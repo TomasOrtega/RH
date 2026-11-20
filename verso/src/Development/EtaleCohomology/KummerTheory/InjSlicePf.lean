@@ -10,7 +10,7 @@ def ForgetInj : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) [Injective F] (S
     Injective (⟨_, h⟩ : Sheaf (Scheme.etaleTopology.over S) (ModuleCat.{1} (ULift.{1} R)))
 
 /- English proof (translation)
-Establish `adj` using `(Over.mapPullbackAdj p).sheafPushforwardContinuous (E := ModuleCat.{1} (ULift.{1} R)) (Scheme.etaleTopology.over X) (Scheme.etaleTopology.over S)`. Establish `: ((Over.map p).sheafPushforwardContinuous (ModuleCat.{1} (ULift.{1} R)) (Scheme.etaleTopology.over X) (Scheme.etaleTopology.over S)).PreservesMonomorphisms` using `inferInstance`. Conclude with `Injective.injective_of_adjoint adj G`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pushPullback_inj {R : Type} [CommRing R] {X S : Scheme.{0}} (p : X ⟶ S)
     (G : Sheaf (Scheme.etaleTopology.over X) (ModuleCat.{1} (ULift.{1} R))) [Injective G] :
@@ -23,7 +23,7 @@ theorem pushPullback_inj {R : Type} [CommRing R] {X S : Scheme.{0}} (p : X ⟶ S
   exact Injective.injective_of_adjoint adj G
 
 /- English proof (translation)
-Introduce `R _ F _ X S p`. Take `⟨hX, iX⟩` from `hF R F X`. Use `⟨?_, hF R F S⟩` and prove the remaining obligations. Set `G : Sheaf (Scheme.etaleTopology.over X) (ModuleCat.{1} (ULift.{1} R))` to `⟨_, hX⟩`. Conclude with `⟨(((Over.pullback p).sheafPushforwardContinuous (ModuleCat.{1} (ULift.{1} R)) (Scheme.etaleTopology.over S) (Scheme.etaleTopology.over X)).obj G).2, pushPullback_inj p G⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem InjSlice_of (hF : ForgetInj) : InjSlice := by
   intro R _ F _ X S p

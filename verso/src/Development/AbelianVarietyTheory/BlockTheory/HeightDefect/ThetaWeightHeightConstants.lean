@@ -17,14 +17,14 @@ def pSig {R : Ranks} (j : Lift R) : ℕ := (R.sigW j.1).1
 def qSig {R : Ranks} (j : Lift R) : ℕ := (R.sigW j.1).2
 
 /- English proof (translation)
-Use `R.m_add_three_le_k` as an intermediate fact. Use `j.2.1` as an intermediate fact. Simplify using `only [pSig, Ranks.sigW]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pSig_pos {R : Ranks} (j : Lift R) : 0 < pSig j := by
   have := R.m_add_three_le_k; have := j.2.1
   simp only [pSig, Ranks.sigW]; omega
 
 /- English proof (translation)
-Use `R.m_add_three_le_k` as an intermediate fact. Use `j.2.1` as an intermediate fact. Use `j.2.2` as an intermediate fact. Simplify using `only [pSig, qSig, Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pSig_add_qSig {R : Ranks} (j : Lift R) : pSig j + qSig j = R.r := by
   have := R.m_add_three_le_k; have := j.2.1; have := j.2.2
@@ -40,9 +40,9 @@ def wittIndexOf {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
   sSup (isotropicDims S)
 
 /- English proof (translation)
-Establish `hb : BddAbove (isotropicDims S)`. Use `⟨Module.finrank E S.V, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨U, -, rfl⟩`. Conclude with `Submodule.finrank_le U`. Establish `hn : (isotropicDims S).Nonempty`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, ⊥, ?_, rfl⟩` and prove the remaining obligations. Introduce `x _ y hy`. Rewrite using `[(Submodule.mem_bot E).1 hy]`. Simplify using `[HSpace.hD]`. Conclude with `⟨Nat.sSup_mem hn hb, fun n h => le_csSup hb h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wittIndexOf_isGreatest {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) :
     IsGreatest (isotropicDims S) (wittIndexOf S) := by
@@ -72,7 +72,7 @@ def WittIndexEq : Prop := ∀ (D : D7) (j : Lift D.R), wittIndex D j = rho j
 def dPrime {R : Ranks} (j : Lift R) : ℕ := 2 * R.f * rho j
 
 /- English proof (translation)
-The claim follows from `Nat.mul_le_mul_left _ (Nat.sub_le _ _)`.
+A detailed English derivation is pending.
 -/
 theorem dPrime_le {R : Ranks} (j : Lift R) : dPrime j ≤ 2 * R.f * R.m :=
   Nat.mul_le_mul_left _ (Nat.sub_le _ _)
@@ -89,7 +89,7 @@ def RR (D : D7) : ℝ := D.host.rdE ^ 7
 def PP {D : D7} (L : SizeData₂ D) (C e : ℝ) : ℝ := C * ((D.R.f : ℝ) * (D.R.r : ℝ) * L.sc.L) ^ e
 
 /- English proof (translation)
-The claim follows from `T.PP_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem PP_eq_params {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) :
     PP L T.CP T.eP = T.PP := T.PP_eq.symm
@@ -125,7 +125,7 @@ def degreeThreePolynomialMajorant {D : D7} (L : SizeData₂ D) (C : ℝ) (e : �
   C * ((D.R.f : ℝ) * (D.R.r : ℝ) + Real.log L.sc.b + logdE D + |L.logOm|) ^ e
 
 /- English proof (translation)
-The claim follows from `Real.log_exp _`.
+A detailed English derivation is pending.
 -/
 theorem log_b {D : D7} (L : SizeData₂ D) : Real.log L.sc.b = L.sc.L := Real.log_exp _
 
@@ -179,16 +179,16 @@ def PlusLastPos (G : ThetaWeight D j) : Prop := ∀ τ, 1 ≤ G.plusLast τ
 def PlusLastPosAtOne (G : ThetaWeight D j) : Prop := ∃ τ, 1 ≤ G.plusLast τ
 
 /- English proof (translation)
-Simplify using `only [size, DF, add, Pi.add_apply, Finset.sum_add_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem size_add (G G' : ThetaWeight D j) : (G.add G').size = G.size + G'.size - 1 := by
   simp only [size, DF, add, Pi.add_apply, Finset.sum_add_distrib]
   push_cast; ring
 
 /- English proof (translation)
-Establish `h : (G.nsmul N).DF = N * G.DF`. Simplify using `only [DF, nsmul, Finset.mul_sum, mul_add]`. Establish `hN' : (1 : ℤ) ≤ N` using `by exact_mod_cast hN`. Establish `hn : (G.nsmul N).n = N * G.n` using `rfl`. Unfold `size`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, hn]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem size_nsmul_le (N : ℕ) (hN : 1 ≤ N) (G : ThetaWeight D j) :
     (G.nsmul N).size ≤ N * G.size := by
@@ -200,7 +200,7 @@ theorem size_nsmul_le (N : ℕ) (hN : 1 ≤ N) (G : ThetaWeight D j) :
   rw [h, hn]; push_cast; nlinarith
 
 /- English proof (translation)
-Establish `: 0 ≤ G.DF` using `Finset.sum_nonneg fun τ _ => add_nonneg (Finset.sum_nonneg fun i _ => (h τ).1 i) (Finset.sum_nonneg fun i _ => (h τ).2 i)`. Unfold `size`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_size {G : ThetaWeight D j} (h : G.Dominant) : 1 ≤ G.size := by
   have : 0 ≤ G.DF := Finset.sum_nonneg fun τ _ =>
@@ -225,9 +225,9 @@ def staircase (D : D7) (j : Lift D.R) : ThetaWeight D j where
   n := 2
 
 /- English proof (translation)
-Use `⟨fun τ => ⟨fun i => ?_, fun i => ?_⟩, fun τ => ?_, by simp [staircase]⟩` and prove the remaining obligations. Use `i.2` as an intermediate fact. Simplify using `only [staircase]`. Use linear arithmetic over natural numbers and integers. Use `i.2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [staircase]`. Use linear arithmetic over natural numbers and integers. Use `pSig_pos j` as an intermediate fact. Simplify using `only [ThetaWeight.plusLast, staircase]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 example (D : D7) (j : Lift D.R) :
     (staircase D j).Dominant ∧ (staircase D j).PlusLastPos ∧ Even (staircase D j).n := by

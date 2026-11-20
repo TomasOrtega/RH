@@ -33,28 +33,28 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.FrameVec
 open GlobalTheory.CompanionTheory.Ar.LieSigma
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem one_left_over {S : Scheme.{0}} {X M : Over S} [GrpObj M] : (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
   rw [Hom.one_def, Over.comp_left]
   congr 1
 
 /- English proof (translation)
-Introduce `E _ _ _ H L _ _ D σ a h1 h2 x`. Establish `hpull` using `isTanAt_pull D.t.G (σ.comp (algebraMap (𝓞 L) L)) (𝟙 _) (D.MB.pt x) (D.MB.tan x)`. Establish `hw : (spMap (dualMap (σ.comp (algebraMap (𝓞 L) L))) ≫ (D.MB.pt x).left) ≫ D.t.G.hom = (epsAt (emb σ)).hom`. Use `Over.w (pullEps (σ.comp (algebraMap (𝓞 L) L)) (𝟙 _) ≫ D.MB.pt x)` as an intermediate fact. Simplify `this` using `[pullEps]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `v : epsAt (emb σ) ⟶ D.t.G` to `Over.homMk _ hw`. Establish `hvl : v.left = spMap (dualMap (σ.comp (algebraMap (𝓞 L) L))) ≫ (D.MB.pt x).left` using `rfl`. Establish `hlift : D.MB.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 D.t.G.left) x v` using `by show v.left ≫ 𝟙 _ = _`. Rewrite using `[Category.comp_id]`. Conclude with `hvl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq : v.left ≫ D.t.G.hom = (epsR ℂ).hom ≫ emb σ` using `hw`. Set `v' : epsR ℂ ⟶ a.A` to `Over.homMk (a.cart.1.lift v.left (epsR ℂ).hom hsq) (a.cart.1.lift_snd _ _ _)`. Establish `hφ : v'.left ≫ a.φ = v.left` using `a.cart.1.lift_fst _ _ _`. Establish `ht : IsTangent v'`. Unfold `IsTangent`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `a.cart.1.hom_ext` to reduce the goal to its premises. Establish `h3 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = _` using `hpull`. Rewrite using `[Category.assoc, hφ, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left a.cart, h3, one_left_over]`. Simplify using the standard rewrite rules. Establish `e : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ (epsR ℂ).hom = 𝟙 _` using `by show Spec.map _ ≫ Spec.map _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp (algebraMap ℂ (DualNumber ℂ)) = RingHom.id ℂ`. Apply the tactic sequence `ext t <;> simp`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Category.assoc, Over.w v', e]`. Simplify using `using (Over.w η[a.A]).symm`. Take `⟨c, hc, hu⟩` from `h1 v' ht`. Use `⟨c, ⟨v, hlift, v', hφ, hc⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `c' ⟨v₁, hl₁, v₁', hφ₁, hc₁⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : v₁.left = v.left`. Establish `: v₁.left ≫ 𝟙 _ = _` using `hl₁`. Rewrite `this` using `[Category.comp_id]`. Conclude with `this`. Establish `e₂ : v₁' = v'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `a.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hφ₁, hφ, e₁]`. Rewrite using `[Over.w v₁', Over.w v']`. Conclude with `hu c' (e₂ ▸ hc₁)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVec_existsUnique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ), (∀ v, IsTangent v → ∃! w, a.u.IsDiff w v) → (∀ w, ∃! v, IsTangent v ∧ a.u.IsDiff w v) → ∀ x : D.B.carrier, ∃! c, D.IsVec a x c := by
   intro E _ _ _ H L _ _ D σ a h1 h2 x

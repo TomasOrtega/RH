@@ -15,7 +15,7 @@ variable {C : Type} [Field C] {V : VF C}
 def Tends (V : VF C) (s : ℕ → C) (x : C) : Prop := ∀ w : ℝ, ∃ n0 : ℕ, ∀ n ≥ n0, V.Ge w (x - s n)
 
 /- English proof (translation)
-Use `show (w : WithTop ℝ) ≤ V.v 0`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ge_zero_lemma (w : ℝ) : V.Ge w (0 : C) := by
   show (w : WithTop ℝ) ≤ V.v 0
@@ -23,14 +23,14 @@ private theorem ge_zero_lemma (w : ℝ) : V.Ge w (0 : C) := by
   exact le_top
 
 /- English proof (translation)
-Use `show (w : WithTop ℝ) ≤ V.v (a + b)`. Conclude with `le_trans (le_min ha hb) (AddValuation.map_add V.v a b)`.
+A detailed English derivation is pending.
 -/
 private theorem ge_add_lemma_2 {w : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w b) : V.Ge w (a + b) := by
   show (w : WithTop ℝ) ≤ V.v (a + b)
   exact le_trans (le_min ha hb) (AddValuation.map_add V.v a b)
 
 /- English proof (translation)
-Use `show (w : WithTop ℝ) ≤ V.v (-a)`. Rewrite using `[AddValuation.map_neg]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ge_neg_lemma_3 {w : ℝ} {a : C} (ha : V.Ge w a) : V.Ge w (-a) := by
   show (w : WithTop ℝ) ≤ V.v (-a)
@@ -38,21 +38,21 @@ private theorem ge_neg_lemma_3 {w : ℝ} {a : C} (ha : V.Ge w a) : V.Ge w (-a) :
   exact ha
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `ge_add_lemma_2 ha (ge_neg_lemma_3 hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ge_sub_lemma_4 {w : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w b) : V.Ge w (a - b) := by
   rw [sub_eq_add_neg]
   exact ge_add_lemma_2 ha (ge_neg_lemma_3 hb)
 
 /- English proof (translation)
-Use `show (w' : WithTop ℝ) ≤ V.v a`. Conclude with `le_trans (WithTop.coe_le_coe.mpr h) ha`.
+A detailed English derivation is pending.
 -/
 private theorem ge_mono_lemma_5 {w w' : ℝ} {a : C} (h : w' ≤ w) (ha : V.Ge w a) : V.Ge w' a := by
   show (w' : WithTop ℝ) ≤ V.v a
   exact le_trans (WithTop.coe_le_coe.mpr h) ha
 
 /- English proof (translation)
-Use `show ((w + w' : ℝ) : WithTop ℝ) ≤ V.v (a * b)`. Rewrite using `[AddValuation.map_mul, WithTop.coe_add]`. Conclude with `add_le_add ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ge_mul_lemma_6 {w w' : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w' b) :
     V.Ge (w + w') (a * b) := by
@@ -61,9 +61,9 @@ private theorem ge_mul_lemma_6 {w w' : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge
   exact add_le_add ha hb
 
 /- English proof (translation)
-Introduce `b (hb : a ≤ b)`. Proceed by induction on `b, hb using Nat.le_induction with`. Consider the case `base`. Rewrite using `[sub_self]`. Conclude with `ge_zero_lemma w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ b hab ih`. Establish `e : s (b + 1) - s a = (s (b + 1) - s b) + (s b - s a)` using `by ring`. Rewrite using `[e]`. Conclude with `ge_add_lemma_2 (h b hab) ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ge_tele_lemma_7 {s : ℕ → C} {w : ℝ} {a : ℕ} (h : ∀ m ≥ a, V.Ge w (s (m + 1) - s m)) :
     ∀ b ≥ a, V.Ge w (s b - s a) := by
@@ -78,7 +78,7 @@ private theorem ge_tele_lemma_7 {s : ℕ → C} {w : ℝ} {a : ℕ} (h : ∀ m �
     exact ge_add_lemma_2 (h b hab) ih
 
 /- English proof (translation)
-Use `show ∃ K : ℝ, ((K : WithTop ℝ) ≤ V.v x)`. Generalize the expression as in `V.v x = t`. Proceed by induction on `t using WithTop.recTopCoe with`. Consider the case `top => exact ⟨0, le_top⟩`. Consider the case `coe r => exact ⟨r, le_rfl⟩`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_ge (x : C) : ∃ K : ℝ, V.Ge K x := by
   show ∃ K : ℝ, ((K : WithTop ℝ) ≤ V.v x)
@@ -88,13 +88,13 @@ theorem exists_ge (x : C) : ∃ K : ℝ, V.Ge K x := by
   | coe r => exact ⟨r, le_rfl⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∀ w : ℝ, ((w : WithTop ℝ) ≤ V.v x) at h`. Assume the negation of the conclusion as `hx`. Establish `hne : V.v x ≠ ⊤`. Introduce `ht`. Apply `hx` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `first`. Consider the case `exact (AddValuation.top_iff V.v).mp ht`. Consider the case `exact V.v.top_iff.mp ht`. Consider the case `(by_contra hx0`. Establish `h2 : V.v (x * x⁻¹) = V.v x + V.v x⁻¹` using `AddValuation.map_mul V.v x x⁻¹`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[mul_inv_cancel₀ hx0, AddValuation.map_one, ht, top_add]`. Simplify using `at h2)`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp hne`. Establish `h1` using `h (r + 1)`. Rewrite `h1` using `[← hr, WithTop.coe_le_coe]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ge_all {x : C} (h : ∀ w : ℝ, V.Ge w x) : x = 0 := by
   change ∀ w : ℝ, ((w : WithTop ℝ) ≤ V.v x) at h
@@ -115,7 +115,7 @@ theorem eq_zero_of_ge_all {x : C} (h : ∀ w : ℝ, V.Ge w x) : x = 0 := by
   linarith
 
 /- English proof (translation)
-Introduce `w`. Use `⟨0, fun n _ => ?_⟩` and prove the remaining obligations. Use `show V.Ge w (x - x)`. Rewrite using `[sub_self]`. Conclude with `ge_zero_lemma w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tends_const (x : C) : Tends V (fun _ => x) x := by
   intro w
@@ -125,9 +125,9 @@ theorem tends_const (x : C) : Tends V (fun _ => x) x := by
   exact ge_zero_lemma w
 
 /- English proof (translation)
-Establish `hxy : x - y = 0`. Apply `eq_zero_of_ge_all (V := V)` to reduce the goal to its premises. Introduce `w`. Take `⟨n1, h1⟩` from `hx w`. Take `⟨n2, h2⟩` from `hy w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : x - y = (x - s (max n1 n2)) - (y - s (max n1 n2))` using `by ring`. Rewrite using `[e]`. Conclude with `ge_sub_lemma_4 (h1 _ (le_max_left _ _)) (h2 _ (le_max_right _ _))`. Conclude with `sub_eq_zero.mp hxy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tends.unique {s : ℕ → C} {x y : C} (hx : Tends V s x) (hy : Tends V s y) : x = y := by
   have hxy : x - y = 0 := by
@@ -141,9 +141,9 @@ theorem Tends.unique {s : ℕ → C} {x y : C} (hx : Tends V s x) (hy : Tends V 
   exact sub_eq_zero.mp hxy
 
 /- English proof (translation)
-Introduce `w`. Take `⟨n1, h1⟩` from `hs w`. Take `⟨n2, h2⟩` from `ht w`. Use `⟨max n1 n2, fun n hn => ?_⟩` and prove the remaining obligations. Establish `e : x + y - (s n + t n) = (x - s n) + (y - t n)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show V.Ge w (x + y - (s n + t n))`. Rewrite using `[e]`. Conclude with `ge_add_lemma_2 (h1 n (le_of_max_le_left hn)) (h2 n (le_of_max_le_right hn))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tends.add {s t : ℕ → C} {x y : C} (hs : Tends V s x) (ht : Tends V t y) :
     Tends V (fun n => s n + t n) (x + y) := by
@@ -157,9 +157,9 @@ theorem Tends.add {s t : ℕ → C} {x y : C} (hs : Tends V s x) (ht : Tends V t
   exact ge_add_lemma_2 (h1 n (le_of_max_le_left hn)) (h2 n (le_of_max_le_right hn))
 
 /- English proof (translation)
-Introduce `w`. Take `⟨n0, h0⟩` from `hs w`. Use `⟨n0, fun n hn => ?_⟩` and prove the remaining obligations. Establish `e : -x - -s n = -(x - s n)` using `by ring`. Use `show V.Ge w (-x - -s n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `ge_neg_lemma_3 (h0 n hn)`.
+A detailed English derivation is pending.
 -/
 theorem Tends.neg {s : ℕ → C} {x : C} (hs : Tends V s x) : Tends V (fun n => -s n) (-x) := by
   intro w
@@ -171,9 +171,9 @@ theorem Tends.neg {s : ℕ → C} {x : C} (hs : Tends V s x) : Tends V (fun n =>
   exact ge_neg_lemma_3 (h0 n hn)
 
 /- English proof (translation)
-Introduce `w`. Take `⟨n1, h1⟩` from `hs w`. Take `⟨n2, h2⟩` from `ht w`. Use `⟨max n1 n2, fun n hn => ?_⟩` and prove the remaining obligations. Establish `e : x - y - (s n - t n) = (x - s n) - (y - t n)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show V.Ge w (x - y - (s n - t n))`. Rewrite using `[e]`. Conclude with `ge_sub_lemma_4 (h1 n (le_of_max_le_left hn)) (h2 n (le_of_max_le_right hn))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tends.sub {s t : ℕ → C} {x y : C} (hs : Tends V s x) (ht : Tends V t y) :
     Tends V (fun n => s n - t n) (x - y) := by
@@ -187,15 +187,13 @@ theorem Tends.sub {s t : ℕ → C} {x y : C} (hs : Tends V s x) (ht : Tends V t
   exact ge_sub_lemma_4 (h1 n (le_of_max_le_left hn)) (h2 n (le_of_max_le_right hn))
 
 /- English proof (translation)
-Take `⟨Kx, hKx⟩` from `exists_ge (V := V) x`. Take `⟨Ky, hKy⟩` from `exists_ge (V := V) y`. Introduce `w`. Take `⟨n1, h1⟩` from `hs (w + |Kx| + |Ky| + |w|)`. Take `⟨n2, h2⟩` from `ht (w + |Kx| + |Ky| + |w|)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max n1 n2, fun n hn => ?_⟩` and prove the remaining obligations. Establish `a1` using `h1 n (le_of_max_le_left hn)`. Establish `a2` using `h2 n (le_of_max_le_right hn)`. Establish `e : x * y - s n * t n = x * (y - t n) + (x - s n) * y - (x - s n) * (y - t n)` using `by ring`. Use `show V.Ge w (x * y - s n * t n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `k1` using `neg_abs_le Kx`. Establish `k2` using `neg_abs_le Ky`. Establish `k3` using `neg_abs_le w`. Establish `k4` using `abs_nonneg Kx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k5` using `abs_nonneg Ky`. Establish `k6` using `abs_nonneg w`. Use `ge_sub_lemma_4 (ge_add_lemma_2 ?_ ?_) ?_` and prove the remaining obligations. Conclude with `ge_mono_lemma_5 (by linarith) (ge_mul_lemma_6 hKx a2)`. Conclude with `ge_mono_lemma_5 (by linarith) (ge_mul_lemma_6 a1 hKy)`.
-
-Conclude with `ge_mono_lemma_5 (by linarith) (ge_mul_lemma_6 a1 a2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Tends.mul {s t : ℕ → C} {x y : C} (hs : Tends V s x) (ht : Tends V t y) :
     Tends V (fun n => s n * t n) (x * y) := by
@@ -222,9 +220,9 @@ theorem Tends.mul {s t : ℕ → C} {x y : C} (hs : Tends V s x) (ht : Tends V t
   · exact ge_mono_lemma_5 (by linarith) (ge_mul_lemma_6 a1 a2)
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `only [Finset.sum_empty]`. Conclude with `tends_const (V := V) 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i S hi ih h`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `(h i (Finset.mem_insert_self i S)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 theorem Tends.sum {ι : Type} (S : Finset ι) {s : ι → ℕ → C} {x : ι → C}
     (h : ∀ i ∈ S, Tends V (s i) (x i)) : Tends V (fun n => ∑ i ∈ S, s i n) (∑ i ∈ S, x i) := by
@@ -239,7 +237,7 @@ theorem Tends.sum {ι : Type} (S : Finset ι) {s : ι → ℕ → C} {x : ι →
     exact (h i (Finset.mem_insert_self i S)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Take `⟨n0, hn⟩` from `h 0`. Establish `h1` using `ge_add_lemma_2 (hn n0 le_rfl) (hs n0)`. Rewrite `h1` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Tends.ge0 {s : ℕ → C} {x : C} (h : Tends V s x) (hs : ∀ n, V.Ge 0 (s n)) : V.Ge 0 x := by
   obtain ⟨n0, hn⟩ := h 0
@@ -247,11 +245,11 @@ theorem Tends.ge0 {s : ℕ → C} {x : C} (h : Tends V s x) (hs : ∀ n, V.Ge 0 
   rwa [sub_add_cancel] at h1
 
 /- English proof (translation)
-Use `choose φ hφ using hs`. Take `⟨ψ, hψφ, hψle⟩ : ∃ ψ : ℕ → ℕ, (∀ N, φ N ≤ ψ N) ∧ (∀ N M, N ≤ M → ψ N ≤ ψ M)` from `⟨fun N => ∑ k ∈ Finset.range (N + 1), φ k, fun N => Finset.single_le_sum (f := φ) (fun k _ => Nat.zero_le (φ k)) (Finset.mem_range.mpr (Nat.lt_succ_self N)), fun N M h => Finset.sum_le_sum_of_subset (Finset.range_mono (Nat.succ_le_succ h))⟩`. Establish `tail : ∀ N : ℕ, ∀ n ≥ ψ N, V.Ge (N : ℝ) (s n - s (ψ N))` using `fun N => ge_tele_lemma_7 (fun m hm => hφ N m (le_trans (hψφ N) hm))`. Take `⟨x, hx⟩` from `hc (fun N => s (ψ N)) (fun N => tail N (ψ (N + 1)) (hψle N (N + 1) (Nat.le_succ N)))`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Use `⟨ψ ⌈w⌉₊, fun n hn => ?_⟩` and prove the remaining obligations. Establish `A : V.Ge ((⌈w⌉₊ : ℕ) : ℝ) (x - s (ψ ⌈w⌉₊))` using `hx ⌈w⌉₊`. Establish `B` using `tail ⌈w⌉₊ n hn`. Establish `e : x - s n = (x - s (ψ ⌈w⌉₊)) - (s n - s (ψ ⌈w⌉₊))` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `ge_mono_lemma_5 (Nat.le_ceil w) (ge_sub_lemma_4 A B)`.
+A detailed English derivation is pending.
 -/
 theorem exists_tends
     (hc : ∀ s : ℕ → C, (∀ n : ℕ, V.Ge n (s (n + 1) - s n)) → ∃ x, ∀ n : ℕ, V.Ge n (x - s n))
@@ -285,21 +283,21 @@ def TendsS (V : VF C) (f : ℕ → MvPowerSeries σ C) (g : MvPowerSeries σ C) 
   ∀ μ, Tends V (fun n => coeff μ (f n)) (coeff μ g)
 
 /- English proof (translation)
-Introduce `μ`. Conclude with `tends_const _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem TendsS.const (g : MvPowerSeries σ C) : TendsS V (fun _ => g) g := by
   intro μ
   exact tends_const _
 
 /- English proof (translation)
-Conclude with `MvPowerSeries.ext fun μ => (hF μ).unique (hG μ)`.
+A detailed English derivation is pending.
 -/
 theorem TendsS.unique {f : ℕ → MvPowerSeries σ C} {F G : MvPowerSeries σ C} (hF : TendsS V f F)
     (hG : TendsS V f G) : F = G := by
   exact MvPowerSeries.ext fun μ => (hF μ).unique (hG μ)
 
 /- English proof (translation)
-Introduce `μ`. Simplify `(hf μ).add (hg μ)` using `only [map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem TendsS.add {f g : ℕ → MvPowerSeries σ C} {F G : MvPowerSeries σ C} (hf : TendsS V f F)
     (hg : TendsS V g G) : TendsS V (fun n => f n + g n) (F + G) := by
@@ -307,7 +305,7 @@ theorem TendsS.add {f g : ℕ → MvPowerSeries σ C} {F G : MvPowerSeries σ C}
   simpa only [map_add] using (hf μ).add (hg μ)
 
 /- English proof (translation)
-Introduce `μ`. Simplify `(hf μ).sub (hg μ)` using `only [map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem TendsS.sub {f g : ℕ → MvPowerSeries σ C} {F G : MvPowerSeries σ C} (hf : TendsS V f F)
     (hg : TendsS V g G) : TendsS V (fun n => f n - g n) (F - G) := by
@@ -315,7 +313,7 @@ theorem TendsS.sub {f g : ℕ → MvPowerSeries σ C} {F G : MvPowerSeries σ C}
   simpa only [map_sub] using (hf μ).sub (hg μ)
 
 /- English proof (translation)
-Introduce `μ`. Establish `key` using `Tends.sum (V := V) (Finset.HasAntidiagonal.antidiagonal μ) (s := fun p n => coeff p.1 (f n) * coeff p.2 (g n)) (x := fun p => coeff p.1 F * coeff p.2 G) (fun p _ => (hf p.1).mul (hg p.2))`. Simplify `key` using `only [MvPowerSeries.coeff_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem TendsS.mul {f g : ℕ → MvPowerSeries σ C} {F G : MvPowerSeries σ C} (hf : TendsS V f F)
     (hg : TendsS V g G) : TendsS V (fun n => f n * g n) (F * G) := by
@@ -327,7 +325,7 @@ theorem TendsS.mul {f g : ℕ → MvPowerSeries σ C} {F G : MvPowerSeries σ C}
   simpa only [MvPowerSeries.coeff_mul] using key
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa only [pow_zero] using TendsS.const (V := V) (1 : MvPowerSeries σ C)`. Consider the case `succ k ih => simpa only [pow_succ] using ih.mul hf`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem TendsS.pow {f : ℕ → MvPowerSeries σ C} {F : MvPowerSeries σ C} (hf : TendsS V f F) (k : ℕ) :
     TendsS V (fun n => f n ^ k) (F ^ k) := by
@@ -336,9 +334,9 @@ theorem TendsS.pow {f : ℕ → MvPowerSeries σ C} {F : MvPowerSeries σ C} (hf
   | succ k ih => simpa only [pow_succ] using ih.mul hf
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify `TendsS.const (V := V) (1 : MvPowerSeries σ C)` using `only [Finset.prod_empty]`. Introduce `i S hi ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(h i (Finset.mem_insert_self i S)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))` using `only [Finset.prod_insert hi]`.
+A detailed English derivation is pending.
 -/
 theorem TendsS.prod {ι : Type} (S : Finset ι) {f : ι → ℕ → MvPowerSeries σ C} {F : ι → MvPowerSeries σ C}
     (h : ∀ i ∈ S, TendsS V (f i) (F i)) : TendsS V (fun n => ∏ i ∈ S, f i n) (∏ i ∈ S, F i) := by
@@ -352,7 +350,7 @@ theorem TendsS.prod {ι : Type} (S : Finset ι) {f : ι → ℕ → MvPowerSerie
       (h i (Finset.mem_insert_self i S)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Simplify using `only [Finsupp.prod]`. Conclude with `TendsS.prod d.support (f := fun i n => a n i ^ d i) (F := fun i => A i ^ d i) (fun i _ => (ha i).pow (d i))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TendsS.fprod {ι : Type} (d : ι →₀ ℕ) {a : ℕ → ι → MvPowerSeries σ C} {A : ι → MvPowerSeries σ C}
     (ha : ∀ i, TendsS V (fun n => a n i) (A i)) :
@@ -362,7 +360,7 @@ theorem TendsS.fprod {ι : Type} (d : ι →₀ ℕ) {a : ℕ → ι → MvPower
     (fun i _ => (ha i).pow (d i))
 
 /- English proof (translation)
-Introduce `μ`. Conclude with `(hf μ).ge0 (fun n => hi n μ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem TendsS.intS {f : ℕ → MvPowerSeries σ C} {F : MvPowerSeries σ C} (hf : TendsS V f F)
     (hi : ∀ n, IntS V (f n)) : IntS V F := by
@@ -372,11 +370,11 @@ theorem TendsS.intS {f : ℕ → MvPowerSeries σ C} {F : MvPowerSeries σ C} (h
 def Ord (k : ℕ) (f : MvPowerSeries σ C) : Prop := ∀ μ : σ →₀ ℕ, Finsupp.degree μ < k → coeff μ f = 0
 
 /- English proof (translation)
-Introduce `μ hμ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : Finsupp.degree p.1 + Finsupp.degree p.2 = Finsupp.degree μ`. Rewrite using `[← hp, map_add]`. Distinguish the cases in `h1 : Finsupp.degree p.1 < k`. Rewrite using `[hf p.1 h1, zero_mul]`. Establish `h2 : Finsupp.degree p.2 < k'` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg p.2 h2, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Ord.mul {k k' : ℕ} {f g : MvPowerSeries σ C} (hf : Ord k f) (hg : Ord k' g) : Ord (k + k') (f * g) := by
   classical
@@ -393,21 +391,21 @@ theorem Ord.mul {k k' : ℕ} {f g : MvPowerSeries σ C} (hf : Ord k f) (hg : Ord
     rw [hg p.2 h2, mul_zero]
 
 /- English proof (translation)
-Introduce `μ h`. Conclude with `absurd h (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ord.one : Ord 0 (1 : MvPowerSeries σ C) := by
   intro μ h
   exact absurd h (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Introduce `μ hμ`. Conclude with `hf μ (lt_of_lt_of_le hμ h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Ord.mono {k k' : ℕ} {f : MvPowerSeries σ C} (hf : Ord k f) (h : k' ≤ k) : Ord k' f := by
   intro μ hμ
   exact hf μ (lt_of_lt_of_le hμ h)
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simpa only [mul_zero, pow_zero] using (Ord.one : Ord 0 (1 : MvPowerSeries σ C))`. Consider the case `succ e ih`. Rewrite using `[pow_succ, mul_add, mul_one]`. Conclude with `ih.mul hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ord.pow {k : ℕ} {f : MvPowerSeries σ C} (hf : Ord k f) (e : ℕ) : Ord (k * e) (f ^ e) := by
   induction e with
@@ -417,9 +415,9 @@ theorem Ord.pow {k : ℕ} {f : MvPowerSeries σ C} (hf : Ord k f) (e : ℕ) : Or
     exact ih.mul hf
 
 /- English proof (translation)
-Introduce `μ hμ`. Establish `h0 : μ = 0`. Establish `hd : Finsupp.degree μ = 0` using `by omega`. Conclude with `(Finsupp.degree_eq_zero_iff μ).mp hd`. Substitute `h0` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Treat this case separately.
 
-Use `first`. Consider the case `(rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply]; exact hf)`. Consider the case `simpa using hf`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ord_one_of_const {f : MvPowerSeries σ C} (hf : constantCoeff f = 0) : Ord 1 f := by
   intro μ hμ
@@ -432,9 +430,9 @@ theorem ord_one_of_const {f : MvPowerSeries σ C} (hf : constantCoeff f = 0) : O
   | simpa using hf
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.sum_empty, Finset.prod_empty]`. Conclude with `Ord.one`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i S hi ih h`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`. Conclude with `(h i (Finset.mem_insert_self i S)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+A detailed English derivation is pending.
 -/
 theorem Ord.prod {ι : Type} (S : Finset ι) {k : ι → ℕ} {f : ι → MvPowerSeries σ C}
     (h : ∀ i ∈ S, Ord (k i) (f i)) : Ord (∑ i ∈ S, k i) (∏ i ∈ S, f i) := by
@@ -449,9 +447,9 @@ theorem Ord.prod {ι : Type} (S : Finset ι) {k : ι → ℕ} {f : ι → MvPowe
     exact (h i (Finset.mem_insert_self i S)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Establish `hdeg : Finsupp.degree d = ∑ s ∈ d.support, d s` using `by first`. Consider the case `rfl`. Consider the case `simp [Finsupp.degree_apply]`. Consider the case `simp [Finsupp.degree]`. Rewrite using `[hdeg]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.prod]`. Conclude with `Ord.prod d.support (k := fun s => d s) (f := fun s => a s ^ d s) (fun s _ => by simpa only [one_mul] using (ord_one_of_const (ha s)).pow (d s))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ord_fprod {τ : Type} {a : σ → MvPowerSeries τ C} (ha : ∀ s, constantCoeff (a s) = 0) (d : σ →₀ ℕ) :
     Ord (Finsupp.degree d) (d.prod fun s e => a s ^ e) := by
@@ -466,11 +464,11 @@ theorem ord_fprod {τ : Type} {a : σ → MvPowerSeries τ C} (ha : ∀ s, const
     (fun s _ => by simpa only [one_mul] using (ord_one_of_const (ha s)).pow (d s))
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst a` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`. Consider the case `exact ⟨fun s => by rw [ha s]; exact IsNilpotent.zero, fun d => Set.toFinite _⟩`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[MvPowerSeries.coeff_subst hs]`. Simplify using `only [smul_eq_mul]`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `d hd`. Rewrite using `[Set.Finite.coe_toFinset, Set.mem_setOf_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.mem_support, ne_eq] at hd`. Assume the negation of the conclusion as `hlt`. Conclude with `hd (by rw [ord_fprod ha d μ (by omega), mul_zero])`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem coeff_subst_eq_sum [Finite σ] {τ : Type} {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ C) (μ : τ →₀ ℕ) :
@@ -492,7 +490,7 @@ theorem coeff_subst_eq_sum [Finite σ] {τ : Type} {a : σ → MvPowerSeries τ 
   exact hd (by rw [ord_fprod ha d μ (by omega), mul_zero])
 
 /- English proof (translation)
-Introduce `μ`. Establish `key` using `Tends.sum (V := V) (Finsupp.finite_of_degree_le (σ := σ) (Finsupp.degree μ)).toFinset (s := fun d n => coeff d (f n) * coeff μ (d.prod fun s e => a n s ^ e)) (x := fun d => coeff d F * coeff μ (d.prod fun s e => A s ^ e)) (fun d _ => (hf d).mul (TendsS.fprod d ha μ))`. Establish `hsub` using `fun n => coeff_subst_eq_sum (ha0 n) (f n) μ`. Simplify using `only [hsub, coeff_subst_eq_sum hA0]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TendsS.subst [Finite σ] {τ : Type} {a : ℕ → σ → MvPowerSeries τ C} {A : σ → MvPowerSeries τ C}
     {f : ℕ → MvPowerSeries σ C} {F : MvPowerSeries σ C}

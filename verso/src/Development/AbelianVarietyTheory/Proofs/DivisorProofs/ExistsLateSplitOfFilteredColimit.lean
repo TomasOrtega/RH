@@ -9,9 +9,9 @@ namespace GlobalTheory.SplitColim
 variable {J : Type} [SmallCategory J] [IsFiltered J] {F : J ⥤ CommRingCat.{0}} {c : Cocone F}
 
 /- English proof (translation)
-Establish `hc'` using `isColimitOfPreserves (forget _) hc`. Establish `h0 : (c.ι.app k).hom x = (c.ι.app k).hom 0` using `by rw [hx, map_zero]`. Take `⟨k₀, f₀, e⟩` from `(Types.FilteredColimit.isColimit_eq_iff' hc' x 0).1 (by exact h0)`. Use `⟨k₀, f₀, fun k' f => ?_⟩` and prove the remaining obligations. Establish `e' : (F.map f₀).hom x = 0` using `by simpa using e`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Functor.map_comp, CommRingCat.hom_comp, RingHom.comp_apply, e', map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eventually_map_eq_zero (hc : IsColimit c) {k : J} (x : F.obj k)
     (hx : (c.ι.app k).hom x = 0) :
@@ -24,11 +24,11 @@ theorem eventually_map_eq_zero (hc : IsColimit c) {k : J} (x : F.obj k)
   rw [Functor.map_comp, CommRingCat.hom_comp, RingHom.comp_apply, e', map_zero]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ S : Finset κ, ∃ (k₀ : J) (f₀ : k ⟶ k₀), ∀ (k' : J) (f : k₀ ⟶ k'), ∀ i ∈ S, (F.map (f₀ ≫ f)).hom (x i) = 0 by`. Take `⟨k₀, f₀, h⟩` from `H Finset.univ`. Conclude with `⟨k₀, f₀, fun k' f i => h k' f i (Finset.mem_univ i)⟩`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty => exact ⟨k, 𝟙 k, fun _ _ i hi => absurd hi (Finset.notMem_empty i)⟩`. Consider the case `insert a S _ ih`. Take `⟨k₀, f₀, h⟩` from `GlobalTheory.TorsorColim.eventually_and (fun k' (g : k ⟶ k') => (F.map g).hom (x a) = 0) (fun k' (g : k ⟶ k') => ∀ i ∈ S, (F.map g).hom (x i) = 0) (eventually_map_eq_zero hc (x a) (hx a)) ih`. Use `⟨k₀, f₀, fun k' f i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(h k' f).1`. Conclude with `(h k' f).2 i hi`.
+A detailed English derivation is pending.
 -/
 theorem eventually_map_eq_zero_finite (hc : IsColimit c) {k : J} {κ : Type} [Fintype κ]
     (x : κ → F.obj k) (hx : ∀ i, (c.ι.app k).hom (x i) = 0) :
@@ -52,11 +52,9 @@ theorem eventually_map_eq_zero_finite (hc : IsColimit c) {k : J} {κ : Type} [Fi
     · exact (h k' f).2 i hi
 
 /- English proof (translation)
-Establish `hc'` using `isColimitOfPreserves (forget _) hc`. Use `choose jx x hx using fun i : ι => Types.jointly_surjective_of_isColimit hc' (t i)`. Use `haveI := Fintype.ofFinite ι`. Take `⟨K, hK⟩` from `IsFiltered.sup_objs_exists (insert k₁ (Finset.univ.image jx))`. Take `⟨h⟩` from `hK (Finset.mem_insert_self k₁ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : ∀ i, Nonempty (jx i ⟶ K)` using `fun i => hK (Finset.mem_insert_of_mem (Finset.mem_image_of_mem jx (Finset.mem_univ i)))`. Use `⟨K, h, fun i => (F.map (hm i).some).hom (x i), fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `hx i`. Establish `h2` using `congr(($(c.w (hm i).some)).hom (x i))`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply] at h2`.
-
-Rewrite using `[h2]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stage_rep (hc : IsColimit c) (k₁ : J) {ι : Type} [Finite ι] (t : ι → c.pt) :
     ∃ (K : J) (h : k₁ ⟶ K) (u : ι → F.obj K), ∀ i, (c.ι.app K).hom (u i) = t i := by
@@ -82,11 +80,11 @@ namespace GlobalTheory.SplitColim
 variable {J : Type} [SmallCategory J] [IsFiltered J] {F : J ⥤ CommRingCat.{0}} {c : Cocone F}
 
 /- English proof (translation)
-Take `⟨K, h, u, hu⟩` from `exists_stage_rep hc k₁ t`. Establish `hx : ∀ i, (c.ι.app K).hom (MvPolynomial.eval₂ (F.map h).hom u (P i)) = 0`. Introduce `i`. Rewrite using `[MvPolynomial.eval₂_comp_left]`. Establish `e1 : (c.ι.app K).hom.comp (F.map h).hom = (c.ι.app k₁).hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← CommRingCat.hom_comp, c.w h]`. Establish `e2 : ⇑(c.ι.app K).hom ∘ u = t` using `funext hu`. Rewrite using `[e1, e2]`. Conclude with `ht i`. Take `⟨k₀, f₀, h0⟩` from `eventually_map_eq_zero_finite hc _ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k₀, h ≫ f₀, fun k f => ⟨fun a => (F.map (f₀ ≫ f)).hom (u a), fun i => ?_⟩⟩` and prove the remaining obligations. Use `h0 k f i` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval₂_comp_left, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Rewrite using `[Category.assoc]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_late_solution (hc : IsColimit c) (k₁ : J) {ι κ : Type} [Finite ι] [Fintype κ]
     (P : κ → MvPolynomial ι (F.obj k₁)) (t : ι → c.pt)
@@ -109,29 +107,27 @@ theorem exists_late_solution (hc : IsColimit c) (k₁ : J) {ι κ : Type} [Finit
   exact this
 
 /- English proof (translation)
-Use `letI : Algebra (F.obj k₁) c.pt := (c.ι.app k₁).hom.toAlgebra`. Introduce `σ hσ`. Take `⟨s, hs, K, hK⟩` from `Module.FinitePresentation.out (R := F.obj k₁) (M := M)`. Use `set π := Finsupp.linearCombination (F.obj k₁) (Subtype.val : s → M) with hπdef`. Establish `hπ : Function.Surjective π`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.range_eq_top, hπdef, Finsupp.range_linearCombination, Subtype.range_coe_subtype]`. Simplify using `using hs`. Take `⟨e, he⟩` from `hπ m`. Establish `hπapp : ∀ {T : Type} [AddCommGroup T] [Module (F.obj k₁) T] (g : M →ₗ[F.obj k₁] T) (v : s →₀ F.obj k₁), g (π v) = ∑ x, v x • g x`. Introduce `T _ _ g v`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hπdef, Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (fun i => by simp), map_sum]`. Simplify using the standard rewrite rules. Set `lin : (s →₀ F.obj k₁) → MvPolynomial s (F.obj k₁)` to `fun v => ∑ x, MvPolynomial.C (v x) * MvPolynomial.X x`. Establish `evlin : ∀ {T : Type} [CommRing T] (φ : F.obj k₁ →+* T) (u : s → T) (v : s →₀ F.obj k₁), MvPolynomial.eval₂ φ u (lin v) = ∑ x, φ (v x) * u x`. Introduce `T _ φ u v`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[lin, MvPolynomial.eval₂_sum]`. Set `P : Option K → MvPolynomial s (F.obj k₁)` to `fun o => o.elim (lin e - 1) (fun v => lin v.1)`. Establish `hKker : ∀ v ∈ K, π v = 0` using `fun v hv => by`. Establish `: v ∈ Submodule.span (F.obj k₁) (K : Set (s →₀ F.obj k₁))` using `Submodule.subset_span hv`. Rewrite `this` using `[hK]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨k₀, f₀, hsol⟩` from `exists_late_solution hc k₁ P (fun x => σ x) (by`. Introduce `o`. Consider the cases of `o with`. Consider the case `none`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.eval₂ _ _ (lin e - 1) = 0`. Rewrite using `[MvPolynomial.eval₂_sub, MvPolynomial.eval₂_one, evlin, sub_eq_zero, ← hσ, ← he, hπapp σ e]`. Both sides reduce to the same expression. Consider the case `some v`. Express the relevant statement in the definitionally equal form `MvPolynomial.eval₂ _ _ (lin v.1) = 0`.
+Both sides reduce to the same expression. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[evlin]`. Use `hπapp σ v.1` as an intermediate fact. Rewrite `this` using `[hKker v.1 v.2, map_zero]`. Rewrite using `[this]`. Use the proof step `rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `⟨k₀, f₀, fun k f => ?_⟩` and prove the remaining obligations. Use `letI : Algebra (F.obj k₁) (F.obj k) := (F.map (f₀ ≫ f)).hom.toAlgebra`. Take `⟨u, hu⟩` from `hsol k f`. Set `φ` to `Finsupp.linearCombination (F.obj k₁) u`. Establish `hφ : ∀ v : s →₀ F.obj k₁, φ v = MvPolynomial.eval₂ (F.map (f₀ ≫ f)).hom u (lin v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `v`. Rewrite using `[evlin, Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Both sides reduce to the same expression. Introduce `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : LinearMap.ker π ≤ LinearMap.ker φ`. Rewrite using `[← hK, Submodule.span_le]`. Introduce `v hv`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[hφ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu (some ⟨v, hv⟩)`. Use `⟨((LinearMap.ker π).liftQ φ hle).comp (π.quotKerEquivOfSurjective hπ).symm.toLinearMap, ?_⟩` and prove the remaining obligations. Establish `hq : (π.quotKerEquivOfSurjective hπ).symm m = Submodule.Quotient.mk e`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk, he]`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, hq, Submodule.liftQ_apply, hφ]`.
-
-Use `hu none` as an intermediate fact. Express the relevant statement in the definitionally equal form `MvPolynomial.eval₂ _ _ (lin e - 1) = 0 at this`. Rewrite `this` using `[MvPolynomial.eval₂_sub, MvPolynomial.eval₂_one, sub_eq_zero]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_late_linear (hc : IsColimit c) (k₁ : J) (M : Type) [AddCommGroup M]
     [Module (F.obj k₁) M] [Module.FinitePresentation (F.obj k₁) M] (m : M) :
@@ -208,19 +204,17 @@ end GlobalTheory.SplitColim
 namespace GlobalTheory.SplitColim
 
 /- English proof (translation)
-Introduce `J _ _ F c hc j A _ _ _ h`. Use `letI : Algebra (F.obj j) c.pt := (c.ι.app j).hom.toAlgebra`. Take `⟨hfin, τ, hτ⟩` from `h`. Take `⟨k₁, f₁, hk₁⟩` from `GlobalTheory.T.eventually_finite_baseChange_filtered_colimit J F c hc j A hfin`. Establish `hfin₁` using `hk₁ k₁ (𝟙 k₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hfin₁` using `[Category.comp_id]`. Use `letI : Algebra (F.obj j) (F.obj k₁) := (F.map f₁).hom.toAlgebra`. Use `letI : Algebra (F.obj k₁) c.pt := (c.ι.app k₁).hom.toAlgebra`. Use `haveI : IsScalarTower (F.obj j) (F.obj k₁) c.pt := IsScalarTower.of_algebraMap_eq (fun x => by`. Express the relevant statement in the definitionally equal form `(c.ι.app j).hom x = (c.ι.app k₁).hom ((F.map f₁).hom x)`.
+Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c.w f₁]`. Use the proof step `rfl)`. Use `haveI : Module.Finite (F.obj k₁) (F.obj k₁ ⊗[F.obj j] A) := hfin₁`. Use `haveI : Module.FinitePresentation (F.obj k₁) (F.obj k₁ ⊗[F.obj j] A) := (Module.FinitePresentation.iff_finitePresentation_of_finite _ _).2 inferInstance`. Set `g : A →ₗ[F.obj j] c.pt` to `(τ.restrictScalars (F.obj j)).comp (TensorProduct.mk (F.obj j) c.pt A 1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Set `σ : (F.obj k₁ ⊗[F.obj j] A) →ₗ[F.obj k₁] c.pt` to `LinearMap.liftBaseChange (F.obj k₁) g`. Establish `hσ : σ 1 = 1`. Rewrite using `[Algebra.TensorProduct.one_def, LinearMap.liftBaseChange_tmul, one_smul]`. Express the relevant statement in the definitionally equal form `τ (1 ⊗ₜ 1) = 1`. Rewrite using `[← Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `hτ`. Take `⟨k₀, f₀, hk₀⟩` from `exists_late_linear hc k₁ _ (1 : F.obj k₁ ⊗[F.obj j] A) σ hσ`. Use `⟨k₀, f₁ ≫ f₀, fun k f => ?_⟩` and prove the remaining obligations. Use `letI : Algebra (F.obj j) (F.obj k) := (F.map ((f₁ ≫ f₀) ≫ f)).hom.toAlgebra`. Use `letI : Algebra (F.obj k₁) (F.obj k) := (F.map (f₀ ≫ f)).hom.toAlgebra`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower (F.obj j) (F.obj k₁) (F.obj k) := IsScalarTower.of_algebraMap_eq (fun x => by`. Express the relevant statement in the definitionally equal form `(F.map ((f₁ ≫ f₀) ≫ f)).hom x = (F.map (f₀ ≫ f)).hom ((F.map f₁).hom x)`. Rewrite using `[Category.assoc, Functor.map_comp, CommRingCat.hom_comp, RingHom.comp_apply])`. Take `⟨σk, hσk⟩` from `hk₀ k f`. Use `⟨LinearMap.liftBaseChange (F.obj k) ((σk.restrictScalars (F.obj j)).comp (TensorProduct.mk (F.obj j) (F.obj k₁) A 1)), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Algebra.TensorProduct.one_def, LinearMap.liftBaseChange_tmul, one_smul]`. Express the relevant statement in the definitionally equal form `σk (1 ⊗ₜ 1) = 1`. Rewrite using `[← Algebra.TensorProduct.one_def]`. Conclude with `hσk`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_late_split_of_isColimit :
     ∀ (J : Type) [SmallCategory J] [IsFiltered J] (F : J ⥤ CommRingCat.{0}) (c : Cocone F),

@@ -23,7 +23,7 @@ def Test2J : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b
     (2 * Fintype.card (InfinitePlace E) * R + r)
 
 /- English proof (translation)
-Introduce `E _ _ _ a b fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂` and use `have h := pTest_main fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂ { toIsTest2 := h.1, level := h.2 }`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem test2J : Test2J := fun E _ _ _ a b fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂ =>
   have h := pTest_main fa fb ψ R r U hR ha hb hψs hUo hψU hsz hr₁ hr₂

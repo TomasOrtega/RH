@@ -20,9 +20,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ Y, φ y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hy ((Module.forall_dual_apply_eq_zero_iff ℂ y).1 hc)`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg ((TensorProduct.rid ℂ X).toLinearMap ∘ₗ LinearMap.lTensor X φ) h0` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul, map_zero] at this`. Conclude with `hx ((smul_eq_zero.1 this).resolve_left hφ)`.
+A detailed English derivation is pending.
 -/
 theorem tmul_ne_zero_of_ne {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] {x : X} {y : Y}
     (hx : x ≠ 0) (hy : y ≠ 0) : x ⊗ₜ[ℂ] y ≠ 0 := by
@@ -37,9 +37,9 @@ theorem tmul_ne_zero_of_ne {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddComm
   exact hx ((smul_eq_zero.1 this).resolve_left hφ)
 
 /- English proof (translation)
-Establish `h1 : WD.lpSp h 1 = WD.lpOfChar h (WeilDeligne.unrChar h (qPow w 0)) (isSmooth_unrChar h _)`. Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[WDRep.spEig]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[shiftEnd_apply]`. Rewrite using `[h1, lpChar_lpOfChar]`. Conclude with `WD.lpTw_zero x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpChar_lpSp_one' (x : WD h) : x.lpChar (WD.lpSp h 1) = x := by
   have h1 : WD.lpSp h 1 = WD.lpOfChar h (WeilDeligne.unrChar h (qPow w 0)) (isSmooth_unrChar h _) := by
@@ -52,11 +52,11 @@ theorem lpChar_lpSp_one' (x : WD h) : x.lpChar (WD.lpSp h 1) = x := by
   exact WD.lpTw_zero x
 
 /- English proof (translation)
-Establish `h0` using `TemperedRec.monodromy_zero_of_irreducible_weilDeligne E Ω A w h x hx`. Take `⟨m, b, rfl, hirr⟩` from `hx`. Establish `: Nontrivial (Fin m → ℂ)` using `Model.nontrivial_of_isIrreducible hirr`. Take `⟨v, hv⟩` from `exists_ne (0 : Fin m → ℂ)`. Rewrite `h0` using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[WD.lpSp, WD.lpChar_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.tensor_N, h0, WDRep.sp_N, LinearMap.rTensor_zero, zero_add]`. Introduce `hN`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, shiftEnd n u ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `shiftEnd_ne_zero hn (LinearMap.ext hc)`. Use `LinearMap.congr_fun hN (v ⊗ₜ u)` as an intermediate fact. Rewrite `this` using `[LinearMap.lTensor_tmul, LinearMap.zero_apply]`. Conclude with `tmul_ne_zero_of_ne hv hu this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mono0_lpChar_lpSp {x : WD h} (hx : IsIrrWD x) {n : ℕ} (hn : 2 ≤ n) :
     ¬ (x.lpChar (WD.lpSp h n)).mono0 := by

@@ -18,13 +18,13 @@ theorem ar_densProd_eq (q n m c : ℕ) :
     Formalism.L2.SG.DensExact.densProd q (-1) n m c = ∏ i ∈ Icc (n + 1 - (m + c)) n, arF q i := rfl
 
 /- English proof (translation)
-Simplify using `[arF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ar_f_zero (q : ℕ) : arF q 0 = 0 := by
   simp [arF]
 
 /- English proof (translation)
-Establish `hq' : (q : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hq.ne'`. Establish `hb : (q : ℝ) ^ (n + 1) * ((q : ℝ) ^ (n + 1))⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ hq')`. Simplify using `only [valN, arF, Nat.add_sub_cancel]`. Use `push_cast`. Take the linear combination `((-1 : ℝ) ^ (n + 1) * (q : ℝ) ^ n) * hb`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ar_valN (q n : ℕ) (hq : 0 < q) :
     ((valN q (n + 1) : ℤ) : ℝ) = (q : ℝ) ^ (2 * n + 1) * arF q (n + 1) := by
@@ -35,15 +35,15 @@ theorem ar_valN (q n : ℕ) (hq : 0 < q) :
   linear_combination ((-1 : ℝ) ^ (n + 1) * (q : ℝ) ^ n) * hb
 
 /- English proof (translation)
-Simplify using `[valN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ar_valN_zero (q : ℕ) : valN q 0 = 0 := by
   simp [valN]
 
 /- English proof (translation)
-Establish `hq' : (q : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hq.ne'`. Establish `ha : (q : ℝ) ^ (N + 2) * ((q : ℝ) ^ (N + 2))⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ hq')`. Establish `hb : (q : ℝ) ^ (N + 1) * ((q : ℝ) ^ (N + 1))⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ hq')`. Establish `hs : (-1 : ℝ) ^ N * (-1 : ℝ) ^ N = 1` using `by rw [← mul_pow]; norm_num`. Simplify using `only [valZ, arF]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show 2 * (N + 2) - 1 = 2 * N + 3 by omega, show N + 2 - 1 = N + 1 by omega]`. Use `push_cast`. Take the linear combination `hs + (-((-1 : ℝ) ^ N) * (q : ℝ) ^ (N + 2) + ((-1 : ℝ) ^ N) ^ 2) * hb + ((-1 : ℝ) ^ N * (q : ℝ) ^ (N + 1) + ((-1 : ℝ) ^ N) ^ 2 + ((-1 : ℝ) ^ N) ^ 2 * ((q : ℝ) ^ (N + 1) * ((q : ℝ) ^ (N + 1))⁻¹ - 1)) * ha`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ar_valZ (q N : ℕ) (hq : 0 < q) :
     ((valZ q (N + 2) : ℤ) : ℝ) - 1 = (q : ℝ) ^ (2 * N + 3) * arF q (N + 2) * arF q (N + 1) := by
@@ -59,19 +59,19 @@ theorem ar_valZ (q N : ℕ) (hq : 0 < q) :
       ((-1 : ℝ) ^ N) ^ 2 * ((q : ℝ) ^ (N + 1) * ((q : ℝ) ^ (N + 1))⁻¹ - 1)) * ha
 
 /- English proof (translation)
-Simplify using `[valZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ar_valZ_zero (q : ℕ) : valZ q 0 - 1 = 0 := by
   simp [valZ]
 
 /- English proof (translation)
-Simplify using `[valZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ar_valZ_one (q : ℕ) : valZ q 1 - 1 = 0 := by
   simp [valZ]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.DensExact.densProd`. Rewrite using `[show n + 1 + 1 - (r + 1 + c + c) = n + 1 - (r + c + c) by omega, Finset.prod_Icc_succ_top (by omega), mul_comm]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem densityProduct_succ_succ_add (q n r c : ℕ) :
     Formalism.L2.SG.DensExact.densProd q (-1) (n + 1) (r + 1 + c) c =
@@ -82,7 +82,7 @@ theorem densityProduct_succ_succ_add (q n r c : ℕ) :
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.DensExact.densProd arF`. Rewrite using `[show N + 2 + 1 - (c + 1 + (c + 1)) = N + 1 - (c + c) by omega, show N + 2 = N + 1 + 1 from rfl, Finset.prod_Icc_succ_top (by omega), Finset.prod_Icc_succ_top (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem densityProduct_add_two_succ_succ (q N c : ℕ) :
     Formalism.L2.SG.DensExact.densProd q (-1) (N + 2) (c + 1) (c + 1) =
@@ -93,7 +93,7 @@ theorem densityProduct_add_two_succ_succ (q N c : ℕ) :
   ring
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.DensExact.densProd`. Conclude with `Finset.prod_eq_zero (i := 0) (Finset.mem_Icc.mpr ⟨by omega, Nat.zero_le _⟩) (by simp)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ar_zero_prod (q n m c : ℕ) (h : n + 1 ≤ m + c) :
     Formalism.L2.SG.DensExact.densProd q (-1) n m c = 0 := by
@@ -101,17 +101,17 @@ theorem ar_zero_prod (q n m c : ℕ) (h : n + 1 ≤ m + c) :
   exact Finset.prod_eq_zero (i := 0) (Finset.mem_Icc.mpr ⟨by omega, Nat.zero_le _⟩) (by simp)
 
 /- English proof (translation)
-Introduce `c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `n`. Establish `h0 : Fr q n 0 0 = 1` using `by simp [Fr]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Formalism.L2.SG.DensExact.densProd`. Rewrite using `[h0, Finset.Icc_eq_empty (by omega), Finset.prod_empty]`. Simplify using the standard rewrite rules. Consider the case `succ c ih`. Introduce `n`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `match n with`. Consider the case `0`. Rewrite using `[ar_zero_prod q 0 (c + 1) (c + 1) (by omega)]`. Establish `h0 : Fr q 0 0 (c + 1) = 0` using `by simp only [Fr, ar_valZ_zero, zero_mul]`. Rewrite using `[h0]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `1`. Rewrite using `[ar_zero_prod q 1 (c + 1) (c + 1) (by omega)]`. Establish `h0 : Fr q 1 0 (c + 1) = 0` using `by simp only [Fr, ar_valZ_one, zero_mul]`. Rewrite using `[h0]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `N + 2`. Establish `hF : ((Fr q (N + 2) 0 (c + 1) : ℤ) : ℝ) = (((valZ q (N + 2) : ℤ) : ℝ) - 1) * (q : ℝ) ^ (2 * c) * ((Fr q N 0 c : ℤ) : ℝ)`. Simplify using `[Fr]`. Rewrite using `[hF, ar_valZ q N hq, densityProduct_add_two_succ_succ]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `ih N`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem frameCount_zero_mul_pow (q : ℕ) (hq : 0 < q) : ∀ c n : ℕ,
     ((Fr q n 0 c : ℤ) : ℝ) * (q : ℝ) ^ (c ^ 2) =
@@ -148,13 +148,13 @@ theorem frameCount_zero_mul_pow (q : ℕ) (hq : 0 < q) : ∀ c n : ℕ,
         _ = _ := by rw [e2]; ring
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `c n`. Simplify `frameCount_zero_mul_pow q hq c n` using `only [zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ r ih`. Introduce `c n`. Use `match n with`. Consider the case `0`. Rewrite using `[ar_zero_prod q 0 (r + 1 + c) c (by omega)]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : Fr q 0 (r + 1) c = 0` using `by simp only [Fr, ar_valN_zero, zero_mul]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Consider the case `N + 1`. Establish `hF : ((Fr q (N + 1) (r + 1) c : ℤ) : ℝ) = ((valN q (N + 1) : ℤ) : ℝ) * ((Fr q N r c : ℤ) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Fr]`. Rewrite using `[hF, ar_valN q N hq, densityProduct_succ_succ_add]`. Establish `e2` using `ih c N`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ar_main (q : ℕ) (hq : 0 < q) : ∀ r c n : ℕ,
     ((Fr q n r c : ℤ) : ℝ) * (q : ℝ) ^ ((r + c) ^ 2) =
@@ -182,9 +182,9 @@ theorem ar_main (q : ℕ) (hq : 0 < q) : ∀ r c n : ℕ,
         _ = _ := by rw [e2]; ring
 
 /- English proof (translation)
-Introduce `q n m r hq hrm`. Establish `hq0 : 0 < q` using `by omega`. Establish `e` using `ar_main q hq0 r (m - r) n`. Rewrite `e` using `[show r + (m - r) = m by omega]`. Establish `hA : (q : ℝ) ^ (2 * n * m) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_div_eq_mul_div, e, mul_div_cancel_left₀ _ hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quadraticDifferenceArith : Arith := by
   intro q n m r hq hrm

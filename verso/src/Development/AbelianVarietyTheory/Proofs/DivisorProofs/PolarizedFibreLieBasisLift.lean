@@ -9,7 +9,7 @@ open GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory
 namespace GlobalTheory.LieHt
 
 /- English proof (translation)
-Introduce `K _ _ F K'' _ _ _ P ψ h`. Establish `hs : Smooth F.P₀.A.hom` using `F.P₀.isAb.smooth`. Take `⟨v', hb, hv⟩` from `GlobalTheory.exists_isLieBasis_baseChange K K'' (algebraMap K K'') F.P₀.A P.A ψ h.2.1 hs F.P₀.g F.v F.basis`. Conclude with `⟨v', hv, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isLieBasis_isVecOver_of_isPolFibre : ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (K'' : Type) [Field K''] [NumberField K''] [Algebra K K''] (P : Out.PolAV (Sp K'')) (ψ : P.A.left ⟶ F.P₀.A.left), GlobalTheory.IsPolFibre (algebraMap K K'') F.P₀ P ψ → ∃ v' : Fin F.P₀.g → (epsR K'' ⟶ P.A), (∀ k, GlobalTheory.IsVecOver (algebraMap K K'') ψ (F.v k) (v' k)) ∧ IsLieBasis v' := by
   intro K _ _ F K'' _ _ _ P ψ h

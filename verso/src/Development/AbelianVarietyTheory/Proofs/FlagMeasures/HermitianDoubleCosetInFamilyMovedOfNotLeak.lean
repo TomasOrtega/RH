@@ -14,11 +14,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.OffLeak
 
 /- English proof (translation)
-Use `Set.ncard_congr (fun c hc => g (Classical.choose ((Set.mem_image f B c).1 hc))) ?_ ?_ ?_` and prove the remaining obligations. Introduce `c hc`. Conclude with `⟨_, (Classical.choose_spec ((Set.mem_image f B c).1 hc)).1, rfl⟩`. Introduce `c c' hc hc' hgg`. Establish `e₁` using `Classical.choose_spec ((Set.mem_image f B c).1 hc)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e₂` using `Classical.choose_spec ((Set.mem_image f B c').1 hc')`. Conclude with `e₁.2.symm.trans (((h _ e₁.1 _ e₂.1).2 hgg).trans e₂.2)`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `hfa : f a ∈ f '' B` using `⟨a, ha, rfl⟩`. Use `⟨f a, hfa, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `Classical.choose_spec ((Set.mem_image f B (f a)).1 hfa)`. Conclude with `(h _ e.1 _ ha).1 e.2`.
+A detailed English derivation is pending.
 -/
 theorem ncard_image_eq_of_iff {α β γ : Type*} (B : Set α) (f : α → β) (g : α → γ)
     (h : ∀ a ∈ B, ∀ b ∈ B, f a = f b ↔ g a = g b) : (f '' B).ncard = (g '' B).ncard := by
@@ -37,13 +37,13 @@ theorem ncard_image_eq_of_iff {α β γ : Type*} (B : Set α) (f : α → β) (g
     exact (h _ e.1 _ ha).1 e.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ha : a ∈ ({x | x - a ∈ M} : Set V)` using `by simp`. Rewrite `ha` using `[h]`. Conclude with `ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hxb : (x - a) + (a - b) ∈ M` using `M.add_mem hx h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (x - a) + (a - b) = x - b` using `by abel`. Rewrite `hxb` using `[e]`. Conclude with `hxb`. Introduce `hx`. Establish `hxa : (x - b) - (a - b) ∈ M` using `M.sub_mem hx h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (x - b) - (a - b) = x - a` using `by abel`. Rewrite `hxa` using `[e]`. Conclude with `hxa`.
+A detailed English derivation is pending.
 -/
 theorem coset_eq_iff {R V : Type*} [Ring R] [AddCommGroup V] [Module R V] (M : Submodule R V) (a b : V) :
     ({x | x - a ∈ M} : Set V) = {x | x - b ∈ M} ↔ a - b ∈ M := by
@@ -67,9 +67,9 @@ theorem coset_eq_iff {R V : Type*} [Ring R] [AddCommGroup V] [Module R V] (M : S
       exact hxa
 
 /- English proof (translation)
-Establish `hT : T.toAddSubgroup = B.toAddSubgroup ⊔ M.toAddSubgroup`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨y₀, hy₀, hm⟩` from `h y hy`. Establish `hs : y₀ + (y - y₀) ∈ B.toAddSubgroup ⊔ M.toAddSubgroup` using `AddSubgroup.add_mem_sup hy₀ hm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : y₀ + (y - y₀) = y` using `by abel`. Rewrite `hs` using `[e]`. Conclude with `hs`. Conclude with `sup_le (fun x hx => hB hx) (fun x hx => hM hx)`. Rewrite using `[hT, AddSubgroup.relIndex_sup_right, AddSubgroup.inf_relIndex_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_of_reps {R V : Type*} [Ring R] [AddCommGroup V] [Module R V] (M T B : Submodule R V)
     (hM : M ≤ T) (hB : B ≤ T) (h : ∀ y ∈ T, ∃ y₀ ∈ B, y - y₀ ∈ M) :
@@ -91,7 +91,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Unfold `Frames.spanTo`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `⟨i, lt_of_lt_of_le hi h, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem spanTo_mono {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 1) → S.V) {a b : ℕ}
     (h : a ≤ b) : S.spanTo g a ≤ S.spanTo g b := by
@@ -101,9 +101,7 @@ theorem spanTo_mono {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 
   exact ⟨i, lt_of_lt_of_le hi h, rfl⟩
 
 /- English proof (translation)
-Unfold `Frames.th`. Use `split_ifs`. Introduce `h0`. Apply `S.ϖ_irr.ne_zero` to reduce the goal to its premises. Conclude with `Subtype.ext h0`.
-
-Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem th_ne_zero {L : LocE F E} {r k : ℕ} (S : Frames L r k) : S.th ≠ 0 := by
   unfold Frames.th
@@ -115,55 +113,51 @@ theorem th_ne_zero {L : LocE F E} {r k : ℕ} (S : Frames L r k) : S.th ≠ 0 :=
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF x x' u s hMv hleak Λ₁ hΛ₁`. Take `⟨hT₁, hY⟩` from `GlobalTheory.T.hermitianMove_preserves_frameLattice_levels L r k S j β βJ d Λ hT hF x x' u s hMv Λ₁ hΛ₁`. Establish `h78` using `GlobalTheory.T.hermitianDefectClass_mem_trace_firstFrameSpan L r k S j β βJ d Λ hT hF x x' u s hMv hleak Λ₁ hΛ₁`. Establish `h64` using `GlobalTheory.T.termLevel_zero_and_bounded_representatives L r k S d Λ hT`. Establish `h64₁` using `GlobalTheory.T.termLevel_zero_and_bounded_representatives L r k S d Λ₁ hT₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMs : S.M d Λ ≤ S.sat Λ` using `(GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).2.2.1`. Establish `hMs₁ : S.M d Λ₁ ≤ S.sat Λ₁` using `(GlobalTheory.HL.TermBasic.term_basic L r k S d Λ₁ hT₁).2.2.1`. Unfold `Frames.InFF at hF ⊢`. Take `⟨hTB, hbe, hle, ⟨z, hz, hzJ⟩, hn⟩` from `hF`. Unfold `Frames.TypeBe at hTB`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨Y, hYdef⟩ : ∃ Y : Submodule E S.V, Y = S.spanTo S.f (↑j + 1) ⊔ S.spanTo S.f' (↑j + 1)` from `⟨_, rfl⟩`. Establish `hYmem : ∀ y, y ∈ Y ↔ y ∈ S.spanTo S.f (↑j + 1) ⊔ S.spanTo S.f' (↑j + 1)`. Introduce `y`. Rewrite using `[hYdef]`. Establish `hjr : (j : ℕ) + 1 ≤ r` using `j.isLt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hjr' : (j : ℕ) + 1 ≤ r + 1` using `by omega`. Establish `hYME : Y ≤ S.ME`. Rewrite using `[hYdef]`. Conclude with `sup_le_sup (spanTo_mono S S.f hjr') (spanTo_mono S S.f' hjr')`. Establish `hYX : Y ≤ S.X ⊔ S.X'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hYdef]`. Conclude with `sup_le_sup (spanTo_mono S S.f hjr) (spanTo_mono S S.f' hjr)`. Establish `hYY : ∀ y ∈ Y, (y ∈ Λ → y ∈ Λ₁) ∧ (y ∈ S.M d Λ₁ ↔ y ∈ S.M d Λ) ∧ S.lev (S.fr d Λ₁) (S.fr' d Λ₁) y = S.lev (S.fr d Λ) (S.fr' d Λ) y` using `fun y hy => hY y ((hYmem y).1 hy)`. Establish `memSat : ∀ (Λ' : Submodule L.O S.V) (y : S.V), y ∈ S.sat Λ' ↔ y ∈ Λ' ∧ y ∈ S.ME`. Introduce `Λ' y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `Frames.sat`. Simplify using `[Submodule.mem_inf]`. Take `⟨B₀, hB₀⟩ : ∃ B₀ : Submodule L.O S.V, ∀ y, y ∈ B₀ ↔ y ∈ Λ ∧ y ∈ Y` from `⟨Λ ⊓ Y.restrictScalars L.O, fun y => by simp [Submodule.mem_inf]⟩`. Establish `hB₀Y : ∀ y ∈ B₀, y ∈ Y` using `fun y hy => ((hB₀ y).1 hy).2`. Establish `hB₀sat : ∀ y ∈ B₀, y ∈ S.sat Λ` using `fun y hy => (memSat Λ y).2 ⟨((hB₀ y).1 hy).1, hYME (hB₀Y y hy)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB₀Λ₁ : ∀ y ∈ B₀, y ∈ Λ₁` using `fun y hy => (hYY y (hB₀Y y hy)).1 ((hB₀ y).1 hy).1`. Establish `hB₀sat₁ : ∀ y ∈ B₀, y ∈ S.sat Λ₁` using `fun y hy => (memSat Λ₁ y).2 ⟨hB₀Λ₁ y hy, hYME (hB₀Y y hy)⟩`. Establish `hMiff : ∀ y ∈ B₀, (y ∈ S.M d Λ₁ ↔ y ∈ S.M d Λ)` using `fun y hy => (hYY y (hB₀Y y hy)).2.1`. Establish `hlev : ∀ y ∈ B₀, S.levC d Λ₁ y = S.levC d Λ y`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Frames.levC`. Conclude with `(hYY _ (Y.smul_mem _ (hB₀Y y hy))).2.2`. Establish `rep : ∀ y ∈ S.sat Λ, ∃ y₁ ∈ B₀, y - y₁ ∈ S.M d Λ`. Introduce `y hy`. Take `⟨y₁, hy₁Y, hm⟩` from `(h64.2.1 y hy (↑j + 1)).1 (hle y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : y - (y - y₁) ∈ S.sat Λ` using `(S.sat Λ).sub_mem hy (hMs hm)`. Establish `e : y - (y - y₁) = y₁` using `by abel`. Rewrite `hs` using `[e]`. Conclude with `⟨y₁, (hB₀ y₁).2 ⟨((memSat Λ y₁).1 hs).1, (hYmem y₁).2 hy₁Y⟩, hm⟩`. Establish `rep₁ : ∀ y ∈ S.sat Λ₁, ∃ y₀ ∈ B₀, y - y₀ ∈ S.M d Λ₁`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y hy`. Take `⟨y₀, h1, h2, h3⟩` from `h78 y hy`. Conclude with `⟨y₀, (hB₀ y₀).2 ⟨h1, (hYmem y₀).2 h2⟩, h3⟩`. Establish `hinv : ∀ (Λ' : Submodule L.O S.V), S.IsTerm d Λ' → ∀ y ∈ S.sat Λ', ∀ y₁, y - y₁ ∈ S.M d Λ' → S.levC d Λ' y₁ = S.levC d Λ' y`. Introduce `Λ' hT' y hy y₁ hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm' : -(y - y₁) ∈ S.M d Λ'` using `(S.M d Λ').neg_mem hm`. Establish `e₁ : -(y - y₁) = y₁ - y` using `by abel`. Rewrite `hm'` using `[e₁]`. Establish `hc` using `(GlobalTheory.T.termLevel_zero_and_bounded_representatives L r k S d Λ' hT').2.2.1 y hy (y₁ - y) hm'`. Establish `e₂ : y + (y₁ - y) = y₁` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hc` using `[e₂]`. Conclude with `hc`. Establish `hbe₁ : S.be d Λ₁ = S.be d Λ`. Unfold `Frames.be`. Rewrite using `[relIndex_eq_of_reps (S.M d Λ₁) (S.sat Λ₁) B₀ hMs₁ (fun y hy => hB₀sat₁ y hy) rep₁, relIndex_eq_of_reps (S.M d Λ) (S.sat Λ) B₀ hMs (fun y hy => hB₀sat y hy) rep]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `congr 1`. Use extensionality with `y`. Simplify using `only [AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup]`. Conclude with `⟨fun h => ⟨(hMiff y h.2).1 h.1, h.2⟩, fun h => ⟨(hMiff y h.2).2 h.1, h.2⟩⟩`. Establish `hth : S.th ≠ 0` using `th_ne_zero S`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hInTh : ∀ w : S.V, algebraMap F E S.th⁻¹ • w ∈ (B₀ : Set S.V) → S.InTh Λ w`. Introduce `w hw`. Use `⟨_, ((hB₀ _).1 hw).1, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← map_mul, mul_inv_cancel₀ hth, map_one, one_smul]`. Establish `hnotBB : ¬ S.BBzero d Λ₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hbb`. Apply `hTB.1` to reduce the goal to its premises. Unfold `Frames.BBzero at hbb ⊢`. Use `le_antisymm hMs ?_` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y₁, hy₁, hm⟩` from `rep y hy`. Establish `h1 : y₁ ∈ S.M d Λ₁`. Rewrite using `[hbb]`. Conclude with `hB₀sat₁ y₁ hy₁`. Establish `h2 : (y - y₁) + y₁ ∈ S.M d Λ` using `(S.M d Λ).add_mem hm ((hMiff y₁ hy₁).1 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (y - y₁) + y₁ = y` using `by abel`. Rewrite `h2` using `[e]`. Conclude with `h2`. Establish `hTB₁ : S.TypeBe d Λ₁` using `GlobalTheory.T.pairing_second_type_test_on_representatives L r k S d Λ₁ hT₁ hnotBB (B₀ : Set S.V) (fun y hy => ⟨hB₀Λ₁ y hy, hYX (hB₀Y y hy)⟩) rep₁ (fun x₁ hx₁ x₁' hx₁' x₂ hx₂ x₂' hx₂' h1 h2 => hTB.2.2 x₁ hx₁ x₁' hx₁' x₂ hx₂ x₂' hx₂' (hInTh _ h1) (hInTh _ h2))`. Establish `hle₁ : ∀ y ∈ S.sat Λ₁, S.levC d Λ₁ y ≤ ↑j + 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨y₀, hy₀, hm⟩` from `rep₁ y hy`. Establish `hy0 : y₀ ∈ S.spanTo S.f (↑j + 1) ⊔ S.spanTo S.f' (↑j + 1)` using `(hYmem y₀).1 (hB₀Y y₀ hy₀)`. Establish `key` using `(h64₁.2.1 y hy (↑j + 1)).2`. Establish `ex : ∃ y₁ ∈ S.spanTo S.f (↑j + 1) ⊔ S.spanTo S.f' (↑j + 1), y - y₁ ∈ S.M d Λ₁` using `⟨y₀, hy0, hm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key ex`. Establish `hex₁ : ∃ y ∈ S.sat Λ₁, S.levC d Λ₁ y = ↑j + 1`. Take `⟨y₁, hy₁, hm⟩` from `rep z hz`. Use `⟨y₁, hB₀sat₁ y₁ hy₁, ?_⟩` and prove the remaining obligations. Rewrite using `[hlev y₁ hy₁, hinv Λ hT z hz y₁ hm, hzJ]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hset : ∀ (Λ' : Submodule L.O S.V), S.IsTerm d Λ' → (∀ y ∈ B₀, y ∈ S.sat Λ') → (∀ y ∈ S.sat Λ', ∃ y₀ ∈ B₀, y - y₀ ∈ S.M d Λ') → {C : Set S.V | ∃ y ∈ S.sat Λ', S.levC d Λ' y = ↑j + 1 ∧ C = {x | x - y ∈ S.M d Λ'}} = (fun y => {x | x - y ∈ S.M d Λ'}) '' {y | y ∈ B₀ ∧ S.levC d Λ' y = …`. Introduce `Λ' hT' hBs hrep`. Use extensionality with `C`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyJ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨y₀, hy₀, hm⟩` from `hrep y hy`. Use `⟨y₀, ⟨hy₀, (hinv Λ' hT' y hy y₀ hm).trans hyJ⟩, ?_⟩` and prove the remaining obligations. Establish `hm' : -(y - y₀) ∈ S.M d Λ'` using `(S.M d Λ').neg_mem hm`. Establish `e : -(y - y₀) = y₀ - y` using `by abel`. Rewrite `hm'` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(coset_eq_iff (S.M d Λ') y₀ y).2 hm'`. Introduce and unpack `⟨y, ⟨hy, hyJ⟩, rfl⟩`. Conclude with `⟨y, hBs y hy, hyJ, rfl⟩`. Establish `hn₁ : S.nLev d Λ₁ (↑j + 1) = βJ`. Rewrite using `[← hn]`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Frames.nLev`. Rewrite using `[hset Λ₁ hT₁ hB₀sat₁ rep₁, hset Λ hT hB₀sat rep]`. Establish `hBB : {y | y ∈ B₀ ∧ S.levC d Λ₁ y = ↑j + 1} = {y | y ∈ B₀ ∧ S.levC d Λ y = ↑j + 1}`. Use extensionality with `y`. Conclude with `⟨fun h => ⟨h.1, (hlev y h.1).symm.trans h.2⟩, fun h => ⟨h.1, (hlev y h.1).trans h.2⟩⟩`.
-
-Rewrite using `[hBB]`. Apply `ncard_image_eq_of_iff` to reduce the goal to its premises. Introduce `a ha b hb`. Establish `hab : a - b ∈ Y` using `Y.sub_mem (hB₀Y a ha.1) (hB₀Y b hb.1)`. Conclude with `(coset_eq_iff (S.M d Λ₁) a b).trans ((hYY _ hab).2.1.trans (coset_eq_iff (S.M d Λ) a b).symm)`.
-
-Conclude with `⟨hTB₁, hbe₁.trans hbe, hle₁, hex₁, hn₁⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inFF_moved_of_not_leak : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → ∀ x x' u s, S.IsMove (j + 1) d Λ x x' u s → (∃ y ∈ Λ, y ∈ S.W0 ∧ S.h u y = 1) → ∀ Λ₁ : Submodule L.O S.V, (Λ₁ : Set S.V) = S.moved Λ x u s → S.InFF β (j + 1) βJ d Λ₁ := by
   intro F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF x x' u s hMv hleak Λ₁ hΛ₁

@@ -23,7 +23,7 @@ variable {m : ℕ}
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `[corner, val_emb₂, stdSum, Matrix.reindex_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem corner_cs_cs (g : GL (Fin m) k) (i j : Fin m) :
     (corner g : Matrix (Fin (m+1)) (Fin (m+1)) k) i.castSucc j.castSucc = (g : Matrix _ _ k) i j := by
@@ -31,7 +31,7 @@ theorem corner_cs_cs (g : GL (Fin m) k) (i j : Fin m) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `[corner, val_emb₂, stdSum, Matrix.reindex_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem corner_cs_last (g : GL (Fin m) k) (i : Fin m) :
     (corner g : Matrix (Fin (m+1)) (Fin (m+1)) k) i.castSucc (Fin.last m) = 0 := by
@@ -39,7 +39,7 @@ theorem corner_cs_last (g : GL (Fin m) k) (i : Fin m) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `[corner, val_emb₂, stdSum, Matrix.reindex_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem corner_last_cs (g : GL (Fin m) k) (j : Fin m) :
     (corner g : Matrix (Fin (m+1)) (Fin (m+1)) k) (Fin.last m) j.castSucc = 0 := by
@@ -47,7 +47,7 @@ theorem corner_last_cs (g : GL (Fin m) k) (j : Fin m) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `[corner, val_emb₂, stdSum, Matrix.reindex_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem corner_last_last (g : GL (Fin m) k) :
     (corner g : Matrix (Fin (m+1)) (Fin (m+1)) k) (Fin.last m) (Fin.last m) = 1 := by
@@ -55,7 +55,7 @@ theorem corner_last_last (g : GL (Fin m) k) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Simplify using `only [corner]`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem corner_mul (g h : GL (Fin m) k) : corner (g * h) = corner g * corner h := by
   simp only [corner]
@@ -63,9 +63,9 @@ theorem corner_mul (g h : GL (Fin m) k) : corner (g * h) = corner g * corner h :
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx h hh`. Use `hx ⟨h, hh⟩` as an intermediate fact. Simplify using `using this`. Introduce `hx h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hx h h.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff {V : Type} [AddCommGroup V] [Module ℂ V] {G : Type} [Group G]
     (ρ : Representation ℂ G V) (H : Subgroup G) (x : V) :
@@ -78,7 +78,7 @@ theorem mem_fixed_iff {V : Type} [AddCommGroup V] [Module ℂ V] {G : Type} [Gro
     simpa using hx h h.2
 
 /- English proof (translation)
-Rewrite using `[map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_mul {V : Type} [AddCommGroup V] [Module ℂ V] {G : Type} [Group G]
     (ρ : Representation ℂ G V) (a b : G) (x : V) : ρ (a * b) x = ρ a (ρ b x) := by
@@ -99,7 +99,7 @@ def stabG {V : Type} [AddCommGroup V] [Module ℂ V] {G : Type} [Group G]
     rw [← rho_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_fixed_iff]`. Conclude with `⟨fun h g hg => h g hg, fun h g hg => h hg⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_fixed_iff_le {V : Type} [AddCommGroup V] [Module ℂ V] {G : Type} [Group G]
     (ρ : Representation ℂ G V) (H : Subgroup G) (x : V) :
@@ -108,13 +108,13 @@ theorem mem_fixed_iff_le {V : Type} [AddCommGroup V] [Module ℂ V] {G : Type} [
   exact ⟨fun h g hg => h g hg, fun h g hg => h hg⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `valuation_surjective (K := k) (uniformizer k)`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[map_zero]`. Conclude with `uniformizer_ne_zero hx.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set u := Units.mk0 x hx0`. Establish `h1 : ord k u = 1` using `ord_eq_one (by simpa [u] using hx)`. Establish `h3 : ord k (u * u⁻¹) = 0` using `by rw [mul_inv_cancel]; exact ord_eq_zero (by simp)`. Establish `h2 : ord k (c * u⁻¹) = 0`. Rewrite `h3`, the goal using `[ord_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h4` using `ord_eq_zero_iff.1 h2`. Rewrite `h4` using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `hu0 : valuation k (u : k) ≠ 0` using `by simp [u, hx0]`. Rewrite using `[← hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(mul_inv_eq_one₀ hu0).1 h4` as an intermediate fact. Simplify `this` using `[u]`.
+A detailed English derivation is pending.
 -/
 theorem val_eq_unif {c : kˣ} (hc : ord k c = 1) : valuation k (c : k) = uniformizer k := by
   obtain ⟨x, hx⟩ := valuation_surjective (K := k) (uniformizer k)
@@ -136,7 +136,7 @@ theorem val_eq_unif {c : kˣ} (hc : ord k c = 1) : valuation k (c : k) = uniform
   simpa [u] using this
 
 /- English proof (translation)
-Take `⟨c, hc, hc1⟩` from `hψ`. Conclude with `(hc c).2 le_rfl y (by rw [val_eq_unif hc1]; exact le_uniformizer_iff.2 hy)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem levelOne_triv {ψ : AddChar k Circle} (hψ : IsLevelOne ψ) {y : k} (hy : valuation k y < 1) :
     ψ y = 1 := by
@@ -144,9 +144,7 @@ theorem levelOne_triv {ψ : AddChar k Circle} (hψ : IsLevelOne ψ) {y : k} (hy 
   exact (hc c).2 le_rfl y (by rw [val_eq_unif hc1]; exact le_uniformizer_iff.2 hy)
 
 /- English proof (translation)
-Take `⟨c, hc, hc1⟩` from `hψ`. Assume the negation of the conclusion as `H`. Use `push_neg at H`. Use `(hc 1).1 (fun y hy => H y (by simpa using hy))` as an intermediate fact. Rewrite `this` using `[map_one, val_eq_unif hc1]`.
-
-Conclude with `absurd uniformizer_lt_one (not_lt.2 this)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelOne_exists {ψ : AddChar k Circle} (hψ : IsLevelOne ψ) :
     ∃ y : k, valuation k y ≤ 1 ∧ ψ y ≠ 1 := by
@@ -166,9 +164,9 @@ def maskM (X : Matrix (Fin N) (Fin N) k) : Matrix (Fin N) (Fin N) k := fun a b =
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.mul_apply, maskM, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : P a b`. Distinguish the cases in `h2 : P b c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hP a b c h1 h2).elim`. Simplify using `[h2]`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem maskM_mul (hP : ∀ a b c, P a b → P b c → False) (X Y : Matrix (Fin N) (Fin N) k) :
     maskM P X * maskM P Y = 0 := by
@@ -183,7 +181,7 @@ theorem maskM_mul (hP : ∀ a b c, P a b → P b c → False) (X Y : Matrix (Fin
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [maskM, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem maskM_add (X Y : Matrix (Fin N) (Fin N) k) : maskM P (X + Y) = maskM P X + maskM P Y := by
   ext a b
@@ -210,7 +208,7 @@ theorem U_inv_val (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin N
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, U_val, U_val, U_val, maskM_add, add_mul, one_mul, mul_add, mul_one, maskM_mul P hP]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem U_mul (hP : ∀ a b c, P a b → P b c → False) (X Y : Matrix (Fin N) (Fin N) k) :
     U P hP X * U P hP Y = U P hP (X + Y) := by
@@ -220,7 +218,7 @@ theorem U_mul (hP : ∀ a b c, P a b → P b c → False) (X Y : Matrix (Fin N) 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[mem_unipB]`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[U_val, Matrix.add_apply, Matrix.one_apply_ne (ne_of_gt hji), maskM, if_neg (fun h => absurd (hlt i j h) (not_lt.2 hji.le)), add_zero]`. Rewrite using `[U_val, Matrix.add_apply, Matrix.one_apply_eq, maskM, if_neg (fun h => lt_irrefl _ (hlt i i h)), add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem U_mem_unipB (hP : ∀ a b c, P a b → P b c → False) (hlt : ∀ a b, P a b → a < b)
     (X : Matrix (Fin N) (Fin N) k) : U P hP X ∈ unipB k (Fin N) := by
@@ -231,9 +229,9 @@ theorem U_mem_unipB (hP : ∀ a b c, P a b → P b c → False) (hlt : ∀ a b, 
   · rw [U_val, Matrix.add_apply, Matrix.one_apply_eq, maskM, if_neg (fun h => lt_irrefl _ (hlt i i h)), add_zero]
 
 /- English proof (translation)
-Establish `hM : GlobalTheory.StepData.IntM (maskM P X)` using `fun a b => by`. Simplify using `only [maskM]`. Use `split_ifs with h`. Conclude with `hX a b h`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.StepData.mem_KO, U_inv_val, U_val]`. Conclude with `⟨GlobalTheory.StepData.intM_one.add hM, by`. Rewrite using `[sub_eq_add_neg]`. Conclude with `GlobalTheory.StepData.intM_one.add hM.neg⟩`.
+A detailed English derivation is pending.
 -/
 theorem U_mem_KO (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin N) (Fin N) k)
     (hX : ∀ a b, P a b → valuation k (X a b) ≤ 1) : U P hP X ∈ KO k (Fin N) := by
@@ -247,9 +245,7 @@ theorem U_mem_KO (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin N)
     rw [sub_eq_add_neg]; exact GlobalTheory.StepData.intM_one.add hM.neg⟩
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.StepData.mem_KOne, U_val, add_sub_cancel_left]`. Introduce `a b`. Simplify using `only [maskM]`. Use `split_ifs with h`. Conclude with `hX a b h`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem U_mem_KOne (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin N) (Fin N) k)
     (hX : ∀ a b, P a b → valuation k (X a b) < 1) : U P hP X ∈ KOne k (Fin N) := by
@@ -262,9 +258,9 @@ theorem U_mem_KOne (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, GroundTheory.Automorphic.Iwasawa.coe_diagGL, GroundTheory.Automorphic.Iwasawa.coe_diagGL, U_val, U_val]`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.add_apply, maskM, Matrix.one_apply, Pi.inv_apply, Units.val_inv_eq_inv_val, Matrix.of_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hab : a = b`. Apply the tactic sequence `subst hab split_ifs <;> field_simp`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_conj_U (hP : ∀ a b c, P a b → P b c → False) (X : Matrix (Fin N) (Fin N) k) (τ : Fin N → kˣ) :
     GroundTheory.Automorphic.Iwasawa.diagGL k N τ * U P hP X * (GroundTheory.Automorphic.Iwasawa.diagGL k N τ)⁻¹ =
@@ -286,9 +282,9 @@ section Rep
 variable {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[mem_fixed_iff]`. Introduce `h hh`. Establish `h1 : g⁻¹ * h * g ∈ KOne k (Fin N)`. Use `(Subgroup.mem_normalizer_iff.1 (KO_le_normalizer (inv_mem hg)) h).1 hh` as an intermediate fact. Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← rho_mul, show h * g = g * (g⁻¹ * h * g) by group, rho_mul, hw _ h1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem fixed_of_KO (ρ : Representation ℂ (GL (Fin N) k) V) {w : V} (hw : w ∈ fixed ρ (KOne k (Fin N)))
     {g : GL (Fin N) k} (hg : g ∈ KO k (Fin N)) : ρ g w ∈ fixed ρ (KOne k (Fin N)) := by
@@ -300,11 +296,11 @@ theorem fixed_of_KO (ρ : Representation ℂ (GL (Fin N) k) V) {w : V} (hw : w �
   rw [← rho_mul, show h * g = g * (g⁻¹ * h * g) by group, rho_mul, hw _ h1]
 
 /- English proof (translation)
-Rewrite using `[hl _ (U_mem_unipB P hP hlt X) x]`. Establish `: ψ (superDiag (U P hP X)) = 1`. Apply `levelOne_triv hψ` to reduce the goal to its premises. Unfold `superDiag`. Use `Valuation.map_sum_lt _ one_ne_zero fun i _ => Valuation.map_sum_lt _ one_ne_zero fun j hj => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Simplify using `at hj`. Rewrite using `[U_val, Matrix.add_apply, Matrix.one_apply_ne hij, zero_add, maskM]`. Use `split_ifs with h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hX i j h`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem whit_U {ψ : AddChar k Circle} (hψ : IsLevelOne ψ) (ρ : Representation ℂ (GL (Fin N) k) V)
     {l : Module.Dual ℂ V} (hl : IsFunctional ψ ρ l) (P : Fin N → Fin N → Prop) [DecidableRel P]
@@ -328,11 +324,11 @@ theorem whit_U {ψ : AddChar k Circle} (hψ : IsLevelOne ψ) (ρ : Representatio
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Unfold `superDiag`. Rewrite using `[Finset.sum_eq_single p.castSucc]`. Rewrite using `[Finset.sum_eq_single p.succ]`. Simplify using `[U_val, maskM, Matrix.one_apply_ne (Fin.castSucc_lt_succ (i := p)).ne]`. Introduce `j hj hne`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.val_castSucc] at hj`. Conclude with `absurd (Fin.ext (by simp [hj])) hne`. Simplify using the standard rewrite rules. Introduce `i _ hne`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Simplify using `at hj`. Rewrite using `[U_val, Matrix.add_apply, Matrix.one_apply_ne hij, zero_add, maskM, if_neg (fun h => hne h.1)]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superDiag_U_single {M : ℕ} (p : Fin M)
     (hP : ∀ a b c : Fin (M + 1), (a = p.castSucc ∧ b = p.succ) → (b = p.castSucc ∧ c = p.succ) → False)
@@ -354,17 +350,15 @@ theorem superDiag_U_single {M : ℕ} (p : Fin M)
   · simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨y, hy1, hy⟩` from `levelOne_exists hψ`. Set `P : Fin (M + 1) → Fin (M + 1) → Prop` to `fun a b => a = p.castSucc ∧ b = p.succ`. Establish `hP : ∀ a b c, P a b → P b c → False`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b c ⟨-, rfl⟩ ⟨h, -⟩`. Conclude with `(Fin.castSucc_lt_succ (i := p)).ne' h`. Establish `hlt' : ∀ a b, P a b → a < b`. Introduce and unpack `a b ⟨rfl, rfl⟩`. Conclude with `Fin.castSucc_lt_succ (i := p)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ with hD`. Set `X : Matrix (Fin (M + 1)) (Fin (M + 1)) k` to `Matrix.of fun _ _ => y`. Establish `hconj : D⁻¹ * U P hP X * D ∈ KOne k (Fin (M + 1))`. Use `diag_conj_U P hP X τ⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv, inv_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[hD, this]`. Apply `U_mem_KOne` to reduce the goal to its premises. Introduce and unpack `a b ⟨rfl, rfl⟩`. Establish `h0 : valuation k (τ p.castSucc : k) ≠ 0` using `by simp`. Simplify using `only [X, Matrix.of_apply, Pi.inv_apply, Units.val_inv_eq_inv_val, inv_inv, map_mul, map_inv₀]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, inv_mul_lt_iff₀ (zero_lt_iff.2 h0), mul_one]`. Conclude with `hlt`. Establish `key : ρ (U P hP X) (ρ D w) = ρ D w`. Rewrite using `[← rho_mul, show U P hP X * D = D * (D⁻¹ * U P hP X * D) by group, rho_mul, (mem_fixed_iff _ _ _).1 hw _ hconj]`.
-
-Use `hl _ (U_mem_unipB P hP hlt' X) (ρ D w)` as an intermediate fact. Rewrite `this` using `[key, superDiag_U_single p hP y]`. Apply `hy` to reduce the goal to its premises. Establish `h2 : (ψ y : ℂ) = 1` using `mul_right_cancel₀ h (this.symm.trans (one_mul _).symm)`. Conclude with `Circle.ext (by simpa using h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem diag_step_le {M : ℕ} {ψ : AddChar k Circle} (hψ : IsLevelOne ψ)
     (ρ : Representation ℂ (GL (Fin (M + 1)) k) V) {l : Module.Dual ℂ V} (hl : IsFunctional ψ ρ l)
@@ -413,7 +407,7 @@ variable {M : ℕ}
 def dTwo (p : Fin M) : Fin 2 → ℕ := ![p.val + 1, M - p.val]
 
 /- English proof (translation)
-Use `p.isLt` as an intermediate fact. Simplify using `[dTwo, Fin.sum_univ_two]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dTwo_sum (p : Fin M) : ∑ a, dTwo p a = M + 1 := by
   have := p.isLt
@@ -423,9 +417,9 @@ theorem dTwo_sum (p : Fin M) : ∑ a, dTwo p a = M + 1 := by
 def eTwo (p : Fin M) : (Σ a, Fin (dTwo p a)) ≃ Fin (M + 1) := stdBlocks (dTwo p) (dTwo_sum p)
 
 /- English proof (translation)
-Establish `h` using `stdBlocks_val (dTwo p) (dTwo_sum p) 0 i`. Establish `hi` using `i.isLt`. Simplify using `only [dTwo] at hi`. Simplify using `only [eTwo, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `at hi`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eTwo_zero (p : Fin M) (i : Fin (dTwo p 0)) : ((eTwo p ⟨0, i⟩ : Fin (M + 1)) : ℕ) ≤ p.val := by
   have h := stdBlocks_val (dTwo p) (dTwo_sum p) 0 i
@@ -437,7 +431,7 @@ theorem eTwo_zero (p : Fin M) (i : Fin (dTwo p 0)) : ((eTwo p ⟨0, i⟩ : Fin (
   omega
 
 /- English proof (translation)
-Establish `h` using `stdBlocks_val (dTwo p) (dTwo_sum p) 1 j`. Simplify using `only [eTwo, h]`. Simplify using `[dTwo]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eTwo_one (p : Fin M) (j : Fin (dTwo p 1)) : p.val < ((eTwo p ⟨1, j⟩ : Fin (M + 1)) : ℕ) := by
   have h := stdBlocks_val (dTwo p) (dTwo_sum p) 1 j
@@ -450,25 +444,25 @@ def PB (p : Fin M) (a b : Fin (M + 1)) : Prop := a.val ≤ p.val ∧ p.val < b.v
 instance (p : Fin M) : DecidableRel (PB p) := fun a b => by unfold PB; infer_instance
 
 /- English proof (translation)
-Introduce and unpack `a b c ⟨-, h1⟩ ⟨h2, -⟩`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hPB (p : Fin M) : ∀ a b c, PB p a b → PB p b c → False := by
   rintro a b c ⟨-, h1⟩ ⟨h2, -⟩
   omega
 
 /- English proof (translation)
-Introduce and unpack `a b ⟨h1, h2⟩`. Conclude with `Fin.lt_def.2 (by omega)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hltB (p : Fin M) : ∀ a b, PB p a b → a < b := by
   rintro a b ⟨h1, h2⟩
   exact Fin.lt_def.2 (by omega)
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b`. Use `eTwo_zero p j` as an intermediate fact. Simplify using `[PB]`. Use linear arithmetic over natural numbers and integers. Use `eTwo_zero p i` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `eTwo_one p j` as an intermediate fact. Simplify using `[PB]`. Use linear arithmetic over natural numbers and integers. Use `eTwo_one p i` as an intermediate fact. Simplify using `[PB]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `eTwo_one p i` as an intermediate fact. Simplify using `[PB]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem PB_e (p : Fin M) (a b : Fin 2) (i : Fin (dTwo p a)) (j : Fin (dTwo p b)) :
     PB p (eTwo p ⟨a, i⟩) (eTwo p ⟨b, j⟩) ↔ a = 0 ∧ b = 1 := by
@@ -489,7 +483,7 @@ theorem PB_e (p : Fin M) (a b : Fin 2) (i : Fin (dTwo p a)) (j : Fin (dTwo p b))
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Conclude with `if_congr (eTwo p).injective.eq_iff rfl rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_e (p : Fin M) (a b : Fin 2) (i : Fin (dTwo p a)) (j : Fin (dTwo p b)) :
     (1 : Matrix (Fin (M + 1)) (Fin (M + 1)) k) (eTwo p ⟨a, i⟩) (eTwo p ⟨b, j⟩) =
@@ -498,18 +492,18 @@ theorem one_e (p : Fin M) (a b : Fin 2) (i : Fin (dTwo p a)) (j : Fin (dTwo p b)
   exact if_congr (eTwo p).injective.eq_iff rfl rfl
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fin_two_lt {a b : Fin 2} (h : b < a) : a = 1 ∧ b = 0 := by
   fin_cases a <;> fin_cases b <;> simp_all
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[mem_unipRad]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_parab_iff]`. Introduce `a b i j hba`. Take `⟨rfl, rfl⟩` from `fin_two_lt hba`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hP' : ¬ PB p (eTwo p ⟨1, i⟩) (eTwo p ⟨0, j⟩)` using `by rw [PB_e]; simp`. Rewrite using `[U_val, Matrix.add_apply, one_e, maskM, if_neg hP']`. Simplify using the standard rewrite rules. Introduce `a i j`. Establish `hP' : ¬ PB p (eTwo p ⟨a, i⟩) (eTwo p ⟨a, j⟩)` using `by rw [PB_e]; rintro ⟨rfl, h⟩; simp at h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[U_val, Matrix.add_apply, one_e, maskM, if_neg hP']`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem U_mem_unipRad (p : Fin M) (X : Matrix (Fin (M + 1)) (Fin (M + 1)) k) :
     U (PB p) (hPB p) X ∈ unipRad k (eTwo p) := by
@@ -528,13 +522,13 @@ theorem U_mem_unipRad (p : Fin M) (X : Matrix (Fin (M + 1)) (Fin (M + 1)) k) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Take `⟨hpar, hdiag⟩` from `mem_unipRad.1 hg`. Rewrite `hpar` using `[mem_parab_iff]`. Use extensionality with `x y`. Take `⟨⟨a, i⟩, rfl⟩` from `(eTwo p).surjective x`. Take `⟨⟨b, j⟩, rfl⟩` from `(eTwo p).surjective y`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.add_apply, one_e, maskM]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `hP' : ¬ PB p (eTwo p ⟨a, i⟩) (eTwo p ⟨a, j⟩)` using `by rw [PB_e]; rintro ⟨rfl, h⟩; simp at h`. Rewrite using `[if_neg hP', hdiag]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply]`. Establish `hne : ¬ ((⟨a, i⟩ : Σ a, Fin (dTwo p a)) = ⟨b, j⟩)` using `fun h => hab (congrArg Sigma.fst h)`. Rewrite using `[if_neg hne, zero_add]`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Establish `: a = 0 ∧ b = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `fin_two_lt h`. Conclude with `⟨h2, h1⟩`. Rewrite using `[if_pos ((PB_e p a b i j).2 this)]`. Establish `hP' : ¬ PB p (eTwo p ⟨a, i⟩) (eTwo p ⟨b, j⟩)` using `by rw [PB_e]; rintro ⟨rfl, rfl⟩; simp at h`. Rewrite using `[if_neg hP', hpar a b i j h]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unipRad_eq_U (p : Fin M) {g : GL (Fin (M + 1)) k} (hg : g ∈ unipRad k (eTwo p)) :
     (g : Matrix (Fin (M + 1)) (Fin (M + 1)) k) = 1 + maskM (PB p) (g : Matrix (Fin (M + 1)) (Fin (M + 1)) k) := by
@@ -564,33 +558,31 @@ end Parab
 section Main
 
 /- English proof (translation)
-Use `haveI : Fintype 𝓀[k] := Fintype.ofFinite _`. Establish `hP` using `hPB p`. Establish `hlt` using `hltB p`. Set `lift : 𝓀[k] → 𝒪[k]` to `Function.surjInv IsLocalRing.residue_surjective`. Establish `hlift : ∀ x, IsLocalRing.residue 𝒪[k] (lift x) = x` using `Function.surjInv_eq _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Yc : (Fin (M + 1) → Fin (M + 1) → 𝓀[k]) → Matrix (Fin (M + 1)) (Fin (M + 1)) k` to `fun c => Matrix.of fun a b => ((lift (c a b) : 𝒪[k]) : k)`. Establish `hYc : ∀ c a b, valuation k (Yc c a b) ≤ 1` using `fun c a b => (lift (c a b)).2`. Set `s : π.V` to `∑ c, π.ρ (U (PB p) hP (Yc c)) w`. Establish `hinv : ∀ Y : Matrix (Fin (M + 1)) (Fin (M + 1)) k, (∀ a b, valuation k (Y a b) ≤ 1) → π.ρ (U (PB p) hP Y) s = s`. Introduce `Y hY`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `r : Fin (M + 1) → Fin (M + 1) → 𝓀[k]` to `fun a b => IsLocalRing.residue 𝒪[k] ⟨Y a b, hY a b⟩`. Establish `step : ∀ c, π.ρ (U (PB p) hP Y) (π.ρ (U (PB p) hP (Yc c)) w) = π.ρ (U (PB p) hP (Yc (c + r))) w`. Introduce `c`. Set `Z : Matrix (Fin (M + 1)) (Fin (M + 1)) k` to `Y + Yc c - Yc (c + r)`. Establish `hZ : U (PB p) hP Z ∈ KOne k (Fin (M + 1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `U_mem_KOne` to reduce the goal to its premises. Introduce `a b _`. Establish `e1 : Z a b = ((⟨Y a b, hY a b⟩ + lift (c a b) - lift (c a b + r a b) : 𝒪[k]) : k)`. Simplify using `[Z, Yc]`. Rewrite using `[e1, ← GlobalTheory.StepData.residue_eq_zero_iff_lt, map_sub, map_add, hlift, hlift]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [r]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← rho_mul, U_mul, show Y + Yc c = Yc (c + r) + Z by simp [Z], ← U_mul, rho_mul, (mem_fixed_iff _ _ _).1 hw _ hZ]`. Simplify using `only [s, map_sum, step]`. Conclude with `Fintype.sum_equiv (Equiv.addRight r) _ _ (fun c => rfl)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsK : s ∈ fixed π.ρ (KOne k (Fin (M + 1)))` using `Submodule.sum_mem _ fun c _ => fixed_of_KO π.ρ hw (U_mem_KO (PB p) hP _ fun a b _ => hYc c a b)`. Establish `hs : s ∈ fixed π.ρ (KOne k (Fin (M + 1)) ⊔ (unipRad k (eTwo p) ⊓ KO k (Fin (M + 1))))`. Rewrite `hsK`, the goal using `[mem_fixed_iff_le]`. Use `sup_le hsK fun g hg => ?_` and prove the remaining obligations. Take `⟨hg1, hg2⟩` from `Subgroup.mem_inf.1 hg`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgU : g = U (PB p) hP (g : Matrix (Fin (M + 1)) (Fin (M + 1)) k)` using `Units.ext (unipRad_eq_U p hg1)`. Establish `hint` using `(GlobalTheory.StepData.mem_KO.1 hg2).1`. Use `show π.ρ g s = s`. Rewrite using `[hgU]`. Conclude with `hinv _ fun a b => hint a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0l : (0 : Fin (M + 1)) ≠ Fin.last M`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use `p.isLt` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hne : unipRad k (eTwo p) ≠ ⊥`. Introduce `hbot`. Establish `hmem` using `U_mem_unipRad (k := k) p (Matrix.of fun _ _ => (1 : k))`. Rewrite `hmem` using `[hbot, Subgroup.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun g : GL (Fin (M + 1)) k => (g : Matrix (Fin (M + 1)) (Fin (M + 1)) k) 0 (Fin.last M)) hmem` as an intermediate fact. Simplify using `only [U_val, Units.val_one, Matrix.add_apply, Matrix.one_apply_ne h0l, maskM] at this`. Rewrite `this` using `[if_pos ⟨by simp, by simp⟩]`. Simplify using `at this`. Establish `: Subsingleton (Jacquet π.ρ (unipRad k (eTwo p)))` using `hπ.2 2 (dTwo p) (eTwo p) hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hs0 : s = 0` using `GlobalTheory.DepthZeroJac.depthZeroJacquetInjective k (M + 1) 2 (dTwo p) (eTwo p) (GlobalTheory.SplitRead.Irr.ofIrrRep π) s hs (Subsingleton.elim _ _)`. Establish `heach : ∀ c, l (π.ρ (GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ) (π.ρ (U (PB p) hP (Yc c)) w)) = l (π.ρ (GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ) w)`. Introduce `c`. Rewrite using `[← rho_mul, show GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ * U (PB p) hP (Yc c) = (GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ * U (PB p) hP (Yc c) * (GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ)⁻¹) * GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ b …`. Apply `whit_U hψ π.ρ hl (PB p) hP hlt` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab`. Establish `ha : valuation k (τ a : k) ≤ valuation k (τ p.castSucc : k)` using `hmono (Fin.le_iff_val_le_val.2 (by simpa using hab.1))`. Establish `hb : valuation k (τ p.succ : k) ≤ valuation k (τ b : k)` using `hmono (Fin.le_iff_val_le_val.2 (by simpa using hab.2))`. Establish `hb0 : valuation k (τ b : k) ≠ 0` using `by simp`. Simplify using `only [Matrix.of_apply, map_mul, map_inv₀]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, mul_inv_lt_iff₀ (zero_lt_iff.2 hb0), one_mul]`. Conclude with `lt_of_le_of_lt ha (lt_of_lt_of_le hp hb)`. Establish `hsum : l (π.ρ (GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ) s) = (Fintype.card (Fin (M + 1) → Fin (M + 1) → 𝓀[k]) : ℂ) * l (π.ρ (GroundTheory.Automorphic.Iwasawa.diagGL k (M + 1) τ) w)`. Simplify using `only [s, map_sum, heach, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
-
-Rewrite `hsum` using `[hs0, map_zero, map_zero]`. Establish `hc : (Fintype.card (Fin (M + 1) → Fin (M + 1) → 𝓀[k]) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Conclude with `(mul_eq_zero.1 hsum.symm).resolve_left hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem diag_no_step {M : ℕ} (π : IrrRep (GL (Fin (M + 1)) k)) (hπ : IsCuspidal π.ρ) {ψ : AddChar k Circle}
     (hψ : IsLevelOne ψ) {l : Module.Dual ℂ π.V} (hl : IsFunctional ψ π.ρ l) {w : π.V}
@@ -685,9 +677,9 @@ theorem diag_no_step {M : ℕ} (π : IrrRep (GL (Fin (M + 1)) k)) (hπ : IsCuspi
   exact (mul_eq_zero.1 hsum.symm).resolve_left hc
 
 /- English proof (translation)
-Establish `hmono : Monotone fun a => valuation k (τ a : k)` using `Fin.monotone_iff_le_succ.2 (diag_step_le hψ π.ρ hl hw τ h)`. Establish `heq : ∀ p : Fin M, valuation k (τ p.castSucc : k) = valuation k (τ p.succ : k)` using `fun p => le_antisymm (hmono (Fin.castSucc_lt_succ (i := p)).le) (not_lt.1 fun hp => h (diag_no_step π hπ hψ hl hw τ hmono p hp))`. Introduce `a`. Proceed by induction on `a using Fin.reverseInduction with`. Consider the case `last => simp [hτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cast p ih => rw [heq p]`. Conclude with `ih`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem diag_support {M : ℕ} (π : IrrRep (GL (Fin (M + 1)) k)) (hπ : IsCuspidal π.ρ) {ψ : AddChar k Circle}
     (hψ : IsLevelOne ψ) {l : Module.Dual ℂ π.V} (hl : IsFunctional ψ π.ρ l) {w : π.V}
@@ -707,33 +699,31 @@ theorem diag_support {M : ℕ} (π : IrrRep (GL (Fin (M + 1)) k)) (hπ : IsCuspi
 end Main
 
 /- English proof (translation)
-Take `⟨u, hu, lam, κ, hκ, rfl⟩` from `GroundTheory.Automorphic.Iwasawa.exists_iwasawa k m g`. Set `τ : Fin (m + 1) → kˣ` to `Fin.lastCases 1 fun i => GroundTheory.Automorphic.Iwasawa.uniformizerUnit k ^ lam i`. Establish `hcD : corner (GroundTheory.Automorphic.Iwasawa.torusPow k m lam) = GroundTheory.Automorphic.Iwasawa.diagGL k (m + 1) τ`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[GroundTheory.Automorphic.Iwasawa.coe_diagGL, Matrix.diagonal_apply]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [τ, corner_last_last]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => simp [corner_last_cs, (Fin.castSucc_lt_last j).ne']`. Consider the case `cast i`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [corner_cs_last, (Fin.castSucc_lt_last i).ne]`. Consider the case `cast j`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[corner_cs_cs]`. Simplify using `[τ, GroundTheory.Automorphic.Iwasawa.torusPow, Matrix.diagonal_apply]`. Establish `hcu : corner u ∈ unipB k (Fin (m + 1))`. Take `⟨hu1, hu2⟩` from `(GroundTheory.Automorphic.Iwasawa.mem_unipotent k m).1 hu`. Rewrite using `[mem_unipB]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a b hba => ?_, fun a => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => exact absurd hba (lt_irrefl _)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => exact corner_last_cs u j`. Consider the case `cast i`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => exact absurd hba (not_lt.2 (Fin.castSucc_lt_last i).le)`. Consider the case `cast j`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[corner_cs_cs]`. Conclude with `hu1 (Fin.castSucc_lt_castSucc_iff.1 hba)`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact corner_last_last u`. Consider the case `cast i => rw [corner_cs_cs]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `hu2 i`. Establish `hint : ∀ h : GL (Fin m) k, (∀ i j, (h : Matrix (Fin m) (Fin m) k) i j ∈ 𝒪[k]) → GlobalTheory.StepData.IntM (corner h : Matrix (Fin (m + 1)) (Fin (m + 1)) k)`. Introduce `h hh a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [corner_last_last]`. Conclude with `one_mem _`. Consider the case `cast j => rw [corner_last_cs]`. Conclude with `zero_mem _`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast i`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => rw [corner_cs_last]`. Conclude with `zero_mem _`. Consider the case `cast j => rw [corner_cs_cs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hh i j`. Establish `hκ'` using `(GroundTheory.Automorphic.GLnLocal.mem_integralGL_iff k m).1 hκ`. Establish `hci : (corner κ)⁻¹ = corner κ⁻¹` using `inv_eq_of_mul_eq_one_right (by rw [← corner_mul, mul_inv_cancel]; exact map_one _)`. Establish `hcκ : corner κ ∈ KO k (Fin (m + 1))` using `GlobalTheory.StepData.mem_KO.2 ⟨hint κ hκ'.1, by rw [hci]; exact hint κ⁻¹ hκ'.2⟩`. Establish `hv'` using `fixed_of_KO π.ρ hv hcκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hg` using `[corner_mul, corner_mul, rho_mul, rho_mul, hl _ hcu, hcD]`. Establish `h1` using `right_ne_zero_of_mul hg`. Establish `hall` using `diag_support π hπ hψ hl hv' τ (by simp [τ]) h1`. Establish `hvu : valuation k ((GeneralLinearGroup.det u : kˣ) : k) = 1`. Take `⟨hu1, hu2⟩` from `(GroundTheory.Automorphic.Iwasawa.mem_unipotent k m).1 hu`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular hu1]`. Simplify using `[hu2]`. Establish `hvt : valuation k ((GeneralLinearGroup.det (GroundTheory.Automorphic.Iwasawa.torusPow k m lam) : kˣ) : k) = 1`. Rewrite using `[GeneralLinearGroup.val_det_apply, GroundTheory.Automorphic.Iwasawa.torusPow, GroundTheory.Automorphic.Iwasawa.coe_diagGL, Matrix.det_diagonal, map_prod]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
-
-Use `hall i.castSucc` as an intermediate fact. Simplify `this` using `[τ]`. Establish `hvk : valuation k ((GeneralLinearGroup.det κ : kˣ) : k) = 1` using `GlobalTheory.StepData.valuation_det_of_mem_KO (GlobalTheory.StepData.mem_KO.2 ⟨hκ'.1, hκ'.2⟩)`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, map_mul, map_mul, hvu, hvt, hvk]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem whittaker_support {m : ℕ} (π : IrrRep (GL (Fin (m + 1)) k)) (hπ : IsCuspidal π.ρ) (ψ : AddChar k Circle)
     (hψ : IsLevelOne ψ) (l : Module.Dual ℂ π.V) (hl : IsFunctional ψ π.ρ l)

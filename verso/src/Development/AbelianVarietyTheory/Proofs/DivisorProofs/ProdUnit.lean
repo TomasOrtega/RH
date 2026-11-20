@@ -13,9 +13,9 @@ open GlobalTheory.MumFam GlobalTheory.MumProd GlobalTheory.ProdUnif
 namespace GlobalTheory.ProdUnifUnit
 
 /- English proof (translation)
-Establish `e : ∀ k, r.left ≫ D.Oφ P χ k = D.Oφ (1 : T₀ ⟶ D.P.A) χ k` using `fun k => by`. Rewrite using `[← h]`. Conclude with `(WeightPf.Oφ_comp r P χ k).trans rfl`. Establish `e₀ : D.Oφ (1 : T₀ ⟶ D.P.A) χ 0 = D.Oφ (1 : T₀ ⟶ D.P.A) χ 1` using `congrArg (fun m : T₀ ⟶ D.P.A => m.left) (_root_.one_mul (toUnit T₀ ≫ D.c χ))`. Establish `e₂ : D.Oφ (1 : T₀ ⟶ D.P.A) χ 2 = D.Oφ (1 : T₀ ⟶ D.P.A) χ 3` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Rewrite using `[Fin.prod_univ_four, e₀, e₂]`. Simplify using `[Oinvε]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_unit {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {T T₀ : Over (Sp R)} (r : T₀ ⟶ T)
     (P : T ⟶ D.P.A) (h : r ≫ P = 1) (χ : D.X) {U : Type} [CommGroup U] (f : (T₀.left ⟶ D.P.A.left) → U) :
@@ -30,11 +30,11 @@ theorem prod_unit {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {T T₀ : 
   simp [Oinvε]
 
 /- English proof (translation)
-Introduce `R _ _ D D₁ D₂ p₁ p₂ q₁ q₂ w S s G G₁ G₂ _ _ _ σ₁ σ₂ P P₁ P₂ χ t t₁ t₂ h₁ h₂ H e u₁ u₂`. Use `corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₁, hJ₁⟩` from `BoxFamily.exists_good_at D₁.P.isLB y`. Take `⟨J₂, hJ₂⟩` from `BoxFamily.exists_good_at D₂.P.isLB y`. Establish `v` using `H _ (eSec G) y J₁ J₂ J hJ₁ hJ₂ hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `o` using `prod_unit D ((Over.map s).map η[G]) P e χ (om w y J₁ J₂ J)`. Establish `a₁ : eSec G ≫ σ₁.left = 𝟙 _ ≫ eSec G₁` using `(SumDeg.eSec_comp σ₁).trans (Category.id_comp _).symm`. Establish `a₂ : eSec G ≫ σ₂.left = 𝟙 _ ≫ eSec G₂` using `(SumDeg.eSec_comp σ₂).trans (Category.id_comp _).symm`. Establish `b₁ : val t₁ (eSec G ≫ σ₁.left) y J₁ = 1` using `(congrArg (fun r => val t₁ r y J₁) a₁).trans ((val_pull hJ₁ _ _ _).symm.trans ((val_corr hJ₁ u₁ (𝟙 _)).trans (val_one _)))`. Establish `b₂ : val t₂ (eSec G ≫ σ₂.left) y J₂ = 1` using `(congrArg (fun r => val t₂ r y J₂) a₂).trans ((val_pull hJ₂ _ _ _).symm.trans ((val_corr hJ₂ u₂ (𝟙 _)).trans (val_one _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c : val t (eSec G) y J = 1` using `((congrArg₂ (· * ·) o rfl).trans (_root_.one_mul _)).symm.trans (v.trans ((congrArg₂ (· * ·) b₁ b₂).trans (_root_.one_mul _)))`. Conclude with `(val_pull hJ _ _ _).trans ((congrArg (fun r => val t r y J) (Category.id_comp _)).trans (c.trans (val_one _).symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unit_box : ∀ (R : Type) [CommRing R] [IsDomain R] (D D₁ D₂ : DegPre R) (p₁ : D.P.A ⟶ D₁.P.A) (p₂ : D.P.A ⟶ D₂.P.A) (q₁ : D.X →+ D₁.X) (q₂ : D.X →+ D₂.X) (w : LB.Iso D.P.L (extLB D₁.P.L D₂.P.L p₁.left p₂.left)) (S : Scheme.{0}) (s : S ⟶ Sp R) (G G₁ G₂ : Over S) [GrpObj G] [GrpObj G₁] [GrpObj G₂] (σ₁ : G ⟶ G₁) (σ₂ : G ⟶ G₂) (P : (Over.map s).obj G ⟶ D.P.A) (P₁ : (Over.map s).obj G₁ ⟶ D₁.P.A) (P₂ : (Over.map s).obj G₂ ⟶ D₂.P.A) (χ : D.X) (t : LB.Gen (LB.LinComb D.P.L (D.Oφ P χ) Oinvε)) (t₁ : LB.Gen (LB.LinComb D₁.P.L (D₁.Oφ P₁ (q₁ χ)) Oinvε)) (t₂ : LB.Gen (LB.LinComb D₂.P.L (D₂.Oφ P₂ (q₂ χ)) Oinvε)), IsMonHom σ₁ → IsMonHom σ₂ → IsBoxGen (Y := G.left) (Y₁ := G₁.left) (Y₂ := G₂.left) w σ₁.left σ₂.left t t₁ t₂ → (Over.map s).map η[G] ≫ P = 1 → LB.Gen.Corr D₁.P.L _ _ _ _ (LB.pullGen D₁.P.L _ _ t₁ (eSec G₁)) (LB.oneGen D₁.P.L) → LB.Gen.Corr D₂.P.L _ _ _ _ (LB.pullGen D₂.P.L _ _ t₂ (eSec G₂)) (LB.oneGen D₂.P.L) → LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ t (eSec G)) (LB.oneGen D.P.L) := by
   intro R _ _ D D₁ D₂ p₁ p₂ q₁ q₂ w S s G G₁ G₂ _ _ _ σ₁ σ₂ P P₁ P₂ χ t t₁ t₂ h₁ h₂ H e u₁ u₂

@@ -34,9 +34,9 @@ noncomputable section
 namespace GlobalTheory.BasePointLift
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z i hi k hk`. Take `⟨p, hp, -⟩` from `hk`. Establish `hu` using `hp.uni`. Take `⟨-, -, -, hg⟩` from `GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords I hI hP l Z`. Establish `hg1` using `(hg i hi).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Formalism.L2.Forms.gramN at hg1`. Establish `hy : k ∈ Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (((I.rec7 l Z).sp.X i).gram.reindex (finCongr (rankN (I.rec7 l Z) i hi)) (finCongr (rankN (I.rec7 l Z) i hi))) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)` using `by rw [hg1]; exact hu`. Take `⟨a, ha, e⟩` from `GlobalTheory.Core.Mi.PinModel.exists_finM _ (rankN (I.rec7 l Z) i hi) ⟨k, hy⟩`. Conclude with `⟨a, ha, e⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift_of_ptOf : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (i : ℕ) (hi : i ≤ B.R.m) (k : TC.GA B (B.R.N i)), (∃ p : Formalism.L2.Col.DecoF B.fields.E (B.R.N i) ∅ ∅ ∅, TC.PtOf k p ∧ p.deco.1.N = Formalism.L2.Col.stdLat B.fields.E (B.R.N i)) → ∃ kA : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X i), kA ∈ GfC _ ∧ finM _ (rankN (I.rec7 l Z) i hi) kA = k.1 := by
   intro B X I hI hP l Z i hi k hk

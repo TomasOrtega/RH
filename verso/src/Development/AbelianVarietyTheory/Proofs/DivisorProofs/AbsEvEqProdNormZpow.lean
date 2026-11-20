@@ -17,9 +17,9 @@ open GroundTheory.Global.SemiLocal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h0 : Valued.v a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Rewrite using `[FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ h0]`. Take `⟨c, hc⟩` from `WithZero.ne_zero_iff_exists.mp h0`. Establish `: Multiplicative.toAdd (WithZero.unzero h0) = WithZero.log (Valued.v a)`. Simplify using `only [← hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem norm_eq_zpow (v : Pl F) {a : Fv F v} (ha : a ≠ 0) :
     ‖a‖ = (Ideal.absNorm v.asIdeal : ℝ) ^ WithZero.log (Valued.v a) := by
@@ -33,11 +33,11 @@ theorem norm_eq_zpow (v : Pl F) {a : Fv F v} (ha : a ≠ 0) :
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[complMap_rfl]`. Use `sub_eq_zero.1 (GlobalTheory.PlaceIdem.eq_zero_of_val w _ fun n => ?_)` and prove the remaining obligations. Establish `hc` using `continuous_completionMap (w.under (𝓞 F)) w`. Establish `h1` using `(GlobalTheory.Mem.UnitOpen.isOpen_val_le (w.under (𝓞 F)) (-(n : ℤ))).preimage (continuous_sub_left a)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.Mem.UnitOpen.isOpen_val_le w (-(n : ℤ))).preimage ((continuous_sub_left (completionMap _ w a)).comp hc)`. Take `⟨k, hk1, hk2⟩` from `(HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 F) (K := F) (w.under (𝓞 F))).exists_mem_open (h1.inter h2) ⟨a, by simp, by simp⟩`. Establish `e : GlobalTheory.AdeleBaseChange.locMap F w a - completionMap (w.under (𝓞 F)) w a = GlobalTheory.AdeleBaseChange.locMap F w (a - algebraMap F ((w.under (𝓞 F)).adicCompletion F) k) - (completionMap (w.under (𝓞 F)) w a - completionMap (w.under (𝓞 F)) w (algebraMap F ((w.under (𝓞 F) …`. Rewrite using `[map_sub, GlobalTheory.AdeleBaseChange.locMap_algebraMap, completionMap_algebraMap, IsScalarTower.algebraMap_apply F E (w.adicCompletion E)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `Valuation.map_sub_le _ (GlobalTheory.AdeleBaseChange.locMap_valued w n _ hk1) hk2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complMap_eq (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) [w.asIdeal.LiesOver v.asIdeal]
     (h : w.under (𝓞 F) = v) (a : Fv F v) : complMap h a = completionMap v w a := by
@@ -61,7 +61,7 @@ theorem complMap_eq (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) [w.asIdeal.LiesO
   exact Valuation.map_sub_le _ (GlobalTheory.AdeleBaseChange.locMap_valued w n _ hk1) hk2
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [toCompl_tmul, tensorEquiv_tmul, Pi.mul_apply, complMap_eq v w.1 h]`. Both sides reduce to the same expression. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
 Both sides reduce to the same expression.
 -/
@@ -73,9 +73,9 @@ theorem toCompl_eq (v : Pl F) (w : PlacesOver E v) (h : w.1.under (𝓞 F) = v) 
   | add y z hy hz => rw [map_add, map_add, hy, hz]; rfl
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : Module.Finite (Fv F v) (CompletionsOver E v) := Module.Finite.equiv (tensorEquiv E v).toLinearEquiv`. Set `b` to `Module.finBasis (Fv F v) (CompletionsOver E v)`. Establish `hlin : Continuous (Algebra.leftMulMatrix b : CompletionsOver E v → Matrix _ _ (Fv F v))` using `IsModuleTopology.continuous_of_linearMap (Algebra.leftMulMatrix b).toLinearMap`. Establish `h : (Algebra.norm (Fv F v) : CompletionsOver E v → Fv F v) = fun x => (Algebra.leftMulMatrix b x).det`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Conclude with `Algebra.norm_eq_matrix_det b x`. Rewrite using `[h]`. Conclude with `hlin.matrix_det`.
+A detailed English derivation is pending.
 -/
 theorem continuous_norm_completionsOver (v : Pl F) :
     Continuous (Algebra.norm (Fv F v) : CompletionsOver E v → Fv F v) := by
@@ -91,9 +91,9 @@ theorem continuous_norm_completionsOver (v : Pl F) :
   rw [h]; exact hlin.matrix_det
 
 /- English proof (translation)
-Rewrite using `[mem_aboveF]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Both sides reduce to the same expression. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `HeightOneSpectrum.ext h`.
+A detailed English derivation is pending.
 -/
 theorem mem_aboveF_iff (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) :
     w ∈ Formalism.L2.Host.aboveF (L := E) F v ↔ w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal := by
@@ -103,7 +103,7 @@ theorem mem_aboveF_iff (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) :
   · intro h; exact HeightOneSpectrum.ext h
 
 /- English proof (translation)
-Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 F) (𝓞 E) w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal v.asIdeal, map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_eq_pow (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) [w.asIdeal.LiesOver v.asIdeal] :
     Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ w.asIdeal.inertiaDeg (𝓞 F) := by
@@ -116,7 +116,7 @@ end GlobalTheory.UnrTate.completion_norms
 namespace GlobalTheory.UnrTate.completion_norms
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, zpow_add₀ hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq {ι : Type} (q : ℝ) (hq : q ≠ 0) (s : Finset ι) (a : ι → ℤ) :
     ∏ i ∈ s, q ^ a i = q ^ ∑ i ∈ s, a i := by
@@ -126,7 +126,7 @@ theorem prod_zpow_eq {ι : Type} (q : ℝ) (hq : q ≠ 0) (s : Finset ι) (a : �
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, zpow_add₀ hq]
 
 /- English proof (translation)
-Use `lt_of_le_of_lt hs ?_` and prove the remaining obligations. Use `conv_rhs => rw [← WithZero.exp_log ht]`. Conclude with `WithZero.exp_lt_exp.2 (by omega)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lt_of_le_exp_log_sub_one {t s : WithZero (Multiplicative ℤ)} (ht : t ≠ 0)
     (hs : s ≤ WithZero.exp (WithZero.log t - 1)) : s < t := by
@@ -141,23 +141,19 @@ namespace GlobalTheory.UnrTate
 open GroundTheory.Global.SemiLocal completion_norms
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v x`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `set z : CompletionsOver E v := tensorEquiv E v x.1 with hz`. Establish `hN : Algebra.norm (Fv F v) x.1 = Algebra.norm (Fv F v) z` using `(Algebra.norm_eq_of_algEquiv (tensorEquiv E v) x.1).symm`. Establish `hzu : IsUnit z` using `x.isUnit.map (tensorEquiv E v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzw : ∀ w, z w ≠ 0` using `fun w => (hzu.map (Pi.evalRingHom _ w)).ne_zero`. Establish `hNz : Algebra.norm (Fv F v) z ≠ 0` using `(hzu.map (Algebra.norm (Fv F v))).ne_zero`. Use `set c : Fv F v := Algebra.norm (Fv F v) z with hc`. Establish `hc0 : Valued.v c ≠ 0` using `(Valuation.ne_zero_iff _).2 hNz`. Establish `hzw0 : ∀ w, Valued.v (z w) ≠ 0` using `fun w => (Valuation.ne_zero_iff _).2 (hzw w)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `U : Set (CompletionsOver E v)` to `(⋂ w, {y | Valued.v (y w - z w) ≤ WithZero.exp (WithZero.log (Valued.v (z w)) - 1)}) ∩ {y | Valued.v (Algebra.norm (Fv F v) y - c) ≤ WithZero.exp (WithZero.log (Valued.v c) - 1)}`. Establish `hU : IsOpen U`. Use `(isOpen_iInter_of_finite fun w => ?_).inter ?_` and prove the remaining obligations. Conclude with `IsOpen.preimage (f := fun y : CompletionsOver E v => y w - z w) ((continuous_apply w).sub continuous_const) (GlobalTheory.Mem.UnitOpen.isOpen_val_le w.1 (WithZero.log (Valued.v (z w)) - 1))`. Conclude with `IsOpen.preimage (f := fun y : CompletionsOver E v => Algebra.norm (Fv F v) y - c) ((continuous_norm_completionsOver v).sub continuous_const) (GlobalTheory.Mem.UnitOpen.isOpen_val_le v (WithZero.log (Valued.v c) - 1))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hzU : z ∈ U`. Use `⟨Set.mem_iInter.2 fun w => ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v (z w - z w) ≤ _`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show Valued.v (c - c) ≤ _`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le'`. Take `⟨b, hb1, hb2⟩` from `(denseRange_algebraMap_completionsOver E v).exists_mem_open hU ⟨z, hzU⟩`. Establish `hbw : ∀ w : PlacesOver E v, Valued.v (algebraMap E (w.1.adicCompletion E) b) = Valued.v (z w)` using `fun w => Valuation.map_eq_of_sub_lt _ (lt_of_le_exp_log_sub_one (hzw0 w) (Set.mem_iInter.1 hb1 w))`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbN : Valued.v (Algebra.norm (Fv F v) (algebraMap E (CompletionsOver E v) b)) = Valued.v c` using `Valuation.map_eq_of_sub_lt _ (lt_of_le_exp_log_sub_one hc0 hb2)`. Establish `hNb : Algebra.norm (Fv F v) (algebraMap E (CompletionsOver E v) b) = algebraMap F (Fv F v) (Algebra.norm F b)`. Rewrite using `[← tensorEquiv_one_tmul, Algebra.norm_eq_of_algEquiv, norm_one_tmul]`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hbN` using `[hNb, Algebra.norm_zero, map_zero, map_zero]`. Conclude with `hc0 hbN.symm`. Establish `hq : (Ideal.absNorm v.asIdeal : ℝ) ≠ 0`. Conclude with `(Ideal.absNorm_ne_zero_iff_mem_nonZeroDivisors (I := v.asIdeal)).2 (mem_nonZeroDivisors_of_ne_zero v.ne_bot)` after adjusting the coercions. Establish `hL : ((absEv F E v x : ℝ≥0) : ℝ) = (Ideal.absNorm v.asIdeal : ℝ) ^ ∑ w ∈ Formalism.L2.Host.aboveF (L` using `E) F v, (w.asIdeal.inertiaDeg (𝓞 F) : ℤ) * WithZero.log (w.valuation E b) := by`.
-
-Rewrite using `[GlobalTheory.Doubling.absEv_apply, coe_nnnorm, hN, norm_eq_zpow v hNz, ← hbN, hNb, Formalism.UG.P.levelaf_valued_algebraMap]`. Conclude with `congrArg _ (GlobalTheory.NormValuation.log_valuation_norm_eq_sum F E v (Units.mk0 b hb0) _ (mem_aboveF_iff v))`. Rewrite using `[hL, ← prod_zpow_eq _ hq]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `h` using `mem_aboveF.1 hw`.
-
-Use `haveI : w.asIdeal.LiesOver v.asIdeal := ⟨by rw [← h]; rfl⟩`. Establish `hval : -ordAt v w x = WithZero.log (w.valuation E b)`. Rewrite using `[ordAt, neg_neg, valAt_of_under h, toCompl_eq v ⟨w, inferInstance⟩ h, ← hz, ← hbw ⟨w, inferInstance⟩, Formalism.UG.P.levelaf_valued_algebraMap]`. Rewrite using `[hval, absNorm_eq_pow v w, Nat.cast_pow, ← zpow_natCast, ← zpow_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absEv_eq_prod_absNorm : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : Pl F) (x : (Fv F v ⊗[F] E)ˣ), ((absEv F E v x : ℝ≥0) : ℝ) =

@@ -16,13 +16,13 @@ open scoped Classical
 namespace GlobalTheory.TorusTheta
 
 /- English proof (translation)
-Take `⟨hpos, hstep, hlast⟩` from `ht`. Establish `hm0 : 0 < min 1 c` using `lt_min one_pos hc`. Establish `hm1 : min 1 c ≤ 1` using `min_le_left _ _`. Establish `key : ∀ k : ℕ, ∀ i : Fin r, i.val + k + 1 = r → min 1 c ^ (k + 1) ≤ t i`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `i hi`. Simplify using `only [zero_add, pow_one]`. Conclude with `(min_le_right _ _).trans (hlast i (by omega))`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `i hi`. Establish `hj : i.val + 1 < r` using `by omega`. Establish `h1` using `ih ⟨i.val + 1, hj⟩ (by simp; omega)`. Establish `h2` using `hstep i ⟨i.val + 1, hj⟩ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 < t ⟨i.val + 1, hj⟩` using `hpos _`. Combine the equalities or inequalities in the displayed calculation. Use `key (r - i.val - 1) i (by omega)` as an intermediate fact. Use `le_trans ?_ this` and prove the remaining obligations. Conclude with `pow_le_pow_of_le_one hm0.le hm1 (by omega)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem min_pow_le_of_mem_cone {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → ℝ}
     (ht : t ∈ GlobalTheory.SiegelSet.cone r c) (i : Fin r) : min 1 c ^ r ≤ t i := by
@@ -51,7 +51,7 @@ theorem min_pow_le_of_mem_cone {r : ℕ} {c : ℝ} (hc : 0 < c) {t : Fin r → �
   exact pow_le_pow_of_le_one hm0.le hm1 (by omega)
 
 /- English proof (translation)
-Rewrite using `[← le_div_iff₀' hc']`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀' hc']`. Establish `hsi : 0 < s i` using `hc'.trans_le (hs i)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_norm_le_norm_smul {ι V : Type} [Fintype ι] [NormedAddCommGroup V] [NormedSpace ℝ V] {c' : ℝ} (hc' : 0 < c')
     (s : ι → ℝ) (hs : ∀ i, c' ≤ s i) (v : ι → V) : c' * ‖v‖ ≤ ‖fun i => s i • v i‖ := by
@@ -64,9 +64,9 @@ theorem mul_norm_le_norm_smul {ι V : Type} [Fintype ι] [NormedAddCommGroup V] 
     _ ≤ ‖fun i => s i • v i‖ := norm_le_pi_norm (fun i => s i • v i) i
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_fiberwise (Finset.univ : Finset κ) blk (fun j => ((blk j).elim 1 t : ℝ) ^ f)]`. Establish `h1 : ∀ o : Option (Fin r), ∏ j ∈ Finset.univ.filter (fun j => blk j = o), (blk j).elim 1 t ^ f = (o.elim 1 t ^ f) ^ (Finset.univ.filter (fun j => blk j = o)).card`. Introduce `o`. Rewrite using `[← Finset.prod_const]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Finset.mem_filter.1 hj).2]`. Rewrite using `[Finset.prod_congr rfl (fun o _ => h1 o), Fintype.prod_option]`. Simplify using `only [Option.elim_none, Option.elim_some, one_pow, one_mul, hcard]`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -91,41 +91,37 @@ end GlobalTheory.TorusTheta
 namespace GlobalTheory.TorusTheta
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hWitt c hc Φ hΦ`. Take `⟨co, blk, hrat, hcard, hact⟩` from `GlobalTheory.T.witt_frame_darboux_coordinates F E σ B n d X W M χX χW om r s r' s' hP r₀ Xf Yf hWitt`. Take `⟨M₁, om₁, e, c₀, hco, hP₁, hc₀, he⟩` from `GlobalTheory.T.darboux_coords_rational_points F E σ B n d X W M χX χW om r s r' s' hP co hrat`. Take `⟨N₀, k₃, C₃, hlat⟩` from `GlobalTheory.LatScaleSum.thetaSum_norm_le_pow F (Fin n × Fin d)`. Establish `heΦ` using `(he Φ hΦ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C₁, k₁, hdec⟩` from `GlobalTheory.T.weilRepresentation_pointwise_archimedeanDecay_bound F E σ B n d X W M₁ χX χW om₁ r s r' s' hP₁ (e Φ) heΦ N₀`. Take `⟨C₂, k₂, hden⟩` from `GlobalTheory.T.schwartz_theta_polynomial_growth F E σ B n d X W M₁ χX χW om₁ r s r' s' hP₁ (e Φ) heΦ`. Use `set c' : ℝ := min 1 c ^ r₀ with hc'def`. Establish `hc'0 : 0 < c'` using `pow_pos (lt_min one_pos hc) _`. Establish `hc'1 : c' ≤ 1` using `pow_le_one₀ (lt_min one_pos hc).le (min_le_left _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨‖c₀‖⁻¹ * |C₃| * (c'⁻¹) ^ N₀ * |C₁| * |C₂| ^ k₃, k₁ + k₂ * k₃, ?_⟩` and prove the remaining obligations. Introduce `t htc a hta a' ha' y h`. Establish `tlow : ∀ i, c' ≤ t i` using `min_pow_le_of_mem_cone hc htc`. Establish `tpos : ∀ i, 0 < t i` using `fun i => hc'0.trans_le (tlow i)`. Use `set u : Fin n × Fin d → ℝ := fun j => (blk j).elim 1 t with hudef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hulow : ∀ j, c' ≤ u j`. Introduce `j`. Simplify using `only [hudef]`. Consider the cases of `blk j with`. Consider the case `none => exact hc'1`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `some i => exact tlow i`. Establish `hupos : ∀ j, 0 < u j` using `fun j => hc'0.trans_le (hulow j)`. Take `⟨κ, hκ, hom⟩` from `GlobalTheory.T.torus_action_model_coordinates F E σ B n d X W M₁ χX χW om₁ r s r' s' hP₁ a' u hupos (by rw [hco]; exact hact t tpos a hta a' ha')`. Establish `hΨ0 : om (y, h) Φ ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres _ _ hΦ`. Establish `hT : om (a', 1) (om (y, h) Φ) ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres _ _ hΨ0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Ψ, hΨdef⟩ : ∃ Ψ, Ψ = om₁ (y, h) (e Φ)` from `⟨_, rfl⟩`. Establish `hΨ : Ψ ∈ schA F (Fin n × Fin d)` using `hΨdef ▸ (IsUWeilPair.isUSplitting hP₁.weil).pres _ _ heΦ`. Establish `hmul : ((a' * y, h) : UA σ X.J × UA σ W.J) = (a', 1) * (y, h)`. Apply the tactic sequence `ext <;> simp`. Establish `hsplit : om (a' * y, h) Φ = om (a', 1) (om (y, h) Φ)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmul, map_mul, Module.End.mul_apply]`. Establish `heT : e (om (a', 1) (om (y, h) Φ)) = om₁ (a', 1) Ψ`. Rewrite using `[(he _ hΨ0).2.2, (he Φ hΦ).2.2, hΨdef]`. Establish `hthT : thetaSum F (om (a', 1) (om (y, h) Φ)) = c₀⁻¹ * thetaSum F (om₁ (a', 1) Ψ)`. Rewrite using `[← heT, (he _ hT).2.1, ← mul_assoc, inv_mul_cancel₀ hc₀, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : om₁ (a', 1) Ψ = fun x => κ * Ψ (fun j => infScale F (u j) * x j)` using `funext (hom Ψ hΨ)`. Establish `hkey : theta om Φ (a' * y) h = c₀⁻¹ * (κ * thetaSum F (fun x => Ψ (fun j => infScale F (u j) * x j)))` using `by show thetaSum F (om (a' * y, h) Φ) = _`. Rewrite using `[hsplit, hthT, hfun]`. Unfold `thetaSum`. Rewrite using `[tsum_mul_left]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ' : ‖κ‖ = ∏ i, t i ^ (Module.finrank ℚ F * d)`. Establish `h2 : ‖κ‖ ^ 2 = (∏ i, t i ^ (Module.finrank ℚ F * d)) ^ 2`. Rewrite using `[hκ]`. Conclude with `prod_elim_pow blk t _ d hcard`. Establish `hnn : 0 ≤ ∏ i, t i ^ (Module.finrank ℚ F * d)` using `Finset.prod_nonneg fun i _ => pow_nonneg (tpos i).le _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(pow_left_inj₀ (norm_nonneg _) hnn two_ne_zero).1 h2`. Use `set P : ℝ := (ht y : ℝ) * ht h with hPdef`. Establish `hP0 : 0 ≤ P` using `mul_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)`. Take `⟨m, hm1, hmC, hmint⟩` from `hden y h`. Establish `hdecay : ∀ ξ : Fin n × Fin d → F, ‖Ψ (fun j => infScale F (u j) * (fun i => algebraMap F (AF F) (ξ i)) j)‖ * (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ (c'⁻¹) ^ N₀ * (C₁ * P ^ k₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `ξ`. Use `beta_reduce`. Establish `h1` using `hdec y h (fun j => infScale F (u j) * algebraMap F (AF F) (ξ j))`. Rewrite `h1` using `[← hΨdef]`. Establish `hnorm : c' * ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖ ≤ ‖fun i => evI F (infScale F (u i) * algebraMap F (AF F) (ξ i))‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [evI_infScale_mul]`. Conclude with `mul_norm_le_norm_smul hc'0 u hulow _`. Establish `hle : 1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖ ≤ c'⁻¹ * (1 + ‖fun i => evI F (infScale F (u i) * algebraMap F (AF F) (ξ i))‖)`. Establish `hi : 1 ≤ c'⁻¹` using `one_le_inv₀ hc'0 |>.2 hc'1`. Establish `h3 : ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖ ≤ c'⁻¹ * ‖fun i => evI F (infScale F (u i) * algebraMap F (AF F) (ξ i))‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[le_inv_mul_iff₀ hc'0]`. Conclude with `hnorm`. Use polynomial arithmetic with `[norm_nonneg (fun i => evI F (infScale F (u i) * algebraMap F (AF F) (ξ i)))]`. Establish `hpow : (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ (c'⁻¹) ^ N₀ * (1 + ‖fun i => evI F (infScale F (u i) * algebraMap F (AF F) (ξ i))‖) ^ N₀`. Establish `h0 : 0 ≤ 1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖` using `add_nonneg zero_le_one (norm_nonneg _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `pow_le_pow_left₀ h0 hle N₀`. Rewrite `h4` using `[mul_pow]`. Conclude with `h4`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : ∀ ξ : Fin n × Fin d → F, Ψ (fun j => infScale F (u j) * (fun i => algebraMap F (AF F) (ξ i)) j) ≠ 0 → ∀ i, IsIntegral ℤ ((m : F) * ξ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce `ξ hne`. Rewrite `hne` using `[hΨdef]`. Conclude with `hmint _ ξ (fun i => infScale_mul_snd F (u i) _) hne`. Establish `hS` using `hlat ((c'⁻¹) ^ N₀ * (C₁ * P ^ k₁)) m (fun x => Ψ (fun j => infScale F (u j) * x j)) hm1 hdecay hint`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmk : (m : ℝ) ^ k₃ ≤ |C₂| ^ k₃ * P ^ (k₂ * k₃)`. Rewrite using `[pow_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ hm0 (hmC.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (pow_nonneg hP0 _))) k₃`. Establish `hS' : ‖thetaSum F (fun x => Ψ (fun j => infScale F (u j) * x j))‖ ≤ |C₃| * (c'⁻¹) ^ N₀ * |C₁| * |C₂| ^ k₃ * P ^ (k₁ + k₂ * k₃)`. Use `hS.trans ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg hm0 _)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_mul, abs_mul, abs_of_nonneg (by positivity : (0:ℝ) ≤ (c'⁻¹) ^ N₀), abs_of_nonneg (pow_nonneg hP0 _)]`. Use `_ ≤ |C₃| * ((c'⁻¹) ^ N₀ * (|C₁| * P ^ k₁)) * (|C₂| ^ k₃ * P ^ (k₂ * k₃)) := mul_le_mul_of_nonneg_left hmk (by positivity)`.
-
-Use `_ = |C₃| * (c'⁻¹) ^ N₀ * |C₁| * |C₂| ^ k₃ * P ^ (k₁ + k₂ * k₃) := by ring`. Rewrite using `[hkey, norm_mul, norm_mul, norm_inv, hκ']`. Establish `hT0 : 0 ≤ ∏ i, t i ^ (Module.finrank ℚ F * d)` using `Finset.prod_nonneg fun i _ => pow_nonneg (tpos i).le _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem theta_torus_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

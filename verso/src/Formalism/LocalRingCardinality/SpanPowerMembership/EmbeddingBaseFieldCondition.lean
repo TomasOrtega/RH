@@ -26,9 +26,7 @@ Both sides reduce to the same expression.
 theorem coordMap_apply (x : W) (a : ι) : coordMap σ b x a = σ (b.repr x a) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Rewrite using `[coordMap_apply, b.repr_self, Finsupp.single_apply, Pi.single_apply]`. Use `split_ifs with h1 h2 h2`. Conclude with `map_one σ`. Conclude with `absurd h1.symm h2`.
-
-Conclude with `absurd h2.symm h1`. Conclude with `map_zero σ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordMap_basis (i : ι) : coordMap σ b (b i) = Pi.single i 1 := by
   funext a
@@ -40,7 +38,7 @@ theorem coordMap_basis (i : ι) : coordMap σ b (b i) = Pi.single i 1 := by
   · exact map_zero σ
 
 /- English proof (translation)
-Establish `e : (fun i => coordMap σ b (b i)) = ⇑(Pi.basisFun F ι)`. Use function extensionality and compare the values at `fun i => (coordMap_basis σ b i).trans (Pi.basisFun_apply _ _ i).symm`. Rewrite using `[e]`. Conclude with `⟨(Pi.basisFun F ι).linearIndependent, (Pi.basisFun F ι).span_eq⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem coordMap_good : LinearIndependent F (fun i => coordMap σ b (b i)) ∧
     Submodule.span F (Set.range fun i => coordMap σ b (b i)) = ⊤ := by
@@ -50,7 +48,7 @@ theorem coordMap_good : LinearIndependent F (fun i => coordMap σ b (b i)) ∧
   exact ⟨(Pi.basisFun F ι).linearIndependent, (Pi.basisFun F ι).span_eq⟩
 
 /- English proof (translation)
-Rewrite using `[← Set.range_comp]`. Conclude with `congrArg Set.range (funext fun i => coordMap_basis σ b i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordMap_image_range : coordMap σ b '' Set.range b = Set.range fun a : ι => (Pi.single a 1 : ι → F) := by
   rw [← Set.range_comp]
@@ -101,7 +99,7 @@ def eMtN (w : D.what₂.places.Pl) (j : ℕ) :
   coordMap (E.embW w) (S.bT w j)
 
 /- English proof (translation)
-The claim follows from `haveI : Module.Finite D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j) := Module.Finite.of_basis (S.bT w j) haveI : Finite (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)) := Module.Finite.finite_basis b letI : Fintype (Module.Free.ChooseBasisIndex D.what₂.LL …`.
+A detailed English derivation is pending.
 -/
 theorem eMtN_basis (w : D.what₂.places.Pl) (j : ℕ)
     (b : Module.Basis (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j))
@@ -116,7 +114,7 @@ theorem eMtN_basis (w : D.what₂.places.Pl) (j : ℕ)
     (coordMap_good (E.embW w) (S.bT w j)) b
 
 /- English proof (translation)
-Rewrite using `[S.bT_gen w j, TwCore.range_incl_eq_span]`. Conclude with `congrArg _ (coordMap_image_range (E.embW w) (S.bT w j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eMtN_lat (w : D.what₂.places.Pl) (j : ℕ) :
     Submodule.span (C.Ok (E.twI w) 1)
@@ -135,7 +133,7 @@ def nchN : NChoice (recN D C I he) :=
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `a` and use `hL.elim a twSide_eq := fun a => hL.elim a Q_eq := fun a => hL.elim a psi_eq := ⟨fun _ => 1, fun _ => rfl, fun w _ => (map_one (E.embW w)).trans (map_one (algebraMap (C.Ok (E.twI w) 1) (FractionRing (C.Ok (E.twI w) 1)))).symm, fun a => hL.elim a⟩ embedding_baseField_condition := E …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nchN_tie : NChTie (recN D C I he) (nchN D C I he E S) where
   twOf_eq := fun a => hL.elim a

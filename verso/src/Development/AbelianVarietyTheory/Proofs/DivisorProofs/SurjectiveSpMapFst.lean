@@ -16,7 +16,7 @@ section Val
 variable {A : Type} [CommRing A] {Y : Scheme.{0}}
 
 /- English proof (translation)
-Unfold `valR`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_of (x : Sp A ⟶ Y) (V : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(Y, V)) :
     valR x V f = (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom ((x.appLE V ⊤ h).hom f) := by
@@ -24,21 +24,21 @@ theorem valR_of (x : Sp A ⟶ Y) (V : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V) (f : �
   rw [dif_pos h]
 
 /- English proof (translation)
-Simplify using `only [valR_of x V h, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_add (x : Sp A ⟶ Y) (V : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V) (f g : Γ(Y, V)) :
     valR x V (f + g) = valR x V f + valR x V g := by
   simp only [valR_of x V h, map_add]
 
 /- English proof (translation)
-Simplify using `only [valR_of x V h, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_mul (x : Sp A ⟶ Y) (V : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V) (f g : Γ(Y, V)) :
     valR x V (f * g) = valR x V f * valR x V g := by
   simp only [valR_of x V h, map_mul]
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (x ≫ g) ⁻¹ᵁ V` using `h.trans (x.preimage_mono e)`. Rewrite using `[valR_of x W h, valR_of (x ≫ g) V h', ← Scheme.Hom.appLE_comp_appLE x g V W ⊤ e h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_appLE {Z : Scheme.{0}} (x : Sp A ⟶ Z) (g : Z ⟶ Y) (V : Y.Opens) (W : Z.Opens) (e : W ≤ g ⁻¹ᵁ V)
     (h : ⊤ ≤ x ⁻¹ᵁ W) (f : Γ(Y, V)) : valR x W ((g.appLE V W e).hom f) = valR (x ≫ g) V f := by
@@ -47,9 +47,9 @@ theorem valR_appLE {Z : Scheme.{0}} (x : Sp A ⟶ Z) (g : Z ⟶ Y) (V : Y.Opens)
   rfl
 
 /- English proof (translation)
-Unfold `constFn`. Use `(valR_appLE x p ⊤ V (fun _ _ => trivial) h _).trans ?_` and prove the remaining obligations. Rewrite using `[hx, valR_of _ _ le_rfl]`. Establish `n` using `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ψ))`. Establish `e' : ((spMap ψ).appLE ⊤ ⊤ le_rfl) = (spMap ψ).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (ψ a) = (spMap ψ).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom a) at n`. Rewrite using `[e', ← n]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of A)).inv_hom_id_apply _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valR_constFn {B : Type} [CommRing B] (x : Sp A ⟶ Y) (p : Y ⟶ Sp B) (ψ : B →+* A) (hx : x ≫ p = spMap ψ)
     (V : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V) (a : B) : valR x V (constFn p V a) = ψ a := by
@@ -64,9 +64,9 @@ theorem valR_constFn {B : Type} [CommRing B] (x : Sp A ⟶ Y) (p : Y ⟶ Sp B) (
   exact (Scheme.ΓSpecIso (CommRingCat.of A)).inv_hom_id_apply _
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ V` using `fun y _ => h (Set.mem_univ ((spMap ψ) y))`. Rewrite using `[valR_of _ V h', valR_of x V h]`. Establish `e : (spMap ψ ≫ x).appLE V ⊤ h' = x.appLE V ⊤ h ≫ (spMap ψ).appTop` using `(Scheme.Hom.appLE_comp_appLE (spMap ψ) x V ⊤ ⊤ h le_rfl).symm`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)`. Express the relevant statement in the definitionally equal form `((spMap ψ ≫ x).appLE V ⊤ h' ≫ (Scheme.ΓSpecIso (CommRingCat.of A')).hom).hom f = (x.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom ≫ CommRingCat.ofHom ψ).hom f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, Category.assoc, n]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_spMap_comp {A' : Type} [CommRing A'] (ψ : A →+* A') (x : Sp A ⟶ Y) (V : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V)
     (f : Γ(Y, V)) : valR (spMap ψ ≫ x) V f = ψ (valR x V f) := by
@@ -84,11 +84,9 @@ end Val
 section Geo
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (TrivSqZeroExt.fstHom R R R).toRingHom` using `fun x => ⟨TrivSqZeroExt.inl x, rfl⟩`. Use `⟨fun P => ?_⟩` and prove the remaining obligations. Establish `: P ∈ Set.range (PrimeSpectrum.comap (TrivSqZeroExt.fstHom R R R).toRingHom)`. Rewrite using `[range_comap_of_surjective _ _ hs]`. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(P : PrimeSpectrum (DualNumber R)).2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `hx' : x.fst = 0` using `hx`. Apply the tactic sequence `have : x ^ 2 = 0 := by ext <;> simp [sq, hx']`. Rewrite using `[this]`. Conclude with `zero_mem _`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_spMap_fst (R : Type) [CommRing R] : Surjective (spMap (TrivSqZeroExt.fstHom R R R).toRingHom) := by
   have hs : Function.Surjective (TrivSqZeroExt.fstHom R R R).toRingHom := fun x => ⟨TrivSqZeroExt.inl x, rfl⟩
@@ -103,7 +101,7 @@ theorem surjective_spMap_fst (R : Type) [CommRing R] : Surjective (spMap (TrivSq
   exact this
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem spMap_fst_comp (R : Type) [CommRing R] :
     spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _ := by
@@ -111,7 +109,7 @@ theorem spMap_fst_comp (R : Type) [CommRing R] :
   congr 1
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_eq_of_eq {Y Z : Scheme.{0}} {g g' : Z ⟶ Y} (hg : g = g') (V : Y.Opens) (W : Z.Opens)
     (e : W ≤ g ⁻¹ᵁ V) (e' : W ≤ g' ⁻¹ᵁ V) : g.appLE V W e = g'.appLE V W e' := by
@@ -119,7 +117,7 @@ theorem appLE_eq_of_eq {Y Z : Scheme.{0}} {g g' : Z ⟶ Y} (hg : g = g') (V : Y.
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.appLE_comp_appLE k g V W W' e e']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_appLE {Y Z Q : Scheme.{0}} (g : Z ⟶ Y) (k : Q ⟶ Z) (V : Y.Opens) (W : Z.Opens) (W' : Q.Opens)
     (e : W ≤ g ⁻¹ᵁ V) (e' : W' ≤ k ⁻¹ᵁ W) (f : Γ(Y, V)) :
@@ -128,7 +126,7 @@ theorem appLE_appLE {Y Z Q : Scheme.{0}} (g : Z ⟶ Y) (k : Q ⟶ Z) (V : Y.Open
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h).op ≫ g.appLE V' W' e').hom f = (g.appLE V W e ≫ Z.presheaf.map (homOfLE h').op).hom f`. Rewrite using `[Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_res {Y Z : Scheme.{0}} (g : Z ⟶ Y) {V V' : Y.Opens} {W W' : Z.Opens} (h : V' ≤ V) (h' : W' ≤ W)
     (e : W ≤ g ⁻¹ᵁ V) (e' : W' ≤ g ⁻¹ᵁ V') (f : Γ(Y, V)) :
@@ -137,7 +135,7 @@ theorem appLE_res {Y Z : Scheme.{0}} (g : Z ⟶ Y) {V V' : Y.Opens} {W W' : Z.Op
   rw [Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Unfold `constFn`. Conclude with `appLE_appLE p k ⊤ W W' _ e' _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem appLE_constFn {R : Type} [CommRing R] {Z Q : Scheme.{0}} (p : Z ⟶ Sp R) (k : Q ⟶ Z) (W : Z.Opens)
     (W' : Q.Opens) (e' : W' ≤ k ⁻¹ᵁ W) (a : R) : (k.appLE W W' e').hom (constFn p W a) = constFn (k ≫ p) W' a := by
@@ -145,9 +143,9 @@ theorem appLE_constFn {R : Type} [CommRing R] {Z Q : Scheme.{0}} (p : Z ⟶ Sp R
   exact appLE_appLE p k ⊤ W W' _ e' _
 
 /- English proof (translation)
-Establish `h : (spMap φ).appLE ⊤ ⊤ (fun _ _ => trivial) = (spMap φ).appTop`. Rewrite using `[Scheme.Hom.appTop, ← Scheme.Hom.appLE_eq_app]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun ψ => ψ.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Establish `h3` using `congrArg (fun ψ => ψ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.Hom.appLE_comp_appLE q (spMap φ) ⊤ ⊤ O (fun _ _ => trivial) (fun _ _ => trivial))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2 h3`. Unfold `constFn`. Rewrite using `[← h3, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem constFn_spMap {R S : Type} [CommRing R] [CommRing S] {Y : Scheme.{0}} (q : Y ⟶ Sp S) (φ : R →+* S)
     (O : Y.Opens) (a : R) : constFn (q ≫ spMap φ) O a = constFn q O (φ a) := by
@@ -162,14 +160,14 @@ theorem constFn_spMap {R S : Type} [CommRing R] [CommRing S] {Y : Scheme.{0}} (q
   rw [← h3, h2]
 
 /- English proof (translation)
-Simplify using `only [constFn, ← map_mul, DualNumber.eps_mul_eps, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_eps_sq {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Sp (DualNumber R)) (O : Y.Opens) :
     constFn p O DualNumber.eps * constFn p O DualNumber.eps = 0 := by
   simp only [constFn, ← map_mul, DualNumber.eps_mul_eps, map_zero]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (f.appLE_map (U := ⊤) (fun _ _ => trivial) (homOfLE h).op)`.
+A detailed English derivation is pending.
 -/
 theorem res_constFn {R : Type} [CommRing R] {Y : Scheme.{0}} (f : Y ⟶ Sp R) {V W : Y.Opens} (h : W ≤ V) (a : R) :
     resG Y h (constFn f V a) = constFn f W a :=
@@ -177,7 +175,7 @@ theorem res_constFn {R : Type} [CommRing R] {Y : Scheme.{0}} (f : Y ⟶ Sp R) {V
     (f.appLE_map (U := ⊤) (fun _ _ => trivial) (homOfLE h).op)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(f.app V ≫ Z.presheaf.map (homOfLE h').op).hom a = (Y.presheaf.map (homOfLE h).op ≫ f.app W).hom a`. Rewrite using `[Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_app {Y Z : Scheme.{0}} (f : Z ⟶ Y) {V W : Y.Opens} (h : W ≤ V) (h' : f ⁻¹ᵁ W ≤ f ⁻¹ᵁ V) (a : Γ(Y, V)) :
     resG Z h' ((f.app V).hom a) = (f.app W).hom (resG Y h a) := by

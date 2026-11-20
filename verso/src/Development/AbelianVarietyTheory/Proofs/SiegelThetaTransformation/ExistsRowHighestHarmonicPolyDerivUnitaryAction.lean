@@ -19,7 +19,7 @@ variable {σ κ W W' : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [NormedA
   [NormedSpace ℂ W']
 
 /- English proof (translation)
-Unfold `I2.polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hcomp` using `A.iteratedFDeriv_comp_right hF x (i := Multiset.card (Finsupp.toMultiset m)) (by exact_mod_cast le_top)`. Rewrite using `[show (fun z => F (A z)) = F ∘ A from rfl, hcomp]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -35,9 +35,9 @@ theorem polyDeriv_comp_linear {F : W' → ℂ} (hF : ContDiff ℂ (⊤ : ℕ∞)
   rfl
 
 /- English proof (translation)
-Unfold `I2.polyDeriv`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hm0 : m = 0`. Assume the negation of the conclusion as `hne`. Conclude with `(MvPolynomial.mem_support_iff.1 hm) (by rw [MvPolynomial.coeff_C, if_neg (Ne.symm hne)])`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Substitute `hm0` using the available equality. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem polyDeriv_C_indep (a : ℂ) (u v : σ → W) (F : W → ℂ) (x : W) :
     I2.polyDeriv (MvPolynomial.C a : MvPolynomial σ ℂ) u F x =
@@ -51,11 +51,11 @@ private theorem polyDeriv_C_indep (a : ℂ) (u v : σ → W) (F : W → ℂ) (x 
   congr 1
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on generalizing x with`. Consider the case `C a`. Rewrite using `[MvPolynomial.algHom_C]`. Conclude with `polyDeriv_C_indep a _ _ F x`. Consider the case `add p q hp hq => rw [map_add, I2.polyDeriv_add, I2.polyDeriv_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p l hp`. Establish `e1 : (fun y => I2.polyDeriv (Φ p) u F y) = fun y => I2.polyDeriv p (fun l => ∑ k, s l k • u (j l k)) F y` using `funext hp`. Rewrite using `[polyDeriv_mul_X hF p _ l x, map_mul, hΦ l, Finset.mul_sum, I2.jof_polyDeriv_sum]`. Repeatedly rewrite using `[MvPolynomial.C_mul', mul_smul_comm, I2.polyDeriv_smul, polyDeriv_mul_X hF (Φ p) u _ x, e1]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem polyDeriv_subst [Fintype κ] {F : W → ℂ} (hF : ContDiff ℂ (⊤ : ℕ∞) F) (s : σ → κ → ℂ)
     (j : σ → κ → σ) (Φ : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial σ ℂ)
@@ -91,21 +91,21 @@ end GlobalTheory.Dict.ColPoly
 open GlobalTheory.Dict.ColPoly in
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n _hs _hn h hh k k' P hP`. Set `A : X.Ψ → Matrix (Fin n) (Fin n) ℂ` to `fun t => (h.map (t.1 : E →+* ℂ))ᵀ`. Set `B : X.Ψ → Matrix (Fin n) (Fin n) ℂ` to `fun t => h.map (ComplexEmbedding.conjugate (t.1 : E →+* ℂ))`. Establish `hAB : ∀ t, A t * B t = 1`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fun M => M.map (t.1 : E →+* ℂ)) hh`. Simplify using `only [Matrix.map_mul, GlobalTheory.SW.Base.ccT_map, Matrix.map_one _ (map_zero _) (map_one _)] at h1`. Use extensionality with `i j`. Establish `h2` using `congrFun (congrFun h1 j) i`. Simplify using `only [A, B, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.conjTranspose_apply, ComplexEmbedding.conjugate_coe_eq, Matrix.one_apply] at h2 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Conclude with `Finset.sum_congr rfl fun l _ => by rw [mul_comm]; rfl`. Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `s : Harm.Var X.Ψ q0 X.p0 (Fin n) → Fin n → ℂ` to `fun l k₁ => rowType X (rowOf X hr (l.1, l.2.1)) (h k₁ l.2.2)`. Set `j : Harm.Var X.Ψ q0 X.p0 (Fin n) → Fin n → Harm.Var X.Ψ q0 X.p0 (Fin n)` to `fun l k₁ => (l.1, l.2.1, k₁)`. Establish `hΦ : ∀ l, GlobalTheory.Harm.colSubst A B (MvPolynomial.X l) = ∑ k₁, MvPolynomial.C (s l k₁) * MvPolynomial.X (j l k₁)`. Introduce and unpack `⟨t, (a | b), k₀⟩`. Establish `e : rowType X (t, rowIdx hr (Sum.inl a)) = t.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using rowType_rowOf_inl X hr t a`. Simplify using `[GlobalTheory.Harm.xForm, GlobalTheory.Harm.rowForm_apply, A, s, j, e]`. Establish `e : rowType X (t, rowIdx hr (Sum.inr b)) = ComplexEmbedding.conjugate t.1`. Simplify using `using rowType_rowOf_inr X hr t b`. Simplify using `[GlobalTheory.Harm.yForm, GlobalTheory.Harm.rowForm_apply, B, s, j, e, ComplexEmbedding.conjugate_coe_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdir : (fun l => hActL X idx h (letterDir X hr idx l)) = fun l => ∑ k₁, s l k₁ • letterDir X hr idx (j l k₁)`. Use function extensionality and compare the values at `l k₁ i`. Use `show hAct X idx h (letterDir X hr idx l) k₁ i = _`. Distinguish the cases in `hi : i = idx.symm (rowOf X hr (l.1, l.2.1))`. Substitute `hi` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hAct, letterDir, Pi.single_apply, Finset.sum_apply, s, j, ite_apply, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Simplify using `only [rowOf_apply] at hi`. Simplify using `[hAct, letterDir, Pi.single_apply, Finset.sum_apply, s, j, hi, ite_apply, mul_ite]`. Use `⟨GlobalTheory.Harm.colSubst A B P, GlobalTheory.Harm.colSubst_mem_rowHighest hAB hP, fun F hF => ?_⟩` and prove the remaining obligations. Establish `hF' : ContDiff ℂ (⊤ : ℕ∞) F` using `contDiffOn_univ.1 (hF.contDiffOn uniqueDiffOn_univ)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0` using `polyDeriv_comp_linear hF' (hActL X idx h) P (letterDir X hr idx) 0`. Rewrite `e0` using `[map_zero, hdir]`. Rewrite using `[show (fun z => F (hAct X idx h z)) = fun z => F (hActL X idx h z) from rfl, e0]`. Conclude with `(polyDeriv_subst hF' s j (GlobalTheory.Harm.colSubst A B) hΦ (letterDir X hr idx) P 0).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Dict.exists_rowHighest_polyDeriv_hAct : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ h : Matrix (Fin n) (Fin n) E, ccT h * h = 1 → ∀ (k : X.Ψ → Fin q0 → ℕ) (k' : X.Ψ → Fin X.p0 → ℕ), ∀ P ∈ Harm.rowHighest ℂ k k', ∃ P' ∈ Harm.rowHighest ℂ k k', ∀ F : (Fin n → Fin g → ℂ) → ℂ, AnalyticOnNhd ℂ F Set.univ → I2.polyDeriv P (letterDir X hr idx) (fun z => F (hAct X idx h z)) 0 = I2.polyDeriv P' (letterDir X hr idx) F 0 := by
   intro E _ _ _ r X g q0 hr bas idx n _hs _hn h hh k k' P hP

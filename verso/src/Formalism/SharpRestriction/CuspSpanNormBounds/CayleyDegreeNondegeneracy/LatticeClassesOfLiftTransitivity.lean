@@ -14,7 +14,7 @@ variable (D : D7) (u : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ)
   (he : F0.e = D.sp.hypE) (hz : F0.z = D.zmOf u)
 
 /- English proof (translation)
-Unfold `latticeWithZ`. Rewrite using `[Submodule.mem_comap]`. Simplify using `[embedWithZ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_latticeWithZ_iff {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (Λ : LatV D) (w : (D.sp.X 0).V) (c : D.host.E) :
     (w, c) ∈ latticeWithZ D F Λ ↔ D.sp.iXY 0 w + c • F.z ∈ Lsub Λ (lf D F) := by
@@ -24,11 +24,11 @@ theorem mem_latticeWithZ_iff {T : D.host.E} (F : FlagG (VS D) D.R.rS T) (Λ : La
 
 include he hz in
 /- English proof (translation)
-Establish `hfix : ∀ y ∈ F0.X, (extendByIdentity D γ).symm y = y` using `fun y hy => extendByIdentity_symm_fix_orth D γ y (isotropic_le_orth_range D u F0 he hy)`. Use `⟨extendByIdentity_mem_isom D γ hγ, fun j => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[Submodule.mem_map_equiv]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `e : (extendByIdentity D γ).symm x = x` using `(extendByIdentity D γ).symm.injective (hfix _ (partial_isotropic_le F0 j h))`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Introduce `h`. Rewrite using `[hfix x (partial_isotropic_le F0 j h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[← LinearEquiv.eq_symm_apply]`. Conclude with `(extendByIdentity_symm_fix_orth D γ _ (z_mem_orth_range D u F0 hz)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extendByIdentity_mem_flag_stabilizer (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) (hγ : γ ∈ isom (D.sp.X 0).hT) :
     extendByIdentity D γ ∈ stabF D F0 := by
@@ -50,9 +50,9 @@ theorem extendByIdentity_mem_flag_stabilizer (γ : (D.sp.X 0).V ≃ₗ[D.host.E]
 include he hz in
 
 /- English proof (translation)
-Establish `hzO` using `z_mem_orth_range D u F0 hz`. Apply the tactic sequence `obtain ⟨hrow, hLsub⟩ := isLattice_gmap_of_flag_isometry F0 (extendByIdentity D γ) (extendByIdentity_mem_isom D γ hγ) (fun x hx => extendByIdentity_symm_fix_orth D γ x (isotropic_le_orth_range D u F0 he hx)) (extendByIdentity_symm_fix_orth D γ _ hzO) Λ hΛ`. Use `⟨hrow, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨w, c⟩`. Establish `e : (extendByOne D γ).symm (w, c) = (γ.symm w, c)` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[isomAct_mem_gmap, e, mem_latticeWithZ_iff, mem_latticeWithZ_iff, hLsub, isomAct_mem_gmap, extendByIdentity_symm_apply D γ w _ (Submodule.smul_mem _ c hzO)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transport_isLattice_latticeWithZ (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) (hγ : γ ∈ isom (D.sp.X 0).hT) (Λ : LatV D)
     (hΛ : IsRowLat D F0 Λ) :
@@ -68,21 +68,21 @@ theorem transport_isLattice_latticeWithZ (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.
     extendByIdentity_symm_apply D γ w _ (Submodule.smul_mem _ c hzO)]
 
 /- English proof (translation)
-Introduce `hTp hT3 hsp F0 he hz Λ₁ Λ₂ h₁ h₂`. Establish `hT : Tu D u ≠ 0` using `hTp.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Take `⟨γ, hγ, hind⟩` from `exists_induced_isometry_W D u hT F0 he hz σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Establish `hX : F0.X.map (σ : (VS D).V →ₗ[D.host.E] (VS D).V) = F0.X`. Use `hσ.2.1 D.R.rS` as an intermediate fact. Rewrite `this` using `[partial_isotropic_top]`. Then use the resulting hypothesis. Apply the tactic sequence `have hLs := Lsub_gmap_of_isometry F0 σ hσ.1 hX Λ₁`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use extensionality with `⟨w, c⟩`. Establish `e : (extendByOne D γ).symm (w, c) = (γ.symm w, c)` using `rfl`. Rewrite using `[isomAct_mem_gmap, e, mem_latticeWithZ_iff, mem_latticeWithZ_iff, hLs, isomAct_mem_gmap]`. Establish `hd : σ.symm (D.sp.iXY 0 w + c • F0.z) - (D.sp.iXY 0 (γ.symm w) + c • F0.z) ∈ F0.X`. Establish `h1` using `hind (γ.symm w)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Establish `h2 : σ.symm (σ (D.sp.iXY 0 (γ.symm w)) - D.sp.iXY 0 w) ∈ F0.X`. Rewrite using `[← Submodule.mem_map_equiv, hX]`. Conclude with `h1`. Establish `hzs : σ.symm F0.z = F0.z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `hσ.2.2.symm`. Establish `e3 : σ.symm (D.sp.iXY 0 w + c • F0.z) - (D.sp.iXY 0 (γ.symm w) + c • F0.z) = -(σ.symm (σ (D.sp.iXY 0 (γ.symm w)) - D.sp.iXY 0 w))`. Rewrite using `[map_add, map_smul, hzs, map_sub, LinearEquiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e3]`. Conclude with `F0.X.neg_mem h2`. Establish `hd'` using `isotropic_le_Lsub F0 Λ₁ hd`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Lsub Λ₁ (lf D F0)).add_mem ha hd'` as an intermediate fact. Simplify using `using this`. Introduce `hb`. Use `(Lsub Λ₁ (lf D F0)).sub_mem hb hd'` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨γ, hγ, hγe⟩`. Take `⟨hrow, hLd⟩` from `transport_isLattice_latticeWithZ D u F0 he hz γ hγ Λ₁ h₁`. Establish `hLs` using `Lsub_eq_of_latticeWithZ_eq D u hT F0 he hz _ _ (hLd.trans hγe)`. Take `⟨n, hn, _, hne⟩` from `hL hTp hT3 hsp F0 he hz _ _ hrow h₂ hLs`. Conclude with `⟨n * extendByIdentity D γ, mul_mem_flag_stabilizer F0 hn (extendByIdentity_mem_flag_stabilizer D u F0 he hz γ hγ), by rw [gmap_mul, hne]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lattice_classes_of_lift_transitivity (hL : LiftsConjugateUnderStabilizer D u) : LatticeClassesIff D u := by
   intro hTp hT3 hsp F0 he hz Λ₁ Λ₂ h₁ h₂

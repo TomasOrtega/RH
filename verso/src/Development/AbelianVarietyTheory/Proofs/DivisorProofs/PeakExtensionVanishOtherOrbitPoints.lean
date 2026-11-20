@@ -16,14 +16,14 @@ namespace GlobalTheory.PeakOrbit
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty (Ent X)` from `Fintype.card_pos_iff.1 hn`. Conclude with `Fin.pos e.2.1.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rank_pos (X : Data E r) (hn : 0 < nd X) : 0 < r := by
   obtain ⟨e⟩ : Nonempty (Ent X) := Fintype.card_pos_iff.1 hn
   exact Fin.pos e.2.1.1
 
 /- English proof (translation)
-Introduce `τ` and use `by rw [OntoS.gram_lact X hγ]; exact ho τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOrth_translate (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r}
     (ho : IsOrth X x) : IsOrth X (lact γ x) := fun τ => by
@@ -35,7 +35,7 @@ def testFn (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (Ψ : Fram
   exact ENNReal.ofReal (‖X.dom.piecewise P 0 y‖ ^ 2 * Real.exp (-(X.dom.piecewise (phla X la) 0 y))) * Ψ y
 
 /- English proof (translation)
-Simplify using `only [testFn, Set.piecewise_eq_of_mem _ _ _ hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem testFn_dom (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (Ψ : Frame X.Ψ r → ℝ≥0∞)
     {y : Frame X.Ψ r} (hy : y ∈ X.dom) :
@@ -44,7 +44,7 @@ theorem testFn_dom (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (�
   simp only [testFn, Set.piecewise_eq_of_mem _ _ _ hy]
 
 /- English proof (translation)
-Establish `hm` using `(IW.isOpen_dom X).measurableSet`. Establish `h1 : Measurable (X.dom.piecewise P 0)` using `hP.measurable_piecewise continuousOn_const hm`. Establish `h2 : Measurable (X.dom.piecewise (phla X la) 0)` using `(IW.phla_contOn X la).measurable_piecewise continuousOn_const hm`. Unfold `testFn`. Conclude with `((h1.norm.pow_const 2).mul (h2.neg.exp)).ennreal_ofReal.mul hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem testFn_meas (X : Data E r) (la : Wt X.Ψ r) {P : Frame X.Ψ r → ℂ} (hP : ContinuousOn P X.dom)
     {Ψ : Frame X.Ψ r → ℝ≥0∞} (hΨ : Measurable Ψ) : Measurable (testFn X la P Ψ) := by
@@ -57,7 +57,7 @@ theorem testFn_meas (X : Data E r) (la : Wt X.Ψ r) {P : Frame X.Ψ r → ℂ} (
   exact ((h1.norm.pow_const 2).mul (h2.neg.exp)).ennreal_ofReal.mul hΨ
 
 /- English proof (translation)
-Rewrite using `[testFn_dom X la P Ψ (OntoS.dom_rmul X hy hb), testFn_dom X la P Ψ hy, IW.exp_neg_phla_rmul X GlobalTheory.NormFactor.nfacRmul_holds la hy hb, hP.2 y hy b hb, hΨ y hy b hb]`. Use `congr 2`. Establish `: ‖bchar la b‖ ≠ 0` using `norm_ne_zero_iff.2 (IW.bchar_ne_zero X hb la)`. Rewrite using `[norm_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem testFn_rmul (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : IsBEq X la P)
     {Ψ : Frame X.Ψ r → ℝ≥0∞} (hΨ : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Ψ (rmul y b) = Ψ y)
@@ -71,35 +71,31 @@ theorem testFn_rmul (X : Data E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (
   field_simp
 
 /- English proof (translation)
-Introduce `E _ _ _ r X la x ho hn Ψ hΨm hΨB hΨΓ c ρ' hc hρ' hlow hinj F0 F hF0 _ hI P hP hPF γ hγ hγ1`. Assume the negation of the conclusion as `hne`. Establish `hr : (0 : ℝ) < r` using `Nat.cast_pos.2 (rank_pos X hn)`. Establish `hR : (0 : ℝ) < 1 / (100 * (r : ℝ) ^ 2)` using `by positivity`. Use `set x1 := lact γ x with hx1def`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho1 : IsOrth X x1` using `isOrth_translate X hγ ho`. Establish `h01` using `IW.zero_mem_OmF X x1 ho1`. Establish `hO1` using `(ExF.isOpen_OmF X x1).mem_nhds h01`. Establish `hO` using `(ExF.isOpen_OmF X x).mem_nhds (IW.zero_mem_OmF X x ho)`. Use `set h : V (nd X) → ℝ := fun w => Real.exp (Real.log (densF X x1 w) - phla X la (cpt X x1 w)) * ‖P (cpt X x1 w)‖ ^ 2 with hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousAt h 0` using `(Real.continuous_exp.continuousAt.comp (((IW.logDens_cdAt X x1 h01).sub (IW.phla_cpt_cdAt X x1 h01 la)).continuousAt)).mul (((IW.comp_cpt_diffOn X hP.1 x1).continuousOn.continuousAt hO1).norm.pow 2)`. Establish `hh0 : 0 < h 0`. Simplify using `only [hh, IW.cpt_zero]`. Conclude with `mul_pos (Real.exp_pos _) (pow_pos (norm_pos_iff.2 hne) 2)`. Establish `hev : ∀ᶠ w in 𝓝 (0 : V (nd X)), h 0 / 2 < h w` using `hcont.eventually (lt_mem_nhds (by linarith))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hall : ∀ᶠ w in 𝓝 (0 : V (nd X)), h 0 / 2 < h w ∧ w ∈ OmF X x1 ∧ w ∈ OmF X x ∧ w ∈ ball (0 : V (nd X)) ρ' ∧ w ∈ ball (0 : V (nd X)) (1 / (100 * (r : ℝ) ^ 2))` using `by filter_upwards [hev, hO1, hO, ball_mem_nhds 0 hρ', ball_mem_nhds 0 hR] with w a b c d e`. Conclude with `⟨a, b, c, d, e⟩`. Take `⟨ρ, hρ, hsub⟩` from `Metric.mem_nhds_iff.1 hall`. Take `⟨Δ, zOf, bOf, hΔd, -, hzOf, -, hdec, hlast⟩` from `lu_holds (E := E) r X x1 ho1`. Establish `hG : IsOpen {y | y ∈ X.dom ∧ Δ y ≠ 0}` using `hΔd.continuous.continuousOn.isOpen_inter_preimage (IW.isOpen_dom X) isOpen_compl_singleton`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hNo : IsOpen (IW.Nset X Δ zOf ρ)` using `hzOf.continuousOn.isOpen_inter_preimage hG isOpen_ball`. Establish `hN1 : ∀ w ∈ ball (0 : V (nd X)) ρ, cpt X x1 w ∈ IW.Nset X Δ zOf ρ`. Introduce `w hw`. Establish `hwO` using `(hsub hw).2.1`. Take `⟨h1, h2, -⟩` from `hlast w hwO (IW.idF X) (IW.idF_mem X)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[IW.rmul_idF]`. Conclude with `⟨⟨hwO, h1⟩, by simp only [Set.mem_preimage]; rw [h2]; exact hw⟩`. Establish `hN2 : ∀ z, cpt X x z ∈ IW.Nset X Δ zOf ρ → z ∈ OmF X x ∧ F0 z = 0`. Introduce `z hzN`. Take `⟨⟨hzd, hΔz⟩, hzb⟩` from `hzN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨hzd, hF0 z (lt_of_not_ge fun hz => hγ1 ?_)⟩` and prove the remaining obligations. Take `⟨-, hbO, hd⟩` from `hdec _ hzd hΔz`. Establish `e` using `IW.rmul_binv X (cpt X x1 (zOf (cpt X x z))) hbO`. Rewrite `e` using `[← hd, hx1def, IW.cpt_lact]`. Establish `hw` using `(hsub hzb).2.2.2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw` using `[mem_ball, dist_zero_right]`. Conclude with `hinj γ hγ _ z hw.le hz _ (IW.binv_mem X hbO) e.symm`. Establish `hφm : Measurable ((IW.Nset X Δ zOf ρ).indicator (testFn X la P Ψ))` using `(testFn_meas X la hP.1.continuousOn hΨm).indicator hNo.measurableSet`. Establish `hφinv : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, (IW.Nset X Δ zOf ρ).indicator (testFn X la P Ψ) (rmul y b) = (IW.Nset X Δ zOf ρ).indicator (testFn X la P Ψ) y`. Introduce `y hy b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hyN : y ∈ IW.Nset X Δ zOf ρ`. Rewrite using `[Set.indicator_of_mem hyN, Set.indicator_of_mem ((IW.Nset_sat X x1 hdec hlast ρ hy hb).2 hyN), testFn_rmul X hP hΨB hy hb]`. Rewrite using `[Set.indicator_of_notMem hyN, Set.indicator_of_notMem (fun h => hyN ((IW.Nset_sat X x1 hdec hlast ρ hy hb).1 h))]`. Establish `hMI` using `measInv_holds (E := E) r X x x1 ho ho1 _ hφm hφinv`. Establish `hL : ∫⁻ z, (IW.Nset X Δ zOf ρ).indicator (testFn X la P Ψ) (cpt X x z) ∂muF X x < ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt (lintegral_mono fun z => ?_) hI` and prove the remaining obligations. Distinguish the cases in `hzN : cpt X x z ∈ IW.Nset X Δ zOf ρ`. Take `⟨hz, hz0⟩` from `hN2 z hzN`. Establish `hzd : cpt X x z ∈ X.dom` using `hz`. Rewrite using `[Set.indicator_of_mem hzN, testFn_dom X la P Ψ hzd, hPF z hz, hz0, zero_sub, norm_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_notMem hzN]`. Conclude with `zero_le`. Establish `hk : 0 < h 0 / 2 * c` using `by positivity`. Establish `hpt : ∀ w ∈ ball (0 : V (nd X)) ρ, ENNReal.ofReal (h 0 / 2 * c) * ENNReal.ofReal (‖w‖ ^ (-2 * (nd X : ℝ))) ≤ ENNReal.ofReal (densF X x1 w) * (IW.Nset X Δ zOf ρ).indicator (testFn X la P Ψ) (cpt X x1 w)`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, hw1, hw0, hwρ, -⟩` from `hsub hw`. Establish `hd` using `IW.densF_pos X x1 hw1`. Establish `hwd : cpt X x1 w ∈ X.dom` using `hw1`. Establish `hΨw : Ψ (cpt X x1 w) = Ψ (cpt X x w)`. Rewrite using `[hx1def, IW.cpt_lact]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hΨΓ γ hγ _ hw0`. Establish `hval : h w = densF X x1 w * (‖P (cpt X x1 w)‖ ^ 2 * Real.exp (-phla X la (cpt X x1 w)))`. Simplify using `only [hh]`. Rewrite using `[sub_eq_add_neg, Real.exp_add, Real.exp_log hd]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[Set.indicator_of_mem (hN1 w hw), testFn_dom X la P Ψ hwd, hΨw, ← mul_assoc, ← ENNReal.ofReal_mul hd.le, ← hval, ← ENNReal.ofReal_mul hk.le, mul_assoc, ENNReal.ofReal_mul (by positivity), neg_mul]`. Conclude with `mul_le_mul' (ENNReal.ofReal_le_ofReal h1.le) (hlow w hwρ)`. Establish `hR1 : ENNReal.ofReal (h 0 / 2 * c) * ∫⁻ w in ball (0 : V (nd X)) ρ, ENNReal.ofReal (‖w‖ ^ (-2 * (nd X : ℝ))) ≤ ∫⁻ w, (IW.Nset X Δ zOf ρ).indicator (testFn X la P Ψ) (cpt X x1 w) ∂muF X x1`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, IW.muF_lintegral]`. Conclude with `(setLIntegral_mono' measurableSet_ball hpt).trans (lintegral_mono_set fun w hw => (hsub hw).2.1)`.
-
-Rewrite `hR1` using `[VanishPf.crit_div hn hρ, ENNReal.mul_top (ENNReal.ofReal_pos.2 hk).ne', ← hMI]`. Conclude with `absurd (hR1.trans_lt hL) (lt_irrefl _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_translate : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (la : ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (x : Frame X.Ψ r), IsOrth X x → 0 < nd X →

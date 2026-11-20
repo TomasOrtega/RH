@@ -13,13 +13,13 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Establish `hmax : ∀ n ∈ Icc 1 ⌊y⌋₊, max (y / n - 1) 0 = y / n - 1`. Introduce `n hn`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hn`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast h1`. Establish `hy : 0 ≤ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Rewrite `h2` using `[Nat.floor_of_nonpos (le_of_lt (not_le.1 hc))]`. Use linear arithmetic over natural numbers and integers. Establish `hny : (n : ℝ) ≤ y` using `(Nat.le_floor_iff hy).1 h2`. Establish `: 1 ≤ y / n` using `(one_le_div hn0).2 hny`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `max_eq_left (by linarith)`. Unfold `Formalism.HC.An.gChi G0`. Distinguish the cases in `h : χ = 1`. Rewrite using `[if_pos h, if_pos h]`. Unfold `Formalism.HC.An.G G1`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun n hn => by rw [hmax n hn]]`. Rewrite using `[if_neg h, if_neg h]`. Unfold `Formalism.HC.An.sumLamChi Gchi Formalism.HC.An.logDerivativeAtOne logDerivLAtOne`. Rewrite using `[Finset.sum_congr rfl fun n hn => by rw [hmax n hn]]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gauss_sum_function_eq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) :
     Formalism.HC.An.gChi χ y = G0 χ y := by
@@ -44,7 +44,7 @@ private theorem gauss_sum_function_eq {N : ℕ} [NeZero N] (χ : DirichletCharac
     rw [Finset.sum_congr rfl fun n hn => by rw [hmax n hn]]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases MulChar.isQuadratic_iff_sq_eq_one.2 h2 a with h | h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem isReal_of_sq {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h2 : χ ^ 2 = 1) (a : ZMod N) :
     (χ a).im = 0 := by
@@ -59,19 +59,19 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `eps he _`. Use `⟨1 / 2, by norm_num, fun Co => ?_⟩` and prove the remaining obligations. Take `⟨c₁, hc₁, hsm⟩` from `QH.small_zeros ⌈8 * Co ^ 2⌉₊`. Take `⟨x₀, hx₀⟩` from `QH.thin eps 3 (1 / 2) (min (1 / 400) c₁) he (by norm_num) (by norm_num) (lt_min (by norm_num) hc₁)`. Use `⟨x₀, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s R H hs hx _ ho hQ hlog hbox`. Substitute `hs` using the available equality. Rewrite using `[thinScales_iff_hostBound]`. Introduce `N _ χ hχ y hy`. Establish `hB` using `UpperTheory.GL.oddQS_le H.toHostRaw Co ho hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hdvd, hcl⟩` from `UpperTheory.GL.realClass H.toHostRaw N χ hχ`. Establish `hp : χ.IsPrimitive` using `hχ.choose_spec.1`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Rewrite using `[QH.gauss_sum_function_eq]`. Use `hx₀ s.x hx N χ hp ?_ ?_ y hy` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ hlog` and prove the remaining obligations. Use `Real.log_le_log (by exact_mod_cast hN0) ?_` and prove the remaining obligations. Conclude with `(Nat.le_of_dvd H.condN_pos hdvd : N ≤ H.QS * H.q * H.d)` after adjusting the coercions. Introduce `h2 h1 β hb1 hb2`. Establish `hr` using `QH.isReal_of_sq χ h2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hcl hr with hN | hqd` into its components or cases. Establish `hle : N ≤ 8 * ordCompl[2] H.QS` using `Nat.le_of_dvd (Nat.mul_pos (by norm_num) (Nat.ordCompl_pos 2 H.QS_pos.ne')) hN`. Establish `hle' : N ≤ ⌈8 * Co ^ 2⌉₊`. Establish `a1 : (N : ℝ) ≤ 8 * ((ordCompl[2] H.QS : ℕ) : ℝ)` using `by exact_mod_cast hle`. Establish `a2 : (N : ℝ) ≤ (⌈8 * Co ^ 2⌉₊ : ℝ)` using `le_trans (by linarith) (Nat.le_ceil (8 * Co ^ 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `a2` after adjusting the coercions. Use `hsm N χ hle' h1 β ?_ hb2` and prove the remaining obligations. Use `min_le_right (1 / 400 : ℝ) c₁` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `hbox N χ hχ hr hqd β ?_ hb2` and prove the remaining obligations.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `min_le_left (1 / 400 : ℝ) c₁` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem thinChoice_host : ThinChoice := by
   intro eps he _

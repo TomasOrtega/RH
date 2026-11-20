@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarP
 namespace Formalism.L2.SG.BesselDiscreteSeries
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem besselNVGap [Fact Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap] : Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap := Fact.out
 

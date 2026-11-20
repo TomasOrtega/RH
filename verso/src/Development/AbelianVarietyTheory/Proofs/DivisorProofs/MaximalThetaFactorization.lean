@@ -17,51 +17,41 @@ noncomputable section
 namespace GlobalTheory.ThetaRadZero
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT N hN hI f φ hf hφ hφc hn v`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hA` using `GlobalTheory.T.theta_action_exists hKP.base`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `(hφc.and hP.good.std).mono fun w hw => hw.1.trans hw.2`. Take `⟨ρ, hρ, hρt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hstd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `lin : ((Fin a × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] Fn F a (a + a')` to `{ toFun := fun χ => tens (evFin F v) χ ρ map_add' := fun χ χ' => by funext x; simp [tens, add_mul] map_smul' := fun c χ => by funext x; simp [tens, mul_assoc] }`. Establish `hlin : ∀ χ, lin χ = pure f (Function.update φ v χ)` using `fun χ => hρt χ`. Establish `hupd : ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ w, Function.update φ v χ w ∈ SB _`. Introduce `χ hχ w`. Distinguish the cases in `hw : w = v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hχ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hφ w`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD : ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), lin χ ∈ PolData B G.M`. Introduce `χ hχ`. Rewrite using `[hlin]`. Use `Submodule.subset_span ⟨f, hf, Function.update φ v χ, hupd χ hχ, ?_, rfl⟩` and prove the remaining obligations. Use `filter_upwards [hφc, Filter.eventually_cofinite_ne v] with w hw hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hne]`. Conclude with `hw`. Establish `hRest : ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), Rest (evFin F v) χ ρ` using `fun χ hχ => ⟨hρ, by rw [hρt]; exact GlobalTheory.TensUniq.pure_mem_schA f _ (hupd χ hχ) (GlobalTheory.PureFactor.update_eventually φ v χ hstd)⟩`. Establish `h1V : (1 : UA σ G.V.J) ∈ UAt σ G.V (evFin F v)`. Introduce `u _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show u • (mat (1 : UA σ G.V.J) - 1) = 0`. Establish `: mat (1 : UA σ G.V.J) = 1` using `rfl`. Rewrite using `[this, sub_self, smul_zero]`. Establish `hex : ∀ h ∈ UAt σ G.W (evFin F v), ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∃ χ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) χ χ₁`. Introduce `h hh χ hχ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨χ₁, ⟨h1, h2⟩, -⟩` from `(hA F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP v).1 1 h1V h hh χ hχ`. Conclude with `⟨χ₁, h1, h2⟩`. Establish `hact : ∀ g, ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ χ₁, Acts (evFin F v) (om g) χ χ₁ → om g (lin χ) = lin χ₁` using `fun g χ hχ χ₁ hA => hA ρ (hRest χ hχ)`. Use `set D := PolData B G.M with hDdef`. Use `set SBv := SB (Fin a × Fin (a + a') → Fv F v) with hSBv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `St : Submodule ℂ (Fn F a (a + a')) → Prop` to `fun P => ∀ h ∈ UAt σ G.W (evFin F v), ∀ Φ ∈ P, om (1, h) Φ ∈ P`. Establish `hStN : St N` using `fun h hh Φ hΦ => hN.stab.fin v h hh Φ hΦ`. Use `set M := N ⊔ SBv.map lin with hMdef`. Establish `hMD : M ≤ D` using `sup_le hN.le (by rintro _ ⟨χ, hχ, rfl⟩; exact hD χ hχ)`. Establish `hStImg : ∀ Q : Submodule ℂ ((Fin a × Fin (a + a') → Fv F v) → ℂ), Q ≤ SBv → (∀ h ∈ UAt σ G.W (evFin F v), ∀ χ ∈ Q, ∀ χ₁ ∈ SBv, Acts (evFin F v) (om (1, h)) χ χ₁ → χ₁ ∈ Q) → St (N ⊔ Q.map lin)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `Q hQ hQs h hh Φ hΦ`. Take `⟨n, hn, y, ⟨χ, hχ, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hΦ`. Take `⟨χ₁, hχ₁, hA₁⟩` from `hex h hh χ (hQ hχ)`. Rewrite using `[map_add, hact _ χ (hQ hχ) χ₁ hA₁]`. Conclude with `Submodule.add_mem_sup (hStN h hh n hn) ⟨χ₁, hQs h hh χ hχ χ₁ hχ₁ hA₁, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hStM : St M` using `hStImg SBv le_rfl (fun _ _ _ _ χ₁ hχ₁ _ => hχ₁)`. Establish `hx : pure f φ ∈ M`. Establish `e : lin (φ v) = pure f φ` using `by rw [hlin, Function.update_eq_self]`. Rewrite using `[← e]`. Conclude with `Submodule.mem_sup_right ⟨φ v, hφ v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Ph, hPhSt, hNPh, hPhM, hxPh, hPhmax⟩` from `GlobalTheory.ThetaFacW.exists_max_not_mem St M N hStN le_sup_left (fun c hne hc hcs h hh Φ hΦ => by`. Take `⟨P, hP, hΦP⟩` from `(Submodule.mem_sSup_of_directed hne hc.directedOn).1 hΦ`. Conclude with `(Submodule.mem_sSup_of_directed hne hc.directedOn).2 ⟨P, hP, hcs P hP h hh Φ hΦP⟩)`. Use the proof step `(fun N₁ N₂ h₁ h₂ _ _ h hh Φ hΦ => by`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hΦ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h₁ h hh y hy) (h₂ h hh z hz))`. Use the proof step `(fun P hPSt hNP hPM => by`. Take `⟨C, hCD, hCSt, hsup, hinf⟩` from `GlobalTheory.T.maximal_theta_polynomial_data hKP F E σ B a a' G X om om' hT N hN hI v P hNP (hPM.trans hMD) hPSt`. Use `⟨C ⊓ M, fun h hh Φ hΦ => ⟨hCSt h hh Φ hΦ.1, hStM h hh Φ hΦ.2⟩, inf_le_right, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sup_inf_assoc_of_le C hPM, hsup]`. Conclude with `inf_eq_right.2 hMD`. Rewrite using `[← inf_assoc, hinf]`. Conclude with `inf_eq_left.2 le_sup_left)`. Use the proof step `(pure f φ) hx hn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Pl := Ph.comap lin ⊓ SBv with hPl`. Establish `hmemM : ∀ m ∈ M, ∃ n ∈ N, ∃ χ ∈ SBv, m = n + lin χ`. Introduce `m hm`. Take `⟨n, hn, y, ⟨χ, hχ, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hm`. Conclude with `⟨n, hn, χ, hχ, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPlSub : GlobalTheory.Published.ThetaSub om v Pl`. Use `⟨?_, inf_le_right, ?_⟩` and prove the remaining obligations. Rewrite using `[augAt, Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, χ, hχ, χ₁, hχ₁, hA₁, rfl⟩`. Use `⟨?_, Submodule.sub_mem _ hχ₁ hχ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show lin (χ₁ - χ) ∈ Ph`. Rewrite using `[map_sub, ← hact _ χ hχ χ₁ hA₁]`. Conclude with `hNPh (hN.coinv.fin v g hg _ (hD χ hχ))`. Introduce `h hh χ hχ χ₁ hχ₁ hA₁`. Use `⟨?_, hχ₁⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Use `show lin χ₁ ∈ Ph`. Rewrite using `[← hact _ χ hχ.2 χ₁ hA₁]`. Conclude with `hPhSt h hh _ hχ.1`. Establish `hvPl : φ v ∉ Pl` using `fun h => hxPh (by`. Use `h.1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this)` using `[Submodule.mem_comap, hlin, Function.update_eq_self]`. Use `⟨Pl, ⟨⟨hPlSub, fun e => hvPl (e ▸ hφ v)⟩, ?_⟩, hvPl⟩` and prove the remaining obligations. Introduce and unpack `Q ⟨hQ, hQne⟩ hPlQ`. Establish `hQSB : Q ≤ SBv` using `hQ.2.1`. Establish `hStQ` using `hStImg Q hQSB (fun h hh χ hχ χ₁ hχ₁ hA₁ => hQ.2.2 h hh χ hχ χ₁ hχ₁ hA₁)`.
-
-Establish `hQM : N ⊔ Q.map lin ≤ M` using `sup_le_sup_left (Submodule.map_mono hQSB) _`. Establish `hPhQ : Ph ≤ N ⊔ Q.map lin`. Introduce `m hm`. Take `⟨n, hn, χ, hχ, rfl⟩` from `hmemM m (hPhM hm)`. Establish `hχP : χ ∈ Pl` using `⟨by show lin χ ∈ Ph`.
-
-Use `Ph.sub_mem hm (hNPh hn)` as an intermediate fact. Simplify using `using this, hχ⟩`. Conclude with `Submodule.add_mem_sup hn ⟨χ, hPlQ hχP, rfl⟩`. Break down `hPhmax _ hPhQ hQM hStQ with e | e` into its components or cases. Introduce `χ hχ`.
-
-Use `⟨?_, hQSB hχ⟩` and prove the remaining obligations. Use `show lin χ ∈ Ph`. Rewrite using `[← e]`. Conclude with `Submodule.mem_sup_right ⟨χ, hχ, rfl⟩`. It suffices to derive a contradiction.
-
-Use `hQne (le_antisymm hQSB fun χ hχ => ?_)` and prove the remaining obligations. Establish `hm : lin χ ∈ N ⊔ Q.map lin` using `e ▸ Submodule.mem_sup_right ⟨χ, hχ, rfl⟩`. Take `⟨n, hn, y, ⟨χ', hχ', rfl⟩, hsum⟩` from `Submodule.mem_sup.1 hm`. Establish `hd : χ - χ' ∈ Pl`. Use `⟨?_, Submodule.sub_mem _ hχ (hQSB hχ')⟩` and prove the remaining obligations.
-
-Use `show lin (χ - χ') ∈ Ph`. Rewrite using `[map_sub, ← hsum, add_sub_cancel_right]`. Conclude with `hNPh hn`. Simplify using `using Q.add_mem (hPlQ hd) hχ'`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem radZero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∀ N, GlobalTheory.ThetaFac.IsMaxTh B om (GlobalTheory.ThK.PolData B G.M) N → (∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, G.M.I om Ψ = 0 → Ψ ∈ N) → ∀ (f : SInf F (Fin a × Fin (a + a'))) (φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ), f ∈ G.M.Pol B.ψ B.emb → (∀ v, φ v ∈ SB _) → (∀ᶠ v in Filter.cofinite, φ v = G.M.vac v) → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∉ N → ∀ v : Pl F, ∃ P : Submodule ℂ ((Fin a × Fin (a + a') → Fv F v) → ℂ), Maximal (fun Q => GlobalTheory.Published.ThetaSub om v Q ∧ Q ≠ SB _) P ∧ φ v ∉ P := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT N hN hI f φ hf hφ hφc hn v

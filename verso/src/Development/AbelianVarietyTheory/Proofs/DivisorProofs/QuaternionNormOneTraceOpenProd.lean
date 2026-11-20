@@ -21,42 +21,40 @@ def snd (x : ℍ[R₁ × R₂, (a₁, a₂), (b₁, b₂)]) : ℍ[R₂, a₂, b�
   ⟨x.re.2, x.imI.2, x.imJ.2, x.imK.2⟩
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glue_fst_snd (x : ℍ[R₁ × R₂, (a₁, a₂), (b₁, b₂)]) : glue (fst x, snd x) = x := by
   ext <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [nrm, glue]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nrm_glue (p : ℍ[R₁, a₁, b₁] × ℍ[R₂, a₂, b₂]) : nrm (glue p) = (nrm p.1, nrm p.2) := by
   ext <;> simp [nrm, glue]
 
 /- English proof (translation)
-Simplify using `[nrm, fst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_fst (x : ℍ[R₁ × R₂, (a₁, a₂), (b₁, b₂)]) : nrm (fst x) = (nrm x).1 := by
   simp [nrm, fst]
 
 /- English proof (translation)
-Simplify using `[nrm, snd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_snd (x : ℍ[R₁ × R₂, (a₁, a₂), (b₁, b₂)]) : nrm (snd x) = (nrm x).2 := by
   simp [nrm, snd]
 
 /- English proof (translation)
-The claim follows from `(continuous_apply i).comp continuous_induced_dom`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord {R : Type} [CommRing R] [TopologicalSpace R] {a b : R} (i : Fin 4) :
     Continuous (fun x : ℍ[R, a, b] => coords x i) :=
   (continuous_apply i).comp continuous_induced_dom
 
 /- English proof (translation)
-Apply `continuous_induced_rng.2` to reduce the goal to its premises. Apply `continuous_pi` to reduce the goal to its premises. Introduce `i`. Establish `h1 : Continuous (fun p : ℍ[R₁, a₁, b₁] × ℍ[R₂, a₂, b₂] => coords p.1 i)` using `(continuous_coord i).comp continuous_fst`. Establish `h2 : Continuous (fun p : ℍ[R₁, a₁, b₁] × ℍ[R₂, a₂, b₂] => coords p.2 i)` using `(continuous_coord i).comp continuous_snd`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (fun p => coords (glue p) i) = fun p : ℍ[R₁, a₁, b₁] × ℍ[R₂, a₂, b₂] => (coords p.1 i, coords p.2 i)`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `fin_cases i <;> rfl`. Use `show Continuous (fun p : ℍ[R₁, a₁, b₁] × ℍ[R₂, a₂, b₂] => coords (glue p) i)`. Rewrite using `[this]`.
-
-Conclude with `h1.prodMk h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_glue : Continuous (glue : ℍ[R₁, a₁, b₁] × ℍ[R₂, a₂, b₂] → _) := by
   apply continuous_induced_rng.2
@@ -81,13 +79,13 @@ namespace GlobalTheory.QSA
 open TraceOpenProd in
 
 /- English proof (translation)
-Introduce `R₁ R₂ _ _ _ _ a₁ b₁ a₂ b₂ h₁ h₂ g hg W hW`. Establish `hW' : glue ⁻¹' W ∈ 𝓝 (fst g, snd g)`. Apply `continuous_glue.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[glue_fst_snd]`. Conclude with `hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨W₁, hW₁, W₂, hW₂, hsub⟩` from `mem_nhds_prod_iff.1 hW'`. Establish `hg₁ : nrm (fst g) = 1` using `by rw [nrm_fst, hg]; rfl`. Establish `hg₂ : nrm (snd g) = 1` using `by rw [nrm_snd, hg]; rfl`. Take `⟨O₁, hO₁, hne₁, hO₁t⟩` from `h₁ _ hg₁ W₁ hW₁`. Take `⟨O₂, hO₂, hne₂, hO₂t⟩` from `h₂ _ hg₂ W₂ hW₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨O₁ ×ˢ O₂, hO₁.prod hO₂, hne₁.prod hne₂, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t₁, t₂⟩ ⟨ht₁, ht₂⟩`. Take `⟨u₁, hu₁W, hu₁n, hu₁r⟩` from `hO₁t t₁ ht₁`. Take `⟨u₂, hu₂W, hu₂n, hu₂r⟩` from `hO₂t t₂ ht₂`. Use `⟨glue (u₁, u₂), hsub ⟨hu₁W, hu₂W⟩, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nrm_glue, hu₁n, hu₂n]`. Both sides reduce to the same expression. Simplify using `[glue, hu₁r, hu₂r]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem traceOpen_prod : ∀ (R₁ R₂ : Type) [CommRing R₁] [TopologicalSpace R₁] [CommRing R₂] [TopologicalSpace R₂]
     (a₁ b₁ : R₁) (a₂ b₂ : R₂), TraceOpen R₁ a₁ b₁ → TraceOpen R₂ a₂ b₂ → TraceOpen (R₁ × R₂) (a₁, a₂) (b₁, b₂) := by

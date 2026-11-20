@@ -12,29 +12,29 @@ namespace Formalism.L2.SG.Pf.RedExists0Pf
 open Formalism.MainNotions.S Formalism.L2.SG.Pf.RowDictPf PIW.AdelClassFin Formalism.L2.SG.Pf.RedBasicsPf
 
 /- English proof (translation)
-Introduce `I w p hp hcard m hm x hx`. Substitute `hm` using the available equality. Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Take `⟨b, hb⟩` from `exists_redBasis I w hp hcard`. Establish `hx' : ∀ v, v ∈ I.Lf ↔ I.fmat x *ᵥ v ∈ I.Lf` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxi : x⁻¹ ∈ I.Kset` using `(Formalism.UG.stabGL I.Lf).inv_mem hx`. Establish `hxi' : ∀ v, v ∈ I.Lf ↔ I.fmat x⁻¹ *ᵥ v ∈ I.Lf` using `hxi`. Use `choose c hc using fun i => coords I w hp hcard hb ((hx' _).1 (DictLat.iv_mem I (hb.1 i)))`. Use `choose c' hc' using fun i => coords I w hp hcard hb ((hxi' _).1 (DictLat.iv_mem I (hb.1 i)))`. Set `M : Matrix (Fin I.n) (Fin I.n) (ZMod p)` to `Matrix.of fun j i => ((c i j : ℤ) : ZMod p)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `N : Matrix (Fin I.n) (Fin I.n) (ZMod p)` to `Matrix.of fun k j => ((c' j k : ℤ) : ZMod p)`. Establish `hzs : ∀ (z : ℤ) {v : Fin I.n → I.E ⊗[I.F] Af I.F}, v ∈ lamAf (F` using `I.F) (wLat0 I w) → (z : I.E ⊗[I.F] Af I.F) • v ∈ lamAf (F := I.F) (wLat0 I w) := fun z v hv => by`. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem hv z`. Establish `hdiv : ∀ i k, (p : ℤ) ∣ (1 : Matrix (Fin I.n) (Fin I.n) ℤ) i k - ∑ j, c i j * c' j k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `hW : iv I (b i) - ∑ j, (c i j : I.E ⊗[I.F] Af I.F) • ∑ k, (c' j k : I.E ⊗[I.F] Af I.F) • iv I (b k) ∈ lamAf (F` using `I.F) (wLat0 I w) := by`. Establish `h1` using `stab_w I w hxi (hc i)`. Establish `h2 : ∑ j, (c i j : I.E ⊗[I.F] Af I.F) • (I.fmat x⁻¹ *ᵥ iv I (b j) - ∑ k, (c' j k : I.E ⊗[I.F] Af I.F) • iv I (b k)) ∈ lamAf (F` using `I.F) (wLat0 I w) := Submodule.sum_mem _ fun j _ => hzs _ (hc' j)`. Establish `h3` using `Submodule.add_mem _ h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, DictGen.fmat_inv_mul, Matrix.one_mulVec, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Establish `hW2 : iv I (b i - ∑ k, ((∑ j, c i j * c' j k : ℤ) : I.E) • b k) ∈ lamAf (F` using `I.F) (wLat0 I w) := by`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[iv_lin]`. Use `hW using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [← Finset.sum_smul, Int.cast_sum, Int.cast_mul]`. Establish `h4` using `inter I w hW2`. Introduce `k`. Establish `h5 : ∑ k, (((1 : Matrix (Fin I.n) (Fin I.n) ℤ) i k - ∑ j, c i j * c' j k : ℤ) : I.E) • b k ∈ wLat0 I w`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Int.cast_sub, sub_smul, Finset.sum_sub_distrib]`. Use `congr 1`. Simplify using `[Matrix.one_apply]`. Conclude with `redBasis_indep I w hp hcard hb _ h5 k`. Establish `hNM : N * M = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use extensionality with `k i`. Establish `h` using `hdiv i k`. Rewrite `h` using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at h`. Rewrite `h` using `[sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [N, M, Matrix.mul_apply, Matrix.of_apply]`. Establish `e : ∑ j, ((c' j k : ℤ) : ZMod p) * ((c i j : ℤ) : ZMod p) = ∑ j, ((c i j : ℤ) : ZMod p) * ((c' j k : ℤ) : ZMod p)` using `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[e, ← h]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hik, Matrix.one_apply_ne (Ne.symm hik)]`. Establish `hMN : M * N = 1` using `mul_eq_one_comm.1 hNM`. Use `⟨⟨M, N, hMN, hNM⟩, b, hb, fun i => ?_⟩` and prove the remaining obligations. Use `show I.fmat x *ᵥ iv I (b i) - ∑ j, ((((M j i).val : ℕ)) : I.E ⊗[I.F] Af I.F) • iv I (b j) ∈ lamAf (F := I.F) (wLat0 I w)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hS : (∑ j, ((((((c i j : ℤ) : ZMod p)).val : ℕ) : I.E ⊗[I.F] Af I.F) • iv I (b j) - ((c i j : ℤ) : I.E ⊗[I.F] Af I.F) • iv I (b j))) ∈ lamAf (F` using `I.F) (wLat0 I w) := Submodule.sum_mem _ fun j _ => val_sub I w hp hcard (hb.1 j) (c i j)`. Establish `key` using `Submodule.sub_mem _ (hc i) hS`. Use `key using 1` and compare the differences between its conclusion and the goal. Simplify using `only [M, Matrix.of_apply, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem reduction_exists : Formalism.L2.SG.Pf.RowDictPf.RedExists0 := by
   intro I w p hp hcard m hm x hx

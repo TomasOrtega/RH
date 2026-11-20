@@ -11,11 +11,11 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `O A _ _ _ _ _ _ ψ _ h`. Use `letI : Algebra O A := ψ.toAlgebra`. Establish `hmap : (maximalIdeal O).map (algebraMap O A) = maximalIdeal A` using `h.2.1`. Establish `hlo : (maximalIdeal A).LiesOver (maximalIdeal O)`. Use `⟨?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.under_def]`. Conclude with `(IsLocalRing.maximalIdeal_comap ψ).symm`. Establish `key` using `Ideal.height_le_height_add_of_liesOver (maximalIdeal O) (maximalIdeal A)`. Rewrite `key` using `[hmap, Ideal.map_quotient_self]`. Establish `h0 : (⊥ : Ideal (A ⧸ maximalIdeal A)).height = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `key` using `[h0, add_zero]`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, ← IsLocalRing.maximalIdeal_height_eq_ringKrullDim]`. Conclude with `key` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ringKrullDim_le_of_isEtaleCompletion : ∀ (O A : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (ψ : O →+* A) [IsLocalHom ψ], IsEtaleCompletion ψ → ringKrullDim A ≤ ringKrullDim O := by
   intro O A _ _ _ _ _ _ ψ _ h

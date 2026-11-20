@@ -20,7 +20,7 @@ open GlobalTheory.RegSch (ikS projS Lvl)
 namespace PositivityTheory.Rg.Rsw.L.LIkSch
 
 /- English proof (translation)
-Conclude with `(GlobalTheory.T.goodMajorantLevel_conj_unitaryAdelicMaximalCompact D T T₀ r d l.c hl.2.2 (GlobalTheory.T.adelic_iwasawa_decomposition_wittIsotropicStabilizer D T T₀ r d l.c (fun v hv => GlobalTheory.Core.Rk.IP.Model.isSplit_two v hv) hl.2.2) l hl).2.1`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_K {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) {l : Lvl T} (hl : l.Good) :
     IsCompact (l.K : Set (GA D T)) := by
@@ -32,9 +32,9 @@ end PositivityTheory.Rg.Rsw.L.LIkSch
 namespace PositivityTheory.Rg.Rsw.L
 
 /- English proof (translation)
-Introduce `D n t B W d I θ hθ Φ hΦ`. Establish `hK : IsCompact (I.l.K : Set (GA D B))` using `LIkSch.isCompact_K d I.good`. Establish `h1` using `GlobalTheory.T.compactAverageSchwartzProjection_mem_adelicSchwartz D θ hθ B n I.l.K hK I.νK I.probK Φ hΦ`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Take `⟨𝓕, h𝓕⟩` from `I.cov₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.ikedaPartialFourierIntegral_mem_adelicSchwartz D θ hθ B W t n d I.μ₁ 𝓕 h𝓕 _ h1`.
+A detailed English derivation is pending.
 -/
 theorem ikSch : IkSch := by
   intro D n t B W d I θ hθ Φ hΦ

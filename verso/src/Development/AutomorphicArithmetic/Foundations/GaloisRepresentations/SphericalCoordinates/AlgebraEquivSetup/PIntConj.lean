@@ -7,9 +7,9 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat le
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Establish `h` using `congrArg (RingHom.mapMatrix (pLoc E u)) (UpperTheory.Gal.CertificateRingHomMap.mem_Sim.1 k.2)`. Rewrite `h` using `[map_mul]`. Use `Eq.trans ?_ (h.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem rel_at {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (k : GUf E n) (u : Plc E) :
     ((comp (UpperTheory.Gal.CertificateRingHomMap.cj u) k).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) u))ᵀ * (comp u k).val =
@@ -23,11 +23,9 @@ private theorem rel_at {E : Type} [Field E] [NumberField E] [IsCMField E] {n : �
     by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (rel_at k u) ⟨0, hn⟩) ⟨0, hn⟩`. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, Matrix.transpose_apply, Matrix.map_apply] at h`. Rewrite using `[← h]`. Establish `hG` using `(GlobalTheory.BCT.GlobLev.mem_KGL_iff_val u _).1 ((GlobalTheory.CompanionTheory.LFixDPf.mem_KGL_map_conj u (comp (UpperTheory.Gal.CertificateRingHomMap.cj u) k)).2 (hk _))`. Establish `ha` using `(GlobalTheory.BCT.GlobLev.mem_KGL_iff_val u _).1 (hk u)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `sum_mem fun j _ => mul_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hG.1 j ⟨0, hn⟩`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
-
-Conclude with `ha.1 j ⟨0, hn⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_le_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (hn : 0 < n) (k : GUf E n)
     (hk : ∀ u : Plc E, comp u k ∈ GlobalTheory.LFun.KGL u n) (u : Plc E) :
@@ -47,7 +45,7 @@ private theorem val_le_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n
     exact ha.1 j ⟨0, hn⟩
 
 /- English proof (translation)
-Use `haveI := v.isMaximal`. Take `⟨P, hP, hlo⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Conclude with `⟨⟨P, hP.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, (GroundTheory.Global.AdeleBaseChange.below_eq_iff _ _).2 hlo⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_over {E : Type} [Field E] [NumberField E] (v : Plc ℚ) :
     ∃ w : Plc E, GroundTheory.Global.AdeleBaseChange.below ℚ w = v := by
@@ -57,13 +55,13 @@ private theorem exists_over {E : Type} [Field E] [NumberField E] (v : Plc ℚ) :
     (GroundTheory.Global.AdeleBaseChange.below_eq_iff _ _).2 hlo⟩
 
 /- English proof (translation)
-Introduce `v`. Take `⟨w, rfl⟩` from `exists_over (E := E) v`. Establish `h1` using `val_le_one hn g hg w`. Establish `h2` using `val_le_one hn g⁻¹ (fun u => by rw [map_inv]; exact inv_mem (hg u)) w`. Establish `hmul : pLoc E w (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g : AfQˣ) : AfQ)) * pLoc E w (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g⁻¹ : AfQˣ) : AfQ)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, map_inv, Units.mul_inv, map_one, map_one]`. Establish `hv` using `congrArg Valued.v hmul`. Rewrite `hv` using `[map_mul, map_one]`. Establish `h3 : Valued.v (pLoc E w (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g : AfQˣ) : AfQ))) = 1`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h4 : Valued.v (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g : AfQˣ) : AfQ) w) = 1` using `h3`. Rewrite `h4` using `[GroundTheory.Global.AdeleBaseChange.finiteAdeleMap_apply, GroundTheory.Global.SemiLocal.valued_completionMap]`. Establish `he : w.asIdeal.ramificationIdx (𝓞 ℚ) ≠ 0`. Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx (GroundTheory.Global.AdeleBaseChange.below ℚ w).asIdeal w.asIdeal (GroundTheory.Global.AdeleBaseChange.below ℚ w).ne_bot]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (GroundTheory.Global.AdeleBaseChange.below ℚ w).ne_bot`. Conclude with `(pow_eq_one_iff.1 h4).resolve_right he`.
+A detailed English derivation is pending.
 -/
 private theorem sim_unit {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (hn : 0 < n) (g : GUf E n)
     (hg : ∀ u : Plc E, comp u g ∈ GlobalTheory.LFun.KGL u n) : sim g ∈ ZU := by
@@ -91,9 +89,9 @@ private theorem sim_unit {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
   exact (pow_eq_one_iff.1 h4).resolve_right he
 
 /- English proof (translation)
-Establish `hx : ∀ x : GlobalTheory.CuspRep.Af E, ∀ᶠ u : Plc E in Filter.cofinite, Valued.v (pLoc E u x) ≤ 1` using `fun x => x.2`. Establish `h1 : ∀ᶠ u : Plc E in Filter.cofinite, ∀ i j, Valued.v (pLoc E u ((mat g).val i j)) ≤ 1` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hx _`. Establish `h2 : ∀ᶠ u : Plc E in Filter.cofinite, ∀ i j, Valued.v (pLoc E u ((mat g⁻¹).val i j)) ≤ 1` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hx _`. Establish `h3 : ∀ᶠ u : Plc E in Filter.cofinite, comp u g ∈ GlobalTheory.LFun.KGL u n` using `by filter_upwards [h1, h2] with u a b`. Use `(GlobalTheory.BCT.GlobLev.mem_KGL_iff_val u _).2 ⟨a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv]`. Conclude with `b`. Conclude with `Filter.eventually_cofinite.1 h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finite_bad {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (g : GUf E n) :
     {u : Plc E | comp u g ∉ GlobalTheory.LFun.KGL u n}.Finite := by
@@ -110,7 +108,7 @@ private theorem finite_bad {E : Type} [Field E] [NumberField E] [IsCMField E] {n
   exact Filter.eventually_cofinite.1 h3
 
 /- English proof (translation)
-Introduce `E _ _ _ n g w hn`. Conclude with `⟨fun hs hw => UpperTheory.Gal.CertificateRingHomMap.pIntConj_of E n g w hs hw, sim_unit hn g, finite_bad g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.W2.Seed.pIntConj :
     IntConj := by

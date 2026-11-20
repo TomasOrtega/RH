@@ -18,11 +18,11 @@ open TensorProduct
 namespace GlobalTheory.KillLocal
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add, ha, hb, map_add]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, ← ih]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v b => simp [actVB, map_mul, AlgEquiv.mul_apply]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, map_add, map_add]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem actPow {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -48,7 +48,7 @@ theorem actPow {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [
     | add a b ha hb => rw [map_add, ha, hb, map_add, map_add]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_eq_sum_range' (n := p.natDegree + 1) (Nat.lt_succ_of_le Polynomial.natDegree_map_le)]`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, Polynomial.coeff_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sumAeval {O LL M : Type} [CommRing O] [Field LL] [AddCommGroup M] [Module LL M] (f : O →+* LL)
     (T : Module.End LL M) (p : O[X]) (x : M) :
@@ -58,13 +58,11 @@ theorem sumAeval {O LL M : Type} [CommRing O] [Field LL] [AddCommGroup M] [Modul
   simp only [LinearMap.smul_apply, Polynomial.coeff_map]
 
 /- English proof (translation)
-Introduce `D i w hw K' h hN hF hS m r hr hpc σ hσ p hp d hd`. Establish `hPst` using `GlobalTheory.T.potSemistable_of_potCrystalline_decompositionGroup D i w hw K' h hN hF hS m r hr hpc`. Take `⟨LL', hL, hV', hchar⟩` from `GlobalTheory.T.charPoly_inertia_of_potSemistable_enlargement D i w hw m r hPst`. Establish `hq` using `hchar σ hσ p hp`. Establish `hkill` using `GlobalTheory.T.aeval_inertia_eq_zero_potSemistableDieudonne (D.loc (D.nd.l i)) (D.locA (D.nd.l i)) (D.locT (D.nd.l i)) (D.naut.iotaQC i) (D.nbr i w hw) (D.nd.plOm.2 w) (D.nbr_ind i w hw) _ hV' ⟨(σ : GE D.nd), hσ⟩ _ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (GlobalTheory.PstLine.incV hL m)`. Introduce `x y hxy`. Use function extensionality and compare the values at `j`. Conclude with `(IntermediateField.inclusion hL).injective (congrFun hxy j)`. Establish `hd'` using `GlobalTheory.T.aeval_kills_potCrystalline_of_kills_potSemistable (D.loc (D.nd.l i)) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL LL' h hN hF hS hL _ _ (GlobalTheory.PstLine.incV hL m) hinj (GlobalTheory.PstLine.isMor_incV (D.nbr i w hw) hL m _) _ (p.map (D.nbr i w hw).toLL) hkill d hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : GlobalTheory.Pst.weilToGK (D.nbr i w hw) (D.nd.plOm.2 w) (GlobalTheory.WeilDeligne.ineIncl (D.nd.plOm.2 w) ⟨(σ : GE D.nd), hσ⟩) = (D.nbr i w hw).e σ` using `rfl`. Establish `key : ∑ n ∈ Finset.range (p.natDegree + 1), (D.nbr i w hw).toLL (p.coeff n) • ((actVB ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw) ((D.nbr i w hw).rep (r.comp (decS D.nd w))) ((D.nbr i w hw).e σ)) ^ n) d = 0`. Rewrite using `[sumAeval]`. Conclude with `hd'`. Use `(Finset.sum_congr rfl fun n _ => ?_).trans key` and prove the remaining obligations.
-
-Establish `e1 : (D.nbr i w hw).e (σ ^ n) = (D.nbr i w hw).e σ ^ n` using `map_pow _ σ n`. Conclude with `congrArg _ ((congrArg (fun g => actVB ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw) ((D.nbr i w hw).rep (r.comp (decS D.nd w))) g d) e1).trans (actPow _ _ _ _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (K' : FinExt (D.nd.l i)) (h : (D.nbr i w hw).Kw.1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex) (hS : ∀ (g : ↥(GK (D.nbr i w hw).Kw)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'), ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).actB g (algebraMap ↥(K0 K') (D.loc (D.nd.l i)).R.B c) = algebraMap ↥(K0 K') (D.loc (D.nd.l i)).R.B c') (m : ℕ) (r : GE D.nd →* GL (Fin m) (D.nd.O i)), Continuous (fun g => ((r g : GL _ _) : Matrix (Fin m) (Fin m) (D.nd.O i))) → (pc (D.loc (D.nd.l i)) h hN hF hS).IsPotCrys ((D.nbr i w hw).rep (r.comp (decS D.nd w))) → ∀ σ : Gw D.nd w, (σ : GE D.nd) ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) → ∀ p : (D.nd.O i)[X], p.map (iotaO D.nd D.naut i) = (GlobalTheory.Pst.wdAt (D.loc (D.nd.l i)) (D.naut.iotaQC i) (D.nbr i w hw) (D.nd.plOm.2 w) (D.nbr_ind i w hw) (GlobalTheory.Pst.resDec D.nd.plOm.1 (mapRep (iotaOQ D.nd D.naut i) r) w)).inePol (σ : GE D.nd) → ∀ d ∈ (pc (D.loc (D.nd.l i)) h hN hF hS).Dpcris ((D.nbr i w hw).rep (r.comp (decS D.nd w))), ∑ n ∈ Finset.range (p.natDegree + 1), (D.nbr i w hw).toLL (p.coeff n) • actVB ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw) ((D.nbr i w hw).rep (r.comp (decS D.nd w))) ((D.nbr i w hw).e (σ ^ n)) d = 0 := by
   intro D i w hw K' h hN hF hS m r hr hpc σ hσ p hp d hd

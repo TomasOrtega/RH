@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.ThetaDecay
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Finset.sum_apply, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_finset_sum {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w : (κ → R) × (κ → R)) {ι : Type} (s : Finset ι) (φ : ι → (κ → R) → ℂ) :
@@ -22,7 +22,7 @@ theorem schr_finset_sum {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddCh
   simp only [schr, Finset.sum_apply, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [actAB, Matrix.mul_smul, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actAB_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {JX : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin d) (Fin d) E} (p : UA σ JX × UA σ JW) (a : AF F)
@@ -34,23 +34,23 @@ end GlobalTheory.ThetaDecay
 open GlobalTheory.ThetaDecay in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ p u hu`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨D, hD⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) B.ψ (incM F X.J) (incM F W.J) M.co hψ`. Establish `hAt : At (evI F) u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha`. Apply `M.co.e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero]`. Conclude with `Prod.ext (funext fun i => (hu i).1 a ha) (funext fun i => (hu i).2 a ha)`. Take `⟨m, c, q, hq⟩` from `Submodule.mem_span_set'.mp hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose f g hg hfg using fun i => (q i).2`. Use `set f' : Fin m → SInf F (Fin n × Fin d) := fun i => c i • f i with hf'`. Establish `hΦe : Φ = ∑ i, pureA F (f' i) (g i)`. Rewrite using `[← hq]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfg i]`. Use function extensionality and compare the values at `x`. Simplify using `[f', pureA, mul_assoc]`. Establish `hrho : ∀ (t : ℝ) (Ψ : (Fin n × Fin d → AF F) → ℂ), M.co.rho B.ψ (realAd F t • u) Ψ = schr B.ψ (realAd F t • M.co.e u) Ψ`. Introduce `t Ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Darboux.rho, map_smul]`. Establish `hdΦ : dH B.ψ (M.co.e u) Φ = ∑ i, pureA F (D u (f' i)) (g i)`. Use function extensionality and compare the values at `y`. Establish `h : ∀ i, HasDerivAt (fun t : ℝ => schr B.ψ (realAd F t • M.co.e u) (pureA F (f' i) (g i)) y) (pureA F (D u (f' i)) (g i) y) 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(hD u hAt (f' i)).1 (g i) (hg i) (GlobalTheory.ExpAct.evalAt y) (GlobalTheory.ExpAct.evalAt_mem_adm F _ y)` as an intermediate fact. Simplify `this` using `only [GlobalTheory.ExpAct.evalAt, LinearMap.proj_apply, hrho]`. Establish `hs` using `HasDerivAt.fun_sum (u := Finset.univ) fun i _ => h i`. Establish `e : (fun t : ℝ => schr B.ψ (realAd F t • M.co.e u) Φ y) = fun t => ∑ i, schr B.ψ (realAd F t • M.co.e u) (pureA F (f' i) (g i)) y`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hΦe, schr_finset_sum, Finset.sum_apply]`. Rewrite using `[dH, e, hs.deriv, Finset.sum_apply]`. Use function extensionality and compare the values at `x`. Use `set l : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ := GlobalTheory.ExpAct.evalAt x ∘ₗ om p with hl`. Establish `hladm : l ∈ (adeleClass F).adm (Fin n × Fin d)` using `hS.adm p _ (GlobalTheory.ExpAct.evalAt_mem_adm F _ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h : ∀ i, HasDerivAt (fun t : ℝ => l (M.co.rho B.ψ (realAd F t • u) (pureA F (f' i) (g i)))) (l (pureA F (D u (f' i)) (g i))) 0` using `fun i => (hD u hAt (f' i)).1 (g i) (hg i) l hladm`. Establish `hs` using `HasDerivAt.fun_sum (u := Finset.univ) fun i _ => h i`. Establish `e : (fun t : ℝ => schr B.ψ (realAd F t • M.co.e (actAB (cA σ) p u)) (om p Φ) x) = fun t => ∑ i, l (M.co.rho B.ψ (realAd F t • u) (pureA F (f' i) (g i)))`. Use function extensionality and compare the values at `t`. Establish `e1 : ∑ i, l (M.co.rho B.ψ (realAd F t • u) (pureA F (f' i) (g i))) = l (M.co.rho B.ψ (realAd F t • u) Φ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum, hΦe, Darboux.rho, schr_finset_sum]`. Rewrite using `[e1, hl, LinearMap.comp_apply, hS.impl p _ Φ hΦ, actAB_smul, Darboux.rho, map_smul]`. Both sides reduce to the same expression. Rewrite using `[dH, e, hs.deriv, ← map_sum, hdΦ, hl, LinearMap.comp_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThetaDecay.dH_transport : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ (p : UA σ X.J × UA σ W.J) (u : Matrix (Fin n) (Fin d) (AE F E)), IsArch (M.co.e u) → dH B.ψ (M.co.e (actAB (cA σ) p u)) (om p Φ) = om p (dH B.ψ (M.co.e u) Φ) := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ p u hu

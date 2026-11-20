@@ -27,7 +27,7 @@ variable {l : ℕ} [Fact l.Prime]
 def IsStd (P : LocPrime l) (AI : LocAinf l P) : Prop := Nonempty (LocTied l P AI)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsStd.of_tied {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) : IsStd P AI := ⟨T⟩
 
@@ -38,7 +38,7 @@ namespace GlobalTheory.MemLoc
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hc : Continuous (AI.actC g)` using `(AddMonoidHomClass.isometry_of_norm (AI.actC g) (AI.actC_norm g)).continuous`. Proceed by induction on `x using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq hc (GlobalTheory.RingIface.sigC_cont l g)`. Consider the case `ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem locAinf_actC {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (x : ℂ_[l]) :
     AI.actC g x = Per.σC g x := by
@@ -49,9 +49,9 @@ theorem locAinf_actC {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (x : ℂ_[l]
   | ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm
 
 /- English proof (translation)
-Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (PreTilt.coeff n x)`. Take `⟨y₁, h₁, e₁⟩` from `AI.actT_coeff g x n y hy.symm`. Take `⟨y₂, h₂, e₂⟩` from `coeff_galois_tilt l g x n y hy.symm`. Establish `: y₁ = y₂` using `Subtype.ext (by rw [h₁, h₂, locAinf_actC])`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `e₁.trans (this ▸ e₂.symm)`.
+A detailed English derivation is pending.
 -/
 theorem locAinf_actT {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (x : OCb l) :
     AI.actT g x = Per.σF g x := by
@@ -63,7 +63,7 @@ theorem locAinf_actT {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (x : OCb l) 
   exact e₁.trans (this ▸ e₂.symm)
 
 /- English proof (translation)
-The claim follows from `WittVector.ext fun n => (locAinf_actT AI g (a.coeff n)).trans (GlobalTheory.RingIface.sigA_coeff l g a n).symm`.
+A detailed English derivation is pending.
 -/
 theorem locAinf_actW {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (a : Ainf l) :
     AI.actW g a = Per.σA g a :=
@@ -82,20 +82,20 @@ theorem locAinf_mu {P : LocPrime l} (AI : LocAinf l P) : AI.μ = mu AI.ε := rfl
 variable (l)
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.RingBasics.isUnit_l l).map (algebraMap (Per.AinfP l) (Per.BdRp l))`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_l_BdRp : IsUnit ((l : ℕ) : Per.BdRp l) := by
   have h := (GlobalTheory.RingBasics.isUnit_l l).map (algebraMap (Per.AinfP l) (Per.BdRp l))
   rwa [map_natCast] at h
 
 /- English proof (translation)
-Take `⟨ζ, e, h0, -, h1, hr⟩` from `exists_zeta_eps l`. Establish `he : e.untilt = 1` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `this)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : e ≠ 1`. Introduce and unpack `rfl`. Apply `h1` to reduce the goal to its premises. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← hr 1, map_one]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[rootT]`. Take `⟨w, hw, -⟩` from `exists_mu_pow_div l e he`. Establish `hw' : ((l : ℕ) : Per.Acris0 l) * w = algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e) ^ (l - 1)` using `Subtype.ext (by simpa using hw)`. Establish `hm : IsUnit (((algebraMap (Per.Acris l) (Per.Bcris l)).comp (algebraMap (Per.Acris0 l) (Per.Acris l))) (algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e)))`. Rewrite using `[RingHom.comp_apply, ← GlobalTheory.RingIface.tower]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.CrisLoc.unit_of_root l e he hne`. Establish `h2` using `congrArg ((algebraMap (Per.Acris l) (Per.Bcris l)).comp (algebraMap (Per.Acris0 l) (Per.Acris l))) hw'`. Rewrite `h2` using `[map_mul, map_natCast, map_pow]`. Conclude with `isUnit_of_mul_isUnit_left (h2 ▸ hm.pow (l - 1))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_l_Bcris : IsUnit ((l : ℕ) : Per.Bcris l) := by
   obtain ⟨ζ, e, h0, -, h1, hr⟩ := exists_zeta_eps l
@@ -139,14 +139,14 @@ def plusLift {S : Type} [CommRing S] (f : Per.Acris l →+* S) (h : IsUnit ((l :
 variable {l} in
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem plusLift_alg {S : Type} [CommRing S] (f : Per.Acris l →+* S) (h : IsUnit ((l : ℕ) : S))
     (x : Per.Acris l) : plusLift f h (algebraMap _ _ x) = f x :=
   IsLocalization.Away.lift_eq _ _ x
 
 /- English proof (translation)
-Establish `h` using `IsLocalization.Away.algebraMap_isUnit (S := BcrisP l) ((l : ℕ) : Per.Acris l)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_l_BcrisP : IsUnit ((l : ℕ) : BcrisP l) := by
   have h := IsLocalization.Away.algebraMap_isUnit (S := BcrisP l) ((l : ℕ) : Per.Acris l)
@@ -164,32 +164,32 @@ def sigP (g : Per.Gq l) : BcrisP l →+* BcrisP l :=
   plusLift ((algebraMap (Per.Acris l) (BcrisP l)).comp (sigA g)) (isUnit_l_BcrisP l)
 
 /- English proof (translation)
-The claim follows from `plusLift_alg _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem plusToB_alg (x : Per.Acris l) :
     plusToB l (algebraMap _ _ x) = algebraMap (Per.Acris l) (Per.Bcris l) x := plusLift_alg _ _ x
 
 /- English proof (translation)
-The claim follows from `plusLift_alg _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem phiP_alg (x : Per.Acris l) : phiP l (algebraMap _ _ x) = algebraMap _ _ (phiA l x) :=
   plusLift_alg _ _ x
 
 /- English proof (translation)
-The claim follows from `plusLift_alg _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem sigP_alg (g : Per.Gq l) (x : Per.Acris l) : sigP g (algebraMap _ _ x) = algebraMap _ _ (sigA g x) :=
   plusLift_alg _ _ x
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers ((l : ℕ) : Per.Acris l)) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem plus_ext {S : Type} [CommRing S] {f f' : BcrisP l →+* S}
     (h : ∀ x : Per.Acris l, f (algebraMap _ _ x) = f' (algebraMap _ _ x)) : f = f' :=
   IsLocalization.ringHom_ext (Submonoid.powers ((l : ℕ) : Per.Acris l)) (RingHom.ext h)
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (plus_ext (f := (plusToB l).comp (phiP l)) (f' := (Per.φB l).comp (plusToB l)) fun y => by rw [RingHom.comp_apply, RingHom.comp_apply, phiP_alg, plusToB_alg, plusToB_alg] exact ((ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.2 y).symm) x`.
+A detailed English derivation is pending.
 -/
 theorem plusToB_phi (x : BcrisP l) : plusToB l (phiP l x) = Per.φB l (plusToB l x) :=
   RingHom.congr_fun (plus_ext (f := (plusToB l).comp (phiP l)) (f' := (Per.φB l).comp (plusToB l)) fun y => by
@@ -197,7 +197,7 @@ theorem plusToB_phi (x : BcrisP l) : plusToB l (phiP l x) = Per.φB l (plusToB l
     exact ((ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.2 y).symm) x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (plus_ext (f := (plusToB l).comp (sigP g)) (f' := (Per.σB g).comp (plusToB l)) fun y => by rw [RingHom.comp_apply, RingHom.comp_apply, sigP_alg, plusToB_alg, plusToB_alg] exact ((ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.2.1 g y).symm) x`.
+A detailed English derivation is pending.
 -/
 theorem plusToB_sig (g : Per.Gq l) (x : BcrisP l) : plusToB l (sigP g x) = Per.σB g (plusToB l x) :=
   RingHom.congr_fun (plus_ext (f := (plusToB l).comp (sigP g)) (f' := (Per.σB g).comp (plusToB l)) fun y => by
@@ -211,12 +211,12 @@ variable (C : Core l)
 def jP : BcrisP l →+* Per.BdRp l := plusLift C.j (isUnit_l_BdRp l)
 
 /- English proof (translation)
-The claim follows from `plusLift_alg _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem jP_alg (x : Per.Acris l) : C.jP (algebraMap _ _ x) = C.j x := plusLift_alg _ _ x
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (plus_ext (f := C.ι.comp (plusToB l)) (f' := (algebraMap (Per.BdRp l) (Per.BdR l)).comp C.jP) fun y => by rw [RingHom.comp_apply, RingHom.comp_apply, plusToB_alg, jP_alg, C.ι_j]) x`.
+A detailed English derivation is pending.
 -/
 theorem ι_plusToB (x : BcrisP l) :
     C.ι (plusToB l x) = algebraMap (Per.BdRp l) (Per.BdR l) (C.jP x) :=
@@ -231,7 +231,7 @@ def qB : ℚ_[l] →+* Per.Bcris l := C.u.comp (algebraMap ℚ_[l] ↥(MaximalUn
 def tB : Per.Bcris l := algebraMap (Per.Acris l) (Per.Bcris l) C.t
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, Ideal.mem_span_singleton]`. Conclude with `theta_eq_zero_iff_xi_dvd l C.ε (core_isEps l C) a`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_theta : RingHom.ker (Per.θ l) = Ideal.span {xi C.ε} := by
   ext a
@@ -243,7 +243,7 @@ end Core
 variable (l) in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(acris_basic l).2.1, (acris_basic l).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem acris_torsionFree_complete : (∀ x : Per.Acris l, ((l : ℕ) : Per.Acris l) * x = 0 → x = 0) ∧
     IsAdicComplete (Ideal.span {((l : ℕ) : Per.Acris l)}) (Per.Acris l) :=
@@ -252,7 +252,7 @@ theorem acris_torsionFree_complete : (∀ x : Per.Acris l, ((l : ℕ) : Per.Acri
 variable (l) in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(thetaD_props l).1, Ideal.ext fun y => (thetaD_props l).2.1 y⟩`.
+Supply the required witnesses or components.
 -/
 theorem thetaD_onto_ker : Function.Surjective (Per.θD l) ∧ RingHom.ker (Per.θD l) = Per.FilP l 1 :=
   ⟨(thetaD_props l).1, Ideal.ext fun y => (thetaD_props l).2.1 y⟩
@@ -320,23 +320,23 @@ structure Fits {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) (C : Cor
     (((P.PD K).σ x : ↥(K0 K)) : Om l) = ((C.σ c : ↥(MaximalUnramifiedExtension l)) : Om l)
 
 /- English proof (translation)
-The claim follows from `(theta_eq_zero_iff_xi_dvd l C.ε (core_isEps l C) _).2 dvd_rfl`.
+A detailed English derivation is pending.
 -/
 example (C : Core l) : Per.θ l (xi C.ε) = 0 :=
   (theta_eq_zero_iff_xi_dvd l C.ε (core_isEps l C) _).2 dvd_rfl
 
 /- English proof (translation)
-The claim follows from `((Per.θD l).comp C.jP).domain_nontrivial`.
+A detailed English derivation is pending.
 -/
 example (C : Core l) : Nontrivial (BcrisP l) := ((Per.θD l).comp C.jP).domain_nontrivial
 
 /- English proof (translation)
-The claim follows from `C.ι_u _`.
+A detailed English derivation is pending.
 -/
 example (C : Core l) (x : ℚ_[l]) : C.ι (C.qB x) = C.oD (algebraMap ℚ_[l] (Om l) x) := C.ι_u _
 
 /- English proof (translation)
-Rewrite using `[show C.ι (C.qB x) = _ from C.ι_u _]`. Conclude with `GlobalTheory.RingIface.alg_mem_FilD_zero l _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (C : Core l) (x : ℚ_[l]) : C.ι (C.qB x) ∈ Per.FilD l 0 := by
   rw [show C.ι (C.qB x) = _ from C.ι_u _]

@@ -54,9 +54,9 @@ def RestPlusB (CM : ℝ) : Prop :=
 variable {C0 CE1 CE2 X}
 
 /- English proof (translation)
-Introduce `dl hdl aTop haTop x hx`. Establish `hA'` using `hA dl hdl aTop haTop x hx`. Establish `hR'` using `hR dl hdl aTop haTop x hx`. Use `(hB dl hdl aTop haTop x hx).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (add_le_add (by exact_mod_cast hA') ?_) (Nat.cast_nonneg _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul_of_nonneg_left (by exact_mod_cast hR') (div_nonneg (by norm_num) hY.le)`.
+A detailed English derivation is pending.
 -/
 theorem restPlus_of (CM : ℝ) (hY : 0 < X.L.Y) (hA : RestPlusA C0 CE1 CE2 X CM) (hR : RestRankL C0 CE1 CE2 X)
     (hB : RestPlusB C0 CE1 CE2 X CM) : RestPlus C0 CE1 CE2 X CM := by

@@ -6,7 +6,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem comp_hom_apply_pointOfLocal {a b c d : CommRingCat.{0}} (A : a ⟶ b) (B : b ⟶ c) (D : a ⟶ c) (T : c ⟶ d)
     (e : A ≫ B = D) (s : a) : (B ≫ T).hom (A.hom s) = (D ≫ T).hom s := by
@@ -14,7 +14,7 @@ theorem comp_hom_apply_pointOfLocal {a b c d : CommRingCat.{0}} (A : a ⟶ b) (B
   simp
 
 /- English proof (translation)
-Establish `e : X.presheaf.stalkSpecializes h ≫ X.presheaf.stalkSpecializes p.2 = X.presheaf.stalkSpecializes q.2` using `TopCat.Presheaf.stalkSpecializes_comp _ _ _`. Unfold `genMap`. Conclude with `comp_hom_apply_pointOfLocal _ _ _ _ e s`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem genMap_apply_of_specializes_pointOfLocal {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (p q : Cpt ξ) (h : p.1 ⤳ q.1) (s : X.presheaf.stalk q.1) :
@@ -25,25 +25,23 @@ theorem genMap_apply_of_specializes_pointOfLocal {X : Scheme.{0}} {Ω : Type} [F
   exact comp_hom_apply_pointOfLocal _ _ _ _ e s
 
 /- English proof (translation)
-Set `e : X.presheaf.stalk p.1 →+* regAt ξ p` to `(genMap ξ p).rangeRestrict`. Establish `he : ∀ s, ((e s : regAt ξ p) : Ω) = genMap ξ p s` using `fun s => rfl`. Establish `einj : Function.Injective e` using `fun s t h => hξ.inj p (by rw [← he, ← he, h])`. Establish `esurj : Function.Surjective e` using `(genMap ξ p).rangeRestrict_surjective`. Set `ψ : X.presheaf.stalk p.1 ⟶ CommRingCat.of R` to `CommRingCat.ofHom (φ.comp e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hψ : ∀ s, ψ.hom s = φ (e s)` using `fun s => rfl`. Establish `hloc : IsLocalHom ψ.hom`. Use `⟨fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (e s)` using `hφ.map_nonunit _ (by rwa [hψ] at hs)`. Take `⟨b, hb⟩` from `h1.exists_right_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `esurj b`. Establish `: s * t = 1` using `einj (by rw [map_mul, hb, map_one])`. Conclude with `IsUnit.of_mul_eq_one t this`. Set `w : Σ x, { f : X.presheaf.stalk x ⟶ CommRingCat.of R // IsLocalHom f.hom }` to `⟨p.1, ψ, hloc⟩`. Set `E` to `SpecToEquivOfLocalRing X (CommRingCat.of R)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ y : Spec (CommRingCat.of R) ⟶ X, ∀ hc : centre y = p.1, (∀ s : X.presheaf.stalk (centre y), (Scheme.stalkClosedPointTo y).hom s = ψ.hom ((X.presheaf.stalkSpecializes (specializes_of_eq hc.symm)).hom s)) → y = E.symm w`. Introduce `y hc h`. Rewrite using `[Equiv.eq_symm_apply]`. Use `SpecToEquivOfLocalRing_eq_iff.mpr ⟨hc, ?_⟩` and prove the remaining obligations. Use extensionality with `s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h s`. Use `⟨E.symm w, ?_, ?_⟩` and prove the remaining obligations. Establish `hs` using `E.apply_symm_apply w`. Take `⟨hc, hT⟩` from `SpecToEquivOfLocalRing_eq_iff.mp hs`. Establish `hc' : centre (E.symm w) = p.1` using `hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hc', fun a => ?_⟩` and prove the remaining obligations. Take `⟨s, hsa⟩` from `a.2`. Establish `hsa' : e s = a` using `Subtype.ext hsa`. Establish `hg : genPt ξ ⤳ centre (E.symm w)` using `hc'.symm ▸ p.2`. Use `⟨hg, (X.presheaf.stalkSpecializes (specializes_of_eq hc')).hom s, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(genMap_apply_of_specializes_pointOfLocal ξ ⟨_, hg⟩ p (specializes_of_eq hc') s).trans hsa`. Establish `h1` using `congrArg (fun f => f.hom ((X.presheaf.stalkSpecializes (specializes_of_eq hc')).hom s)) hT`. Establish `h1' : (Scheme.stalkClosedPointTo (E.symm w)).hom ((X.presheaf.stalkSpecializes (specializes_of_eq hc')).hom s) = ψ.hom ((X.presheaf.stalkSpecializes (specializes_of_eq hc.symm)).hom ((X.presheaf.stalkSpecializes (specializes_of_eq hc')).hom s))` using `h1`. Establish `h2 : (X.presheaf.stalkSpecializes (specializes_of_eq hc.symm)).hom ((X.presheaf.stalkSpecializes (specializes_of_eq hc')).hom s) = s`. Establish `h3 : X.presheaf.stalkSpecializes (specializes_of_eq hc') ≫ X.presheaf.stalkSpecializes (specializes_of_eq hc.symm) = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[TopCat.Presheaf.stalkSpecializes_comp]`. Conclude with `TopCat.Presheaf.stalkSpecializes_refl _ _`. Establish `h4` using `congrArg (fun f => f.hom s) h3`. Conclude with `h4`. Rewrite `h1'` using `[h2, hψ, hsa']`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h1'`. Introduce and unpack `y ⟨hc, hv⟩`. Use `key y hc fun s => ?_` and prove the remaining obligations. Take `⟨s0, hs0⟩ : ∃ s0, s0 = (X.presheaf.stalkSpecializes (specializes_of_eq hc.symm)).hom s` from `⟨_, rfl⟩`. Take `⟨hg, s1, hs1, hr⟩` from `hv (e s0)`.
-
-Establish `h1 : s1 = s`. Apply `hξ.inj ⟨_, hg⟩` to reduce the goal to its premises. Rewrite using `[hs1, he, hs0]`. Conclude with `genMap_apply_of_specializes_pointOfLocal ξ p ⟨_, hg⟩ (specializes_of_eq hc.symm) s`. Rewrite using `[← hs0, hψ, ← hr, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_point_of_local (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (hξ : IsCptGen ξ) (p : Cpt ξ) (R : Type) [CommRing R] [IsLocalRing R] (φ : regAt ξ p →+* R)

@@ -33,32 +33,32 @@ variable (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μf : ∀ v, Me
   (A : Finset (HeightOneSpectrum (𝓞 D.host.F)))
 
 /- English proof (translation)
-The claim follows from `Function.update_self ..`.
+A detailed English derivation is pending.
 -/
 theorem levelFam_u : levelFam T U U.u = U.frame.iwahori := Function.update_self ..
 
 /- English proof (translation)
-Establish `: (v : HeightOneSpectrum (𝓞 D.host.F)) ≠ U.u` using `fun e => hu (e ▸ v.2)`. Rewrite using `[levelFam, Function.update_of_ne this, dif_pos v.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelFam_of_mem (hu : U.u ∉ T.S) (v : T.S) : levelFam T U v = kerSub T v := by
   have : (v : HeightOneSpectrum (𝓞 D.host.F)) ≠ U.u := fun e => hu (e ▸ v.2)
   rw [levelFam, Function.update_of_ne this, dif_pos v.2]
 
 /- English proof (translation)
-Rewrite using `[levelFam, Function.update_of_ne hu, dif_neg hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levelFam_of_notMem {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∉ T.S) (hu : v ≠ U.u) :
     levelFam T U v = Kv V v := by
   rw [levelFam, Function.update_of_ne hu, dif_neg hv]
 
 /- English proof (translation)
-The claim follows from `dif_pos ⟨hv, hA⟩`.
+A detailed English derivation is pending.
 -/
 theorem fam_of_mem {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∈ T.S) (hA : v ∈ A) :
     fam T U μf A v = T.idem μf ⟨v, hv⟩ := dif_pos ⟨hv, hA⟩
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem fam_of_not {v : HeightOneSpectrum (𝓞 D.host.F)} (h : ¬ (v ∈ T.S ∧ v ∈ A)) :
     fam T U μf A v = normInd (μf v) (levelFam T U v : Set _) := dif_neg h

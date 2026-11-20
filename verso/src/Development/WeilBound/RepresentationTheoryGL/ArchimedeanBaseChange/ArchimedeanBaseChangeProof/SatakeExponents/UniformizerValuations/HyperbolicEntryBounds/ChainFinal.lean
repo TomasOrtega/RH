@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.F.F0
 
 /- English proof (translation)
-The claim follows from `chain_existence_of_global_character PositivityTheory.Rg.BcB.G8.global_character_holds`.
+A detailed English derivation is pending.
 -/
 theorem chainEx_holds : PositivityTheory.Rg.BcB.F.ChainEx := chain_existence_of_global_character PositivityTheory.Rg.BcB.G8.global_character_holds
 

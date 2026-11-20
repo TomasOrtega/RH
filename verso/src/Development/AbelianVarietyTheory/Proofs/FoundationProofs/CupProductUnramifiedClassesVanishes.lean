@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.Ord2.UnrCup
 
 /- English proof (translation)
-Simplify using `only [om, Matrix.mulVec_sub, Matrix.mulVec_add, Pi.sub_apply, Pi.add_apply] at *`. Take the linear combination `-key`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ident_c {l : ℕ} [Fact l.Prime] (ar as ars bs bt bst : Fin 2 → Qbar l) (P M N : Matrix (Fin 2) (Fin 2) (Qbar l)) (e : Qbar l)
     (key : om (P *ᵥ as) (M *ᵥ (N *ᵥ bt)) = e * om as (N *ᵥ bt)) :
@@ -23,17 +23,15 @@ theorem ident_c {l : ℕ} [Fact l.Prime] (ar as ars bs bt bst : Fin 2 → Qbar l
   linear_combination -key
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ c n V H I a hint hIH hconj ha ha0`. Establish `hVn : ∀ g i j, ‖mat V g i j‖ ≤ 1` using `fun g i j => CupCob.norm_le_one_of_mem c (hint g i j)`. Establish `small : ∀ g, ∀ i ∈ I, ∀ j, ‖(mat V g *ᵥ a i) j‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖` using `fun g i hi => CupCob.mulVec_le _ _ (hVn g) (fun k => by have := ha0 i hi k; unfold Cg at this; simpa using this)`. Establish `first : ∀ s ∈ H, ∀ i ∈ I, Cv n (a (s * i)) (a s)`. Introduce `s hs i hi j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `ha.2.2 s hs i (hIH hi) j`. Unfold `Cg at h1 ⊢`. Establish `e : a (s * i) j - a s j = (a (s * i) j - (a s + mat V s *ᵥ a i) j) + (mat V s *ᵥ a i) j`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 (small s i hi j))`. Introduce `s hs i hi`. Use `⟨first s hs i hi, fun j => ?_⟩` and prove the remaining obligations. Establish `hi' : s⁻¹ * i * s ∈ I` using `hconj s hs i hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : i * s = s * (s⁻¹ * i * s)` using `by group`. Establish `h1` using `ha.2.2 i (hIH hi) s hs j`. Establish `h2` using `first s hs _ hi' j`. Establish `h3` using `ha0 i hi j`. Unfold `Cg at h1 h2 h3 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e1]`. Establish `e : (mat V i *ᵥ a s) j - a s j = -(a (s * (s⁻¹ * i * s)) j - (a i + mat V i *ᵥ a s) j) - (a i j - (0 : Fin 2 → Qbar l) j) + (a (s * (s⁻¹ * i * s)) j - a s j)`. Simplify using `only [Pi.add_apply, Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((CupCob.nsub_le_max _ _).trans (max_le (by rw [norm_neg]; exact h1) h3)) h2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_ine : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (c : Coef l) (n : ℕ) (V : R2 Ω l) (H I : Subgroup (G ℚ Ω)) (a : G ℚ Ω → Fin 2 → Qbar l), (∀ s i j, mat V s i j ∈ c.O) → I ≤ H → (∀ s ∈ H, ∀ i ∈ I, s⁻¹ * i * s ∈ I) → Coc1 c n V H a → (∀ i ∈ I, Cv n (a i) 0) → ∀ s ∈ H, ∀ i ∈ I, Cv n (a (s * i)) (a s) ∧ Cv n (mat V i *ᵥ a s) (a s) := by
   intro l _ Ω _ _ c n V H I a hint hIH hconj ha ha0
@@ -62,9 +60,9 @@ theorem inv_ine : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra �
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((CupCob.nsub_le_max _ _).trans (max_le (by rw [norm_neg]; exact h1) h3)) h2)
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ c n W H a b hint hdet ha hb r hr s hs t ht`. Establish `hDm` using `CupCob.dual_representation_integral c W hdet hint`. Establish `hDn : ∀ g i j, ‖mat (dual1 W) g i j‖ ≤ 1` using `fun g i j => CupCob.norm_le_one_of_mem c (hDm g i j)`. Establish `key` using `CupCob.om_key W hdet r (a s) (mat (dual1 W) s *ᵥ b t)`. Unfold `Cg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [cup]`. Rewrite using `[CupCob.mat_dual1_mul W r s (b t), ident_c (a r) (a s) (a (r * s)) (b s) (b t) (b (s * t)) (mat W r) (mat (dual1 W) r) (mat (dual1 W) s) (eps l r) key]`. Use `(CupCob.nsub_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `CupCob.om_le_right _ _ (fun i => CupCob.norm_le_one_of_mem c (ha.2.1 r i)) (CupCob.mulVec_le _ _ (hDn r) (fun i => hb.2.2 s hs t ht i))`. Conclude with `CupCob.om_le_left _ _ (fun i => ha.2.2 r hr s hs i) (CupCob.mulVec_le _ _ (hDn r) (CupCob.mulVec_le _ _ (hDn s) (fun i => CupCob.norm_le_one_of_mem c (hb.2.1 t i))))`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cup_coc : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (c : Coef l) (n : ℕ) (W : R2 Ω l) (H : Subgroup (G ℚ Ω)) (a b : G ℚ Ω → Fin 2 → Qbar l), (∀ s i j, mat W s i j ∈ c.O) → dt W ^ 2 = 1 → Coc1 c n W H a → Coc1 c n (dual1 W) H b → ∀ r ∈ H, ∀ s ∈ H, ∀ t ∈ H, Cg n (eps l r * cup W a b s t + cup W a b r (s * t)) (cup W a b (r * s) t + cup W a b r s) := by
   intro l _ Ω _ _ c n W H a b hint hdet ha hb r hr s hs t ht
@@ -84,7 +82,7 @@ theorem cup_coc : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra �
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `Cg at *`. Establish `e : a + a' - (b + b') = (a - b) + (a' - b')` using `by ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h h')`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cg_add {n : ℕ} {a b a' b' : Qbar l} (h : Cg n a b) (h' : Cg n a' b') : Cg n (a + a') (b + b') := by
   unfold Cg at *
@@ -92,7 +90,7 @@ theorem cg_add {n : ℕ} {a b a' b' : Qbar l} (h : Cg n a b) (h' : Cg n a' b') :
   rw [e]; exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h h')
 
 /- English proof (translation)
-Introduce `i`. Unfold `Cg at *`. Establish `e : (a - a') i - (b - b') i = (a i - b i) - (a' i - b' i)` using `by simp only [Pi.sub_apply]; ring`. Rewrite using `[e]`. Conclude with `(CupCob.nsub_le_max _ _).trans (max_le (h i) (h' i))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cv_sub {n : ℕ} {a b a' b' : Fin 2 → Qbar l} (h : Cv n a b) (h' : Cv n a' b') : Cv n (a - a') (b - b') := by
   intro i
@@ -101,7 +99,7 @@ theorem cv_sub {n : ℕ} {a b a' b' : Fin 2 → Qbar l} (h : Cv n a b) (h' : Cv 
   rw [e]; exact (CupCob.nsub_le_max _ _).trans (max_le (h i) (h' i))
 
 /- English proof (translation)
-Take `⟨u, hu, hui, hu'⟩` from `h`. Take `⟨v, hv, hvi, hv'⟩` from `h'`. Use `⟨fun s => u s + v s, hu.add hv, fun s => add_mem (hui s) (hvi s), fun s hs t ht => ?_⟩` and prove the remaining obligations. Use `cg_add (hu' s hs t ht) (hv' s hs t ht)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -114,7 +112,7 @@ theorem isIntegralCoboundaryTwoModPow_add (c : Coef l) (n : ℕ) (H : Subgroup (
   convert this using 1; ring
 
 /- English proof (translation)
-Use `⟨h.1.sub h'.1, fun s i => sub_mem (h.2.1 s i) (h'.2.1 s i), fun s hs t ht => ?_⟩` and prove the remaining obligations. Use `cv_sub (h.2.2 s hs t ht) (h'.2.2 s hs t ht)` as an intermediate fact. Introduce `i`. Use `this i using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.sub_apply, Pi.add_apply, Matrix.mulVec_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -127,9 +125,9 @@ theorem isIntegralCocycleOneModPow_sub (c : Coef l) (n : ℕ) (V : R2 Ω l) (H :
   simp only [Pi.sub_apply, Pi.add_apply, Matrix.mulVec_sub]; ring
 
 /- English proof (translation)
-Use `⟨(hV.matrix_mulVec continuous_const).sub continuous_const |>.continuousOn, fun s i => sub_mem (CupCob.mulVec_mem c _ _ (hint s) hx i) (hx i), fun s _ t _ i => ?_⟩` and prove the remaining obligations. Establish `e : (mat V (s * t) *ᵥ x - x) i = ((mat V s *ᵥ x - x) + mat V s *ᵥ (mat V t *ᵥ x - x)) i`. Simplify using `only [mat, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, Matrix.mulVec_sub, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Cg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Rewrite using `[e, sub_self, norm_zero]`. Conclude with `norm_nonneg _`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegralCocycleOneModPow_coboundary (c : Coef l) (n : ℕ) (V : R2 Ω l) (H : Subgroup (G ℚ Ω)) (x : Fin 2 → Qbar l)
     (hV : Continuous fun s => mat V s) (hint : ∀ s i j, mat V s i j ∈ c.O) (hx : ∀ i, x i ∈ c.O) :
@@ -141,9 +139,9 @@ theorem isIntegralCocycleOneModPow_coboundary (c : Coef l) (n : ℕ) (V : R2 Ω 
   unfold Cg; dsimp only; rw [e, sub_self, norm_zero]; exact norm_nonneg _
 
 /- English proof (translation)
-Establish `hMn : ∀ i j, ‖M i j‖ ≤ 1` using `fun i j => CupCob.norm_le_one_of_mem c (hM i j)`. Unfold `Cg`. Establish `e : om A' (M *ᵥ B') - om A (M *ᵥ B) = om (A' - A) (M *ᵥ B') + om A (M *ᵥ (B' - B))`. Simplify using `only [om, Matrix.mulVec_sub, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `CupCob.om_le_left _ _ (fun i => h1 i) (CupCob.mulVec_le _ _ hMn (fun i => CupCob.norm_le_one_of_mem c (hB' i)))`. Conclude with `CupCob.om_le_right _ _ (fun i => CupCob.norm_le_one_of_mem c (hA i)) (CupCob.mulVec_le _ _ hMn (fun i => by simpa [Cg] using h2 i))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem om_cg (c : Coef l) (n : ℕ) (A A' B B' : Fin 2 → Qbar l) (M : Matrix (Fin 2) (Fin 2) (Qbar l))
     (hA : ∀ i, A i ∈ c.O) (hB' : ∀ i, B' i ∈ c.O) (hM : ∀ i j, M i j ∈ c.O)
@@ -159,7 +157,7 @@ theorem om_cg (c : Coef l) (n : ℕ) (A A' B B' : Fin 2 → Qbar l) (M : Matrix 
       (CupCob.mulVec_le _ _ hMn (fun i => by simpa [Cg] using h2 i))
 
 /- English proof (translation)
-Establish `hM : Continuous fun s => mat W s` using `Units.continuous_val.comp hW`. Establish `: (fun s => mat (dual1 W) s) = fun s => (eps l s * (mat W s).det) • mat W s` using `funext (CupCob.mat_dual1 W hdet)`. Rewrite using `[this]`. Conclude with `(CupCob.eps_cont.mul hM.matrix_det).smul hM`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_dual1_cont (W : R2 Ω l) (hW : Continuous W) (hdet : dt W ^ 2 = 1) :
     Continuous fun s => mat (dual1 W) s := by
@@ -169,21 +167,19 @@ theorem mat_dual1_cont (W : R2 Ω l) (hW : Continuous W) (hdet : dt W ^ 2 = 1) :
   exact (CupCob.eps_cont.mul hM.matrix_det).smul hM
 
 /- English proof (translation)
-Use `set D := Dec (F := ℚ) B with hD`. Use `set I := Ine (F := ℚ) B with hI`. Establish `hID : I ≤ D` using `Ine_le_Dec B`. Establish `hconj : ∀ s ∈ D, ∀ i ∈ I, s⁻¹ * i * s ∈ I` using `fun s hs i hi => by`. Use `conj_mem_Ine (D.inv_mem hs) hi` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hDm : ∀ s i j, mat (dual1 W) s i j ∈ c.O` using `CupCob.dual_representation_integral c W hdet hint`. Establish `hia` using `inv_ine l Ω c n W D I a hint hID hconj ha ha0`. Establish `hib` using `inv_ine l Ω c n (dual1 W) D I b hDm hID hconj hb hb0`. Establish `hξint : ∀ s t, cup W a b s t ∈ c.O` using `fun s t => CupCob.om_mem c _ _ (ha.2.1 s) (CupCob.mulVec_mem c _ _ (hDm s) (hb.2.1 t))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hepsI : ∀ i ∈ I, eps l i = 1` using `fun i hi => by`. Establish `h` using `cyc_eq_one_of_mem_Ine (F := ℚ) (l := l) hl hB hi`. Use `show ((cycBar ℚ Ω l i : (Qbar l)ˣ) : Qbar l) = 1`. Rewrite using `[show cycBar ℚ Ω l i = cyc ℚ Ω l i from rfl, h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hbiI : ∀ s ∈ D, ∀ t ∈ D, ∀ i ∈ I, Cg n (cup W a b (s * i) t) (cup W a b s t) ∧ Cg n (cup W a b s (t * i)) (cup W a b s t)`. Introduce `s hs t ht i hi`. Prove the components needed by the constructor for the conclusion. Simplify using `only [cup]`. Rewrite using `[CupCob.mat_dual1_mul W s i (b t)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `om_cg c n _ _ _ _ _ (ha.2.1 s) (fun j => CupCob.mulVec_mem c _ _ (hDm i) (hb.2.1 t) j) (hDm s) (hia s hs i hi).1 (hib t ht i hi).2`. Simplify using `only [cup]`. Conclude with `om_cg c n _ _ _ _ _ (ha.2.1 s) (hb.2.1 _) (hDm s) (fun j => by simp [Cg]) (hib t ht i hi).1`. Establish `hcont : ContinuousOn (fun p : G ℚ Ω × G ℚ Ω => cup W a b p.1 p.2) ((D : Set (G ℚ Ω)) ×ˢ (D : Set (G ℚ Ω)))`. Establish `h1 : ContinuousOn (fun p : G ℚ Ω × G ℚ Ω => a p.1) ((D : Set (G ℚ Ω)) ×ˢ (D : Set (G ℚ Ω)))` using `ha.1.comp continuousOn_fst (fun p hp => hp.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousOn (fun p : G ℚ Ω × G ℚ Ω => b p.2) ((D : Set (G ℚ Ω)) ×ˢ (D : Set (G ℚ Ω)))` using `hb.1.comp continuousOn_snd (fun p hp => hp.2)`. Establish `hm : ∀ i j, ContinuousOn (fun p : G ℚ Ω × G ℚ Ω => mat (dual1 W) p.1 i j) ((D : Set (G ℚ Ω)) ×ˢ (D : Set (G ℚ Ω)))` using `fun i j => (((continuous_apply j).comp (continuous_apply i)).comp ((mat_dual1_cont W hW hdet).comp continuous_fst)).continuousOn`. Establish `h1'` using `continuousOn_pi.1 h1`. Establish `h2'` using `continuousOn_pi.1 h2`. Establish `h3' : ∀ i, ContinuousOn (fun p : G ℚ Ω × G ℚ Ω => mat (dual1 W) p.1 i 0 * b p.2 0 + mat (dual1 W) p.1 i 1 * b p.2 1) ((D : Set (G ℚ Ω)) ×ˢ (D : Set (G ℚ Ω)))` using `fun i => ((hm i 0).mul (h2' 0)).add ((hm i 1).mul (h2' 1))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : (fun p : G ℚ Ω × G ℚ Ω => cup W a b p.1 p.2) = fun p => a p.1 0 * (mat (dual1 W) p.1 1 0 * b p.2 0 + mat (dual1 W) p.1 1 1 * b p.2 1) - a p.1 1 * (mat (dual1 W) p.1 0 0 * b p.2 0 + mat (dual1 W) p.1 0 1 * b p.2 1)`. Use function extensionality and compare the values at `p`. Simplify using `only [cup, om, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Rewrite using `[e]`. Conclude with `((h1' 0).mul (h3' 1)).sub ((h1' 1).mul (h3' 0))`.
-
-Take `⟨K, hIK, hKD, hKo, hepsK, hbiK⟩` from `GlobalTheory.T.open_subgroup_cochain_invariance l Ω n D I (cup W a b) (isClosed_Dec B) hID hcont hepsI hbiI`. Take `⟨φ, m, hm, hφm, hd⟩` from `GlobalTheory.T.exists_frobenius_pow_inv_mul_mem_open_subgroup Ω q B K hB hIK hKo`. Take `⟨d, hdo, hdK⟩` from `hd (l ^ n) (pow_pos (Fact.out : l.Prime).pos n)`. Conclude with `GlobalTheory.T.cob2_of_cocycle_cong_of_invariant l Ω c n D K φ m d (cup W a b) hm hφm hdo hdK hepsK hξint (cup_coc l Ω c n W D a b hint hdet ha hb) hbiK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cup_unr_cob_of_vanish [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ) (W : R2 Ω l) (q : Pl) (B : ValuationSubring Ω)
     (a b : G ℚ Ω → Fin 2 → Qbar l) (hW : Continuous W) (hint : ∀ s i j, mat W s i j ∈ c.O) (hdet : dt W ^ 2 = 1)
@@ -238,17 +234,15 @@ theorem cup_unr_cob_of_vanish [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ) (W : 
     (cup_coc l Ω c n W D a b hint hdet ha hb) hbiK
 
 /- English proof (translation)
-Introduce `_ l _ Ω _ _ _ c n W q B a b hW hint hdet hB hl ha hb ⟨x, hx, hax⟩ ⟨y, hy, hby⟩`. Establish `hDm : ∀ s i j, mat (dual1 W) s i j ∈ c.O` using `CupCob.dual_representation_integral c W hdet hint`. Establish `hMc : Continuous fun s => mat W s` using `Units.continuous_val.comp hW`. Use `set a0 : G ℚ Ω → Fin 2 → Qbar l := fun s => mat W s *ᵥ x - x with ha0def`. Use `set b0 : G ℚ Ω → Fin 2 → Qbar l := fun s => mat (dual1 W) s *ᵥ y - y with hb0def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : Coc1 c n W (Dec (F` using `ℚ) B) a0 := isIntegralCocycleOneModPow_coboundary c n W _ x hMc hint hx`. Establish `hb0 : Coc1 c n (dual1 W) (Dec (F` using `ℚ) B) b0 := isIntegralCocycleOneModPow_coboundary c n (dual1 W) _ y (mat_dual1_cont W hW hdet) hDm hy`. Establish `ha1` using `isIntegralCocycleOneModPow_sub c n W _ a a0 ha ha0`. Establish `hb1` using `isIntegralCocycleOneModPow_sub c n (dual1 W) _ b b0 hb hb0`. Establish `hsplit : cup W a b = fun s t => (cup W a0 b s t + cup W (fun s => a s - a0 s) b0 s t) + cup W (fun s => a s - a0 s) (fun s => b s - b0 s) s t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `s t`. Simplify using `only [cup, om, Matrix.mulVec_sub, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `triv : ∀ (V : R2 Ω l) (z : Fin 2 → Qbar l), (∀ i, z i ∈ c.O) → Cob1 c n V (Dec (F` using `ℚ) B) (fun s => mat V s *ᵥ z - z) := fun V z hz => ⟨z, hz, fun s _ i => by unfold Cg; rw [sub_self, norm_zero]; exact norm_nonneg _⟩`. Establish `c1` using `CupCob.cup_cob l Ω c n W _ a0 b hW hint hdet ha0 hb (Or.inl (triv W x hx))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `CupCob.cup_cob l Ω c n W _ _ b0 hW hint hdet ha1 hb0 (Or.inr (triv (dual1 W) y hy))`. Establish `c3` using `cup_unr_cob_of_vanish c n W q B _ _ hW hint hdet hB hl ha1 hb1 (fun i hi j => by`. Use `hax i hi j` as an intermediate fact. Unfold `Cg at this ⊢`. Simplify using `only [Pi.sub_apply, Pi.zero_apply, sub_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `this)`. Use the proof step `(fun i hi j => by`. Use `hby i hi j` as an intermediate fact. Unfold `Cg at this ⊢`. Simplify using `only [Pi.sub_apply, Pi.zero_apply, sub_zero]`.
-
-Conclude with `this)`. Rewrite using `[hsplit]`. Conclude with `isIntegralCoboundaryTwoModPow_add c n _ _ _ (isIntegralCoboundaryTwoModPow_add c n _ _ _ c1 c2) c3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_unr_cob : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ) (W : R2 Ω l) (q : Pl) (B : ValuationSubring Ω) (a b : G ℚ Ω → Fin 2 → Qbar l), Continuous W → (∀ s i j, mat W s i j ∈ c.O) → dt W ^ 2 = 1 → IsPlaceOver B q → ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → Coc1 c n W (Dec (F := ℚ) B) a → Coc1 c n (dual1 W) (Dec (F := ℚ) B) b → Cob1 c n W (Ine (F := ℚ) B) a → Cob1 c n (dual1 W) (Ine (F := ℚ) B) b → Cob2 c n (Dec (F := ℚ) B) (cup W a b) := by
   intro _ l _ Ω _ _ _ c n W q B a b hW hint hdet hB hl ha hb ⟨x, hx, hax⟩ ⟨y, hy, hby⟩

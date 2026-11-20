@@ -4,29 +4,29 @@ open CategoryTheory Limits TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `φ : (Fin n → R) →ₗ[R] (Fin n → B)` to `∑ a, (LinearMap.proj a).smulRight (v a)`. Establish `hφ : ∀ x l, φ x l = ∑ a, algebraMap R B (x a) * v a l`. Introduce `x l`. Simplify using `[φ, Finset.sum_apply, Algebra.smul_def]`. Establish `hker : LinearMap.ker π ≤ LinearMap.ker φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hr, Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`. Use function extensionality and compare the values at `l`. Rewrite using `[hφ]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hv b l`. Set `ψ : M →ₗ[R] (Fin n → B)` to `(LinearMap.ker π).liftQ φ hker ∘ₗ (π.quotKerEquivOfSurjective hπ).symm.toLinearMap`. Establish `hψ : ∀ x, ψ (π x) = φ x`. Introduce `x`. Establish `: (π.quotKerEquivOfSurjective hπ).symm (π x) = Submodule.Quotient.mk x`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `[ψ, this]`. Set `i : B ⊗[R] M →ₗ[B] (Fin n → B)` to `ψ.liftBaseChange B`. Set `s : (Fin n → B) →ₗ[B] B ⊗[R] M` to `∑ l, (LinearMap.proj l).smulRight ((1 : B) ⊗ₜ[R] π (Pi.single l 1))`. Establish `hs : ∀ y, s y = ∑ l, y l • ((1 : B) ⊗ₜ[R] π (Pi.single l 1))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y`. Simplify using `[s]`. Establish `hsr : ∀ b, ∑ l, algebraMap R B (r b l) • ((1 : B) ⊗ₜ[R] π (Pi.single l 1)) = 0`. Introduce `b`. Establish `h0 : π (r b) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.mem_ker, ← hr]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Establish `: ∑ l, algebraMap R B (r b l) • ((1 : B) ⊗ₜ[R] π (Pi.single l 1)) = (1 : B) ⊗ₜ[R] π (r b)` using `by conv_rhs => rw [show r b = ∑ l, r b l • Pi.single l (1 : R) by`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, tmul_sum, algebraMap_smul, tmul_smul]`. Rewrite using `[this, h0, tmul_zero]`. Establish `hsv : ∀ a, s (v a) = (1 : B) ⊗ₜ[R] π (Pi.single a 1)`. Introduce `a`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hvw a, add_smul, Finset.sum_add_distrib, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ b, ∑ l, (w a b * algebraMap R B (r b l)) • ((1 : B) ⊗ₜ[R] π (Pi.single l 1)) = 0`. Introduce `b`. Repeatedly rewrite using `[mul_smul, ← Finset.smul_sum, hsr, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[this, ite_smul]`. Establish `hsi : s ∘ₗ i = LinearMap.id`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x y`. Take `⟨z, rfl⟩` from `hπ y`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, i, LinearMap.liftBaseChange_tmul, map_smul]`. Establish `hz : φ z = ∑ a, z a • v a`. Use function extensionality and compare the values at `l`. Rewrite using `[hφ]`. Simplify using `[Finset.sum_apply, Algebra.smul_def]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ, hz, map_sum]`. Repeatedly rewrite using `[LinearMap.map_smul_of_tower, hsv]`. Use `conv_rhs => rw [show z = ∑ a, z a • Pi.single a (1 : R) by`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`.
+Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, tmul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, TensorProduct.smul_tmul', smul_eq_mul, mul_one, map_smul, TensorProduct.tmul_smul]`. Conclude with `Module.Projective.of_split i s hsi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projective_baseChange_of_presentation_split
     (R B M : Type) [CommRing R] [CommRing B] [Algebra R B] [AddCommGroup M]

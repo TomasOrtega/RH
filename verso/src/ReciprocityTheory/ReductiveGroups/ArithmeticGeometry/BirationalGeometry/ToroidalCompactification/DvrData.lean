@@ -46,7 +46,7 @@ private theorem comp_apply_point {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C
     (f ≫ g) x = g (f x) := rfl
 
 /- English proof (translation)
-Rewrite using `[← P.ext]`. Simplify using `only [ValPt.ξ, spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hlift]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem spMap_comp_xi_eq_spMap_lift_comp_y_comp_j (P : ValPt Y) (W : UnramExt P.V) (lift : P.K' →+* FractionRing W.W)
     (hlift : lift.comp (algebraMap P.V P.K') =
@@ -56,13 +56,13 @@ private theorem spMap_comp_xi_eq_spMap_lift_comp_y_comp_j (P : ValPt Y) (W : Unr
   simp only [ValPt.ξ, spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hlift]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum R)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem sp_nonempty_of_field (R : Type) [Field R] : Nonempty (Sp R) :=
   ⟨(⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum R)⟩
 
 /- English proof (translation)
-Rewrite using `[Y.ab_gen]`. Conclude with `Set.mem_range_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem jQ_mem_preimage_abLocus (p : Xo.XF c) :
     Y.jQ p ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G := by
@@ -70,9 +70,7 @@ private theorem jQ_mem_preimage_abLocus (p : Xo.XF c) :
   exact Set.mem_range_self _
 
 /- English proof (translation)
-Use `haveI := P.frac`. Establish `hinj : Function.Injective ((algebraMap W.W (FractionRing W.W)).comp (algebraMap P.V W.W))`. Rewrite using `[RingHom.coe_comp]`. Conclude with `(IsFractionRing.injective W.W (FractionRing W.W)).comp W.inj`. Use `⟨IsFractionRing.lift hinj, RingHom.ext fun x => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_lift_fractionRing_comp_algebraMap (P : ValPt Y) (W : UnramExt P.V) :
     ∃ f : P.K' →+* FractionRing W.W, f.comp (algebraMap P.V P.K') =
@@ -86,7 +84,7 @@ private theorem exists_lift_fractionRing_comp_algebraMap (P : ValPt Y) (W : Unra
   simp only [RingHom.comp_apply, IsFractionRing.lift_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[← comp_apply_point, spMap_comp_xi_eq_spMap_lift_comp_y_comp_j P W lift hlift, comp_apply_point, comp_apply_point, Model.j, comp_apply_point]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem xi_spMap_eq_pullback_fst_jQ (P : ValPt Y) (W : UnramExt P.V) (lift : P.K' →+* FractionRing W.W)
     (hlift : lift.comp (algebraMap P.V P.K') =
@@ -97,7 +95,7 @@ private theorem xi_spMap_eq_pullback_fst_jQ (P : ValPt Y) (W : UnramExt P.V) (li
   rw [← comp_apply_point, spMap_comp_xi_eq_spMap_lift_comp_y_comp_j P W lift hlift, comp_apply_point, comp_apply_point, Model.j, comp_apply_point]
 
 /- English proof (translation)
-Take `⟨lift, hlift⟩` from `exists_lift_fractionRing_comp_algebraMap P W`. Take `⟨z⟩` from `sp_nonempty_of_field (FractionRing W.W)`. Use `⟨spMap (algebraMap W.W (FractionRing W.W)) z, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, xi_spMap_eq_pullback_fst_jQ P W lift hlift z]`. Conclude with `Set.mem_preimage.mp (jQ_mem_preimage_abLocus (Y := Y) _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ValPt.ξ_ab (P : ValPt Y) (W : UnramExt P.V) : (P.ξ W ⁻¹' abLocus Y.t.G).Nonempty := by
   obtain ⟨lift, hlift⟩ := exists_lift_fractionRing_comp_algebraMap P W
@@ -107,9 +105,9 @@ theorem ValPt.ξ_ab (P : ValPt Y) (W : UnramExt P.V) : (P.ξ W ⁻¹' abLocus Y.
   exact Set.mem_preimage.mp (jQ_mem_preimage_abLocus (Y := Y) _)
 
 /- English proof (translation)
-Take `⟨W, t, m, hsp⟩` from `hs`. Use `haveI : CharZero P.K' := P.char0`. Use `haveI : CharZero P.V := (algebraMap P.V P.K').charZero`. Use `haveI : CharZero W.W := ⟨fun a b h => by`. Apply `Nat.cast_injective (R := P.V)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Apply `W.inj` to reduce the goal to its premises. Simplify using `using h⟩`. Conclude with `⟨W, t, m, hsp, h3 W.W inferInstance inferInstance W.complete (P.ξ W) t m (ValPt.ξ_ab P W) hsp⟩`.
+A detailed English derivation is pending.
 -/
 theorem dvrData_of_splitting (h3 : Y.N3) (P : ValPt Y) (hs : SplitsAt P) : DvrDataAt P := by
   obtain ⟨W, t, m, hsp⟩ := hs

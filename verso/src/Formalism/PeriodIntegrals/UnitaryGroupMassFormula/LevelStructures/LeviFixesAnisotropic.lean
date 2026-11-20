@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {P : Frame E n r} {c : R ⊗[F] E} {T : F}
 
 /- English proof (translation)
-Establish `h0 : piW (σ` using `σ) (J := J) P c (ratV (F := F) R (P.e b)) = 0 := by`. Simplify using `only [piW, LinearMap.sub_apply, LinearMap.id_apply, piRest_e ht b, sub_self]`. Simplify using `only [Lh_apply, h0, map_zero, zero_add, piRest_e ht b]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Lh_fix_e (ht : FrameTab (σ := σ) (J := J) P c T) (s : HA R σ J) (b : Fin r) :
     Lh P c s (ratV (F := F) R (P.e b)) = ratV (F := F) R (P.e b) := by
@@ -24,7 +24,7 @@ theorem Lh_fix_e (ht : FrameTab (σ := σ) (J := J) P c T) (s : HA R σ J) (b : 
   simp only [Lh_apply, h0, map_zero, zero_add, piRest_e ht b]
 
 /- English proof (translation)
-Establish `h0 : piW (σ` using `σ) (J := J) P c (ratV (F := F) R (P.f b)) = 0 := by`. Simplify using `only [piW, LinearMap.sub_apply, LinearMap.id_apply, piRest_f ht b, sub_self]`. Simplify using `only [Lh_apply, h0, map_zero, zero_add, piRest_f ht b]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Lh_fix_f (ht : FrameTab (σ := σ) (J := J) P c T) (s : HA R σ J) (b : Fin r) :
     Lh P c s (ratV (F := F) R (P.f b)) = ratV (F := F) R (P.f b) := by
@@ -33,7 +33,7 @@ theorem Lh_fix_f (ht : FrameTab (σ := σ) (J := J) P c T) (s : HA R σ J) (b : 
   simp only [Lh_apply, h0, map_zero, zero_add, piRest_f ht b]
 
 /- English proof (translation)
-Establish `h0 : piW (σ` using `σ) (J := J) P c (ratV (F := F) R P.z) = 0 := by`. Simplify using `only [piW, LinearMap.sub_apply, LinearMap.id_apply, piRest_of_frameTab ht, sub_self]`. Simplify using `only [Lh_apply, h0, map_zero, zero_add, piRest_of_frameTab ht]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem levi_fixes_anisotropic (ht : FrameTab (σ := σ) (J := J) P c T) (s : HA R σ J) :
     Lh P c s (ratV (F := F) R P.z) = ratV (F := F) R P.z := by
@@ -61,11 +61,11 @@ def gL (ht : FrameTab (σ := σ) (J := J) P c T) {s : HA R σ J} (hs : s ∈ Ssu
     rw [this, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR R σ) (LinearMap.toMatrix' (Lh P c s)) * JR R J * LinearMap.toMatrix' (Lh P c s) = JR R J`. Establish `key : ∀ x y, Formalism.UG.hform (sigR R σ) (Formalism.UG.cT (sigR R σ) (LinearMap.toMatrix' (Lh P c s)) * JR R J * LinearMap.toMatrix' (Lh P c s)) x y = Formalism.UG.hform (sigR R σ) (JR R J) x y`. Introduce `x y`. Rewrite using `[← Formalism.UG.P.hform_mulVec, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Conclude with `Lh_unitary ht hs' x y`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Use `key (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Establish `hsg : ∀ k, sigR R σ ((Pi.single i (1 : R ⊗[F] E) : Fin n → R ⊗[F] E) k) = (Pi.single i (1 : R ⊗[F] E) : Fin n → R ⊗[F] E) k` using `fun k => by`. Apply the tactic sequence `by_cases hk : k = i <;> simp [Pi.single_apply, hk]`. Simplify using `only [Formalism.UG.hform, hsg] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem gL_mem (ht : FrameTab (σ := σ) (J := J) P c T) {s : HA R σ J} (hs : s ∈ Ssub R σ J P)
     (hs' : s⁻¹ ∈ Ssub R σ J P) : gL ht hs hs' ∈ HR R σ J := by
@@ -88,7 +88,7 @@ def hOf (ht : FrameTab (σ := σ) (J := J) P c T) {s : HA R σ J} (hs : s ∈ Ss
     (hs' : s⁻¹ ∈ Ssub R σ J P) : HA R σ J := (⟨gL ht hs hs', gL_mem ht hs hs'⟩ : ↥(HR R σ J))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.mulVec (LinearMap.toMatrix' (Lh P c s)) v = _`. Conclude with `LinearMap.toMatrix'_mulVec _ _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem lin_hOf (ht : FrameTab (σ := σ) (J := J) P c T) {s : HA R σ J} (hs : s ∈ Ssub R σ J P)
     (hs' : s⁻¹ ∈ Ssub R σ J P) (v : Fin n → R ⊗[F] E) : lin R σ J (hOf ht hs hs') v = Lh P c s v := by
@@ -96,11 +96,11 @@ theorem lin_hOf (ht : FrameTab (σ := σ) (J := J) P c T) {s : HA R σ J} (hs : 
   exact LinearMap.toMatrix'_mulVec _ _
 
 /- English proof (translation)
-Rewrite using `[Hsub, mem_stabT]`. Introduce `b`. Rewrite using `[lin_hOf]`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Simplify using `only [tupH, Fin.append_left]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [F0, Fin.snoc_last]`. Conclude with `levi_fixes_anisotropic ht s`. Consider the case `cast j => simp only [F0, Fin.snoc_castSucc]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Lh_fix_e ht s j`. Consider the case `right j`. Simplify using `only [tupH, Fin.append_right]`. Conclude with `Lh_fix_f ht s j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hOf_mem (ht : FrameTab (σ := σ) (J := J) P c T) {s : HA R σ J} (hs : s ∈ Ssub R σ J P)
     (hs' : s⁻¹ ∈ Ssub R σ J P) : hOf ht hs hs' ∈ Hsub R σ J P := by
@@ -118,11 +118,11 @@ theorem hOf_mem (ht : FrameTab (σ := σ) (J := J) P c T) {s : HA R σ J} (hs : 
     exact Lh_fix_f ht s j
 
 /- English proof (translation)
-Establish `hr : piRest (σ` using `σ) (J := J) P c u = (∑ a, hR R σ J (ratV (F := F) R (P.f a)) u • ratV (F := F) R (P.e a)) + (c * hR R σ J (ratV (F := F) R P.z) u) • ratV (F := F) R P.z := by`. Rewrite using `[piRest_apply]`. Simplify using `[hu _]`. Use `set xu := ∑ a, hR R σ J (ratV (F := F) R (P.f a)) u • ratV (F := F) R (P.e a)`. Establish `hxu : xu ∈ spanR (F` using `F) R P.e Set.univ := Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, Set.mem_univ _, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set γ := c * hR R σ J (ratV (F := F) R P.z) u`. Establish `e1 : lin R σ J s u = lin R σ J s (piW (σ` using `σ) (J := J) P c u) + lin R σ J s (piRest (σ := σ) (J := J) P c u) := by`. Rewrite using `[← map_add, piW_add_rest]`. Establish `e2` using `piW_add_rest (σ := σ) (J := J) P c (lin R σ J s (piW (σ := σ) (J := J) P c u))`. Establish `e3 : piRest (σ` using `σ) (J := J) P c (lin R σ J s (piW (σ := σ) (J := J) P c u)) = lin R σ J s (piW (σ := σ) (J := J) P c u) - piW (σ := σ) (J := J) P c (lin R σ J s (piW (σ := σ) (J := J) P c u)) := eq_sub_of_add_eq' e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : lin R σ J s u - Lh P c s u = piRest (σ` using `σ) (J := J) P c (lin R σ J s (piW (σ := σ) (J := J) P c u)) + (lin R σ J s xu - xu) + γ • (lin R σ J s (ratV (F := F) R P.z) - ratV (F := F) R P.z) := by`. Rewrite using `[e3, Lh_apply, e1, hr, map_add, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ (parabolic_maps_complement ht hs' (piW_inW ht u)) (Submodule.sub_mem _ (parabolic_preserves_isotropic hs hxu) hxu)) (Submodule.smul_mem _ _ (parabolic_fixes_modulo_span hs))`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_diff (ht : FrameTab (σ := σ) (J := J) P c T) {s : HA R σ J} (hs : s ∈ Ssub R σ J P)
     (hs' : s⁻¹ ∈ Ssub R σ J P) (u : Fin n → R ⊗[F] E) (hu : InXperp R σ J P u) :
@@ -155,15 +155,11 @@ end Pack
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D X w p s hs`. Take `⟨hee, hff, hef, hez, hfz, hzz, hT⟩` from `FrameW.frameOf_isStd X w`. Establish `hσ : ∀ x, X.B.I.cm.sig (X.B.I.cm.sig x) = x` using `fun x => by simp [FrameW.sig_apply]`. Establish `hJ : ∀ i j, X.B.I.cm.sig (X.B.I.J j i) = X.B.I.J i j` using `(cmInst_holds X).2.1`. Use `set T : X.B.I.F := (((D.mem w).A.T : ℕ) : X.B.I.F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : algebraMap X.B.I.F X.B.I.E (-T) ≠ 0`. Rewrite using `[map_neg, neg_ne_zero]`. Conclude with `fun h => hT ((algebraMap X.B.I.F X.B.I.E).injective (by rw [h, map_zero]))`. Use `set c : Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E := inclR (F := X.B.I.F) (Fv X.B.I.F p.1) ((algebraMap X.B.I.F X.B.I.E (-T))⁻¹)`. Apply the tactic sequence `have ht : FrameTab (σ := X.B.I.cm.sig) (J := X.B.I.J) (frameOf X w) c T := { ee := fun a b => by rw [hermForm_rational_vectors, hee, map_zero] ef := fun a b => by rw [hermForm_rational_vectors, hef]; split_ifs <;> simp fe := fun a b => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hermForm_rational_vectors, ← hermForm_base_conj_symm hσ hJ, hef b a]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all`. Use `ff := fun a b => by rw [hermForm_rational_vectors, hff, map_zero]`. Use `ez := fun a => by rw [hermForm_rational_vectors, hez, map_zero]`. Use `fz := fun a => by rw [hermForm_rational_vectors, hfz, map_zero]`.
-
-Use `ze := fun a => by rw [hermForm_rational_vectors, ← hermForm_base_conj_symm hσ hJ, hez, map_zero, map_zero]`. Use `zf := fun a => by rw [hermForm_rational_vectors, ← hermForm_base_conj_symm hσ hJ, hfz, map_zero, map_zero]`. Use `zz := by rw [hermForm_rational_vectors, hzz, ← map_mul, inv_mul_cancel₀ hne, map_one]`. Use `hσ := hσ`. Use `hJ := hJ }`.
-
-Establish `hs'` using `inv_mem hs`. Conclude with `⟨hOf ht hs hs', hOf_mem ht hs hs', fun u hu => by rw [lin_hOf]; exact levi_diff ht hs hs' u hu⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem leviComp_holds : LeviComp := by
   intro D X w p s hs
@@ -194,7 +190,7 @@ theorem leviComp_holds : LeviComp := by
   exact ⟨hOf ht hs hs', hOf_mem ht hs hs', fun u hu => by rw [lin_hOf]; exact levi_diff ht hs hs' u hu⟩
 
 /- English proof (translation)
-The claim follows from `locLevi_of_comp leviComp_holds hN`.
+A detailed English derivation is pending.
 -/
 theorem locLevi_of_NO (hN : UnipotentIntegralInLevel) : LocLevi := locLevi_of_comp leviComp_holds hN
 

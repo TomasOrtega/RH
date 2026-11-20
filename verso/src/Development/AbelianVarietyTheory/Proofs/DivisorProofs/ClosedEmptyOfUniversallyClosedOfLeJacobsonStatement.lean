@@ -6,7 +6,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.FormalAlg
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.closed_empty_of_universallyClosed_of_le_jacobson` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClosedEmptyOfUniversallyClosedOfLeJacobson.lean&line=8#L8)
 -/

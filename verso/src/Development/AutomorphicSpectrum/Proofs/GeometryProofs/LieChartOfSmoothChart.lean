@@ -16,27 +16,25 @@ namespace GlobalTheory.CompanionTheory.Ar.ChartDer
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `letI iB : Algebra B A := g.toAlgebra`. Use `haveI : Algebra.Smooth B A := hg`. Use `letI iA : Algebra A (Localization.Away f) := u.toAlgebra`. Use `haveI tw : IsScalarTower R (Localization.Away f) (Localization.Away f ⊗[A] Ω[A⁄B]) := inferInstance`. Establish `hsmul : ∀ (a : A) (x : Ω[A⁄B]), (1 : Localization.Away f) ⊗ₜ[A] (a • x) = u a • ((1 : Localization.Away f) ⊗ₜ[A] x)` using `fun a x => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : a • (1 : Localization.Away f) = u a`. Rewrite using `[Algebra.smul_def, _root_.mul_one]`. Both sides reduce to the same expression. Rewrite using `[← TensorProduct.smul_tmul, e, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Use `⟨Localization.Away f ⊗[A] Ω[A⁄B], inferInstance, inferInstance, inferInstance, tw, Module.Finite.base_change A _ _, inferInstance, fun a => 1 ⊗ₜ[A] KaehlerDifferential.D B A a, fun a b => by simp [TensorProduct.tmul_add], fun a b => ?_, fun b => ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Derivation.leibniz, TensorProduct.tmul_add, hsmul]`. Establish `: g b = algebraMap B A b` using `rfl`. Simplify using `[this]`. Introduce `C _ _ κ hκ`. Use `letI aC : Algebra (Localization.Away f) C := κ.toAlgebra`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower R (Localization.Away f) C := IsScalarTower.of_algebraMap_eq' hκ.symm`. Establish `lin : ∀ (w : (Localization.Away f ⊗[A] Ω[A⁄B]) →ₗ[R] C) (r : Localization.Away f) p, w (r • p) = κ r * w p` using `fun w r p => by`. Establish `h : w (r • p) = r • w p` using `(w.extendScalarsOfIsLocalization (Submonoid.powers f) (Localization.Away f)).map_smul r p`. Rewrite using `[h, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨lin, fun w w' h => LinearMap.ext fun p => ?_, fun δ h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `hD : ∀ x : Ω[A⁄B], w ((1 : Localization.Away f) ⊗ₜ[A] x) = w' ((1 : Localization.Away f) ⊗ₜ[A] x)`. Introduce `x`. Establish `hx : x ∈ Submodule.span A (Set.range (KaehlerDifferential.D B A))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `h a`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [TensorProduct.tmul_add, map_add, map_add, hx, hy]`. Consider the case `smul a x _ ih => rw [hsmul, lin, lin, ih]`. Proceed by induction on `p using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul r x`. Establish `e : r ⊗ₜ[A] x = r • ((1 : Localization.Away f) ⊗ₜ[A] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[e, lin, lin, hD]`. Use `letI aA : Algebra A C := (κ.comp u).toAlgebra haveI : IsScalarTower A (Localization.Away f) C := IsScalarTower.of_algebraMap_eq' rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `letI aB : Algebra B C := ((κ.comp u).comp g).toAlgebra`. Use `haveI : IsScalarTower B A C := IsScalarTower.of_algebraMap_eq' rfl`. Set `L : A →ₗ[B] C` to `{ toFun := δ map_add' := h1 map_smul' := fun b a => by`. Express the relevant statement in the definitionally equal form `δ (g b * a) = κ (u (g b)) * δ a`. Rewrite using `[h2, h3, mul_zero, add_zero] }`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Set `Dv : Derivation B A C` to `Derivation.mk' L fun a b => by`. Express the relevant statement in the definitionally equal form `δ (a * b) = κ (u a) * δ b + κ (u b) * δ a`. Conclude with `h2 a b`. Use `⟨(Dv.liftKaehlerDifferential.liftBaseChange (Localization.Away f)).restrictScalars R, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.liftBaseChange_tmul, one_smul, Derivation.liftKaehlerDifferential_comp_D]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_diffModule {A B : Type} [CommRing A] [CommRing B] (g : B →+* A) (hg : g.Smooth)
     {R : Type} [CommRing R] (f : R) (u : A →+* Localization.Away f) :
@@ -131,44 +129,44 @@ def dualOf {A C : Type} [CommRing A] [CommRing C] (v : A →+* C) (δ : A → C)
     · simp [h1]
 
 /- English proof (translation)
-Simplify using `[dualOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualOf_fst {A C : Type} [CommRing A] [CommRing C] (v : A →+* C) (δ : A → C) (h1 h2) (a : A) :
     (dualOf v δ h1 h2 a).fst = v a := by
   simp [dualOf]
 
 /- English proof (translation)
-Simplify using `[dualOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualOf_snd {A C : Type} [CommRing A] [CommRing C] (v : A →+* C) (δ : A → C) (h1 h2) (a : A) :
     (dualOf v δ h1 h2 a).snd = δ a := by
   simp [dualOf]
 
 /- English proof (translation)
-Rewrite using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : B →+* C) (f : A →+* B) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_left {T : Scheme.{0}} {X M : Over T} [GrpObj M] : (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
 
 /- English proof (translation)
-Take `⟨c1, c2⟩` from `GlobalTheory.T.tangent_vector_of_dual_hom S G U V hU hV hUV C y v h1`. Set `φ : E → (Γ(G.left, U) →+* DualNumber C)` to `fun e => dualOf v (δ e) (hadd e) (hmul e)`. Establish `φfst : ∀ e a, (φ e a).fst = v a` using `fun e a => dualOf_fst ..`. Establish `φsnd : ∀ e a, (φ e a).snd = δ e a` using `fun e a => dualOf_snd ..`. Establish `ex : ∀ e, ∃ t : epsAt y ⟶ G, IsTanAt G y t ∧ t.left = spMap (φ e) ≫ hU.fromSpec` using `fun e => c1 (φ e) (φfst e) fun b => by rw [φsnd, hker]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose pt ptan pleft using ex`. Establish `spinj : ∀ ψ ψ' : Γ(G.left, U) →+* DualNumber C, spMap ψ ≫ hU.fromSpec = spMap ψ' ≫ hU.fromSpec → ψ = ψ'` using `fun ψ ψ' h => by`. Establish `h2` using `Spec.map_injective ((cancel_mono hU.fromSpec).1 h)`. Simplify using `using congrArg CommRingCat.Hom.hom h2`. Use `⟨{ pt := pt, tan := ptan, inj := ?_, onto := ?_, add := ?_, smul := ?_ }, fun e => ⟨φ e, φfst e, φsnd e, pleft e⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e e' h`. Establish `h2` using `spinj _ _ (by rw [← pleft, ← pleft, h] : spMap (φ e) ≫ hU.fromSpec = spMap (φ e') ≫ hU.fromSpec)`. Conclude with `hinj _ _ fun a => by rw [← φsnd, h2, φsnd]`. Introduce `t ht`. Take `⟨ψ, f1, f2, f3⟩` from `c2 t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨e, he⟩` from `hsurj (fun a => (ψ a).snd) (fun a b => by simp) (fun a b => by`. Simplify using `only [map_mul, TrivSqZeroExt.snd_mul, f1]`. Simplify using `[mul_comm, add_comm]) f2`. Use `⟨e, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Establish `h2 : φ e = ψ` using `RingHom.ext fun a => TrivSqZeroExt.ext (by rw [φfst, f1]) (by rw [φsnd, he])`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pleft, f3, h2]`. Introduce `e e'`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.tangent_vector_sum_dual_number S G U hU C y v h1 (pt e) (pt e') (ptan e) (ptan e') (φ e) (φ e') (φ (e + e')) (φfst e) (φfst e') (φfst _) (fun a => by rw [φsnd, φsnd, φsnd, hEadd]) (pleft e) (pleft e'), pleft]`. Introduce `c e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : φ (c • e) = (epsMul c).comp (φ e)` using `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [epsMul, φfst]) (by simp [epsMul, φsnd, hEsmul])`. Rewrite using `[pleft, pleft, h2, spMap_comp, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lieModel {S : Scheme.{0}} (G : Over S) [GrpObj G] (U : G.left.Opens) (V : S.Opens)
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) (hUV : U ≤ G.hom ⁻¹ᵁ V)
@@ -221,19 +219,17 @@ theorem exists_lieModel {S : Scheme.{0}} (G : Over S) [GrpObj G] (U : G.left.Ope
     rw [pleft, pleft, h2, spMap_comp, Category.assoc]
 
 /- English proof (translation)
-Introduce `S G _ R _ x f U V hU hV hUV hsm u h1`. Take `⟨P, i1, i2, i3, i4, i5, i6, d, dadd, dmul, dker, hP⟩` from `exists_diffModule (G.hom.appLE V U hUV).hom hsm f u`. Establish `hunit : ∀ (C : Type) [CommRing C] [Algebra R C] (κ : Localization.Away f →+* C), κ.comp (algebraMap R (Localization.Away f)) = algebraMap R C → (1 : Over.mk (spMap (algebraMap R C) ≫ x) ⟶ G).left = spMap (κ.comp u) ≫ hU.fromSpec`. Introduce `C _ _ κ hκ`. Rewrite `h1`, the goal using `[one_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Over.mk_hom] at h1 ⊢`. Establish `e : spMap (algebraMap R C) = spMap κ ≫ spMap (algebraMap R (Localization.Away f))`. Rewrite using `[← spMap_comp, hκ]`. Establish `h3 : ((spMap κ ≫ spMap (algebraMap R (Localization.Away f))) ≫ x) ≫ η[G].left = spMap κ ≫ (spMap (algebraMap R (Localization.Away f)) ≫ x) ≫ η[G].left`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, h3, h1, spMap_comp κ u]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `key : ∀ (C : Type) [CommRing C] [Algebra R C] (hC : IsUnit (algebraMap R C f)), ∃ M : LieModel G (spMap (algebraMap R C) ≫ x) (P →ₗ[R] C), ∀ w, ∃ φ : Γ(G.left, U) →+* DualNumber C, (∀ a, (φ a).fst = ((IsLocalization.Away.lift f hC).comp u) a) ∧ (∀ a, (φ a).snd = w (d a)) ∧ (M.pt …`. Introduce `C _ _ hC`. Establish `hκ` using `IsLocalization.Away.lift_comp (S := Localization.Away f) f hC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l1, l2, l3⟩` from `hP C _ hκ`. Conclude with `exists_lieModel (E := P →ₗ[R] C) G U V hU hV hUV C _ _ (hunit C _ hκ) (fun (w : P →ₗ[R] C) a => w (d a)) (fun w a b => by simp [dadd]) (fun w a b => by simp only [dmul, map_add, l1, RingHom.comp_apply]) (fun w b => by simp [dker]) (fun w w' a => rfl) (fun c w a => by simp) l2 l3`. Use `⟨P, i1, i2, i3, i4, i5, i6, fun C _ _ hC => (key C hC).choose, ?_⟩` and prove the remaining obligations. Introduce `C C' _ _ _ _ hC hC' c w`. Take `⟨φ, f1, f2, f3⟩` from `(key C hC).choose_spec w`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ', g1, g2, g3⟩` from `(key C' hC').choose_spec (c.toLinearMap ∘ₗ w)`. Establish `hc : c.toRingHom.comp (IsLocalization.Away.lift (S` using `Localization.Away f) f hC) = IsLocalization.Away.lift (S := Localization.Away f) f hC' := by`. Use `IsLocalization.ringHom_ext (Submonoid.powers f) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, IsLocalization.Away.lift_comp, IsLocalization.Away.lift_comp]`. Conclude with `c.comp_algebraMap`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : φ' = (dualMap c.toRingHom).comp φ` using `RingHom.ext fun a => TrivSqZeroExt.ext (by`. Simplify using `only [g1, RingHom.comp_apply, dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, f1]`. Conclude with `(RingHom.congr_fun hc (u a)).symm)`. Use the proof step `(by`. Simplify using `only [g2, RingHom.comp_apply, dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, f2]`.
-
-Use the proof step `rfl)`. Rewrite using `[g3, f3, h2, spMap_comp, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieChart_of_smooth_chart : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommRing R] (x : Sp R ⟶ S) (f : R) (U : G.left.Opens) (V : S.Opens)
   (hU : IsAffineOpen U) (hV : IsAffineOpen V) (hUV : U ≤ G.hom ⁻¹ᵁ V), RingHom.Smooth (G.hom.appLE V U hUV).hom →

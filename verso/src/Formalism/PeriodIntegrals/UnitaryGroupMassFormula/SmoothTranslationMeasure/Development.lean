@@ -53,21 +53,21 @@ def StepWord : Prop :=
         dsigW σ ws (σ g w - σ g₀ w) = dsigW σ ws (σ g w) - dsigW σ ws (σ g₀ w)
 
 /- English proof (translation)
-The claim follows from `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_UH {n : ℕ} (Hm : Matrix (Fin n) (Fin n) ℂ) : IsClosed (UH Hm) := isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul
   continuous_id) continuous_const
 
 /- English proof (translation)
-Take `⟨C, Ws, hWs, hBd⟩` from `hB`. Establish `hS'` using `hS n Hm H σ w hmul hw`. Establish `hsub : ∀ v ∈ smoothVecs Hm σ, ∀ v' ∈ smoothVecs Hm σ, B (v - v') = B v - B v'`. Introduce `v hv v' hv'`. Establish `h` using `hadd (v - v') (hS'.2 v hv v' hv') v' hv'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, add_sub_cancel_right]`. Introduce `g₀ hg₀`. Rewrite using `[ContinuousWithinAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `hlim : Filter.Tendsto (fun g => C * (Ws.map fun ws => ‖dsigW σ ws (σ g w) - dsigW σ ws (σ g₀ w)‖).sum) (nhdsWithin g₀ (UH Hm)) (nhds 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Filter.Tendsto.const_mul C (tendsto_list_sum (f := fun ws g => ‖dsigW σ ws (σ g w) - dsigW σ ws (σ g₀ w)‖) (a := fun ws => ‖dsigW σ ws (σ g₀ w) - dsigW σ ws (σ g₀ w)‖) Ws fun ws hws => Filter.Tendsto.norm (Filter.Tendsto.sub ((hW n Hm H σ w hmul hexp hw ws (hWs ws hws)).1 g₀ hg₀) …`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Use `squeeze_zero' (Filter.Eventually.of_forall fun g => norm_nonneg _) ?_ hlim` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with g hg`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hS'.1 g hg`. Establish `h0` using `hS'.1 g₀ hg₀`. Rewrite using `[← hsub _ h1 _ h0]`. Use `(hBd _ (hS'.2 _ h1 _ h0)).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `List.map_congr_left fun ws hws => ?_` and prove the remaining obligations. Rewrite using `[(hW n Hm H σ w hmul hexp hw ws (hWs ws hws)).2 g hg g₀ hg₀]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_B {n : ℕ} {Hm : Matrix (Fin n) (Fin n) ℂ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {Wp : Type} [NormedAddCommGroup Wp]
@@ -106,9 +106,9 @@ theorem continuousOn_B {n : ℕ} {Hm : Matrix (Fin n) (Fin n) ℂ} {H : Type} [N
   rw [(hW n Hm H σ w hmul hexp hw ws (hWs ws hws)).2 g hg g₀ hg₀]
 
 /- English proof (translation)
-Introduce `n ε Hm H _ _ Wp _ _ σ B w ⟨P, hP, hPH, hσ, _⟩ hadd _ hB hw`. Take `⟨hu, hmul⟩` from `hR n ε Hm H σ P hP hPH hσ`. Establish `hexp : ∀ X, InLie Hm X → ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ UH Hm` using `fun X hX t => hE n Hm X hu hX t`. Establish `hc : ContinuousOn (fun g => B (σ g w)) (UH Hm)` using `continuousOn_B hS hW hmul hexp hadd hB hw`. Establish `hof : Continuous (fun x : Fin n → Fin n → ℂ => Matrix.of x)` using `continuous_id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed {x : Fin n → Fin n → ℂ | Matrix.of x ∈ UH Hm}` using `(isClosed_UH Hm).preimage hof`. Rewrite using `[← Set.piecewise_eq_indicator]`. Use `ContinuousOn.measurable_piecewise ?_ continuousOn_const hcl.measurableSet` and prove the remaining obligations. Conclude with `(hc.comp hof.continuousOn fun x hx => hx).norm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phMeasCore_of (hR : StepRed) (hE : StepExp) (hS : StepSub) (hW : StepWord) : PI.PhMeasCore := by
   intro n ε Hm H _ _ Wp _ _ σ B w ⟨P, hP, hPH, hσ, _⟩ hadd _ hB hw

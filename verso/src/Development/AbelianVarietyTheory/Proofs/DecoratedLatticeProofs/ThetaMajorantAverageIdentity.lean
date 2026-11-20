@@ -26,18 +26,18 @@ namespace GlobalTheory.IkedaK
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI := isLattice_frameLat_host T`. Conclude with `GlobalTheory.Doubling.isCompact_levelAll (AdelicU.isCMExt_host D) _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_Kmax (T : HSp D) (b : GL (Fin T.rank) (AE D)) : IsCompact (Kmax T b : Set (GA D T)) := by
   haveI := isLattice_frameLat_host T
   exact GlobalTheory.Doubling.isCompact_levelAll (AdelicU.isCMExt_host D) _ _ _
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, K, hK, hKc⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Establish `hc` using `GlobalTheory.Unf.jointCont_all D ψ S T χS χT om hW f hf`. Take `⟨C, hC⟩` from `(hP.prod hK).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun p hp x => ?_⟩` and prove the remaining obligations. Take `⟨γ, ⟨γ', rfl⟩, hx⟩` from `hKc x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hq` using `(hW.om_pres p f hf).quasi γ' x`. Establish `e : (((incA D).toAddMonoidHom.mapMatrix (m` using `Fin T.rank) (n := Fin S.rank)) γ') = ratW T S γ' := rfl`. Rewrite `hx` using `[e]`. Establish `h1` using `hW.std.1.2.1 (-(symplOH S T (ratW T S γ') x))`. Use `hC (p, ratW T S γ' + x) ⟨hp, hx⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at this`. Rewrite `this` using `[hq, norm_mul, h1, one_mul]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_om_compact {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : WRep S T}
     (hW : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {P : Set (GA D S × GA D T)}
@@ -57,28 +57,28 @@ theorem bdd_om_compact {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT :
   exact this
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem om_mul_apply {S T : HSp D} (om : WRep S T) (p q : GA D S × GA D T) (f : WO S T → ℂ) :
     om p (om q f) = om (p * q) f := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `rw [om_mul_apply]; congr 1; ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weilRepUnitaryPair_left_apply_right {S T : HSp D} (om : WRep S T) (g : GA D S) (k : GA D T) (f : WO S T → ℂ) :
     om (g, 1) (om (1, k) f) = om (g, k) f := by
   rw [om_mul_apply]; congr 1; ext <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rw [om_mul_apply]; congr 1; ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weilRepUnitaryPair_right_apply_left {S T : HSp D} (om : WRep S T) (g : GA D S) (k : GA D T) (f : WO S T → ℂ) :
     om (1, k) (om (g, 1) f) = om (g, k) f := by
   rw [om_mul_apply]; congr 1; ext <;> simp
 
 /- English proof (translation)
-Use `haveI : BorelSpace (GA D T) := ⟨rfl⟩`. Take `⟨C, hC⟩` from `bdd_om_compact hW hf ((isCompact_singleton (x := g)).prod (isCompact_Kmax T b))`. Establish `hc` using `GlobalTheory.Unf.jointCont_all D ψ S T χS χT om hW f hf`. Establish `hk : Continuous fun k : Kmax T b => om (g, (k : GA D T)) f w` using `hc.comp ((continuous_const.prodMk continuous_subtype_val).prodMk continuous_const)`. Conclude with `Integrable.mono' (integrable_const C) hk.aestronglyMeasurable (ae_of_all _ fun k => hC (g, (k : GA D T)) ⟨Set.mem_singleton g, k.2⟩ w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_om_Kmax {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : WRep S T}
     (hW : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (b : GL (Fin T.rank) (AE D))
@@ -93,31 +93,27 @@ theorem integrable_om_Kmax {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS �
     (ae_of_all _ fun k => hC (g, (k : GA D T)) ⟨Set.mem_singleton g, k.2⟩ w)
 
 /- English proof (translation)
-Introduce `D ψ S T T' t d χS χT om om' hW hW' b hb ν hν μ₁ 𝓕₁ hcov hP`. Use `haveI : BorelSpace (GA D T) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (GA D T) := (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D T).2.1`. Establish `hKc` using `isCompact_Kmax T b`. Establish `hcomm : ∀ φ, IsThetaFunO ψ S T φ → ∀ g, projK om ν (om (g, 1) φ) = om (g, 1) (projK om ν φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `φ hφ g`. Use function extensionality and compare the values at `x`. Establish `hc` using `GlobalTheory.Unf.jointCont_all D ψ S T χS χT om hW φ hφ`. Take `⟨C1, hC1⟩` from `bdd_om_compact hW hφ ((isCompact_singleton (x := (1 : GA D S))).prod hKc)`. Take `⟨C2, hC2⟩` from `bdd_om_compact hW hφ ((isCompact_singleton (x := g)).prod hKc)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hF2 : (fun q : Kmax T b × WO S T => om (g, 1) (om (1, (q.1 : GA D T)) φ) q.2) = fun q => om (g, (q.1 : GA D T)) φ q.2`. Use function extensionality and compare the values at `q`. Rewrite using `[weilRepUnitaryPair_left_apply_right]`. Establish `key` using `GlobalTheory.CommIntBdd.om_integral_comm_bdd D ψ S T χS χT om hW (Kmax T b) ν (fun k : Kmax T b => om (1, (k : GA D T)) φ) (g, 1) (fun k => hW.om_pres _ φ hφ) (hc.comp ((continuous_const.prodMk (continuous_subtype_val.comp continuous_fst)).prodMk continuous_snd)) ⟨C1, fun k y => …`. Use `Eq.trans ?_ key.symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show ∫ k, om (1, (k : GA D T)) (om (g, 1) φ) x ∂ν = ∫ k, om (g, 1) (om (1, (k : GA D T)) φ) x ∂ν`. Simplify using `only [weilRepUnitaryPair_left_apply_right, weilRepUnitaryPair_right_apply_left]`. Establish `hmix` using `GlobalTheory.T.mixedModelFormulas_wittTarget D ψ S T T' t d χS χT om om' hW hW' μ₁ 𝓕₁ hcov`. Establish `cl1 : ∀ φ, IsThetaFunO ψ S T φ → ∀ g, ikeda ψ d μ₁ 𝓕₁ (projK om ν (om (g, 1) φ)) = om' (g, 1) (ikeda ψ d μ₁ 𝓕₁ (projK om ν φ))`. Introduce `φ hφ g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hcomm φ hφ g]`. Use `(hmix _ (hP φ hφ)).source g 0` as an intermediate fact. Rewrite `this` using `[Matrix.mul_zero]`. Conclude with `this`. Use `⟨cl1, fun K φ hφ hfin => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `Θ : Submodule ℂ (WO S T → ℂ)` to `{ carrier := {f | IsThetaFunO ψ S T f} add_mem' := fun hf hg => Formalism.IndefR.Fock.CCR.theta_add hf hg zero_mem' := Formalism.IndefR.Fock.CCR.theta_zero ψ S T smul_mem' := fun c _ hf => Formalism.IndefR.Fock.CCR.theta_smul hf c }`. Establish `hPadd : ∀ f g, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → projK om ν (f + g) = projK om ν f + projK om ν g`. Introduce `f g hf hg`. Use function extensionality and compare the values at `w`. Simplify using `only [projK, map_add, Pi.add_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `integral_add (integrable_om_Kmax hW hf b ν 1 w) (integrable_om_Kmax hW hg b ν 1 w)`. Establish `hPsmul : ∀ (c : ℂ) f, projK om ν (c • f) = c • projK om ν f`. Introduce `c f`. Use function extensionality and compare the values at `w`. Simplify using `only [projK, map_smul, Pi.smul_apply, smul_eq_mul, integral_const_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIadd : ∀ f g, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → ikeda ψ d μ₁ 𝓕₁ (f + g) = ikeda ψ d μ₁ 𝓕₁ f + ikeda ψ d μ₁ 𝓕₁ g`. Introduce `f g hf hg`. Use function extensionality and compare the values at `w`. Establish `h1` using `d.integrableOn_mixT hW.std.1.1 hcov hf 0 w`. Establish `h2` using `d.integrableOn_mixT hW.std.1.1 hcov hg 0 w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [ikeda, HypDec.mixT, HypDec.integrandT_eq, Pi.add_apply, mul_add] at h1 h2 ⊢`. Conclude with `integral_add h1 h2`. Establish `hIsmul : ∀ (c : ℂ) f, ikeda ψ d μ₁ 𝓕₁ (c • f) = c • ikeda ψ d μ₁ 𝓕₁ f`. Introduce `c f`. Use function extensionality and compare the values at `w`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ikeda, HypDec.mixT, HypDec.integrandT_eq, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`. Set `L : Θ →ₗ[ℂ] (WO S T' → ℂ)` to `{ toFun := fun f => ikeda ψ d μ₁ 𝓕₁ (projK om ν f.1) map_add' := fun f g => by`. Simplify using `only [Submodule.coe_add]`. Rewrite using `[hPadd _ _ f.2 g.2, hIadd _ _ (hP _ f.2) (hP _ g.2)]`. Use the proof step `map_smul' := fun c f => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Submodule.coe_smul, RingHom.id_apply]`. Rewrite using `[hPsmul, hIsmul] }`. Use `set V := Submodule.span ℂ {f : WO S T → ℂ | ∃ k ∈ K, f = om (k, 1) φ} with hV`. Establish `hle : V ≤ Θ` using `Submodule.span_le.2 (by rintro f ⟨k, -, rfl⟩; exact hW.om_pres _ φ hφ)`. Use `haveI : FiniteDimensional ℂ V := hfin`.
-
-Set `V'` to `Submodule.comap Θ.subtype V`. Establish `e : V' ≃ₗ[ℂ] V` using `(Submodule.equivMapOfInjective Θ.subtype Subtype.val_injective V').trans (LinearEquiv.ofEq _ _ (by rw [Submodule.map_comap_subtype, inf_eq_right.2 hle]))`. Use `haveI : FiniteDimensional ℂ V' := LinearEquiv.finiteDimensional e.symm`. Use `show FiniteDimensional ℂ (Submodule.span ℂ {f | ∃ k ∈ K, f = om' (k, 1) (ikeda ψ d μ₁ 𝓕₁ (projK om ν φ))})`. Use `Submodule.finiteDimensional_of_le (Submodule.span_le.2 ?_ : _ ≤ V'.map L)` and prove the remaining obligations.
-
-Introduce and unpack `f ⟨k, hk, rfl⟩`. Use `⟨⟨om (k, 1) φ, hW.om_pres _ φ hφ⟩, Submodule.subset_span ⟨k, hk, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `cl1 φ hφ k`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ikeda_projK_intertwine : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T T' : HSp D) (t : ℕ) (d : HypDec T T' t) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T) (om' : WRep S T'), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ S T' χS χT om' → ∀ b : GL (Fin T.rank) (AE D), IsMaj T b → ∀ ν : Measure (Kmax T b), IsProbabilityMeasure ν → ∀ (μ₁ : Measure (Mx D t S.rank)) (𝓕₁ : Set (Mx D t S.rank)), IsCovolOne (ratMx D t S.rank) μ₁ 𝓕₁ → (∀ φ, IsThetaFunO ψ S T φ → IsThetaFunO ψ S T (projK om ν φ)) → (∀ φ, IsThetaFunO ψ S T φ → ∀ g, ikeda ψ d μ₁ 𝓕₁ (projK om ν (om (g, 1) φ)) = om' (g, 1) (ikeda ψ d μ₁ 𝓕₁ (projK om ν φ))) ∧ ∀ (K : Subgroup (GA D S)) φ, IsThetaFunO ψ S T φ → IsKFinVec om K φ → IsKFinVec om' K (ikeda ψ d μ₁ 𝓕₁ (projK om ν φ)) := by
   intro D ψ S T T' t d χS χT om om' hW hW' b hb ν hν μ₁ 𝓕₁ hcov hP

@@ -15,17 +15,15 @@ open Formalism.L2.Th1.C (wpShift HasSecondLogDeriv)
 open Formalism.ELL (InFormalGroupPoints)
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => exact ⟨∅, by simp, by simp, by simp⟩`. Consider the case `insert a A _ ih`. Take `⟨Sq, h0, h1, h2⟩` from `ih`. Distinguish the cases in `ha : ∃ Q ∈ Sq, a - Q ∈ M ∨ a + Q ∈ M`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨Sq, h0.trans (Finset.subset_insert _ _), h1, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Break down `Finset.mem_insert.1 hc with rfl | hc` into its components or cases. Conclude with `ha`. Conclude with `h2 c hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨insert a Sq, Finset.insert_subset_insert _ h0, ?_, ?_⟩` and prove the remaining obligations. Introduce `Q hQ Q' hQ' h`. Break down `Finset.mem_insert.1 hQ with rfl | hQs` into its components or cases. Break down `Finset.mem_insert.1 hQ' with rfl | hQ'` into its components or cases. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd ⟨Q', hQ', h⟩ ha`. Break down `Finset.mem_insert.1 hQ' with rfl | hQ'` into its components or cases. Use `absurd ⟨Q, hQs, ?_⟩ ha` and prove the remaining obligations. Break down `h with h | h` into its components or cases. Use `left`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `M.neg_mem h` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Use `right`. Rewrite `h` using `[add_comm]`. Then use the resulting hypothesis. Conclude with `h1 Q hQs Q' hQ' h`.
-
-Introduce `c hc`. Break down `Finset.mem_insert.1 hc with rfl | hc` into its components or cases. Conclude with `⟨c, Finset.mem_insert_self _ _, Or.inl (by simp)⟩`. Take `⟨Q, hQ, h⟩` from `h2 c hc`. Conclude with `⟨Q, Finset.mem_insert_of_mem hQ, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_transversal (M : Submodule ℤ ℂ) (A : Finset ℂ) :
     ∃ Sq : Finset ℂ, Sq ⊆ A ∧
@@ -64,23 +62,19 @@ theorem exists_transversal (M : Submodule ℤ ℂ) (A : Finset ℂ) :
           exact ⟨Q, Finset.mem_insert_of_mem hQ, h⟩
 
 /- English proof (translation)
-Introduce `L α ω₀ hα hst _ hno`. Take `⟨S, hS1, _, hS3⟩` from `Formalism.L2.Th1.F.kerRepsExist L α hα hst`. Use `set Q0 : ℂ := (ω₀ / 2) / α with hQ0`. Establish `hαQ0 : α * Q0 = ω₀ / 2` using `by rw [hQ0]; field_simp`. Take `⟨Sq, h0, h1, h2⟩` from `exists_transversal L.lattice (insert Q0 (S.image (fun P => Q0 + P)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfib : ∀ c ∈ insert Q0 (S.image (fun P => Q0 + P)), α * c - ω₀ / 2 ∈ L.lattice`. Introduce `c hc`. Break down `Finset.mem_insert.1 hc with rfl | hc` into its components or cases. Rewrite using `[hαQ0, sub_self]`. Conclude with `L.lattice.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hc`. Establish `: α * (Q0 + P) - ω₀ / 2 = α * P` using `by rw [mul_add, hαQ0]; ring`. Rewrite using `[this]`. Conclude with `(hS1 P hP).1`. Use `⟨Sq, ?_, h1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q hQ`. Conclude with `⟨hfib Q (h0 hQ), hno Q (hfib Q (h0 hQ))⟩`. Introduce `z hz`. Establish `hker : α * (z - Q0) ∈ L.lattice`. Establish `: α * (z - Q0) = α * z - ω₀ / 2` using `by rw [mul_sub, hαQ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[this]`. Conclude with `hz`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hzc⟩ : ∃ c ∈ insert Q0 (S.image (fun P => Q0 + P)), z - c ∈ L.lattice := by`. Distinguish the cases in `hz0 : z - Q0 ∈ L.lattice`. Conclude with `⟨Q0, Finset.mem_insert_self _ _, hz0⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP, h⟩` from `hS3 (z - Q0) hker hz0`. Use `⟨Q0 + P, Finset.mem_insert_of_mem (Finset.mem_image.2 ⟨P, hP, rfl⟩), ?_⟩` and prove the remaining obligations. Establish `: z - (Q0 + P) = z - Q0 - P` using `by ring`. Rewrite using `[this]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Q, hQ, h⟩` from `h2 c hc`. Use `⟨Q, hQ, ?_⟩` and prove the remaining obligations. Break down `h with h | h` into its components or cases. Use `left`. Establish `: z - Q = (z - c) + (c - Q)` using `by ring`.
-
-Rewrite using `[this]`. Conclude with `L.lattice.add_mem hzc h`. Use `right`. Establish `: z + Q = (z - c) + (c + Q)` using `by ring`. Rewrite using `[this]`.
-
-Conclude with `L.lattice.add_mem hzc h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_fibre_exists_holds : HalfFibreExists := by
   classical
@@ -126,7 +120,7 @@ section Alg
 variable {K K' : Type} [Field K] [Field K'] (φ : K →+* K')
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[PowerSeries.coeff_derivative]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_derivative (f : PowerSeries K) :
     PowerSeries.map φ (PowerSeries.derivative K f) =
@@ -135,7 +129,7 @@ theorem map_derivative (f : PowerSeries K) :
   simp [PowerSeries.coeff_derivative]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[PowerSeries.coeff_rescale]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_rescale (a : K) (f : PowerSeries K) :
     PowerSeries.map φ (PowerSeries.rescale a f) =
@@ -144,7 +138,7 @@ theorem map_rescale (a : K) (f : PowerSeries K) :
   simp [PowerSeries.coeff_rescale]
 
 /- English proof (translation)
-Unfold `wpShift`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem map_wpShift (e : PowerSeries K) (c : K) :
     PowerSeries.map φ (wpShift e c) = wpShift (PowerSeries.map φ e) (φ c) := by
@@ -152,7 +146,7 @@ theorem map_wpShift (e : PowerSeries K) (c : K) :
   simp
 
 /- English proof (translation)
-Unfold `HasSecondLogDeriv at h ⊢`. Use `congrArg (PowerSeries.map φ) h` as an intermediate fact. Simplify `this` using `[map_derivative]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem second_log_derivative_map {f g : PowerSeries K} (h : HasSecondLogDeriv f g) :
     HasSecondLogDeriv (PowerSeries.map φ f) (PowerSeries.map φ g) := by
@@ -163,9 +157,9 @@ theorem second_log_derivative_map {f g : PowerSeries K} (h : HasSecondLogDeriv f
 end Alg
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ j P tr ι _ c wp wm al S h`. Take `⟨h1, h2⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `Q`. Use `second_log_derivative_map j (h1 Q)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2 : PowerSeries.map j (2 : PowerSeries K) = 2` using `map_ofNat _ 2`. Rewrite `this` using `[map_wpShift]`. Simplify `this` using `[e2]`. Use `congrArg (PowerSeries.map j) h2` as an intermediate fact. Simplify `this` using `[map_rescale]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fibre_map_holds : FibreMap := by
   intro K K' _ _ _ _ j P tr ι _ c wp wm al S h
@@ -180,7 +174,7 @@ theorem fibre_map_holds : FibreMap := by
     simpa [map_rescale] using this
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact absurd trivial h`. Consider the case `some x y hxy => exact not_lt.1 h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem norm_x_le_one_of_not_in_kernel {K : Type} [NormedField K] {W : WeierstrassCurve K}
     (P : W.toAffine.Point) (h : ¬ InFormalGroupPoints P) : ‖px W P‖ ≤ 1 := by
@@ -190,21 +184,19 @@ theorem norm_x_le_one_of_not_in_kernel {K : Type} [NormedField K] {W : Weierstra
 
 open Classical in
 /- English proof (translation)
-Introduce `l _ L ι W hU hW α α' t0 t' t'' hα hα' hinj ht0 h1 h2 h3 h4`. Take `⟨a1, a2, a3, a4, a6, hΔ⟩` from `hW`. Establish `hsub` using `Formalism.ELL.formal_group_points_subgroup.{0} ℂ_[l] W ⟨a1, a2, a3, a4, a6⟩ hΔ`. Establish `hadd` using `Formalism.L2.Th1.E.ptWAdd l L ι W hU`. Establish `hzero` using `Formalism.L2.Th1.E.ptWZero l L ι W hU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlat : ∀ t ∈ L.lattice, InFormalGroupPoints (ptW l L ι W t)`. Introduce `t ht`. Rewrite using `[(hzero t).2 ht]`. Discharge the goal by the elementary cases of `trivial`. Establish `hA : ∀ s t, InFormalGroupPoints (ptW l L ι W s) → InFormalGroupPoints (ptW l L ι W t) → InFormalGroupPoints (ptW l L ι W (s + t))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Introduce `s t hs ht`. Rewrite using `[hadd]`. Conclude with `(hsub _ _ hs ht).1`. Establish `hneg : ∀ t, ptW l L ι W (-t) = - ptW l L ι W t`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_neg_of_add_eq_zero_left` to reduce the goal to its premises. Rewrite using `[← hadd, neg_add_cancel]`. Conclude with `(hzero 0).2 L.lattice.zero_mem`. Establish `hN : ∀ t, InFormalGroupPoints (ptW l L ι W t) → InFormalGroupPoints (ptW l L ι W (-t))`. Introduce `t ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hneg]`. Conclude with `(hsub _ _ ht ht).2`. Establish `ht0' : ¬ InFormalGroupPoints (ptW l L ι W t0)`. Introduce `H`. Establish `e : t'' = α' * t0 + -(α' * t') + -(α' * t'' - t'')` using `by rw [ht0]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: InFormalGroupPoints (ptW l L ι W t'')`. Rewrite using `[e]`. Conclude with `hA _ _ (hA _ _ (hα' _ H) (hN _ (hlat _ h1))) (hN _ (hlat _ h2))`. Conclude with `h3 (hinj t'' this h4)`. Use `⟨norm_x_le_one_of_not_in_kernel _ ht0', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `Q hQ`. Apply `norm_x_le_one_of_not_in_kernel` to reduce the goal to its premises. Introduce `H`. Apply `ht0'` to reduce the goal to its premises. Establish `e : t0 = α * Q + -(α * Q - t0)` using `by ring`.
-
-Rewrite using `[e]`. Conclude with `hA _ _ (hα _ H) (hN _ (hlat _ hQ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem points_integral_at_two_holds : PointsIntTwo := by
   intro l _ L ι W hU hW α α' t0 t' t'' hα hα' hinj ht0 h1 h2 h3 h4

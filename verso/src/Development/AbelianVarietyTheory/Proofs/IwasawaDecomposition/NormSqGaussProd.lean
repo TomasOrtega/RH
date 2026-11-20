@@ -31,15 +31,15 @@ open MeasureTheory Measure
 open scoped ENNReal Pointwise
 
 /- English proof (translation)
-Establish `: Countable Γ` using `(AddSubgroup.inclusion_injective h).countable`. Establish `hb : Function.Bijective fun p : (B ⧸ Γ.addSubgroupOf B) × Γ => p.1.out + AddSubgroup.inclusion h p.2`. Establish `hm : ∀ (b : B) (γ : Γ), ((b + AddSubgroup.inclusion h γ : B) : B ⧸ Γ.addSubgroupOf B) = b` using `fun b γ => QuotientAddGroup.mk_add_of_mem b γ.2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, γ⟩ ⟨q', γ'⟩ e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `e'` using `congrArg (fun b : B => (b : B ⧸ Γ.addSubgroupOf B)) e`. Simplify using `only [hm, QuotientAddGroup.out_eq'] at e'`. Substitute `e'` using the available equality. Conclude with `Prod.ext rfl (AddSubgroup.inclusion_injective h (add_left_cancel e))`. Introduce `b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `QuotientAddGroup.mk_out_eq_add (Γ.addSubgroupOf B) b`. Use `⟨(b, -⟨γ.1, γ.2⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [hγ, map_neg]`. Conclude with `add_neg_cancel_right _ _`. Rewrite using `[hF.setLIntegral_eq_tsum, ← (Equiv.ofBijective _ hb).tsum_eq, ENNReal.tsum_prod']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[hF.setLIntegral_eq (hF.vadd_of_comm q.out) Φ (fun b v => hΦ b b.2 v), hFd.setLIntegral_eq_tsum']`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Establish `e : (γ +ᵥ (q.out +ᵥ F)) = (q.out + AddSubgroup.inclusion h γ) +ᵥ F`. Rewrite using `[add_comm, add_vadd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Set.inter_comm, e]`. Conclude with `lintegral_congr fun v => (hΦ _ (h (-γ).2) v).symm`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_sub {V : Type} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd₂ V] {μ : Measure V}
     [μ.IsAddLeftInvariant] {Γ B : AddSubgroup V} [Countable B] (h : Γ ≤ B) {Fd F : Set V}
@@ -71,11 +71,11 @@ theorem lintegral_sub {V : Type} [AddCommGroup V] [MeasurableSpace V] [Measurabl
   exact lintegral_congr fun v => (hΦ _ (h (-γ).2) v).symm
 
 /- English proof (translation)
-Establish `hq (i : Fin n)` using `quasiMeasurePreserving_eval (fun _ : Fin n => (volume : Measure Y)) i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.univ_pi_eq_iInter]`. Conclude with `NullMeasurableSet.iInter fun i => hF.nullMeasurableSet.preimage (hq i)`. Use `(ae_all_iff (μ := (volume : Measure (Fin n → Y)))).2 fun i => (hq i).ae hF.ae_covers filter_upwards [this] with z hz choose a ha using hz` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨fun i => a i, fun i _ => (a i).2⟩, fun i _ => ha i⟩`. Introduce `a b hab`. Take `⟨i, hi⟩ : ∃ i, a.1 i ≠ b.1 i` from `by by_contra! h`. Conclude with `hab (Subtype.ext (funext h))`. Establish `h` using `hF.aedisjoint (i := ⟨a.1 i, a.2 i trivial⟩) (j := ⟨b.1 i, b.2 i trivial⟩) fun e => hi (congrArg Subtype.val e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `measure_mono_null ?_ ((hq i).preimage_null h)` and prove the remaining obligations. Introduce and unpack `z ⟨⟨u, hu, hu'⟩, ⟨v, hv, hv'⟩⟩`. Conclude with `⟨⟨u i, hu i trivial, congrFun hu' i⟩, ⟨v i, hv i trivial, congrFun hv' i⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFD_pi {Y : Type} [AddCommGroup Y] [MeasureSpace Y] [SigmaFinite (volume : Measure Y)] {A : AddSubgroup Y}
     {F : Set Y} (hF : IsAddFundamentalDomain A F volume) (n : ℕ) :
@@ -99,25 +99,23 @@ theorem isFD_pi {Y : Type} [AddCommGroup Y] [MeasureSpace Y] [SigmaFinite (volum
     exact ⟨⟨u i, hu i trivial, congrFun hu' i⟩, ⟨v i, hv i trivial, congrFun hv' i⟩⟩
 
 /- English proof (translation)
-Establish `hV : (volume F).toReal ≠ 0` using `fun h => by simp [h] at hm`. Rewrite `hm` using `[div_eq_one_iff_eq hV]`. Establish `hi : Integrable φ (volume.restrict F)` using `Integrable.of_integral_ne_zero (hm ▸ hV)`. Use `set P : Set (Fin n → Fin g → ℂ) := Set.univ.pi fun _ : Fin n => F with hP`. Set `Φ : (Fin n → Fin g → ℂ) → ℝ` to `fun z => ∏ b, φ (z b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΦc : Continuous Φ` using `continuous_finset_prod _ fun b _ => hc.comp (continuous_apply b)`. Establish `hΦ0 : ∀ z, 0 ≤ Φ z` using `fun z => Finset.prod_nonneg fun b _ => h0 _`. Establish `h1 : ∫⁻ z in P, ENNReal.ofReal (Φ z) = volume P`. Establish `e1 : volume.restrict P = Measure.pi fun _ : Fin n => volume.restrict F` using `restrict_pi_pi _ _`. Establish `e2 : volume P = volume F ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, volume_pi_pi]`. Simplify using the standard rewrite rules. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal _ (Filter.Eventually.of_forall hΦ0), e1, e2]`. Rewrite using `[integral_fintype_prod_eq_pow, hm, Fintype.card_fin, ← ENNReal.toReal_pow, ENNReal.ofReal_toReal]`. Conclude with `ENNReal.pow_ne_top fun h => hV (by simp [h])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `Integrable.fintype_prod fun _ => hi`. Establish `hH` using `e.isAddHaarMeasure_map μ`. Establish `: (volume : Measure (Fin g → ℂ)).IsAddHaarMeasure` using `pi.isAddHaarMeasure _`. Establish `: (volume : Measure (Fin n → Fin g → ℂ)).IsAddHaarMeasure` using `pi.isAddHaarMeasure _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc'⟩ : ∃ c : NNReal, μ.map e = c • volume` from `⟨_, isAddLeftInvariant_eq_smul _ _⟩`. Establish `hme` using `e.toHomeomorph.measurableEmbedding`. Establish `hq : QuasiMeasurePreserving e μ volume` using `⟨e.continuous.measurable, by`. Rewrite using `[hc']`. Conclude with `smul_absolutelyContinuous⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Bn` to `AddSubgroup.pi Set.univ fun _ : Fin n => A`. Set `B : AddSubgroup V` to `Bn.comap e.toLinearEquiv.toAddEquiv.toAddMonoidHom`. Set `k : B ≃ Bn` to `e.toEquiv.subtypeEquiv fun _ => Iff.rfl`. Establish `: Countable Bn` using `Function.Injective.countable (f := fun (a : Bn) (i : Fin n) => (⟨a.1 i, a.2 i trivial⟩ : A)) fun a b h => Subtype.ext (funext fun i => congrArg Subtype.val (congrFun h i))`. Establish `: Countable B` using `k.injective.countable`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB : IsAddFundamentalDomain B (e ⁻¹' P) μ` using `(isFD_pi hF n).preimage_of_equiv hq k.symm.bijective fun a v => by`. Express the relevant statement in the definitionally equal form `e (e.symm a + v) = a + e v`. Simplify using the standard rewrite rules. Establish `hle : Γ ≤ B` using `fun v hv i _ => hΓ v hv i`. Establish `h2` using `lintegral_sub hle hFd hB (fun v => ENNReal.ofReal (Φ (e v))) fun b hb v => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Φ, map_add, Pi.add_apply]`. Conclude with `congrArg _ (Finset.prod_congr rfl fun i _ => hp _ (hb i trivial) _)`. Establish `h3` using `lintegral_sub hle hFd hB (fun _ => 1) fun _ _ _ => rfl`. Establish `h4 : ∀ Ψ : (Fin n → Fin g → ℂ) → ℝ≥0∞, ∫⁻ v in e ⁻¹' P, Ψ (e v) ∂μ = c * ∫⁻ z in P, Ψ z` using `fun Ψ => by`. Use `hme.lintegral_map (μ := μ.restrict (e ⁻¹' P)) Ψ` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3` using `hme.restrict_map μ P`. Simplify using `only [ContinuousLinearEquiv.coe_toHomeomorph] at this e3`. Rewrite using `[← this, ← e3, hc', restrict_smul, lintegral_smul_measure]`. Both sides reduce to the same expression. Rewrite `h2` using `[h4 fun z => ENNReal.ofReal (Φ z), h1]`.
-
-Rewrite `h3` using `[h4 fun _ => 1, setLIntegral_one, setLIntegral_one, ← h2]`. Rewrite using `[h3]`. Conclude with `integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun v => hΦ0 _) (hΦc.comp e.continuous).aestronglyMeasurable`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_prod_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] {g n : ℕ}
@@ -183,15 +181,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r} {x : Frame X.Ψ r}
 
 /- English proof (translation)
-Establish `hc` using `(hx_laws E r X g bas idx 0 hs Even.zero x hx').1`. Establish `hp : _ = th z` using `congrFun (h.2 u hu) z`. Establish `hε : ‖eps1 X w u‖ = 1`. Rewrite using `[eps1, Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `pv X idx x u = p at hp`. Simplify using `only [Pi.smul_apply, smul_eq_mul, fock] at hp`. Rewrite using `[← hp, add_comm p z, norm_mul, norm_mul, hε, _root_.one_mul, mul_pow, Complex.norm_exp, ← Real.exp_nat_mul, mul_comm (Real.exp _), _root_.mul_assoc, ← Real.exp_add]`. Use `congr 2`. Establish `e1 : (hx X bas idx x (z + p) (z + p)).re = (hx X bas idx x z z).re + 2 * (hx X bas idx x z p).re + (hx X bas idx x p p).re`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congrArg Complex.re (hc z p)` as an intermediate fact. Rewrite `this` using `[Complex.conj_re]`. Simplify using `only [hx, mulVec_add, star_add, add_dotProduct, dotProduct_add, Complex.add_re] at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : hx X bas idx x (z + (1 / 2 : ℂ) • p) p = hx X bas idx x z p + (1 / 2 : ℝ) * hx X bas idx x p p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [hx, mulVec_add, mulVec_smul, add_dotProduct, smul_dotProduct, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Simplify using `only [Nat.cast_one, _root_.one_mul, Complex.neg_re, Complex.re_ofReal_mul, Complex.add_re]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_periodic (hs : IsSympl X bas) (hx' : x ∈ X.dom) {w : E} {L : Lt E r} {th : (Fin g → ℂ) → ℂ}
     (h : IsTheta1 X bas idx w x L th) {u : Fin r → E} (hu : u ∈ L) (z : Fin g → ℂ) :
@@ -221,7 +219,7 @@ theorem norm_periodic (hs : IsSympl X bas) (hx' : x ∈ X.dom) {w : E} {L : Lt E
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_mul_distrib, ← Real.exp_sum, norm_mul, mul_pow, norm_prod, Finset.prod_pow, mul_comm, Ker.gaussR, Complex.norm_exp, ← Real.exp_nat_mul, ← Finset.mul_sum]`. Use `congr 2`. Establish `: ((Real.pi : ℂ) / 2) = ((Real.pi / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.neg_re, Complex.re_ofReal_mul, Complex.re_sum]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -236,11 +234,9 @@ theorem norm_sq_gauss_prod (th : (Fin g → ℂ) → ℂ) (z : Fin n → Fin g �
   push_cast; ring
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hΛ`. Use `choose k hk hk' using GlobalTheory.LatFin.exists_int_smul_mem L hL`. Use `⟨(∏ v ∈ s, k v).natAbs, Int.natAbs_pos.2 (Finset.prod_ne_zero_iff.2 fun v _ => hk v), fun v hv => ?_⟩` and prove the remaining obligations. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Int.dvd_natAbs.2 (Finset.dvd_prod_of_mem k hv)`. Rewrite using `[← natCast_zsmul, hc, mul_comm, mul_smul]`. Conclude with `zsmul_mem (hk' v) c`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [smul_add]`.
-
-Conclude with `add_mem hu hv`. Consider the case `smul a u _ hu => rw [smul_comm]`. Conclude with `L.smul_mem a hu`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {Λ L : Lt E r} (hΛ : Λ.FG) (hL : Submodule.span E (L : Set (Fin r → E)) = ⊤) :
     ∃ N : ℕ, 0 < N ∧ ∀ v ∈ Λ, N • v ∈ L := by
@@ -259,11 +255,11 @@ theorem exists_nsmul_mem {Λ L : Lt E r} (hΛ : Λ.FG) (hL : Submodule.span E (L
 end Classical
 
 /- English proof (translation)
-Use `Ker.ONBasis.mem_dom X fun σ => ?_` and prove the remaining obligations. Take `⟨ρ, rfl⟩` from `eT.surjective σ`. Use extensionality with `a b`. Establish `h` using `congrFun (congrFun (hZ ρ) b) a`. Establish `hs : sgnM X a b = -negM T X.p0 b a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sgnM, negM, Matrix.diagonal_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, ← h]`. Simplify using `only [FD.gram, Matrix.of_apply, hermC, FD.col, FD.mat, frOf, Equiv.symm_apply_apply, he, hm.1, Matrix.mul_apply, Matrix.conjTranspose_apply, gramAt, Matrix.map_apply, Fin.cast_eq_self, finCongr_refl, Matrix.reindex_refl_refl, Matrix.neg_apply, map_neg, ← Finset.sum_neg_distrib, M …`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frOf_mem_dom {D : D7} {T : HSp D} {X : Data D.host.E T.rank} {eT : D.what₂.Tau ≃ X.Ψ} (hm : ModelW T rfl X)
     (he : ∀ ρ, (eT ρ).1 = tauE D ρ) {Z : Fam T} (hZ : IsONeg T X.p0 Z) : frOf rfl eT Z ∈ X.dom := by
@@ -294,47 +290,41 @@ def conjPt {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X X' : 
   right_inv _ := by funext τ k a; simp
 
 /- English proof (translation)
-Introduce `D S T r g hr ψ θ X eT bas idx hS w hw hw' hw2 Z hZ LT L hL hA f hf th hth hmean`. Substitute `hr` using the available equality. Take `⟨X', m, hq', bas', idx', hs, π, hΛ, hEF, hhe, H⟩` from `GlobalTheory.OneMapRef.Flip.exists_flip_model D S T _ g rfl ψ θ X eT bas idx hS (T.rank - X.p0) (Nat.add_sub_cancel' X.p0_le)`. Take `⟨hB, H⟩` from `H Z`. Take `⟨hsB, hZak, -⟩` from `H hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `replace hB := hB.1 hZ`. Use `set C := ctxOf hS.1 hS.2.1 hS.2.2.2.1 X' m hq' bas' idx' hs with hC`. Use `set B : C.Bas := fun ρ => (Z ρ).submatrix id π with hBd`. Establish `hsym` using `hS.2.2.2.2.2.2.2`. Establish `hev` using `hS.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `replace hEF : ∀ u v, EF X' u v = EF X u v := hEF`. Use `replace hΛ : X'.Λ = X.Λ := hΛ.trans (Submodule.comap_id _)`. Use `replace hA : Ker.IsAA L LT := hA`. Use `replace hhe : ∀ y φ, heisG X' bas' y φ = heisG X bas y φ := hhe`. Establish `hL' : SelfD X' L` using `⟨hL.1, by simpa only [hEF] using hL.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx'` using `frOf_mem_dom hS.2.2.2.2.1 hS.2.2.2.2.2.2.1 hZ`. Use `set x := frOf rfl eT Z with hxd`. Take `⟨-, hv⟩` from `hf`. Establish `hstar : ∀ v : Fin S.rank → D.host.E, v ∈ stdL D.host.E S.rank ↔ star v ∈ stdL D.host.E S.rank`. Establish `: ∀ v : Fin S.rank → D.host.E, v ∈ stdL D.host.E S.rank → star v ∈ stdL D.host.E S.rank` using `fun v hv => (SW.Base.mem_stdL _).2 fun a => SW.Base.isIntegral_cc ((SW.Base.mem_stdL _).1 hv a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `fun v => ⟨this v, fun h => by simpa using this _ h⟩`. Establish `hV` using `SW.Base.stdL_mem_Vset (E := D.host.E) S.rank 1`. Take `⟨v, hvac⟩` from `(TensVac.vacua _ _ X g bas idx S.rank hsym hev w hw hw' L hL 1 _ hV).1`. Establish `hvac' : IsVac X' bas' w (tens (stdL D.host.E S.rank) L) v` using `⟨hvac.1, hvac.2.1, fun y hy => by simpa only [SW.epsW, hEF, hhe] using hvac.2.2 y hy⟩`. Take `⟨t, ht⟩` from `(Ker.latVac_th_line D S T C w hw hw' hw2 1 _ hV L hL').2 B hB v hvac' f hv.theta (fun τ => by rw [hsB]; exact hv.fock τ) (by rw [← Ker.LatTens.latO_eq_hatA D S T C _ _ LT _ hstar hA]; exact hv.lat)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz` using `((hZak v _).1 (Ker.ZakEx.isZak_Th D S T C _ (Ker.ONBasis.mem_dom _ (Ker.ONBasis.isONFr_xB C hB)) v hvac.1).1).2`. Take `⟨κ, hκ⟩` from `VacProd.prod_eq_mul_thA _ _ X g bas idx S.rank hsym hev w hw hw' L hL v hvac x hx' th hth`. Take `⟨A, F, hAm, hF, hm⟩` from `hmean`. Establish `hκ0 : κ ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩ : ∃ z, th z ≠ 0` from `by by_contra! h0`. Simplify using `[h0] at hm`. Conclude with `Finset.prod_ne_zero_iff.2 (fun _ _ => hz) ((hκ fun _ => z).trans (zero_mul _))`. Establish `hfp : ∀ p : WO S T, Ker.IsRealPt p → f p = t / κ * (Ker.gaussR X bas idx x (Ker.zR X idx x (rePt θ rfl eT p)) * ∏ b, th (Ker.zR X idx x (rePt θ rfl eT p) b))` using `fun p hp => by`. Rewrite using `[ht, Pi.smul_apply, hz p hp, hκ, Ker.thR, smul_eq_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨t / κ, ?_, hfp⟩` and prove the remaining obligations. Generalize the expression as in `t / κ = a at hfp`. Take `⟨⟨⟨μ, 𝓕⟩, hμ⟩, hn⟩` from `hv.norm`. Establish `h1 : nrm2 μ 𝓕 f = 1` using `hn _ hμ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N₀, hN₀, hN⟩` from `Ker.TorusMean.ipO_eq_mean D S T C μ 𝓕 hμ f f hv.theta hv.theta`. Take `⟨N₁, hN₁, hN'⟩` from `exists_nsmul_mem X.Λ_fg (TensLat.span_of_selfD X hL)`. Take `⟨⟨Fd, hFd⟩, hN⟩` from `hN (N₀ * N₁) (Nat.mul_pos hN₀ hN₁) (Dvd.intro _ rfl)`. Take `⟨⟨e₀, he₀⟩, -⟩` from `Ker.zR_laws _ _ X g _ (Nat.add_sub_cancel' X.p0_le) bas idx S.rank hsym hev x hx'`. Set `J` to `conjPt (eT.symm.trans m.e) S.rank`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `e` to `J.toContinuousLinearEquiv.trans e₀`. Establish `hJ : ∀ p : WO S T, e (C.realPt p) = Ker.zR X idx x (rePt θ rfl eT p)` using `fun p => by`. Rewrite using `[← he₀]`. Use `congrArg e₀ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ k a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `conj (conj (compAt θ (m.e.symm (m.e (eT.symm τ))) p a k)) = _`. Rewrite using `[Complex.conj_conj, Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `hJ' : ∀ y, e (Ker.embR X' y) = Ker.zR X idx x (Ker.embR X y)` using `fun y => by`. Rewrite using `[← he₀]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg e₀ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ k a`. Take `⟨ρ, rfl⟩` from `eT.surjective τ`. Express the relevant statement in the definitionally equal form `conj ((m.e (eT.symm (eT ρ))).1 (y k a)) = (eT ρ).1 (y k a)`. Rewrite using `[Equiv.symm_apply_apply, m.e_emb, hS.2.2.2.2.2.2.1, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `φ : (Fin g → ℂ) → ℝ` to `fun z => ‖th z‖ ^ 2 * Real.exp (-Real.pi * (hx X bas idx x z z).re)`. Establish `hφ : Continuous φ`. Use `hth.1.continuous` as an intermediate fact. Simplify using `only [φ, hx]`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Countable D.host.E` using `(Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Establish `: Countable A`. Establish `: (A : Set (Fin g → ℂ)) ⊆ Set.range (pv X idx x)` using `fun z hz => by`. Take `⟨u, -, rfl⟩` from `(hAm z).1 hz`. Conclude with `⟨u, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `((Set.countable_range _).mono this).to_subtype`. Establish `: (volume : Measure (Fin T.rank → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (Fin S.rank → Fin T.rank → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (Ker.WR X' S.rank)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `h2` using `integral_prod_eq (volume : Measure (Ker.WR X' S.rank)) e hF hφ (fun z => by positivity) (fun p hp z => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, rfl⟩` from `(hAm p).1 hp`. Conclude with `norm_periodic hsym hx' hth hu z) hm (Γ := Ker.latR X' S.rank (N₀ * N₁)) (fun u hu => by`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨y, hy, rfl⟩` from `hu`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Establish `e1 : (N₀ * N₁) • Ker.embR X' y = Ker.embR X' ((N₀ * N₁) • y)`. Use function extensionality and compare the values at `τ k a`. Simplify using `[Ker.embR]`. Rewrite using `[e1, hJ', hAm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(N₀ * N₁) • y b, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `nsmul_mem (hN' _ (hΛ ▸ hy b)) _`. Consider the case `zero => simp`. Consider the case `add u u' _ _ hu hu' => exact fun b => by rw [map_add]; exact add_mem (hu b) (hu' b)`.
-
-Consider the case `neg u _ hu => exact fun b => by rw [map_neg]; exact neg_mem (hu b)) hFd`. Establish `h3` using `hN Fd hFd (fun u => ((‖a‖ ^ 2 * ∏ b, φ (e u b) : ℝ) : ℂ)) fun p hp => by`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hfp p hp, norm_mul, mul_pow, norm_sq_gauss_prod, hJ]`. Establish `h4 : Ker.ipO μ 𝓕 f f = 1`. Simplify using `only [Ker.ipO, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
-
-Rewrite using `[integral_complex_ofReal]`. Conclude with `h1` after adjusting the coercions. Rewrite `h3` using `[h4, integral_complex_ofReal, integral_const_mul]`. Use `erw [h2] at h3`. Establish `h5 : (1 : ℝ) = (volume Fd).toReal⁻¹ * (‖a‖ ^ 2 * (volume Fd).toReal)` using `by exact_mod_cast h3`.
-
-Establish `h6 : (volume Fd).toReal ≠ 0` using `fun h => by simp [h] at h5`. Rewrite `h5` using `[mul_comm, _root_.mul_assoc, mul_inv_cancel₀ h6, _root_.mul_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg a) two_ne_zero).1 h5.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_eq_unit_mul : ∀ (D : D7) (S T : HSp D) (r g : ℕ) (hr : T.rank = r) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (X : Data D.host.E r) (eT : D.what₂.Tau ≃ X.Ψ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (hS : IsSet ψ θ S T hr X eT bas), ∀ w : D.host.E, IsIntegral ℤ w → w + cc w = 1 → GlobalTheory.Ker.IdemTwo w → ∀ Z : Fam T, IsONeg T X.p0 Z → ∀ (LT : Lt D.host.E T.rank) (L : Lt D.host.E r), SelfD X L → GlobalTheory.Ker.IsAA (latW hr L) LT → ∀ f, IsVacO ψ θ S T (fun _ => 1) (cartZ T X.p0 Z) (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) f → ∀ th : (Fin g → ℂ) → ℂ, IsTheta1 X bas idx w (frOf hr eT Z) L th → MeanOne X bas idx (frOf hr eT Z) L th → ∃ a : ℂ, ‖a‖ = 1 ∧ ∀ p : WO S T, GlobalTheory.Ker.IsRealPt p → f p = a * (GlobalTheory.Ker.gaussR X bas idx (frOf hr eT Z) (GlobalTheory.Ker.zR X idx (frOf hr eT Z) (rePt θ hr eT p)) * ∏ b, th (GlobalTheory.Ker.zR X idx (frOf hr eT Z) (rePt θ hr eT p) b)) := by
   intro D S T r g hr ψ θ X eT bas idx hS w hw hw' hw2 Z hZ LT L hL hA f hf th hth hmean

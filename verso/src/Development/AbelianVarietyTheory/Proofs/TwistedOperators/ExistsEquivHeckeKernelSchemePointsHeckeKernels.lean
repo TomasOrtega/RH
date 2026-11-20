@@ -13,11 +13,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {P : Ideal (𝓞 E)} {p i : ℕ}
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Take `⟨C₀, hC₀, hk⟩` from `Z.hecke k w`. Take `⟨ρ, e₀⟩` from `GlobalTheory.HkSetPull.exists_equiv Z.m₁.cart (Over.mk w)`. Establish `hh : ∀ (u : Over.mk w ⟶ Z.o₁.t.G) (v : Over.mk (w ≫ Z.π₁) ⟶ Xo.univ.t.G), v.left = u.left ≫ Z.m₁.toSABMap.φ → (u ∈ C₀ ↔ v ∈ Subgroup.comap ρ.symm.toMonoidHom C₀)` using `fun u v e => by`. Rewrite using `[show v = ρ u from Over.OverMorphism.ext (e.trans (e₀ u).symm)]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ ↔ ρ.symm (ρ u) ∈ C₀`. Rewrite using `[ρ.symm_apply_apply]`. Use `⟨Subgroup.comap ρ.symm.toMonoidHom C₀, (GlobalTheory.HkSetPull.heckeKer_iff Dw P p i Z.m₁.toSABMap (Over.mk w) C₀ _ hh).1 hk, fun C' => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `v`. Take `⟨u, rfl⟩` from `ρ.surjective v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Conclude with `(h.2 u _ (e₀ u)).symm.trans ((hC₀ u).symm.trans (hh u _ (e₀ u)))`. Introduce and unpack `rfl`. Conclude with `⟨rfl, fun u v e => (hC₀ u).symm.trans (hh u v e)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_carried (Z : KerScheme Xo P p i) {k : Type} [Field k] [IsAlgClosed k] (w : Sp k ⟶ Z.Hk)
     (y : Sp k ⟶ Xo.X) (hw : w ≫ Z.π₁ = y) :
@@ -40,9 +40,7 @@ theorem exists_carried (Z : KerScheme Xo P p i) {k : Type} [Field k] [IsAlgClose
     exact ⟨rfl, fun u v e => (hC₀ u).symm.trans (hh u v e)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo P p i Z hA k _ _ y`. Use `choose c hc hcc using fun w : {w : Sp k ⟶ Z.Hk // w ≫ Z.π₁ = y} => exists_carried Z w.1 y w.2`. Use `⟨Equiv.ofBijective (fun w => ⟨c w, hc w⟩) ⟨fun w w' e => ?_, fun C => ?_⟩, hcc⟩` and prove the remaining obligations. Conclude with `Subtype.ext (((GlobalTheory.kerScheme_points E H Dw l Xo P p i Z hA).1 k y (c w) (hc w)).unique ((hcc w _).2 rfl) ((hcc w' _).2 (congrArg Subtype.val e)))`. Take `⟨z, hz, -⟩` from `(GlobalTheory.kerScheme_points E H Dw l Xo P p i Z hA).1 k y C.1 C.2`.
-
-Conclude with `⟨⟨z, hz.1⟩, Subtype.ext ((hcc ⟨z, hz.1⟩ _).1 hz).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_carries : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (P : Ideal (𝓞 E)) (p i : ℕ) (Z : KerScheme Xo P p i), admitted l P p → ∀ (k : Type) [Field k] [IsAlgClosed k] (y : Sp k ⟶ Xo.X), ∃ e : {w : Sp k ⟶ Z.Hk // w ≫ Z.π₁ = y} ≃ {C : Subgroup (Over.mk y ⟶ Xo.univ.t.G) // Xo.univ.t.HeckeKer (Over.mk y) Dw P p i C}, ∀ w C, Z.Carries w.1 y C ↔ C = (e w).1 := by
   intro E _ _ _ H Dw l Xo P p i Z hA k _ _ y

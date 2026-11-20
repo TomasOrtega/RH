@@ -9,7 +9,7 @@ section Form
 variable {M : Type} [AddCommGroup M] (B : LinearMap.BilinForm ℤ M)
 
 /- English proof (translation)
-Establish `h` using `alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, alt x, alt y, zero_add, add_zero] at h`. Conclude with `eq_neg_of_add_eq_zero_right h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma skew (alt : ∀ x, B x x = 0) (x y : M) : B x y = - B y x := by
   have h := alt (x + y)
@@ -17,19 +17,19 @@ private lemma skew (alt : ∀ x, B x x = 0) (x y : M) : B x y = - B y x := by
   exact eq_neg_of_add_eq_zero_right h
 
 /- English proof (translation)
-The claim follows from `Nat.isCoprime_iff_coprime.2 hc`.
+A detailed English derivation is pending.
 -/
 private lemma bezout {e n : ℕ} (hc : e.Coprime n) : ∃ a b : ℤ, a * e + b * n = 1 :=
   Nat.isCoprime_iff_coprime.2 hc
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `bezout hc`. Set `f : M →ₗ[ℤ] ℤ` to `{ toFun := fun y => B x y / n map_add' := fun y y' => by`. Simplify using `only [map_add]`. Conclude with `Int.add_ediv_of_dvd_right (h y')`. Use the proof step `map_smul' := fun c y => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_smul, smul_eq_mul, RingHom.id_apply]`. Conclude with `Int.mul_ediv_assoc c (h y) }`. Establish `hf : ∀ y, (n : ℤ) * f y = B x y` using `fun y => Int.mul_ediv_cancel' (h y)`. Take `⟨w, hw⟩` from `perf f`. Establish `key : n • w = e • x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `nd` to reduce the goal to its premises. Use extensionality with `y`. Simplify using `only [map_nsmul, LinearMap.smul_apply, hw, nsmul_eq_mul, ← hf]`. Expand and normalize the polynomial expressions, which then agree. Establish `key' : (e : ℤ) • x = (n : ℤ) • w`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, key]`. Use `⟨a • w + b • x, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key', ← Nat.cast_smul_eq_nsmul ℤ n, smul_add, smul_comm a, smul_comm b]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma first {n e : ℕ} (hn : 0 < n) (hc : e.Coprime n) (nd : Function.Injective B)
     (perf : ∀ f : M →ₗ[ℤ] ℤ, ∃ x, B x = e • f) (x : M) (h : ∀ y, (n : ℤ) ∣ B x y) :
@@ -59,13 +59,13 @@ private lemma first {n e : ℕ} (hn : 0 < n) (hc : e.Coprime n) (nd : Function.I
       rw [key', ← Nat.cast_smul_eq_nsmul ℤ n, smul_add, smul_comm a, smul_comm b]
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `bezout hc`. Set `F : M → M →ₗ[ℤ] ℤ` to `fun y => (B.flip y) ∘ₗ h.toIntLinearMap`. Establish `hF : ∀ y x, F y x = B (h x) y` using `fun y x => rfl`. Use `choose w hw using fun y => perf (F y)`. Establish `wadd : ∀ y y', w (y + y') = w y + w y'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y y'`. Apply `nd` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [map_add, LinearMap.add_apply, hw, LinearMap.smul_apply, hF, smul_add]`. Set `k : M →+ M` to `AddMonoidHom.mk' (fun y => -(a • w y)) (by`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y y'`. Simplify using `only [wadd, smul_add, neg_add])`. Use `⟨k, fun x y => ?_⟩` and prove the remaining obligations. Establish `h1 : B x (k y) = a * (e * B (h x) y)`. Simplify using `only [k, AddMonoidHom.mk'_apply, map_neg, map_zsmul, smul_eq_mul, skew B alt x (w y), hw, LinearMap.smul_apply, hF, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `⟨b * B (h x) y, by linear_combination (-(B (h x) y)) * hab⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma second {n e : ℕ} (hc : e.Coprime n) (nd : Function.Injective B)
     (alt : ∀ x, B x x = 0) (perf : ∀ f : M →ₗ[ℤ] ℤ, ∃ x, B x = e • f) (h : M →+ M) :
@@ -91,19 +91,17 @@ private lemma second {n e : ℕ} (hc : e.Coprime n) (nd : Function.Injective B)
   exact ⟨b * B (h x) y, by linear_combination (-(B (h x) y)) * hab⟩
 
 /- English proof (translation)
-Set `N : AddSubgroup M` to `(nsmulAddMonoidHom n).range`. Establish `memN : ∀ y, y ∈ N ↔ ∃ z, n • z = y` using `fun y => by`. Simplify using `[N, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`. Establish `hle : N ≤ N.comap g`. Introduce `y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, rfl⟩` from `(memN y).1 hy`. Conclude with `(memN _).2 ⟨g z, (map_nsmul g n z).symm⟩`. Set `G` to `QuotientAddGroup.map N N g hle`. Use `haveI : AddGroup.FG M := Module.Finite.iff_addGroup_fg.1 inferInstance`. Use `haveI : Finite (M ⧸ N) := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `AddCommGroup.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `u`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective u`. Rewrite using `[isOfFinAddOrder_iff_nsmul_eq_zero]`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `(memN _).2 ⟨y, rfl⟩`. Establish `ginj : Function.Injective G`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective u`. Rewrite `hu` using `[QuotientAddGroup.map_mk, QuotientAddGroup.eq_zero_iff]`. Take `⟨z, hz⟩` from `(memN _).1 hu`. Take `⟨w, hw⟩` from `inj y z hz.symm`. Rewrite using `[QuotientAddGroup.eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(memN _).2 ⟨w, hw.symm⟩`. Take `⟨u, hu⟩` from `Finite.injective_iff_surjective.1 ginj (QuotientAddGroup.mk x)`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective u`. Rewrite `hu` using `[QuotientAddGroup.map_mk, QuotientAddGroup.eq]`. Take `⟨z, hz⟩` from `(memN _).1 hu`.
-
-Conclude with `⟨y, -z, by rw [smul_neg, hz]; abel⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma third {n : ℕ} (hn : 0 < n) [Module.Finite ℤ M] (g : M →+ M)
     (inj : ∀ x z, g x = n • z → ∃ w, x = n • w) (x : M) : ∃ y z, g y = x + n • z := by
@@ -143,23 +141,23 @@ private lemma third {n : ℕ} (hn : 0 < n) [Module.Finite ℤ M] (g : M →+ M)
 end Form
 
 /- English proof (translation)
-Introduce `q _ D e`. Use `haveI := D.finLa`. Take `⟨e', he', perf⟩` from `D.perfP`. Establish `hc : e'.Coprime (q ^ e)` using `Nat.Coprime.pow_right e he'`. Establish `hn : 0 < q ^ e` using `pow_pos (Fact.out : Nat.Prime q).pos e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fst : ∀ x : D.La, (∀ y, ((q ^ e : ℕ) : ℤ) ∣ D.EF x y) → Cg (q ^ e) x 0`. Introduce `x hx`. Take `⟨z, hz⟩` from `first D.EF hn hc D.nondeg perf x hx`. Conclude with `⟨z, by rw [zero_add]; exact hz⟩`. Use `⟨fst, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨k, hk⟩` from `second D.EF hc D.nondeg D.alt perf h.toAddMonoidHom`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Introduce `c y`. Take `⟨z, hz⟩` from `fst (k (c • y) - c • k y) (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨b', hb'⟩ : ∃ b', MulOpposite.unop (D.star b') = c` from `⟨_, D.star_star c⟩`. Establish `e1` using `hk x (c • y)`. Establish `e2` using `hk (b' • x) y`. Establish `a1 : D.EF (h.toAddMonoidHom (b' • x)) y = D.EF (h.toAddMonoidHom x) (c • y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.toAddMonoidHom_coe, map_smul, D.adj, hb']`. Establish `a2 : D.EF (b' • x) (k y) = D.EF x (c • k y)` using `by rw [D.adj, hb']`. Rewrite `e2` using `[a1, a2]`. Rewrite using `[skew D.EF D.alt, map_sub, dvd_neg]`. Establish `h5` using `dvd_sub e2 e1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[sub_sub_sub_cancel_left] at h5)` and apply the resulting hypothesis. Conclude with `⟨z, by rw [zero_add, sub_eq_iff_eq_add'] at hz; exact hz⟩`. Introduce `g hg`. Establish `ginj : ∀ x z, g x = (q ^ e) • z → ∃ w, x = (q ^ e) • w`. Introduce `x z hz`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `first D.EF hn hc D.nondeg perf x` to reduce the goal to its premises. Introduce `y`. Establish `h3` using `hg x y`. Rewrite `h3` using `[hz, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Establish `h2 : ((q ^ e : ℕ) : ℤ) ∣ ((q ^ e : ℕ) : ℤ) * D.EF z (g y)` using `dvd_mul_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `dvd_sub h2 h3`. Rewrite `h4` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use `⟨fun x ⟨z, hz⟩ => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `ginj x z (by rw [hz, zero_add])`. Conclude with `⟨w, by rw [zero_add]; exact hw⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, z, hyz⟩` from `third hn g ginj x`. Conclude with `⟨y, z, hyz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adj : UpperTheory.Gal.FiniteEtaleModels.O.Adj := by
   intro q _ D e

@@ -22,9 +22,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `gen_of_lbIso (LBIso.symm (t.adj a))`. Take `⟨v, hv, -⟩` from `exists_gen t.PP.isLB (φ' := rosatiφ t.G (t.act.act a) (t.act.act (H.bar a))) (ε' := rosatiε) (fun U _ k => by`. Establish `p` using `prod_ros (t.act.act a) (t.act.act (H.bar a)) (fst t.G t.G) (snd t.G t.G) k`. Rewrite `p` using `[lift_fst_snd]`. Simplify using `only [Over.id_left, Category.id_comp] at p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(prod_sum₂ (K := ULift.{0} (Finset (Fin 2))) (K' := ULift.{0} (Finset (Fin 2))) (U := U) _ (prod_cube₂ _ _ k) (prod_neg _ _ (prod_cube₂ _ _ k))).trans (Eq.trans ?_ p.symm)` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) u hu`. Conclude with `⟨v, hv⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sab_gen (t : SAB H S) (a : 𝓞 E) : ∃ v : LB.Gen (LB.LinComb t.PP.L
     (rosatiφ t.G (t.act.act a) (t.act.act (H.bar a))) rosatiε), v.IsGen := by
@@ -42,13 +42,13 @@ theorem sab_gen (t : SAB H S) (a : 𝓞 E) : ∃ v : LB.Gen (LB.LinComb t.PP.L
   exact ⟨v, hv⟩
 
 /- English proof (translation)
-Use `haveI := P.isAb.comm`. Set `U₂` to `lift (pushPt hα.1.w (fst P.A P.A)) (pushPt hα.1.w (snd P.A P.A))`. Establish `u₁ : U₂.left ≫ (fst t.G t.G).left = (fst P.A P.A).left ≫ α` using `TripleDescent.lift_left_fst _ _`. Establish `u₂ : U₂.left ≫ (snd t.G t.G).left = (snd P.A P.A).left ≫ α` using `TripleDescent.lift_left_snd _ _`. Establish `v₁ : (fst P.A P.A ≫ a).left ≫ α = U₂.left ≫ (fst t.G t.G ≫ t.act.act c).left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, ← u₁, Category.assoc]`. Establish `v₂ : (snd P.A P.A ≫ b).left ≫ α = U₂.left ≫ (snd t.G t.G ≫ t.act.act (H.bar c)).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hb, ← Category.assoc, ← u₂, Category.assoc]`. Establish `hφ : ∀ k, rosatiφ P.A a b k ≫ α = U₂.left ≫ rosatiφ t.G (t.act.act c) (t.act.act (H.bar c)) k` using `fun k => by fin_cases k exacts [ArcPull.mul_push hα U₂.left v₁ u₂.symm, v₁, u₂.symm, ArcPull.mul_push hα U₂.left u₁.symm v₂, u₁.symm, v₂]`. Take `⟨t₀, ht₀⟩` from `sab_gen t c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hL`. Choose the witnesses or unpack the hypotheses as in `⟨t₁, ht₁⟩ : ∃ t₁ : LB.Gen (LB.LinComb t.PP.L (fun k => rosatiφ P.A a b k ≫ α) rosatiε), t₁.IsGen := by`. Rewrite using `[show (fun k => rosatiφ P.A a b k ≫ α) = fun k => U₂.left ≫ rosatiφ t.G (t.act.act c) (t.act.act (H.bar c)) k from funext hφ]`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ t₀ ht₀ _⟩`. Take `⟨a₀, ha₀⟩` from `exists_down ((isGen_iff w).1 hw) t.PP.isLB P.isLB t₁ ht₁`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun s => ⟨⊤, trivial, _, DVR.pullGen_isGen _ _ _ a₀ ha₀ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem rosati_fibre (t : SAB H S) {K : Type} [Field K] (P : PolAV (Sp K)) (x : Sp K ⟶ S)
     {α : P.A.left ⟶ t.G.left} (hα : IsGrpPullback P.A t.G x α) (hL : LBIso P.L (t.PP.L.pull α))
@@ -75,9 +75,9 @@ theorem rosati_fibre (t : SAB H S) {K : Type} [Field K] (P : PolAV (Sp K)) (x : 
   exact fun s => ⟨⊤, trivial, _, DVR.pullGen_isGen _ _ _ a₀ ha₀ _⟩
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `haveI := P.isAb.comm`. Take `⟨β, hβm, hβ⟩` from `grpPullback_iso (isGrpPullback_pullback t.G x) hα`. Use `haveI := hβm`. Set `j' : OAct (𝓞 E) P.A` to `PolPartPull.oActIso β (OAct.pullback x t.G t.act)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : ∀ c, (j'.act c).left ≫ α = α ≫ (t.act.act c).left` using `fun c => by show (β.inv ≫ (Over.pullback x).map (t.act.act c) ≫ β.hom).left ≫ α = _`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hβ, PolPartPull.pbMap_fst, ← hβ, ← Category.assoc, ← Category.assoc, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, Category.id_comp]`. Conclude with `⟨{ j'.toRingAct with rosati := fun c => rosati_fibre t P x hα hL c (hj c) (hj (star c)) }, hj⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_oact (t : SAB H S) {K : Type} [Field K] (P : PolAV (Sp K)) (x : Sp K ⟶ S)
     {α : P.A.left ⟶ t.G.left} (hα : IsGrpPullback P.A t.G x α) (hL : LBIso P.L (t.PP.L.pull α)) :
@@ -101,13 +101,11 @@ namespace GlobalTheory.UMinQF
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Set `φ : Multiplicative La →* Q` to `MonoidHom.mk' (fun a => f a.toAdd) (fun a b => hf _ _)`. Use `haveI : Group.FG (Multiplicative La) := AddGroup.fg_iff_mul_fg.1 (Module.Finite.iff_addGroup_fg.1 ‹_›)`. Use `haveI := Group.fg_range φ`. Establish `hpow : ∀ a : Multiplicative La, φ a ^ n = 1` using `fun a => by`. Rewrite using `[← map_pow]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hk a.toAdd`. Use `haveI : Finite φ.range := CommGroup.finite_of_fg_isMulTorsion _ (fun y => by`. Take `⟨_, a, rfl⟩` from `y`. Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, Subtype.ext (hpow a)⟩)`. Establish `: Set.range f = (φ.range : Set Q)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨Multiplicative.ofAdd a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`.
-
-Conclude with `⟨a.toAdd, rfl⟩`. Rewrite using `[this]`. Conclude with `Set.toFinite _`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_finite {La Q : Type} [AddCommGroup La] [Module.Finite ℤ La] [CommGroup Q] (f : La → Q)
     (hf : ∀ a b, f (a + b) = f a * f b) (n : ℕ) (hn : 0 < n) (hk : ∀ a, f (n • a) = 1) : (Set.range f).Finite := by
@@ -126,11 +124,11 @@ theorem range_finite {La Q : Type} [AddCommGroup La] [Module.Finite ℤ La] [Com
   rw [this]; exact Set.toFinite _
 
 /- English proof (translation)
-Use `haveI := Dw.fin`. Use `haveI : Module.Finite ℤ Dw.La := Module.Finite.trans (𝓞 E) Dw.La`. Establish `hs : x ≫ Xo.s = spMap (Spec.preimage (x ≫ Xo.s)).hom` using `by simp [spMap]`. Take `⟨-, I, -⟩` from `Xo.univ.geom K x _ hs`. Establish `hR : (Set.range (I.ev n)).Finite` using `range_finite (I.ev n) (I.add n) n hn (fun a => (I.ker n hn (n • a)).2 ⟨a, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : Over.mk x ⟶ Over.mk (𝟙 (Sp K) ≫ x)` to `Over.homMk (𝟙 _) (by simp)`. Use `Set.Finite.of_injOn (f := fun z => e ≫ ObjPull.pushEquiv hα (baseOver (Sp K)) z) (t := Set.range (I.ev n)) (fun z hz => ?_) (fun z _ z' _ h => ?_) hR` and prove the remaining obligations. Establish `: (e ≫ ObjPull.pushEquiv hα (baseOver (Sp K)) z) ^ n = 1`. Rewrite using `[← MonObj.comp_pow, ← map_pow, show z ^ n = 1 from hz, map_one, MonObj.comp_one]`. Conclude with `(I.onto n hn _).1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `(ObjPull.pushEquiv hα (baseOver (Sp K))).injective` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `congrArg CommaMorphism.left h` as an intermediate fact. Simplify `this` using `[e]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tors_finite (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) {K : Type} [Field K] [IsAlgClosed K]
     (P : PolAV (Sp K)) (x : Sp K ⟶ Xo.X) {α : P.A.left ⟶ Xo.univ.t.G.left}
@@ -159,9 +157,9 @@ noncomputable section
 namespace GlobalTheory.UMinQF
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := La)`. Set `hom : ∀ f : La → Q, (∀ a b, f (a + b) = f a * f b) → La →ₗ[ℤ] Additive Q` to `fun f hf => (AddMonoidHom.mk' (fun a => Additive.ofMul (f a)) (fun a b => by rw [hf]; rfl)).toIntLinearMap`. Use `Set.Finite.of_injOn (f := fun f (g : s) => f g) (t := {v : s → Q | ∀ i, v i ∈ T}) (fun f hf => fun g => hf.2 g) (fun f hf f' hf' h => ?_) (Set.Finite.pi' fun _ => hT)` and prove the remaining obligations. Use `LinearMap.ext_on hs (f := hom f hf.1) (g := hom f' hf'.1) (fun g hg => by show Additive.ofMul (f g) = Additive.ofMul (f' g)` as an intermediate fact. Conclude with `congrArg Additive.ofMul (congrFun h ⟨g, hg⟩))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Conclude with `congrArg Additive.toMul (LinearMap.congr_fun this a)`.
+A detailed English derivation is pending.
 -/
 theorem addFun_finite {La Q : Type} [AddCommGroup La] [Module.Finite ℤ La] [CommGroup Q] (T : Set Q) (hT : T.Finite) :
     {f : La → Q | (∀ a b, f (a + b) = f a * f b) ∧ ∀ a, f a ∈ T}.Finite := by
@@ -182,36 +180,26 @@ noncomputable section
 namespace GlobalTheory.UMinQF
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mk' (fun a => Additive.ofMul (f a)) (fun a b => by rw [hf]; rfl)).map_nsmul n a`.
+A detailed English derivation is pending.
 -/
 theorem pow_of_add {La Q : Type} [AddCommGroup La] [Group Q] (f : La → Q) (hf : ∀ a b, f (a + b) = f a * f b)
     (n : ℕ) (a : La) : f (n • a) = f a ^ n :=
   (AddMonoidHom.mk' (fun a => Additive.ofMul (f a)) (fun a b => by rw [hf]; rfl)).map_nsmul n a
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo K _ _ P s₀`. Use `haveI := P.isAb.comm`. Use `letI := H.starRing`. Use `haveI := Dw.fin`. Use `haveI : Module.Finite ℤ Dw.La := Module.Finite.trans (𝓞 E) Dw.La`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero K := charZero_of_injective_ringHom (((Spec.preimage s₀).hom.comp (algebraMap ℚ (KA l))).injective)`. Use `set X0 := {x : Sp K ⟶ Xo.X | x ≫ Xo.s = s₀ ∧ ∃ α : P.A.left ⟶ Xo.univ.t.G.left, IsGrpPullback P.A Xo.univ.t.G x α ∧ LBIso P.L (Xo.univ.t.PP.L.pull α)} with hX0`. Establish `hx : ∀ x : X0, ∃ (α : P.A.left ⟶ Xo.univ.t.G.left) (_ : IsGrpPullback P.A Xo.univ.t.G x.1 α) (_ : LBIso P.L (Xo.univ.t.PP.L.pull α)) (ρ : P.OAct (𝓞 E)), ∀ c, (ρ.act c).left ≫ α = α ≫ (Xo.univ.t.act.act c).left` using `fun x => by`. Take `⟨-, α, h₁, h₂⟩` from `x.2`. Take `⟨ρ, hρ⟩` from `exists_oact Xo.univ.t P x.1 h₁ h₂`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨α, h₁, h₂, ρ, hρ⟩`. Use `choose α hα hL ρ hρ using hx`. Set `pt : ∀ x : X0, (𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G) →* (baseOver (Sp K) ⟶ P.A)` to `fun x => ObjPull.secPull (hα x)`. Break down `X0.eq_empty_or_nonempty with h0 | ⟨x₀, hx₀⟩` into its components or cases. Rewrite using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.finite_empty`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Establish `TM` using `tors_finite Dw l Xo P _ (hα ⟨x₀, hx₀⟩) l.M hM`. Establish `TA` using `tors_finite Dw l Xo P _ (hα ⟨x₀, hx₀⟩) l.A l.A_pos`. Establish `hMb : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `Ideal.mul_le_left h`. Set `F` to `fun x : X0 => ((fun c => (ρ x).act c), (fun a => pt x (Xo.univ.eta a)), (fun a => pt x (Xo.univ.etaA a)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set As := {act : 𝓞 E → (P.A ⟶ P.A) | ∃ ρ : P.OAct (𝓞 E), ∀ a, ρ.act a = act a}`. Establish `hA : As.Finite` using `GlobalTheory.T.finite_integerRing_actions_principallyPolarised E H K P`. Use `set FM := {f : Dw.La → (baseOver (Sp K) ⟶ P.A) | (∀ a b, f (a + b) = f a * f b) ∧ ∀ a, f a ∈ {z : baseOver (Sp K) ⟶ P.A | z ^ l.M = 1}}`. Use `set FA := {f : Dw.La → (baseOver (Sp K) ⟶ P.A) | (∀ a b, f (a + b) = f a * f b) ∧ ∀ a, f a ∈ {z : baseOver (Sp K) ⟶ P.A | z ^ l.A = 1}}`. Establish `hFM : FM.Finite` using `addFun_finite _ TM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hFA : FA.Finite` using `addFun_finite _ TA`. Establish `mem : ∀ x, F x ∈ As ×ˢ FM ×ˢ FA` using `fun x => by`. Use `⟨⟨ρ x, fun _ => rfl⟩, ⟨fun a b => ?_, fun a => ?_⟩, ⟨fun a b => ?_, fun a => ?_⟩⟩` and prove the remaining obligations. Use `show pt x _ = pt x _ * pt x _`. Rewrite using `[Xo.univ.eta_add, map_mul]`.
-
-Use `show pt x _ ^ l.M = 1`. Rewrite using `[← map_pow, ← pow_of_add _ Xo.univ.eta_add, Xo.univ.eta_ker, map_one]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hMb Submodule.mem_top`. Use `show pt x _ = pt x _ * pt x _`.
-
-Rewrite using `[Xo.univ.etaA_add, map_mul]`. Use `show pt x _ ^ l.A = 1`. Rewrite using `[← map_pow, ← pow_of_add _ Xo.univ.etaA_add, Xo.univ.etaA_ker, map_one]`. Establish `inj : Function.Injective F`. Introduce `x x' h`.
-
-Simplify using `only [F, Prod.mk.injEq] at h`. Take `⟨h1, h2, h3⟩` from `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use `GlobalTheory.T.moduli_geometric_point_eq_of_same_fibre_action_level E H Dw l Xo K P x.1 x'.1 (α x) (α x') (x.2.1.trans x'.2.1.symm) (hα x) (hα x') (hL x) (hL x') (fun a => ⟨(ρ x).act a, hρ x a, by rw [congrFun h1 a]; exact hρ x' a⟩) (fun a => ⟨pt x (Xo.univ.eta a), ObjPull.secPul …` and prove the remaining obligations. Rewrite using `[congrFun h2 a]`.
-
-Conclude with `ObjPull.secPull_left (hα x') _⟩)`. Use the proof step `(fun a => ⟨pt x (Xo.univ.etaA a), ObjPull.secPull_left (hα x) _, by`. Rewrite using `[congrFun h3 a]`. Conclude with `ObjPull.secPull_left (hα x') _⟩)`. Use `haveI := (hA.prod (hFM.prod hFA)).to_subtype`.
-
-Conclude with `Set.finite_coe_iff.1 (Finite.of_injective (fun x => (⟨F x, mem x⟩ : ↥(As ×ˢ FM ×ˢ FA))) (fun x x' h => inj (congrArg Subtype.val h)))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_points : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) (s₀ : Sp K ⟶ Sp (KA l)), Set.Finite {x : Sp K ⟶ Xo.X | x ≫ Xo.s = s₀ ∧ ∃ α : P.A.left ⟶ Xo.univ.t.G.left, IsGrpPullback P.A Xo.univ.t.G x α ∧ LBIso P.L (Xo.univ.t.PP.L.pull α)} := by
   intro E _ _ _ H Dw l Xo K _ _ P s₀

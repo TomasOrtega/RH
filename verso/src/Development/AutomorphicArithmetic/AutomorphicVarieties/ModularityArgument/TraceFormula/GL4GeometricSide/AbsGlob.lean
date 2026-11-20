@@ -12,7 +12,7 @@ section Pure
 variable {ι : Type} {U : Type} [AddCommGroup U] [Module ℂ U]
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun h.eq x`.
+A detailed English derivation is pending.
 -/
 private theorem capp {a b : Module.End ℂ U} (h : Commute a b) (x : U) : a (b x) = b (a x) :=
   LinearMap.congr_fun h.eq x
@@ -24,36 +24,30 @@ private def fixS (e : ι → Module.End ℂ U) (s : Finset ι) : Submodule ℂ U
   smul_mem' c x hx i hi := by rw [map_smul, hx i hi]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_fixS {e : ι → Module.End ℂ U} {s : Finset ι} {x : U} : x ∈ fixS e s ↔ ∀ i ∈ s, e i x = x := Iff.rfl
 
 /- English proof (translation)
-Establish `hK : ∀ i (y : U), y ≠ 0 → ∃ a ∈ A i, e i (a y) ≠ 0`. Introduce `i y hy`. Set `K : Submodule ℂ U` to `{ carrier := {z | ∀ a ∈ A i, e i (a z) = 0} add_mem' := fun {x z} hx hz a ha => by rw [map_add, map_add, hx a ha, hz a ha, add_zero] zero_mem' := fun a _ => by rw [map_zero, map_zero] smul_mem' := fun c x hx a ha => by rw [map_smul, map_smul, hx a ha, smul_zero] }`. Establish `hKs` using `hs K (fun j b hb x hx a ha => by`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Conclude with `hx (a * b) (mul_mem ha hb)`. Rewrite using `[capp (hAA i j hij a ha b hb), capp (heA i j hij b hb), hx a ha, map_zero])`. Use the proof step `(fun r hr x hx a ha => by rw [capp (hAR i a ha r hr), capp (heR i r hr), hx a ha, map_zero])`. Assume the negation of the conclusion as `hcon`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `push Not at hcon`. Break down `hKs with h | h` into its components or cases. Establish `: y ∈ K` using `hcon`. Rewrite `this` using `[h]`. Conclude with `hy this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨x, hx⟩` from `he0 i`. Establish `: x ∈ K` using `h ▸ Submodule.mem_top`. Conclude with `hx (this 1 (one_mem _))`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : U)`. Use `⟨⟨y, fun i hi => absurd hi (Finset.notMem_empty i), hy⟩, fun W _ hR _ hA => ?_⟩` and prove the remaining obligations. Break down `hs W (fun i => hA i (Finset.notMem_empty i)) hR with h | h` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr (h.trans (Submodule.eq_top_iff'.2 fun x i hi => absurd hi (Finset.notMem_empty i)).symm)` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Consider the case `insert i s hi ih`. Take `⟨⟨y, hy, hy0⟩, ih⟩` from `ih`. Establish `hne : ∀ j ∈ s, j ≠ i` using `fun j hj h => hi (h ▸ hj)`. Use `⟨?_, fun W hW hR h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, h0⟩` from `hK i y hy0`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨_, fun j hj => ?_, h0⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `hee _ _`. Rewrite using `[capp (hc j i), capp (heA j i (hne j hj) a ha), hy j hj]`. Set `M : Submodule ℂ U` to `Submodule.span ℂ {z | ∃ a ∈ A i, ∃ w ∈ W, a w = z}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `gen : ∀ a ∈ A i, ∀ w ∈ W, a w ∈ M` using `fun a ha w hw => Submodule.subset_span ⟨a, ha, w, hw, rfl⟩`. Establish `ind : ∀ (f : Module.End ℂ U) (N : Submodule ℂ U), (∀ a ∈ A i, ∀ w ∈ W, f (a w) ∈ N) → ∀ x ∈ M, f x ∈ N`. Introduce `f N h x hx`. Establish `: M ≤ N.comap f` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨a, ha, w, hw, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `h a ha w hw)`. Conclude with `this hx`. Establish `hM` using `ih M (fun x hx => ind 1 (fixS e s) (fun a ha w hw j hj => by show e j (a w) = a w`. Rewrite using `[capp (heA j i (hne j hj) a ha), hW hw j (Finset.mem_insert_of_mem hj)]) x hx)`. Use the proof step `(fun r hr => ind r M fun a ha w hw => by`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← capp (hAR i a ha r hr)]`. Conclude with `gen a ha _ (hR r hr w hw))`. Use the proof step `(fun j hj b hb => ind (e j * b) M fun a ha w hw => by show e j (b (a w)) ∈ M`. Rewrite using `[capp (hAA j i (hne j hj) b hb a ha), capp (heA j i (hne j hj) a ha)]`. Conclude with `gen a ha _ (h1 j (Finset.mem_insert_of_mem hj) b hb w hw))`.
-
-Use the proof step `(fun j hj b hb => ind b M fun a ha w hw => by`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Conclude with `gen (b * a) (mul_mem hb ha) w hw`. Rewrite using `[capp (hAA j i hji b hb a ha)]`.
-
-Conclude with `gen a ha _ (h2 j (by simp [hji, hj]) b hb w hw))`. Break down `hM with h | h` into its components or cases. Use `Or.inl (eq_bot_iff.2 fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `gen 1 (one_mem _) w hw`.
-
-Use `Or.inr (le_antisymm hW fun z hz => ?_)` and prove the remaining obligations. Establish `hzM : z ∈ M` using `h ▸ fun j hj => hz j (Finset.mem_insert_of_mem hj)`. Rewrite using `[← hz i (Finset.mem_insert_self i s)]`. Conclude with `ind (e i) W (fun a ha w hw => h1 i (Finset.mem_insert_self i s) a ha w hw) z hzM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem compress [Nontrivial U] (A : ι → Subalgebra ℂ (Module.End ℂ U)) (e : ι → Module.End ℂ U)
     (Rs : Set (Module.End ℂ U)) (hee : ∀ i x, e i (e i x) = e i x) (hc : ∀ i j, Commute (e i) (e j))
@@ -139,13 +133,13 @@ private theorem compress [Nontrivial U] (A : ι → Subalgebra ℂ (Module.End �
 variable {F : Submodule ℂ U}
 
 /- English proof (translation)
-Establish `hiff : (∀ x ∈ S.map F.subtype, f x ∈ S.map F.subtype) ↔ ∀ x ∈ S, g x ∈ S`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Take `⟨z, hz, hzx⟩` from `H x ⟨x, hx, rfl⟩`. Establish `: z = g x` using `Subtype.ext (hzx.trans (h x).symm)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this ▸ hz`. Introduce and unpack `H _ ⟨x, hx, rfl⟩`. Conclude with `⟨g x, H x hx, h x⟩`. Unfold `trOn`. Distinguish the cases in `H : ∀ x ∈ S, g x ∈ S`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos H, dif_pos (hiff.2 H), ← LinearMap.trace_conj' _ (Submodule.equivMapOfInjective F.subtype F.injective_subtype S).symm]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [LinearEquiv.conj_apply, LinearEquiv.symm_symm, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Establish `: (f.restrict (hiff.2 H)) (Submodule.equivMapOfInjective F.subtype F.injective_subtype S x) = Submodule.equivMapOfInjective F.subtype F.injective_subtype S (g.restrict H x)` using `Subtype.ext (h x).symm`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, LinearEquiv.symm_apply_apply]`. Rewrite using `[dif_neg H, dif_neg fun H' => H (hiff.1 H')]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trOn_map (S : Submodule ℂ F) {f : Module.End ℂ U} {g : Module.End ℂ F}
     (h : ∀ x, (g x : U) = f x) : trOn (S.map F.subtype) f = trOn S g := by
@@ -170,9 +164,9 @@ private theorem trOn_map (S : Submodule ℂ F) {f : Module.End ℂ U} {g : Modul
   · rw [dif_neg H, dif_neg fun H' => H (hiff.1 H')]
 
 /- English proof (translation)
-Establish `H : ∀ x ∈ F, f x ∈ F` using `fun x hx => h ⟨x, hx⟩ ▸ (g ⟨x, hx⟩).2`. Unfold `trOn`. Rewrite using `[dif_pos H]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `(h x).symm`.
+A detailed English derivation is pending.
 -/
 private theorem trOn_self {f : Module.End ℂ U} {g : Module.End ℂ F}
     (h : ∀ x, (g x : U) = f x) : trOn F f = LinearMap.trace ℂ F g := by
@@ -196,7 +190,7 @@ private def resAlg (B : Subalgebra ℂ (Module.End ℂ U)) : Subalgebra ℂ (Mod
   algebraMap_mem' c := ⟨algebraMap ℂ _ c, Subalgebra.algebraMap_mem _ _, fun x => by simp [Module.algebraMap_end_apply]⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons o l ih => simp [h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem list_res {κ : Type} (a : κ → Module.End ℂ U) (g : κ → Module.End ℂ F) (h : ∀ o x, (g o x : U) = a o x)
     (l : List κ) (x : F) : ((l.map g).prod x : U) = (l.map a).prod x := by
@@ -205,23 +199,19 @@ private theorem list_res {κ : Type} (a : κ → Module.End ℂ U) (g : κ → M
   | cons o l ih => simp [h, ih]
 
 /- English proof (translation)
-Use `haveI : Nontrivial F := Submodule.nontrivial_iff_ne_bot.2 hF`. Establish `hinj` using `Submodule.map_injective_of_injective F.injective_subtype`. Take `⟨Fi, s, hs1, hFi, htr⟩` from `hMF κ F (fun i => resAlg F (B i)) (Θ.restrict hΘF) (by`. Introduce and unpack `i j hij g ⟨b, hb, h⟩ g' ⟨b', hb', h'⟩`. Use extensionality with `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[h, h', capp (hB i j hij b hb b' hb')])`. Use the proof step `(by`. Introduce `W hW`. Break down `hs (W.map F.subtype) (Submodule.map_subtype_le F W) (by` into its components or cases. Introduce and unpack `i a ha haF _ ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the first alternative.
 
-Conclude with `⟨_, hW i (a.restrict haF) ⟨a, ha, fun _ => rfl⟩ x hx, rfl⟩) with h | h`. Conclude with `Or.inl (hinj (h.trans (Submodule.map_bot _).symm))`. Conclude with `Or.inr (hinj (h.trans (Submodule.map_subtype_top F).symm)))`. Use the proof step `(by`. Use extensionality with `x`.
+Prove the second alternative. By extensionality, compare the relevant components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `LinearMap.congr_fun hΘ x)`. Use the proof step `(by`. Introduce and unpack `i g ⟨b, hb, h⟩`. Conclude with `⟨_, hΘB i b hb, fun x => by simp [h]⟩)`. Apply the tactic sequence `refine ⟨fun i => (Fi i).map F.subtype, s, by rcases hs1 with rfl | rfl <;> norm_num, fun i => ?_, fun a ha haF => ?_⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨h1, h2, h3, h4⟩` from `hFi i`. Use `⟨Submodule.map_subtype_le F _, fun h => h1 (hinj (h.trans (Submodule.map_bot _).symm)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ha haF _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, h2 (a.restrict haF) ⟨a, ha, fun _ => rfl⟩ x hx, rfl⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, h3 x hx, rfl⟩`. Introduce `W hW hst`. Establish `hWF : W ≤ F` using `hW.trans (Submodule.map_subtype_le F _)`. Establish `hmc : (W.comap F.subtype).map F.subtype = W`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hWF]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the first alternative.
 
-Break down `h4 (W.comap F.subtype) (fun x hx => by` into its components or cases. Take `⟨z, hz, hzx⟩` from `hW hx`. Conclude with `(Subtype.ext hzx : z = x) ▸ hz)`. Use the proof step `(by`. Introduce and unpack `g ⟨b, hb, h⟩ x hx`.
-
-Use `show (g x : U) ∈ W`. Rewrite using `[h]`. Conclude with `hst b hb (fun y hy => h ⟨y, hy⟩ ▸ (g ⟨y, hy⟩).2) _ hx) with h | h`. Conclude with `Or.inl (by rw [← hmc, h, Submodule.map_bot])`. Conclude with `Or.inr (by rw [← hmc, h])`.
-
-Use `htr (fun i => (a i).restrict (haF i)) fun i => ⟨a i, ha i, fun _ => rfl⟩` as an intermediate fact. Rewrite using `[trOn_self (g := ((Finset.univ : Finset κ).toList.map fun i => (a i).restrict (haF i)).prod * Θ.restrict hΘF) (fun x => list_res a _ (fun _ _ => rfl) _ _), this]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => (trOn_map _ fun _ => rfl).symm`.
+Prove the second alternative. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem descend (hMF : MultiFac) {κ : Type} [Fintype κ] [FiniteDimensional ℂ F] (hF : F ≠ ⊥)
     (B : κ → Subalgebra ℂ (Module.End ℂ U)) (Θ : Module.End ℂ U)
@@ -281,9 +271,9 @@ private theorem descend (hMF : MultiFac) {κ : Type} [Fintype κ] [FiniteDimensi
     exact Finset.prod_congr rfl fun i _ => (trOn_map _ fun _ => rfl).symm
 
 /- English proof (translation)
-Establish `hp : (Finset.univ : Finset (Option ι)).toList.Perm ((Finset.univ : Finset ι).toList.map some ++ [none])`. Use `(List.perm_ext_iff_of_nodup (Finset.nodup_toList _) ?_).2 fun o => ?_` and prove the remaining obligations. Rewrite using `[List.nodup_append]`. Use `⟨(Finset.nodup_toList _).map (Option.some_injective _), List.nodup_singleton _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases o <;> simp`. Rewrite using `[(hp.map a).prod_eq' (List.pairwise_map.2 ((Finset.nodup_toList _).imp fun hij => h _ _ hij))]`. Simplify using `[List.map_map, Function.comp_def]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem prod_option [Fintype ι] (a : Option ι → Module.End ℂ U) (h : ∀ i j, i ≠ j → Commute (a i) (a j)) :
     ((Finset.univ : Finset (Option ι)).toList.map a).prod =
@@ -304,7 +294,7 @@ section Gen
 variable {U : Type} [AddCommGroup U] [Module ℂ U]
 
 /- English proof (translation)
-Introduce `a ha b hb` and use `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb fun y hy => (Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha fun x hx => (h x hx y hy).symm).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem adjoin_comm {s t : Set (Module.End ℂ U)} (h : ∀ a ∈ s, ∀ b ∈ t, Commute a b) :
     ∀ a ∈ Algebra.adjoin ℂ s, ∀ b ∈ Algebra.adjoin ℂ t, Commute a b := fun a ha b hb =>
@@ -312,9 +302,9 @@ private theorem adjoin_comm {s t : Set (Module.End ℂ U)} (h : ∀ a ∈ s, ∀
     (Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha fun x hx => (h x hx y hy).symm).symm
 
 /- English proof (translation)
-Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem z hz => exact h z hz`. Consider the case `algebraMap c => exact fun x hx => N.smul_mem c hx`. Consider the case `add u v _ _ hu hv => exact fun x hx => N.add_mem (hu x hx) (hv x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul u v _ _ hu hv => exact fun x hx => hu _ (hv x hx)`.
+Treat this case separately.
 -/
 private theorem adjoin_stab {s : Set (Module.End ℂ U)} {N : Submodule ℂ U} (h : ∀ a ∈ s, ∀ x ∈ N, a x ∈ N) :
     ∀ a ∈ Algebra.adjoin ℂ s, ∀ x ∈ N, a x ∈ N := by
@@ -326,11 +316,11 @@ private theorem adjoin_stab {s : Set (Module.End ℂ U)} {N : Submodule ℂ U} (
   | mul u v _ _ hu hv => exact fun x hx => hu _ (hv x hx)
 
 /- English proof (translation)
-Establish `key : ∀ a ∈ Algebra.adjoin ℂ s, ∃ b ∈ Algebra.adjoin ℂ s, Θ * a = b * Θ`. Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem z hz => exact (h z hz).imp fun b hb => ⟨Algebra.subset_adjoin hb.1, hb.2⟩`. Consider the case `algebraMap c => exact ⟨_, Subalgebra.algebraMap_mem _ c, (Algebra.commutes c Θ).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v _ _ hu hv`. Take `⟨⟨b, hb, e⟩, b', hb', e'⟩` from `And.intro hu hv`. Conclude with `⟨b + b', add_mem hb hb', by rw [mul_add, add_mul, e, e']⟩`. Consider the case `mul u v _ _ hu hv`. Take `⟨⟨b, hb, e⟩, b', hb', e'⟩` from `And.intro hu hv`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b * b', mul_mem hb hb', by rw [← mul_assoc, e, mul_assoc, e', mul_assoc]⟩`. Introduce `a ha`. Take `⟨b, hb, e⟩` from `key a ha`. Rewrite using `[e, mul_assoc, hΘ, mul_one]` and apply the resulting hypothesis.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem adjoin_conj {s : Set (Module.End ℂ U)} {Θ : Module.End ℂ U} (hΘ : Θ * Θ = 1)
     (h : ∀ a ∈ s, ∃ b ∈ s, Θ * a = b * Θ) : ∀ a ∈ Algebra.adjoin ℂ s, Θ * a * Θ ∈ Algebra.adjoin ℂ s := by
@@ -353,14 +343,14 @@ private def orb (A : Subalgebra ℂ (Module.End ℂ U)) (x : U) : Submodule ℂ 
   (Subalgebra.toSubmodule A).map (LinearMap.applyₗ x)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_orb {A : Subalgebra ℂ (Module.End ℂ U)} {x y : U} : y ∈ orb A x ↔ ∃ a ∈ A, a x = y := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp at hl`. Consider the case `cons j l ih`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply]`. Break down `List.mem_cons.1 hl with rfl | hl` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hi _`. Rewrite using `[capp (h j), ih hl]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem list_fix {ι : Type} (P : ι → Module.End ℂ U) (e : Module.End ℂ U) (h : ∀ j, Commute e (P j)) (i : ι)
     (hi : ∀ x, e (P i x) = P i x) (l : List ι) (hl : i ∈ l) (x : U) : e ((l.map P).prod x) = (l.map P).prod x := by
@@ -379,7 +369,7 @@ section Adj
 variable {n : ℕ} {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U]
 
 /- English proof (translation)
-Establish `hK : ∀ x y : U, ⟪E1 a b x, y⟫_ℂ + ⟪E2 a b x, y⟫_ℂ = ⟪x, E1 b a y⟫_ℂ + ⟪x, E2 b a y⟫_ℂ` using `fun x y => by`. Simplify `h.unitK a b x y` using `[kF, inner_add_left, inner_add_right]`. Establish `hP : ∀ x y : U, ⟪E1 a b x, y⟫_ℂ - ⟪E2 a b x, y⟫_ℂ = -(⟪x, E1 b a y⟫_ℂ - ⟪x, E2 b a y⟫_ℂ)` using `fun x y => by`. Simplify `h.unitP a b x y` using `only [pF, LinearMap.sub_apply, inner_sub_left, inner_sub_right]`. Conclude with `⟨fun x y => by linear_combination (hK x y + hP x y) / 2, fun x y => by linear_combination (hK x y - hP x y) / 2⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 private theorem pair_adj {E1 E2 : Fin n → Fin n → Module.End ℂ U} (h : IsPair E1 E2) (a b : Fin n) :
     (∀ x y : U, ⟪E1 a b x, y⟫_ℂ = ⟪x, E2 b a y⟫_ℂ) ∧ ∀ x y : U, ⟪E2 a b x, y⟫_ℂ = ⟪x, E1 b a y⟫_ℂ := by
@@ -390,7 +380,7 @@ private theorem pair_adj {E1 E2 : Fin n → Fin n → Module.End ℂ U} (h : IsP
   exact ⟨fun x y => by linear_combination (hK x y + hP x y) / 2, fun x y => by linear_combination (hK x y - hP x y) / 2⟩
 
 /- English proof (translation)
-Rewrite using `[← h x (g y), ← Module.End.mul_apply, hfg, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem iso_adj {f g : Module.End ℂ U} (h : ∀ x y : U, ⟪f x, f y⟫_ℂ = ⟪x, y⟫_ℂ) (hfg : f * g = 1) (x y : U) :
     ⟪f x, y⟫_ℂ = ⟪x, g y⟫_ℂ := by
@@ -402,55 +392,47 @@ end UpperTheory.V.Z.GSp4Splitting.AbsoluteGlobal
 
 open UpperTheory.V.Z.GSp4Splitting.AbsoluteGlobal in
 /- English proof (translation)
-Introduce `hMF hLS hPE hAF hOP n ι _ lam hlam E T hT _ _ ν _ hν U _ _ E1 E2 σ Θ P J R hloc havg hEE hσσ hRc hRa hRΘ hΘ hsimp hnt hfd hne`. Use `choose e he using fun i => hPE n U (σ i) (hloc i).isK (E i)`. Establish `hP` using `fun i => hAF n ν U (σ i) (hloc i).isK (E i) (T i) (P i) (hT i).1 (havg i)`. Establish `hce : ∀ i {x}, AdjComm (σ i) x → Commute (e i) x` using `fun i x hx => (he i).2.2.2.2.1 x hx`. Establish `hcP : ∀ i {x}, AdjComm (σ i) x → Commute (P i) x` using `fun i x hx => (hP i).2.2.1 x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : ∀ i x, x ∈ isoSp (σ i) (E i) ↔ e i x = x` using `fun i x => ⟨(he i).2.2.1 x, fun h => h ▸ (he i).2.1 x⟩`. Set `G : ι → Set (Module.End ℂ U)` to `fun i => {x | ∃ a b, x = E1 i a b ∨ x = E2 i a b}`. Set `Gs : Option ι → Set (Module.End ℂ U)` to `fun o => o.elim (Set.range R) fun i => G i ∪ {e i, P i}`. Establish `aσ : ∀ i j, i ≠ j → ∀ k, AdjComm (σ i) (σ j k)` using `fun i j hij k => ⟨σ j k⁻¹, iso_adj ((hloc j).isK.iso k) (by rw [← map_mul, mul_inv_cancel, map_one]), fun k' => ⟨hσσ j i hij.symm _ _, hσσ j i hij.symm _ _⟩⟩`. Establish `aΘ : ∀ i, AdjComm (σ i) Θ` using `fun i => ⟨Θ, iso_adj (hloc i).Aiso hΘ, fun k => ⟨(hloc i).Aσ k, (hloc i).Aσ k⟩⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `aG : ∀ i j, i ≠ j → ∀ x ∈ G j, AdjComm (σ i) x`. Introduce and unpack `i j hij _ ⟨a, b, rfl | rfl⟩`. Conclude with `⟨_, (pair_adj (hloc j).pair a b).1, fun k => ⟨((hEE j i hij.symm a b).2 k).1, ((hEE j i hij.symm b a).2 k).2⟩⟩`. Conclude with `⟨_, (pair_adj (hloc j).pair a b).2, fun k => ⟨((hEE j i hij.symm a b).2 k).2, ((hEE j i hij.symm b a).2 k).1⟩⟩`. Establish `aR : ∀ i j, AdjComm (σ i) (R j)` using `fun i j => (hRa j).elim fun j' h => ⟨R j', h, fun k => ⟨(hRc j i).2 k, (hRc j' i).2 k⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ae : ∀ i j, AdjComm (σ i) (e j)`. Introduce `i j`. Establish `: ∀ k, e j * σ i k = σ i k * e j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `(he j).2.2.2.1`. Conclude with `fun k => hce j (aσ j i h k)`. Conclude with `⟨e j, (he j).1, fun k => ⟨this k, this k⟩⟩`. Establish `aP : ∀ i j, AdjComm (σ i) (P j)`. Introduce `i j`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `(hP j).2.1`. Take `⟨P', h1, h2⟩` from `(hP j).2.2.2.2`. Conclude with `⟨P', h1, fun k => ⟨hcP j (aσ j i h k), h2 _ (aσ j i h k)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `aGs : ∀ i j, i ≠ j → ∀ x ∈ Gs (some j), AdjComm (σ i) x`. Introduce and unpack `i j hij x (hx | rfl | rfl)`. Use `exacts [aG i j hij x hx, ae i j, aP i j]`. Establish `cGG : ∀ i j, i ≠ j → ∀ x ∈ G i, ∀ y ∈ G j, Commute x y`. Introduce and unpack `i j hij _ ⟨a, b, rfl | rfl⟩ _ ⟨c, d, rfl | rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `exacts [((hEE i j hij a b).1 c d).1, ((hEE i j hij a b).1 c d).2.1, ((hEE j i hij.symm c d).1 a b).2.1.symm, ((hEE i j hij a b).1 c d).2.2]`. Establish `cGR : ∀ i, ∀ x ∈ Gs (some i), ∀ y ∈ Set.range R, Commute x y`. Introduce and unpack `i _ (⟨a, b, rfl | rfl⟩ | rfl | rfl) _ ⟨j, rfl⟩`. Use `exacts [((hRc j i).1 a b).1.symm, ((hRc j i).1 a b).2.symm, hce i (aR i j), hcP i (aR i j)]`. Establish `cGs : ∀ o o', o ≠ o' → ∀ x ∈ Gs o, ∀ y ∈ Gs o', Commute x y`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `(_ | i) (_ | j) h x hx y hy`. Conclude with `absurd rfl h`. Conclude with `(cGR j y hy x hx).symm`. Conclude with `cGR i x hx y hy`. Establish `hij : i ≠ j` using `fun h' => h (congrArg some h')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hx with hx | rfl | rfl` into its components or cases. Break down `hy with hy | rfl | rfl exacts [cGG i j hij x hx y hy, (hce j (aG j i hij.symm x hx)).symm, (hcP j (aG j i hij.symm x hx)).symm]` into its components or cases. Conclude with `hce i (aGs i j hij y hy)`. Conclude with `hcP i (aGs i j hij y hy)`. Set `B : Option ι → Subalgebra ℂ (Module.End ℂ U)` to `fun o => Algebra.adjoin ℂ (Gs o)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cB : ∀ o o', o ≠ o' → ∀ x ∈ B o, ∀ y ∈ B o', Commute x y` using `fun o o' h => adjoin_comm (cGs o o' h)`. Establish `hAB : ∀ i, alg (E1 i) (E2 i) ≤ B (some i)` using `fun i => Algebra.adjoin_mono Set.subset_union_left`. Establish `heB : ∀ i, e i ∈ B (some i)` using `fun i => Algebra.subset_adjoin (Or.inr (Or.inl rfl))`. Establish `hPB : ∀ i, P i ∈ B (some i)` using `fun i => Algebra.subset_adjoin (Or.inr (Or.inr rfl))`. Establish `hRB : ∀ j, R j ∈ B none` using `fun j => Algebra.subset_adjoin ⟨j, rfl⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cij : ∀ i j, i ≠ j → ∀ x ∈ B (some i), ∀ y ∈ B (some j), Commute x y` using `fun i j h => cB _ _ fun h' => h (Option.some.inj h')`. Use `set F : Submodule ℂ U := ⨅ i, isoSp (σ i) (E i) with hFdef`. Establish `hF : ∀ x, x ∈ F ↔ ∀ i, e i x = x` using `fun x => by simp only [hFdef, Submodule.mem_iInf, hiso]`. Establish `hFfix : fixS e Finset.univ = F` using `Submodule.ext fun x => by simp [mem_fixS, hF]`. Establish `keep : ∀ a : Module.End ℂ U, (∀ i, Commute (e i) a) → ∀ x ∈ F, a x ∈ F` using `fun a ha x hx => (hF _).2 fun i => by rw [capp (ha i), (hF x).1 hx i]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hee : ∀ i x, e i (e i x) = e i x` using `fun i x => (hiso i _).1 ((he i).2.1 x)`. Establish `keepE : ∀ i, ∀ a ∈ B (some i), ∀ x ∈ F, (e i * a) x ∈ F` using `fun i a ha x hx => (hF _).2 fun j => by`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `hee _ _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components.
 
-Rewrite using `[capp (cij j i h _ (heB j) _ (mul_mem (heB i) ha)), (hF x).1 hx j]`. Establish `keepR : ∀ j, ∀ x ∈ F, R j x ∈ F` using `fun j => keep _ fun i => hce i (aR i j)`. Establish `keepP : ∀ j, ∀ x ∈ F, P j x ∈ F` using `fun j => keep _ fun i => hce i (aP i j)`. Take `⟨⟨y, hy, hy0⟩, hFs⟩` from `compress (fun i => alg (E1 i) (E2 i)) e (Set.range R) hee (fun i j => hce i (ae i j)) (fun i j h a ha => cij i j h _ (heB i) _ (hAB j ha)) (by rintro i _ ⟨j, rfl⟩; exact hce i (aR i j)) (fun i j h a ha b hb => cij i j h _ (hAB i ha) _ (hAB j hb)) (by rintro i a ha _ ⟨j, rfl⟩; exa …`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (hne i)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨x, by rwa [(hiso i x).1 hx]⟩) Finset.univ`. Rewrite `hy`, `hFs` using `[hFfix]`. Establish `hΘ2 : ∀ i a b, Θ * E2 i a b = E1 i a b * Θ` using `fun i a b => by`. Establish `h` using `(hloc i).AE a b`. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨S, s, hs0, hS, htr⟩` from `descend (F := F) hMF ((Submodule.ne_bot_iff _).2 ⟨y, hy, hy0⟩) B Θ cB hΘ (keep _ fun i => hce i (aΘ i)) (fun o => adjoin_conj hΘ (by`. Break down `o with _ | i` into its components or cases. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨j', h⟩` from `hRΘ j`. Conclude with `⟨_, ⟨j', rfl⟩, h⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ (⟨a, b, rfl | rfl⟩ | rfl | rfl)`. Conclude with `⟨_, Or.inl ⟨a, b, Or.inr rfl⟩, (hloc i).AE a b⟩`. Conclude with `⟨_, Or.inl ⟨a, b, Or.inl rfl⟩, hΘ2 i a b⟩`. Conclude with `⟨_, Or.inr (Or.inl rfl), (hce i (aΘ i)).symm⟩`. Conclude with `⟨_, Or.inr (Or.inr rfl), (hcP i (aΘ i)).symm⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use the proof step `(fun W hW h => hFs W hW (by rintro _ ⟨j, rfl⟩; exact h none _ (hRB j) (keepR j)) (fun i _ a ha => h (some i) (e i * a) (mul_mem (heB i) (hAB i ha)) (keepE i a (hAB i ha))) fun i hi => absurd (Finset.mem_univ i) hi)`. Establish `horb : ∀ i x, ∀ a ∈ B (some i), a x ∈ orb (alg (E1 i) (E2 i)) x`. Introduce `i x a ha`. Establish `hA : ∀ c ∈ alg (E1 i) (E2 i), ∀ z ∈ orb (alg (E1 i) (E2 i)) x, c z ∈ orb (alg (E1 i) (E2 i)) x`. Introduce and unpack `c hc _ ⟨b, hb, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mem_orb.2 ⟨c * b, mul_mem hc (show b ∈ alg (E1 i) (E2 i) from hb), rfl⟩`. Establish `hσ` using `hLS n U (σ i) _ (hloc i).der (orb (alg (E1 i) (E2 i)) x) fun a b => hA _ (add_mem (Algebra.subset_adjoin ⟨a, b, Or.inl rfl⟩) (Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩))`. Use `adjoin_stab ?_ a ha x (mem_orb.2 ⟨1, one_mem _, rfl⟩)` and prove the remaining obligations. Introduce and unpack `c (hc | rfl | rfl)`. Use `exacts [hA c (Algebra.subset_adjoin hc), (he i).2.2.2.2.2 _ hσ, (hP i).2.2.2.1 _ hσ]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hloc2 : ∀ i, trOn (S (some i)) (P i * Θ) ≠ 0`. Introduce `i`. Take `⟨h1, h2, h3, h4, h5⟩` from `hS (some i)`. Use `hOP n (lam i) (hlam i) (E i) (T i) (hT i) ν hν U (E1 i) (E2 i) (σ i) Θ (P i) (hloc i) (havg i) (S (some i)) (Submodule.finiteDimensional_of_le h1) h2 (h1.trans (iInf_le _ i)) h4 (fun a ha x hx hax => by` as an intermediate fact. Rewrite using `[← (hiso i _).1 hax]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `h3 (e i * a) (mul_mem (heB i) (hAB i ha)) (keepE i a (hAB i ha)) x hx)`. Use the proof step `(fun x hx z hz hx0 => by`. Break down `h5 (S (some i) ⊓ orb (alg (E1 i) (E2 i)) x) inf_le_left (by` into its components or cases. Introduce and unpack `a ha haF _ ⟨hw, b, hb, rfl⟩`. Conclude with `⟨h3 a ha haF _ hw, horb i x (a * b) (mul_mem ha (hAB i hb))⟩) with h | h`.
-
-Establish `: x ∈ S (some i) ⊓ orb (alg (E1 i) (E2 i)) x` using `⟨hx, mem_orb.2 ⟨1, one_mem _, rfl⟩⟩`. Rewrite `this` using `[h]`. Conclude with `absurd this hx0`. Rewrite `hz` using `[← h]`. Conclude with `hz.2)`.
-
-Apply the tactic sequence `rcases this with h | h <;> rw [h] <;> simp`. Take `⟨h1, h2, h3, h4, h5⟩` from `hS none`. Use `⟨S none, s * ∏ i, trOn (S (some i)) (P i * Θ), mul_ne_zero hs0 (Finset.prod_ne_zero_iff.2 fun i _ => hloc2 i), Submodule.finiteDimensional_of_le h1, h2, fun j => h3 _ (hRB j) (keepR j), h4, fun W hW h => h5 W hW fun a ha _ => adjoin_stab (by rintro _ ⟨j, rfl⟩; exact h j) a ha, fu …` and prove the remaining obligations. Conclude with `list_fix P (e i) (fun j => hce i (aP i j)) i (fun x => (hiso i _).1 ((hP i).1 x)) _ (by simp) x`. Establish `ha : ∀ o : Option ι, o.elim (R j) P ∈ B o`.
-
-Introduce and unpack `(_ | i)`. Use `exacts [hRB j, hPB i]`. Use `htr (fun o => o.elim (R j) P) ha (by` as an intermediate fact. Introduce and unpack `(_ | i)`. Use `exacts [keepR j, keepP i])`.
-
-Rewrite `this` using `[prod_option _ fun o o' h => cB o o' h _ (ha o) _ (ha o'), Fintype.prod_option]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [Option.elim]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.GSp4Splitting.absGlob :
     MultiFac → LieStab → ProjEx → AvgFacts → OnePlace → AbsGlob := by

@@ -12,22 +12,22 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 def au (j : ℕ) : ℝ := j ! * j ! * 4 ^ j
 
 /- English proof (translation)
-Unfold `au`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem au_nonneg (j : ℕ) : 0 ≤ au j := by
   unfold au
   positivity
 
 /- English proof (translation)
-The claim follows from `(contDiff_const.add (contDiff_norm_sq ℝ)).inv (fun y => by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_u (n : ℕ∞) : ContDiff ℝ n (fun y : V => (1 + ‖y‖ ^ 2)⁻¹) :=
   (contDiff_const.add (contDiff_norm_sq ℝ)).inv (fun y => by positivity)
 
 /- English proof (translation)
-Use `(norm_iteratedFDeriv_mul_le (N := (n : ℕ∞)) (contDiff_u n) (contDiff_u n) x le_rfl).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `norm_iteratedFDeriv_u_le (V := V) i x`. Establish `h2` using `norm_iteratedFDeriv_u_le (V := V) (n - i) x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : 0 ≤ (1 + ‖x‖ ^ 2)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_iteratedFDeriv_w_le (n : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ n (fun y : V => (1 + ‖y‖ ^ 2)⁻¹ * (1 + ‖y‖ ^ 2)⁻¹) x‖ ≤
@@ -46,11 +46,11 @@ theorem norm_iteratedFDeriv_w_le (n : ℕ) (x : V) :
     _ = (n.choose i : ℝ) * au i * au (n - i) * ((1 + ‖x‖ ^ 2)⁻¹ * (1 + ‖x‖ ^ 2)⁻¹) := by ring
 
 /- English proof (translation)
-Establish `ht0 : 0 ≤ ‖x‖` using `norm_nonneg x`. Establish `h1 : (0 : ℝ) < 1 + ‖x‖` using `by positivity`. Establish `hA : (0 : ℝ) < (1 + ‖x‖ ^ 2) * (1 + ‖x‖ ^ 2)` using `by positivity`. Establish `hB : (0 : ℝ) < (1 + ‖x‖) ^ 4` using `by positivity`. Establish `hr : (1 + ‖x‖) ^ (-(4 : ℝ)) = ((1 + ‖x‖) ^ 4)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_neg h1.le]`. Use `norm_cast`. Establish `h2 : (1 + ‖x‖) ^ 2 ≤ 2 * (1 + ‖x‖ ^ 2)` using `by nlinarith [sq_nonneg (1 - ‖x‖)]`. Establish `h3 : ((1 + ‖x‖) ^ 2) ^ 2 ≤ (2 * (1 + ‖x‖ ^ 2)) ^ 2` using `pow_le_pow_left₀ (by positivity) h2 2`. Rewrite using `[hr, ← mul_inv, ← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ hA hB]`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[h3]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem inv_sq_le (x : V) : (1 + ‖x‖ ^ 2)⁻¹ * (1 + ‖x‖ ^ 2)⁻¹ ≤ 4 * (1 + ‖x‖) ^ (-(4 : ℝ)) := by
   have ht0 : 0 ≤ ‖x‖ := norm_nonneg x
@@ -66,15 +66,15 @@ theorem inv_sq_le (x : V) : (1 + ‖x‖ ^ 2)⁻¹ * (1 + ‖x‖ ^ 2)⁻¹ ≤ 
   nlinarith [h3]
 
 /- English proof (translation)
-Establish `hB : 0 ≤ B` using `(norm_nonneg _).trans (hEb 0 (Nat.zero_le _) 0)`. Establish `hDw : D = fun x => ((1 + ‖x‖ ^ 2)⁻¹ * (1 + ‖x‖ ^ 2)⁻¹) • E x`. Use function extensionality and compare the values at `x`. Rewrite using `[hDE x, smul_smul]`. Establish `hq : (1 + ‖x‖ ^ 2) ≠ 0` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hwc : ContDiff ℝ m (fun y : V => (1 + ‖y‖ ^ 2)⁻¹ * (1 + ‖y‖ ^ 2)⁻¹)` using `(contDiff_u m).mul (contDiff_u m)`. Use `⟨hDw ▸ hwc.smul hE, ?_⟩` and prove the remaining obligations. Use `set Kw : ℕ → ℝ := fun i => ∑ l ∈ Finset.range (i + 1), (i.choose l : ℝ) * au l * au (i - l) with hKw`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hKw0 : ∀ i, 0 ≤ Kw i` using `fun i => Finset.sum_nonneg fun l _ => mul_nonneg (mul_nonneg (by positivity) (au_nonneg _)) (au_nonneg _)`. Use `set Cn : ℕ → ℝ := fun n => ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * Kw i * B with hCn`. Establish `hCn0 : ∀ n, 0 ≤ Cn n` using `fun n => Finset.sum_nonneg fun i _ => mul_nonneg (mul_nonneg (by positivity) (hKw0 i)) hB`. Use `⟨4 * ∑ n ∈ Finset.range (m + 1), Cn n, fun j hj x => ?_⟩` and prove the remaining obligations. Establish `hq0 : 0 ≤ (1 + ‖x‖ ^ 2)⁻¹ * (1 + ‖x‖ ^ 2)⁻¹` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hstep : ‖iteratedFDeriv ℝ j D x‖ ≤ Cn j * ((1 + ‖x‖ ^ 2)⁻¹ * (1 + ‖x‖ ^ 2)⁻¹)`. Rewrite using `[hDw]`. Use `(norm_iteratedFDeriv_smul_le (N := (j : ℕ∞)) (hwc.of_le (by exact_mod_cast hj)) (hE.of_le (by exact_mod_cast hj)) x le_rfl).trans ?_` and prove the remaining obligations. Rewrite using `[hCn, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hi' : i ≤ j` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : Cn j ≤ ∑ n ∈ Finset.range (m + 1), Cn n` using `Finset.single_le_sum (fun n _ => hCn0 n) (Finset.mem_range.2 (Nat.lt_succ_of_le hj))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decay_of_weight {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] {D E : V → W} {m : ℕ}
     (hE : ContDiff ℝ m E) (B : ℝ) (hEb : ∀ j ≤ m, ∀ x, ‖iteratedFDeriv ℝ j E x‖ ≤ B)
@@ -120,9 +120,9 @@ theorem decay_of_weight {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] {
     _ = 4 * (∑ n ∈ Finset.range (m + 1), Cn n) * (1 + ‖x‖) ^ (-(4 : ℝ)) := by ring
 
 /- English proof (translation)
-Take `⟨hD, C, hC⟩` from `decay_of_weight hE B hEb hDE`. Use `⟨hD, ⟨C, hC⟩, fun j hj1 hjm => integral_iteratedFDeriv_eq_zero hD C (fun i hi x => ?_) j hj1 hjm⟩` and prove the remaining obligations. Use `(hC i hi x).trans ?_` and prove the remaining obligations. Establish `hC0 : 0 ≤ C`. Establish `h` using `(norm_nonneg _).trans (hC 0 (Nat.zero_le _) 0)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `nonneg_of_mul_nonneg_left h (by positivity)`. Use `gcongr`. Combine the linear relations using `[norm_nonneg x]`. Establish `: (finrank ℝ V : ℝ) ≤ 3` using `by exact_mod_cast hV`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem smooth_decay_of_weighted [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (hV : finrank ℝ V ≤ 3)
     {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [CompleteSpace W] {D E : V → W} {m : ℕ}

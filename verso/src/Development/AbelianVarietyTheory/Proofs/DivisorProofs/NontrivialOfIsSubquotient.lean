@@ -18,13 +18,11 @@ namespace GlobalTheory.TypeTwo.PowIrrProof
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Take `⟨y, hy⟩` from `exists_ne (0 : W)`. Take `⟨v, rfl⟩` from `hf y`. Use `haveI : IsSimpleOrder (Subrepresentation ρ) := hρ`. Break down `eq_bot_or_eq_top S with rfl | rfl` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Conclude with `absurd (by rw [show v = 0 from Subtype.ext v.2, map_zero]) hy`. Set `F : ρ.IntertwiningMap σ` to `f.comp (topEquiv ρ).symm.toIntertwiningMap`. Establish `hs : Function.Surjective F` using `hf.comp (topEquiv ρ).symm.toLinearEquiv.surjective`. Use `⟨equivOfBijective F ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, hs⟩⟩` and prove the remaining obligations. Use `haveI : IsSimpleOrder (Subrepresentation ρ) := hρ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `eq_bot_or_eq_top F.ker with h | h` into its components or cases. Establish `: x ∈ F.ker` using `hx`. Rewrite `this` using `[h]`. Conclude with `this`. Establish `: v.1 ∈ F.ker` using `by rw [h]; trivial`.
-
-Conclude with `absurd this hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem equiv_of_isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (h : IsSubquotient σ ρ) [Nontrivial W]
@@ -47,7 +45,7 @@ theorem equiv_of_isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [Module
     exact absurd this hy
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Use `hf.nontrivial` as an intermediate fact. Conclude with `Subtype.val_injective.nontrivial (α := S.toSubmodule)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (h : IsSubquotient σ ρ) [Nontrivial W] :

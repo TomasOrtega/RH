@@ -16,9 +16,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {M : Type} [NormedAddCommGroup M] [Inne
   {E : Fin n → Fin n → Module.End ℂ M}
 
 /- English proof (translation)
-Unfold `SqId ForAlg at hSq`. Establish `hd` using `(hSq n ε M E hE hU y).2.1`. Establish `hnn : 0 ≤ ∑ a : Fin n, ∑ b ∈ Finset.univ.filter (fun b => ε b ≠ ε a), ‖(E a b) y‖ ^ 2` using `Finset.sum_nonneg (fun a _ => Finset.sum_nonneg (fun b _ => by positivity))`. Establish `hK : (⟪casimirK ε E y, y⟫_ℂ).re = casValK ε L * ‖y‖ ^ 2`. Rewrite using `[casimirK_khwVec ε hE hy, inner_smul_left, inner_self_eq_norm_sq_to_K]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[casValK]`. Use `left`. Use `norm_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem re_cas_le (hSq : SqId) (hE : IsGlRep E) (hU : IsInfUnitary ε E) {L : Fin n → ℝ} {y : M}
     (hy : IsKHWVec ε E L y) : (⟪casimir E y, y⟫_ℂ).re ≤ casValK ε L * ‖y‖ ^ 2 := by
@@ -34,7 +34,7 @@ theorem re_cas_le (hSq : SqId) (hE : IsGlRep E) (hU : IsInfUnitary ε E) {L : Fi
   linarith
 
 /- English proof (translation)
-Unfold `root`. Simplify using `only [Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_root_le (a b c : Fin n) : |root a b c| ≤ 1 := by
   unfold root
@@ -42,21 +42,21 @@ theorem abs_root_le (a b c : Fin n) : |root a b c| ≤ 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `KIrrEx ForAlg at hK`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ L' y hyN hy0 _ hyHW _ hcas`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Establish `h1` using `hR y hyN`. Establish `h2` using `re_cas_le hSq hE hU hyHW`. Establish `hpos : 0 < ‖y‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hy0) 2`. Establish `hc : casValK ε L' ≤ casValK ε L - J * w` using `by simpa using hcas`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: casValK ε L - R ≤ casValK ε L'` using `le_of_mul_le_mul_right (h1.trans h2) hpos`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ k ih`. Introduce `hk L' y hyN hy0 hyK hyHW hbd hcas`. Take `⟨V, hVN, hIrr⟩` from `hK n ε M E hE hU N hN L' y hyN hy0 hyK hyHW`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hk0 : (0:ℝ) ≤ k` using `by positivity`. Distinguish the cases in `hND : NoDown ε E L' V`. Use `⟨L', V, fun a => ?_, hIrr, hND⟩` and prove the remaining obligations. Use `hbd a` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `NoDown at hND push_neg at hND`. Take `⟨a, b, hab, _, v, hv, hvHW, hv0⟩` from `hND`. Apply `ih (by omega) (L' - root a b) v (layer_le_of_stable hVN (fun c d u hu => hN c d u hu) 1 hv) hv0 ⟨layer ε E V 1, finiteDimensional_layer hIrr.1 1, layer_kStable hE hIrr.2.1 1, hv⟩ hvHW` to reduce the goal to its premises. Introduce `c`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `abs_le.mp (hbd c)`. Establish `h2` using `abs_le.mp (abs_root_le a b c)`. Move the coercions through the operations in `at h1`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[abs_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`. Establish `hdrop` using `hD n ε L' a b hab.ne`. Establish `ha` using `abs_le.mp (hbd a)`. Establish `hb` using `abs_le.mp (hbd b)`. Establish `ht` using `hτ a b hab`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at ha hb hcas`. Use polynomial arithmetic with `[ha.1, ha.2, hb.1, hb.2]`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem main (hSq : SqId) (hK : KIrrEx) (hD : Drop) (hE : IsGlRep E) (hU : IsInfUnitary ε E)
     (N : Submodule ℂ M) (hN : Stab E N) (μ L : Fin n → ℝ) (R τ s : ℝ) (J : ℕ) (w : ℝ)
@@ -111,7 +111,7 @@ theorem main (hSq : SqId) (hK : KIrrEx) (hD : Drop) (hE : IsGlRep E) (hU : IsInf
 end DescentAux
 
 /- English proof (translation)
-Unfold `Descent ForAlg`. Introduce `hSq hK hD n ε M _ _ E hE hU N hN μ L R τ s J hR hτ hs hJ y hyN hy0 hyK hyHW`. Conclude with `DescentAux.main hSq hK hD hE hU N hN μ L R τ s J _ hR hτ hJ le_rfl J le_rfl L y hyN hy0 hyK hyHW (fun a => by simpa using hs a) (by simp)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_span_of_frobenius_mem_span : SqId → KIrrEx → Drop → Descent := by
   unfold Descent ForAlg

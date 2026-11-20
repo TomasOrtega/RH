@@ -40,7 +40,7 @@ open GlobalTheory.MiTop
 namespace GlobalTheory.Fam
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 D L hT Gi Gl Kc Yd cX ex W hW hR hP`. Consider the cases of `hW with`. Consider the case `mk W hA`. Conclude with `GlobalTheory.T.main_theorem_from_published_results h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 W hA hR hP`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem miAt_of_truePack : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.StrongApproxSU → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), TruePack W → 1 ≤ D.R.rS → PuNZ D → MiAt W := by
   intro h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 D L hT Gi Gl Kc Yd cX ex W hW hR hP

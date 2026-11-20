@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.KZ.FracGen
 
 /- English proof (translation)
-Set `L' : IntermediateField (FixedPoints.subfield G E) E` to `{ L with algebraMap_mem' := fun x => hL x.2 }`. Establish `hb : L'.fixingSubgroup = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `σ hσ`. Take `⟨g, rfl⟩` from `FixedPoints.toAlgAut_surjective G E σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Subgroup.mem_bot]`. Use extensionality with `x`. Use `hfix g (fun y hy => (IntermediateField.mem_fixingSubgroup_iff L' _).1 hσ y hy) x` as an intermediate fact. Simplify using `using this`. Establish `h` using `IsGalois.fixedField_fixingSubgroup L'`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[hb, IntermediateField.fixedField_bot]`. Use extensionality with `x`. Simplify using `only [Subfield.mem_top, iff_true]`. Establish `hx : x ∈ L'` using `h ▸ IntermediateField.mem_top`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_top_of_fix {E : Type} [Field E] (G : Type) [Group G] [Finite G] [MulSemiringAction G E]
     (L : Subfield E) (hL : FixedPoints.subfield G E ≤ L)
@@ -66,9 +66,9 @@ def FM (X : Tower Ω ε) (M : ℕ) : IntermediateField Ω X.K :=
   IntermediateField.fixedField ((CongruenceSubgroup.Gamma M).map (rho X))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h γ hγ`. Use `(IntermediateField.mem_fixedField_iff _ _).1 h (rho X γ⁻¹) ⟨γ⁻¹, inv_mem hγ, rfl⟩` as an intermediate fact. Rewrite `this` using `[rho_apply, inv_inv]`. Conclude with `this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Unfold `FM`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Conclude with `h _ (inv_mem hγ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_FM (X : Tower Ω ε) (M : ℕ) (f : X.K) : f ∈ FM X M ↔ Inv X (CongruenceSubgroup.Gamma M) f := by
   constructor
@@ -83,9 +83,9 @@ theorem mem_FM (X : Tower Ω ε) (M : ℕ) (f : X.K) : f ∈ FM X M ↔ Inv X (C
     exact h _ (inv_mem hγ)
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[mem_FM]`. Introduce `δ hδ`. Establish `hc : γ⁻¹ * δ * γ⁻¹⁻¹ ∈ CongruenceSubgroup.Gamma M` using `(CongruenceSubgroup.Gamma_normal M).conj_mem δ hδ γ⁻¹`. Rewrite using `[rho_apply, ← X.sl_mul, ← map_mul]`. Establish `e : γ⁻¹ * δ = (γ⁻¹ * δ * γ⁻¹⁻¹) * γ⁻¹` using `by group`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, X.sl_mul, hf _ hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stab (X : Tower Ω ε) (M : ℕ) (γ : SL(2, ℤ)) {f : X.K} (hf : f ∈ FM X M) : rho X γ f ∈ FM X M := by
   rw [mem_FM] at hf ⊢
@@ -128,9 +128,7 @@ theorem rhoF_apply (X : Tower Ω ε) (M : ℕ) (γ : SL(2, ℤ)) (x : FM X M) :
     ((rhoF X M γ x : FM X M) : X.K) = X.sl (ofSL γ⁻¹) x := rfl
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `hle : CongruenceSubgroup.Gamma M ≤ (rhoF X M).ker`. Introduce `γ hγ`. Rewrite using `[MonoidHom.mem_ker]`. Use extensionality with `x`.
-
-Use `show X.sl (ofSL γ⁻¹) x = x`. Conclude with `(mem_FM X M x).1 x.2 _ (inv_mem hγ)`. Use `haveI := Subgroup.finiteIndex_of_le hle`. Conclude with `Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange (rhoF X M)).toEquiv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem finite_range (X : Tower Ω ε) (M : ℕ) (hM : 0 < M) : Finite (rhoF X M).range := by
   haveI : NeZero M := ⟨hM.ne'⟩
@@ -144,9 +142,9 @@ theorem finite_range (X : Tower Ω ε) (M : ℕ) (hM : 0 < M) : Finite (rhoF X M
   exact Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange (rhoF X M)).toEquiv
 
 /- English proof (translation)
-Apply `GlobalTheory.KZ.SiegelSL.an_injective X` to reduce the goal to its premises. Take `⟨φ, -, hφ, -⟩` from `X.an_exp f`. Rewrite using `[X.an_sl _ _ _ hφ, hφ]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Simplify using `[mob, ent, ofSL]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem sl_neg_one (X : Tower Ω ε) (f : X.K) : X.sl (ofSL (-1)) f = f := by
   apply GlobalTheory.KZ.SiegelSL.an_injective X
@@ -166,9 +164,9 @@ namespace GlobalTheory.KZ.FracGen
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Establish `e : sgC c (fun i => x i + n i) = sgC c x`. Use function extensionality and compare the values at `z`. Simplify using `only [sgC]`. Conclude with `GlobalTheory.Sieg.Per.sg_add_int c x n _ hx`. Unfold `siegel`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem siegel_add_int (X : Tower Ω ε) (c : ℕ) (x : Fin 2 → ℚ) (n : Fin 2 → ℤ) (hx : GlobalTheory.Sieg.admitted c x) :
     siegel X c (fun i => x i + n i) = siegel X c x := by
@@ -180,13 +178,13 @@ theorem siegel_add_int (X : Tower Ω ε) (c : ℕ) (x : Fin 2 → ℚ) (n : Fin 
   rw [e]
 
 /- English proof (translation)
-Use `⟨hc, hc6, ?_⟩` and prove the remaining obligations. Establish `hcop : IsCoprime (M : ℤ) (c : ℤ)`. Rewrite using `[Nat.isCoprime_iff_coprime]`. Establish `h` using `(Nat.ModEq.gcd_eq hcM).trans (Nat.gcd_one_left M)`. Conclude with `Nat.Coprime.symm h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMq : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `key : ∀ t : ℤ, (c : ℚ) * ((t : ℚ) / M) ∈ Set.range ((↑) : ℤ → ℚ) → (M : ℤ) ∣ t`. Introduce and unpack `t ⟨m, hm⟩`. Establish `h1 : ((c * t : ℤ) : ℚ) = ((M * m : ℤ) : ℚ)`. Use `push_cast`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Clear the denominators using the available nonvanishing facts. Establish `h2 : c * t = M * m` using `by exact_mod_cast h1`. Conclude with `hcop.dvd_of_dvd_mul_left ⟨m, h2⟩`. Introduce and unpack `⟨h0, h1⟩`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hab` to reduce the goal to its premises. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h0 h1`. Conclude with `⟨key a h0, key b h1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem admissible_of_integral_conj_le (M c : ℕ) (hc : 1 < c) (hc6 : Nat.Coprime c 6) (hcM : c ≡ 1 [MOD M]) (a b : ℤ)
     (hab : ¬ ((M : ℤ) ∣ a ∧ (M : ℤ) ∣ b)) (hM : 0 < M) :
@@ -211,19 +209,19 @@ theorem admissible_of_integral_conj_le (M c : ℕ) (hc : 1 < c) (hc6 : Nat.Copri
   exact ⟨key a h0, key b h1⟩
 
 /- English proof (translation)
-Introduce `γ hγ`. Establish `hadm` using `admissible_of_integral_conj_le M c hc hc6 hcM a b hab hM`. Rewrite using `[GlobalTheory.KZ.SiegelSL.sl_siegel Ω ε X c _ γ hadm]`. Rewrite `hγ` using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨g00, g01, g10, g11⟩` from `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `d1 : ∀ t : ℤ, ((t : ZMod M) = 1) → ∃ k : ℤ, (t : ℚ) = 1 + M * k`. Introduce `t ht`. Establish `: (M : ℤ) ∣ t - 1`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ht, sub_self]`. Take `⟨k, hk⟩` from `this`. Conclude with `⟨k, by rw [show t = 1 + M * k by linarith]; push_cast; ring⟩`. Establish `d0 : ∀ t : ℤ, ((t : ZMod M) = 0) → ∃ k : ℤ, (t : ℚ) = M * k`. Introduce `t ht`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd t M).1 ht`. Conclude with `⟨k, by rw [hk]; push_cast; ring⟩`. Take `⟨k00, h00⟩` from `d1 _ g00`. Take `⟨k01, h01⟩` from `d0 _ g01`. Take `⟨k10, h10⟩` from `d0 _ g10`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k11, h11⟩` from `d1 _ g11`. Establish `hMq : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `e : GlobalTheory.Sieg.act ![(a : ℚ) / M, (b : ℚ) / M] γ = fun i => (![(a : ℚ) / M, (b : ℚ) / M] : Fin 2 → ℚ) i + ((![a * k00 + b * k10, a * k01 + b * k11] : Fin 2 → ℤ) i : ℚ)`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.Sieg.act, Fin.sum_univ_two]`. Simplify using `[h00, h10]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GlobalTheory.Sieg.act, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h01, h11]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, siegel_add_int X c _ _ hadm]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegel_inv {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     (M c : ℕ) (hM : 0 < M) (hc : 1 < c) (hc6 : Nat.Coprime c 6) (hcM : c ≡ 1 [MOD M]) (a b : ℤ)
@@ -270,19 +268,17 @@ end GlobalTheory.KZ.FracGen
 namespace GlobalTheory.KZ.FracGen
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X hj M c hM hc hc6 hcM f hf`. Use `set L := IntermediateField.adjoin Ω ({X.jK} ∪ {g | ∃ a b : ℤ, ¬ ((M : ℤ) ∣ a ∧ (M : ℤ) ∣ b) ∧ g = siegel X c ![(a : ℚ) / M, (b : ℚ) / M]}) with hLdef`. Set `Lsub : Subfield (FM X M)` to `L.toSubfield.comap (algebraMap (FM X M) X.K)`. Use `haveI := finite_range X M hM`. Establish `hL : FixedPoints.subfield (rhoF X M).range (FM X M) ≤ Lsub`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hinv : ∀ γ : SL(2, ℤ), X.sl (ofSL γ) x = x`. Introduce `γ`. Establish `h1` using `hx ⟨rhoF X M γ⁻¹, ⟨γ⁻¹, rfl⟩⟩`. Establish `h2` using `congrArg Subtype.val h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ((rhoF X M γ⁻¹ x : FM X M) : X.K) = X.sl (ofSL γ⁻¹⁻¹) x` using `rhoF_apply X M γ⁻¹ x`. Rewrite `h3` using `[inv_inv]`. Rewrite using `[← h3]`. Conclude with `h2`. Establish `hj'` using `GlobalTheory.T.modularTower_mem_adjoin_j_of_slTwoInt_invariant ε X hj (x : X.K) hinv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show (algebraMap (FM X M) X.K x) ∈ L`. Conclude with `IntermediateField.adjoin.mono Ω _ _ Set.subset_union_left hj'`. Establish `hfix : ∀ g : (rhoF X M).range, (∀ x ∈ Lsub, g • x = x) → ∀ x : FM X M, g • x = x`. Introduce and unpack `⟨σ, γ, rfl⟩ hg x`. Establish `hs : ∀ a b : ℤ, ¬ ((M : ℤ) ∣ a ∧ (M : ℤ) ∣ b) → X.sl (ofSL γ⁻¹) (siegel X c ![(a : ℚ) / M, (b : ℚ) / M]) = siegel X c ![(a : ℚ) / M, (b : ℚ) / M]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `a b hab`. Establish `hmem : siegel X c ![(a : ℚ) / M, (b : ℚ) / M] ∈ FM X M` using `(mem_FM X M _).2 (siegel_inv X M c hM hc hc6 hcM a b hab)`. Establish `hin : (⟨_, hmem⟩ : FM X M) ∈ Lsub` using `by show (siegel X c ![(a : ℚ) / M, (b : ℚ) / M]) ∈ L`. Conclude with `IntermediateField.subset_adjoin Ω _ (Or.inr ⟨a, b, hab, rfl⟩)`. Use `congrArg Subtype.val (hg _ hin)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Break down `GlobalTheory.T.siegel_invariance_implies_congruence ε X M c γ⁻¹ hM hc hc6 hcM hs with h | h` into its components or cases. Apply `Subtype.ext show X.sl (ofSL γ⁻¹) x = x` to reduce the goal to its premises. Conclude with `(mem_FM X M x).1 x.2 _ h`. Apply `Subtype.ext show X.sl (ofSL γ⁻¹) x = x` to reduce the goal to its premises.
-
-Establish `e : γ⁻¹ = -γ⁻¹ * -1` using `by simp`. Rewrite using `[e, map_mul, X.sl_mul, (mem_FM X M x).1 x.2 _ h, sl_neg_one]`. Establish `key` using `eq_top_of_fix (rhoF X M).range Lsub hL hfix`. Establish `hx : (⟨f, (mem_FM X M f).2 hf⟩ : FM X M) ∈ Lsub` using `key ▸ Subfield.mem_top _`. Conclude with `hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fracGen : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) → ∀ (M c : ℕ), 0 < M → 1 < c → Nat.Coprime c 6 → c ≡ 1 [MOD M] → ∀ f : X.K, Inv X (CongruenceSubgroup.Gamma M) f → f ∈ IntermediateField.adjoin Ω ({X.jK} ∪ {g | ∃ a b : ℤ, ¬ ((M : ℤ) ∣ a ∧ (M : ℤ) ∣ b) ∧ g = siegel X c ![(a : ℚ) / M, (b : ℚ) / M]}) := by
   intro Ω _ _ _ ε X hj M c hM hc hc6 hcM f hf

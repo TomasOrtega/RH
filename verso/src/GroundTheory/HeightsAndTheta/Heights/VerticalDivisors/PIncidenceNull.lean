@@ -7,17 +7,15 @@ namespace GroundTheory.Heights₂.Heights.Vertical
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ n k I f hf`. Establish `hvan : ∀ j : Fin n, rename Sum.inr f * X (Sum.inl j) ∈ MvPolynomial.vanishingIdeal F (MvPolynomial.zeroLocus (AlgebraicClosure F) (incIdeal I k))`. Introduce `j z hz`. Establish `hI : ∀ g ∈ I, aeval (z ∘ Sum.inl) g = 0`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : rename Sum.inl g ∈ incIdeal I k` using `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg)`. Establish `h` using `hz _ hmem`. Rewrite `h` using `[aeval_rename]`. Then use the resulting hypothesis. Establish `hlin : ∀ i : Fin k, ∑ j, (z ∘ Sum.inr) (i, j) * (z ∘ Sum.inl) j = 0`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : (∑ j, X (Sum.inr (i, j)) * X (Sum.inl j) : MvPolynomial (Fin n ⊕ (Fin k × Fin n)) F) ∈ incIdeal I k` using `Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)`. Establish `h` using `hz _ hmem`. Simplify using `using h`. Rewrite using `[map_mul, aeval_rename, aeval_X]`. Distinguish the cases in `hx : z ∘ Sum.inl = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h0 : z (Sum.inl j) = 0` using `congrFun hx j`. Rewrite using `[h0, mul_zero]`. Establish `hu : z ∘ Sum.inr ∈ incidence I k` using `⟨z ∘ Sum.inl, hx, hI, hlin⟩`. Rewrite using `[(hf.2 f).2 dvd_rfl _ hu, zero_mul]`. Establish `hrad : ∀ j : Fin n, ∃ m, (rename Sum.inr f * X (Sum.inl j)) ^ m ∈ incIdeal I k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Establish `h` using `hvan j`. Rewrite `h` using `[MvPolynomial.vanishingIdeal_zeroLocus_eq_radical]`. Conclude with `h`. Use `choose m hm using hrad`.
-
-Conclude with `⟨Finset.univ.sup m, fun j => Ideal.pow_mem_of_pow_mem _ (hm j) (Finset.le_sup (Finset.mem_univ j))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IncidenceNull.proof : IncidenceNull.Statement := by
   intro F _ n k I f hf

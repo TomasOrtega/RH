@@ -16,7 +16,7 @@ def BeOnFam {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
   Formalism.MainNotions.FamU Fm fun D u => Formalism.L2.Ker.BeOnTie D u
 
 /- English proof (translation)
-Introduce `i`. Take `⟨h1, h2⟩` from `sg_interlace Tf.valP τ i`. Conclude with `⟨by simpa [lamTr, sgTr, wSh] using h1, by simpa [lamTr, sgTr, wSh] using h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem interlace_lamTr_sgTr' {u : D.what₂.Word} (Tf : FormsTied D u) (τ : D.what₂.Tau) :
     Formalism.MainNotions.PrimeDegreeVariant.Interlace (Nm_succ D.R) (lamTr D u τ) (sgTr D u τ) := by
@@ -45,7 +45,7 @@ structure LowerLevelCompatible {u : D.what₂.Word} (Tf : FormsTied D u) : Prop 
   map : LowerMapTie Tf
 
 /- English proof (translation)
-The claim follows from `h hB ((D.mem u).P.evz φ) c P hP hv`.
+A detailed English derivation is pending.
 -/
 theorem LowerMapTie.pt_eq {u : D.what₂.Word} {Tf : FormsTied D u} (h : LowerMapTie Tf) (hB : IsUnit (bZ u Tf.til.z0).det) (φ : Fn D u D.R.m) (c : (D.fm u).clsP)
     (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) (hP : P ∈ CSpan ((D.fm u).lam D.R.m))
@@ -55,7 +55,7 @@ theorem LowerMapTie.pt_eq {u : D.what₂.Word} {Tf : FormsTied D u} (h : LowerMa
   h hB ((D.mem u).P.evz φ) c P hP hv
 
 /- English proof (translation)
-Introduce `τ`. Rewrite using `[hP τ]`. Conclude with `Formalism.L2.Ker.brOneIsBr D u τ (interlace_lamTr_sgTr' Tf τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archimedeanSignatureMatching_of_trivial_branching {u : D.what₂.Word} (Tf : FormsTied D u) (P : Pend D u)
     (hP : ∀ τ, P.br τ = Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ)) : ArchimedeanSignatureMatching P := by
@@ -64,7 +64,7 @@ theorem archimedeanSignatureMatching_of_trivial_branching {u : D.what₂.Word} (
   exact Formalism.L2.Ker.brOneIsBr D u τ (interlace_lamTr_sgTr' Tf τ)
 
 /- English proof (translation)
-Establish `h1 : IsUnit ((bZ u z0)⁻¹).det` using `Matrix.isUnit_nonsing_inv_det _ hB`. Establish `h2 : IsUnit ((embT D τ).mapMatrix (bZ u z0)⁻¹).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `h1.map _`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mZ_isUnit {u : D.what₂.Word} {z0 : Fin (D.R.N D.R.m) → D.host.E} (hB : IsUnit (bZ u z0).det) (τ : D.what₂.Tau) :
     IsUnit (mZ u z0 τ).det := by

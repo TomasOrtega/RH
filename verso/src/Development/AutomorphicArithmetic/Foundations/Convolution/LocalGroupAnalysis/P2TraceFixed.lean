@@ -13,9 +13,9 @@ section
 variable {A B : Type} [CommRing A] [CommRing B] {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => ext a b`. Both sides reduce to the same expression. Consider the case `succ j ih`. Rewrite using `[pow_succ_apply', ih, pow_succ']`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem p2_pow (s : B →+* B) (j : ℕ) (g : GL (Fin n) B) :
     ((show Monoid.End (GL (Fin n) B) from mapGL n s) ^ j) g = mapGL n (s ^ j) g := by
@@ -26,11 +26,11 @@ private theorem p2_pow (s : B →+* B) (j : ℕ) (g : GL (Fin n) B) :
     ext a b; rfl
 
 /- English proof (translation)
-Establish `key : ∀ y : GL (Fin n) B, mapGL n s y = y → ∃ M : Matrix (Fin n) (Fin n) A, M.map ι = (y : Matrix (Fin n) (Fin n) B)`. Introduce `y hy`. Establish `h : ∀ a b, ∃ c, ι c = (y : Matrix (Fin n) (Fin n) B) a b` using `fun a b => fix _ (congrArg (fun g : GL (Fin n) B => (g : Matrix (Fin n) (Fin n) B) a b) hy)`. Use `choose M hM using h`. Conclude with `⟨Matrix.of M, by ext a b; exact hM a b⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `key x hx`. Take `⟨N, hN⟩` from `key x⁻¹ (by rw [map_inv, hx])`. Establish `inj` using `Matrix.map_injective (m := Fin n) (n := Fin n) inj`. Use `⟨⟨M, N, inj ?_, inj ?_⟩, Units.ext hM.symm⟩` and prove the remaining obligations. Simplify using `only`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _), Units.mul_inv]`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _), Units.inv_mul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem p2_descend (ι : A →+* B) (s : B →+* B) (inj : Function.Injective ι)
     (fix : ∀ b, s b = b → b ∈ ι.range) (x : GL (Fin n) B) (hx : mapGL n s x = x) :
@@ -52,23 +52,23 @@ private theorem p2_descend (ι : A →+* B) (s : B →+* B) (inj : Function.Inje
     rw [Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _), Units.inv_mul]
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map hs)`.
+A detailed English derivation is pending.
 -/
 private theorem p2_cont [TopologicalSpace B] [IsTopologicalRing B] (s : B →+* B) (hs : Continuous s) :
     Continuous (mapGL n s) :=
   Continuous.units_map _ (continuous_id.matrix_map hs)
 
 /- English proof (translation)
-Rewrite using `[RingHom.coe_pow]`. Conclude with `hs.iterate j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem p2_cont_pow [TopologicalSpace B] (s : B →+* B) (hs : Continuous s) (j : ℕ) :
     Continuous (s ^ j : B →+* B) := by
   rw [RingHom.coe_pow]; exact hs.iterate j
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Establish `: twNorm (mapGL n s) 0 = fun _ => 1` using `funext fun g => twNorm_zero _ g`. Rewrite using `[this]`. Conclude with `continuous_const`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ j ih`. Establish `: twNorm (mapGL n s) (j + 1) = fun g => twNorm (mapGL n s) j g * mapGL n (s ^ j) g`. Use function extensionality and compare the values at `fun g => (twNorm_succ _ j g).trans (congrArg _ (p2_pow s j g))`. Rewrite using `[this]`. Conclude with `ih.mul (p2_cont _ (p2_cont_pow s hs j))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem p2_cont_norm [TopologicalSpace B] [IsTopologicalRing B] (s : B →+* B) (hs : Continuous s) (j : ℕ) :
     Continuous (twNorm (mapGL n s) j) := by
@@ -82,9 +82,9 @@ private theorem p2_cont_norm [TopologicalSpace B] [IsTopologicalRing B] (s : B �
     rw [this]; exact ih.mul (p2_cont _ (p2_cont_pow s hs j))
 
 /- English proof (translation)
-Establish `h1` using `Finset.sum_range_succ (fun j => (s ^ j) r) l`. Establish `h2` using `Finset.sum_range_succ' (fun j => (s ^ j) r) l`. Rewrite `h2` using `[h1, hl, pow_zero]`. Rewrite using `[map_sum, add_right_cancel h2]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem p2_trace_fixed (s : B →+* B) (l : ℕ) (hl : s ^ l = 1) (r : B) :
     s (∑ j ∈ Finset.range l, (s ^ j) r) = ∑ j ∈ Finset.range l, (s ^ j) r := by
@@ -96,41 +96,37 @@ private theorem p2_trace_fixed (s : B →+* B) (l : ℕ) (hl : s ^ l = 1) (r : B
   rw [pow_succ']; rfl
 
 /- English proof (translation)
-Use `set θ : Monoid.End (GL (Fin n) B) := mapGL n s with hθ`. Use `set γ' := mapGL n ι γ with hγ'`. Establish `hpow : ∀ j g, (θ ^ j) g = mapGL n (s ^ j) g` using `p2_pow s`. Establish `hθl : θ ^ l = 1`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hpow l g).trans ?_` and prove the remaining obligations. Rewrite using `[hl]`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `hθγ : θ γ' = γ'` using `by ext a b; exact hsι _`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθc : ∀ g, g * γ' = γ' * g → θ g * γ' = γ' * θ g` using `fun g hg => by`. Use `congrArg θ hg` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, hθγ]`. Then use the resulting hypothesis. Establish `hθjc : ∀ j g, g * γ' = γ' * g → (θ ^ j) g * γ' = γ' * (θ ^ j) g` using `fun j g hg => by`. Proceed by induction on `j with`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact hg`. Consider the case `succ j ih => rw [pow_succ_apply']`. Conclude with `hθc _ ih`. Establish `hδc : δ * γ' = γ' * δ`. Use `map_twNorm_of_pow_eq_one θ hθl δ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Rewrite `this` using `[hδ, hθγ, mul_assoc, eq_inv_mul_iff_mul_eq]`. Conclude with `this`. Establish `hNc : ∀ j, twNorm θ j δ * γ' = γ' * twNorm θ j δ` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `succ j ih => rw [twNorm_succ, mul_assoc, hθjc j δ hδc, ← mul_assoc, ih, mul_assoc]`. Take `⟨C₀, hC₀, hx₀⟩` from `hP _ (hD.image (p2_cont_norm s hs l))`. Set `Q : ℕ → GL (Fin n) B × GL (Fin n) B → GL (Fin n) B` to `fun j p => twNorm θ j δ * mapGL n (s ^ j) p.2 * (twNorm θ j p.1)⁻¹`. Establish `hQ : ∀ j, Continuous (Q j)` using `fun j => (continuous_const.mul ((p2_cont _ (p2_cont_pow s hs j)).comp continuous_snd)).mul ((p2_cont_norm s hs j).comp continuous_fst).inv`. Set `z : B → GL (Fin n) B × GL (Fin n) B → Matrix (Fin n) (Fin n) B` to `fun e p => ∑ j ∈ Finset.range l, (s ^ j) e • (Q j p : Matrix (Fin n) (Fin n) B)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ e, Continuous (z e)` using `fun e => continuous_finsetSum _ fun j _ => (Units.continuous_val.comp (hQ j)).const_smul ((s ^ j) e)`. Set `U : B → Set (GL (Fin n) B × GL (Fin n) B)` to `fun e => z e ⁻¹' Set.range Units.val`. Establish `hU : ∀ e, IsOpen (U e)` using `fun e => hopen.isOpen_range.preimage (hz e)`. Establish `hK : IsCompact (D ×ˢ C₀)` using `hD.prod hC₀`. Take `⟨T, hT⟩` from `hK.elim_finite_subcover U hU (fun p _ => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨e, he⟩` from `hunit fun j => Q j p`. Conclude with `Set.mem_iUnion.2 ⟨e, he⟩)`. Take `⟨K, hKc, hKU, hKe⟩` from `hK.finite_compact_cover T U (fun e _ => hU e) hT`. Use `⟨⋃ e ∈ T, Units.val ⁻¹' (z e '' K e), T.isCompact_biUnion fun e _ => hopen.isInducing.isCompact_preimage' ((hKc e).image (hz e)) ?_, fun x hx => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hKU e hp`. Take `⟨τ, hτ, y, hy, hxy⟩` from `hx₀ x ⟨_, hx, by`. Rewrite using `[← hδ]`. Conclude with `twNorm_twConj_of_pow_eq_one θ hθl x δ⟩`. Establish `hp : (x⁻¹ * δ * θ x, y) ∈ D ×ˢ C₀` using `⟨hx, hy⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hp` using `[hKe]`. Take `⟨e, he, hp⟩` from `Set.mem_iUnion₂.1 hp`. Take `⟨u, hu⟩` from `hKU e hp`. Establish `hτ' : τ⁻¹ * γ' = γ' * τ⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, hτ, mul_inv_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hQx : ∀ j, Q j (x⁻¹ * δ * θ x, y) = (θ ^ j) τ⁻¹ * x` using `fun j => by`. Establish `h1 : y = τ⁻¹ * x` using `by rw [hxy, inv_mul_cancel_left]`. Establish `h2` using `hcomm _ _ (hNc j) (hθjc j _ hτ')`. Establish `h3` using `twNorm_twConj θ j x δ`. Rewrite `h3` using `[twConj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Q]`. Rewrite using `[h3, ← hpow, h1, map_mul, ← mul_assoc, h2]`. Use `group`. Establish `hux : ((u * x⁻¹ : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) = ∑ j ∈ Finset.range l, (s ^ j) e • (((θ ^ j) τ⁻¹ : GL (Fin n) B) : Matrix (Fin n) (Fin n) B)`. Rewrite using `[Units.val_mul, hu]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [z, hQx, Finset.sum_mul, smul_mul_assoc]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Units.val_mul, mul_inv_cancel_right]`. Establish `hfix : mapGL n s (u * x⁻¹) = u * x⁻¹`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((u * x⁻¹ : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) a b = ∑ j ∈ Finset.range l, (s ^ j) (e * (τ⁻¹ : GL (Fin n) B) a b)`. Rewrite using `[hux, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hpow]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `s (((u * x⁻¹ : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) a b) = _`. Rewrite using `[this]`. Conclude with `p2_trace_fixed s l hl _`. Establish `hc : (u * x⁻¹) * γ' = γ' * (u * x⁻¹)`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_mul γ', hux, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, ← Units.val_mul, ← Units.val_mul, hθjc j _ hτ']`. Take `⟨t, ht⟩` from `p2_descend ι s inj fix _ hfix`. Establish `htc : t * γ = γ * t`.
-
-Rewrite `hc` using `[ht, hγ', ← map_mul, ← map_mul]`. Use extensionality with `a b`. Conclude with `inj (congrArg (fun g : GL (Fin n) B => (g : Matrix (Fin n) (Fin n) B) a b) hc)`. Use `⟨t⁻¹, ?_, u, Set.mem_iUnion₂.2 ⟨e, he, _, hp, hu.symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, htc, mul_inv_cancel_right]`.
-
-Rewrite using `[map_inv, ← ht]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem p2_main [TopologicalSpace B] [IsTopologicalRing B] [T2Space B] (ι : A →+* B) (s : B →+* B) (l : ℕ)
     (hs : Continuous s) (hl : s ^ l = 1) (inj : Function.Injective ι)
@@ -242,26 +238,26 @@ variable {F E A B : Type} [Field F] [NumberField F] [Field E] [NumberField E] [A
   [CommRing B] [Algebra E B]
 
 /- English proof (translation)
-Simplify using `[galOf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem p2_gal_tmul (e : E ⊗[F] A ≃ₐ[E] B) (σ : E ≃ₐ[F] E) (x : E) (a : A) :
     galOf e σ (e (x ⊗ₜ a)) = e (σ x ⊗ₜ a) := by
   simp [galOf]
 
 /- English proof (translation)
-Establish `h` using `(UpperTheory.ConvolutionTheory.D.galBase F E A σ _ (UpperTheory.ConvolutionTheory.D.galField F E σ hσ)).2.2.2`. Use `set τ : A ⊗[F] E ≃ₐ[A] A ⊗[F] E := Algebra.TensorProduct.congr AlgEquiv.refl σ with hτ`. Set `φ : A ⊗[F] E ≃+* B` to `(Algebra.TensorProduct.comm F A E).toRingEquiv.trans e.toRingEquiv`. Establish `hφ : ∀ a x, φ (a ⊗ₜ x) = e (x ⊗ₜ a)` using `fun a x => rfl`. Establish `h1 : ∀ z, galOf e σ (φ z) = φ (τ z)` using `fun z => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [hφ, p2_gal_tmul, ← hφ]`. Both sides reduce to the same expression. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2 : ∀ j z, (galOf e σ ^ j) (φ z) = φ ((τ ^ j) z)` using `fun j z => by`. Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => rw [pow_succ', pow_succ', AlgEquiv.mul_apply, ← h1, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h3 : ∀ a, ι a = φ (algebraMap A _ a)` using `fun a => hι a`. Use `⟨?_, fun a b hab => ?_, fun b hb => ?_, fun a => ?_, h.pos, ?_⟩` and prove the remaining obligations. Use extensionality with `b`. Take `⟨z, rfl⟩` from `φ.surjective b`. Rewrite using `[h2, h.pow]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `hab` using `[h3, h3]`. Conclude with `h.inj (φ.injective hab)`. Take `⟨z, rfl⟩` from `φ.surjective b`. Rewrite `hb` using `[h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `h.fix z (φ.injective hb)`. Conclude with `⟨a, by rw [h3, ha]⟩`. Rewrite using `[h3, h1, τ.commutes]`. Take `⟨m, x, y, hxy⟩` from `h.sep`. Use `⟨m, fun i => φ (x i), fun i => φ (y i), fun j hj => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [h2, ← map_mul, ← map_sum, hxy j hj]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 private theorem p2_gal [IsGalois F E] (e : E ⊗[F] A ≃ₐ[E] B) (σ : E ≃ₐ[F] E) (hσ : ∀ τ, τ ∈ Subgroup.zpowers σ)
     (ι : A →+* B) (hι : ∀ a, ι a = e (1 ⊗ₜ a)) :
@@ -302,13 +298,13 @@ private theorem p2_gal [IsGalois F E] (e : E ⊗[F] A ≃ₐ[E] B) (σ : E ≃�
 end
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, m, x, y, hxy⟩` from `h`. Establish `hγ' : ((mapGL n ι γ : GL (Fin n) (∀ w, K w)) : Matrix (Fin n) (Fin n) (∀ w, K w)).charpoly.Separable`. Establish `h` using `hγ.map (f := ι)`. Rewrite `h` using `[← Matrix.charpoly_map]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `p2_main ι s l hs h1 h2 h3 h4 (UpperTheory.isOpenEmbedding_units_val_generalLinearPi W K n) (fun Y => ?_) γ (UpperTheory.generalLinearPi_centralizer_comm_of_charpoly_separable W K n _ hγ') (UpperTheory.exists_compact_conj_mem_centralizer_mul_of_separable_charpoly hP W K n _ hγ') δ …` and prove the remaining obligations. Take `⟨a, ha⟩` from `UpperTheory.exists_nat_combination_isUnit_of_isUnit_combination W K n m (fun i => ∑ j ∈ Finset.range l, (s ^ j) (y i) • (Y j : Matrix (Fin n) (Fin n) (∀ w, K w))) x (by`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun j hj => by rw [hxy j (Finset.mem_range.1 hj)]]`. Simplify using `[h5, ite_smul])`. Use `⟨∑ i, (a i : ∀ w, K w) * y i, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.smul_sum, smul_smul] at ha`. Rewrite `ha` using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `ha` using `only [map_sum, map_mul, map_natCast, Finset.sum_smul]`.
+A detailed English derivation is pending.
 -/
 private theorem p2_pi (hP : P1) {A : Type} [CommRing A] (W : Type) [Finite W] (K : W → Type)
     [∀ w, NontriviallyNormedField (K w)] [∀ w, LocallyCompactSpace (K w)] [∀ w, CharZero (K w)] {n : ℕ}
@@ -339,9 +335,9 @@ private theorem p2_pi (hP : P1) {A : Type} [CommRing A] (W : Type) [Finite W] (K
 
 open NumberField IsDedekindDomain GroundTheory.Global GroundTheory.Global.SemiLocal in
 /- English proof (translation)
-Set `L : CompletionsOver E v →ₗ[v.adicCompletion F] CompletionsOver E v` to `{ toFun := galFin σ v map_add' := map_add _ map_smul' := fun c b => by`. Rewrite using `[RingHom.id_apply, Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `congr 1`. Use `p2_gal_tmul (tensorEquiv' E v) σ 1 c` as an intermediate fact. Rewrite `this` using `[map_one, tensorEquiv'_tmul, map_one, one_mul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this }`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+A detailed English derivation is pending.
 -/
 private theorem p2_cont_fin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) : Continuous (galFin σ v) := by
@@ -358,9 +354,9 @@ private theorem p2_cont_fin {F E : Type} [Field F] [NumberField F] [Field E] [Nu
 
 open NumberField GroundTheory.Global.InfinitePlace in
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Establish `h : ∀ y, galInf σ y = ∑ i, algebraMap E (InfiniteAdeleRing E) (σ (b i)) * infiniteAdeleRingMap (adeleCoord b i y)` using `fun y => by conv_lhs => rw [← tensorInfiniteAdeleRingEquiv_sum_adeleCoord b y]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← tensorInfiniteAdeleRingEquiv_tmul']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `p2_gal_tmul _ σ _ _`. Rewrite using `[show (galInf σ : InfiniteAdeleRing E → InfiniteAdeleRing E) = _ from funext h]`. Conclude with `continuous_finsetSum _ fun i _ => continuous_const.mul (continuous_infiniteAdeleRingMap.comp (continuous_adeleCoord b i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem p2_cont_inf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E ≃ₐ[F] E) : Continuous (galInf σ) := by
@@ -379,9 +375,7 @@ private theorem p2_cont_inf {F E : Type} [Field F] [NumberField F] [Field E] [Nu
 open NumberField IsDedekindDomain GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Global.InfinitePlace in
 open scoped Valued in
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ _ σ hσ n _`. Use `⟨fun v γ δ hγ hδ D hD => ?_, fun γ δ hγ hδ D hD => ?_⟩` and prove the remaining obligations. Conclude with `p2_pi hP (PlacesOver E v) (fun w => w.1.adicCompletion E) (incFin E v) (galFin σ v) _ (p2_cont_fin σ v) (p2_gal (tensorEquiv' E v) σ hσ _ fun a => by rw [tensorEquiv'_tmul, map_one, one_mul]; rfl) γ δ hγ hδ D hD`. Use `haveI : ∀ w : InfinitePlace E, CharZero w.Completion := fun w => charZero_of_injective_algebraMap (algebraMap E w.Completion).injective`. Conclude with `p2_pi hP (InfinitePlace E) (fun w => w.Completion) infiniteAdeleRingMap (galInf σ) _ (p2_cont_inf σ) (p2_gal tensorInfiniteAdeleRingEquiv σ hσ _ fun a => by`.
-
-Rewrite using `[tensorInfiniteAdeleRingEquiv_tmul', map_one, one_mul]) γ δ hγ hδ D hD`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.p2_of :
     P1 → P2 := by

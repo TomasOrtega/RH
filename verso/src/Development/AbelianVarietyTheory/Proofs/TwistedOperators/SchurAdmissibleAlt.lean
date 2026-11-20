@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.SchurAdm
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.SchurAdmissibility.schur_admissible`.
+A detailed English derivation is pending.
 -/
 theorem schur_admissible : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G), IsOpen (K : Set G) → IsCompact (K : Set G) → ∀ (N : Type) [AddCommGroup N] [Module ℂ N] (π : Representation ℂ G N), π.IsIrreducible → IsAdmissible π → ∀ φ : N →ₗ[ℂ] N, (∀ g x, φ (π g x) = π g (φ x)) → ∃ c : ℂ, φ = c • LinearMap.id :=
   _root_.GlobalTheory.SchurAdmissibility.schur_admissible

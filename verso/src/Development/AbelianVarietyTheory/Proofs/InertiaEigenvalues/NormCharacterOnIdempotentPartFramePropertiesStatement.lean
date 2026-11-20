@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DltEqZero
 open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Desc Polynomial Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnitLemma.Desc.chi_frame_props` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNormCharacterOnIdempotentPartFrameProperties.lean&line=191#L191)
 -/

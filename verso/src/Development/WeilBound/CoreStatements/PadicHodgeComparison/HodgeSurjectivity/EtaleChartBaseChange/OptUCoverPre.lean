@@ -16,9 +16,9 @@ def optU {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingC
   fun o => o.elim B.U B.V
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Distinguish the cases in `hx : x ∈ Set.range i`. Take `⟨w, rfl⟩` from `hx`. Establish `hw` using `B.cover (show w ∈ (⊤ : W.Opens) from trivial)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨α, hα⟩` from `(TopologicalSpace.Opens.mem_iSup).1 hw`. Conclude with `⟨some α, hα⟩`. Use `⟨none, ?_⟩ show x ∈ (B.U : Set Z)` and prove the remaining obligations. Rewrite using `[B.U_eq]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem optU_cover {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z}
     {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) : (⨆ o, optU B o) = ⊤ := by
@@ -35,7 +35,7 @@ theorem optU_cover {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec 
     exact hx
 
 /- English proof (translation)
-Establish `hL` using `hSL K Z Z Z q (𝟙 Z) (𝟙 Z)`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hL.2.2.1 T`. Consider the case `insert o S ho ih`. Simplify using `only [Finset.inf_insert, hL.2.2.2.1, ih, Finset.mem_insert, forall_eq_or_imp]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem inU_inf_iff (hSL : SiteLaws) {K : Type} [CommRing K] {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of K))
     {ι : Type} (f : ι → Z.Opens) (S : Finset ι) (T : Thick (smFun Z q)) :
@@ -48,9 +48,9 @@ theorem inU_inf_iff (hSL : SiteLaws) {K : Type} [CommRing K] {Z : Scheme.{0}} (q
     simp only [Finset.inf_insert, hL.2.2.2.1, ih, Finset.mem_insert, forall_eq_or_imp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T`. Apply `propext` to reduce the goal to its premises. Rewrite using `[inU_inf_iff hSL q f S T]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `h`. Take `⟨o, ho⟩` from `hS`. Conclude with `⟨⟨o, h o ho⟩, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem capU_eq (hSL : SiteLaws) {K : Type} [CommRing K] {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of K))
     {ι : Type} [DecidableEq ι] (f : ι → Z.Opens) (S : Finset ι) (hS : S.Nonempty) :
@@ -65,9 +65,9 @@ theorem capU_eq (hSL : SiteLaws) {K : Type} [CommRing K] {Z : Scheme.{0}} (q : Z
     exact ⟨⟨o, h o ho⟩, h⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T`. Apply `propext` to reduce the goal to its premises. Establish `hp` using `fun V => (hSL K Z Z Y q (𝟙 Z) π).2.2.2.2.1 V T`. Establish `e` using `congrFun (capU_eq hSL q f S hS) ((smS π rfl).G.obj T)`. Rewrite using `[hp, ← e]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [capU, hp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem capU_pre (hSL : SiteLaws) {K : Type} [CommRing K] {Z Y : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of K))
     (π : Y ⟶ Z) {ι : Type} [DecidableEq ι] (f : ι → Z.Opens) (S : Finset ι) (hS : S.Nonempty) :
@@ -80,15 +80,13 @@ theorem capU_pre (hSL : SiteLaws) {K : Type} [CommRing K] {Z Y : Scheme.{0}} (q 
   simp only [capU, hp]
 
 /- English proof (translation)
-Use `revert h`. Rewrite using `[capU_eq hSL q (optU B) S hS, capU_pre hSL q π (optU B) S hS]`. Introduce `h`. Distinguish the cases in `hn : none ∈ S`. Conclude with `hIso K Z Y q π B.U (S.inf (optU B)) B.iso (Finset.inf_le (f := optU B) hn) (On q i) (On (π ≫ q) (pullback.snd i π)) hQ hQ' (fun T hT => ((hSL K W Z Y q i π).2.2.2.2.2 T).2 hT) a h h' n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩` from `hS`. Choose the witnesses or unpack the hypotheses as in `⟨α, rfl⟩ : ∃ α, o = some α := by`. Consider the cases of `o with`. Consider the case `none => exact absurd ho hn`. Consider the case `some α => exact ⟨α, rfl⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := B.closed`. Use `haveI : Z.IsSeparated := ⟨by rw [← terminal.comp_from q]; infer_instance⟩`. Establish `haff : IsAffineOpen (S.inf (optU B))`. Rewrite using `[Finset.inf_eq_iInf]`. Use `IsAffineOpen.biInf (X := Z) (S : Set (Option B.ι)) S.finite_toSet ⟨_, ho⟩ (U := optU B) (fun o' ho' => by` as an intermediate fact.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the cases of `o' with`. Consider the case `none => exact absurd ho' hn`. Consider the case `some β => exact (B.c β).affine)`. Simplify using `using this`. Take `⟨c', -, -⟩` from `(hCL K W Z Y q i π d (B.V α) (B.c α)).1 (S.inf (optU B)) (Finset.inf_le (f := optU B) ho) haff`.
-
-Conclude with `hCB K W Z Y q i π d hd (S.inf (optU B)) ⟨c'⟩ hQ hQ' a h h' n`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem relInj_loc (hSL : SiteLaws) (hIso : IsoBij) (hCL : ChartLaws) (hCB : ChartBij)
     (K : Type) [Field K] [CharZero K] (W Z Y : Scheme.{0}) (q : Z ⟶ Spec (CommRingCat.of K)) [IsProper q]

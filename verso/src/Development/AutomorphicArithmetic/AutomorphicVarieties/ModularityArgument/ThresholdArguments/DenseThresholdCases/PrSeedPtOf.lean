@@ -16,13 +16,13 @@ set_option linter.overlappingInstances false
 section SlopeTestRemainingChoices
 variable {l : ℕ} [Fact l.Prime]
 /- English proof (translation)
-Rewrite using `[← sub_add_sub_cancel a b c]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h h')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tri {a b c : Qbar l} (h : ‖a - b‖ < 1) (h' : ‖b - c‖ < 1) : ‖a - c‖ < 1 := by
   rw [← sub_add_sub_cancel a b c]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h h')
 /- English proof (translation)
-Establish `h1 : a - b ∈ maximalIdeal c.O`. Rewrite using `[← residue_eq_zero_iff, map_sub, h, sub_self]`. Establish `h2` using `(Fr.sc_norm l c _).2.1 h1`. Rewrite `h2` using `[Subalgebra.coe_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem near_of_res {c : Coef l} {a b : c.O} (h : residue c.O a = residue c.O b) : ‖a.1 - b.1‖ < 1 := by
   have h1 : a - b ∈ maximalIdeal c.O := by
@@ -30,18 +30,18 @@ private theorem near_of_res {c : Coef l} {a b : c.O} (h : residue c.O a = residu
   have h2 := (Fr.sc_norm l c _).2.1 h1
   rwa [Subalgebra.coe_sub] at h2
 /- English proof (translation)
-The claim follows from `le_antisymm (Fr.sc_norm l c _).1 (not_lt.1 fun h => (Fr.sc_norm l c _).2.2 h a.isUnit)`.
+A detailed English derivation is pending.
 -/
 private theorem norm_unit {c : Coef l} (a : c.Oˣ) : ‖a.val.1‖ = 1 :=
   le_antisymm (Fr.sc_norm l c _).1 (not_lt.1 fun h => (Fr.sc_norm l c _).2.2 h a.isUnit)
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - b) (y := b) (by rw [hb]; exact h.ne)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hb, max_eq_right h.le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem norm_of_near {a b : Qbar l} (h : ‖a - b‖ < 1) (hb : ‖b‖ = 1) : ‖a‖ = 1 := by
   have := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - b) (y := b) (by rw [hb]; exact h.ne)
   rwa [sub_add_cancel, hb, max_eq_right h.le] at this
 /- English proof (translation)
-Use `tri (b := b * a') ?_ ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, norm_mul, norm_of_near h' hb', mul_one]` and apply the resulting hypothesis. Rewrite using `[← mul_sub, norm_mul, hb, one_mul]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem near_mul {a b a' b' : Qbar l} (h : ‖a - b‖ < 1) (h' : ‖a' - b'‖ < 1) (hb : ‖b‖ = 1) (hb' : ‖b'‖ = 1) :
     ‖a * a' - b * b'‖ < 1 := by
@@ -49,11 +49,11 @@ private theorem near_mul {a b a' b' : Qbar l} (h : ‖a - b‖ < 1) (h' : ‖a' 
   · rwa [← sub_mul, norm_mul, norm_of_near h' hb', mul_one]
   · rwa [← mul_sub, norm_mul, hb, one_mul]
 /- English proof (translation)
-Establish `ha` using `norm_of_near h hb`. Establish `hn : ∀ k : ℕ, ‖a ^ k - b ^ k‖ < 1` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ]; exact near_mul ih h (by rw [norm_pow, hb, one_pow]) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨k, rfl | rfl⟩` from `w.eq_nat_or_neg`. Simplify using `using hn k`. Establish `ha0 : a ^ k ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [ha]; exact one_ne_zero))`. Establish `hb0 : b ^ k ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [hb]; exact one_ne_zero))`. Rewrite using `[zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, inv_sub_inv ha0 hb0, norm_div, norm_mul, norm_pow, norm_pow, ha, hb, norm_sub_rev]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hn k`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem near_zpow {a b : Qbar l} (h : ‖a - b‖ < 1) (hb : ‖b‖ = 1) (w : ℤ) : ‖a ^ w - b ^ w‖ < 1 := by
   have ha := norm_of_near h hb
@@ -69,12 +69,12 @@ private theorem near_zpow {a b : Qbar l} (h : ‖a - b‖ < 1) (hb : ‖b‖ = 1
       norm_sub_rev]
     simpa using hn k
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.S7.eq_one_of_near hm hu h`.
+A detailed English derivation is pending.
 -/
 private theorem eq_one_of_near {u : Qbar l} {m : ℕ} (hm : ¬ l ∣ m) (hu : u ^ m = 1) (h : ‖u - 1‖ < 1) : u = 1 :=
   _root_.UpperTheory.Reformulated.B.S7.eq_one_of_near hm hu h
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Establish `: g * r s * g⁻¹ = 1` using `Units.ext (by rw [hg s hs]; simp [h1])`. Rewrite `this` using `[mul_inv_eq_one, mul_eq_left]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem one_of_diag {Γ : Type} [Group Γ] {n : ℕ} {r : Γ →* GL (Fin n) (Qbar l)} {H : Subgroup Γ}
     {χ : Fin n → Γ →* (Qbar l)ˣ} (h : IsDiagOn r H χ) {s : Γ} (hs : s ∈ H) (h1 : ∀ i, χ i s = 1) : r s = 1 := by
@@ -82,9 +82,9 @@ private theorem one_of_diag {Γ : Type} [Group Γ] {n : ℕ} {r : Γ →* GL (Fi
   have : g * r s * g⁻¹ = 1 := Units.ext (by rw [hg s hs]; simp [h1])
   rwa [mul_inv_eq_one, mul_eq_left] at this
 /- English proof (translation)
-Take `⟨P, hP⟩` from `h`. Establish `: ∀ g, (κ i g).val = ∑ b, (∑ a, P.val i a * (r g).val a b) * (P⁻¹).val b i` using `fun g => by`. Rewrite using `[← (hP g).2 i]`. Simplify using `only [Units.val_mul, Matrix.mul_apply]`. Simplify using `only [this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_finset_sum _ fun b _ => (continuous_finset_sum _ fun a _ => continuous_const.mul (hr a b)).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 private theorem flag_cont {Γ : Type} [Group Γ] [TopologicalSpace Γ] {n : ℕ} {r : Γ →* GL (Fin n) (Qbar l)}
     {κ : Fin n → Γ →* (Qbar l)ˣ} (hr : ∀ a b, Continuous fun g => (r g).val a b) (h : W.HasFlag r κ) (i : Fin n) :
@@ -97,7 +97,7 @@ private theorem flag_cont {Γ : Type} [Group Γ] [TopologicalSpace Γ] {n : ℕ}
   exact continuous_finset_sum _ fun b _ => (continuous_finset_sum _ fun a _ =>
     continuous_const.mul (hr a b)).mul continuous_const
 /- English proof (translation)
-Use `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker κ) ?_ hg` and prove the remaining obligations. Establish `: (κ.ker : Set Γ) = {g | (κ g).val = 1}` using `by ext; simp`. Rewrite using `[this]`. Conclude with `isClosed_eq h continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comm_one {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] {κ : Γ →* (Qbar l)ˣ}
     (h : Continuous fun g => (κ g).val) {g : Γ} (hg : g ∈ (commutator Γ).topologicalClosure) : κ g = 1 := by
@@ -106,17 +106,15 @@ private theorem comm_one {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopolog
   rw [this]
   exact isClosed_eq h continuous_const
 /- English proof (translation)
-Use `(W.exists_determinantPair_over_algebraicIntegers l T.G c.O n T.r T.B ρ ψ hc ⟨P, fun g => ?_⟩ (fun i g a ha => ?_) h2 (fun v i g a ha => ?_) (fun v i g => ?_) hf).exists` and prove the remaining obligations. Establish `h` using `congrArg (fun u : c.Oˣ => algebraMap c.O (Qbar l) u) (T.K.κ_conj g)`. Establish `e : ((T.G.eps c.O (Qbar l) g ^ (1 - (n : ℤ)) : (Qbar l)ˣ) : Qbar l) = algebraMap c.O (Qbar l) (T.G.eps c.O c.O g ^ (1 - (n : ℤ)) : c.Oˣ)` using `congrArg Units.val (map_zpow (Units.map (algebraMap c.O (Qbar l) : c.O →* Qbar l)) (T.G.eps c.O c.O g) _).symm`. Rewrite using `[e, ← h, hρ]`. Express the relevant statement in the definitionally equal form `(tw _ _ g).valᵀ * _ * (tw _ _ _).val = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[tw_val, tw_val, MonoidHom.comp_apply, MonoidHom.comp_apply, T.K.π_conj, Matrix.transpose_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, hP, smul_smul, Units.val_mul, map_mul]`. Both sides reduce to the same expression. Take `⟨b, hb, hk⟩` from `h1 g`. Establish `e : residue c.O ((-1) ^ i * (∏ j, (X - C (b j))).coeff (n - i)) = residue c.O a`. Rewrite using `[ha, W.Resid.Dbar, W.GDet.lam, (AlgebraTools.Det.repApi _).2.1, map_mul, ← coeff_map, Polynomial.map_prod]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = _ * (Matrix.diagonal _).charpoly.coeff _`. Rewrite using `[Matrix.charpoly_diagonal]`. Simplify using `only [map_pow, map_neg, map_one, Polynomial.map_sub, map_X, map_C, hb]`. Use `tri ?_ (near_of_res e)` and prove the remaining obligations. Rewrite using `[W.GDet.lam, (AlgebraTools.Det.repApi _).2.1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : ((-1) ^ i * (∏ j, (X - C (b j))).coeff (n - i) : c.O).1 = (-1) ^ i * (∏ j, (X - C (b j).1)).coeff (n - i)`. Establish `e0 : ∀ y : c.O, y.1 = algebraMap c.O (Qbar l) y` using `fun _ => rfl`. Rewrite using `[e0 (_ * _), map_mul, ← coeff_map, Polynomial.map_prod, map_pow, map_neg, map_one]`. Simplify using `only [Polynomial.map_sub, map_X, map_C]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e', ← mul_sub, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Conclude with `hk (n - i)`. Take `⟨b, hb, hk⟩` from `h3 v i g`. Conclude with `tri hk (near_of_res (by rw [hb, ha, T.K.psib]))`. Rewrite using `[T.r.th_comm v i g (T.K.mu v g.2), comm_one (flag_cont (r := ρ.comp (T.G.φ v)) (fun a b => (hc a b).comp (T.G.φ_cont v)) (hf v) i) (T.K.mu v g.2)]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pt_ex {c : Coef l} [Fr.IsCoef l c.O] {F : Fr.Frame l (ResidueField c.O)} {n : ℕ} (T : Setup F n)
     (r : F.G0 →* GL (Fin n) (Qbar l)) (P : GL (Fin n) (Qbar l)) (hP : ∀ g, (r g).valᵀ * P.val * (r (F.conj g)).val = P.val)
@@ -161,13 +159,13 @@ private theorem pt_ex {c : Coef l} [Fr.IsCoef l c.O] {F : Fr.Frame l (ResidueFie
       (T.K.mu v g.2)]
     simp
 /- English proof (translation)
-The claim follows from `haveI : T3Space F.Γ := {} inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem t2_space_open_subgroup (F : W.GFrame l) : T2Space F.G₀ :=
   haveI : T3Space F.Γ := {}
   inferInstance
 /- English proof (translation)
-Introduce and unpack `⟨g, hg⟩`. Take `⟨g, rfl⟩` from `QuotientGroup.mk'_surjective _ g`. Take `⟨t, rfl⟩` from `(V.hη g).1 hg`. Conclude with `⟨t, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem pr_surj {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     {s : W.HidaSetting l L Ω} (V : s.Lev) : Function.Surjective V.pr := by
@@ -176,7 +174,7 @@ private theorem pr_surj {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [F
   obtain ⟨t, rfl⟩ := (V.hη g).1 hg
   exact ⟨t, rfl⟩
 /- English proof (translation)
-Simplify using `using h (l : ℕ)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem val_iff {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] {A : ValuationSubring Ω} {v : W.Plc L}
     (h : IsPlaceOver A v) : A.valuation (l : Ω) < 1 ↔ ((l : ℕ) : 𝓞 L) ∈ v.asIdeal := by
@@ -188,11 +186,11 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {c : Coef l}
   {n : ℕ} {ka : G L Ω →* (Qbar l)ˣ}
 private def prT (R : CReal k c₁ f n ka) : G L Ω →* R.T.G.G₀ := R.V.pr
 /- English proof (translation)
-Set `j : c.O →+* c₁.O` to `(Subalgebra.inclusion R.le).toRingHom`. Use `⟨fun i => (W.pushCh j (Ψ.comp (galEmb ℚ L Ω))) ^ Fr.w n i * R.K.κ.comp R.V.pr, fun i s => ?_, fun i s => ?_⟩` and prove the remaining obligations. Establish `h : (Φ.ext f).Ψ (R.K.π (R.V.pr s)) = W.pushCh (residue c₁.O) (W.pushCh j (Ψ.comp (galEmb ℚ L Ω))) s`. Rewrite using `[R.π_pr]`. Apply `Units.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `f (Φ.Ψ (k.p _)) = _`. Rewrite using `[k.psi]`. Conclude with `R.hf _ _ rfl`. Use `Eq.trans ?_ (congrArg Units.val (R.K.chib i (R.V.pr s)).symm)` and prove the remaining obligations. Rewrite using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Units.val ((map_mul (Units.map (residue c₁.O : c₁.O →* ResidueField c₁.O)) _ _).trans (congrArg (· * _) (map_zpow _ _ _)))`. Rewrite using `[← R.κ_pr]`. Use `(congrArg Units.val ((map_mul (Units.map (c₁.O.val : c₁.O →* Qbar l)) _ _).trans (congrArg (· * _) (map_zpow _ _ _)))).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem beta_ex (R : CReal k c₁ f n ka) : ∃ β : Fin n → G L Ω →* c₁.Oˣ,
     (∀ i s, residue c₁.O (β i s) = R.T.r.chib i (prT R s)) ∧
@@ -215,39 +213,33 @@ private theorem beta_ex (R : CReal k c₁ f n ka) : ∃ β : Fin n → G L Ω �
     rw [Units.val_mul, Units.val_zpow_eq_zpow_val]
     rfl
 /- English proof (translation)
-Establish `hε : ∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ s ∈ Ine (F` using `L) A, ‖(χ' (galEmb ℚ L Ω s)).val - (Ψ (galEmb ℚ L Ω s)).val.1‖ < 1 := fun A hA s hs => by`. Establish `h1 : cycZ ℚ Ω l (galEmb ℚ L Ω s) = 1` using `(places L Ω l A).2.2.2 hA hs`. Establish `h2` using `hc (galEmb ℚ L Ω s)`. Simplify `h2` using `[cycBar, h1]`. Establish `hχo : ∀ s, (χ' s).val ^ orderOf χ' = 1` using `fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, pow_orderOf_eq_one]`. Both sides reduce to the same expression. Take `⟨r', hr'c, hr', hform⟩` from `UpperTheory.exists_frame_factorization_of_trivial_on_inertia k r hr.cont fun A hA s hs h1 => one_of_diag (hr.away A hA) hs fun i => by`. Establish `h2 : χ' (galEmb ℚ L Ω s) = 1` using `Units.ext (eq_one_of_near hχ (hχo _) (by simpa [h1] using hε A hA s hs))`. Simplify using `[h2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨P, hPs, hP⟩` from `hr.pair`. Take `⟨β, hβ1, hβ2⟩` from `beta_ex R`. Establish `hκ : ∀ s, R.T.K.κA (Qbar l) (prT R s) = ka s` using `fun s => Units.ext (R.κ_pr s)`. Establish `hkn : ∀ s, ‖(ka s).val‖ = 1` using `fun s => R.κ_pr s ▸ norm_unit _`. Establish `hzn : ∀ s (w : ℤ), ‖(Ψ s).val.1 ^ w‖ = 1` using `fun s w => by rw [norm_zpow, norm_unit, one_zpow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ρ, hρ⟩ : ∃ ρ : R.T.G.G₀ →* GL (Fin n) (Qbar l), ρ = tw (r'.comp R.T.K.π) (R.T.K.κA (Qbar l))` from `⟨_, rfl⟩`. Establish `hρr : ∀ s, ρ (prT R s) = tw r ka s` using `fun s => Units.ext (by`. Rewrite using `[hρ, tw_val, tw_val, hκ, ← hr' s, ← R.π_pr s]`. Use the proof step `rfl)`. Take `⟨hS1, -, hS3, hS4, -⟩` from `Sd.shapeFacts l (G L Ω) n r ka`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS5'` using `(Sd.shapeFacts l (G L Ω) n (tw r ka) ka).2.2.2.2.1`. Establish `htw : Continuous (tw r ka)`. Establish `h1 : ∀ {r : G L Ω →* GL (Fin n) (Qbar l)} {ka : G L Ω →* (Qbar l)ˣ}, Continuous r → Continuous ka → Continuous fun s => (tw r ka s).val` using `fun h h' => by`. Simplify using `only [tw_val]`. Conclude with `(Units.continuous_val.comp h').smul (Units.continuous_val.comp h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Units.continuous_iff.2 ⟨h1 hr.cont hka.alg.1, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `(h1 hr.cont hka.alg.1).comp continuous_inv`. Establish `hρc : ∀ a b, Continuous fun g => (ρ g).val a b` using `fun a b => by haveI := t2_space_open_subgroup R.T.G`. Establish `hp : Continuous (prT R)` using `R.V.pr_cont W.continuous_resP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hq : Topology.IsQuotientMap (prT R)` using `hp.isClosedMap.isQuotientMap hp (pr_surj R.V)`. Rewrite using `[hq.continuous_iff]`. Simplify using `only [Function.comp_def, hρr]`. Conclude with `(Units.continuous_val.comp htw).matrix_elem a b`. Establish `hX : ∀ i s, ‖(((cycBar ℚ Ω l ^ j * χ') ^ Fr.w n i).comp (galEmb ℚ L Ω) s).val - (Ψ (galEmb ℚ L Ω s)).val.1 ^ Fr.w n i‖ < 1` using `fun i s => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.comp_apply, MonoidHom.zpow_apply, Units.val_zpow_eq_zpow_val]`. Conclude with `near_zpow (hc _) (norm_unit _) _`. Establish `htame : ∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ s ∈ Ine (F` using `L) A, (∀ i, R.T.r.chib i (prT R s) = 1) → tw r ka s = 1 := fun A hA s hs h1 => by`. Take `⟨o, ho, hko⟩` from `hka.ord`. Use `one_of_diag (hS1 _ _ (hr.away A hA)) hs fun i => Units.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.zpow_apply, Units.val_mul, Units.val_zpow_eq_zpow_val]`. Use `eq_one_of_near (m := orderOf χ' * o) (fun h => ((Fact.out : l.Prime).dvd_mul.1 h).elim hχ ho) ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← zpow_natCast, ← zpow_mul, mul_comm (Fr.w n i), zpow_mul, zpow_natCast, pow_mul, hχo, one_pow, one_zpow, one_mul, pow_mul', ← Units.val_pow_eq_pow_val, hko A hA s hs, Units.val_one, one_pow]`. Use `tri (near_mul (near_zpow (hε A hA s hs) (norm_unit _) _) (by simp) (hzn _ _) (hkn s)) ?_` and prove the remaining obligations. Rewrite using `[← hβ2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `near_of_res (b := 1) (by rw [hβ1, h1, map_one, Units.val_one])`. Use `choose κ hκf hκi hκc using fun v : W.Vl l L => hr.above (R.s.A v) ((val_iff (R.s.hA v)).2 v.2)`. Set `ψ : ∀ v : W.Vl l L, Fin n → Dec (F` to `L) (R.s.A v) →* (Qbar l)ˣ := fun v i => κ v i * ka.comp (Dec (F := L) (R.s.A v)).subtype`. Establish `hfl : ∀ v : W.Vl l L, W.HasFlag ((tw r ka).comp (Dec (F` using `L) (R.s.A v)).subtype) (ψ v) := fun v => hS3 _ _ (hκf v)`. Establish `hfl' : ∀ v, W.HasFlag (ρ.comp (R.T.G.φ v)) (ψ v)` using `fun v => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ρ.comp (R.T.G.φ v) = (tw r ka).comp (Dec (F` using `L) (R.s.A v.1)).subtype := MonoidHom.ext fun s => hρr s.1`. Conclude with `this ▸ hfl v`. Use `(pt_ex R.T r' P (hform P hP) ρ hρ hρc ψ hfl' (fun g => ?_) (fun u g hg => ?_) (fun v i g => ?_)).elim fun x hx => ?_` and prove the remaining obligations. Use `rotate_right`. Take `⟨ρ', h1, h2⟩` from `UpperTheory.universalMaps_point_of_polarized_flagged_rep R.T (Qbar l) x r' ρ P ψ hPs (hform P hP) hρ hx hfl' ⟨hr.irr.1, fun _ _ _ => trivial, fun U hU hi => hr.irr.2.2 U hU fun s => hr' s ▸ hi (k.p0 s)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Qbar l, inferInstance, inferInstance, inferInstance, x, ρ', h1, ?_, h2⟩` and prove the remaining obligations. Establish `hA` using `fun v : W.Vl l L => UpperTheory.diagonal_characters_regular_algebraic_of_inertia_weights H ι (R.s.hw v) ((val_iff (R.s.hw v)).1 ((val_iff (R.s.hA v)).2 v.2)) ka hka.alg n m hm (κ v) (hκi v)`. Use `choose wt hwt1 hwt2 using fun v => (hA v).1`. Establish `hψ : ∀ v i, W.UniversalOrdinaryDeterminantRing.Pt.psi (B` using `R.B₀) x v i = ψ v i := hx.2`. Use `hJ x wt (tw r ka) (by have := R.n23; omega) (by have := R.n23; omega) ⟨hwt1, fun v i => hψ v i ▸ hwt2 v i⟩ ?_ htw hr.aut (fun s hs => htame _ ?_ s hs fun i => ?_) fun v => ⟨?_, fun a b => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (W.GDet.comap · (prT R)) hx.1).trans (((AlgebraTools.Det.repApi _).2.2.2.2.2.2.1 _).trans ?_)` and prove the remaining obligations. Conclude with `congrArg _ (MonoidHom.ext fun s => congrArg Units.val (hρr s))`. Take `⟨d, rfl⟩` from `hM`. Use `fun h => R.v0M ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_one_of_lt_of_le h ((ValuationSubring.valuation_le_one_iff _ _).2 (natCast_mem _ d))`. Conclude with `R.v0.1 i ⟨s, hs, rfl⟩`. Conclude with `(funext (hψ v) : _ = ψ v) ▸ hfl v`. Rewrite using `[hψ, hψ]`. Conclude with `(hA v).2 a b`.
-
-Take `⟨s, rfl⟩ : ∃ s, prT R s = g` from `pr_surj R.V g`. Use `⟨fun i => β i s, fun i => hβ1 i s, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hρr]`. Use `hS5' _ (fun i => W.pushCh (c₁.O.val : c₁.O →+* Qbar l) (β i)) 1 (fun i t => ?_) (hS4 _ hkn hr.res) (fun i t => ?_) s a` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, hkn, mul_one]`.
-
-Conclude with `norm_of_near (hX i t) (hzn _ _)`. Express the relevant statement in the definitionally equal form `‖(β i t).val.1 - _‖ < 1`. Rewrite using `[hβ2, norm_sub_rev]`. Conclude with `near_mul (hX i t) (by simp) (hzn _ _) (hkn _)`. Take `⟨⟨s, hs, rfl⟩, h2⟩` from `hg`.
-
-Conclude with `(hρr s).trans (htame _ (fun h => R.s.St_l u.1 u.2 ((val_iff (R.s.hA u.1)).1 h)) s hs fun i => Subgroup.mem_iInf.1 h2 i)`. Use `⟨β i g.1, hβ1 i g.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ2]`. Conclude with `near_mul (a' := (ka g.1).val) (tri (hκc v i g) (hX i g.1)) (by simp) (hzn _ _) (hkn _)`.
+A detailed English derivation is pending.
 -/
 private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Qbar l ≃+* ℂ) (hM : l ∣ M) (R : CReal k c₁ f n ka)
     (hka : IsKa σ M ι n ka) (χ' : G ℚ Ω →* (Qbar l)ˣ) (j : ℕ) (hχ : ¬ l ∣ orderOf χ')
@@ -353,7 +345,7 @@ private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Q
     exact near_mul (a' := (ka g.1).val) (tri (hκc v i g) (hX i g.1)) (by simp) (hzn _ _) (hkn _)
 end SlopeTestRemainingChoices
 /- English proof (translation)
-Introduce `H Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ k c₁ _ f n ka R hka χ' j hχ hc m hm r hr J hJ`. Conclude with `main H ι ((Dvd.intro _ rfl).trans hL.dvd) R hka χ' j hχ hc m hm r hr J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.seedPtOf_alt :
     GlobalTheory.Published.GlobalArtinReciprocity → _root_.UpperTheory.V.Pr.SeedPtOfAlt := by

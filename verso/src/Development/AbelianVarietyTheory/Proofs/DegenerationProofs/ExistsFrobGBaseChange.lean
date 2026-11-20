@@ -21,14 +21,14 @@ def powHom (R : Type) [CommRing R] (p r : ℕ) (hp : p.Prime) (h : (p : R) = 0) 
     rw [hc, h]; simp
 
 /- English proof (translation)
-Use `congrArg (X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cast_zero {X : Scheme.{0}} {p : ℕ} (h : (p : Γ(X, ⊤)) = 0) (U : X.Opens) : (p : Γ(X, U)) = 0 := by
   have := congrArg (X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom h
   rwa [map_natCast, map_zero] at this
 
 /- English proof (translation)
-Use `congrArg f.appTop.hom h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cast_zero_of_hom {X Y : Scheme.{0}} (f : X ⟶ Y) {p : ℕ} (h : (p : Γ(Y, ⊤)) = 0) :
     (p : Γ(X, ⊤)) = 0 := by
@@ -61,7 +61,7 @@ theorem absFrob_preimage (X : Scheme.{0}) (p r : ℕ) (hp : p.Prime) (h : (p : �
     absFrob X p r hp h ⁻¹ᵁ U = U := rfl
 
 /- English proof (translation)
-Use `Scheme.Hom.appLE_eq_app (absFrob X p r hp h) (U := U)` as an intermediate fact. Conclude with `congrArg (fun φ => φ.hom f) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absFrob_appLE (X : Scheme.{0}) (p r : ℕ) (hp : p.Prime) (h : (p : Γ(X, ⊤)) = 0) (U : X.Opens)
     (e : U ≤ absFrob X p r hp h ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -70,9 +70,9 @@ theorem absFrob_appLE (X : Scheme.{0}) (p r : ℕ) (hp : p.Prime) (h : (p : Γ(X
   exact congrArg (fun φ => φ.hom f) this
 
 /- English proof (translation)
-Use `Scheme.Hom.ext rfl fun U => ?_` and prove the remaining obligations. Use extensionality with `x`. Establish `e : ∀ (V : X.Opens) (i : Opposite.op V ⟶ Opposite.op V) (y : Γ(X, V)), (X.presheaf.map i).hom y = y`. Introduce `V i y`. Rewrite using `[Subsingleton.elim i (𝟙 _), CategoryTheory.Functor.map_id]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `(e (f ⁻¹ᵁ U) _ _).trans (map_pow (f.app U).hom x _).symm`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem absFrob_nat {X Y : Scheme.{0}} (f : X ⟶ Y) (p r : ℕ) (hp : p.Prime) (hX : (p : Γ(X, ⊤)) = 0)
     (hY : (p : Γ(Y, ⊤)) = 0) : absFrob X p r hp hX ≫ f = f ≫ absFrob Y p r hp hY := by
@@ -85,7 +85,7 @@ theorem absFrob_nat {X Y : Scheme.{0}} (f : X ⟶ Y) (p r : ℕ) (hp : p.Prime) 
   exact (e (f ⁻¹ᵁ U) _ _).trans (map_pow (f.app U).hom x _).symm
 
 /- English proof (translation)
-Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso (.of k)).inv]`. Rewrite using `[← Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom τ)]`. Use extensionality with `c`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, hτ, map_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -102,7 +102,7 @@ def Q {X : Scheme.{0}} (φ : X ⟶ X) (n : ℕ) (U : X.Opens) (f : Γ(X, U)) : P
   ∃ h : U = φ ⁻¹ᵁ U, (φ.appLE U U h.le).hom f = f ^ n
 
 /- English proof (translation)
-Take `⟨h, e⟩` from `a`. Take `⟨h', e'⟩` from `b`. Use `⟨by rw [Scheme.Hom.comp_preimage, ← h', ← h], ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.appLE_comp_appLE φ ψ U U U h'.le h.le, CommRingCat.hom_comp, RingHom.comp_apply, e', map_pow, e, pow_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Q.comp {X : Scheme.{0}} {φ ψ : X ⟶ X} {n n' : ℕ} {U : X.Opens} {f : Γ(X, U)}
     (a : Q φ n U f) (b : Q ψ n' U f) : Q (φ ≫ ψ) (n * n') U f := by
@@ -113,7 +113,7 @@ theorem Q.comp {X : Scheme.{0}} {φ ψ : X ⟶ X} {n n' : ℕ} {U : X.Opens} {f 
     map_pow, e, pow_mul]
 
 /- English proof (translation)
-Use `⟨rfl, ?_⟩` and prove the remaining obligations. Simplify using `[Scheme.Hom.appLE]`. Conclude with `GlobalTheory.AbLaw.rs_self (X := X) le_rfl f`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Q.id {X : Scheme.{0}} (U : X.Opens) (f : Γ(X, U)) : Q (𝟙 X) 1 U f := by
   refine ⟨rfl, ?_⟩
@@ -121,9 +121,9 @@ theorem Q.id {X : Scheme.{0}} (U : X.Opens) (f : Γ(X, U)) : Q (𝟙 X) 1 U f :=
   exact GlobalTheory.AbLaw.rs_self (X := X) le_rfl f
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using Q.id U f`. Consider the case `succ j ih`. Use `a.comp ih` as an intermediate fact. Rewrite using `[Nat.mul_succ, pow_add, pow_add, mul_comm (q ^ (m * j))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem Q.pow {X : Scheme.{0}} {F : End X} {q m : ℕ} {U : X.Opens} {f : Γ(X, U)}
     (a : Q (show X ⟶ X from F ^ m) (q ^ m) U f) (j : ℕ) :
@@ -139,7 +139,7 @@ def Good {X : Scheme.{0}} (F : End X) (q : ℕ) (U : X.Opens) (f : Γ(X, U)) : P
   ∃ m, 1 ≤ m ∧ Q (show X ⟶ X from F ^ m) (q ^ m) U f
 
 /- English proof (translation)
-Take `⟨m, hm, a⟩` from `a`. Take `⟨n, hn, b⟩` from `b`. Use `⟨m * n, Nat.mul_pos hm hn, a.pow n, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `b.pow m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Good.two {X : Scheme.{0}} {F : End X} {q : ℕ} {U V : X.Opens} {f : Γ(X, U)} {g : Γ(X, V)}
     (a : Good F q U f) (b : Good F q V g) :
@@ -150,7 +150,7 @@ theorem Good.two {X : Scheme.{0}} {F : End X} {q : ℕ} {U V : X.Opens} {f : Γ(
   rw [mul_comm]; exact b.pow m
 
 /- English proof (translation)
-Take `⟨h', e⟩` from `a`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← e, ← RingHom.comp_apply, ← RingHom.comp_apply, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Q.res {X : Scheme.{0}} {φ : X ⟶ X} {n : ℕ} {U V : X.Opens} {f : Γ(X, U)}
     (a : Q φ n U f) (i : V ≤ U) (h : V = φ ⁻¹ᵁ V) : Q φ n V ((X.presheaf.map (homOfLE i).op).hom f) := by
@@ -160,9 +160,9 @@ theorem Q.res {X : Scheme.{0}} {φ : X ⟶ X} {n : ℕ} {U V : X.Opens} {f : Γ(
     ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Take `⟨m, hm, ⟨h, e⟩, ⟨h', e'⟩⟩` from `a.two b`. Establish `hh : W = (show X ⟶ X from F ^ m) ⁻¹ᵁ W`. Rewrite using `[hW, Scheme.Hom.preimage_sup, ← h, ← h']`. Use `⟨m, hm, hh, ?_⟩` and prove the remaining obligations. Use `X.sheaf.eq_of_locally_eq₂ (homOfLE hU) (homOfLE hV) hW.le _ _ ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE hU).op).hom _ = (X.presheaf.map (homOfLE hU).op).hom _`. Rewrite using `[map_pow, ← e, ← RingHom.comp_apply, ← RingHom.comp_apply, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE hV).op).hom _ = (X.presheaf.map (homOfLE hV).op).hom _`. Rewrite using `[map_pow, ← e', ← RingHom.comp_apply, ← RingHom.comp_apply, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem Good.sup {X : Scheme.{0}} {F : End X} {q : ℕ} {U V W : X.Opens} (f : Γ(X, W))
     (hU : U ≤ W) (hV : V ≤ W) (hW : W = U ⊔ V)
@@ -181,21 +181,19 @@ theorem Good.sup {X : Scheme.{0}} {F : End X} {q : ℕ} {U V W : X.Opens} (f : �
       ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, le_rfl, rfl, Subsingleton.elim _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_bot {X : Scheme.{0}} (F : End X) (q : ℕ) (f : Γ(X, ⊥)) : Good F q ⊥ f :=
   ⟨1, le_rfl, rfl, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Use `hU.isLocalization_basicOpen g` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g f`. Take `⟨m, hm, qa, qg⟩` from `(H a).two (H g)`. Establish `hb : X.basicOpen g = (show X ⟶ X from F ^ m) ⁻¹ᵁ X.basicOpen g`. Take `⟨h, e⟩` from `qg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `Scheme.basicOpen_appLE (show X ⟶ X from F ^ m) U U h.le g`. Use `erw [e] at h1`. Rewrite `h1` using `[Scheme.basicOpen_pow _ _ (pow_pos hq m)]`. Use `h1.trans (inf_eq_right.2 ?_)` and prove the remaining obligations. Conclude with `((show X ⟶ X from F ^ m).preimage_mono (X.basicOpen_le g)).trans h.ge`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ea⟩` from `qa.res (X.basicOpen_le g) hb`. Take `⟨_, eg⟩` from `qg.res (X.basicOpen_le g) hb`. Use `⟨m, hm, hb, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = algebraMap Γ(X, U) Γ(X, X.basicOpen g) a ^ _ at ea`. Express the relevant statement in the definitionally equal form `_ = algebraMap Γ(X, U) Γ(X, X.basicOpen g) g ^ _ at eg`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (algebraMap Γ(X, U) Γ(X, X.basicOpen g) g)` using `IsLocalization.Away.algebraMap_isUnit g`. Establish `h2` using `congrArg ((show X ⟶ X from F ^ m).appLE _ _ hb.le).hom ha`. Rewrite `h2` using `[map_mul, map_pow]`. Use `erw [ea, eg] at h2`. Rewrite `h2` using `[← ha, mul_pow, ← pow_mul, ← pow_mul, mul_comm n]`.
-
-Conclude with `(hu.pow _).mul_right_cancel h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Good.basic {X : Scheme.{0}} {F : End X} {q : ℕ} (hq : 0 < q) {U : X.Opens} (hU : IsAffineOpen U)
     (H : ∀ f, Good F q U f) (g : Γ(X, U)) (f : Γ(X, X.basicOpen g)) : Good F q (X.basicOpen g) f := by
@@ -222,11 +220,11 @@ theorem Good.basic {X : Scheme.{0}} {F : End X} {q : ℕ} (hq : 0 < q) {U : X.Op
   exact (hu.pow _).mul_right_cancel h2
 
 /- English proof (translation)
-Establish `key : ∃ V : Set X, (U : Set X) ⊆ V ∧ ∃ W : X.Opens, (W : Set X) = V ∧ W ≤ U ∧ ∀ f, Good F q W f`. Use `hU.induction_on (p := fun s => ∃ V : Set X, s ⊆ V ∧ ∃ W : X.Opens, (W : Set X) = V ∧ W ≤ U ∧ ∀ f, Good F q W f) ⟨∅, le_rfl, ⊥, rfl, bot_le, good_bot F q⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `s t hst ⟨V, hV, h⟩`. Conclude with `⟨V, hst.trans hV, h⟩`. Introduce and unpack `s t ⟨_, hs, V, rfl, hV, gV⟩ ⟨_, ht, W, rfl, hW, gW⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, Set.union_subset_union hs ht, V ⊔ W, rfl, sup_le hV hW, fun f => Good.sup f le_sup_left le_sup_right rfl (gV _) (gW _)⟩`. Introduce `x hx`. Take `⟨V, hxV, hV, gV⟩` from `H x`. Take `⟨g, hg, hxg⟩` from `hV.exists_basicOpen_le ⟨x, hx⟩ hxV`. Conclude with `⟨_, mem_nhdsWithin_of_mem_nhds ((X.basicOpen g).isOpen.mem_nhds hxg), _, le_rfl, X.basicOpen g, rfl, hg, Good.basic hq hV gV g⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨_, h1, W, rfl, h2, g⟩` from `key`. Take `rfl : U = W` from `le_antisymm h1 h2`. Conclude with `g f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_of_cover {X : Scheme.{0}} {F : End X} {q : ℕ} (hq : 0 < q)
     (H : ∀ x : X, ∃ U : X.Opens, x ∈ U ∧ IsAffineOpen U ∧ ∀ f, Good F q U f)
@@ -269,28 +267,26 @@ def goodSubring {X : Scheme.{0}} (F : End X) (p r : ℕ) (hp : p.Prime) (U : X.O
     exact (map_neg (powHom _ p (r * m) hp hc) x).symm
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_congr_hom {X Y : Scheme.{0}} {φ ψ : X ⟶ Y} (e : φ = ψ) (V : Y.Opens) (U : X.Opens)
     (h : U ≤ φ ⁻¹ᵁ V) (h' : U ≤ ψ ⁻¹ᵁ V) : φ.appLE V U h = ψ.appLE V U h' := by
   subst e; rfl
 
 /- English proof (translation)
-Use `good_of_cover (pow_pos hp.pos r) (fun x => ?_) U hU f` and prove the remaining obligations. Take `⟨_, ⟨V, hV, rfl⟩, hx, -⟩` from `G.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (g x)) isOpen_univ`. Establish `: IsAffineHom b` using `inferInstance`. Establish `: IsAffineHom g` using `MorphismProperty.of_isPullback H.flip this`. Use `⟨g ⁻¹ᵁ V, hx, IsAffineOpen.preimage hV g, fun f => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF : g ⁻¹ᵁ V = (show X ⟶ X from F) ⁻¹ᵁ g ⁻¹ᵁ V`. Rewrite using `[← Scheme.Hom.comp_preimage, hg]`. Both sides reduce to the same expression. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := V) (UY := g ⁻¹ᵁ V) le_top le_top (by simp)).mp (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hV)`. Establish `hle : ⊤ ≤ goodSubring F p r hp _ (cast_zero hc _) hF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← CommRingCat.closure_range_union_range_eq_top_of_isPushout po, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨c, rfl⟩)`. Use `⟨1, le_rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, pow_one]`. Use `⟨hF, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `Scheme.Hom.appLE_comp_appLE (show X ⟶ X from F) g V (g ⁻¹ᵁ V) (g ⁻¹ᵁ V) le_rfl hF.le`. Establish `e2` using `Scheme.Hom.appLE_comp_appLE (absFrob X p r hp hc) g V (g ⁻¹ᵁ V) (g ⁻¹ᵁ V) le_rfl le_rfl`. Establish `e3` using `(e1.trans (appLE_congr_hom hg _ _ _ _)).trans e2.symm`. Conclude with `(congrArg (fun φ => φ.hom y) e3).trans (absFrob_appLE X p r hp hc _ _ _)`. Take `⟨m, hm, hc'⟩` from `hT c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ n : ℕ, (show X ⟶ X from F ^ n) ≫ s = s ∧ g ⁻¹ᵁ V = (show X ⟶ X from F ^ n) ⁻¹ᵁ g ⁻¹ᵁ V`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨Category.id_comp _, rfl⟩`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Express the relevant statement in the definitionally equal form `((show X ⟶ X from F) ≫ (show X ⟶ X from F ^ n)) ≫ s = s ∧ g ⁻¹ᵁ V = ((show X ⟶ X from F) ≫ (show X ⟶ X from F ^ n)) ⁻¹ᵁ g ⁻¹ᵁ V`. Rewrite using `[Category.assoc, ih.1, hs, Scheme.Hom.comp_preimage, ← ih.2, ← hF]`. Conclude with `⟨rfl, rfl⟩`. Use `⟨m, hm, (h1 m).2, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1` using `Scheme.Hom.appLE_comp_appLE (show X ⟶ X from F ^ m) s ⊤ (g ⁻¹ᵁ V) (g ⁻¹ᵁ V) le_top (h1 m).2.le`. Establish `e3` using `e1.trans (appLE_congr_hom (h1 m).1 _ _ _ le_top)`. Use `(congrArg (fun φ => φ.hom c) e3).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(s.appLE ⊤ (g ⁻¹ᵁ V) le_top).hom c = (s.appLE ⊤ (g ⁻¹ᵁ V) le_top).hom c ^ _`. Rewrite using `[← map_pow, hc']`.
-
-Conclude with `hle (Subring.mem_top f)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_of_isPullback {X G S T : Scheme.{0}} [IsAffine S] [IsAffine T] {g : X ⟶ G} {s : X ⟶ T}
     {a : G ⟶ S} {b : T ⟶ S} (H : IsPullback g s a b) (p r : ℕ) (hp : p.Prime) (hc : (p : Γ(X, ⊤)) = 0)
@@ -340,7 +336,7 @@ theorem good_of_isPullback {X G S T : Scheme.{0}} [IsAffine S] [IsAffine T] {g :
   exact hle (Subring.mem_top f)
 
 /- English proof (translation)
-Use `congrArg (Scheme.ΓSpecIso (.of k)).inv.hom h` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cast_zero_sp (k : Type) [CommRing k] {p : ℕ} (h : (p : k) = 0) : (p : Γ(Sp k, ⊤)) = 0 := by
   have := congrArg (Scheme.ΓSpecIso (.of k)).inv.hom h
@@ -352,7 +348,7 @@ variable {W k : Type} [CommRing W] [CommRing k] (ρ : W →+* k) (p r : ℕ) (hp
 
 include hρ in
 /- English proof (translation)
-Rewrite using `[absFrob_spec k p r hp _ (powHom k p r hp hk) (fun _ => rfl), ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `w`. Conclude with `hρ w`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem absFrob_comp_spMap : absFrob (Sp k) p r hp (cast_zero_sp k hk) ≫ spMap ρ = spMap ρ := by
   rw [absFrob_spec k p r hp _ (powHom k p r hp hk) (fun _ => rfl), ← Spec.map_comp]
@@ -384,7 +380,7 @@ def relNat : Over.pullback (spMap ρ) ⟶ Over.pullback (spMap ρ) where
 end Rel
 
 /- English proof (translation)
-Rewrite using `[Functor.obj.η_def, Category.assoc, α.naturality, ← Category.assoc, NatTrans.IsMonoidal.unit]`. Use `mul_hom := by`. Rewrite using `[Functor.obj.μ_def, Category.assoc, α.naturality, ← Category.assoc, NatTrans.IsMonoidal.tensor, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_app {C D : Type*} [Category C] [Category D] [CartesianMonoidalCategory C]
     [CartesianMonoidalCategory D] (P : C ⥤ D) [P.Monoidal] (α : P ⟶ P) (G : C) [MonObj G] :
@@ -396,7 +392,7 @@ theorem isMonHom_app {C D : Type*} [Category C] [Category D] [CartesianMonoidalC
       Category.assoc]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ, End.mul_def, End.mul_def]`. Conclude with `(Over.comp_left _ _ _ _ _).trans (congrArg _ ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_pow_left {S : Scheme.{0}} {G : Over S} (F : End G) (m : ℕ) :
     (show G ⟶ G from F ^ m).left = (show G.left ⟶ G.left from
@@ -413,13 +409,11 @@ namespace GlobalTheory.SS
 open FrobField
 
 /- English proof (translation)
-Introduce `W k _ _ ρ p r hp _ _ hρ hfin G _ _`. Establish `hk : (p : k) = 0` using `CharP.cast_eq_zero k p`. Use `⟨(relNat ρ p r hp.out hk hρ).app G, ⟨isMonHom_app _ _ G, fun U hU f => ?_⟩, fun x τ hτ => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `good_of_isPullback (IsPullback.of_hasPullback G.hom (spMap ρ)) p r hp.out (cast_zero_of_hom (pullback.snd _ _) (cast_zero_sp k hk)) (fun c => by`. Take `⟨m, hm, h⟩` from `hfin ((Scheme.ΓSpecIso (.of k)).hom.hom c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m, hm, (Scheme.ΓSpecIso (.of k)).commRingCatIsoToRingEquiv.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `h)`. Use the proof step `(relLeft ρ p r hp.out hk hρ G) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _) U hU.isCompact f`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `over_pow_left ((relNat ρ p r hp.out hk hρ).app G) m`. Conclude with `(congrArg (fun φ => Q φ ((p ^ r) ^ m) U f) e).mpr h`. Establish `e` using `absFrob_nat (show Sp k ⟶ pullback G.hom (spMap ρ) from x.left) p r hp.out (cast_zero_sp k hk) (cast_zero_of_hom (pullback.snd _ _) (cast_zero_sp k hk))`. Rewrite `e` using `[absFrob_spec k p r hp.out _ τ hτ]`. Establish `e2 : relLeft ρ p r hp.out hk hρ G ≫ pullback.fst _ _ = _` using `pullback.lift_fst _ _ _`.
-
-Express the relevant statement in the definitionally equal form `((show Sp k ⟶ pullback G.hom (spMap ρ) from x.left) ≫ relLeft ρ p r hp.out hk hρ G) ≫ _ = _`. Rewrite using `[Category.assoc, e2, ← Category.assoc, ← e, Category.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frobG_baseChange : ∀ (W k : Type) [CommRing W] [Field k] (ρ : W →+* k) (p r : ℕ) [Fact p.Prime] [CharP k p], 1 ≤ r → (∀ w, ρ w ^ (p ^ r) = ρ w) → (∀ c : k, ∃ m, 1 ≤ m ∧ c ^ ((p ^ r) ^ m) = c) → ∀ (G : Over (Sp W)) [GrpObj G], SmConn G → ∃ F : End ((Over.pullback (spMap ρ)).obj G), FrobG _ F (p ^ r) ∧ ∀ (x : 𝟙_ (Over (Sp k)) ⟶ (Over.pullback (spMap ρ)).obj G) (τ : k →+* k), (∀ c, τ c = c ^ (p ^ r)) → (x ≫ (show (Over.pullback (spMap ρ)).obj G ⟶ (Over.pullback (spMap ρ)).obj G from F)).left ≫ pullback.fst G.hom (spMap ρ) = spMap τ ≫ x.left ≫ pullback.fst G.hom (spMap ρ) := by
   intro W k _ _ ρ p r hp _ _ hρ hfin G _ _

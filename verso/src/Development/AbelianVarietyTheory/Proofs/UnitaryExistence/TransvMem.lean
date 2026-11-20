@@ -9,7 +9,7 @@ open scoped Matrix
 namespace GlobalTheory.TransvLevel
 
 /- English proof (translation)
-Simplify using `only [herm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_smul_left {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
@@ -19,21 +19,21 @@ theorem herm_smul_left {E : Type} [Field E] [NumberField E] [IsCMField E] {r : �
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ r X m hm v hv hiso b hb hbi`. Establish `hξ' : IsCMField.complexConj E X.ξ0 = -X.ξ0` using `X.ξ0_im`. Establish `hκc : IsCMField.complexConj E X.κ0 = -X.κ0`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> simp [h, hξ', map_ofNat]`. Establish `hb' : IsCMField.complexConj E b = b` using `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hmκ : IsIntegral ℤ ((m : E) * X.κ0)`. Break down `X.κ0_xi with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hm`. Rewrite using `[h, mul_neg]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm.neg`. Use `set α : E := ((X.g * X.NA * X.NC * m : ℕ) : E) * b * X.κ0 with hαdef`. Establish `hα : cc α = -α`. Simplify using `[hαdef, cc, hb', hκc]`. Establish `key : ∀ x ∈ X.Λ, (b * ((m : E) * X.κ0) * herm X.Gm ((X.NA : E) • x) v) • ((X.NC : E) • v) ∈ X.Λ` using `fun x hx => GlobalTheory.FlagData.smul_mem_of_isIntegral _ ((hbi.mul hmκ).mul (X.L'_int _ (X.NA_sub x hx) _ hv)) (X.NC_sub v hv)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ x, (α * herm X.Gm x v) • v = (X.g : E) • ((b * ((m : E) * X.κ0) * herm X.Gm ((X.NA : E) • x) v) • ((X.NC : E) • v))`. Introduce `x`. Rewrite using `[smul_smul, smul_smul, hαdef, herm_smul_left]`. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key' : ∀ x ∈ X.Λ, (α * herm X.Gm x v) • v ∈ X.Λ` using `fun x hx => by`. Rewrite using `[e]`. Conclude with `GlobalTheory.FlagData.smul_mem_of_isIntegral _ (isIntegral_natCast _) (key x hx)`. Use `⟨GlobalTheory.FlagData.transv X.Gm hiso α, X.cong _ ⟨GlobalTheory.FlagData.herm_transvMat X.Gm_herm hiso hα, fun x => ?_⟩ (fun x hx => ?_), fun τ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `x ∈ X.Λ ↔ transvMat X.Gm v α *ᵥ x ∈ X.Λ`. Rewrite using `[GlobalTheory.FlagData.transvMat_mulVec]`. Use `⟨fun hx => Submodule.add_mem _ hx (key' x hx), fun hx => ?_⟩` and prove the remaining obligations. Establish `h` using `key' _ hx`. Rewrite `h` using `[GlobalTheory.FlagData.herm_add_smul_left, hiso, mul_zero, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using Submodule.sub_mem _ hx h`. Use `⟨_, key x hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `transvMat X.Gm v α *ᵥ x - x = _`. Rewrite using `[GlobalTheory.FlagData.transvMat_mulVec, add_sub_cancel_left, e]`. Express the relevant statement in the definitionally equal form `(transvMat X.Gm v α).map τ.1 = _`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `TransvectionPeriodicity.transvMat_map X.toData v τ α _ ?_` and prove the remaining obligations. Rewrite using `[hαdef, map_mul, map_mul, TransvectionPeriodicity.emb_kappa X.toData τ, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem transv_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r) (m : ℕ), IsIntegral ℤ ((m : E) * (2 * X.ξ0)) → ∀ v ∈ X.L', herm X.Gm v v = 0 → ∀ b : E, cc b = b → IsIntegral ℤ b → ∃ γ ∈ X.Γ, ∀ τ : X.Ψ, (γ : Matrix (Fin r) (Fin r) E).map τ.1 = X.flowMat v τ ((((X.g * X.NA * X.NC * m : ℕ) : ℝ) : ℂ) * τ.1 b) := by
   intro E _ _ _ r X m hm v hv hiso b hb hbi

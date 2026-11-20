@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.LieRead
 
 /- English proof (translation)
-Introduce `p2 pH D O hO hf A T H hR`. Take `⟨C, hC⟩` from `GlobalTheory.T.omega_height_adelic_sum_bound p2 pH D O hO hf A T H hR`. Use `⟨C, fun y hy K _ _ F ι h hT hH => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.T.hermitian_degree_adelic_sum K F.P₀.g F.lieLat h (SemiFib.full_lieLat K F)`. Use `hC y hy K F ι h hT hH` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deg_lieLat_add_omHt_le : Hypotheses2 → HypothesesH → OnObj fun D O _ _ H _ => ∃ C : ℝ, ∀ y : Pt O.s, y ∈ H.int → ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (ι : K →+* Qb) (h : HermFam K (Fin F.P₀.g → K)), FibTie O y F ι → F.IsHerm h → |deg h F.lieLat + omHt O O.met.hm y| ≤ C := by
   intro p2 pH D O hO hf A T H hR

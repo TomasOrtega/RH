@@ -9,7 +9,7 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_D X h hVol hcd hT` and use `Formalism.L2.SG.Pf.DstarVolPf.dstarVol_holds X h hVol hcd hT`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem covol_formalDegree_eq : ∀ (D : D7) (X : HidaSetting D), X.B.I = Formalism.L2.SG.InstExistsPf.instOf D →
     Formalism.MainNotions.StandardLattice.VolTie D → cdScaleTie D → dsigTie D →

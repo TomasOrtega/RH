@@ -7,13 +7,11 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Establish `hK : IsCompact (Metric.closedBall z r)` using `isCompact_closedBall z r`. Establish `hpos : ∀ w ∈ Metric.closedBall z r, 0 < w.re`. Introduce `w hw`. Establish `h1 : ‖w - z‖ ≤ r` using `by simpa [dist_eq_norm] using hw`. Establish `h2 : |(w - z).re| ≤ ‖w - z‖` using `Complex.abs_re_le_norm _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(abs_le.mp (h2.trans h1)).1`. Simplify using `only [Complex.sub_re] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun w => {v | v ∈ ({w}ᶜ : Set ℂ) → v ∉ Z}) (fun w hw => eventually_nhdsWithin_iff.mp (hiso w (hpos w hw)))`. Use `t.finite_toSet.subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `v ⟨hvZ, hvK⟩`. Take `⟨w, hw, hvw⟩` from `Set.mem_iUnion₂.mp (ht hvK)`. Distinguish the cases in `h : v = w`. Rewrite using `[h]`. Conclude with `hw`.
-
-Conclude with `absurd hvZ (hvw h)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem landau_finite {Z : Set ℂ} (hiso : ∀ z : ℂ, 0 < z.re → ∀ᶠ w in 𝓝[≠] z, w ∉ Z) {z : ℂ} {r : ℝ}
     (hr : r < z.re) : (Z ∩ Metric.closedBall z r).Finite := by

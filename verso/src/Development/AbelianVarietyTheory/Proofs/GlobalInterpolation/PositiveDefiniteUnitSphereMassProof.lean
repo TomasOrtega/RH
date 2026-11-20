@@ -12,19 +12,17 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.SphereMassProof
 
 /- English proof (translation)
-Simplify using `[qf, Fintype.sum_sum_type, Complex.normSq_eq_norm_sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qf_pos_eq (M : ℕ) (x : Sp M 0) : qf x = ∑ i, ‖x i‖ ^ 2 := by
   simp [qf, Fintype.sum_sum_type, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin M ⊕ Fin 0) := ⟨Sum.inl ⟨0, hM⟩⟩`. Establish `h` using `Complex.volume_sum_rpow_le (Fin M ⊕ Fin 0) (p := 2) (by norm_num) (Real.sqrt b)`. Establish `e : {x : Sp M 0 | qf x ≤ b} = {x : Fin M ⊕ Fin 0 → ℂ | (∑ i, ‖x i‖ ^ (2 : ℝ)) ^ (1 / (2 : ℝ)) ≤ Real.sqrt b}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, ← Real.sqrt_eq_rpow, Real.rpow_two, qf_pos_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(Real.sqrt_le_sqrt_iff hb).symm`. Establish `hc : Fintype.card (Fin M ⊕ Fin 0) = M` using `by simp`. Rewrite using `[dx, Measure.smul_apply, e, h, hc, smul_eq_mul]`. Establish `g1 : Real.Gamma (2 / 2 + 1) = 1`. Rewrite using `[show (2 / 2 + 1 : ℝ) = 2 by norm_num, Real.Gamma_two]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `g2 : Real.Gamma (2 * (M : ℝ) / 2 + 1) = M.factorial`. Rewrite using `[show (2 * (M : ℝ) / 2 + 1) = M + 1 by ring, Real.Gamma_nat_eq_factorial]`. Rewrite using `[g1, g2, ← ENNReal.ofReal_pow (Real.sqrt_nonneg _), pow_mul, Real.sq_sqrt hb, ← ENNReal.ofReal_mul (by positivity), show (2 : ℝ≥0∞) = ENNReal.ofReal 2 by simp, ← ENNReal.ofReal_pow (by norm_num), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[mul_pow, add_zero]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dx_ball (M : ℕ) (hM : 1 ≤ M) (b : ℝ) (hb : 0 ≤ b) :
     dx M 0 {x | qf x ≤ b} = ENNReal.ofReal ((2 * Real.pi) ^ M / (M.factorial : ℝ) * b ^ M) := by
@@ -49,9 +47,9 @@ theorem dx_ball (M : ℕ) (hM : 1 ≤ M) (b : ℝ) (hb : 0 ≤ b) :
   ring
 
 /- English proof (translation)
-Use `Metric.isCompact_of_isClosed_isBounded (isClosed_Icc.preimage GlobalTheory.RealPlaceCompare.continuous_qf) ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : Sp M 0)) (r := 2)).subset fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg (by norm_num)]`. Introduce `i`. Establish `h1 : ‖x i‖ ^ 2 ≤ ∑ j, ‖x j‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖x j‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : qf x ≤ 2` using `hx.2`. Rewrite `h2` using `[qf_pos_eq]`. Use polynomial arithmetic with `[norm_nonneg (x i)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem isCompact_shell (M : ℕ) : IsCompact {x : Sp M 0 | qf x ∈ Set.Icc (1 / 2 : ℝ) 2} := by
   refine Metric.isCompact_of_isClosed_isBounded
@@ -66,11 +64,11 @@ theorem isCompact_shell (M : ℕ) : IsCompact {x : Sp M 0 | qf x ∈ Set.Icc (1 
   nlinarith [norm_nonneg (x i)]
 
 /- English proof (translation)
-Take `⟨χ, h1, hc, hs, h01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen (isCompact_shell M) (isOpen_ne (x := (0 : Sp M 0))) (by`. Introduce and unpack `x hx rfl`. Establish `: (1 / 2 : ℝ) ≤ qf (0 : Sp M 0)` using `hx.1`. Rewrite `this` using `[qf_pos_eq]`. Evaluate the numerical expressions using `at this)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Take `⟨hi, hg⟩` from `h.2.2 χ χ.continuous hc hs`. Use `⟨fun t => ∫ v, χ v ∂(fib t), continuousOn_univ.1 hg, fun t => integral_nonneg fun v => (h01 v).1, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[ofReal_integral_eq_lintegral_ofReal (hi t trivial) (Filter.Eventually.of_forall fun v => (h01 v).1), ← lintegral_one]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [GlobalTheory.RealPlaceCompare.ae_qf h t] with v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: χ v = 1` using `h1 (show qf v ∈ Set.Icc (1 / 2 : ℝ) 2 from hv ▸ ht)`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mass {M : ℕ} {fib : ℝ → Measure (Sp M 0)} (h : IsDxDq fib) :
     ∃ G : ℝ → ℝ, Continuous G ∧ (∀ t, 0 ≤ G t) ∧
@@ -92,13 +90,13 @@ theorem exists_mass {M : ℕ} {fib : ℝ → Measure (Sp M 0)} (h : IsDxDq fib) 
   simp [this]
 
 /- English proof (translation)
-Establish `hq : Measurable (qf : Sp M 0 → ℝ)` using `GlobalTheory.RealPlaceCompare.continuous_qf.measurable`. Establish `hO : MeasurableSet {x : Sp M 0 | x ≠ 0}` using `isOpen_ne.measurableSet`. Establish `key` using `GlobalTheory.IsFibreFamily_lintegral_preimage hq isOpen_ne subset_rfl h (({x : Sp M 0 | x ≠ 0}).indicator 1) (measurable_one.indicator hO) (fun v hv => Set.indicator_of_notMem hv _) (Set.Ioc a b) measurableSet_Ioc`. Establish `hsub : qf ⁻¹' Set.Ioc a b ⊆ {x : Sp M 0 | x ≠ 0}`. Introduce and unpack `x hx rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `: a < qf (0 : Sp M 0)` using `hx.1`. Rewrite `this` using `[qf_pos_eq]`. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `key` using `[Set.indicator_indicator, Set.inter_eq_left.2 hsub, lintegral_indicator_one (hq measurableSet_Ioc), Measure.restrict_apply (hq measurableSet_Ioc), Set.inter_eq_left.2 hsub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[key]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator_one hO]`. Use `measure_congr (Filter.eventuallyEq_univ.2 ?_)` and prove the remaining obligations. Establish `h1 : ∀ᵐ y ∂(fib t), y ∈ qf ⁻¹' {id t} ∩ {x : Sp M 0 | x ≠ 0}` using `h.1 t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [h1] with y hy using hy.2`.
+A detailed English derivation is pending.
 -/
 theorem dx_shell {M : ℕ} {fib : ℝ → Measure (Sp M 0)} (h : IsDxDq fib) (a b : ℝ) (ha : 0 ≤ a) :
     dx M 0 (qf ⁻¹' Set.Ioc a b) = ∫⁻ t in Set.Ioc a b, fib t Set.univ := by
@@ -124,19 +122,19 @@ theorem dx_shell {M : ℕ} {fib : ℝ → Measure (Sp M 0)} (h : IsDxDq fib) (a 
   filter_upwards [h1] with y hy using hy.2
 
 /- English proof (translation)
-Introduce `M hM`. Use `⟨GlobalTheory.RealPlaceCompare.exists_isDxDq M 0, fun fib h => ?_⟩` and prove the remaining obligations. Take `⟨G, hG, hG0, hGm⟩` from `exists_mass h`. Establish `hq : Measurable (qf : Sp M 0 → ℝ)` using `GlobalTheory.RealPlaceCompare.continuous_qf.measurable`. Use `set C : ℝ := (2 * Real.pi) ^ M / (M.factorial : ℝ) with hC`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C` using `by have := Real.pi_pos; positivity`. Establish `hint : ∀ b ∈ Set.Ioo (1 / 2 : ℝ) 2, ∫ t in (1 / 2 : ℝ)..b, G t = C * b ^ M - C * (1 / 2) ^ M`. Introduce `b hb`. Establish `hb0 : 0 ≤ b` using `by linarith [hb.1]`. Establish `e1 : qf ⁻¹' Set.Ioc (1 / 2 : ℝ) b = {x : Sp M 0 | qf x ≤ b} \ {x | qf x ≤ 1 / 2}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[and_comm]`. Establish `e2` using `dx_shell h (1 / 2) b (by norm_num)`. Establish `hfin : dx M 0 {x : Sp M 0 | qf x ≤ 1 / 2} ≠ ⊤`. Rewrite using `[dx_ball M hM _ (by norm_num)]; exact ENNReal.ofReal_ne_top`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[e1, measure_diff (s₁ := {x : Sp M 0 | qf x ≤ b}) (s₂ := {x : Sp M 0 | qf x ≤ 1 / 2}) (fun x (hx : qf x ≤ 1 / 2) => (hx.trans hb.1.le : qf x ≤ b)) (measurableSet_le hq measurable_const).nullMeasurableSet hfin, dx_ball M hM _ hb0, dx_ball M hM _ (by norm_num), ← hC, ← ENNReal.ofRe …`. Rewrite using `[intervalIntegral.integral_of_le hb.1.le]`. Use `((ENNReal.ofReal_eq_ofReal_iff ?_ (integral_nonneg hG0)).1 e2).symm` and prove the remaining obligations. Establish `: (1 / 2 : ℝ) ^ M ≤ b ^ M` using `pow_le_pow_left₀ (by norm_num) hb.1.le M`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `d1 : HasDerivAt (fun b => ∫ t in (1 / 2 : ℝ)..b, G t) (G 1) 1` using `(hG.integral_hasStrictDerivAt _ _).hasDerivAt`. Establish `d2 : HasDerivAt (fun b : ℝ => C * b ^ M - C * (1 / 2) ^ M) (C * ((M : ℝ) * 1 ^ (M - 1))) 1` using `((hasDerivAt_pow M 1).const_mul C).sub_const _`. Establish `d3 : HasDerivAt (fun b => ∫ t in (1 / 2 : ℝ)..b, G t) (C * ((M : ℝ) * 1 ^ (M - 1))) 1`. Use `d2.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhds (show (1 / 2 : ℝ) < 1 by norm_num) (show (1 : ℝ) < 2 by norm_num)] with b hb using hint b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hGm 1 ⟨by norm_num, by norm_num⟩, d1.unique d3, hC, cM]`. Use `congr 1`. Take `⟨k, rfl⟩ : ∃ k, M = k + 1` from `⟨M - 1, by omega⟩`. Establish `hk : ((k.factorial : ℝ)) ≠ 0` using `by positivity`. Establish `hk1 : ((k : ℝ) + 1) ≠ 0` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Nat.add_sub_cancel, Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one, one_pow, mul_one]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem sphereMass : SphereMass := by
   intro M hM

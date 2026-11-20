@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPinsRec
 open NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.BasicNotions Formalism.L2.DIV GlobalTheory.FieldBC
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IoExtend.exists_ioLFRec_over` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FVectorValuedLiftFieldChange.lean&line=263#L263)
 -/

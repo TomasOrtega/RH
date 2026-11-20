@@ -20,7 +20,7 @@ section Mat
 variable {R : Type} [CommRing R] {m : ℕ}
 
 /- English proof (translation)
-Use `⟨1, ⟨fun i j h => Matrix.one_apply_ne h.ne, fun i => by simp⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inCell_upMat (w : Equiv.Perm (Fin m)) (a : Above m → R) :
     InCell ((upMat a).submatrix id w.symm) w a := by
@@ -44,9 +44,9 @@ def FrameIn {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z,
     ∀ τ, InCell (A τ) (w τ) (fun p => a ⟨τ, p⟩)
 
 /- English proof (translation)
-Establish `hx' : spMap ψ ≫ hV.fromSpec ≫ genι Z = x ≫ genι Z` using `by rw [← hx, Category.assoc]`. Take `⟨f₁, hf₁⟩` from `GlobalTheory.ShFam.Spread.exists_bc f₀ ψ rfl hx'`. Set `A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R` to `fun τ => (upMat (fun p => a ⟨τ, p⟩)).submatrix id (w τ).symm`. Establish `hdet : ∀ τ, IsUnit (A τ).det` using `fun τ => by`. Simplify using `only [A, Matrix.det_permute', det_upMat, mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `((Equiv.Perm.sign (w τ).symm).isUnit.map (Int.castRingHom R))`. Take `⟨g, hg⟩` from `GlobalTheory.ShFam.Spread.exists_change f₁ A (fun τ => (A τ)⁻¹) (fun τ => Matrix.nonsing_inv_mul _ (hdet τ))`. Use `⟨g, A, fun τ i => ?_, fun τ => inCell_upMat _ _⟩` and prove the remaining obligations. Rewrite using `[hg τ i]`. Simplify using `only [hf₁]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frameIn {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)}
     (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) {R : Type}

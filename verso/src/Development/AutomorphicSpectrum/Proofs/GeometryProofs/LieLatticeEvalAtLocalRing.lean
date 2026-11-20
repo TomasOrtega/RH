@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.Ar.LieVal
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Use `letI := φ.toAlgebra`. Take `⟨j, h1, h2, h3⟩` from `GlobalTheory.T.lie_model_base_change_map S G A R x E F M N`. Conclude with `⟨j, h1, h2, fun hs n b => (h3 hs n b).2⟩`.
+Substitute using the available equality. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_base {S : Scheme.{0}} {G : Over S} [GrpObj G] {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R)
     (x : Spec (CommRingCat.of A) ⟶ S) (z : Spec (CommRingCat.of R) ⟶ S)
@@ -36,25 +36,25 @@ namespace GlobalTheory.CompanionTheory.Ar
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Introduce `hξ hs`. Take `⟨EA, _, _, ⟨MA⟩⟩` from `lieModel_exists X G (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z))`. Take `⟨j, hj, hjs, hjb⟩` from `LieVal.exists_base (A := X.presheaf.stalk (centre z)) (Scheme.stalkClosedPointTo z).hom _ z (LieTangent.spec_centre z) MA MR`. Take `⟨i, hi, his, -⟩` from `LieVal.exists_base (genMap ξ ⟨centre z, h⟩) _ ξ (LieTangent.spec_genMap ξ ⟨centre z, h⟩) MA M`. Establish `hext : ∀ a, M.Extends ⟨centre z, h⟩ (i a) (MA.pt a)` using `fun a => ⟨MA.tan a, hi a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ a, i a ∈ M.lat ⟨centre z, h⟩` using `fun a => (M.mem_lat_iff _ _).2 ⟨_, hext a⟩`. Establish `hinj : ∀ a b, i a = i b → a = b` using `fun a b hab => MA.inj ((hext a).unique (hξ.inj _) (hab ▸ hext b))`. Establish `hsurj : ∀ e v, M.Extends ⟨centre z, h⟩ e v → ∃ a, i a = e ∧ MA.pt a = v`. Introduce `e v hv`. Take `⟨a, rfl⟩` from `MA.onto v hv.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, M.inj (Over.OverMorphism.ext ((hi a).trans hv.2.symm)), rfl⟩`. Set `i' : EA →+ M.lat ⟨centre z, h⟩` to `{ toFun := fun a => ⟨i a, hmem a⟩ map_zero' := Subtype.ext (map_zero i) map_add' := fun a b => Subtype.ext (map_add i a b) }`. Establish `hbij : Function.Bijective i'`. Use `⟨fun a b hab => hinj a b (congrArg Subtype.val hab), fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `(M.mem_lat_iff _ _).1 e.2`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, -⟩` from `hsurj _ _ hv`. Conclude with `⟨a, Subtype.ext ha⟩`. Set `q` to `AddEquiv.ofBijective i' hbij`. Establish `hq : ∀ a, q.symm ⟨i a, hmem a⟩ = a` using `fun a => q.symm_apply_apply a`. Use `⟨j.comp q.symm.toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h', v, hv, hw⟩`. Take `⟨a, rfl, rfl⟩` from `hsurj _ _ hv`. Use `⟨hmem a, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `j (q.symm ⟨i a, hmem a⟩) = w`. Rewrite using `[hq]`. Conclude with `MR.inj (Over.OverMorphism.ext ((hj a).trans hw.symm))`. Introduce and unpack `⟨he, rfl⟩`. Take `⟨v, hv⟩` from `(M.mem_lat_iff _ _).1 he`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl, rfl⟩` from `hsurj _ _ hv`. Express the relevant statement in the definitionally equal form `M.ValAt z (i a) (MR.pt (j (q.symm ⟨i a, hmem a⟩)))`. Rewrite using `[hq]`. Conclude with `⟨h, _, hext a, hj a⟩`. Introduce and unpack `a r e ⟨_, s, hsa, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `q.surjective e`. Establish `: a • q b = q (s • b)` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(a : Ω) • i b = i (s • b)`. Rewrite using `[his, hsa])`. Express the relevant statement in the definitionally equal form `j (q.symm (a • q b)) = _ • j (q.symm (q b))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, q.symm_apply_apply, q.symm_apply_apply]`. Conclude with `hjs s b`. Take `⟨n, ⟨b⟩⟩` from `GlobalTheory.T.lie_model_free_over_local_ring X G hs (X.presheaf.stalk (centre z)) (X.fromSpecStalk (centre z)) EA MA`. Use `top_le_iff.1 ((hjb hs n b).symm.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨q (b k), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j (q.symm (q (b k))) = _`. Rewrite using `[q.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieLat_val (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (Ω : Type) [Field Ω]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (R : Type)

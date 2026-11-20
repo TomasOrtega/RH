@@ -125,9 +125,9 @@ def Step : Prop := Base → ∀ e : ℕ, 1 ≤ e → (∀ b ≤ e, Const b) → 
 def Final : Prop := (Base → ∀ d, Const d) → Artin
 
 /- English proof (translation)
-Use `h3 fun hb d => ?_` and prove the remaining obligations. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih => match d, ih with`. Consider the case `0, _ => exact (h1 hb).1`. Consider the case `1, _ => exact (h1 hb).2`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `e + 2, ih => exact h2 hb (e + 1) (by omega) fun b hb' => ih b (by omega)`.
+Treat this case separately.
 -/
 theorem goal_of (h1 : Low) (h2 : Step) (h3 : Final) : Artin := by
   refine h3 fun hb d => ?_

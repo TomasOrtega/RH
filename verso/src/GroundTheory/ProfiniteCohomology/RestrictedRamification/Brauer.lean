@@ -14,7 +14,7 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 noncomputable section
 
 /- English proof (translation)
-Establish `hd : addOrderOf x ∣ Nat.gcd N (ℓ ^ k)` using `Nat.dvd_gcd (addOrderOf_dvd_of_nsmul_eq_zero h1) (addOrderOf_dvd_of_nsmul_eq_zero h2)`. Rewrite `hd` using `[Nat.Coprime.gcd_eq_one (hN.pow_right k), Nat.dvd_one]`. Conclude with `AddMonoid.addOrderOf_eq_one_iff.1 hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_coprime_nsmul_eq_zero {A : Type*} [AddCommGroup A] {ℓ N k : ℕ} (hN : N.Coprime ℓ)
     {x : A} (h1 : N • x = 0) (h2 : ℓ ^ k • x = 0) : x = 0 := by
@@ -24,17 +24,15 @@ theorem eq_zero_of_coprime_nsmul_eq_zero {A : Type*} [AddCommGroup A] {ℓ N k :
   exact AddMonoid.addOrderOf_eq_one_iff.1 hd
 
 /- English proof (translation)
-Use `set M := addOrderOf y`. Establish `hM : M ≠ 0` using `(IsOfFinAddOrder.addOrderOf_pos hy).ne'`. Use `set a := M.factorization ℓ`. Use `set N := M / ℓ ^ a`. Establish `hMN : ℓ ^ a * N = M` using `Nat.ordProj_mul_ordCompl_eq_self M ℓ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN : Nat.Coprime N ℓ` using `(Nat.coprime_ordCompl hℓ hM).symm`. Use `set a' := max a k`. Establish `hc : IsCoprime (N : ℤ) ((ℓ ^ a' : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 (hN.pow_right a')`. Take `⟨u, w, huw⟩` from `hc`. Establish `hyN : (ℓ ^ a' * N) • y = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `addOrderOf_dvd_iff_nsmul_eq_zero.1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `M ∣ ℓ ^ a' * N`. Rewrite using `[← hMN]`. Conclude with `Nat.mul_dvd_mul_right (Nat.pow_dvd_pow ℓ (le_max_left a k)) N`. Establish `hfk : ℓ ^ a' • f y = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : a' = (a' - k) + k` using `(Nat.sub_add_cancel (le_max_right a k)).symm`. Rewrite using `[ha', pow_add, mul_smul, hk, smul_zero]`. Use `⟨(u * N) • y, ⟨a', ?_⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, smul_smul]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [Nat.cast_smul_eq_nsmul, hyN, smul_zero]`. Rewrite using `[map_zsmul]`.
-
-Establish `h2 : (w * ((ℓ ^ a' : ℕ) : ℤ)) • f y = 0`. Rewrite using `[mul_smul, Nat.cast_smul_eq_nsmul, hfk, smul_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_smul, add_sub_cancel_right]`. Use `_ = f y := by rw [huw, one_smul, h2, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_primary_map_eq {A B : Type*} [AddCommGroup A] [AddCommGroup B] (f : A →+ B) {ℓ : ℕ}
     (hℓ : ℓ.Prime) {y : A} (hy : IsOfFinAddOrder y) {k : ℕ} (hk : ℓ ^ k • f y = 0) :
@@ -82,7 +80,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 include hS in
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS i j hij) x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_δ_eq_of_cohomologyMap_f_eq_zero (i j : ℕ) (hij : i + 1 = j) (x : cohomology S.X₁ j)
     (hx : (cohomologyMap S.f j).hom x = 0) : ∃ y : cohomology S.X₃ i, (δ hS i j hij).hom y = x :=
@@ -91,7 +89,7 @@ theorem exists_δ_eq_of_cohomologyMap_f_eq_zero (i j : ℕ) (hij : i + 1 = j) (x
 include hS in
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS i) x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_cohomologyMap_f_eq_of_cohomologyMap_g_eq_zero (i : ℕ) (x : cohomology S.X₂ i)
     (hx : (cohomologyMap S.g i).hom x = 0) : ∃ y : cohomology S.X₁ i, (cohomologyMap S.f i).hom y = x :=
@@ -100,7 +98,7 @@ theorem exists_cohomologyMap_f_eq_of_cohomologyMap_g_eq_zero (i : ℕ) (x : coho
 include hS in
 
 /- English proof (translation)
-The claim follows from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₃ hS i j hij) x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_cohomologyMap_g_eq_of_δ_eq_zero (i j : ℕ) (hij : i + 1 = j) (x : cohomology S.X₃ i)
     (hx : (δ hS i j hij).hom x = 0) : ∃ y : cohomology S.X₂ i, (cohomologyMap S.g i).hom y = x :=
@@ -109,7 +107,7 @@ theorem exists_cohomologyMap_g_eq_of_δ_eq_zero (i j : ℕ) (hij : i + 1 = j) (x
 include hS in
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Take `⟨N, hN, hNy⟩` from `hM y`. Use `eq_zero_of_coprime_nsmul_eq_zero hN ?_ hk` and prove the remaining obligations. Rewrite using `[← map_nsmul, hNy, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_mem_range_δ_of_coprime (i j : ℕ) (hij : i + 1 = j) {x : cohomology S.X₁ j}
     (hx : ∃ y : cohomology S.X₃ i, (δ hS i j hij).hom y = x) (ℓ : ℕ)
@@ -123,7 +121,7 @@ theorem eq_zero_of_mem_range_δ_of_coprime (i j : ℕ) (hij : i + 1 = j) {x : co
 omit hS in
 
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap]`. Use `cohomologyMapAlong_comp (φ := MonoidHom.id G) (hφ := continuous_id) g φ hφ f n` as an intermediate fact. Conclude with `(congrArg (fun m => m.hom x) this).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cohomologyMapAlong_cohomologyMap_apply {H : Type u} [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] (φ : H →* G) (hφ : Continuous φ) {A B : Rep.{u} k G} [IsDiscreteRep A]
@@ -178,11 +176,11 @@ variable (ℓ : ℕ) (hℓ : ℓ.Prime)
 set_option maxHeartbeats 1000000 in
 include hℓ hS in
 /- English proof (translation)
-Establish `hE` using `sUnitsQuotSequence_shortExact K.1 ℚ̄ S`. Take `⟨p, rfl⟩` from `exists_δ_eq_of_cohomologyMap_f_eq_zero hE 1 2 rfl y h`. Establish `hp : ℓ ^ k • p = 0`. Take `⟨z, hz⟩` from `exists_cohomologyMap_g_eq_of_δ_eq_zero hE 1 2 rfl (ℓ ^ k • p) (by rw [map_nsmul]; exact hy)`. Establish `: Subsingleton (cohomology (sUnitsQuotSequence K.1 ℚ̄ S).X₂ 1)` using `subsingleton_cohomology_one_galUnits`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hz, Subsingleton.elim z 0, map_zero]`. Establish `hP` using `picSequence_shortExact K S ιs`. Establish `hD : Subsingleton (cohomology (picSequence K S ιs).X₂ 1)` using `ModuleCat.subsingleton_of_isZero (isZero_cohomology_one_divFunRep_int (gsDecomp K S ιs))`. Take `⟨q, hq⟩` from `exists_δ_eq_of_cohomologyMap_f_eq_zero hP 0 1 rfl (p : cohomology (picSequence K S ιs).X₁ 1) (Subsingleton.elim _ _)`. Establish `hp0 : (p : cohomology (picSequence K S ιs).X₁ 1) = 0` using `eq_zero_of_mem_range_δ_of_coprime hP 0 1 rfl ⟨q, hq⟩ ℓ (fun y => exists_coprime_smul_cohomology_eq_zero (picInfRep K S ιs) ℓ (exists_coprime_smul_picInfRep K S ιs ℓ hℓ hS) 0 y) k hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp0' : p = 0` using `hp0`. Rewrite using `[hp0', map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_sUnitsH2Map_eq_zero_of_localEmbeddings (ιs : LocalEmbeddings K)
     (y : cohomology (sUnitsQuotSequence K.1 ℚ̄ S).X₁ 2) (k : ℕ)
@@ -210,7 +208,7 @@ theorem eq_zero_of_sUnitsH2Map_eq_zero_of_localEmbeddings (ιs : LocalEmbeddings
 include hℓ hS in
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_sUnitsH2Map_eq_zero_of_localEmbeddings K S ℓ hℓ hS (nonempty_localEmbeddings K).some y k hy h`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sUnitsH2Map_eq_zero (y : cohomology (sUnitsQuotSequence K.1 ℚ̄ S).X₁ 2) (k : ℕ)
     (hy : ℓ ^ k • y = 0) (h : (sUnitsH2Map K S).hom y = 0) : y = 0 :=
@@ -226,13 +224,13 @@ def gsQuotMor : galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S) ⟶ galUnitsModS
   (sUnitsQuotSequence K.1 ℚ̄ S).g
 
 /- English proof (translation)
-The claim follows from `sUnitsQuotSequence_g_comp_sUnitsQuotDiv K S ιs`.
+A detailed English derivation is pending.
 -/
 theorem gsQuotMor_comp_sUnitsQuotDiv : gsQuotMor K S ≫ sUnitsQuotDiv K S ιs = unitsDiv K S ιs :=
   sUnitsQuotSequence_g_comp_sUnitsQuotDiv K S ιs
 
 /- English proof (translation)
-Establish `h` using `cohomologyMap_f_comp_g (S := sUnitsQuotSequence K.1 ℚ̄ S) 2`. Conclude with `congrArg (fun m => ModuleCat.Hom.hom m y) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsQuotMor_sUnitsToUnits_apply (y : cohomology (galSUnitsMax K.1 ℚ̄ S) 2) :
     (cohomologyMap (gsQuotMor K S) 2).hom
@@ -241,7 +239,7 @@ theorem gsQuotMor_sUnitsToUnits_apply (y : cohomology (galSUnitsMax K.1 ℚ̄ S)
   exact congrArg (fun m => ModuleCat.Hom.hom m y) h
 
 /- English proof (translation)
-The claim follows from `exists_cohomologyMap_f_eq_of_cohomologyMap_g_eq_zero (sUnitsQuotSequence_shortExact K.1 ℚ̄ S) 2 x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_sUnitsToUnits_eq_of_gsQuotMor (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2)
     (hx : (cohomologyMap (gsQuotMor K S) 2).hom x = 0) :
@@ -250,7 +248,7 @@ theorem exists_sUnitsToUnits_eq_of_gsQuotMor (x : cohomology (galUnits K.1 (maxU
   exists_cohomologyMap_f_eq_of_cohomologyMap_g_eq_zero (sUnitsQuotSequence_shortExact K.1 ℚ̄ S) 2 x hx
 
 /- English proof (translation)
-The claim follows from `exists_δ_eq_of_cohomologyMap_f_eq_zero (picSequence_shortExact K S ιs) 1 2 rfl p hp`.
+A detailed English derivation is pending.
 -/
 theorem exists_δ_pic_eq (p : cohomology (galUnitsModSUnits K.1 ℚ̄ S) 2)
     (hp : (cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom p = 0) :
@@ -258,11 +256,9 @@ theorem exists_δ_pic_eq (p : cohomology (galUnitsModSUnits K.1 ℚ̄ S) 2)
   exists_δ_eq_of_cohomologyMap_f_eq_zero (picSequence_shortExact K S ιs) 1 2 rfl p hp
 
 /- English proof (translation)
-Establish `e : (cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom ((cohomologyMap (gsQuotMor K S) 2).hom x) = (cohomologyMap (unitsDiv K S ιs) 2).hom x`. Rewrite using `[← gsQuotMor_comp_sUnitsQuotDiv K S ιs, cohomologyMap_comp]`. Both sides reduce to the same expression. Establish `hm : (Rep.resFunctor (gsDecomp K S ιs v)).map (unitsDiv K S ιs) ≫ divFunEval (gsDecomp K S ιs) ℤ v = (ordEmbMor S (ιs.fin v.1) v.2 : Rep.res (gsDecomp K S ιs v) (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) ⟶ trivRep Gal(AlgebraicClosure (v.1.adicCompletion K.1)/v.1.adicCompleti …`. Apply `Rep.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Conclude with `(divFunEval_unitsDiv K S ιs v y).trans (ordEmbMor_hom_apply S (ιs.fin v.1) v.2 y).symm`. Use `(congrArg (fun z => (cohomologyMapAlong (gsDecomp K S ιs v) (continuous_gsDecomp K S ιs v) (divFunEval (gsDecomp K S ιs) ℤ v) 2).hom z) e).trans ?_` and prove the remaining obligations.
-
-Conclude with `(cohomologyMapAlong_cohomologyMap_apply (gsDecomp K S ιs v) (continuous_gsDecomp K S ιs v) (unitsDiv K S ιs) (divFunEval (gsDecomp K S ιs) ℤ v) 2 x).trans (congrArg (fun m => (cohomologyMapAlong (gsDecomp K S ιs v) (continuous_gsDecomp K S ιs v) m 2).hom x) hm)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divFunEval_sUnitsQuotDiv_apply (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S})
     (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2) :
@@ -292,7 +288,7 @@ theorem divFunEval_sUnitsQuotDiv_apply (v : {v : HeightOneSpectrum (𝓞 K.1) //
     (congrArg (fun m => (cohomologyMapAlong (gsDecomp K S ιs v) (continuous_gsDecomp K S ιs v) m 2).hom x) hm)
 
 /- English proof (translation)
-Use `(gsLocalRes_eq_zero_iff S (ιs.fin v) hv _).2 ?_` and prove the remaining obligations. Use `(divFunEval_sUnitsQuotDiv_apply K S ιs ⟨v, hv⟩ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (fun z => (cohomologyMapAlong (gsDecomp K S ιs ⟨v, hv⟩) (continuous_gsDecomp K S ιs ⟨v, hv⟩) (divFunEval (gsDecomp K S ιs) ℤ ⟨v, hv⟩) 2).hom ((cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom z)) (gsQuotMor_sUnitsToUnits_apply K S y)).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (fun z => (cohomologyMapAlong (gsDecomp K S ιs ⟨v, hv⟩) (continuous_gsDecomp K S ιs ⟨v, hv⟩) (divFunEval (gsDecomp K S ιs) ℤ ⟨v, hv⟩) 2).hom z) (LinearMap.map_zero _)).trans (LinearMap.map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gsLocalRes_sUnitsToUnits_eq_zero (y : cohomology (galSUnitsMax K.1 ℚ̄ S) 2)
     (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S) :
@@ -314,7 +310,7 @@ variable (ℓ : ℕ) (hℓ : ℓ.Prime)
 include hℓ hS in
 
 /- English proof (translation)
-Establish `hd : (cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom ((cohomologyMap (gsQuotMor K S) 2).hom x) = 0` using `eq_zero_of_divFunEval_eq_zero (gsDecomp K S ιs) (continuous_gsDecomp K S ιs) ((cohomologyMap (sUnitsQuotDiv K S ιs) 2).hom ((cohomologyMap (gsQuotMor K S) 2).hom x)) fun v => (divFunEval_sUnitsQuotDiv_apply K S ιs v x).trans ((gsLocalRes_eq_zero_iff S (ιs.fin v.1) v.2 x).1 (hloc …`. Establish `hpk : ℓ ^ k • (cohomologyMap (gsQuotMor K S) 2).hom x = 0`. Rewrite using `[← map_nsmul, hx, map_zero]`. Establish `hp0 : (cohomologyMap (gsQuotMor K S) 2).hom x = 0` using `eq_zero_of_mem_range_δ_of_coprime (picSequence_shortExact K S ιs) 1 2 rfl (exists_δ_pic_eq K S ιs _ hd) ℓ (fun z => exists_coprime_smul_cohomology_eq_zero (picInfRep K S ιs) ℓ (exists_coprime_smul_picInfRep K S ιs ℓ hℓ hS) 1 z) k hpk`. Conclude with `exists_sUnitsToUnits_eq_of_gsQuotMor K S x hp0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sUnitsToUnits_eq (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2)
     (k : ℕ) (hx : ℓ ^ k • x = 0)
@@ -346,7 +342,7 @@ variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (ℓ : �
 include hℓ hS in
 
 /- English proof (translation)
-Use `eq_zero_of_sUnitsH2Map_eq_zero K S ℓ hℓ hS y k hy ?_` and prove the remaining obligations. Establish `h1` using `gsBrauerInfl_injective K S (h.trans (map_zero _).symm)`. Conclude with `(cohomologyULiftIntAddEquiv _ 2).injective (h1.trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sUnitsBrauer_eq_zero (y : cohomology (galSUnitsMax K.1 ℚ̄ S) 2) (k : ℕ)
     (hy : ℓ ^ k • y = 0) (h : sUnitsBrauer K S y = 0) : y = 0 := by
@@ -357,7 +353,7 @@ theorem eq_zero_of_sUnitsBrauer_eq_zero (y : cohomology (galSUnitsMax K.1 ℚ̄ 
 variable (ιs : LocalEmbeddings K)
 
 /- English proof (translation)
-The claim follows from `(brauerLocal_gsBrauerInfl_inr K S ιs v _).trans (gsLocalRes_sUnitsToUnits_eq_zero K S ιs y v hv)`.
+A detailed English derivation is pending.
 -/
 theorem brauerLocal_sUnitsBrauer_inr (y : cohomology (galSUnitsMax K.1 ℚ̄ S) 2)
     (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S) : brauerLocal ιs (sUnitsBrauer K S y) (.inr v) = 0 :=
@@ -366,9 +362,9 @@ theorem brauerLocal_sUnitsBrauer_inr (y : cohomology (galSUnitsMax K.1 ℚ̄ S) 
 include hℓ hS in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ v hv`. Conclude with `brauerLocal_sUnitsBrauer_inr K S ιs y v hv`. Introduce `hloc`. Take `⟨z, rfl⟩` from `exists_gsBrauerInfl_eq K S ℓ hℓ hS x k hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz0 : ℓ ^ k • z = 0` using `gsBrauerInfl_injective K S ((map_nsmul (gsBrauerInfl K S 2).hom (ℓ ^ k) z).trans (hx.trans (map_zero _).symm))`. Establish `hz : ℓ ^ k • (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2).symm z = 0` using `(map_nsmul (cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2).symm (ℓ ^ k) z).symm.trans ((congrArg _ hz0).trans (map_zero _))`. Take `⟨y, hy⟩` from `exists_sUnitsToUnits_eq K S ιs ℓ hℓ hS _ k hz fun v hv => (congrArg (gsLocalRes S (ιs.fin v) 2).hom (AddEquiv.apply_symm_apply _ z)).trans ((brauerLocal_gsBrauerInfl_inr K S ιs v z).symm.trans (hloc v hv))`. Conclude with `⟨y, (congrArg (fun t => (gsBrauerInfl K S 2).hom ((cohomologyULiftIntAddEquiv (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) 2) t)) hy).trans (congrArg (gsBrauerInfl K S 2).hom (AddEquiv.apply_symm_apply _ z))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sUnitsBrauer_eq_iff (x : cohomology (unitsLimitRep K) 2) (k : ℕ) (hx : ℓ ^ k • x = 0) :
     (∃ y, sUnitsBrauer K S y = x) ↔
@@ -425,11 +421,11 @@ set_option maxHeartbeats 2000000 in
 include hℓ hS in
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `a.2`. Take `⟨n, hn⟩` from `b.2`. Establish `hab' : sUnitsBrauer K S (a.1 - b.1) = 0`. Rewrite using `[map_sub, ← coe_sUnitsBrauerPrimary_apply, ← coe_sUnitsBrauerPrimary_apply, hab, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ℓ ^ (m + n) • a.1 = 0` using `by rw [pow_add, mul_comm (ℓ ^ m), mul_smul, hm, smul_zero]`. Establish `h2 : ℓ ^ (m + n) • b.1 = 0` using `by rw [pow_add, mul_smul, hn, smul_zero]`. Establish `hk : ℓ ^ (m + n) • (a.1 - b.1) = 0` using `by rw [smul_sub, h1, h2, sub_zero]`. Conclude with `Subtype.ext (sub_eq_zero.1 (eq_zero_of_sUnitsBrauer_eq_zero K S ℓ hℓ hS _ (m + n) hk hab'))`. Take `⟨⟨k, hk⟩, hx⟩` from `x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `(exists_sUnitsBrauer_eq_iff K S ℓ hℓ hS ιs x.1 k hk).2 hx`. Take `⟨y', ⟨j, hj⟩, hy'⟩` from `exists_primary_map_eq (sUnitsBrauer K S) hℓ (isTorsion_cohomology _ (by norm_num) y) (k := k) (by rw [hy]; exact hk)`. Conclude with `⟨⟨y', j, hj⟩, Subtype.ext (hy'.trans hy)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sUnitsBrauerPrimary_bijective : Function.Bijective (sUnitsBrauerPrimary K S ℓ ιs) := by
   refine ⟨fun a b hab => ?_, fun x => ?_⟩
@@ -486,7 +482,7 @@ def brauerLocalPrimary : brauerPrimaryOutside K S ℓ ιs →+ localPrimaryKerne
     exact (map_nsmul (brauerLocal ιs) (ℓ ^ k) x.1).symm.trans ((congrArg _ hk).trans (map_zero _))
 
 /- English proof (translation)
-Use `⟨fun a b hab => Subtype.ext (brauerLocal_injective ιs (congrArg Subtype.val hab)), fun t => ?_⟩` and prove the remaining obligations. Take `⟨⟨k, hk⟩, ht, ht'⟩` from `t.2`. Take `⟨x, hx⟩` from `(sumPlaceInv_eq_zero_iff ιs t.1).1 ht'`. Establish `hxk : ℓ ^ k • x = 0` using `brauerLocal_injective ιs ((map_nsmul (brauerLocal ιs) (ℓ ^ k) x).trans ((congrArg _ hx).trans (hk.trans (map_zero _).symm)))`. Use `⟨⟨x, ⟨k, hxk⟩, fun v hv => (congrArg (fun s => s (.inr v)) hx).trans (ht v hv)⟩, Subtype.ext hx⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem brauerLocalPrimary_bijective : Function.Bijective (brauerLocalPrimary K S ℓ ιs) := by
   refine ⟨fun a b hab => Subtype.ext (brauerLocal_injective ιs (congrArg Subtype.val hab)), fun t => ?_⟩

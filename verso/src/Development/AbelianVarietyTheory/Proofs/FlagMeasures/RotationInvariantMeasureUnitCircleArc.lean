@@ -13,38 +13,38 @@ local instance factTwoPiPos : Fact (0 < 2 * Real.pi) := ⟨Real.two_pi_pos⟩
 def par (x : AddCircle (2 * Real.pi)) : ℂ := (AddCircle.toCircle x : Circle)
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp AddCircle.continuous_toCircle`.
+A detailed English derivation is pending.
 -/
 theorem continuous_par : Continuous par :=
   continuous_subtype_val.comp AddCircle.continuous_toCircle
 
 /- English proof (translation)
-Introduce `_ _ h` and use `AddCircle.injective_toCircle Real.two_pi_pos.ne' (Circle.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem par_injective : Function.Injective par := fun _ _ h =>
   AddCircle.injective_toCircle Real.two_pi_pos.ne' (Circle.ext h)
 
 /- English proof (translation)
-Rewrite using `[par, AddCircle.toCircle_apply_mk, div_self Real.two_pi_pos.ne', one_mul, Circle.coe_exp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem par_coe (s : ℝ) : par (s : AddCircle (2 * Real.pi)) = Complex.exp (s * Complex.I) := by
   rw [par, AddCircle.toCircle_apply_mk, div_self Real.two_pi_pos.ne', one_mul, Circle.coe_exp]
 
 /- English proof (translation)
-Rewrite using `[par, AddCircle.toCircle_add, Circle.coe_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem par_add (x y) : par (x + y) = par x * par y := by
   rw [par, AddCircle.toCircle_add, Circle.coe_mul]; rfl
 
 /- English proof (translation)
-The claim follows from `Circle.norm_coe _`.
+A detailed English derivation is pending.
 -/
 theorem norm_par (x) : ‖par x‖ = 1 := Circle.norm_coe _
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `norm_par x`. Introduce `hz`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(z.arg : ℝ), ?_⟩` and prove the remaining obligations. Rewrite using `[par_coe]`. Use `Complex.norm_mul_exp_arg_mul_I z` as an intermediate fact. Rewrite `this` using `[show ‖z‖ = 1 from hz]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem range_par : Set.range par = {z | ‖z‖ = 1} := by
   ext z
@@ -59,9 +59,9 @@ theorem range_par : Set.range par = {z | ‖z‖ = 1} := by
     simpa using this
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite `hx` using `[mem_ball_zero_iff, QuotientAddGroup.norm_lt_iff]`. Take `⟨s, rfl, hs⟩` from `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, mem_ball_zero_iff.2 hs, (par_coe s).symm⟩`. Introduce and unpack `⟨s, hs, rfl⟩`. Use `⟨s, ?_, par_coe s⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, QuotientAddGroup.norm_lt_iff]`. Conclude with `⟨s, rfl, mem_ball_zero_iff.1 hs⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem image_ball (r : ℝ) :
     par '' Metric.ball 0 r = (fun θ : ℝ => Complex.exp (θ * Complex.I)) '' Metric.ball 0 r := by
@@ -77,21 +77,19 @@ theorem image_ball (r : ℝ) :
     exact ⟨s, rfl, mem_ball_zero_iff.1 hs⟩
 
 /- English proof (translation)
-Introduce `τ ρ hfin hsupp hinv hρ hρπ`. Use `haveI : IsFiniteMeasure τ := ⟨hfin⟩`. Establish `hm : MeasurableEmbedding par` using `(continuous_par.isClosedEmbedding par_injective).measurableEmbedding`. Use `set ν : Measure (AddCircle (2 * Real.pi)) := τ.comap par with hν`. Establish `hνa : ∀ S, ν S = τ (par '' S)` using `fun S => hm.comap_apply τ S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsFiniteMeasure ν := ⟨by rw [hνa]; exact measure_lt_top _ _⟩`. Use `haveI : ν.IsAddLeftInvariant := by`. Prove the components needed by the constructor for the conclusion. Introduce `a`. Use extensionality with `S hS`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[Measure.map_apply (measurable_const_add a) hS, hνa, hνa]`. Use `conv_rhs => rw [← hinv (par a) (norm_par a)]`. Rewrite using `[Measure.map_apply (measurable_const_mul _) (hm.measurableSet_image.2 hS)]`. Use `congr 1`. Use extensionality with `z`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨a + x, hx, par_add a x⟩`. Introduce and unpack `⟨y, hy, h⟩`. Use `⟨-a + y, by simpa using hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0 : par a ≠ 0`. Introduce `h0`. Use `norm_par a` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[← par_add, add_neg_cancel_left]`. Conclude with `h`. Take `⟨t, ht⟩ : ∃ t : ℝ≥0, ν = t • (volume : Measure (AddCircle (2 * Real.pi)))` from `⟨_, Measure.isAddLeftInvariant_eq_smul ν volume⟩`. Establish `hu : τ Set.univ = t * ENNReal.ofReal (2 * Real.pi)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `hνa Set.univ`. Rewrite `h1` using `[ht, Measure.smul_apply, AddCircle.measure_univ, Set.image_univ, range_par, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[h1]`. Apply `measure_congr` to reduce the goal to its premises. Conclude with `(ae_eq_univ.2 hsupp).symm`.
-
-Rewrite using `[← image_ball, ← hνa, hu, ht, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ← measure_congr AddCircle.closedBall_ae_eq_ball, AddCircle.volume_closedBall, min_eq_right (by linarith), mul_assoc, ← ENNReal.ofReal_mul Real.two_pi_pos.le]`. Use `congr 2`. Use `Real.pi_pos` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem measure_arc : ∀ (τ : Measure ℂ) (ρ : ℝ), τ Set.univ < ⊤ → τ {z | ‖z‖ ≠ 1} = 0 →
     (∀ u : ℂ, ‖u‖ = 1 → τ.map (fun z => u * z) = τ) → 0 < ρ → ρ ≤ Real.pi →

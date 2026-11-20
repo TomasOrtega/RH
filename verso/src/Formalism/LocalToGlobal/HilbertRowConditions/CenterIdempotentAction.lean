@@ -122,7 +122,7 @@ variable {D : D7} {Gp : Type} [Group Gp] [Fintype Gp] {Pl0 T : Type} {A : FamIn 
   {JA : AmbIds D A p0.s a0 P0 ψ0 I.tup} {JM : MjHIds D A Y S0}
 
 /- English proof (translation)
-Rewrite using `[(H.div.base.forms t).op_eq x]`. Conclude with `H.cen0 t ⟨D.ntypes.e0, h⟩ (idemOf A.X) H.div.grp.e0 x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BaseDivisionAmbientCompatibility.center_idempotent_action (H : BaseDivisionAmbientCompatibility D A Y p0 a0 P0 ψ0 Ps ψs Zs S0 S1 C NuC I JA JM) (t : T)
     (h : D.ntypes.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))) (x : Fin (rDim D A P0 ψ0 t) → D.what₂.LL) :

@@ -13,7 +13,7 @@ private noncomputable def mulCh {Γ : Type} [Group Γ] (χ : Γ →* ℂˣ) : (�
   right_inv φ := by ext g; simp
 
 /- English proof (translation)
-Use `Units.continuous_val.comp (continuous_of_continuousAt_one χ ?_)` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : ℂˣ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [h.mem_nhds χ.ker.one_mem] with g hg`. Conclude with `(MonoidHom.mem_ker.1 hg).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_ch {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (χ : Γ →* ℂˣ)
     (h : IsOpen (χ.ker : Set Γ)) : Continuous fun g => (χ g : ℂ) := by
@@ -23,7 +23,7 @@ private theorem cont_ch {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologi
   exact (MonoidHom.mem_ker.1 hg).symm
 
 /- English proof (translation)
-Rewrite using `[isIrreducible_iff, isIrreducible_iff]`. Use `and_congr_right fun _ => forall_congr' fun W => imp_congr_left ?_` and prove the remaining obligations. Use `forall_congr' fun g => forall_congr' fun v => forall_congr' fun _ => ?_` and prove the remaining obligations. Conclude with `(W.smul_mem_iff (Units.ne_zero (η g))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem irr_tw {H M : Type} [Group H] [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ H M) (η : H →* ℂˣ) :
     ρ.IsIrreducible ↔ (twRep ρ η).IsIrreducible := by
@@ -36,7 +36,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (χ : UA E n →* ℂˣ)
 
 /- English proof (translation)
-Use extensionality with `g`. Express the relevant statement in the definitionally equal form `(χ (g * x) : ℂ) * φ (g * x) = (χ x : ℂ) * ((χ g : ℂ) * φ (g * x))`. Rewrite using `[map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem RU_mulCh (x : UA E n) (φ : UA E n → ℂ) :
     RU E n x (mulCh χ φ) = (χ x : ℂ) • mulCh χ (RU E n x φ) := by
@@ -45,13 +45,13 @@ private theorem RU_mulCh (x : UA E n) (φ : UA E n → ℂ) :
   rw [map_mul, Units.val_mul]; ring
 
 /- English proof (translation)
-Use `⟨(cont_ch χ ho).mul h.cont, fun γ hγ g => ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(χ (γ * g) : ℂ) * φ (γ * g) = (χ g : ℂ) * φ g`. Rewrite using `[map_mul, hr γ hγ, one_mul, h.left γ hγ]`. Use `isOpen_stab_of_mem_nhds ((RU E n).comp (finU E n).subtype) (mulCh χ φ) ?_` and prove the remaining obligations. Establish `h2 : IsOpen ((Subtype.val : finU E n → UA E n) ⁻¹' (χ.ker : Set (UA E n)))` using `ho.preimage continuous_subtype_val`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Filter.mem_of_superset ((h.level.inter h2).mem_nhds ⟨?_, ?_⟩) fun k hk => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RU E n 1 φ = φ`. Simplify using the standard rewrite rules. Conclude with `χ.ker.one_mem`. Establish `h1 : RU E n k φ = φ` using `hk.1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : χ k = 1` using `hk.2`. Express the relevant statement in the definitionally equal form `RU E n k (mulCh χ φ) = mulCh χ φ`. Rewrite using `[RU_mulCh, h1, h3]`. Simplify using the standard rewrite rules. Use `haveI := h.kfin`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : infU E n => RU E n k φ)).map (mulCh χ).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `RU E n k (mulCh χ φ) ∈ _`. Rewrite using `[RU_mulCh]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_map_of_mem (Submodule.subset_span ⟨k, rfl⟩))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem form_mulCh (ho : IsOpen (χ.ker : Set (UA E n))) (hr : ∀ g ∈ ratU E n, χ g = 1) {φ : UA E n → ℂ}
     (h : IsAutFormU φ) : IsAutFormU (mulCh χ φ) := by
@@ -78,23 +78,23 @@ private theorem form_mulCh (ho : IsOpen (χ.ker : Set (UA E n))) (hr : ∀ g ∈
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ n χ ho hr σ hσ`. Use `⟨σ.comap (mulCh χ).symm.toLinearMap, ⟨fun φ hφ => ?_, fun x φ hφ => ?_, fun e => ?_, fun W hW hs => ?_⟩, fun w hw ⟨φ, hφ, h0, hf⟩ => ?_, fun Gv H M _ _ _ p ρ η hη => and_congr (irr_tw ρ η) ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨ψ, rfl⟩` from `(mulCh χ).surjective φ`. Conclude with `form_mulCh χ ho hr (hσ.aut ψ (by simpa using hφ))`. Take `⟨ψ, rfl⟩` from `(mulCh χ).surjective φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RU_mulCh]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Simplify `hφ)` using `using hσ.stable x ψ (by simpa`. Use `hσ.ne_bot (eq_bot_iff.2 fun φ hφ => ?_)` and prove the remaining obligations. Establish `: mulCh χ φ ∈ σ.comap (mulCh χ).symm.toLinearMap` using `by simpa using hφ`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e]`. Simplify using `using this`. Use `hσ.irred (W.comap (mulCh χ).toLinearMap) (fun φ hφ => by simpa using hW hφ) fun x φ hφ => by` as an intermediate fact. Use `hs x _ hφ` as an intermediate fact. Express the relevant statement in the definitionally equal form `RU E n x (mulCh χ φ) ∈ W at this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[RU_mulCh]`. Conclude with `(W.smul_mem_iff (Units.ne_zero (χ x))).1 this`. Use `this.imp (fun e => eq_bot_iff.2 fun φ hφ => ?_) fun e => le_antisymm hW fun φ hφ => ?_` and prove the remaining obligations. Take `⟨ψ, rfl⟩` from `(mulCh χ).surjective φ`. Establish `: ψ ∈ W.comap (mulCh χ).toLinearMap` using `hφ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[e]`. Simplify using `using this`. Take `⟨ψ, rfl⟩` from `(mulCh χ).surjective φ`. Establish `: ψ ∈ σ` using `by simpa using hφ`. Rewrite `this` using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `⟨mulCh χ φ, by simpa using hφ, by simpa using h0, fun x hx hk => ?_⟩` and prove the remaining obligations. Rewrite using `[RU_mulCh, hf x hx hk, hw x hx hk]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨f, h0, h1, h2⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(mulCh χ).toLinearMap ∘ₗ f, fun e => h0 (LinearMap.ext fun v => ?_), fun v => by simpa using h1 v, fun x v => ?_⟩` and prove the remaining obligations. Simplify using `using LinearMap.congr_fun e v`. Express the relevant statement in the definitionally equal form `mulCh χ (f ((η (p x) : ℂ) • ρ (p x) v)) = RU E n x (mulCh χ (f v))`. Rewrite using `[RU_mulCh, map_smul, map_smul, h2, hη]`. Introduce and unpack `⟨f, h0, h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(mulCh χ).symm.toLinearMap ∘ₗ f, fun e => h0 (LinearMap.ext fun v => ?_), fun v => h1 v, fun x v => ?_⟩` and prove the remaining obligations. Simplify using `using LinearMap.congr_fun e v`. Apply `(mulCh χ).injective` to reduce the goal to its premises. Apply `smul_right_injective _ (Units.ne_zero (χ x))` to reduce the goal to its premises. Use `h2 x v` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[twRep_apply, map_smul, ← hη]`. Express the relevant statement in the definitionally equal form `(χ x : ℂ) • mulCh χ ((mulCh χ).symm (f (ρ (p x) v))) = (χ x : ℂ) • mulCh χ (RU E n x ((mulCh χ).symm (f v)))`. Rewrite using `[← RU_mulCh, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, this]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_automorphicRep_twist_by_character :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (χ : UA E n →* ℂˣ), IsOpen (χ.ker : Set (UA E n)) → (∀ g ∈ ratU E n, χ g = 1) → ∀ σ : Submodule ℂ (UA E n → ℂ), IsAutRepU σ → ∃ σ' : Submodule ℂ (UA E n → ℂ), IsAutRepU σ' ∧ (∀ w : Plc E, (∀ g ∈ locU n w, cLoc w g ∈ GlobalTheory.LFun.KGL w n → χ g = 1) → IsUnramU σ w → IsUnramU σ' w) ∧ ∀ (Gv : Subgroup (UA E n)) (H M : Type) [Group H] [AddCommGroup M] [Module ℂ M] (p : Gv →* H) (ρ : Representation ℂ H M) (η : H →* ℂˣ), (∀ x : Gv, χ x = η (p x)) → (IsCompAlong σ Gv p ρ ↔ IsCompAlong σ' Gv p (twRep ρ η)) := by

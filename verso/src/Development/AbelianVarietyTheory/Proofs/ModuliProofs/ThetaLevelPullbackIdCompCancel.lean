@@ -19,14 +19,14 @@ variable {o : Type} [CommRing o] {g k : ℕ} {J : Type} {b : TBase o k} {S S' S'
   {s : S ⟶ Sp o} {s' : S' ⟶ Sp o} {s'' : S'' ⟶ Sp o}
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullPull L' φ' φ' rfl) (chartPullSame L _ _ _ φ' fun _ => rfl) H`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp {X X' X'' : Scheme.{0}} {L : LB X} {L' : LB X'} {φ : X' ⟶ X}
     (H : LBIso L' (L.pull φ)) (φ' : X'' ⟶ X') : LBIso (L'.pull φ') (L.pull (φ' ≫ φ)) :=
   LBIso.chartPull (chartPullPull L' φ' φ' rfl) (chartPullSame L _ _ _ φ' fun _ => rfl) H
 
 /- English proof (translation)
-Use `⟨𝟙 _, ?_, ?_, fun i => by simp, fun j => by simp⟩` and prove the remaining obligations. Establish `: IsMonHom (Iso.refl t.A).hom` using `inferInstanceAs (IsMonHom (𝟙 _))`. Conclude with `isGrpPullback_of_iso (Iso.refl t.A)`. Conclude with `LBIso.chartPull (chartPullId t.L) (chartPullPull t.L _ _ rfl) (GlobalTheory.PolBaseChange.lbIso_refl t.isLB)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TMap.refl (t : TObj g k J b s) : TMap t t (𝟙 S) := by
   refine ⟨𝟙 _, ?_, ?_, fun i => by simp, fun j => by simp⟩
@@ -35,9 +35,9 @@ theorem TMap.refl (t : TObj g k J b s) : TMap t t (𝟙 S) := by
   · exact LBIso.chartPull (chartPullId t.L) (chartPullPull t.L _ _ rfl) (GlobalTheory.PolBaseChange.lbIso_refl t.isLB)
 
 /- English proof (translation)
-Take `⟨φ, h₁, h₂, h₃, h₄⟩` from `h`. Take `⟨φ', k₁, k₂, k₃, k₄⟩` from `h'`. Use `⟨φ' ≫ φ, k₁.comp h₁, ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans t''.isLB (pull_isLB t'.isLB _) (pull_isLB t.isLB _) k₂ (lbIso_pull_comp h₂ φ')`. Rewrite using `[← Category.assoc, k₃, Category.assoc, h₃, Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, k₄, Category.assoc, h₄, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem TMap.comp {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k J b s''} {f : S' ⟶ S} {f' : S'' ⟶ S'}
     (h' : TMap t'' t' f') (h : TMap t' t f) : TMap t'' t (f' ≫ f) := by
@@ -49,13 +49,13 @@ theorem TMap.comp {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k J 
   · rw [← Category.assoc, k₄, Category.assoc, h₄, Category.assoc]
 
 /- English proof (translation)
-Take `⟨φ, h₁, h₂, h₃, h₄⟩` from `h`. Take `⟨ψ, k₁, k₂, k₃, k₄⟩` from `n`. Establish `hp` using `h₁.1`. Take `⟨F, hF, hw⟩ : ∃ F : t''.A.left ⟶ t'.A.left, F ≫ φ = ψ ∧ F ≫ t'.A.hom = t''.A.hom ≫ f'` from `⟨hp.lift ψ (t''.A.hom ≫ f') (by rw [k₁.1.w, Category.assoc]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Substitute `hF` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Use `⟨F, h₁.cancel k₁ hw, ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `LBIso.trans t''.isLB (pull_isLB t.isLB _) (pull_isLB t'.isLB _) k₂ (lbIso_pull_comp h₂ F).symm`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, k₃, Category.assoc, Category.assoc, h₃]`. Establish `a₁ : (t''.pt i).left ≫ t''.A.hom = 𝟙 S''` using `Over.w (t''.pt i)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂ : (t'.pt i).left ≫ t'.A.hom = 𝟙 S'` using `Over.w (t'.pt i)`. Rewrite using `[Category.assoc, hw, ← Category.assoc, a₁, Category.assoc, a₂]`. Simplify using the standard rewrite rules. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, k₄, Category.assoc, Category.assoc, h₄]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w, Category.assoc, Over.w, hw]`.
+A detailed English derivation is pending.
 -/
 theorem TMap.cancel {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k J b s''} {f : S' ⟶ S} {f' : S'' ⟶ S'}
     (h : TMap t' t f) (n : TMap t'' t (f' ≫ f)) : TMap t'' t' f' := by
@@ -77,7 +77,7 @@ theorem TMap.cancel {t : TObj g k J b s} {t' : TObj g k J b s'} {t'' : TObj g k 
     · rw [Category.assoc, hw, ← Category.assoc, Over.w, Category.assoc, Over.w, hw]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ t _ _` and use `⟨TMap.refl t, fun _ _ h => ⟨fun h' => h'.comp h, fun n => h.cancel n⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tmap_id_comp_cancel : ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (S S' S'' : Scheme.{0}) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o) (s'' : S'' ⟶ Sp o) (t : TObj g k J b s) (t' : TObj g k J b s') (t'' : TObj g k J b s''), TMap t t (𝟙 S) ∧ ∀ (f : S' ⟶ S) (f' : S'' ⟶ S'), TMap t' t f → (TMap t'' t' f' ↔ TMap t'' t (f' ≫ f)) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ t _ _ => ⟨TMap.refl t, fun _ _ h => ⟨fun h' => h'.comp h, fun n => h.cancel n⟩⟩

@@ -29,13 +29,13 @@ theorem bet_apply (l : (ι → ℂ) →L[ℝ] ℝ) (x y : V ι a m) : bet l x y 
   rfl
 
 /- English proof (translation)
-Introduce `y hy`. Use function extensionality and compare the values at `t`. Use `show y t = 0`. Apply `hχ` to reduce the goal to its premises. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hy (Pi.single t w)`. Rewrite `h1` using `[bet_apply]`. Establish `hs : ∑ s, (Pi.single t w : V ι a m) s * y s = y t * w`. Rewrite using `[Finset.sum_eq_single t]`. Simplify using `[mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s _ hs`. Simplify using `[Pi.single_apply, hs]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hs]`. Rewrite using `[hl, h1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem bet_nondeg (hm : m + 1 < a) {χ : AddChar (ι → ℂ) ℂ} (hχ : ∀ z, (∀ w, χ (z * w) = 1) → z = 0)
     {l : (ι → ℂ) →L[ℝ] ℝ} (hl : ∀ z, χ z = Complex.exp ((l z : ℝ) * Complex.I)) :
@@ -82,11 +82,11 @@ theorem blkU_inv_val (hm : m + 1 < a) (y : V ι a m) :
   rfl
 
 /- English proof (translation)
-Unfold `lastE`. Rewrite using `[Finset.sum_eq_single (t0 hm)]`. Simplify using `[t0, ix, mm]`. Introduce `t _ ht`. Rewrite using `[if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h1`. Apply `ht` to reduce the goal to its premises. Take `⟨⟨i, k⟩, h1', h2', h3'⟩` from `t`. Simplify using `only at h1 h1' h2' h3'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [t0, ix, mm]`. Apply the tactic sequence `ext <;> simp <;> omega`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem lastE_eq {R : Type} [CommRing R] (hm : m + 1 < a) (y : UnipotentBlockColumnIndex a (m + 1) (m + 1) → R) :
     lastE (m + 1) y = y (t0 hm) := by

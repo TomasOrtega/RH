@@ -19,9 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CoverDescent
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `IsNilpotent.eq_zero` to reduce the goal to its premises. Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `J hJ`. Use `h (AlgebraicClosure J.ResidueField) ((algebraMap J.ResidueField _).comp (algebraMap R J.ResidueField))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← sub_eq_zero, ← map_sub, RingHom.comp_apply, map_eq_zero, Ideal.algebraMap_residueField_eq_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_geometric_points {R : Type} [CommRing R] [_root_.IsReduced R] (a b : R)
     (h : ∀ (k : Type) [Field k] [IsAlgClosed k] (χ : R →+* k), χ a = χ b) : a = b := by
@@ -36,7 +36,7 @@ theorem eq_of_geometric_points {R : Type} [CommRing R] [_root_.IsReduced R] (a b
   exact this
 
 /- English proof (translation)
-Establish `hs : Smooth (spMap (algebraMap R S))` using `(HasRingHomProperty.Spec_iff (P := @Smooth)).2 (RingHom.smooth_algebraMap.2 ‹_›)`. Establish `: IsReduced (Sp S)` using `GlobalTheory.isReduced_of_smooth_of_isReduced (spMap (algebraMap R S))`. Conclude with `(affine_isReduced_iff (CommRingCat.of S)).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_of_smooth_algebra (R S : Type) [CommRing R] [CommRing S] [Algebra R S]
     [_root_.IsReduced R] [Algebra.Smooth R S] : _root_.IsReduced S := by
@@ -48,11 +48,11 @@ theorem isReduced_of_smooth_algebra (R S : Type) [CommRing R] [CommRing S] [Alge
 open scoped TensorProduct in
 
 /- English proof (translation)
-Use `letI : Algebra R k := χ.toAlgebra`. Use `haveI : Nontrivial (k ⊗[R] S) := inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (k ⊗[R] S)`. Use `letI : Field ((k ⊗[R] S) ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite k ((k ⊗[R] S) ⧸ m) := inferInstance`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `g : ((k ⊗[R] S) ⧸ m) →ₐ[k] k` to `IsAlgClosed.lift`. Use `⟨g.toRingHom.comp ((Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeRight (R := R) (A := k) (B := S)).toRingHom), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `e : (1 : k) ⊗ₜ[R] algebraMap R S x = algebraMap k (k ⊗[R] S) (χ x)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul, Algebra.smul_def, _root_.mul_one]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `g (Ideal.Quotient.mk m ((1 : k) ⊗ₜ[R] algebraMap R S x)) = χ x`. Rewrite using `[e]`. Conclude with `g.commutes (χ x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_geometric (R S : Type) [CommRing R] [CommRing S] [Algebra R S]
     [Module.Finite R S] [Module.FaithfullyFlat R S] (k : Type) [Field k] [IsAlgClosed k]
@@ -76,9 +76,9 @@ theorem exists_lift_geometric (R S : Type) [CommRing R] [CommRing S] [Algebra R 
 open scoped TensorProduct in
 
 /- English proof (translation)
-Use `haveI := isReduced_of_smooth_algebra R S`. Use `haveI := isReduced_of_smooth_algebra S (S ⊗[R] S)`. Establish `key : w ⊗ₜ[R] (1 : S) = (1 : S) ⊗ₜ[R] w`. Use `eq_of_geometric_points _ _ fun k _ _ χ => ?_` and prove the remaining obligations. Use `h k (χ.comp Algebra.TensorProduct.includeLeftRingHom) (χ.comp (Algebra.TensorProduct.includeRight (R := R) (A := S) (B := S)).toRingHom) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `χ (algebraMap R S x ⊗ₜ[R] (1 : S)) = χ ((1 : S) ⊗ₜ[R] algebraMap R S x)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Conclude with `(Algebra.IsEffective.of_faithfullyFlat R S w).1 (by`. Rewrite using `[Algebra.TensorProduct.includeLeftSubRight_apply, key, sub_self])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_preimage_of_geometric (R S : Type) [CommRing R] [CommRing S] [Algebra R S]
     [_root_.IsReduced R] [Algebra.Smooth R S] [Module.FaithfullyFlat R S] (w : S)
@@ -98,11 +98,11 @@ theorem exists_preimage_of_geometric (R S : Type) [CommRing R] [CommRing S] [Alg
     rw [Algebra.TensorProduct.includeLeftSubRight_apply, key, sub_self])
 
 /- English proof (translation)
-Set `Z` to `pullback f t`. Set `g : Z ⟶ Sp R` to `pullback.snd f t`. Use `haveI : IsAffine Z := isAffine_of_isAffineHom g`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (Z.isoSpec.inv ≫ g)`. Establish `h1 : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Smooth (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `h3 : Flat (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `h4 : Surjective (Spec.map φ)` using `by rw [hφ]; infer_instance`. Use `⟨Γ(Z, ⊤), inferInstance, φ.hom, Z.isoSpec.inv ≫ pullback.fst f t, (IsFinite.SpecMap_iff φ).1 h1, (HasRingHomProperty.Spec_iff (P := @Smooth)).1 h2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.FaithfullyFlat.iff_flat_and_comap_surjective]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(HasRingHomProperty.Spec_iff (P := @Flat)).1 h3, h4.surj⟩`. Express the relevant statement in the definitionally equal form `_ = Spec.map φ ≫ t`. Rewrite using `[hφ, Category.assoc, pullback.condition, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_affine_lift {X Y : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [Etale f] [Surjective f]
     (R : Type) [CommRing R] (t : Sp R ⟶ X) :
@@ -128,7 +128,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `ht : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨p, φ, y, h⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos ht]`. Conclude with `hWD f hf S _ p _ φ _ y z ht.choose_spec.choose_spec.choose_spec h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_of_test (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
     (f : Rul Xo c) (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
@@ -140,7 +140,7 @@ theorem evR_of_test (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ 
   exact hWD f hf S _ p _ φ _ y z ht.choose_spec.choose_spec.choose_spec h
 
 /- English proof (translation)
-Take `⟨p, φ, y0, h0⟩` from `hT S y`. Rewrite using `[evR_of_test hWD f hf p φ y0 y h0, evR_of_test hWD f hf p (ψ.comp φ) y0 z (((GlobalTheory.framedPoint_baseChange_laws E H Dw l Xo c).2.1 _ _ _ φ ψ y0 y z h0).1 h)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evR_baseChange (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
     (hT : AllTest Xo c)
@@ -154,11 +154,11 @@ theorem evR_baseChange (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun 
   rfl
 
 /- English proof (translation)
-Set `t : Sp R ⟶ Xo.XF c` to `pullback.lift x (spMap (algebraMap c.F R)) (by`. Rewrite using `[hx, sOf, ← Spec.map_comp]`. Use the proof step `rfl)`. Take `⟨S, _, φ, t', f1, f2, f3, ht⟩` from `exists_affine_lift rF R t`. Take `⟨j, hj⟩` from `Spec.map_surjective (R := CommRingCat.of c₂.F) (S := CommRingCat.of S) (t' ≫ pullback.snd _ _)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S, inferInstance, φ, j.hom, t' ≫ pullback.fst _ _, f1, f2, f3, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : Spec.map j ≫ spMap (IntermediateField.inclusion hc.le).toRingHom = spMap φ ≫ spMap (algebraMap c.F R)`. Rewrite using `[hj, Category.assoc, ← h2, ← Category.assoc, ht, Category.assoc, pullback.lift_snd]`. Rewrite `e` using `[← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← h1, ← Category.assoc, ht, Category.assoc, pullback.lift_fst]`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ← hj, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_cover_point {l₂ : Level H} {Xo₂ : Moduli Dw l₂} {c₂ : Coeff l₂} (hc : c.F = c₂.F)
     (r : Xo₂.X ⟶ Xo.X) (rF : Xo₂.XF c₂ ⟶ Xo.XF c)
@@ -189,33 +189,29 @@ theorem exists_cover_point {l₂ : Level H} {Xo₂ : Moduli Dw l₂} {c₂ : Coe
 end Eval
 
 /- English proof (translation)
-Introduce `hL hC E _ _ _ H Dw l Xo c n d hWD hAT hN hlev hA _ hnab hph Λ N hU hTr hLv a P hP x0 β p y`. Use `haveI : _root_.IsReduced p.R := (Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad`. Take `⟨hval, hnat⟩` from `GlobalTheory.T.shortThetaValue_existsUnique_natural_of_laws hL hC E H Dw d.l₂ d.Xo₂ d.c₂ d.nab₂ hnab n Λ N hU hTr hLv a P hP (d.w x0) β`. Establish `hinv` using `GlobalTheory.T.cover_mul_shortThetaSeries_indep_of_framed_lift hL hC E H Dw l Xo c n d hN hlev hA hnab hph Λ N hU hTr hLv a P hP x0 β`. Establish `hbc` using `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbc₂` using `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw d.l₂ d.Xo₂ d.c₂`. Establish `hcomp` using `(GlobalTheory.framedPoint_baseChange_laws E H Dw l Xo c).2.1`. Take `⟨hdvd, hM, -, -, -, -, hlift, hsec, -⟩` from `id hlev`. Take `⟨r, jK, m, -, -, he, heA, -, hF⟩` from `hN l d.l₂ Xo d.Xo₂ hdvd`. Take `⟨rF, h1, h2, _, _, _, -⟩` from `hF c d.c₂ d.hF.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEta : DeltaDat.EtaOK { d with r` using `r, m := m } := by`. Use `⟨fun b => ?_, heA⟩` and prove the remaining obligations. Use `he b` as an intermediate fact. Rewrite `this` using `[hM, Nat.mul_div_cancel_left _ (by have := l.three_le; omega)]`. Then use the resulting hypothesis. Take `⟨hov1, hov2, -⟩` from `GlobalTheory.T.framedPoints_lift_to_levelCover hL E H Dw l Xo c n { d with r := r, m := m }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, _, φ, j, x₂, f1, f2, f3, hj, hx, hx'⟩` from `exists_cover_point d.hF.symm r rF h1 h2 p.R y.x y.x_over`. Use `letI : Algebra p.R S := φ.toAlgebra`. Use `letI : Algebra c.F S := (φ.comp (algebraMap c.F p.R)).toAlgebra`. Use `letI : Algebra d.c₂.F S := j.toAlgebra`. Use `haveI : Module.Finite p.R S := f1`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.Smooth p.R S := f2`. Use `haveI : Module.FaithfullyFlat p.R S := f3`. Use `haveI := isReduced_of_smooth_algebra p.R S`. Establish `hS : ∀ a : c.F, algebraMap d.c₂.F S (d.eF a) = algebraMap c.F S a` using `fun a => RingHom.congr_fun hj a`. Set `φa : p.R →ₐ[c.F] S` to `{ φ with commutes' := fun _ => rfl }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y', hy'⟩` from `hbc p.R S φa y`. Take `⟨y₂, -, hy₂⟩` from `hov1 S hS y' x₂ (hx.trans hy'.1.symm) hx'`. Take `⟨v₀, hv₀, -⟩` from `hval S y₂`. Establish `core : ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] [Algebra d.c₂.F k], (∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a) → ∀ (χ : p.R →ₐ[c.F] k) (χ' : S →+* k), χ'.comp φ = χ.toRingHom → ∀ (z : FrPt Xo c k) (z₂ : FrPt d.Xo₂ d.c₂ k), FrMap χ y z → FrOver d …`. Introduce `k _ _ _ _ hk χ χ' hχ z z₂ hz hz₂ v hv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `c1 : ∀ a : c.F, χ' (algebraMap c.F S a) = algebraMap c.F k a` using `fun a => (RingHom.congr_fun hχ (algebraMap c.F p.R a)).trans (χ.commutes a)`. Set `ψ : S →ₐ[c.F] k` to `{ χ' with commutes' := c1 }`. Set `ψ₂ : S →ₐ[d.c₂.F] k` to `{ χ' with commutes' := fun b => by`. Take `⟨a, rfl⟩` from `d.eF.surjective b`. Conclude with `(congrArg χ' (hS a)).trans ((c1 a).trans (hk a).symm) }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ψ.comp φa = χ` using `AlgHom.ext fun x => RingHom.congr_fun hχ x`. Establish `hz' : FrMap ψ y' z` using `(hcomp _ _ _ φa ψ y y' z hy').2 (by rw [hψ]; exact hz)`. Take `⟨w₂, hw₂⟩` from `hbc₂ S k ψ₂ y₂`. Establish `hw` using `hov2 S hS k hk ψ ψ₂ rfl y' y₂ z w₂ hy₂ hz' hw₂`. Take `⟨v', hv', -⟩` from `hval k w₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[hinv r m hEta k hk z z₂ w₂ hz₂ hw v v' hv hv', ← hnat S k ψ₂ y₂ w₂ hw₂ v₀ v' hv₀ hv', evR_baseChange hWD hAT d.cδ hsec.1 ψ₂ y₂ w₂ hw₂]`. Conclude with `map_mul χ' _ _`. Establish `pts : ∀ (k : Type) [Field k] [IsAlgClosed k] (χ : p.R →+* k), ∃ (_ : Algebra c.F k) (_ : Algebra d.c₂.F k) (χa : p.R →ₐ[c.F] k) (z : FrPt Xo c k) (z₂ : FrPt d.Xo₂ d.c₂ k) (v : k), (∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a) ∧ χa.toRingHom = χ ∧ FrMap χa y z ∧ F …`. Introduce `k _ _ χ`. Use `letI i1 : Algebra c.F k := (χ.comp (algebraMap c.F p.R)).toAlgebra`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `letI i2 : Algebra d.c₂.F k := ((algebraMap c.F k).comp d.eF.symm.toRingEquiv.toRingHom).toAlgebra`. Establish `hk : ∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a` using `fun a => congrArg (algebraMap c.F k) (d.eF.symm_apply_apply a)`. Set `χa : p.R →ₐ[c.F] k` to `{ χ with commutes' := fun _ => rfl }`. Take `⟨z, hz⟩` from `hbc p.R k χa y`. Take `⟨z₂, hz₂⟩` from `hlift k hk z`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, -⟩` from `hval k z₂`. Conclude with `⟨i1, i2, χa, z, z₂, v, hk, rfl, hz, hz₂, hv⟩`. Take `⟨u, hu⟩` from `exists_preimage_of_geometric p.R S (evR d.Xo₂ d.c₂ d.cδ y₂ * v₀) (by`. Introduce `k _ _ χ₁ χ₂ h12`. Take `⟨_, _, χa, z, z₂, v, hk, hχ, hz, hz₂, hv⟩` from `pts k (χ₁.comp φ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(core k hk χa χ₁ hχ.symm z z₂ hz hz₂ v hv).trans (core k hk χa χ₂ (h12.symm.trans hχ.symm) z z₂ hz hz₂ v hv).symm)`. Use `ExistsUnique.intro u ?_ ?_` and prove the remaining obligations. Introduce `k _ _ _ _ hk χ z z₂ hz hz₂ v hv`. Take `⟨χ', hχ'⟩` from `exists_lift_geometric p.R S k χ.toRingHom`. Rewrite using `[← core k hk χ χ' hχ' z z₂ hz hz₂ v hv, ← hu]`.
-
-Conclude with `(RingHom.congr_fun hχ' u).symm`. Introduce `u' hu'`. Use `eq_of_geometric_points _ _ fun k _ _ χ => ?_` and prove the remaining obligations. Take `⟨_, _, χa, z, z₂, v, hk, hχ, hz, hz₂, hv⟩` from `pts k χ`. Take `⟨χ', hχ'⟩` from `exists_lift_geometric p.R S k χ`.
-
-Substitute `hχ` using the available equality. Establish `e` using `core k hk χa χ' hχ' z z₂ hz hz₂ v hv`. Rewrite `e` using `[← hu]`. Conclude with `(hu' k hk χa z z₂ hz hz₂ v hv).trans (e.symm.trans (RingHom.congr_fun hχ' u))`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortValue_descends : Laws → ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), EvalWD (K := d.c₂.F) (fun S _ _ => FrPt d.Xo₂ d.c₂ S) (fun φ y z => FrMap φ y z) → AllTest d.Xo₂ d.c₂ → @ToroidalLevelCompatibility E _ _ _ H Dw → d.IsLev → d.l₂.A = l.A → ∀ [StarRing (𝓞 E)], IsNab d.Xo₂ d.c₂ d.nab₂ → (∃ ph ψ x₀, d.PhiPin ph ψ x₀ ∧ d.PsiTie ψ) → ∀ (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.TrivAt d.l₂.M → Λ.LevOK N d.l₂.M → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) d.c₂.F), P ∈ HHa Dw.mult n d.c₂.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∀ (x0 : Fin n → Dw.La) (β : d.c₂.F), ∀ (p : TRing c.F) (y : FrPt Xo c p.R), ∃! u : p.R, ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] [Algebra d.c₂.F k], (∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a) → ∀ (χ : p.R →ₐ[c.F] k) (z : FrPt Xo c k) (z₂ : FrPt d.Xo₂ d.c₂ k), FrMap χ y z → FrOver d z₂ z → ∀ v, ShortValAt d.Xo₂ d.c₂ d.nab₂ (d.w x0) Λ β N P z₂ v → χ u = evR d.Xo₂ d.c₂ d.cδ z₂ * v := by
   intro hL hC E _ _ _ H Dw l Xo c n d hWD hAT hN hlev hA _ hnab hph Λ N hU hTr hLv a P hP x0 β p y

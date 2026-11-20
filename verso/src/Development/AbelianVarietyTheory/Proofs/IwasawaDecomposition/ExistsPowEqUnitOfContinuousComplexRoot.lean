@@ -9,7 +9,7 @@ namespace GlobalTheory.ContRoot
 open GlobalTheory.AffinePoints
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal B`. Set `_` to `Ideal.Quotient.field m`. Establish `: Module.Finite ℂ (B ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing ℂ (B ⧸ m)`. Conclude with `⟨(IsAlgClosed.lift : (B ⧸ m) →ₐ[ℂ] ℂ).comp (Ideal.Quotient.mkₐ ℂ m)⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nonempty_algHom (B : Type) [CommRing B] [Nontrivial B] [Algebra ℂ B]
     [Algebra.FiniteType ℂ B] : Nonempty (B →ₐ[ℂ] ℂ) := by
@@ -19,9 +19,9 @@ theorem nonempty_algHom (B : Type) [CommRing B] [Nontrivial B] [Algebra ℂ B]
   exact ⟨(IsAlgClosed.lift : (B ⧸ m) →ₐ[ℂ] ℂ).comp (Ideal.Quotient.mkₐ ℂ m)⟩
 
 /- English proof (translation)
-Set `L` to `AlgebraicClosure (FractionRing B)`. Establish `hinj : Function.Injective (algebraMap B L)`. Rewrite using `[IsScalarTower.algebraMap_eq B (FractionRing B) L]`. Conclude with `(algebraMap (FractionRing B) L).injective.comp (IsFractionRing.injective B _)`. Establish `: FaithfulSMul B L` using `(faithfulSMul_iff_algebraMap_injective B L).2 hinj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap B L u) hn`. Establish `h0 : aeval β (X ^ n - C u : B[X]) = 0` using `by simp [hβ]`. Establish `hint : IsIntegral B β` using `⟨_, monic_X_pow_sub_C u hn.ne', h0⟩`. Conclude with `⟨minpoly B β, minpoly.monic hint, minpoly.prime_of_isIntegrallyClosed hint, minpoly.natDegree_pos hint, minpoly.isIntegrallyClosed_dvd hint h0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_monic_prime_dvd (B : Type) [CommRing B] [IsDomain B] [IsIntegrallyClosed B]
     {n : ℕ} (hn : 0 < n) (u : B) :
@@ -38,25 +38,23 @@ theorem exists_monic_prime_dvd (B : Type) [CommRing B] [IsDomain B] [IsIntegrall
     minpoly.natDegree_pos hint, minpoly.isIntegrallyClosed_dvd hint h0⟩
 
 /- English proof (translation)
-Introduce `B _ _ _ _ n u ρ hn hc hρ`. Establish `hρc : Continuous ρ` using `GlobalTheory.RootConst.continuous_of_holomorphic_families B ρ hc`. Use `GlobalTheory.isIntegrallyClosed_of_smooth ℂ B` as an intermediate fact. Take `⟨P, hm, hp, hd, hdvd⟩` from `exists_monic_prime_dvd B hn (u : B)`. Establish `hdom : IsDomain (AdjoinRoot P)` using `AdjoinRoot.isDomain_of_prime hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hft : Algebra.FiniteType ℂ (AdjoinRoot P)` using `Algebra.FiniteType.trans (S := B) inferInstance inferInstance`. Establish `hconn` using `GlobalTheory.RootConst.preconnectedSpace_algHom (AdjoinRoot P)`. Set `φ : B →ₐ[ℂ] AdjoinRoot P` to `IsScalarTower.toAlgHom ℂ B (AdjoinRoot P)`. Establish `hroot : AdjoinRoot.root P ^ n = φ u`. Establish `h` using `(AdjoinRoot.mk_eq_zero (f := P)).2 hdvd`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sub, map_pow, AdjoinRoot.mk_X, AdjoinRoot.mk_C, sub_eq_zero]`. Conclude with `h`. Establish `hu : ∀ ψ : B →ₐ[ℂ] ℂ, ψ u ≠ 0` using `fun ψ => (u.isUnit.map ψ).ne_zero`. Establish `hρ0 : ∀ ψ, ρ ψ ≠ 0` using `fun ψ h => hu ψ (by rw [← hρ, h, zero_pow hn.ne'])`. Establish `hcont : Continuous fun χ : AdjoinRoot P →ₐ[ℂ] ℂ => χ (AdjoinRoot.root P) / ρ (comap φ χ)` using `(continuous_eval _).div (hρc.comp (continuous_comap φ)) fun _ => hρ0 _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconst` using `GlobalTheory.RootConst.eq_of_pow_eq_one hcont hn fun χ => by`. Rewrite using `[div_pow, ← map_pow, hroot, hρ, comap_apply]`. Conclude with `div_self (hu (comap φ χ))`. Take `⟨ψ⟩` from `nonempty_algHom B`. Establish `key : ∀ z, (P.map (ψ : B →+* ℂ)).IsRoot z → ∃ χ : AdjoinRoot P →ₐ[ℂ] ℂ, comap φ χ = ψ ∧ χ (AdjoinRoot.root P) = z`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hz' : P.eval₂ (ψ : B →+* ℂ) z = 0` using `by rw [← eval_map]; exact hz`. Use `⟨AdjoinRoot.liftAlgHom P ψ z hz', ?_, by simp⟩` and prove the remaining obligations. Use extensionality with `b`. Simplify using `[φ]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `huniq : ∀ z w, (P.map (ψ : B →+* ℂ)).IsRoot z → (P.map (ψ : B →+* ℂ)).IsRoot w → z = w`. Introduce `z w hz hw`. Take `⟨χ, h1, h2⟩` from `key z hz`. Take `⟨χ', h1', h2'⟩` from `key w hw`. Establish `h` using `hconst χ χ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h1, h1', h2, h2'] at h`. Conclude with `(div_left_inj' (hρ0 ψ)).1 h`. Establish `hsep : (P.map (ψ : B →+* ℂ)).Separable`. Use `(separable_X_pow_sub_C (n := n) (ψ u) (Nat.cast_ne_zero.2 hn.ne') (hu ψ)).of_dvd ?_` and prove the remaining obligations. Simplify using `using Polynomial.map_dvd (ψ : B →+* ℂ) hdvd`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hne : P.map (ψ : B →+* ℂ) ≠ 0` using `(hm.map _).ne_zero`. Establish `hdeg : P.natDegree ≤ 1`. Rewrite using `[← hm.natDegree_map (ψ : B →+* ℂ), (IsAlgClosed.splits (P.map (ψ : B →+* ℂ))).natDegree_eq_card_roots, ← Multiset.toFinset_card_of_nodup (nodup_roots hsep)]`. Use `Finset.card_le_one.2 fun a ha b hb => huniq a b ?_ ?_` and prove the remaining obligations. Conclude with `(mem_roots hne).1 (Multiset.mem_toFinset.1 ha)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_roots hne).1 (Multiset.mem_toFinset.1 hb)`. Establish `h1 : P = X + C (P.coeff 0)` using `hm.eq_X_add_C (le_antisymm hdeg hd)`. Use `⟨-P.coeff 0, ?_⟩` and prove the remaining obligations. Establish `h2 : P.eval (-P.coeff 0) = 0`. Rewrite using `[congrArg (eval (-P.coeff 0)) h1]`.
-
-Simplify using the standard rewrite rules. Establish `h3` using `eval_eq_zero_of_dvd_of_eval_eq_zero hdvd h2`. Simplify `h3` using `[sub_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_of_continuous_root : ∀ (B : Type) [CommRing B] [IsDomain B] [Algebra ℂ B] [Algebra.Smooth ℂ B] (n : ℕ) (u : Bˣ) (ρ : (B →ₐ[ℂ] ℂ) → ℂ), 0 < n → (∀ (m : ℕ) (V : Set (Fin m → ℂ)) (s : (Fin m → ℂ) → (B →ₐ[ℂ] ℂ)), IsOpen V → (∀ a : B, DifferentiableOn ℂ (fun p => s p a) V) → ContinuousOn (fun p => ρ (s p)) V) → (∀ ψ : B →ₐ[ℂ] ℂ, ρ ψ ^ n = ψ (u : B)) → ∃ b : B, b ^ n = u := by
   intro B _ _ _ _ n u ρ hn hc hρ

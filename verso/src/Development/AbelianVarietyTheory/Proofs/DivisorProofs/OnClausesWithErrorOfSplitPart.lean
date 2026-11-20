@@ -18,7 +18,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `show ((p.R.toCx3 p.F).data p.F.cr false).Iw j t w = _`. Rewrite using `[toCx3_eq_one p.R p.F p.phsOne]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iw_split_eq (j : Fin D.R.m) (t : p.P.A3.fam3.base3.Tup) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) :
     (p.S false).Iw j t w = (S2 p).Iw j t w := by
@@ -29,7 +29,7 @@ theorem iw_split_eq (j : Fin D.R.m) (t : p.P.A3.fam3.base3.Tup) (w : HeightOneSp
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `show ((p.R.toCx3 p.F).data p.F.cr false).D = _`. Rewrite using `[toCx3_eq_one p.R p.F p.phsOne]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem d_split_eq : (p.S false).D = (S2 p).D := by
   show ((p.R.toCx3 p.F).data p.F.cr false).D = _
@@ -39,9 +39,9 @@ theorem d_split_eq : (p.S false).D = (S2 p).D := by
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p C CH err h`. Take `⟨h1, h2, h3⟩` from `h`. Establish `eD` using `d_split_eq p`. Use `⟨⟨fun w hw => ?_, fun w hw j => h2 w hw j, fun j => h3 j⟩, eD⟩` and prove the remaining obligations. Use `h1 w hw` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [iw_split_eq p, eD]`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem onWith_of_split : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Csz : ℝ) (p : PtAt ex Csz), ∀ (C CH : ℝ) (err : HeightOneSpectrum (𝓞 D.what₂.LL) → Fin D.R.m → ℝ), ONwith (S2 p) ((R2 p).num (F2 p) C CH) err → ONwith (p.S false) (p.N C CH) err ∧ (p.S false).D = (S2 p).D := by
   intro D L hT Gi Gl Kc Y cX ex Csz p C CH err h

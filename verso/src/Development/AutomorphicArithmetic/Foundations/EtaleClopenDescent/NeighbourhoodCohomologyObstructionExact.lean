@@ -7,23 +7,23 @@ open CategoryTheory Limits GlobalTheory.EtC CochainComplex.HomComplex CochainCom
 namespace UpperTheory.Cb.ConeExactness
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `y.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom (mappingCone.inr φ)) c (zero_add (m + 1))) = 0 at hy`. Rewrite `hy` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨m', hm', β, hβ⟩` from `hy`. Take `rfl : m' = m` from `by omega`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hβ' : δ m' (m' + 1) β = (Cochain.ofHom (mappingCone.inr φ)).comp c.1 (zero_add (m' + 1))`. Rewrite using `[hβ]`. Both sides reduce to the same expression. Set `e : Cochain (mappingCone φ) (res R F) m'` to `(mappingCone.snd φ).comp β (zero_add m')`. Set `d : Cochain (mappingCone φ) (res R F) (m' + 1)` to `c.1 - δ m' (m' + 1) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hinre : (Cochain.ofHom (mappingCone.inr φ)).comp e (zero_add m') = β`. Simplify using `only [e]`. Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, mappingCone.inr_snd]`. Simplify using the standard rewrite rules. Establish `hinr : (Cochain.ofHom (mappingCone.inr φ)).comp d (zero_add (m' + 1)) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [d]`. Rewrite using `[Cochain.comp_sub, ← δ_ofHom_comp, hinre, hβ', sub_self]`. Establish `hdcl : δ (m' + 1) (m' + 1 + 1) d = 0`. Simplify using `only [d]`. Rewrite using `[δ_sub, δ_δ, Cocycle.δ_eq_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `a : Cochain K (res R F) m'` to `(mappingCone.inl φ).comp d (by omega)`. Establish `hdec : (mappingCone.fst φ).1.comp a (add_comm 1 m') = d`. Establish `hid` using `mappingCone.id φ`. Establish `h2 : ((mappingCone.fst φ).1.comp (mappingCone.inl φ) (add_neg_cancel 1) + (mappingCone.snd φ).comp (Cochain.ofHom (mappingCone.inr φ)) (add_zero 0)).comp d (zero_add (m' + 1)) = d`. Rewrite using `[hid]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h2` using `[Cochain.add_comp, Cochain.comp_assoc _ _ _ (add_neg_cancel 1) (show (-1 : ℤ) + (m' + 1) = m' by omega) (show (1 : ℤ) + -1 + (m' + 1) = m' + 1 by omega), Cochain.comp_assoc_of_second_is_zero_cochain, hinr]`. Simplify `h2` using `[a]`. Establish `ha : δ m' (m' + 1) a = 0`. Establish `h1` using `δ_comp (mappingCone.fst φ).1 a (add_comm 1 m') 2 (m' + 1) (m' + 1 + 1) rfl (by omega) rfl`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hdec, hdcl, Cocycle.δ_eq_zero]`. Establish `h2` using `congrArg (fun t => (mappingCone.inl φ).comp t (show (-1 : ℤ) + (m' + 1 + 1) = m' + 1 by omega)) h1`. Simplify using `only [Cochain.comp_zero, Cochain.zero_comp, smul_zero, add_zero] at h2`. Rewrite `h2` using `[← Cochain.comp_assoc _ _ _ (neg_add_cancel 1) (show (1 : ℤ) + (m' + 1) = m' + 1 + 1 by omega) (show (-1 : ℤ) + 1 + (m' + 1) = m' + 1 by omega), mappingCone.inl_fst]`. Simplify using `using h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨CohomologyClass.mk (Cocycle.mk a (m' + 1) rfl ha), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (mappingCone.fst φ) (Cocycle.mk a (m' + 1) rfl ha) (add_comm 1 m')) = CohomologyClass.mk c`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff]`. Use `⟨m', by omega, -e, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (mappingCone.fst φ).1.comp a (add_comm 1 m') - c.1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hdec, δ_neg]`. Simplify using `[d]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cone_exact (R : Type) [CommRing R] {K L : Cx R} (φ : K ⟶ L) (F : Shv R) (m : ℤ)
     (y : HK R (mappingCone φ) F (m + 1))
@@ -79,7 +79,7 @@ private theorem cone_exact (R : Type) [CommRing R] {K L : Cx R} (φ : K ⟶ L) (
 end UpperTheory.Cb.ConeExactness
 
 /- English proof (translation)
-Introduce `q _ U E u i m y hy`. Conclude with `UpperTheory.Cb.ConeExactness.cone_exact (ZMod q) _ _ m y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.neighbourhood_cohomology_obstruction_exact :
     LateralTheory.E.NeighbourhoodKilling.ObsExact := by

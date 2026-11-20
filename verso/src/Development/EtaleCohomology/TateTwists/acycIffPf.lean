@@ -16,14 +16,14 @@ theorem app_comp {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) (U : Scheme.{0}) 
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun f => f.hom x) (φ.hom.naturality g.op)`.
+A detailed English derivation is pending.
 -/
 theorem map_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) :=
   congrArg (fun f => f.hom x) (φ.hom.naturality g.op)
 
 /- English proof (translation)
-Establish `: Mono ((ev U).map S.iCycles)` using `inferInstance`. Conclude with `(ModuleCat.mono_iff_injective _).1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iCycles_inj (S : ShortComplex (Shv R)) (U : Scheme.{0}) :
     Function.Injective (Sec.map S.iCycles (U := U)) := by
@@ -31,7 +31,7 @@ theorem iCycles_inj (S : ShortComplex (Shv R)) (U : Scheme.{0}) :
   exact (ModuleCat.mono_iff_injective _).1 this
 
 /- English proof (translation)
-Set `S' : ShortComplex (Shv R)` to `ShortComplex.mk S.iCycles S.g S.iCycles_g`. Establish `hS' : S'.Exact` using `S'.exact_of_f_is_kernel S.cyclesIsKernel`. Establish `hE : (S'.map (ev U)).Exact` using `hS'.map_of_mono_of_preservesKernel (ev U) (inferInstanceAs (Mono S.iCycles)) inferInstance`. Conclude with `(ShortComplex.moduleCat_exact_iff _).1 hE z hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iCycles_surj (S : ShortComplex (Shv R)) (U : Scheme.{0}) (z : Sec S.X₂ U) (hz : Sec.map S.g z = 0) :
     ∃ c : Sec S.cycles U, Sec.map S.iCycles c = z := by
@@ -41,15 +41,15 @@ theorem iCycles_surj (S : ShortComplex (Shv R)) (U : Scheme.{0}) (z : Sec S.X₂
   exact (ShortComplex.moduleCat_exact_iff _).1 hE z hz
 
 /- English proof (translation)
-Rewrite using `[S.exact_iff_epi_toCycles, ← Sheaf.isLocallySurjective_iff_epi' _ S.toCycles]`. Prove the components needed by the constructor for the conclusion. Introduce `h U z hz`. Take `⟨c, rfl⟩` from `iCycles_surj S U z hz`. Use `⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology.{0} S.toCycles.hom (U := op U) c, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `V g ⟨t, ht⟩`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `h1 : Sec.map S.f t = Sec.map S.iCycles (Sec.map S.toCycles t)`. Rewrite using `[← app_comp, S.toCycles_i]`. Rewrite using `[h1, ← map_res]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ ht`. Introduce `h`. Prove the components needed by the constructor for the conclusion. Introduce `U c`. Take `⟨Sv, hSv, hP⟩` from `h U (Sec.map S.iCycles c) (by rw [← app_comp, S.iCycles_g]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Scheme.etaleTopology.{0}.superset_covering ?_ hSv` and prove the remaining obligations. Introduce `V g hg`. Take `⟨y, hy⟩` from `hP V g hg`. Use `⟨y, iCycles_inj S V ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map S.iCycles (Sec.map S.toCycles y) = Sec.map S.iCycles (Sec.res g c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← app_comp, S.toCycles_i, hy, map_res]`.
+A detailed English derivation is pending.
 -/
 theorem exact_iff (S : ShortComplex (Shv R)) : S.Exact ↔
     ∀ (U : Scheme.{0}) (z : Sec S.X₂ U), Sec.map S.g z = 0 →
@@ -80,9 +80,9 @@ end LateralTheory.EtaleFoundations.acycIffPf
 
 open LateralTheory.EtaleFoundations.acycIffPf in
 /- English proof (translation)
-Introduce `R _ C`. Unfold `LateralTheory.EtaleFoundations.acyc.LocAcyc`. Prove the components needed by the constructor for the conclusion. Introduce `h U n z hz`. Use `(HomologicalComplex.exactAt_iff' C (n - 1) n (n + 1) (by simp) (by simp)).1 (h n)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(exact_iff _).1 this U z hz`. Introduce `h n`. Rewrite using `[HomologicalComplex.exactAt_iff' C (n - 1) n (n + 1) (by simp) (by simp)]`. Conclude with `(exact_iff _).2 fun U z hz => h U n z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.acyc.acycIff_of : LateralTheory.EtaleFoundations.acyc.acycIff := by
   intro R _ C

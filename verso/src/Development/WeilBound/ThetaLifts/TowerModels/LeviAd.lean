@@ -19,7 +19,7 @@ def sgI (w : InfinitePlace F) : w.Completion →ₗ[F] AF F :=
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => exact congrArg (· ⊗ₜ[F] x) (Pi.single_eq_same (M := fun u : InfinitePlace F => u.Completion) w a)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compInf_sgI_self (w : InfinitePlace F) (y : w.Completion ⊗[F] E) :
     compInf F E w (TensorProduct.map (sgI w) LinearMap.id y) = y := by
@@ -31,7 +31,7 @@ theorem compInf_sgI_self (w : InfinitePlace F) (y : w.Completion ⊗[F] E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Conclude with `(congrArg (· ⊗ₜ[F] x) (Pi.single_eq_of_ne (M := fun u : InfinitePlace F => u.Completion) h a)).trans (TensorProduct.zero_tmul _ _)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem compInf_sgI_ne {w u : InfinitePlace F} (h : u ≠ w) (y : w.Completion ⊗[F] E) :
     compInf F E u (TensorProduct.map (sgI w) LinearMap.id y) = 0 := by
@@ -45,7 +45,7 @@ theorem compInf_sgI_ne {w u : InfinitePlace F} (h : u ≠ w) (y : w.Completion �
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Conclude with `(congrArg (· ⊗ₜ[F] x) (map_zero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v))).trans (TensorProduct.zero_tmul _ _)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem compFin_sgI (w : InfinitePlace F) (v : Pl F) (y : w.Completion ⊗[F] E) :
     compFin F E v (TensorProduct.map (sgI w) LinearMap.id y) = 0 := by
@@ -56,7 +56,7 @@ theorem compFin_sgI (w : InfinitePlace F) (v : Pl F) (y : w.Completion ⊗[F] E)
   | add x y hx hy => simp only [map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Use `choose b hb using fun w => (infEmb_bijective h (τ w)).2 (z w - 1)`. Use `⟨1 + ∑ w, TensorProduct.map (sgI w) LinearMap.id (b w), fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_one, piInf, RingHom.comp_apply, map_sum, Finset.sum_eq_single w (fun u _ hu => compInf_sgI_ne hu.symm _) (fun h => absurd (Finset.mem_univ w) h), compInf_sgI_self, hb, add_sub_cancel]`. Simplify using `[map_sum, compFin_sgI]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (z : InfinitePlace F → ℂ) :
     ∃ a : AE F E, (∀ w, piInf (τ w) a = z w) ∧ ∀ v, compFin F E v a = 1 := by
@@ -67,23 +67,23 @@ theorem exists_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E
   · simp [map_sum, compFin_sgI]
 
 /- English proof (translation)
-The claim follows from `Supp.adTens_ext (fun w => (infEmb_bijective h (τ w)).1 (h1 w)) h2`.
+A detailed English derivation is pending.
 -/
 theorem ad_ext (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {a b : AE F E}
     (h1 : ∀ w, piInf (τ w) a = piInf (τ w) b) (h2 : ∀ v, compFin F E v a = compFin F E v b) : a = b :=
   Supp.adTens_ext (fun w => (infEmb_bijective h (τ w)).1 (h1 w)) h2
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => ad_ext h τ (fun w => congrFun (congrFun (h1 w) i) j) fun v => congrFun (congrFun (h2 v) i) j`.
+A detailed English derivation is pending.
 -/
 theorem mat_ext (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {m n : Type} {a b : Matrix m n (AE F E)}
     (h1 : ∀ w, a.map (piInf (τ w)) = b.map (piInf (τ w))) (h2 : ∀ v, a.map (compFin F E v) = b.map (compFin F E v)) : a = b :=
   Matrix.ext fun i j => ad_ext h τ (fun w => congrFun (congrFun (h1 w) i) j) fun v => congrFun (congrFun (h2 v) i) j
 
 /- English proof (translation)
-Use `choose a h1 h2 using fun i j => exists_inf h τ fun w => z w i j + 1 - (1 : Matrix n n ℂ) i j`. Use `⟨Matrix.of fun i j => a i j - 1 + (1 : Matrix n n (AE F E)) i j, fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [h1, Matrix.one_apply, e]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases e : i = j <;> simp [h2, Matrix.one_apply, e]`.
+A detailed English derivation is pending.
 -/
 theorem exists_inf_mat (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {n : Type} [DecidableEq n]
     (z : InfinitePlace F → Matrix n n ℂ) :
@@ -97,14 +97,14 @@ theorem exists_inf_mat (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOv
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `[piInf, compInf, inclR, infEmb_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piInf_incl {w : InfinitePlace F} (τ : EmbOver E w) (x : E) : piInf τ (inclR (F := F) (AF F) x) = τ.1 x := by
   simp [piInf, compInf, inclR, infEmb_tmul]
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_cA (v : Pl F) (z : AE F E) : compFin F E v (cA σ z) = sigR _ σ (compFin F E v z) := by
   induction z using TensorProduct.induction_on with
@@ -113,7 +113,7 @@ theorem compFin_cA (v : Pl F) (z : AE F E) : compFin F E v (cA σ z) = sigR _ σ
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `Eq.trans (congrArg (infEmb τ) ?_) (infEmb_sigR h τ _).symm` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
     piInf τ (cA σ z) = star (piInf τ z) := by
@@ -124,14 +124,14 @@ theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (sig_sig h x)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -141,7 +141,7 @@ theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 1`. Use `congr 1`. Conclude with `Matrix.ext fun i j => piInf_incl τ _`. Conclude with `Matrix.ext fun i j => hc τ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem iso_map_piInf (hc : ∀ {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E), piInf τ (cA σ z) = star (piInf τ z))
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : Matrix (Fin n) (Fin n) (AE F E)) {w : InfinitePlace F} (τ : EmbOver E w) :
@@ -154,16 +154,16 @@ theorem iso_map_piInf (hc : ∀ {w : InfinitePlace F} (τ : EmbOver E w) (z : AE
 
 omit [NumberField E] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨g, g', h1, mul_eq_one_comm.1 h1⟩, h2⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_UA {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g g' : Matrix (Fin n) (Fin n) (AE F E)} (h1 : g * g' = 1)
     (h2 : gᵀ * incM F J * g.map (cA σ) = incM F J) : ∃ p : UA σ J, mat p = g :=
   ⟨⟨⟨g, g', h1, mul_eq_one_comm.1 h1⟩, h2⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, a1, a2⟩` from `exists_inf_mat h τ g`. Take `⟨b, b1, b2⟩` from `exists_inf_mat h τ g'`. Take `⟨p, hp⟩` from `exists_UA (σ := σ) (J := J) (g := a) (g' := b) (mat_ext h τ (fun w => by rw [Matrix.map_mul, a1, b1, h1, Matrix.map_one _ (map_zero _) (map_one _)]) fun v => by rw [Matrix.map_mul, a2, b2, mul_one, Matrix.map_one _ (map_zero _) (map_one _)]) (mat_ext h τ (fun w => by`. Rewrite using `[iso_map_piInf (fun τ z => piInf_cA h τ z), a1, h2]`. Conclude with `Matrix.ext fun i j => (piInf_incl _ _).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `fun v => by`. Establish `e : (a.map (cA σ)).map (compFin F E v) = (a.map (compFin F E v)).map (sigR _ σ)` using `Matrix.ext fun i j => compFin_cA v _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e, Matrix.transpose_map, a2, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, one_mul, mul_one])`. Conclude with `⟨p, hp ▸ a1, hp ▸ a2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (g g' : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ) (h1 : ∀ w, g w * g' w = 1)
@@ -187,9 +187,9 @@ theorem exists_lift (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver 
 variable {B : Base F E} {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H : Plane E d d₁} {i₀ i₁ r s : ℕ}
 
 /- English proof (translation)
-Take `⟨u⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Introduce `h0`. Establish `hm : (Complex.I • W.J.map (B.emb u).1).det = 0`. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`. Take `⟨x, hx, e⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hm`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(hW.cartan u).2.2 (star x) (by simpa using hx)` as an intermediate fact. Rewrite `this` using `[star_star, e, dotProduct_zero]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero (hW : W.IsSkew σ B r s) : W.J.det ≠ 0 := by
   obtain ⟨u⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -203,7 +203,7 @@ theorem det_ne_zero (hW : W.IsSkew σ B r s) : W.J.det ≠ 0 := by
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, hs, hJ, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_skew (hs : ∀ x, σ (σ x) = x) {J : Matrix (Fin d) (Fin d) E} (hJ : ∀ i j, σ (J j i) = -J i j) (x y : Fin d → E) :
     form σ J x y = -σ (form σ J y x) := by
@@ -212,19 +212,17 @@ theorem form_skew (hs : ∀ x, σ (σ x) = x) {J : Matrix (Fin d) (Fin d) E} (hJ
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Establish `hsk` using `form_skew (sig_sig hB.cm) hW.skew`. Establish `ent : ∀ a b, ((fr H.ι H.x H.y)ᵀ * W.J * (fr H.ι H.x H.y).map (σ : E →+* E)) a b = form σ W.J (fun i => fr H.ι H.x H.y i a) (fun i => fr H.ι H.x H.y i b)` using `fun a b => by`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `col : ∀ j, (fun i => fr H.ι H.x H.y i (Sum.inl j)) = H.ι *ᵥ Pi.single j 1` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[fr]`. Establish `c0 : (fun i => fr H.ι H.x H.y i (Sum.inr 0)) = H.x` using `rfl`. Establish `c1 : (fun i => fr H.ι H.x H.y i (Sum.inr 1)) = H.y` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `(a | a) (b | b)`. Conclude with `congrFun (congrFun hH.gram a) b`. Rewrite using `[ent, col] fin_cases b exacts [(hH.orth _).1, (hH.orth _).2]`. Rewrite using `[ent, col, hsk] fin_cases a`. Conclude with `(congrArg (fun z => -σ z) (hH.orth _).1).trans (by simp [gr])`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun z => -σ z) (hH.orth _).2).trans (by simp [gr])`. Apply the tactic sequence `rw [ent] fin_cases a <;> fin_cases b exacts [hH.xx, hH.xy, (hsk _ _).trans ((congrArg (fun z => -σ z) hH.xy).trans (by simp [gr])), hH.yy]`. Establish `hs : ∀ z : Fin d → E, z ∈ LinearMap.range (Matrix.toLin' (fr H.ι H.x H.y))` using `fun z => by`. Establish `hz : z ∈ Submodule.span E (W.L : Set (Fin d → E))` using `by rw [hW.lat.span_eq_top]; trivial`. Use `(Submodule.span_le.2 fun z hz => ?_) hz` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, t, u, -, -, -, rfl⟩` from `hH.split z hz`. Use `⟨Sum.elim u ![s, t], ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, fr, Matrix.fromCols_mulVec_sumElim]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose f hf using fun j => hs (Pi.single j 1)`. Establish `h1 : fr H.ι H.x H.y * (Matrix.of fun a j => f j a) = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.one_apply, ← Pi.single_apply, ← hf j]`.
-
-Both sides reduce to the same expression. Conclude with `⟨_, h1, (Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hH.rank])).1 h1⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFr (hB : B.IsGood σ) (hW : W.IsSkew σ B r s) (hH : H.IsAdapted σ B W W₁ i₀ i₁) :
     IsFr (σ : E →+* E) W.J W₁.J H.ι H.x H.y := by
@@ -265,14 +263,14 @@ theorem isFr (hB : B.IsGood σ) (hW : W.IsSkew σ B r s) (hH : H.IsAdapted σ B 
     exact ⟨_, h1, (Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hH.rank])).1 h1⟩
 
 /- English proof (translation)
-The claim follows from `(isFr hB hW hH).map (inclR (F := F) (AF F)) fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem isFrA (hB : B.IsGood σ) (hW : W.IsSkew σ B r s) (hH : H.IsAdapted σ B W W₁ i₀ i₁) :
     IsFr (cA σ : AE F E →+* AE F E) (incM F W.J) (incM F W₁.J) (incM F H.ι) (incV F H.x) (incV F H.y) :=
   (isFr hB hW hH).map (inclR (F := F) (AF F)) fun _ => rfl
 
 /- English proof (translation)
-Take `⟨m, m', e1, e2, e3, e4, e5⟩` from `(isFrA hB hW hH).levi (cA_cA hB.cm) t.mul_inv h₁.1.mul_inv h₁.2`. Take `⟨p, rfl⟩` from `exists_UA e1 e2`. Conclude with `⟨p, e3, e4, e5⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_levi (hB : B.IsGood σ) (hW : W.IsSkew σ B r s) (hH : H.IsAdapted σ B W W₁ i₀ i₁) (t : (AE F E)ˣ)
     (h₁ : UA σ W₁.J) : ∃ m : UA σ W.J, IsLevi H t h₁ m := by

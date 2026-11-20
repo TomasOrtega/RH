@@ -15,7 +15,7 @@ open GlobalTheory.Core.Mi.LatMatch
 namespace GlobalTheory.Core.Mi.LatMatch.TraceX
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun i _ => I.mul_mem_left _ (hy i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_ideal {R : Type} [CommRing R] {I : Ideal R} {m n : ℕ} (A : Matrix (Fin m) (Fin n) R) {y : Fin n → R}
     (hy : ∀ i, y i ∈ I) (k : Fin m) : (A *ᵥ y) k ∈ I := by
@@ -23,7 +23,7 @@ theorem mulVec_mem_ideal {R : Type} [CommRing R] {I : Ideal R} {m n : ℕ} (A : 
   exact Ideal.sum_mem _ fun i _ => I.mul_mem_left _ (hy i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.LatVHat.latV_mem_hatL D S L P y, GlobalTheory.HatLatV.mem_latV_of_hatL D S L P y hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem latV_iff_hatL {D : D7} (S : HSp D) (L : Lat S) (P : GlobalTheory.FinPl.Pl D → Prop) (y : Fin S.rank → AE D)
     (hy : ∀ i, y i ∈ idAt D P) :
@@ -31,9 +31,9 @@ theorem latV_iff_hatL {D : D7} (S : HSp D) (L : Lat S) (P : GlobalTheory.FinPl.P
   ⟨GlobalTheory.LatVHat.latV_mem_hatL D S L P y, GlobalTheory.HatLatV.mem_latV_of_hatL D S L P y hy⟩
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `e : L.map ((LinearEquiv.funCongrLeft E E (finCongr (rfl : m = m))).toLinearMap.restrictScalars (𝓞 E)) = L`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hat_reindex {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m n : ℕ} (hn : m = n)
     (L : Submodule (𝓞 E) (Fin n → E)) (z : Fin m → E ⊗[F] Formalism.L2.Herm.Af F) :
@@ -51,9 +51,9 @@ theorem hat_reindex {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rfl
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Establish `hid : ∀ y, ιE y = y` using `fun y => eq_of_heq (hId y)`. Establish `hA : ∀ a, ιA a = a` using `GlobalTheory.Core.Mi.FinFrame.eq_self_of_rat_of_int (Formalism.L2.SG.InstExistsPf.instOf D).F (Formalism.L2.SG.InstExistsPf.instOf D).E ιA.toRingHom (fun x => (hrat x).trans (congrArg _ (hid x))) (fun a ha => (hint a).1 ha)`. Establish `hA' : ∀ a, ιA.symm a = a` using `fun a => (hA _).symm.trans (ιA.apply_symm_apply a)`. Simplify using `only [hid, hA']`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : latS D = GlobalTheory.PlaceModel.latFrame (Yc D 0)` using `GlobalTheory.ConjPlaceRed.crdLat_eq_latFrame (D.sp.Y 0)`. Rewrite using `[e]`. Conclude with `(GlobalTheory.ConjPlaceRed.mem_Lf D _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport (D : D7) (I : AutInst) (ιE : I.E ≃+* D.host.E) (hId : ∀ y, HEq (ιE y) y)
     (hI : I = Formalism.L2.SG.InstExistsPf.instOf D) (hr : (D.sp.Y 0).rank = I.n)
@@ -77,7 +77,7 @@ theorem transport (D : D7) (I : AutInst) (ιE : I.E ≃+* D.host.E) (hId : ∀ y
   exact (GlobalTheory.ConjPlaceRed.mem_Lf D _).symm
 
 /- English proof (translation)
-Establish `h2 : HMul.hMul d.j0 o.jA = (d.i₀ * o.iA).map (incA D)` using `(Matrix.map_mul (f := incA D)).symm`. Rewrite using `[Matrix.mulVec_mulVec, h2]`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, GlobalTheory.Core.Mi.FinFrame.toEAf_incA]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fin_emb {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (w : Fin A.rank → AE D) :
     (fun k => toEAf D ((d.j0 *ᵥ (o.jA *ᵥ w)) k)) =
@@ -90,7 +90,7 @@ theorem fin_emb {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) 
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (toEAf D) (Formalism.L2.Theta.mt V g) y i).symm`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fin_mt {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (g : GA D V) (y : Fin V.rank → AE D) :
     GlobalTheory.AdForm.finM V hn g *ᵥ (fun j => toEAf D (y (Fin.cast hn.symm j))) =
@@ -102,13 +102,13 @@ theorem fin_mt {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (g : GA D V) (y 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D X h u ψ F tr hK B a₀ hId hL hAd h0 v y hy`. Establish `hn` using `Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)`. Establish `hy' : ∀ k, (B.d.j0 *ᵥ (B.o.jA *ᵥ (Formalism.L2.Theta.mt (D.sp.X 0) a₀ *ᵥ y))) k ∈ idAt D (· = v)` using `mulVec_mem_ideal _ (mulVec_mem_ideal _ (mulVec_mem_ideal _ hy))`. Use `(latV_iff_hatL _ _ _ _ hy).trans (Iff.trans ?_ (latV_iff_hatL _ _ _ _ hy').symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(fun i => toEAf D (y i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) (lat0 F) ↔ (fun k => toEAf D ((B.d.j0 *ᵥ (B.o.jA *ᵥ (Formalism.L2.Theta.mt (D.sp.X 0) a₀ *ᵥ y))) k)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) (latS D)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(hat_reindex hn F.cls0.lev.Lb _).trans ?_` and prove the remaining obligations. Establish `H` using `hL.1 (tr.h0.1.1 *ᵥ fun j => toEAf D (y (Fin.cast hn.symm j)))`. Establish `e1 : (tr.h0⁻¹).1.1 *ᵥ (tr.h0.1.1 *ᵥ fun j => toEAf D (y (Fin.cast hn.symm j))) = fun j => toEAf D (y (Fin.cast hn.symm j))`. Rewrite using `[Matrix.mulVec_mulVec]`. Establish `: HMul.hMul (tr.h0⁻¹).1.1 tr.h0.1.1 = 1` using `Units.inv_mul tr.h0.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.one_mulVec]`. Rewrite `H` using `[e1]`. Use `H.trans ?_` and prove the remaining obligations. Rewrite using `[← h0.2, fin_mt, fin_emb]`. Use `(transport D X.B.I X.ιE hId h (rank_eq X h) tr.ιA tr.ιA_rat tr.ιA_int (fun i => X.crd (Formalism.L2.SG.ColDict.qFr tr.wt i)) _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hAd _ _]`. Use `iff_of_eq (congrArg (· ∈ Formalism.L2.Herm.hatL (F := D.host.F) (latS D)) ?_)` and prove the remaining obligations. Conclude with `(Fintype.sum_equiv (finCongr hn) _ _ fun i => rfl).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trace_iff : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (F : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F) (hK : X.LevelSubgroupCharacter) (B : SBes X h u ψ (D.sp.X 0)) (a₀ : GA D (D.sp.X 0)), GlobalTheory.Core.Mi.IdE X → Formalism.L2.SG.ColDict.LevelMatch X tr hK → B.Adapted tr.wt → IsTransportAdelicCorrection tr a₀ → ∀ (v : GlobalTheory.FinPl.Pl D) (y : Fin (D.sp.X 0).rank → AE D), (∀ i, y i ∈ idAt D (· = v)) → (y ∈ latV (D.sp.X 0) (lat0 F) (· = v) ↔ B.d.j0 *ᵥ (B.o.jA *ᵥ (Formalism.L2.Theta.mt (D.sp.X 0) a₀ *ᵥ y)) ∈ latV (D.sp.Y 0) (latS D) (· = v)) := by
   intro D X h u ψ F tr hK B a₀ hId hL hAd h0 v y hy

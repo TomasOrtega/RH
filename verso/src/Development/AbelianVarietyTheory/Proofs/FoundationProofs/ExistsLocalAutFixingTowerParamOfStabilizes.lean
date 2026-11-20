@@ -24,17 +24,17 @@ variable {p : ℕ} [hp : Fact p.Prime] {Ωl : Type} [Field Ωl] [Algebra (O0 p) 
   {v : Valuation Ωl ℝ≥0}
 
 /- English proof (translation)
-The claim follows from `(hv _).2 isIntegral_algebraMap`.
+A detailed English derivation is pending.
 -/
 theorem v_alg_le (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (b : O0 p) : v (algebraMap (O0 p) Ωl b) ≤ 1 :=
   (hv _).2 isIntegral_algebraMap
 
 /- English proof (translation)
-Take `⟨_, hd, hirr⟩` from `completed_laurent_isDVR p`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Rewrite using `[← Ideal.mem_span_singleton, ← hirr.maximalIdeal_eq]`. Introduce `hu`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `hu.exists_right_inv`. Establish `h2 : v (algebraMap (O0 p) Ωl b) * v (algebraMap (O0 p) Ωl c) = 1`. Rewrite using `[← map_mul, ← map_mul, hc, map_one, map_one]`. Conclude with `absurd h2 (mul_lt_one_of_nonneg_of_lt_one_left zero_le hb (v_alg_le hv c)).ne`. Introduce and unpack `⟨c, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_natCast]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le h1 (v_alg_le hv c)`.
+A detailed English derivation is pending.
 -/
 theorem v_alg_lt_iff (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v (p : Ωl) < 1) (b : O0 p) :
     v (algebraMap (O0 p) Ωl b) < 1 ↔ (p : O0 p) ∣ b := by
@@ -52,7 +52,7 @@ theorem v_alg_lt_iff (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v (p : Ω
     exact mul_lt_one_of_nonneg_of_lt_one_left zero_le h1 (v_alg_le hv c)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_completedLaurent_quot_prime_equiv_laurentFp p`. Use `⟨e.toRingHom.comp (Ideal.Quotient.mk _), he, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `e.map_eq_zero_iff`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_red : ∃ φ : O0 p →+* LaurentSeries (ZMod p),
     φ (qO p) = HahnSeries.single (1 : ℤ) (1 : ZMod p) ∧ ∀ b, φ b = 0 ↔ (p : O0 p) ∣ b := by
@@ -62,7 +62,7 @@ theorem exists_red : ∃ φ : O0 p →+* LaurentSeries (ZMod p),
   exact e.map_eq_zero_iff
 
 /- English proof (translation)
-Use `IsIntegral.of_pow (pow_pos hp.out.pos n) ?_` and prove the remaining obligations. Rewrite using `[Basic.qq_pow]`. Conclude with `isIntegral_algebraMap`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_qq (T : K5.Tower p Ωl) (n : ℕ) : IsIntegral (O0 p) (T.qq n) := by
   refine IsIntegral.of_pow (pow_pos hp.out.pos n) ?_
@@ -70,7 +70,7 @@ theorem isInt_qq (T : K5.Tower p Ωl) (n : ℕ) : IsIntegral (O0 p) (T.qq n) := 
   exact isIntegral_algebraMap
 
 /- English proof (translation)
-The claim follows from `(hv _).2 (IsIntegral.of_mem_of_fg _ (isInt_qq T n).fg_adjoin_singleton _ (aeval_mem_adjoin_singleton _ _))`.
+A detailed English derivation is pending.
 -/
 theorem v_aeval_le (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (T : K5.Tower p Ωl) (n : ℕ) (f : (O0 p)[X]) :
     v (aeval (T.qq n) f) ≤ 1 :=
@@ -78,11 +78,11 @@ theorem v_aeval_le (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (T : K5.Tower p �
     (aeval_mem_adjoin_singleton _ _))
 
 /- English proof (translation)
-Take `⟨φ, hq, hφ⟩` from `exists_red (p := p)`. Establish `h2` using `GlobalTheory.aeval_qq_pow_sub_lt_one p Ωl h v hv h1 T n f hf`. Establish `h3 : v (aeval (T.qq n) f ^ (p ^ n)) < 1`. Rewrite using `[map_pow]`. Conclude with `pow_lt_one₀ zero_le hlt (pow_pos hp.out.pos n).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `v.map_sub_lt h3 h2`. Rewrite `h4` using `[sub_sub_cancel, v_alg_lt_iff hv h1, ← hφ]`. Simplify using `only [map_sum, map_mul, map_pow, hq] at h4`. Establish `h5` using `GlobalTheory.laurent_pow_indep_over_prime_pow_powers p n (fun i => φ (f.coeff i)) h4`. Rewrite using `[C_dvd_iff_dvd_coeff]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Distinguish the cases in `hi : i < p ^ n`. Conclude with `(hφ _).1 (h5 i hi)`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega)]; exact dvd_zero _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v (p : Ωl) < 1)
     (T : K5.Tower p Ωl) (n : ℕ) (f : (O0 p)[X]) (hf : f.natDegree < p ^ n)
@@ -102,17 +102,17 @@ theorem orth (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 :
   · rw [coeff_eq_zero_of_natDegree_lt (by omega)]; exact dvd_zero _
 
 /- English proof (translation)
-Take `⟨φ, hq, hφ⟩` from `exists_red (p := p)`. Establish `h2` using `GlobalTheory.aeval_qq_pow_sub_lt_one p Ωl h v hv h1 T n f hf`. Establish `hy` using `v_aeval_le hv T n f`. Use `set y := aeval (T.qq n) f`. Use `set b := ∑ i ∈ Finset.range (p ^ n), f.coeff i ^ (p ^ n) * qO p ^ i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP0, hP⟩` from `GlobalTheory.K5.exists_int_poly_root_mod_p p Ωl h v hv h1 (y ^ p ^ n) b (halg.pow _) (by rw [map_pow]; exact pow_le_one₀ zero_le hy) h2`. Take `⟨c, hc⟩` from `GlobalTheory.laurentSeries_eq_C_of_root (ZMod p) (φ b) ⟨_, hP0, by`. Rewrite using `[← (hφ _).2 hP, eval₂_map, aeval_def, hom_eval₂]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `ZMod.intCast_surjective c`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `h3 : v (algebraMap (O0 p) Ωl (b - (m : O0 p) ^ p ^ n)) < 1`. Rewrite using `[v_alg_lt_iff hv h1, ← hφ, map_sub, hc, map_pow φ, map_intCast φ, ← map_intCast (HahnSeries.C : ZMod p →+* LaurentSeries (ZMod p)), ← map_pow, ZMod.pow_card_pow, sub_self]`. Establish `hm : v (m : Ωl) ≤ 1` using `(hv _).2 (Basic.isInt_intCast m)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `y' : v.integer` to `⟨y - m, v.map_sub_le hy hm⟩`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp.out y' (m : v.integer) n`. Establish `hr'` using `congrArg (Subtype.val) hr`. Simplify using `only [y'] at hr'`. Move the coercions through the operations in `at hr'`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : v ((p : Ωl) * (y - m) * m * r) < 1`. Rewrite using `[mul_assoc, mul_assoc, map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le h1 (y' * ((m : v.integer) * r)).2`. Establish `h5` using `v.map_sub_lt (v.map_add_lt h2 h3) h4`. Establish `h6 : y ^ p ^ n - algebraMap (O0 p) Ωl b + algebraMap (O0 p) Ωl (b - (m : O0 p) ^ p ^ n) - (p : Ωl) * (y - m) * m * r = (y - m) ^ p ^ n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_sub, map_pow, map_intCast]`. Rewrite `hr'` using `[sub_add_cancel]`. Take the linear combination `hr'`. Rewrite `h5` using `[h6, map_pow]`. Conclude with `lt_of_pow_lt_pow_left₀ (p ^ n) zero_le_one (by rwa [one_pow])`.
+A detailed English derivation is pending.
 -/
 theorem res (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v (p : Ωl) < 1)
     (T : K5.Tower p Ωl) (n : ℕ) (f : (O0 p)[X]) (hf : f.natDegree < p ^ n)
@@ -154,17 +154,15 @@ theorem res (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Use `haveI := Basic.charZero_of_isClo h`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `f a _ ha`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `v_aeval_le hv T n f`. Rewrite `h2` using `[ha]`. Rewrite using `[map_sub, pow_zero]`. Conclude with `v.map_sub_le (hs a h2) h2`. Consider the case `succ N ih`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `f a hf ha`. Establish `halg : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (Algebra.IsAlgebraic.isAlgebraic a)`. Take `⟨m, hm⟩` from `res h hv h1 T n f hf (ha ▸ halg.algHom j.toIntAlgHom)`. Establish `hf' : (f - C (m : O0 p)).natDegree < p ^ n` using `by rwa [natDegree_sub_C]`. Take `⟨g, hg⟩` from `orth h hv h1 T n _ hf' (by simpa using hm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : Ω) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hpl : (p : Ωl) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hpO : (p : O0 p) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `h3` using `ih g ((a - m) / p) (by rwa [hg, natDegree_C_mul hpO] at hf') (by`. Use `congrArg (aeval (T.qq n)) hg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_mul, aeval_C, map_intCast, map_natCast, ha] at this`. Rewrite using `[map_div₀, map_sub, map_intCast, map_natCast, this, mul_div_cancel_left₀ _ hpl])`. Establish `h4 : s a - a = p * (s ((a - m) / p) - (a - m) / p)`. Rewrite using `[map_div₀, map_sub, map_intCast, map_natCast]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4, map_mul, map_mul, map_natCast, pow_succ']`. Conclude with `mul_le_mul_right h3 _`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v (p : Ωl) < 1)
     (T : K5.Tower p Ωl) (n : ℕ) (j : Ω →+* Ωl) (s : Ω ≃ₐ[ℚ] Ω) (hs : ∀ x, v (j x) ≤ 1 → v (j (s x)) ≤ 1)
@@ -199,13 +197,13 @@ theorem approx (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1
     exact mul_le_mul_right h3 _
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨_, hdv, hirr⟩` from `completed_laurent_isDVR p`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd hirr`. Establish `hpos` using `pow_pos hp.out.pos n`. Establish `hmon : (X ^ (p ^ n) - C (qO p)).Monic` using `monic_X_pow_sub_C _ hpos.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : ((C (↑u⁻¹ : O0 p) * f) %ₘ (X ^ (p ^ n) - C (qO p))).natDegree < p ^ n`. Use `natDegree_modByMonic_lt (C (↑u⁻¹ : O0 p) * f) hmon (fun h0 => by` as an intermediate fact. Use `congrArg natDegree h0` as an intermediate fact. Rewrite `this` using `[natDegree_X_pow_sub_C, natDegree_one]`. Use the proof step `omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[natDegree_X_pow_sub_C]`. Then use the resulting hypothesis. Establish `hev : aeval (T.qq n) ((C (↑u⁻¹ : O0 p) * f) %ₘ (X ^ (p ^ n) - C (qO p))) = j ((p : Ω) ^ m * a)`. Rewrite using `[aeval_modByMonic_eq_self_of_root (by simp [Basic.qq_pow]), map_mul, aeval_C, ha, ← mul_assoc, ← map_mul, Units.inv_mul_cancel_left]`. Simplify using the standard rewrite rules. Establish `h0 : v (j (s ((p : Ω) ^ m * a) - (p : Ω) ^ m * a)) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (pos_iff_ne_zero.2 hne) h1`. Conclude with `absurd (approx h hv h1 T n j s hs N _ _ hdeg hev) (not_le.2 hN)`. Rewrite `h0` using `[v.zero_iff, map_eq_zero, sub_eq_zero, map_mul, map_pow, map_natCast]`. Conclude with `mul_left_cancel₀ (pow_ne_zero m (by exact_mod_cast hp.out.ne_zero)) h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v (p : Ωl) < 1)
     (T : K5.Tower p Ωl) (n : ℕ) (j : Ω →+* Ωl) (s : Ω ≃ₐ[ℚ] Ω) (hs : ∀ x, v (j x) ≤ 1 → v (j (s x)) ≤ 1)
@@ -234,13 +232,11 @@ theorem fixed (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 
   exact mul_left_cancel₀ (pow_ne_zero m (by exact_mod_cast hp.out.ne_zero)) h0
 
 /- English proof (translation)
-Use `haveI := h.clo`. Use `haveI := h.alg`. Use `haveI := Basic.charZero_of_isClo h`. Use `haveI : FaithfulSMul (O0 p) Ωl := (faithfulSMul_iff_algebraMap_injective _ _).2 h.inj`. Use `letI : Algebra (FractionRing (O0 p)) Ωl := FractionRing.liftAlgebra (O0 p) Ωl`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : IsScalarTower (O0 p) (FractionRing (O0 p)) Ωl := FractionRing.isScalarTower_liftAlgebra _ _`. Use `haveI : Algebra.IsAlgebraic (FractionRing (O0 p)) Ωl := (IsFractionRing.comap_isAlgebraic_iff (A := O0 p) (K := FractionRing (O0 p))).1 h.alg`. Set `K` to `IntermediateField.adjoin (FractionRing (O0 p)) {T.qq n}`. Establish `hfix : ∀ a : Ω, j a ∈ Set.range (algebraMap K Ωl) → s a = a`. Introduce and unpack `a ⟨⟨y, hy⟩, rfl : y = j a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hy` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic _), Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨f, hf⟩` from `hy`. Take `⟨d, hd, hdf⟩` from `IsLocalization.integerNormalization_spec (nonZeroDivisors (O0 p)) f`. Use `fixed h hv h1 T n j s hs (IsLocalization.integerNormalization (nonZeroDivisors (O0 p)) f) d (nonZeroDivisors.ne_zero hd) a ?_` and prove the remaining obligations. Rewrite using `[← aeval_map_algebraMap (FractionRing (O0 p)), hdf, ← Algebra.smul_def, ← hf, ← algebraMap_smul (FractionRing (O0 p)) d f, map_smul, algebraMap_smul]`.
-
-Both sides reduce to the same expression. Take `⟨g, hg⟩` from `GlobalTheory.exists_algEquiv_inducing_of_forall_conj Ω Ωl K j s (GlobalTheory.exists_algEquiv_apply_eq_of_fixes_preimage_base Ω Ωl K j s hfix)`. Use `⟨(g.restrictScalars (FractionRing (O0 p))).restrictScalars (O0 p), ?_, hg⟩` and prove the remaining obligations. Conclude with `g.commutes ⟨T.qq n, IntermediateField.mem_adjoin_simple_self _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem up (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v (p : Ωl) < 1)
     (T : K5.Tower p Ωl) (n : ℕ) (j : Ω →+* Ωl) (s : Ω ≃ₐ[ℚ] Ω) (hs : ∀ x, v (j x) ≤ 1 → v (j (s x)) ≤ 1) :
@@ -272,7 +268,7 @@ theorem up (h : IsClo p Ωl) (hv : ∀ x : Ωl, v x ≤ 1 ↔ IsInt p x) (h1 : v
 end Local
 
 /- English proof (translation)
-Take `⟨v, hv, -, -, h1⟩` from `exists_valuation_isInt p Ωl h`. Conclude with `up h hv h1 T n j s fun x hx => (hv _).2 ((hA _).1 ((hs x).2 ((hA _).2 ((hv _).1 hx))))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gal_fix_qq_of_stab {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (p : ℕ) [Fact p.Prime]
     (A : ValuationSubring Ω) (Ωl : Type) [Field Ωl] [Algebra (O0 p) Ωl] (h : IsClo p Ωl) (j : Ω →+* Ωl)

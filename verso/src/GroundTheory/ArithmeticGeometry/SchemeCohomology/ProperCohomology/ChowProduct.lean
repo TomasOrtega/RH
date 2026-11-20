@@ -18,11 +18,9 @@ namespace ProjSpace
 variable (A : Type u) [CommRing A]
 
 /- English proof (translation)
-Use `⟨fun a b h => ?_, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg Subtype.val h`. Rewrite `h'` using `[SetLike.GradeZero.coe_algebraMap, SetLike.GradeZero.coe_algebraMap, MvPolynomial.algebraMap_eq]`. Conclude with `MvPolynomial.C_injective _ _ h'`. Introduce and unpack `⟨p, hp⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨coeff 0 p, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.GradeZero.coe_algebraMap, MvPolynomial.algebraMap_eq]`. Distinguish the cases in `h0 : p = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `(totalDegree_eq_zero_iff_eq_C.1 (((mem_homogeneousSubmodule _ _).1 hp).totalDegree h0)).symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma bijective_algebraMap_gradeZero (n : ℕ) :
     Function.Bijective (algebraMap A (grading A n 0)) := by
@@ -76,7 +74,7 @@ def pr : (k : ℕ) → (n : Fin (k + 1) → ℕ) → (i : Fin (k + 1)) →
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `| 0, n, i => by induction i using Fin.cases with | zero => exact Category.id_comp _ | succ j => exact j.elim0 | k + 1, n, i => by induction i using Fin.cases with | zero => rfl | succ j => change (pullback.snd _ _ ≫ pr A k (Fin.tail n) j) ≫ toSpecBase A (Fin.tail n j) = _ rw [Cat …`.
+A detailed English derivation is pending.
 -/
 lemma pr_toSpecBase : (k : ℕ) → (n : Fin (k + 1) → ℕ) → (i : Fin (k + 1)) →
     pr A k n i ≫ toSpecBase A (n i) = mpStr A k n
@@ -129,7 +127,7 @@ def lift (k : ℕ) (n : Fin (k + 1) → ℕ) {T : Scheme.{u}} (t : T ⟶ Spec (.
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(liftAux k n t a ha).2 @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 lemma lift_mpStr (k : ℕ) (n : Fin (k + 1) → ℕ) {T : Scheme.{u}} (t : T ⟶ Spec (.of A))
     (a : ∀ i, T ⟶ projectiveSpace A (n i)) (ha : ∀ i, a i ≫ toSpecBase A (n i) = t) :
@@ -138,7 +136,7 @@ lemma lift_mpStr (k : ℕ) (n : Fin (k + 1) → ℕ) {T : Scheme.{u}} (t : T ⟶
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `| 0, n, _, t, a, ha, i => by induction i using Fin.cases with | zero => exact Category.comp_id _ | succ j => exact j.elim0 | k + 1, n, _, t, a, ha, i => by induction i using Fin.cases with | zero => exact pullback.lift_fst _ _ _ | succ j => rw [pr_succ_succ] change pullback.lift …`.
+A detailed English derivation is pending.
 -/
 lemma lift_pr : (k : ℕ) → (n : Fin (k + 1) → ℕ) → {T : Scheme.{u}} → (t : T ⟶ Spec (.of A)) →
     (a : ∀ i, T ⟶ projectiveSpace A (n i)) → (ha : ∀ i, a i ≫ toSpecBase A (n i) = t) →
@@ -157,7 +155,7 @@ lemma lift_pr : (k : ℕ) → (n : Fin (k + 1) → ℕ) → {T : Scheme.{u}} →
       exact lift_pr k (Fin.tail n) t _ _ j
 
 /- English proof (translation)
-The claim follows from `| 0, n, _, f, g, h => by have := h 0 rw [pr_zero_zero] at this exact (Category.comp_id f).symm.trans (this.trans (Category.comp_id g)) | k + 1, n, _, f, g, h => by apply pullback.hom_ext · exact h 0 · refine hom_ext k (Fin.tail n) _ _ fun j => ?_ have := h j.succ rw [pr_succ_succ …`.
+A detailed English derivation is pending.
 -/
 lemma hom_ext : (k : ℕ) → (n : Fin (k + 1) → ℕ) → {T : Scheme.{u}} → (f g : T ⟶ MP A k n) →
     (∀ i, f ≫ pr A k n i = g ≫ pr A k n i) → f = g

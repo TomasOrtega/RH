@@ -7,25 +7,23 @@ open MeasureTheory
 namespace CompanionTheory.RgDs.K
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ A S _ _ _ _ _ _ ρ σ hρ1 hρm hρc hσ1 hσm hσc f hf hfe`. Take `⟨s0, hs0⟩` from `f.exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hf)`. Establish `hs0y : ∀ y, f (s0 y) = y` using `fun y => by`. Simplify using `using congrArg (fun T : S →ₗ[ℂ] S => T y) hs0`. Establish `hσmul : ∀ a b y, σ (a * b) y = σ a (σ b y)` using `fun a b y => by rw [hσm]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hρmul : ∀ a b x, ρ (a * b) x = ρ a (ρ b x)` using `fun a b x => by rw [hρm]; rfl`. Establish `hσinv : ∀ g y, σ g (σ g⁻¹ y) = y` using `fun g y => by`. Rewrite using `[← hσmul, mul_inv_cancel, hσ1]`. Both sides reduce to the same expression. Take `⟨μ, hμ⟩ : ∃ μ : Measure G, μ.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Set `F : S → G → A` to `fun y g => ρ g (s0 (σ g⁻¹ y))`. Establish `hFc : ∀ y, Continuous (F y)` using `fun y => hρc.clm_apply ((LinearMap.continuous_of_finiteDimensional s0).comp ((hσc y).comp continuous_inv))`. Establish `hFi : ∀ y, Integrable (F y) μ` using `fun y => integrableOn_univ.mp ((hFc y).continuousOn.integrableOn_compact isCompact_univ)`. Establish `hFadd : ∀ x y, F (x + y) = F x + F y` using `fun x y => by`. Use function extensionality and compare the values at `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[F]`. Establish `hFsmul : ∀ (r : ℂ) y, F (r • y) = r • F y` using `fun r y => by`. Use function extensionality and compare the values at `g`. Simplify using `[F]`. Use `set c : ℝ := μ.real Set.univ with hc_def`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : c ≠ 0`. Rewrite using `[hc_def, Measure.real]`. Conclude with `ENNReal.toReal_ne_zero.mpr ⟨isOpen_univ.measure_ne_zero μ Set.univ_nonempty, measure_ne_top μ _⟩`. Set `s : S →ₗ[ℂ] A` to `{ toFun := fun y => ((c : ℂ)⁻¹) • ∫ g, F y g ∂μ map_add' := fun x y => by`. Simplify using `only [hFadd]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.add_def, integral_add (hFi x) (hFi y), smul_add]`. Use the proof step `map_smul' := fun r y => by`. Simplify using `only [hFsmul, RingHom.id_apply]`. Rewrite using `[Pi.smul_def, integral_smul, smul_comm] }`. Use `⟨s, fun y => ?_, fun h y => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `fL : A →L[ℂ] S` to `LinearMap.toContinuousLinearMap f`. Establish `h1 : f (∫ g, F y g ∂μ) = ∫ g, fL (F y g) ∂μ` using `(fL.integral_comp_comm (hFi y)).symm`. Establish `h2 : ∀ g, fL (F y g) = y` using `fun g => by show f (ρ g (s0 (σ g⁻¹ y))) = y`. Rewrite using `[hfe, hs0y, hσinv]`. Use `show f (((c : ℂ)⁻¹) • ∫ g, F y g ∂μ) = y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, h1]`. Simplify using `only [h2, integral_const]`. Rewrite using `[← hc_def, ← Complex.coe_smul, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hc), one_smul]`. Establish `h3 : ∀ g, F (σ h y) (h * g) = ρ h (F y g)` using `fun g => by show ρ (h * g) (s0 (σ (h * g)⁻¹ (σ h y))) = ρ h (ρ g (s0 (σ g⁻¹ y)))`. Rewrite using `[hρmul, mul_inv_rev, hσmul, ← hσmul h⁻¹ h, inv_mul_cancel, hσ1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h4 : ∫ g, F (σ h y) g ∂μ = ρ h (∫ g, F y g ∂μ)`. Rewrite using `[← integral_mul_left_eq_self (F (σ h y)) h]`. Simplify using `only [h3]`. Conclude with `(ρ h).integral_comp_comm (hFi y)`.
-
-Use `show ((c : ℂ)⁻¹) • ∫ g, F (σ h y) g ∂μ = ρ h (((c : ℂ)⁻¹) • ∫ g, F y g ∂μ)`. Rewrite using `[h4, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equivariant_section_holds : EquivSection := by
   intro G _ _ _ _ _ _ _ A S _ _ _ _ _ _ ρ σ hρ1 hρm hρc hσ1 hσm hσc f hf hfe

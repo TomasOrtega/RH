@@ -12,13 +12,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.AtQDTypes
 
 /- English proof (translation)
-Establish `hc` using `D.ntypes.g_cond k`. Establish `hq8` using `D.host.hyp.2.2.1`. Establish `hd16` using `D.host.hyp.2.2.2.1`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : D.host.g k % D.host.q = 1`. Rewrite using `[← Nat.mod_mod_of_dvd _ (show D.host.q ∣ D.host.QS * D.host.q * D.host.d from ⟨D.host.QS * D.host.d, by ring⟩), hc]`. Conclude with `Nat.mod_eq_of_lt (by omega)`. Rewrite `h1` using `[h, Nat.mod_self]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1 : D.host.g k % D.host.d = 1`. Rewrite using `[← Nat.mod_mod_of_dvd _ (show D.host.d ∣ D.host.QS * D.host.q * D.host.d from ⟨D.host.QS * D.host.q, by ring⟩), hc]`. Conclude with `Nat.mod_eq_of_lt (by omega)`. Rewrite `h1` using `[h, Nat.mod_self]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem g_ne_q_d (D : D7) (k : Fin 2) : D.host.g k ≠ D.host.q ∧ D.host.g k ≠ D.host.d := by
   have hc := D.ntypes.g_cond k
@@ -41,9 +39,7 @@ theorem g_ne_q_d (D : D7) (k : Fin 2) : D.host.g k ≠ D.host.q ∧ D.host.g k �
     omega
 
 /- English proof (translation)
-Unfold `TwistedPlaces.gset`. Introduce `hm`. Rewrite `hm` using `[Finset.mem_insert, Finset.mem_singleton]`. Apply the tactic sequence `rcases hm with hm | hm <;> rcases h with h | h`. Conclude with `(g_ne_q_d D 0).1 (hm ▸ h)`.
-
-Conclude with `(g_ne_q_d D 0).2 (hm ▸ h)`. Conclude with `(g_ne_q_d D 1).1 (hm ▸ h)`. Conclude with `(g_ne_q_d D 1).2 (hm ▸ h)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem l_not_mem_gset {D : D7} (i : D.nd.Loc) (h : D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) :
     D.nd.l i ∉ TwistedPlaces.gset D := by
@@ -59,7 +55,7 @@ theorem l_not_mem_gset {D : D7} (i : D.nd.Loc) (h : D.nd.l i = D.host.q ∨ D.nd
 end GlobalTheory.AtQDTypes
 
 /- English proof (translation)
-Introduce `hF D r ρ hP h41 hO i hi π hπ` and use `GlobalTheory.T.restriction_at_good_points hF D r ρ hP h41 hO i (GlobalTheory.AtQDTypes.l_not_mem_gset i hi.1.1) π hπ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.restPt_atQD : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))), GlobalTheory.PtCore.PtFam D r ρ → SumRepresentations.Conclusion41 D → GlobalTheory.SplitCoef.OSplit D → ∀ i : D.nd.Loc, EmbeddingTypeJumps.AtQD i → ∀ π ∈ D.nd.Zgood i, RestPt i (r i) (ρ i) π :=
   fun hF D r ρ hP h41 hO i hi π hπ =>

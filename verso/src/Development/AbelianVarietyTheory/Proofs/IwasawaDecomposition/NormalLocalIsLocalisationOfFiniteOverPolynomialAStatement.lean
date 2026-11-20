@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormalLocalI
 open IsLocalRing
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.normal_local_is_localisation_of_finite_over_polynomial` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FNormalLocalIsLocalisationOfFiniteOverPolynomialA.lean&line=82#L82)
 -/

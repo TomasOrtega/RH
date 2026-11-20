@@ -6,25 +6,23 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `K _ _ _ x hx v`. Take `⟨W, rfl⟩` from `InfinitePlace.comap_surjective (k := maximalRealSubfield K) (K := K) v`. Use `set u := W.comap (algebraMap (maximalRealSubfield K) K) with hu_def`. Establish `hWu : W.LiesOver u` using `{ comp_eq := rfl }`. Establish `hu : u.IsReal` using `IsTotallyReal.isReal u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < InfinitePlace.Completion.ringEquivRealOfIsReal hu (algebraMap (maximalRealSubfield K) u.Completion (x : maximalRealSubfield K))`. Establish `h0 : InfinitePlace.Completion.ringEquivRealOfIsReal hu (algebraMap (maximalRealSubfield K) u.Completion (x : maximalRealSubfield K)) = InfinitePlace.embedding_of_isReal hu (x : maximalRealSubfield K)` using `by simp`. Rewrite using `[h0]`. Establish `h1` using `InfinitePlace.embedding_of_isReal_apply hu (x : maximalRealSubfield K)`. Establish `h3` using `hx W.embedding`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `InfinitePlace.LiesOver.embedding_comp_eq_or_conjugate_embedding_comp_eq W u with h2 | h2` into its components or cases. Establish `h4` using `congrArg (fun f => (f (x : maximalRealSubfield K)).re) h2`. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at h4`. Rewrite `h3` using `[h4, ← h1]`. Rewrite `h3` using `[Complex.ofReal_re]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h4` using `congrArg (fun f => (f (x : maximalRealSubfield K)).re) h2`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, ComplexEmbedding.conjugate_coe_eq, Complex.conj_re] at h4`. Rewrite `h3` using `[h4, ← h1]`. Rewrite `h3` using `[Complex.ofReal_re]`. Then use the resulting hypothesis. Use `letI : Algebra u.Completion W.Completion := NumberField.LiesOver.completionMap.toAlgebra`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `set e := InfinitePlace.Completion.ringEquivRealOfIsReal hu with he`. Use `set a := algebraMap (maximalRealSubfield K) u.Completion (x : maximalRealSubfield K) with ha`. Use `set d := Module.finrank u.Completion W.Completion with hd_def`. Establish `hd : 0 < d`. Break down `W.isUnramified_or_isRamified (maximalRealSubfield K) with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[hd_def, h.finrank_eq_one u]`. Evaluate the numerical expressions. Rewrite using `[hd_def, h.finrank_eq_two u]`. Evaluate the numerical expressions. Use `set r : u.Completion := e.symm (e a ^ ((d : ℝ)⁻¹)) with hr_def`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : r ^ d = a`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hr_def, RingEquiv.apply_symm_apply, ← Real.rpow_natCast, ← Real.rpow_mul hpos.le, inv_mul_cancel₀ (by exact_mod_cast hd.ne'), Real.rpow_one]`. Establish `ha0 : a ≠ 0`. Rewrite using `[ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(map_ne_zero _).mpr x.ne_zero`. Establish `hr0 : algebraMap u.Completion W.Completion r ≠ 0`. Rewrite using `[map_ne_zero]`. Introduce and unpack `h0`. Rewrite `hr` using `[h0, zero_pow hd.ne']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `ha0 hr.symm`. Set `w0 : ↑(InfinitePlace.placesOver K u)` to `⟨W, hWu⟩`. Use `⟨Pi.mulSingle w0 (Units.mk0 _ hr0), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [GroundTheory.Global.IdeleNorm.infiniteLocalNorm, MonoidHom.coe_mk, OneHom.coe_mk]`.
-
-Rewrite using `[Fintype.prod_eq_single w0 (fun w hw => by rw [Pi.mulSingle_eq_of_ne hw, map_one]), Pi.mulSingle_eq_same, Units.coe_map, Units.val_mk0]`. Express the relevant statement in the definitionally equal form `Algebra.norm u.Completion (algebraMap u.Completion W.Completion r) = a`. Rewrite using `[Algebra.norm_algebraMap, ← hd_def, hr]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.locInf :
     ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] (x : (maximalRealSubfield K)ˣ), (∀ φ : K →+* ℂ, 0 < (φ (algebraMap (maximalRealSubfield K) K x)).re) → ∀ v, GroundTheory.Global.IdeleGroup.infiniteProj v (GroundTheory.Global.IdeleGroup.diagonal (maximalRealSubfield K) x) ∈ (GroundTheory.Global.IdeleNorm.infiniteLocalNorm K v).range := by

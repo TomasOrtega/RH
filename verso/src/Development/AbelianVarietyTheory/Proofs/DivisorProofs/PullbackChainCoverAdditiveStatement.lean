@@ -15,7 +15,7 @@ open scoped TensorProduct Pointwise
 open GlobalTheory.ChainPts
 open GlobalTheory.ChainDesc
 /- English proof (citation)
-Apply `GlobalTheory.ChainDesc.UpLocJ.jUp_of_local` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPullbackChainCoverAdditive.lean&line=118#L118)
 -/

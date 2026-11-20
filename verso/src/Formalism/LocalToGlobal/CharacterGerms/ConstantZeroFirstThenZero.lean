@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ PartialDerivEval MaximalI
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {dd : ℕ}
 
 /- English proof (translation)
-Unfold `ev`. Establish `e : (fun p : Fin 1 × Fin dd => (![pt C dd 0] : Fin 1 → Pt C 1 dd) p.1 p.2) = MvPowerSeries.X`. Use function extensionality and compare the values at `p`. Take `⟨k, j⟩` from `p`. Use `fin_cases k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eval_identity_point (f : PS C 1 dd) : ev (n := 1) ![pt C dd 0] f = f := by
   unfold ev
@@ -31,14 +31,14 @@ theorem eval_identity_point (f : PS C 1 dd) : ev (n := 1) ![pt C dd 0] f = f := 
   rfl
 
 /- English proof (translation)
-Introduce `k i`. Apply the tactic sequence `fin_cases k <;> simp [pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constant_zero_first_then_zero : Z0 (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) := by
   intro k i
   fin_cases k <;> simp [pt]
 
 /- English proof (translation)
-Introduce `k i`. Use `fin_cases k`. Conclude with `intS_X _`. Conclude with `intS_zero`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_first_zero_points : ∀ k i, IntS V ((![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) k i) := by
   intro k i
@@ -47,14 +47,14 @@ theorem integral_first_zero_points : ∀ k i, IntS V ((![pt C dd 0, 0] : Fin 2 �
   · exact intS_zero
 
 /- English proof (translation)
-Introduce `k i`. Apply the tactic sequence `fin_cases k <;> simp [pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem constant_zero_zero_first : Z0 (![0, pt C dd 0] : Fin 2 → Pt C 1 dd) := by
   intro k i
   fin_cases k <;> simp [pt]
 
 /- English proof (translation)
-Introduce `k i`. Use `fin_cases k`. Simplify using `using ha i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem constant_zero_singleton {a : Pt C 2 dd} (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) : Z0 (![a] : Fin 1 → Pt C 2 dd) := by
   intro k i
@@ -62,9 +62,7 @@ theorem constant_zero_singleton {a : Pt C 2 dd} (ha : ∀ i, MvPowerSeries.const
   simpa using ha i
 
 /- English proof (translation)
-Use `conv_lhs => rw [← G.comm i]`. Rewrite using `[ev_ev (z0_pp 1 0) constant_zero_first_then_zero]`. Establish `e1 : (fun k j => ev (n` using `1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) ((![pt C dd 1, pt C dd 0] : Fin 2 → Pt C 2 dd) k j)) = ![0, pt C dd 0] := by`. Use function extensionality and compare the values at `k j`. Use `fin_cases k`.
-
-Conclude with `ev_X constant_zero_first_then_zero 1 j`. Conclude with `ev_X constant_zero_first_then_zero 0 j`. Rewrite using `[e1]`. Conclude with `G.unit i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem group_law_zero_right_one (G : FGLaw C dd) (i : Fin dd) :
     ev (n := 1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) (G.F i) = pt C dd 0 i := by
@@ -80,11 +78,11 @@ theorem group_law_zero_right_one (G : FGLaw C dd) (i : Fin dd) :
   exact G.unit i
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => MvPowerSeries.constantCoeff (MvPowerSeries.pderiv C ((0 : Fin 1), j) f)) (G.unit i)`. Simplify using `only [pderiv_eval_pair constant_zero_zero_first] at h`. Establish `e0 : ∀ r, MvPowerSeries.pderiv C ((0 : Fin 1), j) ((![0, pt C dd 0] : Fin 2 → Pt C 1 dd) 0 r) = 0` using `fun r => by simp`. Establish `e1 : ∀ r, MvPowerSeries.pderiv C ((0 : Fin 1), j) ((![0, pt C dd 0] : Fin 2 → Pt C 1 dd) 1 r) = if r = j then 1 else 0` using `fun r => by show MvPowerSeries.pderiv C ((0 : Fin 1), j) (MvPowerSeries.X ((0 : Fin 1), r)) = _ split_ifs with hr`. Substitute `hr` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `MvPowerSeries.pderiv_X_self`. Conclude with `MvPowerSeries.pderiv_X_of_ne (fun h' => hr (Prod.ext_iff.1 h').2)`. Simplify using `only [e0, e1, mul_zero, Finset.sum_const_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, constantCoeff_ev constant_zero_zero_first] at h`. Rewrite using `[h]`. Distinguish the cases in `hji : j = i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hji` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hji, MvPowerSeries.pderiv_X_of_ne (fun h' => hji (Prod.ext_iff.1 h').2.symm), map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_dF (G : FGLaw C dd) (i j : Fin dd) :
     MvPowerSeries.constantCoeff (MvPowerSeries.pderiv C ((1 : Fin 2), j) (G.F i)) = if j = i then 1 else 0 := by
@@ -108,7 +106,7 @@ theorem const_dF (G : FGLaw C dd) (i j : Fin dd) :
   · rw [if_neg hji, MvPowerSeries.pderiv_X_of_ne (fun h' => hji (Prod.ext_iff.1 h').2.symm), map_zero]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[Formalism.G.LogCR.pderiv_subst (a := fun p : Fin 1 × Fin dd => (![a] : Fin 1 → Pt C n dd) p.1 p.2) (fun p => (z0_1 a ha) p.1 p.2) f q, Fintype.sum_prod_type, Fin.sum_univ_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pderiv_eval_single {n : ℕ} (a : Pt C n dd) (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (f : PS C 1 dd)
     (q : Fin n × Fin dd) :
@@ -120,20 +118,18 @@ theorem pderiv_eval_single {n : ℕ} (a : Pt C n dd) (ha : ∀ i, MvPowerSeries.
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `eval_points_two (G.F j)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hadd (G : FGLaw C dd) : addOf G.F (pt C dd 0) (pt C dd 1) = G.F := by
   funext j
   exact eval_points_two (G.F j)
 
 /- English proof (translation)
-Unfold `cobd`. Rewrite using `[hadd G, map_sub, map_sub, pderiv_eval_single G.F G.const, pderiv_eval_single (pt C dd 0) (z0_pt 0), pderiv_eval_single (pt C dd 1) (z0_pt 1)]`. Establish `e0 : ∀ r, MvPowerSeries.pderiv C ((1 : Fin 2), j) (pt C (n` using `2) dd 0 r) = 0 := fun r => MvPowerSeries.pderiv_X_of_ne (fun h' => by simp at h')`. Establish `e1 : ∀ r, MvPowerSeries.pderiv C ((1 : Fin 2), j) (pt C (n` using `2) dd 1 r) = if r = j then 1 else 0 := by`. Introduce `r`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show MvPowerSeries.pderiv C ((1 : Fin 2), j) (MvPowerSeries.X ((1 : Fin 2), r)) = _`. Use `split_ifs with hr`. Substitute `hr` using the available equality. Conclude with `MvPowerSeries.pderiv_X_self`. Conclude with `MvPowerSeries.pderiv_X_of_ne (fun h' => hr (Prod.ext_iff.1 h').2)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [e0, e1, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[ev_sub constant_zero_first_then_zero, ev_sum constant_zero_first_then_zero]`. Use `congr 1`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[ev_mul constant_zero_first_then_zero, ev_ev (z0_1 _ G.const) constant_zero_first_then_zero]`.
-
-Establish `e2 : (fun k i => ev (n` using `1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) ((![G.F] : Fin 1 → Pt C 2 dd) k i)) = ![pt C dd 0] := by`. Use function extensionality and compare the values at `k i`. Use `fin_cases k`. Conclude with `group_law_zero_right_one G i`. Rewrite using `[e2, eval_identity_point]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_D_cobd (G : FGLaw C dd) (A : PS C 1 dd) (j : Fin dd) :
     ev (n := 1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) (MvPowerSeries.pderiv C ((1 : Fin 2), j) (cobd G.F A)) =
@@ -167,11 +163,11 @@ theorem E_D_cobd (G : FGLaw C dd) (A : PS C 1 dd) (j : Fin dd) :
   rw [e2, eval_identity_point]
 
 /- English proof (translation)
-Rewrite using `[ev_ev (z0_1 _ (z0_pt 1)) constant_zero_first_then_zero]`. Establish `e : (fun k i => ev (n` using `1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) ((![pt C dd 1] : Fin 1 → Pt C 2 dd) k i)) = fun _ _ => 0 := by`. Use function extensionality and compare the values at `k i`. Use `fin_cases k`. Conclude with `ev_X constant_zero_first_then_zero 1 i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e]`. Unfold `ev`. Rewrite using `[show (fun p : Fin 1 × Fin dd => (fun (_ : Fin 1) (_ : Fin dd) => (0 : PS C 1 dd)) p.1 p.2) = (0 : Fin 1 × Fin dd → PS C 1 dd) from rfl, MvPowerSeries.subst_zero_eq_C_constantCoeff]`. Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_C]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `split_ifs`. Simplify using `using hg`. Simplify using `using (mm_zero : V.MM (0 : C))`.
+A detailed English derivation is pending.
 -/
 theorem maximal_eval_second_constant {g : PS C 1 dd} (hg : V.MM (MvPowerSeries.constantCoeff g)) :
     MMS V (ev (n := 1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) (ev (n := 2) ![pt C dd 1] g)) := by
@@ -192,9 +188,9 @@ theorem maximal_eval_second_constant {g : PS C 1 dd} (hg : V.MM (MvPowerSeries.c
   · simpa using (mm_zero : V.MM (0 : C))
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_pderiv, coeff_frobTw]`. Use `split_ifs with h`. Establish `hs` using `h s`. Rewrite `hs` using `[Finsupp.add_apply, Finsupp.single_eq_same]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((μ s : C) + 1) = ((μ s + 1 : ℕ) : C)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `mm_mul_ge' (VF.Ge.pow (hc _) _) (mm_natCast_of_dvd hs)`. Rewrite using `[zero_mul]`. Conclude with `mm_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_pderiv_frobTw {σ : Type} {c : MvPowerSeries σ C} (hc : IntS V c) (s : σ) :
     MMS V (MvPowerSeries.pderiv C s (frobTw V.l c)) := by
@@ -212,9 +208,9 @@ theorem mms_pderiv_frobTw {σ : Type} {c : MvPowerSeries σ C} (hc : IntS V c) (
 variable (G : FGLaw C dd) {A : PS C 1 dd} {c : PS C 2 dd}
 
 /- English proof (translation)
-Establish `h1 : MMS V (ev (n` using `1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) (MvPowerSeries.pderiv C ((1 : Fin 2), j) (cobd G.F A - frobTw V.l c))) := MMS.ev_of constant_zero_first_then_zero integral_first_zero_points ((show MMS V (cobd G.F A - frobTw V.l c) from hfe).pderiv _)`. Establish `h2 : MMS V (ev (n` using `1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) (MvPowerSeries.pderiv C ((1 : Fin 2), j) (frobTw V.l c))) := MMS.ev_of constant_zero_first_then_zero integral_first_zero_points (mms_pderiv_frobTw hc _)`. Establish `hcst : V.MM (MvPowerSeries.constantCoeff (MvPowerSeries.pderiv C ((0 : Fin 1), j) A))`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv, zero_add]`. Simplify using `using hlin j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `maximal_eval_second_constant (dd := dd) hcst`. Rewrite `h1` using `[map_sub, ev_sub constant_zero_first_then_zero, E_D_cobd]`. Establish `e : ∀ (S X Y : PS C 1 dd), S = (S - X - Y) + Y + X` using `fun S X Y => by ring`. Rewrite using `[e (∑ r, _) _ _]`. Conclude with `(h1.add h2).add h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_dA_M (hc : IntS V c) (hlin : ∀ j : Fin dd, V.MM (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) A))
     (hfe : ∀ μ, V.MM (MvPowerSeries.coeff μ (cobd G.F A - frobTw V.l c))) (j : Fin dd) :
@@ -236,21 +232,19 @@ theorem mms_dA_M (hc : IntS V c) (hlin : ∀ j : Fin dd, V.MM (MvPowerSeries.coe
   exact (h1.add h2).add h3
 
 /- English proof (translation)
-Use `set M : Fin dd → Fin dd → PS C 1 dd := fun j r => ev (n := 1) (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) (MvPowerSeries.pderiv C ((1 : Fin 2), j) (G.F r)) with hMdef`. Establish `hM : ∀ j, MMS V (∑ r, MvPowerSeries.pderiv C ((0 : Fin 1), r) A * M j r)` using `fun j => mms_dA_M G hc hlin hfe j`. Establish `hMint : ∀ j r, IntS V (M j r)` using `fun j r => intS_ev constant_zero_first_then_zero integral_first_zero_points (intS_pderiv (hF r) _)`. Establish `hMc : ∀ j r, MvPowerSeries.constantCoeff (M j r) = if j = r then 1 else 0` using `fun j r => by`. Rewrite using `[hMdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[constantCoeff_ev constant_zero_first_then_zero, const_dF G r j]`. It suffices to establish `h : ∀ n, ∀ ν : Fin 1 × Fin dd →₀ ℕ, ν.degree = n → ∀ i, V.MM (MvPowerSeries.coeff ν (MvPowerSeries.pderiv C ((0 : Fin 1), i) A)) from fun ν => h _ ν rfl i`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `_ n ih`. Introduce `ν hν i`. Establish `h` using `hM i ν`. Rewrite `h` using `[map_sum]`. Establish `hsplit : ∀ r, MvPowerSeries.coeff ν (MvPowerSeries.pderiv C ((0 : Fin 1), r) A * M i r) = MvPowerSeries.coeff ν (MvPowerSeries.pderiv C ((0 : Fin 1), r) A) * MvPowerSeries.constantCoeff (M i r) + ∑ p ∈ (Finset.HasAntidiagonal.antidiagonal ν).erase (ν, 0), MvPowerSeries.coeff p.1 …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Rewrite using `[MvPowerSeries.coeff_mul, ← Finset.add_sum_erase _ _ (show ((ν, 0) : (Fin 1 × Fin dd →₀ ℕ) × (Fin 1 × Fin dd →₀ ℕ)) ∈ Finset.HasAntidiagonal.antidiagonal ν from Finset.HasAntidiagonal.mem_antidiagonal.2 (add_zero ν)), MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Establish `hrest : ∀ r, V.MM (∑ p ∈ (Finset.HasAntidiagonal.antidiagonal ν).erase (ν, 0), MvPowerSeries.coeff p.1 (MvPowerSeries.pderiv C ((0 : Fin 1), r) A) * MvPowerSeries.coeff p.2 (M i r))`. Introduce `r`. Use `mm_sum _ _ fun p hp => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hne, hmem⟩` from `Finset.mem_erase.1 hp`. Rewrite `hmem` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h2 : p.2 ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[h0, add_zero]`. Apply the tactic sequence `ext <;> simp [hmem, h0]`. Establish `hdeg : p.1.degree < n`. Establish `hd` using `congrArg Finsupp.degree hmem`. Rewrite `hd` using `[map_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: p.2.degree ≠ 0` using `fun h0 => h2 ((Finsupp.degree_eq_zero_iff _).1 h0)`. Use linear arithmetic over natural numbers and integers. Conclude with `mm_mul_ge (ih _ hdeg p.1 rfl r) (hMint i r p.2)`. Simplify using `only [hsplit, Finset.sum_add_distrib, hMc, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Establish `h'` using `mm_sub h (mm_sum Finset.univ _ fun r _ => hrest r)`.
-
-Rewrite `h'` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mms_dA (hF : ∀ i, IntS V (G.F i)) (hc : IntS V c) (hlin : ∀ j : Fin dd, V.MM (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) A))
     (hfe : ∀ μ, V.MM (MvPowerSeries.coeff μ (cobd G.F A - frobTw V.l c))) (i : Fin dd) :
@@ -305,15 +299,13 @@ theorem mms_dA (hF : ∀ i, IntS V (G.F i)) (hc : IntS V c) (hlin : ∀ j : Fin 
     rwa [add_sub_cancel_right] at h'
 
 /- English proof (translation)
-Use `push Not at hμ`. Take `⟨s, hs⟩` from `hμ`. Establish `hpos : 1 ≤ μ s`. Break down `Nat.eq_zero_or_pos (μ s) with h0 | h0` into its components or cases. Conclude with `absurd (h0 ▸ dvd_zero V.l) hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h0`. Establish `hle : Finsupp.single s 1 ≤ μ`. Introduce `t`. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs with ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← ht]`. Conclude with `hpos`. Conclude with `Nat.zero_le _`. Establish `hs' : s = ((0 : Fin 1), s.2)` using `Prod.ext (Subsingleton.elim _ _) rfl`. Establish `h` using `mms_dA G hF hc hlin hfe s.2 (μ - Finsupp.single s 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hs', MvPowerSeries.coeff_pderiv, tsub_add_cancel_of_le hle]`. Establish `e : ((((μ - Finsupp.single s 1 : Fin 1 × Fin dd →₀ ℕ)) s : ℕ) : C) + 1 = ((μ s : ℕ) : C)`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`. Move the coercions through the operations in `[Nat.cast_sub hpos]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `h` using `[e, mul_comm]`. Conclude with `mm_of_natCast_mul hs (hA μ) h`.
+A detailed English derivation is pending.
 -/
 theorem mm_A_ndvd (hF : ∀ i, IntS V (G.F i)) (hA : IntS V A) (hc : IntS V c)
     (hlin : ∀ j : Fin dd, V.MM (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) A))
@@ -342,9 +334,9 @@ theorem mm_A_ndvd (hF : ∀ i, IntS V (G.F i)) (hA : IntS V A) (hc : IntS V c)
   exact mm_of_natCast_mul hs (hA μ) h
 
 /- English proof (translation)
-Introduce `μ`. Establish `h1` using `hf μ`. Establish `h2` using `hg μ`. Unfold `VF.Ge at h1 h2 ⊢`. Rewrite using `[map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (le_min h1 h2) (V.v.map_sub _ _)`.
+A detailed English derivation is pending.
 -/
 theorem intS_sub' {σ : Type} {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : IntS V g) : IntS V (f - g) := by
   intro μ
@@ -355,9 +347,9 @@ theorem intS_sub' {σ : Type} {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : I
   exact le_trans (le_min h1 h2) (V.v.map_sub _ _)
 
 /- English proof (translation)
-Establish `h1` using `mms_frobTw_add hf (intS_neg hg)`. Establish `h2` using `mms_frobTw_neg hg`. Rewrite `h1` using `[← sub_eq_add_neg]`. Establish `e : frobTw V.l (f - g) - (frobTw V.l f - frobTw V.l g) = (frobTw V.l (f - g) - (frobTw V.l f + frobTw V.l (-g))) + (frobTw V.l (-g) + frobTw V.l g)` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.add h2`.
+A detailed English derivation is pending.
 -/
 theorem mms_frobTw_sub {σ : Type} {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : IntS V g) :
     MMS V (frobTw V.l (f - g) - (frobTw V.l f - frobTw V.l g)) := by
@@ -370,9 +362,7 @@ theorem mms_frobTw_sub {σ : Type} {f g : MvPowerSeries σ C} (hf : IntS V f) (h
   exact h1.add h2
 
 /- English proof (translation)
-Establish `hI : ∀ p : Fin 1 × Fin dd, IntS V ((![a] : Fin 1 → Pt C 2 dd) p.1 p.2)`. Introduce `p`. Take `⟨k, i⟩` from `p`. Use `fin_cases k`. Conclude with `ha i`.
-
-Conclude with `mms_subst_frobTw (a := fun p : Fin 1 × Fin dd => (![a] : Fin 1 → Pt C 2 dd) p.1 p.2) (fun p => (z0_1 a ha0) p.1 p.2) hI hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eval_commutes_frobenius_twist {a : Pt C 2 dd} (ha0 : ∀ i, MvPowerSeries.constantCoeff (a i) = 0)
     (ha : ∀ i, IntS V (a i)) {f : PS C 1 dd} (hf : IntS V f) :
@@ -386,21 +376,21 @@ theorem eval_commutes_frobenius_twist {a : Pt C 2 dd} (ha0 : ∀ i, MvPowerSerie
     (fun p => (z0_1 a ha0) p.1 p.2) hI hf
 
 /- English proof (translation)
-The claim follows from `intS_ev (z0_1 a ha0) (fun k i => by fin_cases k; exact ha i) hf`.
+A detailed English derivation is pending.
 -/
 theorem integral_eval_single {a : Pt C 2 dd} (ha0 : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (ha : ∀ i, IntS V (a i))
     {f : PS C 1 dd} (hf : IntS V f) : IntS V (ev (n := 2) ![a] f) :=
   intS_ev (z0_1 a ha0) (fun k i => by fin_cases k; exact ha i) hf
 
 /- English proof (translation)
-The claim follows from `MMS.ev_of (z0_1 a ha0) (fun k i => by fin_cases k; exact ha i) hf`.
+A detailed English derivation is pending.
 -/
 theorem maximal_eval_single {a : Pt C 2 dd} (ha0 : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (ha : ∀ i, IntS V (a i))
     {f : PS C 1 dd} (hf : MMS V f) : MMS V (ev (n := 2) ![a] f) :=
   MMS.ev_of (z0_1 a ha0) (fun k i => by fin_cases k; exact ha i) hf
 
 /- English proof (translation)
-Unfold `cobd`. Rewrite using `[hadd G]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cobd_eq (X : PS C 1 dd) :
     cobd G.F X = ev (n := 2) ![G.F] X - ev (n := 2) ![pt C dd 0] X - ev (n := 2) ![pt C dd 1] X := by
@@ -412,27 +402,23 @@ end ZeroPointGroupLaw
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ PartialDerivEval MaximalIdealCongruence ZeroPointGroupLaw in
 
 /- English proof (translation)
-Introduce `C _ _ V hac dd G hF A c hA hc hlin hfe`. Use `hac` as an intermediate fact. Establish `hl` using `V.l_prime.pos`. Establish `hroot : ∀ ν : Fin 1 × Fin dd →₀ ℕ, ∃ y : C, y ^ V.l = MvPowerSeries.coeff (V.l • ν) A` using `fun ν => IsAlgClosed.exists_pow_nat_eq _ hl`. Use `choose b hb using hroot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B : PS C 1 dd` to `fun ν => b ν`. Establish `hBc : ∀ ν, MvPowerSeries.coeff ν B = b ν` using `fun ν => rfl`. Establish `hB : IntS V B` using `fun ν => by`. Rewrite using `[hBc]`. Conclude with `ge_of_pow (by rw [hb]; exact hA _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Establish `hpt0 : ∀ i, IntS V (pt C (n` using `2) dd 0 i) := fun i => intS_X _`. Establish `hpt1 : ∀ i, IntS V (pt C (n` using `2) dd 1 i) := fun i => intS_X _`. Establish `hN : MMS V (A - frobTw V.l B)`. Introduce `μ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, coeff_frobTw]`. Use `split_ifs with hdiv`. Rewrite using `[hBc, hb, smul_divl hdiv, sub_self]`. Conclude with `mm_zero`. Rewrite using `[sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mm_A_ndvd G hF hA hc hlin hfe μ hdiv`. Establish `hFB : IntS V (frobTw V.l B)` using `intS_frobTw hB`. Establish `hdN : MMS V (cobd G.F A - cobd G.F (frobTw V.l B))`. Rewrite using `[cobd_eq G, cobd_eq G]`. Establish `e : ev (n` using `2) ![G.F] A - ev (n := 2) ![pt C dd 0] A - ev (n := 2) ![pt C dd 1] A - (ev (n := 2) ![G.F] (frobTw V.l B) - ev (n := 2) ![pt C dd 0] (frobTw V.l B) - ev (n := 2) ![pt C dd 1] (frobTw V.l B)) = ev (n := 2) ![G.F] (A - frobTw V.l B) - ev (n := 2) ![pt C dd 0] (A - frobTw V.l B) - …`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ev_sub (z0_1 _ G.const), ev_sub (z0_1 _ (z0_pt 0)), ev_sub (z0_1 _ (z0_pt 1))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `((maximal_eval_single G.const hF hN).sub (maximal_eval_single (z0_pt 0) hpt0 hN)).sub (maximal_eval_single (z0_pt 1) hpt1 hN)`. Establish `hx1` using `integral_eval_single G.const hF hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2` using `integral_eval_single (z0_pt 0) hpt0 hB`. Establish `hx3` using `integral_eval_single (z0_pt 1) hpt1 hB`. Establish `hdF : MMS V (cobd G.F (frobTw V.l B) - frobTw V.l (cobd G.F B))`. Rewrite using `[cobd_eq G, cobd_eq G]`. Establish `t1` using `eval_commutes_frobenius_twist G.const hF hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t2` using `eval_commutes_frobenius_twist (z0_pt 0) hpt0 hB`. Establish `t3` using `eval_commutes_frobenius_twist (z0_pt 1) hpt1 hB`. Establish `s1` using `mms_frobTw_sub (intS_sub' hx1 hx2) hx3`. Establish `s2` using `mms_frobTw_sub hx1 hx2`. Establish `e : ev (n` using `2) ![G.F] (frobTw V.l B) - ev (n := 2) ![pt C dd 0] (frobTw V.l B) - ev (n := 2) ![pt C dd 1] (frobTw V.l B) - frobTw V.l (ev (n := 2) ![G.F] B - ev (n := 2) ![pt C dd 0] B - ev (n := 2) ![pt C dd 1] B) = (ev (n := 2) ![G.F] (frobTw V.l B) - frobTw V.l (ev (n := 2) ![G.F] B)) - ( …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(((t1.sub t2).sub t3).sub s2).sub s1`. Establish `hcB : IntS V (cobd G.F B)`. Rewrite using `[cobd_eq G]`. Conclude with `intS_sub' (intS_sub' hx1 hx2) hx3`.
-
-Establish `hFc : MMS V (frobTw V.l c - frobTw V.l (cobd G.F B))`. Establish `e : frobTw V.l c - frobTw V.l (cobd G.F B) = -(cobd G.F A - frobTw V.l c) + (cobd G.F A - cobd G.F (frobTw V.l B)) + (cobd G.F (frobTw V.l B) - frobTw V.l (cobd G.F B))` using `by ring`. Rewrite using `[e]`. Conclude with `(((show MMS V (cobd G.F A - frobTw V.l c) from hfe).neg).add hdN).add hdF`. Establish `hFd : MMS V (frobTw V.l (c - cobd G.F B))`.
-
-Establish `e : frobTw V.l (c - cobd G.F B) = (frobTw V.l (c - cobd G.F B) - (frobTw V.l c - frobTw V.l (cobd G.F B))) + (frobTw V.l c - frobTw V.l (cobd G.F B))` using `by ring`. Rewrite using `[e]`. Conclude with `(mms_frobTw_sub hc hcB).add hFc`. Conclude with `mms_of_frobTw hFd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_step_second_half : FirstStepSecondHalfCondition := by
   intro C _ _ V hac dd G hF A c hA hc hlin hfe
@@ -513,7 +499,7 @@ theorem first_step_second_half : FirstStepSecondHalfCondition := by
   exact mms_of_frobTw hFd
 
 /- English proof (translation)
-The claim follows from `rank_maximal_of_halves hP first_step_second_half`.
+A detailed English derivation is pending.
 -/
 theorem rank_maximal_of_first_half (hP : FirstStepFirstHalfCondition) : RankMaximalOfNondegenerate :=
   rank_maximal_of_halves hP first_step_second_half

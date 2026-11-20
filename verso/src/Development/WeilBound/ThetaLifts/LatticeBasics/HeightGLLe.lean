@@ -14,9 +14,9 @@ namespace Ht
 variable {p q : Type} [Fintype p] [Fintype q] [DecidableEq p] [DecidableEq q]
 
 /- English proof (translation)
-Establish `h2 : (X⁻¹).1 = fromBlocks (x⁻¹).1 0 0 (y⁻¹).1` using `Units.inv_eq_of_mul_eq_one_right (by rw [h1, fromBlocks_multiply]; simp)`. Establish `hx` using `one_le_htOf N₁ x`. Establish `hy` using `one_le_htOf N₂ y`. Use `max_le (one_le_mul_of_one_le_of_one_le hx hy) (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hN _ _).trans (max_le ((le_htOf N₁ x).trans (le_mul_of_one_le_right' hy)) ((le_htOf N₂ y).trans (le_mul_of_one_le_left' hx)))`. Rewrite using `[h2]`. Conclude with `(hN _ _).trans (max_le ((inv_le_htOf N₁ x).trans (le_mul_of_one_le_right' hy)) ((inv_le_htOf N₂ y).trans (le_mul_of_one_le_left' hx)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htOf_le {R : Type} [CommRing R] {N₁ : Matrix p p R → ℝ≥0} {N₂ : Matrix q q R → ℝ≥0}
     {N : Matrix (p ⊕ q) (p ⊕ q) R → ℝ≥0} (hN : ∀ a b, N (fromBlocks a 0 0 b) ≤ max (N₁ a) (N₂ b))
@@ -35,13 +35,11 @@ theorem htOf_le {R : Type} [CommRing R] {N₁ : Matrix p p R → ℝ≥0} {N₂ 
       ((inv_le_htOf N₂ y).trans (le_mul_of_one_le_left' hx)))
 
 /- English proof (translation)
-Use `ContinuousLinearMap.opNNNorm_le_bound _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← NNReal.coe_le_coe, NNReal.coe_mul, coe_nnnorm, coe_nnnorm]`. Take `⟨v, rfl⟩ : ∃ v : p ⊕ q → ℂ, x = WithLp.toLp 2 v` from `⟨x.ofLp, rfl⟩`. Use `set c : ℝ := ((max (opNorm a) (opNorm b) : ℝ≥0) : ℝ) with hc`. Establish `h0 : 0 ≤ c` using `NNReal.coe_nonneg _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ‖(WithLp.toLp 2 (a *ᵥ v ∘ .inl) : EuclideanSpace ℂ p)‖ ≤ c * ‖(WithLp.toLp 2 (v ∘ .inl) : EuclideanSpace ℂ p)‖`. Rewrite using `[← Matrix.toEuclideanCLM_toLp]`. Conclude with `(ContinuousLinearMap.le_opNorm _ _).trans (mul_le_mul_of_nonneg_right (NNReal.coe_le_coe.2 (le_max_left (opNorm a) (opNorm b))) (norm_nonneg _))`. Establish `hb : ‖(WithLp.toLp 2 (b *ᵥ v ∘ .inr) : EuclideanSpace ℂ q)‖ ≤ c * ‖(WithLp.toLp 2 (v ∘ .inr) : EuclideanSpace ℂ q)‖`. Rewrite using `[← Matrix.toEuclideanCLM_toLp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ContinuousLinearMap.le_opNorm _ _).trans (mul_le_mul_of_nonneg_right (NNReal.coe_le_coe.2 (le_max_right (opNorm a) (opNorm b))) (norm_nonneg _))`. Establish `kn : ∀ w : p ⊕ q → ℂ, ‖(WithLp.toLp 2 w : EuclideanSpace ℂ (p ⊕ q))‖ ^ 2 = ‖(WithLp.toLp 2 (w ∘ .inl) : EuclideanSpace ℂ p)‖ ^ 2 + ‖(WithLp.toLp 2 (w ∘ .inr) : EuclideanSpace ℂ q)‖ ^ 2` using `fun w => by`. Rewrite using `[EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, Fintype.sum_sum_type]`. Both sides reduce to the same expression. Use `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg h0 (norm_nonneg _)) two_ne_zero).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.toEuclideanCLM_toLp, fromBlocks_mulVec, kn, mul_pow, kn, mul_add, ← mul_pow, ← mul_pow]`. Simplify using `only [zero_mulVec, add_zero, zero_add, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Conclude with `add_le_add (pow_le_pow_left₀ (norm_nonneg _) ha 2) (pow_le_pow_left₀ (norm_nonneg _) hb 2)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem opNorm_le (a : Matrix p p ℂ) (b : Matrix q q ℂ) : opNorm (fromBlocks a 0 0 b) ≤ max (opNorm a) (opNorm b) := by
   refine ContinuousLinearMap.opNNNorm_le_bound _ _ fun x => ?_
@@ -69,9 +67,7 @@ variable (F : Type) [Field F] [NumberField F] {E : Type} [Field E] [NumberField 
 
 omit [DecidableEq p] [DecidableEq q] in
 /- English proof (translation)
-Use `(normFin_le_iff F v).2 ?_` and prove the remaining obligations. Introduce and unpack `(i | i) (j | j)`. Conclude with `(absFin_le_normFin F v a i j).trans (le_max_left _ _)`. Rewrite using `[fromBlocks_apply₁₂, Matrix.zero_apply, absFin_zero]`. Conclude with `zero_le`.
-
-Rewrite using `[fromBlocks_apply₂₁, Matrix.zero_apply, absFin_zero]`. Conclude with `zero_le`. Conclude with `(absFin_le_normFin F v b i j).trans (le_max_right _ _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normFin_le (v : Pl F) (a : Matrix p p (Fv F v ⊗[F] E)) (b : Matrix q q (Fv F v ⊗[F] E)) :
     normFin F v (fromBlocks a 0 0 b) ≤ max (normFin F v a) (normFin F v b) := by
@@ -83,7 +79,7 @@ theorem normFin_le (v : Pl F) (a : Matrix p p (Fv F v ⊗[F] E)) (b : Matrix q q
   · exact (absFin_le_normFin F v b i j).trans (le_max_right _ _)
 
 /- English proof (translation)
-The claim follows from `(normInf_le_iff F w).2 fun τ => by rw [fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)] exact (opNorm_le _ _).trans (max_le_max ((normInf_le_iff F w).1 le_rfl τ) ((normInf_le_iff F w).1 le_rfl τ))`.
+A detailed English derivation is pending.
 -/
 theorem normInf_le (w : InfinitePlace F) (a : Matrix p p (w.Completion ⊗[F] E)) (b : Matrix q q (w.Completion ⊗[F] E)) :
     normInf F w (fromBlocks a 0 0 b) ≤ max (normInf F w a) (normInf F w b) :=
@@ -92,9 +88,9 @@ theorem normInf_le (w : InfinitePlace F) (a : Matrix p p (w.Completion ⊗[F] E)
     exact (opNorm_le _ _).trans (max_le_max ((normInf_le_iff F w).1 le_rfl τ) ((normInf_le_iff F w).1 le_rfl τ))
 
 /- English proof (translation)
-Establish `b : ∀ {R : Type} [CommRing R] (φ : AE F E →+* R), (Formalism.UG.bc φ X).1 = fromBlocks (Formalism.UG.bc φ x).1 0 0 (Formalism.UG.bc φ y).1` using `fun φ => by show X.1.map φ = _`. Rewrite using `[h, fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]`. Both sides reduce to the same expression. Unfold `heightGL`. Rewrite using `[mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← finprod_mul_distrib (finite_mulSupport_htFin F x) (finite_mulSupport_htFin F y)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul' (Finset.prod_le_prod' fun w _ => htOf_le (normInf_le F w) (b _)) (finprod_le_finprod' (finite_mulSupport_htFin F _) ?_ fun v => htOf_le (normFin_le F v) (b _))` and prove the remaining obligations. Conclude with `((finite_mulSupport_htFin F x).union (finite_mulSupport_htFin F y)).subset (Function.mulSupport_mul _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem heightGL_le {X : GL (p ⊕ q) (AE F E)} {x : GL p (AE F E)} {y : GL q (AE F E)} (h : X.1 = fromBlocks x.1 0 0 y.1) :
     heightGL F X ≤ heightGL F x * heightGL F y := by
@@ -111,7 +107,7 @@ theorem heightGL_le {X : GL (p ⊕ q) (AE F E)} {x : GL p (AE F E)} {y : GL q (A
 end Ht
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ _ _` and use `⟨1, fun _ _ _ h => (Ht.heightGL_le F h).trans_eq (one_mul _).symm, fun h h' => (heightGL_mul_le F h.1 h'.1).trans_eq (one_mul _).symm, fun h => one_le_heightGL F h.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem htEmb : HtEmb := fun F _ _ _ _ _ _ _ _ _ =>
   ⟨1, fun _ _ _ h => (Ht.heightGL_le F h).trans_eq (one_mul _).symm,

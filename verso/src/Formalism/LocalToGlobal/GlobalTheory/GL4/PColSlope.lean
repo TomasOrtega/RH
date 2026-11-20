@@ -14,7 +14,7 @@ open Formalism.LFunctionChainParameters.slopeLatticeData (FinPl)
 variable {D : D7} {u : D.what₂.Word} (CV : ColVal D u) (hTV : TSpan D.what₂.LL ((D.fm u).lam 0) = VV D.what₂.LL ((D.fm u).lam 0))
 
 /- English proof (translation)
-Rewrite using `[← coE_coe CV hTV, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem co_coE_symm (F : (D.mem u).C.cls 0 → VV D.what₂.LL ((D.fm u).lam 0)) (c : (D.mem u).C.cls 0) :
     CV.co ((coE CV hTV).symm F) c = ((F c : VV D.what₂.LL ((D.fm u).lam 0)) : Pol D.what₂.LL D.what₂.Tau (D.R.N 0)) := by
@@ -22,9 +22,9 @@ theorem co_coE_symm (F : (D.mem u).C.cls 0 → VV D.what₂.LL ((D.fm u).lam 0))
 
 open Classical in
 /- English proof (translation)
-Unfold `tcAt`. Rewrite using `[co_coE_symm]`. Distinguish the cases in `h : c'' = c`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, Pi.single_eq_same, Z.basis_coe, MvPolynomial.map_map, show v.embedding.comp (Int.castRingHom D.what₂.LL) = Int.castRingHom ℂ from Subsingleton.elim _ _, ← Z.basis_coe ℂ i]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg h, Pi.single_eq_of_ne h, Submodule.coe_zero, map_zero, map_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem tcAt_basis (Z : ZBasis ((D.fm u).lam 0)) (v : InfinitePlace D.what₂.LL) (i : Z.J0) (c c'' : (D.mem u).C.cls 0) :
     tcAt CV v c'' ((coE CV hTV).symm (Pi.single c (Z.basis D.what₂.LL i))) =
@@ -40,7 +40,7 @@ theorem tcAt_basis (Z : ZBasis ((D.fm u).lam 0)) (v : InfinitePlace D.what₂.LL
   · rw [if_neg h, Pi.single_eq_of_ne h, Submodule.coe_zero, map_zero, map_zero]
 
 /- English proof (translation)
-Establish `h` using `congrArg (Subtype.val) ((Z.basis ℂ).sum_repr (rhoK lam g (Z.basis ℂ i)))`. Rewrite using `[← h, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Z.basis_coe, LinearMap.toMatrix_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_basis_expand {ι : Type} [Fintype ι] {n : ℕ} {lam : ι → DomWeight n} (Z : ZBasis lam) (g : ι → GL (Fin n) ℂ) (i : Z.J0) :
     ((rhoK lam g (Z.basis ℂ i) : VV ℂ lam) : Pol ℂ ι n) =
@@ -52,17 +52,17 @@ theorem rho_basis_expand {ι : Type} [Fintype ι] {n : ℕ} {lam : ι → DomWei
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[majorant_lattice_eq_sum CV v]`. Simplify using `only [tcAt_basis]`. Distinguish the cases in `hcc : c = c'`. Substitute `hcc` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single c]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [↓reduceIte]`. Rewrite using `[rho_basis_expand, rho_basis_expand, nfAll_sum_left]`. Simplify using `only [nfAll_sum_right, nfAll_smul_left, nfAll_smul_right]`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, Matrix.map_apply]`. Establish `hG : ((gramZ ((D.fm u).lam 0) Z k k' : ℝ) : ℂ) = nfAll ((D.fm u).lam 0) (MvPolynomial.map (Int.castRingHom ℂ) (Z.bZ k')) (MvPolynomial.map (Int.castRingHom ℂ) (Z.bZ k))` using `nfAll_int_real _ _ _`. Use `show _ = star _ * ((gramZ ((D.fm u).lam 0) Z k k' : ℝ) : ℂ) * _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG]`. Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c'' _ h`. Rewrite using `[if_neg h, nfAll_zero_left]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[if_neg hcc]`. Use `Finset.sum_eq_zero fun c'' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : c'' = c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[if_neg hcc, nfAll_zero_left]`. Rewrite using `[if_neg h, nfAll_zero_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_lattice_block_diagonal (Z : ZBasis ((D.fm u).lam 0)) (v : InfinitePlace D.what₂.LL) (i i' : Z.J0) (c c' : (D.mem u).C.cls 0) :
     majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v ((coE CV hTV).symm (Pi.single c (Z.basis D.what₂.LL i)))
@@ -104,15 +104,11 @@ theorem gram_lattice_block_diagonal (Z : ZBasis ((D.fm u).lam 0)) (v : InfiniteP
 include hTV in
 
 /- English proof (translation)
-Use `CV.ne` as an intermediate fact. Establish `hex : ∀ (p : FinPl D.what₂.LL) c τ, ∃ γ, LocBasis D (D.plEq.symm (toH p)) (CV.Q c τ) (CV.eQ c τ) γ` using `fun p c τ => exists_locBasis _ _ (CV.Q_good c τ) _`. Use `choose γ hγ using hex`. Set `gG : FinPl D.what₂.LL → (D.mem u).C.cls 0 → D.what₂.Tau → GL (Fin (D.R.N 0)) D.what₂.LL` to `fun p c τ => brpGL D.what₂.LL (γ p c τ) (hγ p c τ).1`. Establish `hw : ∀ p : FinPl D.what₂.LL, D.plEq (D.plEq.symm (toH p)) = toH p` using `fun p => D.plEq.apply_symm_apply _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfrK : Module.finrank D.what₂.LL (VV D.what₂.LL ((D.fm u).lam 0)) = Fintype.card Z.J0` using `Module.finrank_eq_card_basis (Z.basis D.what₂.LL)`. Establish `hfrC : Module.finrank ℂ (VV ℂ ((D.fm u).lam 0)) = Fintype.card Z.J0` using `Module.finrank_eq_card_basis (Z.basis ℂ)`. Conclude with `mu_sum_functor ((D.fm u).lat 0) ((D.fm u).lat_good 0) (coE CV hTV) (Z.basis D.what₂.LL) CV.Q CV.Q_good (D.R.N 0) (rank_zero_pos D) CV.eQ (fun τ => wsum ((D.fm u).lam 0 τ) * (Fintype.card Z.J0 : ℤ)) (fun p c τ => γ p c τ) (fun p c τ => (hγ p c τ).1.ne_zero) (fun p c τ => by`. Use `localization_eq_of_locBasis _ _ _ _ (hγ p c τ)` as an intermediate fact. Rewrite using `[hw p] at this)` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun p c => rhoK ((D.fm u).lam 0) (gG p c))`. Use the proof step `(fun p c => by`. Use `detAll_pow D.what₂.LL ((D.fm u).lam 0) (gG p c)` as an intermediate fact. Rewrite `this` using `[hfrK]`. Conclude with `this)`.
-
-Use the proof step `(fun p => by`. Use `localization_lattice_eq CV hTV Z (D.plEq.symm (toH p)) (gG p) (fun c τ => hγ p c τ)` as an intermediate fact. Rewrite using `[hw p] at this)` and apply the resulting hypothesis. Use the proof step `(gramZ ((D.fm u).lam 0) Z)`. Use the proof step `(fun v c => LinearMap.toMatrix (Z.basis ℂ) (Z.basis ℂ) (rhoK ((D.fm u).lam 0) (invFr CV v c)))`.
-
-Use the proof step `(fun v c => by`. Rewrite using `[LinearMap.det_toMatrix, detAll_pow ℂ ((D.fm u).lam 0) (invFr CV v c), hfrC]`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [invFr_det])`. Use the proof step `(fun v i i' c c' => gram_lattice_block_diagonal CV hTV Z v i i' c c')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_mu (Z : ZBasis ((D.fm u).lam 0)) [Nonempty Z.J0] :
     ((Fintype.card Z.J0 : ℝ) * Fintype.card ((D.mem u).C.cls 0)) * ((D.fm u).lat 0).mu =

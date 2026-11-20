@@ -8,9 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.PropagationTheoremGL3
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F T₂ T₃ J₂ J₃ h₂ h₃`. Take `⟨φ₂, hφ₂, hs₂⟩` from `UpperTheory.V.Pr.phiEx l O F 2 T₂`. Take `⟨φ₃, hφ₃, hs₃⟩` from `UpperTheory.V.Pr.phiEx l O F 3 T₃`. Take `⟨Λ₂, hΛ₂⟩` from `h₂.fin`. Take `⟨Λ₃, hΛ₃⟩` from `h₃.fin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `good₂ : UpperTheory.V.Pr.AllGood T₂.S (Ideal.map φ₂ J₂)` using `UpperTheory.V.Pr.components_good_rank_two l O F T₂.C₀ T₂.ok T₂.big T₂.S (Ideal.map φ₂ J₂) (UpperTheory.V.Pr.finLamOf l O F 2 T₂ φ₂ hφ₂ hs₂ Λ₂ J₂ hΛ₂) (UpperTheory.V.Pr.p1Of l O F 2 T₂ φ₂ hφ₂ h₂.n4 J₂ h₂.p1) (UpperTheory.V.Pr.seedOf l O F 2 T₂ φ₂ hφ₂ J₂ h₂.unr h₂.dim h₂.seed)`. Use `⟨φ₃, hφ₃, hs₃, ?_⟩` and prove the remaining obligations. Conclude with `(UpperTheory.V.Pr.components_good_rank_three l O F T₃.C₀ T₃.ok T₃.big T₂.S (Ideal.map φ₂ J₂) (UpperTheory.V.Pr.finLamOf l O F 2 T₂ φ₂ hφ₂ hs₂ Λ₂ J₂ hΛ₂) good₂ T₃.S (Ideal.map φ₃ J₃) (UpperTheory.V.Pr.finLamOf l O F 3 T₃ φ₃ hφ₃ hs₃ Λ₃ J₃ hΛ₃) (UpperTheory.V.Pr.p1Of l O F 3 T₃ φ₃ h …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.absGood :
     UpperTheory.V.J.AbsGood := by

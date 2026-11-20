@@ -20,17 +20,15 @@ noncomputable section
 namespace GlobalTheory.IdemSumFinAdele
 
 /- English proof (translation)
-Introduce `D P e he`. Establish `he'` using `he`. Take `⟨⟨es, hes, rfl⟩, hz⟩` from `he`. Establish `hex : ∀ PP ∈ P, ∃ α : Af D.host.F, algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) = es PP + cA D (es PP) ∧ evalV D.host.F (HeightOneSpectrum.under (𝓞 D.host.F) PP) α = 1 ∧ ∀ v', v' ≠ HeightOneSpectrum.under (𝓞 D.host.F) PP → evalV D.host.F v' α = 0`. Introduce `PP hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨a1, a2, v, ε, hε, a3⟩, -⟩` from `hes PP hPP`. Establish `hv` using `GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ PP v ε (hes PP hPP) hε a3`. Take `⟨α, rfl, h1, h2⟩` from `hε`. Conclude with `⟨α, a3.symm, hv ▸ h1, hv ▸ h2⟩`. Use `choose! α hα using hex`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsum : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (∑ PP ∈ P, α PP)) = ∑ PP ∈ P, es PP + cA D (∑ PP ∈ P, es PP)`. Establish `hp : pairA D.host.F 0 (∑ PP ∈ P, α PP) = ∑ PP ∈ P, pairA D.host.F 0 (α PP)`. Establish `hadd : ∀ a b : Af D.host.F, pairA D.host.F 0 (a + b) = pairA D.host.F 0 a + pairA D.host.F 0 b` using `fun a b => Prod.ext (add_zero 0).symm rfl`. Conclude with `map_sum (AddMonoidHom.mk' (pairA D.host.F 0) hadd) α P`. Rewrite using `[hp, map_sum, map_sum (cA D), ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_congr rfl fun PP hPP => (hα PP hPP).1`. Use `⟨∑ PP ∈ P, α PP, hsum, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun PP hPP => (hα PP hPP).2.2 w (hw PP hPP).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `PP hPP`. Establish `h1` using `GlobalTheory.CompFinIdemSum.compFin_add_cA_eq_one P _ he' PP hPP`. Rewrite `h1` using `[← hsum]`. Establish `h2 : (evalV D.host.F (HeightOneSpectrum.under (𝓞 D.host.F) PP) (∑ PP ∈ P, α PP)) ⊗ₜ[D.host.F] (1 : D.host.E) = (1 : Fv D.host.F _ ⊗[D.host.F] D.host.E)` using `h1`. Use `haveI : Module.Free D.host.F (Fv D.host.F (HeightOneSpectrum.under (𝓞 D.host.F) PP)) := Module.Free.of_divisionRing _ _`.
-
-Use `haveI : Module.Flat D.host.F (Fv D.host.F (HeightOneSpectrum.under (𝓞 D.host.F) PP)) := Module.Flat.of_free`. Establish `hinj` using `Algebra.TensorProduct.includeLeft_injective (R := D.host.F) (S := D.host.F) (A := Fv D.host.F (HeightOneSpectrum.under (𝓞 D.host.F) PP)) (B := D.host.E) (algebraMap D.host.F D.host.E).injective`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeLeft_apply, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finAdele_of_idemSum : ∀ (D : D7) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P → ∃ σ : Af D.host.F, algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 σ) = e + cA D e ∧ (∀ w : HeightOneSpectrum (𝓞 D.host.F), (∀ PP ∈ P, HeightOneSpectrum.under (𝓞 D.host.F) PP ≠ w) → evalV D.host.F w σ = 0) ∧ ∀ PP ∈ P, evalV D.host.F (HeightOneSpectrum.under (𝓞 D.host.F) PP) σ = 1 := by
   intro D P e he

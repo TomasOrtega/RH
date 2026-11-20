@@ -9,11 +9,11 @@ import Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `hp : Odd p`. Rewrite using `[Nat.odd_iff]`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> simp only [Int.ModEq, Units.val_one, Units.val_neg] at h8 <;> omega`. Break down `hq.eq_two_or_odd' with rfl | hq2` into its components or cases. Rewrite using `[Nat.cast_ofNat, jacobiSym.at_two hp, ZMod.χ₈_nat_eq_if_mod_eight]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> simp only [Int.ModEq, Units.val_one, Units.val_neg] at h8`. Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Establish `e : jacobiSym p q = jacobiSym s q` using `jacobiSym.mod_left' hpq`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> simp only [Int.ModEq, Units.val_one, Units.val_neg] at h8 e`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[jacobiSym.quadratic_reciprocity_one_mod_four' hq2 (by omega), e, jacobiSym.one_left]`. Establish `hq'` using `Nat.odd_iff.1 hq2`. Break down `(by omega : q % 4 = 1 ∨ q % 4 = 3) with h | h` into its components or cases. Rewrite using `[jacobiSym.quadratic_reciprocity_one_mod_four h hp, e, jacobiSym.at_neg_one hq2, ZMod.χ₄_nat_one_mod_four h]`. Rewrite using `[jacobiSym.quadratic_reciprocity_three_mod_four h (by omega), e, jacobiSym.at_neg_one hq2, ZMod.χ₄_nat_three_mod_four h, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem quadEx_jac (p q : ℕ) (s : ℤˣ) (hq : q.Prime) (h8 : (p : ℤ) ≡ s [ZMOD 8]) (hpq : (p : ℤ) ≡ s [ZMOD q]) :
     jacobiSym q p = 1 := by
@@ -35,13 +35,11 @@ private theorem quadEx_jac (p q : ℕ) (s : ℤˣ) (hq : q.Prime) (h8 : (p : ℤ
           ZMod.χ₄_nat_three_mod_four h, neg_neg]
 
 /- English proof (translation)
-Establish `h0 : 8 * ∏ q ∈ S, q ≠ 0` using `mul_ne_zero (by norm_num) (Finset.prod_ne_zero_iff.2 fun q hq => (hS q hq).ne_zero)`. Establish `hc : IsCoprime (s : ℤ) ((8 * ∏ q ∈ S, q : ℕ) : ℤ)` using `⟨(s⁻¹ : ℤˣ), 0, by simp⟩`. Take `⟨p, hpn, hp, hps⟩` from `Nat.forall_exists_prime_gt_and_zmodEq (S.sup id) h0 hc`. Establish `h8 : (p : ℤ) ≡ s [ZMOD 8]` using `hps.of_dvd (by exact_mod_cast Int.natCast_dvd_natCast.2 (dvd_mul_right 8 _))`. Use `haveI : Fact p.Prime := ⟨hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : p ≠ 2`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> simp only [Int.ModEq, Units.val_one, Units.val_neg] at h8 <;> omega`. Use `⟨p, inferInstance, fun h => absurd (Finset.le_sup (f := id) h) (not_le.2 hpn), h2, ?_, fun q hq => ?_⟩` and prove the remaining obligations. Establish `e` using `legendreSym.at_neg_one h2`. Rewrite `e` using `[legendreSym, Int.cast_neg, Int.cast_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> simp only [Int.ModEq, Units.val_one, Units.val_neg] at h8 ⊢`. Conclude with `ZMod.χ₄_nat_one_mod_four (by omega)`. Conclude with `ZMod.χ₄_nat_three_mod_four (by omega)`. Establish `e` using `quadEx_jac p q s (hS q hq) h8 (hps.of_dvd (Int.natCast_dvd_natCast.2 ((Finset.dvd_prod_of_mem _ hq).mul_left 8)))`.
-
-Rewrite `e` using `[← jacobiSym.legendreSym.to_jacobiSym, legendreSym, Int.cast_natCast]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem quadEx_prime (s : ℤˣ) (S : Finset ℕ) (hS : ∀ q ∈ S, q.Prime) :
     ∃ (p : ℕ) (_ : Fact p.Prime), p ∉ S ∧ p ≠ 2 ∧ quadraticChar (ZMod p) (-1) = s ∧
@@ -65,9 +63,9 @@ private theorem quadEx_prime (s : ℤˣ) (S : Finset ℕ) (hS : ∀ q ∈ S, q.P
     rwa [← jacobiSym.legendreSym.to_jacobiSym, legendreSym, Int.cast_natCast] at e
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: NeZero ((p : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hp.out.ne_zero⟩`. Use `(UpperTheory.V.Chr.clsFacts ℚ Ω p).2.2.1 γ u fun ζ hζ => ?_` and prove the remaining obligations. Establish `hζ' : ζ ^ p ^ 1 = 1` using `by rwa [pow_one]`. Establish `h1` using `cyclotomicCharacter.spec p (MulSemiringAction.toRingAut (Ω ≃ₐ[ℚ] Ω) Ω γ) ζ hζ'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((cyclotomicCharacter Ω p (MulSemiringAction.toRingAut (Ω ≃ₐ[ℚ] Ω) Ω γ) : ℤ_[p]ˣ) : ℤ_[p]) = (q : ℤ_[p])` using `h`. Rewrite `h1` using `[h2, map_natCast, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ']`. Rewrite using `[hu, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quadEx_cls {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (p q : ℕ) [hp : Fact p.Prime] (γ : G ℚ Ω)
     (h : ((cycZ ℚ Ω p γ : ℤ_[p]ˣ) : ℤ_[p]) = (q : ℤ_[p])) (u : (ZMod p)ˣ) (hu : (u : ZMod p) = q) : UpperTheory.V.Chr.cls ℚ Ω p γ = u := by
@@ -82,7 +80,7 @@ private theorem quadEx_cls {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact h1
 
 /- English proof (translation)
-Introduce `hp` and use `by obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 h have hv : ∀ n : ℤ, A.valuation (n : Ω) ≤ 1 := fun n => (A.valuation_le_one_iff _).mpr (intCast_mem A n) have h1 : A.valuation ((a : Ω) * (p : Ω) + (b : Ω) * (q : Ω)) < 1 := by refine Valuation.map_add_lt _ ?_ ?_ · rw [map_mul …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem quadEx_val {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {p q : ℕ} (h : p.Coprime q)
     (hq : A.valuation (q : Ω) < 1) : ¬ A.valuation (p : Ω) < 1 := fun hp => by
@@ -97,21 +95,21 @@ private theorem quadEx_val {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {p q
   exact lt_irrefl _ h1
 
 /- English proof (translation)
-Introduce `Ω _ _ _ s S hS`. Take `⟨p, hp, hpS, h2, hs, hq⟩` from `quadEx_prime s S hS`. Take `⟨hopen, -, -, hcc, hine⟩` from `Chr.clsFacts ℚ Ω p`. Set `χ : DirichletCharacter ℤ p` to `quadraticChar (ZMod p)`. Establish `hval : ∀ g : G ℚ Ω, ((Chr.dirG ℚ Ω χ g : ℤˣ) : ℤ) = quadraticChar (ZMod p) (Chr.cls ℚ Ω p g : (ZMod p)ˣ)` using `fun g => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : (Chr.cls ℚ Ω p).ker ≤ (Chr.dirG ℚ Ω χ).ker` using `fun g hg => by`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, hg, map_one]`. Establish `hopn : IsOpen ((Chr.dirG ℚ Ω χ).ker : Set (G ℚ Ω))` using `Subgroup.isOpen_mono hle hopen`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : (ZMod p)ˣ, quadraticChar (ZMod p) u = -1 := by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `quadraticChar_exists_neg_one (F := ZMod p) (by rwa [ZMod.ringChar_zmod_n])`. Establish `h0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Conclude with `⟨Units.mk0 a h0, ha⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `⟨p, Chr.dirG ℚ Ω χ, hp.out, hpS, hopn, ?_, fun A hA => (hine A hA).trans hle, fun A hA => ?_, fun σ hσ => ?_, fun q hqS A hA => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `(Chr.clsOnto Ω p).1 u`. Establish `ht : (Chr.dirG ℚ Ω χ).range = ⊤`. Use `eq_top_iff.2 fun t _ => ?_` and prove the remaining obligations. Break down `Int.units_eq_one_or t with rfl | rfl` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `one_mem _`. Conclude with `⟨g, Units.ext (by rw [hval, hg, hu]; rfl)⟩`. Rewrite using `[Subgroup.index_ker, ht, Subgroup.card_top, Nat.card_eq_fintype_card, Fintype.card_units_int]`. Establish `hm : u ∈ (proj p p).range`. Rewrite using `[(projFacts p p hp.out).2.2.2.2.2.1, MonoidHom.mem_ker]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ordCompl[p] p = 1`. Rewrite using `[hp.out.factorization_self, pow_one, Nat.div_self hp.out.pos]`. Establish `: Subsingleton (ZMod (ordCompl[p] p))` using `by rw [h1]; infer_instance`. Conclude with `Units.ext (Subsingleton.elim _ _)`. Rewrite `hm` using `[← (compIne Ω p p hp.out A hA).1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg, hgu⟩` from `hm`. Conclude with `⟨g, hg, Units.ext (by rw [hval, hgu, hu]; rfl)⟩`. Conclude with `Units.ext (by rw [hval, hcc σ hσ, Units.val_neg, Units.val_one, hs])`. Establish `hne : p ≠ q` using `fun h => hpS (h ▸ hqS)`. Establish `hc : p.Coprime q` using `(Nat.coprime_primes hp.out (hS q hqS)).2 hne`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, γ, -, hD, hγ⟩` from `Chr.decCyc Ω q A (hS q hqS) hA`. Use `hD.trans (Subgroup.topologicalClosure_minimal _ (sup_le ?_ ((hine A (quadEx_val A hc hA)).trans hle)) (Subgroup.isClosed_of_isOpen _ hopn))` and prove the remaining obligations. Rewrite using `[Subgroup.zpowers_le, MonoidHom.mem_ker]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hval, quadEx_cls p q γ (hγ p hne) (ZMod.unitOfCoprime q hc.symm) rfl, ZMod.coe_unitOfCoprime, hq q hqS, Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.quadEx :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (s : ℤˣ) (S : Finset ℕ), (∀ q ∈ S, q.Prime) → ∃ (p : ℕ) (η : G ℚ Ω →* ℤˣ), QuadAt p s S η := by

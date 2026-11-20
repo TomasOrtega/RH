@@ -9,9 +9,9 @@ open scoped Matrix MatrixGroups
 namespace UpperTheory.V.Af.Nf
 
 /- English proof (translation)
-Establish `hM' : (M : ℚ) ≠ 0` using `by exact_mod_cast (by omega : M ≠ 0)`. Establish `e : algebraMap ℚ (Af ℚ) ((n : ℚ) / M) = y`. Establish `h1 : algebraMap ℚ (Af ℚ) ((M : ℚ)⁻¹) * (M : Af ℚ) = 1`. Rewrite using `[← map_natCast (algebraMap ℚ (Af ℚ)), ← map_mul, inv_mul_cancel₀ hM', map_one]`. Rewrite using `[div_eq_inv_mul, map_mul, map_intCast, h, ← mul_assoc, h1, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `ratAd.2.2 _ (e ▸ hy)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `: (n : ℚ) = M * m` using `by rw [← hm]; field_simp`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem dvd_of_ohat {M : ℕ} (hM : 1 ≤ M) (n : ℤ) {y : Af ℚ} (hy : y ∈ Ohat ℚ)
     (h : (n : Af ℚ) = M * y) : (M : ℤ) ∣ n := by
@@ -26,25 +26,23 @@ private theorem dvd_of_ohat {M : ℕ} (hM : 1 ≤ M) (n : ℤ) {y : Af ℚ} (hy 
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨h1, h2, ⟨y, hy, h3⟩, z, hz, h4⟩` from `(memK M _).1 hγ`. Rewrite `h2` using `[← map_inv]`. Use `choose A hA using fun a b => ratAd.2.2 (γ a b) (h1 a b)`. Use `choose B hB using fun a b => ratAd.2.2 ((γ⁻¹ : GL (Fin 2) ℚ) a b) (h2 a b)`. Establish `hA' : γ.val = (Matrix.of A).map (Int.castRingHom ℚ)` using `Matrix.ext hA`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB' : (γ⁻¹).val = (Matrix.of B).map (Int.castRingHom ℚ)` using `Matrix.ext hB`. Establish `hdet : (Matrix.of A).det * (Matrix.of B).det = 1`. Establish `: γ.val.det * (γ⁻¹).val.det = 1` using `by rw [← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`. Rewrite `this` using `[hA', hB', ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det]`. Simplify using `only [eq_intCast] at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this` after adjusting the coercions. Establish `hc : (M : ℤ) ∣ A 1 0`. Use `dvd_of_ohat hM _ hy ?_` and prove the remaining obligations. Rewrite using `[← h3, ← map_intCast (algebraMap ℚ (Af ℚ)), ← hA]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : (M : ℤ) ∣ A 1 1 - 1`. Use `dvd_of_ohat hM _ hz ?_` and prove the remaining obligations. Rewrite using `[← h4, Int.cast_sub, Int.cast_one, ← map_intCast (algebraMap ℚ (Af ℚ)), ← hA]`. Both sides reduce to the same expression. Establish `hc' : ((A 1 0 : ℤ) : ZMod M) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 hc`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hd' : ((A 1 1 : ℤ) : ZMod M) = 1`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 hd` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `sub_eq_zero.1 this`. Establish `hR : ∀ a b, (toR γ).val a b = (A a b : ℝ)` using `fun a b => by show Rat.castHom ℝ (γ a b) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hA]`. Simplify using the standard rewrite rules. Establish `key : ∀ δ : SL(2, ℤ), δ 1 0 = A 1 0 → δ 1 1 = A 1 1 → δ ∈ Gamma1 M`. Introduce `δ e1 e2`. Rewrite using `[Gamma1_mem, e1, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨?_, hd', hc'⟩` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → ZMod M) δ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Move the coercions through the operations in `at this`. Express the relevant statement in the definitionally equal form `((δ 0 0 : ℤ) : ZMod M) * (δ 1 1 : ℤ) - (δ 0 1 : ℤ) * (δ 1 0 : ℤ) = 1 at this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[e1, e2, hc', hd']`. Simplify using `using this`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one hdet with h | h` into its components or cases. Use `⟨⟨Matrix.of A, h⟩, key _ rfl rfl, Or.inl (Matrix.ext hR)⟩` and prove the remaining obligations. Use `⟨⟨!![-A 0 0, -A 0 1; A 1 0, A 1 1], ?_⟩, key _ rfl rfl, Or.inr ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h` using `[Matrix.det_fin_two]`. Simplify using `only [Matrix.of_apply] at h`. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `-h`. Use extensionality with `a b`.
-
-Rewrite using `[hR]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [eps, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem part1 {M : ℕ} (hM : 1 ≤ M) (γ : GL (Fin 2) ℚ) (hγ : toF γ ∈ K1G M) :
     ∃ δ : SL(2, ℤ), δ ∈ Gamma1 M ∧
@@ -95,21 +93,19 @@ private theorem part1 {M : ℕ} (hM : 1 ≤ M) (γ : GL (Fin 2) ℚ) (hγ : toF 
       fin_cases a <;> fin_cases b <;> simp [eps, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Take `⟨d, y, hy, hd⟩` from `ratAd.2.1 M hM _ hu.1`. Take `⟨e, z, hz, he⟩` from `ratAd.2.1 M hM _ hu.2`. Establish `hI : ∀ n : ℤ, (n : Af ℚ) ∈ Ohat ℚ` using `fun n => intCast_mem _ n`. Establish `huu : (u : Af ℚ) * (u⁻¹ : (Af ℚ)ˣ) = 1` using `u.mul_inv`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : (M : ℤ) ∣ e * d - 1 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `dvd_of_ohat hM _ (y := -(z * u + e * y)) (neg_mem (add_mem (mul_mem hz hu.1) (mul_mem (hI e) hy))) ?_` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(-(u : Af ℚ)) * he - (e : Af ℚ) * hd + huu`. Set `δ : SL(2, ℤ)` to `⟨!![e, t; M, d], by rw [Matrix.det_fin_two_of]; linear_combination ht⟩`. Establish `hδ : ∀ (δ : SL(2, ℤ)) a b, (toF (Matrix.SpecialLinearGroup.mapGL ℚ δ)).val a b = ((δ a b : ℤ) : Af ℚ)`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `δ a b`. Use `show algebraMap ℚ (Af ℚ) (algebraMap ℤ ℚ (δ a b)) = _`. Simplify using the standard rewrite rules. Establish `e1 : ∀ a b, ((toF (Matrix.SpecialLinearGroup.mapGL ℚ δ))⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) u).val a b = (((δ⁻¹ : SL(2, ℤ)) a b : ℤ) : Af ℚ) * u`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv, ← map_inv, Units.val_mul, ← hδ]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ a b, (((toF (Matrix.SpecialLinearGroup.mapGL ℚ δ))⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) u)⁻¹).val a b = (u⁻¹ : (Af ℚ)ˣ) * ((δ a b : ℤ) : Af ℚ)`. Introduce `a b`. Rewrite using `[mul_inv_rev, inv_inv, ← map_inv, Units.val_mul, ← hδ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `u⁻¹ = v`. Simplify using the standard rewrite rules. Establish `i10 : (δ⁻¹ : SL(2, ℤ)) 1 0 = -M` using `by rw [Matrix.SpecialLinearGroup.SL2_inv_expl]; rfl`. Establish `i11 : (δ⁻¹ : SL(2, ℤ)) 1 1 = e` using `by rw [Matrix.SpecialLinearGroup.SL2_inv_expl]; rfl`. Use `⟨δ, Matrix.SpecialLinearGroup.mapGL ℚ δ, ?_, rfl, (memK M _).2 ⟨fun a b => ?_, fun a b => ?_, ⟨-u, neg_mem hu.1, ?_⟩, -(z * u), neg_mem (mul_mem hz hu.1), ?_⟩, y, hy, hd⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Gamma0_mem]`. Simplify using `[δ]`. Rewrite using `[e1]`. Conclude with `mul_mem (hI _) hu.1`. Rewrite using `[e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `mul_mem hu.2 (hI _)`. Rewrite using `[e1, i10]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, i11]`.
-
-Take the linear combination `(-(u : Af ℚ)) * he + huu`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem part2 {M : ℕ} (hM : 1 ≤ M) (u : (Af ℚ)ˣ) (hu : IsZU u) :
     ∃ (δ : SL(2, ℤ)) (γ : GL (Fin 2) ℚ), δ ∈ Gamma0 M ∧ γ.val = δ.1.map (Int.cast : ℤ → ℚ) ∧
@@ -152,7 +148,7 @@ private theorem part2 {M : ℕ} (hM : 1 ≤ M) (u : (Af ℚ)ˣ) (hu : IsZU u) :
 end UpperTheory.V.Af.Nf
 
 /- English proof (translation)
-Introduce `_ hM` and use `⟨fun γ hγ => UpperTheory.V.Af.Nf.part1 hM γ hγ, fun u hu => UpperTheory.V.Af.Nf.part2 hM u hu⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Af.Nf.ratK :
     UpperTheory.V.Af.Nf.RatK := fun _ hM =>

@@ -12,7 +12,7 @@ open Formalism.MainNotions.G Formalism.BasicNotions Formalism.FrobeniusOrbits
 def consts1 : Consts := ⟨1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1⟩
 
 /- English proof (translation)
-Use `⟨consts1, ?_⟩` and prove the remaining obligations. Simplify using `only [Consts.Nonneg, consts1]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem consts_nonempty : ∃ K : Consts, K.Nonneg := by
   refine ⟨consts1, ?_⟩
@@ -27,9 +27,9 @@ def bsOf (h t : HH D) : HH D :=
   Quotient.out (QuotientAddGroup.mk t : HH D ⧸ AddSubgroup.zmultiples h)
 
 /- English proof (translation)
-Establish `hq : (QuotientAddGroup.mk (t + h) : HH D ⧸ AddSubgroup.zmultiples h) = QuotientAddGroup.mk t`. Rewrite using `[QuotientAddGroup.eq]`. Establish `e : -(t + h) + t = -h` using `by abel`. Rewrite using `[e]`. Conclude with `neg_mem (AddSubgroup.mem_zmultiples h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `bsOf`. Rewrite using `[hq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bsOf_step (h t : HH D) : bsOf D h (t + h) = bsOf D h t := by
   have hq : (QuotientAddGroup.mk (t + h) : HH D ⧸ AddSubgroup.zmultiples h) = QuotientAddGroup.mk t := by
@@ -41,9 +41,9 @@ theorem bsOf_step (h t : HH D) : bsOf D h (t + h) = bsOf D h t := by
   rw [hq]
 
 /- English proof (translation)
-Establish `hq : (QuotientAddGroup.mk (bsOf D h t) : HH D ⧸ AddSubgroup.zmultiples h) = QuotientAddGroup.mk t` using `Quotient.out_eq _`. Rewrite `hq` using `[QuotientAddGroup.eq]`. Rewrite `hq` using `[← mem_multiples_iff_mem_zmultiples]`. Take `⟨i, hi⟩` from `hq`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at hi`. Rewrite using `[hi]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem bsOf_orb (h t : HH D) : ∃ i : ℕ, bsOf D h t + i • h = t := by
   have hq : (QuotientAddGroup.mk (bsOf D h t) : HH D ⧸ AddSubgroup.zmultiples h) = QuotientAddGroup.mk t :=
@@ -90,12 +90,12 @@ def instOf : Inst D L where
   ep := fun _ => 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨instOf D L⟩`.
+Supply the required witnesses or components.
 -/
 theorem inst_nonempty : Nonempty (Inst D L) := ⟨instOf D L⟩
 
 /- English proof (translation)
-Take `⟨X, -, -, hE, hK⟩` from `exists_inst_defs (instOf D L) K Ce`. Conclude with `⟨X, hE, hK⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inst_defs_nonempty (K : Consts) (Ce : ℝ) : ∃ X : Inst D L, EpDef X Ce ∧ KapIDef X K := by
   obtain ⟨X, -, -, hE, hK⟩ := exists_inst_defs (instOf D L) K Ce
@@ -107,7 +107,7 @@ def GatHasPlaces (D : D7) : Prop :=
   ∀ u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)), 0 < (D.gat u w hg).P.nV
 
 /- English proof (translation)
-Introduce `u w hg`. Take `⟨v, _⟩` from `(hT.gat_pos u w hg).symm (D.eTau.symm 1)`. Conclude with `lt_of_le_of_lt (Nat.zero_le _) v.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gatHasPlaces_of_ties {D : D7} (hT : GatTies D) : GatHasPlaces D := by
   intro u w hg
@@ -122,7 +122,7 @@ def latOf (D : D7) (h : GatHasPlaces D) : LatInst D where
   Vram := fun _ _ _ => ⊤
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y⟩ u w hg`. Conclude with `lt_of_le_of_lt (Nat.zero_le _) (Y.vOf u w hg 0).isLt`. Introduce `h`. Conclude with `⟨latOf D h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latInst_nonempty_iff (D : D7) : Nonempty (LatInst D) ↔ GatHasPlaces D := by
   constructor
@@ -132,7 +132,7 @@ theorem latInst_nonempty_iff (D : D7) : Nonempty (LatInst D) ↔ GatHasPlaces D 
     exact ⟨latOf D h⟩
 
 /- English proof (translation)
-The claim follows from `(latInst_nonempty_iff D).2 (gatHasPlaces_of_ties hT)`.
+A detailed English derivation is pending.
 -/
 theorem latInst_nonempty_of_ties {D : D7} (hT : GatTies D) : Nonempty (LatInst D) :=
   (latInst_nonempty_iff D).2 (gatHasPlaces_of_ties hT)
@@ -142,16 +142,16 @@ def twLocOf {D : D7} (Y : LatInst D) : Formalism.MainNotions.WeilJacquetShalikaL
   LC_muAt := fun _ _ _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨twLocOf Y⟩`.
+Supply the required witnesses or components.
 -/
 theorem twLoc_nonempty {D : D7} (Y : LatInst D) : Nonempty (Formalism.MainNotions.WeilJacquetShalikaLaw.TwLoc D Y) := ⟨twLocOf Y⟩
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hS` using `Formalism.BasicNotions.Examples₂.LevelValuationRings.hidaSettingOfEven p 2 h5 le_rfl even_two`. Use `⟨gat1 hS, le_rfl, ⟨()⟩, fun _ => level1_trivStab hS, fun _ => level1_finClasses hS, ?_⟩` and prove the remaining obligations. Introduce `u v F`. Establish `huv : u = v`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `u`. Take `⟨v, hv⟩` from `v`. Express the relevant statement in the definitionally equal form `u < 1 at hu`. Express the relevant statement in the definitionally equal form `v < 1 at hv`. Use `ext`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite using `[huv]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_admissible_setting (D : D7) (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) :
     ∃ G : GAtP p, 1 ≤ G.P.nV ∧ Nonempty G.comp ∧ Formalism.MainNotions.SelectionLemmas.admitted D G := by
@@ -170,7 +170,7 @@ theorem exists_admissible_setting (D : D7) (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ 
   rw [huv]
 
 /- English proof (translation)
-Take `⟨G, hG, -, hA⟩` from `exists_admissible_setting D p hp h5`. Use `⟨G, Finset.univ, fun _ => 0, fun _ => 0, 4 * (Dd + 1), fun _ => 1, hA, ⟨⟨0, hG⟩, Finset.mem_univ _⟩, hm, fun _ _ => Nat.zero_le _, fun v _ => ?_⟩` and prove the remaining obligations. Conclude with `lpprime_one p _ _ _ _ _ _ _ _ _ le_rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_hypotheses_nonempty (D : D7) (p : ℕ) (hp : p.Prime) (h5 : 5 ≤ p) (m S Dd : ℕ) (hm : 1 ≤ m) :
     ∃ (G : GAtP p) (VV : Finset (Fin G.P.nV)) (t Sv : Fin G.P.nV → ℕ) (cStar : ℕ) (κ : Fin G.P.nV → ℝ),

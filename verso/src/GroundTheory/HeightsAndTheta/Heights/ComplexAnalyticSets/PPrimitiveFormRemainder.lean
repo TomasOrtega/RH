@@ -16,17 +16,17 @@ def PrimitiveFormRemainder.analyticSubring (d : ℕ) (y₀ : Fin d → ℂ) : Su
   neg_mem' ha := ha.neg
 
 /- English proof (translation)
-Introduce `σ _ w d A ℓ N δ q n c f hδ hq hc hW hf`. Take `⟨v, r, -, hr, hev⟩` from `hSWD σ d (A w) w n c (fun x => f x.2) hc hW (hf.comp (analyticAt_snd (p := (A w, w))))`. Use `set S := PrimitiveFormRemainder.analyticSubring d (A w)`. Set `s : ((i : σ) → Fin (n i)) → ℕ` to `fun α => ∑ i, (α i : ℕ)`. Set `M : ℕ` to `∑ i, n i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsM : ∀ α, s α ≤ M` using `fun α => Finset.sum_le_sum fun i _ => (α i).isLt.le`. Set `Q : σ → Polynomial ((Fin d → ℂ) → ℂ)` to `fun i => ∑ j, C (q i j) * X ^ (j : ℕ)`. Set `R : Polynomial ((Fin d → ℂ) → ℂ)` to `∑ α, C (r α * δ ^ (M - s α)) * ∏ i, Q i ^ (α i : ℕ)`. Use `⟨M, R, ?_, ?_⟩` and prove the remaining obligations. Establish `hC : ∀ g : (Fin d → ℂ) → ℂ, AnalyticAt ℂ g (A w) → C g ∈ lifts S.subtype` using `fun g hg => C_mem_lifts S.subtype ⟨g, hg⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : R ∈ lifts S.subtype`. Use `Subsemiring.sum_mem _ fun α _ => Subsemiring.mul_mem _ (hC _ ((hr α).mul (hδ.pow _))) (Subsemiring.prod_mem _ fun i _ => Subsemiring.pow_mem _ ?_ _)` and prove the remaining obligations. Conclude with `Subsemiring.sum_mem _ fun j _ => Subsemiring.mul_mem _ (hC _ (hq i j)) (X_pow_mem_lifts _ _)`. Introduce `k`. Take `⟨g, hg⟩` from `(lifts_iff_coeff_lifts R).1 hR k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hg]`. Conclude with `g.2`. Establish `hcont : Continuous fun z : σ → ℂ => (A z, z)` using `A.continuous.prodMk continuous_id`. Use `filter_upwards [(hcont.tendsto w).eventually hev] with z hz hWz hqz`. Establish `hf' : f z = ∑ α, r α (A z) * ∏ i, z i ^ (α i : ℕ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hz]`. Simplify using `[hWz]`. Establish `hQ : ∀ i, (Q i).eval₂ (Pi.evalRingHom (fun _ : Fin d → ℂ => ℂ) (A z)) (ℓ z) = δ (A z) * z i`. Introduce `i`. Simplify using `[Q, eval₂_finsetSum, hqz i]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [R, eval₂_finsetSum, eval₂_mul, eval₂_C, eval₂_finsetProd, eval₂_pow, hQ, hf', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.evalRingHom_apply, Pi.mul_apply, Pi.pow_apply, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[← pow_mul_pow_sub (δ (A z)) (hsM α)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem PrimitiveFormRemainder.proof (hSWD : SeparateWeierstrassDivision.Statement) :
     PrimitiveFormRemainder.Statement := by

@@ -14,11 +14,11 @@ open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac 
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Introduce `hD E Ω _ _ _ _ _ _ l _ ι a d hd U hU r r' hr hr'`. Take `⟨hc, hs, V, X, hVo, hVd, h⟩` from `hr`. Take `⟨hc', hs', V', X', hVo', hVd', h'⟩` from `hr'`. Establish `hS` using `hD E Ω l a d hd U hU (X ∪ X')`. Establish `hI` using `(hS.inter_of_isOpen_right hVd hVo).inter_of_isOpen_right hVd' hVo'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.SplitAttUniq.repIso_of_dense r r' hc hc' hs hs' _ (hI.preimage (Homeomorph.inv (G E Ω)).isOpenMap) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨⟨⟨w, hw, hus, hl, ⟨B, hB⟩, A, hP, hF⟩, hV⟩, hV'⟩`. Establish `hwX : w ∉ X` using `fun hx => hw (Finset.mem_union_left _ hx)`. Establish `hwX' : w ∉ X'` using `fun hx => hw (Finset.mem_union_right _ hx)`. Establish `e1` using `(h w hwX hus hl B hB A hP).2 g⁻¹ hF hV`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(h' w hwX' hus hl B hB A hP).2 g⁻¹ hF hV'`. Rewrite `e1`, `e2` using `[inv_inv]`. Conclude with `Polynomial.map_injective ι.toRingHom ι.injective (e1.trans e2.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.divUniq_of :
     DenseUs → DivUniq := by

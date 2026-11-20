@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles
 
 /- English proof (translation)
-Establish `ha : (a : Ω) ∈ Algebra.adjoin o (Set.range fun j => mseg y j / mseg y s)` using `(Hcptgen.chartRing_mseg (o := o) y s hs.1).le a.2`. Take `⟨b, hb, h⟩` from `Hcptgen.mem_adjoin_loc Fact.out ho _ ha`. Establish `h3` using `(𝔐.tie.ring s hs.1 _).1 h q hs`. Establish `h4` using `(Hcptgen.overZp_iff Fact.out q).1 hq b hb`. Use `mul_mem h3 h4.2.2` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_assoc, mul_inv_cancel₀ h4.1, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem chart_le_regAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}

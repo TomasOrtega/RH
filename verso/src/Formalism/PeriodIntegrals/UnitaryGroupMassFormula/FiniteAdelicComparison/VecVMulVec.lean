@@ -11,9 +11,9 @@ open Formalism.MainNotions.S (AutInst)
 open Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[tauF_tmul]`. Simplify using `only [psiV, prF, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem psiV_tauF (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (z : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
@@ -30,9 +30,9 @@ theorem psiV_tauF (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [vecV]`. Use `RingHom.map_mulVec (psiV I v).toRingHom (ofHAFin I h) x i` as an intermediate fact. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using `[ofHAFin, Formalism.L2.SG.Sub.compV, Formalism.UG.bc, psiV_tauF]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecV_mulVec (I : AutInst) (h : HAd I) (v : HeightOneSpectrum (𝓞 I.F))
     (x : Fin I.n → I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) :
@@ -50,21 +50,19 @@ theorem vecV_mulVec (I : AutInst) (h : HAd I) (v : HeightOneSpectrum (𝓞 I.F))
   simp [ofHAFin, Formalism.L2.SG.Sub.compV, Formalism.UG.bc, psiV_tauF]
 
 /- English proof (translation)
-Introduce `I h`. Establish `hL : ∀ x, x ∈ I.Lf ↔ ∀ v, vecV I v x ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))` using `fun x => ⟨hT I x, hF I x⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hst v y`. Take `⟨x, hxv, hxw⟩` from `hS I v y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ex : x ∈ I.Lf ↔ y ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))`. Rewrite using `[hL x]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H v` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hxv]`. Then use the resulting hypothesis. Introduce `H w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hxv]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hxw w hw]`. Conclude with `zero_mem _`. Establish `egx : ofHAFin I h *ᵥ x ∈ I.Lf ↔ ((Formalism.L2.SG.Sub.compV v (Formalism.UG.bc (prF I) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J h)) : GL (Fin I.n) (Formalism.MainNotions.Globa …`. Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Use `H v` as an intermediate fact. Rewrite `this` using `[vecV_mulVec, hxv]`. Then use the resulting hypothesis. Introduce `H w`. Rewrite using `[vecV_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hxv]` and apply the resulting hypothesis. Rewrite using `[hxw w hw, Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `ex.symm.trans ((hst x).trans egx)`. Introduce `hK x`. Rewrite using `[hL x, hL (ofHAFin I h *ᵥ x)]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[vecV_mulVec]`.
-
-Conclude with `hK v (vecV I v x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finK_of (hT : MemLocTo) (hF : MemLocFrom) (hS : LiftV) : PI.AdBridgeSteps.FinK := by
   intro I h

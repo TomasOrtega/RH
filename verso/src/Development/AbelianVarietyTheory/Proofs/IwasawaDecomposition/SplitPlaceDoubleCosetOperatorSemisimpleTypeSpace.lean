@@ -14,11 +14,11 @@ namespace GlobalTheory.HeckeNormal
 open GlobalTheory.HeckeStdFacts GlobalTheory.CoefDuty
 
 /- English proof (translation)
-Establish `hg : T f - μ • f ∈ V` using `V.sub_mem (hT f hf) (V.smul_mem μ hf)`. Establish `adj : ∀ x ∈ V, ∀ y ∈ V, B (T x - μ • x) y = B x (S y - starRingEnd ℂ μ • y)`. Introduce `x hx y hy`. Rewrite using `[map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, map_sub, map_smul, hadj x hx y hy]`. Establish `hfg` using `adj f hf _ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero]`. Generalize the expression as in `T f - μ • f = g at hg h hfg ⊢`. Establish `hu : S g - starRingEnd ℂ μ • g ∈ V` using `V.sub_mem (hS g hg) (V.smul_mem _ hg)`. Establish `h0 : T (S g - starRingEnd ℂ μ • g) - μ • (S g - starRingEnd ℂ μ • g) = 0`. Rewrite using `[map_sub, map_smul, hc g hg, h, map_smul, smul_sub, smul_comm μ (starRingEnd ℂ μ) g, sub_self]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `adj _ hu g hg`. Rewrite `h1` using `[h0, map_zero, LinearMap.zero_apply]`. Rewrite `hfg` using `[hpos _ hu h1.symm, map_zero]`. Conclude with `hpos g hg hfg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_normal {M : Type} [AddCommGroup M] [Module ℂ M] (B : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (V : Submodule ℂ M)
     (T S : M →ₗ[ℂ] M) (hpos : ∀ x ∈ V, B x x = 0 → x = 0)
@@ -45,7 +45,7 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 local notation3 "L⁺" => maximalRealSubfield L
 
 /- English proof (translation)
-Take `⟨N, hN, h2⟩` from `hf.2`. Take `⟨⟨N', hN', hc⟩, -, -⟩` from `GlobalTheory.CongIndex.finite_index_conj L n (Umax L n) GlobalTheory.ClassPet.umax_bounded h N hN`. Conclude with `(GlobalTheory.ClassPet.rt_mem a hf hN' h2 hc).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rt_mem_all {a : NG.AlgWt L n} (h : GAf L n) {f : GAf L n → a.W} (hf : f ∈ NG.AFall L n a.ρ) :
     NG.rt L n h f ∈ NG.AFall L n a.ρ := by
@@ -65,7 +65,7 @@ def IsReps (v : HeightOneSpectrum (𝓞 L⁺)) (α : GAf L n) (R : Finset (GAf L
     ∀ x, (∃ k₁ ∈ locK n v, ∃ k₂ ∈ locK n v, x = k₁ * α * k₂) → ∃! γ, γ ∈ R ∧ γ⁻¹ * x ∈ Umax L n
 
 /- English proof (translation)
-Take `⟨γ, ⟨hγ, -⟩, -⟩` from `h.2 α ⟨1, one_mem _, 1, one_mem _, by simp⟩`. Conclude with `Finset.card_ne_zero_of_mem hγ` after adjusting the coercions.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsReps.card_ne_zero {v : HeightOneSpectrum (𝓞 L⁺)} {α : GAf L n} {R : Finset (GAf L n)} (h : IsReps v α R) :
     (R.card : ℂ) ≠ 0 := by
@@ -73,15 +73,15 @@ theorem IsReps.card_ne_zero {v : HeightOneSpectrum (𝓞 L⁺)} {α : GAf L n} {
   exact_mod_cast Finset.card_ne_zero_of_mem hγ
 
 /- English proof (translation)
-Use `⟨sum_mem fun γ _ => rt_mem_all γ hf.1, fun κ hκ => ?_⟩` and prove the remaining obligations. Establish `hD : ∀ x ∈ {x : GAf L n | ∃ k₁ ∈ locK n v, ∃ k₂ ∈ locK n v, x = k₁ * α * k₂}, TrivOutside {v} x`. Introduce and unpack `_ ⟨k₁, h₁, k₂, h₂, rfl⟩`. Conclude with `triv_mul (triv_mul h₁.2 hα) h₂.2`. Establish `hfix : ∀ κ ∈ Umax L n, TrivOutside {v} κ → NG.rt L n κ f = f` using `fun κ h1 h2 => hf.2 κ ⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `heckeD_eq_sum (J := Umax L n) hD h.1 h.2 hfix`. Establish `e2` using `heckeD_eq_sum (J := Umax L n) hD (R := R.image fun γ => κ * γ) (by`. Introduce `γ hγ`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hγ`. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `h.1 δ hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨κ * k₁, mul_mem hκ h₁, k₂, h₂, by simp only [mul_assoc]⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨k₁, h₁, k₂, h₂, rfl⟩`. Take `⟨γ, ⟨hγ, hm⟩, hu⟩` from `h.2 (κ⁻¹ * k₁ * α * k₂) ⟨κ⁻¹ * k₁, mul_mem (inv_mem hκ) h₁, k₂, h₂, rfl⟩`. Use `⟨κ * γ, ⟨Finset.mem_image.2 ⟨γ, hγ, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Assume the hypotheses and unpack their components.
 
-Use `hm using 1 group` and compare the differences between its conclusion and the goal. Introduce and unpack `_ ⟨hδ, hm'⟩`. Take `⟨δ, hδ', rfl⟩` from `Finset.mem_image.1 hδ`. Rewrite using `[hu δ ⟨hδ', ?_⟩]`. Use `hm' using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `group) hfix`. Rewrite `e2` using `[Finset.sum_image (mul_right_injective κ).injOn, e1]`. Use `conv_rhs => rw [e2]`. Simplify using `only [map_sum, rt_rt]`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem_sph {a : NG.AlgWt L n} {v : HeightOneSpectrum (𝓞 L⁺)} {α : GAf L n} (hα : TrivOutside {v} α)
     {R : Finset (GAf L n)} (h : IsReps v α R) {f : GAf L n → a.W} (hf : f ∈ sph a v) :
@@ -115,9 +115,7 @@ theorem sum_mem_sph {a : NG.AlgWt L n} {v : HeightOneSpectrum (𝓞 L⁺)} {α :
   simp only [map_sum, rt_rt]
 
 /- English proof (translation)
-Rewrite using `[map_sum, ← nsmul_eq_mul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `h.1 γ hγ`. Rewrite using `[← rt_rt, hg.2 k₂ h₂, ← rt_rt]`. Use `conv_lhs => rw [← hf.2 k₁ h₁]`.
-
-Conclude with `(hB f hf.1 _ (rt_mem_all α hg.1)).2.2 k₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_sum {a : NG.AlgWt L n} {B : (GAf L n → a.W) →ₗ⋆[ℂ] (GAf L n → a.W) →ₗ[ℂ] ℂ} (hB : IsPetersson a B)
     {v : HeightOneSpectrum (𝓞 L⁺)} {α : GAf L n} {R : Finset (GAf L n)} (h : IsReps v α R)
@@ -131,9 +129,9 @@ theorem form_sum {a : NG.AlgWt L n} {B : (GAf L n → a.W) →ₗ⋆[ℂ] (GAf L
   exact (hB f hf.1 _ (rt_mem_all α hg.1)).2.2 k₁
 
 /- English proof (translation)
-Rewrite using `[map_sum, LinearMap.sum_apply, ← nsmul_eq_mul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `h.1 γ hγ`. Establish `e : g = NG.rt L n (k₁ * α) (NG.rt L n α⁻¹ g)`. Rewrite using `[rt_rt, mul_inv_cancel_right, hg.2 k₁ h₁]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rt_rt, hf.2 k₂ h₂]`. Use `conv_lhs => rw [e]`. Conclude with `(hB f hf.1 _ (rt_mem_all α⁻¹ hg.1)).2.2 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_sum_left {a : NG.AlgWt L n} {B : (GAf L n → a.W) →ₗ⋆[ℂ] (GAf L n → a.W) →ₗ[ℂ] ℂ} (hB : IsPetersson a B)
     {v : HeightOneSpectrum (𝓞 L⁺)} {α : GAf L n} {R : Finset (GAf L n)} (h : IsReps v α R)
@@ -149,17 +147,13 @@ theorem form_sum_left {a : NG.AlgWt L n} {B : (GAf L n → a.W) →ₗ⋆[ℂ] (
   exact (hB f hf.1 _ (rt_mem_all α⁻¹ hg.1)).2.2 _
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `GlobalTheory.InvFormBdd.exists_isInvForm L n a`. Take `⟨B, hB, -⟩` from `GlobalTheory.ClassPet.classSum_eq_pet L n a β hβ`. Take `⟨R', h'⟩ : ∃ R', IsReps s.v α⁻¹ R'` from `exists_repsU s.v α⁻¹`. Establish `key` using `eq_smul_of_normal B (sph a s.v) (c • ∑ γ ∈ R, NG.rt L n γ) ((starRingEnd ℂ c * R.card / R'.card) • ∑ γ ∈ R', NG.rt L n γ) (fun x hx h0 => by`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(hB x hx.1 x hx.1).2.1 hne` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this)`. Use the proof step `(fun x hx => by`. Rewrite using `[LinearMap.smul_apply, LinearMap.sum_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (sum_mem_sph hα h hx))`. Use the proof step `(fun x hx => by`. Rewrite using `[LinearMap.smul_apply, LinearMap.sum_apply]`. Conclude with `Submodule.smul_mem _ _ (sum_mem_sph (triv_inv hα) h' hx))`. Use the proof step `(fun x hx y hy => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, map_smul, form_sum_left hB h hx hy, form_sum hB h' hx hy, smul_eq_mul, smul_eq_mul]`. Use `h'.card_ne_zero` as an intermediate fact. Use the proof step `field_simp)`. Use the proof step `(fun x hx => by`. Establish `conv : ∀ (δ x : GAf L n), (∃ k₁ ∈ Umax L n, ∃ k₂ ∈ Umax L n, TrivOutside {s.v} k₁ ∧ TrivOutside {s.v} k₂ ∧ x = k₁ * δ * k₂) ↔ ∃ k₁ ∈ locK n s.v, ∃ k₂ ∈ locK n s.v, x = k₁ * δ * k₂` using `fun δ x => ⟨fun ⟨k₁, h₁, k₂, h₂, t₁, t₂, e⟩ => ⟨k₁, ⟨h₁, t₁⟩, k₂, ⟨h₂, t₂⟩, e⟩, fun ⟨k₁, h₁, k₂, h₂, e⟩ => ⟨k₁, h₁.1, k₂, h₂.1, h₁.2, h₂.2, e⟩⟩`.
-
-Establish `e` using `GlobalTheory.SplitHeckeComm.doubleCoset_comm L n a.W s α α⁻¹ R R' hα (triv_inv hα) (fun y hy => h.2 y ((conv _ _).1 hy)) (fun y hy => (conv _ _).2 (h.1 y hy)) (fun y hy => h'.2 y ((conv _ _).1 hy)) (fun y hy => (conv _ _).2 (h'.1 y hy)) x (fun κ h1 h2 => hx.2 κ ⟨h1, h2⟩)`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, map_smul, smul_comm]`. Simplify using `only [LinearMap.sum_apply]`. Rewrite using `[e]) hf μ`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply] at key`.
-
-Conclude with `key hμ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_semisimple (a : NG.AlgWt L n) (s : SplitPlace L) {α : GAf L n} (hα : TrivOutside {s.v} α)
     {R : Finset (GAf L n)} (h : IsReps s.v α R) (c : ℂ) {f : GAf L n → a.W} (hf : f ∈ sph a s.v) (μ : ℂ)
@@ -203,11 +197,11 @@ theorem sum_semisimple (a : NG.AlgWt L n) (s : SplitPlace L) {α : GAf L n} (hα
   exact key hμ
 
 /- English proof (translation)
-Introduce `L _ _ _ n a J χ B hN hB s ϖ k hv hϖ _ _ f hf μ hμ`. Take `⟨α, hα, hset⟩` from `exists_tSet_eq (n := n) s ϖ k hϖ`. Take `⟨R, h⟩ : ∃ R, IsReps s.v α R` from `exists_repsU s.v α`. Establish `hT : ∀ g ∈ NG.TypeSp a.ρ J χ, NG.tN J s ϖ k g = ((s.q : ℂ) ^ (k * (n - 1)))⁻¹ • ∑ γ ∈ R, NG.rt L n γ g`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `NG.tN`. Rewrite using `[heckeD_type hB hv (fun γ hγ => (hset γ).2 (h.1 γ hγ)) (fun x hx => h.2 x ((hset x).1 hx)) hg]`. Establish `hg : NG.tN J s ϖ k f - μ • f ∈ NG.TypeSp a.ρ J χ` using `sub_mem (Submodule.smul_mem _ _ (heckeD_mem hN hB hv hϖ k hf)) (Submodule.smul_mem _ _ hf)`. Rewrite `hμ` using `[hT _ hg, hT f hf]`. Rewrite using `[hT f hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_semisimple a s hα h _ ⟨hf.1, fun κ hκ => fixed_of_type hB hv hf κ ((hyp_at hB hv κ hκ.2).1.2 hκ.1) hκ.2⟩ μ hμ`.
+A detailed English derivation is pending.
 -/
 theorem tN_semisimple : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (J : Subgroup (GAf L n)) (χ : J →* ℂˣ) (B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))), (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) → NG.HypOutside J χ B → ∀ (s : SplitPlace L) (ϖ : s.v.adicCompletion (maximalRealSubfield L)) (k : ℕ), s.v ∉ B → IsUnif L s.v ϖ → 1 ≤ k → k ≤ n → ∀ f ∈ NG.TypeSp a.ρ J χ, ∀ μ : ℂ, NG.tN J s ϖ k (NG.tN J s ϖ k f - μ • f) = μ • (NG.tN J s ϖ k f - μ • f) → NG.tN J s ϖ k f = μ • f := by
   intro L _ _ _ n a J χ B hN hB s ϖ k hv hϖ _ _ f hf μ hμ

@@ -4,15 +4,13 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory.SecGlue
 
 /- English proof (translation)
-Introduce `S T _ _ q hq hsq Y u w huw V`. Establish `hsurj : Function.Surjective (spMap q).base`. Introduce `p`. Establish `hker : RingHom.ker q ≤ p.asIdeal`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx2 : x * x ∈ RingHom.ker q ^ 2`. Rewrite using `[sq]`. Conclude with `Ideal.mul_mem_mul hx hx`. Rewrite `hx2` using `[hsq, Ideal.mem_bot]`. Conclude with `(p.isPrime.mem_or_mem (by rw [hx2]; exact p.asIdeal.zero_mem)).elim id id`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := p.isPrime`. Use `haveI : (Ideal.map q p.asIdeal).IsPrime := Ideal.map_isPrime_of_surjective hq hker`. Use `⟨⟨Ideal.map q p.asIdeal, this⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Spec.map_base]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `Ideal.comap q (Ideal.map q p.asIdeal) = p.asIdeal`. Rewrite using `[Ideal.comap_map_of_surjective _ hq, sup_eq_left]`. Introduce `x hx`. Conclude with `hker (by simpa [RingHom.mem_ker] using hx)`. Use extensionality with `x`.
-
-Take `⟨y, rfl⟩` from `hsurj x`. Rewrite using `[SetLike.mem_coe, SetLike.mem_coe, Scheme.Hom.mem_preimage, Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, huw]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_eq_of_comp_eq_of_sqZero : ∀ (S T : Type) [CommRing S] [CommRing T] (q : S →+* T),
     Function.Surjective q → RingHom.ker q ^ 2 = ⊥ →

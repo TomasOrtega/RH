@@ -18,7 +18,7 @@ abbrev Xc : Type := Jd × Jd × 𝔸[ℚ]
 abbrev Bo : Type := (adelicBorel : Subgroup G2)
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_unipotentGL2 : Continuous (uni2 : 𝔸[ℚ] → GL (Fin 2) 𝔸[ℚ]) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -28,9 +28,9 @@ theorem continuous_unipotentGL2 : Continuous (uni2 : 𝔸[ℚ] → GL (Fin 2) �
     fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun a : Jd => (a : 𝔸[ℚ]))` using `Units.continuous_val`. Establish `h2 : Continuous (fun a : Jd => ((a⁻¹ : Jd) : 𝔸[ℚ]))` using `Units.continuous_val.comp continuous_inv`. Establish `f1 : Continuous (fun p : Jd × Jd => (p.1 : 𝔸[ℚ]))` using `h1.comp continuous_fst`. Establish `f2 : Continuous (fun p : Jd × Jd => (p.2 : 𝔸[ℚ]))` using `h1.comp continuous_snd`. Establish `f3 : Continuous (fun p : Jd × Jd => ((p.1⁻¹ : Jd) : 𝔸[ℚ]))` using `h2.comp continuous_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f4 : Continuous (fun p : Jd × Jd => ((p.2⁻¹ : Jd) : 𝔸[ℚ]))` using `h2.comp continuous_snd`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [dg2] <;> first | exact f1 | exact f2 | exact continuous_const`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [dg2] <;> first | exact f3 | exact f4 | exact continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_diagGL2 : Continuous (fun p : Jd × Jd => (dg2 p.1 p.2 : GL (Fin 2) 𝔸[ℚ])) := by
   have h1 : Continuous (fun a : Jd => (a : 𝔸[ℚ])) := Units.continuous_val
@@ -46,7 +46,7 @@ theorem continuous_diagGL2 : Continuous (fun p : Jd × Jd => (dg2 p.1 p.2 : GL (
     fin_cases i <;> fin_cases j <;> simp [dg2] <;> first | exact f3 | exact f4 | exact continuous_const
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pt_val (x : 𝔸[ℚ]) (a z : Jd) :
     ((uni2 x * dg2 a 1 * dg2 z z : GL (Fin 2) 𝔸[ℚ]) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) =
@@ -55,27 +55,27 @@ theorem pt_val (x : 𝔸[ℚ]) (a z : Jd) :
   fin_cases i <;> fin_cases j <;> simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_elem (Units.continuous_val (M := Matrix (Fin 2) (Fin 2) 𝔸[ℚ])) i j`.
+A detailed English derivation is pending.
 -/
 theorem cont_entry (i j : Fin 2) : Continuous (fun g : G2 => (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) i j) :=
   Continuous.matrix_elem (Units.continuous_val (M := Matrix (Fin 2) (Fin 2) 𝔸[ℚ])) i j
 
 /- English proof (translation)
-The claim follows from `(Reduction.mem_adelicBorel.1 b.2) (by decide : (0 : Fin 2) < 1)`.
+A detailed English derivation is pending.
 -/
 theorem bo_low (b : Bo) : (b.1 : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 0 = 0 :=
   (Reduction.mem_adelicBorel.1 b.2) (by decide : (0 : Fin 2) < 1)
 
 /- English proof (translation)
-The claim follows from `(Reduction.mem_adelicBorel.1 (inv_mem b.2)) (by decide : (0 : Fin 2) < 1)`.
+A detailed English derivation is pending.
 -/
 theorem bo_low_inv (b : Bo) : ((b.1⁻¹ : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 0 = 0 :=
   (Reduction.mem_adelicBorel.1 (inv_mem b.2)) (by decide : (0 : Fin 2) < 1)
 
 /- English proof (translation)
-Establish `h : ((b.1 * b.1⁻¹ : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) i i = (1 : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) i i`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Rewrite `h` using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `fin_cases i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[bo_low_inv b]`. Simplify `h` using `[bo_low b]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bo_diag (b : Bo) (i : Fin 2) :
     (b.1 : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) i i * ((b.1⁻¹ : G2) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) i i = 1 := by
@@ -91,7 +91,7 @@ def dE (b : Bo) (i : Fin 2) : Jd :=
     bo_diag b i, by rw [mul_comm]; exact bo_diag b i⟩
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `exact (cont_entry i i).comp continuous_subtype_val`. Apply the tactic sequence `exact (cont_entry i i).comp (continuous_inv.comp continuous_subtype_val)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_dE (i : Fin 2) : Continuous (fun b : Bo => dE b i) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -99,7 +99,7 @@ theorem continuous_dE (i : Fin 2) : Continuous (fun b : Bo => dE b i) := by
   · exact (cont_entry i i).comp (continuous_inv.comp continuous_subtype_val)
 
 /- English proof (translation)
-Use `Reduction.mem_adelicBorel.2 ?_` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[pt_val]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pt_mem (p : Xc) : (uni2 p.2.2 * dg2 p.2.1 1 * dg2 p.1 p.1 : G2) ∈ (adelicBorel : Subgroup G2) := by
   refine Reduction.mem_adelicBorel.2 ?_
@@ -147,24 +147,24 @@ def eB : Xc ≃ₜ Bo where
     exact (continuous_dE 1).prodMk (((continuous_dE 0).mul ((continuous_dE 1).inv)).prodMk (h01.mul hi))
 
 /- English proof (translation)
-The claim follows from `(IdeleGroup.ideleModule ℚ a).2`.
+A detailed English derivation is pending.
 -/
 theorem md_pos (a : Jd) : 0 < md a := (IdeleGroup.ideleModule ℚ a).2
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule (K := ℚ))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_md : Continuous md :=
   continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule (K := ℚ))
 
 /- English proof (translation)
-Simplify using `[md, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_mul (a b : Jd) : md (a * b) = md a * md b := by
   simp [md, map_mul]
 
 /- English proof (translation)
-Simplify using `[md, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem md_inv (a : Jd) : md a⁻¹ = (md a)⁻¹ := by
   simp [md, map_inv]
@@ -172,7 +172,7 @@ theorem md_inv (a : Jd) : md a⁻¹ = (md a)⁻¹ := by
 def wD (a : Jd) : ℝ≥0∞ := ENNReal.ofReal (md a)⁻¹
 
 /- English proof (translation)
-The claim follows from `ENNReal.measurable_ofReal.comp (continuous_md.measurable.inv)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_wD : Measurable wD :=
   ENNReal.measurable_ofReal.comp (continuous_md.measurable.inv)
@@ -194,11 +194,11 @@ def nu : Measure Xc := (ideleMeasure ℚ).prod (wM.prod (adeleMeasure ℚ))
 instance : SFinite nu := by unfold nu; infer_instance
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun g hg => ?_` and prove the remaining obligations. Establish `hm : Measurable (fun a : Jd => a₀ * a)` using `measurable_const_mul a₀`. Rewrite using `[lintegral_map hg hm, lintegral_smul_measure, wM, lintegral_withDensity_eq_lintegral_mul _ measurable_wD (show Measurable (fun a => g (a₀ * a)) from hg.comp hm), lintegral_withDensity_eq_lintegral_mul _ measurable_wD hg, smul_eq_mul, ← lintegral_const_mul _ (measurable_wD.mul hg) …`. Establish `h` using `lintegral_mul_left_eq_self (μ := ideleMeasure ℚ) (fun y => wD (a₀⁻¹ * y) * g y) a₀`. Simplify using `only [inv_mul_cancel_left] at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.mul_apply]`. Rewrite using `[h]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `: wD (a₀⁻¹ * y) = ENNReal.ofReal (md a₀) * wD y`. Simplify using `only [wD, md_mul, md_inv, mul_inv, inv_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ENNReal.ofReal_mul (md_pos a₀).le]`. Rewrite using `[this, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_wM (a₀ : Jd) : wM.map (a₀ * ·) = ENNReal.ofReal (md a₀) • wM := by
   refine Measure.ext_of_lintegral _ fun g hg => ?_
@@ -218,7 +218,7 @@ theorem map_wM (a₀ : Jd) : wM.map (a₀ * ·) = ENNReal.ofReal (md a₀) • w
   rw [this, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : Measurable (fun x : 𝔸[ℚ] => a₀ • x)` using `(continuous_const_smul a₀).measurable`. Establish `h2 : Measurable (fun x : 𝔸[ℚ] => x₀ + x)` using `measurable_const_add x₀`. Establish `h3 : (fun x : 𝔸[ℚ] => x₀ + a₀ • x) = (fun x => x₀ + x) ∘ (fun x => a₀ • x)` using `rfl`. Rewrite using `[h3, ← Measure.map_map h2 h1, map_smul_adeleMeasure, Measure.map_smul, map_add_left_eq_self]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_aff (x₀ : 𝔸[ℚ]) (a₀ : Jd) :
     (adeleMeasure ℚ).map (fun x => x₀ + a₀ • x) = ENNReal.ofReal (md a₀)⁻¹ • adeleMeasure ℚ := by
@@ -232,7 +232,7 @@ def tr (z₀ a₀ : Jd) (x₀ : 𝔸[ℚ]) : Xc → Xc :=
   Prod.map (z₀ * ·) (Prod.map (a₀ * ·) (fun x => x₀ + a₀ • x))
 
 /- English proof (translation)
-Establish `hz : Measurable (fun a : Jd => z₀ * a)` using `measurable_const_mul z₀`. Establish `ha : Measurable (fun a : Jd => a₀ * a)` using `measurable_const_mul a₀`. Establish `hx : Measurable (fun x : 𝔸[ℚ] => x₀ + a₀ • x)` using `(measurable_const_add x₀).comp (continuous_const_smul a₀).measurable`. Rewrite using `[nu, tr, ← Measure.map_prod_map _ _ hz (ha.prodMap hx), ← Measure.map_prod_map _ _ ha hx, map_mul_left_eq_self, map_wM, map_aff, Measure.prod_smul_left, Measure.prod_smul_right, Measure.prod_smul_right, Measure.prod_smul_right, smul_smul, ← ENNReal.ofReal_mul (md_pos a₀).le, mul_ …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_tr (z₀ a₀ : Jd) (x₀ : 𝔸[ℚ]) : nu.map (tr z₀ a₀ x₀) = nu := by
   have hz : Measurable (fun a : Jd => z₀ * a) := measurable_const_mul z₀
@@ -245,9 +245,9 @@ theorem map_tr (z₀ a₀ : Jd) (x₀ : 𝔸[ℚ]) : nu.map (tr z₀ a₀ x₀) 
     mul_inv_cancel₀ (md_pos a₀).ne', ENNReal.ofReal_one, one_smul]
 
 /- English proof (translation)
-Take `⟨z, a, x⟩` from `p`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show ((uni2 x₀ * dg2 a₀ 1 * dg2 z₀ z₀ * (uni2 x * dg2 a 1 * dg2 z z) : GL (Fin 2) 𝔸[ℚ]) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) = ((uni2 (x₀ + a₀ • x) * dg2 (a₀ * a) 1 * dg2 (z₀ * z) (z₀ * z) : GL (Fin 2) 𝔸[ℚ]) : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])`. Rewrite using `[Units.val_mul (uni2 x₀ * dg2 a₀ 1 * dg2 z₀ z₀), pt_val, pt_val, pt_val]`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Units.smul_def] <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem eB_mul (z₀ a₀ : Jd) (x₀ : 𝔸[ℚ]) (p : Xc) :
     eB (z₀, a₀, x₀) * eB p = eB (tr z₀ a₀ x₀ p) := by
@@ -282,9 +282,9 @@ instance : IsFiniteMeasureOnCompacts (nu.map eB) := by
 instance : (nu.map eB).IsHaarMeasure := { }
 
 /- English proof (translation)
-Rewrite using `[nu, lintegral_prod _ hG.aemeasurable]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Establish `hGz : Measurable (fun q : Jd × 𝔸[ℚ] => G (z, q))` using `hG.comp measurable_prodMk_left`. Rewrite using `[lintegral_prod _ hGz.aemeasurable, wM, lintegral_withDensity_eq_lintegral_mul _ measurable_wD hGz.lintegral_prod_right']`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGa : Measurable (fun x : 𝔸[ℚ] => G (z, a, x))` using `hGz.comp measurable_prodMk_left`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[← lintegral_const_mul _ hGa]`. Conclude with `lintegral_congr fun x => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_nu (G : Xc → ℝ≥0∞) (hG : Measurable G) :
     ∫⁻ p, G p ∂nu = ∫⁻ z, ∫⁻ a, ∫⁻ x, G (z, a, x) * ENNReal.ofReal (md a)⁻¹
@@ -301,11 +301,9 @@ theorem lintegral_nu (G : Xc → ℝ≥0∞) (hG : Measurable G) :
   exact lintegral_congr fun x => mul_comm _ _
 
 /- English proof (translation)
-Establish `h : ((adelicBorel : Subgroup G2) : Set G2) = {g : G2 | (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 0 = 0}`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `(Reduction.mem_adelicBorel.1 hg) (by decide : (0 : Fin 2) < 1)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Use `Reduction.mem_adelicBorel.2 ?_` and prove the remaining obligations. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`. Rewrite using `[h]`.
-
-Apply the tactic sequence `exact isClosed_eq (cont_entry 1 0) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_bo : IsClosed ((adelicBorel : Subgroup G2) : Set G2) := by
   have h : ((adelicBorel : Subgroup G2) : Set G2) = {g : G2 | (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ]) 1 0 = 0} := by
@@ -324,14 +322,14 @@ instance : SecondCountableTopology Bo := TopologicalSpace.Subtype.secondCountabl
 instance : SecondCountableTopology KA := TopologicalSpace.Subtype.secondCountableTopology _
 
 /- English proof (translation)
-The claim follows from `hF.comp (((continuous_subtype_val.comp (eB.continuous.comp continuous_fst)).mul (continuous_subtype_val.comp continuous_snd)).measurable)`.
+A detailed English derivation is pending.
 -/
 theorem meas_J (F : G2 → ℝ≥0∞) (hF : Measurable F) : Measurable (fun q : Xc × KA => F ((eB q.1).1 * q.2.1)) :=
   hF.comp (((continuous_subtype_val.comp (eB.continuous.comp continuous_fst)).mul
     (continuous_subtype_val.comp continuous_snd)).measurable)
 
 /- English proof (translation)
-Establish `: Measurable (fun q : Bo × KA => F ((q.1 : G2) * q.2.1))` using `hF.comp (((continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)).measurable)`. Conclude with `this.lintegral_prod_right'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_S (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Measurable F) :
     Measurable (fun s : Bo => ∫⁻ k : KA, F ((s : G2) * k) ∂mK) := by
@@ -346,7 +344,7 @@ Both sides reduce to the same expression.
 theorem pt_eq (x : 𝔸[ℚ]) (a z : Jd) (κ : G2) : (eB (z, a, x)).1 * κ = pt x a z κ := rfl
 
 /- English proof (translation)
-The claim follows from `lintegral_map (meas_S mK F hF) eB.measurable`.
+A detailed English derivation is pending.
 -/
 theorem inner_map (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ s : Bo, ∫⁻ k : KA, F ((s : G2) * k) ∂mK ∂(nu.map eB) =
@@ -354,14 +352,14 @@ theorem inner_map (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : M
   lintegral_map (meas_S mK F hF) eB.measurable
 
 /- English proof (translation)
-The claim follows from `lintegral_lintegral_swap (f := fun (p : Xc) (k : KA) => F ((eB p).1 * k.1)) (meas_J F hF).aemeasurable`.
+A detailed English derivation is pending.
 -/
 theorem inner_swap (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ p : Xc, ∫⁻ k : KA, F ((eB p).1 * k.1) ∂mK ∂nu = ∫⁻ k : KA, ∫⁻ p : Xc, F ((eB p).1 * k.1) ∂nu ∂mK :=
   lintegral_lintegral_swap (f := fun (p : Xc) (k : KA) => F ((eB p).1 * k.1)) (meas_J F hF).aemeasurable
 
 /- English proof (translation)
-Establish `h : Measurable (fun p : Xc => F ((eB p).1 * κ.1))` using `hF.comp ((continuous_subtype_val.comp eB.continuous).mul continuous_const).measurable`. Rewrite using `[lintegral_nu _ h]`. Simplify using `only [pt_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_nu (F : G2 → ℝ≥0∞) (hF : Measurable F) (κ : KA) :
     ∫⁻ p : Xc, F ((eB p).1 * κ.1) ∂nu = ∫⁻ z, ∫⁻ a, ∫⁻ x, F (pt x a z κ.1) * ENNReal.ofReal (md a)⁻¹
@@ -372,7 +370,7 @@ theorem inner_nu (F : G2 → ℝ≥0∞) (hF : Measurable F) (κ : KA) :
   simp only [pt_eq]
 
 /- English proof (translation)
-Rewrite using `[inner_map mK F hF, inner_swap mK F hF]`. Conclude with `lintegral_congr fun κ => inner_nu F hF κ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_eq (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ s : Bo, ∫⁻ k : KA, F ((s : G2) * k) ∂mK ∂(nu.map eB) =
@@ -382,7 +380,7 @@ theorem inner_eq (mK : Measure KA) [SFinite mK] (F : G2 → ℝ≥0∞) (hF : Me
   exact lintegral_congr fun κ => inner_nu F hF κ
 
 /- English proof (translation)
-Introduce `g`. Take `⟨b, hb, k, hk, rfl⟩` from `Reduction.exists_adelicBorel_mul_maxCompact g`. Conclude with `⟨(⟨b, hb⟩, ⟨k, hk⟩), rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surj_mulMap : Function.Surjective (HaarSK.mulMap (adelicBorel : Subgroup G2) (maxCompact : Subgroup G2)) := by
   intro g
@@ -390,7 +388,7 @@ theorem surj_mulMap : Function.Surjective (HaarSK.mulMap (adelicBorel : Subgroup
   exact ⟨(⟨b, hb⟩, ⟨k, hk⟩), rfl⟩
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace G2 := AdelicGLn.locallyCompactSpace ℚ 2`. Take `⟨c, hc0, hc⟩` from `HaarSK.exists_lintegral_eq μ isClosed_bo Reduction.isCompact_maxCompact surj_mulMap (nu.map eB) mK`. Conclude with `⟨c, hc0, fun F hF => (hc F hF).trans (congrArg _ (inner_eq mK F hF))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coord_of (μ : Measure G2) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (mK : Measure KA) [mK.IsHaarMeasure]
     [IsProbabilityMeasure mK] : ∃ C, Coord μ mK C := by
@@ -400,9 +398,7 @@ theorem coord_of (μ : Measure G2) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (
   exact ⟨c, hc0, fun F hF => (hc F hF).trans (congrArg _ (inner_eq mK F hF))⟩
 
 /- English proof (translation)
-Introduce `μ 𝓕 mK 𝓓 h`. Use `haveI := h.haar`. Use `haveI := h.right`. Use `haveI := h.haarK`. Use `haveI := h.probK`.
-
-Conclude with `coord_of μ mK`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coord_exists : Ad3.R.G2a := by
   intro μ 𝓕 mK 𝓓 h

@@ -11,15 +11,15 @@ namespace CompanionTheory.Member.UnipotentColumnData
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Distinguish the cases in `hj : j < N`. Establish `hi : i < N` using `lt_trans hij hj`. Simplify using `only [entN, hi, hj, and_self, ↓reduceDIte]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_add (⟨i, hi⟩ : Fin N) ⟨j, hj⟩]`. Rewrite using `[(hM ⟨i, hi⟩ ⟨i, hi⟩).2 rfl, (hM' ⟨j, hj⟩ ⟨j, hj⟩).2 rfl, one_mul, mul_one, add_comm]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Rewrite `e` using `[Fin.mk.injEq]`. Use linear arithmetic over natural numbers and integers. Introduce `b _ hb`. Take `⟨hbi, hbj⟩` from `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Break down `lt_trichotomy b ⟨i, hi⟩ with h1 | h1 | h1` into its components or cases. Rewrite using `[(hM _ _).1 h1, zero_mul]`. Conclude with `absurd h1 hbi`. Break down `lt_trichotomy b ⟨j, hj⟩ with h2 | h2 | h2` into its components or cases. Establish `hz` using `h b.val (Fin.lt_def.mp h1) (Fin.lt_def.mp h2)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [entN, b.isLt, hj, and_self, ↓reduceDIte, Fin.eta] at hz`. Rewrite using `[hz, mul_zero]`. Conclude with `absurd h2 hbj`. Rewrite using `[(hM' _ _).1 h2, mul_zero]`. Introduce `hn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (Finset.mem_univ _) hn`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Simplify using `[entN, hj]`.
+A detailed English derivation is pending.
 -/
 theorem entN_mul {N : ℕ} (M M' : Mt g N) (hM : IsUniUp M) (hM' : IsUniUp M') (i j : ℕ) (hij : i < j)
     (h : ∀ b, i < b → b < j → entN M' b j = 0) :
@@ -50,13 +50,13 @@ theorem entN_mul {N : ℕ} (M M' : Mt g N) (hM : IsUniUp M) (hM' : IsUniUp M') (
   · simp [entN, hj]
 
 /- English proof (translation)
-Introduce `a b`. Prove the components needed by the constructor for the conclusion. Introduce `hba`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `lt_or_ge c a with hc | hc` into its components or cases. Rewrite using `[(hM a c).1 hc, zero_mul]`. Rewrite using `[(hM' c b).1 (lt_of_lt_of_le hba hc), mul_zero]`. Introduce `hab`. Substitute `hab` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[(hM a a).2 rfl, (hM' a a).2 rfl, one_mul]`. Introduce `c _ hca`. Break down `lt_or_gt_of_ne hca with hc | hc` into its components or cases. Rewrite using `[(hM a c).1 hc, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hM' c a).1 hc, mul_zero]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ a) hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem uni_mul {N : ℕ} (M M' : Mt g N) (hM : IsUniUp M) (hM' : IsUniUp M') : IsUniUp (M * M') := by
   intro a b
@@ -79,7 +79,7 @@ theorem uni_mul {N : ℕ} (M M' : Mt g N) (hM : IsUniUp M) (hM' : IsUniUp M') : 
       exact absurd (Finset.mem_univ a) hn
 
 /- English proof (translation)
-Introduce `a b`. Use `⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `Matrix.one_apply_eq a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem uni_one {N : ℕ} : IsUniUp (1 : Mt g N) := by
   intro a b
@@ -88,9 +88,9 @@ theorem uni_one {N : ℕ} : IsUniUp (1 : Mt g N) := by
   exact Matrix.one_apply_eq a
 
 /- English proof (translation)
-Unfold `entN`. Use `split_ifs with hN`. Use `Matrix.one_apply_ne ?_` and prove the remaining obligations. Introduce `e`. Rewrite `e` using `[Fin.mk.injEq]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem entN_one {N : ℕ} (i j : ℕ) (h : i < j) : entN (1 : Mt g N) i j = 0 := by
   unfold entN
@@ -102,7 +102,7 @@ theorem entN_one {N : ℕ} (i j : ℕ) (h : i < j) : entN (1 : Mt g N) i j = 0 :
   · rfl
 
 /- English proof (translation)
-Unfold `eDat`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 private theorem eDat_eq_inv_card_smul_sum_single {N : ℕ} (P : Mt g N → Prop) (φ : Mt g N → ZMod g)
     (ψ : AddChar (ZMod g) ℂ) :
@@ -113,23 +113,23 @@ private theorem eDat_eq_inv_card_smul_sum_single {N : ℕ} (P : Mt g N → Prop)
   rfl
 
 /- English proof (translation)
-Rewrite using `[eDat_eq_inv_card_smul_sum_single]`. Use `set J := Finset.univ.filter fun u : Gn g N => P (u : Mt g N) with hJ`. Establish `hφ1 : φ 1 = 0`. Establish `e` using `hφ 1 1 h1 h1`. Rewrite `e` using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-e`. Establish `h1J : (1 : Gn g N) ∈ J`. Rewrite using `[hJ, Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, by rw [Units.val_one]; exact h1⟩`. Establish `hJne : (J.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (Finset.card_ne_zero.mpr ⟨1, h1J⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmulJ : ∀ u ∈ J, ∀ v ∈ J, u * v ∈ J`. Introduce `u hu v hv`. Rewrite `hu`, `hv`, the goal using `[hJ, Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, by rw [Units.val_mul]; exact hmul _ _ hu.2 hv.2⟩`. Establish `hx : ∀ u ∈ J, ∀ v ∈ J, (ψ (φ ((u * v : Gn g N) : Mt g N)))⁻¹ = (ψ (φ (u : Mt g N)))⁻¹ * (ψ (φ (v : Mt g N)))⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu v hv`. Rewrite `hu`, `hv` using `[hJ, Finset.mem_filter]`. Rewrite using `[Units.val_mul, hφ _ _ hu.2 hv.2, AddChar.map_add_eq_mul, mul_inv]`. Establish `hshift : ∀ u ∈ J, ∑ v ∈ J, MonoidAlgebra.single (u * v) (ψ (φ ((u * v : Gn g N) : Mt g N)))⁻¹ = ∑ w ∈ J, MonoidAlgebra.single w (ψ (φ (w : Mt g N)))⁻¹`. Introduce `u hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `himg : J.image (fun v => u * v) = J`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `w hw`. Rewrite `hw` using `[Finset.mem_image]`. Take `⟨v, hv, rfl⟩` from `hw`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmulJ u hu v hv`. Rewrite using `[Finset.card_image_of_injective _ (mul_right_injective u)]`. Use `conv_rhs => rw [← himg]`. Rewrite using `[Finset.sum_image (mul_right_injective u).injOn]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mul_smul_comm, Finset.sum_mul_sum]`. Establish `hsq : ∑ u ∈ J, ∑ v ∈ J, MonoidAlgebra.single u (ψ (φ (u : Mt g N)))⁻¹ * MonoidAlgebra.single v (ψ (φ (v : Mt g N)))⁻¹ = ∑ _u ∈ J, ∑ w ∈ J, MonoidAlgebra.single w (ψ (φ (w : Mt g N)))⁻¹`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[← hshift u hu]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[MonoidAlgebra.single_mul_single, hx u hu v hv]`. Rewrite using `[hsq, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Use `congr 1`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hJne, mul_one]`. Rewrite using `[MonoidAlgebra.coeff_smul_apply, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, smul_eq_mul, Finset.sum_eq_single (1 : Gn g N)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hφ1]`. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`. Conclude with `absurd h1J h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eDat_idem {N : ℕ} (P : Mt g N → Prop) (φ : Mt g N → ZMod g) (ψ : AddChar (ZMod g) ℂ)
     (h1 : P 1) (hmul : ∀ M M', P M → P M' → P (M * M'))
@@ -189,27 +189,25 @@ theorem eDat_idem {N : ℕ} (P : Mt g N → Prop) (φ : Mt g N → ZMod g) (ψ :
       exact absurd h1J h
 
 /- English proof (translation)
-Set `S` to `{p : Fin N × Fin N // p.1 < p.2 ∧ ¬ Q p}`. Set `mk : (S → ZMod g) → Mt g N` to `fun f i j => if i = j then 1 else if h : i < j ∧ ¬ Q (i, j) then f ⟨(i, j), h⟩ else 0`. Establish `hmk_up : ∀ f, IsUniUp (mk f)`. Introduce `f a b`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hba`. Establish `hab : a ≠ b` using `ne_of_gt hba`. Simplify using `only [mk, if_neg hab]`. Rewrite using `[dif_neg]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (lt_trans h.1 hba) (lt_irrefl _)`. Introduce `hab`. Simplify using `only [mk, if_pos hab]`. Establish `hmk_unit : ∀ f, IsUnit (mk f)`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_isUpperTriangular]`. Establish `hd : ∀ i, mk f i i = 1` using `fun i => (hmk_up f i i).2 rfl`. Simplify using `only [hd, Finset.prod_const_one, isUnit_one]`. Introduce `i j hji`. Conclude with `(hmk_up f i j).1 hji`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPmk : ∀ f, P (mk f)`. Introduce `f`. Rewrite using `[hP]`. Use `⟨hmk_up f, fun p hp hq => ?_⟩` and prove the remaining obligations. Establish `hne : p.1 ≠ p.2` using `ne_of_lt hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mk, if_neg hne]`. Rewrite using `[dif_neg]`. Conclude with `fun h => h.2 hq`. Set `e : {u : Gn g N // P (u : Mt g N)} ≃ (S → ZMod g)` to `{ toFun := fun u p => (u.1 : Mt g N) p.1.1 p.1.2 invFun := fun f => ⟨(hmk_unit f).unit, by rw [IsUnit.unit_spec]; exact hPmk f⟩ left_inv := by`. Introduce `u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[IsUnit.unit_spec]`. Use extensionality with `i j`. Establish `hu` using `(hP _).1 u.2`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [mk]`. Distinguish the cases in `hij : i = j`. Rewrite using `[if_pos hij, ← hij]`. Conclude with `((hu.1 i i).2 rfl).symm`. Rewrite using `[if_neg hij]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i < j ∧ ¬ Q (i, j)`. Rewrite using `[dif_pos h]`. Rewrite using `[dif_neg h]`. Break down `lt_or_gt_of_ne hij with hlt | hgt` into its components or cases. Conclude with `(hu.2 (i, j) hlt (not_not.mp fun hq => h ⟨hlt, hq⟩)).symm`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hu.1 i j).1 hgt).symm`. Use `right_inv := by`. Introduce `f`. Use function extensionality and compare the values at `p`. Use `show mk f p.1.1 p.1.2 = f p`.
-
-Simplify using `only [mk]`. Rewrite using `[if_neg (ne_of_lt p.2.1), dif_pos (show p.1.1 < p.1.2 ∧ ¬ Q (p.1.1, p.1.2) from p.2)] }`. Establish `hL : (Finset.univ.filter fun u : Gn g N => P (u : Mt g N)).card = Fintype.card {u : Gn g N // P (u : Mt g N)}` using `(Fintype.card_subtype _).symm`. Establish `hS : Fintype.card S = (Finset.univ.filter fun p : Fin N × Fin N => p.1 < p.2 ∧ ¬ Q p).card` using `Fintype.card_subtype _`. Rewrite using `[hL, Fintype.card_congr e, Fintype.card_fun, ZMod.card, hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_uni {N : ℕ} (Q : Fin N × Fin N → Prop) (P : Mt g N → Prop)
     (hP : ∀ M, P M ↔ IsUniUp M ∧ ∀ p : Fin N × Fin N, p.1 < p.2 → Q p → M p.1 p.2 = 0) :
@@ -278,11 +276,9 @@ theorem card_uni {N : ℕ} (Q : Fin N × Fin N → Prop) (P : Mt g N → Prop)
   rw [hL, Fintype.card_congr e, Fintype.card_fun, ZMod.card, hS]
 
 /- English proof (translation)
-Establish `h1 : ∀ j : Fin N, (Finset.univ.filter fun i : Fin N => i < j).card = (j : ℕ)` using `fun j => by`. Rewrite using `[← Fin.card_Iio j]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_filter, Fintype.sum_prod_type_right]`. Simplify using `only [Finset.card_filter]`. Use `_ = ∑ j : Fin N, (j : ℕ) := Finset.sum_congr rfl fun j _ => h1 j`. Use `_ = ∑ i ∈ Finset.range N, i := Fin.sum_univ_eq_sum_range (fun i => i) N`.
-
-Use `_ = N * (N - 1) / 2 := Finset.sum_range_id N`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_lt (N : ℕ) :
     (Finset.univ.filter fun p : Fin N × Fin N => p.1 < p.2).card = N * (N - 1) / 2 := by
@@ -300,27 +296,25 @@ theorem card_lt (N : ℕ) :
     _ = N * (N - 1) / 2 := Finset.sum_range_id N
 
 /- English proof (translation)
-Establish `hQ` using `card_uni (fun p : Fin N × Fin N => s ≤ (p.1 : ℕ) ∧ (p.2 : ℕ) = s + k) P (by`. Introduce `M`. Rewrite using `[hP]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h p hp hq`. Establish `hlt : (p.1 : ℕ) < s + k` using `hq.2 ▸ Fin.lt_def.mp hp`. Establish `hz` using `h p.1 hq.1 hlt`. Rewrite `hz` using `[← hq.2]`. Simplify `hz` using `[entN]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h a ha1 ha2`. Establish `haN : a < N` using `by omega`. Establish `hz` using `h (⟨a, haN⟩, ⟨s + k, hc⟩) (Fin.mk_lt_mk.mpr ha2) ⟨ha1, rfl⟩`. Simplify `hz)` using `[entN, haN, hc]`. Establish `hcount : (Finset.univ.filter fun p : Fin N × Fin N => p.1 < p.2 ∧ (s ≤ (p.1 : ℕ) ∧ (p.2 : ℕ) = s + k)).card = k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(Finset.card_bij (t := Finset.range k) (fun p _ => (p.1 : ℕ) - s) ?_ ?_ ?_).trans (Finset.card_range k)` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Take `⟨_, h1, h2, h3⟩` from `hp`. Rewrite `h1` using `[Fin.lt_def]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `p hp q hq h`. Rewrite `hp`, `hq` using `[Finset.mem_filter]`. Take `⟨_, hp1, hp2, hp3⟩` from `hp`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hq1, hq2, hq3⟩` from `hq`. Apply the tactic sequence `apply Prod.ext <;> apply Fin.ext <;> omega`. Introduce `b hb`. Rewrite `hb` using `[Finset.mem_range]`. Use `⟨(⟨s + b, by omega⟩, ⟨s + k, hc⟩), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, Fin.mk_lt_mk.mpr (by omega), ?_, rfl⟩` and prove the remaining obligations. Use `show s ≤ s + b`. Use linear arithmetic over natural numbers and integers. Use `show s + b - s = b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsplit : (Finset.univ.filter fun p : Fin N × Fin N => p.1 < p.2 ∧ (s ≤ (p.1 : ℕ) ∧ (p.2 : ℕ) = s + k)).card + (Finset.univ.filter fun p : Fin N × Fin N => p.1 < p.2 ∧ ¬ (s ≤ (p.1 : ℕ) ∧ (p.2 : ℕ) = s + k)).card = N * (N - 1) / 2`. Rewrite using `[← card_lt N, ← Finset.card_union_of_disjoint]`. Use `congr 1`. Use extensionality with `p`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Simplify using `only [Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and]`. The claim follows by propositional logic. Rewrite using `[Finset.disjoint_filter]`. Introduce `p _ h1 h2`. Conclude with `h2.2 h1.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hg0 : (g : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : g.Prime).ne_zero`. Establish `hQ' : (Finset.univ.filter fun u : Gn g N => P (u : Mt g N)).card = g ^ (Finset.univ.filter fun p : Fin N × Fin N => p.1 < p.2 ∧ ¬ (s ≤ (p.1 : ℕ) ∧ (p.2 : ℕ) = s + k)).card`. Use `hQ` and compare the differences between its conclusion and the goal. Rewrite using `[hQ']`. Rewrite `hsplit` using `[hcount]`.
-
-Rewrite using `[← hsplit, pow_add, Nat.cast_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hg0), one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_col {N : ℕ} (s k : ℕ) (hc : s + k < N) (P : Mt g N → Prop)
     (hP : ∀ M, P M ↔ IsUniUp M ∧ ∀ a, s ≤ a → a < s + k → entN M a (s + k) = 0) :
@@ -386,7 +380,7 @@ theorem card_col {N : ℕ} (s k : ℕ) (hc : s + k < N) (P : Mt g N → Prop)
   rw [← hsplit, pow_add, Nat.cast_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hg0), one_mul]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hab i]`. Conclude with `entN_mul M M' hM hM' (a i) (a i + 1) (Nat.lt_succ_self _) (fun b h1 h2 => absurd h2 (by omega))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_mul {N : ℕ} (n : ℕ) (a b : ℕ → ℕ) (hab : ∀ i, b i = a i + 1) (M M' : Mt g N)
     (hM : IsUniUp M) (hM' : IsUniUp M') :
@@ -398,7 +392,7 @@ theorem sup_mul {N : ℕ} (n : ℕ) (a b : ℕ → ℕ) (hab : ∀ i, b i = a i 
   exact entN_mul M M' hM hM' (a i) (a i + 1) (Nat.lt_succ_self _) (fun b h1 h2 => absurd h2 (by omega))
 
 /- English proof (translation)
-Take `⟨e1, e2⟩` from `eDat_idem P φ ψ h1 hmul hφ`. Conclude with `⟨e1, e2.trans (card_col s k hc P hP)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eDat_col {N : ℕ} (s k : ℕ) (hc : s + k < N) (P : Mt g N → Prop) (φ : Mt g N → ZMod g)
     (ψ : AddChar (ZMod g) ℂ)
@@ -414,19 +408,19 @@ end CompanionTheory.Member.UnipotentColumnData
 
 open CompanionTheory.Member.UnipotentColumnData in
 /- English proof (translation)
-Introduce `g _ N k s ψ`. Establish `hP : ∀ M : Mt g N, IsUniUp M ↔ IsUniUp M ∧ ∀ p : Fin N × Fin N, p.1 < p.2 → False → M p.1 p.2 = 0` using `fun M => ⟨fun h => ⟨h, fun _ _ hf => hf.elim⟩, fun h => h.1⟩`. Establish `hcard` using `card_uni (fun _ => False) IsUniUp hP`. Take `⟨e1, e2⟩` from `eDat_idem (g := g) (N := N) IsUniUp (fun M => ∑ i ∈ Finset.range (N - 1), entN M i (i + 1)) ψ uni_one (fun M M' hM hM' => uni_mul M M' hM hM') (fun M M' hM hM' => sup_mul (N - 1) (fun i => i) (fun i => i + 1) (fun _ => rfl) M M' hM hM')`. Use `⟨e1, e2.trans ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcard]`. Simplify using `only [not_false_eq_true, and_true, card_lt, Nat.cast_pow]`. Introduce `hN`. Establish `hc : s + k < N` using `by omega`. Unfold `eJ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `eDat_col (g := g) s k hc _ (phiJ k s) ψ (fun M => Iff.rfl) ⟨uni_one, fun a _ ha => entN_one a (s + k) ha⟩ ?_ ?_` and prove the remaining obligations. Introduce `M M' hM hM'`. Use `⟨uni_mul M M' hM.1 hM'.1, fun a ha1 ha2 => ?_⟩` and prove the remaining obligations. Rewrite using `[entN_mul M M' hM.1 hM'.1 a (s + k) ha2 (fun b hb1 hb2 => hM'.2 b (by omega) hb2), hM.2 a ha1 ha2, hM'.2 a ha1 ha2, add_zero]`. Introduce `M M' hM hM'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∑ i ∈ Finset.range (s - 1), entN (M * M') i (i + 1) = ∑ i ∈ Finset.range (s - 1), entN M i (i + 1) + ∑ i ∈ Finset.range (s - 1), entN M' i (i + 1)` using `sup_mul (s - 1) (fun i => i) (fun i => i + 1) (fun _ => rfl) M M' hM.1 hM'.1`. Establish `e3 : ∑ i ∈ Finset.range (s - 1), entN (M * M') (s + k + 1 + i) (s + k + 2 + i) = ∑ i ∈ Finset.range (s - 1), entN M (s + k + 1 + i) (s + k + 2 + i) + ∑ i ∈ Finset.range (s - 1), entN M' (s + k + 1 + i) (s + k + 2 + i)` using `sup_mul (s - 1) (fun i => s + k + 1 + i) (fun i => s + k + 2 + i) (fun i => by omega) M M' hM.1 hM'.1`. Establish `e4 : ∑ a ∈ Finset.range (k - 1), entN (M * M') (s + a) (s + a + 1) = ∑ a ∈ Finset.range (k - 1), entN M (s + a) (s + a + 1) + ∑ a ∈ Finset.range (k - 1), entN M' (s + a) (s + a + 1)` using `sup_mul (k - 1) (fun a => s + a) (fun a => s + a + 1) (fun _ => rfl) M M' hM.1 hM'.1`. Unfold `phiJ`. Rewrite using `[e1, e3, e4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hs`. Rewrite using `[entN_mul M M' hM.1 hM'.1 (s - 1) (s + k) (by omega) (fun b hb1 hb2 => hM'.2 b (by omega) hb2), entN_mul M M' hM.1 hM'.1 (s + k) (s + k + 1) (by omega) (fun b hb1 hb2 => by omega)]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Introduce `hk`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `eJ'`. Use `eDat_col (g := g) 0 k (by omega) _ _ ψ ?_ ⟨uni_one, fun a ha => entN_one a k ha⟩ ?_ (fun M M' hM hM' => sup_mul (N - 1) (fun i => i) (fun i => i + 1) (fun _ => rfl) M M' hM.1 hM'.1)` and prove the remaining obligations. Introduce `M`. Simplify using `only [zero_le, true_implies, zero_add]`. Introduce `M M' hM hM'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨uni_mul M M' hM.1 hM'.1, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[entN_mul M M' hM.1 hM'.1 a k ha (fun b _ hb2 => hM'.2 b hb2), hM.2 a ha, hM'.2 a ha, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompanionTheory.Member.whittakerJacquetIdempotents_idem_coeff_one : ∀ (g : ℕ) [Fact g.Prime] (N k s : ℕ) (ψ : AddChar (ZMod g) ℂ), eU g N ψ * eU g N ψ = eU g N ψ ∧ (eU g N ψ).coeff 1 = ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹ ∧ (N = k + 2 * s + 1 → eJ g N k s ψ * eJ g N k s ψ = eJ g N k s ψ ∧ (eJ g N k s ψ).coeff 1 = (g : ℂ) ^ k * ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹) ∧ (k < N → eJ' g N k ψ * eJ' g N k ψ = eJ' g N k ψ ∧ (eJ' g N k ψ).coeff 1 = (g : ℂ) ^ k * ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹) := by
   intro g _ N k s ψ
@@ -488,7 +482,7 @@ section
 open GlobalTheory.GLq Formalism.MainNotions.ArithmeticCylinders Polynomial
 open scoped Classical
 /- English proof (translation)
-Introduce `g _ N k s ψ`. Conclude with `CompanionTheory.Member.whittakerJacquetIdempotents_idem_coeff_one g N k s ψ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Adopt.whittakerJacquetIdempotents_properties_primeField : ∀ (g : ℕ) [Fact g.Prime] (N k s : ℕ) (ψ : AddChar (ZMod g) ℂ), eU g N ψ * eU g N ψ = eU g N ψ ∧ (eU g N ψ).coeff 1 = ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹ ∧ (N = k + 2 * s + 1 → eJ g N k s ψ * eJ g N k s ψ = eJ g N k s ψ ∧ (eJ g N k s ψ).coeff 1 = (g : ℂ) ^ k * ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹) ∧ (k < N → eJ' g N k ψ * eJ' g N k ψ = eJ' g N k ψ ∧ (eJ' g N k ψ).coeff 1 = (g : ℂ) ^ k * ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹) := by
   intro g _ N k s ψ

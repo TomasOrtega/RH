@@ -17,9 +17,9 @@ set_option linter.unusedSectionVars false
 variable {K : Type*} [Field K] [NumberField K] {ι κ : Type*} [Fintype ι] [Fintype κ]
 
 /- English proof (translation)
-Establish `hm : Measurable (fun x : ι → α ↦ x ∘ e)` using `measurable_pi_lambda _ fun k ↦ measurable_pi_apply (e k)`. Use `⟨hm, (Measure.pi_eq fun s hs ↦ ?_).symm⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun x : ι → α ↦ x ∘ e) ⁻¹' Set.pi Set.univ s = Set.pi Set.univ (fun i ↦ s (e.symm i))`. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, Function.comp_apply]`. Conclude with `⟨fun h i ↦ by simpa using h (e.symm i), fun h k ↦ by simpa using h (e k)⟩`. Rewrite using `[hpre, Measure.pi_pi]`. Conclude with `Fintype.prod_equiv e.symm _ _ fun _ ↦ rfl`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_comp_equiv {α : Type*} [MeasurableSpace α] (μ : Measure α)
     [SigmaFinite μ] (e : κ ≃ ι) :
@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
 theorem finPartPi_eq_adeleFinHom (x : ι → 𝔸[K]) : finPartPi x = fun i ↦ adeleFinHom (x i) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `homeomorphMixedSpace K (algebraMap K 𝔸[K] k).1 = _`. Simplify using `only [adeleRing_algebraMap_fst, homeomorphMixedSpace_algebraMap]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem adeleInfHom_algebraMap (k : K) :
     adeleInfHom (algebraMap K 𝔸[K] k) = mixedEmbedding K k := by
@@ -65,7 +65,7 @@ theorem adeleInfHom_algebraMap (k : K) :
   simp only [adeleRing_algebraMap_fst, homeomorphMixedSpace_algebraMap]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(algebraMap K 𝔸[K] k).2 = _`. Simplify using `only [adeleRing_algebraMap_snd]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem adeleFinHom_algebraMap (k : K) :
     adeleFinHom (algebraMap K 𝔸[K] k) = algebraMap K 𝔸ᶠ[K] k := by
@@ -75,14 +75,14 @@ theorem adeleFinHom_algebraMap (k : K) :
 variable [DecidableEq ι] [DecidableEq κ]
 
 /- English proof (translation)
-The claim follows from `funext fun k ↦ RingHom.map_mulVec h M x k`.
+A detailed English derivation is pending.
 -/
 theorem map_mulVec_eq {R S : Type*} [CommRing R] [CommRing S] (h : R →+* S) (M : Matrix κ ι R)
     (x : ι → R) : (fun k ↦ h ((M *ᵥ x) k)) = M.map h *ᵥ fun i ↦ h (x i) :=
   funext fun k ↦ RingHom.map_mulVec h M x k
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, h, Matrix.map_one f (map_zero f) (map_one f)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_map_eq_one {R : Type*} [CommRing R] (f : K →+* R) {A : Matrix κ ι K}
     {B : Matrix ι κ K} (h : A * B = 1) : A.map f * B.map f = 1 := by
@@ -127,7 +127,7 @@ theorem mixedMulVecEquiv_apply (hNM : N * M = 1) (hMN : M * N = 1) (u : ι → m
     mixedMulVecEquiv M N hNM hMN u = M.map (mixedEmbedding K) *ᵥ u := rfl
 
 /- English proof (translation)
-Establish `h : (⇑adeleInfHom ∘ ⇑(algebraMap K 𝔸[K])) = mixedEmbedding K`. Use function extensionality and compare the values at `adeleInfHom_algebraMap`. Rewrite using `[infPartPi_eq_adeleInfHom, infPartPi_eq_adeleInfHom, map_mulVec_eq, Matrix.map_map, h, mixedMulVecEquiv_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem infPartPi_mulVec (hNM : N * M = 1) (hMN : M * N = 1) (x : ι → 𝔸[K]) :
     infPartPi (M.map (algebraMap K 𝔸[K]) *ᵥ x) =
@@ -138,7 +138,7 @@ theorem infPartPi_mulVec (hNM : N * M = 1) (hMN : M * N = 1) (x : ι → 𝔸[K]
     mixedMulVecEquiv_apply]
 
 /- English proof (translation)
-Establish `h : (⇑adeleFinHom ∘ ⇑(algebraMap K 𝔸[K])) = algebraMap K 𝔸ᶠ[K]`. Use function extensionality and compare the values at `adeleFinHom_algebraMap`. Rewrite using `[finPartPi_eq_adeleFinHom, finPartPi_eq_adeleFinHom, map_mulVec_eq, Matrix.map_map, h, mulVecHomeomorph_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPartPi_mulVec (hNM : N * M = 1) (hMN : M * N = 1) (x : ι → 𝔸[K]) :
     finPartPi (M.map (algebraMap K 𝔸[K]) *ᵥ x) =
@@ -149,11 +149,11 @@ theorem finPartPi_mulVec (hNM : N * M = 1) (hMN : M * N = 1) (x : ι → 𝔸[K]
     mulVecHomeomorph_apply]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Establish `h : (fun x ↦ schwartzBruhatTensorPi φ g (M.map (algebraMap K 𝔸[K]) *ᵥ x)) = schwartzBruhatTensorPi (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (mixedMulVecEquiv M N hNM hMN) φ) (g ∘ mulVecHomeomorph M N 𝔸ᶠ[K] hNM hMN)`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [schwartzBruhatTensorPi, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, infPartPi_mulVec M N hNM hMN, finPartPi_mulVec M N hNM hMN]`. Rewrite using `[h]`. Use `schwartzBruhatTensorPi_mem _ ((mem_finiteSchwartzBruhatPi K).2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `((mem_finiteSchwartzBruhatPi K).1 hg).1.comp_continuous (mulVecHomeomorph M N 𝔸ᶠ[K] hNM hMN).continuous`. Conclude with `((mem_finiteSchwartzBruhatPi K).1 hg).2.comp_homeomorph (mulVecHomeomorph M N 𝔸ᶠ[K] hNM hMN)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ hG hH => exact add_mem hG hH`. Consider the case `smul c G _ hG => exact Submodule.smul_mem _ c hG`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comp_mulVec_mem_schwartzBruhatPi (hNM : N * M = 1) (hMN : M * N = 1)
     {F : (κ → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K κ) :
@@ -181,15 +181,13 @@ theorem comp_mulVec_mem_schwartzBruhatPi (hNM : N * M = 1) (hMN : M * N = 1)
 omit [Fintype κ] [DecidableEq ι] [DecidableEq κ] in
 
 /- English proof (translation)
-Use `set A := M.map (algebraMap K 𝔸[K])`. Use `set B := N.map (algebraMap K 𝔸[K])`. Set `g : GL (Fin n) 𝔸[K]` to `⟨Aᵀ, Bᵀ, by rw [← Matrix.transpose_mul, map_mul_map_eq_one _ hNM, Matrix.transpose_one], by rw [← Matrix.transpose_mul, map_mul_map_eq_one _ hMN, Matrix.transpose_one]⟩`. Establish `hdetM : M.det ≠ 0`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Matrix.det hNM` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`. Establish `hdet : Matrix.GeneralLinearGroup.det g = IdeleGroup.diagonal K (Units.mk0 M.det hdetM)`. Use `ext`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, IdeleGroup.coe_diagonal, Units.val_mk0]`. Express the relevant statement in the definitionally equal form `(Aᵀ).det = _`. Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hmap` using `GroundTheory.Automorphic.GJGlobal.Modulus.map_vecMul_adeleMeasurePi g`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hmap` using `[hdet, IdeleGroup.ideleModule_diagonal]`. Establish `hfun : (fun x : Fin n → 𝔸[K] ↦ x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K])) = fun x ↦ A *ᵥ x`. Use function extensionality and compare the values at `x`. Conclude with `Matrix.vecMul_transpose A x`. Rewrite `hmap` using `[hfun]`.
-
-Use `⟨(continuous_const.matrix_mulVec continuous_id).measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hmap]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_mulVec_fin {n : ℕ} (M N : Matrix (Fin n) (Fin n) K) (hNM : N * M = 1)
     (hMN : M * N = 1) :
@@ -223,17 +221,15 @@ theorem measurePreserving_mulVec_fin {n : ℕ} (M N : Matrix (Fin n) (Fin n) K) 
   simp
 
 /- English proof (translation)
-Establish `hcard : Fintype.card κ = Fintype.card ι`. Set `e : (ι → K) ≃ₗ[K] (κ → K)` to `LinearEquiv.ofLinearMap (Matrix.toLin' M) (Matrix.toLin' N) (by rw [← Matrix.toLin'_mul, hMN, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, hNM, Matrix.toLin'_one])`. Establish `h` using `e.finrank_eq`. Rewrite `h` using `[Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card]`. Conclude with `h.symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set τ : ι ≃ Fin (Fintype.card ι) := Fintype.equivFin ι`. Use `set ρ : κ ≃ Fin (Fintype.card ι) := (Fintype.equivFin κ).trans (finCongr hcard)`. Use `set P : Matrix (Fin (Fintype.card ι)) (Fin (Fintype.card ι)) K := M.submatrix ρ.symm τ.symm`. Use `set Q : Matrix (Fin (Fintype.card ι)) (Fin (Fintype.card ι)) K := N.submatrix τ.symm ρ.symm`. Establish `hQP : Q * P = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.submatrix_mul_equiv, hNM, Matrix.submatrix_one_equiv]`. Establish `hPQ : P * Q = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, hMN, Matrix.submatrix_one_equiv]`. Establish `h1 : MeasurePreserving (fun x : ι → 𝔸[K] ↦ x ∘ τ.symm) (adeleMeasurePi K) (adeleMeasurePi K)` using `measurePreserving_comp_equiv (adeleMeasure K) τ.symm`. Establish `h2` using `measurePreserving_mulVec_fin P Q hQP hPQ`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : MeasurePreserving (fun x : Fin (Fintype.card ι) → 𝔸[K] ↦ x ∘ ρ) (adeleMeasurePi K) (adeleMeasurePi K)` using `measurePreserving_comp_equiv (adeleMeasure K) ρ`. Establish `hfun : (fun x : ι → 𝔸[K] ↦ M.map (algebraMap K 𝔸[K]) *ᵥ x) = (fun x ↦ x ∘ ρ) ∘ (fun x ↦ P.map (algebraMap K 𝔸[K]) *ᵥ x) ∘ (fun x ↦ x ∘ τ.symm)`. Use function extensionality and compare the values at `x`. Establish `hP : P.map (algebraMap K 𝔸[K]) = (M.map (algebraMap K 𝔸[K])).submatrix ρ.symm τ.symm` using `(Matrix.submatrix_map _ _ _ _).symm`. Simplify using `only [Function.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hP, Matrix.submatrix_mulVec_equiv]`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hfun]`. Conclude with `h3.comp (h2.comp h1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_mulVec (hNM : N * M = 1) (hMN : M * N = 1) :
     MeasurePreserving (fun x : ι → 𝔸[K] ↦ M.map (algebraMap K 𝔸[K]) *ᵥ x)
@@ -276,11 +272,9 @@ theorem measurePreserving_mulVec (hNM : N * M = 1) (hMN : M * N = 1) :
 omit [Fintype κ] [DecidableEq κ] in
 
 /- English proof (translation)
-Use `set A := M.map (algebraMap K 𝔸[K])`. Use `set B := N.map (algebraMap K 𝔸[K])`. Establish `hpair : ∀ x : ι → 𝔸[K], ∑ i, (A *ᵥ x) i * (Bᵀ *ᵥ y) i = ∑ i, x i * y i`. Introduce `x`. Express the relevant statement in the definitionally equal form `(A *ᵥ x) ⬝ᵥ (Bᵀ *ᵥ y) = x ⬝ᵥ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, map_mul_map_eq_one _ hNM, Matrix.one_mulVec]`. Establish `hmp : MeasurePreserving (fun x : ι → 𝔸[K] ↦ A *ᵥ x) (adeleMeasurePi K) (adeleMeasurePi K)` using `measurePreserving_mulVec M N hNM hMN`. Establish `hemb : MeasurableEmbedding (fun x : ι → 𝔸[K] ↦ A *ᵥ x)` using `(mulVecHomeomorph M N 𝔸[K] hNM hMN).measurableEmbedding`. Rewrite using `[adelicFourierPi, adelicFourierPi, ← hmp.integral_comp hemb (fun u ↦ F u * (adelicChar K (∑ i, u i * (Bᵀ *ᵥ y) i) : ℂ))]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations.
-
-Simplify using `only [hpair]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adelicFourierPi_comp_mulVec (M N : Matrix ι ι K) (hNM : N * M = 1) (hMN : M * N = 1)
     (F : (ι → 𝔸[K]) → ℂ) (y : ι → 𝔸[K]) :

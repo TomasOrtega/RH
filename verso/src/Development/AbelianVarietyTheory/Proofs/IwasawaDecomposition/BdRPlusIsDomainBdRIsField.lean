@@ -13,13 +13,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc.BdRField
 
 /- English proof (translation)
-Establish `h : ∃ n : ℕ, ¬ π ^ n ∣ y`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hy (hsep y h)`. Establish `h0 : Nat.find h ≠ 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e`. Use `Nat.find_spec h` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this (by simp)`. Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero h0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : π ^ n ∣ y`. Assume the negation of the conclusion as `hc`. Use `Nat.find_min' h hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨u, rfl⟩` from `h1`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨n, u, hu u ?_, rfl⟩` and prove the remaining obligations. Introduce `hd`. Use `Nat.find_spec h` as an intermediate fact. Rewrite `this` using `[hn]`. Conclude with `this (by rw [pow_succ]; exact mul_dvd_mul_left _ hd)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_pow_mul_unit {R : Type} [CommRing R] (π : R) (hsep : ∀ y : R, (∀ n : ℕ, π ^ n ∣ y) → y = 0)
     (hu : ∀ y : R, ¬ π ∣ y → IsUnit y) (y : R) (hy : y ≠ 0) : ∃ (n : ℕ) (u : R), IsUnit u ∧ y = π ^ n * u := by
@@ -46,23 +46,21 @@ theorem eq_pow_mul_unit {R : Type} [CommRing R] (π : R) (hsep : ∀ y : R, (∀
   exact this (by rw [pow_succ]; exact mul_dvd_mul_left _ hd)
 
 /- English proof (translation)
-Establish `hregn : ∀ (n : ℕ) (y : R), π ^ n * y = 0 → y = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y h`. Simplify using `using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih => intro y h; exact ih y (hreg _ (by rw [← h]; ring))`. Establish `: NoZeroDivisors R` using `⟨fun {a b} h => by`. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`. Take `⟨n, u, hu', rfl⟩` from `eq_pow_mul_unit π hsep hu a ha`.
+Treat this case separately. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Use `right`. Rewrite `h` using `[mul_assoc]`. Conclude with `(hu'.mul_right_eq_zero).1 (hregn n _ h)⟩`. Establish `hD : IsDomain R` using `NoZeroDivisors.to_isDomain R`. Establish `hle : M ≤ nonZeroDivisors R`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m hm`. Take `⟨n, c, hc⟩` from `hM m hm`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Use `hregn n 1 (by rw [hc]; ring)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero this`. Establish `hinj : Function.Injective (algebraMap R S)` using `IsLocalization.injective S hle`. Establish `: Nontrivial S` using `hinj.nontrivial`. Use `⟨hD, hinj, ⟨exists_pair_ne S, mul_comm, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨y, m⟩, hy⟩` from `IsLocalization.surj M a`. Establish `hm : IsUnit (algebraMap R S m)` using `IsLocalization.map_units S m`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `only [map_zero] at hy`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha (hm.mul_left_eq_zero.1 hy)`. Take `⟨n, u, hu', rfl⟩` from `eq_pow_mul_unit π hsep hu y hy0`. Establish `hyu : IsUnit (algebraMap R S (π ^ n * u))`. Rewrite using `[map_mul, map_pow]`. Conclude with `((IsLocalization.map_units S (⟨π, hπ⟩ : M)).pow n).mul (hu'.map _)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hy`. Rewrite `hyu` using `[← hy]`. Conclude with `(isUnit_of_mul_isUnit_left hyu).exists_right_inv`. Introduce `x`. Take `⟨⟨y, m⟩, hy⟩` from `IsLocalization.surj M x`.
-
-Take `⟨n, c, hc⟩` from `hM m m.2`. Use `⟨n, y * c, ?_⟩` and prove the remaining obligations. Simplify using `only at hy`. Rewrite using `[← map_pow, hc, map_mul, map_mul, ← mul_assoc, hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem general {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Nontrivial R] (M : Submonoid R)
     [IsLocalization M S] (π : R) (hreg : ∀ y : R, π * y = 0 → y = 0)
@@ -115,11 +113,9 @@ theorem general {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Nontrivial
     rw [← map_pow, hc, map_mul, map_mul, ← mul_assoc, hy]
 
 /- English proof (translation)
-Take `⟨ζ, ε, h0, -, h1, h⟩` from `GlobalTheory.T.exists_compatible_rootsOfUnity_and_tilt_padic l`. Use `⟨ε, ?_, ?_⟩` and prove the remaining obligations. Use `h 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `Subtype.ext this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Use `h 1` as an intermediate fact. Apply `h1` to reduce the goal to its premises. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← this, map_one]`.
-
-Conclude with `congrArg Subtype.val e`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := by
   obtain ⟨ζ, ε, h0, -, h1, h⟩ := GlobalTheory.T.exists_compatible_rootsOfUnity_and_tilt_padic l
@@ -135,13 +131,11 @@ theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := by
     exact congrArg Subtype.val e
 
 /- English proof (translation)
-Take `⟨hF, hreg, hc, -⟩` from `GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he`. Establish `hk` using `GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he`. Take `⟨-, hθ, hu, -, -⟩` from `GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l`. Establish `: Nontrivial (Per.BdRp l)` using `(Per.θD l).domain_nontrivial`. Use `haveI : IsLocalization.Away (aDp l (xi e)) (Per.BdR l) := GlobalTheory.CrisLoc.bdR_away l _ hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `general (Submonoid.powers (aDp l (xi e))) (aDp l (xi e)) hreg ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y hy`. Use `hc.toIsHausdorff.haus y fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `hy n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Use `hu y fun h => hy ?_` and prove the remaining obligations. Use `(hF 1 y).1 ((hθ y).1 h)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Conclude with `Submonoid.mem_powers _`.
-
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨k, dvd_rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem of_isEps (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : IsEps e) :
     IsDomain (Per.BdRp l) ∧ Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) ∧ IsField (Per.BdR l) ∧
@@ -166,7 +160,7 @@ theorem of_isEps (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : IsEps e) :
     exact ⟨k, dvd_rfl⟩
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨e, he⟩` from `exists_isEps l`. Take `⟨h1, h2, h3, -⟩` from `of_isEps l e he`. Conclude with `⟨h1, h2, h3, fun e' he' => (of_isEps l e' he').2.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bdR_isField : ∀ (l : ℕ) [Fact l.Prime], IsDomain (Per.BdRp l) ∧ Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) ∧ IsField (Per.BdR l) ∧ ∀ e : Per.Fl l, IsEps e → ∀ x : Per.BdR l, ∃ (n : ℕ) (y : Per.BdRp l), x * algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (xi e)) ^ n = algebraMap (Per.BdRp l) (Per.BdR l) y := by
   intro l _

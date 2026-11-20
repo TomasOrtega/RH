@@ -16,7 +16,7 @@ namespace Formalism.MainNotions.N.Ln34.UniversalLiftFrames
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.N.Ln34 Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules PowerSeries
 
 /- English proof (translation)
-Conclude with `⟨inferInstance, GenPf.isDVR (D.loc l) LL, GenPf.isFractionRing LL⟩`.
+Supply the required witnesses or components.
 -/
 theorem valuation_ring_instances (D : D7) {l : ℕ} [Fact l.Prime] (LL : FinExt l) :
     IsDomain ↥(OL LL) ∧ IsDiscreteValuationRing ↥(OL LL) ∧ IsFractionRing ↥(OL LL) ↥LL.1 := by
@@ -25,23 +25,21 @@ theorem valuation_ring_instances (D : D7) {l : ℕ} [Fact l.Prime] (LL : FinExt 
 set_option maxHeartbeats 1000000 in
 open Formalism.MainNotions.N.Ln34.ModelFPf in
 /- English proof (translation)
-Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Take `⟨hπΔ, -, ⟨w0, hw0⟩, -, ⟨w, hw⟩, -, ⟨w2, hw2⟩, -⟩` from `hp9`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hd` using `Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : 0 < eK K` using `Nat.pos_of_ne_zero fun h0 => by`. Rewrite `hd` using `[h0, zero_dvd_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hsK : 1 ≤ sK l K` using `Nat.div_pos (Nat.le_of_dvd (by omega) hd) he`. Establish `hEΔ : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' ∈ ((HW l).W K 1 LL hG).AΔ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `δ hδ`. Use function extensionality and compare the values at `i`. Use `show ((HW l).W K 1 LL hG).γ₀ δ (Polynomial.aeval (π' i) (E i)) = Polynomial.aeval (π' i) (E i)`. Rewrite using `[← Polynomial.aeval_algHom_apply]`. Conclude with `congrArg (fun t => Polynomial.aeval t (E i)) (congrFun (hπΔ δ hδ) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hπu : IsUnit (algebraMap (LetA _ _) ((HW l).W K 1 LL hG).EE π')`. Rewrite using `[hw0, map_mul, map_pow]`. Conclude with `(w0.isUnit.map _).mul (((HW l).W K 1 LL hG).EE_π.pow _)`. Establish `hEu : IsUnit (algebraMap (LetA _ _) ((HW l).W K 1 LL hG).EE (Formalism.MainNotions.DeltaInvariantLattices.Eat E π'))`. Establish `hq` using `Formalism.MainNotions.LiftingTheory.liftb_q_unit ((HW l).W K 1 LL hG)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hq` using `[hw, map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hq`. Take `⟨u, hu, hγ⟩` from `gam_unit ((HW l).W K 1 LL hG) π' E hsK w2 hw2 w0 hw0`. Establish `hpO : (((D.loc l).PD K).p : ↥(OL LL)) ≠ 0` using `fun h0 => by`. Apply `p_ne_zero ((HW l).W K 1 LL hG)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap ↥(OL LL) ↥LL.1), h0, map_zero]`. Establish `hnz` using `Eπ_nzd ((HW l).W K 1 LL hG) hw (q0_ne_two_and_ne_q_and_ne_d ((HW l).W K 1 LL hG) hpO)`. Establish `huΔ` using `u_mem_AΔ ((HW l).W K 1 LL hG) hEΔ hnz hγ`. Establish `hu'Δ` using `inv_mem_AΔ ((HW l).W K 1 LL hG) huΔ hu.val_inv_mul`. Establish `hnzπ : ∀ a : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)), a * π' = 0 → a = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Apply `((HW l).W K 1 LL hG).EE_inj` to reduce the goal to its premises. Establish `h1` using `congrArg (algebraMap (LetA _ _) ((HW l).W K 1 LL hG).EE) ha`. Rewrite `h1` using `[map_mul, map_zero]`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `hπu.mul_left_eq_zero.1 h1`. Establish `hγπ : ((HW l).W K 1 LL hG).γA ((HW l).W K 1 LL hG).gam π' = (1 + (w2 : LetA _ _) * Formalism.MainNotions.DeltaInvariantLattices.Eat E π') * π'`. Rewrite `hw2` using `[sub_eq_iff_eq_add]`. Rewrite using `[hw2]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `⟨hEΔ, hπΔ, hEu, hπu, ((HW l).W K 1 LL hG).gamK_eq_one hs (by rw [hp]; exact hl), ⟨u, huΔ, _, hu'Δ, hu.val_inv_mul, hγ⟩, ⟨_, u_mem_AΔ ((HW l).W K 1 LL hG) hπΔ hnzπ hγπ, by rw [hγπ]; ring⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem universal_lift_ring_membership (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL)
@@ -100,11 +98,11 @@ theorem universal_lift_ring_membership (D : D7) (HW : HWOf D.loc) (F : FonOf D.l
     ⟨_, u_mem_AΔ ((HW l).W K 1 LL hG) hπΔ hnzπ hγπ, by rw [hγπ]; ring⟩⟩
 
 /- English proof (translation)
-Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hζ : IsPrimitiveRoot ζ ((D.loc l).PD K).p`. Rewrite using `[hp]`. Conclude with `framepf_pt_prim D HW hG c ζ τ hpt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, ⟨w0, hw0⟩, -, ⟨w, hw⟩, -, -, -⟩` from `hp9`. Take `⟨e₁, he₁, he₁0⟩` from `DescentValuation.u3downPf_lev_E ((HW l).W K 1 LL hG) c ζ hζ (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') w hw`. Use `⟨?_, ?_, DescentValuation.u3downPf_cc_π' ((HW l).W K 1 LL hG) c ζ hζ π' (sK l K) w0 hw0, ?_⟩` and prove the remaining obligations. Rewrite using `[he₁]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he₁, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `he₁0`. Introduce `a`. Establish `hg` using `((HW l).W K 1 LL hG).gam_gen`. Conclude with `((Cm l).C K 1 LL hG).tie.lev_Γ _ c ζ ζ 1 1 (by rw [pow_one]; exact hζ) (le_of_eq (by simpa [hs] using hg.symm)) (pow_one ζ).symm a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem universal_lift_points (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL)
@@ -137,11 +135,9 @@ theorem universal_lift_points (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA
       (le_of_eq (by simpa [hs] using hg.symm)) (pow_one ζ).symm a
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `haveI : Finite (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) := by`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[GenPf.natCard_emb K LL hG]`. Conclude with `(Module.finrank_pos (R := ℚ_[l]) (M := ↥K.1)).ne'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := Fintype.ofFinite (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)`. Use `haveI : FiniteDimensional ↥(K0 K) ↥K.1 := Module.Finite.right ℚ_[l] ↥(K0 K) ↥K.1`. Use `⟨Finset.univ.filter (fun τ => Formalism.MainNotions.DeltaInvariantLattices.OverLetter ((HW l).W K 1 LL hG) τ c), fun τ ζ hpt => Finset.mem_filter.2 ⟨Finset.mem_univ _, u3upPf_pt_over D HW hG c ζ τ hpt⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `kapPiPf_card ((HW l).W K 1 LL hG) c`. Rewrite `h` using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`.
-
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem embeddings_card_le_degree (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL)
     (c : ZMod (finrank ℚ_[l] ↥(K0 K))) :

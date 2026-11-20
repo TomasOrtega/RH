@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocOver.WittFrames
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `h1` using `congrFun (congrFun h a) b`. Simplify using `only [ZhatOM] at h1`. Conclude with `((isUnit_one.neg).pow (r - b.val)).mul_left_cancel h1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zhatOM_injective {K : Type*} [CommRing K] {r : ℕ} {Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (h : ZhatOM Z = ZhatOM Z') : Z = Z' := by
@@ -21,13 +21,13 @@ theorem zhatOM_injective {K : Type*} [CommRing K] {r : ℕ} {Z Z' : Matrix (Fin 
   exact ((isUnit_one.neg).pow (r - b.val)).mul_left_cancel h1
 
 /- English proof (translation)
-Take `⟨A, ⟨hA1, hA2⟩, hc⟩` from `h`. Establish `hbt : A.BlockTriangular id` using `fun i j hij => hA1 i j hij`. Establish `hdet : A.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular hbt]`. Simplify using `[hA2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hu : IsUnit A.det` using `by rw [hdet]; exact isUnit_one`. Take `⟨hB1, hB2⟩` from `inv_unitri A hA1 hA2`. Establish `hc' : ∀ b, g b = ∑ a, A a b • f a` using `hc`. Use `⟨A⁻¹, ⟨hB1, hB2⟩, fun b => ?_⟩` and prove the remaining obligations. Use `show f b = ∑ a, A⁻¹ a b • g a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm` using `Matrix.mul_nonsing_inv A hu`. Repeatedly rewrite using `[hc', Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ c, ∑ a, (A⁻¹ a b * A c a) • f c = (A * A⁻¹) c b • f c`. Introduce `c`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_smul, Matrix.mul_apply]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl (fun a _ => mul_comm _ _)`. Repeatedly rewrite using `[this, hm, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tri_symm {E W : Type} [Field E] [AddCommGroup W] [Module E W] {n : ℕ} {f g : Fin n → W}
     (h : Tri E f g) : Tri E g f := by
@@ -52,9 +52,9 @@ theorem tri_symm {E W : Type} [Field E] [AddCommGroup W] [Module E W] {n : ℕ} 
   simp
 
 /- English proof (translation)
-Take `⟨A, hA, hc⟩` from `h`. Establish `hc' : ∀ b, g b = ∑ a, A a b • f a` using `hc`. Use `⟨A, hA, fun b => ?_⟩` and prove the remaining obligations. Use `show γ (g b) = ∑ a, A a b • γ (f a)`. Rewrite using `[hc' b, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem tri_map {E W : Type} [Field E] [AddCommGroup W] [Module E W] {n : ℕ} {f g : Fin n → W}
     (γ : W →ₗ[E] W) (h : Tri E f g) : Tri E (fun a => γ (f a)) (fun a => γ (g a)) := by
@@ -66,15 +66,15 @@ theorem tri_map {E W : Type} [Field E] [AddCommGroup W] [Module E W] {n : ℕ} {
   simp [map_smul]
 
 /- English proof (translation)
-Set `U` to `Submodule.span K (Set.range v)`. Set `bU : Module.Basis ι K U` to `Module.Basis.span hv`. Establish `hbU : ∀ i, (bU i : V) = v i` using `fun i => congrArg Subtype.val (Module.Basis.span_apply hv i)`. Set `f : U →ₗ[K] V` to `bU.constr K v'`. Establish `hf : ∀ i, f (bU i) = v' i` using `fun i => by simp [f, Module.Basis.constr_basis]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfe : f = Finsupp.linearCombination K v' ∘ₗ bU.repr.toLinearMap`. Use `bU.ext (fun i => ?_)` and prove the remaining obligations. Rewrite using `[hf]`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hfe, LinearMap.coe_comp]`. Conclude with `Function.Injective.comp hv' bU.repr.injective`. Establish `hiso : ∀ x y : U, B (f x) (f y) = B x y`. Establish `: (B.comp f).compl₂ f = (B.comp U.subtype).compl₂ U.subtype`. Use `LinearMap.ext_basis bU bU (fun i j => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.compl₂_apply, LinearMap.comp_apply, Submodule.subtype_apply, hf, hbU]`. Conclude with `(hg i j).symm`. Introduce `x y`. Use `LinearMap.congr_fun₂ this x y` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg1, hg2⟩` from `hW K V B hs hn U f hinj hiso`. Conclude with `⟨g, hg1, fun i => by rw [← hbU i, hg2, hf]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isom_of_gram (hW : PI.WittExtension) {K V : Type} [Field K] [StarRing K] [CharZero K]
     [AddCommGroup V] [Module K V] [FiniteDimensional K V]
@@ -111,19 +111,19 @@ namespace GlobalTheory.LocOver
 open GlobalTheory.LocOver.WittFrames Formalism.L2.SG.GramJoint in
 
 /- English proof (translation)
-Introduce `D T T' F F00 F' F'0 w hT hT' hG hcell hpt`. Take `⟨⟨Fb, Fb', h1, h2, hb⟩, hall⟩` from `GlobalTheory.T.exists_unitriangular_frames_gram_eq_cell_point D F F' w hT hT' hcell`. Establish `hGb : Gval Fb Fb' = Gval F F'` using `(hall Fb Fb' h1 h2).2`. Establish `hZ : ZhatL Fb Fb' = ZhatL F00 F'0` using `zhatOM_injective (hb.trans hpt.symm)`. Establish `hG0 : Gval F00 F'0 = Gval Fb Fb'` using `by show Gmat (Zhat F00.fl F'0.fl) T T' = Gmat (Zhat Fb.fl Fb'.fl) T T'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun Z => Gmat Z T T') hZ.symm`. Use `⟨hG0.trans hGb, ?_⟩` and prove the remaining obligations. Establish `hGb0 : Gflag Fb.fl Fb'.fl ≠ 0` using `by rw [← hGb] at hG; exact hG`. Establish `hG00 : Gflag F00.fl F'0.fl ≠ 0`. Use `hG0.trans hGb` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hG` using `[← this]`. Conclude with `hG`. Establish `hli` using `(gramIndep D.host.E (VS D) D.R.rS T T' Fb.fl Fb'.fl hGb0).1`. Establish `hli'` using `(gramIndep D.host.E (VS D) D.R.rS T T' F00.fl F'0.fl hG00).1`. Establish `hgram : ∀ i j, (VS D).hT (pairVec Fb.fl Fb'.fl i) (pairVec Fb.fl Fb'.fl j) = (VS D).hT (pairVec F00.fl F'0.fl i) (pairVec F00.fl F'0.fl j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Establish `e` using `congrFun (congrFun (gramBlocks D.host.E (VS D) D.R.rS T T' Fb.fl Fb'.fl) i) j`. Establish `e'` using `congrFun (congrFun (gramBlocks D.host.E (VS D) D.R.rS T T' F00.fl F'0.fl) i) j`. Establish `hZ' : Zhat Fb.fl Fb'.fl = Zhat F00.fl F'0.fl` using `hZ`. Rewrite `e` using `[hZ']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.trans e'.symm`. Establish `hs : ∀ x y, star ((VS D).hT x y) = (VS D).hT y x` using `fun x y => (VS D).herm.eq x y`. Establish `hn : ∀ x, (∀ y, (VS D).hT x y = 0) → x = 0` using `fun x hx => (VS D).nondeg.1 x hx`. Take `⟨γ, hγ, hγv⟩` from `exists_isom_of_gram witt_extension_theorem (VS D).hT hs hn _ _ hli hli' hgram`. Use `⟨γ, fun x y => hγ x y, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `tri_map (γ : (VS D).V →ₗ[D.host.E] (VS D).V) h1` as an intermediate fact. Establish `e : (fun a => (γ : (VS D).V →ₗ[D.host.E] (VS D).V) (frame Fb a)) = frame F00`. Use function extensionality and compare the values at `fun a => hγv (Sum.inl a)`. Rewrite `this` using `[e]`. Conclude with `tri_symm this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `tri_map (γ : (VS D).V →ₗ[D.host.E] (VS D).V) h2` as an intermediate fact. Establish `e : (fun a => (γ : (VS D).V →ₗ[D.host.E] (VS D).V) (frame Fb' a)) = frame F'0`. Use function extensionality and compare the values at `fun a => hγv (Sum.inr a)`. Rewrite `this` using `[e]`. Conclude with `tri_symm this`.
+A detailed English derivation is pending.
 -/
 theorem witt_frames_at_point : ∀ (D : D7) {T T' : D.host.E} (F F00 : LFlag (VS D) D.R.rS T)
     (F' F'0 : LFlag (VS D) D.R.rS T') (w : Point D.host.E (D.R.rS + 1)), T ≠ 0 → T' ≠ 0 → Gval F F' ≠ 0 →

@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.KeyEven
 
 /- English proof (translation)
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Establish `hx : ∀ (S : Type) [CommRing S] (b : DualNumber S), b = algebraMap S (DualNumber S) (TrivSqZeroExt.fst b) + algebraMap S (DualNumber S) (TrivSqZeroExt.snd b) * DualNumber.eps`. Introduce `S _ b`. Rewrite using `[← Algebra.smul_def, ← DualNumber.inr_eq_smul_eps, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.inl_fst_add_inr_snd_eq]`. Establish `hF : F a = algebraMap R' (DualNumber R') (f (TrivSqZeroExt.fst a)) + algebraMap R' (DualNumber R') (f (TrivSqZeroExt.snd a)) * DualNumber.eps` using `by conv_lhs => rw [hx R a]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_mul, h1, h1, h2]`. Rewrite using `[hF, ← Algebra.smul_def, ← DualNumber.inr_eq_smul_eps, TrivSqZeroExt.algebraMap_eq_inl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dualMapR_eq_of_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (F : DualNumber R →+* DualNumber R')
     (h1 : ∀ a, F (algebraMap R _ a) = algebraMap R' _ (f a)) (h2 : F DualNumber.eps = DualNumber.eps) :
@@ -43,13 +43,13 @@ theorem dualMapR_eq_of_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+*
   rfl
 
 /- English proof (translation)
-Introduce `κ hU V _ _ _ _ hA hF G _ _ L σ x y hSA hUn hLie hNz hKey`. Take `⟨D, A, U, e, he⟩` from `hUn`. Take `⟨φ, hφe, ψ, F, hPB, hψ, hRig, hTh, hF1, hF2, hv⟩` from `hKey`. Take `⟨θ, hθm, hθφ⟩` from `grpPullback_iso (isGrpPullback_pullback G (jK V)) hPB`. Take `⟨e', he', heR⟩` from `GlobalTheory.T.exists_rescaled_iso_preserving_rigidification G U.LG L e he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ', hσ', hnz⟩` from `GlobalTheory.T.exists_section_transport_along_generating_iso e' he' U.LG.isLB L.isLB σ`. Take `⟨w₀, hw₀, hPW⟩` from `GlobalTheory.T.exists_iso_cancel_pulled_bundles_germs θ.hom.left φ (pullback.fst G.hom (jK V)) hθφ x.P.L L.L U.LG.L x.P.isLB L.isLB U.LG.isLB ψ e' hψ he'`. Set `U' : Unif (IsLocalRing.maximalIdeal V) D x.P G` to `{ toUnifPre := { U.toUnifPre with gen := θ, gen_hom := hθm, ext := ⟨w₀, hw₀⟩ }, expand := U.expand }`. Establish `hinv : U'.gen.inv.left ≫ pullback.fst G.hom (jK V) = φ` using `by show θ.inv.left ≫ pullback.fst G.hom (jK V) = φ`. Rewrite using `[← hθφ, ← Category.assoc, ← Over.comp_left, θ.inv_hom_id, Over.id_left, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFd` using `dualMapR_eq_of_map _ F hF1 hF2`. Use `haveI : IsMonHom θ.hom := hθm`. Use `hU V hA hF D x G hSA U' w₀ ⟨hw₀, x.rig_gen, ?_⟩ y hLie (fun i => ?_) σ' ?_ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.iso_preserves_rigidification_at_origin V G x.P.A θ.hom φ hθφ hφe x.P.L L.L U.LG.L x.P.isLB L.isLB U.LG.isLB x.rig L.rig U.LG.rig ψ e' w₀ hPW hRig heR`. Use `show (x.v i).left ≫ (U'.gen.inv.left ≫ pullback.fst G.hom (jK V)) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hinv, hv i, hFd]`. Introduce `s`. Take `⟨z, hz, hz'⟩` from `hNz s`. Conclude with `⟨z, hz, hnz hz'⟩`. Conclude with `GlobalTheory.T.secMaps_secPull_of_pointwise_germs θ.hom.left φ _ hθφ x.P.L L.L U.LG.L L.isLB ψ e' w₀ hPW x.th σ σ' hTh hσ'`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem keyTrait_of_keyTraitU : ∀ κ : Rule, KeyTraitU κ → KeyTrait κ := by
   intro κ hU V _ _ _ _ hA hF G _ _ L σ x y hSA hUn hLie hNz hKey

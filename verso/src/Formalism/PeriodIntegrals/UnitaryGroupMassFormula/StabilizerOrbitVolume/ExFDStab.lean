@@ -17,11 +17,11 @@ def DiscHF : Prop := InCtx fun F _E _ _ _ _ _ σ _M J _a _X0 _hT =>
   DiscreteTopology (HFinIn (AF F) σ J)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ' _hμ'`. Establish `i1 : SecondCountableTopology (HA (AF F) σ J)` using `h1 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet`. Establish `i2 : DiscreteTopology (HFinIn (AF F) σ J)` using `h2 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet`. Establish `i3 : SecondCountableTopology (stabT (AF F) σ J X0)` using `TopologicalSpace.Subtype.secondCountableTopology (stabT (AF F) σ J X0 : Set (HA (AF F) σ J))`. Set `f : ratIn F E σ M J (stabT (AF F) σ J X0) → HFinIn (AF F) σ J` to `fun x => ⟨((x : stabT (AF F) σ J X0) : HA (AF F) σ J), (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 x.2)).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : Continuous f` using `((continuous_subtype_val.comp continuous_subtype_val : Continuous fun x : ratIn F E σ M J (stabT (AF F) σ J X0) => ((x : stabT (AF F) σ J X0) : HA (AF F) σ J))).subtype_mk _`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `e` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext e)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: DiscreteTopology (ratIn F E σ M J (stabT (AF F) σ J X0))` using `DiscreteTopology.of_continuous_injective hf hinj`. Take `⟨𝓕, -, h𝓕⟩` from `PI.VolSemiDirect.W.exists_fd (G := stabT (AF F) σ J X0) (ratIn F E σ M J (stabT (AF F) σ J X0))`. Conclude with `⟨𝓕, h𝓕 μ'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exFDStab_of (h1 : SCHA) (h2 : DiscHF) : ExFDStab := by
   intro F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ' _hμ'
@@ -43,7 +43,7 @@ theorem exFDStab_of (h1 : SCHA) (h2 : DiscHF) : ExFDStab := by
   exact ⟨𝓕, h𝓕 μ'⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J hJ _ _ _ _ _ _ _ _`. Conclude with `(h F E σ hE M J hJ).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem discHF_of_discHA (h : PI.VolSemiDirect.W.DiscHA) : DiscHF := by
   intro F E _ _ _ _ _ σ hE M J hJ _ _ _ _ _ _ _ _

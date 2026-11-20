@@ -8,21 +8,19 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `R _ r n ν μ f hf`. Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, mem_weightedHomogeneousSubmodule] at hf ⊢`. Take `⟨hcol, hadd⟩` from `hf`. Use `⟨?_, fun l j hlj => ?_⟩` and prove the remaining obligations. Introduce `d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hd` using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs at hd with h`. Conclude with `hcol hd`. Conclude with `absurd rfl hd`. Set `w' : Option (Fin r × Fin n) → (Fin r → ℕ)` to `fun o => Option.elim o 0 (rowW r n)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ F : Fin r × Fin n → MvPolynomial (Option (Fin r × Fin n)) R, (∀ v, IsWeightedHomogeneous w' (F v) (rowW r n v)) → ∀ φ : MvPolynomial (Fin r × Fin n) R, weightedHomogeneousComponent w' μ (aeval F φ) = aeval F (weightedHomogeneousComponent (rowW r n) μ φ)`. Introduce `F hF φ`. Use `MvPolynomial.induction_on' φ (fun u a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Establish `hm : IsWeightedHomogeneous w' (aeval F (monomial u a)) (Finsupp.weight (rowW r n) u)`. Rewrite using `[aeval_monomial, Finsupp.prod, Finsupp.weight_apply, Finsupp.sum, algebraMap_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(isWeightedHomogeneous_C w' a).mul (IsWeightedHomogeneous.prod u.support (fun i => F i ^ u i) (fun i => u i • rowW r n i) fun i _ => (hF i).pow (u i))` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `hm0 : IsWeightedHomogeneous (rowW r n) (monomial u a) (Finsupp.weight (rowW r n) u)` using `isWeightedHomogeneous_monomial _ _ _ rfl`. Rewrite using `[weightedHomogeneousComponent_of_mem ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr hm), weightedHomogeneousComponent_of_mem ((mem_weightedHomogeneousSubmodule _ _ _ _).mpr hm0)]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [map_add, hp, hq]`. Set `G : Fin r × Fin n → MvPolynomial (Option (Fin r × Fin n)) R` to `fun v => if v.2 = j then X (some v) + X none * X (some (v.1, l)) else X (some v)`. Establish `hG : ∀ v, IsWeightedHomogeneous w' (G v) (rowW r n v)`. Introduce `v`. Simplify using `only [G]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs`. Use `(isWeightedHomogeneous_X R w' (some v)).add ?_` and prove the remaining obligations. Use `(isWeightedHomogeneous_X R w' none).mul (isWeightedHomogeneous_X R w' (some (v.1, l)))` as an intermediate fact. Rewrite `this` using `[show w' none = 0 from rfl, zero_add]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `isWeightedHomogeneous_X R w' (some v)`. Establish `hGs : ∀ v, IsWeightedHomogeneous w' ((fun v : Fin r × Fin n => (X (some v) : MvPolynomial (Option (Fin r × Fin n)) R)) v) (rowW r n v)` using `fun v => isWeightedHomogeneous_X R w' (some v)`. Establish `hA : colAddGen R (r` using `r) l j = aeval G := rfl`. Establish `hB : (rename (R` using `R) (some : Fin r × Fin n → Option (Fin r × Fin n))) = aeval (fun v : Fin r × Fin n => (X (some v) : MvPolynomial (Option (Fin r × Fin n)) R)) := by`. Use extensionality with `v`.
-
-Simplify using the standard rewrite rules. Establish `h1` using `hadd l j hlj`. Rewrite `h1`, the goal using `[hA, hB]`. Rewrite using `[← key G hG, ← key _ hGs, h1]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualWeylModuleRowGraded : DualWeylRowGraded := by
   classical

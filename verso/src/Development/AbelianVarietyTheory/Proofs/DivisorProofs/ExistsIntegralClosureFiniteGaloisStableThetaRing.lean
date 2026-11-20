@@ -20,35 +20,27 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.Poinc.NormalClosureRing
 
 /- English proof (translation)
-Introduce `o₁ Ω₁ _ _ _ _ R₁ hR₁ hfrac o₂ Ω₂ _ _ _ _ _ _ κ hκ hcomp`. Use `haveI : IsDedekindDomain o₁ := ArithBase.ded (Ω := Ω₁)`. Use `haveI : CharZero Ω₁ := ArithBase.char (o := o₁)`. Establish `hinj₁ : Function.Injective (algebraMap o₁ Ω₁)` using `ArithBase.inj`. Use `haveI : CharZero o₁ := (algebraMap o₁ Ω₁).charZero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.FiniteType o₁ R₁ := (Subalgebra.fg_iff_finiteType R₁).mp hR₁`. Use `haveI : FaithfulSMul o₁ R₁ := (faithfulSMul_iff_algebraMap_injective _ _).mpr fun a b hab => hinj₁ (congrArg Subtype.val hab)`. Use `haveI : FaithfulSMul R₁ Ω₁ := (faithfulSMul_iff_algebraMap_injective _ _).mpr Subtype.val_injective`. Use `haveI : IsFractionRing R₁ Ω₁ := IsFractionRing.of_field _ _ fun z => by`. Take `⟨a, ha, b, hb, rfl⟩` from `hfrac z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, rfl⟩`. Use `haveI : IsScalarTower R₁ Ω₁ Ω₂ := inferInstance`. Set `C` to `integralClosure R₁ Ω₂`. Establish `hmem : ∀ x : o₂, algebraMap o₂ Ω₂ x ∈ C`. Introduce `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨p, hp, hpx⟩` from `hκ.to_isIntegral x`. Use `⟨p.map (algebraMap o₁ R₁), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Use `congrArg (algebraMap o₂ Ω₂) hpx` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, map_zero, hcomp]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Set `R : Subalgebra o₂ Ω₂` to `{ toSubsemiring := C.toSubsemiring algebraMap_mem' := hmem }`. Set `h : R₁ →+* R` to `(algebraMap R₁ Ω₂).codRestrict R fun a => (isIntegral_algebraMap : IsIntegral R₁ (algebraMap R₁ Ω₂ a))`. Establish `hh : ∀ a, ((h a : R) : Ω₂) = algebraMap Ω₁ Ω₂ a` using `fun a => rfl`. Use `letI : Algebra R₁ R := h.toAlgebra`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `haveI : IsScalarTower R₁ R Ω₂ := .of_algebraMap_eq fun a => rfl`. Use `haveI : IsIntegralClosure R R₁ Ω₂ := { algebraMap_injective := Subtype.val_injective isIntegral_iff := fun {x} => ⟨fun hx => ⟨⟨x, hx⟩, rfl⟩, by rintro ⟨y, rfl⟩; exact y.2⟩ }`. Establish `hfin : h.Finite` using `GlobalTheory.finite_of_isIntegralClosure_dedekind o₁ R₁ Ω₁ Ω₂ R`. Establish `hic : IsIntegrallyClosed R` using `integralClosure.isIntegrallyClosedOfFiniteExtension (R := R₁) Ω₁ (L := Ω₂)`. Use `haveI : Module.Finite R₁ C := GlobalTheory.finite_integralClosure_dedekind o₁ R₁ Ω₁ Ω₂`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hfg : R.FG`. Take `⟨s, hs⟩` from `hR₁`. Take `⟨t, ht⟩` from `(Module.Finite.fg_top : (⊤ : Submodule R₁ C).FG)`. Use `⟨s.image (algebraMap Ω₁ Ω₂) ∪ t.image Subtype.val, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.adjoin_le_iff]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Simplify using `only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe] at hy`. Break down `hy with ⟨a, ha, rfl⟩ | ⟨z, -, rfl⟩` into its components or cases. Establish `ha' : a ∈ R₁` using `hs ▸ Algebra.subset_adjoin ha`. Conclude with `(h ⟨a, ha'⟩).2`.
+Treat this case separately. Treat this case separately. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `z.2`. Use `set A := Algebra.adjoin o₂ ((s.image (algebraMap Ω₁ Ω₂) ∪ t.image Subtype.val : Finset Ω₂) : Set Ω₂)`. Establish `hR₁A : ∀ z ∈ Algebra.adjoin o₁ (s : Set Ω₁), algebraMap Ω₁ Ω₂ z ∈ A`. Introduce `z hz`. Proceed by induction on `hz using Algebra.adjoin_induction with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Consider the case `mem z hz => exact Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hz)))`. Consider the case `algebraMap r`. Use `congrArg (fun f => f r) hcomp` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[← this]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `A.algebraMap_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `A.add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `A.mul_mem hx hy`.
-
-It suffices to establish `key : ∀ y : C, y ∈ Submodule.span R₁ (t : Set C) → (y : Ω₂) ∈ A from fun x hx => key ⟨x, hx⟩ (ht ▸ Submodule.mem_top)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hy)))`. Consider the case `zero => exact A.zero_mem`.
-
-Consider the case `add y z _ _ hy hz => exact A.add_mem hy hz`. Consider the case `smul r y _ hy`. Use `A.mul_mem (hR₁A r.1 (hs ▸ r.2)) hy using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `first | rfl | exact Algebra.smul_def r (y : Ω₂) | simp [Algebra.smul_def]`. Use `⟨R, h, hfg, ?_, hh, hfin, hic, ?_⟩` and prove the remaining obligations.
-
-Introduce `x`. Establish `hxi : IsIntegral Ω₁ x` using `Algebra.IsIntegral.isIntegral x`. Take `⟨m, hm⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors R₁) x hxi`. Establish `hm0 : algebraMap R₁ Ω₂ (m : R₁) ≠ 0`. Rewrite using `[IsScalarTower.algebraMap_apply R₁ Ω₁ Ω₂]`.
-
-Conclude with `(map_ne_zero _).mpr (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors m.2)`. Use `⟨_, hm, algebraMap R₁ Ω₂ (m : R₁), isIntegral_algebraMap, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, Algebra.smul_def, mul_div_cancel_left₀ _ hm0]`. Introduce `σ x hx`. Conclude with `(show IsIntegral R₁ x from hx).map (σ.toAlgHom.restrictScalars R₁)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_integralClosure_finite : ∀ {o₁ Ω₁ : Type} [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] [ArithBase o₁ Ω₁] (R₁ : Subalgebra o₁ Ω₁), R₁.FG → (∀ x : Ω₁, ∃ a ∈ R₁, ∃ b ∈ R₁, x = a / b) → ∀ {o₂ Ω₂ : Type} [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] [ArithBase o₂ Ω₂] [Algebra Ω₁ Ω₂] [FiniteDimensional Ω₁ Ω₂] (κ : o₁ →+* o₂), κ.Finite → (algebraMap o₂ Ω₂).comp κ = (algebraMap Ω₁ Ω₂).comp (algebraMap o₁ Ω₁) → ∃ (R : Subalgebra o₂ Ω₂) (h : R₁ →+* R), R.FG ∧ (∀ x : Ω₂, ∃ a ∈ R, ∃ b ∈ R, x = a / b) ∧ (∀ a, ((h a : R) : Ω₂) = algebraMap Ω₁ Ω₂ a) ∧ h.Finite ∧ IsIntegrallyClosed R ∧ ∀ σ : Ω₂ ≃ₐ[Ω₁] Ω₂, ∀ x ∈ R, σ x ∈ R := by
   intro o₁ Ω₁ _ _ _ _ R₁ hR₁ hfrac o₂ Ω₂ _ _ _ _ _ _ κ hκ hcomp

@@ -14,7 +14,7 @@ variable {p f : ℕ} [Fact p.Prime] {k : Type*} [Field k] [Fintype k] [Algebra (
   (D : GSDatum p f k A Q)
 
 /- English proof (translation)
-Rewrite using `[← map_mul, ← jacobiSum_mul_nontrivial h D.ψ, map_mul]`. Conclude with `mul_le_of_le_one_right' (Q.intValuation_le_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mul_le {χ₁ χ₂ : MulChar k A} (h : χ₁ * χ₂ ≠ 1) :
     Q.intValuation (gaussSum χ₁ D.ψ) * Q.intValuation (gaussSum χ₂ D.ψ) ≤
@@ -23,9 +23,9 @@ theorem val_mul_le {χ₁ χ₂ : MulChar k A} (h : χ₁ * χ₂ ≠ 1) :
   exact mul_le_of_le_one_right' (Q.intValuation_le_one _)
 
 /- English proof (translation)
-Establish `: CharP k p` using `(Algebra.charP_iff (ZMod p) k p).1 inferInstance`. Unfold `gaussSum`. Use `Fintype.sum_bijective (fun x : k => x ^ p) (frobeniusEquiv k p).bijective _ _ ?_` and prove the remaining obligations. Introduce `x`. Rewrite using `[MulChar.pow_apply' χ (Fact.out : p.Prime).ne_zero, map_pow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(psi_pow p k D.ζ D.prim.pow_eq_one x).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gaussSum_pow_p (χ : MulChar k A) : gaussSum (χ ^ p) D.ψ = gaussSum χ D.ψ := by
   have : CharP k p := (Algebra.charP_iff (ZMod p) k p).1 inferInstance
@@ -37,24 +37,24 @@ theorem gaussSum_pow_p (χ : MulChar k A) : gaussSum (χ ^ p) D.ψ = gaussSum χ
   exact (psi_pow p k D.ζ D.prim.pow_eq_one x).symm
 
 /- English proof (translation)
-Rewrite using `[pow_add, mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ω_pow_add_inv (a b : ℕ) : (D.ω ^ (a + b))⁻¹ = (D.ω ^ a)⁻¹ * (D.ω ^ b)⁻¹ := by
   rw [pow_add, mul_inv]
 
 /- English proof (translation)
-Rewrite using `[Ne, inv_eq_one]`. Conclude with `D.ω_pow_ne_one h0 ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ω_pow_inv_ne_one {a : ℕ} (h0 : 0 < a) (ha : a < p ^ f - 1) : (D.ω ^ a)⁻¹ ≠ 1 := by
   rw [Ne, inv_eq_one]
   exact D.ω_pow_ne_one h0 ha
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => rw [D.g_zero, pow_zero, Valuation.map_neg, map_one]`. Consider the case `succ a ih`. Establish `h1 : 1 < p ^ f - 1` using `by omega`. Establish `hne : (D.ω ^ a)⁻¹ * (D.ω ^ 1)⁻¹ ≠ 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← D.ω_pow_add_inv]`. Conclude with `D.ω_pow_inv_ne_one (Nat.succ_pos a) ha`. Establish `h2` using `D.val_mul_le hne`. Rewrite `h2` using `[← D.ω_pow_add_inv]`. Establish `h3 : Q.intValuation (D.g a) * Q.intValuation (D.g 1) ≤ Q.intValuation (D.g (a + 1))` using `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[D.val_g_one h1]`. Rewrite using `[pow_succ]`. Conclude with `le_trans (mul_le_mul_left (ih (by omega)) _) h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_val_g_small {a : ℕ} (ha : a < p ^ f - 1) :
     Q.intValuation (D.ζ - 1) ^ a ≤ Q.intValuation (D.g a) := by
@@ -73,13 +73,13 @@ theorem pow_le_val_g_small {a : ℕ} (ha : a < p ^ f - 1) :
     exact le_trans (mul_le_mul_left (ih (by omega)) _) h3
 
 /- English proof (translation)
-Establish `hp : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Proceed by induction on `a using Nat.strong_induction_on with`. Consider the case `_ a ih`. Break down `Nat.eq_zero_or_pos a with rfl | h0` into its components or cases. Rewrite using `[dsum_of_lt hp (by omega)]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `D.pow_le_val_g_small ha`. Establish `hdiv : a / p < a` using `Nat.div_lt_self h0 hp`. Establish `hmod : a % p ≤ a` using `Nat.mod_le a p`. Establish `hdec : (D.ω ^ a)⁻¹ = (D.ω ^ (a % p))⁻¹ * ((D.ω ^ (a / p))⁻¹) ^ p`. Rewrite using `[inv_pow, ← pow_mul, ← D.ω_pow_add_inv, mul_comm (a / p) p, Nat.mod_add_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : (D.ω ^ (a % p))⁻¹ * ((D.ω ^ (a / p))⁻¹) ^ p ≠ 1`. Rewrite using `[← hdec]`. Conclude with `D.ω_pow_inv_ne_one h0 ha`. Establish `h2` using `D.val_mul_le hne`. Rewrite `h2` using `[← hdec, D.gaussSum_pow_p]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Q.intValuation (D.g (a % p)) * Q.intValuation (D.g (a / p)) ≤ Q.intValuation (D.g a)` using `h2`. Rewrite using `[dsum_rec hp a, pow_add]`. Conclude with `le_trans (mul_le_mul' (D.pow_le_val_g_small (by omega)) (ih _ hdiv (by omega))) h3`.
+A detailed English derivation is pending.
 -/
 theorem pow_dsum_le_val_g {a : ℕ} (ha : a < p ^ f - 1) :
     Q.intValuation (D.ζ - 1) ^ dsum p a ≤ Q.intValuation (D.g a) := by
@@ -104,7 +104,7 @@ theorem pow_dsum_le_val_g {a : ℕ} (ha : a < p ^ f - 1) :
       exact le_trans (mul_le_mul' (D.pow_le_val_g_small (by omega)) (ih _ hdiv (by omega))) h3
 
 /- English proof (translation)
-Establish `h : χ (-1) * χ (-1) = 1` using `by rw [← map_mul]; simp`. Establish `h1 : Q.intValuation (χ (-1)) * Q.intValuation (χ (-1)) = 1`. Rewrite using `[← map_mul, h, map_one]`. Use `le_antisymm (Q.intValuation_le_one _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem val_neg_one (χ : MulChar k A) : Q.intValuation (χ (-1)) = 1 := by
   have h : χ (-1) * χ (-1) = 1 := by rw [← map_mul]; simp
@@ -115,13 +115,13 @@ theorem val_neg_one (χ : MulChar k A) : Q.intValuation (χ (-1)) = 1 := by
     _ ≤ Q.intValuation (χ (-1)) := mul_le_of_le_one_right' (Q.intValuation_le_one _)
 
 /- English proof (translation)
-Establish `hprim : D.ψ.IsPrimitive` using `psi_isPrimitive p k D.ζ D.prim`. Establish `hne` using `D.ω_pow_inv_ne_one h0 ha`. Establish `hinv : (D.ω ^ (p ^ f - 1 - a))⁻¹ = ((D.ω ^ a)⁻¹)⁻¹`. Rewrite using `[inv_inv, inv_eq_iff_mul_eq_one, ← pow_add, Nat.sub_add_cancel ha.le, D.ω_pow_card]`. Establish `hcard` using `gaussSum_mul_gaussSum_eq_card hne hprim`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hshift` using `gaussSum_mulShift ((D.ω ^ a)⁻¹)⁻¹ D.ψ (-1 : kˣ)`. Establish `hψ : AddChar.mulShift D.ψ ((-1 : kˣ) : k) = D.ψ⁻¹`. Rewrite using `[AddChar.inv_mulShift]`. Simplify using the standard rewrite rules. Rewrite `hshift` using `[hψ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : Q.intValuation (gaussSum ((D.ω ^ a)⁻¹)⁻¹ D.ψ⁻¹) = Q.intValuation (gaussSum ((D.ω ^ a)⁻¹)⁻¹ D.ψ)`. Rewrite using `[← hshift, map_mul]`. Establish `: (((-1 : kˣ) : k)) = -1` using `by simp`. Rewrite using `[this, val_neg_one, one_mul]`. Unfold `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hinv, ← hv, ← map_mul, hcard, D.card_eq, Nat.cast_pow, map_pow, D.val_p, ← pow_mul, mul_comm f]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_g_mul_val_g_compl {a : ℕ} (h0 : 0 < a) (ha : a < p ^ f - 1) :
     Q.intValuation (D.g a) * Q.intValuation (D.g (p ^ f - 1 - a)) =

@@ -14,13 +14,13 @@ def dcos (N P : Subgroup G) (x : G) : Set G := {g | ∃ u ∈ N, ∃ p ∈ P, g 
 def cj (x : G) (P : Subgroup G) : Subgroup G := P.comap (MulAut.conj x⁻¹).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[cj, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cj {x y : G} {P : Subgroup G} : y ∈ cj x P ↔ x⁻¹ * y * x ∈ P := by
   simp [cj, MulAut.conj_apply]
 
 /- English proof (translation)
-Introduce `s` and use `by have h := Set.indicator_const_preimage W s c simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at h rcases h with h | h | h | h <;> rw [h] exacts [isOpen_univ, hW.isOpen, hW.isClosed.isOpen_compl, isOpen_empty]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem indicator_isLocallyConstant {W : Set G} (hW : IsClopen W) (c : ℂ) :
     IsLocallyConstant (W.indicator fun _ => c) := fun s => by
@@ -30,9 +30,9 @@ theorem indicator_isLocallyConstant {W : Set G} (hW : IsClopen W) (c : ℂ) :
   exacts [isOpen_univ, hW.isOpen, hW.isClosed.isOpen_compl, isOpen_empty]
 
 /- English proof (translation)
-Take `⟨V, hV, hVe⟩` from `isOpen_induced_iff.mp hPo`. Establish `h1 : (⟨1, B.one_mem⟩ : B) ∈ (Subtype.val : B → G) ⁻¹' V` using `by rw [hVe]; exact P.one_mem`. Use `⟨V, hV.mem_nhds h1, fun y hy hyV => ?_⟩` and prove the remaining obligations. Establish `: (⟨y, hy⟩ : B) ∈ (Subtype.val : B → G) ⁻¹' V` using `hyV`. Rewrite `this` using `[hVe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem nhds_of_relOpen {B P : Subgroup G} (hPo : IsOpen ((Subtype.val : B → G) ⁻¹' P)) :
     ∃ U ∈ nhds (1 : G), ∀ y ∈ B, y ∈ U → y ∈ P := by
@@ -44,7 +44,7 @@ theorem nhds_of_relOpen {B P : Subgroup G} (hPo : IsOpen ((Subtype.val : B → G
   exact this
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[mem_cj]`. Use `B.mul_mem (B.mul_mem hx (hPB hy)) (B.inv_mem hx)` as an intermediate fact. Rewrite `this` using `[show x * (x⁻¹ * y * x) * x⁻¹ = y by group]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cj_le {B P : Subgroup G} {x : G} (hx : x ∈ B) (hPB : P ≤ B) : cj x P ≤ B := by
   intro y hy
@@ -53,9 +53,9 @@ theorem cj_le {B P : Subgroup G} {x : G} (hx : x ∈ B) (hPB : P ≤ B) : cj x P
   rwa [show x * (x⁻¹ * y * x) * x⁻¹ = y by group] at this
 
 /- English proof (translation)
-Establish `: ((cj x P : Subgroup G) : Set G) = (fun y => x * y * x⁻¹) '' (P : Set G)`. Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, mem_cj, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `h; exact ⟨_, h, by group⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨z, hz, rfl⟩; rwa [show x⁻¹ * (x * z * x⁻¹) * x = z by group]`. Rewrite using `[this]`. Conclude with `hPc.image (by fun_prop)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_compact {P : Subgroup G} (x : G) (hPc : IsCompact (P : Set G)) :
     IsCompact ((cj x P : Subgroup G) : Set G) := by
@@ -69,7 +69,7 @@ theorem cj_compact {P : Subgroup G} (x : G) (hPc : IsCompact (P : Set G)) :
   exact hPc.image (by fun_prop)
 
 /- English proof (translation)
-Establish `: (Subtype.val : B → G) ⁻¹' (cj x P) = (fun b : B => (⟨x, hx⟩ : B)⁻¹ * b * ⟨x, hx⟩) ⁻¹' ((Subtype.val : B → G) ⁻¹' P)`. Use extensionality with `b`. Simplify using `[mem_cj]`. Rewrite using `[this]`. Conclude with `hPo.preimage (by fun_prop)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_open {B P : Subgroup G} {x : G} (hx : x ∈ B)
     (hPo : IsOpen ((Subtype.val : B → G) ⁻¹' P)) :
@@ -81,9 +81,9 @@ theorem cj_open {B P : Subgroup G} {x : G} (hx : x ∈ B)
   exact hPo.preimage (by fun_prop)
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [dcos, ncos, Set.mem_preimage, Set.mem_setOf_eq, mem_cj]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, p, hp, rfl⟩`. Conclude with `⟨u, hu, x * p * x⁻¹, by rwa [show x⁻¹ * (x * p * x⁻¹) * x = p by group], by group⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨u, hu, c, hc, h⟩`. Use `⟨u, hu, _, hc, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem dcos_eq (N P : Subgroup G) (x : G) :
     dcos N P x = (fun g => g * x⁻¹) ⁻¹' ncos N (cj x P) := by
@@ -99,9 +99,9 @@ theorem dcos_eq (N P : Subgroup G) (x : G) :
       _ = u * x * (x⁻¹ * c * x) := by group
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, c, hc, e⟩`. Use `⟨u⁻¹ * v, N.mul_mem (N.inv_mem hu) hv, c, hc, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨v, hv, c, hc, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u * v, N.mul_mem hu hv, c, hc, by group⟩`.
+Supply the required witnesses or components.
 -/
 theorem ncos_left {N P : Subgroup G} {u g : G} (hu : u ∈ N) : u * g ∈ ncos N P ↔ g ∈ ncos N P := by
   constructor
@@ -114,9 +114,9 @@ theorem ncos_left {N P : Subgroup G} {u g : G} (hu : u ∈ N) : u * g ∈ ncos N
     exact ⟨u * v, N.mul_mem hu hv, c, hc, by group⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, c, hc, e⟩`. Use `⟨v, hv, c * q⁻¹, P.mul_mem hc (P.inv_mem hq), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨v, hv, c, hc, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨v, hv, c * q, P.mul_mem hc hq, by group⟩`.
+Supply the required witnesses or components.
 -/
 theorem ncos_right {N P : Subgroup G} {q g : G} (hq : q ∈ P) : g * q ∈ ncos N P ↔ g ∈ ncos N P := by
   constructor
@@ -129,9 +129,9 @@ theorem ncos_right {N P : Subgroup G} {q g : G} (hq : q ∈ P) : g * q ∈ ncos 
     exact ⟨v, hv, c * q, P.mul_mem hc hq, by group⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, p, hp, e⟩`. Use `⟨u⁻¹ * v, N.mul_mem (N.inv_mem hu) hv, p, hp, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨v, hv, p, hp, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u * v, N.mul_mem hu hv, p, hp, by group⟩`.
+Supply the required witnesses or components.
 -/
 theorem dcos_left {N P : Subgroup G} {x u g : G} (hu : u ∈ N) :
     u * g ∈ dcos N P x ↔ g ∈ dcos N P x := by
@@ -145,9 +145,9 @@ theorem dcos_left {N P : Subgroup G} {x u g : G} (hu : u ∈ N) :
     exact ⟨u * v, N.mul_mem hu hv, p, hp, by group⟩
 
 /- English proof (translation)
-Take `⟨u, hu, p, hp, e1⟩` from `hx`. Take `⟨v, hv, q, hq, e2⟩` from `hy`. Establish `hxe : x = u⁻¹ * v * y * q * p⁻¹`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `z ⟨w, hw, r, hr, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Use `⟨w * u⁻¹ * v, N.mul_mem (N.mul_mem hw (N.inv_mem hu)) hv, q * p⁻¹ * r, P.mul_mem (P.mul_mem hq (P.inv_mem hp)) hr, ?_⟩` and prove the remaining obligations. Rewrite using `[hxe]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dcos_sub {N P : Subgroup G} {x y g : G} (hx : g ∈ dcos N P x) (hy : g ∈ dcos N P y) :
     dcos N P x ⊆ dcos N P y := by
@@ -163,15 +163,13 @@ theorem dcos_sub {N P : Subgroup G} {x y g : G} (hx : g ∈ dcos N P x) (hy : g 
   rw [hxe]; group
 
 /- English proof (translation)
-Proceed by induction on `t₀ using Finset.induction_on with`. Consider the case `empty => exact ⟨∅, subset_refl _, by simp, by simp⟩`. Consider the case `@insert a s ha ih`. Take `⟨t, hts, hcov, hinj⟩` from `ih`. Distinguish the cases in `hex : ∃ y ∈ t, D a = D y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨t, hts.trans (Finset.subset_insert _ _), ?_, hinj⟩` and prove the remaining obligations. Introduce `x hx`. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases. Conclude with `hex`. Conclude with `hcov x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hex`. Use `⟨insert a t, Finset.insert_subset_insert _ hts, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases. Conclude with `⟨x, Finset.mem_insert_self _ _, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, e⟩` from `hcov x hx`. Conclude with `⟨y, Finset.mem_insert_of_mem hy, e⟩`. Introduce `x hx y hy e`. Apply the tactic sequence `rcases Finset.mem_insert.mp hx with hx | hx <;> rcases Finset.mem_insert.mp hy with hy | hy`. Rewrite using `[hx, hy]`.
-
-Conclude with `absurd (hx ▸ e) (hex y hy)`. Conclude with `absurd (hy ▸ e).symm (hex x hx)`. Conclude with `hinj x hx y hy e`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dedupe {α β : Type} [DecidableEq α] (D : α → β) (t₀ : Finset α) :
     ∃ t ⊆ t₀, (∀ x ∈ t₀, ∃ y ∈ t, D x = D y) ∧ ∀ x ∈ t, ∀ y ∈ t, D x = D y → x = y := by
@@ -200,7 +198,7 @@ theorem dedupe {α β : Type} [DecidableEq α] (D : α → β) (t₀ : Finset α
         · exact hinj x hx y hy e
 
 /- English proof (translation)
-Rewrite using `[hT]`. Conclude with `⟨fun _ _ _ => rfl, IsLocallyConstant.const 0, ∅, isCompact_empty, Set.empty_subset _, fun g h => absurd rfl h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem zero_fun_mem {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -211,9 +209,9 @@ theorem zero_fun_mem {N B : Subgroup G} {T : Set (G → ℂ)}
     fun g h => absurd rfl h⟩
 
 /- English proof (translation)
-Rewrite `hF`, `hF'`, the goal using `[hT]`. Take `⟨hN, hL, C, hC, hCB, hs⟩` from `hF`. Take `⟨hN', hL', C', hC', hCB', hs'⟩` from `hF'`. Use `⟨fun u hu g => by simp only [hN u hu, hN' u hu], hL.comp₂ hL' (fun a b => c * a + c' * b), C ∪ C', hC.union hC', Set.union_subset hCB hCB', fun g hg => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : F g = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : F' g ≠ 0` using `by intro h2; apply hg; simp [h1, h2]`. Take `⟨u, hu, c, hc, e⟩` from `hs' g h2`. Conclude with `⟨u, hu, c, Or.inr hc, e⟩`. Take `⟨u, hu, c, hc, e⟩` from `hs g h1`. Conclude with `⟨u, hu, c, Or.inl hc, e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem linear_combination_mem {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -233,9 +231,9 @@ theorem linear_combination_mem {N B : Subgroup G} {T : Set (G → ℂ)}
     exact ⟨u, hu, c, Or.inl hc, e⟩
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[hT]`. Take `⟨hN, hL, C, hC, hCB, hs⟩` from `hF`. Use `⟨fun u hu g => by rw [mul_assoc]; exact hN u hu _, hL.comp_continuous (continuous_mul_right x), (fun c => c * x⁻¹) '' C, hC.image (continuous_mul_right _), ?_, fun g hg => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `B.mul_mem (hCB hc) (B.inv_mem hx)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, c, hc, e⟩` from `hs _ hg`. Use `⟨u, hu, c * x⁻¹, ⟨c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem right_translate_mem {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -253,9 +251,9 @@ theorem right_translate_mem {N B : Subgroup G} {T : Set (G → ℂ)}
       _ = u * (c * x⁻¹) := by group
 
 /- English proof (translation)
-Rewrite using `[hT]`. Use `⟨fun u hu g => ?_, indicator_isLocallyConstant (h2 P hPB hPc hPo) 1, P, hPc, fun x hx => hPB hx, fun g hg => by have := Set.mem_of_indicator_ne_zero hg; exact this⟩` and prove the remaining obligations. Use `ncos_left (P := P) (g := g) hu` as an intermediate fact. Distinguish the cases in `h : g ∈ ncos N P`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (this.mpr h)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (this.mp h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nonzero_coset_mem_compact {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -274,7 +272,7 @@ theorem nonzero_coset_mem_compact {N B : Subgroup G} {T : Set (G → ℂ)}
   · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (this.mp h'))]
 
 /- English proof (translation)
-Use `right_translate_mem hT (nonzero_coset_mem_compact hT h2 (cj_le hx hPB) (cj_compact x hPc) (cj_open hx hPo)) (B.inv_mem hx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Rewrite using `[dcos_eq]`. Apply the tactic sequence `first | rfl | simp only [Set.indicator_apply, Set.mem_preimage]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_dcos_mem {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -292,7 +290,7 @@ theorem indicator_dcos_mem {N B : Subgroup G} {T : Set (G → ℂ)}
   first | rfl | simp only [Set.indicator_apply, Set.mem_preimage]
 
 /- English proof (translation)
-Rewrite using `[← hinv _ (nonzero_coset_mem_compact hT h2 (cj_le hx hPB) (cj_compact x hPc) (cj_open hx hPo)) _ (B.inv_mem hx)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[dcos_eq]`. Apply the tactic sequence `first | rfl | simp only [Set.indicator_apply, Set.mem_preimage]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem I_dcos {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -310,11 +308,11 @@ theorem I_dcos {N B : Subgroup G} {T : Set (G → ℂ)}
   first | rfl | simp only [Set.indicator_apply, Set.mem_preimage]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `hz` using `zero_fun_mem hT`. Establish `h0` using `hlin _ hz _ hz 0 0`. Simplify using `only [zero_mul, add_zero] at h0`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using ⟨hz, h0⟩`. Consider the case `@insert a s ha ih`. Take `⟨hm, hI⟩` from `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))`. Establish `hfa` using `hf a (Finset.mem_insert_self a s)`. Establish `e : (fun g => ∑ i ∈ insert a s, c i * f i g) = fun g => c a * f a g + 1 * (fun g => ∑ i ∈ s, c i * f i g) g`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_insert ha, one_mul]`. Rewrite using `[e, Finset.sum_insert ha]`. Use `⟨linear_combination_mem hT hfa hm _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hlin _ hfa _ hm, hI, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_sum {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -341,25 +339,23 @@ theorem I_sum {N B : Subgroup G} {T : Set (G → ℂ)}
     rw [hlin _ hfa _ hm, hI, one_mul]
 
 /- English proof (translation)
-Establish `hFN` using `((hT F).mp hF).1`. Take `⟨V, hV, hVP⟩` from `nhds_of_relOpen hPo`. Take `⟨t₀, ht₀C, hcov⟩` from `hC.elim_nhds_subcover (fun x => (fun y => x⁻¹ * y) ⁻¹' V) (fun x _ => by`. Apply `(continuous_mul_left x⁻¹).continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using hV)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcov' : ∀ c ∈ C, ∃ x ∈ t₀, c ∈ dcos N P x`. Introduce `c hc`. Use `hcov hc` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_preimage] at this`. Take `⟨x, hx, hxV⟩` from `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hxB : x ∈ B` using `hCB (ht₀C x hx)`. Establish `hp : x⁻¹ * c ∈ P` using `hVP _ (B.mul_mem (B.inv_mem hxB) (hCB hc)) hxV`. Conclude with `⟨x, hx, 1, N.one_mem, x⁻¹ * c, hp, by group⟩`. Take `⟨t, htt, htcov, hinj⟩` from `dedupe (dcos N P) t₀`. Establish `htC : ∀ x ∈ t, x ∈ C` using `fun x hx => ht₀C x (htt hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcovt : ∀ c ∈ C, ∃ x ∈ t, c ∈ dcos N P x`. Introduce `c hc`. Take `⟨x, hx, hcx⟩` from `hcov' c hc`. Take `⟨y, hy, e⟩` from `htcov x hx`. Conclude with `⟨y, hy, e ▸ hcx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hval : ∀ x, ∀ g ∈ dcos N P x, F g = F x`. Introduce and unpack `x g ⟨u, hu, p, hp, rfl⟩`. Rewrite using `[mul_assoc, hFN u hu, hFP x p hp]`. Establish `hdec : F = fun g => ∑ x ∈ t, F x * (dcos N P x).indicator (fun _ => (1 : ℂ)) g`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hg : ∃ x ∈ t, g ∈ dcos N P x`. Take `⟨x, hx, hgx⟩` from `hg`. Rewrite using `[Finset.sum_eq_single x]`. Rewrite using `[Set.indicator_of_mem hgx, mul_one, hval x g hgx]`. Introduce `y hy hyx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: g ∉ dcos N P y`. Introduce `hgy`. Conclude with `hyx (hinj y hy x hx (Set.Subset.antisymm (dcos_sub hgy hgx) (dcos_sub hgx hgy)))`. Rewrite using `[Set.indicator_of_notMem this, mul_zero]`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd hx h`. Use `push_neg at hg`. Establish `hF0 : F g = 0`. Assume the negation of the conclusion as `h`. Take `⟨u, hu, c, hc, rfl⟩` from `hs g h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, hcx⟩` from `hcovt c hc`. Conclude with `hg x hx ((dcos_left hu).mpr hcx)`. Rewrite using `[hF0]`. Conclude with `(Finset.sum_eq_zero fun x hx => by rw [Set.indicator_of_notMem (hg x hx), mul_zero]).symm`. Use `⟨t, htC, hcovt, ?_⟩` and prove the remaining obligations.
-
-Use `(I_sum hT hlin t (fun x => F x) (fun x => (dcos N P x).indicator fun _ => (1 : ℂ)) (fun x hx => indicator_dcos_mem hT h2 hPB hPc hPo (hCB (htC x hx)))).2` as an intermediate fact. Use `conv_lhs => rw [hdec]`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem decomp {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -426,17 +422,17 @@ theorem decomp {N B : Subgroup G} {T : Set (G → ℂ)}
   exact this
 
 /- English proof (translation)
-Establish `hPB` using `hPQ.trans hQB`. Establish `hF` using `nonzero_coset_mem_compact hT h2 hQB hQc hQo`. Establish `hFP : ∀ g, ∀ p ∈ P, (ncos N Q).indicator (fun _ => (1 : ℂ)) (g * p) = (ncos N Q).indicator (fun _ => (1 : ℂ)) g`. Introduce `g p hp`. Use `ncos_right (N := N) (g := g) (hPQ hp)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `h : g ∈ ncos N Q`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (this.mpr h)]`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (this.mp h'))]`. Take `⟨t, htQ, hcov, hI⟩` from `decomp hT h2 hlin hPB hPc hPo hF hFP hQc (fun x hx => hQB hx) (fun g hg => by have := Set.mem_of_indicator_ne_zero hg; exact this)`. Establish `hterm : ∀ x ∈ t, (ncos N Q).indicator (fun _ => (1 : ℂ)) x * I ((dcos N P x).indicator fun _ => (1 : ℂ)) = I ((ncos N P).indicator fun _ => (1 : ℂ))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hxQ : x ∈ Q` using `htQ x hx`. Establish `hS : ncos N (cj x P) = ncos N P`. Use extensionality with `g`. Simplify using `only [ncos, Set.mem_setOf_eq, mem_cj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, c, hc, rfl⟩`. Use `⟨u, hu, c, ?_, rfl⟩` and prove the remaining obligations. Use `hnorm x hxQ _ hc` as an intermediate fact. Rewrite `this` using `[show x * (x⁻¹ * c * x) * x⁻¹ = c by group]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨u, hu, c, hc, rfl⟩`. Use `⟨u, hu, c, ?_, rfl⟩` and prove the remaining obligations. Use `hnorm x⁻¹ (Q.inv_mem hxQ) c hc` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Rewrite using `[Set.indicator_of_mem (show x ∈ ncos N Q from ⟨1, N.one_mem, x, hxQ, by group⟩), one_mul, I_dcos hT h2 hinv hPB hPc hPo (hQB hxQ), hS]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI, Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul]`. Establish `hne : (t.card : ℂ) ≠ 0`. Take `⟨x, hx, _⟩` from `hcov 1 Q.one_mem`. Conclude with `Nat.cast_ne_zero.mpr (Finset.card_ne_zero_of_mem hx)`. Conclude with `⟨fun h => (mul_eq_zero.mp h).resolve_left hne, fun h => by rw [h, mul_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mult {N B : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -487,17 +483,15 @@ theorem mult {N B : Subgroup G} {T : Set (G → ℂ)}
   exact ⟨fun h => (mul_eq_zero.mp h).resolve_left hne, fun h => by rw [h, mul_zero]⟩
 
 /- English proof (translation)
-Establish `hW : ∀ c : G, ∃ W ∈ nhds (1 : G), ∀ v ∈ W, ∀ w ∈ W, F (c * (v * w)) = F c`. Introduce `c`. Establish `: (fun k => c * k) ⁻¹' {y | F y = F c} ∈ nhds (1 : G)`. Apply `(continuous_mul_left c).continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Use `show _ ∈ nhds (c * 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one]`. Conclude with `(hL.isOpen_fiber (F c)).mem_nhds rfl`. Take `⟨W, hW, hWW⟩` from `exists_nhds_one_split this`. Conclude with `⟨W, hW, fun v hv w hw => hWW v hv w hw⟩`. Use `choose W hW hWW using hW`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨t, -, hcov⟩` from `hC.elim_nhds_subcover (fun c => (fun y => c⁻¹ * y) ⁻¹' W c) (fun c _ => by`. Apply `(continuous_mul_left c⁻¹).continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using hW c)`. Use `⟨⋂ c ∈ t, W c, (Filter.biInter_finset_mem t).mpr fun c _ => hW c, ?_⟩` and prove the remaining obligations. Introduce `c' hc' k hk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `hcov hc'` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_preimage] at this`. Take `⟨c, hct, hcW⟩` from `this`. Establish `hkW : k ∈ W c` using `Set.mem_iInter₂.mp hk c hct`. Establish `e1 : F (c' * k) = F c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hWW c _ hcW k hkW` as an intermediate fact. Rewrite `this` using `[show c * (c⁻¹ * c' * k) = c' * k by group]`. Then use the resulting hypothesis. Establish `e2 : F c' = F c`. Use `hWW c _ hcW 1 (mem_of_mem_nhds (hW c))` as an intermediate fact. Rewrite `this` using `[show c * (c⁻¹ * c' * 1) = c' by group]`. Then use the resulting hypothesis.
-
-Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_inv {F : G → ℂ} (hL : IsLocallyConstant F) {C : Set G} (hC : IsCompact C) :
     ∃ U ∈ nhds (1 : G), ∀ c ∈ C, ∀ k ∈ U, F (c * k) = F c := by
@@ -531,17 +525,17 @@ theorem unif_inv {F : G → ℂ} (hL : IsLocallyConstant F) {C : Set G} (hC : Is
   rw [e1, e2]
 
 /- English proof (translation)
-Establish `hKB` using `hKK₀.trans hK₀B`. Take `⟨V₁, hV₁, hV₁K⟩` from `nhds_of_relOpen hKo`. Take `⟨V₂, hV₂, hV₂K⟩` from `nhds_of_relOpen (cj_open (B.inv_mem hc) hKo)`. Take `⟨K₁, hK₁K₀, hK₁c, hK₁o, hK₁U, hK₁n⟩` from `h3 _ (Filter.inter_mem hV₁ hV₂)`. Establish `hK₁B` using `hK₁K₀.trans hK₀B`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK₁K : K₁ ≤ K` using `fun y hy => hV₁K y (hK₁B hy) (hK₁U hy).1`. Establish `hK₁K' : ∀ y ∈ K₁, c * y * c⁻¹ ∈ K` using `fun y hy => by`. Use `hV₂K y (hK₁B hy) (hK₁U hy).2` as an intermediate fact. Rewrite `this` using `[mem_cj, inv_inv]`. Then use the resulting hypothesis. Establish `hL₁L : cj c K₁ ≤ cj c K` using `fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hy`, the goal using `[mem_cj]`. Conclude with `hK₁K hy`. Establish `hL₁K : cj c K₁ ≤ K` using `fun y hy => by`. Rewrite `hy` using `[mem_cj]`. Use `hK₁K' _ hy` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show c * (c⁻¹ * y * c) * c⁻¹ = y by group]`. Then use the resulting hypothesis. Establish `hL₁n : ∀ x ∈ cj c K, ∀ y ∈ cj c K₁, x * y * x⁻¹ ∈ cj c K₁`. Introduce `x hx y hy`. Rewrite `hx`, `hy`, the goal using `[mem_cj]`. Use `hK₁n _ (hKK₀ hx) _ hy` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show c⁻¹ * x * c * (c⁻¹ * y * c) * (c⁻¹ * x * c)⁻¹ = c⁻¹ * (x * y * x⁻¹) * c by group]`. Then use the resulting hypothesis. Take `⟨V₃, hV₃, hV₃L⟩` from `nhds_of_relOpen (cj_open hc hK₁o)`. Take `⟨K₂, hK₂K₀, hK₂c, hK₂o, hK₂U, hK₂n⟩` from `h3 _ hV₃`. Establish `hK₂B` using `hK₂K₀.trans hK₀B`. Establish `hK₂L₁ : K₂ ≤ cj c K₁` using `fun y hy => hV₃L y (hK₂B hy) (hK₂U hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(mult hT h2 hlin hinv hK₂K₀ hK₀B hK₂c hK₂o hK₀c hK₀o hK₂n).mp h0`. Establish `e2` using `(mult hT h2 hlin hinv hK₂L₁ (cj_le hc hK₁B) hK₂c hK₂o (cj_compact c hK₁c) (cj_open hc hK₁o) (fun x hx y hy => hK₂n x (hKK₀ (hL₁K hx)) y hy)).mpr e1`. Conclude with `(mult hT h2 hlin hinv hL₁L (cj_le hc hKB) (cj_compact c hK₁c) (cj_open hc hK₁o) (cj_compact c hKc) (cj_open hc hKo) hL₁n).mpr e2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_zero {N B K₀ : Subgroup G} {T : Set (G → ℂ)}
     (hT : ∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧
@@ -591,15 +585,15 @@ theorem conj_zero {N B K₀ : Subgroup G} {T : Set (G → ℂ)}
 end
 
 /- English proof (translation)
-Introduce `G _ _ _ _ N B K₀ T hT h2 h3 hK₀B hK₀c hK₀o I hlin hinv h0 F hF`. Take `⟨hFN, hFL, C, hCc, hCB, hs⟩` from `(hT F).mp hF`. Take `⟨U, hU, hUF⟩` from `unif_inv hFL hCc`. Take `⟨K, hKK₀, hKc, hKo, hKU, -⟩` from `h3 U hU`. Establish `hKB` using `hKK₀.trans hK₀B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hFK : ∀ g, ∀ k ∈ K, F (g * k) = F g`. Introduce `g k hk`. Distinguish the cases in `hg : F g ≠ 0`. Take `⟨u, hu, c, hc, rfl⟩` from `hs g hg`. Rewrite using `[mul_assoc, hFN u hu, hFN u hu, hUF c hc k (hKU hk)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hgk : F (g * k) = 0`. Use `push_neg at hg`. Rewrite using `[hgk, hg]`. Take `⟨u, hu, c, hc, e⟩` from `hs _ hgk`. Establish `hge : g = u * (c * k⁻¹)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : F g = F c`. Rewrite using `[hge, hFN u hu, hUF c hc k⁻¹ (hKU (K.inv_mem hk))]`. Rewrite using `[e, hFN u hu, h1]`. Take `⟨t, htC, -, hI⟩` from `decomp hT h2 hlin hKB hKc hKo hF hFK hCc hCB hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite using `[I_dcos hT h2 hinv hKB hKc hKo (hCB (htC x hx)), conj_zero hT h2 hlin hinv h3 hK₀B hK₀c hK₀o h0 hKK₀ hKc hKo (hCB (htC x hx)), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_functional_eq_zero :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (N B K₀ : Subgroup G) (T : Set (G → ℂ)), (∀ F, F ∈ T ↔ (∀ u ∈ N, ∀ g, F (u * g) = F g) ∧ IsLocallyConstant F ∧ ∃ C : Set G, IsCompact C ∧ C ⊆ B ∧ ∀ g, F g ≠ 0 → ∃ u ∈ N, ∃ c ∈ C, g = u * c) → (∀ K : Subgroup G, K ≤ B → IsCompact (K : Set G) → IsOpen ((Subtype.val : B → G) ⁻¹' K) → IsClopen {g : G | ∃ u ∈ N, ∃ c ∈ K, g = u * c}) → (∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, K ≤ K₀ ∧ IsCompact (K : Set G) ∧ IsOpen ((Subtype.val : B → G) ⁻¹' K) ∧ (K : Set G) ⊆ U ∧ ∀ x ∈ K₀, ∀ y ∈ K, x * y * x⁻¹ ∈ K) → K₀ ≤ B → IsCompact (K₀ : Set G) → IsOpen ((Subtype.val : B → G) ⁻¹' K₀) → ∀ I : (G → ℂ) → ℂ, (∀ F ∈ T, ∀ F' ∈ T, ∀ c c' : ℂ, I (fun g => c * F g + c' * F' g) = c * I F + c' * I F') → (∀ F ∈ T, ∀ x ∈ B, I (fun g => F (g * x)) = I F) → I (Set.indicator {g : G | ∃ u ∈ N, ∃ c ∈ K₀, g = u * c} fun _ => (1 : ℂ)) = 0 → ∀ F ∈ T, I F = 0 := by

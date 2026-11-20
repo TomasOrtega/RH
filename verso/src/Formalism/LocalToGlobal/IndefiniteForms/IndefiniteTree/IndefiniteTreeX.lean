@@ -274,9 +274,9 @@ Evaluate the decidable proposition.
 theorem reduced_forms_neg_four : reducedForms (-4) = {(1, 0, 1)} := by decide
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨⟨by norm_num, (by norm_num : Nat.Prime 7).prime.squarefree⟩, fun x hx => by simp only [Polynomial.eval_X]; rw [abs_le]; constructor <;> linarith [hx.1, hx.2], by simp, by simp, by rw [reduced_forms_neg_four]; simp, ?_, ⟨RingTheory.Sequence.IsWeaklyRegular.nil ℤ ℤ, by simp …`. Simplify using `only [List.ofFn_succ, List.ofFn_zero]`. Rewrite using `[RingTheory.Sequence.isWeaklyRegular_singleton_iff]`. Introduce `a b h`. Simplify using `only [smul_eq_mul] at h`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `z _`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem premises_satisfiable₂ :
     (7 % 16 = 7 ∧ Squarefree 7) ∧ (∀ x ∈ Set.Icc (0 : ℝ) 1, |(Polynomial.X : Polynomial ℝ).eval x| ≤ 1) ∧

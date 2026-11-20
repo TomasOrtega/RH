@@ -14,25 +14,25 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.VbPull
 
 /- English proof (translation)
-Set `c` to `Module.Basis.mk hli hb.ge`. Establish `hc : ∀ k, c k = b k` using `fun k => by simp [c]`. Use `haveI : Module.Finite Ω (Module.Dual Ω W) := Module.Finite.of_basis c`. Use `haveI : Module.Finite Ω W := (Module.finite_dual_iff Ω).1 inferInstance`. Set `e : Fin r → W` to `fun l => (Module.evalEquiv Ω W).symm (c.dualBasis l)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ∀ k l, b k (e l) = if k = l then 1 else 0`. Introduce `k l`. Simplify using `only [e]`. Rewrite using `[Module.apply_evalEquiv_symm_apply, ← hc k, Module.Basis.dualBasis_apply_self]`. Establish `hx : ∀ x : W, x = ∑ k, b k x • e k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[← sub_eq_zero]`. Apply `(Module.forall_dual_apply_eq_zero_iff Ω _).1` to reduce the goal to its premises. Introduce `u`. Establish `hu : u ∈ Submodule.span Ω (Set.range b)` using `by rw [hb]; trivial`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨m, rfl⟩` from `hy`. Simplify using `[he, map_sum]`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => simp only [LinearMap.add_apply, hy, hz, add_zero]`. Consider the case `smul a y _ hy => simp only [LinearMap.smul_apply, hy, smul_zero]`. Establish `hjx : ∀ x, j x = ∑ k, i (b k x) • j (e k)`. Introduce `x`. Use `conv_lhs => rw [hx x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => hj _ _`. Establish `hext : ∀ v v' : Module.Dual Ω' W', (∀ k, v (j (e k)) = v' (j (e k))) → v = v'`. Introduce `v v' h`. Use `LinearMap.ext_on hs ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hjx x]`. Simplify using `only [map_sum, map_smul, h]`. Establish `hpair : ∀ k l, jW (b k) (j (e l)) = if k = l then 1 else 0`. Introduce `k l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hjW, he]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun v : Module.Dual Ω' W' => v (j (e l))) hg` as an intermediate fact. Simplify `this` using `[hpair]`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v = ∑ k, v (j (e k)) • jW (b k)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hext` to reduce the goal to its premises. Introduce `l`. Simplify using `[hpair]`. Rewrite using `[hv]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dual_frame_ext {Ω Ω' : Type} [Field Ω] [Field Ω'] (i : Ω →+* Ω') {W W' : Type} [AddCommGroup W] [Module Ω W]
     [AddCommGroup W'] [Module Ω' W'] (j : W →+ W') (hj : ∀ (a : Ω) (e : W), j (a • e) = i a • j e)
@@ -93,39 +93,33 @@ theorem dual_frame_ext {Ω Ω' : Type} [Field Ω] [Field Ω'] (i : Ω →+* Ω')
     exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
 /- English proof (translation)
-Introduce `X X' Ω Ω' _ _ ξ ξ' f i V V' _ _ _ _ j jd W W' Lo Lo' T T' r hd _ hj hjd hW hvb hT`. Establish `hmem : ∀ e : W, j e ∈ W'` using `fun e => by`. Rewrite using `[hW]`. Conclude with `Submodule.subset_span ⟨e, e.2, rfl⟩`. Set `jr : W →+ W'` to `{ toFun := fun e => ⟨j e, hmem e⟩ map_zero' := Subtype.ext (map_zero j) map_add' := fun a b => Subtype.ext (map_add j _ _) }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsm : ∀ (a : Ω) (e : W), jr (a • e) = i a • jr e` using `fun a e => Subtype.ext (hj.1 a e)`. Establish `hext : IsExtOver i jr` using `⟨hsm, fun n b hb => by`. Establish `h1` using `hj.2 n (fun k => (b k : V)) (hb.map' W.subtype W.ker_subtype)`. Conclude with `LinearIndependent.of_comp W'.subtype h1⟩`. Establish `hs : Submodule.span Ω' (Set.range jr) = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Submodule.span Ω' (Set.range jr)).map W'.subtype = W'`. Rewrite using `[Submodule.map_span]`. Use `conv_rhs => rw [hW]`. Use `congr 1`. Use extensionality with `x`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨e, rfl⟩, rfl⟩`. Conclude with `⟨e, e.2, rfl⟩`. Introduce and unpack `⟨e, he, rfl⟩`. Conclude with `⟨_, ⟨⟨e, he⟩, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `Submodule.comap_map_eq_of_injective W'.injective_subtype (Submodule.span Ω' (Set.range jr))`. Rewrite `h2` using `[h1, Submodule.comap_subtype_self]`. Conclude with `h2.symm`. Take `⟨jW, hjW⟩` from `DualExt.dual_ext Ω Ω' i W W' jr hext hs`. Establish `hcomp : ∀ w, W'.dualRestrict (jd w) = jW (W.dualRestrict w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Use `LinearMap.ext_on hs ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, rfl⟩`. Rewrite using `[hjW]`. Conclude with `hjd w e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hsemi : ∀ (a : Ω) (u : Module.Dual Ω W), jW (a • u) = i a • jW u`. Introduce `a u`. Use `LinearMap.ext_on hs ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, rfl⟩`. Simplify using `[hjW]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p' hp'`. Take `⟨hq, hpT, -⟩` from `hT p' hp'`. Take `⟨U, hU, b, hb, hfr⟩` from `hvb _ hpT`. Take `⟨hli', hspan'⟩` from `dual_frame_ext i jr hsm hs jW hjW b (hfr _ hpT hU).1 hb`. Use `⟨f ⁻¹ᵁ U, hU, fun k => jW (b k), hspan', fun q' hq' hq'U => ⟨hli', ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hq2, hqT, hL⟩` from `hT q' hq'`. Establish `hfrq` using `(hfr _ hqT hq'U).2`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `: Subsingleton (Module.Dual Ω' W')`. Rewrite using `[← Submodule.subsingleton_iff Ω', ← subsingleton_iff_bot_eq_top]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hspan']`. Simplify using the standard rewrite rules. Conclude with `Subsingleton.elim _ _`. Take `⟨hq3, hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q'`. Apply `le_antisymm` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `show Submodule.map _ _ ≤ _`. Rewrite using `[hL hr, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨w, hw, rfl⟩, rfl⟩`. Use `show W'.dualRestrict (jd w) ∈ _`. Rewrite using `[hcomp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hin : W.dualRestrict w ∈ Submodule.span (regAt ξ ⟨f q'.1, hq2⟩) (Set.range b)`. Rewrite using `[← hfrq]`. Conclude with `⟨w, hw, rfl⟩`. Establish `key : ∀ y ∈ Submodule.span (regAt ξ ⟨f q'.1, hq2⟩) (Set.range b), jW y ∈ Submodule.span (regAt ξ' q') (Set.range fun k => jW (b k))`. Introduce `y hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy`. Establish `: jW (a • y) = (⟨i a, hreg _ a.2⟩ : regAt ξ' q') • jW y` using `hsemi (a : Ω) y`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `key _ hin`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
-
-Establish `hin : b k ∈ (Lo.map W.dualRestrict) ⟨f q'.1, hq2⟩`. Rewrite using `[hfrq]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Take `⟨w, hw, hwk⟩` from `hin`. Use `⟨jd w, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hL hr]`. Conclude with `Submodule.subset_span ⟨w, hw, rfl⟩`. Use `show W'.dualRestrict (jd w) = jW (b k)`. Rewrite using `[hcomp]`. Conclude with `congrArg jW hwk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVBOn_dual_pull : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω' ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω') (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V'] (j : V →+ V') (jd : Module.Dual Ω V →+ Module.Dual Ω' V') (W : Submodule Ω V) (W' : Submodule Ω' V') (Lo : Lat ξ (Module.Dual Ω V)) (Lo' : Lat ξ' (Module.Dual Ω' V')) (T : Set (Cpt ξ)) (T' : Set (Cpt ξ')) (r : ℕ), GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → IsCptGen ξ' → IsExtOver i j → (∀ w e, jd w (j e) = i (w e)) → W' = Submodule.span Ω' (j '' (W : Set V)) → (Lo.map W.dualRestrict).IsVBOn T r ⊤ → (∀ p' ∈ T', ∃ hq : genPt ξ ⤳ f p'.1, (⟨f p'.1, hq⟩ : Cpt ξ) ∈ T ∧ (0 < r → Lo' p' = Submodule.span (regAt ξ' p') (jd '' (Lo ⟨f p'.1, hq⟩ : Set (Module.Dual Ω V))))) → (Lo'.map W'.dualRestrict).IsVBOn T' r ⊤ := by
   intro X X' Ω Ω' _ _ ξ ξ' f i V V' _ _ _ _ j jd W W' Lo Lo' T T' r hd _ hj hjd hW hvb hT

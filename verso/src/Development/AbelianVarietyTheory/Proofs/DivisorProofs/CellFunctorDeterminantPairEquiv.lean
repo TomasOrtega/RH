@@ -17,9 +17,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {X : Type} [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Establish `hs : blk3 m j ≤ 1`. Break down `j with ⟨_ | _ | _ | n, hn⟩` into its components or cases. Conclude with `Nat.le_of_eq rfl`. Conclude with `absurd (Fin.ext rfl) hj`. Conclude with `Nat.le_of_eq rfl`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : Subsingleton (Fin (blk3 m j)) := Fin.subsingleton_iff_le_one.2 hs`. Use `mem_parab.2 fun i i' h => ?_` and prove the remaining obligations. Rewrite `h` using `[Subsingleton.elim i i']`. Conclude with `absurd h (lt_irrefl _)`.
+A detailed English derivation is pending.
 -/
 theorem midCol_mem_parab (g : ∀ j, (Σ i, c j i) ≃ Fin (blk3 m j)) {j : Fin 3} (hj : j ≠ 1)
     (y : GL (Fin (blk3 m j)) k) : y ∈ parab k (g j) := by
@@ -42,9 +42,7 @@ def midColDrop : Levi k (fun j : Fin 3 => Fin (blk3 m j)) →* Levi k (fun j : F
   map_mul' x y := by rw [← Function.update_mul, one_mul]
 
 /- English proof (translation)
-Use `(Subgroup.mem_pi _).2 fun j _ => ?_` and prove the remaining obligations. Break down `eq_or_ne j 1 with rfl | hj` into its components or cases. Use `show Function.update x 1 1 1 ∈ parab k (g 1)`. Rewrite using `[Function.update_self]`. Conclude with `one_mem _`.
-
-Conclude with `midCol_mem_parab g hj _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem midColDrop_mem (g : ∀ j, (Σ i, c j i) ≃ Fin (blk3 m j)) (x : Levi k (fun j : Fin 3 => Fin (blk3 m j))) :
     midColDrop k m x ∈ relParab k g := by
@@ -56,19 +54,19 @@ theorem midColDrop_mem (g : ∀ j, (Σ i, c j i) ≃ Fin (blk3 m j)) (x : Levi k
   · exact midCol_mem_parab g hj _
 
 /- English proof (translation)
-The claim follows from `Pi.mulSingle_eq_same (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) 1 h`.
+A detailed English derivation is pending.
 -/
 theorem midIncl_apply_one (h : GL (Fin (blk3 m 1)) k) : midIncl k m h 1 = h :=
   Pi.mulSingle_eq_same (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) 1 h
 
 /- English proof (translation)
-The claim follows from `Pi.mulSingle_eq_of_ne (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) hj h`.
+A detailed English derivation is pending.
 -/
 theorem midIncl_apply_of_ne {j : Fin 3} (hj : j ≠ 1) (h : GL (Fin (blk3 m 1)) k) : midIncl k m h j = 1 :=
   Pi.mulSingle_eq_of_ne (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) hj h
 
 /- English proof (translation)
-Use `continuous_pi fun j => ?_` and prove the remaining obligations. Break down `eq_or_ne j 1 with rfl | hj` into its components or cases. Conclude with `continuous_id.congr fun a => (midIncl_apply_one a).symm`. Conclude with `continuous_const.congr fun a => (midIncl_apply_of_ne hj a).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_midIncl : Continuous (midIncl k m) := by
   refine continuous_pi fun j => ?_
@@ -77,9 +75,7 @@ theorem continuous_midIncl : Continuous (midIncl k m) := by
   · exact continuous_const.congr fun a => (midIncl_apply_of_ne hj a).symm
 
 /- English proof (translation)
-Use `(Subgroup.mem_pi _).2 fun j _ => ?_` and prove the remaining obligations. Break down `eq_or_ne j 1 with rfl | hj` into its components or cases. Rewrite using `[midIncl_apply_one]`. Conclude with `p.2`. Rewrite using `[midIncl_apply_of_ne hj]`.
-
-Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem midIncl_mem_relParab (g : ∀ j, (Σ i, c j i) ≃ Fin (blk3 m j)) (p : parab k (g 1)) :
     midIncl k m p.1 ∈ relParab k g := by
@@ -95,9 +91,7 @@ variable (g : ∀ j, (Σ i, c j i) ≃ Fin (blk3 m j)) (ρ : Representation ℂ 
 abbrev midColSrc : Representation ℂ (relParab k g) X := (twist ρ (relDeltaHalf k c)).comp (relProj k g)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Break down `eq_or_ne j 1 with rfl | hj` into its components or cases. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `congrArg (leviProj k (g 1)) (Subtype.ext (midIncl_apply_one p.1))`. Rewrite using `[Pi.mulSingle_eq_of_ne hj]`.
-
-Conclude with `(congrArg (leviProj k (g j)) (Subtype.ext (midIncl_apply_of_ne hj p.1))).trans (map_one _)`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relProj_midIncl (p : parab k (g 1)) :
     relProj k g ⟨midIncl k m p.1, midIncl_mem_relParab g p⟩ =
@@ -111,7 +105,7 @@ theorem relProj_midIncl (p : parab k (g 1)) :
       (map_one _)
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [midColSrc, MonoidHom.coe_comp, Function.comp_apply, twist_apply, relProj_midIncl, MonoidHom.mulSingle_apply, relDeltaHalf_apply]`. Rewrite using `[Finset.prod_eq_single (1 : Fin 3) (fun j _ hj => by rw [Pi.mulSingle_eq_of_ne hj, map_one]) (by simp), Pi.mulSingle_eq_same]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem midColSrc_midIncl (p : parab k (g 1)) :
     midColSrc g ρ ⟨midIncl k m p.1, midIncl_mem_relParab g p⟩ =
@@ -186,13 +180,13 @@ def midColExt (hZ : {z : Levi k (fun j : Fin 3 => Fin (blk3 m j)) |
 variable {g ρ} in
 
 /- English proof (translation)
-Use `⟨Representation.Equiv.mk' ⟨⟨⟨midColRes g ρ, fun F G => Subtype.ext (Subtype.ext rfl)⟩, fun t F => Subtype.ext (Subtype.ext rfl)⟩, fun h => ?_⟩ (midColExt hZ) (fun F => ?_) (fun φ => ?_)⟩` and prove the remaining obligations. Use `LinearMap.ext fun F => Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Conclude with `(congrArg F.1.1 (map_mul (midIncl k m) x h)).symm`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_)) show midColSrc g ρ ⟨midColDrop k m x, midColDrop_mem g x⟩ (F.1.1 (midIncl k m (x 1))) = F.1.1 x` and prove the remaining obligations. Rewrite using `[← F.1.2 ⟨midColDrop k m x, midColDrop_mem g x⟩ (midIncl k m (x 1))]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg F.1.1 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Break down `eq_or_ne j 1 with rfl | hj` into its components or cases. Use `show Function.update x 1 1 1 * midIncl k m (x 1) 1 = x 1`. Rewrite using `[Function.update_self, midIncl_apply_one, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Function.update x 1 1 j * midIncl k m (x 1) j = x j`. Rewrite using `[Function.update_of_ne hj, midIncl_apply_of_ne hj, mul_one]`. Use `Subtype.ext (Subtype.ext (funext fun h => ?_)) show midColSrc g ρ ⟨midColDrop k m (midIncl k m h), midColDrop_mem g _⟩ (φ.1.1 (midIncl k m h 1)) = φ.1.1 h` and prove the remaining obligations. Establish `e : (⟨midColDrop k m (midIncl k m h), midColDrop_mem g _⟩ : relParab k g) = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Break down `eq_or_ne j 1 with rfl | hj` into its components or cases. Conclude with `Function.update_self (1 : Fin 3) (1 : GL (Fin (blk3 m 1)) k) (midIncl k m h)`. Simplify using `[midColDrop, midIncl_apply_of_ne hj, Function.update_of_ne hj]`. Rewrite using `[e, map_one, Module.End.one_apply, midIncl_apply_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_midCol_equiv (hZ : {z : Levi k (fun j : Fin 3 => Fin (blk3 m j)) |
       ∀ w : X, midColSrc g ρ ⟨midColDrop k m z, midColDrop_mem g z⟩ w = w} ∈ nhds 1) :
@@ -223,16 +217,16 @@ theorem nonempty_midCol_equiv (hZ : {z : Levi k (fun j : Fin 3 => Fin (blk3 m j)
     rw [e, map_one, Module.End.one_apply, midIncl_apply_one]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun j => (ProdIrr.continuous_leviProj (g j)).comp (((continuous_apply j).comp continuous_subtype_val).subtype_mk fun p : relParab k g => p.2 j trivial)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_relProj_midCol : Continuous (relProj k g) :=
   continuous_pi fun j => (ProdIrr.continuous_leviProj (g j)).comp
     (((continuous_apply j).comp continuous_subtype_val).subtype_mk fun p : relParab k g => p.2 j trivial)
 
 /- English proof (translation)
-Set `d : Levi k (fun j : Fin 3 => Fin (blk3 m j)) →* relParab k g` to `(midColDrop k m).codRestrict _ (midColDrop_mem g)`. Establish `hd : Continuous d` using `(continuous_id.update 1 continuous_const).subtype_mk (midColDrop_mem g)`. Establish `hs : IsSmooth ((midColSrc g ρ).comp d)` using `isSmooth_comp (isSmooth_comp (isSmooth_twist hρ hδ) _ (continuous_relProj_midCol g)) _ hd`. Use `Filter.mem_of_superset ((hs w₀).mem_nhds (by simp)) fun z hz w => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hw w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_smul]`. Conclude with `congrArg (t • ·) hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem midCol_nhds (hρ : IsSmooth ρ) (w₀ : X) (hw : ∀ w : X, ∃ t : ℂ, w = t • w₀)
     (hδ : IsSmoothChar (relDeltaHalf k c)) :
@@ -255,7 +249,7 @@ section Det
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `relDeltaHalf`. Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) ?_ fun i _ => ?_` and prove the remaining obligations. Unfold `IsSmoothChar`. Simplify using the standard rewrite rules. Conclude with `(isSmoothChar_deltaHalf k).comp _ (continuous_apply i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothChar_relDeltaHalf {α β : Type} [Fintype α] [Fintype β] [LinearOrder β]
     (c : α → β → Type) [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)] :
@@ -266,7 +260,7 @@ theorem isSmoothChar_relDeltaHalf {α β : Type} [Fintype α] [Fintype β] [Line
   · exact (isSmoothChar_deltaHalf k).comp _ (continuous_apply i)
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp (isSmooth_twist (isSmooth_jacquet hρ _ _ _ (continuous_pi fun i => (continuous_leviEmb k (f i)).comp (continuous_apply i))) (isSmoothChar_relDeltaHalf c).inv) _ (continuous_pi fun i => continuous_pi fun j => (continuous_apply i).comp (continuous_apply j))`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_relJac_swap {α β : Type} [Fintype α] [Fintype β] [LinearOrder β]
     {mr : α → Type} [∀ i, Fintype (mr i)] [∀ i, DecidableEq (mr i)]
@@ -280,7 +274,7 @@ theorem isSmooth_relJac_swap {α β : Type} [Fintype α] [Fintype β] [LinearOrd
     (continuous_pi fun i => continuous_pi fun j => (continuous_apply i).comp (continuous_apply j))
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Establish `key : v = TensorProduct.lid ℂ ℂ v • ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ))` using `(TensorProduct.lid ℂ ℂ).injective (by rw [map_smul, TensorProduct.lid_tmul]; simp)`. Conclude with `⟨TensorProduct.lid ℂ ℂ v, by rw [← Submodule.Quotient.mk_smul, ← key]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem jacquet_detPair_eq_smul (a a' : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (N : Subgroup (Levi k (Two (Fin a) (Fin a'))))
     (w : Jacquet (detPair k a a' α₀ β₀) N) :
@@ -293,7 +287,7 @@ theorem jacquet_detPair_eq_smul (a a' : ℕ) (α₀ β₀ : kˣ →* ℂˣ) (N :
 end Det
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a a' m α₀ β₀ hα hβ b f g`. Conclude with `nonempty_midCol_equiv (c := fun j i => Fin (b.1 i j)) (g := g) (ρ := (relJac f (detPair k a a' α₀ β₀)).comp (swapBlocks k _)) (midCol_nhds g _ (isSmooth_relJac_swap f (isSmooth_detPair a a' hα hβ)) _ (jacquet_detPair_eq_smul a a' α₀ β₀ _) (isSmoothChar_relDeltaHalf _))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_cell_midIncl_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →

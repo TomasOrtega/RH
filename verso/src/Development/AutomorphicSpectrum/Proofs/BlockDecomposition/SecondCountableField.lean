@@ -10,9 +10,7 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.SatakeStable
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne :=`. Use the proof step `{ hom' := ValuativeRel.IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := ValuativeRel.IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
-
-Use `haveI : ProperSpace k := .of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k`. Conclude with `secondCountable_of_proper`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem secondCountable_field (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : SecondCountableTopology k := by
@@ -29,7 +27,7 @@ theorem secondCountable_field (k : Type) [Field k] [ValuativeRel k] [Topological
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Introduce `h0`. Conclude with `(irreducible_uniformizer F).ne_zero (Subtype.ext h0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unif_ne_zero : (uniformizer F : F) ≠ 0 := by
   intro h0
@@ -48,7 +46,7 @@ def scal (m M : ℕ) : GL (Fin m) F where
     rw [smul_mul_smul_comm, one_mul, ← mul_pow, mul_inv_cancel₀ h, one_pow, one_smul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(((uniformizer F : F)⁻¹ ^ M) • (1 : Matrix (Fin m) (Fin m) F)) *ᵥ x = _`. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem scal_mulVec (m M : ℕ) (x : Fin m → F) :
     ((scal F m M : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ x = ((uniformizer F : F)⁻¹ ^ M) • x := by
@@ -56,11 +54,11 @@ theorem scal_mulVec (m M : ℕ) (x : Fin m → F) :
   rw [Matrix.smul_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h` using `unif_ne_zero (F := F)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ i`. Establish `hxi` using `hx i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hxi` using `[pow_zero, one_mul]`. Simplify using `only [scal_mulVec m M x, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, ← mul_pow, mul_inv_cancel₀ h, one_pow, one_mul]` and apply the resulting hypothesis. Introduce `hy`. Use `⟨fun i => (uniformizer F : F) ^ M * y i, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_zero, one_mul]`. Conclude with `hy i`. Use function extensionality and compare the values at `i`. Simplify using `only [scal_mulVec m M _, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ h, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_scal (m M : ℕ) :
     (fun x => ((scal F m M : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) *ᵥ x) '' lat F m 0 = lat F m M := by
@@ -80,9 +78,9 @@ theorem image_scal (m M : ℕ) :
       rw [← mul_assoc, ← mul_pow, inv_mul_cancel₀ h, one_pow, one_mul]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨(uniformizer F : F) ^ (M - c) * (1 : Matrix (Fin m) (Fin m) F) i j, ?_, ?_⟩` and prove the remaining obligations. Use `mul_mem (pow_mem (uniformizer F).2 _) ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Rewrite using `[hij, Matrix.one_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Rewrite using `[Matrix.one_apply_ne hij]`. Conclude with `zero_mem _`. Express the relevant statement in the definitionally equal form `(((uniformizer F : F) ^ M) • (1 : Matrix (Fin m) (Fin m) F)) i j = _`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hM]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_scal_inv {m c M : ℕ} (hM : c ≤ M) :
     Div c (((scal F m M)⁻¹ : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) := by
@@ -103,23 +101,23 @@ def avg (M : ℕ) (u' u : V) : ℂ :=
   ∫ x in lat F (k + 1) M, ψ (-x (Fin.last k)) * B u' (ρ (col n k x) u) ∂(Measure.pi fun _ => μ)
 
 /- English proof (translation)
-Use `haveI := secondCountable_field F`. Use `choose m hm using hst`. Establish `hint : ∀ M u' u, IntegrableOn (fun x : Fin (k + 1) → F => ψ (-x (Fin.last k)) * B u' (ρ (col n k x) u)) (lat F (k + 1) M) (Measure.pi fun _ => μ)`. Introduce `M u' u`. Use `ContinuousOn.integrableOn_compact (hlat M) (Continuous.continuousOn ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(hψ.comp (continuous_apply _).neg).mul (hcont u u')`. Set `f : V → V → ℂ` to `fun u' u => avg μ ψ ρ k B (m u u') u' u`. Establish `hf : ∀ u' u M, m u u' ≤ M → f u' u = avg μ ψ ρ k B M u' u` using `fun u' u M h => (hm u u' M h).symm`. Use `⟨LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) f ?_ ?_ ?_ ?_, ?_⟩` and prove the remaining obligations. Introduce `a b w`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `M` to `max (m w (a + b)) (max (m w a) (m w b))`. Rewrite using `[hf _ _ M (le_max_left _ _), hf _ _ M ((le_max_left _ _).trans (le_max_right _ _)), hf _ _ M ((le_max_right _ _).trans (le_max_right _ _))]`. Simplify using `only [avg]`. Rewrite using `[← integral_add (hint M a w) (hint M b w)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Simplify using `[mul_add]`. Introduce `c a w`. Set `M` to `max (m w (c • a)) (m w a)`. Rewrite using `[hf _ _ M (le_max_left _ _), hf _ _ M (le_max_right _ _)]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [avg]`. Rewrite using `[smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `a v w`. Set `M` to `max (m (v + w) a) (max (m v a) (m w a))`. Rewrite using `[hf _ _ M (le_max_left _ _), hf _ _ M ((le_max_left _ _).trans (le_max_right _ _)), hf _ _ M ((le_max_right _ _).trans (le_max_right _ _))]`. Simplify using `only [avg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← integral_add (hint M a v) (hint M a w)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[mul_add]`. Introduce `c a v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `M` to `max (m (c • v) a) (m v a)`. Rewrite using `[hf _ _ M (le_max_left _ _), hf _ _ M (le_max_right _ _)]`. Simplify using `only [avg]`. Rewrite using `[smul_eq_mul, ← integral_const_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [map_smul, smul_eq_mul, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u u'`. Conclude with `⟨m u u', fun M hM => hf u' u M hM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_char (hψ : Continuous ψ) (hlat : ∀ M, IsCompact (lat F (k + 1) M))
     (hcont : ∀ u u', Continuous (fun x : Fin (k + 1) → F => B u' (ρ (col n k x) u)))
@@ -177,9 +175,9 @@ theorem exists_char (hψ : Continuous ψ) (hlat : ∀ M, IsCompact (lat F (k + 1
     exact ⟨m u u', fun M hM => hf u' u M hM⟩
 
 /- English proof (translation)
-Introduce `h0 h4 F _ _ _ _ _ _ μ _ ψ hψ n V _ _ ρ hρ l k B hk hInv`. Take `⟨hψc, hL⟩` from `h0 F μ ψ hψ`. Establish `h4'` using `h4 F μ ψ hψ n V ρ hρ l k B hk hInv`. Use `exists_char μ ψ ρ k B hψc (fun M => ((hL (k + 1)).1 M).1) (fun u u' => (h4' u u').1) ?_` and prove the remaining obligations. Introduce `u u'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `(h4' u u').2`. Use `⟨c + 1, fun M hM => ?_⟩` and prove the remaining obligations. Use `hc (scal F (k + 1) M) (div_scal_inv hM)` as an intermediate fact. Rewrite `this` using `[image_scal]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_average : L0 → FormCoefficientStability → StableAverageExists := by
   intro h0 h4 F _ _ _ _ _ _ μ _ ψ hψ n V _ _ ρ hρ l k B hk hInv

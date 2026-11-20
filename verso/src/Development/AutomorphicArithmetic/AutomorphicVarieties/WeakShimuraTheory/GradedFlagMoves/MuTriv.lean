@@ -3,15 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ _ H k _ _ ψ hψ s hs`. Take `⟨-, a, ha⟩` from `hs`. Establish `hcl : IsClosed ((ψ.ker : Subgroup Γ) : Set Γ)`. Establish `e : ((ψ.ker : Subgroup Γ) : Set Γ) = {x | ψ x = 1}`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[e]`. Conclude with `hψ.isClosed_fiber 1`. Establish `hle : ⁅H, H⁆ ≤ ψ.ker`. Rewrite using `[Subgroup.commutator_le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g₁ _ g₂ _`. Rewrite using `[MonoidHom.mem_ker, commutatorElement_def, map_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `_ = 1 := by simp`. Establish `hm` using `Subgroup.topologicalClosure_minimal _ hle hcl ha`. Rewrite `hm` using `[MonoidHom.mem_ker, map_pow]`. Establish `h0 : (ψ s - 1) ^ l ^ a = 0`. Rewrite using `[sub_pow_char_pow, hm, one_pow, sub_self]`.
-
-Conclude with `sub_eq_zero.mp (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) |>.mp h0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Rt.muTriv :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (H : Subgroup Γ) (k : Type) [Field k] [CharP k l]

@@ -7,12 +7,12 @@ noncomputable section
 namespace CrystallineSemistableComparison
 
 /- English proof (translation)
-The claim follows from `fun l _ K _ ↦ ⟨compSm l K, compGood l K⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem comp : ModelComponents := fun l _ K _ ↦ ⟨compSm l K, compGood l K⟩
 
 /- English proof (translation)
-The claim follows from `geoMain`.
+A detailed English derivation is pending.
 -/
 theorem geo : GeometricGenericComponents := geoMain
 

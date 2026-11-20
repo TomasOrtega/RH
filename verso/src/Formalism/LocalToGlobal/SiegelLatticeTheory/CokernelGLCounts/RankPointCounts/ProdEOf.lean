@@ -14,7 +14,7 @@ variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
   (δ : ∀ p : PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1))
 
 /- English proof (translation)
-Establish `hWu` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.ptMat_isUnit (K := D.host.E) w`. Unfold `VolPinAsm.bOf`. Establish `h1 : (((a⁻¹ : Formalism.L2.SG.PairVal.GLR D)) : Formalism.L2.SG.PairVal.MatR D) * (a : Formalism.L2.SG.PairVal.MatR D) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem bOf_unique (a : Formalism.L2.SG.PairVal.GLR D) (b : Formalism.L2.SG.PairVal.MatR D)
     (hW : (a : Formalism.L2.SG.PairVal.MatR D) * ptMat w * b = ptMat w) : VolPinAsm.bOf w a = b := by
@@ -30,17 +30,15 @@ theorem bOf_unique (a : Formalism.L2.SG.PairVal.GLR D) (b : Formalism.L2.SG.Pair
     _ = b := by rw [h1, Matrix.mul_one, Matrix.nonsing_inv_mul _ hWu, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hset : ∀ a : VolPinAsm.StG w, (a : Formalism.L2.SG.PairVal.GLR D) ∈ Formalism.L2.SG.PairVal.stabIntSet D u u' δ M w ↔ ∀ p, πP M δ u u' w (hA p) a ∈ AP M δ u u' w p`. Introduce `a`. Take `⟨ha, hb, hW⟩` from `bOf_spec w a`. Rewrite using `[mem_stabIntSet_iff δ M u u' hA w]`. Use `⟨fun h p => ?_, fun hp => ⟨ha, _, hb, hW, hp⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, b, -, hW', hp⟩` from `h`. Establish `e` using `bOf_unique w (a : Formalism.L2.SG.PairVal.GLR D) b hW'`. Rewrite `hp` using `[← e]`. Conclude with `hp p`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg set K : Subgroup (Formalism.L2.SG.PairVal.GLR D) := (Formalism.L2.SG.Pf.ProdE.glob (fun p => πP M δ u u' w (hA p)) (fun p => AP M δ u u' w p)).map (VolPinAsm.StG w).subtype with hK`. Establish `hle : Formalism.L2.SG.PairVal.stabInt D u u' δ M w ≤ K`. Unfold `Formalism.L2.SG.PairVal.stabInt`. Rewrite using `[Subgroup.closure_le]`. Introduce `a ha`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `haSt : a ∈ VolPinAsm.StG w`. Take `⟨h1, b, hb, hW, -⟩` from `ha`. Conclude with `⟨h1, b, hb, hW⟩`. Use `⟨⟨a, haSt⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Formalism.L2.SG.Pf.ProdE.mem_glob]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hset ⟨a, haSt⟩).1 ha`. Take `⟨g', hg', e⟩` from `hle hg`. Establish `: g' = g` using `Subtype.ext e`. Rewrite `hg'` using `[this, SetLike.mem_coe, Formalism.L2.SG.Pf.ProdE.mem_glob]`. Conclude with `hg'`.
-
-Introduce `hp`. Conclude with `Subgroup.subset_closure ((hset g).2 hp)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_stabInt_glob (hA : ∀ p, Agree δ M p) (g : VolPinAsm.StG w) :
     ((g : Formalism.L2.SG.PairVal.GLR D) ∈ Formalism.L2.SG.PairVal.stabInt D u u' δ M w) ↔
@@ -79,45 +77,41 @@ theorem mem_stabInt_glob (hA : ∀ p, Agree δ M p) (g : VolPinAsm.StG w) :
     exact Subgroup.subset_closure ((hset g).2 hp)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc L g, lOf_mul δ M hA L U (g * L⁻¹) (U⁻¹ * b), lOf_mul δ M hA g b L⁻¹ U⁻¹, Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem lOf_conj {p : PlF D} (hA : Agree δ M p) (L U g b : Formalism.L2.SG.PairVal.MatR D) :
     lOf δ M p (L * g * L⁻¹) (U⁻¹ * b * U) = lOf δ M p L U * lOf δ M p g b * lOf δ M p L⁻¹ U⁻¹ := by
   rw [Matrix.mul_assoc L g, lOf_mul δ M hA L U (g * L⁻¹) (U⁻¹ * b), lOf_mul δ M hA g b L⁻¹ U⁻¹, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc L g, ρOf_mul δ M hA L U (g * L⁻¹) (U⁻¹ * b), ρOf_mul δ M hA g b L⁻¹ U⁻¹]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem ρOf_conj {p : PlF D} (hA : Agree δ M p) (L U g b : Formalism.L2.SG.PairVal.MatR D) :
     ρOf δ M p (L * g * L⁻¹) (U⁻¹ * b * U) = ρOf δ M p L⁻¹ U⁻¹ * ρOf δ M p g b * ρOf δ M p L U := by
   rw [Matrix.mul_assoc L g, ρOf_mul δ M hA L U (g * L⁻¹) (U⁻¹ * b), ρOf_mul δ M hA g b L⁻¹ U⁻¹]
 
 /- English proof (translation)
-Establish `hLi` using `ZsVolGrp.isLoUni_inv hL`. Establish `hUi` using `ZsVolGrp.isUpUni_inv hU`. Establish `hLdet : IsUnit L.det` using `by rw [ZsVolGrp.det_lo (fun a => (hL a a).2 rfl) (fun a b h => (hL a b).1 h)]; exact isUnit_one`. Rewrite using `[ZsVolGrp.mem_CZ M δ u u' Zh L hLdet]`. Take `⟨ha, hb, hW⟩` from `bOf_spec w g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set gm : Formalism.L2.SG.PairVal.MatR D := ((g : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) with hgm`. Use `set b := VolPinAsm.bOf w (g : Formalism.L2.SG.PairVal.GLR D) with hb'`. Establish `hmemC : ∀ p, πP M δ u u' w (hA p) g ∈ CPL M δ u u' w (hA p) L U hL hU ↔ Formalism.MainNotions.S.TieN.IntLow (M p) (lOf δ M p (L * gm * L⁻¹) (U⁻¹ * b * U)) ∧ Formalism.MainNotions.S.TieN.IntUp (M p) (ρOf δ M p (L * gm * L⁻¹) (U⁻¹ * b * U))`. Introduce `p`. Rewrite using `[lOf_conj M δ (hA p), ρOf_conj M δ (hA p)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [hmemC]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a', ha'eq, ha'lo, b', hb'up, hZ', hloc⟩ p`. Establish `ea' : ((a' : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) = L * gm * L⁻¹`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `ha'eq`. Rewrite `h` using `[← hgm]`. Rewrite using `[h]`. Combine the equalities or inequalities in the displayed calculation. Establish `eb' : b' = U⁻¹ * b * U`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : gm * ptMat w * (U * b' * U⁻¹) = ptMat w`. Use `hZ'` as an intermediate fact. Rewrite `this` using `[hZ, ea']`. Establish `h2 : L⁻¹ * (L * gm * L⁻¹ * (L * ptMat w * U) * b') * U⁻¹ = L⁻¹ * (L * ptMat w * U) * U⁻¹` using `by rw [this]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hLi.2.1]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = L⁻¹ * (L * gm * L⁻¹ * (L * ptMat w * U) * b') * U⁻¹ := by simp only [Matrix.mul_assoc]`. Use `_ = L⁻¹ * (L * ptMat w * U) * U⁻¹ := h2`. Use `_ = (L⁻¹ * L) * ptMat w * (U * U⁻¹) := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Use `_ = ptMat w := by rw [hLi.2.1, hUi.2.2, Matrix.one_mul, Matrix.mul_one]`. Establish `e` using `bOf_unique w (g : Formalism.L2.SG.PairVal.GLR D) _ h1`. Rewrite `e` using `[← hb']`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨l, ρ, hl, hρ, hZl⟩` from `hloc p`. Take `⟨el, eρ⟩` from `uniq δ M u u' (hA p) _ b' ha'lo hb'up l ρ (fun i => hl.1 i) (fun i => hρ.1 i) hZl`. Rewrite using `[← ea', ← eb', ← el, ← eρ]`. Conclude with `⟨hl, hρ⟩`. Introduce `hp set a'm := L * gm * L⁻¹ with ha'm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha'lo : IsLoUni a'm` using `ZsVolGrp.isLoUni_mul (ZsVolGrp.isLoUni_mul hL ha) hLi.1`. Establish `hb'up : IsUpUni (U⁻¹ * b * U)` using `ZsVolGrp.isUpUni_mul (ZsVolGrp.isUpUni_mul hUi.1 hb) hU`. Establish `hginv : ((((g : Formalism.L2.SG.PairVal.GLR D))⁻¹ : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) * gm = 1`. Rewrite using `[hgm, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hginv' : gm * ((((g : Formalism.L2.SG.PairVal.GLR D))⁻¹ : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) = 1`.
+Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[hgm, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Set `a' : Formalism.L2.SG.PairVal.GLR D` to `⟨a'm, L * ((((g : Formalism.L2.SG.PairVal.GLR D))⁻¹ : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) * L⁻¹, by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ha'm, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hLi.2.1, Matrix.mul_one, Matrix.mul_assoc L, hginv', Matrix.mul_one, hLi.2.2],`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ha'm, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hLi.2.1, Matrix.mul_one, Matrix.mul_assoc L, hginv, Matrix.mul_one, hLi.2.2]⟩`. Use `⟨a', ?_, ha'lo, U⁻¹ * b * U, hb'up, ?_, fun p => ⟨_, _, (hp p).1, (hp p).2, move δ M u u' (hA p) a'm (U⁻¹ * b * U) ha'lo hb'up⟩⟩` and prove the remaining obligations.
-
-Use `show gm = L⁻¹ * a'm * L`. Combine the equalities or inequalities in the displayed calculation. Use `show a'm * ZhatOM Zh * (U⁻¹ * b * U) = ZhatOM Zh`. Rewrite using `[hZ]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [ha'm, Matrix.mul_assoc]`. Use `_ = L * (gm * ptMat w * b) * U := by`. Rewrite using `[hLi.2.1, hUi.2.2, Matrix.mul_one, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = L * ptMat w * U := by rw [hW]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_CZ_glob (hA : ∀ p, Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U)
     (Zh : Formalism.L2.SG.PairVal.MatR D) (hZ : ZhatOM Zh = L * ptMat w * U) (g : VolPinAsm.StG w) :
@@ -200,13 +194,13 @@ theorem mem_CZ_glob (hA : ∀ p, Agree δ M p) (L U : Formalism.L2.SG.PairVal.Ma
         _ = L * ptMat w * U := by rw [hW]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio`. Simplify using `[Subgroup.relIndex_self]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem idxRatio_self {G : Type} [Group G] (A : Subgroup G) : Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio A A = 1 := by
   unfold Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio; simp [Subgroup.relIndex_self]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio`. Rewrite using `[Subgroup.relIndex_subgroupOf hA, Subgroup.relIndex_subgroupOf hB]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem idxRatio_subgroupOf {G : Type} [Group G] (A B K : Subgroup G) (hA : A ≤ K) (hB : B ≤ K) :
     Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio (A.subgroupOf K) (B.subgroupOf K) = Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio A B := by
@@ -214,11 +208,11 @@ theorem idxRatio_subgroupOf {G : Type} [Group G] (A B K : Subgroup G) (hA : A �
   rw [Subgroup.relIndex_subgroupOf hA, Subgroup.relIndex_subgroupOf hB]
 
 /- English proof (translation)
-Establish `hLi` using `ZsVolGrp.isLoUni_inv hL`. Establish `hUi` using `ZsVolGrp.isUpUni_inv hU`. Establish `hLdet : IsUnit L.det` using `by rw [ZsVolGrp.det_lo (fun a => (hL a a).2 rfl) (fun a b h => (hL a b).1 h)]; exact isUnit_one`. Introduce `a ha`. Rewrite `ha` using `[ZsVolGrp.mem_CZ M δ u u' Zh L hLdet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a', ha'eq, ha'lo, b', hb'up, hZ', -⟩` from `ha`. Use `⟨?_, U * b' * U⁻¹, ZsVolGrp.isUpUni_mul (ZsVolGrp.isUpUni_mul hU hb'up) hUi.1, ?_⟩` and prove the remaining obligations. Rewrite using `[ha'eq]`. Conclude with `ZsVolGrp.isLoUni_mul (ZsVolGrp.isLoUni_mul hLi.1 ha'lo) hL`. Rewrite using `[ha'eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hZ'` using `[hZ]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cz_le (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U)
     (Zh : Formalism.L2.SG.PairVal.MatR D) (hZ : ZhatOM Zh = L * ptMat w * U) :
@@ -242,17 +236,17 @@ theorem cz_le (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUp
 variable (F0 : FlagG (VS D) D.R.rS (Formalism.L2.SG.CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
 
 /- English proof (translation)
-Introduce `γ w F' L U hE`. Take `⟨S, hS, hfin, happrox⟩` from `hap γ w F' L U hE`. Establish `hA` using `hE.1`. Establish `hL : IsLoUni L` using `hE.2.2.2.2.2.2.2.1`. Establish `hU : IsUpUni U` using `hE.2.2.2.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : ZhatOM (ZhatL (lf D F0) F') = L * ptMat w * U` using `hE.2.2.2.2.2.2.2.2.2`. Establish `hset : Formalism.L2.SG.PairVal.stabIntSet D u u' δ M w ⊆ Formalism.L2.SG.Pf.StabilizerIndexVolumes.StSet (ptMat w)`. Introduce `a ha`. Take `⟨h1, b, hb, hW, -⟩` from `ha`. Conclude with `⟨h1, b, hb, hW⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hAle : Formalism.L2.SG.PairVal.stabInt D u u' δ M w ≤ VolPinAsm.StG w` using `fun x hx => Formalism.L2.SG.Pf.StabilizerIndexVolumes.closure_subset_StSet Formalism.L2.SG.Pf.StabilizerIndexVolumes.stClosed _ _ hset hx`. Establish `hCle` using `cz_le M δ u u' w L U hL hU _ hZ`. Rewrite using `[← idxRatio_subgroupOf _ _ _ hAle hCle]`. Establish `e1 : (Formalism.L2.SG.PairVal.stabInt D u u' δ M w).subgroupOf (VolPinAsm.StG w) = Formalism.L2.SG.Pf.ProdE.glob (fun p => πP M δ u u' w (hA p)) (fun p => AP M δ u u' w p)`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Subgroup.mem_subgroupOf, Formalism.L2.SG.Pf.ProdE.mem_glob]`. Conclude with `mem_stabInt_glob M δ u u' w hA g`. Establish `e2 : (Formalism.L2.SG.Pf.ZsVolCut.CZ M δ u u' (ZhatL (lf D F0) F') L).subgroupOf (VolPinAsm.StG w) = Formalism.L2.SG.Pf.ProdE.glob (fun p => πP M δ u u' w (hA p)) (fun p => CPL M δ u u' w (hA p) L U hL hU)`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_subgroupOf, Formalism.L2.SG.Pf.ProdE.mem_glob]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_CZ_glob M δ u u' w hA L U hL hU _ hZ g`. Rewrite using `[e1, e2, Formalism.L2.SG.Pf.ProdE.idxRatio_glob _ _ _ S hS (fun p => (hfin p).1) (fun p => (hfin p).2) happrox]`. Establish `hl` using `fun p => hloc γ w F' L U hE p`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S)]`. Conclude with `Finset.prod_congr rfl fun p _ => hl p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hpS`. Apply `hp` to reduce the goal to its premises. Use `show Formalism.L2.SG.LsDatumB.wtL M δ (D.mem u).A.T (D.mem u').A.T p w (Formalism.L2.SG.CntLocal.ZZP (M := M) δ u u' p (ZhatL (lf D F0) F') * Formalism.L2.SG.LsDatumB.sgnP p) = 1`. Rewrite using `[← hl p, hS p hpS, idxRatio_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodE_of (hap : ApproxC M δ u u' F0 what₂) (hloc : LocIdxC M δ u u' F0 what₂) :
     Formalism.L2.SG.Pf.ZsVolCut.ProdE M δ u u' F0 what₂ (Formalism.L2.SG.Pf.ZsVolCut.CZ M δ u u') := by

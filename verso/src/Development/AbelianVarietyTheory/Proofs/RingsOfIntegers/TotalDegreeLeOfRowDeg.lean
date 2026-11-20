@@ -16,7 +16,7 @@ set_option autoImplicit false
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hff : f' = f` using `funext fun τ => RingHom.ext fun x => hf τ x`. Substitute `hff` using the available equality. Conclude with `hβ`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem span_mul_prod_of_eq {E T : Type} [Field E] [Fintype T] {F F' : IntermediateField ℚ ℂ} (h : F' = F)
     (A B : Set E) (f : T → E →+* F) (f' : T → E →+* F')
@@ -31,9 +31,9 @@ theorem span_mul_prod_of_eq {E T : Type} [Field E] [Fintype T] {F F' : Intermedi
   exact hβ
 
 /- English proof (translation)
-Unfold `MvPolynomial.totalDegree`. Use `Finset.sup_le fun m hm => le_of_eq ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hP m hm σ i`.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_le_of_rowDeg {T : Type} [Fintype T] (r : T → ℕ) (n : ℕ) {k : Type} [Field k] (a : T → ℕ → ℕ)
     (P : MvPolynomial (Letter T r n) k) (hP : RowDeg r n k a P) :
@@ -50,15 +50,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n)
 
 /- English proof (translation)
-Conclude with `Subtype.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem eF_embF (τ : E →+* ℂ) (x : E) : d.eF (embF c τ x) = embF d.c₂ τ x := by
   exact Subtype.ext rfl
 
 /- English proof (translation)
-Establish `key : symO c Λ ≤ (symO (Dw` using `Dw) d.c₂ Λ).comap (MvPolynomial.map (d.eF : c.F →+* d.c₂.F)) := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f (⟨o, rfl⟩ | ⟨σ, i, b, hb, rfl⟩)`. Use `Subring.mem_comap.2 (Subring.subset_closure (Or.inl ⟨⟨d.eF o, ?_⟩, ?_⟩))` and prove the remaining obligations. Conclude with `o.2.map (d.eF : c.F →+* d.c₂.F).toIntAlgHom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.map_C]`. Both sides reduce to the same expression. Use `Subring.mem_comap.2 (Subring.subset_closure (Or.inr ⟨σ, i, b, hb, ?_⟩))` and prove the remaining obligations. Simplify using `only [letB, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, RingHom.coe_coe, eF_embF]`. Conclude with `key hP`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_eF_mem_symO (Λ : GenLat E n) (P : MvPolynomial (LtN Dw n) c.F) (hP : P ∈ symO c Λ) :
     MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P ∈ symO (Dw := Dw) d.c₂ Λ := by
@@ -76,11 +76,9 @@ theorem map_eF_mem_symO (Λ : GenLat E n) (P : MvPolynomial (LtN Dw n) c.F) (hP 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d Λ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `β hβ`. Unfold `BetaIs idealAt at hβ ⊢`. Conclude with `span_mul_prod_of_eq d.hF (detSet Λ.La) (detSet Λ.Ln) (fun τ => embF c τ) (fun τ => embF d.c₂ τ) (fun τ x => (eF_embF d τ x).symm) Dw.mult β hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w P hP`. Take `⟨hH, hS⟩` from `hP`. Use `⟨⟨GlobalTheory.map_mem_HHa Dw.mult n (d.eF : c.F →+* d.c₂.F) d.eF.surjective ComplexEmbedding.conjugate (InPsi H) (fun τ i => w (τ, i)) P hH, map_eF_mem_symO d Λ P hS⟩, ?_⟩` and prove the remaining obligations. Conclude with `totalDegree_le_of_rowDeg Dw.mult n (fun τ i => w (τ, i)) P hH.2.2`. Introduce `w α`.
-
-Simplify using `only [nrm, embK, map_prod, map_pow, RingHom.comp_apply, eF_embF]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eF_transfer : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (Λ : GenLat E n), (∀ β : c.F, BetaIs (Dw := Dw) c Λ β → BetaIs (Dw := Dw) d.c₂ Λ (d.eF β)) ∧ (∀ (w : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmL c Λ w → MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P ∈ harmL d.c₂ Λ w ∧ P.totalDegree ≤ Formalism.L2.Pj.DF Dw w) ∧ ∀ (w : (E →+* ℂ) × ℕ → ℕ) (α : 𝓞 E), d.eF (nrm Dw c w α) = nrm Dw d.c₂ w α := by
   intro E _ _ _ H Dw l Xo c n d Λ

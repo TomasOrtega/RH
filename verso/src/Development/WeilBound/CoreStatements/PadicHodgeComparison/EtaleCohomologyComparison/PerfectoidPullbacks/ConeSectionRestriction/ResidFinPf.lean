@@ -11,7 +11,7 @@ namespace CrystallineSemistableComparison.Pb
 variable {K : Type} [Field K] {R : Type} [CommRing R] [IsDomain R] [Algebra K R] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : algebraMap R (FractionRing R) (tpow t m) = (((Units.map (algebraMap R (FractionRing R)).toMonoidHom) (∏ k, t k ^ m k) : (FractionRing R)ˣ) : FractionRing R)` using `rfl`. Rewrite using `[h, map_prod, Units.coe_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fldF_findim_pf_tpow (t : Fin (n + 1) → Rˣ) (m : Fin (n + 1) → ℤ) :
     algebraMap R (FractionRing R) (tpow t m) = ∏ k, (algebraMap R (FractionRing R) (t k : R)) ^ (m k) := by
@@ -24,9 +24,9 @@ theorem fldF_findim_pf_tpow (t : Fin (n + 1) → Rˣ) (m : Fin (n + 1) → ℤ) 
   rfl
 
 /- English proof (translation)
-Introduce `r hr`. Establish `hle : torusS K t Finset.univ ≤ (fldF K t).toSubalgebra.comap (IsScalarTower.toAlgHom K R (FractionRing R))`. Unfold `torusS`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨m, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[SetLike.mem_coe, Subalgebra.mem_comap, IsScalarTower.coe_toAlgHom', IntermediateField.mem_toSubalgebra, fldF_findim_pf_tpow]`. Conclude with `prod_mem fun k _ => zpow_mem (IntermediateField.subset_adjoin K (Set.range fun k => algebraMap R (FractionRing R) (t k : R)) ⟨k, rfl⟩ : algebraMap R (FractionRing R) (t k : R) ∈ fldF K t) _`. Use `hle hr` as an intermediate fact. Rewrite `this` using `[Subalgebra.mem_comap, IsScalarTower.coe_toAlgHom', IntermediateField.mem_toSubalgebra]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fldF_findim_pf_mem (t : Fin (n + 1) → Rˣ) :
     ∀ r ∈ torusS K t Finset.univ, algebraMap R (FractionRing R) r ∈ fldF K t := by
@@ -45,19 +45,17 @@ theorem fldF_findim_pf_mem (t : Fin (n + 1) → Rˣ) :
   rwa [Subalgebra.mem_comap, IsScalarTower.coe_toAlgHom', IntermediateField.mem_toSubalgebra] at this
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hFG`. Set `ψ : torusS K t Finset.univ →+* fldF K t` to `((algebraMap R (FractionRing R)).comp (torusS K t Finset.univ).val.toRingHom).codRestrict (fldF K t) (fun x => fldF_findim_pf_mem t x x.2)`. Establish `hcomp : (algebraMap (fldF K t) (FractionRing R)).comp ψ = (algebraMap R (FractionRing R)).comp (algebraMap (torusS K t Finset.univ) R)`. Use extensionality with `x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hint : ∀ x ∈ (s : Set R), IsIntegral (fldF K t) (algebraMap R (FractionRing R) x)` using `fun x hx => IsIntegral.map_of_comp_eq ψ (algebraMap R (FractionRing R)) hcomp (hInt x (hs ▸ Algebra.subset_adjoin hx))`. Set `E` to `IntermediateField.adjoin (fldF K t) (algebraMap R (FractionRing R) '' (s : Set R))`. Establish `: Finite (algebraMap R (FractionRing R) '' (s : Set R))` using `(s.finite_toSet.image _).to_subtype`. Establish `hE : FiniteDimensional (fldF K t) E` using `IntermediateField.finiteDimensional_adjoin (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hint x hx)`. Establish `hBu : Bu ≤ ((E.restrictScalars K).toSubalgebra).comap (IsScalarTower.toAlgHom K R (FractionRing R))`. Rewrite using `[← hs, Algebra.adjoin_le_iff]`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_comap, IsScalarTower.coe_toAlgHom', IntermediateField.mem_toSubalgebra, IntermediateField.mem_restrictScalars]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IntermediateField.subset_adjoin _ _ ⟨x, hx, rfl⟩`. Establish `hmemB : ∀ b ∈ Bu, algebraMap R (FractionRing R) b ∈ E` using `fun b hb => by`. Use `hBu hb` as an intermediate fact. Rewrite `this` using `[Subalgebra.mem_comap, IsScalarTower.coe_toAlgHom', IntermediateField.mem_toSubalgebra, IntermediateField.mem_restrictScalars]`. Then use the resulting hypothesis. Establish `hmemR : ∀ r : R, algebraMap R (FractionRing R) r ∈ E` using `fun r => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb, b', hb', hb0, hrb⟩` from `hFrac r`. Establish `hne : algebraMap R (FractionRing R) b' ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).mpr hb0`. Establish `heq : algebraMap R (FractionRing R) r = algebraMap R (FractionRing R) b / algebraMap R (FractionRing R) b'` using `eq_div_of_mul_eq hne (by rw [← map_mul, hrb])`. Rewrite using `[heq]`. Conclude with `div_mem (hmemB b hb) (hmemB b' hb')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop : E = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨r, r', -, rfl⟩` from `IsFractionRing.div_surjective (A := R) y`. Conclude with `div_mem (hmemR r) (hmemR r')`.
-
-Establish `e : E ≃ₗ[fldF K t] FractionRing R` using `((IntermediateField.equivOfEq htop).trans IntermediateField.topEquiv).toLinearEquiv`. Conclude with `e.finiteDimensional`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fldF_findim_pf (t : Fin (n + 1) → Rˣ) (Bu : Subalgebra K R) (hTB : torusS K t Finset.univ ≤ Bu) (hFG : Bu.FG)
     (hInt : ∀ b ∈ Bu, IsIntegral (torusS K t Finset.univ) b)

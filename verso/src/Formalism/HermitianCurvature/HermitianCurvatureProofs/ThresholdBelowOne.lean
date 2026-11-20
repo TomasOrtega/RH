@@ -5,15 +5,13 @@ open Finset NumberField Formalism.FourierDecayAlt Formalism.FourierDecayAlt.J
 namespace Formalism.FourierDecayAlt.P.Jx11
 
 /- English proof (translation)
-Introduce `L f d pl sa al bt κ len lv be X B Mx hκ hlen hbt hsa h1 h2`. Establish `hz : κ ^ (1 - (d : ℤ)) = κ * (κ ^ d)⁻¹`. Rewrite using `[zpow_sub₀ hκ.ne', zpow_one, zpow_natCast, div_eq_mul_inv]`. Establish `hfac : ∀ a, (1 / 2) * (4 / (bt a - al a)) ^ d * (κ * be (pl a)) = κ ^ (1 - (d : ℤ)) * ((1 / 2) * be (pl a) * (4 * κ / len) ^ d)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hbt a, hz, div_pow, div_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hc0 : 0 ≤ ∏ a, (1 / 2) * (4 / (bt a - al a)) ^ d`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `a _`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hbt a]`. Check the signs of the components of the expression. Establish `hP : 0 < ∏ _a : Fin L, κ ^ (1 - (d : ℤ))` using `Finset.prod_pos (fun _ _ => zpow_pos hκ _)`. Establish `h3 : (∏ a, sa a) * X ≤ (∏ a, (1 / 2) * (4 / (bt a - al a)) ^ d) * ((∏ a, κ * be (pl a)) * Mx)` using `h1.trans (mul_le_mul_of_nonneg_left h2 hc0)`. Establish `h4 : (∏ a, sa a) = (∏ _a : Fin L, κ ^ (1 - (d : ℤ))) * ∏ a, lv (pl a)`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl (fun a _ => hsa a)`. Establish `h5 : (∏ a, (1 / 2) * (4 / (bt a - al a)) ^ d) * (∏ a, κ * be (pl a)) = (∏ _a : Fin L, κ ^ (1 - (d : ℤ))) * ∏ a, (1 / 2) * be (pl a) * (4 * κ / len) ^ d`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl (fun a _ => hfac a)`.
-
-Rewrite `h3` using `[h4, ← mul_assoc, h5, mul_assoc, mul_assoc]`. Conclude with `le_of_mul_le_mul_left h3 hP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chebToThreshold : ChebToThreshold := by
   intro L f d pl sa al bt κ len lv be X B Mx hκ hlen hbt hsa h1 h2
@@ -41,17 +39,15 @@ theorem chebToThreshold : ChebToThreshold := by
   exact le_of_mul_le_mul_left h3 hP
 
 /- English proof (translation)
-Establish `hth : ∀ j, F7.thGrid grid j = ∏ a, (|F7.lagCo (grid a) (j a)| / S a)`. Introduce `j`. Unfold `F7.thGrid`. Conclude with `Finset.prod_congr rfl fun a _ => by rw [hS a]`. Establish `hnn : ∀ j, 0 ≤ F7.thGrid grid j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[hth j]`. Conclude with `Finset.prod_nonneg fun a _ => div_nonneg (abs_nonneg _) (hpos a).le`. Establish `hsum : ∑ j, F7.thGrid grid j = 1`. Establish `h1 : ∑ j : Fin L → Fin (d + 1), ∏ a, (|F7.lagCo (grid a) (j a)| / S a) = ∏ a, ∑ i, (|F7.lagCo (grid a) i| / S a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Rewrite using `[Finset.sum_congr rfl fun j _ => hth j, h1]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[← Finset.sum_div, hS a, div_self (hpos a).ne']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : 0 < ∏ a, S a` using `Finset.prod_pos fun a _ => hpos a`. Establish `hco : ∀ j : Fin L → Fin (d + 1), |∏ a, F7.lagCo (grid a) (j a)| = (∏ a, S a) * F7.thGrid grid j`. Introduce `j`. Rewrite using `[hth j, Finset.prod_div_distrib, Finset.abs_prod, mul_div_cancel₀ _ hP.ne']`. Use `⟨hnn, hsum, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hz]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, hco j]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (hF j) (mul_nonneg hP.le (hnn j))`. Use `_ = (∏ a, S a) * (c * ∑ j, F7.thGrid grid j * Mj j) := by`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mix {L d : ℕ} (grid : Fin L → Fin (d + 1) → ℝ) (S : Fin L → ℝ)
     (hS : ∀ a, ∑ i, |F7.lagCo (grid a) i| = S a) (hpos : ∀ a, 0 < S a) (z : ℂ)
@@ -100,7 +96,7 @@ namespace Formalism.FourierDecayAlt.P
 open Jx11
 
 /- English proof (translation)
-Introduce `m C c₂ κ N I A hκ hA hc`. Unfold `Sz.lamThreshold`. Establish `e : 2 * (1 - 1) + 1 - 1 = 0` using `by norm_num`. Rewrite using `[e, pow_zero, mul_one]`. Conclude with `mul_le_mul_of_nonneg_right hc (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem threshold_below_one : ThresholdBelowOne := by
   intro m C c₂ κ N I A hκ hA hc
@@ -110,11 +106,11 @@ theorem threshold_below_one : ThresholdBelowOne := by
   exact mul_le_mul_of_nonneg_right hc (by positivity)
 
 /- English proof (translation)
-Introduce `L f K pl A φ h`. Rewrite using `[← Finset.prod_fiberwise (s := univ) (g := pl) (f := fun a => φ (pl a))]`. Establish `h1 : ∀ v : Fin f, ∏ a ∈ univ.filter (fun a => pl a = v), φ (pl a) = φ v ^ (if v ∈ A then K else 0)`. Introduce `v`. Rewrite using `[← h v, ← Finset.prod_const]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[(Finset.mem_filter.1 ha).2]`. Simplify using `only [h1]`. Rewrite using `[← Finset.prod_subset (Finset.subset_univ A)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `v hv`. Rewrite using `[if_pos hv]`. Introduce `v _ hv`. Rewrite using `[if_neg hv, pow_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem letters_at_places : LettersAtPlaces := by
   intro L f K pl A φ h
@@ -132,7 +128,7 @@ theorem letters_at_places : LettersAtPlaces := by
   · intro v _ hv; rw [if_neg hv, pow_zero]
 
 /- English proof (translation)
-Introduce `hPW hC R M _ _ _ _ _ _ Ξ n L f pl dat α β X X' κ len Mx lv be hn hκ hlen hbt hsh hs hF`. Establish `hlt : ∀ a, α a < β a` using `fun a => by have := hbt a; linarith`. Establish `h1` using `hPW R M Ξ n L dat α β X X' _ hn hlt hsh hF`. Conclude with `hC L f (2 * n) pl (fun a => ‖(dat a).s‖) α β κ len lv be _ _ Mx hκ hlen hbt hs h1 le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wave_letters : WaveLetters := by
   intro hPW hC R M _ _ _ _ _ _ Ξ n L f pl dat α β X X' κ len Mx lv be hn hκ hlen hbt hsh hs hF
@@ -141,15 +137,13 @@ theorem wave_letters : WaveLetters := by
   exact hC L f (2 * n) pl (fun a => ‖(dat a).s‖) α β κ len lv be _ _ Mx hκ hlen hbt hs h1 le_rfl
 
 /- English proof (translation)
-Introduce `hPW R M _ _ _ _ _ _ Ξ L f pl dat y X X' κ Mx lv be hκ hsh hs hF`. Establish `: Subsingleton (Fin (2 * 0 + 1))` using `(inferInstance : Subsingleton (Fin 1))`. Establish `h` using `hPW R M Ξ 0 L dat (fun a _ => y a) X X' hsh (fun a => Function.injective_of_subsingleton _)`. Rewrite `h` using `[Fintype.sum_subsingleton _ (fun _ => (0 : Fin (2 * 0 + 1)))]`. Establish `hl : ∀ a : Fin L, F7.lagCo (fun _ : Fin (2 * 0 + 1) => y a) 0 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Unfold `F7.lagCo`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i hi`. Conclude with `absurd (Subsingleton.elim _ _) (Finset.mem_erase.1 hi).1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hl, Finset.prod_const_one, Complex.ofReal_one, one_mul] at h`. Establish `hn : (∏ a, ‖(dat a).s‖) * ‖Ξ X X'‖ = ‖F7.Fw Ξ X X' (List.ofFn fun a => (dat a, y a)) 1 1‖`. Rewrite using `[← h, norm_mul, norm_prod]`. Establish `h1 : (∏ a, ‖(dat a).s‖) = (∏ _a : Fin L, κ) * ∏ a, lv (pl a)`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl (fun a _ => hs a)`. Establish `h2 : (∏ a, κ * be (pl a)) = (∏ _a : Fin L, κ) * ∏ a, be (pl a)`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `hP : 0 < ∏ _a : Fin L, κ` using `Finset.prod_pos (fun _ _ => hκ)`. Rewrite `hF` using `[← hn, h1, h2, mul_assoc, mul_assoc]`.
-
-Conclude with `le_of_mul_le_mul_left hF hP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_letters_one : WaveLettersOne := by
   intro hPW R M _ _ _ _ _ _ Ξ L f pl dat y X X' κ Mx lv be hκ hsh hs hF
@@ -174,7 +168,7 @@ theorem wave_letters_one : WaveLettersOne := by
   exact le_of_mul_le_mul_left hF hP
 
 /- English proof (translation)
-Introduce `hLW hC R M _ _ _ _ _ _ Ξ n s L f pl dat A₀ A₀v e t t' α β X X' κ len Mx ov be hs hκ hlen hbt h0 he ht hA hA0 hB hBv ho hF`. Establish `hlt : ∀ a, α a < β a` using `fun a => by have := hbt a; linarith`. Establish `h1` using `hLW R M Ξ n s L dat A₀ A₀v e t t' α β X X' _ hs h0 he ht hA hA0 hB hBv hlt hF`. Conclude with `hC L f (2 * n + s) pl (fun a => ‖1 / t a - 1 / t' a‖) α β κ len ov be _ _ Mx hκ hlen hbt ho h1 le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_letters : LiftLetters := by
   intro hLW hC R M _ _ _ _ _ _ Ξ n s L f pl dat A₀ A₀v e t t' α β X X' κ len Mx ov be hs hκ hlen hbt
@@ -184,9 +178,9 @@ theorem lift_letters : LiftLetters := by
   exact hC L f (2 * n + s) pl (fun a => ‖1 / t a - 1 / t' a‖) α β κ len ov be _ _ Mx hκ hlen hbt ho h1 le_rfl
 
 /- English proof (translation)
-Introduce `hPW hCS R M _ _ _ _ _ _ Ξ n L f pl dat α β X X' κ len Mj lv be hn hκ hlen hbt hsh hs hF`. Establish `hlt : ∀ a, α a < β a` using `fun a => by have := hbt a; linarith`. Establish `hd : 1 ≤ 2 * n` using `by omega`. Establish `hid` using `hPW R M Ξ n L dat (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n)) X X' hsh (fun a => (hCS (α a) (β a) (2 * n) (hlt a) hd).1)`. Take `⟨m1, m2, m3⟩` from `mix (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n)) (fun a => (1 / 2) * (4 / (β a - α a)) ^ (2 * n)) (fun a => (hCS (α a) (β a) (2 * n) (hlt a) hd).2) (fun a => by have := hlt a; have h : 0 < β a - α a := by linarith positivity) _ _ hid _ Mj hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨m1, m2, ?_⟩` and prove the remaining obligations. Rewrite `m3` using `[norm_mul, norm_prod]`. Conclude with `chebToThreshold L f (2 * n) pl (fun a => ‖(dat a).s‖) α β κ len lv be _ _ _ hκ hlen hbt hs m3 le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_letters_mixed : WaveLettersMix := by
   intro hPW hCS R M _ _ _ _ _ _ Ξ n L f pl dat α β X X' κ len Mj lv be hn hκ hlen hbt hsh hs hF
@@ -206,11 +200,11 @@ theorem wave_letters_mixed : WaveLettersMix := by
     m3 le_rfl
 
 /- English proof (translation)
-Introduce `hLW hCS R M _ _ _ _ _ _ Ξ n s L f pl dat A₀ A₀v e t t' α β X X' κ len Mj ov be hs hκ hlen hbt h0 he ht hA hA0 hB hBv ho hF`. Establish `hlt : ∀ a, α a < β a` using `fun a => by have := hbt a; linarith`. Establish `hd : 1 ≤ 2 * n + s` using `by omega`. Establish `hid` using `hLW R M Ξ n s L dat A₀ A₀v e t t' (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n + s)) X X' hs h0 he ht hA hA0 hB hBv (fun a => (hCS (α a) (β a) (2 * n + s) (hlt a) hd).1)`. Take `⟨m1, m2, m3⟩` from `mix (fun a => Formalism.SA.C.chebPt (α a) (β a) (2 * n + s)) (fun a => (1 / 2) * (4 / (β a - α a)) ^ (2 * n + s)) (fun a => (hCS (α a) (β a) (2 * n + s) (hlt a) hd).2) (fun a => by have := hlt a; have h : 0 < β a - α a := by linarith positivity) _ _ hid _ Mj hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨m1, m2, ?_⟩` and prove the remaining obligations. Establish `hn : ∀ a, ‖e a * (1 / t a - 1 / t' a)‖ = ‖1 / t a - 1 / t' a‖`. Introduce `a`. Rewrite using `[norm_mul]`. Apply the tactic sequence `rcases he a with h | h <;> rw [h] <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `m3` using `[norm_mul, norm_prod, Finset.prod_congr rfl fun a _ => hn a]`. Conclude with `chebToThreshold L f (2 * n + s) pl (fun a => ‖1 / t a - 1 / t' a‖) α β κ len ov be _ _ _ hκ hlen hbt ho m3 le_rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_letters_mixed : LiftLettersMix := by
   intro hLW hCS R M _ _ _ _ _ _ Ξ n s L f pl dat A₀ A₀v e t t' α β X X' κ len Mj ov be hs hκ hlen hbt

@@ -11,11 +11,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
 /- English proof (translation)
-Establish `hne : (Ideal.span {(p : (⊥ : Subring Ω))}) ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨n, hn⟩` from `Subring.mem_bot.1 v.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ((p : ℤ) * n : ℤ) = 1`. Use `congrArg Subtype.val hv` as an intermediate fact. Simplify using `only [Subring.coe_mul, Subring.coe_natCast, Subring.coe_one] at this`. Rewrite `this` using `[← hn]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Int.isUnit_iff_natAbs_eq.1 (IsUnit.of_mul_eq_one _ h1)` as an intermediate fact. Simplify using `at this`. Conclude with `hp.one_lt.ne' this`. Take `⟨W, -, hW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hne`. Conclude with `⟨W, (ValuationSubring.mem_nonunits_iff W).1 (hW ⟨p, Ideal.mem_span_singleton_self _, by simp⟩)⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_val (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) (hp : p.Prime) :
     ∃ W : ValuationSubring Ω, W.valuation (p : Ω) < 1 := by
@@ -36,15 +36,15 @@ private theorem exists_val (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) (hp : 
   exact ⟨W, (ValuationSubring.mem_nonunits_iff W).1 (hW ⟨p, Ideal.mem_span_singleton_self _, by simp⟩)⟩
 
 /- English proof (translation)
-Take `⟨κ, γ, -, -, hk, -, hcl, hfin⟩` from `gammaGen k Ω l V hV hg hχ`. Use `haveI : ((cycU l V).subgroupOf V).Normal := hk ▸ inferInstance`. Use `(kerResCyc O (G k Ω) (QO l O) _ ((contTw k Ω l).2.2 O ψ n hψo) (cycU l V) V (cycU_le l V) γ.1 γ.2 hcl).2 ?_` and prove the remaining obligations. Introduce `m _`. Establish `hall : ∀ m' : QO l O, m' ∈ H0U (twist₂ l (ψ * chiO k Ω l O ^ n)) (cycU l V)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m' u`. Establish `h1 : ψ u.1 = 1` using `hψ u.2.1`. Establish `h2 : cycZ k Ω l u.1 = 1` using `u.2.2`. Establish `h3 : (ψ * chiO k Ω l O ^ n) u.1 = 1`. Simplify using `[chiO, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (((ψ * chiO k Ω l O ^ n) u.1 : Oˣ) : O) • m' = m'`. Rewrite using `[h3, Units.val_one, one_smul]`. Establish `ha : (((ψ * chiO k Ω l O ^ n) γ.1 : Oˣ) : O) - 1 ≠ 0`. Introduce `h0`. Establish `h1 : ψ γ.1 = 1` using `hψ γ.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (ψ * chiO k Ω l O ^ n) γ.1 = 1` using `Units.ext (sub_eq_zero.1 h0)`. Establish `h3 : Units.map (algebraMap ℤ_[l] O).toMonoidHom (cycZ k Ω l γ.1 ^ n) = 1`. Rewrite using `[map_zpow]`. Simplify `h2` using `[chiO, h1]`. Establish `h4 : cycZ k Ω l γ.1 ^ n = 1` using `Units.map_injective (f := (algebraMap ℤ_[l] O).toMonoidHom) (dvrFacts l O).1 (h3.trans (map_one _).symm)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hfin (isOfFinOrder_iff_zpow_eq_one.2 ⟨n, hn, h4⟩)`. Take `⟨m', hm'⟩` from `(qoFacts l O).2.2.1 _ ha m`. Use `⟨m', hall m', ?_⟩` and prove the remaining obligations. Use `show (((ψ * chiO k Ω l O ^ n) γ.1 : Oˣ) : O) • m' - m' = m`. Rewrite using `[← hm', sub_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inj_cyc (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ)
     [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O]
@@ -80,7 +80,7 @@ private theorem inj_cyc (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Alge
   rw [← hm', sub_smul, one_smul]
 
 /- English proof (translation)
-Unfold `selEig`. Rewrite using `[eig_one]`. Conclude with `⟨fun h g => congrArg Subtype.val (h g), fun h g => Subtype.ext (h g)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem mem_selEig_one {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G] [AddCommGroup M] [Module R M]
     [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M] [IsTopologicalGroup G] [DiscreteTopology M]
@@ -91,21 +91,19 @@ private theorem mem_selEig_one {R G M : Type} [CommRing R] [Group G] [Topologica
   exact ⟨fun h g => congrArg Subtype.val (h g), fun h g => Subtype.ext (h g)⟩
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ _ _ l hl O _ _ _ _ _ U _ hU hg ψ n hψ hn`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap k Ω).injective`. Establish `hψo : IsOpen (ψ.ker : Set (G k Ω))` using `Subgroup.isOpen_mono hψ hU`. Establish `hUc : IsClosed (U : Set (G k Ω))` using `U.isClosed_of_isOpen hU`. Establish `hnt : ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → ¬ U ⊓ Dec (F` using `k) A ≤ (cycZ k Ω l).ker := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A hA h`. Take `⟨g, hgm, hf⟩` from `decInf k Ω l U hU A hA`. Conclude with `hf (by rw [MonoidHom.mem_ker.1 (h hgm)]; exact IsOfFinOrder.one)`. Establish `hχ : ¬ U ≤ (cycZ k Ω l).ker`. Take `⟨A, hA⟩` from `exists_val Ω l hl.out`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun h => hnt A hA (inf_le_left.trans h)`. Use `⟨fun a b hab => Subtype.ext (inj_cyc k Ω l O ψ n hn hψo U hUc hg hψ hχ (congrArg Subtype.val hab)), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `(mem_selEig_one _ _ _ _ _).2 (restriction_mem_invariant_H1 _ (cycU_le l U) y.1)`. Introduce `x hx`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx1 : x.1 ∈ invariantsUnderSubgroupH1 (twist₂ l (ψ * chiO k Ω l O ^ n)) U (cycU l U)` using `(mem_selEig_one _ _ _ _ _).1 hx`. Take `⟨κ, γ, hκ, hs, hk, -⟩` from `gammaGen k Ω l U hUc hg hχ`. Take `⟨y, hy⟩` from `resZl l O (G k Ω) (QO l O) _ ((contTw k Ω l).2.2 O ψ n hψo) (qoFacts l O).2.1 (cycU l U) U (cycU_le l U) hUc κ hκ hs hk hx1`. Establish `hz : ∀ D ∈ shaFam k Ω l, ∀ (W : Subgroup (G k Ω)) (h : W ≤ cycU l U ⊓ D) (h' : W ≤ U), resU (twist₂ l (ψ * chiO k Ω l O ^ n)) h' y = 0`. Introduce `D hD W h h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `mem_locSel.1 x.2 D hD`. Rewrite `h0` using `[← hy, resU_resU]`. Use `congrArg (fun t => resU (twist₂ l (ψ * chiO k Ω l O ^ n)) h t) h0` as an intermediate fact. Rewrite `this` using `[resU_resU, map_zero]`. Then use the resulting hypothesis. Establish `hdec : ∀ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 → resU (twist₂ l (ψ * chiO k Ω l O ^ n)) (inf_le_left : U ⊓ Dec (F` using `k) A ≤ U) y = 0 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `A hA`. Apply `inj_cyc k Ω l O ψ n hn hψo (U ⊓ Dec (F := k) A) (hUc.inter (isClosed_Dec A)) (inf_le_left.trans hg) (inf_le_left.trans hψ) (hnt A hA)` to reduce the goal to its premises. Rewrite using `[resU_resU, map_zero]`. Conclude with `hz _ (Or.inl ⟨A, hA, rfl⟩) (cycU l (U ⊓ Dec (F := k) A)) (fun g hg => ⟨⟨hg.1.1, hg.2⟩, hg.1.2⟩) _`. Use `⟨⟨y, mem_locSel.2 ?_⟩, Subtype.ext hy⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `D (⟨A, hA, rfl⟩ | ⟨A, rfl⟩)`. Conclude with `hdec A hA`. Distinguish the cases in `hA : A.valuation (l : Ω) < 1`. Use `congrArg (fun t => resU (twist₂ l (ψ * chiO k Ω l O ^ n)) (inf_le_inf_left U (Ine_le_Dec (F := k) A)) t) (hdec A hA)` as an intermediate fact. Rewrite `this` using `[resU_resU, map_zero]`. Then use the resulting hypothesis.
-
-Conclude with `hz _ (Or.inr ⟨A, rfl⟩) (U ⊓ Ine (F := k) A) (fun g hg => ⟨⟨hg.1, (places k Ω l A).2.2.2 hA hg.2⟩, hg.2⟩) _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.controlGamma :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (U : Subgroup (G k Ω)) [U.Normal], IsOpen (U : Set (G k Ω)) → U ≤ gamU l ⊤ → ∀ (ψ : G k Ω →* Oˣ) (n : ℤ), U ≤ ψ.ker → n ≠ 0 →

@@ -8,13 +8,11 @@ open scoped ComplexOrder
 namespace PositivityTheory.KB.WhittakerCocycle
 
 /- English proof (translation)
-Use `Matrix.posDef_iff_dotProduct_mulVec.mpr ⟨hM, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hr : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Establish `hx' : ((‖x‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Use `set u : Fin N → ℂ := ((‖x‖⁻¹ : ℝ) : ℂ) • x with hu`. Establish `hu1 : ‖u‖ = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hr.ne']`. Establish `key : star x ⬝ᵥ (M *ᵥ x) = ((‖x‖ ^ 2 : ℝ) : ℂ) * (star u ⬝ᵥ (M *ᵥ u))`. Rewrite using `[hu, Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct]`. Simplify using `only [smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[RCLike.pos_iff]`. Use `⟨?_, hM.im_star_dotProduct_mulVec_self x⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using `only [RCLike.re_to_complex, Complex.re_ofReal_mul]`.
-
-Conclude with `mul_pos (by positivity) (h u hu1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posDef_of_sphere {N : ℕ} {M : Matrix (Fin N) (Fin N) ℂ} (hM : M.IsHermitian)
     (h : ∀ v : Fin N → ℂ, ‖v‖ = 1 → 0 < (star v ⬝ᵥ (M *ᵥ v)).re) : M.PosDef := by
@@ -36,13 +34,11 @@ theorem posDef_of_sphere {N : ℕ} {M : Matrix (Fin N) (Fin N) ℂ} (hM : M.IsHe
   exact mul_pos (by positivity) (h u hu1)
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `h0 h0p`. Establish `hm : Continuous fun z : HS L N × (Fin N → ℂ) => mat z.1 w` using `by show Continuous fun z : HS L N × (Fin N → ℂ) => (z.1.1 w : Matrix (Fin N) (Fin N) ℂ)`. Conclude with `(continuous_apply w).comp (continuous_subtype_val.comp continuous_fst)`. Establish `hg : Continuous fun z : HS L N × (Fin N → ℂ) => (star z.2 ⬝ᵥ (mat z.1 w *ᵥ z.2)).re` using `Complex.continuous_re.comp ((continuous_snd.star).dotProduct (hm.matrix_mulVec continuous_snd))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact (Metric.sphere (0 : Fin N → ℂ) 1)` using `isCompact_sphere 0 1`. Establish `hev` using `hK.eventually_forall_of_forall_eventually (x₀ := h0) (P := fun h v => 0 < (star v ⬝ᵥ (mat h w *ᵥ v)).re) (fun v hv => by`. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpos : 0 < (star v ⬝ᵥ (mat h0 w *ᵥ v)).re`. Use `(show (mat h0 w).PosDef from h0p).re_dotProduct_pos hv0` as an intermediate fact. Simplify using `using this`. Conclude with `(isOpen_lt continuous_const hg).mem_nhds hpos)`. Use `filter_upwards [hev] with h hh`.
-
-Conclude with `posDef_of_sphere (mat_herm h w) fun v hv => hh v (by simpa using hv)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOpen_posW {L : Type} [Field L] [NumberField L] {N : ℕ} (w : InfinitePlace L) :
     IsOpen {h : HS L N | (mat h w).PosDef} := by
@@ -67,11 +63,11 @@ theorem isOpen_posW {L : Type} [Field L] [NumberField L] {N : ℕ} (w : Infinite
   exact posDef_of_sphere (mat_herm h w) fun v hv => hh v (by simpa using hv)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Pos L N = ⋂ w, {h : HS L N | (mat h w).PosDef}`. Use extensionality with `h`. Simplify using `[Pos]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_iInter_of_finite fun w => isOpen_posW w`. Introduce `x hx y hy a b ha hb hab w show (mat (a • x + b • y) w).PosDef`. Rewrite using `[mat_add, mat_smul, mat_smul]`. Break down `ha.eq_or_lt with rfl | ha'` into its components or cases. Rewrite `hab` using `[zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hab` using the available equality. Simplify using `using hy w`. Conclude with `((hx w).smul ha').add_posSemidef ((hy w).posSemidef.smul hb)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pos_open_convex (L : Type) [Field L] [NumberField L] (N : ℕ) :
     IsOpen (Pos L N) ∧ Convex ℝ (Pos L N) := by
@@ -91,13 +87,13 @@ theorem pos_open_convex (L : Type) [Field L] [NumberField L] (N : ℕ) :
     · exact ((hx w).smul ha').add_posSemidef ((hy w).posSemidef.smul hb)
 
 /- English proof (translation)
-Distinguish the cases in `hne : Nonempty (InfinitePlace L)`. Take `⟨w0⟩` from `hne`. Establish `hs0 : (s w0 : ℂ) ≠ 0` using `(s w0).ne_zero`. Use `⟨(‖(s w0 : ℂ)‖ ^ 2)⁻¹, by positivity, fun h => HS_ext fun w => ?_⟩` and prove the remaining obligations. Establish `e : ((((scal L N s) w)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = Matrix.scalar (Fin N) ((s w : ℂ)⁻¹)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [scal, ← map_inv, GeneralLinearGroup.coe_scalar, Units.val_inv_eq_inv_val]`. Rewrite using `[mat_actL, mat_smul, e]`. Establish `hc : star ((s w : ℂ)⁻¹) * (s w : ℂ)⁻¹ = (((‖(s w0 : ℂ)‖ ^ 2)⁻¹ : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul', norm_inv, hs w w0]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i j`. Simplify using `only [Matrix.scalar_apply, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.smul_apply, Pi.star_apply]`. Rewrite using `[Complex.real_smul, ← hc]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨1, one_pos, fun h => HS_ext fun w => absurd ⟨w⟩ hne⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem actL_scal {L : Type} [Field L] [NumberField L] {N : ℕ} (s : InfinitePlace L → ℂˣ)
     (hs : ∀ w w', ‖(s w : ℂ)‖ = ‖(s w' : ℂ)‖) :

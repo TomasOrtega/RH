@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ _ _ hX U hU hne` and use `GlobalTheory.T.exists_nonzeroLocus_eq_affineOpen_locallyFactorial X U hU hne hX`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_sec_nonzeroLocus_eq_of_isAffineOpen_of_factorial :
     ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [X.IsSeparated], (∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) → ∀ U : X.Opens, IsAffineOpen U → (U : Set X).Nonempty → ∃ (L : LB X) (s : LB.Sec L), L.IsLB ∧ nonzeroLocus s = U :=

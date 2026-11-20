@@ -9,13 +9,11 @@ namespace GroundTheory.Heights₂.Heights.NineStatements
 open NumberField GroundTheory.Heights₂.Heights.LowerBoundFree
 
 /- English proof (translation)
-Use `set J := Submodule.span (𝓞 Em) (Set.range v) with hJdef`. Establish `hJ : J.FG` using `Submodule.fg_span (Set.finite_range v)`. Use `set m := J.toAddSubgroup.relIndex I.toAddSubgroup with hmdef`. Establish `hm : m ≠ 0` using `hv.2.2.2`. Establish `hmem : ∀ u ∈ I, m • u ∈ J`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `h` using `AddSubgroup.nsmul_index_mem (J.toAddSubgroup.addSubgroupOf I.toAddSubgroup) ⟨u, hu⟩`. Rewrite `h` using `[AddSubgroup.mem_addSubgroupOf]`. Conclude with `h`. Establish `: IsNoetherian (𝓞 Em) J` using `isNoetherian_of_fg_of_noetherian J hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : I →ₗ[𝓞 Em] J` to `{ toFun := fun u => ⟨m • (u : Fin N → Em), hmem u u.2⟩ map_add' := fun a b => by ext1; simp [smul_add] map_smul' := fun c a => by ext1; simp [smul_comm] }`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Establish `h1 : m • (a : Fin N → Em) = m • (b : Fin N → Em)` using `congrArg Subtype.val hab`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul Em, ← Nat.cast_smul_eq_nsmul Em]`.
-
-Conclude with `Subtype.ext (smul_right_injective _ (by exact_mod_cast hm) h1)`. Conclude with `(Submodule.fg_top I).1 (fg_of_injective (N := ⊤) f hf)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_of_isNzFamily {Em : Type} [Field Em] [NumberField Em] {N : ℕ} {I : Submodule (𝓞 Em) (Fin N → Em)}
     {ρ : ℕ} {v : Fin ρ → Fin N → Em} (hv : IsNzFamily I ρ v) : I.FG := by
@@ -41,7 +39,7 @@ theorem fg_of_isNzFamily {Em : Type} [Field Em] [NumberField Em] {N : ℕ} {I : 
   exact (Submodule.fg_top I).1 (fg_of_injective (N := ⊤) f hf)
 
 /- English proof (translation)
-Introduce `Em _ _ K _ _ ι hι N I ρ v hv s`. Rewrite using `[hA Em K ι hι N I (fg_of_isNzFamily hv) s]`. Conclude with `hB Em K N I ρ v hv s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TorusIndex.proof (hA : EigenLatDifferent.Statement) (hB : DifferentLatIndex.Statement) :
     TorusIndex.Statement := by

@@ -1,6 +1,6 @@
 import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.WeilPairExistence.WeilEx
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.ThKW.S.weilEx`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKW.weilEx : PositivityTheory.ThKG.Tow.WeilEx := PositivityTheory.ThKW.S.weilEx

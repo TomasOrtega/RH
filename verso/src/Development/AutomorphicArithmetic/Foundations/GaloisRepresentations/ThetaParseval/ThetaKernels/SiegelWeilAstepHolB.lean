@@ -15,15 +15,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.AStep
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `hP : inFrame d.b (R.ι w xN) = Matrix.fromBlocks 1 (inFrame d.b (R.ι w xN)).toBlocks₁₂ 0 1`. Apply `_root_.PositivityTheory.SiegelWeilFormula.Place.cw_ext_k d` to reduce the goal to its premises. Introduce `u`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_fromBlocks_k, _root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_toBlocks₁₂_k]`. Distinguish the cases in `hu : u = w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_unip_k d R u xN _ hxN, Matrix.toBlocks_fromBlocks₁₂]`. Rewrite using `[R.off_w w u xN hu, KSing.UnitaryGroupBasics.toBlocks₁₂_one, Matrix.fromBlocks_one]`. Rewrite using `[Matrix.fromBlocks_smul, KSing.UnitaryGroupBasics.fin_toBlocks₁₂, R.off_f w xN, ← KSing.UnitaryGroupBasics.fin_toBlocks₁₂, KSing.UnitaryGroupBasics.toBlocks₁₂_one, smul_zero]`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, smul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `β₁ : nA σ d.Y d.b` to `⟨(inFrame d.b (R.ι w xN)).toBlocks₁₂, AddSubgroup.subset_closure ⟨R.ι w xN, hP⟩⟩`. Establish `hB : inFrame d.b (R.ι w xN) = Matrix.fromBlocks 1 β₁.1 0 1` using `hP`. Use `⟨β₁, _root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.inFrame_inj_k d (by rw [hN]; exact hB), ?_, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `_root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_unip_k d R w xN _ hxN`. Rewrite `e` using `[hB, _root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_fromBlocks_k]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Matrix.fromBlocks_inj.1 e).2.1`. Establish `e` using `R.off_w w u xN hu`. Rewrite `e` using `[hB, _root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_fromBlocks_k, ← Matrix.fromBlocks_one]`. Conclude with `(Matrix.fromBlocks_inj.1 e).2.1`. Establish `e` using `R.off_f w xN`.
-
-Rewrite `e` using `[hB, Matrix.fromBlocks_smul, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]`. Conclude with `(Matrix.fromBlocks_inj.1 e).2.1.trans (smul_zero _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_realEmbedding_exists (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) {nb : nA σ d.Y d.b → d.G} (hN : IsNMap d.b nb)
     (xN : GR d.n) (h : Matrix (Fin d.n) (Fin d.n) ℂ) (hxN : mR xN = nU h) :
@@ -55,29 +53,29 @@ theorem unipotent_realEmbedding_exists (d : _root_.PositivityTheory.SiegelWeilFo
 def betaW_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (T : nF σ d.Y d.b) : Matrix (Fin d.n) (Fin d.n) ℂ :=
   ((2 * Real.pi : ℝ) : ℂ) • (-(2 : ℂ) • (R.ζ • d.cw w T.1.1))
 /- English proof (translation)
-Establish `hT : (d.cw w T.1.1)ᵀ + ((R.ε : ℤ) : ℂ) • (d.cw w T.1.1).map star = 0`. Use `AddSubgroup.closure_induction (p := fun β _ => (d.cw w β)ᵀ + ((R.ε : ℤ) : ℂ) • (d.cw w β).map star = 0) ?_ ?_ ?_ ?_ T.1.2` and prove the remaining obligations. Introduce and unpack `β ⟨x, hx⟩`. Establish `e` using `_root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.form_w_k d R w x`. Rewrite `e` using `[hx, _root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_fromBlocks_k]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Krd.Qc, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply] at e`. Rewrite using `[add_comm]`. Conclude with `e`. Use extensionality with `i j`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b _ _ ha hb`. Use extensionality with `i j`. Establish `ea` using `congrFun (congrFun ha i) j`. Establish `eb` using `congrFun (congrFun hb i) j`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw] at ea eb ⊢`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `ea + eb`. Introduce `a _ ha`. Use extensionality with `i j`. Establish `ea` using `congrFun (congrFun ha i) j`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw] at ea ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-ea`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.AStep.betaW_k`. Take `⟨Tw, hTw⟩ : ∃ Tw, Tw = d.cw w T.1.1` from `⟨_, rfl⟩`. Rewrite `hT`, the goal using `[← hTw]`. Establish `hAh : (R.ζ • Tw)ᴴ = R.ζ • Tw`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hT j) i`. Simplify using `only [Matrix.add_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply, smul_eq_mul] at e`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, star_mul']`. Break down `R.hζ with ⟨hε, hζ⟩ | ⟨hε, hζ⟩` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hζ]`. Rewrite `e` using `[hε]`. Simplify using `at e ⊢`. Take the linear combination `-e`. Rewrite using `[hζ]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hε]`. Simplify using `at e ⊢`. Take the linear combination `(-Complex.I) * e`. Establish `hf : finOne F • (T.1.1 * β₁.1).trace = 0`. Rewrite using `[← Matrix.trace_smul, ← Matrix.mul_smul, hBf, Matrix.mul_zero, Matrix.trace_zero]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : ∀ u, u ≠ w → piInf (d.B.emb u) (T.1.1 * β₁.1).trace = 0` using `fun u hu => by`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.piInf_trace_k, _root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_mul_k, hBu u hu, Matrix.mul_zero, Matrix.trace_zero]`. Establish `hz` using `Place.psi_trace_at d.std d.cm d.B.emb w (T.1.1 * β₁.1).trace hf hw`. Establish `hw' : piInf (d.B.emb w) (T.1.1 * β₁.1).trace = ((R.ζ • Tw) * h).trace`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.piInf_trace_k, _root_.PositivityTheory.SiegelWeilFormula.KSing.UnitaryGroupBasics.cw_mul_k, hBw, ← hTw, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hreal : ((((R.ζ • Tw) * h).trace).re : ℂ) = ((R.ζ • Tw) * h).trace`. Establish `hs : star (((R.ζ • Tw) * h).trace) = ((R.ζ • Tw) * h).trace`. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, hAh, hh.eq, Matrix.trace_mul_comm]`. Conclude with `Complex.conj_eq_iff_re.1 hs`. Establish `eR : ((((2 * Real.pi : ℝ) : ℂ) • (-(2 : ℂ) • (R.ζ • Tw))) * h).trace = ((2 * Real.pi : ℝ) : ℂ) * (-2 * (R.ζ • Tw * h).trace)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.smul_mul, Matrix.trace_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, smul_eq_mul]`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.tt`. Rewrite using `[hz, hw', eR]`. Generalize the expression as in `(R.ζ • Tw * h).trace = c at hreal ⊢`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[hreal]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem character_unipotent_trace (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (T : nF σ d.Y d.b) (β₁ : nA σ d.Y d.b)
     (h : Matrix (Fin d.n) (Fin d.n) ℂ) (hh : h.IsHermitian) (hBw : d.cw w β₁.1 = R.ζ • h)

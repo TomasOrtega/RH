@@ -13,7 +13,7 @@ set_option maxHeartbeats 4000000
 open GlobalTheory.OneMapAll GlobalTheory.AdTh GlobalTheory.Mem.R3.Rw.GeoTies
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_equiv_lift hM h1 h2 h3 hH hθ hv`. Conclude with `⟨e, fun y => ⟨(he y).1, fun q => by rw [eq_of_heq (hpt q), (he y).2]⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem lift_pt {D : D7} {V : HSp D} {S S' : D.what₂.Tau → SPar} {M : DSModel V S} {M' : DSModel V S'} (hM : ModelSame M M')
     {Γ W W' : Type} {nW : NormedAddCommGroup W} {nW' : NormedAddCommGroup W'} {iW : InnerProductSpace ℂ W}
@@ -25,7 +25,7 @@ private theorem lift_pt {D : D7} {V : HSp D} {S S' : D.what₂.Tau → SPar} {M 
   exact ⟨e, fun y => ⟨(he y).1, fun q => by rw [eq_of_heq (hpt q), (he y).2]⟩⟩
 
 /- English proof (translation)
-Substitute `h h'` using the available equality. Conclude with `hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem heq_at {L L' : Type} {P : L → Type} {P' : L' → Type} (v : ∀ s, P s) (v' : ∀ s, P' s) {a b : L} {a' b' : L'}
     (h : a = b) (h' : a' = b') (hv : HEq (v' b') (v b)) : HEq (v' a') (v a) := by
@@ -33,7 +33,7 @@ private theorem heq_at {L L' : Type} {P : L → Type} {P' : L' → Type} (v : �
   exact hv
 
 /- English proof (translation)
-Substitute `h h'` using the available equality. Conclude with `hv`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem same_at {D D' : D7} {V : HSp D} {V' : HSp D'} {L L' : Type} {S : L → D.what₂.Tau → SPar} {S' : L' → D'.what₂.Tau → SPar}
     (M : ∀ s, DSModel V (S s)) (M' : ∀ s, DSModel V' (S' s)) {a b : L} {a' b' : L'}
@@ -42,24 +42,24 @@ private theorem same_at {D D' : D7} {V : HSp D} {V' : HSp D'} {L L' : Type} {S :
   exact hv
 
 /- English proof (translation)
-The claim follows from `sgAt_mk _ R.hv0`.
+A detailed English derivation is pending.
 -/
 private theorem sign_at_base_place_eq_embedding {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) : sg0 D A = D.what₂.embLL :=
   sgAt_mk _ R.hv0
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hpins hRS κ' hκ v₀' fw' hcrd hv0 i i' hi hMW pt hpt`. Use `letI := alg'`. Use `letI := z.alg`. Establish `hs` using `sign_at_base_place_eq_embedding z.R.toRealDat`. Establish `hs'` using `sign_at_base_place_eq_embedding R'.toRealDat`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl` using `hRS.1.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hi`. Establish `h2` using `hRS.2 i i' hi`. Establish `c1` using `hcl.1`. Establish `c2` using `hcl.2.2.1`. Establish `c3` using `hcl.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `h2.2.2.1`. Establish `hθ` using `h2.2.2.2.1`. Establish `hk` using `hcl.2.2.2.2.2.2.2`. Establish `hMM` using `same_at (z.R.MW i) (R'.MW i') hs hs' ⟨hk.1, hk.2.1, hk.2.2.1, hk.2.2.2.1, hk.2.2.2.2.1, hk.2.2.2.2.2.1, hk.2.2.2.2.2.2.1⟩`. Establish `hv` using `heq_at (z.geo.v₀ i) (v₀' i') hs hs' (hv0 i i' hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `clear hcl h2 hk hs hs' hMW hv0 hcrd hκ hRS hpins hc halg`. Establish `h1` using `hE.1`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at h1`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hii : i = (by with_unfolding_all exact (i' :))` using `Fin.ext ((by with_unfolding_all exact (hi :)))`. Substitute `hii` using the available equality. Set `i' : Fin (w'.st Z').toD7.R.m` to `(by with_unfolding_all exact (i :))`. Set `S₀ : (w'.st Z').toD7.what₂.Tau → SPar` to `(by with_unfolding_all exact ((parAt (Wc (w.st Z).toD7 i) (sg0 (w.st Z).toD7 (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A)) :))`. Set `M₀ : DSModel (Wc (w'.st Z').toD7 i') S₀` to `@DSModel.mk _ _ _ ((by with_unfolding_all exact ((z.R.MW i (sg0 (w.st Z).toD7 (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A)).H :))) ((by with_unfolding_all exact ((z.R.MW i (sg0 (w.st Z).toD7 (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A)).nacg :))) ((by with_unfol …`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `H₀ : Links.HMod (Bridge.Gf (Vc (w'.st Z').toD7 i') → (z.R.cV i).W)` to `(by with_unfolding_all exact ((z.R.HV i (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0) :))`. Set `θ₀ : H₀.H →ₗ[ℂ] MMap M₀` to `(by with_unfolding_all exact ((z.R.thF i (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A.μ0) :))`. Set `u₀ : M₀.Vec` to `(by with_unfolding_all exact ((z.geo.v₀ i (sg0 (w.st Z).toD7 (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A)) :))`. Conclude with `(by with_unfolding_all exact ((lift_pt (M := M₀) (M' := R'.MW i' (sg0 (w'.st Z').toD7 (famR (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr).A)) ((hMM)) (W := (z.R.cV i).W) (W' := (R'.cV i').W) (nW := (z.R.cV i).nW) (nW' := (R'.cV i').nW) (iW := (z.R.cV i).iW) (iW' := (R'.cV i').i …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.theta_lift_data_over_coefficient_extension :
     ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')

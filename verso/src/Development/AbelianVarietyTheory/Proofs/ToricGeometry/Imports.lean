@@ -5,15 +5,13 @@ universe u_1 u_2
 namespace GlobalTheory.CommonDenominatorForFinset
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `Module.Finite.fg_top (R := R) (M := A)`. Use `choose f hf0 r hr using h`. Use `⟨∏ b ∈ S, f b, Finset.prod_ne_zero_iff.mpr fun b _ => hf0 b, ?_⟩` and prove the remaining obligations. Set `N : Submodule R A` to `{ carrier := {b | ∃ p : Polynomial R, algebraMap R A (∏ b ∈ S, f b) * b = Polynomial.aeval a p} add_mem' := by`. Introduce and unpack `x y ⟨p, hp⟩ ⟨q, hq⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨p + q, by rw [mul_add, hp, hq, map_add]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨p, hp⟩`. Use `⟨Polynomial.C c * p, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Polynomial.aeval_C, ← hp, Algebra.smul_def]`. Use `ring }`. Establish `hgen : (S : Set A) ⊆ N`. Introduce `b hb`. Take `⟨t, ht⟩` from `Finset.dvd_prod_of_mem f hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨Polynomial.C t * r b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Polynomial.aeval_C, ← hr b, ht, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `htop : (⊤ : Submodule R A) ≤ N`. Rewrite using `[← hS, Submodule.span_le]`.
-
-Conclude with `hgen`. Introduce `b`. Conclude with `htop Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_common_denominator {R : Type u_1} {A : Type u_2} [CommRing R] [IsDomain R]
     [CommRing A] [Algebra R A] [Module.Finite R A] (a : A)

@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.KnownScale
 
 /- English proof (translation)
-Take `⟨τ, M, p, q, c, hpq, hc, ⟨u, k₁, k₂, k₃, k₄, k₅, k₆⟩, rfl⟩` from `h`. Use `P.isAb.comm` as an intermediate fact. Use `⟨τ, N * M, p, q, a * c, hpq, mul_ne_zero ha hc, ⟨u, k₁, k₂, k₃, k₄, fun i z hz => ?_, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Use `((congrArg (valAt' _ _) (h₁ i)).trans (valAt'_mul _ _ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[valAt'_constFn _ _ (Over.w (u.ex z)) _ _ hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (a * ·) (k₅ i z hz)).trans ?_` and prove the remaining obligations. Simplify using `only [_root_.mul_assoc]`. Establish `k` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb P.A P.L P.g P.g u _ v _ _ hv.1 k₆ (h₂ i)`. Establish `e : ∑ j, N i j • ((2 * Real.pi * Complex.I : ℂ)⁻¹ • M j) = (2 * Real.pi * Complex.I : ℂ)⁻¹ • (N * M) i`. Simplify using `only [smul_comm (N i _) (2 * Real.pi * Complex.I : ℂ)⁻¹]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.smul_sum, ← Matrix.vecMul_eq_sum]`. Both sides reduce to the same expression. Rewrite `k` using `[e]`. Then use the resulting hypothesis. Rewrite using `[Matrix.det_mul, mul_pow, mul_pow, div_mul_div_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_scale {P : Out.PolAV (Sp ℂ)} {hg rig hr th hth v hv th' hth' v' hv'} {a : ℂ} (ha : a ≠ 0)
     {N : Matrix (Fin P.g) (Fin P.g) ℂ} (h₁ : ∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i)
@@ -48,7 +48,7 @@ theorem val_scale {P : Out.PolAV (Sp ℂ)} {hg rig hr th hth v hv th' hth' v' hv
   · rw [Matrix.det_mul, mul_pow, mul_pow, div_mul_div_comm]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `(f.map_det M).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem det_map_cast {K K' : Type} [CommRing K] [CommRing K'] (f : K →+* K') {m n : ℕ} (e : m = n)
     (M : Matrix (Fin n) (Fin n) K) :
@@ -57,19 +57,19 @@ theorem det_map_cast {K K' : Type} [CommRing K] [CommRing K'] (f : K →+* K') {
   exact (f.map_det M).symm
 
 /- English proof (translation)
-Take `⟨t₀, ht₀⟩` from `h`. Use `P.isAb.comm` as an intermediate fact. Use `choose N hN using fun i => (hv'.2 (v i) (hv.1 i)).exists`. Establish `hdet : IsUnit (Matrix.of N).det` using `((GlobalTheory.LieComb.lieComb_algebra K P.A P.g v' hv'.1).2.2.2.2 (Matrix.of N) v hv' hN).1 hv`. Establish `h₁' : ∀ i, LB.Sec.f th i = constFn P.A.hom _ ((a⁻¹ : Kˣ) : K) * LB.Sec.f th' i` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁, ← _root_.mul_assoc, ← KeyPow.constFn_mul, Units.inv_mul, KeyPow.constFn_one, _root_.one_mul]`. Use `⟨((Matrix.of N).det)⁻¹ ^ 4 / (a : K) ^ 8 * t₀, fun e x hx => ?_⟩` and prove the remaining obligations. Take `⟨Q, hgQ, rigQ, hrQ, s, hs, u, hu⟩` from `x`. Choose the witnesses or unpack the hypotheses as in `⟨eg⟩ : Nonempty (Q.g = P.g) := by`. Take `⟨_, _, _, hg, _⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨hg⟩`. Use `Q.isAb.comm` as an intermediate fact. Take `⟨ex, -, comp, sgl, bas⟩` from `GlobalTheory.LieComb.lieComb_algebra ℂ Q.A Q.g u hu.1`. Set `N' : Matrix (Fin Q.g) (Fin Q.g) ℂ` to `Matrix.of fun i j => e (Matrix.of N (i.cast eg) (j.cast eg))`. Establish `hd : N'.det = e (Matrix.of N).det` using `det_map_cast e eg (Matrix.of N)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose u₀ hu₀ using fun i => (ex (N' i)).exists`. Establish `hb₀ : IsLieBasis u₀` using `(bas N' u₀ hu hu₀).2 (hd ▸ hdet.map e)`. Use `choose M hM using fun i => (hb₀.2 (u i) (hu.1 i)).exists`. Establish `hMN : Matrix.of M * N' = 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k` using `(hu.2 (u i) (hu.1 i)).unique (comp _ (fun j => N' j) u₀ (M i) (u i) hu₀ (hM i)) (sgl i)`. Rewrite `k` using `[← Matrix.vecMul_eq_sum]`. Use `k.trans ?_` and prove the remaining obligations. Simplify using `using (smul_one_row (1 : ℂ) i).symm`. Establish `hMd : (Matrix.of M).det = (e (Matrix.of N).det)⁻¹`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← hd, ← Matrix.det_mul, hMN, Matrix.det_one]`. Take `⟨s₀, e₀, e₁, hle⟩` from `exists_sec_div Q.A.hom (a := e a) (b := e ((a⁻¹ : Kˣ) : K)) (by rw [← map_mul, Units.mul_inv, map_one]) s`. Establish `hs₀ : ∀ p : Sp ℂ, ∃ z : Q.A.left, Q.A.hom z = p ∧ z ∈ Out.nonzeroLocus s₀` using `fun p => (hs p).imp fun z hz => ⟨hz.1, hle hz.2⟩`. Establish `hx₀` using `KeyPBScale.keyPB_scale K ℂ e P hg rig hr th' hth' v' hv' th hth v hv _ (Matrix.of N) Q eg hgQ rigQ hrQ s hs u hu s₀ hs₀ u₀ hb₀ h₁' hN e₀ hu₀ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `k` using `val_scale (hth' := hs) (hv' := hu) (N := Matrix.of M) ((map_ne_zero e).2 a.ne_zero) e₁ hM (ht₀ e _ hx₀)`. Rewrite `k` using `[hMd]`. Rewrite using `[map_mul, map_div₀, map_pow, map_pow, map_inv₀]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem known_change {K : Type} [Field K] {P : Out.PolAV (Sp K)} {hg rig hr th hth v hv th' hth' v' hv'} (a : Kˣ)
     (h₁ : ∀ i, LB.Sec.f th' i = constFn P.A.hom _ (a : K) * LB.Sec.f th i)
@@ -113,14 +113,14 @@ theorem known_change {K : Type} [Field K] {P : Out.PolAV (Sp K)} {hg rig hr th h
   rwa [map_mul, map_div₀, map_pow, map_pow, map_inv₀]
 
 /- English proof (translation)
-The claim follows from `hy.imp fun _ ht e x hx => ht e x (keyPB_trans _ _ _ y y' x (RingHom.id K) e h hx)`.
+A detailed English derivation is pending.
 -/
 theorem known_of_keyPB {K : Type} [Field K] {y y' : KeyIn K} (h : KeyPB y' y (RingHom.id K)) (hy : Known K y) :
     Known K y' :=
   hy.imp fun _ ht e x hx => ht e x (keyPB_trans _ _ _ y y' x (RingHom.id K) e h hx)
 
 /- English proof (translation)
-Introduce `hL K _ y y' φ ⟨h₁, h₂, h₃⟩ hy`. Establish `e : spMap (RingHom.id K) = 𝟙 (Sp K)` using `Spec.map_id _`. Take `⟨rig, hr, th, hth, v, hv, hz⟩` from `KeyTf.exists_keyPB_on K K (RingHom.id K) y y'.P φ y'.g_pos h₂ (e ▸ h₁) h₃`. Take `⟨a, t, ht, hta, hid⟩` from `(KeyOnPol.main hL K).2 ⟨y'.P, y'.g_pos, rig, hr, th, hth, v, hv⟩ y'.rig y'.rig_gen y'.th y'.th_ne y'.v y'.basis`. Conclude with `known_of_keyPB hid (known_change a hta (known_of_keyPB hz hy))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem known_of_polPB : Out.Laws → ∀ (K : Type) [Field K] (y y' : KeyIn K) (φ : y'.P.A.left ⟶ y.P.A.left), PolPB y'.P y.P (𝟙 _) φ → Known K y → Known K y' := by
   intro hL K _ y y' φ ⟨h₁, h₂, h₃⟩ hy

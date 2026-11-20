@@ -8,9 +8,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ M G hG`. Use `haveI : IsLocallyNoetherian (Sp R) := inferInstance`. Use `haveI := M.proper`. Use `haveI : IsLocallyNoetherian M.S := LocallyOfFiniteType.isLocallyNoetherian M.π`. Use `haveI := hG`.
-
-Conclude with `LocallyOfFiniteType.isLocallyNoetherian G.hom`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_of_smooth_over_modif : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (M : Modif R) (G : Over M.S), Smooth G.hom → IsLocallyNoetherian G.left := by
   intro R _ _ _ M G hG

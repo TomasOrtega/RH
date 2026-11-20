@@ -25,19 +25,17 @@ def WickExpSt : Prop :=
 
 open G2 in
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B h h' hh hh' w0 m ι _ u Q f`. Establish `ha0 : ∀ (j : Fin 2) (i : Fin d), MvPowerSeries.constantCoeff ((![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] : Fin 2 → Pt k 1 d) j i) = 0`. Introduce `j i`. Use `fin_cases j`. Simplify using `[pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show MvPowerSeries.constantCoeff (ev ![pt k d 0] (B.actK k w0 i)) = 0`. Rewrite using `[hE k d 1 1 ![pt k d 0] (B.actK k w0 i) (by intro j i; fin_cases j; simp [pt])]`. Use `show MvPowerSeries.constantCoeff (MvPowerSeries.map (algebraMap R k) (B.A.act w0 i)) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, B.A.const, map_zero]`. Establish `hc0 : ∀ (j : Fin 2) (i : Fin d), MvPowerSeries.constantCoeff ((![0, pt k d 0] : Fin 2 → Pt k 1 d) j i) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `j i`. Apply the tactic sequence `fin_cases j <;> simp [pt]`. Establish `hsub : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d => (![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] : Fin 2 → Pt k 1 d) p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha0 p.1 p.2)`. Establish `hlin : B.hL k h' w0 = B.hL k h w0 + ev (n` using `1) ![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] (h' - h) := by`. Simplify using `only [FB.hL, ev]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.subst_sub hsub]`. Normalize the expressions using the abelian group laws. Establish `hch : MvPowerSeries.constantCoeff h = 0`. Rewrite using `[← hE k d 2 1 ![0, pt k d 0] h hc0, hh.ax0, map_zero]`. Establish `hcL : MvPowerSeries.constantCoeff (B.hL k h w0) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [FB.hL]`. Rewrite using `[hE k d 2 1 _ h ha0, hch]`. Establish `hq` using `hQ R d O k B (h' - h) (hG R d O k B h h' hh hh') w0`. Establish `hcm1 : MvPowerSeries.constantCoeff ((m : k) • B.hL k h w0) = 0` using `by first`. Consider the case `simp [hcL]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(rw [MvPowerSeries.smul_eq_C_mul]; simp [hcL])`. Establish `hcm2 : MvPowerSeries.constantCoeff ((m : k) • ev (n` using `1) ![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] (h' - h)) = 0 := by first`. Consider the case `simp [hq.1]`. Consider the case `(rw [MvPowerSeries.smul_eq_C_mul]; simp [hq.1])`. Simplify using `only [FB.nabVal]`.
-
-Rewrite using `[hlin, smul_add, hA k 1 d _ _ hcm1 hcm2, ← mul_assoc]`. Conclude with `hW k d (B.FK k) ι u _ Q _ (fun l l' => add_comm _ _) hq.1 (fun l => hq.2.1 (u l)) (fun l l' => hq.2.2 (u l) (u l')) (m : k) _`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaugeExp_of (hA : ExpAddZeroConstant) (hE : ConstantCoeffSubstitution) (hG : CanonicalGaugeDiffBiadditive) (hQ : QuadraticFormDerivatives)
     (hW : WickExpSt) : GaugeExpSt := by

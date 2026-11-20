@@ -9,7 +9,7 @@ namespace GlobalTheory.Pst.StLat
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h` using `congrArg f (mul_linv (l := l))`. Rewrite `h` using `[map_mul, map_natCast, map_one]`. Establish `h2` using `mul_linv (l := l)`. Take the linear combination `(linv l) * h - f (linv l) * h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem map_linv (f : Per.AinfP l →+* Per.AinfP l) : f (linv l) = linv l := by
   have h := congrArg f (mul_linv (l := l))
@@ -18,7 +18,7 @@ theorem map_linv (f : Per.AinfP l →+* Per.AinfP l) : f (linv l) = linv l := by
   linear_combination (linv l) * h - f (linv l) * h2
 
 /- English proof (translation)
-Rewrite using `[← ThetaD.fontaineTheta_eq_zero]`. Establish `h` using `congrArg (Per.θP l) (l_mul_beta ϖ)`. Rewrite `h` using `[map_mul, map_sub, map_natCast, ThetaD.fontaineTheta_algebraMap₂, WittVector.fontaineTheta_teichmuller, hu]`. Establish `hl : ((l : ℕ) : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Use `(mul_eq_zero.1 (h.trans ?_)).resolve_left hl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules.
 -/
@@ -31,9 +31,9 @@ theorem beta_mem_kerP (ϖ : Per.Fl l) (hu : ϖ.untilt = ((l : ℕ) : Per.OC l)) 
   simp
 
 /- English proof (translation)
-Establish `e1 : Per.σA g (Per.tm ϖ) = Per.tm ϖ * Per.tm e`. Establish `h1` using `gal_quot g ϖ e h 1`. Simplify using `only [map_one, mul_one, map_sub] at h1`. Conclude with `sub_left_injective h1`. Rewrite using `[beta, map_sub, map_mul, map_one, map_linv, GlobalTheory.RingBasics.awayMap_algebraMap₂, e1, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.MemLoc.mu, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gal_beta (g : GQ l) (ϖ e : Per.Fl l) (h : Per.σF g ϖ = ϖ * e) :
     Per.extP (Per.σA g) (beta ϖ) = beta ϖ + algebraMap (Per.Ainf l) (Per.AinfP l) (GlobalTheory.MemLoc.mu e) +
@@ -47,11 +47,11 @@ theorem gal_beta (g : GQ l) (ϖ e : Per.Fl l) (h : Per.σF g ϖ = ϖ * e) :
   ring
 
 /- English proof (translation)
-Introduce `n`. Establish `hu : ∀ k : ℕ, ∃ u : Per.AinfP l, ((k + 1 : ℕ) : Per.AinfP l) * u = 1` using `fun k => (GlobalTheory.RingBasics.isUnit_nat l _ k.succ_ne_zero).exists_right_inv`. Use `choose u hu using hu`. Establish `hf : ∀ k : ℕ, IsUnit ((k.factorial : ℕ) : Per.AinfP l)` using `fun k => GlobalTheory.RingBasics.isUnit_nat l _ k.factorial_ne_zero`. Take `⟨d, hd⟩` from `(hf n).exists_right_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : ∃ c : Per.AinfP l, ((n.factorial : ℕ) : Per.AinfP l) * c = ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) * (algebraMap (Per.Ainf l) (Per.AinfP l) (GlobalTheory.MemLoc.mu e)) ^ (k + 1)` from `⟨d * _, by rw [← mul_assoc, hd, one_mul]⟩`. Establish `key` using `(GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l j hj).2.2 n t (algebraMap (Per.AinfP l) (Per.BdRp l) c) (by`. Introduce `r`. Take `⟨N, hN⟩` from `ht r`. Take `⟨s, hs, z, hz⟩` from `hN (max N n) (le_max_left _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, z, 0, by rw [← hz]; ring, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, mul_zero, map_zero, ← map_sub, LogFun.ev_alg, Ideal.Quotient.eq_zero_iff_mem, LogFun.partial_eq u hu _ _ _ (hf _) hs, LogFun.partial_eq u hu _ _ _ (hf _) hc, ← neg_sub]`. Conclude with `neg_mem (LogFun.partial_sub_mem _ u _ (LogFun.mu_mem he) (le_max_right _ _)))`. Rewrite using `[key, LogFun.ev_alg, ← map_natCast (Ideal.Quotient.mk (Per.kerP l ^ n)), ← map_mul, hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLogP_map {e : Per.Fl l} (he : e.untilt = 1) {t : Per.Acris l} (ht : IsLogA e t)
     {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) :
@@ -78,13 +78,13 @@ theorem isLogP_map {e : Per.Fl l} (he : e.untilt = 1) {t : Per.Acris l} (ht : Is
   rw [key, LogFun.ev_alg, ← map_natCast (Ideal.Quotient.mk (Per.kerP l ^ n)), ← map_mul, hc]
 
 /- English proof (translation)
-Introduce `l _ P Co hζ ϖ hr hu u hlog g`. Establish `hd : ∀ m, g (lRoot l m) = Co.ζ m ^ (PadicInt.toZModPow m (kummer P g)).val * lRoot l m` using `fun m => by`. Rewrite using `[hζ]`. Conclude with `isKummer_kummer P g m`. Establish `hd' : ∀ m, g (lRoot l m) / lRoot l m = Co.ζ m ^ (PadicInt.toZModPow m (kummer P g)).val` using `fun m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, mul_div_cancel_right₀ _ (lRoot_ne_zero l m)]`. Take `⟨e, he⟩` from `exists_tilt (fun m => Co.ζ m ^ (PadicInt.toZModPow m (kummer P g)).val) (fun m => by rw [← hd', ← hd', div_pow, ← map_pow, lRoot_succ]) 1 (by simp [Co.ζ_zero])`. Establish `he1 : e.untilt = 1` using `Subtype.ext (by`. Use `he 0` as an intermediate fact. Rewrite `this` using `[Co.ζ_zero, one_pow, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this)`. Establish `hxe : Per.σF g ϖ = ϖ * e` using `gal_eq_mul g ϖ e fun m => by`. Rewrite using `[hr, he, ← map_mul, mul_comm, ← hd]`. Conclude with `GlobalTheory.RingBasics.σC_coe g _`. Take `⟨y, -, hy, -⟩` from `exists_isLogA l e he1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← log_eq Co e (kummer P g) y he hy]`. Use `IsLogP.add (beta_mem_kerP ϖ hu) (LogFun.mu_mem he1) hlog (isLogP_map he1 hy Co.j_cris) ?_` and prove the remaining obligations. Establish `h` using `IsLogP.gal hlog g`. Rewrite `h` using `[gal_beta g ϖ e hxe]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gal_log : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (Co : Core l), Co.ζ = P.ζQ → ∀ ϖ : Per.Fl l,
   (∀ m : ℕ, (rootT ϖ m : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (lRoot l m)) → ϖ.untilt = ((l : ℕ) : Per.OC l) →

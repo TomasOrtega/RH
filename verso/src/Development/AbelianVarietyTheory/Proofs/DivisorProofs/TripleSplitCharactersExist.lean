@@ -29,55 +29,45 @@ namespace GlobalTheory.ThetaAtGoodLocal
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcs`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_linear_bar_good_place hK.base F E σ B a a' G X om om' hT B.v₁ hT.chars.good B.τ₁`. Take `⟨ν₀, hν₀u, hν₀n, hV⟩` from `GlobalTheory.T.unramified_character_base_place_lift hK F E σ B a a' G X om om' hT`. Take `⟨χW, ε, C, hχu, hχn, hW⟩` from `GlobalTheory.T.unramified_linear_model_at_base_place hK F E σ B a a' G X om om' hT`. Establish `hSo` using `GlobalTheory.T.local_schwartz_membership_criterion hK F E σ B a a' G X om om' hT ι hι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbij : Set.BijOn ι (GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁) : Set _) (GlobalTheory.WeilM.SB (Matrix (Fin a') (Fin (a + a')) (Fv F B.v₁)) : Set _)` using `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.IsLin.bij hι`. Take `⟨Z, hZmem, hZonto, hZker, hZeq⟩` from `GlobalTheory.T.full_rank_coinvariant_induced_iso (Fv F B.v₁) a' (a + a') ν₀ (by omega) (isSmoothChar_of_isUnram hν₀u)`. Take `⟨b, hb, χ', T, hbχ, hTbij, hTeq⟩` from `GlobalTheory.T.induced_space_two_block_intertwiner (Fv F B.v₁) a a' ν₀ χW (isSmoothChar_of_isUnram hχu) ε C`. Use `set S := G.M'.SoLoc B.ψ B.τ₁ with hS`. Establish `hSSB : ∀ φ ∈ S, φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁)` using `fun φ hφ => hφ.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N := Submodule.span ℂ S with hN`. Establish `hNSB : N ≤ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁)` using `Submodule.span_le.2 hSSB`. Establish `hSfull : ∀ φ ∈ S, ι φ ∈ GlobalTheory.FullRankCoinv.fullRk (Fv F B.v₁) a' (a + a')` using `fun φ hφ => ⟨hbij.mapsTo (hSSB φ hφ), (hSo φ (hSSB φ hφ)).1 hφ⟩`. Establish `hNfull : ∀ φ ∈ N, ι φ ∈ GlobalTheory.FullRankCoinv.fullRk (Fv F B.v₁) a' (a + a')`. Establish `: N ≤ (GlobalTheory.FullRankCoinv.fullRk (Fv F B.v₁) a' (a + a')).comap ι` using `Submodule.span_le.2 hSfull`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression.
 
-Conclude with `fun φ hφ => this hφ`. Set `Zr : N →ₗ[ℂ] GlobalTheory.FullRankCoinv.indSp (Fv F B.v₁) a' (a + a') ν₀` to `((Z.comp ι).comp N.subtype).codRestrict _ (fun φ => hZmem _ (hNfull φ.1 φ.2))`. Take `⟨N', hN'⟩` from `Submodule.exists_isCompl N`. Set `P` to `T.comp (Zr.comp (Submodule.linearProjOfIsCompl N N' hN'))`. Establish `hP : ∀ φ (hφ : φ ∈ N), P φ = T ⟨Z (ι φ), hZmem _ (hNfull φ hφ)⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `φ hφ`. Establish `e : Submodule.linearProjOfIsCompl N N' hN' φ = ⟨φ, hφ⟩` using `Submodule.linearProjOfIsCompl_apply_left hN' ⟨φ, hφ⟩`. Simplify using `only [P, LinearMap.comp_apply, e]`. Both sides reduce to the same expression. Establish `u1 : IsUnram (χW * ν₀⁻¹)` using `fun x hx => by`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hχu x hx, hν₀u x hx, inv_one, mul_one]`. Establish `u2 : IsUnram ((χW * ν₀⁻¹)⁻¹)` using `fun x hx => by rw [MonoidHom.inv_apply, u1 x hx, inv_one]`. Establish `u3 : IsUnram (χW⁻¹)` using `fun x hx => by rw [MonoidHom.inv_apply, hχu x hx, inv_one]`. Establish `n1 : ∀ y, ‖(((χW * ν₀⁻¹) y : ℂˣ) : ℂ)‖ = 1` using `fun y => by`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, norm_mul, norm_inv, hχn, hν₀n, inv_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n2 : ∀ y, ‖((((χW * ν₀⁻¹)⁻¹) y : ℂˣ) : ℂ)‖ = 1` using `fun y => by`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv, n1, inv_one]`. Establish `n3 : ∀ y, ‖(((χW⁻¹) y : ℂˣ) : ℂ)‖ = 1` using `fun y => by`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv, hχn, inv_one]`. Establish `hunr : ∀ j, IsUnram (χ' j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `j`. Apply the tactic sequence `rcases hbχ with ⟨-, -, e0, e1⟩ | ⟨-, -, e0, e1⟩ <;> fin_cases j`. Use `show IsUnram (χ' 0)`. Rewrite using `[e0]`. Conclude with `hχu`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show IsUnram (χ' 1)`. Rewrite using `[e1]`. Conclude with `u1`. Use `show IsUnram (χ' 0)`. Rewrite using `[e0]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `u2`. Use `show IsUnram (χ' 1)`. Rewrite using `[e1]`. Conclude with `u3`. Establish `hnorm : ∀ j y, ‖((χ' j y : ℂˣ) : ℂ)‖ = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Introduce `j`. Apply the tactic sequence `rcases hbχ with ⟨-, -, e0, e1⟩ | ⟨-, -, e0, e1⟩ <;> fin_cases j`. Use `show ∀ y, ‖((χ' 0 y : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[e0]`. Conclude with `hχn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show ∀ y, ‖((χ' 1 y : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[e1]`. Conclude with `n1`. Use `show ∀ y, ‖((χ' 0 y : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[e0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `n2`. Use `show ∀ y, ‖((χ' 1 y : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[e1]`. Conclude with `n3`. Use `⟨b, hb, χ', ?_, hunr, hnorm, P, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hbχ with ⟨h0, h1, -⟩ | ⟨h0, h1, -⟩` into its components or cases. Conclude with `Or.inl ⟨h0, h1⟩`. Conclude with `Or.inr ⟨h0, h1⟩`. Introduce `ξ`. Take `⟨f, rfl⟩` from `hTbij.2 ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, hΨ, hZΨ⟩` from `hZonto f.1 f.2`. Take `⟨φ, hφSB, hιφ⟩` from `hbij.surjOn hΨ.1`. Establish `hφS : φ ∈ S` using `(hSo φ hφSB).2 (by rw [hιφ]; exact hΨ.2)`. Use `⟨φ, hφS, ?_⟩` and prove the remaining obligations. Rewrite using `[hP φ (Submodule.subset_span hφS)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Subtype.ext (by simp only [hιφ, hZΨ])`. Introduce `φ hφN hP0`. Use `set Q := Submodule.span ℂ {z | ∃ g ∈ UAt σ G.V' (evFin F B.v₁), ∃ φ₀ ∈ S, ∃ φ₁ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), Acts (evFin F B.v₁) (om' (g, 1)) φ₀ φ₁ ∧ z = φ₁ - φ₀} with hQ`. Establish `hQSB : Q ≤ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[hQ, Submodule.span_le]`. Introduce and unpack `_ ⟨g, -, φ₀, hφ₀, φ₁, hφ₁, -, rfl⟩`. Conclude with `Submodule.sub_mem _ hφ₁ (hSSB φ₀ hφ₀)`. Establish `hZ0 : Z (ι φ) = 0`. Rewrite `hP0` using `[hP φ hφN]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hTbij.1 (hP0.trans (map_zero T).symm)` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hAug` using `hZker _ (hNfull φ hφN) hZ0`. Establish `hle : GlobalTheory.FullRankCoinv.augRk a' (a + a') ν₀ ≤ Q.map ι`. Rewrite using `[GlobalTheory.FullRankCoinv.augRk, Submodule.span_le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨g₀, Ψ, hΨ, rfl⟩`. Take `⟨φ₀, hφ₀SB, hιφ₀⟩` from `hbij.surjOn hΨ.1`. Establish `hφ₀S : φ₀ ∈ S` using `(hSo φ₀ hφ₀SB).2 (by rw [hιφ₀]; exact hΨ.2)`. Take `⟨g, hg, hg'⟩` from `hV ι hι g₀`. Take `⟨φ₁, hφ₁SB, hAct, hιφ₁⟩` from `hg' φ₀ hφ₀SB`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨φ₁ - φ₀, Submodule.subset_span ⟨g, hg, φ₀, hφ₀S, φ₁, hφ₁SB, hAct, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hιφ₁, hιφ₀]`. Take `⟨q, hqQ, hq⟩` from `Submodule.mem_map.1 (hle hAug)`. Rewrite `hqQ` using `[hbij.injOn (hQSB hqQ) (hNSB hφN) hq]`. Conclude with `hqQ`.
-
-Introduce `g x hx φ₀ hφ₀`. Take `⟨hUAt, hcomp⟩` from `GlobalTheory.T.compact_level_embedding_unitary F E σ hσ (a + a') G.W c hc B.v₁ B.τ₁ g x hx`. Set `gT : GL (Fin (a + a')) (Fv F B.v₁)` to `⟨((g⁻¹ : GL (Fin (a + a')) (Fv F B.v₁)).1)ᵀ, (g.1)ᵀ, by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one], by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]⟩`. Set `M : GL (Fin (a + a')) (Fv F B.v₁)` to `C * (if ε then gT else g) * C⁻¹`. Establish `hM : M.1 = C.1 * (if ε then ((g⁻¹ : GL (Fin (a + a')) (Fv F B.v₁)).1)ᵀ else g.1) * (C⁻¹ : GL (Fin (a + a')) (Fv F B.v₁)).1`.
-
-Apply the tactic sequence `cases ε <;> rfl`. Take `⟨φ₁, hφ₁SB, hAct, hιφ₁⟩` from `hW ι hι _ hUAt g M hcomp hM φ₀ (hSSB φ₀ hφ₀)`. Establish `hdet : IsUnit (M.1).det` using `(Matrix.isUnit_iff_isUnit_det _).1 M.isUnit`. Establish `hφ₁S : φ₁ ∈ S`. Use `(hSo φ₁ hφ₁SB).2 fun Y hY => ?_` and prove the remaining obligations.
-
-Rewrite using `[hιφ₁]`. Establish `h0 : ι φ₀ (Y * M.1) = 0` using `(hSo φ₀ (hSSB φ₀ hφ₀)).1 hφ₀ _ (by rwa [Matrix.rank_mul_eq_left_of_isUnit_det _ _ hdet])`. Simplify using `[h0]`. Use `⟨φ₁, hφ₁S, hAct, ?_⟩` and prove the remaining obligations. Use `set s : ℂ := (χW (GlobalTheory.SplitFlip.gdet M) : ℂ) * GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet M) ((a' : ℂ) / 2) with hs`.
-
-Establish `hZ1 : Z (ι φ₁) = fun y => s * Z (ι φ₀) (y * M)`. Rewrite using `[hιφ₁, map_smul, hZeq _ (hSfull φ₀ hφ₀) M]`. Both sides reduce to the same expression. Establish `hmem : (fun y => s * Z (ι φ₀) (y * M)) ∈ GlobalTheory.FullRankCoinv.indSp (Fv F B.v₁) a' (a + a') ν₀` using `hZ1 ▸ hZmem _ (hSfull φ₁ hφ₁S)`. Rewrite using `[hP φ₁ (Submodule.subset_span hφ₁S), hP φ₀ (Submodule.subset_span hφ₀)]`.
-
-Rewrite using `[← hTeq (Z (ι φ₀)) (hZmem _ (hSfull φ₀ hφ₀)) g M hM hmem]`. Use `congr 1`. Conclude with `Subtype.ext hZ1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem localHalf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

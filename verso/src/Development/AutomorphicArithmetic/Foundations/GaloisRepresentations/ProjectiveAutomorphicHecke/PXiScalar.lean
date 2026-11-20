@@ -6,13 +6,13 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ n W j y s t hy v`. Establish `hy' : y = Formalism.L2.Col.brpSc E t` using `Units.ext (by rw [hy, Formalism.L2.Col.brpSc_coe])`. Establish `hinv : y⁻¹ = Formalism.L2.Col.brpSc E t⁻¹`. Rewrite using `[hy']`. Conclude with `(map_inv (Units.map (algebraMap E (Matrix (Fin n) (Fin n) E) : E →* Matrix (Fin n) (Fin n) E)) t).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hemb : embAll E n y⁻¹ = fun u => Formalism.L2.Col.brpSc ℂ (Units.map (u.embedding : E →* ℂ) t⁻¹)`. Use function extensionality and compare the values at `u`. Use extensionality with `i k`. Rewrite using `[hinv]`. Express the relevant statement in the definitionally equal form `((((Formalism.L2.Col.brpSc E t⁻¹ : GL (Fin n) E)) : Matrix (Fin n) (Fin n) E).map u.embedding) i k = _`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.Col.brpSc_coe, Formalism.L2.Col.brpSc_coe]`. Apply the tactic sequence `by_cases h : i = k <;> simp [Matrix.one_apply, h]`. Establish `hr` using `Formalism.L2.Col.tensorWeights_scalar_action (K := ℂ) W (fun u => Units.map (u.embedding : E →* ℂ) t⁻¹)`. Rewrite `hr` using `[← hemb]`. Simplify using `only [xi, MonoidHom.coe_mk, OneHom.coe_mk, Representation.dual_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.comp_apply, hr]`. Use extensionality with `x`. Simplify using `[Module.Dual.transpose_apply, smul_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pXiScalar_of :
     UpperTheory.Gal.CertificateRingHomMap.XiScalar := by

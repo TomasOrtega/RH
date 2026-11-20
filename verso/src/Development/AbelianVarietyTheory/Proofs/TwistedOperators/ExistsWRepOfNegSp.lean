@@ -19,9 +19,9 @@ namespace GlobalTheory.GridJoin
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `hS` using the available equality. Substitute `hT` using the available equality. Set `ω : GlobalTheory.Grid.WRep S T` to `om.comp (((GlobalTheory.Grid.ofSgn true S).symm.toMonoidHom.prodMap (MonoidHom.id _) : GA D S × GA D T →* GA D (negSp S) × GA D T))`. Establish `e : ω.toSgn true = om` using `MonoidHom.ext fun _ => rfl`. Use `⟨ω, ?_, heq_of_eq e⟩` and prove the remaining obligations.
+Substitute using the available equality. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show IsWeilDatumO ψ (GlobalTheory.Grid.sgn true S) T χS χT (ω.toSgn true)`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_wRep_of_negSp {S T S' T' : HSp D} (hS : S = S') (hT : T = T') (ψ : AddChar (AF D.host.F) ℂ)
     (χS χT : (AE D)ˣ →* Circle) (om : GA D (negSp S') × GA D T' →* Module.End ℂ (WO (negSp S') T' → ℂ))
@@ -42,17 +42,17 @@ end GlobalTheory.GridJoin
 namespace GlobalTheory.GridJoin
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc _ _ _ F _ _ G' W hW G hG _ hsp _ i j hi hj`. Establish `hv1` using `(hsp.vert (i + 1) j (by omega) hj).sp`. Establish `hv0` using `(hsp.vert i j (by omega) hj).sp`. Establish `hom` using `W.om_is (.chi i j) ⟨by omega, hj⟩`. Rewrite `hom` using `[hW.ψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ω, h1, h2⟩` from `exists_wRep_of_negSp hv1 hv0 R.ψ _ _ (W.om (.chi i j)) hom`. Use `⟨ω, ?_, h2⟩` and prove the remaining obligations. Establish `hchi : G.chi (D.R.m - i) = G'.ch.chi (D.R.m - i)` using `hsp.chi _ (by omega) (by omega)`. Establish `rS : (G'.V (.grid (i + 1) j)).rank = rkV D (i + 1) j`. Rewrite using `[← hv1]; exact (hG.vert i j (by omega) hj).rank`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `rT : (G'.V (.grid i j)).rank = rkV D i j`. Rewrite using `[← hv0]`. Consider the cases of `i with`. Consider the case `succ k => exact (hG.vert k j (by omega) hj).rank`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hv0]`. Use `show (columnBlock R.toLevCh j).sp.rank = _`. Simplify using `only [rkV, zero_mul, add_zero]`. Break down `hj.eq_or_lt with rfl | hk` into its components or cases. Rewrite using `[colY_m]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `D.sp.X'_rank`. Rewrite using `[colY_lt _ hk]`. Conclude with `(D.sp.Y_rank _ (min_le_right _ _)).trans (by rw [min_eq_left hk.le]; rfl)`. Establish `cS : G'.chrS (.chi i j) = G.chiAt (D.R.m - i) (rkV D (i + 1) j)` using `by show Formalism.IndefR.Lift.attChr (G'.ch.chi (D.R.m - i)) R.toLevCh.eta (G'.V (.grid (i + 1) j)).rank = _`. Rewrite using `[rS, ← hchi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `cT : G'.chrT (.chi i j) = G.chiAt (D.R.m - i) (rkV D i j)` using `by show Formalism.IndefR.Lift.attChr (G'.ch.chi (D.R.m - i)) R.toLevCh.eta (G'.V (.grid i j)).rank = _`. Rewrite using `[rT, ← hchi]`. Rewrite `h1` using `[cS, cT]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_omX_of_agree : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → HostHyp D → ∀ {F : Face D A}, GlobalTheory.Hk3.Core R F → sc.cGap = 1 → ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} (W : G'.Weil), W.Over R → ∀ G : GlobalTheory.Grid.GridPre R, G.IsSpaces → G.IsChars → SpAgree G W → (∀ i, i < D.R.m → ∀ κ : G'.CosAt i, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) G.idem (latO (G'.pS (.chi i 0)) (G'.pT (.chi i 0)) (G'.latS (.chi i 0) : Set _) (G'.latT (.chi i 0) : Set _) fun _ => True) 1 (W.vac i) (cosInd G.idem κ) (W.cosVec i κ)) → ∀ i j, i < D.R.m → j ≤ D.R.m → ∃ ω : GlobalTheory.Grid.WRep (G.V (i + 1) j).V (G.V i j).V, GlobalTheory.Grid.IsWeil R.ψ true (G.V (i + 1) j).V (G.V i j).V (G.chiAt (D.R.m - i) (rkV D (i + 1) j)) (G.chiAt (D.R.m - i) (rkV D i j)) ω ∧ HEq (ω.toSgn true) (W.om (.chi i j)) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc _ _ _ F _ _ G' W hW G hG _ hsp _ i j hi hj

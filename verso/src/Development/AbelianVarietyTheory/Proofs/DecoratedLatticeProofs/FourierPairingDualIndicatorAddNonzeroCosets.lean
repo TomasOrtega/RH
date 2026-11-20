@@ -15,9 +15,9 @@ variable {n : Type} [Fintype n]
 open Classical in
 
 /- English proof (translation)
-Establish `h` using `integral_add_right_eq_self (μ := μ) (fun y => vecInd L y * (χ (e * (η ⬝ᵥ y)) : ℂ)) y₀`. Establish `e2 : ∀ y, vecInd L (y + y₀) * (χ (e * (η ⬝ᵥ (y + y₀))) : ℂ) = (χ (e * (η ⬝ᵥ y₀)) : ℂ) * (vecInd L y * (χ (e * (η ⬝ᵥ y)) : ℂ))` using `fun y => by`. Rewrite using `[dotProduct_add, mul_add, AddChar.map_add_eq_mul, Circle.coe_mul, vecInd, vecInd, if_congr (L.add_mem_iff_left hy₀) rfl rfl]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e2] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[integral_const_mul]`. Assume the negation of the conclusion as `h0`. Conclude with `hne (Circle.ext (by simpa using (mul_eq_right₀ h0).1 h))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem integral_vecInd_eq_zero [MeasurableSpace k] [BorelSpace k] (χ : AddChar k Circle) (e : k)
     (μ : Measure (n → k)) [μ.IsAddHaarMeasure] (L : Submodule 𝒪[k] (n → k)) (η : n → k) {y₀ : n → k}
@@ -35,9 +35,9 @@ theorem integral_vecInd_eq_zero [MeasurableSpace k] [BorelSpace k] (χ : AddChar
   exact hne (Circle.ext (by simpa using (mul_eq_right₀ h0).1 h))
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, f x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hf (LinearMap.ext h)`. Take `⟨y, rfl⟩` from `Red.mk_surjective L x`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `residue_surjective (R := 𝒪[k]) (b * (f (Red.mk L y))⁻¹)`. Take `⟨s, hs, hs'⟩` from `hF (t • y)`. Use `⟨_, (t • y).2, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hs', map_smul, ← Red.residue_smul, map_smul, ht, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hx, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lifts_value (L : Submodule 𝒪[k] (n → k)) {f : Module.Dual 𝓀[k] (Red L)} (hf : f ≠ 0)
     {F : n → k} (hF : Lifts L F f) (b : 𝓀[k]) :
@@ -53,15 +53,13 @@ theorem exists_lifts_value (L : Submodule 𝒪[k] (n → k)) {f : Module.Dual �
   rw [hs', map_smul, ← Red.residue_smul, map_smul, ht, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hx, mul_one]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, resChar χ hχ q a ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `resChar_ne_one hχ q (by ext a; rw [h a, AddChar.one_apply])`. Apply the tactic sequence `have hee : e * e = 1 := by rcases he with rfl | rfl <;> norm_num`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `heo : e ∈ 𝒪[k]`. Break down `he with rfl | rfl` into its components or cases. Conclude with `one_mem _`. Conclude with `neg_mem (one_mem _)`. Set `ε : 𝒪[k]` to `⟨e, heo⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hε : residue 𝒪[k] ε * residue 𝒪[k] ε = 1`. Rewrite using `[← map_mul, show ε * ε = 1 from Subtype.ext hee, map_one]`. Take `⟨y₀, hy₀, s, hs, hs'⟩` from `exists_lifts_value L hf hF (residue 𝒪[k] ε * a)`. Use `integral_vecInd_eq_zero χ e μ L η hy₀ fun h => ha ?_` and prove the remaining obligations. Establish `hl : e * ((η - q.inv • F) ⬝ᵥ y₀) ∈ 𝒪[k]` using `mul_mem heo (hη y₀ hy₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsplit : e * (η ⬝ᵥ y₀) = q.inv * ((ε * s : 𝒪[k]) : k) + e * ((η - q.inv • F) ⬝ᵥ y₀)`. Rewrite using `[sub_dotProduct, smul_dotProduct, smul_eq_mul, Subring.coe_mul, hs]`. Express the relevant statement in the definitionally equal form `_ = _ * (e * _) + _`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hsplit, AddChar.map_add_eq_mul, apply_int_eq_one hχ ⟨_, hl⟩, mul_one]`.
-
-Rewrite using `[show a = residue 𝒪[k] (ε * s) by rw [map_mul, hs', ← mul_assoc, hε, one_mul], resChar_residue, h]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_vecInd_coset [MeasurableSpace k] [BorelSpace k] (q : Unif k) (χ : AddChar k Circle)
     (hχ : HasConductor χ 1) (e : k) (he : e = 1 ∨ e = -1) (μ : Measure (n → k)) [μ.IsAddHaarMeasure]
@@ -96,11 +94,11 @@ end GlobalTheory.FinPl.Comm
 namespace GlobalTheory.FinPl.Comm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ q χ hχ e he μ _ L _`. Unfold `fpair`. Use `congr 1`. Use function extensionality and compare the values at `η`. Rewrite using `[Pi.add_apply, mul_add, Finset.sum_apply, Finset.mul_sum, add_eq_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun Q hQ => ?_` and prove the remaining obligations. Establish `hL : Q.lat = L` using `mem_withLat.1 hQ`. Unfold `cosetInd`. Use `split_ifs with h`. Take `⟨F, hF, hD⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `integral_vecInd_coset q χ hχ e he μ Q.lat Q.red_ne hF hD`. Rewrite `h0` using `[hL]`. Rewrite using `[h0, zero_mul]`. Rewrite using `[mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fpair_vecInd_dualInd_add_cosets : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n]

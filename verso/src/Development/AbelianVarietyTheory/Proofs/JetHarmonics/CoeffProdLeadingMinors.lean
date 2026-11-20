@@ -8,9 +8,9 @@ namespace GlobalTheory.LeadingMinors
 open MvPowerSeries in
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.mem_homogeneousSubmodule, Matrix.det_apply]`. Use `Submodule.sum_mem _ fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_homogeneousSubmodule]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `MvPolynomial.IsHomogeneous.prod Finset.univ (fun i => (Matrix.of fun a i : ι => (MvPolynomial.X (v a i) : MvPolynomial σ k)) (e i) i) (fun _ => 1) fun i _ => MvPolynomial.isHomogeneous_X k _`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.LeadingMinors.isHomogeneous_det_X {k σ ι : Type*} [CommRing k] [Fintype ι]
     [DecidableEq ι] (v : ι → ι → σ) :
@@ -29,7 +29,7 @@ theorem _root_.GlobalTheory.LeadingMinors.isHomogeneous_det_X {k σ ι : Type*} 
 open MvPowerSeries in
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Subalgebra.sum_mem _ fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `zsmul_mem (Subalgebra.prod_mem _ fun i _ => ?_) _` and prove the remaining obligations. Conclude with `Algebra.subset_adjoin (Set.mem_image_of_mem MvPolynomial.X (hS (e i) i))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LeadingMinors.det_X_mem_supported {k σ ι : Type*} [CommRing k] [Fintype ι]
     [DecidableEq ι] (v : ι → ι → σ) (S : Set σ) (hS : ∀ a i, v a i ∈ S) :
@@ -44,9 +44,9 @@ theorem _root_.GlobalTheory.LeadingMinors.det_X_mem_supported {k σ ι : Type*} 
 open MvPowerSeries in
 
 /- English proof (translation)
-Rewrite using `[AlgHom.map_det]`. Establish `hM : (MvPolynomial.killCompl hf).mapMatrix (Matrix.of fun a i : ι => (MvPolynomial.X (v a i) : MvPolynomial σ k)) = Matrix.diagonal fun a => MvPolynomial.X (u a)`. Use extensionality with `a i`. Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.diagonal_apply]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[hd, ← MvPolynomial.rename_X f, MvPolynomial.killCompl_rename_app]`. Rewrite using `[MvPolynomial.killCompl, MvPolynomial.aeval_X, dif_neg (ho a i h)]`. Rewrite using `[hM, Matrix.det_diagonal, MvPolynomial.monomial_sum_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LeadingMinors.killCompl_det_X {k σ ρ ι : Type*} [CommRing k] [Fintype ι]
     [DecidableEq ι] {f : ρ → σ} (hf : Function.Injective f) (v : ι → ι → σ) (u : ι → ρ)
@@ -70,19 +70,17 @@ theorem _root_.GlobalTheory.LeadingMinors.killCompl_det_X {k σ ρ ι : Type*} [
 open MvPowerSeries in
 
 /- English proof (translation)
-Introduce `k _ T _ _ r n col m hcol P al hP hal`. Establish `hf : Function.Injective (fun l : Σ τ : T, Fin (r τ) => ((l, col l.1 l.2) : (Σ τ : T, Fin (r τ)) × Fin n))` using `fun a b h => congrArg Prod.fst h`. Establish `hblock : ∀ τ (s : Fin (r τ)), MvPolynomial.killCompl hf (Matrix.of fun a i : Fin (s.val + 1) => (MvPolynomial.X ((⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (r τ)), col τ (Fin.castLE s.isLt i)) : MvPolynomial ((Σ τ : T, Fin (r τ)) × Fin n) k)).det = MvPolynomial.monomial (∑ a : Fin …` using `fun τ s => _root_.GlobalTheory.LeadingMinors.killCompl_det_X hf _ (fun a => ⟨τ, Fin.castLE s.isLt a⟩) (fun _ => rfl) (by`. Introduce and unpack `a i hai ⟨l, hl⟩`. Simplify using `only [Prod.mk.injEq] at hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Take `⟨rfl, h⟩` from `hl`. Conclude with `hai (Fin.castLE_injective _ (hcol τ h)))`. Use `set B : (Σ τ : T, Fin (r τ)) →₀ ℕ := ∑ τ, ∑ s : Fin (r τ), m τ s • ∑ a : Fin (s.val + 1), Finsupp.single (⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (r τ)) 1 with hBdef`. Establish `hkill : MvPolynomial.killCompl hf P = MvPolynomial.monomial B 1`. Rewrite using `[hP, hBdef, map_prod, MvPolynomial.monomial_sum_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod, MvPolynomial.monomial_sum_one]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, hblock, MvPolynomial.monomial_pow, one_pow]`. Establish `hmap : Finsupp.mapDomain (fun l : Σ τ : T, Fin (r τ) => ((l, col l.1 l.2) : (Σ τ : T, Fin (r τ)) × Fin n)) B = al`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hal, hBdef]`. Simplify using `[Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_smul, Finsupp.mapDomain_single]`. Establish `hdeg : al.degree = ∑ τ, ∑ s : Fin (r τ), m τ s * (s.val + 1)`. Rewrite using `[hal]`. Simplify using `[map_sum, Finsupp.degree_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hhom : P.IsHomogeneous (∑ τ, ∑ s : Fin (r τ), m τ s * (s.val + 1))`. Rewrite using `[hP]`. Use `MvPolynomial.IsHomogeneous.prod _ _ _ fun τ _ => MvPolynomial.IsHomogeneous.prod _ _ _ fun s _ => ?_` and prove the remaining obligations. Establish `h` using `(_root_.GlobalTheory.LeadingMinors.isHomogeneous_det_X (k := k) (fun a i : Fin (s.val + 1) => ((⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (r τ)), col τ (Fin.castLE s.isLt i)))).pow (m τ s)`. Rewrite `h` using `[Fintype.card_fin]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[mul_comm]`. Then use the resulting hypothesis. Establish `hsupp : P ∈ MvPolynomial.supported k {x : (Σ τ : T, Fin (r τ)) × Fin n | ∃ i, col x.1.1 i = x.2}`. Rewrite using `[hP]`. Conclude with `Subalgebra.prod_mem _ fun τ _ => Subalgebra.prod_mem _ fun s _ => Subalgebra.pow_mem _ (_root_.GlobalTheory.LeadingMinors.det_X_mem_supported (fun a i : Fin (s.val + 1) => ((⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (r τ)), col τ (Fin.castLE s.isLt i))) {x : (Σ τ : T, Fin (r τ)) × …`. Use `⟨?_, by rw [hdeg]; exact hhom, hdeg, fun mo hmo l b hlb => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hmap, ← MvPolynomial.coeff_killCompl hf, hkill, MvPolynomial.coeff_monomial, if_pos rfl]`. Establish `hv : (l, b) ∈ P.vars` using `(MvPolynomial.mem_vars _).2 ⟨mo, hmo, Finsupp.mem_support_iff.2 hlb⟩`. Conclude with `MvPolynomial.mem_supported.1 hsupp hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LeadingMinors.coeff_prod_leading_minors : ∀ (k : Type) [CommRing k] (T : Type) [Fintype T] [DecidableEq T] (r : T → ℕ) (n : ℕ) (col : ∀ τ, Fin (r τ) → Fin n) (m : ∀ τ, Fin (r τ) → ℕ), (∀ τ, Function.Injective (col τ)) → ∀ (P : MvPolynomial ((Σ τ : T, Fin (r τ)) × Fin n) k) (al : (Σ τ : T, Fin (r τ)) × Fin n →₀ ℕ), P = (∏ τ, ∏ s : Fin (r τ), (Matrix.of fun a i : Fin (s.val + 1) => (MvPolynomial.X ((⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (r τ)), col τ (Fin.castLE s.isLt i)) : MvPolynomial ((Σ τ : T, Fin (r τ)) × Fin n) k)).det ^ m τ s) → al = ∑ τ, ∑ s : Fin (r τ), m τ s • ∑ a : Fin (s.val + 1), Finsupp.single ((⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (r τ)), col τ (Fin.castLE s.isLt a)) 1 → P.coeff al = 1 ∧ P.IsHomogeneous al.degree ∧ al.degree = ∑ τ, ∑ s : Fin (r τ), m τ s * (s.val + 1) ∧ ∀ mo ∈ P.support, ∀ l b, mo (l, b) ≠ 0 → ∃ i, col l.1 i = b := by
   intro k _ T _ _ r n col m hcol P al hP hal

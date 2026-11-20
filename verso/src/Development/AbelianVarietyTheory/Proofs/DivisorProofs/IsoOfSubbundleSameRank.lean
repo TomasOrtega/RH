@@ -12,11 +12,11 @@ open GlobalTheory.Twist (resM)
 namespace GlobalTheory.TriFrame
 
 /- English proof (translation)
-Introduce `X _ G G' E n i a hG hG' hi hs`. Use `hs.mono` as an intermediate fact. Establish `: Mono a` using `mono_of_mono a i`. Use `hG.isFiniteQC` as an intermediate fact. Use `hG'.isFiniteQC` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QCoh.IsFiniteQC (cokernel a)` using `inferInstance`. Establish `hS` using `shortExact_cokernel_comp a i`. Establish `hm` using `hS.mono_f`. Establish `htf : IsTorsionFree (cokernel a)` using `@IsTorsionFree.of_mono X (cokernel (a ≫ i)) (cokernel a) _ hs.isSaturated (kernelCokernelCompSequence.snakeInput a i).L₃.f hm`. Establish `h0` using `genRank_cokernel a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hG.genRank_eq, hG'.genRank_eq]`. Establish `hz : IsZero (cokernel a)` using `htf.isZero (by omega)`. Establish `: Epi a` using `Preadditive.epi_of_isZero_cokernel a hz`. Conclude with `isIso_of_mono_of_epi a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_of_isSubbundle_comp : ∀ (X : Scheme.{0}) [IsIntegral X] (G G' E : X.Modules) (n : ℕ) (i : G ⟶ E) (a : G' ⟶ G), IsVB G n → IsVB G' n → Mono i → IsSubbundle (a ≫ i) → IsIso a := by
   intro X _ G G' E n i a hG hG' hi hs

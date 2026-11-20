@@ -17,35 +17,31 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.EisLine GlobalTheory.
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI : X.L.IsLattice E := hX.lat`. Establish `hσ : IsCMExt F E σ` using `hB.cm`. Establish `hs : ∀ z : E, σ (σ z) = z` using `fun z => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hσ.2.2.2, hσ.2.2.2, star_star])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hND : IsHermND σ X.Jᵀ` using `isHermND_transpose hX`. Establish `hHxx : form σ X.J H.x H.x = 0` using `hH.xx`. Establish `hHyy : form σ X.J H.y H.y = 0` using `hH.yy`. Establish `hHxy : form σ X.J H.x H.y = 1` using `hH.xy`. Use `set xc : Matrix (Fin n) (Fin 1) E := Matrix.of fun i _ => H.x i with hxc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set yc : Matrix (Fin n) (Fin 1) E := Matrix.of fun i _ => H.y i with hyc`. Establish `hfyx : form σ X.J H.y H.x = 1`. Establish `e : form σ X.J H.y H.x = σ (form σ X.J H.x H.y)`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hs, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← hX.herm k l, hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hHxy, map_one]`. Establish `hxx : cT (σ : E →+* E) xc * X.Jᵀ * xc = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[cT_col_eq_form]`. Use extensionality with `i j`. Simplify using `[hHxx]`. Establish `hyy : cT (σ : E →+* E) yc * X.Jᵀ * yc = 0`. Rewrite using `[cT_col_eq_form]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[hHyy]`. Establish `hxy : cT (σ : E →+* E) xc * X.Jᵀ * yc = 1`. Rewrite using `[cT_col_eq_form]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim i j]`. Simplify using `[hfyx]`. Establish `hyx : cT (σ : E →+* E) yc * X.Jᵀ * xc = 1`. Rewrite using `[cT_col_eq_form]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim i j]`. Simplify using `[hHxy]`. Establish `hSD` using `GlobalTheory.T.hermitian_lattice_self_dual_everywhere F E σ B n X r s hB hX`. Establish `loc : ∀ v (y : GLoc σ X.Jᵀ v), ∃ q k : GLoc σ X.Jᵀ v, k ∈ stabLoc σ X.Jᵀ X.L v ∧ y = q * k ∧ ∃ β : GL (Fin 1) (Fv F v ⊗[F] E), (matHom _ σ X.Jᵀ q).1 * xc.map (inclR (F` using `F) (Fv F v)) = xc.map (inclR (F := F) (Fv F v)) * β.1 := fun v y => if hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v then GlobalTheory.T.hyperbolic_pair_lattice_local_split F E σ hσ n X.Jᵀ hND xc yc hxx hyy hxy hyx X.L hX.lat v hv (hSD v) y else GlobalTheory.T.is …`. Take `⟨a, ha, haK⟩` from `GlobalTheory.T.majorant_frame_commutes_cartan F E σ B n X r s hB hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g' := (ofGAd σ X.J).symm g with hg'`. Use `choose qa ka hka hga βa hβa using fun w => GlobalTheory.T.archimedean_iwasawa_majorant_frame F E σ hσ n X.Jᵀ hND xc yc hxx hyx a ha w (projArch σ X.Jᵀ w g')`. Use `choose qf kf hkf hgf βf hβf using fun v => loc v (proj σ X.Jᵀ v g')`. Use `set S := (Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc σ X.Jᵀ X.L g')).toFinset with hS`. Take `⟨pa, hpa1, hpa2⟩` from `exists_arch_comp σ X.Jᵀ qa`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨pf, hpf1, hpf2⟩` from `exists_fin_comp σ X.Jᵀ qf S`. Use `set p := pa * pf with hp`. Establish `pA : ∀ w, projArch σ X.Jᵀ w p = qa w` using `fun w => by rw [hp, map_mul, hpa2 w, hpf1 w, mul_one]`. Establish `pF : ∀ v, proj σ X.Jᵀ v p = if v ∈ S then qf v else 1` using `fun v => by rw [hp, map_mul, hpa1 v, hpf2 v, one_mul]`. Take `⟨l, hl⟩` from `GlobalTheory.T.parabolic_archimedean_eigenvector F E σ n X.Jᵀ xc (cT (σ : E →+* E) yc * X.Jᵀ) hyx p (fun w => ⟨βa w, by rw [pA w]; exact hβa w⟩) (fun v => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pF v]`. Use `split_ifs`. Conclude with `⟨βf v, hβf v⟩`. Conclude with `⟨1, by simp⟩)`. Establish `hk : ofGAd σ X.J (p⁻¹ * g') ∈ GlobalTheory.StabHaar.stabK (σ` using `σ) B X := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `GlobalTheory.T.majorant_stabilizer_iwasawa_line F E σ B n X hX.lat _ (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Establish `e : projArch σ X.Jᵀ w (p⁻¹ * g') = ka w`. Rewrite using `[map_mul, map_inv, pA w, hga w, inv_mul_cancel_left]`. Rewrite using `[e]`. Conclude with `haK w (ka w) (hka w)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e1 : proj σ X.Jᵀ v (p⁻¹ * g') = (if v ∈ S then qf v else 1)⁻¹ * proj σ X.Jᵀ v g'`. Rewrite using `[map_mul, map_inv, pF v]`. Rewrite using `[e1]`. Use `split_ifs with hv`. Rewrite using `[hgf v, inv_mul_cancel_left]`.
-
-Conclude with `hkf v`. Rewrite using `[inv_one, one_mul]`. Assume the negation of the conclusion as `hc`. Conclude with `hv ((Set.Finite.mem_toFinset _).2 hc)`. Use `⟨ofGAd σ X.J p, ⟨l, ?_⟩, ofGAd σ X.J (p⁻¹ * g'), (hK _).2 ((GlobalTheory.StabHaar.isStab_stabK B X _).1 hk), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mat_ofGAd]`. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun hl i) 0` as an intermediate fact. Simplify `this` using `[adMat, xc, incV, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[← map_mul, mul_inv_cancel_left, hg', MulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa_reS (B : Base F E) {n n₁ : ℕ} {X Y : Spc F E n} {X₁ : Spc F E n₁} {r s : ℕ} {H : Plane E n n₁}
     {i₀ i₁ : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hH : H.IsAdapted σ B (reS X Y) X₁ i₀ i₁)
@@ -133,7 +129,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.IwDecompAdapted
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hH p hp`. Take `⟨G, hG⟩` from `GlobalTheory.T.line_stabilizer_orthogonal_action F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hH p hp`. Take `⟨G', hG'⟩` from `GlobalTheory.T.line_stabilizer_orthogonal_action F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hH p⁻¹ (Subgroup.inv_mem _ hp)`. Take `⟨g₀, hg₀⟩` from `GlobalTheory.T.line_stabilizer_orthogonal_unique F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hH p hp G G' hG hG'`. Conclude with `⟨g₀, hg₀ ▸ hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levi_part : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (X Y : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ), B.IsGood σ → X.IsHerm σ B r s → H.IsAdapted σ B (reS X Y) X₁ i₀ i₁ → ∀ p ∈ GlobalTheory.IwLine.lineStab σ X.J H.x, ∃ g₀ : UA σ X₁.J, ∀ z : Fin n₁ → AE F E, ∃ a : AE F E, mat p *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ (mat g₀ *ᵥ z) + a • incV F H.x := by
   intro F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hH p hp
@@ -143,17 +139,17 @@ theorem levi_part : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   exact ⟨g₀, hg₀ ▸ hG⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX _hXY hH K hK m hm g`. Take `⟨p, hp, k, hk, rfl⟩` from `iwasawa_reS B hB hX hH K hK g`. Take `⟨α, hα⟩` from `hp`. Take `⟨g₀, hg₀⟩` from `levi_part F E σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX hH p ⟨α, hα⟩`. Establish `mm : ∀ a b : UA σ X.J, mat (a * b) = mat a * mat b` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `mm₁ : ∀ a b : UA σ X₁.J, mat (a * b) = mat a * mat b` using `fun _ _ => rfl`. Establish `m1 : mat (1 : UA σ X.J) = 1` using `rfl`. Establish `m1₁ : mat (1 : UA σ X₁.J) = 1` using `rfl`. Take `⟨hx, -, hι⟩` from `hm α g₀`. Establish `hx' : mat (m α g₀)⁻¹ *ᵥ incV F H.x = (α⁻¹).1 • incV F H.x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun v => (α⁻¹).1 • (mat (m α g₀)⁻¹ *ᵥ v)) hx`. Simplify using `only [Matrix.mulVec_mulVec, ← mm, inv_mul_cancel, m1, Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, Units.inv_mul, one_smul] at e`. Conclude with `e.symm`. Establish `hι' : mat (m α g₀)⁻¹ * incM F H.ι = incM F H.ι * mat g₀⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mm₁, mul_inv_cancel, m1₁, Matrix.mul_one]`. Use `_ = mat (m α g₀)⁻¹ * (mat (m α g₀) * incM F H.ι) * mat g₀⁻¹ := by`. Rewrite using `[hι]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = incM F H.ι * mat g₀⁻¹ := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← mm, inv_mul_cancel, m1, Matrix.one_mul]`. Use `⟨p * (m α g₀)⁻¹, Subgroup.subset_closure ⟨?_, fun z => ?_⟩, α, g₀, k, hk, by group⟩` and prove the remaining obligations. Rewrite using `[mm, ← Matrix.mulVec_mulVec, hx', Matrix.mulVec_smul, hα, smul_smul, Units.inv_mul, one_smul]`. Take `⟨a, ha⟩` from `hg₀ (mat g₀⁻¹ *ᵥ z)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : mat (m α g₀)⁻¹ *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ (mat g₀⁻¹ *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, hι', ← Matrix.mulVec_mulVec]`. Establish `e2 : mat g₀ *ᵥ (mat g₀⁻¹ *ᵥ z) = z`. Rewrite using `[Matrix.mulVec_mulVec, ← mm₁, mul_inv_cancel, m1₁, Matrix.one_mulVec]`. Rewrite using `[mm, ← Matrix.mulVec_mulVec, e1, ha, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa_decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (X Y : Spc F E n) (X₁ : Spc F E n₁) (H : Plane E n n₁) (r s i₀ i₁ : ℕ), B.IsGood σ → X.IsHerm σ B r s → (reS X Y).IsHerm σ B r s → H.IsAdapted σ B (reS X Y) X₁ i₀ i₁ → ∀ (K : Subgroup (UA σ X.J)), IsStab (X := X) B K → ∀ m : (AE F E)ˣ → UA σ X₁.J → UA σ X.J, (∀ l g₀, IsLevi (W₁ := X₁) H l g₀ (m l g₀)) → ∀ g : UA σ X.J, ∃ u ∈ unip σ X H, ∃ l g₀, ∃ k ∈ K, g = u * m l g₀ * k := by
   intro F E _ _ _ _ _ σ B n n₁ X Y X₁ H r s i₀ i₁ hB hX _hXY hH K hK m hm g

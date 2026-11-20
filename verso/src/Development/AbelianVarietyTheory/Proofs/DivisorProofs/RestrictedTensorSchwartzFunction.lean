@@ -17,23 +17,21 @@ noncomputable section
 namespace GlobalTheory.ThK.FunFin
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT f φ h v hSB hvac`. Establish `hp` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hstd : ∀ᶠ w in cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `(hvac.and hT.geo.hM.std).mono fun w hw => hw.1.trans hw.2`. Take `⟨r, hr, er⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hstd`. Establish `hmem : ∀ χ ∈ SB (Fin a × Fin (a + a') → Fv F v), pure f (Function.update φ v χ) ∈ schA F (Fin a × Fin (a + a'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `χ hχ`. Use `GlobalTheory.TensUniq.pure_mem_schA f _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually φ v χ hstd)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hχ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB w`. Establish `hrange : a + a' + 2 * min (a - G.p) G.p < 2 * a ∨ min (a - G.p) G.p = 0`. Establish `h1` using `hT.geo.eBig`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `hT.geo.lt`. Use `left`. Use linear arithmetic over natural numbers and integers. Establish `hconv : ∀ Φ ∈ schA F (Fin a × Fin (a + a')), G.M.Conv om Φ` using `fun Φ hΦ => ((GlobalTheory.T.weil_convergence_of_kernel hK F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hp hrange).1 Φ hΦ).1`. Establish `hadd : ∀ χ₁ χ₂, pure f (Function.update φ v (χ₁ + χ₂)) = pure f (Function.update φ v χ₁) + pure f (Function.update φ v χ₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `χ₁ χ₂`. Rewrite using `[← er, ← er, ← er]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.add_apply, add_mul]`. Establish `hsmul : ∀ (c : ℂ) χ, pure f (Function.update φ v (c • χ)) = c • pure f (Function.update φ v χ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c χ`. Rewrite using `[← er, ← er]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Use `⟨fun p hp₀ q hq => ?_, fun c p hp₀ => ?_, fun g hg p hp₀ p₁ hp₁ hA => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ x, theta om (pure f (Function.update φ v (p + q))) x h = theta om (pure f (Function.update φ v p)) x h + theta om (pure f (Function.update φ v q)) x h`. Introduce `x`. Simplify using `only [theta, hadd, map_add]`. Conclude with `thetaSum_add F (hp.weil.isUSplitting.pres _ _ (hmem p hp₀)) (hp.weil.isUSplitting.pres _ _ (hmem q hq))`. Simplify using `only [Model.I, e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `integral_add (hconv _ (hmem p hp₀) h) (hconv _ (hmem q hq) h)`. Simplify using `only [Model.I, theta, hsmul, map_smul, thetaSum_smul]`. Conclude with `integral_const_mul c _`. Establish `e1 : om (g, 1) (pure f (Function.update φ v p)) = pure f (Function.update φ v p₁)`. Rewrite using `[← er, ← er]`.
-
-Conclude with `hA r ⟨hr, by rw [er]; exact hmem p hp₀⟩`. Rewrite using `[← e1, GlobalTheory.ThetaIntegralInv.integral_translate hK.base hp g _ (hmem p hp₀)]`.
+A detailed English derivation is pending.
 -/
 theorem thetaIntegral_fin : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ (f : SInf F (Fin a × Fin (a + a'))) (φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ)

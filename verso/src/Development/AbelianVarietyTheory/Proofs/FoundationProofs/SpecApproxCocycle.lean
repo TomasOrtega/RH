@@ -7,13 +7,13 @@ open scoped Matrix
 namespace GlobalTheory.KA
 
 /- English proof (translation)
-Introduce `s t i`. Establish `hre : (∑ x, η x • Y t (x * κ s)) = ∑ x, η (x * (κ s)⁻¹) • Y t x`. Conclude with `Fintype.sum_equiv (Equiv.mulRight (κ s)) _ _ (fun x => by simp)`. Establish `key : spec η Y (s * t) - (spec η Y s + τ s • (ρ s *ᵥ spec η Y t)) = ρ s *ᵥ ∑ x, (η (x * (κ s)⁻¹) - η x * τ s) • Y t x`. Establish `h1 : spec η Y (s * t) = spec η Y s + ρ s *ᵥ ∑ x, η x • Y t (x * κ s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [spec, hY s t, smul_add, Finset.sum_add_distrib, Matrix.mulVec_sum, Matrix.mulVec_smul]`. Rewrite using `[h1, hre, ← Matrix.mulVec_smul, add_sub_add_left_eq_sub, ← Matrix.mulVec_sub]`. Use `congr 1`. Simplify using `only [spec, Finset.smul_sum, smul_smul, ← Finset.sum_sub_distrib, sub_smul, mul_comm (τ s)]`. Establish `hC : (0 : ℝ) ≤ ‖((l : ℕ) : Qbar l) ^ r‖` using `norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Pi.sub_apply, key]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[norm_mul]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (mul_le_of_le_one_left (norm_nonneg _) (hρ s i j)) ?_` and prove the remaining obligations. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[norm_mul]`. Conclude with `le_trans (mul_le_of_le_one_right (norm_nonneg _) (hYi t x j)) (happ s x)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_approx_cocycle (l : ℕ) [Fact l.Prime] {Γ X : Type} [Group Γ] [CommGroup X] [Fintype X] (r : ℕ)
     (ρ : Γ → Matrix (Fin 2) (Fin 2) (Qbar l)) (κ : Γ →* X) (Y : Γ → X → Fin 2 → Qbar l) (η : X → Qbar l)

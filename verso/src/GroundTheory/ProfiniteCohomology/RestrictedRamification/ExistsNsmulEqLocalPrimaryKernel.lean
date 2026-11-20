@@ -13,7 +13,7 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 noncomputable section
 
 /- English proof (translation)
-Establish `h` using `map_nsmul QZ.mkHom j r`. Rewrite `h` using `[nsmul_eq_mul]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QZ.nsmul_mk (j : ℕ) (r : ℚ) : j • QZ.mk r = QZ.mk (j * r) := by
   have h := map_nsmul QZ.mkHom j r
@@ -26,15 +26,15 @@ def qzDiv (ℓ : ℕ) (q : QZ) : QZ :=
   if q = 0 then 0 else QZ.mk ((QZ.mk_surjective q).choose / ℓ)
 
 /- English proof (translation)
-Simplify using `[qzDiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qzDiv_zero (ℓ : ℕ) : qzDiv ℓ 0 = 0 := by
   simp [qzDiv]
 
 /- English proof (translation)
-Distinguish the cases in `hq : q = 0`. Rewrite using `[hq, qzDiv_zero, smul_zero]`. Rewrite using `[qzDiv, if_neg hq, QZ.nsmul_mk]`. Establish `hℓq : (ℓ : ℚ) ≠ 0` using `by exact_mod_cast hℓ`. Rewrite using `[mul_div_cancel₀ _ hℓq]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(QZ.mk_surjective q).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_qzDiv {ℓ : ℕ} (hℓ : ℓ ≠ 0) (q : QZ) : ℓ • qzDiv ℓ q = q := by
   by_cases hq : q = 0
@@ -47,9 +47,9 @@ theorem nsmul_qzDiv {ℓ : ℕ} (hℓ : ℓ ≠ 0) (q : QZ) : ℓ • qzDiv ℓ 
 variable {K : FiniteSubfield}
 
 /- English proof (translation)
-Break down `hv with h2 | hc` into its components or cases. Establish `h2t : 2 • t = 0`. Apply `placeInv_injective (.inl v)` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero]`. Break down `placeInv_inl_eq_zero_or_eq_half v t with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h, smul_zero]`. Rewrite using `[h, two_nsmul, QZ.mk_half_add_mk_half]`. Conclude with `eq_zero_of_coprime_nsmul_eq_zero ((Nat.coprime_primes Nat.prime_two hℓ).2 (Ne.symm h2)) h2t ht`. Use `subsingleton_cohomology_two_of_isComplex v hc` as an intermediate fact. Conclude with `Subsingleton.elim (α := cohomology (galUnitsZ v.Completion (AlgebraicClosure v.Completion)) 2) _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_inl_of_pow_nsmul_eq_zero {ℓ : ℕ} (hℓ : ℓ.Prime) (v : InfinitePlace K.1)
     (hv : ℓ ≠ 2 ∨ v.IsComplex) (t : localGaloisCohomology K 2 (.inl v)) (k : ℕ) (ht : ℓ ^ k • t = 0) :
@@ -71,23 +71,23 @@ variable (K) (S : Set (HeightOneSpectrum (𝓞 K.1))) (ℓ : ℕ) (hℓ : ℓ.Pr
 include hℓ hS in
 
 /- English proof (translation)
-Take `⟨⟨k, hk⟩, hout, hsum⟩` from `t.2`. Establish `hℓ0 : ℓ ≠ 0` using `hℓ.ne_zero`. Establish `hinf : ∀ v : InfinitePlace K.1, (t : ⨁ v : Place K.1, localGaloisCohomology K 2 v) (.inl v) = 0` using `fun v => eq_zero_inl_of_pow_nsmul_eq_zero hℓ v (hK.imp id fun h => h.isComplex v) _ k (by`. Use `congrArg (fun x : ⨁ v : Place K.1, localGaloisCohomology K 2 v => x (.inl v)) hk` as an intermediate fact. Rewrite using `[DFinsupp.smul_apply] at this)` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `e : ∀ v : HeightOneSpectrum (𝓞 K.1), localGaloisCohomology K 2 (.inr v) ≃+ QZ` to `fun v => AddEquiv.ofBijective (placeInv (.inr v)) (placeInv_bijective_inr v)`. Introduce the local definition `f : ∀ v : Place K.1, localGaloisCohomology K 2 v → localGaloisCohomology K 2 v`. Consider the case `.inl _ => fun _ => 0`. Consider the case `.inr v => fun x => (e v).symm (qzDiv ℓ (e v x))`. Establish `hf : ∀ v, f v 0 = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce and unpack `(v | v)`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(e v).symm (qzDiv ℓ (e v 0)) = 0`. Rewrite using `[map_zero, qzDiv_zero, map_zero]`. Set `s₀ : ⨁ v : Place K.1, localGaloisCohomology K 2 v` to `DFinsupp.mapRange f hf t.1`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hs₀ : ℓ • s₀ = t`. Use `DFinsupp.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[DFinsupp.smul_apply, DFinsupp.mapRange_apply]`. Break down `v with v | v` into its components or cases. Express the relevant statement in the definitionally equal form `ℓ • (0 : localGaloisCohomology K 2 (.inl v)) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[smul_zero, hinf v]`. Express the relevant statement in the definitionally equal form `ℓ • (e v).symm (qzDiv ℓ (e v _)) = _`. Rewrite using `[← map_nsmul, nsmul_qzDiv hℓ0, AddEquiv.symm_apply_apply]`. Take `⟨v₀, hv₀⟩` from `exists_place_above K ℓ hℓ`. Set `c` to `sumPlaceInv K s₀`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `o : ⨁ v : Place K.1, localGaloisCohomology K 2 v` to `DirectSum.of (fun v : Place K.1 => localGaloisCohomology K 2 v) (Sum.inr v₀) ((e v₀).symm c)`. Set `s : ⨁ v : Place K.1, localGaloisCohomology K 2 v` to `s₀ - o`. Establish `hc : ℓ • c = 0`. Express the relevant statement in the definitionally equal form `ℓ • sumPlaceInv K s₀ = 0`. Rewrite using `[← map_nsmul, hs₀, hsum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ℓ • s = t`. Rewrite using `[smul_sub, hs₀, ← map_nsmul, ← map_nsmul, hc, map_zero, map_zero, sub_zero]`. Use `⟨⟨s, ⟨k + 1, ?_⟩, fun v hv => ?_, ?_⟩, Subtype.ext hs⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_smul, hs, hk]`. Establish `hne : (.inr v : Place K.1) ≠ .inr v₀` using `fun h => hv (by cases h; exact hS v₀ hv₀)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `s₀ (.inr v) - o (.inr v) = 0`. Rewrite using `[show o (.inr v) = 0 from DirectSum.of_eq_of_ne _ _ _ hne, sub_zero]`. Express the relevant statement in the definitionally equal form `(e v).symm (qzDiv ℓ (e v (t.1 (.inr v)))) = 0`. Rewrite using `[hout v hv, map_zero, qzDiv_zero, map_zero]`. Express the relevant statement in the definitionally equal form `sumPlaceInv K (s₀ - o) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sub, sumPlaceInv_of]`. Express the relevant statement in the definitionally equal form `c - e v₀ ((e v₀).symm c) = 0`. Rewrite using `[AddEquiv.apply_symm_apply, sub_self]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_nsmul_eq_localPrimaryKernel (hK : ℓ ≠ 2 ∨ IsTotallyComplex K.1)
     (t : localPrimaryKernel K S ℓ) : ∃ s : localPrimaryKernel K S ℓ, ℓ • s = t := by
@@ -143,9 +143,9 @@ set_option maxHeartbeats 1000000 in
 include hℓ hS in
 
 /- English proof (translation)
-Take `⟨ιs⟩` from `nonempty_localEmbeddings K`. Set `E` to `sUnitsH2PrimaryEquiv K S ℓ hℓ hS ιs`. Take `⟨s, hs⟩` from `exists_nsmul_eq_localPrimaryKernel K S ℓ hℓ hS hK (E y)`. Use `⟨E.symm s, ?_⟩` and prove the remaining obligations. Rewrite using `[← E.symm_apply_apply y, ← hs]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_nsmul E.symm ℓ s).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_nsmul_eq_h2SUnits (hK : ℓ ≠ 2 ∨ IsTotallyComplex K.1)
     (y : AddCommGroup.primaryComponent (cohomology (galSUnitsMax K.1 ℚ̄ S) 2) ℓ) :

@@ -15,17 +15,15 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.HoweFockReal
 
 /- English proof (translation)
-Introduce `hH hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE`. Take `⟨Xs, Ws, Mo, ψ', χX, χW, om, τ, hcm, hstd, hX, hXd, hWs, hWd, hrX, hrW, hhX, hhW, hwe, hcX, hcW, Φ, hinj, hran, hLT, hKT, hLS, hKS⟩` from `GlobalTheory.T.exists_local_models_weil_exponents hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE`. Take `⟨⟨L, hL⟩, hsum⟩` from `hH D.host.F D.host.E D.sp.cm.sig hcm M.rank X.rank Xs Ws Mo ψ' χX χW om hstd hX hXd hWs hWd hrX hrW hhX hhW hwe τ hcX hcW`. Establish `key : ∀ N : Submodule ℂ (PolF D X.rank M.rank), GlobalTheory.RealQuot.IsStab (fun i : GlobalTheory.RealQuot.LieIx X => GlobalTheory.RealQuot.actT ε A B eS i.1.1 i.1.2) N → GlobalTheory.RealQuot.coinv ε A B eT ≤ N → GlobalTheory.Published.ThetaSubInf Mo ψ' τ om (N.map Φ)`. Introduce `N hs hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hran]`. Conclude with `LinearMap.map_le_range`. Introduce `γ hγ f hf f₁ h`. Conclude with `Submodule.map_mono hc (hLS γ hγ f hf f₁ h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk f hf f₁ h`. Conclude with `Submodule.map_mono hc (hKS k hk f hf f₁ h)`. Introduce `γ hγ f hf f₁ h`. Conclude with `hLT N hs γ hγ f hf f₁ h`. Introduce `k hk f hf f₁ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hKT N hs k hk f hf f₁ h`. Establish `hne : ∀ N : Submodule ℂ (PolF D X.rank M.rank), N ≠ ⊤ → N.map Φ ≠ Mo.Pol ψ' τ`. Introduce `N hN h`. Apply `hN` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, Submodule.map_top, hran]`. Use `⟨⟨L, fun m N hN hk => hL m (fun i => (N i).map Φ) ?_ fun i => key _ (hk i).1 (hk i).2⟩, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Conclude with `(Submodule.map_strictMono_of_injective hinj) (hN hij)`. Introduce `N N' hs hc hN hs' hc' hN' hsup`.
-
-Apply `hsum _ _ (key N hs hc) (key N' hs' hc') (hne N hN) (hne N' hN')` to reduce the goal to its premises. Rewrite using `[← Submodule.map_sup, hsup, Submodule.map_top, hran]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem howeCond_actT_coinv : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

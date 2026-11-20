@@ -3,47 +3,43 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ σ h p d θ O L hp hd hθ hσθ hK _ hω hO hherm hdef hL hLO hscale W hW hne`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hpK : (p : K) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hpQ : (p : ℚ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hp1 : (1 : ℚ) < p` using `by exact_mod_cast hp.one_lt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ0 : θ ≠ 0`. Introduce and unpack `rfl`. Establish `: (d : K) = 0` using `by simpa using hθ`. Conclude with `hd.ne_zero (by exact_mod_cast this)`. Establish `hrat : ∀ x : V, ∃ u : ℚ, h x x = (u : K)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨a, b, hab⟩` from `hK (h x x)`. Establish `h1` using `hherm x x`. Rewrite `h1` using `[hab, map_add, map_mul, map_ratCast, map_ratCast, hσθ]`. Establish `h2 : (b : K) * θ = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: (2 : K) * ((b : K) * θ) = 0` using `by linear_combination h1`. Simplify using `using this`. Conclude with `⟨a, by rw [hab, h2, add_zero]⟩`. Establish `hnp : padicNorm p (p : ℚ) = (p : ℚ)⁻¹` using `padicNorm.padicNorm_p_of_prime`. Assume the negation of the conclusion as `hcon`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hcon`. Establish `hdiv : ∀ y ∈ L, y ∈ W → h y y / p ∈ O`. Introduce `y hy hyW`. Take `⟨u, hu⟩` from `hrat y`. Establish `h1 : padicNorm p u ≤ 1` using `(hO u).1 (hu ▸ hLO y hy y hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hcon y hy hyW u hu`. Establish `h3 : ((u / p : ℚ) : K) ∈ O`. Rewrite using `[hO, padicNorm.div, hnp]`. Distinguish the cases in `hu0 : u = 0`. Simplify using `[hu0]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `padicNorm.values_discrete (p := p) hu0`. Rewrite `h1`, `h2`, the goal using `[hz]`. Establish `hz0 : -z < 0`. Use `lt_of_le_of_ne h1 h2` as an intermediate fact. Conclude with `(zpow_lt_one_iff_right₀ hp1).1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[div_inv_eq_mul, ← zpow_add_one₀ hpQ]`. Conclude with `zpow_le_one_of_nonpos₀ hp1.le (by omega)`. Rewrite using `[hu]`. Simplify using `using h3`. Establish `htr : ∀ x ∈ L, x ∈ W → ∀ y ∈ L, y ∈ W → (h x y + σ (h x y)) / p ∈ O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx hxW y hy hyW`. Establish `h1` using `O.sub_mem (O.sub_mem (hdiv _ (L.add_mem hx hy) (W.add_mem hxW hyW)) (hdiv x hx hxW)) (hdiv y hy hyW)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[← hherm x y]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hstep : ∀ x ∈ L, x ∈ W → (θ / p) • x ∈ L`. Introduce `x hx hxW`. Use `hW _ (W.smul_mem _ hxW) ?_` and prove the remaining obligations. Introduce `y hy hyW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `r1` using `htr x hx hxW y hy hyW`. Establish `r2` using `htr _ (hL _ hω x hx) (W.smul_mem _ hxW) y hy hyW`. Establish `h1` using `O.add_mem r2 (O.mul_mem (O.sub_mem hω O.one_mem) r1)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, map_mul, map_div₀, map_add, map_one, hσθ, map_ofNat]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨x, hxW, hx0⟩` from `hne`. Take `⟨m, hm⟩` from `hscale x`. Use `set x0 := (p : K) ^ m • x with hx0def`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hx0W : x0 ∈ W` using `W.smul_mem _ hxW`. Establish `hx00 : x0 ≠ 0` using `smul_ne_zero (pow_ne_zero _ hpK) hx0`. Establish `hiter : ∀ k : ℕ, (θ / p) ^ k • x0 ∈ L`. Introduce `k`. Proceed by induction on `k with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Consider the case `zero => simpa using hm`. Consider the case `succ k ih`. Rewrite using `[pow_succ', mul_smul]`. Conclude with `hstep _ ih (W.smul_mem _ hx0W)`. Take `⟨u, hu⟩` from `hrat x0`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx00 (hdef _ (by simpa using hu))`. Establish `hupos : 0 < padicNorm p u` using `lt_of_le_of_ne (padicNorm.nonneg _) (padicNorm.nonzero hu0).symm`. Establish `hnd : (p : ℚ)⁻¹ ≤ padicNorm p (d : ℚ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hpd : p = d`. Rewrite using `[← hpd, hnp]`. Use `haveI : Fact d.Prime := ⟨hd⟩`. Rewrite using `[padicNorm.padicNorm_of_prime_of_ne hpd]`. Conclude with `inv_le_one_of_one_le₀ hp1.le`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : (p : ℚ) ≤ padicNorm p ((d : ℚ) / (p * p))`. Rewrite using `[padicNorm.div, padicNorm.mul, hnp, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpow : ∀ (q : ℚ) (k : ℕ), padicNorm p (q ^ k) = padicNorm p q ^ k`. Introduce `q k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ, padicNorm.mul, ih]`. Establish `hbound : ∀ k : ℕ, (p : ℚ) ^ k * padicNorm p u ≤ 1`. Introduce `k`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hLO _ (hiter k) _ (hiter k)`. Establish `h2 : h ((θ / p) ^ k • x0) ((θ / p) ^ k • x0) = ((((d : ℚ) / (p * p)) ^ k * u : ℚ) : K)`. Rewrite using `[h.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, hu, smul_eq_mul, smul_eq_mul, map_pow, map_div₀, hσθ, map_natCast, ← mul_assoc, ← mul_pow]`. Use `push_cast`. Use `congr 2`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-hθ`. Rewrite `h1` using `[h2, hO, padicNorm.mul, hpow]`. Use `le_trans ?_ h1` and prove the remaining obligations. Use `gcongr`.
-
-Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (padicNorm p u)⁻¹ hp1`. Use `hbound k` as an intermediate fact. Rewrite `hk` using `[inv_lt_iff_one_lt_mul₀ hupos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_unit_norm_of_selfDual_hermitian_lattice :
     ∀ (K V : Type) [Field K] [CharZero K] [AddCommGroup V] [Module K V] (σ : K →+* K) (h : V →ₗ[K] V →ₛₗ[σ] K) (p d : ℕ) (θ : K) (O : Subring K) (L : AddSubgroup V), p.Prime → d.Prime → θ ^ 2 = -(d : K) → σ θ = -θ → (∀ x : K, ∃ a b : ℚ, x = (a : K) + (b : K) * θ) → (∀ x ∈ O, σ x ∈ O) → (1 + θ) / 2 ∈ O → (∀ r : ℚ, (r : K) ∈ O ↔ padicNorm p r ≤ 1) → (∀ x y : V, h y x = σ (h x y)) → (∀ x : V, h x x = 0 → x = 0) → (∀ a ∈ O, ∀ x ∈ L, a • x ∈ L) → (∀ x ∈ L, ∀ y ∈ L, h x y ∈ O) → (∀ x : V, ∃ m : ℕ, (p : K) ^ m • x ∈ L) → ∀ W : Submodule K V, (∀ x ∈ W, (∀ y ∈ L, y ∈ W → h x y ∈ O) → x ∈ L) → (∃ x ∈ W, x ≠ 0) → ∃ y ∈ L, y ∈ W ∧ ∃ u : ℚ, h y y = (u : K) ∧ padicNorm p u = 1 := by

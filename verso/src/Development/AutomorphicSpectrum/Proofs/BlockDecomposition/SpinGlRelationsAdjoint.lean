@@ -16,9 +16,9 @@ def quadM (c : Fin n → Fin n → Matrix ι ι ℂ) (a b : Fin n) : Matrix ι �
   (1 / 2 : ℂ) • ∑ e, c a e * c e b
 
 /- English proof (translation)
-Establish `h1` using `hc.1 e b d g`. Establish `h2` using `hc.1 a e d g`. Establish `h : c a e * c e b * c d g - c d g * (c a e * c e b) = c a e * (c e b * c d g + c d g * c e b) - (c a e * c d g + c d g * c a e) * c e b` using `by noncomm_ring`. Rewrite using `[h, h1, h2]`. Apply the tactic sequence `by_cases hbd : b = d <;> by_cases heg : e = g <;> by_cases hag : a = g <;> by_cases hed : e = d <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [hbd, heg, hag, hed, and_self, and_true, and_false, true_and, false_and, if_true, if_false, mul_zero, zero_mul, sub_zero, two_smul, mul_two, two_mul] <;> simp_all [two_smul, mul_two, two_mul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem term_comm {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a b d g e : Fin n) :
     c a e * c e b * c d g - c d g * (c a e * c e b) =
@@ -35,9 +35,9 @@ theorem term_comm {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a
       mul_zero, zero_mul, sub_zero, two_smul, mul_two, two_mul] <;> simp_all [two_smul, mul_two, two_mul]
 
 /- English proof (translation)
-Establish `h : quadM c a b * c d g - c d g * quadM c a b = (1 / 2 : ℂ) • ∑ e, (c a e * c e b * c d g - c d g * (c a e * c e b))`. Simplify using `only [quadM, smul_mul_assoc, mul_smul_comm, Finset.sum_mul, Finset.mul_sum, ← smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[h]`. Simplify using `only [term_comm hc, Finset.sum_sub_distrib]`. Apply the tactic sequence `by_cases hbd : b = d <;> by_cases hag : a = g <;>`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[hbd, hag, smul_sub, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quad_c {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a b d g : Fin n) :
     quadM c a b * c d g - c d g * quadM c a b =
@@ -52,15 +52,13 @@ theorem quad_c {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a b 
     simp [hbd, hag, smul_sub, smul_smul]
 
 /- English proof (translation)
-Establish `h : ∀ f, quadM c a b * (c d f * c f e) - (c d f * c f e) * quadM c a b = ((if b = d then c a f else 0) - (if a = f then c d b else 0)) * c f e + c d f * ((if b = f then c a e else 0) - (if a = e then c f b else 0))`. Introduce `f`. Rewrite using `[← quad_c hc a b d f, ← quad_c hc a b f e]`. Use `noncomm_ring`. Establish `h2 : quadM c a b * quadM c d e - quadM c d e * quadM c a b = (1 / 2 : ℂ) • ∑ f, (quadM c a b * (c d f * c f e) - (c d f * c f e) * quadM c a b)` using `by conv_lhs => rw [show quadM c d e = (1 / 2 : ℂ) • ∑ f, c d f * c f e from rfl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_mul_assoc, mul_smul_comm, Finset.sum_mul, Finset.mul_sum, ← smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[h2]`. Simplify using `only [h, sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Apply the tactic sequence `by_cases hbd : b = d <;> by_cases hae : a = e`. Establish `hea : e = a` using `hae.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hbd, hae, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Apply the tactic sequence `try abel`. Establish `hea : ¬ e = a` using `fun h => hae h.symm`. Simplify using `[hbd, hae, hea, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Apply the tactic sequence `try abel`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hea : e = a` using `hae.symm`. Simplify using `[hbd, hae, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Apply the tactic sequence `try abel`. Establish `hea : ¬ e = a` using `fun h => hae h.symm`. Simplify using `[hbd, hae, hea, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
-
-Apply the tactic sequence `try abel`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quad_quad {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a b d e : Fin n) :
     quadM c a b * quadM c d e - quadM c d e * quadM c a b =
@@ -99,13 +97,13 @@ theorem spinM_eq (c : Fin n → Fin n → Matrix ι ι ℂ) (a b : Fin n) :
     spinM c a b = quadM c a b - (if a = b then ((n : ℂ) / 2) • (1 : Matrix ι ι ℂ) else 0) := rfl
 
 /- English proof (translation)
-Introduce `a b d e`. Establish `h` using `quad_quad hc a b d e`. Establish `hcomm : spinM c a b * spinM c d e - spinM c d e * spinM c a b = quadM c a b * quadM c d e - quadM c d e * quadM c a b`. Simplify using `only [spinM_eq]`. Apply the tactic sequence `by_cases hab : a = b <;> by_cases hde : d = e <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [hab, hde, if_true, if_false, sub_zero, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one] <;> module`. Rewrite using `[hcomm, h]`. Distinguish the cases in `hbd : b = d`. Distinguish the cases in `hea : e = a`. Substitute `hbd` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hea` using the available equality. Simplify using `[spinM_eq]`. Establish `hae : ¬ a = e` using `fun h => hea h.symm`. Substitute `hbd` using the available equality. Simplify using `[spinM_eq, hea, hae]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hea : e = a`. Establish `hdb : ¬ d = b` using `fun h => hbd h.symm`. Simplify using `[spinM_eq, hbd, hea, hdb]`. Simplify using `[hbd, hea]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem spin_glRel {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) : Formalism.REAL.GlRel (spinM c) := by
   intro a b d e
@@ -131,7 +129,7 @@ theorem spin_glRel {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) :
     · simp [hbd, hea]
 
 /- English proof (translation)
-Simplify using `only [spinM_eq, quadM]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[conjTranspose_sum, conjTranspose_mul, hc.2, conjTranspose_smul, Complex.conj_ofNat]`. Simplify using `[hab, Ne.symm hab, conjTranspose_sum, conjTranspose_mul, hc.2, conjTranspose_smul]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem spin_conjTranspose {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a b : Fin n) :
     (spinM c a b)ᴴ = spinM c b a := by
@@ -142,7 +140,7 @@ theorem spin_conjTranspose {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCl
   · simp [hab, Ne.symm hab, conjTranspose_sum, conjTranspose_mul, hc.2, conjTranspose_smul]
 
 /- English proof (translation)
-Introduce `_ hc` and use `⟨spin_glRel hc, spin_conjTranspose hc⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem spinRel : ∀ {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n → Fin n → Matrix ι ι ℂ), IsCliff c →
     Formalism.REAL.GlRel (spinM c) ∧ ∀ a b, (spinM c a b)ᴴ = spinM c b a :=

@@ -19,7 +19,7 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω 
 end
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `hx` using `[zero_pow hm.ne']`. Conclude with `hw ((map_eq_zero (io X)).mp hx.symm)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ne_zero_of_pow_eq_io_of_ne_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     {X : Tower Ω ε} {m : ℕ} (hm : 0 < m) {x : Kb X} {w : X.K} (hx : x ^ m = io X w) (hw : w ≠ 0) :
@@ -29,9 +29,9 @@ private theorem ne_zero_of_pow_eq_io_of_ne_zero {Ω : Type} [Field Ω] [Algebra 
   exact hw ((map_eq_zero (io X)).mp hx.symm)
 
 /- English proof (translation)
-Take `⟨-, -, hlg2, -, hmul, -, -⟩` from `lgB Ω ε X m hm`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.sum_empty]`. Conclude with `hlg2 1 1 0 one_ne_zero (by simp)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `insert k S hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk, Finset.sum_insert hk]`. Establish `hb' : ∀ j ∈ S, b j ≠ 0` using `fun j hj => hb j (Finset.mem_insert_of_mem hj)`. Establish `hab' : ∀ j ∈ S, a j ^ m = b j ^ m` using `fun j hj => hab j (Finset.mem_insert_of_mem hj)`. Rewrite using `[hmul _ _ _ _ (hb k (Finset.mem_insert_self k S)) (Finset.prod_ne_zero_iff.mpr hb') (hab k (Finset.mem_insert_self k S)) (by rw [← Finset.prod_pow, ← Finset.prod_pow]; exact Finset.prod_congr rfl hab'), ih hb' hab']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lg_prod_eq_sum_lg_of_pow_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     {X : Tower Ω ε} {m : ℕ} (hm : 0 < m) {ι : Type} (S : Finset ι) (a b : ι → Kb X)
@@ -52,13 +52,13 @@ private theorem lg_prod_eq_sum_lg_of_pow_eq {Ω : Type} [Field Ω] [Algebra ℚ 
       (by rw [← Finset.prod_pow, ← Finset.prod_pow]; exact Finset.prod_congr rfl hab'), ih hb' hab']
 
 /- English proof (translation)
-Take `⟨-, -, hlg2, hch, -, hσ, hcyc⟩` from `lgB Ω ε X m hm`. Take `⟨-, -, hrefl, -⟩` from `admB Ω ε X`. Establish `hx0` using `ne_zero_of_pow_eq_io_of_ne_zero hm hx hw`. Establish `hy0` using `ne_zero_of_pow_eq_io_of_ne_zero hm hy hw`. Establish `hfix : h (io X w) = io X w` using `hh w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhx : (h x) ^ m = io X w` using `by rw [← map_pow, hx, hfix]`. Establish `hhy : (h y) ^ m = io X w` using `by rw [← map_pow, hy, hfix]`. Establish `hL : Lifts X h (RingEquiv.refl X.K)` using `fun f => hh f`. Establish `e1 : lg X m (h x) (h y) = lg X m x y`. Rewrite using `[hσ h _ 1 hrefl hL x y hy0 (hx.trans hy.symm), (hcyc 1 1).2.1, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : lg X m (h x) x = lg X m (h x) (h y) + lg X m (h y) x` using `hch _ _ _ hx0 (hhx.trans hhy.symm) (hhy.trans hx.symm)`. Establish `e3 : lg X m (h y) x = lg X m (h y) y + lg X m y x` using `hch _ _ _ hx0 (hhy.trans hy.symm) (hy.trans hx.symm)`. Establish `e4 : lg X m x x = lg X m x y + lg X m y x` using `hch _ _ _ hx0 (hx.trans hy.symm) (hy.trans hx.symm)`. Establish `e5 : lg X m x x = 0` using `hlg2 x x 0 hx0 (by simp)`. Unfold `ka`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e2, e3, e1]`. Take the linear combination `e4.symm.trans e5`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem ka_eq_of_pow_eq_io_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     {X : Tower Ω ε} {m : ℕ} (hm : 0 < m) {h : RingAut (Kb X)} (hh : InD X h) {x y : Kb X} {w : X.K}
@@ -85,9 +85,9 @@ private theorem ka_eq_of_pow_eq_io_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω] [I
   linear_combination e4.symm.trans e5
 
 /- English proof (translation)
-Unfold `InD`. Introduce `f`. Establish `h1 : σ (io X f) = io X (τ f)` using `hσL f`. Establish `h2 : h (io X (τ f)) = io X (τ f)` using `hh (τ f)`. Establish `h3 : σ⁻¹ (io X (τ f)) = io X f` using `by rw [← h1]; simp`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingAut.mul_apply, RingAut.mul_apply, h1, h2, h3]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem inD_conj_of_lifts {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     {X : Tower Ω ε} {τ : X.K ≃+* X.K} {σ h : RingAut (Kb X)} (hσL : Lifts X σ τ) (hh : InD X h) :
@@ -99,9 +99,9 @@ private theorem inD_conj_of_lifts {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlg
   have h3 : σ⁻¹ (io X (τ f)) = io X f := by rw [← h1]; simp
   rw [RingAut.mul_apply, RingAut.mul_apply, h1, h2, h3]
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hσ, -⟩` from `lgB Ω ε X m hm`. Establish `hx0` using `ne_zero_of_pow_eq_io_of_ne_zero hm hx hw`. Unfold `ka`. Establish `e : σ ((σ⁻¹ * h * σ) x) = h (σ x)` using `by simp [RingAut.mul_apply]`. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hσ σ τ s hs hσL _ _ hx0 ?_` and prove the remaining obligations. Establish `h1 : σ (io X w) = io X (τ w)` using `hσL w`. Establish `h2 : h (io X (τ w)) = io X (τ w)` using `hh (τ w)`. Establish `h3 : σ⁻¹ (io X (τ w)) = io X w` using `by rw [← h1]; simp`. Rewrite using `[← map_pow, hx, RingAut.mul_apply, RingAut.mul_apply, h1, h2, h3]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ka_apply_lift_eq_cyc_mul_ka_conj {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     {X : Tower Ω ε} {m : ℕ} (hm : 0 < m) {τ : X.K ≃+* X.K} {s : Gal(Ω/ℚ)} (hs : admitted X τ s)
@@ -120,19 +120,19 @@ private theorem ka_apply_lift_eq_cyc_mul_ka_conj {Ω : Type} [Field Ω] [Algebra
   rw [← map_pow, hx, RingAut.mul_apply, RingAut.mul_apply, h1, h2, h3]
 
 /- English proof (translation)
-Take `⟨-, -, -, hch, -, hσ, -⟩` from `lgB Ω ε X m hm`. Establish `hτu : τ u ≠ 0` using `(map_ne_zero τ).mpr hu`. Establish `hτv : τ v ≠ 0` using `(map_ne_zero τ).mpr hv`. Establish `hgD` using `inD_conj_of_lifts hσL hh`. Establish `E1` using `hPQ _ hgD`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσPa : (σ P.a) ^ m = io X (τ u)` using `by rw [← map_pow, hPa]; exact hσL u`. Establish `hσQa : (σ Q.a) ^ m = io X (τ u)` using `by rw [← map_pow, hQa]; exact hσL u`. Establish `hσPb : (σ P.b) ^ m = io X (τ v)` using `by rw [← map_pow, hPb]; exact hσL v`. Establish `hσQb : (σ Q.b) ^ m = io X (τ v)` using `by rw [← map_pow, hQb]; exact hσL v`. Establish `kA1 : ka X m Q.a (σ⁻¹ * h * σ) = ka X m P.a (σ⁻¹ * h * σ)` using `ka_eq_of_pow_eq_io_eq hm hgD hQa hPa hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kB1 : ka X m Q.b (σ⁻¹ * h * σ) = ka X m P.b (σ⁻¹ * h * σ)` using `ka_eq_of_pow_eq_io_eq hm hgD hQb hPb hv`. Establish `kA2 : cyc m s * ka X m P.a (σ⁻¹ * h * σ) = ka X m P'.a h`. Rewrite using `[← ka_apply_lift_eq_cyc_mul_ka_conj hm hs hσL hh hPa hu]`. Conclude with `ka_eq_of_pow_eq_io_eq hm hh hσPa hP'a hτu`. Establish `kB2 : cyc m s * ka X m P.b (σ⁻¹ * h * σ) = ka X m P'.b h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ka_apply_lift_eq_cyc_mul_ka_conj hm hs hσL hh hPb hv]`. Conclude with `ka_eq_of_pow_eq_io_eq hm hh hσPb hP'b hτv`. Establish `kA3 : ka X m Q'.a h = ka X m P'.a h` using `ka_eq_of_pow_eq_io_eq hm hh hQ'a hP'a hτu`. Establish `kB3 : ka X m Q'.b h = ka X m P'.b h` using `ka_eq_of_pow_eq_io_eq hm hh hQ'b hP'b hτv`. Establish `hQa0` using `ne_zero_of_pow_eq_io_of_ne_zero hm hQa hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQb0` using `ne_zero_of_pow_eq_io_of_ne_zero hm hQb hv`. Establish `hQ'a0` using `ne_zero_of_pow_eq_io_of_ne_zero hm hQ'a hτu`. Establish `hQ'b0` using `ne_zero_of_pow_eq_io_of_ne_zero hm hQ'b hτv`. Establish `la : lg X m (σ P.a) (σ Q.a) = cyc m s * lg X m P.a Q.a` using `hσ σ τ s hs hσL _ _ hQa0 (hPa.trans hQa.symm)`. Establish `lb : lg X m (σ P.b) (σ Q.b) = cyc m s * lg X m P.b Q.b` using `hσ σ τ s hs hσL _ _ hQb0 (hPb.trans hQb.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Ca : lg X m (σ P.a) Q'.a = lg X m (σ P.a) (σ Q.a) + lg X m (σ Q.a) Q'.a` using `hch _ _ _ hQ'a0 (hσPa.trans hσQa.symm) (hσQa.trans hQ'a.symm)`. Establish `Ca' : lg X m (σ P.a) Q'.a = lg X m (σ P.a) P'.a + lg X m P'.a Q'.a` using `hch _ _ _ hQ'a0 (hσPa.trans hP'a.symm) (hP'a.trans hQ'a.symm)`. Establish `Cb : lg X m (σ P.b) Q'.b = lg X m (σ P.b) (σ Q.b) + lg X m (σ Q.b) Q'.b` using `hch _ _ _ hQ'b0 (hσPb.trans hσQb.symm) (hσQb.trans hQ'b.symm)`. Establish `Cb' : lg X m (σ P.b) Q'.b = lg X m (σ P.b) P'.b + lg X m P'.b Q'.b` using `hch _ _ _ hQ'b0 (hσPb.trans hP'b.symm) (hP'b.trans hQ'b.symm)`. Unfold `dif at E1 hPQ' ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Unfold `Pt.mv`. Simplify using `only`. Rewrite `E1` using `[kA1, kB1]`. Rewrite `hPQ'`, the goal using `[kA3, kB3]`. Take the linear combination `(cyc m s) ^ 2 * E1 - hPQ' + ka X m P'.a h * (Cb - Cb') - ka X m P'.b h * (Ca - Ca') - (cyc m s * lg X m P.b Q.b) * kA2 + ka X m P'.a h * lb - (cyc m s * ka X m P.b (σ⁻¹ * h * σ)) * la + lg X m (σ P.a) (σ Q.a) * kB2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem dif_mv_eq_of_dif_eq_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     {X : Tower Ω ε} {m : ℕ} (hm : 0 < m) {τ : X.K ≃+* X.K} {s : Gal(Ω/ℚ)} (hs : admitted X τ s)
@@ -185,15 +185,15 @@ private theorem dif_mv_eq_of_dif_eq_zero {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     - ka X m P'.b h * (Ca - Ca') - (cyc m s * lg X m P.b Q.b) * kA2 + ka X m P'.a h * lb
     - (cyc m s * ka X m P.b (σ⁻¹ * h * σ)) * la + lg X m (σ P.a) (σ Q.a) * kB2
 /- English proof (translation)
-Take `⟨-, -, hrefl, -⟩` from `admB Ω ε X`. Take `⟨-, -, -, -, -, -, hcyc⟩` from `lgB Ω ε X m hm`. Establish `hδL : Lifts X (σ'⁻¹ * σ) (RingEquiv.refl X.K)`. Unfold `Lifts`. Introduce `f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `a1 : σ (io X f) = io X (τ f)` using `h1 f`. Establish `a2 : σ' (io X f) = io X (τ f)` using `h2 f`. Rewrite using `[RingAut.mul_apply, a1, ← a2]`. Simplify using the standard rewrite rules. Establish `hδD : InD X (σ'⁻¹ * σ)` using `fun f => hδL f`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hY` using `mvPt Ω ε X m hm _ _ hrefl (σ'⁻¹ * σ) hδL u v P hP`. Rewrite `hY` using `[(hcyc 1 1).2.1]`. Establish `hmv : Pt.mv σ (cyc m s) P = Pt.mv σ' (cyc m s) (Pt.mv (σ'⁻¹ * σ) 1 P)`. Unfold `Pt.mv`. Simplify using `[RingAut.mul_apply, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hA` using `mvPt Ω ε X m hm τ s hs σ h1 u v P hP`. Establish `hB` using `mvPt Ω ε X m hm τ s hs σ' h2 u v P hP`. Take `⟨-, -, -, htri, -, -, -⟩` from `difB Ω ε X m hm _ _ _ _ hA hB`. Take `⟨-, -, -, -, -, -, h7⟩` from `difB Ω ε X m hm _ _ _ _ hY hP`. Take `⟨-, -, -, -, -, h6, -⟩` from `difB Ω ε X m hm _ _ _ _ hP hP`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `z : dif X (Pt.mv σ (cyc m s) P) (Pt.mv σ' (cyc m s) P) h = 0`. Rewrite using `[hmv, h7 τ s hs σ' h2 h hh, h6 _ hδD _ (inD_conj_of_lifts h2 hh), mul_zero]`. Rewrite using `[htri P' hP' h hh, z, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dif_mv_independent_of_lift {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     {X : Tower Ω ε} {m : ℕ} (hm : 0 < m) {τ : X.K ≃+* X.K} {s : Gal(Ω/ℚ)} (hs : admitted X τ s)
@@ -225,43 +225,39 @@ private theorem dif_mv_independent_of_lift {Ω : Type} [Field Ω] [Algebra ℚ �
   rw [htri P' hP' h hh, z, zero_add]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X m hm I J A A' B B' u u' v v' P P' R R' e e' τ s hs hA hB he he' hP hP' hu hv hR hR' f hf`. Take `⟨-, -, -, -, -, -, hlift, -⟩` from `admB Ω ε X`. Take `⟨σ, hσL⟩` from `hlift τ`. Unfold `IsSum at hR hR'`. Take `⟨α, β, η, hQ, rfl⟩` from `hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨α', β', η', hQ', rfl⟩` from `hR'`. Take `⟨i0, hi0⟩` from `hA`. Take `⟨j0, hj0⟩` from `hB`. Take `⟨i1, hi1, -⟩` from `he.surjOn hi0`. Take `⟨j1, hj1, -⟩` from `he'.surjOn hj0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hPt : ∀ i ∈ A, ∀ j ∈ B, (P i j).a ^ m = io X (u i) ∧ (P i j).b ^ m = io X (v j) ∧ u i ≠ 0 ∧ v j ≠ 0`. Introduce `i hi j hj`. Take `⟨h1, h2, ha, hb, -⟩` from `hP i hi j hj`. Conclude with `⟨ha, hb, h1.1, h2.1⟩`. Establish `hPt' : ∀ i ∈ A', ∀ j ∈ B', (P' i j).a ^ m = io X (u' i) ∧ (P' i j).b ^ m = io X (v' j) ∧ u' i ≠ 0 ∧ v' j ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `i hi j hj`. Take `⟨h1, h2, ha, hb, -⟩` from `hP' i hi j hj`. Conclude with `⟨ha, hb, h1.1, h2.1⟩`. Establish `hα : ∀ i ∈ A, α i ^ m = io X (u i)` using `fun i hi => (hQ i hi j0 hj0).1.trans (hPt i hi j0 hj0).1`. Establish `hβ : ∀ j ∈ B, β j ^ m = io X (v j)` using `fun j hj => (hQ i0 hi0 j hj).2.1.trans (hPt i0 hi0 j hj).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα' : ∀ i ∈ A', α' i ^ m = io X (u' i)` using `fun i hi => (hQ' i hi j1 hj1).1.trans (hPt' i hi j1 hj1).1`. Establish `hβ' : ∀ j ∈ B', β' j ^ m = io X (v' j)` using `fun j hj => (hQ' i1 hi1 j hj).2.1.trans (hPt' i1 hi1 j hj).2.1`. Establish `hu0 : ∀ i ∈ A, u i ≠ 0` using `fun i hi => (hPt i hi j0 hj0).2.2.1`. Establish `hv0 : ∀ j ∈ B, v j ≠ 0` using `fun j hj => (hPt i0 hi0 j hj).2.2.2`. Establish `hu0' : ∀ i ∈ A', u' i ≠ 0` using `fun i hi => (hPt' i hi j1 hj1).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv0' : ∀ j ∈ B', v' j ≠ 0` using `fun j hj => (hPt' i1 hi1 j hj).2.2.2`. Establish `hk : ∀ i ∈ A', ∀ j ∈ B', ∃ θ : Kb X, θ ^ m = io X (f i j) ∧ ∀ h, InD X h → ka X m θ h = dif X (Pt.mv σ (cyc m s) (Pt.mk (α (e i)) (β (e' j)) (η (e i) (e' j)))) (Pt.mk (α' i) (β' j) (η' i j)) h`. Introduce `i hi j hj`. Establish `hei : e i ∈ A` using `he.mapsTo hi`. Establish `hej : e' j ∈ B` using `he'.mapsTo hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ', hσ', θ, hθ, hθk⟩` from `hf i hi j hj`. Use `⟨θ, hθ, fun h hh => ?_⟩` and prove the remaining obligations. Establish `hPij` using `hP (e i) hei (e' j) hej`. Establish `hP'ij` using `hP' i hi j hj`. Rewrite `hP'ij` using `[hu i hi, hv j hj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hθk h hh, ← dif_mv_independent_of_lift hm hs hσL hσ' hPij hP'ij hh]`. Conclude with `dif_mv_eq_of_dif_eq_zero hm hs hσL hh (hPt _ hei _ hej).2.2.1 (hPt _ hei _ hej).2.2.2 _ _ _ _ (hPt _ hei _ hej).1 (hα _ hei) (hPt _ hei _ hej).2.1 (hβ _ hej) (by rw [← hu i hi]; exact (hPt' i hi j hj).1) (by rw [← hu i hi]; exact hα' i hi) (by rw [← hv j hj]; exact (hPt' i hi j h …`. Use `choose! θ hθ hθk using hk`. Unfold `Mv IsKum`. Use `⟨σ, hσL, ∏ i ∈ A', ∏ j ∈ B', θ i j, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun j hj => hθ i hi j hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = io X ↑(∏ i ∈ A', ∏ j ∈ B', f i j) := by simp only [Units.coe_prod, map_prod]`. Introduce `h hh`. Establish `hD : InD X h` using `hh`. Establish `hθ0 : ∀ i ∈ A', ∀ j ∈ B', θ i j ≠ 0` using `fun i hi j hj => ne_zero_of_pow_eq_io_of_ne_zero hm (hθ i hi j hj) (f i j).ne_zero`. Establish `L : ka X m (∏ i ∈ A', ∏ j ∈ B', θ i j) h = ∑ i ∈ A', ∑ j ∈ B', ka X m (θ i j) h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `ka`. Simplify using `only [map_prod]`. Rewrite using `[← Finset.prod_product', ← Finset.prod_product', ← Finset.sum_product']`. Use `lg_prod_eq_sum_lg_of_pow_eq hm _ _ _ (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[Finset.mem_product]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hθ0 _ hx.1 _ hx.2`. Rewrite `hx` using `[Finset.mem_product]`. Rewrite using `[← map_pow, hθ _ hx.1 _ hx.2]`. Conclude with `hD _`. Rewrite using `[L, Finset.sum_congr rfl fun i hi => Finset.sum_congr rfl fun j hj => hθk i hi j hj h hD]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `F1 : ∑ i ∈ A', ∑ j ∈ B', η (e i) (e' j) (σ⁻¹ * h * σ) = ∑ i ∈ A, ∑ j ∈ B, η i j (σ⁻¹ * h * σ)`. Use `Finset.sum_nbij e (fun a ha => he.mapsTo ha) he.injOn he.surjOn fun i hi => ?_` and prove the remaining obligations. Conclude with `Finset.sum_nbij e' (fun a ha => he'.mapsTo ha) he'.injOn he'.surjOn fun j hj => rfl`. Establish `F2 : ka X m (∏ i ∈ A', α' i) h = ∑ i ∈ A', ka X m (α' i) h`. Unfold `ka`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_prod]`. Use `lg_prod_eq_sum_lg_of_pow_eq hm _ _ _ (fun i hi => ne_zero_of_pow_eq_io_of_ne_zero hm (hα' i hi) (hu0' i hi)) (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[← map_pow, hα' i hi]`. Conclude with `hD _`. Establish `F3 : ka X m (∏ j ∈ B', β' j) h = ∑ j ∈ B', ka X m (β' j) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `ka`. Rewrite using `[map_prod]`. Use `lg_prod_eq_sum_lg_of_pow_eq hm _ _ _ (fun j hj => ne_zero_of_pow_eq_io_of_ne_zero hm (hβ' j hj) (hv0' j hj)) (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[← map_pow, hβ' j hj]`. Conclude with `hD _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `F4 : lg X m (σ (∏ j ∈ B, β j)) (∏ j ∈ B', β' j) = ∑ j ∈ B', lg X m (σ (β (e' j))) (β' j)`. Establish `r : ∏ j ∈ B, σ (β j) = ∏ j ∈ B', σ (β (e' j))` using `(Finset.prod_nbij e' (fun a ha => he'.mapsTo ha) he'.injOn he'.surjOn fun j hj => rfl).symm`. Rewrite using `[map_prod, r]`. Use `lg_prod_eq_sum_lg_of_pow_eq hm _ _ _ (fun j hj => ne_zero_of_pow_eq_io_of_ne_zero hm (hβ' j hj) (hv0' j hj)) (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[← map_pow, hβ _ (he'.mapsTo hj), hβ' j hj, hv j hj]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hσL _`. Establish `F5 : lg X m (σ (∏ i ∈ A, α i)) (∏ i ∈ A', α' i) = ∑ i ∈ A', lg X m (σ (α (e i))) (α' i)`. Establish `r : ∏ i ∈ A, σ (α i) = ∏ i ∈ A', σ (α (e i))` using `(Finset.prod_nbij e (fun a ha => he.mapsTo ha) he.injOn he.surjOn fun i hi => rfl).symm`. Rewrite using `[map_prod, r]`. Use `lg_prod_eq_sum_lg_of_pow_eq hm _ _ _ (fun i hi => ne_zero_of_pow_eq_io_of_ne_zero hm (hα' i hi) (hu0' i hi)) (fun i hi => ?_)` and prove the remaining obligations.
-
-Rewrite using `[← map_pow, hα _ (he.mapsTo hi), hα' i hi, hu i hi]`. Conclude with `hσL _`. Unfold `dif Pt.mv`. Simplify using `only`. Rewrite using `[← F1, F2, F3, F4, F5, Finset.sum_mul_sum, Finset.sum_mul_sum, Finset.mul_sum]`.
-
-Simplify using `only [Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+A detailed English derivation is pending.
 -/
 theorem sumMv : SumMv := by
   intro Ω _ _ _ ε X m hm I J A A' B B' u u' v v' P P' R R' e e' τ s hs hA hB he he' hP hP' hu hv hR hR' f hf

@@ -388,7 +388,7 @@ def SmallRankWeakHypothesis.Statement : Prop :=
   ¬ ∀ k m j' N : ℕ, 2 ≤ m → m + 3 ≤ k → j' ≤ m → N = k + m - 1 → 3 * j' ≤ N - 1
 
 /- English proof (translation)
-Use `⟨?_, isHomogeneous_one _ _⟩` and prove the remaining obligations. Simplify using `[IsPowerSumDecomposition]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem LemmaA.hypotheses_inhabited :
     IsPowerSumDecomposition 1 1 (blockPowerSum 1 1 1 0)
@@ -398,12 +398,12 @@ theorem LemmaA.hypotheses_inhabited :
   simp [IsPowerSumDecomposition]
 
 /- English proof (translation)
-Introduce `_ _ _` and use `le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rectangle_antitone_inhabited : Antitone (rectangle 2 3) := fun _ _ _ => le_rfl
 
 /- English proof (translation)
-Use `⟨by norm_num, le_rfl, ?_, by simp⟩` and prove the remaining obligations. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem SchurPowerSumCoefficient.hypotheses_inhabited :
     1 ≤ 3 ∧ 3 ≤ 3 ∧ Antitone (![2, 1] : Fin 2 → ℕ) ∧ ∑ i, (![2, 1] : Fin 2 → ℕ) i = 3 := by
@@ -412,7 +412,7 @@ theorem SchurPowerSumCoefficient.hypotheses_inhabited :
   fin_cases i <;> fin_cases j <;> simp_all
 
 /- English proof (translation)
-Use `⟨?_, by simp⟩` and prove the remaining obligations. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem CharacterBound.hypotheses_inhabited :
     Antitone (![2, 1] : Fin 2 → ℕ) ∧ ∀ q ∈ [2, 1], 1 ≤ q := by

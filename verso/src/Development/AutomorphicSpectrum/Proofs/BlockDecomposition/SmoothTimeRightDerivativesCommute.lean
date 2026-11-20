@@ -20,7 +20,7 @@ variable {E W : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [NormedAddCommGroup W] [NormedSpace ℝ W] {u : ℝ → E → W} {O : Set E}
 
 /- English proof (translation)
-The claim follows from `((hu.contDiffAt ((isOpen_univ.prod hO).mem_nhds ⟨Set.mem_univ _, hy⟩)).differentiableAt (by simp)).hasFDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_unc (hO : IsOpen O)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O)) (s : ℝ) {y : E} (hy : y ∈ O) :
@@ -29,14 +29,14 @@ theorem hasFDerivAt_unc (hO : IsOpen O)
     (by simp)).hasFDerivAt
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_id s).prodMk (hasDerivAt_const s y)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line (s : ℝ) (y : E) :
     HasDerivAt (fun r : ℝ => (r, y)) ((1 : ℝ), (0 : E)) s :=
   (hasDerivAt_id s).prodMk (hasDerivAt_const s y)
 
 /- English proof (translation)
-Establish `h2` using `HasFDerivAt.comp_hasDerivAt (f := fun r : ℝ => (r, y)) s (hasFDerivAt_unc hO hu s hy) (hasDerivAt_line s y)`. Conclude with `h2.deriv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deriv_eq (hO : IsOpen O)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O)) (s : ℝ) {y : E} (hy : y ∈ O) :
@@ -46,7 +46,7 @@ theorem deriv_eq (hO : IsOpen O)
   exact h2.deriv
 
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun z : E => (s, z)) (ContinuousLinearMap.inr ℝ ℝ E) y` using `hasFDerivAt_prodMk_right s y`. Establish `h2` using `HasFDerivAt.comp (g := Function.uncurry u) (f := fun z : E => (s, z)) y (hasFDerivAt_unc hO hu s hy) h1`. Establish `h3 : HasFDerivAt (u s) ((fderiv ℝ (Function.uncurry u) (s, y)).comp (ContinuousLinearMap.inr ℝ ℝ E)) y` using `h2`. Simplify using `[h3.fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_slice_eq (hO : IsOpen O)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O)) (s : ℝ) {y : E} (hy : y ∈ O)
@@ -60,7 +60,7 @@ theorem fderiv_slice_eq (hO : IsOpen O)
   simp [h3.fderiv]
 
 /- English proof (translation)
-The claim follows from `hu.fderiv_of_isOpen (isOpen_univ.prod hO) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem fd_smooth (hO : IsOpen O)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O)) :
@@ -68,7 +68,7 @@ theorem fd_smooth (hO : IsOpen O)
   hu.fderiv_of_isOpen (isOpen_univ.prod hO) (by simp)
 
 /- English proof (translation)
-Establish `h : ContDiffOn ℝ ∞ (fun p : ℝ × E => fderiv ℝ (Function.uncurry u) p ((1 : ℝ), (0 : E))) (Set.univ ×ˢ O)` using `(fd_smooth hO hu).clm_apply contDiffOn_const`. Use `ContDiffOn.congr h ?_` and prove the remaining obligations. Introduce and unpack `⟨s, y⟩ ⟨-, hy⟩`. Conclude with `deriv_eq hO hu s hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smooth_deriv (hO : IsOpen O)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O)) :
@@ -81,7 +81,7 @@ theorem smooth_deriv (hO : IsOpen O)
   exact deriv_eq hO hu s hy
 
 /- English proof (translation)
-Establish `h0 : ContDiff ℝ ∞ (fun p : ℝ × E => ((0 : ℝ), V p.2))` using `contDiff_const.prodMk (hV.comp contDiff_snd)`. Establish `h : ContDiffOn ℝ ∞ (fun p : ℝ × E => fderiv ℝ (Function.uncurry u) p ((0 : ℝ), V p.2)) (Set.univ ×ˢ O)` using `(fd_smooth hO hu).clm_apply h0.contDiffOn`. Use `ContDiffOn.congr h ?_` and prove the remaining obligations. Introduce and unpack `⟨s, y⟩ ⟨-, hy⟩`. Conclude with `fderiv_slice_eq hO hu s hy _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smooth_field (hO : IsOpen O)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O))
@@ -97,7 +97,7 @@ theorem smooth_field (hO : IsOpen O)
   exact fderiv_slice_eq hO hu s hy _
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ ∞ (fun z : E => (s, z))` using `contDiff_const.prodMk contDiff_id`. Conclude with `ContDiffOn.comp (g := Function.uncurry u) (f := fun z : E => (s, z)) hu h1.contDiffOn (fun z hz => ⟨Set.mem_univ _, hz⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_slice (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O)) (s : ℝ) :
     ContDiffOn ℝ ∞ (u s) O := by
@@ -106,7 +106,7 @@ theorem smooth_slice (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×�
     h1.contDiffOn (fun z hz => ⟨Set.mem_univ _, hz⟩)
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ ∞ (fun r : ℝ => (r, y))` using `contDiff_id.prodMk contDiff_const`. Establish `h2` using `ContDiffOn.comp (s := Set.univ) (g := Function.uncurry u) (f := fun r : ℝ => (r, y)) hu h1.contDiffOn (fun _ _ => ⟨Set.mem_univ _, hy⟩)`. Conclude with `contDiffOn_univ.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_line (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O))
     {y : E} (hy : y ∈ O) : ContDiff ℝ ∞ fun s => u s y := by
@@ -116,15 +116,15 @@ theorem smooth_line (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ
   exact contDiffOn_univ.1 h2
 
 /- English proof (translation)
-Establish `hm : (s, y) ∈ (Set.univ : Set ℝ) ×ˢ O` using `⟨Set.mem_univ _, hy⟩`. Establish `hn` using `(isOpen_univ.prod hO).mem_nhds hm`. Establish `hF : ContDiffAt ℝ ∞ (Function.uncurry u) (s, y)` using `hu.contDiffAt hn`. Establish `hG : HasFDerivAt (fderiv ℝ (Function.uncurry u)) (fderiv ℝ (fderiv ℝ (Function.uncurry u)) (s, y)) (s, y)` using `(((fd_smooth hO hu).contDiffAt hn).differentiableAt (by simp)).hasFDerivAt`. Establish `hsym : IsSymmSndFDerivAt ℝ (Function.uncurry u) (s, y)` using `hF.isSymmSndFDerivAt (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [minSmoothness_of_isRCLikeNormedField]`. Conclude with `WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Establish `hL : HasDerivAt (fun r => fderiv ℝ (u r) y v) (fderiv ℝ (fderiv ℝ (Function.uncurry u)) (s, y) ((1 : ℝ), (0 : E)) ((0 : ℝ), v)) s`. Establish `h2` using `HasFDerivAt.comp_hasDerivAt (f := fun r : ℝ => (r, y)) s hG (hasDerivAt_line s y)`. Establish `h3` using `((ContinuousLinearMap.apply ℝ W ((0 : ℝ), v)).hasFDerivAt).comp_hasDerivAt s h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (fun r => fderiv ℝ (u r) y v) = (⇑(ContinuousLinearMap.apply ℝ W ((0 : ℝ), v)) ∘ (fderiv ℝ (Function.uncurry u)) ∘ fun r : ℝ => (r, y))`. Use function extensionality and compare the values at `r`. Simplify using `using fderiv_slice_eq hO hu r hy v`. Rewrite using `[he]`. Simplify using `using h3`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hR : HasFDerivAt (fun z => deriv (fun r => u r z) s) ((ContinuousLinearMap.apply ℝ W ((1 : ℝ), (0 : E))).comp ((fderiv ℝ (fderiv ℝ (Function.uncurry u)) (s, y)).comp (ContinuousLinearMap.inr ℝ ℝ E))) y`. Establish `h1 : HasFDerivAt (fun z : E => (s, z)) (ContinuousLinearMap.inr ℝ ℝ E) y` using `hasFDerivAt_prodMk_right s y`. Establish `h2` using `HasFDerivAt.comp (f := fun z : E => (s, z)) y hG h1`. Establish `h3` using `((ContinuousLinearMap.apply ℝ W ((1 : ℝ), (0 : E))).hasFDerivAt).comp y h2`. Use `h3.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [hO.mem_nhds hy] with z hz`. Simplify using `using deriv_eq hO hu s hz`. Rewrite using `[hL.deriv, hR.fderiv]`. Simplify using `using hsym.eq ((1 : ℝ), (0 : E)) ((0 : ℝ), v)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem deriv_fderiv_comm (hO : IsOpen O)
     (hu : ContDiffOn ℝ ∞ (Function.uncurry u) (Set.univ ×ˢ O)) (v : E) (s : ℝ) {y : E}
@@ -168,7 +168,7 @@ theorem deriv_fderiv_comm (hO : IsOpen O)
 end Generic
 
 /- English proof (translation)
-The claim follows from `(LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X)).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_mulRight {n : ℕ} (X : Mat n) : ContDiff ℝ ∞ (fun y : Mat n => y * X) :=
   (LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ X)).contDiff
@@ -176,7 +176,7 @@ theorem contDiff_mulRight {n : ℕ} (X : Mat n) : ContDiff ℝ ∞ (fun y : Mat 
 end SmCalc
 
 /- English proof (translation)
-Introduce `_ hu` and use `⟨SmCalc.smooth_deriv isOpen_GLs hu, fun X => SmCalc.smooth_field isOpen_GLs hu (SmCalc.contDiff_mulRight X), SmCalc.smooth_slice hu, fun _ hy => SmCalc.smooth_line hu hy, fun _ s _ hy => SmCalc.deriv_fderiv_comm isOpen_GLs hu _ s hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sm_calculus : ∀ {n : ℕ} {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W]
     (u : ℝ → Mat n → W), Sm u → Sm (dt u) ∧ (∀ X : Mat n, Sm (Rt X u)) ∧

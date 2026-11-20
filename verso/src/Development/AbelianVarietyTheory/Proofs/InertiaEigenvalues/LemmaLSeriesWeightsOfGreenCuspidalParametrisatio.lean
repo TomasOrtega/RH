@@ -13,7 +13,7 @@ open scoped Classical
 namespace GlobalTheory.GLq
 
 /- English proof (translation)
-Establish `hc` using `D.ntypes.g_cond k`. Establish `h4 : D.host.g k % 4 = 1`. Rewrite using `[← Nat.mod_mod_of_dvd (D.host.g k) (show 4 ∣ D.host.QS * D.host.q * D.host.d from (((pow_dvd_pow 2 (Nat.le_add_left 2 _)).trans D.host.tower_dvd).mul_right _).mul_right _), hc]`. Use `(D.host.g_prime k).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem five_le_typePrime (D : Formalism.BasicNotions.D7) (k : Fin 2) : 5 ≤ D.host.g k := by
   have hc := D.ntypes.g_cond k
@@ -25,7 +25,7 @@ theorem five_le_typePrime (D : Formalism.BasicNotions.D7) (k : Fin 2) : 5 ≤ D.
   omega
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.m_even`. Use `R.two_le_m` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_eq_k_add_two_mul (R : Formalism.BasicNotions.Ranks) : R.r = R.k + 2 * (R.m / 2 - 1) + 1 := by
   obtain ⟨a, ha⟩ := R.m_even
@@ -34,15 +34,15 @@ theorem rank_eq_k_add_two_mul (R : Formalism.BasicNotions.Ranks) : R.r = R.k + 2
   omega
 
 /- English proof (translation)
-Introduce `hG D hT k ψ hψ`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨L, -, hL⟩` from `hT k`. Establish `hw : ∀ a f, wtOf D k a f = wtC L a f`. Introduce `a f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `wtOf wtC`. Rewrite using `[hL f]`. Establish `h5` using `five_le_typePrime D k`. Establish `hr` using `rank_eq_k_add_two_mul D.R`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hU, hU1, hJ, -⟩` from `GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField (D.host.g k) D.R.r D.R.k (D.R.m / 2 - 1) ψ`. Take `⟨hJ, hJ1⟩` from `hJ hr`. Simplify using `only [hw]`. Use `⟨fun f => ⟨?_, ?_⟩, fun f hf hs => ?_, fun f _ => ?_, fun f hf hs => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.harishChandraSeriesWeight_nonneg_of_idempotent_glnPrime _ L _ _ hU ?_ f` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 ≤ ((eU (D.host.g k) D.R.r ψ).coeff 1).re`. Rewrite using `[hU1, ← Nat.cast_pow, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re]`. Check the signs of the components of the expression. Use `GlobalTheory.T.harishChandraSeriesWeight_nonneg_of_idempotent_glnPrime _ L _ _ hJ ?_ f` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 ≤ ((eJ (D.host.g k) D.R.r D.R.k (D.R.m / 2 - 1) ψ).coeff 1).re`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ1, ← Nat.cast_pow, ← Nat.cast_pow, ← Complex.ofReal_natCast, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, ← Complex.ofReal_mul, Complex.ofReal_re]`. Check the signs of the components of the expression. Conclude with `GlobalTheory.T.harishChandraSeriesWeight_squarefree_label_gelfandGraev _ L h5 hG ψ hψ _ f hf.1 hf.2.1 hf.2.2 hs`. Conclude with `GlobalTheory.T.harishChandraSeriesWeight_lower_comparison _ L ψ hψ _ _ _ hr hk f`. Conclude with `GlobalTheory.T.harishChandraSeriesWeight_le_squarefree _ L h5 hG ψ hψ _ _ _ hr hk f hf.1 hf.2.1 hf.2.2 hs`.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem lemmaL_series_weights_of_greenCuspidalParametrisation : Green → ∀ D : Formalism.BasicNotions.D7, ESerTie D → admLq D := by
   intro hG D hT k ψ hψ

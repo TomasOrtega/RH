@@ -33,7 +33,7 @@ namespace GlobalTheory.ExpModel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `Closed.imp (Closed.and h h') fun _ _ _ H => by obtain ⟨⟨a, ha⟩, ⟨b, hb⟩⟩ := H exact ⟨max a b, fun x hx hle i p hp hm => ⟨ha x hx ((le_max_left _ _).trans hle) i p hp hm, hb x hx ((le_max_right _ _).trans hle) i p hp hm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem atPts_and2 {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (h : AtPts Q) (h' : AtPts Q') : AtPts fun Fm x hx i p => Q Fm x hx i p ∧ Q' Fm x hx i p :=
@@ -43,7 +43,7 @@ theorem atPts_and2 {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1
       hb x hx ((le_max_right _ _).trans hle) i p hp hm⟩⟩
 
 /- English proof (translation)
-The claim follows from `Closed.imp h fun Fm _ _ H => by obtain ⟨a, ha⟩ := H exact ⟨a, fun x hx hle i p hp hm => f Fm x hx i p hm (ha x hx hle i p hp hm)⟩`.
+A detailed English derivation is pending.
 -/
 theorem atPts_imp2 {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (h : AtPts Q) (f : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), More p →
@@ -53,9 +53,9 @@ theorem atPts_imp2 {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1
     exact ⟨a, fun x hx hle i p hp hm => f Fm x hx i p hm (ha x hx hle i p hp hm)⟩
 
 /- English proof (translation)
-Set `g : E.comap S.mkQ →ₗ[A] E` to `(S.mkQ.domRestrict (E.comap S.mkQ)).codRestrict E (fun x => x.2)`. Use `⟨E.comap S.mkQ, N'.mkQ ∘ₗ g, fun z => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective _ z`. Take `⟨v, hv⟩` from `Submodule.mkQ_surjective S a`. Establish `hvU : v ∈ E.comap S.mkQ` using `by rw [Submodule.mem_comap, hv]; exact a.2`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : g ⟨v, hvU⟩ = a` using `Subtype.ext hv`. Conclude with `⟨⟨v, hvU⟩, congrArg N'.mkQ hg⟩`. Establish `hg : g x = 0` using `Subtype.ext ((Submodule.Quotient.mk_eq_zero S).2 hx)`. Conclude with `(congrArg N'.mkQ hg).trans (map_zero _)`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lift_subquot {A V : Type} [Ring A] [AddCommGroup V] [Module A V] (S : Submodule A V) (E : Submodule A (V ⧸ S))
     (N' : Submodule A E) : ∃ (U : Submodule A V) (π : U →ₗ[A] (E ⧸ N')), Function.Surjective π ∧ ∀ x : U, (x : V) ∈ S → π x = 0 := by
@@ -72,9 +72,9 @@ theorem exists_lift_subquot {A V : Type} [Ring A] [AddCommGroup V] [Module A V] 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hsq : ∀ μ : SimpIx X ϖ, ∃ (U : Submodule X.A (NablaT X.O P.Nr W.lam)) (π : U →ₗ[X.A] SimpMod X ϖ μ), Function.Surjective π ∧ ∀ (x : U) (y : NablaT X.O P.Nr W.lam), (x : NablaT X.O P.Nr W.lam) = ϖ • y → π x = 0`. Introduce `μ`. Take `⟨U, π, h1, h2⟩` from `exists_lift_subquot _ μ.1 μ.2.1`. Conclude with `⟨U, π, h1, fun x y hxy => h2 x ⟨y, hxy⟩⟩`. Establish `h` using `fun μ : SimpIx X ϖ => hQ (SimpMod X ϖ μ) μ.2.2 (hsq μ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose mT hw h1 h2 h3 using h`. Conclude with `⟨ϖ, n₀, e, SimpIx X ϖ, SimpMod X ϖ, fun _ => inferInstance, fun _ => inferInstance, fun _ => inferInstance, fun _ => inferInstance, mT, hw, hfin, hd, hA, ⟨hS, h1⟩, ⟨fun Gm _ _ _ hq => exists_simpMod Gm hq, h2⟩, fun μ _ hn τ _ => h3 μ hn τ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem winputs_of_simple {ι : Type} [DecidableEq ι] (P : Formalism.CohomologicalDescent.LogSmallConstantBounds.Par) (W : Wts ι) (X : HidaSetting ι P.Nr W.lam) (l : ℕ) (ϖ : X.O)
     (n₀ : ℕ) (e : ι → (Fin P.Nr → ℕ) → X.A) (hfin : Finite (X.O ⧸ Ideal.span {(l : X.O)})) (hd : (l : X.O) ∣ ϖ ^ n₀)
@@ -101,7 +101,7 @@ set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-The claim follows from `hm.isPrime; WInputsLink P (reFr W fr cjj) (F.setting W.lam jK m) l := by intro E Ω _ _ _ _ _ _ hCheb l _ ι _ _ inc fr cjj P W hW hlink F hF Bk hG jK hJ _ _ hH hfin hnu m hm θ0 h0e h0b h0o obtain ⟨ϖ, n₀, hϖ, hϖl, hlϖ⟩ := exists_unif_dvd F.O l (Fact.out : l.Prime).ne_zero hnu have …`.
+A detailed English derivation is pending.
 -/
 theorem winputs_frame : ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω], GlobalTheory.Published.ChebotarevDegreeOne → ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (inc : ι → (E →+* PadicAlgCl l)) (fr : ℕ → ι → ι) (cjj : ℕ → ι → Bool) (P : Par) (W : Wts ι), W.Ok P → (∀ mu : ι → ℕ → ℕ, Linked l P.Nr W.lam mu → BlockFor Ω inc P W mu → ∀ τ, LatticeLink P (reFr W fr cjj) l τ (res P.Nr (mu τ))) → ∀ (F : Frame l ι P.Nr), F.Ok → ∀ (Bk : (F.I → PadicAlgCl l) → Prop), GalSide Ω inc P W F Bk → ∀ (jK : F.K →* alg F.O P.Nr W.lam), F.IsJ W.lam jK → ∀ [Module F.T (Forms F.O (A := alg F.O P.Nr W.lam) F.Γ jK (NablaT F.O P.Nr W.lam))] [IsScalarTower F.O F.T (Forms F.O (A := alg F.O P.Nr W.lam) F.Γ jK (NablaT F.O P.Nr W.lam))], F.IsHecke W.lam jK (NablaT F.O P.Nr W.lam) → Finite (F.O ⧸ Ideal.span {((l : ℕ) : F.O)}) → ¬ IsUnit ((l : ℕ) : F.O) → ∀ (m : Ideal F.T) [hm : m.IsMaximal] (θ0 : F.I → PadicAlgCl l), F.IsEig W.lam θ0 → Bk θ0 → F.Over θ0 m → haveI := hm.isPrime; WInputsLink P (reFr W fr cjj) (F.setting W.lam jK m) l := by
   intro E Ω _ _ _ _ _ _ hCheb l _ ι _ _ inc fr cjj P W hW hlink F hF Bk hG jK hJ _ _ hH hfin hnu m hm θ0 h0e h0b h0o
@@ -134,13 +134,13 @@ open Classical in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hBS hCheb hS hFr hGal`. Use `atPts_imp2 (atPts_and2 hS (atPts_and2 hFr hGal)) ?_` and prove the remaining obligations. Introduce `eps Fm x hx i p _ H j P W hD hN w hw hR`. Take `⟨hs, hf, hg⟩` from `H`. Establish `hsm : SmallAt p j P w` using `hs j P W hD hN w hw hR`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI hl : Fact (Formalism.EigenvalueLevelCeiling.plc w).Prime := ⟨hsm.1⟩`. Take `⟨F, R, inc, hFok, ⟨T⟩⟩` from `@hf j P W hD hN w hw hR hl`. Establish `hG` using `@hg j P W hD hN w hw hR hl F R inc hFok T`. Establish `hNr` using `hN.1.Nr_eq`. Establish `ht` using `hN.1.t_ge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2 : Formalism.EigenvalueLevelCeiling.plc w ≠ 2` using `by have := hsm.2.1; omega`. Take `⟨fr, cjj, hlk⟩` from `GlobalTheory.T.crystallineLatticeLink_of_blockData hBS _ (AlgebraicClosure (Fm.D x i).host.E) (Formalism.EigenvalueLevelCeiling.plc w) hl2 hsm.2.2.1 _ inc T.half`. Take `⟨jK, hJ⟩` from `GlobalTheory.ExpFrame.levelMap_exists (Formalism.EigenvalueLevelCeiling.plc w) _ P.Nr F W.lam`. Take `⟨_, _, hH⟩` from `GlobalTheory.ExpFrame.HeckeMod.hecke_module (Formalism.EigenvalueLevelCeiling.plc w) _ P.Nr F W.lam jK hFok hJ (NablaT F.O P.Nr W.lam)`. Use `⟨fr, cjj, {m : MaximalSpectrum F.T // ∃ θ, R.Occurs (subZ p j (p.R.mu w)) θ ∧ F.Over θ m.asIdeal}, fun m => haveI := m.1.isMaximal.isPrime; F.setting W.lam jK m.1.asIdeal, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.T.maximalIdeals_meeting_subspace_cover _ _ _ (blk p j (p.R.mu w)) w _ P.Nr F W.lam jK hFok hJ hH R (lvlL p) _ hsm.2.2.2.1`. Introduce and unpack `⟨m, θ0, hocc, hov⟩`. Establish `hop : ∀ Q, (blk p j (p.R.mu w)).op (Q, 0) = 1` using `fun Q => (p.charW.base.fam.degL j (p.R.mu w) Q).1`. Take `⟨hb, he⟩` from `GlobalTheory.T.hasBlocks_of_system_occurs_in_block_part _ _ _ (blk p j (p.R.mu w)) w (Formalism.EigenvalueLevelCeiling.plc w) _ P.Nr F W.lam R _ hop hsm.2.2.2.2 θ0 hocc`. Conclude with `⟨GlobalTheory.T.frameCoeffRing_prime_not_isUnit _ _ _ F hFok, winputs_frame _ (AlgebraicClosure (Fm.D x i).host.E) hCheb (Formalism.EigenvalueLevelCeiling.plc w) _ inc fr cjj P W hN.2.2.1 (hlk P W hN.1 hN.2.2.1 hD.box) F hFok R.HasBlock hG jK hJ hH (GlobalTheory.T.finite_frameCoe …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem modelSt_of_frames : GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.ChebotarevDegreeOne → SmallSt → FrameSt →
     GlobalTheory.ExpTie.GalSt → ModelSt := by

@@ -15,47 +15,45 @@ namespace GlobalTheory.CompanionTheory.FreeQuotGlue
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `X R 𝒰 hbas hc Y q hepi hsurj hfib hst k hko hqk`. Establish `hr (U : 𝒰) : U.1.ι.opensRange = U.1` using `Scheme.Opens.opensRange_ι _`. Establish `hmem (U : 𝒰) (x : U.1.toScheme) : U.1.ι x ∈ U.1`. Establish `: U.1.ι x ∈ U.1.ι.opensRange` using `⟨x, rfl⟩`. Rewrite `this` using `[hr U]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hex (U : 𝒰) (x : X) (hx : x ∈ U.1) : ∃ y, U.1.ι y = x`. Rewrite `hx` using `[← hr U]`. Conclude with `hx`. Establish `hinj (U : 𝒰) : Function.Injective U.1.ι` using `U.1.ι.isOpenEmbedding.injective`. Establish `hm {U V : 𝒰} (h : U.1 ≤ V.1) : X.homOfLE h ≫ V.1.ι = U.1.ι` using `X.homOfLE_ι h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' {U V : 𝒰} (h : U.1 ≤ V.1) (x : U.1.toScheme) : V.1.ι (X.homOfLE h x) = U.1.ι x` using `congr($(hm h) x)`. Establish `hmo {U V : 𝒰} (h : U.1 ≤ V.1) : IsOpenImmersion (X.homOfLE h)`. Establish `: IsOpenImmersion (X.homOfLE h ≫ V.1.ι)` using `by rw [hm]; infer_instance`. Conclude with `.of_comp _ V.1.ι`. Set `F : 𝒰 ⥤ Scheme.{0}` to `{ obj := Y map {U V} f := k U V f.le map_id U := by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hepi U` as an intermediate fact. Rewrite using `[← cancel_epi (q U), hqk]`. Establish `: X.homOfLE (show U.1 ≤ U.1 from (𝟙 U : U ⟶ U).le) = 𝟙 _`. Rewrite using `[← cancel_mono U.1.ι, hm, Category.id_comp]`. Rewrite using `[this, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.comp_id _).symm`. Use `map_comp {U V W} f g := by`. Use `hepi U` as an intermediate fact. Rewrite using `[← cancel_epi (q U), hqk, reassoc_of% (hqk U V f.le), hqk]`. Establish `: X.homOfLE (show U.1 ≤ W.1 from (f ≫ g).le) = X.homOfLE (show U.1 ≤ V.1 from f.le) ≫ X.homOfLE (show V.1 ≤ W.1 from g.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono W.1.ι, Category.assoc, hm, hm, hm]`. Rewrite using `[this, Category.assoc] }`. Set `e (U : 𝒰) : U.1.toScheme ⟶ F.obj U` to `q U`. Establish `hnat {U V : 𝒰} (f : U ⟶ V) : e U ≫ F.map f = X.homOfLE (show U.1 ≤ V.1 from f.le) ≫ e V` using `hqk U V f.le`. Establish `hnat' {U V : 𝒰} (f : U ⟶ V) (x : U.1.toScheme) : F.map f (e U x) = e V (X.homOfLE (show U.1 ≤ V.1 from f.le) x)` using `congr($(hnat f) x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF {U V : 𝒰} (f : U ⟶ V) : IsOpenImmersion (F.map f)` using `hko U V f.le`. Establish `hsurj' (U : 𝒰) : Function.Surjective (e U)` using `hsurj U`. Establish `hfib' (U : 𝒰) (x y : U.1.toScheme) : e U x = e U y ↔ R (U.1.ι x) (U.1.ι y)` using `hfib U x y`. Establish `key {U V : 𝒰} (x : U.1.toScheme) (y : V.1.toScheme) (h : U.1.ι x = V.1.ι y) : ∃ (W : 𝒰) (f : W ⟶ U) (g : W ⟶ V) (z : F.obj W), F.map f z = e U x ∧ F.map g z = e V y`. Take `⟨W, hW, hxW, h1, h2⟩` from `hbas U.1 U.2 V.1 V.2 _ (hmem U x) (h ▸ hmem V y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨z, hz⟩` from `hex ⟨W, hW⟩ _ hxW`. Use `⟨⟨W, hW⟩, homOfLE h1, homOfLE h2, e ⟨W, hW⟩ z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hnat']`. Use `congr 1`. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hm', hz]`. Rewrite using `[hnat']`. Use `congr 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hm', hz, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: (F ⋙ Scheme.forget).IsLocallyDirected`. Prove the components needed by the constructor for the conclusion. Introduce `U V W f g x y h`. Take `⟨x, rfl⟩` from `hsurj' U x`. Take `⟨y, rfl⟩` from `hsurj' V y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : F.map f (e U x) = F.map g (e V y)` using `h`. Rewrite `h'` using `[hnat', hnat']`. Establish `hR` using `(hfib' _ _ _).mp h'`. Rewrite `hR` using `[hm', hm']`. Take `⟨y', hy'⟩` from `hex U _ (hst U _ _ hR (hmem U x))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hxy : e U x = e U y'` using `(hfib' U _ _).mpr (by rw [hy']; exact hR)`. Use `key _ _ hy'` as an intermediate fact. Rewrite `this` using `[← hxy]`. Then use the resulting hypothesis. Establish `key2 {U V : 𝒰} (x : U.1.toScheme) (y : V.1.toScheme) (h : colimit.ι F U (e U x) = colimit.ι F V (e V y)) : V.1.ι y ∈ U.1`. Take `⟨W, f, g, z, -, h2⟩` from `(Scheme.IsLocallyDirected.ι_eq_ι_iff F).mp h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, rfl⟩` from `hsurj' W z`. Rewrite `h2` using `[hnat']`. Establish `hR` using `(hfib' _ _ _).mp h2`. Rewrite `hR` using `[hm']`. Conclude with `hst U _ _ hR ((show W.1 ≤ U.1 from f.le) (hmem W _))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `𝒱 : X.OpenCover` to `Scheme.Cover.mkOfCovers 𝒰 (fun U ↦ U.1.toScheme) (fun U ↦ U.1.ι) (fun x ↦ by`. Take `⟨U, hU⟩` from `hc x`. Conclude with `⟨U, hex U x hU⟩)`. Set `j : X ⟶ colimit F` to `𝒱.glueMorphisms (fun U ↦ e U ≫ colimit.ι F U) (by`. Introduce `U V`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Apply `Scheme.hom_ext_of_forall` to reduce the goal to its premises. Introduce `x`. Establish `hx : U.1.ι (pullback.fst U.1.ι V.1.ι x) = V.1.ι (pullback.snd U.1.ι V.1.ι x)` using `congr($(pullback.condition (f := U.1.ι) (g := V.1.ι)) x)`. Take `⟨W, hW, hxW, h1, h2⟩` from `hbas U.1 U.2 V.1 V.2 _ (hmem U _) (hx ▸ hmem V _)`. Set `α : W.toScheme ⟶ pullback U.1.ι V.1.ι` to `pullback.lift (X.homOfLE h1) (X.homOfLE h2) ((hm (U := ⟨W, hW⟩) h1).trans (hm (U := ⟨W, hW⟩) h2).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hα1 : α ≫ pullback.fst _ _ = X.homOfLE h1` using `pullback.lift_fst _ _ _`. Establish `hα2 : α ≫ pullback.snd _ _ = X.homOfLE h2` using `pullback.lift_snd _ _ _`. Establish `: IsOpenImmersion (α ≫ pullback.fst _ _)` using `by rw [hα1]; exact hmo (U := ⟨W, hW⟩) _`. Establish `: IsOpenImmersion α` using `.of_comp _ (pullback.fst _ _)`. Take `⟨z, hz⟩` from `hex ⟨W, hW⟩ _ hxW`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨α.opensRange, ⟨z, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `(pullback.fst U.1.ι V.1.ι).isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hα1]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hm' (U := ⟨W, hW⟩), hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi α.isoOpensRange.hom]`. Simplify using `only [Scheme.Hom.isoOpensRange_hom_ι_assoc]`. Express the relevant statement in the definitionally equal form `α ≫ pullback.fst U.1.ι V.1.ι ≫ e U ≫ colimit.ι F U = α ≫ pullback.snd U.1.ι V.1.ι ≫ e V ≫ colimit.ι F V`. Rewrite using `[reassoc_of% hα1, reassoc_of% hα2, ← reassoc_of% (hnat (U := ⟨W, hW⟩) (V := U) (homOfLE h1)), ← reassoc_of% (hnat (U := ⟨W, hW⟩) (V := V) (homOfLE h2)), colimit.w, colimit.w])`. Establish `hj (U : 𝒰) : U.1.ι ≫ j = e U ≫ colimit.ι F U` using `𝒱.ι_glueMorphisms _ _ U`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hj' (U : 𝒰) (x : U.1.toScheme) : j (U.1.ι x) = colimit.ι F U (e U x)` using `congr($(hj U) x)`. Establish `hpre (U : 𝒰) : j ⁻¹ᵁ (colimit.ι F U).opensRange = U.1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hsurj' U y`. Take `⟨V, hV⟩` from `hc x`. Take `⟨z, rfl⟩` from `hex V x hV`. Conclude with `key2 y z (hy.trans (hj' V z))`. Introduce `hx`.
-
-Take `⟨z, rfl⟩` from `hex U x hx`. Conclude with `⟨_, (hj' U z).symm⟩`. Use `⟨colimit F, j, fun U ↦ colimit.ι F U, fun U ↦ inferInstance, hj, hpre, fun y ↦ ?_⟩` and prove the remaining obligations. Take `⟨U, x, rfl⟩` from `Scheme.IsLocallyDirected.ι_jointly_surjective F y`. Conclude with `⟨U, x, rfl⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_colimit_of_quotient_charts : ∀ {X : Scheme.{0}} (R : X → X → Prop) (𝒰 : Set X.Opens), (∀ U ∈ 𝒰, ∀ V ∈ 𝒰, ∀ x : X, x ∈ U → x ∈ V → ∃ W ∈ 𝒰, x ∈ W ∧ W ≤ U ∧ W ≤ V) → (∀ x : X, ∃ U : 𝒰, x ∈ U.1) → ∀ (Y : 𝒰 → Scheme.{0}) (q : ∀ U : 𝒰, U.1.toScheme ⟶ Y U), (∀ U, Epi (q U)) → (∀ U, Function.Surjective (q U)) → (∀ (U : 𝒰) (u v : U.1.toScheme), q U u = q U v ↔ R (U.1.ι u) (U.1.ι v)) → (∀ (U : 𝒰) (x y : X), R x y → x ∈ U.1 → y ∈ U.1) → ∀ (k : ∀ U V : 𝒰, U.1 ≤ V.1 → (Y U ⟶ Y V)), (∀ U V h, IsOpenImmersion (k U V h)) → (∀ U V h, q U ≫ k U V h = X.homOfLE h ≫ q V) → ∃ (Y' : Scheme.{0}) (π : X ⟶ Y') (em : ∀ U, Y U ⟶ Y') (_ : ∀ U, IsOpenImmersion (em U)), (∀ U, U.1.ι ≫ π = q U ≫ em U) ∧ (∀ U, π ⁻¹ᵁ (em U).opensRange = U.1) ∧ ∀ y : Y', ∃ U, ∃ z : Y U, em U z = y := by
   intro X R 𝒰 hbas hc Y q hepi hsurj hfib hst k hko hqk

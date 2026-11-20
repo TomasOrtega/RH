@@ -18,42 +18,42 @@ namespace GeneratorWeights
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_cases (ε : Fin n → Bool) (p : Fin n × Fin n) : sg ε p = 1 ∨ sg ε p = -1 := by
   unfold sg
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `wt`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wt_ge (p : Fin n × Fin n) : 1 / 2 ≤ wt p := by
   unfold wt
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `wt`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wt_le (p : Fin n × Fin n) : wt p ≤ 1 := by
   unfold wt
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Take `⟨a, b⟩` from `p`. Establish `key : ∀ X : Matrix (Fin n) (Fin n) ℂ, (∀ i j, star (X j i) * (if ε j = true then 1 else -1) + (if ε i = true then 1 else -1) * X i j = 0) → inG ε X`. Introduce `X hX`. Unfold `inG`. Use extensionality with `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Simplify `hX i j` using `[Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Apply `key` to reduce the goal to its premises. Introduce `i j`. Unfold `gen sg`. Distinguish the cases in `hab : a = b`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Simplify using `only [if_true, Matrix.smul_apply, smul_eq_mul, Matrix.single_apply]`. Distinguish the cases in `h : a = i ∧ a = j`. Take `⟨rfl, rfl⟩` from `h`. Apply the tactic sequence `cases ha : ε a <;> simp [ha]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h' : ¬ (a = j ∧ a = i)` using `fun h2 => h ⟨h2.2, h2.1⟩`. Simplify using `[h, h']`. Establish `hba : ¬ b = a` using `Ne.symm hab`. Distinguish the cases in `hlt : a < b`. Simplify using `only [hab, hlt, if_false, if_true, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Matrix.single_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `h1`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb, hab, hba]`. Distinguish the cases in `h2 : b = i ∧ a = j`. Take `⟨rfl, rfl⟩` from `h2`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb, hab, hba]`. Establish `h1' : ¬ (a = j ∧ b = i)` using `fun h => h2 ⟨h.2, h.1⟩`. Establish `h2' : ¬ (b = j ∧ a = i)` using `fun h => h1 ⟨h.2, h.1⟩`. Simplify using `[h1, h2, h1', h2']`. Simplify using `only [hab, hlt, if_false, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `h1`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb, hab, hba] <;> ring1`. Distinguish the cases in `h2 : b = i ∧ a = j`. Take `⟨rfl, rfl⟩` from `h2`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb, hab, hba] <;> ring1`. Establish `h1' : ¬ (a = j ∧ b = i)` using `fun h => h2 ⟨h.2, h.1⟩`. Establish `h2' : ¬ (b = j ∧ a = i)` using `fun h => h1 ⟨h.2, h.1⟩`. Simplify using `[h1, h2, h1', h2']`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gen_mem (ε : Fin n → Bool) (p : Fin n × Fin n) : inG ε (gen ε p) := by
   obtain ⟨a, b⟩ := p
@@ -103,11 +103,11 @@ variable {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSp
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
 
 /- English proof (translation)
-Establish `hgen : ∀ p, inG ε (gen ε p)` using `gen_mem ε`. Establish `key : ⟪Cas ε σ v, v⟫_ℂ = ∑ p, ((wt p * sg ε p * ‖dS σ (gen ε p) v‖ ^ 2 : ℝ) : ℂ)`. Unfold `Cas`. Rewrite using `[inner_neg_left, sum_inner, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inner_smul_left, hC.skew _ (hgen p) _ (hC.mem _ (hgen p) v hv) v hv, inner_self_eq_norm_sq_to_K]`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring`. Establish `h2 : ((c * ‖v‖ ^ 2 : ℝ) : ℂ) = ((∑ p, wt p * sg ε p * ‖dS σ (gen ε p) v‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_sum, ← key, hc v hv, inner_smul_left, inner_self_eq_norm_sq_to_K]`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(Complex.ofReal_inj.1 h2).symm`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq (hC : Calc ε σ D) {c : ℝ} (hc : ∀ v ∈ D, Cas ε σ v = (c : ℂ) • v) {v : H} (hv : v ∈ D) :
     ∑ p : Fin n × Fin n, wt p * sg ε p * ‖dS σ (gen ε p) v‖ ^ 2 = c * ‖v‖ ^ 2 := by
@@ -130,23 +130,21 @@ end GeneratorWeights
 
 open GeneratorWeights in
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ D hC c hc W C hW`. Use `set K : ℝ := 2 * ((Fintype.card (Fin n × Fin n) : ℝ) * C ^ 2 + |c|) with hK`. Use `⟨max C (Real.sqrt K), fun p v hvD hvW => ?_⟩` and prove the remaining obligations. Establish `hv0 : 0 ≤ ‖v‖` using `norm_nonneg v`. Distinguish the cases in `hp : ε p.1 = ε p.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `(hW p hp v hvW).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hv0)`. Establish `hsum` using `sum_eq hC hc hvD`. Establish `hsgp : sg ε p = -1` using `by simp [sg, hp]`. Establish `hterm : ∀ q, wt q * sg ε q * ‖dS σ (gen ε q) v‖ ^ 2 ≤ C ^ 2 * ‖v‖ ^ 2`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `wt_le q`. Establish `h4` using `wt_ge q`. Break down `sg_cases ε q with h | h` into its components or cases. Establish `hq : ε q.1 = ε q.2`. Assume the negation of the conclusion as `hne`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Simplify using `[sg, hne] at h`. Evaluate the numerical expressions using `at h`. Establish `h1` using `hW q hq v hvW`. Establish `h2 : ‖dS σ (gen ε q) v‖ ^ 2 ≤ (C * ‖v‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Rewrite using `[h, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h5 : wt q * ‖dS σ (gen ε q) v‖ ^ 2 ≤ 1 * ‖dS σ (gen ε q) v‖ ^ 2` using `mul_le_mul_of_nonneg_right h3 (sq_nonneg _)`. Use polynomial arithmetic with `[h2, h5]`. Rewrite using `[h]`. Establish `h5 : 0 ≤ wt q * ‖dS σ (gen ε q) v‖ ^ 2` using `mul_nonneg (by linarith) (sq_nonneg _)`. Use polynomial arithmetic with `[sq_nonneg (C * ‖v‖), h5]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun q => wt q * sg ε q * ‖dS σ (gen ε q) v‖ ^ 2) (Finset.mem_univ p)`. Establish `hrest : ∑ q ∈ Finset.univ.erase p, wt q * sg ε q * ‖dS σ (gen ε q) v‖ ^ 2 ≤ (Fintype.card (Fin n × Fin n) : ℝ) * (C ^ 2 * ‖v‖ ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_right (by exact_mod_cast (Finset.card_erase_le.trans (le_of_eq Finset.card_univ))) (by positivity)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hwp` using `wt_ge p`. Rewrite `hsplit` using `[hsgp]`. Establish `e2 : (1 / 2) * ‖dS σ (gen ε p) v‖ ^ 2 ≤ wt p * ‖dS σ (gen ε p) v‖ ^ 2` using `mul_le_mul_of_nonneg_right hwp (sq_nonneg _)`. Establish `e3 : -c * ‖v‖ ^ 2 ≤ |c| * ‖v‖ ^ 2` using `mul_le_mul_of_nonneg_right (neg_le_abs c) (sq_nonneg _)`. Establish `hsq : ‖dS σ (gen ε p) v‖ ^ 2 ≤ K * ‖v‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[hK]`. Use polynomial arithmetic with `[hsplit, hsum, hrest, e2, e3]`. Establish `hK0 : 0 ≤ K` using `by positivity`. Establish `hle : ‖dS σ (gen ε p) v‖ ≤ Real.sqrt K * ‖v‖`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (dS σ (gen ε p) v)), ← Real.sqrt_sq hv0, ← Real.sqrt_mul hK0]`.
-
-Conclude with `Real.sqrt_le_sqrt hsq`. Conclude with `hle.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hv0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c4 : CasimirScalarBounded := by
   intro n ε H _ _ _ σ D hC c hc W C hW

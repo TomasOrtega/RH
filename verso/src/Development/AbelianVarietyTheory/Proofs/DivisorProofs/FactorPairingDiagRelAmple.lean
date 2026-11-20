@@ -22,9 +22,9 @@ namespace GlobalTheory.Mum.FactorAmple
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.AdjPolLocal.lbIso_of_rosatiAdj_local K B M u v hM h`. Establish `h1 : (cubeLB B ![fst B B ≫ u, snd B B] M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `h2 : (cubeLB B ![fst B B, snd B B ≫ v] M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `e'` using `(cls_eq_iff h1 h2).2 e`. Rewrite `e'` using `[cls_cube_two hM, cls_cube_two hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e''` using `congrArg (pull (lift x y : T ⟶ G2 B).left) e'`. Rewrite `e''` using `[pull_lam, pull_lam]`. Simplify using `using e''`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lam_rosati {K : Type} [Field K] {B : Over (Sp K)} [GrpObj B] [IsCommMonObj B] {M : LB B.left} (hM : M.IsLB)
     {u v : B ⟶ B} (h : RosatiAdj B M u v) {T : Over (Sp K)} (x y : T ⟶ B) :
@@ -39,9 +39,9 @@ theorem lam_rosati {K : Type} [Field K] {B : Over (Sp K)} [GrpObj B] [IsCommMonO
   simpa using e''
 
 /- English proof (translation)
-Establish `h0 : ρ.act 0 = 1`. Establish `e` using `ρ.map_add 0 0`. Rewrite `e` using `[add_zero]`. Establish `e' : ρ.act 0 * 1 = ρ.act 0 * ρ.act 0` using `by rw [_root_.mul_one]; exact e.trans (Hom.mul_def _ _).symm`. Conclude with `(mul_left_cancel e').symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ n ih => rw [succ_nsmul, ρ.map_add, ih, pow_succ]`. Conclude with `(Hom.mul_def _ _).symm`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem act_nsmul {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {O : Type} [Ring O] (ρ : RingAct A O)
     (u : O) (n : ℕ) : ρ.act (n • u) = ρ.act u ^ n := by
@@ -55,7 +55,7 @@ theorem act_nsmul {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {O :
   | succ n ih => rw [succ_nsmul, ρ.map_add, ih, pow_succ]; exact (Hom.mul_def _ _).symm
 
 /- English proof (translation)
-Simplify using `only [lam, ← map_mul, ← map_one (pushHom hp T)]`. Simplify using `only [← pull_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem lam_push {S S' : Scheme.{0}} {G : Over S} {H : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj H]
     [IsCommMonObj H] {f : S' ⟶ S} {φ : H.left ⟶ G.left} (hp : IsGrpPullback H G f φ) (c : Pic G.left)
@@ -72,41 +72,35 @@ namespace GlobalTheory.Mum
 open GlobalTheory.CechPic GlobalTheory.Mum.FactorAmple
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D D' F hF A' G' _ _ hG' U' oA oG hlin G _ _ hG inc pr hinc hpr hip hpi κ₀ hκ`. Use `A'.isAb.comm` as an intermediate fact. Establish `hp` using `isGrpPullback_pullback G (jK R)`. Establish `hp'` using `isGrpPullback_pullback G' (jK R)`. Set `X` to `(Over.pullback (jK R)).obj G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ιK : X ⟶ (Over.pullback (jK R)).obj G'` to `(Over.pullback (jK R)).map inc`. Set `a : X ⟶ A'.A` to `ιK ≫ U'.gen.hom`. Establish `hM` using `A'.isLB`. Establish `hL' : U'.LG.L.IsLB` using `U'.LG.isLB`. Establish `hΛ : (abelian₂ G' U'.LG.L).IsLB` using `LB.isLB_linComb hL' _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `pull_isLB hΛ (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left`. Establish `h2` using `pull_isLB h1 κ₀`. Establish `h3` using `pull_isLB h2 (lift (𝟙 X) (𝟙 X) : X ⟶ G2 X).left`. Establish `e1 : pushHom hp X (𝟙 X) ≫ inc = pushHom hp' X ιK` using `by ext1 show (𝟙 _ ≫ pullback.fst G.hom (jK R)) ≫ inc.left = ιK.left ≫ pullback.fst G'.hom (jK R)`. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pullback.lift_fst _ _ _).symm`. Establish `e2 : pushHom hp X (𝟙 X) ≫ inc ≫ oG.act F.f = pushHom hp' X (ιK ≫ (Over.pullback (jK R)).map (oG.act F.f))`. Rewrite using `[← Category.assoc, e1]`. Use `ext1`. Use `show (ιK.left ≫ pullback.fst G'.hom (jK R)) ≫ (oG.act F.f).left = (ιK ≫ (Over.pullback (jK R)).map (oG.act F.f)).left ≫ pullback.fst G'.hom (jK R)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `congrArg (ιK.left ≫ ·) (pullback.lift_fst _ _ _).symm`. Establish `eN : cls _ h3 = lam (cls _ hL') (pushHom hp X (𝟙 X) ≫ inc) (pushHom hp X (𝟙 X) ≫ inc ≫ oG.act F.f)`. Rewrite using `[cls_pull h2, cls_pull h1, cls_pull hΛ, ← pull_comp, ← pull_comp]`. Rewrite using `[← Category.assoc, FactorAdd.lift_square hp hκ, ← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : cls (abelian₂ G' U'.LG.L) hΛ = lam (cls _ hL') (fst G' G') (snd G' G')` using `cls_cube_two hL' _ _ hΛ`. Rewrite using `[e, pull_lam]`. Simplify using the standard rewrite rules. Establish `hgen` using `U'.gen_hom`. Establish `eT : pull (pullback.fst G'.hom (jK R)) (cls _ hL') = pull U'.gen.hom.left (cls _ hM)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `U'.ext`. Rewrite using `[← cls_pull hL' _ (pull_isLB hL' _), ← cls_pull hM _ (pull_isLB hM _)]`. Conclude with `((cls_eq_iff (pull_isLB hM _) (pull_isLB hL' _)).2 ⟨w, hw⟩).symm`. Establish `eN' : cls _ h3 = lam (cls _ hM) a (a ≫ oA.act F.f)`. Rewrite using `[eN, e2, e1, lam_push hp', eT, lam_pull]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Category.assoc, Category.assoc, hlin.ext F.f]`. Establish `hie : inc ≫ oG.act F.e = inc` using `by rw [← hpi, ← Category.assoc, hip, Category.id_comp]`. Establish `ha : a ≫ oA.act F.e = a` using `by show (ιK ≫ U'.gen.hom) ≫ oA.act F.e = ιK ≫ U'.gen.hom`. Rewrite using `[Category.assoc, ← hlin.ext F.e, ← Category.assoc, ← Functor.map_comp, hie]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΘ : ∃ t : LB.Gen (Theta A'.A A'.L), t.IsGen` using `GlobalTheory.GenericAmpleDvr.triv_theta A'.isAb hM`. Take `⟨⟨b, hb, hbe⟩, -, -⟩` from `hF`. Establish `rosE : ∀ x y : X ⟶ A'.A, lam (cls _ hM) (x ≫ oA.act F.e) y = lam (cls _ hM) x (y ≫ oA.act (star F.e))` using `fun x y => lam_rosati hM (oA.rosati F.e) x y`. Establish `hpow : ∀ (u : F.O) (n : ℕ), (a ≫ oA.act u) ^ n = a ≫ oA.act (n • u)`. Introduce `u n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[act_nsmul oA.toRingAct]`. Conclude with `(map_pow (preHom (G := A'.A) a) (oA.act u) n).symm`. Establish `eb : b • cls _ h3 = lam (cls _ hM) a a`. Rewrite using `[eN']`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[rosE, oA.map_mul, oA.map_mul]`. Simplify using `only [Category.assoc]`. Use `_ = lam (cls _ hM) a ((a ≫ oA.act (star F.e * F.f * F.e)) ^ b) := (lam_pow_right hM hΘ _ _ b).symm`. Use `_ = lam (cls _ hM) a (a ≫ oA.act (star F.e * F.e)) := by rw [hpow, hbe]`. Use `_ = lam (cls _ hM) (a ≫ oA.act F.e) (a ≫ oA.act F.e) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[oA.map_mul, ← Category.assoc, ← rosE]`. Use `_ = lam (cls _ hM) a a := by rw [ha]`. Establish `hΛA : (abelian₂ A'.A A'.L).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hDg` using `pull_isLB hΛA (lift (𝟙 A'.A) (𝟙 A'.A) : A'.A ⟶ G2 A'.A).left`. Establish `eD : lam (cls _ hM) a a = cls _ (pull_isLB hDg a.left)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : cls (abelian₂ A'.A A'.L) hΛA = lam (cls _ hM) (fst A'.A A'.A) (snd A'.A A'.A)` using `cls_cube_two hM _ _ hΛA`. Rewrite using `[cls_pull hDg, cls_pull hΛA, e, pull_lam, pull_lam]`. Simplify using the standard rewrite rules. Establish `hNb` using `isLB_lbPow h3 b`. Establish `iso` using `(cls_eq_iff hNb (pull_isLB hDg a.left)).1 (by rw [cls_lbPow h3, eb, eD])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hG'.separated` as an intermediate fact. Establish `: IsSeparated ((Over.pullback (jK R)).obj G').hom` using `by dsimp; infer_instance`. Set `prK : (Over.pullback (jK R)).obj G' ⟶ X` to `(Over.pullback (jK R)).map pr`. Establish `hs : ιK ≫ prK = 𝟙 X` using `by rw [← Functor.map_comp, hip]; exact (Over.pullback (jK R)).map_id G`. Establish `: IsSeparated prK.left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : prK.left ≫ X.hom = ((Over.pullback (jK R)).obj G').hom` using `Over.w prK`. Establish `: IsSeparated (prK.left ≫ X.hom)` using `by rw [e]; infer_instance`. Conclude with `IsSeparated.of_comp prK.left X.hom`. Establish `: IsClosedImmersion ιK.left`. Establish `: IsClosedImmersion (ιK.left ≫ prK.left)`.
-
-Rewrite using `[← Over.comp_left, hs]`. Conclude with `inferInstanceAs (IsClosedImmersion (𝟙 _))`. Conclude with `IsClosedImmersion.of_comp ιK.left prK.left`. Establish `: IsIso U'.gen.hom.left` using `((Over.forget _).mapIso U'.gen).isIso_hom`. Establish `: IsFinite a.left` using `by show IsFinite (ιK ≫ U'.gen.hom).left`.
-
-Rewrite using `[Over.comp_left]`. Use `infer_instance`. Use `A'.isAb.proper` as an intermediate fact. Establish `: IsProper X.hom`. Establish `e : a.left ≫ A'.A.hom = X.hom` using `Over.w a`.
-
-Rewrite using `[← e]`. Use `infer_instance`. Establish `hDgA` using `GlobalTheory.isAmpleLB_of_relAmple_of_isAffine A'.A hDg (GlobalTheory.EighthPowerFactor.relAmple_diag_lam A'.isAb hM hΘ A'.ample)`. Establish `hNa` using `(hDgA.pull_of_isFinite a.left).of_lbIso hNb iso`. Conclude with `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine X h3).2 ((GlobalTheory.isAmpleLB_pow_iff h3 hb).1 hNa)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem factorPairing_diag_relAmple : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) (F : Factor D.toPre D'.toPre) (_ : F.Alg) (A' : PolAV (Sp (FractionRing R))) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R) D' A' G') (oA : A'.OAct F.O) (oG : RingAct G' F.O), U'.toUnifPre.OLinear F.O F.o oA oG → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (inc : G ⟶ G') (pr : G' ⟶ G), IsMonHom inc → IsMonHom pr → inc ≫ pr = 𝟙 G → pr ≫ inc = oG.act F.e → ∀ κ₀ : (G2 ((Over.pullback (jK R)).obj G)).left ⟶ (G2 G).left, Geo.Tor.IsSquare (G' := ((Over.pullback (jK R)).obj G)) (G := G) (pullback.fst G.hom (jK R)) κ₀ → Out.RelAmple ((Over.pullback (jK R)).obj G) ((((abelian₂ G' U'.LG.L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left).pull κ₀).pull (lift (𝟙 ((Over.pullback (jK R)).obj G)) (𝟙 ((Over.pullback (jK R)).obj G)) : ((Over.pullback (jK R)).obj G) ⟶ G2 ((Over.pullback (jK R)).obj G)).left) := by
   intro R _ _ _ hR D D' F hF A' G' _ _ hG' U' oA oG hlin G _ _ hG inc pr hinc hpr hip hpi κ₀ hκ

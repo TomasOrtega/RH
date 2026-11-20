@@ -16,9 +16,9 @@ attribute [local instance 2000] Rep.hV2
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hc1 : Continuous (d.ev v).toMonoidHom` using `(d.hev_cont v).1`. Establish `heM` using `hloc2 ρ (locFam S Av v) (d.ev v) (fun g => d.e g) d.A d.eM d.hM (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 Kf.1))) d.ιs ⟨v.1, Finset.mem_coe.2 v.2⟩).toMonoidHom (d.hev v)`. Establish `heD` using `hloc2 (twDual μ ρ) (locFam S Av v) (d.ev v) (fun g => d.e g) (dualRep (gsRoots (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)) d.A) d.eD d.hD (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 Kf.1))) d.ιs ⟨v.1, Finset.mem_coe.2 v.2⟩).toMonoidHom (d.hev v)`. Establish `hbμ : ∀ (x : M) (y : TDual (ZMod (l ^ r)) M), ((((Additive.toMul ((ptLocalEval (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 Kf.1))) d.ιs) (gsRoots (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r)) d.A ⟨v.1, Finset.mem_coe.2 v.2⟩).hom (d.eM x ⊗ₜ[ULift.{0} ℤ] d.eD y)) : rootsOfUnity ( …` using `fun x y => d.hDζ y x`. Establish `hJ : ∀ (W : ↥(Z2 ((charRep μ).comp (locFam S Av v)))) (x : cocycles (Rep.res (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 Kf.1))) d.ιs ⟨v.1, Finset.mem_coe.2 v.2⟩).toMonoidHom (gsRoots (S : Set (HeightOneSpectrum (𝓞 Kf.1))) (l ^ r))) 2), (∀ s, ((((Additive.toMul (cochainOf _ (cocy …` using `fun W x h => @invCmp Kf ‹_› ‹_› (S : Set (HeightOneSpectrum (𝓞 Kf.1))) inferInstance l r ‹_› hr (fun w hw => Finset.mem_coe.2 (hS w hw)) ζ hζ inv hinv d.ιs ⟨v.1, Finset.mem_coe.2 v.2⟩ (Av v) (hAv v) (d.ev v) (d.hιs v) (d.hev_cont v).1 (cocycles2Map ((charRep μ).comp (locFam S Av …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `transfer_cup_one_one_general (d.ev v) hc1 ((twDual μ ρ).comp (locFam S Av v)) (ρ.comp (locFam S Av v)) ((charRep μ).comp (locFam S Av v)) evalPair.flip continuous_of_discreteTopology (fun g y x => evalPair_equiv μ ρ (locFam S Av v g) x y) (hρ.comp' (continuous_locFam S Av v)) (Re …`.
+A detailed English derivation is pending.
 -/
 theorem locTr1_C (Kf : FiniteSubfield) [NumberField Kf.1]
     [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)] (S : Finset (HeightOneSpectrum (𝓞 Kf.1))) {l r : ℕ}

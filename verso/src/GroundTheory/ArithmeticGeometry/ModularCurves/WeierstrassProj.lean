@@ -17,7 +17,7 @@ def quotGrading (n : ℕ) : Submodule R (A ⧸ I) :=
 
 omit [GradedAlgebra 𝒜] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, ha, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma mk_mem_quotGrading {n : ℕ} {a : A} (ha : a ∈ 𝒜 n) :
     Ideal.Quotient.mk I a ∈ quotGrading 𝒜 I n :=
@@ -40,7 +40,7 @@ def quotDecomposeHom : A →+ ⨁ n, quotGrading 𝒜 I n :=
 variable {𝒜 I}
 
 /- English proof (translation)
-Use extensionality with `n`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I (DirectSum.decompose 𝒜 a n : A) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hI n ha`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma quotDecomposeHom_of_mem (hI : I.IsHomogeneous 𝒜) {a : A} (ha : a ∈ I) :
     quotDecomposeHom 𝒜 I a = 0 := by
@@ -65,7 +65,7 @@ lemma quotDecomposeHom_apply (a : A) : quotDecomposeHom 𝒜 I a =
 
 omit hI [GradedAlgebra 𝒜] in
 /- English proof (translation)
-Use extensionality with `n x`. Simplify using `[DirectSum.map_of, quotComponent]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma coe_comp_map_quotComponent :
     (DirectSum.coeAddMonoidHom (quotGrading 𝒜 I)).comp (DirectSum.map (quotComponent 𝒜 I)) =
@@ -75,7 +75,7 @@ lemma coe_comp_map_quotComponent :
 
 omit hI in
 /- English proof (translation)
-Rewrite using `[quotDecomposeHom_apply]`. Use `congrArg (fun φ => φ (DirectSum.decompose 𝒜 a)) (coe_comp_map_quotComponent (𝒜 := 𝒜) (I := I))` as an intermediate fact. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply] at this`. Rewrite using `[this]`. Conclude with `congrArg (Ideal.Quotient.mk I) ((DirectSum.decompose 𝒜).symm_apply_apply a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coe_quotDecomposeHom (a : A) :
     DirectSum.coeAddMonoidHom (quotGrading 𝒜 I) (quotDecomposeHom 𝒜 I a) =
@@ -88,7 +88,7 @@ lemma coe_quotDecomposeHom (a : A) :
 
 omit hI in
 /- English proof (translation)
-Rewrite using `[quotDecomposeHom_apply, DirectSum.decompose_of_mem 𝒜 ha, DirectSum.map_of]`. Both sides reduce to the same expression. Use the proof step `@[instance_reducible]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma quotDecomposeHom_of_mem_grading {n : ℕ} {a : A} (ha : a ∈ 𝒜 n) :
     quotDecomposeHom 𝒜 I a = DirectSum.of (fun n => quotGrading 𝒜 I n) n
@@ -124,9 +124,9 @@ noncomputable def scale : MvPolynomial σ R →+* Localization.Away (π (MvPolyn
       IsLocalization.Away.invSelf (S := Localization.Away (π (MvPolynomial.X i))) (π (MvPolynomial.X i)))
 
 /- English proof (translation)
-Use `set u := IsLocalization.Away.invSelf (S := Localization.Away (π (MvPolynomial.X i))) (π (MvPolynomial.X i))`. Establish `hu : algebraMap Q _ (π (MvPolynomial.X i)) * u = 1` using `IsLocalization.Away.mul_invSelf _`. Establish `hdeg : e.degree = ∑ j ∈ e.support, e j` using `rfl`. Establish `hinv : (e.prod fun _ k => u ^ k) * algebraMap Q (Localization.Away (π (MvPolynomial.X i))) (π (MvPolynomial.X i) ^ e.degree) = 1`. Rewrite using `[Finsupp.prod, Finset.prod_pow_eq_pow_sum, map_pow, ← hdeg, ← mul_pow, mul_comm, hu, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [scale, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_monomial, RingHom.comp_apply]`. Repeatedly rewrite using `[mul_pow]`. Rewrite using `[Finsupp.prod_mul, mul_assoc, mul_assoc, hinv, mul_one, MvPolynomial.monomial_eq, map_mul, map_mul, map_finsuppProd, map_finsuppProd]`. Simplify using `only [map_pow]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scale_monomial (e : σ →₀ ℕ) (c : R) :
     scale π i (MvPolynomial.monomial e c) *
@@ -146,9 +146,9 @@ theorem scale_monomial (e : σ →₀ ℕ) (c : R) :
   simp only [map_pow]
 
 /- English proof (translation)
-Use `conv_lhs => rw [a.as_sum]`. Use `conv_rhs => rw [a.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun e he => ?_)` and prove the remaining obligations. Establish `hdeg : e.degree = m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `ha (MvPolynomial.mem_support_iff.mp he)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis. Rewrite using `[← hdeg]`. Conclude with `scale_monomial π i e _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_homog {m : ℕ} {a : MvPolynomial σ R} (ha : a.IsHomogeneous m) :
     scale π i a * algebraMap Q (Localization.Away (π (MvPolynomial.X i))) (π (MvPolynomial.X i) ^ m) =
@@ -180,9 +180,9 @@ noncomputable def cubicIdeal : Ideal (MvPolynomial (Fin 3) R) :=
   Ideal.span {W.toProjective.polynomial}
 
 /- English proof (translation)
-Establish `hX` using `isHomogeneous_X R (0 : Fin 3)`. Establish `hY` using `isHomogeneous_X R (1 : Fin 3)`. Establish `hZ` using `isHomogeneous_X R (2 : Fin 3)`. Establish `hC` using `fun a : R => isHomogeneous_C (Fin 3) a`. Simplify using `only [WeierstrassCurve.Projective.polynomial]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `IsHomogeneous.sub (IsHomogeneous.add (IsHomogeneous.add ((hY.pow 2).mul hZ) ((((hC _).mul hX).mul hY).mul hZ)) (((hC _).mul hY).mul (hZ.pow 2))) (IsHomogeneous.add (IsHomogeneous.add (IsHomogeneous.add (hX.pow 3) (((hC _).mul (hX.pow 2)).mul hZ)) (((hC _).mul hX).mul (hZ.pow 2))) …`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_cubic : W.toProjective.polynomial.IsHomogeneous 3 := by
   have hX := isHomogeneous_X R (0 : Fin 3)
@@ -196,7 +196,7 @@ theorem isHomogeneous_cubic : W.toProjective.polynomial.IsHomogeneous 3 := by
       (((hC _).mul (hX.pow 2)).mul hZ)) (((hC _).mul hX).mul (hZ.pow 2))) ((hC _).mul (hZ.pow 3)))
 
 /- English proof (translation)
-The claim follows from `Ideal.homogeneous_span _ _ (by rintro _ rfl exact ⟨3, (mem_homogeneousSubmodule 3 _).2 (isHomogeneous_cubic W)⟩)`.
+A detailed English derivation is pending.
 -/
 theorem cubicIdeal_isHomogeneous : (cubicIdeal W).IsHomogeneous (grading R) :=
   Ideal.homogeneous_span _ _ (by
@@ -215,7 +215,7 @@ noncomputable abbrev Curve : Scheme.{u} := Proj (homGrading W)
 noncomputable abbrev var (j : Fin 3) : HomRing W := Ideal.Quotient.mk (cubicIdeal W) (X j)
 
 /- English proof (translation)
-The claim follows from `mk_mem_quotGrading _ _ (isHomogeneous_X R j)`.
+A detailed English derivation is pending.
 -/
 theorem var_mem (j : Fin 3) : var W j ∈ homGrading W 1 :=
   mk_mem_quotGrading _ _ (isHomogeneous_X R j)
@@ -231,7 +231,7 @@ variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 noncomputable abbrev π : MvPolynomial (Fin 3) R →+* HomRing W := Ideal.Quotient.mk (cubicIdeal W)
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`.
+A detailed English derivation is pending.
 -/
 theorem π_cubic : π W W.toProjective.polynomial = 0 :=
   Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)
@@ -246,7 +246,7 @@ noncomputable abbrev vinv (j : Fin 3) : Localization.Away (var W j) :=
   IsLocalization.Away.invSelf (S := Localization.Away (var W j)) (var W j)
 
 /- English proof (translation)
-Rewrite using `[frac, Away.val_mk, Localization.mk_eq_mk', IsLocalization.mk'_eq_mul_mk'_one, vinv, IsLocalization.Away.invSelf]`. Use `congr 2`. Conclude with `Subtype.ext (pow_one _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem val_frac (j k : Fin 3) :
     (frac W j k).val = algebraMap (HomRing W) (Localization.Away (var W j)) (var W k) * vinv W j := by
@@ -256,7 +256,7 @@ theorem val_frac (j k : Fin 3) :
   exact Subtype.ext (pow_one _)
 
 /- English proof (translation)
-Simplify using `[scalarAway, fromZeroRingHom]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem val_scalarAway (j : Fin 3) (r : R) :
     (scalarAway W j r).val = algebraMap (HomRing W) (Localization.Away (var W j)) (algebraMap R _ r) := by
@@ -264,9 +264,9 @@ theorem val_scalarAway (j : Fin 3) (r : R) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `scale_homog (π W) j (isHomogeneous_cubic W)`. Rewrite `h` using `[π_cubic, map_zero]`. Establish `hu : algebraMap (HomRing W) (Localization.Away (var W j)) (var W j) * vinv W j = 1` using `IsLocalization.Away.mul_invSelf _`. Establish `: scale (π W) j W.toProjective.polynomial = scale (π W) j W.toProjective.polynomial * algebraMap (HomRing W) (Localization.Away (var W j)) (var W j ^ 3) * vinv W j ^ 3`. Rewrite using `[map_pow, mul_assoc, ← mul_pow, hu, one_pow, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_eq_zero_of_mem {j : Fin 3} : scale (π W) j W.toProjective.polynomial = 0 := by
   have h := scale_homog (π W) j (isHomogeneous_cubic W)
@@ -288,19 +288,19 @@ open MvPolynomial HomogeneousLocalization
 variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 
 /- English proof (translation)
-Simplify using `[WeierstrassCurve.Projective.polynomial]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_cubic : constantCoeff W.toProjective.polynomial = 0 := by
   simp [WeierstrassCurve.Projective.polynomial]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `r s h`. Establish `h' : π W (C (r - s)) = 0`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `only [SetLike.GradeZero.coe_algebraMap] at this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `this`. Rewrite `h'` using `[Ideal.Quotient.eq_zero_iff_mem, cubicIdeal, Ideal.mem_span_singleton']`. Take `⟨g, hg⟩` from `h'`. Use `congrArg constantCoeff hg` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, constantCoeff_cubic, mul_zero, constantCoeff_C]`. Conclude with `sub_eq_zero.1 this.symm`. Introduce and unpack `⟨q, P, hP, rfl⟩`. Establish `hP' : P.IsHomogeneous 0` using `(mem_homogeneousSubmodule 0 P).1 hP`. Establish `h0 : P.totalDegree = 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hP0 : P = 0`. Simplify using `[hP0]`. Conclude with `hP'.totalDegree hP0`. Take `⟨r, rfl⟩ : ∃ r, P = C r` from `⟨_, totalDegree_eq_zero_iff_eq_C.1 h0⟩`. Conclude with `⟨r, Subtype.ext rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem algebraMap_zero_bijective : Function.Bijective (algebraMap R (homGrading W 0)) := by
   constructor

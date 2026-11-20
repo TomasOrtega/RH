@@ -18,15 +18,15 @@ open scoped ComplexOrder
 namespace GlobalTheory.PairSetting
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T' A Ks _ _ _ R F hC _ i σ`. Establish `hi1 : 1 ≤ (i : ℕ) + 1` using `Nat.le_add_left 1 _`. Establish `hi2 : (i : ℕ) + 1 ≤ D.R.m` using `i.isLt`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ hi1 hi2`. Establish `hV : (Vc D i).rank = D.R.nV` using `D.sp.V_rank _ hi1 hi2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `D.R.rank_add_five_le`. Establish `hm` using `D.R.two_le_m`. Take `⟨cA, hF, hcart, hJ, hA0⟩` from `GlobalTheory.T.multiplicity_map_apply_mem_A0_of_kfin D R.θ hC.models.inf (Wc D i) (D.sp.W_sig _) _ (R.MW i σ)`. Establish `hpos : ∀ τ, (gramAt D (Vc D i) τ).PosDef` using `fun τ => by`. Use `D.sp.V_sig (↑i + 1) (tauE D τ)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hC.models.vpos i]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`. Use `⟨GlobalTheory.Cusp.wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.Per.isAniso_of_posDef (D.sp.V_sig _) (hC.models.vpos i)), ?_, cA, ⟨?_, ?_, ?_, hC.models.inf, D.sp.W_sig _, hF, hcart, fun τ => ⟨by simp, by simp, by simpa using hpos τ⟩, hJ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hW]`. Simplify using `only [Ranks.r] at *`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hW]`. Simplify using `only [Ranks.r] at *`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Ranks.r] at *`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hV, hW]`. Both sides reduce to the same expression. Introduce `U hU v`. Conclude with `hA0 _ _ U hU (fun ρ => v ρ) (fun τ => GlobalTheory.T.lowestKType_mem_discreteSeriesKFiniteVectors D (Wc D i) _ (R.MW i σ) τ (v τ))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → (∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)) → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), GlobalTheory.Cusp.wittIndex (Vc D i) = 0 ∧ (Wc D i).rank < D.R.t ∧ ∃ cA : GlobalTheory.Mem.Th.CptF (Wc D i), GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.HidaSetting R.θ (Wc D i) (Vc D i) (cart (R.MW i σ)) (fun _ => 1) D.R.t cA ∧ ∀ U ∈ R.Wall i σ, ∀ v : ∀ ρ, lowT (R.MW i σ) ρ, U (fun ρ => v ρ) ∈ GlobalTheory.Cusp.A0 R.θ (Wc D i) cA := by
   intro D G _ _ Pl0 T' A Ks _ _ _ R F hC _ i σ

@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 theorem entL_apply (M : KMod n) (i j : Ix M) (A : M.V →L[ℂ] M.V) : entL M i j A = ent M A i j := rfl
 
 /- English proof (translation)
-Take `⟨m, c, w, g, ks, hks, hk, -⟩` from `h`. Conclude with `(ContDiffOn.sum fun i _ => ((hks i).2.1).const_smul (c i)).congr fun y hy => hk y hy`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mult_contDiffOn [MeasurableSpace (G n)] {μ : Measure (G n)} {M : KMod n} {k : Mat n → (M.V →L[ℂ] M.V)}
     {val : Inf n → ℂ} {T : ℝ} (h : IsMult μ M k val T) : ContDiffOn ℝ ∞ k (GLs n) := by
@@ -36,7 +36,7 @@ theorem mult_contDiffOn [MeasurableSpace (G n)] {μ : Measure (G n)} {M : KMod n
   exact (ContDiffOn.sum fun i _ => ((hks i).2.1).const_smul (c i)).congr fun y hy => hk y hy
 
 /- English proof (translation)
-The claim follows from `(entL M i j).contDiff.comp_contDiffOn (mult_contDiffOn h)`.
+A detailed English derivation is pending.
 -/
 theorem ent_contDiffOn [MeasurableSpace (G n)] {μ : Measure (G n)} {M : KMod n} {k : Mat n → (M.V →L[ℂ] M.V)}
     {val : Inf n → ℂ} {T : ℝ} (h : IsMult μ M k val T) (i j : Ix M) :
@@ -44,7 +44,7 @@ theorem ent_contDiffOn [MeasurableSpace (G n)] {μ : Measure (G n)} {M : KMod n}
   (entL M i j).contDiff.comp_contDiffOn (mult_contDiffOn h)
 
 /- English proof (translation)
-The claim follows from `continuous_finsetProd _ fun v _ => (entL (M v) (I v) (J v)).continuous.comp ((mult_contDiffOn (h v)).continuousOn.comp_continuous (Units.continuous_val.comp (continuous_gI v)) fun _ => val_mem_GLs₀ _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entA [MeasurableSpace (G n)] {μ : Measure (G n)} {M : Mods E n} {k : Kers M}
     {val : InfinitePlace E → Inf n → ℂ} {T : ℝ} (h : IsMults μ k val T) (I J : IxA M) :
@@ -55,19 +55,19 @@ theorem continuous_entA [MeasurableSpace (G n)] {μ : Measure (G n)} {M : Mods E
 
 omit [IsCMField E] in
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gFin₀ : Continuous (gFin : GA E n → GL (Fin n) (Af E)) :=
   Continuous.units_map _ (continuous_id.matrix_map continuous_snd)
 
 /- English proof (translation)
-The claim follows from `(continuous_gFin₀.comp continuous_fst).prodMk (continuous_gFin₀.comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hFin₀ {a b : ℕ} : Continuous (hFin : H E a b → Hf E a b) :=
   (continuous_gFin₀.comp continuous_fst).prodMk (continuous_gFin₀.comp continuous_snd)
 
 /- English proof (translation)
-The claim follows from `pFin_infGL u`.
+A detailed English derivation is pending.
 -/
 theorem gFin_infGL₀ (u : GL (Fin n) (Cinf E)) : gFin (infGL E n u) = 1 := pFin_infGL u
 
@@ -76,19 +76,19 @@ end SmoothIntegrals
 open SmoothIntegrals in
 
 /- English proof (translation)
-Introduce `E _ _ _ a b _ _ _ _ μa _ μb _ Ma Mb ι _ D ka kb va vb T ψ U f hka hkb hψ _ _ hR`. Establish `: BorelSpace (H E a b)` using `⟨rfl⟩`. Establish `: D.μ.IsMulLeftInvariant` using `D.haar.1`. Establish `: IsLocallyFiniteMeasure D.μ` using `D.haar.2.2.2`. Establish `: IsFiniteMeasureOnCompacts D.μ` using `isFiniteMeasureOnCompacts_of_isLocallyFiniteMeasure`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hfc, c, hc, hconv⟩` from `hR`. Establish `hTest` using `(hTT E a b μa μb Ma Mb ι ka kb va vb T ψ hka hkb hψ).1`. Establish `hψc : ∀ x y, Continuous fun w : H E a b => ψ x y (hFin w)` using `fun x y => (hψ x y).1.comp continuous_hFin₀`. Establish `hrep : ∀ i z, f i z = c⁻¹ * ∑ j, ∫ y, tens ka kb ψ i j y * f j (z * y) ∂D.μ`. Introduce `i z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrFun (congrFun hconv i) z`. Establish `h2 : c * f i z = ∑ j, ∫ y, tens ka kb ψ i j y * f j (z * y) ∂D.μ` using `h1.symm`. Rewrite using `[← h2, inv_mul_cancel_left₀ hc]`. Use `⟨fun i m₂ => ?_, fun i m₁ => ?_⟩` and prove the remaining obligations. Establish `hj : ∀ j, (fun x => ∫ y, tens ka kb ψ i j y * f j ((x, m₂) * y) ∂D.μ) ∈ Sm E a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `j`. Establish `h` using `mem_Sm_conv D.μ (MonoidHom.inl (GA E a) (GA E b)) (continuous_id.prodMk continuous_const) Prod.fst continuous_fst (fun h w => by simp) (fun v A => ent (Ma v) (ka v A) (i.1.1 v) (j.1.1 v)) (fun v => ent_contDiffOn (hka v) _ _) (fun w => entA kb i.1.2 j.1.2 w.2 * ψ i.2 j.2 (hFin w) …`. Establish `e : ∀ x : GA E a, ((1 : GA E a), m₂) * MonoidHom.inl (GA E a) (GA E b) x = (x, m₂)` using `fun x => Prod.ext (one_mul x) (mul_one m₂)`. Simplify `h` using `only [e]`. Use `⟨⟨c⁻¹ • ∑ j, fun x => ∫ y, tens ka kb ψ i j y * f j ((x, m₂) * y) ∂D.μ, (Sm E a).smul_mem c⁻¹ ((Sm E a).sum_mem fun j _ => hj j)⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hrep i (x, m₂)).symm`. Establish `hj : ∀ j, (fun x => ∫ y, tens ka kb ψ i j y * f j ((m₁, x) * y) ∂D.μ) ∈ Sm E b`. Introduce `j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `mem_Sm_conv D.μ (MonoidHom.inr (GA E a) (GA E b)) (continuous_const.prodMk continuous_id) Prod.snd continuous_snd (fun h w => by simp) (fun v A => ent (Mb v) (kb v A) (i.1.2 v) (j.1.2 v)) (fun v => ent_contDiffOn (hkb v) _ _) (fun w => entA ka i.1.1 j.1.1 w.1 * ψ i.2 j.2 (hFin w) …`. Establish `e : ∀ x : GA E b, (m₁, (1 : GA E b)) * MonoidHom.inr (GA E a) (GA E b) x = (m₁, x)` using `fun x => Prod.ext (mul_one m₁) (one_mul x)`. Simplify `h` using `only [e]`. Use `⟨⟨c⁻¹ • ∑ j, fun x => ∫ y, tens ka kb ψ i j y * f j ((m₁, x) * y) ∂D.μ, (Sm E b).smul_mem c⁻¹ ((Sm E b).sum_mem fun j _ => hj j)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hrep i (m₁, x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem smoothOf (hTT : TensTest) : SmoothOf := by
   intro E _ _ _ a b _ _ _ _ μa _ μb _ Ma Mb ι _ D ka kb va vb T ψ U f hka hkb hψ _ _ hR

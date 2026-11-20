@@ -6,7 +6,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Proof.LevelCharacterConjugate
 
 /- English proof (translation)
-Establish `hc : (Units.map (σ : K →* ℂ)).comp (ψ⁻¹.comp (eG.symm.toMonoidHom.subgroupComap P)) = ((Units.map (σ : K →* ℂ)).comp (ψ.comp (eG.symm.toMonoidHom.subgroupComap P)))⁻¹` using `MonoidHom.ext fun x => by simp only [MonoidHom.comp_apply, MonoidHom.inv_apply, map_inv]`. Conclude with `congrArg (LevelP.mk (Subgroup.comap eG.symm.toMonoidHom P)) hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levPOf_inv {D : D7} {G K : Type} [Group G] [Field K] {Pg : Finset (Pl D.host.E)} {r : ℕ}
     (eG : G ≃* G0 Pg r) (σ : K →+* ℂ) (P : Subgroup G) (ψ : P →* Kˣ) :
@@ -17,7 +17,7 @@ theorem levPOf_inv {D : D7} {G K : Type} [Group G] [Field K] {Pg : Finset (Pl D.
   exact congrArg (LevelP.mk (Subgroup.comap eG.symm.toMonoidHom P)) hc
 
 /- English proof (translation)
-Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ h]`. Conclude with `levPOf_inv _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftLevel_fixedEmbedding_eq_conj_rowLevel {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (b : Bool)

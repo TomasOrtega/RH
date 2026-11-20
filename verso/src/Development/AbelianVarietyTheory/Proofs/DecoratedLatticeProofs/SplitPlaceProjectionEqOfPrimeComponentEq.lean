@@ -21,13 +21,13 @@ section Base
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Use `set r : v.adicCompletion F := algebraMap F _ (π ^ n) with hr_def`. Establish `hr : Valued.v r = WithZero.exp (-(n : ℤ))`. Rewrite using `[hr_def]`. Use `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (π ^ n)).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hπ]`. Rewrite using `[← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hr0 : Valued.v r ≠ 0` using `by rw [hr]; exact WithZero.exp_ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : {y : v.adicCompletion F | Valued.v (c - y) < Valued.v r} ∈ nhds c`. Establish `ho` using `(Valued.isOpen_ball (v.adicCompletion F) (Valued.v.restrict r)).preimage (continuous_const.sub continuous_id : Continuous fun y : v.adicCompletion F => c - y)`. Simplify using `only [Set.preimage_setOf_eq, Valuation.restrict_lt_iff] at ho`. Use `ho.mem_nhds ?_` and prove the remaining obligations. Use `show Valued.v (c - c) < _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sub_self, map_zero]`. Conclude with `zero_lt_iff.2 hr0`. Take `⟨k, hk⟩` from `(HeightOneSpectrum.denseRange_algebraMap (K := F) v).mem_nhds hN`. Conclude with `⟨k, (le_of_lt hk).trans_eq hr⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_near (v : HeightOneSpectrum (𝓞 F)) (c : v.adicCompletion F) (n : ℕ) :
     ∃ k : F, Valued.v (c - algebraMap F _ k) ≤ WithZero.exp (-(n : ℤ)) := by
@@ -53,13 +53,11 @@ theorem exists_near (v : HeightOneSpectrum (𝓞 F)) (c : v.adicCompletion F) (n
   exact ⟨k, (le_of_lt hk).trans_eq hr⟩
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, Valued.v (GlobalTheory.Mem.Col2.afIso F E (1 ⊗ₜ[F] a) P - GlobalTheory.AdeleBaseChange.adMap F E a P) ≤ WithZero.exp (-(n : ℤ))` using `fun n => by`. Take `⟨k, hk⟩` from `exists_near (P.under (𝓞 F)) (a (P.under (𝓞 F))) n`. Establish `h1` using `(GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.2.2.2 a k P n hk`. Establish `h2 : Valued.v (GlobalTheory.AdeleBaseChange.adMap F E a P - algebraMap E _ (algebraMap F E k)) ≤ WithZero.exp (-(n : ℤ))`. Rewrite using `[GlobalTheory.AdeleBaseChange.adMap_apply, ← GlobalTheory.AdeleBaseChange.locMap_algebraMap, ← map_sub]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.AdeleBaseChange.locMap_valued P n _ hk`. Establish `e : GlobalTheory.Mem.Col2.afIso F E (1 ⊗ₜ[F] a) P - GlobalTheory.AdeleBaseChange.adMap F E a P = (GlobalTheory.Mem.Col2.afIso F E (1 ⊗ₜ[F] a) P - algebraMap E _ (algebraMap F E k)) - (GlobalTheory.AdeleBaseChange.adMap F E a P - algebraMap E _ (algebraMap F E k))` using `by ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le h1 h2)`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Valued.v (GlobalTheory.Mem.Col2.afIso F E (1 ⊗ₜ[F] a) P - GlobalTheory.AdeleBaseChange.adMap F E a P) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `sub_ne_zero.2 hne`. Establish `h2` using `key (1 - WithZero.log (Valued.v (GlobalTheory.Mem.Col2.afIso F E (1 ⊗ₜ[F] a) P - GlobalTheory.AdeleBaseChange.adMap F E a P))).toNat`. Use `conv_lhs at h2 => rw [← WithZero.exp_log h0]`.
-
-Rewrite `h2` using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem afIso_one_tmul_apply (a : FiniteAdeleRing (𝓞 F) F) (P : HeightOneSpectrum (𝓞 E)) :
     GlobalTheory.Mem.Col2.afIso F E (1 ⊗ₜ[F] a) P = GlobalTheory.AdeleBaseChange.adMap F E a P := by
@@ -91,9 +89,9 @@ end Base
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul x a`. Rewrite using `[GlobalTheory.StdFrames.toAd_spec]`. Establish `e : (x ⊗ₜ[D.host.F] a : Formalism.L2.DIV.AfE D.host.F D.host.E) = (x ⊗ₜ[D.host.F] (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F)) * ((1 : D.host.E) ⊗ₜ[D.host.F] a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e, map_mul, GlobalTheory.Mem.Col2.afIso_tmul_one]`. Use `congr 1`. Conclude with `FiniteAdeleRing.ext _ fun P => (afIso_one_tmul_apply a P).symm`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem toAd_eq_afIso (w : GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.Ef D) :
     GlobalTheory.StdFrames.toAd D w = GlobalTheory.Mem.Col2.afIso D.host.F D.host.E w := by
@@ -110,7 +108,7 @@ theorem toAd_eq_afIso (w : GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Use `show Formalism.UG.evalV D.host.E Q (GlobalTheory.StdFrames.toAd D w) = Formalism.UG.evalV D.host.E Q (GlobalTheory.Mem.Col2.afIso D.host.F D.host.E w)`. Rewrite using `[toAd_eq_afIso]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_eq_adAt (Q : HeightOneSpectrum (𝓞 D.host.E)) (w : GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.Ef D) :
     GlobalTheory.StdFrames.cpt Q w = GlobalTheory.Mem.Col2.adAt D.host.F Q w := by
@@ -118,11 +116,11 @@ theorem cpt_eq_adAt (Q : HeightOneSpectrum (𝓞 D.host.E)) (w : GlobalTheory.In
   rw [toAd_eq_afIso]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q PP he z x hz`. Establish `hx : GlobalTheory.StdFrames.cpt PP (toEAf D (incA D x)) = algebraMap D.host.E (PP.adicCompletion D.host.E) x` using `(cpt_eq_adAt PP _).trans (GlobalTheory.Mem.Col2.adAt_inclE D.host.F PP x)`. Establish `hz' : GlobalTheory.StdFrames.cpt PP (toEAf D z) = algebraMap D.host.E (PP.adicCompletion D.host.E) x` using `(cpt_eq_adAt PP _).trans hz`. Establish `h1 : toEAf D (q.e * z) = toEAf D (q.e * incA D x)`. Rewrite using `[RingHom.map_mul, RingHom.map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.StdFrames.cpt_ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, RingHom.map_mul]`. Distinguish the cases in `hQ : Q = PP`. Rewrite using `[hQ, hx, hz']`. Rewrite using `[(GlobalTheory.StdFrames.cpt_of_isIdemAt he).2 Q hQ, zero_mul, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : q.pr (q.e * z - q.e * incA D x) = 0` using `q.pr_eq_zero_of_toEAf he _ (by rw [RingHom.map_sub, h1, sub_self])`. Rewrite `h2` using `[RingHom.map_sub, sub_eq_zero, ← q.sec_pr, ← q.sec_pr, q.pr_sec, q.pr_sec]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_eq_of_adAt : ∀ {D : Formalism.BasicNotions.D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (PP : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt q.e PP → ∀ (z : Formalism.L2.Theta.AE D) (x : D.host.E), GlobalTheory.Mem.Col2.adAt D.host.F PP (Formalism.IndefR.Datum.toEAf D z) = algebraMap D.host.E (PP.adicCompletion D.host.E) x → q.pr z = q.pr (Formalism.L2.Theta.incA D x) := by
   intro D k _ _ _ _ q PP he z x hz

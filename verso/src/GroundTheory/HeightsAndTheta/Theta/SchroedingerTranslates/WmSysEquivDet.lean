@@ -20,7 +20,7 @@ variable {G : Type*} [AddGroup G] [TopologicalSpace G] [MeasurableSpace G] [Bore
   [IsTopologicalAddGroup G] [LocallyCompactSpace G]
 
 /- English proof (translation)
-Establish `h1` using `addEquivAddHaarChar_smul_preimage μ (X := S) φ`. Rewrite `h1` using `[ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.coe_injective ((ENNReal.mul_left_inj h0 htop).1 (h1.trans h.symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addEquivAddHaarChar_eq_of_preimage (μ : Measure G) [μ.IsAddHaarMeasure] [μ.Regular]
     (φ : G ≃ₜ+ G) {S : Set G} {c : ℝ≥0} (h0 : μ (φ ⁻¹' S) ≠ 0) (htop : μ (φ ⁻¹' S) ≠ ∞)
@@ -30,15 +30,15 @@ theorem addEquivAddHaarChar_eq_of_preimage (μ : Measure G) [μ.IsAddHaarMeasure
   exact ENNReal.coe_injective ((ENNReal.mul_left_inj h0 htop).1 (h1.trans h.symm))
 
 /- English proof (translation)
-Set `μ : Measure G'` to `addHaar`. Set `e : G' ≃ᵐ G` to `b.symm.toHomeomorph.toMeasurableEquiv`. Set `ν : Measure G` to `μ.map e`. Establish `: ν.IsAddHaarMeasure` using `b.symm.isAddHaarMeasure_map μ`. Establish `: ν.Regular` using `Regular.map b.symm.toHomeomorph`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : ∀ T : Set G, μ (e ⁻¹' T) = ν T` using `fun T => (e.map_apply T).symm`. Take `⟨K, hKc, hK0⟩ : ∃ K : Set G, IsCompact K ∧ K ∈ 𝓝 (0 : G)` from `exists_compact_mem_nhds 0`. Establish `hpre : ⇑((b.symm.trans H).trans b) ⁻¹' (e ⁻¹' K) = e ⁻¹' (H ⁻¹' K)`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `b.symm (b (H (b.symm y))) ∈ K ↔ H (b.symm y) ∈ K`. Rewrite using `[b.symm_apply_apply]`. Establish `hHK0 : H ⁻¹' K ∈ 𝓝 (0 : G)`. Establish `hc : Tendsto (fun x => H x) (𝓝 0) (𝓝 (H 0))` using `H.continuous.tendsto 0`. Rewrite `hc` using `[map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hc hK0`. Establish `hHKc : IsCompact (H ⁻¹' K)` using `H.toHomeomorph.isCompact_preimage.2 hKc`. Use `addEquivAddHaarChar_eq_of_preimage μ _ (S := e ⁻¹' K) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hpre, hν]`. Conclude with `(measure_pos_of_mem_nhds ν hHK0).ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpre, hν]`. Conclude with `hHKc.measure_lt_top.ne`. Rewrite using `[hpre, hν, hν]`. Establish `h1` using `addEquivAddHaarChar_smul_preimage ν (X := K) H`. Rewrite `h1` using `[ENNReal.smul_def, smul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem addEquivAddHaarChar_conj {G' : Type*} [AddGroup G'] [TopologicalSpace G']
     [MeasurableSpace G'] [BorelSpace G'] [IsTopologicalAddGroup G'] [LocallyCompactSpace G']
@@ -94,14 +94,14 @@ def glEquiv : GL ι F ≃* ((ι → F) ≃ₗ[F] (ι → F)) :=
     (LinearMap.GeneralLinearGroup.generalLinearEquiv F (ι → F))
 
 /- English proof (translation)
-Simplify using `[glEquiv, LinearMap.GeneralLinearGroup.generalLinearEquiv, Matrix.GeneralLinearGroup.toLin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glEquiv_apply (g : GL ι F) (x : ι → F) :
     glEquiv F ι g x = (g : Matrix ι ι F).mulVec x := by
   simp [glEquiv, LinearMap.GeneralLinearGroup.generalLinearEquiv, Matrix.GeneralLinearGroup.toLin]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[LinearEquiv.coe_det]`. Use `show LinearMap.det (Matrix.toLin' (g : Matrix ι ι F)) = _`. Rewrite using `[LinearMap.det_toLin']`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_glEquiv (g : GL ι F) :
     LinearEquiv.det (glEquiv F ι g) = Matrix.GeneralLinearGroup.det g := by
@@ -116,7 +116,7 @@ variable [MeasurableSpace F] [BorelSpace F] [SecondCountableTopology F] [SigmaCo
 def piChar (L : (ι → F) ≃ₗ[F] (ι → F)) : ℝ≥0 := addEquivAddHaarChar (piHomeo L)
 
 /- English proof (translation)
-Establish `h : piHomeo (L * M) = (piHomeo M).trans (piHomeo L)` using `ContinuousAddEquiv.ext fun _ => rfl`. Rewrite using `[piChar, h, addEquivAddHaarChar_trans, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem piChar_mul (L M : (ι → F) ≃ₗ[F] (ι → F)) : piChar (L * M) = piChar L * piChar M := by
   have h : piHomeo (L * M) = (piHomeo M).trans (piHomeo L) := ContinuousAddEquiv.ext fun _ => rfl
@@ -124,7 +124,7 @@ theorem piChar_mul (L M : (ι → F) ≃ₗ[F] (ι → F)) : piChar (L * M) = pi
   rfl
 
 /- English proof (translation)
-Establish `h : piHomeo (1 : (ι → F) ≃ₗ[F] (ι → F)) = ContinuousAddEquiv.refl _` using `ContinuousAddEquiv.ext fun _ => rfl`. Rewrite using `[piChar, h, addEquivAddHaarChar_refl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem piChar_one : piChar (1 : (ι → F) ≃ₗ[F] (ι → F)) = 1 := by
   have h : piHomeo (1 : (ι → F) ≃ₗ[F] (ι → F)) = ContinuousAddEquiv.refl _ :=
@@ -142,19 +142,19 @@ Both sides reduce to the same expression.
 theorem glChar_apply (g : GL ι F) : glChar g = piChar (glEquiv F ι g) := rfl
 
 /- English proof (translation)
-Establish `hD : ∀ i, D i ≠ 0` using `fun i => by`. Rewrite `h` using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ i)`. Set `u : ι → Fˣ` to `fun i => Units.mk0 (D i) (hD i)`. Establish `hdet : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h) = ∏ i, u i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `[u, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.det_diagonal]`. Rewrite using `[hdet, map_prod, glChar_apply, piChar]`. Set `ν : Measure F` to `addHaar`. Set `μ : Measure (ι → F)` to `Measure.pi fun _ => ν`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: μ.Regular` using `isAddHaar_regular μ`. Take `⟨K, hKc, hK0⟩ : ∃ K : Set F, IsCompact K ∧ K ∈ 𝓝 (0 : F)` from `exists_compact_mem_nhds 0`. Establish `hν0 : ν K ≠ 0` using `(measure_pos_of_mem_nhds ν hK0).ne'`. Establish `hνtop : ν K ≠ ∞` using `hKc.measure_lt_top.ne`. Establish `hpre : ⇑(piHomeo (glEquiv F ι (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h))) ⁻¹' (Set.univ.pi fun _ => K) = Set.univ.pi fun i => (u i)⁻¹ • K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, piHomeo_apply, glEquiv_apply]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Matrix.diagonal D).mulVec x i ∈ K ↔ x i ∈ ((u i)⁻¹ : Fˣ) • K`. Rewrite using `[Matrix.mulVec_diagonal, Set.mem_inv_smul_set_iff, Units.smul_def]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hP : μ (⇑(piHomeo (glEquiv F ι (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h))) ⁻¹' (Set.univ.pi fun _ => K)) = ∏ i, (((distribHaarChar F (u i))⁻¹ : ℝ≥0) : ℝ≥0∞) * ν K`. Rewrite using `[hpre, Measure.pi_pi]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_inv, distribHaarChar_mul ν]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : ∀ i, (distribHaarChar F (u i) : ℝ≥0) ≠ 0` using `fun i => distribHaarChar_pos.ne'`. Use `addEquivAddHaarChar_eq_of_preimage μ _ (S := Set.univ.pi fun _ => K) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hP]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (ENNReal.coe_ne_zero.2 (inv_ne_zero (hpos i))) hν0`. Rewrite using `[hP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ENNReal.prod_ne_top fun i _ => ENNReal.mul_ne_top ENNReal.coe_ne_top hνtop`. Rewrite using `[hP, Measure.pi_pi, ENNReal.ofNNReal_finsetProd, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← ENNReal.coe_mul, mul_inv_cancel₀ (hpos i), ENNReal.coe_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glChar_diagonal {D : ι → F} (h : (Matrix.diagonal D).det ≠ 0) :
     glChar (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h) =
@@ -200,31 +200,29 @@ theorem glChar_diagonal {D : ι → F} (h : (Matrix.diagonal D).det ≠ 0) :
     rw [← mul_assoc, ← ENNReal.coe_mul, mul_inv_cancel₀ (hpos i), ENNReal.coe_one, one_mul]
 
 /- English proof (translation)
-Take `⟨i, j, hij, c⟩` from `t`. Establish `h1 : ∀ d : F, (Matrix.transvection i j d).det ≠ 0` using `fun d => by`. Rewrite using `[Matrix.det_transvection_of_ne _ _ hij]`. Conclude with `one_ne_zero`. Set `T : F → GL ι F` to `fun d => Matrix.GeneralLinearGroup.mkOfDetNeZero _ (h1 d)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : ∀ d d', T d * T d' = T (d + d')` using `fun d d' => by`. Use extensionality with `: 1`. Simplify using `[T, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.transvection_mul_transvection_same (h := hij)]`. Establish `hT0 : T 0 = 1`. Use extensionality with `: 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[T, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `hconj : ∀ c : F, c ≠ 0 → glChar (T c) = glChar (T 1)`. Introduce `c hc`. Set `d : ι → F` to `Function.update 1 i c`. Establish `hd : (Matrix.diagonal d).det ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify `hc` using `[d]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[d, hk]`. Set `Dg : GL ι F` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd`. Establish `hM : Matrix.transvection i j c * Matrix.diagonal d = Matrix.diagonal d * Matrix.transvection i j 1`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, d]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Ne.symm hij]`. Simplify using `[hai, Ne.symm hai]`. Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality. Distinguish the cases in `hbj : b = j`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hbj` using the available equality. Simplify using `[hab, Ne.symm hij]`. Simplify using `[hab, Ne.symm hbj]`. Simplify using `[hab, hai, Ne.symm hai]`. Establish `hcomm : T c * Dg = Dg * T 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `: 1`. Simplify `hM` using `[T, Dg, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `key` using `congrArg glChar hcomm`. Rewrite `key` using `[map_mul, map_mul, mul_comm (glChar Dg)]`. Conclude with `(mul_left_inj' (show glChar Dg ≠ 0 from (addEquivAddHaarChar_pos _).ne')).1 key`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hT1 : glChar (T 1) = 1`. Distinguish the cases in `h2 : (2 : F) = 0`. Establish `h11 : T 1 * T 1 = 1` using `by rw [hT, one_add_one_eq_two, h2, hT0]`. Establish `hsq` using `congrArg glChar h11`. Rewrite `hsq` using `[map_mul, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hr : (glChar (T 1) : ℝ) * glChar (T 1) = 1` using `by exact_mod_cast hsq`. Break down `mul_self_eq_one_iff.1 hr with hr1 | hr1` into its components or cases. Conclude with `NNReal.coe_eq_one.1 hr1`. Use `NNReal.coe_nonneg (glChar (T 1))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h11 : T 1 * T 1 = T 2` using `by rw [hT, one_add_one_eq_two]`. Establish `hsq` using `congrArg glChar h11`. Rewrite `hsq` using `[map_mul, hconj 2 h2]`. Conclude with `(mul_eq_left₀ (show glChar (T 1) ≠ 0 from (addEquivAddHaarChar_pos _).ne')).1 hsq`. Express the relevant statement in the definitionally equal form `glChar (T c) = 1`.
-
-Distinguish the cases in `hc : c = 0`. Rewrite using `[hc, hT0, map_one]`. Rewrite using `[hconj c hc, hT1]`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glChar_transvection (t : Matrix.TransvectionStruct ι F) (h : t.toMatrix.det ≠ 0) :
     glChar (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h) = 1 := by
@@ -293,15 +291,15 @@ theorem glChar_transvection (t : Matrix.TransvectionStruct ι F) (h : t.toMatrix
   · rw [hconj c hc, hT1]
 
 /- English proof (translation)
-Set `ψ : GL ι F →* ℝ≥0` to `(distribHaarChar F).comp Matrix.GeneralLinearGroup.det`. Establish `key : ∀ (M : Matrix ι ι F) (h : M.det ≠ 0), glChar (Matrix.GeneralLinearGroup.mkOfDetNeZero M h) = ψ (Matrix.GeneralLinearGroup.mkOfDetNeZero M h)`. Introduce `M hM`. Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun M => ∀ h : M.det ≠ 0, glChar (Matrix.GeneralLinearGroup.mkOfDetNeZero M h) = ψ (Matrix.GeneralLinearGroup.mkOfDetNeZero M h)) M hM ?_ ?_ ?_ hM` and prove the remaining obligations. Introduce `D _ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `glChar_diagonal h`. Introduce `t h`. Establish `hdet : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.mkOfDetNeZero _ h) = 1`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `glChar _ = distribHaarChar F _`. Rewrite using `[glChar_transvection t h, hdet, map_one]`. Introduce `A B hA hB IHA IHB h`. Establish `: Matrix.GeneralLinearGroup.mkOfDetNeZero (A * B) h = Matrix.GeneralLinearGroup.mkOfDetNeZero A hA * Matrix.GeneralLinearGroup.mkOfDetNeZero B hB`. Use extensionality with `: 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, map_mul, map_mul, IHA hA, IHB hB]`. Establish `hg : Matrix.GeneralLinearGroup.mkOfDetNeZero (g : Matrix ι ι F) (Matrix.det_ne_zero_of_left_inverse (g.inv_mul)) = g`. Use extensionality with `: 1`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `key _ (Matrix.det_ne_zero_of_left_inverse (g.inv_mul))` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glChar_eq (g : GL ι F) : glChar g = distribHaarChar F (Matrix.GeneralLinearGroup.det g) := by
   let ψ : GL ι F →* ℝ≥0 := (distribHaarChar F).comp Matrix.GeneralLinearGroup.det
@@ -336,7 +334,7 @@ theorem glChar_eq (g : GL ι F) : glChar g = distribHaarChar F (Matrix.GeneralLi
   exact this
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `(glEquiv F ι).surjective L`. Rewrite using `[← glChar_apply, glChar_eq, ← LinearEquiv.coe_det, det_glEquiv, IndefiniteRowSideFullHecke.WmSys.absF, dif_neg (Units.ne_zero _), Units.mk0_val]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem piChar_eq (L : (ι → F) ≃ₗ[F] (ι → F)) :
     piChar L = IndefiniteRowSideFullHecke.WmSys.absF (LinearMap.det (L : (ι → F) →ₗ[F] (ι → F))) := by
@@ -347,11 +345,11 @@ theorem piChar_eq (L : (ι → F) ≃ₗ[F] (ι → F)) :
 end Pi
 
 /- English proof (translation)
-Set `: MeasurableSpace F` to `borel F`. Establish `: BorelSpace F` using `⟨rfl⟩`. Use `locField_sigmaCompactSpace hF` as an intermediate fact. Use `locField_secondCountable hF` as an intermediate fact. Use `IsModuleTopology.toContinuousAdd F X` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b₀ : X ≃ₗ[F] (Fin (Module.finrank F X) → F)` to `(Module.finBasis F X).equivFun`. Set `b : X ≃ₜ+ (Fin (Module.finrank F X) → F)` to `{ b₀.toAddEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap b₀.toLinearMap continuous_invFun := b₀.symm.toLinearMap.continuous_on_pi }`. Set `L' : (Fin (Module.finrank F X) → F) ≃ₗ[F] (Fin (Module.finrank F X) → F)` to `b₀.symm.trans (L.trans b₀)`. Establish `hconj : (b.symm.trans H).trans b = piHomeo L'` using `ContinuousAddEquiv.ext fun y => by`. Express the relevant statement in the definitionally equal form `b₀ (H (b₀.symm y)) = b₀ (L (b₀.symm y))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hH]`. Establish `hdet : LinearMap.det (L' : (Fin (Module.finrank F X) → F) →ₗ[F] _) = LinearMap.det (L : X →ₗ[F] X)` using `LinearMap.det_conj (L : X →ₗ[F] X) b₀`. Rewrite using `[← addEquivAddHaarChar_conj b H, hconj, ← hdet]`. Conclude with `piChar_eq L'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addEquivAddHaarChar_eq_absF_det {F : Type*} [Field F] [TopologicalSpace F]
     [IsTopologicalRing F] [LocallyCompactSpace F] [T2Space F] (hF : ¬ DiscreteTopology F)

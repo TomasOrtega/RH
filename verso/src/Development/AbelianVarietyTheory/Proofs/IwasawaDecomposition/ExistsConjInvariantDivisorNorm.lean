@@ -17,7 +17,7 @@ namespace GlobalTheory.ShFam.DivFam
 variable {k : Type} [Field k] {Y : Scheme.{0}} {p : Y ⟶ Sp k}
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun x => by simp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_conj_conj : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) = 𝟙 (Sp ℂ) := by
   rw [← Spec.map_comp, ← Spec.map_id]
@@ -28,7 +28,7 @@ def conjPt (σ : k →+* ℂ) (z : CxPts p σ) : CxPts p ((starRingEnd ℂ).comp
     rw [Category.assoc, z.2, ← Spec.map_comp]; rfl⟩
 
 /- English proof (translation)
-Establish `h1 : spMap σ = spMap ((starRingEnd ℂ).comp σ')`. Rewrite using `[← y.2, h]`. Conclude with `(conjPt σ' z).2`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_conj {σ σ' : k →+* ℂ} {y : CxPts p σ} {z : CxPts p σ'} (h : y.1 = spMap (starRingEnd ℂ) ≫ z.1) :
     σ = (starRingEnd ℂ).comp σ' := by
@@ -38,11 +38,11 @@ theorem eq_conj {σ σ' : k →+* ℂ} {y : CxPts p σ} {z : CxPts p σ'} (h : y
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
 
 /- English proof (translation)
-Use `⟨fun y => h.1 _, fun y => ?_⟩` and prove the remaining obligations. Take `⟨V, t, f, hy, ht, hf, e⟩` from `h.2 (j y)`. Establish `hpt : ∀ z, (j z).1 (IsLocalRing.closedPoint ℂ) = z.1 (IsLocalRing.closedPoint ℂ)` using `fun z => by`. Rewrite using `[hj z]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg z.1 (Subsingleton.elim (α := PrimeSpectrum ℂ) _ _))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ z, j z ∈ ptsIn p σ V.1 ↔ z ∈ ptsIn p σ' V.1` using `fun z => by`. Rewrite using `[mem_ptsIn, mem_ptsIn, hpt]`. Establish `hs` using `(GlobalTheory.T.conj_smoothOn_preimage_charts k Y p d σ σ' j hj _ f (isOpen_ptsIn _) hf).2.1`. Use `⟨V, t, f ∘ j, (hm y).1 hy, ht, hs.mono fun z hz => (hm z).2 hz, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[Function.comp_apply, e _ ((hm z).2 hz), CxPts.ev_conj (hj z) hz, RCLike.norm_conj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isDivNorm_comp {d : ℕ} [SmoothOfRelativeDimension d p] {σ σ' : k →+* ℂ} {C : Closeds Y}
     {n : CxPts p σ → ℝ} (h : IsDivNorm (AnRead.all p σ d) C n) {j : CxPts p σ' → CxPts p σ} (hj : IsConjMap j) :
@@ -66,15 +66,13 @@ namespace GlobalTheory.ShFam
 open DivFam in
 
 /- English proof (translation)
-Introduce `k _ Y p d _ C hp hr hC`. Use `choose n hn using fun σ => GlobalTheory.T.exists_divisor_norm_of_effCartier k Y p d σ C hp hC`. Set `_ : LinearOrder (k →+* ℂ)` to `linearOrderOfSTO WellOrderingRel`. Use `⟨fun σ => if σ < (starRingEnd ℂ).comp σ then n σ else n _ ∘ conjPt σ, fun σ => ?_, fun σ σ' j hj z => ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : σ < (starRingEnd ℂ).comp σ`. Rewrite using `[if_pos h]`. Conclude with `hn σ`. Rewrite using `[if_neg h]`. Conclude with `isDivNorm_comp (hn _) fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `rfl` from `eq_conj (hj z)`. Establish `hjz : j z = conjPt σ' z` using `Subtype.ext (hj z)`. Establish `cc : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ') = σ'` using `RingHom.ext fun x => by simp`. Establish `key : ∀ (τ : k →+* ℂ) (w : CxPts p τ), τ = σ' → w.1 = z.1 → n τ w = n σ' z`. Introduce and unpack `τ w rfl e`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subtype.ext e]`. Use `beta_reduce`. Distinguish the cases in `h : σ' < (starRingEnd ℂ).comp σ'`. Rewrite using `[if_pos h, if_neg (by rw [cc]; exact h.not_gt)]`. Use `(key _ _ cc ?_).symm` and prove the remaining obligations.
-
-Use `show spMap (starRingEnd ℂ) ≫ (j z).1 = z.1`. Rewrite using `[hj z, ← Category.assoc, spMap_conj_conj, Category.id_comp]`. Rewrite using `[if_neg h, if_pos (by rw [cc]; exact lt_of_le_of_ne (not_lt.1 h) (hr σ')), hjz]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isDivNorm_family : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ) [SmoothOfRelativeDimension d p] (C : Closeds Y), IsProjOver p → (∀ σ : k →+* ℂ, (starRingEnd ℂ).comp σ ≠ σ) → ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (Scheme.IdealSheafData.vanishingIdeal C) → ∃ n : ∀ σ : k →+* ℂ, CxPts p σ → ℝ, (∀ σ, IsDivNorm (AnRead.all p σ d) C (n σ)) ∧ ∀ σ σ' (j : CxPts p σ' → CxPts p σ), IsConjMap j → ∀ z, n σ' z = n σ (j z) := by
   classical

@@ -19,31 +19,27 @@ open scoped ComplexConjugate Classical InnerProductSpace ComplexOrder
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hP κ e κ₂ p₁ p₂ k₀ hL S U hLev D hD d A 𝔞 φ c β hU hφ hc hR hA hne`. Take `⟨v₀, g₀, hI⟩` from `hne`. Establish `hsec : ∀ v, IsSec τ₁ τ₂ (A.sec v) ∧ D.Fix (A.sec v)` using `fun v => (A.onto _).1 ⟨v, rfl⟩`. Establish `hflat0 : ∀ x, flat 0 (0 : G1 K (2 + 2) → ℂ) x = 0` using `fun x => by simp [flat]`. Establish `hd : 0 < d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos d with rfl | h` into its components or cases. It suffices to derive a contradiction. Apply `hI` to reduce the goal to its premises. Rewrite using `[show v₀ = 0 from Subsingleton.elim _ _, map_zero]`. Simplify using `only [hflat0, mul_zero, integral_zero]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Use `haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩`. Take `⟨h0, h1, -⟩` from `UpperTheory.ConvolutionTheory.evEx K (2 + 2) (by norm_num) μ 𝔞`. Establish `hpos` using `(posSymb A.J 𝔞.A β hA.1 (hR ▸ hA.2.1) h0 h1).1`. Establish `hcomm : ∀ h M, HeckeAt A (levOn S U) h M → Commute M (symb β 0 : Eu d →ₗ[ℂ] Eu d)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA' : ActsBy μ A (tens (c • 𝔞.a₀) φ) β`. Rewrite using `[((UpperTheory.ConvolutionTheory.Tf.tensApply K (2 + 2) (by norm_num) 𝔞.a₀ φ).2.2.2.2 c).1]`. Conclude with `hA`. Conclude with `(heckeEx K μ μ₂ τ₁ τ₂ hP κ e hL.idem S U hLev D hD d A).2.2 _ φ β hφ hA'`. Take `⟨l, hl⟩` from `Module.End.exists_eigenvalue (symb β 0 : Eu d →ₗ[ℂ] Eu d)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : Module.End.eigenspace (symb β 0 : Eu d →ₗ[ℂ] Eu d) l = ⊤`. Use `(irrW K μ μ₂ τ₁ τ₂ hP κ e κ₂ p₁ p₂ k₀ hL S U hLev D hD d A _ fun w _ g M hM v hv => ?_).resolve_left hl` and prove the remaining obligations. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `h` using `LinearMap.congr_fun (hcomm _ M hM).eq v`. Simplify using `only [Module.End.mul_apply] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← h, hv, map_smul]`. Establish `hT : ∀ v, symb β 0 v = l • v` using `fun v => Module.End.mem_eigenspace_iff.1 (hE ▸ Submodule.mem_top : v ∈ Module.End.eigenspace (symb β 0 : Eu d →ₗ[ℂ] Eu d) l)`. Establish `hl0 : 0 ≤ l`. Take `⟨v, hv⟩` from `exists_ne (0 : Eu d)`. Establish `hp` using `(ContinuousLinearMap.nonneg_iff_isPositive _).1 hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hp.inner_nonneg_right v`. Rewrite `h2` using `[hT, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Establish `hn : 0 < ‖v‖ ^ 2` using `pow_pos (norm_pos_iff.2 hv) 2`. Establish `h3 : 0 ≤ l * ((‖v‖ ^ 2 : ℝ) : ℂ)`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`. Take `⟨a, b⟩` from `Complex.nonneg_iff.1 h3`. Rewrite `a` using `[Complex.re_mul_ofReal]`. Rewrite `b` using `[Complex.im_mul_ofReal]`. Use `Complex.nonneg_iff.2 ⟨le_of_mul_le_mul_right (by simpa using a) hn, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((mul_eq_zero.1 (by simpa using b.symm)).resolve_right hn.ne').symm`. Establish `hlne : l ≠ 0`. Introduce and unpack `rfl`. Take `⟨⟨c', hc', hint, -⟩, -⟩` from `tensAmp K (2 + 2) (by norm_num) μ 𝔞 φ (fun x => by rw [hφ, hU])`. Establish `hH : Continuous fun x : G1 K (2 + 2) => Complex.exp ((0 + 2) * (HP 2 2 x : ℂ))` using `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hpSpec.2.2.2.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΘ : Continuous (flat 0 (A.sec v₀))` using `hH.mul (hsec v₀).1.cont`. Establish `hfix : FixF 𝔞.U (flat 0 (A.sec v₀))`. Use `(((UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.secTr μ₂ τ₁ τ₂ κ e hL.idem).2.1 _ (hsec v₀).1.cont).2 𝔞.U 𝔞.le).2 ?_` and prove the remaining obligations. Rewrite using `[hU]`. Conclude with `((hD.fix _ (hsec v₀).1.cont).1 (hsec v₀).2).2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `hA.2.2 0 v₀ g₀`. Rewrite `e1` using `[hT, zero_smul, map_zero, hflat0]`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, smul_eq_mul, mul_assoc] at e1`. Rewrite `e1` using `[integral_const_mul, hint _ hΘ hfix g₀]`. Conclude with `mul_ne_zero hc (mul_ne_zero (Complex.ofReal_ne_zero.2 hc'.ne') hI) e1`.
-
-Take `⟨a, b⟩` from `Complex.nonneg_iff.1 hl0`. Establish `hre : l = ((l.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [← b])`. Use `⟨hd, l.re, lt_of_le_of_ne a fun h => hlne (by rw [hre, ← h]; simp), ?_⟩` and prove the remaining obligations. Use `ext1 v`. Rewrite using `[hT, ← hre]`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.famScalar :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2))

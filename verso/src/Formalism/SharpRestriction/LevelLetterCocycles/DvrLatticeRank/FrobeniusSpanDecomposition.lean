@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `Formalism.MainNotions.LiftingTheory.PhiBasis_of W a`. Use `⟨fun k => e k • s, fun k => S.smul_mem _ hs, ?_⟩` and prove the remaining obligations. Rewrite using `[he, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_φD_smul, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem kl2_dec_lemma (W : LocWach PD LL O v n) [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
     (T : LocLat G Qp LL O) (S : Submodule (LetA O n) (W.DD T)) (a : LetA O n) (s : W.DD T) (hs : s ∈ S) :
@@ -33,13 +33,13 @@ private theorem kl2_dec_lemma (W : LocWach PD LL O v n) [IsAdicComplete (Ideal.s
   rw [Formalism.MainNotions.LiftingTheory.wmap_φD_smul, mul_smul]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.DeltaInvariantLattices.φspan at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, hs, rfl⟩` from `hx`. Take `⟨t, ht, he⟩` from `kl2_dec_lemma W T S 1 s hs`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨t, ht, by rw [← he, one_smul]⟩`. Consider the case `zero => exact ⟨fun _ => 0, fun _ => S.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, rfl⟩` from `hx`. Take `⟨s', hs', rfl⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun k => s k + s' k, fun k => S.add_mem (hs k) (hs' k), by simp only [map_add, smul_add, Finset.sum_add_distrib]⟩`. Consider the case `smul a x _ hx`. Take `⟨s, hs, rfl⟩` from `hx`. Use `choose t ht he using fun k : Fin PD.p => kl2_dec_lemma W T S (a * (letπ : LetA O n) ^ (k : ℕ)) (s k) (hs k)`. Use `⟨fun j => ∑ k, t k j, fun j => S.sum_mem fun k _ => ht k j, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.smul_sum, ← mul_smul, he, map_sum]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_span_decomposition (W : LocWach PD LL O v n) [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
     (T : LocLat G Qp LL O) (S : Submodule (LetA O n) (W.DD T)) (z : W.DD T)
@@ -67,15 +67,15 @@ theorem frobenius_span_decomposition (W : LocWach PD LL O v n) [IsAdicComplete (
     rw [Finset.sum_comm]
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `frobenius_span_decomposition W Tp (W.Nl Tp i) z hz`. Establish `hπs : ∀ k, W.map π (s k) = 0`. Use `Formalism.MainNotions.LiftingTheory.phii_DD W T'' c'' (fun k => W.map π (s k)) ?_` and prove the remaining obligations. Rewrite using `[← h0, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_map_smul, W.map_φ]`. Use `choose y hy using fun k => hex (s k) (hπs k)`. Establish `hyNl : ∀ k, y k ∈ W.Nl T i`. Introduce `k`. Take `⟨w, hw, hwe⟩` from `(Formalism.MainNotions.LiftingTheory.wmap_mem_Nl W Tp i (s k)).1 (hs k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyN : y k ∈ W.N T`. Apply `h4` to reduce the goal to its premises. Rewrite using `[hy k, ← hwe]`. Conclude with `(W.N Tp).smul_mem _ hw`. Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_mem_Nl]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨y k, hyN, ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_map_smul, hy k, Formalism.MainNotions.LiftingTheory.wmap_Nl_fix W Tp i (s k) (hs k)]`. Use `⟨∑ k : Fin PD.p, (letπ : LetA O n) ^ (k : ℕ) • W.φD T (y k), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.MainNotions.DeltaInvariantLattices.φspan`. Conclude with `Submodule.subset_span ⟨y k, hyNl k, rfl⟩`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_map_smul, W.map_φ, hy k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_span_exact_lift (W : LocWach PD LL O v n) [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
     {T Tp T'' : LocLat G Qp LL O} (ι : LatHom T.L Tp.L) (π : LatHom Tp.L T''.L)
@@ -111,23 +111,21 @@ theorem frobenius_span_exact_lift (W : LocWach PD LL O v n) [IsAdicComplete (Ide
     rw [Formalism.MainNotions.LiftingTheory.wmap_map_smul, W.map_φ, hy k]
 
 /- English proof (translation)
-Establish `hex' : ∀ x, W.map π x = 0 → ∃ y, W.map ι y = x` using `fun x hx => (hex x).1 hx`. Establish `hΔ : ∀ x : W.DD T, (∀ δ ∈ W.DelF, W.γD Tp δ (W.map ι x) = W.map ι x) → ∀ δ ∈ W.DelF, W.γD T δ x = x`. Introduce `x hx δ hδ`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[W.map_γ, hx δ hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∀ (x : W.DD T) (a : LetA O n), a • W.map ι x = W.map ι x → a • x = x`. Introduce `x a hx`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_map_smul, hx]`. Use `⟨hinj, ?_, fun c => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k y hy hyπ`. Rewrite `hy` using `[mem_PiNS]`. Take `⟨⟨y0, hy0N, rfl⟩, hyΔ⟩` from `hy`. Establish `hz : W.map π y0 = 0`. Establish `hu : IsUnit (algebraMap (LetA O n) W.EE (π' ^ k))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_pow]`. Conclude with `hπ'.pow k`. Rewrite `hyπ` using `[Formalism.MainNotions.LiftingTheory.wmap_map_smul, ← algebraMap_smul W.EE]`. Conclude with `(hu.smul_eq_zero).1 hyπ`. Take `⟨x0, rfl⟩` from `hex' y0 hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨π' ^ k • x0, ?_, Formalism.MainNotions.LiftingTheory.wmap_map_smul W ι _ _⟩` and prove the remaining obligations. Rewrite using `[mem_PiNS]`. Use `⟨⟨x0, h4 x0 hy0N, rfl⟩, hΔ _ ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.LiftingTheory.wmap_map_smul]`. Conclude with `hyΔ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `y hy hyπ`. Rewrite `hy` using `[mem_LamPS]`. Take `⟨hyE, hyΔ, hyL⟩` from `hy`. Take `⟨x, rfl⟩` from `hex' y hyπ`. Take `⟨z', hz', hz'e⟩` from `frobenius_span_exact_lift W ι π c'' hinj hex' h4 (c - 1) (Eπ ^ h' • W.map ι x) hyE (by rw [Formalism.MainNotions.LiftingTheory.wmap_map_smul, hyπ, smul_zero])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_LamPS]`. Use `⟨?_, hΔ x hyΔ, hL x _ hyL⟩` and prove the remaining obligations. Establish `e : z' = Eπ ^ h' • x` using `hinj (by rw [hz'e, Formalism.MainNotions.LiftingTheory.wmap_map_smul])`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hz'`. Introduce `y hy hyπ`. Rewrite `hy` using `[mem_NcS]`. Take `⟨hyN, hyΔ, hyL⟩` from `hy`. Take `⟨x, rfl⟩` from `hex' y hyπ`.
-
-Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_NcS]`. Conclude with `⟨h4 x hyN, hΔ x hyΔ, hL x _ hyL⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frobenius_span_exact_local (W : LocWach PD LL O v n) [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
     {T Tp T'' : LocLat G Qp LL O} (ι : LatHom T.L Tp.L) (π : LatHom Tp.L T''.L)
@@ -186,11 +184,11 @@ theorem frobenius_span_exact_local (W : LocWach PD LL O v n) [IsAdicComplete (Id
 end KerLam2Local
 
 /- English proof (translation)
-Unfold `KerLamStep kerLamR`. Introduce `D HW F Cm CA CB CK hA hF l _ hl K LL hG π' E hp9 T Tp T'' ι π h' hses hT hTp hT'' hJ`. Take `⟨hW, -⟩` from `hA`. Take `⟨-, -, -, -, -, h6W, -⟩` from `hW l K 1 LL hG`. Take `⟨-, -, h6ses⟩` from `h6W`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hsat, -⟩` from `h6ses T Tp T'' ι π hT hTp hT'' hses`. Establish `hEx` using `hF l K 1 LL hG T Tp T'' ι π hses`. Take `⟨-, -, ⟨w, hw⟩, -⟩` from `hp9`. Establish `e : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Use `letI : IsAdicComplete (Ideal.span {((((D.loc l).PD K).p : ℕ) : ↥(OL LL))}) ↥(OL LL) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Rewrite using `[e]`. Conclude with `Formalism.MainNotions.LiftingTheory.phib_OL_complete LL`. Use `frobenius_span_exact_local _ ι π π' _ h' hT'' hEx.1 hEx.2.2 hsat ?_` and prove the remaining obligations. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (by simpa using (Formalism.MainNotions.LiftingTheory.wmap_unit _ 0).pow _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerlam2_pf : KerLamStep := by
   unfold KerLamStep kerLamR

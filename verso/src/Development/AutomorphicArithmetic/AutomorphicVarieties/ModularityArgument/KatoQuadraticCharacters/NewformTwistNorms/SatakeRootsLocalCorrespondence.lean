@@ -27,11 +27,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.FrobHecke
 
 /- English proof (translation)
-Establish `h : normV w = Ideal.absNorm w.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `hN : Ideal.absNorm (Ideal.span {((p : ℕ) : 𝓞 ℚ)}) = p`. Rewrite using `[Ideal.absNorm_span_natCast, NumberField.RingOfIntegers.rank]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hd : Ideal.absNorm w.asIdeal ∣ p` using `hN ▸ Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hw)`. Rewrite using `[h]`. Use `((Nat.dvd_prime hp).1 hd).resolve_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_eq_one_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.isPrime.ne_top`.
+A detailed English derivation is pending.
 -/
 theorem normV_rat {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 ℚ)) (hw : (p : 𝓞 ℚ) ∈ w.asIdeal) :
     normV w = p := by
@@ -48,9 +48,9 @@ theorem normV_rat {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 ℚ)) (h
   exact w.isPrime.ne_top
 
 /- English proof (translation)
-Use `⟨⟨!![0, 1; -1, 0], !![0, -1; 1, 0], ?_, ?_⟩, fun s => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_fin_two]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_fin_two]`. Establish `e : (r s : Matrix (Fin 2) (Fin 2) k) = !![(r s : Matrix (Fin 2) (Fin 2) k) 0 0, (r s : Matrix (Fin 2) (Fin 2) k) 0 1; (r s : Matrix (Fin 2) (Fin 2) k) 1 0, (r s : Matrix (Fin 2) (Fin 2) k) 1 1]` using `Matrix.eta_fin_two _`. Simplify using `only [MonoidHom.comp_apply, Matrix.GeneralLinearGroup.val_det_apply, Matrix.coe_units_inv]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Matrix.det_fin_two_of]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) :
     DualTw r (Matrix.GeneralLinearGroup.det.comp r) := by
@@ -64,23 +64,23 @@ theorem dualTw_det {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k)
     ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
 /- English proof (translation)
-Introduce `P l _ Ω _ _ _ ι e V A κ g hl he hc hirr hway hdet hA hfl hI hatt hgM σ hσ`. Take `⟨M, hM, haway⟩` from `hway`. Take `⟨M', hM', hdet⟩` from `hdet`. Take `⟨π, hreg, hattR, hsat⟩` from `GlobalTheory.T.exists_cuspidal_satake_at_prime_to_level_of_newform P e g l Ω ι V he hatt hgM`. Establish `hlev` using `GlobalTheory.T.ordinary_flag_inertia_weights l Ω e M V A κ he hM hc haway hA hfl hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv, hlv⟩` from `hA`. Establish `hnv : normV v = l` using `normV_rat (Fact.out) v hlv`. Establish `hdual : ∃ θ, IsCycWt l 0 θ ∧ DualTw V θ` using `⟨dt V, ⟨M', dt V, hM', hdet, by rw [zpow_zero, one_mul]⟩, dualTw_det V⟩`. Take `⟨j, L0, hj0, hL⟩` from `GlobalTheory.PlaceBridge.exists_locBridge l ℚ Ω v A hlv hv`. Take `⟨Bw, hB, -⟩` from `hL L0 le_rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hj : Induces Bw` using `fun x => by rw [hB]; exact hj0 x`. Establish `hm : StrictAnti ![(e : ℤ), -(e : ℤ)]`. Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all <;> omega`. Take `⟨hpst, hcomp⟩` from `compatAtLQ P 2 le_rfl 0 l hl Ω ι V π hc hirr M ![(e : ℤ), -(e : ℤ)] hM hm hlev hdual hreg hattR v A hv _ Bw hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, hpoly⟩` from `hsat v hlv`. Take `⟨⟨τ, hτ⟩, hiso⟩` from `locCompR P ℚ 2 π v`. Establish `hBτ` using `((satLoc P ℚ 2 v τ).2 _ π.finPart (hiso τ hτ) B).1 hB`. Establish `L` using `P.litN.loc`. Take `⟨rc, hrc⟩` from `L.llc ℚ Ω A v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrec : IsRec hv rc` using `GlobalTheory.T.rec_of_rec_literal L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz ℚ Ω A v hv rc hrc`. Establish `heq` using `hcomp τ hτ rc hrec`. Establish `hσ' : IsFrob A (normV v) (σ : G ℚ Ω)` using `by rw [hnv]; exact hσ`. Set `φ : ↥(Weil hv)` to `⟨σ, mem_Weil_of_isFrob hv hσ'⟩`. Establish `hd : deg φ = 1` using `deg_eq_one_iff.2 hσ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfa : FlagAt M ![(e : ℤ), -(e : ℤ)] V A κ`. Use `⟨fun _ => 1, fun _ _ _ => rfl, hfl, fun i s hs => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Simplify using `using (hI s hs).1`. Simplify using `using (hI s hs).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.weilDeligne_frobenius_eigenvalue_of_full_flag ℚ Ω l ι 2 M hM _ V hc v A hv _ Bw hj κ hfa hpst 0 φ hd`. Take `⟨μ, hμ, -⟩` from `Lev.flagPol ℚ Ω l ι 2 M hM _ V hc v A hv _ Bw hj κ hfa hpst`. Rewrite `h1` using `[heq (Or.inl ((Lev.ssCalc ℚ Ω A v hv).1 2 _ μ hμ))]`. Take `⟨b, hb, hzb⟩` from `GlobalTheory.T.satake_roots_local_correspondence ℚ Ω A v hv rc hrec 2 τ B hBτ φ hd _ h1`. Rewrite `hb` using `[hnv]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinc : Subgroup.inclusion (Weil_le_Dec hv) φ = σ` using `rfl`. Use `⟨(l : ℂ) ^ e * b, ?_, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[← hpoly, Polynomial.IsRoot, Polynomial.eval_multiset_prod]`. Use `Multiset.prod_eq_zero (Multiset.mem_map.2 ⟨_, Multiset.mem_map_of_mem _ hb, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hzb` using `[hinc, hnv]`. Simplify using `only [Matrix.cons_val_zero] at hzb`. Use `(eq_inv_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Rewrite `hzb` using `[zpow_natCast]`. Take the linear combination `hzb`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem frobValue_isRoot_heckePoly : Af.Hypotheses₂ → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (V : R2 Ω l) (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ) (g : Newform (2 * e + 1)), l ≠ 2 → 1 ≤ e → Continuous V → IsIrr V → (∃ M : ℕ, 1 ≤ M ∧ LevelAway l M V) → (∃ M : ℕ, 1 ≤ M ∧ KillsMu M (dt V)) → OverL l A → IsFlagOn V (Dec (F := ℚ) A) κ → (∀ s : ↥(Dec (F := ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ 0 s = cycBar ℚ Ω l s ^ (e : ℤ) ∧ κ 1 s = cycBar ℚ Ω l s ^ (-(e : ℤ))) → g.Att ι (tw V (cycBar ℚ Ω l ^ (-(e : ℤ)))) → ¬ l ∣ g.M → ∀ σ : ↥(Dec (F := ℚ) A), IsFrob A l (σ : G ℚ Ω) → ∃ α : ℂ, (g.heckePoly l).IsRoot α ∧ (α = ι ((κ 0 σ * cycBar ℚ Ω l σ ^ (-(e : ℤ)) : (Qbar l)ˣ) : Qbar l) ∨ α⁻¹ = ι ((κ 0 σ * cycBar ℚ Ω l σ ^ (-(e : ℤ)) : (Qbar l)ˣ) : Qbar l)) := by
   intro P l _ Ω _ _ _ ι e V A κ g hl he hc hirr hway hdet hA hfl hI hatt hgM σ hσ
@@ -142,7 +142,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrobHecke.frobValue_isRoot_heckePoly | exact GlobalTheory.FrobHecke.frobValue_isRoot_heckePoly | (intros; apply GlobalTheory.FrobHecke.frobValue_isRoot_heckePoly <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.newform_flag_local_of_level : Af.Hypotheses₂ → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (V : R2 Ω l) (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ) (g : Newform (2 * e + 1)), l ≠ 2 → 1 ≤ e → Continuous V → IsIrr V → (∃ M : ℕ, 1 ≤ M ∧ LevelAway l M V) → (∃ M : ℕ, 1 ≤ M ∧ KillsMu M (dt V)) → OverL l A → IsFlagOn V (Dec (F := ℚ) A) κ → (∀ s : ↥(Dec (F := ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ 0 s = cycBar ℚ Ω l s ^ (e : ℤ) ∧ κ 1 s = cycBar ℚ Ω l s ^ (-(e : ℤ))) → g.Att ι (tw V (cycBar ℚ Ω l ^ (-(e : ℤ)))) → ¬ l ∣ g.M → ∀ σ : ↥(Dec (F := ℚ) A), IsFrob A l (σ : G ℚ Ω) → ∃ α : ℂ, (g.heckePoly l).IsRoot α ∧ (α = ι ((κ 0 σ * cycBar ℚ Ω l σ ^ (-(e : ℤ)) : (Qbar l)ˣ) : Qbar l) ∨ α⁻¹ = ι ((κ 0 σ * cycBar ℚ Ω l σ ^ (-(e : ℤ)) : (Qbar l)ˣ) : Qbar l)) := by
   first | exact @GlobalTheory.FrobHecke.frobValue_isRoot_heckePoly | exact GlobalTheory.FrobHecke.frobValue_isRoot_heckePoly | (intros; apply GlobalTheory.FrobHecke.frobValue_isRoot_heckePoly <;> assumption)

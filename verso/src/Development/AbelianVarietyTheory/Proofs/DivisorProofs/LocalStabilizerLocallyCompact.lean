@@ -22,27 +22,27 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups GlobalTheory.Au
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[atPlace_mul_right, evFin_atPlace]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem atPlace_mul' (v : Pl F) (a b : Fv F v) : atPlace v (a * b) = atPlace v a * atPlace v b := by
   rw [atPlace_mul_right, evFin_atPlace]
 
 /- English proof (translation)
-The claim follows from `continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_atPlace' (v : Pl F) : Continuous (atPlace (F := F) v) :=
   continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)
 
 /- English proof (translation)
-The claim follows from `(RestrictedProduct.continuous_eval v).comp continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evFin' (v : Pl F) : Continuous (evFin F v) :=
   (RestrictedProduct.continuous_eval v).comp continuous_snd
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[Algebra.smul_def, mul_comm, tensAt_mul_right]`. Establish `: compFin F E v (algebraMap (AF F) (AE F E) u) = 0`. Express the relevant statement in the definitionally equal form `(evFin F v u) ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[hu, TensorProduct.zero_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem at_tensAt' (v : Pl F) (y : Fv F v ⊗[F] E) : At (evFin F v) (tensAt E v y) := by
   intro u hu
@@ -55,11 +55,11 @@ theorem at_tensAt' (v : Pl F) (y : Fv F v ⊗[F] E) : At (evFin F v) (tensAt E v
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : Pl F)
 
 /- English proof (translation)
-Use `HA_ext σ J fun r s => ?_` and prove the remaining obligations. Rewrite using `[mat_extH, mat_mapH]`. Use `set x := (HA.mat (AF F) σ J g : Matrix (Fin n) (Fin n) (AE F E)) r s with hxdef`. Establish `hx : At (evFin F v) (x - (1 : Matrix (Fin n) (Fin n) (AE F E)) r s)` using `fun u hu => by`. Use `congrFun (congrFun (hg u hu) r) s` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[smul_sub]`. Establish `key` using `GlobalTheory.UnitaryInjAtPlace.eq_tensAt_of_at v _ hx`. Express the relevant statement in the definitionally equal form `(1 - tensAt E v 1) * (1 : Matrix (Fin n) (Fin n) (AE F E)) r s + tensAt E v (compFin F E v x) = x`. Establish `hc : compFin F E v x = compFin F E v (x - (1 : Matrix (Fin n) (Fin n) (AE F E)) r s) + compFin F E v ((1 : Matrix (Fin n) (Fin n) (AE F E)) r s)` using `by rw [← map_add, sub_add_cancel]`. Rewrite using `[hc, map_add, ← key]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.one_apply_ne h, map_zero, mul_zero, zero_add, add_zero, sub_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extH_mapH {g : HA (AF F) σ J} (hg : At (evFin F v) ((HA.mat (AF F) σ J g : Matrix (Fin n) (Fin n) (AE F E)) - 1)) :
     extH σ J (atPlace v) (atPlace_mul' v) (mapH σ J (evFin F v) g) = g := by
@@ -81,11 +81,9 @@ theorem extH_mapH {g : HA (AF F) σ J} (hg : At (evFin F v) ((HA.mat (AF F) σ J
   · simp only [Matrix.one_apply_ne h, map_zero, mul_zero, zero_add, add_zero, sub_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Use extensionality with `r s`. Rewrite using `[Matrix.smul_apply, Matrix.sub_apply, mat_extH, Matrix.zero_apply]`. Express the relevant statement in the definitionally equal form `u • ((1 - tensAt E v 1) * (1 : Matrix (Fin n) (Fin n) (AE F E)) r s + tensAt E v ((HA.mat (Fv F v) σ J h : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) r s) - (1 : Matrix (Fin n) (Fin n) (AE F E)) r s) = 0`. Distinguish the cases in `hrs : r = s`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Substitute `hrs` using the available equality. Simplify using `only [Matrix.one_apply_eq, mul_one]`. Rewrite using `[show (1 - tensAt E v 1 + tensAt E v ((HA.mat (Fv F v) σ J h : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) r r) - 1 : AE F E) = tensAt E v ((HA.mat (Fv F v) σ J h : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) r r - 1) by rw [map_sub]; ring]`. Conclude with `at_tensAt' v _ u hu`. Simplify using `only [Matrix.one_apply_ne hrs, mul_zero, zero_add, sub_zero]`.
-
-Conclude with `at_tensAt' v _ u hu`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem at_extH (h : HA (Fv F v) σ J) :
     At (evFin F v) ((HA.mat (AF F) σ J (extH σ J (atPlace v) (atPlace_mul' v) h) : Matrix (Fin n) (Fin n) (AE F E)) - 1) := by
@@ -107,12 +105,12 @@ theorem at_extH (h : HA (Fv F v) σ J) :
 def toHAe : UA σ J ≃* HA (AF F) σ Jᵀ := MulEquiv.subgroupCongr (GlobalTheory.ThetaKInv.UG_eq_HR σ J)
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toHAe : Continuous (toHAe σ J) := continuous_subtype_val.subtype_mk _
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toHAe_symm : Continuous (toHAe σ J).symm := continuous_subtype_val.subtype_mk _
 
@@ -129,7 +127,7 @@ theorem mat_toHAe_symm (g : HA (AF F) σ Jᵀ) :
     mat ((toHAe σ J).symm g) = (HA.mat (AF F) σ Jᵀ g : Matrix (Fin n) (Fin n) (AE F E)) := rfl
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `(continuous_mapH σ X.Jᵀ (evFin F v) (continuous_evFin' v)).comp ((continuous_toHAe σ X.J).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locTo {n : ℕ} (X : Spc F E n) :
     Continuous fun g : UAtSub σ X (evFin F v) => mapH σ X.Jᵀ (evFin F v) (toHAe σ X.J g.1) := by
@@ -138,7 +136,7 @@ theorem continuous_locTo {n : ℕ} (X : Spc F E n) :
     ((continuous_toHAe σ X.J).comp continuous_subtype_val)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `(continuous_toHAe_symm σ X.J).comp (continuous_extH σ X.Jᵀ (atPlace v) (atPlace_mul' v) (continuous_atPlace' v))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locFrom {n : ℕ} (X : Spc F E n) :
     Continuous fun h : HA (Fv F v) σ X.Jᵀ => (toHAe σ X.J).symm (extH σ X.Jᵀ (atPlace v) (atPlace_mul' v) h) := by
@@ -147,7 +145,7 @@ theorem continuous_locFrom {n : ℕ} (X : Spc F E n) :
     (continuous_extH σ X.Jᵀ (atPlace v) (atPlace_mul' v) (continuous_atPlace' v))
 
 /- English proof (translation)
-Rewrite using `[mem_UAtSub]`. Express the relevant statement in the definitionally equal form `At (evFin F v) (mat ((toHAe σ X.J).symm (extH σ X.Jᵀ (atPlace v) (atPlace_mul' v) h)) - 1)`. Rewrite using `[mat_toHAe_symm]`. Conclude with `at_extH σ X.Jᵀ v h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locFrom {n : ℕ} (X : Spc F E n) (h : HA (Fv F v) σ X.Jᵀ) :
     (toHAe σ X.J).symm (extH σ X.Jᵀ (atPlace v) (atPlace_mul' v) h) ∈ UAtSub σ X (evFin F v) := by
@@ -157,7 +155,7 @@ theorem mem_locFrom {n : ℕ} (X : Spc F E n) (h : HA (Fv F v) σ X.Jᵀ) :
   exact at_extH σ X.Jᵀ v h
 
 /- English proof (translation)
-Establish `hg : At (evFin F v) ((HA.mat (AF F) σ X.Jᵀ (toHAe σ X.J g.1) : Matrix (Fin n) (Fin n) (AE F E)) - 1)`. Rewrite using `[mat_toHAe]`. Conclude with `g.2`. Rewrite using `[extH_mapH σ X.Jᵀ v hg, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locFrom_locTo {n : ℕ} (X : Spc F E n) (g : UAtSub σ X (evFin F v)) :
     (toHAe σ X.J).symm (extH σ X.Jᵀ (atPlace v) (atPlace_mul' v) (mapH σ X.Jᵀ (evFin F v) (toHAe σ X.J g.1))) = g.1 := by
@@ -181,11 +179,7 @@ def locEquiv {n : ℕ} (X : Spc F E n) : UAtSub σ X (evFin F v) ≃ₜ* HA (Fv 
   continuous_invFun := (continuous_locFrom σ v X).subtype_mk _
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `haveI : SecondCountableTopology (Fv F v) := secondCountable_of_proper`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`.
-
-Use `haveI : IsTopologicalGroup (UA σ X.J) := inferInstanceAs (IsTopologicalGroup (UG (cA σ) (incM F X.J)))`. Establish `hss` using `GlobalTheory.HermLineZeros.conj_invol hcm`. Take `⟨d, hd⟩` from `GlobalTheory.HermLineZeros.exists_conj_ne hcm`. Establish `hJ : IsHermND σ X.Jᵀ` using `⟨fun i j => by simp [Matrix.transpose_apply, herm], by rwa [Matrix.det_transpose]⟩`. Establish `hU` using `GlobalTheory.ArchUnitaryUnimod.isUnimodularLC_of_artinian (Fv F v) hss (sub_ne_zero.2 hd) (by rw [map_sub, hss, neg_sub]) hJ`.
-
-Conclude with `GlobalTheory.ArchUnitaryUnimod.isUnimodularLC_of_equiv hU (locEquiv σ v X).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnimodularLC_UAtSub (hcm : IsCMExt F E σ) {n : ℕ} (X : Spc F E n) (herm : ∀ i j, σ (X.J j i) = X.J i j)
     (hdet : X.J.det ≠ 0) : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure.IsUnimodularLC (UAtSub σ X (evFin F v)) := by
@@ -203,7 +197,7 @@ theorem isUnimodularLC_UAtSub (hcm : IsCMExt F E σ) {n : ℕ} (X : Spc F E n) (
   exact GlobalTheory.ArchUnitaryUnimod.isUnimodularLC_of_equiv hU (locEquiv σ v X).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' _ X om om' om₁ om₁' hT _ v`. Take `⟨-, hT2, hLC, hSC, -, -, hR⟩` from `isUnimodularLC_UAtSub σ v hT.base.cm G.V hT.geo.hV.herm (GlobalTheory.ThetaKInv.det_ne_zero_of_isHerm hT.geo.hV)`. Conclude with `⟨hLC, hSC, hT2, fun μ hμ => hR μ hμ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lcsc_unimodular_UAtSub : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

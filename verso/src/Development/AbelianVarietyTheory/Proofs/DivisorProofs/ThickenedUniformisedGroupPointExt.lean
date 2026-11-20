@@ -11,15 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `g.i_hom` as an intermediate fact. Use `g.q_hom` as an intermediate fact. Establish `hq : a ≫ g.q = a' ≫ g.q`. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans (hp.trans (Category.assoc _ _ _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : (a' * a⁻¹) ≫ g.q = toUnit _ ≫ η[thickObj R I e D.P.A]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hq, mul_inv_cancel]`. Both sides reduce to the same expression. Set `τ` to `g.isKernel.lift (a' * a⁻¹) (toUnit _) hd`. Establish `hτ : τ ≫ g.i = a' * a⁻¹` using `g.isKernel.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : τ = 1`. Use `TorusPts.torusPt_ext fun χ => ?_` and prove the remaining obligations. Use `congrArg Units.val (show pullU τ.left ⊤ (charUnit _ D.X χ) = pullU (1 : Z ⟶ splitTorus _ D.X).left ⊤ (charUnit _ D.X χ) from unit_ext fun z _ => ?_)` and prove the remaining obligations. Use `choose J hJ using fun ψ : Z.left ⟶ D.P.A.left => exists_chart D.P.isLB (ψ z)`. Establish `k` using `(TorusCoord.val_torus_point_and_translate R I D e G g Z τ a z J hJ χ).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k'` using `(TorusCoord.val_torus_point_and_translate R I D e G g Z 1 a z J hJ χ).2`. Rewrite `k` using `[hτ, inv_mul_cancel_right]`. Rewrite `k'` using `[MonObj.one_comp, _root_.one_mul]`. Establish `k2` using `mul_right_cancel (k.symm.trans ((hv z J hJ χ).symm.trans k'))`. Conclude with `(gm_pull (𝟙 Z.left) τ.left z ⊤ trivial _).trans (k2.trans (gm_pull (𝟙 Z.left) (1 : Z ⟶ splitTorus _ D.X).left z ⊤ trivial _).symm)`.
-
-Rewrite `hτ` using `[h1, MonObj.one_comp]`. Conclude with `(mul_inv_eq_one.1 hτ.symm).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtCoord_overPoint_ext {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
@@ -53,7 +51,7 @@ theorem gtCoord_overPoint_ext {R : Type} [CommRing R] [IsDomain R] {I : Ideal R}
   exact (mul_inv_eq_one.1 hτ.symm).symm
 
 /- English proof (translation)
-Introduce `R _ _ I D e G _ _ g Z r r' hb hp hv`. Set `FinalForm : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (r ≫ (thickObj R I e G).hom)`. Conclude with `congrArg (fun φ => φ.left) (gtCoord_overPoint_ext g (Z := FinalForm) (Over.homMk r rfl) (Over.homMk r' hb.symm) hp hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem gtCoord_point_ext : ∀ {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G) {Z : Scheme.{0}} (r r' : Z ⟶ (thickObj R I e G).left), r ≫ (thickObj R I e G).hom = r' ≫ (thickObj R I e G).hom → r ≫ g.pG.left = r' ≫ g.pG.left → (∀ (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → ∀ χ : D.X, val (g.t χ) r z J = val (g.t χ) r' z J) → r = r' := by
   intro R _ _ I D e G _ _ g Z r r' hb hp hv

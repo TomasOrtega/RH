@@ -16,25 +16,21 @@ open scoped CategoryTheory.Obj RatFunc
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ C _ x hx G _ hG W r i hi V₀ s g hV₀ hs hg hloc`. Introduce `E _ _ _ _ _ ρ hρ w hw`. Simplify using `only [zero_mul]`. Assume the negation of the conclusion as `hpos`. Use `push_neg at hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpos' : 0 < degLine (pullAd ρ g) w` using `by exact_mod_cast hpos`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap k E).injective`. Use `letI : Algebra ℚ E := DivisionRing.toRatAlgebra`. Establish `hne : Nonempty (Place k E)`. Assume the negation of the conclusion as `h`.
+Equip the data with the indicated structure. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[not_nonempty_iff]`. Simplify using `[degLine, finsum_of_isEmpty] at hpos'`. Take `⟨p₀⟩` from `hne`. Take `⟨b₀, V, t, V', h₀, h₁, hxV, M, -, -, -, -, -⟩` from `hloc (ρ p₀)`. Use `set b : Sp E ⟶ C := spMap (algebraMap K E) ≫ x with hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hbV : ⊤ ≤ b ⁻¹ᵁ V₀`. Introduce `z _`. Establish `hz` using `h₀ (hxV (show (spMap (algebraMap K E)).base z ∈ (⊤ : (Sp K).Opens) from trivial))`. Use `show b.base z ∈ V₀`. Simplify `hz` using `[hb]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : QuasiSeparated G.hom := inferInstance`. Take `⟨ξ, hξ, htan⟩` from `GlobalTheory.T.exists_formalSquaringPath_with_tangentVector C G E hG.smooth inferInstance b r V₀ (fun j => i.app V₀ (s j)) w hbV`. Establish `hvec : ∀ p : Place k E, (pullAd ρ g p).mulVec w ≠ 0`. Introduce `p h`. Establish `hdet : (pullAd ρ g p).det ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [pullAd]`. Establish `e` using `RingHom.map_det (algebraMap K E) (g (ρ p))`. Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← e]`. Conclude with `(map_ne_zero _).mpr (hg.1 (ρ p))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hdet (Matrix.exists_mulVec_eq_zero_iff.mp ⟨w, hw, h⟩)`. Establish `hu : ∀ p : Place k E, ∃ u : E, u ≠ 0 ∧ p.1 u = nrm p ((pullAd ρ g p).mulVec w) ∧ ordVec p ((pullAd ρ g p).mulVec w) = ord p u`. Introduce `p`. Take `⟨j, hj0, hj1, hj2, -⟩` from `((GlobalTheory.T.functionFieldPlaceOrder_calculus k E p).2.2.2.2.2.2.1) r _ (hvec p)`. Conclude with `⟨_, hj0, hj1.symm, hj2⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `choose u hu0 hu1 hu2 using hu`. Establish `hsum : ∑ᶠ p, ord p (u p) = degLine (pullAd ρ g) w`. Unfold `degLine`. Conclude with `finsum_congr fun p => (hu2 p).symm`. Establish `hfin : {p | ord p (u p) ≠ 0}.Finite`.
-
-Assume the negation of the conclusion as `hinf`. Establish `: ∑ᶠ p, ord p (u p) = 0` using `finsum_of_infinite_support (by simpa [Function.support] using hinf)`. Use linear arithmetic over natural numbers and integers. Establish `hint` using `fun p => GlobalTheory.T.genericFormalPath_eq_scaling_valuationRingPath k K E C x hx G hG W r i V₀ s ρ hρ p (g (ρ p)) (hloc (ρ p)) w (u p) (hu0 p) (hu1 p) ξ hξ htan`. Establish `hrat` using `GlobalTheory.T.isRationalFormalPath_of_integral_allPlaces k K E C x hx G ξ u hu0 hfin (by omega) hint`.
-
-Establish `htriv : ξ = triv G b` using `GlobalTheory.T.rationalSquaringPathsRigid_of_isSemiAbelian C G hG E b ξ hξ hrat`. Rewrite `htan` using `[htriv]`. Conclude with `hw (GlobalTheory.T.tangent_constantPath_eq_zero k K E C x hx G hG W r i hi V₀ s hV₀ hs w htan)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linesLE_zero_of_sub_lie : ∀ (k K : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
   ∀ (G : Over C) [GrpObj G], IsSemiAbelian G → ∀ (W : C.Modules) (r : ℕ) (i : W ⟶ Lie G), Mono i → ∀ (V₀ : C.Opens) (s : Fin r → Γ(W, V₀)) (g : Place k K → Matrix (Fin r) (Fin r) K), (V₀ : Set C).Nonempty → IsFrame s → admitted g → (∀ v, LocFrame x s v (g v)) → LinesLE g 0 := by

@@ -12,7 +12,7 @@ namespace GlobalTheory.ThetaCharMult
 variable {g : ℕ}
 
 /- English proof (translation)
-Take `⟨-, r2, -, r4⟩` from `sp_rel (SymplecticGroup.transpose_mem hγ)`. Conclude with `⟨r2, r4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sp_rel_transpose {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ) :
@@ -22,9 +22,9 @@ theorem sp_rel_transpose {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
   exact ⟨r2, r4⟩
 
 /- English proof (translation)
-Establish `h` using `(sp_rel_transpose hγ).1`. Establish `h' : (cMat γ).toBlocks₁₁ * (cMat γ).toBlocks₂₂ᵀ = 1 + (cMat γ).toBlocks₁₂ * (cMat γ).toBlocks₂₁ᵀ`. Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h' i) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.add_apply, Matrix.one_apply, cMat, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.transpose_apply, Matrix.of_apply, Matrix.map_apply] at this ⊢`. Conclude with `this` after adjusting the coercions.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sp_rel_int {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ) :
@@ -42,21 +42,21 @@ theorem sp_rel_int {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
   exact_mod_cast this
 
 /- English proof (translation)
-Use `set j := C * τ + D with hj`. Establish `hjT : jᵀ = τ * Cᵀ + Dᵀ` using `by rw [hj, transpose_add, transpose_mul, hτ.eq]`. Establish `hjσ : jᵀ * σ = τ * Aᵀ + Bᵀ` using `by conv_lhs => rw [← hσ.eq]`. Rewrite using `[← transpose_mul, hs, Matrix.mul_assoc, h1, Matrix.mul_one, transpose_add, transpose_mul, hτ.eq]`. Use `set p := σ *ᵥ a + b with hp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set q := τ *ᵥ a' + b' with hq`. Establish `hqp : jᵀ *ᵥ p = q`. Rewrite using `[hp, hq, ha', hb', mulVec_add, mulVec_mulVec, hjσ, hjT]`. Simplify using `only [add_mulVec, mulVec_add, mulVec_mulVec]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpq : Jᵀ *ᵥ q = p`. Rewrite using `[← hqp, mulVec_mulVec, ← transpose_mul, h2, transpose_one, one_mulVec]`. Establish `hM : (J * C).IsSymm`. Establish `e : C * jᵀ = j * Cᵀ`. Rewrite using `[hjT, hj, Matrix.mul_add, Matrix.add_mul, sub_eq_zero.mp hCD, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (J * C)ᵀ = J * C`. Combine the equalities or inequalities in the displayed calculation. Establish `hq1 : ∀ x, q ⬝ᵥ ((J * C) *ᵥ x) = a' ⬝ᵥ x - a ⬝ᵥ (Jᵀ *ᵥ x)`. Introduce `x`. Establish `e1 : q ⬝ᵥ ((J * C) *ᵥ x) = p ⬝ᵥ (C *ᵥ x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hpq, ← mulVec_mulVec, dotProduct_mulVec, mulVec_transpose]`. Establish `e2 : a' ⬝ᵥ x = a ⬝ᵥ (A *ᵥ x) + b ⬝ᵥ (C *ᵥ x)`. Rewrite using `[ha', add_dotProduct, mulVec_transpose, mulVec_transpose, dotProduct_mulVec, dotProduct_mulVec]`. Establish `e3 : (σ *ᵥ a) ⬝ᵥ (C *ᵥ x) = a ⬝ᵥ (σ *ᵥ (C *ᵥ x))`. Rewrite using `[dot_mulVec_symm hσ, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, ← hA, sub_mulVec, dotProduct_sub, hp, add_dotProduct, e3, mulVec_mulVec]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : z + τ *ᵥ a' + b' = z + q` using `by rw [hq, add_assoc]`. Rewrite using `[hz]`. Use `⟨by rw [mulVec_add, hpq, hp, add_assoc], ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e4` using `dot_mulVec_symm hM q z`. Establish `e5` using `hq1 z`. Establish `e6` using `hq1 q`. Rewrite `e6` using `[hpq]`. Establish `e7 : a' ⬝ᵥ q = a' ⬝ᵥ (τ *ᵥ a') + a' ⬝ᵥ b'` using `by rw [hq, dotProduct_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e8 : a ⬝ᵥ p = a ⬝ᵥ (σ *ᵥ a) + a ⬝ᵥ b` using `by rw [hp, dotProduct_add]`. Simplify using `only [mulVec_add, add_dotProduct, dotProduct_add]`. Rewrite using `[e4, e5, e6, e7, e8]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem shift_algebra (A B C D τ σ J : Matrix (Fin g) (Fin g) ℂ) (hτ : τ.IsSymm) (hσ : σ.IsSymm)
     (h1 : J * (C * τ + D) = 1) (h2 : (C * τ + D) * J = 1) (hs : σ = (A * τ + B) * J)
@@ -114,7 +114,7 @@ theorem shift_algebra (A B C D τ σ J : Matrix (Fin g) (Fin g) ℂ) (hτ : τ.I
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.dvd_sum fun j _ => (h i j).mul_right _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dvd_mulVec {M : Matrix (Fin g) (Fin g) ℤ} {k : ℤ} (h : ∀ i j, k ∣ M i j) (v : Fin g → ℤ)
     (i : Fin g) : k ∣ (M *ᵥ v) i := by
@@ -122,21 +122,21 @@ theorem dvd_mulVec {M : Matrix (Fin g) (Fin g) ℤ} {k : ℤ} (h : ∀ i j, k �
   exact Finset.dvd_sum fun j _ => (h i j).mul_right _
 
 /- English proof (translation)
-The claim follows from `Finset.dvd_sum fun j _ => (h j).mul_right _`.
+A detailed English derivation is pending.
 -/
 theorem dvd_dot_left {k : ℤ} {u : Fin g → ℤ} (h : ∀ i, k ∣ u i) (v : Fin g → ℤ) : k ∣ u ⬝ᵥ v :=
   Finset.dvd_sum fun j _ => (h j).mul_right _
 
 /- English proof (translation)
-The claim follows from `Finset.dvd_sum fun j _ => (h j).mul_left _`.
+A detailed English derivation is pending.
 -/
 theorem dvd_dot_right {k : ℤ} {v : Fin g → ℤ} (h : ∀ i, k ∣ v i) (u : Fin g → ℤ) : k ∣ u ⬝ᵥ v :=
   Finset.dvd_sum fun j _ => (h j).mul_left _
 
 /- English proof (translation)
-Establish `e : (γ.toBlocks₁₁ᵀ *ᵥ n) ⬝ᵥ (γ.toBlocks₂₂ᵀ *ᵥ n') = n ⬝ᵥ n' + (γ.toBlocks₁₂ᵀ *ᵥ n) ⬝ᵥ (γ.toBlocks₂₁ᵀ *ᵥ n')`. Rewrite using `[mulVec_transpose, mulVec_transpose γ.toBlocks₁₂, ← dotProduct_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, sp_rel_int hγ, add_mulVec, one_mulVec, dotProduct_add]`. Establish `d1` using `dvd_dot_left (dvd_mulVec hB n) (γ.toBlocks₂₁ᵀ *ᵥ n')`. Establish `d2` using `dvd_dot_right (dvd_mulVec hB n) (γ.toBlocks₁₁ᵀ *ᵥ n)`. Establish `d3` using `dvd_dot_left (dvd_mulVec hC n') (γ.toBlocks₁₂ᵀ *ᵥ n + γ.toBlocks₂₂ᵀ *ᵥ n')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_dotProduct, dotProduct_add, e]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem phase_dvd {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hγ : γ ∈ Matrix.symplecticGroup (Fin g) ℤ)
@@ -155,7 +155,7 @@ theorem phase_dvd {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
   omega
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[ofRealVec, halfVec, Matrix.mulVec, dotProduct, Finset.sum_div, mul_div_assoc, add_div]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem half_mulVec (M : Matrix (Fin g) (Fin g) ℤ) (N : Matrix (Fin g) (Fin g) ℤ)
     (n n' : Fin g → ℤ) :
@@ -166,7 +166,7 @@ theorem half_mulVec (M : Matrix (Fin g) (Fin g) ℤ) (N : Matrix (Fin g) (Fin g)
   simp [ofRealVec, halfVec, Matrix.mulVec, dotProduct, Finset.sum_div, mul_div_assoc, add_div]
 
 /- English proof (translation)
-Establish `h0 : halfVec (0 : Fin g → ℤ) = 0` using `by ext i; simp [halfVec]`. Establish `h00 : ofRealVec (0 : Fin g → ℝ) = 0` using `by ext i; simp [ofRealVec]`. Rewrite using `[h0, thetaRealTransl_holds (Fin g) 0 0 a b z τ hτ, mul_pow, eC_pow, h00, zero_add, zero_add, add_zero]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem theta_zero_shift_sq (a b : Fin g → ℝ) (z : Fin g → ℂ) {τ : Matrix (Fin g) (Fin g) ℂ}
     (hτ : τ.IsSymm) :
@@ -180,19 +180,19 @@ theorem theta_zero_shift_sq (a b : Fin g → ℝ) (z : Fin g → ℂ) {τ : Matr
   norm_num
 
 /- English proof (translation)
-Introduce `g γ hγ h8 c n n' h0 ⟨hn, hn'⟩ τ hτ z`. Establish `hB : ∀ i j, (8 : ℤ) ∣ γ.toBlocks₁₂ᵀ i j` using `fun i j => (h8 j i).1`. Establish `hC : ∀ i j, (8 : ℤ) ∣ γ.toBlocks₂₁ᵀ i j` using `fun i j => (h8 j i).2`. Establish `hj` using `jAut_isUnit hγ hτ`. Establish `hσ` using `spAct_isSymm hγ hτ.1 hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := γ.toBlocks₁₁ᵀ *ᵥ n + γ.toBlocks₂₁ᵀ *ᵥ n' with hm`. Use `set m' := γ.toBlocks₁₂ᵀ *ᵥ n + γ.toBlocks₂₂ᵀ *ᵥ n' with hm'`. Take `⟨k1, k2⟩` from `shift_algebra (cMat γ).toBlocks₁₁ (cMat γ).toBlocks₁₂ (cMat γ).toBlocks₂₁ (cMat γ).toBlocks₂₂ τ (spAct γ τ) (jAut γ τ)⁻¹ hτ.1 hσ (Matrix.nonsing_inv_mul _ hj) (Matrix.mul_nonsing_inv _ hj) rfl (sp_A hγ hτ.1 hj) (sp_rel_transpose hγ).2 (ofRealVec (halfVec n)) (ofRealVec (halfVec n …`. Establish `h` using `h0 τ hτ (z + τ *ᵥ ofRealVec (halfVec m) + ofRealVec (halfVec m'))`. Establish `hred : theta (halfVec m) (halfVec m') z τ ^ 2 = theta (halfVec n) (halfVec n') z τ ^ 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[theta_sq_red m m', theta_sq_red n n']`. Establish `e1 : (fun i => m i % 2) = fun i => n i % 2`. Use function extensionality and compare the values at `i`. Establish `a1` using `hn i`. Establish `a2` using `dvd_mulVec hC n' i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [hm, Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `e2 : (fun i => m' i % 2) = fun i => n' i % 2`. Use function extensionality and compare the values at `i`. Establish `a1` using `hn' i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `a2` using `dvd_mulVec hB n i`. Simplify using `only [hm', Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2]`. Take `⟨t, ht⟩` from `phase_dvd hγ hB hC n n'`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hph : ofRealVec (halfVec n) ⬝ᵥ ofRealVec (halfVec n') - ofRealVec (halfVec m) ⬝ᵥ ofRealVec (halfVec m') = ((2 * t : ℤ) : ℂ)`. Establish `ht' : ((n ⬝ᵥ n' : ℤ) : ℂ) - ((m ⬝ᵥ m' : ℤ) : ℂ) = 8 * (t : ℂ)` using `by exact_mod_cast ht`. Simplify using `only [ofRealVec_halfVec, smul_dotProduct, dotProduct_smul, ofIntVec_dot, smul_eq_mul]`. Use `push_cast`. Take the linear combination `(1 / 4 : ℂ) * ht'`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[zAct, k1, theta_zero_shift_sq _ _ _ hσ, theta_zero_shift_sq _ _ _ hτ.1, hred, ← mul_assoc, mul_assoc (c * _), ← eC_add, expArg, k2, hph, eC_add, eC_add, eC_int, mul_one]`. Establish `hne : ∀ x, eC x ≠ 0` using `fun x => Complex.exp_ne_zero _`. Use `mul_left_cancel₀ (hne _) (h.trans ?_)` and prove the remaining obligations. Rewrite using `[expArg]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem theta_sq_law_of_zero : ∀ (g : ℕ) (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ), γ ∈ Matrix.symplecticGroup (Fin g) ℤ → (∀ i j, (8 : ℤ) ∣ γ (Sum.inl i) (Sum.inr j) ∧ (8 : ℤ) ∣ γ (Sum.inr i) (Sum.inl j)) → ∀ (c : ℂ) (n n' : Fin g → ℤ), (∀ τ ∈ SiegelH (Fin g), ∀ z : Fin g → ℂ, theta (halfVec 0) (halfVec 0) (zAct γ τ z) (spAct γ τ) ^ 2 = c * (jAut γ τ).det * eC (expArg γ τ z) * theta (halfVec 0) (halfVec 0) z τ ^ 2) → (∀ i, (2 : ℤ) ∣ (γ.toBlocks₁₁ᵀ *ᵥ n) i - n i) ∧ (∀ i, (2 : ℤ) ∣ (γ.toBlocks₂₂ᵀ *ᵥ n') i - n' i) → (∀ τ ∈ SiegelH (Fin g), ∀ z : Fin g → ℂ, theta (halfVec n) (halfVec n') (zAct γ τ z) (spAct γ τ) ^ 2 = c * (jAut γ τ).det * eC (expArg γ τ z) * theta (halfVec n) (halfVec n') z τ ^ 2) := by
   intro g γ hγ h8 c n n' h0 ⟨hn, hn'⟩ τ hτ z

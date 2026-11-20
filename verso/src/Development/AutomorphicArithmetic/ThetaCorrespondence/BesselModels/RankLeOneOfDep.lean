@@ -26,13 +26,13 @@ namespace UpperTheory.Lit.Bur.BurPos
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 
 /- English proof (translation)
-Distinguish the cases in `h0 : S = ⊥`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Use `rank_le_one_iff.2 ⟨⟨x, hx⟩, fun y => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, hab, e⟩` from `h x hx y y.2`. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Break down `hab with ha | hb` into its components or cases. Simplify using `only [zero_smul, add_zero] at e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `(smul_ne_zero ha hx0) e`. Conclude with `hb rfl`. Use `⟨-(b⁻¹ * a), Subtype.ext ?_⟩` and prove the remaining obligations. Establish `e' : (y : V) = -(b⁻¹ * a) • x`. Establish `: b • (y : V) = -(a • x)` using `by rw [eq_neg_iff_add_eq_zero, add_comm]; exact e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `using e'.symm`.
+A detailed English derivation is pending.
 -/
 theorem rank_le_one_of_dep {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V)
     (h : ∀ x ∈ S, ∀ y ∈ S, ∃ a b : ℂ, (a ≠ 0 ∨ b ≠ 0) ∧ a • x + b • y = 0) : Module.rank ℂ S ≤ 1 := by
@@ -55,13 +55,13 @@ theorem rank_le_one_of_dep {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submo
   simpa using e'.symm
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det fr).1 hfr`. Establish `g1 : (fr * Q) * (Qi * fr⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Q, h1, Matrix.one_mul, mul_nonsing_inv _ hd]`. Establish `g2 : (Qi * fr⁻¹) * (fr * Q) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc fr⁻¹, nonsing_inv_mul _ hd, Matrix.one_mul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `gg : (fr * Q)ᴴ * Formalism.REAL.Jm ε * (fr * Q) = Formalism.QuantumDeterminants.Hpk m r`. Rewrite using `[← hg, ← hJ]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Establish `hc` using `UpperTheory.Lit.Bur.sylvester_inertia_signForm_congr_splitHermitian ε g1 g2 gg`. Take `⟨P, hP⟩` from `(GlobalTheory.UnitaryCayley.exists_isCayleyU_iff m r ε).2 hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Use `Formalism.L2.SG.Pf.Choice.dsHpk_tr rfl ε ε (fun _ => rfl) lam lam (fun _ => rfl) _ hds (fr * Q) (Qi * fr⁻¹) g1 gg P hP` as an intermediate fact. Establish `e : (fun g => σ (fr⁻¹ * (fr * Q * (P⁻¹ * g * P) * (Qi * fr⁻¹)) * fr)) = fun g => σ (Q * (P⁻¹ * g * P) * Qi)`. Use function extensionality and compare the values at `g`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : fr⁻¹ * (fr * Q * (P⁻¹ * g * P) * (Qi * fr⁻¹)) * fr = (fr⁻¹ * fr) * Q * (P⁻¹ * g * P) * Qi * (fr⁻¹ * fr)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, nonsing_inv_mul _ hd, Matrix.one_mul, Matrix.mul_one]`. Rewrite `this` using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDSHpk_tr {m r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + m + 1)) ℂ → (H →L[ℂ] H)}
@@ -90,19 +90,17 @@ theorem isDSHpk_tr {m r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSp
   exact this
 
 /- English proof (translation)
-Establish `h0 : J₀ᴴ = J₀`. Rewrite using `[← hf.gram]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hf.herm, Matrix.mul_assoc]`. Take `⟨A, Ai, a1, a2, a3⟩` from `UpperTheory.Lit.Bur.hermitian_form_pos_congruent_identity h0 hp`. Take `⟨f, f1, f2, f3, f4⟩` from `UpperTheory.Lit.Bur.isFrame_exists_isotropic_dual_columns hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hreal : Formalism.QuantumDeterminants.herm J z z = (((Formalism.QuantumDeterminants.herm J z z).re : ℝ) : ℂ)`. Establish `hc : star (Formalism.QuantumDeterminants.herm J z z) = Formalism.QuantumDeterminants.herm J z z`. Unfold `Formalism.QuantumDeterminants.herm`. Use `conv_rhs => rw [star_dotProduct, star_mulVec, hf.herm, ← dotProduct_mulVec]`. Conclude with `(Complex.conj_eq_iff_re.1 hc).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T : ℝ := -(Formalism.QuantumDeterminants.herm J z z).re with hT`. Establish `hTp : 0 < T` using `by simpa [hT] using hz`. Use `set t : ℝ := Real.sqrt T with ht`. Establish `htp : 0 < t` using `Real.sqrt_pos.2 hTp`. Establish `htc : (t : ℂ) ≠ 0` using `by exact_mod_cast htp.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsq : t * t = T` using `Real.mul_self_sqrt hTp.le`. Take `⟨Q, Qi, q1, q2, qg, qe, qw, qy⟩` from `UpperTheory.Lit.Bur.hyperbolic_frame_congruent_splitHermGram (Fa := F * A) (e := e) (f := f) (y := (t⁻¹ : ℂ) • z) hf.herm (by rw [conjTranspose_mul]; calc _ = Aᴴ * (Fᴴ * J * F) * A := by simp only [Matrix.mul_assoc] _ = 1 := by rw [hf.gram, a3]) hf.e_iso f2 f1 (by rw [conjTranspo …`. Establish `e1 : Formalism.QuantumDeterminants.herm J ((t⁻¹ : ℂ) • z) ((t⁻¹ : ℂ) • z) = (t⁻¹ : ℂ) * (t⁻¹ : ℂ) * Formalism.QuantumDeterminants.herm J z z`. Unfold `Formalism.QuantumDeterminants.herm`. Rewrite using `[mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[mul_assoc]`. Rewrite using `[e1, hreal]`. Establish `e2 : (((Formalism.QuantumDeterminants.herm J z z).re : ℝ) : ℂ) = -((t : ℂ) * t)`. Establish `: (Formalism.QuantumDeterminants.herm J z z).re = -(t * t)` using `by rw [hsq, hT]; ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use the proof step `field_simp)`. Use `⟨Q, Qi, A, Ai, t, q1, q2, a1, a2, a3, qg, qe, qw, htp, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mulVec_smul, qy, smul_smul, mul_inv_cancel₀ htc, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_normal {m r : ℕ} {J : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + m + 1)) ℂ} {J₀ : Matrix (Fin m) (Fin m) ℂ}
     {F : Matrix (Fin (2 * r + m + 1)) (Fin m) ℂ} {e : Matrix (Fin (2 * r + m + 1)) (Fin r) ℂ}
@@ -151,11 +149,11 @@ theorem frame_normal {m r : ℕ} {J : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r +
   rw [mulVec_smul, qy, smul_smul, mul_inv_cancel₀ htc, one_smul]
 
 /- English proof (translation)
-Establish `hb : Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk m r) (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI m r (Fin.last m))) (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI m r (Fin.last m))) = -1`. Unfold `Formalism.QuantumDeterminants.herm Formalism.QuantumDeterminants.bvec`. Simplify using `[dotProduct, Pi.single_apply, mulVec, Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.wI]`. Rewrite using `[Finset.sum_eq_single (⟨r + m, by omega⟩ : Fin (2 * r + m + 1))]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Unfold `Formalism.QuantumDeterminants.Tz`. Establish `e1 : Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk m r) ((t : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI m r (Fin.last m))) ((t : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI m r (Fin.last m))) = …`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Formalism.QuantumDeterminants.herm`. Rewrite using `[mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul]`. Simplify using `[mul_assoc]`. Rewrite using `[e1, hb]`. Simplify using `[pow_two, ← Complex.ofReal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tz_last (m r : ℕ) (t : ℝ) :
     Formalism.QuantumDeterminants.Tz m r ((t : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI m r (Fin.last m))) = t ^ 2 := by
@@ -176,9 +174,9 @@ theorem tz_last (m r : ℕ) (t : ℝ) :
   simp [pow_two, ← Complex.ofReal_mul]
 
 /- English proof (translation)
-Introduce `i hi`. Establish `: i ≠ Formalism.QuantumDeterminants.wI m r (Fin.last m)`. Introduce `h`. Substitute `h` using the available equality. Simplify using `[Formalism.QuantumDeterminants.wI] at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.QuantumDeterminants.bvec, this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inWb_last (m r : ℕ) (t : ℝ) :
     Formalism.QuantumDeterminants.inWb m r ((t : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI m r (Fin.last m))) := by
@@ -188,9 +186,9 @@ theorem inWb_last (m r : ℕ) (t : ℝ) :
   simp [Formalism.QuantumDeterminants.bvec, this]
 
 /- English proof (translation)
-Use `⟨?_, fun a => ⟨one_mulVec _, one_mulVec _⟩, ?_⟩` and prove the remaining obligations. Use `show (1 : Matrix _ _ ℂ)ᴴ * _ * 1 = _`. Simplify using the standard rewrite rules. Use `tz_last m r t` as an intermediate fact. Rewrite using `[one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((Real.sqrt (Formalism.QuantumDeterminants.Tz m r _) : ℝ) : ℂ) • _ = _`. Rewrite using `[this, Real.sqrt_sq ht.le]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isFrameW_one (m r : ℕ) {t : ℝ} (ht : 0 < t) :
     PI.UpqRep.IsFrameW m r ((t : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI m r (Fin.last m))) 1 := by
@@ -204,11 +202,11 @@ theorem isFrameW_one (m r : ℕ) {t : ℝ} (ht : 0 < t) :
     rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hf'.exists_coords hu`. Rewrite using `[isCharWith hz' c u hu a ha, hχ _ (UpperTheory.Lit.Bur.isometry_conj_maps_unipotentRadical q1 q2 qg qe hu) a fun j => ?_]`. Establish `hfl : flagVec e z j.succ = Q *ᵥ flagVec (colE m r) z' j.succ`. Use `Fin.lastCases ?_ (fun i => ?_) j.succ` and prove the remaining obligations. Simplify using `[flagVec, qz]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [flagVec, Fin.snoc_castSucc]`. Rewrite using `[← qe]`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mul_apply, mulVec, dotProduct]`. Establish `hq : Q * u * Qi - 1 = Q * (u - 1) * Qi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, q1]`. Rewrite using `[hfl, hq, mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, q2, Matrix.mul_one, ← mulVec_mulVec, ha j, ← qe, mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_eq {m r : ℕ} {J Q Qi : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + m + 1)) ℂ}
     {e : Matrix (Fin (2 * r + m + 1)) (Fin r) ℂ} {z z' : Fin (2 * r + m + 1) → ℂ} {c : Fin r → ℂ}
@@ -232,59 +230,55 @@ theorem chi_eq {m r : ℕ} {J Q Qi : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + 
     mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `hB n m r J J₀ F e z hf hm hz hp χ hχ H _ _ _ σ hU hI h hh hgap W _ _ _ π₀ hπ`. Take `rfl : n = 2 * r + m + 1` from `by have := hf.codim; omega`. Distinguish the cases in `hW : Nontrivial W`. Use `swap`. Establish `: Subsingleton W` using `not_nontrivial_iff_subsingleton.1 hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `rank_le_one_of_dep _ fun x _ y _ => ⟨1, 0, Or.inl one_ne_zero, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Simplify using `[Subsingleton.elim w 0]`. Take `⟨ε, lam, fr, hfrU, hfrJ, hHC, hG, hDS⟩` from `hgap`. Take `⟨c, hc, hχc⟩` from `hχ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, Qi, A, Ai, t, q1, q2, a1, a2, a3, qg, qe, qw, ht, qz⟩` from `frame_normal hf hz hp`. Use `set z' : Fin (2 * r + m + 1) → ℂ := (t : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI m r (Fin.last m)) with hz'`. Establish `hzW : Formalism.QuantumDeterminants.inWb m r z'` using `inWb_last m r t`. Establish `hTz : 0 < Formalism.QuantumDeterminants.Tz m r z'` using `by rw [hz', tz_last]; positivity`. Establish `hfw : PI.UpqRep.IsFrameW m r z' 1` using `isFrameW_one m r ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf'` using `isFrame hfw hzW hTz`. Use `set σ' : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + m + 1)) ℂ → (H →L[ℂ] H) := fun g => σ (Q * g * Qi) with hσ'`. Establish `hDSH : PI.UpqRep.IsDSHpk m r ε lam σ'` using `isDSHpk_tr q1 q2 qg hfrU hfrJ hDS`. Take `⟨-, hU', -⟩` from `rep_of_isDSHpk hDSH`. Establish `hsm : ∀ v, v ∈ PI.UpqRep.smoothVecs (k` using `m) (r := r) σ' ↔ v ∈ smSub J σ := fun v => (smoothOnH_iff_mem PI.HwUniqW.Hpk_conjTranspose PI.HwUniqW.Hpk_mul_self hU' v).trans (UpperTheory.Lit.Bur.smoothVec_conjugate_unitaryGroup_iff σ q1 q2 qg v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπ'` using `UpperTheory.Lit.Bur.contragredient_conj_definiteUnitary_isContIrred a1 a2 a3 hπ`. Take `⟨Wp, _, _, _, ρ, T1, hρ, hT1, hirr⟩` from `UpperTheory.Lit.Bur.contIrred_compactUnitaryGroup_rep_isUnitarizable hπ'`. Establish `hD : Nontrivial (Module.Dual ℂ W)` using `(Module.nontrivial_dual_iff ℂ).2 hW`. Establish `: Nontrivial Wp` using `T1.symm.toEquiv.nontrivial`. Take `⟨u, Wq, _, _, ρ', T2, hty, hT2⟩` from `UpperTheory.Lit.Bur.irreducible_unitary_rep_iso_harishChandraType hρ hirr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set T : Module.Dual ℂ W ≃ₗ[ℂ] Wq := T1.trans T2 with hTdef`. Establish `hone : ∀ s ∈ Formalism.QuantumDeterminants.UH (1 : Matrix (Fin m) (Fin m) ℂ), s ∈ PI.UpqRep.UJset (PI.UpqRep.allPos m)` using `fun s hs => PI.HwUniqW.mem_UJset_allPos.2 (mem_UH_one.1 hs)`. Establish `hT : ∀ s ∈ Formalism.QuantumDeterminants.UH (1 : Matrix (Fin m) (Fin m) ℂ), ∀ l : Module.Dual ℂ W, T ((π₀ (A * sᴴ * Ai)).dualMap l) = ρ' s (T l)` using `fun s hs l => by`. Simplify using `only [hTdef, LinearEquiv.trans_apply]`. Rewrite using `[hT1 s hs l, hT2 s (hone s hs)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set π : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + m + 1)) ℂ → (Wq →L[ℂ] Wq) := fun g => ρ' (PI.HwUniqW.sub m r g) with hπdef`. Establish `hty' : PI.UpqRep.IsHCTypeW m r z' u π`. Use `⟨1, hfw, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun h => π (1 * PI.UpqRep.blockW m r h * (1 : Matrix (Fin (2 * r + m + 1)) (Fin (2 * r + m + 1)) ℂ)⁻¹)) = ρ'`. Use function extensionality and compare the values at `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[hπdef, PI.HwUniqW.sub_blockW]`. Rewrite using `[e1]`. Conclude with `hty`. Establish `key : ∀ β ∈ besselForms J J₀ F e χ σ π₀ (smSub J σ), ∃ B : H → Wq, PI.BesselMapUniq.IsBesselMapSm (k` using `m) (r := r) z' (PI.BesselMapUniq.psiGen m r z' c) σ' π B ∧ ∀ x : smSub J σ, B x = T (β.flip x) := by`. Introduce `β hβ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBm : ∃ B : H → Wq, ∀ x : smSub J σ, B x = T (β.flip x)` using `by classical`. Conclude with `⟨fun v => if hv : v ∈ smSub J σ then T (β.flip ⟨v, hv⟩) else 0, fun x => dif_pos x.2⟩`. Take `⟨B, hBx⟩` from `hBm`. Use `⟨B, ⟨fun v hv w hw => ?_, fun a v hv => ?_, fun h' hh' u' hu' v hv => ?_, ?_⟩, hBx⟩` and prove the remaining obligations. Establish `hv'` using `(hsm v).1 hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw'` using `(hsm w).1 hw`. Establish `e0` using `hBx (⟨v, hv'⟩ + ⟨w, hw'⟩)`. Rewrite `e0` using `[map_add, map_add, ← hBx, ← hBx]`. Conclude with `e0`. Establish `hv'` using `(hsm v).1 hv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0` using `hBx (a • ⟨v, hv'⟩)`. Rewrite `e0` using `[map_smul, map_smul, ← hBx]`. Conclude with `e0`. Establish `hv'` using `(hsm v).1 hv`. Establish `hfix : PI.HwUniqW.FixEW m r h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hh'.2.1, ?_⟩` and prove the remaining obligations. Establish `e0` using `hh'.2.2`. Rewrite `e0` using `[hz', mulVec_smul]`. Conclude with `smul_right_injective _ (by exact_mod_cast ht.ne' : (t : ℂ) ≠ 0) e0`. Take `⟨hs, hbl⟩` from `PI.HwUniqW.fix_block hh'.1 hfix`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set s := PI.HwUniqW.sub m r h' with hsdef`. Establish `hs1 : sᴴ * s = 1` using `PI.HwUniqW.mem_UJset_allPos.1 hs`. Establish `hs2 : s * sᴴ = 1` using `mul_eq_one_comm.1 hs1`. Establish `hsU : s ∈ Formalism.QuantumDeterminants.UH (1 : Matrix (Fin m) (Fin m) ℂ)` using `mem_UH_one.2 hs1`. Establish `hJ₀ : Aiᴴ * Ai = J₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : Aiᴴ * (Aᴴ * J₀ * A) * Ai = (A * Ai)ᴴ * J₀ * (A * Ai)`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite `e0` using `[a3, a1]`. Simplify using `using e0`. Establish `hmem : ∀ y : Matrix (Fin m) (Fin m) ℂ, yᴴ * y = 1 → A * y * Ai ∈ Formalism.QuantumDeterminants.UH J₀` using `fun y hy => by show (A * y * Ai)ᴴ * J₀ * (A * y * Ai) = J₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : (A * y * Ai)ᴴ * J₀ * (A * y * Ai) = Aiᴴ * (yᴴ * (Aᴴ * J₀ * A) * y) * Ai`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e0, a3, Matrix.mul_one, hy, Matrix.mul_one, hJ₀]`. Establish `hh0` using `hmem s hs1`. Establish `hh1` using `hmem sᴴ (by rw [conjTranspose_conjTranspose]; exact hs2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h01 : (A * s * Ai) * (A * sᴴ * Ai) = 1`. Establish `e0 : (A * s * Ai) * (A * sᴴ * Ai) = A * s * (Ai * A) * sᴴ * Ai` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e0, a2, Matrix.mul_one, Matrix.mul_assoc A, hs2, Matrix.mul_one, a1]`. Establish `hinv : ∀ w, π₀ (A * s * Ai) (π₀ (A * sᴴ * Ai) w) = w` using `fun w => by`. Establish `e0` using `hπ.1.2 _ hh0 _ hh1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e0` using `[h01, hπ.1.1]`. Conclude with `(LinearMap.congr_fun e0 w).symm`. Establish `hgu` using `UpperTheory.Lit.Bur.isometry_conj_maps_unipotentRadical q1 q2 qg qe (UpperTheory.Lit.Bur.mem_besselUnipotentRadical_of_mem_coordGroup hu')`. Establish `hQi : Qiᴴ * Formalism.QuantumDeterminants.Hpk m r * Qi = J`. Rewrite using `[← qg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hgh : Q * h' * Qi ∈ Formalism.QuantumDeterminants.UH J` using `by show (Q * h' * Qi)ᴴ * J * (Q * h' * Qi) = J`. Establish `hh2 : h'ᴴ * Formalism.QuantumDeterminants.Hpk m r * h' = Formalism.QuantumDeterminants.Hpk m r` using `hh'.1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Use `_ = J := by rw [qg, hh2, hQi]`. Establish `hE : IsEmb J F (Q * h' * Qi) (A * s * Ai)`. Use `UpperTheory.Lit.Bur.blockEmbed_conj_isUnitaryEmbedding (s := s) q1 q2 qg qw a1` as an intermediate fact. Rewrite `this` using `[← hbl]`. Then use the resulting hypothesis. Establish `e1 : σ' (h' * u') v = σ (Q * h' * Qi) (σ (Q * u' * Qi) v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e0 : Q * (h' * u') * Qi = (Q * h' * Qi) * (Q * u' * Qi)`. Establish `: (Q * h' * Qi) * (Q * u' * Qi) = Q * h' * (Qi * Q) * u' * Qi` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, q2, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `show σ (Q * (h' * u') * Qi) v = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e0, hU.1.2 _ hgh _ hgu.1]`. Both sides reduce to the same expression. Set `x : smSub J σ` to `⟨v, hv'⟩`. Set `y1 : smSub J σ` to `⟨σ (Q * u' * Qi) v, UpperTheory.Lit.Bur.smoothVec_stable_under_unitaryGroup hf.unit hU hgu.1 hv'⟩`. Set `y2 : smSub J σ` to `⟨σ (Q * h' * Qi) y1, UpperTheory.Lit.Bur.smoothVec_stable_under_unitaryGroup hf.unit hU hgh y1.2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hflip : β.flip y2 = χ (Q * u' * Qi) • (π₀ (A * sᴴ * Ai)).dualMap (β.flip x)`. Use extensionality with `w`. Establish `i1` using `hβ.inv _ hh0 _ hgh hE (π₀ (A * sᴴ * Ai) w) y1 y2 rfl`. Establish `i2` using `hβ.equiv _ hgu (π₀ (A * sᴴ * Ai) w) x y1 rfl`. Rewrite `i1` using `[hinv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.flip_apply, LinearMap.smul_apply, LinearMap.dualMap_apply, smul_eq_mul]`. Rewrite using `[i1, i2]`. Establish `hχe` using `chi_eq q1 q2 qg qe qz hzW hf' hχc (UpperTheory.Lit.Bur.mem_besselUnipotentRadical_of_mem_coordGroup hu')`. Rewrite using `[e1]`. Use `show B (y2 : H) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[hBx y2, hflip, map_smul, hT s hsU, hχe, ← hBx x]`. Set `b` to `Module.finBasis ℂ W choose l hl1 hl2 using fun i => hβ.cont (b i)`. Use `UpperTheory.Lit.Bur.casselmanWallachCont_finite_sum_sobolev_forms (fun v hv => (UpperTheory.Lit.Bur.smoothVec_conjugate_unitaryGroup_iff σ q1 q2 qg v).2 ((hsm v).1 hv)) l (fun i => T (b.coord i)) (fun i => UpperTheory.Lit.Bur.sobolevCont_of_conj_gram_form σ q1 q2 qg (hl1 i)) (fun …` and prove the remaining obligations. Establish `hv'` using `(hsm v).1 hv`. Establish `e0` using `hBx ⟨v, hv'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e0` using `[← b.sum_dual_apply_smul_coord (β.flip ⟨v, hv'⟩), map_sum]`. Use `e0.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.flip_apply, ← hl2 i ⟨v, hv'⟩]`. Use `rank_le_one_of_dep _ fun β₁ h₁ β₂ h₂ => ?_` and prove the remaining obligations. Take `⟨B₁, m₁, e₁⟩` from `key β₁ h₁`.
-
-Take `⟨B₂, m₂, e₂⟩` from `key β₂ h₂`. Take `⟨a, b, hab, hz0⟩` from `hB m r ε lam h H σ' z' c u Wq π hm hG hh hHC hDSH hzW hTz hc hty' B₁ B₂ m₁ m₂`. Use `⟨a, b, hab, ?_⟩` and prove the remaining obligations. Use extensionality with `w x`. Establish `h0` using `hz0 x ((hsm x).2 x.2)`.
-
-Rewrite `h0` using `[e₁ x, e₂ x]`. Establish `h1 : T (a • β₁.flip x + b • β₂.flip x) = 0` using `by rw [map_add, map_smul, map_smul]; exact h0`. Use `LinearMap.congr_fun (T.map_eq_zero_iff.1 h1) w` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem burGapPos_of_bmu : CompanionTheory.Bmu.BesselMapUniqGap → UpperTheory.Lit.Bur.BurGapPos := by
   intro hB n m r J J₀ F e z hf hm hz hp χ hχ H _ _ _ σ hU hI h hh hgap W _ _ _ π₀ hπ

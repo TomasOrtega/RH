@@ -12,7 +12,7 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `twist`. Break down `(D.s.atP p).split with _ | sg` into its components or cases. Simplify using the standard rewrite rules. Apply `sg.e.injective` to reduce the goal to its premises. Apply the tactic sequence `ext <;> simp [mul_comm]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem twist_mul {D : Formalism.BasicNotions.D7} (p : PlF D) (s : ℕ) (x : (D.s.atP p).Ep) :
     twist p s x = x * twist p s 1 := by
@@ -23,7 +23,7 @@ theorem twist_mul {D : Formalism.BasicNotions.D7} (p : PlF D) (s : ℕ) (x : (D.
     ext <;> simp [mul_comm]
 
 /- English proof (translation)
-Unfold `twist`. Break down `(D.s.atP p).split with _ | sg` into its components or cases. Simplify using the standard rewrite rules. Apply `sg.e.injective` to reduce the goal to its premises. Apply the tactic sequence `ext <;> simp`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem twist_one_pow {D : Formalism.BasicNotions.D7} (p : PlF D) (s : ℕ) :
     twist p s (1 : (D.s.atP p).Ep) = twist p 1 (1 : (D.s.atP p).Ep) ^ s := by
@@ -34,7 +34,7 @@ theorem twist_one_pow {D : Formalism.BasicNotions.D7} (p : PlF D) (s : ℕ) :
     ext <;> simp
 
 /- English proof (translation)
-Unfold `twist`. Break down `(D.s.atP p).split with _ | sg` into its components or cases. Simplify using the standard rewrite rules. Apply `sg.e.injective` to reduce the goal to its premises. Apply the tactic sequence `ext <;> simp`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem twist_sq {D : Formalism.BasicNotions.D7} (p : PlF D) :
     twist p 1 (1 : (D.s.atP p).Ep) ^ 2 = 1 := by
@@ -45,7 +45,7 @@ theorem twist_sq {D : Formalism.BasicNotions.D7} (p : PlF D) :
     ext <;> simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Nat.div_add_mod n 2, pow_add, pow_mul, h, one_pow, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pow_mod_two_of_sq {A : Type} [Monoid A] (τ : A) (h : τ ^ 2 = 1) (n : ℕ) : τ ^ n = τ ^ (n % 2) := by
   conv_lhs => rw [← Nat.div_add_mod n 2, pow_add, pow_mul, h, one_pow, one_mul]
@@ -60,9 +60,9 @@ def gF (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T
   else hF D δ p a s
 
 /- English proof (translation)
-Unfold `gF`. Distinguish the cases in `h : a + s - 1 = D.R.rS + 1 ∧ s = 1`. Rewrite using `[if_pos h, ← mul_assoc, Ring.mul_inverse_cancel _ ((isUnit_iff_ne_zero.mpr ht).map _), one_mul]`. Rewrite using `[if_neg h]`. Simplify using `only [blkTop, blkMod, tMod, hF, if_neg h, sub_zero]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[twist_mul p s ((D.s.atP p).ιE t)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem blkTop_eq (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (a s : ℕ)
     (t : D.host.E) (ht : t ≠ 0) :
@@ -80,7 +80,7 @@ def prodFac {A B : Type} [CommMonoid B] (g : ℕ → ℕ → A → B) : ℕ → 
   | a, (t, s) :: rest => g a s t ^ s * prodFac g (a + s) rest
 
 /- English proof (translation)
-Proceed by induction on `l1 generalizing a with`. Consider the case `nil => simp [prodFac]`. Consider the case `cons x l ih`. Take `⟨t, s⟩` from `x`. Simplify using `[prodFac, ih, mul_assoc, add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem prodFac_append {A B : Type} [CommMonoid B] (g : ℕ → ℕ → A → B) (l1 l2 : List (A × ℕ)) (a : ℕ) :
     prodFac g a (l1 ++ l2) = prodFac g a l1 * prodFac g (a + (l1.map Prod.snd).sum) l2 := by
@@ -94,7 +94,7 @@ def Hm (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p :
   ∏ k ∈ Finset.range m, hF D δ p (a + k) 1
 
 /- English proof (translation)
-Unfold `Hm`. Rewrite using `[Finset.prod_range_add]`. Simplify using `only [add_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hm_add (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (a m m' : ℕ) :
     Hm D δ p a (m + m') = Hm D δ p a m * Hm D δ p (a + m) m' := by
@@ -103,11 +103,11 @@ theorem Hm_add (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).
   simp only [add_assoc]
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Rewrite using `[Finset.sum_range_succ, ih (by omega)]`. Take `⟨f, hf⟩ : ∃ f, 2 * (r + 1) - a - (a + s) = s + f` from `⟨2 * (r + 1) - a - (a + s) - s, by omega⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : a + s + 1 - 1 = a + s` using `by omega`. Establish `h2 : a + (s + 1) - 1 = a + s` using `by omega`. Establish `e1 : 2 * (r + 1) - a - (a + s - 1) = s + f + 1` using `by omega`. Establish `e2 : 2 * (r + 1) - (a + s) - (a + s) = f` using `by omega`. Unfold `nu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, h2, e1, e2, hf]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_nu (r a s : ℕ) (ha : 1 ≤ a) (hs : a + s ≤ r + 2) :
     ∑ k ∈ Finset.range s, nu r (a + k) (a + k + 1 - 1) = nu r a (a + s - 1) * s := by
@@ -126,11 +126,11 @@ theorem sum_nu (r a s : ℕ) (ha : 1 ≤ a) (hs : a + s ≤ r + 2) :
     ring
 
 /- English proof (translation)
-Establish `hsum` using `sum_nu D.R.rS a s ha hs`. Establish `hmod : s * s % 2 = s % 2`. Rewrite using `[Nat.mul_mod]`. Apply the tactic sequence `rcases Nat.mod_two_eq_zero_or_one s with h | h <;> rw [h]`. Unfold `Hm hF`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_const, Finset.card_range, mul_pow, mul_pow]`. Use `congr 1`. Use `congr 1`. Simplify using `only [← Ring.inverse_pow, ← pow_mul]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hsum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twist_one_pow p s, ← pow_mul, pow_mod_two_of_sq _ (twist_sq p) (s * s), hmod, ← pow_mod_two_of_sq _ (twist_sq p) s]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hF_pow (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (a s : ℕ) (ha : 1 ≤ a)
     (hs : a + s ≤ D.R.rS + 2) : hF D δ p a s ^ s = Hm D δ p a s := by
@@ -149,9 +149,9 @@ theorem hF_pow (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).
       ← pow_mod_two_of_sq _ (twist_sq p) s]
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing a with`. Consider the case `nil => simp [prodFac, Hm]`. Consider the case `cons b rest ih`. Take `⟨t, s⟩` from `b`. Establish `hs1 : 1 ≤ s` using `hsz (t, s) (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrest : ∀ b ∈ rest, 1 ≤ b.2` using `fun b hb => hsz b (by simp [hb])`. Simplify using `only [List.map_cons, List.sum_cons] at hend ⊢`. Establish `hnt : ¬ (a + s - 1 = D.R.rS + 1 ∧ s = 1)` using `by omega`. Rewrite using `[prodFac, gF, if_neg hnt, hF_pow D δ p a s ha (by omega), ih (a + s) (by omega) hrest (by omega), ← Hm_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodFac_noTop (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D)
     (bs : List (D.host.E × ℕ)) (a : ℕ) (ha : 1 ≤ a) (hsz : ∀ b ∈ bs, 1 ≤ b.2)

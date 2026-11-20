@@ -4,11 +4,11 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce `H _ _ _ ι b T D c hc hT hd`. Establish `hs` using `hT.summable_norm_inner b`. Establish `h1` using `(hT.comp_right D).hasSum_trace b`. Rewrite using `[trace_comp_comm hT D]`. Establish `h2 : ‖trace (T ∘L D)‖ ≤ ∑' i, c * ‖inner ℂ (b i) (T (b i))‖` using `h1.norm_le_of_bounded (hs.mul_left c).hasSum fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨d, hd1, hd2⟩` from `hd i`. Rewrite using `[ContinuousLinearMap.comp_apply, hd2, inner_smul_right, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right hd1 (norm_nonneg _)`. Establish `h3 : ∑' i, ‖inner ℂ (b i) (T (b i))‖ ≤ (traceNorm T).toReal`. Rewrite using `[← ENNReal.ofReal_le_iff_le_toReal (show traceNorm T < ⊤ from hT).ne, ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofReal_norm]`. Conclude with `tsum_enorm_inner_self_le b T`. Rewrite `h2` using `[tsum_mul_left]`. Conclude with `h2.trans (mul_le_mul_of_nonneg_left h3 hc)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_trace_comp_le_mul_traceNorm :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ι : Type) (b : HilbertBasis ι ℂ H) (T D : H →L[ℂ] H) (c : ℝ), 0 ≤ c → IsTraceClass T → (∀ i, ∃ d : ℂ, ‖d‖ ≤ c ∧ T (D (b i)) = d • T (b i)) → ‖trace (D ∘L T)‖ ≤ c * (traceNorm T).toReal := by

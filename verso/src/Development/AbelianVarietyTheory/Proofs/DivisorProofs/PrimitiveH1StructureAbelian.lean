@@ -20,13 +20,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Take `⟨-, -, hAA, hgg⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hg`. Establish `h1` using `(GlobalTheory.T.abelian_structure_cohomology_statement R A g hA hg).1`. Establish `h2` using `(GlobalTheory.T.abelian_structure_cohomology_statement R (A ⊗ A) (g + g) hAA hgg).1`. Establish `hax` using `(GlobalTheory.T.grpObj_pullback_axes_cohomology_projections R A).1`. Set `f : HO1 A.hom × HO1 A.hom →ₗ[R] HO1 (A ⊗ A).hom` to `pO1 (fst A A) ∘ₗ LinearMap.fst R _ _ + pO1 (snd A A) ∘ₗ LinearMap.snd R _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `r : HO1 (A ⊗ A).hom →ₗ[R] HO1 A.hom × HO1 A.hom` to `LinearMap.prod (pO1 (lift (𝟙 A) (toUnit A ≫ η[A]))) (pO1 (lift (toUnit A ≫ η[A]) (𝟙 A)))`. Establish `hrf : ∀ x, r (f x) = x`. Introduce and unpack `⟨a, b⟩`. Establish `e : f (a, b) = pO1 (fst A A) a + pO1 (snd A A) b` using `rfl`. Establish `e2 : ∀ z, r z = (pO1 (lift (𝟙 A) (toUnit A ≫ η[A])) z, pO1 (lift (toUnit A ≫ η[A]) (𝟙 A)) z)` using `fun _ ↦ rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2, e, map_add, map_add, (hax a).1, (hax b).2.1, (hax a).2.2.2.1, (hax b).2.2.2.2.1, add_zero, zero_add]`. Establish `hP` using `(GlobalTheory.T.fgProjectiveConstantRank_extension_and_prod).2 R _ _ g g h1 h1`. Establish `hbij` using `GlobalTheory.T.bijective_of_split_injective_fgProjectiveConstantRank R _ _ (g + g) hP h2 f r hrf`. Introduce `y hy1 hy2`. Take `⟨x, rfl⟩` from `hbij.2 y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : r (f x) = 0` using `Prod.ext hy1 hy2`. Rewrite `h0` using `[hrf]`. Rewrite using `[h0, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem axesO1_of_isAbelianScheme (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) : AxesVanishingStructureSheafDegOne A := by
@@ -53,7 +53,7 @@ theorem axesO1_of_isAbelianScheme (R : Type) [CommRing R] (A : Over (Sp R)) [Grp
   rw [h0, map_zero]
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg x`. Establish `hax` using `(GlobalTheory.T.grpObj_pullback_axes_cohomology_projections R A).1 x`. Establish `h` using `axesO1_of_isAbelianScheme R A g hA hg (pO1 μ[A] x - pO1 (fst A A) x - pO1 (snd A A) x) (by rw [map_sub, map_sub, hax.1, hax.2.1, hax.2.2.1, sub_self, sub_zero]) (by rw [map_sub, map_sub, hax.2.2.2.1, hax.2.2.2.2.1, hax.2.2.2.2.2, sub_zero, sub_self])`. Rewrite `h` using `[sub_sub, sub_eq_zero]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primO1_of_isAbelianScheme : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → StructureSheafH1Primitive A := by

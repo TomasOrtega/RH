@@ -5,15 +5,15 @@ namespace GlobalTheory.SpanInfEq
 open NumberField
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (L : Set V)` using `by rw [hL.span_eq_top]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d₁, hd₁, h₁⟩` from `hx`. Take `⟨d₂, hd₂, h₂⟩` from `hy`. Use `⟨d₁ * d₂, mul_ne_zero hd₁ hd₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem _ h₁`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ h₂`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, h⟩` from `hx`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := RingOfIntegers K) c`. Use `⟨b * d, mul_ne_zero (nonZeroDivisors.ne_zero hb) hd, ?_⟩` and prove the remaining obligations. Establish `hb' : algebraMap (RingOfIntegers K) K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `: (b * d) • ((algebraMap (RingOfIntegers K) K a / algebraMap (RingOfIntegers K) K b) • x) = a • (d • x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← algebraMap_smul K (b * d), ← algebraMap_smul K d, ← algebraMap_smul K a, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `L.smul_mem _ h`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V]
     [Module K V] [Module (RingOfIntegers K) V] [IsScalarTower (RingOfIntegers K) K V]
@@ -47,13 +47,11 @@ theorem exists_smul_mem {K : Type} [Field K] [NumberField K] {V : Type} [AddComm
     exact L.smul_mem _ h
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `(Submodule.mem_inf.mp hx).2`. Introduce `v hv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, h⟩` from `exists_smul_mem L hL v`. Establish `hd' : algebraMap (RingOfIntegers K) K d ≠ 0`. Introduce `h0`. Conclude with `hd ((map_eq_zero_iff _ (IsFractionRing.injective (RingOfIntegers K) K)).mp h0)`. Establish `hdT : d • v ∈ Submodule.restrictScalars (RingOfIntegers K) T`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul K d v]`. Conclude with `T.smul_mem _ hv`. Establish `hmem : d • v ∈ L ⊓ Submodule.restrictScalars (RingOfIntegers K) T` using `Submodule.mem_inf.mpr ⟨h, hdT⟩`. Establish `: v = (algebraMap (RingOfIntegers K) K d)⁻¹ • (d • v)`. Rewrite using `[← algebraMap_smul K d v, smul_smul, inv_mul_cancel₀ hd', one_smul]`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inf_eq {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V]
     [Module K V] [Module (RingOfIntegers K) V] [IsScalarTower (RingOfIntegers K) K V]
@@ -79,7 +77,7 @@ theorem span_inf_eq {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGrou
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Introduce `L hL T` and use `span_inf_eq L hL T`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [inst : Field K] [NumberField K] {V : Type} [inst_2 : AddCommGroup V]
     [inst_3 : Module K V] [inst_4 : Module (NumberField.RingOfIntegers K) V]

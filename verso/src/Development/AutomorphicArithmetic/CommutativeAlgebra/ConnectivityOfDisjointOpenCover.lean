@@ -4,25 +4,25 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.t_E6Cut
 
 /- English proof (translation)
-Introduce `hP a1 R _ F c Z ι O j _ disj cov W h`. Establish `hsq : ∀ a, sch.map (j a ∣_ W) ≫ sch.map W.ι = sch.map (j a ⁻¹ᵁ W).ι ≫ sch.map (j a)` using `fun a => by`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, morphismRestrict_ι]`. Establish `hval : ∀ a (y : (j a ⁻¹ᵁ W).toScheme), W.ι ((j a ∣_ W) y) = j a ((j a ⁻¹ᵁ W).ι y)` using `fun a y => by`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, morphismRestrict_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `disjW : ∀ a b, a ≠ b → Disjoint (Set.range (j a ∣_ W)) (Set.range (j b ∣_ W))`. Introduce `a b hab`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨x, rfl⟩ ⟨y, hy⟩`. Use `Set.disjoint_left.1 (disj a b hab) ⟨(j a ⁻¹ᵁ W).ι x, (hval a x).symm⟩ ⟨(j b ⁻¹ᵁ W).ι y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hval b y, hy]`. Establish `covW : ∀ y : W.toScheme, ∃ a, y ∈ Set.range (j a ∣_ W)`. Introduce `y`. Take `⟨a, x, hx⟩` from `cov (W.ι y)`. Establish `hxW : x ∈ j a ⁻¹ᵁ W`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `j a x ∈ W`. Rewrite using `[hx]`. Conclude with `y.2`. Choose the witnesses or unpack the hypotheses as in `⟨x', rfl⟩ : x ∈ Set.range (j a ⁻¹ᵁ W).ι := by`. Rewrite using `[Scheme.Opens.range_ι]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hxW`. Conclude with `⟨a, x', W.ι.isOpenEmbedding.injective ((hval a x').trans hx)⟩`. Establish `key : ∀ (n : ℤ) (x : H R (sch.obj Z) F n) (a : ι), pull R (sch.map (j a ∣_ W)) F n (pull R (sch.map W.ι) F n x) = pull R (sch.map (j a ⁻¹ᵁ W).ι) F n (pull R (sch.map (j a)) F n x)`. Introduce `n x a`. Rewrite using `[← pull_comp, ← pull_comp, hsq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Establish `PZ` using `hP a1 R F O j disj cov n`. Establish `PW` using `hP a1 R F (fun a => (j a ⁻¹ᵁ W).toScheme) (fun a => j a ∣_ W) disjW covW n`. Establish `hinj : n < c → Function.Injective (pull R (sch.map W.ι) F n)`. Introduce `hn x y hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `PZ.1` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `ha : Function.Injective (pull R (sch.map (j a ⁻¹ᵁ W).ι) F n)` using `(h a n).2 hn`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← key, ← key, hxy]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun hn => ⟨hinj (by omega), ?_⟩, hinj⟩` and prove the remaining obligations. Introduce `y`. Establish `hs : ∀ a, ∃ z, pull R (sch.map (j a ⁻¹ᵁ W).ι) F n z = pull R (sch.map (j a ∣_ W)) F n y`. Introduce `a`. Establish `ha : Function.Bijective (pull R (sch.map (j a ⁻¹ᵁ W).ι) F n)` using `(h a n).1 hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ha.2 _`. Use `choose z hz using hs`. Take `⟨x, hx⟩` from `PZ.2 z`. Use `⟨x, ?_⟩` and prove the remaining obligations. Apply `PW.1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Establish `hxa : pull R (sch.map (j a)) F n x = z a` using `congrFun hx a`. Express the relevant statement in the definitionally equal form `pull R (sch.map (j a ∣_ W)) F n (pull R (sch.map W.ι) F n x) = pull R (sch.map (j a ∣_ W)) F n y`. Rewrite using `[key, hxa, hz]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.connectivity_of_disjoint_open_cover :
     LeafProd → A1 → ∀ (R : Type) [CommRing R] (F : Shv R) (c : ℤ) {Z : Scheme.{0}} {ι : Type} (O : ι → Scheme.{0}) (j : ∀ a, O a ⟶ Z) [∀ a, IsOpenImmersion (j a)],

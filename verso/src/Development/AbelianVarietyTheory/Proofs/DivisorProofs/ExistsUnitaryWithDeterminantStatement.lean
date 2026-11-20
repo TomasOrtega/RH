@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.AdLat GlobalTheory.UCls Re
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnitDet.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsUnitaryWithDeterminant.lean&line=46#L46)
 -/

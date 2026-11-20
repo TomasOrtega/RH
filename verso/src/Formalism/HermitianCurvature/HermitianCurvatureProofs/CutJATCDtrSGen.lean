@@ -12,16 +12,16 @@ variable {n : ℕ}
 def cols (x : Fin n → Fin n → ℂ) : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun p i => x i p
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[cols, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cols_mulVec (x : Fin n → Fin n → ℂ) (c : Fin n → ℂ) : cols x *ᵥ c = ∑ i, c i • x i := by
   funext p
   simp [cols, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[cols_mulVec, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem cols_mulVec_single (x : Fin n → Fin n → ℂ) (i : Fin n) : cols x *ᵥ Pi.single i 1 = x i := by
   rw [cols_mulVec, Finset.sum_eq_single i]
@@ -32,7 +32,7 @@ theorem cols_mulVec_single (x : Fin n → Fin n → ℂ) (i : Fin n) : cols x *�
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use extensionality with `p i`. Simplify using `[cols, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_cols (A : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → Fin n → ℂ) :
     A * cols x = cols (fun i => A *ᵥ x i) := by
@@ -40,7 +40,7 @@ theorem mul_cols (A : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → Fin n → ℂ) 
   simp [cols, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `j i`. Rewrite using `[Matrix.mul_assoc, mul_cols]`. Simplify using `[cols, Matrix.mul_apply, herm, dotProduct, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_cols (H : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → Fin n → ℂ) :
     (cols x)ᴴ * H * cols x = Matrix.of fun j i => herm H (x i) (x j) := by
@@ -49,7 +49,7 @@ theorem gram_cols (H : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → Fin n → ℂ)
   simp [cols, Matrix.mul_apply, herm, dotProduct, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Rewrite using `[gram_cols]`. Use extensionality with `j i`. Conclude with `hx i j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gram_eq {H : Matrix (Fin n) (Fin n) ℂ} {x : Fin n → Fin n → ℂ}
     (hx : ∀ i j, herm H (x i) (x j) = H j i) : (cols x)ᴴ * H * cols x = H := by
@@ -58,7 +58,7 @@ theorem gram_eq {H : Matrix (Fin n) (Fin n) ℂ} {x : Fin n → Fin n → ℂ}
   exact hx i j
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (gram_eq hx)`. Rewrite `h` using `[Matrix.det_mul]`. Rewrite `hH` using `[← h]`. Conclude with `isUnit_of_mul_isUnit_right hH`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cols_unit {H : Matrix (Fin n) (Fin n) ℂ} (hH : IsUnit H.det) {x : Fin n → Fin n → ℂ}
     (hx : ∀ i j, herm H (x i) (x j) = H j i) : IsUnit (cols x).det := by
@@ -68,13 +68,13 @@ theorem cols_unit {H : Matrix (Fin n) (Fin n) ℂ} (hH : IsUnit H.det) {x : Fin 
   exact isUnit_of_mul_isUnit_right hH
 
 /- English proof (translation)
-Establish `hX` using `cols_unit hH hx`. Establish `gx` using `gram_eq hx`. Establish `gy` using `gram_eq hy`. Establish `e1 : (cols x)⁻¹ * cols x = 1` using `Matrix.nonsing_inv_mul _ hX`. Establish `e2 : cols x * (cols x)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨cols y * (cols x)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `show (cols y * (cols x)⁻¹)ᴴ * H * (cols y * (cols x)⁻¹) = H`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((cols x)⁻¹)ᴴ * ((cols x)ᴴ * H * cols x) * (cols x)⁻¹ := by rw [gy, gx]`. Use `_ = (cols x * (cols x)⁻¹)ᴴ * H * (cols x * (cols x)⁻¹) := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [e2]; simp`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cols_mulVec_single]`. Use `_ = y i := by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, e1, Matrix.mul_one, cols_mulVec_single]`.
+A detailed English derivation is pending.
 -/
 theorem wittGram (n : ℕ) (H : Matrix (Fin n) (Fin n) ℂ) (hH : IsUnit H.det) (x y : Fin n → Fin n → ℂ)
     (hx : ∀ i j, herm H (x i) (x j) = H j i) (hy : ∀ i j, herm H (y i) (y j) = H j i) :
@@ -100,9 +100,9 @@ theorem wittGram (n : ℕ) (H : Matrix (Fin n) (Fin n) ℂ) (hH : IsUnit H.det) 
           rw [Matrix.mulVec_mulVec, Matrix.mul_assoc, e1, Matrix.mul_one, cols_mulVec_single]
 
 /- English proof (translation)
-Establish `hX` using `cols_unit hH hx`. Establish `e : A * cols x = B * cols x`. Rewrite using `[mul_cols, mul_cols]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h i`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem extGram (n : ℕ) (H : Matrix (Fin n) (Fin n) ℂ) (hH : IsUnit H.det) (x : Fin n → Fin n → ℂ)
     (hx : ∀ i j, herm H (x i) (x j) = H j i) (A B : Matrix (Fin n) (Fin n) ℂ)

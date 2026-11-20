@@ -11,11 +11,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `h1` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `h2` using `congrArg Complex.im H.sqrt_neg_disc_sq`. Simplify using `only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at h1 h2`. Establish `hre : H.rt0.re = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 (show H.rt0.re * H.rt0.im * 2 = 0 by linarith) with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `h1` using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Evaluate the numerical expressions using `at h`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hre]`. Simplify using the standard rewrite rules.
+Evaluate the numerical expressions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
   have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
@@ -36,13 +36,13 @@ theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
   · simp
 
 /- English proof (translation)
-Introduce `τ`. Establish `hsq : (τ (H.rt : E)) ^ 2 = -(H.d : ℂ)`. Establish `e : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← map_pow, e]`. Simplify using the standard rewrite rules. Establish `hpm : τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0`. Establish `h : (τ (H.rt : E) - H.rt0) * (τ (H.rt : E) + H.rt0) = 0`. Establish `e : (τ (H.rt : E) - H.rt0) * (τ (H.rt : E) + H.rt0) = τ (H.rt : E) ^ 2 - H.rt0 ^ 2` using `by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hsq, H.sqrt_neg_disc_sq, sub_self]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h)`. Conclude with `Or.inr (eq_neg_of_add_eq_zero_left h)`. Break down `hpm with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl h`. Use `right show starRingEnd ℂ (τ (H.rt : E)) = H.rt0`. Rewrite using `[h, map_neg, rt0_conj_neg_ne_zero, neg_neg]`.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiCover_holds (H : Host E) : PsiCoverSt H := by
   intro τ

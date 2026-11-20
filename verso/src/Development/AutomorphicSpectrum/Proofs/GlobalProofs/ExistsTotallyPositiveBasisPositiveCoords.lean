@@ -11,7 +11,7 @@ open NumberField NumberField.Units NumberField.Units.dirichletUnitTheorem Global
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Gens
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def, map_mul, map_ratCast, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sum_ratSmul {F κ : Type} [Field F] [Fintype κ] (σ : F →+* ℝ) (q : κ → ℚ) (v : κ → F) :
     σ (∑ i, q i • v i) = ∑ i, σ (v i) * (q i : ℝ) := by
@@ -20,23 +20,21 @@ theorem map_sum_ratSmul {F κ : Type} [Field F] [Fintype κ] (σ : F →+* ℝ) 
   rw [Rat.smul_def, map_mul, map_ratCast, mul_comm]
 
 /- English proof (translation)
-Introduce `F _ _ _ M`. Take `⟨hfin, hcard⟩` from `GlobalTheory.T.card_real_embeddings_eq_finrank F`. Use `letI : Fintype (F →+* ℝ) := Fintype.ofFinite _`. Take `⟨ε, hε, hW⟩` from `GlobalTheory.T.near_identity_matrix_positive_solution (κ := F →+* ℝ) M`. Establish `hex : ∀ i : F →+* ℝ, ∃ v : F, ∀ σ : F →+* ℝ, |σ v - ((if σ = i then 1 else 0) + ε / 2)| < ε / 2` using `fun i => GlobalTheory.T.totally_real_field_dense_embeddings F (fun σ => (if σ = i then 1 else 0) + ε / 2) (ε / 2) (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose v hv using hex`. Establish `hclose : ∀ σ i : F →+* ℝ, |σ (v i) - if σ = i then 1 else 0| < ε`. Introduce `σ i`. Establish `h` using `abs_lt.mp (hv i σ)`. Rewrite using `[abs_lt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith [h.1, h.2]`. Establish `hpos : ∀ σ i : F →+* ℝ, 0 < σ (v i)`. Introduce `σ i`. Establish `h` using `(abs_lt.mp (hv i σ)).1`. Apply the tactic sequence `split_ifs at h <;> linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hW (fun σ i => σ (v i)) hclose`. Establish `hli : LinearIndependent ℚ v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `q hq i`. Establish `hz : (fun i => (q i : ℝ)) = 0` using `h1 _ fun σ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum_ratSmul σ q v, hq, map_zero]`. Establish `hi : (q i : ℝ) = 0` using `congrFun hz i`. Conclude with `hi` after adjusting the coercions. Establish `hcardκ : Fintype.card (F →+* ℝ) = Module.finrank ℚ F`. Rewrite using `[← Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcard`. Use `haveI : Nonempty (F →+* ℝ) := by`. Apply `Fintype.card_pos_iff.mp` to reduce the goal to its premises. Rewrite using `[hcardκ]`. Conclude with `Module.finrank_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli hcardκ`. Establish `hb : ∀ i, b i = v i` using `fun i => by`. Simplify using `[b, coe_basisOfLinearIndependentOfCardEqFinrank]`. Use `⟨F →+* ℝ, inferInstance, b, fun i σ => ?_, fun x hx hM i => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `hpos σ i`. Establish `hrep : ∀ σ : F →+* ℝ, σ x = ∑ i, σ (v i) * ((b.repr x i : ℚ) : ℝ)`. Introduce `σ`. Rewrite using `[← map_sum_ratSmul σ (fun i => b.repr x i) v]`. Use `congr 1`.
-
-Use `conv_lhs => rw [← b.sum_repr x]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hb]`. Establish `hc` using `h2 (fun i => ((b.repr x i : ℚ) : ℝ)) (fun σ => by rw [← hrep σ]; exact hx σ) (fun σ τ => by rw [← hrep σ, ← hrep τ]; exact hM σ τ) i`. Conclude with `hc` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem exists_totPos_basis : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (M : ℝ),
     ∃ (κ : Type) (_ : Fintype κ) (b : Module.Basis κ ℚ F), (∀ i, TotPos F (b i)) ∧

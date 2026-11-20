@@ -16,7 +16,7 @@ namespace UpperTheory.Gal.InertialTypesAlt.G.WP
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `: Neutral.B1.localIdele K v x = GroundTheory.Global.IdeleGroup.finiteEmbedding v x`. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding v x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem module_local (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
     ((GroundTheory.Global.IdeleGroup.ideleModule K (Neutral.B1.localIdele K v x)).1 : ℝ) = ‖(x : v.adicCompletion K)‖ := by
@@ -27,7 +27,7 @@ private theorem module_local (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicComple
   exact GroundTheory.Global.IdeleGroup.ideleModule_finiteEmbedding v x
 
 /- English proof (translation)
-Rewrite using `[FinitePlace.norm_def, h, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Simplify using `[WithZero.exp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem norm_of_val (v : HeightOneSpectrum (𝓞 K)) (x : v.adicCompletion K) (n : ℤ)
     (h : Valued.v x = WithZero.exp n) : ‖x‖ = (Ideal.absNorm v.asIdeal : ℝ) ^ n := by
@@ -35,7 +35,7 @@ private theorem norm_of_val (v : HeightOneSpectrum (𝓞 K)) (x : v.adicCompleti
   simp [WithZero.exp]
 
 /- English proof (translation)
-Rewrite using `[← module_local]`. Conclude with `h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_loc {χ : HChar K} {s : ℂ} (h : UpperTheory.ConvolutionTheory.T.IsPow χ s) (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
     ((χ.loc v x : ℂˣ) : ℂ) = ((‖(x : v.adicCompletion K)‖ : ℝ) : ℂ) ^ s := by
@@ -43,7 +43,7 @@ private theorem pow_loc {χ : HChar K} {s : ℂ} (h : UpperTheory.ConvolutionThe
   exact h _
 
 /- English proof (translation)
-Introduce `x hx` and use `by apply Units.ext rw [pow_loc h, norm_of_val v _ 0 (by simpa [Formalism.L2.Host.IsUnitAt] using hx)] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem pow_unr {χ : HChar K} {s : ℂ} (h : UpperTheory.ConvolutionTheory.T.IsPow χ s) (v : HeightOneSpectrum (𝓞 K)) : χ.UnrAt v := fun x hx => by
   apply Units.ext
@@ -51,9 +51,9 @@ private theorem pow_unr {χ : HChar K} {s : ℂ} (h : UpperTheory.ConvolutionThe
   simp
 
 /- English proof (translation)
-Establish `e : χ.val v = χ.loc v (Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v))` using `rfl`. Establish `e2 : (Formalism.ConjugateSelfDual.normV v : ℕ) = Ideal.absNorm v.asIdeal` using `rfl`. Rewrite using `[e, pow_loc h, norm_of_val v _ (-1) (Formalism.L2.Host.unif_spec v), e2, zpow_neg_one, Complex.ofReal_inv, Complex.inv_cpow _ _ (by`. Rewrite using `[Complex.arg_ofReal_of_nonneg (by positivity)]`. Conclude with `Real.pi_pos.ne), Complex.cpow_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem pow_val {χ : HChar K} {s : ℂ} (h : UpperTheory.ConvolutionTheory.T.IsPow χ s) (v : HeightOneSpectrum (𝓞 K)) :
     ((χ.val v : ℂˣ) : ℂ) = ((Formalism.ConjugateSelfDual.normV v : ℕ) : ℂ) ^ (-s) := by
@@ -69,7 +69,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [IsTotallyComplex F] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, pow_val h, pow_val h', hf, Nat.cast_pow, ← Complex.cpow_nat_mul, Complex.natCast_cpow_natCast_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_pow {χ : HChar F} {χ' : HChar E} {s : ℂ} (h : UpperTheory.ConvolutionTheory.T.IsPow χ s) (h' : UpperTheory.ConvolutionTheory.T.IsPow χ' s)
     (w : HeightOneSpectrum (𝓞 E)) (f : ℕ) (hf : Formalism.ConjugateSelfDual.normV w = Formalism.ConjugateSelfDual.normV (w.under (𝓞 F)) ^ f) :
@@ -79,9 +79,9 @@ private theorem val_pow {χ : HChar F} {χ' : HChar E} {s : ℂ} (h : UpperTheor
     Complex.natCast_cpow_natCast_mul]
 
 /- English proof (translation)
-Use `Filter.Eventually.mono H fun w hw f hf => ?_` and prove the remaining obligations. Take `⟨B, hB, hB'⟩` from `hw f hf`. Use `⟨B.map (· * χ.val (w.under (𝓞 F))), ?_, ?_⟩` and prove the remaining obligations. Use `satake_twist_holds F n (CG.mk π) χ _ B (pow_unr h _) hB` as an intermediate fact. Rewrite `this` using `[CG.twist_mk]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `satake_twist_holds E n (CG.mk P) χ' w _ (pow_unr h' _) hB'` as an intermediate fact. Rewrite `this` using `[CG.twist_mk]`. Express the relevant statement in the definitionally equal form `(CG.mk (P.twist χ')).HasSat w _`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[Multiset.map_map, val_pow h h' w f hf, mul_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 private theorem weak_twist {χ : HChar F} {χ' : HChar E} {s : ℂ} (h : UpperTheory.ConvolutionTheory.T.IsPow χ s) (h' : UpperTheory.ConvolutionTheory.T.IsPow χ' s)
     (π : CuspSub F n) (P : CuspSub E n) (H : WeakBC (Cusp.cx π).sat (Cusp.cx P).sat) :
@@ -101,7 +101,7 @@ end UpperTheory.Gal.InertialTypesAlt.G.WP
 
 open UpperTheory.Gal.InertialTypesAlt.G.WP in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ _ _ n _ z χ χ' h h' π P H`. Conclude with `weak_twist h h' π P H`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.G.weakPow :
     UpperTheory.Gal.InertialTypesAlt.G.WeakPow := by

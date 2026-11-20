@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `h : ((a ^ l : ℤ) : ZMod l) = ((a : ℤ) : ZMod l)` using `by push_cast; exact ZMod.pow_card _`. Rewrite `h` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Take `⟨b, hb⟩` from `h`. Conclude with `⟨b, by simp only [RingHom.id_apply]; linear_combination hb⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem int_frob_lift (l : ℕ) [hl : Fact l.Prime] (a : ℤ) :
     ∃ b : ℤ, (RingHom.id ℤ) a = a ^ l + (l : ℤ) * b := by
@@ -25,11 +25,11 @@ def intDelta (l : ℕ) [hl : Fact l.Prime] : Delta l ℤ :=
     (int_frob_lift l)
 
 /- English proof (translation)
-Use `set D := polyDelta (intDelta l)`. Establish `hl0 : (l : MvPolynomial ℕ ℤ) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`. Use `mul_left_cancel₀ hl0 ?_` and prove the remaining obligations. Establish `h1` using `D.φ_eq (D.φ x)`. Establish `h2` using `D.φ_eq x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : D.φ ((l : MvPolynomial ℕ ℤ) * D.δ x) = (l : MvPolynomial ℕ ℤ) * D.φ (D.δ x)`. Rewrite using `[map_mul, map_natCast]`. Establish `h4 : D.φ (D.φ x) = D.φ (x ^ l) + D.φ ((l : MvPolynomial ℕ ℤ) * D.δ x)`. Rewrite using `[← map_add, ← h2]`. Rewrite `h4` using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-h1 + h4 + h3`.
+A detailed English derivation is pending.
 -/
 theorem poly_δ_φ (l : ℕ) [hl : Fact l.Prime] (x : MvPolynomial ℕ ℤ) :
     (polyDelta (intDelta l)).δ ((polyDelta (intDelta l)).φ x) =
@@ -47,15 +47,13 @@ theorem poly_δ_φ (l : ℕ) [hl : Fact l.Prime] (x : MvPolynomial ℕ ℤ) :
   linear_combination -h1 + h4 + h3
 
 /- English proof (translation)
-Introduce `l hl A _ D a`. Use `set D₀ := polyDelta (intDelta l)`. Set `g : MvPolynomial ℕ ℤ →+* A` to `MvPolynomial.eval₂Hom (Int.castRingHom A) (fun i => D.δ^[i] a)`. Establish `hg : ∀ p, p ∈ δLocus D₀ D g`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C n`. Establish `: MvPolynomial.C n = ((n : ℤ) : MvPolynomial ℕ ℤ)` using `by simp`. Rewrite using `[this]`. Conclude with `intCast_mem _ n`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q hp hq => exact add_mem hp hq`. Consider the case `mul_X p i hp`. Use `mul_mem hp (mem_δLocus.2 ?_)` and prove the remaining obligations. Rewrite using `[polyDelta_X]`. Simplify using `only [g, MvPolynomial.eval₂Hom_X']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.iterate_succ_apply']`. Establish `hgδ : ∀ p, g (D₀.δ p) = D.δ (g p)` using `fun p => mem_δLocus.1 (hg p)`. Establish `hgφ : ∀ p, g (D₀.φ p) = D.φ (g p)` using `Delta.map_φ_of_map_δ D₀ D g hgδ`. Establish `hX : g (MvPolynomial.X 0) = a` using `by simp [g]`. Use `congrArg g (poly_δ_φ l (MvPolynomial.X 0))` as an intermediate fact.
-
-Rewrite `this` using `[hgδ, hgφ, hgφ, hgδ, hX]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Delta.δ_φ_comm : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (D : Delta l A) (a : A),
     D.δ (D.φ a) = D.φ (D.δ a) := by

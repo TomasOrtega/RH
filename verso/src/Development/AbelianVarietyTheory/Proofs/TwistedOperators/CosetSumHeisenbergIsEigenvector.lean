@@ -27,7 +27,7 @@ noncomputable section
 namespace GlobalTheory.CosetEigen
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heisO_lincomb {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (y : WO S T) {ι : Type*}
     (s : Finset ι) (c : ι → ℂ) (f : ι → WO S T → ℂ) :
@@ -37,25 +37,25 @@ theorem heisO_lincomb {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (y
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Introduce `D ψ S T ΛS ΛT P e he Λd R x hR h2 h3 h4 g hg y hy hyd`. Establish `hec : cA D e * cA D (cA D e) = 0` using `by rw [cA_cA, mul_comm]; exact he.2`. Establish `half_add : ∀ {a b : WO S T}, IsHalf (cA D e) a → IsHalf (cA D e) b → IsHalf (cA D e) (a + b)` using `fun ha hb i j => by rw [Matrix.add_apply, mul_add, ha i j, hb i j]`. Establish `half_neg : ∀ {a : WO S T}, IsHalf (cA D e) a → IsHalf (cA D e) (-a)` using `fun ha i j => by rw [Matrix.neg_apply, mul_neg, ha i j]`. Establish `half_sub : ∀ {a b : WO S T}, IsHalf (cA D e) a → IsHalf (cA D e) b → IsHalf (cA D e) (a - b)` using `fun ha hb => by rw [sub_eq_add_neg]; exact half_add ha (half_neg hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ann_add : ∀ {a b : WO S T}, (∀ u ∈ Λd, ψ (symplO S T u a) = 1) → (∀ u ∈ Λd, ψ (symplO S T u b) = 1) → ∀ u ∈ Λd, ψ (symplO S T u (a + b)) = 1` using `fun ha hb u hu => by rw [Formalism.IndefR.Fin.symplO_add_right, AddChar.map_add_eq_mul, ha u hu, hb u hu, one_mul]`. Establish `ann_neg : ∀ {a : WO S T}, (∀ u ∈ Λd, ψ (symplO S T u a) = 1) → ∀ u ∈ Λd, ψ (symplO S T u (-a)) = 1` using `fun ha u hu => by rw [Formalism.IndefR.Fin.symplO_neg_right, AddChar.map_neg_eq_inv, ha u hu, inv_one]`. Use `choose! f hfR hfΛ using h2`. Establish `hyz : ∀ z ∈ R, IsHalf (cA D e) (y + z) ∧ ∀ u ∈ Λd, ψ (symplO S T u (y + z)) = 1` using `fun z hz => ⟨half_add hy (hR z hz).1, ann_add hyd (hR z hz).2⟩`. Establish `hzy : ∀ z ∈ R, IsHalf (cA D e) (z + -y) ∧ ∀ u ∈ Λd, ψ (symplO S T u (z + -y)) = 1` using `fun z hz => ⟨half_add (hR z hz).1 (half_neg hy), ann_add (hR z hz).2 (ann_neg hyd)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ a ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True), IsHalf (cA D e) a → heisO ψ S T a g = g` using `fun a ha hh => Formalism.IndefR.Fin.LevelGroupLemmas.Lat.heisO_fix_of_latVac ψ hg he a ha (Or.inr hh)`. Establish `key : ∀ z ∈ R, ψ (-symplO S T x z) • heisO ψ S T y (heisO ψ S T z g) = ψ (symplO S T x y) • (ψ (-symplO S T x (f (y + z))) • heisO ψ S T (f (y + z)) g)`. Introduce `z hz`. Take `⟨hh, ha⟩` from `hyz z hz`. Establish `hσR` using `hfR _ hh ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0` using `hfΛ _ hh ha`. Generalize the expression as in `f (y + z) = s at hσR ha0 ⊢`. Establish `hσh` using `(hR _ hσR).1`. Establish `ha0h : IsHalf (cA D e) (y + z - s)` using `half_sub hh hσh`. Establish `e1 : heisO ψ S T y (heisO ψ S T z g) = heisO ψ S T s g`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.IndefR.Fin.LevelGroupLemmas.Lat.heisO_add_of_iso ψ (Formalism.IndefR.Fin.LevelGroupLemmas.Lat.symplOH_half_zero hec hy (hR z hz).1)]`. Establish `hsplit : y + z = s + (y + z - s)` using `by abel`. Rewrite using `[hsplit, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.heisO_add_of_iso ψ (Formalism.IndefR.Fin.LevelGroupLemmas.Lat.symplOH_half_zero hec hσh ha0h), hfix _ ha0 ha0h]`. Establish `hlin : symplO S T x y + symplO S T x z = symplO S T x s + symplO S T x (y + z - s)`. Rewrite using `[← Formalism.IndefR.Fin.symplO_add_right, ← Formalism.IndefR.Fin.symplO_add_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `hph : -symplO S T x z = symplO S T x y + -symplO S T x s + -symplO S T x (y + z - s)`. Take the linear combination `(-1 : AF D.host.F) * hlin`. Rewrite using `[e1, hph, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv ψ (symplO S T x (y + z - s)), h4 _ ha0 ha0h, inv_one, mul_one, smul_smul]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heisO_lincomb, Finset.sum_congr rfl key, ← Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_nbij' (fun z => f (y + z)) (fun z => f (z + -y)) (fun z hz => hfR _ (hyz z hz).1 (hyz z hz).2) (fun z hz => hfR _ (hzy z hz).1 (hzy z hz).2) (fun z hz => ?_) (fun z hz => ?_) (fun z hz => rfl)` and prove the remaining obligations. Establish `hs` using `hfR _ (hyz z hz).1 (hyz z hz).2`. Establish `h1` using `hfΛ _ (hyz z hz).1 (hyz z hz).2`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2'` using `hfΛ _ (hzy _ hs).1 (hzy _ hs).2`. Establish `ht` using `hfR _ (hzy _ hs).1 (hzy _ hs).2`. Establish `hsum` using `add_mem h1 h2'`. Establish `heq : y + z - f (y + z) + (f (y + z) + -y - f (f (y + z) + -y)) = z - f (f (y + z) + -y)` using `by abel`. Rewrite `hsum` using `[heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(h3 z hz _ ht hsum).symm`. Establish `ht` using `hfR _ (hzy z hz).1 (hzy z hz).2`. Establish `h1` using `hfΛ _ (hzy z hz).1 (hzy z hz).2`. Establish `h2'` using `hfΛ _ (hyz _ ht).1 (hyz _ ht).2`. Establish `hs` using `hfR _ (hyz _ ht).1 (hyz _ ht).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `add_mem h1 h2'`. Establish `heq : z + -y - f (z + -y) + (y + f (z + -y) - f (y + f (z + -y))) = z - f (y + f (z + -y))` using `by abel`. Rewrite `hsum` using `[heq]`. Conclude with `(h3 z hz _ hs hsum).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetSum_eigen : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P → ∀ (Λd : AddSubgroup (WO S T)) (R : Finset (WO S T)) (x : WO S T), (∀ y ∈ R, IsHalf (cA D e) y ∧ ∀ u ∈ Λd, ψ (symplO S T u y) = 1) → (∀ y, IsHalf (cA D e) y → (∀ u ∈ Λd, ψ (symplO S T u y) = 1) → ∃ y' ∈ R, y - y' ∈ latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True) → (∀ y ∈ R, ∀ y' ∈ R, y - y' ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True) → y = y') → (∀ a ∈ latO S T (ΛS : Set _) (ΛT : Set _) (fun _ => True), IsHalf (cA D e) a → ψ (symplO S T x a) = 1) → ∀ g : WO S T → ℂ, IsLatVac (heisO ψ S T) (latO S T (ΛS : Set _) (ΛT : Set _) fun _ => True) g → ∀ y, IsHalf (cA D e) y → (∀ u ∈ Λd, ψ (symplO S T u y) = 1) → heisO ψ S T y (∑ z ∈ R, ψ (-symplO S T x z) • heisO ψ S T z g) = ψ (symplO S T x y) • ∑ z ∈ R, ψ (-symplO S T x z) • heisO ψ S T z g := by
   intro D ψ S T ΛS ΛT P e he Λd R x hR h2 h3 h4 g hg y hy hyd

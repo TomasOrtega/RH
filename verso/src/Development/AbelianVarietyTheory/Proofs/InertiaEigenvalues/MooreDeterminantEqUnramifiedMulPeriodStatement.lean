@@ -5,7 +5,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PMon.mooreDeterminant_eq_unramified_mul_period_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FMooreDeterminantEqUnramifiedMulPeriod.lean&line=34#L34)
 -/

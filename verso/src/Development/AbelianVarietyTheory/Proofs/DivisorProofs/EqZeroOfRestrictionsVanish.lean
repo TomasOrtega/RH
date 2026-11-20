@@ -33,11 +33,11 @@ namespace GlobalTheory.IntWtRead
 open Formalism.L2.Pj
 
 /- English proof (translation)
-Unfold `evalAt`. Rewrite using `[dif_pos hy, dif_pos hy']`. Apply `eq_of_locM (K := K)` to reduce the goal to its premises. Introduce `m hm`. Take `⟨A, u, c, c', B, uB, uB', tB, π, π', cB, hc, hc', hπ, hπ', hbB, e1, e2, e3⟩` from `h S t y y' hb m`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, chartAt_val hf hc' hy'.choose_spec.choose_spec.choose_spec, chartAt_val hf hc hy.choose_spec.choose_spec.choose_spec, ← e1, ← e2, AlgHom.comp_apply, AlgHom.comp_apply, ← hf A B π u uB hπ, ← hf A B π' u uB' hπ', hw B tB uB uB' hbB, map_mul]`. Use `congr 1`. Establish `hu : ∀ i, Units.map (cB : B.R →* Localization.AtPrime m) (tB i) = Units.map ((locM K m : S →ₐ[K] Localization.AtPrime m) : S →* Localization.AtPrime m) (t i)` using `fun i => Units.ext (by simpa using e3 i)`. Establish `h1 : cB ((∏ i, tB i ^ e i : (B.R)ˣ) : B.R) = ((Units.map (cB : B.R →* Localization.AtPrime m) (∏ i, tB i ^ e i) : (Localization.AtPrime m)ˣ) : Localization.AtPrime m)` using `rfl`. Establish `h2 : locM K m ((∏ i, t i ^ e i : Sˣ) : S) = ((Units.map ((locM K m : S →ₐ[K] Localization.AtPrime m) : S →* Localization.AtPrime m) (∏ i, t i ^ e i) : (Localization.AtPrime m)ˣ) : Localization.AtPrime m)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, map_prod, map_prod]`. Simplify using `only [map_zpow, hu]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wtAllZ_of_borChart {K : Type} [Field K] {ι : Type} [Fintype ι]
     {pts : ∀ (S : Type) [CommRing S] [Algebra K S], Type}
@@ -79,17 +79,17 @@ open Formalism.L2.Pj
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D T j Y e o hY σ hσ G x h0`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hU` using `hY.unf σ hσ`. Take `⟨-, hB, hW, -, -, -, -⟩` from `GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS _ _ _ _ Y.d.Xo₂ Y.d.c₂`. Establish `hall : AllTest Y.d.Xo₂ Y.d.c₂` using `GlobalTheory.T.framedPoint_reduced_from_testRing hS _ _ _ _ Y.d.Xo₂ Y.d.c₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : (x : Rul Y.d.Xo₂ Y.d.c₂) ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (exZ _ G)` using `GlobalTheory.AllWt.cuspW_le_secZ G x.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p y`. Use `show (x : Rul Y.d.Xo₂ Y.d.c₂) p y = 0`. Use `eq_zero_of_cpts σ p _ fun ψ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS _ _ _ _ Y.d.Xo₂ Y.d.c₂ p.R (CAt σ) ψ y`. Take `⟨k, x', t, ht⟩` from `hU.2.2.1 z`. Establish `hft : FromTest (K` using `Y.d.c₂.F) (fun S _ _ => FrPt Y.d.Xo₂ Y.d.c₂ S) (fun φ y z => FrMap φ y z) z := ⟨p, ψ, y, hz⟩`. Establish `hev : evR Y.d.Xo₂ Y.d.c₂ (x : Rul Y.d.Xo₂ Y.d.c₂) z = ψ ((x : Rul Y.d.Xo₂ Y.d.c₂) p y)`. Unfold `evR evalAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hft]`. Conclude with `hW _ hx.1 (CAt σ) _ p _ ψ _ y z hft.choose_spec.choose_spec.choose_spec hz`. Use `haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)`. Establish `hw` using `wtAllZ_of_borChart hB (exZ _ G) hx.1 hx.2 (CAt σ) t _ z (hall _ _) (hall _ _) ht`. Establish `h1` using `h0 k x'.1 x'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : toC (evR Y.d.Xo₂ Y.d.c₂ (x : Rul Y.d.Xo₂ Y.d.c₂) ((Y.U σ).un k x')) = 0`. Rewrite using `[← h1]`. Use `show _ = (if h : x'.1 ∈ ((Y.U σ).X k).dom then toC (evR Y.d.Xo₂ Y.d.c₂ (x : Rul Y.d.Xo₂ Y.d.c₂) ((Y.U σ).un k ⟨x'.1, h⟩)) else 0)`. Rewrite using `[dif_pos x'.2]`. Establish `h3 : evR Y.d.Xo₂ Y.d.c₂ (x : Rul Y.d.Xo₂ Y.d.c₂) ((Y.U σ).un k x') = 0` using `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hev]`. Unfold `evR`. Rewrite using `[hw]`. Unfold `evR at h3`. Rewrite using `[h3, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspW_eq_zero_of_reading : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ σ : Y.d.c₂.F →+* ℂ, GoodEmb Y.d.c₂ σ → ∀ (G : WTZ D.host.E) (x : Y.V G), (∀ k, ∀ z ∈ ((Y.U σ).X k).dom, rdU (Y.U σ) (x : Rul Y.d.Xo₂ Y.d.c₂) k z = 0) → x = 0 := by
   intro D T j Y e o hY σ hσ G x h0

@@ -20,31 +20,31 @@ noncomputable section
 namespace GlobalTheory.RawLift.GoodFactor
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_mul' {D : D7} (V : HSp D) (a b : GA D V) : mt V (a * b) = mt V a * mt V b := by
   unfold Formalism.L2.Theta.mt
   rw [map_mul, Units.val_mul]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_one' {D : D7} (V : HSp D) : mt V 1 = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [map_one, Units.val_one]
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem mt_inj {D : D7} (V : HSp D) {a b : GA D V} (h : mt V a = mt V b) : a = b :=
   Subtype.val_injective (Units.ext h)
 
 /- English proof (translation)
-Apply `mt_inj` to reduce the goal to its premises. Establish `hAB : (mt V a - 1) * (mt V b - 1) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha i l, mul_assoc, mul_left_comm, hb l j, mul_zero]`. Establish `hBA : (mt V b - 1) * (mt V a - 1) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ha l j, mul_left_comm, ← mul_assoc, hb i l, zero_mul]`. Establish `e1 : mt V a * mt V b = (mt V a - 1) * (mt V b - 1) + mt V a + mt V b - 1` using `by noncomm_ring`. Establish `e2 : mt V b * mt V a = (mt V b - 1) * (mt V a - 1) + mt V b + mt V a - 1` using `by noncomm_ring`. Rewrite using `[mt_mul', mt_mul', e1, e2, hAB, hBA, zero_add, zero_add, add_comm (mt V a)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_of_supp_triv {D : D7} {V : HSp D} {f : AE D} {a b : GA D V} (ha : SuppF V f a) (hb : TrivAt V f b) :
     a * b = b * a := by
@@ -64,11 +64,11 @@ theorem comm_of_supp_triv {D : D7} {V : HSp D} {f : AE D} {a b : GA D V} (ha : S
   rw [mt_mul', mt_mul', e1, e2, hAB, hBA, zero_add, zero_add, add_comm (mt V a)]
 
 /- English proof (translation)
-Take `⟨ε, hε, rfl⟩` from `hf`. Establish `hu'` using `GlobalTheory.VecInvInert.idem_smul_eq hε hu`. Establish `hz : algebraMap (AF D.host.F) (AE D) ε • (mt T γ - 1) = 0`. Use extensionality with `a b`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hγ a b`. Establish `h0 : HMul.hMul (mt T γ - 1) (u : Matrix (Fin T.rank) (Fin S.rank) (AE D)) = (0 : Matrix (Fin T.rank) (Fin S.rank) (AE D))`. Rewrite using `[← hu', Matrix.mul_smul, ← Matrix.smul_mul, hz, Matrix.zero_mul]`. Unfold `actO`. Rewrite using `[inv_one, mt_one', Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem actO_one_of_trivAt {D : D7} {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {v : HeightOneSpectrum (𝓞 D.host.F)} {f : AE D} (hf : IsFinIdem D v f) {γ : GA D T} (hγ : TrivAt T f γ)
@@ -87,7 +87,7 @@ theorem actO_one_of_trivAt {D : D7} {S T : HSp D} {LS : Set (Fin S.rank → D.ho
   exact h0
 
 /- English proof (translation)
-Take `⟨hth, hl1, hl2⟩` from `hx`. Use `⟨hW.om_pres _ _ hth, fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Rewrite using `[← actO_one_of_trivAt hf hγ (nsmul_mem hu 2), ← hW.om_heis 1 γ _ x hth, hl1 u hu]`. Rewrite using `[← actO_one_of_trivAt hf hγ hu, ← hW.om_heis 1 γ _ x hth, hl2 e he u hu hh]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem vacFin_om_trivAt {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om)
@@ -99,9 +99,9 @@ theorem vacFin_om_trivAt {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
   · rw [← actO_one_of_trivAt hf hγ hu, ← hW.om_heis 1 γ _ x hth, hl2 e he u hu hh]
 
 /- English proof (translation)
-Unfold `thetaIP GlobalTheory.AdelicScalar.l2 Formalism.IndefR.Lift.pet`. Use `show _ = (starRingEnd ℂ) _`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem thetaInner_eq_star_l2 {D : D7} {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO S T')) (x y : WO S T' → ℂ) :
     thetaIP μ 𝓕 x y = star (GlobalTheory.AdelicScalar.l2 μ 𝓕 x y) := by
@@ -112,11 +112,11 @@ theorem thetaInner_eq_star_l2 {D : D7} {S T' : HSp D} (μ : Measure (WO S T')) (
   simp [mul_comm]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL _ i t μ 𝓕 hμ v f hf hoff k hk`. Take `⟨a, rfl⟩` from `GlobalTheory.T.exists_local_preimage_of_supportedAtPlace D (Wc D i) v f hf k hk`. Establish `hW` using `hL.thP.ωP i t`. Establish `hvac` using `GlobalTheory.T.pairFixedVector_latticeVacuum_offLevels D G Pl0 T A Ks R F hL i t v f hf hoff`. Establish `hunr` using `GlobalTheory.T.weilDatumCharacters_unramified_offLevels D G Pl0 T A Ks R F hL i t v f hf hoff`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, -, hc⟩` from `GlobalTheory.VacCoef.vac_coef D R.ψ (Vc D i) (Wc D i) _ _ (R.ωP i t) hW μ 𝓕 hμ v hunr`. Use `⟨star (φ a), fun γ _ hγ => ?_⟩` and prove the remaining obligations. Establish `hcomm` using `comm_of_supp_triv hk hγ`. Establish `hv'` using `vacFin_om_trivAt hW hf hγ hvac`. Establish `e : R.ωP i t (1, γ * GlobalTheory.FinZeta.embV (Wc D i) v a) (R.vP i t) = R.ωP i t (1, GlobalTheory.FinZeta.embV (Wc D i) v a) (R.ωP i t (1, γ) (R.vP i t))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hcomm]`. Use `show _ = (R.ωP i t (1, _) * R.ωP i t (1, γ)) (R.vP i t)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e, thetaInner_eq_star_l2, thetaInner_eq_star_l2 μ 𝓕 (R.ωP i t (1, γ) (R.vP i t)), hc a _ _ hv' hvac, star_mul']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finmult_good : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → ∀ v f, IsFinIdem D v f → (∀ P, P ∈ R.Pg ∨ P ∈ R.Q t → ∀ e f', IsPrimeIdem P e f' → f' ≠ f) → ∀ k, SuppF (Wc D i) f k → ∃ c : ℂ, ∀ γ ∈ GfC (Wc D i), TrivAt (Wc D i) f γ → thetaIP μ 𝓕 (R.ωP i t (1, γ * k) (R.vP i t)) (R.vP i t) = c * thetaIP μ 𝓕 (R.ωP i t (1, γ) (R.vP i t)) (R.vP i t) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL _ i t μ 𝓕 hμ v f hf hoff k hk

@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem flagBasis_diag_mul {F : Type} [Field F] {n : ℕ} {A B : Matrix (Fin n) (Fin n) F}
     (hA : A.BlockTriangular id) (hB : B.BlockTriangular id) (i : Fin n) :
@@ -21,11 +21,11 @@ private theorem flagBasis_diag_mul {F : Type} [Field F] {n : ℕ} {A B : Matrix 
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `hbm : (b : Matrix (Fin n) (Fin n) F).BlockTriangular id` using `fun i j h => hb i j h`. Establish `htm : (t : Matrix (Fin n) (Fin n) F).BlockTriangular id` using `fun i j h => ht i j h`. Establish `hbi : ((b⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).BlockTriangular id`. Use `letI := b.invertible`. Rewrite using `[Matrix.coe_units_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Conclude with `blockTriangular_inv_of_blockTriangular hbm`. Establish `hdiag : ∀ i, ((b⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i * (b : Matrix (Fin n) (Fin n) F) i i = 1`. Introduce `i`. Rewrite using `[← flagBasis_diag_mul hbi hbm, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_apply_eq]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `((hbi.mul htm).mul hbm) hij`. Rewrite using `[Units.val_mul, Units.val_mul, flagBasis_diag_mul (hbi.mul htm) hbm, flagBasis_diag_mul hbi htm, mul_right_comm, hdiag, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem flagBasis_conj {F : Type} [Field F] {n : ℕ} (b t : GL (Fin n) F)
     (hb : ∀ i j, j < i → b i j = 0) (ht : ∀ i j, j < i → t i j = 0) :
@@ -48,23 +48,21 @@ private theorem flagBasis_conj {F : Type} [Field F] {n : ℕ} (b t : GL (Fin n) 
       flagBasis_diag_mul hbi htm, mul_right_comm, hdiag, one_mul]
 
 /- English proof (translation)
-Introduce `K H _ _ n a r ψ hev hinj hflag`. Use `set ι := algebraMap (PowerSeries K) (FractionRing (PowerSeries K)) with hι`. Establish `hιi : Function.Injective ι` using `IsFractionRing.injective _ _`. Use `haveI : Infinite (FractionRing (PowerSeries K)) := by`. Use `Infinite.of_injective (fun m : ℕ => ι (PowerSeries.X ^ m)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m k hmk`. Establish `h` using `congrArg (fun p => PowerSeries.coeff (R := K) m p) (hιi hmk)`. Simplify using `only [PowerSeries.coeff_X_pow, if_true] at h`. Assume the negation of the conclusion as `hne`. Rewrite `h` using `[if_neg hne]`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_ne_zero h`. Establish `hev' : ∀ g, mat (pushRep ι r) g ∈ Ev (FractionRing (PowerSeries K)) (FractionRing (PowerSeries K)) n a`. Introduce `g`. Establish `hg` using `hev g`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun _ => Submodule.mem_top, fun h => ?_⟩` and prove the remaining obligations. Establish `h0` using `(Submodule.mem_bot _).1 ((hg i j).2 h)`. Establish `e : mat (pushRep ι r) g i j = ι (mat r g i j)` using `rfl`. Rewrite using `[e, h0, map_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hψ : Function.Injective (fun i => pushCh ι (ψ i))`. Introduce `i j hij`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `g`. Use `congrArg (fun f : H →* (FractionRing (PowerSeries K))ˣ => ((f g : (FractionRing (PowerSeries K))ˣ) : FractionRing (PowerSeries K))) hij` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hιi this]`. Take `⟨w0, ty, hw0, htri⟩` from `Det.flagF (pushRep ι r) (fun i => pushCh ι (ψ i)) hev' hψ hflag`. Take `⟨w, b, hb, hwb, hw⟩` from `Det.exists_integral_block_iwasawa_decomposition (A := PowerSeries K) (fun i : Fin n => decide ((i : ℕ) < a)) ty w0 hw0`. Use `⟨w, ty, hw, fun g => ?_⟩` and prove the remaining obligations. Establish `hmap : GeneralLinearGroup.map ι (w⁻¹ * r g * w) = b⁻¹ * (w0⁻¹ * pushRep ι r g * w0) * b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_mul, map_inv, hwb, _root_.mul_inv_rev]`. Simplify using `only [pushRep, MonoidHom.comp_apply, mul_assoc]`. Establish `hent : ∀ i j, ι ((w⁻¹ * r g * w : GL (Fin n) (PowerSeries K)) i j) = (b⁻¹ * (w0⁻¹ * pushRep ι r g * w0) * b : GL (Fin n) (FractionRing (PowerSeries K))) i j`. Introduce `i j`. Rewrite using `[← hmap]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨hc1, hc2⟩` from `flagBasis_conj b (w0⁻¹ * pushRep ι r g * w0) hb (htri g).1`. Use `⟨fun i j hij => hιi ?_, fun i => hιi ?_⟩` and prove the remaining obligations. Rewrite using `[hent, hc1 i j hij, map_zero]`. Rewrite using `[hent, hc2 i, (htri g).2 i]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.flagBasis :
     ∀ {K H : Type} [Field K] [Group H] {n a : ℕ} (r : H →* GL (Fin n) (PowerSeries K)) (ψ : Fin n → H →* (PowerSeries K)ˣ), (∀ g, mat r g ∈ Ev (PowerSeries K) (PowerSeries K) n a) → Function.Injective ψ → HasFlag (pushRep (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))) r) (fun i => pushCh (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))) (ψ i)) → ∃ (w : GL (Fin n) (PowerSeries K)) (ty : Fin n → Bool), (∀ i j : Fin n, decide ((i : ℕ) < a) ≠ ty j → w i j = 0) ∧ ∀ g, (∀ i j, j < i → (w⁻¹ * r g * w : GL (Fin n) (PowerSeries K)) i j = 0) ∧ ∀ i, (w⁻¹ * r g * w : GL (Fin n) (PowerSeries K)) i i = (ψ i g : PowerSeries K) := by

@@ -14,9 +14,9 @@ variable {G : Type} [Group G]
 def cj (s : G) (X : Subgroup G) : Subgroup G := X.map (MulAut.conj s⁻¹).toMonoidHom
 
 /- English proof (translation)
-Unfold `cj`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[mul_assoc]`. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨s * g * s⁻¹, h, by simp [mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_cj {s : G} {X : Subgroup G} {g : G} : g ∈ cj s X ↔ s * g * s⁻¹ ∈ X := by
   unfold cj
@@ -27,14 +27,14 @@ theorem mem_cj {s : G} {X : Subgroup G} {g : G} : g ∈ cj s X ↔ s * g * s⁻�
     exact ⟨s * g * s⁻¹, h, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-The claim follows from `Subgroup.map_mono h`.
+A detailed English derivation is pending.
 -/
 theorem cj_le {s : G} {X Y : Subgroup G} (h : X ≤ Y) : cj s X ≤ cj s Y := Subgroup.map_mono h
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_cj]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : s⁻¹ * (s * g * s⁻¹) * s ∈ X` using `X.mul_mem (X.mul_mem (X.inv_mem hs) h) hs`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h2` using `[mul_assoc]`. Introduce `h`. Conclude with `X.mul_mem (X.mul_mem hs h) (X.inv_mem hs)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cj_self {s : G} {X : Subgroup G} (hs : s ∈ X) : cj s X = X := by
   ext g
@@ -47,22 +47,22 @@ theorem cj_self {s : G} {X : Subgroup G} (hs : s ∈ X) : cj s X = X := by
     exact X.mul_mem (X.mul_mem hs h) (X.inv_mem hs)
 
 /- English proof (translation)
-The claim follows from `Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj s⁻¹).injective`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_cj (s : G) (X Y : Subgroup G) : (cj s X).relIndex (cj s Y) = X.relIndex Y := Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj s⁻¹).injective
 
 /- English proof (translation)
-Simplify using `[IdxRatio, Subgroup.relIndex_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem idxRatio_self (A : Subgroup G) : IdxRatio A A = 1 := by
   simp [IdxRatio, Subgroup.relIndex_self]
 
 /- English proof (translation)
-Establish `hmul : B.relIndex A * A.relIndex B' = B.relIndex B'` using `Subgroup.relIndex_mul_relIndex B A B' hBA hAB'`. Establish `hBA0 : B.relIndex A ≠ 0` using `fun h => hfin (by rw [← hmul, h, zero_mul])`. Establish `hAB0 : A.relIndex B' ≠ 0` using `fun h => hfin (by rw [← hmul, h, mul_zero])`. Establish `hB'eq : cj s B' = B'` using `cj_self hs`. Establish `hA'le : cj s A ≤ B'` using `hB'eq ▸ cj_le hAB'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA'idx : (cj s A).relIndex B' = A.relIndex B'`. Rewrite using `[← relIndex_cj s A B', hB'eq]`. Establish `e1` using `idxCocycle G A (cj s B) (cj s A) (cj_le hBA) (by rw [relIndex_cj]; exact hBA0)`. Establish `e2` using `idxCocycle G A (cj s A) B' hA'le (by rw [hA'idx]; exact hAB0)`. Establish `e3` using `idxCocycle G A A B' hAB' hAB0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e3` using `[idxRatio_self]`. Rewrite `e2` using `[hA'idx, ← e3]`. Rewrite using `[e1, e2, relIndex_cj, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idxRatio_conj_sub (A B B' : Subgroup G) (s : G) (hBA : B ≤ A) (hAB' : A ≤ B') (hs : s ∈ B')
     (hfin : B.relIndex B' ≠ 0) : IdxRatio A (cj s B) = (B.relIndex A : ℝ) := by
@@ -89,7 +89,7 @@ variable {K : Type} [Group K] (A : Subgroup K) (π : K →* A) (H : Subgroup K)
 def dcMap (k : K) : A ⧸ H.map π := QuotientGroup.mk (π k)
 
 /- English proof (translation)
-Introduce `q`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective q`. Conclude with `⟨a, by simp [dcMap, hπ]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dcMap_surjective (hπ : ∀ a : A, π a = a) : Function.Surjective (dcMap A π H) := by
   intro q
@@ -97,11 +97,11 @@ theorem dcMap_surjective (hπ : ∀ a : A, π a = a) : Function.Surjective (dcMa
   exact ⟨a, by simp [dcMap, hπ]⟩
 
 /- English proof (translation)
-Unfold `dcMap`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hH, hh⟩`. Use `⟨k' * h⁻¹ * k⁻¹, ?_, h, hH, by group⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.mem_ker, map_mul, map_mul, map_inv, map_inv, hh]`. Use `group`. Introduce and unpack `⟨n, hn, h, hH, rfl⟩`. Use `⟨h, hH, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[MonoidHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hn, one_mul]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem dcMap_eq_iff (k k' : K) :
     dcMap A π H k = dcMap A π H k' ↔ ∃ n ∈ π.ker, ∃ h ∈ H, k' = n * k * h := by
@@ -119,7 +119,7 @@ theorem dcMap_eq_iff (k k' : K) :
     group
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index, Nat.card_congr (Setoid.quotientKerEquivOfSurjective _ (dcMap_surjective A π H hπ))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_dc (hπ : ∀ a : A, π a = a) :
     Nat.card (Quotient (Setoid.ker (dcMap A π H))) = (H.map π).index := by

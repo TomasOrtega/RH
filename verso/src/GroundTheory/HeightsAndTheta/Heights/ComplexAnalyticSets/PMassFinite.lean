@@ -15,11 +15,11 @@ noncomputable section
 namespace MassFinite
 
 /- English proof (translation)
-Set `v : Fin n → EuclideanSpace ℂ (Fin n)` to `fun i => WithLp.toLp 2 fun j => star (U i j)`. Establish `hv : Orthonormal ℂ v`. Rewrite using `[orthonormal_iff_ite]`. Introduce `i k`. Establish `h` using `congrFun (congrFun (Matrix.mem_unitaryGroup_iff.mp hU) i) k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← h]`. Simplify using `[v, PiLp.inner_apply, Matrix.star_apply, mul_comm]`. Use `⟨OrthonormalBasis.mk hv (hv.linearIndependent.span_eq_top_of_card_eq_finrank' (by simp)).ge, fun i z => ?_⟩` and prove the remaining obligations. Rewrite using `[OrthonormalBasis.coe_mk]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[v, PiLp.inner_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_frame {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ)
     (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) :
@@ -40,9 +40,9 @@ theorem exists_frame {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ)
   simp [v, PiLp.inner_apply, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [ComplexSets.pullback]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ComplexSets.pullback, ComplexSets.linPoly, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_pullback {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) (P : MvPolynomial (Fin d) ℂ)
     (x : Fin n → ℂ) : eval x (ComplexSets.pullback A P) = eval (A *ᵥ x) P := by
@@ -54,11 +54,11 @@ theorem eval_pullback {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) (P : MvPolyno
     simp [ComplexSets.pullback, ComplexSets.linPoly, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use `hJ` as an intermediate fact. Establish `hr : Ideal.Quotient.mk J f ∈ nonZeroDivisors (MvPolynomial (Fin n) ℂ ⧸ J)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Establish `h` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor (le_sup_left : J ≤ J ⊔ Ideal.span {f})) (Ideal.Quotient.factor_surjective _) hr (by`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self f))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hd]`. Generalize the expression as in `ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ (J ⊔ Ideal.span {f})) = x at h ⊢`. Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe e`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h' : e + 1 ≤ (d : ℕ∞)` using `by exact_mod_cast h`. Establish `he : e ≠ ⊤` using `fun he => by simp [he] at h'`. Conclude with `(ENat.add_one_le_iff he).mp h'` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_sup_lt {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (hJ : J.IsPrime)
     (hd : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d) (f : MvPolynomial (Fin n) ℂ) (hf : f ∉ J) :
@@ -82,11 +82,11 @@ theorem dim_sup_lt {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (hJ : J.Is
     exact_mod_cast (ENat.add_one_le_iff he).mp h'
 
 /- English proof (translation)
-Establish `hfr : Module.finrank ℝ (ι × Fin 2 → ℝ) = Module.finrank ℝ (EuclideanSpace ℂ ι)`. Rewrite using `[Module.finrank_fintype_fun_eq_card, ← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex, finrank_euclideanSpace, Fintype.card_prod, Fintype.card_fin, mul_comm]`. Set `e` to `(LinearEquiv.ofFinrankEq _ _ hfr).toContinuousLinearEquiv`. Establish `hcard : ((2 * Fintype.card ι : ℕ) : ℝ) = ((Fintype.card (ι × Fin 2) : ℕ) : ℝ)`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsub : Metric.ball (0 : EuclideanSpace ℂ ι) R ⊆ e '' (e.symm '' Metric.ball 0 R)`. Rewrite using `[Set.image_image]`. Simplify using the standard rewrite rules. Establish `hb : Bornology.IsBounded (e.symm '' Metric.ball (0 : EuclideanSpace ℂ ι) R)` using `e.symm.lipschitz.isBounded_image Metric.isBounded_ball`. Rewrite using `[hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.mul_lt_top (ENNReal.rpow_lt_top_of_nonneg (by positivity) ENNReal.coe_ne_top) ?_` and prove the remaining obligations. Rewrite using `[hausdorffMeasure_pi_real]`. Conclude with `hb.measure_lt_top`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ball_lt_top {ι : Type*} [Fintype ι] (R : ℝ) :
     μH[((2 * Fintype.card ι : ℕ) : ℝ)] (Metric.ball (0 : EuclideanSpace ℂ ι) R) < ⊤ := by
@@ -111,13 +111,11 @@ theorem ball_lt_top {ι : Type*} [Fintype ι] (R : ℝ) :
       exact hb.measure_lt_top
 
 /- English proof (translation)
-Use `set e := I.orderIsoOfFin hI`. Use `set A := U.submatrix (I.orderEmbOfFin hI) id`. Set `y : Fin d → ℂ` to `fun k => x (e k)`. Establish `hsub : WithLp.ofLp '' {z ∈ S | frameProj b I z = x} ⊆ ComplexSets.fibre J A y`. Introduce and unpack `_ ⟨z, ⟨hzS, hzx⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun q hq => hS hzS q hq, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `h1` using `congrFun hzx (e k)`. Simplify using `only [frameProj, hb] at h1`. Simplify using `only [y, ← h1, A, Matrix.mulVec, dotProduct, Matrix.submatrix_apply, id, Finset.coe_orderIsoOfFin_apply, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hinj : Set.InjOn (WithLp.ofLp (p` using `2)) {z ∈ S | frameProj b I z = x} := (WithLp.ofLp_injective 2).injOn`. Unfold `frameFibreCount`. Rewrite using `[← hinj.encard_image, ← (hN y).1.subset hsub |>.cast_ncard_eq]`. Establish `h2` using `Set.ncard_le_ncard hsub (hN y).1`. Establish `h3` using `(hN y).2`.
-
-Conclude with `h2.trans h3` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem count_le {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (U : Matrix (Fin n) (Fin n) ℂ)
     (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n)))
@@ -147,21 +145,19 @@ theorem count_le {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (U : Matrix 
   exact_mod_cast h2.trans h3
 
 /- English proof (translation)
-Use `set A := U.submatrix (I₀.orderEmbOfFin hI) id`. Use `set e := I₀.orderIsoOfFin hI`. Introduce and unpack `z ⟨hzZ, hzP⟩`. Take `⟨U', V, g, hU', -, hV, hzV, hg, -, hAg, hZV⟩` from `hP _ hzP (WithLp.ofLp z) ⟨hzZ, rfl⟩`. Set `σ : (I₀ → ℂ) →L[ℂ] (Fin d → ℂ)` to `ContinuousLinearMap.pi fun k => ContinuousLinearMap.proj (e k)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hσ : ∀ w k, σ w k = w (e k)` using `fun _ _ => rfl`. Set `L` to `(PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin n => ℂ)).symm`. Establish `hL : ∀ v, L v = WithLp.toLp 2 v` using `fun _ => rfl`. Establish `hcP : Continuous fun w : Fin d → ℂ => eval w P` using `MvPolynomial.continuous_eval P`. Establish `hcA : Continuous fun z' : EuclideanSpace ℂ (Fin n) => A *ᵥ WithLp.ofLp z'` using `(Continuous.matrix_mulVec continuous_const continuous_id).comp (PiLp.continuous_ofLp 2 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨σ ⁻¹' (U' ∩ {w | eval w P ≠ 0}), {z' | WithLp.ofLp z' ∈ V ∧ eval (A *ᵥ WithLp.ofLp z') P ≠ 0}, fun w => L (g (σ w)), (hU'.inter (isOpen_ne_fun hcP continuous_const)).preimage σ.continuous, (hV.preimage (PiLp.continuous_ofLp 2 _)).inter (isOpen_ne_fun (hcP.comp hcA) continuous_co …` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (hAg _ hw.1) (e.symm i)`. Simplify using `only [A, Matrix.mulVec, dotProduct, Matrix.submatrix_apply, id, hσ, ← Finset.coe_orderIsoOfFin_apply, e, OrderIso.apply_symm_apply] at h1`. Simplify using `only [frameProj, hb, hL]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify using `using h1`. Use extensionality with `z'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hz'Z, -⟩, hz'V, hz'P⟩`. Establish `hmem : WithLp.ofLp z' ∈ ComplexSets.zeroSet J ∩ V` using `⟨hz'Z, hz'V⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hmem` using `[hZV]`. Take `⟨w0, hw0, hgw0⟩` from `hmem`. Establish `hσw : σ (fun i => w0 (e.symm i)) = w0`. Use function extensionality and compare the values at `k`. Simplify using `[hσ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => w0 (e.symm i), ⟨by rw [hσw]; exact hw0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_ofPred_eq, hσw, ← hAg w0 hw0, hgw0]`. Conclude with `hz'P`. Simplify using `only [hσw, hL, hgw0]`. Introduce and unpack `⟨w, ⟨hwU, hwP⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : g (σ w) ∈ ComplexSets.zeroSet J ∩ V` using `hZV ▸ ⟨σ w, hwU, rfl⟩`. Establish `hA : A *ᵥ WithLp.ofLp (L (g (σ w))) = σ w` using `hAg _ hwU`. Use `⟨⟨fun q hq => hmem.1 q hq, ?_⟩, hmem.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_ofPred_eq, hA]`. Conclude with `hwP`.
-
-Rewrite using `[hA]`. Conclude with `hwP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_localGraph {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (U : Matrix (Fin n) (Fin n) ℂ)
     (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n)))
@@ -227,21 +223,21 @@ theorem good_localGraph {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (U : 
 end MassFinite
 
 /- English proof (translation)
-Introduce `n d J hJ hd R`. Establish `hdn : d ≤ n`. Establish `h1` using `ringKrullDim_quotient_le J`. Rewrite `h1` using `[hd, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨U, hU, hUfin⟩` from `(hG n d J hJ hd).2.2.2 1 (fun _ => 1)`. Take `⟨b, hb⟩` from `MassFinite.exists_frame U hU`. Establish `hfin : ∀ (I : Finset (Fin n)) (hI : I.card = d), ComplexSets.IsFiniteProjection J (U.submatrix (I.orderEmbOfFin hI) id)` using `fun I hI => by`. Simplify using `using hUfin 0 (I.orderEmbOfFin hI).toEmbedding`. Take `⟨I₀, -, hI₀⟩` from `Finset.exists_subset_card_eq (s := (Finset.univ : Finset (Fin n))) (by simpa using hdn)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `set A := U.submatrix (I₀.orderEmbOfFin hI₀) id`. Take `⟨P, hP0, hP⟩` from `hD n d J A hJ hd (hfin I₀ hI₀)`. Use `set G := zeroSetEuc J ∩ {z | eval (A *ᵥ WithLp.ofLp z) P ≠ 0}`. Establish `hPJ : ComplexSets.pullback A P ∉ J` using `fun hmem => hP0 <| (hfin I₀ hI₀).injective <| by`. Rewrite using `[map_zero, ComplexSets.projHom, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmem`. Establish `hbad : μH[((2 * d : ℕ) : ℝ)] (zeroSetEuc (J ⊔ Ideal.span {ComplexSets.pullback A P})) = 0` using `hN n d _ (MassFinite.dim_sup_lt J hJ hd _ hPJ)`. Establish `hsub : zeroSetEuc J ∩ Metric.ball 0 R ⊆ zeroSetEuc (J ⊔ Ideal.span {ComplexSets.pullback A P}) ∪ G ∩ Metric.ball 0 R`. Introduce and unpack `z ⟨hz, hzR⟩`. Distinguish the cases in `hzP : eval (A *ᵥ WithLp.ofLp z) P = 0`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `left`. Introduce `q hq`. Take `⟨j, hj, c, hc, rfl⟩` from `Submodule.mem_sup.mp hq`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hc`. Establish `hzj : eval (fun i => z i) j = 0` using `hz j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the second alternative.
 
-Establish `hpb : eval (fun i => z i) (ComplexSets.pullback A P) = 0`. Rewrite using `[MassFinite.eval_pullback]`. Conclude with `hzP`. Simplify using `[hzj, hpb]`. Conclude with `Or.inr ⟨⟨hz, hzP⟩, hzR⟩`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hgood` using `hL n d b I₀ G hI₀ (MassFinite.good_localGraph J U b hb I₀ hI₀ P (fun y hy x hx => ((hP y hy).2.2 x hx))) R`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hbad, zero_add]`. Use `lt_of_le_of_lt hgood (ENNReal.sum_lt_top.mpr fun I hI => ENNReal.mul_lt_top ?_ ?_)` and prove the remaining obligations. Establish `hIc` using `(Finset.mem_powersetCard.mp hI).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `lt_of_le_of_lt (iSup_le fun x => MassFinite.count_le J U b hb I hIc G (fun z hz => hz.1) (ComplexSets.projDegree J (U.submatrix (I.orderEmbOfFin hIc) id)) (fun y => ?_) x) ENNReal.coe_lt_top` and prove the remaining obligations. Establish `h` using `hF n d J _ hJ hd (hfin I hIc) y`. Conclude with `⟨h.2.1, h.2.2⟩`. Establish `h` using `MassFinite.ball_lt_top (ι := I) R`. Rewrite `h` using `[Fintype.card_coe, (Finset.mem_powersetCard.mp hI).2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem MassFinite.proof (hG : ComplexSets.GenericProjectionFinite.Statement)
     (hF : ComplexSets.FibreBound.Statement) (hD : ComplexSets.DiscriminantCover.Statement)

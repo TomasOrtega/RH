@@ -6,15 +6,13 @@ import Formalism.CyclotomicNorms.NonsquarefreeBounds.NonsquarefreeMonicBoundHold
 namespace GlobalTheory.RingHomOfIsIntegral
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap ℤ R)` using `(algebraMap ℤ R).injective_int`. Establish `hlp : (Ideal.span {(l : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hl.out.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hl.out)`. Take `⟨P, -, hP, hPc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := R) (Ideal.span {(l : ℤ)}) ⊥ (by`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hinj (hx.trans (map_zero _).symm)]`. Conclude with `Ideal.zero_mem _)`. Use `hP` as an intermediate fact. Establish `hl0 : ((l : ℕ) : R ⧸ P) = 0`. Establish `h1 : (l : ℤ) ∈ P.comap (algebraMap ℤ R)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPc]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[Ideal.mem_comap]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk P), Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hchar : CharP (R ⧸ P) l` using `(CharP.charP_iff_prime_eq_zero hl.out).mpr hl0`. Set `: Algebra (ZMod l) (R ⧸ P)` to `ZMod.algebra _ l`. Establish `: Algebra.IsIntegral (ZMod l) (R ⧸ P)` using `⟨fun x => by`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `((Algebra.IsIntegral.isIntegral (R := ℤ) r).map (Ideal.Quotient.mkₐ ℤ P)).tower_top⟩`.
-
-Conclude with `⟨(IsAlgClosed.lift (R := ZMod l) (S := R ⧸ P) (M := AlgebraicClosure (ZMod l))).toRingHom.comp (Ideal.Quotient.mk P)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_of_isIntegral (R : Type) [CommRing R] [CharZero R] [Algebra.IsIntegral ℤ R]
     (l : ℕ) [hl : Fact (Nat.Prime l)] : Nonempty (R →+* AlgebraicClosure (ZMod l)) := by
@@ -45,7 +43,7 @@ theorem exists_ringHom_of_isIntegral (R : Type) [CommRing R] [CharZero R] [Algeb
     (M := AlgebraicClosure (ZMod l))).toRingHom.comp (Ideal.Quotient.mk P)⟩
 
 /- English proof (translation)
-Introduce `l _`. Conclude with `exists_ringHom_of_isIntegral (integralClosure ℤ ℂ) l`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_ringHom : ∀ (l : ℕ) [Fact (Nat.Prime l)],
     Nonempty (↥(integralClosure ℤ ℂ) →+* Formalism.CyclotomicNorms.Fbar l) := by

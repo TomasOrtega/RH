@@ -8,18 +8,18 @@ open CategoryTheory Polynomial GlobalTheory.NormalDescent
 namespace GlobalTheory.NormalDescent
 
 /- English proof (translation)
-Rewrite using `[reverse, reverse, natDegree_map_eq_of_injective hf, reflect_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reverse_map_of_injective {R S : Type} [CommRing R] [CommRing S] (f : R →+* S)
     (hf : Function.Injective f) (Q : R[X]) : (Q.map f).reverse = Q.reverse.map f := by
   rw [reverse, reverse, natDegree_map_eq_of_injective hf, reflect_map]
 
 /- English proof (translation)
-Establish `hbc` using `@GlobalTheory.T.charpolyMulBaseChangeFinite_map_of_isPushout`. Establish `hint` using `@GlobalTheory.T.exists_charpoly_baseChange_integrallyClosed`. Set `ι : FractionRing A →+* FractionRing A'` to `IsLocalization.map (FractionRing A') α (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective α hα)`. Establish `hι : ∀ a : A, ι (algebraMap A (FractionRing A) a) = algebraMap A' (FractionRing A') (α a)` using `fun a => IsLocalization.map_eq _ _`. Establish `hc` using `hbc φ α β φ' H hφ hφ' ι hι b`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `spec : ∀ {R S : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [CommRing S] (ψ : R →+* S) (hψ : ψ.Finite) (s : S), algebraMap R (FractionRing R) (normCoeff ψ hψ s k) = (charK ψ hψ (FractionRing R) s).reverse.coeff k`. Introduce `R S _ _ _ _ ψ hψ s`. Take `⟨P, hP⟩` from `hint (K := FractionRing R) ψ hψ s`. Use `algebraMap_normCoeff ψ hψ s k ⟨P.reverse.coeff k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hP, reverse_map_of_injective _ (IsFractionRing.injective R (FractionRing R)), coeff_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `IsFractionRing.injective A' (FractionRing A')` to reduce the goal to its premises. Rewrite using `[← hι, spec, spec, hc, reverse_map_of_injective ι ι.injective, coeff_map]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem normCoeff_map_of_isPushout {A B A' B' : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CommRing B] [CommRing A']
     [IsDomain A'] [IsIntegrallyClosed A'] [CommRing B'] (φ : A →+* B) (α : A →+* A') (β : B →+* B') (φ' : A' →+* B')

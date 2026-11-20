@@ -7,13 +7,11 @@ open NumberField
 namespace PI.UnitaryGroupMassFormula.BetaLUniq.EigA
 
 /- English proof (translation)
-Establish `hPt : P ≠ ⊤` using `hP.ne_top`. Establish `hlt : P ^ 2 < P ^ 1` using `Ideal.pow_right_strictAnti P hP0 hPt (show 1 < 2 by norm_num)`. Rewrite `hlt` using `[pow_one]`. Take `⟨π, hπP, hπ2⟩` from `SetLike.exists_of_lt hlt`. Establish `hπ0 : π ≠ 0` using `by rintro rfl; exact hπ2 (Ideal.zero_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdvd : P ∣ Ideal.span {π}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem P).mpr hπP)`. Take `⟨Q, hQ⟩` from `hdvd`. Establish `hQP : ¬ Q ≤ P`. Introduce `hle`. Apply `hπ2` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: Ideal.span {π} ≤ P ^ 2` using `by rw [hQ, pow_two]; exact Ideal.mul_mono_right hle`. Conclude with `this (Ideal.mem_span_singleton_self π)`. Take `⟨b, hbQ, hbP⟩` from `SetLike.not_le_iff_exists.mp hQP`. Use `⟨π, hπP, hπ0, b, hbP, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, mul_comm b]`.
-
-Conclude with `Ideal.mul_mem_mul hp hbQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pi_b {R : Type*} [CommRing R] [IsDedekindDomain R] (P : Ideal R) [hP : P.IsPrime]
     (hP0 : P ≠ ⊥) : ∃ π ∈ P, π ≠ 0 ∧ ∃ b ∉ P, ∀ p ∈ P, b * p ∈ Ideal.span {π} := by
@@ -40,11 +38,11 @@ variable {E : Type} [Field E] [NumberField E]
 def InO (x : E) : Prop := ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = x
 
 /- English proof (translation)
-Set `J : Ideal (𝓞 E)` to `Submodule.comap (LinearMap.toSpanSingleton (𝓞 E) E ν) (LinearMap.range (Algebra.linearMap (𝓞 E) E))`. Establish `hmem : ∀ s, s ∈ J ↔ InO (algebraMap (𝓞 E) E s * ν)`. Introduce `s`. Simplify using `only [J, Submodule.mem_comap, LinearMap.toSpanSingleton_apply, LinearMap.mem_range, Algebra.linearMap_apply, Algebra.smul_def, InO]`. Establish `hJ : J = ⊤`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hJM⟩` from `Ideal.exists_le_maximal J hne`. Take `⟨s, hsM, hs⟩` from `h M hM`. Conclude with `hsM (hJM ((hmem s).mpr hs))`. Establish `h1` using `(hmem 1).mp (hJ ▸ Submodule.mem_top)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_O_of_local (ν : E)
     (h : ∀ P : Ideal (𝓞 E), P.IsMaximal → ∃ s : 𝓞 E, s ∉ P ∧ InO (algebraMap (𝓞 E) E s * ν)) :
@@ -64,7 +62,7 @@ theorem mem_O_of_local (ν : E)
   rwa [map_one, one_mul] at h1
 
 /- English proof (translation)
-Establish `hint : IsIntegral (𝓞 E) x` using `isIntegral_of_smul_mem_submodule I hI hfg x (fun c hc => by simpa [smul_eq_mul] using hx c hc)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_O_of_stable (I : Submodule (𝓞 E) E) (hI : I ≠ ⊥) (hfg : I.FG) (x : E)
     (hx : ∀ c ∈ I, x * c ∈ I) : InO x := by
@@ -74,17 +72,15 @@ theorem mem_O_of_stable (I : Submodule (𝓞 E) E) (hI : I ≠ ⊥) (hfg : I.FG)
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hfg`. Establish `hS' : ∀ c ∈ S, ∃ s : 𝓞 E, s ∉ P ∧ algebraMap (𝓞 E) E s * x * c ∈ I` using `fun c hc => hx c (hS ▸ Submodule.subset_span hc)`. Use `choose! f hfP hfI using hS'`. Use `⟨∏ c ∈ S, f c, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcP⟩` from `Ideal.IsPrime.prod_mem_iff.mp hmem`. Conclude with `hfP c hc hcP`. Introduce `c hc`. Rewrite `hc` using `[← hS]`. Proceed by induction on `hc using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem c hc`. Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem f hc`. Establish `: algebraMap (𝓞 E) E (f c * r) * x * c = r • (algebraMap (𝓞 E) E (f c) * x * c)`. Rewrite using `[Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hr, this]`. Conclude with `I.smul_mem r (hfI c hc)`. Consider the case `zero => simpa using I.zero_mem`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `I.add_mem ha hb`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `smul a c _ hc`. Establish `: algebraMap (𝓞 E) E (∏ c ∈ S, f c) * x * (a • c) = a • (algebraMap (𝓞 E) E (∏ c ∈ S, f c) * x * c)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `I.smul_mem a hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common (P : Ideal (𝓞 E)) [P.IsPrime] (I : Submodule (𝓞 E) E) (hfg : I.FG) (x : E)
     (hx : ∀ c ∈ I, ∃ s : 𝓞 E, s ∉ P ∧ algebraMap (𝓞 E) E s * x * c ∈ I) :
@@ -117,13 +113,13 @@ theorem exists_common (P : Ideal (𝓞 E)) [P.IsPrime] (I : Submodule (𝓞 E) E
       exact I.smul_mem a hc
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Use `set y : E := algebraMap (𝓞 E) E x with hy`. Establish `hne : Algebra.norm ℤ x ≠ 0`. Rewrite using `[Ne, Algebra.norm_eq_zero_iff]` and apply the resulting hypothesis. Establish `hQ : ((Algebra.norm ℤ x : ℤ) : ℚ) = Algebra.norm ℚ y` using `Algebra.coe_norm_int x`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `Algebra.norm_eq_prod_embeddings ℚ ℂ y`. Rewrite `hC` using `[← hQ, map_intCast]`. Set `σ0 : E →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Establish `hlt : ‖∏ σ : E →ₐ[ℚ] ℂ, σ y‖ < 1`. Rewrite using `[norm_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ σ0)]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ‖σ0 y‖ < 1` using `h σ0.toRingHom`. Establish `h1 : ∏ σ ∈ Finset.univ.erase σ0, ‖σ y‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun σ _ => (h σ.toRingHom).le)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlt` using `[← hC]`. Establish `h1 : (1 : ℝ) ≤ ‖((Algebra.norm ℤ x : ℤ) : ℂ)‖`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.norm_intCast]`. Conclude with `Int.one_le_abs hne` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_norm_lt_one (x : 𝓞 E) (h : ∀ φ : E →+* ℂ, ‖φ (algebraMap (𝓞 E) E x)‖ < 1) :
     x = 0 := by
@@ -151,11 +147,11 @@ theorem eq_zero_of_norm_lt_one (x : 𝓞 E) (h : ∀ φ : E →+* ℂ, ‖φ (al
   linarith
 
 /- English proof (translation)
-Take `⟨o, ho⟩` from `hν`. Establish `hg0 : (g : E) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `hg' : (3 : ℝ) ≤ g` using `by exact_mod_cast hg`. Establish `ho0 : o = 0`. Apply `eq_zero_of_norm_lt_one` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `φ`. Rewrite using `[ho, map_div₀, map_sub, map_one, map_natCast, norm_div, Complex.norm_natCast, div_lt_one (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `ho` using `[ho0, map_zero, eq_comm, div_eq_zero_iff]`. Break down `ho with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h hg0`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_cong (μ : E) (g : ℕ) (hg : 3 ≤ g) (hμ : ∀ φ : E →+* ℂ, ‖φ μ‖ = 1)
     (hν : InO ((μ - 1) / (g : E))) : μ = 1 := by

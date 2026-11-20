@@ -15,7 +15,7 @@ open PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[PI.UnitaryGroupMassFormula.BetaModX.Iota.mem_orth'']`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem perpS_eq_orth (D : D7) (U : Submodule D.host.E (VS D).V) : perpS (VS D) U = orth (VS D) U := by
   ext v
@@ -23,9 +23,9 @@ theorem perpS_eq_orth (D : D7) (U : Submodule D.host.E (VS D).V) : perpS (VS D) 
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Conclude with `F0.e_iso b a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add y w _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c y _ h => simp [h]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem e_mem_perp (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (a : Fin D.R.rS) :
     F0.e a ∈ perpS (VS D) F0.X := by
@@ -39,7 +39,7 @@ theorem e_mem_perp (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (a : Fin
   | smul c y _ h => simp [h]
 
 /- English proof (translation)
-Unfold `FlagG.X`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `e_mem_perp D F0 a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem X_le_perp (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) : F0.X ≤ perpS (VS D) F0.X := by
   unfold FlagG.X
@@ -48,7 +48,7 @@ theorem X_le_perp (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) : F0.X �
   exact e_mem_perp D F0 a
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_Mof (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (x : WbQ D F0) :
@@ -60,7 +60,7 @@ theorem mem_Mof (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submo
     exact ⟨a, ha, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mk_eq_mk (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (a b : perpS (VS D) F0.X) :
     (Submodule.Quotient.mk a : WbQ D F0) = Submodule.Quotient.mk b ↔ (a : (VS D).V) - b ∈ F0.X := by
@@ -68,7 +68,7 @@ theorem mk_eq_mk (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (a b : per
   rfl
 
 /- English proof (translation)
-Apply `Submodule.FG.map` to reduce the goal to its premises. Apply `Submodule.fg_of_fg_map_injective ((perpS (VS D) F0.X).subtype.restrictScalars (𝓞 D.host.E)) Subtype.val_injective` to reduce the goal to its premises. Use `Submodule.FG.of_le hfg ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Mof_fg (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hfg : Λ.FG) : (Mof D F0 Λ).FG := by
@@ -80,11 +80,11 @@ theorem Mof_fg (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submod
   exact hy
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Proceed by induction on `x using Submodule.Quotient.induction_on with | H a => ?_`. Take `⟨d, hd, hdm⟩` from `PI.UnitaryGroupMassFormula.BetaModX.Iota.exists_smul_mem Λ hsp (a : (VS D).V)`. Establish `hdE : algebraMap (𝓞 D.host.E) D.host.E d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)).mpr hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : (Submodule.Quotient.mk (d • a) : WbQ D F0) ∈ Mof D F0 Λ`. Rewrite using `[mem_Mof]`. Use `⟨d • a, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul_of_tower]`. Conclude with `hdm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (Submodule.Quotient.mk a : WbQ D F0) = (algebraMap (𝓞 D.host.E) D.host.E d)⁻¹ • (Submodule.Quotient.mk (d • a) : WbQ D F0)`. Rewrite using `[← algebraMap_smul D.host.E d a, Submodule.Quotient.mk_smul, smul_smul, inv_mul_cancel₀ hdE, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mof_span (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hsp : Submodule.span D.host.E (Λ : Set (VS D).V) = ⊤) :
@@ -107,36 +107,34 @@ theorem Mof_span (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Subm
   exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Mof_fg D F0 Λ hL.fg, Mof_span D F0 Λ hL.span_eq_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem Mof_isLattice (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hL : Submodule.IsLattice D.host.E Λ) : Submodule.IsLattice D.host.E (Mof D F0 Λ) :=
   ⟨Mof_fg D F0 Λ hL.fg, Mof_span D F0 Λ hL.span_eq_top⟩
 
 /- English proof (translation)
-Establish `hU' : Formalism.HermitianLatticesTheory.dual (VS D).hT Λ = Λ` using `hU`. Use `show Formalism.HermitianLatticesTheory.dual (hWb D F0) (Mof D F0 Λ) = Mof D F0 Λ`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Proceed by induction on `x using Submodule.Quotient.induction_on with | H a => ?_`. Establish `hint : ∀ l : perpS (VS D) F0.X, (l : (VS D).V) ∈ Λ → (VS D).hT (l : (VS D).V) (a : (VS D).V) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `l hl`. Use `hx (Submodule.Quotient.mk l) ((mem_Mof D F0 Λ _).2 ⟨l, hl, rfl⟩)` as an intermediate fact. Rewrite `this` using `[hWb_mk]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρX, hρid⟩` from `PI.UnitaryGroupMassFormula.BetaModX.Iota.exists_retract Λ hL.fg (perpS (VS D) F0.X)`. Set `f : Λ →ₗ[𝓞 D.host.E] D.host.E` to `((VS D).hT (a : (VS D).V)).restrictScalars (𝓞 D.host.E) ∘ₗ Λ.subtype ∘ₗ ρ`. Take `⟨w, hw⟩` from `PI.UnitaryGroupMassFormula.BetaModX.Iota.riesz (VS D).hT (VS D).herm (VS D).nondeg Λ hL.fg hL.span_eq_top f`. Establish `hwΛ : w ∈ Λ`. Rewrite using `[← hU', Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite using `[PI.UnitaryGroupMassFormula.BetaModX.Iota.herm'' (S := VS D) w y, hw y hy]`. Establish `e1 : f ⟨y, hy⟩ = (VS D).hT (a : (VS D).V) ((ρ ⟨y, hy⟩ : Λ) : (VS D).V)` using `rfl`. Rewrite using `[e1, ← PI.UnitaryGroupMassFormula.BetaModX.Iota.herm'' (S := VS D)]`. Conclude with `hint ⟨_, hρX ⟨y, hy⟩⟩ (ρ ⟨y, hy⟩).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwv : ∀ v ∈ perpS (VS D) F0.X, (VS D).hT (w - (a : (VS D).V)) v = 0`. Introduce `v hv`. Take `⟨d, hd, hdm⟩` from `PI.UnitaryGroupMassFormula.BetaModX.Iota.exists_smul_mem Λ hL.span_eq_top v`. Establish `hdE : algebraMap (𝓞 D.host.E) D.host.E d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 D.host.E) D.host.E)).mpr hd`. Establish `hdp : d • v ∈ perpS (VS D) F0.X`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul D.host.E d v]`. Conclude with `Submodule.smul_mem _ _ hv`. Establish `h1` using `hw (d • v) hdm`. Establish `e1 : f ⟨d • v, hdm⟩ = (VS D).hT (a : (VS D).V) ((ρ ⟨d • v, hdm⟩ : Λ) : (VS D).V)` using `rfl`. Rewrite `h1` using `[e1, hρid ⟨d • v, hdm⟩ hdp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (VS D).hT (w - (a : (VS D).V)) (d • v) = 0`. Rewrite using `[map_sub, LinearMap.sub_apply, h1]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[← algebraMap_smul D.host.E d v, LinearMap.map_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h2).resolve_left hdE`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwX : w - (a : (VS D).V) ∈ F0.X`. Establish `: w - (a : (VS D).V) ∈ orth (VS D) (orth (VS D) F0.X)`. Rewrite using `[PI.UnitaryGroupMassFormula.BetaModX.Iota.mem_orth'']`. Introduce `v hv`. Rewrite `hv` using `[← perpS_eq_orth]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PI.UnitaryGroupMassFormula.BetaModX.Iota.herm'' (S := VS D), hwv v hv, star_zero]`. Rewrite `this` using `[PI.ScalarPairDr.W.orth_orth]`. Then use the resulting hypothesis. Establish `hwp : w ∈ perpS (VS D) F0.X`. Establish `e : w = (a : (VS D).V) + (w - (a : (VS D).V))` using `by abel`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.add_mem _ a.2 (X_le_perp D F0 hwX)`. Rewrite using `[mem_Mof]`. Use `⟨⟨w, hwp⟩, hwΛ, ?_⟩` and prove the remaining obligations. Rewrite using `[mk_eq_mk]`. Conclude with `hwX`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `y hy`. Take `⟨a, ha, rfl⟩` from `(mem_Mof D F0 Λ x).1 hx`. Take `⟨b, hb, rfl⟩` from `(mem_Mof D F0 Λ y).1 hy`.
-
-Rewrite using `[hWb_mk]`. Take `⟨o, ho⟩` from `PI.UnitaryGroupMassFormula.BetaModX.Iota.int_val (S := VS D) hU hb ha`. Conclude with `Submodule.mem_one.2 ⟨o, ho⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Mof_unimod (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hL : Submodule.IsLattice D.host.E Λ) (hU : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ) :
@@ -209,20 +207,18 @@ theorem Mof_unimod (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Su
     exact Submodule.mem_one.2 ⟨o, ho⟩
 
 /- English proof (translation)
-The claim follows from `(mem_Mof D F0 Λ _).2 ⟨⟨F0.z, z_mem_perp D F0⟩, hz, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem zbar_mem (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hz : F0.z ∈ Λ) : zbar D F0 ∈ Mof D F0 Λ :=
   (mem_Mof D F0 Λ _).2 ⟨⟨F0.z, z_mem_perp D F0⟩, hz, rfl⟩
 
 /- English proof (translation)
-Apply `hprim` to reduce the goal to its premises. Take `⟨a, ha, hae⟩` from `(mem_Mof D F0 Λ _).1 hc`. Rewrite `hae` using `[zbar, ← Submodule.Quotient.mk_smul, mk_eq_mk]`. Establish `hzo : F0.z ∈ orth (VS D) F0.X`. Rewrite using `[← perpS_eq_orth]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `z_mem_perp D F0`. Establish `hao : (a : (VS D).V) ∈ orth (VS D) F0.X`. Rewrite using `[← perpS_eq_orth]`. Conclude with `a.2`. Establish `hcz : c • F0.z = (a : (VS D).V) + -((a : (VS D).V) - c • F0.z)` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcz]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Conclude with `⟨ha, hao⟩`. Conclude with `Submodule.neg_mem _ (by simpa using hae)`.
-
-Conclude with `(orth (VS D) F0.X).smul_mem c hzo`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem zbar_prim (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hprim : ∀ c : D.host.E, c • F0.z ∈ Lsub Λ (lf D F0) → ∃ o : 𝓞 D.host.E, (o : D.host.E) = c)
@@ -245,7 +241,7 @@ theorem zbar_prim (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Sub
   · exact (orth (VS D) F0.X).smul_mem c hzo
 
 /- English proof (translation)
-Introduce `D u F0 Λ hrow`. Take `⟨_, ⟨hL, hU, ⟨hz, _⟩, hconv⟩, _⟩` from `hrow`. Conclude with `⟨Mof_isLattice D F0 Λ hL, Mof_unimod D F0 Λ hL hU, zbar_mem D F0 Λ hz, zbar_prim D F0 Λ hconv.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem row_lattice_mass_holds : RowM := by
   intro D u F0 Λ hrow
@@ -256,7 +252,7 @@ theorem row_lattice_mass_holds : RowM := by
 end PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.row_lattice_mass_holds`.
+A detailed English derivation is pending.
 -/
 theorem PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.row_lattice_mass_holds : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowM :=
   PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.row_lattice_mass_holds

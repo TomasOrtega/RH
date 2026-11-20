@@ -12,11 +12,11 @@ open scoped ContDiff ComplexOrder Classical
 namespace GlobalTheory.DetCoef
 
 /- English proof (translation)
-Establish `h` using `(Matrix.detRowAlternating (n := n) (R := ℂ)).toMultilinearMap.map_add_univ (t • N) Θ`. Rewrite using `[add_comm Θ]`. Use `h.trans (Finset.sum_congr rfl fun S _ => ?_)` and prove the remaining obligations. Establish `h2` using `(Matrix.detRowAlternating (n := n) (R := ℂ)).toMultilinearMap.map_piecewise_smul (fun _ => t) (S.piecewise N Θ) S`. Rewrite `h2` using `[Finset.prod_const, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans ?_ h2` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ S`. Simplify using `[Finset.piecewise, hi]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `[Finset.piecewise, hi]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem det_add_smul_eq_sum {n : Type} [Fintype n] [DecidableEq n] (Θ N : Matrix n n ℂ) (t : ℂ) :
     (Θ + t • N).det = ∑ S : Finset n, t ^ S.card * Matrix.det (Matrix.of (S.piecewise N Θ)) := by
@@ -34,7 +34,7 @@ theorem det_add_smul_eq_sum {n : Type} [Fintype n] [DecidableEq n] (Θ N : Matri
   · simp [Finset.piecewise, hi]
 
 /- English proof (translation)
-Rewrite using `[Matrix.trace_mul_comm, Matrix.trace]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.cramer_transpose_apply, Matrix.cramer_eq_adjugate_mulVec, ← Matrix.adjugate_transpose]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_adjugate_mul {n : Type} [Fintype n] [DecidableEq n] (Θ N : Matrix n n ℂ) :
     (N.adjugate * Θ).trace = ∑ k, (N.updateRow k (Θ k)).det := by
@@ -44,13 +44,13 @@ theorem trace_adjugate_mul {n : Type} [Fintype n] [DecidableEq n] (Θ N : Matrix
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_bij (fun k _ => Finset.univ.erase k) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k _`. Simplify using `[Finset.card_erase_of_mem]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a _ b _ h`. Assume the negation of the conclusion as `hab`. Establish `: a ∈ Finset.univ.erase b` using `by simp [hab]`. Rewrite `this` using `[← h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `S hS`. Establish `hS' : S.card = e` using `by simpa using hS`. Establish `h1 : Sᶜ.card = 1` using `by rw [Finset.card_compl, hS']; simp`. Take `⟨k, hk⟩` from `Finset.card_eq_one.1 h1`. Use `⟨k, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← compl_compl S, hk, Finset.compl_singleton]`. Introduce `_ _`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem sum_card_eq {e : ℕ} {M : Type} [AddCommMonoid M] (d : Finset (Fin (e + 1)) → M) :
     ∑ S : Finset (Fin (e + 1)), (if S.card = e then d S else 0) = ∑ k, d (Finset.univ.erase k) := by
@@ -73,19 +73,19 @@ theorem sum_card_eq {e : ℕ} {M : Type} [AddCommMonoid M] (d : Finset (Fin (e +
   · intro _ _; rfl
 
 /- English proof (translation)
-Introduce `R _ _ Λ a b f e Θ N s h`. Set `c : ℕ → ℝ` to `fun m => ((f + e).choose m : ℝ) * Λ (a ^ (f + e - m) * b ^ m)`. Set `d : Finset (Fin (e + 1)) → ℝ` to `fun S => s * (Matrix.det (Matrix.of (S.piecewise N Θ))).re`. Establish `hP : (∑ m ∈ Finset.range (f + e + 1), Polynomial.monomial m (c m)) = ∑ S : Finset (Fin (e + 1)), Polynomial.monomial S.card (d S)`. Apply `Polynomial.funext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t`. Establish `ht` using `h t`. Rewrite `ht` using `[det_add_smul_eq_sum, add_comm a, add_pow, map_sum, Complex.re_sum, Finset.mul_sum]`. Simplify using `only [Polynomial.eval_finset_sum, Polynomial.eval_monomial]`. Use `Eq.trans ?_ (ht.trans ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `: (t • b) ^ m * a ^ (f + e - m) * ((f + e).choose m : R) = (((f + e).choose m : ℝ) * t ^ m) • (a ^ (f + e - m) * b ^ m)`. Rewrite using `[smul_pow, mul_smul, Nat.cast_smul_eq_nsmul, nsmul_eq_mul, smul_mul_assoc, mul_comm (b ^ m), mul_comm]`. Rewrite using `[this, map_smul, smul_eq_mul]`. Simplify using `only [c]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Simplify using `only [d]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hc` using `congrArg (fun p => Polynomial.coeff p e) hP`. Simplify using `only [Polynomial.finset_sum_coeff, Polynomial.coeff_monomial] at hc`. Rewrite `hc` using `[sum_card_eq, Finset.sum_ite_eq' , if_pos (by simp)]`. Simplify using `only [c, Nat.add_sub_cancel] at hc`. Rewrite using `[hc, trace_adjugate_mul, Complex.re_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [d]`. Use `congr 3`. Use extensionality with `i j`. Distinguish the cases in `hi : i = k`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `[Finset.piecewise]`. Simplify using `[Finset.piecewise, hi]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_compare :
     ∀ (R : Type) [CommRing R] [Algebra ℝ R] (Λ : R →ₗ[ℝ] ℝ) (a b : R) (f e : ℕ) (Θ N : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) (s : ℝ), (∀ t : ℝ, Λ ((a + t • b) ^ (f + e)) = s * (Θ + (t : ℂ) • N).det.re) → ((f + e).choose e : ℝ) * Λ (a ^ f * b ^ e) = s * (N.adjugate * Θ).trace.re := by

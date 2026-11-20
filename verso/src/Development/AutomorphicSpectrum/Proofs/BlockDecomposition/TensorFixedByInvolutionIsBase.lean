@@ -11,19 +11,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.KFin
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h K _ _ a ha`. Take `⟨θ, d, B, hθ, hd, hσθ, hsq, hB0, hB1⟩` from `GlobalTheory.CompanionTheory.SaGen.Dichotomy.exists_theta h`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`. Set `C : Module.Basis (Fin 2) K (K ⊗[F] E)` to `Algebra.TensorProduct.basis K B`. Establish `hC0 : C 0 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [C, Algebra.TensorProduct.basis_apply, hB0]`. Both sides reduce to the same expression. Establish `hC1 : C 1 = (1 : K) ⊗ₜ[F] θ`. Simplify using `only [C, Algebra.TensorProduct.basis_apply, hB1]`. Establish `hsK : ∀ x : K, sigR K σ (algebraMap K (K ⊗[F] E) x) = algebraMap K (K ⊗[F] E) x`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id F K) σ (algebraMap K (K ⊗[F] E) x) = _`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Establish `hsT : sigR K σ ((1 : K) ⊗ₜ[F] θ) = -((1 : K) ⊗ₜ[F] θ)`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id F K) σ ((1 : K) ⊗ₜ[F] θ) = _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, hσθ, TensorProduct.tmul_neg]`. Both sides reduce to the same expression. Establish `hz` using `C.sum_repr a`. Rewrite `hz` using `[Fin.sum_univ_two, hC0, hC1, Algebra.smul_def, Algebra.smul_def, mul_one]`. Generalize the expression as in `C.repr a 0 = x at hz`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `C.repr a 1 = y at hz`. Substitute `hz` using the available equality. Rewrite `ha` using `[map_add, map_mul, hsK, hsK, hsT]`. Establish `h2 : algebraMap K (K ⊗[F] E) 0 + algebraMap K (K ⊗[F] E) (2 * y) * ((1 : K) ⊗ₜ[F] θ) = 0`. Rewrite using `[map_zero, map_mul, map_ofNat]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-ha`. Establish `hl` using `Fintype.linearIndependent_iff.1 C.linearIndependent ![0, 2 * y] (by`. Rewrite using `[Fin.sum_univ_two, hC0, hC1]`. Simplify `h2)` using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Algebra.smul_def, mul_one]`. Establish `hy : y = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hl 1` as an intermediate fact. Simplify using `only [Matrix.cons_val_one] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left two_ne_zero`. Conclude with `⟨x, by rw [hy, map_zero, zero_mul, add_zero]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sigR_fixed_eq_algebraMap : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E}, IsCMExt F E σ → ∀ (K : Type) [Field K] [Algebra F K] (a : K ⊗[F] E),

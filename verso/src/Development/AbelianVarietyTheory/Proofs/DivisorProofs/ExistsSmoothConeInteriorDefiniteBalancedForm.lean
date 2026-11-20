@@ -10,29 +10,27 @@ namespace GlobalTheory.Poinc.Cover
 open Matrix
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ X`. Set `GZ : Matrix (Module.Free.ChooseBasisIndex ℤ X) (Module.Free.ChooseBasisIndex ℤ X) ℤ` to `fun i j => β (b i) (b j)`. Set `G : Matrix (Module.Free.ChooseBasisIndex ℤ X) (Module.Free.ChooseBasisIndex ℤ X) ℝ` to `GZ.map (Int.cast : ℤ → ℝ)`. Establish `hval : ∀ v : Module.Free.ChooseBasisIndex ℤ X → ℤ, β (∑ i, v i • b i) (∑ i, v i • b i) = v ⬝ᵥ (GZ *ᵥ v)` using `fun v => by`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, dotProduct, mulVec, GZ, Finset.mul_sum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Establish `hx : ∀ v : Module.Free.ChooseBasisIndex ℤ X → ℤ, v ≠ 0 → ∑ i, v i • b i ≠ 0` using `fun v hv h0 => hv (funext fun i => Fintype.linearIndependent_iff.1 b.linearIndependent v h0 i)`. Establish `hcast : ∀ c : Module.Free.ChooseBasisIndex ℤ X → ℤ, (fun i => (c i : ℝ)) ⬝ᵥ (G *ᵥ fun i => (c i : ℝ)) = ((c ⬝ᵥ (GZ *ᵥ c) : ℤ) : ℝ)` using `fun c => by`. Simplify using `[dotProduct, mulVec, G]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hG : G.IsHermitian` using `Matrix.IsHermitian.ext fun i j => by show star ((β (b j) (b i) : ℤ) : ℝ) = ((β (b i) (b j) : ℤ) : ℝ)`. Rewrite using `[star_trivial, hs]`. Establish `hpsd : G.PosSemidef`. Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hG ?_` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : DenseRange (Pi.map (fun (_ : Module.Free.ChooseBasisIndex ℤ X) (q : ℚ) => (q : ℝ)))` using `DenseRange.piMap (fun _ => Rat.denseRange_cast)`. Rewrite using `[star_trivial]`. Use `hd.induction_on (p := fun y => 0 ≤ y ⬝ᵥ (G *ᵥ y)) x ?_ ?_` and prove the remaining obligations. Use `isClosed_le continuous_const ?_` and prove the remaining obligations. Simplify using `only [dotProduct, mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Introduce `q`. Take `⟨⟨d, hd0⟩, hq⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) q`. Use `choose c hc using hq`. Establish `hd1 : (d : ℝ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.ne_zero hd0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun i => (c i : ℝ)) = (d : ℝ) • Pi.map (fun (_ : Module.Free.ChooseBasisIndex ℤ X) (q : ℚ) => (q : ℝ)) q`. Use function extensionality and compare the values at `i`. Establish `h1 : (c i : ℚ) = (d : ℚ) * q i` using `by simpa using hc i`. Establish `h2 : ((c i : ℚ) : ℝ) = (((d : ℚ) * q i : ℚ) : ℝ)` using `by rw [h1]`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (0 : ℝ) ≤ (fun i => (c i : ℝ)) ⬝ᵥ (G *ᵥ fun i => (c i : ℝ))`. Rewrite using `[hcast]`. Distinguish the cases in `hc0 : c = 0`. Simplify using `[hc0]`. Rewrite using `[← hval]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hp _ (hx c hc0)).le` after adjusting the coercions. Rewrite `h3` using `[e, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Conclude with `(mul_nonneg_iff_of_pos_left (mul_self_pos.mpr hd1)).mp h3`. Establish `hdef : ∀ c : Module.Free.ChooseBasisIndex ℤ X → ℝ, c ≠ 0 → 0 < c ⬝ᵥ (G *ᵥ c)`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `hpsd.dotProduct_mulVec_nonneg c`. Rewrite `h0` using `[star_trivial]`. Use `h0.lt_of_ne fun h1 => ?_` and prove the remaining obligations. Establish `h2 : G *ᵥ c = 0`. Use `(hpsd.dotProduct_mulVec_zero_iff c).1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[star_trivial]`. Conclude with `this h1.symm`. Establish `h3 : G.det = 0` using `Matrix.exists_mulVec_eq_zero_iff.1 ⟨c, hc, h2⟩`. Establish `h4 : GZ.det = 0`. Establish `: ((GZ.det : ℤ) : ℝ) = G.det` using `(Int.castRingHom ℝ).map_det GZ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this.trans h3` after adjusting the coercions. Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h4`. Use `hp _ (hx v hv)` as an intermediate fact. Rewrite `this` using `[hval, hv0, dotProduct_zero]`. Conclude with `lt_irrefl _ this`.
-
-Use `(isPosDef_iff_basis b _).2 fun c hc => (hdef c hc).trans_eq ?_` and prove the remaining obligations. Establish `hGij : ∀ i j, G i j = ((β (b i) (b j) : ℤ) : ℝ)` using `fun _ _ => rfl`. Simplify using `only [dotProduct, mulVec, hGij, toReal_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPosDef_toReal_of_pos {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     {β : LinearMap.BilinForm ℤ X} (hs : ∀ y z, β y z = β z y) (hp : ∀ x, x ≠ 0 → 0 < β x x) :
@@ -109,13 +107,13 @@ end GlobalTheory.Poinc.Cover
 namespace GlobalTheory.Poinc.Cover
 
 /- English proof (translation)
-Take `⟨k, bb, hbb⟩` from `hb`. Use `⟨fun i => bb.coord (Sum.inl i) ⟨β, hβ⟩, fun i => ?_⟩` and prove the remaining obligations. Set `v : Option (Fin m) → balForms bar X` to `fun o => o.elim ⟨β, hβ⟩ fun i => ⟨γ i, hmem i⟩`. Set `w : Option (Fin m) → ℝ` to `fun o => o.elim (-1) c`. Establish `h : ∑ o, w o • toReal ((balForms bar X).subtype (v o)) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Fintype.sum_option]`. Simplify using `only [w, v, Option.elim, Submodule.subtype_apply]`. Rewrite using `[← hs]`. Simplify using the standard rewrite rules. Use `sum_mul_eq_zero_of_sum_toReal (j := (balForms bar X).subtype) Subtype.val_injective (bb.coord (Sum.inl i)) h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[Fintype.sum_option]`. Simplify using `only [w, v, Option.elim] at this`. Establish `hc : ∀ i' : Fin m, bb.coord (Sum.inl i) ⟨γ i', hmem i'⟩ = if i' = i then 1 else 0` using `fun i' => by`. Rewrite using `[show (⟨γ i', hmem i'⟩ : balForms bar X) = bb (Sum.inl i') from (hbb i').symm, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Distinguish the cases in `h' : i' = i`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h']`. Simplify using `[h', Ne.symm h']`. Simplify using `only [hc] at this`. Simplify using `only [Int.cast_ite, Int.cast_one, Int.cast_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem coeff_int {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCommGroup X] [Module O X] {m : ℕ}
     {γ : Fin m → LinearMap.BilinForm ℤ X} (hmem : ∀ i, γ i ∈ balForms bar X)
@@ -146,15 +144,15 @@ theorem coeff_int {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCommGro
   linarith
 
 /- English proof (translation)
-Introduce `O _ bar φ X _ _ _ _ _ _ hF β hβ hp`. Establish `hB : toReal β ∈ psdCone bar X` using `(isPosDef_toReal_of_pos hβ.1 hp).mem_psdCone (toReal_mem hβ)`. Take `⟨m, γ, c, hγ, hc, hsum⟩` from `hF.cover _ hB`. Take `⟨nZ, hnZ⟩` from `coeff_int hγ.mem hγ.basis hβ hsum`. Establish `hn0 : ∀ i, 0 ≤ nZ i` using `fun i => by exact_mod_cast (hnZ i) ▸ hc i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `n : Fin m → ℕ` to `fun i => (nZ i).toNat`. Establish `hn : ∀ i, ((n i : ℤ) : ℝ) = c i` using `fun i => by simp [n, Int.toNat_of_nonneg (hn0 i), hnZ i]`. Establish `heq : β = ∑ i, n i • γ i` using `LinearMap.ext₂ fun a b => by`. Establish `h1` using `LinearMap.congr_fun₂ hsum a b`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, ← hn] at h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, nsmul_eq_mul]`. Conclude with `h1` after adjusting the coercions. Set `S : Finset (Fin m)` to `Finset.univ.filter fun i => n i ≠ 0`. Set `e` to `S.orderEmbOfFin rfl`. Use `⟨S.card, fun j => γ (e j), 1, fun j => n (e j), hF.face _ _ γ e.toEmbedding hγ, one_pos, fun j => Nat.pos_of_ne_zero (Finset.mem_filter.1 (S.orderEmbOfFin_mem rfl j)).2, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul, heq]`. Establish `h2 : ∑ i ∈ S, n i • γ i = ∑ i, n i • γ i` using `Finset.sum_filter_of_ne fun i _ h => fun h0 => h (by rw [h0, zero_smul])`. Establish `h3` using `Finset.sum_map (Finset.univ : Finset (Fin S.card)) e.toEmbedding fun i => n i • γ i`. Rewrite `h3` using `[Finset.map_orderEmbOfFin_univ S rfl]`. Rewrite using `[← h2, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_cone : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (X : Type) [AddCommGroup X] [Module O X]
     [Module.Finite O X] [Module.Projective O X] [Module.Free ℤ X] [Module.Finite ℤ X], IsPolFanOn bar φ X →

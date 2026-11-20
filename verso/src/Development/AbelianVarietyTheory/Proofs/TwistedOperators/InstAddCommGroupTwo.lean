@@ -17,7 +17,7 @@ def leviChar {R β : Type} [CommRing R] [Fintype β] (c : β → Type) [∀ j, F
   ∏ j, (detChar (c j) (χ j)).comp (Pi.evalMonoidHom (fun j => GL (c j) R) j)
 
 /- English proof (translation)
-Simplify using `[leviChar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem leviChar_apply {R β : Type} [CommRing R] [Fintype β] (c : β → Type) [∀ j, Fintype (c j)]
     [∀ j, DecidableEq (c j)] (χ : β → Rˣ →* ℂˣ) (g : Levi R c) :
@@ -29,14 +29,14 @@ def wordMult {n : ℕ} (π : Representation ℂ (GL (Fin n) k) V) (w : List ℂ�
   else 0
 
 /- English proof (translation)
-Simplify using `[wordMult]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wordMult_ofFn {n : ℕ} (π : Representation ℂ (GL (Fin n) k) V) (z : Fin n → ℂˣ) :
     wordMult π (List.ofFn z) = jhMult (ofChar (torusChar fun i => unrChar k (z i))) (jacB π) := by
   simp [wordMult]
 
 /- English proof (translation)
-Rewrite using `[wordMult, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wordMult_of_ne {n : ℕ} (π : Representation ℂ (GL (Fin n) k) V) {w : List ℂˣ}
     (h : w.length ≠ n) : wordMult π w = 0 := by
@@ -54,7 +54,7 @@ def jacEquiv {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ 
       exact congrArg Submodule.Quotient.mk (φ.apply_symm_apply v)⟩)
 
 /- English proof (translation)
-Unfold `wordMult`. Use `split_ifs`. Conclude with `jhMult_congr_right _ (Representation.Equiv.mk (jacEquiv (points (Fin n)) φ).toLinearEquiv fun t => (jacEquiv (points (Fin n)) φ).isIntertwining' _)`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wordMult_congr {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V}
     {τ : Representation ℂ (GL (Fin n) k) W} (φ : π.Equiv τ) (w : List ℂˣ) :

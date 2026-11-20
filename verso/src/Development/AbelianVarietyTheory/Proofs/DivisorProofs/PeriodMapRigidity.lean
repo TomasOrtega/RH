@@ -24,7 +24,7 @@ def thM (τ : E → Matrix (Fin g) (Fin g) ℂ) (P : Pt E g) : ℝ :=
   Real.exp (-2 * π * ((fun i => (P.2 i).im) ⬝ᵥ ((((τ P.1).map Complex.im)⁻¹) *ᵥ fun i => (P.2 i).im)))
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [per, Pi.add_apply, Complex.ofReal_add, Matrix.vecMul, dotProduct, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem per_add (t : Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) : per t (x + y) = per t x + per t y := by
   ext i
@@ -33,7 +33,7 @@ theorem per_add (t : Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) : per t (x + y) = 
   ring
 
 /- English proof (translation)
-Simplify using `only [transl, per_add]`. Apply the tactic sequence `ext <;> simp [add_comm, add_assoc]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transl_transl (τ : E → Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) (P : Pt E g) :
     transl τ x (transl τ y P) = transl τ (x + y) P := by
@@ -41,21 +41,21 @@ theorem transl_transl (τ : E → Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) (P : 
   ext <;> simp [add_comm, add_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hP.1, Set.mem_univ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem transl_mem {B : Set E} (τ : E → Matrix (Fin g) (Fin g) ℂ) (x : Fl g) {P : Pt E g}
     (hP : P ∈ cov B g) : transl τ x P ∈ cov B g :=
   ⟨hP.1, Set.mem_univ _⟩
 
 /- English proof (translation)
-The claim follows from `(hτ.2.1 i j).comp differentiableOn_fst fun _ hP => hP.1`.
+A detailed English derivation is pending.
 -/
 theorem diff_entries {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) (i j : Fin g) :
     DifferentiableOn ℂ (fun P : Pt E g => τ P.1 i j) (cov B g) :=
   (hτ.2.1 i j).comp differentiableOn_fst fun _ hP => hP.1
 
 /- English proof (translation)
-Establish `hp : DifferentiableOn ℂ (fun P : Pt E g => per (τ P.1) x) (cov B g)`. Use `differentiableOn_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [per, Pi.add_apply, Matrix.vecMul, dotProduct]`. Conclude with `(DifferentiableOn.fun_sum fun k _ => (diff_entries hτ k i).const_mul _).add (differentiableOn_const _)`. Conclude with `differentiableOn_fst.prodMk (differentiableOn_snd.add hp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_transl {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) : DifferentiableOn ℂ (transl τ x) (cov B g) := by
@@ -67,7 +67,7 @@ theorem differentiableOn_transl {B : Set E} {τ : E → Matrix (Fin g) (Fin g) �
   exact differentiableOn_fst.prodMk (differentiableOn_snd.add hp)
 
 /- English proof (translation)
-Establish `hd` using `diff_entries hτ (g := g)`. Unfold `thF`. Simplify using `only [thetaExp, dotProduct, Matrix.vecMul, div_eq_mul_inv]`. Establish `hz : ∀ i, DifferentiableOn ℂ (fun P : Pt E g => P.2 i) (cov B g)` using `fun i => Differentiable.differentiableOn (by fun_prop)`. Conclude with `DifferentiableOn.cexp (DifferentiableOn.const_mul (DifferentiableOn.sub (DifferentiableOn.mul_const (DifferentiableOn.neg (DifferentiableOn.fun_sum fun i _ => DifferentiableOn.mul_const (DifferentiableOn.fun_sum fun k _ => (hd k i).const_mul _) _)) _) (DifferentiableOn.fun_sum fu …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiableOn_thF {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (x : Fl g) : DifferentiableOn ℂ (thF τ x) (cov B g) := by
@@ -83,15 +83,15 @@ theorem differentiableOn_thF {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (DifferentiableOn.fun_sum fun i _ => (hz i).const_mul _)) _)
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem thF_ne (τ : E → Matrix (Fin g) (Fin g) ℂ) (x : Fl g) (P : Pt E g) : thF τ x P ≠ 0 :=
   Complex.exp_ne_zero _
 
 /- English proof (translation)
-Simplify using `only [thF, transl, ← Complex.exp_add]`. Use `congr 1`. Establish `e1` using `thetaExp_add hs x l P.2`. Establish `e2` using `thetaExp_add hs l x P.2`. Rewrite `e2` using `[add_comm l x]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3 : (riem x l : ℂ) = ∑ i, (l (Sum.inl i) : ℂ) * (x (Sum.inr i) : ℂ) - ∑ i, (x (Sum.inl i) : ℂ) * (l (Sum.inr i) : ℂ)`. Simplify using `[riem, mul_comm, Finset.sum_sub_distrib]`. Rewrite using `[e3]`. Take the linear combination `(2 * π * Complex.I) * (e2 - e1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem thF_transl {τ : E → Matrix (Fin g) (Fin g) ℂ} (x l : Fl g) (P : Pt E g)
     (hs : (τ P.1).IsSymm) :
@@ -119,9 +119,9 @@ namespace GlobalTheory.FlatRigidity
 variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Break down `(cov B g).eq_empty_or_nonempty with he | ⟨P₀, hP₀⟩` into its components or cases. Conclude with `⟨0, fun P hP => by simp [he] at hP⟩`. Use `⟨f P₀, fun P hP => ?_⟩` and prove the remaining obligations. Establish `hpc : IsPreconnected (cov B g)` using `hc.prod isPreconnected_univ`. Establish `hm : IsMaxOn (norm ∘ f) (cov B g) P₀` using `fun P hP => by`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Function.comp, h1 P hP, h1 P₀ hP₀]`. Conclude with `Complex.eqOn_of_isPreconnected_of_isMaxOn_norm hpc (hB.prod isOpen_univ) hf hP₀ hm hP`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_const_of_norm_eq_one {B : Set E} (hB : IsOpen B) (hc : IsPreconnected B)
     (f : Pt E g → ℂ) (hf : DifferentiableOn ℂ f (cov B g)) (h1 : ∀ P ∈ cov B g, ‖f P‖ = 1) :
@@ -135,14 +135,14 @@ theorem eq_const_of_norm_eq_one {B : Set E} (hB : IsOpen B) (hc : IsPreconnected
   exact Complex.eqOn_of_isPreconnected_of_isMaxOn_norm hpc (hB.prod isOpen_univ) hf hP₀ hm hP
 
 /- English proof (translation)
-Take `⟨⟨b, hb⟩⟩` from `(inferInstance : Nonempty B)`. Conclude with `⟨b, hb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_of_sc {B : Set E} (hB : SimplyConnectedSpace B) : ∃ b, b ∈ B := by
   obtain ⟨⟨b, hb⟩⟩ := (inferInstance : Nonempty B)
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-The claim follows from `isPreconnected_iff_preconnectedSpace.2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem preconnected_of_sc {B : Set E} (hB : SimplyConnectedSpace B) : IsPreconnected B :=
   isPreconnected_iff_preconnectedSpace.2 inferInstance
@@ -158,31 +158,29 @@ namespace GlobalTheory.FlatRigidity
 variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `hU : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Take `⟨hθm, hθc⟩` from `GlobalTheory.T.chernIsFlat_exp_neg_im_quadratic (E := E) hτ`. Establish `hθs : ContDiffOn ℝ ∞ (thM τ) (cov B g)` using `hθm.1`. Establish `hθp : ∀ P ∈ cov B g, 0 < thM τ P` using `fun P _ => Real.exp_pos _`. Establish `hθi : ∀ x : Fl g, ∀ P ∈ cov B g, thM τ (transl τ x P) * ‖thF τ x P‖ ^ 2 = thM τ P` using `GlobalTheory.T.theta_metric_translation_invariant hτ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl1 : ContDiffOn ℝ ∞ (fun Q => Real.log (h Q)) (cov B g)` using `hh.1.log fun P hP => (hh.2.1 P hP).ne'`. Establish `hl2 : ContDiffOn ℝ ∞ (fun Q => Real.log (thM τ Q)) (cov B g)` using `hθs.log fun P hP => (hθp P hP).ne'`. Use `set u : Pt E g → ℝ := fun Q => Real.log (h Q) - Real.log (thM τ Q) with hu`. Establish `hus : ContDiffOn ℝ ∞ u (cov B g)` using `hl1.sub hl2`. Establish `hddc : ∀ P ∈ cov B g, ∀ v w : Pt E g, ddc u P v w = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP v w`. Rewrite using `[hu, GlobalTheory.T.ddc_sub_of_contDiffOn' _ _ hU (hl1.of_le (WithTop.coe_le_coe.2 le_top)) (hl2.of_le (WithTop.coe_le_coe.2 le_top)) P hP v w]`. Establish `e1` using `hc P hP v w`. Establish `e2` using `hθc P hP v w`. Express the relevant statement in the definitionally equal form `-ddc (fun Q => Real.log (thM τ Q)) P v w = om0 τ P ![v, w] at e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨F, hFd, hFr⟩` from `GlobalTheory.T.pluriharmonic_is_real_part_holomorphic u hU (GlobalTheory.T.simply_connected_cover hB) hus hddc`. Use `set φ : Pt E g → ℂ := fun P => Complex.exp (F P / 2) with hφ`. Establish `hφd : DifferentiableOn ℂ φ (cov B g)` using `DifferentiableOn.cexp (by simpa only [div_eq_mul_inv] using hFd.mul_const (2⁻¹ : ℂ))`. Establish `hφn : ∀ P, φ P ≠ 0` using `fun P => Complex.exp_ne_zero _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφs : ∀ P ∈ cov B g, thM τ P * ‖φ P‖ ^ 2 = h P`. Introduce `P hP`. Rewrite using `[hφ, Complex.norm_exp, ← Real.exp_nat_mul]`. Establish `: ((2 : ℕ) : ℝ) * (F P / 2).re = u P`. Rewrite using `[← hFr P hP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hu, Real.exp_sub, Real.exp_log (hh.2.1 P hP), Real.exp_log (hθp P hP)]`. Clear denominators, using `[(hθp P hP).ne']` for the nonvanishing conditions. Use `set k : Fl g → Pt E g → ℂ := fun l P => φ (transl τ l P) * j l P / (thF τ l P * φ P) with hk`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk1 : ∀ l ∈ M, ∀ P ∈ cov B g, ‖k l P‖ = 1`. Introduce `l hl P hP`. Establish `A` using `hφs _ (transl_mem τ l hP)`. Establish `Bq` using `hφs P hP`. Establish `C` using `hh.2.2 l hl P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `D` using `hθi l P hP`. Establish `key : thM τ (transl τ l P) * (‖φ (transl τ l P)‖ ^ 2 * ‖j l P‖ ^ 2) = thM τ (transl τ l P) * (‖thF τ l P‖ ^ 2 * ‖φ P‖ ^ 2)`. Take the linear combination `‖j l P‖ ^ 2 * A + C - ‖φ P‖ ^ 2 * D - Bq`. Establish `key'` using `mul_left_cancel₀ (hθp _ (transl_mem τ l hP)).ne' key`. Establish `hpos : 0 < ‖thF τ l P‖ ^ 2 * ‖φ P‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `norm_pos_iff.2 (thF_ne τ l P)` as an intermediate fact. Use `norm_pos_iff.2 (hφn P)` as an intermediate fact. Check the signs of the components of the expression. Establish `hsq : ‖k l P‖ ^ 2 = 1`. Simplify using `only [hk, norm_div, norm_mul, div_pow, mul_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[key', div_self hpos.ne']`. Use `norm_nonneg (k l P)` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg (‖k l P‖ - 1), sq_nonneg (‖k l P‖ + 1)]`. Establish `hkc : ∀ l ∈ M, ∃ c : ℂ, ∀ P ∈ cov B g, k l P = c`. Introduce `l hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `eq_const_of_norm_eq_one hτ.1 (preconnected_of_sc hB) (k l) ?_ (hk1 l hl)` and prove the remaining obligations. Simplify using `only [hk, div_eq_mul_inv]`. Conclude with `((hφd.comp (differentiableOn_transl hτ l) fun P hP => transl_mem τ l hP).mul ((hj.1 l hl).1)).mul (((differentiableOn_thF hτ l).mul hφd).inv fun P _ => mul_ne_zero (thF_ne _ _ _) (hφn P))`. Use `choose! κ hκ using hkc`. Take `⟨b₀, hb₀⟩` from `nonempty_of_sc hB`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hP₀ : ((b₀, 0) : Pt E g) ∈ cov B g` using `⟨hb₀, Set.mem_univ _⟩`. Use `⟨φ, κ, ⟨hφd, fun P _ => hφn P, fun l hl P hP => ?_⟩, hφs, fun l hl => ?_⟩` and prove the remaining obligations. Use `show φ (transl τ l P) * j l P = κ l * thF τ l P * φ P`. Use `hκ l hl P hP` as an intermediate fact. Simplify using `only [hk] at this`.
-
-Rewrite using `[← this]`. Clear denominators, using `[thF_ne τ l P, hφn P]` for the nonvanishing conditions. Rewrite using `[← hκ l hl _ hP₀]`. Conclude with `hk1 l hl _ hP₀`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normal_form [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     (hτ : IsPeriodMap B τ) (hB : SimplyConnectedSpace B) {M : Submodule ℤ (Fl g)}
@@ -271,9 +269,9 @@ namespace GlobalTheory.FlatRigidity
 variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `e1` using `hi.2.2 (l + l') (M.add_mem hl hl') P hP`. Establish `e2` using `hj.2 l hl l' hl' P hP`. Establish `e3` using `hi.2.2 l hl (transl τ l' P) (transl_mem τ l' hP)`. Establish `e4` using `hi.2.2 l' hl' P hP`. Simplify using `only at e1 e3 e4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e3` using `[transl_transl]`. Establish `hφ` using `hi.2.1 P hP`. Apply `mul_right_cancel₀ hφ` to reduce the goal to its premises. Rewrite using `[← e1, e2]`. Take the linear combination `j l' P * e3 + κ l * thF τ l (transl τ l' P) * e4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem kappa_add {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submodule ℤ (Fl g)}
     {j : Fl g → Pt E g → ℂ} {φ : Pt E g → ℂ} {κ : Fl g → ℂ} (hj : IsFactor B τ M j)
@@ -292,29 +290,25 @@ theorem kappa_add {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {M : Submo
   linear_combination j l' P * e3 + κ l * thF τ l (transl τ l' P) * e4
 
 /- English proof (translation)
-Introduce `g E _ _ _ B τ hτ hB M hM _ j₁ j₂ h₁ h₂ hj₁ hh₁ hc₁ hj₂ hh₂ hc₂`. Take `⟨φ₁, κ₁, hi₁, hs₁, hn₁⟩` from `normal_form hτ hB hj₁ hh₁ hc₁`. Take `⟨φ₂, κ₂, hi₂, hs₂, hn₂⟩` from `normal_form hτ hB hj₂ hh₂ hc₂`. Take `⟨b₀, hb₀⟩` from `nonempty_of_sc hB`. Establish `hP₀ : ((b₀, 0) : Pt E g) ∈ cov B g` using `⟨hb₀, Set.mem_univ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : ∀ l ∈ M, κ₂ l ≠ 0` using `fun l hl h0 => by simpa [h0] using hn₂ l hl`. Use `set χ : Fl g → ℂ := fun l => κ₁ l / κ₂ l with hχ`. Establish `hχ1 : ∀ l ∈ M, ‖χ l‖ = 1` using `fun l hl => by simp [hχ, norm_div, hn₁ l hl, hn₂ l hl]`. Establish `hχm : ∀ l ∈ M, ∀ l' ∈ M, χ (l + l') = χ l * χ l'`. Introduce `l hl l' hl'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `kappa_add hj₁ hi₁ hl hl' hP₀`. Establish `e2` using `kappa_add hj₂ hi₂ hl hl' hP₀`. Use `set T := thF τ (l + l') ((b₀, 0) : Pt E g)`. Use `set X := thF τ l (transl τ l' ((b₀, 0) : Pt E g)) * thF τ l' ((b₀, 0) : Pt E g)`. Establish `hT : T ≠ 0` using `thF_ne _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : X ≠ 0` using `mul_ne_zero (thF_ne _ _ _) (thF_ne _ _ _)`. Establish `e1' : κ₁ (l + l') = κ₁ l * κ₁ l' * X / T` using `by field_simp; linear_combination e1`. Establish `e2' : κ₂ (l + l') = κ₂ l * κ₂ l' * X / T` using `by field_simp; linear_combination e2`. Simplify using `only [hχ, e1', e2']`. Clear denominators, using `[hne l hl, hne l' hl']` for the nonvanishing conditions.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨x, hx⟩` from `GlobalTheory.T.lattice_character_eq_exp_riemann_form hM χ hχ1 hχm`. Use `⟨x, fun P => φ₂ P * thF τ x P / φ₁ (transl τ x P), ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [div_eq_mul_inv]`. Conclude with `(hi₂.1.mul (differentiableOn_thF hτ x)).mul ((hi₁.1.comp (differentiableOn_transl hτ x) fun P hP => transl_mem τ x hP).inv fun P hP => hi₁.2.1 _ (transl_mem τ x hP))`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_ne_zero (mul_ne_zero (hi₂.2.1 P hP) (thF_ne _ _ _)) (hi₁.2.1 _ (transl_mem τ x hP))`. Introduce `l hl P hP`. Simplify using `only [translPullFactor]`. Establish `A` using `hi₂.2.2 l hl P hP`. Establish `Bf` using `hi₁.2.2 l hl (transl τ x P) (transl_mem τ x hP)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `Cf` using `thF_transl (τ := τ) x l P (hτ.2.2 P.1 hP.1).1`. Establish `Df` using `hx l hl`. Simplify using `only at A Bf`. Simplify using `only [hχ] at Df`. Establish `hcomm : transl τ x (transl τ l P) = transl τ l (transl τ x P)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[transl_transl, transl_transl, add_comm]`. Rewrite using `[hcomm]`. Establish `hV` using `hi₁.2.1 _ (transl_mem τ x hP)`. Establish `hW` using `hi₁.2.1 _ (transl_mem τ l (transl_mem τ x hP))`. Establish `hk1 : κ₁ l = κ₂ l * Complex.exp (2 * π * Complex.I * riem x l)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← Df]`. Clear denominators, using `[hne l hl]` for the nonvanishing conditions. Rewrite using `[div_mul_eq_mul_div, mul_div_assoc', div_eq_div_iff hW hV]`. Use `first`. Consider the case `linear_combination (thF τ x (transl τ l P) * φ₁ (transl τ x P)) * A + κ₂ l * φ₂ P * φ₁ (transl τ x P) * Cf - φ₂ P * thF τ x P * Bf - φ₂ P * thF τ x P * thF τ l (transl τ x P) * φ₁ (transl τ x P) * hk1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `linear_combination -((thF τ x (transl τ l P) * φ₁ (transl τ x P)) * A + κ₂ l * φ₂ P * φ₁ (transl τ x P) * Cf - φ₂ P * thF τ x P * Bf - φ₂ P * thF τ x P * thF τ l (transl τ x P) * φ₁ (transl τ x P) * hk1)`. Introduce `P hP`. Establish `e1` using `hs₁ _ (transl_mem τ x hP)`. Establish `e2` using `hs₂ P hP`. Establish `e3` using `GlobalTheory.T.theta_metric_translation_invariant hτ x P hP`.
-
-Express the relevant statement in the definitionally equal form `thM τ (transl τ x P) * ‖thF τ x P‖ ^ 2 = thM τ P at e3`. Establish `hV` using `norm_pos_iff.2 (hi₁.2.1 _ (transl_mem τ x hP))`. Use `show h₁ (transl τ x P) * ‖φ₂ P * thF τ x P / φ₁ (transl τ x P)‖ ^ 2 = h₂ P`. Rewrite using `[← e1, ← e2, norm_div, norm_mul, div_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `‖φ₂ P‖ ^ 2 * e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rigidity : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ},

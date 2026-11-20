@@ -34,7 +34,7 @@ structure LabSGeoCore (C3 : IntChart T io y) (ι : T.Fr →+* C) (Y : FBChart C 
     ∃ b : lab.II Dw o → C, (∀ q, q.1 ≠ a → b q = 0) ∧ v = ∑ q, b q • selfLieBasisVector C3 ι lab o q
 
 /- English proof (translation)
-Introduce `_ _ x` and use `embedding_integral ι _ x em_conj := fun o a x => by rw [← ha.conj o a]; exact (embedding_conjugate hstar ι _ x).symm e_int := fun _ _ i => a3uvec_int C3 hι _ i e_eig := h.e_eig e_sat := h.e_sat e_full := h.e_full`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem labSGeo_of (hstar : ∀ a : 𝓞 E, star a = H.bar a) {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι)
     {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : LabS E C Orb d} (ha : LabSArith V io ι lab)
@@ -63,14 +63,14 @@ def LabSGeoCoreSt : Prop :=
     ∀ (Orb : Type) (d : ℕ) [NeZero d] (lab : LabS E C Orb d), LabSArith V io ι lab → LabSGeoCore C3 ι Y lab
 
 /- English proof (translation)
-Introduce `hstar T io y C3 C _ _ V ι hι k Y hY Orb d _ lab ha` and use `labSGeo_of hstar hι ha (h hstar T io y C3 C V ι hι k Y hY Orb d lab ha)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem labSGeo_of_core (h : LabSGeoCoreSt Xo c) : LabSGeoSt Xo c :=
   fun hstar T io y C3 C _ _ V ι hι k Y hY Orb d _ lab ha =>
     labSGeo_of hstar hι ha (h hstar T io y C3 C V ι hι k Y hY Orb d lab ha)
 
 /- English proof (translation)
-Introduce `hstar T io y C3 C _ _ V ι hι k Y hY _ d _ _ ha hg hr o Hc` and use `h1 C V (𝓞 E) _ Y d _ (selfOfLab ha hg o) (h2 hstar T io y C3 C V ι hι k Y hY) (rankHyp_ofLabS ha hg hr o) Hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rank_maximal_self_charts_of_nondegenerate (h1 : RankMaximalSelfOfNondegenerate) (h2 : NondegenerateCharts Xo c) : RankMaximalSelfCharts Xo c :=
   fun hstar T io y C3 C _ _ V ι hι k Y hY _ d _ _ ha hg hr o Hc =>

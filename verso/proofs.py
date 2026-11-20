@@ -112,149 +112,130 @@ def compact(text):
     return " ".join(text.split())
 
 
-def code(text, limit=280):
-    text = compact(text).replace("\x60", "′")
-    if len(text) > limit:
-        text = text[:limit].rstrip() + " …"
-    return f"\x60{text}\x60"
-
-
-NO_ARGUMENT_TACTICS = {
+PROOF_ACTIONS = {
     "abel": "Normalize the expressions using the abelian group laws.",
     "ac_rfl": "The two sides agree by associativity and commutativity.",
-    "aesop": "Discharge the remaining goals by the proof search in \x60aesop\x60.",
+    "aesop": "Search for a derivation from the available facts and logical rules.",
+    "apply": "Reduce the claim to the hypotheses of an applicable result.",
+    "apply_rules": "Apply available rules repeatedly to reduce the claim to their hypotheses.",
     "assumption": "Use the matching hypothesis.",
+    "by_cases": "Consider separately whether the proposition holds or fails.",
     "by_contra": "Assume the negation of the conclusion and derive a contradiction.",
+    "case": "Treat this case separately.",
+    "cases": "Split into cases according to the possible forms of the given data.",
+    "change": "Express the relevant assertion in an equivalent form by its definition.",
     "congr": "Reduce the equality to equality of the corresponding arguments.",
     "constructor": "Prove the components needed by the constructor for the conclusion.",
     "contradiction": "The hypotheses give a contradiction.",
+    "convert": "Apply an available result and prove the equalities needed to match it to the conclusion.",
     "decide": "Evaluate the decidable proposition.",
+    "dsimp": "Simplify by unfolding definitions.",
     "exact?": "Find a matching proof by searching the available lemmas.",
     "exfalso": "It suffices to derive a contradiction.",
+    "ext": "By extensionality, compare the relevant components.",
     "field_simp": "Clear the denominators using the available nonvanishing facts.",
     "finish": "Complete the remaining goals with the available hypotheses and lemmas.",
     "funext": "Apply function extensionality and compare values at an arbitrary argument.",
+    "generalize": "Replace the chosen expression with an arbitrary variable.",
+    "have": "Establish an intermediate fact.",
+    "induction": "Proceed by induction.",
+    "intro": "Fix the arbitrary inputs or assume the hypotheses.",
+    "intros": "Fix the arbitrary inputs and assume the hypotheses.",
+    "let": "Introduce a local definition for the expression.",
+    "letI": "Equip the data with the indicated structure.",
     "linarith": "Combine the linear equalities and inequalities to obtain the conclusion.",
+    "linear_combination": "Take a linear combination of the given relations to obtain the conclusion.",
     "native_decide": "Evaluate the decision procedure for the proposition.",
     "nlinarith": "Use the polynomial consequences of the given equalities and inequalities.",
+    "norm_cast": "Put the expressions in a common number system so they can be compared.",
     "norm_num": "Evaluate the numerical expressions.",
+    "obtain": "Extract witnesses or component facts from the available result.",
     "omega": "Use linear arithmetic over natural numbers and integers.",
     "positivity": "Check the signs of the components of the expression.",
+    "push_cast": "Move the embeddings inside the algebraic operations.",
+    "rcases": "Separate the alternatives or extract the components of the hypothesis.",
+    "refine": "Reduce the conclusion to the remaining proof obligations.",
     "rfl": "Both sides reduce to the same expression.",
+    "rintro": "Assume the hypotheses and unpack their components.",
     "ring": "Expand and normalize the polynomial expressions, which then agree.",
     "ring_nf": "Put the polynomial expressions in normal form.",
     "simp": "Simplify using the standard rewrite rules.",
     "simp_all": "Simplify the hypotheses and the goal together.",
+    "simpa": "Simplify to obtain the desired conclusion from the available facts.",
+    "specialize": "Apply the general hypothesis to the chosen values.",
+    "subst": "Substitute using the available equality.",
+    "suffices": "Reduce the argument to an intermediate assertion.",
+    "symm": "Use symmetry to reverse the relation.",
     "tauto": "The claim follows by propositional logic.",
-    "trivial": "Discharge the goal by the elementary cases of \x60trivial\x60.",
+    "trivial": "Check the elementary cases of the proposition.",
+    "unfold": "Replace the relevant objects with their definitions.",
+    "use": "Choose witnesses for the existential claim.",
 }
-
-TACTIC_ARGUMENTS = {
-    "apply": "Apply {} to reduce the goal to its premises.",
-    "apply_rules": "Repeatedly apply the rules in {}.",
-    "by_cases": "Distinguish the cases in {}.",
-    "by_contra": "Assume the negation of the conclusion as {}.",
-    "cases": "Consider the cases of {}.",
-    "change": "Express the relevant statement in the definitionally equal form {}.",
-    "convert": "Use {} and compare the differences between its conclusion and the goal.",
-    "exact": "Conclude with {}.",
-    "exact_mod_cast": "Conclude with {} after adjusting the coercions.",
-    "ext": "Use extensionality with {}.",
-    "field_simp": "Clear denominators, using {} for the nonvanishing conditions.",
-    "funext": "Use function extensionality and compare the values at {}.",
-    "generalize": "Generalize the expression as in {}.",
-    "induction": "Proceed by induction on {}.",
-    "intro": "Introduce {}.",
-    "intros": "Introduce {}.",
-    "linarith": "Combine the linear relations using {}.",
-    "linear_combination": "Take the linear combination {}.",
-    "nlinarith": "Use polynomial arithmetic with {}.",
-    "norm_cast": "Normalize the coercions in {}.",
-    "norm_num": "Evaluate the numerical expressions using {}.",
-    "obtain": "Choose the witnesses or unpack the hypotheses as in {}.",
-    "push_cast": "Move the coercions through the operations in {}.",
-    "rcases": "Break down {} into its components or cases.",
-    "refine": "Use {} and prove the remaining obligations.",
-    "rename_i": "Name the introduced variables {}.",
-    "repeat": "Repeat the step {} while it applies.",
-    "rintro": "Introduce and unpack {}.",
-    "rw": "Rewrite using {}.",
-    "rwa": "Rewrite using {} and apply the resulting hypothesis.",
-    "simp_rw": "Repeatedly rewrite using {}.",
-    "specialize": "Specialize {}.",
-    "subst": "Substitute {} using the available equality.",
-    "symm": "Use symmetry as in {}.",
-    "unfold": "Unfold {}.",
-    "use": "Choose the witnesses {}.",
-}
-
+PENDING = "A detailed English derivation is pending."
+NO_PROOF_STEP = {"classical", "rename_i", "skip"}
+INTRODUCE = "Fix the arbitrary inputs and assume any hypotheses."
 STEP = re.compile(r"^(?P<name>[\w_]+[!?]?)(?:\s+(?P<args>.*))?$")
 SEQUENCE_TOKEN = re.compile(r"[({\[⟨⦃)}\]⟩⦄;]")
 
 
 def term_prose(term):
-    term = compact(term)
-    if term == "Iff.rfl":
-        return "Unfold both sides. The equivalence is reflexive."
-    if term in NO_ARGUMENT_TACTICS:
-        return NO_ARGUMENT_TACTICS[term]
-    if term.startswith("False.elim "):
-        return f"Derive the conclusion from the contradiction {code(term.removeprefix('False.elim '))}."
-    if term.startswith("⟨"):
-        return f"Assemble the required witnesses or components as {code(term)}."
-    if term.startswith("fun ") and "=>" in term:
-        binders, _, body = term[4:].partition("=>")
-        return f"Introduce {code(binders)} and use {code(body)}."
-    if term.startswith("calc "):
-        return f"Combine the equalities or inequalities in the calculation {code(term)}."
-    return f"The claim follows from {code(term)}."
+    introductions = False
+    while term.startswith("fun "):
+        parts = re.split(r"=>|↦", term, maxsplit=1)
+        if len(parts) != 2:
+            break
+        introductions = True
+        term = parts[1].strip()
+    if term == "rfl":
+        conclusion = PROOF_ACTIONS["rfl"]
+    elif term == "Iff.rfl":
+        conclusion = "Unfold both sides to obtain the same proposition, which implies itself."
+    elif term.startswith("False.elim "):
+        conclusion = "The hypotheses yield a contradiction, which proves the conclusion."
+    elif term.startswith(("And.intro ", "Iff.intro ")):
+        conclusion = "Prove both required implications or components."
+    elif term.startswith(("Exists.intro ", "⟨")):
+        conclusion = "Supply the required witnesses or components."
+    elif term.startswith("Or.inl "):
+        conclusion = "Prove the first alternative."
+    elif term.startswith("Or.inr "):
+        conclusion = "Prove the second alternative."
+    elif term.startswith("calc "):
+        conclusion = "Chain the equalities or inequalities of the calculation."
+    else:
+        conclusion = PENDING
+    return f"{INTRODUCE} {conclusion}" if introductions else conclusion
 
 
 def describe_step(step):
     if step.startswith("|"):
-        case = step[1:].strip().removesuffix("=>").strip()
-        return f"Consider the case {code(case)}." if case else ""
-    if step.startswith("calc"):
-        return "Combine the equalities or inequalities in the displayed calculation."
-    if any(operator in step for operator in ("<;>", " <|> ", "first |", "all_goals ", "try ")):
-        return f"Apply the tactic sequence {code(step)}."
+        return "Treat this case separately."
+    if step.startswith("calc "):
+        return "Chain the equalities or inequalities of the calculation."
+    if "<;>" in step:
+        return "Apply the first step, then apply the next step to every resulting obligation."
     match = STEP.fullmatch(step)
     if match is None:
-        return f"Use the proof step {code(step)}."
+        return PENDING
     name = match["name"]
-    args = match["args"]
-    if name in {"classical", "skip"}:
+    args = match["args"] or ""
+    if name in NO_PROOF_STEP:
         return ""
-    if not args and name in NO_ARGUMENT_TACTICS:
-        return NO_ARGUMENT_TACTICS[name]
-    if name in {"have", "suffices", "let"} and args:
-        claim, separator, proof = args.partition(":=")
-        if name == "have" and not claim.strip() and proof.strip() not in {"", "by"}:
-            return f"Use {code(proof)} as an intermediate fact."
-        if name == "let":
-            return f"Set {code(claim)} to {code(proof)}." if proof else f"Introduce the local definition {code(claim)}."
-        verb = "It suffices to establish" if name == "suffices" else "Establish"
-        if separator and proof.strip() not in {"", "by"}:
-            return f"{verb} {code(claim)} using {code(proof)}."
-        return f"{verb} {code(claim)}." if claim.strip() else "Establish an intermediate fact."
-    if name == "obtain" and args:
-        witnesses, _, proof = args.partition(":=")
-        if proof.strip() and proof.strip() != "by":
-            return f"Take {code(witnesses)} from {code(proof)}."
-    if name in {"simp", "simp_all", "simpa", "dsimp"} and args:
-        rules, using, proof = args.partition(" using ")
-        if using:
-            return f"Simplify {code(proof)} using {code(rules)}." if rules else f"Simplifying {code(proof)} gives the conclusion."
-        return f"Simplify using {code(rules)}."
-    if name in {"rw", "rwa", "simp_rw"} and args:
-        rules, at, location = args.rpartition(" at ")
-        if at and re.fullmatch(r"[\w'.⊢* ]+", location):
-            target = ", ".join("the goal" if item == "⊢" else code(item) for item in location.split())
-            conclusion = " Then use the resulting hypothesis." if name == "rwa" else ""
-            return f"Rewrite {target} using {code(rules)}.{conclusion}"
-    if args and name in TACTIC_ARGUMENTS:
-        return TACTIC_ARGUMENTS[name].format(code(args))
-    return f"Use {code(step)}."
+    if name == "exact":
+        return term_prose(args)
+    if name in {"rw", "rwa", "simp_rw"}:
+        _, at, location = args.rpartition(" at ")
+        if "*" in location or ("⊢" in location and len(location.split()) > 1):
+            target = "the hypotheses and the conclusion"
+        elif at and location != "⊢":
+            target = "the indicated hypotheses"
+        else:
+            target = "the conclusion"
+        if name == "simp_rw":
+            return f"Rewrite {target} repeatedly using the stated equalities."
+        follow = " Use the resulting assumption." if name == "rwa" else ""
+        return f"Rewrite {target} using the stated equalities.{follow}"
+    return PROOF_ACTIONS.get(name, PENDING)
 
 
 def split_sequence(step):
@@ -263,7 +244,7 @@ def split_sequence(step):
         return
     depth = 0
     start = 0
-    for match in SEQUENCE_TOKEN.finditer(mask_non_code(step)):
+    for match in SEQUENCE_TOKEN.finditer(step):
         char = match[0]
         if char in "({[⟨⦃":
             depth += 1
@@ -276,23 +257,17 @@ def split_sequence(step):
 
 
 def tactic_steps(body):
-    masked = mask_non_code(body)
-    lines = body.split("\n")
     step = []
     indent = -1
-    for original, visible in zip(lines, masked.split("\n")):
-        if not visible.strip():
+    for line in body.splitlines():
+        text = line.lstrip()
+        if not text:
             continue
-        visible_start = len(visible) - len(visible.lstrip())
-        text = original[visible_start:].strip()
+        visible_start = len(line) - len(text)
         bullet = text.startswith("·")
         text = text.removeprefix("·").strip()
         first = text.split(" ", 1)[0]
-        starts_step = (
-            first in TACTIC_ARGUMENTS
-            or first in NO_ARGUMENT_TACTICS
-            or first in {"have", "suffices", "let", "letI", "simpa", "calc", "case", "|"}
-        )
+        starts_step = first in PROOF_ACTIONS or first in {"calc", "exact", "rw", "rwa", "simp_rw", "|"}
         if step and (bullet or visible_start <= indent or starts_step):
             yield from split_sequence(compact(" ".join(step)))
             step = []
@@ -314,11 +289,14 @@ def explain(source, masked, claim):
         return "source gap", "The declaration contains no proof body."
     if PLACEHOLDER.search(masked, claim.proof_start, claim.end):
         return "source gap", "The source contains an admitted step in this argument."
+    body = masked[claim.proof_start:claim.end].strip()
     if not re.match(r"by\b", body):
-        return "translation", term_prose(body)
+        return "translation", term_prose(compact(body))
     sentences = [sentence for step in tactic_steps(body[2:]) if step and (sentence := describe_step(step))]
     if not sentences:
-        return "translation", f"The proof uses {code(body)}."
+        return "translation", PENDING
+    if PENDING in sentences:
+        sentences = [sentence for sentence in sentences if sentence != PENDING] + [PENDING]
     paragraphs = [" ".join(sentences[start:start + 5]) for start in range(0, len(sentences), 5)]
     return "translation", "\n\n".join(paragraphs)
 

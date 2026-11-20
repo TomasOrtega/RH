@@ -21,14 +21,14 @@ namespace GlobalTheory.KumDlog
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Rewrite using `[← (GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hΩ T n hn ι hι).2]`. Conclude with `⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem emb_mem_Lev {T : Tower p Ω} {n : ℕ} {ι : On p n →ₐ[O0 p] Ω} (hΩ : IsClo p Ω) (hn : 1 ≤ n)
     (hι : IsEmb T n ι) (x : On p n) : ι x ∈ Lev T n := by
   rw [← (GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hΩ T n hn ι hι).2]; exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `(T.prim 1).neZero'`. Use `h.ne` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem p_ne (T : Tower p Ω) : (p : Ω) ≠ 0 := by
   have h := (T.prim 1).neZero'
@@ -36,9 +36,9 @@ theorem p_ne (T : Tower p Ω) : (p : Ω) ≠ 0 := by
   simpa using this
 
 /- English proof (translation)
-Rewrite `hh`, the goal using `[mem_Hinf]`. Introduce `m`. Take `⟨i, j, -, -, e1, e2, -⟩` from `GlobalTheory.T.towerGn_exponents_kummer_cochains p Ω T n (m + 2 * n) (by omega) lz lq hz hq g hg`. Establish `k1 : (g⁻¹ * h * g) (T.ζ (m + 2 * n)) = T.ζ (m + 2 * n)` using `by show g.symm (h (g _)) = _`. Rewrite using `[AlgEquiv.symm_apply_eq, e1, map_pow, (hh _).1]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : (g⁻¹ * h * g) (T.qq (m + 2 * n)) = T.qq (m + 2 * n)` using `by show g.symm (h (g _)) = _`. Rewrite using `[AlgEquiv.symm_apply_eq, e2, map_mul, map_pow, (hh _).1, (hh _).2]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← zeta_pow T m (2 * n), map_pow, k1]`. Rewrite using `[← qq_pow T m (2 * n), map_pow, k2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem conj_mem_Hinf {T : Tower p Ω} {n : ℕ} {lz lq : Gal p Ω → ZMod (p ^ n)}
     (hz : IsKum T n (Gn T n) (T.ζ (2 * n)) lz) (hq : IsKum T n (Gn T n) (T.qq (2 * n)) lq)
@@ -57,9 +57,9 @@ theorem conj_mem_Hinf {T : Tower p Ω} {n : ℕ} {lz lq : Gal p Ω → ZMod (p ^
   · rw [← qq_pow T m (2 * n), map_pow, k2]
 
 /- English proof (translation)
-Introduce `x hx`. Use `⟨int_gal g hx.1, fun h hh => ?_⟩` and prove the remaining obligations. Establish `h1 : g⁻¹ * h * g ∈ Hfix T r`. Use `⟨conj_mem_Hinf hz hq hg hh.1, ?_⟩` and prove the remaining obligations. Use `show g.symm (h (g r)) = r`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : h r = r` using `hh.2`. Rewrite using `[AlgEquiv.symm_apply_eq, ha g hg, map_mul, map_pow, h2, (mem_Hinf.1 hh.1 n).1]`. Establish `h3 : g.symm (h (g x)) = x` using `hx.2 _ h1`. Rewrite `h3` using `[AlgEquiv.symm_apply_eq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gal_mem_fix {T : Tower p Ω} {n : ℕ} {a lz lq : Gal p Ω → ZMod (p ^ n)} {r : Ω}
     (ha : IsKum T n (Gn T n) r a)
@@ -76,7 +76,7 @@ theorem gal_mem_fix {T : Tower p Ω} {n : ℕ} {a lz lq : Gal p Ω → ZMod (p ^
   rwa [AlgEquiv.symm_apply_eq] at h3
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨m, a, ha, b, hb, hb0, rfl⟩` from `GlobalTheory.T.towerGaloisFixed_eq_div_levelElements p Ω hΩ T x hx.2`. Conclude with `⟨m + 1, GlobalTheory.T.towerLevelAdjoinRoots_integrallyClosed_quotient p Ω hΩ T (m + 1) (by omega) a (Lev_mono T (by omega) ha) b (Lev_mono T (by omega) hb) hb0 hx.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fix_mem_Lev (hΩ : IsClo p Ω) (T : Tower p Ω) :
     ∀ x ∈ FixI (Hinf T), ∃ m : ℕ, x ∈ Lev T m := by
@@ -86,7 +86,7 @@ theorem fix_mem_Lev (hΩ : IsClo p Ω) (T : Tower p Ω) :
     (Lev_mono T (by omega) hb) hb0 hx.1⟩
 
 /- English proof (translation)
-Establish `h1` using `int_mul (int_zeta_inv T m) (int_add (hD.pow' hC hm i) (int_mul (int_mul (int_nat i) (int_pow (int_zeta T m) i)) he))`. Use `int_congr h1 ?_` and prove the remaining obligations. Use `zeta_ne T m` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem der_zeta_pow {T : Tower p Ω} {C : Subalgebra (O0 p) Ω} {D : Ω → Ω} (hD : IsDer C D)
     (hC : ∀ x ∈ C, IsInt p x) {m : ℕ} (hm : T.ζ m ∈ C) {e : Ω}
@@ -100,27 +100,27 @@ theorem der_zeta_pow {T : Tower p Ω} {C : Subalgebra (O0 p) Ω} {D : Ω → Ω}
   ring
 
 /- English proof (translation)
-Establish `hH : ∀ h ∈ Hinf T, ∃ i : ℕ, h r = T.ζ n ^ i * r` using `fun h hh => ⟨_, ha h (Hinf_le T n hh)⟩`. Take `⟨ι, _, u, v, hu, hv, huv, h0⟩` from `GlobalTheory.T.exists_almostGalois_coordinates p hp2 Ω hΩ T n r hr hH`. Take `⟨tr, hd⟩` from `GlobalTheory.T.traceTower_almostDualBases_adjoin_kummer_root p Ω T n r hr hH ι u v hu hv huv h0`. Take `⟨dz, dq, hdz, hdq, hval⟩` from `GlobalTheory.T.exists_dlog_derivations_glued_tower_levels p Ω hΩ T _ (fix_mem_Lev hΩ T) (fun m hm => GlobalTheory.T.exists_dlog_derivations_towerLevel_mod_integral p Ω hΩ T m hm)`. Take `⟨Dz, hDz, ez⟩` from `GlobalTheory.T.exists_derivationModIntegral_extension_p_cube p Ω _ _ ι u v tr hd dz hdz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Dq, hDq, eq⟩` from `GlobalTheory.T.exists_derivationModIntegral_extension_p_cube p Ω _ _ ι u v tr hd dq hdq`. Establish `hC` using `hd.2.1`. Establish `hLB : ∀ m, Lev T m ≤ FixI (Hinf T)` using `fun m => Lev_le_FixI T m (Hinf_le T m)`. Establish `p3 : IsInt p ((p : Ω) ^ 3)` using `int_pow (int_nat p) 3`. Establish `V : ∀ m, 1 ≤ m → IsInt p (Dz (T.ζ m) - (p : Ω) ^ 4 / p ^ m * T.ζ m) ∧ IsInt p (Dz (T.qq m)) ∧ IsInt p (Dq (T.ζ m)) ∧ IsInt p (Dq (T.qq m) - (p : Ω) ^ 4 / p ^ m * T.qq m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m hm`. Take `⟨v1, v2, v3, v4⟩` from `hval m hm`. Establish `z` using `hLB m (zeta_mem_Lev T m)`. Establish `q` using `hLB m (qq_mem_Lev T m)`. Conclude with `⟨int_congr (int_add (ez _ z) (int_mul p3 v1)) (by ring), int_congr (int_add (ez _ q) (int_mul p3 v2)) (by ring), int_congr (int_add (eq _ z) (int_mul p3 v3)) (by ring), int_congr (int_add (eq _ q) (int_mul p3 v4)) (by ring)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨w1, w2, w3, w4⟩` from `V n hn`. Use `⟨Dz, Dq, hDz, hDq, w1, w2, w3, w4, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hrC : r ∈ FixI (Hfix T r)` using `⟨hr, fun h hh => hh.2⟩`. Establish `hex : ∀ kl : ι × ι, ∃ m, tr (u kl.2 * (r * v kl.1)) ∈ Lev T m` using `fun kl => fix_mem_Lev hΩ T _ (hd.2.2.2.2.1 _ (mul_mem (hu _) (mul_mem hrC (hv _))))`. Use `choose M hM using hex`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm2, hmM⟩ : ∃ m, 2 * n ≤ m ∧ ∀ kl, M kl ≤ m` from `⟨max (2 * n) (Finset.univ.sup M), le_max_left _ _, fun kl => le_trans (Finset.le_sup (f := M) (Finset.mem_univ kl)) (le_max_right _ _)⟩`. Take `⟨i, j, s, t, e1, e2, hi, hj⟩` from `GlobalTheory.T.towerGn_exponents_kummer_cochains p Ω T n m hm2 lz lq hz hq g hg`. Take `⟨y1, y2, y3, y4⟩` from `V m (by omega)`. Establish `zC` using `hd.1 (hLB m (zeta_mem_Lev T m))`. Establish `qC` using `hd.1 (hLB m (qq_mem_Lev T m))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD'` using `((hDz.conj g (gal_mem_fix ha hz hq hg)).sub (hDz.smul (int_nat i))).sub (hDq.smul (int_nat j))`. Establish `hvan` using `hD'.adjoin hC (t := {T.ζ m, T.qq m}) (by rintro x (rfl | rfl); exacts [zC, qC]) (by`. Introduce and unpack `x (rfl | rfl)`. Establish `a1` using `int_gal g.symm (der_zeta_pow hDz hC zC y1 i)`. Rewrite `a1` using `[← e1]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `int_congr (int_sub (int_sub a1 (int_mul (int_nat i) y1)) (int_mul (int_nat j) y3)) ?_` and prove the remaining obligations. Simplify using `only [map_sub, map_mul, map_div₀, map_pow, map_natCast, AlgEquiv.symm_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `a1` using `int_add (int_add (hDz.2.1 _ (pow_mem zC j) _ qC) (int_mul (int_pow (int_zeta T m) j) y2)) (int_mul (int_qq T m) (der_zeta_pow hDz hC zC y1 j))`. Establish `a2 : IsInt p (Dz (g (T.qq m)) - j * ((p : Ω) ^ 4 / p ^ m) * g (T.qq m))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]; exact int_congr a1 (by ring)`. Establish `a3` using `int_gal g.symm a2`. Use `int_congr (int_sub (int_sub a3 (int_mul (int_nat i) y2)) (int_mul (int_nat j) y4)) ?_` and prove the remaining obligations. Simplify using `only [map_sub, map_mul, map_div₀, map_pow, map_natCast, AlgEquiv.symm_apply_apply]`. Use the proof step `ring)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hU` using `GlobalTheory.T.derivationModIntegral_almostDual_p_sq_isInt p Ω _ _ ι u v tr hd _ hD' r hrC (fun k l => hvan _ (Lev_mono T (hmM (k, l)) (hM (k, l))))`. Use `⟨s, t, int_congr (int_gal g hU) ?_⟩` and prove the remaining obligations. Establish `hi' : (i : Ω) = 1 + p ^ n * ((lz g).val : Ω) + p ^ (2 * n) * s`. Use `congrArg (Int.cast : ℤ → Ω) hi` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hj' : (j : Ω) = p ^ n * ((lq g).val : Ω) + p ^ (2 * n) * t`. Use `congrArg (Int.cast : ℤ → Ω) hj` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `using this`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hi', ← hj']`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast, AlgEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_ders (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ) (hn : 1 ≤ n) {r : Ω}
     (hr : IsInt p r) {a lz lq : Gal p Ω → ZMod (p ^ n)} (ha : IsKum T n (Gn T n) r a)
@@ -196,25 +196,25 @@ theorem exists_ders (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ
   simp only [map_sub, map_mul, map_pow, map_natCast, AlgEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `hL` using `emb_mem_Lev hΩ hn hι`. Establish `hI : ∀ x, IsInt p (ι x)` using `fun x => Lev_int T n _ (hL x)`. Establish `hrI : IsInt p r` using `int_of_pow (ppow_pos n) (hr ▸ hI u)`. Take `⟨Dz, Dq, hDz, hDq, w1, w2, w3, w4, hE⟩` from `exists_ders hp2 hΩ T n hn hrI ha hz hq`. Establish `hC : ∀ x ∈ FixI (Hfix T r), IsInt p x` using `fun x hx => hx.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLC : Lev T n ≤ FixI (Hfix T r)` using `Lev_le_FixI T n (le_trans inf_le_left (Hinf_le T n))`. Establish `hrC : r ∈ FixI (Hfix T r)` using `⟨hrI, fun h hh => hh.2⟩`. Establish `kz` using `GlobalTheory.T.kaehler_relation_derivationModIntegral p Ω n ι _ hC (fun x => hLC (hL x)) Dz hDz _ _ _ _ _ _ hrel`. Establish `kq` using `GlobalTheory.T.kaehler_relation_derivationModIntegral p Ω n ι _ hC (fun x => hLC (hL x)) Dq hDq _ _ _ _ _ _ hrel`. Simplify using `only [map_mul, hι.1, hι.2] at kz kq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `z0` using `zeta_ne T n`. Establish `q0` using `qq_ne T n`. Establish `p0` using `p_ne T`. Establish `inv` using `int_mul (int_zeta_inv T n) (int_qq_inv T n)`. Take `⟨N, hN⟩ : ∃ N, p ^ n = N + 1` from `⟨p ^ n - 1, by have := ppow_pos (p := p) n; omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN' : ((N + 1 : ℕ) : Ω) = (p : Ω) ^ n` using `by rw [← hN]; push_cast; rfl`. Establish `pz` using `hDz.pow hC hrC N`. Establish `pq` using `hDq.pow hC hrC N`. Rewrite `pz`, `pq` using `[hN', ← hN, hr]`. Establish `Ez : IsInt p ((p : Ω) ^ n * (r ^ N * Dz r) - ι B * (p ^ 4 / p ^ n))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `int_congr (int_sub (int_mul inv (int_add (int_add kz (int_mul (int_mul (int_zeta T n) (hI A)) w2)) (int_mul (int_mul (int_qq T n) (hI B)) w1))) pz) ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `Eq : IsInt p ((p : Ω) ^ n * (r ^ N * Dq r) - ι A * (p ^ 4 / p ^ n))`. Use `int_congr (int_sub (int_mul inv (int_add (int_add kq (int_mul (int_mul (int_zeta T n) (hI A)) w4)) (int_mul (int_mul (int_qq T n) (hI B)) w3))) pq) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `p2 : IsInt p ((p : Ω) ^ 2)` using `int_pow (int_nat p) 2`. Use `⟨_, int_mul p2 Ez, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨s, t, hst⟩` from `hE g hg`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hfix : ∀ x, g (ι x) = ι x` using `fun x => (Lev_le_FixI T n le_rfl (hL x)).2 g hg`. Establish `zC` using `hLC (zeta_mem_Lev T n)`. Establish `b1` using `int_add (hDz.2.1 _ (pow_mem zC (a g).val) _ hrC) (int_mul hrI (der_zeta_pow hDz hC zC w1 (a g).val))`. Rewrite `b1` using `[← ha g hg]`. Establish `b2` using `int_mul (int_pow (int_gal g hrI) N) (int_sub hst (int_mul p2 b1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `gz` using `int_gal g Ez`. Establish `gq` using `int_gal g Eq`. Establish `pn : IsInt p ((p : Ω) ^ n)` using `int_pow (int_nat p) n`. Establish `p6 : IsInt p ((p : Ω) ^ 6)` using `int_pow (int_nat p) 6`. Use `⟨_, int_add (int_add (int_add (int_add b2 (int_mul (int_mul (int_add (int_nat (lz g).val) (int_mul pn (int_int s))) p2) gz)) (int_mul (int_mul (int_add (int_nat (lq g).val) (int_mul pn (int_int t))) p2) gq)) (int_mul (int_mul p6 (hI B)) (int_int s))) (int_mul (int_mul p6 (hI A)) …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sub, map_mul, map_div₀, map_pow, map_natCast, hfix]`. Establish `c1 : g r ^ N * T.ζ n ^ (a g).val = r ^ N`. Rewrite using `[ha g hg, mul_pow, mul_right_comm, ← pow_succ, ← hN, ← pow_mul, mul_comm (a g).val, pow_mul, (T.prim n).pow_eq_one, one_pow, one_mul]`. Establish `c2 : r ^ N * r = ι u` using `by rw [← pow_succ, ← hN, hr]`. Rewrite using `[two_mul, pow_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : (p : Ω) ^ n * ((p : Ω) ^ 4 / (p : Ω) ^ n) = (p : Ω) ^ 4` using `mul_div_cancel₀ _ (pow_ne_zero _ p0)`. Generalize the expression as in `(p : Ω) ^ 4 / (p : Ω) ^ n = Q at *`. Generalize the expression as in `(p : Ω) ^ n = P at *`. Take the linear combination `(-(p : Ω) ^ 2 * P * Dz r - (p : Ω) ^ 6 * r * ((a g).val : Ω)) * c1 - (p : Ω) ^ 6 * ((a g).val : Ω) * c2 + (-(p : Ω) ^ 2 * r * ((a g).val : Ω) * (g r ^ N * T.ζ n ^ (a g).val) + (((lz g).val : Ω) + P * s) * (p : Ω) ^ 2 * ι B + (((lq g).val : Ω) + P * t) * (p : Ω) ^ 2 * ι A) * hQ`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem core (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ) (hn : 1 ≤ n)
     (ι : On p n →ₐ[O0 p] Ω) (hι : IsEmb T n ι) (u A B : On p n)
@@ -288,11 +288,9 @@ theorem core (hp2 : p ≠ 2) (hΩ : IsClo p Ω) (T : Tower p Ω) (n : ℕ) (hn :
       (((lz g).val : Ω) + P * s) * (p : Ω) ^ 2 * ι B + (((lq g).val : Ω) + P * t) * (p : Ω) ^ 2 * ι A) * hQ
 
 /- English proof (translation)
-Use `haveI : NeZero (p ^ n) := ⟨(ppow_pos n).ne'⟩`. Establish `: ∀ g : Gal p Ω, ∃ i : ZMod (p ^ n), g ∈ Gn T n → g r = T.ζ n ^ i.val * r`. Introduce `g`. Distinguish the cases in `hg : g ∈ Gn T n`. Take `⟨i, hi, e⟩` from `(T.prim n).eq_pow_of_pow_eq_one (ξ := g r / r) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_pow, ← map_pow, h g hg, div_self (pow_ne_zero _ hr)])`. Use `⟨i, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_cast_of_lt hi, e, div_mul_cancel₀ _ hr]`. Conclude with `⟨0, fun h => absurd h hg⟩`. Use `choose a ha using this`.
-
-Conclude with `⟨a, fun g hg => ha g hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_kum (T : Tower p Ω) (n : ℕ) {r : Ω} (hr : r ≠ 0)
     (h : ∀ g ∈ Gn T n, g (r ^ (p ^ n)) = r ^ (p ^ n)) : ∃ a, IsKum T n (Gn T n) r a := by
@@ -309,27 +307,27 @@ theorem exists_kum (T : Tower p Ω) (n : ℕ) {r : Ω} (hr : r ≠ 0)
   exact ⟨a, fun g hg => ha g hg⟩
 
 /- English proof (translation)
-Introduce `p _ hp2`. Use `⟨7, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ hΩ T n hn ι hι k w α β hd r hr a lz lq ha hz hq`. Use `haveI := hΩ.clo`. Establish `hL` using `emb_mem_Lev hΩ hn hι`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : ∀ x, IsInt p (ι x)` using `fun x => Lev_int T n _ (hL x)`. Establish `hfix : ∀ g ∈ Gn T n, ∀ x, g (ι x) = ι x` using `fun g hg x => (Lev_le_FixI T n le_rfl (hL x)).2 g hg`. Establish `hπ : T.ζ n - 1 ≠ 0` using `sub_ne_zero.2 ((T.prim n).ne_one (Nat.one_lt_pow (by omega) (Fact.out : p.Prime).one_lt))`. Establish `hww : ι w * ι (↑w⁻¹ : On p n) = 1` using `by rw [← map_mul]; simp`. Establish `hw0 : ι w ≠ 0` using `left_ne_zero_of_mul_eq_one hww`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `IsAlgClosed.exists_pow_nat_eq (T.ζ n - 1) (ppow_pos (p := p) n)`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hπ (by rw [← hs, zero_pow (ppow_pos (p := p) n).ne'])`. Establish `hr0 : r ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hr` using `[zero_pow (ppow_pos (p := p) n).ne']`. Conclude with `mul_ne_zero (zpow_ne_zero k hπ) hw0 hr.symm`. Establish `hr' : (r / s ^ k) ^ (p ^ n) = ι w`. Rewrite using `[div_pow, hr, ← zpow_natCast, ← zpow_mul, mul_comm k, zpow_mul, zpow_natCast, hs, mul_div_cancel_left₀ _ (zpow_ne_zero k hπ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs' : s ^ (p ^ n) = ι (xn p n - 1)` using `by rw [hs, map_sub, hι.1, map_one]`. Establish `hr0' : r / s ^ k ≠ 0` using `div_ne_zero hr0 (zpow_ne_zero k hs0)`. Take `⟨b, hb⟩` from `exists_kum T n hs0 (fun g hg => by rw [hs', hfix g hg])`. Take `⟨a', ha'⟩` from `exists_kum T n hr0' (fun g hg => by rw [hr', hfix g hg])`. Take `⟨x1, i1, e1⟩` from `core hp2 hΩ T n hn ι hι w (w * α) (w * β) (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hd, mul_left_comm, mul_left_comm (yn p n), mul_assoc, mul_assoc]) hr' ha' hz hq`. Take `⟨x2, i2, e2⟩` from `core hp2 hΩ T n hn ι hι (xn p n - 1) 0 (xn p n) (by`. Simplify using `[mul_comm]) hs' hb hz hq`. Establish `hpπ : IsInt p ((p : Ω) / (T.ζ n - 1))`. Simplify using `using GlobalTheory.T.isInt_prime_div_rootOfUnity_sub_one_pow p Ω T n 1 hn (Nat.totient_pos.2 (ppow_pos n))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `j1` using `int_mul (int_nat (Ω := Ω) (p := p) p) (hI (↑w⁻¹ : On p n))`. Establish `j2` using `int_mul (int_int (Ω := Ω) (p := p) k) hpπ`. Use `⟨_, int_add (int_mul j1 i1) (int_mul j2 i2), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨z1, l1, f1⟩` from `e1 g hg`. Take `⟨z2, l2, f2⟩` from `e2 g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `z0` using `zeta_ne T n`. Establish `hdvd : ((p ^ n : ℕ) : ℤ) ∣ ((a g).val : ℤ) - (a' g).val - k * (b g).val`. Rewrite using `[← (T.prim n).zpow_eq_one_iff_dvd]`. Establish `h1` using `ha' g hg`. Rewrite `h1` using `[map_div₀, map_zpow₀, ha g hg, hb g hg, mul_zpow, mul_div_mul_comm, mul_left_inj' hr0']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub₀ z0, zpow_sub₀ z0, mul_comm k, zpow_mul]`. Simplify using `only [zpow_natCast]`. Rewrite using `[div_right_comm, h1, div_self (pow_ne_zero _ z0)]`. Take `⟨t, ht⟩` from `hdvd`. Establish `ht' : ((a g).val : Ω) - (a' g).val - k * (b g).val = (p : Ω) ^ n * t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (Int.cast : ℤ → Ω) ht` as an intermediate fact. Simplify `this` using `only [Int.cast_sub, Int.cast_mul, Int.cast_natCast, Nat.cast_pow, Int.cast_pow]`. Use `⟨_, int_add (int_add (int_mul j1 l1) (int_mul j2 l2)) (int_mul (int_pow (int_nat p) 7) (int_int t)), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_sub, map_mul, map_div₀, map_natCast, map_intCast, map_one, map_zero, hfix g hg, hι.1, (mem_Gn.1 hg).1] at f1 f2 ⊢`. Establish `hinv : (T.ζ n - 1) * (T.ζ n - 1)⁻¹ = 1` using `mul_inv_cancel₀ hπ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [div_eq_mul_inv]`. Generalize the expression as in `(T.ζ n - 1)⁻¹ = V at *`. Take the linear combination `((p : Ω) * ι (↑w⁻¹ : On p n)) * f1 + ((k : Ω) * (p * V)) * f2 + (p : Ω) ^ 7 * ht' - (p : Ω) ^ 7 * (((a' g).val : Ω) - ι α * ((lq g).val : Ω) - ι β * ((lz g).val : Ω)) * hww - (p : Ω) ^ 7 * k * ((b g).val : Ω) * hinv`.
+A detailed English derivation is pending.
 -/
 theorem kummer_eq_dlog : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (n : ℕ), 1 ≤ n → ∀ ι : On p n →ₐ[O0 p] Ω, IsEmb T n ι →

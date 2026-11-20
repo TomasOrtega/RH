@@ -24,9 +24,9 @@ Both sides reduce to the same expression.
 theorem mat_one' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
 /- English proof (translation)
-Establish `hgi : mat g * mat g⁻¹ = 1` using `by rw [← mat_mul', mul_inv_cancel, mat_one']`. Establish `hι : mat g * incM F H.ι = incM F H.ι` using `by conv_lhs => rw [← hι']`. Rewrite using `[← Matrix.mul_assoc, hgi, Matrix.one_mul]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[mat_mul', mat_mul', ← Matrix.mulVec_mulVec, hx', Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, hu.1, hx, smul_smul, mul_comm, hcd, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Take `⟨a, ha⟩` from `hu.2 z`. Use `⟨a * c, ?_⟩` and prove the remaining obligations. Establish `e1 : mat g⁻¹ *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z` using `by rw [Matrix.mulVec_mulVec, hι']`. Rewrite using `[mat_mul', mat_mul', ← Matrix.mulVec_mulVec, e1, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, Matrix.mulVec_mulVec, hι, Matrix.mulVec_smul, hx, smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_gen {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} (H : Plane E n n₁) (g : UA σ J) (c d : AE F E)
     (hcd : c * d = 1) (hx : mat g *ᵥ incV F H.x = c • incV F H.x) (hx' : mat g⁻¹ *ᵥ incV F H.x = d • incV F H.x)
@@ -50,9 +50,9 @@ theorem conj_mem_gen {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} (H : Plane E 
       Matrix.mulVec_add, Matrix.mulVec_mulVec, hι, Matrix.mulVec_smul, hx, smul_smul]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hle : (Subgroup.closure S).map (MulAut.conj g).toMonoidHom ≤ Subgroup.closure S`. Rewrite using `[MonoidHom.map_closure]`. Apply `Subgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Simplify using `using hS v hv`. Simplify using `using hle ⟨u, hu, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_mem_closure {G : Type} [Group G] (S : Set G) (g : G) (hS : ∀ u ∈ S, g * u * g⁻¹ ∈ S) :
     ∀ u ∈ Subgroup.closure S, g * u * g⁻¹ ∈ Subgroup.closure S := by
@@ -65,13 +65,11 @@ theorem conj_mem_closure {G : Type} [Group G] (S : Set G) (g : G) (hS : ∀ u �
   simpa using hle ⟨u, hu, rfl⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n n₁ Y Y₁ H t m hL u hu`. Take `⟨h1, -, h3⟩` from `hL`. Rewrite `h3` using `[mat_one', Matrix.mul_one]`. Establish `hmi : mat m⁻¹ * mat m = 1` using `by rw [← mat_mul', inv_mul_cancel, mat_one']`. Establish `hι' : mat m⁻¹ * incM F H.ι = incM F H.ι` using `by conv_lhs => rw [← h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hmi, Matrix.one_mul]`. Establish `hx' : mat m⁻¹ *ᵥ incV F H.x = (t⁻¹).1 • incV F H.x`. Establish `e : incV F H.x = t.1 • (mat m⁻¹ *ᵥ incV F H.x)`. Rewrite using `[← Matrix.mulVec_smul, ← h1, Matrix.mulVec_mulVec, hmi, Matrix.one_mulVec]`. Use `conv_rhs => rw [e, smul_smul, Units.inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `conj_mem_closure _ m (fun v hv => conj_mem_gen H m t.1 (t⁻¹).1 (Units.mul_inv t) h1 hx' hι' v hv) u hu` and prove the remaining obligations. Establish `key` using `conj_mem_closure _ m⁻¹ (fun v hv => by`. Use `conj_mem_gen H m⁻¹ (t⁻¹).1 t.1 (Units.inv_mul t) hx' (by rw [inv_inv]; exact h1) (by rw [inv_inv]; exact h3) v hv` as an intermediate fact. Conclude with `this) u hu`.
-
-Rewrite `key` using `[inv_inv]`. Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_normalises_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁) (t : (AE F E)ˣ) (m : UA σ Y.J),

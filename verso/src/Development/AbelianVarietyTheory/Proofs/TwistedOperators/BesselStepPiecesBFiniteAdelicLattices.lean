@@ -14,7 +14,7 @@ namespace GlobalTheory.BesselPieceB
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_mul_left {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} (M : Mx D k m) {x : Mx D m n} (hx : MxAt P x) :
     MxAt P (M ⬝ x) := fun i j => by
@@ -22,7 +22,7 @@ theorem mxAt_mul_left {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} (M : 
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx i l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_mul_right {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} {x : Mx D k m} (hx : MxAt P x) (M : Mx D m n) :
     MxAt P (x ⬝ M) := fun i j => by
@@ -30,13 +30,11 @@ theorem mxAt_mul_right {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} {x :
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx i l)
 
 /- English proof (translation)
-Use `haveI : T2Space (Mx D k' m') := (lattice_Mx D k' m').2.2.2.1`. Establish `hfc : Continuous f`. Establish `: (f : Mx D k n → Mx D k' m') = fun x : Mx D k n => M ⬝ x ⬝ N` using `funext hf`. Rewrite using `[this]`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : Continuous fun y : Mx D k' m' => M' ⬝ y ⬝ N'` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `hgf : ∀ x, M' ⬝ f x ⬝ N' = x` using `fun x => by`. Establish `e : M' ⬝ f x ⬝ N' = (M' ⬝ M) ⬝ x ⬝ (N ⬝ N')` using `by rw [hf]; simp only [Matrix.mul_assoc]`. Rewrite using `[e, hM, hN, Matrix.one_mul, Matrix.mul_one]`. Use `⟨fun a ha => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hgf a]`. Conclude with `mxAt_mul_right (mxAt_mul_left _ (hA.fin _ ha)) _`. Use `(hA.cpt.image hgc).of_isClosed_subset (hA.cpt.isClosed.preimage hfc) fun a ha => ⟨f a, ha, hgf a⟩` and prove the remaining obligations. Take `⟨U, hU, h0, hUA⟩` from `hA.opn`. Use `⟨f ⁻¹' U, hU.preimage hfc, by simpa using h0, fun a ha hfin => hUA _ ha ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hf]`. Conclude with `mxAt_mul_right (mxAt_mul_left _ hfin) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finLat_comap_mul {k n k' m' : ℕ} {A : AddSubgroup (Mx D k' m')} (hA : FinLat A) (f : Mx D k n →+ Mx D k' m')
     (M : Mx D k' k) (N : Mx D n m') (M' : Mx D k k') (N' : Mx D m' n) (hf : ∀ x : Mx D k n, f x = M ⬝ x ⬝ N)
@@ -62,7 +60,7 @@ end GlobalTheory.BesselPieceB
 open GlobalTheory.BesselPieceB in
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W M hM F hF ρ h`. Establish `hB : FinLat (latBig G (2 * ρ + 1))` using `((GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hD T L μ0 hL sc G W M hM F hF).1 (2 * ρ + 1) (by omega)).2.2.1`. Conclude with `⟨finLat_comap_mul hB _ (F.dJ ρ h).jX (F.dB ρ h).p0 (F.dJ ρ h).pX (F.dB ρ h).j0 (fun _ => rfl) (F.dJ ρ h).pX_jX (F.dB ρ h).p0_j0, finLat_comap_mul hB _ (F.dJ ρ h).jY (F.dB ρ h).p0 (F.dJ ρ h).pY (F.dB ρ h).j0 (fun _ => rfl) (F.dJ ρ h).pY_jY (F.dB ρ h).p0_j0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.BesselPieceB.finLat_pcBF_B : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m),
     FinLat (pcBF W F ρ h).B₁ ∧ FinLat (pcBF W F ρ h).B₂ := by

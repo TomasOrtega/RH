@@ -27,11 +27,11 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hadd, -, hMv⟩` from `GlobalTheory.T.residueCoordinatesInFrame_linear_stabiliser β Λ hβ PP`. Introduce `q hq`. Establish `e1 : (M.val - 1) *ᵥ w + w = (M : Matrix (Fin n) (Fin n) _) *ᵥ w`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel]`. Establish `e2` using `hMv M hM w hw`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[← e1, hadd _ hmem.1 _ hw, hwr, Matrix.mulVec_single_one]`. Establish `e3` using `congrFun e2 q`. Establish `h0 : redV β PP ((M.val - 1) *ᵥ w) q = 0`. Use `(Submodule.mem_pi.1 hmem.2) q hq` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e3` using `[Pi.add_apply, h0, zero_add, Pi.single_apply]`. Conclude with `e3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redFn_col {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hβ : IsFrame β Λ) (PP : Pl E) (M : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hM : M ∈ St β)
@@ -56,7 +56,7 @@ theorem redFn_col {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Subm
 end Gen
 
 /- English proof (translation)
-Take `⟨hadd, -, -⟩` from `GlobalTheory.T.residueCoordinatesInFrame_linear_stabiliser β Λ hβ PP`. Use `hadd 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem redV_zero_of_frame {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)} (hβ : IsFrame β Λ) (PP : Pl E) :
@@ -67,7 +67,7 @@ theorem redV_zero_of_frame {F E : Type} [Field F] [NumberField F] [Field E] [Num
   simpa using this
 
 /- English proof (translation)
-Use `Submodule.mem_pi.2 fun q hq => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, Pi.single_apply, if_neg]`. Introduce `h`. Substitute `h` using the available equality. Conclude with `hq hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem single_mem_pi_bot {κ : Type} [CommRing κ] {n : ℕ} {A : Set (Fin n)} {p : Fin n} (hp : p ∈ A) :
     (Pi.single p (1 : κ) : Fin n → κ) ∈ Submodule.pi {q | q ∉ A} (fun _ => (⊥ : Submodule κ κ)) := by
@@ -78,41 +78,41 @@ theorem single_mem_pi_bot {κ : Type} [CommRing κ] {n : ℕ} {A : Set (Fin n)} 
   exact hq hp
 
 /- English proof (translation)
-Unfold `flagV`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagV_of_lt {M : Type} [Zero M] (ρ k n : ℕ) (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n)
     (h : i.1 < ρ) : flagV ρ k n e f b z i = e ⟨i.1, h⟩ := by
   unfold flagV; rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `flagV; rw [dif_neg (by omega), dif_pos h2]`.
+Replace the relevant objects with their definitions.
 -/
 theorem flagV_of_mid {M : Type} [Zero M] (ρ k n : ℕ) (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n)
     (h1 : ρ ≤ i.1) (h2 : i.1 < ρ + k) : flagV ρ k n e f b z i = b ⟨i.1 - ρ, by omega⟩ := by
   unfold flagV; rw [dif_neg (by omega), dif_pos h2]
 
 /- English proof (translation)
-Unfold `flagV; rw [dif_neg (by omega), dif_neg (by omega), dif_pos h]`.
+Replace the relevant objects with their definitions.
 -/
 theorem flagV_of_eq {M : Type} [Zero M] (ρ k n : ℕ) (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n)
     (h : i.1 = ρ + k) : flagV ρ k n e f b z i = z := by
   unfold flagV; rw [dif_neg (by omega), dif_neg (by omega), dif_pos h]
 
 /- English proof (translation)
-Unfold `flagV; rw [dif_neg (by omega), dif_neg (by omega), dif_neg (by omega), dif_pos h2]`.
+Replace the relevant objects with their definitions.
 -/
 theorem flagV_of_gt {M : Type} [Zero M] (ρ k n : ℕ) (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n)
     (h1 : ρ + k < i.1) (h2 : i.1 < 2 * ρ + k + 1) : flagV ρ k n e f b z i = f ⟨2 * ρ + k - i.1, by omega⟩ := by
   unfold flagV; rw [dif_neg (by omega), dif_neg (by omega), dif_neg (by omega), dif_pos h2]
 
 /- English proof (translation)
-Establish `hall : N ∈ blockTri (blk2 r)`. Rewrite using `[mem_blockTri]`. Introduce `i j hij`. It suffices to derive a contradiction. Establish `hi : i.1 < r` using `by have := i.2; omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hj : j.1 < r` using `by have := j.2; omega`. Simplify using `only [blk2, hi, hj, if_true, lt_irrefl] at hij`. Establish `hv : ∀ i j : Fin r, ((upperLeftBlock hle N : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) i j = (N : Matrix (Fin n) (Fin n) κ) (Fin.castLE hle i) (Fin.castLE hle j)`. Introduce `i j`. Rewrite using `[upper_block_val_submatrix hle hall]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hne : ∀ i j : Fin r, i.1 ≠ j.1 → (if Fin.castLE hle i = Fin.castLE hle j then (1 : κ) else 0) = 0` using `fun i j h => if_neg (fun e => h (by simpa using congrArg Fin.val e))`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j h0 h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hij' : j.1 < i.1` using `hij show ((upperLeftBlock hle N : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) i j = 0`. Rewrite using `[hv, hcol _ _ (by simp only [Fin.coe_castLE]; omega), hne i j (by omega)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, hcol _ _ (by simp only [Fin.coe_castLE]; omega), if_pos rfl]`. Rewrite using `[hv, hcol _ _ (by simp only [Fin.coe_castLE]; omega), hne i j (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictedBlock_mem_unipSym_of_columns {κ : Type} [CommRing κ] {n r : ℕ} (ρ k : ℕ) (hr : r = n) (hle : r ≤ n) (N : GL (Fin n) κ)
     (hcol : ∀ j q : Fin n, ¬ ((j.1 = ρ + k ∧ q.1 < ρ) ∨ (j.1 ≠ ρ + k ∧ q.1 < j.1)) →
@@ -140,7 +140,7 @@ theorem restrictedBlock_mem_unipSym_of_columns {κ : Type} [CommRing κ] {n r : 
   · rw [hv, hcol _ _ (by simp only [Fin.coe_castLE]; omega), hne i j (by omega)]
 
 /- English proof (translation)
-Introduce `v hv` and use `(Set.ext_iff.1 (Formalism.IndefR.Eqv.lamAf_eq_hatL (V := Yc D 0) (II D).L) v).1 hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_hatL_of_Lf (D : D7) : ∀ v ∈ (II D).Lf, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (E := D.host.E) (n := (Yc D 0).rank) (II D).L :=
     fun v hv => (Set.ext_iff.1 (Formalism.IndefR.Eqv.lamAf_eq_hatL (V := Yc D 0) (II D).L) v).1 hv
@@ -148,17 +148,17 @@ theorem mem_hatL_of_Lf (D : D7) : ∀ v ∈ (II D).Lf, v ∈ Formalism.L2.Herm.h
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hadd, hsmul, -⟩` from `GlobalTheory.T.residueCoordinatesInFrame_linear_stabiliser β (II D).L hβ PP`. Introduce `v hv`. Unfold `mL at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨x, hx, rfl⟩` from `hy`. Establish `hx'` using `mem_hatL_of_Lf D x hx`. Establish `hc : ((g : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = (g : EAf D)` using `map_natCast (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype g`. Establish `e : ((((g : ℕ) : (II D).E ⊗[(II D).F] Af (II D).F) • x : VA (II D)) : Fin (Yc D 0).rank → EAf D) = ((g : ℕ) : EAf D) • (show Fin (Yc D 0).rank → EAf D from x)` using `rfl`. Establish `hm : ((g : ℕ) : EAf D) • (show Fin (Yc D 0).rank → EAf D from x) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (E := D.host.E) (n := (Yc D 0).rank) (II D).L := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ (g : Formalism.L2.Herm.intAf D.host.F D.host.E) hx'`. Establish `hs` using `hsmul (g : Formalism.L2.Herm.intAf D.host.F D.host.E) x hx'`. Rewrite using `[e]`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `hs.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast]`. Establish `h0 : ((g : kP PP)) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hg`. Rewrite using `[h0, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨Submodule.zero_mem _, redV_zero_of_frame hβ PP⟩`. Consider the case `add a b _ _ ha hb`. Conclude with `⟨Submodule.add_mem _ ha.1 hb.1, (hadd a ha.1 b hb.1).trans (by rw [ha.2, hb.2, add_zero])⟩`. Consider the case `smul c a _ ha`. Establish `c2 : (show EAf D from c.1) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `c.2`.
+Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((c • a : VA (II D)) : Fin (Yc D 0).rank → EAf D) = (show EAf D from c.1) • (show Fin (Yc D 0).rank → EAf D from a)` using `rfl`. Rewrite using `[e]`. Establish `hm` using `Submodule.smul_mem _ (⟨_, c2⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) ha.1`. Conclude with `⟨hm, (hsmul ⟨_, c2⟩ a ha.1).trans (by rw [ha.2, smul_zero])⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem redV_mL (D : D7) (g : ℕ) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host.E) (hβ : IsFrame β (II D).L)
     (hg : ((g : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) :
@@ -201,11 +201,11 @@ theorem redV_mL (D : D7) (g : ℕ) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : P
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hadd, hsmul, -⟩` from `GlobalTheory.T.residueCoordinatesInFrame_linear_stabiliser β (II D).L hβ PP`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy => exact hS y hy`. Consider the case `zero => exact ⟨Submodule.zero_mem _, (redV_zero_of_frame hβ PP) ▸ T.zero_mem⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Conclude with `⟨Submodule.add_mem _ ha.1 hb.1, by`. Establish `e` using `hadd a ha.1 b hb.1`. Conclude with `e ▸ T.add_mem ha.2 hb.2⟩`. Consider the case `smul c a _ ha`.
+Treat this case separately. Supply the required witnesses or components. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Establish `c2 : (show EAf D from c.1) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `c.2`. Establish `e : ((c • a : VA (II D)) : Fin (Yc D 0).rank → EAf D) = (show EAf D from c.1) • (show Fin (Yc D 0).rank → EAf D from a)` using `rfl`. Rewrite using `[e]`. Establish `hm` using `Submodule.smul_mem _ (⟨_, c2⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) ha.1`. Conclude with `⟨hm, (hsmul ⟨_, c2⟩ a ha.1) ▸ T.smul_mem _ ha.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem redV_span (D : D7) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host.E) (hβ : IsFrame β (II D).L)
     (T : Submodule (kP PP) (Fin (Yc D 0).rank → kP PP)) (S : Set (VA (II D)))
@@ -232,9 +232,9 @@ theorem redV_span (D : D7) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hadd, -, -⟩` from `GlobalTheory.T.residueCoordinatesInFrame_linear_stabiliser β (II D).L hβ PP`. Introduce `v hv`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hv`. Take `⟨hy1, hy2⟩` from `redV_span D β PP hβ T S hS y hy`. Take `⟨hz1, hz2⟩` from `redV_mL D g β PP hβ hg z hz`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Submodule.add_mem _ hy1 hz1, ?_⟩` and prove the remaining obligations. Establish `e` using `hadd y hy1 z hz1`. Rewrite `e` using `[hz2, add_zero]`. Conclude with `e ▸ hy2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redV_Mo (D : D7) (g : ℕ) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host.E) (hβ : IsFrame β (II D).L)
     (hg : ((g : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal)
@@ -255,11 +255,9 @@ theorem redV_Mo (D : D7) (g : ℕ) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : P
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hv` using the available equality. Use `redFn_col hβ PP M hM (w j) j (hw j).1 (hw j).2 A ?_` and prove the remaining obligations. Use `redV_Mo D g β PP hβ hg _ S ?_ _ hmo` and prove the remaining obligations. Introduce `s hs`. Break down `hS s hs with ⟨p, hp, rfl⟩ | ⟨h1, h2⟩` into its components or cases.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨(hw p).1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hw p).2]`. Conclude with `single_mem_pi_bot hp`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`.
-
-Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redFn_col_of_Mo (D : D7) (g : ℕ) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host.E) (hβ : IsFrame β (II D).L)
     (hg : ((g : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) (w : Fin (Yc D 0).rank → VA (II D))
@@ -287,31 +285,31 @@ theorem redFn_col_of_Mo (D : D7) (g : ℕ) (β : GL (Fin (Yc D 0).rank) (EAf D))
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D g e0 f0 z0 bb cc β PP hβ hg hRed hcc M hM he0 hz0 hbb hf0`. Establish `hn : (Yc D 0).rank = 2 * D.R.rS + D.R.k + 1`. Establish `h1 : (Yc D 0).rank = D.R.r` using `Formalism.L2.SG.InstExistsPf.rank_eq D`. Rewrite using `[h1]`. Take `⟨j, hj⟩` from `D.R.m_even`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers. Establish `hw : ∀ j, flagV D.R.rS D.R.k (Yc D 0).rank e0 f0 bb z0 j ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (E := D.host.E) (n := (Yc D 0).rank) (II D).L ∧ redV β PP (flagV D.R.rS D.R.k (Yc D 0).rank e0 f0 bb z0 j) = Pi.single j 1 := by`. Introduce `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(hβ _).2 (fun i => (hRed i j).1), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Take `⟨hm, he⟩` from `hRed i j`. Unfold `redV`. Rewrite using `[dif_pos hm, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he`. Establish `hcol : ∀ j q : Fin (Yc D 0).rank, ¬ ((j.1 = D.R.rS + D.R.k ∧ q.1 < D.R.rS) ∨ (j.1 ≠ D.R.rS + D.R.k ∧ q.1 < j.1)) → ((redFn β PP M : GL (Fin (Yc D 0).rank) (kP PP)) : Matrix (Fin (Yc D 0).rank) (Fin (Yc D 0).rank) (kP PP)) q j = if q = j then 1 else 0`. Introduce `j q hq`. Establish `hj2` using `j.2`. Distinguish the cases in `h1 : j.1 < D.R.rS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `redFn_col_of_Mo D g β PP hβ hg _ hw M hM j (e0 ⟨j.1, h1⟩) (flagV_of_lt _ _ _ _ _ _ _ j h1) _ {q | q.1 < j.1} (he0 ⟨j.1, h1⟩) ?_ q (by simp only [Set.mem_setOf_eq]; omega)` and prove the remaining obligations. Introduce and unpack `s ⟨b, hb, rfl⟩`. Establish `hb' : b.1 < j.1` using `hb`. Conclude with `Or.inl ⟨⟨b.1, by omega⟩, hb', (flagV_of_lt _ _ _ _ _ _ _ ⟨b.1, by omega⟩ b.2).symm⟩`. Distinguish the cases in `h2 : j.1 < D.R.rS + D.R.k`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Prove the first alternative. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `redFn_col_of_Mo D g β PP hβ hg _ hw M hM j (bb ⟨j.1 - D.R.rS, by omega⟩) (flagV_of_mid _ _ _ _ _ _ _ j (by omega) h2) _ {q | q.1 < j.1} (hbb _) ?_ q (by simp only [Set.mem_setOf_eq]; omega)` and prove the remaining obligations. Introduce and unpack `s ((⟨b, rfl⟩ | ⟨c, rfl⟩) | ⟨l, hl, rfl⟩)`. Use `b.2` as an intermediate fact. Conclude with `Or.inl ⟨⟨b.1, by omega⟩, (show b.1 < j.1 by omega), (flagV_of_lt _ _ _ _ _ _ _ ⟨b.1, by omega⟩ b.2).symm⟩`. Conclude with `Or.inr ⟨mem_hatL_of_Lf D _ (hcc c).1, (hcc c).2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Establish `hl' : l.1 < j.1 - D.R.rS` using `hl`. Use `l.2` as an intermediate fact. Use `Or.inl ⟨⟨D.R.rS + l.1, by omega⟩, (show D.R.rS + l.1 < j.1 by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[flagV_of_mid _ _ _ _ _ _ _ _ (by show D.R.rS ≤ D.R.rS + l.1; omega) (by show D.R.rS + l.1 < D.R.rS + D.R.k; omega)]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using the standard rewrite rules. Distinguish the cases in `h3 : j.1 = D.R.rS + D.R.k`. Use `redFn_col_of_Mo D g β PP hβ hg _ hw M hM j z0 (flagV_of_eq _ _ _ _ _ _ _ j h3) _ {q | q.1 < D.R.rS} hz0 ?_ q (by simp only [Set.mem_setOf_eq]; omega)` and prove the remaining obligations. Introduce and unpack `s ⟨b, rfl⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inl ⟨⟨b.1, by omega⟩, b.2, (flagV_of_lt _ _ _ _ _ _ _ ⟨b.1, by omega⟩ b.2).symm⟩`. Use `redFn_col_of_Mo D g β PP hβ hg _ hw M hM j (f0 ⟨2 * D.R.rS + D.R.k - j.1, by omega⟩) (flagV_of_gt _ _ _ _ _ _ _ j (by omega) (by omega)) _ {q | q.1 < j.1} (hf0 _) ?_ q (by simp only [Set.mem_setOf_eq]; omega)` and prove the remaining obligations. Introduce and unpack `s ((((⟨a, rfl⟩ | rfl) | ⟨l, rfl⟩) | ⟨c, rfl⟩) | ⟨c, hc, rfl⟩)`. Use `a.2` as an intermediate fact. Conclude with `Or.inl ⟨⟨a.1, by omega⟩, (show a.1 < j.1 by omega), (flagV_of_lt _ _ _ _ _ _ _ ⟨a.1, by omega⟩ a.2).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Prove the first alternative. Prove the first alternative.
 
-Conclude with `Or.inl ⟨⟨D.R.rS + D.R.k, by omega⟩, (show D.R.rS + D.R.k < j.1 by omega), (flagV_of_eq _ _ _ _ _ _ _ _ rfl).symm⟩`. Use `l.2` as an intermediate fact. Use `Or.inl ⟨⟨D.R.rS + l.1, by omega⟩, (show D.R.rS + l.1 < j.1 by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[flagV_of_mid _ _ _ _ _ _ _ _ (by show D.R.rS ≤ D.R.rS + l.1; omega) (by show D.R.rS + l.1 < D.R.rS + D.R.k; omega)]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using the standard rewrite rules. Conclude with `Or.inr ⟨mem_hatL_of_Lf D _ (hcc c).1, (hcc c).2⟩`. Establish `hc' : 2 * D.R.rS + D.R.k - j.1 < c.1` using `hc`. Use `c.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inl ⟨⟨2 * D.R.rS + D.R.k - c.1, by omega⟩, (show 2 * D.R.rS + D.R.k - c.1 < j.1 by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[flagV_of_gt _ _ _ _ _ _ _ _ (by show D.R.rS + D.R.k < 2 * D.R.rS + D.R.k - c.1; omega) (by show 2 * D.R.rS + D.R.k - c.1 < 2 * D.R.rS + D.R.k + 1; omega)]`. Use `congr 1`. Use `ext`. Simplify using `only`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `restrictedBlock_mem_unipSym_of_columns D.R.rS D.R.k (Formalism.L2.SG.InstExistsPf.rank_eq D).symm _ _ hcol`.
+A detailed English derivation is pending.
 -/
 theorem redFn_mem_unipSym_of_cong : ∀ {D : D7} (g : ℕ) (e0 f0 : Fin D.R.rS → VA (II D)) (z0 : VA (II D)) (bb cc : Fin D.R.k → VA (II D)) (β : GL (Fin (Yc D 0).rank) (EAf D)) (PP : Pl D.host.E), IsFrame β (II D).L → ((g : 𝓞 D.host.E) ∈ PP.asIdeal) → RedIs β PP (flagV D.R.rS D.R.k (Yc D 0).rank e0 f0 bb z0) → (∀ i, cc i ∈ (II D).Lf ∧ redV β PP (cc i) = 0) → ∀ M : GL (Fin (Yc D 0).rank) (EAf D), M ∈ St β → (∀ a, (M.val - 1) *ᵥ e0 a ∈ Formalism.L2.SG.Pf.unitaryCongruence.Mo (II D) g (e0 '' {b | b.1 < a.1})) → ((M.val - 1) *ᵥ z0 ∈ Formalism.L2.SG.Pf.unitaryCongruence.Mo (II D) g (Set.range e0)) → (∀ i, (M.val - 1) *ᵥ bb i ∈ Formalism.L2.SG.Pf.unitaryCongruence.Mo (II D) g (Set.range e0 ∪ Set.range cc ∪ bb '' {j | j.1 < i.1})) → (∀ b, (M.val - 1) *ᵥ f0 b ∈ Formalism.L2.SG.Pf.unitaryCongruence.Mo (II D) g (Set.range e0 ∪ {z0} ∪ Set.range bb ∪ Set.range cc ∪ f0 '' {c | b < c})) → upperLeftBlock (r_le_Y (D := D) 0) (redFn β PP M) ∈ unipSym (kP PP) D.R.r D.R.rS D.R.k := by
   intro D g e0 f0 z0 bb cc β PP hβ hg hRed hcc M hM he0 hz0 hbb hf0

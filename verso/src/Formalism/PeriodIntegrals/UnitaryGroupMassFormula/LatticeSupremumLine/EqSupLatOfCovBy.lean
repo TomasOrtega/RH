@@ -6,17 +6,17 @@ namespace SupLatW
 open Formalism.MainNotions.Ext.CutC
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Unfold `stdLat at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hv`. Use `⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[vecK]`. Simplify using `[vecK, h]`. Consider the case `zero => exact ⟨0, by funext j; simp [vecK]⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨x, rfl⟩` from `ha`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hb`. Conclude with `⟨x + y, by funext j; simp [vecK]⟩`. Consider the case `smul a b _ hb`. Take `⟨y, rfl⟩` from `hb`. Conclude with `⟨a • y, by funext j; simp [vecK, Algebra.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, rfl⟩`. Establish `hx : vecK R K x = ∑ i, x i • (Pi.single i (1 : K) : Fin r → K)`. Use function extensionality and compare the values at `j`. Simplify using `[vecK, Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`. Rewrite using `[hx]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `stdLat`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_stdLat_iff {R K : Type} [CommRing R] [Field K] [Algebra R K] {r : ℕ}
     (v : Fin r → K) : v ∈ stdLat R K r ↔ ∃ x : Fin r → R, v = vecK R K x := by
@@ -49,18 +49,18 @@ theorem mem_stdLat_iff {R K : Type} [CommRing R] [Field K] [Algebra R K] {r : �
       Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hϖ.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem alg_ne_zero {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {ϖ : R} (hϖ : Irreducible ϖ) : algebraMap R K ϖ ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hϖ.ne_zero
 
 /- English proof (translation)
-Establish `h0` using `alg_ne_zero (K := K) hϖ`. Establish `hinj` using `IsFractionRing.injective R K`. Rewrite using `[mem_stdLat_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩ i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨z i, hinj ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun hz i`. Simplify using `only [vecK, Pi.smul_apply, smul_eq_mul] at e`. Rewrite using `[map_mul, ← e, mul_inv_cancel_left₀ h0]`. Introduce `h choose z hz using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨z, funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [vecK, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hz i, map_mul, inv_mul_cancel_left₀ h0]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_smul_mem_iff {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {ϖ : R} (hϖ : Irreducible ϖ) {r : ℕ} (x : Fin r → R) :
@@ -81,7 +81,7 @@ theorem inv_smul_mem_iff {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algeb
     rw [hz i, map_mul, inv_mul_cancel_left₀ h0]
 
 /- English proof (translation)
-Establish `hm : s ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal s).mpr (mem_nonunits_iff.mpr hs)`. Rewrite `hm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.mem_span_singleton]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_not_isUnit {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {ϖ : R} (hϖ : Irreducible ϖ) {s : R} (hs : ¬ IsUnit s) : ϖ ∣ s := by
@@ -92,11 +92,11 @@ theorem dvd_of_not_isUnit {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuat
   exact hm
 
 /- English proof (translation)
-Unfold `supLat`. Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Establish `h1 : (algebraMap R K ϖ)⁻¹ • vecK R K (fun i => x i - c * y i) ∈ stdLat R K r` using `(inv_smul_mem_iff hϖ _).mpr h`. Establish `h2 : (algebraMap R K ϖ)⁻¹ • vecK R K x = (algebraMap R K ϖ)⁻¹ • vecK R K (fun i => x i - c * y i) + c • ((algebraMap R K ϖ)⁻¹ • vecK R K y)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [vecK, Pi.add_apply, Pi.smul_apply]`. Simplify using `only [smul_eq_mul]`. Simplify using `only [Algebra.smul_def, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left h1) (Submodule.smul_mem _ _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supLat_le_of_dvd {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {ϖ : R} (hϖ : Irreducible ϖ) {r : ℕ} (x y : Fin r → R) (c : R)
@@ -119,19 +119,17 @@ theorem supLat_le_of_dvd {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algeb
     (Submodule.smul_mem _ _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Establish `hm : (algebraMap R K ϖ)⁻¹ • vecK R K x ∈ stdLat R K r ⊔ Submodule.span R {(algebraMap R K ϖ)⁻¹ • vecK R K y}`. Establish `: (algebraMap R K ϖ)⁻¹ • vecK R K x ∈ supLat R K ϖ x` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Rewrite `this` using `[hxy]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨l, hl, t, ht, hsum⟩` from `Submodule.mem_sup.mp hm`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.mp ht`. Take `⟨z, rfl⟩` from `(mem_stdLat_iff (R := R) l).mp hl`. Establish `hw : algebraMap R K ϖ * (algebraMap R K ϖ)⁻¹ = 1` using `mul_inv_cancel₀ (alg_ne_zero hϖ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi : ∀ i, x i = ϖ * z i + s * y i`. Introduce `i`. Apply `IsFractionRing.injective R K` to reduce the goal to its premises. Establish `e` using `congrFun hsum i`. Simplify using `only [vecK, Pi.add_apply, Pi.smul_apply] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_mul] at e`. Simplify using `only [Algebra.smul_def] at e`. Rewrite using `[map_add, map_mul, map_mul]`. Take the linear combination `(-(algebraMap R K ϖ)) * e + (algebraMap R K s * algebraMap R K (y i) - algebraMap R K (x i)) * hw`. Use `⟨s, ?_, fun i => ⟨z i, by rw [hxi i]; ring⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hs`. Take `⟨i, hi⟩` from `hx`. Conclude with `hi (by`. Rewrite using `[hxi i]`. Conclude with `dvd_add (dvd_mul_right _ _) (dvd_mul_of_dvd_left (dvd_of_not_isUnit hϖ hs) _))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨c, hc, h⟩`. Use `le_antisymm (supLat_le_of_dvd hϖ x y c h) (supLat_le_of_dvd hϖ y x (↑hc.unit⁻¹) fun i => ?_)` and prove the remaining obligations. Take `⟨d, hd⟩` from `h i`. Use `⟨-(↑hc.unit⁻¹ : R) * d, ?_⟩` and prove the remaining obligations. Establish `hcc : (↑hc.unit⁻¹ : R) * c = 1` using `hc.val_inv_mul`.
-
-Take the linear combination `(-(↑hc.unit⁻¹ : R)) * hd + (-(y i)) * hcc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem supLat_eq_iff {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] {ϖ : R} (hϖ : Irreducible ϖ) {r : ℕ}
@@ -174,19 +172,19 @@ theorem supLat_eq_iff {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuatio
     linear_combination (-(↑hc.unit⁻¹ : R)) * hd + (-(y i)) * hcc
 
 /- English proof (translation)
-Establish `hv : (algebraMap R K ϖ)⁻¹ • vecK R K x ∉ stdLat R K r`. Rewrite using `[inv_smul_mem_iff hϖ]`. Use `push Not`. Conclude with `hx`. Establish `hw : algebraMap R K ϖ * (algebraMap R K ϖ)⁻¹ = 1` using `mul_inv_cancel₀ (alg_ne_zero hϖ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `supLat`. Rewrite using `[covBy_iff_lt_and_eq_or_eq]`. Use `⟨SetLike.lt_iff_le_and_exists.mpr ⟨le_sup_left, _, Submodule.mem_sup_right (Submodule.mem_span_singleton_self _), hv⟩, ?_⟩` and prove the remaining obligations. Introduce `C h1 h2`. Distinguish the cases in `hC : C ≤ stdLat R K r`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Or.inl (le_antisymm hC h1)`. Use `right`. Use `le_antisymm h2 (sup_le h1 ?_)` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Take `⟨c, hcC, hcL⟩` from `SetLike.not_le_iff_exists.mp hC`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl, q, hq, hsum⟩` from `Submodule.mem_sup.mp (h2 hcC)`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.mp hq`. Establish `hs : IsUnit s`. Assume the negation of the conclusion as `hs`. Take `⟨t, rfl⟩` from `dvd_of_not_isUnit hϖ hs`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hcL` to reduce the goal to its premises. Rewrite using `[← hsum]`. Use `Submodule.add_mem _ hl ?_` and prove the remaining obligations. Establish `e : (ϖ * t) • ((algebraMap R K ϖ)⁻¹ • vecK R K x) = vecK R K (t • x)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [vecK, Pi.smul_apply]`. Simplify using `only [smul_eq_mul]`. Simplify using `only [Algebra.smul_def, map_mul]`. Take the linear combination `(algebraMap R K t * algebraMap R K (x i)) * hw`. Rewrite using `[e, mem_stdLat_iff]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`. Establish `e : (algebraMap R K ϖ)⁻¹ • vecK R K x = (↑hs.unit⁻¹ : R) • (c - l)`. Rewrite using `[← hsum, add_sub_cancel_left, smul_smul, hs.val_inv_mul, one_smul]`. Rewrite using `[e]`. Conclude with `C.smul_mem _ (C.sub_mem hcC (h1 hl))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covBy_supLat {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] {ϖ : R} (hϖ : Irreducible ϖ) {r : ℕ}
@@ -229,25 +227,21 @@ theorem covBy_supLat {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuation
     exact C.smul_mem _ (C.sub_mem hcC (h1 hl))
 
 /- English proof (translation)
-Establish `h0` using `alg_ne_zero (K := K) hϖ`. Take `⟨m, hmM, hmL⟩` from `SetLike.exists_of_lt hM.lt`. Establish `hpm : ϖ • m ∈ stdLat R K r`. Break down `(covBy_iff_lt_and_eq_or_eq.mp hM).2 (stdLat R K r ⊔ Submodule.span R {ϖ • m}) le_sup_left (sup_le hM.le ((Submodule.span_singleton_le_iff_mem _ _).mpr (M.smul_mem _ hmM))) with h | h` into its components or cases. Rewrite using `[← h]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. It suffices to derive a contradiction. Establish `hm' : m ∈ stdLat R K r ⊔ Submodule.span R {ϖ • m}` using `by rw [h]; exact hmM`. Take `⟨l, hl, q, hq, hsum⟩` from `Submodule.mem_sup.mp hm'`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.mp hq`.
+It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : IsUnit (1 - t * ϖ)`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (t * ϖ) with h' | h'` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_right h') hϖ.not_isUnit`. Conclude with `h'`. Apply `hmL` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (1 - t * ϖ) • m = l`. Rewrite using `[sub_smul, one_smul, mul_smul]`. Conclude with `(eq_sub_of_add_eq hsum).symm`. Establish `e2 : m = (↑hu.unit⁻¹ : R) • l`. Rewrite using `[← e, smul_smul, hu.val_inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ _ hl`. Take `⟨z, hz⟩` from `(mem_stdLat_iff _).mp hpm`. Establish `hm : m = (algebraMap R K ϖ)⁻¹ • vecK R K z`. Rewrite using `[← hz]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply]`. Simplify using `only [smul_eq_mul]`. Simplify using `only [Algebra.smul_def]`. Rewrite using `[inv_mul_cancel_left₀ h0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz' : ∃ i, ¬ ϖ ∣ z i`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Apply `hmL` to reduce the goal to its premises. Rewrite using `[hm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(inv_smul_mem_iff hϖ z).mpr hn`. Use `⟨z, hz', ?_⟩` and prove the remaining obligations. Establish `hle : supLat R K ϖ z ≤ M`. Unfold `supLat`. Conclude with `sup_le hM.le ((Submodule.span_singleton_le_iff_mem _ _).mpr (hm ▸ hmM))`.
-
-Break down `(covBy_iff_lt_and_eq_or_eq.mp hM).2 (supLat R K ϖ z) le_sup_left hle with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hmL` to reduce the goal to its premises. Rewrite using `[← h, hm]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
-
-Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_supLat_of_covBy {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] {ϖ : R} (hϖ : Irreducible ϖ) {r : ℕ}
@@ -304,7 +298,7 @@ theorem eq_supLat_of_covBy {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteVal
   · exact h.symm
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ ϖ hϖ r`. Use `⟨fun x hx => ?_, fun x y hx _ => supLat_eq_iff hϖ x y hx, fun M hle hM => eq_supLat_of_covBy hϖ M ((covBy_iff_quot_is_simple hle).mpr hM)⟩` and prove the remaining obligations. Conclude with `(covBy_iff_quot_is_simple le_sup_left).mp (covBy_supLat hϖ x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : SupLatLine := by
   intro R K _ _ _ _ _ _ ϖ hϖ r

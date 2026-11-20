@@ -6,19 +6,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Introduce `Ω _ _ _ K _ _ _ l _ c N _ e ψ D`. Establish `hι : D.ι = Loc.iota D.j`. Use extensionality with `σ x`. Apply `D.j.injective` to reduce the goal to its premises. Rewrite using `[Loc.iota_spec, ← D.ι_spec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hemb, hrange, -, hmap, hcyc, -, -⟩` from `Loc.iotaFacts D.j`. Establish `hmem : ∀ x : Ω, x ∈ Loc.placeJ D.j ↔ Valued.v (D.j x) ≤ 1` using `fun x => Iff.rfl`. Establish `hA : (Loc.placeJ D.j).valuation (l : Ω) < 1`. Establish `hnot : (l : Ω)⁻¹ ∉ Loc.placeJ D.j`. Rewrite using `[hmem, map_inv₀, map_natCast, map_inv₀, PadicAlgCl.valuation_p, not_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : (1 : NNReal) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Simplify using `using hl`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hnot` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hle : (Loc.placeJ D.j).valuation (l : Ω) ≤ 1` using `((Loc.placeJ D.j).valuation_le_one_iff _).2 (natCast_mem _ l)`. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_inv₀, le_antisymm hle h, inv_one]`. Use `⟨Loc.placeJ D.j, hA, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hι]`. Conclude with `hrange`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hι]`. Conclude with `hmap`. Rewrite using `[hι]`. Conclude with `hemb.injective`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmem, ← NNReal.coe_le_coe, PadicAlgCl.valuation_coe, NNReal.coe_one]`. Introduce `σ`. Rewrite using `[hι]`. Conclude with `DFunLike.congr_fun (hcyc l) σ`. Introduce `A' hA'`.
-
-Take `⟨-, -, -, -, -, -, -, hconj, -, hact⟩` from `ML.placeBasic Ω`. Take `⟨g, rfl⟩` from `hconj (Loc.placeJ D.j) A' l Fact.out hA hA'`. Conclude with `⟨g, (hact _ g).1, (hact _ g).2.1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.dat_loc :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

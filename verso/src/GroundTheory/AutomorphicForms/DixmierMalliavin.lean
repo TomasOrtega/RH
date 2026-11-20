@@ -18,23 +18,23 @@ namespace IsExpLieAlgebra
 variable (h : IsExpLieAlgebra G 𝔤)
 
 /- English proof (translation)
-Take `⟨M, hM, hser⟩` from `h.exists_bound_dirDeriv hf hfc X`. Take `⟨c, g, k, hg, hk, hgs, hks, hc, hid⟩` from `exists_dixmierMalliavin_line M hε`. Take `⟨hf₁, hf₁c⟩` from `hser c hc`. Use `⟨_, hf₁, hf₁c, g, k, hg, hk, hgs, hks, fun x => ?_⟩` and prove the remaining obligations. Use `set F : ℝ → ℂ := fun t => f (h.expG (t • X) * x) with hFdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hF : ContDiff ℝ ∞ F` using `h.contDiff_comp_expG_smul_mul hf X x`. Establish `hD : ∀ p t, iteratedDeriv p F t = h.dirDeriv X p f (h.expG (t • X) * x)` using `fun p t => h.iteratedDeriv_comp_expG_mul X p f x t`. Establish `key` using `hid F hF (fun p t _ => by rw [hD]; exact hM p _)`. Establish `hF0 : F 0 = f x`. Simplify using `only [hFdef, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.expG_zero, one_mul]`. Rewrite `key` using `[hF0]`. Rewrite using `[key]`. Use `congr 1`. Establish `hgc : HasCompactSupport g` using `isCompact_Icc.of_isClosed_subset (isClosed_tsupport g) hgs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ∀ p, Continuous (fun t => iteratedDeriv p F t)` using `fun p => hF.continuous_iteratedDeriv p (by exact_mod_cast le_top)`. Set `T : ℕ → ℝ → ℂ` to `fun p t => (c p : ℂ) * (iteratedDeriv p F t * g t)`. Establish `hTi : ∀ p, Integrable (T p)` using `fun p => (((hcont p).mul hg.continuous).integrable_of_hasCompactSupport hgc.mul_left).const_mul _`. Establish `hTb : ∀ p t, ‖T p t‖ ≤ |c p| * M p * ‖g t‖`. Introduce `p t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [T, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[mul_assoc (|c p|)]`. Use `mul_le_mul_of_nonneg_left ?_ (abs_nonneg (c p))` and prove the remaining obligations. Establish `: ‖iteratedDeriv p F t‖ ≤ M p` using `by rw [hD]; exact hM p _`. Conclude with `mul_le_mul_of_nonneg_right this (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgi : Integrable (fun t => ‖g t‖)` using `(hg.continuous.integrable_of_hasCompactSupport hgc).norm`. Establish `hsum : Summable fun p => ∫ t, ‖T p t‖`. Use `Summable.of_nonneg_of_le (fun p => integral_nonneg fun t => norm_nonneg _) (fun p => ?_) (hc.mul_right (∫ t, ‖g t‖))` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Conclude with `integral_mono (hTi p).norm (hgi.const_mul _) (fun t => hTb p t)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∀ p, (c p : ℂ) * ∫ t, iteratedDeriv p F t * g t = ∫ t, T p t` using `fun p => (integral_const_mul _ _).symm`. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_tsum_of_summable_integral_norm hTi hsum]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [T, hD]`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_decomp_direction {f : G → ℂ}
     (hf : letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f)
@@ -92,7 +92,7 @@ theorem exists_decomp_direction {f : G → ℂ}
   · congr 1; funext t; rw [mul_comm]
 
 /- English proof (translation)
-The claim follows from `| 0, X, f, hf, hfc => by refine ⟨1, fun _ => f, fun _ _ => 1, fun _ => ⟨hf, hfc⟩, fun _ => ⟨contDiff_const, ?_⟩, fun x => ?_⟩ · intro t _ rw [Subsingleton.elim t 0]; exact Metric.mem_closedBall_self hε.le · have hv : (volume : Measure (Fin 0 → ℝ)).real univ = 1 := by simp [Measur …`.
+A detailed English derivation is pending.
 -/
 theorem exists_decomp_iter {ε : ℝ} (hε : 0 < ε) : ∀ {d : ℕ} (X : Fin d → 𝔤) (f : G → ℂ),
     (letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ f) → HasCompactSupport f →
@@ -141,17 +141,15 @@ theorem exists_decomp_iter {ε : ℝ} (hε : 0 < ε) : ∀ {d : ℕ} (X : Fin d 
 end IsExpLieAlgebra
 
 /- English proof (translation)
-Set `` to `h.chartedSpace`. Set `b` to `Module.finBasis ℝ 𝔤`. Take `⟨ε, hε, hdens⟩` from `h.exists_smooth_density_prodExp μ b`. Take `⟨m, F, K, hF, hK, hd⟩` from `h.exists_decomp_iter hε (⇑b) f hf hfc`. Establish `hK' : ∀ i, ContDiff ℝ ∞ (fun t => K i (-t)) ∧ tsupport (fun t => K i (-t)) ⊆ Metric.closedBall 0 ε`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Use `⟨(hK i).1.comp contDiff_neg, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Establish `: -t ∈ tsupport (K i)`. Use `tsupport_comp_subset_preimage (K i) (f := fun t : Fin _ → ℝ => -t) continuous_neg ht` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Use `(hK i).2 this` as an intermediate fact. Simplify `this` using `[mem_closedBall_zero_iff, norm_neg]`. Use `choose κ hκs hκc hκ using fun i => hdens (fun t => K i (-t)) (hK' i).1 (hK' i).2`. Use `⟨m, κ, F, fun i => ⟨hκs i, hκc i, (hF i).1, (hF i).2⟩, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[hd x, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[groupConv, hκ i (fun y => F i (y⁻¹ * x)) ((hF i).1.continuous.comp (continuous_inv.mul continuous_const))]`. Establish `e : ∀ t : Fin (Module.finrank ℝ 𝔤) → ℝ, K i (-t) * F i ((h.prodExp (⇑b) t)⁻¹ * x) = (fun s => K i s * F i (h.revProdExp (⇑b) s * x)) (-t)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Use `h.revProdExp_inv (⇑b) (-t)` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Simplify using `only [← this, inv_inv]`. Repeatedly rewrite using `[e]`.
-
-Conclude with `(integral_neg_eq_self (fun s => K i s * F i (h.revProdExp (⇑b) s * x)) volume).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dixmierMalliavin (h : IsExpLieAlgebra G 𝔤) [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsHaarMeasure] (f : G → ℂ)

@@ -3,17 +3,17 @@ import Mathlib
 namespace Bl.general_b_fact_second''''''''
 
 /- English proof (translation)
-Introduce `K _ _ V _ _ _ _ M x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨d1, hd1, h1⟩` from `hy`. Take `⟨d2, hd2, h2⟩` from `hz`. Use `⟨d1 * d2, mul_ne_zero hd1 hd2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Apply `M.add_mem` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `M.smul_mem _ h1`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem _ h2`. Consider the case `smul a y _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, h⟩` from `hy`. Take `⟨⟨n, m⟩, hnm⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers K)) a`. Simplify using `only at hnm`. Use `⟨(m : NumberField.RingOfIntegers K) * d, mul_ne_zero (nonZeroDivisors.coe_ne_zero m) hd, ?_⟩` and prove the remaining obligations. Establish `e : ∀ (r : NumberField.RingOfIntegers K) (v : V), r • v = (algebraMap (NumberField.RingOfIntegers K) K r) • v` using `fun r v => (algebraMap_smul K r v).symm`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : ((m : NumberField.RingOfIntegers K) * d) • (a • y) = n • (d • y)`. Simplify using `only [e, smul_smul]`. Use `congr 1`. Rewrite using `[← hnm]`. Simplify using `only [map_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `M.smul_mem _ h`.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K : Type} [inst : Field.{0} K] [NumberField.{0} K] {V : Type} [inst_2 : AddCommGroup.{0} V]

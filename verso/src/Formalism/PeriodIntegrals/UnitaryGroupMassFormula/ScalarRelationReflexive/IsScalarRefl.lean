@@ -21,7 +21,7 @@ structure DC (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (y y' : 
   hzt : y'.zt = n (m y.zt)
 
 /- English proof (translation)
-Simplify using `only [Xplus, FlagG.Xplus]`. Conclude with `le_sup_left`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem X_le_Xplus {T₀ : E} (G : LFlag S r T₀) : Xsp G ≤ Xplus G := by
   simp only [Xplus, FlagG.Xplus]
@@ -33,21 +33,21 @@ variable {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S r T} {y y' : LFla
   {n m : S.V ≃ₗ[E] S.V}
 
 /- English proof (translation)
-Use `h.hfr a.castSucc` as an intermediate fact. Simplify `this` using `[frame, FlagG.fvec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem e_eq (h : DC Λ F y y' n m) (a : Fin r) : y'.fl.e a = n (m (y.fl.e a)) := by
   have := h.hfr a.castSucc
   simpa [frame, FlagG.fvec] using this
 
 /- English proof (translation)
-Use `h.hfr (Fin.last r)` as an intermediate fact. Simplify `this` using `[frame, FlagG.fvec]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem z_eq (h : DC Λ F y y' n m) : y'.fl.z = n (m y.fl.z) := by
   have := h.hfr (Fin.last r)
   simpa [frame, FlagG.fvec] using this
 
 /- English proof (translation)
-Establish `he : y'.fl.e = fun i => ((m.trans n : S.V ≃ₗ[E] S.V) : S.V →ₗ[E] S.V) (y.fl.e i)`. Use function extensionality and compare the values at `fun i => by rw [e_eq h i]; rfl`. Simplify using `only [Xflag, FlagG.Xa]`. Rewrite using `[Submodule.map_span, Set.image_image, he]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Xflag_eq (h : DC Λ F y y' n m) (j : ℕ) :
     Xflag y' j = (Xflag y j).map ((m.trans n : S.V ≃ₗ[E] S.V) : S.V →ₗ[E] S.V) := by
@@ -57,46 +57,44 @@ theorem Xflag_eq (h : DC Λ F y y' n m) (j : ℕ) :
   rw [Submodule.map_span, Set.image_image, he]
 
 /- English proof (translation)
-Rewrite using `[← Xa_ge y' le_rfl, Xflag_eq h, Xa_ge y le_rfl, Submodule.mem_map_equiv, LinearEquiv.symm_trans_apply]`. Conclude with `nl_symm_X_iff h.hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_X' (h : DC Λ F y y' n m) {v : S.V} : v ∈ Xsp y' ↔ n.symm v ∈ Xsp y := by
   rw [← Xa_ge y' le_rfl, Xflag_eq h, Xa_ge y le_rfl, Submodule.mem_map_equiv, LinearEquiv.symm_trans_apply]
   exact nl_symm_X_iff h.hm
 
 /- English proof (translation)
-Rewrite using `[mem_XLam, mem_XLam, mem_X' h]`. Conclude with `and_congr_left' ⟨aut_symm_mem h.hn.1, fun hv => by simpa using aut_mem h.hn.1 hv⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_XLam' (h : DC Λ F y y' n m) {v : S.V} : v ∈ XLam Λ y' ↔ n.symm v ∈ XLam Λ y := by
   rw [mem_XLam, mem_XLam, mem_X' h]
   exact and_congr_left' ⟨aut_symm_mem h.hn.1, fun hv => by simpa using aut_mem h.hn.1 hv⟩
 
 /- English proof (translation)
-Rewrite using `[h.hy.2]`. Conclude with `nl_sub_XLam h.hm h.hy.1 (z_orth y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mz_sub (h : DC Λ F y y' n m) : m y.zt - y.zt ∈ XLam Λ y := by
   rw [h.hy.2]
   exact nl_sub_XLam h.hm h.hy.1 (z_orth y)
 
 /- English proof (translation)
-Rewrite using `[h.hF.2]`. Conclude with `nl_sub_XLam h.hn h.hF.1 (z_orth F)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzF_sub (h : DC Λ F y y' n m) : n F.zt - F.zt ∈ XLam Λ F := by
   rw [h.hF.2]
   exact nl_sub_XLam h.hn h.hF.1 (z_orth F)
 
 /- English proof (translation)
-Rewrite using `[h.hF.2]`. Conclude with `nl_symm_sub_XLam h.hn h.hF.1 (z_orth F)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzF_symm_sub (h : DC Λ F y y' n m) : n.symm F.zt - F.zt ∈ XLam Λ F := by
   rw [h.hF.2]
   exact nl_symm_sub_XLam h.hn h.hF.1 (z_orth F)
 
 /- English proof (translation)
-Use `uue_map (n.symm : S.V →ₗ[E] S.V) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce `w hw`. Conclude with `uue_of (uu_A (nl_symm_XLam h.hn hw))`. Establish `e : (n.symm : S.V →ₗ[E] S.V) F.zt = F.zt + (n.symm F.zt - F.zt)` using `by simp`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem (uue_of uu_B) (uue_of (uu_A (nzF_symm_sub h)))`. Introduce `w hw`. Conclude with `uue_of (uu_C ((mem_XLam' h).mp hw))`. Establish `e : (n.symm : S.V →ₗ[E] S.V) y'.zt = y.zt + (m y.zt - y.zt)` using `by simp [h.hzt]`. Rewrite using `[e]`.
-
-Conclude with `add_mem (uue_of uu_D) (uue_of (uu_C (mz_sub h)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uue_symm (h : DC Λ F y y' n m) {v : S.V} (hv : v ∈ UUE Λ F y') : n.symm v ∈ UUE Λ F y := by
   refine uue_map (n.symm : S.V →ₗ[E] S.V) ?_ ?_ ?_ ?_ hv
@@ -112,11 +110,9 @@ theorem uue_symm (h : DC Λ F y y' n m) {v : S.V} (hv : v ∈ UUE Λ F y') : n.s
     exact add_mem (uue_of uu_D) (uue_of (uu_C (mz_sub h)))
 
 /- English proof (translation)
-Use `uue_map (n : S.V →ₗ[E] S.V) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce `w hw`. Conclude with `uue_of (uu_A (nl_XLam h.hn hw))`. Establish `e : (n : S.V →ₗ[E] S.V) F.zt = F.zt + (n F.zt - F.zt)` using `by simp`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem (uue_of uu_B) (uue_of (uu_A (nzF_sub h)))`. Introduce `w hw`. Establish `: n w ∈ XLam Λ y'` using `(mem_XLam' h).mpr (by simpa using hw)`. Conclude with `uue_of (uu_C this)`. Establish `e : (n : S.V →ₗ[E] S.V) y.zt = y'.zt - n (m y.zt - y.zt)` using `by simp [h.hzt]`.
-
-Rewrite using `[e]`. Establish `: n (m y.zt - y.zt) ∈ XLam Λ y'` using `(mem_XLam' h).mpr (by simpa using mz_sub h)`. Conclude with `sub_mem (uue_of uu_D) (uue_of (uu_C this))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uue_fwd (h : DC Λ F y y' n m) {v : S.V} (hv : v ∈ UUE Λ F y) : n v ∈ UUE Λ F y' := by
   refine uue_map (n : S.V →ₗ[E] S.V) ?_ ?_ ?_ ?_ hv
@@ -134,26 +130,24 @@ theorem uue_fwd (h : DC Λ F y y' n m) {v : S.V} (hv : v ∈ UUE Λ F y) : n v �
     exact sub_mem (uue_of uu_D) (uue_of (uu_C this))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨uue_symm h, fun hv => by simpa using uue_fwd h hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_UUE' (h : DC Λ F y y' n m) {v : S.V} : v ∈ UUE Λ F y' ↔ n.symm v ∈ UUE Λ F y :=
   ⟨uue_symm h, fun hv => by simpa using uue_fwd h hv⟩
 
 /- English proof (translation)
-Unfold `Hp`. Conclude with `orth_transport h.hn.1.1 (fun v => mem_UUE' (v := v) h) w`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_Hp' (h : DC Λ F y y' n m) (w : S.V) : w ∈ Hp Λ F y' ↔ n.symm w ∈ Hp Λ F y := by
   unfold Hp
   exact orth_transport h.hn.1.1 (fun v => mem_UUE' (v := v) h) w
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `hz : (n.symm : S.V →ₗ[E] S.V) y'.fl.z - y.fl.z ∈ Xsp y`. Establish `e : (n.symm : S.V →ₗ[E] S.V) y'.fl.z - y.fl.z = m y.fl.z - y.fl.z` using `by simp [z_eq h]`. Rewrite using `[e]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nl_orth h.hm (z_orth y)`. Conclude with `xplus_map (n.symm : S.V →ₗ[E] S.V) (fun w hw => (mem_X' h).mp hw) hz hv`. Introduce `hv`. Establish `hz : (n : S.V →ₗ[E] S.V) y.fl.z - y'.fl.z ∈ Xsp y'`. Rewrite using `[mem_X' h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : n.symm ((n : S.V →ₗ[E] S.V) y.fl.z - y'.fl.z) = -(m y.fl.z - y.fl.z)`. Simplify using `[z_eq h]`. Rewrite using `[e]`. Conclude with `(Xsp y).neg_mem (nl_orth h.hm (z_orth y))`. Use `xplus_map (A := y) (B := y') (n : S.V →ₗ[E] S.V) (fun w hw => (mem_X' h).mpr (by simpa using hw)) hz hv` as an intermediate fact.
-
-Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_Xplus' (h : DC Λ F y y' n m) {v : S.V} : v ∈ Xplus y' ↔ n.symm v ∈ Xplus y := by
   constructor
@@ -175,23 +169,23 @@ theorem mem_Xplus' (h : DC Λ F y y' n m) {v : S.V} : v ∈ Xplus y' ↔ n.symm 
     simpa using this
 
 /- English proof (translation)
-Simplify using `only [Ylift, Submodule.mem_inf]`. Rewrite using `[mem_UUE' h, orth_transport h.hn.1.1 (fun v => nl_Xplus_iff h.hn (v := v)) w]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_YL (h : DC Λ F y y' n m) (w : S.V) : w ∈ Ylift Λ F y' ↔ n.symm w ∈ Ylift Λ F y := by
   simp only [Ylift, Submodule.mem_inf]
   rw [mem_UUE' h, orth_transport h.hn.1.1 (fun v => nl_Xplus_iff h.hn (v := v)) w]
 
 /- English proof (translation)
-Simplify using `only [Ylift', Submodule.mem_inf]`. Rewrite using `[mem_UUE' h, orth_transport h.hn.1.1 (fun v => mem_Xplus' h (v := v)) w]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_YL' (h : DC Λ F y y' n m) (w : S.V) : w ∈ Ylift' Λ F y' ↔ n.symm w ∈ Ylift' Λ F y := by
   simp only [Ylift', Submodule.mem_inf]
   rw [mem_UUE' h, orth_transport h.hn.1.1 (fun v => mem_Xplus' h (v := v)) w]
 
 /- English proof (translation)
-Unfold `NgX`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `map_mem_sup_three (n.symm : S.V →ₗ[E] S.V) (fun w hw => gL_map _ (fun u hu => aut_symm_mem h.hn.1 hu) g hw) (fun w hw => nl_symm_XLam h.hn hw) (fun w hw => (mem_XLam' h).mp hw) hv`. Introduce `hv`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `map_mem_sup_three (n : S.V →ₗ[E] S.V) (fun w hw => gL_map _ (fun u hu => aut_mem h.hn.1 hu) g hw) (fun w hw => nl_XLam h.hn hw) (fun w hw => (mem_XLam' h).mpr (by simpa using hw)) hv` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_NgX' (h : DC Λ F y y' n m) (g : ℕ) {v : S.V} :
     v ∈ NgX Λ g F y' ↔ n.symm v ∈ NgX Λ g F y := by
@@ -206,13 +200,13 @@ theorem mem_NgX' (h : DC Λ F y y' n m) (g : ℕ) {v : S.V} :
     simpa using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, u', hu', e⟩`. Use `⟨n u + al • (n F.zt - F.zt), ?_, n u' - al' • n (m y.zt - y.zt), ?_, ?_⟩` and prove the remaining obligations. Conclude with `add_mem (nl_X_mem h.hn hu) (Submodule.smul_mem _ _ (mem_XLam.mp (nzF_sub h)).2)`. Use `sub_mem ((mem_X' h).mpr (by simpa using hu')) (Submodule.smul_mem _ _ ((mem_X' h).mpr ?_))` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (mem_XLam.mp (mz_sub h)).2`. Establish `e2 : a - b = n (n.symm a - n.symm b)` using `by simp`. Rewrite using `[e2, e, h.hzt]`. Simplify using `only [map_add, map_sub, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨U, hU, U', hU', e⟩`. Use `⟨n.symm U + al • (n.symm F.zt - F.zt), ?_, n.symm U' + al' • (m y.zt - y.zt), ?_, ?_⟩` and prove the remaining obligations. Conclude with `add_mem (nl_symm_X h.hn hU) (Submodule.smul_mem _ _ (mem_XLam.mp (nzF_symm_sub h)).2)`. Conclude with `add_mem ((mem_X' h).mp hU') (Submodule.smul_mem _ _ (mem_XLam.mp (mz_sub h)).2)`. Establish `e2 : n.symm a - n.symm b = n.symm (a - b)` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e2, e, h.hzt]`. Simplify using `only [map_add, map_sub, map_smul, LinearEquiv.symm_apply_apply, smul_sub]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem sg_move (h : DC Λ F y y' n m) (a b : S.V) (al al' : E) :
     SgRel F y (n.symm a) (n.symm b) al al' ↔ SgRel F y' a b al al' := by
@@ -238,7 +232,7 @@ theorem sg_move (h : DC Λ F y y' n m) (a b : S.V) (al al' : E) :
 end Move
 
 /- English proof (translation)
-Simplify using `only [ThPairs, Submodule.mem_inf, Submodule.mem_prod, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.fst_apply, LinearMap.snd_apply, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem mem_ThP (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (F' F'' : LFlag S r T')
     (β : S.V ≃ₗ[E] S.V) (p : S.V × S.V) :
@@ -249,7 +243,7 @@ theorem mem_ThP (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (F' F
   tauto
 
 /- English proof (translation)
-The claim follows from `(orth_transport hβ (U := Xsp x) (U' := Xsp y) (fun w => by rw [← hX, Submodule.mem_map_equiv]) (β v)).mpr (by simpa using hv)`.
+A detailed English derivation is pending.
 -/
 theorem orth_beta {T' : E} {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) {x y : LFlag S r T'}
     (hX : (Xsp x).map (β : S.V →ₗ[E] S.V) = Xsp y) {v : S.V} (hv : v ∈ orth S (Xsp x)) :
@@ -258,37 +252,33 @@ theorem orth_beta {T' : E} {β : S.V ≃ₗ[E] S.V} (hβ : β ∈ Formalism.Herm
     (fun w => by rw [← hX, Submodule.mem_map_equiv]) (β v)).mpr (by simpa using hv)
 
 /- English proof (translation)
-Take `⟨β, ⟨hAut, hfl, hz, hI⟩, hs0, hsc⟩` from `hs`. Set `β' : S.V ≃ₗ[E] S.V` to `(β.trans m).trans n`. Establish `hb' : ∀ v, β' v = n (m (β v))` using `fun v => rfl`. Establish `hXβ : (Xsp x).map (β : S.V →ₗ[E] S.V) = Xsp y`. Rewrite using `[← Xa_ge x le_rfl, ← Xa_ge y le_rfl]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfl r`. Establish `hβo : ∀ v ∈ orth S (Xsp x), β v ∈ orth S (Xsp y)` using `fun v hv => orth_beta hAut.1 hXβ hv`. Establish `oF : ∀ b ∈ Hp Λ F y', b ∈ orth S (Xsp F)` using `fun b hb => orth_anti' (PI.UnitaryGroupMassFormula.BetaLUniq.Xsp_le_UUE S Λ hΛ F y') hb`. Establish `oF' : ∀ b ∈ Hp Λ F y, b ∈ orth S (Xsp F)` using `fun b hb => orth_anti' (PI.UnitaryGroupMassFormula.BetaLUniq.Xsp_le_UUE S Λ hΛ F y) hb`. Establish `oX : ∀ a ∈ Hp Λ F x, a ∈ orth S (Xsp x)` using `fun a ha => orth_anti' (PI.UnitaryGroupMassFormula.BetaLUniq.Xsp_le_UUE' S Λ hΛ F x) ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTh : Th Λ F x y' β' = Th Λ F x y β`. Use extensionality with `v`. Simplify using `only [Th, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, b⟩, hp, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨ha, hb, hab, hbb⟩` from `(mem_ThP Λ F x y' β' _).mp hp`. Use `⟨(a, n.symm b), (mem_ThP Λ F x y β _).mpr ⟨ha, (mem_Hp' h b).mp hb, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `e : a - n.symm b = (a - b) - (n.symm b - b)` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem hab (nl_symm_sub h.hn (oF b hb))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : β a - n.symm b = n.symm (β' a - b) - (m (β a) - β a)`. Rewrite using `[hb']`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `sub_mem ((mem_X' h).mp hbb) (nl_orth h.hm (hβo a (oX a ha)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨⟨a, b⟩, hp, rfl⟩`. Take `⟨ha, hb, hab, hbb⟩` from `(mem_ThP Λ F x y β _).mp hp`. Use `⟨(a, n b), (mem_ThP Λ F x y' β' _).mpr ⟨ha, (mem_Hp' h _).mpr (by simpa using hb), ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `e : a - n b = (a - b) - (n b - b)` using `by abel`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem hab (nl_orth h.hn (oF' b hb))`. Rewrite using `[mem_X' h]`. Establish `e : n.symm (β' a - n b) = (m (β a) - β a) + (β a - b)`. Rewrite using `[hb']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `add_mem (nl_orth h.hm (hβo a (oX a ha))) hbb`. Use `⟨β', ⟨aut_trans (aut_trans hAut h.hm.1) h.hn.1, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Establish `hc : (β' : S.V →ₗ[E] S.V) = ((m.trans n : S.V ≃ₗ[E] S.V) : S.V →ₗ[E] S.V).comp (β : S.V →ₗ[E] S.V)`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `v`. Both sides reduce to the same expression. Rewrite using `[hc, Submodule.map_comp, hfl j, Xflag_eq h j]`. Use `show n (m (β x.fl.z)) = y'.fl.z`. Rewrite using `[hz, z_eq h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x' hx' l hl`. Rewrite using `[hI x' hx' l hl, mem_NgX' h g]`. Rewrite `hx'`, `hl` using `[mem_Lrep]`. Establish `d1 : n.symm l - l ∈ NgX Λ g F y` using `Submodule.mem_sup_left (Submodule.mem_sup_right (nl_symm_sub_XLam h.hn hl.1 hl.2))`. Establish `d2 : m (β x') - β x' ∈ NgX Λ g F y` using `Submodule.mem_sup_right (nl_sub_XLam h.hm (aut_mem hAut hx'.1) (hβo x' hx'.2))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : n.symm (l - β' x') = (l - β x') + ((n.symm l - l) - (m (β x') - β x'))`. Rewrite using `[hb']`. Simplify using `only [map_sub, LinearEquiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Submodule.add_mem_iff_left _ (sub_mem d1 d2)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show k - finrank E (Th Λ F x y' β') = 1`. Rewrite using `[hTh]`. Conclude with `hs0`. Introduce `y1 hy1 Y2 hY2 y1' hy1' Y2'' hY2'' h1 h2 al al'`. Establish `hy2` using `(mem_YL h Y2).mp hY2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy2''` using `(mem_YL' h Y2'').mp hY2''`. Establish `oY2 : Y2 ∈ orth S (Xsp F)` using `orth_anti' (X_le_Xplus F) (Submodule.mem_inf.mp hY2).2`. Establish `oy1' : y1' ∈ orth S (Xsp x)` using `orth_anti' (X_le_Xplus x) (Submodule.mem_inf.mp hy1').2`. Establish `k1 : y1 - n.symm Y2 ∈ Xsp F`. Establish `e : y1 - n.symm Y2 = (y1 - Y2) - (n.symm Y2 - Y2)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `sub_mem h1 (nl_symm_sub h.hn oY2)`. Establish `k2 : n.symm Y2'' - β y1' ∈ Xsp y`. Establish `e : n.symm Y2'' - β y1' = n.symm (Y2'' - β' y1') + (m (β y1') - β y1')`. Rewrite using `[hb']`.
-
-Simplify using `only [map_sub, LinearEquiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem ((mem_X' h).mp h2) (nl_orth h.hm (hβo y1' oy1'))`. Rewrite using `[hsc y1 hy1 (n.symm Y2) hy2 y1' hy1' (n.symm Y2'') hy2'' k1 k2 al al']`.
-
-Conclude with `sg_move h Y2 Y2'' al al'`.
+A detailed English derivation is pending.
 -/
 theorem scalRel_move (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) (g k : ℕ) {T T' : E}
     (F : LFlag S r T) (x y y' : LFlag S r T') (n m : S.V ≃ₗ[E] S.V) (h : DC Λ F y y' n m)

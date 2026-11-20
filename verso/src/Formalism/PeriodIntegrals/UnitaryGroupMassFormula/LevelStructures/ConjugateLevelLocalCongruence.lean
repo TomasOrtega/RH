@@ -10,7 +10,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Repeatedly rewrite using `[Subgroup.index, ← Nat.card_pi]`. Use `Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientGroup.leftRel_pi]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_pi_dep {ι : Type*} [Fintype ι] {β : ι → Type*} [∀ i, Group (β i)]
     (C : ∀ i, Subgroup (β i)) : (Subgroup.pi Set.univ C).index = ∏ i, (C i).index := by
@@ -20,7 +20,7 @@ theorem index_pi_dep {ι : Type*} [Fintype ι] {β : ι → Type*} [∀ i, Group
   rw [QuotientGroup.leftRel_pi]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index_comap_of_surjective _ hφ, index_pi_dep]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem index_comap_pi {A : Type*} [Group A] {ι : Type*} [Fintype ι] {β : ι → Type*} [∀ i, Group (β i)]
     (φ : A →* ((i : ι) → β i)) (hφ : Function.Surjective φ) (C : ∀ i, Subgroup (β i)) :
@@ -28,7 +28,7 @@ theorem index_comap_pi {A : Type*} [Group A] {ι : Type*} [Fintype ι] {β : ι 
   rw [Subgroup.index_comap_of_surjective _ hφ, index_pi_dep]
 
 /- English proof (translation)
-The claim follows from `Subgroup.closure_eq (T.subgroupOf H)`.
+A detailed English derivation is pending.
 -/
 theorem closure_val_preimage {G : Type*} [Group G] (H T : Subgroup G) :
     Subgroup.closure (Subtype.val ⁻¹' (T : Set G) : Set H) = T.subgroupOf H :=
@@ -103,19 +103,17 @@ def compHom (ha : CompH) (hk : CompK) (w : D.what₂.Word) :
 end Der
 
 /- English proof (translation)
-Introduce `D X hb hK hT hL w`. Establish `e1 : idxH X hb w = (((concreteLevelAdelicSubset X hb hK hg w).subgroupOf (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X w))).subgroupOf ((Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))).subgroupOf (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X w)))).index`. Unfold `idxH`. Rewrite using `[show (Subtype.val ⁻¹' K2u X hb w : Set ↥(Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X w))) = Subtype.val ⁻¹' ((concreteLevelAdelicSubset X hb hK hg w : Subgroup _) : Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)) from rfl, closure_val_preimage, closure_val_preimage]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : ∀ p : TypX X, idxHp X hb w p = ((((concreteLevelAdelicSubset X hb hK hg w).map (haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1))).subgroupOf (Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w))).subgroupOf ((KvS X p.1).subgroupOf (Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B. …`. Introduce `p`. Unfold `idxHp`. Rewrite using `[show (Subtype.val ⁻¹' compSet X.B.I.cm.sig X.B.I.J (K2u X hb w) p.1 : Set ↥(Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w))) = Subtype.val ⁻¹' ((((concreteLevelAdelicSubset X hb hK hg w).map (haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1))) : Subgroup _) : Set (HA (Fv …`. Rewrite using `[Subgroup.coe_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl,`. Use `show (Subtype.val ⁻¹' Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 : Set ↥(Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w))) =`. Use the proof step `Subtype.val ⁻¹' ((KvS X p.1 : Subgroup _) : Set (HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J)) from rfl,`. Use the proof step `closure_val_preimage, closure_val_preimage]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, Finset.prod_congr rfl (fun p _ => e2 p), ← index_comap_pi (compHom X ha hk w)]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_comap, Subgroup.mem_pi, Set.mem_univ, true_implies]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx p`. Conclude with `⟨x.1.1, hx, rfl⟩`. Introduce `hx`. Conclude with `hp X hb hK hL w x.1.1 x.1.2 (Subgroup.mem_subgroupOf.1 x.2) (fun p => hx p)`. Introduce `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨h, hH, hKf, hh⟩` from `hs X w (fun p => (y p).1.1) (fun p => (y p).1.2) (fun p => (y p).2)`. Use `⟨⟨⟨h, hH⟩, Subgroup.mem_subgroupOf.2 hKf⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Conclude with `hh p`.
+A detailed English derivation is pending.
 -/
 theorem globProd_of (ha : CompH) (hk : CompK) (hg : ConjugateLevelIsSubgroup) (hs : SurjKH) (hp : ConjugateLevelLocalCongruence) : GlobProd := by
   intro D X hb hK hT hL w

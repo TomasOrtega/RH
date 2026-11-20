@@ -19,7 +19,7 @@ namespace GlobalTheory.Cartier.CommonEqnOpen
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `unitAt_one x`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitAt_pow {x : X} {f : X.functionField} (h : UnitAt x f) (n : ℕ) : UnitAt x (f ^ n) := by
   induction n with
@@ -27,9 +27,9 @@ theorem unitAt_pow {x : X} {f : X.functionField} (h : UnitAt x f) (n : ℕ) : Un
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `exists_fnOf_eq ht h`. Use `hU.isLocalization_basicOpen t` as an intermediate fact. Take `⟨n, a, e⟩` from `IsLocalization.Away.surj t b`. Use `⟨n, a, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (fnOf _ ht) e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e'` using `[map_mul, map_pow]`. Establish `k (c : Γ(X, U)) : fnOf _ ht (algebraMap Γ(X, U) Γ(X, X.basicOpen t) c) = fnOf U hg c` using `fnOf_resG (X.basicOpen_le t) ht c`. Rewrite `e'` using `[k, k]`. Rewrite using `[← e', mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_mul_eq {U : X.Opens} (hU : IsAffineOpen U) (hg : genericPoint X ∈ U) (t : Γ(X, U))
     (ht : genericPoint X ∈ X.basicOpen t) {f : X.functionField}
@@ -47,15 +47,15 @@ theorem exists_pow_mul_eq {U : X.Opens} (hU : IsAffineOpen U) (hg : genericPoint
   rw [← e', mul_comm]
 
 /- English proof (translation)
-Take `⟨W, hW, hgW⟩` from `hg.exists_nhds`. Take `⟨V, hV, g', hgV⟩` from `D.exists_isEqn_nhds y`. Take `⟨t, htW, ht⟩` from `hU.exists_basicOpen_le ⟨x, hW⟩ hxU`. Take `⟨t', htV, ht'⟩` from `hU.exists_basicOpen_le ⟨y, hV⟩ hyU`. Establish `hgen : genericPoint X ∈ X.basicOpen (t * t')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[X.basicOpen_mul]`. Conclude with `⟨gen_mem ht, gen_mem ht'⟩`. Take `⟨n, a, e⟩` from `exists_pow_mul_eq hU (gen_mem hxU) (t * t') hgen (f := (g' : X.functionField) / g) fun z hz => by`. Rewrite `hz` using `[X.basicOpen_mul]`. Conclude with `((hgW z (htW hz.1)).iff_unitAt.1 (hgV z (htV hz.2))).regAt`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : UnitAt y (fnOf U (gen_mem hxU) (t' ^ n))`. Rewrite using `[map_pow]`. Conclude with `unitAt_pow ((unitAt_fnOf_iff hyU _ _).2 ht') n`. Use `⟨t ^ n, (unitAt_fnOf_iff hxU (gen_mem hxU) _).1 (by` and prove the remaining obligations. Rewrite using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `unitAt_pow ((unitAt_fnOf_iff hxU _ _).2 ht) n), g', hgV y hV, ?_⟩`. Use `(regAt_fnOf hyU (gen_mem hxU) a).mul hu.inv.regAt` as an intermediate fact. Rewrite `this` using `[← e]`. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `h0` using `hu.ne_zero`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `h0` using `[map_pow]`. Rewrite using `[map_mul, map_pow, map_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem exists_regularAt {U : X.Opens} (hU : IsAffineOpen U) {D : CartierDiv X} {x : X}
     (hxU : x ∈ U) {g : X.functionFieldˣ} (hg : D.IsEqn x g) {y : X} (hyU : y ∈ U) :
@@ -84,9 +84,9 @@ theorem exists_regularAt {U : X.Opens} (hU : IsAffineOpen U) {D : CartierDiv X} 
   field_simp
 
 /- English proof (translation)
-Take `⟨s, hs, hreg⟩` from `exists_regularAt hU hxU hg hyU`. Take `⟨t, htU, ht⟩` from `hU.exists_basicOpen_le (V := ⟨(closure ({y} : Set X))ᶜ, isClosed_closure.isOpen_compl⟩) ⟨x, hxy⟩ hxU`. Establish `hz : ZeroAt y (fnOf U (gen_mem hxU) t)` using `zeroAt_iff.2 ⟨regAt_fnOf hyU _ _, fun h => htU ((unitAt_fnOf_iff hyU _ _).1 h) (subset_closure rfl)⟩`. Use `⟨t * s, by rw [X.basicOpen_mul]; exact ⟨ht, hs⟩, ?_⟩` and prove the remaining obligations. Take `⟨g', hg', hr⟩` from `hreg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g', hg', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, mul_assoc, ← mul_assoc (fnOf U (gen_mem hxU) s)]`. Conclude with `hz.mul hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vanishesAt {U : X.Opens} (hU : IsAffineOpen U) {D : CartierDiv X} {x : X}
     (hxU : x ∈ U) {g : X.functionFieldˣ} (hg : D.IsEqn x g) {y : X} (hyU : y ∈ U)
@@ -105,17 +105,17 @@ theorem exists_vanishesAt {U : X.Opens} (hU : IsAffineOpen U) {D : CartierDiv X}
   exact hz.mul hr
 
 /- English proof (translation)
-Introduce `X _ U hU D x hxU T hTU hT`. Take `⟨g, hg⟩` from `D.exists_isEqn x`. It suffices to establish `∃ s : Γ(X, U), x ∈ X.basicOpen s ∧ ∀ y ∈ T, y ≠ x → D.VanishesAt y (fnOf U (gen_mem hxU) s * (g : X.functionField)⁻¹) by`. Take `⟨s, hs, h⟩` from `this`. Use `⟨_, ⟨g, hg, ?_⟩, h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, inv_mul_cancel₀ g.ne_zero, mul_one]`. Conclude with `(unitAt_fnOf_iff hxU _ _).2 hs`. Establish `key (y : X) (hyU : y ∈ U) (s t : Γ(X, U)) (h : D.VanishesAt y (fnOf U (gen_mem hxU) s * (g : X.functionField)⁻¹)) : D.VanishesAt y (fnOf U (gen_mem hxU) (s * t) * (g : X.functionField)⁻¹)`. Take `⟨g', hg', hr⟩` from `h`. Use `⟨g', hg', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hr.mul (regAt_fnOf hyU (gen_mem hxU) t)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `T using Finset.induction_on with`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Proceed by induction. Treat this case separately.
 
-Consider the case `empty => exact ⟨1, by simpa using hxU, by simp⟩`. Consider the case `insert y T _ ih`. Take `⟨s, hs, h⟩` from `ih (fun z hz => hTU z (Finset.mem_insert_of_mem hz)) fun z hz => hT z (Finset.mem_insert_of_mem hz)`. Distinguish the cases in `hyx : y = x`. Use `⟨s, hs, fun z hz hzx => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `(hzx hyx).elim`. Conclude with `h z hz hzx`. Establish `hyU` using `hTU y (Finset.mem_insert_self _ _)`. Take `⟨t, ht, h'⟩` from `exists_vanishesAt hU hxU hg hyU (hT y (Finset.mem_insert_self _ _) hyx)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s * t, by rw [X.basicOpen_mul]; exact ⟨hs, ht⟩, fun z hz hzx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Rewrite using `[mul_comm s]`. Conclude with `key _ hyU _ _ h'`. Conclude with `key _ (hTU z (Finset.mem_insert_of_mem hz)) _ _ (h z hz hzx)`.
+A detailed English derivation is pending.
 -/
 theorem exists_generatesAt_vanishesAt : ∀ (X : Scheme.{0}) [IsIntegral X] (U : X.Opens), IsAffineOpen U →
     ∀ (D : CartierDiv X) (x : X), x ∈ U →

@@ -9,9 +9,9 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.CompanionTheory.PartialZeta
 
 /- English proof (translation)
-Use `(mem_standardOpenSubgroup F).2 fun v ↦ ?_` and prove the remaining obligations. Establish `h1 : ((infiniteEmbedding w a : IdeleGroup F) : AdeleRing (𝓞 F) F).2 v = 1`. Rewrite using `[coe_infiniteEmbedding]`. Both sides reduce to the same expression. Establish `h2 : (((infiniteEmbedding w a)⁻¹ : IdeleGroup F) : AdeleRing (𝓞 F) F).2 v = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← map_inv, coe_infiniteEmbedding]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`. Conclude with `⟨one_mem _, one_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem infiniteEmbedding_mem_standardOpenSubgroup {F : Type*} [Field F] [NumberField F]
     (w : InfinitePlace F) (a : (w.Completion)ˣ) :
@@ -27,7 +27,7 @@ theorem infiniteEmbedding_mem_standardOpenSubgroup {F : Type*} [Field F] [Number
   exact ⟨one_mem _, one_mem _⟩
 
 /- English proof (translation)
-Use `(χ.infiniteParams_unique w (p := (0, 0)) (fun _ ↦ ⟨le_rfl, by norm_num⟩) fun a ↦ ?_).symm` and prove the remaining obligations. Establish `h : χ.toIdele (infiniteEmbedding w a) = 1` using `hχ (infiniteEmbedding_mem_standardOpenSubgroup w a)`. Simplify using `[HeckeCharacter.infiniteComponent_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem infiniteParams_eq_zero {F : Type*} [Field F] [NumberField F] (χ : HeckeCharacter F)
     (hχ : standardOpenSubgroup F ≤ χ.toIdele.ker) (w : InfinitePlace F) :
@@ -38,11 +38,11 @@ theorem infiniteParams_eq_zero {F : Type*} [Field F] [NumberField F] (χ : Hecke
   simp [HeckeCharacter.infiniteComponent_apply, h]
 
 /- English proof (translation)
-Introduce `F _ _ _ χ hχ s`. Establish `hw : ∀ w : InfinitePlace F, χ.infiniteGamma w s = Complex.Gammaℝ s` using `fun w ↦ by`. Establish `hr : w.IsReal` using `IsTotallyReal.isReal w`. Establish `hp` using `infiniteParams_eq_zero χ hχ w`. Simplify using `[HeckeCharacter.infiniteGamma, hr, HeckeCharacter.infiniteTau, HeckeCharacter.infiniteWeight, hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcard : Fintype.card (InfinitePlace F) = Module.finrank ℚ F`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank F`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces F`. Establish `h3` using `IsTotallyReal.nrComplexPlaces_eq_zero F`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[HeckeCharacter.gammaFactor, Finset.prod_congr rfl fun w _ ↦ hw w, Finset.prod_const, Finset.card_univ, hcard]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gammaFactor_eq_of_unramified : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (χ : HeckeCharacter F), standardOpenSubgroup F ≤ χ.toIdele.ker →

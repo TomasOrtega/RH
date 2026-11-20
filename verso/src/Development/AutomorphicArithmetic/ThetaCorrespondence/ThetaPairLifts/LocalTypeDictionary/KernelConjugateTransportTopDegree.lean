@@ -11,17 +11,17 @@ noncomputable section
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.KerConjTransport
 /- English proof (translation)
-Introduce `hP hI hDict hDepth`. Take `⟨CF0, hb0⟩` from `BigC.and hDict hDepth`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, hb1⟩` from `hb0 CF hCF`. Use `⟨C0, fun ε C hC => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, hb2⟩` from `hb1 ε C hC`. Use `⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨hD, -⟩` from `hb2 D large₂ he hx Γ Pl0 T A Ks R F hS ch h1 h2 h3`. Use `clear hb0 hb1 hb2 hDict hDepth`. Introduce `Φ β d hocc c j f hf σ ρ hρ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, τe, ⟨hk, ⟨e, -, hτ1, -⟩, hτ3⟩, hdτ⟩` from `hocc`. Establish `hdp : DefPair D.R.m (Pair.top A.μ0 (j : ℕ) : Pair T)` using `by show (j : ℕ) + 1 ≤ D.R.m`. Use linear arithmetic over natural numbers and integers. Take `⟨Ls, Lt, κ, n, r, s, hLs, hLt, hκ, hs, -, hr, -, hjet⟩` from `hD A.μ0 (.top A.μ0 j) hdp _ (d.1 j) hk ((hτ3 d hdτ).1 j) ((hτ1 d hdτ).1 j).2.2 ((hτ1 d hdτ).1 j).1 (ch.S.ptTop c j) (ch.S.ptTop c (j + 1))`. Establish `hJ` using `(wtOK_of_defPair ch.G (.top A.μ0 j) hdp).2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0` using `ch.S.Z.e0_is _ hdp`. Establish `hev` using `even_rank_mul ch.G _ hdp`. Establish `hper : ∀ τ : D.what₂.Tau, period ch.S.Z.δ τ ≠ 0` using `fun τ => period_ne_zero (GlobalTheory.TwoTorsionPt.delta_ne ch.S.Z.crv) τ`. Establish `hkk` using `kkMap_top_eq ch.S.Z A.μ0 j (d.1 j) (ch.S.ptTop c j) (ch.S.ptTop c (j + 1)) _ hJ hper hjet`. Take `⟨ρ', hρσ, hlam⟩` from `GlobalTheory.T.exists_algebraicNumbers_extension_curveField_conjLattice D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 σ ρ hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `((hI D).t0Ex D.host.ccK ch.S.Z.δ ch.S.Z.crv).2 (GlobalTheory.KerConjMean.fld D ch.S.Z.δ ch.S.Z.t0) ρ (IntermediateField.subset_adjoin ℚ _ (Or.inr (by simp))) (IntermediateField.subset_adjoin ℚ _ (Or.inr (by simp)))`. Establish `hDj` using `GlobalTheory.T.thetaCombinationJets_algebraic_conj_eq_conjSeries D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 _ _ hev _ he0 Ls Lt hLs hLt κ hκ _ n hk r s hs ρ'`. Use `⟨ρ', ch.S.Z.e0 (.top A.μ0 j), Ls, Lt, κ, _, n, r, s, hev, he0, hLs, hLt, hκ, hk, hs, hr, hlam, ⟨t', ht'⟩, hJ, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.jetOperator_rationalForm_conj_eq_conjTable _ _ _ _ σ ρ' f hJ (fun m => (hDj m).1) hρσ (fun u => by rw [← hkk]; exact hf u) u]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `m`. Conclude with `(hDj m).2`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem kernel_conjugate_transport_top_degree : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → BigC fun {D} _ _ _ _ _ A _ _ _ _ _ _ ch _ b =>
   ∀ Φ β d, Occurs ch.S.toGridChoice A.μ0 Φ β d → ∀ (c : ch.S.Classes A.μ0 Φ β) (j : Fin D.R.m)
@@ -88,7 +88,7 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.SumSize GlobalTheory.KerConjMean
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.KerConjTransport.kernel_conjugate_transport_top_degree | exact _root_.GlobalTheory.KerConjTransport.kernel_conjugate_transport_top_degree | (intros; apply _root_.GlobalTheory.KerConjTransport.kernel_conjugate_transport_top_degree <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.kernel_conjugate_transport : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → BigC fun {D} _ _ _ _ _ A _ _ _ _ _ _ ch _ b =>
   ∀ Φ β d, Occurs ch.S.toGridChoice A.μ0 Φ β d → ∀ (c : ch.S.Classes A.μ0 Φ β) (j : Fin D.R.m)

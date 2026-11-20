@@ -9,17 +9,15 @@ open scoped TensorProduct
 namespace GlobalTheory.St.G.GlobIdx
 
 /- English proof (translation)
-Set `ψ : A →+ (∀ i : S, K i ⧸ (H i).addSubgroupOf (K i))` to `AddMonoidHom.pi fun i : S => (QuotientAddGroup.mk' ((H i).addSubgroupOf (K i))).comp (((φ i).comp A.subtype).codRestrict (K i) fun x => hA i x x.2)`. Establish `hψ : Function.Surjective ψ`. Introduce `q`. Use `choose r hr using fun i : S => QuotientAddGroup.mk_surjective (q i)`. Take `⟨x, hx, h⟩` from `hs (fun i => if hi : i ∈ S then (r ⟨i, hi⟩ : M i) else 0) (fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i ∈ S`. Simplify using `only [hi, dif_pos]`. Conclude with `(r ⟨i, hi⟩).2`. Simplify using `only [hi, dif_neg, not_false_eq_true]`. Conclude with `zero_mem _)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨⟨x, hx⟩, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hr i]`. Establish `h1` using `h i i.2`. Simplify using `only [i.2, dif_pos] at h1`. Use `show (QuotientAddGroup.mk (⟨φ i x, hA i x hx⟩ : K i) : K i ⧸ (H i).addSubgroupOf (K i)) = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_addSubgroupOf]`. Conclude with `h1`. Establish `hker : B.addSubgroupOf A ≤ ψ.ker`. Introduce `x hx`. Rewrite using `[AddMonoidHom.mem_ker]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `show (QuotientAddGroup.mk (⟨φ i x, hA i x x.2⟩ : K i) : K i ⧸ (H i).addSubgroupOf (K i)) = 0`. Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Conclude with `hB i x hx`. Establish `h1 : ψ.ker.index ∣ B.relIndex A` using `AddSubgroup.index_dvd_of_le hker`.
-
-Rewrite `h1` using `[AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hψ, AddSubgroup.card_top, Nat.card_pi]`. Rewrite using `[← Finset.prod_coe_sort S]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem prod_relIndex_dvd {G ι : Type} [AddCommGroup G] {M : ι → Type} [∀ i, AddCommGroup (M i)]
     (B A : AddSubgroup G) (H K : ∀ i, AddSubgroup (M i)) (φ : ∀ i, G →+ M i) (S : Finset ι)
@@ -59,11 +57,11 @@ theorem prod_relIndex_dvd {G ι : Type} [AddCommGroup G] {M : ι → Type} [∀ 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨T • y, h y hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, map_nsmul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_mem_loc (v : HeightOneSpectrum (𝓞 F)) (T : ℕ) (L D : Submodule (𝓞 E) (Fin n → E))
     (h : ∀ y ∈ D, T • y ∈ L) : ∀ z ∈ loc v D, T • z ∈ loc v L := by
@@ -79,17 +77,15 @@ theorem nsmul_mem_loc (v : HeightOneSpectrum (𝓞 F)) (T : ℕ) (L D : Submodul
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm n J hJ hdet T f L hT _ _ hL S _`. Take `⟨hlat, -, hTL, -, -⟩` from `hL`. Establish `hfin` using `(GlobalTheory.St.G.dualL_local_adelic F E cm n J hJ hdet L hlat).1.1`. Establish `hTD : ∀ y ∈ dualL cm.sig J L, T • y ∈ L`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => rw [← Nat.cast_smul_eq_nsmul E]`. Conclude with `hTL x hx`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `prod_relIndex_dvd (M := fun v : HeightOneSpectrum (𝓞 F) => Fin n → E ⊗[F] v.adicCompletion F) L.toAddSubgroup (dualL cm.sig J L).toAddSubgroup (fun v => (loc v L).toAddSubgroup) (fun v => (loc v (dualL cm.sig J L)).toAddSubgroup) (fun v => AddMonoidHom.compLeft (inclE (F := F) (E …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨x, hx, h⟩` from `GlobalTheory.OverCompare.exists_lattice_approx_all F E n (dualL cm.sig J L) hfin T hT.ne_zero y hy`. Use `⟨x, hx, fun v _ => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `h v`. Establish `h1` using `nsmul_mem_loc v T L _ hTD z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (fun i => inclE (F` using `F) (v.adicCompletion F) (x i)) - y v = -(T • z) := by`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Use `show (fun i => inclE (F := F) (v.adicCompletion F) (x i)) - y v ∈ loc v L`. Rewrite using `[e2]`.
-
-Conclude with `neg_mem h1`.
+A detailed English derivation is pending.
 -/
 theorem prod_loc_relIndex_dvd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), T.Prime → SplitsIn E T → Module.finrank ℚ E = 2 * f → TLat cm.sig J T f L → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))), (∀ v ∈ S, (T : 𝓞 F) ∈ v.asIdeal) → ∏ v ∈ S, (loc v L).toAddSubgroup.relIndex (loc v (dualL cm.sig J L)).toAddSubgroup ∣ L.toAddSubgroup.relIndex (dualL cm.sig J L).toAddSubgroup := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet T f L hT _ _ hL S _

@@ -10,15 +10,13 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `n M h`. Establish `hmon` using `Matrix.charpoly_monic M`. Establish `hdeg : M.charpoly.natDegree = n`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hX : M.charpoly = (X : ℂ[X]) ^ n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i`. Rewrite using `[Polynomial.coeff_X_pow]`. Break down `lt_trichotomy i n with hi | hi | hi` into its components or cases. Rewrite using `[if_neg (by omega)]`. Use `h (n - i) (by omega) (by omega)` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[show n - (n - i) = i by omega]`. Then use the resulting hypothesis. Rewrite using `[if_pos hi]`. Establish `h1` using `hmon.coeff_natDegree`. Rewrite `h1` using `[hdeg]`. Rewrite using `[hi]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[if_neg (by omega)]`. Conclude with `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `Matrix.aeval_self_charpoly M` as an intermediate fact.
-
-Rewrite `this` using `[hX, map_pow, Polynomial.aeval_X]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nilpotent_of_char_poly : NilOfCharpoly := by
   intro n M h

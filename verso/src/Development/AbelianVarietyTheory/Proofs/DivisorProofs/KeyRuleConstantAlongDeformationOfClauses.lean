@@ -15,16 +15,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.MBLow.KeyTop
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem levelPoint_cast {S : Scheme.{0}} {P : PolAV S} {M : ℕ} {u₁ u₂ : Γ(S, ⊤)ˣ} (h : u₁ = u₂)
     (l : Out.Level P M u₁) {g : ℕ} (hg : P.g = g) : levelPoint (h ▸ l) hg = levelPoint l hg := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨c, hc⟩` from `lev.span K (𝟙 _) z hz`. Use `⟨fun i => ((c i : ℕ) : ZMod M), ?_⟩` and prove the remaining obligations. Rewrite using `[levelPoint_rfl, Out.Level.toPt, ← hc]`. Use `congr 1`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `ZMod.val_cast_of_lt (c i).isLt`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exhaust {K : Type} [Field K] [IsAlgClosed K] {P : PolAV (Sp K)} {M : ℕ} {ze : Γ(Sp K, ⊤)ˣ}
     (lev : Out.Level P M ze) {g : ℕ} (hg : P.g = g) (z : baseOver (Sp K) ⟶ P.A) (hz : z ^ M = 1) :
@@ -41,29 +41,27 @@ end GlobalTheory.MBLow.KeyTop
 namespace GlobalTheory.MBLow.KeyTop
 
 /- English proof (translation)
-Introduce `κ hκ g n hn hodd`. Take `⟨j₁, hj₁⟩` from `GlobalTheory.T.exists_family_localDomain_of_twoFibres g n hn hodd`. Use `⟨max j₁ 1, fun j hj C _ _ _ _ _ e x hg ζ lev k hD => ?_⟩` and prove the remaining obligations. Establish `hj1 : j₁ ≤ j` using `le_trans (le_max_left _ _) hj`. Establish `hj2 : 1 ≤ j` using `le_trans (le_max_right _ _) hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmodd : Odd (n ^ j)` using `hodd.pow`. Establish `hm3 : 3 ≤ n ^ j`. Establish `h2` using `hn.two_le`. Establish `hne : n ≠ 2` using `fun h => by subst h; exact (Nat.not_even_iff_odd.mpr hodd) even_two`. Use `Nat.le_self_pow (show j ≠ 0 by omega) n` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨Θ, Γ, π, b, hπ, hb, hJ, ε, hε, hD'⟩` from `hD`. Use `haveI : NeZero ((n ^ j) ^ 2) := ⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩`. Set `Φ : (Fin (2 * g) → ZMod ((n ^ j) ^ 2)) ⊕ (Fin (2 * g) → ZMod ((n ^ j) ^ 2)) × Fin g → PowerSeries C` to `Sum.elim Θ (fun p => Γ p.1 p.2)`. Set `c : Fin 2 → C` to `![(ζ : C), k]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbΦ : ∀ a n, ‖PowerSeries.coeff n (Φ a)‖ ≤ b`. Introduce and unpack `(a | ⟨a, i⟩) n`. Conclude with `(hb a n).1`. Conclude with `(hb a n).2 i`. Establish `hsΦ : ∀ u : ℂ, u ≠ 0 → ‖u‖ < ε → ∀ a, Summable fun n => ‖e (PowerSeries.coeff n (Φ a)) * u ^ n‖`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce `u hu hu'`. Take `⟨hs, -⟩` from `hD' u hu hu'`. Introduce and unpack `(a | ⟨a, i⟩)`. Conclude with `(hs a).1`. Conclude with `(hs a).2 i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, o, _, _, jo, c₀, hu0, huε, hc₀, W, _, _, _, _, _, _, β, i₀, i₁, φ, hinj, h0, h1, hunit, hprime, hφ⟩` from `GlobalTheory.T.exists_deformation_base_ring_local_domain C e _ (Fin 2) Φ c π b ε hπ hε hbΦ hsΦ`. Take `⟨-, x₀, hg₀, lev₀, hJ₀, hκ₀⟩` from `hD' u hu0 huε`. Establish `hc0 : jo (c₀ 0) = ζ` using `hc₀ 0`. Establish `hc1 : jo (c₀ 1) = k` using `hc₀ 1`. Establish `hζ0 : c₀ 0 ≠ 0` using `fun h => ζ.ne_zero (by rw [← hc0, h, map_zero])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ζ₀ : oˣ` to `Units.mk0 (c₀ 0) hζ0`. Establish `hu₁ : Units.map (i₁.comp β).toMonoidHom ζ₀ = ζ` using `Units.ext (by show (i₁.comp β) (c₀ 0) = ζ`. Rewrite using `[h1, hc0])`. Establish `hu₀ : Units.map (i₀.comp β).toMonoidHom ζ₀ = Units.map e.toMonoidHom ζ` using `Units.ext (by show (i₀.comp β) (c₀ 0) = e ζ`. Rewrite using `[h0, RingHom.comp_apply, hc0])`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl₀` using `(congrArg unitOn hu₀).symm`. Establish `hl₁` using `(congrArg unitOn hu₁).symm`. Set `l₀` to `hl₀ ▸ lev₀`. Set `l₁` to `hl₁ ▸ lev`. Establish `eϑ₀ : (fun a => ∑' n, e (PowerSeries.coeff n (Θ a)) * u ^ n) = fun a => i₀ (φ (Sum.inl a))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun a => ((hφ (Sum.inl a)).1).symm`. Establish `eJ₀ : (fun a i => ∑' n, e (PowerSeries.coeff n (Γ a i)) * u ^ n) = fun a i => i₀ (φ (Sum.inr (a, i)))`. Use function extensionality and compare the values at `fun a => funext fun i => ((hφ (Sum.inr (a, i))).1).symm`. Establish `eϑ₁ : (fun a => ∑' n, PowerSeries.coeff n (Θ a) * π ^ n) = fun a => i₁ (φ (Sum.inl a))`. Use function extensionality and compare the values at `fun a => ((hφ (Sum.inl a)).2).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `eJ₁ : (fun a i => ∑' n, PowerSeries.coeff n (Γ a i) * π ^ n) = fun a i => i₁ (φ (Sum.inr (a, i)))`. Use function extensionality and compare the values at `fun a => funext fun i => ((hφ (Sum.inr (a, i))).2).symm`. Rewrite `hJ₀` using `[eϑ₀, eJ₀, ← levelPoint_cast hl₀ lev₀ hg₀]`. Rewrite `hJ` using `[eϑ₁, eJ₁, ← levelPoint_cast hl₁ lev hg]`. Establish `hθ₀` using `GlobalTheory.T.isThetaPt_of_thetaConstantsAndFirstJets ℂ x₀ g hg₀ (n ^ j) hmodd (by exact_mod_cast pow_ne_zero _ hn.ne_zero) _ _ _ _ hJ₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hθ₁` using `GlobalTheory.T.isThetaPt_of_thetaConstantsAndFirstJets C x g hg (n ^ j) hmodd (by exact_mod_cast pow_ne_zero _ hn.ne_zero) _ _ _ _ hJ`. Take `⟨P, pt, φ₀, φ₁, hPg, hpt, hpb₀, hpb₁, hL₀, hL₁, hc₀', hc₁'⟩` from `hj₁ j hj1 o ζ₀ W β (fun a => φ (Sum.inl a)) ℂ C i₀ i₁ hprime x₀.P x.P hg₀ hg l₀ l₁ hθ₀ hθ₁`. Establish `hk₀ : (κ ℂ x₀ : ℂ) = i₀ (β (c₀ 1))`. Rewrite using `[hκ₀, ← RingHom.comp_apply i₀ β, h0, RingHom.comp_apply, hc1]`. Use `GlobalTheory.T.thetaKeyValue_two_fibres_local_ring κ hκ W ℂ C i₀ i₁ hinj hunit P x₀ x g hg₀ hg (n ^ j) hPg hmodd hm3 _ pt (levelPoint l₀ hg₀) (levelPoint l₁ hg) φ₀ φ₁ hpt hpb₀ hpb₁ hL₀ hL₁ hc₀' hc₁' (fun z hz => exhaust l₁ hg z hz) _ _ (β (c₀ 1)) hJ₀ hJ hk₀` as an intermediate fact.
-
-Rewrite using `[this, ← RingHom.comp_apply i₁ β, h1, hc1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_of_rule4 : ∀ κ : Rule, Rule4 κ → Transfer κ := by
   intro κ hκ g n hn hodd

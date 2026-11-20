@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {p : HeightOneSpectrum (𝓞 F)} {L : LocAt F E sig p} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `entIn_mul_right hQ (entIn_mul_left hP hX)`.
+A detailed English derivation is pending.
 -/
 theorem entIn_sandwich {P Q X : Matrix (Fin n) (Fin n) L.Ep} {sP sQ c : L.Fp}
     (hP : ∀ i j, algebraMap L.Fp L.Ep sP * P i j ∈ L.O) (hQ : ∀ i j, algebraMap L.Fp L.Ep sQ * Q i j ∈ L.O)
@@ -23,55 +23,47 @@ theorem entIn_sandwich {P Q X : Matrix (Fin n) (Fin n) L.Ep} {sP sQ c : L.Fp}
   entIn_mul_right hQ (entIn_mul_left hP hX)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_sandwich (e : L.Ep) (P X Q : Matrix (Fin n) (Fin n) L.Ep) : P * (e • X) * Q = e • (P * X * Q) := by
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Take `⟨sN, hsN0, hsNO, hsN⟩` from `bounded_mat (L := L) N`. Take `⟨sNi, hsNi0, hsNiO, hsNi⟩` from `bounded_mat (L := L) Ni`. Take `⟨sA, hsA0, hsAO, hsA⟩` from `bounded_mat (L := L) (((h1⁻¹ : GL (Fin n) L.Ep) : Matrix (Fin n) (Fin n) L.Ep) * Δ)`. Take `⟨sB, hsB0, hsBO, hsB⟩` from `bounded_mat (L := L) Δi`. Take `⟨sC, hsC0, hsCO, hsC⟩` from `bounded_mat (L := L) Γi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨sD, hsD0, hsDO, hsD⟩` from `bounded_mat (L := L) (Γ * ((h2⁻¹ : GL (Fin n) L.Ep) : Matrix (Fin n) (Fin n) L.Ep))`. Use `set c1 := sNi * (sN * c) with hc1`. Establish `hc1O : c1 ∈ 𝒪[L.Fp]` using `Subring.mul_mem _ hsNiO (Subring.mul_mem _ hsNO hc)`. Establish `hc10 : c1 ≠ 0` using `mul_ne_zero hsNi0 (mul_ne_zero hsN0 hc0)`. Use `⟨sA * (sB * (sC * (sD * c1))), mul_ne_zero hsA0 (mul_ne_zero hsB0 (mul_ne_zero hsC0 (mul_ne_zero hsD0 hc10))), Subring.mul_mem _ hsAO (Subring.mul_mem _ hsBO (Subring.mul_mem _ hsCO (Subring.mul_mem _ hsDO hc1O))), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l ρ G hk1 hk2 hlN hlx hρy hG`. Use `set h1i := ((h1⁻¹ : GL (Fin n) L.Ep) : Matrix (Fin n) (Fin n) L.Ep) with hh1i`. Use `set h2i := ((h2⁻¹ : GL (Fin n) L.Ep) : Matrix (Fin n) (Fin n) L.Ep) with hh2i`. Use `set τ := ex • (Δi * (h1 : Matrix (Fin n) (Fin n) L.Ep) * Δ) + ey • (Γ * (h2 : Matrix (Fin n) (Fin n) L.Ep) * Γi).transpose with hτ`. Use `set D := G - τ with hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h11 : h1i * h1 = 1` using `by rw [hh1i, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h22 : (h2 : Matrix (Fin n) (Fin n) L.Ep) * h2i = 1` using `by rw [hh2i, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hk1v : ((h1⁻¹ * l : GL (Fin n) L.Ep) : Matrix (Fin n) (Fin n) L.Ep) = h1i * l` using `Units.val_mul _ _`. Establish `hk2v : ((ρ * h2⁻¹ : GL (Fin n) L.Ep) : Matrix (Fin n) (Fin n) L.Ep) = ρ * h2i` using `Units.val_mul _ _`. Establish `hτx : ex • τ = ex • (Δi * (h1 : Matrix (Fin n) (Fin n) L.Ep) * Δ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hτ, smul_add, smul_smul, smul_smul, hxx, hxy, zero_smul, add_zero]`. Establish `hτy : ey • τ.transpose = ey • (Γ * (h2 : Matrix (Fin n) (Fin n) L.Ep) * Γi)`. Rewrite using `[hτ, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_smul, Matrix.transpose_transpose, smul_add, smul_smul, smul_smul, hyy, mul_comm ey ex, hxy, zero_smul, zero_add]`. Establish `E1 : ex • (h1i * l - 1) = (h1i * Δ) * (ex • D) * Δi`. Establish `a1 : (h1i * Δ) * (ex • D) * Δi = h1i * (Δ * (ex • G) * Δi) - h1i * (Δ * (ex • τ) * Δi)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, smul_sub, Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `a2 : Δ * (ex • G) * Δi = ex • (l : Matrix (Fin n) (Fin n) L.Ep)` using `by rw [smul_sandwich, hlx]`. Establish `a3 : Δ * (ex • τ) * Δi = ex • (h1 : Matrix (Fin n) (Fin n) L.Ep)`. Rewrite using `[hτx, smul_sandwich]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[show Δ * (Δi * (h1 : Matrix (Fin n) (Fin n) L.Ep) * Δ) * Δi = (Δ * Δi) * h1 * (Δ * Δi) by`. Simplify using `only [Matrix.mul_assoc], hΔ, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[a1, a2, a3, Matrix.mul_smul, Matrix.mul_smul, h11, smul_sub]`. Establish `E2 : ey • (ρ * h2i - 1) = Γi * (ey • D).transpose * (Γ * h2i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1 : Γi * (ey • D).transpose * (Γ * h2i) = (Γi * (ey • G.transpose) * Γ) * h2i - (Γi * (ey • τ.transpose) * Γ) * h2i`. Rewrite using `[hD, smul_sub, Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_smul, Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `b2 : Γi * (ey • G.transpose) * Γ = ey • (ρ : Matrix (Fin n) (Fin n) L.Ep)` using `by rw [smul_sandwich, hρy]`. Establish `b3 : Γi * (ey • τ.transpose) * Γ = ey • (h2 : Matrix (Fin n) (Fin n) L.Ep)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτy, smul_sandwich]`. Use `congr 1`. Rewrite using `[show Γi * (Γ * (h2 : Matrix (Fin n) (Fin n) L.Ep) * Γi) * Γ = (Γi * Γ) * h2 * (Γi * Γ) by`. Simplify using `only [Matrix.mul_assoc], hΓ', Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[b1, b2, b3, Matrix.smul_mul, Matrix.smul_mul, h22, smul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexJ : ∀ {c'' : L.Fp}, ∀ x ∈ latS L c'', ex * x ∈ latS L c''` using `fun x hx => O_mul_latS hex hx`. Establish `heyJ : ∀ {c'' : L.Fp}, ∀ x ∈ latS L c'', ey * x ∈ latS L c''` using `fun x hx => O_mul_latS hey hx`. Establish `hD1 : EntIn (latS L (sA * (sB * c1))) (ex • D)` using `entIn_smul ex (fun x hx => hexJ x hx) (entIn_latS_of_eq (t := sC * sD) (by ring) (Subring.mul_mem _ hsCO hsDO) hG)`. Establish `X1 : EntIn (latS L c1) (ex • (h1i * (l : Matrix (Fin n) (Fin n) L.Ep) - 1))` using `by rw [E1]; exact entIn_sandwich hsA hsB hD1`. Establish `hD2 : EntIn (latS L (sC * (sD * c1))) (ey • D).transpose` using `entIn_transpose (entIn_smul ey (fun x hx => heyJ x hx) (entIn_latS_of_eq (t := sA * sB) (by ring) (Subring.mul_mem _ hsAO hsBO) hG))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `Y2 : EntIn (latS L c1) (ey • ((ρ : Matrix (Fin n) (Fin n) L.Ep) * h2i - 1))` using `by rw [E2]; exact entIn_sandwich hsC hsD hD2`. Use `set k1 : GL (Fin n) L.Ep := h1⁻¹ * l with hk1d`. Use `set k2 : GL (Fin n) L.Ep := ρ * h2⁻¹ with hk2d`. Use `set k1i := ((k1⁻¹ : GL (Fin n) L.Ep) : Matrix (Fin n) (Fin n) L.Ep) with hk1id`. Use `set k2i := ((k2⁻¹ : GL (Fin n) L.Ep) : Matrix (Fin n) (Fin n) L.Ep) with hk2id`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `R : (k1 : Matrix (Fin n) (Fin n) L.Ep) * N * (k2 : Matrix (Fin n) (Fin n) L.Ep) = N`. Rewrite using `[hk1v, hk2v]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = h1i * ((h1 : Matrix (Fin n) (Fin n) L.Ep) * N * (h2 : Matrix (Fin n) (Fin n) L.Ep)) * h2i := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hlN, hh]`. Use `_ = (h1i * h1) * N * ((h2 : Matrix (Fin n) (Fin n) L.Ep) * h2i) := by simp only [Matrix.mul_assoc]`. Use `_ = N := by rw [h11, h22, Matrix.one_mul, Matrix.mul_one]`. Establish `hk1i : k1i * (k1 : Matrix (Fin n) (Fin n) L.Ep) = 1`. Rewrite using `[hk1id, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk2i : (k2 : Matrix (Fin n) (Fin n) L.Ep) * k2i = 1`. Rewrite using `[hk2id, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `S2 : (k2 : Matrix (Fin n) (Fin n) L.Ep) = Ni * k1i * N`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show k1i * ((k1 : Matrix (Fin n) (Fin n) L.Ep) * N * k2) = (k1i * k1) * N * k2 by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mul_assoc], hk1i, Matrix.one_mul, ← Matrix.mul_assoc, hN', Matrix.one_mul]`. Use `_ = Ni * k1i * N := by rw [R, Matrix.mul_assoc]`. Establish `S1 : (k1 : Matrix (Fin n) (Fin n) L.Ep) = N * k2i * Ni`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show ((k1 : Matrix (Fin n) (Fin n) L.Ep) * N * k2) * k2i = k1 * N * (k2 * k2i) by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc], hk2i, Matrix.mul_one, Matrix.mul_assoc, hN, Matrix.mul_one]`. Use `_ = N * k2i * Ni := by rw [R]`. Establish `F1 : ex • ((k2 : Matrix (Fin n) (Fin n) L.Ep) - 1) = Ni * (ex • (k1i - 1)) * N`. Rewrite using `[smul_sandwich, S2, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hN']`. Establish `F2 : ey • ((k1 : Matrix (Fin n) (Fin n) L.Ep) - 1) = N * (ey • (k2i - 1)) * Ni`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_sandwich, S1, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hN]`. Establish `hJ : ∀ x ∈ latS L c1, ∀ y ∈ latS L c1, x * y ∈ latS L c1` using `fun x hx y hy => latS_mul_self hc1O hx hy`. Establish `I1 : EntIn (latS L c1) (ex • (k1i - 1))`. Use `proj_inv (fun i => i.val) (fun i => i.isLt) hJ ex hxx k1 (fun i j h => hk1 i j (Fin.le_def.2 h)) ?_` and prove the remaining obligations. Rewrite using `[hk1v]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X1`. Establish `I2 : EntIn (latS L c1) (ey • (k2i - 1))`. Use `proj_inv (fun i => n - 1 - i.val) (fun i => by have := i.isLt; omega) hJ ey hyy k2 (fun i j h => hk2 i j (Fin.le_def.2 (by have := i.isLt; have := j.isLt; omega))) ?_` and prove the remaining obligations. Rewrite using `[hk2v]`. Conclude with `Y2`.
-
-Establish `G1 : EntIn (latS L c) (ex • ((k2 : Matrix (Fin n) (Fin n) L.Ep) - 1))`. Rewrite using `[F1]`. Conclude with `entIn_sandwich hsNi hsN I1`. Establish `G2 : EntIn (latS L c) (ey • ((k1 : Matrix (Fin n) (Fin n) L.Ep) - 1))`. Rewrite using `[F2]`.
-
-Conclude with `entIn_sandwich hsN hsNi (entIn_latS_of_eq (t := 1) (by rw [hc1]; ring) (Subring.one_mem _) I2)`. Establish `hsplit : ∀ X : Matrix (Fin n) (Fin n) L.Ep, X = ex • X + ey • X` using `fun X => by`. Rewrite using `[← add_smul, hsum, one_smul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show EntIn (latS L c) ((k1 : Matrix (Fin n) (Fin n) L.Ep) - 1)`.
-
-Rewrite using `[hsplit ((k1 : Matrix (Fin n) (Fin n) L.Ep) - 1)]`. Use `entIn_add ?_ G2` and prove the remaining obligations. Rewrite using `[hk1v]`. Conclude with `entIn_latS_of_eq (t := sNi * sN) (by rw [hc1]; ring) (Subring.mul_mem _ hsNiO hsNO) X1`. Use `show EntIn (latS L c) ((k2 : Matrix (Fin n) (Fin n) L.Ep) - 1)`.
-
-Rewrite using `[hsplit ((k2 : Matrix (Fin n) (Fin n) L.Ep) - 1)]`. Use `entIn_add G1 ?_` and prove the remaining obligations. Rewrite using `[hk2v]`. Conclude with `entIn_latS_of_eq (t := sNi * sN) (by rw [hc1]; ring) (Subring.mul_mem _ hsNiO hsNO) Y2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem close (ex ey : L.Ep) (hex : ex ∈ L.O) (hey : ey ∈ L.O) (hxx : ex * ex = ex) (hyy : ey * ey = ey)
     (hsum : ex + ey = 1) (hxy : ex * ey = 0)

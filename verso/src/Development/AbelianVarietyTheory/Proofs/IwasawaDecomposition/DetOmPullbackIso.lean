@@ -16,7 +16,7 @@ namespace GlobalTheory.DetOmPull
 open GlobalTheory.FlagMod GlobalTheory.Reg
 
 /- English proof (translation)
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Apply the tactic sequence `ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (g.comp f) =
@@ -26,7 +26,7 @@ theorem dualMapR_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f :
   ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -34,7 +34,7 @@ theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f
   rfl
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp_ring, ← spMap_comp_ring]`. Use `congr 1`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Apply the tactic sequence `ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem alg_dualMapR {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ spMap (algebraMap A (DualNumber A)) =
@@ -46,13 +46,13 @@ theorem alg_dualMapR {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
   ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Use `set r : Γ(X.X, M.U) →+* Γ(Z.X, V) := (π.appLE M.U V hVM).hom with hr_def`. Establish `hr : spMap r ≫ M.hU.fromSpec = hV.fromSpec ≫ π` using `IsAffineOpen.SpecMap_appLE_fromSpec π M.hU hV hVM`. Establish `hp : ∃ t₀ : SAB H (Sp Γ(Z.X, V)), Nonempty (SABMap t₀ Z.t hV.fromSpec)`. Take `⟨PP', cub, sym, adj, prim, m₀, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull hV.fromSpec Z.t`. Conclude with `⟨_, ⟨m₀⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨t₀, ⟨m₀⟩⟩` from `hp`. Take `⟨n₀, hn₀⟩` from `GlobalTheory.LevelCover.sab_comp m₀ m (e := spMap r ≫ M.hU.fromSpec) hr.symm`. Take `⟨w, hw, -, -⟩` from `M.lie Γ(Z.X, V) r t₀ n₀`. Use `⟨fun j => (w j).left ≫ m₀.φ, fun R' _ f t' m' => ?_⟩` and prove the remaining obligations. Establish `he : (spMap f ≫ hV.fromSpec) ≫ π = spMap (f.comp r) ≫ M.hU.fromSpec`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spMap_comp_ring, Category.assoc, Category.assoc, hr]`. Take `⟨n, hn⟩` from `GlobalTheory.LevelCover.sab_comp m' m he`. Take `⟨v', hv', hb, ha⟩` from `M.lie R' (f.comp r) t' n`. Use `⟨v', fun j => ?_, hb, fun a j => ha a j⟩` and prove the remaining obligations. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← hn, hv', Category.assoc, Category.assoc, ← hn₀, hw, dualMapR_comp, spMap_comp_ring, Category.assoc]`. Establish `w1 : (v' j).left ≫ t'.G.hom = spMap (algebraMap R' (DualNumber R'))` using `Over.w (v' j)`. Establish `w2 : (w j).left ≫ t₀.G.hom = spMap (algebraMap Γ(Z.X, V) (DualNumber Γ(Z.X, V)))` using `Over.w (w j)`. Rewrite using `[Category.assoc, m'.cart.1.w, ← Category.assoc, w1, Category.assoc, Category.assoc, m₀.cart.1.w, ← Category.assoc (w j).left, w2]`. Simplify using `only [← Category.assoc, alg_dualMapR]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} (X Z : GMod Xo c) (π : Z.X ⟶ X.X) (m : SABMap Z.t X.t π) (M : MChart X)
@@ -88,11 +88,11 @@ theorem lie_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     simp only [← Category.assoc, alg_dualMapR]
 
 /- English proof (translation)
-Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Z.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`. Establish `: GlobalTheory.IsNormalScheme Z.X` using `GlobalTheory.IsNormalScheme.of_pred Z.normal`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Take `⟨M, hM⟩ : ∃ M : MChart X, π z ∈ M.U` from `Opens.mem_iSup.1 (hX.ge trivial)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hzW, hW⟩` from `GlobalTheory.ModelChart.exists_open_isDomain Z.X z`. Take `⟨_, ⟨V, hV, rfl⟩, hzV, hle⟩` from `Z.X.isBasis_affineOpens.exists_subset_of_mem_open (show z ∈ ((π ⁻¹ᵁ M.U ⊓ W : Z.X.Opens) : Set Z.X) from ⟨hM, hzW⟩) (π ⁻¹ᵁ M.U ⊓ W).isOpen`. Establish `hVM : V ≤ π ⁻¹ᵁ M.U` using `fun q hq => (hle hq).1`. Establish `hVW : V ≤ W` using `fun q hq => (hle hq).2`. Take `⟨θ, hθ, nz⟩` from `GlobalTheory.T.sections_restrict_along_base_change X.t Z.t π m M.U V hVM M.θ M.θ_mem M.θ_ne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v₀, hlie⟩` from `lie_pull X Z π m M V hV hVM`. Conclude with `Opens.mem_iSup.2 ⟨⟨V, hV, hW V hzV hVW, θ, hθ, nz, M.n, v₀, fun a => (M.ρ a).map (π.appLE M.U V hVM).hom, hlie⟩, hzV⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem charts_cover {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} (X Z : GMod Xo c) (π : Z.X ⟶ X.X) (m : SABMap Z.t X.t π)
@@ -113,9 +113,9 @@ theorem charts_cover {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
     fun a => (M.ρ a).map (π.appLE M.U V hVM).hom, hlie⟩, hzV⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Z π ⟨m⟩ hX`. Establish `hLX : (detLie X).IsLB` using `isLB_of_ev _ hX.cover fun i j k _ _ z => ev_detChg_mul i j k z`. Establish `hLZ : (detLie Z).IsLB` using `isLB_of_ev _ (charts_cover X Z π m hX.cover) fun i j k _ _ z => ev_detChg_mul i j k z`. Establish `hOZ : (detOm Z).IsLB` using `CechPic.isLB_dual hLZ`. Use `⟨hOZ, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁ : LBIso ((detLie X).pull π) (detLie Z)` using `PolFin.lbIso_detLie m.cart`. Establish `c₁` using `(CechPic.cls_eq_iff (pull_isLB hLX π) hLZ).2 e₁`. Use `(CechPic.cls_eq_iff hOZ (pull_isLB hX π)).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem detOm_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (π : Z.X ⟶ X.X), Nonempty (SABMap Z.t X.t π) → (GlobalTheory.FlagMod.detOm X).IsLB → (GlobalTheory.FlagMod.detOm Z).IsLB ∧ LBIso (GlobalTheory.FlagMod.detOm Z) ((GlobalTheory.FlagMod.detOm X).pull π) := by
   intro E _ _ _ H D l Xo c X Z π ⟨m⟩ hX

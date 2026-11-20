@@ -8,17 +8,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ F Y X Y' X' a f' f b hab hf H m hm n`. Establish `hf' : IsIntegralHom f'` using `MorphismProperty.of_isPullback (P := @IsIntegralHom) hab hf`. Establish `hn : IsPullback (m.app n) ((cechAug f').app n) ((cechAug f).app n) (yoneda.map b)` using `hm.map ((evaluation SimplexCategoryᵒᵖ PSh).obj n)`. Take `⟨Z, π, e, hπ, he⟩` from `GlobalTheory.T.exists_representable_cech_level_of_stable (@IsIntegralHom) Y X f hf n`. Take `⟨Z', π', e', hπ', he'⟩` from `GlobalTheory.T.exists_representable_cech_level_of_stable (@IsIntegralHom) Y' X' f' hf' n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hh : IsIntegralHom (π ≫ f)` using `inferInstance`. Establish `hh' : IsIntegralHom (π' ≫ f')` using `inferInstance`. Set `φ : Z' ⟶ Z` to `yoneda.preimage (e'.hom ≫ m.app n ≫ e.inv)`. Establish `hφ : yoneda.map φ = e'.hom ≫ m.app n ≫ e.inv` using `yoneda.map_preimage _`. Establish `hsqY : IsPullback (yoneda.map φ) (yoneda.map (π' ≫ f')) (yoneda.map (π ≫ f)) (yoneda.map b)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPullback.of_iso hn e'.symm e.symm (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[hφ]`. Simplify using `[← he']`. Conclude with `Category.comp_id _`. Simplify using `[← he]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Category.comp_id _`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Establish `hsq : IsPullback φ (π' ≫ f') (π ≫ f) b`. Use `IsPullback.of_map yoneda ?_ hsqY` and prove the remaining obligations. Apply `yoneda.map_injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `using hsqY.w`. Establish `hE` using `H Z Z' (π ≫ f) (π' ≫ f') φ hh hsq`. Take `⟨hiso, hcomp, -, -⟩` from `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F`. Establish `hdec : disc.map (m.app n) = disc.map e'.inv ≫ sch.map φ ≫ disc.map e.hom`. Express the relevant statement in the definitionally equal form `_ = disc.map e'.inv ≫ disc.map (yoneda.map φ) ≫ disc.map e.hom`.
-
-Simplify using `only [hφ, ← Functor.map_comp, Iso.inv_hom_id_assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[hdec]`. Conclude with `(hcomp _ _ _ _ _).1 (hiso _ _ (disc.map e'.inv) inferInstance) ((hcomp _ _ _ _ _).1 hE (hiso _ _ (disc.map e.hom) inferInstance))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cech_level_eqv_of_integral_pullback :
     ∀ (R : Type) [CommRing R] (F : Shv R) (Y X Y' X' : Scheme.{0}) (a : Y' ⟶ Y) (f' : Y' ⟶ X') (f : Y ⟶ X) (b : X' ⟶ X),

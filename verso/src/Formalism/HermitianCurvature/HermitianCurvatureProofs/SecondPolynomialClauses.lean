@@ -10,19 +10,17 @@ namespace Formalism.FourierDecayAlt.P.SecondPolynomialClauses
 open Formalism.FourierDecayAlt.PairingProductCorollary
 
 /- English proof (translation)
-Introduce `K t t' Ntt Nt Nt' S abelian₂ c ht ht' hne hle hNt hNt' hS hLam hc hG hA`. Establish `ho0 : 0 < ‖1 / t - 1 / t'‖` using `norm_pos_iff.mpr hne`. Establish `htpos : 0 < ‖t‖` using `norm_pos_iff.mpr ht`. Establish `hto : ‖1 / t - 1 / t'‖ * ‖t‖ ≤ 2`. Establish `h1 : ‖1 / t - 1 / t'‖ ≤ ‖1 / t‖ + ‖1 / t'‖` using `norm_sub_le _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖1 / t'‖ ≤ 1 / ‖t‖`. Rewrite using `[norm_div, norm_one]`. Conclude with `one_div_le_one_div_of_le htpos hle`. Establish `h3 : ‖1 / t‖ = 1 / ‖t‖` using `by rw [norm_div, norm_one]`. Establish `h4 : ‖1 / t - 1 / t'‖ ≤ 2 / ‖t‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h3] at h1; linarith [show 2 / ‖t‖ = 1 / ‖t‖ + 1 / ‖t‖ by ring]`. Conclude with `(le_div_iff₀ htpos).mp h4`. Establish `hL : ‖t‖ * abelian₂ ≤ 2 * abelian₂ / ‖1 / t - 1 / t'‖`. Rewrite using `[le_div_iff₀ ho0]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hto hLam]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hprod : ∏ a, c a ≤ (abelian₂ ^ 2) ^ K`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : 0 < ‖t‖ ^ (2 * K)` using `pow_pos htpos _`. Establish `e : ‖t‖ ^ (-(2 * K : ℤ)) = (‖t‖ ^ (2 * K))⁻¹`. Rewrite using `[zpow_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `norm_cast`. Rewrite `hA` using `[e]`. Establish `hA' : Nt ≤ ‖t‖ ^ (2 * K) * ((∏ a, c a) * S)` using `(inv_mul_le_iff₀ hT).mp hA`. Establish `hX0 : 0 ≤ (2 * abelian₂ / ‖1 / t - 1 / t'‖) ^ K` using `pow_nonneg (div_nonneg (by linarith) ho0.le) K`. Establish `hNtX : Nt ≤ ((2 * abelian₂ / ‖1 / t - 1 / t'‖) ^ K) ^ 2 * S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsq : ‖Ntt‖ ^ 2 ≤ ((2 * abelian₂ / ‖1 / t - 1 / t'‖) ^ K * ((S + Nt') / 2)) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (by nlinarith [sq_nonneg (S - Nt')]) (sq_nonneg _)`.
-
-Use `_ = _ := by ring`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hX0 (by linarith)) two_ne_zero).mp hsq`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p3bOfA_ok : LeadingBlockBoundFromRecursion := by
   intro K t t' Ntt Nt Nt' S abelian₂ c ht ht' hne hle hNt hNt' hS hLam hc hG hA
@@ -66,9 +64,9 @@ theorem p3bOfA_ok : LeadingBlockBoundFromRecursion := by
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hX0 (by linarith)) two_ne_zero).mp hsq
 
 /- English proof (translation)
-Introduce `K d grid q w e o W0 W RL RV he hq hR hD hS`. Unfold `LiftLeadingCoefficientIdentity at hD`. Unfold `NodeDualityBound at hS`. Apply the tactic sequence `have hne : ‖e‖ = 1 := by rcases he with rfl | rfl <;> simp`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `h` using `Real.abs_le_sqrt (hS j)`. Rewrite `h` using `[abs_norm]`. Conclude with `mul_le_mul_of_nonneg_left h (abs_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotent_degree_three_of_parts : UnnormalisedLiftBoundFromComponents := by
   intro K d grid q w e o W0 W RL RV he hq hR hD hS
@@ -86,9 +84,9 @@ theorem unipotent_degree_three_of_parts : UnnormalisedLiftBoundFromComponents :=
         exact mul_le_mul_of_nonneg_left h (abs_nonneg _)
 
 /- English proof (translation)
-Establish `h1` using `(hR (x + y)).1`. Establish `h2` using `(hR (x + Complex.I • y)).1`. Establish `hx` using `(hR x).1`. Establish `hy` using `(hR y).1`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, map_smulₛₗ, Complex.conj_I, smul_eq_mul] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.add_im, Complex.add_re, Complex.mul_im, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.neg_re, Complex.neg_im] at h1 h2`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.conj_re]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [Complex.conj_im]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -107,7 +105,7 @@ theorem herm_of_psd {V : Type} [AddCommGroup V] [Module ℂ V] (R : Formalism.Fo
   · simp only [Complex.conj_im]; nlinarith
 
 /- English proof (translation)
-Set `c : PreInnerProductSpace.Core ℂ V` to `{ inner := fun x y => R y x conj_inner_symm := fun x y => herm_of_psd R hR x y re_inner_nonneg := fun x => (hR x).2 add_left := fun x y z => by simp smul_left := fun x y r => by simp }`. Establish `h` using `@InnerProductSpace.Core.inner_mul_inner_self_le ℂ V _ _ _ c x y`. Establish `e : ‖R y x‖ = ‖R x y‖` using `by rw [← herm_of_psd R hR x y, Complex.norm_conj]`. Rewrite using `[sq]`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cs_of_psd {V : Type} [AddCommGroup V] [Module ℂ V] (R : Formalism.FourierDecayAlt.F7.Sesq V) (hR : PSD R)
     (x y : V) : ‖R x y‖ ^ 2 ≤ (R x x).re * (R y y).re := by
@@ -124,9 +122,9 @@ theorem cs_of_psd {V : Type} [AddCommGroup V] [Module ℂ V] (R : Formalism.Four
     _ ≤ _ := h
 
 /- English proof (translation)
-Introduce `V _ _ R x wt bw hR hbw hwt t t'`. Establish `hcs` using `cs_of_psd R hR (x t) (x t')`. Establish `hk : 0 ≤ wt t * wt t' / bw` using `div_nonneg (mul_nonneg (hwt t) (hwt t')) hbw.le`. Establish `e1 : ‖Npair R x wt bw t t'‖ = wt t * wt t' / bw * ‖R (x t) (x t')‖`. Rewrite using `[Npair, norm_mul, Complex.norm_real, Real.norm_of_nonneg hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (Npair R x wt bw t t).re * (Npair R x wt bw t' t').re = (wt t * wt t' / bw) ^ 2 * ((R (x t) (x t)).re * (R (x t') (x t')).re)`. Simplify using `only [Npair, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hk]`. Conclude with `mul_le_mul_of_nonneg_left (le_trans (le_abs_self _) (Real.abs_le_sqrt hcs)) hk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem second_polynomial_first_clause : PairingGramBound := by
   intro V _ _ R x wt bw hR hbw hwt t t'
@@ -141,29 +139,27 @@ theorem second_polynomial_first_clause : PairingGramBound := by
   exact mul_le_mul_of_nonneg_left (le_trans (le_abs_self _) (Real.abs_le_sqrt hcs)) hk
 
 /- English proof (translation)
-Introduce `ι _ _ K abelian₂ t t' Ntt Nt Nt' S1 S2 ht hLam hNt hNt' hS1 hS2 hG hA hB`. Take `⟨m, hm⟩ : ∃ m : ι → ℝ, m = fun v => minFac (2 * abelian₂ v) (oAbs t t' v) K` from `⟨_, rfl⟩`. Establish `hm0 : ∀ v, 0 ≤ m v`. Introduce `v`. Rewrite using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Unfold `minFac`. Use `split_ifs with h`. Conclude with `pow_nonneg (div_nonneg (by linarith [hLam v]) (norm_nonneg _)) _`. Conclude with `zero_le_one`.
+Simplify by unfolding definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ v (s : ℝ), 0 ≤ s → s * oAbs t t' v ≤ 2 → 2 * abelian₂ v < oAbs t t' v → (s * abelian₂ v) ^ (2 * K) ≤ m v ^ 2`. Introduce `v s hs hso hlt`. Establish `ho : 0 < oAbs t t' v` using `lt_of_le_of_lt (by linarith [hLam v]) hlt`. Establish `hmv : m v = (2 * abelian₂ v / oAbs t t' v) ^ K` using `by rw [hm]; dsimp only; rw [minFac, if_pos hlt]`. Rewrite using `[hmv, ← pow_mul, mul_comm K 2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Apply `pow_le_pow_left₀ (mul_nonneg hs (hLam v))` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ ho]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hso (hLam v)]`. Establish `h1 : ∀ v, oAbs t t' v ≤ 1 / ‖t v‖ + 1 / ‖t' v‖`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Unfold `oAbs`. Combine the equalities or inequalities in the displayed calculation. Establish `hto : ∀ v, ‖t v‖ ≤ ‖t' v‖ → ‖t v‖ * oAbs t t' v ≤ 2`. Introduce `v hle`. Establish `ha : 0 < ‖t v‖` using `norm_pos_iff.mpr (ht v).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hb : 0 < ‖t' v‖` using `norm_pos_iff.mpr (ht v).2`. Combine the equalities or inequalities in the displayed calculation. Establish `hto' : ∀ v, ¬ ‖t v‖ ≤ ‖t' v‖ → ‖t' v‖ * oAbs t t' v ≤ 2`. Introduce `v hle`. Establish `ha : 0 < ‖t v‖` using `norm_pos_iff.mpr (ht v).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hb : 0 < ‖t' v‖` using `norm_pos_iff.mpr (ht v).2`. Combine the equalities or inequalities in the displayed calculation. Establish `hPA : (∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ‖t v‖ ≤ ‖t' v‖), (‖t v‖ * abelian₂ v) ^ (2 * K)) ≤ ∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ‖t v‖ ≤ ‖t' v‖), m v ^ 2` using `Finset.prod_le_prod (fun v _ => pow_nonneg (mul_nonneg (norm_nonneg _) (hLam v)) _) (fun v hv => by`. Take `⟨hv1, hv2⟩` from `(Finset.mem_filter.mp hv).2`. Conclude with `key v _ (norm_nonneg _) (hto v hv2) hv1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPB : (∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ¬ ‖t v‖ ≤ ‖t' v‖), (‖t' v‖ * abelian₂ v) ^ (2 * K)) ≤ ∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ¬ ‖t v‖ ≤ ‖t' v‖), m v ^ 2` using `Finset.prod_le_prod (fun v _ => pow_nonneg (mul_nonneg (norm_nonneg _) (hLam v)) _) (fun v hv => by`. Take `⟨hv1, hv2⟩` from `(Finset.mem_filter.mp hv).2`. Conclude with `key v _ (norm_nonneg _) (hto' v hv2) hv1)`. Establish `hdisj : Disjoint (univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ‖t v‖ ≤ ‖t' v‖)) (univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ¬ ‖t v‖ ≤ ‖t' v‖))` using `Finset.disjoint_filter.mpr fun v _ hv1 hv2 => hv2.2 hv1.2`. Establish `hM : (∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ‖t v‖ ≤ ‖t' v‖), m v ^ 2) * (∏ v ∈ univ.filter (fun v => 2 * abelian₂ v < oAbs t t' v ∧ ¬ ‖t v‖ ≤ ‖t' v‖), m v ^ 2) = (∏ v, m v) ^ 2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.prod_union hdisj, ← Finset.prod_pow]`. Apply `Finset.prod_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `v _ hv`. Establish `hnot : ¬ 2 * abelian₂ v < oAbs t t' v`. Introduce `hlt`.
+Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `hv` to reduce the goal to its premises. Distinguish the cases in `hle : ‖t v‖ ≤ ‖t' v‖`. Conclude with `Finset.mem_union_left _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hlt, hle⟩)`. Conclude with `Finset.mem_union_right _ (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hlt, hle⟩)`. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only`. Rewrite using `[minFac, if_neg hnot, one_pow]`. Establish `hM0 : 0 ≤ ∏ v, m v` using `Finset.prod_nonneg fun v _ => hm0 v`. Establish `hgoal : ∏ v, minFac (2 * abelian₂ v) (oAbs t t' v) K = ∏ v, m v` using `by rw [hm]`. Rewrite using `[hgoal]`.
-
-Establish `hsq : ‖Ntt‖ ^ 2 ≤ ((∏ v, m v) * ((S1 + S2) / 2)) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hM0 (by linarith)) two_ne_zero).mp hsq`.
+A detailed English derivation is pending.
 -/
 theorem third_polynomial_prime_combination : LeadingBlockSeveralPlacesBound := by
   intro ι _ _ K abelian₂ t t' Ntt Nt Nt' S1 S2 ht hLam hNt hNt' hS1 hS2 hG hA hB
@@ -250,7 +246,7 @@ theorem third_polynomial_prime_combination : LeadingBlockSeveralPlacesBound := b
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hM0 (by linarith)) two_ne_zero).mp hsq
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.F7.lagCo`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i hi => inv_ne_zero (sub_ne_zero.mpr (hy.ne (Finset.ne_of_mem_erase hi).symm))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lagCo_ne_zero {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injective y) (j : Fin (d + 1)) :
     Formalism.FourierDecayAlt.F7.lagCo y j ≠ 0 := by
@@ -259,7 +255,7 @@ theorem lagCo_ne_zero {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injecti
     inv_ne_zero (sub_ne_zero.mpr (hy.ne (Finset.ne_of_mem_erase hi).symm))
 
 /- English proof (translation)
-Unfold `cg`. Conclude with `Finset.sum_pos' (fun i _ => abs_nonneg _) ⟨0, Finset.mem_univ _, abs_pos.mpr (lagCo_ne_zero (grid a) (hg a) 0)⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cg_pos {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hg : ∀ a, Function.Injective (grid a)) (a : Fin K) :
     0 < cg grid a := by
@@ -268,7 +264,7 @@ theorem cg_pos {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hg : ∀ a, F
     ⟨0, Finset.mem_univ _, abs_pos.mpr (lagCo_ne_zero (grid a) (hg a) 0)⟩
 
 /- English proof (translation)
-Establish `hc : ∀ a, ∑ i, |Formalism.FourierDecayAlt.F7.lagCo (grid a) i| ≠ 0` using `fun a => (cg_pos grid hg a).ne'`. Unfold `coProd Formalism.FourierDecayAlt.F7.thGrid cg`. Rewrite using `[Finset.abs_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h` using `hc a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -282,33 +278,31 @@ theorem co_eq {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hg : ∀ a, Fu
   field_simp
 
 /- English proof (translation)
-Introduce `K d grid q nn w o W0 RL RV wt wt' bw Qw BB hinj hpos hQ hnn hBB hwt hwt' hbw hR H`. Establish `hQw : K = 0 ∨ 0 ≤ Qw`. Break down `Nat.eq_zero_or_pos K with hK | hK` into its components or cases. Conclude with `Or.inl hK`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact.
 
-Establish `h1` using `hQ ⟨0, hK⟩ 0`. Establish `h2` using `(hpos ⟨0, hK⟩ 0).1`. Establish `h3` using `(hpos ⟨0, hK⟩ 0).2.1`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_neg_of_neg_of_pos hneg h3]`. Establish `hZ2 : (Real.sqrt Qw * BB) ^ K * (Real.sqrt Qw * BB) ^ K = Qw ^ K * (BB ^ 2) ^ K`. Break down `hQw with hK | hQ0` into its components or cases. Substitute `hK` using the available equality. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← mul_pow, ← mul_pow]`. Use `congr 1`. Take the linear combination `(BB ^ 2) * Real.mul_self_sqrt hQ0`. Establish `hN : ∀ j, nnProd nn 0 grid j * nnProd nn 1 grid j ≤ Qw ^ K * (BB ^ 2) ^ K * qProd q w grid j`. Introduce `j`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `nnProd qProd`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `e : Qw ^ K * (BB ^ 2) ^ K * ∏ a, F7.qW q w (grid a (j a)) = ∏ a, (Qw * BB ^ 2 * F7.qW q w (grid a (j a)))`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_le_prod (fun a _ => ?_) (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[add_zero]`. Conclude with `mul_nonneg (hpos a (j a)).2.2.1.le (hpos a (j a)).2.2.2.le`. Rewrite using `[add_zero]`. Establish `h1` using `(div_le_iff₀ (hpos a (j a)).1).mp (hnn a (j a))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h2` using `hQ a (j a)`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg BB) (sub_nonneg.mpr h2)]`. Establish `hj : ∀ j, wt * wt' / bw * Real.sqrt (RL j * RV j / qProd q w grid j) ≤ (Real.sqrt Qw * BB) ^ K * ((wt ^ 2 * RL j / (bw * nnProd nn 0 grid j) + wt' ^ 2 * RV j / (bw * nnProd nn 1 grid j)) / 2)`. Introduce `j`. Establish `hq0 : 0 < qProd q w grid j` using `Finset.prod_pos fun a _ => (hpos a (j a)).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN0 : 0 < nnProd nn 0 grid j` using `Finset.prod_pos fun a _ => by`. Rewrite using `[add_zero]`. Conclude with `(hpos a (j a)).2.2.1`. Establish `hN1 : 0 < nnProd nn 1 grid j` using `Finset.prod_pos fun a _ => (hpos a (j a)).2.2.2`. Establish `hX : 0 ≤ wt ^ 2 * RL j / (bw * nnProd nn 0 grid j)` using `div_nonneg (mul_nonneg (sq_nonneg _) (hR j).1) (mul_pos hbw hN0).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : 0 ≤ wt' ^ 2 * RV j / (bw * nnProd nn 1 grid j)` using `div_nonneg (mul_nonneg (sq_nonneg _) (hR j).2) (mul_pos hbw hN1).le`. Establish `hZ : 0 ≤ (Real.sqrt Qw * BB) ^ K` using `pow_nonneg (mul_nonneg (Real.sqrt_nonneg _) hBB) K`. Establish `hc : 0 ≤ wt ^ 2 * wt' ^ 2 * RL j * RV j / bw ^ 2` using `div_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)) (hR j).1) (hR j).2) (sq_nonneg _)`. Establish `hL0 : 0 ≤ wt * wt' / bw * Real.sqrt (RL j * RV j / qProd q w grid j)` using `mul_nonneg (div_nonneg (mul_nonneg hwt hwt') hbw.le) (Real.sqrt_nonneg _)`. Establish `e1 : (wt * wt' / bw * Real.sqrt (RL j * RV j / qProd q w grid j)) ^ 2 = (wt ^ 2 * wt' ^ 2 * RL j * RV j / bw ^ 2) * (1 / qProd q w grid j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, Real.sq_sqrt (div_nonneg (mul_nonneg (hR j).1 (hR j).2) hq0.le)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : 1 / qProd q w grid j ≤ Qw ^ K * (BB ^ 2) ^ K / (nnProd nn 0 grid j * nnProd nn 1 grid j)`. Rewrite using `[div_le_div_iff₀ hq0 (mul_pos hN0 hN1)]`. Combine the linear relations using `[hN j]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2 : (Real.sqrt Qw * BB) ^ K * (Real.sqrt Qw * BB) ^ K * (wt ^ 2 * RL j / (bw * nnProd nn 0 grid j) * (wt' ^ 2 * RV j / (bw * nnProd nn 1 grid j))) = (wt ^ 2 * wt' ^ 2 * RL j * RV j / bw ^ 2) * (Qw ^ K * (BB ^ 2) ^ K / (nnProd nn 0 grid j * nnProd nn 1 grid j))`. Rewrite using `[hZ2]`. Expand and normalize the polynomial expressions, which then agree. Apply `(pow_le_pow_iff_left₀ hL0 (mul_nonneg hZ (by linarith)) two_ne_zero).mp` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hk : 0 ≤ wt * wt' / bw` using `div_nonneg (mul_nonneg hwt hwt') hbw.le`. Establish `hcg0 : 0 ≤ ∏ a, cg grid a` using `Finset.prod_nonneg fun a _ => (cg_pos grid hinj a).le`. Establish `hth : ∀ j, 0 ≤ F7.thGrid grid j` using `fun j => Finset.prod_nonneg fun a _ => div_nonneg (abs_nonneg _) (Finset.sum_nonneg fun i _ => abs_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[co_eq grid hinj j]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (∏ a, cg grid a) * ∑ j, F7.thGrid grid j * ((Real.sqrt Qw * BB) ^ K * ((wt ^ 2 * RL j / (bw * nnProd nn 0 grid j) + wt' ^ 2 * RV j / (bw * nnProd nn 1 grid j)) / 2)) := mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_left (hj j) (hth j)) hcg0`. Use `_ = _ := by`.
-
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem p2cOfParts_ok : LowerBlockNormalisedBoundFromComponents := by
   intro K d grid q nn w o W0 RL RV wt wt' bw Qw BB hinj hpos hQ hnn hBB hwt hwt' hbw hR H
@@ -408,27 +402,27 @@ theorem p2cOfParts_ok : LowerBlockNormalisedBoundFromComponents := by
 end Formalism.FourierDecayAlt.P.SecondPolynomialClauses
 
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.p3bOfA_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.third_polynomial_second_of_first : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockBoundFromRecursion := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.p3bOfA_ok
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.unipotent_degree_three_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.unipotent_degree_three_of_clauses : Formalism.FourierDecayAlt.PairingProductCorollary.UnnormalisedLiftBoundFromComponents := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.unipotent_degree_three_of_parts
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.second_polynomial_first_clause`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.second_polynomial_first_identity : Formalism.FourierDecayAlt.PairingProductCorollary.PairingGramBound := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.second_polynomial_first_clause
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.third_polynomial_prime_combination`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.third_polynomial_prime_combine : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockSeveralPlacesBound := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.third_polynomial_prime_combination
 /- English proof (translation)
-Conclude with `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.p2cOfParts_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.second_polynomial_third_of_parts : Formalism.FourierDecayAlt.PairingProductCorollary.LowerBlockNormalisedBoundFromComponents := by
   exact Formalism.FourierDecayAlt.P.SecondPolynomialClauses.p2cOfParts_ok

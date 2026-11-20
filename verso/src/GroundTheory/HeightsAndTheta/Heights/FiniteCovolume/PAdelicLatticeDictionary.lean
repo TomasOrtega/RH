@@ -26,11 +26,9 @@ def coordSpan (c : F) : (ι × κ → 𝓞 F) →ₗ[ℤ] W :=
         simp only [Pi.add_apply, map_add, mul_add, add_mul, add_smul, Finset.sum_add_distrib] }
 
 /- English proof (translation)
-Use `choose z hz using fun a : ι × κ => (⟨⟨_, hx a.1 a.2⟩, rfl⟩ : ∃ z : 𝓞 F, algebraMap (𝓞 F) F z = c * b.repr (v.repr x a.1) a.2)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `show ∑ a : ι × κ, (algebraMap F E (c⁻¹ * algebraMap (𝓞 F) F (z a)) * b a.2) • v a.1 = x`. Simplify using `only [hz, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Rewrite using `[Fintype.sum_prod_type]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `conv_rhs => rw [← v.sum_repr x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
-
-Use `conv_rhs => rw [← b.sum_repr (v.repr x i)]`. Simplify using `only [Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_range_coordSpan {c : F} (hc : c ≠ 0) {x : W}
     (hx : ∀ i k, IsIntegral ℤ (c * b.repr (v.repr x i) k)) :
@@ -52,7 +50,7 @@ theorem mem_range_coordSpan {c : F} (hc : c ≠ 0) {x : W}
 end Span
 
 /- English proof (translation)
-The claim follows from `Module.IsTorsionFree.comap (S := K') (fun n : ℤ => (n : K')) (fun r hr => isRegular_iff_ne_zero.2 (Int.cast_ne_zero.2 (isRegular_iff_ne_zero.1 hr))) (fun r m => Int.cast_smul_eq_zsmul K' r m)`.
+A detailed English derivation is pending.
 -/
 theorem isTorsionFree_int_of_module (K' V' : Type*) [Field K'] [CharZero K'] [AddCommGroup V']
     [Module K' V'] : Module.IsTorsionFree ℤ V' :=
@@ -66,7 +64,7 @@ variable {κ : Type*} [Fintype κ] [DecidableEq κ] (b : Basis κ F E) (h : Herm
   (v : Basis ι E W)
 
 /- English proof (translation)
-Establish `: (d : E)⁻¹ = algebraMap F E (d : F)⁻¹` using `by rw [map_inv₀, map_intCast]`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, this, ← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_repr_smul_inv_int (d : ℤ) (x : W) (i : ι) (k : κ) :
     b.repr (v.repr ((d : E)⁻¹ • x) i) k = (d : F)⁻¹ * b.repr (v.repr x i) k := by
@@ -75,52 +73,46 @@ theorem repr_repr_smul_inv_int (d : ℤ) (x : W) (i : ι) (k : κ) :
     Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[map_nsmul, Finsupp.smul_apply, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_repr_nsmul (n : ℕ) (x : W) (i : ι) (k : κ) :
     b.repr (v.repr (n • x) i) k = n * b.repr (v.repr x i) k := by
   rw [map_nsmul, Finsupp.smul_apply, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]
 
 /- English proof (translation)
-Use `haveI : Module.IsTorsionFree ℤ W := isTorsionFree_int_of_module E W`. Establish `hdE : (d : E) ≠ 0` using `by exact_mod_cast hd0`. Establish `hdF : (d : F) ≠ 0` using `by exact_mod_cast hd0`. Establish `hsmulL : ∀ (c : E) (x y : W), h.toSesq (c • x) y = conj F E c * h.toSesq x y`. Introduce `c x y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hsmulR : ∀ (c : E) (x y : W), h.toSesq x (c • y) = c * h.toSesq x y`. Introduce `c x y`. Rewrite using `[map_smul, smul_eq_mul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconjd : conj F E (d : E) = d` using `map_intCast _ _`. Establish `hdI : IsIntegral ℤ (d : E)`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := E) (x := d))`. Establish `hint : ∀ x ∈ dictLattice b h v d g, ∀ y ∈ dictLattice b h v d g, IsIntegral ℤ (h.toSesq x y)`. Introduce `x hx y hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : h.toSesq x y = (d : E) * ((d : E) * pairE (gram h.toSesq v) (coordEquiv F v ((d : E)⁻¹ • x)) (coordEquiv F v ((d : E)⁻¹ • y)))`. Rewrite using `[pairE_coordEquiv, hsmulL, hsmulR, map_inv₀, hconjd]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hdI.mul (hd g _ _ hx hy)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m', hm'0, hm'⟩` from `exists_int_isIntegral_coords b (isUnit_det_gram h v) g`. Use `set c : F := (m' : F) * (d : F)⁻¹ with hcdef`. Establish `hc : c ≠ 0` using `mul_ne_zero (by exact_mod_cast hm'0) (inv_ne_zero hdF)`. Establish `hcoordL : ∀ x ∈ dictLattice b h v d g, ∀ i k, IsIntegral ℤ (c * b.repr (v.repr x i) k)`. Introduce `x hx i k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx' : coordEquiv F v ((d : E)⁻¹ • x) ∈ coreLattice b (gram h.toSesq v) g` using `hx`. Use `hm' _ (coreLattice_le_adelicLattice b g hx') (i, k)` as an intermediate fact. Rewrite `this` using `[vecCoords_coordEquiv, repr_repr_smul_inv_int]`. Rewrite using `[hcdef, mul_assoc]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLQ : (dictLattice b h v d g).toIntSubmodule ≤ LinearMap.range (coordSpan b v c)` using `fun x hx => mem_range_coordSpan b v hc (hcoordL x hx)`. Use `set M : ℤ := m * d * d with hMdef`. Establish `hM0 : M.natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (mul_ne_zero (mul_ne_zero hm0 hd0) hd0)`. Establish `hLP : dictLattice b h v d g ≤ dualLattice h (dictLattice b h v d g)` using `fun x hx y hy => (mem_integralClosure_iff ℤ E).2 (hint x hx y hy)`. Establish `hnL : ∀ y ∈ dualLattice h (dictLattice b h v d g), M.natAbs • y ∈ dictLattice b h v d g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `h1 : (m : F) • coordEquiv F v ((d : E) • y) ∈ coreLattice b (gram h.toSesq v) g`. Use `hm g _ fun X hX => ?_` and prove the remaining obligations. Use `set x0 := (coordEquiv F v).symm X`. Establish `hx0 : (d : E) • x0 ∈ dictLattice b h v d g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem_dictLattice, inv_smul_smul₀ hdE, AddEquiv.apply_symm_apply]`. Conclude with `hX`. Establish `h2` using `(mem_integralClosure_iff ℤ E).1 (hy _ hx0)`. Rewrite using `[show X = coordEquiv F v x0 from (AddEquiv.apply_symm_apply _ X).symm, pairE_coordEquiv, hsmulL, hconjd, ← hsmulR]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hMy : M • y ∈ dictLattice b h v d g`. Rewrite using `[mem_dictLattice]`. Establish `e : (d : E)⁻¹ • (M • y) = m • ((d : E) • y)`. Rewrite using `[← Int.cast_smul_eq_zsmul E M, ← Int.cast_smul_eq_zsmul E m, smul_smul, smul_smul, hMdef]`. Use `congr 1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_zsmul, ← Int.cast_smul_eq_zsmul F]`. Conclude with `h1`. Establish `: (M.natAbs : ℤ) • y ∈ dictLattice b h v d g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Break down `Int.natAbs_eq M with hM | hM` into its components or cases. Rewrite using `[← hM]` and apply the resulting hypothesis. Rewrite using `[show (M.natAbs : ℤ) = -M by omega, neg_smul]`. Conclude with `neg_mem hMy`. Rewrite `this` using `[natCast_zsmul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcn : c * (M.natAbs : F) ≠ 0` using `mul_ne_zero hc (by exact_mod_cast hM0)`. Establish `hPQ : (dualLattice h (dictLattice b h v d g)).toIntSubmodule ≤ LinearMap.range (coordSpan b v (c * M.natAbs))`. Introduce `y hy`. Use `mem_range_coordSpan b v hcn fun i k => ?_` and prove the remaining obligations. Use `hcoordL _ (hnL y hy) i k` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[repr_repr_nsmul]`. Rewrite using `[mul_assoc]`. Conclude with `this`. Take `⟨hne, hle⟩` from `relIndex_ne_zero_and_le_of_nsmul_mem hLP hPQ hM0 hnL`. Use `⟨⟨fun a x hx => ?_, ?_, ?_⟩, fun x hx y hy => (mem_integralClosure_iff ℤ E).2 (hint x hx y hy), hne, hle.trans (Nat.pow_le_pow_right (Nat.pos_of_ne_zero hM0) (LinearMap.finrank_range_le (coordSpan b v (c * M.natAbs))))⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mem_dictLattice, smul_comm, coordEquiv_smul]`. Conclude with `smul_mem_coreLattice b hx a`. Use `haveI : Module.Finite ℤ (dictLattice b h v d g).toIntSubmodule := Module.Finite.of_injective (Submodule.inclusion hLQ) (Submodule.inclusion_injective hLQ)`. Use `Module.Finite.iff_fg.1 (inferInstance : Module.Finite ℤ (dictLattice b h v d g).toIntSubmodule)` as an intermediate fact. Conclude with `(Submodule.fg_iff_addSubgroup_fg _).1 this`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[eq_top_iff, ← v.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨n, hn0, hn⟩` from `exists_int_smul_single_mem_coreLattice b g i`. Establish `hmem : (d * n) • v i ∈ dictLattice b h v d g`. Rewrite using `[mem_dictLattice]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (d : E)⁻¹ • ((d * n) • v i) = n • v i`. Rewrite using `[← Int.cast_smul_eq_zsmul E (d * n), ← Int.cast_smul_eq_zsmul E n, smul_smul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Establish `e2 : coordEquiv F v (v i) = Pi.single i (1 : F ⊗[F] E)`. Use function extensionality and compare the values at `j`. Rewrite using `[coordEquiv_apply, Basis.repr_self, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
-
-Simplify using `[Algebra.TensorProduct.one_def]`. Rewrite using `[if_neg hij, if_neg (Ne.symm hij), TensorProduct.tmul_zero]`. Rewrite using `[e1, map_zsmul, e2, ← Int.cast_smul_eq_zsmul F]`. Conclude with `hn`. Establish `hvi : v i = ((d * n : ℤ) : E)⁻¹ • ((d * n) • v i)`.
-
-Rewrite using `[← Int.cast_smul_eq_zsmul E (d * n), inv_smul_smul₀ (by exact_mod_cast mul_ne_zero hd0 hn0)]`. Rewrite using `[SetLike.mem_coe, hvi]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDIntegral_dictLattice {d : ℤ} (hd0 : d ≠ 0)
     (hd : ∀ (g : unitaryPoints F E (gram h.toSesq v) (FinAdele F)) (x y : ι → F ⊗[F] E),
@@ -249,7 +241,7 @@ end DIntegral
 variable [IsTotallyReal F] [IsTotallyComplex E]
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `exists_int_isIntegral_pairE (Module.finBasis F E) (gram h.toSesq v)`. Take `⟨m, hm0, hm⟩` from `exists_int_smul_mem_coreLattice_of_dual (Module.finBasis F E) (isUnit_det_gram h v)`. Conclude with `⟨coreStabilizer (Module.finBasis F E) (gram h.toSesq v), _, dictLattice (Module.finBasis F E) h v d, isCompact_coreStabilizer (Module.finBasis F E) _ (isUnit_det_gram h v), isOpen_coreStabilizer (Module.finBasis F E) _, fun g => isDIntegral_dictLattice (Module.finBasis F E) h v h …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem AdelicLatticeDictionary.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     AdelicLatticeDictionary.Statement h v := by

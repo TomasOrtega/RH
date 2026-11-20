@@ -7,19 +7,17 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ σ _ A _ _ φ hφ`. Use `haveI := Fintype.ofFinite σ`. Use `choose m hm using hφ`. Use `set M := Finset.univ.sup m with hMdef`. Establish `hM : ∀ i, φ (X i) ^ M = 0` using `fun i => pow_eq_zero_of_le (Finset.le_sup (Finset.mem_univ i)) (hm i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨Fintype.card σ * M + 1, fun f hf => ?_⟩` and prove the remaining obligations. Set `fi : σ → MvPowerSeries σ k` to `fun i α => if h : ∃ j, M ≤ α j then (if h.choose = i then coeff α f else 0) else 0`. Establish `hcoeff : ∀ i α, coeff α (fi i) = if h : ∃ j, M ≤ α j then (if h.choose = i then coeff α f else 0) else 0` using `fun i α => rfl`. Establish `hsum : f = ∑ i, fi i`. Use extensionality with `α`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_sum]`. Simplify using `only [hcoeff]`. Distinguish the cases in `h : ∃ j, M ≤ α j`. Simplify using `only [dif_pos h]`. Rewrite using `[Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Simplify using `only [dif_neg h, Finset.sum_const_zero]`. Apply `hf` to reduce the goal to its premises. Use `push_neg at h`. Rewrite using `[Finsupp.degree_eq_sum]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hdvd : ∀ i, (X i : MvPowerSeries σ k) ^ M ∣ fi i`. Introduce `i`. Rewrite using `[MvPowerSeries.X_pow_dvd_iff]`. Introduce `α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoeff]`. Use `split_ifs with h h'`. Conclude with `absurd (h'.symm ▸ h.choose_spec) (not_le.mpr hα)`. Both sides reduce to the same expression. Both sides reduce to the same expression.
-
-Rewrite using `[hsum, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `hdvd i`. Rewrite using `[hg, map_mul, map_pow, hM i, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvPowerSeries_algHom_kill_high_order :
     ∀ (k : Type) [CommRing k] (σ : Type) [Finite σ] (A : Type) [CommRing A] [Algebra k A],

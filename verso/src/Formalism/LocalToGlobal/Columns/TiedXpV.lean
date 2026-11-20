@@ -18,11 +18,11 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `RowPar.sgHC Formalism.L2.Forms.sgHC`. Distinguish the cases in `h1 : i.1 < R.k - 1`. Simplify using `only [dif_pos h1, RowPar.of]`. Establish `h2 : (i.1 - (R.k - 1)) / (R.t + 1) < R.m`. Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `R.m_add_three_le_k` as an intermediate fact. Establish `hi` using `i.2`. Unfold `Ranks.N at hi`. Rewrite using `[Nat.mul_comm]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [dif_neg h1, dif_pos h2, RowPar.bAt, RowPar.eAt, RowPar.of]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xp_sgHC_eq {R : Ranks} (P : HCParam R) (i : Fin (R.N R.m - 1)) :
     (RowPar.of P).sgHC i.1 = Formalism.L2.Forms.sgHC R P i.1 := by
@@ -38,14 +38,14 @@ theorem xp_sgHC_eq {R : Ranks} (P : HCParam R) (i : Fin (R.N R.m - 1)) :
     simp only [dif_neg h1, dif_pos h2, RowPar.bAt, RowPar.eAt, RowPar.of]
 
 /- English proof (translation)
-Rewrite using `[RowPar.sg_eq, xp_sgHC_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_sg_tie {R : Ranks} (P : HCParam R) (i : Fin (R.N R.m - 1)) :
     (((RowPar.of P).sg).w i : ℚ) = Formalism.L2.Forms.sgHC R P i - rhoVec (R.N R.m - 1) i := by
   rw [RowPar.sg_eq, xp_sgHC_eq]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `R.t_odd`. Establish `h : R.t + 1 = 2 * (b + 1)` using `by omega`. Rewrite using `[h, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2), Nat.mul_left_comm, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem xp_half (R : Ranks) : R.m * (R.t + 1) / 2 = R.m * ((R.t + 1) / 2) := by
   obtain ⟨b, hb⟩ := R.t_odd
@@ -53,7 +53,7 @@ theorem xp_half (R : Ranks) : R.m * (R.t + 1) / 2 = R.m * ((R.t + 1) / 2) := by
   rw [h, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2), Nat.mul_left_comm, Nat.mul_div_cancel_left _ (by norm_num : 0 < 2)]
 
 /- English proof (translation)
-Unfold `RowPar.sgTrue shiftW shW`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[xp_half]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,9 +72,9 @@ variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} 
   (Lf : DecoSet X.E n ST SG → Submodule (𝓞 X.E) (Sp X.E n)) (Λ : LevFam X.E X.K n SG)
 
 /- English proof (translation)
-Substitute `hJ hemb hT` using the available equality. Use `(GSD.Ev.ipCl_apply (roundEv σ₀ hσ lamT Lf Λ) hOk z z').trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hz c, hz' c, ← hnf]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ipFr_fnOf _ lamT (stdFrC _) o (frame_std _ _ (stdFrC_isON _)) (frame_std _ o ho) (P c) (Q c)`.
+A detailed English derivation is pending.
 -/
 theorem xp_ipCl_tie (hOk : (formGSD (roundPk X lam Lf) Λ).Ok) (lam' : X.Tau → DomWeight n)
     (hnf : ∀ p q, nfAll lam p q = nfAll lam' p q) {J : Matrix (Fin n) (Fin n) X.E} (hJ : J = 1)
@@ -157,9 +157,9 @@ def Norm (Q : PCrd W ΛM σ₀) : Prop :=
 end XpV
 
 /- English proof (translation)
-Introduce `o ho z z' P P' _ _ hz hz'`. Use `xp_ipCl_tie σ₀ hσ W.sgTrue _ ΛM.inv (ptOk W ΛM hX) W.sgW ?_ Q.hJ Q.hemb Q.hlt o ho z z' P P' hz hz'` and prove the remaining obligations. Introduce `p q`. Establish `h : W.sgTrue = fun τ => shW (W.sgW τ) ((R.m * (R.t + 1) / 2 : ℕ) : ℤ)` using `funext fun τ => xp_sgTrue_eq (W.row τ)`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nfAll_shW _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem XpV.ipP (Q : PCrd W ΛM σ₀) : XpV.IpP W ΛM hX σ₀ hσ Q := by
   intro o ho z z' P P' _ _ hz hz'
@@ -171,9 +171,9 @@ theorem XpV.ipP (Q : PCrd W ΛM σ₀) : XpV.IpP W ΛM hX σ₀ hσ Q := by
 
 include hX in
 /- English proof (translation)
-Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `z`. Establish `h` using `roundEv_exists_emb_iff σ₀ hσ W.sgTrue (fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv (ptOk W ΛM hX) z`. Establish `e : RatSpanG σ₀ W.sgTrue = RatSpanG σ₀ W.sgW`. Establish `h2 : W.sgTrue = fun τ => shW (W.sgW τ) ((R.m * (R.t + 1) / 2 : ℕ) : ℤ)` using `funext fun τ => xp_sgTrue_eq (W.row τ)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `RatSpanG_shW σ₀ _ _`. Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem XpV.rat (Q : PCrd W ΛM σ₀) : XpV.Rat W ΛM σ₀ hσ Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
@@ -188,7 +188,7 @@ theorem XpV.rat (Q : PCrd W ΛM σ₀) : XpV.Rat W ΛM σ₀ hσ Q := by
 
 include hX in
 /- English proof (translation)
-Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `z`. Conclude with `fi_iff_FiC hc σ₀ hσ W.sgTrue (fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv 1 (ptOk W ΛM hX) hS (L := tieLevP hc σ₀ ΛM.inv) ⟨rfl, fun _ _ => rfl⟩ z`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem XpV.ptC (Q : PCrd W ΛM σ₀) : XpV.PtC W ΛM hc σ₀ hσ hS Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
@@ -197,7 +197,7 @@ theorem XpV.ptC (Q : PCrd W ΛM σ₀) : XpV.PtC W ΛM hc σ₀ hσ hS Q := by
     (L := tieLevP hc σ₀ ΛM.inv) ⟨rfl, fun _ _ => rfl⟩ z
 
 /- English proof (translation)
-Use `show (W.row τ).sgTrue.natW = _`. Rewrite using `[xp_sgTrue_eq, natW_shW]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xp_natW_sgTrue (τ : X.Tau) : (W.sgTrue τ).natW = (W.sgW τ).natW := by
   show (W.row τ).sgTrue.natW = _
@@ -207,9 +207,9 @@ theorem xp_natW_sgTrue (τ : X.Tau) : (W.sgTrue τ).natW = (W.sgW τ).natW := by
 include hX in
 
 /- English proof (translation)
-Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `x`. Rewrite using `[(ptGSD W ΛM).mem_intDel_iff (ptOk W ΛM hX) (ptGSD W ΛM).outSec x]`. Establish `key` using `fun c : (ptGSD W ΛM).Cl => vl_mem_delAtr_iff Pl pw hval X.emb σ₀ hpw (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) X.E) W.sgTrue W.sgW (xp_natW_sgTrue W) ((ptGSD W ΛM).outSec.rep c).1.N ((ptGSD W ΛM).outSec.rep c).2.lat ((x : (ptGSD W ΛM).D → (ptGSD W ΛM).V) ((ptGSD W ΛM).o …`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h w c B hB`. Conclude with `(key c).1 (h c) w B hB`. Introduce `h c`. Conclude with `(key c).2 fun w B hB => h w c B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem XpV.lat (Pl : Rows.Places X.K) (pw : Pl.Pl → HeightOneSpectrum (𝓞 X.K)) (hpw : Function.Surjective pw)
     (hval : ∀ w (x : X.K), x ≠ 0 → Pl.val w x = ((vAdd (pw w) x : ℤ) : WithTop ℤ)) (Q : PCrd W ΛM σ₀) :
@@ -227,13 +227,13 @@ theorem XpV.lat (Pl : Rows.Places X.K) (pw : Pl.Pl → HeightOneSpectrum (𝓞 X
     exact (key c).2 fun w B hB => h w c B hB
 
 /- English proof (translation)
-Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `s x Pc hPc o ho`. Establish `hval : ∀ c, (x.1 ((ptGSD W ΛM).outSec.rep c) : VV X.K W.sgTrue).1 = Pc c`. Introduce `c`. Apply `evFr_injective (gramC (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) X.E) (embAt σ₀ X.emb)) (shiftOf W.sgTrue) σ₀ (stdFrC _)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[evFr_eq_fnOf, evFr_eq_fnOf]`. Conclude with `hPc c`. Establish `h` using `vn_norm_round W.sgTrue (fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv (ptOk W ΛM hX) (ptRat W ΛM hX) s o ho x`. Use `h.trans ?_` and prove the remaining obligations. Set `_` to `(ptOk W ΛM hX).fintypeCl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hv : (x.1 ((formGSD (roundPk X W.sgTrue fun d : DecoSet X.E (R.N R.m - 1) ∅ Pr.vGs => d.1.N) ΛM.inv).outSec.rep c) : VV X.K W.sgTrue).1 = Pc c` using `hval c`. Establish `h2 : ∀ p q, nfAll W.sgTrue p q = nfAll W.sgW p q`. Introduce `p q`. Establish `h3 : W.sgTrue = fun τ => shW (W.sgW τ) ((R.m * (R.t + 1) / 2 : ℕ) : ℤ)` using `funext fun τ => xp_sgTrue_eq (W.row τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `nfAll_shW _ _ _ _`. Rewrite using `[hv, h2, vn_inv_natCast_re]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem XpV.norm (Q : PCrd W ΛM σ₀) : XpV.Norm W ΛM hX σ₀ hσ Q := by
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
@@ -267,7 +267,7 @@ variable {d : ColDat} (a : ColArgs d)
 def RowSame (d : ColDat) : Prop := ∀ u τ, RowPar.of (d.hcW u τ) = RowPar.of (d.hcW d.u₀ τ)
 
 /- English proof (translation)
-The claim follows from `funext fun τ => (xp_sgTrue_eq (d.W.row τ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem sgT_eq (u : d.what₂.Word) : CF.sgT (D := d.colRec a) u = d.W.sgTrue :=
   funext fun τ => (xp_sgTrue_eq (d.W.row τ)).symm
@@ -292,7 +292,7 @@ def parabolicValuationAgreement (hR : RowSame d) :
   lat := XpV.lat (Pr := d.Pr) d.W d.levP d.hX d.σ₀ d.star_cx d.what₂.places d.plEq d.plEq.surjective hH.val_eq (pCrd a hS hH u)
 
 /- English proof (translation)
-The claim follows from `XpV.norm (Pr := d.Pr) d.W d.levP d.hX d.σ₀ d.star_cx (pCrd a hS hH u)`.
+A detailed English derivation is pending.
 -/
 theorem normPTied (hR : RowSame d) :
     CF.NormPTie (parabolicValuationAgreement a hS hH hP u hR) :=

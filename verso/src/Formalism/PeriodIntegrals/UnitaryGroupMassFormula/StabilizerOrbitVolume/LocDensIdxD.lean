@@ -18,27 +18,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   (b : Module.Basis (Fin 2) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (a : ℕ)
 
 /- English proof (translation)
-Introduce `z`. Set `T : Fv F v → Fv F v → Fv F v ⊗[F] E` to `fun p q => (Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm ![p, q]`. Establish `cT : ∀ p q k, cr b v (T p q) k = ![p, q] k` using `fun p q k => cr_symm b v _ k`. Establish `hu0 : algebraMap F (Fv F v) (b.repr 1 k0) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap F (Fv F v)).injective]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk0`. Set `t : Fin a → Fv F v` to `fun i => (z (i, i) : Fv F v) * (algebraMap F (Fv F v) (b.repr 1 k0))⁻¹`. Set `Y : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)` to `fun i j => if i < j then T (z (i, j)) (z (j, i)) else if j < i then sigR (Fv F v) σ (T (z (j, i)) (z (i, j))) else t i • 1`. Establish `hY : Y ∈ HermR (Fv F v) σ a`. Introduce `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show sigR (Fv F v) σ (Y j i) = Y i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `only [Y, if_pos h, if_neg (not_lt.2 h.le)]`. Conclude with `sigR_invol (Fv F v) σ hσ _`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Y, lt_irrefl, if_false]`. Rewrite using `[Algebra.smul_def, mul_one, sigR_algebraMap]`. Simplify using `only [Y, if_pos h, if_neg (not_lt.2 h.le)]`. Set `S : HermR (Fv F v) σ a` to `⟨Y, hY⟩`. Establish `hSY : ∀ i j, (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = Y i j` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hSO : S ∈ hermO b v σ a`. Use `(mem_hermO_iff b v σ a S).2 fun i j k => ?_` and prove the remaining obligations. Rewrite using `[crdS_eq, hSY]`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `only [Y, if_pos h, cT] fin_cases k`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(z (i, j)).2`. Conclude with `(z (j, i)).2`. Substitute `h` using the available equality. Simplify using `only [Y, lt_irrefl, if_false, cr_smul_one]`. Establish `e : t i * algebraMap F (Fv F v) (b.repr 1 k) = (z (i, i) : Fv F v) * algebraMap F (Fv F v) (b.repr 1 k / b.repr 1 k0)`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [t, map_div₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_mem (z (i, i)).2 (hu k)`. Simplify using `only [Y, if_neg (not_lt.2 h.le), if_pos h, cr_sig, Fin.sum_univ_two, cT]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `add_mem (mul_mem (hC _ _) ?_) (mul_mem (hC _ _) ?_)` and prove the remaining obligations. Conclude with `(z (j, i)).2`. Conclude with `(z (i, j)).2`. Use `⟨⟨S, hSO⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Take `⟨i, j⟩` from `q`. Apply `Subtype.ext` to reduce the goal to its premises. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_pos h, crdS_eq, hSY]`. Simplify using `only [Y, if_pos h, cT]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Substitute `h` using the available equality. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, lt_irrefl, if_false, crdS_eq, hSY]`. Simplify using `only [Y, lt_irrefl, if_false, cr_smul_one, t]`. Rewrite using `[inv_mul_cancel_right₀ hu0]`.
-
-Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_neg (not_lt.2 h.le), if_pos h, crdS_eq, hSY]`. Simplify using `only [Y, if_pos h, cT]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem psi_surj (k0 : Fin 2) (hσ : ∀ x, σ (σ x) = x)
     (hC : ∀ k l, algebraMap F (Fv F v) (Cmat b σ k l) ∈ v.adicCompletionIntegers F)

@@ -27,15 +27,15 @@ namespace GlobalTheory.LatTorusAct
 open scoped IntermediateField
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ w`. Use `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℚ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_add_C _ (by norm_num)`. Simplify using `[hw]`. Rewrite using `[IntermediateField.adjoin.finrank hint]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdvd : minpoly ℚ w ∣ Polynomial.X ^ 2 + Polynomial.C (d : ℚ)` using `minpoly.dvd _ _ (by simp [hw])`. Establish `hle : (minpoly ℚ w).natDegree ≤ 2`. Use `Polynomial.natDegree_le_of_dvd hdvd (Polynomial.monic_X_pow_add_C (d : ℚ) (by norm_num)).ne_zero` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_X_pow_add_C]`. Then use the resulting hypothesis. Establish `hpos` using `minpoly.natDegree_pos hint`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (minpoly ℚ w).natDegree ≠ 1`. Introduce `h1`. Take `⟨q, hq⟩` from `(minpoly.natDegree_eq_one_iff).1 h1`. Establish `h2 : ((q ^ 2 : ℚ) : E) = ((-(d : ℚ) : ℚ) : E)`. Rewrite using `[Rat.cast_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `: (algebraMap ℚ E q) = (q : E)` using `rfl`. Rewrite using `[← this, hq, hw]`. Establish `h3 : q ^ 2 = -(d : ℚ)` using `Rat.cast_injective h2`. Establish `h4 : (0 : ℚ) < d` using `by exact_mod_cast hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[sq_nonneg q]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_adjoin_sqrt_neg {E : Type} [Field E] [CharZero E] (d : ℕ) (hd : 0 < d) (w : E) (hw : w ^ 2 = -(d : E)) :
     Module.finrank ℚ ℚ⟮w⟯ = 2 := by
@@ -62,9 +62,9 @@ theorem finrank_adjoin_sqrt_neg {E : Type} [Field E] [CharZero E] (d : ℕ) (hd 
   omega
 
 /- English proof (translation)
-Establish `: f.toRatAlgHom = g.toRatAlgHom`. Use `IntermediateField.adjoin_algHom_ext ℚ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `h`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun this x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ringHom_ext_adjoin {E R : Type} [Field E] [CharZero E] [Field R] [CharZero R] (w : E)
     (f g : ℚ⟮w⟯ →+* R) (h : f (IntermediateField.AdjoinSimple.gen ℚ w) = g (IntermediateField.AdjoinSimple.gen ℚ w)) : f = g := by
@@ -78,13 +78,13 @@ theorem ringHom_ext_adjoin {E R : Type} [Field E] [CharZero E] [Field R] [CharZe
   exact DFunLike.congr_fun this x
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ d φ hF c y hc`. Take `⟨hdp, -, -, -, -, hcard, hcm, w, hw, hφw⟩` from `hF`. Establish `hd : 0 < d` using `hdp.pos`. Establish `hI : Nonempty I` using `Fintype.card_pos_iff.1 (by omega)`. Take `⟨i₀⟩` from `hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `δ : ℚ⟮w⟯` to `IntermediateField.AdjoinSimple.gen ℚ w`. Establish `hδ : δ ^ 2 = -(d : ℚ⟮w⟯)` using `Subtype.ext (by simpa [δ] using hw)`. Establish `hagree : ∀ i, (φ i).comp (algebraMap ℚ⟮w⟯ E) = (φ i₀).comp (algebraMap ℚ⟮w⟯ E)` using `fun i ↦ ringHom_ext_adjoin w _ _ (by show φ i w = φ i₀ w`. Rewrite using `[hφw, hφw])`. Take `⟨𝔠, X, U, -⟩` from `GlobalTheory.T.cm_abelian_variety_uniformization_exists ℚ⟮w⟯ d δ ((φ i₀).comp (algebraMap ℚ⟮w⟯ E)) (finrank_adjoin_sqrt_neg d hd w hw) hd hδ E I φ hcm hagree c y hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨𝔠, X, U, fun a ↦ ?_⟩` and prove the remaining obligations. Set `T : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `{ toFun := fun v j ↦ φ (U.e j) (a : E) * v j map_add' := fun v v' ↦ by ext j; simp [mul_add] map_smul' := fun s v ↦ by ext j; simp; ring }`. Establish `hT : ∀ v ∈ U.u.Λ, T v ∈ U.u.Λ`. Introduce `v hv`. Take `⟨x, hx, rfl⟩` from `(U.lat v).1 hv`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(U.lat _).2 ⟨(a : E) * x, mul_mem_lattice a.2 hx, ?_⟩` and prove the remaining obligations. Use extensionality with `j`. Simplify using `[T, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]`. Take `⟨α, hα, hαe⟩` from `GlobalTheory.RealMult.Obj.exists_isMonHom_of_map_lattice (FR E) 𝔠 X _ _ U.u T hT`. Conclude with `⟨α, hα, hαe⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unif_act_orderC : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (d : ℕ) (φ : I → E →+* ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ →

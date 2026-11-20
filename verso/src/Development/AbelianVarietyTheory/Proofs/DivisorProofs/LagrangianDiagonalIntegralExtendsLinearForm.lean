@@ -8,7 +8,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.InertLagChar.LinForm
 
 /- English proof (translation)
-Use `IsCompact.of_isClosed_subset (hg.image hl) isClosed_closure ?_` and prove the remaining obligations. Use `closure_minimal ?_ (hg.image hl).isClosed` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨f x, subset_tsupport _ hx, hlf x⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem hasCompactSupport_comp_of_leftInverse {X Y M : Type} [TopologicalSpace X] [TopologicalSpace Y] [T2Space X]
     [Zero M] {f : X → Y} {l : Y → X} (hl : Continuous l) (hlf : ∀ x, l (f x) = x) {g : Y → M}
@@ -19,7 +19,7 @@ theorem hasCompactSupport_comp_of_leftInverse {X Y M : Type} [TopologicalSpace X
   exact ⟨f x, subset_tsupport _ hx, hlf x⟩
 
 /- English proof (translation)
-Use `letI : MeasurableSpace X := borel X`. Use `haveI : BorelSpace X := ⟨rfl⟩`. Conclude with `hf.integrable_of_hasCompactSupport hcs`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem integrable_of_cont_cs {X : Type} [TopologicalSpace X] (μ : @Measure X (borel X))
     [IsFiniteMeasureOnCompacts μ] {f : X → ℂ} (hf : Continuous f) (hcs : HasCompactSupport f) :
@@ -32,25 +32,23 @@ end GlobalTheory.InertLagChar.LinForm
 
 open GlobalTheory.InertLagChar.LinForm in
 /- English proof (translation)
-Introduce `F _ _ v κ _ ψ hψ μ hμ N ν hν j hj hdiag`. Establish `hd : Continuous (fun x : κ → Fv F v => (Sum.elim x x : κ ⊕ κ → Fv F v))`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Apply the tactic sequence `cases i <;> exact continuous_apply _`. Establish `hdl : Continuous (fun z : κ ⊕ κ → Fv F v => fun i => z (Sum.inl i))` using `continuous_pi fun i => continuous_apply _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hin : ∀ w : (κ → Fv F v) × (κ → Fv F v), ∀ Φ ∈ SB (κ ⊕ κ → Fv F v), Integrable (fun x => schr ψ (Sum.elim w.1 0, Sum.elim w.2 0) Φ (Sum.elim x x)) μ`. Introduce `w Φ hΦ`. Establish `hs` using `GlobalTheory.SchrSBFin.schr_mem_SB v ψ hψ (Sum.elim w.1 0, Sum.elim w.2 0) Φ hΦ`. Conclude with `integrable_of_cont_cs μ (hs.1.continuous.comp hd) (hasCompactSupport_comp_of_leftInverse hdl (fun x => rfl) hs.2)`. Establish `hschr_add : ∀ w (Φ Φ' : (κ ⊕ κ → Fv F v) → ℂ), schr ψ w (Φ + Φ') = schr ψ w Φ + schr ψ w Φ'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w Φ Φ'`. Use function extensionality and compare the values at `x`. Simplify using `[schr, mul_add]`. Establish `hschr_smul : ∀ w (c : ℂ) (Φ : (κ ⊕ κ → Fv F v) → ℂ), schr ψ w (c • Φ) = c • schr ψ w Φ`. Introduce `w c Φ`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `[schr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiag_add : ∀ Φ ∈ SB (κ ⊕ κ → Fv F v), ∀ Φ' ∈ SB (κ ⊕ κ → Fv F v), diagW ψ μ (Φ + Φ') = diagW ψ μ Φ + diagW ψ μ Φ'`. Introduce `Φ hΦ Φ' hΦ'`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [diagW, Pi.add_apply, hschr_add]`. Conclude with `integral_add (hin w Φ hΦ) (hin w Φ' hΦ')`. Establish `hdiag_smul : ∀ (c : ℂ) (Φ : (κ ⊕ κ → Fv F v) → ℂ), diagW ψ μ (c • Φ) = c • diagW ψ μ Φ`. Introduce `c Φ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [diagW, Pi.smul_apply, hschr_smul, smul_eq_mul]`. Conclude with `integral_const_mul (μ := μ) c _`. Take `⟨l, hl⟩` from `LinearMap.exists_leftInverse_of_injective j (LinearMap.ker_eq_bot.mpr hj)`. Establish `hjc : Continuous j` using `IsModuleTopology.continuous_of_linearMap j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlc : Continuous l` using `IsModuleTopology.continuous_of_linearMap l`. Establish `hlj : ∀ y, l (j y) = y` using `fun y => by`. Use `LinearMap.congr_fun hl y` as an intermediate fact. Simplify using `using this`. Establish `hout : ∀ Φ ∈ SB (κ ⊕ κ → Fv F v), Integrable (fun y => diagW ψ μ Φ (j y)) ν`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Φ hΦ`. Establish `hs` using `hdiag Φ hΦ`. Establish `hcs : HasCompactSupport (diagW ψ μ Φ ∘ (j : (Fin N → Fv F v) → (κ → Fv F v) × (κ → Fv F v)))` using `hasCompactSupport_comp_of_leftInverse (f := (j : (Fin N → Fv F v) → (κ → Fv F v) × (κ → Fv F v))) (l := (l : (κ → Fv F v) × (κ → Fv F v) → (Fin N → Fv F v))) hlc hlj hs.2`. Establish `hc : Continuous (diagW ψ μ Φ ∘ (j : (Fin N → Fv F v) → (κ → Fv F v) × (κ → Fv F v)))` using `hs.1.continuous.comp hjc`. Conclude with `integrable_of_cont_cs ν hc hcs`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : SB (κ ⊕ κ → Fv F v) →ₗ[ℂ] ℂ` to `{ toFun := fun Φ => lagInt ψ μ ν j Φ.1 map_add' := by`. Introduce `Φ Φ'`. Simplify using `only [Submodule.coe_add, lagInt, hdiag_add _ Φ.2 _ Φ'.2, Pi.add_apply]`. Conclude with `integral_add (hout _ Φ.2) (hout _ Φ'.2)`. Use the proof step `map_smul' := by`.
-
-Introduce `c Φ`. Simplify using `only [Submodule.coe_smul, lagInt, hdiag_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Conclude with `integral_const_mul (μ := ν) c _ }`. Take `⟨g, hg⟩` from `LinearMap.exists_extend f`. Conclude with `⟨g, fun Φ hΦ => LinearMap.congr_fun hg ⟨Φ, hΦ⟩⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.InertLagChar.lagInt_linForm : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ] (ψ : AddChar (Fv F v) ℂ), Continuous ψ →
     ∀ (μ : @Measure (κ → Fv F v) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

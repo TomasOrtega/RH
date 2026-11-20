@@ -4,7 +4,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations
 
 /- English proof (translation)
-Establish `: ∀ U, Mono ((Functor.whiskerLeft Scheme.Γ ι).app U)` using `fun U => (ModuleCat.mono_iff_injective _).2 (hι _)`. Establish `: Mono (Functor.whiskerLeft Scheme.Γ ι)` using `NatTrans.mono_of_mono_app _`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kt_mono_sh (q : ℕ) (T G : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))) (ι : T ⟶ G)
     (hι : ∀ A, Function.Injective (ι.app A).hom) :
@@ -15,7 +15,7 @@ theorem kt_mono_sh (q : ℕ) (T G : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1}
   infer_instance
 
 /- English proof (translation)
-Unfold `Sec.res ofRings.sec ofRings`. Use `congrArg (fun f => (ModuleCat.Hom.hom f) x) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ G)).naturality g.op)` as an intermediate fact. Conclude with `this.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kt_res_sec (q : ℕ) (G : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))) (V U : Scheme.{0}) (g : V ⟶ U)
     (x : G.obj Γ(U, ⊤)) :
@@ -26,7 +26,7 @@ theorem kt_res_sec (q : ℕ) (G : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} (
   exact this.symm
 
 /- English proof (translation)
-Unfold `Sec.map ofRings.sec`. Use `congrArg (fun f => (ModuleCat.Hom.hom (NatTrans.app f (op U))) x) (toSheafify_naturality Scheme.etaleTopology (Functor.whiskerLeft Scheme.Γ ι))` as an intermediate fact. Conclude with `this.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kt_map_sec (q : ℕ) (T G : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} (ZMod q))) (ι : T ⟶ G) (U : Scheme.{0})
     (x : T.obj Γ(U, ⊤)) :
@@ -49,11 +49,11 @@ def MuTwistQuotientEmbedsInUnitTorsorPresheaf : Prop :=
           s A w = s A v + (ι.app A).hom ((τ.app A).hom (twGenR A ζ))
 
 /- English proof (translation)
-Introduce `q _ T τ hm hl`. Take `⟨G, ι, hι, s, hs, hr⟩` from `hpre q T τ hl`. Establish `hmι` using `kt_mono_sh q T G ι hι`. Use `⟨ofRings (ZMod q) G, (presheafToSheaf Scheme.etaleTopology _).map (Functor.whiskerLeft Scheme.Γ τ) ≫ (presheafToSheaf Scheme.etaleTopology _).map (Functor.whiskerLeft Scheme.Γ ι), @mono_comp _ _ _ _ _ _ hm _ hmι, fun U v => ofRings.sec G U (s _ v), ?_, ?_⟩` and prove the remaining obligations. Introduce `V U g v _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[kt_res_sec]`. Conclude with `congrArg _ (hs _ _ g.appTop v)`. Introduce `U ζ v w h beta_reduce`. Rewrite using `[hr _ ζ v w h]`. Rewrite using `[show ofRings.sec G U (s _ v + (ι.app _).hom ((τ.app _).hom (twGenR _ ζ))) = ofRings.sec G U (s _ v) + ofRings.sec G U ((ι.app _).hom ((τ.app _).hom (twGenR _ ζ))) from map_add _ _ _]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `((kt_map_sec q T G ι U _).symm.trans (congrArg _ (kt_map_sec q (twF q 1) T τ U (twGenR _ ζ)).symm))`.
+A detailed English derivation is pending.
 -/
 theorem etale_mu_twist_mono_extends_of_presheaf_torsor_embedding (hpre : MuTwistQuotientEmbedsInUnitTorsorPresheaf) : EtaleMuTwistMonoExtendsToTorsorSheaf := by
   intro q _ T τ hm hl
@@ -74,7 +74,7 @@ theorem etale_mu_twist_mono_extends_of_presheaf_torsor_embedding (hpre : MuTwist
     exact ((kt_map_sec q T G ι U _).symm.trans (congrArg _ (kt_map_sec q (twF q 1) T τ U (twGenR _ ζ)).symm))
 
 /- English proof (translation)
-The claim follows from `exists_etale_mono_muTwist_into_torsorSheaf h1 (etale_mu_twist_mono_extends_of_presheaf_torsor_embedding h2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_etale_mono_mu_twist_into_torsor_sheaf_of_presheaf (h1 : ExistsEtaleMonoMuTwistKillingRootRelations) (h2 : MuTwistQuotientEmbedsInUnitTorsorPresheaf) :
     EtaleKummerSectionsIntoTwistEmbeddingExist :=

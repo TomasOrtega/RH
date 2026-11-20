@@ -9,13 +9,13 @@ open scoped ContDiff Real Topology
 namespace GlobalTheory.BcUnique
 
 /- English proof (translation)
-Introduce `M _ A α hα j k t ht v`. Distinguish the cases in `hv : v ∈ (A.e j).target`. Establish `hs : (A.e j).symm v ∈ (A.e j).source` using `(A.e j).map_target hv`. Establish `hr : A.e j ((A.e j).symm v) = v` using `(A.e j).right_inv hv`. Establish `hm : fib t ((A.e j).symm v) ∈ ((famAtlas A).e (j, k)).source` using `⟨hs, ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : A.loc ((famAtlas A).pullback A (fib t) α) j (A.e j ((A.e j).symm v)) = _` using `A.loc_crd ((famAtlas A).pullback A (fib t) α) ⟨(j, (A.e j).symm v), hs⟩`. Establish `h2 : (famAtlas A).loc α (j, k) (appendV 1 1 (A.e j ((A.e j).symm v), sphere.e k t)) = _` using `(famAtlas A).loc_crd α ⟨((j, k), fib t ((A.e j).symm v)), hm⟩`. Rewrite `h1`, `h2` using `[hr]`. Establish `h3` using `pullback_eq_chart _ _ _ _ (famAtlas A) A (fib t) α (isHolo_fib A t) hα ⟨(j, (A.e j).symm v), hs⟩ (j, k) hm`. Establish `hev : ((famAtlas A).e (j, k) ∘ fib t ∘ (A.e j).symm) =ᶠ[𝓝 v] fun w => headIn w + appendV 1 1 (0, sphere.e k t)` using `by filter_upwards [(A.e j).open_target.mem_nhds hv] with w hw show appendV 1 1 (A.e j ((A.e j).symm w), sphere.e k t) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(A.e j).right_inv hw, headIn_apply, ← map_add]`. Simplify using the standard rewrite rules. Establish `hd : fderiv ℂ ((famAtlas A).e (j, k) ∘ fib t ∘ (A.e j).symm) (A.e j ((A.e j).symm v)) = headIn`. Rewrite using `[hr, hev.fderiv_eq]`. Conclude with `(headIn.hasFDerivAt.add_const _).fderiv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, h3]`. Conclude with `congrArg (fun L => pull L _) hd`. Establish `hn : appendV 1 1 (v, sphere.e k t) ∉ ((famAtlas A).e (j, k)).target` using `fun h => hv ((appendV_mem_famAtlas_target A j k _ _).1 h).1`. Simplify using `only [HolAtlas.loc, dif_neg hv, dif_neg hn, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_pullback_fib : ∀ (M : Type) [TopologicalSpace M] (A : HolAtlas M 1) (α : (famAtlas A).Fld), (famAtlas A).IsForm α → ∀ (j : A.ι) (k : sphere.ι) (t : OnePoint ℂ), t ∈ (sphere.e k).source → ∀ v : V 1, A.loc ((famAtlas A).pullback A (fib t) α) j v = pull headIn ((famAtlas A).loc α (j, k) (appendV 1 1 (v, sphere.e k t))) := by
   intro M _ A α hα j k t ht v

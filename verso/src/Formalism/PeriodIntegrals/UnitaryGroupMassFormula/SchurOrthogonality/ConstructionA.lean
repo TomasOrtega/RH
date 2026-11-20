@@ -9,7 +9,7 @@ namespace PI.WSF
 open Formalism.BasicNotions MvPolynomial MeasureTheory
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype d (fun i c => c • Formalism.GradedWeylDivisibility.rowW N N i) (fun i => zero_smul _ _), Finset.sum_apply, Fintype.sum_prod_type, Finset.sum_eq_single a]`. Simplify using `[Formalism.GradedWeylDivisibility.rowW, Formalism.GradedWeylDivisibility.rowDeg]`. Introduce `b _ hb`. Simplify using `[Formalism.GradedWeylDivisibility.rowW, Pi.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem evA_weight_rowW {N : ℕ} (d : Fin N × Fin N →₀ ℕ) (a : Fin N) :
     Finsupp.weight (Formalism.GradedWeylDivisibility.rowW N N) d a = Formalism.GradedWeylDivisibility.rowDeg d a := by
@@ -22,13 +22,13 @@ theorem evA_weight_rowW {N : ℕ} (d : Fin N × Fin N →₀ ℕ) (a : Fin N) :
   · simp
 
 /- English proof (translation)
-Rewrite `hf` using `[Formalism.GradedWeylDivisibility.standardMonomialSpanDomain ℂ N N ν]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, hshape, rfl⟩` from `hx`. Introduce `m hm`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `Formalism.GradedWeylDivisibility.bidetDominance ℂ N N K sz hsz I m hm`. Rewrite `h` using `[hshape]`. Conclude with `h`. Consider the case `zero`. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `at hm`. Consider the case `add x y _ _ hx hy`. Introduce `m hm`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hx m h`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hy m h`. Consider the case `smul c x _ hx`. Introduce `m hm`. Conclude with `hx m (support_smul hm)`.
+A detailed English derivation is pending.
 -/
 theorem evA_dom {N : ℕ} (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) ℂ)
     (hf : f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℂ N N ν) : ∀ m ∈ f.support,
@@ -56,11 +56,11 @@ theorem evA_dom {N : ℕ} (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N
     exact hx m (support_smul hm)
 
 /- English proof (translation)
-Establish `h1 : ∀ k : Fin N, (∑ a : Fin N, (μ a : ℤ)) - ∑ a : Fin N with a.val < k.val + 1, (μ a : ℤ) = ∑ a : Fin N, if k.val < a.val then (μ a : ℤ) else 0`. Introduce `k`. Rewrite using `[sub_eq_iff_eq_add, Finset.sum_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `hI : (Finset.univ.filter fun k : Fin N => k.val < a.val) = Finset.Iio a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_Iio, Fin.lt_iff_val_lt_val]`. Rewrite using `[hI, Fin.card_Iio]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evA_ht_eq {N : ℕ} (μ : Fin N → ℕ) :
     ∑ a : Fin N, (a.val : ℤ) * (μ a : ℤ) =
@@ -81,7 +81,7 @@ theorem evA_ht_eq {N : ℕ} (μ : Fin N → ℕ) :
   rw [hI, Fin.card_Iio]
 
 /- English proof (translation)
-Rewrite using `[evA_ht_eq ν, evA_ht_eq μ]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k _`. Establish `hs : (∑ a : Fin N, (μ a : ℤ)) = ∑ a : Fin N, (ν a : ℤ)` using `by exact_mod_cast h2`. Establish `hk : (∑ a : Fin N with a.val < k.val + 1, (μ a : ℤ)) ≤ ∑ a : Fin N with a.val < k.val + 1, (ν a : ℤ)` using `by exact_mod_cast h1 (k.val + 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -98,9 +98,9 @@ theorem evA_ht {N : ℕ} (μ ν : Fin N → ℕ)
   linarith
 
 /- English proof (translation)
-Unfold `Formalism.REAL.fockF`. Rewrite using `[Finset.sum_subset (Finset.subset_union_left : f.support ⊆ f.support ∪ g.support), Finset.sum_subset (Finset.subset_union_right : g.support ⊆ f.support ∪ g.support)]`. Introduce `m _ hm`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Simplify using `[hm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `m _ hm`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Simplify using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem evA_fock_right {σ : Type*} (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF f g = ∑ m ∈ g.support,
@@ -117,11 +117,11 @@ theorem evA_fock_right {σ : Type*} (f g : MvPolynomial σ ℂ) :
     simp [hm]
 
 /- English proof (translation)
-Establish `hdiag : ∀ v ∈ d.support, v.1 = v.2`. Introduce `v hv`. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Apply `Finset.prod_eq_zero hv` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.one_apply_ne hne]`. Conclude with `zero_pow (Finsupp.mem_support_iff.mp hv)`. Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply]`. Unfold `Finsupp.sum`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.GradedWeylDivisibility.rowW, Formalism.GradedWeylDivisibility.colW, hdiag v hv]`.
+A detailed English derivation is pending.
 -/
 theorem evA_diag {N : ℕ} (d : Fin N × Fin N →₀ ℕ)
     (h : (∏ v ∈ d.support, ((1 : Matrix (Fin N) (Fin N) ℂ) v.1 v.2) ^ d v) ≠ 0) :
@@ -139,11 +139,11 @@ theorem evA_diag {N : ℕ} (d : Fin N × Fin N →₀ ℕ)
   simp [Formalism.GradedWeylDivisibility.rowW, Formalism.GradedWeylDivisibility.colW, hdiag v hv]
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (h1 : k ≤ N) (h2 : k ≤ N), MvPolynomial.eval (fun v : Fin N × Fin N => (1 : Matrix (Fin N) (Fin N) ℂ) v.1 v.2) (Formalism.GradedWeylDivisibility.lpMinor ℂ k h1 h2) = 1`. Introduce `k h1 h2`. Unfold `Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[RingHom.map_det]`. Establish `hM : (MvPolynomial.eval fun v : Fin N × Fin N => (1 : Matrix (Fin N) (Fin N) ℂ) v.1 v.2).mapMatrix (Matrix.of fun p q : Fin k => (X (Fin.castLE h1 p, Fin.castLE h2 q) : MvPolynomial (Fin N × Fin N) ℂ)) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `p q`. Simplify using `[Matrix.one_apply]`. Rewrite using `[hM, Matrix.det_one]`. Unfold `evalM Formalism.GradedWeylDivisibility.hw`. Rewrite using `[map_prod]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun s _ => by rw [map_pow, key, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem evA_hw_one {N : ℕ} (ν : Fin N → ℕ) : evalM 1 (Formalism.GradedWeylDivisibility.hw ℂ (le_refl N) ν) = 1 := by
   have key : ∀ (k : ℕ) (h1 : k ≤ N) (h2 : k ≤ N),
@@ -163,37 +163,35 @@ theorem evA_hw_one {N : ℕ} (ν : Fin N → ℕ) : evalM 1 (Formalism.GradedWey
   exact Finset.prod_eq_one fun s _ => by rw [map_pow, key, one_pow]
 
 /- English proof (translation)
-Introduce `N lam s hs`. Use `set ν := lam.natW with hνdef`. Establish `hν : Antitone ν` using `fun i j hij => by`. Simplify using `only [hνdef, Formalism.BasicNotions.DomWeight.natW]`. Conclude with `Int.toNat_le_toNat (sub_le_sub_right (lam.anti hij) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : s ∈ Formalism.GradedWeylDivisibility.dualWeyl ℂ N N ν` using `hs`. Establish `hscol : IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.colW N N) s ν` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp hs').1`. Use `set P := weightedHomogeneousComponent (Formalism.GradedWeylDivisibility.rowW N N) ν s with hP`. Establish `hPmem : P ∈ Formalism.GradedWeylDivisibility.dualWeyl ℂ N N ν` using `Formalism.GradedWeylDivisibility.dualWeylRowGraded ℂ N N ν ν s hs'`. Establish `hPht : IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.lhwinHt N N) P (∑ a : Fin N, (a.val : ℤ) * (ν a : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `d hd`. Rewrite `hd` using `[hP, coeff_weightedHomogeneousComponent]`. Use `split_ifs at hd with hw`. Rewrite using `[Formalism.GradedWeylDivisibility.lhwin_weight_ht, hw]`. Conclude with `absurd rfl hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkill : ∀ a b : Fin N, a < b → ∀ k : ℕ, 1 ≤ k → Formalism.GradedWeylDivisibility.rowDiv ℂ a b k P = 0`. Introduce `a b hab k hk`. Assume the negation of the conclusion as `hne`. Establish `hQ` using `Formalism.GradedWeylDivisibility.lhwin_rowDiv_shift ℂ _ a b k P hPht`. Establish `hQmem` using `Formalism.GradedWeylDivisibility.rowDivStable ℂ N N ν a b k P hPmem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d, hd⟩` from `ne_zero_iff.mp hne`. Take `⟨h1, h2⟩` from `evA_dom ν _ hQmem d (mem_support_iff.mpr hd)`. Establish `hge` using `evA_ht (Formalism.GradedWeylDivisibility.rowDeg d) ν h1 h2`. Establish `hwt` using `hQ hd`. Rewrite `hwt` using `[Formalism.GradedWeylDivisibility.lhwin_weight_ht]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [evA_weight_rowW] at hwt`. Establish `hab' : (a.val : ℤ) < b.val` using `by exact_mod_cast (Fin.lt_def.mp hab)`. Establish `hk' : (1 : ℤ) ≤ k` using `by exact_mod_cast hk`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨c, hc⟩` from `Formalism.GradedWeylDivisibility.hwLine ℂ N N le_rfl ν hν P hPmem hkill`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `he : extremal ℂ N lam = Formalism.GradedWeylDivisibility.hw ℂ (le_refl N) ν` using `rfl`. Establish `heRow : IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.rowW N N) (Formalism.GradedWeylDivisibility.hw ℂ (le_refl N) ν) ν`. Establish `h` using `Formalism.GradedWeylDivisibility.hwRowWeight ℂ N N le_rfl ν hν`. Establish `hr : (Formalism.GradedWeylDivisibility.rowNu (r` using `N) ν) = ν := by`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Formalism.GradedWeylDivisibility.rowNu, a.isLt]`. Rewrite `h` using `[hr]`. Then use the resulting hypothesis. Establish `hsub : P.support ⊆ s.support` using `fun d hd => by`. Rewrite `hd`, the goal using `[mem_support_iff]`. Rewrite `hd` using `[hP, coeff_weightedHomogeneousComponent]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs at hd with h`. Conclude with `hd`. Conclude with `absurd rfl hd`. Establish `hev : evalM 1 s = evalM 1 P`. Unfold `evalM`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eval_eq, eval_eq]`. Use `symm`. Rewrite using `[Finset.sum_subset hsub (fun d _ hd => by rw [mem_support_iff, not_not] at hd; simp [hd])]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Distinguish the cases in `hw : Finsupp.weight (Formalism.GradedWeylDivisibility.rowW N N) d = ν`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hP, coeff_weightedHomogeneousComponent, if_pos hw]`. Establish `hcol : Finsupp.weight (Formalism.GradedWeylDivisibility.colW N N) d = ν` using `hscol (mem_support_iff.mp hd)`. Establish `hz : (∏ v ∈ d.support, ((1 : Matrix (Fin N) (Fin N) ℂ) v.1 v.2) ^ d v) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hw ((evA_diag d hne).trans hcol)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, mul_zero, mul_zero]`. Establish `hfse : Formalism.REAL.fockF s (Formalism.GradedWeylDivisibility.hw ℂ (le_refl N) ν) = Formalism.REAL.fockF P (Formalism.GradedWeylDivisibility.hw ℂ (le_refl N) ν)`. Rewrite using `[evA_fock_right s, evA_fock_right P]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (Formalism.GradedWeylDivisibility.rowW N N) m = ν` using `heRow (mem_support_iff.mp hm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP, coeff_weightedHomogeneousComponent, if_pos hw]`. Establish `hfce : ∀ e : MvPolynomial (Fin N × Fin N) ℂ, Formalism.REAL.fockF (c • e) e = c * Formalism.REAL.fockF e e`. Introduce `e`. Rewrite using `[evA_fock_right, evA_fock_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hFne : Formalism.REAL.fockF (Formalism.GradedWeylDivisibility.hw ℂ (le_refl N) ν) (Formalism.GradedWeylDivisibility.hw ℂ (le_refl N) ν) ≠ 0`. Establish `h` using `(Formalism.GradedWeylDivisibility.fockPos (Fin N × Fin N) _ (Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl ν)).1`. Introduce `h0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[h0]`. Simplify using `at h`. Unfold `normFock`. Rewrite using `[he, hev, hfse, hc, hfce, mul_div_assoc, div_self hFne, mul_one]`. Unfold `evalM`.
-
-Rewrite using `[smul_eq_C_mul, eval_mul, eval_C]`. Establish `h1` using `evA_hw_one ν`. Unfold `evalM at h1`. Rewrite using `[h1, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem evaluation_at_one : EvalOne := by
   intro N lam s hs

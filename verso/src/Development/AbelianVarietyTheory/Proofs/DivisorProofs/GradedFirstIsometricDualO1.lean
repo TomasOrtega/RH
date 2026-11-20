@@ -14,7 +14,7 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.HermFrame Glob
 namespace GlobalTheory.TautFlag
 
 /- English proof (translation)
-Establish `hm : Mono (kernel.ι quotMap)` using `equalizer.ι_mono`. Use `injective_app_of_mono (kernel.ι quotMap) V ?_` and prove the remaining obligations. Use `Eq.trans ?_ (kernel_ι_app_smul_resM_s j h _).symm` and prove the remaining obligations. Rewrite using `[ratioOn_mul_ratioOn, ratioOn_mul_ratioOn]`. Conclude with `(app_resM _ _ _).trans ((congrArg (resM E h') (map_s j')).trans (resM_v j' h'))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resM_s_eq_ratioOn_smul (j j' : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V ≤ chart ℤ 1 j) (h' : V ≤ chart ℤ 1 j') :
     resM K h' (s j') = ratioOn V j' h' j • resM K h (s j) := by
@@ -25,7 +25,7 @@ theorem resM_s_eq_ratioOn_smul (j j' : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V 
   exact (app_resM _ _ _).trans ((congrArg (resM E h') (map_s j')).trans (resM_v j' h'))
 
 /- English proof (translation)
-Rewrite using `[IsFrame.val_detUnit, Module.Basis.det_apply, Matrix.det_fin_one, Module.Basis.toMatrix_apply, hc, ← ha.basis_apply h, map_smul, Module.Basis.repr_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_detUnit_rankOne_of_eq_smul {X : Scheme.{0}} {F : X.Modules} {U U' V : X.Opens} {a : Fin 1 → Γ(F, U)}
     {a' : Fin 1 → Γ(F, U')} (ha : IsFrame a) (ha' : IsFrame a') (h : V ≤ U) (h' : V ≤ U') (c : Γ(X, V))
@@ -35,7 +35,7 @@ theorem val_detUnit_rankOne_of_eq_smul {X : Scheme.{0}} {F : X.Modules} {U U' V 
   simp
 
 /- English proof (translation)
-Use `Units.ext (val_detUnit_rankOne_of_eq_smul _ _ _ _ _ ?_)` and prove the remaining obligations. Use `(app_resM (VMetric.stepSeq flag 0).g inf_le_right (s j')).symm.trans ?_` and prove the remaining obligations. Use `(congrArg ((VMetric.stepSeq flag 0).g.app _) (resM_s_eq_ratioOn_smul j j' inf_le_left inf_le_right)).trans ?_` and prove the remaining obligations. Conclude with `(Scheme.Modules.Hom.app_smul _ _ _).trans (congrArg (_ • ·) (app_resM (VMetric.stepSeq flag 0).g inf_le_left (s j)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem det_g_adapt₀ (j j' : Fin 2) :
     (VB.det (flag.gr 0) 1).g (adapt₀ j).quot (adapt₀ j').quot = ((O1 ℤ 1).g j j')⁻¹ := by
@@ -46,9 +46,9 @@ theorem det_g_adapt₀ (j j' : Fin 2) :
     (congrArg (_ • ·) (app_resM (VMetric.stepSeq flag 0).g inf_le_left (s j)))
 
 /- English proof (translation)
-Establish `e` using `Met.quot_G ((stdH.h.stepMet flag 0).met σ) (VMetric.stepSeq_shortExact flag 0) (flag.isVB (Fin.castSucc 0)) (flag.isVB_gr 0) (adapt₀ j) hy`. Use `congrArg (fun z : ℂ => -Real.log z.re) ((congrArg Matrix.det e).trans ((Matrix.det_fin_one _).trans ?_))` and prove the remaining obligations. Use `Eq.trans ?_ (gram_adapt₀ j hy 0 0)` and prove the remaining obligations. Establish `key (H : Matrix (Fin 0 ⊕ Fin 1) (Fin 0 ⊕ Fin 1) ℂ) : quotGram H 0 0 = H (.inr 0) (.inr 0)`. Simplify using `[quotGram, toBlocks₂₂]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem grLB_zero_φ (σ : ℤ →+* ℂ) (j : Fin 2) {y : CxPts (PSpace.str ℤ 1) σ}
     (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ (chart ℤ 1 j)) :
@@ -62,7 +62,7 @@ theorem grLB_zero_φ (σ : ℤ →+* ℂ) (j : Fin 2) {y : CxPts (PSpace.str ℤ
   exact key _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(ProjAn.fsO1 ℤ σ 1).φ j y = _`. Use `(Weight.fsBasis_φ _ _ _ _ _ _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `(Fin.sum_univ_two _).trans ?_` and prove the remaining obligations. Simplify using `only [nsqV, Complex.mul_conj, Complex.add_re, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -76,7 +76,7 @@ theorem fubini_study_weight_eq_log_norm (σ : ℤ →+* ℂ) (j : Fin 2) (y : Cx
   rfl
 
 /- English proof (translation)
-The claim follows from `HermLB.Isometric.symm (HermLB.isometric_of_chart (L := (hermitianTwistingSheaf ℤ 1).dual) (fun j => (adapt₀ j).quot) (fun _ => le_rfl) (fun x j j' _ _ => congrArg (gm (𝟙 _) x _) (det_g_adapt₀ j j').symm) fun σ j y hy => (grLB_zero_φ σ j hy).trans (congrArg (- ·) (fubini_study_wei …`.
+A detailed English derivation is pending.
 -/
 theorem isometric_grLB_zero :
     (VMetric.grLB TautFlag.flag 0 TautFlag.stdH.cInf).Isometric (ProjSpace.hermitianTwistingSheaf ℤ 1).dual :=

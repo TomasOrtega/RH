@@ -8,9 +8,9 @@ namespace GlobalTheory.IdemNewton
 variable {A : Type} [CommRing A] {Λ : Type} [Ring Λ] [Algebra A Λ]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz i`. Use `Submodule.smul_induction_on hz (fun r hr y _ => ?_) (fun y w hy hw => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `J.mul_mem_right _ hr`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem hy hw`. Introduce `h`. Rewrite using `[← b.sum_repr z]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_top_iff_repr {ι : Type} [Fintype ι] (b : Module.Basis ι A Λ) (J : Ideal A) (z : Λ) :
     z ∈ J • (⊤ : Submodule A Λ) ↔ ∀ i, b.repr z i ∈ J := by
@@ -26,7 +26,7 @@ theorem mem_smul_top_iff_repr {ι : Type} [Fintype ι] (b : Module.Basis ι A Λ
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hz (fun r hr w _ => ?_) (fun u w hu hw => ?_)` and prove the remaining obligations. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Rewrite using `[add_mul]`. Conclude with `add_mem hu hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_right {J : Ideal A} {z : Λ} (y : Λ) (hz : z ∈ J • (⊤ : Submodule A Λ)) :
     z * y ∈ J • (⊤ : Submodule A Λ) := by
@@ -37,7 +37,7 @@ theorem mul_mem_right {J : Ideal A} {z : Λ} (y : Λ) (hz : z ∈ J • (⊤ : S
     exact add_mem hu hw
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hz (fun r hr w _ => ?_) (fun u w hu hw => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Rewrite using `[mul_add]`. Conclude with `add_mem hu hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_left {J : Ideal A} {z : Λ} (y : Λ) (hz : z ∈ J • (⊤ : Submodule A Λ)) :
     y * z ∈ J • (⊤ : Submodule A Λ) := by
@@ -48,7 +48,7 @@ theorem mul_mem_left {J : Ideal A} {z : Λ} (y : Λ) (hz : z ∈ J • (⊤ : Su
     exact add_mem hu hw
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hz (fun r hr w _ => ?_) (fun u w hu hw => ?_)` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hr (mul_mem_left w hy)`. Rewrite using `[add_mul]`. Conclude with `add_mem hu hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem {J K : Ideal A} {z y : Λ} (hz : z ∈ J • (⊤ : Submodule A Λ))
     (hy : y ∈ K • (⊤ : Submodule A Λ)) : z * y ∈ (J * K) • (⊤ : Submodule A Λ) := by
@@ -59,33 +59,31 @@ theorem mul_mem {J K : Ideal A} {z y : Λ} (hz : z ∈ J • (⊤ : Submodule A 
     exact add_mem hu hw
 
 /- English proof (translation)
-Introduce `A _ I _ Λ _ _ _ _ x hx`. Set `b` to `Module.Free.chooseBasis A Λ`. Establish `mono : ∀ {k m : ℕ}, k ≤ m → ∀ {z : Λ}, z ∈ (I ^ m) • (⊤ : Submodule A Λ) → z ∈ (I ^ k) • (⊤ : Submodule A Λ)` using `fun hkm _ hz => Submodule.smul_mono_left (Ideal.pow_le_pow_right hkm) hz`. Set `f : ℕ → Λ` to `fun k => Nat.rec x (fun _ y => 3 * (y * y) - 2 * (y * y * y)) k`. Establish `f0 : f 0 = x` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `fs : ∀ k, f (k + 1) = 3 * (f k * f k) - 2 * (f k * f k * f k)` using `fun k => rfl`. Establish `h1 : ∀ k, (f k * f k - f k) ∈ (I ^ (k + 1)) • (⊤ : Submodule A Λ)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa [f0] using hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `e : f (k + 1) * f (k + 1) - f (k + 1) = ((f k * f k - f k) * (f k * f k - f k)) * (4 * (f k * f k) - 4 * f k - 3)`. Rewrite using `[fs]`. Use `noncomm_ring`. Rewrite using `[e]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_mem_right _ ?_` and prove the remaining obligations. Use `mul_mem ih ih` as an intermediate fact. Rewrite `this` using `[← pow_add]`. Conclude with `mono (by omega) this`. Establish `h2 : ∀ k, (f (k + 1) - f k) ∈ (I ^ (k + 1)) • (⊤ : Submodule A Λ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Establish `e : f (k + 1) - f k = (f k * f k - f k) * (1 - 2 * f k)`. Rewrite using `[fs]`. Use `noncomm_ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `mul_mem_right _ (h1 k)`. Establish `h3 : ∀ k m, k ≤ m → (f m - f k) ∈ (I ^ (k + 1)) • (⊤ : Submodule A Λ)`. Introduce `k m hkm`. Proceed by induction on `m, hkm using Nat.le_induction with`. Consider the case `base => simp`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `succ m hkm ih`. Establish `e : f (m + 1) - f k = (f (m + 1) - f m) + (f m - f k)` using `by abel`. Rewrite using `[e]`. Conclude with `add_mem (mono (by omega) (h2 m)) ih`. Establish `h4 : ∀ i, ∃ L : A, ∀ k, b.repr (f k) i - L ∈ I ^ k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `i`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := I) (fun k => b.repr (f k) i) (fun {k m} hkm => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← neg_mem_iff, neg_sub]`. Use `(mem_smul_top_iff_repr b _ _).1 (mono (Nat.le_succ k) (h3 k m hkm)) i` as an intermediate fact. Rewrite using `[map_sub, Finsupp.sub_apply] at this)` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨L, fun k => ?_⟩` and prove the remaining obligations. Use `hL k` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis. Use `choose L hL using h4`. Set `e : Λ` to `b.equivFun.symm L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : ∀ i, b.repr e i = L i` using `fun i => by`. Use `congrFun (b.equivFun.apply_symm_apply L) i` as an intermediate fact. Rewrite `this` using `[Module.Basis.equivFun_apply]`. Then use the resulting hypothesis. Establish `hL' : ∀ k, (f k - e) ∈ (I ^ k) • (⊤ : Submodule A Λ)` using `fun k => (mem_smul_top_iff_repr b _ _).2 fun i => by`. Rewrite using `[map_sub, Finsupp.sub_apply, he]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hL i k`. Use `⟨e, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e * e = e`. Rewrite using `[← sub_eq_zero]`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `IsHausdorff.haus' (I := I) _ fun k => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Use `(mem_smul_top_iff_repr b _ _).1 ?_ i` and prove the remaining obligations. Establish `e1 : e * e - e = (f k * f k - f k) - ((f k - e) * (f k - 1) + e * (f k - e))` using `by noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `sub_mem (mono (Nat.le_succ k) (h1 k)) (add_mem (mul_mem_right _ (hL' k)) (mul_mem_left _ (hL' k)))`. Establish `e1 : e - x = (f 1 - f 0) - (f 1 - e)` using `by rw [f0]; abel`. Rewrite using `[e1]`. Establish `a` using `h2 0`.
-
-Establish `c` using `hL' 1`. Rewrite `a` using `[zero_add, pow_one]`. Rewrite `c` using `[pow_one]`. Conclude with `sub_mem a c`.
+A detailed English derivation is pending.
 -/
 theorem exists_idem : ∀ (A : Type) [CommRing A] (I : Ideal A) [IsAdicComplete I A] (Λ : Type) [Ring Λ]
     [Algebra A Λ] [Module.Free A Λ] [Module.Finite A Λ] (x : Λ),

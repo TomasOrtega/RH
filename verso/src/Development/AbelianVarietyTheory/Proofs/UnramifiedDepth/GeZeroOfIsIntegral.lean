@@ -12,13 +12,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.LabelledDirections
 
 /- English proof (translation)
-Set `A : ValuationSubring C` to `{ VF.RR V with mem_or_inv_mem' := by`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Use `left`. Rewrite using `[hz]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `VF.Ge.zero 0`. Assume the negation of the conclusion as `hc push Not at hc`. Take `⟨h1, h2⟩` from `hc`. Establish `h1' : V.v z < 0` using `lt_of_not_ge h1`. Establish `h2' : V.v z⁻¹ < 0` using `lt_of_not_ge h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : V.v (z * z⁻¹) = 0` using `by rw [mul_inv_cancel₀ hz]; simp`. Rewrite `h3` using `[V.v.map_mul]`. Establish `h4 : V.v z + V.v z⁻¹ ≤ V.v z + 0` using `add_le_add le_rfl h2'.le`. Rewrite `h4` using `[h3, add_zero]`. Conclude with `absurd h1' (not_lt.2 h4) }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h : IsIntegral A x` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (K := C) h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem ge_zero_of_isIntegral {C : Type} [Field C] (V : VF C) {x : C} (hx : IsIntegral ℤ x) : V.Ge 0 x := by
   let A : ValuationSubring C :=
@@ -43,11 +43,11 @@ theorem ge_zero_of_isIntegral {C : Type} [Field C] (V : VF C) {x : C} (hx : IsIn
   exact y.2
 
 /- English proof (translation)
-Set `U : Matrix (Fin d) (Fin d) R` to `Matrix.of w`. Set `W : Matrix (Fin d) (Fin d) R` to `Matrix.of fun t => (hw (Pi.single t 1)).exists.choose`. Establish `hWU : W * U = 1`. Use extensionality with `t s`. Use `(hw (Pi.single t 1)).exists.choose_spec s` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [W, U, Matrix.of_apply]`. Rewrite using `[this, Pi.single_apply]`. Simplify using `[eq_comm]`. Establish `hUW : U * W = 1` using `mul_eq_one_comm.1 hWU`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨fun s i' => W s (emb i'), fun i i' => ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun hUW (emb i)) (emb i')` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `this` using `[U]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_dual {R : Type} [CommRing R] {d m : ℕ} (w : Fin d → Fin d → R) (emb : Fin m ↪ Fin d)
     (hw : ∀ v : Fin d → R, ∃! a : Fin d → R, ∀ j, ∑ k, a k * w k j = v j) :
@@ -69,31 +69,29 @@ theorem exists_dual {R : Type} [CommRing R] {d m : ℕ} (w : Fin d → Fin d →
   simpa [U] using this
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hs T io y C3 C _ _ V ι hι k Y hY Orb d _ lab ha`. Use `letI := io.toAlgebra`. Establish `hval : ∀ x : T.V, V.Ge 0 (ι (algebraMap T.V T.Fr x))` using `(GlobalTheory.nval_eq_of_extension T C V.v V.l V.l_prime.ne_zero V.v_l ι hι).1`. Establish `huv : ∀ ℓ i, chartUnitVectors C3 ℓ i = algebraMap T.V T.Fr (C3.uvecT ℓ i)` using `fun ℓ i => C3.gen.1.2.2.2.2.2.2 ℓ i`. Establish `hint : ∀ (τ : E →+* ℂ) (x : 𝓞 E), V.Ge 0 (emA3 io ι τ x)` using `fun τ x => ge_zero_of_isIntegral V (map_isIntegral_int (emA3 io ι τ) (Algebra.IsIntegral.isIntegral x))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `M : 𝓞 E → Matrix (Fin (chD C3.ch)) (Fin (chD C3.ch)) C` to `fun a i j => MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (Y.B.A.act a i)`. Establish `hM : ∀ a z, linAct (Y.B.A.act a) z = (M a).mulVec z` using `fun a z => rfl`. Establish `heig : ∀ (a : 𝓞 E) (ℓ : Lt1 Dw), (M a).mulVec (fun s => ι (chartUnitVectors C3 ℓ s)) = emA3 io ι ℓ.1 a • fun s => ι (chartUnitVectors C3 ℓ s)`. Introduce `a ℓ`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `congrArg ι (GlobalTheory.EigDir.linEig_holds E H Dw l Xo c T.Fr y.1 C3.ch a ℓ i)`. Rewrite `h` using `[map_sum, map_mul]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `show ∑ j, M a i j * ι (chartUnitVectors C3 ℓ j) = _`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Simplify using `only [M, hY.act, MvPowerSeries.coeff_map]`. Both sides reduce to the same expression. Use `⟨fun o g a x => hint _ x, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `o a x`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : embK c (ComplexEmbedding.conjugate (lab.tau o 0 a)) x = embK c (lab.tau o 0 a) (H.bar x)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe, ComplexEmbedding.conjugate_coe_eq, H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Rewrite using `[ha.conj, hs]`. Conclude with `congrArg (ι.comp io) h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `o g x i`. Unfold `lieBasisVector`. Rewrite using `[huv]`. Conclude with `hval _`. Introduce `o g x a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `heig a ⟨lab.tau o g x.1, x.2⟩`. Introduce `o g`. Establish `key` using `GlobalTheory.SatBlocks.saturated_blocks_summand C V.v (𝓞 E) (ZMod d) (fun a => Dw.mult (lab.tau o g a)) (chD C3.ch) M (fun a x => emA3 io ι (lab.tau o g a) x) (lieBasisVector C3 ι lab o g) (fun x i j => Y.intAct x i _) (fun a x => hint _ x) (fun x q => heig x ⟨lab.tau o g q.1, q. …`. Take `⟨⟨w, emb, hw1, hw2⟩, -⟩` from `Formalism.L2.Pj.SaturatedCharts.saturation_charts_holds Xo c T io y C3 (lab.tau o g a)`. Take `⟨W, hW⟩` from `exists_dual w emb hw2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s i => ι (algebraMap T.V T.Fr (W s i)), fun s i => hval _, fun i i' => ?_⟩` and prove the remaining obligations. Use `congrArg (ι.comp (algebraMap T.V T.Fr)) (hW i i')` as an intermediate fact. Rewrite `this` using `[map_sum, apply_ite (ι.comp (algebraMap T.V T.Fr)), map_one, map_zero]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, hw1]`. Unfold `lieBasisVector`. Rewrite using `[huv]`. Use the proof step `rfl)`. Take `⟨w, h1, h2⟩` from `key`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `⟨w, h1, fun q q' => by convert h2 q q'⟩`. Introduce `o g a v hv`. Establish `hinj : Function.Injective fun (τ : E →+* ℂ) (x : 𝓞 E) => emA3 io ι τ x`. Introduce `τ τ' h`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `GlobalTheory.EigDir.embK_sep c τ τ' hne`. Conclude with `hb ((ι.comp io).injective (congrFun h b))`. Take `⟨b, hb⟩` from `GlobalTheory.eigenvector_mem_span_block_of_basis T.Fr C ι (𝓞 E) (E →+* ℂ) Dw.mult (chD C3.ch) M (fun τ x => emA3 io ι τ x) (chartUnitVectors C3) hinj heig C3.ch.chart.basis (lab.tau o g a) v hv`. Use `⟨fun q => if h : q.1 = a then b (Fin.cast (by rw [h]) q.2) else 0, fun q hq => dif_neg hq, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, Fintype.sum_sigma, Finset.sum_eq_single a]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_ dsimp only` and prove the remaining obligations. Rewrite using `[dif_pos rfl]`. Both sides reduce to the same expression. Introduce `a' _ ha'`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
-
-Simplify using `only`. Rewrite using `[dif_neg ha', zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem labGeoSt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], Formalism.L2.FormalSeriesBounds.LabGeoSt Xo c := by
   intro E _ _ _ H Dw l Xo c _ hs T io y C3 C _ _ V ι hι k Y hY Orb d _ lab ha

@@ -18,9 +18,9 @@ open scoped TensorProduct
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `a1` using `GlobalTheory.SplitWeil.padic_valuation_lt_iff g (x : ℚ_[g]) 1`. Establish `a2` using `GlobalTheory.SplitWeil.padic_valuation_lt_iff g 1 (x : ℚ_[g])`. Rewrite `a1`, `a2` using `[hx, map_one]`. Establish `h1 : ‖(x : ℚ_[g])‖ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [lt_self_iff_false, norm_one, false_iff, not_lt] at a1 a2`. Conclude with `le_antisymm a2 a1`. Use `h (PadicInt.mkUnits h1)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Conclude with `Units.ext rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isUnram_of_supp {ν : ℚ_[g]ˣ →* ℂˣ} (h : Supp.IsUnram ν) : GlobalTheory.SplitWeil.IsUnram ν := by
   intro x hx
@@ -35,7 +35,7 @@ theorem isUnram_of_supp {ν : ℚ_[g]ˣ →* ℂˣ} (h : Supp.IsUnram ν) : Glob
   exact Units.ext rfl
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => rw [map_add, hu, hv, map_add, smul_add]`. Consider the case `tmul u v`. Rewrite using `[extTensor_tmul, TensorProduct.map_tmul, twist_apply, twist_apply, TensorProduct.smul_tmul_smul, Units.val_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem extTensor_twist_apply {a b : ℕ} {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (σ : Representation ℂ (GL (Fin a) ℚ_[g]) W) (ρ : Representation ℂ (GL (Fin b) ℚ_[g]) W')
@@ -50,7 +50,7 @@ theorem extTensor_twist_apply {a b : ℕ} {W W' : Type} [AddCommGroup W] [Module
       Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply]`. Simplify using `[mul_assoc, mul_comm, mul_left_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem scal_eq (ν₁ ν₂ A B : ℚ_[g]ˣ →* ℂˣ) (u v : ℚ_[g]ˣ) :
     (A u * B v) * ((ν₁ * A⁻¹) u * (ν₂ * B⁻¹) v) = ν₁ u * ν₂ v := by
@@ -58,17 +58,15 @@ theorem scal_eq (ν₁ ν₂ A B : ℚ_[g]ˣ →* ℂˣ) (u v : ℚ_[g]ˣ) :
   simp [mul_assoc, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Use `set X := ((leviTwo ℚ_[g] (Fin a) (Fin b)).symm (leviProj ℚ_[g] _ q)).1 with hX`. Use `set Y := ((leviTwo ℚ_[g] (Fin a) (Fin b)).symm (leviProj ℚ_[g] _ q)).2 with hY`. Establish `hL : leviProj ℚ_[g] _ q = leviTwo ℚ_[g] _ _ (X, Y)` using `(MulEquiv.apply_symm_apply _ _).symm`. Establish `hpar` using `(mem_parab_two ℚ_[g]).1 q.2`. Establish `h0 : ∀ i j : Fin (a + b), (j : ℕ) < a → a ≤ (i : ℕ) → ((q : GL (Fin (a + b)) ℚ_[g]) : Matrix (Fin (a + b)) (Fin (a + b)) ℚ_[g]) i j = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j hj hi`. Establish `e1 : stdSum (rfl : a + b = a + b) (.inr ⟨i - a, by omega⟩) = i` using `Fin.ext (by rw [stdSum_inr]; simp; omega)`. Establish `e2 : stdSum (rfl : a + b = a + b) (.inl ⟨j, hj⟩) = j` using `Fin.ext (by rw [stdSum_inl])`. Use `hpar ⟨i - a, by omega⟩ ⟨j, hj⟩` as an intermediate fact. Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : ∀ i j : Fin a, (X : Matrix (Fin a) (Fin a) ℚ_[g]) i j = Formalism.MainNotions.ArithmeticCylinders.entN ((q : GL (Fin (a + b)) ℚ_[g]) : Matrix (Fin (a + b)) (Fin (a + b)) ℚ_[g]) i j`. Introduce `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Rewrite using `[Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos ⟨by omega, by omega⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `show ((q : GL (Fin (a + b)) ℚ_[g]) : Matrix (Fin (a + b)) (Fin (a + b)) ℚ_[g]) (stdSum (rfl : a + b = a + b) (.inl i)) (stdSum (rfl : a + b = a + b) (.inl j)) = _`. Apply the tactic sequence `congr 1 <;> exact Fin.ext (stdSum_inl _ _)`. Establish `hy : ∀ i j : Fin b, (Y : Matrix (Fin b) (Fin b) ℚ_[g]) i j = Formalism.MainNotions.ArithmeticCylinders.entN ((q : GL (Fin (a + b)) ℚ_[g]) : Matrix (Fin (a + b)) (Fin (a + b)) ℚ_[g]) (a + i) (a + j)`. Introduce `i j`. Establish `hi` using `i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hj` using `j.2`. Rewrite using `[Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos ⟨by omega, by omega⟩]`. Use `show ((q : GL (Fin (a + b)) ℚ_[g]) : Matrix (Fin (a + b)) (Fin (a + b)) ℚ_[g]) (stdSum (rfl : a + b = a + b) (.inr i)) (stdSum (rfl : a + b = a + b) (.inr j)) = _`. Apply the tactic sequence `congr 1 <;> exact Fin.ext (stdSum_inr _ _)`. Rewrite using `[hΛ q X Y h0 hx hy w, hL, MulEquiv.symm_apply_apply, deltaHalf_two, extTensor_twist_apply, smul_smul, ← Units.val_mul, detChar_apply, detChar_apply]`.
-
-Simplify using `only [Fintype.card_fin]`. Rewrite using `[scal_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law {a b : ℕ} {V W W' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup W'] [Module ℂ W'] (π : Representation ℂ (GL (Fin (a + b)) ℚ_[g]) V)
@@ -120,19 +118,17 @@ theorem law {a b : ℕ} {V W W' : Type} [AddCommGroup V] [Module ℂ V] [AddComm
   rw [scal_eq]
 
 /- English proof (translation)
-Introduce `hZ g _ n a b V W W' _ _ _ _ _ _ π σ ρ hs hπ hM ys yr hys hyr`. Take `⟨Z, Ψ, -, hΨ, -⟩` from `hZ ℚ_[g]`. Take `⟨hn, ν₁, ν₂, Λ, h₁, h₂, hΛ0, hΛ⟩` from `hM`. Substitute `hn` using the available equality. Establish `hμ₁ : GlobalTheory.SplitWeil.IsUnram (ν₁ * (absPow ℚ_[g] ((b : ℂ) / 2))⁻¹)` using `isUnram_mul (isUnram_of_supp h₁) (isUnram_inv (isUnram_absPow _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hμ₂ : GlobalTheory.SplitWeil.IsUnram (ν₂ * (absPow ℚ_[g] (-(a : ℂ) / 2))⁻¹)` using `isUnram_mul (isUnram_of_supp h₂) (isUnram_inv (isUnram_absPow _ _))`. Use `⟨_, _, hμ₁, hμ₂, ?_⟩` and prove the remaining obligations. Set `T : π.IntertwiningMap (prod₂ (twist σ (detChar (Fin a) (ν₁ * (absPow ℚ_[g] ((b : ℂ) / 2))⁻¹))) (twist ρ (detChar (Fin b) (ν₂ * (absPow ℚ_[g] (-(a : ℂ) / 2))⁻¹))))` to `{ toFun := fun v => ⟨⟨fun x => Λ (π x v), fun q x => by show Λ (π (q * x) v) = _`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `law π σ ρ ν₁ ν₂ Λ hΛ q (π x v)⟩,`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hs v).mem_nhds (by simp)) fun h hh => by`. Establish `hh' : π h v = v` using `hh`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show Λ (π (x * h) v) = Λ (π x v)`. Rewrite using `[map_mul, Module.End.mul_apply, hh'])⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_add' := fun v w => Subtype.ext (Subtype.ext (funext fun x => by show Λ (π x (v + w)) = Λ (π x v) + Λ (π x w)`. Rewrite using `[map_add, map_add]))`. Use the proof step `map_smul' := fun c v => Subtype.ext (Subtype.ext (funext fun x => by show Λ (π x (c • v)) = c • Λ (π x v)`. Rewrite using `[map_smul, map_smul]))`. Use the proof step `isIntertwining' := fun h => LinearMap.ext fun v => Subtype.ext (Subtype.ext (funext fun x => by show Λ (π x (π h v)) = Λ (π (x * h) v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_mul, Module.End.mul_apply])) }`. Establish `hT : Function.Injective T` using `by haveI := hπ`. Use `(Representation.IsIrreducible.injective_or_eq_zero T).resolve_right fun h0 => hΛ0 (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `h1 : (T v).1.1 1 = 0` using `by rw [h0]; rfl`. Express the relevant statement in the definitionally equal form `Λ (π 1 v) = 0 at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h1`. Establish `hσ'` using `hys.tw _ (isSmoothChar_of_isUnram hμ₁)`. Establish `hρ'` using `hyr.tw _ (isSmoothChar_of_isUnram hμ₂)`. Take `⟨φ⟩` from `nonempty_prod₂_equiv_prodIrr _ hσ'.isSmooth hσ'.isIrreducible _ hρ'.isSmooth hρ'.isIrreducible (Fin.sum_univ_two _)`. Establish `hsub` using `(IsSubquotient.of_injective T hT).trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`.
-
-Establish `key` using `SupportRing.hasSupport_of_isSubquotient_prodIrr hΨ (t := ![_, _]) (Fin.forall_fin_two.2 ⟨hσ'.of_equiv (IrrGL.equivOf _ _ _), hρ'.of_equiv (IrrGL.equivOf _ _ _)⟩) hπ hsub`. Rewrite `key` using `[Fin.sum_univ_two]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_of_mapsToProd : GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (g : ℕ) [Fact g.Prime] (n a b : ℕ) (V W W' : Type)
     [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']

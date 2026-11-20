@@ -20,7 +20,7 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Rewrite using `[← residue_ne_zero_iff_isUnit, residue_aeval K L (fun _ ↦ rfl), ← derivative_map]`. Use `hP.aeval_derivative_ne_zero ?_` and prove the remaining obligations. Rewrite using `[← residue_aeval K L (fun _ ↦ rfl), hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_aeval_derivative_of_separable (P : 𝒪[K][X])
     (hP : (P.map (residue 𝒪[K])).Separable) (x : 𝒪[L]) (hx : aeval x P = 0) :
@@ -30,7 +30,7 @@ theorem isUnit_aeval_derivative_of_separable (P : 𝒪[K][X])
   rw [← residue_aeval K L (fun _ ↦ rfl), hx, map_zero]
 
 /- English proof (translation)
-Take `⟨β, P, hPm, hβ, hsep, -, hdeg, -⟩` from `exists_unramified_adjoin K L`. Use `⟨β, P, hPm, hβ, hsep, isUnit_aeval_derivative_of_separable K L P hsep β hβ, ?_⟩` and prove the remaining obligations. Use `IntermediateField.eq_of_le_of_finrank_eq le_top ?_` and prove the remaining obligations. Rewrite using `[hdeg, IntermediateField.finrank_top', IsUnramified.residueDegree_eq_finrank K L]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsUnramified.exists_generator [IsUnramified K L] :
     ∃ (β : 𝒪[L]) (P : 𝒪[K][X]), P.Monic ∧ aeval β P = 0 ∧ (P.map (residue 𝒪[K])).Separable ∧
@@ -49,11 +49,11 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Rewrite using `[map_maximalIdeal K L, isUnramified_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hpos` using `ramificationIndex_pos K L`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : 2 ≤ ramificationIndex K L` using `by omega`. Establish `hL : maximalIdeal 𝒪[L] ≠ ⊥` using `maximalIdeal_ne_bot L`. Establish `hlt` using `Ideal.pow_succ_lt_pow hL 1`. Establish `hle : maximalIdeal 𝒪[L] ^ 1 ≤ maximalIdeal 𝒪[L] ^ (1 + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[pow_one, h]`. Use `_ ≤ maximalIdeal 𝒪[L] ^ (1 + 1) := Ideal.pow_le_pow_right h2`. Conclude with `absurd hle (not_le_of_gt hlt)`. Introduce `h`. Rewrite using `[h, pow_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_maximalIdeal_eq_iff :
     (maximalIdeal 𝒪[K]).map (algebraMap 𝒪[K] 𝒪[L]) = maximalIdeal 𝒪[L] ↔ IsUnramified K L := by
@@ -84,7 +84,7 @@ def maximalUnramified : IntermediateField K L :=
   sSup {E : IntermediateField K L | IsUnramified K E}
 
 /- English proof (translation)
-The claim follows from `le_sSup (show IsUnramified K E from inferInstance)`.
+A detailed English derivation is pending.
 -/
 theorem le_maximalUnramified (E : IntermediateField K L) [IsUnramified K E] :
     E ≤ maximalUnramified K L :=
@@ -96,7 +96,7 @@ variable [TopologicalSpace K] [IsNonarchimedeanLocalField K] [TopologicalSpace L
 variable {K L} in
 
 /- English proof (translation)
-Set `: Algebra E F` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Establish `: IsScalarTower K E F` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `: ValuativeExtension E F` using `valuativeExtension_algHom (K := K) (IntermediateField.inclusion h)`. Establish `: FiniteDimensional E F` using `Module.Finite.of_restrictScalars_finite K E F`. Conclude with `IsUnramified.of_tower_left K E F`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsUnramified.of_le {E F : IntermediateField K L} (h : E ≤ F) [IsUnramified K F] :
     IsUnramified K E := by
@@ -107,9 +107,9 @@ theorem IsUnramified.of_le {E F : IntermediateField K L} (h : E ≤ F) [IsUnrami
   exact IsUnramified.of_tower_left K E F
 
 /- English proof (translation)
-Take `⟨β, P, hPm, hβ, -, hd, htop⟩` from `IsUnramified.exists_generator K E`. Use `⟨algebraMap 𝒪[E] 𝒪[L] β, P, hPm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_algebraMap_apply, hβ, map_zero]`. Rewrite using `[aeval_algebraMap_apply]`. Conclude with `hd.map _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (IntermediateField.map E.val) htop` as an intermediate fact. Rewrite `this` using `[IntermediateField.adjoin_map, Set.image_singleton, ← AlgHom.fieldRange_eq_map, IntermediateField.fieldRange_val]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generator_of_isUnramified (E : IntermediateField K L) [IsUnramified K E] :
     ∃ (γ : 𝒪[L]) (P : 𝒪[K][X]), P.Monic ∧ aeval γ P = 0 ∧ IsUnit (aeval γ (derivative P)) ∧
@@ -125,9 +125,9 @@ theorem exists_generator_of_isUnramified (E : IntermediateField K L) [IsUnramifi
     exact this.symm
 
 /- English proof (translation)
-Take `⟨β, P, hPm, hβ, hsep, hunr, hdeg, h1⟩` from `exists_unramified_adjoin K L`. Use `⟨β, P, hPm, hβ, isUnit_aeval_derivative_of_separable K L P hsep β hβ, ?_, hunr, hdeg, h1⟩` and prove the remaining obligations. Use `le_antisymm (sSup_le fun E hE ↦ ?_) (le_sSup hunr)` and prove the remaining obligations. Establish `: IsUnramified K E` using `hE`. Take `⟨γ, Q, hQ, hγ, hd, hE'⟩` from `exists_generator_of_isUnramified K L E`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hE']`. Conclude with `IntermediateField.adjoin_simple_le_iff.2 (mem_of_residueDegree_eq_one K L _ h1 Q hQ γ hγ hd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_maximalUnramified_eq :
     ∃ (β : 𝒪[L]) (P : 𝒪[K][X]), P.Monic ∧ aeval β P = 0 ∧ IsUnit (aeval β (derivative P)) ∧
@@ -147,7 +147,7 @@ instance isUnramified_maximalUnramified : IsUnramified K (maximalUnramified K L)
   exact hunr
 
 /- English proof (translation)
-Take `⟨β, P, -, -, -, heq, -, hdeg, -⟩` from `exists_maximalUnramified_eq K L`. Rewrite using `[heq]`. Conclude with `hdeg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_maximalUnramified :
     Module.finrank K (maximalUnramified K L) = residueDegree K L := by
@@ -156,14 +156,14 @@ theorem finrank_maximalUnramified :
   exact hdeg
 
 /- English proof (translation)
-The claim follows from `IsUnramified.of_le (sup_le (le_maximalUnramified K L E) (le_maximalUnramified K L F))`.
+A detailed English derivation is pending.
 -/
 theorem IsUnramified.sup (E F : IntermediateField K L) [IsUnramified K E] [IsUnramified K F] :
     IsUnramified K (E ⊔ F : IntermediateField K L) :=
   IsUnramified.of_le (sup_le (le_maximalUnramified K L E) (le_maximalUnramified K L F))
 
 /- English proof (translation)
-The claim follows from `IsUnramified.of_le (iSup_le fun i ↦ le_maximalUnramified K L (E i))`.
+A detailed English derivation is pending.
 -/
 theorem IsUnramified.iSup {ι : Type*} (E : ι → IntermediateField K L)
     [∀ i, IsUnramified K (E i)] : IsUnramified K (⨆ i, E i : IntermediateField K L) :=
@@ -191,13 +191,11 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
 def inertiaSubgroup : Subgroup (L ≃ₐ[K] L) := (residueAlgEquiv K L).ker
 
 /- English proof (translation)
-Use `set γσ := integerAlgEquiv K L σ γ`. Establish `h0 : aeval γσ P = 0`. Use `aeval_algHom_apply (integerAlgEquiv K L σ : 𝒪[L] →ₐ[𝒪[K]] 𝒪[L]) γ P` as an intermediate fact. Rewrite `this` using `[hγ, map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : residue 𝒪[L] γσ = residue 𝒪[L] γ`. Establish `h1 : residueAlgEquiv K L σ = 1` using `hσ`. Rewrite using `[← residueAlgEquiv_residue, h1]`. Both sides reduce to the same expression. Establish `heq : γ = γσ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsLocalRing.eq_of_eval_eq_zero_of_not_isUnit_sub (f := P.map (algebraMap 𝒪[K] 𝒪[L])) (by rw [eval_map_algebraMap]; exact hγ) (by rw [eval_map_algebraMap]; exact h0) ?_ ?_` and prove the remaining obligations. Rewrite using `[← mem_nonunits_iff, ← mem_maximalIdeal, ← residue_eq_zero_iff, map_sub, hres, sub_self]`. Rewrite using `[derivative_map, eval_map_algebraMap]`. Conclude with `hd`. Rewrite using `[← coe_integerAlgEquiv_apply]`.
-
-Conclude with `congrArg Subtype.val heq.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertiaSubgroup_apply_eq (σ : L ≃ₐ[K] L) (hσ : σ ∈ inertiaSubgroup K L) (P : 𝒪[K][X])
     (γ : 𝒪[L]) (hγ : aeval γ P = 0) (hd : IsUnit (aeval γ (derivative P))) : σ γ = γ := by
@@ -220,7 +218,7 @@ theorem inertiaSubgroup_apply_eq (σ : L ≃ₐ[K] L) (hσ : σ ∈ inertiaSubgr
   exact congrArg Subtype.val heq.symm
 
 /- English proof (translation)
-Take `⟨β, P, -, hβ, hd, heq, -, -, -⟩` from `exists_maximalUnramified_eq K L`. Rewrite using `[heq, IntermediateField.adjoin_simple_le_iff]`. Conclude with `fun σ ↦ inertiaSubgroup_apply_eq K L σ σ.2 P β hβ hd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem maximalUnramified_le_fixedField :
     maximalUnramified K L ≤ IntermediateField.fixedField (inertiaSubgroup K L) := by
@@ -231,19 +229,15 @@ theorem maximalUnramified_le_fixedField :
 variable [IsGalois K L]
 
 /- English proof (translation)
-Use `set I := inertiaSubgroup K L`. Use `set F := IntermediateField.fixedField I`. Establish `hn` using `ramificationIndex_mul_residueDegree K L`. Establish `hf` using `residueDegree_pos K L`. Establish `he` using `ramificationIndex_pos K L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFL : Module.finrank F L = Nat.card I` using `IntermediateField.finrank_fixedField_eq_card I`. Establish `hG : Nat.card (L ≃ₐ[K] L) = Module.finrank K L` using `IsGalois.card_aut_eq_finrank K L`. Establish `hIdx : Nat.card I * I.index = Nat.card (L ≃ₐ[K] L)` using `Subgroup.card_mul_index I`. Establish `hind : I.index = Nat.card (residueAlgEquiv K L).range` using `Subgroup.index_ker _`. Establish `hrange : Nat.card (residueAlgEquiv K L).range ≤ residueDegree K L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hFK : Module.finrank K F * Module.finrank F L = Module.finrank K L` using `Module.finrank_mul_finrank K F L`. Establish `hTF : residueDegree K L ≤ Module.finrank K F`. Rewrite using `[← finrank_maximalUnramified K L]`. Conclude with `IntermediateField.finrank_le_of_le_right (maximalUnramified_le_fixedField K L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set a := Nat.card I`. Use `set r := Nat.card (residueAlgEquiv K L).range`. Use `set e := ramificationIndex K L`. Use `set f := residueDegree K L`. Use `set d := Module.finrank K F`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hIdx` using `[hind, hG, ← hn]`. Rewrite `hFK` using `[hFL, ← hn]`. Establish `h1 : a ≤ e`. Use `Nat.le_of_mul_le_mul_left ?_ hf` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `h2 : e ≤ a`. Use `Nat.le_of_mul_le_mul_right ?_ hf` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hae : a = e` using `le_antisymm h1 h2`. Use `⟨hae, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hIdx` using `[hae]`. Conclude with `(Nat.eq_of_mul_eq_mul_left he hIdx)`. Rewrite `hFK` using `[hae, mul_comm e f]`. Conclude with `Nat.eq_of_mul_eq_mul_right he hFK`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertiaSubgroup_counting :
     Nat.card (inertiaSubgroup K L) = ramificationIndex K L ∧
@@ -292,7 +286,7 @@ theorem inertiaSubgroup_counting :
     exact Nat.eq_of_mul_eq_mul_right he hFK
 
 /- English proof (translation)
-The claim follows from `(inertiaSubgroup_counting K L).1`.
+A detailed English derivation is pending.
 -/
 theorem card_inertiaSubgroup : Nat.card (inertiaSubgroup K L) = ramificationIndex K L :=
   (inertiaSubgroup_counting K L).1

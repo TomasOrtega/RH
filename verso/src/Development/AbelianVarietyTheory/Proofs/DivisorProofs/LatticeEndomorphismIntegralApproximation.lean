@@ -18,7 +18,7 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LKGeo.LiftSys.exists_lift_sys) | (exact GlobalTheory.LKGeo.LiftSys.exists_lift_sys) | (intros; apply GlobalTheory.LKGeo.LiftSys.exists_lift_sys <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.lattice_endomorphism_integral_approximation : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (h₀ : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)), (∀ v ∈ LaHat D, h₀ v ∈ LaHat D) → ∃ h : ℕ → D.La →+ D.La, ∀ n : ℕ, 0 < n → n.Coprime p → ∀ x, ∃ w ∈ LaHat D, h₀ (inAf D x) = inAf D (h n x) + n • w := by
   first | (exact @GlobalTheory.LKGeo.LiftSys.exists_lift_sys) | (exact GlobalTheory.LKGeo.LiftSys.exists_lift_sys) | (intros; apply GlobalTheory.LKGeo.LiftSys.exists_lift_sys  <;> assumption)

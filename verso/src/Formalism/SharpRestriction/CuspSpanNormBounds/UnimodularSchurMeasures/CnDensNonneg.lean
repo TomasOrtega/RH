@@ -8,7 +8,7 @@ open MeasureTheory Finset
 open scoped ENNReal
 
 /- English proof (translation)
-Rewrite using `[← integral_fintype_prod_volume_eq_prod]`. Use `(ofReal_integral_eq_lintegral_ofReal ?_ ?_).symm` and prove the remaining obligations. Conclude with `Integrable.fintype_prod hi`. Conclude with `Filter.Eventually.of_forall fun t => Finset.prod_nonneg fun i _ => h0 i (t i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cn_lint_prod {a : ℕ} (h : Fin a → ℝ → ℝ) (hi : ∀ i, Integrable (h i)) (h0 : ∀ i t, 0 ≤ h i t) :
     ∫⁻ t : Fin a → ℝ, ENNReal.ofReal (∏ i, h i (t i)) = ENNReal.ofReal (∏ i, ∫ s, h i s) := by
@@ -18,7 +18,7 @@ theorem cn_lint_prod {a : ℕ} (h : Fin a → ℝ → ℝ) (hi : ∀ i, Integrab
   · exact Filter.Eventually.of_forall fun t => Finset.prod_nonneg fun i _ => h0 i (t i)
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (fun t : ℝ => 2 * (f : ℝ) * j / t) (Set.Icc ts (1 / 2))` using `continuousOn_const.div continuousOn_id fun t ht => (lt_of_lt_of_le h0 ht.1).ne'`. Establish `hI : IntegrableOn (fun t : ℝ => 2 * (f : ℝ) * j / t) (Set.Icc ts (1 / 2))` using `hc.integrableOn_Icc`. Use `⟨(integrable_indicator_iff measurableSet_Ico).2 (hI.mono_set Set.Ico_subset_Icc_self), ?_⟩` and prove the remaining obligations. Rewrite using `[integral_indicator measurableSet_Ico, ← Formalism.HermitianLatticeCounting.Final.S7.logVolume f j ts h0 h1, intervalIntegral.integral_of_le h1, integral_Ico_eq_integral_Ioo, integral_Ioc_eq_integral_Ioo]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cn_int_log (f j : ℕ) (ts : ℝ) (h0 : 0 < ts) (h1 : ts ≤ 1 / 2) :
     Integrable ((Set.Ico ts (1 / 2)).indicator fun t : ℝ => 2 * (f : ℝ) * j / t) ∧
@@ -32,9 +32,9 @@ theorem cn_int_log (f j : ℕ) (ts : ℝ) (h0 : 0 < ts) (h1 : ts ≤ 1 / 2) :
     intervalIntegral.integral_of_le h1, integral_Ico_eq_integral_Ioo, integral_Ioc_eq_integral_Ioo]
 
 /- English proof (translation)
-Establish `hT` using `Formalism.HermitianLatticeCounting.Final.S7.tauIntegral f j n0 hf hj hn`. Establish `hpos : (0 : ℝ) < (1 / 2) ^ (2 * j * n0 * f) / (n0 : ℝ)` using `by positivity`. Establish `hII : IntervalIntegrable (fun t : ℝ => t ^ (2 * j * n0 * f) * (2 * (f : ℝ) * j / t)) volume 0 (1 / 2)`. Assume the negation of the conclusion as `hcon`. Rewrite `hT` using `[intervalIntegral.integral_undef hcon]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hpos.ne hT`. Establish `hI : IntegrableOn (fun t : ℝ => t ^ (2 * j * n0 * f) * (2 * (f : ℝ) * j / t)) (Set.Ioc 0 (1 / 2))` using `(intervalIntegrable_iff_integrableOn_Ioc_of_le (by norm_num)).1 hII`. Use `⟨(integrable_indicator_iff measurableSet_Ioo).2 (hI.mono_set Set.Ioo_subset_Ioc_self), ?_⟩` and prove the remaining obligations. Rewrite using `[integral_indicator measurableSet_Ioo, ← hT, intervalIntegral.integral_of_le (by norm_num), integral_Ioc_eq_integral_Ioo]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cn_int_tau (f j n0 : ℕ) (hf : 1 ≤ f) (hj : 1 ≤ j) (hn : 1 ≤ n0) :
     Integrable ((Set.Ioo (0 : ℝ) (1 / 2)).indicator fun t : ℝ => t ^ (2 * j * n0 * f) * (2 * (f : ℝ) * j / t)) ∧
@@ -75,7 +75,7 @@ def cn_cnt {a : ℕ} (j : Fin a → ℕ) (n0 f : ℕ) (de : ℝ) (t : Fin a → 
   ∏ r, (1 + 12 * de / cn_la t r) ^ (cn_dim j n0 r * f)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun p : Fin a × Fin a => p.1 < p.2) (by simp) (fun p => F p.1 p.2), Finset.sum_filter, Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun x _ => (Finset.sum_filter _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cn_sum_pairs {a : ℕ} (F : Fin a → Fin a → ℕ) :
     ∑ p : {p : Fin a × Fin a // p.1 < p.2}, F p.1.1 p.1.2 = ∑ x, ∑ y with x < y, F x y := by
@@ -84,7 +84,7 @@ theorem cn_sum_pairs {a : ℕ} (F : Fin a → Fin a → ℕ) :
   exact Finset.sum_congr rfl fun x _ => (Finset.sum_filter _ _).symm
 
 /- English proof (translation)
-Simplify using `only [Fintype.sum_sum_type, cn_dim, Formalism.HermitianLatticeCounting.S7.dimN]`. Rewrite using `[cn_sum_pairs fun x y => 2 * j x * j y]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cn_sum_dim {a : ℕ} (j : Fin a → ℕ) (n0 : ℕ) : ∑ r, cn_dim j n0 r = Formalism.HermitianLatticeCounting.S7.dimN j n0 := by
   simp only [Fintype.sum_sum_type, cn_dim, Formalism.HermitianLatticeCounting.S7.dimN]
@@ -92,13 +92,11 @@ theorem cn_sum_dim {a : ℕ} (j : Fin a → ℕ) (n0 : ℕ) : ∑ r, cn_dim j n0
   ring
 
 /- English proof (translation)
-Take `⟨hm, hb⟩` from `ht`. Break down `r with (p | p) | (x | x)` into its components or cases. Establish `h1` using `hb p.1.1`. Establish `h2` using `hb p.1.2`. Conclude with `⟨div_pos h1.1 h2.1, (div_lt_one h2.1).2 (hm p.2)⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h1` using `hb p.1.1`. Establish `h2` using `hb p.1.2`. Use `⟨mul_pos h1.1 h2.1, ?_⟩` and prove the remaining obligations. Use `show t p.1.1 * t p.1.2 < 1`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1` using `hb x`. Use `⟨pow_pos h1.1 2, ?_⟩` and prove the remaining obligations. Use `show t x ^ 2 < 1`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `hb x`.
-
-Conclude with `⟨h1.1, by show t x < 1; linarith⟩`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cn_la_mem {a : ℕ} {t : Fin a → ℝ} (ht : t ∈ cn_Reg a) (r : cn_Root a) : 0 < cn_la t r ∧ cn_la t r < 1 := by
   obtain ⟨hm, hb⟩ := ht
@@ -119,7 +117,7 @@ theorem cn_la_mem {a : ℕ} {t : Fin a → ℝ} (ht : t ∈ cn_Reg a) (r : cn_Ro
     exact ⟨h1.1, by show t x < 1; linarith⟩
 
 /- English proof (translation)
-Use `Formalism.HermitianLatticeCounting.Final.S7.nearProduct (cn_Root a) (cn_la t) (cn_dim j n0) n q (∑ x, j x) f de 12 (cn_la_mem ht) hde (by norm_num) (by norm_num) ?_ hq hsm` and prove the remaining obligations. Rewrite using `[cn_sum_dim, ← hn]`. Conclude with `(Formalism.HermitianLatticeCounting.Final.S7.dimIdentity a j n0).2.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cn_cnt_dens_le {a : ℕ} (j : Fin a → ℕ) (n0 f n q : ℕ) (de : ℝ) (hn : n0 + 2 * ∑ x, j x = n) (hq : ∑ x, j x ≤ q)
     (hde : 0 ≤ de) (hsm : de * q * n * f ≤ 1 / 100) {t : Fin a → ℝ} (ht : t ∈ cn_Reg a) :
@@ -130,11 +128,11 @@ theorem cn_cnt_dens_le {a : ℕ} (j : Fin a → ℕ) (n0 f n q : ℕ) (de : ℝ)
   exact (Formalism.HermitianLatticeCounting.Final.S7.dimIdentity a j n0).2.1
 
 /- English proof (translation)
-Establish `h1 : ∀ r, 0 ≤ cn_la t r ^ (cn_dim j n0 r * f) ∧ cn_la t r ^ (cn_dim j n0 r * f) ≤ 1` using `fun r => ⟨pow_nonneg (cn_la_mem ht r).1.le _, pow_le_one₀ (cn_la_mem ht r).1.le (cn_la_mem ht r).2.le⟩`. Unfold `cn_dens`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type (f := fun r : Fin a ⊕ Fin a => _)]`. Establish `hA : ∏ r : {p : Fin a × Fin a // p.1 < p.2} ⊕ {p : Fin a × Fin a // p.1 < p.2}, cn_la t (Sum.inl r) ^ (cn_dim j n0 (Sum.inl r) * f) ≤ 1` using `Finset.prod_le_one (fun r _ => (h1 _).1) fun r _ => (h1 _).2`. Establish `hB : ∏ x : Fin a, cn_la t (Sum.inr (Sum.inl x)) ^ (cn_dim j n0 (Sum.inr (Sum.inl x)) * f) ≤ 1` using `Finset.prod_le_one (fun r _ => (h1 _).1) fun r _ => (h1 _).2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : 0 ≤ ∏ r : {p : Fin a × Fin a // p.1 < p.2} ⊕ {p : Fin a × Fin a // p.1 < p.2}, cn_la t (Sum.inl r) ^ (cn_dim j n0 (Sum.inl r) * f)` using `Finset.prod_nonneg fun r _ => (h1 _).1`. Establish `hB0 : 0 ≤ ∏ x : Fin a, cn_la t (Sum.inr (Sum.inl x)) ^ (cn_dim j n0 (Sum.inr (Sum.inl x)) * f)` using `Finset.prod_nonneg fun r _ => (h1 _).1`. Establish `hC0 : 0 ≤ ∏ x : Fin a, cn_la t (Sum.inr (Sum.inr x)) ^ (cn_dim j n0 (Sum.inr (Sum.inr x)) * f)` using `Finset.prod_nonneg fun r _ => (h1 _).1`. Establish `hC : ∏ x : Fin a, cn_la t (Sum.inr (Sum.inr x)) ^ (cn_dim j n0 (Sum.inr (Sum.inr x)) * f) = ∏ x, t x ^ (2 * j x * n0 * f)` using `rfl`. Rewrite using `[← hC]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cn_dens_le {a : ℕ} (j : Fin a → ℕ) (n0 f : ℕ) {t : Fin a → ℝ} (ht : t ∈ cn_Reg a) :
     cn_dens j n0 f t ≤ ∏ x, t x ^ (2 * j x * n0 * f) := by

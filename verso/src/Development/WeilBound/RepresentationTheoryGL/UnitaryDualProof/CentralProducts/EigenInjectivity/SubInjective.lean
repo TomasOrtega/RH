@@ -15,7 +15,7 @@ section Lin
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun a ha => h a ?_` and prove the remaining obligations. Simplify `ha` using `[sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_injective (f : Module.End ℂ V) (α : ℂ) (h : ∀ a : V, f a = α • a → a = 0) :
     Function.Injective (f - α • (LinearMap.id : V →ₗ[ℂ] V)) := by
@@ -23,15 +23,15 @@ theorem sub_injective (f : Module.End ℂ V) (α : ℂ) (h : ∀ a : V, f a = α
   simpa [sub_eq_zero] using ha
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨⊥, ⊥, inferInstance, inferInstance, by simp, by simp, zero_mem _⟩`. Consider the case `tmul a b`. Take `⟨U₁, h₁, ha, s₁⟩` from `hA a`. Take `⟨U₂, h₂, hb, s₂⟩` from `hB b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U₁, U₂, h₁, h₂, s₁, s₂, ⟨⟨a, ha⟩ ⊗ₜ ⟨b, hb⟩, by simp⟩⟩`. Consider the case `add y z hy hz`. Take `⟨U₁, U₂, h₁, h₂, s₁, s₂, my⟩` from `hy`. Take `⟨U₁', U₂', h₁', h₂', s₁', s₂', mz⟩` from `hz`. Establish `st : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] (F : Module.End ℂ M) (P Q : Submodule ℂ M), (∀ u ∈ P, F u ∈ P) → (∀ u ∈ Q, F u ∈ Q) → ∀ u ∈ P ⊔ Q, F u ∈ P ⊔ Q`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `M _ _ F P Q hP hQ u hu`. Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.1 hu`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hP p hp) (hQ q hq)`. Establish `mono : ∀ (P P' : Submodule ℂ V) (Q Q' : Submodule ℂ W), P ≤ P' → Q ≤ Q' → LinearMap.range (TensorProduct.map P.subtype Q.subtype) ≤ LinearMap.range (TensorProduct.map P'.subtype Q'.subtype)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P P' Q Q' hP hQ`. Establish `: TensorProduct.map P.subtype Q.subtype = TensorProduct.map P'.subtype Q'.subtype ∘ₗ TensorProduct.map (Submodule.inclusion hP) (Submodule.inclusion hQ)`. Rewrite using `[← TensorProduct.map_comp]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `LinearMap.range_comp_le_range _ _`. Conclude with `⟨U₁ ⊔ U₁', U₂ ⊔ U₂', inferInstance, inferInstance, st S _ _ s₁ s₁', st T _ _ s₂ s₂', add_mem (mono _ _ _ _ le_sup_left le_sup_left my) (mono _ _ _ _ le_sup_right le_sup_right mz)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_fin (S : Module.End ℂ V) (T : Module.End ℂ W)
     (hA : ∀ a : V, ∃ U : Submodule ℂ V, FiniteDimensional ℂ U ∧ a ∈ U ∧ ∀ u ∈ U, S u ∈ U)
@@ -68,27 +68,23 @@ theorem exists_fin (S : Module.End ℂ V) (T : Module.End ℂ W)
       add_mem (mono _ _ _ _ le_sup_left le_sup_left my) (mono _ _ _ _ le_sup_right le_sup_right mz)⟩
 
 /- English proof (translation)
-Use `set R := LinearMap.range (TensorProduct.map U₁.subtype U₂.subtype) with hR`. Use `set S' := LinearMap.rTensor W S with hS'`. Use `set T' := LinearMap.lTensor V T with hT'`. Use `set P := TensorProduct.map S T with hP`. Establish `hPST : ∀ z, P z = S' (T' z)` using `fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP, hS', hT', ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor]`. Establish `hPS : ∀ z, P (S' z) = S' (P z)` using `fun z => by`. Establish `: P ∘ₗ S' = S' ∘ₗ P` using `TensorProduct.ext' fun a b => by simp [hP, hS']`. Conclude with `LinearMap.congr_fun this z`. Establish `hRS : ∀ z ∈ R, S' z ∈ R`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Use `⟨TensorProduct.map (S.restrict h₁) LinearMap.id z, ?_⟩` and prove the remaining obligations. Establish `: TensorProduct.map U₁.subtype U₂.subtype ∘ₗ TensorProduct.map (S.restrict h₁) LinearMap.id = S' ∘ₗ TensorProduct.map U₁.subtype U₂.subtype` using `TensorProduct.ext' fun a b => by simp [hS', LinearMap.restrict_apply]`. Conclude with `LinearMap.congr_fun this z`. Set `E : Submodule ℂ (V ⊗[ℂ] W)` to `R ⊓ LinearMap.ker (P - c • LinearMap.id)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `memE : ∀ z, z ∈ E ↔ z ∈ R ∧ P z = c • z` using `fun z => by`. Simplify using `[E, sub_eq_zero]`. Establish `hES : ∀ z ∈ E, S' z ∈ E` using `fun z hz => by`. Rewrite `hz`, the goal using `[memE]`. Conclude with `⟨hRS z hz.1, by rw [hPS, hz.2, map_smul]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: FiniteDimensional ℂ R` using `LinearMap.finiteDimensional_range _`. Establish `: FiniteDimensional ℂ E` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hyE : y ∈ E` using `(memE y).2 ⟨hy, hc⟩`. Establish `: Nontrivial E` using `⟨⟨⟨y, hyE⟩, 0, fun h => hy0 (congrArg Subtype.val h)⟩⟩`. Take `⟨α, hα⟩` from `Module.End.exists_eigenvalue (S'.restrict hES)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hα.exists_hasEigenvector`. Establish `hv1 : S' v.1 = α • v.1`. Use `Module.End.mem_eigenspace_iff.1 hv.1` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hv0 : v.1 ≠ 0` using `fun h => hv.2 (Subtype.ext h)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hv2 : P v.1 = c • v.1` using `((memE _).1 v.2).2`. Establish `hS'inj : Function.Injective S'` using `Module.Flat.rTensor_preserves_injective_linearMap S hS`. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv0 (hS'inj (by rw [hv1, zero_smul, map_zero]))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hT1 : T' v.1 = (c / α) • v.1`. Apply `hS'inj` to reduce the goal to its premises. Rewrite using `[← hPST, hv2, map_smul, hv1, smul_smul, div_mul_cancel₀ _ hα0]`. Use `⟨α, c / α, (mul_div_cancel₀ _ hα0).symm, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno push Not at hno`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hinj` using `sub_injective S α fun a ha => by`. Assume the negation of the conclusion as `h0`. Conclude with `hno a h0 ha`. Establish `h3` using `Module.Flat.rTensor_preserves_injective_linearMap (M := W) _ hinj`. Establish `h4 : LinearMap.rTensor W (S - α • LinearMap.id) v.1 = 0`.
-
-Rewrite using `[LinearMap.rTensor_sub, LinearMap.rTensor_smul, LinearMap.rTensor_id, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, ← hS', hv1, sub_self]`. Conclude with `hv0 (h3 (by rw [h4, map_zero]))`. Assume the negation of the conclusion as `hno push Not at hno`. Establish `hinj` using `sub_injective T (c / α) fun b hb => by`. Assume the negation of the conclusion as `h0`.
-
-Conclude with `hno b h0 hb`. Establish `h3` using `Module.Flat.lTensor_preserves_injective_linearMap (M := V) _ hinj`. Establish `h4 : LinearMap.lTensor V (T - (c / α) • LinearMap.id) v.1 = 0`. Rewrite using `[LinearMap.lTensor_sub, LinearMap.lTensor_smul, LinearMap.lTensor_id, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, ← hT', hT1, sub_self]`. Conclude with `hv0 (h3 (by rw [h4, map_zero]))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_eig (S : Module.End ℂ V) (T : Module.End ℂ W) (hS : Function.Injective S)
     (U₁ : Submodule ℂ V) (U₂ : Submodule ℂ W) [FiniteDimensional ℂ U₁] [FiniteDimensional ℂ U₂]
@@ -161,23 +157,21 @@ end Lin
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `r t A B _ _ hA hB x c f hf hfc`. Establish `hinj : ∀ {n : ℕ} (C : GRep k n), Function.Injective (C.ρ (sc n x))` using `fun {n} C => by`. Use `Function.LeftInverse.injective (g := C.ρ (sc n x⁻¹)) fun a => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Module.End.one_apply]`. Establish `h1 : leviEmb k (two (stdSum (rfl : r + t = r + t))) (fun a => GeneralLinearGroup.scalar (Two (Fin r) (Fin t) a) x) = sc (r + t) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Take `⟨⟨b, y⟩, rfl⟩` from `(two (stdSum (rfl : r + t = r + t))).surjective i`. Take `⟨⟨b', y'⟩, rfl⟩` from `(two (stdSum (rfl : r + t = r + t))).surjective j`. Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[leviEmb_apply_same]`. Simplify using `[GeneralLinearGroup.scalar, diagonal_apply]`. Rewrite using `[leviEmb_apply_ne _ _ _ hb]`. Simplify using `[hb]`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, f.1.1 g ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hf (Subtype.ext (Subtype.ext (funext h)))`. Establish `hc : f.1.1 (g * sc (r + t) x) = c • f.1.1 g` using `congrArg (fun F : (A.prod B).V => F.1.1 g) hfc`. Establish `hcomm : g * sc (r + t) x = sc (r + t) x * g`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[mul_comm]`. Establish `h5` using `parInd_law (two (stdSum (rfl : r + t = r + t))) (piTensor (twoRep A.ρ B.ρ)) f ⟨_, leviEmb_mem_parab k _ (fun a => GeneralLinearGroup.scalar (Two (Fin r) (Fin t) a) x)⟩ g`. Rewrite `h5` using `[leviProj_leviEmb, GlobalTheory.CentralSupport.deltaHalf_scalar]`. Establish `h6 : piTensor (twoRep A.ρ B.ρ) (fun a => GeneralLinearGroup.scalar (Two (Fin r) (Fin t) a) x) (f.1.1 g) = c • f.1.1 g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h7 : f.1.1 (leviEmb k (two (stdSum (rfl : r + t = r + t))) (fun a => GeneralLinearGroup.scalar (Two (Fin r) (Fin t) a) x) * g) = c • f.1.1 g`. Rewrite using `[h1, ← hcomm]`. Conclude with `hc`. Rewrite `h7` using `[h5]`. Simplify using `using h7`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `htr : ∀ z, Exponents.boolTensorEquiv (X` using `TwoT A.V B.V) (piTensor (twoRep A.ρ B.ρ) (fun a => GeneralLinearGroup.scalar (Two (Fin r) (Fin t) a) x) z) = TensorProduct.map (A.ρ (sc r x)) (B.ρ (sc t x)) (Exponents.boolTensorEquiv (X := TwoT A.V B.V) z) := by`. Introduce `z`. Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `add z w hz hw => rw [map_add, map_add, hz, hw, map_add, map_add]`. Consider the case `smul_tprod s z`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_smul, map_smul, map_smul, map_smul, piTensor_tprod, Exponents.boolTensorEquiv_tprod, Exponents.boolTensorEquiv_tprod, TensorProduct.map_tmul]`. Both sides reduce to the same expression. Use `set y := Exponents.boolTensorEquiv (X := TwoT A.V B.V) (f.1.1 g) with hy`. Establish `hy0 : y ≠ 0`. Rewrite using `[hy]`.
-
-Conclude with `(LinearEquiv.map_ne_zero_iff _).2 hg`. Establish `hyc : TensorProduct.map (A.ρ (sc r x)) (B.ρ (sc t x)) y = c • y`. Rewrite using `[hy, ← htr, h6, map_smul]`. Take `⟨U₁, U₂, fd₁, fd₂, s₁, -, hmem⟩` from `exists_fin (A.ρ (sc r x)) (B.ρ (sc t x)) (fun a => by obtain ⟨U, h, ha, hs⟩ := hA a; exact ⟨U, h, ha, fun u hu => hs x u hu⟩) (fun b => by obtain ⟨U, h, hb, hs⟩ := hB b; exact ⟨U, h, hb, fun u hu => hs x u hu⟩) y`. Conclude with `tensor_eig _ _ (hinj A) U₁ U₂ s₁ y hmem hy0 c hyc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eigProd : EigProd k := by
   intro r t A B _ _ hA hB x c f hf hfc
@@ -236,15 +230,13 @@ theorem eigProd : EigProd k := by
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Introduce `n V _ _ ρ ℓ F hF h0 hℓ x c v hv hvc`. Establish `hex : ∃ j, v ∉ (F (j + 1)).toSubmodule` using `⟨ℓ, by`. Rewrite using `[hℓ]`. Introduce `h`. Conclude with `hv ((Submodule.mem_bot ℂ).1 h)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set j := Nat.find hex with hjdef`. Establish `hj : v ∉ (F (j + 1)).toSubmodule` using `Nat.find_spec hex`. Establish `hvj : v ∈ (F j).toSubmodule`. Break down `hjj : j with _ | j'` into its components or cases. Rewrite using `[h0]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_top`. Use `Nat.find_min hex (show j' < Nat.find hex by omega) push Not at this` as an intermediate fact. Conclude with `this`. Use `⟨j, Nat.find_min' hex (show v ∉ (F (ℓ + 1)).toSubmodule from ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[hℓ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `h`. Conclude with `hv ((Submodule.mem_bot ℂ).1 h)`. Use `⟨Submodule.Quotient.mk ⟨v, hvj⟩, fun h => hj (Submodule.mem_comap.1 ((Submodule.Quotient.mk_eq_zero _).1 h)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `show Submodule.Quotient.mk (⟨ρ (sc n x) v, _⟩ : (F j).toSubmodule) = _`.
-
-Use `congr 1`. Conclude with `Subtype.ext hvc`.
+A detailed English derivation is pending.
 -/
 theorem eigFilt : EigFilt k := by
   intro n V _ _ ρ ℓ F hF h0 hℓ x c v hv hvc

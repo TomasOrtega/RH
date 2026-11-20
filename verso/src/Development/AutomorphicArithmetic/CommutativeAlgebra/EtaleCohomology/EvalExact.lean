@@ -5,7 +5,7 @@ open CategoryTheory
 namespace UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Establish `hB` using `h.map_of_exact ((evaluation C AddCommGrpCat.{1}).obj B)`. Establish `hm` using `hB.mono_f`. Establish `he` using `hB.epi_g`. Conclude with `⟨(ShortComplex.ab_exact_iff_function_exact _).1 hB.exact, (AddCommGrpCat.mono_iff_injective _).1 hm, (AddCommGrpCat.epi_iff_surjective _).1 he⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private lemma evalExact {C : Type 1} [Category.{0} C] (S : ShortComplex (Coef C))
     (h : S.ShortExact) (B : C) :
@@ -20,25 +20,21 @@ private lemma evalExact {C : Type 1} [Category.{0} C] (S : ShortComplex (Coef C)
 end UpperTheory.Ru.crystallineComparison
 
 /- English proof (translation)
-Introduce `C _ Pa S hS h1 h2 A T hT`. Establish `ex` using `fun B => UpperTheory.Ru.crystallineComparison.evalExact S hS B`. Establish `natf : ∀ (i : T.ι) (z : S.X₁.obj A), (S.f.app (T.B i)).hom ((S.X₁.map (T.f i)).hom z) = (S.X₂.map (T.f i)).hom ((S.f.app A).hom z)`. Introduce `i z`. Use `congrArg (fun φ => φ.hom z) (S.f.naturality (T.f i))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `natg : ∀ (i : T.ι) (y : S.X₂.obj A), (S.g.app (T.B i)).hom ((S.X₂.map (T.f i)).hom y) = (S.X₃.map (T.f i)).hom ((S.g.app A).hom y)`. Introduce `i y`. Use `congrArg (fun φ => φ.hom y) (S.g.naturality (T.f i))` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `inj0 : ∀ x : S.X₃.obj A, (∀ i, (S.X₃.map (T.f i)).hom x = 0) → x = 0`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(ex A).2.2 x`. Establish `hz : ∀ i, ∃ z : S.X₁.obj (T.B i), (S.f.app (T.B i)).hom z = (S.X₂.map (T.f i)).hom y`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (S.g.app (T.B i)).hom ((S.X₂.map (T.f i)).hom y) = 0`. Rewrite using `[natg]`. Conclude with `hx i`. Conclude with `((ex (T.B i)).1 _).1 this`. Use `choose z hz using hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨w, hw⟩` from `(h1 A T hT).2 z`. Establish `hy : y = (S.f.app A).hom w`. Apply `(h2 A T hT).1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show (S.X₂.map (T.f i)).hom y = (S.X₂.map (T.f i)).hom ((S.f.app A).hom w)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← natf, ← hz i]`. Conclude with `congrArg _ (congrFun hw i).symm`. Rewrite using `[hy]`. Conclude with `((ex A).1 _).2 ⟨w, rfl⟩`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x x' e`. Rewrite using `[← sub_eq_zero]`. Apply `inj0` to reduce the goal to its premises. Introduce `i`. Use `congrFun e i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at this`. Rewrite using `[map_sub, this, sub_self]`. Introduce `v`. Establish `hy : ∀ i, ∃ y : S.X₂.obj (T.B i), (S.g.app (T.B i)).hom y = v i` using `fun i => (ex (T.B i)).2.2 (v i)`. Use `choose y hy using hy`.
-
-Take `⟨w, hw⟩` from `(h2 A T hT).2 y`. Use `⟨(S.g.app A).hom w, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (S.X₃.map (T.f i)).hom ((S.g.app A).hom w) = v i`. Rewrite using `[← natg, ← hy i]`.
-
-Conclude with `congrArg _ (congrFun hw i)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.quotAdd :
     UpperTheory.Ru.crystallineComparison.QuotAdd := by

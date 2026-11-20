@@ -14,28 +14,28 @@ set_option linter.unusedSectionVars false
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Rewrite using `[frQ, Matrix.mul_assoc, ← Matrix.transpose_mul, incM_mul_inv, Matrix.transpose_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frQ_mul_frame {m k : ℕ} (c : GL (Fin k ⊕ Fin k) E) (w : Matrix (Fin m) (Fin k ⊕ Fin k) (AE F E)) :
     frQ c w * (incM F c.1)ᵀ = w := by
   rw [frQ, Matrix.mul_assoc, ← Matrix.transpose_mul, incM_mul_inv, Matrix.transpose_one, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[frQ, Matrix.mul_assoc, ← Matrix.transpose_mul, incM_inv_mul, Matrix.transpose_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frQ_of {m k : ℕ} (c : GL (Fin k ⊕ Fin k) E) (Q : Matrix (Fin m) (Fin k ⊕ Fin k) (AE F E)) :
     frQ c (Q * (incM F c.1)ᵀ) = Q := by
   rw [frQ, Matrix.mul_assoc, ← Matrix.transpose_mul, incM_inv_mul, Matrix.transpose_one, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[← frQ_mul_frame c w, ← frQ_mul_frame c w', e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frQ_injective {m k : ℕ} (c : GL (Fin k ⊕ Fin k) E) {w w' : Matrix (Fin m) (Fin k ⊕ Fin k) (AE F E)}
     (e : frQ c w = frQ c w') : w = w' := by
   rw [← frQ_mul_frame c w, ← frQ_mul_frame c w', e]
 
 /- English proof (translation)
-Establish `e1 : incM F c.1 = Matrix.fromCols (incM F c.1.toCols₁) (incM F c.1.toCols₂)`. Use extensionality with `i j`. Apply the tactic sequence `rcases j with j | j <;> rfl`. Use `conv_lhs => rw [← Matrix.fromCols_toCols Q, e1, Matrix.transpose_fromCols, Matrix.fromCols_mul_fromRows]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem split_frame {m k : ℕ} (c : GL (Fin k ⊕ Fin k) E) (Q : Matrix (Fin m) (Fin k ⊕ Fin k) (AE F E)) :
     Q * (incM F c.1)ᵀ = Q.toCols₁ * (incM F c.1.toCols₁)ᵀ + Q.toCols₂ * (incM F c.1.toCols₂)ᵀ := by
@@ -45,7 +45,7 @@ theorem split_frame {m k : ℕ} (c : GL (Fin k ⊕ Fin k) E) (Q : Matrix (Fin m)
   conv_lhs => rw [← Matrix.fromCols_toCols Q, e1, Matrix.transpose_fromCols, Matrix.fromCols_mul_fromRows]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← frQ_mul_frame c w, split_frame]`. Conclude with `hd _ _`.
+A detailed English derivation is pending.
 -/
 theorem adapted_e {m k : ℕ} {bs : Module.Basis (Fin 2) F E} {A : Spc F E m} {Y : Spc F E k} {c : GL (Fin k ⊕ Fin k) E}
     {dd : Darboux (symp (R := AF F) (cA σ) (-1) (incM F A.J) (dbl (incM F Y.J))) (Fin m × Fin k × Fin 2)}
@@ -59,11 +59,11 @@ def embQ {R : Type*} [Zero R] {m n N : ℕ} (h : n + 1 = N) (Q : Matrix (Fin m) 
   (Matrix.fromCols Q (0 : Matrix (Fin m) (Fin 1 ⊕ Fin 1) R)).submatrix id (eB h)
 
 /- English proof (translation)
-Use extensionality with `a i`. Break down `idx_cases h (Sum.inl i) with ⟨u, hu⟩ | hu | hu` into its components or cases. Break down `u with u | u` into its components or cases. Simplify using `only [Sum.map_inl, Sum.inl.injEq] at hu`. Substitute `hu` using the available equality.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only [Matrix.toCols₁, Matrix.of_apply, embQ, Matrix.submatrix_apply, id_eq]`. Rewrite using `[show (Sum.inl (em0 h u) : Fin N ⊕ Fin N) = Sum.map (em0 h) (em0 h) (Sum.inl u) from rfl, eB_map]`. Simplify using `[ext0, em0]`. Simplify using `at hu`. Simplify using `only [Sum.inl.injEq] at hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hu` using the available equality. Simplify using `only [Matrix.toCols₁, Matrix.of_apply, embQ, Matrix.submatrix_apply, id_eq, block_index_inl_last]`. Simplify using `[ext0, i0]`. Simplify using `at hu`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem embQ_toCols₁ {m n N : ℕ} (h : n + 1 = N) (Q : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) :
     (embQ h Q).toCols₁ = ext0 h Q.toCols₁ := by
@@ -83,11 +83,11 @@ theorem embQ_toCols₁ {m n N : ℕ} (h : n + 1 = N) (Q : Matrix (Fin m) (Fin n 
   · simp at hu
 
 /- English proof (translation)
-Use extensionality with `a i`. Break down `idx_cases h (Sum.inr i) with ⟨u, hu⟩ | hu | hu` into its components or cases. Break down `u with u | u` into its components or cases. Simplify using `at hu`. Simplify using `only [Sum.map_inr, Sum.inr.injEq] at hu`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hu` using the available equality. Simplify using `only [Matrix.toCols₂, Matrix.of_apply, embQ, Matrix.submatrix_apply, id_eq]`. Rewrite using `[show (Sum.inr (em0 h u) : Fin N ⊕ Fin N) = Sum.map (em0 h) (em0 h) (Sum.inr u) from rfl, eB_map]`. Simplify using `[ext0, em0]`. Simplify using `at hu`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.inr.injEq] at hu`. Substitute `hu` using the available equality. Simplify using `only [Matrix.toCols₂, Matrix.of_apply, embQ, Matrix.submatrix_apply, id_eq, block_index_inr_last]`. Simplify using `[ext0, i0]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem embQ_toCols₂ {m n N : ℕ} (h : n + 1 = N) (Q : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) :
     (embQ h Q).toCols₂ = ext0 h Q.toCols₂ := by
@@ -107,21 +107,21 @@ theorem embQ_toCols₂ {m n N : ℕ} (h : n + 1 = N) (Q : Matrix (Fin m) (Fin n 
     simp [ext0, i0]
 
 /- English proof (translation)
-Rewrite using `[split_frame, embQ_toCols₁, embQ_toCols₂, emb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_eq {m n N : ℕ} (h : n + 1 = N) (b : GL (Fin n ⊕ Fin n) E) (bd : GL (Fin N ⊕ Fin N) E)
     (w : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) : emb h b bd w = embQ h (frQ b w) * (incM F bd.1)ᵀ := by
   rw [split_frame, embQ_toCols₁, embQ_toCols₂, emb]
 
 /- English proof (translation)
-Rewrite using `[emb_eq, frQ_of]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frQ_emb {m n N : ℕ} (h : n + 1 = N) (b : GL (Fin n ⊕ Fin n) E) (bd : GL (Fin N ⊕ Fin N) E)
     (w : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E)) : frQ bd (emb h b bd w) = embQ h (frQ b w) := by
   rw [emb_eq, frQ_of]
 
 /- English proof (translation)
-Rewrite using `[blk_transpose]`. Simplify using `only [embQ, blk]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromCols_mul_fromBlocks]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem embQ_mul_blk {m n N : ℕ} (h : n + 1 = N) (Q : Matrix (Fin m) (Fin n ⊕ Fin n) (AE F E))
     (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) : embQ h Q * (blk h M 1)ᵀ = embQ h (Q * Mᵀ) := by
@@ -131,7 +131,7 @@ theorem embQ_mul_blk {m n N : ℕ} (h : n + 1 = N) (Q : Matrix (Fin m) (Fin n �
   simp
 
 /- English proof (translation)
-Establish `e : x.1.1 = incM F c.1 * inFrame c x * incM F (c⁻¹).1`. Rewrite using `[inFrame_eq, ← Matrix.mul_assoc, ← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul, Matrix.mul_assoc, incM_mul_inv, Matrix.mul_one]`. Rewrite using `[frQ, frQ, e]`. Simplify using `only [Matrix.transpose_mul, ← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc _ (incM F c.1)ᵀ, ← Matrix.transpose_mul, incM_inv_mul, Matrix.transpose_one, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frQ_mul_mat {m k : ℕ} {Y : Spc F E k} (c : GL (Fin k ⊕ Fin k) E) (x : G2 σ Y)
     (w : Matrix (Fin m) (Fin k ⊕ Fin k) (AE F E)) : frQ c (w * (x.1.1)ᵀ) = frQ c w * (inFrame c x)ᵀ := by

@@ -11,7 +11,7 @@ open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `fock`. Use `Finset.sum_subset hs ?_` and prove the remaining obligations. Introduce `m _ hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, not_not]`. Simplify using `[hm]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fock_form_finset_sum {σ : Type} (F G : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)) (hs : F.support ⊆ s) :
     fock F G = ∑ m ∈ s, F.coeff m * G.coeff m * (expFact m : K) := by
@@ -22,7 +22,7 @@ theorem fock_form_finset_sum {σ : Type} (F G : MvPolynomial σ K) (s : Finset (
   simp [hm]
 
 /- English proof (translation)
-Rewrite using `[fock_form_finset_sum F G (F.support ∪ G.support) Finset.subset_union_left, fock_form_finset_sum G F (F.support ∪ G.support) Finset.subset_union_right]`. Conclude with `Finset.sum_congr rfl (fun m _ => by ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_form_symm {σ : Type} (F G : MvPolynomial σ K) : fock F G = fock G F := by
   classical
@@ -31,7 +31,7 @@ theorem fock_form_symm {σ : Type} (F G : MvPolynomial σ K) : fock F G = fock G
   exact Finset.sum_congr rfl (fun m _ => by ring)
 
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun m _ => by rw [MvPolynomial.coeff_add]; ring)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_form_add_right {σ : Type} (F G G' : MvPolynomial σ K) : fock F (G + G') = fock F G + fock F G' := by
   unfold fock
@@ -39,7 +39,7 @@ theorem fock_form_add_right {σ : Type} (F G G' : MvPolynomial σ K) : fock F (G
   exact Finset.sum_congr rfl (fun m _ => by rw [MvPolynomial.coeff_add]; ring)
 
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun m _ => by rw [MvPolynomial.coeff_smul, smul_eq_mul]; ring)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_form_smul_right {σ : Type} (c : K) (F G : MvPolynomial σ K) : fock F (c • G) = c • fock F G := by
   unfold fock
@@ -60,7 +60,7 @@ Both sides reduce to the same expression.
 theorem fockBilinear_apply {σ : Type} (F G : MvPolynomial σ K) : fockBilinear K σ F G = fock F G := rfl
 
 /- English proof (translation)
-Rewrite using `[fock_form_finset_sum _ G {m} MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_form_monomial {σ : Type} (m : σ →₀ ℕ) (c : K) (G : MvPolynomial σ K) :
     fock (monomial m c) G = c * G.coeff m * (expFact m : K) := by
@@ -69,9 +69,9 @@ theorem fock_form_monomial {σ : Type} (m : σ →₀ ℕ) (c : K) (G : MvPolyno
     MvPolynomial.coeff_monomial, if_pos rfl]
 
 /- English proof (translation)
-Unfold `expFact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Fintype.prod_eq_mul_prod_compl v, Fintype.prod_eq_mul_prod_compl v (fun i => (u i).factorial)]`. Establish `h1 : ∀ i ∈ ({v}ᶜ : Finset σ), ((u + Finsupp.single v 1 : σ →₀ ℕ) i).factorial = (u i).factorial`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_compl, Finset.mem_singleton]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Finsupp.single_apply, Ne.symm hi]`. Rewrite using `[Finset.prod_congr rfl h1]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exponent_factorial_add_single_one {σ : Type} [Fintype σ] (u : σ →₀ ℕ) (v : σ) :
     expFact (u + Finsupp.single v 1) = (u v + 1) * expFact u := by
@@ -90,15 +90,15 @@ theorem exponent_factorial_add_single_one {σ : Type} [Fintype σ] (u : σ →�
   ring
 
 /- English proof (translation)
-Establish `addL : ∀ A B C : MvPolynomial σ K, fock (A + B) C = fock A C + fock B C`. Introduce `A B C`. Rewrite using `[fock_form_symm, fock_form_add_right, fock_form_symm C A, fock_form_symm C B]`. Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial m c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial n d`. Rewrite using `[MvPolynomial.X, MvPolynomial.monomial_mul, one_mul, MvPolynomial.pderiv_monomial, fock_form_monomial, fock_form_monomial, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial, add_comm (Finsupp.single v 1) m, exponent_factorial_add_single_one]`. Distinguish the cases in `h : n = m + Finsupp.single v 1`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [add_tsub_cancel_right, if_true, Finsupp.add_apply, Finsupp.single_eq_same]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h]`. Distinguish the cases in `h' : n - Finsupp.single v 1 = m`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hv : n v = 0`. Assume the negation of the conclusion as `hv`. Apply `h` to reduce the goal to its premises. Rewrite using `[← h', tsub_add_cancel_of_le]`. Conclude with `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hv)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h', hv]`. Simplify using `[h']`. Consider the case `add G1 G2 h1 h2 => rw [fock_form_add_right, map_add, fock_form_add_right, h1, h2]`. Consider the case `add F1 F2 h1 h2 => rw [mul_add, addL, addL, h1, h2]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fock_mul_adjoint_pderiv {σ : Type} [Fintype σ] (v : σ) (F G : MvPolynomial σ K) :
     fock (X v * F) G = fock F (pderiv v G) := by
@@ -131,16 +131,16 @@ theorem fock_mul_adjoint_pderiv {σ : Type} [Fintype σ] (v : σ) (F G : MvPolyn
   | add F1 F2 h1 h2 => rw [mul_add, addL, addL, h1, h2]
 
 /- English proof (translation)
-Rewrite using `[fock_form_symm, ← fock_mul_adjoint_pderiv, fock_form_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_pderiv_adjoint_mul {σ : Type} [Fintype σ] (v : σ) (F G : MvPolynomial σ K) :
     fock (pderiv v F) G = fock F (X v * G) := by
   rw [fock_form_symm, ← fock_mul_adjoint_pderiv, fock_form_symm]
 
 /- English proof (translation)
-Simplify using `only [glOps, glAct, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Use `split_ifs with h1 h2`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, fockBilinear_apply]`. Rewrite using `[fock_mul_adjoint_pderiv, fock_pderiv_adjoint_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.neg_apply, map_neg, LinearMap.comp_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, fockBilinear_apply]`. Rewrite using `[fock_mul_adjoint_pderiv, fock_pderiv_adjoint_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_form_contravariant (LL : Letters ι) (S : Set ι) (a b : Fin n) (F G : MvPolynomial (ι × Fin n) K) :
     fockBilinear K (ι × Fin n) (glOps K n LL S a b F) G = fockBilinear K (ι × Fin n) F (glOps K n LL S b a G) := by
@@ -156,7 +156,7 @@ theorem fock_form_contravariant (LL : Letters ι) (S : Set ι) (a b : Fin n) (F 
   · simp
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n LL`. Conclude with `⟨fun S => polynomial_isGLRep LL S, fun S S' hd a b c d => disjoint_letters_commute LL S S' hd a b c d, fun S S' hs a b => gl_operator_union_add LL S S' hs a b, fun S d a b F hF => gl_operator_preserves_multidegree LL S d a b F hF, fun d => homogeneous_multidegree_findim d, fun S …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem polynomial_representation_holds : PolynomialGLRepresentation := by
   intro K _ _ ι _ n LL

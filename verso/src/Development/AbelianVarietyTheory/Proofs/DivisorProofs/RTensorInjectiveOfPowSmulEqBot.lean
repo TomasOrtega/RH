@@ -5,7 +5,7 @@ open TensorProduct LinearMap Function
 namespace GlobalTheory.NilpotentFlat
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, rTensor_comp_lTensor, lTensor_comp_rTensor]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rTensor_lTensor_apply {R : Type} [CommRing R] {M M' A A' : Type} [AddCommGroup M]
     [Module R M] [AddCommGroup M'] [Module R M'] [AddCommGroup A] [Module R A] [AddCommGroup A']
@@ -14,13 +14,13 @@ theorem rTensor_lTensor_apply {R : Type} [CommRing R] {M M' A A' : Type} [AddCom
   rw [← LinearMap.comp_apply, ← LinearMap.comp_apply, rTensor_comp_lTensor, lTensor_comp_rTensor]
 
 /- English proof (translation)
-Set `e'` to `AlgebraTensorModule.cancelBaseChange A C C N' M`. Set `e` to `AlgebraTensorModule.cancelBaseChange A C C N M`. Establish `h1 : Injective (ι.rTensor (C ⊗[A] M))` using `Module.Flat.rTensor_preserves_injective_linearMap ι hι`. Establish `key : ∀ z, (ι.restrictScalars A).rTensor M (e' z) = e (ι.rTensor (C ⊗[A] M) z)`. Introduce `z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul n t`. Proceed by induction on `t with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb]`. Consider the case `tmul c b => simp [e, e']`. Introduce `x y h`. Take `⟨x, rfl⟩` from `e'.surjective x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `e'.surjective y`. Rewrite `h` using `[key, key]`. Rewrite using `[h1 (e.injective h)]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rTensor_injective_of_flat_baseChange {A C M N' N : Type} [CommRing A] [CommRing C]
     [Algebra A C] [AddCommGroup M] [Module A M] [Module.Flat C (C ⊗[A] M)]
@@ -48,13 +48,13 @@ theorem rTensor_injective_of_flat_baseChange {A C M N' N : Type} [CommRing A] [C
   rw [h1 (e.injective h)]
 
 /- English proof (translation)
-Set `e'` to `AlgebraTensorModule.cancelBaseChange A C C F N'`. Set `e` to `AlgebraTensorModule.cancelBaseChange A C C F N`. Establish `hι' : Injective (ι.baseChange C)` using `(LinearMap.lTensor_inj_iff_rTensor_inj (M := C) ι).mpr hι`. Establish `h1 : Injective ((ι.baseChange C).lTensor F)` using `Module.Flat.lTensor_preserves_injective_linearMap _ hι'`. Establish `key : ∀ z, ι.lTensor F (e' z) = e ((ι.baseChange C).lTensor F z)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul n t`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb]`. Consider the case `tmul c b => simp [e, e']`. Introduce `x y h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `e'.surjective x`. Take `⟨y, rfl⟩` from `e'.surjective y`. Rewrite `h` using `[key, key]`. Rewrite using `[h1 (e.injective h)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lTensor_injective_of_flat {A C F N' N : Type} [CommRing A] [CommRing C] [Algebra A C]
     [AddCommGroup F] [Module A F] [Module C F] [IsScalarTower A C F] [Module.Flat C F]
@@ -84,9 +84,9 @@ theorem lTensor_injective_of_flat {A C F N' N : Type} [CommRing A] [CommRing C] 
 variable {B : Type} [CommRing B]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h2 : g₂.lTensor K x = 0`. Apply `(injective_iff_map_eq_zero _).mp h₃` to reduce the goal to its premises. Rewrite using `[rTensor_lTensor_apply, hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x₁, rfl⟩` from `(lTensor_exact K hg hg₂ x).mp h2`. Establish `h4 : i.rTensor N₁ x₁ = 0`. Apply `(injective_iff_map_eq_zero _).mp (Module.Flat.lTensor_preserves_injective_linearMap (M := L) g₁ hg₁)` to reduce the goal to its premises. Rewrite using `[← rTensor_lTensor_apply, hx]`. Simplify using `[(injective_iff_map_eq_zero _).mp h₁ _ h4]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rTensor_injective_of_extension {K L : Type} [AddCommGroup K] [Module B K]
     [AddCommGroup L] [Module B L] [Module.Flat B L] (i : K →ₗ[B] L)
@@ -108,7 +108,7 @@ theorem rTensor_injective_of_extension {K L : Type} [AddCommGroup K] [Module B K
   simp [(injective_iff_map_eq_zero _).mp h₁ _ h4]
 
 /- English proof (translation)
-Establish `h` using `lTensor_injective_of_exact_of_exact_of_rTensor_injective (LinearMap.exact_subtype_mkQ I) (Submodule.mkQ_surjective I) hex hπ hIM (Module.Flat.lTensor_preserves_injective_linearMap (M := B) i hi)`. Conclude with `(lTensor_inj_iff_rTensor_inj (B ⧸ I) i).mp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rTensor_injective_quotient (I : Ideal B) {K L M : Type} [AddCommGroup K] [Module B K]
     [AddCommGroup L] [Module B L] [AddCommGroup M] [Module B M] (i : K →ₗ[B] L) (π : L →ₗ[B] M)
@@ -120,7 +120,7 @@ theorem rTensor_injective_quotient (I : Ideal B) {K L M : Type} [AddCommGroup K]
   exact (lTensor_inj_iff_rTensor_inj (B ⧸ I) i).mp h
 
 /- English proof (translation)
-Set `p : (N →₀ (B ⧸ I)) →ₗ[B ⧸ I] N` to `Finsupp.linearCombination (B ⧸ I) id`. Establish `hp : Surjective p` using `fun n => ⟨Finsupp.single n 1, by simp [p]⟩`. Establish `h` using `lTensor_injective_of_exact_of_exact_of_rTensor_injective (f₁ := (LinearMap.ker p).subtype.restrictScalars B) (f₂ := p.restrictScalars B) (LinearMap.exact_subtype_ker_map p) hp hex hπ (rTensor_injective_of_flat_baseChange (LinearMap.ker p).subtype (Submodule.injective_subtype _)) …`. Conclude with `(lTensor_inj_iff_rTensor_inj N i).mp h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rTensor_injective_of_quotient_module (I : Ideal B) {K L M : Type} [AddCommGroup K]
     [Module B K] [AddCommGroup L] [Module B L] [AddCommGroup M] [Module B M] (i : K →ₗ[B] L)
@@ -138,15 +138,15 @@ theorem rTensor_injective_of_quotient_module (I : Ideal B) {K L M : Type} [AddCo
   exact (lTensor_inj_iff_rTensor_inj N i).mp h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `N _ _ hN`. Establish `h0 : ∀ x : N, x = 0` using `fun x => by`. Establish `hx : x ∈ (I ^ 0 • ⊤ : Submodule B N)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hx` using `[hN]`. Simplify using `using hx`. Establish `hz : ∀ z : K ⊗[B] N, z = 0` using `fun z => by`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Proceed by induction on `z with`. Consider the case `zero => rfl`. Consider the case `tmul k x => rw [h0 x, tmul_zero]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Introduce `a b _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hz a, hz b]`. Consider the case `succ n ih`. Introduce `N _ _ hN`. Set `S : Submodule B N` to `I • ⊤`. Use `rTensor_injective_of_extension i S.subtype S.mkQ (LinearMap.exact_subtype_mkQ S) S.injective_subtype (Submodule.mkQ_surjective S) (ih S ?_) (hbase (N ⧸ S))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Submodule.map_injective_of_injective S.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_smul'', Submodule.map_bot, Submodule.map_subtype_top, ← Submodule.mul_smul, ← pow_succ, hN]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rTensor_injective_of_pow_smul_eq_bot (I : Ideal B) {K L : Type} [AddCommGroup K]
     [Module B K] [AddCommGroup L] [Module B L] [Module.Flat B L] (i : K →ₗ[B] L)
@@ -179,13 +179,13 @@ theorem rTensor_injective_of_pow_smul_eq_bot (I : Ideal B) {K L : Type} [AddComm
       ← pow_succ, hN]
 
 /- English proof (translation)
-Introduce `B _ I hI M _ _ hflat hinj`. Take `⟨n, hn⟩` from `hI`. Set `π : (M →₀ B) →ₗ[B] M` to `Finsupp.linearCombination B id`. Establish `hπ : Surjective π` using `fun m => ⟨Finsupp.single m 1, by simp [π]⟩`. Set `K` to `LinearMap.ker π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hex : Exact K.subtype π` using `LinearMap.exact_subtype_ker_map π`. Establish `hIM : Injective (I.subtype.rTensor M)`. Establish `e : TensorProduct.lift ((LinearMap.lsmul B M).comp I.subtype) = (TensorProduct.lid B M).toLinearMap ∘ₗ I.subtype.rTensor M`. Use extensionality with `a m`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `hinj` using `[e, LinearMap.coe_comp]`. Conclude with `hinj.of_comp`. Set `e : ((B ⧸ I) ⊗[B] M) ≃ₗ[B ⧸ I] (M ⧸ (I • ⊤ : Submodule B M))` to `(TensorProduct.quotTensorEquivQuotSMul M I).extendScalarsOfSurjective Ideal.Quotient.mk_surjective`. Use `haveI : Module.Flat (B ⧸ I) ((B ⧸ I) ⊗[B] M) := Module.Flat.of_linearEquiv e`. Establish `hq` using `rTensor_injective_quotient I K.subtype π K.injective_subtype hex hπ hIM`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hall` using `rTensor_injective_of_pow_smul_eq_bot I K.subtype (rTensor_injective_of_quotient_module I K.subtype π hex hπ hq) n`. Rewrite using `[Module.Flat.iff_lTensor_injective']`. Introduce `J`. Use `lTensor_injective_of_exact_of_exact_of_rTensor_injective hex hπ (LinearMap.exact_subtype_mkQ J) (Submodule.mkQ_surjective J) (hall (B ⧸ J) ?_) (Module.Flat.lTensor_preserves_injective_linearMap _ J.injective_subtype)` and prove the remaining obligations. Rewrite using `[hn, Submodule.zero_eq_bot, Submodule.bot_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_isNilpotent : ∀ (B : Type) [CommRing B] (I : Ideal B), IsNilpotent I →
     ∀ (M : Type) [AddCommGroup M] [Module B M],

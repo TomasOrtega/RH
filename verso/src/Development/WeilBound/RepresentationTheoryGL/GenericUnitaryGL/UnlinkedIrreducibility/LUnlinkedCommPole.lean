@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.RgGu.Unl
 
 /- English proof (translation)
-Introduce `k _ _ _ _`. Establish `hA : GlobalTheory.Published.IrreducibleAdmissibleGL` using `by first`. Consider the case `exact PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Consider the case `exact PositivityTheory.Exh.irreducibleAdmissibleGL`. Consider the case `exact GlobalTheory.RgGu.irreducibleAdmissibleGL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `lUnlinkedIrr_nu k (GlobalTheory.CompanionTheory.SegCoarse.lSegJacquet hA hZ) PositivityTheory.Geo.geometricLemmaFiltration (PositivityTheory.RgGu.NR.nuPair k)`.
+A detailed English derivation is pending.
 -/
 theorem lUnlinkedIrr_pole (hZ : GlobalTheory.Published.SegmentRepresentation) :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
@@ -26,7 +26,7 @@ theorem lUnlinkedIrr_pole (hZ : GlobalTheory.Published.SegmentRepresentation) :
     PositivityTheory.Geo.geometricLemmaFiltration (PositivityTheory.RgGu.NR.nuPair k)
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `lUnlinkedComm_of_irr k (lUnlinkedIrr_pole hZ k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lUnlinkedComm_pole (hZ : GlobalTheory.Published.SegmentRepresentation) :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],

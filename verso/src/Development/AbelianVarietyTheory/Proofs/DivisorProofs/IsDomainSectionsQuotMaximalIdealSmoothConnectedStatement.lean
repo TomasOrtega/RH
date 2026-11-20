@@ -10,7 +10,7 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.isDomain_quot_maximalIdeal_of_smooth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsDomainSectionsQuotMaximalIdealSmoothConnected.lean&line=22#L22)
 -/

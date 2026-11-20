@@ -16,7 +16,7 @@ local notation "𝒪K♭" => PreTilt (normInteger K) p
 local notation "𝒪C♭" => PreTilt (normInteger C) p
 
 /- English proof (translation)
-Apply `(frobeniusEquiv S p).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, frobeniusEquiv_apply, frobenius_def, ← map_pow, frobeniusEquiv_symm_pow_p]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringHom_frobeniusEquiv_symm {R S : Type*} [CommRing R] [CommRing S] [CharP R p]
     [CharP S p] [PerfectRing R p] [PerfectRing S p] (f : R →+* S) (x : R) :
@@ -26,7 +26,7 @@ theorem ringHom_frobeniusEquiv_symm {R S : Type*} [CommRing R] [CommRing S] [Cha
     frobeniusEquiv_symm_pow_p]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ringHom_frobeniusEquiv_symm, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringHom_iterate_frobeniusEquiv_symm {R S : Type*} [CommRing R] [CommRing S] [CharP R p]
     [CharP S p] [PerfectRing R p] [PerfectRing S p] (f : R →+* S) (x : R) (n : ℕ) :
@@ -39,9 +39,9 @@ theorem ringHom_iterate_frobeniusEquiv_symm {R S : Type*} [CommRing R] [CommRing
 section Injective
 
 /- English proof (translation)
-Establish `hu : ∀ b : PreTilt (normInteger (untiltField K C p N)) p, PreTilt.untilt (untiltPreTiltAut N σ b) = PreTilt.untilt b`. Introduce `b`. Use `untiltAut_untilt N σ b` as an intermediate fact. Rewrite `this` using `[h, AlgEquiv.one_apply]`. Conclude with `Subtype.ext this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPerfectoidField.preTilt_ext p fun n => ?_` and prove the remaining obligations. Rewrite using `[← IsPerfectoidField.mk_untilt_iterate, ← IsPerfectoidField.mk_untilt_iterate, ← ringHom_iterate_frobeniusEquiv_symm, hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltPreTiltAut_eq_id (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (h : untiltAut N σ = 1)
@@ -57,17 +57,15 @@ theorem untiltPreTiltAut_eq_id (N : IntermediateField K♭ C♭) [FiniteDimensio
     ← ringHom_iterate_frobeniusEquiv_symm, hu]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_one _).2 fun σ h => ?_` and prove the remaining obligations. Establish `h' : untiltAut N σ = 1` using `h`. Establish `hint : ∀ a : integerTilt K C p N, integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ) a = a`. Introduce `a`. Take `⟨b, rfl⟩` from `(preTiltUntiltEquiv N).surjective a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← preTiltUntiltEquiv_untiltPreTiltAut, untiltPreTiltAut_eq_id N σ h' b]`. Establish `key : ∀ x : N, ‖(x : C♭)‖ ≤ 1 → σ x = x`. Introduce `x hx`. Take `⟨a, ha, hax⟩` from `exists_algebraMap_eq_of_mem (p := p) x.2 hx`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `algebraMap_integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ) ⟨a, ha⟩` as an intermediate fact. Rewrite `this` using `[hint]`. Establish `hx' : (⟨algebraMap 𝒪C♭ C♭ a, ha⟩ : N) = x` using `Subtype.ext hax`. Rewrite `this` using `[hx']`. Conclude with `this.symm.trans hax`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Break down `le_or_gt ‖(x : C♭)‖ 1 with hx | hx` into its components or cases. Conclude with `congrArg Subtype.val (key x hx)`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at hx`. Use `key x⁻¹ (by` as an intermediate fact. Rewrite using `[IntermediateField.coe_inv, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hx.le)`. Rewrite `this` using `[map_inv₀]`.
-
-Conclude with `congrArg Subtype.val (inv_injective this)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltAutHom_injective (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] :
     Function.Injective (untiltAutHom (K := K) (C := C) (p := p) N) := by
@@ -103,9 +101,9 @@ end Injective
 section Galois
 
 /- English proof (translation)
-Establish `hinj` using `untiltAutHom_injective (K := K) (C := C) (p := p) N`. Establish `h1 : Nat.card (N ≃ₐ[K♭] N) = Module.finrank K (untiltField K C p N)`. Rewrite using `[IsGalois.card_aut_eq_finrank, finrank_untiltField]`. Establish `h2 : Nat.card (untiltField K C p N ≃ₐ[K] untiltField K C p N) ≤ Module.finrank K (untiltField K C p N)`. Use `le_trans ?_ (card_algHom_le_finrank K (untiltField K C p N) (untiltField K C p N))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.card_le_card_of_injective _ AlgEquiv.coe_toAlgHom_injective`. Establish `h3 : Nat.card (N ≃ₐ[K♭] N) ≤ Nat.card (untiltField K C p N ≃ₐ[K] untiltField K C p N)` using `Nat.card_le_card_of_injective _ hinj`. Establish `heq : Nat.card (untiltField K C p N ≃ₐ[K] untiltField K C p N) = Module.finrank K (untiltField K C p N)` using `le_antisymm h2 (h1 ▸ h3)`. Conclude with `⟨hinj.bijective_of_nat_card_le (by rw [heq, h1]), IsGalois.of_card_aut_eq_finrank _ _ heq⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem untiltAutHom_bijective (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     [IsGalois K♭ N] :
@@ -126,7 +124,7 @@ theorem untiltAutHom_bijective (N : IntermediateField K♭ C♭) [FiniteDimensio
   exact ⟨hinj.bijective_of_nat_card_le (by rw [heq, h1]), IsGalois.of_card_aut_eq_finrank _ _ heq⟩
 
 /- English proof (translation)
-The claim follows from `(untiltAutHom_bijective N).2`.
+A detailed English derivation is pending.
 -/
 theorem isGalois_untiltField (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     [IsGalois K♭ N] : IsGalois K (untiltField K C p N) :=
@@ -137,7 +135,7 @@ end Galois
 section Theta
 
 /- English proof (translation)
-Rewrite using `[← coe_preTiltUntiltEquiv, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untiltPreTiltMap_symm (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (a : integerTilt K C p N) :
@@ -145,7 +143,7 @@ theorem untiltPreTiltMap_symm (N : IntermediateField K♭ C♭) [FiniteDimension
   rw [← coe_preTiltUntiltEquiv, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `hu : WittVector.map (integerTilt K C p N).subtype u = WittVector.map (untiltPreTiltMap N) (WittVector.map (preTiltUntiltEquiv N).symm.toRingHom u)`. Rewrite using `[← wittVector_map_comp]`. Conclude with `WittVector.ext fun n => (untiltPreTiltMap_symm N (u.coeff n)).symm`. Rewrite using `[hu, untiltPreTiltMap, fontaineTheta_map_preTiltMap, coe_integerMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fontaineTheta_map_subtype (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (u : WittVector p (integerTilt K C p N)) :
@@ -162,7 +160,7 @@ theorem fontaineTheta_map_subtype (N : IntermediateField K♭ C♭) [FiniteDimen
   rfl
 
 /- English proof (translation)
-Establish `he : (⟨_, hu⟩ : untiltField K C p N) = ((WittVector.fontaineTheta (normInteger (untiltField K C p N)) p (WittVector.map (preTiltUntiltEquiv N).symm.toRingHom u) : normInteger (untiltField K C p N)) : untiltField K C p N)` using `Subtype.ext (fontaineTheta_map_subtype N u)`. Rewrite using `[he, untiltAut_coe, untiltIntegerHom_fontaineTheta, fontaineTheta_map_subtype, ← wittVector_map_comp, ← wittVector_map_comp]`. Use `congr 3`. Use extensionality with `a`. Simplify using `[untiltPreTiltAut]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coe_untiltAut_fontaineTheta (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     (σ : N ≃ₐ[K♭] N) (u : WittVector p (integerTilt K C p N))
@@ -188,35 +186,29 @@ end Theta
 section Correspondence
 
 /- English proof (translation)
-Take `⟨hbij, hgal⟩` from `untiltAutHom_bijective (K := K) (C := C) (p := p) N`. Use `set F := untiltField K C p N`. Use `set Φ := untiltAutHom (K := K) (C := C) (p := p) N`. Use `set L' : IntermediateField K F := IntermediateField.restrict hL`. Use `set H := L'.fixingSubgroup`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set J := H.comap Φ`. Use `set M0 : IntermediateField K♭ N := IntermediateField.fixedField J`. Use `set M : IntermediateField K♭ C♭ := M0.map N.val`. Establish `hMN : M ≤ N`. Introduce and unpack `_ ⟨y, -, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `y.2`. Establish `hMfin : FiniteDimensional K♭ M` using `LinearEquiv.finiteDimensional (IntermediateField.equivMap M0 N.val).toLinearEquiv`. Use `⟨M, hMN, hMfin, ?_⟩` and prove the remaining obligations. Establish `hle : untiltField K C p M ≤ L`. Rewrite using `[untiltField, IntermediateField.adjoin_le_iff]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, ⟨u, rfl⟩, rfl⟩`. Use `set u' := WittVector.map (Subring.inclusion (integerTilt_mono hMN)) u`. Establish `hz : ((RingHom.comp (WittVector.fontaineTheta (normInteger C) p) (WittVector.map (integerTilt K C p M).subtype)) u : normInteger C) = WittVector.fontaineTheta (normInteger C) p (WittVector.map (integerTilt K C p N).subtype u')`. Simplify using `only [RingHom.comp_apply, u']`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hzF : ((WittVector.fontaineTheta (normInteger C) p (WittVector.map (integerTilt K C p N).subtype u') : normInteger C) : C) ∈ F` using `coe_mem_untiltField ⟨u', rfl⟩`. Express the relevant statement in the definitionally equal form `((RingHom.comp (WittVector.fontaineTheta (normInteger C) p) (WittVector.map (integerTilt K C p M).subtype)) u : C) ∈ L`. Rewrite using `[hz]`. Establish `hfix : (⟨_, hzF⟩ : F) ∈ IntermediateField.fixedField H`. Rewrite using `[IntermediateField.mem_fixedField_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `τ hτ`. Take `⟨σ, rfl⟩` from `hbij.2 τ`. Establish `hσ : σ ∈ J` using `hτ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hcoeff : ∀ n, integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ) (u'.coeff n) = u'.coeff n`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Use `set c := u'.coeff n`. Establish `hcM : algebraMap 𝒪C♭ C♭ (c : 𝒪C♭) ∈ M` using `(u.coeff n).2`. Take `⟨y, hy, hyc⟩` from `hcM`. Establish `hyfix : σ y = y` using `(IntermediateField.mem_fixedField_iff J y).1 hy σ hσ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `IsFractionRing.injective 𝒪C♭ C♭` to reduce the goal to its premises. Rewrite using `[algebraMap_integerTiltHom]`. Establish `: (⟨algebraMap 𝒪C♭ C♭ (c : 𝒪C♭), c.2⟩ : N) = y` using `Subtype.ext hyc.symm`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `((σ y : N) : C♭) = _`. Rewrite using `[hyfix]`. Conclude with `hyc`. Establish `hmap : WittVector.map (integerTiltHom N σ.toAlgHom (norm_tiltAlgEquiv_toAlgHom_apply N σ)) u' = u'` using `WittVector.ext fun n => by rw [WittVector.map_coeff, hcoeff n]`. Express the relevant statement in the definitionally equal form `((untiltAut N σ ⟨_, hzF⟩ : F) : C) = _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_untiltAut_fontaineTheta, hmap]`. Rewrite `hfix` using `[IsGalois.fixedField_fixingSubgroup]`. Conclude with `(IntermediateField.mem_restrict hL _).1 hfix`. Establish `hL'fin : FiniteDimensional K L'` using `inferInstance`. Establish `hcard : Nat.card J = Nat.card H`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.card_congr (Equiv.ofBijective (fun σ : J => (⟨Φ σ, σ.2⟩ : H)) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (hbij.1 (congrArg Subtype.val hab))`. Introduce and unpack `⟨τ, hτ⟩`. Take `⟨σ, rfl⟩` from `hbij.2 τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨⟨σ, hτ⟩, rfl⟩`. Establish `hN : Module.finrank K♭ M0 * Nat.card J = Module.finrank K♭ N`. Rewrite using `[← IntermediateField.finrank_fixedField_eq_card, Module.finrank_mul_finrank]`. Establish `hF : Module.finrank K L' * Nat.card H = Module.finrank K F`. Establish `h` using `IntermediateField.finrank_fixedField_eq_card H`.
-
-Rewrite `h` using `[IsGalois.fixedField_fixingSubgroup]`. Rewrite using `[← h, Module.finrank_mul_finrank]`. Establish `hFN : Module.finrank K F = Module.finrank K♭ N` using `finrank_untiltField N`. Establish `hpos : 0 < Nat.card H` using `Nat.card_pos`. Establish `hL'M0 : Module.finrank K L' = Module.finrank K♭ M0`.
-
-Use `hF.trans (hFN.trans hN.symm)` as an intermediate fact. Rewrite `this` using `[hcard]`. Conclude with `Nat.eq_of_mul_eq_mul_right hpos this`. Establish `hLL' : Module.finrank K L = Module.finrank K L'` using `(AlgEquiv.ofInjectiveField (IntermediateField.inclusion hL)).toLinearEquiv.finrank_eq`. Establish `hMM0 : Module.finrank K♭ M = Module.finrank K♭ M0` using `(IntermediateField.equivMap M0 N.val).toLinearEquiv.finrank_eq.symm`.
-
-Establish `: FiniteDimensional K L` using `LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField (IntermediateField.inclusion hL)).toLinearEquiv.symm`. Conclude with `IntermediateField.eq_of_le_of_finrank_le hle (by rw [finrank_untiltField, hMM0, ← hL'M0, hLL'])`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_untiltField_eq_of_le (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     [IsGalois K♭ N] (L : IntermediateField K C) (hL : L ≤ untiltField K C p N) :

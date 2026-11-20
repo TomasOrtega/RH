@@ -13,7 +13,7 @@ namespace GlobalTheory.Cyc.Decomp
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h : ((algebraMap ℤ_[l] ↥(OL LL) x : ↥(OL LL)) : ↥LL.1) = algebraMap ℚ_[l] ↥LL.1 (x : ℚ_[l])`. Rewrite using `[Subalgebra.coe_algebraMap, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1]`. Both sides reduce to the same expression. Rewrite using `[h, AlgHom.commutes]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_emb_algebraMap (LL : FinExt l) (τ : ↥LL.1 →ₐ[ℚ_[l]] Om l) (x : ℤ_[l]) :
     algebraMap (Om l) (PadicComplex l) (τ ((algebraMap ℤ_[l] ↥(OL LL) x : ↥(OL LL)) : ↥LL.1)) = zC x := by
@@ -22,7 +22,7 @@ theorem coe_emb_algebraMap (LL : FinExt l) (τ : ↥LL.1 →ₐ[ℚ_[l]] Om l) (
   rw [h, AlgHom.commutes]; rfl
 
 /- English proof (translation)
-Use `letI : Algebra ℤ_[l] (PadicComplex l) := ((algebraMap ℚ_[l] (PadicComplex l)).comp PadicInt.Coe.ringHom).toAlgebra`. Set `u : OC l →ₐ[ℤ_[l]] PadicComplex l` to `{ (PadicComplexInt l).subtype with commutes' := fun x => rfl }`. Set `v : ↥(OL LL) →ₐ[ℤ_[l]] PadicComplex l` to `{ (algebraMap (Om l) (PadicComplex l)).comp (τ.toRingHom.comp (OL LL).val.toRingHom) with commutes' := fun x => coe_emb_algebraMap LL τ x }`. Conclude with `⟨(Algebra.TensorProduct.productMap u v).toRingHom, fun c a => rfl⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_evEmb (LL : FinExt l) (τ : ↥LL.1 →ₐ[ℚ_[l]] Om l) :
     ∃ ev : OCO LL →+* PadicComplex l, ∀ (c : OC l) (a : ↥(OL LL)),
@@ -37,9 +37,9 @@ theorem exists_evEmb (LL : FinExt l) (τ : ↥LL.1 →ₐ[ℚ_[l]] Om l) :
   exact ⟨(Algebra.TensorProduct.productMap u v).toRingHom, fun c a => rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, kap_zero, zero_mul, Finset.sum_const_zero]`. Consider the case `add x y hx hy => simp only [map_add, kap_add, hx, hy, add_mul, Finset.sum_add_distrib]`. Consider the case `tmul c a`. Rewrite using `[hev]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [kap_tmul, mul_assoc, ← Finset.mul_sum]`. Use `congr 1`. Use `conv_lhs => rw [← o.sum_repr a]`. Simplify using `only [Algebra.smul_def, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul, map_sum, map_mul, coe_emb_algebraMap]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evEmb_eq_sum {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL))
     (τ : ↥LL.1 →ₐ[ℚ_[l]] Om l) (ev : OCO LL →+* PadicComplex l)
@@ -59,11 +59,11 @@ theorem evEmb_eq_sum {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l]
       map_mul, coe_emb_algebraMap]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI : IsIntegralClosure ↥(OL LL) ℤ_[l] ↥LL.1 := integralClosure.isIntegralClosure ℤ_[l] ↥LL.1`. Use `haveI := IsIntegralClosure.isLocalization ℤ_[l] ℚ_[l] ↥LL.1 ↥(OL LL)`. Set `b` to `o.localizationLocalization ℚ_[l] (nonZeroDivisors ℤ_[l]) ↥LL.1`. Establish `hb : ∀ i, b i = (o i : ↥LL.1)` using `fun i => Module.Basis.localizationLocalization_apply _ _ _ _ i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hc : Fintype.card (Fin f) = Fintype.card (↥LL.1 →ₐ[ℚ_[l]] Om l)`. Rewrite using `[AlgHom.card, Module.finrank_eq_card_basis b]`. Set `e` to `Fintype.equivOfCardEq hc`. Use `⟨e, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two ℚ_[l] (Om l) b e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2 : Algebra.embeddingsMatrixReindex ℚ_[l] (Om l) b e = Matrix.of fun i j => e j (o i : ↥LL.1)`. Use extensionality with `i j`. Simplify using `[Algebra.embeddingsMatrixReindex, hb]`. Rewrite `h1` using `[h2, h0, zero_pow two_ne_zero, map_eq_zero]`. Conclude with `Algebra.discr_not_zero_of_basis ℚ_[l] b h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb_det_ne_zero {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) :
     ∃ τ : Fin f → (↥LL.1 →ₐ[ℚ_[l]] Om l),
@@ -87,13 +87,11 @@ theorem exists_emb_det_ne_zero {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin 
   exact Algebra.discr_not_zero_of_basis ℚ_[l] b h1
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_emb_det_ne_zero o`. Use `set M : Matrix (Fin f) (Fin f) (Om l) := Matrix.of fun i j => τ j (o i : ↥LL.1) with hM`. Establish `hy : ∀ j, ∃ y : Om l, algebraMap (Om l) (PadicComplex l) y = ∑ k, kap o e k * algebraMap (Om l) (PadicComplex l) (M k j)`. Introduce `j`. Take `⟨ev, hev⟩` from `exists_evEmb LL (τ j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `evEmb_eq_sum o (τ j) ev hev e`. Break down `IsIdempotentElem.iff_eq_zero_or_one.1 (he.map ev) with h | h` into its components or cases. Conclude with `⟨0, by rw [map_zero, ← h, h1]; rfl⟩`. Conclude with `⟨1, by rw [map_one, ← h, h1]; rfl⟩`. Use `choose y hy using hy`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ j, y j * M⁻¹ j k, ?_⟩` and prove the remaining obligations. Establish `hinv : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M (Ne.isUnit hτ)`. Simplify using `only [map_sum, map_mul, hy, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, ← map_mul, ← map_sum, ← Matrix.mul_apply, hinv, Matrix.one_apply]`.
-
-Simplify using `[apply_ite (algebraMap (Om l) (PadicComplex l))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kap_idem_algebraic {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL))
     (e : OCO LL) (he : IsIdempotentElem e) (k : Fin f) :
@@ -117,9 +115,9 @@ theorem kap_idem_algebraic {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) �
   simp [apply_ite (algebraMap (Om l) (PadicComplex l))]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `kap_idem_algebraic o e he k`. Use `⟨x, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup K.1]`. Introduce and unpack `⟨g, hg⟩`. Establish `h1` using `hfix g hg k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hx]`. Apply `(algebraMap (Om l) (PadicComplex l)).injective` to reduce the goal to its premises. Conclude with `(hact.1 g x).symm.trans h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem kap_idem_mem_inC (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l))
     (K LL : FinExt l) (f : ℕ) (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) (e : OCO LL)

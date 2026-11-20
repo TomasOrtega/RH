@@ -15,13 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff.CardTors
 
 /- English proof (translation)
-Introduce `p _ R K _ _ _ _ _ _ _ _ G _ _ G₀ _ _ F h GG₀ θ₀ hθ n`. Set `f : Sp K ⟶ Sp R` to `spMap (algebraMap R K)`. Set `T : Over (Sp K)` to `SpAlg K K`. Establish `hc : T.hom ≫ f = (SpAlg R K).hom` using `by show spMap (algebraMap K K) ≫ spMap (algebraMap R K) = spMap (algebraMap R K)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ρ : SpAlg R K ⟶ Over.mk (T.hom ≫ f)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans hc)`. Set `Φ : (T ⟶ G₀) →* (SpAlg R K ⟶ G)` to `(preHom ρ).comp (pushHom h T)`. Establish `hΦ : ∀ x, (Φ x).left = x.left ≫ F` using `fun x => Category.id_comp _`. Establish `hb : Function.Bijective Φ`. Use `⟨fun x y e => Over.OverMorphism.ext (h.1.hom_ext ?_ ((Over.w x).trans (Over.w y).symm)), fun a => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hΦ, ← hΦ, e]`. Conclude with `⟨Over.homMk (h.1.lift a.left T.hom ((Over.w a).trans hc.symm)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext ((hΦ _).trans (h.1.lift_fst _ _ _))⟩`. Set `e` to `MulEquiv.ofBijective Φ hb`. Establish `e1 : Tors G₀ (p ^ n) K ≃ Tors G (p ^ n) K` using `e.toEquiv.subtypeEquiv fun x => by show _ ↔ e x ^ (p ^ n) = 1`. Rewrite using `[← map_pow, EmbeddingLike.map_eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.card_congr e1, Nat.card_congr (Equiv.ofBijective _ (hθ n K))]`. Conclude with `GG₀.natCard_pts_eq K n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_tors_eq : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], ∀ (G₀ : Over (Sp K)) [GrpObj G₀] [IsCommMonObj G₀] (F : G₀.left ⟶ G.left), IsGrpPullback G₀ G (spMap (algebraMap R K)) F → ∀ (GG₀ : PDivGroup p K) (θ₀ : TorsionMap G₀ GG₀), (∀ (n : ℕ) (B : Type) [CommRing B] [Algebra K B], Function.Bijective (θ₀.pt n B)) → ∀ n : ℕ, Nat.card (Tors G (p ^ n) K) = p ^ (n * GG₀.height) := by
   intro p _ R K _ _ _ _ _ _ _ _ G _ _ G₀ _ _ F h GG₀ θ₀ hθ n

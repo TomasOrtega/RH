@@ -13,13 +13,13 @@ def wSqOld (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) : SL(2, ℤ) 
     rw [Matrix.det_fin_two_of]; linear_combination ((l : ℤ) * b - N * a + 1) * h⟩
 
 /- English proof (translation)
-Rewrite using `[wOld, Matrix.det_fin_two_of]`. Take the linear combination `(l : ℤ) * h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma oldformLevelRaisingMatrix_det_eq_level (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) : (wOld N l a b).det = l := by
   rw [wOld, Matrix.det_fin_two_of]; linear_combination (l : ℤ) * h
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [wOld, wSqOld, mat, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma atkin_lehner_square_mul (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) :
     wOld N l a b * wOld N l a b = (l : ℤ) • mat (wSqOld N l a b h) := by
@@ -28,7 +28,7 @@ lemma atkin_lehner_square_mul (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a
     simp [wOld, wSqOld, mat, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
 /- English proof (translation)
-Rewrite using `[Gamma0_mem]`. Establish `: ((((wSqOld N l a b h : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℤ)) = ((N * l : ℕ) : ℤ) * (1 + b)`. Simplify using `[wSqOld]`. Rewrite using `[this, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma wSqOld_mem (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) :
     wSqOld N l a b h ∈ Gamma0 (N * l) := by
@@ -38,7 +38,7 @@ lemma wSqOld_mem (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) :
   rw [this, Int.cast_mul, Int.cast_natCast, ZMod.natCast_self, zero_mul]
 
 /- English proof (translation)
-Establish `e : mat (wSqOld N l a b h) 1 1 = b + (N : ℤ) * (a * (1 + b))`. Simplify using `[wSqOld, mat]`. Take the linear combination `b * h`. Rewrite using `[e]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Simplify using the standard rewrite rules.
 -/
@@ -49,7 +49,7 @@ lemma wSqOld_entry (N l : ℕ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) :
   rw [e]; push_cast; simp
 
 /- English proof (translation)
-Establish `hd : (wOld N l a b).det ≠ 0` using `by rw [oldformLevelRaisingMatrix_det_eq_level N l a b h]; exact_mod_cast hl.ne'`. Establish `hM : 0 < (mat (wSqOld N l a b h)).det` using `by simp [mat]`. Rewrite using `[← SlashAction.slash_mul, ← toGL_mul _ _ hd hd, atkin_lehner_square_mul N l a b h, slash_toGL_smul k l hl _ hM, ← slash_SL_eq, hG _ (wSqOld_mem N l a b h), wSqOld_entry, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wOld_slash_slash (N l : ℕ) (k : ℤ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1) (χ : DirichletCharacter ℂ N)
     (G : ℍ → ℂ) (hl : 0 < l) (hG : ChiInv k N (N * l) χ G) :

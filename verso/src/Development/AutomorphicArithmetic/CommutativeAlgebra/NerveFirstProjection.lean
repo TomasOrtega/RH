@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.BothToSe
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTheory.E.t_E6Cut UpperTheory.Aff
 
 /- English proof (translation)
-Establish `h1 : (1 : A) ∈ Ideal.span (Set.range v)` using `by rw [h]; trivial`. Establish `key : ∀ c ∈ Ideal.span (Set.range v), (a - b) * c = 0`. Introduce `c hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hx`. Rewrite using `[sub_mul, hab, sub_self]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [smul_eq_mul, mul_left_comm, hx, mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2` using `key 1 h1`. Rewrite `h2` using `[mul_one]`. Conclude with `sub_eq_zero.1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_unique {A : Type} [CommRing A] {N : ℕ} (v : Fin N → A)
     (h : Ideal.span (Set.range v) = ⊤) (a b : A) (hab : ∀ j, a * v j = b * v j) : a = b := by
@@ -26,13 +26,13 @@ private theorem unit_unique {A : Type} [CommRing A] {N : ℕ} (v : Fin N → A)
   exact sub_eq_zero.1 h2
 
 /- English proof (translation)
-Establish `hv : ∀ i (j : Fin d), (x i).1.1.2 j.castSucc = (y i).1.1.2 j.castSucc` using `fun i j => congrFun (congrArg (fun z => z.1.2) (h1 i)) j`. Establish `hr : ∀ i, (x i).1.1.1 = (y i).1.1.1` using `fun i => congrArg (fun z => z.1.1) (h1 i)`. Use `funext fun i => Subtype.ext (Subtype.ext (Prod.ext (hr i) (funext fun j => ?_)))` and prove the remaining obligations. Take `⟨-, u, hu⟩` from `hx i 0`. Take `⟨-, u', hu'⟩` from `hy i 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `huu : (u : A) = u'`. Use `unit_unique (fun j : Fin d => (x 0).1.1.2 j.castSucc) (x 0).2 _ _ fun j => ?_` and prove the remaining obligations. Establish `e1 : (x i).1.1.2 j.castSucc = (u : A) * (x 0).1.1.2 j.castSucc` using `congrFun hu _`. Establish `e2 : (y i).1.1.2 j.castSucc = (u' : A) * (y 0).1.1.2 j.castSucc` using `congrFun hu' _`. Express the relevant statement in the definitionally equal form `(u : A) * (x 0).1.1.2 j.castSucc = (u' : A) * (x 0).1.1.2 j.castSucc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← e1, hv i j, e2, hv 0 j]`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Establish `e1 : (x i).1.1.2 (Fin.last d) = (u : A) * (x 0).1.1.2 (Fin.last d)` using `congrFun hu _`. Establish `e2 : (y i).1.1.2 (Fin.last d) = (u' : A) * (y 0).1.1.2 (Fin.last d)` using `congrFun hu' _`. Express the relevant statement in the definitionally equal form `(x i).1.1.2 (Fin.last d) = (y i).1.1.2 (Fin.last d)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, e2, huu, h2]`. Conclude with `hv i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fam_inj (D : Type) [CommRing D] (d m : ℕ) {A : Type} [CommRing A]
     (x y : Fin (m + 1) → (L2 D d).obj A)
@@ -59,15 +59,15 @@ private theorem fam_inj (D : Type) [CommRing D] (d m : ℕ) {A : Type} [CommRing
   · exact hv i j
 
 /- English proof (translation)
-Establish `hex : ∀ i, ∃ u : Aˣ, (c i).1.2 = fun j => (u : A) * (c 0).1.2 j` using `fun i => (hc i 0).2`. Use `choose u hu using hex`. Establish `hu0 : (u 0 : A) = 1`. Use `unit_unique (c 0).1.2 (c 0).2 _ _ fun j => ?_` and prove the remaining obligations. Establish `e : (c 0).1.2 j = (u 0 : A) * (c 0).1.2 j` using `congrFun (hu 0) j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, one_mul]`. Use `⟨fun i => ⟨⟨((c i).1.1, Fin.snoc (α := fun _ => A) (c i).1.2 ((u i : A) * t)), span_snoc _ _ (c i).2⟩, ?_⟩, fun i j => ⟨(hc i j).1, u i * (u j)⁻¹, funext fun k => ?_⟩, fun i => Subtype.ext (Prod.ext rfl (funext fun k => ?_)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.span (Set.range fun j : Fin d => Fin.snoc (α := fun _ => A) (c i).1.2 ((u i : A) * t) j.castSucc) = ⊤`. Simplify using `using (c i).2`. Establish `hinv : ((u j : A)) * (((u j)⁻¹ : Aˣ) : A) = 1` using `Units.mul_inv _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.lastCases ?_ (fun k => ?_) k` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => A) (c i).1.2 ((u i : A) * t) (Fin.last d) = ((u i * (u j)⁻¹ : Aˣ) : A) * Fin.snoc (α := fun _ => A) (c j).1.2 ((u j : A) * t) (Fin.last d)`. Simplify using `only [Fin.snoc_last, Units.val_mul]`. Take the linear combination `(-(u i : A) * t) * hinv`. Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => A) (c i).1.2 ((u i : A) * t) k.castSucc = ((u i * (u j)⁻¹ : Aˣ) : A) * Fin.snoc (α := fun _ => A) (c j).1.2 ((u j : A) * t) k.castSucc`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.snoc_castSucc, Units.val_mul]`. Establish `e1 : (c i).1.2 k = (u i : A) * (c 0).1.2 k` using `congrFun (hu i) k`. Establish `e2 : (c j).1.2 k = (u j : A) * (c 0).1.2 k` using `congrFun (hu j) k`. Rewrite using `[e1, e2]`. Take the linear combination `(-(u i : A) * (c 0).1.2 k) * hinv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => A) (c i).1.2 ((u i : A) * t) k.castSucc = (c i).1.2 k`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => A) (c 0).1.2 ((u 0 : A) * t) (Fin.last d) = t`. Simplify using `[hu0]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fam_surj (D : Type) [CommRing D] (d m : ℕ) {A : Type} [CommRing A]
     (c : Fin (m + 1) → (Vec D d).obj A) (hc : ∀ i j, (Vec D d).rel (c i) (c j)) (t : A) :
@@ -104,9 +104,9 @@ private theorem fam_surj (D : Type) [CommRing D] (d m : ℕ) {A : Type} [CommRin
     simp [hu0]
 
 /- English proof (translation)
-Introduce `D _ d n T`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h1` using `congrArg Prod.fst hxy`. Establish `h2 : (x.1 0).1.1.2 (Fin.last d) = (y.1 0).1.1.2 (Fin.last d)` using `congrArg Prod.snd hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Subtype.ext (fam_inj D d _ x.1 y.1 x.2 y.2 (fun i => ?_) h2)` and prove the remaining obligations. Conclude with `congrFun (congrArg Subtype.val h1) i`. Introduce and unpack `⟨c, t⟩`. Take `⟨x, hx, hc, ht⟩` from `fam_surj D d _ c.1 c.2 t`. Use `⟨⟨x, hx⟩, Prod.ext (Subtype.ext (funext hc)) ht⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.nerve_first_projection :
     ∀ (D : Type) [CommRing D] (d : ℕ) (n : SimplexCategoryᵒᵖ) (T : Scheme.{0}), Function.Bijective fun x : ((CN (L2 D d)).obj n).obj (op T) => (((CN.map (fstV D d) (fstV_rel D d)).app n).app (op T) x, (x.1 0).1.1.2 (Fin.last d)) := by

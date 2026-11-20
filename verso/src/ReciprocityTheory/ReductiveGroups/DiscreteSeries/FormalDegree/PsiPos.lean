@@ -18,9 +18,9 @@ open S7
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ}
 
 /- English proof (translation)
-Simplify using `only [KType.op]`. Rewrite using `[map_inv, ← ContinuousLinearMap.star_eq_adjoint]`. Use `first`. Consider the case `rfl`. Consider the case `(rw [← unitary.star_eq_inv]; rfl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp`.
+A detailed English derivation is pending.
 -/
 lemma psiPos_op_inv (T : KType ε Λ) (k : KG ε) :
     T.op k⁻¹ = ContinuousLinearMap.adjoint (T.op k) := by
@@ -32,7 +32,7 @@ lemma psiPos_op_inv (T : KType ε Λ) (k : KG ε) :
     | simp
 
 /- English proof (translation)
-Rewrite using `[psiPos_op_inv T k]`. Simplify using `only [ContinuousLinearMap.mul_apply, projW, ContinuousLinearMap.smulRight_apply, map_smul, inner_smul_right]`. Rewrite using `[← inner_conj_symm v (T.op k T.w)]`. Rewrite using `[show ((innerSL ℂ) T.w) (ContinuousLinearMap.adjoint (T.op k) v) = ⟪T.op k T.w, v⟫_ℂ from ContinuousLinearMap.adjoint_inner_right _ _ _]`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma psiPos_inner_P (T : KType ε Λ) (k : KG ε) (v : T.V) :
     ⟪v, (T.op k * projW T * T.op k⁻¹) v⟫_ℂ = ((‖⟪T.op k T.w, v⟫_ℂ‖ ^ 2 : ℝ) : ℂ) := by
@@ -45,17 +45,15 @@ lemma psiPos_inner_P (T : KType ε Λ) (k : KG ε) (v : T.V) :
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Use `set A : T.V →L[ℂ] T.V := (c : ℂ) • ∫ k, ((g k : ℝ) : ℂ) • (T.op k * projW T * T.op k⁻¹) ∂(muK ε) with hA`. Establish `key : ∀ x : T.V, ∃ r : ℝ, 0 ≤ r ∧ ⟪x, A x⟫_ℂ = (r : ℂ)`. Introduce `x`. Distinguish the cases in `hint : Integrable (fun k => ((g k : ℝ) : ℂ) • (T.op k * projW T * T.op k⁻¹)) (muK ε)`. Use `⟨c * ∫ k, g k * ‖⟪T.op k T.w, x⟫_ℂ‖ ^ 2 ∂(muK ε), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_nonneg hc (integral_nonneg fun k => mul_nonneg (hg0 k) (sq_nonneg _))`. Establish `hpt : ∀ k, ⟪x, (((g k : ℝ) : ℂ) • (T.op k * projW T * T.op k⁻¹)) x⟫_ℂ = ((g k * ‖⟪T.op k T.w, x⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Introduce `k`. Rewrite using `[ContinuousLinearMap.smul_apply, inner_smul_right, psiPos_inner_P, Complex.ofReal_mul]`. Rewrite using `[hA, ContinuousLinearMap.smul_apply, inner_smul_right, ContinuousLinearMap.integral_apply hint x, ← integral_inner (hint.apply_continuousLinearMap x)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hpt]`. Rewrite using `[Complex.ofReal_mul]`. Use `first`. Consider the case `rw [integral_complex_ofReal]`. Consider the case `exact congrArg _ integral_ofReal`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, le_rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, integral_undef hint, smul_zero, ContinuousLinearMap.zero_apply, inner_zero_right, Complex.ofReal_zero]`. Rewrite using `[ContinuousLinearMap.isPositive_iff_complex]`. Introduce `x`. Take `⟨r, hr, hx⟩` from `key x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : ⟪A x, x⟫_ℂ = (r : ℂ)`. Rewrite using `[← inner_conj_symm, hx, Complex.conj_ofReal]`. Rewrite using `[hx']`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
-
-Simplify using `using hr`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma psiPos_integral_isPositive (T : KType ε Λ) {c : ℝ} (hc : 0 ≤ c) (g : KG ε → ℝ)
     (hg0 : ∀ k, 0 ≤ g k) :
@@ -94,15 +92,13 @@ lemma psiPos_integral_isPositive (T : KType ε Λ) {c : ℝ} (hc : 0 ≤ c) (g :
   · simpa using hr
 
 /- English proof (translation)
-Unfold `toMK`. Establish `hk : toM (k : UJ ε) ∈ Kset ε` using `k.2`. Unfold `Kset at hk`. Take `⟨hU, -⟩` from `hk`. Unfold `toM at hU ⊢`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Establish `gen' : ∀ U : Matrix (Fin n) (Fin n) ℂ, U ∈ unitary (Matrix (Fin n) (Fin n) ℂ) → (star U * x * U).PosDef`. Introduce `U hU'`. Rewrite using `[Matrix.star_eq_conjTranspose]`. Apply `hx.conjTranspose_mul_mul_same` to reduce the goal to its premises. Apply `Matrix.mulVec_injective_iff_isUnit.mpr` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `first`. Consider the case `exact ⟨⟨U, star U, Unitary.mul_star_self_of_mem hU', Unitary.star_mul_self_of_mem hU'⟩, rfl⟩`. Consider the case `exact ⟨⟨U, star U, unitary.mul_star_self_of_mem hU', unitary.star_mul_self_of_mem hU'⟩, rfl⟩`. Establish `hinv2 : ((((k⁻¹ : KG ε) : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = star ((((k : KG ε) : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[InvMemClass.coe_inv, InvMemClass.coe_inv]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Use `first`. Consider the case `exact Unitary.star_mul_self_of_mem hU`. Consider the case `exact unitary.star_mul_self_of_mem hU`. Rewrite using `[hinv2]`.
-
-Conclude with `gen' _ hU`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma psiPos_posDef_conj (k : KG ε) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) :
     (toMK k⁻¹ * x * toMK k).PosDef := by
@@ -133,11 +129,11 @@ lemma psiPos_posDef_conj (k : KG ε) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.Po
 end PsiPosAux
 
 /- English proof (translation)
-Introduce `X hX`. Establish `hpd : ∀ k : S7.KG ε, (S7.toMK k⁻¹ * NormedSpace.exp X * S7.toMK k)⁻¹.PosDef` using `fun k => (psiPos_posDef_conj k (S7.exp_noncompactPart_posDef hX)).inv`. Set `g : S7.KG ε → ℝ` to `fun k => (S7.PhiM μ (S7.toMK k⁻¹ * NormedSpace.exp X * S7.toMK k)⁻¹).re`. Establish `hphi : ∀ k, S7.PhiM μ (S7.toMK k⁻¹ * NormedSpace.exp X * S7.toMK k)⁻¹ = ((g k : ℝ) : ℂ)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[g]`. Simplify using `[g, (S7.phiM_posDef μ (hpd k)).2]`. Establish `hc : (0 : ℝ) ≤ (Module.finrank ℂ T.V : ℝ) / (S7.muK ε Set.univ).toReal` using `div_nonneg (Nat.cast_nonneg _) ENNReal.toReal_nonneg`. Establish `hcc : ((Module.finrank ℂ T.V : ℂ) / ((S7.muK ε Set.univ).toReal : ℂ)) = ((((Module.finrank ℂ T.V : ℝ) / (S7.muK ε Set.univ).toReal : ℝ)) : ℂ)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hform X hX, hcc]`. Repeatedly rewrite using `[hphi]`. Conclude with `psiPos_integral_isPositive T hc g (fun k => (S7.phiM_posDef μ (hpd k)).1.le)`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_exp_isPositive {ε : Fin n → Bool} {lam : Fin n → ℝ} (T : S7.KType ε (lowK ε lam))
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (μ : Fin n → ℤ) (hμ : S7.IsMu lam μ)

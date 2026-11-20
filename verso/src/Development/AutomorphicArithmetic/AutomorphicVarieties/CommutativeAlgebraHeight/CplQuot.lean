@@ -4,19 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
 /- English proof (translation)
-Establish `hmap : ∀ n : ℕ, (I ^ n • ⊤ : Submodule R R).map K.mkQ = (I ^ n • ⊤ : Submodule R (R ⧸ K))`. Introduce `n`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ n, ∃ d ∈ (I ^ n • ⊤ : Submodule R R), K.mkQ d = f (n + 1) - f n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `n`. Establish `h` using `(hf (Nat.le_succ n)).symm`. Rewrite `h` using `[SModEq.sub_mem, ← hmap]`. Conclude with `h`. Use `choose d hd hd' using hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨a, ha⟩` from `K.mkQ_surjective (f 0)`. Set `g : ℕ → R` to `fun n => a + ∑ i ∈ Finset.range n, d i`. Establish `hg : ∀ n, K.mkQ (g n) = f n`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa [g] using ha`. Consider the case `succ n ih`. Establish `: g (n + 1) = g n + d n` using `by simp only [g, Finset.sum_range_succ, add_assoc]`. Rewrite using `[this, map_add, ih, hd']`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ {m n : ℕ}, m ≤ n → g m ≡ g n [SMOD (I ^ m • ⊤ : Submodule R R)]`. Introduce `m n h`. Proceed by induction on `h with`. Consider the case `refl => rfl`. Consider the case `@step n h ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: g (n + 1) = g n + d n` using `by simp only [g, Finset.sum_range_succ, add_assoc]`. Use `ih.trans ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, this, sub_add_cancel_left]`. Conclude with `neg_mem (Submodule.smul_mono_left (Ideal.pow_le_pow_right h) (hd n))`. Take `⟨L, hL⟩` from `IsPrecomplete.prec inferInstance hc`.
-
-Use `⟨K.mkQ L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, ← hg, ← map_sub, ← hmap]`. Conclude with `Submodule.mem_map_of_mem (SModEq.sub_mem.1 (hL n))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem precomplete_quot {R : Type} [CommRing R] (I K : Ideal R) [IsPrecomplete I R] :
     IsPrecomplete I (R ⧸ K) := by
@@ -54,29 +52,23 @@ private theorem precomplete_quot {R : Type} [CommRing R] (I K : Ideal R) [IsPrec
   exact Submodule.mem_map_of_mem (SModEq.sub_mem.1 (hL n))
 
 /- English proof (translation)
-Introduce `C R _ _ _ _ _ x hx hR C' R' _ _ _ _ π x' hπ hx' hR'`. Use `haveI : IsNoetherianRing C' := isNoetherianRing_of_surjective C C' π hπ`. Establish `hxm : x.map π = x'` using `by rw [← hx', Ideal.map_comap_of_surjective π hπ]`. Use `haveI hx'm : x'.IsMaximal := by`. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective π hπ hx with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[hxm]`. Conclude with `absurd (by rw [← hx', h, Ideal.comap_top]) hx.ne_top`. Rewrite `h` using `[hxm]`. Then use the resulting hypothesis. Use `haveI := hR.noeth`. Use `haveI := hR.complete`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := hR'.complete`. Take `⟨hU, -, hm⟩` from `cpl_uniq x hR`. Take `⟨hU', -, hm'⟩` from `cpl_uniq x' hR'`. Establish `hx1 : x' ≤ (maximalIdeal R').comap (algebraMap C' R')`. Rewrite using `[← Ideal.map_le_iff_le_comap, hm']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨F, ⟨hF, hFm⟩, -⟩` from `hU R' (maximalIdeal R') ((algebraMap C' R').comp π) (by`. Rewrite using `[← Ideal.comap_comap, ← hx']`. Conclude with `Ideal.comap_mono hx1)`. Use `set K := (RingHom.ker π).map (algebraMap C R) with hK`. Establish `hKF : K ≤ RingHom.ker F`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hK, Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Rewrite `hc` using `[RingHom.mem_ker]`. Use `RingHom.congr_fun hF c` as an intermediate fact. Simplify using `only [RingHom.comp_apply, hc, map_zero] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Use `set J := (maximalIdeal R).map (Ideal.Quotient.mk K) with hJ`. Use `haveI : IsAdicComplete J (R ⧸ K) := by haveI := precomplete_quot (maximalIdeal R) K haveI : IsHausdorff (maximalIdeal R) (R ⧸ K) := IsHausdorff.of_le_jacobson _ _ (by rw [jacobson_eq_maximalIdeal _ bot_ne_top])`. Conclude with `(IsAdicComplete.map_algebraMap_iff (S := R ⧸ K) (maximalIdeal R) (R ⧸ K)).2 ⟨⟩`. Set `g : C' →+* R ⧸ K` to `π.liftOfSurjective hπ ⟨(Ideal.Quotient.mk K).comp (algebraMap C R), fun c hc => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hc⟩`. Establish `hg : g.comp π = (Ideal.Quotient.mk K).comp (algebraMap C R)` using `RingHom.liftOfSurjective_comp _ _ _`. Establish `hxJ : x ≤ J.comap ((Ideal.Quotient.mk K).comp (algebraMap C R))`. Rewrite using `[← Ideal.map_le_iff_le_comap, ← Ideal.map_map, hm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨G, ⟨hG, hGm⟩, -⟩` from `hU' (R ⧸ K) J g (by`. Rewrite using `[← hxm, Ideal.map_le_iff_le_comap, Ideal.comap_comap, hg]`. Conclude with `hxJ)`. Establish `h1 : G.comp F = Ideal.Quotient.mk K`. Use `(hU (R ⧸ K) J _ hxJ).unique ⟨?_, ?_⟩ ⟨rfl, Ideal.le_comap_map⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_assoc, hF, ← RingHom.comp_assoc, hG, hg]`. Rewrite using `[← Ideal.comap_comap]`. Conclude with `hFm.trans (Ideal.comap_mono hGm)`. Set `Fb : R ⧸ K →+* R'` to `Ideal.Quotient.lift K F hKF`. Establish `hFb : Fb.comp (Ideal.Quotient.mk K) = F` using `RingHom.ext fun _ => rfl`.
-
-Establish `h2 : Fb.comp G = RingHom.id R'`. Use `(hU' R' (maximalIdeal R') _ hx1).unique ⟨?_, ?_⟩ ⟨rfl, le_rfl⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hG, ← RingHom.cancel_right hπ, RingHom.comp_assoc, hg, ← RingHom.comp_assoc, hFb, hF]`. Rewrite using `[← Ideal.comap_comap]`. Use `hGm.trans (Ideal.comap_mono ?_)` and prove the remaining obligations.
-
-Rewrite using `[hJ, Ideal.map_le_iff_le_comap, Ideal.comap_comap, hFb]`. Conclude with `hFm`. Use `⟨F, fun y => ?_, hF, le_antisymm (fun r hr => ?_) hKF⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (G y)`. Use `⟨r, ?_⟩` and prove the remaining obligations.
-
-Use `RingHom.congr_fun h2 y` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, ← hr]`. Conclude with `this`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← h1, RingHom.comp_apply, (RingHom.mem_ker).1 hr, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.cpl_quot :
     ∀ {C R : Type} [CommRing C] [IsNoetherianRing C] [CommRing R] [Algebra C R] [IsLocalRing R] (x : Ideal C) [x.IsMaximal], IsCplAt x R → ∀ (C' R' : Type) [CommRing C'] [CommRing R'] [Algebra C' R'] [IsLocalRing R'] (π : C →+* C') (x' : Ideal C'), Function.Surjective π → x'.comap π = x → IsCplAt x' R' → ∃ F : R →+* R', Function.Surjective F ∧ F.comp (algebraMap C R) = (algebraMap C' R').comp π ∧ RingHom.ker F = (RingHom.ker π).map (algebraMap C R) := by

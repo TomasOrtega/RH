@@ -19,7 +19,7 @@ namespace GlobalTheory.ThetaMap
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h0 : hO S T 0 w = 0` using `by simp [hO]`. Simplify using `[heisO, symplOH, symplO, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem heisO_apply_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) (g : WO S T → ℂ) :
     heisO ψ S T w g 0 = g w := by
@@ -27,15 +27,15 @@ theorem heisO_apply_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO 
   simp [heisO, symplOH, symplO, h0]
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ S T S₀ T₀ ι hιc hιf hιi A hA hint hrat f hf`. Establish `key : ∀ w, A f w = A (heisO ψ S T (ι w) f) 0`. Introduce `w`. Rewrite using `[hint f w hf, heisO_apply_zero]`. Establish `hfun : A f = fun w => (fun g => A g 0) (heisO ψ S T (ι w) f)` using `funext key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hc, hs⟩` from `GlobalTheory.T.sobolevBoundedThetaForm_matrixCoeff_smooth D ψ hψ θ hθ S T (fun g => A g 0) hA f hf`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ w`. Establish `h1` using `hrat (heisO ψ S T (ι w) f) γ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf (ι w))`. Rewrite `h1` using `[hint f w hf, heisO_apply_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [heisO] at h1`. Rewrite using `[← h1, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`. Take `⟨U, hUo, hU⟩` from `hf.level`. Use `⟨U.comap ι, hUo.preimage hιc, fun u hu hui => ?_⟩` and prove the remaining obligations. Rewrite using `[← hint f u hf, hU (ι u) hu (hιi u hui)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `hc.comp hιc`. Introduce `k L hL hLf w`. Establish `h2` using `hs k (ι.comp L) (hιc.comp hL) (fun t => hιf (L t) (hLf t)) (ι w)`. Rewrite using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[map_add]`.
+A detailed English derivation is pending.
 -/
 theorem thetaMap : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T S₀ T₀ : HSp D) (ι : WO S₀ T₀ →+ WO S T), Continuous ι → (∀ w, w.map (finPart D) = 0 → (ι w).map (finPart D) = 0) → (∀ w, w.map (infPart D) = 0 → (ι w).map (infPart D) = 0) → ∀ A : (WO S T → ℂ) → WO S₀ T₀ → ℂ, IsSobForm ψ θ S T (fun f => A f 0) → (∀ f w, IsThetaFunO ψ S T f → A (heisO ψ S T (ι w) f) = heisO ψ S₀ T₀ w (A f)) → (∀ f γ, IsThetaFunO ψ S T f → A f (ratW T₀ S₀ γ) = A f 0) → ∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S₀ T₀ (A f) := by
   intro D ψ hψ θ hθ S T S₀ T₀ ι hιc hιf hιi A hA hint hrat f hf

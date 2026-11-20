@@ -20,11 +20,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hh` using `GlobalTheory.FlagMod.le_preimage_inf hz hz'`. Establish `h1 : spMap (dualMap (RingHom.id S)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : spMap (RingHom.id S) = 𝟙 _` using `Spec.map_id _`. Use `⟨fun τ i => F.TAt k k' z hh (some ⟨τ, i⟩), by rw [h2, Category.id_comp], rfl, fun τ i => ⟨fun j => (F.B k k' τ).map (GlobalTheory.FlagMod.ev z _ hh) j i, rfl, fun j hj => F.B_map_tri k k' τ _ hj, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [h1, Category.id_comp]`. Establish `e : (fun j => g.v τ j) = fun j => (tv (F.vecAt k z hz rfl τ j)).left` using `funext (hg τ)`. Rewrite using `[e, hg' τ i, GlobalTheory.LieMet.isComb_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `F.vecAt_eq_sum k k' z hz hz' hh rfl τ i`.
+A detailed English derivation is pending.
 -/
 theorem tri_of_isFrameAt {Y : Model Xo c (RingHom.id c.F)} {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π)
     {S : Type} [CommRing S] {φ : c.F →+* S} (z : Sp S ⟶ Z) (k k' : F.J) (hz : ⊤ ≤ z ⁻¹ᵁ F.U k)
@@ -55,7 +55,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨v, a1, a2, a3⟩` from `g`. Take `⟨v', b1, b2, b3⟩` from `g'`. Establish `e : v = v'` using `funext fun τ => funext fun i => hv τ i`. Substitute `e` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -70,7 +70,7 @@ theorem carries_congr {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEqui
   rfl
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f, t, t', h1, h2, h3⟩` from `hp`. Conclude with `⟨y, ψ, φ₁, f, t, _, h1, h2, GlobalTheory.ShFam.FlatSec.tri_trans h3 h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem carries_of_tri {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEquiv.refl c.F)) {K : Type} [Field K]
     {φ φ' : c.F →+* K} {x x' : Sp K ⟶ Y.X} {g : EigFrame Y φ x} {g' : EigFrame Y φ' x'}
@@ -80,7 +80,7 @@ theorem carries_of_tri {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEqu
   exact ⟨y, ψ, φ₁, f, t, _, h1, h2, GlobalTheory.ShFam.FlatSec.tri_trans h3 h⟩
 
 /- English proof (translation)
-Take `⟨y, ψ, φ₁, f, t, t', h1, h2, h3⟩` from `hp`. Rewrite using `[h1, Category.assoc, ← h3.1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem carries_over {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEquiv.refl c.F)) {K : Type} [Field K]
     {φ : c.F →+* K} {x : Sp K ⟶ Y.X} {g : EigFrame Y φ x} {p : Sp K ⟶ C.Y.X} (hp : C.Carries p g) :
@@ -89,23 +89,21 @@ theorem carries_over {Y : Model Xo c (RingHom.id c.F)} (C : FlagCpt Y (RingEquiv
   rw [h1, Category.assoc, ← h3.1]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z hFE C _ B j _ f hπ hlifts hbar K _ z`. Use `set zz := z ≫ GlobalTheory.CompHS.inc₀ X Z with hzz`. Set `φ : c.F →+* K` to `(Spec.preimage (zz ≫ X.π ≫ Y.s)).hom`. Establish `hφ : zz ≫ X.π ≫ Y.s = spMap φ` using `(Spec.map_preimage _).symm`. Take `⟨k, hk⟩` from `GlobalTheory.FlagMod.exists_chart_of_isLocalRing X.F.cover zz`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `hFE K φ zz k hk hφ`. Set `xg : Sp K ⟶ gen Y` to `zz ≫ X.π ≫ inv (genι Y)`. Establish `hxg : xg ≫ genι Y = zz ≫ X.π` using `by simp [xg]`. Establish `hid : spMap (RingHom.id c.F) = 𝟙 _` using `Spec.map_id _`. Establish `hstr : xg ≫ genStr Y = spMap φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : genStr Y = genι Y ≫ Y.s`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, ← Category.assoc, hxg, Category.assoc, hφ]`. Establish `hr : Set.range xg ⊆ Set.range j`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hbar _).1 ?_` and prove the remaining obligations. Establish `e : genι Y (xg a) = X.π (GlobalTheory.CompHS.inc₀ X Z (z a))`. Rewrite using `[← Scheme.Hom.comp_apply, hxg]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : GlobalTheory.CompHS.inc₀ X Z (z a) ∈ X.π ⁻¹ᵁ GlobalTheory.CompHS.barComp Y Z`. Use `(Scheme.Opens.range_ι (X.π ⁻¹ᵁ GlobalTheory.CompHS.barComp Y Z)).le ⟨z a, rfl⟩` as an intermediate fact. Conclude with `this`. Conclude with `hm`. Set `x'` to `IsOpenImmersion.lift j xg hr`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x' ≫ j = xg` using `IsOpenImmersion.lift_fac _ _ _`. Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g0 : EigFrame Y φ (xg ≫ genι Y), ∀ τ i, g0.v τ i = g.v τ i := by`. Rewrite using `[hxg]`. Conclude with `⟨g, fun _ _ => rfl⟩`. Take `⟨p, ⟨hp1, hp2⟩, hpu⟩` from `hlifts K φ xg x' hx' hstr g0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨p, ⟨φ, k, hk, g, hφ, hg, (carries_congr C hxg g0 g hg0 p).1 hp2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `p' ⟨φ', k', hk', g', hφ', hg', hc'⟩`. Establish `e : φ' = φ`. Establish `h0 : spMap φ' = spMap φ` using `hφ'.symm.trans hφ`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h0)`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Take `⟨d, hd⟩` from `tri_of_isFrameAt X.F zz k' k hk' hk g' g hg' hg`. Establish `hc : C.Carries p' g` using `carries_of_tri C hd hc'`. Establish `hc0 : C.Carries p' g0` using `(carries_congr C hxg g0 g hg0 p').2 hc`. Use `hpu p' ⟨?_, hc0⟩` and prove the remaining obligations.
-
-Establish `h1 : p' ≫ C.π = xg`. Rewrite using `[← cancel_mono (genι Y), Category.assoc]`. Conclude with `carries_over C hc0`. Rewrite using `[← cancel_mono j, Category.assoc, ← hπ, h1, hx']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniq_rel : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)}, ∀ (X : GlobalTheory.FlagMod.FlagCover Y) (Z : Formalism.L2.Pj.Comp Xo c), GlobalTheory.VarFlag.FramesExist X → ∀ (C : GlobalTheory.ShFam.FlagCpt Y (RingEquiv.refl c.F)), GlobalTheory.VarFlag.CarriesTri C → ∀ (B : GlobalTheory.ProjVar.Var c.F) (j : B.X ⟶ GlobalTheory.Toroidal.gen Y) [IsOpenImmersion j] (f : C.Y.X ⟶ B.X), C.π = f ≫ j → (∀ (K : Type) [Field K] (χ : c.F →+* K) (x : Sp K ⟶ GlobalTheory.Toroidal.gen Y) (x' : Sp K ⟶ B.X), x' ≫ j = x → x ≫ GlobalTheory.Toroidal.genStr Y = spMap χ → ∀ g : GlobalTheory.ShFam.EigFrame Y χ (x ≫ GlobalTheory.Toroidal.genι Y), ∃! p : Sp K ⟶ C.Y.X, p ≫ f = x' ∧ C.Carries p g) → (∀ w : GlobalTheory.Toroidal.gen Y, GlobalTheory.Toroidal.genι Y w ∈ GlobalTheory.CompHS.barComp Y Z ↔ w ∈ Set.range j) → ∀ (K : Type) [Field K] (z : Sp K ⟶ GlobalTheory.CompHS.Y₀ X Z), ∃! p : Sp K ⟶ C.Y.X, GlobalTheory.VarFlag.Rel X.F C (z ≫ GlobalTheory.CompHS.inc₀ X Z) p := by
   intro E _ _ _ H Dw l Xo c Y X Z hFE C _ B j _ f hπ hlifts hbar K _ z

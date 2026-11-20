@@ -42,7 +42,7 @@ def LeafZMap : Prop := ∀ (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ
   u ∈ Z1 A U → tmap A U V g u ∈ Z1 A V
 
 /- English proof (translation)
-Rewrite using `[Z1, MonoidHom.mem_ker, cob1, MonoidHom.div_apply, div_eq_one, MonoidHom.mul_apply, Units.ext_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_Z1_iff_cocycle (A : Type) [CommRing A] (U : Cov A) (u : (U.B ⊗[A] U.B)ˣ) :
     u ∈ Z1 A U ↔ p13 A U (u : U.B ⊗[A] U.B) = p12 A U u * p23 A U u := by
@@ -54,7 +54,7 @@ abbrev g3 (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) :
   Algebra.TensorProduct.map g (Algebra.TensorProduct.map g g)
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[p12]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem p12_tensorProduct_map_eq_g3_p12 (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) (x : U.B ⊗[A] U.B) :
     p12 A V (Algebra.TensorProduct.map g g x) = g3 A U V g (p12 A U x) := by
@@ -65,7 +65,7 @@ theorem p12_tensorProduct_map_eq_g3_p12 (A : Type) [CommRing A] (U V : Cov A) (g
   simp [p12]
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[p13]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem p13_tensorProduct_map_eq_g3_p13 (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) (x : U.B ⊗[A] U.B) :
     p13 A V (Algebra.TensorProduct.map g g x) = g3 A U V g (p13 A U x) := by
@@ -76,7 +76,7 @@ theorem p13_tensorProduct_map_eq_g3_p13 (A : Type) [CommRing A] (U V : Cov A) (g
   simp [p13]
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[p23]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem p23_tensorProduct_map_eq_g3_p23 (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) (x : U.B ⊗[A] U.B) :
     p23 A V (Algebra.TensorProduct.map g g x) = g3 A U V g (p23 A U x) := by
@@ -87,7 +87,7 @@ theorem p23_tensorProduct_map_eq_g3_p23 (A : Type) [CommRing A] (U V : Cov A) (g
   simp [p23]
 
 /- English proof (translation)
-Introduce `A _ U V g u hu`. Rewrite `hu`, the goal using `[mem_Z1_iff_cocycle]`. Establish `ht : ((tmap A U V g u : (V.B ⊗[A] V.B)ˣ) : V.B ⊗[A] V.B) = Algebra.TensorProduct.map g g (u : U.B ⊗[A] U.B)` using `rfl`. Rewrite using `[ht, p12_tensorProduct_map_eq_g3_p12, p13_tensorProduct_map_eq_g3_p13, p23_tensorProduct_map_eq_g3_p23, hu, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem zmap : LeafZMap := by
   intro A _ U V g u hu
@@ -104,13 +104,13 @@ def LeafDescP : Prop := ∀ (A : Type) [CommRing A], ∃ c : ∀ U : Cov A, Cech
     (c V (cls A V v) : Additive (CommRing.Pic A)) = c U (cls A U u)
 
 /- English proof (translation)
-Introduce `hy A _`. Take `⟨cH, hcH⟩` from `hH hy A`. Take `⟨cP, hcP⟩` from `hP A`. Use `⟨fun U => (cH U).symm.trans (cP U), ?_⟩` and prove the remaining obligations. Introduce `U V g x hU hV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : Z1 A U, cls A U u = (cH U).symm ⟨x, hU⟩ := by`. Take `⟨u, hu⟩` from `QuotientGroup.mk_surjective (Additive.toMul ((cH U).symm ⟨x, hU⟩))`. Conclude with `⟨u, by rw [cls, hu]; rfl⟩`. Set `v : Z1 A V` to `⟨tmap A U V g u, zmap A U V g u u.2⟩`. Establish `h1` using `hcH U V g u v rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `hcP U V g u v rfl`. Establish `hv : (cH V).symm ⟨x, hV⟩ = cls A V v`. Apply `(cH V).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h1, hu, AddEquiv.apply_symm_apply]`. Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[← hu, hv, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem goal_of (hH : LeafDescH) (hP : LeafDescP) : LateralTheory.E.H1MultiplicativeGroup.LeafDesc := by
   intro hy A _

@@ -6,13 +6,13 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto Simplicial UpperTheory.Gal.KunnethLefschetz UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Introduce `T W r d P n U t h`. Establish `hrel : ∀ i j, P.rel U (P.sv (t i) 0) (P.sv (t j) 0)`. Introduce `i j`. Establish `hq : (Quotient.mk (P.relS U) (P.sv (t i) 0)) = Quotient.mk (P.relS U) (P.sv (t j) 0)` using `h i j`. Conclude with `Quotient.exact hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `UpperTheory.projBundleData_exists_simplex_of_rel P n U (fun i => P.sv (t i) 0) hrel`. Establish `key : ∀ (y : Sx P.S n U) (i : Fin (n + 1)), P.sv (Sx.along y (SimplexCategory.const ⦋0⦌ ⦋n⦌ i)) 0 = P.sv y i`. Introduce `y i`. Rewrite using `[PBData.sv_along]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, fun i => ?_, fun z' hz' => ?_⟩` and prove the remaining obligations. Apply `UpperTheory.projBundleData_simplex_ext_of_vertices P` to reduce the goal to its premises. Introduce `k`. Establish `hk : k = 0` using `Fin.fin_one_eq_zero k`. Rewrite using `[hk, key, hz]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `UpperTheory.projBundleData_simplex_ext_of_vertices P` to reduce the goal to its premises. Introduce `i`. Rewrite using `[← key, hz' i, hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.projBundleData_existsUnique_simplex_of_vertices :
     ∀ {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P : PBData r d) (n : ℕ) (U : Scheme.{0}) (t : Fin (n + 1) → Sx P.S 0 U),

@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.TensorOneInj
 
 /- English proof (translation)
-Take `⟨C⟩` from `GlobalTheory.MemLoc.nonempty_core l`. Establish `: Nontrivial (Per.BdR l)` using `(GlobalTheory.MemLoc.BdRField.bdR_isField l).2.2.1.nontrivial`. Conclude with `C.ι.domain_nontrivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bcris_nontrivial (l : ℕ) [Fact l.Prime] : Nontrivial (Per.Bcris l) := by
   obtain ⟨C⟩ := GlobalTheory.MemLoc.nonempty_core l
@@ -22,9 +22,9 @@ theorem bcris_nontrivial (l : ℕ) [Fact l.Prime] : Nontrivial (Per.Bcris l) := 
   exact C.ι.domain_nontrivial
 
 /- English proof (translation)
-Use `bcris_nontrivial l` as an intermediate fact. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Rewrite `hx` using `[PadicInt.unitCoeff_spec h0, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : IsUnit (algebraMap ℤ_[l] (Per.Bcris l) (PadicInt.unitCoeff h0 : ℤ_[l]))` using `(PadicInt.unitCoeff h0).isUnit.map _`. Conclude with `(hu.mul ((GlobalTheory.MemLoc.isUnit_l_Bcris l).pow _)).ne_zero hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraMap_injective (l : ℕ) [Fact l.Prime] :
     Function.Injective (algebraMap ℤ_[l] (Per.Bcris l)) := by
@@ -38,9 +38,9 @@ theorem algebraMap_injective (l : ℕ) [Fact l.Prime] :
   exact (hu.mul ((GlobalTheory.MemLoc.isUnit_l_Bcris l).pow _)).ne_zero hx
 
 /- English proof (translation)
-Establish `h` using `Module.Flat.lTensor_preserves_injective_linearMap (M := O) (Algebra.linearMap ℤ_[l] (Per.Bcris l)) (algebraMap_injective l)`. Establish `e : ⇑(algebraMap O (OB l O)) = (LinearMap.lTensor O (Algebra.linearMap ℤ_[l] (Per.Bcris l))) ∘ (TensorProduct.rid ℤ_[l] O).symm`. Use function extensionality and compare the values at `o`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.comp (TensorProduct.rid ℤ_[l] O).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_OB_injective (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     [Module.Flat ℤ_[l] O] : Function.Injective (algebraMap O (OB l O)) := by
@@ -54,9 +54,9 @@ theorem algebraMap_OB_injective (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O]
   exact h.comp (TensorProduct.rid ℤ_[l] O).symm.injective
 
 /- English proof (translation)
-Introduce `l _ O K _ _ _ _ _ _ _ _ G _ _ T`. Use `haveI : Module.Free O ↥T.L.T := T.L.free`. Establish `h` using `Module.Flat.rTensor_preserves_injective_linearMap (M := ↥T.L.T) (Algebra.linearMap O (OB l O)) (algebraMap_OB_injective l O)`. Establish `e : (fun x : ↥T.L.T => (1 : OB l O) ⊗ₜ[O] x) = (LinearMap.rTensor (↥T.L.T) (Algebra.linearMap O (OB l O))) ∘ (TensorProduct.lid O ↥T.L.T).symm`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.TensorProduct.one_def]`. Rewrite using `[e]`. Conclude with `h.comp (TensorProduct.lid O ↥T.L.T).symm.injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_one_injective : ∀ (l : ℕ) [Fact l.Prime] (O K : Type) [CommRing O] [Algebra ℤ_[l] O]
     [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [Algebra O K] [IsUnitBall O K]

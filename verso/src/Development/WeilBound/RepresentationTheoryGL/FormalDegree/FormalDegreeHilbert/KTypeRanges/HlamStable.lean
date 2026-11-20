@@ -9,9 +9,9 @@ namespace PositivityTheory.RgFd
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
 
 /- English proof (translation)
-Introduce `n ε lam T Ψ hP g hg x hx`. Establish `hw : T.w ≠ 0` using `fun h => by`. Establish `h1` using `T.w_norm`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hK` using `datumV_isKIrrHW hP hw`. Conclude with `closure_genSub_stable (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) hK.1 hK.2.1 (datumV_casimir hP T.w) g hg x hx`.
+A detailed English derivation is pending.
 -/
 theorem hlamStable : HlamStable := by
   intro n ε lam T Ψ hP g hg x hx

@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.ELL.WeierstrassSubstitution
 
 /- English proof (translation)
-Establish `ha' : MvPowerSeries.HasSubst (fun _ : Unit => a)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => ha`. Unfold `PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply ha' hb]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mvsubst_psubst {K : Type u} [Field K] {τ σ : Type} (w : PowerSeries K)
     (a : MvPowerSeries τ K) (ha : MvPowerSeries.constantCoeff a = 0)
@@ -21,14 +21,14 @@ theorem mvsubst_psubst {K : Type u} [Field K] {τ σ : Type} (w : PowerSeries K)
   rw [MvPowerSeries.subst_comp_subst_apply ha' hb]
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_right (by rw [← map_mul, h, map_one])`.
+A detailed English derivation is pending.
 -/
 theorem eq_inv_of_map {L F : Type*} [CommRing L] [Field F] (f : L →+* F) {a b : L}
     (h : a * b = 1) : f b = (f a)⁻¹ :=
   eq_inv_of_mul_eq_one_right (by rw [← map_mul, h, map_one])
 
 /- English proof (translation)
-Unfold `Formalism.ELL.WEqAt at h`. Simplify using `only [mul_zero, smul_zero, add_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow] at h`. Conclude with `pow_eq_zero_iff (n := 3) (by norm_num) |>.1 h.symm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_weq {K : Type u} [Field K] {W : WeierstrassCurve K} {σ : Type}
     {s : MvPowerSeries σ K} (h : Formalism.ELL.WEqAt W s 0) : s = 0 := by
@@ -38,7 +38,7 @@ theorem eq_zero_of_weq {K : Type u} [Field K] {W : WeierstrassCurve K} {σ : Typ
   exact pow_eq_zero_iff (n := 3) (by norm_num) |>.1 h.symm
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hs (eq_zero_of_weq h)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_weq {K : Type u} [Field K] {W : WeierstrassCurve K} {σ : Type}
     {s v : MvPowerSeries σ K} (h : Formalism.ELL.WEqAt W s v) (hs : s ≠ 0) : v ≠ 0 := by
@@ -49,49 +49,47 @@ end Formalism.ELL.WeierstrassSubstitution
 
 open Formalism.ELL.WeierstrassSubstitution in
 /- English proof (translation)
-Introduce `K _ W w hw F₂ hF0 hch σ _ s t hs ht hs0 ht0 hxst`. Establish `chord_forms : ∀ (L : Type u) [Field L] (V : WeierstrassCurve.Affine L) (x0 x1 w0 w1 D PX : L), w0 ≠ 0 → w1 ≠ 0 → D = x0 * w1 - x1 * w0 → D ≠ 0 → PX = (w0 - w1) ^ 2 * w0 * w1 + V.a₁ * (w0 - w1) * D * w0 * w1 - V.a₂ * D ^ 2 * w0 * w1 - x0 * D ^ 2 * w1 - x1 * D ^ 2 * w0 → V.addX (x0 …`. Introduce `L _ V x0 x1 w0 w1 D PX h0 h1 hD hd hPX`. Establish `hl : (-1 / w0 - -1 / w1) / (x0 / w0 - x1 / w1) = (w0 - w1) / D`. Rewrite using `[hD]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hd` using `[hD]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hX : V.addX (x0 / w0) (x1 / w1) ((-1 / w0 - -1 / w1) / (x0 / w0 - x1 / w1)) = PX / (D ^ 2 * w0 * w1)`. Rewrite using `[hl, hPX]`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [WeierstrassCurve.Affine.addX]`. Clear the denominators using the available nonvanishing facts. Use `⟨hX, ?_⟩` and prove the remaining obligations. Simplify using `only [WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negY, WeierstrassCurve.Affine.negAddY]`. Rewrite using `[hX, hl]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `have hv : MvPowerSeries.HasSubst ![s, t] := MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simp [hs, ht]`. Use `set φ := MvPowerSeries.substAlgHom (R := K) hv with hφ`. Establish `φe : ∀ g, φ g = MvPowerSeries.subst ![s, t] g` using `fun g => by`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, MvPowerSeries.coe_substAlgHom]`. Establish `φX0 : φ (MvPowerSeries.X 0) = s` using `by rw [φe, MvPowerSeries.subst_X hv]; rfl`. Establish `φX1 : φ (MvPowerSeries.X 1) = t` using `by rw [φe, MvPowerSeries.subst_X hv]; rfl`. Establish `φw : ∀ g : MvPowerSeries (Fin 2) K, MvPowerSeries.constantCoeff g = 0 → φ (w.subst g) = w.subst (φ g)` using `fun g hg => by`. Rewrite using `[φe, φe, mvsubst_psubst w g hg _ hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `φw0 : φ (w.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K)) = w.subst s`. Rewrite using `[φw _ (MvPowerSeries.constantCoeff_X 0), φX0]`. Establish `φw1 : φ (w.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)) = w.subst t`. Rewrite using `[φw _ (MvPowerSeries.constantCoeff_X 1), φX1]`. Establish `φwF : φ (w.subst F₂) = w.subst (φ F₂)` using `φw F₂ hF0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `injA` using `IsFractionRing.injective (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K))`. Establish `injB` using `IsFractionRing.injective (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))`. Establish `ws0 : w.subst s ≠ 0` using `ne_zero_of_weq (hU K W w hw σ s hs).1 hs0`. Establish `wt0 : w.subst t ≠ 0` using `ne_zero_of_weq (hU K W w hw σ t ht).1 ht0`. Establish `dB : s * w.subst t - t * w.subst s ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hxst` to reduce the goal to its premises. Unfold `Formalism.ELL.xOf`. Rewrite using `[div_eq_div_iff ((map_ne_zero_iff _ injB).2 ws0) ((map_ne_zero_iff _ injB).2 wt0), ← map_mul, ← map_mul]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h`. Establish `w00 : w.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) ≠ 0` using `fun h => ws0 (by rw [← φw0, h, map_zero])`. Establish `w10 : w.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) ≠ 0` using `fun h => wt0 (by rw [← φw1, h, map_zero])`. Establish `φD : φ (MvPowerSeries.X 0 * w.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) - MvPowerSeries.X 1 * w.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K)) = s * w.subst t - t * w.subst s`. Simplify using `only [map_sub, map_mul, φX0, φX1, φw0, φw1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `dA : MvPowerSeries.X 0 * w.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) - MvPowerSeries.X 1 * w.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) ≠ 0` using `fun h => dB (by rw [← φD, h, map_zero])`. Unfold `Formalism.ELL.ChordAt at hch ⊢`. Simplify using `only at hch ⊢`. Unfold `Formalism.ELL.xOf Formalism.ELL.yOf at hch ⊢`. Rewrite `hch` using `[(chord_forms _ _ _ _ _ _ _ _ ((map_ne_zero_iff _ injA).2 w00) ((map_ne_zero_iff _ injA).2 w10) rfl (by rw [← map_mul, ← map_mul, ← map_sub]; exact (map_ne_zero_iff _ injA).2 dA) rfl).1, (chord_forms _ _ _ _ _ _ _ _ ((map_ne_zero_iff _ injA).2 w00) ((map_ne_zero_iff _ injA).2 w10 …`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(chord_forms _ _ _ _ _ _ _ _ ((map_ne_zero_iff _ injB).2 ws0) ((map_ne_zero_iff _ injB).2 wt0) rfl (by rw [← map_mul, ← map_mul, ← map_sub]; exact (map_ne_zero_iff _ injB).2 dB) rfl).1, (chord_forms _ _ _ _ _ _ _ _ ((map_ne_zero_iff _ injB).2 ws0) ((map_ne_zero_iff _ injB).2 wt0 …`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃] at hch ⊢`. Simplify using `only [IsScalarTower.algebraMap_apply K (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K))] at hch`. Simplify using `only [IsScalarTower.algebraMap_apply K (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))]`. Establish `iw0` using `(map_ne_zero_iff _ injA).2 w00`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iw1` using `(map_ne_zero_iff _ injA).2 w10`. Establish `idA : algebraMap (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K)) (MvPowerSeries.X 0) * algebraMap (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K)) (w.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)) - algebraMap (MvPowerSeries (Fin 2) K) ( …`. Rewrite using `[← map_mul, ← map_mul, ← map_sub]`. Conclude with `(map_ne_zero_iff _ injA).2 dA`. Establish `jw0` using `(map_ne_zero_iff _ injB).2 ws0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `jw1` using `(map_ne_zero_iff _ injB).2 wt0`. Establish `jdB : algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) s * algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) (w.subst t) - algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) t * algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerS …`. Rewrite using `[← map_mul, ← map_mul, ← map_sub]`. Conclude with `(map_ne_zero_iff _ injB).2 dB`. Take `⟨hx, hy⟩` from `hch`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[← φe F₂]`. Distinguish the cases in `hwF : w.subst F₂ = 0`. Establish `hF : F₂ = 0` using `eq_zero_of_weq (hwF ▸ (hU K W w hw (Fin 2) F₂ hF0).1)`. Establish `hr : w.subst (φ F₂) = 0`. Rewrite using `[hF, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((hU K W w hw σ 0 (map_zero _)).2 0 (map_zero _) (by unfold Formalism.ELL.WEqAt; simp)).symm`. Rewrite `hx`, `hy` using `[hwF, map_zero, div_zero, eq_comm, div_eq_zero_iff]`. Establish `hx'` using `hx.resolve_right (by simp [iw0, iw1, idA])`. Establish `hy'` using `hy.resolve_right (by simp [iw0, iw1, idA])`. Simplify using `only [← map_mul, ← map_sub, ← map_add, ← map_pow, ← map_neg] at hx' hy'`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hx'`, `hy'` using `[map_eq_zero_iff _ injA]`. Establish `hxB` using `congrArg φ hx'`. Establish `hyB` using `congrArg φ hy'`. Simplify using `only [map_mul, map_sub, map_add, map_pow, map_neg, map_zero, AlgHom.commutes, φX0, φX1, φw0, φw1] at hxB hyB`. Establish `hxF` using `congrArg (algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))) hxB`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hyF` using `congrArg (algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))) hyB`. Simplify using `only [map_mul, map_sub, map_add, map_pow, map_neg, map_zero] at hxF hyF`. Rewrite using `[hr, map_zero, div_zero, div_zero]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hxF, zero_div]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hyF, zero_div]`. Establish `iwF` using `(map_ne_zero_iff _ injA).2 hwF`. Rewrite `hx` using `[div_eq_div_iff iwF (by simp [iw0, iw1, idA])]`. Rewrite `hy` using `[div_eq_div_iff iwF (by simp [iw0, iw1, idA]), neg_one_mul]`. Simplify using `only [← map_mul, ← map_sub, ← map_add, ← map_pow, ← map_neg] at hx hy`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hx`, `hy` using `[injA.eq_iff]`. Establish `hxB` using `congrArg φ hx`. Establish `hyB` using `congrArg φ hy`. Simplify using `only [map_mul, map_sub, map_add, map_pow, map_neg, AlgHom.commutes, φX0, φX1, φw0, φw1, φwF] at hxB hyB`. Establish `hxF` using `congrArg (algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))) hxB`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyF` using `congrArg (algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K))) hyB`. Simplify using `only [map_mul, map_sub, map_add, map_pow, map_neg] at hxF hyF`. Establish `jwr : algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) (w.subst (φ F₂)) ≠ 0`. Introduce `h0`. Rewrite `hyF` using `[h0, mul_zero, neg_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `revert hyF`. Simplify using `[jw0, jw1, jdB]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[div_eq_div_iff jwr (by simp [jw0, jw1, jdB])]`. Take the linear combination `hxF`.
-
-Rewrite using `[div_eq_div_iff jwr (by simp [jw0, jw1, jdB]), neg_one_mul]`. Take the linear combination `hyF`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Formalism.ELL.wChordSubst_of (hU : Formalism.ELL.WSubstUnique.{u}) : Formalism.ELL.WChordSubst.{u} := by
   intro K _ W w hw F₂ hF0 hch σ _ s t hs ht hs0 ht0 hxst

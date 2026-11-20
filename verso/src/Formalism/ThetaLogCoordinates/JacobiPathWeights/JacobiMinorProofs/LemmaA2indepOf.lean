@@ -20,11 +20,11 @@ def Cols {n : ℕ} (isVec : ℕ → Bool) (μ : ℕ → Fin n → ℤ) (N : ℕ)
     ∀ I : ℤ → Finset (Fin n), IsIndex (μ N) I → I c = ∅
 
 /- English proof (translation)
-Establish `hfin : (⋃ i ∈ Set.Iio N, {c : ℤ | colHeight (μ (i + 1)) c ≠ colHeight (μ i) c}).Finite` using `Set.Finite.biUnion (Set.finite_Iio N) fun i hi => Paths.path_finite hp hi`. Use `⟨hfin.toFinset, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hun : ∀ i < N, colHeight (μ (i + 1)) c = colHeight (μ i) c`. Introduce `i hi`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hc (hfin.mem_toFinset.2 (Set.mem_biUnion (show i ∈ Set.Iio N from hi) hne))`. Use `⟨fun R _ Xr => (Paths.pathWord_unchanged isVec μ c Xr N hun).1, fun I hI => ?_⟩` and prove the remaining obligations. Establish `b` using `(Paths.pathWord_unchanged isVec μ c (fun _ _ => (0 : ℤ)) N hun).2`. Establish `hcard` using `hI c`. Rewrite `hcard` using `[b, hp.1, Paths.colHeight_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.card_eq_zero.1` to reduce the goal to its premises. Apply the tactic sequence `rw [hcard]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_cols {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ N) : ∃ F : Finset ℤ, Cols isVec μ N F := by
@@ -43,9 +43,9 @@ theorem exists_cols {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : �
   rw [hcard]; split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `psiPath`. Use `finprod_eq_prod_of_mulSupport_subset _ fun c hc => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hc` to reduce the goal to its premises. Use `show pathWord isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n) R)) N (I c) = 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hF c hn).1, (hF c hn).2 I hI]`. Simplify using `[oneF]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_eq_prod (R : Type) [CommRing R] {n N : ℕ} {isVec : ℕ → Bool} {μ : ℕ → Fin n → ℤ}
     {F : Finset ℤ} (hF : Cols isVec μ N F) {I : ℤ → Finset (Fin n)} (hI : IsIndex (μ N) I) :
@@ -60,7 +60,7 @@ theorem psi_eq_prod (R : Type) [CommRing R] {n N : ℕ} {isVec : ℕ → Bool} {
   simp [oneF]
 
 /- English proof (translation)
-Rewrite using `[minorF_eq m (d := 0) rfl rfl]`. Conclude with `Matrix.det_isEmpty`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorF_empty {R : Type*} [CommRing R] {n : ℕ} (m : Matrix (Fin n) (Fin n) R) :
     minorF m ∅ ∅ = 1 := by
@@ -68,9 +68,9 @@ theorem minorF_empty {R : Type*} [CommRing R] {n : ℕ} (m : Matrix (Fin n) (Fin
   exact Matrix.det_isEmpty
 
 /- English proof (translation)
-Unfold `brk`. Use `finprod_eq_prod_of_mulSupport_subset _ fun c hc => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hc` to reduce the goal to its premises. Use `show minorF (if 1 ≤ c then g else gi.transpose) (canIdx (μ N) c) (I c) = 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hF c hn).2 I hI, (hF c hn).2 _ (A1hw.isIndex_can _)]`. Conclude with `minorF_empty _`.
+A detailed English derivation is pending.
 -/
 theorem brk_eq_prod {L : Type} [CommRing L] {n N : ℕ} {isVec : ℕ → Bool} {μ : ℕ → Fin n → ℤ}
     {F : Finset ℤ} (hF : Cols isVec μ N F) (g gi : Matrix (Fin n) (Fin n) L)
@@ -93,21 +93,19 @@ def invT {A : Type*} [CommRing A] {n : ℕ} (G : (Matrix (Fin n) (Fin n) A)ˣ) :
   inv_val := by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]
 
 /- English proof (translation)
-Establish `h1` using `A1hw.map_pathWord ((actAll isVec (↑g : Matrix (Fin n) (Fin n) L) (↑g⁻¹ : Matrix (Fin n) (Fin n) L) : MvPolynomial (ℕ × Fin n) L →ₐ[L] MvPolynomial (ℕ × Fin n) L) : MvPolynomial (ℕ × Fin n) L →+* MvPolynomial (ℕ × Fin n) L) isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n …`. Rewrite `h1` using `[RingHom.coe_coe]`. Rewrite using `[h1]`. Establish `hX : ∀ i, (fun a => actAll isVec (↑g : Matrix (Fin n) (Fin n) L) (↑g⁻¹ : Matrix (Fin n) (Fin n) L) (X (i, a) : MvPolynomial (ℕ × Fin n) L)) = if isVec i then Matrix.vecMul (fun b => (X (i, b) : MvPolynomial (ℕ × Fin n) L)) ((↑g : Matrix (Fin n) (Fin n) L).map C) else Matrix.vecMu …`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a`. Unfold `actAll`. Rewrite using `[aeval_X]`. Apply the tactic sequence `split_ifs <;> rfl`. Set `G : (Matrix (Fin n) (Fin n) (MvPolynomial (ℕ × Fin n) L))ˣ` to `Units.map ((C : L →+* MvPolynomial (ℕ × Fin n) L).mapMatrix (m := Fin n)).toMonoidHom g`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hG : (↑G : Matrix (Fin n) (Fin n) (MvPolynomial (ℕ × Fin n) L)) = (↑g : Matrix (Fin n) (Fin n) L).map C` using `rfl`. Establish `hGi : (↑G⁻¹ : Matrix (Fin n) (Fin n) (MvPolynomial (ℕ × Fin n) L)) = (↑g⁻¹ : Matrix (Fin n) (Fin n) L).map C` using `rfl`. Distinguish the cases in `hc : 1 ≤ c`. Use `A1hw.act_pathWord actFormWedge actFormContract isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n) L)) (fun i a => actAll isVec (↑g : Matrix (Fin n) (Fin n) L) (↑g⁻¹ : Matrix (Fin n) (Fin n) L) (X (i, a) : MvPolynomial (ℕ × Fin n) L)) G (fun i hi => by` as an intermediate fact. Establish `hv : isVec i = true` using `by simpa [hc] using hi`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hX i, if_pos hv, hG])`. Use the proof step `(fun i hi => by`. Establish `hv : ¬ isVec i = true` using `by simpa [hc] using hi`. Rewrite using `[hX i, if_neg hv, hGi]) N`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `actF`. Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos hc, hG, minorMap]`. Use `A1hw.act_pathWord actFormWedge actFormContract isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n) L)) (fun i a => actAll isVec (↑g : Matrix (Fin n) (Fin n) L) (↑g⁻¹ : Matrix (Fin n) (Fin n) L) (X (i, a) : MvPolynomial (ℕ × Fin n) L)) (invT G) (fun i hi => by` as an intermediate fact. Establish `hv : ¬ isVec i = true` using `by simpa [hc] using hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX i, if_neg hv]`. Use the proof step `rfl)`. Use the proof step `(fun i hi => by`. Establish `hv : isVec i = true` using `by simpa [hc] using hi`. Rewrite using `[hX i, if_pos hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show _ = Matrix.vecMul _ ((↑G : Matrix (Fin n) (Fin n) (MvPolynomial (ℕ × Fin n) L)).transpose).transpose`. Rewrite using `[Matrix.transpose_transpose, hG]) N`. Rewrite using `[this]`. Unfold `actF`. Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[if_neg hc, minorMap]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem col_act {L : Type} [CommRing L] {n : ℕ} (isVec : ℕ → Bool) (μ : ℕ → Fin n → ℤ) (c : ℤ)
     (g : (Matrix (Fin n) (Fin n) L)ˣ) (N : ℕ) (J : Finset (Fin n)) :
@@ -185,9 +183,9 @@ def term {L : Type} [CommRing L] {n : ℕ} (isVec : ℕ → Bool) (μ : ℕ → 
     C (∏ c ∈ F, minorF (if 1 ≤ c then g else gi.transpose) (I' c) (I c))
 
 /- English proof (translation)
-Rewrite using `[psi_eq_prod L hF hI, map_prod]`. Repeatedly rewrite using `[col_act]`. Rewrite using `[Finset.prod_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Unfold `term`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_prod, ← Finset.prod_mul_distrib, ← Finset.prod_attach F]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[extF, x.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem act_psi {L : Type} [CommRing L] {n N : ℕ} {isVec : ℕ → Bool} {μ : ℕ → Fin n → ℤ}
     {F : Finset ℤ} (hF : Cols isVec μ N F) (g : (Matrix (Fin n) (Fin n) L)ˣ)
@@ -207,11 +205,9 @@ theorem act_psi {L : Type} [CommRing L] {n N : ℕ} {isVec : ℕ → Bool} {μ :
   simp [extF, x.2]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∀ c ∈ F, (I' c).card = (I c).card`. Use `left`. Introduce `c`. Distinguish the cases in `hc : c ∈ F`. Rewrite using `[h c hc]`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI c`. Rewrite using `[h0 c hc, ← (hF c hc).2 I hI]`. Conclude with `hI c`. Use `right push Not at h`. Take `⟨c, hc, hne⟩` from `h`.
-
-Establish `: ∏ c ∈ F, minorF (if 1 ≤ c then g else gi.transpose) (I' c) (I c) = 0` using `Finset.prod_eq_zero hc (minorF_ne _ (Ne.symm hne))`. Unfold `term`. Rewrite using `[this, map_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_cases {L : Type} [CommRing L] {n N : ℕ} {isVec : ℕ → Bool} {μ : ℕ → Fin n → ℤ}
     {F : Finset ℤ} (hF : Cols isVec μ N F) (g gi : Matrix (Fin n) (Fin n) L)
@@ -233,7 +229,7 @@ theorem term_cases {L : Type} [CommRing L] {n N : ℕ} {isVec : ℕ → Bool} {�
     rw [this, map_zero, mul_zero]
 
 /- English proof (translation)
-Unfold `term`. Rewrite using `[← psi_eq_prod L hF hI', mul_comm]`. Conclude with `(hW L n N isVec B μ I' hp hI').C_mul _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_hom (hW : PsiWeight) {L : Type} [CommRing L] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ}
     {μ : ℕ → Fin n → ℤ} (hp : IsPath n isVec B μ N)
@@ -245,17 +241,15 @@ theorem term_hom (hW : PsiWeight) {L : Type} [CommRing L] {n N : ℕ} {isVec : �
   exact (hW L n N isVec B μ I' hp hI').C_mul _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Unfold `idxWeight`. Establish `h1 : {c : ℤ | 1 ≤ c ∧ m ∈ canIdx μ c} = ↑(Finset.Icc 1 (μ m))`. Use extensionality with `c`. Rewrite using `[Finset.mem_coe, Finset.mem_Icc]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Rewrite `b` using `[A1hw.mem_can h, if_pos a]`. Conclude with `⟨a, b⟩`. Introduce and unpack `⟨a, b⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[A1hw.mem_can h, if_pos a]`. Conclude with `b`. Establish `h2 : {c : ℤ | c ≤ 0 ∧ m ∈ canIdx μ c} = ↑(Finset.Ioc (μ m) 0)`. Use extensionality with `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_coe, Finset.mem_Ioc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Rewrite `b` using `[A1hw.mem_can h, if_neg (by omega)]`. Conclude with `⟨b, a⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, b⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[A1hw.mem_can h, if_neg (by omega)]`. Conclude with `a`. Rewrite using `[h1, h2, Set.ncard_coe_finset, Set.ncard_coe_finset, Int.card_Icc, Int.card_Ioc]`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem idxWeight_can {n : ℕ} {μ : Fin n → ℤ} (h : Antitone μ) : idxWeight (canIdx μ) = μ := by
   funext m
@@ -289,23 +283,21 @@ end A3ev
 
 open A3ev in
 /- English proof (translation)
-Introduce `hT hW L _ n N isVec B μ I g hp hI`. Take `⟨F, hF⟩` from `exists_cols hp`. Establish `hanti : Antitone (μ N)` using `hp.2.1 N le_rfl`. Establish `key : ∀ (ν : Fin n → ℤ) (p : ∀ c ∈ F, Finset (Fin n)), weightedHomogeneousComponent (torusW isVec) ν (term isVec μ N F (↑g : Matrix (Fin n) (Fin n) L) (↑g⁻¹ : Matrix (Fin n) (Fin n) L) I (extF F p)) ≠ 0 → IsIndex (μ N) (extF F p) ∧ idxWeight (extF F p) = ν`. Introduce `ν p hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `term_cases hF (↑g : Matrix (Fin n) (Fin n) L) (↑g⁻¹ : Matrix (Fin n) (Fin n) L) hI (extF F p) (fun c hc => dif_neg hc) with h | h` into its components or cases. Use `⟨h, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hν`. Conclude with `hne ((term_hom hW hp hF _ _ I h).weightedHomogeneousComponent_ne ν (Ne.symm hν))`. Rewrite `hne` using `[h, map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd rfl hne`. Rewrite using `[act_psi hF g hI]`. Prove the components needed by the constructor for the conclusion. Introduce `ν hne`. Rewrite `hne` using `[map_sum]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, _, hp'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Take `⟨h1, h2⟩` from `key ν p hp'`. Rewrite using `[← h2]`. Conclude with `(hT n (μ N) _ hanti h1).1`. Rewrite using `[map_sum, Finset.sum_eq_single (fun c _ => canIdx (μ N) c)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Establish `hcan : extF F (fun c _ => canIdx (μ N) c) = canIdx (μ N)`. Use function extensionality and compare the values at `c`. Unfold `extF`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hF c h).2 _ (A1hw.isIndex_can _)).symm`. Rewrite using `[hcan]`. Establish `hh` using `term_hom hW hp hF (↑g : Matrix (Fin n) (Fin n) L) (↑g⁻¹ : Matrix (Fin n) (Fin n) L) I (A1hw.isIndex_can (μ N))`. Rewrite `hh` using `[idxWeight_can hanti]`. Rewrite using `[hh.weightedHomogeneousComponent_same]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Unfold `term`. Rewrite using `[← psi_eq_prod L hF (A1hw.isIndex_can _), ← brk_eq_prod hF _ _ hI, mul_comm]`. Introduce `p _ hpne`. Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `key _ p hne`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply `hpne` to reduce the goal to its premises. Establish `h3` using `(hT n (μ N) _ hanti h1).2 h2`. Use function extensionality and compare the values at `c hc`. Establish `h4` using `congrFun h3 c`. Unfold `extF at h4`.
-
-Rewrite `h4` using `[dif_pos hc]`. Conclude with `h4`. Introduce `h`. Conclude with `absurd (Finset.mem_pi.2 fun _ _ => Finset.mem_univ _) h`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem factEV_of : IndexWeightsDominance → PsiWeight → FactEV := by
   intro hT hW L _ n N isVec B μ I g hp hI
@@ -364,9 +356,9 @@ namespace A3ev
 def psum {n : ℕ} (ν : Fin n → ℤ) (j : ℕ) : ℤ := ∑ m ∈ univ.filter (fun m : Fin n => m.val < j), ν m
 
 /- English proof (translation)
-Unfold `psum`. Establish `: univ.filter (fun m' : Fin n => m'.val < m.val + 1) = insert m (univ.filter (fun m' : Fin n => m'.val < m.val))`. Use extensionality with `x`. Simplify using `only [mem_filter, mem_univ, true_and, mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this, Finset.sum_insert (by simp), add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psum_succ {n : ℕ} (ν : Fin n → ℤ) (m : Fin n) : psum ν (m.val + 1) = psum ν m.val + ν m := by
   unfold psum
@@ -378,7 +370,7 @@ theorem psum_succ {n : ℕ} (ν : Fin n → ℤ) (m : Fin n) : psum ν (m.val + 
   rw [this, Finset.sum_insert (by simp), add_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Establish `h1` using `psum_succ ν m`. Establish `h2` using `psum_succ μ m`. Rewrite `h1` using `[h _ m.2, h _ m.2.le]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_of_psum {n : ℕ} {ν μ : Fin n → ℤ} (h : ∀ j ≤ n, psum ν j = psum μ j) : ν = μ := by
   funext m
@@ -390,7 +382,7 @@ theorem eq_of_psum {n : ℕ} {ν μ : Fin n → ℤ} (h : ∀ j ≤ n, psum ν j
 def height {n : ℕ} (ν : Fin n → ℤ) : ℤ := ∑ j ∈ range (n + 1), psum ν j
 
 /- English proof (translation)
-Establish `hle : ∀ j, psum μ j ≤ psum ν j` using `h.2`. Establish `heq : ∀ j ∈ range (n + 1), psum μ j = psum ν j` using `(Finset.sum_eq_sum_iff_of_le (fun j _ => hle j)).1 (le_antisymm (Finset.sum_le_sum fun j _ => hle j) hh)`. Conclude with `eq_of_psum fun j hj => (heq j (Finset.mem_range.2 (by omega))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem domLe_eq {n : ℕ} {μ ν : Fin n → ℤ} (h : DomLe μ ν) (hh : height ν ≤ height μ) : ν = μ := by
   have hle : ∀ j, psum μ j ≤ psum ν j := h.2
@@ -400,7 +392,7 @@ theorem domLe_eq {n : ℕ} {μ ν : Fin n → ℤ} (h : DomLe μ ν) (hh : heigh
   exact eq_of_psum fun j hj => (heq j (Finset.mem_range.2 (by omega))).symm
 
 /- English proof (translation)
-Establish `: genMat k n = (algebraMap (MvPolynomial (Fin n × Fin n) k) (GenField k n)).mapMatrix (Matrix.mvPolynomialX (Fin n) (Fin n) k)`. Use extensionality with `a b`. Simplify using `[genMat, Matrix.mvPolynomialX]`. Rewrite using `[this, ← RingHom.map_det]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr (Matrix.det_mvPolynomialX_ne_zero (Fin n) k)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genMat_det_ne (k : Type*) [Field k] (n : ℕ) : (genMat k n).det ≠ 0 := by
   have : genMat k n = (algebraMap (MvPolynomial (Fin n × Fin n) k) (GenField k n)).mapMatrix
@@ -418,7 +410,7 @@ def genU (k : Type*) [Field k] (n : ℕ) : (Matrix (Fin n) (Fin n) (GenField k n
   inv_val := Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (genMat_det_ne k n))
 
 /- English proof (translation)
-The claim follows from `hEV (GenField k n) n N isVec B μ I (genU k n) hp hI`.
+A detailed English derivation is pending.
 -/
 theorem ev_gen (hEV : FactEV) (k : Type) [Field k] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ}
     {μ : ℕ → Fin n → ℤ} {I : ℤ → Finset (Fin n)} (hp : IsPath n isVec B μ N)
@@ -434,7 +426,7 @@ theorem ev_gen (hEV : FactEV) (k : Type) [Field k] {n N : ℕ} {isVec : ℕ → 
   hEV (GenField k n) n N isVec B μ I (genU k n) hp hI
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_cols hp`. Rewrite using `[psi_eq_prod k hF hI, psi_eq_prod L hF hI, map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[A1hw.map_pathWord]`. Simplify using `only [map_X]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_psi {k L : Type} [CommRing k] [CommRing L] (φ : k →+* L) {n N : ℕ} {isVec : ℕ → Bool}
     {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ} {I : ℤ → Finset (Fin n)} (hp : IsPath n isVec B μ N)
@@ -453,7 +445,7 @@ def evC (k : Type) [Field k] (n : ℕ) (isVec : ℕ → Bool) (ν : Fin n → �
       (mapAlgHom (σ := ℕ × Fin n) (Algebra.ofId k (GenField k n))).toLinearMap
 
 /- English proof (translation)
-Rewrite using `[← map_psi (algebraMap k (GenField k n)) hp hI]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evC_psi (k : Type) [Field k] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ}
     {μ : ℕ → Fin n → ℤ} {I : ℤ → Finset (Fin n)} (ν : Fin n → ℤ) (hp : IsPath n isVec B μ N)
@@ -470,13 +462,11 @@ def fam (k : Type) [Field k] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ
     psiPath (GenField k n) isVec x.1.1 N (canIdx (x.1.1 N))
 
 /- English proof (translation)
-Establish `hprod` using `linearIndependent_smul (hBrk k n μ₀ hanti) (pathProductLinearIndependent (GenField k n) n N isVec B μ₀)`. Set `φ : {x : PathIdx n N isVec B // x.1.1 N = μ₀} → {I : ℤ → Finset (Fin n) // IsStd μ₀ I} × {μ : ℕ → Fin n → ℤ // IsPath n isVec B μ N ∧ μ N = μ₀ ∧ ∀ i, N < i → μ i = 0}` to `fun x => (⟨x.1.1.2, by have := x.1.2.2.2; rw [x.2] at this; exact this⟩, ⟨x.1.1.1, x.1.2.1, x.2, x.1.2.2.1⟩)`. Establish `hφ : Function.Injective φ`. Introduce `x y h`. Establish `h1` using `congrArg (fun p => p.1.1) h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun p => p.2.1) h`. Conclude with `Subtype.ext (Subtype.ext (Prod.ext h2 h1))`. Establish `hc` using `hprod.comp φ hφ`. Use `show LinearIndependent k (fun x : {x : PathIdx n N isVec B // x.1.1 N = μ₀} => fam k x.1)`. Use `hc using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Establish `hx : x.1.1.1 N = μ₀` using `x.2`. Use `show fam k x.1 = _`. Unfold `fam`. Rewrite using `[hx]`.
-
-Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fam_li (hBrk : FactBrk) (k : Type) [Field k] (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ)
     (μ₀ : Fin n → ℤ) (hanti : Antitone μ₀) :
@@ -507,19 +497,17 @@ end A3ev
 
 open A3ev in
 /- English proof (translation)
-Introduce `hEV hBrk k _ n N isVec B`. Rewrite using `[linearIndependent_iff']`. Introduce `s a hsum`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨x₁, hx₁s, hx₁⟩` from `hcon`. Establish `hT : (s.filter fun x => a x ≠ 0).Nonempty` using `⟨x₁, Finset.mem_filter.2 ⟨hx₁s, hx₁⟩⟩`. Take `⟨x₀, hx₀, hmax⟩` from `Finset.exists_max_image _ (fun x : PathIdx n N isVec B => height (x.1.1 N)) hT`. Rewrite `hx₀` using `[Finset.mem_filter]`. Take `⟨μ₀, hμ₀⟩ : ∃ μ₀, x₀.1.1 N = μ₀` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hanti : Antitone μ₀` using `hμ₀ ▸ x₀.2.1.2.1 N le_rfl`. Establish `h1` using `congrArg (evC k n isVec μ₀) hsum`. Rewrite `h1` using `[map_sum, map_zero]`. Rewrite `h1` using `[map_smul]`. Establish `h2 : ∑ x ∈ s.filter (fun x => x.1.1 N = μ₀), a x • fam k x = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Finset.sum_filter_of_ne (s := s) (p := fun x : PathIdx n N isVec B => x.1.1 N = μ₀) (f := fun x => a x • evC k n isVec μ₀ (psiPath k isVec x.1.1 N x.1.2)) ?_`. Rewrite using `[← h1, ← h3]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.mem_filter]`. Rewrite using `[evC_psi k μ₀ x.2.1 x.2.2.2.1, ← hx.2, (ev_gen hEV k x.2.1 x.2.2.2.1).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `fam`. Rewrite using `[smul_eq_C_mul]`. Introduce `x hx hne`. Establish `ha : a x ≠ 0` using `fun h => hne (by rw [h, zero_smul])`. Establish `he : evC k n isVec μ₀ (psiPath k isVec x.1.1 N x.1.2) ≠ 0` using `fun h => hne (by rw [h, smul_zero])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[evC_psi k μ₀ x.2.1 x.2.2.2.1]`. Establish `hd : DomLe μ₀ (x.1.1 N)` using `(ev_gen hEV k x.2.1 x.2.2.2.1).1 μ₀ he`. Use `domLe_eq hd ?_` and prove the remaining obligations. Rewrite using `[← hμ₀]`. Conclude with `hmax x (Finset.mem_filter.2 ⟨hx, ha⟩)`.
-
-Conclude with `hx₀.2 (linearIndepOn_iff'.1 (fam_li hBrk k n N isVec B μ₀ hanti) _ a (fun x hx => (Finset.mem_filter.1 (Finset.mem_coe.1 hx)).2) h2 x₀ (Finset.mem_filter.2 ⟨hx₀.1, hμ₀⟩))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lemmaA2indep_of : FactEV → FactBrk → LemmaA2indep := by
   intro hEV hBrk k _ n N isVec B

@@ -23,7 +23,7 @@ def globalSectionsToMvPolynomial (k : Type u) [Field k] (v : Type u) :
     ((affineSpaceIsoSpecMvPolynomial k v).inv.appTop).hom
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, e.inv_hom_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem appTop_inv_hom_apply {X Y : Scheme.{u}} (e : X ≅ Y) (s : Γ(Y, ⊤)) :
     e.inv.appTop (e.hom.appTop s) = s := by
@@ -31,7 +31,7 @@ private theorem appTop_inv_hom_apply {X Y : Scheme.{u}} (e : X ≅ Y) (s : Γ(Y,
   simp
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, e.hom_inv_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem appTop_hom_inv_apply {X Y : Scheme.{u}} (e : X ≅ Y) (s : Γ(X, ⊤)) :
     e.hom.appTop (e.inv.appTop s) = s := by
@@ -57,7 +57,7 @@ private theorem globalSectionsToMvPolynomial_apply (k : Type u) [Field k] (v : T
         ((affineSpaceIsoSpecMvPolynomial k v).inv.appTop s) := rfl
 
 /- English proof (translation)
-Introduce `p`. Rewrite using `[mvPolynomialToGlobalSections_apply, globalSectionsToMvPolynomial_apply, appTop_inv_hom_apply]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leftInverse_globalSectionsToMvPolynomial (k : Type u) [Field k] (v : Type u) :
     Function.LeftInverse ⇑(globalSectionsToMvPolynomial k v) ⇑(mvPolynomialToGlobalSections k v) := by
@@ -66,7 +66,7 @@ theorem leftInverse_globalSectionsToMvPolynomial (k : Type u) [Field k] (v : Typ
   simp
 
 /- English proof (translation)
-Introduce `s`. Rewrite using `[globalSectionsToMvPolynomial_apply, mvPolynomialToGlobalSections_apply, Iso.hom_inv_id_apply, appTop_hom_inv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem rightInverse_globalSectionsToMvPolynomial (k : Type u) [Field k] (v : Type u) :
     Function.RightInverse ⇑(globalSectionsToMvPolynomial k v) ⇑(mvPolynomialToGlobalSections k v) := by
@@ -101,7 +101,7 @@ theorem mvPolynomialEquivGlobalSections_symm_apply (k : Type u) [Field k] (v : T
         ((affineSpaceIsoSpecMvPolynomial k v).inv.appTop s) := rfl
 
 /- English proof (translation)
-Rewrite using `[AlgebraicGeometry.AffineSpace.SpecIso_inv_appTop_coord]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem affineSpaceIsoSpecMvPolynomial_inv_appTop_coord (k : Type u) [Field k] (v : Type u) (i : v) :
     (affineSpaceIsoSpecMvPolynomial k v).inv.appTop (AffineSpace.coord (Spec (CommRingCat.of k)) i) =
@@ -110,7 +110,7 @@ private theorem affineSpaceIsoSpecMvPolynomial_inv_appTop_coord (k : Type u) [Fi
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[mvPolynomialEquivGlobalSections_apply, ← affineSpaceIsoSpecMvPolynomial_inv_appTop_coord k v i, appTop_hom_inv_apply]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvPolynomialEquivGlobalSections_X (k : Type u) [Field k] (v : Type u) (i : v) :
     mvPolynomialEquivGlobalSections k v (MvPolynomial.X i) = AffineSpace.coord (Spec (CommRingCat.of k)) i := by
@@ -118,7 +118,7 @@ theorem mvPolynomialEquivGlobalSections_X (k : Type u) [Field k] (v : Type u) (i
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← mvPolynomialEquivGlobalSections_X k v i, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mvPolynomialEquivGlobalSections_symm_coord (k : Type u) [Field k] (v : Type u) (i : v) :
     (mvPolynomialEquivGlobalSections k v).symm (AffineSpace.coord (Spec (CommRingCat.of k)) i) =
@@ -126,9 +126,9 @@ theorem mvPolynomialEquivGlobalSections_symm_coord (k : Type u) [Field k] (v : T
   rw [← mvPolynomialEquivGlobalSections_X k v i, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[mvPolynomialEquivGlobalSections_apply]`. Establish `h2 : (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial v k)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial v k))).inv = (Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ (Spec.map (CommRingCat.ofHom (MvPolynomial.C : k →+* MvPolynomial v k))).appTop` using `Scheme.ΓSpecIso_inv_naturality _`. Establish `key : (affineSpaceIsoSpecMvPolynomial k v).inv.appTop ((affineSpaceIndexedByToSpec k v).appTop ((Scheme.ΓSpecIso (CommRingCat.of k)).inv c)) = (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial v k))).inv (MvPolynomial.C c)`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← CommRingCat.comp_apply, ← h2, CommRingCat.comp_apply]`. Simplify using the standard rewrite rules. Rewrite using `[← key, appTop_hom_inv_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mvPolynomialEquivGlobalSections_C (k : Type u) [Field k] (v : Type u) (c : k) :
     mvPolynomialEquivGlobalSections k v (MvPolynomial.C c) =
@@ -149,7 +149,7 @@ theorem mvPolynomialEquivGlobalSections_C (k : Type u) [Field k] (v : Type u) (c
   rw [← key, appTop_hom_inv_apply]
 
 /- English proof (translation)
-Rewrite using `[mvPolynomialEquivGlobalSections_apply, Scheme.preimage_basicOpen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mvPolynomialEquivGlobalSections_basicOpen (k : Type u) [Field k] (v : Type u) (p : MvPolynomial v k) :
     (affineSpaceIndexedBy k v).basicOpen (mvPolynomialEquivGlobalSections k v p) =
@@ -160,7 +160,7 @@ theorem mvPolynomialEquivGlobalSections_basicOpen (k : Type u) [Field k] (v : Ty
   rfl
 
 /- English proof (translation)
-Rewrite using `[mvPolynomialEquivGlobalSections_basicOpen, basicOpen_eq_of_affine]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mvPolynomialEquivGlobalSections_basicOpen_primeSpectrum (k : Type u) [Field k] (v : Type u)
     (p : MvPolynomial v k) :

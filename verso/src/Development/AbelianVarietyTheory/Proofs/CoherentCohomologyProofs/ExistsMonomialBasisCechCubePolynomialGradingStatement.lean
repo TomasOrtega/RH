@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsMo
 import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.ExistsAwayFracOfMemHomLoc
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct GlobalTheory
 /- English proof (citation)
-Apply `GlobalTheory.exists_basis_grCube_polyGrading` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCoherentCohomologyProofs%2FExistsMonomialBasisCechCubePolynomialGrading.lean&line=49#L49)
 -/

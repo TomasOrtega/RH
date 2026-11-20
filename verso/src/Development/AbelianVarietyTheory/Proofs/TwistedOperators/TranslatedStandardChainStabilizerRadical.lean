@@ -14,7 +14,7 @@ def lowVec (b : Fin n → Fin m) (j : ℕ) (w : Fin n → K) : Prop :=
   ∀ i : Fin n, j ≤ ((b i : Fin m) : ℕ) → w i = 0
 
 /- English proof (translation)
-Introduce `i hi`. Establish `: i ≠ c` using `by rintro rfl; omega`. Simplify using `[Pi.single_apply, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lowVec_single (b : Fin n → Fin m) (c : Fin n) :
     lowVec b ((b c : ℕ) + 1) (Pi.single c (1 : K)) := by
@@ -23,16 +23,16 @@ theorem lowVec_single (b : Fin n → Fin m) (c : Fin n) :
   simp [Pi.single_apply, this]
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec_single_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_single_apply (z : Matrix (Fin n) (Fin n) K) (i c : Fin n) :
     (z *ᵥ Pi.single c (1 : K)) i = z i c := by
   simp [Matrix.mulVec_single_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H i c hic`. Establish `h1` using `H ⟨(b c : ℕ) + 1, by omega⟩ _ (lowVec_single b c) i (by simp; exact hic)`. Rewrite `h1` using `[mulVec_single_apply]`. Then use the resulting hypothesis. Introduce `H j w hw i hi`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : (j : ℕ) ≤ (b c : ℕ)`. Rewrite using `[hw c hc, mul_zero]`. Rewrite using `[H i c (by rw [Fin.lt_iff_val_lt_val]; omega), zero_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem stab_iff (b : Fin n → Fin m) (z : Matrix (Fin n) (Fin n) K) :
     (∀ j : Fin (m + 1), ∀ w, lowVec b j w → lowVec b j (z *ᵥ w)) ↔
@@ -49,11 +49,11 @@ theorem stab_iff (b : Fin n → Fin m) (z : Matrix (Fin n) (Fin n) K) :
     · rw [H i c (by rw [Fin.lt_iff_val_lt_val]; omega), zero_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H i c hic`. Establish `h1` using `H (b c) _ (by simpa using lowVec_single (K := K) b c) i (by simp; exact (not_lt.1 hic))`. Rewrite `h1` using `[Pi.sub_apply, mulVec_single_apply, sub_eq_zero]`. Rewrite using `[h1, Pi.single_apply, one_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `H j w hw i hi`. Establish `e : z *ᵥ w - w = (z - 1) *ᵥ w` using `by rw [sub_mulVec, one_mulVec]`. Rewrite using `[e]`. Simplify using `only [mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : (j : ℕ) + 1 ≤ (b c : ℕ)`. Rewrite using `[hw c (by simpa using hc), mul_zero]`. Simplify using `only [Fin.coe_castSucc] at hi`. Rewrite using `[Matrix.sub_apply, H i c (by rw [Fin.lt_iff_val_lt_val]; omega), sub_self, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rad_iff (b : Fin n → Fin m) (z : Matrix (Fin n) (Fin n) K) :
     (∀ j : Fin m, ∀ w, lowVec b (j.succ : ℕ) w → lowVec b (j.castSucc : ℕ) (z *ᵥ w - w)) ↔
@@ -75,9 +75,9 @@ theorem rad_iff (b : Fin n → Fin m) (z : Matrix (Fin n) (Fin n) K) :
       rw [Matrix.sub_apply, H i c (by rw [Fin.lt_iff_val_lt_val]; omega), sub_self, zero_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H w hw`. Establish `hw' : Gi *ᵥ (Gm *ᵥ w) = w` using `by rw [mulVec_mulVec, h1, one_mulVec]`. Use `H (Gm *ᵥ w) (by rw [hw']; exact hw)` as an intermediate fact. Rewrite `this` using `[hw']`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[mulVec_mulVec, Matrix.mul_assoc]`. Introduce `H y hy`. Use `H _ hy` as an intermediate fact. Simplify `this` using `[mulVec_mulVec, Matrix.mul_assoc, h2]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem transport (Gm Gi X : Matrix (Fin n) (Fin n) K) (h1 : Gi * Gm = 1) (h2 : Gm * Gi = 1)
     (P : (Fin n → K) → Prop) (Q : (Fin n → K) → (Fin n → K) → Prop) :
@@ -93,15 +93,15 @@ theorem transport (Gm Gi X : Matrix (Fin n) (Fin n) K) (h1 : Gi * Gm = 1) (h2 : 
     simpa [mulVec_mulVec, Matrix.mul_assoc, h2] using this
 
 /- English proof (translation)
-Introduce `K _ n m Y d h g hY`. Use `set b := GlobalTheory.SmGL.blk (GlobalTheory.SmGL.stdBlocks d h) with hb`. Establish `hGi : ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (g : Matrix (Fin n) (Fin n) K) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hGm : (g : Matrix (Fin n) (Fin n) K) * ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hz : ∀ x : GL (Fin n) K, (((g⁻¹ * x * g : GL (Fin n) K)) : Matrix (Fin n) (Fin n) K) = ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (x : Matrix (Fin n) (Fin n) K) * (g : Matrix (Fin n) (Fin n) K)` using `fun x => by simp only [Units.val_mul]`. Use `⟨fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.mem_conjBy, GlobalTheory.SmGL.mem_parab, hz, ← stab_iff]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `transport (g : Matrix (Fin n) (Fin n) K) ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) (x : Matrix (Fin n) (Fin n) K) hGi hGm (lowVec b j) (fun _ v => lowVec b j v)` as an intermediate fact. Rewrite using `[← this]`. Use `forall_congr' fun y => ?_` and prove the remaining obligations. Rewrite using `[hY j y, hY j]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.mem_conjBy, GlobalTheory.RadRev.mem_unipRad_entries, hz, ← rad_iff]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Use `transport (g : Matrix (Fin n) (Fin n) K) ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) (x : Matrix (Fin n) (Fin n) K) hGi hGm (lowVec b (j.succ : ℕ)) (fun w v => lowVec b (j.castSucc : ℕ) (v - w))` as an intermediate fact. Rewrite using `[← this]`. Use `forall_congr' fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY j.succ y, hY j.castSucc, mulVec_sub]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stdChain_stab_rad : ∀ {K : Type} [Field K] {n m : ℕ} (Y : Fin (m + 1) → Submodule K (Fin n → K)) (d : Fin m → ℕ) (h : ∑ j, d j = n)
     (g : GL (Fin n) K), (∀ (j : Fin (m + 1)) (y : Fin n → K),

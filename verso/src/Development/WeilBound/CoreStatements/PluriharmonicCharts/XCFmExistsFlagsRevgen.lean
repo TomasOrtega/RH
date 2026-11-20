@@ -9,21 +9,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.FMX GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl
 
 /- English proof (translation)
-Establish `hup : (Mᵀ).BlockTriangular id`. Introduce `i j hij`. Rewrite using `[Matrix.transpose_apply]`. Conclude with `hl j i hij`. Establish `hunit : IsUnit (Mᵀ).det`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_isUpperTriangular hup]`. Simplify using `[Matrix.transpose_apply, hd]`. Use `letI : Invertible (Mᵀ) := Matrix.invertibleOfIsUnitDet _ hunit`. Establish `hup' : (Mᵀ)⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hup`. Establish `hdiag : ∀ i, (Mᵀ)⁻¹ i i = 1`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h1 : ((Mᵀ)⁻¹ * Mᵀ) i i = 1`. Rewrite using `[Matrix.nonsing_inv_mul _ hunit, Matrix.one_apply_eq]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify `h1` using `[Matrix.transpose_apply, hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hup' h, zero_mul]`. Rewrite using `[hup h, mul_zero]`. Introduce `h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_univ i) h`. Establish `hrev : ∀ a b, revInv M a b = (Mᵀ)⁻¹ a.rev b.rev` using `fun a b => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[hrev]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdiag _`. Introduce `a b hab`. Rewrite using `[hrev]`. Conclude with `hup' (Fin.rev_lt_rev.mpr hab)`. Introduce `F hF a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmem : ∀ x y, (Mᵀ)⁻¹ x y ∈ F`. Introduce `x y`. Use `hF x.rev y.rev` as an intermediate fact. Rewrite `this` using `[hrev, Fin.rev_rev, Fin.rev_rev]`. Then use the resulting hypothesis. Establish `hdet' : IsUnit ((Mᵀ)⁻¹).det` using `Matrix.isUnit_nonsing_inv_det _ hunit`.
-
-Use `PositivityTheory.Xgp.GenFam.inv_mem F ((Mᵀ)⁻¹) hdet' hmem b a` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ hunit, Matrix.transpose_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem revInv_unitriangular_and_mem_of_unitriangular {Ω G : Type} [Field Ω] [Field G] [Algebra Ω G] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) G) (hd : ∀ a, M a a = 1) (hl : ∀ a b, a < b → M a b = 0) :
@@ -69,15 +67,13 @@ private theorem revInv_unitriangular_and_mem_of_unitriangular {Ω G : Type} [Fie
     rwa [Matrix.nonsing_inv_nonsing_inv _ hunit, Matrix.transpose_apply] at this
 
 /- English proof (translation)
-Introduce `Ω G _ _ _ S _ r u P _ hu`. Establish `hu'` using `hu`. Take `⟨hd, hl, -, -⟩` from `hu'`. Establish `key` using `fun s => revInv_unitriangular_and_mem_of_unitriangular (Ω := Ω) (u s) (hd s) (hl s)`. Use `PositivityTheory.Xgp.GenFam.of_gen hu ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s a`. Distinguish the cases in `h : P s`. Rewrite using `[if_pos h]`. Conclude with `(key s).1 a`. Rewrite using `[if_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hd s a`. Introduce `s a b hab`. Distinguish the cases in `h : P s`. Rewrite using `[if_pos h]`. Conclude with `(key s).2.1 a b hab`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_neg h]`. Conclude with `hl s a b hab`. Introduce `s a b`. Establish `hsub : ∀ x y, (if P s then revInv (u s) else u s) x y ∈ IntermediateField.adjoin Ω (Set.range fun (q : (σ : S) × Fin (r σ) × Fin (r σ)) => (if P q.fst then revInv (u q.fst) else u q.fst) q.snd.1 q.snd.2)` using `fun x y => IntermediateField.subset_adjoin _ _ ⟨⟨s, x, y⟩, rfl⟩`. Distinguish the cases in `h : P s`.
-
-Rewrite `hsub` using `[if_pos h]`. Conclude with `(key s).2.2 _ hsub a b`. Rewrite `hsub` using `[if_neg h]`. Conclude with `hsub a b`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_c_fm_exists_flags_revgen : ∀ (Ω G : Type) [Field Ω] [Field G] [Algebra Ω G] (S : Type) [Finite S] (r : S → ℕ) (u : ∀ s, Matrix (Fin (r s)) (Fin (r s)) G) (P : S → Prop) [DecidablePred P], IsGenFam Ω G u → IsGenFam Ω G (fun s => if P s then revInv (u s) else u s) := by
   intro Ω G _ _ _ S _ r u P _ hu

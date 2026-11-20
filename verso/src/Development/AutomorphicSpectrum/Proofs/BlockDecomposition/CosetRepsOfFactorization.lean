@@ -8,7 +8,7 @@ open GlobalTheory.PRep Formalism.UG GlobalTheory.LFun PositivityTheory.Spherical
 namespace GlobalTheory.CompanionTheory.SatPow.RepsGen
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[MulAut.conj_apply, mul_assoc]`. Introduce `h`. Conclude with `⟨t⁻¹ * y * t, h, by simp [MulAut.conj_apply, mul_assoc]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem mem_map_conj_iff_inv_mul_mul_mem {G : Type*} [Group G] (I : Subgroup G) (t y : G) :
     y ∈ I.map (MulAut.conj t).toMonoidHom ↔ t⁻¹ * y * t ∈ I := by
@@ -19,19 +19,17 @@ private theorem mem_map_conj_iff_inv_mul_mul_mem {G : Type*} [Group G] (I : Subg
     exact ⟨t⁻¹ * y * t, h, by simp [MulAut.conj_apply, mul_assoc]⟩
 
 /- English proof (translation)
-Use `set H := (I ⊓ I.map (MulAut.conj t).toMonoidHom).subgroupOf I with hH`. Establish `: Fintype (I ⧸ H)` using `@Fintype.ofFinite _ hfin`. Establish `hmem : ∀ a b : I, (QuotientGroup.mk a : I ⧸ H) = QuotientGroup.mk b ↔ t⁻¹ * ((a : G)⁻¹ * b) * t ∈ I`. Introduce `a b`. Rewrite using `[QuotientGroup.eq, hH, Subgroup.mem_subgroupOf, Subgroup.mem_inf, and_iff_right (a⁻¹ * b).2, mem_map_conj_iff_inv_mul_mul_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Establish `key : ∀ c : I ⧸ H, ∃ r : I, P r ∧ (QuotientGroup.mk r : I ⧸ H) = c ∧ (c = QuotientGroup.mk 1 → r = 1)`. Introduce `c`. Take `⟨i, rfl⟩` from `QuotientGroup.mk_surjective c`. Distinguish the cases in `h : (QuotientGroup.mk i : I ⧸ H) = QuotientGroup.mk 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨1, by simpa using hP1, h.symm, fun _ => rfl⟩`. Take `⟨u, hu, hPu, y, hy, hty, hi⟩` from `hfac i i.2`. Use `⟨⟨u, hu⟩, hPu, ?_, fun h' => absurd h' h⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Establish `hy' : u⁻¹ * (i : G) = y` using `by rw [hi, inv_mul_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show t⁻¹ * (u⁻¹ * (i : G)) * t ∈ I`. Rewrite using `[hy']`. Conclude with `hty`. Use `choose f hfP hfmk hf1 using key`. Use `⟨Finset.univ.image (fun c => (f c : G)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_image.2 ⟨QuotientGroup.mk 1, Finset.mem_univ _, by rw [hf1 _ rfl]; simp⟩`. Introduce `r hr`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hr`. Conclude with `⟨(f c).2, hfP c⟩`. Introduce `i hi`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Use `⟨f (QuotientGroup.mk ⟨i, hi⟩), ⟨Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hmem (f (QuotientGroup.mk ⟨i, hi⟩)) ⟨i, hi⟩).1 (hfmk _)`. Introduce and unpack `r ⟨hr, hri⟩`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hr`. Establish `hc : c = QuotientGroup.mk ⟨i, hi⟩` using `(hfmk c).symm.trans ((hmem _ _).2 hri)`.
-
-Substitute `hc` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reps_of_quotient_with_property (G : Type) [Group G] (I : Subgroup G) (t : G) (P : G → Prop)
     (hP1 : P 1)

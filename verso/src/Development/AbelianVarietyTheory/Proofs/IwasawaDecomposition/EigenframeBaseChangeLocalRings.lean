@@ -27,7 +27,7 @@ def FrameBC (Z : Model Xo c β) : Prop :=
       ∀ τ i, g.v τ i = spMap (dualMap ψ) ≫ f.v τ i
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Conclude with `hbc R R' φ x f ψ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem FrameBC.at (hbc : FrameBC Z) {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x) (ψ : R →+* R') {x' : Sp R' ⟶ Z.X}
@@ -40,13 +40,11 @@ section Cpt
 variable {C : FlagCpt Z e}
 
 /- English proof (translation)
-Establish `: IsProper Z.s`. Take `⟨N, i, _, hi⟩` from `Z.proj`. Use `isProper_str O N` as an intermediate fact. Rewrite using `[← hi]`. Use `infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsIso (spMap e.toRingHom)`. Establish `: IsIso (CommRingCat.ofHom e.toRingHom)` using `e.toCommRingCatIso.isIso_hom`. Use `infer_instance`. Establish `: IsProper (C.π ≫ genStr Z ≫ spMap e.toRingHom)` using `by rw [C.π_str]; infer_instance`. Establish `: IsProper C.π` using `IsProper.of_comp C.π (genStr Z ≫ spMap e.toRingHom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ValuativeCriterion.Existence C.π`. Establish `h : UniversallyClosed C.π` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`. Take `⟨⟨q, q1, q2⟩⟩` from `(hv ⟨A, k, p, xA, ⟨h⟩⟩).exists_lift`.
-
-Conclude with `⟨q, q1, q2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extension {A k : Type} [CommRing A] [IsDomain A] [ValuationRing A] [Field k] [Algebra A k]
     [IsFractionRing A k] (p : Sp k ⟶ C.Y.X) (xA : Sp A ⟶ gen Z) (h : p ≫ C.π = spMap (algebraMap A k) ≫ xA) :
@@ -68,7 +66,7 @@ theorem exists_extension {A k : Type} [CommRing A] [IsDomain A] [ValuationRing A
   exact ⟨q, q1, q2⟩
 
 /- English proof (translation)
-The claim follows from `have h : spMap (R := St C _) (Scheme.stalkClosedPointTo q).hom ≫ pt C _ = q := Scheme.Spec_stalkClosedPointTo_fromSpecStalk q ⟨_, algOf _ h hq, inferInstanceAs (IsLocalHom (Scheme.stalkClosedPointTo q).hom), h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_local_factor {T : Type} [CommRing T] [IsLocalRing T] [Algebra c.F T] (q : Sp T ⟶ C.Y.X)
     (hq : q ≫ C.π ≫ genStr Z = spMap (algebraMap c.F T)) :
@@ -79,7 +77,7 @@ theorem exists_local_factor {T : Type} [CommRing T] [IsLocalRing T] [Algebra c.F
   ⟨_, algOf _ h hq, inferInstanceAs (IsLocalHom (Scheme.stalkClosedPointTo q).hom), h, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, ha, h⟩` from `(isEqn_LEx ht hex).vanishesAt_iff.1 hs`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `h' : toFk C y a = s * ((Descent.chi ex t)⁻¹ : (Fk C)ˣ)` using `h`. Rewrite using `[h', mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_zero_coeff {y : C.Y.X} {t : Ix Dw → (Fk C)ˣ} (ht : ∀ τ i, (C.gr τ i).IsEqn y (t (some ⟨τ, i⟩)))
     {ex : Ix Dw → ℤ} (hex : ex none = 0) {s : Fk C} (hs : (C.LEx ex).VanishesAt y s) :
@@ -92,7 +90,7 @@ theorem exists_zero_coeff {y : C.Y.X} {t : Ix Dw → (Fk C)ˣ} (ht : ∀ τ i, (
 end Cpt
 
 /- English proof (translation)
-Simplify using `only [Descent.chi, Fintype.prod_option, hex, zpow_zero, one_mul, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_congr {A : Type} [CommRing A] {ex : Ix Dw → ℤ} (hex : ex none = 0) {t u : Ix Dw → Aˣ}
     (h : ∀ x, t (some x) = u (some x)) : Descent.chi ex t = Descent.chi ex u := by
@@ -101,41 +99,37 @@ theorem chi_congr {A : Type} [CommRing A] {ex : Ix Dw → ℤ} (hex : ex none = 
 section Core
 
 /- English proof (translation)
-Take `⟨q, q1, q2⟩` from `exists_extension p xA hp`. Take `⟨y₀, ψ₀, hloc, hψ₀, hy₀⟩` from `exists_local_factor q (by rw [← Category.assoc, q2, hxA])`. Establish `hmem : y₀ ∈ C.Ybd`. Establish `h1 : C.π y₀ ∈ genBd Z`. Establish `e0 : C.π (q (IsLocalRing.closedPoint A)) = xA (IsLocalRing.closedPoint A)` using `congrArg (fun g => g (IsLocalRing.closedPoint A)) q2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hy₀, e0]`. Conclude with `hbd`. Conclude with `(C.bd_supp y₀).2 h1`. Take `⟨φ₀, f₀, t₀, hT, ht⟩` from `C.gr_spec y₀`. Take `rfl : φ₀ = algebraMap c.F (St C y₀)` from `RingHom.ext fun a => toFk_injective C y₀ ((DFunLike.congr_fun hT.2.1 a).symm.trans ((toFk C y₀).commutes a).symm)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `T₀ : Ix Dw → (Fk C)ˣ` to `fun j => j.elim 1 fun x => t₀ x.1 x.2`. Take `⟨a, ha, ha'⟩` from `exists_zero_coeff (t := T₀) ht hex (hv y₀ hmem)`. Establish `hpstr : p ≫ C.π ≫ genStr Z = spMap (algebraMap c.F k)`. Rewrite using `[← Category.assoc]`. Conclude with `str_of_over w.ov`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y₂, χ₂, hχ₂, hy₂⟩` from `exists_factor p hpstr`. Establish `hspec : y₂ ⤳ y₀` using `hy₂ ▸ specializes_of (ψ := (algebraMap A k).comp ψ₀.toRingHom) (p := p) (by rw [← sp_comp, Category.assoc, hψ₀, q1]) (IsLocalRing.closedPoint k)`. Take `⟨sp, s1, s2⟩` from `exists_spec hspec`. Establish `e1 : χ₂.toRingHom.comp sp.toRingHom = (algebraMap A k).comp ψ₀.toRingHom` using `hom_eq (by`. Rewrite using `[← sp_comp, ← sp_comp, Category.assoc, Category.assoc, s1, hχ₂, hψ₀, q1])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f₂, hf₂⟩` from `hbc.at (x := pt C y₀ ≫ C.π ≫ genι Z) f₀ sp.toRingHom (x' := pt C y₂ ≫ C.π ≫ genι Z) (by rw [← s1, Category.assoc])`. Establish `hy₂b : C.π y₂ ∉ genBd Z` using `fun hb => hb ⟨GlobalTheory.AllWt.ptF z (IsLocalRing.closedPoint k), (congrArg (fun g => g (IsLocalRing.closedPoint k)) w.ov).trans (congrArg C.π hy₂)⟩`. Take `⟨xF, hxF⟩` from `exists_lift_open (pt C y₂ ≫ C.π) fun h => hy₂b ((congrArg C.π (pt_closedPoint y₂)) ▸ h)`. Establish `hφ₂ : sp.toRingHom.comp (algebraMap c.F (St C y₀)) = algebraMap c.F (St C y₂)` using `sp.comp_algebraMap`. Take `⟨P, hP, hTP⟩` from `exists_tie_point (S := St C y₂) (xF := xF) (x := pt C y₂ ≫ C.π ≫ genι Z) (by rw [← Z.jQ_over, ← Category.assoc, hxF, Category.assoc, pt_str]) (by rw [Model.j, ← Category.assoc, hxF, Category.assoc]) hφ₂ f₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Z.jQ_open` as an intermediate fact. Establish `hx0 : (fr0 C).x = spMap (toFk C y₂).toRingHom ≫ P.x`. Rewrite using `[← ptF_fst, ← ptF_fst, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono Z.jQ, frame_point_over, Category.assoc, hP, hxF, ← Category.assoc, toFk_pt]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : (toFk C y₂).toRingHom.comp sp.toRingHom = (toFk C y₀).toRingHom` using `RingHom.ext s2`. Establish `hTf : f₂.Tri (toFk C y₂).toRingHom (rationalEigenFrame C) t₀`. Use `⟨?_, ?_, fun τ i => ?_⟩` and prove the remaining obligations. Use `show gpt C ≫ C.π ≫ genι Z = _`. Rewrite using `[← toFk_pt C y₂, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.comp_assoc, e2]`. Conclude with `hT.2.1`. Take `⟨cf, c1, c2, c3⟩` from `hT.2.2 τ i`. Use `⟨cf, c1, c2, ?_⟩` and prove the remaining obligations. Establish `e : ∀ j, spMap (dualMap (toFk C y₂).toRingHom) ≫ f₂.v τ j = spMap (dualMap (toFk C y₀).toRingHom) ≫ f₀.v τ j` using `fun j => by rw [hf₂, ← Category.assoc, dual_comp, e2]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [e]`. Conclude with `c3`. Take `⟨u, hu1, hu2⟩` from `hTP.bm_of_tri tie0 hx0 hTf`. Establish `hC : Chart C y₂ P u` using `⟨by rw [hP, hxF], hu1⟩`. Take `⟨t', hb, -⟩` from `w.transfer hC hχ₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `v1` using `hb.evR hf`. Establish `v2` using `hu1.evR hf`. Establish `hchi : Descent.chi ex u = Descent.chi ex T₀` using `chi_congr hex fun x => hu2 x.1 x.2`. Establish `hval : sp a = evR Xo c f P` using `toFk_injective C y₂ (by`. Use `(Descent.chi ex T₀).isUnit.mul_left_cancel ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[s2, mul_comm, ha', ← hchi]`. Conclude with `v2)`. Take `⟨fA, hfA⟩` from `hbc.at (x := pt C y₀ ≫ C.π ≫ genι Z) f₀ ψ₀.toRingHom (x' := xA ≫ genι Z) (by rw [← q2, ← hψ₀]; simp only [Category.assoc])`. Establish `hT1` using `hTP.tri_of_bm hTz hb`. Establish `hF : fA.Tri (algebraMap A k) gk (fun τ i => t' (some ⟨τ, i⟩))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hxk, ?_, fun τ i => ?_⟩` and prove the remaining obligations. Establish `h3 : ψ₀.toRingHom.comp (algebraMap c.F (St C y₀)) = algebraMap c.F A` using `ψ₀.comp_algebraMap show φk = (algebraMap A k).comp (ψ₀.toRingHom.comp (algebraMap c.F (St C y₀)))`. Rewrite using `[hφk, h3]`. Conclude with `IsScalarTower.algebraMap_eq _ _ _`. Take `⟨cf, c1, c2, c3⟩` from `hT1.2.2 τ i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨cf, c1, c2, ?_⟩` and prove the remaining obligations. Establish `e : ∀ j, spMap (dualMap (algebraMap A k)) ≫ fA.v τ j = spMap (dualMap χ₂.toRingHom) ≫ f₂.v τ j` using `fun j => by`. Rewrite using `[hfA, hf₂, ← Category.assoc (spMap (dualMap (algebraMap A k))), ← Category.assoc (spMap (dualMap χ₂.toRingHom)), dual_comp, dual_comp, e1]`. Simplify using `only [e]`. Conclude with `c3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hG : gA.Tri (algebraMap A k) gk 1`. Use `⟨hxk, ?_, fun τ i => ⟨Pi.single i 1, by simp, fun j hj => Pi.single_eq_of_ne hj.ne' _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hφk]`. Conclude with `IsScalarTower.algebraMap_eq _ _ _`. Establish `e : (fun j => spMap (dualMap (algebraMap A k)) ≫ gA.v τ j) = gk.v τ` using `funext fun j => (hgk τ j).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `isCombAtG_single Z.t _ (gk.tan τ) i`. Take `⟨uu, huu⟩` from `CoordUniq.exists_unit_ratio fA gA (IsFractionRing.injective A k) hF hG`. Establish `hu'` using `huu (algebraMap A k) gk _ _ hF hG`. Set `W : Aˣ` to `∏ x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), uu x.1 x.2 ^ ex (some x)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hW : (Descent.chi ex t' : k) = algebraMap A k (W : A)`. Establish `: Descent.chi ex t' = Units.map (algebraMap A k : A →* k) W`. Simplify using `only [Descent.chi, Fintype.prod_option, hex, zpow_zero, one_mul, W, map_prod, map_zpow]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[show t' (some x) = _ from hu' x.1 x.2]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hψa : ψ₀ a ∈ IsLocalRing.maximalIdeal A` using `fun h => ha (isUnit_of_map_unit ψ₀.toRingHom a h)`. Use `⟨W * ψ₀ a, Ideal.mul_mem_left _ _ hψa, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[v1, hW, ← hval, map_mul]`. Use `congr 1`. Conclude with `DFunLike.congr_fun e1 a`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_mem_of_wit (hbc : FrameBC Z) {C : FlagCpt Z e} {A k : Type} [CommRing A] [IsDomain A] [ValuationRing A]
     [Field k] [Algebra A k] [IsFractionRing A k] [Algebra c.F A] [Algebra c.F k] [IsScalarTower c.F A k]
@@ -243,9 +237,9 @@ theorem exists_mem_of_wit (hbc : FrameBC Z) {C : FlagCpt Z e} {A k : Type} [Comm
   exact DFunLike.congr_fun e1 a
 
 /- English proof (translation)
-Establish `hφ : (algebraMap A k).comp (algebraMap c.F A) = algebraMap c.F k` using `(IsScalarTower.algebraMap_eq _ _ _).symm`. Take `⟨gk, hgk⟩` from `hbc.at gA (algebraMap A k) (x' := (spMap (algebraMap A k) ≫ xA) ≫ genι Z) (Category.assoc _ _ _)`. Establish `hTz : Comparison₂ z gk` using `⟨hφ, by rw [Model.j, ← Category.assoc, hz], fun τ i => by rw [hgk]; exact hu τ i⟩`. Establish `hstr : (spMap (algebraMap A k) ≫ xA) ≫ genStr Z = spMap ((algebraMap A k).comp (algebraMap c.F A))`. Rewrite using `[Category.assoc, hxA, sp_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨i, p⟩, ⟨hp, hc⟩, -⟩` from `Φ.lifts k _ _ hstr gk`. Take `⟨w⟩` from `wit_of_carries (hz.trans hp.symm) hTz hc`. Conclude with `exists_mem_of_wit hbc xA hxA gA z gk (Category.assoc _ _ _) hφ hgk hTz p hp w hbd hex hf (hv i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mem_maximalIdeal_evR (hbc : FrameBC Z) {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N}
     (Φ : FlagTor Z e U) {A k : Type} [CommRing A] [IsDomain A] [ValuationRing A] [Field k] [IsAlgClosed k] [Algebra A k]
@@ -268,9 +262,9 @@ theorem exists_mem_maximalIdeal_evR (hbc : FrameBC Z) {σ : c.F →+* ℂ} {N : 
   exact exists_mem_of_wit hbc xA hxA gA z gk (Category.assoc _ _ _) hφ hgk hTz p hp w hbd hex hf (hv i)
 
 /- English proof (translation)
-Establish `hc : ∀ a, algebraMap A k (i a) = j (algebraMap V K a)` using `fun a => DFunLike.congr_fun h a`. Break down `ValuationRing.isInteger_or_isInteger V w with ⟨a, ha⟩ | ⟨a, ha⟩` into its components or cases. Establish `e : i a = b` using `hinj (by rw [hc, ha, hw])`. Conclude with `⟨a, fun hu => hb (e ▸ hu.map i), ha.symm⟩`. Distinguish the cases in `h0 : w = 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨0, Ideal.zero_mem _, by simp [h0]⟩`. It suffices to derive a contradiction. Establish `e : i a * b = 1` using `hinj (by`. Rewrite using `[map_mul, hc, ha, ← hw, ← map_mul, inv_mul_cancel₀ h0, map_one, map_one])`. Conclude with `hb (IsUnit.of_mul_eq_one _ (by rwa [mul_comm] at e))`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_dominates {V K A k : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] [CommRing A] [IsLocalRing A] [Field k] [Algebra A k]
@@ -289,15 +283,15 @@ theorem mem_of_dominates {V K A k : Type} [CommRing V] [IsDomain V] [ValuationRi
       exact hb (IsUnit.of_mul_eq_one _ (by rwa [mul_comm] at e))
 
 /- English proof (translation)
-Take `⟨χ, g, hχ, hpt, hw, hbd⟩` from `hB`. Take `⟨z, hzm⟩` from `exists_frMap (IsScalarTower.toAlgHom c.F K k) y`. Take `⟨gA, hgA⟩ : ∃ gA : EigFrame Z (algebraMap c.F A) ((spMap i ≫ χ) ≫ genι Z), ∀ τ j, gA.v τ j = spMap (dualMap i) ≫ g.v τ j` from `hiφ ▸ hbc.at g i (x' := (spMap i ≫ χ) ≫ genι Z) (Category.assoc _ _ _)`. Establish `hspm : spMap (algebraMap A k) ≫ spMap i = spMap (algebraMap K k) ≫ spMap (algebraMap V K)`. Rewrite using `[sp_comp, sp_comp, hi]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoe : (IsScalarTower.toAlgHom c.F K k).toRingHom = algebraMap K k` using `RingHom.ext fun _ => rfl`. Establish `hptz : GlobalTheory.AllWt.ptF z = spMap (algebraMap K k) ≫ GlobalTheory.AllWt.ptF y`. Establish `h0` using `ptF_map (φ := IsScalarTower.toAlgHom c.F K k) hzm.1`. Rewrite `h0` using `[hcoe]`. Then use the resulting hypothesis. Take `⟨b, hb, hbv⟩` from `exists_mem_maximalIdeal_evR (A := A) (k := k) hbc Φ (spMap i ≫ χ) (by rw [Category.assoc, hχ, sp_comp, hiφ]) gA z (by rw [hptz, Category.assoc, hpt, ← Category.assoc, ← hspm, Category.assoc]) (fun τ j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨w, w1, w2, w3⟩` from `hw τ j`. Establish `h1 : TanRel Z (GlobalTheory.AllWt.ptF y) (y.u τ j) (spMap (dualMap (algebraMap V K)) ≫ g.v τ j)` using `⟨w, w1, w2, w3⟩`. Establish `h2` using `h1.map (algebraMap K k)`. Establish `h3 : spMap (dualMap (algebraMap K k)) ≫ spMap (dualMap (algebraMap V K)) ≫ g.v τ j = spMap (dualMap (algebraMap A k)) ≫ gA.v τ j`. Rewrite using `[hgA, ← Category.assoc (spMap (dualMap (algebraMap K k))), ← Category.assoc (spMap (dualMap (algebraMap A k))), dual_comp, dual_comp, hi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hptz, show z.u τ j = _ from hzm.2.1 τ j, ← h3]`. Conclude with `h2)`. Use the proof step `(by`. Establish `h1 : (spMap i) (IsLocalRing.closedPoint A) = IsLocalRing.closedPoint V` using `IsLocalRing.comap_closedPoint i`. Establish `h2 : (spMap i ≫ χ) (IsLocalRing.closedPoint A) = χ ((spMap i) (IsLocalRing.closedPoint A))` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, h1]`. Conclude with `hbd)`. Use `hex hf hv`. Establish `hj` using `evR_frMap hf.1 hzm`. Conclude with `mem_of_dominates (IsFractionRing.injective A k) (algebraMap K k) i hi hb (hj.symm.trans hbv)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_boundary_extension_valuation (hbc : FrameBC Z) {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N} (Φ : FlagTor Z e U)
     {V K A k : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K]
@@ -341,11 +335,9 @@ theorem mem_of_boundary_extension_valuation (hbc : FrameBC Z) {σ : c.F →+* �
   exact mem_of_dominates (IsFractionRing.injective A k) (algebraMap K k) i hi hb (hj.symm.trans hbv)
 
 /- English proof (translation)
-Set `ι₁ : V →+* AlgebraicClosure K` to `(algebraMap K (AlgebraicClosure K)).comp (algebraMap V K)`. Take `⟨A, hA, hloc⟩` from `IsLocalRing.exists_factor_valuationRing ι₁`. Set `i : V →+* A` to `ι₁.codRestrict A.toSubring hA`. Use `haveI : IsLocalHom i := hloc`. Establish `hi : (algebraMap A (AlgebraicClosure K)).comp i = ι₁` using `rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Algebra c.F A := (i.comp φ).toAlgebra`. Use `haveI : IsScalarTower c.F A (AlgebraicClosure K) := IsScalarTower.of_algebraMap_eq' (by`. Express the relevant statement in the definitionally equal form `algebraMap c.F (AlgebraicClosure K) = (algebraMap A (AlgebraicClosure K)).comp (i.comp φ)`. Rewrite using `[← RingHom.comp_assoc, hi, RingHom.comp_assoc, hφ]`. Conclude with `IsScalarTower.algebraMap_eq _ _ _)`.
-
-Conclude with `mem_of_boundary_extension_valuation hbc Φ i hi φ rfl y hB hex hf hv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_bdExt (hbc : FrameBC Z) {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N} (Φ : FlagTor Z e U)
     {V K : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K]
@@ -373,7 +365,7 @@ end GlobalTheory.CuspFrom.Vanish
 namespace GlobalTheory.CuspFrom
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ Z hbc _ _ _ _ _ _ Φ _ _ _ _ _ _ _ _ _ φ y ex f hφ hB hex hf hv` and use `Vanish.mem_of_bdExt (Z := Z) hbc Φ φ y hφ hB hex hf hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem evR_mem_maximalIdeal_of_vanishOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β), (∀ (R R' : Type) [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R'] (φ : c.F →+* R) (x : Sp R ⟶ Z.X) (f : EigFrame Z φ x) (ψ : R →+* R'), ∃ g : EigFrame Z (ψ.comp φ) (spMap ψ ≫ x), ∀ τ i, g.v τ i = spMap (dualMap ψ) ≫ f.v τ i) → ∀ (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r) (Φ : FlagTor Z e U) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] [Algebra c.F K] (φ : c.F →+* V) (y : FrPt Xo c K) (ex : Ix Dw → ℤ) (f : Rul Xo c), (algebraMap V K).comp φ = algebraMap c.F K → BdExt Z φ y → ex none = 0 → f ∈ GlobalTheory.AllWt.secZ Xo c ex → (∀ k, (Φ.C k).Y.vanishOn ((Φ.C k).LEx ex) ((Φ.C k).val f) (Φ.C k).Ybd) → ∃ v ∈ IsLocalRing.maximalIdeal V, evR Xo c f y = algebraMap V K v :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ Z hbc _ _ _ _ _ _ Φ _ _ _ _ _ _ _ _ _ φ y ex f hφ hB hex hf hv =>

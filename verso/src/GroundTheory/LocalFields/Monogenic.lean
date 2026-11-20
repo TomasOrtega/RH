@@ -13,7 +13,7 @@ variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_map, hom_eval₂]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem residue_aeval_integer (p : 𝒪[K][X]) (x : 𝒪[L]) :
     residue 𝒪[L] (aeval x p) = aeval (residue 𝒪[L] x) (p.map (residue 𝒪[K])) := by
@@ -23,23 +23,23 @@ theorem residue_aeval_integer (p : 𝒪[K][X]) (x : 𝒪[L]) :
 variable (K) in
 
 /- English proof (translation)
-Use `set A := Algebra.adjoin 𝒪[K] {x}`. Use `set e := ramificationIndex K L`. Establish `hres : ∀ w : 𝒪[L], ∃ a ∈ A, ∃ w', w = a + π * w'`. Introduce `w`. Establish `hw : residue 𝒪[L] w ∈ Algebra.adjoin 𝓀[K] {residue 𝒪[L] x}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[hx]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hw` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, hp⟩` from `hw`. Take `⟨p₀, rfl⟩` from `Polynomial.map_surjective (residue 𝒪[K]) residue_surjective p`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨aeval x p₀, ?_, ?_⟩` and prove the remaining obligations. Conclude with `aeval_mem_adjoin_singleton 𝒪[K] x`. Establish `hm : w - aeval x p₀ ∈ IsLocalRing.maximalIdeal 𝒪[L]`. Rewrite using `[← residue_eq_zero_iff, map_sub, residue_aeval_integer]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hp, sub_self]`. Rewrite `hm` using `[← pow_one (IsLocalRing.maximalIdeal 𝒪[L]), mem_maximalIdeal_pow_iff_le_addVal, Nat.cast_one, ← hπ, addVal_le_iff_dvd]`. Take `⟨w', hw'⟩` from `hm`. Conclude with `⟨w', by rw [← hw']; ring⟩`. Establish `step : ∀ k : ℕ, ∀ z : 𝒪[L], ∃ a ∈ A, ∃ w, z = a + π ^ k * w`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact fun z => ⟨0, zero_mem _, z, by simp⟩`. Consider the case `succ k ih`. Introduce `z`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, w, rfl⟩` from `ih z`. Take `⟨b, hb, w', rfl⟩` from `hres w`. Use `⟨a + π ^ k * b, add_mem ha (mul_mem (pow_mem hπA k) hb), w', ?_⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨ϖK, hϖK⟩` from `exists_irreducible 𝒪[K]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hassoc : Associated (algebraMap 𝒪[K] 𝒪[L] ϖK) (π ^ e)`. Rewrite using `[← addVal_eq_iff_associated, addVal_algebraMap_integer, addVal_uniformizer hϖK, addVal_pow, hπ, mul_one, nsmul_eq_mul, mul_one]`. Take `⟨u, hu⟩` from `hassoc`. Establish `hle : (⊤ : Submodule 𝒪[K] 𝒪[L]) ≤ Subalgebra.toSubmodule A ⊔ IsLocalRing.maximalIdeal 𝒪[K] • ⊤`. Introduce `z _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, w, rfl⟩` from `step e z`. Use `Submodule.add_mem_sup ha ?_` and prove the remaining obligations. Rewrite using `[← hu, mul_assoc, ← Algebra.smul_def]`. Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Rewrite using `[hϖK.maximalIdeal_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.subset_span rfl`. Establish `hnak` using `Submodule.le_of_le_smul_of_le_jacobson_bot (Module.Finite.fg_top) (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge hle`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Conclude with `hnak Submodule.mem_top`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_eq_top_of_residue_of_addVal_eq_one {x : 𝒪[L]}
     (hx : Algebra.adjoin 𝓀[K] {residue 𝒪[L] x} = ⊤) {π : 𝒪[L]}
@@ -98,23 +98,21 @@ theorem adjoin_eq_top_of_residue_of_addVal_eq_one {x : 𝒪[L]}
 variable (K L) in
 
 /- English proof (translation)
-Take `⟨ξ, hξ⟩` from `Field.exists_primitive_element_of_finite_top 𝓀[K] 𝓀[L]`. Establish `hadj : Algebra.adjoin 𝓀[K] {ξ} = ⊤` using `IntermediateField.adjoin_eq_top_iff.mp hξ`. Establish `hint : IsIntegral 𝓀[K] ξ` using `Algebra.IsIntegral.isIntegral ξ`. Use `set P := minpoly 𝓀[K] ξ`. Establish `hsep : P.Separable` using `PerfectField.separable_of_irreducible (minpoly.irreducible hint)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P₀, hP₀⟩` from `Polynomial.map_surjective (residue 𝒪[K]) residue_surjective P`. Take `⟨x₀, hx₀⟩` from `residue_surjective ξ`. Establish `hy₀ : aeval x₀ P₀ ∈ IsLocalRing.maximalIdeal 𝒪[L]`. Rewrite using `[← residue_eq_zero_iff, residue_aeval_integer, hP₀, hx₀]`. Conclude with `minpoly.aeval _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd₀ : IsUnit (aeval x₀ (derivative P₀))`. Rewrite using `[← not_not (a := IsUnit _), ← mem_nonunits_iff, ← mem_maximalIdeal, ← residue_eq_zero_iff, residue_aeval_integer, ← derivative_map, hP₀, hx₀]`. Conclude with `hsep.aeval_derivative_ne_zero (minpoly.aeval _ _)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxres, hxval⟩ : ∃ x : 𝒪[L], residue 𝒪[L] x = ξ ∧ addVal 𝒪[L] (aeval x P₀) = 1 := by`. Distinguish the cases in `hsq : aeval x₀ P₀ ∈ IsLocalRing.maximalIdeal 𝒪[L] ^ 2`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ϖ, hϖ⟩` from `exists_irreducible 𝒪[L]`. Establish `hϖ1 : addVal 𝒪[L] ϖ = 1` using `addVal_uniformizer hϖ`. Use `⟨x₀ + ϖ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hx₀, (residue_eq_zero_iff ϖ).mpr hϖ.not_isUnit, add_zero]`. Take `⟨k, hk⟩` from `binomExpansion (P₀.map (algebraMap 𝒪[K] 𝒪[L])) x₀ ϖ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk` using `[eval_map_algebraMap, eval_map_algebraMap, derivative_map, eval_map_algebraMap]`. Establish `hϖm : ϖ ∈ IsLocalRing.maximalIdeal 𝒪[L]` using `hϖ.not_isUnit`. Establish `hϖsq : ϖ ^ 2 ∈ IsLocalRing.maximalIdeal 𝒪[L] ^ 2` using `Ideal.pow_mem_pow hϖm 2`. Use `addVal_eq_one_of_mem_of_notMem_sq ?_ ?_` and prove the remaining obligations. Rewrite using `[hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `add_mem (add_mem hy₀ (Ideal.mul_mem_left _ _ hϖm)) ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_le_self two_ne_zero hϖsq)`. Introduce `hmem`. Establish `h1 : aeval x₀ (derivative P₀) * ϖ ∈ IsLocalRing.maximalIdeal 𝒪[L] ^ 2`. Establish `: aeval x₀ (derivative P₀) * ϖ = aeval (x₀ + ϖ) P₀ - aeval x₀ P₀ - k * ϖ ^ 2` using `by rw [hk]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `sub_mem (sub_mem hmem hsq) (Ideal.mul_mem_left _ _ hϖsq)`. Take `⟨v, hv⟩` from `hd₀`. Establish `h2 : ϖ ∈ IsLocalRing.maximalIdeal 𝒪[L] ^ 2`. Use `Ideal.mul_mem_left (IsLocalRing.maximalIdeal 𝒪[L] ^ 2) (↑v⁻¹ : 𝒪[L]) h1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← hv, ← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis. Rewrite `h2` using `[mem_maximalIdeal_pow_iff_le_addVal, hϖ1]`. Evaluate the numerical expressions using `at h2`. Conclude with `⟨x₀, hx₀, addVal_eq_one_of_mem_of_notMem_sq hy₀ hsq⟩`. Use `⟨x, adjoin_eq_top_of_residue_of_addVal_eq_one K (π := aeval x P₀) ?_ ?_ hxval⟩` and prove the remaining obligations.
-
-Rewrite using `[hxres]`. Conclude with `hadj`. Conclude with `aeval_mem_adjoin_singleton 𝒪[K] x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integer_adjoin_eq_top : ∃ x : 𝒪[L], Algebra.adjoin 𝒪[K] {x} = ⊤ := by
   classical

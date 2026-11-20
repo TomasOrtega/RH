@@ -16,7 +16,7 @@ structure IsHalf (D : D7) (Mb : Ideal (𝓞 D.host.E)) : Prop where
   coprime : Mb ⊔ Mb.map (bH D) = ⊤
 
 /- English proof (translation)
-The claim follows from `MbOf_fromK D _ prod := by simpa [MbProdLaw] using MbProd_of D _ (splitG D) coprime := MbCop_of D _ (splitG D)`.
+A detailed English derivation is pending.
 -/
 theorem isHalf_levelG (D : D7) : IsHalf D (MbOf D [D.host.g 0, D.host.g 1]) where
   fromK := MbOf_fromK D _
@@ -24,7 +24,7 @@ theorem isHalf_levelG (D : D7) : IsHalf D (MbOf D [D.host.g 0, D.host.g 1]) wher
   coprime := MbCop_of D _ (splitG D)
 
 /- English proof (translation)
-Use `(D.host.g_prime k).two_le` as an intermediate fact. Use `g_ne_two D k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem three_le_g (D : D7) (k : Fin 2) : 3 ≤ D.host.g k := by
   have := (D.host.g_prime k).two_le
@@ -68,9 +68,9 @@ def datAt (D : D7) (j : ℕ) : Datum (hostOfRecord D) :=
   if hj : InR D j then datumW D j hj else datumW D 1 (inR_one D)
 
 /- English proof (translation)
-Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `datAt`. Use `split_ifs with hj`. Use `show 1 ≤ (D.R.sigW j).1 + (D.R.sigW j).2`. Simplify using `only [Ranks.sigW]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hj.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show 1 ≤ (D.R.sigW 1).1 + (D.R.sigW 1).2`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem datAt_rank_pos (D : D7) (j : ℕ) : 1 ≤ (datAt D j).p + (datAt D j).q := by
   have := D.R.m_add_three_le_k
@@ -110,7 +110,7 @@ def HalfOfPrimes (D : D7) : Prop :=
   ∀ pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K), PrimesOver D pb → IsHalf D (halfOf D pb)
 
 /- English proof (translation)
-Use `forall₂_congr fun pb _ => ⟨fun h => ⟨levelAt D _ h, rfl, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨l, hM, -, hb⟩`. Rewrite using `[← hb]`. Conclude with `⟨l.fromK, hM ▸ l.prod, l.coprime⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem halfOfPrimes_iff (D : D7) : HalfOfPrimes D ↔
     ∀ pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K), PrimesOver D pb →
@@ -121,9 +121,7 @@ theorem halfOfPrimes_iff (D : D7) : HalfOfPrimes D ↔
   exact ⟨l.fromK, hM ▸ l.prod, l.coprime⟩
 
 /- English proof (translation)
-Use `⟨⟨⟨rfl, rfl, rfl, tauEmb_sqrt D⟩, ⟨rfl, rfl⟩, eOf_spec D hF, fun j hj => ?_⟩, rfl, datAt_rank_pos D⟩` and prove the remaining obligations. Use `show IsDatW D j (datAt D j)`. Unfold `datAt`. Rewrite using `[dif_pos hj]`. Unfold `datumW datumOfRecord`.
-
-Conclude with `isDatW_datumOf D _ j _ _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isParAt_parWith (D : D7) (hF : OFull D) (hz : OZeta D) (Mb : Ideal (𝓞 D.host.E)) (h : IsHalf D Mb)
     (Xo : ∀ j, Moduli (datAt D j) (levelAt D Mb h)) : IsParAt D Mb (parWith D hF hz Mb h Xo) := by
@@ -135,7 +133,7 @@ theorem isParAt_parWith (D : D7) (hF : OFull D) (hz : OZeta D) (Mb : Ideal (𝓞
   exact isDatW_datumOf D _ j _ _
 
 /- English proof (translation)
-The claim follows from `isParAt_parWith D hF hz Mb h _`.
+A detailed English derivation is pending.
 -/
 theorem isParAt_parAt (D : D7) (hF : OFull D) (hz : OZeta D) (hN : N1ab) (Mb : Ideal (𝓞 D.host.E))
     (h : IsHalf D Mb) : IsParAt D Mb (parAt D hF hz hN Mb h) :=

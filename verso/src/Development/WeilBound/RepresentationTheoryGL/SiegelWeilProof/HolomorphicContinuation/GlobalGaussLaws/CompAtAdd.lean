@@ -16,7 +16,7 @@ namespace PositivityTheory.Rg.Sw.Glob.DilBH
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [compAt, Matrix.map_apply, Matrix.add_apply, map_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compAt_add {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (x y : Mx D m n) :
     compAt θ τ (x + y) = compAt θ τ x + compAt θ τ y := by
@@ -24,11 +24,11 @@ theorem compAt_add {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (x y : Mx D m 
   simp only [compAt, Matrix.map_apply, Matrix.add_apply, map_add]
 
 /- English proof (translation)
-Take `⟨L, _, hLf, hLz⟩` from `Formalism.IndefR.Eqv.lineAtExists_holds D θ hθ m n τ (fr * Matrix.of u - compAt θ τ x₀)`. Use `⟨x₀ + L 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[compAt_add, hLz 1 τ, if_pos rfl, Complex.ofReal_one, one_smul]`. Establish `hs : compAt θ τ x₀ + (fr * Matrix.of u - compAt θ τ x₀) = fr * Matrix.of u` using `by abel`. Rewrite using `[hs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.nonsing_inv_mul_cancel_left _ _ hfr`. Introduce `τ' h`. Rewrite using `[compAt_add, hLz 1 τ', if_neg h, add_zero]`. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun (hLf 1) i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Matrix.add_apply, map_add, Matrix.zero_apply] at h1 ⊢`. Rewrite using `[h1, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointAt {m : ℕ} (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ)
     (hfr : IsUnit fr.det) (x₀ : Mx D m n) (u : Fin m → Fin n → ℂ) :

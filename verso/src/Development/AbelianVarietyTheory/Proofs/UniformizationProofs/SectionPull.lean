@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SecPullIso
 
 /- English proof (translation)
-Establish `hm : r z ∈ L.U j ⊓ L.U j'` using `⟨hj, hj'⟩`. Conclude with `(gs_res r z _ hm _).symm.trans ((congrArg (gs r z _) (s.compat j j')).trans ((gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit r z _ hm _) (gs_res r z _ hm _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gs_sec_trans {X Z : Scheme.{0}} {L : LB X} (s : LB.Sec L) (r : Z ⟶ X) (z : Z) {j j' : L.ι}
     (hj : r z ∈ L.U j) (hj' : r z ∈ L.U j') :
@@ -24,9 +24,9 @@ theorem gs_sec_trans {X Z : Scheme.{0}} {L : LB X} (s : LB.Sec L) (r : Z ⟶ X) 
     (congrArg₂ (· * ·) (gs_unit r z _ hm _) (gs_res r z _ hm _))))
 
 /- English proof (translation)
-Rewrite using `[gs_eq r z U h]`. Establish `e : r z ∈ X.basicOpen a ↔ z ∈ Z.basicOpen ((r.app U).hom a)`. Rewrite using `[← Scheme.preimage_basicOpen]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Scheme.mem_basicOpen Z _ z h).symm`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_gs_iff {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) {U : X.Opens} (h : r z ∈ U) (a : Γ(X, U)) :
     IsUnit (gs r z U a) ↔ r z ∈ X.basicOpen a := by
@@ -37,19 +37,17 @@ theorem isUnit_gs_iff {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) {U : X.Opens} (h 
   exact (Scheme.mem_basicOpen Z _ z h).symm
 
 /- English proof (translation)
-Establish `hp` using `(isGen_iff w).1 hw`. Establish `ind : ∀ (z : X') (k j : H.ι) (k' j' : H'.ι), φ z ∈ H.U k → φ z ∈ H.U j → z ∈ H'.U k' → z ∈ H'.U j' → ((Geo.Tor.gw w (𝟙 _) z k k')⁻¹).val * gs φ z _ (s.f k) = (gm (𝟙 X') z _ (H'.g k' j')).val * (((Geo.Tor.gw w (𝟙 _) z j j')⁻¹).val * gs φ z _ (s.f j))`. Introduce `z k j k' j' hk hj hk' hj'`. Establish `a` using `hp _ (𝟙 X') z k j k' j' hk hj hk' hj'`. Rewrite `a` using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[a, gs_sec_trans s φ z hk hj, ← _root_.mul_assoc, ← _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul]`. Generalize the expression as in `gm φ z _ (H.g k j) = A`. Generalize the expression as in `gm (𝟙 X') z _ (H'.g k' j') = B`. Generalize the expression as in `Geo.Tor.gw w (𝟙 _) z j j' = C`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Establish `glue : ∀ k' : H'.ι, ∃ a : Γ(X', H'.U k'), ∀ (z : X') (k : H.ι), φ z ∈ H.U k → z ∈ H'.U k' → gs (𝟙 X') z _ a = ((Geo.Tor.gw w (𝟙 _) z k k')⁻¹).val * gs φ z _ (s.f k)`. Introduce `k'`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `W : H.ι → X'.Opens` to `fun k => (H.pull φ).U (fun _ => k) ⊓ H'.U k'`. Establish `l₁ : ∀ k, W k ≤ φ ⁻¹ᵁ H.U k` using `fun k x hx => mem_pull.1 hx.1`. Take `⟨u, hu⟩ : ∃ u : ∀ k, Γ(X', W k), ∀ (z : X') k, z ∈ W k → gs (𝟙 X') z (W k) (u k) = ((Geo.Tor.gw w (𝟙 _) z k k')⁻¹).val * gs φ z _ (s.f k)` from `⟨fun k => ((show Γ(X', W k)ˣ from w.s (fun _ => k, k'))⁻¹).val * (X'.presheaf.map (homOfLE (l₁ k)).op).hom ((φ.app _).hom (s.f k)), fun z k hz => (gs_mul (𝟙 X') z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 X') z _ hz _).trans (congrArg Units.val (map_inv _ _))) ((gs_res (𝟙 X …`. Take `⟨a, ha, -⟩` from `X'.sheaf.existsUnique_gluing' W (H'.U k') (fun k => homOfLE inf_le_right) (fun y hy => by`. Take `⟨k, hk⟩` from `exists_chart hH (φ y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Opens.mem_iSup.2 ⟨k, mem_pull.2 hk, hy⟩) u`. Use the proof step `(fun k j => fn_ext (V := W k ⊓ W j) fun y hy => by`. Use `(gs_res (𝟙 X') y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 X') y inf_le_right hy _).symm)` and prove the remaining obligations. Rewrite using `[hu y k hy.1, hu y j hy.2, ind y k j k' k' (l₁ k hy.1) (l₁ j hy.2) hy.1.2 hy.1.2, gm_self hH' (𝟙 X') y hy.1.2, Units.val_one, _root_.one_mul])`. Use `⟨a, fun z k h₁ h₂ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : z ∈ W k` using `⟨mem_pull.2 h₁, h₂⟩`. Conclude with `(gs_res (𝟙 X') z inf_le_right hz a).symm.trans ((congrArg (gs (𝟙 X') z (W k)) (ha k)).trans (hu z k hz))`. Use `choose a ha using glue`. Use `⟨⟨a, fun j j' => fn_ext fun y hy => ?_⟩, fun z k k' hk hk' => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hH (φ y)`.
-
-Use `(gs_res (𝟙 X') y _ hy _).trans (Eq.trans ?_ ((gs_mul (𝟙 X') y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 X') y _ hy _) (gs_res (𝟙 X') y _ hy _))).symm)` and prove the remaining obligations. Rewrite using `[ha j y k hk hy.1, ha j' y k hk hy.2]`. Conclude with `ind y k k j j' hk hk hy.1 hy.2`. Use `show _ = _ * gs (𝟙 X') z _ (a k')`. Rewrite using `[ha k' z k hk hk', Units.mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull {X X' : Scheme.{0}} (φ : X' ⟶ X) (H : LB X) (H' : LB X') (w : LB.Iso H' (H.pull φ))
     (hH : H.IsLB) (hH' : H'.IsLB) (hw : w.IsGen) (s : LB.Sec H) :
@@ -105,15 +103,15 @@ theorem exists_pull {X X' : Scheme.{0}} (φ : X' ⟶ X) (H : LB X) (H' : LB X') 
     rw [ha k' z k hk hk', Units.mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `X X' φ H H' w hH hH' hw s`. Prove the components needed by the constructor for the conclusion. Take `⟨s', hs'⟩` from `exists_pull φ H H' w hH hH' hw s`. Use `⟨s', hs', fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `t`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `s'`. Take `rfl : f = g` from `funext fun k' => fn_ext fun z hz => by`. Take `⟨k, hk⟩` from `exists_chart hH (φ z)`. Conclude with `(Units.mul_right_inj _).1 ((ht z k k' hk hz).symm.trans (hs' z k k' hk hz))`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s' hs'`. Establish `key : ∀ (z : X') (k : H.ι) (k' : H'.ι), φ z ∈ H.U k → z ∈ H'.U k' → (φ z ∈ X.basicOpen (s.f k) ↔ z ∈ X'.basicOpen (s'.f k'))` using `fun z k k' hk hk' => by`. Rewrite using `[← isUnit_gs_iff φ z hk, hs' z k k' hk hk', Units.isUnit_units_mul]`. Conclude with `isUnit_gs_iff (𝟙 X') z hk' _`. Use extensionality with `z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨k', hk'⟩` from `Opens.mem_iSup.1 hz`. Take `⟨k, hk⟩` from `exists_chart hH (φ z)`. Conclude with `Opens.mem_iSup.2 ⟨k, (key z k k' hk (X'.basicOpen_le _ hk')).2 hk'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hz`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (show φ z ∈ nonzeroLocus s from hz)`. Take `⟨k', hk'⟩` from `exists_chart hH' z`. Conclude with `Opens.mem_iSup.2 ⟨k', (key z k k' (X.basicOpen_le _ hk) hk').1 hk⟩`.
+A detailed English derivation is pending.
 -/
 theorem section_pull : ∀ (X X' : Scheme.{0}) (φ : X' ⟶ X) (H : LB X) (H' : LB X') (w : LB.Iso H' (H.pull φ)), H.IsLB → H'.IsLB → w.IsGen → ∀ s : LB.Sec H, (∃! s' : LB.Sec H', (∀ z (k : (H).ι) (k' : (H').ι), (φ) z ∈ (H).U k → z ∈ (H').U k' → gs (φ) z _ ((s).f k) = (Geo.Tor.gw (w) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s').f k'))) ∧ ∀ s' : LB.Sec H', (∀ z (k : (H).ι) (k' : (H').ι), (φ) z ∈ (H).U k → z ∈ (H').U k' → gs (φ) z _ ((s).f k) = (Geo.Tor.gw (w) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s').f k')) → nonzeroLocus s' = φ ⁻¹ᵁ nonzeroLocus s := by
   intro X X' φ H H' w hH hH' hw s

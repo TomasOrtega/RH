@@ -9,33 +9,27 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory.ConvSeries
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ b c hb hc h t ht k n`. Use `set δ : ℝ := min 1 (b / (6 * c)) with hδ`. Establish `hδ0 : 0 < δ` using `lt_min one_pos (by positivity)`. Establish `hδ1 : δ ≤ 1` using `min_le_left _ _`. Establish `hδ2 : δ ≤ b / (6 * c)` using `min_le_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set θ : ℝ := 1 + δ with hθ`. Use `set α : ℝ := (2 * c + b) / (2 * (b + c)) with hα`. Establish `hθ1 : 1 ≤ θ` using `by linarith`. Establish `hθpos : 0 < θ` using `by linarith`. Establish `hα0 : 0 < α` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα1 : α < 1` using `by rw [hα, div_lt_one (by positivity)]; linarith`. Establish `hθα : c * θ ^ 2 ≤ α * (b + c)`. Establish `e1 : α * (b + c) = c + b / 2` using `by rw [hα]; field_simp`. Establish `e2 : δ * (6 * c) ≤ b` using `by rwa [le_div_iff₀ (by positivity)] at hδ2`. Rewrite using `[e1, hθ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `choose K hK using fun m => GlobalTheory.T.gaussian_iteratedFDeriv_weighted_exp_bounded E c α hc hα1 k m`. Use `set M : ℕ → ℝ := fun i => ∫ a, (2 * c * ‖a‖) ^ i * ‖h a‖ with hM`. Establish `hM0 : ∀ i, 0 ≤ M i` using `fun i => integral_nonneg fun a => by positivity`. Use `set B : ℝ := θ ^ n * ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * M (n - i) * K i with hB`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK0 : ∀ m, 0 ≤ K m` using `fun m => le_trans (by positivity) (hK m 0)`. Establish `hB0 : 0 ≤ B`. Use `mul_nonneg (by positivity) (Finset.sum_nonneg fun i _ => ?_)` and prove the remaining obligations. Conclude with `mul_nonneg (mul_nonneg (by positivity) (hM0 _)) (hK0 _)`. Establish `hbound : ∀ j, SchwartzMap.seminorm ℂ k n (t j) ≤ θ⁻¹ ^ j * B`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Use `SchwartzMap.seminorm_le_bound ℂ k n (t j) (by positivity) fun y => ?_` and prove the remaining obligations. Use `set s : ℝ := (2 * c) ^ j / (j.factorial : ℝ) with hs`. Establish `hs0 : 0 ≤ s` using `by positivity`. Use `set f : ContinuousMultilinearMap ℝ (fun _ : Fin j => E) ℂ := ((s : ℝ) : ℂ) • GlobalTheory.ConvSeries.coef b c (⇑h) j with hf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (⇑(t j)) = fun y => Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ)) * f (fun _ => y)`. Use function extensionality and compare the values at `y`. Rewrite using `[ht, GlobalTheory.ConvSeries.term, hf, ContinuousMultilinearMap.smul_apply, smul_eq_mul, mul_assoc]`. Establish `hG : ContDiff ℝ (⊤ : ℕ∞) (fun y : E => Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ)))`. Use `Complex.contDiff_exp.comp ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ContDiff.neg ?_` and prove the remaining obligations. Conclude with `Complex.ofRealCLM.contDiff.comp (contDiff_const.mul (contDiff_norm_sq ℝ))`. Establish `hP : ContDiff ℝ (⊤ : ℕ∞) (fun y : E => f (fun _ => y))` using `f.contDiff.comp (contDiff_pi.2 fun _ => contDiff_id)`. Establish `hL` using `norm_iteratedFDeriv_mul_le hG hP y (n := n) (by exact_mod_cast le_top)`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfn : ‖f‖ ≤ s * ∫ a, ‖GlobalTheory.ConvSeries.wt b c (⇑h) a‖ * ‖a‖ ^ j`. Rewrite using `[hf, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hs0]`. Conclude with `mul_le_mul_of_nonneg_left (GlobalTheory.T.norm_gaussianConvolutionSeriesCoefficient_le_integral E b c hb.le hc.le h j) hs0`. Establish `hterm : ∀ i ∈ Finset.range (n + 1), ‖y‖ ^ k * ((n.choose i : ℝ) * ‖iteratedFDeriv ℝ i (fun y : E => Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ))) y‖ * ‖iteratedFDeriv ℝ (n - i) (fun y : E => f (fun _ => y)) y‖) ≤ θ⁻¹ ^ j * (θ ^ n * ((n.choose i : ℝ) * M (n - i) * K i))`. Introduce `i hi`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Use `set m := n - i`. Establish `h1` using `GlobalTheory.T.norm_iteratedFDeriv_multilinear_diagonal_le E j f m y`. Establish `h3` using `GlobalTheory.T.gaussianConvolutionSeriesCoefficient_descFactorial_estimate E b c θ α hc hθ1 hα0 hθα h j m y`. Establish `hPm : ‖iteratedFDeriv ℝ m (fun y : E => f (fun _ => y)) y‖ ≤ θ⁻¹ ^ (j - m) * Real.exp (c * α * ‖y‖ ^ 2) * M m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `h1.trans (le_trans ?_ h3)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left hfn (by positivity : (0:ℝ) ≤ (j.descFactorial m : ℝ))` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hθj : θ⁻¹ ^ (j - m) ≤ θ⁻¹ ^ j * θ ^ n`. Establish `hinv : 0 < θ⁻¹` using `inv_pos.2 hθpos`.
-
-Establish `hle : θ⁻¹ ^ (j - m + m) ≤ θ⁻¹ ^ j` using `pow_le_pow_of_le_one hinv.le (inv_le_one_of_one_le₀ hθ1) (by omega)`. Establish `e : θ⁻¹ ^ (j - m) = θ⁻¹ ^ (j - m + m) * θ ^ m`. Rewrite using `[pow_add, mul_assoc, ← mul_pow, inv_mul_cancel₀ hθpos.ne', one_pow, mul_one]`. Rewrite using `[e]`. Conclude with `mul_le_mul hle (pow_le_pow_right₀ hθ1 (by omega)) (by positivity) (by positivity)`.
-
-Establish `hGk` using `hK i y`. Establish `hch : (0:ℝ) ≤ n.choose i` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hPm.trans (by gcongr)`. Use `_ = θ⁻¹ ^ j * (θ ^ n * ((n.choose i : ℝ) * M m * (‖y‖ ^ k * ‖iteratedFDeriv ℝ i (fun y : E => Complex.exp (-((c * ‖y‖ ^ 2 : ℝ) : ℂ))) y‖ * Real.exp (c * α * ‖y‖ ^ 2)))) := by ring`.
-
-Use `_ ≤ θ⁻¹ ^ j * (θ ^ n * ((n.choose i : ℝ) * M m * K i)) := by gcongr`. Combine the equalities or inequalities in the displayed calculation. Establish `hgeom : Summable fun j : ℕ => θ⁻¹ ^ j * B` using `(summable_geometric_of_lt_one (inv_nonneg.2 hθpos.le) (inv_lt_one_of_one_lt₀ (by linarith))).mul_right B`. Conclude with `Summable.of_nonneg_of_le (fun j => apply_nonneg _ _) hbound hgeom`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem summable_seminorm_term : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (b c : ℝ), 0 < b → 0 < c → ∀ (h : SchwartzMap E ℂ)

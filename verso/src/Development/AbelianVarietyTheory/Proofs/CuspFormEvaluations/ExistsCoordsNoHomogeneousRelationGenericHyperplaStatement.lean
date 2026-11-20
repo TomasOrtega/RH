@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsCoordsN
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_coordinates_no_homogeneous_relation_of_generic_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCuspFormEvaluations%2FExistsCoordsNoHomogeneousRelationGenericHyperpla.lean&line=60#L60)
 -/

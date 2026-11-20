@@ -15,9 +15,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P J :
   {n : ℕ} {R : AnLogRes P J (n + 1)} (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
 
 /- English proof (translation)
-Take `⟨c, hc, hz⟩` from `R.compat y x y ⟨R.mem_U y, hy⟩`. Use `⟨∏ k, c k, Finset.prod_ne_zero_iff.mpr (fun k _ => hc k), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [segre, Pi.smul_apply, smul_eq_mul, hz, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem proj_segre_lift_eq {x y : R.X} (hy : y ∈ R.U x) :
     ∃ c : ℂ, c ≠ 0 ∧ Ψ (segre (R.lift y y)) = c • Ψ (segre (R.lift x y)) := by
@@ -29,7 +29,7 @@ theorem proj_segre_lift_eq {x y : R.X} (hy : y ∈ R.U x) :
   simp only [segre, Pi.smul_apply, smul_eq_mul, hz, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `proj_segre_lift_eq Ψ hy`. Use function extensionality and compare the values at `i`. Simplify using `only [projCoord, h, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_div_mul_left _ _ hc`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projCoord_eq {x y : R.X} (hy : y ∈ R.U x) :
     projCoord R Ψ y = fun i => Ψ (segre (R.lift x y)) i.succ / Ψ (segre (R.lift x y)) 0 := by
@@ -39,7 +39,7 @@ theorem projCoord_eq {x y : R.X} (hy : y ∈ R.U x) :
   exact mul_div_mul_left _ _ hc
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `proj_segre_lift_eq Ψ hy`. Simplify using `[h, hc]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem proj_ne_zero_iff {x y : R.X} (hy : y ∈ R.U x) :
     Ψ (segre (R.lift y y)) 0 ≠ 0 ↔ Ψ (segre (R.lift x y)) 0 ≠ 0 := by
@@ -47,13 +47,13 @@ theorem proj_ne_zero_iff {x y : R.X} (hy : y ∈ R.U x) :
   simp [h, hc]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, x.1 ∈ (R.A.chart k).source` from `R.A.cover x.1`. Establish `hxt : BV.chart j x ∈ (BV.chart j).target` using `(BV.chart j).map_source hx`. Establish `hsx : (BV.chart j).symm (BV.chart j x) = x` using `(BV.chart j).left_inv hx`. Establish `hcont : ContinuousAt (fun u => ((BV.chart j).symm u).1) (BV.chart j x)` using `continuous_subtype_val.continuousAt.comp ((BV.chart j).continuousAt_symm hxt)`. Establish `hev : ∀ s : Set R.X, IsOpen s → x.1 ∈ s → ∀ᶠ u in 𝓝 (BV.chart j x), ((BV.chart j).symm u).1 ∈ s` using `fun s hs hxs => hcont.preimage_mem_nhds (by show s ∈ 𝓝 ((BV.chart j).symm (BV.chart j x)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsx]`. Conclude with `hs.mem_nhds hxs)`. Use `⟨?_, hev _ (R.isOpen_U x.1) (R.mem_U x.1)⟩` and prove the remaining obligations. Rewrite using `[analyticAt_pi_iff]`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : AnalyticAt ℂ ((fun y => R.lift x.1 y p) ∘ (R.A.chart k).symm) (R.A.chart k x.1)` using `R.holo x.1 p k _ ⟨(R.A.chart k).map_source hk, by show (R.A.chart k).symm (R.A.chart k x.1) ∈ R.U x.1`. Rewrite using `[(R.A.chart k).left_inv hk]`. Conclude with `R.mem_U x.1⟩`. Establish `h2 : AnalyticAt ℂ (R.A.chart k ∘ Subtype.val ∘ (BV.chart j).symm) (BV.chart j x)` using `hB.2 j k _ ⟨hxt, by show ((BV.chart j).symm (BV.chart j x)).1 ∈ (R.A.chart k).source`. Rewrite using `[hsx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hk⟩`. Use `(h1.comp_of_eq h2 (by simp [hsx])).congr ?_` and prove the remaining obligations. Use `filter_upwards [hev _ (R.A.chart k).open_source hk] with u hu`. Simplify using `[(R.A.chart k).left_inv hu]`.
+A detailed English derivation is pending.
 -/
 theorem lift_analyticAt {V : Set R.X} {BV : FinHolAtlas n V} (hB : HoloMap BV R.A Subtype.val)
     (x : V) {j : Fin BV.n} (hx : x ∈ (BV.chart j).source) :
@@ -85,9 +85,7 @@ theorem lift_analyticAt {V : Set R.X} {BV : FinHolAtlas n V} (hB : HoloMap BV R.
   simp [(R.A.chart k).left_inv hu]
 
 /- English proof (translation)
-Establish `hF` using `(lift_analyticAt hB x hx).1`. Establish `hs : AnalyticAt ℂ (fun u => segre (R.lift x.1 ((BV.chart j).symm u).1)) (BV.chart j x)`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Conclude with `Finset.univ.analyticAt_fun_prod (fun k _ => analyticAt_pi_iff.1 hF ⟨k, i k⟩)`.
-
-Conclude with `((LinearMap.toContinuousLinearMap Ψ).analyticAt _).comp hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem proj_analyticAt {V : Set R.X} {BV : FinHolAtlas n V} (hB : HoloMap BV R.A Subtype.val)
     (x : V) {j : Fin BV.n} (hx : x ∈ (BV.chart j).source) :
@@ -102,9 +100,9 @@ theorem proj_analyticAt {V : Set R.X} {BV : FinHolAtlas n V} (hB : HoloMap BV R.
   exact ((LinearMap.toContinuousLinearMap Ψ).analyticAt _).comp hs
 
 /- English proof (translation)
-Establish `hsx : (BV.chart j).symm (BV.chart j x) = x` using `(BV.chart j).left_inv hx`. Establish `hc : ∀ i : Fin (n + 1), AnalyticAt ℂ (fun u => Ψ (segre (R.lift x.1 ((BV.chart j).symm u).1)) i) (BV.chart j x)` using `fun i => analyticAt_pi_iff.1 (proj_analyticAt Ψ hB x hx) i`. Establish `hG : AnalyticAt ℂ (fun u (i : Fin n) => Ψ (segre (R.lift x.1 ((BV.chart j).symm u).1)) i.succ / Ψ (segre (R.lift x.1 ((BV.chart j).symm u).1)) 0) (BV.chart j x)`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hc i.succ).div (hc 0) (by simpa [hsx] using h0)`. Use `hG.congr ?_` and prove the remaining obligations. Use `filter_upwards [(lift_analyticAt hB x hx).2] with u hu`. Conclude with `(projCoord_eq Ψ hu).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_chart {V : Set R.X} {BV : FinHolAtlas n V} (hB : HoloMap BV R.A Subtype.val)
     (x : V) (h0 : Ψ (segre (R.lift x.1 x.1)) 0 ≠ 0) (j : Fin BV.n)
@@ -124,17 +122,15 @@ theorem analyticAt_chart {V : Set R.X} {BV : FinHolAtlas n V} (hB : HoloMap BV R
   exact (projCoord_eq Ψ hu).symm
 
 /- English proof (translation)
-Establish `hu0 : BV.chart j y ∈ (BV.chart j).target` using `(BV.chart j).map_source hj`. Establish `hv0 : BV.chart k y ∈ (BV.chart k).target` using `(BV.chart k).map_source hk`. Establish `hsj : (BV.chart j).symm (BV.chart j y) = y` using `(BV.chart j).left_inv hj`. Establish `hsk : (BV.chart k).symm (BV.chart k y) = y` using `(BV.chart k).left_inv hk`. Establish `hτu : (BV.chart k ∘ (BV.chart j).symm) (BV.chart j y) = BV.chart k y` using `by simp [hsj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : AnalyticAt ℂ (BV.chart k ∘ (BV.chart j).symm) (BV.chart j y)` using `BV.holo j k _ ⟨hu0, by show (BV.chart j).symm (BV.chart j y) ∈ (BV.chart k).source; rw [hsj]; exact hk⟩`. Establish `hσ : AnalyticAt ℂ (BV.chart j ∘ (BV.chart k).symm) ((BV.chart k ∘ (BV.chart j).symm) (BV.chart j y))`. Rewrite using `[hτu]`. Conclude with `BV.holo k j _ ⟨hv0, by show (BV.chart k).symm (BV.chart k y) ∈ (BV.chart j).source; rw [hsk]; exact hj⟩`. Establish `hev : ∀ᶠ u in 𝓝 (BV.chart j y), (BV.chart j).symm u ∈ (BV.chart k).source` using `((BV.chart j).continuousAt_symm hu0).preimage_mem_nhds (by show (BV.chart k).source ∈ 𝓝 ((BV.chart j).symm (BV.chart j y))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsj]`. Conclude with `(BV.chart k).open_source.mem_nhds hk)`. Establish `hid : (BV.chart j ∘ (BV.chart k).symm) ∘ (BV.chart k ∘ (BV.chart j).symm) =ᶠ[𝓝 (BV.chart j y)] id` using `by filter_upwards [hev, (BV.chart j).open_target.mem_nhds hu0] with u hu hut`. Simplify using `[(BV.chart k).left_inv hu, (BV.chart j).right_inv hut]`. Establish `hq : (projCoord R Ψ ∘ Subtype.val) ∘ (BV.chart j).symm =ᶠ[𝓝 (BV.chart j y)] ((projCoord R Ψ ∘ Subtype.val) ∘ (BV.chart k).symm) ∘ (BV.chart k ∘ (BV.chart j).symm)` using `by filter_upwards [hev] with u hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[(BV.chart k).left_inv hu]`. Establish `hqk : DifferentiableAt ℂ ((projCoord R Ψ ∘ Subtype.val) ∘ (BV.chart k).symm) ((BV.chart k ∘ (BV.chart j).symm) (BV.chart j y))`. Rewrite using `[hτu]`. Conclude with `(analyticAt_chart Ψ hB y h0 k hk).differentiableAt`. Establish `hinv : (fderiv ℂ (BV.chart j ∘ (BV.chart k).symm) ((BV.chart k ∘ (BV.chart j).symm) (BV.chart j y))).comp (fderiv ℂ (BV.chart k ∘ (BV.chart j).symm) (BV.chart j y)) = ContinuousLinearMap.id ℂ (Fin n → ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← fderiv_comp _ hσ.differentiableAt hτ.differentiableAt, hid.fderiv_eq, fderiv_id]`. Establish `hdetτ : LinearMap.det (fderiv ℂ (BV.chart k ∘ (BV.chart j).symm) (BV.chart j y) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) ≠ 0`. Introduce `h`. Use `congrArg (fun f : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ) => LinearMap.det (f : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))) hinv` as an intermediate fact. Simplify using `[LinearMap.det_comp, h] at this`.
-
-Rewrite using `[hq.fderiv_eq, fderiv_comp _ hqk hτ.differentiableAt, ContinuousLinearMap.toLinearMap_comp, LinearMap.det_comp, hτu]`. Conclude with `mul_ne_zero hd hdetτ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_chart {V : Set R.X} {BV : FinHolAtlas n V}
     (hB : HoloMap BV R.A Subtype.val) (y : V) (h0 : Ψ (segre (R.lift y.1 y.1)) 0 ≠ 0)
@@ -187,13 +183,11 @@ theorem det_ne_zero_of_chart {V : Set R.X} {BV : FinHolAtlas n V}
   exact mul_ne_zero hd hdetτ
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R Ψ V BV hB`. Use `⟨?_, fun x h0 j hx => analyticAt_chart Ψ hB x h0 j hx, ?_⟩` and prove the remaining obligations. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `x ⟨h0, hdet⟩`. Establish `hj : x ∈ (BV.chart (chartIdx BV x)).source` using `Classical.choose_spec (BV.cover x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hsx : (BV.chart (chartIdx BV x)).symm (BV.chart (chartIdx BV x) x) = x` using `(BV.chart _).left_inv hj`. Establish `hg : BV.chart (chartIdx BV x) x ∈ goodT BV (projCoord R Ψ ∘ Subtype.val) (chartIdx BV x)` using `⟨(BV.chart _).map_source hj, analyticAt_chart Ψ hB x h0 _ hj, hdet _ hj⟩`. Establish `hD : ∀ᶠ u in 𝓝 (BV.chart (chartIdx BV x) x), Ψ (segre (R.lift x.1 ((BV.chart (chartIdx BV x)).symm u).1)) 0 ≠ 0` using `(analyticAt_pi_iff.1 (proj_analyticAt Ψ hB x hj) 0).continuousAt.eventually_ne (by simpa [hsx] using h0)`. Use `((BV.chart _).eventually_nhds' (· ∈ projRegular R Ψ BV) hj).1 ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_goodT BV _ _).mem_nhds hg, hD, (lift_analyticAt hB x hj).2] with u hu hDu hUu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0u` using `(proj_ne_zero_iff Ψ hUu).2 hDu`. Use `⟨h0u, fun k hk => det_ne_zero_of_chart Ψ hB _ h0u hk ((BV.chart _).map_target hu.1) ?_⟩` and prove the remaining obligations. Rewrite using `[(BV.chart _).right_inv hu.1]`. Conclude with `hu.2.2`. Introduce `x h0 hd`.
-
-Conclude with `⟨h0, fun k hk => det_ne_zero_of_chart Ψ hB x h0 hk (Classical.choose_spec (BV.cover x)) hd⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proof : ProjRegular.Statement := by
   intro K _ ι _ P J n R Ψ V BV hB

@@ -14,15 +14,13 @@ open scoped ComplexConjugate TensorProduct
 namespace GlobalTheory.EllipticOrb
 
 /- English proof (translation)
-Introduce `hDS D V S M ρ μ _ f hl hf s hs hT y θ hy dt _ _`. Use `haveI := (M.ds ρ).1`. Use `haveI : (μ.map (frameEquiv M ρ)).IsHaarMeasure := (frameEquiv M ρ).isHaarMeasure_map μ`. Take `⟨Θ', hΘ', hval⟩` from `hDS V.rank (M.ε ρ) (μ.map (frameEquiv M ρ)) (M.H ρ) (M.lam ρ) (M.σ ρ) hl (M.ds ρ) (M.ds ρ).2.2.1`. Establish `hΘ : IsCharFn (matAt V ρ) μ (dsRep M ρ) (Θ' ∘ frameEquiv M ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dsRep_eq_comp]`. Conclude with `IsCharFn.of_map (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ) hΘ'.1`. Establish `hι : Topology.IsInducing (matCoord (matAt V ρ))` using `(isEmbedding_archMat V.gram (isCMExt_host D) (embOverOf D ρ)).isInducing`. Establish `h1` using `hf.orb_of_isCharFn hι hΘ hs hT dt`. Establish `hreg : IsRegSS (ujMat (M.ε ρ) (frameEquiv M ρ s))` using `(isRegSS_conj_iff (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ) s).2 hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : frameEquiv M ρ (y⁻¹ * s * y) = torusPt (M.ε ρ) θ`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hy`. Establish `hreg' : IsRegSS (ujMat (M.ε ρ) (torusPt (M.ε ρ) θ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `(isRegSS_conj_iff (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ) _).2 (by`. Rewrite using `[IsRegSS, map_mul, Matrix.charpoly_mul_comm, ← map_mul, mul_inv_cancel_left]`. Conclude with `hs)`. Establish `h3 : Θ' (frameEquiv M ρ s) = dsChar (M.ε ρ) (M.lam ρ) θ`.
-
-Rewrite using `[← (hΘ'.2 _ hreg).2 (frameEquiv M ρ y), ← map_inv, ← map_mul, ← map_mul, h2]`. Conclude with `hval θ hreg'`. Simplify `h1` using `[Function.comp, h3]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem orbInt_elliptic : DiscreteSeriesCharacter → ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (ρ : D.what₂.Tau) (μ : Measure (GArch D.sp.cm.sig V.gram (placeOf D ρ))) [μ.IsHaarMeasure]

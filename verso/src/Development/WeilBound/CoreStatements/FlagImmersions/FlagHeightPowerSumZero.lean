@@ -7,11 +7,11 @@ noncomputable section
 namespace RootFieldNumerics
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨σ, a⟩` from `q`. Rewrite using `[Finset.sum_apply, Pi.zero_apply]`. Establish `ha : (a:ℕ) + 1 < N` using `by have := a.isLt; omega`. Distinguish the cases in `h : σ = τ`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `only [GroundTheory.Heights₂.Heights.LowerBoundFree.xDeg, if_true]`. Rewrite using `[Finset.sum_sub_distrib]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun n => if (a:ℕ) = n then (1:ℤ) else 0) N, Fin.sum_univ_eq_sum_range (fun n => if (a:ℕ) + 1 = n then (1:ℤ) else 0) N]`. Rewrite using `[Finset.sum_ite_eq, Finset.sum_ite_eq, if_pos (Finset.mem_range.mpr (by omega)), if_pos (Finset.mem_range.mpr ha)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[GroundTheory.Heights₂.Heights.LowerBoundFree.xDeg, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem HH.sum_xDeg {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (τ : Ψ) :
     ∑ i : Fin N, GroundTheory.Heights₂.Heights.LowerBoundFree.xDeg Ψ N (τ, i) = 0 := by
@@ -32,19 +32,19 @@ theorem HH.sum_xDeg {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (τ : Ψ
 
 open GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear in
 /- English proof (translation)
-Introduce `II hII Ψ _ _ N τ Q hN hP hQ`. Establish `key : ∀ (w : Fin (dimFl Ψ N) → Ψ × Fin N), ∑ i : Fin N, II (GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.FlIdx Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1) (fun k => GroundTheory.Heights₂.He …` using `fun _ => Ψ × Fin N) w (τ, i) k)) = 0 := by`. Introduce `w`. Set `f` to `GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear.fsMultilin (hII.1 (GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.FlIdx Ψ N)) hP`. Set `u : Fin (dimFl Ψ N + 1) → GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N → ℤ` to `Fin.snoc (α := fun _ => GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N → ℤ) (fun k => GroundTheory.Heights₂.Heights.LowerBoundFree.xDeg Ψ N (w k)) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1 : ∀ i : Fin N, II (GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.FlIdx Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1) (fun k => GroundTheory.Heights₂.Heights.LowerBoundFree.xLine Ψ N (Fin.sn …` using `fun _ => Ψ × Fin N) w (τ, i) k)) = f.toLinearMap u (Fin.last _) (GroundTheory.Heights₂.Heights.LowerBoundFree.xDeg Ψ N (τ, i)) := by`. Introduce `i`. Rewrite using `[MultilinearMap.toLinearMap_apply, GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear.fsMultilin_apply]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Fin.lastCases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[u, GroundTheory.Heights₂.Heights.LowerBoundFree.xLine]`. Simplify using `[u, GroundTheory.Heights₂.Heights.LowerBoundFree.xLine]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => h1 i), ← map_sum, HH.sum_xDeg (N := N) τ, map_zero]`. Rewrite using `[MvPolynomial.as_sum Q, Finset.mul_sum, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m hm`. Establish `hdeg : Finsupp.degree m = dimFl Ψ N`. Use `hQ (mem_support_iff.mp hm)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Take `⟨w, hw⟩` from `HH.exists_word (dimFl Ψ N) m hdeg`. Establish `hprod : pk τ 1 * monomial m (coeff m Q) = ∑ i : Fin N, monomial (∑ k : Fin (dimFl Ψ N + 1), Finsupp.single (Fin.snoc (α` using `fun _ => Ψ × Fin N) w (τ, i) k) 1) (coeff m Q) := by`. Unfold `pk`. Rewrite using `[Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[pow_one, X, monomial_mul, one_mul, Fin.sum_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Rewrite using `[← hw, add_comm (Finsupp.single (τ, i) 1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod, map_sum, Finset.sum_congr rfl (fun i _ => HH.hhFl_word II hII.1 hP (Fin.snoc (α := fun _ => Ψ × Fin N) w (τ, i)) (coeff m Q)), ← Finset.mul_sum, ← Finset.mul_sum, key w, mul_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem flag_height_power_sum_zero : ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (τ : Ψ) (Q : RP Ψ N), 2 ≤ N → IsArithVar (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1) → Q.IsHomogeneous (dimFl Ψ N) → hhFl Ψ N II (pk τ 1 * Q) = 0 := by
   intro II hII Ψ _ _ N τ Q hN hP hQ

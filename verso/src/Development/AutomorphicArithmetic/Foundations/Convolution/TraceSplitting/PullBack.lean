@@ -34,9 +34,9 @@ variable {G H V : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpa
   [MeasurableSpace G] [BorelSpace G] [MeasurableSpace H] [BorelSpace H] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨hf, rfl⟩` from `h`. Establish `hR : LinearMap.range (c • A) = LinearMap.range A` using `LinearMap.range_smul A c hc`. Establish `key : ∀ (R : Submodule ℂ V) (_ : R = LinearMap.range A) (h1 : ∀ v ∈ R, (c • A) v ∈ R) (h2 : ∀ v ∈ LinearMap.range A, A v ∈ LinearMap.range A), LinearMap.trace ℂ R ((c • A).restrict h1) = c * LinearMap.trace ℂ (LinearMap.range A) (A.restrict h2)`. Introduce and unpack `_ rfl h1 h2`. Establish `: (c • A).restrict h1 = c • A.restrict h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, map_smul, smul_eq_mul]`. Conclude with `⟨hR ▸ hf, key _ hR _ _⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem hasFinTrace_smul {A : V →ₗ[ℂ] V} {c s : ℂ} (hc : c ≠ 0) (h : HasFinTrace A s) :
     HasFinTrace (c • A) (c * s) := by
@@ -54,9 +54,9 @@ private theorem hasFinTrace_smul {A : V →ₗ[ℂ] V} {c s : ℂ} (hc : c ≠ 0
   exact ⟨hR ▸ hf, key _ hR _ _⟩
 
 /- English proof (translation)
-Take `⟨A, hA, hf⟩` from `hs`. Establish `hme : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc`. Use `⟨(c : ℂ) • A, fun x l => ?_, hasFinTrace_smul hc' hf⟩` and prove the remaining obligations. Take `⟨hi, hl⟩` from `hA x l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hi' : Integrable (fun y => ψ y * l (π y x)) (mF.map e)` using `hme.integrable_map_iff.2 hi`. Substitute `h` using the available equality. Use `⟨hi'.smul_measure_nnreal, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_nnreal_measure, hme.integral_map, LinearMap.smul_apply, map_smul, hl]`. Simplify using `[NNReal.smul_def]`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hasTrace_map (e : G ≃ₜ* H) (mF : Measure G) (mE : Measure H) (c : NNReal) (hc : c ≠ 0)
     (h : mE = c • mF.map e) (π : Representation ℂ H V) (ψ : H → ℂ) (s : ℂ)
@@ -77,21 +77,19 @@ end Trace
 end UpperTheory.ConvolutionTheory.T
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n v w hs _ _ _ _ mF mE hF hE τ'`. Take `⟨⟨e, he⟩, -⟩` from `UpperTheory.ConvolutionTheory.L1.splitLoc F E v w hs n`. Establish `hmap : (mF.map e).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map mF e`. Establish `hscal` using `Measure.isMulLeftInvariant_eq_smul mE (mF.map e)`. Establish `hpos` using `Measure.haarScalarFactor_pos_of_isHaarMeasure mE (mF.map e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : mE.haarScalarFactor (mF.map e) ≠ 0` using `hpos.ne'`. Use `⟨pull e τ', ((mE.haarScalarFactor (mF.map e) : NNReal) : ℂ), by exact_mod_cast hc0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `τ₁ ⟨E₁⟩`. Use `⟨E₁.toLinearEquiv, fun g x => ?_⟩` and prove the remaining obligations. Rewrite using `[← he g]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.congr_fun (E₁.toIntertwiningMap.isIntertwining' g) x`. Introduce `ψ s h`. Use `hasTrace_map e mF mE _ hc0 hscal τ'.ρ ψ s ?_` and prove the remaining obligations. Establish `hfun : (fun g => ψ (e g)) = fun g => ψ (mapGL n (completionMap v w.1) g)`. Use function extensionality and compare the values at `fun g => by rw [he g]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `h`. Introduce `J U hJ hU`. Establish `hU' : ∀ g, g ∈ U ↔ e g ∈ J` using `fun g => by rw [he g]; exact hU g`. Establish `hset : (U : Set (Gw n v)) = e ⁻¹' (J : Set (Gw n w.1))` using `Set.ext hU'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hset]`. Conclude with `e.toHomeomorph.isCompact_preimage.2 hJ.1`. Rewrite using `[hset]`. Conclude with `hJ.2.preimage e.continuous`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h h0`. Use `h (eq_bot_iff.2 fun x hx => ?_)` and prove the remaining obligations. Establish `hx' : x ∈ fixedVectors (pull e τ').ρ U` using `fun u hu => hx _ ((hU' u).1 hu)`. Rewrite `hx'` using `[h0]`. Conclude with `hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `φ hφ hinv`. Use `⟨fun y => φ (e.symm y), ⟨hφ.1.comp_continuous e.symm.continuous, hφ.2.comp_homeomorph e.symm.toHomeomorph⟩, fun u hu g => ?_, ?_⟩` and prove the remaining obligations. Establish `hu' : e.symm u ∈ U` using `(hU' _).2 (by simpa using hu)`. Simplify `hinv _ hu' (e.symm g)` using `[map_mul]`. Use function extensionality and compare the values at `g`.
-
-Rewrite using `[← he g]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.pullBack :
     UpperTheory.ConvolutionTheory.T.PullBack := by

@@ -10,11 +10,11 @@ open NumberField IsDedekindDomain Formalism.L2.DIV GlobalTheory.ExpFrame Formali
 namespace GlobalTheory.ExpFrame.Conj
 
 /- English proof (translation)
-Take `⟨f, hf0, ⟨hΓ, hK⟩, hH⟩` from `h`. Take `⟨Φ, hinj, hsm, hgrp⟩` from `GlobalTheory.T.exists_semilinear_action_dualWeylTensor (PadicAlgCl l) ι N mu g`. Use `⟨fun x => Φ (f x), ?_, ⟨fun γ hγ x => by simp only [hΓ γ hγ x], fun κ x => ?_⟩, fun i x => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hf0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `x`. Use `congrFun h0 x` as an intermediate fact. Conclude with `hinj (by simpa using this)`. Establish `hfix : ∀ τ a b, g ((Matrix.GeneralLinearGroup.map F.emb (F.kap κ τ) : Matrix (Fin N) (Fin N) (PadicAlgCl l)) a b) = (Matrix.GeneralLinearGroup.map F.emb (F.kap κ τ) : Matrix (Fin N) (Fin N) (PadicAlgCl l)) a b`. Introduce `τ a b`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hg]`. Rewrite using `[← hgrp _ hfix, ← hg (F.chi κ : F.O), ← hsm, hK κ x]`. Use `hH i x` as an intermediate fact. Simplify using `only`. Rewrite using `[← hg (F.cst i), ← map_sum, ← hsm, this, hsm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEig_map {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (F : Frame l ι N)
     (mu : ι → ℕ → ℕ) (g : PadicAlgCl l ≃+* PadicAlgCl l) (hg : ∀ x, g (F.emb x) = F.emb x)
@@ -37,13 +37,13 @@ theorem isEig_map {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] [DecidableEq
     rw [← hg (F.cst i), ← map_sum, ← hsm, this, hsm]
 
 /- English proof (translation)
-Introduce `l _ ι _ _ N F lam hOk θ θ0 m hE hθ hθ0`. Take `⟨_, L, hfin, hrange⟩` from `hOk.ring`. Establish `hmemL : ∀ x, F.emb x ∈ L` using `fun x => by`. Establish `: F.emb x ∈ Set.range F.emb` using `⟨x, rfl⟩`. Rewrite `this` using `[hrange]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.1`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_galois_lift_residue_congruence_padic l L F.I θ θ0 hθ.1 hθ0.1 (by`. Introduce `p hp`. Establish `hmem : p ∈ Set.range (MvPolynomial.map F.emb)`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Take `⟨n, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.1 hc`. Rewrite using `[hrange]`. Conclude with `hp n`. Take `⟨q, rfl⟩` from `hmem`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.eval_map, MvPolynomial.eval_map, ← hθ.2 q, hθ0.2 q])`. Establish `hn : ∀ x, ‖g x‖ = ‖x‖` using `fun x => (spectralNorm_eq_of_equiv (g.restrictScalars ℚ_[l]) x).symm`. Use `⟨fun i => g (θ i), isEig_map F lam g.toRingEquiv (fun x => g.commutes ⟨F.emb x, hmemL x⟩) θ hE, fun i => (hn _).trans_le (hθ.1 i), hg⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_eig_congr : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (lam : ι → ℕ → ℕ), F.Ok → ∀ (θ θ0 : F.I → PadicAlgCl l) (m : Ideal F.T), F.IsEig lam θ → F.Over θ m → F.Over θ0 m → ∃ θ', F.IsEig lam θ' ∧ (∀ i, ‖θ' i‖ ≤ 1) ∧ ∀ i, ‖θ' i - θ0 i‖ < 1 := by
   intro l _ ι _ _ N F lam hOk θ θ0 m hE hθ hθ0

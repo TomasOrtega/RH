@@ -24,7 +24,7 @@ theorem allWords_succ {α : Type} {k : ℕ} (E : Fin k → α) (m : ℕ) :
     allWords E (m + 1) = [] :: (allWords E m).flatMap fun l => (List.ofFn E).map fun X => X :: l := rfl
 
 /- English proof (translation)
-The claim follows from `| 0, l => by cases l <;> simp [allWords_zero] | m + 1, [] => by simp [allWords_succ] | m + 1, X :: l => by simp only [allWords_succ, List.mem_cons, List.mem_flatMap, List.mem_map, List.mem_ofFn, List.length_cons, reduceCtorEq, false_or, List.cons.injEq, forall_eq_or_imp, Nat.add_ …`.
+A detailed English derivation is pending.
 -/
 theorem mem_allWords {α : Type} {k : ℕ} (E : Fin k → α) :
     ∀ (m : ℕ) (l : List α), l ∈ allWords E m ↔ l.length ≤ m ∧ ∀ X ∈ l, ∃ i, E i = X
@@ -46,12 +46,12 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [
 def cf (E : Fin k → Mx n) (X : Mx n) : ℝ := ∑ i, |((X * (E i)ᴴ).trace).re|
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem cf_nonneg (E : Fin k → Mx n) (X : Mx n) : 0 ≤ cf E X := Finset.sum_nonneg fun _ _ => abs_nonneg _
 
 /- English proof (translation)
-Unfold `cf`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_re.comp ((continuous_id.matrix_mul continuous_const).matrix_trace)).abs`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_cf (E : Fin k → Mx n) : Continuous (cf E) := by
   unfold cf
@@ -60,7 +60,7 @@ theorem continuous_cf (E : Fin k → Mx n) : Continuous (cf E) := by
 
 omit [CompleteSpace H] in
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_word (isUnit_Jm ε) hσ l hl`. Use `congrArg Subtype.val (map_sum L (fun i => c i • (⟨x i, hx i⟩ : smooth (Jm ε) σ)) Finset.univ)` as an intermediate fact. Simplify using `only [map_smul, Submodule.coe_sum, Submodule.coe_smul, hL] at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Dw_sum (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) (c : Fin k → ℂ)
     {x : Fin k → H} (hx : ∀ i, Sm ε σ (x i)) : Dw σ l (∑ i, c i • x i) = ∑ i, c i • Dw σ l (x i) := by
@@ -70,17 +70,17 @@ theorem Dw_sum (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈ 
   exact this
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `p hp hm`. Simplify `hm, hp⟩) w` using `using norm_Dw_le_sobNorm σ ((mem_allWords E m p).2 ⟨by simpa`. Consider the case `cons X l ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `p hp hm`. Establish `hX` using `hl X List.mem_cons_self`. Establish `hl'` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`. Establish `hp' : ∀ Y ∈ p, Y ∈ lieSet ε` using `fun Y hY => by`. Take `⟨i, rfl⟩` from `hp Y hY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hE i`. Establish `hs` using `hw.word h.1 hl'`. Establish `e1 : Dw σ (p ++ X :: l) w = ∑ i, ((((X * (E i)ᴴ).trace).re : ℝ) : ℂ) • Dw σ ((p ++ [E i]) ++ l) w`. Rewrite using `[Dw_append]`. Use `show Dw σ p (dRep σ X (Dw σ l w)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [hx X hX]`. Rewrite using `[h.dRep_sum hE hs, Dw_sum h.1 hp' _ (fun i => dRep_mem (isUnit_Jm ε) h.1 hs (hE i))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Dw_append, Dw_append]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, List.map_cons, List.prod_cons, mul_assoc, cf, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs]`. Use `mul_le_mul_of_nonneg_left (ih hl' _ ?_ ?_) (abs_nonneg _)` and prove the remaining obligations. Introduce `Y hY`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Break down `List.mem_append.1 hY with hY | hY` into its components or cases. Conclude with `hp Y hY`. Conclude with `⟨i, (List.mem_singleton.1 hY).symm⟩`. Simplify using `only [List.length_append, List.length_cons, List.length_nil] at hm ⊢`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem key (h : Std ε σ) {E : Fin k → Mx n} (hE : ∀ i, E i ∈ lieSet ε)
     (hx : ∀ X ∈ lieSet ε, X = ∑ i, ((X * (E i)ᴴ).trace).re • E i) (m : ℕ) {w : H} (hw : Sm ε σ w)
@@ -120,7 +120,7 @@ theorem key (h : Std ε σ) {E : Fin k → Mx n} (hE : ∀ i, E i ∈ lieSet ε)
       omega
 
 /- English proof (translation)
-Rewrite using `[← List.sum_map_mul_right]`. Use `conv_lhs => unfold sobNorm`. Use `List.sum_le_sum fun l hl => ?_` and prove the remaining obligations. Simplify `hm l hl)` using `using key h hE hx m hw l (hS l hl) [] (by simp) (by simpa`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sob_le (h : Std ε σ) {E : Fin k → Mx n} (hE : ∀ i, E i ∈ lieSet ε)
     (hx : ∀ X ∈ lieSet ε, X = ∑ i, ((X * (E i)ᴴ).trace).re • E i) (m : ℕ) {w : H} (hw : Sm ε σ w)
@@ -132,17 +132,15 @@ theorem sob_le (h : Std ε σ) {E : Fin k → Mx n} (hE : ∀ i, E i ∈ lieSet 
   simpa using key h hE hx m hw l (hS l hl) [] (by simp) (by simpa using hm l hl)
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ h S₀ hS₀`. Take `⟨E, hE, -, hx⟩` from `GlobalTheory.LieONB.exists_orthonormal_basis n ε`. Establish `hE' : ∀ i, E i ∈ lieSet ε` using `fun i => (hE i).1`. Establish `hx' : ∀ X ∈ lieSet ε, X = ∑ i, ((X * (E i)ᴴ).trace).re • E i` using `fun X hX => by`. Simplify `hx X hX` using `only [Complex.coe_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set m := (S₀.map List.length).sum with hm`. Establish `hW : Words (lieSet ε) (allWords E m)` using `fun l hl X hX => by`. Take `⟨i, rfl⟩` from `((mem_allWords E m l).1 hl).2 X hX`. Conclude with `hE' i`. Use `⟨allWords E m, hW, (mem_allWords E m _).2 (by simp), ?_, (S₀.map fun l => (l.map (cf E)).prod).sum, ?_, fun w hw => sob_le h hE' hx' m hw S₀ hS₀ fun l hl => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g => ((allWords E m).map fun l => (l.map fun X => cf E (Jm ε * gᴴ * Jm ε * X * g)).prod).sum, ?_, fun g hg w hw => ?_⟩` and prove the remaining obligations. Use `continuous_list_sum _ fun l _ => continuous_list_prod _ fun X _ => ?_` and prove the remaining obligations. Conclude with `(continuous_cf E).comp (f := fun g : Mx n => Jm ε * gᴴ * Jm ε * X * g) (((((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_const)).matrix_mul continuous_id)`. Rewrite using `[sobNorm_translate h.1 hg hw hW]`. Use `sob_le h hE' hx' m hw ((allWords E m).map fun l => l.map fun X => g⁻¹ * X * g) ?_ ?_` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `only [List.map_map, Function.comp_def, inv_eq_UJ hg]`. Introduce `l hl X hX`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `conj_mem_lie (isUnit_Jm ε) hg (hW l' hl' Y hY)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `l hl`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Simplify using `using ((mem_allWords E m l').1 hl').1`. Use `List.sum_nonneg fun x hx => ?_` and prove the remaining obligations. Take `⟨l, -, rfl⟩` from `List.mem_map.1 hx`.
-
-Use `List.prod_nonneg fun y hy => ?_` and prove the remaining obligations. Take `⟨X, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `cf_nonneg E X`. Conclude with `List.single_le_sum (fun _ _ => Nat.zero_le _) _ (List.mem_map.2 ⟨l, hl, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_ctrl : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ S₀ : List (List (Mx n)), Words (lieSet ε) S₀ → ∃ S : List (List (Mx n)), Words (lieSet ε) S ∧ [] ∈ S ∧ Ctrl (lieSet ε) (UJset ε) σ S ∧ ∃ A : ℝ, 0 ≤ A ∧ ∀ w, Sm ε σ w → sobNorm σ S₀ w ≤ A * sobNorm σ S w := by
   intro n ε H _ _ _ σ h S₀ hS₀

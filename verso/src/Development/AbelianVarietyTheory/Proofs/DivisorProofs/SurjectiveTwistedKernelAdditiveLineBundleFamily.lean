@@ -20,19 +20,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TwistKerSurj
 
 /- English proof (translation)
-Introduce `S A _ hA L hL hAmp K _ _ ξ M hM`. Take `⟨A', _, φ, hφ⟩` from `GlobalTheory.FlagTan.exists_isGrpPullback A ξ`. Use `hA` as an intermediate fact. Establish `: IsProper A.hom` using `IsAbelianScheme.proper`. Establish `hA' : IsAbelianScheme A'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA'` as an intermediate fact. Establish `: IsCommMonObj A` using `IsAbelianScheme.comm`. Establish `: IsCommMonObj A'` using `IsAbelianScheme.comm`. Establish `hL' : (L.pull φ).IsLB` using `pull_isLB hL φ`. Establish `hAmp' : Out.RelAmple A' (L.pull φ)` using `GlobalTheory.AmpleBaseChange.relAmple_of_isPullback hL hAmp hφ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 𝟙 (Sp K) ≫ ξ = ξ` using `Category.id_comp ξ`. Establish `hN' : Fam A' (M.pull (BaseChange.toBase hφ hs))` using `BaseChange.fam_toBase hφ hs hM`. Take `⟨a', ha'⟩` from `GlobalTheory.T.additiveLineBundle_eq_mumfordLambda_of_ample_algClosed K A' hA' (L.pull φ) hL' hAmp' _ hN'`. Use `⟨GlobalTheory.AbDual.pushP hφ hs a', ?_⟩` and prove the remaining obligations. Take `hsq` from `GlobalTheory.LamPull.exists_isSquare (G := A) (G' := A') (f := ξ) (φ := φ) hφ.1.w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hLam : (abelian₂ A L).IsLB` using `FullSiegel.isLB_lam hL`. Establish `hLam' : (abelian₂ A' (L.pull φ)).IsLB` using `FullSiegel.isLB_lam hL'`. Establish `eLam` using `(GlobalTheory.LamPull.lbIso_lam_pull hφ hL hL' (GlobalTheory.lbIso_self hL') hsq).symm`. Establish `h0` using `(same_iff hN'.isLB hLam' _ _).mp ha'`. Establish `e1 : evc hN'.isLB (fst A' (𝟙_ (Over (Sp K)))) (snd A' (𝟙_ (Over (Sp K))) ≫ 𝟙 _) = GlobalTheory.CechPic.pull (BaseChange.toBase hφ hs) (evc hM.isLB (fst A (Over.mk ξ)) (snd A (Over.mk ξ) ≫ 𝟙 _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.AbDual.evc]`. Rewrite using `[show lift (fst A' (𝟙_ (Over (Sp K)))) (snd A' (𝟙_ (Over (Sp K))) ≫ 𝟙 _) = 𝟙 _ by simp, show lift (fst A (Over.mk ξ)) (snd A (Over.mk ξ) ≫ 𝟙 _) = 𝟙 _ by simp, Over.id_left, Over.id_left, GlobalTheory.CechPic.pull_id]`. Conclude with `(GlobalTheory.CechPic.pull_id _).trans (GlobalTheory.CechPic.cls_pull hM.isLB _ hN'.isLB)`. Rewrite using `[same_iff hLam hM.isLB]`. Rewrite using `[BaseChange.pull_inj_iff (BaseChange.toBase hφ hs) (BaseChange.ofBase hφ hs) (BaseChange.ofBase_toBase hφ hs), ← e1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `BaseChange.toBase`. Rewrite using `[pull_evc]`. Use `Eq.trans (GlobalTheory.AbDual.evc_eq (f := φ) (g := φ) hsq.1 hsq.2 hLam hLam' eLam (s := (A' ⊗ 𝟙_ (Over (Sp K))).hom) (s₀ := (A' ⊗ 𝟙_ (Over (Sp K))).hom ≫ ξ) (fst A' (𝟙_ (Over (Sp K)))) (snd A' (𝟙_ (Over (Sp K))) ≫ a') _ _ ?_ ?_).symm h0.symm` and prove the remaining obligations. Rewrite using `[Over.comp_left, GlobalTheory.AbDual.lift_left_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left]`. Rewrite using `[← Category.assoc, GlobalTheory.AbDual.lift_left_snd]`. Simplify using `[GlobalTheory.AbDual.pushP]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_point_geom : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → Out.RelAmple A L → ∀ (K : Type) [Field K] [IsAlgClosed K] (ξ : Sp K ⟶ S) (M : LB (A ⊗ Over.mk ξ).left), Fam A M → ∃ a : Over.mk ξ ⟶ A, Same A (abelian₂ A L) M a (𝟙 _) := by
   intro S A _ hA L hL hAmp K _ _ ξ M hM
@@ -77,13 +77,13 @@ theorem exists_point_geom : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbel
     simp [GlobalTheory.AbDual.pushP]
 
 /- English proof (translation)
-Introduce `R _ _ A _ hA L hL hAmp T _ _ N hN H h _ hiff`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Set `Ω` to `AlgebraicClosure (T.left.residueField x)`. Set `p : Sp Ω ⟶ T.left` to `Spec.map (CommRingCat.ofHom (algebraMap (T.left.residueField x) Ω)) ≫ T.left.fromSpecResidueField x`. Set `tpt : Over.mk (p ≫ T.hom) ⟶ T` to `Over.homMk p rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hMf` using `Fam.ev hN tpt`. Take `⟨a, ha⟩` from `exists_point_geom (Sp R) A hA L hL hAmp Ω (p ≫ T.hom) _ hMf`. Establish `hs : Same A (abelian₂ A L) N a tpt`. Rewrite using `[same_iff (FullSiegel.isLB_lam hL) hN.isLB]`. Rewrite `ha` using `[same_iff (FullSiegel.isLB_lam hL) hMf.isLB]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ha, GlobalTheory.AbDual.evc_ev hN.isLB]`. Simplify using the standard rewrite rules. Take `⟨z, hz⟩` from `(hiff (Over.mk (p ≫ T.hom)) a tpt).mp hs`. Establish `e : z.left ≫ (h ≫ snd A T).left = p`. Rewrite using `[← Over.comp_left, ← Category.assoc, hz, lift_snd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `q : Sp Ω` to `IsLocalRing.closedPoint Ω`. Use `⟨z.left.base q, ?_⟩` and prove the remaining obligations. Establish `e2 : (h ≫ snd A T).left.base (z.left.base q) = p.base q` using `(Scheme.Hom.comp_apply z.left (h ≫ snd A T).left q).symm.trans (congrArg (fun f : Sp Ω ⟶ T.left => f.base q) e)`. Conclude with `e2.trans ((Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply _ _))`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem surjective_twist_kernel : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → Out.RelAmple A L → ∀ (T : Over (Sp R)) [IsAffine T.left], LocallyOfFiniteType T.hom → ∀ N : LB (A ⊗ T).left, Fam A N → ∀ (H : Over (Sp R)) (h : H ⟶ A ⊗ T), IsClosedImmersion h.left → (∀ (Y : Over (Sp R)) (a : Y ⟶ A) (t : Y ⟶ T), Same A (abelian₂ A L) N a t ↔ ∃ z : Y ⟶ H, z ≫ h = lift a t) → Surjective (h ≫ snd A T).left := by
   intro R _ _ A _ hA L hL hAmp T _ _ N hN H h _ hiff

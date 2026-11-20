@@ -9,13 +9,13 @@ open scoped TensorProduct ENNReal Matrix
 namespace GlobalTheory.LocalWittND
 
 /- English proof (translation)
-Establish `key : ∀ {m : ℕ} (Z : Matrix (Fin n) (Fin m) S), Zᵀ * Jᵀ * Z.map s = (Formalism.UG.cT s Z * J * Z)ᵀ`. Introduce `m Z`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Establish `hX' : IsUnit (Xᵀ * Jᵀ * X.map s).det` using `by rw [key, Matrix.det_transpose]; exact hX`. Establish `hXY' : Yᵀ * Jᵀ * Y.map s = Xᵀ * Jᵀ * X.map s` using `by rw [key, key, hXY]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∃ γ : Matrix (Fin n) (Fin n) S, γᵀ * Jᵀ * γ.map s = Jᵀ ∧ γ * X = Y`. Break down `hS with hF | ⟨φ, hφ⟩` into its components or cases. Use `letI := hF.toField`. Take `⟨γ, h1, h3⟩` from `GlobalTheory.HermWitt.exists_gl_isometry_mul_eq_of_det_ne_zero (c := s) h2 hs (G := Jᵀ) (fun i j => hJ i j) (X := X) (Y := Y) hX'.ne_zero hXY'`. Conclude with `⟨γ, h1, h3⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `GlobalTheory.HermTuple.exists_matrix_split s φ hφ Jᵀ (fun i j => hJ i j) (by rwa [Matrix.det_transpose]) X Y hX' hXY'`. Take `⟨γ, h1, h3⟩` from `this`. Rewrite `h1` using `[key]`. Establish `h4` using `Matrix.transpose_injective h1`. Establish `hγ : IsUnit γ.det`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[← h4, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hd`. Take `⟨G, hG⟩` from `(Matrix.isUnit_iff_isUnit_det γ).2 hγ`. Conclude with `⟨G, by rw [hG]; exact h4, by rw [hG]; exact h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gl {K S : Type} [Field K] [CommRing S] (s : S →+* S) (hs : ∀ x, s (s x) = x)
     (h2 : (2 : S) ≠ 0) (hS : IsField S ∨ ∃ φ : S ≃+* K × K, ∀ x, φ (s x) = (φ x).swap)
@@ -47,7 +47,7 @@ theorem exists_gl {K S : Type} [Field K] [CommRing S] (s : S →+* S) (hs : ∀ 
   exact ⟨G, by rw [hG]; exact h4, by rw [hG]; exact h3⟩
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [Formalism.UG.hform, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_eq {S : Type} [CommRing S] (s : S →+* S) {n a : ℕ} (J : Matrix (Fin n) (Fin n) S)
     (Z : Fin a → Fin n → S) :
@@ -59,7 +59,7 @@ theorem gram_eq {S : Type} [CommRing S] (s : S →+* S) {n a : ℕ} (J : Matrix 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [gramR, gramE, hR, hE, Formalism.UG.hform, map_sum, map_mul, ratTup, JR, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem gramR_ratTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) {n a : ℕ} (J : Matrix (Fin n) (Fin n) E)
@@ -71,11 +71,9 @@ theorem gramR_ratTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [
   congr 2
 
 /- English proof (translation)
-Take `⟨-, hE, -, hσ⟩` from `h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `⟨fun a => τ.injective (by rw [hσ, hσ, star_star]), ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsTotallyComplex.complexEmbedding_not_isReal τ ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `hσ τ x` as an intermediate fact. Rewrite `this` using `[hc]`.
-
-Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invol_of_isCMExt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : (∀ a, σ (σ a) = a) ∧ ∃ a, σ a ≠ a := by
@@ -92,15 +90,13 @@ theorem invol_of_isCMExt {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   exact this.symm
 
 /- English proof (translation)
-Take `⟨hi, hne⟩` from `invol_of_isCMExt hcm`. Establish `hS` using `(GlobalTheory.quadBaseChange_isField_or_split F E K σ hcm.2.2.1 hi hne).1`. Establish `hg : ∀ Z : Fin a → Fin n → K ⊗[F] E, gramR K σ J Z = _` using `fun Z => gram_eq (sigR K σ) (JR K J) Z`. Establish `h2 : (2 : K ⊗[F] E) ≠ 0`. Establish `: inclR (F` using `F) K (2 : E) ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_ne_zero]`. Conclude with `two_ne_zero`. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Take `⟨γ, h1, h3⟩` from `exists_gl (sigR K σ) (fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul k e => exact congrArg (k ⊗ₜ[F] ·) (hi e)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy])`. Use `h2 hS (JR K J)`. Use the proof step `(fun i j => by show (1 : K) ⊗ₜ[F] σ (J j i) = (1 : K) ⊗ₜ[F] J i j`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hJ.1])`. Use the proof step `(by`. Use `(hJ.2.isUnit).map (inclR (F := F) K)` as an intermediate fact. Rewrite using `[RingHom.map_det] at this)` and apply the resulting hypothesis. Use the proof step `(Matrix.of X)ᵀ (Matrix.of Y)ᵀ (by rw [← hg]; exact hX) (by rw [← hg, ← hg]; exact hXY)`.
-
-Use `⟨(⟨γ, h1⟩ : HR K σ J), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k i`. Conclude with `congrFun (congrFun h3 i) k`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_field {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (K : Type) [Field K] [Algebra F K]
@@ -134,7 +130,7 @@ theorem exists_smul_eq_field {F E : Type} [Field F] [NumberField F] [Field E] [N
   exact congrFun (congrFun h3 i) k
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n J hJ v a X0 hX y hy`. Use `exists_smul_eq_field hcm (Fv F v) hJ _ _ ?_ (by rw [hy, gramR_ratTup])` and prove the remaining obligations. Use `hX.isUnit.map (inclR (F := F) (Fv F v))` as an intermediate fact. Rewrite using `[gramR_ratTup]`. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_smul_ratTup_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (a : ℕ) (X0 : Fin a → Fin n → E), (gramE σ J X0).det ≠ 0 → ∀ y : Fin a → Fin n → Fv F v ⊗[F] E, gramR (Fv F v) σ J y = (gramE σ J X0).map (inclR (Fv F v)) → ∃ g : HA (Fv F v) σ J, g • ratTup (Fv F v) X0 = y := by
   intro F E _ _ _ _ _ σ hcm n J hJ v a X0 hX y hy

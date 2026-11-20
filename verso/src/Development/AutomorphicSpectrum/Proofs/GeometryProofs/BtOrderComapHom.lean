@@ -9,7 +9,7 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 namespace GlobalTheory.CompanionTheory.Ar.BT.Funct
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Simplify using `only [valAt]`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valAt_pullback {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X) (a : X ⟶ Y)
     (y : Spec (CommRingCat.of B) ⟶ Y) (hy : x ≫ a = y) (U : Y.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U)
@@ -21,9 +21,9 @@ theorem valAt_pullback {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (Com
   rfl
 
 /- English proof (translation)
-Take `⟨U, hU, s, hs⟩` from `hg`. Use `⟨a.left ⁻¹ᵁ U, hU, (a.left.app U).hom s, fun t h => ?_⟩` and prove the remaining obligations. Establish `hy : (Γ₁.pt t).left ≫ a.left = (Γ₂.pt (α t)).left`. Rewrite using `[← ha t, Over.comp_left]`. Establish `h₂ : ⊤ ≤ (Γ₂.pt (α t)).left ⁻¹ᵁ U`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Conclude with `h`. Rewrite using `[valAt_pullback _ _ _ hy U h₂ h s]`. Conclude with `hs (α t) h₂`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularAt_pullback {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ₁ : QFGroup R T)
     {T' : Type} [CommGroup T'] (Γ₂ : QFGroup R T') (a : Γ₁.G ⟶ Γ₂.G) (α : T →* T')
@@ -40,9 +40,9 @@ theorem regularAt_pullback {R : Type} [CommRing R] [IsDomain R] {T : Type} [Comm
   exact hs (α t) h₂
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ T' _ _ Γ' a α ha f hf`. Set `Φ : (T' → R) →ₐ[R] (T → R)` to `{ toFun := fun f t => f (α t) map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl commutes' := fun _ => rfl }`. Establish `hle : Γ'.btOrder ⊤ ≤ (Γ.btOrder ⊤).comap Φ`. Use `Algebra.adjoin_le fun f hf => ?_` and prove the remaining obligations. Use `Algebra.subset_adjoin fun t g _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `regularAt_pullback Γ Γ' a α ha _ g (hf (α t) (a.left g) trivial)`. Express the relevant statement in the definitionally equal form `Γ.RegularAt (fun x => algebraMap R (FractionRing R) (f (α (t * x)))) g`. Simplify `h` using `only [map_mul]`. Conclude with `hle hf`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem comp_mem_btOrder : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (T' : Type) [CommGroup T'] [Finite T'] (Γ' : QFGroup R T') (a : Γ.G ⟶ Γ'.G) (α : T →* T'), (∀ t, Γ.pt t ≫ a = Γ'.pt (α t)) → ∀ f ∈ Γ'.btOrder ⊤, (fun t => f (α t)) ∈ Γ.btOrder ⊤ := by
   intro R _ _ T _ _ Γ T' _ _ Γ' a α ha f hf

@@ -28,7 +28,7 @@ def toTh (W : G.Weil) (p : Pair T) (f : WO (G.pS p) (G.pT p) → ℂ) : thSub W 
   if h : IsThetaFunO W.ψ (G.pS p) (G.pT p) f then ⟨f, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[toTh, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_toTh (W : G.Weil) (p : Pair T) {f : WO (G.pS p) (G.pT p) → ℂ} (h : IsThetaFunO W.ψ (G.pS p) (G.pT p) f) :
     (toTh W p f : WO (G.pS p) (G.pT p) → ℂ) = f := by
@@ -37,7 +37,7 @@ theorem coe_toTh (W : G.Weil) (p : Pair T) {f : WO (G.pS p) (G.pT p) → ℂ} (h
 def lastIx (D : D7) : Fin D.R.m := ⟨D.R.m - 1, by have := D.R.two_le_m; omega⟩
 
 /- English proof (translation)
-Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [lastIx]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lastIx_succ (D : D7) : D.R.m = (lastIx D : ℕ) + 1 := by
   have := D.R.two_le_m
@@ -96,35 +96,35 @@ namespace GlobalTheory.LastVertexInv
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Use `j.2` as an intermediate fact. Simplify using `[Pair.InRange, Node.InRange]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem inRange_top (t : T) (j : Fin D.R.m) : (Pair.top t (j : ℕ) : Pair T).InRange D.R.m := by
   have := j.2
   simp [Pair.InRange, Node.InRange]
 
 /- English proof (translation)
-Use `i.2` as an intermediate fact. Simplify using `[Pair.InRange, Node.InRange]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem inRange_chi (i : Fin D.R.m) : (Pair.chi (i : ℕ) D.R.m : Pair T).InRange D.R.m := by
   have := i.2
   simp [Pair.InRange, Node.InRange]
 
 /- English proof (translation)
-Use `j.2` as an intermediate fact. Simplify using `[DefPair]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem defPair_top (t : T) (j : Fin D.R.m) : DefPair D.R.m (Pair.top t (j : ℕ) : Pair T) := by
   have := j.2
   simp [DefPair]
 
 /- English proof (translation)
-Use `i.2` as an intermediate fact. Simplify using `[DefPair]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem defPair_chi (i : Fin D.R.m) : DefPair D.R.m (Pair.chi (i : ℕ) D.R.m : Pair T) := by
   have := i.2
   simp [DefPair]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Rewrite using `[Normal.vec, FinDatum.vec_eq W hf]`. Conclude with `(W.om_is p hIn).om_pres _ _ (GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is hf (S.Z.vac_is p hp).2.theta)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vec_theta (S : GridChoice W U) {t : T} {p : Pair T} (hp : DefPair D.R.m p) (hIn : p.InRange D.R.m)
     (d : FinDatum G t p) (h : S.Z.HasVec d) : IsThetaFunO W.ψ (G.pS p) (G.pT p) (S.Z.vec d) := by
@@ -134,7 +134,7 @@ theorem vec_theta (S : GridChoice W U) {t : T} {p : Pair T} (hp : DefPair D.R.m 
     (GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is hf (S.Z.vac_is p hp).2.theta)
 
 /- English proof (translation)
-The claim follows from `(W.om_is _ (inRange_top t (lastIx D))).om_pres _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem colShift_theta (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m))
     {f : WO (G.pS (.top t (lastIx D))) (G.pT (.top t (lastIx D))) → ℂ} (h : IsThetaFunO W.ψ _ _ f) :
@@ -142,7 +142,7 @@ theorem colShift_theta (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m))
   (W.om_is _ (inRange_top t (lastIx D))).om_pres _ _ h
 
 /- English proof (translation)
-The claim follows from `(W.om_is _ (inRange_chi (lastIx D))).om_pres _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem rowShift_theta (S : GridChoice W U) (k : FinPt G (.grid D.R.m D.R.m))
     {f : WO (G.pS (.chi (lastIx D) D.R.m : Pair T)) (G.pT (.chi (lastIx D) D.R.m : Pair T)) → ℂ} (h : IsThetaFunO W.ψ _ _ f) :

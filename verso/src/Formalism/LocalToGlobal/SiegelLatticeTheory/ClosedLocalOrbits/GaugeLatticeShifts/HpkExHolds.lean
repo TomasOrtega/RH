@@ -16,11 +16,11 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `invM`. Establish `hof : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `continuous_id`. Establish `hc : Continuous fun x : Mt k r => ((Matrix.of x).adjugate : Mt k r)` using `hof.matrix_adjugate`. Establish `hdc : Continuous fun x : Mt k r => (Matrix.of x : Mat k r).det` using `hof.matrix_det`. Establish `hd : Measurable fun x : Mt k r => Ring.inverse (Matrix.of x : Mat k r).det`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ring.inverse_eq_inv']`. Conclude with `hdc.measurable.inv`. Establish `he : (fun x : Mt k r => (((Matrix.of x : Mat k r)⁻¹ : Mat k r) : Mt k r)) = fun x : Mt k r => (Ring.inverse (Matrix.of x).det • (Matrix.of x).adjugate : Mt k r)`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : Measurable fun x : Mt k r => ((Matrix.of x).adjugate : Mt k r)` using `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ((continuous_apply j).comp ((continuous_apply i).comp hc)).measurable`. Rewrite using `[he]`. Conclude with `hd.smul hc'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_invM : Measurable (invM : Mt k r → Mt k r) := by
   unfold invM
@@ -41,7 +41,7 @@ theorem meas_invM : Measurable (invM : Mt k r → Mt k r) := by
   exact hd.smul hc'
 
 /- English proof (translation)
-Unfold `mulM`. Establish `hc : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mat k r))` using `Continuous.matrix_mul continuous_fst continuous_snd`. Conclude with `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ((continuous_apply j).comp ((continuous_apply i).comp hc)).measurable`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_mulM : Measurable (mulM : Mt k r × Mt k r → Mt k r) := by
   unfold mulM
@@ -55,7 +55,7 @@ def Cm (g : Mt k r) (p : SS k r) : Mt k r := mulM (mulM (mulM (mulM (p.1.1, p.1.
 def Tm (g : Mt k r) (p : Mt k r × Mt k r) : Mt k r := mulM (mulM (p.1, g), invM p.2)
 
 /- English proof (translation)
-Unfold `Cm`. Establish `hm` using `meas_mulM (k := k) (r := r)`. Conclude with `hm.comp ((hm.comp ((hm.comp ((hm.comp (measurable_fst.fst.prodMk measurable_fst.snd)).prodMk measurable_const)).prodMk measurable_snd.snd)).prodMk measurable_snd.fst)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_Cm (g : Mt k r) : Measurable (Cm g) := by
   unfold Cm
@@ -64,7 +64,7 @@ theorem meas_Cm (g : Mt k r) : Measurable (Cm g) := by
     measurable_const)).prodMk measurable_snd.snd)).prodMk measurable_snd.fst)
 
 /- English proof (translation)
-Unfold `Tm`. Establish `hm` using `meas_mulM (k := k) (r := r)`. Conclude with `hm.comp ((hm.comp (measurable_fst.prodMk measurable_const)).prodMk (meas_invM.comp measurable_snd))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_Tm (g : Mt k r) : Measurable (Tm g) := by
   unfold Tm
@@ -72,15 +72,15 @@ theorem meas_Tm (g : Mt k r) : Measurable (Tm g) := by
   exact hm.comp ((hm.comp (measurable_fst.prodMk measurable_const)).prodMk (meas_invM.comp measurable_snd))
 
 /- English proof (translation)
-Establish `hm` using `meas_mulM (k := k) (r := r)`. Establish `hi` using `meas_invM (k := k) (r := r)`. Establish `hT` using `meas_Tm g`. Establish `hmu : ∀ X Y : Measure (Mt k r), Formalism.MainNotions.S.muS X Y = (X.prod Y).map mulM` using `fun _ _ => rfl`. Rewrite using `[hmu, hmu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `step1 : ∀ s, ∫⁻ s', φ (Tm g (s, s')) ∂((A'.prod B).map mulM) = ∫⁻ y, φ (Tm g (s, mulM y)) ∂(A'.prod B)` using `fun s => lintegral_map (hφ.comp (hT.comp (measurable_const.prodMk measurable_id))) hm`. Rewrite using `[lintegral_congr step1]`. Establish `hH : Measurable fun s => ∫⁻ y, φ (Tm g (s, mulM y)) ∂(A'.prod B)` using `Measurable.lintegral_prod_right' (f := fun q : Mt k r × (Mt k r × Mt k r) => φ (Tm g (q.1, mulM q.2))) (hφ.comp (hT.comp (measurable_fst.prodMk (hm.comp measurable_snd))))`. Rewrite using `[lintegral_map hH hm]`. Establish `hF : Measurable fun p : (Mt k r × Mt k r) × (Mt k r × Mt k r) => φ (Tm g (mulM p.1, mulM p.2))` using `hφ.comp (hT.comp ((hm.comp measurable_fst).prodMk (hm.comp measurable_snd)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_prod _ hF.aemeasurable]`. Establish `hpt : ∀ p : (Mt k r × Mt k r) × (Mt k r × Mt k r), Tm g (mulM p.1, mulM p.2) = Cm g (Prod.map id (Prod.map invM invM) p)`. Introduce `p`. Use `show (Matrix.of p.1.1 * Matrix.of p.1.2 * Matrix.of g * (Matrix.of p.2.1 * Matrix.of p.2.2)⁻¹ : Mat k r) = Matrix.of p.1.1 * Matrix.of p.1.2 * Matrix.of g * (Matrix.of p.2.2)⁻¹ * (Matrix.of p.2.1)⁻¹`. Rewrite using `[Matrix.mul_inv_rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(mul_assoc _ _ _).symm`. Simplify using `only [hpt]`. Establish `h2 : (A'.prod B).map (Prod.map invM invM) = A'.prod B`. Rewrite using `[← Measure.map_prod_map A' B hi hi, hA', hB]`. Establish `hP : ((A.prod B).prod (A'.prod B)).map (Prod.map id (Prod.map invM invM)) = (A.prod B).prod (A'.prod B)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Measure.map_prod_map _ _ measurable_id (hi.prodMap hi), Measure.map_id, h2]`. Use `(lintegral_map (f := φ ∘ Cm g) (hφ.comp (meas_Cm g)) (measurable_id.prodMap (hi.prodMap hi))).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hP]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tgt_eq (A B A' : Measure (Mt k r)) [SFinite A] [SFinite B] [SFinite A']
     (hB : B.map invM = B) (hA' : A'.map invM = A') (g : Mt k r) (φ : Mt k r → ℝ≥0∞) (hφ : Measurable φ) :
@@ -119,9 +119,9 @@ theorem tgt_eq (A B A' : Measure (Mt k r)) [SFinite A] [SFinite B] [SFinite A']
   rfl
 
 /- English proof (translation)
-Establish `hi` using `meas_invM (k := k) (r := r)`. Establish `hpt : ∀ p : SS k r, (sgs p g : Mt k r) = Cm g (Prod.map (Prod.map invM invM) id p)` using `fun _ => rfl`. Simplify using `only [hpt]`. Establish `h1 : (A.prod B).map (Prod.map invM invM) = A.prod B`. Rewrite using `[← Measure.map_prod_map A B hi hi, hA, hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ((A.prod B).prod (A'.prod B)).map (Prod.map (Prod.map invM invM) id) = (A.prod B).prod (A'.prod B)`. Rewrite using `[← Measure.map_prod_map _ _ (hi.prodMap hi) measurable_id, Measure.map_id, h1]`. Use `(lintegral_map (f := φ ∘ Cm g) (hφ.comp (meas_Cm g)) ((hi.prodMap hi).prodMap measurable_id)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hP]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem src_eq (A B A' : Measure (Mt k r)) [SFinite A] [SFinite B] [SFinite A']
     (hA : A.map invM = A) (hB : B.map invM = B) (g : Mat k r) (φ : Mt k r → ℝ≥0∞) (hφ : Measurable φ) :
@@ -144,23 +144,21 @@ namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 HaarTranslationMeasurability
 
 /- English proof (translation)
-Introduce `k r z z' hk hz hz' hT hT' μ μW μW' μN hμ hW hW' hN μsec hsec`. Take `⟨μG0, hG0⟩` from `Formalism.FourierDecayAlt.P.unitary_group_haar_exists k r`. Take `⟨μW0, hW0⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r z hz hT`. Take `⟨μW0', hW0'⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r z' hz' hT'`. Take `⟨μN0, hN0⟩` from `Formalism.FourierDecayAlt.P.unipotent_haar_exists k r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hD : IsMeasData k r z z' μsec μG0 μW0 μN0 μW0'` using `⟨hk, hz, hz', hT, hT', hG0, hW0, hN0, hW0', hsec⟩`. Take `⟨C, hC, hInt⟩` from `Formalism.FourierDecayAlt.P.integration_formula_constant k r z z' μsec μG0 μW0 μN0 μW0' hD`. Establish `cG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k r`. Establish `cW` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z`. Establish `cW'` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cN` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k r`. Take `⟨a, ha0, hat, rfl⟩` from `Formalism.MainNotions.LeviCoordinates.left_haar_eq_smul_biinvariant cG hG0 hμ`. Take `⟨b, hb0, hbt, rfl⟩` from `Formalism.MainNotions.LeviCoordinates.left_haar_eq_smul_biinvariant cW hW0 hW`. Take `⟨b', hb0', hbt', rfl⟩` from `Formalism.MainNotions.LeviCoordinates.left_haar_eq_smul_biinvariant cW' hW0' hW'`. Take `⟨d, hd0, hdt, rfl⟩` from `Formalism.MainNotions.LeviCoordinates.left_haar_eq_smul_biinvariant cN hN0 hN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hW0`. Use `haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hW0'`. Use `haveI := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hN0`. Establish `iW` using `Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μW0 cW hW0`. Establish `iW'` using `Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μW0' cW' hW0'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `iN` using `Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μN0 cN hN0`. Establish `jW' : (b' • μW0').map invM = b' • μW0'` using `by rw [Measure.map_smul, iW']`. Establish `jN : (d • μN0).map invM = d • μN0` using `by rw [Measure.map_smul, iN]`. Use `set κ : ℝ≥0∞ := b * d * (b' * d) with hκ`. Establish `hκ0 : κ ≠ 0` using `by simp [hκ, hb0, hd0, hb0']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hκt : κ ≠ ⊤` using `by simp [hκ, ENNReal.mul_eq_top, hbt, hdt, hbt']`. Establish `key : ∀ (g : Mat k r) (φ : Mt k r → ℝ≥0∞), Measurable φ → ∫⁻ s, ∫⁻ s', φ (fun i j => (Matrix.of s * g * (Matrix.of s')⁻¹) i j) ∂(Formalism.MainNotions.S.muS (b' • μW0') (d • μN0)) ∂(Formalism.MainNotions.S.muS (b • μW0) (d • μN0)) = κ * ∫⁻ p, φ (sgs p g) ∂((μW0.prod μN0).prod (μW …`. Introduce `g φ hφ`. Use `tgt_eq (b • μW0) (d • μN0) (b' • μW0') jN jW' g φ hφ` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[src_eq μW0 μN0 μW0' iW iN g φ hφ]`. Simplify using `only [Measure.prod_smul_left, Measure.prod_smul_right, lintegral_smul_measure, smul_eq_mul, hκ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : a * (C : ℝ≥0∞) ≠ ⊤` using `ENNReal.mul_ne_top hat ENNReal.coe_ne_top`. Establish `hne0 : a * (C : ℝ≥0∞) ≠ 0` using `mul_ne_zero ha0 (by exact_mod_cast hC.ne')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(a * C / κ).toReal, ENNReal.toReal_pos (by simp [ENNReal.div_eq_zero_iff, hne0, hκt]) (ENNReal.div_lt_top hne hκ0).ne, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_toReal (ENNReal.div_lt_top hne hκ0).ne, lintegral_smul_measure, hInt φ hφ, smul_eq_mul]`. Repeatedly rewrite using `[key _ φ hφ]`. Establish `hc : ∀ q : (Fin r → ℂ) × ℂ, ENNReal.ofReal (bcWeight k r (Tz k r z) (Tz k r z') q) * (κ * ∫⁻ p, φ (sgs p (bigCell k r q.1 (μsec q.2))) ∂((μW0.prod μN0).prod (μW0'.prod μN0))) = κ * (ENNReal.ofReal (bcWeight k r (Tz k r z) (Tz k r z') q) * ∫⁻ p, φ (sgs p (bigCell k r q.1 (μsec q.2 …` using `fun q => by ring`. Repeatedly rewrite using `[hc]`.
-
-Rewrite using `[lintegral_const_mul' _ _ hκt, ← mul_assoc, ← mul_assoc, ENNReal.div_mul_cancel hκ0 hκt]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hpkEx_holds : HpkEx := by
   intro k r z z' hk hz hz' hT hT' μ μW μW' μN hμ hW hW' hN μsec hsec

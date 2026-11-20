@@ -10,28 +10,28 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.N2
 
 /- English proof (translation)
-The claim follows from `etaleClosed_point_lifts_simple_roots_monic`.
+A detailed English derivation is pending.
 -/
 theorem lifting_theorem : StatLIFT := etaleClosed_point_lifts_simple_roots_monic
 
 /- English proof (translation)
-The claim follows from `unit_lemma_prime_case_holds`.
+A detailed English derivation is pending.
 -/
 theorem dual_w_by_letters : StatWPrime := unit_lemma_prime_case_holds
 
 /- English proof (translation)
-The claim follows from `unit_lemma_prime_extension_holds`.
+A detailed English derivation is pending.
 -/
 theorem dual_w_by_letters_extended : StatWPrimeExt := unit_lemma_prime_extension_holds
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨lagrange_annihilation, lagrange_resolvent_kills_class, unit_lemma_case_b_holds, unit_lemma_case_a_unconditional, unit_lemma_case_a_level_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem lagrange_and_w_all : StatLagrange ∧ StatLagrangeKill ∧ StatWB ∧ StatWA ∧ StatWA0 :=
   ⟨lagrange_annihilation, lagrange_resolvent_kills_class, unit_lemma_case_b_holds, unit_lemma_case_a_unconditional, unit_lemma_case_a_level_zero⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨character_value_formula_holds, descent_reduces_level, mem_span_of_frobenius_mem_span, cost_formula_holds, cost_bound, cost_bound_kills_obstruction, unconditional_first_statement, second_descent_free_part_holds, second_descent_statement_holds, residue_finite_holds, residue_always …`.
+Supply the required witnesses or components.
 -/
 theorem descent_cost_all : StatChiVal ∧ StatDescentStep ∧ StatDescent ∧ StatCostFormula ∧ StatCostBound ∧
     StatCostKills ∧ Stat1 ∧ Stat2Free ∧ Stat2 ∧ StatResFinite ∧ StatResAlways ∧ StatResQ ∧ StatResCut :=
@@ -40,13 +40,13 @@ theorem descent_cost_all : StatChiVal ∧ StatDescentStep ∧ StatDescent ∧ St
     residue_quotient_holds, residue_at_truncation⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨superadditivity_holds, frame_invariance_holds, sigma_j_numerical⟩`.
+Supply the required witnesses or components.
 -/
 theorem superadditivity_frame_all : StatASuper ∧ StatFrameInv ∧ StatSigJNum :=
   ⟨superadditivity_holds, frame_invariance_holds, sigma_j_numerical⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨valuation_sum_at_endpoint, valuation_sum_general_index, residue_series_expansion_holds, sign_character_at_j_holds, size_bound_second_case, size_bound_first_case⟩`.
+Supply the required witnesses or components.
 -/
 theorem lifting_size_bounds_all : StatSumValEnd ∧ StatSumValGen ∧ StatResSeries ∧ StatSigJ ∧ StatSizeB ∧ StatSizeA :=
   ⟨valuation_sum_at_endpoint, valuation_sum_general_index, residue_series_expansion_holds, sign_character_at_j_holds, size_bound_second_case, size_bound_first_case⟩

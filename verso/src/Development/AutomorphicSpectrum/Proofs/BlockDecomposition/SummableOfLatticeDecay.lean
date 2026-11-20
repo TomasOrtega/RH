@@ -4,11 +4,11 @@ open MeasureTheory
 namespace GlobalTheory.CompanionTheory.LatticeCount
 
 /- English proof (translation)
-Establish `h : Summable (fun m : ℤ => 1 / (m : ℝ) ^ 2)` using `(Real.summable_one_div_int_pow (p := 2)).2 (by norm_num)`. Use `Summable.of_norm_bounded_eventually h ?_` and prove the remaining obligations. Establish `hfin : ({0} : Set ℤ).Finite` using `Set.finite_singleton 0`. Use `Filter.mem_cofinite.2 (hfin.subset ?_)` and prove the remaining obligations. Introduce `m hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Establish `h0' : m ≠ 0` using `by simpa using h0`. Apply `hm` to reduce the goal to its premises. Establish `hm0 : (0 : ℝ) < (m : ℝ) ^ 2`. Establish `: (m : ℝ) ≠ 0` using `by exact_mod_cast h0'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hpos : (0 : ℝ) < 1 + (m : ℝ) ^ 2` using `by positivity`. Use `show ‖((1 : ℝ) + (m : ℝ) ^ 2)⁻¹‖ ≤ 1 / (m : ℝ) ^ 2`. Rewrite using `[Real.norm_of_nonneg (inv_nonneg.2 hpos.le), one_div]`. Conclude with `inv_anti₀ hm0 (by linarith)`.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_inv_one_add_sq_int :
     Summable (fun m : ℤ => ((1 : ℝ) + (m : ℝ) ^ 2)⁻¹) := by
@@ -30,9 +30,9 @@ theorem summable_inv_one_add_sq_int :
   exact inv_anti₀ hm0 (by linarith)
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => exact Summable.of_finite`. Consider the case `succ d ih`. Establish `h2` using `summable_inv_one_add_sq_int.mul_of_nonneg ih (fun m => by positivity) (fun n => Finset.prod_nonneg (fun k _ => by positivity))`. Rewrite using `[← (Fin.consEquiv (fun _ : Fin (d + 1) => ℤ)).summable_iff]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h2.congr ?_` and prove the remaining obligations. Introduce `x`. Simplify using `[Fin.prod_univ_succ, Fin.consEquiv]`. Conclude with `mul_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_prod_inv_one_add_sq (d : ℕ) :
     Summable (fun n : Fin d → ℤ => ∏ k, ((1 : ℝ) + (n k : ℝ) ^ 2)⁻¹) := by
@@ -48,19 +48,19 @@ theorem summable_prod_inv_one_add_sq (d : ℕ) :
     exact mul_comm _ _
 
 /- English proof (translation)
-Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Set `S` to `{i // w i ≠ 0}`. Use `choose n hn using fun i : S => hint i.1 i.2`. Establish `hinj : Function.Injective n`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hf` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Establish `h1` using `hn a k`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hn b k`. Rewrite `h1` using `[hab]`. Conclude with `mul_left_cancel₀ hNpos.ne' (h1.trans h2.symm)`. Establish `hg` using `((summable_prod_inv_one_add_sq d).comp_injective hinj).mul_left (((N : ℝ) ^ 2) ^ d * C)`. Establish `hbound : ∀ a : S, ‖w a.1‖ ≤ ((N : ℝ) ^ 2) ^ d * C * ∏ k, ((1 : ℝ) + (n a k : ℝ) ^ 2)⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `hle : ∏ k, ((1 : ℝ) + (n a k : ℝ) ^ 2) ≤ ((N : ℝ) ^ 2) ^ d * ∏ k, (1 + f a.1 k ^ 2)`. Establish `: ((N : ℝ) ^ 2) ^ d * ∏ k, (1 + f a.1 k ^ 2) = ∏ k : Fin d, ((N : ℝ) ^ 2 * (1 + f a.1 k ^ 2))`. Rewrite using `[Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Use `Finset.prod_le_prod (fun k _ => by positivity) (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← hn a k]`. Establish `: (1 : ℝ) ≤ (N : ℝ) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : (0 : ℝ) < ∏ k, ((1 : ℝ) + (n a k : ℝ) ^ 2)` using `Finset.prod_pos (fun k _ => by positivity)`. Rewrite using `[Finset.prod_inv_distrib, ← div_eq_mul_inv, le_div_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : Summable (w ∘ (Subtype.val : S → ι))` using `Summable.of_norm_bounded hg hbound`. Use `(Function.Injective.summable_iff Subtype.val_injective ?_).1 hsub` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `x hx`. Assume the negation of the conclusion as `h0`. Conclude with `hx ⟨⟨x, h0⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem summable_of_lattice_decay (ι : Type) (d : ℕ) (w : ι → ℂ) (f : ι → Fin d → ℝ)
     (hf : Function.Injective f) (N : ℕ) (hN : 0 < N) (C : ℝ)

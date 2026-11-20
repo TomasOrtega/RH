@@ -23,7 +23,7 @@ def IsNeg (x : GA D (dblSp V)) : Prop := ¬ ∃ δ ∈ GQ V, x * (io V (δ, 1))�
 variable {V}
 
 /- English proof (translation)
-Unfold `IsNeg`. Use `not_congr ⟨fun ⟨δ, hδ, h⟩ => ⟨δ, hδ, ?_⟩, fun ⟨δ, hδ, h⟩ => ⟨δ, hδ, ?_⟩⟩` and prove the remaining obligations. Use `(siegel V).mul_mem ((siegel V).inv_mem hp) h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify `(siegel V).mul_mem hp h` using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isNeg_siegel_mul {p x : GA D (dblSp V)} (hp : p ∈ siegel V) : IsNeg V (p * x) ↔ IsNeg V x := by
   unfold IsNeg
@@ -33,9 +33,9 @@ theorem isNeg_siegel_mul {p x : GA D (dblSp V)} (hp : p ∈ siegel V) : IsNeg V 
   · simpa [mul_assoc] using (siegel V).mul_mem hp h
 
 /- English proof (translation)
-Introduce `h ⟨δ, hδ, hx⟩`. Use `h ⟨γ₂⁻¹ * δ * γ₁, (GQ V).mul_mem ((GQ V).mul_mem ((GQ V).inv_mem h₂) hδ) h₁, ?_⟩` and prove the remaining obligations. Establish `e : x * io V (γ₁, γ₂) * (io V (γ₂⁻¹ * δ * γ₁, 1))⁻¹ = x * (io V (δ, 1))⁻¹ * io V (γ₂, γ₂)`. Simplify using `only [mul_assoc, ← map_inv, ← map_mul]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `ext <;> simp [mul_assoc]`. Rewrite using `[e]`. Conclude with `(siegel V).mul_mem hx ((io_mem_siegel V).2 rfl)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNeg_mul_io {x : GA D (dblSp V)} {γ₁ γ₂ : GA D V} (h₁ : γ₁ ∈ GQ V) (h₂ : γ₂ ∈ GQ V) :
     IsNeg V (x * io V (γ₁, γ₂)) → IsNeg V x := by
@@ -49,7 +49,7 @@ theorem isNeg_mul_io {x : GA D (dblSp V)} {γ₁ γ₂ : GA D V} (h₁ : γ₁ �
   exact (siegel V).mul_mem hx ((io_mem_siegel V).2 rfl)
 
 /- English proof (translation)
-Use `⟨isNeg_mul_io h₁ h₂, fun h => isNeg_mul_io ((GQ V).inv_mem h₁) ((GQ V).inv_mem h₂) ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have e : ((γ₁, γ₂) * (γ₁⁻¹, γ₂⁻¹) : GA D V × GA D V) = 1 := by ext <;> simp`. Rewrite using `[mul_assoc, ← map_mul, e, map_one, mul_one]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNeg_mul_io_iff {x : GA D (dblSp V)} {γ₁ γ₂ : GA D V} (h₁ : γ₁ ∈ GQ V) (h₂ : γ₂ ∈ GQ V) :
     IsNeg V (x * io V (γ₁, γ₂)) ↔ IsNeg V x := by
@@ -59,7 +59,7 @@ theorem isNeg_mul_io_iff {x : GA D (dblSp V)} {γ₁ γ₂ : GA D V} (h₁ : γ�
   exact h
 
 /- English proof (translation)
-Establish `e : mk ((siegel V).subgroupOf (GQ (dblSp V))) (q.out * g) = mk _ (rmul _ g q).out` using `((rmul_mk g q.out).symm.trans (congrArg (rmul _ g) (Quotient.out_eq q))).trans (Quotient.out_eq _).symm`. Take `⟨p, hp⟩` from `mk_eq_iff.1 e`. Use `⟨((p : GQ (dblSp V)) : GA D (dblSp V)), ⟨Subgroup.mem_subgroupOf.1 p.2, (p : GQ (dblSp V)).2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_out_rmul (q : SiegelCosets V) (g : GQ (dblSp V)) : ∃ p ∈ siegelQ V,
     (((rmul _ g q).out : GQ (dblSp V)) : GA D (dblSp V)) = p * (q.out : GQ (dblSp V)) * g := by
@@ -71,7 +71,7 @@ theorem exists_out_rmul (q : SiegelCosets V) (g : GQ (dblSp V)) : ∃ p ∈ sieg
   simp [mul_assoc]
 
 /- English proof (translation)
-Take `⟨p, hp, e⟩` from `exists_out_rmul q ⟨io V (γ₁, γ₂), io_mem_GQ V h₁ h₂⟩`. Rewrite using `[e, mul_assoc, isNeg_siegel_mul hp.1]`. Conclude with `isNeg_mul_io_iff h₁ h₂`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNeg_out_rmul_iff (q : SiegelCosets V) {γ₁ γ₂ : GA D V} (h₁ : γ₁ ∈ GQ V) (h₂ : γ₂ ∈ GQ V) :
     IsNeg V ((rmul _ ⟨io V (γ₁, γ₂), io_mem_GQ V h₁ h₂⟩ q).out : GQ (dblSp V)) ↔ IsNeg V (q.out : GQ (dblSp V)) := by
@@ -80,7 +80,7 @@ theorem isNeg_out_rmul_iff (q : SiegelCosets V) {γ₁ γ₂ : GA D V} (h₁ : �
   exact isNeg_mul_io_iff h₁ h₂
 
 /- English proof (translation)
-Take `⟨p, hp, e⟩` from `exists_out_rmul q g`. Rewrite using `[e, mul_assoc, mul_assoc, apply_siegelQ_mul V a hμ hφ hp, mul_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_out_rmul {a : GL (Fin V.rank) (AE D)} {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) {s : ℂ}
     {φ : GA D (dblSp V) → ℂ} (hφ : φ ∈ degPS V a μ s) (q : SiegelCosets V) (g : GQ (dblSp V)) (y : GA D (dblSp V)) :
@@ -120,7 +120,7 @@ def negAction (V : HSp D) : MulAction (GQ V) (NegCosets V) where
 attribute [local instance] negAction
 
 /- English proof (translation)
-The claim follows from `map_one (io V)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem io_one_one : io V (1, 1) = 1 := map_one (io V)
 
@@ -131,15 +131,15 @@ theorem smul_val (δ : GQ V) (q : NegCosets V) : (δ • q).1 =
     rmul _ ⟨io V ((δ : GA D V)⁻¹, 1), io_mem_GQ V (inv_mem δ.2) (one_mem _)⟩ q.1 := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ, rfl⟩`. Use `⟨δ.2, ?_⟩` and prove the remaining obligations. Take `⟨p, hp, e⟩` from `exists_out_rmul y.1 ⟨io V ((δ : GA D V)⁻¹, 1), io_mem_GQ V (inv_mem δ.2) (one_mem _)⟩`. Establish `hv : rmul _ ⟨io V ((δ : GA D V)⁻¹, 1), io_mem_GQ V (inv_mem δ.2) (one_mem _)⟩ y.1 = y.1` using `(smul_val δ y).symm.trans (congrArg Subtype.val (MulAction.mem_stabilizer_iff.1 hδ))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[hv]`. Establish `e' : ((y.1.out : GQ (dblSp V)) : GA D (dblSp V)) = p * ((y.1.out : GQ (dblSp V)) : GA D (dblSp V)) * io V ((δ : GA D V)⁻¹, 1)` using `e`. Establish `h' : p * ((y.1.out : GQ (dblSp V)) : GA D (dblSp V)) * io V ((δ : GA D V)⁻¹, 1) * io V ((δ : GA D V), 1) * ((y.1.out : GQ (dblSp V)) : GA D (dblSp V))⁻¹ = p`. Rewrite using `[mul_assoc (p * _), ← map_mul]`. Simplify using `[io_one_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h'` using `[← e']`. Rewrite using `[Subgroup.coe_subtype, h']`. Conclude with `hp.1`. Introduce and unpack `⟨hx, hs⟩`. Use `⟨⟨x, hx⟩, MulAction.mem_stabilizer_iff.2 (Subtype.ext ?_), rfl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_val]`. Use `conv_lhs => rw [← Quotient.out_eq y.1]`. Establish `hr : ((y.1.out : GQ (dblSp V)) : GA D (dblSp V)) * io V (x, 1) * ((y.1.out : GQ (dblSp V)) : GA D (dblSp V))⁻¹ ∈ GQ (dblSp V)` using `mul_mem (mul_mem (y.1.out).2 (io_mem_GQ V hx (one_mem _))) (inv_mem (y.1.out).2)`. Use `((rmul_mk _ _).trans (mk_eq_iff.2 ⟨⟨⟨_, hr⟩, Subgroup.mem_subgroupOf.2 hs⟩, ?_⟩)).trans (Quotient.out_eq _)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, mul_assoc, inv_mul_cancel_left, ← map_mul]`. Simplify using `[io_one_one]`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_stabilizer_iff (y : NegCosets V) (x : GA D V) :
     x ∈ (MulAction.stabilizer (GQ V) y).map (GQ V).subtype ↔
@@ -174,9 +174,9 @@ theorem mem_map_stabilizer_iff (y : NegCosets V) (x : GA D V) :
     simp [io_one_one]
 
 /- English proof (translation)
-Introduce and unpack `⟨γ₁, γ₂⟩ ⟨h₁, h₂⟩ ⟨g₁, g₂⟩`. Establish `hE : (∑' q : NegCosets V, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * io V ((γ₁, γ₂) * (g₁, g₂)))) = ∑' q : NegCosets V, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * io V (g₁, g₂))`. Use `(tsum_congr fun q => ?_).trans ((ioEquiv h₁ h₂).tsum_eq (fun q : NegCosets V => φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * io V (g₁, g₂))))` and prove the remaining obligations. Use `show _ = φ ((((rmul _ ⟨io V (γ₁, γ₂), io_mem_GQ V h₁ h₂⟩ q.1).out : GQ (dblSp V)) : GA D (dblSp V)) * io V (g₁, g₂))`. Rewrite using `[apply_out_rmul hμ hφ, map_mul, mul_assoc]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (∑' q : NegCosets V, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * io V ((γ₁, γ₂) * (g₁, g₂)))) * conj (f₁ (γ₁ * g₁)) * f₂ (γ₂ * g₂) * (μ (detA V (γ₂ * g₂)) : ℂ)⁻¹ = (∑' q : NegCosets V, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * io V (g₁, g₂))) * conj (f₁ g₁) * f₂ …`. Rewrite using `[hE, hf₁ γ₁ h₁, hf₂ γ₂ h₂, map_mul, map_mul, apply_detA hμ h₂, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem leftInv_negIntegrand {a : GL (Fin V.rank) (AE D)} {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) {s : ℂ}
     {φ : GA D (dblSp V) → ℂ} (hφ : φ ∈ degPS V a μ s) {f₁ f₂ : GA D V → ℂ} (hf₁ : LeftInv (GQ V) f₁)
@@ -197,23 +197,19 @@ theorem leftInv_negIntegrand {a : GL (Fin V.rank) (AE D)} {μ : (AE D)ˣ →* Ci
   rw [hE, hf₁ γ₁ h₁, hf₂ γ₂ h₂, map_mul, map_mul, apply_detA hμ h₂, one_mul]
 
 /- English proof (translation)
-Introduce `D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂ hc`. Use `haveI := hm`. Use `show ∫ x, dblIntegrandQ V μ (fun y => ∑' q : NegCosets V, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * y)) f₁ f₂ x ∂(autMeasure V m).prod (autMeasure V m) = 0`. Use `set E : GA D (dblSp V) → ℂ := fun y => ∑' q : NegCosets V, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * y) with hEdef`. Distinguish the cases in `hI : Integrable (dblIntegrandQ V μ E f₁ f₂) ((autMeasure V m).prod (autMeasure V m))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `swap`. Conclude with `integral_undef hI`. Establish `hli : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ E f₁ f₂)` using `leftInv_negIntegrand hμ hφ h₁.1 h₂.1`. Establish `hconv : DblConv V μ m E f₁ f₂` using `⟨hli, hI⟩`. Establish `h𝓕 : IsFundamentalDomain (GQ V) (stdDom (GQ V)) m` using `isFundamentalDomain_stdDom _ m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set 𝓕 := stdDom (GQ V)`. Take `⟨hint, heq⟩` from `hconv.dblInt_eq h𝓕`. Use `(heq : dblInt V μ m E f₁ f₂ = _).trans ?_` and prove the remaining obligations. Rewrite `hint` using `[IntegrableOn, ← Measure.prod_restrict]`. Rewrite using `[← Measure.prod_restrict, integral_prod_symm _ hint]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hφc : Continuous φ` using `hφ.2.1`. Establish `hcont : ∀ q : SiegelCosets V, Continuous (dblIntegrand V μ (fun x => φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * x)) f₁ f₂)` using `fun q => continuous_dblIntegrand hμ (hφc.comp (continuous_const.mul continuous_id)) h₁.continuous h₂.continuous`. Use `set G : SiegelCosets V → GA D V × GA D V → ENNReal := fun q x => ‖dblIntegrand V μ (fun x => φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * x)) f₁ f₂ x‖ₑ with hGdef`. Establish `hGm : ∀ q, Measurable (G q)` using `fun q => (hcont q).measurable.enorm`. Establish `hfin` using `(GlobalTheory.Core.Rk.AbsConv.absConv_unfolded D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂).1 𝓕 h𝓕`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hfin` using `[← Measure.prod_restrict, ← lintegral_tsum fun q => (hGm q).aemeasurable, lintegral_prod_symm _ (Measurable.ennreal_tsum hGm).aemeasurable]`. Establish `hae` using `ae_lt_top (Measurable.ennreal_tsum hGm).lintegral_prod_left' hfin`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with g₂ hg₂`. Use `set Φ : NegCosets V → GA D V → ℂ := fun y h => dblIntegrand V μ (fun x => φ (((y.1.out : GQ (dblSp V)) : GA D (dblSp V)) * x)) f₁ f₂ (h, g₂) with hΦdef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ g₁, dblIntegrand V μ E f₁ f₂ (g₁, g₂) = ∑' y, Φ y g₁` using `fun g₁ => by`. Simplify using `only [hΦdef, dblIntegrand, hEdef]`. Rewrite using `[← tsum_mul_right, ← tsum_mul_right, ← tsum_mul_right]`. Establish `hΦm : ∀ y, Measurable (Φ y)` using `fun y => ((hcont y.1).comp (continuous_id.prodMk continuous_const)).measurable`. Establish `hsum : ∑' y, ∫⁻ h, ‖Φ y h‖ₑ ∂(m.restrict 𝓕) ≠ ⊤`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `ne_top_of_le_ne_top hg₂.ne ?_` and prove the remaining obligations. Establish `hl` using `lintegral_tsum (μ := m.restrict 𝓕) (f := fun q h => G q (h, g₂)) fun q => ((hGm q).comp measurable_prodMk_right).aemeasurable`. Rewrite using `[hl]`. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective (fun q => ∫⁻ h, G q (h, g₂) ∂(m.restrict 𝓕))`. Rewrite using `[integral_congr_ae (.of_forall hpt), integral_tsum (fun y => (hΦm y).aestronglyMeasurable) hsum]`.
-
-Use `GlobalTheory.OrbitUnfold.tsum_setIntegral_eq_zero (GA D V) m (GQ V) (NegCosets V) 𝓕 h𝓕 Φ hΦm ?_ hsum ?_` and prove the remaining obligations. Introduce `γ y h`. Establish `e : io V ((γ : GA D V)⁻¹, 1) * io V (γ * h, g₂) = io V (h, g₂)`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
-
-Simplify using `only [hΦdef, dblIntegrand]`. Rewrite using `[h₁.1 _ γ.2, smul_val, apply_out_rmul hμ hφ, mul_assoc _ _ (io V _)]`. Use `erw [e]`. Introduce `y 𝓖 h𝓖 hi`. Conclude with `GlobalTheory.T.doublingNegligibleOrbit_unfoldedIntegral_eq_zero D V a μ hμ s φ hφ _ (y.1.out).2 y.2 f₁ f₂ h₁.continuous h₂.continuous h₁.1 hc g₂ _ (mem_map_stabilizer_iff y) m hm 𝓖 h𝓖 hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_neg_eq_zero : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)), IsMaj V a → ∀ (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ s : ℂ, (V.rank : ℝ) / 2 < s.re → ∀ φ ∈ degPS V a μ s, GlobalTheory.Grow.ModGrowth (dblSp V) (GlobalTheory.Eis.eis V (GlobalTheory.Eis.sph V a (s.re : ℂ))) → ∀ m : Measure (GA D V), m.IsHaarMeasure → ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → IsCuspFun V f₁ → ∫ x, GlobalTheory.Eis.dblIntegrandQ V μ (fun y => ∑' q : {q : GlobalTheory.Eis.SiegelCosets V // ¬ ∃ δ ∈ GQ V, ((q.out : GQ (dblSp V)) : GA D (dblSp V)) * (io V (δ, 1))⁻¹ ∈ siegel V}, φ (((q.1.out : GQ (dblSp V)) : GA D (dblSp V)) * y)) f₁ f₂ x ∂(autMeasure V m).prod (autMeasure V m) = 0 := by
   intro D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂ hc

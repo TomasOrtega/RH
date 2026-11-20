@@ -6,15 +6,15 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `p _ D G L hm hA`. Establish `h1 : Module.finrank ℝ (Arch G) = Fintype.card (InfinitePlace G.F) * (G.n * 2)`. Establish `hc : Module.finrank ℝ (Fin G.n → ℂ) = G.n * 2`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Arch`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[hc]`. Establish `h2 : Module.finrank ℝ (Arch G) = G.n * Module.finrank ℚ G.F` using `(hA G.F G.n).2.1`. Establish `h3 : Module.finrank ℚ G.F = Module.finrank ℚ D.F` using `(AlgEquiv.ofRingEquiv (f := L.e) (fun r => by simp)).toLinearEquiv.finrank_eq.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Module.finrank ℚ (VQ D) = D.m * D.n * Module.finrank ℚ D.F` using `by haveI := D.freeLa`. Rewrite using `[← D.rankLa]`. Conclude with `Module.finrank_baseChange`. Establish `hg : D.g = D.m * D.n * Module.finrank ℚ D.F / 2` using `rfl`. Establish `h2' : Module.finrank ℝ (Arch G) = D.n * Module.finrank ℚ D.F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, h3, L.n_eq]`. Establish `h1' : Module.finrank ℝ (Arch G) = 2 * (Fintype.card (InfinitePlace G.F) * D.n)`. Rewrite using `[h1, L.n_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h4`, `hg` using `[hm, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by rw [h2', h4], ?_⟩` and prove the remaining obligations. Rewrite using `[hg, ← h2', h1']`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finrank_archimedean_eq_two_mul_dim :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G), D.m = 1 → UpperTheory.Gal.W2.ArchSpan → Module.finrank ℝ (Arch G) = Module.finrank ℚ (VQ D) ∧ Module.finrank ℝ (Arch G) = 2 * D.g := by

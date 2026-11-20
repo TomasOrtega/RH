@@ -24,9 +24,9 @@ end GlobalTheory.GTwoTheta
 namespace GlobalTheory.GTwoTheta
 open Formalism.MainNotions.AdmissibleParameterJ
 /- English proof (translation)
-Introduce `hF D L hG2 hJa hJc i r ρ π hr h0 h1 hπ hD w hw C`. Take `⟨ep, hJ⟩` from `hJa`. Establish `hcrys` using `_root_.GlobalTheory.CrysFromGTwo.main_alt_alt hF D i r ρ π hr (hG2 i r hr) h0 h1 hD w hw C`. Establish `hamb` using `GlobalTheory.T.ambientJumpBlock_of_admissibleDecomposition D i r ρ π hD hπ h0 h1 w hw C`. Establish `hH` using `twistedRep_no_invariants_purity D L ep hJ hJc i r ρ π hr hπ w hw C hD (hcrys.2 π).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨fun x => (hcrys.2 x).1, fun τ => (tw_jumps D L ep hJ hJc i r hr w hw C τ).1, fun τ => (tw_jumps D L ep hJ hJc i r hr w hw C τ).2.1, fun c hc1 hct τ a => chi_jump D i r ρ π w hw C (fun τ => (hamb τ).2) c hc1 hct τ a, fun τ => (tw_jumps D L ep hJ hJc i r hr w hw C τ).2.2, hH.1, h …` and prove the remaining obligations. Rewrite using `[← locC_rTwO]`. Conclude with `(hcrys.2 x).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (L : SizeData₂ D), _root_.Formalism.MainNotions.AdmissibleParameterJ.DeRhamFamilyAwayAlt D → AdmissibleParameterJ.ConclusionJa D → AdmissibleParameterJ.jcCondition L → ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i), GoodR D.nd i r → D.nd.l i ≠ D.host.g 0 → D.nd.l i ≠ D.host.g 1 → π ∈ D.nd.Z i → TruncatedSeriesCountingIdentities.SemisimpleDecomposition (D := D) i r ρ π → TruncatedSeriesCountingIdentities.admG2 (D := D) i r ρ π := by
   intro hF D L hG2 hJa hJc i r ρ π hr h0 h1 hπ hD w hw C

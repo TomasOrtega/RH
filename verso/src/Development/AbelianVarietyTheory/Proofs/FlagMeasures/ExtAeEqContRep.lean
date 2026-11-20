@@ -12,9 +12,9 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.ExtContRep
 
 /- English proof (translation)
-Establish `h1 : ∀ᵐ x ∂μ, x ∈ D → F x = f x` using `(ae_restrict_iff' hD).1 h`. Establish `h2 : ∀ᵐ x ∂μ, ∀ γ ∈ Γ, γ * x ∈ D → F (γ * x) = f (γ * x)` using `(ae_ball_iff hΓ).2 fun γ _ => (measurePreserving_mul_left μ γ).quasiMeasurePreserving.ae h1`. Use `filter_upwards [h2] with x hx`. Take `⟨γ, hγ, e, hm⟩` from `hr x`. Rewrite `hm`, the goal using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx γ hγ hm, hf γ hγ]`.
+A detailed English derivation is pending.
 -/
 theorem comp_rep_ae_eq {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G)
     [μ.IsMulLeftInvariant] (Γ : Set G) (hΓ : Γ.Countable) (D : Set G) (hD : MeasurableSet D)
@@ -30,9 +30,9 @@ theorem comp_rep_ae_eq {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G
   rw [hx γ hγ hm, hf γ hγ]
 
 /- English proof (translation)
-Take `⟨Z, hZ, hZm, hZ0⟩` from `exists_measurable_superset_of_null (ae_iff.1 h)`. Establish `h0 : ∀ᵐ x ∂μ, x ∉ Z` using `measure_eq_zero_iff_ae_notMem.1 hZ0`. Establish `hm : MeasurableSet {z : G × G | z.2 * z.1 ∉ Z}` using `(measurable_snd.mul measurable_fst) hZm.compl`. Establish `h1 : ∀ᵐ x ∂μ, ∀ᵐ m ∂ν, m * x ∉ Z` using `(Measure.ae_ae_comm (p := fun x m => m * x ∉ Z) hm).2 (Filter.Eventually.of_forall fun m => (measurePreserving_mul_left μ m).quasiMeasurePreserving.ae h0)`. Use `filter_upwards [h1] with x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `filter_upwards [hx] with m hmx`. Assume the negation of the conclusion as `hp`. Conclude with `hmx (hZ hp)`.
+A detailed English derivation is pending.
 -/
 theorem ae_ae_mul {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] (μ ν : Measure G)
     [μ.IsMulLeftInvariant] [SFinite μ] [SFinite ν] (p : G → Prop) (h : ∀ᵐ x ∂μ, p x) :
@@ -51,19 +51,15 @@ theorem ae_ae_mul {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] 
   exact hmx (hZ hp)
 
 /- English proof (translation)
-Introduce `B y f hf`. Take `⟨hT, hL, hS, -⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Take `⟨Γ, hΓ, hc, -, -⟩` from `GlobalTheory.RatDiscrete.rational_points B.I`. Take `⟨hl, hrt, -, -, hop⟩` from `GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf`. Establish `: BorelSpace B.I.GA` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (B.I.muA B.μf).IsMulLeftInvariant` using `⟨hl⟩`. Establish `: (B.I.muA B.μf).IsMulRightInvariant` using `⟨hrt⟩`. Establish `: (B.I.muA B.μf).IsOpenPosMeasure` using `⟨fun U hU hne => (hop U hU hne).ne'⟩`. Establish `: SFinite (B.I.muA B.μf)`. Unfold `AutInst.muA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `infer_instance`. Establish `hcount : B.I.GFset.Countable`. Rewrite using `[← hΓ]`. Conclude with `Set.countable_coe_iff.1 hc`. Establish `hr : ∀ z, ∃ γ ∈ B.I.GFset, B.I.rep B.fund z = γ * z ∧ B.I.rep B.fund z ∈ B.fund`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z`. Establish `h` using `B.fund_spec.2.1 z`. Establish `e : B.I.rep B.fund z = h.choose * z`. Unfold `AutInst.rep`. Conclude with `dif_pos h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨h.choose, h.choose_spec.1, e, e ▸ h.choose_spec.2⟩`. Establish `key : ∀ f', IsContRep B y f' → B.I.ext y =ᵐ[B.I.muA B.μf] f'` using `fun f' hf' => comp_rep_ae_eq (B.I.muA B.μf) _ hcount _ B.fund_spec.1 _ hr _ f' hf'.2.1 hf'.2.2`. Use `⟨key f hf, fun f' hf' => ?_, fun g => ⟨?_, ?_, ?_⟩, fun ν hν => ?_⟩` and prove the remaining obligations. Conclude with `(Continuous.ae_eq_iff_eq (B.I.muA B.μf) hf'.1 hf.1).1 ((key f' hf').symm.trans (key f hf))`. Conclude with `hf.1.comp (continuous_id.mul continuous_const)`.
-
-Introduce `γ hγ x`. Simplify using `only [mul_assoc]`. Conclude with `hf.2.1 γ hγ _`. Use `(B.R_spec g y).trans (ae_restrict_of_ae ?_)` and prove the remaining obligations. Conclude with `(measurePreserving_mul_right (B.I.muA B.μf) g).quasiMeasurePreserving.ae (key f hf)`.
-
-Conclude with `ae_ae_mul (B.I.muA B.μf) ν (fun x => B.I.ext y x = f x) (key f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ext_ae_eq_contRep : ∀ (B : RowsAut) (y : B.I.L2 B.μf B.fund) (f : B.I.GA → ℂ), IsContRep B y f → B.I.ext y =ᵐ[B.I.muA B.μf] f ∧ (∀ f', IsContRep B y f' → f' = f) ∧ (∀ g, IsContRep B (B.R g y) (fun x => f (x * g))) ∧ ∀ ν : Measure B.I.GA, IsFiniteMeasure ν → ∀ᵐ x ∂(B.I.muA B.μf), ∀ᵐ m ∂ν, B.I.ext y (m * x) = f (m * x) := by
   intro B y f hf

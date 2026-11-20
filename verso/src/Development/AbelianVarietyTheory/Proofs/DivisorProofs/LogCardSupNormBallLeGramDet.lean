@@ -29,11 +29,9 @@ theorem comb_apply {K : Type} [AddCommGroup K] {r : ℕ} (f : Fin r → K) (z : 
     comb f z = ∑ i, z i • f i := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hle : AddSubgroup.closure (Set.range f) ≤ (comb f).range`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Simplify using `[comb_apply, Pi.single_apply]`. Conclude with `hle hg`. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[comb_apply]`.
-
-Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self i)) _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_iff {K : Type} [AddCommGroup K] {r : ℕ} (f : Fin r → K) (g : K) :
     g ∈ AddSubgroup.closure (Set.range f) ↔ ∃ z, comb f z = g := by
@@ -50,7 +48,7 @@ theorem mem_closure_iff {K : Type} [AddCommGroup K] {r : ℕ} (f : Fin r → K) 
     exact AddSubgroup.sum_mem _ fun i _ => AddSubgroup.zsmul_mem _ (AddSubgroup.subset_closure (Set.mem_range_self i)) _
 
 /- English proof (translation)
-The claim follows from `(injective_iff_map_eq_zero (comb f)).2 fun z hz => funext (Fintype.linearIndependent_iff.1 hf z hz)`.
+A detailed English derivation is pending.
 -/
 theorem comb_injective {K : Type} [AddCommGroup K] {r : ℕ} (f : Fin r → K) (hf : LinearIndependent ℤ f) :
     Function.Injective (comb f) :=
@@ -63,9 +61,9 @@ namespace GlobalTheory.BallGram
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Take `⟨ℓ, hℓ⟩` from `GlobalTheory.T.exists_additive_sectionValueUnitFrame k X p P a b σ y`. Establish `hmem : comb f z ∈ P.H a b`. Rewrite using `[comb_apply]`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.zsmul_mem _ (hf i) _`. Establish `heq : (⟨comb f z, hmem⟩ : P.H a b) = ∑ i, z i • (⟨f i, hf i⟩ : P.H a b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[comb_apply]`. Rewrite using `[← hℓ ⟨comb f z, hmem⟩, heq, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hℓ, zsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_comb (P : Pair p) (a b : ℤ) {r : ℕ} (f : Fin r → X.functionField) (hf : ∀ i, f i ∈ P.H a b)
     (σ : k →+* ℂ) (y : CxPts p σ) (z : Fin r → ℤ) :
@@ -82,7 +80,7 @@ theorem val_comb (P : Pair p) (a b : ℤ) {r : ℕ} (f : Fin r → X.functionFie
   rw [map_zsmul, hℓ, zsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← norm_val, val_comb P a b f hf, cmb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nu_comb_sq (P : Pair p) (a b : ℤ) {r : ℕ} (f : Fin r → X.functionField) (hf : ∀ i, f i ∈ P.H a b)
     (σ : k →+* ℂ) (y : CxPts p σ) (z : Fin r → ℤ) :
@@ -91,9 +89,9 @@ theorem nu_comb_sq (P : Pair p) (a b : ℤ) {r : ℕ} (f : Fin r → X.functionF
   rfl
 
 /- English proof (translation)
-Establish `h1` using `congrArg Complex.re ((gram_isHermitian_and_l2_eq_quadratic_form S Y (Fin r) μ v h).2 (fun i => (z i : ℂ))).2.2`. Rewrite `h1` using `[Complex.ofReal_re]`. Rewrite using `[h1, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_intCast, Matrix.map_apply]`. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem jacobi_field_square_integrable {S : Type} {Y : S → Type} [∀ σ, MeasurableSpace (Y σ)] {r : ℕ} (μ : ∀ σ, Measure (Y σ))
     (v : ∀ σ, Y σ → Fin r → ℂ) (h : IsFam μ v) (z : Fin r → ℤ) :
@@ -115,9 +113,9 @@ namespace GlobalTheory.BallGram
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Take `⟨σ', y', θ, hθ, hval⟩` from `GlobalTheory.T.sectionValueUnitFrame_conj_point_eq_phase_conj k X p P a b σ y`. Use `le_trans (le_of_eq ?_) (hB σ' y')` and prove the remaining obligations. Simplify using `only [cmb, vals]`. Establish `h : ∑ i, c i * val P a b σ' y' (f i) = θ * starRingEnd ℂ (∑ i, starRingEnd ℂ (c i) * val P a b σ y (f i))`. Rewrite using `[map_sum, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hval _ (hf i), map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, norm_mul, hθ, one_mul, Complex.norm_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmb_conj_le (P : Pair p) (a b : ℤ) {r : ℕ} (f : Fin r → X.functionField) (hf : ∀ i, f i ∈ P.H a b)
     (c : Fin r → ℂ) (B : ℝ) (hB : ∀ σ y, cmb (vals P a b f) c σ y ≤ B) (σ : k →+* ℂ) (y : CxPts p σ) :
@@ -138,55 +136,49 @@ end GlobalTheory.BallGram
 namespace GlobalTheory.BallGram
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX hS P ω a b r f hf hli M Vv ρ R hM hV hvol hρ hR hsup hgen hRρ`. Take `⟨hfam, hpd, hbd⟩` from `GlobalTheory.T.gram_posDef_l2_le_sup_of_lin_indep k X p D hX hS P ω a b (Fin r) f hf hli`. Establish `hl2` using `(gram_isHermitian_and_l2_eq_quadratic_form _ _ (Fin r) _ _ hfam).2`. Use `set μ : ∀ σ, Measure (CxPts p σ) := fun σ => (ω σ).meas with hμ`. Use `set v := vals P a b f with hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G := gram μ v with hG`. Use `set A := G.map Complex.re with hA`. Use `set Λ := AddSubgroup.closure (Set.range f) with hΛ`. Use `set φ := comb f with hφ`. Establish `hinj : Function.Injective φ` using `comb_injective f hli`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Q : (Fin r → ℤ) → ℝ := fun z => ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) with hQ`. Establish `hQl2 : ∀ z, l2 μ v (fun i => (z i : ℂ)) = Q z` using `fun z => jacobi_field_square_integrable μ v hfam z`. Establish `hnu0 : ∀ σ y g, 0 ≤ P.nu a b σ y g` using `fun σ y g => by rw [← norm_val]; exact norm_nonneg _`. Establish `hM0 : 0 < M` using `by linarith`. Establish `hV0 : 0 < Vv` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hin : ∀ z (R' : ℝ), 0 ≤ R' → Q z ≤ R' ^ 2 / M → φ z ∈ ballIn P Λ a b R'`. Introduce `z R' hR' hz`. Use `⟨(mem_closure_iff f _).2 ⟨z, rfl⟩, fun σ y => ?_⟩` and prove the remaining obligations. Establish `h1 : P.nu a b σ y (φ z) ^ 2 ≤ R' ^ 2`. Rewrite using `[nu_comb_sq P a b f hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_left₀ (hnu0 σ y _) hR' two_ne_zero).1 h1`. Establish `hout : ∀ z (R' : ℝ), φ z ∈ ballIn P Λ a b R' → Q z ≤ Vv * R' ^ 2`. Introduce `z R' hz`. Establish `h1 : ∀ σ y, cmb v (fun i => (z i : ℂ)) σ y ≤ R' ^ 2` using `fun σ y => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← nu_comb_sq P a b f hf]`. Conclude with `pow_le_pow_left₀ (hnu0 σ y _) (hz.2 σ y) 2`. Rewrite using `[← hQl2]`. Combine the equalities or inequalities in the displayed calculation. Establish `himg : ∀ R', ballIn P Λ a b R' = φ '' {z | φ z ∈ ballIn P Λ a b R'}`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `R'`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨z, rfl⟩` from `(mem_closure_iff f g).1 hg.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨z, hg, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hz`. Establish `hcard : ∀ R', (ballIn P Λ a b R').ncard = {z | φ z ∈ ballIn P Λ a b R'}.ncard` using `fun R' => (congrArg Set.ncard (himg R')).trans (Set.ncard_image_of_injective _ hinj)`. Use `set T := {z | φ z ∈ ballIn P Λ a b ρ} with hT`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTtop : AddSubgroup.closure T = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `h1 : φ z ∈ Λ` using `(mem_closure_iff f _).2 ⟨z, rfl⟩`. Establish `h2` using `hgen h1`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[himg ρ, ← AddMonoidHom.map_closure]`. Take `⟨w, hw, hwz⟩` from `h2`. Rewrite `hw` using `[hinj hwz]`. Then use the resulting hypothesis. Establish `hTQ : ∀ z ∈ T, ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ (ρ * √Vv) ^ 2` using `fun z hz => by`. Rewrite using `[mul_pow, Real.sq_sqrt hV0.le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `hout z ρ hz` as an intermediate fact. Simplify using `only [hQ] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hκ : 1 ≤ M * Vv` using `one_le_mul_of_one_le_of_one_le hM hV`. Establish `hcomp : ∀ c : Fin r → ℂ, (∑ i, ∑ j, starRingEnd ℂ (c i) * c j * G i j).re ≤ (M * Vv) * (∑ i, ∑ j, c i * starRingEnd ℂ (c j) * G i j).re`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Establish `e1` using `(hl2 (fun i => starRingEnd ℂ (c i))).2.2`. Simplify using `only [Complex.conj_conj] at e1`. Rewrite using `[← e1, ← (hl2 c).2.2, Complex.ofReal_re, Complex.ofReal_re]`. Establish `h0` using `(hl2 c).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨hApd, hdet⟩` from `GlobalTheory.T.realPart_posDef_logDet_bound_of_conjugate_comparable (Fin r) G (M * Vv) hpd hκ hcomp`. Establish `hsM : 0 < √M` using `Real.sqrt_pos.2 hM0`. Establish `hsV : 0 < √Vv` using `Real.sqrt_pos.2 hV0`. Use `set R1 := R / √M with hR1d`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `set R2 := R * √Vv with hR2d`. Establish `hR1 : 0 < R1` using `div_pos hR hsM`. Establish `hR2 : 0 < R2` using `mul_pos hR hsV`. Establish `hρ' : 0 ≤ ρ * √Vv` using `mul_nonneg hρ hsV.le`. Establish `hcardr : (Fintype.card (Fin r) : ℝ) = r` using `by simp`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : √M * √Vv ≤ M * Vv`. Rewrite using `[← Real.sqrt_mul hM0.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2rρ : 0 ≤ 2 * (r : ℝ) * ρ` using `by positivity`. Establish `hb1 : 2 * (Fintype.card (Fin r) : ℝ) * (ρ * √Vv) ≤ R1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcardr, hR1d, le_div_iff₀ hsM]`. Combine the equalities or inequalities in the displayed calculation. Establish `hb2 : 2 * (Fintype.card (Fin r) : ℝ) * (ρ * √Vv) ≤ R2`. Rewrite using `[hcardr, hR2d]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `GlobalTheory.T.log_lattice_points_quadratic_ball_estimate (Fin r) A hApd T (ρ * √Vv) R1 hρ' hR1 hTtop hTQ hb1`. Establish `c2` using `GlobalTheory.T.log_lattice_points_quadratic_ball_estimate (Fin r) A hApd T (ρ * √Vv) R2 hρ' hR2 hTtop hTQ hb2`. Use `set B := {z | φ z ∈ ballIn P Λ a b R} with hB`. Establish `hsub1 : {z : Fin r → ℤ | ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R1 ^ 2} ⊆ B` using `fun z hz => by`. Use `hin z R hR.le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R1 ^ 2` using `hz`. Rewrite `hz'` using `[hR1d, div_pow, Real.sq_sqrt hM0.le]`. Conclude with `hz'`. Establish `hsub2 : B ⊆ {z : Fin r → ℤ | ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R2 ^ 2}` using `fun z hz => by show ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R2 ^ 2`. Rewrite using `[hR2d, mul_pow, Real.sq_sqrt hV0.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hout z R hz` as an intermediate fact. Simplify using `only [hQ] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfin : B.Finite` using `c2.1.subset hsub2`. Establish `hn1 : ellCount A R1 ≤ B.ncard` using `Set.ncard_le_ncard hsub1 hfin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn2 : B.ncard ≤ ellCount A R2` using `Set.ncard_le_ncard hsub2 c2.1`. Establish `hpos : 0 < ellCount A R1` using `(Set.ncard_pos c1.1).2 ⟨0, by simp; positivity⟩`. Rewrite using `[hcard R]`. Establish `l1 : Real.log (ellCount A R1) ≤ Real.log B.ncard` using `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hn1)`. Establish `l2' : Real.log B.ncard ≤ Real.log (ellCount A R2)` using `Real.log_le_log (by exact_mod_cast (lt_of_lt_of_le hpos hn1)) (by exact_mod_cast hn2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lr1 : Real.log R1 = Real.log R - Real.log M / 2`. Rewrite using `[hR1d, Real.log_div hR.ne' hsM.ne', Real.log_sqrt hM0.le]`. Establish `lr2 : Real.log R2 = Real.log R + Real.log Vv / 2`. Rewrite using `[hR2d, Real.log_mul hR.ne' hsV.ne', Real.log_sqrt hV0.le]`. Establish `c1b` using `c1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `c2b` using `c2.2`. Rewrite `c1b` using `[hcardr, lr1]`. Rewrite `c2b` using `[hcardr, lr2]`. Rewrite `hdet` using `[hcardr]`. Establish `hx : M * Vv ≤ 2 * (M * Vv)` using `le_mul_of_one_le_left (by positivity) (by norm_num)`.
-
-Establish `hlM : Real.log M ≤ Real.log (2 * (M * Vv))` using `Real.log_le_log hM0 ((le_mul_of_one_le_right hM0.le hV).trans hx)`. Establish `hlV : Real.log Vv ≤ Real.log (2 * (M * Vv))` using `Real.log_le_log hV0 ((le_mul_of_one_le_left hV0.le hM).trans hx)`. Establish `hlt : Real.log 2 ≤ Real.log (2 * (M * Vv))` using `Real.log_le_log (by norm_num) (le_mul_of_one_le_right (by norm_num) hκ)`. Establish `hr0 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `m1` using `mul_le_mul_of_nonneg_left hlM hr0`.
-
-Establish `m2` using `mul_le_mul_of_nonneg_left hlV hr0`. Establish `m3` using `mul_le_mul_of_nonneg_left hlt hr0`. Take `⟨c1x, c1y⟩` from `abs_le.1 c1b`. Take `⟨c2x, c2y⟩` from `abs_le.1 c2b`. Take `⟨dx, dy⟩` from `abs_le.1 hdet`.
-
-Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem count_ball_gram : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (P : Pair p) (ω : ∀ σ, VolDens p σ D) (a b : ℤ) (r : ℕ) (f : Fin r → X.functionField), (∀ i, f i ∈ P.H a b) → LinearIndependent ℤ f → ∀ (M Vv ρ R : ℝ), 1 ≤ M → 1 ≤ Vv → (∑ᶠ σ, ((ω σ).meas Set.univ).toReal) ≤ Vv → 0 ≤ ρ → 0 < R → (∀ (c : Fin r → ℂ) σ y, cmb (vals P a b f) c σ y ≤ M * l2 (fun σ => (ω σ).meas) (vals P a b f) c) → AddSubgroup.closure (Set.range f) ≤ AddSubgroup.closure (ballIn P (AddSubgroup.closure (Set.range f)) a b ρ) → 2 * r * ρ * (M * Vv) ≤ R → |Real.log ((ballIn P (AddSubgroup.closure (Set.range f)) a b R).ncard : ℝ) - (r * Real.log R - Real.log (gram (fun σ => (ω σ).meas) (vals P a b f)).det.re / 2 + Real.log (volume {x : Fin r → ℝ | ∑ i, x i ^ 2 ≤ 1}).toReal)| ≤ 2 * r * Real.log (2 * (M * Vv)) := by
   intro k _ X _ p D hX hS P ω a b r f hf hli M Vv ρ R hM hV hvol hρ hR hsup hgen hRρ

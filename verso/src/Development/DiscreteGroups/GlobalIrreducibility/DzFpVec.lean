@@ -10,7 +10,7 @@ namespace DiscreteGroups.sglob.DzFp
 variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `h0 (LinearMap.ext h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_ne {l : Module.Dual ℂ V} (h0 : l ≠ 0) : ∃ v, l v ≠ 0 := by
   by_contra h
@@ -18,9 +18,9 @@ theorem exists_ne_zero_of_ne {l : Module.Dual ℂ V} (h0 : l ≠ 0) : ∃ v, l v
   exact h0 (LinearMap.ext h)
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne_zero_of_ne h0`. Establish `e1` using `hl (u * u') (mul_mem hu hu') v`. Rewrite `e1` using `[map_mul, Module.End.mul_apply, hl u hu, hl u' hu']`. Establish `: ((ψ (superDiag (u * u')) : ℂ) - ψ (superDiag u) * ψ (superDiag u')) * l v = 0`. Rewrite using `[sub_mul, ← e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right hv)`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chi_mul {n : ℕ} {ψ : AddChar k Circle} {ρ : Representation ℂ (GL (Fin n) k) V} {l : Module.Dual ℂ V}
     (hl : IsFunctional ψ ρ l) (h0 : l ≠ 0) {u u' : GL (Fin n) k} (hu : u ∈ unipB k (Fin n))
@@ -34,15 +34,13 @@ theorem chi_mul {n : ℕ} {ψ : AddChar k Circle} {ρ : Representation ℂ (GL (
   exact sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_right hv)
 
 /- English proof (translation)
-Take `⟨v0, hv0⟩` from `exists_ne_zero_of_ne h0`. Use `⟨∑ u : unipB k (Fin n), ((ψ (superDiag (u : GL (Fin n) k)) : ℂ))⁻¹ • ρ u v0, ?_, fun u' hu' => ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ u : unipB k (Fin n), l (((ψ (superDiag (u : GL (Fin n) k)) : ℂ))⁻¹ • ρ u v0) = l v0` using `fun u => by`. Rewrite using `[map_smul, hl _ u.2, smul_eq_mul, inv_mul_cancel_left₀ (Circle.coe_ne_zero _)]`. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hterm, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 (Fintype.card_pos_iff.2 ⟨1⟩).ne') hv0`. Establish `hχ : ∀ w : unipB k (Fin n), (ψ (superDiag (((⟨u', hu'⟩ : unipB k (Fin n))⁻¹ * w : unipB k (Fin n)) : GL (Fin n) k)) : ℂ) = (ψ (superDiag u') : ℂ)⁻¹ * ψ (superDiag (w : GL (Fin n) k))` using `fun w => by`. Use `chi_mul hl h0 hu' (mul_mem (inv_mem hu') w.2)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, inv_mul_cancel_left₀ (Circle.coe_ne_zero _)]`. Both sides reduce to the same expression. Rewrite using `[map_sum, Finset.smul_sum]`. Use `set a : unipB k (Fin n) := ⟨u', hu'⟩ with ha`. Use `set F : unipB k (Fin n) → V := fun w => ((ψ (superDiag ((a⁻¹ * w : unipB k (Fin n)) : GL (Fin n) k)) : ℂ))⁻¹ • ρ w v0 with hF`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [inv_mul_cancel_left, map_smul, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Use `_ = ∑ w : unipB k (Fin n), ((ψ (superDiag (((⟨u', hu'⟩ : unipB k (Fin n))⁻¹ * w : unipB k (Fin n)) : GL (Fin n) k)) : ℂ))⁻¹ • ρ w v0 := Fintype.sum_equiv (Equiv.mulLeft a) (fun u => F (a * u)) F (fun _ => rfl)`. Use `_ = _ := by`.
-
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hχ, mul_inv, inv_inv, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eigen [Fintype k] [DecidableEq k] {n : ℕ} {ψ : AddChar k Circle}
     {ρ : Representation ℂ (GL (Fin n) k) V} {l : Module.Dual ℂ V} (hl : IsFunctional ψ ρ l) (h0 : l ≠ 0) :
@@ -78,9 +76,9 @@ theorem exists_eigen [Fintype k] [DecidableEq k] {n : ℕ} {ψ : AddChar k Circl
           rw [hχ, mul_inv, inv_inv, mul_smul]
 
 /- English proof (translation)
-Establish `e1 : l (ρ (u₁ * Y) v) = ψ (superDiag u₁) * l (ρ Y v)` using `by rw [map_mul, Module.End.mul_apply, hl u₁ h1]`. Establish `e2 : l (ρ (Y * u₂) v) = ψ (superDiag u₂) * l (ρ Y v)`. Rewrite using `[map_mul, Module.End.mul_apply, hv u₂ h2, map_smul, map_smul, smul_eq_mul]`. Rewrite `e1` using `[hc, e2]`. Establish `hne' : (ψ (superDiag u₁) : ℂ) ≠ ψ (superDiag u₂)` using `fun h => hne (Circle.ext h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((ψ (superDiag u₂) : ℂ) - ψ (superDiag u₁)) * l (ρ Y v) = 0` using `by rw [sub_mul, e1, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne'.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanish_of_comm {n : ℕ} {ψ : AddChar k Circle} {ρ : Representation ℂ (GL (Fin n) k) V}
     {l : Module.Dual ℂ V} (hl : IsFunctional ψ ρ l) {v : V}
@@ -96,25 +94,23 @@ theorem vanish_of_comm {n : ℕ} {ψ : AddChar k Circle} {ρ : Representation �
   exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne'.symm)
 
 /- English proof (translation)
-Use `set S := Finset.univ.filter fun r : Fin (m + 1) => ∃ c, (Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r c ≠ (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r c with hSdef`. Establish `hS : S.Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]`. Apply `hY` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `r c`. Use `h (Finset.mem_univ r)` as an intermediate fact. Use `push_neg at this`. Rewrite using `[this c, Units.val_one]`. Establish `hr₀` using `Finset.max'_mem S hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : ∀ r ∈ S, r ≤ S.max' hS` using `fun r hr => Finset.le_max' S r hr`. Take `⟨r₀, hr₀def⟩ : ∃ r₀, S.max' hS = r₀` from `⟨_, rfl⟩`. Rewrite `hr₀`, `hle` using `[hr₀def]`. Establish `hmax : ∀ r, r₀ < r → ∀ c, (Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r c = (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r c` using `fun r hr c => by`. Assume the negation of the conclusion as `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (hle r (by rw [hSdef, Finset.mem_filter]; exact ⟨Finset.mem_univ _, c, h⟩)) (not_le.2 hr)`. Rewrite `hr₀` using `[hSdef, Finset.mem_filter]`. Take `⟨j, hj⟩` from `hr₀.2`. Establish `hr₀last : r₀ ≠ Fin.last m` using `fun h => by rw [h] at hj; exact hj (hlast j)`. Take `⟨i, hi⟩` from `Fin.exists_castSucc_eq.2 hr₀last`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hjle : j ≤ r₀`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hj (by rw [hlow _ _ h, Matrix.one_apply_ne (ne_of_lt h)])`. Establish `hcgt : r₀ < i.succ` using `by rw [← hi]; exact Fin.castSucc_lt_succ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrow` using `hmax _ hcgt`. Establish `hcol : ∀ r, r₀ < r → (Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r j = 0` using `fun r hr => by`. Rewrite using `[hmax r hr j, Matrix.one_apply_ne (lt_of_le_of_lt hjle hr).ne']`. Establish `hd : (Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j ≠ 0` using `sub_ne_zero.2 hj`. Take `⟨s₀, hs₀⟩` from `AddChar.ne_one_iff.1 hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1' : s₀ / ((Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j) * (Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) i.succ j = 0` using `by rw [hcol _ hcgt, mul_zero]`. Establish `h2' : (Pi.single j (s₀ / ((Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j)) : Fin (m + 1) → k) i.succ = 0`. Rewrite using `[Pi.single_apply, if_neg (lt_of_le_of_lt hjle hcgt).ne']`. Use `vanish_of_comm hl hv (colElt_mem _ _ h1' fun r hr => by rw [hcol r (lt_trans hcgt hr), mul_zero]) (colElt_mem _ _ h2' fun r hr => by rw [Pi.single_apply, if_neg (lt_trans (lt_of_le_of_lt hjle hcgt) hr).ne']) (colElt_comm Y i.succ j _ hrow h1' h2') ?_` and prove the remaining obligations. Rewrite using `[superDiag_colElt, superDiag_colElt, hi]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hsY : s₀ / ((Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j) * (Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j = s₀ / ((Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j) * (1 : Matri …`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hsing : (Pi.single j (s₀ / ((Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j)) : Fin (m + 1) → k) r₀ = s₀ / ((Y : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j - (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) r₀ j) * (1 : Matrix (Fin (m + …`. Distinguish the cases in `h : r₀ = j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_apply, if_neg h, Matrix.one_apply_ne h, mul_zero]`. Rewrite using `[hsY, hsing, AddChar.map_add_eq_mul]`. Introduce `h`.
-
-Conclude with `hs₀ (by simpa using h)`.
+A detailed English derivation is pending.
 -/
 theorem vanish_lower {m : ℕ} {ψ : AddChar k Circle} (hψ : ψ ≠ 1) {ρ : Representation ℂ (GL (Fin (m + 1)) k) V}
     {l : Module.Dual ℂ V} (hl : IsFunctional ψ ρ l) {v : V}

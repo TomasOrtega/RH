@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F W`. Rewrite using `[LinearMap.trace_eq_matrix_trace F b, Matrix.trace_eq_neg_charpoly_nextCoeff, LinearMap.charpoly_toMatrix]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem linTrace_eq_neg_nextCoeff {F W : Type} [Field F] [AddCommGroup W] [Module F W]
     [FiniteDimensional F W] (g : Module.End F W) :
@@ -23,9 +23,9 @@ theorem linTrace_eq_neg_nextCoeff {F W : Type} [Field F] [AddCommGroup W] [Modul
     LinearMap.charpoly_toMatrix]
 
 /- English proof (translation)
-Take `⟨⟨hm, hd, hev⟩, -⟩` from `GlobalTheory.T.abelianVarietyEndCharpoly_spec K A f`. Establish `key` using `GlobalTheory.T.abelianVariety_degreePolynomial_map_eq_charpoly_rationalTate K l hl A f ((charpoly f).map (algebraMap ℤ ℚ)) (hm.map _) (by rw [Polynomial.natDegree_map_eq_of_injective (RingHom.injective_int (algebraMap ℤ ℚ)), hd]) (fun n => by`. Rewrite using `[Polynomial.eval_intCast_map, Int.cast_id, hev n]`. Use the proof step `simp)`. Rewrite using `[← key, Polynomial.map_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_map_vmap {K : Type} [Field K] (l : ℕ) [Fact l.Prime] (hl : (l : K) ≠ 0) (A : AbVar K)
     [Module.Finite ℚ_[l] (Vl l A)] (f : End A) :
@@ -44,13 +44,13 @@ end GlobalTheory.AV.AbVar
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ l _ hl A f`. Use `⟨fun {_} => charpoly_map_vmap l hl A f, fun {_ _} => ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Polynomial.map_injective (algebraMap ℤ_[l] ℚ_[l]) (IsFractionRing.injective ℤ_[l] ℚ_[l])` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, ← LinearMap.charpoly_baseChange]`. Establish `hc : (algebraMap ℤ_[l] ℚ_[l]).comp (algebraMap ℤ ℤ_[l]) = algebraMap ℤ ℚ_[l]` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Conclude with `charpoly_map_vmap l hl A f`. Take `⟨-, -, -, hfin, hrk⟩` from `tl_free_finrank K l hl A`. Establish `hneg : vmap l (A` using `A) (B := A) f = (-1 : ℚ_[l]) • vmap l (A := A) (B := A) (-f) := by`. Simplify using `only [vmap, map_neg, LinearMap.baseChange_neg, neg_one_smul, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hev` using `(GlobalTheory.T.abelianVarietyEndCharpoly_spec K A (-f)).1.2.2 0`. Rewrite `hev` using `[Int.cast_zero, zero_sub, neg_neg]`. Rewrite using `[hneg, LinearMap.det_smul, LinearMap.det_eq_sign_charpoly_coeff, ← charpoly_map_vmap l hl A (-f), Polynomial.coeff_map, Polynomial.coeff_zero_eq_eval_zero, hev, hrk, pow_mul, neg_one_sq, one_pow]`. Simplify using the standard rewrite rules. Take `⟨-, -, -, hfin, -⟩` from `tl_free_finrank K l hl A`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[linTrace_eq_neg_nextCoeff, ← charpoly_map_vmap l hl A f, Polynomial.nextCoeff_map (RingHom.injective_int (algebraMap ℤ ℚ_[l])), trace]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem charpoly_tate_det_trace : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 → ∀ (A : AbVar K) (f : End A), (∀ [Module.Finite ℚ_[l] (Vl l A)], (charpoly f).map (algebraMap ℤ ℚ_[l]) = (vmap l (A := A) (B := A) f).charpoly) ∧ (∀ [Module.Free ℤ_[l] (Tl l A)] [Module.Finite ℤ_[l] (Tl l A)], (charpoly f).map (algebraMap ℤ ℤ_[l]) = (tend l A f).charpoly) ∧ LinearMap.det (vmap l (A := A) (B := A) f) = (deg (A := A) (B := A) f : ℚ_[l]) ∧ LinearMap.trace ℚ_[l] _ (vmap l (A := A) (B := A) f) = (trace f : ℚ_[l]) := by
   intro K _ l _ hl A f

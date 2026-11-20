@@ -6,29 +6,27 @@ open NumberField Module
 namespace PI.SRW
 
 /- English proof (translation)
-Introduce `E V _ _ _ _ _ _ _ _ h hnd Λ hΛ ℓ`. Establish `hsurj : Function.Surjective h`. Rewrite using `[← LinearMap.range_eq_top]`. Establish `hco : (LinearMap.range h).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[Submodule.mem_dualCoannihilator]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `hnd.2 y (fun x => hy (h x) ⟨x, rfl⟩)`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := LinearMap.range h), hco, Submodule.dualAnnihilator_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsΛ, hspan, hli⟩` from `exists_linearIndependent E (Λ : Set V)`. Establish `hs_top : Submodule.span E s = ⊤` using `hspan.trans hΛ.span_eq_top`. Set `b : Basis s E V` to `Basis.mk hli (le_of_eq (by rw [Subtype.range_coe, hs_top]))`. Set `φ : V →ₗ[E] E` to `b.constr E (fun i => ℓ ⟨i.1, hsΛ i.2⟩)`. Establish `hφb : ∀ v (hv : v ∈ s), φ v = ℓ ⟨v, hsΛ hv⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `hb : b ⟨v, hv⟩ = v` using `Basis.mk_apply _ _ _`. Establish `e` using `b.constr_basis E (fun i : s => ℓ ⟨i.1, hsΛ i.2⟩) ⟨v, hv⟩`. Rewrite `e` using `[hb]`. Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hind : ∀ y ∈ Submodule.span (𝓞 E) (s : Set V), ∃ hy : y ∈ Λ, ℓ ⟨y, hy⟩ = φ y`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem v hv => exact ⟨hsΛ hv, (hφb v hv).symm⟩`. Consider the case `zero => exact ⟨zero_mem _, (map_zero ℓ).trans (map_zero φ).symm⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add u v _ _ hu hv`. Take `⟨hu', eu⟩` from `hu`. Take `⟨hv', ev⟩` from `hv`. Use `⟨add_mem hu' hv', ?_⟩` and prove the remaining obligations. Establish `e : (⟨u + v, add_mem hu' hv'⟩ : Λ) = ⟨u, hu'⟩ + ⟨v, hv'⟩` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e, map_add, map_add, eu, ev]`. Consider the case `smul a u _ hu`. Take `⟨hu', eu⟩` from `hu`. Use `⟨Λ.smul_mem a hu', ?_⟩` and prove the remaining obligations. Establish `e : (⟨a • u, Λ.smul_mem a hu'⟩ : Λ) = a • ⟨u, hu'⟩` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, map_smul, eu, ← algebraMap_smul E a u, map_smul, Algebra.smul_def, smul_eq_mul]`. Establish `key : ∀ x : Λ, φ x = ℓ x`. Introduce `x`. Establish `hxE : (x : V) ∈ Submodule.span E s`. Rewrite using `[hs_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_top`. Take `⟨y, hy, z, hxy⟩` from `(IsLocalization.mem_span_iff (nonZeroDivisors (𝓞 E))).mp hxE`. Establish `hzx : (z : 𝓞 E) • (x : V) = y`. Rewrite using `[hxy, ← algebraMap_smul E (z : 𝓞 E), smul_smul, IsLocalization.mk'_spec', map_one, one_smul]`. Take `⟨hyΛ, hℓφ⟩` from `hind y hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ℓ ((z : 𝓞 E) • x) = algebraMap (𝓞 E) E z * ℓ x`. Rewrite using `[map_smul, Algebra.smul_def]`. Establish `h2 : φ ((z : 𝓞 E) • (x : V)) = algebraMap (𝓞 E) E z * φ x`. Rewrite using `[← algebraMap_smul E (z : 𝓞 E) (x : V), map_smul, smul_eq_mul]`. Establish `hzΛ : ((z : 𝓞 E) • x : Λ) = ⟨y, hyΛ⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `ext`. Conclude with `hzx`. Establish `hne : algebraMap (𝓞 E) E z ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors z.2`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← h1, ← h2, hzΛ, hzx, hℓφ]`.
-
-Take `⟨w, hw⟩` from `hsurj φ`. Conclude with `⟨w, fun x => by rw [hw, key]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sesquilinearRepresentation : RepStep := by
   intro E V _ _ _ _ _ _ _ _ h hnd Λ hΛ ℓ

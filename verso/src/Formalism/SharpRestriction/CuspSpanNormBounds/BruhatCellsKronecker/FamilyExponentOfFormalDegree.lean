@@ -10,14 +10,14 @@ namespace Formalism.MainNotions.BridgeLemma
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.FourierDecayAlt Finset
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.capP, Complex.ofReal_prod, Complex.ofReal_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem capelliPoly_ofReal {n : ℕ} (lam : Fin n → ℝ) (Y : ℝ) :
     Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) (Y : ℂ) = ((∏ s, (Y + lam s) : ℝ) : ℂ) := by
   simp only [Formalism.QuantumDeterminants.capP, Complex.ofReal_prod, Complex.ofReal_add]
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.qPoly]`. Apply the tactic sequence `push_cast <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qPoly_ofReal {k : ℕ} (T T' : ℝ) (u u' : Fin k → ℝ) (Y : ℝ) :
     Formalism.QuantumDeterminants.qPoly T T' u u' (Y : ℂ) =
@@ -26,7 +26,7 @@ theorem qPoly_ofReal {k : ℕ} (T T' : ℝ) (u u' : Fin k → ℝ) (Y : ℝ) :
   push_cast <;> ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), ih, Fin.prod_univ_castSucc]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem prod_Icc_one_eq_prod_fin_succ {M : Type*} [CommMonoid M] (n : ℕ) (f : ℕ → M) :
     ∏ i ∈ Finset.Icc 1 n, f i = ∏ i : Fin n, f (i.1 + 1) := by
@@ -37,7 +37,7 @@ private theorem prod_Icc_one_eq_prod_fin_succ {M : Type*} [CommMonoid M] (n : �
     rfl
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.Sz.Cfg.P`. Rewrite using `[prod_Icc_one_eq_prod_fin_succ]`. Conclude with `Finset.prod_congr rfl fun s _ => congrArg (Y + ·) (cfg_lam D τ s)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cfg_P (D : D7) (τ : D.what₂.Tau) (Y : ℝ) :
     (cfgOf D τ).P Y = ∏ s : Fin D.R.r, (Y + lamS D.R (D.hc τ) s) := by
@@ -46,11 +46,11 @@ theorem cfg_P (D : D7) (τ : D.what₂.Tau) (Y : ℝ) :
   exact Finset.prod_congr rfl fun s _ => congrArg (Y + ·) (cfg_lam D τ s)
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.Sz.Cfg.q`. Rewrite using `[prod_Icc_one_eq_prod_fin_succ]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : i.1 < D.R.k` using `i.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu : ∀ w : D.what₂.Word, (cfgOf D τ).u (deOf D w) (i.1 + 1) = uS D w τ i`. Introduce `w`. Rewrite using `[cfg_u D w τ (h5 w) (i.1 + 1) (by omega) (by omega)]`. Unfold `uOne`. Rewrite using `[dif_pos (show 1 ≤ i.1 + 1 ∧ i.1 + 1 ≤ D.R.k by omega)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hu u, hu u']`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem cfg_q (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (h5 : ∀ w : D.what₂.Word, ¬ IsTop D τ → uOne D w τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2) (T T' Y : ℝ) :
@@ -70,11 +70,11 @@ theorem cfg_q (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
   rw [hu u, hu u']
 
 /- English proof (translation)
-Establish `e1 : ((Y : ℂ) + 1) = ((Y + 1 : ℝ) : ℂ)` using `by push_cast; ring`. Simplify using `only [beUU, beS, Formalism.FourierDecayAlt.Sz.Cfg.be, Formalism.FourierDecayAlt.Sz.Cfg.core]`. Rewrite using `[e1, capelliPoly_ofReal, capelliPoly_ofReal, qPoly_ofReal, ← cfg_P D τ Y, ← cfg_P D τ (Y + 1), ← cfg_q D u u' τ h5 (Tr D u) (Tr D u') Y, ← Complex.ofReal_mul, ← Complex.ofReal_div, Complex.norm_real, Real.norm_eq_abs]`. Use `congr 1`. Establish `hm` using `D.R.two_le_m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hrS : 2 * D.R.rS + 2 = D.R.m`. Take `⟨j, hj⟩` from `D.R.m_even`. Unfold `Formalism.BasicNotions.Ranks.rS`. Use linear arithmetic over natural numbers and integers. Establish `hz : 1 + 2 * (D.R.rS : ℤ) = ((D.R.m - 1 : ℕ) : ℤ)` using `by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `show κ ^ (-(1 + 2 * (D.R.rS : ℤ))) = (κ ^ (D.R.m - 1))⁻¹`. Rewrite using `[hz, zpow_neg, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beUU_eq (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (h5 : ∀ w : D.what₂.Word, ¬ IsTop D τ → uOne D w τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2) (κ Y : ℝ) :
@@ -95,11 +95,11 @@ theorem beUU_eq (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
   rw [hz, zpow_neg, zpow_natCast]
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hv` using `cfg_v D τ 1 le_rfl (by omega)`. Establish `hD : (cfgOf D τ).Del = (D.s.Del : ℝ)` using `rfl`. Establish `ha : (cfgOf D τ).a = uOne D u τ 1` using `(uOne_one D u τ).symm`. Unfold `Formalism.FourierDecayAlt.Sz.Cfg.aeff aEff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hv, hD, ha]`. Distinguish the cases in `h : IsTop D τ`. Establish `ht : (cfgOf D τ).top = true` using `(cfg_top_iff D τ).2 h`. Rewrite using `[if_pos ht, if_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `ht : (cfgOf D τ).top = false` using `(cfg_top_false_iff D τ).2 h`. Rewrite using `[if_neg (by simp [ht]), if_neg h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cfg_aeff (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : (cfgOf D τ).aeff = aEff D u τ := by
   have hk := D.R.m_add_three_le_k
@@ -121,9 +121,9 @@ Both sides reduce to the same expression.
 theorem cfg_prodb (D : D7) (τ : D.what₂.Tau) : (cfgOf D τ).prodb = ∏ j ∈ Finset.Icc 1 D.R.m, bOne D τ j := rfl
 
 /- English proof (translation)
-Introduce `heq`. Apply `hne` to reduce the goal to its premises. Establish `hk : (cfgOf D τ).k = D.R.k` using `rfl`. Rewrite using `[← cfg_u D u τ (h5 u) (l + 1) (by omega) (by omega), ← cfg_u D u' τ (h5 u') (l + 1) (by omega) (by omega)]`. Establish `a1 : l + 1 ≠ 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2 : l + 1 ≠ (cfgOf D τ).k` using `by rw [hk]; omega`. Simplify using `only [Formalism.FourierDecayAlt.Sz.Cfg.u, a1, a2, if_false, Nat.add_sub_cancel, heq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem deOf_ne (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (h5 : ∀ w : D.what₂.Word, ¬ IsTop D τ → uOne D w τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
@@ -138,27 +138,27 @@ theorem deOf_ne (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
   simp only [Formalism.FourierDecayAlt.Sz.Cfg.u, a1, a2, if_false, Nat.add_sub_cancel, heq]
 
 /- English proof (translation)
-Take `⟨_, _, _, hbe⟩` from `P.betaFactorisation c de de' ka T T' Y l h hw hw' hT hT' hl hlk hne hY`. Establish `hk4 : (4 : ℝ) ≤ c.k` using `by exact_mod_cast h.hk`. Establish `hD` using `h.hDel`. Establish `hD0 : 0 < c.Del` using `by linarith`. Establish `hpb` using `P.Sz7.prodb_pos c h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hae, hUE⟩` from `P.Sz7.edge_bound c de de' Y l h hw hw' hl hlk hY`. Use `⟨hae, ?_⟩` and prove the remaining obligations. Establish `hNd` using `P.nodeBound c Y l h hl hlk hY`. Establish `hNd0 : 0 ≤ c.Nd (-Y)`. Simplify using `only [Sz.Cfg.Nd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `prod_nonneg (fun _ _ => Real.sqrt_nonneg _)`. Establish `hA` using `P.positionsBefore c de de' Y l h hw hw' hl hlk hY`. Establish `hA0' : 0 ≤ ∏ i ∈ Ico 1 l, c.rho de de' (-Y) i` using `prod_nonneg (fun i _ => P.Sz7.rho_nonneg c de de' Y l i h hlk hY)`. Take `⟨-, hB⟩` from `P.slotAt_true c de de' Y l h hw hw' hl hlk hne hY`. Establish `hB0` using `P.Sz7.rho_nonneg c de de' Y l l h hlk hY`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∏ i ∈ Ico (l + 1) (c.k - 1), c.rho de de' (-Y) i ≤ 1`. Apply `prod_le_one` to reduce the goal to its premises. Introduce `i _`. Conclude with `P.Sz7.rho_nonneg c de de' Y l i h hlk hY`. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hi` using `[mem_Ico]`. Conclude with `P.positionAfter c de de' Y l i h hw hw' hl (by omega) (by omega) (Or.inl (by omega)) hY`. Establish `hC0 : 0 ≤ ∏ i ∈ Ico (l + 1) (c.k - 1), c.rho de de' (-Y) i` using `prod_nonneg (fun i _ => P.Sz7.rho_nonneg c de de' Y l i h hlk hY)`. Establish `hE0` using `P.Sz7.rho_nonneg c de de' Y l (c.k - 1) h hlk hY`. Take `⟨hU0, -, -⟩` from `P.edgeFactorBound c Y l h hl hlk hY`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hd0 : 0 ≤ (c.v l + Y) / c.Del`. Apply the tactic sequence `have := hY.1; apply div_nonneg <;> linarith`. Establish `hsq : Real.sqrt (14 * (c.v l + Y) / (5 * c.Del)) = Real.sqrt (14 / 5) * Real.sqrt ((c.v l + Y) / c.Del)`. Rewrite using `[← Real.sqrt_mul (by norm_num)]; congr 1; field_simp`. Rewrite `hB` using `[hsq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hsd0` using `Real.sqrt_nonneg ((c.v l + Y) / c.Del)`. Rewrite using `[hbe, P.Sz7.prod_split _ c.k l hl hlk]`. Generalize the expression as in `(∏ i ∈ Ico 1 l, c.rho de de' (-Y) i) = A at *`. Generalize the expression as in `(∏ i ∈ Ico (l + 1) (c.k - 1), c.rho de de' (-Y) i) = Cc at *`. Generalize the expression as in `c.rho de de' (-Y) l = B at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `c.rho de de' (-Y) (c.k - 1) = E at *`. Generalize the expression as in `c.Nd (-Y) = Nd at *`. Generalize the expression as in `c.U1 (-Y) = U at *`. Generalize the expression as in `Real.sqrt ((c.v l + Y) / c.Del) = sd at *`. Establish `hS : 0 < Real.sqrt (T * T')` using `Real.sqrt_pos.mpr (mul_pos hT hT')`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `Real.sqrt (T * T') = S at *`. Establish `hsk : 0 ≤ Real.sqrt (c.k : ℝ)` using `Real.sqrt_nonneg _`. Establish `hs145 : 0 ≤ Real.sqrt (14 / 5 : ℝ)` using `Real.sqrt_nonneg _`. Establish `heth : 0 < Real.exp c.vth` using `Real.exp_pos _`. Generalize the expression as in `Real.sqrt (c.k : ℝ) = sk at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `Real.sqrt (14 / 5 : ℝ) = s145 at *`. Generalize the expression as in `Real.exp c.vth = eth at *`. Establish `step : Nd * U * (A * (B * (Cc * E))) ≤ (eth * c.prodb) * (8 / c.aeff) * (3.3 * sk) * (s145 * sd)`. Establish `p1 : Nd * (U * E) ≤ (eth * c.prodb) * (8 / c.aeff)` using `mul_le_mul hNd hUE (mul_nonneg hU0.le hE0) (by positivity)`. Establish `p2 : Nd * (U * E) * A ≤ (eth * c.prodb) * (8 / c.aeff) * (3.3 * sk)` using `mul_le_mul p1 hA hA0' (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `p3 : Nd * (U * E) * A * B ≤ (eth * c.prodb) * (8 / c.aeff) * (3.3 * sk) * (s145 * sd)` using `mul_le_mul p2 hB hB0 (by positivity)`. Establish `p4 : Nd * (U * E) * A * B * Cc ≤ Nd * (U * E) * A * B * 1` using `mul_le_mul_of_nonneg_left hC (mul_nonneg (mul_nonneg (mul_nonneg hNd0 (mul_nonneg hU0.le hE0)) hA0') hB0)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem beta_le_X (c : Sz.Cfg) (de de' : ℕ → ℝ) (ka g T T' Y : ℝ) (l : ℕ) (h : c.Ok)
     (hw : Sz.IsWord c.k de) (hw' : Sz.IsWord c.k de') (hka0 : 0 < ka) (hg0 : 0 < g) (hT : 0 < T) (hT' : 0 < T')
@@ -236,36 +236,36 @@ theorem beta_le_X (c : Sz.Cfg) (de de' : ℕ → ℝ) (ka g T T' Y : ℝ) (l : �
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `Tr`. Conclude with `(D.mem u).A.T_prime.pos` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Tr_pos (D : D7) (u : D.what₂.Word) : 0 < Tr D u := by
   unfold Tr
   exact_mod_cast (D.mem u).A.T_prime.pos
 
 /- English proof (translation)
-Consider the cases of `h with`. Consider the case `mk hk hm hDel hv0 hv1 hb1 hgap`. Establish `hv : ∀ i : ℕ, c.v i = c.vlast + 4 * c.Del * ((c.k : ℝ) - 1 - i)`. Introduce `i`. Simplify using `only [Formalism.FourierDecayAlt.Sz.Cfg.v]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hb : ∀ a d : ℕ, 1 ≤ a → a + d ≤ c.m → c.b a + d ≤ c.b (a + d)`. Introduce `a d ha hd`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `ih (by omega)`. Establish `h2` using `hgap (a + d) (by omega) (by omega)`. Establish `e : a + (d + 1) = a + d + 1` using `by omega`. Rewrite using `[e]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : (0 : ℝ) < c.Del` using `by linarith`. Establish `hlam : ∀ i j : ℕ, 1 ≤ i → i < j → j ≤ c.k + c.m - 1 → c.lam j < c.lam i`. Introduce `i j hi hij hj`. Unfold `Formalism.FourierDecayAlt.Sz.Cfg.lam`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hjk : j < c.k`. Establish `hik : i < c.k` using `by omega`. Rewrite using `[if_pos hjk, if_pos hik, hv, hv]`. Establish `hij' : (i : ℝ) < j` using `by exact_mod_cast hij`. Establish `h4 : 0 < 4 * c.Del * ((j : ℝ) - i)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_pos` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hjk]`.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hik : i < c.k`. Rewrite using `[if_pos hik, hv]`. Establish `h1` using `hb 1 (j + 1 - c.k - 1) le_rfl (by omega)`. Establish `e : 1 + (j + 1 - c.k - 1) = j + 1 - c.k` using `by omega`. Rewrite `h1` using `[e]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (i : ℝ) ≤ c.k - 1`. Establish `h5 : ((i + 1 : ℕ) : ℝ) ≤ c.k` using `by exact_mod_cast (show i + 1 ≤ c.k by omega)`. Move the coercions through the operations in `at h5`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (0 : ℝ) ≤ ((j + 1 - c.k - 1 : ℕ) : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ 4 * c.Del * ((c.k : ℝ) - 1 - i)`. Apply `mul_nonneg` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[if_neg hik]`. Establish `h1` using `hb (i + 1 - c.k) (j - i) (by omega) (by omega)`. Establish `e : i + 1 - c.k + (j - i) = j + 1 - c.k` using `by omega`. Rewrite `h1` using `[e]`. Establish `h3 : (1 : ℝ) ≤ ((j - i : ℕ) : ℝ)` using `by exact_mod_cast (show 1 ≤ j - i by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Formalism.FourierDecayAlt.Sz.Vand`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i hi`. Apply `Finset.prod_pos` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j hj`. Rewrite `hi` using `[Finset.mem_Icc]`. Rewrite `hj` using `[Finset.mem_Ioc]`. Conclude with `sub_pos.2 (hlam i j hi.1 hj.1 hj.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Vand_lam_pos (c : Sz.Cfg) (h : c.Ok) : 0 < Sz.Vand (c.k + c.m - 1) c.lam := by
   cases h with
@@ -329,11 +329,11 @@ theorem Vand_lam_pos (c : Sz.Cfg) (h : c.Ok) : 0 < Sz.Vand (c.k + c.m - 1) c.lam
     exact sub_pos.2 (hlam i j hi.1 hj.1 hj.2)
 
 /- English proof (translation)
-Take `⟨hD, hH, -⟩` from `hh`. Unfold `StandingNumericalData at hD`. Take `⟨-, -, -, -, d5, -⟩` from `hD`. Unfold `StandingHypotheses at hH`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, h12, -, h14, -, -, -, -, h19, -⟩` from `hH`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `⟨fun τ w => d5 w τ, h19, ?_⟩` and prove the remaining obligations. Establish `hk : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast five_le_k D`. Establish `hb` using `(one_lt_b large₂).le`. Establish `hkb : (5 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`. Establish `h5 : (5 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `gg`. Establish `a1 : (5 : ℝ) ≤ D.host.g 0` using `le_trans h5 h12`. Establish `a2 : (5 : ℝ) ≤ D.host.g 1` using `le_trans h5 h14`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sze_facts {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT : ℝ}
     (hh : LocalBesselAndTopKernel.hyp D large₂ C0 C' Cl Cg cb Cu cT CT) :
@@ -358,15 +358,15 @@ theorem sze_facts {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT :
   nlinarith
 
 /- English proof (translation)
-Conclude with `div_pos Real.pi_pos (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem ka_pos_of {D : D7} (hv : 1 ≤ D.host.v) : 0 < D.host.ka := by
   exact div_pos Real.pi_pos (by linarith)
 
 /- English proof (translation)
-Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Establish `hk : (4 : ℝ) ≤ D.R.k` using `by exact_mod_cast (show 4 ≤ D.R.k by omega)`. Establish `h4 : Real.sqrt 4 = 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h4]`. Conclude with `Real.sqrt_le_sqrt hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_le_sqrt_k (D : D7) : 2 ≤ Real.sqrt (D.R.k : ℝ) := by
   have h1 := D.R.m_add_three_le_k
@@ -378,9 +378,9 @@ theorem two_le_sqrt_k (D : D7) : 2 ≤ Real.sqrt (D.R.k : ℝ) := by
   exact Real.sqrt_le_sqrt hk
 
 /- English proof (translation)
-Establish `hv` using `cfg_v D τ l h1 (by omega)`. Establish `hD : (cfgOf D τ).Del = (D.s.Del : ℝ)` using `rfl`. Use `⟨by rw [hv]; ring, ?_⟩` and prove the remaining obligations. Use `show 5 / 2 ≤ (cfgOf D τ).v l + (d - vOne D τ l) ∧ (cfgOf D τ).v l + (d - vOne D τ l) ≤ (cfgOf D τ).Del / 2`. Rewrite using `[hv, hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem mem_cutI (D : D7) (τ : D.what₂.Tau) (l : ℕ) (h1 : 1 ≤ l) (h2 : l ≤ D.R.k - 2) (d : ℝ) (hd1 : 5 / 2 ≤ d)
     (hd2 : d ≤ (D.s.Del : ℝ) / 2) :
@@ -393,37 +393,37 @@ theorem mem_cutI (D : D7) (τ : D.what₂.Tau) (l : ℕ) (h1 : 1 ≤ l) (h2 : l 
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `hh h2d u u' τ l hl1 hl2 hne d hd1 hd2`. Take `⟨h5, hv, hg⟩` from `sze_facts hh`. Establish `hk5` using `five_le_k D`. Establish `hok` using `cfg_ok hh.1 hh.2.1 τ`. Establish `hka0` using `ka_pos_of hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : 0 < gg D` using `by linarith`. Take `⟨ed, hY⟩` from `mem_cutI D τ l hl1 hl2 d hd1 hd2`. Take `⟨hae, key⟩` from `beta_le_X (cfgOf D τ) (deOf D u) (deOf D u') D.host.ka (gg D) (Tr D u) (Tr D u') (d - vOne D τ l) l hok (isWord_deOf D u) (isWord_deOf D u') hka0 hg0 (Tr_pos D u) (Tr_pos D u') hl1 (by show l + 2 ≤ D.R.k; omega) (deOf_ne D u u' τ (h5 τ) l hl1 hl2 hne) hY`. Rewrite `key` using `[← beUU_eq D u u' τ (h5 τ), ed]`. Establish `hvth` using `(cfg_small hh.2.1 h40 τ).hvth`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : 1 ≤ D.R.k)`. Establish `hk0 : (0 : ℝ) < D.R.k` using `by linarith`. Establish `hm1 : 1 ≤ D.R.m` using `le_trans (by norm_num) D.R.two_le_m`. Establish `eka : D.host.ka ^ (-((D.R.m : ℝ) - 1)) = (D.host.ka ^ (D.R.m - 1))⁻¹`. Rewrite using `[Real.rpow_neg hka0.le, ← Real.rpow_natCast, Nat.cast_sub hm1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `low : ∀ w : D.what₂.Word, (gg D ^ D.R.m * (D.host.ka ^ (D.R.m - 1))⁻¹ * (cfgOf D τ).prodb / (cfgOf D τ).aeff) * (D.R.k : ℝ) ^ (-C3') ≤ Tcrit D w τ`. Introduce `w`. Use `h2d w τ` as an intermediate fact. Rewrite `this` using `[eka, ← cfg_prodb, ← cfg_aeff D w τ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `t1` using `low u`. Establish `t2` using `low u'`. Express the relevant statement in the definitionally equal form `gg D ^ D.R.m * beUU D D.host.ka u u' τ (d - vOne D τ l) ≤ (gg D ^ D.R.m * (D.host.ka ^ (D.R.m - 1))⁻¹ * (cfgOf D τ).prodb / (cfgOf D τ).aeff) * ((Real.sqrt (Tr D u * Tr D u'))⁻¹ * Real.exp (cfgOf D τ).vth * 8 * 3.3 * Real.sqrt (D.R.k : ℝ) * Real.sqrt (14 / 5) * Real.sqrt (d / (D. …`. Establish `hX0 : 0 ≤ gg D ^ D.R.m * (D.host.ka ^ (D.R.m - 1))⁻¹ * (cfgOf D τ).prodb / (cfgOf D τ).aeff`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `P.Sz7.prodb_pos _ hok` as an intermediate fact. Check the signs of the components of the expression. Generalize the expression as in `gg D ^ D.R.m * (D.host.ka ^ (D.R.m - 1))⁻¹ * (cfgOf D τ).prodb / (cfgOf D τ).aeff = X at *`. Use `le_trans key ?_` and prove the remaining obligations. Unfold `tV`.
+Establish an intermediate fact. Check the signs of the components of the expression. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hkn : 0 < (D.R.k : ℝ) ^ (-C3')` using `Real.rpow_pos_of_pos hk0 _`. Establish `hXk : 0 ≤ X * (D.R.k : ℝ) ^ (-C3')` using `mul_nonneg hX0 hkn.le`. Establish `hR : X * (D.R.k : ℝ) ^ (-C3') ≤ Real.sqrt (Tcrit D u τ * Tcrit D u' τ)`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Rewrite using `[sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul t1 t2 hXk (hXk.trans t1)`. Rewrite using `[Real.sqrt_div (mul_nonneg (hXk.trans t1) (hXk.trans t2))]`. Establish `hS : 0 < Real.sqrt (Tr D u * Tr D u')` using `Real.sqrt_pos.mpr (mul_pos (Tr_pos D u) (Tr_pos D u'))`. Establish `hX' : X ≤ Real.sqrt (Tcrit D u τ * Tcrit D u' τ) * (D.R.k : ℝ) ^ C3'`. Establish `e : (D.R.k : ℝ) ^ (-C3') * (D.R.k : ℝ) ^ C3' = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_add hk0]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Establish `hR0` using `Real.sqrt_nonneg (Tcrit D u τ * Tcrit D u' τ)`. Generalize the expression as in `Real.sqrt (Tcrit D u τ * Tcrit D u' τ) = R at *`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Real.sqrt (Tr D u * Tr D u') = S at *`. Establish `hsd` using `Real.sqrt_nonneg (d / (D.s.Del : ℝ))`. Generalize the expression as in `Real.sqrt (d / (D.s.Del : ℝ)) = sd at *`. Establish `hexp : Real.exp (cfgOf D τ).vth ≤ 10 / 9`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hexp0` using `Real.exp_pos (cfgOf D τ).vth`. Generalize the expression as in `Real.exp (cfgOf D τ).vth = eth at *`. Establish `h145 : Real.sqrt (14 / 5 : ℝ) ≤ 1.7`. Rewrite using `[Real.sqrt_le_left (by norm_num)]; norm_num`. Establish `h1450` using `Real.sqrt_nonneg (14 / 5 : ℝ)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Real.sqrt (14 / 5 : ℝ) = s145 at *`. Establish `hs2` using `two_le_sqrt_k D`. Establish `hss : Real.sqrt (D.R.k : ℝ) * Real.sqrt (D.R.k : ℝ) = D.R.k` using `Real.mul_self_sqrt hk0.le`. Establish `hk5' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk5`. Establish `hpow : (D.R.k : ℝ) ^ C3' * (D.R.k : ℝ) ^ 3 ≤ (D.R.k : ℝ) ^ C4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hk0]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hk1 (by push_cast; linarith)`. Establish `hkC` using `Real.rpow_pos_of_pos hk0 C3'`. Generalize the expression as in `(D.R.k : ℝ) ^ C3' = kC at *`. Generalize the expression as in `(D.R.k : ℝ) ^ C4 = kC4 at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Real.sqrt (D.R.k : ℝ) = sk at *`. Generalize the expression as in `(D.R.k : ℝ) = kk at *`. Establish `hconst : eth * 8 * 3.3 * s145 ≤ 50`. Establish `: eth * s145 ≤ 10 / 9 * 1.7` using `mul_le_mul hexp h145 h1450 (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsk3 : 50 * sk ≤ kk ^ 3`. Establish `: kk ^ 3 = kk * kk * (sk * sk)` using `by rw [hss]; ring`. Rewrite using `[this]`. Establish `h25 : 25 ≤ kk * kk` using `by nlinarith`. Establish `: 2 * sk ≤ sk * sk` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hK : eth * 8 * 3.3 * sk * s145 ≤ kk ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `hK0 : 0 ≤ eth * 8 * 3.3 * sk * s145` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem level_exponent_of_lower_bound {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT C3' C4 : ℝ} (h40 : 40 ≤ Cl)
     (hC : C3' + 3 ≤ C4) : LocalBesselAndTopKernel.LowerVolumeImpliesUpper D large₂ C0 C' Cl Cg cb Cu cT CT C3' C4 := by
@@ -530,25 +530,23 @@ theorem level_exponent_of_lower_bound {D : D7} {large₂ : SizeData₂ D} {C0 C'
     _ = R / S * kC4 * sd := by rw [div_eq_mul_inv]; ring
 
 /- English proof (translation)
-Introduce `u u' τ l hl1 hl2 hne d hd1 hd2`. Take `⟨h5, hv, hg⟩` from `sze_facts hh`. Establish `hk5` using `five_le_k D`. Establish `hok` using `cfg_ok hh.1 hh.2.1 τ`. Establish `hsm` using `cfg_small hh.2.1 h40 τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hka0` using `ka_pos_of hv`. Take `⟨ed, hY⟩` from `mem_cutI D τ l hl1 hl2 d hd1 hd2`. Establish `hFD : Sz.FormalDegreeLower (cfgOf D τ) (1 / 2) (VV D τ)`. Unfold `Sz.FormalDegreeLower`. Establish `hp` using `Vand_lam_pos _ hok`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `(h2g τ).1` as an intermediate fact. Rewrite `this` using `[← Vand_lam]`. Use the polynomial consequences of the given equalities and inequalities. Establish `key` using `P.beta_bound_on_boundary (cfgOf D τ) D.R.rS large₂.sc.b (deOf D u) (deOf D u') D.host.ka D.host.rdE (gg D) (VV D τ) (Tr D u) (Tr D u') (d - vOne D τ l) l hok (m_eq D) hsm (isWord_deOf D u) (isWord_deOf D u') (by rw [rdE_eq]; linarith) (ka_eq D) (by have := Real.pi_lt_four; linari …`. Rewrite `key` using `[← beUU_eq D u u' τ (h5 τ), ed]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `etv : Sz.tv (cfgOf D τ) (deOf D u) (deOf D u') D.host.ka D.host.rdE (gg D) (VV D τ) (Tr D u) (Tr D u') = tV D u u' τ`. Unfold `Sz.tv tV`. Use `show Real.sqrt (Sz.Tcrit D.R.k D.R.m D.host.ka D.host.rdE (gg D) (VV D τ) (Sz.Vand D.R.k ((cfgOf D τ).u (deOf D u))) * Sz.Tcrit D.R.k D.R.m D.host.ka D.host.rdE (gg D) (VV D τ) (Sz.Vand D.R.k ((cfgOf D τ).u (deOf D u'))) / _) = _`. Rewrite using `[Vand_u D u τ (h5 τ u), Vand_u D u' τ (h5 τ u'), Tcrit_eq D u τ hka0.le, Tcrit_eq D u' τ hka0.le]`. Rewrite `key` using `[etv]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hA0, hA⟩` from `P.a_zero_le_one_sixty (cfgOf D τ) large₂.sc.b hok hsm`. Use `le_trans key ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sz.AZero (cfgOf D τ) large₂.sc.b * tV D u u' τ * Real.sqrt (D.R.k : ℝ) * Real.sqrt (d / (D.s.Del : ℝ)) ≤ _`. Establish `htv : 0 ≤ tV D u u' τ` using `Real.sqrt_nonneg _`. Establish `hsd` using `Real.sqrt_nonneg (d / (D.s.Del : ℝ))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : 1 ≤ D.R.k)`. Establish `hk0 : (0 : ℝ) < D.R.k` using `by linarith`. Establish `hs2` using `two_le_sqrt_k D`. Establish `hss : Real.sqrt (D.R.k : ℝ) * Real.sqrt (D.R.k : ℝ) = D.R.k` using `Real.mul_self_sqrt hk0.le`. Establish `hk5' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (D.R.k : ℝ) ^ 4 ≤ (D.R.k : ℝ) ^ C4`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hk1 (by push_cast; linarith)`. Establish `hsk : 160 * Real.sqrt (D.R.k : ℝ) ≤ (D.R.k : ℝ) ^ 4`. Establish `e : (D.R.k : ℝ) ^ 4 = (D.R.k : ℝ) * D.R.k * D.R.k * (Real.sqrt (D.R.k : ℝ) * Real.sqrt (D.R.k : ℝ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hss]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h125 : 125 ≤ (D.R.k : ℝ) * D.R.k * D.R.k` using `by nlinarith [mul_self_nonneg ((D.R.k : ℝ) - 5)]`. Establish `: 2 * Real.sqrt (D.R.k : ℝ) ≤ Real.sqrt (D.R.k : ℝ) * Real.sqrt (D.R.k : ℝ)` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (D.R.k : ℝ) ^ C4 * (tV D u u' τ * Real.sqrt (d / (D.s.Del : ℝ))) := by`. Use `mul_le_mul_of_nonneg_right ?_ (mul_nonneg htv hsd)` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by ring`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem level_exponent_of_formal_degree {D : D7} {large₂ : SizeData₂ D} {C0 C' Cl Cg cb Cu cT CT ep0 CV C4 : ℝ} (h40 : 40 ≤ Cl)
     (hep : ep0 ≤ 1 / 2) (hC : 4 ≤ C4) (hh : LocalBesselAndTopKernel.hyp D large₂ C0 C' Cl Cg cb Cu cT CT) (h2g : LocalBesselAndTopKernel.MidVolumeChain D large₂ ep0 CV) :
@@ -615,7 +613,7 @@ section Family
 variable {eps : ℝ} {Fm : FamP eps}
 
 /- English proof (translation)
-Take `⟨x0, H⟩` from `h`. Conclude with `⟨x0, fun x hx i hh => level_exponent_of_lower_bound h40 hC hh (H x hx i hh)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem family_exponent_of_lower_bound {C0 Cg cb Cu cT CT C3' C4 : ℝ} (h40 : 40 ≤ sCl Fm) (hC : C3' + 3 ≤ C4)
     (h : LocalBesselAndTopKernel.LocalSplitExponents Fm C0 Cg cb Cu cT CT C3') : LocalBesselAndTopKernel.SchurOrthogonalityRealPlace Fm C0 Cg cb Cu cT CT C4 := by
@@ -623,7 +621,7 @@ theorem family_exponent_of_lower_bound {C0 Cg cb Cu cT CT C3' C4 : ℝ} (h40 : 4
   exact ⟨x0, fun x hx i hh => level_exponent_of_lower_bound h40 hC hh (H x hx i hh)⟩
 
 /- English proof (translation)
-Take `⟨x0, H⟩` from `h`. Conclude with `⟨x0, fun x hx i hh => level_exponent_of_formal_degree h40 hep hC hh (H x hx i hh)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem family_exponent_of_formal_degree {C0 Cg cb Cu cT CT ep0 CV C4 : ℝ} (h40 : 40 ≤ sCl Fm) (hep : ep0 ≤ 1 / 2) (hC : 4 ≤ C4)
     (h : LocalBesselAndTopKernel.FamilyTopBound Fm C0 Cg cb Cu cT CT ep0 CV) : LocalBesselAndTopKernel.SchurOrthogonalityRealPlace Fm C0 Cg cb Cu cT CT C4 := by

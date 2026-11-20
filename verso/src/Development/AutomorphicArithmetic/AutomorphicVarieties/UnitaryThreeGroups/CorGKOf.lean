@@ -6,12 +6,12 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 namespace UpperTheory.V.U3
 
 /- English proof (translation)
-The claim follows from `corGK (propGK h.number (oneChar h ha))`.
+A detailed English derivation is pending.
 -/
 theorem corGK_of (h : Inp) (ha : Aut.AutomorphyUnramifiedCoefficients) : CorGK := corGK (propGK h.number (oneChar h ha))
 
 /- English proof (translation)
-The claim follows from `countI (corGK_of h ha)`.
+A detailed English derivation is pending.
 -/
 theorem caseI (h : Inp) (ha : Aut.AutomorphyUnramifiedCoefficients) : HV.CountI := countI (corGK_of h ha)
 

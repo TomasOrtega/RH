@@ -11,15 +11,15 @@ open Formalism.REAL Formalism.QuantumDeterminants
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-Unfold `JF.TransportedAlt`. Establish `hR : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hK : (2 : ℝ) ≤ k` using `by exact_mod_cast hk`. Use `set n : ℝ := 2 * (r : ℝ) + k + 1 with hn`. Establish `hcast : ((2 * r + k + 1 : ℕ) : ℝ) = n` using `by rw [hn]; push_cast; ring`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcast, lt_div_iff₀ (by positivity)]`. Establish `hn1 : (1 : ℝ) ≤ n` using `by rw [hn]; linarith`. Establish `hR1 : (1 : ℝ) ≤ (r : ℝ) + 1` using `by linarith`. Establish `h4 : (r : ℝ) + 1 ≤ ((r : ℝ) + 1) ^ 4`. Establish `: (1 : ℝ) ≤ ((r : ℝ) + 1) ^ 3` using `one_le_pow₀ hR1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : n ^ 2 ≤ n ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `hNn : 0 ≤ N * n ^ 2` using `by positivity`. Establish `hstep : 100 * ((r : ℝ) + 1) * n ^ 2 ≤ A₀`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: ((r : ℝ) + 1) * n ^ 2 ≤ ((r : ℝ) + 1) ^ 4 * (N * n ^ 2 + n ^ 3)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ A₀ := hA`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrn : (r : ℝ) * n ≤ ((r : ℝ) + 1) * n ^ 2`. Establish `: (r : ℝ) ≤ (r : ℝ) + 1` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < ((r : ℝ) + 1) * n ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem thr_of_budget (k r : ℕ) (N A₀ : ℝ) (hk : 2 ≤ k) (hN : 0 ≤ N)
     (hA : 100 * ((r : ℝ) + 1) ^ 4 * (N * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A₀) :
@@ -59,15 +59,15 @@ theorem thr_of_budget (k r : ℕ) (N A₀ : ℝ) (hk : 2 ≤ k) (hN : 0 ≤ N)
   nlinarith
 
 /- English proof (translation)
-Use `⟨100, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v Y x hx`. Take `⟨⟨_, _, _, hbuilt, _, _, _, _, _, hCk, hk2, hA, _⟩, _, _, _⟩` from `hB`. Take `⟨_, hv⟩` from `hbuilt`. Take `⟨_, _, _, hplace, hCC, heig⟩` from `hv v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hThr : JF.TransportedAlt S.G.k S.G.r A₀ (2 * S.G.r + S.G.k + 1)` using `thr_of_budget S.G.k S.G.r (S.Ntop : ℝ) A₀ hk2 (Nat.cast_nonneg _) hA`. Establish `hT : Tz S.G.k S.G.r (T v).base.z = S.T` using `hplace.2.2.2.1`. Establish `hT' : Tz S.G.k S.G.r (T v).base.z' = S.T'` using `hplace.2.2.2.2.1`. Establish `hq : x ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'`. Use `⟨hx.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : S.T * S.T' < Complex.normSq x.2` using `hx.2`. Rewrite using `[hT, hT']`. Conclude with `h3`. Establish `hg : B.gq (T v).base x ∈ JF.Om S.G.k S.G.r (T v).base.z (T v).base.z'` using `Formalism.FourierDecayAlt.P.big_cell_domain S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base x hq`. Establish `hgG : B.gq (T v).base x ∈ B.GV S.G.k S.G.r` using `hg.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCkn : B.CkOn ((2 * S.G.r + S.G.k + 1 : ℕ) : ℕ∞) (B.GV S.G.k S.G.r) (f v)` using `Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top (hCk v)`. Rewrite using `[Formalism.FourierDecayAlt.P.casimir_under_jacquet_integral S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base A₀ (2 * S.G.r + S.G.k + 1) (f v) (Y : ℂ) le_rfl hThr (hCC _) _ hg]`. Establish `hint : ∀ᵐ p ∂(T v).base.μSS, JF.xiP (T v).base p • Q.CV S.G.k S.G.r (Y : ℂ) (B.rho (T v).base p (f v)) (B.gq (T v).base x) = ((S.P v Y : ℝ) : ℂ) • (JF.xiP (T v).base p • B.rho (T v).base p (f v) (B.gq (T v).base x))` using `by filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_inSS (T v).base] with p hp`. Rewrite using `[Formalism.FourierDecayAlt.P.capelli_rho_commute S.G.k S.G.r _ _ (T v).base (Y : ℂ) (f v) p hp hCkn _ hgG]`. Establish `hs` using `Formalism.FourierDecayAlt.P.B7.sgs_mem (T v).base hp hgG`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [B.rho]`. Rewrite using `[heig Y _ hs, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_comm]`. Rewrite using `[integral_congr_ae hint, integral_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bessel_eigenvalue_equation_holds : BesselEigen := by
   refine ⟨100, ?_⟩

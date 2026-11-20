@@ -14,28 +14,28 @@ def HsCast {q : ℕ} {P : Arrow Spc} {N N' I I' : ℤ} (hN : N = N') (hI : I = I
   subst hN; subst hI; exact x
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Substitute `hI` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem HsCast_val {q : ℕ} {P : Arrow Spc} {N N' I I' : ℤ} (hN : N = N') (hI : I = I') (x : Hs q P N I) :
     (HsCast hN hI x).1 = Ht.cast hN hI x.1 := by
   subst hN; subst hI; rfl
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Substitute `hI` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem HsCast_pull {q : ℕ} {P' P : Arrow Spc} (φ : P' ⟶ P) {N N' I I' : ℤ} (hN : N = N') (hI : I = I')
     (x : Hs q P N I) : Hs.pull q φ N' I' (HsCast hN hI x) = HsCast hN hI (Hs.pull q φ N I x) := by
   subst hN; subst hI; rfl
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Substitute `hI` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem HsCast_fgt {q : ℕ} {P : Arrow Spc} {N N' I I' : ℤ} (hN : N = N') (hI : I = I') (x : Hs q P N I) :
     Hs.fgt q P N' I' (HsCast hN hI x) = Ht.cast hN hI (Hs.fgt q P N I x) := by
   subst hN; subst hI; rfl
 
 /- English proof (translation)
-Establish `hb : pull _ (dbl.inr P) (tw q j) m b.1 = 0` using `b.2`. Express the relevant statement in the definitionally equal form `cup q (pull _ (dbl.fold P) _ n a) b.1 - pull _ (dbl.fold P) _ _ (pull _ (dbl.inr P) _ _ (cup q (pull _ (dbl.fold P) _ n a) b.1)) = _`. Rewrite using `[(hA q).1, hb]`. Simplify using `only [map_zero, sub_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_val (hA : DivisorNaturality) (q : ℕ) [NeZero q] {P : Arrow Spc} {n m i j : ℤ} (a : Ht q P.right n i)
     (b : Hs q P m j) : (Hs.act q a b).1 = cup q (pull _ (dbl.fold P) _ n a) b.1 := by
@@ -46,7 +46,7 @@ theorem act_val (hA : DivisorNaturality) (q : ℕ) [NeZero q] {P : Arrow Spc} {n
   simp only [map_zero, sub_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[HsCast_val, act_val hA, act_val hA, act_val hA, (hA q).1, (hR q _).2.1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_cup (hA : DivisorNaturality) (hR : DivisorRingCompatibility) (q : ℕ) [NeZero q] {P : Arrow Spc} {n m k i j l : ℤ}
     (x : Ht q P.right n i) (y : Ht q P.right m j) (c : Hs q P k l) :
@@ -55,7 +55,7 @@ theorem act_cup (hA : DivisorNaturality) (hR : DivisorRingCompatibility) (q : �
   rw [HsCast_val, act_val hA, act_val hA, act_val hA, (hA q).1, (hR q _).2.1]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pull _ (dbl.inl P) _ _ (Hs.act q a s).1 = cup q a (pull _ (dbl.inl P) _ _ s.1)`. Rewrite using `[act_val hA, (hA q).1, ← pull_comp, show dbl.inl P ≫ dbl.fold P = 𝟙 _ from pushout.inl_desc _ _ _, pull_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fgt_act (hA : DivisorNaturality) (q : ℕ) [NeZero q] {P : Arrow Spc} {n m i j : ℤ} (a : Ht q P.right n i)
     (s : Hs q P m j) : Hs.fgt q P _ _ (Hs.act q a s) = cup q a (Hs.fgt q P m j s) := by
@@ -63,9 +63,7 @@ theorem fgt_act (hA : DivisorNaturality) (q : ℕ) [NeZero q] {P : Arrow Spc} {n
   rw [act_val hA, (hA q).1, ← pull_comp, show dbl.inl P ≫ dbl.fold P = 𝟙 _ from pushout.inl_desc _ _ _, pull_id]
 
 /- English proof (translation)
-Establish `h : q ≠ 0 ∧ IsUnit (q : Γ(P.X, ⊤))` using `⟨NeZero.ne q, hq⟩`. Use `⟨(AddEquiv.ofBijective _ (((T P).ok q hq).1 i n)).symm (pull _ (pullback.snd (T P).π (sch.map P.ι)) (tw q i) n x), ?_, ?_⟩` and prove the remaining obligations. Conclude with `AddEquiv.ofBijective_apply_symm_apply _ (((T P).ok q hq).1 i n)`. Unfold `purT`. Rewrite using `[dif_pos h]`.
-
-Conclude with `AddEquiv.ofBijective_apply_symm_apply _ (((T P).ok q hq).2.2.1 (n + 2 * d) (i + d))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem purT_char {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) [NeZero q] (P : SP d) (hq : IsUnit (q : Γ(P.X, ⊤)))
     (n i : ℤ) (x : Ht q (sch.obj P.Z) n i) : ∃ e : Ht q (T P).E n i,
@@ -86,13 +84,13 @@ end PurProjPf
 open PurPf PurProjPf
 
 /- English proof (translation)
-Introduce `hH d T q _ P hq n m i j a b`. Establish `hA : DivisorNaturality` using `hH.2.2.2.2.1`. Establish `hR : DivisorRingCompatibility` using `hH.2.2.2.2.2.1`. Take `⟨eb, heb1, heb2⟩` from `purT_char T q P hq m j b`. Take `⟨ex, hex1, hex2⟩` from `purT_char T q P hq (n + m) (i + j) (cup q (pull _ (sch.map P.ι) _ _ a) b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hex : ex = cup q (pull (ZMod q) (T P).π (tw q i) n a) eb`. Apply `(((T P).ok q hq).1 (i + j) (n + m)).1` to reduce the goal to its premises. Rewrite using `[hex1, (hA q).1, (hA q).1, heb1, ← pull_comp, ← pull_comp, pullback.condition]`. Establish `hN : n + (m + 2 * (d : ℤ)) = n + m + 2 * d` using `by ring`. Establish `hI : i + (j + (d : ℤ)) = i + j + d` using `by ring`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : purT T q P (n + m) (i + j) (cup q (pull _ (sch.map P.ι) _ _ a) b) = HsCast hN hI (Hs.act q (P` using `opn P.U) (n := n) (i := i) a (purT T q P m j b)) := by`. Apply `(((T P).ok q hq).2.2.1 (n + m + 2 * d) (i + j + d)).1` to reduce the goal to its premises. Rewrite using `[hex2, hex, HsCast_pull]`. Use `(act_cup hA hR q (P := abv P.U (T P).π) (pull (ZMod q) (T P).π (tw q i) n a) eb (Hs.pull q (abvMap P.U (T P).π) (2 * d) d (fcl d q P))).trans ?_` and prove the remaining obligations. Rewrite using `[TubeCut.LeafActNat_of hA q _ _ (abvMap P.U (T P).π) n (m + 2 * d) i (j + d) a (purT T q P m j b), heb2]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[key, HsCast_fgt]`. Conclude with `congrArg (Ht.cast hN hI) (fgt_act hA q (P := opn P.U) a (purT T q P m j b))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafPurProj_of : EtalePurityProjection := by
   intro hH d T q _ P hq n m i j a b

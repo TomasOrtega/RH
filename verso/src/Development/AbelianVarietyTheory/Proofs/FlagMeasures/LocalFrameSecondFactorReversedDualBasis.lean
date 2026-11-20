@@ -14,25 +14,25 @@ namespace GlobalTheory.St.G
 namespace SecondFactor
 
 /- English proof (translation)
-Introduce `k _ n A M h`. Set `Ad : Matrix (Fin n) (Fin n) k` to `fun x y => A (Fin.rev y) (Fin.rev x)`. Establish `hAM : Ad * M = 1`. Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h (Fin.rev x) y` as an intermediate fact. Simplify using `only [Ad]`. Rewrite using `[this, Matrix.one_apply]`. Simplify using `only [Fin.rev_inj]`. Establish `hMA : M * Ad = 1` using `mul_eq_one_comm.1 hAM`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinvM : Ad⁻¹ = M` using `Matrix.inv_eq_right_inv hAM`. Establish `hinvA : M⁻¹ = Ad` using `Matrix.inv_eq_right_inv hMA`. Establish `hrevlt : ∀ x y : Fin n, y < x → Fin.rev x < Fin.rev y` using `fun x y hxy => Fin.rev_lt_rev.2 hxy`. Establish `hAtoAd : ((∀ x y : Fin n, y < x → A x y = 0) ∧ ∀ x, A x x = 1) → ((∀ x y : Fin n, y < x → Ad x y = 0) ∧ ∀ x, Ad x x = 1)` using `fun ⟨a1, a2⟩ => ⟨fun x y hxy => a1 _ _ (hrevlt x y hxy), fun x => a2 _⟩`. Use `⟨⟨fun hA => ?_, fun hM => ?_⟩, fun hA => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d1, d2⟩` from `hAtoAd hA`. Take `⟨i1, i2, -⟩` from `GlobalTheory.T.inv_upperUnitriangular_superdiag_neg k n Ad d1 d2`. Rewrite `i1`, `i2` using `[hinvM]`. Conclude with `⟨i1, i2⟩`. Take `⟨i1, i2, -⟩` from `GlobalTheory.T.inv_upperUnitriangular_superdiag_neg k n M hM.1 hM.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite `i1`, `i2` using `[hinvA]`. Use `⟨fun x y hxy => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `i1 (Fin.rev y) (Fin.rev x) (hrevlt x y hxy)` as an intermediate fact. Simplify `this` using `[Ad]`. Use `i2 (Fin.rev x)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Ad]`. Take `⟨d1, d2⟩` from `hAtoAd hA`. Take `⟨-, -, i3⟩` from `GlobalTheory.T.inv_upperUnitriangular_superdiag_neg k n Ad d1 d2`. Rewrite `i3` using `[hinvM]`. Establish `e1 : ∀ x y : Fin n, (if (x : ℕ) + 1 = y then M x y else 0) = - (fun p q : Fin n => if (p : ℕ) + 1 = q then A p q else 0) (Fin.rev y) (Fin.rev x)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Establish `hy` using `y.2`. Establish `hx` using `x.2`. Distinguish the cases in `hxy : (x : ℕ) + 1 = y`. Establish `hc : ((Fin.rev y : Fin n) : ℕ) + 1 = (Fin.rev x : Fin n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [if_pos hxy, if_pos hc, i3 x y hxy, Ad]`. Establish `hc : ¬ ((Fin.rev y : Fin n) : ℕ) + 1 = (Fin.rev x : Fin n)`. Simplify using `only [Fin.val_rev]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [if_neg hxy, if_neg hc, neg_zero]`. Simplify using `only [e1, Finset.sum_neg_distrib]`. Use `congr 1`. Establish `key : ∀ f : Fin n → Fin n → k, ∑ x : Fin n, ∑ y : Fin n, f (Fin.rev y) (Fin.rev x) = ∑ x : Fin n, ∑ y : Fin n, f x y`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `f`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key (fun p q : Fin n => if (p : ℕ) + 1 = q then A p q else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem reversed_unitriangular : ∀ (k : Type) [Field k] (n : ℕ) (A M : Matrix (Fin n) (Fin n) k), (∀ x y : Fin n, ∑ l : Fin n, A (Fin.rev l) x * M l y = if x = Fin.rev y then 1 else 0) → ((((∀ x y : Fin n, y < x → A x y = 0) ∧ ∀ x, A x x = 1) ↔ ((∀ x y : Fin n, y < x → M x y = 0) ∧ ∀ x, M x x = 1)) ∧ (((∀ x y : Fin n, y < x → A x y = 0) ∧ ∀ x, A x x = 1) → ∑ x : Fin n, ∑ y : Fin n, (if (x : ℕ) + 1 = y then M x y else 0) = - ∑ x : Fin n, ∑ y : Fin n, (if (x : ℕ) + 1 = y then A x y else 0))) := by
   intro k _ n A M h
@@ -91,23 +91,23 @@ theorem reversed_unitriangular : ∀ (k : Type) [Field k] (n : ℕ) (A M : Matri
     exact key (fun p q : Fin n => if (p : ℕ) + 1 = q then A p q else 0)
 
 /- English proof (translation)
-Introduce `F _ _ v n g A M R hA hM hrel hRent hg x y`. Use `choose s hs hs2 using hRent`. Set `φ : v.adicCompletionIntegers F →+* v.adicCompletion F` to `algebraMap _ _`. Set `ρ : v.adicCompletionIntegers F →+* kv F v` to `IsLocalRing.residue _`. Set `Ao : Fin n → Fin n → v.adicCompletionIntegers F` to `fun a c => ⟨A a c, hA a c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Mo : Fin n → Fin n → v.adicCompletionIntegers F` to `fun a c => ⟨M a c, hM a c⟩`. Set `So : Fin n → Fin n → v.adicCompletionIntegers F` to `fun a c => ⟨s a c, hs a c⟩`. Set `Ro : Fin n → Fin n → v.adicCompletionIntegers F` to `fun i j => (if i = Fin.rev j then 1 else 0) + (g : v.adicCompletionIntegers F) * So i j`. Establish `hφA : ∀ a c, φ (Ao a c) = A a c` using `fun _ _ => rfl`. Establish `hφM : ∀ a c, φ (Mo a c) = M a c` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφS : ∀ a c, φ (So a c) = s a c` using `fun _ _ => rfl`. Establish `hφR : ∀ i j, φ (Ro i j) = R i j`. Introduce `i j`. Use `hs2 i j` as an intermediate fact. Establish `e : R i j = (if i = Fin.rev j then 1 else 0) + (g : v.adicCompletion F) * s i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Simplify using `only [Ro, map_add, map_mul, map_natCast, hφS]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hinj : Function.Injective φ` using `Subtype.val_injective`. Establish `hE : ∑ l, (∑ p, Ao p x * Ro p l) * Mo l y = Ro x y`. Apply `hinj` to reduce the goal to its premises. Use `congrFun (congrFun hrel x) y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply] at this`. Simplify using `only [map_sum, map_mul, hφA, hφM, hφR]`. Conclude with `this`. Establish `hg0 : ρ (g : v.adicCompletionIntegers F) = 0`. Use `(IsLocalRing.residue_eq_zero_iff _).2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hρR : ∀ i j, ρ (Ro i j) = if i = Fin.rev j then 1 else 0`. Introduce `i j`. Simplify using `only [Ro, map_add, map_mul, hg0, zero_mul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hρA : ∀ a c, ρ (Ao a c) = redM F v A a c` using `fun a c => (show redM F v A a c = ρ (Ao a c) from dif_pos (hA a c)).symm`. Establish `hρM : ∀ a c, ρ (Mo a c) = redM F v M a c` using `fun a c => (show redM F v M a c = ρ (Mo a c) from dif_pos (hM a c)).symm`. Establish `h` using `congrArg ρ hE`. Simplify using `only [map_sum, map_mul, hρR, hρA, hρM] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem reversed_relation_mod : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n g : ℕ) (A M R : Matrix (Fin n) (Fin n) (v.adicCompletion F)), (∀ a b, A a b ∈ v.adicCompletionIntegers F) → (∀ a b, M a b ∈ v.adicCompletionIntegers F) → Aᵀ * R * M = R → (∀ i j, ∃ s ∈ v.adicCompletionIntegers F, R i j - (if i = Fin.rev j then 1 else 0) = (g : v.adicCompletion F) * s) → IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) = Ideal.span {((g : ℕ) : v.adicCompletionIntegers F)} → ∀ x y : Fin n, ∑ l : Fin n, redM F v A (Fin.rev l) x * redM F v M l y = if x = Fin.rev y then 1 else 0 := by
   intro F _ _ v n g A M R hA hM hrel hRent hg x y
@@ -154,45 +154,43 @@ theorem reversed_relation_mod : ∀ (F : Type) [Field F] [NumberField F] (v : He
   simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v sp halg hint g hg e he psi hadd hpsiO hne`. Establish `hOA : ∀ x ∈ intV E v, Formalism.UG.P.afsplitIE v x ∈ OAd F E`. Introduce `x hx`. Use `((GlobalTheory.St.G.IntAd.integral_adeles_properties F E).1 _).2 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[Formalism.UG.P.afsplit_prV_IE]`. Conclude with `hx`. Rewrite using `[Formalism.UG.P.afsplit_prV_IE_ne v w hw]`. Conclude with `zero_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpsi0 : psi 0 = 1` using `hpsiO 0 (zero_mem _)`. Establish `hgF : (g : F) ≠ 0`. Introduce `h0`. Take `⟨a, -, ha⟩` from `hne`. Apply `ha` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, _root_.inv_zero, map_zero, zero_mul, map_zero, hpsi0]`. Establish `hspA : ∀ a : F, sp (algebraMap F (E ⊗[F] v.adicCompletion F) a) = (algebraMap F (v.adicCompletion F) a, algebraMap F (v.adicCompletion F) a)`. Introduce `a`. Establish `: algebraMap F (E ⊗[F] v.adicCompletion F) a = (1 : E) ⊗ₜ[F] algebraMap F (v.adicCompletion F) a`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, halg]`. Use `set c : v.adicCompletion F := algebraMap F (v.adicCompletion F) ((g : F)⁻¹) with hc`. Establish `hcg : c * (g : v.adicCompletion F) = 1`. Rewrite using `[hc, ← map_natCast (algebraMap F (v.adicCompletion F)) g, ← map_mul, inv_mul_cancel₀ hgF, map_one]`. Set `P : v.adicCompletion F → ℂ` to `fun r => psi (Formalism.UG.P.afsplitIE v (algebraMap F (E ⊗[F] v.adicCompletion F) ((g : F)⁻¹) * sp.symm (0, r)))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hPadd : ∀ r r', P (r + r') = P r * P r'`. Introduce `r r'`. Establish `: ((0 : v.adicCompletion F), r + r') = (0, r) + (0, r')` using `by simp`. Simplify using `only [P]`. Rewrite using `[this, map_add, mul_add, map_add, hadd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hP1 : ∀ r : v.adicCompletionIntegers F, P ((g : v.adicCompletion F) * r) = 1`. Introduce `r`. Establish `: algebraMap F (E ⊗[F] v.adicCompletion F) ((g : F)⁻¹) * sp.symm (0, (g : v.adicCompletion F) * r) = sp.symm (0, (r : v.adicCompletion F))`. Apply `sp.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hspA, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Prod.ext (by simp) ?_` and prove the remaining obligations. Use `show c * ((g : v.adicCompletion F) * r) = r`. Rewrite using `[← mul_assoc, hcg, one_mul]`. Simplify using `only [P]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `hpsiO _ (hOA _ ((hint _).2 ?_))` and prove the remaining obligations. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `⟨zero_mem _, r.2⟩`. Set `Q : v.adicCompletionIntegers F → ℂ` to `fun u => P (-(u : v.adicCompletion F))`. Establish `hQadd : ∀ u u', Q (u + u') = Q u * Q u'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `u u'`. Simplify using `only [Q]`. Rewrite using `[← hPadd]`. Use `congr 1`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hQ1 : ∀ u ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F), Q u = 1`. Introduce `u hu`. Rewrite `hu` using `[hg, Ideal.mem_span_singleton']`. Take `⟨w, rfl⟩` from `hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `hP1 (-w)` as an intermediate fact. Simplify using `only [Q]`. Rewrite using `[← this]`. Use `congr 1`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsurj` using `IsLocalRing.residue_surjective (R := v.adicCompletionIntegers F)`. Set `lift : kv F v → v.adicCompletionIntegers F` to `Function.surjInv hsurj`. Establish `hlift : ∀ z, IsLocalRing.residue _ (lift z) = z` using `Function.surjInv_eq hsurj`. Establish `hQres : ∀ u u', IsLocalRing.residue (v.adicCompletionIntegers F) u = IsLocalRing.residue _ u' → Q u = Q u'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u u' h`. Establish `hm : u - u' ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, h, sub_self]`. Establish `h2 : Q u = Q (u' + (u - u'))` using `by rw [add_sub_cancel]`. Rewrite using `[h2, hQadd, hQ1 _ hm, mul_one]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `ψ : AddChar (kv F v) ℂ` to `{ toFun := fun z => Q (lift z) map_zero_eq_one' := hQ1 _ ((IsLocalRing.residue_eq_zero_iff _).1 (hlift 0)) map_add_eq_mul' := fun a b => by`. Rewrite using `[← hQadd]`. Apply `hQres` to reduce the goal to its premises. Rewrite using `[map_add, hlift, hlift, hlift] }`. Establish `hψ : ∀ u, ψ (IsLocalRing.residue _ u) = Q u` using `fun u => hQres _ _ (hlift _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h1`. Take `⟨a, ha, hne'⟩` from `hne`. Establish `hr` using `((hint a).1 ha).2`. Establish `he' : e * a = sp.symm (0, (sp a).2)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `sp.injective` to reduce the goal to its premises. Rewrite using `[map_mul, he, RingEquiv.apply_symm_apply]`. Use `Prod.ext (by simp) (by simp)` and prove the remaining obligations. Apply `hne'` to reduce the goal to its premises. Rewrite using `[he']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hψ (-⟨(sp a).2, hr⟩)` as an intermediate fact. Rewrite `this` using `[h1, AddChar.one_apply]`. Simplify using `only [Q] at this`. Establish `e2 : -(((-⟨(sp a).2, hr⟩ : v.adicCompletionIntegers F)) : v.adicCompletion F) = (sp a).2` using `by push_cast; ring`. Rewrite `this` using `[e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Introduce `s r x hx`. Establish `hxs : x = sp.symm (0, (s : v.adicCompletion F) + (g : v.adicCompletion F) * r)`. Rewrite using `[← hx, RingEquiv.symm_apply_apply]`. Rewrite using `[hψ]`.
-
-Use `show _ = P (-((-s : v.adicCompletionIntegers F) : v.adicCompletion F))`. Establish `e1 : -((-s : v.adicCompletionIntegers F) : v.adicCompletion F) = s` using `by push_cast; ring`. Rewrite using `[e1, hxs]`. Use `show P _ = _`. Rewrite using `[hPadd, hP1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_character : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F), (∀ a : v.adicCompletion F, sp ((1 : E) ⊗ₜ[F] a) = (a, a)) → (∀ x, x ∈ intV E v ↔ (sp x).1 ∈ v.adicCompletionIntegers F ∧ (sp x).2 ∈ v.adicCompletionIntegers F) → ∀ (g : ℕ), IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) = Ideal.span {((g : ℕ) : v.adicCompletionIntegers F)} → ∀ (e : E ⊗[F] v.adicCompletion F), sp e = (0, 1) → ∀ (psi : E ⊗[F] Ad F → ℂ), (∀ x y, psi (x + y) = psi x * psi y) → (∀ x ∈ OAd F E, psi x = 1) → (∃ a ∈ intV E v, psi (Formalism.UG.P.afsplitIE v (algebraMap F (E ⊗[F] v.adicCompletion F) ((g : F)⁻¹) * (e * a))) ≠ 1) → ∃ ψ : AddChar (kv F v) ℂ, ψ ≠ 1 ∧ ∀ (s r : v.adicCompletionIntegers F) (x : E ⊗[F] v.adicCompletion F), sp x = (0, (s : v.adicCompletion F) + (g : v.adicCompletion F) * (r : v.adicCompletion F)) → psi (Formalism.UG.P.afsplitIE v (algebraMap F (E ⊗[F] v.adicCompletion F) ((g : F)⁻¹) * x)) = ψ (IsLocalRing.residue (v.adicCompletionIntegers F) (-s)) := by
   intro F E _ _ _ _ _ v sp halg hint g hg e he psi hadd hpsiO hne
@@ -303,9 +301,9 @@ theorem residue_character : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     rw [hPadd, hP1, mul_one]
 
 /- English proof (translation)
-Establish `hb : ∀ x : Fin n, blkOf n t x = x` using `fun x => by simp [blkOf, x.2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, -, -⟩`. Conclude with `⟨fun x y h => h1 x y (by rw [hb, hb]; exact h), fun x => h2 x x.2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨fun x y h => h1 x y (by rw [hb, hb] at h; exact h), fun x _ => h2 x, fun x y h => ?_, fun h => ?_⟩` and prove the remaining obligations. Conclude with `absurd h (by have := y.2; omega)`. Simplify using `at h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inJ_full_iff {k : Type} [Field k] {n : ℕ} (t : ℕ) (X : Matrix (Fin n) (Fin n) k) :
     InJ n t n false X ↔ ((∀ x y : Fin n, y < x → X x y = 0) ∧ ∀ x, X x x = 1) := by
@@ -319,11 +317,11 @@ theorem inJ_full_iff {k : Type} [Field k] {n : ℕ} (t : ℕ) (X : Matrix (Fin n
     · simp at h
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i.1 + 1 < n`. Rewrite using `[dif_pos hi, Finset.sum_eq_single ⟨i.1 + 1, hi⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (Fin.ext h.symm)`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg hi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Use `Finset.sum_eq_zero fun y _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Use `y.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_super_eq {A : Type} [AddCommMonoid A] {n : ℕ} (f : Fin n → Fin n → A) :
     (∑ i : Fin n, if hi : i.1 + 1 < n then f i ⟨i.1 + 1, hi⟩ else 0) =
@@ -349,91 +347,81 @@ end SecondFactor
 open SecondFactor in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm n J hJ hdet t v sp hsig halg hint g hg L hL e he b bd hb hbd hbe hbde hdual hspan psi hadd hpsiO hne`. Take `⟨sp', h1, h2⟩ : ∃ sp' : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F, (∀ x, (sp' x).1 = (sp x).2) ∧ (∀ x, (sp' x).2 = (sp x).1)` from `⟨sp.trans RingEquiv.prodComm, fun _ => rfl, fun _ => rfl⟩`. Establish `hsig' : ∀ x, sp' (sigR cm.sig (v.adicCompletion F) x) = swapR _ (sp' x)`. Introduce `x`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, hsig]`. Conclude with `(h2 x).symm`. Rewrite using `[h2, hsig]`. Conclude with `(h1 x).symm`. Establish `halg' : ∀ a : v.adicCompletion F, sp' ((1 : E) ⊗ₜ[F] a) = (a, a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[h1, halg]`. Rewrite using `[h2, halg]`. Establish `hint' : ∀ x, x ∈ intV E v ↔ (sp' x).1 ∈ v.adicCompletionIntegers F ∧ (sp' x).2 ∈ v.adicCompletionIntegers F`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[h1, h2, hint, and_comm]`. Establish `hb1 : ∀ i a, (sp (b i a)).1 = 0`. Introduce `i a`. Use `congrArg sp (congrFun (hbe i) a)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Pi.smul_apply, smul_eq_mul, map_mul, he]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hse : sp (sigR cm.sig (v.adicCompletion F) e) = (1, 0)`. Rewrite using `[hsig, he]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hbd2 : ∀ i a, (sp (bd i a)).2 = 0`. Introduce `i a`. Use `congrArg sp (congrFun (hbde i) a)` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul, map_mul, hse]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hrange : Set.range (fun j : Fin n => bd (Fin.rev j)) = Set.range bd` using `(Fin.revPerm.surjective.range_comp bd)`. Take `⟨fr, hfr, hlat⟩` from `GlobalTheory.T.first_components_basis_local_lattice_split F E cm n J hJ hdet v sp hsig halg hint g hg L hL (fun j => bd (Fin.rev j)) (Set.range b) (fun j => hbd _) (by rintro _ ⟨i, rfl⟩ a; exact hb1 i a) (by intro y hy; rw [hrange, Set.union_comm]; exact hspan y hy)`. Take `⟨frB, hfrB, hlatB⟩` from `GlobalTheory.T.first_components_basis_local_lattice_split F E cm n J hJ hdet v sp' hsig' halg' hint' g hg L hL b (Set.range bd) hb (by rintro _ ⟨i, rfl⟩ a; rw [h1]; exact hbd2 i a) (by intro y hy; exact hspan y hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ1, hψ⟩` from `residue_character F E v sp halg hint g hg e he psi hadd hpsiO hne`. Use `⟨fr, ψ, hψ1, hlat, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hA` using `GlobalTheory.T.hermitian_local_level_unitriangular_iff F E cm n J hJ hdet v sp' hsig' halg' hint' g hg L hL b frB hb (fun j a => by rw [h2]; exact hb1 j a) hfrB hlatB t y hy`. Establish `hM` using `GlobalTheory.T.hermitian_local_level_unitriangular_iff F E cm n J hJ hdet v sp hsig halg hint g hg L hL (fun j => bd (Fin.rev j)) fr (fun j => hbd _) (fun j a => hbd2 _ a) hfr hlat t y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hAint, hAiff⟩` from `hA`. Take `⟨hMint, -⟩` from `hM`. Use `set Y1 : GL (Fin n) (v.adicCompletion F) := bc ((RingHom.fst _ _).comp sp.toRingHom) y with hY1`. Use `set Y2 : GL (Fin n) (v.adicCompletion F) := bc ((RingHom.fst _ _).comp sp'.toRingHom) y with hY2`. Use `set M : Matrix (Fin n) (Fin n) (v.adicCompletion F) := ((fr⁻¹ * Y1 * fr : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) with hMdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : Matrix (Fin n) (Fin n) (v.adicCompletion F) := ((frB⁻¹ * Y2 * frB : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) with hAdef`. Establish `hfM : fr.1 * M = Y1.1 * fr.1`. Establish `: fr * (fr⁻¹ * Y1 * fr) = Y1 * fr` using `by group`. Conclude with `congrArg Units.val this`. Establish `hfA : frB.1 * A = Y2.1 * frB.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: frB * (frB⁻¹ * Y2 * frB) = Y2 * frB` using `by group`. Conclude with `congrArg Units.val this`. Use `set J1 : Matrix (Fin n) (Fin n) (v.adicCompletion F) := Matrix.of fun a c => (sp (inclE (F := F) (v.adicCompletion F) (J a c))).1 with hJ1`. Establish `hyU : cT (sigR cm.sig (v.adicCompletion F)) y.1 * J.map (inclE (F` using `F) (v.adicCompletion F)) * y.1 = J.map (inclE (F := F) (v.adicCompletion F)) := hy.1`. Establish `hU : Y2.1ᵀ * J1 * Y1.1 = J1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h` using `congrArg (fun X => X.map ((RingHom.fst _ _).comp sp.toRingHom : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F)) hyU`. Simplify using `only [Matrix.map_mul] at h`. Establish `e1 : (cT (sigR cm.sig (v.adicCompletion F)) y.1).map ((RingHom.fst _ _).comp sp.toRingHom : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F) = Y2.1ᵀ`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Use `show (sp (sigR cm.sig (v.adicCompletion F) (y.1 c a))).1 = (sp' (y.1 c a)).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hsig, h1]`. Both sides reduce to the same expression. Rewrite `h` using `[e1]`. Conclude with `h`. Use `set R : Matrix (Fin n) (Fin n) (v.adicCompletion F) := frB.1ᵀ * J1 * fr.1 with hRdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrel : Aᵀ * R * M = R`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hRdef, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = frB.1ᵀ * (Y2.1ᵀ * J1 * Y1.1) * fr.1 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfA, hfM, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = R := by rw [hU]`. Establish `hpair : ∀ x w : Fin n → E ⊗[F] v.adicCompletion F, (sp (hR cm.sig J (v.adicCompletion F) x w)).2 = ∑ a, ∑ c, (sp (x a)).1 * J1 c a * (sp (w c)).2`. Introduce `x w`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `(GlobalTheory.St.G.split_components F E cm n J hJ hdet v sp' hsig' halg').2.2 x w`. Simplify using `only [h1, h2] at h3`. Rewrite using `[h3]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hJac : (sp (inclE (F` using `F) (v.adicCompletion F) (J a c))).2 = J1 c a := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh : J a c = (cm.sig : E →+* E) (J c a)`. Use `congrFun (congrFun hJ a) c` as an intermediate fact. Conclude with `this.symm`. Establish `hs : inclE (F` using `F) (v.adicCompletion F) ((cm.sig : E →+* E) (J c a)) = sigR cm.sig (v.adicCompletion F) (inclE (F := F) (v.adicCompletion F) (J c a)) := rfl`. Rewrite using `[hh, hs, hsig]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hJac]`. Establish `hpair1 : ∀ (i : Fin n) (w : Fin n → E ⊗[F] v.adicCompletion F), (sp (hR cm.sig J (v.adicCompletion F) (bd i) w)).1 = 0`. Introduce `i w`. Rewrite using `[(GlobalTheory.St.G.split_components F E cm n J hJ hdet v sp hsig halg).2.2 (bd i) w]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Simplify using `[hbd2]`. Establish `hfrE : ∀ a j, fr.1 a j = (sp (bd (Fin.rev j) a)).1` using `fun a j => congrFun (congrFun hfr a) j`. Establish `hfrBE : ∀ a j, frB.1 a j = (sp (b j a)).2` using `fun a j => by`. Rewrite using `[← h1]`. Conclude with `congrFun (congrFun hfrB a) j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hRw : ∀ (i : Fin n) (w : Fin n → E ⊗[F] v.adicCompletion F) (C : Fin n → v.adicCompletion F), (fun c => (sp (w c)).2) = frB.1 *ᵥ C → (sp (hR cm.sig J (v.adicCompletion F) (bd i) w)).2 = ∑ l, R l (Fin.rev i) * C l`. Introduce `i w C hC`. Rewrite using `[hpair]`. Establish `hR' : ∀ l, R l (Fin.rev i) = ∑ a, ∑ c, frB.1 c l * J1 c a * (sp (bd i a)).1`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hRdef, Matrix.mul_apply, Finset.sum_congr rfl fun a _ => by`. Rewrite using `[Matrix.mul_apply, hfrE, Fin.rev_rev, Finset.sum_mul]]`. Simplify using `only [Matrix.transpose_apply]`. Establish `hw : ∀ c, (sp (w c)).2 = ∑ l, frB.1 c l * C l` using `fun c => congrFun hC c`. Simplify using `only [hw, hR', Finset.sum_mul, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hRi : ∀ i j, R i j = (sp (hR cm.sig J (v.adicCompletion F) (bd (Fin.rev j)) (b i))).2`. Introduce `i j`. Use `hRw (Fin.rev j) (b i) (Pi.single i 1) (by` as an intermediate fact. Use function extensionality and compare the values at `c`. Simplify using `[hfrBE])`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using `[Pi.single_apply, Fin.rev_rev]`. Establish `hg0 : ∀ x : E ⊗[F] v.adicCompletion F, (sp ((g : E ⊗[F] v.adicCompletion F) * x)).2 = (g : v.adicCompletion F) * (sp x).2`. Introduce `x`. Rewrite using `[map_mul, map_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hRent : ∀ i j, ∃ s ∈ v.adicCompletionIntegers F, R i j - (if i = Fin.rev j then 1 else 0) = (g : v.adicCompletion F) * s`. Introduce `i j`. Take `⟨s, hs, hs2⟩` from `hdual (Fin.rev j) i`. Use `⟨(sp s).2, ((hint s).1 hs).2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hRi, ← hg0, ← hs2, map_sub, Prod.snd_sub]`. Use `congr 1`. Distinguish the cases in `hij : i = Fin.rev j`. Simplify using `[hij, he]`. Establish `: ¬ Fin.rev j = i` using `fun h => hij h.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[hij, this]`. Establish `hred` using `reversed_relation_mod F v n g A M R hAint hMint hrel hRent hg`. Take `⟨hiff, hsup⟩` from `reversed_unitriangular (kv F v) n (redM F v A) (redM F v M) hred`. Use `⟨hAiff.trans ?_, fun hK => ?_⟩` and prove the remaining obligations. Rewrite using `[inJ_full_iff, inJ_full_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `hiff`. Establish `hAu` using `(inJ_full_iff t _).1 (hAiff.1 hK)`. Establish `hsupM` using `hsup hAu`. Use `choose sR hsR hsR2 using hRent`. Set `Ao : Fin n → Fin n → v.adicCompletionIntegers F` to `fun a c => ⟨A a c, hAint a c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `So : Fin n → Fin n → v.adicCompletionIntegers F` to `fun a c => ⟨sR a c, hsR a c⟩`. Set `rr : Fin n → Fin n → v.adicCompletionIntegers F` to `fun i j => ∑ l, So l (Fin.rev i) * Ao l j`. Set `sO : v.adicCompletionIntegers F` to `∑ x : Fin n, ∑ y : Fin n, (if (x : ℕ) + 1 = y then Ao x y else 0)`. Set `rO : v.adicCompletionIntegers F` to `∑ x : Fin n, ∑ y : Fin n, (if (x : ℕ) + 1 = y then rr x y else 0)`. Establish `hcoe : ∀ (f : Fin n → Fin n → v.adicCompletionIntegers F), (((∑ x : Fin n, ∑ y : Fin n, (if (x : ℕ) + 1 = y then f x y else 0)) : v.adicCompletionIntegers F) : v.adicCompletion F) = ∑ x : Fin n, ∑ y : Fin n, (if (x : ℕ) + 1 = y then (f x y : v.adicCompletion F) else 0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `f`. Use `show algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F) _ = _`. Simplify using `only [map_sum, apply_ite (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)), map_zero]`. Both sides reduce to the same expression. Establish `hrr : ∀ i j, ((rr i j : v.adicCompletionIntegers F) : v.adicCompletion F) = ∑ l, sR l (Fin.rev i) * A l j`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Use `show algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F) _ = _`. Simplify using `only [rr, map_sum, map_mul]`. Both sides reduce to the same expression. Establish `hterm : ∀ i j, (sp (hR cm.sig J (v.adicCompletion F) (bd i) (y.1 *ᵥ b j))).2 = A i j + (g : v.adicCompletion F) * (rr i j : v.adicCompletion F)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `i j`. Establish `hC : (fun c => (sp ((y.1 *ᵥ b j) c)).2) = frB.1 *ᵥ (fun l => A l j)`. Use function extensionality and compare the values at `c`. Establish `e1 : (frB.1 *ᵥ (fun l => A l j)) c = (frB.1 * A) c j`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hfA, Matrix.mul_apply]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[map_sum, Prod.snd_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Prod.snd_mul, hfrBE, ← h1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Rewrite using `[hRw i _ _ hC, hrr, Finset.mul_sum]`. Establish `hRl : ∀ l, R l (Fin.rev i) = (if l = i then 1 else 0) + (g : v.adicCompletion F) * sR l (Fin.rev i)`. Introduce `l`. Use `hsR2 l (Fin.rev i)` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[Fin.rev_rev]`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hRl, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Establish `hss : sp (supSum (hR cm.sig J (v.adicCompletion F)) b bd y.1) = (0, (sO : v.adicCompletion F) + (g : v.adicCompletion F) * (rO : v.adicCompletion F))`. Unfold `supSum`. Rewrite using `[map_sum]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Prod.fst_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hpair1 i _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.snd_sum]`. Establish `e1 : ∀ i : Fin n, (sp (if hi : i.1 + 1 < n then hR cm.sig J (v.adicCompletion F) (bd i) (y.1 *ᵥ b ⟨i.1 + 1, hi⟩) else 0)).2 = if hi : i.1 + 1 < n then (fun p q => A p q + (g : v.adicCompletion F) * (rr p q : v.adicCompletion F)) i ⟨i.1 + 1, hi⟩ else 0`. Introduce `i`. Use `split_ifs`. Conclude with `hterm i _`.
-
-Simplify using the standard rewrite rules. Simplify using `only [e1]`. Use `(sum_super_eq (fun p q => A p q + (g : v.adicCompletion F) * (rr p q : v.adicCompletion F))).trans ?_` and prove the remaining obligations. Use `show _ = ((sO : v.adicCompletionIntegers F) : v.adicCompletion F) + (g : v.adicCompletion F) * ((rO : v.adicCompletionIntegers F) : v.adicCompletion F)`. Rewrite using `[hcoe Ao, hcoe rr, Finset.mul_sum, ← Finset.sum_add_distrib]`.
-
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `split_ifs`. Both sides reduce to the same expression.
-
-Simplify using the standard rewrite rules. Rewrite using `[hψ sO rO _ hss]`. Establish `hredA : ∀ x q, redM F v A x q = IsLocalRing.residue (v.adicCompletionIntegers F) (Ao x q)` using `fun x q => dif_pos (hAint x q)`. Establish `hlam : lamJ ψ (fun _ => 1) n t 0 n (redM F v M) = ψ (∑ x : Fin n, ∑ q : Fin n, (if (x : ℕ) + 1 = q then redM F v M x q else 0))`. Simplify using `only [lamJ, Finset.range_zero, Finset.prod_empty, mul_one]`.
-
-Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hq` using `q.2`. Distinguish the cases in `h : (x : ℕ) + 1 = q`. Rewrite using `[if_pos h, if_pos ⟨h, hq, by omega⟩]`.
-
-Rewrite using `[if_neg h, if_neg (fun h' => h h'.1)]`. Rewrite using `[hlam, hsupM, map_neg]`. Use `congr 2`. Simplify using `only [sO, map_sum, apply_ite (IsLocalRing.residue (v.adicCompletionIntegers F)), map_zero, hredA]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem local_frame_second_factor : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (t : ℕ) (v : HeightOneSpectrum (𝓞 F)) (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F), (∀ x, sp (sigR cm.sig (v.adicCompletion F) x) = swapR _ (sp x)) → (∀ a : v.adicCompletion F, sp ((1 : E) ⊗ₜ[F] a) = (a, a)) → (∀ x, x ∈ intV E v ↔ (sp x).1 ∈ v.adicCompletionIntegers F ∧ (sp x).2 ∈ v.adicCompletionIntegers F) → ∀ (g : ℕ), IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) = Ideal.span {((g : ℕ) : v.adicCompletionIntegers F)} → ∀ (L : Submodule (𝓞 E) (Fin n → E)), IsLat L → ∀ (e : E ⊗[F] v.adicCompletion F), sp e = (0, 1) → ∀ (b bd : Fin n → Fin n → E ⊗[F] v.adicCompletion F), (∀ i, b i ∈ loc v L) → (∀ i, bd i ∈ loc v L) → (∀ i, b i = e • b i) → (∀ i, bd i = sigR cm.sig (v.adicCompletion F) e • bd i) → (∀ i j, ∃ s ∈ intV E v, hR cm.sig J (v.adicCompletion F) (bd i) (b j) - (if i = j then e else 0) = (g : E ⊗[F] v.adicCompletion F) * s) → (∀ y ∈ loc v L, InModL (loc v L) g (Set.range b ∪ Set.range bd) y) → ∀ (psi : E ⊗[F] Ad F → ℂ), (∀ x y, psi (x + y) = psi x * psi y) → (∀ x ∈ OAd F E, psi x = 1) → (∃ a ∈ intV E v, psi (Formalism.UG.P.afsplitIE v (algebraMap F (E ⊗[F] v.adicCompletion F) ((g : F)⁻¹) * (e * a))) ≠ 1) → ∃ (fr : GL (Fin n) (v.adicCompletion F)) (ψ : AddChar (kv F v) ℂ), ψ ≠ 1 ∧ (∀ x : Fin n → v.adicCompletion F, (∃ y ∈ loc v L, ∀ c, (sp (y c)).1 = x c) ↔ ∀ c, ((fr⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)).mulVec x c ∈ v.adicCompletionIntegers F) ∧ ∀ y ∈ levelVL cm.sig J v L, ((∀ i : Fin n, InModL (loc v L) g (b '' {j | j.1 < i.1}) ((y.1 - 1) *ᵥ b i)) ↔ InJ n t n false (redM F v ((fr⁻¹ * bc ((RingHom.fst _ _).comp sp.toRingHom) y * fr : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)))) ∧ ((∀ i : Fin n, InModL (loc v L) g (b '' {j | j.1 < i.1}) ((y.1 - 1) *ᵥ b i)) → psi (Formalism.UG.P.afsplitIE v (algebraMap F (E ⊗[F] v.adicCompletion F) ((g : F)⁻¹) * supSum (hR cm.sig J (v.adicCompletion F)) b bd y.1)) = lamJ ψ (fun _ => 1) n t 0 n (redM F v ((fr⁻¹ * bc ((RingHom.fst _ _).comp sp.toRingHom) y * fr : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)))) := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet t v sp hsig halg hint g hg L hL e he b bd hb hbd hbe hbde hdual hspan psi hadd hpsiO hne

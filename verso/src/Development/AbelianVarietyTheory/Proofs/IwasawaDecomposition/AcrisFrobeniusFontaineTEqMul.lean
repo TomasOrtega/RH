@@ -15,18 +15,18 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Rewrite using `[map_pow, he, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untilt_pow_eq_one (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : e.untilt = 1) (n : ℕ) :
     (e ^ n).untilt = 1 := by
   rw [map_pow, he, one_pow]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `y hy`. Establish `h0` using `untilt_pow_eq_one l e he 0`. Establish `h` using `LogAdd.log_add l (e ^ 0) (e ^ 0) y y y h0 h0 hy hy (by rwa [← pow_add])`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_zero, zero_mul]`. Conclude with `left_eq_add.mp h`. Consider the case `succ n ih`. Introduce `y hy`. Establish `hn` using `untilt_pow_eq_one l e he n`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, _, hs, -, -⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l (e ^ n) hn`. Establish `hs'` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l (e ^ n) s hn hs).2.2.2 j hj`. Establish `h` using `LogAdd.log_add l (e ^ n) e (j s) x y hn he hs' hx (by rwa [← pow_succ])`. Rewrite using `[h, ih _ hs', Nat.cast_succ, add_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_pow (l : ℕ) [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j)
     (e : Per.Fl l) (he : e.untilt = 1) (x : Per.BdRp l) (hx : Per.IsLog l e x) (n : ℕ) :
@@ -47,9 +47,9 @@ theorem log_pow (l : ℕ) [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l) (hj 
     rw [h, ih _ hs', Nat.cast_succ, add_mul, one_mul]
 
 /- English proof (translation)
-Introduce `l _ C`. Establish `he : C.ε.untilt = 1` using `(core_isEps l C).1`. Take `⟨-, -, h3, h4⟩` from `GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l C.ε C.t he C.t_log`. Establish `h5` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l (C.ε ^ l) _ (untilt_pow_eq_one l _ he l) h3).2.2.2 C.j C.j_cris`. Apply `GlobalTheory.T.acrisToBdRPlus_injective l C.j C.j_cris` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, map_natCast]`. Conclude with `log_pow l C.j C.j_cris C.ε he _ (h4 C.j C.j_cris) l _ h5`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_phi : ∀ (l : ℕ) [Fact l.Prime], ∀ C : Core l,
     phiA l C.t = (l : Per.Acris l) * C.t := by

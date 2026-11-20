@@ -12,13 +12,11 @@ noncomputable section
 namespace StackedExceptionalChart
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hI`. Establish `h' : ∀ x ∈ S, ∃ n : ℕ, s ^ n * x ∈ J` using `fun x hx => h x (Ideal.subset_span hx)`. Use `choose! n hn using h'`. Use `⟨S.sup n, fun e he => ?_⟩` and prove the remaining obligations. Proceed by induction on `he using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Establish `e1 : s ^ S.sup n * x = s ^ (S.sup n - n x) * (s ^ n x * x)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.le_sup (f := n) hx)]`. Rewrite using `[e1]`. Conclude with `J.mul_mem_left _ (hn x hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `J.zero_mem`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `J.add_mem hx hy`. Consider the case `smul r x _ hx => rw [smul_eq_mul, mul_left_comm]`.
-
-Conclude with `J.mul_mem_left r hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pow_uniform {A : Type*} [CommRing A] {I J : Ideal A} (hI : I.FG) {s : A}
     (h : ∀ e ∈ I, ∃ n : ℕ, s ^ n * e ∈ J) : ∃ N : ℕ, ∀ e ∈ I, s ^ N * e ∈ J := by
@@ -44,13 +42,13 @@ section Chart
 variable {F' : HermLattice K i} (b' : Module.Basis T ℤ (dualLattice F')) (a : T → ℤ) (v u : T)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.algebraMap_isUnit (Ideal.Quotient.mk (excChartIdeal b' a u) (graphFirst v * graphSecond u))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_chart : IsUnit (excChartMap b' a v u (graphFirst v * graphSecond u)) :=
   IsLocalization.Away.algebraMap_isUnit (Ideal.Quotient.mk (excChartIdeal b' a u) (graphFirst v * graphSecond u))
 
 /- English proof (translation)
-Establish `h : IsUnit (excChartMap b' a v u (graphFirst v) * excChartMap b' a v u (graphSecond u))`. Rewrite using `[← map_mul]`. Conclude with `isUnit_chart b' a v u`. Conclude with `isUnit_of_mul_isUnit_right h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_second : IsUnit (excChartMap b' a v u (graphSecond u)) := by
   have h : IsUnit (excChartMap b' a v u (graphFirst v) * excChartMap b' a v u (graphSecond u)) := by
@@ -58,7 +56,7 @@ theorem isUnit_second : IsUnit (excChartMap b' a v u (graphSecond u)) := by
   exact isUnit_of_mul_isUnit_right h
 
 /- English proof (translation)
-Establish `h : IsUnit (excChartMap b' a v u (graphFirst v) * excChartMap b' a v u (graphSecond u))`. Rewrite using `[← map_mul]`. Conclude with `isUnit_chart b' a v u`. Conclude with `isUnit_of_mul_isUnit_left h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_first : IsUnit (excChartMap b' a v u (graphFirst v)) := by
   have h : IsUnit (excChartMap b' a v u (graphFirst v) * excChartMap b' a v u (graphSecond u)) := by
@@ -66,7 +64,7 @@ theorem isUnit_first : IsUnit (excChartMap b' a v u (graphFirst v)) := by
   exact isUnit_of_mul_isUnit_left h
 
 /- English proof (translation)
-Establish `hJ : (C (a s) * graphFirst s) * graphSecond u ∈ excChartIdeal b' a u` using `StackedExceptionalCycle.mul_mem_first b' a s u`. Establish `h0 : excChartMap b' a v u ((C (a s) * graphFirst s) * graphSecond u) = 0`. Rewrite using `[excChartMap, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.mpr hJ, map_zero]`. Rewrite `h0` using `[map_mul]`. Conclude with `(isUnit_second b' a v u).mul_left_eq_zero.mp h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_eq_zero (s : T) : excChartMap b' a v u (C (a s) * graphFirst s) = 0 := by
   have hJ : (C (a s) * graphFirst s) * graphSecond u ∈ excChartIdeal b' a u :=
@@ -77,7 +75,7 @@ theorem first_eq_zero (s : T) : excChartMap b' a v u (C (a s) * graphFirst s) = 
   exact (isUnit_second b' a v u).mul_left_eq_zero.mp h0
 
 /- English proof (translation)
-Rewrite `he` using `[excChartMap, RingHom.comp_apply, IsLocalization.map_eq_zero_iff (Submonoid.powers (Ideal.Quotient.mk (excChartIdeal b' a u) (graphFirst v * graphSecond u))) (excChartRing b' a v u)]`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `he`. Use `⟨n, Ideal.Quotient.eq_zero_iff_mem.mp ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem {e : MRing (stackedBlocks T)} (he : excChartMap b' a v u e = 0) :
     ∃ n : ℕ, (graphFirst v * graphSecond u) ^ n * e ∈ excChartIdeal b' a u := by
@@ -90,9 +88,9 @@ theorem exists_pow_mul_mem {e : MRing (stackedBlocks T)} (he : excChartMap b' a 
   exact hn
 
 /- English proof (translation)
-Establish `h1 : ∀ s, excChartMap b' a v u (C ((Pi.single t (1 : ℤ) : T → ℤ) s - e s * a s) * graphFirst s) = excChartMap b' a v u (C ((Pi.single t (1 : ℤ) : T → ℤ) s) * graphFirst s)`. Introduce `s`. Rewrite using `[C_sub, C_mul, sub_mul, mul_assoc, map_sub, map_mul (excChartMap b' a v u) (C (e s)), first_eq_zero, mul_zero, sub_zero]`. Rewrite using `[graphFirstForm, map_sum, Finset.sum_congr rfl fun s _ => h1 s, ← map_sum]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_eq_single t (fun s _ hs => by rw [Pi.single_eq_of_ne hs, C_0, zero_mul]) (fun h => absurd (Finset.mem_univ t) h), Pi.single_eq_same, C_1, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_firstForm_sub (t : T) (e : T → ℤ) :
     excChartMap b' a v u (graphFirstForm fun s => (Pi.single t (1 : ℤ) : T → ℤ) s - e s * a s) =
@@ -116,7 +114,7 @@ variable {F F' : HermLattice K i}
 omit [DecidableEq T] in
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.equivFun_symm_apply, latCombo, Submodule.coe_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latCombo_eq (b' : Module.Basis T ℤ (dualLattice F')) (c : T → ℤ) :
     latCombo b' c = ((b'.equivFun.symm c : dualLattice F') : Fin i → K) := by
@@ -126,9 +124,9 @@ theorem latCombo_eq (b' : Module.Basis T ℤ (dualLattice F')) (c : T → ℤ) :
 omit [DecidableEq T] in
 
 /- English proof (translation)
-Use `⟨b.equivFun ⟨ψ, hψ⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (b.sum_equivFun ⟨ψ, hψ⟩)`. Rewrite `h` using `[Submodule.coe_sum]`. Use `Eq.trans (h.symm : ψ = _) ?_` and prove the remaining obligations. Rewrite using `[latCombo]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hab, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_latCombo (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) {ψ : Fin i → K}
@@ -142,7 +140,7 @@ theorem exists_latCombo (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Ba
   rw [Submodule.coe_smul, hab, mul_smul]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[smul_dotProduct, smul_eq_mul]`. Conclude with `mul_mem ⟨ω, rfl⟩ (hφ x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_dual {φ : Fin i → K} (hφ : φ ∈ dualLattice F') (ω : 𝓞 K) :
     algebraMap (𝓞 K) K ω • φ ∈ dualLattice F' := by
@@ -157,25 +155,25 @@ end StackedExceptionalChart
 open StackedExceptionalChart in
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b b' a hi hlt hcov hab k _ ρ π y₀ m g α M hX v u`. Establish `hX'` using `hX`. Take `⟨hρ, -, -, -, hα, -, -, -, -, -, h11, -⟩` from `hX'`. Use `exists_pow_uniform (IsNoetherian.noetherian _) fun e he => exists_pow_mul_mem b' a v u ?_` and prove the remaining obligations. Take `⟨cv, hcv, hρcv⟩` from `hα v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hv : α v = 0`. Establish `hmem : (b' v : Fin i → K) ∈ dualLattice F` using `h11 _ (b' v).2 cv hcv (hρcv.trans hv)`. Take `⟨c, hc⟩` from `exists_latCombo b b' hab hmem`. Rewrite `hc` using `[latCombo_eq]`. Establish `hc'` using `congrArg (fun x => b'.equivFun x v) (Subtype.ext hc : b' v = b'.equivFun.symm _)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearEquiv.apply_symm_apply, Module.Basis.equivFun_self, ↓reduceIte] at hc'`. Establish `hXv : excChartMap b' a v u (graphFirst v) = 0`. Establish `e1 : graphFirst v = C (c v) * (C (a v) * graphFirst v)`. Rewrite using `[← mul_assoc, ← C_mul, ← hc', C_1, one_mul]`. Rewrite using `[congrArg (excChartMap b' a v u) e1, map_mul, first_eq_zero, mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `isUnit_first b' a v u`. Rewrite `hu` using `[hXv]`. Conclude with `(subsingleton_iff_zero_eq_one.mp (isUnit_zero_iff.mp hu)).elim _ _`. Take `⟨σ₀, hσ, W, hW⟩` from `hC K i F F' T b b' a hi hlt hcov hab k ρ π y₀ m g α M hX v u`. Establish `hfirst : ∀ t, σ₀ (α t) * (σ₀ (α v)⁻¹ * excChartMap b' a v u (graphFirst v)) = excChartMap b' a v u (graphFirst t)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Take `⟨ω, hω⟩` from `hρ (α t * (α v)⁻¹)`. Take `⟨ct, hct, hρct⟩` from `hα t`. Establish `hψ : (b' t : Fin i → K) - algebraMap (𝓞 K) K ω • (b' v : Fin i → K) ∈ dualLattice F`. Use `h11 _ (sub_mem (b' t).2 (smul_mem_dual (b' v).2 ω)) (ct - ω * cv) ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, hct, hcv, sub_dotProduct, smul_dotProduct, smul_eq_mul]`. Rewrite using `[map_sub, map_mul, hρct, hρcv, hω, mul_assoc, inv_mul_cancel₀ hv, mul_one, sub_self]`. Take `⟨e, he⟩` from `exists_latCombo b b' hab hψ`. Establish `hlc : latCombo b' (fun s => (Pi.single t (1 : ℤ) : T → ℤ) s - e s * a s) = algebraMap (𝓞 K) K ω • (b' v : Fin i → K)`. Establish `e2 : latCombo b' (fun s => (Pi.single t (1 : ℤ) : T → ℤ) s - e s * a s) = latCombo b' (Pi.single t (1 : ℤ)) - latCombo b' fun s => e s * a s`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [latCombo, sub_smul, Finset.sum_sub_distrib]`. Establish `e3 : latCombo b' (Pi.single t (1 : ℤ)) = (b' t : Fin i → K)`. Rewrite using `[latCombo, Finset.sum_eq_single t (fun s _ hs => by rw [Pi.single_eq_of_ne hs, zero_smul]) (fun h => absurd (Finset.mem_univ t) h), Pi.single_eq_same, one_smul]`. Rewrite using `[e2, e3, ← he, sub_sub_cancel]`. Rewrite using `[← chart_firstForm_sub b' a v u t e, ← hσ ω _ hlc, ← mul_assoc, ← map_mul, hω]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `σ : MvPolynomial (Option (Fin (m + 1))) k →+* excChartRing b' a v u` to `eval₂Hom σ₀ fun o => o.elim (σ₀ (α v)⁻¹ * excChartMap b' a v u (graphFirst v)) W`. Establish `key : σ.comp (linPointMap α M) = excChartMap b' a v u`. Use `MvPolynomial.ringHom_ext (fun n => ?_) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, eq_intCast C n, map_intCast, map_intCast, map_intCast]`. Introduce and unpack `⟨⟨⟨⟩⟩ | ⟨⟨⟩⟩, (t : T)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show σ (linPointMap α M (graphFirst t)) = excChartMap b' a v u (graphFirst t)`. Rewrite using `[LinPrimeExample.linPointMap_first, map_mul]`. Simplify using `only [σ, eval₂Hom_C, eval₂Hom_X', Option.elim]`. Conclude with `hfirst t`. Use `show σ (linPointMap α M (graphSecond t)) = excChartMap b' a v u (graphSecond t)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinPrimeExample.linPointMap_second, map_sum, ← hW t]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [σ, map_mul, eval₂Hom_C, eval₂Hom_X', Option.elim]`. Rewrite using `[← key, RingHom.comp_apply, RingHom.mem_ker.mp he, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem DualStackedExcChart.proof (hC : DualStackedExcChartForms.Statement) : DualStackedExcChart.Statement := by
   intro K _ _ i F F' T _ _ b b' a hi hlt hcov hab k _ ρ π y₀ m g α M hX v u

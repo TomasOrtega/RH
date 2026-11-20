@@ -11,7 +11,7 @@ namespace FunctionalCalculusInner
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type}
 
 /- English proof (translation)
-Unfold `fc`. Conclude with `b.constr_basis ℂ _ i`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fc_basis (b : Module.Basis ι ℂ V) (μ : ι → ℝ) (φ : ℝ → ℝ) (i : ι) :
     fc b μ φ (b i) = ((φ (μ i) : ℝ) : ℂ) • b i := by
@@ -19,9 +19,9 @@ theorem fc_basis (b : Module.Basis ι ℂ V) (μ : ι → ℝ) (φ : ℝ → ℝ
   exact b.constr_basis ℂ _ i
 
 /- English proof (translation)
-Establish `key : (b.coord i).comp (fc b μ φ) = ((φ (μ i) : ℝ) : ℂ) • b.coord i`. Use `b.ext fun j => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Module.Basis.coord_apply, fc_basis, map_smul, LinearMap.smul_apply, Module.Basis.repr_self]`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, hji]`. Conclude with `LinearMap.congr_fun key v`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_fc (b : Module.Basis ι ℂ V) (μ : ι → ℝ) (φ : ℝ → ℝ) (v : V) (i : ι) :
     b.repr (fc b μ φ v) i = ((φ (μ i) : ℝ) : ℂ) * b.repr v i := by
@@ -35,9 +35,9 @@ theorem repr_fc (b : Module.Basis ι ℂ V) (μ : ι → ℝ) (φ : ℝ → ℝ)
   exact LinearMap.congr_fun key v
 
 /- English proof (translation)
-Establish `key : (innerₛₗ ℂ (b i) : V →ₗ[ℂ] ℂ) = b.coord i`. Use `b.ext fun j => ?_` and prove the remaining obligations. Use `show inner ℂ (b i) (b j) = b.repr (b j) i`. Rewrite using `[Module.Basis.repr_self, orthonormal_iff_ite.mp hb i j]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`. Conclude with `LinearMap.congr_fun key y`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_basis_left (b : Module.Basis ι ℂ V) (hb : Orthonormal ℂ b) (i : ι) (y : V) :
     inner ℂ (b i) y = b.repr y i := by
@@ -52,9 +52,9 @@ theorem inner_basis_left (b : Module.Basis ι ℂ V) (hb : Orthonormal ℂ b) (i
   exact LinearMap.congr_fun key y
 
 /- English proof (translation)
-Establish `hx : x = ∑ i ∈ s, b.repr x i • b i` using `by conv_lhs => rw [← b.linearCombination_repr x]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ hs]`. Introduce `i _`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_inner]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_basis_left b hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_eq_sum (b : Module.Basis ι ℂ V) (hb : Orthonormal ℂ b) (x y : V) (s : Finset ι)
     (hs : (b.repr x).support ⊆ s) :
@@ -70,21 +70,21 @@ theorem inner_eq_sum (b : Module.Basis ι ℂ V) (hb : Orthonormal ℂ b) (x y :
   rw [inner_smul_left, inner_basis_left b hb]
 
 /- English proof (translation)
-The claim follows from `b.ext fun i => by rw [fc_basis]; exact (h i).symm`.
+A detailed English derivation is pending.
 -/
 theorem fc_id (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (b : Module.Basis ι ℂ V) (μ : ι → ℝ)
     (h : ∀ i, Eig ε E (μ i) (b i)) : fc b μ (fun x => x) = casimirK ε E :=
   b.ext fun i => by rw [fc_basis]; exact (h i).symm
 
 /- English proof (translation)
-Rewrite using `[mul_left_comm, Complex.conj_mul']`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem re_conj_mul (z : ℂ) (r : ℝ) : (starRingEnd ℂ z * ((r : ℂ) * z)).re = r * ‖z‖ ^ 2 := by
   rw [mul_left_comm, Complex.conj_mul']
   norm_cast
 
 /- English proof (translation)
-Rewrite using `[inner_eq_sum b hb w _ _ subset_rfl, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[repr_fc, re_conj_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem re_inner_fc (b : Module.Basis ι ℂ V) (hb : Orthonormal ℂ b) (μ : ι → ℝ) (φ : ℝ → ℝ) (w : V) :
     (inner ℂ w (fc b μ φ w)).re = ∑ i ∈ (b.repr w).support, φ (μ i) * ‖b.repr w i‖ ^ 2 := by
@@ -96,19 +96,17 @@ end FunctionalCalculusInner
 
 open FunctionalCalculusInner in
 /- English proof (translation)
-Introduce `_ n ε V _ _ E _ ι b μ hb`. Establish `hid` using `fc_id ε E b μ hb.eig`. Use `⟨fun φ ν v hv => ?_, fun φ x y => ?_, fun φ ψ hφψ w => ?_, fun φ ψ => ?_, fun φ ψ => ?_, fun c => ?_, hid⟩` and prove the remaining obligations. Use `b.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Establish `h1 : b.repr (casimirK ε E v) i = b.repr ((ν : ℂ) • v) i` using `by rw [show casimirK ε E v = (ν : ℂ) • v from hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hid, repr_fc]`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul] at h1`. Rewrite using `[repr_fc, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Distinguish the cases in `h0 : b.repr v i = 0`. Simplify using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: μ i = ν`. Use `mul_right_cancel₀ h0 h1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[this]`. Establish `hs : (b.repr (fc b μ φ x)).support ⊆ (b.repr x).support`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite `hi`, the goal using `[Finsupp.mem_support_iff]`. Rewrite `hi` using `[repr_fc]`. Conclude with `right_ne_zero_of_mul hi`. Rewrite using `[inner_eq_sum b hb.on _ _ _ hs, inner_eq_sum b hb.on _ _ _ subset_rfl]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[repr_fc, repr_fc, map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[re_inner_fc b hb.on, re_inner_fc b hb.on]`. Conclude with `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_right (hφψ _ (hb.nonneg i)) (sq_nonneg _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `b.ext fun i => ?_` and prove the remaining obligations. Simplify using `only [fc_basis, LinearMap.add_apply, Complex.ofReal_add, add_smul]`. Use `b.ext fun i => ?_` and prove the remaining obligations. Simplify using `only [fc_basis, Module.End.mul_apply, map_smul, smul_smul, Complex.ofReal_mul, mul_comm]`. Use `b.ext fun i => ?_` and prove the remaining obligations.
-
-Simplify using `[fc_basis]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem functional_calculus_of_basic : A0 → FunctionalCalculusLaws := by
   intro _ n ε V _ _ E _ ι b μ hb

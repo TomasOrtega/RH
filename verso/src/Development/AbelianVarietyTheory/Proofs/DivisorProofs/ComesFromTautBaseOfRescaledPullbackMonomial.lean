@@ -14,17 +14,17 @@ noncomputable section
 namespace GlobalTheory.TInj
 
 /- English proof (translation)
-Introduce `o W _ _ _ _ T n D₀ hev hbi hun ib β ββ w hF V _ _ iw hiw Q g hD I _ s ε e he hg`. Establish `hin : ∀ χ, D₀.PsiIn χ ⊤` using `fun χ j U hU hle h => by`. Take `⟨r, -, hr⟩` from `hun χ j U hU (Set.subset_univ _) hle h`. Conclude with `⟨r, by rw [Ideal.map_top]; trivial, hr⟩`. Set `D₁ : DegData W ⊤` to `{ toPre := D₀ psi_even := hev tau_bimult := hbi psi_pos := fun χ _ => hin χ psi_tendsto := fun m => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite using `[Ideal.top_pow]`. Conclude with `Set.finite_empty.subset fun χ hχ => hχ (hin χ) }`. Take `⟨ββ', w', pb, sq, gen, hc, hτ⟩` from `from_pull T (fun _ : Empty => 0) n W V ⊤ D₁ (RingHom.id W) (fun _ => 1) ib β ββ w iw (rescale Q g) hD hiw hF`. Rewrite `pb`, `hc`, `hτ` using `[RingHom.comp_id]`. Use `⟨_, ββ', w', pb, sq, gen, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he a]`. Conclude with `hc a`. Take `⟨k, hk, hv⟩` from `hτ a b`. Establish `hk1 : k = 1` using `Units.ext (by rw [hk]; simp)`. Use `⟨_, hg a b, fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `hv z J J' hJ hJ'`. Establish `E` using `rescale_tau_val Q g a b hJ'`. Establish `H'` using `E.symm.trans H`. Rewrite `H'` using `[hk1]`. Rewrite using `[he a, he b]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `aux : ∀ {G : Type} [CommGroup G] (x y u t p : G), x * y⁻¹ * u⁻¹ * t = 1 * p → t = x⁻¹ * y * u * p`. Introduce `G _ x y u t p h`. Rewrite `h` using `[_root_.one_mul]`. Rewrite using `[← h, ← _root_.mul_assoc]`. Establish `h1 : x⁻¹ * y * u * (x * y⁻¹ * u⁻¹) = (x⁻¹ * x) * (y * y⁻¹) * (u * u⁻¹)` using `by ac_rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using the standard rewrite rules. Simplify using `only [unitOn, map_mul, map_inv, map_one] at H' ⊢`. Conclude with `aux _ _ _ _ _ H'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem from_rescale_pull : ∀ {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (n : ℕ) (D₀ : DegPre W), D₀.PsiEven → D₀.TauBimult → (∀ y, PsiUnitOn D₀ y Set.univ) → ∀ (ib : D₀.X ≃+ (Fin T.r → ℤ)) (β : D₀.P.A.left ⟶ T.B.left) (ββ : (G2 D₀.P.A).left ⟶ (G2 T.B).left) (w : LB.Iso (abelian₂ D₀.P.A D₀.P.L) ((abelian₂ T.B T.M.L).pull ββ)), From T (RingHom.id W) (fun _ : Empty => (1 : W)) (fun _ => 0) n D₀ ib β ββ w → ∀ (V : Type) [CommRing V] [IsDomain V] (iw : W →+* V), Function.Injective iw → ∀ (Q : DegPre V) (g : Q.X → (FractionRing V)ˣ) (hD : IsPullDeg iw D₀ (rescale Q g)) {I : Type} [Fintype I] (s : I → V) (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (e : Q.X ≃+ (Fin T.r → ℤ)), (∀ y : Q.X, e y = ib (hD.xe y)) → (∀ a a' : Q.X, (((g (a + a'))⁻¹ * g a * g a' : (FractionRing V)ˣ) : FractionRing V) = ∏ i, algebraMap V (FractionRing V) (s i) ^ ((n : ℤ) * ε i (e a) (e a'))) → ∃ (β' : Q.P.A.left ⟶ T.B.left) (ββ' : (G2 Q.P.A).left ⟶ (G2 T.B).left) (w' : LB.Iso (abelian₂ Q.P.A Q.P.L) ((abelian₂ T.B T.M.L).pull ββ')), From T iw s ε n Q e β' ββ' w' := by
   intro o W _ _ _ _ T n D₀ hev hbi hun ib β ββ w hF V _ _ iw hiw Q g hD I _ s ε e he hg

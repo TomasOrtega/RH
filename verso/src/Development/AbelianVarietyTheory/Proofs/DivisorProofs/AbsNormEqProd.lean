@@ -13,15 +13,15 @@ namespace GlobalTheory.HeckeTwoExp
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Simplify using `[phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_zero (w : ℂ) : phi 0 w = w⁻¹ ^ 2 := by
   simp [phi]
 
 /- English proof (translation)
-Unfold `hTrans`. Use `conv_lhs => rw [← MeasureTheory.integral_neg_eq_self]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [phi_zero, ofReal_neg]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[show -(t : ℂ) + -(y : ℂ) * I = -((t : ℂ) + (y : ℂ) * I) by ring, inv_neg, neg_sq]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hTrans_zero_neg (ν y : ℝ) : hTrans 0 ν (-y) = hTrans 0 (-ν) y := by
   unfold hTrans
@@ -33,7 +33,7 @@ theorem hTrans_zero_neg (ν y : ℝ) : hTrans 0 ν (-y) = hTrans 0 (-ν) y := by
   · congr 1; ring
 
 /- English proof (translation)
-Establish `: Nonempty (F →+* ℂ)`. Rewrite using `[← Fintype.card_pos_iff, NumberField.Embeddings.card]`. Conclude with `Module.finrank_pos`. Take `⟨φ⟩` from `this`. Conclude with `⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem emb_nonempty [IsTotallyReal F] : Nonempty (Emb F) := by
   have : Nonempty (F →+* ℂ) := by
@@ -43,9 +43,9 @@ theorem emb_nonempty [IsTotallyReal F] : Nonempty (Emb F) := by
   exact ⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding⟩
 
 /- English proof (translation)
-Establish `h` using `prod_emb ν`. Establish `h' : ((Algebra.norm ℚ ν : ℚ) : ℝ) = ∏ τ : Emb F, τ ν`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_prod, h]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[h', Finset.abs_prod, Complex.ofReal_prod]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem abs_norm_eq_prod [IsTotallyReal F] (ν : F) :
     ((|(Algebra.norm ℚ ν : ℝ)| : ℝ) : ℂ) = ∏ τ : Emb F, ((|τ ν| : ℝ) : ℂ) := by
@@ -66,13 +66,13 @@ def toQ (𝔞 𝔟 : Frac F) : (Σ c : Quotient (unitRel (𝔟 : FractionalIdeal
   fun s => Quotient.mk _ ⟨(s.2.1.1, s.1.out.1), s.2.1.2.1, s.1.out.2.1, s.2.2⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨c, ν⟩ ⟨c', ν'⟩ h`. Take `⟨ε, h1, h2⟩` from `Quotient.exact h`. Simplify using `only at h1 h2`. Establish `hc : c = c'`. Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c']`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Quotient.sound ⟨ε, h2⟩`. Substitute `hc` using the available equality. Establish `hne : c.out.1 ≠ 0` using `c.out.2.2`. Establish `hε : ((ε : 𝓞 F) : F) = 1`. Establish `h3 : (((ε : 𝓞 F) : F) - 1) * c.out.1 = 0` using `by linear_combination -h2`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_right hne)`. Establish `hε' : (((ε⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) = 1`. Use `unit_inv_mul ε` as an intermediate fact. Rewrite `this` using `[hε, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite `h1` using `[hε', one_mul]`. Establish `: ν = ν'` using `Subtype.ext (Subtype.ext h1.symm)`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toQ_injective (𝔞 𝔟 : Frac F) : Function.Injective (toQ 𝔞 𝔟) := by
   rintro ⟨c, ν⟩ ⟨c', ν'⟩ h
@@ -94,19 +94,17 @@ theorem toQ_injective (𝔞 𝔟 : Frac F) : Function.Injective (toQ 𝔞 𝔟) 
   rfl
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h p => ?_`. Take `⟨⟨ν, b⟩, hν, hb, hpos⟩` from `p`. Take `⟨τ₀⟩` from `emb_nonempty (F := F)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hνb : ν * b ≠ 0`. Introduce `h0`. Use `hpos τ₀` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0` using `right_ne_zero_of_mul hνb`. Establish `hν0 : ν ≠ 0` using `left_ne_zero_of_mul hνb`. Use `set c : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) := Quotient.mk _ ⟨b, hb, hb0⟩ with hcdef`. Take `⟨ε, hε⟩` from `Quotient.exact (Quotient.out_eq c : Quotient.mk _ c.out = Quotient.mk _ ⟨b, hb, hb0⟩)`. Simplify using `only at hε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ((ε : 𝓞 F) : F) * ν ∈ (𝔞 : FractionalIdeal (𝓞 F)⁰ F)`. Use `Submodule.smul_mem (𝔞 : FractionalIdeal (𝓞 F)⁰ F).coeToSubmodule (ε : 𝓞 F) hν` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Conclude with `this`. Establish `hne : ((ε : 𝓞 F) : F) * ν ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `mul_ne_zero ?_ hν0` and prove the remaining obligations. Introduce `h0`. Use `unit_inv_mul ε` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : ((ε : 𝓞 F) : F) * ν * c.out.1 = ν * b` using `by rw [hε]; ring`. Use `⟨⟨c, ⟨⟨((ε : 𝓞 F) : F) * ν, hmem, hne⟩, fun τ => by rw [hprod]; exact hpos τ⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Quotient.sound` to reduce the goal to its premises. Use `⟨ε, ?_, hε⟩` and prove the remaining obligations. Use `show ν = _ * (((ε : 𝓞 F) : F) * ν)`.
-
-Rewrite using `[← mul_assoc, unit_inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toQ_surjective [IsTotallyReal F] (𝔞 𝔟 : Frac F) : Function.Surjective (toQ 𝔞 𝔟) := by
   intro q
@@ -137,11 +135,11 @@ theorem toQ_surjective [IsTotallyReal F] (𝔞 𝔟 : Frac F) : Function.Surject
   rw [← mul_assoc, unit_inv_mul, one_mul]
 
 /- English proof (translation)
-Use `set e := Equiv.ofBijective (toQ 𝔞 𝔟) ⟨toQ_injective 𝔞 𝔟, toQ_surjective 𝔞 𝔟⟩ with he`. Establish `hS' : Summable (qClass 𝔞 𝔟 2 z ∘ e)` using `e.summable_iff.2 hS`. Establish `h1 : ∑' c, qClass 𝔞 𝔟 2 z c = ∑' p, qClass 𝔞 𝔟 2 z (e p)` using `(e.tsum_eq _).symm`. Establish `h2 : ∑' p, qClass 𝔞 𝔟 2 z (e p) = ∑' c, ∑' ν, qClass 𝔞 𝔟 2 z (e ⟨c, ν⟩)` using `hS'.tsum_sigma`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun c => ?_` and prove the remaining obligations. Establish `h3` using `tsum_subtype {ν : NZ (𝔞 : FractionalIdeal (𝓞 F)⁰ F) | ∀ τ : Emb F, 0 < τ (ν.1 * c.out.1)} (fun ν => qTerm 𝔞 2 z (ν.1, c.out.1))`. Establish `h4 : ∀ ν : {ν : NZ (𝔞 : FractionalIdeal (𝓞 F)⁰ F) // ∀ τ : Emb F, 0 < τ (ν.1 * c.out.1)}, qClass 𝔞 𝔟 2 z (e ⟨c, ν⟩) = qTerm 𝔞 2 z (ν.1.1, c.out.1)` using `fun ν => by`. Rewrite using `[he]`. Conclude with `qClass_mk 𝔞 𝔟 2 z _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tsum_congr h4]`. Use `h3.trans (tsum_congr fun ν => ?_)` and prove the remaining obligations. Rewrite using `[Set.indicator_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tsum_qClass_eq [IsTotallyReal F] (𝔞 𝔟 : Frac F) (z : Emb F → ℂ) (hS : Summable (qClass 𝔞 𝔟 2 z)) :
     ∑' c, qClass 𝔞 𝔟 2 z c = ∑' c : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)),
@@ -170,9 +168,9 @@ namespace GlobalTheory.HeckeTwoExp
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hπ : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `h1 : (2 * (Real.pi : ℂ) * I)⁻¹ ^ 2 * (-4 * (Real.pi : ℂ) ^ 2) = 1`. Rewrite using `[inv_pow, mul_pow, mul_pow, I_sq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `kFac`. Simplify using `only [mul_zero, cpow_zero, mul_one, Finset.prod_const, Finset.card_univ]`. Rewrite using `[← mul_pow, h1, one_pow]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem kFac_zero_mul : kFac F 0 * (-4 * (Real.pi : ℂ) ^ 2) ^ Fintype.card (Emb F) = 1 := by
   have hπ : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
@@ -185,12 +183,12 @@ theorem kFac_zero_mul : kFac F 0 * (-4 * (Real.pi : ℂ) ^ 2) ^ Fintype.card (Em
   rw [← mul_pow, h1, one_pow]
 
 /- English proof (translation)
-The claim follows from `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero F))`.
+A detailed English derivation is pending.
 -/
 theorem dF_pos : 0 < dF F := abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero F))
 
 /- English proof (translation)
-Unfold `nrm`. Rewrite using `[Rat.cast_ne_zero, Ne, FractionalIdeal.absNorm_eq_zero_iff]`. Conclude with `𝔞.ne_zero`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_ne_zero (𝔞 : Frac F) : nrm 𝔞 ≠ 0 := by
   unfold nrm

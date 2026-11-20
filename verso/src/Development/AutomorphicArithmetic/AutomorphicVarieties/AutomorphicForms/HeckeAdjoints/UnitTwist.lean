@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.H
 open NumberField IsDedekindDomain Matrix Formalism.L2.Host UpperTheory.V UpperTheory.V.TR UpperTheory.V.Af.Gk
 
 /- English proof (translation)
-Introduce `F _ _ _ a ha π`. Take `⟨s, hs⟩` from `UpperTheory.V.Af.Gk.oneScalar F a π`. Take `⟨χ, hχ⟩` from `UpperTheory.V.Af.Gk.expoChar F (-s / ((Fintype.card (InfinitePlace F) : ℂ) * a))`. Use `⟨χ, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `ht : (Matrix.of (oneL F a)).trace = (a : TR.Rinf F)`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (TR.Rinf F)).trace = _`. Simplify using the standard rewrite rules. Establish `h1 : (Fintype.card (InfinitePlace F) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `h2 : (a : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : TR.dchi χ (Matrix.of (oneL F a)).trace = -s`. Rewrite using `[ht, TR.dchi_eq_sum]`. Simplify using `only [hχ, Pi.natCast_apply, Complex.ofReal_natCast, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `TR.lie F a (oneL F a) (TR.mulChi a χ φ) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[TR.lie_mulChi, hs φ hφ, hd, ← add_smul, add_neg_cancel, zero_smul, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Af.Gk.unitTwist :
     UpperTheory.V.Af.Gk.UnitTwist := by

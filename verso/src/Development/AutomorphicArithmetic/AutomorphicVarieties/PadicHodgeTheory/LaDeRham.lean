@@ -15,9 +15,9 @@ section
 open GlobalTheory.Pst GlobalTheory.TripleGal
 
 /- English proof (translation)
-Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Take `⟨LL', r', hm, hp⟩` from `hB.isPstAt T Bw _ (GlobalTheory.CharAboveRead.continuous_rankOneOperator κ hκ) hd`. Use `haveI := hp.finite`. Take `⟨ι⟩` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Establish `h1 : Module.finrank ℂ (WDSpace (UpperTheory.V.Loc.PP l) ι (Bw.repE LL' r')) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Pst.LetterDim.finrank_wdSpace l _ ι _ LL' _ _ hp, Module.finrank_fin_fun]`. Establish `hN : wdN (UpperTheory.V.Loc.PP l) ι (Bw.repE LL' r') = 0` using `GlobalTheory.PotCrysRankOne.eq_zero_of_isNilpotent_of_finrank_eq_one h1 (isNilpotent_wdN _ ι _)`. Take `⟨K', hK, hcr⟩` from `(GlobalTheory.PstLaws.isPotCrys_iff _ _ hp).2 ((GlobalTheory.PstLaws.wdN_eq_zero_iff _ _ ι).1 hN)`. Conclude with `⟨LL', r', hm, K', hK, hcr⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem potCrys_of_dR (hB : DeRhamPotSemistable) {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {l : ℕ} [Fact l.Prime] {Gw : Subgroup (Ω ≃ₐ[F] Ω)} (κ : ↥Gw →* (Qbar l)ˣ) (hκ : Continuous κ)
@@ -35,15 +35,15 @@ private theorem potCrys_of_dR (hB : DeRhamPotSemistable) {F Ω : Type} [Field F]
   exact ⟨LL', r', hm, K', hK, hcr⟩
 
 /- English proof (translation)
-Take `⟨Kw', j', jE', jd', e', ec', esc', ecomm', LL0', hs', eO', h1', h2', h3'⟩` from `Bw'`. Simplify using `only at hK hj hL`. Substitute `hK hj hL` using the available equality. Use `set Bw' : LocBridge l E Ω Gu O := ⟨Bw.Kw, Bw.j, jE', jd', e', ec', esc', ecomm', Bw.LL, hs', eO', h1', h2', h3'⟩ with hB`. Take `⟨L, r₀, hm, hV⟩` from `hd`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `r₁ : ↥Gw →* GL (Fin n) ↥L.1` to `r₀.comp (Bw.e.trans e'.symm).toMonoidHom`. Establish `hm₁ : IsModel Bw r L r₁`. Use `⟨hm.1, MonoidHom.ext fun g => ?_⟩` and prove the remaining obligations. Use `(DFunLike.congr_fun hm.2 (e'.symm (Bw.e g))).trans (hr _ _ fun z => Bw.j.injective ?_).symm` and prove the remaining obligations. Rewrite using `[← ecomm', MulEquiv.apply_symm_apply, Bw.e_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrep : Bw.repE L r₁ = Bw'.repE L r₀`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `[LocBridge.repE, r₁, hB]`. Both sides reduce to the same expression. Establish `hV₁ : Bw.IsdRE P L r₁`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `LocBridge.IsdRE at hV ⊢`. Rewrite using `[hrep]`. Conclude with `hV`. Use `⟨⟨L, r₁, hm₁, hV₁⟩, fun τ τ' hτ => ⟨(Bw.LL.1.val.comp τ').toRingHom.comp ((Bw.j.comp (algebraMap E Ω)).codRestrict Bw.Kw.1 jE'), τ', fun _ => rfl, fun _ _ => rfl, fun J hJ => ?_⟩⟩` and prove the remaining obligations. Use `⟨L, r₁, hm₁, hV₁, (IntermediateField.inclusion hm.1).comp τ', hτ, fun a => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hJ.count_eq P hm (τ' := (IntermediateField.inclusion hm.1).comp τ') (fun _ => rfl) a]`. Unfold `LocBridge.multE`. Rewrite using `[hrep]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bridge_transfer {F E Ω : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Field Ω] [Algebra F Ω]
     [Algebra E Ω] {l : ℕ} [Fact l.Prime] (P : LocPrime l) {Gw : Subgroup (Ω ≃ₐ[F] Ω)} {Gu : Subgroup (Ω ≃ₐ[E] Ω)}
@@ -85,15 +85,15 @@ private theorem bridge_transfer {F E Ω : Type} [Field F] [NumberField F] [Field
 end
 
 /- English proof (translation)
-Introduce `hG hH hD hB F Ω _ _ _ _ _ l _ A w h κ hκ wt ⟨ph, hph⟩ O _ _ _ Bw hj`. Take `⟨ι⟩` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Take `⟨E, _, _, _, _, u, hu, Bw', art, χ, n, μ, ν, b1, b2, b3, hart, hχ, hμ, hL, hν, hνμ, ⟨ph', hph'⟩, hn⟩` from `laGlob hG hH h wt Bw hj ι`. Establish `hj' : GlobalTheory.Pst.Induces Bw'` using `fun x => by rw [b2]; exact hj x`. Take `⟨d1, d2⟩` from `hD E Ω l _ _ (tiedP l) ι art hart χ n μ hχ hμ hL u A hu O Bw' hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, c2⟩` from `bridge_transfer (PP l) Bw Bw' b1 b2 b3 (GlobalTheory.TripleGal.rk1 ν) ((GlobalTheory.TripleGal.rk1 μ).comp (Dec (F := E) A).subtype) (fun g g' hg => congrArg (Units.map (Matrix.scalar (Fin 1) : Qbar l →+* _).toMonoidHom) (hνμ g g' hg)) d1`. Establish `h0` using `((laMul h).1 _ _ _ _ _ _ hph ((laMul h).1 _ _ _ _ _ _ hph' hph').2).1`. Rewrite `h0` using `[add_neg_cancel]`. Take `⟨a, ha⟩` from `laArtin hG h`. Establish `ho : IsOpen {σ : ↥(Ine (F` using `F) A) | (κ * ν⁻¹) (Subgroup.inclusion (Ine_le_Dec A) σ) = 1} := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Subgroup.isOpen_mono (H₁ := (ph * ph'⁻¹).ker) (H₂ := ((κ * ν⁻¹).comp (Subgroup.inclusion (Ine_le_Dec A))).ker) (fun σ hσ => ?_) h0.1` and prove the remaining obligations. Use `h0.2 a ha σ` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker.1 hσ, mul_one]`. Rewrite `this` using `[show (∏ᶠ τ : Emb l w, τ.1 (a (ineIncl h σ) : w.adicCompletion F) ^ (-(0 : Emb l w → ℤ) τ)) = 1 by simp]`. Conclude with `Units.ext this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u1, u2⟩` from `UpperTheory.rankOne_character_isdR_and_jumps_zero (κ * ν⁻¹) (hκ.mul hν.inv) ho O Bw hj`. Take `⟨t1, -, -, t2⟩` from `GlobalTheory.TwistAbove.twist_above l _ _ (tiedP l) F Ω _ O Bw 1 (GlobalTheory.TripleGal.rk1 ν) (GlobalTheory.TripleGal.rk1 κ) (κ * ν⁻¹) (fun g => by`. Use extensionality with `i j`. Simplify using `[GlobalTheory.TripleGal.rk1, Subsingleton.elim i j])`. Use `⟨t1 c1 u1, potCrys_of_dR hB κ hκ Bw (t1 c1 u1), fun τ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨τ', hτ'⟩` from `exists_isInduced_emb h Bw hj τ`. Take `⟨τE, τ₂, e1, e2, e3⟩` from `c2 _ τ' hτ'`. Use `t2 _ _ 0 (e3 _ (d2 τE _ τ₂ e1)) (u2 _ _ τ' hτ')` as an intermediate fact. Rewrite `this` using `[hn τ (Bw.LL.1.val.comp τ') τE hτ' e2]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.laDeRham :
     GlobalArtinReciprocity → HeckeLAdicCharacter → HeckeLAdicCharacterDeRham → DeRhamPotSemistable → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w) (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ), Continuous κ → ∀ wt : Emb l w → ℤ, IsLocAlg h κ wt → ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : GlobalTheory.Pst.Induces Bw), GlobalTheory.Pst.IsdRAt (UpperTheory.V.Loc.PP l) Bw (GlobalTheory.TripleGal.rk1 κ) ∧ GlobalTheory.Pst.IsPotCrysAt (UpperTheory.V.Loc.PP l) Bw (GlobalTheory.TripleGal.rk1 κ) ∧ ∀ τ : Emb l w, GlobalTheory.Pst.IsJumpsAt (UpperTheory.V.Loc.PP l) Bw (GlobalTheory.TripleGal.rk1 κ) (τ.1.comp (algebraMap F (w.adicCompletion F))) {wt τ} := by

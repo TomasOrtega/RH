@@ -6,13 +6,13 @@ open scoped ComplexOrder ENNReal Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ ν _ h k hk`. Establish `e : h * (k * h) = k` using `by rw [hk, mul_inv_cancel_left]`. Establish `e2` using `congrArg Measure.modularCharacterFun e`. Rewrite `e2` using `[Measure.modularCharacterFun_map_mul, Measure.modularCharacterFun_map_mul]`. Establish `hk0 : (0 : ℝ) < Measure.modularCharacterFun k` using `Measure.modularCharacterFun_pos k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hh0 : (0 : ℝ) < Measure.modularCharacterFun h` using `Measure.modularCharacterFun_pos h`. Establish `e3 : (Measure.modularCharacterFun h : ℝ) * ((Measure.modularCharacterFun k : ℝ) * Measure.modularCharacterFun h) = Measure.modularCharacterFun k` using `by exact_mod_cast e2`. Establish `e4 : (Measure.modularCharacterFun h : ℝ) * Measure.modularCharacterFun h = 1`. Apply `mul_left_cancel₀ hk0.ne'` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e5 : (Measure.modularCharacterFun h : ℝ) = 1` using `by nlinarith`. Establish `e6 : Measure.modularCharacterFun h = 1` using `by exact_mod_cast e5`. Establish `hm : ν.map (fun g => g * h) = Measure.modularCharacterFun h • ν`. Rewrite using `[Measure.modularCharacterFun_eq_haarScalarFactor ν h]`. Conclude with `Measure.isMulLeftInvariant_eq_smul _ ν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, e6, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem haar_map_mul_right_of_conj_inv :
     (∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [ν.IsHaarMeasure] (h k : G), k * h = h⁻¹ * k → ν.map (fun g => g * h) = ν) := by

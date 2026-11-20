@@ -16,7 +16,7 @@ def blk (T : ∀ s, Matrix (Fin n) (Fin (m (π s))) ℂ) (k : ∀ i, Matrix (Fin
 variable {T : ∀ s, Matrix (Fin n) (Fin (m (π s))) ℂ}
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[Matrix.mul_sum, Finset.sum_eq_single s]`. Rewrite using `[Matrix.mul_assoc (T s), ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Introduce `t _ hts`. Rewrite using `[Matrix.mul_assoc (T t), ← Matrix.mul_assoc, h0 s t hts.symm, Matrix.zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -31,9 +31,9 @@ theorem frame_mul_blk (h1 : ∀ s, (T s)ᴴ * T s = 1) (h0 : ∀ s t, s ≠ t �
   · simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [blk, Matrix.sum_mul]`. Unfold `blk`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `frame_mul_blk h1 h0 l s` as an intermediate fact. Unfold `blk at this`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, this]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_mul (h1 : ∀ s, (T s)ᴴ * T s = 1) (h0 : ∀ s t, s ≠ t → (T s)ᴴ * T t = 0)
     (k l : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ) :
@@ -47,27 +47,27 @@ theorem blk_mul (h1 : ∀ s, (T s)ᴴ * T s = 1) (h0 : ∀ s t, s ≠ t → (T s
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify `hs` using `[blk]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blk_one (hs : ∑ s, T s * (T s)ᴴ = 1) : blk T (fun _ => 1) = 1 := by
   simpa [blk] using hs
 
 /- English proof (translation)
-Simplify using `[blk, Matrix.conjTranspose_sum, Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_conjTranspose (k : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ) :
     (blk T k)ᴴ = blk T (fun i => (k i)ᴴ) := by
   simp [blk, Matrix.conjTranspose_sum, Matrix.conjTranspose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[blk, Matrix.mul_sub, Matrix.sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_sub (k l : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ) :
     blk T k - blk T l = blk T (fun i => k i - l i) := by
   simp [blk, Matrix.mul_sub, Matrix.sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Unfold `blk`. Rewrite using `[Matrix.trace_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.trace_mul_comm, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_trace (h1 : ∀ s, (T s)ᴴ * T s = 1) (k : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ) :
     (blk T k).trace = ∑ s, (k (π s)).trace := by
@@ -77,7 +77,7 @@ theorem blk_trace (h1 : ∀ s, (T s)ᴴ * T s = 1) (k : ∀ i, Matrix (Fin (m i)
   rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_eq_trace {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) :
     Formalism.REAL.hs X = (X * Xᴴ).trace.re := by
@@ -87,7 +87,7 @@ theorem hs_eq_trace {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) :
   rw [Complex.star_def, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Rewrite using `[hs_eq_trace, blk_conjTranspose, blk_mul h1 h0, blk_trace h1, Complex.re_sum]`. Simplify using `only [hs_eq_trace]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blk_hs (h1 : ∀ s, (T s)ᴴ * T s = 1) (h0 : ∀ s t, s ≠ t → (T s)ᴴ * T t = 0)
     (k : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ) :
@@ -96,7 +96,7 @@ theorem blk_hs (h1 : ∀ s, (T s)ᴴ * T s = 1) (h0 : ∀ s t, s ≠ t → (T s)
   simp only [hs_eq_trace]
 
 /- English proof (translation)
-Unfold `blk`. Use `continuous_finset_sum _ fun s _ => ?_` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (continuous_apply (π s))).matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_blk : Continuous (blk T) := by
   unfold blk
@@ -106,7 +106,7 @@ theorem continuous_blk : Continuous (blk T) := by
 end
 
 /- English proof (translation)
-Establish `h : (uMat g)ᴴ * Formalism.REAL.Jm (allPos N) * uMat g = Formalism.REAL.Jm (allPos N)` using `g.2`. Establish `hJ : Formalism.REAL.Jm (allPos N) = 1` using `by simp [Formalism.REAL.Jm, allPos]`. Simplify `h` using `[hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitary_of_allPos {N : ℕ} (g : Formalism.REAL.UJ (allPos N)) : (uMat g)ᴴ * uMat g = 1 := by
   have h : (uMat g)ᴴ * Formalism.REAL.Jm (allPos N) * uMat g = Formalism.REAL.Jm (allPos N) := g.2
@@ -124,25 +124,23 @@ Both sides reduce to the same expression.
 theorem uMat_one' {n : ℕ} {ε : Fin n → Bool} : uMat (1 : Formalism.REAL.UJ ε) = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uMat {n : ℕ} {ε : Fin n → Bool} : Continuous (fun g : Formalism.REAL.UJ ε => uMat g) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Introduce `n ε σ ι _ _ π m T hπ h1 h0 hs hJ`. Set `f : (∀ i, Formalism.REAL.UJ (allPos (m i))) →* Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun g => blk T (fun i => uMat (g i)) map_one' := by simp only [Pi.one_apply, uMat_one']; exact blk_one hs map_mul' := fun g h => by simp only [Pi.mul_apply, uMat_mul']; exact (blk_mul h1 h0 _ _).symm }`. Establish `hfe : ∀ g, f g = blk T (fun i => uMat (g i))` using `fun g => rfl`. Use `clear_value f`. Establish `hf : Continuous f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : Continuous (fun (g : ∀ i, Formalism.REAL.UJ (allPos (m i))) => fun i => uMat (g i))` using `continuous_pi fun i => continuous_uMat.comp (continuous_apply i)`. Establish `h2` using `(continuous_blk (T := T)).comp h`. Conclude with `h2.congr fun g => (hfe g).symm`. Establish `hmem : ∀ g, f.toHomUnits g ∈ Formalism.REAL.UJ ε`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (f g)ᴴ * Formalism.REAL.Jm ε * f g = Formalism.REAL.Jm ε`. Rewrite using `[hfe]`. Establish `hJ' : ∀ k, Formalism.REAL.Jm ε * blk T k = blk T k * Formalism.REAL.Jm ε` using `hJ`. Use `hJ' (fun i => uMat (g i))` as an intermediate fact. Rewrite using `[Matrix.mul_assoc, this, ← Matrix.mul_assoc, blk_conjTranspose, blk_mul h1 h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [unitary_of_allPos]`. Rewrite using `[blk_one hs, Matrix.one_mul]`. Use `⟨f.toHomUnits.codRestrict _ hmem, ?_, ?_, fun g => hfe g, fun g => ?_⟩` and prove the remaining obligations. Establish `hu : Continuous f.toHomUnits` using `Units.continuous_iff.2 ⟨hf, hf.comp continuous_inv⟩`. Conclude with `hu.subtype_mk hmem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `g h hgh`. Establish `e : blk T (fun i => uMat (g i)) = blk T (fun i => uMat (h i))`. Rewrite using `[← hfe, ← hfe]`. Conclude with `congrArg (fun x : Formalism.REAL.UJ ε => uMat x) hgh`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨s, rfl⟩` from `hπ i`. Establish `e2` using `frame_mul_blk h1 h0 (fun i => uMat (g i)) s`. Rewrite `e2` using `[e, frame_mul_blk h1 h0]`. Establish `e3` using `congrArg (· * T s) e2`. Simplify using `only [Matrix.mul_assoc, h1, Matrix.mul_one] at e3`.
-
-Conclude with `Subtype.ext (Units.ext e3.symm)`. Use `show Formalism.REAL.hs (f g - 1) = _`. Rewrite using `[hfe, ← blk_one (T := T) hs, blk_sub, blk_hs h1 h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_blockDiag_hom : ∀ (n : ℕ) (ε : Fin n → Bool) (σ ι : Type) [Fintype σ] [Fintype ι] (π : σ → ι) (m : ι → ℕ) (T : ∀ s, Matrix (Fin n) (Fin (m (π s))) ℂ), Function.Surjective π → (∀ s, (T s)ᴴ * T s = 1) → (∀ s t, s ≠ t → (T s)ᴴ * T t = 0) → ∑ s, T s * (T s)ᴴ = 1 → (∀ k : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ, Formalism.REAL.Jm ε * ∑ s, T s * k (π s) * (T s)ᴴ = (∑ s, T s * k (π s) * (T s)ᴴ) * Formalism.REAL.Jm ε) → ∃ Φ : (∀ i, Formalism.REAL.UJ (allPos (m i))) →* Formalism.REAL.UJ ε, Continuous Φ ∧ Function.Injective Φ ∧ (∀ g, uMat (Φ g) = ∑ s, T s * uMat (g (π s)) * (T s)ᴴ) ∧ ∀ g, Formalism.REAL.hs (uMat (Φ g) - 1) = ∑ s, Formalism.REAL.hs (uMat (g (π s)) - 1) := by
   intro n ε σ ι _ _ π m T hπ h1 h0 hs hJ

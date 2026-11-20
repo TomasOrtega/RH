@@ -5,7 +5,7 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col dmin Wt)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.nfac_inv_le_pow_of_isOrbit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FPeriodFrameLimitsOfOrbit.lean&line=268#L268)
 -/

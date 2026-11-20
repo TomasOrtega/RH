@@ -8,7 +8,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : mulN G n = mulA G n` using `(Category.id_comp _).symm.trans (MulUnramified.comp_mulN G (𝟙 G) n)`. Rewrite using `[← h]`. Conclude with `formallyUnramified_mulN S G n hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_mulA (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ)
     (hn : IsUnit (n : Γ(S, ⊤))) : FormallyUnramified (mulA G n).left := by

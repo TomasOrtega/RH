@@ -12,11 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Simplify using `only [Charts.perCl, GlobalTheory.CatCoh.cup_mk] at h`. Rewrite `h` using `[← map_sum, GlobalTheory.CatCoh.H2.mk_eq_mk]`. Take `⟨f, hf⟩` from `h`. Use `⟨f + c, fun T T' T'' φ ψ ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun (congrFun (congrFun (congrFun hf T) T') T'') φ) ψ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `hℓ T T' T'' φ ψ`. Rewrite using `[map_add, Pi.add_apply, Pi.add_apply, Pi.add_apply, Pi.add_apply, Pi.add_apply, e]`. Rewrite using `[Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, Submodule.coe_sum]`. Simplify using `only [Finset.sum_apply, GlobalTheory.CatCoh.cupZ_apply, Charts.perZ, Charts.mp_Oc] at e2 ⊢`. Rewrite using `[e2, map_sub, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AlgHom.commutes, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cup_per_sum_const {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
     (K : Charts F) {n : ℕ} (p q : Fin n → Λ →+ Hol F.V) (ℓ : GlobalTheory.CatCoh.Z2 K.Oc) (c : GlobalTheory.CatCoh.C1 K.Oc)

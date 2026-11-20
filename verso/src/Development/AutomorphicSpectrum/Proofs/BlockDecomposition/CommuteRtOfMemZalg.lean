@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.CTFin.Slice1
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `p ((lev R r s g : Matrix _ _ R) i j) = (lev S r s _ : Matrix _ _ S) i j`. Rewrite using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.val_emb₂]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i = i'`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j = j'`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp [Matrix.fromBlocks] <;> rfl`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_lev {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (g : GL (Fin r) R × GL (Fin s) R) :
     GeneralLinearGroup.map p (lev R r s g) = lev S r s (GeneralLinearGroup.map p g.1, GeneralLinearGroup.map p g.2) := by
@@ -26,7 +26,7 @@ theorem map_lev {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (g : GL (
   rcases i' with i' | i' <;> rcases j' with j' | j' <;> simp [Matrix.fromBlocks] <;> rfl
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_lev, pInf_infGL, pInf_infGL, pInf_infGL]`. Rewrite using `[map_lev, pFin_infGL, pFin_infGL, pFin_infGL]`. Conclude with `map_one _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_infGL (y₁ : GL (Fin r) (Cinf E)) (y₂ : GL (Fin s) (Cinf E)) :
     lev (Ad E) r s (infGL E r y₁, infGL E s y₂) = infGL E (r + s) (lev (Cinf E) r s (y₁, y₂)) := by
@@ -36,7 +36,7 @@ theorem lev_infGL (y₁ : GL (Fin r) (Cinf E)) (y₂ : GL (Fin s) (Cinf E)) :
     exact map_one _
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_lev, pInf_finGL, pInf_finGL, pInf_finGL]`. Conclude with `map_one _`. Rewrite using `[map_lev, pFin_finGL, pFin_finGL, pFin_finGL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_finGL (k₁ : GL (Fin r) (Af E)) (k₂ : GL (Fin s) (Af E)) :
     lev (Ad E) r s (finGL E r k₁, finGL E s k₂) = finGL E (r + s) (lev (Af E) r s (k₁, k₂)) := by
@@ -46,7 +46,7 @@ theorem lev_finGL (k₁ : GL (Fin r) (Af E)) (k₂ : GL (Fin s) (Af E)) :
   · rw [map_lev, pFin_finGL, pFin_finGL, pFin_finGL]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.val_emb₂, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem star_val_lev (k : Kinf E r) :
     star ((lev (Cinf E) r s (Unitary.toUnits k, 1) : GL _ _) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)) =
@@ -57,7 +57,7 @@ theorem star_val_lev (k : Kinf E r) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff, star_val_lev, ← Units.val_mul, ← map_mul, Prod.mk_mul_mk, ← map_mul, Unitary.mul_star_self, map_one, one_mul, Prod.mk_one_one, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_mem_unitary (k : Kinf E r) :
     ((lev (Cinf E) r s (Unitary.toUnits k, 1) : GL _ _) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)) ∈
@@ -78,22 +78,22 @@ def levK : Kinf E r →* Kinf E (r + s) where
     rw [← Units.val_mul, ← map_mul, Prod.mk_mul_mk, map_mul, one_mul])
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem toUnits_levK (k : Kinf E r) :
     Unitary.toUnits (levK E r s k) = lev (Cinf E) r s (Unitary.toUnits k, 1) := Units.ext rfl
 
 /- English proof (translation)
-Rewrite using `[toUnits_levK, ← lev_infGL, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infGL_levK (k : Kinf E r) :
     infGL E (r + s) (Unitary.toUnits (levK E r s k)) = lev (Ad E) r s (infGL E r (Unitary.toUnits k), 1) := by
   rw [toUnits_levK, ← lev_infGL, map_one]
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Establish `e : (fun k : Kinf E r => ((lev (Cinf E) r s (Unitary.toUnits k, 1) : GL _ _) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E))) = fun k : Kinf E r => Matrix.reindex (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)) (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)) (Matrix.fromBlocks k …`. Use function extensionality and compare the values at `k`. Rewrite using `[GlobalTheory.SmGL.val_emb₂]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `Continuous (fun k : Kinf E r => ((lev (Cinf E) r s (Unitary.toUnits k, 1) : GL _ _) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)))`. Rewrite using `[e]`. Conclude with `(continuous_subtype_val.matrix_fromBlocks continuous_const continuous_const continuous_const).matrix_reindex _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_levK : Continuous (levK E r s) := by
   refine Continuous.subtype_mk ?_ _
@@ -113,20 +113,20 @@ def levelOne (L : Subgroup (GL (Fin (r + s)) (Af E))) (t : GL (Fin (r + s)) (Af 
   L.comap ((MulAut.conj t⁻¹).toMonoidHom.comp ((lev (Af E) r s).comp (MonoidHom.inl _ _)))
 
 /- English proof (translation)
-Simplify using `[levelOne, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_levelOne {L : Subgroup (GL (Fin (r + s)) (Af E))} {t : GL (Fin (r + s)) (Af E)} {k : GL (Fin r) (Af E)} :
     k ∈ levelOne s L t ↔ t⁻¹ * lev (Af E) r s (k, 1) * t ∈ L := by
   simp [levelOne, MulAut.conj_apply]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SmGL.continuous_leviEmb R _).comp (GlobalTheory.SmGL.continuous_leviTwo R)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lev (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] : Continuous (lev R r s) :=
   (GlobalTheory.SmGL.continuous_leviEmb R _).comp (GlobalTheory.SmGL.continuous_leviTwo R)
 
 /- English proof (translation)
-Establish `hc : Continuous fun k : GL (Fin r) (Af E) => t⁻¹ * lev (Af E) r s (k, 1) * t` using `(continuous_const.mul ((continuous_lev (Af E)).comp (continuous_id.prodMk continuous_const))).mul continuous_const`. Use `hL.preimage hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `mem_levelOne`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isOpen_levelOne {L : Subgroup (GL (Fin (r + s)) (Af E))} (hL : IsOpen (L : Set (GL (Fin (r + s)) (Af E))))
     (t : GL (Fin (r + s)) (Af E)) : IsOpen (levelOne s L t : Set (GL (Fin r) (Af E))) := by
@@ -144,14 +144,14 @@ namespace GlobalTheory.CompanionTheory.CTFin.Slice1
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_mul_one (m₁ x : GA E r) (m₂ : GA E s) :
     lev (Ad E) r s (m₁ * x, m₂) = lev (Ad E) r s (m₁, m₂) * lev (Ad E) r s (x, 1) := by
   rw [← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Establish `e1 : lev (Ad E) r s (infGL E r y, 1) = infGL E (r + s) (lev (Cinf E) r s (y, 1))`. Rewrite using `[← lev_infGL, map_one]`. Rewrite using `[lev_mul_one, e1, map_mul (infGL E (r + s)), mul_assoc (lev (Ad E) r s (g, m₂)) (infGL E (r + s) _), infGL_comm]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lev_infGL_right (g : GA E r) (y : GL (Fin r) (Cinf E)) (m₂ : GA E s) (t : GL (Fin (r + s)) (Af E))
     (c : GL (Fin (r + s)) (Cinf E)) :
@@ -164,9 +164,9 @@ theorem lev_infGL_right (g : GA E r) (y : GL (Fin r) (Cinf E)) (m₂ : GA E s) (
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `e1 : lev (Ad E) r s (finGL E r k, 1) = finGL E (r + s) (lev (Af E) r s (k, 1))`. Rewrite using `[← lev_finGL, map_one]`. Establish `hY : finGL E (r + s) (lev (Af E) r s (k, 1)) * finGL E (r + s) t = finGL E (r + s) t * finGL E (r + s) (t⁻¹ * lev (Af E) r s (k, 1) * t)`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Rewrite using `[lev_mul_one, e1, mul_assoc (lev (Ad E) r s (m, m₂)), hY, mul_assoc _ (infGL E (r + s) c), infGL_comm]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lev_finGL_right (m : GA E r) (k : GL (Fin r) (Af E)) (m₂ : GA E s) (t : GL (Fin (r + s)) (Af E))
     (c : GL (Fin (r + s)) (Cinf E)) :
@@ -191,9 +191,9 @@ namespace GlobalTheory.CompanionTheory.CTFin.Slice1
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hc : ∀ τ u, Commute (cap (a` using `a) τ u) (rt E a h) := fun τ u => by`. Rewrite using `[← infGL_mul_finGL h, map_mul]`. Conclude with `(GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _).mul_right (commute_cap_finRep τ u _)`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx => obtain ⟨τ, u, rfl⟩ := hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hc τ u`. Consider the case `algebraMap c => exact Algebra.commute_algebraMap_left c _`. Consider the case `add x y _ _ hx hy => exact hx.add_left hy`. Consider the case `mul x y _ _ hx hy => exact hx.mul_left hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem commute_rt_of_mem_Zalg {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (h : GA E a) :
     Commute z (rt E a h) := by
@@ -207,15 +207,13 @@ theorem commute_rt_of_mem_Zalg {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E 
   | mul x y _ _ hx hy => exact hx.mul_left hy
 
 /- English proof (translation)
-Take `⟨-, V, hV, hz⟩` from `hJ`. Set `ev : Module.End ℂ (Sm E a) →ₗ[ℂ] Sm E a` to `LinearMap.applyₗ φ`. Establish `hev : ∀ z, ev z = z φ` using `fun _ => rfl`. Establish `hw0 : ∀ w ∈ Submodule.span ℂ {y | ∃ x ∈ Zalg E a, ∃ j ∈ J, y = x * j}, ev w = 0`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, -, j, hj, rfl⟩` from `hy`. Rewrite using `[hev, Module.End.mul_apply, h j hj, map_zero]`. Consider the case `zero => exact map_zero ev`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`. Establish `hle : Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a) ≤ V.map ev`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz', rfl⟩`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨v, hv, w, hw, hvw⟩` from `Submodule.mem_sup.1 (hz z hz')`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev v = ev z`. Rewrite using `[← hvw, map_add, hw0 w hw, add_zero]`. Use `haveI := hV`.
-
-Conclude with `Submodule.finiteDimensional_of_le hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zfin_of_cofin {J : Set (Module.End ℂ (Sm E a))} (hJ : Cofin J) {φ : Sm E a} (h : ∀ z ∈ J, z φ = 0) :
     FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)) := by
@@ -242,13 +240,11 @@ theorem zfin_of_cofin {J : Set (Module.End ℂ (Sm E a))} (hJ : Cofin J) {φ : S
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ C`. Set `A : Fin (Module.finrank ℂ C) → X → ℂ` to `fun i x => b.repr ⟨_, hf x⟩ i`. Establish `hA : ∀ k, f k = ∑ i, (b i : K → ℂ) k • A i`. Introduce `k`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e` using `congrArg (fun c : C => (c : K → ℂ) k) (b.sum_repr ⟨_, hf x⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at e`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, A]`. Rewrite using `[← e]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Submodule.span ℂ (Set.range f) ≤ Submodule.span ℂ (Set.range A)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[hA k]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
-
-Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range A)) := FiniteDimensional.span_of_finite ℂ (Set.finite_range A)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fd_span_of_forall_mem {K X : Type} (C : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ C] (f : K → X → ℂ)
     (hf : ∀ x, (fun k => f k x) ∈ C) : FiniteDimensional ℂ (Submodule.span ℂ (Set.range f)) := by
@@ -271,9 +267,7 @@ theorem fd_span_of_forall_mem {K X : Type} (C : Submodule ℂ (K → ℂ)) [Fini
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CompanionTheory.CTFin.UniSol.finiteDimensional_coeffSpan ρ`. Use `haveI := fd_span_of_forall_mem _ (fun k => (cptRep E a k φ).1) h`. Set `S` to `Submodule.span ℂ (Set.range fun k => cptRep E a k φ)`. Establish `e : S.map (Sm E a).subtype = Submodule.span ℂ (Set.range fun k => (cptRep E a k φ).1)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
-
-Both sides reduce to the same expression. Use `haveI : FiniteDimensional ℂ (S.map (Sm E a).subtype) := by rw [e]; infer_instance`. Conclude with `(Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) S).symm.finiteDimensional`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kfin_of_coeff {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (Kinf E a) W)
     (φ : Sm E a) (h : ∀ g : GA E a, (fun k : Kinf E a => (cptRep E a k φ).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) :
@@ -288,9 +282,9 @@ theorem kfin_of_coeff {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensio
   exact (Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) S).symm.finiteDimensional
 
 /- English proof (translation)
-Set `T : (K' → ℂ) →ₗ[ℂ] (K → ℂ)` to `LinearMap.funLeft ℂ ℂ (fun k => f k * κ)`. Establish `hle : GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan (ρ.comp f)).comap T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`. Use `Submodule.subset_span ⟨ℓ, ρ κ w, funext fun k => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[T, LinearMap.funLeft, map_mul, Module.End.mul_apply]`. Conclude with `hle hc`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_comp {K K' W : Type} [Group K] [Group K'] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ K' W)
     (f : K →* K') (κ : K') {c : K' → ℂ} (hc : c ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) :

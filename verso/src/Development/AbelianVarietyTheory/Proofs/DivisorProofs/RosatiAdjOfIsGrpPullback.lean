@@ -19,15 +19,15 @@ namespace GlobalTheory.TorusPart
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR TopologicalSpace in
 
 /- English proof (translation)
-Establish `pa : ∀ {c : P.A ⟶ P.A} {c' : P'.A ⟶ P'.A}, c'.left ≫ g = g ≫ c.left → ∀ {T : Over S'} (x : T ⟶ P'.A), pushPt hg.1.w (x ≫ c') = pushPt hg.1.w x ≫ c` using `fun hc _ x => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hc, Category.assoc])`. Establish `pm : ∀ {T : Over S'} (x y : T ⟶ P'.A), pushPt hg.1.w (x * y) = pushPt hg.1.w x * pushPt hg.1.w y` using `fun x y => map_mul (pushHom hg _) x y`. Take `⟨w, gw'⟩` from `LBIso.symm hw`. Introduce `s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, hU, t, ht⟩` from `h (f s)`. Set `V : (P'.A ⊗ P'.A).left.Opens` to `(P'.A ⊗ P'.A).hom ⁻¹ᵁ (f ⁻¹ᵁ U)`. Set `T' : Over S'` to `Over.mk (V.ι ≫ (P'.A ⊗ P'.A).hom)`. Set `j : T' ⟶ P'.A ⊗ P'.A` to `Over.homMk V.ι rfl`. Set `m` to `lift (pushPt hg.1.w (j ≫ fst _ _)) (pushPt hg.1.w (j ≫ snd _ _))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨n, hn⟩ : ∃ n : V.toScheme ⟶ ((P.A ⊗ P.A).hom ⁻¹ᵁ U).toScheme, n ≫ ((P.A ⊗ P.A).hom ⁻¹ᵁ U).ι = m.left` from `⟨IsOpenImmersion.lift _ m.left (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q y ∈ U) (Over.w m)).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨t', ht', -⟩` from `exists_gen P.isLB (φ' := fun i => (V.ι ≫ rosatiφ P'.A a' b' i) ≫ g) (ε' := rosatiε) (fun W _ k => by`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `p₁` using `prod_ros a b (pushPt hg.1.w (j ≫ fst _ _)) (pushPt hg.1.w (j ≫ snd _ _)) k`. Establish `p₂` using `prod_ros a' b' (j ≫ fst _ _) (j ≫ snd _ _) (fun q => k (q ≫ g))`. Rewrite `p₂` using `[← comp_lift, lift_fst_snd, Category.comp_id]`. Rewrite `p₁` using `[← pa ha, ← pa hb, ← pm, ← pm]`. Conclude with `((Finset.prod_congr rfl fun i _ => by show k (n ≫ _ ≫ _) ^ _ = k (m.left ≫ _) ^ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← Category.assoc, hn]).trans p₁).trans p₂.symm) (LB.pullGen P.L _ _ t n) (pullGen_isGen _ _ _ _ ht n)`. Conclude with `⟨f ⁻¹ᵁ U, hU, exists_down ((isGen_iff w).1 gw') P.isLB P'.isLB t' ht'⟩`.
+A detailed English derivation is pending.
 -/
 theorem rosatiAdj_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} (P : Out.PolAV S) (P' : Out.PolAV S')
     {g : P'.A.left ⟶ P.A.left} (hg : IsGrpPullback P'.A P.A f g) (hw : LBIso (P.L.pull g) P'.L)
@@ -64,7 +64,7 @@ theorem rosatiAdj_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} (P : Out.P
   exact ⟨f ⁻¹ᵁ U, hU, exists_down ((isGen_iff w).1 gw') P.isLB P'.isLB t' ht'⟩
 
 /- English proof (translation)
-Introduce `O _ c S S' f P j h`. Establish `hp` using `exists_isActPull f j`. Conclude with `⟨StrictPull.polPull P f, OAct.pullback f P.A j, pullback.fst P.A.hom f, hp, fun a => rosatiAdj_of_isGrpPullback P (StrictPull.polPull P f) hp.1 (PolBaseChange.lbIso_refl (StrictPull.polPull P f).isLB) (hp.2 a) (hp.2 (c a)) (h a)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isActPull_isRosati : ∀ (O : Type) [CommRing O] (c : O →+* O) (S S' : Scheme.{0}) (f : S' ⟶ S)
     (P : Out.PolAV S) (j : OAct O P.A),

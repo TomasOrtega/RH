@@ -11,9 +11,9 @@ open Ad3 Ad3.R
 namespace GlobalTheory.CompanionTheory.RSZeta
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hH.bdd`. Establish `hmF : MeasurableSet (𝓕 ∩ band)` using `hS.meas.inter hmb`. Use `Measure.integrableOn_of_bounded (M := C * (2 : ℝ) ^ |s.re|) hS.vol.ne (measurable_w hH c s).aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' hmF).2 (Eventually.of_forall fun g hg => ?_)` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hg.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 1)`. Establish `hp : (Dt g) ^ s.re ≤ (2 : ℝ) ^ |s.re|` using `(Real.rpow_le_rpow_of_exponent_le h1 (le_abs_self _)).trans (Real.rpow_le_rpow (Dt_pos g).le h2.le (abs_nonneg _))`. Rewrite using `[norm_mul, norm_mul, norm_cdet, mul_one, Complex.norm_cpow_eq_rpow_re_of_pos (Dt_pos g)]`. Conclude with `mul_le_mul (hC g) hp (Real.rpow_nonneg (Dt_pos g).le _) hC0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_band_w {μ : Measure G2} {𝓕 : Set G2} {mK : Measure KA} {𝓓 : Set Jd}
     {H : G2 → ℂ} (c : HeckeCharacter ℚ) (hS : Set0 μ 𝓕 mK 𝓓) (hH : Aut H) (s : ℂ)
@@ -33,7 +33,7 @@ theorem integrableOn_band_w {μ : Measure G2} {𝓕 : Set G2} {mK : Measure KA} 
   exact mul_le_mul (hC g) hp (Real.rpow_nonneg (Dt_pos g).le _) hC0
 
 /- English proof (translation)
-Establish `h2 : (2 : ℂ).arg ≠ Real.pi`. Rewrite using `[show (2 : ℂ) = ((2 : ℝ) : ℂ) by norm_num, Complex.arg_ofReal_of_nonneg (by norm_num)]`. Conclude with `Real.pi_pos.ne`. Rewrite using `[show (((1 / 2 : ℝ)) : ℂ) = (2 : ℂ)⁻¹ by push_cast; norm_num, Complex.inv_cpow _ _ h2, Complex.cpow_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpow_half (s : ℂ) : (((1 / 2 : ℝ)) : ℂ) ^ s = 2 ^ (-s) := by
   have h2 : (2 : ℂ).arg ≠ Real.pi := by
@@ -43,29 +43,29 @@ theorem cpow_half (s : ℂ) : (((1 / 2 : ℝ)) : ℂ) ^ s = 2 ^ (-s) := by
     Complex.cpow_neg]
 
 /- English proof (translation)
-Introduce `μ 𝓕 mK 𝓓 H c hG hS hH hc s hI`. Use `set w : G2 → ℂ := fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s with hw`. Take `⟨-, hr, hT⟩` from `hG μ 𝓕 mK 𝓓 hS`. Take `⟨z, hz2, hzc⟩` from `hr (1 / 2) (by norm_num)`. Establish `hzc'` using `hzc c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : MeasurableSet {g : G2 | Dt g < 1}` using `measurableSet_lt measurable_Dt measurable_const`. Establish `hm2 : MeasurableSet {g : G2 | Dt g < 2}` using `measurableSet_lt measurable_Dt measurable_const`. Establish `hmb : MeasurableSet band` using `(measurableSet_le measurable_const measurable_Dt).inter hm2`. Establish `hwm : Measurable w` using `measurable_w hH c s`. Establish `hset : {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)} = {g : G2 | Dt g < 1}` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFm : Measurable (Set.indicator {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)} w)` using `hwm.indicator hm1`. Establish `hFl : LInv (Set.indicator {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)} w)` using `linv_ind (linv_w hH c s) _`. Establish `hinv : ∫ g in 𝓕, Set.indicator {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)} w (dg2 z z * g) ∂μ = ∫ g in 𝓕, Set.indicator {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)} w g ∂μ` using `(hT (fun g : G2 => dg2 z z * g) (Or.inr (Or.inr ⟨z, rfl⟩))).2 _ hFm hFl`. Establish `hpt : ∀ g : G2, Set.indicator {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)} w (dg2 z z * g) = 2 ^ (-s) * Set.indicator {g : G2 | Dt g < 2} w g`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD : Dt (dg2 z z * g) = 1 / 2 * Dt g` using `by rw [Dt_dg, hz2]`. Establish `hwg : w (dg2 z z * g) = 2 ^ (-s) * w g`. Simplify using `only [hw]`. Rewrite using `[hH.cen z g, cdet_dg c z hzc' g, cpow_dg, hz2, cpow_half]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : Dt g < 2`. Establish `h' : dg2 z z * g ∈ {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)}`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Iio, hD]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Set.indicator_of_mem h', Set.indicator_of_mem (show g ∈ {g : G2 | Dt g < 2} from h), hwg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : dg2 z z * g ∉ {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)}`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Iio, hD]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Set.indicator_of_notMem h', Set.indicator_of_notMem (show g ∉ {g : G2 | Dt g < 2} from h), mul_zero]`. Establish `e1 : ∫ g in 𝓕, Set.indicator {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)} w (dg2 z z * g) ∂μ = 2 ^ (-s) * ∫ g in 𝓕 ∩ {g : G2 | Dt g < 2}, w g ∂μ`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_const_mul, setIntegral_indicator hm2]`. Establish `e2 : ∫ g in 𝓕, Set.indicator {g : G2 | Dt g ∈ Set.Iio (1 : ℝ)} w g ∂μ = GlobalTheory.CompanionTheory.RSZeta.Jl μ 𝓕 H c s`. Rewrite using `[hset, setIntegral_indicator hm1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hun : 𝓕 ∩ {g : G2 | Dt g < 2} = (𝓕 ∩ {g : G2 | Dt g < 1}) ∪ (𝓕 ∩ band)`. Use extensionality with `g`. Simplify using `only [band, Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : Dt g < 1`. Conclude with `Or.inl ⟨h1, h⟩`. Conclude with `Or.inr ⟨h1, not_lt.1 h, h2⟩`. Introduce and unpack `(⟨h1, h2⟩ | ⟨h1, -, h2⟩)`. Conclude with `⟨h1, by linarith⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h2⟩`. Establish `hdis : Disjoint (𝓕 ∩ {g : G2 | Dt g < 1}) (𝓕 ∩ band)`. Use `Set.disjoint_left.2 fun g hg hb => ?_` and prove the remaining obligations. Establish `h1 : Dt g < 1` using `hg.2`. Establish `h2 : 1 ≤ Dt g` using `hb.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : ∫ g in 𝓕 ∩ {g : G2 | Dt g < 2}, w g ∂μ = GlobalTheory.CompanionTheory.RSZeta.Jl μ 𝓕 H c s + GlobalTheory.CompanionTheory.RSZeta.Bd μ 𝓕 H c s`. Rewrite using `[hun, setIntegral_union hdis (hS.meas.inter hmb) hI (integrableOn_band_w c hS hH s hmb)]`. Both sides reduce to the same expression. Establish `key : 2 ^ (-s) * (GlobalTheory.CompanionTheory.RSZeta.Jl μ 𝓕 H c s + GlobalTheory.CompanionTheory.RSZeta.Bd μ 𝓕 H c s) = GlobalTheory.CompanionTheory.RSZeta.Jl μ 𝓕 H c s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e3, ← e1, hinv, e2]`. Take the linear combination `-key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Jl_shift : ∀ (μ : Measure G2) (𝓕 : Set G2) (mK : Measure KA) (𝓓 : Set Jd) (H : G2 → ℂ) (c : HeckeCharacter ℚ),
   Ad3.R.G1a → Set0 μ 𝓕 mK 𝓓 → Aut H → IsOfFinOrder c → ∀ s : ℂ,

@@ -156,15 +156,15 @@ def SquaresCommute (F : Face D A) : Prop :=
   R.Char F → G.Is → ∀ i j, i < D.R.m → j < D.R.m → SquareComm G i j
 
 /- English proof (translation)
-The claim follows from `mul_div_mul_right_eq_div _ _ _`.
+A detailed English derivation is pending.
 -/
 example (t : T) (i j : ℕ) : al R t i j / be G i j = R.toLevCh.mu t (j + 1) / G.chi (D.R.m - i) :=
   mul_div_mul_right_eq_div _ _ _
 
 /- English proof (translation)
-Establish `h : adj M V₁ (blkR M V V₁ 0) = 0`. Use extensionality with `a b`. Simplify using `[adj, blkR, Matrix.mul_apply]`. Use `show φ (blkL M V V₁ 0) * φ' (adj M V₁ (blkR M V V₁ 0)) = _`. Rewrite using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 example (M V V₁ : HSp D) (φ : WO M V → ℂ) (φ' : WO V₁ M → ℂ) : ten M V V₁ φ φ' 0 = φ 0 * φ' 0 := by
   have h : adj M V₁ (blkR M V V₁ 0) = 0 := by
@@ -174,7 +174,7 @@ example (M V V₁ : HSp D) (φ : WO M V → ℂ) (φ' : WO V₁ M → ℂ) : ten
   rw [h]; rfl
 
 /- English proof (translation)
-Rewrite using `[routeA, route, Fin.sum_univ_one, (hG.lifts.X t i (j + 1) hi hj f.1 hf.1).int_eq]`. Conclude with `(hG.lifts.th t (i + 1) j hi hj f.2 hf.2).int_eq _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (hG : G.Is) (t : T) {i j : ℕ} (hi : i < D.R.m) (hj : j < D.R.m) (f : Pair (G.V i (j + 1)) (G.V (i + 1) (j + 1)) (G.V (i + 1) j))
     (hf : IsFinPair R.ψ R.θ true _ _ _ f) (P P') (F : G.CV i (j + 1)) (v : SmT (G.V i (j + 1)).M) :

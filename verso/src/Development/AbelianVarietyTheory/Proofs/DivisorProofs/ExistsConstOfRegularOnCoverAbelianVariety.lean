@@ -18,13 +18,13 @@ noncomputable section
 namespace GlobalTheory.HeatConst
 
 /- English proof (translation)
-Introduce `K _ P₀ F _ ψ ξ hξ hinj I W hW hWξ y hy`. Use `choose h hh using hy`. Establish `hagree : ∀ i j, rsT (h i) (W i ⊓ W j) = rsT (h j) (W i ⊓ W j)`. Introduce `i j`. Establish `hij : ⊤ ≤ ξ ⁻¹ᵁ (W i ⊓ W j)` using `fun p hp => ⟨hWξ i hp, hWξ j hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sub_eq_zero.1 (hinj _ _ hij ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.LogKSBal.valR_eq ξ hij, map_sub, ← GlobalTheory.LogKSBal.valR_eq ξ hij, ← GlobalTheory.LogKSBal.valR_eq ξ hij, GlobalTheory.LogKSBal.valR_rsT ξ inf_le_left hij, GlobalTheory.LogKSBal.valR_rsT ξ inf_le_right hij, hh, hh, sub_self]`. Take `⟨t, ht⟩` from `GlobalTheory.KS.exists_rsT_eq W (O := ⊤) (fun _ => le_top) hW.ge h hagree`. Take `⟨u, hu⟩` from `(GlobalTheory.globalFns_holds (Sp K) P₀.A P₀.isAb).2 t`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom u, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, -⟩ : ∃ i, ξ.base (IsLocalRing.closedPoint F) ∈ W i := by`. Establish `: ξ.base (IsLocalRing.closedPoint F) ∈ (⨆ i, W i)` using `by rw [hW]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Establish `htop : ⊤ ≤ ξ ⁻¹ᵁ (⊤ : P₀.A.left.Opens)` using `fun _ _ => trivial`. Establish `hc : t = constFn P₀.A.hom ⊤ ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hu]`. Simplify using `[constFn, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Rewrite using `[← hh i, ← ht i, GlobalTheory.LogKSBal.valR_rsT ξ le_top (hWξ i), hc, GlobalTheory.LogKSBal.valR_constFn P₀.A.hom ξ htop hξ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_of_regular_on_cover : ∀ (K : Type) [Field K] (P₀ : Out.PolAV (Sp K)), ∀ (F : Type) [Field F] (ψ : K →+* F) (ξ : Sp F ⟶ P₀.A.left), ξ ≫ P₀.A.hom = spMap ψ → (∀ O (f : Γ(P₀.A.left, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 → f = 0) → ∀ (I : Type) (W : I → P₀.A.left.Opens), ⨆ i, W i = ⊤ → (∀ i, ⊤ ≤ ξ ⁻¹ᵁ W i) → ∀ y : F, (∀ i, ∃ h : Γ(P₀.A.left, W i), valR ξ (W i) h = y) → ∃ r : K, ψ r = y := by
   intro K _ P₀ F _ ψ ξ hξ hinj I W hW hWξ y hy

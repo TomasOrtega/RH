@@ -21,19 +21,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (FinPl Is
 namespace GlobalTheory.NrmVol
 
 /- English proof (translation)
-Introduce `D v a b r`. Establish `hC : (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `hE : (ValuativeRel.valuation (Fv D.host.F v)).IsEquiv (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ)))` using `ValuativeRel.isEquiv _ _`. Establish `hle : ∀ z : Fv D.host.F v, ValuativeRel.valuation (Fv D.host.F v) z ≤ 1 ↔ Valued.v z ≤ 1` using `fun z => hE.le_one_iff_le_one`. Establish `hlt : ∀ z : Fv D.host.F v, ValuativeRel.valuation (Fv D.host.F v) z < 1 ↔ Valued.v z < 1` using `fun z => hE.lt_one_iff_lt_one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : ∀ z : Fv D.host.F v, ValuativeRel.valuation (Fv D.host.F v) z = 1 ↔ Valued.v z = 1` using `fun z => hE.eq_one_iff_eq_one`. Establish `htop : ∀ (x : Matrix (Fin b) (Fin a) (Fv D.host.F v)) (i j : Fin r), topL r x i j = 0 ∨ ∃ i' j', topL r x i j = x i' j'`. Introduce `x i j`. Unfold `topL`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the second alternative.
 
-Conclude with `Or.inr ⟨_, _, rfl⟩`. Conclude with `Or.inl rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [suppQ, Set.mem_setOf_eq, GlobalTheory.ParahoricConjBlocks.mem_KO_val_iff, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hdet, hint, hlow⟩`. Use `⟨⟨fun i j => ?_, (heq _).2 hdet⟩, fun i j => (hle _).2 (hint i j), fun i j hi hj => (hlt _).2 (hlow i j hi hj)⟩` and prove the remaining obligations. Break down `htop x i j with h | ⟨i', j', h⟩` into its components or cases. Rewrite using `[h, map_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le_one`. Rewrite using `[h]`. Conclude with `(hle _).2 (hint i' j')`. Introduce and unpack `⟨⟨-, hdet⟩, hint, hlow⟩`. Establish `hd : Valued.v (topL r x).det = 1` using `(heq _).1 hdet`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, hd, fun i j => (hle _).1 (hint i j), fun i j hi hj => (hlt _).1 (hlow i j hi hj)⟩` and prove the remaining obligations. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `hd` using `[h0, map_zero]`. Conclude with `zero_ne_one hd`. Use extensionality with `y`.
-
-Simplify using `only [Set.mem_setOf_eq]`. Conclude with `forall_congr' fun i => forall_congr' fun j => (hle _).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem suppQ_eq_valuative : ∀ (D : D7) (v : FinPl D) (a b r : ℕ), GlobalTheory.NrmVol.suppQ (a := a) (b := b) v r = {x | topL r x ∈ Units.val '' (GlobalTheory.SplitWeil.KO (Fv D.host.F v) (Fin r) : Set (GL (Fin r) (Fv D.host.F v))) ∧ (∀ i j, ValuativeRel.valuation (Fv D.host.F v) (x i j) ≤ 1) ∧ ∀ i j, r ≤ i.val → j.val < r → ValuativeRel.valuation (Fv D.host.F v) (x i j) < 1} ∧ {y : Matrix (Fin b) (Fin a) (Fv D.host.F v) | ∀ i j, Valued.v (y i j) ≤ 1} = {x | ∀ i j, ValuativeRel.valuation (Fv D.host.F v) (x i j) ≤ 1} := by
   intro D v a b r

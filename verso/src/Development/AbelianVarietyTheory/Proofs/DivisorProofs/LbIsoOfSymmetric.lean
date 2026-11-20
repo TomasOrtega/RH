@@ -16,23 +16,21 @@ namespace GlobalTheory.SymFirstOrder
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `K _ _ A _ A' _ i q hA hi hq e L M hL hM hLs hMs hLM`. Establish `hA'` using `PolPull.isAbelianScheme_of_isGrpPullback hA hq`. Use `set c := cls L hL - cls M hM with hc`. Establish `h0 : pull i c = 0`. Rewrite using `[hc, map_sub, ← cls_pull hL i (pull_isLB hL i), ← cls_pull hM i (pull_isLB hM i), (cls_eq_iff (pull_isLB hL i) (pull_isLB hM i)).2 hLM, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : pull (GrpObj.inv : A' ⟶ A').left c = c`. Rewrite using `[hc, map_sub, ← cls_pull hL _ (pull_isLB hL _), ← cls_pull hM _ (pull_isLB hM _), (cls_eq_iff _ hL).2 hLs, (cls_eq_iff _ hM).2 hMs]`. Establish `hlam` using `ConstTheta.lam_eq_zero GlobalTheory.laws_without_cohomology.1 hA' hi.1 c h0 (𝟙 A') (𝟙 A')⁻¹`. Establish `einv : (𝟙 A')⁻¹ = (GrpObj.inv : A' ⟶ A')` using `by simp [Hom.inv_def]`. Establish `hone : pull (1 : A' ⟶ A').left c = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hom.one_def, Over.comp_left, pull_comp]`. Take `⟨Q, hQ, hQc⟩` from `cls_surj (pull (η[A'] : 𝟙_ (Over (Sp (DualNumber K))) ⟶ A').left c)`. Rewrite using `[← hQc, (cls_eq_zero_iff hQ).2 (LB.exists_isGen_of_isLocalRing hQ), map_zero]`. Establish `htwo : 2 • c = 0`. Unfold `lam at hlam`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlam` using `[mul_inv_cancel, einv, hinv, hone, Over.id_left, pull_id]`. Rewrite using `[two_nsmul, ← neg_eq_zero, neg_add]`. Simplify `hlam` using `[sub_eq_add_neg, add_assoc]`. Establish `hsurj : Surjective i`. Establish `: Surjective (GlobalTheory.DeRham.epsRed K)` using `⟨fun x => by haveI := ConstTheta.subsingleton_sp (K := K)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t⟩ : Nonempty (Sp K)` from `inferInstance`. Conclude with `⟨t, Subsingleton.elim _ _⟩⟩`. Conclude with `MorphismProperty.of_isPullback (P := @Surjective) hi.1.flip this`. Establish `hiq : ∀ x, i (q x) = x` using `fun x => by`. Take `⟨y, rfl⟩` from `hsurj.surj x`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Scheme.Hom.comp_apply i q, e]`. Both sides reduce to the same expression. Establish `h2 : IsUnit (2 : Γ(A'.left, ⊤))`. Establish `u : IsUnit (2 : DualNumber K)` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (by rw [show TrivSqZeroExt.fst (2 : DualNumber K) = 2 from rfl]; exact isUnit_iff_ne_zero.2 two_ne_zero)`. Establish `u'` using `(u.map (Scheme.ΓSpecIso (CommRingCat.of (DualNumber K))).inv.hom).map A'.hom.appTop.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `u'` using `[map_ofNat, map_ofNat]`. Then use the resulting hypothesis. Establish `hsq : ∀ (W : A'.left.Opens) (f g : Γ(A'.left, W)), (i.app W).hom f = 0 → (i.app W).hom g = 0 → f * g = 0`. Use `SquareZero.mul_eq_zero_of_app_eq_zero (DualNumber K) K (TrivSqZeroExt.fstHom K K K).toRingHom TrivSqZeroExt.fst_surjective ?_ A'.left A.left A'.hom A.hom i hi.1` and prove the remaining obligations. Rewrite using `[pow_two, eq_bot_iff, Ideal.mul_le]`. Introduce `r hr s hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : r.fst = 0` using `hr`. Establish `hs' : s.fst = 0` using `hs`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hr', hs']`. Establish `hc0` using `GlobalTheory.T.cechPicardClass_eq_zero_of_squareZero_retraction i q e hiq h2 hsq c h0 htwo`.
-
-Conclude with `(cls_eq_iff hL hM).1 (sub_eq_zero.1 hc0)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_of_symmetric : ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp (DualNumber K))) [GrpObj A']
     (i : A.left ⟶ A'.left) (q : A'.left ⟶ A.left),

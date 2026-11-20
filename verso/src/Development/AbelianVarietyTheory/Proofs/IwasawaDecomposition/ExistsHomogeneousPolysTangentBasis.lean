@@ -20,23 +20,21 @@ namespace GlobalTheory.LineNorm.WedgeMax
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Take `⟨d, n, B, hB, hN⟩` from `GlobalTheory.T.exists_homogeneous_invariants_norms A A' hinj (Fin k → Fin g) (Fin k → J) fun σ s => ∏ i, h (σ i) (s i)`. Set `e` to `Fintype.equivFin (Fin n ⊕ (Fin k → Fin g))`. Set `B' : Fin n ⊕ (Fin k → Fin g) → MvPolynomial (Fin k → Fin g) A` to `Sum.elim B fun s => MvPolynomial.C (((c ^ k) ^ (d : ℕ) : ℕ) : A) * MvPolynomial.X s ^ (d : ℕ)`. Use `⟨d, _, fun i => B' (e.symm i), fun i => ?_, fun s => ⟨e (Sum.inr s), (c ^ k) ^ (d : ℕ), pow_ne_zero _ (pow_ne_zero _ hc), by simp [B']⟩, ?_⟩` and prove the remaining obligations. Use `show (B' (e.symm i)).IsHomogeneous d`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `e.symm i with i | s` into its components or cases. Conclude with `hB i`. Conclude with `(MvPolynomial.isHomogeneous_X_pow s _).C_mul _`. Introduce `C _ _ _ _ x m hk a ha N hx`. Choose the witnesses or unpack the hypotheses as in `⟨x', hx'⟩ : ∃ x' : A' →+* C, x'.comp (algebraMap A A') = x := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h0`. Establish `h1` using `(hN C x (minor a hk) 0 fun y hy => absurd ⟨y, hy⟩ h0).trans (hN C x (minor a hk) 1 fun y hy => absurd ⟨y, hy⟩ h0).symm`. Simplify using `at h1`. Establish `cov` using `fun (y : A' →+* C) (hy : y.comp (algebraMap A A') = x) => GlobalTheory.T.successive_minima_positive_norms C g J (fun j i => y (h j i)) (fun b hb => funext fun i => by`. Take `⟨j, hj⟩` from `hh i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hb j` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single i (fun i' _ hi => by simp [hj, Pi.single_eq_of_ne hi]) (by simp)]`. Simplify `this) m a ha N (hx y hy)` using `[hj, hc]`. Establish `hP` using `hN C x (minor a hk) (∏ l : Fin k, N (Fin.castLE hk l)) fun y hy => by`. Simplify using `only [map_prod]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((cov y hy).2 k hk).symm`. Establish `hpos` using `(cov x' hx').1`. Establish `hP0 : 0 ≤ ∏ l : Fin k, N (Fin.castLE hk l)` using `Finset.prod_nonneg fun l _ => (hpos _).le`. Rewrite using `[← Real.log_prod fun l _ => (hpos _).ne', ← Real.log_pow, e.symm.iSup_comp (g := fun i => ‖MvPolynomial.eval₂ x (minor a hk) (B' i)‖)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm ?_ (Real.iSup_le ?_ (pow_nonneg hP0 _))` and prove the remaining obligations. Rewrite using `[hP]`. Conclude with `Real.iSup_le (fun i => le_ciSup (f := fun i => ‖MvPolynomial.eval₂ x (minor a hk) (B' i)‖) (Finite.bddAbove_range _) (Sum.inl i)) (Real.iSup_nonneg fun _ => norm_nonneg _)`. Introduce and unpack `(i | s)`. Rewrite using `[hP]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_ciSup (f := fun i => ‖MvPolynomial.eval₂ x (minor a hk) (B i)‖) (Finite.bddAbove_range _) i`. Establish `e1 : ‖MvPolynomial.eval₂ x (minor a hk) (B' (Sum.inr s))‖ = ‖(c : C) ^ k * minor a hk s‖ ^ (d : ℕ)`. Simplify using `[B', mul_pow]`. Rewrite using `[e1]`. Use `pow_le_pow_left₀ (norm_nonneg _) ?_ _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `choose j hj using hh`. Rewrite using `[(cov x' hx').2 k hk]`. Use `le_trans (le_of_eq ?_) (le_ciSup (Finite.bddAbove_range _) fun i => j (s i))` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single s (fun s' _ hs => ?_) (by simp)]`. Simplify using `[hj]`.
-
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hs`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hj, Pi.single_eq_of_ne hi]), zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_poly (A A' : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CharZero A] [CommRing A']
     [IsDomain A'] [Algebra A A'] [Module.Finite A A'] (hinj : Function.Injective (algebraMap A A')) (g k : ℕ)
@@ -101,14 +99,14 @@ theorem exists_poly (A A' : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed 
         rw [Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hj, Pi.single_eq_of_ne hi]), zero_mul]
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     spMap (ψ.comp φ) = spMap ψ ≫ spMap φ := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp]`. Use `congr 1`. Apply the tactic sequence `exact RingHom.ext fun x => by ext <;> simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spMap_dual_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     spMap (dualMap (ψ.comp φ)) = spMap (dualMap ψ) ≫ spMap (dualMap φ) := by
@@ -120,7 +118,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   (t : SAB H X)
 
 /- English proof (translation)
-Use `⟨fun i => GlobalTheory.LieMet.isTan_map φ rfl (he.1 i), fun T _ ψ w => ?_⟩` and prove the remaining obligations. Use `he.2 T (ψ.comp φ) w` as an intermediate fact. Simplify `this` using `only [spMap_comp, spMap_dual_comp, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isTanBasis_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {x : Sp R ⟶ X} {g : ℕ}
     {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (he : IsTanBasis t x e) :
@@ -130,7 +128,7 @@ theorem isTanBasis_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {
   simpa only [spMap_comp, spMap_dual_comp, Category.assoc] using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, GlobalTheory.LieMet.isTan_tv (∑ l, cf l • GlobalTheory.LieMet.tanOf (hu l)), (GlobalTheory.LieMet.isComb_iff (fun l => GlobalTheory.LieMet.tanOf (hu l)) cf _).2 rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_comb {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)}
     (hu : ∀ l, IsTanAtG t x (u l)) (cf : Fin m → S) : ∃ w, IsTanAtG t x w ∧ IsCombAtG t x u cf w :=
@@ -138,7 +136,7 @@ theorem exists_comb {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {u : Fin 
     (GlobalTheory.LieMet.isComb_iff (fun l => GlobalTheory.LieMet.tanOf (hu l)) cf _).2 rfl⟩
 
 /- English proof (translation)
-The claim follows from `((isCombAtG_iff t _ (fun j => ovT (hu j)) _ _).1 h).symm.trans ((isCombAtG_iff t _ (fun j => ovT (hu j)) _ _).1 h')`.
+A detailed English derivation is pending.
 -/
 theorem comb_unique {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)}
     (hu : ∀ l, IsTanAtG t x (u l)) {cf : Fin m → S} {w w' : Sp (DualNumber S) ⟶ t.G.left}
@@ -150,11 +148,11 @@ variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
 omit [IsUltrametricDist C] in
 
 /- English proof (translation)
-Establish `hut : ∀ l, IsTanAtG t x (u l)` using `fun l => by`. Take `⟨w, hw, hw'⟩` from `exists_comb t he (a l)`. Conclude with `comb_unique t he hw' (hu l) ▸ hw`. Establish `key : ∀ cf w, IsCombAtG t x u cf w → (w ∈ Λ ↔ P fun i => ∑ l', cf l' * a l' i)` using `fun cf w hw => by`. Use `hΛ _ w ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `tanLinG e he u (Matrix.of fun i l => a l i) cf w hu hw` as an intermediate fact. Use `this using 2 with i` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Unfold `GlobalTheory.ShFam.Pad.grNorm`. Use `congr 1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Use `exists_congr fun cf => and_congr_right fun _ => and_congr_right fun _ => and_congr_left fun _ => ?_` and prove the remaining obligations. Use `⟨fun ⟨w, h1, h2⟩ => (key cf w h2).1 h1, fun hP => ?_⟩` and prove the remaining obligations. Take `⟨w, -, hw⟩` from `exists_comb t hut cf`. Conclude with `⟨w, (key cf w hw).2 hP, hw⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem grNorm_eq {x : Sp C ⟶ X} {g m : ℕ} {e : Fin g → (Sp (DualNumber C) ⟶ t.G.left)} (he : ∀ i, IsTanAtG t x (e i))
     {Λ : Set (Sp (DualNumber C) ⟶ t.G.left)} {P : (Fin g → C) → Prop}
@@ -179,7 +177,7 @@ theorem grNorm_eq {x : Sp C ⟶ X} {g m : ℕ} {e : Fin g → (Sp (DualNumber C)
   exact ⟨w, (key cf w hw).2 hP, hw⟩
 
 /- English proof (translation)
-Establish `: IsDominant (spMap (intO C).subtype)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Introduce `z hz`. Establish `: z = 0` using `Subtype.ext hz`. Simplify using `[this])⟩`. Conclude with `ext_of_isDominant (spMap (intO C).subtype) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ext_intO (hX : X.IsSeparated) (x x' : Sp ↥(intO C) ⟶ X)
     (h : spMap (intO C).subtype ≫ x' = spMap (intO C).subtype ≫ x) : x' = x := by
@@ -190,13 +188,13 @@ theorem ext_intO (hX : X.IsSeparated) (x x' : Sp ↥(intO C) ⟶ X)
   exact ext_of_isDominant (spMap (intO C).subtype) h
 
 /- English proof (translation)
-Establish `h1 : spMap (RingHom.id ↥(intO C)) = 𝟙 _` using `Spec.map_id _`. Establish `h2 : dualMap (RingHom.id ↥(intO C)) = RingHom.id _`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`. Establish `h3 : spMap (dualMap (RingHom.id ↥(intO C))) = 𝟙 _` using `by rw [h2]; exact Spec.map_id _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hD0` using `he.2 _ (RingHom.id ↥(intO C))`. Simplify using `only [h1, h3, Category.id_comp] at hD0`. Establish `hDk` using `(isTanBasis_map t (intO C).subtype he).1`. Use `⟨?_, fun hc => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨xO', hx, vO, hv, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `rfl` from `ext_intO hX _ xO' hx`. Take `⟨a, ha, -⟩` from `hD0 vO hv`. Establish `e` using `(he.2 C _ _ (GlobalTheory.LieMet.isTan_map (intO C).subtype rfl hv)).unique hw (GlobalTheory.LatDRFree.comb_map t (intO C).subtype ha)`. Introduce `i`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(a i).2`. Take `⟨v, hv, ha⟩` from `exists_comb t he.1 fun i => (⟨b i, hc i⟩ : ↥(intO C))`. Conclude with `⟨x, rfl, v, hv, comb_unique t hDk (GlobalTheory.LatDRFree.comb_map t (intO C).subtype ha) hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_latDR (hX : X.IsSeparated) {x : Sp ↥(intO C) ⟶ X} {g : ℕ}
     {e : Fin g → (Sp (DualNumber ↥(intO C)) ⟶ t.G.left)} (he : IsTanBasis t x e) (b : Fin g → C)
@@ -224,7 +222,7 @@ theorem mem_latDR (hX : X.IsSeparated) {x : Sp ↥(intO C) ⟶ X} {g : ℕ}
     exact ⟨x, rfl, v, hv, comb_unique t hDk (GlobalTheory.LatDRFree.comb_map t (intO C).subtype ha) hw⟩
 
 /- English proof (translation)
-Establish `hi : ∀ z : C, z ∈ (NormedField.valuation (K` using `C)).integer ↔ ‖z‖ ≤ 1 := fun z => by`. Rewrite using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `Iff.rfl` after adjusting the coercions. Set `y : A →+* (NormedField.valuation (K` to `C)).integer := (x'.comp (algebraMap A A')).codRestrict _ fun a => (hi _).2 (hx a)`. Conclude with `(hi _).1 ((Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral (IsIntegral.map_of_comp_eq y x' rfl (Algebra.IsIntegral.isIntegral (R := A) b)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem norm_le_one {A A' : Type} [CommRing A] [CommRing A'] [Algebra A A'] [Module.Finite A A'] (x' : A' →+* C)
     (hx : ∀ a, ‖x' (algebraMap A A' a)‖ ≤ 1) (b : A') : ‖x' b‖ ≤ 1 := by
@@ -237,9 +235,9 @@ theorem norm_le_one {A A' : Type} [CommRing A] [CommRing A'] [Algebra A A'] [Mod
     (IsIntegral.map_of_comp_eq y x' rfl (Algebra.IsIntegral.isIntegral (R := A) b)))
 
 /- English proof (translation)
-Take `⟨d, n, B, h1, h2, h3⟩` from `exists_poly A A' hinj g k J h c hc hh`. Use `⟨d, n, B, h1, h2, fun p _ x hx m hk u a ha hu => h3 ℂ_[p] x m hk a ha _ fun x' hx' l => ?_⟩` and prove the remaining obligations. Substitute `hx'` using the available equality. Set `y : A' →+* ↥(intO ℂ_[p])` to `x'.codRestrict _ fun b => norm_le_one x' hx b`. Establish `e1 : x' = (intO ℂ_[p]).subtype.comp y` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `grNorm_eq t (isTanBasis_map t _ he).1 (P := fun b => ∀ j, ‖∑ i, x' (h j i) * b i‖ ≤ 1) ?_ hu l` and prove the remaining obligations. Use `hΛ p y` as an intermediate fact. Rewrite using `[e1]`. Simplify `this` using `only [spMap_comp, spMap_dual_comp, Category.assoc, RingHom.comp_apply, Subring.coe_subtype]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem of_covectors {A : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CharZero A] (x₀ : Sp A ⟶ X) {g : ℕ}
     {e : Fin g → (Sp (DualNumber A) ⟶ t.G.left)} (he : IsTanBasis t x₀ e) (q k : ℕ) (A' : Type) [CommRing A']
@@ -264,7 +262,7 @@ theorem of_covectors {A : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
   simpa only [spMap_comp, spMap_dual_comp, Category.assoc, RingHom.comp_apply, Subring.coe_subtype] using this
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single i (fun i' _ hi => by simp [Pi.single_eq_of_ne hi]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_sum_single {g : ℕ} {A' : Type} [CommRing A'] (y : A' →+* ↥(intO C)) (c : ℕ) (b : Fin g → C) (i : Fin g) :
     ∑ i', (y ((Pi.single i (c : A') : Fin g → A') i') : C) * b i' = c * b i := by
@@ -272,17 +270,17 @@ theorem norm_sum_single {g : ℕ} {A' : Type} [CommRing A'] (y : A' →+* ↥(in
   simp
 
 /- English proof (translation)
-Introduce `hHT E _ _ _ H X _ t hX A _ _ _ _ _ x₀ g e he q k`. Distinguish the cases in `hq : q.Prime`. Take `⟨A', _, _, _, _, hinj, _, hζ, hsp⟩` from `GlobalTheory.T.exists_finite_extension_splitting_torsion E H X t A x₀ q hq.ne_zero`. Establish `: CharZero A'` using `charZero_of_injective_algebraMap hinj`. Establish `he'` using `isTanBasis_map t (algebraMap A A') he`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, h, hh⟩` from `GlobalTheory.T.exists_tangent_presentation_prime E H X t A' _ g _ he' q hq hζ hsp`. Use `of_covectors t x₀ he q k A' hinj (Fin n ⊕ Fin g) (Sum.elim h fun i => Pi.single i (q : A')) q hq.ne_zero (fun i => ⟨Sum.inr i, rfl⟩) fun p _ y b w hw => ?_` and prove the remaining obligations. Simplify using `only [Sum.forall, Sum.elim_inl, Sum.elim_inr, norm_sum_single]`. Establish `hn : ∀ r : ℕ, ‖(r : ℂ_[p])‖ = ‖(r : ℚ_[p])‖` using `fun r => by`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hp : p = q`. Substitute `hp` using the available equality. Rewrite using `[decide_eq_true rfl]`. Conclude with `GlobalTheory.T.unique_integral_lift_norm_p_inverse hHT E H X t p ℂ_[p] (by rw [hn, Padic.norm_p]) _ (ext_intO hX _) g _ (isTanBasis_map t y he') n (fun j i => y (h j i)) (hh ℂ_[p] y).1 (hh ℂ_[p] y).2 b w hw`. Rewrite using `[decide_eq_false hp]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ‖(q : ℂ_[p])‖ = 1`. Rewrite using `[hn, Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes Fact.out hq).2 hp`. Use `(mem_latDR t hX (isTanBasis_map t y he') b w hw).trans ?_` and prove the remaining obligations. Simplify using `only [norm_mul, h1, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hb => ⟨fun j => ?_, hb⟩, fun hb => hb.2⟩` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (y (h j i)).2 (norm_nonneg _) (hb i)`. Establish `he'` using `isTanBasis_map t (algebraMap A A) he`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `of_covectors t x₀ he q k A (fun _ _ h => h) (Fin g) (fun i => Pi.single i ((1 : ℕ) : A)) 1 one_ne_zero (fun i => ⟨i, rfl⟩) fun p hp y b w hw => ?_` and prove the remaining obligations. Simplify using `only [norm_sum_single]`. Rewrite using `[decide_eq_false fun h : p = q => hq (h ▸ hp.out)]`. Simplify using `only [Nat.cast_one, _root_.one_mul]`. Conclude with `mem_latDR t hX (isTanBasis_map t y he') b w hw`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wedge_norm_max : HTBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X), X.IsSeparated → ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [CharZero A] (x₀ : Sp A ⟶ X) (g : ℕ) (e : Fin g → (Sp (DualNumber A) ⟶ t.G.left)), IsTanBasis t x₀ e → ∀ q k : ℕ, ∃ (d : ℕ+) (n : ℕ) (B : Fin n → MvPolynomial (Fin k → Fin g) A), (∀ i, (B i).IsHomogeneous d) ∧ (∀ s, ∃ (i : Fin n) (c : ℕ), c ≠ 0 ∧ B i = MvPolynomial.C (c : A) * (MvPolynomial.X s : MvPolynomial (Fin k → Fin g) A) ^ (d : ℕ)) ∧ ∀ (p : ℕ) [Fact p.Prime] (x : A →+* ℂ_[p]), (∀ a, ‖x a‖ ≤ 1) → ∀ (m : ℕ) (hk : k ≤ m) (u : Fin m → (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)) (a : Fin m → Fin g → ℂ_[p]), LinearIndependent ℂ_[p] a → (∀ l, IsCombAtG t (spMap x ≫ x₀) (fun i => spMap (dualMap x) ≫ e i) (a l) (u l)) → ((d : ℕ) : ℝ) * ∑ l : Fin k, Real.log (GlobalTheory.ShFam.Pad.grNorm t (spMap x ≫ x₀) (lat t p (spMap x ≫ x₀) (decide (p = q))) u (Fin.castLE hk l)) = Real.log (⨆ i, ‖MvPolynomial.eval₂ x (minor a hk) (B i)‖) := by
   intro hHT E _ _ _ H X _ t hX A _ _ _ _ _ x₀ g e he q k

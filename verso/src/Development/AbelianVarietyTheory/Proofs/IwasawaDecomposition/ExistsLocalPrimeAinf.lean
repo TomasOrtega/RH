@@ -55,27 +55,27 @@ end General
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.tower l a`.
+A detailed English derivation is pending.
 -/
 theorem alg_tower (a : Per.Ainf l) : algebraMap (Per.Ainf l) (Per.Acris l) a =
     algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) a) := GlobalTheory.RingIface.tower l a
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.1`.
+A detailed English derivation is pending.
 -/
 theorem dR_inj : Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) := (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.1
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `BdRField.exists_isEps l`. Conclude with `((GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he).1 0 y).2 (by rw [pow_zero]; exact one_dvd y)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ev_zero (y : Per.BdRp l) : y ∈ Per.FilP l 0 := by
   obtain ⟨e, he⟩ := BdRField.exists_isEps l
   exact ((GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he).1 0 y).2 (by rw [pow_zero]; exact one_dvd y)
 
 /- English proof (translation)
-Establish `h` using `C.ι_j (algebraMap (Per.Ainf l) (Per.Acris l) a)`. Establish `h' : C.j (algebraMap (Per.Ainf l) (Per.Acris l) a) = aDp l a`. Rewrite using `[alg_tower, C.j_cris.on0]`. Both sides reduce to the same expression. Rewrite `h` using `[h', ← GlobalTheory.RingIface.aB_eq_alg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem iota_aB (C : Core l) (a : Per.Ainf l) :
     C.ι (Per.aB l a) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a) := by
@@ -86,7 +86,7 @@ theorem iota_aB (C : Core l) (a : Per.Ainf l) :
   exact h
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1` using `congrArg C.ι h`. Rewrite `h1` using `[iota_aB, iota_aB]`. Conclude with `(ainf_isDomain_and_injective l).2.2 (GlobalTheory.T.algebraMap_ainfInvPrime_bdRPlus_injective l (dR_inj h1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aB_inj (C : Core l) : Function.Injective (Per.aB l) := by
   intro a b h
@@ -95,14 +95,14 @@ theorem aB_inj (C : Core l) : Function.Injective (Per.aB l) := by
   exact (ainf_isDomain_and_injective l).2.2 (GlobalTheory.T.algebraMap_ainfInvPrime_bdRPlus_injective l (dR_inj h1))
 
 /- English proof (translation)
-Rewrite using `[iota_aB]`. Conclude with `((GlobalTheory.T.bdR_filtration_laws l).2.2.2.2.2.2 0 _).2 (ev_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fil0 (C : Core l) (a : Per.Ainf l) : C.ι (Per.aB l a) ∈ Per.FilD l 0 := by
   rw [iota_aB]
   exact ((GlobalTheory.T.bdR_filtration_laws l).2.2.2.2.2.2 0 _).2 (ev_zero _)
 
 /- English proof (translation)
-Rewrite using `[iota_aB]`. Use `((GlobalTheory.T.bdR_filtration_laws l).2.2.2.2.2.2 1 _).trans ?_` and prove the remaining obligations. Rewrite using `[← (thetaD_props l).2.1, (thetaD_props l).2.2.2.1]`. Use `Iff.trans ?_ (theta_eq_zero_iff_xi_dvd l C.ε (core_isEps l C) a)` and prove the remaining obligations. Conclude with `⟨fun h => Subtype.ext h, fun h => by rw [h]; rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem fil1 (C : Core l) (a : Per.Ainf l) :
     C.ι (Per.aB l a) ∈ Per.FilD l 1 ↔ ∃ b : Per.Ainf l, a = xi C.ε * b := by
@@ -113,7 +113,7 @@ theorem fil1 (C : Core l) (a : Per.Ainf l) :
   exact ⟨fun h => Subtype.ext h, fun h => by rw [h]; rfl⟩
 
 /- English proof (translation)
-Apply `(GlobalTheory.T.localPeriodRingsData_unramified_laws l C).2.2.2.1` to reduce the goal to its premises. Rewrite using `[iota_aB, C.ι_u, ((GlobalTheory.T.rootOfUnity_prime_to_teichmuller_lift l C.o C.o_sec c m hm hl hc).2 xb h).2.2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem teich (C : Core l) (c : ↥(MaximalUnramifiedExtension l)) (m : ℕ) (hm : 0 < m) (hl : ¬ l ∣ m) (hc : (c : Om l) ^ m = 1)
     (xb : Per.Fl l) (h : IsTiltOf (c : Om l) m xb) : Per.aB l (Per.tm xb) = C.u c := by
@@ -121,7 +121,7 @@ theorem teich (C : Core l) (c : ↥(MaximalUnramifiedExtension l)) (m : ℕ) (hm
   rw [iota_aB, C.ι_u, ((GlobalTheory.T.rootOfUnity_prime_to_teichmuller_lift l C.o C.o_sec c m hm hl hc).2 xb h).2.2]
 
 /- English proof (translation)
-Rewrite using `[(ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.1, (GlobalTheory.T.bdRPlus_simple_roots_section_unique_equivariant l C.o C.o_sec).2.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigD_o (C : Core l) (g : GQ l) (x : Om l) :
     Per.σD g (algebraMap (Per.BdRp l) (Per.BdR l) (C.o x)) =
@@ -129,9 +129,9 @@ theorem sigD_o (C : Core l) (g : GQ l) (x : Om l) :
   rw [(ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.1, (GlobalTheory.T.bdRPlus_simple_roots_section_unique_equivariant l C.o C.o_sec).2.2]
 
 /- English proof (translation)
-Use `⟨_, ?_, C.χ_cyc g m x hx⟩` and prove the remaining obligations. Establish `h : ((C.χ g : ℤ_[l]) - ((PadicInt.toZModPow m (C.χ g : ℤ_[l])).val : ℤ_[l])) ∈ Ideal.span {(l : ℤ_[l]) ^ m}`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Establish `h2` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ m).2 h`. Rewrite `h2` using `[PadicInt.norm_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem chi_cyc (C : Core l) (g : GQ l) (m : ℕ) (x : Om l) (hx : x ^ (l ^ m) = 1) :
     ∃ a : ℕ, ‖((C.χ g : ℤ_[l]) : ℚ_[l]) - (a : ℚ_[l])‖ ≤ (l : ℝ) ^ (-(m : ℤ)) ∧ g x = x ^ a := by
@@ -170,7 +170,7 @@ def conj {A A' B B' : Type} [CommRing A] [CommRing A'] [CommRing B] [CommRing B'
     (f : A' →+* B') : A →+* B := (e'.symm.toRingHom.comp f).comp e.toRingHom
 
 /- English proof (translation)
-The claim follows from `e'.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem conj_apply {A A' B B' : Type} [CommRing A] [CommRing A'] [CommRing B] [CommRing B'] (e : A ≃+* A')
     (e' : B ≃+* B') (f : A' →+* B') (x : A) : e' (conj e e' f x) = f (e x) := e'.apply_symm_apply _
@@ -184,7 +184,7 @@ def actQ (C : Core l) : GQ l →* ((ringsOf C).B ≃ₐ[ℚ_[l]] (ringsOf C).B) 
       exact (GlobalTheory.T.localPeriodRingsData_unramified_laws l C).2.1 g _ _ (g.commutes c)))
 
 /- English proof (translation)
-The claim follows from `conj_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem actQ_apply (C : Core l) (g : GQ l) (b : (ringsOf C).B) : eB C (actQ C g b) = Per.σB g (eB C b) :=
   conj_apply _ _ _ _
@@ -196,7 +196,7 @@ def actQdR (C : Core l) : GQ l →* ((ringsOf C).BdR ≃ₐ[ℚ_[l]] (ringsOf C)
     (fun g c => (eD C).injective (by rw [conj_apply, algD, sigD_o, g.commutes]))
 
 /- English proof (translation)
-The claim follows from `conj_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem actQdR_apply (C : Core l) (g : GQ l) (b : (ringsOf C).BdR) :
     eD C (actQdR C g b) = Per.σD g (eD C b) :=
@@ -209,7 +209,7 @@ def phiB (C : Core l) : (ringsOf C).B →ₐ[ℚ_[l]] (ringsOf C).B :=
       rw [algB, (GlobalTheory.T.localPeriodRingsData_unramified_laws l C).1, C.σ.commutes]) }
 
 /- English proof (translation)
-The claim follows from `conj_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phiB_apply (C : Core l) (b : (ringsOf C).B) : eB C (phiB C b) = Per.φB l (eB C b) :=
   conj_apply _ _ _ _
@@ -222,7 +222,7 @@ def iotaB (C : Core l) : (ringsOf C).B →ₐ[ℚ_[l]] (ringsOf C).BdR :=
       rfl) }
 
 /- English proof (translation)
-The claim follows from `conj_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem iotaB_apply (C : Core l) (b : (ringsOf C).B) : eD C (iotaB C b) = C.ι (eB C b) :=
   conj_apply _ _ _ _
@@ -230,30 +230,30 @@ theorem iotaB_apply (C : Core l) (b : (ringsOf C).B) : eD C (iotaB C b) = C.ι (
 def iA (C : Core l) : Per.Ainf l →+* (ringsOf C).B := (eB C).symm.toRingHom.comp (Per.aB l)
 
 /- English proof (translation)
-The claim follows from `(eB C).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem iA_apply (C : Core l) (a : Per.Ainf l) : eB C (iA C a) = Per.aB l a := (eB C).apply_symm_apply _
 
 /- English proof (translation)
-Introduce `a b h` and use `aB_inj C (by rw [← iA_apply C, h, iA_apply])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iA_inj (C : Core l) : Function.Injective (iA C) := fun a b h =>
   aB_inj C (by rw [← iA_apply C, h, iA_apply])
 
 /- English proof (translation)
-The claim follows from `(eB C).injective (by rw [actQ_apply, iA_apply, iA_apply, (ActLaws.act_laws l).2.2.2.2.2.1])`.
+A detailed English derivation is pending.
 -/
 theorem iA_act (C : Core l) (g : GQ l) (a : Per.Ainf l) : iA C (Per.σA g a) = actQ C g (iA C a) :=
   (eB C).injective (by rw [actQ_apply, iA_apply, iA_apply, (ActLaws.act_laws l).2.2.2.2.2.1])
 
 /- English proof (translation)
-The claim follows from `(eB C).injective (by rw [phiB_apply, iA_apply, iA_apply, (ActLaws.act_laws l).2.2.2.2.2.2.1, GlobalTheory.RingBasics.φA_apply])`.
+A detailed English derivation is pending.
 -/
 theorem iA_phi (C : Core l) (a : Per.Ainf l) : iA C (WittVector.frobenius a) = phiB C (iA C a) :=
   (eB C).injective (by rw [phiB_apply, iA_apply, iA_apply, (ActLaws.act_laws l).2.2.2.2.2.2.1, GlobalTheory.RingBasics.φA_apply])
 
 /- English proof (translation)
-Rewrite using `[iotaB_apply, iA_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_iA (C : Core l) (a : Per.Ainf l) : eD C (iotaB C (iA C a)) = C.ι (Per.aB l a) := by
   rw [iotaB_apply, iA_apply]
@@ -265,7 +265,7 @@ def pd (C : Core l) (K : FinExt l) :
   (GlobalTheory.T.exists_concretePeriodDatum_padicFiniteExtension l C K).choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.exists_concretePeriodDatum_padicFiniteExtension l C K).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem pd_real (C : Core l) (K : FinExt l) : IsRealPD C K (pd C K) := (GlobalTheory.T.exists_concretePeriodDatum_padicFiniteExtension l C K).choose_spec
 
@@ -358,7 +358,7 @@ namespace GlobalTheory.MemLoc
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨C⟩` from `nonempty_core l`. Conclude with `⟨PrimeEx.prime C, PrimeEx.ainf C, ⟨PrimeEx.tied C⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_locPrime_tied : ∀ (l : ℕ) [Fact l.Prime],
     ∃ (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) := by

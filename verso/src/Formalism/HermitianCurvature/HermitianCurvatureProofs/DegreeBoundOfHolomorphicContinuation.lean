@@ -25,7 +25,7 @@ def FdegHpkHC : Prop :=
       PI.BesselPeriodGGP.fdegH μG σ w = C * PI.UpqRep.fdegHC lam
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [lamOf, LatticeNorms.eI, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamOf_add_eI {n : ℕ} (sh : ℝ) (μ : Fin n → ℤ) (I : Finset (Fin n)) :
     lamOf sh (μ + LatticeNorms.eI I) = fun i => lamOf sh μ i + if i ∈ I then 1 else 0 := by
@@ -34,7 +34,7 @@ theorem lamOf_add_eI {n : ℕ} (sh : ℝ) (μ : Fin n → ℤ) (I : Finset (Fin 
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Unfold `PI.UpqRep.fdegHC`. Use `div_nonneg (prod_nonneg fun a _ => prod_nonneg fun b _ => abs_nonneg _) (prod_nonneg fun a _ => prod_nonneg fun b hb => ?_)` and prove the remaining obligations. Use `(mem_filter.1 hb).2` as an intermediate fact. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem fdegHC_nonneg {n : ℕ} (x : Fin n → ℝ) : 0 ≤ PI.UpqRep.fdegHC x := by
   unfold PI.UpqRep.fdegHC
@@ -45,13 +45,13 @@ theorem fdegHC_nonneg {n : ℕ} (x : Fin n → ℝ) : 0 ≤ PI.UpqRep.fdegHC x :
   linarith
 
 /- English proof (translation)
-Introduce `μ I hI hμ hμI hp hq`. Take `⟨C, hC, hd⟩` from `hHC`. Rewrite using `[hd _ hμI hq, hd μ hμ hp, lamOf_add_eI]`. Establish `hinj : Function.Injective (lamOf F.sh μ)` using `hp.1.1.injective`. Establish `hint : ∀ a b, ∃ m : ℤ, lamOf F.sh μ a - lamOf F.sh μ b = m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Take `⟨ma, ha⟩` from `hp.1.2 a`. Take `⟨mb, hb⟩` from `hp.1.2 b`. Conclude with `⟨ma - mb, by push_cast; linarith⟩`. Establish `hb` using `JmuHC.fdegHC_addI_le (lamOf F.sh μ) hinj hint I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hb` using `[hI]`. Establish `hf0` using `fdegHC_nonneg (lamOf F.sh μ)`. Establish `hn : ((2 * P.r + P.k + 1 : ℕ) : ℝ) ^ (P.r + 1) ≤ (Real.exp 1 * ((2 * P.r + P.k + 1 : ℕ) : ℝ)) ^ (P.r + 1)`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `he : (1 : ℝ) ≤ Real.exp 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[(Nat.cast_nonneg (2 * P.r + P.k + 1) : (0 : ℝ) ≤ ((2 * P.r + P.k + 1 : ℕ) : ℝ))]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem degRatio_of (p : KB.Pl P Wp Wq) (F : JFam P.k P.r Wp Wq) (lam0 : Fin (2 * P.r + P.k + 1) → ℤ) (q0 : ℕ)
     (hHC : DegHC p F lam0 q0) : DegRatio p F lam0 q0 := by
@@ -81,9 +81,9 @@ theorem degRatio_of (p : KB.Pl P Wp Wq) (F : JFam P.k P.r Wp Wq) (lam0 : Fin (2 
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `μ hμ hp`. Establish `hG` using `hF μ hμ hp.1`. Take `⟨d, hd, hS⟩` from `hSch _ _ F.ε (lamOf F.sh μ) (F.A μ).H (F.A μ).σ p.T.base.μG hG.1.1 hG.1.2.1 hG.1.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨P0, -, hw1, -⟩` from `hG.1.2.2.2.2.1`. Establish `hw0 : (F.A μ).w0 ≠ 0` using `fun h => by rw [h, norm_zero] at hw1; exact zero_ne_one hw1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show 0 < PI.BesselPeriodGGP.fdegH p.T.base.μG (F.A μ).σ (F.A μ).w0`. Rewrite using `[Formalism.FourierDecayAlt.P.DDSmoothness.fdeg_eq hd hS hw0]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degPos_of [CompleteSpace Wp] [CompleteSpace Wq] (hSch : SchurH) (p : KB.Pl P Wp Wq)
     (F : JFam P.k P.r Wp Wq) (lam0 : Fin (2 * P.r + P.k + 1) → ℤ) (q0 : ℕ) (hF : F.Good p.T.base lam0 q0) :
@@ -99,7 +99,7 @@ theorem degPos_of [CompleteSpace Wp] [CompleteSpace Wq] (hSch : SchurH) (p : KB.
   exact hd
 
 /- English proof (translation)
-The claim follows from `pieri_degree_of_family p F lam0 tau c0 q0 H hc0 hN (degPos_of hSch p F lam0 q0 hF) (degRatio_of p F lam0 q0 hHC) hP0`.
+A detailed English derivation is pending.
 -/
 theorem degree_bound_of_holomorphic_continuation [CompleteSpace Wp] [CompleteSpace Wq] (p : KB.Pl P Wp Wq) (F : JFam P.k P.r Wp Wq)
     (lam0 : Fin (2 * P.r + P.k + 1) → ℤ)

@@ -20,9 +20,9 @@ def withRep (L : LocBessel k r) (R : Rep k r) (mu : Fin (2 * r + k + 1) → ℝ)
   { L with lam := mu, hlam := hR.1, Hs := R.H, hsN := R.nacg, hsI := R.ips, hsC := R.cs, σ := R.σ, hσ := hR.2 }
 
 /- English proof (translation)
-Unfold `fdegHC`. Apply `div_pos` to reduce the goal to its premises. Use `Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_` and prove the remaining obligations. Establish `hab : a < b` using `(Finset.mem_filter.mp hb).2`. Conclude with `abs_pos.mpr (sub_ne_zero.mpr (hlam hab).ne')`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_` and prove the remaining obligations. Conclude with `sub_pos.mpr (Nat.cast_lt.mpr (Finset.mem_filter.mp hb).2)`.
+A detailed English derivation is pending.
 -/
 theorem fdegHC_pos {n : ℕ} {lam : Fin n → ℝ} (hlam : StrictAnti lam) : 0 < fdegHC lam := by
   unfold fdegHC
@@ -39,17 +39,17 @@ def coefR {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Nor
   (innerSL ℂ ξ').smulRight (⟪v, R.σ g v'⟫_ℂ • ξ)
 
 /- English proof (translation)
-Establish `hKF : PI.KFinSmooth` using `hH.1.2.2.1`. Take `⟨-, -, -, -, hsm, -, hKT, -, -⟩` from `GlobalTheory.rep_basic_of_isDS hKF k r L.ε mu R hR`. Establish `hwK : R.KFin w` using `PI.UnitaryGroupMassFormula.LowSmooth.isKFinHpk_of_lowUnit hw`. Establish `hle : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, x ∈ R.TK`. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.span_mono ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `⟨g, hg, w, hwK, rfl⟩`. Establish `hD' : CellData (withRep L R mu hR) μG γ μR νR ν` using `hD`. Take `⟨b, hb0, hb1, hb2⟩` from `hC k r L h μG γ μR νR ν hκ hok hcell hD hD.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hAG : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.AG k r`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.AG`. Check the signs of the components of the expression. Establish `hOne : OnePlaceKF (withRep L R mu hR) h μG w l l'` using `⟨⟨hgap, hok, hc, hw, hG, fun x hx y hy => hl x (hsm x (hle x hx)) y (hle y hy), fun x hx y hy => hl' x (hsm x (hle x hx)) y (hle y hy)⟩, fun x hx y hy => hl x (hsm x (hle x hx)) y (hKT y hy), fun x hx y hy => hl' x (hsm x (hle x hx)) y (hKT y hy)⟩`. Establish `h1` using `hA hH.1 k r (withRep L R mu hR) h μG w l l' hOne γ μR νR ν hD' b hb0 hb1 hb2 v v' hv hv' ξ ξ'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.T.cell_data_support hH k r (withRep L R mu hR) h μG γ μR νR ν hgap hok hκ hD').2 b hb0 (by linarith) hb2 v v' hv hv' ξ ξ'`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Take `⟨c, hc0, hc1⟩` from `GlobalTheory.BesselDegree.schur_fdeg hH k r L.ε μG hG`. Establish `hw0 : w ≠ 0`. Take `⟨P, -, hn, -⟩` from `hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Rewrite `hn` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn`. Establish `hf : (PI.BesselPeriodGGP.fdegH μG R.σ w : ℂ) ≠ 0`. Rewrite using `[(hc1 mu R hR).1 w hw0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Complex.ofReal_ne_zero.mpr (mul_pos hc0 (fdegHC_pos hR.1.1)).ne'`. Establish `h3 : (⟪l v, ξ⟫_ℂ * ⟪ξ', l' v'⟫_ℂ) • amp R l l' w νR γ = ((PI.BesselPeriodGGP.fdegH μG R.σ w : ℂ)⁻¹) • OrbInt L (coefR R v v' ξ ξ') γ ν` using `h1`. Rewrite using `[mul_smul, h3, smul_smul, mul_inv_cancel₀ hf, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem amp_eq_orb (hH : Hyps) (hA : AmpKF) (hC : CellConv) (L : LocBessel k r) (R : Rep k r)
     (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (μG : Measure (Mt k r)) (l : R.H → L.Wp) (l' : R.H → L.Wq) (w : R.H)
@@ -102,9 +102,9 @@ theorem amp_eq_orb (hH : Hyps) (hA : AmpKF) (hC : CellConv) (L : LocBessel k r) 
   rw [mul_smul, h3, smul_smul, mul_inv_cancel₀ hf, one_smul]
 
 /- English proof (translation)
-Take `⟨-, -, -, hmul, hinv, -⟩` from `hρ`. Take `⟨hai, h1, -⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv ha`. Establish `hm : a⁻¹ * g ∈ GG k r` using `Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul hai hg`. Establish `e : ρ g = ρ a * ρ (a⁻¹ * g)`. Rewrite using `[← hmul a ha _ hm, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `herm`. Rewrite using `[e]`. Use `conv_rhs => rw [← hom]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hinv a ha]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_inv {ι : Type} [Fintype ι] [DecidableEq ι]
     {ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Matrix ι ι ℂ} {Γ : Matrix ι ι ℂ} {d : ℕ}
@@ -123,13 +123,13 @@ theorem herm_inv {ι : Type} [Fintype ι] [DecidableEq ι]
     Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hinv a ha]
 
 /- English proof (translation)
-Simplify using `[UH]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_mem_UH : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UH (Hpk k r) := by
   simp [UH]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨g, hg, 1, ⟨one_mem_UH, fun a i _ => ?_, fun i j _ _ _ => ?_⟩, (Matrix.mul_one g).symm⟩ <;>`. Conclude with `Matrix.one_apply`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_Sset_of_UW {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UWset k r z) : g ∈ Sset k r z := by
@@ -137,7 +137,7 @@ theorem mem_Sset_of_UW {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r
     exact Matrix.one_apply
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, ⟨one_mem_UH, fun _ => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩, g, hg, (Matrix.one_mul g).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Sset_of_N (z : Fin (2 * r + k + 1) → ℂ) {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Nset k r) : g ∈ Sset k r z :=
@@ -145,9 +145,9 @@ theorem mem_Sset_of_N (z : Fin (2 * r + k + 1) → ℂ) {g : Matrix (Fin (2 * r 
     (Matrix.one_mul g).symm⟩
 
 /- English proof (translation)
-Establish `mul : ∀ {x y}, x ∈ GG k r → y ∈ GG k r → x * y ∈ GG k r` using `fun hx hy => Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul hx hy`. Establish `hai` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv ha.1).1`. Establish `hni` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hn.1).1`. Establish `h1` using `mul (mul hai hni) hγ`. Establish `h2` using `mul h1 hn'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨mul h2 ha'.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hρ.2.2.2.1 _ h2 _ ha'.1, hρ.2.2.2.1 _ h1 _ hn'.1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hom' _ (mem_Sset_of_UW ha'), hom' _ (mem_Sset_of_N z' hn'), Matrix.mul_assoc, herm_inv hρ ha.1 (mul hni hγ) (hom _ (mem_Sset_of_UW ha)), herm_inv hρ hn.1 hγ (hom _ (mem_Sset_of_N z …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_cell {ι : Type} [Fintype ι] [DecidableEq ι]
     {ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Matrix ι ι ℂ} {Γ : Matrix ι ι ℂ} {d : ℕ}
@@ -169,7 +169,7 @@ theorem herm_cell {ι : Type} [Fintype ι] [DecidableEq ι]
     herm_inv hρ hn.1 hγ (hom _ (mem_Sset_of_N z hn))]
 
 /- English proof (translation)
-The claim follows from `FiniteDimensional.complete ℂ L.Wp; haveI := FiniteDimensional.complete ℂ L.Wq; R.IsDS L.ε mu → GapAtLeast L.ε mu h → (∀ I, (RI I).IsDS L.ε (muI I) ∧ GapAtLeast L.ε (muI I) h) → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → GapCell k r h → L.c ≠ 0 → L.κN ≠ ⊤ → IsHaarOn (UH …`.
+A detailed English derivation is pending.
 -/
 theorem amp_pieri : Hyps → AmpKF → CellConv → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (L : LocBessel k r) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ep : κ → ℝ) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ) (h : ℝ) (μG : Measure (Mt k r)) (om om' : ι → ℂ) (l : R.H → L.Wp) (l' : R.H → L.Wq) (lI : ∀ I, (RI I).H → L.Wp) (lI' : ∀ I, (RI I).H → L.Wq) (w : R.H) (wI : ∀ I, (RI I).H) (κ₀ κ₁ : κ → ℂ), haveI := FiniteDimensional.complete ℂ L.Wp; haveI := FiniteDimensional.complete ℂ L.Wq; R.IsDS L.ε mu → GapAtLeast L.ε mu h → (∀ I, (RI I).IsDS L.ε (muI I) ∧ GapAtLeast L.ε (muI I) h) → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → GapCell k r h → L.c ≠ 0 → L.κN ≠ ⊤ → IsHaarOn (UH (Hpk k r)) μG → IsFRep ρ Γ d → TensH ρ Γ R RI io pr ep → (∀ g ∈ Sset k r L.z, ρ g *ᵥ om = om) → (∀ g ∈ Sset k r L.z', ρ g *ᵥ om' = om') → (∀ x ∈ R.sm, ∀ v ∈ R.TK, Formalism.FourierDecayAlt.ThreeDimData.be L.z L.c L.π R.σ L.μW L.μN x v = (innerSL ℂ (l v)).smulRight (l x)) → (∀ x ∈ R.sm, ∀ v ∈ R.TK, Formalism.FourierDecayAlt.ThreeDimData.be L.z' L.c L.π' R.σ L.μW' L.μN x v = (innerSL ℂ (l' v)).smulRight (l' x)) → (∀ I, (∀ x ∈ (RI I).sm, ∀ v ∈ (RI I).TK, Formalism.FourierDecayAlt.ThreeDimData.be L.z L.c L.π (RI I).σ L.μW L.μN x v = (innerSL ℂ (lI I v)).smulRight (lI I x)) ∧ (∀ x ∈ (RI I).sm, ∀ v ∈ (RI I).TK, Formalism.FourierDecayAlt.ThreeDimData.be L.z' L.c L.π' (RI I).σ L.μW' L.μN x v = (innerSL ℂ (lI' I v)).smulRight (lI' I x))) → (∃ v, R.KFin v ∧ l v ≠ 0) → (∃ v, R.KFin v ∧ l' v ≠ 0) → PI.UpqRep.IsLowUnitH k r L.ε mu R.σ w → (∀ I, PI.UpqRep.IsLowUnitH k r L.ε (muI I) (RI I).σ (wI I)) → (∀ I, ∀ v ∈ R.sm, lI I (∑ c, pr I c (tm R om v c)) = κ₀ I • l v ∧ lI' I (∑ c, pr I c (tm R om' v c)) = κ₁ I • l' v) → ∀ (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (μR νR : Measure (Mt k r)) (ν : Measure (PairSp k r)), CellData L μG γ μR νR ν → (herm Γ (ρ γ *ᵥ om') om * (PI.BesselPeriodGGP.fdegH μG R.σ w : ℂ)) • amp R l l' w νR γ = ∑ I, ((ep I : ℂ) * κ₁ I * star (κ₀ I) * (PI.BesselPeriodGGP.fdegH μG (RI I).σ (wI I) : ℂ)) • amp (RI I) (lI I) (lI' I) (wI I) νR γ := by
   intro hH hA hC k r ι κ _ _ _ _ ρ Γ d L R RI io pr ep mu muI h μG om om' l l' lI lI' w wI κ₀ κ₁

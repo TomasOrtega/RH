@@ -9,13 +9,11 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Establish `hO : CharZero O`. Break down `S with ⟨w, hw, hpm, hp0, -⟩` into its components or cases. Break down `CharP.char_is_prime_or_zero O (ringChar O) with hq | hq` into its components or cases. It suffices to derive a contradiction. Establish `hne : p ≠ ringChar O`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Introduce and unpack `h`. Apply `hp0` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `CharP.cast_eq_zero O (ringChar O)`. Establish `hcop : Nat.gcd p (ringChar O) = 1` using `(Nat.coprime_primes hp hq).mpr hne`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (1 : O) = (p : O) * (Nat.gcdA p (ringChar O) : O)`. Establish `h` using `congrArg (fun z : ℤ => (z : O)) (Nat.gcd_eq_gcd_ab p (ringChar O))`. Simplify using `only [hcop, Nat.cast_one, Int.cast_one, Int.cast_add, Int.cast_mul, Int.cast_natCast, CharP.cast_eq_zero, zero_mul, add_zero] at h`. Conclude with `h`. Establish `h1 : (1 : O) ∈ IsLocalRing.maximalIdeal O` using `key ▸ Ideal.mul_mem_right _ _ hpm`.
-
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Use `haveI : CharP O 0 := hq ▸ ringChar.charP O`. Conclude with `CharP.charP_to_charZero O`. Conclude with `charZero_of_injective_algebraMap (IsFractionRing.injective O (KK O))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_fraction_field_of_setting {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (S : UniformizedDVR p O) (hp : p.Prime) : CharZero (KK O) := by
@@ -41,11 +39,9 @@ theorem charZero_fraction_field_of_setting {p : ℕ} {O : Type} [CommRing O] [Is
   exact charZero_of_injective_algebraMap (IsFractionRing.injective O (KK O))
 
 /- English proof (translation)
-Unfold `IsSubrepresentation cyclicSubmodule`. Introduce `a b x hx`. Establish `hle : Submodule.span K {x | ∃ u ∈ Umon E, x = u v} ≤ (Submodule.span K {x | ∃ u ∈ Umon E, x = u v}).comap (E a b)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨u, hu, rfl⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨E a b * u, ?_, rfl⟩` and prove the remaining obligations. Unfold `Umon at hu ⊢`. Conclude with `Submonoid.mul_mem _ (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu`.
-
-Conclude with `hle hx`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cyclicSubmodule_isSubrepresentation {n : ℕ} {K V : Type} [Field K] [AddCommGroup V] [Module K V] (E : GLOps n K V) (v : V) :
     IsSubrepresentation E (cyclicSubmodule E v) := by
@@ -63,14 +59,14 @@ theorem cyclicSubmodule_isSubrepresentation {n : ℕ} {K V : Type} [Field K] [Ad
   exact hle hx
 
 /- English proof (translation)
-Unfold `deF`. Conclude with `Nat.log_mono_right (by omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem log_bound_monotone (p n : ℕ) {k l : ℕ} (h : k ≤ l) : deF p n k ≤ deF p n l := by
   unfold deF
   exact Nat.log_mono_right (by omega)
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `M.smul_mem _ h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_mem_of_le' {O W : Type} [CommRing O] [AddCommGroup W] [Module O W] (M : Submodule O W) (c : O) {a b : ℕ}
     (hab : a ≤ b) {z : W} (h : c ^ a • z ∈ M) : c ^ b • z ∈ M := by
@@ -79,21 +75,19 @@ theorem pow_smul_mem_of_le' {O W : Type} [CommRing O] [AddCommGroup W] [Module O
   exact M.smul_mem _ h
 
 /- English proof (translation)
-Use `haveI : CharZero (KK O) := charZero_fraction_field_of_setting S hG.prime`. Distinguish the cases in `hv : ∃ v0, IsHWV E lam v0`. Take `⟨v0, hv0⟩` from `hv`. Establish `hL` using `cyclicSubmodule_isSubrepresentation E v0`. Take `⟨d, b, hbM, hbc⟩` from `hB O V M hM.2 hMQ (cyclicSubmodule E v0)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEH : IsGLRep (homRepresentation (restrictRepresentation E _ hL) E)` using `hHom n (KK O) _ V _ E (hRes n (KK O) V E hE _ hL) hE`. Take `⟨P, hP⟩` from `hInv n (KK O) _ _ hEH`. Take `⟨hl1, hl2⟩` from `hLat O n V E hE M hM hMQ _ hL`. Establish `key : ∀ i, ((p : O) ^ (N0 n * deF p n (ellOf E (MQ M)))) • P ((b.coord i).smulRight x) (b i) ∈ M`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf : (b.coord i).smulRight x ∈ homLattice M (cyclicSubmodule E v0)`. Introduce `y hy`. Take `⟨o, ho⟩` from `hbc y hy i`. Rewrite using `[LinearMap.smulRight_apply, ho, algebraMap_smul]`. Conclude with `M.smul_mem _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h p n' O S hG n _ _ hEH _ hl1 hl2 P hP _ hf`. Establish `h2` using `h1 (b i) (hbM i)`. Rewrite `h2` using `[LinearMap.smul_apply]`. Use `pow_smul_mem_of_le' M _ ?_ h2` and prove the remaining obligations. Use `Nat.mul_le_mul_left _ (log_bound_monotone p n ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl2, hMQ]`. Conclude with `hEll n (KK O) V E hE _ hL`. Rewrite using `[← hTh n (KK O) V E hE lam e he v0 hv0 hL P hP (Fin d) b x, Nat.cast_smul_eq_nsmul, smul_comm, Finset.smul_sum]`. Conclude with `M.smul_of_tower_mem _ (M.sum_mem fun i _ => key i)`. Establish `h0 : e x = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hle : (⨆ mu, isoSub E mu) ≤ LinearMap.ker e`. Use `iSup_le fun mu => ?_` and prove the remaining obligations. Distinguish the cases in `hmu : mu = lam`. Substitute `hmu` using the available equality. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `y ⟨u, _, v, hv', _⟩`. Conclude with `absurd ⟨v, hv'⟩ hv`. Introduce `y hy`. Conclude with `he.2 mu hmu y hy`. Establish `: x ∈ (⨆ mu, isoSub E mu)` using `by rw [hTop n (KK O) V E hE]; trivial`.
-
-Conclude with `hle this`. Rewrite using `[h0, smul_zero]`. Conclude with `M.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem lattice_theorem_single_rep (h : InvariantDenominatorEllPBound) (hTop : IsotypicSubmodulesSpanTop) (hRes : RestrictionIsRepresentation) (hHom : HomSpaceIsRepresentation) (hInv : InvariantProjectionExists)
     (hTh : IsotypicProjectorTraceFormula) (hB : LatticeAdaptedBasisExists) (hLat : HomLatticeDividedPowerStable) (hEll : HomRepEllBoundedByTarget)
@@ -144,9 +138,9 @@ theorem lattice_theorem_single_rep (h : InvariantDenominatorEllPBound) (hTop : I
     rw [h0, smul_zero]; exact M.zero_mem
 
 /- English proof (translation)
-Unfold `IsotypicProjectorTheoremField`. Introduce `p n' O _ _ _ S hG n _ V _ _ _ _ _ E hE M hM hMQ Sw _ e he x hx`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun lam hlam => ?_` and prove the remaining obligations. Establish `h1` using `lattice_theorem_single_rep h hTop hRes hHom hInv hTh hB hLat hEll p n' O S hG n V E hE M hM hMQ lam (e lam) (he lam hlam) x hx`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `pow_smul_mem_of_le' M (p : O) ?_ h1` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem lattice_theorem_of_interfaces (D : Formalism.BasicNotions.D7) (h : InvariantDenominatorEllPBound) (hTop : IsotypicSubmodulesSpanTop) (hRes : RestrictionIsRepresentation) (hHom : HomSpaceIsRepresentation)
     (hInv : InvariantProjectionExists) (hTh : IsotypicProjectorTraceFormula) (hB : LatticeAdaptedBasisExists) (hLat : HomLatticeDividedPowerStable) (hEll : HomRepEllBoundedByTarget) :

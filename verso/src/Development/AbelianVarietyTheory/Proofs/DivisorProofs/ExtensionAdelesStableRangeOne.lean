@@ -10,7 +10,7 @@ open Formalism.IndefR.DatumF
 namespace GlobalTheory.StableRange
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ a b h`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : Algebra.IsIntegral (AF F) (AF F ⊗[F] E) := Algebra.IsIntegral.of_finite _ _`. Conclude with `stable_adele F a b h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adeles_tensor_stableRange_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (a b : AF F ⊗[F] E),
     IsCoprime a b → ∃ t : AF F ⊗[F] E, IsUnit (a + t * b) := by

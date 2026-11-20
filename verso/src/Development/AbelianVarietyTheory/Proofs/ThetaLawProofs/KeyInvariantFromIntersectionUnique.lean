@@ -21,15 +21,13 @@ noncomputable section
 namespace GlobalTheory.KaUnique
 
 /- English proof (translation)
-Set `p : Sp K` to `IsLocalRing.closedPoint K`. Establish `hs : ∀ q q' : Sp K, q = q'` using `fun q q' => Subsingleton.elim (α := PrimeSpectrum K) q q'`. Establish `h1 : ∀ a, ∃ a', z' a' = z a`. Introduce `a`. Take `⟨a', q, hq⟩` from `hz'.2.2.2.2 ((z a).left p) (fun i hi => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Establish `hcU : ⊤ ≤ (z a).left ⁻¹ᵁ x.P.L.U c` using `fun q _ => by`. Rewrite using `[hs q p]`. Conclude with `x.P.A.left.basicOpen_le _ hc`. Establish `e` using `valT_sec (T := K) (z a).left x.P.L c (ch a) hcU (hz.1 a) n (s i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [hz.2.1 a i, mul_zero, valT_eq _ _ hcU] at e`. Establish `e1 : IsUnit (evalHom (T` using `K) (z a).left (x.P.L.U c) hcU ((s i).f c)) ↔ IsUnit (((show Sp K ⟶ x.P.A.left from (z a).left).appLE (x.P.L.U c) ⊤ hcU).hom ((s i).f c)) := isUnit_map_iff (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv _`. Establish `e2` using `Scheme.basicOpen_appLE (show Sp K ⟶ x.P.A.left from (z a).left) ⊤ (x.P.L.U c) hcU ((s i).f c)`. Establish `e3 : IsUnit (((show Sp K ⟶ x.P.A.left from (z a).left).appLE (x.P.L.U c) ⊤ hcU).hom ((s i).f c))`. Apply `RingedSpace.isUnit_of_isUnit_germ` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `q hq`. Establish `: q ∈ (Sp K).basicOpen (((show Sp K ⟶ x.P.A.left from (z a).left).appLE (x.P.L.U c) ⊤ hcU).hom ((s i).f c))` using `by erw [e2]; rw [hs q p]; exact ⟨trivial, hc⟩`. Conclude with `((Sp K).mem_basicOpen _ q hq).1 this`. Conclude with `(e1.2 e3).ne_zero e)`. Conclude with `⟨a', Over.OverMorphism.ext (section_ext x.P.A.hom _ _ (Over.w (z' a')) (Over.w (z a)) q p hq)⟩`.
-
-Use `choose f hf using h1`. Establish `hinj : Function.Injective f` using `fun a a' e => by`. Assume the negation of the conclusion as `hne`. Conclude with `hz.2.2.2.1 a a' hne p (by rw [← hf a, ← hf a', e])`. Conclude with `⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hinj), hf⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_perm {K : Type} [Field K] {x : KeyIn K} {n d : ℕ} {s : Fin x.P.g → RR x n} {z z' : Fin d → Pt x}
     {ch ch' : Fin d → x.P.L.ι} (hz : EtZ x s z ch) (hz' : EtZ x s z' ch') :
@@ -64,27 +62,25 @@ theorem exists_perm {K : Type} [Field K] {x : KeyIn K} {n d : ℕ} {s : Fin x.P.
   exact ⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hinj), hf⟩
 
 /- English proof (translation)
-Establish `hB : ∀ j, ∃ B : (Matrix (Fin ((l - j * n) ^ x.P.g)) (Fin ((l - j * n) ^ x.P.g)) K)ˣ, j ≤ x.P.g → ∀ k, IsComb x.P.A.hom x.P.L (fam x (b j)) (fun k' => B.val k' k) (fam x (b' j) k)` using `fun j => by`. Distinguish the cases in `hj : j ≤ x.P.g`. Take `⟨B, hB⟩` from `exists_change (hb j hj).1 (hb' j hj).1`. Conclude with `⟨B, fun _ => hB⟩`. Conclude with `⟨1, fun h => absurd h hj⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose B hB using hB`. Take `⟨m, hm, ht⟩` from `ht`. Take `⟨m', hm', ht'⟩` from `ht'`. Set `P : Matrix (Fin d) (Fin d) K` to `(Matrix.diagonal fun a => (ga a).val ^ (l - 0 * n)).submatrix id σ.symm`. Establish `hP : P.det ^ 2 = (((∏ a, ga a) ^ (2 * l) : Kˣ) : K)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [P]`. Rewrite using `[Matrix.det_permute', Matrix.det_diagonal, mul_pow, Finset.prod_pow, ← pow_mul]`. Establish `: ((Equiv.Perm.sign σ.symm : ℤ) : K) ^ 2 = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ.symm) with h | h <;> simp [h]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Establish `hPu : IsUnit P` using `(Matrix.isUnit_iff_isUnit_det P).2 ((isUnit_pow_iff two_ne_zero).1 (hP ▸ Units.isUnit _))`. Take `⟨t'', h1, h2⟩` from `GlobalTheory.KeyKa.torsSq_kosD_conj K x.P.g d (fun j => (l - j * n) ^ x.P.g) m m' _ (fun j => Matrix.of fun a k => valT (T := K) (z' a).left (x.P.L.U (ch' a)) ((b' j k).f (ch' a))) B hPu.unit t (fun i j hj => by`. Use extensionality with `a k`. Establish `e1` using `IsComb.mulVec' (hB j hj.le) (isMul_comb hm' i j hj k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `IsComb.mulVec (isMul_comb hm i j hj) (hB (j + 1) hj k)`. Conclude with `congrFun (comb_unique (hb j hj.le).1 e1 e2) a)`. Use the proof step `(by`. Use extensionality with `a k`. Establish `e1` using `(hB 0 (Nat.zero_le _) k).valT (z a).left (Over.w (z a)) (ch a) (hz.1 a)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ e1` and prove the remaining obligations. Use `Eq.trans ?_ (hga a (b' 0 k)).symm` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, Matrix.mul_apply, Finset.sum_eq_single (σ a)]`. Simplify using `[P]`. Introduce `a' _ h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: a ≠ σ.symm a'` using `fun e => h (by rw [e, Equiv.apply_symm_apply])`. Simplify using `[P, Matrix.diagonal_apply_ne _ this]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h)`. Use the proof step `(isCx_of_isMul hm (fun j hj => (hb j hj).1) hz) ht`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : t'' = t'` using `Units.ext (GlobalTheory.TorsionUnique.torsSq_unique K _ _ _ _ _ (isCx_of_isMul hm' (fun j hj => (hb' j hj).1) hz') h1 ht').1`. Substitute `h3` using the available equality. Establish `h4 : Matrix.GeneralLinearGroup.det hPu.unit ^ 2 = (∏ a, ga a) ^ (2 * l)` using `Units.ext hP`. Use `⟨fun j => Matrix.GeneralLinearGroup.det (B j), ?_, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[h4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[one_pow, _root_.mul_one, mul_right_comm, ← h2, neg_mul, zpow_neg]`. Establish `: (∏ a, ga a) ^ (2 * (l : ℤ)) = (∏ a, ga a) ^ (2 * l)`. Rewrite using `[← zpow_natCast]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this, mul_inv_cancel_right]`. Rewrite using `[one_pow, _root_.mul_one]`. Establish `hpos : l - j * n ≠ 0`. Establish `: j * n ≤ x.P.g * n` using `Nat.mul_le_mul_right _ hj`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `GlobalTheory.BoxDetUnique.isSquareDetComparison_eq_mul_det_pow_of_basis_change hL K x (l - j * n) _ (b j) (b' j) (B j) _ _ (Nat.cast_ne_zero.2 hpos) (hal _) (hb j hj).1 (hB j hj) (hb j hj).2 (hb' j hj).2`.
+A detailed English derivation is pending.
 -/
 theorem degree_compare (hL : Out.Laws) {K : Type} [Field K] [CharZero K] (x : KeyIn K) {n l d : ℕ}
     {al : ℕ → Matrix (Fin 4) (Fin 4) ℤ}
@@ -157,7 +153,7 @@ theorem degree_compare (hL : Out.Laws) {K : Type} [Field K] [CharZero K] (x : Ke
       (hB j hj) (hb j hj).2 (hb' j hj).2
 
 /- English proof (translation)
-Unfold `tComb`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j hj => by rw [h j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tComb_congr {R : Type} [CommRing R] (g n l Pr : ℕ) (t : Rˣ) {lam mu : ℕ → Rˣ} (h : ∀ j ≤ g, lam j = mu j) :
     tComb g n l Pr t lam = tComb g n l Pr t mu := by
@@ -166,15 +162,15 @@ theorem tComb_congr {R : Type} [CommRing R] (g n l Pr : ℕ) (t : Rˣ) {lam mu :
   exact Finset.prod_congr rfl fun j hj => by rw [h j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]
 
 /- English proof (translation)
-Introduce `hL K _ _ x n l l' al s κ κ' ⟨_, hl, hl', hal⟩ ⟨z, ch, b₁, b₂, t₁, t₂, J, lam₁, lam₂, hz, hJ, hb₁, hb₂, ht₁, ht₂, hκ⟩ ⟨z', ch', b₁', b₂', t₁', t₂', J', lam₁', lam₂', hz', hJ', hb₁', hb₂', ht₁', ht₂', hκ'⟩`. Take `⟨σ, hσ⟩` from `exists_perm hz hz'`. Establish `hc : ∀ a, ⊤ ≤ (z a).left ⁻¹ᵁ x.P.L.U (ch' (σ a))` using `fun a => hσ a ▸ hz'.1 (σ a)`. Set `ga` to `fun a => trU (T := K) (z a).left x.P.L (ch a) (ch' (σ a)) (hz.1 a) (hc a)`. Establish `hga : ∀ (k : ℕ) a (r : RR x k), valT (T` using `K) (z a).left (x.P.L.U (ch a)) (r.f (ch a)) = (ga a).val ^ k * valT (T := K) (z' (σ a)).left (x.P.L.U (ch' (σ a))) (r.f (ch' (σ a))) := fun k a r => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hσ a]`. Conclude with `valT_sec (T := K) (z a).left x.P.L _ _ (hz.1 a) (hc a) k r`. Take `⟨be₁, e₁, f₁⟩` from `degree_compare hL x hal hl hz hz' σ ga (hga _) hb₁ hb₁' ht₁ ht₁'`. Take `⟨be₂, e₂, f₂⟩` from `degree_compare hL x hal (hl.trans hl') hz hz' σ ga (hga _) hb₂ hb₂' ht₂ ht₂'`. Establish `eJ : J' = J * (∏ a, ga a) ^ (-((x.P.g * n : ℕ) : ℤ)) * 1 ^ 2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_pow, _root_.mul_one, zpow_neg, zpow_natCast, eq_mul_inv_iff_mul_eq]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hJ, hJ', ← Equiv.prod_comp σ, Units.val_pow_eq_pow_val, Units.coe_prod, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h0` using `hz'.2.1 (σ a)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h0`, the goal using `[hσ a]`. Rewrite using `[jac_chart x s (z a) (ch a) (ch' (σ a)) (hz.1 a) (hc a) h0, mul_comm]`. Establish `key` using `GlobalTheory.kaForm_homogeneous K x.P.g n l l' t₁ t₂ J (∏ a, ga a) 1 1 lam₁ lam₂ be₁ be₂ hl hl'`. Rewrite `key` using `[one_pow (8 * kaExp _ _ _ _), _root_.mul_one, ← e₁, ← e₂, ← eJ]`. Rewrite using `[hκ, hκ', ← key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `kaForm`. Rewrite using `[tComb_congr _ _ _ _ t₁' f₁, tComb_congr _ _ _ _ t₂' f₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kaVal_unique : Out.Laws → ∀ (K : Type) [Field K] [CharZero K] (x : KeyIn K) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (s : Fin x.P.g → RR x n) (κ κ' : Kˣ), admitted x.P.g n l l' al → KaVal x n l l' al s κ → KaVal x n l l' al s κ' → κ = κ' := by
   intro hL K _ _ x n l l' al s κ κ' ⟨_, hl, hl', hal⟩

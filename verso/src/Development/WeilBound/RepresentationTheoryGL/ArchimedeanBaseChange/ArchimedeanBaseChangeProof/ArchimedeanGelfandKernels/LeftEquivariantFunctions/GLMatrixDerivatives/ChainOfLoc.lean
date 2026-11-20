@@ -15,13 +15,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun (Continuous.matrix_det continuous_id) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_GLs (n : ℕ) : IsOpen (GLs n) :=
   isOpen_ne_fun (Continuous.matrix_det continuous_id) continuous_const
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Rd]`. Rewrite using `[Filter.EventuallyEq.fderiv_eq (Filter.eventuallyEq_of_mem (hU.mem_nhds hx) h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rd_congr {U : Set (Mat n)} (hU : IsOpen U) {f f' : Mat n → V} (h : Set.EqOn f f' U) (X : Mat n) :
     Set.EqOn (Rd X f) (Rd X f') U := by
@@ -30,7 +30,7 @@ theorem rd_congr {U : Set (Mat n)} (hU : IsOpen U) {f f' : Mat n → V} (h : Set
   rw [Filter.EventuallyEq.fderiv_eq (Filter.eventuallyEq_of_mem (hU.mem_nhds hx) h)]
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply]`. Rewrite using `[rd_congr hU h _ hx, rd_congr hU h _ hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eu_congr {U : Set (Mat n)} (hU : IsOpen U) {f f' : Mat n → V} (h : Set.EqOn f f' U) (s : Bool) (a b : Fin n) :
     Set.EqOn (Eu s a b f) (Eu s a b f') U := by
@@ -39,11 +39,9 @@ theorem eu_congr {U : Set (Mat n)} (hU : IsOpen U) {f f' : Mat n → V} (h : Set
   rw [rd_congr hU h _ hx, rd_congr hU h _ hx]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b f f' h x hx`. Simplify using `only [Epow]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `h hx`. Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `a b f f' h x hx`. Simplify using `only [Epow, Finset.sum_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun c _ => eu_congr hU (ih c b h) s a c hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem epow_congr {U : Set (Mat n)} (hU : IsOpen U) (s : Bool) (m : ℕ) : ∀ (a b : Fin n) {f f' : Mat n → V},
     Set.EqOn f f' U → Set.EqOn (Epow s m a b f) (Epow s m a b f') U := by
@@ -60,7 +58,7 @@ theorem epow_congr {U : Set (Mat n)} (hU : IsOpen U) (s : Bool) (m : ℕ) : ∀ 
     exact Finset.sum_congr rfl fun c _ => eu_congr hU (ih c b h) s a c hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gel, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => epow_congr hU s m a a h hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_congr {U : Set (Mat n)} (hU : IsOpen U) {f f' : Mat n → V} (h : Set.EqOn f f' U) (s : Bool) (m : ℕ) :
     Set.EqOn (gel s m f) (gel s m f') U := by
@@ -69,9 +67,7 @@ theorem gel_congr {U : Set (Mat n)} (hU : IsOpen U) {f f' : Mat n → V} (h : Se
   exact Finset.sum_congr rfl fun a _ => epow_congr hU s m a a h hx
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro f f' h`. Conclude with `h`. Consider the case `cons p w ih => intro f f' h`.
-
-Conclude with `gel_congr hU (ih h) p.1 p.2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem zop_congr {U : Set (Mat n)} (hU : IsOpen U) : ∀ (w : List (Bool × ℕ)) {f f' : Mat n → V},
     Set.EqOn f f' U → Set.EqOn (zOp w f) (zOp w f') U := by
@@ -81,11 +77,11 @@ theorem zop_congr {U : Set (Mat n)} (hU : IsOpen U) : ∀ (w : List (Bool × ℕ
   | cons p w ih => intro f f' h; exact gel_congr hU (ih h) p.1 p.2
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hc`. Establish `hcont : Continuous fun y : G n => F y.val`. Use `hF.comp_continuous (Units.continuous_val) fun y => ?_` and prove the remaining obligations. Use `show (y.val).det ≠ 0`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit |>.ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlg : ContinuousOn (lg (n` using `n)) (GLs n) := (hL n).2.2.2.1.continuousOn`. Establish `hK : IsCompact {y : G n | lg y.val ≤ R}` using `(hL n).2.2.2.2.1 R`. Establish `hclosed : IsClosed {y : G n | lg y.val ≤ R}`. Establish `: Continuous fun y : G n => lg y.val` using `hlg.comp_continuous Units.continuous_val fun y => (Matrix.isUnit_iff_isUnit_det _).1 y.isUnit |>.ne_zero`. Conclude with `isClosed_le this continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hcont.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro hK ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_setOf_eq, not_le] at hy`. Conclude with `hR _ ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit |>.ne_zero) hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_cpt (hL : LgFacts) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] (F : Mat n → W) (hF : ContinuousOn F (GLs n))

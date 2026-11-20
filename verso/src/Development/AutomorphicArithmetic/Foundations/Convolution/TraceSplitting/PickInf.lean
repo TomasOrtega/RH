@@ -18,7 +18,7 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Geo UpperTheory.Convolut
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Introduce `h0`. Apply `hu` to reduce the goal to its premises. Rewrite `h0`, the goal using `[ContinuousLinearMap.star_eq_adjoint]`. Establish `h1 : T (ContinuousLinearMap.adjoint T u) = 0` using `h0`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), ContinuousLinearMap.adjoint_inner_left, h1, inner_zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.T.Port.adj_ne {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (T : H →L[ℂ] H) (u : H) (hu : star T u ≠ 0) : (T * star T) u ≠ 0 := by
@@ -29,11 +29,11 @@ theorem UpperTheory.ConvolutionTheory.T.Port.adj_ne {H : Type} [NormedAddCommGro
   rw [← inner_self_eq_zero (𝕜 := ℂ), ContinuousLinearMap.adjoint_inner_left, h1, inner_zero_right]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn μE _ μF _ u hu`. Take `⟨m, hm⟩ : ∃ m, Module.finrank F E = m + 1` from `⟨Module.finrank F E - 1, by have := hp.two_le; omega⟩`. Take `⟨p⟩` from `(hInf F E σ hσ m hm).1 inferInstance`. Take `⟨D, -⟩` from `(hInf F E σ hσ m hm).2 p`. Take `⟨-, -, -, -, -, ⟨s, hsl, hs⟩, -, -⟩` from `hAB F E σ m D n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨νF, hνF⟩ : ∃ νF : Measure (archGroup F n), νF.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`. Take `⟨b, hbs, hbf, hbn, hbu⟩` from `hBump F n νF (LL μE) (((rightRegularRep (rationalGLOne E n) μE).compHom (archP E n) continuous_archP).compHom (s 0) (hs 0)) u hu`. Take `⟨νE, hνE, a, aE, aF, hA⟩` from `hPosition F E σ m D n νF b hbs hbf hbn`. Take `⟨hsq, -, -, -⟩` from `hSq F n νF b a aF m hA.sq hA.pow hA.norm (LL μE) (((rightRegularRep (rationalGLOne E n) μE).compHom (archP E n) continuous_archP).compHom (s 0) (hs 0))`. Take `⟨hAE, hAF⟩` from `hAmp F E σ m D n νE νF b a aE aF hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m, hm, D, s, hs, νE, hνE, νF, hνF, b, a, aE, aF, hsl, hA, hAE μE, hAF μF, hPair F E σ m hm D n νE νF b a aE aF hA, ?_⟩` and prove the remaining obligations. Establish `key` using `UpperTheory.ConvolutionTheory.T.Port.adj_ne _ u hbu`. Rewrite `key` using `[← hsq]`. Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.Port.pickInf_of (hInf : UpperTheory.ConvolutionTheory.L1.InfSplit) (hAB : UpperTheory.ConvolutionTheory.L1.ArchBasic)
     (hBump : UpperTheory.ConvolutionTheory.L1.BumpEx) (hPosition : UpperTheory.ConvolutionTheory.L1.ArchSlotEx) (hSq : UpperTheory.ConvolutionTheory.L1.SqOp)
@@ -59,7 +59,7 @@ theorem UpperTheory.ConvolutionTheory.T.Port.pickInf_of (hInf : UpperTheory.Conv
 
 open UpperTheory.ConvolutionTheory.L1 in
 /- English proof (translation)
-The claim follows from `UpperTheory.ConvolutionTheory.T.Port.pickInf_of infSplit archBasic bumpEx archPositionEx sqOp ampPosition pairPosition`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.T.pickInf :
     UpperTheory.ConvolutionTheory.T.PickInf := UpperTheory.ConvolutionTheory.T.Port.pickInf_of infSplit archBasic bumpEx archPositionEx sqOp ampPosition pairPosition

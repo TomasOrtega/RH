@@ -5,13 +5,11 @@ namespace GlobalTheory
 open Submodule
 
 /- English proof (translation)
-Use `set Mξ : Submodule R M := ⨆ f : (R ∙ x₀) →ₗ[R] M, LinearMap.range f with hMξ`. Establish `hinv : Mξ.IsFullyInvariant`. Introduce `g`. Use `iSup_le fun f => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_le_iff_le_comap, ← LinearMap.range_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `le_iSup (fun f : (R ∙ x₀) →ₗ[R] M => LinearMap.range f) (g ∘ₗ f)`. Set `e` to `(OrderIso.setIsotypicComponents (R := R) (M := M))`. Set `m : fullyInvariantSubmodule R M` to `⟨Mξ, hinv⟩`. Set `c : fullyInvariantSubmodule R M` to `e (e.symm m)ᶜ`. Establish `h1 : IsCompl (e (e.symm m)) c` using `(e.isCompl_iff).mp isCompl_compl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[e.apply_symm_apply]`. Use `⟨c.1, ?_, c.2⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff]`. Conclude with `congrArg Subtype.val h1.inf_eq_bot`.
-
-Rewrite using `[codisjoint_iff]`. Conclude with `congrArg Subtype.val h1.sup_eq_top`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompl_isFullyInvariant_sum_images (R : Type) [Ring R] (M : Type) [AddCommGroup M]
     [Module R M] [IsSemisimpleModule R M] (x₀ : M) :
@@ -36,23 +34,21 @@ theorem exists_isCompl_isFullyInvariant_sum_images (R : Type) [Ring R] (M : Type
     exact congrArg Subtype.val h1.sup_eq_top
 
 /- English proof (translation)
-Introduce `hM x₀`. Take `⟨C, hC, hCinv⟩` from `exists_isCompl_isFullyInvariant_sum_images R M x₀`. Use `set Mξ : Submodule R M := ⨆ f : (R ∙ x₀) →ₗ[R] M, LinearMap.range f with hMξ`. Establish `hinv : Mξ.IsFullyInvariant`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun f => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_le_iff_le_comap, ← LinearMap.range_comp]`. Conclude with `le_iSup (fun f : (R ∙ x₀) →ₗ[R] M => LinearMap.range f) (g ∘ₗ f)`. Establish `hx : x₀ ∈ Mξ`. Use `(le_iSup (fun f : (R ∙ x₀) →ₗ[R] M => LinearMap.range f) (R ∙ x₀).subtype) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨⟨x₀, Submodule.mem_span_singleton_self x₀⟩, rfl⟩`. Set `P : M →ₗ[R] M` to `Mξ.subtype ∘ₗ Submodule.linearProjOfIsCompl Mξ C hC`. Establish `hP : ∀ y ∈ Mξ, ∀ z ∈ C, P (y + z) = y`. Introduce `y hy z hz`. Simplify using `only [P, LinearMap.comp_apply, map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Submodule.linearProjOfIsCompl Mξ C hC y = ⟨y, hy⟩` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨y, hy⟩`. Establish `h2 : Submodule.linearProjOfIsCompl Mξ C hC z = 0` using `Submodule.linearProjOfIsCompl_apply_right hC ⟨z, hz⟩`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. Establish `hdec : ∀ v : M, ∃ y ∈ Mξ, ∃ z ∈ C, y + z = v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v`. Establish `: v ∈ Mξ ⊔ C` using `by rw [hC.sup_eq_top]; exact Submodule.mem_top`. Conclude with `Submodule.mem_sup.mp this`. Establish `hPmem : ∀ v, P v ∈ Mξ` using `fun v => (Submodule.linearProjOfIsCompl Mξ C hC v).2`. Establish `hPy : ∀ y ∈ Mξ, P y = y` using `fun y hy => by simpa using hP y hy 0 C.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hPy x₀ hx, fun v => hPy _ (hPmem v), ?_, ?_⟩` and prove the remaining obligations. Introduce `g v`. Take `⟨y, hy, z, hz, rfl⟩` from `hdec v`. Rewrite using `[hP y hy z hz, map_add, hP (g y) (hinv g hy) (g z) (hCinv g hz)]`. Introduce `W hW a ha v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hX : ∀ u : (R ∙ x₀), a • u = 0`. Introduce `u`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `ha u ((Submodule.span_singleton_le_iff_mem x₀ W).mpr hW u.2)`. Establish `key : ∀ m ∈ Mξ, a • m = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Use `Submodule.iSup_induction _ (motive := fun m => a • m = 0) hm ?_ (smul_zero a) ?_` and prove the remaining obligations. Introduce and unpack `f _ ⟨u, rfl⟩`. Rewrite using `[← map_smul, hX u, map_zero]`. Introduce `m₁ m₂ h₁ h₂`.
-
-Rewrite using `[smul_add, h₁, h₂, add_zero]`. Conclude with `key _ (hPmem v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isotypic_projector (R : Type) [Ring R] (M : Type) [AddCommGroup M] [Module R M] :
     IsSemisimpleModule R M → ∀ x₀ : M, ∃ P : M →ₗ[R] M, P x₀ = x₀ ∧ (∀ v, P (P v) = P v) ∧

@@ -19,7 +19,7 @@ def wt (y t : ℝ) : ℂ := (t : ℂ) + (y : ℂ) * I
 def L (y t : ℝ) : ℝ := Real.log |y| + lg (t / y)
 
 /- English proof (translation)
-Unfold `wt`. Establish `: (y : ℂ) ≠ 0` using `by exact_mod_cast hy`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem wt_eq {y : ℝ} (hy : y ≠ 0) (t : ℝ) : wt y t = (y : ℂ) * (((t / y : ℝ) : ℂ) + I) := by
   unfold wt
@@ -28,14 +28,14 @@ theorem wt_eq {y : ℝ} (hy : y ≠ 0) (t : ℝ) : wt y t = (y : ℂ) * (((t / y
   field_simp
 
 /- English proof (translation)
-Rewrite using `[wt_eq hy, norm_mul, Complex.norm_real, Real.norm_eq_abs, L, Real.exp_add, Real.exp_log (abs_pos.2 hy), ← norm_tI_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_wt {y : ℝ} (hy : y ≠ 0) (t : ℝ) : ‖wt y t‖ = Real.exp (L y t) := by
   rw [wt_eq hy, norm_mul, Complex.norm_real, Real.norm_eq_abs, L, Real.exp_add,
     Real.exp_log (abs_pos.2 hy), ← norm_tI_eq]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `[wt] at this`. Conclude with `hy this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wt_ne {y : ℝ} (hy : y ≠ 0) (t : ℝ) : wt y t ≠ 0 := by
   intro h; have := congrArg Complex.im h; simp [wt] at this; exact hy this
@@ -50,9 +50,9 @@ def F' (a b : ℕ) (ν y : ℝ) (σ : ℂ) (t : ℝ) : ℂ :=
     Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Unfold `hTransAB F`. Use `congr 1`. Use function extensionality and compare the values at `t`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[show (t : ℂ) + (y : ℂ) * I = wt y t from rfl, norm_wt hy, Complex.cpow_def_of_ne_zero (by exact_mod_cast (Real.exp_pos _).ne'), ← Complex.ofReal_log (Real.exp_pos _).le, Real.log_exp]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hTransAB_eq (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) :
     (fun σ => hTransAB a b σ ν y) = fun σ => ∫ t, F a b ν y σ t := by
@@ -65,13 +65,13 @@ theorem hTransAB_eq (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) :
     ← Complex.ofReal_log (Real.exp_pos _).le, Real.log_exp]
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_e (ν t : ℝ) : ‖Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ)))‖ = 1 := by
   rw [Complex.norm_exp]; simp
 
 /- English proof (translation)
-Unfold `F`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_e, norm_pow, norm_pow, norm_inv, norm_inv, Complex.norm_conj, norm_wt hy, Complex.norm_exp, ← Real.exp_neg, ← Real.exp_nat_mul, ← Real.exp_nat_mul, mul_one, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_F (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) (σ : ℂ) (t : ℝ) :
     ‖F a b ν y σ t‖ = Real.exp (-((a + b : ℝ) + 2 * σ.re) * L y t) := by
@@ -84,7 +84,7 @@ theorem norm_F (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) (σ : ℂ) (t : �
   ring
 
 /- English proof (translation)
-Establish `: F' a b ν y σ t = F a b ν y σ t * ((L y t : ℂ) * (-2))` using `by unfold F F'; ring`. Rewrite using `[this, norm_mul, norm_F a b ν hy, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_F' (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) (σ : ℂ) (t : ℝ) :
     ‖F' a b ν y σ t‖ = Real.exp (-((a + b : ℝ) + 2 * σ.re) * L y t) * (2 * |L y t|) := by
@@ -93,9 +93,9 @@ theorem norm_F' (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) (σ : ℂ) (t : 
   simp; ring
 
 /- English proof (translation)
-Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `h1` using `le_abs_self L0`. Establish `h2` using `neg_abs_le L0`. Establish `h3` using `abs_nonneg L0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ c) (by linarith : 0 ≤ |L0| + L0), mul_nonneg (by linarith : 0 ≤ M - c) h3, mul_nonneg (by linarith : 0 ≤ c - 1 - 2 * ε) hD]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem bound_exp {ε M c L0 D : ℝ} (hc : 1 + 2 * ε ≤ c) (hM : c ≤ M) (hD : 0 ≤ D) (hε : 0 < ε) :
     Real.exp (-c * (L0 + D)) ≤ Real.exp (M * |L0|) * Real.exp (-(1 + ε) * D) * Real.exp (-(ε * D)) := by
@@ -108,7 +108,7 @@ theorem bound_exp {ε M c L0 D : ℝ} (hc : 1 + 2 * ε ≤ c) (hM : c ≤ M) (hD
     mul_nonneg (by linarith : 0 ≤ M - c) h3, mul_nonneg (by linarith : 0 ≤ c - 1 - 2 * ε) hD]
 
 /- English proof (translation)
-Rewrite using `[norm_F a b ν hy]`. Establish `hD` using `lg_nonneg (t / y)`. Establish `h` using `bound_exp (L0 := Real.log |y|) hc hM hD hε`. Establish `h2 : Real.exp (-(ε * lg (t / y))) ≤ 1` using `Real.exp_le_one_iff.2 (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bound_F {ε M : ℝ} (hε : 0 < ε) (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) {σ : ℂ}
     (hc : 1 + 2 * ε ≤ (a + b : ℝ) + 2 * σ.re) (hM : (a + b : ℝ) + 2 * σ.re ≤ M) (t : ℝ) :
@@ -124,13 +124,13 @@ theorem bound_F {ε M : ℝ} (hε : 0 < ε) (a b : ℕ) (ν : ℝ) {y : ℝ} (hy
     _ = _ := mul_one _
 
 /- English proof (translation)
-Rewrite using `[norm_F' a b ν hy]`. Establish `hD : 0 ≤ lg (t / y)` using `lg_nonneg _`. Establish `h` using `bound_exp (L0 := Real.log |y|) hc hM hD hε`. Establish `hL : |L y t| ≤ |Real.log (abs y)| + lg (t / y)`. Unfold `L; exact (abs_add_le _ _).trans (by rw [abs_of_nonneg hD])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hE2 : Real.exp (-(ε * lg (t / y))) ≤ 1` using `Real.exp_le_one_iff.2 (by nlinarith)`. Establish `hE2D : Real.exp (-(ε * lg (t / y))) * lg (t / y) ≤ 1 / ε`. Rewrite using `[Real.exp_neg, le_div_iff₀ hε]`. Establish `hp` using `Real.exp_pos (ε * lg (t / y))`. Use `Real.add_one_le_exp (ε * lg (t / y))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (Real.exp (ε * lg (t / y)))⁻¹ * lg (t / y) * ε = (ε * lg (t / y)) / Real.exp (ε * lg (t / y)) by field_simp]`. Rewrite using `[div_le_iff₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `heC : 0 ≤ Real.exp (M * |Real.log (abs y)|)` using `(Real.exp_pos _).le`. Establish `hE1 : 0 ≤ Real.exp (-(1 + ε) * lg (t / y))` using `(Real.exp_pos _).le`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE2p : 0 ≤ Real.exp (-(ε * lg (t / y)))` using `(Real.exp_pos _).le`. Establish `hl0` using `abs_nonneg (Real.log |y|)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bound_F' {ε M : ℝ} (hε : 0 < ε) (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) {σ : ℂ}
     (hc : 1 + 2 * ε ≤ (a + b : ℝ) + 2 * σ.re) (hM : (a + b : ℝ) + 2 * σ.re ≤ M) (t : ℝ) :
@@ -164,14 +164,14 @@ theorem bound_F' {ε M : ℝ} (hε : 0 < ε) (a b : ℕ) (ν : ℝ) {y : ℝ} (h
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `(integrable_expL hε).comp_div hy`.
+A detailed English derivation is pending.
 -/
 theorem integrable_bound {ε : ℝ} (hε : 0 < ε) {y : ℝ} (hy : y ≠ 0) :
     Integrable (fun t : ℝ => Real.exp (-(1 + ε) * lg (t / y))) :=
   (integrable_expL hε).comp_div hy
 
 /- English proof (translation)
-Unfold `F F'`. Establish `h : HasDerivAt (fun s : ℂ => (L y t : ℂ) * (-2 * s)) ((L y t : ℂ) * (-2)) σ`. Conclude with `(((hasDerivAt_id σ).const_mul (-2 : ℂ)).const_mul (L y t : ℂ)).congr_deriv (by ring)`. Conclude with `(h.cexp.const_mul _).mul_const _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_F (a b : ℕ) (ν y : ℝ) (σ : ℂ) (t : ℝ) :
     HasDerivAt (fun s => F a b ν y s t) (F' a b ν y σ t) σ := by
@@ -181,16 +181,16 @@ theorem hasDerivAt_F (a b : ℕ) (ν y : ℝ) (σ : ℂ) (t : ℝ) :
   exact (h.cexp.const_mul _).mul_const _
 
 /- English proof (translation)
-Unfold `L`. Conclude with `continuous_const.add (continuous_lg.comp (continuous_id.div_const y))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_L {y : ℝ} : Continuous (L y) := by
   unfold L
   exact continuous_const.add (continuous_lg.comp (continuous_id.div_const y))
 
 /- English proof (translation)
-Unfold `F`. Establish `hw : Continuous (wt y)` using `by unfold wt; fun_prop`. Establish `h1 : Continuous fun t => (wt y t)⁻¹` using `hw.inv₀ (wt_ne hy)`. Establish `h2 : Continuous fun t => ((starRingEnd ℂ) (wt y t))⁻¹` using `(Complex.continuous_conj.comp hw).inv₀ (fun t => (map_ne_zero _).2 (wt_ne hy t))`. Establish `h3 : Continuous fun t => Complex.exp ((L y t : ℂ) * (-2 * σ))` using `Complex.continuous_exp.comp ((Complex.continuous_ofReal.comp continuous_L).mul continuous_const)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Continuous fun t : ℝ => Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ)))` using `by fun_prop`. Conclude with `(((h1.pow a).mul (h2.pow b)).mul h3).mul h4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_F (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) (σ : ℂ) : Continuous (F a b ν y σ) := by
   unfold F
@@ -204,7 +204,7 @@ theorem continuous_F (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) (σ : ℂ) 
   exact (((h1.pow a).mul (h2.pow b)).mul h3).mul h4
 
 /- English proof (translation)
-Establish `: F' a b ν y σ = fun t => F a b ν y σ t * ((L y t : ℂ) * (-2))` using `by funext t; unfold F F'; ring`. Rewrite using `[this]`. Conclude with `(continuous_F a b ν hy σ).mul ((Complex.continuous_ofReal.comp continuous_L).mul continuous_const)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_F' (a b : ℕ) (ν : ℝ) {y : ℝ} (hy : y ≠ 0) (σ : ℂ) : Continuous (F' a b ν y σ) := by
   have : F' a b ν y σ = fun t => F a b ν y σ t * ((L y t : ℂ) * (-2)) := by funext t; unfold F F'; ring
@@ -218,17 +218,15 @@ namespace GlobalTheory.HeckeTwo
 open MeasureTheory GlobalTheory.HeckeTwoC GlobalTheory.HeckeTwoAB
 
 /- English proof (translation)
-Introduce `a b ν y hab hy`. Rewrite using `[hTransAB_eq a b ν hy]`. Introduce `σ₀ hσ₀`. Establish `hre : -1 / 2 < σ₀.re` using `hσ₀`. Use `set ε := (σ₀.re + 1 / 2) / 2 with hε_def`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε : 0 < ε` using `by rw [hε_def]; linarith`. Establish `hab' : (2 : ℝ) ≤ (a + b : ℝ)` using `by exact_mod_cast hab`. Establish `hball : ∀ σ ∈ Metric.ball σ₀ ε, -1 / 2 + ε ≤ σ.re ∧ σ.re ≤ σ₀.re + ε`. Introduce `σ hσ`. Establish `h1 : |(σ - σ₀).re| ≤ ‖σ - σ₀‖` using `Complex.abs_re_le_norm _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖σ - σ₀‖ < ε` using `by simpa [dist_eq_norm] using hσ`. Establish `h3` using `abs_lt.1 (lt_of_le_of_lt h1 h2)`. Simplify using `only [sub_re] at h3`. Apply the tactic sequence `constructor <;> linarith [h3.1, h3.2]`. Use `set M := (a + b : ℝ) + 2 * (σ₀.re + ε) with hM_def`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ σ ∈ Metric.ball σ₀ ε, 1 + 2 * ε ≤ (a + b : ℝ) + 2 * σ.re`. Introduce `σ hσ`. Use `(hball σ hσ).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM : ∀ σ ∈ Metric.ball σ₀ ε, (a + b : ℝ) + 2 * σ.re ≤ M`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ hσ`. Use `(hball σ hσ).2` as an intermediate fact. Rewrite using `[hM_def]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0` using `Metric.mem_ball_self hε (x := σ₀)`.
-
-Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (F := F a b ν y) (F' := F' a b ν y) (x₀ := σ₀) (bound := fun t => 2 * Real.exp (M * |Real.log (abs y)|) * (|Real.log (abs y)| + 1 / ε) * Real.exp (-(1 + ε) * lg (t / y))) (Metric.ball_mem_nhds σ₀ hε) (Filter.Eventuall …`. Conclude with `key.2.differentiableAt.differentiableWithinAt`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hTransAB_differentiableOn : ∀ (a b : ℕ) (ν y : ℝ), 2 ≤ a + b → y ≠ 0 →
     DifferentiableOn ℂ (fun σ => hTransAB a b σ ν y) halfPlane := by

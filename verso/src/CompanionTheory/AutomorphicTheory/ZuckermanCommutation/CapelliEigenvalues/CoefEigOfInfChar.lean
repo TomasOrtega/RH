@@ -4,7 +4,7 @@ import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AdmissibleSmo
 namespace CompanionTheory.CapEig
 
 /- English proof (translation)
-The claim follows from `coefEig_of hI CompanionTheory.D.gk.admitted.k_finite_smooth`.
+A detailed English derivation is pending.
 -/
 theorem coefEig_of_infChar (hI : PI.DSInfCharCap.DSInfCharCap) : CompanionTheory.LimBd.Main.CoefEig :=
   coefEig_of hI CompanionTheory.D.gk.admitted.k_finite_smooth

@@ -9,23 +9,23 @@ namespace GlobalTheory.AdMark
 open scoped Matrix
 
 /- English proof (translation)
-Set `P : Submodule R (U × La)` to `{ carrier := {p | p.1 ∈ L ∧ ∃ w ∈ Hk, fv p.1 - K (fv (ι p.2)) = N • w} zero_mem' := ⟨L.zero_mem, 0, zero_mem _, by simp⟩ add_mem' := by`. Introduce and unpack `p q ⟨hp, w, hw, e⟩ ⟨hq, w', hw', e'⟩`. Use `⟨L.add_mem hp hq, w + w', add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← e, ← e']`. Simplify using `only [Prod.fst_add, Prod.snd_add, map_add]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Use the proof step `smul_mem' := by`. Introduce and unpack `c p ⟨hp, w, hw, e⟩`. Use `⟨L.smul_mem c hp, φ c • w, hsm c w hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm N, ← e]`.
+Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.smul_fst, Prod.smul_snd, map_smul, hfv, smul_sub] }`. Establish `hs : Function.Surjective ((LinearMap.snd R U La) ∘ₗ P.subtype)`. Introduce `a`. Take `⟨x, hx, w, hw, e⟩` from `apk _ ((hK _).2 ⟨_, (h1 _).2 ⟨a, rfl⟩, rfl⟩)`. Conclude with `⟨⟨(x, a), hx, -w, neg_mem hw, by rw [e]; simp⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `Module.projective_lifting_property _ LinearMap.id hs`. Establish `hs2 : ∀ a, (s a).1.2 = a` using `fun a => LinearMap.congr_fun hs a`. Set `mk : La →ₗ[R] U` to `(LinearMap.fst R U La) ∘ₗ P.subtype ∘ₗ s`. Establish `m1 : ∀ a, mk a ∈ L` using `fun a => (s a).2.1`. Establish `m2 : ∀ a, ∃ w ∈ Hk, fv (mk a) - K (fv (ι a)) = N • w` using `fun a => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, e⟩` from `(s a).2.2`. Rewrite `e` using `[hs2]`. Conclude with `⟨w, hw, e⟩`. Use `⟨mk, m1, m2, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨u, hu, e⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, e'⟩` from `m2 a`. Take `⟨y, hy, ey⟩` from `(hK _).1 (sub_mem ((hL u).1 hu) hw)`. Establish `: fv (ι a) = N • y`. Apply `hKi` to reduce the goal to its premises. Rewrite using `[map_nsmul, ey, smul_sub, ← e', e, map_nsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Take `⟨x, rfl, ex⟩` from `hdiv _ _ this`. Take `⟨b, rfl⟩` from `(h1 _).1 hy`. Conclude with `⟨b, hι (by rw [ex, map_nsmul])⟩`. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, ey⟩` from `(hK _).1 ((hL v).1 hv)`. Take `⟨a, w, hw, rfl⟩` from `ap1 y hy`. Take `⟨w', hw', e'⟩` from `m2 a`. Take `⟨u, hu, eu⟩` from `hdiv (v - mk a) (K w - w') (by`. Rewrite using `[map_sub, ← ey, smul_sub, ← e', map_add, map_nsmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `abel)`. Use `⟨a, u, (hL u).2 (hu ▸ sub_mem ((hK _).2 ⟨w, hw, rfl⟩) hw'), ?_⟩` and prove the remaining obligations. Rewrite using `[← eu]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_lift {R S La U A : Type} [CommRing R] [CommRing S] [AddCommGroup La] [Module R La] [Module.Projective R La]
     [AddCommGroup U] [Module R U] [AddCommGroup A] [Module S A] (φ : R → S) (fv : U →+ A)
@@ -87,7 +87,7 @@ theorem exists_lift {R S La U A : Type} [CommRing R] [CommRing S] [AddCommGroup 
     abel
 
 /- English proof (translation)
-Rewrite using `[smul_sub, ← mul_smul, ← hc, ← e, ← e']`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sub_congr {A : Type} [AddCommGroup A] {x y z w w' : A} {M N c : ℕ} (hc : N = M * c) (e : y - z = M • w)
     (e' : x - z = N • w') : x - y = M • (c • w' - w) := by
@@ -107,9 +107,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdMark
 
 /- English proof (translation)
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `hw`. Introduce `hv`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨v, hv, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem latR_rfl {E : Type} [Field E] [NumberField E] {m : ℕ} (L : Submodule (𝓞 E) (Fin m → E)) :
     latR rfl L = L := by
@@ -121,11 +121,11 @@ theorem latR_rfl {E : Type} [Field E] [NumberField E] {m : ℕ} (L : Submodule (
     exact ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, z, hz, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨c • a, (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).smul_mem c ha, z, hz, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← _root_.mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one]`. Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_latGHat {D : D7} (W : HSp D) (k : GA D W) (c : 𝓞 D.host.E) :
     ∀ z ∈ latGHat W k, ((1 : Af D.host.F) ⊗ₜ[D.host.F] (c : D.host.E)) • z ∈ latGHat W k := by
@@ -142,25 +142,21 @@ theorem smul_mem_latGHat {D : D7} (W : HSp D) (k : GA D W) (c : 𝓞 D.host.E) :
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `D H Dw l l₂ W r hr ι hι hM hMb k`. Substitute `hr` using the available equality. Rewrite using `[latR_rfl]`. Use `haveI := Dw.proj`. Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM2 : l₂.M ≠ 0` using `by have := l₂.three_le; omega`. Set `fv : (Fin W.rank → D.host.E) →+ (Fin W.rank → Af D.host.F ⊗[D.host.F] D.host.E)` to `AddMonoidHom.mk' (finVec W) (GlobalTheory.AdLat.cap_fv_add D.host.F)`. Establish `ap : ∀ g : GA D W, ∀ z ∈ latGHat W g, ∃ x ∈ latG W g, ∃ w ∈ latGHat W g, z = fv x + l₂.M • w`. Introduce `g`. Take `⟨a1, a2, -, -, a5, -⟩` from `GlobalTheory.Member.latG_lattice_and_completion D W g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a5]`. Conclude with `(GlobalTheory.AdLat.hat_rational_points_and_approx _ _ _ _ a1 a2).2.1 l₂.M (Nat.pos_of_ne_zero hM2)`. Take `⟨mk₂, m1, m2, m3, m4⟩` from `exists_lift (fun c : 𝓞 D.host.E => (1 : Af D.host.F) ⊗ₜ[D.host.F] (c : D.host.E)) fv (fun c x => by`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(1 : Af D.host.F) ⊗ₜ[D.host.F] ((c : D.host.E) * x i) = _ * ((1 : Af D.host.F) ⊗ₜ[D.host.F] x i)`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one])`. Use the proof step `(finHom W k).1.mulVecLin`. Use the proof step `(fun x y h => by`. Use `congrArg (fun v => ((finHom W k)⁻¹).1 *ᵥ v) h` as an intermediate fact. Simplify `this)` using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(latGHat W 1) (latGHat W k) (smul_mem_latGHat W k) (latG W k) ι hι.1 l₂.M`. Use the proof step `(GlobalTheory.MarkCoset.latG_spec D W k).1 (GlobalTheory.MarkCoset.latG_spec D W k).2`. Use the proof step `(fun v => ((GlobalTheory.MarkCoset.latG_spec D W 1).1 v).symm.trans (by rw [← hι.2]; rfl))`. Use the proof step `(fun y hy => by`. Take `⟨x, hx, h⟩` from `ap 1 y hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[← hι.2]`. Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨a, h⟩)`. Use the proof step `(ap k) (GlobalTheory.MarkCoset.finVec_div W l₂.M hM2)`. Use `⟨mk₂, ⟨m1, fun a _ => m3 a, fun v hv => ?_⟩, fun a _ => m2 a, fun mk _ hmk a ha => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Submodule.smul_induction_on hv (fun m hm v hv => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Take `⟨a, u, hu, rfl⟩` from `m4 v hv`. Use `⟨m • a, Submodule.smul_mem_smul hm trivial, m • u, Submodule.smul_mem _ m hu, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, map_smul, smul_comm m]`. Take `⟨a, ha, u, hu, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨a', ha', u', hu', rfl⟩` from `hy`. Conclude with `⟨a + a', add_mem ha ha', u + u', add_mem hu hu', by rw [map_add, smul_add]; abel⟩`. Take `⟨c, hc⟩` from `hM`. Take `⟨w, hw, e⟩` from `hmk a (Submodule.smul_mono_left (Ideal.map_mono hMb) ha)`. Take `⟨w', hw', e'⟩` from `m2 a`.
-
-Use `replace e : fv (mk a) - (finHom W k).1.mulVecLin (fv (ι a)) = l.M • w := e`. Take `⟨u, hu, eu⟩` from `GlobalTheory.MarkCoset.finVec_div W l.M hM0 (mk₂ a - mk a) (c • w' - w) (by`. Conclude with `(fv.map_sub _ _).trans (sub_congr hc e e'))`. Use `⟨u, ((GlobalTheory.MarkCoset.latG_spec D W k).1 u).2 (hu ▸ sub_mem (nsmul_mem hw' c) hw), ?_⟩` and prove the remaining obligations. Rewrite using `[← eu]`.
-
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_marking : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (l l₂ : Geo.Tor.Level H) (W : HSp D) (r : ℕ) (hr : W.rank = r) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)), LatEmb W ι → l.M ∣ l₂.M → l₂.Mb ≤ l.Mb → ∀ k : GA D W, ∃ mk₂ : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E), IsMark l₂ (latR hr (latG W k)) mk₂ ∧ MarkAd l₂ W hr ι k mk₂ ∧ ∀ mk, (∀ a, mk a ∈ latR hr (latG W k)) → MarkAd l W hr ι k mk → MarkOver l l₂ (latR hr (latG W k)) mk mk₂ := by
   intro D H Dw l l₂ W r hr ι hι hM hMb k

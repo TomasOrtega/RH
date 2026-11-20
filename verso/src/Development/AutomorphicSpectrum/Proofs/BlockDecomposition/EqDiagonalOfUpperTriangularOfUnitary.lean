@@ -6,11 +6,11 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.RealPlace
 
 /- English proof (translation)
-Establish `hinv : B⁻¹ = Bᴴ` using `Matrix.inv_eq_left_inv hBB`. Use `haveI : Invertible B := Matrix.invertibleOfIsUnitDet B (Matrix.isUnit_det_of_left_inverse hBB)`. Establish `hT : B⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hB`. Rewrite `hT` using `[hinv]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Establish `h1 : Bᴴ j i = 0` using `hT h`. Rewrite `h1` using `[Matrix.conjTranspose_apply, star_eq_zero]`. Rewrite using `[h1, Matrix.diagonal_apply_ne _ (ne_of_lt h)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB h, Matrix.diagonal_apply_ne _ (ne_of_gt h)]`.
+A detailed English derivation is pending.
 -/
 theorem eq_diagonal_of_upperTriangular_of_unitary {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ)
     (hB : B.BlockTriangular id) (hBB : Bᴴ * B = 1) : B = diagonal (fun i => B i i) := by
@@ -27,23 +27,19 @@ theorem eq_diagonal_of_upperTriangular_of_unitary {r : ℕ} (B : Matrix (Fin r) 
   · rw [hB h, Matrix.diagonal_apply_ne _ (ne_of_gt h)]
 
 /- English proof (translation)
-Establish `hXPX : Xᴴ * P * X = 1`. Rewrite using `[Matrix.mul_assoc, hPX, ← Matrix.mul_assoc]`. Conclude with `hXY`. Establish `hBB : Bᴴ * B = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (p * X)ᴴ * P * (p * X) := by rw [hpX]`. Use `_ = Xᴴ * (pᴴ * P * p) * X := by`. Rewrite using `[Matrix.conjTranspose_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hpP]`. Conclude with `hXPX`. Establish `hBd` using `eq_diagonal_of_upperTriangular_of_unitary B hB hBB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨D, hD⟩ : ∃ D : Matrix (Fin r) (Fin r) ℂ, D = diagonal (fun i => B i i)` from `⟨_, rfl⟩`. Establish `hBD : B = D` using `hBd.trans hD.symm`. Establish `hpXD : p * X = X * D`. Rewrite using `[hpX, hBD]`. Establish `hr : pᴴ * (J * p * J⁻¹) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hpJ, Matrix.mul_nonsing_inv J hJ]`. Establish `hr' : (J * p * J⁻¹) * pᴴ = 1` using `mul_eq_one_comm.mp hr`. Establish `key : J * (p * Y) = J * (Y * D)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hpJ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (J * p * J⁻¹) * (pᴴ * P * p * X) := by rw [hpP, hPX]`. Use `_ = (J * p * J⁻¹) * pᴴ * (P * (p * X)) := by simp only [Matrix.mul_assoc]`. Use `_ = (J * p * J⁻¹) * pᴴ * (P * X * D) := by`. Rewrite using `[hpXD]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (J * p * J⁻¹) * pᴴ * (J * (Y * D)) := by`. Rewrite using `[hPX]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J * (Y * D) := by rw [hr', Matrix.one_mul]`.
-
-Establish `hpYD : p * Y = Y * D`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul J hJ, Matrix.one_mul]`. Use `_ = J⁻¹ * (J * (Y * D)) := by rw [key]`. Use `_ = Y * D := by`.
-
-Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul J hJ, Matrix.one_mul]`. Conclude with `⟨fun i => B i i, hD ▸ hpXD, hD ▸ hpYD⟩`.
+A detailed English derivation is pending.
 -/
 theorem flag_isometry_diagonal_on_frame (n r : ℕ) (J P p : Matrix (Fin n) (Fin n) ℂ)
     (X Y : Matrix (Fin n) (Fin r) ℂ) (hJ : IsUnit J.det) (hXY : Xᴴ * J * Y = 1)

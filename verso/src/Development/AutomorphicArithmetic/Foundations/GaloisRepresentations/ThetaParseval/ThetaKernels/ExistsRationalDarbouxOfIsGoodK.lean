@@ -13,7 +13,7 @@ open scoped TensorProduct ComplexConjugate GlobalTheory.IndefiniteRowSideFullHec
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model HasExp SplitsFully Chars)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Introduce `B hB _ _ X Y r s r' s' hX hY` and use `_root_.Tw.RatDarboux.exists_rational_darboux_k _ B X Y r s r' s' hB hX hY`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tw.RatDarboux.exists_rational_darboux_of_isGood_k : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ),

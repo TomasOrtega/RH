@@ -14,21 +14,19 @@ namespace SectionsLatticeFS
 open ProjScheme
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos (∑ i, a i) with h0 | hpos` into its components or cases. Establish `ha : ∀ i, a i = 0` using `fun i => Finset.sum_eq_zero_iff.mp h0 i (Finset.mem_univ i)`. Simplify using `[ha]`. Use `set n := ∑ i, a i with hn`. Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast hpos`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : ι → ℝ := fun i => (a i : ℝ) / n`. Use `set z : ι → ℝ := fun i => q i / a i`. Establish `hz : ∀ i, 0 ≤ z i` using `fun i => div_nonneg (hq i) (Nat.cast_nonneg _)`. Establish `hw : ∑ i, w i = 1`. Simplify using `only [w, ← Finset.sum_div]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_sum, ← hn, div_self hnR.ne']`. Establish `hamgm` using `Real.geom_mean_le_arith_mean_weighted Finset.univ w z (fun i _ => div_nonneg (Nat.cast_nonneg _) hnR.le) hw (fun i _ => hz i)`. Establish `hsum : ∑ i, w i * z i ≤ (∑ i, q i) / n`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [w, z]`. Break down `eq_or_ne (a i : ℝ) 0 with h | h` into its components or cases. Rewrite using `[h]`. Simplify using `using div_nonneg (hq i) hnR.le`. Rewrite using `[div_mul_div_comm, mul_comm (a i : ℝ), mul_div_mul_right _ _ h]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : (∏ i, z i ^ w i) ^ n = ∏ i, z i ^ a i`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (hz i), div_mul_cancel₀ _ hnR.ne', Real.rpow_natCast]`. Establish `h1 : ∏ i, z i ^ a i ≤ (∑ i, q i) ^ n / (n : ℝ) ^ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key, ← div_pow]`. Conclude with `pow_le_pow_left₀ (Finset.prod_nonneg fun i _ => Real.rpow_nonneg (hz i) _) (hamgm.trans hsum) n`. Establish `h2 : ∏ i, q i ^ a i = (∏ i, z i ^ a i) * ∏ i, (a i : ℝ) ^ a i`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [z]`. Break down `eq_or_ne (a i) 0 with h | h` into its components or cases. Simplify using `[h]`. Rewrite using `[div_pow, div_mul_cancel₀ _ (pow_ne_zero _ (Nat.cast_ne_zero.mpr h))]`. Establish `hA : 0 ≤ ∏ i, (a i : ℝ) ^ a i` using `Finset.prod_nonneg fun i _ => by positivity`.
-
-Establish `hN : 0 < (n : ℝ) ^ n` using `pow_pos hnR n`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma SupMonomial.pow_mul_prod_le {ι : Type*} [Fintype ι] (a : ι → ℕ) (q : ι → ℝ)
     (hq : ∀ i, 0 ≤ q i) :
@@ -77,7 +75,7 @@ lemma SupMonomial.pow_mul_prod_le {ι : Type*} [Fintype ι] (a : ι → ℕ) (q 
     _ = (∑ i, q i) ^ n * ∏ i, (a i : ℝ) ^ a i := by field_simp
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_monomial, one_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _), div_pow, show (norm2 v ^ a.degree) ^ 2 = (norm2 v ^ 2) ^ a.degree by ring, euclideanNorm_sq, norm_prod, ← Finset.prod_pow]`. Simplify using `only [norm_pow, ← pow_mul, mul_comm (a _) 2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma SupMonomial.sq_eq {N : ℕ} (a : Fin (N + 1) →₀ ℕ) (v : Fin (N + 1) → ℂ) :
     (‖MvPolynomial.eval v (MvPolynomial.monomial a (1 : ℂ))‖ / norm2 v ^ a.degree) ^ 2 =
@@ -89,11 +87,11 @@ lemma SupMonomial.sq_eq {N : ℕ} (a : Fin (N + 1) →₀ ℕ) (v : Fin (N + 1) 
   rfl
 
 /- English proof (translation)
-Establish `hx : 0 ≤ ‖MvPolynomial.eval v (MvPolynomial.monomial a (1 : ℂ))‖ / norm2 v ^ a.degree` using `div_nonneg (norm_nonneg _) (pow_nonneg (euclideanNorm_pos hv).le _)`. Rewrite using `[← Real.sqrt_sq hx]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Rewrite using `[SupMonomial.sq_eq]`. Establish `hS : 0 < (∑ i, ‖v i‖ ^ 2) ^ a.degree` using `pow_pos (normSq2_pos hv) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : 0 < (a.degree : ℝ) ^ a.degree`. Break down `Nat.eq_zero_or_pos a.degree with h | h` into its components or cases. Simplify using `[h]`. Conclude with `pow_pos (by exact_mod_cast h) _`. Rewrite using `[div_le_div_iff₀ hS hN]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `SupMonomial.pow_mul_prod_le (fun i => a i) (fun i => ‖v i‖ ^ 2) (fun i => by positivity)` as an intermediate fact. Rewrite `this` using `[← Finsupp.degree_eq_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma SupMonomial.le {N : ℕ} (a : Fin (N + 1) →₀ ℕ) (v : Fin (N + 1) → ℂ) (hv : v ≠ 0) :
     ‖MvPolynomial.eval v (MvPolynomial.monomial a (1 : ℂ))‖ / norm2 v ^ a.degree ≤
@@ -114,15 +112,13 @@ lemma SupMonomial.le {N : ℕ} (a : Fin (N + 1) →₀ ℕ) (v : Fin (N + 1) →
   linarith
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a.degree with h0 | hpos` into its components or cases. Establish `ha : a = 0` using `(Finsupp.degree_eq_zero_iff a).mp h0`. Substitute `ha` using the available equality. Use `⟨Pi.single 0 1, by simp [funext_iff, Pi.single_apply], ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `set n := a.degree`. Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast hpos`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (show ∑ i, a i ≠ 0 by rw [← Finsupp.degree_eq_sum]; exact hpos.ne')`. Use `set v : Fin (N + 1) → ℂ := fun i => ((√((a i : ℝ) / n) : ℝ) : ℂ)`. Establish `hvi : ∀ i, ‖v i‖ ^ 2 = (a i : ℝ) / n` using `fun i => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [v, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Conclude with `Real.sq_sqrt (div_nonneg (Nat.cast_nonneg _) hnR.le)`. Establish `hv : v ≠ 0` using `fun h => by`. Use `hvi j` as an intermediate fact. Rewrite `this` using `[h, Pi.zero_apply, norm_zero, zero_pow two_ne_zero, eq_comm, div_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.elim (fun h' => hj (by exact_mod_cast h')) hnR.ne'`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Establish `hx : 0 ≤ ‖MvPolynomial.eval v (MvPolynomial.monomial a (1 : ℂ))‖ / norm2 v ^ n` using `div_nonneg (norm_nonneg _) (pow_nonneg (euclideanNorm_pos hv).le _)`. Rewrite using `[← Real.sqrt_sq hx, SupMonomial.sq_eq]`. Use `congr 1`.
-
-Simplify using `only [hvi]`. Rewrite using `[← Finset.sum_div, ← Nat.cast_sum, ← Finsupp.degree_eq_sum, div_self hnR.ne', one_pow, div_one, Finset.prod_congr rfl fun i _ => div_pow (a i : ℝ) n (a i), Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, ← Finsupp.degree_eq_sum]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma SupMonomial.exists_eq {N : ℕ} (a : Fin (N + 1) →₀ ℕ) :
     ∃ v : Fin (N + 1) → ℂ, v ≠ 0 ∧
@@ -156,11 +152,11 @@ lemma SupMonomial.exists_eq {N : ℕ} (a : Fin (N + 1) →₀ ℕ) :
     Finset.prod_pow_eq_pow_sum, ← Finsupp.degree_eq_sum]
 
 /- English proof (translation)
-Introduce `K _ _ N σ a`. Establish `hval : ∀ x : (self (𝓞 K) N).complexPoints (intEmb σ), fsFibreNorm a.degree (intEmb σ) x ((self (𝓞 K) N).evalFibre (twistN (𝓞 K) N a.degree) σ x ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] polySection (monomial_mem_grading (A` using `𝓞 K) a rfl))) = CP.fsNormPoly a.degree (MvPolynomial.monomial a (1 : ℂ)) x.1 := by`. Introduce `x`. Rewrite using `[evalFibre_tmul, map_one, one_smul, h, MvPolynomial.map_monomial, map_one]`. Establish `hle : ∀ y : CP N, CP.fsNormPoly a.degree (MvPolynomial.monomial a (1 : ℂ)) y ≤ √((∏ i, ((a i : ℝ) ^ a i)) / (a.degree : ℝ) ^ a.degree)` using `fun y => SupMonomial.le a y.rep y.rep_nonzero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨v, hv, hveq⟩` from `SupMonomial.exists_eq a`. Set `x₀ : (self (𝓞 K) N).complexPoints (intEmb σ)` to `selfPoint (intEmb σ) (Projectivization.mk ℂ v hv)`. Establish `: Nonempty ((self (𝓞 K) N).complexPoints (intEmb σ))` using `⟨x₀⟩`. Simplify using `only [fsSupNorm, hval]`. Use `le_antisymm (ciSup_le fun x => hle x.1) (le_ciSup_of_le ⟨√((∏ i, ((a i : ℝ) ^ a i)) / (a.degree : ℝ) ^ a.degree), ?_⟩ x₀ (le_of_eq ?_))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hle x.1`. Rewrite using `[← hveq]`. Conclude with `(CP.fsNormPoly_mk (MvPolynomial.isHomogeneous_monomial 1 rfl) v hv).symm`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SupMonomial.proof (h : FSValue.Statement.{0}) : SupMonomial.Statement := by
   intro K _ _ N σ a

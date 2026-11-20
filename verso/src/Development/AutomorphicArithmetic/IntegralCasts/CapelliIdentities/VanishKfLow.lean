@@ -28,11 +28,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Classical in
 /- English proof (translation)
-Use `⟨Formalism.L2.Theta.atTau θ V τ g, ?_⟩` and prove the remaining obligations. Unfold `Formalism.IndefR.Mult.Mult at hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem U hU => intro x`. Conclude with `congrFun (hU.equiv τ g hg v w hw) x`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `add U U' _ _ h h'`. Introduce `x`. Use `show U (Function.update v τ w) x + U' (Function.update v τ w) x = U v _ + U' v _`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[h x, h' x]`. Consider the case `smul a U _ h`. Introduce `x`. Use `show a • U (Function.update v τ w) x = a • U v _`. Rewrite using `[h x]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.LowTypeThetaMapVanishing.equiv_of_mem
     {D : Formalism.BasicNotions.D7} {V : Formalism.BasicNotions.TH.HSp D} {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar}
@@ -57,11 +57,11 @@ private theorem UpperTheory.Reformulated.B.LowTypeThetaMapVanishing.equiv_of_mem
     rw [h x]
 
 /- English proof (translation)
-Introduce `D V S θ M J χ T hT h0 s v hs hns`. Use `UpperTheory.multilinear_vanish_lattice T (fun τ => (Formalism.IndefR.Links.lowT M τ : Set (M.sm τ))) (fun τ => {w : ↥(M.sm τ) | ∃ g ∈ Formalism.QuantumDeterminants.UH (Formalism.BasicNotions.TH.gramAt D V τ), ∃ (w0 : ↥(Formalism.IndefR.Links.lowT M τ)), (↑w : M.H τ) = (M.rep τ g …` and prove the remaining obligations. Introduce and unpack `τ w ⟨g, hg, w0, hw⟩`. Use `⟨w0.1, w0.2, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `UpperTheory.Reformulated.B.LowTypeThetaMapVanishing.equiv_of_mem θ M J χ hT τ g hg (Function.update u τ w0.1) w (by rw [Function.update_self]; exact hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `x`. Establish `h1` using `hk x`. Rewrite `h1` using `[Function.update_idem]`. Establish `h2 : T (Function.update u τ w) x = T (Function.update u τ w0.1) (x * k)` using `by convert h1`. Rewrite using `[h2, hu]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `τ`. Distinguish the cases in `h : τ ∈ s`. Conclude with `hs τ h`. Conclude with `Submodule.subset_span (hns τ h)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LowTypeThetaMapVanishing.vanish_KfLow :
     ∀ {D : Formalism.BasicNotions.D7} {V : Formalism.BasicNotions.TH.HSp D} {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar}

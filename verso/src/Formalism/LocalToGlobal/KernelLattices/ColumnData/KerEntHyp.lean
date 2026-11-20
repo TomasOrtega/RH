@@ -168,14 +168,14 @@ structure KerEntHyp : Prop where
           (KM.Gxz (D.R.N i) (D.R.N (i + 1)) (nuD D u i) I))
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evC_inj (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ) : Function.Injective (evC O u μ i) := by
   rw [← LinearMap.ker_eq_bot]
   exact Submodule.ker_liftQ_eq_bot _ _ _ le_rfl
 
 /- English proof (translation)
-Unfold `unC`. Use `split_ifs with h`. Conclude with `one_ne_zero`. Conclude with `h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unC_ne (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ) (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) :
     unC P O B u μ w i c c' ≠ 0 := by

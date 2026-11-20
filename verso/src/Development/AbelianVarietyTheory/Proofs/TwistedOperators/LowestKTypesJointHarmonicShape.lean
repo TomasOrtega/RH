@@ -9,7 +9,7 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `t al be ga de h`. Take `⟨hA, hpA, hpA', -, -⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de h`. Take `⟨hM, hpM', -, -⟩` from `GlobalTheory.T.lowestKTypes_jointShape_block_in_unitaryS t al be ga de h`. Conclude with `⟨⟨hpA, hpA', hpM'⟩, hA, hM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lowestKTypes_jointShape : ∀ (t : ℕ) (al be ga de : List ℚ), HypA t al be ga de → (IsParam (lamA al be ga de) ∧ IsParam (lamA' t al be ga de) ∧ IsParam (lamM' t al be ga de)) ∧ JointShape _ _ _ _ (blattner (lamA al be ga de)) (blattner (lamA' t al be ga de)) ∧ JointShape _ _ _ _ (blattner (lamA al be ga de)) (blattner (lamM' t al be ga de)) := by
   intro t al be ga de h

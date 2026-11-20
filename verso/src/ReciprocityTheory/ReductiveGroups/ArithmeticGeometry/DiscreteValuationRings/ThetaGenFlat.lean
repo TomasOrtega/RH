@@ -7,23 +7,23 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR.TG
 noncomputable section
 
 /- English proof (translation)
-Use `set J := RingHom.ker b.hom`. Set `Q` to `CommRingCat.of (A ⧸ J.map a.hom)`. Set `mk : A ⟶ Q` to `CommRingCat.ofHom (Ideal.Quotient.mk _)`. Establish `hker : RingHom.ker b.hom ≤ RingHom.ker ((Ideal.Quotient.mk (J.map a.hom)).comp a.hom)`. Introduce `r hr`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hr`. Set `bQ : B ⟶ Q` to `CommRingCat.ofHom (RingHom.liftOfSurjective b.hom hb ⟨_, hker⟩)`. Establish `hbQ : ∀ r, bQ (b r) = mk (a r)` using `fun r => RingHom.liftOfRightInverse_comp_apply _ _ _ _ r`. Establish `comm : a ≫ mk = b ≫ bQ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Use extensionality with `r`. Conclude with `(hbQ r).symm`. Set `hQ : P ⟶ Q` to `h.desc mk bQ comm`. Establish `h1 : c ≫ hQ = mk` using `h.inl_desc _ _ _`. Establish `h2 : d ≫ hQ = bQ` using `h.inr_desc _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : J.map a.hom ≤ RingHom.ker c.hom`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker]`. Use `congrArg (fun φ => φ.hom r) h.w` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[this, show b.hom r = 0 from hr, map_zero]`. Set `k : Q ⟶ P` to `CommRingCat.ofHom (Ideal.Quotient.lift _ c.hom hc)`. Establish `hmk : mk ≫ k = c` using `by ext x; rfl`. Establish `hid : hQ ≫ k = 𝟙 P`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `h.hom_ext` to reduce the goal to its premises. Rewrite using `[← Category.assoc, h1, hmk, Category.comp_id]`. Rewrite using `[← Category.assoc, h2, Category.comp_id]`. Use extensionality with `y`. Take `⟨r, rfl⟩` from `hb y`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : k (bQ (b r)) = c (a r)` using `by rw [hbQ]; rfl`. Establish `e2` using `congrArg (fun φ => φ.hom r) h.w`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`. Simplify using `using e1.trans e2`. Use `⟨fun p => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (hQ p)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `: k (hQ p) = p`. Use `congrArg (fun φ => φ.hom p) hid` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← this, ← hx]`. Both sides reduce to the same expression. Establish `: mk x = hQ (c x)` using `by rw [← h1]; rfl`. Rewrite `this` using `[hx, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushout_quot {R A B P : CommRingCat.{0}} {a : R ⟶ A} {b : R ⟶ B} {c : A ⟶ P} {d : B ⟶ P}
     (h : IsPushout a b c d) (hb : Function.Surjective b) :
@@ -89,25 +89,23 @@ abbrev tq (J : Ideal R) : Spec (CommRingCat.of (R ⧸ J)) ⟶ Spec (CommRingCat.
   Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))
 
 /- English proof (translation)
-Establish `H` using `IsPullback.of_hasPullback p (tq J)`. Establish `hUST : tq J ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ tq J ⁻¹ᵁ ⊤` using `le_rfl`. Establish `hUSX : W ≤ p ⁻¹ᵁ ⊤` using `le_top`. Establish `hUY : pullback.fst p (tq J) ⁻¹ᵁ W = pullback.fst p (tq J) ⁻¹ᵁ W ⊓ pullback.snd p (tq J) ⁻¹ᵁ (tq J ⁻¹ᵁ ⊤)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT : IsAffineOpen (tq J ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of R)).Opens))`. Simplify using `using isAffineOpen_top (Spec (CommRingCat.of (R ⧸ J)))`. Establish `iso` using `isIso_pushoutSection_of_isAffineOpen H hUST hUSX hUY (isAffineOpen_top _) hT hW`. Establish `hP` using `(isIso_pushoutSection_iff H hUST hUSX hUY).1 iso`. Establish `hb0 : (tq J).appLE ⊤ (tq J ⁻¹ᵁ ⊤) hUST = (Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ CommRingCat.ofHom (Ideal.Quotient.mk J) ≫ (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).inv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appLE_eq_app, ← Scheme.Hom.appTop, (Iso.eq_comp_inv _).2 (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (Ideal.Quotient.mk J))), Category.assoc]`. Establish `eR : ∀ r, (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = r` using `fun r => by rw [← CommRingCat.comp_apply, Iso.inv_hom_id]; rfl`. Establish `eR' : ∀ z, (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom z) = z` using `fun z => by rw [← CommRingCat.comp_apply, Iso.hom_inv_id]; rfl`. Establish `eS : ∀ y, (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).hom.hom y) = y` using `fun y => by rw [← CommRingCat.comp_apply, Iso.hom_inv_id]; rfl`. Establish `hbapp : ∀ z, ((tq J).appLE ⊤ (tq J ⁻¹ᵁ ⊤) hUST).hom z = (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).inv.hom (Ideal.Quotient.mk J ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom z))` using `fun z => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hb0]`. Both sides reduce to the same expression. Establish `hb : Function.Surjective ((tq J).appLE ⊤ (tq J ⁻¹ᵁ ⊤) hUST)`. Introduce `y`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective ((Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).hom.hom y)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r, ?_⟩` and prove the remaining obligations. Use `show ((tq J).appLE ⊤ (tq J ⁻¹ᵁ ⊤) hUST).hom _ = y`. Rewrite using `[hbapp, eR, hr]`. Conclude with `eS y`. Establish `hker : RingHom.ker ((tq J).appLE ⊤ (tq J ⁻¹ᵁ ⊤) hUST).hom = J.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Rewrite `hz` using `[RingHom.mem_ker, hbapp]`. Establish `h1 : Ideal.Quotient.mk J ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom z) = 0`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).hom.hom hz` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eS2 : ∀ x, (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).inv.hom x) = x` using `fun x => by rw [← CommRingCat.comp_apply, Iso.inv_hom_id]; rfl`. Conclude with `(eS2 _).symm.trans (this.trans (map_zero _))`. Rewrite using `[← eR' z]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.Quotient.eq_zero_iff_mem.1 h1)`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Introduce `r hr`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hbapp, eR, Ideal.Quotient.eq_zero_iff_mem.2 hr, map_zero]`. Both sides reduce to the same expression. Take `⟨hs, hk⟩` from `pushout_quot hP hb`. Establish `happ : (pullback.fst p (tq J)).appLE W (pullback.fst p (tq J) ⁻¹ᵁ W) le_rfl = (pullback.fst p (tq J)).app W` using `Scheme.Hom.appLE_eq_app _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← happ]`. Conclude with `hs`. Use `hk x (by rw [happ]; exact hx)` as an intermediate fact. Rewrite `this` using `[hker, Ideal.map_map]`.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem app_fst_tq {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)) (J : Ideal R) (W : X.Opens)
     (hW : IsAffineOpen W) :
@@ -181,7 +179,7 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR.TG
 noncomputable section
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma appLE_of_eq {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) {U : Y.Opens} {W : X.Opens}
     (e : W ≤ f ⁻¹ᵁ U) : f.appLE U W e = g.appLE U W (h ▸ e) := by
@@ -190,9 +188,9 @@ lemma appLE_of_eq {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) {U : Y.Opens} {
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Introduce `a b hab`. Use `TopCat.Presheaf.section_ext Z.sheaf V a b fun z hz => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `q.surjective z`. Establish `hinj : Function.Injective (q.stalkMap y)` using `by algebraize [(q.stalkMap y).hom]`. Establish `: Module.FaithfullyFlat (Z.presheaf.stalk (q y)) (Y.presheaf.stalk y)` using `@Module.FaithfullyFlat.of_flat_of_isLocalHom _ _ _ _ _ _ _ (Flat.stalkMap q y) (q.toLRSHom.prop y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `‹RingHom.FaithfullyFlat _›.injective`. Apply `hinj` to reduce the goal to its premises. Use `show q.stalkMap y (Z.presheaf.germ V (q y) hz a) = q.stalkMap y (Z.presheaf.germ V (q y) hz b)`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.germ_stalkMap_apply, hab]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_injective_of_flat_surj {Y Z : Scheme.{0}} (q : Y ⟶ Z) [Flat q] [Surjective q] (V : Z.Opens) :
     Function.Injective (q.app V) := by
@@ -216,9 +214,9 @@ abbrev jF (R : Type) [CommRing R] [IsDomain R] :
   Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Set `x : Spec (CommRingCat.of (FractionRing R))` to `IsLocalRing.closedPoint (FractionRing R)`. Establish `hx : (jF R).base x = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap (algebraMap R (FractionRing R)) (IsLocalRing.maximalIdeal (FractionRing R)) = ⊥`.
+Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.comap_bot_of_injective _ (IsFractionRing.injective R _)]`. Establish `hsub : ({(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)} : Set (PrimeSpectrum R)) ⊆ Set.range (jF R).base` using `Set.singleton_subset_iff.2 ⟨x, hx⟩`. Use `dense_iff_closure_eq.2 (Set.eq_univ_of_forall fun y => closure_mono hsub ?_)` and prove the remaining obligations. Rewrite using `[PrimeSpectrum.closure_singleton]`. Conclude with `(PrimeSpectrum.mem_zeroLocus _ _).2 (by simp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDominant_jF (R : Type) [CommRing R] [IsDomain R] : IsDominant (jF R) := by
   constructor
@@ -235,7 +233,7 @@ theorem isDominant_jF (R : Type) [CommRing R] [IsDomain R] : IsDominant (jF R) :
   exact (PrimeSpectrum.mem_zeroLocus _ _).2 (by simp)
 
 /- English proof (translation)
-Use `isDominant_jF R` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (jF R)` using `IsSchemeTheoreticallyDominant.of_isDominant _`. Conclude with `Scheme.Hom.app_injective _ U`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem app_fst_jF_injective {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)) [Flat p] (U : X.Opens) :
     Function.Injective ((pullback.fst p (jF R)).app U) := by
@@ -244,15 +242,15 @@ theorem app_fst_jF_injective {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)
   exact Scheme.Hom.app_injective _ U
 
 /- English proof (translation)
-Use `set π := pullback.fst p (jF R)`. Establish `hu : IsUnit ((π.app V).hom (toW p V r))`. Establish `e1 : (π.app V).hom (toW p V r) = ((pullback.snd p (jF R) ≫ jF R).appLE ⊤ (π ⁻¹ᵁ V) le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)`. Rewrite using `[toW, RingHom.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[appLE_of_eq pullback.condition]`. Establish `e2 : (pullback.snd p (jF R) ≫ jF R).appLE ⊤ (π ⁻¹ᵁ V) le_top = (jF R).appLE ⊤ (jF R ⁻¹ᵁ ⊤) le_rfl ≫ (pullback.snd p (jF R)).appLE (jF R ⁻¹ᵁ ⊤) (π ⁻¹ᵁ V) le_top` using `by erw [Scheme.Hom.appLE_comp_appLE]`. Establish `e3 : (jF R).appLE ⊤ (jF R ⁻¹ᵁ ⊤) le_rfl = (Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv`. Rewrite using `[Scheme.Hom.appLE_eq_app, ← Scheme.Hom.appTop, (Iso.eq_comp_inv _).2 (Scheme.ΓSpecIso_naturality _), Category.assoc]`. Establish `eR : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id]`. Both sides reduce to the same expression. Establish `hK : IsUnit (algebraMap R (FractionRing R) r)` using `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hr)`. Establish `e4 : ((Scheme.ΓSpecIso (CommRingCat.of R)).hom ≫ CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (algebr …`. Rewrite using `[CommRingCat.comp_apply, CommRingCat.comp_apply, eR]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e1, e2, CommRingCat.comp_apply, e3]`. Use `erw [e4]`. Conclude with `(hK.map _).map _`. Establish `hinj` using `app_fst_jF_injective p V`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Use `congrArg (π.app V).hom h` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Rewrite using `[map_zero]`. Conclude with `(IsUnit.mul_right_eq_zero hu).1 this`.
+A detailed English derivation is pending.
 -/
 theorem toW_mul_eq_zero {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of R)) [Flat p] (V : X.Opens)
     {r : R} (hr : r ≠ 0) {y : Γ(X, V)} (h : toW p V r * y = 0) : y = 0 := by

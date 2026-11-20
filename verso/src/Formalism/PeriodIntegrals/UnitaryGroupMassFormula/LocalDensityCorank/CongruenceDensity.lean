@@ -16,7 +16,7 @@ def act {R N ι : Type} [CommRing R] [AddCommGroup N] [Module R N] [Fintype ι] 
   fun a => ∑ i, P i a • v i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [act, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_act {R N ι : Type} [CommRing R] [AddCommGroup N] [Module R N] [Fintype ι]
     (P Q : Matrix ι ι R) (v : ι → N) : act Q (act P v) = act (P * Q) v := by
@@ -27,7 +27,7 @@ theorem act_act {R N ι : Type} [CommRing R] [AddCommGroup N] [Module R N] [Fint
   rw [mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[act, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem act_one {R N ι : Type} [CommRing R] [AddCommGroup N] [Module R N] [Fintype ι] [DecidableEq ι]
     (v : ι → N) : act (1 : Matrix ι ι R) v = v := by
@@ -35,7 +35,7 @@ theorem act_one {R N ι : Type} [CommRing R] [AddCommGroup N] [Module R N] [Fint
   simp [act, Matrix.one_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[act, map_sum, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem act_map {R N N' ι : Type} [CommRing R] [AddCommGroup N] [Module R N] [AddCommGroup N']
     [Module R N'] [Fintype ι] (f : N →ₗ[R] N') (P : Matrix ι ι R) (v : ι → N) :
@@ -72,25 +72,23 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_mem (Submodule.span M.L.O {ϖE}) (⟨x, hx⟩ : M.L.O) hy`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_span {ϖE x y : E} (hx : x ∈ M.L.O) (hy : y ∈ Submodule.span M.L.O {ϖE}) :
     x * y ∈ Submodule.span M.L.O {ϖE} := Submodule.smul_mem (Submodule.span M.L.O {ϖE}) (⟨x, hx⟩ : M.L.O) hy
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hv`. Establish `back : act B (act P v) = v` using `by rw [act_act, hPB, act_one]`. Establish `memO : ∀ (Q : Matrix ι ι M.L.O) (w : ι → V) a, act Q w a ∈ Submodule.span M.L.O (Set.range w)` using `fun Q w a => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨fun a => Λ.sum_mem fun i _ => Λ.smul_mem _ (h1 i), ?_, ?_⟩` and prove the remaining obligations. Rewrite `h2`, the goal using `[Fintype.linearIndependent_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `g hg`. Establish `E1 : ∀ g : ι → E, ∑ j, (∑ a, g a * (P j a : E)) • v j = ∑ a, g a • act P v a`. Introduce `g`. Simplify using `only [act, Finset.sum_smul, Finset.smul_sum, Subring.smul_def, smul_smul]`. Conclude with `Finset.sum_comm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : ∀ j, ∑ a, g a * (P j a : E) = 0` using `h2 _ ((E1 g).trans hg)`. Establish `hB'P' : B.map M.L.O.subtype * P.map M.L.O.subtype = 1`. Rewrite using `[← Matrix.map_mul, hBP, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hPg : Matrix.mulVec (P.map M.L.O.subtype) g = 0`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show ∑ a, (P j a : E) * g a = 0`. Conclude with `(Finset.sum_congr rfl fun a _ => mul_comm _ _).trans (key j)`. Establish `hg0 : g = 0`. Rewrite using `[← Matrix.one_mulVec g, ← hB'P', ← Matrix.mulVec_mulVec, hPg, Matrix.mulVec_zero]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hg0]`. Both sides reduce to the same expression. Introduce `x hxΛ hxspan`. Establish `hE : Submodule.span E (Set.range (act P v)) ≤ Submodule.span E (Set.range v)`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (P i a : E) (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h'` using `h3 x hxΛ (hE hxspan)`. Establish `hO : Submodule.span M.L.O (Set.range v) ≤ Submodule.span M.L.O (Set.range (act P v))`. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨a, rfl⟩`. Establish `e : v a = act B (act P v) a` using `by rw [back]`. Rewrite using `[e]`. Conclude with `memO B (act P v) a`. Conclude with `hO h'`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_act (H : Loc.HermSp M V) (Λ : Submodule M.L.O V) {ι : Type} [Fintype ι] [DecidableEq ι]
     (P B : Matrix ι ι M.L.O) (hPB : P * B = 1) (hBP : B * P = 1) {v : ι → V} (hv : H.Prim Λ v) :
@@ -133,17 +131,17 @@ theorem prim_act (H : Loc.HermSp M V) (Λ : Submodule M.L.O V) {ι : Type} [Fint
     exact hO h'
 
 /- English proof (translation)
-Establish `hR : ∀ x y y', H.h x (y + y') = H.h x y + H.h x y'`. Introduce `x y y'`. Rewrite using `[H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm y x, ← H.h_herm y' x]`. Establish `hS : ∀ (c : E) x y, H.h x (c • y) = M.L.cj c * H.h x y`. Introduce `c x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]`. Establish `hsumL : ∀ (f : ι → V) y, H.h (∑ i, f i) y = ∑ i, H.h (f i) y` using `fun f y => map_sum (AddMonoidHom.mk' (fun x => H.h x y) (fun x x' => H.h_add_left x x' y)) f Finset.univ`. Establish `hsumR : ∀ x (f : ι → V), H.h x (∑ i, f i) = ∑ i, H.h x (f i)` using `fun x f => map_sum (AddMonoidHom.mk' (fun y => H.h x y) (fun y y' => hR x y y')) f Finset.univ`. Establish `e1 : H.h (act P v b) (act P v a) = ∑ j, ∑ i, ((P j b : E) * M.L.cj (P i a)) * H.h (v j) (v i)`. Rewrite using `[show act P v b = ∑ j, (P j b : E) • v j from rfl, show act P v a = ∑ i, (P i a : E) • v i from rfl, hsumL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[H.h_smul_left, hsumR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hS]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : (((P.map M.L.O.subtype).map M.L.cj).transpose * G * P.map M.L.O.subtype) a b = ∑ j, ∑ i, ((P j b : E) * M.L.cj (P i a)) * G i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Subring.coe_subtype]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, e2, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem_span (M.L.O.mul_mem (P j b).2 (PI.UnitaryGroupMassFormula.CntFormula.fl_cj_mem M.L (P i a).2)) (hv i j)`.
+A detailed English derivation is pending.
 -/
 theorem gram_act (H : Loc.HermSp M V) (ϖE : E) {ι : Type} [Fintype ι]
     (P : Matrix ι ι M.L.O) (G : Matrix ι ι E) {v : ι → V}
@@ -182,7 +180,7 @@ theorem gram_act (H : Loc.HermSp M V) (ϖE : E) {ι : Type} [Fintype ι]
   exact mul_mem_span (M.L.O.mul_mem (P j b).2 (PI.UnitaryGroupMassFormula.CntFormula.fl_cj_mem M.L (P i a).2)) (hv i j)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨_, ⟨⟨w, hw1, hw2⟩, rfl⟩, rfl⟩`. Use `⟨⟨act P w, prim_act H Λ P B hPB hBP hw1, gram_act H _ P G hw2⟩, ?_⟩` and prove the remaining obligations. Conclude with `act_map (Submodule.mkQ _) P w`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cls_act (H : Loc.HermSp M V) (ϖ : 𝒪[F]) (Λ : Submodule M.L.O V) {ι : Type} [Fintype ι]
     [DecidableEq ι] (P B : Matrix ι ι M.L.O) (hPB : P * B = 1) (hBP : B * P = 1) (G : Matrix ι ι E) :
@@ -193,21 +191,19 @@ theorem cls_act (H : Loc.HermSp M V) (ϖ : 𝒪[F]) (Λ : Submodule M.L.O V) {ι
   exact act_map (Submodule.mkQ _) P w
 
 /- English proof (translation)
-Take `⟨y, hy, hAy⟩` from `hdet`. Use `set P : Matrix ι ι M.L.O := Matrix.of fun i j => ⟨A i j, hA i j⟩ with hPdef`. Establish `hPA : P.map M.L.O.subtype = A`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdetA : ((P.det : M.L.O) : E) = A.det`. Rewrite using `[← hPA]`. Conclude with `RingHom.map_det M.L.O.subtype P`. Establish `hdetP : P.det * ⟨y, hy⟩ = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subring.coe_mul, hdetA]`. Conclude with `hAy`. Use `set B : Matrix ι ι M.L.O := (⟨y, hy⟩ : M.L.O) • P.adjugate with hBdef`. Establish `hPB : P * B = 1`. Rewrite using `[hBdef, Matrix.mul_smul, Matrix.mul_adjugate, smul_smul, mul_comm, hdetP, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBP : B * P = 1`. Rewrite using `[hBdef, Matrix.smul_mul, Matrix.adjugate_mul, smul_smul, mul_comm, hdetP, one_smul]`. Establish `hmc : ∀ X Y : Matrix ι ι E, (X * Y).map M.L.cj = X.map M.L.cj * Y.map M.L.cj` using `fun X Y => Matrix.map_mul (f := (M.L.cj : E →+* E))`. Establish `hAB : A * B.map M.L.O.subtype = 1`. Rewrite using `[← hPA, ← Matrix.map_mul, hPB, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hG : ((B.map M.L.O.subtype).map M.L.cj).transpose * ((A.map M.L.cj).transpose * G * A) * B.map M.L.O.subtype = G`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmc, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hAB, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `h1 : act B '' cls H ϖ Λ ((A.map M.L.cj).transpose * G * A) ⊆ cls H ϖ Λ G`. Use `cls_act H ϖ Λ B P hBP hPB ((A.map M.L.cj).transpose * G * A)` as an intermediate fact. Rewrite `this` using `[hG]`. Then use the resulting hypothesis. Establish `h2 : act P '' cls H ϖ Λ G ⊆ cls H ϖ Λ ((A.map M.L.cj).transpose * G * A)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `cls_act H ϖ Λ P B hPB hBP G` as an intermediate fact. Rewrite `this` using `[hPA]`. Then use the resulting hypothesis. Set `e : cls H ϖ Λ ((A.map M.L.cj).transpose * G * A) ≃ cls H ϖ Λ G` to `{ toFun := fun x => ⟨act B x.1, h1 ⟨x.1, x.2, rfl⟩⟩ invFun := fun x => ⟨act P x.1, h2 ⟨x.1, x.2, rfl⟩⟩ left_inv := fun x => Subtype.ext (by show act P (act B x.1) = x.1`. Rewrite using `[act_act, hBP, act_one])`. Use `right_inv := fun x => Subtype.ext (by show act B (act P x.1) = x.1`.
-
-Rewrite using `[act_act, hPB, act_one]) }`. Rewrite using `[dens_eq_cls, dens_eq_cls, Nat.card_congr e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_dens (H : Loc.HermSp M V) (ϖ : 𝒪[F]) (Λ : Submodule M.L.O V) {ι : Type} [Fintype ι]
     [DecidableEq ι] (A : Matrix ι ι E) (hA : ∀ i j, A i j ∈ M.L.O)
@@ -262,7 +258,7 @@ theorem cong_dens (H : Loc.HermSp M V) (ϖ : 𝒪[F]) (Λ : Submodule M.L.O V) {
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ M V _ _ H Λ ϖ ι _ _ A a hA hdet`. Conclude with `cong_dens H ϖ Λ A hA hdet _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem congruence_density : CongStep := by
   intro F E _ _ _ _ _ _ _ M V _ _ H Λ ϖ ι _ _ A a hA hdet

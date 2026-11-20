@@ -23,7 +23,7 @@ def chartDerivativeCoefficient (C3 : IntChart T io y) (k n : ℕ) (f : PS T.Fr n
   nabValN (a3B C3) T.Fr (a3h C3) H.w0 k f (fun ℓ => ℓ.2.2) (fun ℓ => chartUnitVectors C3 ⟨ℓ.1, ℓ.2.1⟩) P
 
 /- English proof (translation)
-Unfold `nuLocC chartDerivativeCoefficient`. Conclude with `le_trans (iInf₂_le P hP) (iInf₂_le f hf)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nuLocC_le_nval (C3 : IntChart T io y) (e k : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (P : MvPolynomial (LtN Dw n) T.Fr) (hP : P ∈ FFV (Dw := Dw) T a n) (f : PS T.Fr n (chD C3.ch)) (hf : IsIntPS T f) :
@@ -38,7 +38,7 @@ section Val
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Use `Finset.sum_induction z (fun w => x ≤ V.v w) (fun a b ha hb => le_trans (le_min ha hb) (V.v.map_add a b)) ?_ (fun i _ => h i)` and prove the remaining obligations. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_v_sum (x : WithTop ℝ) {m : ℕ} (z : Fin m → C) (h : ∀ i, x ≤ V.v (z i)) : x ≤ V.v (∑ i, z i) := by
   refine Finset.sum_induction z (fun w => x ≤ V.v w)
@@ -74,13 +74,13 @@ def NvalEqSt : Prop :=
 variable {Xo c}
 
 /- English proof (translation)
-Introduce `T io y C3 C _ _ V ι hι k Y hY a n`. Unfold `FBChart.nuPlE`. Use `le_iInf₂ fun x hx => ?_` and prove the remaining obligations. Take `⟨P, hP, f, hf, rfl⟩` from `hx`. Take `⟨m, r, Pi, fi, hr, hPi, hfi, heq⟩` from `h2 T io y C3 C V ι hι k Y hY a n P hP f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∀ i, nuLocC C3 (eOf T V) k a n ≤ (WithBot.some (V.v (Y.nab (chartLetterSystem C3 V ι a) n (MvPowerSeries.map ι (fi i)) (MvPolynomial.map ι (Pi i)))) : WithBot (WithTop ℝ))`. Introduce `i`. Rewrite using `[h1 T io y C3 C V ι k Y hY a n (fi i) (Pi i), h3 T C V ι hι]`. Conclude with `nuLocC_le_nval C3 (eOf T V) k a n (Pi i) (hPi i) (fi i) (hfi i)`. Rewrite using `[heq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `nuLocC C3 (eOf T V) k a n = ν at hz ⊢`. Break down `ν with _ | w` into its components or cases. Conclude with `bot_le`. Use `WithBot.coe_le_coe.mpr (le_v_sum w _ fun i => ?_)` and prove the remaining obligations. Establish `hzi` using `WithBot.coe_le_coe.mp (hz i)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[AddValuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem descent_of (h1 : NabMapSt Xo c) (h2 : DescSpanSt Xo c) (h3 : NvalEqSt) : DescentSt Xo c := by
   intro T io y C3 C _ _ V ι hι k Y hY a n

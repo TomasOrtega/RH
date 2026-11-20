@@ -16,9 +16,7 @@ abbrev Bn (T : Tower p Ω) (n : ℕ) : Subalgebra (O0 p) Ω :=
   Algebra.adjoin (O0 p) {T.ζ n, T.qq n}
 
 /- English proof (translation)
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `x (rfl | rfl)`. Rewrite using `[← T.ζpow n]`. Conclude with `Subalgebra.pow_mem _ (Algebra.subset_adjoin (by simp)) _`. Rewrite using `[← T.qpow n]`.
-
-Conclude with `Subalgebra.pow_mem _ (Algebra.subset_adjoin (by simp)) _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bn_le_succ (T : Tower p Ω) (n : ℕ) : Bn T n ≤ Bn T (n + 1) := by
   rw [Algebra.adjoin_le_iff]
@@ -29,13 +27,13 @@ theorem bn_le_succ (T : Tower p Ω) (n : ℕ) : Bn T n ≤ Bn T (n + 1) := by
     exact Subalgebra.pow_mem _ (Algebra.subset_adjoin (by simp)) _
 
 /- English proof (translation)
-The claim follows from `monotone_nat_of_le_succ (bn_le_succ T)`.
+A detailed English derivation is pending.
 -/
 theorem bn_mono (T : Tower p Ω) : Monotone (Bn T) :=
   monotone_nat_of_le_succ (bn_le_succ T)
 
 /- English proof (translation)
-Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `x (rfl | rfl)`. Conclude with `Or.inl ⟨n, rfl⟩`. Conclude with `Or.inr ⟨n, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative.
 -/
 theorem bn_le_B (T : Tower p Ω) (n : ℕ) :
     Bn T n ≤ Algebra.adjoin (O0 p) (Set.range T.ζ ∪ Set.range T.qq) := by
@@ -45,11 +43,11 @@ theorem bn_le_B (T : Tower p Ω) (n : ℕ) :
   · exact Or.inr ⟨n, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨n, rfl⟩ | ⟨n, rfl⟩` into its components or cases. Conclude with `⟨n, Algebra.subset_adjoin (by simp)⟩`. Conclude with `⟨n, Algebra.subset_adjoin (by simp)⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `algebraMap r => exact ⟨0, Subalgebra.algebraMap_mem _ r⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨m, hm⟩` from `hx`. Take `⟨k, hk⟩` from `hy`. Conclude with `⟨max m k, Subalgebra.add_mem _ (bn_mono T (le_max_left m k) hm) (bn_mono T (le_max_right m k) hk)⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨m, hm⟩` from `hx`. Take `⟨k, hk⟩` from `hy`. Conclude with `⟨max m k, Subalgebra.mul_mem _ (bn_mono T (le_max_left m k) hm) (bn_mono T (le_max_right m k) hk)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_bn (T : Tower p Ω) {b : Ω}
     (hb : b ∈ Algebra.adjoin (O0 p) (Set.range T.ζ ∪ Set.range T.qq)) : ∃ n, b ∈ Bn T n := by
@@ -71,7 +69,7 @@ theorem exists_mem_bn (T : Tower p Ω) {b : Ω}
       (bn_mono T (le_max_right m k) hk)⟩
 
 /- English proof (translation)
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `x (rfl | rfl)`. Conclude with `⟨xn p n, h.1⟩`. Conclude with `⟨yn p n, h.2⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem bn_le_range (T : Tower p Ω) (n : ℕ) (ι : On p n →ₐ[O0 p] Ω) (h : IsEmb T n ι) :
     Bn T n ≤ ι.range := by
@@ -81,19 +79,17 @@ theorem bn_le_range (T : Tower p Ω) (n : ℕ) (ι : On p n →ₐ[O0 p] Ω) (h 
   · exact ⟨yn p n, h.2⟩
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Establish `hX : ι (Ideal.Quotient.mk (towerIdeal p n) (C X)) ∈ Bn T n`. Establish `: ι (xn p n) = T.ζ n` using `h.1`. Simplify using `only [xn] at this`. Rewrite using `[this]; exact Algebra.subset_adjoin (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hY : ι (Ideal.Quotient.mk (towerIdeal p n) X) ∈ Bn T n`. Establish `: ι (yn p n) = T.qq n` using `h.2`. Simplify using `only [yn] at this`. Rewrite using `[this]; exact Algebra.subset_adjoin (by simp)`. Establish `hC : ∀ a : Polynomial (O0 p), ι (Ideal.Quotient.mk (towerIdeal p n) (C a)) ∈ Bn T n`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Proceed by induction on `a using Polynomial.induction_on with`. Consider the case `C c`. Establish `: (Ideal.Quotient.mk (towerIdeal p n) (C (C c))) = algebraMap (O0 p) (On p n) c` using `rfl`. Rewrite using `[this, AlgHom.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.algebraMap_mem _ c`. Consider the case `add f g hf hg`. Rewrite using `[map_add, map_add, map_add]`. Conclude with `Subalgebra.add_mem _ hf hg`. Consider the case `monomial k c _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul, map_pow]`. Use `Subalgebra.mul_mem _ ?_ (Subalgebra.pow_mem _ hX _)` and prove the remaining obligations. Establish `: (Ideal.Quotient.mk (towerIdeal p n) (C (C c))) = algebraMap (O0 p) (On p n) c` using `rfl`. Rewrite using `[this, AlgHom.commutes]`. Conclude with `Subalgebra.algebraMap_mem _ c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `P using Polynomial.induction_on with`. Consider the case `C a => exact hC a`. Consider the case `add f g hf hg => rw [map_add, map_add]`. Conclude with `Subalgebra.add_mem _ hf hg`. Consider the case `monomial k a _`.
-
-Simplify using `only [map_mul, map_pow]`. Conclude with `Subalgebra.mul_mem _ (hC a) (Subalgebra.pow_mem _ hY _)`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem range_le_bn (T : Tower p Ω) (n : ℕ) (ι : On p n →ₐ[O0 p] Ω) (h : IsEmb T n ι)
     (w : On p n) : ι w ∈ Bn T n := by
@@ -131,9 +127,9 @@ theorem range_le_bn (T : Tower p Ω) (n : ℕ) (ι : On p n →ₐ[O0 p] Ω) (h 
 end GlobalTheory.K5.Level
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ _ T b hb`. Take `⟨m, hm⟩` from `GlobalTheory.K5.Level.exists_mem_bn T hb`. Establish `hm1 : b ∈ GlobalTheory.K5.Level.Bn T (m + 1)` using `GlobalTheory.K5.Level.bn_le_succ T m hm`. Take `⟨ι, hι⟩` from `GlobalTheory.K5.Basic.exists_isEmb T (m + 1)`. Take `⟨w, hw⟩` from `GlobalTheory.K5.Level.bn_le_range T (m + 1) ι hι hm1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m + 1, ι, w, Nat.le_add_left 1 m, hι, hw, fun w' => GlobalTheory.K5.Level.bn_le_B T (m + 1) (GlobalTheory.K5.Level.range_le_bn T (m + 1) ι hι w')⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.K5.exists_level_of_mem_adjoin :
     ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →

@@ -10,13 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ProdGlue
 
 /- English proof (translation)
-Introduce `S S₁ S₂ X₁ X₂ u₁ u₂ ⟨hc⟩ x₁ x₂ h₁ h₂`. Set `e` to `Limits.IsColimit.coconePointUniqueUpToIso (Limits.coprodIsCoprod S₁ S₂) hc`. Establish `e₁ : Limits.coprod.inl ≫ e.hom = u₁` using `Limits.IsColimit.comp_coconePointUniqueUpToIso_hom (Limits.coprodIsCoprod S₁ S₂) hc ⟨Limits.WalkingPair.left⟩`. Establish `e₂ : Limits.coprod.inr ≫ e.hom = u₂` using `Limits.IsColimit.comp_coconePointUniqueUpToIso_hom (Limits.coprodIsCoprod S₁ S₂) hc ⟨Limits.WalkingPair.right⟩`. Establish `i₁ : IsOpenImmersion (Limits.coprod.inl : S₁ ⟶ S₁ ⨿ S₂)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₂ : IsOpenImmersion (Limits.coprod.inr : S₂ ⟶ S₁ ⨿ S₂)` using `inferInstance`. Establish `: IsIso e.hom` using `Iso.isIso_hom e`. Establish `ie : IsOpenImmersion e.hom` using `inferInstance`. Establish `o₁ : IsOpenImmersion u₁` using `e₁ ▸ (@IsOpenImmersion.comp _ _ _ _ _ i₁ ie)`. Establish `o₂ : IsOpenImmersion u₂` using `e₂ ▸ (@IsOpenImmersion.comp _ _ _ _ _ i₂ ie)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsZariskiLocalAtSource @Smooth` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_openCover (P := @Smooth) (coprodOpenCover.{0, 0} X₁ X₂) ?_` and prove the remaining obligations. Introduce and unpack `(_ | _)`. Use `show Smooth (Limits.coprod.inl ≫ Limits.coprod.desc (x₁ ≫ u₁) (x₂ ≫ u₂))`. Rewrite using `[Limits.coprod.inl_desc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Use `show Smooth (Limits.coprod.inr ≫ Limits.coprod.desc (x₁ ≫ u₁) (x₂ ≫ u₂))`. Rewrite using `[Limits.coprod.inr_desc]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem smooth_desc_of_isColimit : ∀ {S S₁ S₂ X₁ X₂ : Scheme.{0}} (u₁ : S₁ ⟶ S) (u₂ : S₂ ⟶ S), Nonempty (Limits.IsColimit (Limits.BinaryCofan.mk u₁ u₂)) → ∀ (x₁ : X₁ ⟶ S₁) (x₂ : X₂ ⟶ S₂), Smooth x₁ → Smooth x₂ → Smooth (Limits.coprod.desc (x₁ ≫ u₁) (x₂ ≫ u₂)) := by
   intro S S₁ S₂ X₁ X₂ u₁ u₂ ⟨hc⟩ x₁ x₂ h₁ h₂

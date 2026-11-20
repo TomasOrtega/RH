@@ -14,7 +14,7 @@ namespace PositivityTheory.SiegelWeilFormula.Avac
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 open GlobalTheory.Doubling (absE)
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T, Pi.zero_apply]`. Establish `: d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) 0 = 0` using `funext fun z => mul_zero _`. Rewrite using `[this, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem T_zero_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : d.T 0 = 0 := by
   funext X

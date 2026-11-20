@@ -15,9 +15,7 @@ namespace GlobalTheory.CoverExhaust
 variable {p q n : ℕ}
 
 /- English proof (translation)
-Use `⟨fun i => by simp, fun j => by simp, ?_⟩` and prove the remaining obligations. Introduce and unpack `(a | a) (b | b) hab`. Conclude with `hab`. Conclude with `hab.elim`. Conclude with `hab.elim`.
-
-Conclude with `Nat.add_lt_add_left hab p`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem blockOrd_std (p q : ℕ) :
     BlockOrd (finSumFinEquiv : Ix p q ≃ Fin (p + q)) fun i => (finSumFinEquiv.symm i).isLeft := by
@@ -29,9 +27,9 @@ theorem blockOrd_std (p q : ℕ) :
   · exact Nat.add_lt_add_left hab p
 
 /- English proof (translation)
-Use `⟨fun i => by simpa using h.1 i, fun j => by simpa using h.2.1 j, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Take `⟨hlt, hε⟩` from `(h.posC_iff a b).1 hab`. Simplify using `only [Equiv.trans_apply]`. Break down `lt_trichotomy (s.symm (e a)) (s.symm (e b)) with h1 | h1 | h1` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1`. Conclude with `absurd (s.symm.injective h1) (ne_of_lt hlt)`. Establish `h2` using `hs _ _ h1 (by simp only [Equiv.apply_symm_apply]; exact hε.symm)`. Simplify using `only [Equiv.apply_symm_apply] at h2`. Conclude with `absurd h2 (not_lt.2 hlt.le)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockOrd_perm {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (s : Equiv.Perm (Fin n))
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) : BlockOrd (e.trans s.symm) (ε ∘ s) := by
@@ -47,11 +45,11 @@ theorem blockOrd_perm {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd
     exact absurd h2 (not_lt.2 hlt.le)
 
 /- English proof (translation)
-Take `⟨σ, hF⟩` from `exists_factors R.U (finSumFinEquiv : Ix p q ≃ Fin (p + q)) k`. Establish `hB0` using `blockOrd_std p q`. Establish `hIrr : GlobalTheory.Dec.IsSqIntIrr (fun i : Fin (p + q) => (finSumFinEquiv.symm i).isLeft) σ` using `⟨R.U.cs, R.nontriv, (GlobalTheory.T.discreteSeries_cover_irreducibleUnitary p q (p + q) _ _ T R σ hB0 hF).1, (GlobalTheory.T.discreteSeries_cover_irreducibleUnitary p q (p + q) _ _ T R σ hB0 hF).2, GlobalTheory.T.block_ordered_square_integrable p q (p + q) _ _ T R σ hB0 hF⟩`. Take `⟨s, mu, hc, hs, hDS⟩` from `hE (p + q) _ R.U.H σ hIrr`. Set `P : SignedPar (p + q)` to `⟨mu, (fun i : Fin (p + q) => (finSumFinEquiv.symm i).isLeft) ∘ s, hc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hB : BlockOrd ((finSumFinEquiv : Ix p q ≃ Fin (p + q)).trans s.symm) P.sgn` using `blockOrd_perm hB0 s hs`. Establish `hF' : Factors R.U ((finSumFinEquiv : Ix p q ≃ Fin (p + q)).trans s.symm) (fun g => σ (g.submatrix s.symm s.symm))`. Introduce `x`. Rewrite using `[hF x]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `⟨P, _, hB, (hasParam_iff_isDSPar R P hB hF').2 hDS⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_param_of_trivial (hE : GlobalTheory.Dec.DSExhaust) {T : GrpData p q} (R : DSRep T)
     (k : ∀ x, T.cov x = 1 → R.U.π x = 1) :
@@ -76,9 +74,9 @@ theorem exists_param_of_trivial (hE : GlobalTheory.Dec.DSExhaust) {T : GrpData p
   exact ⟨P, _, hB, (hasParam_iff_isDSPar R P hB hF').2 hDS⟩
 
 /- English proof (translation)
-Introduce `hE p q _ T R`. Break down `Cover.trivial_or_twist R with k | k` into its components or cases. Take `⟨P, e, h1, h2⟩` from `exists_param_of_trivial hE R k`. Conclude with `⟨_, isParam_blockPar P h1, h2⟩`. Take `⟨P, e, h1, h2⟩` from `exists_param_of_trivial hE (Cover.twist R) k`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, isParam_half P h1, (Cover.hasParam_twist R _).1 h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_param : GlobalTheory.Dec.DSExhaust → ∀ (p q : ℕ), 1 ≤ p + q → ∀ (T : GrpData p q) (R : DSRep T), ∃ lam, IsParam lam ∧ HasParam R lam := by
   intro hE p q _ T R

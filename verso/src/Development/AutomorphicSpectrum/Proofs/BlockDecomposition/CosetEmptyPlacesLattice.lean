@@ -6,15 +6,15 @@ open scoped Classical
 namespace GlobalTheory.CompanionTheory.Equi
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Set `J : Ideal (𝓞 F)` to `{ carrier := {s | ∃ y ∈ I, (s : F) * z = y} add_mem' := by`. Introduce and unpack `a b ⟨y₁, hy₁, h₁⟩ ⟨y₂, hy₂, h₂⟩`. Conclude with `⟨y₁ + y₂, I.add_mem hy₁ hy₂, by push_cast; rw [add_mul, h₁, h₂]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := ⟨0, I.zero_mem, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨y, hy, h₁⟩`. Conclude with `⟨c * y, I.mul_mem_left c hy, by rw [smul_eq_mul]; push_cast; rw [mul_assoc, h₁]⟩ }`. Establish `hJ : J = ⊤`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hJM⟩` from `Ideal.exists_le_maximal J hne`. Establish `hM0 : M ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField F)`. Establish `hv` using `h ⟨M, hM.isPrime, hM0⟩`. Unfold `GlobalTheory.CompanionTheory.Equi.LocMem at hv`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs, y, hy, hsy⟩` from `hv`. Conclude with `hs (hJM ⟨y, hy, hsy⟩)`. Establish `h1 : (1 : 𝓞 F) ∈ J` using `hJ ▸ Submodule.mem_top`. Take `⟨y, hy, hy1⟩` from `h1`. Conclude with `⟨y, hy, by simpa using hy1.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩ v`. Unfold `GlobalTheory.CompanionTheory.Equi.LocMem`. Conclude with `⟨1, fun h1 => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1), y, hy, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem forall_locMem_iff_exists_mem_ideal {F : Type} [Field F] [NumberField F] (I : Ideal (𝓞 F))
     (z : F) :
@@ -47,9 +47,9 @@ private theorem forall_locMem_iff_exists_mem_ideal {F : Type} [Field F] [NumberF
     exact ⟨1, fun h1 => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1), y, hy, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [GlobalTheory.CompanionTheory.Equi.cosetOff, GlobalTheory.CompanionTheory.Equi.latCoset, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Conclude with `(forall_locMem_iff_exists_mem_ideal I (x i - x0 i)).mp fun v => h v (by simp) i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h v _ i`. Conclude with `(forall_locMem_iff_exists_mem_ideal I (x i - x0 i)).mpr (h i) v`.
+A detailed English derivation is pending.
 -/
 theorem cosetOff_empty_eq_latCoset (F : Type) [Field F] [NumberField F] (ι : Type)
     (I : Ideal (𝓞 F)) (x0 : ι → F) :

@@ -7,13 +7,13 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `X' Y' i₁ i₂ f' H`. Establish `c₁` using `h₁.universally_isClosedMap _ _ _ ((IsPullback.of_hasPullback i₁ g₁).paste_horiz H)`. Establish `c₂` using `h₂.universally_isClosedMap _ _ _ ((IsPullback.of_hasPullback i₁ g₂).paste_horiz H)`. Introduce `Zs hZ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : f' '' Zs = (pullback.fst i₁ g₁ ≫ f') '' (pullback.fst i₁ g₁ ⁻¹' Zs) ∪ (pullback.fst i₁ g₂ ≫ f') '' (pullback.fst i₁ g₂ ⁻¹' Zs)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Break down `hcov (i₁ x) with ⟨a, ha⟩ | ⟨a, ha⟩` into its components or cases. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback x a ha.symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inl ⟨z, by simpa [hz] using hx, by simp [hz]⟩`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback x a ha.symm`. Conclude with `Or.inr ⟨z, by simpa [hz] using hx, by simp [hz]⟩`. Apply the tactic sequence `rintro _ (⟨z, hz, rfl⟩ | ⟨z, hz, rfl⟩) <;> exact ⟨_, hz, by simp⟩`. Rewrite using `[e]`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Prove the second alternative. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(c₁ _ (hZ.preimage (Scheme.Hom.continuous _))).union (c₂ _ (hZ.preimage (Scheme.Hom.continuous _)))`.
+A detailed English derivation is pending.
 -/
 theorem universallyClosed_of_jointly_surjective {A₁ A₂ X Z : Scheme.{0}} (g₁ : A₁ ⟶ X)
     (g₂ : A₂ ⟶ X) (k : X ⟶ Z) (hcov : ∀ x : X, (∃ a, g₁ a = x) ∨ ∃ a, g₂ a = x)
@@ -43,21 +43,19 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S W W' f π hsep hlft T' T'' h₁ h₂`. Establish `hle₁ : T'.map π ⊓ T'' ≤ T'.map π` using `inf_le_left`. Establish `hle₂ : T'.map π ⊓ T'' ≤ T''` using `inf_le_right`. Set `g₁` to `Scheme.IdealSheafData.subschemeMap T' (T'.map π ⊓ T'') π hle₁`. Set `g₂` to `Scheme.IdealSheafData.inclusion hle₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e₁ : g₁ ≫ (T'.map π ⊓ T'').subschemeι ≫ f = T'.subschemeι ≫ π ≫ f` using `by simp [g₁]`. Establish `e₂ : g₂ ≫ (T'.map π ⊓ T'').subschemeι ≫ f = T''.subschemeι ≫ f` using `by simp [g₂]`. Establish `huc₀ : UniversallyClosed ((T'.subschemeι ≫ π) ≫ f)`. Rewrite using `[Category.assoc]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `huc : UniversallyClosed (T'.subschemeι ≫ π)` using `UniversallyClosed.of_comp_of_isSeparated _ f`. Establish `hsupp : ((T'.map π).support : Set W) = Set.range (T'.subschemeι ≫ π)`. Rewrite using `[Scheme.IdealSheafData.map, Scheme.Hom.support_ker]`. Conclude with `(T'.subschemeι ≫ π).isClosedMap.isClosed_range.closure_eq`. Establish `hmul : T'.map π * T'' ≤ T'.map π ⊓ T''`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `U`. Conclude with `Ideal.mul_le_inf`. Establish `hcov : ∀ x : (T'.map π ⊓ T'').subscheme, (∃ a, g₁ a = x) ∨ ∃ a, g₂ a = x`. Introduce `x`. Establish `hx : (T'.map π ⊓ T'').subschemeι x ∈ (T'.map π ⊓ T'').support`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← SetLike.mem_coe, ← Scheme.IdealSheafData.range_subschemeι]`. Conclude with `⟨x, rfl⟩`. Establish `hx'` using `Scheme.IdealSheafData.support_antitone hmul hx`. Rewrite `hx'` using `[Scheme.IdealSheafData.support_mul]`. Establish `hinj` using `(T'.map π ⊓ T'').subschemeι.isClosedEmbedding.injective`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Break down `hx' with hx' | hx'` into its components or cases. Rewrite `hx'` using `[hsupp]`. Take `⟨a, ha⟩` from `hx'`. Use `Or.inl ⟨a, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← Scheme.Hom.comp_apply, Scheme.IdealSheafData.subschemeMap_subschemeι]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx'` using `[← Scheme.IdealSheafData.range_subschemeι]`. Take `⟨a, ha⟩` from `hx'`. Use `Or.inr ⟨a, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← Scheme.Hom.comp_apply, Scheme.IdealSheafData.inclusion_subschemeι]`. Establish `huc' : UniversallyClosed ((T'.map π ⊓ T'').subschemeι ≫ f)` using `universallyClosed_of_jointly_surjective g₁ g₂ _ hcov (e₁ ▸ inferInstance) (e₂ ▸ inferInstance)`.
-
-Conclude with `{ }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_map_inf_subschemeι : ∀ (S W W' : Scheme.{0}) (f : W ⟶ S) (π : W' ⟶ W),
     IsSeparated f → LocallyOfFiniteType f → ∀ (T' : W'.IdealSheafData) (T'' : W.IdealSheafData),

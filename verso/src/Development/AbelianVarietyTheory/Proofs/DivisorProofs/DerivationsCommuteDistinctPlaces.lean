@@ -16,7 +16,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {γ δ : ℝ → GAd σ J}
 
 /- English proof (translation)
-Take `⟨y, e, -⟩` from `hγ s`. Take `⟨y', e', -⟩` from `hδ t`. Rewrite using `[e, e']`. Conclude with `(commute_embArch σ J y (projArch_embArch_ne σ J hw y')).eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_commute (hw : w ≠ w') (hγ : IsLineOf σ J τ Z γ) (hδ : IsLineOf σ J τ' Z' δ) (s t : ℝ) :
     γ s * δ t = δ t * γ s := by
@@ -26,9 +26,9 @@ theorem line_commute (hw : w ≠ w') (hγ : IsLineOf σ J τ Z γ) (hδ : IsLine
   exact (commute_embArch σ J y (projArch_embArch_ne σ J hw y')).eq
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hu` using `GlobalTheory.UAut.CentralComm.isSmFamily_translate hφ (hγ.isRealLine h)`. Establish `e` using `hu.deriv_lineDer (hδ.isRealLine h) g`. Use `Eq.trans ?_ e` and prove the remaining obligations. Simplify using `only [GlobalTheory.SiegelSet.lineDer]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, mul_assoc, line_commute hw hγ hδ]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem lineDer_comm (h : IsCMExt F E σ) (hw : w ≠ w') (hγ : IsLineOf σ J τ Z γ) (hδ : IsLineOf σ J τ' Z' δ)
     {φ : GAd σ J → ℂ} (hφ : IsSm σ J φ) :
@@ -42,7 +42,7 @@ theorem lineDer_comm (h : IsCMExt F E σ) (hw : w ≠ w') (hγ : IsLineOf σ J �
   rw [mul_assoc, mul_assoc, line_commute hw hγ hδ]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[hD.2 Z γ hγ, hD'.2 Z' δ hδ, hD'.2 Z' δ hδ, hD.2 Z γ hγ]`. Conclude with `lineDer_comm h hw hγ hδ f.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_comm_lines (h : IsCMExt F E σ) (hw : w ≠ w')
     {D : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (SmG σ J)} (hD : IsDer σ J τ D)
@@ -58,9 +58,9 @@ end GlobalTheory.LeviHC.PlaceComm
 namespace GlobalTheory.LeviHC
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ w τ D hD w' τ' D' hD' hw X X'`. Take `⟨γ₁, γ₂, e1, e2, hX⟩` from `exists_lines h hJ τ X`. Take `⟨δ₁, δ₂, f1, f2, hX'⟩` from `exists_lines h hJ τ' X'`. Establish `c : ∀ {Z Z' : Matrix (Fin n) (Fin n) ℂ} {γ δ : ℝ → GAd σ J}, IsLineOf σ J τ Z γ → IsLineOf σ J τ' Z' δ → Commute (D Z) (D' Z')` using `fun hγ hδ => PlaceComm.der_comm_lines h hw hD hD' hγ hδ`. Establish `key : Commute (D X) (D' X')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hX, hX']`. Rewrite using `[map_add, map_add, LinearMap.map_smul D Complex.I _, LinearMap.map_smul D' Complex.I _]`. Conclude with `((c e1 f1).add_right ((c e1 f2).smul_right Complex.I)).add_left (((c e2 f1).add_right ((c e2 f2).smul_right Complex.I)).smul_left Complex.I)`. Conclude with `key.eq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_comm_of_ne : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

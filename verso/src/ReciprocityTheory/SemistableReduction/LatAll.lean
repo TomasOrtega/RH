@@ -14,19 +14,19 @@ namespace ReciprocityTheory.MultiplicativeHeights.Closed
 open ReciprocityTheory.MultiplicativeHeights
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.MultiplicativeHeights.lemmaH_holds`.
+A detailed English derivation is pending.
 -/
 theorem lemmaH : LemmaHStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.lemmaH_holds
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.MultiplicativeHeights.balancedSchwarz_holds`.
+A detailed English derivation is pending.
 -/
 theorem balancedSchwarz : BalancedSchwarzStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.balancedSchwarz_holds
 
 /- English proof (translation)
-Use `first`. Consider the case `exact ReciprocityTheory.MultiplicativeHeights.torsionNonvanish_holds`. Consider the case `exact ReciprocityTheory.MultiplicativeHeights.torsionNonvanish_holds ReciprocityTheory.MultiplicativeHeights.lemmaH_holds`. Consider the case `exact ReciprocityTheory.MultiplicativeHeights.torsionNonvanish_holds ReciprocityTheory.MultiplicativeHeights.balancedSchwarz_holds`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem torsionNonvanish : TorsionNonvanishStatement := by
   first
@@ -35,37 +35,37 @@ theorem torsionNonvanish : TorsionNonvanishStatement := by
     | exact ReciprocityTheory.MultiplicativeHeights.torsionNonvanish_holds ReciprocityTheory.MultiplicativeHeights.balancedSchwarz_holds
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.MultiplicativeHeights.approxGraph_holds`.
+A detailed English derivation is pending.
 -/
 theorem approxGraph : ApproxGraphStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.approxGraph_holds
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.MultiplicativeHeights.approxBasis_holds ReciprocityTheory.MultiplicativeHeights.approxGraph_holds`.
+A detailed English derivation is pending.
 -/
 theorem approx : ApproxStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.approxBasis_holds ReciprocityTheory.MultiplicativeHeights.approxGraph_holds
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.MultiplicativeHeights.unipotent_holds`.
+A detailed English derivation is pending.
 -/
 theorem unipotent : UnipotentStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.unipotent_holds
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.MultiplicativeHeights.degAdd_holds`.
+A detailed English derivation is pending.
 -/
 theorem degAdd : DegAddStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.degAdd_holds
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.MultiplicativeHeights.onePolyGrowth_holds`.
+A detailed English derivation is pending.
 -/
 theorem onePolyGrowth : OnePolyGrowthStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.onePolyGrowth_holds
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.MultiplicativeHeights.bwPoly_holds ReciprocityTheory.MultiplicativeHeights.lemmaH_holds ReciprocityTheory.L2DbarEstimates.ext ReciprocityTheory.MultiplicativeHeights.onePolyGrowth_holds`.
+A detailed English derivation is pending.
 -/
 theorem bwPoly : BWPolyStatement := by
   exact ReciprocityTheory.MultiplicativeHeights.bwPoly_holds ReciprocityTheory.MultiplicativeHeights.lemmaH_holds ReciprocityTheory.L2DbarEstimates.ext

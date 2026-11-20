@@ -9,17 +9,15 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Introduce `E _ _ _ l hl a ha w₀ hmem hs v' hv' hap K hK hint Kv hKv W f hf`. Take `⟨N, hN, hNf⟩` from `UpperTheory.Gal.Gen.smoothAt_holds E a w₀ hs W f`. Take `⟨J, hJ, hJN, hJt, -⟩` from `UpperTheory.Gal.Gen.tower_holds E w₀ a l hl hmem ha N hN`. Take `⟨hLev, hmemC, hcJ, -, -, -⟩` from `UpperTheory.Gal.Gen.levFacts_holds E a w₀ hs K hK (J 0) (hJ.isOpen 0) (hJ.compact 0)`. Establish `hKC : K ≤ UpperTheory.Gal.Gen.lev K w₀ (J 0)` using `le_sup_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨UpperTheory.Gal.Gen.lev K w₀ (J 0), hLev, hKC, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g γ hγ c hc x hx h`. Establish `hT : UpperTheory.Gal.CharacterCongruences.TorsFreeAt (UpperTheory.Gal.Gen.lev K w₀ (J 0)) w₀` using `fun k hk ho => hJt _ (hcJ k hk) ho`. Conclude with `UpperTheory.Gal.CharacterCongruences.neatOfPlace_holds E a _ ⟨hLev.fin, hLev.compact, hLev.isOpen⟩ w₀ hT g γ hγ c hc x hx h`. Establish `hKGL : GlobalTheory.LFun.KGL v' a ≤ (UpperTheory.Gal.Gen.lev K w₀ (J 0)).map (cLoc v')`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a v' hv'`. Establish `hy' : cLoc v' (e.symm y : UA E a) = y` using `by rw [← he]; simp`. Conclude with `⟨(e.symm y : UA E a), hKC (hint _ (e.symm y).2 (hy'.symm ▸ hy)), hy'⟩`. Establish `hmax` using `UpperTheory.Gal.Gen.maxCpt_holds E v' a ((UpperTheory.Gal.Gen.lev K w₀ (J 0)).map (cLoc v')) (cLoc v' '' (UpperTheory.Gal.Gen.lev K w₀ (J 0) : Set (UA E a))) (hLev.compact.image (GlobalTheory.BCT.GlobLev.continuous_cLoc v')) (fun _ h => h) hKGL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Conclude with `hmax ⟨c, hc, rfl⟩`. Introduce `c hc v g`. Take `⟨hcC, hcv⟩` from `hc`. Take `⟨k, hk, x, hx, hxJ, rfl⟩` from `(hmemC _).1 hcC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : cLoc v' x = 1` using `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.2 v') hap)`. Establish `hkv : k ∈ K ⊓ Kv.comap (cLoc v')`. Use `⟨hk, ?_⟩` and prove the remaining obligations. Establish `h2 : cLoc v' (k * x) ∈ Kv` using `hcv`. Rewrite `h2` using `[map_mul, hx1, mul_one]`.
-
-Conclude with `h2`. Rewrite using `[← mul_assoc, hNf x hx (hJN hxJ) v (g * k)]`. Conclude with `hf k hkv v g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.neatLev_of :
     UpperTheory.Gal.Wt.NeatLev := by

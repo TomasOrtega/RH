@@ -13,9 +13,9 @@ def smulS (g : PowerSeries LL) (f : ℤ → V) : ℤ → V :=
   fun k => ∑ᶠ j : ℕ, PowerSeries.coeff j g • f (k - j)
 
 /- English proof (translation)
-Use `show ∑ᶠ j : ℕ, PowerSeries.coeff j g • f (k - j) = _`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Function.mem_support, ne_eq] at hj`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hjN`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hf (k - j) (by omega), smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulS_eq_sum {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) (k : ℤ) (N : ℕ)
     (hN : k - m < N) : smulS g f k = ∑ j ∈ Finset.range N, PowerSeries.coeff j g • f (k - j) := by
@@ -29,14 +29,14 @@ theorem smulS_eq_sum {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL
   rw [hf (k - j) (by omega), smul_zero]
 
 /- English proof (translation)
-Introduce `k hk`. Conclude with `hf k (lt_of_lt_of_le hk h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LB_mono {m m' : ℤ} {f : ℤ → V} (hf : LB m f) (h : m' ≤ m) : LB m' f := by
   intro k hk
   exact hf k (lt_of_lt_of_le hk h)
 
 /- English proof (translation)
-Introduce `k hk`. Rewrite using `[smulS_eq_sum hf g k 0 (by omega)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem LB_smulS {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) : LB m (smulS g f) := by
   intro k hk
@@ -44,35 +44,35 @@ theorem LB_smulS {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) : 
   simp
 
 /- English proof (translation)
-Introduce `k hk`. Simplify using `[hf k hk, hf' k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem LB_add {m : ℤ} {f f' : ℤ → V} (hf : LB m f) (hf' : LB m f') : LB m (f + f') := by
   intro k hk
   simp [hf k hk, hf' k hk]
 
 /- English proof (translation)
-Introduce `k hk`. Simplify using `[hf k hk, hf' k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem LB_sub {m : ℤ} {f f' : ℤ → V} (hf : LB m f) (hf' : LB m f') : LB m (f - f') := by
   intro k hk
   simp [hf k hk, hf' k hk]
 
 /- English proof (translation)
-Introduce `k hk`. Simplify using `[hf k hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem LB_smul {m : ℤ} {f : ℤ → V} (hf : LB m f) (c : LL) : LB m (c • f) := by
   intro k hk
   simp [hf k hk]
 
 /- English proof (translation)
-Conclude with `⟨LB_mono hf (min_le_left _ _), LB_mono hf' (min_le_right _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem LB_min {m m' : ℤ} {f f' : ℤ → V} (hf : LB m f) (hf' : LB m' f') :
     LB (min m m') f ∧ LB (min m m') f' := by
   exact ⟨LB_mono hf (min_le_left _ _), LB_mono hf' (min_le_right _ _)⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact exists_nat_gt (k - m)`. Consider the case `exact ⟨(k - m).toNat + 1, by omega⟩`. Consider the case `exact ⟨(k - m).toNat + 1, by have := Int.self_le_toNat (k - m); omega⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem exists_nat_gt_int_sub (k m : ℤ) : ∃ N : ℕ, k - m < N := by
   first
@@ -81,7 +81,7 @@ private theorem exists_nat_gt_int_sub (k m : ℤ) : ∃ N : ℕ, k - m < N := by
   | exact ⟨(k - m).toNat + 1, by have := Int.self_le_toNat (k - m); omega⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Rewrite using `[Pi.add_apply, smulS_eq_sum (LB_add hf hf') g k N hN, smulS_eq_sum hf g k N hN, smulS_eq_sum hf' g k N hN, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem smulS_add {m : ℤ} {f f' : ℤ → V} (hf : LB m f) (hf' : LB m f') (g : PowerSeries LL) :
     smulS g (f + f') = smulS g f + smulS g f' := by
@@ -93,7 +93,7 @@ theorem smulS_add {m : ℤ} {f f' : ℤ → V} (hf : LB m f) (hf' : LB m f') (g 
   simp only [Pi.add_apply, smul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Rewrite using `[Pi.sub_apply, smulS_eq_sum (LB_sub hf hf') g k N hN, smulS_eq_sum hf g k N hN, smulS_eq_sum hf' g k N hN, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, smul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem smulS_sub {m : ℤ} {f f' : ℤ → V} (hf : LB m f) (hf' : LB m f') (g : PowerSeries LL) :
     smulS g (f - f') = smulS g f - smulS g f' := by
@@ -105,9 +105,9 @@ theorem smulS_sub {m : ℤ} {f f' : ℤ → V} (hf : LB m f) (hf' : LB m f') (g 
   simp only [Pi.sub_apply, smul_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Rewrite using `[Pi.smul_apply, smulS_eq_sum (LB_smul hf c) g k N hN, smulS_eq_sum hf g k N hN, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `smul_comm _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smulS_smul {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) (c : LL) :
     smulS g (c • f) = c • smulS g f := by
@@ -120,7 +120,7 @@ theorem smulS_smul {m : ℤ} {f : ℤ → V} (hf : LB m f) (g : PowerSeries LL) 
   exact smul_comm _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Rewrite using `[Pi.add_apply, smulS_eq_sum hf (g + h) k N hN, smulS_eq_sum hf g k N hN, smulS_eq_sum hf h k N hN, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_add, add_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem smulS_add_left {m : ℤ} {f : ℤ → V} (hf : LB m f) (g h : PowerSeries LL) :
     smulS (g + h) f = smulS g f + smulS h f := by
@@ -132,9 +132,9 @@ theorem smulS_add_left {m : ℤ} {f : ℤ → V} (hf : LB m f) (g h : PowerSerie
   simp only [map_add, add_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Rewrite using `[smulS_eq_sum hf _ k (N + 1) (by omega), Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[PowerSeries.coeff_C, hj]`. Introduce `h0`. Conclude with `absurd (Finset.mem_range.mpr (Nat.succ_pos N)) h0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem smulS_C_eq_smul_of_LB {m : ℤ} {f : ℤ → V} (hf : LB m f) (c : LL) :
     smulS (PowerSeries.C c) f = c • f := by
@@ -148,7 +148,7 @@ private theorem smulS_C_eq_smul_of_LB {m : ℤ} {f : ℤ → V} (hf : LB m f) (c
     exact absurd (Finset.mem_range.mpr (Nat.succ_pos N)) h0
 
 /- English proof (translation)
-Use `first`. Consider the case `simpa using smulS_C_eq_smul_of_LB hf (1 : LL)`. Consider the case `(have h1 := smulS_C_eq_smul_of_LB hf (1 : LL); rwa [map_one, one_smul] at h1)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smulS_one {m : ℤ} {f : ℤ → V} (hf : LB m f) : smulS (1 : PowerSeries LL) f = f := by
   first
@@ -156,16 +156,16 @@ theorem smulS_one {m : ℤ} {f : ℤ → V} (hf : LB m f) : smulS (1 : PowerSeri
   | (have h1 := smulS_C_eq_smul_of_LB hf (1 : LL); rwa [map_one, one_smul] at h1)
 
 /- English proof (translation)
-Conclude with `smulS_C_eq_smul_of_LB hf c`.
+A detailed English derivation is pending.
 -/
 theorem smulS_C {m : ℤ} {f : ℤ → V} (hf : LB m f) (c : LL) :
     smulS (PowerSeries.C c) f = c • f := by
   exact smulS_C_eq_smul_of_LB hf c
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Rewrite using `[smulS_eq_sum hf _ k (N + K + 1) (by omega), Finset.sum_eq_single K]`. Simplify using `[PowerSeries.coeff_X_pow]`. Introduce `j _ hj`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[PowerSeries.coeff_X_pow, hj]`. Introduce `hK`. Conclude with `absurd (Finset.mem_range.mpr (by omega)) hK`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smulS_X_pow {m : ℤ} {f : ℤ → V} (hf : LB m f) (K : ℕ) :
     smulS ((PowerSeries.X : PowerSeries LL) ^ K) f = fun k => f (k - K) := by
@@ -179,19 +179,19 @@ theorem smulS_X_pow {m : ℤ} {f : ℤ → V} (hf : LB m f) (K : ℕ) :
     exact absurd (Finset.mem_range.mpr (by omega)) hK
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Establish `hR : ∀ i : ℕ, smulS h f (k - i) = ∑ j ∈ Finset.range N, PowerSeries.coeff j h • f (k - i - j)` using `fun i => smulS_eq_sum hf h (k - i) N (by omega)`. Establish `hzero : ∀ i j : ℕ, N ≤ i + j → f (k - i - j) = 0` using `fun i j hij => hf _ (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [PowerSeries.coeff_mul, Finset.sum_smul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hin : i ≤ n`. Simplify using `only [Finset.mem_range, Nat.succ_eq_add_one] at hi`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `e : k - (n : ℤ) = k - i - ((n - i : ℕ) : ℤ)` using `by omega`. Rewrite using `[e]`. Apply the tactic sequence `try rfl`. Use `_ = ∑ i ∈ Finset.range N, ∑ n ∈ Finset.Ico i N, (PowerSeries.coeff i g * PowerSeries.coeff (n - i) h) • f (k - i - (n - i : ℕ)) := Finset.sum_comm' fun n i => by`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Finset.mem_range, Finset.mem_Ico]`. Apply the tactic sequence `constructor <;> intro hh <;> omega`. Use `_ = ∑ i ∈ Finset.range N, ∑ j ∈ Finset.range (N - i), (PowerSeries.coeff i g * PowerSeries.coeff j h) • f (k - i - j) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_Ico_eq_sum_range]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Nat.add_sub_cancel_left]`. Use `_ = ∑ i ∈ Finset.range N, ∑ j ∈ Finset.range N, (PowerSeries.coeff i g * PowerSeries.coeff j h) • f (k - i - j) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply `Finset.sum_subset` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Simplify using `only [Finset.mem_range] at hj ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `j hj hj'`. Simplify using `only [Finset.mem_range, not_lt] at hj hj'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hzero i j (by omega), smul_zero]`. Use `_ = smulS g (smulS h f) k := by`. Rewrite using `[smulS_eq_sum (LB_smulS hf h) g k N hN]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hR, Finset.smul_sum, smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem smulS_mul {m : ℤ} {f : ℤ → V} (hf : LB m f) (g h : PowerSeries LL) :
     smulS (g * h) f = smulS g (smulS h f) := by
@@ -243,9 +243,9 @@ theorem smulS_mul {m : ℤ} {f : ℤ → V} (hf : LB m f) (g h : PowerSeries LL)
         simp only [hR, Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Establish `h1 : u⁻¹ * u = 1` using `by first`. Consider the case `exact PowerSeries.inv_mul_cancel u hu`. Consider the case `exact PowerSeries.inv_mul_cancel hu`. Consider the case `exact PowerSeries.inv_mul_cancel _ hu`. Consider the case `(rw [mul_comm]; exact PowerSeries.mul_inv_cancel u hu)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← smulS_mul hf, h1, smulS_one hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smulS_inv {m : ℤ} {f : ℤ → V} (hf : LB m f) (u : PowerSeries LL)
     (hu : PowerSeries.constantCoeff u ≠ 0) : smulS u⁻¹ (smulS u f) = f := by
@@ -260,7 +260,7 @@ theorem smulS_inv {m : ℤ} {f : ℤ → V} (hf : LB m f) (u : PowerSeries LL)
 def Dg (Fil : ℤ → Submodule LL V) (s : ℤ) (f : ℤ → V) : Prop := ∀ k, f k ∈ Fil (s - k)
 
 /- English proof (translation)
-Introduce `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Rewrite using `[smulS_eq_sum hf g k N hN]`. Use `sum_mem fun j _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `hF (by omega : s - k ≤ s - (k - (j : ℤ))) (hD (k - j))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Dg_smulS {Fil : ℤ → Submodule LL V} (hF : Antitone Fil) {m s : ℤ} {f : ℤ → V}
     (hf : LB m f) (hD : Dg Fil s f) (g : PowerSeries LL) : Dg Fil s (smulS g f) := by
@@ -271,7 +271,7 @@ theorem Dg_smulS {Fil : ℤ → Submodule LL V} (hF : Antitone Fil) {m s : ℤ} 
   exact hF (by omega : s - k ≤ s - (k - (j : ℤ))) (hD (k - j))
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Pi.add_apply]`. Conclude with `add_mem (h k) (h' k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dg_add {Fil : ℤ → Submodule LL V} {s : ℤ} {f f' : ℤ → V} (h : Dg Fil s f)
     (h' : Dg Fil s f') : Dg Fil s (f + f') := by
@@ -280,7 +280,7 @@ theorem Dg_add {Fil : ℤ → Submodule LL V} {s : ℤ} {f f' : ℤ → V} (h : 
   exact add_mem (h k) (h' k)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Pi.sub_apply]`. Conclude with `sub_mem (h k) (h' k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dg_sub {Fil : ℤ → Submodule LL V} {s : ℤ} {f f' : ℤ → V} (h : Dg Fil s f)
     (h' : Dg Fil s f') : Dg Fil s (f - f') := by
@@ -289,7 +289,7 @@ theorem Dg_sub {Fil : ℤ → Submodule LL V} {s : ℤ} {f f' : ℤ → V} (h : 
   exact sub_mem (h k) (h' k)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[Pi.smul_apply]`. Conclude with `Submodule.smul_mem _ c (h k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dg_smul {Fil : ℤ → Submodule LL V} {s : ℤ} {f : ℤ → V} (h : Dg Fil s f) (c : LL) :
     Dg Fil s (c • f) := by
@@ -300,7 +300,7 @@ theorem Dg_smul {Fil : ℤ → Submodule LL V} {s : ℤ} {f : ℤ → V} (h : Dg
 def resc (χ : LL) (f : ℤ → V) : ℤ → V := fun k => (χ ^ k) • f k
 
 /- English proof (translation)
-Introduce `k hk`. Use `show (χ ^ k) • f k = 0`. Rewrite using `[hf k hk, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LB_resc {m : ℤ} {f : ℤ → V} (hf : LB m f) (χ : LL) : LB m (resc χ f) := by
   intro k hk
@@ -308,11 +308,11 @@ theorem LB_resc {m : ℤ} {f : ℤ → V} (hf : LB m f) (χ : LL) : LB m (resc �
   rw [hf k hk, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Take `⟨N, hN⟩` from `exists_nat_gt_int_sub k m`. Rewrite using `[smulS_eq_sum (LB_resc hf χ) _ k N hN]`. Use `show _ = χ ^ k • smulS g f k`. Rewrite using `[smulS_eq_sum hf g k N hN, Finset.smul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : χ ^ j * χ ^ (k - (j : ℤ)) = χ ^ k`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hχ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `show PowerSeries.coeff j (PowerSeries.rescale χ g) • (χ ^ (k - (j : ℤ)) • f (k - j)) = χ ^ k • (PowerSeries.coeff j g • f (k - j))`. Rewrite using `[PowerSeries.coeff_rescale, smul_smul, smul_smul, mul_right_comm, e]`.
+A detailed English derivation is pending.
 -/
 theorem smulS_rescale {m : ℤ} {f : ℤ → V} (hf : LB m f) (χ : LL) (hχ : χ ≠ 0)
     (g : PowerSeries LL) : smulS (PowerSeries.rescale χ g) (resc χ f) = resc χ (smulS g f) := by
@@ -331,7 +331,7 @@ theorem smulS_rescale {m : ℤ} {f : ℤ → V} (hf : LB m f) (χ : LL) (hχ : �
   rw [PowerSeries.coeff_rescale, smul_smul, smul_smul, mul_right_comm, e]
 
 /- English proof (translation)
-Introduce `k`. Use `show (χ ^ k) • f k ∈ Fil (s - k)`. Conclude with `Submodule.smul_mem _ _ (h k)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Dg_resc {Fil : ℤ → Submodule LL V} {s : ℤ} {f : ℤ → V} (h : Dg Fil s f) (χ : LL) :
     Dg Fil s (resc χ f) := by

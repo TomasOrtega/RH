@@ -18,7 +18,7 @@ section Loc
 variable (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)
 
 /- English proof (translation)
-Simplify using `only [Iwasawa.torusPow, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.zpow_add]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem torusPow_add (x y : Fin n → ℤ) :
     Iwasawa.torusPow F n (x + y) = Iwasawa.torusPow F n x * Iwasawa.torusPow F n y := by
@@ -28,16 +28,14 @@ theorem torusPow_add (x y : Fin n → ℤ) :
   simp [_root_.zpow_add]
 
 /- English proof (translation)
-The claim follows from `Iwasawa.diagGL_mul_mul_inv_mem_unipotent F n hu _`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem (x : Fin n → ℤ) {u : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n) :
     Iwasawa.torusPow F n x * u * (Iwasawa.torusPow F n x)⁻¹ ∈ Iwasawa.unipotent F n :=
   Iwasawa.diagGL_mul_mul_inv_mem_unipotent F n hu _
 
 /- English proof (translation)
-Take `⟨u, hu, κ, hκ, e⟩` from `Iwasawa.exists_eq_mul_torusPow_iwasawaExponent F n h`. Establish `key : Iwasawa.torusPow F n x * h = (Iwasawa.torusPow F n x * u * (Iwasawa.torusPow F n x)⁻¹) * Iwasawa.torusPow F n (x + Iwasawa.iwasawaExponent F n h) * κ`. Rewrite using `[torusPow_add]`. Use `conv_lhs => rw [e]`. Use `group`.
-
-Rewrite using `[key, Iwasawa.iwasawaExponent_eq F n (conj_mem F n x hu) hκ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_torus_mul (x : Fin n → ℤ) (h : GL (Fin n) F) :
     Iwasawa.iwasawaExponent F n (Iwasawa.torusPow F n x * h) = x + Iwasawa.iwasawaExponent F n h := by
@@ -50,7 +48,7 @@ theorem exp_torus_mul (x : Fin n → ℤ) (h : GL (Fin n) F) :
   rw [key, Iwasawa.iwasawaExponent_eq F n (conj_mem F n x hu) hκ]
 
 /- English proof (translation)
-Simplify using `using torusPow_add F n 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem torusPow_zero : Iwasawa.torusPow F n 0 = 1 := by
   simpa using torusPow_add F n 0 0
@@ -62,9 +60,9 @@ section Glob
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
 /- English proof (translation)
-Use `haveI : Countable (𝓞 E) := (RingOfIntegers.basis E).repr.toEquiv.injective.countable`. Set `f : Pl E → Finset (𝓞 E)` to `fun v ↦ (IsNoetherian.noetherian v.asIdeal).choose`. Use `Function.Injective.countable (f := f) fun v w h ↦ ?_` and prove the remaining obligations. Establish `hv` using `(IsNoetherian.noetherian v.asIdeal).choose_spec`. Establish `hw` using `(IsNoetherian.noetherian w.asIdeal).choose_spec`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext1`. Rewrite using `[← hv, ← hw]`. Conclude with `congrArg (fun s : Finset (𝓞 E) ↦ Submodule.span (𝓞 E) (s : Set (𝓞 E))) h`.
+A detailed English derivation is pending.
 -/
 theorem countable_pl : Countable (Pl E) := by
   classical
@@ -81,7 +79,7 @@ def A (S : Finset (Pl E)) (l : Off E S →₀ (Fin k → ℤ)) : Set (GA E k) :=
   {g | ∀ w : Off E S, Iwasawa.iwasawaExponent _ k (cLoc w.1 g) = l w}
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [A, G0, Set.mem_setOf_eq, Finsupp.coe_zero, Pi.zero_apply]`. Conclude with `⟨fun h w hw => h ⟨w, hw⟩, fun h w => h w.1 w.2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem A_zero (S : Finset (Pl E)) : A (k := k) S 0 = G0 S := by
   ext g
@@ -89,7 +87,7 @@ theorem A_zero (S : Finset (Pl E)) : A (k := k) S 0 = G0 S := by
   exact ⟨fun h w hw => h ⟨w, hw⟩, fun h w => h w.1 w.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finsupp.ofSupportFinite (fun w : Off E S => Iwasawa.iwasawaExponent _ k (cLoc w.1 g)) ((hfin g).preimage Subtype.val_injective.injOn), fun w => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem A_cover (S : Finset (Pl E))
     (hfin : ∀ g : GA E k, {w | Iwasawa.iwasawaExponent _ k (cLoc w g) ≠ 0}.Finite) (g : GA E k) :
@@ -98,14 +96,14 @@ theorem A_cover (S : Finset (Pl E))
     ((hfin g).preimage Subtype.val_injective.injOn), fun w => rfl⟩
 
 /- English proof (translation)
-Introduce `l l' hne`. Conclude with `Set.disjoint_left.2 fun g h h' => hne (Finsupp.ext fun w => (h w).symm.trans (h' w))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem A_disj (S : Finset (Pl E)) : Pairwise (Function.onFun Disjoint (A (k := k) S)) := by
   intro l l' hne
   exact Set.disjoint_left.2 fun g h h' => hne (Finsupp.ext fun w => (h w).symm.trans (h' w))
 
 /- English proof (translation)
-Establish `: A S l = ⋂ w : Off E S, {g : GA E k | Iwasawa.iwasawaExponent _ k (cLoc w.1 g) = l w}` using `by ext; simp [A]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun w => (hcl w.1 (l w)).isClosed`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem A_closed (S : Finset (Pl E))
     (hcl : ∀ (w : Pl E) (l : Fin k → ℤ), IsClopen {g : GA E k | Iwasawa.iwasawaExponent _ k (cLoc w g) = l})
@@ -116,7 +114,7 @@ theorem A_closed (S : Finset (Pl E))
   exact isClosed_iInter fun w => (hcl w.1 (l w)).isClosed
 
 /- English proof (translation)
-Use `⟨fun i c hci => ?_, fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((pLoc E w).comp (pFin E)) (u.val i c) = 0`. Rewrite using `[hu.1 i c hci, map_zero]`. Express the relevant statement in the definitionally equal form `((pLoc E w).comp (pFin E)) (u.val i i) = 1`. Rewrite using `[hu.2.1 i, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cLoc_unip (u : GA E k) (hu : UU 0 u) (w : Pl E) : cLoc w u ∈ Iwasawa.unipotent _ k := by
   refine ⟨fun i c hci => ?_, fun i => ?_⟩
@@ -126,7 +124,7 @@ theorem cLoc_unip (u : GA E k) (hu : UU 0 u) (w : Pl E) : cLoc w u ∈ Iwasawa.u
     rw [hu.2.1 i, map_one]
 
 /- English proof (translation)
-Establish `h` using `fun w : Pl E => Iwasawa.iwasawaExponent_mul_of_mem_unipotent _ k (cLoc_unip u hu w) (cLoc w g)`. Simplify using `only [A, Set.mem_setOf_eq, map_mul, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem A_mul (S : Finset (Pl E)) (l : Off E S →₀ (Fin k → ℤ)) (u g : GA E k) (hu : UU 0 u) :
     u * g ∈ A S l ↔ g ∈ A S l := by
@@ -134,11 +132,11 @@ theorem A_mul (S : Finset (Pl E)) (l : Off E S →₀ (Fin k → ℤ)) (u g : GA
   simp only [A, Set.mem_setOf_eq, map_mul, h]
 
 /- English proof (translation)
-Simplify using `only [A, Set.mem_setOf_eq, map_mul]`. Establish `key : ∀ v : Off E S, (Iwasawa.iwasawaExponent _ k (cLoc v.1 (fl k w.1 (Iwasawa.torusPow _ k x)) * cLoc v.1 g) = (Finsupp.single w x + l) v ↔ Iwasawa.iwasawaExponent _ k (cLoc v.1 g) = l v)`. Introduce `v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hloc, exp_torus_mul, Finsupp.add_apply, Finsupp.single_eq_same, hw, add_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using h`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, add_zero]`. Establish `e1 : (Finsupp.single w x + l) v = l v` using `by simp [Finsupp.single_apply, Ne.symm hv]`. Rewrite using `[hoff w.1 v.1 _ (fun h => hv (Subtype.ext h)), one_mul, e1]`. Conclude with `forall_congr' key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem A_tr (S : Finset (Pl E))
     (hloc : ∀ (w : Pl E) (u : GL (Fin k) (w.adicCompletion E)), cLoc w (fl k w u : GA E k) = u)
@@ -160,9 +158,9 @@ theorem A_tr (S : Finset (Pl E))
   exact forall_congr' key
 
 /- English proof (translation)
-Take `⟨g', h1, hg'⟩` from `hdec w.1 g`. Take `⟨u, hu, κ, hκ, e⟩` from `Iwasawa.exists_eq_mul_torusPow_iwasawaExponent _ k (cLoc w.1 g)`. Rewrite `e` using `[hg]`. Establish `h0 : Φ g = Φ g'`. Rewrite using `[hg', e, hlaw w g' h1 u hu κ hκ 0, ha0, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : fl k w.1 (Iwasawa.torusPow _ k x) * g = g' * fl k w.1 ((Iwasawa.torusPow _ k x * u * (Iwasawa.torusPow _ k x)⁻¹) * Iwasawa.torusPow _ k x * κ)` using `by conv_lhs => rw [hg', e]`. Rewrite using `[← mul_assoc, ← hcomm w.1 g' h1, mul_assoc, ← map_mul, torusPow_zero, mul_one]`. Use `congr 2`. Use `group`. Rewrite using `[h2, hlaw w g' h1 _ (conj_mem _ k x hu) κ hκ x, h0, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Phi_tr (S : Finset (Pl E)) (Φ : GA E k → ℂ) (a : Off E S → (Fin k → ℤ) → ℂ) (hlaw : LawOff S Φ a)
     (ha0 : ∀ w, a w 0 = 1)
@@ -188,23 +186,23 @@ end Glob
 end TorusPowerExponential
 
 /- English proof (translation)
-Introduce `hG hC0 hC1 E _ _ _ k μ _ hk β hβ S Φ a hΦm hΦu hlaw ha0 hint`. Take `⟨-, -, -, hloc, hoff, -, -, hcomm, -⟩` from `hG E k`. Take `⟨-, -, -, -, hfin, hcl, hdec⟩` from `hC0 E k S`. Use `haveI := TorusPowerExponential.countable_pl (E := E)`. Establish `hmeas : ∀ l, MeasurableSet (TorusPowerExponential.A (k` using `k) S l) := fun l => (TorusPowerExponential.A_closed S hcl l).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c : Off E S → (Fin k → ℤ) → ℂ` to `fun w x => (nq w : ℂ) ^ rhoPair x * a w x`. Establish `hc0 : ∀ w, c w 0 = 1` using `fun w => by simp [c, rhoPair, ha0]`. Establish `hstep : ∀ (f : Off E S →₀ (Fin k → ℤ)) (w : Off E S) (x : Fin k → ℤ), f w = 0 → ∫ g in TorusPowerExponential.A S (Finsupp.single w x + f), Φ g ∂μ.withDensity β = c w x * ∫ g in TorusPowerExponential.A S f, Φ g ∂μ.withDensity β`. Introduce `f w x hw`. Establish `hUU : ∀ u, UU 0 u → ∀ g, (TorusPowerExponential.A S (Finsupp.single w x + f)).indicator Φ (u * g) = (TorusPowerExponential.A S (Finsupp.single w x + f)).indicator Φ g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu g`. Distinguish the cases in `hg : g ∈ TorusPowerExponential.A S (Finsupp.single w x + f)`. Rewrite using `[Set.indicator_of_mem ((TorusPowerExponential.A_mul S _ u g hu).2 hg), Set.indicator_of_mem hg, hΦu u hu g]`. Rewrite using `[Set.indicator_of_notMem (mt (TorusPowerExponential.A_mul S _ u g hu).1 hg), Set.indicator_of_notMem hg]`. Take `⟨-, hE⟩` from `hC1 E k μ hk β hβ w.1 x ((TorusPowerExponential.A S (Finsupp.single w x + f)).indicator Φ) (hΦm.indicator (hmeas _)) hUU (hint.indicator (hmeas _))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_indicator (hmeas _), hE, ← integral_indicator (hmeas _)]`. Establish `hpt : ∀ g, (TorusPowerExponential.A S (Finsupp.single w x + f)).indicator Φ (fl k w.1 (Iwasawa.torusPow (w.1.adicCompletion E) k x) * g) = a w x * (TorusPowerExponential.A S f).indicator Φ g`. Introduce `g`. Distinguish the cases in `hg : g ∈ TorusPowerExponential.A S f`. Rewrite using `[Set.indicator_of_mem ((TorusPowerExponential.A_tr S hloc hoff f w hw x g).2 hg), Set.indicator_of_mem hg, TorusPowerExponential.Phi_tr S Φ a hlaw ha0 hcomm (fun w g => (hdec w g).imp fun g' h => ⟨h.1, h.2.1⟩) w x g ((hg w).trans hw)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (fun h => hg ((TorusPowerExponential.A_tr S hloc hoff f w hw x g).1 h)), Set.indicator_of_notMem hg, mul_zero]`. Simplify using `only [hpt, c, nq]`. Rewrite using `[integral_const_mul, mul_assoc]`. Establish `hclaim : ∀ l : Off E S →₀ (Fin k → ℤ), ∫ g in TorusPowerExponential.A S l, Φ g ∂μ.withDensity β = (∏ w ∈ l.support, c w (l w)) * ∫ g in G0 S, Φ g ∂μ.withDensity β`. Introduce `l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `l using Finsupp.induction with`. Consider the case `zero => simp [TorusPowerExponential.A_zero]`. Consider the case `single_add w x f hwf hx ih`. Establish `hfw : f w = 0` using `Finsupp.notMem_support_iff.1 hwf`. Express the relevant statement in the definitionally equal form `_ = Finsupp.prod (Finsupp.single w x + f) c * _`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = Finsupp.prod f c * _ at ih`. Establish `hdisj : Disjoint (Finsupp.single w x).support f.support`. Use `Finset.disjoint_left.2 fun v hv hv' => hwf ?_` and prove the remaining obligations. Rewrite `hv` using `[Finsupp.support_single_ne_zero _ hx, Finset.mem_singleton]`. Conclude with `hv ▸ hv'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.prod_add_index_of_disjoint hdisj, Finsupp.prod_single_index (hc0 w), hstep f w x hfw, ih]`. Simplify using `only [c]`. Expand and normalize the polynomial expressions, which then agree. Establish `hU : ⋃ l, TorusPowerExponential.A (k` using `k) S l = Set.univ := Set.iUnion_eq_univ_iff.2 (TorusPowerExponential.A_cover S hfin)`. Establish `hs` using `hasSum_integral_iUnion hmeas (TorusPowerExponential.A_disj S) hint.integrableOn`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs` using `[hU, setIntegral_univ]`. Establish `hfun : (fun l => ∫ g in TorusPowerExponential.A S l, Φ g ∂μ.withDensity β) = fun l : Off E S →₀ (Fin k → ℤ) => (∏ w ∈ l.support, c w (l w)) * ∫ g in G0 S, Φ g ∂μ.withDensity β`. Use function extensionality and compare the values at `hclaim`. Rewrite `hs` using `[hfun]`. Conclude with `hs`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_exponential_of_open : jumpWindows.G0 → C0 → C1 → C2 := by
   intro hG hC0 hC1 E _ _ _ k μ _ hk β hβ S Φ a hΦm hΦu hlaw ha0 hint

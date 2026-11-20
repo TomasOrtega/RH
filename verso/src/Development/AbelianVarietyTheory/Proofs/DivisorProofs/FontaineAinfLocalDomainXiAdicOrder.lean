@@ -15,7 +15,7 @@ section Tilt
 variable {p : ℕ} [hp : Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, PreTilt.coeff_pow_p, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coeff_pow_pow_zero (x : PreTilt O p) (n : ℕ) :
     PreTilt.coeff n x ^ p ^ n = PreTilt.coeff 0 x := by
@@ -24,11 +24,11 @@ theorem coeff_pow_pow_zero (x : PreTilt O p) (n : ℕ) :
   | succ n ih => rw [pow_succ', pow_mul, PreTilt.coeff_pow_p, ih]
 
 /- English proof (translation)
-Establish `hn : ∀ n, IsUnit (PreTilt.coeff n x)` using `fun n => (isUnit_pow_iff (pow_ne_zero n hp.out.ne_zero)).1 (by rw [coeff_pow_pow_zero]; exact h)`. Establish `hu : ∀ n, (hn (n + 1)).unit ^ p = (hn n).unit` using `fun n => Units.ext (by simp [PreTilt.coeff_pow_p])`. Set `f : ℕ → ModP O p` to `fun n => (((hn n).unit⁻¹ : (ModP O p)ˣ) : ModP O p)`. Establish `hf : ∀ n, f (n + 1) ^ p = f n` using `fun n => by`. Simplify using `only [f]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, inv_pow, hu]`. Set `y : PreTilt O p` to `(⟨f, hf⟩ : Perfection (ModP O p) p)`. Use `isUnit_iff_exists_inv.2 ⟨y, ?_⟩` and prove the remaining obligations. Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PreTilt.coeff n (x * y) = PreTilt.coeff n 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, map_one]`. Express the relevant statement in the definitionally equal form `PreTilt.coeff n x * f n = 1`. Conclude with `IsUnit.mul_val_inv (hn n)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isUnit_of_coeff_zero {x : PreTilt O p} (h : IsUnit (PreTilt.coeff 0 x)) : IsUnit x := by
   have hn : ∀ n, IsUnit (PreTilt.coeff n x) := fun n =>
@@ -54,9 +54,9 @@ section Witt
 variable {p : ℕ} [hp : Fact p.Prime] {R : Type} [CommRing R] [CharP R p] [PerfectRing R p]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Establish `hmem : c * teichmuller p ((u⁻¹ : Rˣ) : R) - 1 ∈ span {(p : WittVector p R)}`. Rewrite using `[← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_mul, map_one, ← hu, constantCoeff_apply (x := teichmuller p _), teichmuller_coeff_zero, Units.mul_inv, sub_self]`. Establish `hj` using `IsAdicComplete.le_jacobson_bot (span {(p : WittVector p R)}) hmem`. Establish `h1` using `(mem_jacobson_bot.1 hj) 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_one, sub_add_cancel]`. Conclude with `isUnit_of_mul_isUnit_left h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem witt_isUnit (c : WittVector p R) (h : IsUnit (constantCoeff c)) : IsUnit c := by
   obtain ⟨u, hu⟩ := h
@@ -79,16 +79,16 @@ variable {p : ℕ} [hp : Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [Cha
   [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Establish `: IsDomain (PreTilt O p)` using `PreTilt.isDomain C v O hv p`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDomain_ainf (hv : v.Integers O) : IsDomain (Ainf p O) := by
   have : IsDomain (PreTilt O p) := PreTilt.isDomain C v O hv p
   infer_instance
 
 /- English proof (translation)
-Establish `: IsDomain (PreTilt O p)` using `PreTilt.isDomain C v O hv p`. Use `haveI : IsLocalRing O := ReciprocityTheory.PGsh.Ainf.O_local O hv`. Use `haveI : Nontrivial (ModP O p) := ReciprocityTheory.PGsh.Ainf.quot_nontrivial _ (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `Fact.out)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `haveI : IsLocalRing (ModP O p) := IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (PreTilt.coeff 0 a) with h | h` into its components or cases. Conclude with `Or.inl (isUnit_of_coeff_zero h)`. Conclude with `Or.inr (isUnit_of_coeff_zero (by rwa [map_sub, map_one]))`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isLocalRing_preTilt (hv : v.Integers O) : IsLocalRing (PreTilt O p) := by
   have : IsDomain (PreTilt O p) := PreTilt.isDomain C v O hv p
@@ -103,9 +103,7 @@ theorem isLocalRing_preTilt (hv : v.Integers O) : IsLocalRing (PreTilt O p) := b
   · exact Or.inr (isUnit_of_coeff_zero (by rwa [map_sub, map_one]))
 
 /- English proof (translation)
-Use `haveI := isDomain_ainf (p := p) hv`. Use `haveI := isLocalRing_preTilt (p := p) hv`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (constantCoeff a) with h | h` into its components or cases. Conclude with `Or.inl (witt_isUnit a h)`.
-
-Conclude with `Or.inr (witt_isUnit _ (by rwa [map_sub, map_one]))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isLocalRing_ainf (hv : v.Integers O) : IsLocalRing (Ainf p O) := by
   haveI := isDomain_ainf (p := p) hv
@@ -119,23 +117,23 @@ variable (hv : v.Integers O) (ε : PreTilt O p) (hε : IsPrimitiveRoot (root ε)
 include hv hε
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.PGsh.Ainf.ker_theta p O hv ε hε`.
+A detailed English derivation is pending.
 -/
 theorem ker_theta : RingHom.ker (fontaineTheta O p) = span {xi ε} :=
   ReciprocityTheory.PGsh.Ainf.ker_theta p O hv ε hε
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.PGsh.Ainf.xi_nzd p O hv ε hε y hy`.
+A detailed English derivation is pending.
 -/
 theorem xi_nzd (y : Ainf p O) (hy : y * xi ε = 0) : y = 0 :=
   ReciprocityTheory.PGsh.Ainf.xi_nzd p O hv ε hε y hy
 
 /- English proof (translation)
-Proceed by induction on `N generalizing z with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Take `⟨w, hw⟩` from `h`. Establish `h1 : fontaineTheta O p (z * p) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hw, map_mul, map_pow, show fontaineTheta O p (xi ε) = 0 from ReciprocityTheory.PGsh.Ainf.theta_xi p O hv ε hε, zero_pow (Nat.succ_ne_zero _), zero_mul]`. Rewrite `h1` using `[map_mul, map_natCast]`. Establish `h0 : fontaineTheta O p z = 0` using `ReciprocityTheory.PGsh.Ainf.torsion_free p O hv 1 _ (by rw [pow_one]; exact h1)`. Take `⟨z1, rfl⟩` from `mem_span_singleton'.1 (by rw [← ker_theta hv ε hε]; exact h0)`. Establish `h2 : (z1 * p - xi ε ^ N * w) * xi ε = 0` using `by linear_combination hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w', hw'⟩` from `ih z1 ⟨w, sub_eq_zero.1 (xi_nzd hv ε hε _ h2)⟩`. Conclude with `⟨w', by rw [hw']; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dvd_of_dvd_mul_p (N : ℕ) (z : Ainf p O) (h : xi ε ^ N ∣ z * p) : xi ε ^ N ∣ z := by
   induction N generalizing z with
@@ -155,11 +153,11 @@ theorem dvd_of_dvd_mul_p (N : ℕ) (z : Ainf p O) (h : xi ε ^ N ∣ z * p) : xi
     exact ⟨w', by rw [hw']; ring⟩
 
 /- English proof (translation)
-Take `⟨⟨pf, hpf⟩, -, -, hX, -, -⟩` from `ReciprocityTheory.PGsh.a0 p C v O hv`. Take `⟨u, hu⟩` from `((hX ε hv hε).2.2.2 pf hpf).2`. Establish `hu' : xi ε = u * ((p : Ainf p O) - teichmuller p pf)` using `hu`. Establish `hxi : constantCoeff (xi ε) = constantCoeff (u : Ainf p O) * (-pf)`. Rewrite using `[hu', map_mul, map_sub, map_natCast, CharP.cast_eq_zero, zero_sub, constantCoeff_apply (x := teichmuller p pf), teichmuller_coeff_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hx (p ^ n)`. Express the relevant statement in the definitionally equal form `PreTilt.coeff n (constantCoeff x) = PreTilt.coeff n 0`. Establish `h0 : PreTilt.coeff n (-pf) ^ p ^ n = 0`. Rewrite using `[coeff_pow_pow_zero, map_neg, ← PreTilt.mk_untilt_eq_coeff_zero, hpf, neg_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`. Simplify using `only [hw, hxi, map_mul, map_pow, mul_pow]`. Rewrite using `[h0, mul_zero, zero_mul, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_zero_eq_zero (x : Ainf p O) (hx : ∀ N, xi ε ^ N ∣ x) : constantCoeff x = 0 := by
   obtain ⟨⟨pf, hpf⟩, -, -, hX, -, -⟩ := ReciprocityTheory.PGsh.a0 p C v O hv
@@ -178,13 +176,13 @@ theorem coeff_zero_eq_zero (x : Ainf p O) (hx : ∀ N, xi ε ^ N ∣ x) : consta
   rw [h0, mul_zero, zero_mul, map_zero]
 
 /- English proof (translation)
-Establish `key : ∀ k, ∀ x : Ainf p O, (∀ N, xi ε ^ N ∣ x) → (p : Ainf p O) ^ k ∣ x`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x _`. Rewrite using `[pow_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_dvd _`. Consider the case `succ k ih`. Introduce `x hx`. Establish `h0` using `coeff_zero_eq_zero hv ε hε x hx`. Rewrite `h0` using `[constantCoeff_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `mem_span_singleton'.1 ((mem_span_p_iff_coeff_zero_eq_zero x).2 h0)`. Take `⟨w, hw⟩` from `ih z fun N => dvd_of_dvd_mul_p hv ε hε N z (hx N)`. Conclude with `⟨w, by rw [hw]; ring⟩`. Use extensionality with `n`. Establish `h` using `(mem_span_p_pow_iff_le_coeff_eq_zero x (n + 1)).1 (mem_span_singleton.2 (key (n + 1) x hx)) n (Nat.lt_succ_self n)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_dvd (x : Ainf p O) (hx : ∀ N, xi ε ^ N ∣ x) : x = 0 := by
   have key : ∀ k, ∀ x : Ainf p O, (∀ N, xi ε ^ N ∣ x) → (p : Ainf p O) ^ k ∣ x := by
@@ -204,11 +202,11 @@ theorem eq_zero_of_forall_dvd (x : Ainf p O) (hx : ∀ N, xi ε ^ N ∣ x) : x =
   simpa using h
 
 /- English proof (translation)
-Establish `hex : ∃ N, ¬ xi ε ^ N ∣ x`. Assume the negation of the conclusion as `h`. Conclude with `hx (eq_zero_of_forall_dvd hv ε hε x fun N => by_contra fun h' => h ⟨N, h'⟩)`. Establish `hM` using `Nat.find_spec hex`. Establish `hM0 : Nat.find hex ≠ 0` using `fun h => hM (by rw [h, pow_zero]; exact one_dvd _)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `Nat.exists_eq_succ_of_ne_zero hM0`. Take `⟨y, hy⟩ : xi ε ^ N ∣ x` from `not_not.1 (Nat.find_min hex (by omega))`. Use `⟨N, y, hy, fun h0 => hM ?_⟩` and prove the remaining obligations. Take `⟨y1, rfl⟩` from `mem_span_singleton'.1 (by rw [← ker_theta hv ε hε]; exact h0)`. Rewrite using `[hN, Nat.succ_eq_add_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨y1, by rw [hy]; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_order (x : Ainf p O) (hx : x ≠ 0) :
     ∃ (N : ℕ) (y : Ainf p O), x = xi ε ^ N * y ∧ fontaineTheta O p y ≠ 0 := by
@@ -232,7 +230,7 @@ section Statement
 open ReciprocityTheory.PGsh.Up GlobalTheory.Sandwich Matrix
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε`. Use `haveI := isDomain_ainf (p := p) hv`. Use `⟨inferInstance, isLocalRing_ainf hv, ker_theta hv ε hε, ReciprocityTheory.PGsh.Ainf.theta_surj p O hv, ReciprocityTheory.PGsh.Ainf.theta_nu p O hv ε hε, fun h => ?_, fun x hx => exists_order hv ε hε x hx⟩` and prove the remaining obligations. Conclude with `one_ne_zero (xi_nzd hv ε hε 1 (by rw [h, mul_zero]))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ainf_local_xi_order : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ ε : PreTilt O p, IsPrimitiveRoot (root ε).untilt p → IsDomain (Ainf p O) ∧ IsLocalRing (Ainf p O) ∧ RingHom.ker (WittVector.fontaineTheta O p) = Ideal.span {xi ε} ∧ Function.Surjective (WittVector.fontaineTheta O p) ∧ WittVector.fontaineTheta O p (nu ε) ≠ 0 ∧ xi ε ≠ 0 ∧ (∀ x : Ainf p O, x ≠ 0 → ∃ (N : ℕ) (y : Ainf p O), x = xi ε ^ N * y ∧ WittVector.fontaineTheta O p y ≠ 0) := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε

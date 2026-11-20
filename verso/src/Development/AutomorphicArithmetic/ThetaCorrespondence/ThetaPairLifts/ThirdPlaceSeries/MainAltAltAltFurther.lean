@@ -15,9 +15,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.ChiOneAbove
 /- English proof (translation)
-Introduce `hPr hL D P i w hw`. Establish `hB : GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.BlockCharParam D` using `GlobalTheory.BlockCharInf.main D P.cf P.C P.tp P.chr`. Establish `h2 : _root_.Formalism.MainNotions.SumRepresentations.adm2_alt D` using `_root_.UpperTheory.GalS.galClose_alt hPr hL D P`. Establish `h5` using `_root_.GlobalTheory.ChiOneAbove.character_trivial_above_place_admissible_alt hPr hL D P`. Take `⟨ρ, hρc, haway, habove⟩` from `(_root_.UpperTheory.GalS.weak' h2 i).2.2 (D.naut.tw (D.naut.muC i) D.naut.etaTinv) (GlobalTheory.ChiOneNoPt.sOne D) (GlobalTheory.ChiOneNoPt.integral D hB i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hρ` using `GlobalTheory.ChiOneNoPt.eq_chi D h5 i w hw ρ hρc haway`. Take `⟨hdR, hwd, -⟩` from `habove w hw`. Substitute `hρ` using the available equality. Use `⟨((D.loc_tie i w hw).2.1 1 _ (GlobalTheory.JumpDictionaryFoundation.continuous_chiGL D i 1)).2.1.1 hdR, hwd⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem main_alt_alt_alt : ∀ (hPr : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (i : D.nd.Loc)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)),

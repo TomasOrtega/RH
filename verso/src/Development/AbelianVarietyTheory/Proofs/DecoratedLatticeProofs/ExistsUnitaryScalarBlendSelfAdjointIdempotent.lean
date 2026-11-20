@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.UnitTorus
 
 /- English proof (translation)
-Establish `e : ∀ (N : Matrix n n A) (u v : n → A), Formalism.UG.hform σ N u v = (σ ∘ u) ⬝ᵥ (N *ᵥ v)`. Introduce `N u v`. Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, Function.comp_apply, Finset.mul_sum, mul_assoc]`. Establish `hσ : σ ∘ (M *ᵥ x) = M.map σ *ᵥ (σ ∘ x)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `RingHom.map_mulVec σ M x i`. Rewrite using `[e, e, hσ, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Formalism.UG.cT, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_mulVec_two {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A)
     (J M M' : Matrix n n A) (x y : n → A) :
@@ -35,7 +35,7 @@ theorem hform_mulVec_two {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A 
     mulVec_mulVec, Formalism.UG.cT, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_single {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A)
     (N : Matrix n n A) (i j : n) :
@@ -43,7 +43,7 @@ theorem hform_single {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq
   simp [Formalism.UG.hform, Pi.single_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[← hform_single σ N i j, ← hform_single σ N' i j, h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_eq_of_hform {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A)
     (N N' : Matrix n n A) (h : ∀ x y, Formalism.UG.hform σ N x y = Formalism.UG.hform σ N' x y) : N = N' := by
@@ -51,11 +51,11 @@ theorem matrix_eq_of_hform {A : Type} [CommRing A] {n : Type} [Fintype n] [Decid
   rw [← hform_single σ N i j, ← hform_single σ N' i j, h]
 
 /- English proof (translation)
-Establish `hcT : Formalism.UG.cT σ (c • (1 : Matrix n n A) + (1 - c) • P) = σ c • 1 + (1 - σ c) • Formalism.UG.cT σ P`. Use extensionality with `i j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.cT]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.UG.cT, Matrix.one_apply, h, Ne.symm h]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, hPP, smul_smul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, hPP, smul_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcT]`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, hSA, Matrix.mul_assoc, hPP, smul_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem unit_of_proj {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A)
     (J P : Matrix n n A) (c : A) (hPP : P * P = P) (hSA : Formalism.UG.cT σ P * J = J * P) (hc : c * σ c = 1) :
@@ -84,11 +84,11 @@ end GlobalTheory.UnitTorus
 
 open GlobalTheory.UnitTorus in
 /- English proof (translation)
-Introduce `I P c hP hSA hc`. Establish `hPP : P * P = P`. Use extensionality with `i j`. Use `congrFun (hP (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hSA' : Formalism.UG.cT (sigA I) P * I.J.map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) = I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) * P := by`. Use `matrix_eq_of_hform (sigA I) (Formalism.UG.cT (sigA I) P * I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) * 1) (Formalism.UG.cT (sigA I) 1 * I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) * P) (fun x y => by` as an intermediate fact. Rewrite using `[← hform_mulVec_two, ← hform_mulVec_two, one_mulVec, one_mulVec]`. Conclude with `hSA x y)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Formalism.UG.cT_one]`. Take `⟨h1, h2, h3⟩` from `unit_of_proj (sigA I) _ P c hPP hSA' hc`. Conclude with `⟨⟨⟨_, _, h1, h2⟩, h3⟩, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.unitTorus_unit : ∀ (I : AutInst) (P : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) (c : I.E ⊗[I.F] Af I.F), (∀ y, P *ᵥ (P *ᵥ y) = P *ᵥ y) → (∀ x y, hA I (P *ᵥ x) y = hA I x (P *ᵥ y)) → c * sigA I c = 1 → ∃ h : I.Gf, I.fmat h = c • 1 + (1 - c) • P ∧ I.fmat h⁻¹ = sigA I c • 1 + (1 - sigA I c) • P := by
   intro I P c hP hSA hc

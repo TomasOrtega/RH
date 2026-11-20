@@ -8,13 +8,13 @@ open Filter Topology
 namespace GlobalTheory.PeriodFamily
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hp`. Unfold `taylor FormalMultilinearSeries.partialSum`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Establish `h1` using `hr.factorial_smul z k`. Establish `hk : (k.factorial : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 k.factorial_ne_zero`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (iteratedFDeriv ℂ k f 0 fun _ ↦ z) = ∑ s : Fin k → I, (∏ a, z (s a)) • iteratedFDeriv ℂ k f 0 fun a ↦ Pi.single (s a) 1`. Establish `hz : (fun _ : Fin k ↦ z) = fun _ ↦ ∑ i, z i • (Pi.single i (1 : ℂ) : I → ℂ)`. Use function extensionality and compare the values at `a j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hz, ContinuousMultilinearMap.map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ ↦ ?_` and prove the remaining obligations. Rewrite using `[ContinuousMultilinearMap.map_smul_univ]`. Rewrite `h1` using `[h2, nsmul_eq_mul]`. Rewrite using `[← inv_mul_cancel_left₀ hk (p k fun _ ↦ z), h1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem taylor_eq_partialSum {I : Type} [Fintype I] [DecidableEq I] (N : ℕ) {f : (I → ℂ) → ℂ}
     {p : FormalMultilinearSeries ℂ (I → ℂ) ℂ} (hp : HasFPowerSeriesAt f p 0) (z : I → ℂ) :
@@ -39,13 +39,11 @@ theorem taylor_eq_partialSum {I : Type} [Fintype I] [DecidableEq I] (N : ℕ) {f
   ring
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `hk`. Establish `h1` using `hp.isBigO_sub_partialSum_pow (k + 1)`. Establish `hs : ∀ y, p.partialSum (k + 1) y = p k fun _ ↦ y`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[FormalMultilinearSeries.partialSum, Finset.sum_range_succ, Finset.sum_eq_zero fun j hj ↦ ih j (Finset.mem_range.1 hj) (le_trans (Finset.mem_range.1 hj).le hk) y, zero_add]`. Establish `h2 : (fun z : E ↦ ‖z‖ ^ (N + 1)) =O[𝓝 0] fun z : E ↦ ‖z‖ ^ (k + 1)`. Use `Asymptotics.IsBigO.of_bound 1 ?_` and prove the remaining obligations. Use `filter_upwards [Metric.closedBall_mem_nhds (0 : E) one_pos] with z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul, Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (by positivity)]`. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) (by simpa using hz) (by omega)`. Establish `h3 : (fun y : E ↦ p k fun _ ↦ y) =O[𝓝 0] fun z : E ↦ ‖z‖ ^ (k + 1)`. Use `((hf.trans h2).sub h1).congr_left fun y ↦ ?_` and prove the remaining obligations. Simplify using `[hs]`.
-
-Conclude with `h3.continuousMultilinearMap_apply_eq_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_eq_zero_of_isBigO {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (N : ℕ) {f : E → ℂ}
     {p : FormalMultilinearSeries ℂ E ℂ} (hp : HasFPowerSeriesAt f p 0)
@@ -70,7 +68,7 @@ theorem diag_eq_zero_of_isBigO {E : Type} [NormedAddCommGroup E] [NormedSpace �
     exact h3.continuousMultilinearMap_apply_eq_zero
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `ha`. Establish `h` using `diag_eq_zero_of_isBigO N hp hf k hk`. Take `⟨r, hr⟩` from `hp`. Rewrite using `[hr.iteratedFDeriv_eq_sum_of_completeSpace, ← (p k).iteratedFDeriv_comp_diagonal 0 v]`. Simplify using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iteratedFDeriv_eq_zero_of_isBigO {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (N : ℕ)
     {f : E → ℂ} (ha : AnalyticAt ℂ f 0) (hf : f =O[𝓝 0] fun z : E ↦ ‖z‖ ^ (N + 1)) {k : ℕ} (hk : k ≤ N)
@@ -82,9 +80,9 @@ theorem iteratedFDeriv_eq_zero_of_isBigO {E : Type} [NormedAddCommGroup E] [Norm
   simp [h]
 
 /- English proof (translation)
-Introduce `I _ _ N f ha`. Use `⟨?_, fun hf D _ _ t ↦ ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `ha`. Use `(hp.isBigO_sub_partialSum_pow (N + 1)).congr_left fun z ↦ ?_` and prove the remaining obligations. Rewrite using `[taylor_eq_partialSum N hp, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `taylor`. Use `Finset.sum_eq_zero fun k hk ↦ Finset.sum_eq_zero fun s _ ↦ ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_eq_zero_of_isBigO N ha hf (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk)), mul_zero, zero_smul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem taylor_remainder_and_flat : ∀ {I : Type} [Fintype I] [DecidableEq I] (N : ℕ) (f : (I → ℂ) → ℂ), AnalyticAt ℂ f 0 → ((fun z ↦ f z - GlobalTheory.PeriodFamily.taylor N z f) =O[𝓝 0] fun z : I → ℂ ↦ ‖z‖ ^ (N + 1)) ∧ ((f =O[𝓝 0] fun z : I → ℂ ↦ ‖z‖ ^ (N + 1)) → ∀ {D : Type} [CommRing D] [Algebra ℂ D] (t : I → D), GlobalTheory.PeriodFamily.taylor N t f = 0) := by
   intro I _ _ N f ha

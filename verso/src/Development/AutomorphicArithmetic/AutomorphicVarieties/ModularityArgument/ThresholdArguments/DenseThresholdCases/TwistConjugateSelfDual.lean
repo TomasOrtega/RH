@@ -9,7 +9,7 @@ section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N
 open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V.Af
 /- English proof (translation)
-Introduce `k` and use `hκ k fun φ => by have h := IsTotallyComplex.complexEmbedding_not_isReal (Complex.ofRealHom.comp φ) refine absurd ?_ h rw [ComplexEmbedding.isReal_iff] ext x simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isAlg_of_pos {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {κ : HChar K}
     {m : (K →+* ℂ) → ℤ} (hκ : IsAlgPos κ m) : κ.IsAlg m := fun k => hκ k fun φ => by
@@ -19,7 +19,7 @@ private theorem isAlg_of_pos {K : Type} [Field K] [NumberField K] [IsTotallyComp
   ext x
   simp
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by have e := ((ParLaws.hasInfChar_infChar (CG.mk P) τ).twist κ).infChar_eq rw [CG.twist_mk] at e rw [e, (InfType.expo_of_infType K κ).1 m hκ τ] refine ⟨(h τ).1.map (add_left_injective _), fun z hz => ?_⟩ obtain ⟨y, hy, rfl⟩ := M …`.
+A detailed English derivation is pending.
 -/
 private theorem regAlg_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} {P : CuspSub K n}
     (h : (CG.mk P).IsRegAlg) {κ : HChar K} {m : (K →+* ℂ) → ℤ} (hκ : κ.IsAlg m) : (CG.mk (P.twist κ)).IsRegAlg := (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by
@@ -31,7 +31,7 @@ private theorem regAlg_twist {K : Type} [Field K] [NumberField K] [IsTotallyComp
   obtain ⟨k, rfl⟩ := (h τ).2 y hy
   exact ⟨k + m τ, by push_cast; ring⟩
 /- English proof (translation)
-Introduce `_ F Ω _ _ _ _ _ _ l _ ι n r κ ⟨_, art, χ, a, hart, hpos, hL⟩ ⟨π, hreg, hatt⟩`. Conclude with `⟨π.twist χ, regAlg_twist hreg (isAlg_of_pos hpos), UpperTheory.V.Af.Cq.attTwist F Ω l ι n r π hatt art χ a κ hart hL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Sd.twist_conjugate_selfDual :
     _root_.UpperTheory.V.Af.Hypotheses' → UpperTheory.V.Sd.TwC := by

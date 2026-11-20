@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsFiniteMeas
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-The claim follows from `firstGeometricCondition_of_properties pairFacts qhtFacts levD bdGrowth approx ptBd fun E _ _ _ a μ _ => (GlobalTheory.CovolGL.finvol E a μ).1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.g1 :
     G1 :=

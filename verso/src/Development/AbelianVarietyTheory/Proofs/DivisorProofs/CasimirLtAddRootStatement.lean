@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermi
 open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RealLift.casK_lt_of_isHarmVec_addRoot` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCasimirLtAddRoot.lean&line=413#L413)
 -/

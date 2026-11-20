@@ -14,11 +14,9 @@ namespace GlobalTheory.Cyc
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h0 : K0 K ≤ K0 E` using `inf_le_inf_right _ hle`. Establish `h1 : Ks E s = Ks K s`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Rewrite using `[← hE]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inf_le_left`. Conclude with `sup_le_sup_right h0 _`. Establish `h2` using `finrank_Ks E s hs`. Rewrite `h2` using `[h1, finrank_Ks K s hs]`. Establish `hlp : l.Prime` using `Fact.out`.
-
-Establish `hpos : 0 < (l - 1) * l ^ (s - 1)` using `Nat.mul_pos (Nat.sub_pos_of_lt hlp.one_lt) (pow_pos hlp.pos _)`. Conclude with `(Nat.eq_of_mul_eq_mul_right hpos h2).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_maxUnramified_eq_cyclotomicLevel (K E : FinExt l) (s : ℕ) (hs : 1 ≤ s) (hE : E.1 = Ks K s)
     (hle : K.1 ≤ E.1) : Module.finrank ℚ_[l] ↥(K0 E) = Module.finrank ℚ_[l] ↥(K0 K) := by
@@ -37,7 +35,7 @@ theorem finrank_maxUnramified_eq_cyclotomicLevel (K E : FinExt l) (s : ℕ) (hs 
   exact (Nat.eq_of_mul_eq_mul_right hpos h2).symm
 
 /- English proof (translation)
-Establish `hχ : IsCyc P.χQ` using `P.χQ_cyc`. Establish `hcb` using `(cyc_basic l P.χQ hχ).2.2 K`. Establish `hK0 : (x : GQ l) ∈ (K0 K).fixingSubgroup` using `IntermediateField.fixingSubgroup_antitone (inf_le_left : K0 K ≤ K.1) x.2`. Rewrite using `[W.GKs_def, (hcb x hK0).1 W.s, P.PD_χ, ← DictKs.le_v_iff P LL, (algebraMap ℚ_[l] ↥LL.1).map_sub, (algebraMap ℚ_[l] ↥LL.1).map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_GKs_iff_mem_Gj (P : LocPrime l) (K : FinExt l) (LL : FinExt l) (n : ℕ)
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n) (x : ↥(GK K)) :
@@ -50,7 +48,7 @@ theorem mem_GKs_iff_mem_Gj (P : LocPrime l) (K : FinExt l) (LL : FinExt l) (n : 
     (algebraMap ℚ_[l] ↥LL.1).map_sub, (algebraMap ℚ_[l] ↥LL.1).map_one]
 
 /- English proof (translation)
-Unfold `actVB`. Use `congr 1`. Use extensionality with `b`. Express the relevant statement in the definitionally equal form `(P.PD E).actB g b = (P.PD K).actB _ b`. Rewrite using `[P.PD_actB, P.PD_actB]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -66,9 +64,9 @@ theorem actVB_inclusion (P : LocPrime l) (K E LL : FinExt l) (hle : K.1 ≤ E.1)
   rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf fun k => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `h2 k`. Conclude with `hi ▸ iInf_le _ i`. Use `le_iInf fun i => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `h1 i`. Conclude with `hk ▸ iInf_le _ k`.
+A detailed English derivation is pending.
 -/
 theorem iInf_ker_eq {R M ι κ : Type} [Ring R] [AddCommGroup M] [Module R M]
     (f : ι → M →ₗ[R] M) (g : κ → M →ₗ[R] M) (h1 : ∀ i, ∃ k, f i = g k) (h2 : ∀ k, ∃ i, f i = g k) :
@@ -82,9 +80,9 @@ theorem iInf_ker_eq {R M ι κ : Type} [Ring R] [AddCommGroup M] [Module R M]
     exact hk ▸ iInf_le _ k
 
 /- English proof (translation)
-Unfold `Dcris`. Apply `iInf_ker_eq` to reduce the goal to its premises. Introduce `g`. Use `⟨⟨Subgroup.inclusion (GK_le hle) g, (hH _).2 g.2⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun f => f - LinearMap.id) (actVB_inclusion P K E LL hle T g)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `⟨⟨(g : ↥(GK K)), (hH _).1 g.2⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun f => f - LinearMap.id) (actVB_inclusion P K E LL hle T _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Dcris_eq_iInf (P : LocPrime l) (K E LL : FinExt l) (hle : K.1 ≤ E.1)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (H : Subgroup ↥(GK K))
@@ -104,9 +102,9 @@ theorem Dcris_eq_iInf (P : LocPrime l) (K E LL : FinExt l) (hle : K.1 ≤ E.1)
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `l _ P K s LL n W hs E hE hle T h`. Establish `hG : Gj K W.s = GK E`. Rewrite using `[Gj, hs, ← hE]`. Both sides reduce to the same expression. Establish `hD` using `Dcris_eq_iInf P K E LL hle T W.GKs (fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[mem_GKs_iff_mem_Gj, hG])`. Establish `h1` using `finrank_maxUnramified_eq_cyclotomicLevel K E s (hs ▸ W.s_pos) hE hle`. Establish `h2` using `congrArg (fun D : Submodule ↥LL.1 (T.V ⊗[ℚ_[l]] P.R.B) => Module.finrank ↥LL.1 ↥D) hD`. Rewrite `h` using `[← h1]`. Conclude with `h2.trans h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrys_Ks_of_finrank : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s : ℕ) (LL : FinExt l) (n : ℕ) (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n), W.s = s → ∀ (E : FinExt l), E.1 = Ks K s → ∀ (hle : K.1 ≤ E.1) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), Module.finrank ↥LL.1 ↥(⨅ g : ↥W.GKs, LinearMap.ker (actVB (P.PD K) T.ρ (g : ↥(GK K)) - (LinearMap.id : T.V ⊗[ℚ_[l]] P.R.B →ₗ[↥LL.1] T.V ⊗[ℚ_[l]] P.R.B))) = Module.finrank ℚ_[l] ↥(K0 K) * Module.finrank ↥LL.1 T.V → IsCrys (P.PD E) (T.ρ.comp (Subgroup.inclusion (GK_le hle))) := by
   intro l _ P K s LL n W hs E hE hle T h

@@ -10,7 +10,7 @@ namespace Formalism.L2.FormalSeriesBounds.RF
 open Formalism.IncomingBounds Formalism.L2.Pj MvPolynomial
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨a, fun b => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem letter_cast {T : Type} {r : T → ℕ} {n : ℕ} {σ σ' : T} (h : σ = σ') (a : Fin (r σ)) :
     ∃ a' : Fin (r σ'), ∀ b : Fin n, (⟨σ, a, b⟩ : Letter T r n) = ⟨σ', a', b⟩ := by
@@ -23,23 +23,23 @@ variable {C : Type} [Field C] {T Orb : Type} [Fintype Orb] {r : T → ℕ} {tau 
   {gm : Orb → ZMod 2 → Matrix (Fin 2) (Fin 2) C} {N n : ℕ} (plc : Fin N × Fin 2 ↪ Fin n)
 
 /- English proof (translation)
-Establish `hoff : ∀ b ∈ (Finset.univ : Finset (Fin n)), b ∉ Finset.univ.map plc → pderiv (⟨tau o t, a1, b⟩ : Letter T r n) (pderiv (⟨tau o (t + 1), a2, b⟩ : Letter T r n) (subG r tau gm plc Q)) = 0`. Introduce `b _ hb`. Rewrite using `[pderiv_subG_off plc (ℓ := ⟨tau o (t + 1), a2, b⟩), map_zero]`. Introduce `z e`. Apply `hb` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.mem_map]`. Conclude with `⟨(z.1.1, z.2), Finset.mem_univ _, (congrArg (fun ℓ : Letter T r n => ℓ.2.2) e).symm⟩`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map plc)) hoff, Finset.sum_map, Fintype.sum_prod_type]`. Use `Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Establish `hf : ∀ col, pderiv (⟨tau o t, a1, plc (ρ, col)⟩ : Letter T r n) (pderiv (⟨tau o (t + 1), a2, plc (ρ, col)⟩ : Letter T r n) (subG r tau gm plc Q)) = ∑ g1, ∑ g2, MvPolynomial.C (gm o t col g1 * gm o (t + 1) col g2) * subG r tau gm plc (pderiv ((eW r tau N).symm ((ρ, ⟨o, ⟨t, a1⟩⟩), …`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `col`. Establish `e2` using `pderiv_subG_lam (gm := gm) plc inj ((ρ, ⟨o, ⟨t + 1, a2⟩⟩) : AA r tau N) col Q`. Establish `e2' : pderiv (⟨tau o (t + 1), a2, plc (ρ, col)⟩ : Letter T r n) (subG r tau gm plc Q) = _` using `e2`. Rewrite using `[e2', map_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g2 _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Derivation.leibniz, pderiv_C, smul_zero, add_zero, smul_eq_mul]`. Establish `e1` using `pderiv_subG_lam (gm := gm) plc inj ((ρ, ⟨o, ⟨t, a1⟩⟩) : AA r tau N) col (pderiv ((eW r tau N).symm ((ρ, ⟨o, ⟨t + 1, a2⟩⟩), g2)) Q)`. Establish `e1' : pderiv (⟨tau o t, a1, plc (ρ, col)⟩ : Letter T r n) (subG r tau gm plc (pderiv ((eW r tau N).symm ((ρ, ⟨o, ⟨t + 1, a2⟩⟩), g2)) Q)) = _` using `e1`. Rewrite using `[e1', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g1 _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Unfold `Gm`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun g1 _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun g2 _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← map_sum]`. Distinguish the cases in `hg : g1 = g2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hK : ∑ col, gm o t col g1 * gm o (t + 1) col g2 = 0`. Establish `h` using `gm_hyp o t g2 g1`. Rewrite `h` using `[if_pos hg.symm]`. Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun q _ => mul_comm _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK, map_zero, zero_mul]`. Establish `hz : pderiv ((eW r tau N).symm ((ρ, ⟨o, ⟨t, a1⟩⟩), g1)) (pderiv ((eW r tau N).symm ((ρ, ⟨o, ⟨t + 1, a2⟩⟩), g2)) Q) = 0`. Distinguish the cases in `h2 : (eW r tau N).symm ((ρ, ⟨o, ⟨t + 1, a2⟩⟩), g2) ∈ Q.vars`. Establish `h1 : (eW r tau N).symm ((ρ, ⟨o, ⟨t, a1⟩⟩), g1) ∉ Q.vars` using `fun h1 => hno ρ g1 g2 hg h1 h2`. Rewrite using `[pderiv_comm', pderiv_eq_zero_of_notMem_vars h1, map_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_eq_zero_of_notMem_vars h2, map_zero]`. Rewrite using `[hz, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lap_plane (inj : Function.Injective fun x : Orb × ZMod 2 => tau x.1 x.2)
     (gm_hyp : ∀ o t (s s' : Fin 2), ∑ q, gm o (t + 1) q s * gm o t q s' = if s = s' then 0 else 1)
@@ -106,13 +106,13 @@ end Plane
 section Fam
 
 /- English proof (translation)
-Use `first`. Consider the case `unfold blkProd at hx`. Consider the case `simp only [blkProd] at hx`. Use `first`. Consider the case `unfold toAll at hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `simp only [toAll] at hx`. Establish `h1` using `MvPolynomial.vars_prod _ hx`. Rewrite `h1` using `[Finset.mem_biUnion]`. Take `⟨o', -, h2⟩` from `h1`. Establish `h3` using `MvPolynomial.vars_rename _ _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[Finset.mem_image]`. Take `⟨x, hx1, hx2⟩` from `h3`. Simplify using `only [Prod.mk.injEq, Sigma.mk.inj_iff] at hx2`. Take `⟨hb, ho, hw⟩` from `hx2`. Substitute `ho` using the available equality.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `rfl` from `eq_of_heq hw`. Substitute `hb` using the available equality. Conclude with `hx1`.
+A detailed English derivation is pending.
 -/
 theorem mem_vars_blkProdG {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {Orb : Type} [Fintype Orb]
     {I J : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)] [∀ o g, Fintype (J o g)]
@@ -153,15 +153,13 @@ theorem zmod_two_add_one_add_one_eq : ∀ t : ZMod 2, t + 1 + 1 = t := by
   decide
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin (L o).length, ∃ kind : Fin (rowsAt X L o i) → Knd 2, RowsOK (X o).G (X o).Alt ((blkAt L o i).poly (X o) (F o)) kind`. Introduce `i`. Use `exists_rowsOK (X o) (F o) (Or.inl (H.alt o)) (H.hj o) _ fun g t k hk => ?_` and prove the remaining obligations. Establish `hsum : ∀ s, (blkAt L o i).wt (X o) 0 s k + (blkAt L o i).wt (X o) 1 (s + 1) k ≤ gaC o s k`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← H.wt o s k]`. Conclude with `le_sum_map (L o) (fun q => q.1.wt (X o) 0 s k + q.1.wt (X o) 1 (s + 1) k) (List.get_mem (L o) i)`. Distinguish the cases in `hg : g = 0`. Substitute `hg` using the available equality. Establish `h1` using `hsum t`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(H.supp o t k (by omega)).2`. Establish `hg1 : g = 1` using `Fin.eq_one_of_ne_zero g hg`. Substitute `hg1` using the available equality. Establish `h1` using `hsum (t + 1)`. Rewrite `h1` using `[zmod_two_add_one_add_one_eq]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(H.supp o (t + 1) k (by omega)).2`. Rewrite `h2` using `[H.rkF_eq o 0 (t + 1)]`. Rewrite using `[H.rkF_eq o 1 t]`. Conclude with `h2`. Use `choose kind hk using h`.
-
-Conclude with `⟨_, rowsOK_prodAll _ _ (plAt_inj N H.plinj o) _ kind hk⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SelfConjugatePlaceSetting.rowsOK (H : SelfConjugatePlaceSetting r cc a tau gm X F gaC N L pl) (o : Orb) :
     ∃ kind : Fin N → Knd 2, RowsOK (X o).G (X o).Alt
@@ -197,9 +195,9 @@ theorem lab_eq : ∀ g1 g2 : Fin 2, g1 ≠ g2 → ∀ t : ZMod 2,
   decide
 
 /- English proof (translation)
-Take `⟨kind, hk⟩` from `H.rowsOK o`. Establish `hx1 : ((ρ, ⟨o, ⟨g1, ⟨t, a1⟩⟩⟩) : Fin N × WVO fun o (_ : Fin 2) => IIs r tau o) ∈ (blkProd X F N L pl).vars` using `hx`. Establish `hx2 : ((ρ, ⟨o, ⟨g2, ⟨t + 1, a2⟩⟩⟩) : Fin N × WVO fun o (_ : Fin 2) => IIs r tau o) ∈ (blkProd X F N L pl).vars` using `hx'`. Establish `h1` using `mem_vars_blkProdG hx1`. Establish `h2` using `mem_vars_blkProdG hx2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : tyW (X o).G (⟨g1, ⟨t, a1⟩⟩ : WV fun _ => IIs r tau o) = tyW (X o).G (⟨g2, ⟨t + 1, a2⟩⟩ : WV fun _ => IIs r tau o)` using `(H.hty o g1 ⟨t, a1⟩).trans ((lab_eq g1 g2 hne t).trans (H.hty o g2 ⟨t + 1, a2⟩).symm)`. Conclude with `no_conj_of_rowsOK hk h1 h2 hne ht`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SelfConjugatePlaceSetting.no_conj (H : SelfConjugatePlaceSetting r cc a tau gm X F gaC N L pl) (ρ : Fin N) (o : Orb) (g1 g2 : Fin 2) (hne : g1 ≠ g2)
     (t : ZMod 2) (a1 : Fin (r (tau o t))) (a2 : Fin (r (tau o (t + 1))))
@@ -217,15 +215,13 @@ theorem SelfConjugatePlaceSetting.no_conj (H : SelfConjugatePlaceSetting r cc a 
 end Fam
 
 /- English proof (translation)
-Introduce `C _ V T r cc a Orb _ tau gm J _ X F gaC N L pl H n plc isX`. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `τ _ a1 a2`. Rewrite using `[lap_one_apply]`. Establish `hdiag : ∀ b, (∑ b', (1 : Matrix (Fin n) (Fin n) C) b b' • pderiv (⟨τ, a1, b⟩ : Letter T r n) (pderiv (⟨cc τ, a2, b'⟩ : Letter T r n) (subG r tau gm plc (blkProd X F N L pl)))) = pderiv (⟨τ, a1, b⟩ : Letter T r n) (pderiv (⟨cc τ, a2, b⟩ : Letter T r n) (subG r tau gm plc (blkProd …`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[Finset.sum_eq_single b]`. Rewrite using `[Matrix.one_apply_eq, one_smul]`. Introduce `b' _ hb`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hb), zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [hdiag]`. Distinguish the cases in `hτ : ∃ o t, tau o t = τ`. Take `⟨o, t, rfl⟩` from `hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a2', ha2⟩` from `letter_cast (n := n) (H.conj o t) a2`. Simplify using `only [ha2]`. Conclude with `lap_plane plc H.inj H.gm_hyp _ o t a1 a2' fun ρ g1 g2 hne h1 h2 => H.no_conj ρ o g1 g2 hne t a1 a2' h1 h2`. Use `push Not at hτ`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[pderiv_comm', pderiv_subG_off plc (ℓ := ⟨τ, a1, b⟩), map_zero]`. Introduce `z e`. Conclude with `hτ _ _ (congrArg Sigma.fst e).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isotropic_to_std_subst_harmonic : IsotropicToStdSubstHarmonic := by
   intro C _ V T r cc a Orb _ tau gm J _ X F gaC N L pl H n plc isX

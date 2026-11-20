@@ -12,9 +12,9 @@ section Irr
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
 
 /- English proof (translation)
-Break down `IsSimpleOrder.eq_bot_or_eq_top (⟨S, hS⟩ : Subrepresentation ρ) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hv0` to reduce the goal to its premises. Establish `: v ∈ (⟨S, hS⟩ : Subrepresentation ρ)` using `hv`. Rewrite `this` using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `: w ∈ (⊤ : Subrepresentation ρ)` using `Submodule.mem_top`. Rewrite `this` using `[← h]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irr_mem [ρ.IsIrreducible] (S : Submodule ℂ V) (hS : ∀ g, ∀ ⦃x⦄, x ∈ S → ρ g x ∈ S) {v : V} (hv0 : v ≠ 0)
     (hv : v ∈ S) (w : V) : w ∈ S := by
@@ -29,9 +29,9 @@ theorem irr_mem [ρ.IsIrreducible] (S : Submodule ℂ V) (hS : ∀ g, ∀ ⦃x�
     exact this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hb0`. Set `S : Submodule ℂ V` to `{ carrier := {x | ∀ g, l (ρ g x) = 0} add_mem' := fun {x y} hx hy g => by rw [map_add, map_add, hx g, hy g, add_zero] zero_mem' := fun g => by rw [map_zero, map_zero] smul_mem' := fun c x hx g => by rw [map_smul, map_smul, hx g, smul_zero] }`. Establish `hS : ∀ h, ∀ ⦃x⦄, x ∈ S → ρ h x ∈ S` using `fun h x hx g => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `hx (g * h)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `irr_mem S hS hb0 hb v₀ 1` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`. Conclude with `hv₀ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall [ρ.IsIrreducible] (l : Module.Dual ℂ V) {v₀ : V} (hv₀ : l v₀ ≠ 0) {b : V}
     (hb : ∀ g, l (ρ g b) = 0) : b = 0 := by
@@ -51,31 +51,27 @@ theorem eq_zero_of_forall [ρ.IsIrreducible] (l : Module.Dual ℂ V) {v₀ : V} 
 end Irr
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ m hm π₁ π₂ l₁ l₂ hl₁ hl₂ hW ⟨v₁, v₂, hX, h0⟩`. Use `π₁.irr` as an intermediate fact. Use `π₂.irr` as an intermediate fact. Take `⟨ω₁, -, h₁⟩` from `GlobalTheory.LocGL.exists_smooth_hasCentralChar π₁.smooth π₁.irr`. Take `⟨ω₂, -, h₂⟩` from `GlobalTheory.LocGL.exists_smooth_hasCentralChar π₂.smooth π₂.irr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `centralChar_eq hm π₁.smooth π₂.smooth h₁ h₂ hl₁ hl₂ hW hX h0`. Establish `hall : ∀ (a : π₁.V) (b : π₂.V), (∀ g : GL (Fin m) k, l₁ (π₁.ρ (corner g) a) = l₂ (π₂.ρ (corner g) b)) → ∀ g, l₁ (π₁.ρ g a) = l₂ (π₂.ρ g b)` using `fun a b hab g => agree_all hm π₁.smooth π₂.smooth h₁ h₂ hl₁ hl₂ hW hab g`. Set `Y : Submodule ℂ (π₁.V × π₂.V)` to `{ carrier := {x | ∀ g, l₁ (π₁.ρ g x.1) = l₂ (π₂.ρ g x.2)} add_mem' := fun {x y} hx hy g => by`. Rewrite using `[Prod.fst_add, Prod.snd_add, map_add, map_add, map_add, map_add, hx g, hy g]`. Use the proof step `zero_mem' := fun g => by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `smul_mem' := fun c x hx g => by`. Rewrite using `[Prod.smul_fst, Prod.smul_snd, map_smul, map_smul, map_smul, map_smul, hx g] }`. Establish `hY : ∀ h (x : π₁.V × π₂.V), x ∈ Y → (π₁.ρ h x.1, π₂.ρ h x.2) ∈ Y` using `fun h x hx g => by show l₁ (π₁.ρ g (π₁.ρ h x.1)) = l₂ (π₂.ρ g (π₂.ρ h x.2))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Conclude with `hx (g * h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (v₁, v₂) ∈ Y` using `hall v₁ v₂ hX`. Establish `h0' : l₂ v₂ ≠ 0`. Use `hv 1` as an intermediate fact. Rewrite `this` using `[map_one, map_one, Module.End.one_apply, Module.End.one_apply]`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hv₁ : v₁ ≠ 0` using `fun e => h0 (by rw [e, map_zero])`. Establish `hv₂ : v₂ ≠ 0` using `fun e => h0' (by rw [e, map_zero])`. Set `f₁ : Y →ₗ[ℂ] π₁.V` to `(LinearMap.fst ℂ π₁.V π₂.V).comp Y.subtype`. Set `f₂ : Y →ₗ[ℂ] π₂.V` to `(LinearMap.snd ℂ π₁.V π₂.V).comp Y.subtype`. Establish `inj₁ : Function.Injective f₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(injective_iff_map_eq_zero f₁).2 fun y hy => ?_` and prove the remaining obligations. Establish `hy1 : (y : π₁.V × π₂.V).1 = 0` using `hy`. Establish `hy2 : (y : π₁.V × π₂.V).2 = 0` using `eq_zero_of_forall (ρ := π₂.ρ) l₂ h0' fun g => by`. Rewrite using `[← y.2 g, hy1, map_zero, map_zero]`. Conclude with `Subtype.ext (Prod.ext hy1 hy2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj₂ : Function.Injective f₂`. Use `(injective_iff_map_eq_zero f₂).2 fun y hy => ?_` and prove the remaining obligations. Establish `hy2 : (y : π₁.V × π₂.V).2 = 0` using `hy`. Establish `hy1 : (y : π₁.V × π₂.V).1 = 0` using `eq_zero_of_forall (ρ := π₁.ρ) l₁ h0 fun g => by`. Rewrite using `[y.2 g, hy2, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Subtype.ext (Prod.ext hy1 hy2)`. Establish `surj₁ : Function.Surjective f₁` using `fun a => by`. Use `irr_mem (ρ := π₁.ρ) (LinearMap.range f₁) (fun h x hx => by` as an intermediate fact. Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨⟨_, hY h _ y.2⟩, rfl⟩) hv₁ ⟨⟨_, hv⟩, rfl⟩ a`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `this`. Establish `surj₂ : Function.Surjective f₂` using `fun b => by`. Use `irr_mem (ρ := π₂.ρ) (LinearMap.range f₂) (fun h x hx => by` as an intermediate fact. Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨⟨_, hY h _ y.2⟩, rfl⟩) hv₂ ⟨⟨_, hv⟩, rfl⟩ b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Set `e₁` to `LinearEquiv.ofBijective f₁ ⟨inj₁, surj₁⟩`. Set `e₂` to `LinearEquiv.ofBijective f₂ ⟨inj₂, surj₂⟩`. Set `T : π₁.V ≃ₗ[ℂ] π₂.V` to `e₁.symm.trans e₂`. Establish `hT : ∀ a, (a, T a) ∈ Y` using `fun a => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : ((e₁.symm a : Y) : π₁.V × π₂.V).1 = a` using `e₁.apply_symm_apply a`. Use `(e₁.symm a).2` as an intermediate fact. Rewrite `this` using `[← Prod.mk.eta (p := ((e₁.symm a : Y) : π₁.V × π₂.V)), h1]`. Conclude with `this`. Establish `hint : ∀ g a, T (π₁.ρ g a) = π₂.ρ g (T a)` using `fun g a => by`.
-
-Establish `h1 : e₁.symm (π₁.ρ g a) = ⟨_, hY g _ (hT a)⟩` using `e₁.injective (by rw [e₁.apply_symm_apply]; rfl)`. Use `show e₂ (e₁.symm (π₁.ρ g a)) = _`. Rewrite using `[h1]`. Both sides reduce to the same expression. Set `Tint : Representation.IntertwiningMap π₁.ρ π₂.ρ` to `{ toLinearMap := T.toLinearMap isIntertwining' := fun g => LinearMap.ext fun a => hint g a }`.
-
-Conclude with `⟨Tint.ofBijective T.bijective⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bigCell : BigCell := by
   intro k _ _ _ _ ψ m hm π₁ π₂ l₁ l₂ hl₁ hl₂ hW ⟨v₁, v₂, hX, h0⟩

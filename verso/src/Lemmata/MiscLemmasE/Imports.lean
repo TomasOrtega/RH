@@ -5,13 +5,13 @@ universe u_1
 namespace Bl.SecondBlockLemmaF
 
 /- English proof (translation)
-Introduce `M _ r S F`. Rewrite using `[← Finset.sum_product' (f := fun a μ' => F (Fin.cons a μ'))]`. Use `Finset.sum_nbij' (fun μ => (μ 0, Fin.tail μ)) (fun p => Fin.cons p.1 p.2) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `μ hμ`. Simplify using `only [Fintype.mem_piFinset, Finset.mem_product] at hμ ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hμ 0, fun t => hμ t.succ⟩`. Introduce `p hp`. Simplify using `only [Fintype.mem_piFinset, Finset.mem_product] at hp ⊢`. Introduce `i`. Use `Fin.cases ?_ (fun t => ?_) i` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hp.1` using `only [Fin.cons_zero]`. Simplify `hp.2 t` using `only [Fin.cons_succ]`. Introduce `μ _`. Conclude with `Fin.cons_self_tail μ`. Introduce `p _`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_zero, Fin.tail_cons]`. Introduce `μ _`. Simplify using `only [Fin.cons_self_tail]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {M : Type u_1} [inst : AddCommMonoid.{u_1} M] (r : Nat) (S : Fin (HAdd.hAdd.{0, 0, 0} r 1) → Finset.{0} Nat)

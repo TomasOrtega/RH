@@ -44,14 +44,14 @@ variable {t : Formalism.CyclotomicNorms.Fbar g →* ℂ} {ht : ∀ x y : Formali
 include hO
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isCuspidalCharacterOfPolynomial_of_cuspidalLabel g (datum t ht ζ hζ) t ht hζ rfl d V _ hd ((GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).2 hc) (hO d V hd hs hc)`.
+A detailed English derivation is pending.
 -/
 theorem isCuspOf_lab (d : ℕ) (V : FDRep ℂ (GL (Fin d) (ZMod g))) (hd : 1 ≤ d) (hs : Simple V)
     (hc : IsCuspidal (ZMod g) V) : IsCuspOf (datum t ht ζ hζ) (O.lab d V) (fun x => V.character x) :=
   GlobalTheory.T.isCuspidalCharacterOfPolynomial_of_cuspidalLabel g (datum t ht ζ hζ) t ht hζ rfl d V _ hd ((GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).2 hc) (hO d V hd hs hc)
 
 /- English proof (translation)
-Introduce `d χ hχ`. Take `⟨V, hV, hVχ⟩` from `hχ.2.1`. Take `rfl : (fun x => V.character x) = χ` from `funext hVχ`. Conclude with `⟨_, isCuspOf_lab O hO d V hχ.1 hV ((GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hχ.1 hV).1 hχ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem allLab : AllLab (datum t ht ζ hζ) := by
   intro d χ hχ
@@ -60,13 +60,13 @@ theorem allLab : AllLab (datum t ht ζ hζ) := by
   exact ⟨_, isCuspOf_lab O hO d V hχ.1 hV ((GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hχ.1 hV).1 hχ)⟩
 
 /- English proof (translation)
-Distinguish the cases in `hm : zIdem ρ ∈ GlobalTheory.SerOSys.Zl O r f`. Take `⟨τ, hτ, he, hl⟩` from `hm`. Establish `h1` using `GlobalTheory.T.classFunctionLabel_of_labelMap_label g (datum t ht ζ hζ) O (isCuspOf_lab O hO) (GlobalTheory.T.trace_harishChandra_induced_eq_product_characters g) (GlobalTheory.T.isConstituent_harishChandraRep_iff_pairing_ne_zero g) r τ f hτ hl`. Establish `h2 : zOf (fun x => τ.character x) = zIdem τ`. Unfold `zOf zIdem`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [FDRep.char_one]`. Both sides reduce to the same expression. Establish `h3` using `eSerC_mul_zOf (datum t ht ζ hζ) ⟨τ, hτ, fun _ => rfl⟩ h1`. Rewrite `h3` using `[h2, he]`. Then use the resulting hypothesis. Establish `h0 : zIdem ρ = 0`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← h, GlobalTheory.SerOSys.eSerO_eq_sum, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun z hz => ?_` and prove the remaining obligations. Establish `hz'` using `(GlobalTheory.SerOSys.Zl_finite O r f).mem_toFinset.1 hz`. Rewrite using `[GlobalTheory.SerOSys.mul_of_mem ⟨ρ, hρ, rfl⟩ (GlobalTheory.SerOSys.Zl_sub O r f hz'), if_neg]`. Introduce and unpack `e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hm (e ▸ hz')`. Rewrite using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSerC_mul_zIdem {r : ℕ} (ρ : FDRep ℂ (GL (Fin r) (ZMod g))) (hρ : Simple ρ) (f : (ZMod g)[X])
     (h : zIdem ρ * eSerO O r f = zIdem ρ) : eSerC (datum t ht ζ hζ) r f * zIdem ρ = zIdem ρ := by
@@ -102,7 +102,7 @@ variable {g : ℕ} [Fact g.Prime] {E : Type} [Field E] [NumberField E] {w : Heig
   (hw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal) (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i)
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_lt_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y < 1 ↔ ‖y‖ < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -112,7 +112,7 @@ theorem val_lt_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y <
   rw [he.lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Rewrite using `[he.le_one_iff_le_one, Valued.toNormedField.norm_le_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_le_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y ≤ 1 ↔ ‖y‖ ≤ 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -123,14 +123,14 @@ theorem val_le_iff (y : w.adicCompletion E) : valuation (w.adicCompletion E) y �
 
 include hi in
 /- English proof (translation)
-The claim follows from `(val_le_iff _).2 (GlobalTheory.TypeRec.Model.emb_le w g i.toRingHom hi _ z.2)`.
+A detailed English derivation is pending.
 -/
 theorem val_int_le (z : ℤ_[g]) : valuation (w.adicCompletion E) (i (z : ℚ_[g])) ≤ 1 :=
   (val_le_iff _).2 (GlobalTheory.TypeRec.Model.emb_le w g i.toRingHom hi _ z.2)
 
 include hw hi in
 /- English proof (translation)
-Establish `h1 : z ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := hz`. Rewrite `h1` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `h1`. Rewrite using `[PadicInt.coe_mul, map_mul, map_mul, PadicInt.coe_natCast, map_natCast]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (val_int_le i hi c) zero_le ((val_lt_iff _).2 (Formalism.BasicNotions.Examples₂.LocF.norm_l_lt w g hw))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_int_lt (z : ℤ_[g]) (hz : PadicInt.toZMod z = 0) : valuation (w.adicCompletion E) (i (z : ℚ_[g])) < 1 := by
   have h1 : z ∈ RingHom.ker (PadicInt.toZMod (p := g)) := hz
@@ -143,15 +143,13 @@ theorem val_int_lt (z : ℤ_[g]) (hz : PadicInt.toZMod z = 0) : valuation (w.adi
 include hw hi in
 
 /- English proof (translation)
-Use `set K := Matrix.GeneralLinearGroup.map i.toRingHom (inc g n k) with hK`. Establish `h1 : IntM (K⁻¹).val` using `fun a b => by`. Rewrite using `[hK, ← map_inv, ← map_inv]`. Conclude with `val_int_le i hi ((k⁻¹).val a b)`. Establish `h2 : MaxM (h.val - K.val)` using `fun a b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `hh a b`. Rewrite `e1` using `[dif_pos ⟨a.2, b.2⟩]`. Establish `e2` using `val_int_lt hw i hi ((((red g n k).val a b).val : ℤ_[g]) - k.val a b) (by`. Rewrite using `[map_sub, map_natCast, ZMod.natCast_zmod_val, sub_eq_zero]`. Use the proof step `rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `e3` using `Valuation.map_add_lt _ e1 e2`. Use `e3 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[PadicInt.coe_sub, map_sub, PadicInt.coe_natCast, map_natCast, Matrix.sub_apply]`. Express the relevant statement in the definitionally equal form `_ - i (k.val a b : ℚ_[g]) = _`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : π (K⁻¹ * h) x = x` using `hx _ fun a b => by`. Establish `e` using `h1.mul_maxM h2 a b`. Rewrite `e` using `[Matrix.mul_sub, ← Units.val_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.sub_apply, Matrix.one_apply]`. Conclude with `e`. Use `conv_rhs => rw [← h3]`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_lift {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) {x : V} (hx : IsLevelOne π x)
@@ -181,9 +179,9 @@ theorem act_lift {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 include hw hi in
 /- English proof (translation)
-Use `(Model.mem_principalCongruenceFixedVectors_iff _ _).2 fun k hk => ?_` and prove the remaining obligations. Use `act_lift hw i hi π hx k 1 (fun a b => by` as an intermediate fact. Rewrite using `[dif_pos ⟨a.2, b.2⟩, hk]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[ZMod.val_one]`. Simplify using `[Matrix.one_apply_ne hab])`. Rewrite `this` using `[map_one]`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_principalCongruenceFixed_of_levelOne {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) {x : V} (hx : IsLevelOne π x) :
@@ -199,9 +197,9 @@ theorem mem_principalCongruenceFixed_of_levelOne {n : ℕ} {V : Type} [AddCommGr
 
 include hw hi in
 /- English proof (translation)
-Take `⟨ℓ, hℓ, h0⟩` from `hz`. Rewrite `h0` using `[Finsupp.sum_fintype _ _ (fun _ => by simp)]`. Rewrite using `[actK, LinearMap.sum_apply]`. Use `h0 using 2 with y` and compare the differences between its conclusion and the goal. Establish `e : red g n (Function.invFun (red g n) y) = y` using `Function.invFun_eq (Model.red_surjective n y)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.smul_apply, act_lift hw i hi π hx (Function.invFun (red g n) y) (ℓ y) (by rw [e]; exact hℓ y)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actK_ne_of_notKilled {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) {x : V} (hx : IsLevelOne π x)
@@ -216,7 +214,7 @@ theorem actK_ne_of_notKilled {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V
   rfl
 
 /- English proof (translation)
-Use `⟨_, ((repK π).asAlgebraHom z ⟨x, hx⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← repK_alg π (S.e n f) ((repK π).asAlgebraHom z ⟨x, hx⟩), ← Module.End.mul_apply, ← map_mul, he, repK_alg]`. Conclude with `hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem has_of_actK (S : Sys g) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) {x : V} (hx : x ∈ fixK1 π) {z : MonoidAlgebra ℂ (Gn g n)}
@@ -232,11 +230,11 @@ variable {Ω : Type} [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : Valuatio
 include hi hrc hDZ ht hκ
 
 /- English proof (translation)
-Establish `hi'` using `GlobalTheory.TameRecord.continuous_symm w i hi`. Establish `hc' : IsCuspidal (σ.π.comp (Matrix.GeneralLinearGroup.map (n` using `Fin n) i.toRingHom)) := GlobalTheory.LocGL.isCuspidal_comp_generalLinearGroupMap i.symm hi σ.π hc`. Set `ρ : GLRep g` to `⟨n, Rep.of (σ.π.comp (Matrix.GeneralLinearGroup.map (n := Fin n) i.toRingHom))⟩`. Establish `hρ : TameGen.IsSC ρ` using `⟨hn, (Model.isIrrRep_iff _).2 (GlobalTheory.CuspRep.ParLaws.isIrreducible_comp σ.irr _ fun y => ⟨_, GlobalTheory.TameRecord.glMap_apply_symm i y⟩), GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal _ _ _ _ hc'⟩`. Take `⟨τ, φ, hs, hinj, heq, he⟩` from `TameGen.exists_simple_of_has (sysOf L h5 hA) ρ.2.ρ f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hφ : (fixK1 ρ.2.ρ).subtype ∘ₗ φ ≠ 0` using `fun e => by`. Establish `h0 : ∀ u : τ, u = 0` using `fun u => hinj (Subtype.ext (by simpa using LinearMap.congr_fun e u))`. Conclude with `CategoryTheory.id_nonzero τ (by ext u; exact (h0 _).trans (h0 _).symm)`. Establish `hfix : fixK1 ρ.2.ρ ≠ ⊥` using `fun e => hφ (LinearMap.ext fun u => (Submodule.eq_bot_iff _).1 e _ (φ u).2)`. Establish `hτ : FiniteGL.IsCuspidal τ.ρ` using `fun b hb hb' u hu => hinj (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `GlobalTheory.DepthZeroCusp.depthZeroCuspidal g ρ hρ hfix b hb hb' _ fun x hx => by rw [← heq, hu x hx])`. Use `hDZ E Ω g A w h rc hrc i hi κ L t ht hκ n σ.toIrrRep (IrrGL.isCusp_of.2 ⟨hn, hc⟩) τ f (isCuspOf_of_series L h5 hA τ (TameGen.isCusp_character hn τ hs hτ) f he) ⟨_, hφ, fun k u => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg Subtype.val (heq (red g n k) u)).trans (repK_red ρ.2.ρ k (φ u))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inePol_cusp {n : ℕ} (hn : 0 < n) (σ : Irr (w.adicCompletion E) n) (hc : IsCuspidal σ.π) (f : (ZMod g)[X])
     (hf : Has (sysOf L h5 hA) (σ.π.comp (Matrix.GeneralLinearGroup.map i.toRingHom)) f) :
@@ -260,13 +258,13 @@ theorem inePol_cusp {n : ℕ} (hn : 0 < n) (σ : Irr (w.adicCompletion E) n) (hc
   exact (congrArg Subtype.val (heq (red g n k) u)).trans (repK_red ρ.2.ρ k (φ u))
 
 /- English proof (translation)
-Establish `hi'` using `GlobalTheory.TameRecord.continuous_symm w i hi`. Take `⟨s, d, σ, hs⟩` from `GlobalTheory.T.exists_cuspidalSupport_irreducibleSmoothGL hBZ hGL _ n π`. Establish `h1` using `hrc.recSupp n s π d σ hs (ineIncl h ⟨t, ht⟩)`. Take `⟨-, hc, e, U, T, hT⟩` from `hs`. Take `⟨φ⟩` from `GlobalTheory.IndField.multiProd_comp_glMap i.symm hi' hi (GlobalTheory.SplitWeil.nabs_map_of_homeomorph i.symm hi' hi) e (fun a => (σ a).π)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : IsSubquotient (π.π.comp (Matrix.GeneralLinearGroup.map (n` using `Fin n) i.toRingHom)) ((multiProd e fun a => (σ a).π).comp (Matrix.GeneralLinearGroup.map (n := Fin n) i.toRingHom)) := ⟨⟨U.toSubmodule, fun x _ hv => U.apply_mem_toSubmodule _ hv⟩, ⟨T.toLinearMap, fun x => T.isIntertwining' _⟩, hT⟩`. Take `⟨fs, hfs, rfl⟩` from `series_of_isSubquotient (sysOf L h5 hA) e (fun a => (σ a).π.comp (Matrix.GeneralLinearGroup.map (n := Fin (d a)) i.toRingHom)) (h2.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)) f hf`. Establish `h3 : ∀ a, (rc (cls (σ a).toIrrRep)).charPol (ineIncl h ⟨t, ht⟩) = TameGen.liftPoly L.teich (fs a)` using `fun a => by`. Rewrite using `[← WD.inePol_of_mem_Ine _ ht]`. Conclude with `inePol_cusp i hi hrc hDZ κ L h5 hA ht hκ (hc a).1 (σ a) (hc a).2.2 _ (hfs a)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ∀ u : Finset (Fin s), TameGen.liftPoly L.teich (∏ a ∈ u, fs a) = ∏ a ∈ u, TameGen.liftPoly L.teich (fs a)`. Introduce `u`. Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simp [TameGen.liftPoly_one]`. Consider the case `insert a u ha ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, TameGen.liftPoly_mul _ (TameGen.Has.monic (hfs a)).ne_zero (monic_prod_of_monic _ _ fun b _ => TameGen.Has.monic (hfs b)).ne_zero, ih]`. Rewrite using `[WD.inePol_of_mem_Ine _ ht, h4]`. Conclude with `h1.trans (Finset.prod_congr rfl fun a _ => h3 a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inePol_of_has (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (hGL : GlobalTheory.Published.GeometricLemma) {n : ℕ}
     (π : Irr (w.adicCompletion E) n) (f : (ZMod g)[X])
@@ -307,17 +305,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.WeilDeligne in
 
 /- English proof (translation)
-Introduce `hP hDZ hL D Γ hG k v π ρ f hρ hsq ⟨x, hx, hnk⟩`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨I⟩` from `GlobalTheory.TypeRec.Model.nonempty_ident D`. Establish `hrc` using `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))`. Establish `hw` using `D.naut.plGw_over k v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `GlobalTheory.RegType.allLab (Γ.O k) (hG k)`. Establish `h5` using `GlobalTheory.SerSys.Bridge.five_le D k`. Establish `hx'` using `GlobalTheory.RegType.mem_principalCongruenceFixed_of_levelOne hw (I.i k v) (I.cont k v) π.π hx`. Establish `hz` using `GlobalTheory.RegType.actK_ne_of_notKilled hw (I.i k v) (I.cont k v) π.π hx _ hnk`. Establish `he` using `GlobalTheory.RegType.eSerC_mul_zIdem (Γ.O k) (hG k) ρ hρ.1 f (by rw [← Γ.eSer_def k f]; exact hρ.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHas` using `GlobalTheory.RegType.has_of_actK (GlobalTheory.RegType.sysOf _ h5 hA) _ hx' hz he`. Establish `hine : (rcAt hL D (D.naut.plGw k v) D.R.r π).inePol (D.ntypes.tg k v) = ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (D.ntypes.teichC k x)).prod` using `GlobalTheory.RegType.inePol_of_has (I.i k v) (I.cont k v) hrc hDZ (Γ.kv k v) _ h5 hA (D.ntypes.tg_mem k v) (Γ.tg_tame k v) hP.bz hP.geo π f hHas`. Use `⟨WD.noMonodromy_of_inertia_separable_charpoly _ _ _ _ _ _ _ (D.ntypes.tg_mem k v) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hine]`. Conclude with `GlobalTheory.GoodRowMono.separable_prod_teich _ (D.ntypes.teichC_inj k) hsq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSet : TeichmullerInertiaLabelCondition (D.nd.plOm.1 (D.naut.plGw k v)) (D.naut.plGw k v) (D.ntypes.teichC k) (D.ntypes.tg k v)` using `.of_tameGenAt (GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) (D.naut.plGw_over k v)) (D.ntypes.tg_gen k v) (D.ntypes.teichC_inj k)`. Establish `htame : (rcAt hL D (D.naut.plGw k v) D.R.r π).tame`. Take `⟨a, ha, ε, -, hl⟩` from `hrc`. Use `GlobalTheory.SerSys.LabDepth.tame_of_isTameWD ((hl.depth _).1 ?_)` and prove the remaining obligations. Use `GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (GlobalTheory.SmGL.IrrRep.nonempty_equiv_rep π.toIrrRep).some.symm ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Submodule.ne_bot_iff _).2 ⟨x, GlobalTheory.Parabolic.mem_fixed.2 fun u hu => hx u fun a b => ?_, fun h0 => hz ?_⟩` and prove the remaining obligations. Use `GlobalTheory.StepData.mem_KOne.1 hu a b` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply]`. Then use the resulting hypothesis. Rewrite using `[h0, map_zero]`. Establish `e1 : (Formalism.CyclotomicNorms.rootsBar f).map (fun x => X - C (D.ntypes.teichC k x)) = ((Formalism.CyclotomicNorms.rootsBar f).map (D.ntypes.teichC k)).map (fun a => X - C a)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[labAt, WD.lab_eq_iff_of_tame hSet htame, hine, e1, roots_multiset_prod_X_sub_C]`. Conclude with `⟨GlobalTheory.SerSys.TameGen.Has.monic hHas, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RegType.regLoc : GlobalTheory.NRows.Hypotheses₂ → GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (Γ : GrpSide D), GreenLab Γ → RegLoc hL D := by
   intro hP hDZ hL D Γ hG k v π ρ f hρ hsq ⟨x, hx, hnk⟩

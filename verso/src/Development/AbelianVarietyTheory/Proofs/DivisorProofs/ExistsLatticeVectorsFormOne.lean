@@ -10,7 +10,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.FormOne
 
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
@@ -18,23 +18,21 @@ theorem form_smul_left {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   simp [form, smul_dotProduct]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n X r s hX hn`. Establish `key : (1 : E) ∈ Submodule.span (𝓞 E) {z : E | ∃ x ∈ X.L, ∃ y ∈ X.L, form σ X.J x y = z}`. Assume the negation of the conclusion as `h1`. Establish `hI : (Submodule.span (𝓞 E) {z : E | ∃ x ∈ X.L, ∃ y ∈ X.L, form σ X.J x y = z}).comap (Algebra.linearMap (𝓞 E) E) ≠ ⊤`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h1` to reduce the goal to its premises. Establish `: (1 : 𝓞 E) ∈ (Submodule.span (𝓞 E) {z : E | ∃ x ∈ X.L, ∃ y ∈ X.L, form σ X.J x y = z}).comap (Algebra.linearMap (𝓞 E) E)` using `h ▸ Submodule.mem_top`. Simplify using `using this`. Take `⟨P, hP, hIP⟩` from `Ideal.exists_le_maximal _ hI`. Establish `hP0 : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField E)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hγ1⟩` from `FractionalIdeal.exists_notMem_one_of_ne_bot (K := E) hP0 hP.ne_top`. Establish `hγL : ∀ y ∈ X.L, γ • y ∈ X.L`. Introduce `y hy`. Rewrite using `[hX.dual]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[form_smul_left]`. Take `⟨a, ha⟩ : ∃ a : 𝓞 E, algebraMap (𝓞 E) E a = form σ X.J y x` from `⟨⟨_, (hX.dual y).1 hy x hx⟩, rfl⟩`. Establish `haP : a ∈ P` using `hIP (Submodule.mem_comap.2 (Submodule.subset_span ⟨y, hy, x, hx, ha.symm⟩))`. Establish `hm` using `FractionalIdeal.mul_mem_mul hγ ((FractionalIdeal.mem_coeIdeal _).2 ⟨a, haP, rfl⟩)`. Rewrite `hm` using `[inv_mul_cancel₀ (FractionalIdeal.coeIdeal_ne_zero.2 hP0)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb⟩` from `(FractionalIdeal.mem_one_iff _).1 hm`. Rewrite using `[← ha, ← hb]`. Conclude with `RingOfIntegers.isIntegral_coe b`. Establish `hL0 : X.L ≠ ⊥`. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hX.lat.span_eq_top`. Rewrite `h1` using `[h]`. Establish `h2 : (Pi.single (⟨0, hn⟩ : Fin n) (1 : E) : Fin n → E) ∈ Submodule.span E ((⊥ : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E))`. Rewrite using `[h1]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Simplify using the standard rewrite rules.
 
-Simplify using `at h2`. Establish `hint` using `isIntegral_of_smul_mem_submodule X.L hL0 hX.lat.fg γ hγL`. Conclude with `hγ1 ((FractionalIdeal.mem_one_iff _).2 (IsIntegrallyClosed.isIntegral_iff.1 hint))`. Take `⟨m, f, g, hfg⟩` from `Submodule.mem_span_set'.1 key`. Establish `hg` using `fun i => (g i).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_setOf_eq] at hg`. Use `choose x hx y hy hxy using hg`. Use `⟨m, fun i => (algebraMap (𝓞 E) E (f i)) • x i, y, fun i => ⟨by show (algebraMap (𝓞 E) E (f i)) • x i ∈ X.L; rw [algebraMap_smul]; exact X.L.smul_mem _ (hx i), hy i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfg]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[form_smul_left, hxy i, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_form_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ), X.IsHerm σ B r s → 0 < n →

@@ -14,7 +14,7 @@ noncomputable def tenMap {ι : Type} [Fintype ι] {n : ℕ} {V : ι → Type} [�
     (fun τ => (MvPolynomial.rename (Prod.mk τ)).toLinearMap ∘ₗ j τ))
 
 /- English proof (translation)
-Unfold `tenMap ten`. Rewrite using `[PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tenMap_tprod {ι : Type} [Fintype ι] {n : ℕ} {V : ι → Type} [∀ τ, AddCommGroup (V τ)] [∀ τ, Module ℂ (V τ)]
     (j : ∀ τ, V τ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ) (x : ∀ τ, V τ) :
@@ -24,7 +24,7 @@ theorem tenMap_tprod {ι : Type} [Fintype ι] {n : ℕ} {V : ι → Type} [∀ �
   rfl
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.TenTypes.nfAll_smul_left lam 0 0 q`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nfAll_zero_left {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (q : MvPolynomial (ι × Fin n × Fin n) ℂ) : nfAll lam 0 q = 0 := by
@@ -32,23 +32,21 @@ theorem nfAll_zero_left {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeig
   simpa using h
 
 /- English proof (translation)
-Introduce `ι _ n lam V _ _ j d b hin hon hortho`. Use `⟨tenMap j, ?_, ?_, tenMap_tprod j⟩` and prove the remaining obligations. Set `B` to `Basis.piTensorProduct b`. Establish `hB : ∀ i, B i = PiTensorProduct.tprod ℂ (fun τ => b τ (i τ))` using `fun i => Basis.piTensorProduct_apply b i`. Take `⟨hprod, -, -⟩` from `GlobalTheory.FockTen.nfAll_ten ι n lam`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpair : ∀ i i', nfAll lam (tenMap j (B i)) (tenMap j (B i')) = if i = i' then 1 else 0`. Introduce `i i'`. Rewrite using `[hB, hB, tenMap_tprod, tenMap_tprod, hprod]`. Repeatedly rewrite using `[hortho]`. Distinguish the cases in `h : i = i'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, i τ ≠ i' τ := by`. Assume the negation of the conclusion as `hc`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hc`. Conclude with `h (funext hc)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ τ) (if_neg hτ)`. Establish `hcoord : ∀ i' x, nfAll lam (tenMap j x) (tenMap j (B i')) = B.coord i' x`. Introduce `i'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `L : (⨂[ℂ] τ, V τ) →ₗ[ℂ] ℂ` to `{ toFun := fun x => nfAll lam (tenMap j x) (tenMap j (B i')) map_add' := fun x y => by rw [map_add, GlobalTheory.TenTypes.nfAll_add_left] map_smul' := fun c x => by rw [map_smul, GlobalTheory.TenTypes.nfAll_smul_left]; rfl }`. Establish `hL : L = B.coord i'`. Use `B.ext fun i => ?_` and prove the remaining obligations. Use `show nfAll lam (tenMap j (B i)) (tenMap j (B i')) = B.coord i' (B i)`. Rewrite using `[hpair, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Conclude with `LinearMap.congr_fun hL x`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Use `B.ext_elem fun i' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[map_zero, Finsupp.zero_apply, ← Module.Basis.coord_apply, ← hcoord, hx, nfAll_zero_left]`. Rewrite using `[LinearMap.range_eq_map, ← PiTensorProduct.span_tprod_eq_top, Submodule.map_span]`. Unfold `CSpan`. Use `congr 1`. Use extensionality with `p`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨fun τ => j τ (x τ), fun τ => hin τ _, tenMap_tprod j x⟩`. Introduce and unpack `⟨f, hf, rfl⟩ choose ξ hξ using fun τ => hon τ (f τ) (hf τ)`. Use `⟨PiTensorProduct.tprod ℂ ξ, ⟨ξ, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[tenMap_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `hξ τ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem main : ∀ (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n) (V : ι → Type) [∀ τ, AddCommGroup (V τ)] [∀ τ, Module ℂ (V τ)] (j : ∀ τ, V τ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ) (d : ι → ℕ) (b : ∀ τ, Module.Basis (Fin (d τ)) ℂ (V τ)), (∀ τ ξ, j τ ξ ∈ delSq ℂ n (lam τ)) → (∀ τ, ∀ p ∈ delSq ℂ n (lam τ), ∃ ξ, j τ ξ = p) → (∀ τ a a', normFock (lam τ) (j τ (b τ a)) (j τ (b τ a')) = if a = a' then 1 else 0) → ∃ Jt : (⨂[ℂ] τ, V τ) →ₗ[ℂ] MvPolynomial (ι × Fin n × Fin n) ℂ, Function.Injective Jt ∧ LinearMap.range Jt = CSpan lam ∧ ∀ x : (∀ τ, V τ), Jt (PiTensorProduct.tprod ℂ x) = ten (fun τ => j τ (x τ)) := by
   intro ι _ n lam V _ _ j d b hin hon hortho

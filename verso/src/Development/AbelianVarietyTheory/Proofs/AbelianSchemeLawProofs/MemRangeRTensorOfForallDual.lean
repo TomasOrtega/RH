@@ -6,11 +6,11 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Ten
 namespace GlobalTheory.KuennethOne
 
 /- English proof (translation)
-Use `letI := hR.toField`. Establish `hex` using `rTensor_exact B (LinearMap.exact_map_mkQ_range δ) (Submodule.mkQ_surjective _)`. Use `(hex z).mp ?_` and prove the remaining obligations. Set `b` to `Module.Basis.ofVectorSpace R (C₁ ⧸ LinearMap.range δ)`. Apply `(TensorProduct.equivFinsuppOfBasisLeft b).injective` to reduce the goal to its premises.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i`. Establish `h1` using `h (b.coord i ∘ₗ (LinearMap.range δ).mkQ) (by`. Use extensionality with `x`. Simplify using `[(Submodule.Quotient.mk_eq_zero _).mpr (LinearMap.mem_range_self δ x)])`. Rewrite using `[map_zero, Finsupp.zero_apply, ← h1]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `clear h h1`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_range_rTensor_of_forall_dual {R C₀ C₁ B : Type} [CommRing R] (hR : IsField R)
     [AddCommGroup C₀] [Module R C₀] [AddCommGroup C₁] [Module R C₁] [AddCommGroup B] [Module R B]
@@ -45,7 +45,7 @@ noncomputable instance (i : X ⟶ S) (U : X.Opens) : Algebra Γ(S, ⊤) (Fn i U)
   (show Γ(S, ⊤) →+* Fn i U from (i.appLE ⊤ U le_top).hom).toAlgebra
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_appLE (f : T ⟶ X) (g : X ⟶ Y) (h : T ⟶ Y) (e : f ≫ g = h) {W : Y.Opens}
     {U : X.Opens} {N : T.Opens} (h1 : U ≤ g ⁻¹ᵁ W) (h2 : N ≤ f ⁻¹ᵁ U) (h3 : N ≤ h ⁻¹ᵁ W)
@@ -55,7 +55,7 @@ theorem appLE_appLE (f : T ⟶ X) (g : X ⟶ Y) (h : T ⟶ Y) (e : f ≫ g = h) 
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Simplify using `only [Scheme.Hom.appLE, rs]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem id_appLE {U N : X.Opens} (h : N ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ U) (x : Γ(X, U)) :
     ((𝟙 X : X ⟶ X).appLE U N h).hom x = rs (show N ≤ U from h) x := by
@@ -84,11 +84,11 @@ noncomputable def mm (U : X.Opens) (W : Y.Opens) (O : Z.Opens) (hU : O ≤ p ⁻
   Algebra.TensorProduct.productMap (pb p rfl U O hU) (pb q H.w.symm W O hW)
 
 /- English proof (translation)
-Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := W) (UX := U) le_top le_top rfl).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) hW hU)`. Establish `h1` using `CommRingCat.isPushout_tensorProduct Γ(S, ⊤) (Fn iX U) (Fn iY W)`. Set `e` to `h1.isoIsPushout _ _ po`. Establish `: e.hom = CommRingCat.ofHom (mm H U W (p ⁻¹ᵁ U ⊓ q ⁻¹ᵁ W) inf_le_left inf_le_right).toRingHom`. Use `h1.hom_ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h1.inl_isoIsPushout_hom _ _ po).trans ?_` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(Algebra.TensorProduct.productMap_left_apply (pb p rfl U _ inf_le_left) (pb q H.w.symm W _ inf_le_right) x).symm`. Use `(h1.inr_isoIsPushout_hom _ _ po).trans ?_` and prove the remaining obligations. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(Algebra.TensorProduct.productMap_right_apply (pb p rfl U _ inf_le_left) (pb q H.w.symm W _ inf_le_right) x).symm`. Establish `hb` using `ConcreteCategory.bijective_of_isIso e.hom`. Rewrite `hb` using `[this]`. Conclude with `hb`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_bijective [IsAffine S] {U : X.Opens} {W : Y.Opens} (hU : IsAffineOpen U)
     (hW : IsAffineOpen W) :
@@ -126,9 +126,9 @@ theorem MM_tmul (U : ι → X.Opens) (W : Y.Opens) (i : ι) (O : Z.Opens) (hU : 
     MM H U W i O hU hW (a ⊗ₜ b) = (p.appLE (U i) O hU).hom (a i) * (q.appLE W O hW).hom b := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Pi.zero_apply]`. Both sides reduce to the same expression. Consider the case `tmul x y => rw [MM_tmul]`. Simplify using `[mm]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem MM_eq [Fintype ι] [DecidableEq ι] (U : ι → X.Opens) (W : Y.Opens) (i : ι) (O : Z.Opens)
     (hU : O ≤ p ⁻¹ᵁ U i) (hW : O ≤ q ⁻¹ᵁ W) (z) :
@@ -139,7 +139,7 @@ theorem MM_eq [Fintype ι] [DecidableEq ι] (U : ι → X.Opens) (W : Y.Opens) (
   | add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]; rfl
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Use `choose w hw using fun i => (mm_bijective H (hU i) hW).2 (c i)`. Use `⟨(TensorProduct.piLeft _ _ _).symm w, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[MM_eq, LinearEquiv.apply_symm_apply, hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MM_surj [IsAffine S] [Finite ι] {U : ι → X.Opens} {W : Y.Opens}
     (hU : ∀ i, IsAffineOpen (U i)) (hW : IsAffineOpen W)
@@ -152,7 +152,7 @@ theorem MM_surj [IsAffine S] [Finite ι] {U : ι → X.Opens} {W : Y.Opens}
   rw [MM_eq, LinearEquiv.apply_symm_apply, hw]
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Apply `(TensorProduct.piLeft _ _ _).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `(mm_bijective H (hU i) hW).1` to reduce the goal to its premises. Rewrite using `[← MM_eq, h, map_zero, Pi.zero_apply, map_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -168,9 +168,9 @@ theorem MM_inj [IsAffine S] [Finite ι] {U : ι → X.Opens} {W : Y.Opens}
   rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y`. Rewrite using `[MM_tmul, MM_tmul, map_mul]`. Conclude with `congrArg₂ _ (rs_appLE p h hU _) (rs_appLE q h hW _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+A detailed English derivation is pending.
 -/
 theorem rs_MM (U : ι → X.Opens) (W : Y.Opens) (i : ι) {O O' : Z.Opens} (h : O' ≤ O)
     (hU : O ≤ p ⁻¹ᵁ U i) (hW : O ≤ q ⁻¹ᵁ W) (z) :
@@ -183,9 +183,9 @@ theorem rs_MM (U : ι → X.Opens) (W : Y.Opens) (i : ι) {O O' : Z.Opens} (h : 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y`. Rewrite using `[LinearMap.lTensor_tmul, MM_tmul, MM_tmul]`. Conclude with `congrArg _ (appLE_rs q h hW y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+A detailed English derivation is pending.
 -/
 theorem MM_lTensor (U : ι → X.Opens) {W W' : Y.Opens} (h : W' ≤ W) (i : ι) (O : Z.Opens)
     (hU : O ≤ p ⁻¹ᵁ U i) (hW : O ≤ q ⁻¹ᵁ W') (z) :
@@ -210,9 +210,9 @@ theorem dlt_apply (iX : X ⟶ S) (U : ι → X.Opens) (x : ∀ i, Fn iX (U i)) (
     dlt iX U x k = (rs inf_le_left (x k.1) - rs inf_le_right (x k.2) : Γ(X, U k.1 ⊓ U k.2)) := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, sub_zero]`. Consider the case `tmul x y`. Rewrite using `[LinearMap.rTensor_tmul, MM_tmul, MM_tmul, MM_tmul, dlt_apply, map_sub, sub_mul]`. Conclude with `congrArg₂ _ (congrArg (· * _) (appLE_rs p _ hU _)) (congrArg (· * _) (appLE_rs p _ hU _))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem MM_dlt (U : ι → X.Opens) (W : Y.Opens) (k : ι × ι) (O : Z.Opens)
     (hU : O ≤ p ⁻¹ᵁ (U k.1 ⊓ U k.2)) (hW : O ≤ q ⁻¹ᵁ W) (z) :
@@ -227,9 +227,9 @@ theorem MM_dlt (U : ι → X.Opens) (W : Y.Opens) (k : ι × ι) (O : Z.Opens)
   | add x y hx hy => simp only [map_add, hx, hy]; ring
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Both sides reduce to the same expression. Consider the case `tmul a b`. Establish `h3 : U i ≤ (iX ≫ y) ⁻¹ᵁ W` using `le_top.trans (iX.preimage_mono e)`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.lTensor_tmul, MM_tmul, map_mul, TensorProduct.rid_tmul, Pi.smul_apply, Algebra.smul_def, mul_comm]`. Conclude with `congrArg₂ _ ((appLE_appLE s q _ hs' hW hO h3 b).trans (appLE_appLE iX y _ rfl e le_top h3 b).symm) (((appLE_appLE s p _ hs hU hO le_rfl (a i)).trans (id_appLE _ _)).trans (rs_self _ _))`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem section_MM {y : S ⟶ Y} (hy : y ≫ iY = 𝟙 S) {s : X ⟶ Z} (hs : s ≫ p = 𝟙 X)
     (hs' : s ≫ q = iX ≫ y) (U : ι → X.Opens) (W : Y.Opens) (e : ⊤ ≤ y ⁻¹ᵁ W) (i : ι)

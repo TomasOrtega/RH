@@ -11,9 +11,9 @@ section Mul
 variable {Kf : Type} [Field Kf] {n' m : ℕ}
 
 /- English proof (translation)
-Introduce `F hF r hr`. Unfold `Vsp at hF hr ⊢`. Use `tensorLat_mul _ _ _ (fun s f hf g hg => ?_) F hF r hr` and prove the remaining obligations. Simplify using `only [if_pos (lamAt_anti X hX s)] at hf`. Simplify using `only [if_pos (lamAt_anti Y hY s)] at hg`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos (lamAt_anti Z hZ s)]`. Rewrite using `[h s, cbNuOf_add _ _ (lamAt_anti X hX s) (lamAt_anti Y hY s)]`. Conclude with `Formalism.GradedWeylDivisibility.dualWeyl_mul hf hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulV_mem (X Y Z : Fin n' → Fin (m + 1) → ℤ) (hX : IsDominant X) (hY : IsDominant Y) (hZ : IsDominant Z)
     (h : ∀ s, lamAt Z s = lamAt X s + lamAt Y s) :
@@ -38,7 +38,7 @@ def mulV (X Y Z : Fin n' → Fin (m + 1) → ℤ) (hX : IsDominant X) (hY : IsDo
 variable {O : Type} [CommRing O] [Algebra O Kf]
 
 /- English proof (translation)
-Establish `hX : c ^ Ar 1 X = ∏ s, c ^ lamAt X s 0`. Rewrite using `[Ar_one, Formalism.MainNotions.G.LatticeSystems.lb_zpow_sum c hc]`. Rewrite using `[hX, ← prod_bE_smul (fun s => c ^ lamAt X s 0) f]`. Unfold `Hten tensorLat`. Conclude with `Submodule.subset_span ⟨fun s => c ^ lamAt X s 0 • f s, hf, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem prod_mem_Hten (X : Fin n' → Fin (m + 1) → ℤ) (gs : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (c : Kf)
     (hc : c ≠ 0) (f : Fin n' → MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf)
@@ -51,7 +51,7 @@ theorem prod_mem_Hten (X : Fin n' → Fin (m + 1) → ℤ) (gs : Fin n' → Matr
   exact Submodule.subset_span ⟨fun s => c ^ lamAt X s 0 • f s, hf, rfl⟩
 
 /- English proof (translation)
-Establish `hL : ∀ s, IsLattice O (colSpan O (gs s * lb_D _ 1 (1 : Kf)))` using `fun s => famD_lat O gs hgs 1 one_ne_zero s`. Use `tn_Hten_le X hX (fun s => colSpan O (gs s * lb_D _ 1 (1 : Kf))) hL _ ?_` and prove the remaining obligations. Unfold `Hten tensorLat`. Use `Submodule.subset_span ⟨f, fun s => ?_, rfl⟩` and prove the remaining obligations. Simplify `hf s` using `only [one_zpow, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prod_mem_Vsp (X : Fin n' → Fin (m + 1) → ℤ) (hX : IsDominant X)
     (gs : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hgs : ∀ s, IsUnit (gs s).det)
@@ -68,49 +68,39 @@ theorem prod_mem_Vsp (X : Fin n' → Fin (m + 1) → ℤ) (hX : IsDominant X)
 end Mul
 
 /- English proof (translation)
-Use `haveI : IsFractionRing R.O R.Kf := R.std.1.frac_O`. Establish `hw : Irreducible R.w` using `R.std.2.1`. Establish `hH0 : ∀ (a b : Fin (m + 1) → ℤ), Antitone a → Antitone b → ∀ Λ : Submodule R.O (Fin (m + 1) → R.Kf), IsLattice R.O Λ → ∀ F ∈ H0 R.O m a Λ, ∀ G ∈ H0 R.O m b Λ, F * G ∈ H0 R.O m (a + b) Λ`. Introduce `a b ha hb Λ hΛ F hF G hG`. Rewrite using `[hCO R.O R.Kf m a b Λ hΛ ha hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Submodule.subset_span ⟨F, hF, G, hG, rfl⟩`. Unfold `PosOK at hpos`. Use `choose Ls hA hB hC using hpos`. Take `⟨T, hT⟩` from `KP.tensorMap (K := R.Kf) (S := Fin n') (fun s => (blockEmb R.Kf s).toLinearMap ∘ₗ Ls s)`. Establish `hT' : ∀ Q : Fin n' → MvPolynomial (Bool × (Fin (m + 1) × Fin (m + 1))) R.Kf, T (∏ s, rename (fun x => (s, x)) (Q s)) = ∏ s, blockEmb R.Kf s (Ls s (Q s))` using `fun Q => hT Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hLV : ∀ V ∈ Vsp R.Kf lam0, ∀ W ∈ Vsp R.Kf lo', lamPoly T V W ∈ Vsp R.Kf Hp`. Unfold `Vsp`. Use `lamPoly_mem T Ls hT' _ _ _ (fun s v hv t ht => ?_)` and prove the remaining obligations. Simplify using `only [if_pos (lamAt_anti lam0 dlam s)] at hv`. Simplify using `only [if_pos (lamAt_anti lo' dlo' s)] at ht`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_pos (lamAt_anti Hp dHp s)]`. Conclude with `hA s v hv t ht`. Use `⟨mulV H ze Hp dH dze dHp hadd1, mulV H lo lam0 dH dlo dlam hadd2, LinearMap.mk₂ R.Kf (fun V W => (⟨lamPoly T V.1 W.1, hLV _ V.2 _ W.2⟩ : Vsp R.Kf Hp)) (fun a b c => Subtype.ext (lamPoly_add_left T _ _ _)) (fun c a b => Subtype.ext (lamPoly_smul_left T c _ _)) (fun a b c => Subtyp …` and prove the remaining obligations. Introduce `M hM`. Use `⟨fun F hF z hz => ?_, fun F hF z hz => ?_, fun v hv z hz => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hF' : F.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt H s) (M s))` using `hF`. Establish `hz' : z.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt ze s) (M s))` using `hz`. Use `show F.1 * z.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt Hp s) (M s))`. Use `tensorLat_mul _ _ _ (fun s f hf g hg => ?_) _ hF' _ hz'` and prove the remaining obligations. Rewrite using `[hadd1 s]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hH0 _ _ (lamAt_anti H dH s) (lamAt_anti ze dze s) (M s) (hM s) f hf g hg`. Establish `hF' : F.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt H s) (M s))` using `hF`. Establish `hz' : z.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt lo s) (M s))` using `hz`. Use `show F.1 * z.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt lam0 s) (M s))`. Use `tensorLat_mul _ _ _ (fun s f hf g hg => ?_) _ hF' _ hz'` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hadd2 s]`. Conclude with `hH0 _ _ (lamAt_anti H dH s) (lamAt_anti lo dlo s) (M s) (hM s) f hf g hg`. Establish `hv' : v.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt lam0 s) (M s))` using `hv`. Establish `hz' : z.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt lo' s) (M s))` using `hz`. Use `show lamPoly T v.1 z.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt Hp s) (M s))`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `lamPoly_mem T Ls hT' _ _ _ (fun s v' hv'' t ht => hB s (M s) (hM s) v' hv'' t ht) _ hv' _ hz'`. Introduce `gs hgs choose nb z0 sv sv' ka hnb hka hmul hcc using fun s => hC s (gs s) (hgs s)`. Set `e : Fin (∏ s, nb s) ≃ ((s : Fin n') → Fin (nb s))` to `finPiFinEquiv.symm`. Establish `key : ∀ f ∈ Vsp R.Kf H, ∀ a' b : Fin (∏ s, nb s), lamPoly T (f * ∏ s, blockEmb R.Kf s (sv s (e b s))) (∏ s, blockEmb R.Kf s (sv' s (e a' s))) = if a' = b then ((p : R.Kf) ^ (∑ s, ka s (e b s))) • (f * ∏ s, blockEmb R.Kf s (z0 s)) else 0`. Introduce `f hf a' b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Vsp tensorLat at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨G, hG, rfl⟩` from `hx`. Establish `hGs : ∀ s, G s ∈ dualWeyl R.Kf (m + 1) (m + 1) (nuOf (lamAt H s))` using `fun s => by`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hG s`. Simplify using `only [if_pos (lamAt_anti H dH s)] at h`. Conclude with `h`. Rewrite using `[show (∏ s, blockEmb R.Kf s (G s)) * ∏ s, blockEmb R.Kf s (sv s (e b s)) = ∏ s, blockEmb R.Kf s (G s * sv s (e b s)) by`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul]]`. Rewrite using `[lamPoly_prod T Ls hT']`. Distinguish the cases in `hab : a' = b`. Substitute `hab` using the available equality. Establish `hfac : ∀ s, Ls s (blockEmb R.Kf true (G s * sv s (e a' s)) * blockEmb R.Kf false (sv' s (e a' s))) = ((p : R.Kf) ^ ka s (e a' s)) • (z0 s * G s)` using `fun s => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hmul s _ _ _ (hGs s), if_pos rfl]`. Rewrite using `[if_pos rfl]`. Simplify using `only [hfac]`. Rewrite using `[prod_bE_smul, Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun s _ => by rw [map_mul, mul_comm]`. Rewrite using `[if_neg hab]`. Establish `hex : ∃ s, e a' s ≠ e b s`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hcon`. Conclude with `hab (e.injective (funext hcon))`. Take `⟨s0, hs0⟩` from `hex`. Apply `Finset.prod_eq_zero (Finset.mem_univ s0)` to reduce the goal to its premises. Rewrite using `[hmul s0 _ _ _ (hGs s0), if_neg hs0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => simp only [zero_mul, lamPoly_zero_left, smul_zero, ite_self]`. Consider the case `add x y _ _ hx hy`. Rewrite using `[add_mul, lamPoly_add_left, hx, hy]`. Use `split_ifs`. Rewrite using `[add_mul, smul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[add_zero]`. Consider the case `smul c x _ hx`. Rewrite using `[smul_mul_assoc, lamPoly_smul_left, hx]`. Use `split_ifs`. Rewrite using `[smul_mul_assoc, smul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[smul_zero]`. Use `⟨∏ s, nb s, ⟨∏ s, blockEmb R.Kf s (z0 s), prod_mem_Vsp ze dze gs hgs z0 (fun s => (hcc s 1 one_ne_zero).1)⟩, fun b => ⟨∏ s, blockEmb R.Kf s (sv s (e b s)), prod_mem_Vsp lo dlo gs hgs _ (fun s => (hcc s 1 one_ne_zero).2.2.1 (e b s))⟩, fun a' => ⟨∏ s, blockEmb R.Kf s (sv' s (e a' s …` and prove the remaining obligations. Rewrite using `[Nat.cast_prod]`. Conclude with `Finset.prod_congr rfl fun s _ => hnb s`. Introduce `b`.
-
-Conclude with `Finset.sum_le_sum fun s _ => hka s _`. Introduce `a' b F`. Take `⟨f, hf⟩` from `F`. Establish `hk` using `key f hf a' b`. Use `split_ifs at hk ⊢ with hab`.
-
-Conclude with `Subtype.ext hk`. Conclude with `Subtype.ext hk`. Introduce `c hc`. Use `⟨?_, fun b => ?_, fun a' => ?_, fun F hF => ?_⟩` and prove the remaining obligations. Use `show (c ^ Ar 1 ze) • (∏ s, blockEmb R.Kf s (z0 s)) ∈ Hten R.O ze (famD R.O gs c)`.
-
-Conclude with `prod_mem_Hten ze gs c hc z0 (fun s => (hcc s c hc).1)`. Use `show (c ^ Ar 1 lo) • (∏ s, blockEmb R.Kf s (sv s (e b s))) ∈ Hten R.O lo (famD R.O gs c)`. Conclude with `prod_mem_Hten lo gs c hc _ (fun s => (hcc s c hc).2.2.1 (e b s))`. Use `show (c ^ Ar 1 lo') • (∏ s, blockEmb R.Kf s (sv' s (e a' s))) ∈ Hten R.O lo' (famD R.O gs c)`. Conclude with `prod_mem_Hten lo' gs c hc _ (fun s => (hcc s c hc).2.2.2 (e a' s))`.
-
-Use `show F.1 ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt H s) (famD R.O gs c s))`. Establish `hF' : F.1 * ((c ^ Ar 1 ze) • ∏ s, blockEmb R.Kf s (z0 s)) ∈ tensorLat R.O R.Kf (fun s => H0 R.O m (lamAt Hp s) (famD R.O gs c s))` using `hF`. Rewrite `hF'` using `[Ar_one, ← Formalism.MainNotions.G.LatticeSystems.lb_zpow_sum c hc, ← prod_bE_smul, mul_comm]`. Simplify using `only [hadd1] at hF'`. Establish `h2 : F.1 ∈ tensorLat R.Kf R.Kf (fun s => if Antitone (lamAt H s) then dualWeyl R.Kf (m + 1) (m + 1) (nuOf (lamAt H s)) else ⊥)` using `F.2`.
-
-Establish `hfun : (fun s => if Antitone (lamAt H s) then dualWeyl R.Kf (m + 1) (m + 1) (nuOf (lamAt H s)) else ⊥) = fun s => dualWeyl R.Kf (m + 1) (m + 1) (nuOf (lamAt H s))`. Use function extensionality and compare the values at `fun s => if_pos (lamAt_anti H dH s)`. Rewrite `h2` using `[hfun]`. Conclude with `hIso R.O R.Kf R.w hw n' m (fun s => lamAt H s) (fun s => lamAt ze s) (lamAt_anti H dH) (lamAt_anti ze dze) (famD R.O gs c) (fun s => famD_lat R.O gs hgs c hc s) (fun s => c ^ lamAt ze s 0 • z0 s) (fun s => (hcc s c hc).1) (fun s => (hcc s c hc).2.1) F.1 h2 hF'`.
+A detailed English derivation is pending.
 -/
 theorem cloudTen {p n' : ℕ} (R : RS p n') (m : ℕ) (lam0 H Hp ze lo lo' : Fin n' → Fin (m + 1) → ℤ)
     (dlam : IsDominant lam0) (dH : IsDominant H) (dHp : IsDominant Hp) (dze : IsDominant ze) (dlo : IsDominant lo)

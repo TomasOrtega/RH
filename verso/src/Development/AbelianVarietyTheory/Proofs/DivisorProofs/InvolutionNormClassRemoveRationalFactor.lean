@@ -7,15 +7,15 @@ def LUnit (ℓ : ℕ) (r : ℚ) : Prop :=
   ∃ N : ℕ, ¬ ℓ ∣ N ∧ (∃ m : ℤ, (N : ℚ) * r = m) ∧ ∃ m : ℤ, (N : ℚ) * r⁻¹ = m
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, hℓ.not_dvd_one, ⟨1, by simp⟩, ⟨1, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem lunit_one (ℓ : ℕ) (hℓ : ℓ.Prime) : LUnit ℓ 1 :=
   ⟨1, hℓ.not_dvd_one, ⟨1, by simp⟩, ⟨1, by simp⟩⟩
 
 /- English proof (translation)
-Take `⟨N, hN, ⟨m₁, h₁⟩, ⟨m₂, h₂⟩⟩` from `hr`. Take `⟨M, hM, ⟨k₁, g₁⟩, ⟨k₂, g₂⟩⟩` from `hs`. Use `⟨N * M, fun h => (hℓ.dvd_mul.1 h).elim hN hM, ⟨m₁ * k₁, ?_⟩, ⟨m₂ * k₂, ?_⟩⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← h₁, ← g₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Rewrite using `[← h₂, ← g₂, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lunit_mul {ℓ : ℕ} (hℓ : ℓ.Prime) {r s : ℚ} (hr : LUnit ℓ r) (hs : LUnit ℓ s) :
     LUnit ℓ (r * s) := by
@@ -26,16 +26,16 @@ theorem lunit_mul {ℓ : ℕ} (hℓ : ℓ.Prime) {r s : ℚ} (hr : LUnit ℓ r) 
   · push_cast; rw [← h₂, ← g₂, mul_inv]; ring
 
 /- English proof (translation)
-Take `⟨N, hN, h₁, h₂⟩` from `hr`. Conclude with `⟨N, hN, h₂, by simpa using h₁⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lunit_inv {ℓ : ℕ} {r : ℚ} (hr : LUnit ℓ r) : LUnit ℓ r⁻¹ := by
   obtain ⟨N, hN, h₁, h₂⟩ := hr
   exact ⟨N, hN, h₂, by simpa using h₁⟩
 
 /- English proof (translation)
-Take `⟨N, hN, ⟨m₁, h₁⟩, ⟨m₂, h₂⟩⟩` from `hr`. Use `⟨N, hN, ⟨-m₁, ?_⟩, ⟨-m₂, ?_⟩⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← h₁]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Rewrite using `[← h₂, inv_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lunit_neg {ℓ : ℕ} {r : ℚ} (hr : LUnit ℓ r) : LUnit ℓ (-r) := by
   obtain ⟨N, hN, ⟨m₁, h₁⟩, ⟨m₂, h₂⟩⟩ := hr
@@ -44,7 +44,7 @@ theorem lunit_neg {ℓ : ℕ} {r : ℚ} (hr : LUnit ℓ r) : LUnit ℓ (-r) := b
   · push_cast; rw [← h₂, inv_neg]; ring
 
 /- English proof (translation)
-Establish `hn0 : (n : ℚ) ≠ 0`. Introduce and unpack `h; exact hn (by rw [Nat.cast_eq_zero.1 h]; exact dvd_zero _)`. Use `⟨n, hn, ⟨(n : ℤ) * n, by push_cast; ring⟩, ⟨1, by rw [mul_inv_cancel₀ hn0]; simp⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem lunit_nat {ℓ : ℕ} {n : ℕ} (hn : ¬ ℓ ∣ n) : LUnit ℓ (n : ℚ) := by
   have hn0 : (n : ℚ) ≠ 0 := by
@@ -52,7 +52,7 @@ theorem lunit_nat {ℓ : ℕ} {n : ℕ} (hn : ¬ ℓ ∣ n) : LUnit ℓ (n : ℚ
   refine ⟨n, hn, ⟨(n : ℤ) * n, by push_cast; ring⟩, ⟨1, by rw [mul_inv_cancel₀ hn0]; simp⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using lunit_one ℓ hℓ`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `lunit_mul hℓ ih hr`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lunit_pow {ℓ : ℕ} (hℓ : ℓ.Prime) {r : ℚ} (hr : LUnit ℓ r) (k : ℕ) : LUnit ℓ (r ^ k) := by
   induction k with
@@ -60,7 +60,7 @@ theorem lunit_pow {ℓ : ℕ} (hℓ : ℓ.Prime) {r : ℚ} (hr : LUnit ℓ r) (k
   | succ k ih => rw [pow_succ]; exact lunit_mul hℓ ih hr
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg k with ⟨n, rfl | rfl⟩` into its components or cases. Simplify using `using lunit_pow hℓ hr n`. Simplify `lunit_inv (lunit_pow hℓ hr n)` using `[zpow_neg]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lunit_zpow {ℓ : ℕ} (hℓ : ℓ.Prime) {r : ℚ} (hr : LUnit ℓ r) (k : ℤ) : LUnit ℓ (r ^ k) := by
   rcases Int.eq_nat_or_neg k with ⟨n, rfl | rfl⟩
@@ -68,23 +68,23 @@ theorem lunit_zpow {ℓ : ℕ} (hℓ : ℓ.Prime) {r : ℚ} (hr : LUnit ℓ r) (
   · simpa [zpow_neg] using lunit_inv (lunit_pow hℓ hr n)
 
 /- English proof (translation)
-The claim follows from `lunit_nat (fun h => hne ((Nat.prime_dvd_prime_iff_eq hℓ hp).1 h).symm)`.
+A detailed English derivation is pending.
 -/
 theorem lunit_prime {ℓ p : ℕ} (hℓ : ℓ.Prime) (hp : p.Prime) (hne : p ≠ ℓ) : LUnit ℓ (p : ℚ) :=
   lunit_nat (fun h => hne ((Nat.prime_dvd_prime_iff_eq hℓ hp).1 h).symm)
 
 /- English proof (translation)
-Establish `hnum : c.num.natAbs ≠ 0` using `by simpa using Rat.num_ne_zero.2 hc`. Take `⟨e₁, n, hn, hne⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hnum ℓ hℓ.ne_one`. Take `⟨e₂, m, hm, hme⟩` from `Nat.exists_eq_pow_mul_and_not_dvd c.den_nz ℓ hℓ.ne_one`. Establish `hℓ0 : (ℓ : ℚ) ≠ 0` using `by exact_mod_cast hℓ.ne_zero`. Establish `hm0 : (m : ℚ) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `h; exact hm (by rw [Nat.cast_eq_zero.1 h]; exact dvd_zero _)`. Use `⟨(e₁ : ℤ) - e₂, ?_⟩` and prove the remaining obligations. Establish `hden : (c.den : ℚ) = (ℓ : ℚ) ^ e₂ * m` using `by rw [hme]; push_cast; ring`. Establish `key : c * ((ℓ : ℚ) ^ e₂ * m) = (c.num : ℚ)` using `by rw [← hden]; exact Rat.mul_den_eq_num c`. Rewrite using `[zpow_sub₀ hℓ0, zpow_natCast, zpow_natCast]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `Int.natAbs_eq c.num with h | h` into its components or cases. Establish `hv : c / ((ℓ : ℚ) ^ e₁ / (ℓ : ℚ) ^ e₂) = (n : ℚ) * (m : ℚ)⁻¹`. Establish `: (c.num : ℚ) = (ℓ : ℚ) ^ e₁ * n` using `by rw [h, hne]; push_cast; ring`. Rewrite `key` using `[this]`. Establish `hp : (ℓ : ℚ) ^ e₁ ≠ 0` using `pow_ne_zero _ hℓ0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Clear denominators, using `at key ⊢` for the nonvanishing conditions. Take the linear combination `key`. Rewrite using `[hv]`. Conclude with `lunit_mul hℓ (lunit_nat hn) (lunit_inv (lunit_nat hm))`. Establish `hv : c / ((ℓ : ℚ) ^ e₁ / (ℓ : ℚ) ^ e₂) = -((n : ℚ) * (m : ℚ)⁻¹)`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (c.num : ℚ) = -((ℓ : ℚ) ^ e₁ * n)` using `by rw [h, hne]; push_cast; ring`. Rewrite `key` using `[this]`. Establish `hp : (ℓ : ℚ) ^ e₁ ≠ 0` using `pow_ne_zero _ hℓ0`. Clear denominators, using `at key ⊢` for the nonvanishing conditions. Take the linear combination `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Conclude with `lunit_neg (lunit_mul hℓ (lunit_nat hn) (lunit_inv (lunit_nat hm)))`.
+A detailed English derivation is pending.
 -/
 theorem lunit_decomp {ℓ : ℕ} (hℓ : ℓ.Prime) {c : ℚ} (hc : c ≠ 0) :
     ∃ k : ℤ, LUnit ℓ (c / (ℓ : ℚ) ^ k) := by
@@ -115,13 +115,11 @@ theorem lunit_decomp {ℓ : ℕ} (hℓ : ℓ.Prime) {c : ℚ} (hc : c ≠ 0) :
     rw [hv]; exact lunit_neg (lunit_mul hℓ (lunit_nat hn) (lunit_inv (lunit_nat hm)))
 
 /- English proof (translation)
-Take `⟨N, hN, ⟨m₁, h₁⟩, ⟨m₂, h₂⟩⟩` from `hr`. Use `⟨d * N, fun h => (hℓ.dvd_mul.1 h).elim hd hN, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((d * N : ℕ) : E) * (algebraMap ℚ E r * x) = (m₁ : E) * ((d : E) * x)`. Establish `: (m₁ : E) = algebraMap ℚ E ((N : ℚ) * r)` using `by rw [h₁]; simp`. Rewrite using `[this, map_mul, map_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(isIntegral_intCast m₁).mul hx`. Establish `e : ((d * N : ℕ) : E) * (algebraMap ℚ E r⁻¹ * y) = (m₂ : E) * ((d : E) * y)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (m₂ : E) = algebraMap ℚ E ((N : ℚ) * r⁻¹)` using `by rw [h₂]; simp`. Rewrite using `[this, map_mul, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `(isIntegral_intCast m₂).mul hy`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lunit_integral {E : Type} [CommRing E] [Algebra ℚ E] {ℓ : ℕ} (hℓ : ℓ.Prime) {r : ℚ}
     (hr : LUnit ℓ r) {d : ℕ} (hd : ¬ ℓ ∣ d) {x y : E} (hx : IsIntegral ℤ ((d : E) * x))
@@ -140,11 +138,11 @@ theorem lunit_integral {E : Type} [CommRing E] [Algebra ℚ E] {ℓ : ℕ} (hℓ
     rw [e]; exact (isIntegral_intCast m₂).mul hy
 
 /- English proof (translation)
-Establish `hz : IsAlgebraic ℤ z` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic z)`. Take `⟨y, hy, hint⟩` from `hz.exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_ne_zero.2 hy, ?_⟩` and prove the remaining obligations. Rewrite `hint` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq y with h | h` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `congrArg (Int.cast : ℤ → E) h` as an intermediate fact. Rewrite `this` using `[Int.cast_natCast]`. Rewrite `hint` using `[this]`. Then use the resulting hypothesis. Use `congrArg (Int.cast : ℤ → E) h` as an intermediate fact. Rewrite `this` using `[Int.cast_neg, Int.cast_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hint` using `[this, neg_mul]`. Simplify using `using hint.neg`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_nat_mul_integral {E : Type} [CommRing E] [Algebra ℚ E] [FiniteDimensional ℚ E]
     (z : E) : ∃ D : ℕ, D ≠ 0 ∧ IsIntegral ℤ ((D : E) * z) := by
@@ -163,33 +161,29 @@ theorem exists_nat_mul_integral {E : Type} [CommRing E] [Algebra ℚ E] [FiniteD
     simpa using hint.neg
 
 /- English proof (translation)
-Introduce `E _ _ _ τ S A hA a ha hτa hloc`. Take `⟨u, rfl⟩` from `ha`. Take `⟨D₁, hD₁, hi₁⟩` from `exists_nat_mul_integral (u : E)`. Take `⟨D₂, hD₂, hi₂⟩` from `exists_nat_mul_integral ((u⁻¹ : Eˣ) : E)`. Establish `hD0 : D₁ * D₂ ≠ 0` using `mul_ne_zero hD₁ hD₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDu : IsIntegral ℤ (((D₁ * D₂ : ℕ) : E) * u)`. Establish `e : (((D₁ * D₂ : ℕ) : E) * u) = (D₂ : E) * ((D₁ : E) * u)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `(isIntegral_natCast D₂).mul hi₁`. Establish `hDu' : IsIntegral ℤ (((D₁ * D₂ : ℕ) : E) * ((u⁻¹ : Eˣ) : E))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((D₁ * D₂ : ℕ) : E) * ((u⁻¹ : Eˣ) : E)) = (D₁ : E) * ((D₂ : E) * ((u⁻¹ : Eˣ) : E))` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `(isIntegral_natCast D₁).mul hi₂`. Use `choose! c b x y hc hb h₁ h₂ d hd hix hiy using hloc`. Establish `hk : ∀ ℓ, ℓ.Prime → ℓ ∉ S → ∃ k : ℤ, LUnit ℓ (c ℓ / (ℓ : ℚ) ^ k)` using `fun ℓ hℓ hS => lunit_decomp hℓ (hc ℓ hℓ hS)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose! k hk using hk`. Set `T : Finset ℕ` to `(D₁ * D₂).primeFactors.filter (· ∉ S)`. Establish `hTmem : ∀ p, p ∈ T ↔ p.Prime ∧ p ∣ D₁ * D₂ ∧ p ∉ S`. Introduce `p`. Simplify using `only [T, Finset.mem_filter, Nat.mem_primeFactors]`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-The claim follows by propositional logic. Set `q : ℚ` to `∏ p ∈ T, (p : ℚ) ^ (k p)`. Establish `hq0 : q ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun p hp => zpow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `((hTmem p).1 hp).1.ne_zero` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hqU : ∀ ℓ, ℓ.Prime → ℓ ∉ T → LUnit ℓ q`. Introduce `ℓ hℓ hT`. Use `Finset.prod_induction _ (LUnit ℓ) (fun _ _ => lunit_mul hℓ) (lunit_one ℓ hℓ) ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `lunit_zpow hℓ (lunit_prime hℓ ((hTmem p).1 hp).1 (fun h => hT (h ▸ hp))) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcqU : ∀ ℓ ∈ T, LUnit ℓ (c ℓ / q)`. Introduce `ℓ hℓT`. Take `⟨hℓ, -, hS⟩` from `(hTmem ℓ).1 hℓT`. Establish `e : c ℓ / q = c ℓ / (ℓ : ℚ) ^ (k ℓ) * (∏ p ∈ T.erase ℓ, (p : ℚ) ^ (k p))⁻¹`. Simplify using `only [q]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Finset.mul_prod_erase T (fun p => (p : ℚ) ^ (k p)) hℓT, div_mul_eq_div_div, div_eq_mul_inv]`. Rewrite using `[e]`. Use `lunit_mul hℓ (hk ℓ hℓ hS) (lunit_inv ?_)` and prove the remaining obligations. Use `Finset.prod_induction _ (LUnit ℓ) (fun _ _ => lunit_mul hℓ) (lunit_one ℓ hℓ) ?_` and prove the remaining obligations. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hpl, hpT⟩` from `Finset.mem_erase.1 hp`. Conclude with `lunit_zpow hℓ (lunit_prime hℓ ((hTmem p).1 hpT).1 hpl) _`. Establish `hq1 : algebraMap ℚ E q * algebraMap ℚ E q⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hq0, map_one]`. Establish `ha' : IsUnit (algebraMap ℚ E q⁻¹ * (u : E))` using `((isUnit_iff_ne_zero.2 (inv_ne_zero hq0)).map (algebraMap ℚ E)).mul u.isUnit`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hτ' : τ (algebraMap ℚ E q⁻¹ * (u : E)) = algebraMap ℚ E q⁻¹ * (u : E)`. Rewrite using `[map_mul, AlgEquiv.commutes, hτa]`. Take `⟨a₀, ha₀, e, he⟩` from `hA _ ha' hτ' (by`. Introduce `ℓ hℓ hS`. Distinguish the cases in `hT : ℓ ∈ T`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d', hd', hx', hy'⟩` from `lunit_integral hℓ (hcqU ℓ hT) (hd ℓ hℓ hS) (hix ℓ hℓ hS) (hiy ℓ hℓ hS)`. Use `⟨b ℓ, _, _, hb ℓ hℓ hS, ?_, ?_, d', hd', hx', hy'⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, map_mul, h₁ ℓ hℓ hS]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc1 : algebraMap ℚ E (c ℓ) * algebraMap ℚ E (c ℓ)⁻¹ = 1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ (hc ℓ hℓ hS), map_one]`. Rewrite using `[inv_div, div_eq_mul_inv, map_mul]`. Take the linear combination `(-(b ℓ * τ (b ℓ))) * hc1 + algebraMap ℚ E (c ℓ)⁻¹ * h₂ ℓ hℓ hS - (algebraMap ℚ E (c ℓ)⁻¹ * y ℓ * (u : E)) * hq1`. Establish `hD : ¬ ℓ ∣ D₁ * D₂` using `fun h => hT ((hTmem ℓ).2 ⟨hℓ, h, hS⟩)`. Take `⟨d', hd', hx', hy'⟩` from `lunit_integral hℓ (lunit_inv (hqU ℓ hℓ hT)) hD hDu hDu'`.
-
-Use `⟨1, _, _, isUnit_one, ?_, ?_, d', hd', hx', hy'⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[inv_inv, map_one, mul_one]`. Take the linear combination `(-((u : E) * ((u⁻¹ : Eˣ) : E))) * hq1 - u.mul_inv)`. Use `⟨a₀, ha₀, Units.mk0 q hq0, e, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← he, Units.val_mk0, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hq0, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratred : ∀ (E : Type) [CommRing E] [Algebra ℚ E] [FiniteDimensional ℚ E] (τ : E ≃ₐ[ℚ] E) (S : Finset ℕ) (A : Finset E),
     (∀ a : E, IsUnit a → τ a = a →

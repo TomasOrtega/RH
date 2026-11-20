@@ -13,7 +13,7 @@ namespace GlobalTheory.Mum.Conj
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Over.comp_left, twK_left, twK_left, Over.id_left, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: τ.toRingHom.comp σ.toRingHom = RingHom.id _` using `congrArg AlgHom.toRingHom h`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twK_comp_twK (σ τ : Kb R →ₐ[FractionRing R] Kb R) (h : τ.comp σ = AlgHom.id _ _) :
     twK τ ≫ twK σ = 𝟙 _ := by
@@ -25,9 +25,9 @@ theorem twK_comp_twK (σ τ : Kb R →ₐ[FractionRing R] Kb R) (h : τ.comp σ 
   exact Spec.map_id _
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left]`. Establish `: mTw A τ ≫ mTw A σ = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mTw_fst, ← Category.assoc, mTw_fst, Category.assoc, twK_comp_twK σ τ h, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.assoc, mTw_snd, mTw_snd, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mTw_comp_mTw_left (A : PolAV (Sp (FractionRing R))) (σ τ : Kb R →ₐ[FractionRing R] Kb R)
     (h : τ.comp σ = AlgHom.id _ _) : (mTw A τ).left ≫ (mTw A σ).left = 𝟙 _ := by
@@ -40,7 +40,7 @@ theorem mTw_comp_mTw_left (A : PolAV (Sp (FractionRing R))) (σ τ : Kb R →ₐ
   rw [this]; rfl
 
 /- English proof (translation)
-Use `GlobalTheory.FieldBaseChange.sec_ext' A.isLB fun y J hJ => ?_` and prove the remaining obligations. Use `(GlobalTheory.FieldBaseChange.sval_pullOver _ _ _ _ hJ).trans ((GlobalTheory.FieldBaseChange.sval_pullOver _ _ _ _ hJ).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, mTw_comp_mTw_left A σ τ h, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem secTw_secTw (A : PolAV (Sp (FractionRing R))) (N : ℕ) (σ τ : Kb R →ₐ[FractionRing R] Kb R)
     (h : τ.comp σ = AlgHom.id _ _) (t : SecK A.L (snd (TFK (R := R) (Kb R)) A.A).left N) :
@@ -51,9 +51,9 @@ theorem secTw_secTw (A : PolAV (Sp (FractionRing R))) (N : ℕ) (σ τ : Kb R �
   rw [Category.assoc, mTw_comp_mTw_left A σ τ h, Category.comp_id]
 
 /- English proof (translation)
-Establish `hσ : Function.Bijective σ` using `Algebra.IsAlgebraic.algHom_bijective σ`. Set `e` to `AlgEquiv.ofBijective σ hσ`. Set `τ : Kb R →ₐ[FractionRing R] Kb R` to `e.symm.toAlgHom`. Establish `h1 : τ.comp σ = AlgHom.id _ _`. Use extensionality with `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `e.symm_apply_apply x`. Establish `h2 : σ.comp τ = AlgHom.id _ _`. Use extensionality with `x`. Conclude with `e.apply_symm_apply x`. Conclude with `⟨Function.LeftInverse.injective (g := secTw A N τ) (secTw_secTw A N σ τ h1), Function.RightInverse.surjective (g := secTw A N τ) (secTw_secTw A N τ σ h2)⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secTw_bijective (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ)
     (σ : Kb R →ₐ[FractionRing R] Kb R) : Function.Bijective (secTw A N σ) := by

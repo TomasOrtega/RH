@@ -12,21 +12,19 @@ noncomputable section
 namespace GlobalTheory.DblHerm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n r s W hW X₂ hJ hL hθ`. Establish `hθ' : X₂.θ = fun w => blkMat finSumFinEquiv (W.θ w) (-W.θ w)` using `funext hθ`. Rewrite using `[hJ, hL, hθ']`. Use `haveI : Submodule.IsLattice E W.L := hW.lat`. Establish `hex : ∀ v : B.P, ∃ β, IsSplitBasis (B.τ v) (sumLat finSumFinEquiv W.L W.L) β` using `fun v => exists_isSplitBasis (B.τ v) _ hB.cm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun v => if h : v ∈ B.P then (hex ⟨v, h⟩).choose else 1, ⟨?_, ?_, inferInstance, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `i j show σ (dblGram finSumFinEquiv W.J j i) = dblGram finSumFinEquiv W.J i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [dblGram, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, map_zero, map_neg, hW.herm]`. Introduce `w show HasSig ((dblGram finSumFinEquiv W.J).map (B.emb w).1) (r + s) (s + r)`. Rewrite using `[dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]`. Conclude with `hasSig_dbl _ (hW.sig w)`. Introduce `y show y ∈ sumLat finSumFinEquiv W.L W.L ↔ ∀ x ∈ sumLat finSumFinEquiv W.L W.L, IsIntegral ℤ (form σ (dblGram finSumFinEquiv W.J) y x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨fun hy x hx => ?_, fun H => ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[← pairVec_eta finSumFinEquiv y]`. Rewrite `hx`, the goal using `[← pairVec_eta finSumFinEquiv x]`. Rewrite `hy`, `hx` using `[pairVec_mem_sumLat]`. Rewrite using `[form_dblGram]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `((hW.dual _).1 hy.1 _ hx.1).sub ((hW.dual _).1 hy.2 _ hx.2)`. Rewrite using `[← pairVec_eta finSumFinEquiv y, pairVec_mem_sumLat]`. Prove the components needed by the constructor for the conclusion. Use `(hW.dual _).2 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `H (pairVec finSumFinEquiv x 0) ((pairVec_mem_sumLat _).2 ⟨hx, zero_mem _⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[← pairVec_eta finSumFinEquiv y, form_dblGram, form_zero_right, sub_zero]`. Conclude with `h1`. Use `(hW.dual _).2 fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `H (pairVec finSumFinEquiv 0 x) ((pairVec_mem_sumLat _).2 ⟨zero_mem _, hx⟩)`. Rewrite `h1` using `[← pairVec_eta finSumFinEquiv y, form_dblGram, form_zero_right, zero_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h1.neg`. Introduce `w show IsCartan ((dblGram finSumFinEquiv W.J).map (B.emb w).1) (blkMat finSumFinEquiv (W.θ w) (-W.θ w))`. Rewrite using `[dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]`. Conclude with `GlobalTheory.DblUnfoldCont.isCartan_dbl _ _ (hW.cartan w)`. Introduce `v show IsSplitBasis (B.τ v) (sumLat finSumFinEquiv W.L W.L) (if h : (v : Pl F) ∈ B.P then (hex ⟨v, h⟩).choose else 1)`.
-
-Rewrite using `[dif_pos v.2]`. Conclude with `(hex v).choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isHerm_dbl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ (n r s' : ℕ) (X : Spc F E n), X.IsHerm σ B r s' →
     ∀ X₂ : Spc F E (n + n), X₂.J = dblGram finSumFinEquiv X.J → X₂.L = sumLat finSumFinEquiv X.L X.L →

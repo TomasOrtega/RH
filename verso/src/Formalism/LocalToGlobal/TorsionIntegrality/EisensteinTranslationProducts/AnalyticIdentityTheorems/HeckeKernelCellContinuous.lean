@@ -8,7 +8,7 @@ namespace Formalism.L2.Th1.F
 namespace Hk2
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma rpow_bd {κ x t : ℝ} (hκ : 0 < κ) (hκ1 : κ ≤ 1) (hx : κ ≤ x) (ht0 : 0 ≤ t) (ht2 : t ≤ 2) :
     x ^ (-t) ≤ (κ ^ 2)⁻¹ := by
@@ -17,7 +17,7 @@ lemma rpow_bd {κ x t : ℝ} (hκ : 0 < κ) (hκ1 : κ ≤ 1) (hx : κ ≤ x) (h
     _ = (κ ^ 2)⁻¹ := by rw [Real.rpow_neg hκ.le, Real.rpow_two]
 
 /- English proof (translation)
-The claim follows from `|a ^ (-t) - b ^ (-t)| ≤ 2 * (κ ^ 2)⁻¹ * ρ⁻¹ * |a - b| := by have hρ0 : 0 < ρ := lt_of_lt_of_le hκ hρ have key := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (𝕜 := ℝ) (f := fun x : ℝ => x ^ (-t)) (f' := fun x : ℝ => (-t) * x ^ (-t - 1)) (s := Set.Ici ρ) (C := 2 * (κ ^ 2)⁻¹ …`.
+A detailed English derivation is pending.
 -/
 lemma rpow_diff {κ ρ a b t : ℝ} (hκ : 0 < κ) (hκ1 : κ ≤ 1) (hρ : κ ≤ ρ) (ha : ρ ≤ a) (hb : ρ ≤ b)
     (ht0 : 0 ≤ t) (ht2 : t ≤ 2) :
@@ -42,13 +42,13 @@ lemma rpow_diff {κ ρ a b t : ℝ} (hκ : 0 < κ) (hκ1 : κ ≤ 1) (hρ : κ �
   simpa [Real.norm_eq_abs] using key
 
 /- English proof (translation)
-Establish `h0 : w ≠ 0` using `norm_pos_iff.mp (lt_of_lt_of_le hρ hw)`. Establish `h0' : w' ≠ 0` using `norm_pos_iff.mp (lt_of_lt_of_le hρ hw')`. Establish `e : (w ^ 2)⁻¹ - (w' ^ 2)⁻¹ = (w' - w) * (w⁻¹ * (w' ^ 2)⁻¹ + (w ^ 2)⁻¹ * w'⁻¹)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `i1 : ‖w‖⁻¹ ≤ ρ⁻¹` using `inv_anti₀ hρ hw`. Establish `i2 : ‖w'‖⁻¹ ≤ ρ⁻¹` using `inv_anti₀ hρ hw'`. Establish `p1 : 0 ≤ ‖w‖⁻¹` using `by positivity`. Establish `p2 : 0 ≤ ‖w'‖⁻¹` using `by positivity`. Establish `b1 : ‖w⁻¹ * (w' ^ 2)⁻¹‖ ≤ (ρ ^ 3)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_inv, norm_inv, norm_pow, ← inv_pow, ← inv_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `b2 : ‖(w ^ 2)⁻¹ * w'⁻¹‖ ≤ (ρ ^ 3)⁻¹`. Rewrite using `[norm_mul, norm_inv, norm_inv, norm_pow, ← inv_pow, ← inv_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e, norm_mul, norm_sub_rev w' w, mul_comm]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma inv_sq_diff {ρ : ℝ} {w w' : ℂ} (hρ : 0 < ρ) (hw : ρ ≤ ‖w‖) (hw' : ρ ≤ ‖w'‖) :
     ‖(w ^ 2)⁻¹ - (w' ^ 2)⁻¹‖ ≤ 2 * (ρ ^ 3)⁻¹ * ‖w - w'‖ := by
@@ -76,17 +76,15 @@ lemma inv_sq_diff {ρ : ℝ} {w w' : ℂ} (hρ : 0 < ρ) (hw : ρ ≤ ‖w‖) (
     _ = 2 * (ρ ^ 3)⁻¹ := by ring
 
 /- English proof (translation)
-Establish `hρ0 : 0 < ρ` using `lt_of_lt_of_le hκ hρ`. Establish `e : hk s w - hk s w' = ((w ^ 2)⁻¹ - (w' ^ 2)⁻¹) * ((‖w‖ ^ (-(2 * s)) : ℝ) : ℂ) + (w' ^ 2)⁻¹ * ((‖w‖ ^ (-(2 * s)) - ‖w'‖ ^ (-(2 * s)) : ℝ) : ℂ)`. Unfold `hk`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `a1 : ‖(w ^ 2)⁻¹ - (w' ^ 2)⁻¹‖ ≤ 2 * (ρ ^ 3)⁻¹`. Use `(inv_sq_diff hρ0 hw hw').trans ?_` and prove the remaining obligations. Establish `: 0 ≤ 2 * (ρ ^ 3)⁻¹` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `a2 : ‖((‖w‖ ^ (-(2 * s)) : ℝ) : ℂ)‖ ≤ (κ ^ 2)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (norm_nonneg _) _)]`. Conclude with `rpow_bd hκ hκ1 (hρ.trans hw) (by linarith) (by linarith)`. Establish `a3 : ‖(w' ^ 2)⁻¹‖ ≤ (ρ ^ 2)⁻¹`. Rewrite using `[norm_inv, norm_pow]`. Conclude with `inv_anti₀ (by positivity) (by gcongr)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a4 : ‖((‖w‖ ^ (-(2 * s)) - ‖w'‖ ^ (-(2 * s)) : ℝ) : ℂ)‖ ≤ 2 * (κ ^ 2)⁻¹ * ρ⁻¹`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Use `(rpow_diff hκ hκ1 hρ hw hw' (by linarith) (by linarith)).trans ?_` and prove the remaining obligations. Establish `h1 : |‖w‖ - ‖w'‖| ≤ 1` using `(abs_norm_sub_norm_le w w').trans hd`. Establish `: 0 ≤ 2 * (κ ^ 2)⁻¹ * ρ⁻¹` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul]`. Use `gcongr`.
-
-Use `_ = 4 * (κ ^ 2)⁻¹ * (ρ ^ 3)⁻¹ := by`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma hk_diff {κ ρ s : ℝ} {w w' : ℂ} (hκ : 0 < κ) (hκ1 : κ ≤ 1) (hρ : κ ≤ ρ) (hw : ρ ≤ ‖w‖)
     (hw' : ρ ≤ ‖w'‖) (hd : ‖w - w'‖ ≤ 1) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) :
@@ -126,7 +124,7 @@ lemma hk_diff {κ ρ s : ℝ} {w w' : ℂ} (hκ : 0 < κ) (hκ1 : κ ≤ 1) (hρ
 def kap (τ : ℂ) : ℝ := |τ.im| / (|τ.im| + 2 + |τ.re|)
 
 /- English proof (translation)
-Establish `: 0 < |τ.im|` using `abs_pos.mpr hτ`. Unfold `kap`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma kap_pos {τ : ℂ} (hτ : τ.im ≠ 0) : 0 < kap τ := by
   have : 0 < |τ.im| := abs_pos.mpr hτ
@@ -134,7 +132,7 @@ lemma kap_pos {τ : ℂ} (hτ : τ.im ≠ 0) : 0 < kap τ := by
   positivity
 
 /- English proof (translation)
-Unfold `kap`. Establish `h1 : 0 ≤ |τ.im|` using `abs_nonneg _`. Establish `h2 : 0 ≤ |τ.re|` using `abs_nonneg _`. Rewrite using `[div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma kap_le_one (τ : ℂ) : kap τ ≤ 1 := by
   unfold kap
@@ -144,15 +142,15 @@ lemma kap_le_one (τ : ℂ) : kap τ ≤ 1 := by
   linarith
 
 /- English proof (translation)
-Use `set W := ‖(m : ℂ) + (x : ℂ) + (n : ℂ) * τ‖ with hW`. Establish `hY : 0 ≤ |τ.im|` using `abs_nonneg _`. Establish `hA : 0 ≤ |τ.re|` using `abs_nonneg _`. Establish `hN : (1 : ℝ) ≤ |(n : ℝ)|`. Establish `: (1 : ℤ) ≤ |n|` using `Int.one_le_abs hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `h1 : |(n : ℝ)| * |τ.im| ≤ W`. Use `Complex.abs_im_le_norm ((m : ℂ) + (x : ℂ) + (n : ℂ) * τ)` as an intermediate fact. Simplify `this` using `[abs_mul]`. Establish `h2 : |(m : ℝ)| ≤ W + |(n : ℝ)| + |(n : ℝ)| * |τ.re|`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Complex.abs_re_le_norm ((m : ℂ) + (x : ℂ) + (n : ℂ) * τ)`. Establish `e : ((m : ℂ) + (x : ℂ) + (n : ℂ) * τ).re = (m : ℝ) + x + (n : ℝ) * τ.re` using `by simp`. Rewrite `h` using `[e]`. Establish `e2 : (m : ℝ) = ((m : ℝ) + x + (n : ℝ) * τ.re) - x - (n : ℝ) * τ.re` using `by ring`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `abs_sub _ _`. Use `_ ≤ W + |(n : ℝ)| + |(n : ℝ)| * |τ.re| := by`. Rewrite using `[abs_mul, abs_of_nonneg hx0]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Unfold `kap`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by linarith)]`. Establish `k1` using `mul_le_mul_of_nonneg_left h2 hY`. Establish `k2` using `mul_le_mul_of_nonneg_right h1 hA`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 lemma lower {τ : ℂ} (m n : ℤ) (hn : n ≠ 0) {x : ℝ} (hx0 : 0 ≤ x) (hx1 : x ≤ 1) :
     kap τ * (|(m : ℝ)| + |(n : ℝ)|) ≤ ‖(m : ℂ) + (x : ℂ) + (n : ℂ) * τ‖ := by
@@ -186,15 +184,15 @@ lemma lower {τ : ℂ} (m n : ℤ) (hn : n ≠ 0) {x : ℝ} (hx0 : 0 ≤ x) (hx1
   nlinarith
 
 /- English proof (translation)
-Establish `h` using `EisensteinSeries.summable_one_div_norm_rpow (k := 3) (by norm_num)`. Rewrite `h` using `[← (finTwoArrowEquiv ℤ).symm.summable_iff]`. Use `Summable.of_nonneg_of_le (fun p => by positivity) (fun p => ?_) h` and prove the remaining obligations. Simplify using `only [Function.comp, finTwoArrowEquiv_symm_apply]`. Establish `hN : ‖![p.1, p.2]‖ = max |(p.1 : ℝ)| |(p.2 : ℝ)|`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[EisensteinSeries.norm_eq_max_natAbs]`. Simplify using `[Nat.cast_natAbs]`. Rewrite using `[hN]`. Establish `q1 : 0 ≤ |(p.1 : ℝ)|` using `abs_nonneg _`. Establish `q2 : 0 ≤ |(p.2 : ℝ)|` using `abs_nonneg _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `eq_or_lt_of_le (le_max_of_le_left q1 : 0 ≤ max |(p.1 : ℝ)| |(p.2 : ℝ)|) with h0 | h0` into its components or cases. Establish `z1 : |(p.1 : ℝ)| = 0` using `le_antisymm (h0 ▸ le_max_left _ _) q1`. Establish `z2 : |(p.2 : ℝ)| = 0` using `le_antisymm (h0 ▸ le_max_right _ _) q2`. Rewrite using `[z1, z2]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.rpow_neg h0.le]`. Establish `: (max |(p.1 : ℝ)| |(p.2 : ℝ)|) ^ (3 : ℝ) = (max |(p.1 : ℝ)| |(p.2 : ℝ)|) ^ 3`. Rewrite using `[← Real.rpow_natCast]`. Evaluate the numerical expressions. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Use `gcongr`. Conclude with `max_le (by linarith) (by linarith)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma summ : Summable (fun p : ℤ × ℤ => ((|(p.1 : ℝ)| + |(p.2 : ℝ)|) ^ 3)⁻¹) := by
   have h := EisensteinSeries.summable_one_div_norm_rpow (k := 3) (by norm_num)
@@ -222,9 +220,7 @@ lemma summ : Summable (fun p : ℤ × ℤ => ((|(p.1 : ℝ)| + |(p.2 : ℝ)|) ^ 
     exact max_le (by linarith) (by linarith)
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Break down `this with h | h` into its components or cases. Conclude with `hn h`.
-
-Conclude with `hτ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma pt_ne_zero {τ : ℂ} (hτ : τ.im ≠ 0) {n : ℤ} (hn : n ≠ 0) (m : ℤ) (x : ℝ) :
     (m : ℂ) + (x : ℂ) + (n : ℂ) * τ ≠ 0 := by
@@ -236,9 +232,9 @@ lemma pt_ne_zero {τ : ℂ} (hτ : τ.im ≠ 0) {n : ℤ} (hn : n ≠ 0) (m : �
   · exact hτ h
 
 /- English proof (translation)
-Unfold `hk Function.uncurry`. Establish `c : Continuous fun q : ℝ × ℝ => (m : ℂ) + ((q.2 : ℝ) : ℂ) + (n : ℂ) * τ` using `by fun_prop`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `(c.pow 2).inv₀ (fun q => pow_ne_zero 2 (pt_ne_zero hτ hn m q.2))`. Use `Complex.continuous_ofReal.comp ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.rpow c.norm (by fun_prop) (fun q => Or.inl ?_)` and prove the remaining obligations. Conclude with `norm_ne_zero_iff.mpr (pt_ne_zero hτ hn m q.2)`.
+A detailed English derivation is pending.
 -/
 lemma hk_cont {τ : ℂ} (hτ : τ.im ≠ 0) {n : ℤ} (hn : n ≠ 0) (m : ℤ) :
     Continuous (Function.uncurry fun (s x : ℝ) => hk s ((m : ℂ) + (x : ℂ) + (n : ℂ) * τ)) := by
@@ -251,7 +247,7 @@ lemma hk_cont {τ : ℂ} (hτ : τ.im ≠ 0) {n : ℤ} (hn : n ≠ 0) (m : ℤ) 
     exact norm_ne_zero_iff.mpr (pt_ne_zero hτ hn m q.2)
 
 /- English proof (translation)
-Unfold `hkCell`. Use `Continuous.sub ?_ ?_` and prove the remaining obligations. Establish `h` using `(hk_cont hτ hp p.1).comp (Continuous.prodMk continuous_id (continuous_const (y := (0 : ℝ))))`. Simplify `h` using `[Function.uncurry, Function.comp_def]`. Conclude with `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' (hk_cont hτ hp p.1) 0 1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma cell_cont {τ : ℂ} (hτ : τ.im ≠ 0) {p : ℤ × ℤ} (hp : p.2 ≠ 0) :
     Continuous fun s : ℝ => hkCell τ s p := by
@@ -262,15 +258,15 @@ lemma cell_cont {τ : ℂ} (hτ : τ.im ≠ 0) {p : ℤ × ℤ} (hp : p.2 ≠ 0)
   · exact intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' (hk_cont hτ hp p.1) 0 1
 
 /- English proof (translation)
-Establish `hκ` using `kap_pos hτ`. Establish `hκ1` using `kap_le_one τ`. Establish `hN : (1 : ℝ) ≤ |(p.2 : ℝ)|`. Establish `: (1 : ℤ) ≤ |p.2|` using `Int.one_le_abs hp`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : kap τ ≤ kap τ * (|(p.1 : ℝ)| + |(p.2 : ℝ)|)`. Establish `: 0 ≤ |(p.1 : ℝ)|` using `abs_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Establish `cx : Continuous fun x : ℝ => hk s ((p.1 : ℂ) + (x : ℂ) + (p.2 : ℂ) * τ)`. Establish `h` using `(hk_cont hτ hp p.1).comp (Continuous.prodMk (continuous_const (y := s)) continuous_id)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Function.uncurry, Function.comp_def]`. Establish `e : hkCell τ s p = ∫ x in (0 : ℝ)..1, (hk s ((p.1 : ℂ) + (p.2 : ℂ) * τ) - hk s ((p.1 : ℂ) + (x : ℂ) + (p.2 : ℂ) * τ))`. Rewrite using `[intervalIntegral.integral_sub (by simp) (cx.intervalIntegrable 0 1)]`. Simplify using `[hkCell]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `intervalIntegral.norm_integral_le_of_norm_le_const (a := 0) (b := 1) (C := 4 * (kap τ ^ 2)⁻¹ * ((kap τ * (|(p.1 : ℝ)| + |(p.2 : ℝ)|)) ^ 3)⁻¹) (f := fun x : ℝ => hk s ((p.1 : ℂ) + (p.2 : ℂ) * τ) - hk s ((p.1 : ℂ) + (x : ℂ) + (p.2 : ℂ) * τ)) (fun x hx => by` as an intermediate fact. Rewrite `hx` using `[Set.uIoc_of_le zero_le_one]`. Establish `l0` using `lower (τ := τ) p.1 p.2 hp (le_refl (0 : ℝ)) zero_le_one`. Establish `lx` using `lower (τ := τ) p.1 p.2 hp hx.1.le hx.2`. Simplify using `only [Complex.ofReal_zero, add_zero] at l0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hk_diff hκ hκ1 hρ l0 lx ?_ hs0 hs1` and prove the remaining obligations. Establish `: (p.1 : ℂ) + (p.2 : ℂ) * τ - ((p.1 : ℂ) + (x : ℂ) + (p.2 : ℂ) * τ) = -(x : ℂ)` using `by ring`. Rewrite using `[this, norm_neg, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hx.1]`. Conclude with `hx.2)`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma cell_bound {τ : ℂ} (hτ : τ.im ≠ 0) {p : ℤ × ℤ} (hp : p.2 ≠ 0) {s : ℝ} (hs0 : 0 ≤ s)
     (hs1 : s ≤ 1) :
@@ -308,7 +304,7 @@ lemma cell_bound {τ : ℂ} (hτ : τ.im ≠ 0) {p : ℤ × ℤ} (hp : p.2 ≠ 0
 end Hk2
 
 /- English proof (translation)
-Introduce `τ hτ`. Use `⟨fun p => 4 * (Hk2.kap τ ^ 2)⁻¹ * ((Hk2.kap τ * (|(p.1 : ℝ)| + |(p.2 : ℝ)|)) ^ 3)⁻¹, ?_, fun s p hs0 hs1 hp => Hk2.cell_bound hτ hp hs0 hs1⟩` and prove the remaining obligations. Establish `h` using `Hk2.summ.mul_left (4 * (Hk2.kap τ ^ 2)⁻¹ * (Hk2.kap τ ^ 3)⁻¹)`. Use `h.congr (fun p => ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -322,7 +318,7 @@ theorem hecke_kernel_cell_bound : HkCellBound := by
   ring
 
 /- English proof (translation)
-Introduce `τ p hτ hp`. Conclude with `((Hk2.cell_cont hτ hp).tendsto 0).mono_left nhdsWithin_le_nhds`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hecke_kernel_cell_continuous : HkCellCont := by
   intro τ p hτ hp

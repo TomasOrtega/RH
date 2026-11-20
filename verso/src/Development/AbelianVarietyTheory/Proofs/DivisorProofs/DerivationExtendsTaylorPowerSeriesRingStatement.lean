@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntDerApply
 open IsLocalRing GlobalTheory.FormalOrigin
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FormalOrigin.Extend.derivation_extends` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDerivationExtendsTaylorPowerSeriesRing.lean&line=33#L33)
 -/

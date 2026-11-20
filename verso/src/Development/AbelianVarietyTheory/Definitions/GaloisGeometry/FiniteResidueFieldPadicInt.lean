@@ -27,7 +27,7 @@ instance instInhabitedLat : Inhabited (Lat O K r) := ⟨std O K r⟩
 variable {O K r}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem Lat.ext {L M : Lat O K r} (h : L.1 = M.1) : L = M := Subtype.ext h
 
@@ -37,7 +37,7 @@ def glMap (g : GL (Fin r) K) (L : Submodule O (Fin r → K)) : Submodule O (Fin 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[glMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem glMap_one (L : Submodule O (Fin r → K)) : glMap 1 L = L := by
   ext x; simp [glMap]
@@ -45,7 +45,7 @@ theorem glMap_one (L : Submodule O (Fin r → K)) : glMap 1 L = L := by
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
 
 /- English proof (translation)
-Simplify using `only [glMap, ← Submodule.map_comp, Units.val_mul, Matrix.toLin'_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem glMap_mul (g h : GL (Fin r) K) (L : Submodule O (Fin r → K)) :
     glMap (g * h) L = glMap g (glMap h L) := by
@@ -55,7 +55,7 @@ theorem glMap_mul (g h : GL (Fin r) K) (L : Submodule O (Fin r → K)) :
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Submodule.map_mono h⟩` and prove the remaining obligations. Establish `h' : glMap g⁻¹ (glMap g M) ≤ glMap g⁻¹ (glMap g L)` using `Submodule.map_mono h`. Rewrite `h'` using `[← glMap_mul, ← glMap_mul, inv_mul_cancel, glMap_one, glMap_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem glMap_le_glMap_iff (g : GL (Fin r) K) (M L : Submodule O (Fin r → K)) :
     glMap g M ≤ glMap g L ↔ M ≤ L := by
@@ -66,7 +66,7 @@ theorem glMap_le_glMap_iff (g : GL (Fin r) K) (M L : Submodule O (Fin r → K)) 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
 
 /- English proof (translation)
-The claim follows from `Submodule.map_smul'' _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem glMap_smul (g : GL (Fin r) K) (I : Ideal O) (L : Submodule O (Fin r → K)) :
     glMap g (I • L) = I • glMap g L := Submodule.map_smul'' _ _ _
@@ -74,7 +74,7 @@ theorem glMap_smul (g : GL (Fin r) K) (I : Ideal O) (L : Submodule O (Fin r → 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.toLin' (g : Matrix (Fin r) (Fin r) K))`. Introduce `x y h`. Use `congrArg (Matrix.toLin' ((g⁻¹ : GL (Fin r) K) : Matrix (Fin r) (Fin r) K)) h` as an intermediate fact. Simplify `this` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective (f := (Matrix.toLin' (g : Matrix (Fin r) (Fin r) K)).toAddMonoidHom) M.toAddSubgroup L.toAddSubgroup hinj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem relIndex_glMap (g : GL (Fin r) K) (M L : Submodule O (Fin r → K)) :
     (glMap g M).toAddSubgroup.relIndex (glMap g L).toAddSubgroup =
@@ -87,7 +87,7 @@ theorem relIndex_glMap (g : GL (Fin r) K) (M L : Submodule O (Fin r → K)) :
     (Matrix.toLin' (g : Matrix (Fin r) (Fin r) K)).toAddMonoidHom) M.toAddSubgroup L.toAddSubgroup hinj
 
 /- English proof (translation)
-The claim follows from `L.2.fg.map _ span_eq_top := by have : (glMap g L.1 : Set (Fin r → K)) = Matrix.toLin' (g : Matrix (Fin r) (Fin r) K) '' (L.1 : Set (Fin r → K)) := rfl rw [this, Submodule.span_image, L.2.span_eq_top, Submodule.map_top, LinearMap.range_eq_top] intro y refine ⟨Matrix.toLin' ((g⁻¹ : …`.
+A detailed English derivation is pending.
 -/
 theorem glMap_isLattice (g : GL (Fin r) K) (L : Lat O K r) : (glMap g L.1).IsLattice K where
   fg := L.2.fg.map _
@@ -138,13 +138,13 @@ Both sides reduce to the same expression.
     (maxMul L).1 = IsLocalRing.maximalIdeal O • L.1 := rfl
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `S hS`. Establish `: Subsingleton S` using `Finite.card_le_one_iff_subsingleton.1 (by simpa using hS)`. Establish `hb : S = ⊥` using `(Submodule.eq_bot_iff _).2 fun x hx => congrArg Subtype.val (Subsingleton.elim (⟨x, hx⟩ : S) 0)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hb]`. Consider the case `succ N ih`. Introduce `S hS`. Distinguish the cases in `hb : S = ⊥`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hne : IsLocalRing.maximalIdeal O • S ≠ S`. Introduce `h`. Use `hb (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal O) S (IsNoetherian.noetherian S) h.ge ?_)` and prove the remaining obligations. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Establish `hlt : ((IsLocalRing.maximalIdeal O • S : Submodule O Q) : Set Q) ⊂ (S : Set Q)` using `⟨Submodule.smul_le_right, fun h => hne (le_antisymm Submodule.smul_le_right h)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `Set.Finite.card_lt_card (Set.toFinite _) hlt`. Rewrite using `[pow_succ, Submodule.mul_smul]`. Conclude with `ih _ (by`. Establish `: Nat.card (IsLocalRing.maximalIdeal O • S : Submodule O Q) < Nat.card S` using `hc`. Use the proof step `omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_smul_eq_bot {Q : Type} [AddCommGroup Q] [Module O Q] [Finite Q] (N : ℕ) :
     ∀ S : Submodule O Q, Nat.card S ≤ N + 1 → IsLocalRing.maximalIdeal O ^ N • S = ⊥ := by
@@ -175,12 +175,12 @@ theorem pow_smul_eq_bot {Q : Type} [AddCommGroup Q] [Module O Q] [Finite Q] (N :
 variable [Finite (IsLocalRing.ResidueField O)]
 
 /- English proof (translation)
-The claim follows from `Finite.one_lt_card`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_qRes : 1 < qRes O := Finite.one_lt_card
 
 /- English proof (translation)
-The claim follows from `one_lt_qRes`.
+A detailed English derivation is pending.
 -/
 theorem two_le_qRes : 2 ≤ qRes O := one_lt_qRes
 
@@ -191,15 +191,11 @@ def subElem (k : ℕ) (L : Lat O K r) : Set (Lat O K r) :=
   {M | M ∈ subIdx k L ∧ IsLocalRing.maximalIdeal O • L.1 ≤ M.1}
 
 /- English proof (translation)
-Use `haveI := L.2`. Establish `hq : qRes O ^ n ≠ 0` using `(pow_pos (lt_of_lt_of_le two_pos two_le_qRes) _).ne'`. Use `set I := IsLocalRing.maximalIdeal O ^ (qRes O ^ n)`. Use `haveI : Finite (O ⧸ IsLocalRing.maximalIdeal O) := ‹Finite (IsLocalRing.ResidueField O)›`. Use `haveI : Finite (O ⧸ I) := Ideal.finite_quotient_pow (IsNoetherian.noetherian _) _`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N : Submodule O L.1 := I • ⊤`. Use `haveI hfin : Finite (L.1 ⧸ N) := Submodule.finite_quotient_smul I Module.Finite.fg_top`. Use `haveI : Finite (Submodule O (L.1 ⧸ N)) := Finite.of_injective (fun S : Submodule O (L.1 ⧸ N) => (S : Set (L.1 ⧸ N))) SetLike.coe_injective`. Establish `key : ∀ M ∈ subIdx n L, N ≤ M.1.comap L.1.subtype`. Introduce and unpack `M ⟨-, h2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : Nat.card (L.1 ⧸ M.1.comap L.1.subtype) = qRes O ^ n` using `h2`. Use `haveI : Finite (L.1 ⧸ M.1.comap L.1.subtype) := Nat.finite_of_card_ne_zero (h1 ▸ hq)`. Establish `h3` using `pow_smul_eq_bot (O := O) (qRes O ^ n) (⊤ : Submodule O (L.1 ⧸ M.1.comap L.1.subtype)) (by rw [Nat.card_congr Submodule.topEquiv.toEquiv, h1]; omega)`. Rewrite using `[← Submodule.ker_mkQ (M.1.comap L.1.subtype), ← Submodule.comap_bot, ← Submodule.map_le_iff_le_comap, Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`. Conclude with `h3.le`.
-
-Use `Set.Finite.of_finite_image (f := fun M : Lat O K r => (M.1.comap L.1.subtype).map N.mkQ) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce and unpack `M hM M' hM' h`. Establish `e` using `congrArg (Submodule.comap N.mkQ) h`. Simplify using `only [Submodule.comap_map_mkQ] at e`. Rewrite `e` using `[sup_eq_right.2 (key M hM), sup_eq_right.2 (key M' hM')]`.
-
-Establish `e2` using `congrArg (Submodule.map L.1.subtype) e`. Rewrite `e2` using `[Submodule.map_comap_subtype, Submodule.map_comap_subtype, inf_eq_right.2 hM.1, inf_eq_right.2 hM'.1]`. Conclude with `Subtype.ext e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subIdx_finite (n : ℕ) (L : Lat O K r) :
     (subIdx n L).Finite := by
@@ -234,15 +230,15 @@ theorem subIdx_finite (n : ℕ) (L : Lat O K r) :
   exact Subtype.ext e2
 
 /- English proof (translation)
-The claim follows from `(subIdx_finite k L).subset fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem subElem_finite (k : ℕ) (L : Lat O K r) : (subElem k L).Finite :=
   (subIdx_finite k L).subset fun _ h => h.1
 
 /- English proof (translation)
-Use extensionality with `M`. Simplify using `only [subIdx, pow_zero, Set.mem_setOf_eq, Set.mem_singleton_iff, AddSubgroup.relIndex_eq_one, Submodule.toAddSubgroup_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `Subtype.ext (le_antisymm h1 h2)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `⟨le_rfl, le_rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subIdx_zero (L : Lat O K r) : subIdx 0 L = {L} := by
   ext M
@@ -253,9 +249,9 @@ theorem subIdx_zero (L : Lat O K r) : subIdx 0 L = {L} := by
   · rintro rfl; exact ⟨le_rfl, le_rfl⟩
 
 /- English proof (translation)
-Use extensionality with `M`. Simplify using `only [subElem, subIdx_zero, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Introduce and unpack `rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨rfl, Submodule.smul_le_right⟩`.
+Supply the required witnesses or components.
 -/
 theorem subElem_zero (L : Lat O K r) : subElem 0 L = {L} := by
   ext M
@@ -265,9 +261,9 @@ theorem subElem_zero (L : Lat O K r) : subElem 0 L = {L} := by
   · rintro rfl; exact ⟨rfl, Submodule.smul_le_right⟩
 
 /- English proof (translation)
-Use `haveI := L.2`. Use `haveI : Module.Free O L.1 := Submodule.IsLattice.free K L.1`. Establish `hc : (IsLocalRing.maximalIdeal O • L.1).comap L.1.subtype = IsLocalRing.maximalIdeal O • (⊤ : Submodule O L.1)`. Apply `Submodule.map_injective_of_injective L.1.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype, Submodule.map_comap_subtype, inf_eq_right.2 Submodule.smul_le_right]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (maxMul L).1.toAddSubgroup.relIndex L.1.toAddSubgroup = Nat.card (L.1 ⧸ (IsLocalRing.maximalIdeal O • L.1).comap L.1.subtype)` using `rfl`. Rewrite using `[h1, hc, ← Nat.card_congr (TensorProduct.quotTensorEquivQuotSMul L.1 (IsLocalRing.maximalIdeal O)).toEquiv]`. Express the relevant statement in the definitionally equal form `Nat.card (IsLocalRing.ResidueField O ⊗[O] L.1) = _`. Rewrite using `[Module.natCard_eq_pow_finrank (K := IsLocalRing.ResidueField O), Module.finrank_baseChange, Submodule.IsLattice.finrank_of_pi K L.1, Fintype.card_fin]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem relIndex_maxMul (L : Lat O K r) :
     (maxMul L).1.toAddSubgroup.relIndex L.1.toAddSubgroup = qRes O ^ r := by
@@ -288,11 +284,11 @@ theorem relIndex_maxMul (L : Lat O K r) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `M`. Simplify using `only [subElem, subIdx, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Establish `h` using `AddSubgroup.relIndex_mul_relIndex (maxMul L).1.toAddSubgroup M.1.toAddSubgroup L.1.toAddSubgroup h3 h1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h` using `[h2, relIndex_maxMul]`. Establish `hq : 0 < qRes O ^ r` using `pow_pos (lt_of_lt_of_le two_pos two_le_qRes) _`. Establish `h4 : (maxMul L).1.toAddSubgroup.relIndex M.1.toAddSubgroup = 1` using `Nat.eq_of_mul_eq_mul_right hq (by rw [h, one_mul])`. Conclude with `Subtype.ext (le_antisymm (AddSubgroup.relIndex_eq_one.1 h4) h3)`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨Submodule.smul_le_right, relIndex_maxMul L⟩, le_rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem subElem_top (L : Lat O K r) :
     subElem r L = {maxMul L} := by
@@ -311,9 +307,9 @@ theorem subElem_top (L : Lat O K r) :
     exact ⟨⟨Submodule.smul_le_right, relIndex_maxMul L⟩, le_rfl⟩
 
 /- English proof (translation)
-Use extensionality with `M`. Simplify using `only [subElem, subIdx, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Establish `h` using `AddSubgroup.relIndex_mul_relIndex (maxMul L).1.toAddSubgroup M.1.toAddSubgroup L.1.toAddSubgroup h3 h1`. Rewrite `h` using `[h2, relIndex_maxMul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : qRes O ^ k ∣ qRes O ^ r` using `Dvd.intro_left _ h`. Use `(Nat.pow_dvd_pow_iff_le_right (two_le_qRes (O := O))).1 hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem subElem_eq_empty {k : ℕ} (hk : r < k)
     (L : Lat O K r) : subElem k L = ∅ := by
@@ -328,7 +324,7 @@ theorem subElem_eq_empty {k : ℕ} (hk : r < k)
   omega
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `relIndex_maxMul L`. Rewrite `h1` using `[h, AddSubgroup.relIndex_self]`. Use `Nat.one_lt_pow hr.ne' (two_le_qRes (O := O))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem maxMul_ne (hr : 0 < r) (L : Lat O K r) : maxMul L ≠ L := by
   intro h
@@ -338,14 +334,14 @@ theorem maxMul_ne (hr : 0 < r) (L : Lat O K r) : maxMul L ≠ L := by
   omega
 
 /- English proof (translation)
-Simplify using `only [subIdx, Set.mem_setOf_eq, smul_def, glLat_val, glMap_le_glMap_iff, relIndex_glMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_mem_subIdx_iff (g : GL (Fin r) K) (n : ℕ) (M L : Lat O K r) :
     g • M ∈ subIdx n (g • L) ↔ M ∈ subIdx n L := by
   simp only [subIdx, Set.mem_setOf_eq, smul_def, glLat_val, glMap_le_glMap_iff, relIndex_glMap]
 
 /- English proof (translation)
-Establish `h` using `smul_mem_subIdx_iff g k M L`. Simplify using `only [subElem, Set.mem_setOf_eq, h]`. Simplify using `only [smul_def, glLat_val, ← glMap_smul, glMap_le_glMap_iff]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem smul_mem_subElem_iff (g : GL (Fin r) K) (k : ℕ) (M L : Lat O K r) :
     g • M ∈ subElem k (g • L) ↔ M ∈ subElem k L := by
@@ -360,46 +356,46 @@ def heckeAll (n : ℕ) (φ : Lat O K r → E) (L : Lat O K r) : E := ∑ᶠ M �
 def heckeElem (k : ℕ) (φ : Lat O K r → E) (L : Lat O K r) : E := ∑ᶠ M ∈ subElem k L, φ M
 
 /- English proof (translation)
-The claim follows from `finsum_mem_eq_finite_toFinset_sum φ (subIdx_finite n L)`.
+A detailed English derivation is pending.
 -/
 theorem heckeAll_eq_sum (n : ℕ) (φ : Lat O K r → E) (L : Lat O K r) :
     heckeAll n φ L = ∑ M ∈ (subIdx_finite n L).toFinset, φ M :=
   finsum_mem_eq_finite_toFinset_sum φ (subIdx_finite n L)
 
 /- English proof (translation)
-The claim follows from `finsum_mem_eq_finite_toFinset_sum φ (subElem_finite k L)`.
+A detailed English derivation is pending.
 -/
 theorem heckeElem_eq_sum (k : ℕ) (φ : Lat O K r → E) (L : Lat O K r) :
     heckeElem k φ L = ∑ M ∈ (subElem_finite k L).toFinset, φ M :=
   finsum_mem_eq_finite_toFinset_sum φ (subElem_finite k L)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `L`. Simplify using `[heckeAll, subIdx_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heckeAll_zero (φ : Lat O K r → E) : heckeAll 0 φ = φ := by
   funext L; simp [heckeAll, subIdx_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `L`. Simplify using `[heckeElem, subElem_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heckeElem_zero (φ : Lat O K r → E) : heckeElem 0 φ = φ := by
   funext L; simp [heckeElem, subElem_zero]
 
 /- English proof (translation)
-Simplify using `[heckeElem, subElem_top]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeElem_top (φ : Lat O K r → E) (L : Lat O K r) : heckeElem r φ L = φ (maxMul L) := by
   simp [heckeElem, subElem_top]
 
 /- English proof (translation)
-Simplify using `[heckeElem, subElem_eq_empty hk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeElem_eq_zero {k : ℕ} (hk : r < k) (φ : Lat O K r → E) (L : Lat O K r) :
     heckeElem k φ L = 0 := by
   simp [heckeElem, subElem_eq_empty hk]
 
 /- English proof (translation)
-Use `symm`. Use `finsum_mem_eq_of_bijOn (fun M => g • M) ⟨fun M hM => (smul_mem_subIdx_iff g n M L).2 hM, (MulAction.injective g).injOn, fun M hM => ⟨g⁻¹ • M, ?_, smul_inv_smul g M⟩⟩ fun _ _ => rfl` and prove the remaining obligations. Rewrite using `[← smul_mem_subIdx_iff g, smul_inv_smul]`. Conclude with `hM`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeAll_smul (g : GL (Fin r) K) (n : ℕ) (φ : Lat O K r → E) (L : Lat O K r) :
     heckeAll n φ (g • L) = heckeAll n (fun M => φ (g • M)) L := by
@@ -409,7 +405,7 @@ theorem heckeAll_smul (g : GL (Fin r) K) (n : ℕ) (φ : Lat O K r → E) (L : L
   rw [← smul_mem_subIdx_iff g, smul_inv_smul]; exact hM
 
 /- English proof (translation)
-Use `symm`. Use `finsum_mem_eq_of_bijOn (fun M => g • M) ⟨fun M hM => (smul_mem_subElem_iff g k M L).2 hM, (MulAction.injective g).injOn, fun M hM => ⟨g⁻¹ • M, ?_, smul_inv_smul g M⟩⟩ fun _ _ => rfl` and prove the remaining obligations. Rewrite using `[← smul_mem_subElem_iff g, smul_inv_smul]`. Conclude with `hM`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeElem_smul (g : GL (Fin r) K) (k : ℕ) (φ : Lat O K r → E) (L : Lat O K r) :
     heckeElem k φ (g • L) = heckeElem k (fun M => φ (g • M)) L := by
@@ -419,14 +415,14 @@ theorem heckeElem_smul (g : GL (Fin r) K) (k : ℕ) (φ : Lat O K r → E) (L : 
   rw [← smul_mem_subElem_iff g, smul_inv_smul]; exact hM
 
 /- English proof (translation)
-The claim follows from `Finite.of_equiv _ (PadicInt.residueField (p := p)).toEquiv.symm`.
+A detailed English derivation is pending.
 -/
 theorem finite_residueField_padicInt (p : ℕ) [Fact p.Prime] :
     Finite (IsLocalRing.ResidueField ℤ_[p]) :=
   Finite.of_equiv _ (PadicInt.residueField (p := p)).toEquiv.symm
 
 /- English proof (translation)
-Unfold `qRes`. Rewrite using `[Nat.card_congr (PadicInt.residueField (p := p)).toEquiv, Nat.card_zmod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qRes_padicInt (p : ℕ) [Fact p.Prime] [Finite (IsLocalRing.ResidueField ℤ_[p])] :
     qRes ℤ_[p] = p := by
@@ -434,7 +430,7 @@ theorem qRes_padicInt (p : ℕ) [Fact p.Prime] [Finite (IsLocalRing.ResidueField
   rw [Nat.card_congr (PadicInt.residueField (p := p)).toEquiv, Nat.card_zmod]
 
 /- English proof (translation)
-The claim follows from `finite_residueField_padicInt 2 (heckeElem 2 : (Lat ℤ_[2] ℚ_[2] 2 → ℕ) → Lat ℤ_[2] ℚ_[2] 2 → ℕ) ≠ id := by classical haveI := finite_residueField_padicInt 2 intro h have h1 := congrFun (congrFun h fun M => if M = std ℤ_[2] ℚ_[2] 2 then 1 else 0) (std ℤ_[2] ℚ_[2] 2) rw [heckeElem_t …`.
+A detailed English derivation is pending.
 -/
 example : haveI := finite_residueField_padicInt 2
     (heckeElem 2 : (Lat ℤ_[2] ℚ_[2] 2 → ℕ) → Lat ℤ_[2] ℚ_[2] 2 → ℕ) ≠ id := by
@@ -446,7 +442,7 @@ example : haveI := finite_residueField_padicInt 2
   simp [maxMul_ne] at h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.prime_three⟩ (maxMul (std ℤ_[3] ℚ_[3] 2)).1.toAddSubgroup.relIndex (std ℤ_[3] ℚ_[3] 2).1.toAddSubgroup = 9 := by haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩ haveI := finite_residueField_padicInt 3 rw [relIndex_maxMul, qRes_padicInt]; rfl`.
+Supply the required witnesses or components.
 -/
 example : haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
     (maxMul (std ℤ_[3] ℚ_[3] 2)).1.toAddSubgroup.relIndex (std ℤ_[3] ℚ_[3] 2).1.toAddSubgroup = 9 := by

@@ -17,9 +17,9 @@ def LocEt : Prop := ∀ {T : CommRingCat.{0}} {X : Scheme.{0}} (p : X ⟶ Spec T
       CommRingCat.ofHom (MvPolynomial.C : T →+* MvPolynomial (Fin n) T) ≫ c = gam p V
 
 /- English proof (translation)
-Introduce `H q i T K k hG X p _`. Use `hZ H (ZMod q) (tw q i) (pullback.fst p (Spec.map k)) fun x => ?_` and prove the remaining obligations. Take `⟨U, n, hx, hU⟩` from `hL p x`. Use `⟨U, hx, fun V hV hVU => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hcg⟩` from `hU V hV hVU`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `hG n _ c hc`. Rewrite `hb` using `[hcg]`. Conclude with `hA q i k p V hV hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Global_of (hZ : ZarLocal) (hA : Affine) (hL : LocEt) : Global := by
   intro H q i T K k hG X p _

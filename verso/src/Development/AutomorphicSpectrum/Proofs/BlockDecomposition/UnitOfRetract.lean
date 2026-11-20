@@ -14,7 +14,7 @@ section Mix
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, Finset.prod_insert hi, ih]`. Take the linear combination `(a i * ∏ i ∈ s, a i - a i * ∏ i ∈ s, b i - b i * ∏ i ∈ s, a i + b i * ∏ i ∈ s, b i) * hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem prod_mix {ι : Type*} (f : R) (hf : f * f = f) (s : Finset ι) (a b : ι → R) :
     ∏ i ∈ s, (f * a i + (1 - f) * b i) = f * ∏ i ∈ s, a i + (1 - f) * ∏ i ∈ s, b i := by
@@ -26,7 +26,7 @@ theorem prod_mix {ι : Type*} (f : R) (hf : f * f = f) (s : Finset ι) (a b : ι
     linear_combination (a i * ∏ i ∈ s, a i - a i * ∏ i ∈ s, b i - b i * ∏ i ∈ s, a i + b i * ∏ i ∈ s, b i) * hf
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, prod_mix f hf, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_mix {n : Type*} [Fintype n] [DecidableEq n] (f : R) (hf : f * f = f) (X Y : Matrix n n R) :
     (f • X + (1 - f) • Y).det = f * X.det + (1 - f) * Y.det := by
@@ -36,7 +36,7 @@ theorem det_mix {n : Type*} [Fintype n] [DecidableEq n] (f : R) (hf : f * f = f)
   ring
 
 /- English proof (translation)
-The claim follows from `left_inv_eq_right_inv (Ring.inverse_mul_cancel x h) hw`.
+A detailed English derivation is pending.
 -/
 theorem inverse_eq {x w : R} (h : IsUnit x) (hw : x * w = 1) : Ring.inverse x = w :=
   left_inv_eq_right_inv (Ring.inverse_mul_cancel x h) hw
@@ -44,33 +44,31 @@ theorem inverse_eq {x w : R} (h : IsUnit x) (hw : x * w = 1) : Ring.inverse x = 
 end Mix
 
 /- English proof (translation)
-Use `set e := algebraMap R A f with he`. Set `L : A → Matrix ι ι R` to `fun z => Algebra.leftMulMatrix b z`. Establish `hL : Continuous L`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `: (fun z : A => L z i j) = (b.coord i) ∘ₗ (LinearMap.mulRight R (b j))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Simplify using `[L, Algebra.leftMulMatrix_eq_repr_mul]`. Rewrite using `[this]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`. Set `N : A → R` to `fun z => (L z).det`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hN : Continuous N` using `hL.matrix_det`. Set `y : A → A` to `fun z => ∑ i, ((L z).adjugate *ᵥ b.repr 1) i • b i`. Establish `hy : Continuous y`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Use `Continuous.smul ?_ continuous_const` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Continuous fun z => (L z).adjugate` using `hL.matrix_adjugate`. Conclude with `(continuous_apply i).comp (Continuous.matrix_mulVec this continuous_const)`. Establish `hrep : ∀ z x : A, ⇑(b.repr (z * x)) = L z *ᵥ ⇑(b.repr x)`. Introduce `z x`. Use `LinearMap.toMatrix_mulVec_repr b b (Algebra.lmul R A z) x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this.symm` using `[L, Algebra.leftMulMatrix_apply]`. Establish `hmul : ∀ z, z * y z = N z • (1 : A)`. Introduce `z`. Apply `b.repr.injective` to reduce the goal to its premises. Apply `DFunLike.coe_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrep, map_smul]`. Establish `h1 : ⇑(b.repr (y z)) = (L z).adjugate *ᵥ ⇑(b.repr 1)`. Simplify using `only [y]`. Use extensionality with `i`. Rewrite using `[Module.Basis.repr_sum_self]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[h1, Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Establish `hLm : ∀ z w, L (z * w) = L z * L w` using `fun z w => map_mul (Algebra.leftMulMatrix b) z w`. Establish `hL1 : L 1 = 1` using `map_one (Algebra.leftMulMatrix b)`. Set `Nh : A →* R` to `{ toFun := N map_one' := by simp only [N, hL1, Matrix.det_one] map_mul' := fun z w => by simp only [N, hLm, Matrix.det_mul] }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hNmix : ∀ z, N (1 - e + e * z) = 1 - f + f * N z`. Introduce `z`. Establish `h1 : L (1 - e + e * z) = f • L z + (1 - f) • (1 : Matrix ι ι R)`. Establish `h0 : (Algebra.leftMulMatrix b) e = f • (1 : Matrix ι ι R)`. Rewrite using `[he, AlgHom.commutes, Algebra.algebraMap_eq_smul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `only [L, map_add, map_sub, map_one, map_mul, h0, smul_mul_assoc, one_mul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Simplify using `only [N]`. Rewrite using `[h1, det_mix f hf, Matrix.det_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : ∀ z, IsUnit z ↔ IsUnit (N z)`. Introduce `z`. Use `⟨fun h => h.map Nh, fun h => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `h`. Use `IsUnit.of_mul_eq_one (y z * algebraMap R A ((u⁻¹ : Rˣ) : R)) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← mul_assoc, hmul, ← hu, Algebra.smul_def, mul_one, ← map_mul, Units.mul_inv, map_one]`. Establish `hset : {z : A | IsUnit (1 - e + e * z)} = N ⁻¹' {a : R | IsUnit (1 - f + f * a)}`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage]`. Rewrite using `[hu, hNmix]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hset ▸ ho.preimage hN, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun z : A => 1 - e + e * z` using `by fun_prop`. Establish `h2 : ContinuousOn (fun z : A => Ring.inverse (1 - f + f * N z) • y (1 - e + e * z)) {z : A | IsUnit (1 - e + e * z)}`. Use `ContinuousOn.smul (hi.comp hN.continuousOn ?_) (hy.comp hc).continuousOn` and prove the remaining obligations. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hz` using `[hset]`. Conclude with `hz`. Use `h2.congr fun z hz => ?_` and prove the remaining obligations. Use `inverse_eq hz ?_` and prove the remaining obligations. Establish `h3 : IsUnit (1 - f + f * N z)`.
-
-Rewrite using `[← hNmix, ← hu]`. Conclude with `hz`. Rewrite using `[mul_smul_comm, hmul, hNmix, smul_smul, Ring.inverse_mul_cancel _ h3, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_basis {R A ι : Type*} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [CommRing A] [Algebra R A] [TopologicalSpace A] [IsTopologicalRing A] [IsModuleTopology R A]
@@ -155,17 +153,15 @@ theorem unit_of_basis {R A ι : Type*} [CommRing R] [TopologicalSpace R] [IsTopo
   rw [mul_smul_comm, hmul, hNmix, smul_smul, Ring.inverse_mul_cancel _ h3, one_smul]
 
 /- English proof (translation)
-Use `set f := s 1 with hfd`. Establish `hf : f * f = f` using `by rw [hfd, ← hadd, one_mul]`. Establish `hpf : p f = 1` using `hps 1`. Establish `key : ∀ (a : A) (v : T), p a * v = 1 → (1 - f + f * a) * (1 - f + s v) = 1`. Introduce `a v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : f * a * s v = f` using `by rw [← hsp, ← hadd, hv]`. Establish `h2 : f * s v = s v` using `by rw [hfd, ← hadd, one_mul]`. Take the linear combination `h1 - h2 + (1 - a) * hf`. Establish `hset : ∀ a, IsUnit (1 - f + f * a) ↔ IsUnit (p a)`. Introduce `a`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h.map p` as an intermediate fact. Simplify `this` using `[hpf]`. Introduce and unpack `⟨u, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `IsUnit.of_mul_eq_one _ (key a ((u⁻¹ : Tˣ) : T) (by rw [← hu, Units.mul_inv]))`. Establish `hset' : {a : A | IsUnit (1 - f + f * a)} = p ⁻¹' {t : T | IsUnit t}`. Use extensionality with `a`. Conclude with `hset a`. Use `⟨hset' ▸ ho.preimage hp, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ContinuousOn (fun a : A => 1 - f + s (Ring.inverse (p a))) {a : A | IsUnit (1 - f + f * a)}`. Use `continuousOn_const.add (hs.comp_continuousOn (hi.comp hp.continuousOn ?_))` and prove the remaining obligations. Introduce `a ha`. Conclude with `(hset a).1 ha`. Use `h2.congr fun a ha => ?_` and prove the remaining obligations.
-
-Conclude with `inverse_eq ha (key a _ (Ring.mul_inverse_cancel _ ((hset a).1 ha)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unit_of_retract {A T : Type*} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [CommRing T] [TopologicalSpace T] (p : A →+* T) (s : T → A) (hp : Continuous p) (hs : Continuous s)
@@ -201,11 +197,9 @@ theorem unit_of_retract {A T : Type*} [CommRing A] [TopologicalSpace A] [IsTopol
   exact inverse_eq ha (key a _ (Ring.mul_inverse_cancel _ ((hset a).1 ha)))
 
 /- English proof (translation)
-Establish `hset : {x : ∀ i, K i | IsUnit x} = ⋂ i, (fun x : ∀ i, K i => x i) ⁻¹' {0}ᶜ`. Use extensionality with `x`. Simplify using `[Pi.isUnit_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hset]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_iInter_of_finite fun i => isOpen_compl_singleton.preimage (continuous_apply i)`. Establish `h2 : ContinuousOn (fun x : ∀ i, K i => fun i => (x i)⁻¹) {x | IsUnit x}`. Use `continuousOn_pi.2 fun i => ContinuousOn.inv₀ (continuous_apply i).continuousOn fun x hx => ?_` and prove the remaining obligations. Conclude with `(Pi.isUnit_iff.1 hx i).ne_zero`. Use `h2.congr fun x hx => inverse_eq hx ?_` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (Pi.isUnit_iff.1 hx i).ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem unit_pi {ι : Type*} [Fintype ι] {K : ι → Type*} [∀ i, Field (K i)] [∀ i, TopologicalSpace (K i)]
     [∀ i, ContinuousInv₀ (K i)] [∀ i, T1Space (K i)] :
@@ -224,11 +218,11 @@ theorem unit_pi {ι : Type*} [Fintype ι] {K : ι → Type*} [∀ i, Field (K i)
     exact mul_inv_cancel₀ (Pi.isUnit_iff.1 hx i).ne_zero
 
 /- English proof (translation)
-Establish `hset : {x : X × Y | IsUnit x} = {x | IsUnit x} ×ˢ {y | IsUnit y}`. Use extensionality with `x`. Simplify using `[Prod.isUnit_iff]`. Use `⟨hset ▸ hX.prod hY, ?_⟩` and prove the remaining obligations. Establish `h2 : ContinuousOn (fun x : X × Y => (Ring.inverse x.1, Ring.inverse x.2)) {x | IsUnit x}`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ContinuousOn.prodMk (hX'.comp continuousOn_fst ?_) (hY'.comp continuousOn_snd ?_)` and prove the remaining obligations. Conclude with `fun x hx => (Prod.isUnit_iff.1 hx).1`. Conclude with `fun x hx => (Prod.isUnit_iff.1 hx).2`. Use `h2.congr fun x hx => inverse_eq hx ?_` and prove the remaining obligations. Establish `h3` using `Prod.isUnit_iff.1 hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Prod.ext (Ring.mul_inverse_cancel _ h3.1) (Ring.mul_inverse_cancel _ h3.2)`.
+A detailed English derivation is pending.
 -/
 theorem unit_prod {X Y : Type*} [CommRing X] [CommRing Y] [TopologicalSpace X] [TopologicalSpace Y]
     (hX : IsOpen {x : X | IsUnit x}) (hX' : ContinuousOn (Ring.inverse : X → X) {x | IsUnit x})
@@ -259,7 +253,7 @@ section MixMatrix
 variable {R n : Type*} [CommRing R] [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[add_comm, det_mix e hee, Matrix.det_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_mix_one {e : R} (hee : e * e = e) (C : Matrix n n R) :
     ((1 - e) • (1 : Matrix n n R) + e • C).det = 1 - e + e * C.det := by
@@ -267,13 +261,13 @@ theorem det_mix_one {e : R} (hee : e * e = e) (C : Matrix n n R) :
   ring
 
 /- English proof (translation)
-Establish `h1 : (1 - e) * (1 - e) = 1 - e` using `by linear_combination hee`. Establish `h2 : e * (1 - e) = 0` using `by linear_combination -hee`. Establish `h3 : (1 - e) * e = 0` using `by linear_combination -hee`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu' : IsUnit ((1 - e) • (1 : Matrix n n R) + e • C)` using `(Matrix.isUnit_iff_isUnit_det _).2 hu`. Take `⟨u, hu2⟩` from `hu'`. Use `⟨e • ((u⁻¹ : (Matrix n n R)ˣ) : Matrix n n R), ?_⟩` and prove the remaining obligations. Establish `h4 : e • ((1 - e) • (1 : Matrix n n R) + e • C) = e • C`. Rewrite using `[smul_add, smul_smul, smul_smul, h2, hee, zero_smul, zero_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_assoc, ← mul_smul_comm, ← h4, ← hu2, mul_smul_comm, Units.inv_mul]`. Introduce and unpack `⟨y, hy⟩`. Establish `h5 : (e • y + (1 - e) • (1 : Matrix n n R)) * ((1 - e) • (1 : Matrix n n R) + e • C) = 1`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, hy, h1, h2, h3, hee, zero_smul, add_zero, zero_add, smul_add]`. Rewrite using `[← add_smul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (IsUnit.of_mul_eq_one _ (mul_eq_one_comm.1 h5))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_mix_iff {e : R} (hee : e * e = e) (C : Matrix n n R) :
     IsUnit ((1 - e) • (1 : Matrix n n R) + e • C).det ↔ ∃ y : Matrix n n R, y * C = e • 1 := by
@@ -297,7 +291,7 @@ theorem isUnit_mix_iff {e : R} (hee : e * e = e) (C : Matrix n n R) :
     exact (Matrix.isUnit_iff_isUnit_det _).1 (IsUnit.of_mul_eq_one _ (mul_eq_one_comm.1 h5))
 
 /- English proof (translation)
-Establish `h1 : ((1 - e) • (1 : Matrix n n R) + e • C) * x = e • d`. Rewrite using `[add_mul, smul_mul_assoc, one_mul, smul_mul_assoc, hB, smul_smul, hee, sub_smul, one_smul, hx, sub_self, zero_add]`. Rewrite using `[← h1, ← mul_assoc, Matrix.adjugate_mul, det_mix_one hee, smul_mul_assoc, one_mul, smul_smul, Ring.inverse_mul_cancel _ hu, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mix_solve {e : R} (hee : e * e = e) {C d x : Matrix n n R} (hu : IsUnit (1 - e + e * C.det))
     (hx : e • x = x) (hB : C * x = e • d) :
@@ -330,20 +324,20 @@ section Adelic
 variable {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F)))
 
 /- English proof (translation)
-The claim follows from `continuous_fst.prodMk (continuous_pi fun v => (RestrictedProduct.continuous_eval v.1).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pS : Continuous (pS S) :=
   continuous_fst.prodMk (continuous_pi fun v => (RestrictedProduct.continuous_eval v.1).comp continuous_snd)
 
 /- English proof (translation)
-The claim follows from `continuous_fst.prodMk (continuous_finsetSum _ fun v _ => (continuous_singleFin v.1).comp ((continuous_apply v).comp continuous_snd))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sS : Continuous (sS S) :=
   continuous_fst.prodMk (continuous_finsetSum _ fun v _ =>
     (continuous_singleFin v.1).comp ((continuous_apply v).comp continuous_snd))
 
 /- English proof (translation)
-Establish `h1` using `unit_pi (K := fun v : InfinitePlace F => v.Completion)`. Establish `h2` using `unit_pi (K := fun v : S => Fv F v.1)`. Conclude with `unit_prod h1.1 h1.2 h2.1 h2.2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unit_RS : IsOpen {t : RS S | IsUnit t} ∧ ContinuousOn (Ring.inverse : RS S → RS S) {t | IsUnit t} := by
   have h1 := unit_pi (K := fun v : InfinitePlace F => v.Completion)
@@ -351,7 +345,7 @@ theorem unit_RS : IsOpen {t : RS S | IsUnit t} ∧ ContinuousOn (Ring.inverse : 
   exact unit_prod h1.1 h1.2 h2.1 h2.2
 
 /- English proof (translation)
-The claim follows from `unit_of_retract (pS S : AF F →+* RS S) (sS S) (continuous_pS S) (continuous_sS S) sS_mul pS_sS sS_pS (unit_RS S).1 (unit_RS S).2`.
+A detailed English derivation is pending.
 -/
 theorem unit_AF : IsOpen {a : AF F | IsUnit (1 - sS S 1 + sS S 1 * a)} ∧
     ContinuousOn (fun a : AF F => Ring.inverse (1 - sS S 1 + sS S 1 * a)) {a : AF F | IsUnit (1 - sS S 1 + sS S 1 * a)} :=
@@ -378,11 +372,11 @@ open GlobalTheory.CompanionTheory.SPartTensor
 variable {D : D7} {p : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.CompanionTheory.AdeleComp.eq_zero_of_comps D _ (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, he.1 w, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `(1 : _) = evInf D.host.F w (sS S 1) ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[evInf_sS_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[RingHom.map_sub, he.2 v, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `_ = evFin D.host.F v (sS S 1) ⊗ₜ[D.host.F] (1 : D.host.E)`. Distinguish the cases in `h : v ∈ S`. Rewrite using `[if_pos h, evFin_sS_one_mem h]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg h, evFin_sS_one_not h, TensorProduct.zero_tmul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_eq {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) :
     e = algebraMap (AF D.host.F) (AE D) (sS S 1) := by
@@ -398,9 +392,9 @@ theorem idem_eq {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) :
     · rw [if_neg h, evFin_sS_one_not h, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE D)` using `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `: ContinuousSMul (AF D.host.F) (AE D)` using `ModuleTopology.continuousSMul _ _`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `hf : sS S (1 : RS S) * sS S 1 = sS S 1` using `by rw [← sS_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `unit_of_basis (Algebra.TensorProduct.basis (AF D.host.F) (Module.finBasis D.host.F D.host.E)) (sS S 1) hf (unit_AF S).1 (unit_AF S).2`. Rewrite `h` using `[← idem_eq he]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_AE {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) :
     IsOpen {z : AE D | IsUnit (1 - e + e * z)} ∧

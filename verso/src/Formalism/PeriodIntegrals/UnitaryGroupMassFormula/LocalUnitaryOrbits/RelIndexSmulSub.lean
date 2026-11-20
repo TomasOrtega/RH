@@ -14,14 +14,14 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
   {W : Type} [AddCommGroup W] [Module (Fv F v) W]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨unifV v, by rw [IsUnif, unifV_val]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem sdc_unifEx_holds : UnifEx v := ⟨unifV v, by rw [IsUnif, unifV_val]; rfl⟩
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mem_smulSub]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨p, hp, rfl⟩, rfl⟩`. Conclude with `⟨p, hp, by rw [smul_smul]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨p, hp, rfl⟩`. Conclude with `⟨t • p, ⟨p, hp, rfl⟩, by rw [smul_smul]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem smulSub_smulSub (s t : Fv F v) (P : AddSubgroup W) :
     smulSub s (smulSub t P) = smulSub (s * t) P := by
@@ -34,21 +34,21 @@ theorem smulSub_smulSub (s t : Fv F v) (P : AddSubgroup W) :
     exact ⟨t • p, ⟨p, hp, rfl⟩, by rw [smul_smul]⟩
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `[mem_smulSub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smulSub_one (P : AddSubgroup W) : smulSub (1 : Fv F v) P = P := by
   ext z
   simp [mem_smulSub]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.relIndex_map_map_of_injective H G (smul_right_injective W ht)`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_smulSub {t : Fv F v} (ht : t ≠ 0) (H G : AddSubgroup W) :
     (smulSub t H).relIndex (smulSub t G) = H.relIndex G :=
   AddSubgroup.relIndex_map_map_of_injective H G (smul_right_injective W ht)
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite `hz` using `[mem_smulSub]`. Take `⟨p, hp, rfl⟩` from `hz`. Conclude with `hP s hs p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem smulSub_le {s : Fv F v} (hs : s ∈ v.adicCompletionIntegers F) (P : AddSubgroup W)
     (hP : ∀ s ∈ v.adicCompletionIntegers F, ∀ x ∈ P, s • x ∈ P) : smulSub s P ≤ P := by
@@ -58,7 +58,7 @@ theorem smulSub_le {s : Fv F v} (hs : s ∈ v.adicCompletionIntegers F) (P : Add
   exact hP s hs p hp
 
 /- English proof (translation)
-Apply `le_antisymm (smulSub_le v hu P hP)` to reduce the goal to its premises. Introduce `z hz`. Rewrite using `[mem_smulSub]`. Conclude with `⟨u⁻¹ • z, hP _ hu' z hz, by rw [smul_smul, mul_inv_cancel₀ hu0, one_smul]⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem smulSub_unit {u : Fv F v} (hu : u ∈ v.adicCompletionIntegers F)
     (hu' : u⁻¹ ∈ v.adicCompletionIntegers F) (hu0 : u ≠ 0) (P : AddSubgroup W)
@@ -69,11 +69,11 @@ theorem smulSub_unit {u : Fv F v} (hu : u ∈ v.adicCompletionIntegers F)
   exact ⟨u⁻¹ • z, hP _ hu' z hz, by rw [smul_smul, mul_inv_cancel₀ hu0, one_smul]⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [smulSub_one]`. Consider the case `succ k ih`. Establish `e : smulSub (ϖ ^ (k + 1)) P = smulSub (ϖ ^ k) (smulSub ϖ P)`. Rewrite using `[smulSub_smulSub, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : smulSub (ϖ ^ k) P ≤ P` using `smulSub_le v (pow_mem hϖ k) P hP`. Establish `h1 : smulSub (ϖ ^ k) (smulSub ϖ P) ≤ smulSub (ϖ ^ k) P`. Introduce `z hz`. Rewrite `hz`, the goal using `[mem_smulSub]`. Take `⟨p, hp, rfl⟩` from `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p, smulSub_le v hϖ P hP hp, rfl⟩`. Rewrite using `[e, ← AddSubgroup.relIndex_mul_relIndex _ _ _ h1 h2, relIndex_smulSub v (pow_ne_zero k hϖ0), ih]`. Expand and normalize the polynomial expressions, which then agree.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem relIndex_pow {ϖ : Fv F v} (hϖ0 : ϖ ≠ 0) (hϖ : ϖ ∈ v.adicCompletionIntegers F)
     (P : AddSubgroup W) (hP : ∀ s ∈ v.adicCompletionIntegers F, ∀ x ∈ P, s • x ∈ P) (k : ℕ) :
@@ -93,19 +93,17 @@ theorem relIndex_pow {ϖ : Fv F v} (hϖ0 : ϖ ≠ 0) (hϖ : ϖ ∈ v.adicComplet
     ring
 
 /- English proof (translation)
-Establish `hϖ0` using `unif_ne_zero v hϖ`. Establish `hv : Valued.v d ≠ 0` using `(Valuation.ne_zero_iff _).2 hd0`. Use `set m : ℤ := Multiplicative.toAdd (WithZero.unzero hv) with hmdef`. Establish `hvm : Valued.v d = ((Multiplicative.ofAdd m : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Simplify using `[m]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm : m ≤ 0`. Establish `h1 : Valued.v d ≤ 1`. Rewrite `hd` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hd`. Rewrite `h1` using `[hvm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (Multiplicative.ofAdd m : Multiplicative ℤ) ≤ 1` using `by exact_mod_cast h1`. Rewrite `h2` using `[← ofAdd_zero]`. Conclude with `Multiplicative.ofAdd_le.1 h2`. Establish `hk : ((m.natAbs : ℕ) : ℤ) = -m` using `Int.ofNat_natAbs_of_nonpos hm`. Establish `hvk : Valued.v (ϖ ^ m.natAbs) = Valued.v d`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hϖ, hvm, ← WithZero.coe_pow, ← ofAdd_nsmul]`. Use `congr 2`. Rewrite using `[nsmul_eq_mul, hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `hϖk : ϖ ^ m.natAbs ≠ 0` using `pow_ne_zero _ hϖ0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu1 : Valued.v ((ϖ ^ m.natAbs)⁻¹ * d) = 1`. Rewrite using `[map_mul, map_inv₀, hvk, inv_mul_cancel₀ hv]`. Use `⟨m.natAbs, (ϖ ^ m.natAbs)⁻¹ * d, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hu1]`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hu1, inv_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (inv_ne_zero hϖk) hd0`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hϖk, one_mul]`. Unfold `absV`. Rewrite using `[dif_neg hv]`. Unfold `qv`.
-
-Use `congr 1`. Rewrite using `[hk]`. Simplify using `[m]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_pow {ϖ : Fv F v} (hϖ : IsUnif v ϖ) {d : Fv F v} (hd0 : d ≠ 0)
     (hd : d ∈ v.adicCompletionIntegers F) :
@@ -162,9 +160,9 @@ def IdxPiH (a : ℕ) : Prop :=
     ((smulSub ϖ (HO σ v a)).relIndex (HO σ v a) : ℝ) = qv v ^ (a ^ 2)
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `sdc_unifEx_holds v`. Establish `hd0` using `dV_ne_zero v`. Take `⟨k, u, hu, hu', hu0, hd, habs⟩` from `exists_unit_pow v hϖ hd0 (dV_int v)`. Establish `e1 : P.relIndex (smulSub (dV v)⁻¹ P) = (smulSub ϖ P).relIndex P ^ k`. Rewrite using `[← relIndex_smulSub v hd0, smulSub_smulSub, mul_inv_cancel₀ hd0, smulSub_one, hd, ← smulSub_smulSub, smulSub_unit v hu hu' hu0 P hP, relIndex_pow v (unif_ne_zero v hϖ) (unif_int v hϖ) P hP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, Nat.cast_pow, hN ϖ hϖ, habs, he]`. Establish `hq` using `qv_pos v`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul hq.le, ← pow_mul, ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -188,7 +186,7 @@ theorem relIndex_dV {W : Type} [AddCommGroup W] [Module (Fv F v) W] (P : AddSubg
   ring
 
 /- English proof (translation)
-Introduce `hL hU`. Conclude with `relIndex_dV v (LW v Λ a) (fun s hs x hx => smul_mem_LW v Λ hs hx) (2 * n * a) _ (fun ϖ hϖ => h hL hU ϖ hϖ) (by push_cast; ring)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idxW_of (a : ℕ) (h : IdxPiW v Λ a) : IdxW v Λ a := by
   intro hL hU
@@ -196,7 +194,7 @@ theorem idxW_of (a : ℕ) (h : IdxPiW v Λ a) : IdxW v Λ a := by
     (fun ϖ hϖ => h hL hU ϖ hϖ) (by push_cast; ring)
 
 /- English proof (translation)
-Introduce `hU ϖ hϖ`. Use `⟨relIndex_dV v (HO σ v a) (fun s hs x hx => smul_mem_HO σ v hs hx) (a ^ 2) _ (fun ϖ hϖ => h hU ϖ hϖ) (by push_cast; ring), h hU ϖ hϖ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem idxHO_of (a : ℕ) (h : IdxPiH σ v a) : IdxHO σ v a := by
   intro hU ϖ hϖ

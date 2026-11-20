@@ -24,15 +24,13 @@ def cfR (c : ℕ) {ρ : ℕ} (r : Fin ρ → D.host.E) : Matrix (Fin ρ) (Fin c)
   fun p q => if p.1 = q.1 then (r p)⁻¹ else 0
 
 /- English proof (translation)
-Use `Matrix.ext fun k q => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [colsOf, cfR, cfE']`. Distinguish the cases in `hq : q.1 < ρ`. Rewrite using `[Finset.sum_eq_single ⟨q.1, hq⟩, Finset.sum_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl, add_zero, show (Fin.castLE h ⟨q.1, hq⟩ : Fin c) = q from Fin.ext rfl, mul_comm, ← mul_assoc, inv_mul_cancel₀ (hr _), one_mul]`. Introduce `p _`. Rewrite using `[if_neg (by omega), mul_zero]`. Introduce `p _ hp`. Rewrite using `[if_neg (fun e => hp (Fin.ext e)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Establish `hp' : c - 1 - q.1 < ρ` using `by have := q.2; omega`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_single ⟨c - 1 - q.1, hp'⟩]`. Rewrite using `[if_pos (by have := q.2; simp only [Fin.val_mk]; omega), zero_add, show ((Fin.castLE h ⟨c - 1 - q.1, hp'⟩ : Fin c).rev) = q from Fin.ext (by simp [Fin.val_rev]; omega), mul_comm, ← mul_assoc, inv_mul_cancel₀ (hs _), one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p _ hp`. Rewrite using `[if_neg (fun e => hp (Fin.ext (show p.1 = c - 1 - q.1 by omega))), mul_zero]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Introduce `p _`.
-
-Rewrite using `[if_neg (by have := p.2; omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cols_mul_coeff_eq_reflected_sum {n c ρ : ℕ} (a : Matrix (Fin n) (Fin c) D.host.E) (hc : c = 2 * ρ) (h : ρ ≤ c) (r s : Fin ρ → D.host.E)
     (hr : ∀ p, r p ≠ 0) (hs : ∀ p, s p ≠ 0) :
@@ -63,25 +61,23 @@ theorem cols_mul_coeff_eq_reflected_sum {n c ρ : ℕ} (a : Matrix (Fin n) (Fin 
       rw [if_neg (by have := p.2; omega), mul_zero]
 
 /- English proof (translation)
-Establish `ha` using `cols_mul_coeff_eq_reflected_sum t.a hc hρ r s hr hs`. Rewrite `ha` using `[← he, ← he']`. Establish `hX : d.qX * t.a = cfR c r`. Rewrite using `[ha, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, GlobalTheory.SeeSaw.SplitLat.qX_e, GlobalTheory.SeeSaw.SplitLat.qX_e', Matrix.one_mul, Matrix.zero_mul, add_zero]`. Establish `hY : d.qY * t.a = cfE' c s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, GlobalTheory.SeeSaw.SplitLat.qY_e, GlobalTheory.SeeSaw.SplitLat.qY_e', Matrix.one_mul, Matrix.zero_mul, zero_add]`. Establish `h0 : d.q0 * t.a = 0`. Rewrite using `[ha, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, GlobalTheory.SeeSaw.SplitLat.wittDecomposition_coreProj_mul_e_eq_zero, GlobalTheory.SeeSaw.SplitLat.wittZeroProjection_mul_dualBasis_eq_zero, Matrix.zero_mul, Matrix.zero_mul, add_zero]`. Use `monoAt_of_proj d _ _ (fun i => ?_) (fun i => ?_) ?_ ?_ v` and prove the remaining obligations. Use `sumLat_map _ (Pi.single (Fin.castLE hρ i) 1) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[colProj_mul, ← hi, GlobalTheory.SeeSaw.SplitLat.qX_i₀, colProj_zero]`. Rewrite using `[colProj_mul, hX]`. Use `Matrix.ext fun k q => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, he]`. Simplify using `only [colProj, Matrix.of_apply, colsOf, cfR]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hq : i.1 = q.1`. Establish `e : (Fin.castLE hρ i : Fin c) = q` using `Fin.ext hq`. Substitute `e` using the available equality. Rewrite using `[if_pos hq, Pi.single_eq_same, mul_one, mul_comm (r i), mul_assoc, mul_inv_cancel₀ (hr _), mul_one]`. Establish `e : q ≠ (Fin.castLE hρ i : Fin c)` using `fun e => hq (by rw [e]; rfl)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hq, mul_zero, Pi.single_apply, if_neg e, mul_zero]`. Introduce `p`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `Or.inr rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inl rfl`. Use `sumLat_map _ (Pi.single (Fin.castLE hρ i : Fin c).rev 1) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[colProj_mul, ← hi, GlobalTheory.SeeSaw.SplitLat.qY_i₀, colProj_zero]`. Rewrite using `[colProj_mul, hY]`. Use `Matrix.ext fun k q => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_diagonal, he']`. Simplify using `only [colProj, Matrix.of_apply, colsOf, cfE']`. Distinguish the cases in `hq : q.1 + i.1 + 1 = c`. Establish `e : (Fin.castLE hρ i : Fin c).rev = q` using `Fin.ext (by simp [Fin.val_rev]; omega)`. Substitute `e` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hq, Pi.single_eq_same, mul_one, mul_comm (s i), mul_assoc, mul_inv_cancel₀ (hs _), mul_one]`. Establish `e : q ≠ (Fin.castLE hρ i : Fin c).rev` using `fun e => hq (by rw [e]; simp [Fin.val_rev]; omega)`. Rewrite using `[if_neg hq, mul_zero, Pi.single_apply, if_neg e, mul_zero]`. Introduce `p`. Rewrite using `[Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the second alternative.
 
-Use `split_ifs`. Conclude with `Or.inr rfl`. Conclude with `Or.inl rfl`. Conclude with `sumLat_proj d.q0 (by rw [← hi]; exact GlobalTheory.SeeSaw.SplitLat.wittDecomposition_coreProj_mul_core_eq_one d) h0`. Introduce `x hx`.
-
-Rewrite using `[hi]`. Conclude with `mem_sumLat_of hx`.
+Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_at_lattice_of_column_frames {A B : HSp D} {c ρ : ℕ} {ε : D.host.E} (t : HermitianOrthogonalExtensionData A B c ε) (d : HypDec B A ρ) (hc : c = 2 * ρ)
     (hρ : ρ ≤ c) (r s : Fin ρ → D.host.E) (hr : ∀ p, r p ≠ 0) (hs : ∀ p, s p ≠ 0)
@@ -140,9 +136,9 @@ theorem mono_at_lattice_of_column_frames {A B : HSp D} {c ρ : ℕ} {ε : D.host
     exact mem_sumLat_of hx
 
 /- English proof (translation)
-Establish `hρ : σ ≤ c` using `by omega`. Use `mono_at_lattice_of_column_frames t _ h hρ 1 1 (fun _ => one_ne_zero) (fun _ => one_ne_zero) ?_ ?_ rfl Λ 𝔟 v` and prove the remaining obligations. Use `Matrix.ext fun k p => ?_` and prove the remaining obligations. Simplify using `only [colsOf, Pi.one_apply, one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `Matrix.ext fun k p => ?_` and prove the remaining obligations. Simplify using `only [colsOf, Pi.one_apply, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem monoAt_jacDec {A B : HSp D} {c σ : ℕ} {ε : D.host.E} (t : HermitianOrthogonalExtensionData A B c ε) (h : c = 2 * σ)
     (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
@@ -159,7 +155,7 @@ theorem monoAt_jacDec {A B : HSp D} {c σ : ℕ} {ε : D.host.E} (t : HermitianO
 end GlobalTheory.RowShape.MonoRow
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, fun D _ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `n hn σ h v`. Rewrite using `[GlobalTheory.RowShape.rowN, dif_pos hn]`. Conclude with `GlobalTheory.RowShape.MonoRow.monoAt_jacDec _ h _ _ v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowShape.rowN_monoAt : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ n (hn : n < D.R.m) σ
     (h : D.R.m - 1 - n = 2 * σ) v, GlobalTheory.FinPl.MonoAt (rowJac ch.G n hn σ h) (GlobalTheory.RowShape.rowN ch.G n) (ch.G.Λ (.top n)) v := by

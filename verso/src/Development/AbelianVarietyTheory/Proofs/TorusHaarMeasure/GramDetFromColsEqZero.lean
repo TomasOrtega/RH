@@ -11,14 +11,14 @@ variable {m α β γ : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ]
 
 /- English proof (translation)
-The claim follows from `(Complex.nonneg_iff.mp (Matrix.posSemidef_conjTranspose_mul_self U).det_nonneg).1`.
+A detailed English derivation is pending.
 -/
 lemma gram_det_re_nonneg (U : Matrix m α ℂ) : 0 ≤ (Uᴴ * U).det.re :=
   (Complex.nonneg_iff.mp (Matrix.posSemidef_conjTranspose_mul_self U).det_nonneg).1
 
 omit [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β] in
 /- English proof (translation)
-Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma gram_fromCols (U : Matrix m α ℂ) (V : Matrix m β ℂ) :
     (fromCols U V)ᴴ * fromCols U V = fromBlocks (Uᴴ * U) (Uᴴ * V) (Vᴴ * U) (Vᴴ * V) := by
@@ -31,7 +31,7 @@ open scoped ComplexOrder ENNReal Pointwise in
 variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [Fintype n]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 /- English proof (translation)
-Establish `h` using `Complex.le_def.mp (posSemidef_conjTranspose_mul_self X).det_nonneg`. Conclude with `⟨by simpa using h.1, by simpa using h.2.symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private lemma gram_det_re_nonneg_and_im_eq_zero (X : Matrix m α ℂ) : 0 ≤ (Xᴴ * X).det.re ∧ (Xᴴ * X).det.im = 0 := by
   have h := Complex.le_def.mp (posSemidef_conjTranspose_mul_self X).det_nonneg
@@ -42,7 +42,7 @@ open scoped ComplexOrder ENNReal Pointwise in
 variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [Fintype n]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 /- English proof (translation)
-Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma gram_fromCols_eq_fromBlocks (X : Matrix m α ℂ) (N : Matrix m n ℂ) :
     (fromCols X N)ᴴ * fromCols X N = fromBlocks (Xᴴ * X) (Xᴴ * N) (Nᴴ * X) (Nᴴ * N) := by
@@ -53,11 +53,11 @@ open scoped ComplexOrder ENNReal Pointwise in
 variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [Fintype n]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 /- English proof (translation)
-Establish `hG : (Xᴴ * X)⁻¹ᴴ = (Xᴴ * X)⁻¹`. Rewrite using `[conjTranspose_nonsing_inv, conjTranspose_mul, conjTranspose_conjTranspose]`. Establish `hGG : (Xᴴ * X)⁻¹ * (Xᴴ * X) = 1` using `nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr h)`. Establish `hQ : X * (Xᴴ * X)⁻¹ * Xᴴ * (X * (Xᴴ * X)⁻¹ * Xᴴ) = X * (Xᴴ * X)⁻¹ * Xᴴ`. Rewrite using `[show X * (Xᴴ * X)⁻¹ * Xᴴ * (X * (Xᴴ * X)⁻¹ * Xᴴ) = X * ((Xᴴ * X)⁻¹ * (Xᴴ * X)) * (Xᴴ * X)⁻¹ * Xᴴ by simp only [Matrix.mul_assoc], hGG, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hP : (1 - X * (Xᴴ * X)⁻¹ * Xᴴ) * (1 - X * (Xᴴ * X)⁻¹ * Xᴴ) = 1 - X * (Xᴴ * X)⁻¹ * Xᴴ`. Rewrite using `[sub_mul, mul_sub, mul_sub, hQ]`. Simplify using `only [Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `hPh : (1 - X * (Xᴴ * X)⁻¹ * Xᴴ)ᴴ = 1 - X * (Xᴴ * X)⁻¹ * Xᴴ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[conjTranspose_sub, conjTranspose_one, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hG, Matrix.mul_assoc]`. Rewrite using `[conjTranspose_mul, hPh, Matrix.mul_assoc, ← Matrix.mul_assoc _ _ N, hP]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma gram_projection_residual_eq [DecidableEq m] (X : Matrix m α ℂ) (N : Matrix m n ℂ)
     (h : (Xᴴ * X).det ≠ 0) :
@@ -86,7 +86,7 @@ open scoped ComplexOrder ENNReal Pointwise in
 variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [Fintype n]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 /- English proof (translation)
-Use `haveI := invertibleOfIsUnitDet _ (isUnit_iff_ne_zero.mpr h)`. Rewrite using `[gram_fromCols_eq_fromBlocks, det_fromBlocks₁₁, invOf_eq_nonsing_inv, gram_projection_residual_eq X N h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gram_det_fromCols_eq_mul_residual [DecidableEq m] (X : Matrix m α ℂ) (N : Matrix m n ℂ)
     (h : (Xᴴ * X).det ≠ 0) :
@@ -100,7 +100,7 @@ open scoped ComplexOrder ENNReal Pointwise in
 variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [Fintype n]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 /- English proof (translation)
-Simplify using `[Complex.mul_re, hz]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma re_mul_of_im_eq_zero {z w : ℂ} (hz : z.im = 0) : (z * w).re = z.re * w.re := by
   simp [Complex.mul_re, hz]
@@ -110,9 +110,9 @@ open scoped ComplexOrder ENNReal Pointwise in
 variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [Fintype n]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 /- English proof (translation)
-Take `⟨v, hv0, hv⟩` from `exists_mulVec_eq_zero_iff.mpr h`. Establish `hXv : X *ᵥ v = 0` using `(conjTranspose_mul_self_mulVec_eq_zero X v).mp hv`. Use `exists_mulVec_eq_zero_iff.mp ⟨Sum.elim v 0, fun hw => hv0 ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `using congrFun hw (Sum.inl a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[conjTranspose_mul_self_mulVec_eq_zero, fromCols_mulVec]`. Simplify using `[Function.comp_def, hXv]`. Conclude with `N.mulVec_zero`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma gram_det_fromCols_eq_zero_of_gram_det_eq_zero (X : Matrix m α ℂ) (N : Matrix m n ℂ)
     (h : (Xᴴ * X).det = 0) : ((fromCols X N)ᴴ * fromCols X N).det = 0 := by
@@ -130,9 +130,9 @@ open scoped ComplexOrder ENNReal Pointwise in
 variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [Fintype n]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 /- English proof (translation)
-Distinguish the cases in `h : (Yᴴ * Y).det = 0`. Rewrite using `[gram_det_fromCols_eq_zero_of_gram_det_eq_zero Y Z h, h]`. Simplify using the standard rewrite rules. Rewrite using `[gram_det_fromCols_eq_mul_residual Y Z h, re_mul_of_im_eq_zero (gram_det_re_nonneg_and_im_eq_zero Y).2]`. Use `mul_le_mul_of_nonneg_left ?_ (gram_det_re_nonneg_and_im_eq_zero Y).1` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ : ((Yᴴ * Z)ᴴ * (Yᴴ * Y)⁻¹ * (Yᴴ * Z)).PosSemidef` using `(posSemidef_conjTranspose_mul_self Y).inv.conjTranspose_mul_mul_same _`. Establish `hmono'` using `(hmono γ _ _ (posSemidef_conjTranspose_mul_self ((1 - Y * (Yᴴ * Y)⁻¹ * Yᴴ) * Z)) hQ).2.1`. Use `hmono'.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[gram_projection_residual_eq Y Z h, conjTranspose_mul, conjTranspose_conjTranspose, sub_add_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gram_det_fromCols_le_mul
     (hmono : ∀ (n : Type) [Fintype n] [DecidableEq n] (P Q : Matrix n n ℂ), P.PosSemidef → Q.PosSemidef → 0 ≤ P.det.re ∧ P.det.re ≤ (P + Q).det.re ∧ (P.det ≠ 0 → (P + Q).det.re ≤ P.det.re → Q = 0))
@@ -156,9 +156,9 @@ open scoped ComplexOrder ENNReal Pointwise in
 variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [Fintype n]
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 /- English proof (translation)
-Distinguish the cases in `h : (Xᴴ * X).det = 0`. Rewrite using `[h]`. Simplify using `using mul_nonneg (gram_det_re_nonneg_and_im_eq_zero (fromCols X Y)).1 (gram_det_re_nonneg_and_im_eq_zero (fromCols X Z)).1`. Rewrite using `[gram_det_fromCols_eq_mul_residual X _ h, gram_det_fromCols_eq_mul_residual X Y h, gram_det_fromCols_eq_mul_residual X Z h, mul_fromCols, re_mul_of_im_eq_zero (gram_det_re_nonneg_and_im_eq_zero X).2, re_mul_of_im_eq_zero (gram_det_re_nonneg_and_im_eq_zero X).2, re_mul_of_im_eq_ze …`. Establish `hF` using `gram_det_fromCols_le_mul hmono ((1 - X * (Xᴴ * X)⁻¹ * Xᴴ) * Y) ((1 - X * (Xᴴ * X)⁻¹ * Xᴴ) * Z)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hF (mul_self_nonneg (Xᴴ * X).det.re)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 private lemma gram_det_koteljanskii_inequality
     (hmono : ∀ (n : Type) [Fintype n] [DecidableEq n] (P Q : Matrix n n ℂ), P.PosSemidef → Q.PosSemidef → 0 ≤ P.det.re ∧ P.det.re ≤ (P + Q).det.re ∧ (P.det ≠ 0 → (P + Q).det.re ≤ P.det.re → Q = 0))
@@ -182,9 +182,9 @@ variable {m α β γ n : Type} [Fintype m] [Fintype α] [Fintype β] [Fintype γ
   [DecidableEq α] [DecidableEq β] [DecidableEq γ] [DecidableEq n] in
 
 /- English proof (translation)
-Introduce `hmono m α β γ _ _ _ _ _ _ _ M`. Establish `key` using `gram_det_koteljanskii_inequality hmono (M.submatrix id Sum.inl) (M.submatrix id (Sum.inr ∘ Sum.inl)) (M.submatrix id (Sum.inr ∘ Sum.inr))`. Establish `hM : fromCols (M.submatrix id Sum.inl) (fromCols (M.submatrix id (Sum.inr ∘ Sum.inl)) (M.submatrix id (Sum.inr ∘ Sum.inr))) = M`. Apply the tactic sequence `ext x (a | b | c) <;> rfl`. Establish `hXY : fromCols (M.submatrix id Sum.inl) (M.submatrix id (Sum.inr ∘ Sum.inl)) = M.submatrix id (Sum.map id Sum.inl : α ⊕ β → α ⊕ β ⊕ γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext x (a | b) <;> rfl`. Establish `hXZ : fromCols (M.submatrix id Sum.inl) (M.submatrix id (Sum.inr ∘ Sum.inr)) = M.submatrix id (Sum.map id Sum.inr : α ⊕ γ → α ⊕ β ⊕ γ)`. Apply the tactic sequence `ext x (a | c) <;> rfl`. Rewrite `key` using `[hM, hXY, hXZ]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem _root_.GlobalTheory.gram_det_submodular :
     (∀ (n : Type) [Fintype n] [DecidableEq n] (P Q : Matrix n n ℂ), P.PosSemidef → Q.PosSemidef → 0 ≤ P.det.re ∧ P.det.re ≤ (P + Q).det.re ∧ (P.det ≠ 0 → (P + Q).det.re ≤ P.det.re → Q = 0)) → (∀ (m α β γ : Type) [Fintype m] [Fintype α] [Fintype β] [Fintype γ] [DecidableEq α] [DecidableEq β] [DecidableEq γ] (M : Matrix m (α ⊕ β ⊕ γ) ℂ), (((M.submatrix id (Sum.inl : α → α ⊕ β ⊕ γ))ᴴ * (M.submatrix id (Sum.inl : α → α ⊕ β ⊕ γ))).det.re) * (((M)ᴴ * (M)).det.re) ≤ (((M.submatrix id (Sum.map id Sum.inl : α ⊕ β → α ⊕ β ⊕ γ))ᴴ * (M.submatrix id (Sum.map id Sum.inl : α ⊕ β → α ⊕ β ⊕ γ))).det.re) * (((M.submatrix id (Sum.map id Sum.inr : α ⊕ γ → α ⊕ β ⊕ γ))ᴴ * (M.submatrix id (Sum.map id Sum.inr : α ⊕ γ → α ⊕ β ⊕ γ))).det.re)) := by

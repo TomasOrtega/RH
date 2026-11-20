@@ -26,11 +26,11 @@ noncomputable section
 namespace GlobalTheory.KosField
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `Submodule.iSup_induction (motive := fun y => ∃ t : J → M, y = ∑ j ∈ Finset.univ.filter P, φ j (t j)) _ hy (fun j z hz => ?_) ⟨0, by simp⟩ ?_` and prove the remaining obligations. Distinguish the cases in `hj : P j`. Rewrite `hz` using `[iSup_pos hj]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, rfl⟩` from `hz`. Use `⟨Pi.single j w, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by rw [Pi.single_eq_of_ne hb, map_zero]) (fun h => absurd (by simpa using hj) h), Pi.single_eq_same]`. Rewrite `hz` using `[iSup_neg hj, Submodule.mem_bot]`. Conclude with `⟨0, by simp [hz]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `a b ⟨t, rfl⟩ ⟨u, rfl⟩`. Conclude with `⟨t + u, by simp [Finset.sum_add_distrib]⟩`. Introduce and unpack `⟨t, rfl⟩`. Use `Submodule.sum_mem _ fun j hj => ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem j (Submodule.mem_iSup_of_mem (by simpa using hj) ⟨t j, rfl⟩)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_iSup_range_iff {R M N J : Type} [Ring R] [AddCommGroup M] [AddCommGroup N] [Module R M] [Module R N]
     [Fintype J] (P : J → Prop) [DecidablePred P] (φ : J → M →ₗ[R] N) (y : N) :
@@ -56,13 +56,13 @@ theorem mem_iSup_range_iff {R M N J : Type} [Ring R] [AddCommGroup M] [AddCommGr
     exact Submodule.mem_iSup_of_mem j (Submodule.mem_iSup_of_mem (by simpa using hj) ⟨t j, rfl⟩)
 
 /- English proof (translation)
-Establish `hi : (i : ℕ) < (List.ofFn f).length` using `by simp`. Establish `h1` using `h.regular_mod_prev i hi`. Rewrite `h1` using `[isSMulRegular_quotient_iff_mem_of_smul_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h2 : Ideal.ofList ((List.ofFn f).take i) = ⨆ (j : Fin g) (_ : (j : ℕ) < i), LinearMap.range (LinearMap.mulLeft R (f j))`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.ofList, Ideal.span_le]`. Introduce `z hz`. Take `⟨k, hk, rfl⟩` from `List.mem_take_iff_getElem.1 hz`. Establish `hk' : k < g` using `by simp at hk; omega`. Use `Submodule.mem_iSup_of_mem (⟨k, hk'⟩ : Fin g) (Submodule.mem_iSup_of_mem (by simp at hk ⊢; omega) ⟨1, ?_⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `iSup₂_le fun j hj => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Use `Ideal.mul_mem_right _ _ (Ideal.subset_span ?_)` and prove the remaining obligations. Conclude with `List.mem_take_iff_getElem.2 ⟨j, by simp; omega, by simp⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `(mem_iSup_range_iff _ _ _).1 (h1 a ((mem_iSup_range_iff _ _ _).2 ⟨r, by simpa using e⟩))`.
+A detailed English derivation is pending.
 -/
 theorem regular_step {R : Type} [CommRing R] {g : ℕ} (f : Fin g → R)
     (h : RingTheory.Sequence.IsWeaklyRegular R (List.ofFn f)) (i : Fin g) (a : R) (r : Fin g → R)
@@ -94,7 +94,7 @@ def sf (s : LB.Sec (pw L n)) (k : L.ι) : Γ(X, L.U k) := s.f k
 def co (x : SecOn (pw L l) V) (k : L.ι) : Γ(X, V ⊓ L.U k) := GlobalTheory.LB.coord x k
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LB.sec_ext h`.
+A detailed English derivation is pending.
 -/
 theorem co_ext {x y : SecOn (pw L l) V} (h : ∀ k, co x k = co y k) : x = y := GlobalTheory.LB.sec_ext h
 
@@ -126,7 +126,7 @@ Both sides reduce to the same expression.
 theorem co_ofSec (s : LB.Sec (pw L l)) (k : L.ι) :
     co (GlobalTheory.LB.ofSec s V) k = rs X inf_le_right (sf s k) := rfl
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, co_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem co_sum {J : Type} (T : Finset J) (x : J → SecOn (pw L l) V) (k : L.ι) :
     co (∑ j ∈ T, x j) k = ∑ j ∈ T, co (x j) k := by
@@ -136,7 +136,7 @@ theorem co_sum {J : Type} (T : Finset J) (x : J → SecOn (pw L l) V) (k : L.ι)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, co_add, ih]
 
 /- English proof (translation)
-The claim follows from `SecOn.compat x i j hi hj hij`.
+A detailed English derivation is pending.
 -/
 theorem co_compat (x : SecOn (pw L l) V) (i j : L.ι) {O : X.Opens} (hi : O ≤ V ⊓ L.U i) (hj : O ≤ V ⊓ L.U j)
     (hij : O ≤ L.U i ⊓ L.U j) :
@@ -144,7 +144,7 @@ theorem co_compat (x : SecOn (pw L l) V) (i j : L.ι) {O : X.Opens} (hi : O ≤ 
   SecOn.compat x i j hi hj hij
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LB.sec_rel s i j hi hj hij`.
+A detailed English derivation is pending.
 -/
 theorem sf_compat (s : LB.Sec (pw L n)) (i j : L.ι) {O : X.Opens} (hi : O ≤ L.U i) (hj : O ≤ L.U j)
     (hij : O ≤ L.U i ⊓ L.U j) :
@@ -175,14 +175,14 @@ def mulPw (s : LB.Sec (pw L n)) (l l' : ℤ) (V : X.Opens) :
   if h : l' = l + n then mulEq s h V else 0
 
 /- English proof (translation)
-Rewrite using `[mulPw, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem co_mulPw (s : LB.Sec (pw L n)) (h : l' = l + n) (x : SecOn (pw L l) V) (k : L.ι) :
     co (mulPw s l l' V x) k = rs X inf_le_right (sf s k) * co x k := by
   rw [mulPw, dif_pos h]; rfl
 
 /- English proof (translation)
-Distinguish the cases in `e : l' = l + n`. Conclude with `co_ext fun k => by simp only [co_mulPw s e, co_restrict, map_mul, rs_rs]`. Simplify using `only [mulPw, dif_neg e, LinearMap.zero_apply, map_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulPw_restrict (s : LB.Sec (pw L n)) (h : W ≤ V) (x : SecOn (pw L l) V) :
     mulPw s l l' W (SecOn.restrict _ h x) = SecOn.restrict _ h (mulPw s l l' V x) := by
@@ -191,7 +191,7 @@ theorem mulPw_restrict (s : LB.Sec (pw L n)) (h : W ≤ V) (x : SecOn (pw L l) V
   · simp only [mulPw, dif_neg e, LinearMap.zero_apply, map_zero]
 
 /- English proof (translation)
-The claim follows from `co_ext fun k => by rw [co_mulPw _ h', co_mulPw _ h', co_mulPw _ h, co_mulPw _ h, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem mulPw_comm (s s' : LB.Sec (pw L n)) {l'' : ℤ} (h : l' = l + n) (h' : l'' = l' + n)
     (x : SecOn (pw L l) V) :
@@ -209,16 +209,16 @@ theorem ch_apply (hL : L.IsLB) (k : L.ι) (h : V ≤ L.U k) (x : SecOn (pw L l) 
     ch hL l k h x = rs X (le_inf le_rfl h) (co x k) := rfl
 
 /- English proof (translation)
-Rewrite using `[ch_apply, ch_apply, co_mulPw s e, map_mul, rs_rs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ch_mulPw (hL : L.IsLB) (k : L.ι) (h : V ≤ L.U k) (s : LB.Sec (pw L n)) (e : l' = l + n)
     (x : SecOn (pw L l) V) : ch hL l' k h (mulPw s l l' V x) = rs X h (sf s k) * ch hL l k h x := by
   rw [ch_apply, ch_apply, co_mulPw s e, map_mul, rs_rs]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨fun j => ch hL l k h (t j), by simp only [map_sum, ch_mulPw hL k h _ e]⟩`. Introduce and unpack `⟨r, hr⟩`. Use `⟨fun j => (ch hL l k h).symm (r j), (ch hL l' k h).injective ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hr, map_sum, ch_mulPw hL k h _ e, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_mulPw_iff (hL : L.IsLB) (k : L.ι) (h : V ≤ L.U k) {J : Type} (T : Finset J)
     (s : J → LB.Sec (pw L n)) (e : l' = l + n) (y : SecOn (pw L l') V) :
@@ -237,7 +237,7 @@ def mulCube (s : LB.Sec (pw L n)) (l l' : ℤ) : secCube f (pw L l) D ⟶ secCub
   secCubeMap f D (mulPw s l l') (mulPw_restrict s)
 
 /- English proof (translation)
-Use extensionality with `T x`. Conclude with `mulPw_comm s s' h h' x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mulCube_comm (s s' : LB.Sec (pw L n)) (l l' l'' : ℤ) (h : l' = l + n) (h' : l'' = l' + n) :
     mulCube f D s l l' ≫ mulCube f D s' l' l'' = mulCube f D s' l l' ≫ mulCube f D s l' l'' := by
@@ -245,7 +245,7 @@ theorem mulCube_comm (s s' : LB.Sec (pw L n)) (l l' l'' : ℤ) (h : l' = l + n) 
   exact mulPw_comm s s' h h' x
 
 /- English proof (translation)
-The claim follows from `mem_iSup_range_iff P _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_mulCube_iff {J : Type} [Fintype J] (P : J → Prop) [DecidablePred P] (s : J → LB.Sec (pw L n))
     (T : Finset κ) (y : SecOn (pw L l') (⨅ i ∈ T, D i)) :
@@ -256,9 +256,9 @@ theorem mem_mulCube_iff {J : Type} [Fintype J] (P : J → Prop) [DecidablePred P
   mem_iSup_range_iff P _ _
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Use `choose ta hta using fun j => (SecOn.ofSec_bijective (M := pw L l) hV).2 (t j)`. Use `⟨ta, fun k => ?_⟩` and prove the remaining obligations. Establish `hk : L.U k ≤ V ⊓ L.U k` using `le_inf (hV ▸ le_top) le_rfl`. Use `congrArg (fun z => rs X hk (co z k)) ht` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [co_sum, co_mulPw _ e, ← hta, co_ofSec, map_sum, map_mul, rs_rs, rs_self] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_sec_sum_of_ofSec_eq_sum (hV : V = ⊤) {J : Type} (T : Finset J) (s : J → LB.Sec (pw L n)) (e : l' = l + n)
     (y : LB.Sec (pw L l')) (h : ∃ t : J → SecOn (pw L l) V,
@@ -273,26 +273,26 @@ theorem exists_sec_sum_of_ofSec_eq_sum (hV : V = ⊤) {J : Type} (T : Finset J) 
   exact this
 
 /- English proof (translation)
-The claim follows from `gs_res (𝟙 X) y h hy a`.
+A detailed English derivation is pending.
 -/
 theorem gs_rs (y : X) (h : W ≤ V) (hy : y ∈ W) (a : Γ(X, V)) :
     gs (𝟙 X) y W (rs X h a) = gs (𝟙 X) y V a := gs_res (𝟙 X) y h hy a
 
 /- English proof (translation)
-The claim follows from `gs_eq (𝟙 X) y V hy a`.
+A detailed English derivation is pending.
 -/
 theorem gs_germ (y : X) (hy : y ∈ V) (a : Γ(X, V)) :
     gs (𝟙 X) y V a = (X.presheaf.germ V y hy).hom a := gs_eq (𝟙 X) y V hy a
 
 /- English proof (translation)
-Simplify using `only [gs_germ y hy, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sub' (y : X) (hy : y ∈ V) (a b : Γ(X, V)) :
     gs (𝟙 X) y V (a - b) = gs (𝟙 X) y V a - gs (𝟙 X) y V b := by
   simp only [gs_germ y hy, map_sub]
 
 /- English proof (translation)
-Establish `hO : y ∈ V ⊓ L.U k ⊓ L.U k'` using `⟨⟨hy, hk⟩, hk'⟩`. Use `congrArg (gs (𝟙 X) y _) (co_compat x k k' (O := V ⊓ L.U k ⊓ L.U k') inf_le_left (inf_le_inf_right _ inf_le_left) (inf_le_inf_right _ inf_le_right))` as an intermediate fact. Rewrite `this` using `[gs_mul _ y _ hO, gs_rs y _ hO, gs_rs y _ hO, gs_rs y _ hO]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_co_change (x : SecOn (pw L l) V) (y : X) (hy : y ∈ V) {k k' : L.ι} (hk : y ∈ L.U k) (hk' : y ∈ L.U k') :
     gs (𝟙 X) y (V ⊓ L.U k) (co x k) =
@@ -303,7 +303,7 @@ theorem gs_co_change (x : SecOn (pw L l) V) (y : X) (hy : y ∈ V) {k k' : L.ι}
   rwa [gs_mul _ y _ hO, gs_rs y _ hO, gs_rs y _ hO, gs_rs y _ hO] at this
 
 /- English proof (translation)
-Establish `hO : y ∈ L.U k ⊓ L.U k'` using `⟨hk, hk'⟩`. Use `congrArg (gs (𝟙 X) y _) (sf_compat s k k' inf_le_left inf_le_right le_rfl)` as an intermediate fact. Rewrite `this` using `[gs_mul _ y _ hO, gs_rs y _ hO, gs_rs y _ hO, gs_rs y _ hO]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gs_sf_change (s : LB.Sec (pw L n)) (y : X) {k k' : L.ι} (hk : y ∈ L.U k) (hk' : y ∈ L.U k') :
     gs (𝟙 X) y (L.U k) (sf s k) =
@@ -316,7 +316,7 @@ def zI {J : Type} (s : J → LB.Sec (pw L n)) (y : X) (k : L.ι) : Ideal (X.pres
   Ideal.span (Set.range fun i => gs (𝟙 X) y (L.U k) (sf (s i) k))
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [gs_sf_change (s i) y hk hk']`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zI_le {J : Type} (s : J → LB.Sec (pw L n)) (y : X) {k k' : L.ι} (hk : y ∈ L.U k) (hk' : y ∈ L.U k') :
     zI s y k ≤ zI s y k' := by
@@ -326,18 +326,18 @@ theorem zI_le {J : Type} (s : J → LB.Sec (pw L n)) (y : X) {k k' : L.ι} (hk :
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Simplify using `only [gs_rs y h hy, zI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zI_eq {J : Type} (s : J → LB.Sec (pw L n)) (y : X) {k : L.ι} (h : V ≤ L.U k) (hy : y ∈ V) :
     Ideal.span (Set.range fun i => gs (𝟙 X) y V (rs X h (sf (s i) k))) = zI s y k := by
   simp only [gs_rs y h hy, zI]
 
 /- English proof (translation)
-Rewrite using `[X.mem_basicOpen _ y hy, ← gs_germ y hy, gs_rs y h hy]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨k, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[gs_germ y (h hy)]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(X.mem_basicOpen (sf s k) y (h hy)).2 hu`. Introduce `hn`. Take `⟨k', hk'⟩` from `TopologicalSpace.Opens.mem_iSup.1 hn`. Establish `hy' : y ∈ L.U k'` using `X.basicOpen_le (sf s k') hk'`. Establish `hu` using `(X.mem_basicOpen (sf s k') y hy').1 hk'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[← gs_germ y hy', gs_sf_change s y hy' (h hy)]`. Conclude with `isUnit_of_mul_isUnit_right hu`.
+A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_iff (s : LB.Sec (pw L n)) (y : X) {k : L.ι} (h : V ≤ L.U k) (hy : y ∈ V) :
     y ∈ X.basicOpen (rs X h (sf s k)) ↔ y ∈ Out.nonzeroLocus s := by
@@ -355,13 +355,13 @@ theorem mem_basicOpen_iff (s : LB.Sec (pw L n)) (y : X) {k : L.ι} (h : V ≤ L.
     exact isUnit_of_mul_isUnit_right hu
 
 /- English proof (translation)
-The claim follows from `gs_rs y _ hy _`.
+A detailed English derivation is pending.
 -/
 theorem gs_ch (hL : L.IsLB) {k : L.ι} (h : V ≤ L.U k) (x : SecOn (pw L l) V) (y : X) (hy : y ∈ V) :
     gs (𝟙 X) y V (ch hL l k h x) = gs (𝟙 X) y (V ⊓ L.U k) (co x k) := gs_rs y _ hy _
 
 /- English proof (translation)
-Establish `hO : y ∈ V ⊓ L.U k` using `⟨hy, hk⟩`. Rewrite using `[co_sum, gs_germ y hO, map_sum]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[co_mulPw _ e, map_mul, ← gs_germ y hO, gs_rs y _ hO]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_sum_mem {J : Type} (T : Finset J) (s : J → LB.Sec (pw L n)) (e : l' = l + n)
     (t : J → SecOn (pw L l) V) (y : X) (hy : y ∈ V) {k : L.ι} (hk : y ∈ L.U k) :
@@ -373,9 +373,9 @@ theorem gs_sum_mem {J : Type} (T : Finset J) (s : J → LB.Sec (pw L n)) (e : l'
   exact Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[sum_mulPw_iff hL k h _ s e, Finset.filter_true_of_mem (fun j _ => j.2)]`. Use `GlobalTheory.mem_span_of_forall_germ_mem_span X V (Fin g) (fun i => rs X h (sf (s i) k)) (ch hL l' k h σ) hV fun y hy hz => by` as an intermediate fact. Rewrite using `[zI_eq s y h hy, gs_ch hL h σ y hy, gs_co_change σ y hy (h hy) (hc y)]`. Conclude with `Ideal.mul_mem_left _ _ (zI_le s y (hc y) (h hy) (hσ y hy fun i hi => hz i ((mem_basicOpen_iff (s i) y h hy).2 hi)))`. Take `⟨r, hr⟩` from `Ideal.mem_span_range_iff_exists_fun.1 this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨r, by rw [← hr]; exact Finset.sum_congr rfl fun j _ => mul_comm _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem sum_of_germs (hL : L.IsLB) (hV : IsAffineOpen V) {k : L.ι} (h : V ≤ L.U k) {g : ℕ}
     (s : Fin g → LB.Sec (pw L n)) (e : l' = l + n) (c : X → L.ι) (hc : ∀ y, y ∈ L.U (c y))
@@ -393,9 +393,9 @@ theorem sum_of_germs (hL : L.IsLB) (hV : IsAffineOpen V) {k : L.ι} (h : V ≤ L
   exact ⟨r, by rw [← hr]; exact Finset.sum_congr rfl fun j _ => mul_comm _ _⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `GlobalTheory.GermInterp.exists_germ_sub_mem K X p V J (fun i => rs X h (sf (s i) k)) (fun y => gs (𝟙 X) y (L.U (c y) ⊓ L.U k) ((L.g (c y) k ^ l)⁻¹).val * a y) hp hV (hZ.subset fun y hy i hi => hy.2 i ((mem_basicOpen_iff (s i) y h hy.1).2 hi))`. Use `⟨(ch hL l k h).symm r, fun y hy hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hr y hy fun i hi => hz i ((mem_basicOpen_iff (s i) y h hy).1 hi)`. Establish `hO : y ∈ L.U (c y) ⊓ L.U k` using `⟨hc y, h hy⟩`. Rewrite `h1` using `[zI_eq s y h hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Ideal.mul_mem_left _ (gs (𝟙 X) y (L.U (c y) ⊓ L.U k) (L.g (c y) k ^ l).val) (zI_le s y (h hy) (hc y) h1)`. Rewrite `h2` using `[mul_sub, ← _root_.mul_assoc, ← gs_mul _ y _ hO, Units.mul_inv, gs_germ y hO 1, map_one, _root_.one_mul]`. Rewrite using `[gs_co_change _ y hy (hc y) (h hy), ← gs_ch hL h _ y hy, LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_interp {K : Type} [Field K] (p : X ⟶ Sp K) (hp : LocallyOfFiniteType p)
     (hL : L.IsLB) (hV : IsAffineOpen V) {k : L.ι} (h : V ≤ L.U k) {J : Type}
@@ -421,9 +421,9 @@ Simplify using the standard rewrite rules.
 theorem biInf_empty : (⨅ i ∈ (∅ : Finset κ), D i) = ⊤ := by simp
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [biInf_empty]`. Discharge the goal by the elementary cases of `trivial`. Consider the case `insert a s _ ih`. Rewrite using `[Finset.iInf_insert]`.
+Proceed by induction. Treat this case separately. Check the elementary cases of the proposition. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h a (by simp), ih fun b hb => h b (by simp [hb])⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_biInf_of_forall (T : Finset κ) (y : X) (h : ∀ a ∈ T, y ∈ D a) : y ∈ ⨅ i ∈ T, D i := by
   classical
@@ -434,7 +434,7 @@ theorem mem_biInf_of_forall (T : Finset κ) (y : X) (h : ∀ a ∈ T, y ∈ D a)
     exact ⟨h a (by simp), ih fun b hb => h b (by simp [hb])⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(sum_mulPw_iff hL k h _ s e _).1 ((mem_mulCube_iff f D (fun j : Fin g => (j : ℕ) < i) s T (mulPw (s i) l l' _ y)).1 hy)`. Use `replace hr := (ch_mulPw hL k h (s i) e y).symm.trans hr`. Conclude with `(mem_mulCube_iff f D (fun j : Fin g => (j : ℕ) < i) s T y).2 ((sum_mulPw_iff hL k h _ s (sub_add_cancel l n).symm y).2 (regular_step _ hreg i _ r hr))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem regular_cube (hL : L.IsLB) {g : ℕ} (s : Fin g → LB.Sec (pw L n)) (T : Finset κ) (k : L.ι)
     (h : ⨅ i ∈ T, D i ≤ L.U k)
@@ -450,23 +450,21 @@ theorem regular_cube (hL : L.IsLB) {g : ℕ} (s : Fin g → LB.Sec (pw L n)) (T 
     ((sum_mulPw_iff hL k h _ s (sub_add_cancel l n).symm y).2 (regular_step _ hreg i _ r hr))
 
 /- English proof (translation)
-Take `⟨I, _, D, kk, hD, hle, hcov⟩` from `exists_finite_affine_refinement hL`. Use `letI : LinearOrder I := linearOrderOfSTO WellOrderingRel`. Use `haveI : X.IsSeparated := by`. Rewrite using `[Scheme.isSeparated_iff, ← terminal.comp_from p]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haff : ∀ T : Finset I, T.Nonempty → IsAffineOpen (⨅ i ∈ T, D i)` using `fun T hT => IsAffineOpen.biInf _ (Finset.finite_toSet _) (by exact_mod_cast hT) fun i _ => hD i`. Establish `hin : ∀ (T : Finset I) a, a ∈ T → ⨅ i ∈ T, D i ≤ L.U (kk a)` using `fun T a ha => (biInf_le _ ha).trans (hle a)`. Establish `htop : ⨆ i, D i = ⊤` using `top_unique fun y _ => TopologicalSpace.Opens.mem_iSup.2 (hcov y)`. Take `⟨H1, H2⟩` from `GlobalTheory.cube_cut_regular_sequence K I g n (fun l => secCube p (pw L l) D) (fun i => mulCube p D (s i)) hn (fun i j => mulCube_comm p D (s i) (s j)) (fun T hT i l l' y e hy => by`. Take `⟨a, ha⟩` from `hT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Conclude with `regular_cube p D hL s T (kk a) (hin T a ha) (hreg _ _ _ (haff T ⟨a, ha⟩)) i l l' y e hy)`. Use the proof step `(fun l hl => hvan l I D hl hD htop)`. Use `⟨fun i l y ta hi e d hd => ?_, fun l hl => ⟨fun a => ?_, fun sg hsg d hd => ?_⟩⟩` and prove the remaining obligations. Substitute `hd` using the available equality. Use `exists_sec_sum_of_ofSec_eq_sum (biInf_empty D) _ s (sub_add_cancel l n).symm y ((mem_mulCube_iff p D (fun j : Fin g => (j : ℕ) < i) s ∅ _).1 (H1 i l (l + n) (GlobalTheory.LB.ofSec y _ : SecOn (pw L l) _) rfl hi ((mem_mulCube_iff p D (fun j : Fin g => (j : ℕ) < i) s ∅ (mulPw (s i) …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [co_sum, co_mulPw _ rfl, co_ofSec, ← map_mul, ← map_sum, e k]`. Use `choose σ hσ using fun b : I => exists_interp p hp hL (haff {b} (by simp)) (hin {b} b (by simp)) s hZ c hc a l`. Take `⟨y₀, hy₀⟩` from `(H2 l hl).2 σ fun b b' => by`. Establish `h1` using `iInf_le_iInf_of_subset D (show ({b} : Finset I) ⊆ {b, b'} by simp)`. Establish `h2` using `iInf_le_iInf_of_subset D (show ({b'} : Finset I) ⊆ {b, b'} by simp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(mem_mulCube_iff p D (fun j : Fin g => (j : ℕ) < g) s {b, b'} (SecOn.restrict _ h1 (σ b) - SecOn.restrict _ h2 (σ b'))).2 (sum_of_germs hL (haff _ (by simp)) (hin _ b (by simp)) s (sub_add_cancel l n).symm c hc _ fun y hy hz => ?_)` and prove the remaining obligations. Establish `hO : y ∈ (⨅ i ∈ ({b, b'} : Finset I), D i) ⊓ L.U (c y)` using `⟨hy, hc y⟩`. Rewrite using `[co_sub, co_restrict, co_restrict, gs_sub' y hO, gs_rs y _ hO, gs_rs y _ hO]`. Use `Ideal.sub_mem _ (hσ b y (h1 hy) hz) (hσ b' y (h2 hy) hz)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨sg, rfl⟩` from `(SecOn.ofSec_bijective (M := pw L l) (biInf_empty D)).2 y₀`. Use `⟨sg, fun y hz => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hcov y`. Establish `hy : y ∈ ⨅ i ∈ ({b} : Finset I), D i` using `mem_biInf_of_forall D _ y (by simpa using hb)`. Establish `hO : y ∈ (⨅ i ∈ ({b} : Finset I), D i) ⊓ L.U (c y)` using `⟨hy, hc y⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨t, ht⟩` from `(mem_mulCube_iff p D (fun j : Fin g => (j : ℕ) < g) s {b} (SecOn.restrict _ (iInf_le_iInf_of_subset D (Finset.empty_subset {b})) (GlobalTheory.LB.ofSec sg _) - σ b)).1 (hy₀ b)`. Establish `h1` using `gs_sum_mem (Finset.univ.filter (fun j : Fin g => (j : ℕ) < g)) s (sub_add_cancel l n).symm t y hy (hc y)`. Rewrite `h1` using `[← ht, SecOn.restrict_ofSec, co_sub, co_ofSec, gs_sub' y hO, gs_rs y _ hO]`. Use `Ideal.add_mem _ h1 (hσ b y hy hz)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hd` using the available equality. Use `exists_sec_sum_of_ofSec_eq_sum (biInf_empty D) _ s (sub_add_cancel l n).symm sg ((mem_mulCube_iff p D (fun j : Fin g => (j : ℕ) < g) s ∅ _).1 ((H2 l hl).1 (GlobalTheory.LB.ofSec sg _ : SecOn (pw L l) _) fun b => by` as an intermediate fact. Use `(mem_mulCube_iff p D (fun j : Fin g => (j : ℕ) < g) s {b} (SecOn.restrict _ (iInf_le_iInf_of_subset D (Finset.empty_subset {b})) (GlobalTheory.LB.ofSec sg _))).2 (sum_of_germs hL (haff _ (by simp)) (hin _ b (by simp)) s (sub_add_cancel l n).symm c hc _ fun y hy hz => ?_)` and prove the remaining obligations. Establish `hO : y ∈ (⨅ i ∈ ({b} : Finset I), D i) ⊓ L.U (c y)` using `⟨hy, hc y⟩`. Rewrite using `[SecOn.restrict_ofSec, co_ofSec, gs_rs y _ hO]`.
-
-Conclude with `hsg y hz))`. Rewrite `this` using `[Finset.filter_true_of_mem (fun j _ => j.2)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cut_global {K : Type} [Field K] (p : X ⟶ Sp K) [IsSeparated p] (hp : LocallyOfFiniteType p)
     [CompactSpace X] (hL : L.IsLB) {g : ℕ} (s : Fin g → LB.Sec (pw L n)) (hn : 0 < n)
@@ -555,15 +553,15 @@ namespace GlobalTheory
 open KosField in
 
 /- English proof (translation)
-Introduce `hlaw K _ _ x n l s b m c hn hl hZ hb hm hc`. Use `haveI := x.P.isAb.proper`. Use `haveI : CompactSpace x.P.A.left := QuasiCompact.compactSpace_of_compactSpace x.P.A.hom`. Take `⟨H1, H2⟩` from `cut_global (n := (n : ℤ)) x.P.A.hom inferInstance x.P.isLB s (by exact_mod_cast hn) hZ (fun V k h hV => GlobalTheory.KeyKa.isWeaklyRegular_of_finZ hlaw K x n s V k h hn hZ hV) (fun l I _ _ D => GlobalTheory.PolVanishing.exactAt_secCube_pw hlaw K x.P l I D) c hc`. Establish `hl' : (x.P.g : ℤ) * n < l` using `by exact_mod_cast hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.KeyKa.KosBasis.koszul_exact_of_regular K x n l s b m hl hb hm fun i j hij y ta e => ?_, (H2 l hl').1, fun sg hsg => ?_⟩` and prove the remaining obligations. Establish `h1 : (j + 1 + i) * n < l` using `lt_of_le_of_lt (Nat.mul_le_mul_right n hij) hl`. Establish `h2 : (i : ℕ) * n < l - (j + 1) * n` using `by rw [add_mul] at h1; omega`. Establish `H` using `H1 i _ y ta (by exact_mod_cast h2) e`. Break down `Nat.eq_zero_or_pos i with hi | hi` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨tb, htb⟩` from `H _ rfl`. Use `⟨fun _ => ⟨fun _ => 0, fun _ _ => by simp⟩, fun k => ?_⟩` and prove the remaining obligations. Establish `h0 : Finset.univ.filter (fun j : Fin x.P.g => (j : ℕ) < i) = ∅` using `Finset.filter_eq_empty_iff.2 fun j _ => by omega`. Use `htb k` as an intermediate fact. Rewrite `this` using `[h0, Finset.sum_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.trans (Finset.sum_eq_zero fun j _ => ?_).symm` and prove the remaining obligations. Conclude with `mul_zero _`. Use `H _ ?_` and prove the remaining obligations. Establish `h3 : n ≤ (i : ℕ) * n` using `Nat.le_mul_of_pos_left n hi`. Establish `h4 : (j + 2) * n = (j + 1) * n + n` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `(H2 l hl').2 sg hsg _ ?_` and prove the remaining obligations. Establish `h3 : n ≤ x.P.g * n` using `Nat.le_mul_of_pos_left n x.g_pos`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem koszul_sections_exact_field : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (n l : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (m) (c : x.P.A.left → x.P.L.ι), 1 ≤ n → x.P.g * n < l → FinZ x s → (∀ j ≤ x.P.g, IsBasis x (b j)) → IsMul x l s b m → (∀ y, y ∈ x.P.L.U (c y)) → (∀ v : KIx x.P.g 0 (fun j => (l - j * n) ^ x.P.g) → K, (kosD m (fun _ => 0)).mulVec v = 0 → ∃ w, ∀ p, p.1 ≠ ∅ → v (.inl p) = (kosD (d := 0) m (fun _ => 0)).mulVec w (.inl p)) ∧ (∀ a : ∀ y : x.P.A.left, x.P.A.left.presheaf.stalk y, ∃ sg : RR x l, ∀ y, (∀ i, y ∉ Out.nonzeroLocus (s i)) → gs (𝟙 _) y (x.P.L.U (c y)) (sg.f (c y)) - a y ∈ Ideal.span (Set.range fun i => gs (𝟙 _) y (x.P.L.U (c y)) ((s i).f (c y)))) ∧ ∀ sg : RR x l, (∀ y, (∀ i, y ∉ Out.nonzeroLocus (s i)) → gs (𝟙 _) y (x.P.L.U (c y)) (sg.f (c y)) ∈ Ideal.span (Set.range fun i => gs (𝟙 _) y (x.P.L.U (c y)) ((s i).f (c y)))) → ∃ ta : Fin x.P.g → RR x (l - 1 * n), ∀ c', (show Γ(x.P.A.left, x.P.L.U c') from sg.f c') = ∑ i, (show Γ(x.P.A.left, x.P.L.U c') from (s i).f c') * (show Γ(x.P.A.left, x.P.L.U c') from (ta i).f c') := by
   intro hlaw K _ _ x n l s b m c hn hl hZ hb hm hc

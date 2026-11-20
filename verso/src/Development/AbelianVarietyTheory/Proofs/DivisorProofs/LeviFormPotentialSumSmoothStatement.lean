@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MSmoot
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Mean4O GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.Cartier GlobalTheory.CxPts
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LeviRelation.levi_sum_eq_levi_of_relation` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviFormPotentialSumSmooth.lean&line=165#L165)
 -/

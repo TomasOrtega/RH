@@ -11,9 +11,9 @@ noncomputable def extQ (P : Ideal (MvPolynomial σ ℤ)) : Ideal (MvPolynomial �
   Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) P
 
 /- English proof (translation)
-Establish `hP' : ChZero P` using `hP`. Use `haveI hI : (extQ P).IsPrime := map_isPrime P hP'`. Use `⟨hI, comap_map_eq P hP', ?_⟩` and prove the remaining obligations. Establish `h1` using `coheight_eQ_add_one_le (⟨P, inferInstance⟩ : PrimeSpectrum (MvPolynomial σ ℤ)) hP'`. Establish `h2 : Order.coheight (⟨P, inferInstance⟩ : PrimeSpectrum (MvPolynomial σ ℤ)) ≤ Order.coheight (eQ ⟨P, inferInstance⟩ hP') + 1` using `Order.coheight_le fun s hs => length_le_coheight_eQ s _ hs hP'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : Order.coheight (eQ ⟨P, inferInstance⟩ hP') + 1 = Order.coheight (⟨P, inferInstance⟩ : PrimeSpectrum (MvPolynomial σ ℤ))` using `le_antisymm h1 h2`. Establish `hE : (⟨extQ P, hI⟩ : PrimeSpectrum (MvPolynomial σ ℚ)) = eQ ⟨P, inferInstance⟩ hP'` using `rfl`. Rewrite using `[ringKrullDim_quotient_eq_coheight (extQ P), ringKrullDim_quotient_eq_coheight P, hE, ← heq]`. Use `norm_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem extQ_spec (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime]
     (hP : ∀ m : ℤ, (C m : MvPolynomial σ ℤ) ∈ P → m = 0) :

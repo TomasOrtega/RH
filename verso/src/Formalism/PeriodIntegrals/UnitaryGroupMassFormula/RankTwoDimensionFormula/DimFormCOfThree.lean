@@ -11,19 +11,19 @@ namespace PI.UnitaryDimensionFormula
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `G _ Γ K n t A N hA hAN hK hΓ`. Establish `key : ∀ j i, DoubleCoset.mk Γ K (t i) = DoubleCoset.mk Γ K (t j) → ∃ γ ∈ Γ, ∃ κ ∈ K, t j = γ * t i * κ` using `fun j i h => (DoubleCoset.eq Γ K (t i) (t j)).mp h`. Establish `hcard : (Finset.univ : Finset (Fin n)).card ≤ N * (Finset.univ.image fun i => DoubleCoset.mk Γ K (t i)).card`. Apply `Finset.card_le_mul_card_image` to reduce the goal to its premises. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i0, -, rfl⟩` from `Finset.mem_image.mp ha`. Set `g : Fin n → G` to `fun j => if h : DoubleCoset.mk Γ K (t i0) = DoubleCoset.mk Γ K (t j) then (key j i0 h).choose else 1`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card_of_injOn g` to reduce the goal to its premises. Introduce `j hj`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj' : DoubleCoset.mk Γ K (t i0) = DoubleCoset.mk Γ K (t j)` using `((Finset.mem_filter.mp (Finset.mem_coe.mp hj)).2).symm`. Take `⟨hγ, κ, hκ, he⟩` from `(key j i0 hj').choose_spec`. Rewrite using `[Finset.mem_coe, Set.Finite.mem_toFinset]`. Simplify using `only [g, dif_pos hj']`. Conclude with `hΓ i0 j _ hγ κ hκ he`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj j' hj' hgg`. Establish `h1 : DoubleCoset.mk Γ K (t i0) = DoubleCoset.mk Γ K (t j)` using `((Finset.mem_filter.mp (Finset.mem_coe.mp hj)).2).symm`. Establish `h2 : DoubleCoset.mk Γ K (t i0) = DoubleCoset.mk Γ K (t j')` using `((Finset.mem_filter.mp (Finset.mem_coe.mp hj')).2).symm`. Take `⟨-, κ, hκ, he⟩` from `(key j i0 h1).choose_spec`. Take `⟨-, κ', hκ', he'⟩` from `(key j' i0 h2).choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, dif_pos h1, dif_pos h2] at hgg`. Apply `hK` to reduce the goal to its premises. Rewrite using `[he, he', hgg]`. Establish `e1 : ((key j' i0 h2).choose * t i0 * κ)⁻¹ * ((key j' i0 h2).choose * t i0 * κ') = κ⁻¹ * κ'` using `by group`. Rewrite using `[e1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `K.mul_mem (K.inv_mem hκ) hκ'`. Use `_ ≤ N := by`. Rewrite using `[← Set.ncard_eq_toFinset_card A hA, ← Nat.card_coe_set_eq]`. Conclude with `hAN`. Establish `e : Nat.card (Set.range fun i => DoubleCoset.mk Γ K (t i)) = (Finset.univ.image fun i => DoubleCoset.mk Γ K (t i)).card` using `by first`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `rw [Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card', Set.toFinset_range]`. Consider the case `simp [Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card']`. Rewrite using `[e]`. Simplify using `using hcard`.
+A detailed English derivation is pending.
 -/
 theorem orbitCount : OrbitCount := by
   intro G _ Γ K n t A N hA hAN hK hΓ
@@ -73,11 +73,11 @@ theorem orbitCount : OrbitCount := by
   simpa using hcard
 
 /- English proof (translation)
-Introduce `D X u hK h κ`. Take `⟨⟨κ, hκ'⟩, hκ⟩` from `κ`. Establish `hk : (X.xu u)⁻¹ * κ * X.xu u ∈ X.K2` using `hκ`. Use `show latS X u (h * κ) = latS X u h`. Establish `h2 : ((X.xu u)⁻¹ * κ * X.xu u)⁻¹ ∈ X.K2` using `hK.2.2.1 _ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.SG.HidaSetting.HidaSetting.K2 K2set at h2`. Establish `hs : ∀ x, x ∈ X.B.I.Lf ↔ (X.B.I.fmat ((X.xu u)⁻¹ * κ * X.xu u)⁻¹).mulVec x ∈ X.B.I.Lf` using `h2.1`. Establish `he : (h * κ * X.xu u)⁻¹ = ((X.xu u)⁻¹ * κ * X.xu u)⁻¹ * (h * X.xu u)⁻¹` using `by group`. Establish `hm : X.B.I.fmat (((X.xu u)⁻¹ * κ * X.xu u)⁻¹ * (h * X.xu u)⁻¹) = X.B.I.fmat ((X.xu u)⁻¹ * κ * X.xu u)⁻¹ * X.B.I.fmat (h * X.xu u)⁻¹` using `rfl`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [latS, Set.mem_setOf_eq]`. Rewrite using `[he, hm, ← Matrix.mulVec_mulVec]`. Conclude with `(hs _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kuStab : KuStab := by
   intro D X u hK h κ
@@ -98,7 +98,7 @@ theorem kuStab : KuStab := by
   exact (hs _).symm
 
 /- English proof (translation)
-The claim follows from `dimFormC_of_steps orbitCount hT kuStab hB hI`.
+A detailed English derivation is pending.
 -/
 theorem dimFormC_of_three (hT : Transport) (hB : StabBound) (hI : IndexGe) : Formalism.L2.SG.KappaOffDiagonal.DimFormC :=
   dimFormC_of_steps orbitCount hT kuStab hB hI

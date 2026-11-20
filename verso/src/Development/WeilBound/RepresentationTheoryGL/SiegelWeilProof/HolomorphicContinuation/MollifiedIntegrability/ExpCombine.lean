@@ -12,7 +12,7 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.WR PositivityTheory.Rg.Sw.WR.
 variable {n : ℕ} {X : Type} [MeasurableSpace X] {μ : Measure X} [SFinite μ]
 
 /- English proof (translation)
-Rewrite using `[ip_sub_right, ip_comm β y, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_combine (t : ℝ) (y q β : E n) :
     Complex.exp (Complex.I * t * ip y q) * Complex.exp (-(Complex.I * t * ip β y)) =
@@ -24,13 +24,11 @@ theorem exp_combine (t : ℝ) (y q β : E n) :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hfun : ∀ (y : E n) (x : X), Ψ x * Complex.exp (Complex.I * t * ip y (qq x)) * gam ε y * Complex.exp (-(Complex.I * t * ip β y)) = Ψ x * (gam ε y * Complex.exp (Complex.I * t * ip y (qq x - β)))`. Introduce `y x`. Rewrite using `[← exp_combine]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : ∀ y : E n, (∫ x, Ψ x * Complex.exp (Complex.I * t * ip y (qq x)) ∂μ) * gam ε y * Complex.exp (-(Complex.I * t * ip β y)) = ∫ x, Ψ x * (gam ε y * Complex.exp (Complex.I * t * ip y (qq x - β))) ∂μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[← integral_mul_const, ← integral_mul_const]`. Conclude with `integral_congr_ae (Eventually.of_forall fun x => hfun y x)`. Establish `hm1 : Measurable fun p : E n × X => ip p.1 (qq p.2 - β)` using `continuous_ip.measurable.comp (measurable_fst.prodMk ((hqq.comp measurable_snd).sub_const β))`. Establish `hm2 : Measurable fun p : E n × X => Complex.exp (Complex.I * t * ip p.1 (qq p.2 - β))` using `((Complex.measurable_ofReal.comp hm1).const_mul (Complex.I * t)).cexp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Integrable (fun p : E n × X => Ψ p.2 * (gam ε p.1 * Complex.exp (Complex.I * t * ip p.1 (qq p.2 - β)))) ((volume : Measure (E n)).prod μ)`. Use `Integrable.mono ((integrable_gauss (n := n) ε hε).mul_prod hΨ) ?_ ?_` and prove the remaining obligations. Conclude with `(hΨ.1.comp_snd (μ := (volume : Measure (E n)))).mul ((((continuous_gam ε).measurable.comp measurable_fst).mul hm2).aestronglyMeasurable)`. Use `Eventually.of_forall fun p => ?_` and prove the remaining obligations. Simplify using `only [norm_mul, norm_cexp_It, mul_one]`.
-
-Conclude with `le_of_eq (mul_comm _ _)`. Simplify using `only [hL, kr, ← integral_const_mul]`. Conclude with `integral_integral_swap hint`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step_a (Ψ : X → ℂ) (qq : X → E n) (hΨ : Integrable Ψ μ) (hqq : Measurable qq) (t ε : ℝ) (hε : 0 < ε)
     (β : E n) :

@@ -12,15 +12,15 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.ThetaFamily
 
 /- English proof (translation)
-Apply the tactic sequence `have re : ∀ {c : Fin g → ℂ}, (∀ k, c k = 0 ∨ c k = 1 / 2) → ∃ a : Fin g → ℝ, c = fun i => (a i : ℂ) := fun {c} hc => ⟨fun i => (c i).re, funext fun i => by rcases hc i with e | e <;> simp [e]⟩`. Take `⟨a₁, rfl⟩` from `re h₁`. Take `⟨a₂, rfl⟩` from `re h₂`. Establish `hinv : ∀ b ∈ B, h b * Matrix.of (fun i k => p k b i) = 1` using `fun b hb => by`. Use extensionality with `i k`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `congrFun ((hh b hb).2 k).1 i` as an intermediate fact. Rewrite using `[Matrix.one_apply, ← Pi.single_apply k (1 : ℂ) i, ← this]`. Both sides reduce to the same expression. Establish `dh : ∀ i j, DifferentiableOn ℂ (fun b => h b i j) B` using `differentiableOn_left_inverse (fun i k => differentiableOn_pi.1 (hp k) i) hinv`. Establish `dτ : ∀ i k, DifferentiableOn ℂ (fun b => τ b i k) B` using `fun i k => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(DifferentiableOn.fun_sum (u := Finset.univ) fun j _ => (dh i j).mul (differentiableOn_pi.1 (hq k) j)).congr fun b hb => ?_` and prove the remaining obligations. Use `congrFun ((hh b hb).2 k).2 i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `this.symm`. Establish `fst : ∀ {f : (Fin m → ℂ) → ℂ}, DifferentiableOn ℂ f B → DifferentiableOn ℂ (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => f bz.1) (B ×ˢ Set.univ)` using `fun hf => hf.comp differentiableOn_fst fun _ h => h.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨CanTh.differentiableOn_thetaChar (T := fun bz : (Fin m → ℂ) × (Fin g → ℂ) => τ bz.1) (Z := fun bz => (h bz.1).mulVec bz.2) (fun i k => fst (dτ i k)) (differentiableOn_pi.2 fun i => ?_) (fun w hw => CanTh.mem_thetaDomain (hh _ hw.1).1) a₁ a₂, fun b hb => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `DifferentiableOn.fun_sum fun j _ => (fst (dh i j)).mul (by fun_prop)`. Establish `dl : Differentiable ℂ (fun w : Fin g → ℂ => (h b).mulVec w)` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin (h b))).differentiable`. Use `frequently_ne_zero_of_entire (θ := fun w => thetaChar (τ b) (fun i => (a₁ i : ℂ)) (fun i => (a₂ i : ℂ)) ((h b).mulVec w)) ((CanTh.differentiable_thetaChar (CanTh.mem_thetaDomain (hh b hb).1) a₁ a₂).comp dl) fun h0 => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `thetaChar_ne_zero (hh b hb).1 a₁ a₂ (funext fun w => ?_)` and prove the remaining obligations. Use `congrFun h0 ((Matrix.of (fun i k => p k b i)).mulVec w)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, hinv b hb, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem thetaChar_family {g m : ℕ} {B : Set (Fin m → ℂ)} {p q : Fin g → (Fin m → ℂ) → (Fin g → ℂ)}
     {h τ : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ} (hp : ∀ k, DifferentiableOn ℂ (p k) B)
@@ -65,19 +65,19 @@ theorem thetaChar_family {g m : ℕ} {B : Set (Fin m → ℂ)} {p q : Fin g → 
     rwa [Matrix.mulVec_mulVec, hinv b hb, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Introduce `laws hsm hobj hpt hsec _ E _ _ _ H D l Xo σ g ty h1 h2 h3 D' t m B P y e bas sgn h τ hU hbas hh _ hc hP hy hol`. Establish `pt` using `hpt E H D l Xo σ g ty h1 h2 h3 D' t m B P y e bas sgn h τ hU hbas hh`. Establish `th` using `fun (c₁ c₂ : Fin g → ℂ) h₁ h₂ => thetaChar_family (c₁ := c₁) (c₂ := c₂) (p := fun k b => P b (bas (Pi.single (.inl k) 1))) (q := fun k b => P b (bas (Pi.single (.inr k) 1))) (fun k => hP.2 _) (fun k => hP.2 _) hh h₁ h₂`. Establish `he : ∀ b ∈ B, ∀ z, (e b z).left ≫ Xo.univ.t.G.hom = y b` using `fun b _ z => Over.w (e b z)`. Establish `he0 : ∀ b ∈ B, (e b 0).left = y b ≫ eSec Xo.univ.t.G` using `fun b hb => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[((hU b hb).2.2.2.1 0).2 (zero_mem _)]`. Both sides reduce to the same expression. Use `Xo.smooth` as an intermediate fact. Use `(hsm _ _ Xo.s (SmoothOfRelativeDimension.smooth D.dim Xo.s)).2.2` as an intermediate fact. Take `⟨o₁, o₂, o₃, o₄⟩` from `hobj E H D l _ _ _ _ Xo.univ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `sec : ∀ b₀ ∈ B, ∃ (V : Xo.X.Opens) (θ₀ : ∀ j, Γ(Xo.univ.t.G.left, Xo.univ.t.G.hom ⁻¹ᵁ V ⊓ Xo.univ.t.PP.L.U j)), ⊤ ≤ y b₀ ⁻¹ᵁ V ∧ ∀ b ∈ B, ⊤ ≤ y b ⁻¹ᵁ V → SpansFibre Xo.univ.t.PP (y b) V θ₀` using `fun b₀ _ => by`. Take `⟨V, θ₀, m₀, s₀, n₀⟩` from `hsec Xo.X { A := Xo.univ.t.G, isAb := o₁, g := _, smoothDim := o₂, L := Xo.univ.t.PP.L, isLB := Xo.univ.t.PP.isLB rigid := o₃, sym := o₄, ample := Xo.univ.ample, ktriv := Xo.univ.ktriv } (y b₀ (default : PrimeSpectrum ℂ))`. Conclude with `⟨V, θ₀, (top_le_preimage_iff_mem _ _).2 m₀, fun b _ hb => exists_ratio_fibre laws.globalSectionsRank Xo.univ (y b) V θ₀ s₀ n₀ hb⟩`. Use `choose! c hc₁ hc₂ using pt`. Set `C₀ : Set (Fin g → ℂ)` to `Set.pi Set.univ fun _ => {0, 1 / 2}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `fin : (C₀ ×ˢ C₀).Finite` using `(Set.Finite.pi fun _ => Set.toFinite _).prod (Set.Finite.pi fun _ => Set.toFinite _)`. Establish `hc₃ : ∀ b ∈ B, (∀ k, (c b).1 k = 0 ∨ (c b).1 k = 1 / 2) ∧ (∀ k, (c b).2 k = 0 ∨ (c b).2 k = 1 / 2) ∧ ∃ fr, IsFibreFrame Xo.univ.t.PP (y b) (fun z => (e b z).left) (fun z => thetaChar (τ b) (c b).1 (c b).2 ((h b).mulVec z)) fr` using `fun b hb => by`. Take `⟨c₁, c₂, e₀, r₁, r₂, r₃⟩` from `hc₁ b hb`. Establish `r` using `isThetaFrame_singleton_iff.1 r₃`. Rewrite using `[e₀]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨r₁, r₂, r⟩`. Establish `const` using `eq_of_finite_of_closed_fibres hc fin c (fun b hb => ⟨fun k _ => (hc₃ b hb).1 k, fun k _ => (hc₃ b hb).2.1 k⟩) (fun k hk b hb hcl => by`. Establish `k₁` using `fun i => hk.1 i trivial`. Establish `k₂` using `fun i => hk.2 i trivial`. Take `⟨V, θ₀, hV₀, hV⟩` from `sec b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨fr', h'⟩` from `(hc₃ b hb).2.2`. Establish `r` using `exists_fibreFrame_of_mem_closure (e := fun b z => (e b z).left) (θ := fun b z => thetaChar (τ b) k.1 k.2 ((h b).mulVec z)) he hol (th _ _ k₁ k₂).1 (th _ _ k₁ k₂).2 hb hV₀ hV (T := {b' ∈ B | c b' = k}) (fun b' hb' => by have r := (hc₃ b' hb'.1).2.2; rw [hb'.2] at r; exact r) hcl ( …`. Conclude with `(hc₂ b hb k ⟨k.1, k.2, rfl, k₁, k₂, (isThetaFrame_singleton_iff (y := y) (e := fun b z => (e b z).left) (θ := fun b z => thetaChar (τ b) k.1 k.2 ((h b).mulVec z))).2 r⟩).symm)`. Choose the witnesses or unpack the hypotheses as in `⟨k, k₁, k₂, hk⟩ : ∃ k : (Fin g → ℂ) × (Fin g → ℂ), (∀ i, k.1 i = 0 ∨ k.1 i = 1 / 2) ∧ (∀ i, k.2 i = 0 ∨ k.2 i = 1 / 2) ∧ ∀ b ∈ B, c b = k := by`. Break down `B.eq_empty_or_nonempty with h0 | ⟨b₀, hb₀⟩` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun _ => Or.inl rfl, fun _ => Or.inl rfl, fun b hb => absurd (h0 ▸ hb) (Set.notMem_empty b)⟩`. Conclude with `⟨c b₀, (hc₃ b₀ hb₀).1, (hc₃ b₀ hb₀).2.1, fun b hb => const b hb b₀ hb₀⟩`. Conclude with `⟨k.1, k.2, k₁, k₂, isThetaFrame_of_fibreFrames (e := fun b z => (e b z).left) (θ := fun b z => thetaChar (τ b) k.1 k.2 ((h b).mulVec z)) he he0 hy hol (th _ _ k₁ k₂).1 (th _ _ k₁ k₂).2 sec fun b hb => by have r := (hc₃ b hb).2.2; rw [hk b hb] at r; exact r⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_thetaFrame_of_preconnected : Out.Laws → (∀ (k : Type) [Field k] (X : Scheme.{0}) (s
     : X ⟶ Sp k), Smooth s → IsReduced X ∧ IsNormalScheme X ∧ IsLocallyNoetherian X) → (∀ (E

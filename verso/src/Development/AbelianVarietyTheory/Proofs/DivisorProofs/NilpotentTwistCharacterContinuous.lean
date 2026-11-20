@@ -5,7 +5,7 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `h`. Establish `h0` using `congrFun (congrFun hn ⟨0, hd⟩) ⟨0, hd⟩`. Rewrite `h0` using `[smul_pow, one_pow]`. Simplify using `at h0`. Conclude with `h0.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scalar_eq_zero_of_isNilpotent_smul_one {d : ℕ} (hd : 0 < d) {c : ℂ}
     (h : IsNilpotent (c • (1 : Matrix (Fin d) (Fin d) ℂ))) : c = 0 := by
@@ -16,35 +16,31 @@ theorem scalar_eq_zero_of_isNilpotent_smul_one {d : ℕ} (hd : 0 < d) {c : ℂ}
   exact h0.1
 
 /- English proof (translation)
-Introduce `G _ _ H d ρ χ hd hnil hH hcont`. Establish `key : ∀ c : ℂ, IsNilpotent (c • (1 : Matrix (Fin d) (Fin d) ℂ)) → c = 0` using `fun c h => scalar_eq_zero_of_isNilpotent_smul_one hd h`. Establish `htr : ∀ s, χ s = trace (ρ s) / (d : ℂ)`. Introduce `s`. Establish `h1 : IsNilpotent (trace (ρ s - χ s • (1 : Matrix (Fin d) (Fin d) ℂ)))` using `Matrix.isNilpotent_trace_of_isNilpotent (hnil s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `h1.eq_zero`. Rewrite `h2` using `[trace_sub, trace_smul, trace_one, Fintype.card_fin, smul_eq_mul]`. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hχ1 : χ 1 = 1`. Establish `h` using `hnil 1`. Rewrite `h` using `[map_one]`. Establish `: (1 : Matrix (Fin d) (Fin d) ℂ) - χ 1 • 1 = (1 - χ 1) • 1`. Rewrite using `[sub_smul, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[this]`. Use `key _ h` as an intermediate fact. Take the linear combination `-this`. Establish `hmul : ∀ s t, χ (s * t) = χ s * χ t`. Introduce `s t`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Commute (ρ s) (ρ t)` using `by show ρ s * ρ t = ρ t * ρ s`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Use `set A := ρ s - χ s • (1 : Matrix (Fin d) (Fin d) ℂ)`. Use `set B := ρ t - χ t • (1 : Matrix (Fin d) (Fin d) ℂ)`. Establish `hAt : Commute A (ρ t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [A]`. Conclude with `(hc.sub_left ((Commute.one_left _).smul_left _))`. Establish `hAB : Commute (A * ρ t) (χ s • B)`. Simplify using `only [B]`. Use `Commute.smul_right ?_ _` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Commute.sub_right ?_ ((Commute.one_right _).smul_right _)` and prove the remaining obligations. Conclude with `Commute.mul_left hAt (Commute.refl _)`. Establish `hN1 : IsNilpotent (A * ρ t + χ s • B)`. Use `Commute.isNilpotent_add hAB ?_ ?_` and prove the remaining obligations. Conclude with `Commute.isNilpotent_mul_right hAt (hnil s)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hnil t).smul _`. Establish `heq1 : A * ρ t + χ s • B = ρ (s * t) - (χ s * χ t) • 1`. Simplify using `only [A, B, map_mul, sub_mul, smul_mul_assoc, one_mul, smul_sub, mul_smul]`. Normalize the expressions using the abelian group laws. Rewrite `hN1` using `[heq1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN2` using `hnil (s * t)`. Establish `hcomm : Commute (ρ (s * t) - (χ s * χ t) • (1 : Matrix (Fin d) (Fin d) ℂ)) (ρ (s * t) - χ (s * t) • 1)`. Use `Commute.sub_left ?_ ((Commute.one_left _).smul_left _)` and prove the remaining obligations. Conclude with `Commute.sub_right (Commute.refl _) ((Commute.one_right _).smul_right _)`. Establish `hN3` using `Commute.isNilpotent_sub hcomm hN1 hN2`.
+Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `: (ρ (s * t) - (χ s * χ t) • (1 : Matrix (Fin d) (Fin d) ℂ)) - (ρ (s * t) - χ (s * t) • 1) = (χ (s * t) - χ s * χ t) • 1`. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite `hN3` using `[this]`. Use `key _ hN3` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Take the linear combination `this`. Set `m : G →* ℂ` to `{ toFun := χ, map_one' := hχ1, map_mul' := hmul }`. Establish `hne : ∀ s, χ s ≠ 0`. Introduce `s h`. Use `hmul s s⁻¹` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[mul_inv_cancel, hχ1, h, zero_mul]`. Conclude with `one_ne_zero this`. Set `lam : G →* ℂˣ` to `m.toHomUnits`. Use `⟨lam, fun s => rfl, ?_, ?_⟩` and prove the remaining obligations. Use `show Continuous χ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: χ = fun s => trace (ρ s) / (d : ℂ)` using `funext htr`. Rewrite using `[this]`. Use `Continuous.div_const ?_ _` and prove the remaining obligations. Simplify using `only [Matrix.trace, Matrix.diag]`. Conclude with `continuous_finset_sum _ (fun i _ => hcont i i)`.
-
-Introduce `γ hγ`. Apply `Units.ext` to reduce the goal to its premises. Use `show χ γ = 1`. Establish `h` using `hnil γ`. Rewrite `h` using `[hH γ hγ]`.
-
-Establish `: (1 : Matrix (Fin d) (Fin d) ℂ) - χ γ • 1 = (1 - χ γ) • 1`. Rewrite using `[sub_smul, one_smul]`. Rewrite `h` using `[this]`. Use `key _ h` as an intermediate fact. Take the linear combination `-this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem scalar_part_character :
     ∀ (G : Type) [CommGroup G] [TopologicalSpace G] (H : Set G) (d : ℕ)

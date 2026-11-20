@@ -14,9 +14,9 @@ namespace GlobalTheory.SeedF
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (Per.BdR l) := (GlobalTheory.MemLoc.BdRField.bdR_isField l).2.2.1.nontrivial`. Use `haveI : Nontrivial (Per.Bcris l) := C.ι.domain_nontrivial`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, b, rfl⟩` from `WittVector.exists_eq_pow_p_mul' x h0`. Rewrite `hx` using `[map_mul, map_pow, map_natCast]`. Establish `hu : IsUnit (((l : ℕ) : Per.Bcris l) ^ m * ((Per.aB l).comp (wA l a).toRingHom) (b : Wq l a))` using `((isUnit_l_Bcris l).pow m).mul (b.isUnit.map _)`. Conclude with `hu.ne_zero hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aw_injective (C : Core l) (a : ℕ) [NeZero a] :
     Function.Injective ((Per.aB l).comp (wA l a).toRingHom) := by
@@ -32,9 +32,9 @@ theorem aw_injective (C : Core l) (a : ℕ) [NeZero a] :
   exact hu.ne_zero hx
 
 /- English proof (translation)
-Use `choose n w hw using h`. Use `⟨Finset.univ.sup (fun p : Fin d × Fin d => n p.1 p.2), Matrix.of fun i j => ((l : ℕ) : R) ^ (Finset.univ.sup (fun p : Fin d × Fin d => n p.1 p.2) - n i j) * w i j, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `hle : n i j ≤ Finset.univ.sup (fun p : Fin d × Fin d => n p.1 p.2)` using `Finset.le_sup (f := fun p : Fin d × Fin d => n p.1 p.2) (Finset.mem_univ (i, j))`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.of_apply, map_mul, map_pow, map_natCast, smul_eq_mul, ← hw]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+A detailed English derivation is pending.
 -/
 theorem clear_den {d : ℕ} {R : Type} [CommRing R] (f : R →+* Per.Bcris l)
     (G : Matrix (Fin d) (Fin d) (Per.Bcris l))
@@ -51,17 +51,15 @@ theorem clear_den {d : ℕ} {R : Type} [CommRing R] (f : R →+* Per.Bcris l)
   rw [← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]
 
 /- English proof (translation)
-Establish `hU'U : U' * U = 1` using `mul_eq_one_comm.1 hUU`. Establish `hR : (ρ g).map (Per.zB l) * U.map (Per.σB (g : GQ l)) = U` using `hρ g`. Establish `hσ1 : U.map (Per.σB (g : GQ l)) * U'.map (Per.σB (g : GQ l)) = 1`. Rewrite using `[← Matrix.map_mul, hUU, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hσU' : U'.map (Per.σB (g : GQ l)) = U' * (ρ g).map (Per.zB l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc U', hR, hU'U, one_mul]`. Use `_ = U' * (ρ g).map (Per.zB l) := by rw [mul_assoc, hσ1, mul_one]`. Establish `hφR : ((ρ g).map (Per.zB l)).map (Per.φB l) = (ρ g).map (Per.zB l)`. Use extensionality with `i j`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply]`. Rewrite using `[GlobalTheory.RingIface.zB_eq_aB_zA, (ActLaws.act_laws l).2.2.2.2.2.2.1, (ActLaws.act_laws l).2.2.2.2.2.2.2.2.1]`. Establish `hcomm : ∀ M : Matrix (Fin d) (Fin d) (Per.Bcris l), (M.map (Per.φB l)).map (Per.σB (g : GQ l)) = (M.map (Per.σB (g : GQ l))).map (Per.φB l)`. Introduce `M`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply]`. Conclude with `((ActLaws.act_laws l).2.2.2.2.1 _ _).symm`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul, hcomm]`.
+Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ = U' * (((ρ g).map (Per.zB l)).map (Per.φB l) * (U.map (Per.σB (g : GQ l))).map (Per.φB l)) := by`. Rewrite using `[hσU', hφR, mul_assoc]`. Use `_ = U' * U.map (Per.φB l) := by rw [← Matrix.map_mul, hR]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul, hcomm]`.
-
-Use `_ = U'.map (Per.φB l) * ((ρ g).map (Per.zB l) * U.map (Per.σB (g : GQ l))) := by`. Rewrite using `[hσU', Matrix.map_mul, hφR, mul_assoc]`. Use `_ = U'.map (Per.φB l) * U := by rw [hR]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_entries {K : FinExt l} {d : ℕ} (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l]))
     (U U' : Matrix (Fin d) (Fin d) (Per.Bcris l)) (hUU : U * U' = 1)
@@ -102,15 +100,15 @@ theorem inv_entries {K : FinExt l} {d : ℕ} (ρ : ↥(GK K) → Matrix (Fin d) 
       _ = U'.map (Per.φB l) * U := by rw [hR]
 
 /- English proof (translation)
-Introduce `l _ K bk C hC d ρ U U' hUU hρ`. Establish `hU'U : U' * U = 1` using `mul_eq_one_comm.1 hUU`. Establish `hent : ∀ G : Matrix (Fin d) (Fin d) (Per.Bcris l), (∀ g : ↥(GK K), G.map (Per.σB (g : GQ l)) = G) → ∀ i j, ∃ (n : ℕ) (w : Wq l bk.a), ((l : ℕ) : Per.Bcris l) ^ n * G i j = ((Per.aB l).comp (wA l bk.a).toRingHom) w`. Introduce `G hG i j`. Take `⟨x, hxK, hx⟩` from `hC K (G i j) fun g hg => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `congrFun (congrFun (hG ⟨g, hg⟩) i) j` as an intermediate fact. Simplify `this` using `only [Matrix.map_apply]`. Take `⟨n, w, hw⟩` from `GlobalTheory.T.exists_pow_mul_unramified_eq_witt_bcris l K bk C x hxK`. Conclude with `⟨n, w, by rw [← hx, hw]; rfl⟩`. Take `⟨k, F, hF⟩` from `clear_den _ _ (hent _ fun g => (inv_entries ρ U U' hUU hρ g).1)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨k', F', hF'⟩` from `clear_den _ _ (hent _ fun g => (inv_entries ρ U U' hUU hρ g).2)`. Establish `hGG : (U' * U.map (Per.φB l)) * (U'.map (Per.φB l) * U) = 1`. Rewrite using `[mul_assoc, ← mul_assoc (U.map _), ← Matrix.map_mul, hUU, Matrix.map_one _ (map_zero _) (map_one _), one_mul, hU'U]`. Use `⟨k, k + k', F, F', ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.map_injective (aw_injective C bk.a)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `(F * F').map ((Per.aB l).comp (wA l bk.a).toRingHom) = (((l : ℕ) : Wq l bk.a) ^ (k + k') • (1 : Matrix (Fin d) (Fin d) (Wq l bk.a))).map ((Per.aB l).comp (wA l bk.a).toRingHom)`. Rewrite using `[Matrix.map_mul, ← hF, ← hF', Matrix.smul_mul, Matrix.mul_smul, smul_smul, ← pow_add, hGG]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← hF, Matrix.mul_smul, ← mul_assoc, hUU, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_matrix : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l), C.InvB →
     ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (U U' : Matrix (Fin d) (Fin d) (Per.Bcris l)),

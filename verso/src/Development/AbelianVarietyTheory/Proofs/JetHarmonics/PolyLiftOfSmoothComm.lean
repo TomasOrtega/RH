@@ -14,23 +14,21 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hW` using `jacquet_derivative_formula`. Establish `hR` using `rewrite_rho_action`. Establish `hCk : CkOn (m : ℕ∞) (GV k r) F` using `hF.choose_spec.1`. Establish `hgG : g ∈ GV k r` using `hg.1`. Establish `key : ∀ T ∈ Θ, Integrable (fun p => xiP D p • Rw T.word (rho D p F) g) D.μSS ∧ Rw T.word (JF D F) g = ∫ p, xiP D p • Rw T.word (rho D p F) g ∂D.μSS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T hT'`. Establish `hvl : T.word.length ≤ m` using `(B5.len_le_order Θ hT').trans ho`. Use `set v' := T.word.map fun X => ((‖X‖⁻¹ : ℝ) : ℂ) • X with hv'`. Establish `hv'u : ∀ X ∈ v', unitLie k r X`. Introduce `X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `B4.nrm_unit (x := (false, Y)) (T.word_lie Y hY)`. Establish `hv'l : v'.length ≤ m` using `by rw [hv', List.length_map]; exact hvl`. Take `⟨hI, hE⟩` from `(hW k r Wp Wq D A m F hT hF).2 [] v' (by simp) hv'u (by simpa using hv'l) g hg`. Simplify using `only [List.map_nil] at hI hE`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : (fun p => xiP D p • rho D p (dLR [] (v'.map (AdR p)) F) g) =ᵐ[D.μSS] fun p => xiP D p • Rw v' (rho D p F) g` using `by filter_upwards [B5.ae_inSS D] with p hp`. Use `hR k r Wp Wq D m F p hp hCk [] v' (by simp) (fun X hX => (hv'u X hX).1) (by simpa using hv'l) g hgG` as an intermediate fact. Simplify using `only [List.map_nil] at this`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI' : Integrable (fun p => xiP D p • Rw v' (rho D p F) g) D.μSS` using `hI.congr hae`. Establish `hfun : (fun p => xiP D p • Rw T.word (rho D p F) g) = fun p => (B4.pn (B4.lr [] T.word) : ℝ) • (xiP D p • Rw v' (rho D p F) g)`. Use function extensionality and compare the values at `p`. Rewrite using `[WordIntegralScaling.rw_scale T.word (rho D p F), Pi.smul_apply, smul_comm]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `hI'.smul (B4.pn (B4.lr [] T.word))`. Rewrite using `[WordIntegralScaling.rw_scale T.word (JF D F), Pi.smul_apply, hfun, integral_smul]`. Use `congr 1`. Rewrite using `[← integral_congr_ae hae]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hE`. Establish `hRHS : JF D (opApply Θ F) g = ∫ p, xiP D p • opApply Θ (rho D p F) g ∂D.μSS` using `by show (∫ p, xiP D p • rho D p (opApply Θ F) g ∂D.μSS) = _`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [B5.ae_inSS D] with p hp`. Rewrite using `[hC p hp]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hRHS]`. Unfold `opApply`. Simplify using `only [WordIntegralScaling.smul_list]`. Take `⟨_, hsum⟩` from `WordIntegralScaling.int_list D.μSS Θ (fun T => T.coef g) (fun T p => xiP D p • Rw T.word (rho D p F) g) fun T hT' => (key T hT').1`. Rewrite using `[hsum]`.
-
-Use `congr 1`. Use `List.map_congr_left fun T hT' => ?_` and prove the remaining obligations. Rewrite using `[(key T hT').2]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opApply_JF (D : B.RealPlaceData k r Wp Wq) (A : ℝ) (m : ℕ) (F : B.Mat k r → (Wq →L[ℂ] Wp))
     (Θ : B.DiffOp k r Wp Wq) (ho : B.opOrder Θ ≤ m) (hT : TransportedAlt k r A m) (hF : B.InCC A m F)
@@ -87,9 +85,9 @@ theorem opApply_JF (D : B.RealPlaceData k r Wp Wq) (A : ℝ) (m : ℕ) (F : B.Ma
   rw [(key T hT').2]
 
 /- English proof (translation)
-Use `⟨Θ, hP, fun F hF Φ hΦ x hx => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε, hN⟩` from `(compact_support_facts P.k P.r Wp Wq Bs F hF).1`. Establish `hJ` using `bessel_function_finite_class P.k P.r Wp Wq Bs F ε hε hN`. Rewrite using `[hres _ hJ Φ hΦ x hx]`. Establish `hom : Q.wCell P.k P.r (Fin.last P.r) x.1 * x.2 ∈ Om P.k P.r Bs.z Bs.z'` using `⟨TLB.wCell_gv Bs hx, P5.Rad.wCell_mem_omPlus Bs.z_mem Bs.z'_mem hx.1 hx.2.1 hx.2.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Q.resG]`. Rewrite using `[opApply_JF Bs _ (B.opOrder Θ) F Θ le_rfl (JFxG.thr_big P.k P.r (B.opOrder Θ)) (hN.2.1 _ _) _ hom (fun p hp => hC p hp F hF.1 _ ⟨hom.1, hom.2.2⟩)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyLift_of_smooth_comm (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (o κ : ℕ)
     (Θ : B.DiffOp P.k P.r Wp Wq) (a : RA P Bs) (hP : CutMP.PolyOp o κ Θ)

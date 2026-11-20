@@ -11,9 +11,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.Per.ResFinite
 
 /- English proof (translation)
-Introduce `D l _ K K' hKK hle LL T hc`. Establish `hT` using `D.locT l`. Establish `hdr` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l (D.loc l) (D.locA l) hT K' LL T.V T.ρ hc).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.Per.TiedRestrict.restrict_crys_deRham l (D.loc l) (D.locA l) hT K' K LL hKK T.V T.ρ).1 hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ a`. Conclude with `GlobalTheory.T.hodgeJumpMultiplicity_restrict_finite_ext l (D.loc l) (D.locA l) hT K' K LL hKK T.V T.ρ hdr τ a`.
+A detailed English derivation is pending.
 -/
 theorem adm12_elementDenominator : ∀ D : D7, Formalism.MainNotions.ElementDenominator.adm12 D := by
   intro D l _ K K' hKK hle LL T hc

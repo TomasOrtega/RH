@@ -11,19 +11,17 @@ namespace Formalism.DworkPowerSeriesWeights
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Introduce `l _ d N0 N1 _ hl3 hd hde K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size hnu1 hnu2 hsize a ha hsa hthr n`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨K, instK, hult, hchar, φ, Y, hφ, hgauss, hgen⟩` from `residuallyGenericExists l (ZMod d × Fin N0 × Fin N0)`. Use `hult` as an intermediate fact. Use `hchar` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnl : ‖(l : K)‖ = ‖(l : ℂ_[l])‖` using `by rw [← map_natCast φ, hφ]`. Establish `hl1 : ‖(l : ℂ_[l])‖ < 1`. Establish `h` using `norm_intCast_padicComplex l (l : ℤ)`. Rewrite `h` using `[Int.cast_natCast, Int.cast_natCast]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_p_lt_one`. Establish `hN0 : 0 < N0`. Establish `h0 : 0 ≤ Real.logb l a` using `Real.logb_nonneg (by exact_mod_cast hlp.one_lt) (by exact_mod_cast ha)`. Establish `h1 : (0 : ℝ) < N0` using `by linarith`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnu1a : ∀ s, nu1 s ≤ a` using `fun s => le_trans (by`. Rewrite using `[hnu1, hsize]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨J, lab, m, hinj, hlab, hJ, hm⟩` from `hL l d N0 hlp.two_le TT nu1 size a ha hnu1a hsa hthr`. Take `⟨hT1, hT2, hT3, hT4⟩` from `hT ℂ_[l] K φ hφ l d N0 N1 K0 ζ be`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨hg0', hg'⟩` from `hT3 g hg0 hg`. Apply the tactic sequence `have hA := theorem_A_generic.{0} K l d N0 N1 hlp hl3 hd hde (hnl ▸ hl1) hN0 (K0.map φ) (hT1 hK0) (φ ζ) (hζ.map_of_injective φ.injective) _ (hT2 hbe) _ hg0' hg' _ (hT4 U hU) (φ ε) (by rcases hε with rfl | rfl <;> simp) TT colN p hp hp1 I Y hgen nu1 nu2 size hnu1 hnu2 hsize a ha hs …`. Rewrite `hA` using `[← hF ℂ_[l] K φ d N0 N1 g U ε be hg0 (asmS_cc_be hbe.2.2.1) colN p hp I (genFrame TT l m Y), hnl]`. Use `le_trans ?_ hA` and prove the remaining obligations. Establish `hk : genFrame TT l m Y = fun y => Y y ^ (if y.1 ∈ TT ∧ y.2.1.val = 0 then l ^ m else 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `y`. Unfold `genFrame`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hk]`. Use `hG ℂ_[l] K φ _ Y hgauss _ (fun y => ?_) _ n` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `pow_ne_zero _ hlp.ne_zero`. Conclude with `one_ne_zero`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thmAGauss_of (hT : TransferB) (hF : FrameJetEval) (hL : LabelsExist) (hG : GaussPow) :
     ThmAGauss := by

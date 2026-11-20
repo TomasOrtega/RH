@@ -9,30 +9,30 @@ open Ad3.LR Ad3.LR.DTr GlobalTheory.CompanionTheory.DInt2
 namespace GlobalTheory.CompanionTheory.DInt2.WMaj
 
 /- English proof (translation)
-Simplify using `[al]`.
+Simplify using the standard rewrite rules.
 -/
 theorem al_re (h : M22) : (al h).re = h 0 0 := by simp [al]
 /- English proof (translation)
-Simplify using `[al]`.
+Simplify using the standard rewrite rules.
 -/
 theorem al_im (h : M22) : (al h).im = h 1 0 := by simp [al]
 /- English proof (translation)
-Simplify using `[be]`.
+Simplify using the standard rewrite rules.
 -/
 theorem be_re (h : M22) : (be h).re = h 0 1 := by simp [be]
 /- English proof (translation)
-Simplify using `[be]`.
+Simplify using the standard rewrite rules.
 -/
 theorem be_im (h : M22) : (be h).im = h 1 1 := by simp [be]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.WeightClosed.alpha_ne_zero h hΔ`.
+A detailed English derivation is pending.
 -/
 theorem al_ne (h : M22) (hΔ : 0 < (Matrix.of h).det) : al h ≠ 0 :=
   GlobalTheory.CompanionTheory.WeightClosed.alpha_ne_zero h hΔ
 
 /- English proof (translation)
-Establish `hn : Complex.normSq (al h) ≠ 0`. Simplify `al_ne h hΔ` using `[Complex.normSq_eq_zero]`. Rewrite using `[Complex.div_im, uu, Complex.sq_norm, Matrix.det_fin_two, al_re, al_im, be_re, be_im]`. Simplify using `only [Matrix.of_apply]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem im_ratio (h : M22) (hΔ : 0 < (Matrix.of h).det) : (be h / al h).im = uu h := by
   have hn : Complex.normSq (al h) ≠ 0 := by
@@ -42,7 +42,7 @@ theorem im_ratio (h : M22) (hΔ : 0 < (Matrix.of h).det) : (be h / al h).im = uu
   field_simp
 
 /- English proof (translation)
-Establish `: 0 < ‖al h‖` using `norm_pos_iff.mpr (al_ne h hΔ)`. Unfold `uu`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem uu_pos (h : M22) (hΔ : 0 < (Matrix.of h).det) : 0 < uu h := by
   have : 0 < ‖al h‖ := norm_pos_iff.mpr (al_ne h hΔ)
@@ -50,9 +50,9 @@ theorem uu_pos (h : M22) (hΔ : 0 < (Matrix.of h).det) : 0 < uu h := by
   positivity
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.CompanionTheory.WeightClosed.main k hk h hΔ`. Express the relevant statement in the definitionally equal form `w0 k h = (((Matrix.of h).det : ℝ) : ℂ) ^ (k - 1) * (al h) ^ (-(2 * (k : ℤ) - 1)) * Complex.exp (2 * Real.pi * Complex.I * (be h / al h)) at e`. Establish `hre : (2 * (Real.pi : ℂ) * Complex.I * (be h / al h)).re = -(2 * Real.pi * uu h)`. Rewrite using `[← im_ratio h hΔ]`. Simplify using `[Complex.mul_re, Complex.mul_im]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, norm_mul, norm_mul, norm_pow, norm_zpow, Complex.norm_exp, hre, Complex.norm_real, Real.norm_of_nonneg hΔ.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_weight_closed_form (k : ℕ) (hk : 3 ≤ k) (h : M22) (hΔ : 0 < (Matrix.of h).det) :
     ‖w0 k h‖ = (Matrix.of h).det ^ (k - 1) * ‖al h‖ ^ (-(2 * (k : ℤ) - 1)) *
@@ -67,23 +67,23 @@ theorem norm_weight_closed_form (k : ℕ) (hk : 3 ≤ k) (h : M22) (hΔ : 0 < (M
     Real.norm_of_nonneg hΔ.le]
 
 /- English proof (translation)
-Take `⟨i00, i01, i10, i11⟩` from `GlobalTheory.CompanionTheory.WeightClosed.inv_entries h`. Establish `hα` using `al_ne h hΔ`. Establish `hD : (((Matrix.of h).det : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hΔ.ne'`. Establish `hdi : ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det = ((Matrix.of h).det)⁻¹`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : (Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹).det = 1 / 2 * ((Matrix.of h).det)⁻¹`. Rewrite using `[Matrix.det_mul, Matrix.det_diagonal, hdi, Fin.prod_univ_two]`. Simplify using the standard rewrite rules. Establish `hpos : 0 < (Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹).det`. Rewrite using `[hdet]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `inv_pos.mpr hΔ` as an intermediate fact. Check the signs of the components of the expression. Establish `m00 : (Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹) 0 0 = 1 / 2 * (((Matrix.of h).det)⁻¹ * h 1 1)`. Rewrite using `[Matrix.diagonal_mul, i00]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `m01 : (Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹) 0 1 = 1 / 2 * (-(((Matrix.of h).det)⁻¹ * h 0 1))`. Rewrite using `[Matrix.diagonal_mul, i01]`. Simplify using the standard rewrite rules. Establish `m10 : (Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹) 1 0 = -(((Matrix.of h).det)⁻¹ * h 1 0)`. Rewrite using `[Matrix.diagonal_mul, i10]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `m11 : (Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹) 1 1 = ((Matrix.of h).det)⁻¹ * h 0 0`. Rewrite using `[Matrix.diagonal_mul, i11]`. Simplify using the standard rewrite rules. Establish `e1 : (((Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹) 1 1 : ℝ) : ℂ) - (((Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹) 1 0 : ℝ) : ℂ) * Complex.I = al h / (((Matrix.of h).det : ℝ) : ℂ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[m11, m10, al]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (((Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹) 0 1 : ℝ) : ℂ) - (((Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹) 0 0 : ℝ) : ℂ) * Complex.I = -(be h) / (2 * (((Matrix.of h).det : ℝ) : ℂ))`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[m01, m00, be]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hq : -2 * (Real.pi : ℂ) * Complex.I * ((-(be h) / (2 * (((Matrix.of h).det : ℝ) : ℂ))) / (al h / (((Matrix.of h).det : ℝ) : ℂ))) = (Real.pi : ℂ) * Complex.I * (be h / al h)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hre : ((Real.pi : ℂ) * Complex.I * (be h / al h)).re = -(Real.pi * uu h)`. Rewrite using `[← im_ratio h hΔ]`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Establish `hb : 0 ≤ 1 / 2 * ((Matrix.of h).det)⁻¹`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `inv_pos.mpr hΔ` as an intermediate fact. Check the signs of the components of the expression. Unfold `Wm`. Rewrite using `[if_pos hpos, e1, e2, hq, hdet, norm_mul, norm_mul, Complex.norm_real, norm_zpow, Complex.norm_exp, hre, norm_div, Complex.norm_real, Real.norm_of_nonneg hΔ.le, Real.norm_of_nonneg (Real.rpow_nonneg hb _)]`.
+Establish an intermediate fact. Check the signs of the components of the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_Wm (k : ℕ) (h : M22) (hΔ : 0 < (Matrix.of h).det) :
     ‖Wm k (Matrix.diagonal ![(1 / 2 : ℝ), 1] * (Matrix.of h)⁻¹)‖ =
@@ -144,9 +144,9 @@ theorem norm_Wm (k : ℕ) (h : M22) (hΔ : 0 < (Matrix.of h).det) :
     Real.norm_of_nonneg (Real.rpow_nonneg hb _)]
 
 /- English proof (translation)
-Establish `hp` using `Real.pi_gt_three`. Establish `hx : 0 ≤ Real.pi * u` using `by positivity`. Establish `h1` using `Real.quadratic_le_exp_of_nonneg hx`. Establish `h2 : 3 * u ≤ Real.pi * u` using `by nlinarith`. Establish `h3 : 9 * u ^ 2 ≤ (Real.pi * u) ^ 2` using `by nlinarith [mul_nonneg hu hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg hu hu]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_le_exp (u : ℝ) (hu : 0 ≤ u) : (1 + u) ^ 2 ≤ Real.exp (Real.pi * u) := by
   have hp := Real.pi_gt_three
@@ -157,11 +157,11 @@ theorem sq_le_exp (u : ℝ) (hu : 0 ≤ u) : (1 + u) ^ 2 ≤ Real.exp (Real.pi *
   nlinarith [mul_nonneg hu hu]
 
 /- English proof (translation)
-Establish `hreal` using `GlobalTheory.CompanionTheory.WeightClosed.real_factor k (by omega) _ hΔ`. Rewrite using `[norm_Wm k h hΔ, abs_of_pos hΔ]`. Use `set D := (Matrix.of h).det with hDdef`. Establish `hhalf : (0 : ℝ) ≤ 1 / 2` using `by norm_num`. Establish `hinv : 0 ≤ D⁻¹` using `(inv_pos.mpr hΔ).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h32 : D ^ (-(3 : ℝ) / 2) = D ^ (-(1 : ℝ) / 2) * D⁻¹`. Rewrite using `[← Real.rpow_neg_one D, ← Real.rpow_add hΔ]`. Evaluate the numerical expressions. Establish `h2 : (2 : ℝ) ^ ((2 * (k : ℝ) - 1) / 2) * (1 / 2 : ℝ) ^ ((2 * (k : ℝ) - 1) / 2) = 1`. Rewrite using `[← Real.mul_rpow (by norm_num) hhalf]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Rewrite using `[Real.mul_rpow hhalf hinv, h32, div_zpow, zpow_neg D, div_inv_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem scaled (k : ℕ) (hk : 3 ≤ k) (h : M22) (hΔ : 0 < (Matrix.of h).det) :
     (2 : ℝ) ^ ((2 * (k : ℝ) - 1) / 2) *
@@ -191,15 +191,15 @@ end GlobalTheory.CompanionTheory.DInt2.WMaj
 open GlobalTheory.CompanionTheory.DInt2.WMaj in
 
 /- English proof (translation)
-Introduce `k hk`. Use `⟨(2 : ℝ) ^ ((2 * (k : ℝ) - 1) / 2), fun N h hΔ => ?_⟩` and prove the remaining obligations. Establish `hsc` using `scaled k hk h hΔ`. Establish `hu` using `uu_pos h hΔ`. Establish `hden : 0 < (1 + ‖h‖) ^ N * (1 + ‖Ad3.LR.B.eta h‖) ^ N` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 0 < ‖al h‖` using `norm_pos_iff.mpr (al_ne h hΔ)`. Establish `hexp : (1 + uu h) ^ 2 * Real.exp (-(2 * Real.pi * uu h)) ≤ Real.exp (-(Real.pi * uu h))`. Establish `e : Real.exp (-(2 * Real.pi * uu h)) = Real.exp (-(Real.pi * uu h)) * Real.exp (-(Real.pi * uu h))`. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e' : Real.exp (Real.pi * uu h) * Real.exp (-(Real.pi * uu h)) = 1`. Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Use `sq_le_exp _ hu.le` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp` using `Real.exp_pos (-(Real.pi * uu h))`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Unfold `Ad3.LR.B.maj`. Rewrite using `[abs_one, one_mul, ← mul_div_assoc, hsc, norm_weight_closed_form k hk h hΔ, abs_of_pos hΔ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `div_le_div_of_nonneg_right _ hden.le` to reduce the goal to its premises. Establish `hc : 0 ≤ (Matrix.of h).det ^ (k - 1) * ‖al h‖ ^ (-(2 * (k : ℤ) - 1)) * ((Matrix.of h).det)⁻¹`. Use `inv_pos.mpr hΔ` as an intermediate fact. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation.
 -/
 theorem GlobalTheory.CompanionTheory.DInt2.WMaj.main : ∀ k : ℕ, 3 ≤ k → ∃ C : ℝ, ∀ (N : ℕ) (h : M22),
     0 < (Matrix.of h).det →

@@ -12,9 +12,9 @@ variable {R : Type u_1} [Ring R] {ι : Type u_2} [Fintype ι] [DecidableEq ι]
   (M : ι → Type u_3) [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
 
 /- English proof (translation)
-Establish `hx : x = ∑ j, Pi.single j (x j)` using `(Finset.univ_sum_single x).symm`. Use `conv_lhs => rw [hx]`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_eq_single i]`. Introduce `j _ hji`. Establish `h0` using `h j i hji ((LinearMap.proj i).comp (g.comp (LinearMap.single R M j)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `LinearMap.congr_fun h0 (x j)`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+A detailed English derivation is pending.
 -/
 theorem endo_apply_eq (h : ∀ (i j : ι), i ≠ j → ∀ (f : M i →ₗ[R] M j), f = 0)
     (g : (Π i, M i) →ₗ[R] (Π i, M i)) (x : Π i, M i) (i : ι) :
@@ -45,9 +45,9 @@ def projOnto (h : ∀ (i j : ι), i ≠ j → ∀ (f : M i →ₗ[R] M j), f = 0
 end
 
 /- English proof (translation)
-Introduce `R _ ι _ _ M _ _ _ h i₀ s`. Use `letI : DecidableEq (Π i, M i) := Classical.decEq _`. Take `⟨r, hr⟩` from `jacobson_density (R := R) (M := Π i, M i) (projOnto M h i₀) (Finset.univ.biUnion fun i => (s i).image (Pi.single i))`. Use `⟨r, fun i m hm => ?_⟩` and prove the remaining obligations. Establish `hmem : Pi.single i m ∈ Finset.univ.biUnion fun i => (s i).image (Pi.single (M` using `M) i) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, Finset.mem_image, true_and]`. Conclude with `⟨i, m, hm, rfl⟩`. Use `congrFun (hr _ hmem) i` as an intermediate fact. Simplify using `only [projOnto, LinearMap.coe_mk, AddHom.coe_mk, Pi.single_eq_same, Pi.smul_apply] at this`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ {R : Type u_1} [inst : Ring R] {ι : Type u_2} [Fintype ι] [inst_2 : DecidableEq ι]
     (M : ι → Type u_3) [inst_3 : (i : ι) → AddCommGroup (M i)] [inst_4 : (i : ι) → Module R (M i)]

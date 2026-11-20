@@ -36,7 +36,7 @@ variable {D : D7}
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.wuBesselOfLoc_all C hG hBW (Formalism.L2.SG.Pf.LocF.locFactor_holds hG C) (fun τ => Formalism.L2.SG.Pf.dsTr C τ) (fun τ => Formalism.L2.SG.Pf.haarTr C τ) (fun u τ => Formalism.L2.SG.Pf.colsTypeTr C u τ)`.
+A detailed English derivation is pending.
 -/
 theorem wuBessel_ofW {X : HidaSetting D} {θ : ℝ} (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D)
     (hBW : Formalism.L2.SG.LocWSOf.BesselOfW) (C : Choice X θ) : WuBessel C :=
@@ -113,13 +113,13 @@ end Sel
 open Formalism.L2.SG.LoopsTies
 
 /- English proof (translation)
-Unfold `FamP.cLast sC'`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem sC'_mem_cLast {eps : ℝ} (Fm : FamP eps) : sC' Fm ∈ Fm.cLast := by
   unfold FamP.cLast sC'; simp
 
 /- English proof (translation)
-Unfold `sCl`. Use `le_min (h _ (by unfold FamP.cLast; simp)) (le_min (h _ (by unfold FamP.cLast; simp)) (le_min (h _ (by unfold FamP.cLast; simp)) (le_min (h _ (by unfold FamP.cLast; simp)) (le_min (h _ (by unfold FamP.cLast; simp)) (h _ (by unfold FamP.cLast; simp))))))` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem le_sCl_of {eps : ℝ} (Fm : FamP eps) {t : ℝ} (h : ∀ c ∈ Fm.cLast, t ≤ c) : t ≤ sCl Fm := by
   unfold sCl
@@ -128,25 +128,21 @@ theorem le_sCl_of {eps : ℝ} (Fm : FamP eps) {t : ℝ} (h : ∀ c ∈ Fm.cLast,
       (le_min (h _ (by unfold FamP.cLast; simp)) (h _ (by unfold FamP.cLast; simp))))))
 
 /- English proof (translation)
-Introduce `hH hBW hBp hWu hRF 𝒞 sel hT hRk`. Establish `hGap` using `Formalism.L2.SG.GapClosed.gapEv_closed_of 𝒞 hT`. Use `haveI : Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram := ⟨GlobalTheory.hermRepUnram⟩`. Use `haveI : Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc := ⟨GlobalTheory.Sloc.CoefWeighted.coefWeightedLoc_uncond⟩`. Use `haveI : Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow := ⟨hH.1.1.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Fact Formalism.FourierDecayAlt.ThreeDimData.DecInf := ⟨hH.1.1.2.1⟩`. Establish `hFX : Formalism.L2.SG.PoincareAmplitudeLowerBounds.FinXC` using `Formalism.L2.SG.Pf.finXC_of hWu hRF`. Establish `hRM : RMeasExAll` using `GlobalTheory.RMeasAll.rMeasEx_all`. Establish `hJF : JFactNAll` using `GlobalTheory.T.localBesselJFactor_all_words_of_gap`. Establish `hCF : Formalism.L2.SG.Pf.LoopBCovN.CovNFormula` using `GlobalTheory.CovNFormulaPf.main`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose C₀F thrF hR using GlobalTheory.T.loopRowBounds_along_family_largeGaps Formalism.HermitianLattices.Ext.L3.siegelMassRatio hH hBp`. Use `choose cVF hcV using GlobalTheory.T.stabiliserCovolume_relevantTerm_le_heightPow`. Establish `hForm : Closed 𝒞 fun Fm _ => OwnEv Fm fun C' Cl x i => Cnt.Hyp0 (Fm.D x i) (Fm.L x i) C' Cl (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 → ∀ u, UnitaryVolumeMass.FormAt (Fm.D x i) u`. Take `⟨e, he, H⟩` from `hRk`. Use `⟨e, he, fun eps h1 h2 => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨K, hK⟩` from `H eps h1 h2`. Set `K4 : Formalism.MainNotions.TransportedAlt` to `⟨0, fun _ => 0, fun _ => 0, fun l => thrF (l.getD 6 0 + 1) (1 / 4) 3 (1 / 2) (l.getD 13 0) 3 0 1 0 (l.getD 17 0)⟩`. Use `⟨K.sup K4, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations. Take `⟨hL1, hL4⟩` from `(Fm.large_sup _ _ CH).1 hL`. Establish `hthr : ∀ c ∈ Fm.cLast, thrF (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 0 1 0 Fm.CGam ≤ c`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Introduce `c hc0`. Establish `h` using `hL4.2.2.2 c hc0`. Simplify using `only [K4] at h`. Rewrite `h` using `[constant_list_cylinder, constant_list_trace, constant_list_gamma]`. Then use the resulting hypothesis. Conclude with `(hR _ _ _ _ _ _ _ _ _ _ eps Fm rfl (hthr _ (sC'_mem_cLast Fm)) (le_sCl_of Fm hthr) (hK Fm CH hc hL1)).1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `loopRowS_of_sub sel 3 hGap ?_` and prove the remaining obligations. Set `C₀f : (List ℝ → ℝ) → List ℝ → ℝ` to `fun aF l => C₀F (l.getD 6 0 + 1) (1 / 4) 3 (1 / 2) (l.getD 13 0) 3 (aF (l.take 16)) 1 (cVF (l.getD 6 0 + 1) (1 / 4) 3 (1 / 2) (l.getD 13 0) 3 (aF (l.take 16))) (l.getD 17 0)`. Use `loopRowS_of_raised 3 (selG sel) yFG (hyFG sel hFX hWu) (fun _ => 1) C₀f (YtR (selG sel) yFG (hyFG sel hFX hWu) (fun _ => 1) (BGW sel hBW (fun _ => 1) (fun _ => zero_le_one)) (MGW sel hFX hWu hBW hRM hJF hCF)) ?_ (closed_sub (fun _ h => h.1) hForm)` and prove the remaining obligations. Introduce `aF`. Take `⟨e, he, H⟩` from `closed_sub (𝒞' := CG 𝒞) (fun _ h => h.1) hRk`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨e, he, fun eps h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H eps h1 h2`. Set `K4 : Formalism.MainNotions.TransportedAlt` to `⟨0, fun _ => 0, fun _ => 0, fun l => max (thrF (l.getD 6 0 + 1) (1 / 4) 3 (1 / 2) (l.getD 13 0) 3 (aF (l.take 16)) 1 (cVF (l.getD 6 0 + 1) (1 / 4) 3 (1 / 2) (l.getD 13 0) 3 (aF (l.take 16))) (l.getD 17 0)) 1⟩`. Use `⟨K.sup K4, fun Fm CH hc hL hc' C hC => ?_⟩` and prove the remaining obligations. Take `⟨hL1, hL4⟩` from `(Fm.large_sup _ _ CH).1 hL`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hthr : ∀ c ∈ Fm.cLast, max (thrF (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 (aF Fm.cOut) 1 (cVF (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 (aF Fm.cOut)) Fm.CGam) 1 ≤ c`. Introduce `c hc0`. Establish `h` using `hL4.2.2.2 c hc0`. Simplify using `only [K4] at h`. Rewrite `h` using `[constant_list_cylinder, constant_list_trace, cOut_take, constant_list_gamma]`. Then use the resulting hypothesis.
-
-Establish `hC' : C₀F (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 (aF Fm.cOut) 1 (cVF (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 (aF Fm.cOut)) Fm.CGam ≤ C`. Simplify using `only [C₀f] at hC`. Rewrite `hC` using `[constant_list_cylinder, constant_list_trace, cOut_take, constant_list_gamma]`. Then use the resulting hypothesis. Establish `hCl1 : 1 ≤ sCl Fm` using `le_sCl_of Fm fun c hc => (le_max_right _ _).trans (hthr c hc)`. Use `(hR (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 (aF Fm.cOut) 1 (cVF (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 (aF Fm.cOut)) Fm.CGam eps (Fm.raise (yR (selG sel) yFG Fm hc')) rfl ((le_max_left _ _).trans (hthr _ (sC'_mem_cLast Fm))) (le_sCl_of Fm fun c hc => (le_max_left _ _).trans (hth …` and prove the remaining obligations.
-
-Use `⟨0, fun x _ i hx u u' hH t hG hr => ?_⟩` and prove the remaining obligations. Conclude with `hcV (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu 3 (aF Fm.cOut) (Fm.D x i) ((selG sel Fm hc').2 x (raise_lt hx) (h0R (selG sel) yFG hx) i).X ((selG sel Fm hc').2 x (raise_lt hx) (h0R (selG sel) yFG hx) i).Y (hyFG sel hFX hWu Fm hc' x (raise_lt hx) (h0R (selG sel) yFG hx) (hyR (selG sel) …`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem loop_rows_closed_gap : GlobalTheory.GapIn.Hyp → Formalism.L2.SG.LocWSOf.BesselOfW → BpJoin.ThmBpDS →
     Formalism.L2.SG.Pf.WuDecayOfGap → Formalism.L2.SG.RowsDef.RowsFinDim → ∀ (𝒞 : FamClass) (sel : SSel 𝒞),

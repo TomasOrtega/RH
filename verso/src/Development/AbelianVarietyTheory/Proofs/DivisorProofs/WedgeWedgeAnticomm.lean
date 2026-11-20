@@ -6,11 +6,11 @@ open scoped Real ContDiff
 namespace GlobalTheory.WedgeAnticomm
 
 /- English proof (translation)
-Unfold `sgn`. Rewrite using `[Finset.filter_erase]`. Use `split_ifs with h`. Establish `hm : i ∈ S.filter (· < k)` using `Finset.mem_filter.2 ⟨hi, h⟩`. Rewrite using `[Finset.card_erase_of_mem hm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < (S.filter (· < k)).card` using `Finset.card_pos.2 ⟨i, hm⟩`. Take `⟨c, hc⟩ : ∃ c, (S.filter (· < k)).card = c + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hpos).symm⟩`. Rewrite using `[hc, Nat.add_sub_cancel, pow_succ, mul_assoc]`. Evaluate the numerical expressions. Establish `hm : i ∉ S.filter (· < k)` using `fun h' => h (Finset.mem_filter.1 h').2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.erase_eq_of_notMem hm, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem sgn_erase_of_mem {m : ℕ} {i : Fin m} (k : Fin m) {S : Finset (Fin m)} (hi : i ∈ S) :
     sgn k (S.erase i) = sgn k S * (if i < k then -1 else 1) := by
@@ -26,13 +26,13 @@ theorem sgn_erase_of_mem {m : ℕ} {i : Fin m} (k : Fin m) {S : Finset (Fin m)} 
     rw [Finset.erase_eq_of_notMem hm, mul_one]
 
 /- English proof (translation)
-Introduce `m i k w`. Use function extensionality and compare the values at `S`. Simplify using `only [wedge, Pi.neg_apply]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Distinguish the cases in `hiS : i ∈ S`. Distinguish the cases in `hkS : k ∈ S`. Establish `hk' : k ∈ S.erase i` using `Finset.mem_erase.2 ⟨Ne.symm hik, hkS⟩`. Establish `hi' : i ∈ S.erase k` using `Finset.mem_erase.2 ⟨hik, hiS⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hiS, if_pos hk', if_pos hkS, if_pos hi', sgn_erase_of_mem k hiS, sgn_erase_of_mem i hkS, Finset.erase_right_comm]`. Break down `lt_or_gt_of_ne hik with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (not_lt.2 h.le)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (not_lt.2 h.le), if_pos h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: k ∉ S.erase i` using `fun h => hkS (Finset.mem_of_mem_erase h)`. Simplify using `[hiS, hkS, this]`. Establish `: i ∉ S.erase k` using `fun h => hiS (Finset.mem_of_mem_erase h)`. Simplify using `[hiS, this]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem wedge_wedge_anticomm : ∀ {m : ℕ} (i k : Fin m) (w : Ext m),
     wedge i (wedge k w) = -wedge k (wedge i w) := by

@@ -5,7 +5,7 @@ open MeasureTheory Filter Topology GlobalTheory.CompanionTheory.Ar.PB.Flat
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.PB.Flat.polyPoisson_eq_self` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FPolydiscPoissonReproducesHarmonic.lean&line=92#L92)
 -/

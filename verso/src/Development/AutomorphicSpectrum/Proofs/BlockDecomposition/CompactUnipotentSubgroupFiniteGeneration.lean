@@ -10,31 +10,27 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.Rodier.OpenExact
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ h N d hd W _ _ ρ Q hQ hex θ hθ f hf hker`. Set `σ : Representation ℂ Q (IndSp (stdBlocks d hd) ρ)` to `(parInd (stdBlocks d hd) ρ).comp Q.subtype`. Establish `hI : ∀ t : Q, ∀ v ∈ openFns d hd ρ, σ t v ∈ openFns d hd ρ`. Introduce `t v hv g hg`. Establish `h1 : v.1.1 (g * (t : GL (Fin N) k)) ≠ 0` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨p, hp, n, hn, e⟩` from `hv _ h1`. Use `show ∃ p ∈ parab k (stdBlocks d hd), ∃ n ∈ unipB k (Fin N), g = p * pm k (wOpen d hd) * n`. Use `⟨p, hp, n * (t : GL (Fin N) k)⁻¹, mul_mem hn (inv_mem (hQ t.2)), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e]`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hσs : IsSmooth σ` using `fun v => (isSmooth_parInd (stdBlocks d hd) ρ v).preimage continuous_subtype_val`. Set `ρ' : Representation ℂ Q (openFns d hd ρ)` to `GlobalTheory.PRep.sub σ (openFns d hd ρ) hI`. Establish `hρs : IsSmooth ρ'`. Introduce `v`. Establish `: {t : Q | ρ' t v = v} = {t : Q | σ t (v : IndSp (stdBlocks d hd) ρ) = v}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `t`. Simplify using `only [Set.mem_setOf_eq, Subtype.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hσs _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `θ' : (⊤ : Subgroup Q) →* ℂˣ` to `θ.comp (⊤ : Subgroup Q).subtype`. Establish `hopen : IsOpen (θ'.ker : Set (⊤ : Subgroup Q))`. Establish `hw : IsOpen ((whitChar ψ N).ker : Set (unipB k (Fin N)))` using `GlobalTheory.Whittaker.isSmoothChar_whitChar hψ`. Set `j : (⊤ : Subgroup Q) → unipB k (Fin N)` to `fun x => ⟨x.1.1, hQ x.1.2⟩`. Establish `hj : Continuous j` using `Continuous.subtype_mk (continuous_subtype_val.comp continuous_subtype_val) _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hset : (θ'.ker : Set (⊤ : Subgroup Q)) = j ⁻¹' ((whitChar ψ N).ker : Set (unipB k (Fin N)))`. Use extensionality with `x`. Use `show θ x.1 = 1 ↔ whitChar ψ N (j x) = 1`. Rewrite using `[hθ x.1 (hQ x.1.2)]`. Rewrite using `[hset]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw.preimage hj`. Establish `hexh : ∀ s : Finset Q, (↑s : Set Q) ⊆ (⊤ : Subgroup Q) → ∃ L : Subgroup Q, L ≤ ⊤ ∧ (↑s : Set Q) ⊆ L ∧ IsCompact (L : Set Q)` using `by classical`. Introduce `s _`. Take `⟨L, hLQ, hsL, hLc⟩` from `hex (s.image Subtype.val) (by`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hx`. Take `⟨a, -, rfl⟩` from `hx`. Conclude with `a.2)`. Use `⟨L.subgroupOf Q, le_top, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `Subgroup.mem_subgroupOf.2 (hsL ?_)` and prove the remaining obligations. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe]`. Conclude with `⟨x, hx, rfl⟩`. Rewrite using `[Subtype.isCompact_iff]`. Establish `himg : ((↑) : Q → GL (Fin N) k) '' (L.subgroupOf Q : Set Q) = (L : Set (GL (Fin N) k))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `Subgroup.mem_subgroupOf.1 hy`. Introduce `hx`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨x, hLQ hx⟩, Subgroup.mem_subgroupOf.2 hx, rfl⟩`. Rewrite using `[himg]`. Conclude with `hLc`. Establish `hle : twKer (parInd (stdBlocks d hd) ρ) Q θ ≤ twKer σ ⊤ θ'` using `Submodule.span_le.2 (by`. Introduce and unpack `w ⟨q, v, rfl⟩`.
-
-Conclude with `Submodule.subset_span ⟨⟨q, trivial⟩, v, rfl⟩)`. Establish `key : (⟨f, hf⟩ : openFns d hd ρ) ∈ twKer ρ' ⊤ θ'` using `GlobalTheory.CompanionTheory.PRep.JacExact.twKer_reflect ρ' σ hρs hσs ⊤ θ' hopen hexh (openFns d hd ρ).subtype (Submodule.injective_subtype _) (fun _ _ => rfl) ⟨f, hf⟩ (hle hker)`. Establish `hle2 : twKer ρ' ⊤ θ' ≤ (Submodule.span ℂ {x | ∃ (q : Q), ∃ g ∈ openFns d hd ρ, x = parInd (stdBlocks d hd) ρ q g - (θ q : ℂ) • g}).comap (openFns d hd ρ).subtype` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨q, g, rfl⟩`. Conclude with `Submodule.subset_span ⟨q.1, g.1, g.2, rfl⟩)`.
-
-Conclude with `hle2 key`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_openFns_of_mem_twKer : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W) (Q : Subgroup (GL (Fin N) k)), Q ≤ unipB k (Fin N) → (∀ s : Finset (GL (Fin N) k), (↑s : Set (GL (Fin N) k)) ⊆ Q → ∃ L : Subgroup (GL (Fin N) k), L ≤ Q ∧ (↑s : Set (GL (Fin N) k)) ⊆ L ∧ IsCompact (L : Set (GL (Fin N) k))) → ∀ θ : Q →* ℂˣ, (∀ (q : Q) (hq : (q : GL (Fin N) k) ∈ unipB k (Fin N)), θ q = whitChar ψ N ⟨q, hq⟩) → ∀ f ∈ openFns d hd ρ, f ∈ twKer (parInd (stdBlocks d hd) ρ) Q θ → f ∈ Submodule.span ℂ {x | ∃ (q : Q), ∃ g ∈ openFns d hd ρ, x = parInd (stdBlocks d hd) ρ q g - (θ q : ℂ) • g} := by
   intro k _ _ _ _ ψ hψ h N d hd W _ _ ρ Q hQ hex θ hθ f hf hker

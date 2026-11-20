@@ -16,13 +16,13 @@ section Local
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Set `q : (R ⧸ J₁) →ₗ[R] (R ⧸ J₂)` to `Submodule.factor h`. Set `φ` to `IsLocalizedModule.mapExtendScalars W.primeCompl (LocalizedModule.mkLinearMap W.primeCompl (R ⧸ J₁)) (LocalizedModule.mkLinearMap W.primeCompl (R ⧸ J₂)) (Localization.AtPrime W) q`. Establish `hsurj : Function.Surjective φ` using `IsLocalizedModule.map_surjective W.primeCompl _ _ q (Submodule.factor_surjective h)`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h m s`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `h0 : LocalizedModule.mk (q (Submodule.Quotient.mk a)) s = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Conclude with `(IsLocalizedModule.map_LocalizedModules W.primeCompl q _ s).symm`. Rewrite `h0`, the goal using `[IsLocalizedModule.mk_eq_mk', IsLocalizedModule.mk'_eq_zero']`. Take `⟨u, hu⟩` from `h0`. Use `⟨⟨t, ht⟩ * u, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `u • (Submodule.Quotient.mk a : R ⧸ J₂) = 0 at hu`. Rewrite `hu`, the goal using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Use `htJ _ hu` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Conclude with `(LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩).length_eq`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem length_loc_eq (W : Ideal R) [W.IsPrime] {J₁ J₂ : Ideal R} (h : J₁ ≤ J₂) {t : R} (ht : t ∉ W)
     (htJ : ∀ a ∈ J₂, t * a ∈ J₁) :
@@ -52,9 +52,9 @@ theorem length_loc_eq (W : Ideal R) [W.IsPrime] {J₁ J₂ : Ideal R} (h : J₁ 
   exact (LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩).length_eq
 
 /- English proof (translation)
-Establish `e₁` using `length_loc_eq W (le_sup_left : J₁ ≤ J₁ ⊔ J₂) h₁ fun a ha => by`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp ha`. Rewrite using `[mul_add]`. Conclude with `J₁.add_mem (J₁.mul_mem_left _ hy) (hJ₁ z hz)`. Establish `e₂` using `length_loc_eq W (le_sup_right : J₂ ≤ J₁ ⊔ J₂) h₂ fun a ha => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp ha`. Rewrite using `[mul_add]`. Conclude with `J₂.add_mem (hJ₂ y hy) (J₂.mul_mem_left _ hz)`. Unfold `multAt`. Rewrite using `[dif_pos ‹W.IsPrime›, dif_pos ‹W.IsPrime›, e₁, e₂]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multAt_eq_of_mul {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     (W : Ideal (MRingOver R ι)) [W.IsPrime] {J₁ J₂ : Ideal (MRingOver R ι)} {t₁ t₂ : MRingOver R ι} (h₁ : t₁ ∉ W)
@@ -71,7 +71,7 @@ theorem multAt_eq_of_mul {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fint
   rw [dif_pos ‹W.IsPrime›, dif_pos ‹W.IsPrime›, e₁, e₂]
 
 /- English proof (translation)
-Establish `key : ∀ {I₁ I₂ : Ideal R}, (∀ Q : Ideal R, Q.IsPrime → Q ≤ W → (I₁ ≤ Q ↔ I₂ ≤ Q)) → W ∈ I₁.minimalPrimes → W ∈ I₂.minimalPrimes`. Introduce `I₁ I₂ h hW`. Use `⟨⟨hW.1.1, (h W hW.1.1 le_rfl).1 hW.1.2⟩, fun Q hQ hQW => hW.2 ⟨hQ.1, (h Q hQ.1 hQW).2 hQ.2⟩ hQW⟩` and prove the remaining obligations. Conclude with `⟨key h, key fun Q hQ hQW => (h Q hQ hQW).symm⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem mem_minimalPrimes_iff {I₁ I₂ W : Ideal R}
     (h : ∀ Q : Ideal R, Q.IsPrime → Q ≤ W → (I₁ ≤ Q ↔ I₂ ≤ Q)) :
@@ -87,7 +87,7 @@ end Local
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `show mConeMap (pair x x') _ = 0`. Rewrite using `[map_sub, map_mul, map_mul, TwoBlockCoeffCycle.mConeMap_X, TwoBlockCoeffCycle.mConeMap_X, twoBlockNum, TwoBlockCoeffCycle.mConeMap_lin, TwoBlockCoeffCycle.mConeMap_lin]`. Simplify using `only [TwoBlockCoeffCycle.pair_one, TwoBlockCoeffCycle.pair_zero', ← hl, hn]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rel_mem' {x x' : Ix κ → Ω} {c : κ} {l : Ix κ → ℤ} (hl : x ⟨(), c⟩ = ∑ j, (l j : Ω) * x' j)
     (k : Ix κ) (n : Ix κ → ℤ) (hn : ∑ j, (n j : Ω) * x' j = x k) :
@@ -99,9 +99,7 @@ theorem rel_mem' {x x' : Ix κ → Ω} {c : κ} {l : Ix κ → ℤ} (hl : x ⟨(
   ring
 
 /- English proof (translation)
-Introduce `h`. Establish `: d ∈ Q.comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, eq_intCast]`. Conclude with `h`. Rewrite `this` using `[hQ, Ideal.mem_bot]`.
-
-Conclude with `hd this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCast_not_mem {ι : Fin 2 → Type} [∀ k, Fintype (ι k)] {Q : Ideal (MRing ι)} (hQ : IsHorizontal Q) {d : ℤ}
     (hd : d ≠ 0) : (d : MRing ι) ∉ Q := by
@@ -113,7 +111,7 @@ theorem intCast_not_mem {ι : Fin 2 → Type} [∀ k, Fintype (ι k)] {Q : Ideal
   exact hd this
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`. Rewrite using `[mul_add, mul_left_comm]`. Conclude with `J.add_mem (J.mul_mem_left _ (hP hy)) (J.mul_mem_left _ hs)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_of_sup {R : Type*} [CommRing R] {P J : Ideal R} {s t : R} (hP : P ≤ J) (hs : t * s ∈ J) :
     ∀ a ∈ P ⊔ Ideal.span {s}, t * a ∈ J := by
@@ -124,11 +122,11 @@ theorem mul_mem_of_sup {R : Type*} [CommRing R] {P J : Ideal R} {s t : R} (hP : 
   exact J.add_mem (J.mul_mem_left _ (hP hy)) (J.mul_mem_left _ hs)
 
 /- English proof (translation)
-Take `⟨d, hd0, hdB⟩` from `ChangeOfLattice.exists_clear_den B`. Use `⟨d, by exact_mod_cast hd0, fun j₀ => ?_⟩` and prove the remaining obligations. Set `j : Ix κ` to `⟨(), j₀⟩`. Use `choose N hN using hdB j`. Establish `hNx : ∑ k, (N k : Ω) * x k = ((d : ℤ) : Ω) * matAct B x j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [matAct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: ((N k : ℚ) : Ω) = ((d : ℚ) : Ω) * ((B j k : ℚ) : Ω)` using `by rw [← hN k]; push_cast; ring`. Move the coercions through the operations in `at this ⊢`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hrel` using `TwoBlockCoeffCycle.rel_mem hl (d : ℤ) N j hNx`. Use `Submodule.add_mem_sup hrel (Ideal.mul_mem_right (∑ k : Ix κ, C (N k) * X ⟨0, k.2⟩) _ (Ideal.mem_span_singleton_self (twoBlockNum l)))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem den_rel {x : Ix κ → Ω} {B : Matrix (Ix κ) (Ix κ) ℚ} {c : κ} {l : Ix κ → ℤ}
     (hl : x ⟨(), c⟩ = ∑ j, (l j : Ω) * matAct B x j) :
@@ -151,9 +149,9 @@ theorem den_rel {x : Ix κ → Ω} {B : Matrix (Ix κ) (Ix κ) ℚ} {c : κ} {l 
   simpa using this
 
 /- English proof (translation)
-Set `k : Ix κ` to `⟨(), i₀⟩`. Establish `hk : x k ∈ Submodule.span ℤ (Set.range (matAct B x))` using `hsp (Submodule.subset_span ⟨k, rfl⟩)`. Take `⟨n, hn⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hk`. Establish `hn' : ∑ j, (n j : Ω) * matAct B x j = x k` using `by simpa [zsmul_eq_mul] using hn`. Establish `hrel` using `rel_mem' hl k n hn'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.add_mem_sup hrel (Ideal.mul_mem_right (∑ j : Ix κ, C (n j) * X ⟨1, j.2⟩) _ (Ideal.mem_span_singleton_self (twoBlockDen c)))` as an intermediate fact. Simplify `this` using `[twoBlockDen]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem num_rel {x : Ix κ → Ω} {B : Matrix (Ix κ) (Ix κ) ℚ} {c : κ} {l : Ix κ → ℤ}
     (hsp : Submodule.span ℤ (Set.range x) ≤ Submodule.span ℤ (Set.range (matAct B x)))
@@ -169,13 +167,11 @@ theorem num_rel {x : Ix κ → Ω} {B : Matrix (Ix κ) (Ix κ) ℚ} {c : κ} {l 
   simpa [twoBlockDen] using this
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `hR 0`. Take `⟨j₀, hj₀⟩` from `hR 1`. Take `⟨d, hd0, hd⟩` from `den_rel (c := c) (l := l) hl`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sup_le (le_sup_left.trans h) ((Ideal.span_singleton_le_iff_mem _).2 ?_)` and prove the remaining obligations. Break down `hQ.mem_or_mem (h (hd j₀)) with h1 | h1` into its components or cases. Break down `hQ.mem_or_mem h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 (intCast_not_mem hH hd0)`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd h1 hj₀`. Introduce `h`. Use `sup_le (le_sup_left.trans h) ((Ideal.span_singleton_le_iff_mem _).2 ?_)` and prove the remaining obligations. Break down `hQ.mem_or_mem (h (num_rel hsp hl i₀)) with h1 | h1` into its components or cases. Conclude with `absurd h1 hi₀`.
-
-Conclude with `h1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sup_le_iff_of_horiz {x : Ix κ → Ω} {B : Matrix (Ix κ) (Ix κ) ℚ} {c : κ} {l : Ix κ → ℤ}
     (hsp : Submodule.span ℤ (Set.range x) ≤ Submodule.span ℤ (Set.range (matAct B x)))
@@ -205,17 +201,15 @@ end TwoBlockHorizDiv
 open TwoBlockHorizDiv in
 
 /- English proof (translation)
-Introduce `Ω _ _ κ _ x B c l hsp hl W hW`. Establish `hiff : IsRelevant W → ∀ Q : Ideal (MRing (FinTwoTypeFamily κ)), Q.IsPrime → Q ≤ W → (twoBlockIdeal x (matAct B x) ⊔ Ideal.span {twoBlockNum l} ≤ Q ↔ twoBlockIdeal x (matAct B x) ⊔ Ideal.span {twoBlockDen c} ≤ Q)`. Introduce `hr Q hQ hQW`. Establish `hH : IsHorizontal Q`. Unfold `IsHorizontal at hW ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `le_bot_iff.mp (hW ▸ Ideal.comap_mono hQW)`. Establish `hR : IsRelevant Q` using `fun k => (hr k).imp fun i hi h => hi (hQW h)`. Conclude with `sup_le_iff_of_horiz hsp hl hQ hH hR`. Use `⟨⟨fun ⟨hm, hr⟩ => ⟨(mem_minimalPrimes_iff (hiff hr)).1 hm, hr⟩, fun ⟨hm, hr⟩ => ⟨(mem_minimalPrimes_iff (hiff hr)).2 hm, hr⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨hm, hr⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: W.IsPrime` using `hm.1.1`. Take `⟨i₀, hi₀⟩` from `hr 0`. Take `⟨j₀, hj₀⟩` from `hr 1`. Take `⟨d, hd0, hd⟩` from `den_rel (c := c) (l := l) hl`. Use `multAt_eq_of_mul W (t₁ := (d : MRing (FinTwoTypeFamily κ)) * X ⟨1, j₀⟩) (t₂ := X ⟨0, i₀⟩) ?_ hi₀ ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h`. Break down `Ideal.IsPrime.mem_or_mem ‹W.IsPrime› h with h1 | h1` into its components or cases. Conclude with `intCast_not_mem hW hd0 h1`. Conclude with `hj₀ h1`. Use `mul_mem_of_sup le_sup_left ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: (d : MRing (FinTwoTypeFamily κ)) * X ⟨1, j₀⟩ * twoBlockDen c = (d : MRing (FinTwoTypeFamily κ)) * X ⟨0, c⟩ * X ⟨1, j₀⟩`. Rewrite using `[twoBlockDen]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hd j₀`.
-
-Conclude with `mul_mem_of_sup le_sup_left (num_rel hsp hl i₀)`.
+A detailed English derivation is pending.
 -/
 theorem TwoBlockHorizDiv.proof : TwoBlockHorizDiv.Statement := by
   intro Ω _ _ κ _ x B c l hsp hl W hW

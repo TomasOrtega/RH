@@ -25,21 +25,17 @@ set_option autoImplicit false
 noncomputable section
 
 /- English proof (translation)
-Introduce `hXH P2 PH SW D O hO hf A T H h B hB τ c g hg hgz ε π hπ hu hc Z i _ _ κ _ _ _ hd`. Establish `hX` using `(h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ar`. Establish `: Module.Finite ℤ (𝓞 D.what₂.LL)` using `hX.finite`. Establish `: IsProper (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hX.isProjOver).1`. Establish `hproj : IsProjOver (strHom κ Z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFinite (spMap (Int.castRingHom (𝓞 D.what₂.LL)))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := 𝓞 D.what₂.LL)).2 inferInstance`. Establish `e : strHom κ Z ≫ spMap (Int.castRingHom κ) = i ≫ (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p ≫ spMap (Int.castRingHom (𝓞 D.what₂.LL))` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom κ Z ≫ spMap (Int.castRingHom κ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `infer_instance`. Establish `: IsProper (strHom κ Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom κ))`. Conclude with `ProperCurve.isProjOver_of_isProper _ hd`. Set `F₀ : HermLB.IsomClass (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p → ℤ` to `Quotient.lift (s := HermLB.isometrySetoid _) (fun L => topSelfIntersection κ (L.B.pull i) 1) fun L L' e => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Establish `⟨w, hw, _⟩` using `HermLB.Isometric.pull e i rfl`. Conclude with `interNum_congr_lbIso κ _ (fun _ => (L.restr i).isLB) (fun _ => (L'.restr i).isLB) fun _ => ⟨w, hw⟩`. Set `F : HermLB.IsomClass (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p →+ ℤ` to `AddMonoidHom.mk' F₀ (by`. Introduce and unpack `⟨L⟩ ⟨L'⟩`. Conclude with `HtTensCurve.topSelf_one_pull_tens hproj hd i L.isLB L'.isLB)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `key {ι : Type} [Fintype ι] (L : ι → HermLB (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p) (e : ι → ℤ) : topSelfIntersection κ ((comb L e).B.pull i) 1 = ∑ x, e x * F (L x).icls`. Express the relevant statement in the definitionally equal form `F (comb L e).icls = _`. Rewrite using `[icls_comb, map_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by rw [map_zsmul, smul_eq_mul]`. Establish `hcore` using `if hp : ringChar κ ∈ GlobalTheory.FlagAr.setB O.Y B then GlobalTheory.T.top_self_curve_char_in_bad_set P2 PH SW D O hO hf B hB c (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c) τ Z i κ hd hp else GlobalTheory.T.top_self_curve_char_not_in_bad_set hXH P2 PH SW D O hO hf B hB c (h.mdl (G …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hcore`, the goal using `[key]`. Rewrite using `[Fintype.sum_option]`. Establish `hF (L : HermLB (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.p) : F L.icls = topSelfIntersection κ (L.B.pull i) 1` using `rfl`. Establish `htriv : topSelfIntersection κ ((LB.triv (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.X).pull i) 1 = 0`. Establish `hl` using `LB.isLB_pull (LB.isLB_triv (h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.X) i`.
-
-Use `interNum_eq_zero_of_cls_eq_zero κ _ (fun _ => hl) 0 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (LB.isLB_triv _) i, cls_triv, map_zero]`. Establish `h0 : F (fnB _ hu hc).icls = 0` using `(hF _).trans htriv`. Simplify using `only [Option.elim_none, Option.elim_some]`. Rewrite using `[h0, mul_zero, zero_add]`.
-
-Conclude with `hcore`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlatVertDeg.topSelf_comb_eq_zero : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ (τ : D.what₂.Tau) (c : O.s.Comp)

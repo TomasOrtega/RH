@@ -9,9 +9,9 @@ open MvPolynomial Filter
 noncomputable section
 
 /- English proof (translation)
-Use `conv_lhs => rw [p.as_sum, map_sum]`. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (le_totalDegree hs)` and prove the remaining obligations. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Simplify using `using Nat.mul_le_mul_left (s i) (hf i)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem totalDegree_bind₁_le_of_le_one {σ τ R : Type*} [CommSemiring R]
     (f : σ → MvPolynomial τ R) (hf : ∀ i, (f i).totalDegree ≤ 1) (p : MvPolynomial σ R) :
@@ -28,11 +28,11 @@ theorem totalDegree_bind₁_le_of_le_one {σ τ R : Type*} [CommSemiring R]
   simpa using Nat.mul_le_mul_left (s i) (hf i)
 
 /- English proof (translation)
-Introduce `K _ h p c hp`. Use `⟨bind₁ (fun k => X k - C (c k : ℚ)) p, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun m : K → ℤ => m + -c) atTop atTop` using `tendsto_atTop_add_const_right atTop (-c) tendsto_id`. Use `(ht.eventually hp).mono fun m hm => ?_` and prove the remaining obligations. Simplify using `only [← sub_eq_add_neg] at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e` using `eval₂Hom_bind₁ (RingHom.id ℚ) (fun k => (m k : ℚ)) (fun k => X k - C (c k : ℚ)) p`. Rewrite using `[hm]`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Use `show eval _ p = eval _ p`. Use `congrArg (fun x => eval x p) (funext fun k => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `totalDegree_bind₁_le_of_le_one _ (fun k => (totalDegree_sub_C_le _ _).trans (totalDegree_X k).le) p`. Introduce and unpack `rfl`. Conclude with `map_zero _`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem EventuallyPolyShift.proof : EventuallyPolyShift.Statement := by
   intro K _ h p c hp

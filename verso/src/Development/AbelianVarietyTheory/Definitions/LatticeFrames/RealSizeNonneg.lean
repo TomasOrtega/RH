@@ -33,13 +33,13 @@ structure IsSobForm (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp 
     ∀ f ∈ GlobalTheory.Size.thetaLevel ψ S T U, ‖ℓ f‖ₑ ≤ C * supSob ψ θ d f
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem realSize_nonneg (θ : InfFam D) {m n : ℕ} (x : Mx D m n) : 0 ≤ realSize θ x :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-Unfold `maj`. Use `split_ifs`. Use `realSize_nonneg θ x` as an intermediate fact. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem maj_nonneg (θ : InfFam D) {m n : ℕ} (K : Set (Mx D m n)) (N : ℕ) (x : Mx D m n) : 0 ≤ maj θ K N x := by
   unfold maj
@@ -48,7 +48,7 @@ theorem maj_nonneg (θ : InfFam D) {m n : ℕ} (K : Set (Mx D m n)) (N : ℕ) (x
   · exact le_rfl
 
 /- English proof (translation)
-The claim follows from `rfl smul _ _ _ := rfl bound _ _ := ⟨0, 1, fun f _ => by rw [ENNReal.coe_one, one_mul] exact le_trans (le_iSup (fun w => ‖f w‖ₑ) 0) (GlobalTheory.Size.le_wordSum (A := GlobalTheory.Size.heisDer ψ θ) (p := fun φ : WO S T → ℂ => ⨆ w, ‖φ w‖ₑ) (l := []) le_rfl f)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSobForm_eval (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) : IsSobForm ψ θ S T fun f => f 0 where
   add _ _ _ _ := rfl

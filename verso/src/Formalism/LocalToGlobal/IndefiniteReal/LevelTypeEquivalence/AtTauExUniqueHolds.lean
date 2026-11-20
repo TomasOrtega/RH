@@ -22,7 +22,7 @@ def basAf : Module.Basis (Fin 2) (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host
   Algebra.TensorProduct.basis (Af D.host.F) (basE D)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [infPart, basA, basAF, Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem repr_infPart (x : AE D) (k : Fin 2) :
     (basA D).repr (infPart D x) k = fstA D.host.F ((basAF D).repr x k) := by
@@ -32,7 +32,7 @@ theorem repr_infPart (x : AE D) (k : Fin 2) :
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [finPart, basAf, basAF, Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem repr_finPart (x : AE D) (k : Fin 2) :
     (basAf D).repr (finPart D x) k = sndA D.host.F ((basAF D).repr x k) := by
@@ -42,9 +42,9 @@ theorem repr_finPart (x : AE D) (k : Fin 2) :
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Apply `(basAF D).ext_elem` to reduce the goal to its premises. Introduce `k`. Establish `e1` using `congrArg (fun y => (basA D).repr y k) h1`. Establish `e2` using `congrArg (fun y => (basAf D).repr y k) h2`. Simplify using `only [repr_infPart, repr_finPart] at e1 e2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext e1 e2`.
+A detailed English derivation is pending.
 -/
 theorem ae_ext {x x' : AE D} (h1 : infPart D x = infPart D x') (h2 : finPart D x = finPart D x') : x = x' := by
   apply (basAF D).ext_elem
@@ -58,7 +58,7 @@ def glueA (y : Ainf D.host.F ⊗[D.host.F] D.host.E) (z : Af D.host.F ⊗[D.host
   (basAF D).equivFun.symm fun k => pairA D.host.F ((basA D).repr y k) ((basAf D).repr z k)
 
 /- English proof (translation)
-Unfold `glueA`. Rewrite using `[← (basAF D).equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_glueA (y : Ainf D.host.F ⊗[D.host.F] D.host.E) (z : Af D.host.F ⊗[D.host.F] D.host.E) (k : Fin 2) :
     (basAF D).repr (glueA D y z) k = pairA D.host.F ((basA D).repr y k) ((basAf D).repr z k) := by
@@ -66,7 +66,7 @@ theorem repr_glueA (y : Ainf D.host.F ⊗[D.host.F] D.host.E) (z : Af D.host.F �
   rw [← (basAF D).equivFun_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Apply `(basA D).ext_elem` to reduce the goal to its premises. Introduce `k`. Rewrite using `[repr_infPart, repr_glueA]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infPart_glueA (y : Ainf D.host.F ⊗[D.host.F] D.host.E) (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     infPart D (glueA D y z) = y := by
@@ -76,7 +76,7 @@ theorem infPart_glueA (y : Ainf D.host.F ⊗[D.host.F] D.host.E) (z : Af D.host.
   rfl
 
 /- English proof (translation)
-Apply `(basAf D).ext_elem` to reduce the goal to its premises. Introduce `k`. Rewrite using `[repr_finPart, repr_glueA]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_glueA (y : Ainf D.host.F ⊗[D.host.F] D.host.E) (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     finPart D (glueA D y z) = z := by
@@ -88,7 +88,7 @@ theorem finPart_glueA (y : Ainf D.host.F ⊗[D.host.F] D.host.E) (z : Af D.host.
 def psiT (τ : D.what₂.Tau) : AE D →+* ℂ := (thetaC D τ).comp (infPart D)
 
 /- English proof (translation)
-Use `show thetaC D τ (infPart D (glueA D (splitInv D f) z)) = f τ`. Rewrite using `[infPart_glueA, thetaC_splitInv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiT_glueA (τ : D.what₂.Tau) (f : D.what₂.Tau → ℂ) (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     psiT D τ (glueA D (splitInv D f) z) = f τ := by
@@ -96,9 +96,9 @@ theorem psiT_glueA (τ : D.what₂.Tau) (f : D.what₂.Tau → ℂ) (z : Af D.ho
   rw [infPart_glueA, thetaC_splitInv]
 
 /- English proof (translation)
-Use `ae_ext D ?_ h2` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `thetaC_inj D` to reduce the goal to its premises. Introduce `τ`. Rewrite using `[map_sub, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 τ`.
+A detailed English derivation is pending.
 -/
 theorem ae_ext' {x x' : AE D} (h1 : ∀ τ, psiT D τ x = psiT D τ x') (h2 : finPart D x = finPart D x') : x = x' := by
   refine ae_ext D ?_ h2
@@ -109,7 +109,7 @@ theorem ae_ext' {x x' : AE D} (h1 : ∀ τ, psiT D τ x = psiT D τ x') (h2 : fi
   exact h1 τ
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `ae_ext' D` to reduce the goal to its premises. Introduce `τ`. Conclude with `congrArg (fun M => M i j) (h1 τ)`. Conclude with `congrArg (fun M => M i j) h2`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mat_ext {m n : ℕ} {A B : Matrix (Fin m) (Fin n) (AE D)} (h1 : ∀ τ, A.map (psiT D τ) = B.map (psiT D τ))
     (h2 : A.map (finPart D) = B.map (finPart D)) : A = B := by
@@ -120,7 +120,7 @@ theorem mat_ext {m n : ℕ} {A B : Matrix (Fin m) (Fin n) (AE D)} (h1 : ∀ τ, 
   · exact congrArg (fun M => M i j) h2
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [infPart, sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem infPart_sigR (x : AE D) :
     infPart D (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D x) := by
@@ -130,7 +130,7 @@ theorem infPart_sigR (x : AE D) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [finPart, sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finPart_sigR (x : AE D) :
     finPart D (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
@@ -140,9 +140,9 @@ theorem finPart_sigR (x : AE D) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `hs : sigR (Ainf D.host.F) D.sp.cm.sig (a ⊗ₜ[D.host.F] e) = a ⊗ₜ[D.host.F] (D.sp.cm.sig e)`. Simplify using `[sigR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, thetaC_tmul, thetaC_tmul, map_mul, gW_real, Complex.conj_ofReal]`. Use `congr 1`. Establish `he : D.sp.cm.sig e = star e` using `rfl`. Rewrite using `[he, tauE_star]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem thetaC_sigR (τ : D.what₂.Tau) (y : Ainf D.host.F ⊗[D.host.F] D.host.E) :
     thetaC D τ (sigR (Ainf D.host.F) D.sp.cm.sig y) = starRingEnd ℂ (thetaC D τ y) := by
@@ -158,7 +158,7 @@ theorem thetaC_sigR (τ : D.what₂.Tau) (y : Ainf D.host.F ⊗[D.host.F] D.host
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `show thetaC D τ (infPart D (sigR (AF D.host.F) D.sp.cm.sig x)) = starRingEnd ℂ (thetaC D τ (infPart D x))`. Rewrite using `[infPart_sigR, thetaC_sigR]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiT_sigR (τ : D.what₂.Tau) (x : AE D) :
     psiT D τ (sigR (AF D.host.F) D.sp.cm.sig x) = starRingEnd ℂ (psiT D τ x) := by
@@ -166,14 +166,14 @@ theorem psiT_sigR (τ : D.what₂.Tau) (x : AE D) :
   rw [infPart_sigR, thetaC_sigR]
 
 /- English proof (translation)
-Simplify using `[psiT, inclR, infPart, thetaC]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem psiT_inclR (τ : D.what₂.Tau) (e : D.host.E) : psiT D τ (inclR (AF D.host.F) e) = tauE D τ e := by
   simp [psiT, inclR, infPart, thetaC]
   rfl
 
 /- English proof (translation)
-Simplify using `[finPart, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finPart_inclR (e : D.host.E) : finPart D (inclR (AF D.host.F) e) = inclR (Af D.host.F) e := by
   simp [finPart, inclR]
@@ -181,7 +181,7 @@ theorem finPart_inclR (e : D.host.E) : finPart D (inclR (AF D.host.F) e) = inclR
 variable (V : HSp D)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, psiT_sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_psiT (τ : D.what₂.Tau) (M : Matrix (Fin V.rank) (Fin V.rank) (AE D)) :
     (Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) M).map (psiT D τ) = (M.map (psiT D τ))ᴴ := by
@@ -189,7 +189,7 @@ theorem cT_map_psiT (τ : D.what₂.Tau) (M : Matrix (Fin V.rank) (Fin V.rank) (
   simp [Formalism.UG.cT, psiT_sigR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, finPart_sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_map_fin (M : Matrix (Fin V.rank) (Fin V.rank) (AE D)) :
     (Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) M).map (finPart D) =
@@ -198,14 +198,14 @@ theorem cT_map_fin (M : Matrix (Fin V.rank) (Fin V.rank) (AE D)) :
   simp [Formalism.UG.cT, finPart_sigR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, gramAt, psiT_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_map_psiT (τ : D.what₂.Tau) : (JR (AF D.host.F) V.gram).map (psiT D τ) = gramAt D V τ := by
   ext i j
   simp [JR, gramAt, psiT_inclR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, finPart_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_map_fin : (JR (AF D.host.F) V.gram).map (finPart D) = JR (Af D.host.F) V.gram := by
   ext i j
@@ -216,7 +216,7 @@ def atM (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : Matrix
     ((1 : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [atM, Matrix.map_apply, Matrix.of_apply, psiT_glueA]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem psi_atM (τ τ' : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     (atM D V τ g).map (psiT D τ') = if τ' = τ then g else 1 := by
@@ -225,14 +225,14 @@ theorem psi_atM (τ τ' : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) �
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [atM, Matrix.map_apply, Matrix.of_apply, finPart_glueA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fin_atM (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : (atM D V τ g).map (finPart D) = 1 := by
   ext i j
   simp only [atM, Matrix.map_apply, Matrix.of_apply, finPart_glueA]
 
 /- English proof (translation)
-Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ'`. Rewrite using `[Matrix.map_mul, psi_atM, psi_atM, psi_atM]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Matrix.map_mul, fin_atM, fin_atM, fin_atM, mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem atM_mul (τ : D.what₂.Tau) (g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     atM D V τ (g * g') = atM D V τ g * atM D V τ g' := by
@@ -243,7 +243,7 @@ theorem atM_mul (τ : D.what₂.Tau) (g g' : Matrix (Fin V.rank) (Fin V.rank) �
   · rw [Matrix.map_mul, fin_atM, fin_atM, fin_atM, mul_one]
 
 /- English proof (translation)
-Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ'`. Rewrite using `[psi_atM]`. Simplify using the standard rewrite rules. Rewrite using `[fin_atM]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -256,9 +256,9 @@ theorem atM_one (τ : D.what₂.Tau) : atM D V τ 1 = 1 := by
     simp
 
 /- English proof (translation)
-Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ'`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map_psiT, JR_map_psiT, psi_atM]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `hg`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map_fin, JR_map_fin, fin_atM]`. Simplify using `[Formalism.UG.cT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atM_unitary (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hg : gᴴ * gramAt D V τ * g = gramAt D V τ) :
@@ -275,13 +275,13 @@ theorem atM_unitary (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) �
     simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hc0` to reduce the goal to its premises. Establish `hi : ∀ i, V.hT (V.frame i) (∑ j, c j • V.frame j) = 0`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrFun hc i`. Simplify using `only [Matrix.mulVec, dotProduct, Formalism.BasicNotions.HSpace.gram, Pi.zero_apply] at h1`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hker : ∀ x, V.hT x (∑ j, c j • V.frame j) = 0`. Introduce `x`. Establish `hx : x = ∑ i, V.frame.repr x i • V.frame i` using `(V.frame.sum_repr x).symm`. Rewrite using `[hx, map_sum V.hT, LinearMap.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, hi i, smul_zero]`. Establish `hy0 : ∑ j, c j • V.frame j = 0` using `V.nondeg.2 _ hker`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 V.frame.linearIndependent c hy0 j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gram_det_ne' : V.gram.det ≠ 0 := by
   intro h
@@ -306,7 +306,7 @@ theorem gram_det_ne' : V.gram.det ≠ 0 := by
   exact Fintype.linearIndependent_iff.1 V.frame.linearIndependent c hy0 j
 
 /- English proof (translation)
-Establish `hd : (gramAt D V τ).det = tauE D τ V.gram.det` using `(RingHom.map_det (tauE D τ) V.gram).symm`. Rewrite using `[isUnit_iff_ne_zero, hd]`. Conclude with `(map_ne_zero _).mpr (gram_det_ne' D V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_isUnit (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
   have hd : (gramAt D V τ).det = tauE D τ V.gram.det := (RingHom.map_det (tauE D τ) V.gram).symm
@@ -317,7 +317,7 @@ def ginv (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : Matri
   (gramAt D V τ)⁻¹ * gᴴ * gramAt D V τ
 
 /- English proof (translation)
-Unfold `ginv`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg, Matrix.nonsing_inv_mul _ (gramAt_isUnit D V τ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ginv_mul (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : gᴴ * gramAt D V τ * g = gramAt D V τ) :
     ginv D V τ g * g = 1 := by
@@ -326,7 +326,7 @@ theorem ginv_mul (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     Matrix.nonsing_inv_mul _ (gramAt_isUnit D V τ)]
 
 /- English proof (translation)
-Establish `h1` using `ginv_mul D V τ g hg`. Rewrite using `[← Matrix.inv_eq_left_inv h1]`. Conclude with `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_ginv (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : gᴴ * gramAt D V τ * g = gramAt D V τ) :
     g * ginv D V τ g = 1 := by
@@ -352,7 +352,7 @@ theorem matA_atH (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     matA D V (atH D V τ g hg) = atM D V τ g := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem matA_inj {h h' : GA D V} (e : matA D V h = matA D V h') : h = h' := Subtype.ext (Units.ext e)
 
@@ -367,7 +367,7 @@ Both sides reduce to the same expression.
 theorem matA_one : matA D V 1 = 1 := rfl
 
 /- English proof (translation)
-Conclude with `h.2`.
+A detailed English derivation is pending.
 -/
 theorem matA_unitary (h : GA D V) :
     Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (matA D V h) * JR (AF D.host.F) V.gram * matA D V h =
@@ -382,7 +382,7 @@ theorem infMat_thetaC (τ : D.what₂.Tau) (h : GA D V) :
   rfl
 
 /- English proof (translation)
-Unfold `GinfC`. Rewrite using `[MonoidHom.mem_ker]`. Unfold `finHom`. Rewrite using `[Units.ext_iff]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_GinfC (h : GA D V) : h ∈ GinfC V ↔ (matA D V h).map (finPart D) = 1 := by
   unfold GinfC
@@ -392,7 +392,7 @@ theorem mem_GinfC (h : GA D V) : h ∈ GinfC V ↔ (matA D V h).map (finPart D) 
   exact Iff.rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_GinfC, matA_atH, fin_atM]`. Rewrite using `[infMat_thetaC, matA_atH, psi_atM, if_pos rfl]`. Introduce `τ' hτ'`. Rewrite using `[infMat_thetaC, matA_atH, psi_atM, if_neg hτ']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAtTau_atH (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : gᴴ * gramAt D V τ * g = gramAt D V τ) :
     IsAtTau (thetaC D) V τ g (atH D V τ g hg) := by
@@ -403,9 +403,9 @@ theorem isAtTau_atH (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) �
     rw [infMat_thetaC, matA_atH, psi_atM, if_neg hτ']
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hh`. Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ'`. Rewrite using `[psi_atM, ← infMat_thetaC]`. Use `split_ifs with e`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `e` using the available equality. Conclude with `h2`. Conclude with `h3 τ' e`. Rewrite using `[fin_atM]`. Conclude with `(mem_GinfC D V h).mp h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matA_of_isAtTau {τ : D.what₂.Tau} {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} {h : GA D V}
     (hh : IsAtTau (thetaC D) V τ g h) : matA D V h = atM D V τ g := by
@@ -421,7 +421,7 @@ theorem matA_of_isAtTau {τ : D.what₂.Tau} {g : Matrix (Fin V.rank) (Fin V.ran
     exact (mem_GinfC D V h).mp h1
 
 /- English proof (translation)
-Introduce `θ hθ V τ g hg`. Take `rfl` from `eq_thetaC D hθ`. Use `⟨atH D V τ g hg, isAtTau_atH D V τ g hg, fun h hh => ?_⟩` and prove the remaining obligations. Apply `matA_inj D V` to reduce the goal to its premises. Rewrite using `[matA_of_isAtTau D V hh, matA_atH]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem atTauExUnique_holds : AtTauExUnique D := by
   intro θ hθ V τ g hg
@@ -431,9 +431,9 @@ theorem atTauExUnique_holds : AtTauExUnique D := by
   rw [matA_of_isAtTau D V hh, matA_atH]
 
 /- English proof (translation)
-Introduce `θ hθ V τ g h hh`. Take `rfl` from `eq_thetaC D hθ`. Establish `hm` using `matA_of_isAtTau D V hh`. Establish `hu` using `congrArg (fun M => M.map (psiT D τ)) (matA_unitary D V h)`. Rewrite `hu` using `[Matrix.map_mul, Matrix.map_mul, cT_map_psiT, JR_map_psiT, hm, psi_atM, if_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem atTauUnitary_holds : AtTauUnitary D := by
   intro θ hθ V τ g h hh

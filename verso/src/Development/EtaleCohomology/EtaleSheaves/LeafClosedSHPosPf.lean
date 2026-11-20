@@ -6,15 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Polynomial IsLocalRing Glo
 namespace LateralTheory.E.LeafClosedSHPosPf
 
 /- English proof (translation)
-Use `IsLocalHom.of_surjective φ hφ` as an intermediate fact. Establish `: IsLocalRing B` using `IsLocalRing.of_surjective φ hφ`. Use `{ is_henselian := ?_ }` and prove the remaining obligations. Introduce `f hf a₀ h₁ h₂`. Establish `hl : f ∈ Polynomial.lifts φ` using `(Polynomial.lifts_iff_coeff_lifts f).2 (fun n => hφ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨g, hg, -, hgm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hf`. Take `⟨b₀, rfl⟩` from `hφ a₀`. Establish `hev : ∀ (p : A[X]) (x : A), (p.map φ).eval (φ x) = φ (p.eval x)` using `fun p x => by`. Rewrite using `[Polynomial.eval_map, eval₂_at_apply]`. Substitute `hg` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `h1 : g.eval b₀ ∈ maximalIdeal A`. Rewrite `h₁` using `[hev]`. Conclude with `(mem_maximalIdeal _).2 (fun hu => (mem_maximalIdeal _).1 h₁ (hu.map φ))`. Establish `h2 : IsUnit (g.derivative.eval b₀)`. Rewrite `h₂` using `[derivative_map, hev]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `IsUnit.of_map φ _ h₂`. Take `⟨a, ha, ham⟩` from `HenselianLocalRing.is_henselian g hgm b₀ h1 h2`. Use `⟨φ a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsRoot, hev, ha.eq_zero, map_zero]`. Rewrite using `[← map_sub]`.
-
-Conclude with `(mem_maximalIdeal _).2 (fun hu => (mem_maximalIdeal _).1 ham (IsUnit.of_map φ _ hu))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hens_of_surj {A B : Type} [CommRing A] [CommRing B] [HenselianLocalRing A] [Nontrivial B]
     (φ : A →+* B) (hφ : Function.Surjective φ) : HenselianLocalRing B := by
@@ -41,11 +39,11 @@ theorem hens_of_surj {A B : Type} [CommRing A] [CommRing B] [HenselianLocalRing 
     exact (mem_maximalIdeal _).2 (fun hu => (mem_maximalIdeal _).1 ham (IsUnit.of_map φ _ hu))
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (ResidueField.map φ)`. Introduce `y`. Take `⟨b, rfl⟩` from `residue_surjective y`. Take `⟨a, rfl⟩` from `hφ b`. Conclude with `⟨residue A a, ResidueField.map_residue φ a⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `e : ResidueField A ≃+* ResidueField B` to `RingEquiv.ofBijective (ResidueField.map φ) ⟨(ResidueField.map φ).injective, hs⟩`. Use `⟨fun p hp => ?_⟩` and prove the remaining obligations. Establish `h1 : (p.map (e.symm : ResidueField B →+* ResidueField A)).Separable` using `hp.map`. Establish `h2` using `(IsSepClosed.splits_of_separable _ h1).map (e : ResidueField A →+* ResidueField B)`. Rewrite `h2` using `[Polynomial.map_map]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sepClosed_of_surj {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B]
     (φ : A →+* B) [IsLocalHom φ] (hφ : Function.Surjective φ) [IsSepClosed (ResidueField A)] :
@@ -65,7 +63,7 @@ theorem sepClosed_of_surj {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A]
   ext x; simp
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : H R (sch.obj X) F n, z = pull R (sch.map e.hom) F n (pull R (sch.map e.inv) F n z)`. Introduce `z`. Rewrite using `[← pull_comp, ← CategoryTheory.Functor.map_comp, e.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]`. Rewrite using `[key x, key y, Subsingleton.elim (pull R (sch.map e.inv) F n x) (pull R (sch.map e.inv) F n y)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_of_iso {X Y : Scheme.{0}} (e : X ≅ Y) (R : Type) [CommRing R] (F : Shv R) (n : ℤ)
     (h : Subsingleton (H R (sch.obj Y) F n)) : Subsingleton (H R (sch.obj X) F n) := by
@@ -77,9 +75,9 @@ theorem sub_of_iso {X Y : Scheme.{0}} (e : X ≅ Y) (R : Type) [CommRing R] (F :
   rw [key x, key y, Subsingleton.elim (pull R (sch.map e.inv) F n x) (pull R (sch.map e.inv) F n y)]
 
 /- English proof (translation)
-Establish `a5 : A5` using `hy.2.2.2.2.1`. It suffices to establish `h : ∀ x : H R (sch.obj W) F n, x = 0 from ⟨fun a b => by rw [h a, h b]⟩`. Introduce `x`. Take `⟨Z, f, -, -, hf⟩` from `a5 R W F n hn x`. Establish `: IsEmpty Z` using `⟨fun z => isEmptyElim (f.base z)⟩`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `g : W ⟶ Z` to `(isInitialOfIsEmpty (X := W)).to Z`. Establish `hgf : g ≫ f = 𝟙 W` using `(isInitialOfIsEmpty (X := W)).hom_ext _ _`. Establish `: pull R (sch.map (g ≫ f)) F n x = x` using `by rw [hgf, CategoryTheory.Functor.map_id, pull_id]`. Rewrite using `[← this, CategoryTheory.Functor.map_comp, pull_comp, hf, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_of_empty (hy : Hyps) (R : Type) [CommRing R] (F : Shv R) (W : Scheme.{0}) [IsEmpty W] (n : ℤ)
     (hn : 0 < n) : Subsingleton (H R (sch.obj W) F n) := by
@@ -94,13 +92,13 @@ theorem sub_of_empty (hy : Hyps) (R : Type) [CommRing R] (F : Shv R) (W : Scheme
   rw [← this, CategoryTheory.Functor.map_comp, pull_comp, hf, map_zero]
 
 /- English proof (translation)
-Introduce `hy q _ i A _ _ hA hq W' ι' _ n hn`. Break down `isEmpty_or_nonempty W' with hW | ⟨⟨w⟩⟩` into its components or cases. Conclude with `sub_of_empty hy _ _ W' n hn`. Take `⟨hAff, hsurj⟩` from `IsClosedImmersion.isAffine_surjective_of_isAffine ι'`. Set `B : Type` to `Γ(W', ⊤)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : A →+* B` to `(ι'.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`. Establish `hψ : Function.Surjective ψ` using `hsurj.comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv).2`. Establish `: Nontrivial B`. Assume the negation of the conclusion as `hB`. Rewrite `hB` using `[not_nontrivial_iff_subsingleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `p` to `W'.isoSpec.hom.base w`. Conclude with `p.isPrime.ne_top (Subsingleton.elim _ _)`. Take `⟨hH, hS⟩` from `hA`. Use `IsLocalHom.of_surjective ψ hψ` as an intermediate fact. Establish `hHB : HenselianLocalRing B` using `hens_of_surj ψ hψ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSB : SH B` using `⟨hHB, sepClosed_of_surj ψ hψ⟩`. Establish `h2` using `LateralTheory.E.LeafVanBPf.heightFunctionalStatement_of_pairingProperties hy (ZMod q) B hSB (tw q i) n hn`. Conclude with `sub_of_iso W'.isoSpec (ZMod q) (tw q i) n h2`.
+A detailed English derivation is pending.
 -/
 theorem LeafClosedSHPos_of : LateralTheory.E.LeafVanBPf.LeafClosedSHPos := by
   intro hy q _ i A _ _ hA hq W' ι' _ n hn

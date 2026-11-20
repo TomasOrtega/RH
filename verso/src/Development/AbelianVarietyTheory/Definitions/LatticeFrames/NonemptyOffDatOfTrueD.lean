@@ -39,9 +39,9 @@ section Empty
 variable {P : Pl D → Prop}
 
 /- English proof (translation)
-Rewrite `hg` using `[grpOff, congGrp, MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff]`. Rewrite using `[GinfC, MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff]`. Introduce `i j`. Establish `e : Ideal.Quotient.mk (idOff D P) ((1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j) = (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D ⧸ idOff D P)) i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : Formalism.L2.Theta.mt S g i j - (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j ∈ idOff D P` using `Ideal.Quotient.eq.1 ((hg i j).trans e.symm)`. Establish `h2` using `GlobalTheory.SelfDualAt.eq_zero_of_compFin (finPart D _) fun w => (Submodule.mem_iInf _).1 h1 ⟨w, hP w⟩`. Rewrite `h2` using `[RingHom.map_sub, sub_eq_zero]`. Use `h2.trans ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_GinfC_of_all (hP : ∀ v, P v) {S : HSp D} {g : GA D S} (hg : g ∈ grpOff S P) : g ∈ GinfC S := by
   rw [grpOff, congGrp, MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff] at hg

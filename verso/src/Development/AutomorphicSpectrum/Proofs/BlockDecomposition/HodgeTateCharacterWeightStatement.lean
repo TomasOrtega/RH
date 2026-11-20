@@ -10,7 +10,7 @@ open scoped Classical
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.eq_one_of_tpow_mul_unit_eigen | exact GlobalTheory.CompanionTheory.LTPer.eq_one_of_tpow_mul_unit_eigen | (intros; apply GlobalTheory.CompanionTheory.LTPer.eq_one_of_tpow_mul_unit_eigen <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.hodge_tate_character_weight : ∀ {l : ℕ} [Fact l.Prime] (L : IntermediateField ℚ_[l] (Om l)) [FiniteDimensional ℚ_[l] ↥L],
     ((GroundTheory.PAdicHodge.cycloChar L) ''

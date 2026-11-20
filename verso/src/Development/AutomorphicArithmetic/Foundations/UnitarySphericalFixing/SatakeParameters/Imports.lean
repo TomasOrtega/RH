@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `UpperTheory.One.M.fieldGT E Ω A w h E' Ω' A' w' h' rc rc' H H'`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.One.M.New.field {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h}

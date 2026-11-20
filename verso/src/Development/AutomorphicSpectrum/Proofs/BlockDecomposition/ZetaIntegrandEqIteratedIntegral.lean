@@ -15,7 +15,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Establish `hm : ((modulus (a : F) : ℝ) : ℂ) ≠ 0`. Use `modulus_ne_zero a.ne_zero` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `Complex.cpow_add _ _ hm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_add (a : Fˣ) (s t : ℂ) : mp a (s + t) = mp a s * mp a t := by
   have hm : ((modulus (a : F) : ℝ) : ℂ) ≠ 0 := by
@@ -25,7 +25,7 @@ theorem mp_add (a : Fˣ) (s t : ℂ) : mp a (s + t) = mp a s * mp a t := by
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Simplify using `only [mp, Units.val_mul, modulus_mul]`. Use `push_cast`. Conclude with `Complex.mul_cpow_ofReal_nonneg (by positivity) (by positivity) s`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem mp_mul (a b : Fˣ) (s : ℂ) : mp (a * b) s = mp a s * mp b s := by
   simp only [mp, Units.val_mul, modulus_mul]
@@ -34,9 +34,9 @@ theorem mp_mul (a b : Fˣ) (s : ℂ) : mp (a * b) s = mp a s * mp b s := by
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Simplify using `only [mp, Units.val_inv_eq_inv_val, modulus_inv]`. Use `push_cast`. Rewrite using `[Complex.cpow_neg, Complex.inv_cpow]`. Rewrite using `[Complex.arg_ofReal_of_nonneg h0.le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.pi_pos.ne`.
+A detailed English derivation is pending.
 -/
 theorem mp_inv (a : Fˣ) (s : ℂ) : mp a⁻¹ s = mp a (-s) := by
   have h0 : (0 : ℝ) < (modulus (a : F) : ℝ) := by exact_mod_cast modulus_pos a.ne_zero
@@ -48,13 +48,11 @@ theorem mp_inv (a : Fˣ) (s : ℂ) : mp a⁻¹ s = mp a (-s) := by
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hk`. Establish `d1 : (k.val).det ∈ 𝒪[F]`. Rewrite using `[Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (h1 0 0) (h1 1 1)) (mul_mem (h1 0 1) (h1 1 0))`. Establish `d2 : ((k⁻¹).val).det ∈ 𝒪[F]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fin_two]`. Conclude with `sub_mem (mul_mem (h2 0 0) (h2 1 1)) (mul_mem (h2 0 1) (h2 1 0))`. Establish `m1 : modulus (k.val).det ≤ 1` using `modulus_le_one_iff.2 d1`. Establish `m2 : modulus ((k⁻¹).val).det ≤ 1` using `modulus_le_one_iff.2 d2`. Establish `e : modulus (k.val).det * modulus ((k⁻¹).val).det = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← modulus_mul, ← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel]`. Simplify using `[modulus_one]`. Establish `hm : modulus (k.val).det = 1`. Use `le_antisymm m1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `[mp, Matrix.GeneralLinearGroup.val_det_apply, hm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modulus_det_integral_GL2_eq_one {k : GL (Fin 2) F} (hk : k ∈ K2 F) (z : ℂ) :
     mp (GeneralLinearGroup.det k) z = 1 := by
@@ -79,7 +77,7 @@ theorem modulus_det_integral_GL2_eq_one {k : GL (Fin 2) F} (hk : k ∈ K2 F) (z 
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use `ext`. Simplify using `[dg2, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_diagonal_two (a b : Fˣ) : GeneralLinearGroup.det (dg2 a b) = a * b := by
   ext
@@ -87,7 +85,7 @@ theorem det_diagonal_two (a b : Fˣ) : GeneralLinearGroup.det (dg2 a b) = a * b 
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use `ext`. Simplify using `[uni2, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_unipotent_adele (x : F) : GeneralLinearGroup.det (uni2 x) = 1 := by
   ext
@@ -95,7 +93,7 @@ theorem det_unipotent_adele (x : F) : GeneralLinearGroup.det (uni2 x) = 1 := by
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_inv_mul_alt (t : Fˣ) : dg2 t⁻¹ 1 * dg2 t 1 = (1 : GL (Fin 2) F) := by
   ext i j
@@ -103,7 +101,7 @@ theorem diag_inv_mul_alt (t : Fˣ) : dg2 t⁻¹ 1 * dg2 t 1 = (1 : GL (Fin 2) F)
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;>`. Apply the tactic sequence `simp [e1r, dg2, uni2, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem first_vector_diag_unipotent_mul (t : Fˣ) (x : F) (h : GL (Fin 2) F) :
     e1r (dg2 t 1 * (uni2 x * h)) = ![(t : F), t * x] ᵥ* (h : Matrix (Fin 2) (Fin 2) F) := by
@@ -113,7 +111,7 @@ theorem first_vector_diag_unipotent_mul (t : Fˣ) (x : F) (h : GL (Fin 2) F) :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [e2r, dg2, uni2, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem second_vector_diag_unipotent_invariant (t : Fˣ) (x : F) (h : GL (Fin 2) F) :
     e2r (dg2 t 1 * (uni2 x * h)) = e2r h := by
@@ -122,7 +120,7 @@ theorem second_vector_diag_unipotent_invariant (t : Fˣ) (x : F) (h : GL (Fin 2)
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Rewrite using `[hI, map_mul, det_diagonal_two, mp_mul, modulus_det_integral_GL2_eq_one hp, mp_mul, mp_mul, two_mul, mp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mp_det_hI (p : Fˣ × Fˣ × GL (Fin 2) F) (hp : p.2.2 ∈ K2 F) (z : ℂ) :
     mp (GeneralLinearGroup.det (hI p)) z = mp p.1 z * mp p.2.1 (2 * z) := by
@@ -131,13 +129,13 @@ theorem mp_det_hI (p : Fˣ × Fˣ × GL (Fin 2) F) (hp : p.2.2 ∈ K2 F) (z : �
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Establish `hw : ((wR p : ℝ) : ℂ) = mp p.1 (-1)`. Rewrite using `[wR, mp, Complex.cpow_neg_one]`. Use `push_cast`. Both sides reduce to the same expression. Establish `ea : mp p.1 (1 / 2) * mp p.1 (s - 1) = mp p.1 (-1) * mp p.1 (s + 1 / 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← mp_add, ← mp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `eb : mp p.2.1 (2 * (1 / 2)) * mp p.2.1 (2 * s) = mp p.2.1 (2 * (s + 1 / 2))`. Rewrite using `[← mp_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `et : mp t (s + 1 / 2) * mp t (-(s - 1 / 2)) = mp t 1`. Rewrite using `[← mp_add]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw, mp_mul, mp_inv, mp_det_hI p hp, mp_det_hI p hp, ← eb, ← et]`. Take the linear combination `(-(mp p.2.1 (2 * (1 / 2)) * mp p.2.1 (2 * s) * mp t (s + 1 / 2) * mp t (-(s - 1 / 2)))) * ea`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem weight (p : Fˣ × Fˣ × GL (Fin 2) F) (hp : p.2.2 ∈ K2 F) (t : Fˣ) (s : ℂ) :
     ((wR p : ℝ) : ℂ) * mp (t * GeneralLinearGroup.det (hI p)) (s + 1 / 2) * mp t⁻¹ (s - 1 / 2) =
@@ -156,11 +154,11 @@ theorem weight (p : Fˣ × Fˣ × GL (Fin 2) F) (hp : p.2.2 ∈ K2 F) (t : Fˣ) 
   linear_combination (-(mp p.2.1 (2 * (1 / 2)) * mp p.2.1 (2 * s) * mp t (s + 1 / 2) * mp t (-(s - 1 / 2)))) * ea
 
 /- English proof (translation)
-Establish `hw` using `weight p hp t s`. Establish `hu : ((((ν' (t * GeneralLinearGroup.det (hI p)))⁻¹ : ℂˣ) : ℂ)) * ((ν' t⁻¹ : ℂˣ) : ℂ) = ((ν'⁻¹ (GeneralLinearGroup.det (hI p)) : ℂˣ) : ℂ) * (((ν' t)⁻¹ * ν'⁻¹ t : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Simplify using `only [map_mul, map_inv, MonoidHom.inv_apply, mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, mul_left_comm]`. Establish `hV' : V (dg2 t⁻¹ 1 * (dg2 t 1 * (uni2 x * hI p))) = (ψ (-x) : ℂ) * V (hI p)`. Rewrite using `[← mul_assoc, diag_inv_mul_alt, one_mul, hV, AddChar.inv_apply]`. Establish `hd : GeneralLinearGroup.det (dg2 t 1 * (uni2 x * hI p)) = t * GeneralLinearGroup.det (hI p)`. Rewrite using `[map_mul, map_mul, det_diagonal_two, det_unipotent_adele, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply, Th, Jm]`. Rewrite using `[hV', first_vector_diag_unipotent_mul, second_vector_diag_unipotent_invariant, hd]`. Take the linear combination `(((ν' (t * GeneralLinearGroup.det (hI p)))⁻¹ : ℂˣ) : ℂ) * ((ν' t⁻¹ : ℂˣ) : ℂ) * φ₀ (![(t : F), t * x] ᵥ* (hI p : Matrix (Fin 2) (Fin 2) F)) * φ (e2r (hI p)) * (ψ (-x) : ℂ) * V (hI p) * hw + (mp (GeneralLinearGroup.det (hI p)) (1 / 2) * mp t 1 * mp p.1 (s - 1) * mp p.2.1 (2 * s)) …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pointwise (ψ : AddChar F Circle) (ν' : Fˣ →* ℂˣ) (φ₀ φ : (Fin 2 → F) → ℂ)
     (V : GL (Fin 2) F → ℂ) (s : ℂ)
@@ -195,7 +193,7 @@ theorem pointwise (ψ : AddChar F Circle) (ν' : Fˣ →* ℂˣ) (φ₀ φ : (Fi
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ _ ν' φ₀ φ V s hV p hp`. Repeatedly rewrite using `[pointwise ψ ν' φ₀ φ V s hV p hp, integral_const_mul]`. Simplify using `only [z2I, W2]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem main : ForS fun F _ _ _ _ _ _ ψ => ∀ (ν' : Fˣ →* ℂˣ) (φ₀ φ : (Fin 2 → F) → ℂ) (V : GL (Fin 2) F → ℂ) (s : ℂ),
     (∀ x g, V (uni2 x * g) = ((ψ⁻¹ x : Circle) : ℂ) * V g) →

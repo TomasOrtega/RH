@@ -12,14 +12,14 @@ namespace GlobalTheory.PPAS
 open CechPic
 
 /- English proof (translation)
-Simplify using `only [lam, map_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_add_class {S : Scheme.{0}} {G T : Over S} [GrpObj G] (a b : Pic G.left) (x y : T ⟶ G) :
     lam (a + b) x y = lam a x y + lam b x y := by
   simp only [lam, map_add]; abel
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_inv_pull {S : Scheme.{0}} {G Q : Over S} [GrpObj G] [GrpObj Q] (π : G ⟶ Q) [IsMonHom π]
     (c : Pic Q.left) :
@@ -27,9 +27,9 @@ theorem pull_inv_pull {S : Scheme.{0}} {G Q : Over S} [GrpObj G] [GrpObj Q] (π 
   rw [← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]
 
 /- English proof (translation)
-Take `⟨π₁, π₂, m₁, m₂, -, -, hc⟩` from `h`. Take `⟨L₁, hL₁, s₁, e₁⟩` from `h₁`. Take `⟨L₂, hL₂, s₂, e₂⟩` from `h₂`. Take `⟨L, hL, hcls⟩` from `cls_surj (pull π₁.left (cls L₁ hL₁) + pull π₂.left (cls L₂ hL₂))`. Use `⟨L, hL, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `PolCompare.sym_of_isSymmetric (A := P.A) hL ((PolCompare.isSymmetric_iff_cls (A := P.A) hL).2 ?_)` and prove the remaining obligations. Establish `k₁` using `(PolCompare.isSymmetric_iff_cls (A := P₁.A) hL₁).1 ((PolCompare.sym_iff (A := P₁.A) P₁.isAb hL₁).1 s₁)`. Establish `k₂` using `(PolCompare.isSymmetric_iff_cls (A := P₂.A) hL₂).1 ((PolCompare.sym_iff (A := P₂.A) P₂.isAb hL₂).1 s₂)`. Rewrite using `[hcls, map_add, pull_inv_pull π₁, pull_inv_pull π₂, sub_eq_zero.1 k₁, sub_eq_zero.1 k₂, sub_self]`. Rewrite using `[hc, e₁, e₂, hcls, pull_lam, pull_lam, tensorHom_fst, tensorHom_snd, tensorHom_fst, tensorHom_snd, ← lam_pull, ← lam_pull, lam_add_class]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasTheta_of_isProd {S : Scheme.{0}} {P P₁ P₂ : PPAS S} (h : P.IsProd P₁ P₂) (h₁ : P₁.HasTheta)
     (h₂ : P₂.HasTheta) : P.HasTheta := by
@@ -48,7 +48,7 @@ theorem hasTheta_of_isProd {S : Scheme.{0}} {P P₁ P₂ : PPAS S} (h : P.IsProd
       ← lam_pull, ← lam_pull, lam_add_class]
 
 /- English proof (translation)
-Introduce `_ _ _ _ h h₁ h₂` and use `hasTheta_of_isProd h h₁ h₂`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasTheta_prod : ∀ (S : Scheme.{0}) (P P₁ P₂ : PPAS S), P.IsProd P₁ P₂ → P₁.HasTheta → P₂.HasTheta →
     P.HasTheta := fun _ _ _ _ h h₁ h₂ => hasTheta_of_isProd h h₁ h₂

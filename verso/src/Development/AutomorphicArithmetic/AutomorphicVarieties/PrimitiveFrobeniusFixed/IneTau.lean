@@ -6,23 +6,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Introduce `Ω _ _ _ q hq`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Use `haveI : NeZero q := ⟨hq.ne_zero⟩`. Establish `hall : ∀ x : (ZMod q)ˣ, x ∈ B3.pPart q q`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `B3.pPart`. Rewrite using `[MonoidHom.mem_ker]`. Establish `h : q / q ^ q.factorization q = 1`. Rewrite using `[hq.factorization_self, pow_one, Nat.div_self hq.pos]`. Establish `hs : Subsingleton (ZMod (q / q ^ q.factorization q))ˣ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Use `infer_instance`. Conclude with `Subsingleton.elim _ _`. Establish `part1 : ∀ A : ValuationSubring Ω, Over A q → ∀ b : (ZMod q)ˣ, ∃ t ∈ Ine (F` using `ℚ) A, Lifts q b t := by`. Introduce `A hA b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : A.valuation (q : Ω) < 1`. Unfold `Over at hA`. Conclude with `hA`. Establish `hmap` using `B1.cycIne Ω q q A hA'`. Establish `hb : b ∈ Subgroup.map (B1.cycN ℚ Ω q) (Ine A)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmap]`. Conclude with `hall b`. Take `⟨t, ht, htb⟩` from `hb`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Unfold `Lifts Pows`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `(B1.cycN_eq_iff ℚ Ω q t b).1 htb`. Use `⟨part1, ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `(B3.placesQ Ω).1 q hq`. Take `⟨b, hgen⟩` from `IsCyclic.exists_generator (α := (ZMod q)ˣ)`. Establish `hA2 : Over A q`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Over`. Conclude with `hA`. Take `⟨t, ht, hl⟩` from `part1 A hA2 b`. Use `⟨t, ?_⟩` and prove the remaining obligations. Unfold `IsTau`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Unfold `fixMu`. Introduce `ζ hζ`. Conclude with `((LDataCardLeFinrank.ineFixRoots ℚ Ω q A hA k hk ζ hζ).2 t ht)`.
-
-Unfold `GenAt`. Conclude with `⟨b, hgen, hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.ineTau :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (q : ℕ), q.Prime → (∀ A : ValuationSubring Ω, Over A q → ∀ b : (ZMod q)ˣ, ∃ t ∈ Ine (F := ℚ) A, Lifts q b t) ∧ ∃ τ : G ℚ Ω, IsTau q τ := by

@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 F) => ((v.adicCompletionIntegers F : ValuationSubring _) : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+A detailed English derivation is pending.
 -/
 private theorem isOpen_intA (F : Type) [Field F] [NumberField F] :
     IsOpen {a : FiniteAdeleRing (𝓞 F) F | ∀ v, Valued.v (a v) ≤ 1} :=
@@ -14,46 +14,42 @@ private theorem isOpen_intA (F : Type) [Field F] [NumberField F] :
     (fun v => Valued.isOpen_valuationSubring _)
 
 /- English proof (translation)
-The claim follows from `continuous_snd.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_sim {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} :
     Continuous (sim : GUf E n → AfQˣ) := continuous_snd.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `continuous_fst.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_mat {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} :
     Continuous (mat : GUf E n → GL (Fin n) (Af E)) := continuous_fst.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `(Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval w))).comp continuous_mat`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (w : Plc E) :
     Continuous (comp w : GUf E n → GL (Fin n) (w.adicCompletion E)) :=
   (Continuous.units_map _ (continuous_id.matrix_map (RestrictedProduct.continuous_eval w))).comp continuous_mat
 
 /- English proof (translation)
-Introduce `E _ _ _ n S Kw hK`. Establish `hI : IsOpen {a : Af E | ∀ v, Valued.v (a v) ≤ 1}` using `isOpen_intA E`. Establish `hJ : IsOpen {a : AfQ | ∀ v, Valued.v (a v) ≤ 1}` using `isOpen_intA ℚ`. Set `A : Set (GUf E n)` to `((((fun k => ((sim k : AfQˣ) : AfQ)) ⁻¹' {a : AfQ | ∀ v, Valued.v (a v) ≤ 1}) ∩ ((fun k => (((sim k)⁻¹ : AfQˣ) : AfQ)) ⁻¹' {a : AfQ | ∀ v, Valued.v (a v) ≤ 1})) ∩ ((⋂ i, ⋂ j, (fun k => (mat k).val i j) ⁻¹' {a : Af E | ∀ v, Valued.v (a v) ≤ 1}) ∩ (⋂ i, ⋂ j, (fun k => ((mat k)⁻¹).v …`. Establish `hAo : IsOpen A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `((IsOpen.inter ?_ ?_).inter (IsOpen.inter ?_ ?_)).inter ?_` and prove the remaining obligations. Conclude with `hJ.preimage (Units.continuous_val.comp continuous_sim)`. Conclude with `hJ.preimage (Units.continuous_val.comp continuous_sim.inv)`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hI.preimage ((Units.continuous_val.comp continuous_mat).matrix_elem i j)`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hI.preimage ((Units.continuous_val.comp continuous_mat.inv).matrix_elem i j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `isOpen_biInter_finset fun w hw => (hK w hw).preimage (continuous_comp w)`. Establish `hone : ∀ (i j : Fin n) (v : Plc E), Valued.v (((1 : Matrix (Fin n) (Fin n) (Af E)) i j) v) ≤ 1`. Introduce `i j v`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.one_apply_eq]`. Express the relevant statement in the definitionally equal form `Valued.v (1 : v.adicCompletion E) ≤ 1`. Rewrite using `[map_one]`. Rewrite using `[Matrix.one_apply_ne h]`. Express the relevant statement in the definitionally equal form `Valued.v (0 : v.adicCompletion E) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Conclude with `zero_le'`. Establish `hQ : ∀ v : Plc ℚ, Valued.v ((1 : AfQ) v) ≤ 1` using `fun v => by`. Express the relevant statement in the definitionally equal form `Valued.v (1 : v.adicCompletion ℚ) ≤ 1`. Rewrite using `[map_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `h1 : (1 : GUf E n) ∈ A`. Use `⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hQ`. Simplify using `using hQ`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, map_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun i j => hone i j`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, map_one, inv_one]`. Conclude with `fun i j => hone i j`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, map_one]`. Conclude with `fun w _ => (Kw w).one_mem`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hsub : A ⊆ (lev S Kw : Set (GUf E n))`. Introduce and unpack `k ⟨⟨⟨hs, hs'⟩, hm, hm'⟩, hc⟩`. Simplify using `only [Set.mem_iInter, Set.mem_preimage] at hm hm' hc`. Use `mem_lev.2 ⟨fun v => ?_, fun w hw => hc w hw, fun w _ _ => ?_⟩` and prove the remaining obligations. Establish `h : Valued.v (((sim k : AfQˣ) : AfQ) v * (((sim k)⁻¹ : AfQˣ) : AfQ) v) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Valued.v ((((sim k : AfQˣ) : AfQ) * (((sim k)⁻¹ : AfQˣ) : AfQ)) v) = 1`. Rewrite using `[Units.mul_inv]`. Conclude with `map_one _`. Rewrite `h` using `[map_mul]`. Use `le_antisymm (hs v) ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.HenQ.Basic.mem_KGL_iff]`. Use `⟨fun i j => hm i j w, fun i j => ?_⟩` and prove the remaining obligations. Establish `: (comp w k)⁻¹ = GeneralLinearGroup.map (pLoc E w) (mat k)⁻¹` using `(map_inv _ _).symm`. Rewrite using `[this]`.
-
-Conclude with `hm' i j w`. Conclude with `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (hAo.mem_nhds h1) hsub)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pLevOpen_of :
     UpperTheory.Gal.CertificateRingHomMap.LevOpen := by

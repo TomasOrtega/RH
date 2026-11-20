@@ -9,9 +9,9 @@ namespace GlobalTheory.ParabVirt
 open Polynomial in
 
 /- English proof (translation)
-Establish `hcard : ∀ s : G, (Finset.univ.filter (fun t => π t = π s)).card = Nat.card H`. Introduce `s`. Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr { toFun := fun t => ⟨s⁻¹ * t.1, (hπ s t.1).1 t.2.symm⟩ invFun := fun h => ⟨s * h.1, ((hπ s (s * h.1)).2 (by simpa using h.2)).symm⟩ left_inv := fun t => by ext; simp right_inv := fun h => by ext; simp }`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hs x`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => f (π s)) (fun t ht => by rw [(Finset.mem_filter.1 ht).2]), Finset.sum_const, hcard, nsmul_eq_mul]`. Use `_ = _ := (Finset.mul_sum _ _ _).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ParabVirt.sum_fibres {G X : Type} [Group G] [Fintype G] [Fintype X]
     (H : Subgroup G) (π : G → X)
@@ -52,7 +52,7 @@ theorem lin_apply (x : GL (Fin n) F) (v : Fin n → F) :
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.ParabVirt.lin_apply, Units.val_mul, Matrix.toLin'_mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.ParabVirt.lin_mul (x y : GL (Fin n) F) (v : Fin n → F) :
     _root_.GlobalTheory.ParabVirt.lin (x * y) v =
@@ -63,7 +63,7 @@ theorem _root_.GlobalTheory.ParabVirt.lin_mul (x y : GL (Fin n) F) (v : Fin n �
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.ParabVirt.lin_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.ParabVirt.lin_one (v : Fin n → F) :
     _root_.GlobalTheory.ParabVirt.lin (1 : GL (Fin n) F) v = v := by
@@ -77,9 +77,9 @@ theorem lin_inv (x : GL (Fin n) F) (v : Fin n → F) : lin x⁻¹ v = (lin x).sy
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-Use `⟨⟨LinearMap.toMatrix' e.toLinearMap, LinearMap.toMatrix' e.symm.toLinearMap, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `v : 1`. Simplify using `[_root_.GlobalTheory.ParabVirt.lin_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.ParabVirt.lin_surjective (e : (Fin n → F) ≃ₗ[F] (Fin n → F)) :
     ∃ x : GL (Fin n) F, _root_.GlobalTheory.ParabVirt.lin x = e := by
@@ -92,7 +92,7 @@ theorem _root_.GlobalTheory.ParabVirt.lin_surjective (e : (Fin n → F) ≃ₗ[F
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-Use `Submodule.eq_of_le_of_finrank_eq ?_ (LinearEquiv.finrank_map_eq _ _)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `h v hv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ParabVirt.map_eq_of_stable (x : GL (Fin n) F)
     (W : Submodule F (Fin n → F)) (h : ∀ v ∈ W, _root_.GlobalTheory.ParabVirt.lin x v ∈ W) :
@@ -115,7 +115,7 @@ def stab (W : Submodule F (Fin n → F)) : Subgroup (GL (Fin n) F) where
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem _root_.GlobalTheory.ParabVirt.mem_stab (W : Submodule F (Fin n → F)) (x : GL (Fin n) F) :
     x ∈ _root_.GlobalTheory.ParabVirt.stab W ↔
@@ -124,7 +124,7 @@ theorem _root_.GlobalTheory.ParabVirt.mem_stab (W : Submodule F (Fin n → F)) (
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun v => _root_.GlobalTheory.ParabVirt.lin_mul x y v`.
+A detailed English derivation is pending.
 -/
 private theorem lin_mul_toLinearMap (x y : GL (Fin n) F) :
     (_root_.GlobalTheory.ParabVirt.lin (x * y)).toLinearMap =
@@ -135,9 +135,9 @@ private theorem lin_mul_toLinearMap (x y : GL (Fin n) F) :
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Rewrite using `[← _root_.GlobalTheory.ParabVirt.lin_apply, _root_.GlobalTheory.ParabVirt.lin_mul, _root_.GlobalTheory.ParabVirt.lin_inv]`. Establish `hmem : _root_.GlobalTheory.ParabVirt.lin t v ∈ W.map (_root_.GlobalTheory.ParabVirt.lin s).toLinearMap` using `h ▸ ⟨v, hv, rfl⟩`. Take `⟨w, hw, hw'⟩` from `hmem`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify `hw` using `[← hw']`. Introduce `h`. Establish `h' : ∀ v ∈ W, _root_.GlobalTheory.ParabVirt.lin (s⁻¹ * t) v ∈ W` using `h`. Use `conv_rhs => rw [show t = s * (s⁻¹ * t) by group]`. Rewrite using `[lin_mul_toLinearMap, Submodule.map_comp, _root_.GlobalTheory.ParabVirt.map_eq_of_stable _ W h']`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ParabVirt.map_eq_map_iff (W : Submodule F (Fin n → F))
     (s t : GL (Fin n) F) :
@@ -161,11 +161,11 @@ theorem _root_.GlobalTheory.ParabVirt.map_eq_map_iff (W : Submodule F (Fin n →
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ v ∈ W, _root_.GlobalTheory.ParabVirt.lin (t⁻¹ * x * t) v ∈ W) ↔ ∀ v ∈ W.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap, _root_.GlobalTheory.ParabVirt.lin x v ∈ W.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨w, hw, rfl⟩`. Use `⟨_root_.GlobalTheory.ParabVirt.lin (t⁻¹ * x * t) w, h w hw, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_coe]`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← _root_.GlobalTheory.ParabVirt.lin_mul, ← _root_.GlobalTheory.ParabVirt.lin_mul, show t * (t⁻¹ * x * t) = x * t by group]`. Introduce `h w hw`. Take `⟨u, hu, hu'⟩` from `h (_root_.GlobalTheory.ParabVirt.lin t w) ⟨w, hw, rfl⟩`. Establish `hwu : _root_.GlobalTheory.ParabVirt.lin (t⁻¹ * x * t) w = u`. Rewrite using `[show t⁻¹ * x * t = t⁻¹ * (x * t) by group, _root_.GlobalTheory.ParabVirt.lin_mul, _root_.GlobalTheory.ParabVirt.lin_mul, ← hu', LinearEquiv.coe_coe, _root_.GlobalTheory.ParabVirt.lin_inv, LinearEquiv.symm_apply_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hwu]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ParabVirt.conj_mem_stab_iff (W : Submodule F (Fin n → F))
     (x t : GL (Fin n) F) :
@@ -212,11 +212,11 @@ def resMat {a : ℕ} (W : Submodule F (Fin n → F)) (e : W ≃ₗ[F] (Fin a →
 open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 /- English proof (translation)
-Take `⟨C₀, hC₀⟩` from `Submodule.exists_isCompl W₀`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl W`. Establish `h₁` using `Submodule.finrank_add_eq_of_isCompl hC₀`. Establish `h₂` using `Submodule.finrank_add_eq_of_isCompl hC`. Set `E : (Fin n → F) ≃ₗ[F] (Fin n → F)` to `(W₀.prodEquivOfIsCompl C₀ hC₀).symm ≪≫ₗ (LinearEquiv.prodCongr (LinearEquiv.ofFinrankEq W₀ W h) (LinearEquiv.ofFinrankEq C₀ C (by omega))) ≪≫ₗ W.prodEquivOfIsCompl C hC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨t, ht⟩` from `_root_.GlobalTheory.ParabVirt.lin_surjective E`. Use `⟨t, Submodule.eq_of_le_of_finrank_eq ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hs : (W₀.prodEquivOfIsCompl C₀ hC₀).symm v = (⟨v, hv⟩, 0)` using `Submodule.prodEquivOfIsCompl_symm_apply_left W₀ C₀ hC₀ ⟨v, hv⟩`. Simplify using `[ht, E, hs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearEquiv.finrank_map_eq, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_gl_map_lin_eq_of_finrank_eq (W₀ W : Submodule F (Fin n → F))
     (h : Module.finrank F W₀ = Module.finrank F W) :
@@ -241,33 +241,31 @@ open Polynomial in
 variable {F : Type} [Field F] {n : ℕ} in
 
 /- English proof (translation)
-Introduce `F _ _ Φ hΦ a n hχ`. Establish `hG` using `_root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear (GL (Fin n) F)`. Establish `hGa` using `_root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear (GL (Fin a) F)`. Distinguish the cases in `ha : a ≤ n`. Use `swap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `(_root_.GlobalTheory.BI.Virt ℂ ℂ (GL (Fin n) F)).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[Pi.zero_apply]`. Use `haveI : IsEmpty {W : Submodule F (Fin n → F) // Module.finrank F W = a ∧ ∀ v ∈ W, Matrix.toLin' (x : Matrix (Fin n) (Fin n) F) v ∈ W} := ⟨fun W => ha (by`. Establish `h₁` using `Submodule.finrank_le W.1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h₁` using `[Module.finrank_fin_fun, W.2.1]`. Conclude with `h₁)⟩`. Conclude with `finsum_of_isEmpty _`. Choose the witnesses or unpack the hypotheses as in `⟨W₀, hW₀⟩ : ∃ W₀ : Submodule F (Fin n → F), Module.finrank F W₀ = a := by`. Use `⟨Submodule.span F (Set.range fun i : Fin a => (Pi.single (Fin.castLE ha i) (1 : F) : Fin n → F)), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[finrank_span_eq_card, Fintype.card_fin]`. Use `(Pi.basisFun F (Fin n)).linearIndependent.comp _ (Fin.castLE_injective ha) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i : 1`. Simplify using the standard rewrite rules. Set `e₀ : W₀ ≃ₗ[F] (Fin a → F)` to `LinearEquiv.ofFinrankEq _ _ (by rw [hW₀, Module.finrank_fin_fun])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P` to `_root_.GlobalTheory.ParabVirt.stab W₀`. Set `ρ : P →* GL (Fin a) F` to `(_root_.GlobalTheory.ParabVirt.resMat W₀ e₀).toHomUnits`. Set `χ : GL (Fin a) F → ℂ` to `fun y => Φ (Fin a → F) (Matrix.toLin' (y : Matrix (Fin a) (Fin a) F))`. Establish `hψ : (fun p : P => χ (ρ p)) ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ P` using `hGa.2.1 χ hχ P ρ`. Use `hG.2.2.2.1 P _ hψ using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Establish `hval : ∀ p : P, χ (ρ p) = Φ W₀ ((Matrix.toLin' ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)).restrict p.2)`. Introduce `p`. Simplify using `only [χ, ρ, MonoidHom.coe_toHomUnits]`. Conclude with `(congrArg (Φ (Fin a → F)) (Matrix.toLin'_toMatrix' (e₀.conj ((Matrix.toLin' ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)).restrict p.2)))).trans (hΦ _ _ e₀ _)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Fintype (Submodule F (Fin n → F)) := Fintype.ofFinite _`. Use `haveI : Fintype (GL (Fin n) F) := Fintype.ofFinite _`. Set `π : GL (Fin n) F → {W : Submodule F (Fin n → F) // Module.finrank F W = a}` to `fun t => ⟨W₀.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap, by`. Rewrite using `[LinearEquiv.finrank_map_eq, hW₀]⟩`. Set `f : {W : Submodule F (Fin n → F) // Module.finrank F W = a} → ℂ` to `fun W => if h : ∀ v ∈ W.1, Matrix.toLin' (x : Matrix (Fin n) (Fin n) F) v ∈ W.1 then Φ W.1 ((Matrix.toLin' (x : Matrix (Fin n) (Fin n) F)).restrict h) else 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `p : {W : Submodule F (Fin n → F) // Module.finrank F W = a} → Prop` to `fun W => ∀ v ∈ W.1, Matrix.toLin' (x : Matrix (Fin n) (Fin n) F) v ∈ W.1`. Establish `hs : Function.Surjective π` using `fun W => by`. Take `⟨t, ht⟩` from `exists_gl_map_lin_eq_of_finrank_eq W₀ W.1 (by rw [hW₀, W.2])`. Conclude with `⟨t, Subtype.ext ht⟩`. Establish `hπ : ∀ s t, π s = π t ↔ s⁻¹ * t ∈ P` using `fun s t => Subtype.ext_iff.trans (_root_.GlobalTheory.ParabVirt.map_eq_map_iff W₀ s t)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ t, _root_.GlobalTheory.BI.ext0 P (fun p => χ (ρ p)) (t⁻¹ * x * t) = f (π t)`. Introduce `t`. Unfold `_root_.GlobalTheory.BI.ext0`. Distinguish the cases in `h : t⁻¹ * x * t ∈ P`. Establish `h' : ∀ v ∈ W₀.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap, Matrix.toLin' (x : Matrix (Fin n) (Fin n) F) v ∈ W₀.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap` using `(_root_.GlobalTheory.ParabVirt.conj_mem_stab_iff W₀ x t).1 h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[dif_pos h]`. Use `show χ (ρ ⟨_, h⟩) = _`. Rewrite using `[hval]`. Simplify using `only [f, π]`. Rewrite using `[dif_pos h']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `symm`. Use `(congrArg (Φ ↥(W₀.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap)) ?_).trans (hΦ _ _ ((_root_.GlobalTheory.ParabVirt.lin t).submoduleMap W₀) _)` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`. Apply `Subtype.ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨w, rfl⟩` from `((_root_.GlobalTheory.ParabVirt.lin t).submoduleMap W₀).surjective u`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Simplify using `only [LinearMap.restrict_coe_apply, LinearEquiv.submoduleMap_apply, Subgroup.coe_mk, ← _root_.GlobalTheory.ParabVirt.lin_apply]`. Express the relevant statement in the definitionally equal form `_ = _root_.GlobalTheory.ParabVirt.lin t (_root_.GlobalTheory.ParabVirt.lin (t⁻¹ * x * t) (w : Fin n → F))`. Simplify using `only [← _root_.GlobalTheory.ParabVirt.lin_mul, Subgroup.coe_mk, mul_assoc, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ¬ ∀ v ∈ W₀.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap, Matrix.toLin' (x : Matrix (Fin n) (Fin n) F) v ∈ W₀.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap` using `fun h' => h ((_root_.GlobalTheory.ParabVirt.conj_mem_stab_iff W₀ x t).2 h')`. Rewrite using `[dif_neg h]`. Simplify using `only [f, π]`. Rewrite using `[dif_neg h']`. Unfold `_root_.GlobalTheory.BI.ind`.
-
-Rewrite using `[finsum_congr hpt, finsum_eq_sum_of_fintype (fun t => f (π t)), _root_.GlobalTheory.ParabVirt.sum_fibres P π hs hπ f, ← mul_assoc, inv_mul_cancel₀ (Nat.cast_ne_zero.2 Nat.card_pos.ne'), one_mul, finsum_eq_sum_of_fintype, ← Fintype.sum_subtype_add_sum_subtype p f]`. Establish `hzero : ∑ W : {W // ¬ p W}, f W = 0` using `Finset.sum_eq_zero (fun W _ => dif_neg W.2)`. Rewrite using `[hzero, add_zero]`. Conclude with `(Fintype.sum_equiv (Equiv.subtypeSubtypeEquivSubtypeInter _ _) _ _ (fun W => dif_pos W.2)).symm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ParabVirt.parab_virt : ∀ (F : Type) [Field F] [Finite F] (Φ : ∀ (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V], Module.End F V → ℂ), (∀ (V V' : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] [AddCommGroup V'] [Module F V'] [FiniteDimensional F V'] (e : V ≃ₗ[F] V') (g : Module.End F V), Φ V' (e.conj g) = Φ V g) → ∀ a n : ℕ, (fun x : GL (Fin a) F => Φ (Fin a → F) (Matrix.toLin' (x : Matrix (Fin a) (Fin a) F))) ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ (GL (Fin a) F) → (fun x : GL (Fin n) F => ∑ᶠ W : {W : Submodule F (Fin n → F) // Module.finrank F W = a ∧ ∀ v ∈ W, Matrix.toLin' (x : Matrix (Fin n) (Fin n) F) v ∈ W}, Φ W.1 ((Matrix.toLin' (x : Matrix (Fin n) (Fin n) F)).restrict W.2.2)) ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ (GL (Fin n) F) := by
   intro F _ _ Φ hΦ a n hχ

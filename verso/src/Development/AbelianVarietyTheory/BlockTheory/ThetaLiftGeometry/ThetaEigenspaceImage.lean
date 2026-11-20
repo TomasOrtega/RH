@@ -27,7 +27,7 @@ def ThetaTMapsIntoEigOut {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : N
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
 /- English proof (translation)
-Unfold `MjSig MjSigOut`. Conclude with `biSup_mono fun σ hσ w hw => hσ.2.2 w hw.1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mjSig_le_mjSigOut (i : N.Loc) (Sig : List (Part A.CG)) :
     MjSig N A i Sig ≤ MjSigOut N A i Sig := by
@@ -35,13 +35,13 @@ theorem mjSig_le_mjSigOut (i : N.Loc) (Sig : List (Part A.CG)) :
   exact biSup_mono fun σ hσ w hw => hσ.2.2 w hw.1
 
 /- English proof (translation)
-Introduce `i x Sig hx hp f hf` and use `h i x Sig hx hp f (mjSig_le_mjSigOut N A i Sig hf)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaTMapsIntoEig_of_out (h : ThetaTMapsIntoEigOut N A) : ThetaTMapsIntoEig N A :=
   fun i x Sig hx hp f hf => h i x Sig hx hp f (mjSig_le_mjSigOut N A i Sig hf)
 
 /- English proof (translation)
-Unfold `ThetaTMapsIntoEig`. Simplify using `only [Submodule.map_le_iff_le_comap]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem thetaTMapsIntoEig_iff_map_le : ThetaTMapsIntoEig N A ↔
     ∀ (i : N.Loc) (x : N.X i) (Sig : List (Part A.CG)),

@@ -12,7 +12,7 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FinPl.SetCut.cutG_mem_jacGrp_besGrp | exact GlobalTheory.FinPl.SetCut.cutG_mem_jacGrp_besGrp | (intros; apply GlobalTheory.FinPl.SetCut.cutG_mem_jacGrp_besGrp <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.unitaryIdempotentCut_mem_fourierJacobi_besselGroup : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (ε : AF D.host.F) (hε : ε * ε = ε), (∀ g ∈ jacGrp d, GlobalTheory.FinPl.SetCut.cutG V ε hε g ∈ jacGrp d) ∧ ∀ (A L : HSp D) (o : OrthDec V₀ A L), ∀ g ∈ besGrp d o, GlobalTheory.FinPl.SetCut.cutG V ε hε g ∈ besGrp d o := by
   first | exact @GlobalTheory.FinPl.SetCut.cutG_mem_jacGrp_besGrp | exact GlobalTheory.FinPl.SetCut.cutG_mem_jacGrp_besGrp | (intros; apply GlobalTheory.FinPl.SetCut.cutG_mem_jacGrp_besGrp <;> assumption)

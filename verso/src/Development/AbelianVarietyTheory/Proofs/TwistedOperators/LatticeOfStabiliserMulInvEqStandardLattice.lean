@@ -24,13 +24,13 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 
 /- English proof (translation)
-Introduce `D T L sc G W S X hX k hk`. Establish `hC` using `GlobalTheory.MovedHomLat.colLat_fin (S.N.fr X)`. Establish `hsp` using `GlobalTheory.MovedHomLat.colLat_span (S.N.fr X)`. Establish `key : ∀ y, y ∈ Formalism.UG.CS.globLat (finG (G.V X) (k * (S.N.u X)⁻¹)) (G.Λ X) ↔ y ∈ colLat (S.N.fr X)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : finG (G.V X) (k * (S.N.u X)⁻¹) * Formalism.IndefR.Lev.finE (G.V X) (S.N.u X).1 = Formalism.IndefR.Lev.finE (G.V X) k.1` using `by show Formalism.IndefR.Lev.finE (G.V X) ((k * (S.N.u X)⁻¹ : FinPt G X) : GA D (G.V X)) * _ = _`. Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, inv_mul_cancel_right]`. Rewrite using `[GlobalTheory.MovedHomLat.globLat_mul_iff _ _ _ _ (S.N.u_lat X hX), e, GlobalTheory.MovedHomLat.mem_globLat_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `GlobalTheory.CongStdLoc.incl_mem_hatL_iff (F := D.host.F) (Module.Finite.iff_fg.1 hC) hsp y`. Use extensionality with `z`. Simplify using `only [GlobalTheory.SumSize.latAt, Submodule.mem_comap, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply]`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (z ∈ ·) (GlobalTheory.ColStd.colLat_comap_eq_stdLat (S.N.fr X))` as an intermediate fact. Simplify using `only [Submodule.mem_comap, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply] at this`. Conclude with `Iff.of_eq this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latAt_mul_inv_eq_stdL : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil}
     (S : GridChoice W Set.univ) (X : Node), DefNode D.R.m X → ∀ k : FinPt G X,

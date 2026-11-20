@@ -35,25 +35,25 @@ def chars {n : ℕ} (ξ : Fin n → (kˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar
   Finset.univ.val.map fun j => IrrGL.ofChar (ξ j) (hξ j)
 
 /- English proof (translation)
-Introduce `_ h` and use `absurd h (Multiset.notMem_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unlinked_zero : Unlinked (0 : Multiset (IrrGL k)) := fun _ h => absurd h (Multiset.notMem_zero _)
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨IrrGL.isCusp_ofChar χ hχ, Or.inl rfl⟩`.
+Prove the second alternative.
 -/
 example (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : Plain (IrrGL.ofChar χ hχ) :=
   Or.inr ⟨IrrGL.isCusp_ofChar χ hχ, Or.inl rfl⟩
 
 /- English proof (translation)
-Introduce `h` and use `h ((IrrGL.ofChar χ hχ).nu 1) (by simp) (IrrGL.ofChar χ hχ) (by simp) rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     ¬ Unlinked ({IrrGL.ofChar χ hχ, (IrrGL.ofChar χ hχ).nu 1} : Multiset (IrrGL k)) := fun h =>
   h ((IrrGL.ofChar χ hχ).nu 1) (by simp) (IrrGL.ofChar χ hχ) (by simp) rfl
 
 /- English proof (translation)
-Simplify using `[chars]`.
+Simplify using the standard rewrite rules.
 -/
 example (ξ : Fin 1 → (kˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j)) : chars ξ hξ = {IrrGL.ofChar (ξ 0) (hξ 0)} := by
   simp [chars]
@@ -71,7 +71,7 @@ def PlainAt (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) : Prop :=
   ∀ σ : SmIrr (GL (Fin a) (w.adicCompletion E)), π.IsLocComp w σ → Plain (IrrGL.of σ.ρ σ.smooth σ.irred)
 
 /- English proof (translation)
-Introduce `σ _` and use `by refine Or.inr ⟨IrrGL.isCusp_of.2 ⟨one_pos, σ.smooth, fun s d e he => absurd ?_ he⟩, Or.inl rfl⟩ rw [eq_bot_iff] intro u hu have h := congrArg Units.val (det_eq_one_of_mem_unipRad _ hu) rw [Subgroup.mem_bot] refine Units.ext (Matrix.ext fun i j => ?_) rw [Subsingleton.elim i 0, …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (π : CuspSub E 1) (w : HeightOneSpectrum (𝓞 E)) : PlainAt π w := fun σ _ => by
   refine Or.inr ⟨IrrGL.isCusp_of.2 ⟨one_pos, σ.smooth, fun s d e he => absurd ?_ he⟩, Or.inl rfl⟩
@@ -84,7 +84,7 @@ example (π : CuspSub E 1) (w : HeightOneSpectrum (𝓞 E)) : PlainAt π w := fu
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[satWD, show (1 - ((1 : ℕ) : ℝ)) / 2 = 0 by norm_num, WD.lpTw_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) (B : Multiset ℂˣ) :
     satWD h 1 B = WD.lpUnr h (B.map fun b => ((b⁻¹ : ℂˣ) : ℂ)) := by

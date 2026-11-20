@@ -20,9 +20,9 @@ def topCoeff [Fintype K] (D : ℕ) (a : K → ℚ) (p : MvPolynomial K ℚ) : �
   ∑ s ∈ p.support, p.coeff s * if ∑ k, s k = D then ∏ k, a k ^ s k else 0
 
 /- English proof (translation)
-Unfold `lineRestrict`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.eval_add, hp, hq]`. Consider the case `mul_X p k hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_mul, Polynomial.eval_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval_X, Polynomial.eval_add, Polynomial.eval_C, Polynomial.eval_X]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_lineRestrict [Fintype K] (a c : K → ℚ) (p : MvPolynomial K ℚ) (t : ℚ) :
     (lineRestrict a c p).eval t = MvPolynomial.eval (fun k => c k + t * a k) p := by
@@ -36,9 +36,9 @@ theorem eval_lineRestrict [Fintype K] (a c : K → ℚ) (p : MvPolynomial K ℚ)
     ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k S hk ih`. Establish `h1 : ((C (a k) * X + C (c k)) ^ (s k)).natDegree ≤ s k`. Simplify using `using natDegree_pow_le_of_le (s k) (natDegree_linear_le (a := a k) (b := c k))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ((C (a k) * X + C (c k)) ^ (s k)).coeff (s k) = a k ^ s k`. Use `coeff_pow_of_natDegree_le (m := s k) (natDegree_linear_le (a := a k) (b := c k))` as an intermediate fact. Simplify using `using this`. Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk, Finset.prod_insert hk]`. Conclude with `⟨natDegree_mul_le.trans (add_le_add h1 ih.1), by rw [coeff_mul_add_eq_of_natDegree_le h1 ih.1, h2, ih.2]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem prod_line_pow (a c : K → ℚ) (s : K → ℕ) (S : Finset K) :
     (∏ k ∈ S, (C (a k) * X + C (c k)) ^ (s k)).natDegree ≤ ∑ k ∈ S, s k ∧
@@ -57,13 +57,13 @@ theorem prod_line_pow (a c : K → ℚ) (s : K → ℕ) (S : Finset K) :
       by rw [coeff_mul_add_eq_of_natDegree_le h1 ih.1, h2, ih.2]⟩
 
 /- English proof (translation)
-Establish `hs : ∀ s ∈ p.support, ∑ k, s k ≤ D` using `fun s hs => by`. Use `MvPolynomial.le_totalDegree hs` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `this.trans hp`. Establish `hexp : lineRestrict a c p = ∑ s ∈ p.support, C (p.coeff s) * ∏ k, (C (a k) * X + C (c k)) ^ (s k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `lineRestrict`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq']`. Both sides reduce to the same expression. Rewrite using `[hexp]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `natDegree_sum_le_of_forall_le _ _ (fun s hs' => ?_)` and prove the remaining obligations. Conclude with `(natDegree_C_mul_le _ _).trans ((prod_line_pow a c s Finset.univ).1.trans (hs s hs'))`. Rewrite using `[Polynomial.finsetSum_coeff]`. Use `Finset.sum_congr rfl (fun s hs' => ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_C_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `split_ifs with hD`. Rewrite using `[← hD]`. Conclude with `(prod_line_pow a c s Finset.univ).2`. Conclude with `coeff_eq_zero_of_natDegree_lt ((prod_line_pow a c s Finset.univ).1.trans_lt (lt_of_le_of_ne (hs s hs') hD))`.
+A detailed English derivation is pending.
 -/
 theorem lineRestrict_natDegree_coeff [Fintype K] (D : ℕ) (a c : K → ℚ) (p : MvPolynomial K ℚ)
     (hp : p.totalDegree ≤ D) :
@@ -92,9 +92,9 @@ theorem lineRestrict_natDegree_coeff [Fintype K] (D : ℕ) (a c : K → ℚ) (p 
         ((prod_line_pow a c s Finset.univ).1.trans_lt (lt_of_le_of_ne (hs s hs') hD))
 
 /- English proof (translation)
-Break down `hP.lt_or_eq with h | h` into its components or cases. Rewrite using `[Polynomial.fwdDiff_iter_eq_zero_of_degree_lt h, coeff_eq_zero_of_natDegree_lt h]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality. Rewrite using `[Polynomial.fwdDiff_iter_degree_eq_factorial]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coeff_natDegree]`. Simplify using `only [Pi.smul_apply, Pi.natCast_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fwdDiff_iter_poly (D : ℕ) (P : ℚ[X]) (hP : P.natDegree ≤ D) :
     (fwdDiff (1 : ℚ))^[D] P.eval 0 = (D.factorial : ℚ) * P.coeff D := by
@@ -108,16 +108,16 @@ theorem fwdDiff_iter_poly (D : ℕ) (P : ℚ[X]) (hP : P.natDegree ≤ D) :
     ring
 
 /- English proof (translation)
-Simplify using `only [mixedDiff, List.ofFn_const]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mixedDiff_const (D : ℕ) (a : K → ℤ) (f : (K → ℤ) → ℤ) :
     mixedDiff (fun _ : Fin D => a) f = (List.replicate D a).foldr diffStep f := by
   simp only [mixedDiff, List.ofFn_const]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e1 : x - (n + 1) • a + a = x - n • a` using `by rw [succ_nsmul]; abel`. Establish `e2 : x - a - n • a = x - (n + 1) • a` using `by rw [succ_nsmul]; abel`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[List.replicate_succ, List.foldr_cons, Function.iterate_succ_apply']`. Use `show (List.replicate n a).foldr diffStep f x - (List.replicate n a).foldr diffStep f (x - a) = _`. Rewrite using `[ih, ih, e2]`. Use `show _ = (fwdDiff a)^[n] f (x - (n + 1) • a + a) - (fwdDiff a)^[n] f (x - (n + 1) • a)`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_replicate (a : K → ℤ) (f : (K → ℤ) → ℤ) (n : ℕ) (x : K → ℤ) :
     (List.replicate n a).foldr diffStep f x = (fwdDiff a)^[n] f (x - n • a) := by
@@ -137,27 +137,27 @@ end EventualPolyLine
 open EventualPolyLine in
 
 /- English proof (translation)
-Introduce `K _ _ D f p a₀ a m hp hf`. Take `⟨aQ, haQ⟩ : ∃ aQ : K → ℚ, aQ = fun k => (a k : ℚ)` from `⟨_, rfl⟩`. Establish `key : ∀ x : K → ℤ, (∀ k, (a₀ : ℤ) + D * |a k| ≤ x k) → ((mixedDiff (fun _ : Fin D => a) f x : ℤ) : ℚ) = (D.factorial : ℚ) * topCoeff D aQ p`. Introduce `x hx`. Take `⟨c, hc⟩ : ∃ c : K → ℚ, c = fun k => (((x - D • a) k : ℤ) : ℚ)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hdeg, hcoeff⟩` from `lineRestrict_natDegree_coeff D aQ c p hp`. Rewrite using `[mixedDiff_const, foldr_diffStep_replicate, fwdDiff_iter_eq_sum_shift, ← hcoeff, ← fwdDiff_iter_poly D _ hdeg, fwdDiff_iter_eq_sum_shift, Int.cast_sum]`. Use `Finset.sum_congr rfl (fun j hj => ?_)` and prove the remaining obligations. Establish `hjD : j ≤ D` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Establish `hnn : ∀ k, (a₀ : ℤ) ≤ (x - D • a + j • a) k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `h1` using `hx k`. Establish `hj' : (j : ℤ) ≤ D` using `by exact_mod_cast hjD`. Establish `hj0 : (0 : ℤ) ≤ j` using `by positivity`. Simplify using `only [Pi.add_apply, Pi.sub_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases abs_cases (a k) with ⟨h2, h3⟩ | ⟨h2, h3⟩ <;> nlinarith`. Establish `hge : ∀ k, a₀ ≤ ((x - D • a + j • a) k).toNat` using `fun k => by have := hnn k; omega`. Establish `hy : (fun k => ((((x - D • a + j • a) k).toNat : ℕ) : ℤ)) = x - D • a + j • a`. Use function extensionality and compare the values at `fun k => Int.toNat_of_nonneg (by have := hnn k; omega)`. Establish `hfy : f (x - D • a + j • a) = f (fun k => ((((x - D • a + j • a) k).toNat : ℕ) : ℤ))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[hy]`. Rewrite using `[smul_eq_mul, zsmul_eq_mul, Int.cast_mul, hfy, hf _ hge, eval_lineRestrict]`. Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : ((((x - D • a + j • a) k).toNat : ℕ) : ℚ) = (((x - D • a + j • a) k : ℤ) : ℚ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by have := hnn k; omega)]`. Rewrite using `[e2, hc, haQ]`. Simplify using `only [Pi.add_apply, Pi.sub_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply, zero_add, mul_one]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨c₀, hc₀⟩ : ∃ c₀, mixedDiff (fun _ : Fin D => a) f (fun k => (a₀ : ℤ) + D * |a k|) = c₀` from `⟨_, rfl⟩`. Establish `h₀` using `key (fun k => (a₀ : ℤ) + D * |a k|) (fun k => le_rfl)`. Rewrite `h₀` using `[hc₀]`. Establish `hev : ∀ᶠ x in Filter.atTop, mixedDiff (fun _ : Fin D => a) f x = c₀`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Filter.eventually_atTop.2 ⟨fun k => (a₀ : ℤ) + D * |a k|, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `key x (fun k => hx k)`. Conclude with `h1.trans h₀.symm` after adjusting the coercions. Establish `hEV` using `(EventualValueFacts.proof K _ c₀ 0).1 hev`. Take `⟨hdeg, hcoeff⟩` from `lineRestrict_natDegree_coeff D aQ (fun k => (m k : ℚ)) p hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(lineRestrict aQ (fun k => (m k : ℚ)) p).map (algebraMap ℚ ℝ), natDegree_map_le.trans hdeg, ?_, ?_⟩` and prove the remaining obligations. Establish `hD : (D.factorial : ℝ) ≠ 0` using `by positivity`. Rewrite using `[Polynomial.coeff_map, hcoeff, hEV, eq_ratCast, eq_div_iff hD, show ((c₀ : ℤ) : ℝ) = (((c₀ : ℤ) : ℚ) : ℝ) by norm_cast, h₀]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Rewrite using `[Polynomial.eval_natCast_map, eval_lineRestrict, eq_ratCast]`. Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[haQ]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem EventualPolyLine.proof : EventualPolyLine.Statement := by
   intro K _ _ D f p a₀ a m hp hf

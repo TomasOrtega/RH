@@ -9,19 +9,17 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology Filter
 
 /- English proof (translation)
-Introduce `σ τ _ _ _ x k f L c hf hfin hpow`. Take `⟨d, F, hF, hFan, hhF, hFev, hord⟩` from `hG σ τ x k f L c hf hfin hpow`. Take `⟨n, e, he, hgen⟩` from `hfin`. Use `set t : (σ → ℂ) → ℂ := fun z => L z c - L x c with ht_def`. Establish `ht : AnalyticAt ℂ t x` using `(((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : τ => ℂ) c).comp L).analyticAt x).sub analyticAt_const`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ix : Fin (n * d) → Fin n × Fin d` to `fun p => finProdFinEquiv.symm p`. Use `⟨n * d, fun p z => t z ^ ((ix p).2 : ℕ) * e (ix p).1 z, fun p => (ht.pow _).mul (he _), ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨b, h, hb, hh, hev⟩` from `hgen g hg`. Use `choose q a hq ha hdiv using fun m => hW τ (L x) c d F (b m) hFan (hb m) hord`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hLt : Tendsto L (𝓝 x) (𝓝 (L x))` using `L.continuous.tendsto x`. Use `⟨fun p y => a (ix p).1 (ix p).2 y, fun i z => h i z + ∑ m, q m (L z) * e m z * hF i z, fun p => by simpa using ha (ix p).1 (ix p).2, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `(hh i).add (Finset.univ.analyticAt_fun_sum fun m _ => ?_)` and prove the remaining obligations. Establish `hqL : AnalyticAt ℂ (fun z => q m (L z)) x` using `(hq m).comp (L.analyticAt x)`. Conclude with `(hqL.mul (he m)).mul (hhF i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdivL : ∀ᶠ z in 𝓝 x, ∀ m, b m (L z) = q m (L z) * F (L z) + ∑ j : Fin d, a m j (zeroCoordinate c (L z)) * (L z c - L x c) ^ (j : ℕ)` using `eventually_all.2 fun m => hLt.eventually (hdiv m) filter_upwards [hev, hdivL, hFev] with z hz hzd hzF`. Rewrite using `[hz]`. Simplify using `only [hzd, hzF, ContinuousLinearMap.comp_apply]`. Establish `hre : ∀ φ : Fin n × Fin d → ℂ, ∑ p : Fin (n * d), φ (ix p) = ∑ m, ∑ j, φ (m, j)` using `fun φ => by`. Rewrite using `[← Fintype.sum_prod_type']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `finProdFinEquiv.symm.sum_comp φ`. Rewrite using `[hre (fun mj => a mj.1 mj.2 (zeroCoordinate c (L z)) * (t z ^ (mj.2 : ℕ) * e mj.1 z))]`. Simplify using `only [add_mul, Finset.sum_add_distrib, Finset.sum_mul, ht_def]`. Establish `h1 : ∑ m, (q m (L z) * ∑ i, hF i z * f i z) * e m z = ∑ i, ∑ m, q m (L z) * e m z * hF i z * f i z`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun m _ => by ring`. Establish `h2 : ∀ m (j : Fin d), a m j (zeroCoordinate c (L z)) * (L z c - L x c) ^ (j : ℕ) * e m z = a m j (zeroCoordinate c (L z)) * ((L z c - L x c) ^ (j : ℕ) * e m z)` using `fun m j => by ring`. Simplify using `only [h2]`. Rewrite using `[h1]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem FiniteModuloEliminate.proof (hG : FiniteModuloGeneralEquation.Statement)
     (hW : WeierstrassDivisionAtPoint.Statement) : FiniteModuloEliminate.Statement := by

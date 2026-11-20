@@ -16,16 +16,16 @@ noncomputable section
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Simplify using `[Function.Periodic.qParam]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem qParam_one_eq (τ : ℍ) :
     Function.Periodic.qParam 1 (τ : ℂ) = Complex.exp (2 * Real.pi * Complex.I * τ) := by
   simp [Function.Periodic.qParam]
 
 /- English proof (translation)
-Establish `h` using `SlashInvariantFormClass.periodic_comp_ofComplex CuspForm.discriminant one_mem_strictPeriods_SL (τ : ℂ)`. Simplify using `only [Function.comp_apply, UpperHalfPlane.ofComplex_apply] at h`. Establish `e : UpperHalfPlane.ofComplex ((τ : ℂ) + ((1 : ℝ) : ℂ)) = (1 : ℝ) +ᵥ τ`. Use `ext`. Rewrite using `[UpperHalfPlane.ofComplex_apply_of_im_pos (by simpa using τ.im_pos)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm]`. Rewrite `h` using `[e]`. Simplify `h` using `[CuspForm.coe_discriminant]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem disc_vadd (τ : ℍ) :
     ModularForm.discriminant ((1 : ℝ) +ᵥ τ) = ModularForm.discriminant τ := by
@@ -40,27 +40,27 @@ private theorem disc_vadd (τ : ℍ) :
   simpa [CuspForm.coe_discriminant] using h
 
 /- English proof (translation)
-The claim follows from `Function.Periodic.qParam_ne_zero _`.
+A detailed English derivation is pending.
 -/
 private theorem qParam_ne (τ : ℍ) : Function.Periodic.qParam 1 (τ : ℂ) ≠ 0 :=
   Function.Periodic.qParam_ne_zero _
 
 /- English proof (translation)
-Take `⟨U, hU0, hU⟩` from `GlobalTheory.exists_hasQExpansion_discriminant`. Establish `hu : GlobalTheory.HasQExpansion 1 (fun τ ↦ ModularForm.discriminant τ / Function.Periodic.qParam 1 τ) (PowerSeries.map (Int.castRingHom ℂ) U)` using `.of_qParam_mul (hU.congr fun τ ↦ by field_simp [qParam_ne τ])`. Establish `hcast : ∀ (V : PowerSeries ℤ) (g : ℍ → ℂ), GlobalTheory.HasQExpansion 1 g (PowerSeries.map (Int.castRingHom ℂ) V) → HasQ 1 g fun n => ((PowerSeries.coeff n V : ℤ) : ℂ)`. Introduce `V g hg`. Use `(hasQ_coeff_iff_hasQExpansion 1 g _).mpr (by exact_mod_cast hg)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[PowerSeries.coeff_map]`. Use `⟨⟨fun n => PowerSeries.coeff n U, hU0, ?_⟩, ?_⟩` and prove the remaining obligations. Use `hcast U _ hu` as an intermediate fact. Use `this using 2 with τ` and compare the differences between its conclusion and the goal. Rewrite using `[qParam_one_eq]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `set f : ℍ → ℂ := fun τ ↦ Function.Periodic.qParam 1 τ / ModularForm.discriminant τ with hf`. Establish `hper : ∀ τ : ℍ, f ((1 : ℝ) +ᵥ τ) = f τ` using `fun τ ↦ by`. Simplify using `only [hf, GlobalTheory.qParam_one_vadd, disc_vadd]`. Establish `hhol : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f` using `((GlobalTheory.HasQExpansion.qParam 1).mdifferentiable one_pos).div CuspForm.discriminant.holo' ModularForm.discriminant_ne_zero`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbdd : UpperHalfPlane.IsBoundedAtImInfty f`. Establish `ht` using `(tendsto_const_nhds (x := (1 : ℂ))).div (hu.tendsto one_pos) (by simp [PowerSeries.coeff_map, hU0])`. Establish `: f = fun τ ↦ 1 / (ModularForm.discriminant τ / Function.Periodic.qParam 1 τ)`. Use function extensionality and compare the values at `τ`. Simplify using `only [hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `ht.isBigO_one ℝ`. Establish `h1` using `GlobalTheory.HasQExpansion.of_periodic one_pos (GlobalTheory.periodic_comp_ofComplex_of_vadd hper) hhol hbdd`. Establish `h2` using `(h1.mul hu).unique one_pos ((GlobalTheory.HasQExpansion.const 1 (1 : ℂ)).congr fun τ ↦ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [hf]`. Clear denominators, using `[qParam_ne τ, ModularForm.discriminant_ne_zero τ])` for the nonvanishing conditions. Establish `hUV : U * U.invOfUnit 1 = 1` using `PowerSeries.mul_invOfUnit U 1 (by simpa using hU0)`. Establish `h3 : UpperHalfPlane.qExpansion 1 f = PowerSeries.map (Int.castRingHom ℂ) (U.invOfUnit 1)`. Establish `e` using `congrArg (· * PowerSeries.map (Int.castRingHom ℂ) (U.invOfUnit 1)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_assoc, ← map_mul, hUV, map_one, mul_one, one_mul] at e`. Conclude with `e`. Use `⟨fun n => PowerSeries.coeff n (U.invOfUnit 1), ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `hcast _ _ (h3 ▸ h1)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `this using 2 with τ` and compare the differences between its conclusion and the goal. Simplify using `only [hf, qParam_one_eq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem dd_div_q_and_q_div_dd :
     (∃ c : ℕ → ℤ, c 0 = 1 ∧ HasQ 1 (fun τ => DD τ / Complex.exp (2 * Real.pi * Complex.I * τ))

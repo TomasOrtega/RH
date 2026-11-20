@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 private theorem zc_eq (q : ℕ) [Fact q.Prime] (a : ℤ_[q]) : zc a = zcRing q a := rfl
 
 /- English proof (translation)
-Use `PadicInt.isUnit_iff.2 (le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => ?_))` and prove the remaining obligations. Establish `h1 : ‖((s : ℤ) : ℤ_[q])‖ < 1` using `by simpa using hlt`. Establish `h2 : (q : ℤ) ∣ (s : ℤ)` using `(PadicInt.norm_int_lt_one_iff_dvd _).1 h1`. Establish `h3 : q ∣ s` using `Int.natCast_dvd_natCast.1 h2`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hq.out).1 h.symm h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isUnit_of_coprime (q : ℕ) [hq : Fact q.Prime] (s : ℕ) (h : Nat.Coprime s q) : IsUnit (s : ℤ_[q]) := by
   refine PadicInt.isUnit_iff.2 (le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => ?_))
@@ -28,19 +28,17 @@ private theorem isUnit_of_coprime (q : ℕ) [hq : Fact q.Prime] (s : ℕ) (h : N
   exact (Nat.Prime.coprime_iff_not_dvd hq.out).1 h.symm h3
 
 /- English proof (translation)
-Introduce `q _ ι V _ _ V' _ _ ω Λ Λ' g G hG hg hL κ _ v hv`. Use `choose s hs hsΛ using fun i => hg (v i) (hv i)`. Establish `hs0 : ∀ i, (s i : ℂ) ≠ 0`. Introduce `i h0`. Establish `h1 : s i = 0` using `by exact_mod_cast h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hs i`. Rewrite `h2` using `[h1, Nat.coprime_zero_left]`. Conclude with `(Fact.out : q.Prime).one_lt.ne' h2`. Use `choose u hu using fun i => isUnit_of_coprime q (s i) (hs i)`. Establish `hM` using `hL κ (fun i => s i • g (v i)) hsΛ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : MomInt ι (fun i => ι.symm ω • g (v i)) G`. Use `GlobalTheory.T.jetsAreBoundedMeasureMoments_padicInt_matrix_change q ι V κ κ (fun i => ι.symm ω • s i • g (v i)) (fun i => ι.symm ω • g (v i)) (fun i j => if i = j then (s i : ℂ)⁻¹ else 0) (fun i j => if i = j then ((u i)⁻¹ : ℤ_[q]ˣ).1 else 0) G ?_ ?_ hM` and prove the remaining obligations. Introduce `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [if_true, map_inv₀, map_natCast, zc_eq]`. Establish `e : zcRing q ((u i)⁻¹ : ℤ_[q]ˣ).1 * (s i : ℂ_[q]) = 1`. Establish `e1 : (s i : ℂ_[q]) = zcRing q (u i).1` using `by rw [hu i, map_natCast]`. Rewrite using `[e1, ← map_mul, Units.inv_mul, map_one]`. Conclude with `(eq_inv_of_mul_eq_one_left e).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hij, zc_eq]`. Introduce `i`. Simplify using `only [ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_comm (ι.symm ω) (s i : ℂ), smul_smul, inv_mul_cancel₀ (hs0 i), one_smul]`. Take `⟨μ, hμ, hm⟩` from `hP`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `⟨μ, hμ, fun k j f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← hm k j f hf]`. Use `congr 1`. Establish `e` using `g.iteratedFDeriv_comp_right hG 0 (i := k) le_top`. Establish `e2 : iteratedFDeriv ℂ k (fun z => G (g z)) 0 = iteratedFDeriv ℂ k (G ∘ g) 0` using `rfl`.
-
-Rewrite using `[e2, e]`. Simplify using `[ContinuousMultilinearMap.compContinuousLinearMap_apply, Function.comp_def, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latInt_pull : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (V' : Type) [NormedAddCommGroup V'] [NormedSpace ℂ V'] (ω : ℂ_[q]) (Λ : AddSubgroup V) (Λ' : AddSubgroup V') (g : V' →L[ℂ] V) (G : V → ℂ), ContDiff ℂ ⊤ G → (∀ x ∈ Λ', ∃ s : ℕ, Nat.Coprime s q ∧ s • g x ∈ Λ) → LatInt ι ω Λ G → LatInt ι ω Λ' fun z => G (g z) := by
   classical

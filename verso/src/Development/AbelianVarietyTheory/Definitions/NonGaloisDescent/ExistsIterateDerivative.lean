@@ -21,11 +21,11 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
 variable (a) in
 
 /- English proof (translation)
-Establish `: Normal ℚ_[l] ↥(ϖ.field a).1`. Use `IntermediateField.normal_iff_forall_map_le'.2 fun g => ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.map_le_iff_le_comap]`. Use `sup_le (IntermediateField.adjoin_le_iff.2 fun x hx => ?_) (IntermediateField.adjoin_le_iff.2 ?_)` and prove the remaining obligations. Conclude with `ϖ.Kunr_le_field a (IntermediateField.subset_adjoin _ _ (show g x ^ l ^ a = g x by rw [← map_pow, show x ^ l ^ a = x from hx]))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ rfl`. Establish `h1 : (g (ϖ.seq 0) / ϖ.seq 0) ^ e = 1`. Rewrite using `[div_pow, ← map_pow, ϖ.seq_zero, map_neg, map_natCast, div_self (neg_ne_zero.2 (Nat.cast_ne_zero.2 hl.out.ne_zero))]`. Take `⟨k, hk⟩` from `he`. Establish `h2 : g (ϖ.seq 0) / ϖ.seq 0 ∈ Kunr l a` using `IntermediateField.subset_adjoin _ _ (show _ ^ l ^ a = _ by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.sub_add_cancel (one_lt_pow_l l a).le, pow_succ, hk, pow_mul, h1, one_pow, one_mul])`. Establish `h3` using `mul_mem (ϖ.Kunr_le_field a h2) (ϖ.pi_mem_field a)`. Rewrite `h3` using `[div_mul_cancel₀ _ (ϖ.seq_ne_zero 0)]`. Then use the resulting hypothesis. Conclude with `{}`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem PiSys.isGalois_field (he : e ∣ l ^ a - 1) : IsGalois ℚ_[l] ↥(ϖ.field a).1 := by
   have : Normal ℚ_[l] ↥(ϖ.field a).1 := by
@@ -58,9 +58,7 @@ def frobMatInv : Matrix ι ι (OW l O) :=
     (ϖ.iW t K)
 
 /- English proof (translation)
-Rewrite using `[frobMat, frobMatInv, ← Matrix.map_mul, ← Matrix.map_one (ϖ.iW t K) (map_zero _) (map_one _)]`. Use `congr 1`. Use `ext1 i j`. Use `ext1 τ`. Establish `h` using `congrFun₂ (P.mat τ).mul_inv i j`.
-
-Simplify `h` using `only [Matrix.mul_apply, Finset.sum_apply, Pi.mul_apply, Matrix.of_apply, Matrix.one_apply, apply_ite (fun f : ZMod a → invE l e (A O K) => f τ), Pi.one_apply, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem frobMat_mul_inv : frobMat t ϖ P * frobMatInv t ϖ P = 1 := by
   rw [frobMat, frobMatInv, ← Matrix.map_mul, ← Matrix.map_one (ϖ.iW t K) (map_zero _) (map_one _)]
@@ -72,7 +70,7 @@ theorem frobMat_mul_inv : frobMat t ϖ P * frobMatInv t ϖ P = 1 := by
     apply_ite (fun f : ZMod a → invE l e (A O K) => f τ), Pi.one_apply, Pi.zero_apply] using h
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (frobMat_mul_inv t ϖ P)`.
+A detailed English derivation is pending.
 -/
 theorem frobMatInv_mul : frobMatInv t ϖ P * frobMat t ϖ P = 1 := mul_eq_one_comm.1 (frobMat_mul_inv t ϖ P)
 
@@ -85,7 +83,7 @@ Both sides reduce to the same expression.
 theorem phiW_apply (v : ι → OW l O) : phiW t ϖ P v = frobMat t ϖ P *ᵥ fun i => frobOW l O (v i) := rfl
 
 /- English proof (translation)
-Rewrite using `[phiW_apply, phiW_apply, ← Matrix.mulVec_smul]`. Use `congr 1`. Use `ext1 i`. Conclude with `map_mul _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem phiW_smul (r : OW l O) (v : ι → OW l O) : phiW t ϖ P (r • v) = frobOW l O r • phiW t ϖ P v := by
   rw [phiW_apply, phiW_apply, ← Matrix.mulVec_smul]
@@ -98,7 +96,7 @@ def Treal : Submodule O (ι → OW l O) := LinearMap.eqLocus (phiW t ϖ P) Linea
 variable {t ϖ P} in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Treal {v : ι → OW l O} : v ∈ Treal t ϖ P ↔ phiW t ϖ P v = v := Iff.rfl
 
@@ -107,7 +105,7 @@ variable (O ι) in
 def galCoef (g : GQ l) : (ι → OW l O) →ₗ[O] (ι → OW l O) := (galOW O g).toLinearMap.compLeft ι
 
 /- English proof (translation)
-Use `ext1 i`. Express the relevant statement in the definitionally equal form `galOW O g (∑ j, ϖ.iW t K _ * frobOW l O (v j)) = ∑ j, ϖ.iW t K _ * frobOW l O (galOW O g (v j))`. Simplify using `only [map_sum, map_mul, ϖ.galOW_iW t K hg, galOW_frobOW]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galCoef_phiW {g : GQ l} (hg : g ∈ ϖ.GfieldInf a) (v : ι → OW l O) :
     galCoef O ι g (phiW t ϖ P v) = phiW t ϖ P (galCoef O ι g v) := by
@@ -116,7 +114,7 @@ theorem galCoef_phiW {g : GQ l} (hg : g ∈ ϖ.GfieldInf a) (v : ι → OW l O) 
   simp only [map_sum, map_mul, ϖ.galOW_iW t K hg, galOW_frobOW]
 
 /- English proof (translation)
-Rewrite using `[mem_Treal, ← galCoef_phiW t ϖ P hg, mem_Treal.1 hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galCoef_mem_Treal {g : GQ l} (hg : g ∈ ϖ.GfieldInf a) {v : ι → OW l O} (hv : v ∈ Treal t ϖ P) :
     galCoef O ι g v ∈ Treal t ϖ P := by
@@ -129,7 +127,7 @@ omit hl [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Modul
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-The claim follows from `mem_tot.2 fun τ i => le_away _ _ (mem_tot.1 hv τ i)`.
+A detailed English derivation is pending.
 -/
 theorem mem_ME_of_mem_M {v : Vec K a ι} (hv : v ∈ P.M) : v ∈ ME P :=
   mem_tot.2 fun τ i => le_away _ _ (mem_tot.1 hv τ i)
@@ -139,7 +137,7 @@ omit hl [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Modul
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-The claim follows from `mem_tot.2 fun τ i => by obtain ⟨m, hm, h⟩ := P.mem_extc.1 (mem_tot.1 hv τ) rw [h] exact Subalgebra.sum_mem _ fun j _ => mul_mem (P.mx_mem τ i j) (le_away _ _ (hm j))`.
+A detailed English derivation is pending.
 -/
 theorem mem_ME_of_mem_L {v : Vec K a ι} (hv : v ∈ P.L) : v ∈ ME P :=
   mem_tot.2 fun τ i => by
@@ -164,14 +162,14 @@ theorem toW_apply (v : ME P) (i : ι) :
     toW t ϖ P v i = ϖ.iW t K fun τ => ⟨v.1 τ i, mem_tot.1 v.2 τ i⟩ := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (funext fun τ => funext fun i => congrArg Subtype.val (congrFun (ϖ.iW_injective t K (congrFun h i)) τ))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toW_injective : Function.Injective (toW t ϖ P) := fun _ _ h =>
   Subtype.ext (funext fun τ => funext fun i =>
     congrArg Subtype.val (congrFun (ϖ.iW_injective t K (congrFun h i)) τ))
 
 /- English proof (translation)
-Use `ext1 i`. Rewrite using `[Pi.smul_apply, toW_apply, toW_apply, smul_eq_mul, ← map_mul]`. Conclude with `congrArg _ (funext fun τ => Subtype.ext (congrFun (h τ) i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toW_smul (f : ZMod a → invE l e (A O K)) (v w : ME P) (h : ∀ τ, w.1 τ = (f τ : K⟦X⟧) • v.1 τ) :
     toW t ϖ P w = ϖ.iW t K f • toW t ϖ P v := by
@@ -180,9 +178,9 @@ theorem toW_smul (f : ZMod a → invE l e (A O K)) (v w : ME P) (h : ∀ τ, w.1
   exact congrArg _ (funext fun τ => Subtype.ext (congrFun (h τ) i))
 
 /- English proof (translation)
-Use `ext1 i`. Simplify using `only [← ϖ.iW_of_mem t K]`. Express the relevant statement in the definitionally equal form `_ = ∑ j, ϖ.iW t K _ * ϖ.iW t K _`. Simplify using `only [← map_mul]`. Rewrite using `[← map_sum, toW_apply]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg _ (funext fun τ => Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, AddSubmonoidClass.coe_finsetSum]`. Conclude with `congrFun (h τ) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toW_of_mx (v : ME P) (m : ι → ZMod a → A O K) (h : ∀ τ, v.1 τ = P.mx τ *ᵥ fun j => m j τ) :
     toW t ϖ P v = frobMat t ϖ P *ᵥ fun j => inclO l O (ϖ.iTot t K (m j)) := by
@@ -196,7 +194,7 @@ theorem toW_of_mx (v : ME P) (m : ι → ZMod a → A O K) (h : ∀ τ, v.1 τ =
   exact congrFun (h τ) i
 
 /- English proof (translation)
-Rewrite using `[toW_of_mx t ϖ P _ (fun j => frobAc l fun τ => ⟨v τ j, mem_tot.1 hv τ j⟩) fun τ => rfl, phiW_apply]`. Use `congr 1`. Use `ext1 j`. Rewrite using `[PiSys.iTot_frob, ← frobOW_inclO, ← ϖ.iW_of_mem t K]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toW_phi {v : Vec K a ι} (hv : v ∈ P.M) :
     toW t ϖ P ⟨P.phi v, mem_ME_of_mem_L (P.phi_mem_L hv)⟩ = phiW t ϖ P (toW t ϖ P ⟨v, mem_ME_of_mem_M hv⟩) := by
@@ -215,7 +213,7 @@ def MA (_ : PhiMod O K l e a ι) : Submodule O (ι → OW l O) := LinearMap.rang
 omit [NeZero a] [NeZero e] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hv`. Conclude with `⟨fun i => galOA O g (c i), funext fun i => (galOW_inclO g (c i)).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem galCoef_mem_MA (g : GQ l) {v : ι → OW l O} (hv : v ∈ MA P) : galCoef O ι g v ∈ MA P := by
   obtain ⟨c, rfl⟩ := hv
@@ -230,7 +228,7 @@ Both sides reduce to the same expression.
 theorem inclL_apply (c : ι → OA l O) : inclL t ϖ P c = frobMat t ϖ P *ᵥ fun i => inclO l O (c i) := rfl
 
 /- English proof (translation)
-Introduce `c c' h` and use `by have h1 := congrArg (frobMatInv t ϖ P *ᵥ ·) h simp only [inclL_apply, Matrix.mulVec_mulVec, frobMatInv_mul, Matrix.one_mulVec] at h1 exact funext fun i => inclO_injective (congrFun h1 i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inclL_injective : Function.Injective (inclL t ϖ P) := fun c c' h => by
   have h1 := congrArg (frobMatInv t ϖ P *ᵥ ·) h
@@ -240,13 +238,13 @@ theorem inclL_injective : Function.Injective (inclL t ϖ P) := fun c c' h => by
 def LA : Submodule O (ι → OW l O) := LinearMap.range (inclL t ϖ P)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => ϖ.iTot t K fun τ => ⟨v τ i, mem_tot.1 hv τ i⟩, funext fun _ => (ϖ.iW_of_mem t K _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem toW_mem_MA {v : Vec K a ι} (hv : v ∈ P.M) : toW t ϖ P ⟨v, mem_ME_of_mem_M hv⟩ ∈ MA P :=
   ⟨fun i => ϖ.iTot t K fun τ => ⟨v τ i, mem_tot.1 hv τ i⟩, funext fun _ => (ϖ.iW_of_mem t K _).symm⟩
 
 /- English proof (translation)
-Use `choose m hm h using fun τ => P.mem_extc.1 (mem_tot.1 hv τ)`. Conclude with `⟨_, (toW_of_mx t ϖ P _ (fun j τ => ⟨m τ j, hm τ j⟩) h).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem toW_mem_LA {v : Vec K a ι} (hv : v ∈ P.L) : toW t ϖ P ⟨v, mem_ME_of_mem_L hv⟩ ∈ LA t ϖ P := by
   choose m hm h using fun τ => P.mem_extc.1 (mem_tot.1 hv τ)
@@ -264,7 +262,7 @@ omit hl [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Modul
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `P.mx τ *ᵥ (P.mxInv τ *ᵥ v.1 τ) = _`. Rewrite using `[Matrix.mulVec_mulVec, P.mx_mul_mxInv, Matrix.one_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mx_mulVec_coordL (B : Subalgebra O K⟦X⟧) (v : P.ext B) (τ : ZMod a) :
     (P.mx τ *ᵥ fun i => (coordL P B v i τ : K⟦X⟧)) = v.1 τ := by
@@ -288,7 +286,7 @@ theorem toBcris_apply (m : P.MMl) (i : ι) :
     toBcris t ϖ P m i = ϖ.iB t K (coordL P (invL l (S O K e)) m i) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨toW_of_mx t ϖ P _ _ fun τ => (mx_mulVec_coordL P _ ⟨v, hv⟩ τ).symm, funext fun i => ϖ.iC_of_mem t K (coordL P _ ⟨v, hv⟩ i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem toW_toCris_of_mem_L {v : Vec K a ι} (hv : v ∈ P.L) (hv' : v ∈ P.MM) :
     toW t ϖ P ⟨v, mem_ME_of_mem_L hv⟩ = inclL t ϖ P (fun i => ϖ.iTot t K (coordL P _ ⟨v, hv⟩ i)) ∧
@@ -315,9 +313,9 @@ theorem homW_apply (F : BK.Hom P Q) (v : ι → OW l O) :
     homW t ϖ F v = (homMat t ϖ F).map (inclO l O) *ᵥ v := rfl
 
 /- English proof (translation)
-Use `ext1 i`. Express the relevant statement in the definitionally equal form `∑ j, inclO l O (ϖ.iTot t K _) * ϖ.iW t K _ = _`. Simplify using `only [← ϖ.iW_of_mem t K, ← map_mul]`. Rewrite using `[← map_sum, toW_apply]`. Use `congrArg _ (funext fun τ => Subtype.ext ?_)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply, AddSubmonoidClass.coe_finsetSum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem homW_toW (F : BK.Hom P Q) (v : ME P) :
     homW t ϖ F (toW t ϖ P v) = toW t ϖ Q ⟨F.app v, F.app_mem_Mext (le_away _ _) v.2⟩ := by
@@ -330,9 +328,9 @@ theorem homW_toW (F : BK.Hom P Q) (v : ME P) :
   rfl
 
 /- English proof (translation)
-Use `ext1 i j`. Express the relevant statement in the definitionally equal form `∑ k, inclO l O (ϖ.iTot t K _) * ϖ.iW t K _ = ∑ k, ϖ.iW t K _ * frobOW l O (inclO l O (ϖ.iTot t K _))`. Simplify using `only [frobOW_inclO, ← PiSys.iTot_frob]`. Simplify using `only [← ϖ.iW_of_mem t K, ← map_mul]`. Rewrite using `[← map_sum, ← map_sum]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg _ (funext fun τ => Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, Finset.sum_apply, AddSubmonoidClass.coe_finsetSum, AddSubmonoidClass.coe_finsetSum]`. Conclude with `congrFun₂ (F.comm τ) i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homMat_mul_frobMat (F : BK.Hom P Q) : (homMat t ϖ F).map (inclO l O) * frobMat t ϖ P =
     frobMat t ϖ Q * ((homMat t ϖ F).map (inclO l O)).map (frobOW l O) := by
@@ -347,7 +345,7 @@ theorem homMat_mul_frobMat (F : BK.Hom P Q) : (homMat t ϖ F).map (inclO l O) * 
   exact congrFun₂ (F.comm τ) i j
 
 /- English proof (translation)
-Rewrite using `[homW_apply, phiW_apply, Matrix.mulVec_mulVec, homMat_mul_frobMat, ← Matrix.mulVec_mulVec, phiW_apply]`. Use `congr 1`. Use `ext1 i`. Conclude with `(RingHom.map_mulVec (frobOW l O).toRingHom _ _ i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem homW_phiW (F : BK.Hom P Q) (v : ι → OW l O) :
     homW t ϖ F (phiW t ϖ P v) = phiW t ϖ Q (homW t ϖ F v) := by
@@ -366,7 +364,7 @@ Both sides reduce to the same expression.
 theorem coe_homT (F : BK.Hom P Q) (v : Treal t ϖ P) : (homT t ϖ F v : κ → OW l O) = homW t ϖ F v := rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨F, hF, _⟩ ⟨G, hG, _⟩ h`. Establish `h1` using `Matrix.toLin'.injective h`. Take `rfl : F = G` from `funext fun τ => Matrix.ext fun i j => congrArg Subtype.val (congrFun (ϖ.iTot_injective t K (inclO_injective (congrFun₂ h1 i j))) τ)`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem homW_injective : Function.Injective (homW t ϖ : BK.Hom P Q → _) := by
   rintro ⟨F, hF, _⟩ ⟨G, hG, _⟩ h
@@ -376,9 +374,9 @@ theorem homW_injective : Function.Injective (homW t ϖ : BK.Hom P Q → _) := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[homW_apply, homW_apply, homW_apply, Matrix.mulVec_mulVec, ← Matrix.map_mul]`. Use `congr 2`. Use `ext1 i j`. Express the relevant statement in the definitionally equal form `_ = ∑ k, ϖ.iTot t K _ * ϖ.iTot t K _`. Simplify using `only [← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum]`. Use `congrArg (ϖ.iTot t K) (funext fun τ => Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, AddSubmonoidClass.coe_finsetSum]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem homW_comp (G : BK.Hom Q R) (F : BK.Hom P Q) (v : ι → OW l O) :
     homW t ϖ (G.comp F) v = homW t ϖ G (homW t ϖ F v) := by
@@ -393,9 +391,9 @@ theorem homW_comp (G : BK.Hom Q R) (F : BK.Hom P Q) (v : ι → OW l O) :
   rfl
 
 /- English proof (translation)
-Establish `: (homMat t ϖ (BK.Hom.scalar P c)).map (inclO l O) = c • (1 : Matrix ι ι (OW l O))` using `by ext1 i j`. Establish `h : (fun τ => (⟨(BK.Hom.scalar P c).mat τ i j, (BK.Hom.scalar P c).mem τ i j⟩ : A O K)) = c • (1 : Matrix ι ι (ZMod a → A O K)) i j` using `funext fun τ => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `algebraMap O K⟦X⟧ c * (1 : Matrix ι ι K⟦X⟧) i j = c • (((1 : Matrix ι ι (ZMod a → A O K)) i j τ : A O K) : K⟦X⟧)`. Rewrite using `[← Algebra.smul_def]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij])`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Express the relevant statement in the definitionally equal form `inclO l O (ϖ.iTot t K _) = _`. Rewrite using `[h, map_smul, map_smul]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite using `[homW_apply, this, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem homW_scalar (c : O) (v : ι → OW l O) : homW t ϖ (BK.Hom.scalar P c) v = c • v := by
   have : (homMat t ϖ (BK.Hom.scalar P c)).map (inclO l O) = c • (1 : Matrix ι ι (OW l O)) := by
@@ -439,7 +437,7 @@ structure Ident (P : PhiMod O K l e a ι) (T : LocLat G ℚ_[l] K O) where
 omit [Module.Finite ℤ_[l] O] in
 
 /- English proof (translation)
-Take `⟨hs, hk, -⟩` from `GlobalTheory.ArtinSchreierWitt.main l`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.WittTensorFixed.baseChange_flat (O := O) (frobW l) hs hk (GlobalTheory.WittTensorFixed.algebraMap_WCb_injective l)`. Use `T.L.free` as an intermediate fact. Conclude with `GlobalTheory.WittTensorFixed.tensor_flat (frobOW l O) h1 h2 h3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frob_fixed (T : LocLat G ℚ_[l] K O) :
     (∀ y : TW (OW l O) T, ∃ b, TWmap (frobOW l O) T b - b = y) ∧
@@ -463,17 +461,17 @@ def ofT : ↥T.L.T →ₗ[O] (ι → OW l O) :=
   (I.j.symm.toLinearMap.restrictScalars O).comp (TensorProduct.mk O (OW l O) ↥T.L.T 1)
 
 /- English proof (translation)
-The claim follows from `I.j.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem j_ofT (x : ↥T.L.T) : I.j (I.ofT x) = (1 : OW l O) ⊗ₜ[O] x := I.j.apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `I.j.symm.injective.comp (frob_fixed T).2.2`.
+A detailed English derivation is pending.
 -/
 theorem ofT_injective : Function.Injective I.ofT := I.j.symm.injective.comp (frob_fixed T).2.2
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[mem_Treal, ← I.j.injective.eq_iff, I.j_φ, (frob_fixed T).2.1]`. Conclude with `exists_congr fun x => by rw [← I.j.injective.eq_iff, j_ofT, eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_ofT : LinearMap.range I.ofT = Treal t ϖ P := by
   ext v
@@ -491,7 +489,7 @@ theorem coe_equivT (x : ↥T.L.T) : (I.equivT x : ι → OW l O) = I.ofT x := rf
 include I in
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(frob_fixed T).1 (I.j y)`. Conclude with `⟨I.j.symm b, I.j.injective (by rw [map_sub, I.j_φ, I.j.apply_symm_apply, hb])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_phiW_sub (y : ι → OW l O) : ∃ v, phiW t ϖ P v - v = y := by
   obtain ⟨b, hb⟩ := (frob_fixed T).1 (I.j y)
@@ -502,22 +500,22 @@ def act (s : GQ l) (g : G) : (ι → OW l O) →ₗ[O] (ι → OW l O) :=
     ((TWact (galOW O s) T g).comp (I.j.toLinearMap.restrictScalars O))
 
 /- English proof (translation)
-The claim follows from `I.j.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem j_act (s : GQ l) (g : G) (v : ι → OW l O) : I.j (I.act s g v) = TWact (galOW O s) T g (I.j v) :=
   I.j.apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `I.j.injective (by rw [j_act, j_ofT, j_ofT, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one])`.
+A detailed English derivation is pending.
 -/
 theorem act_ofT (s : GQ l) (g : G) (x : ↥T.L.T) : I.act s g (I.ofT x) = I.ofT (T.actT g x) :=
   I.j.injective (by
     rw [j_act, j_ofT, j_ofT, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one])
 
 /- English proof (translation)
-Apply `I.j.injective` to reduce the goal to its premises. Rewrite using `[j_act, map_smul I.j, map_smul I.j, j_act]`. Proceed by induction on `I.j v using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul w x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [TWact, smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem act_smul (s : GQ l) (g : G) (r : OW l O) (v : ι → OW l O) :
     I.act s g (r • v) = galOW O s r • I.act s g v := by
@@ -530,9 +528,9 @@ theorem act_smul (s : GQ l) (g : G) (r : OW l O) (v : ι → OW l O) :
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Apply `I.j.injective` to reduce the goal to its premises. Rewrite using `[j_act, I.j_φ, I.j_φ, j_act]`. Proceed by induction on `I.j v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [TWact, TWmap, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, galOW_frobOW]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem act_phiW (s : GQ l) (g : G) (v : ι → OW l O) :
     I.act s g (phiW t ϖ P v) = phiW t ϖ P (I.act s g v) := by
@@ -546,9 +544,9 @@ theorem act_phiW (s : GQ l) (g : G) (v : ι → OW l O) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Apply `I.j.injective` to reduce the goal to its premises. Rewrite using `[j_act, j_act, j_act]`. Proceed by induction on `I.j v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, galOW_mul]`. Conclude with `congrArg _ (Subtype.ext (LinearMap.congr_fun (map_mul T.ρ g g') x))`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem act_mul (s s' : GQ l) (g g' : G) (v : ι → OW l O) :
     I.act (s * s') (g * g') v = I.act s g (I.act s' g' v) := by
@@ -567,7 +565,7 @@ def IsLMat (s : GQ l) (g : G) (Γ : Matrix ι ι (OA l O)) : Prop :=
 variable {I} in
 
 /- English proof (translation)
-Use `ext1 i j`. Establish `h1` using `congrFun (inclL_injective t ϖ P ((h (Pi.single j 1)).symm.trans (h' (Pi.single j 1)))) i`. Simplify `h1` using `[Matrix.mulVec, dotProduct, Pi.single_apply, apply_ite (galOA O s)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsLMat.unique {s : GQ l} {g : G} {Γ Γ' : Matrix ι ι (OA l O)} (h : I.IsLMat s g Γ)
     (h' : I.IsLMat s g Γ') : Γ = Γ' := by
@@ -576,11 +574,11 @@ theorem IsLMat.unique {s : GQ l} {g : G} {Γ Γ' : Matrix ι ι (OA l O)} (h : I
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply, apply_ite (galOA O s)] using h1
 
 /- English proof (translation)
-Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨Γ, h⟩ _ ⟨c, rfl⟩`. Conclude with `⟨_, (h c).symm⟩`. Use `choose y hy using fun j => h _ ⟨Pi.single j 1, rfl⟩`. Establish `key : ∀ (d : ι → OA l O) (w : ι → ι → OA l O), inclL t ϖ P (∑ j, d j • w j) = ∑ j, inclO l O (d j) • inclL t ϖ P (w j)` using `fun d w => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inclL_apply, inclL_apply, ← Matrix.mulVec_smul]`. Conclude with `congrArg _ (funext fun i => map_mul _ _ _)`. Use `⟨Matrix.of fun i j => y j i, fun c => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : (Matrix.of fun i j => y j i) *ᵥ (fun i => galOA O s (c i)) = ∑ j, galOA O s (c j) • y j` using `by ext1 i`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Use `conv_lhs => rw [pi_eq_sum_univ' c, key, map_sum]`. Rewrite using `[h1, key]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [act_smul, galOW_inclO, hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isLMat_iff (s : GQ l) (g : G) :
     (∃ Γ, I.IsLMat s g Γ) ↔ ∀ v ∈ LA t ϖ P, I.act s g v ∈ LA t ϖ P := by
@@ -610,7 +608,7 @@ def IsMapOf {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T T' : LocLat G
   ∀ v, I'.j (homW t ϖ F v) = latW f (I.j v)
 
 /- English proof (translation)
-The claim follows from `homW_injective t ϖ (LinearMap.ext fun v => I'.j.injective ((h v).trans (h' v).symm))`.
+A detailed English derivation is pending.
 -/
 theorem IsMapOf.unique {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T T' : LocLat G ℚ_[l] K O}
     {t : Wq l a →ₐ[ℤ_[l]] O} {ϖ : PiSys l e} {I : Ident t ϖ P T} {I' : Ident t ϖ Q T'} {f : LatHom T.L T'.L}
@@ -618,7 +616,7 @@ theorem IsMapOf.unique {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T T'
   homW_injective t ϖ (LinearMap.ext fun v => I'.j.injective ((h v).trans (h' v).symm))
 
 /- English proof (translation)
-The claim follows from `I'.j.injective (by rw [h, I.j_ofT, I'.j_ofT]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem IsMapOf.homW_ofT {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T T' : LocLat G ℚ_[l] K O}
     {t : Wq l a →ₐ[ℤ_[l]] O} {ϖ : PiSys l e} {I : Ident t ϖ P T} {I' : Ident t ϖ Q T'} {f : LatHom T.L T'.L}
@@ -660,9 +658,9 @@ theorem kappa_tmul (T : LocLat G ℚ_[l] K O) (w : WCb l) (x : ↥T.L.T) :
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
 /- English proof (translation)
-Set `_` to `zlLat T`. Establish `: IsScalarTower ℤ_[l] O ↥T.L.T` using `⟨fun z x y => by rw [Algebra.smul_def, mul_smul]; rfl⟩`. Set `E : TW (OW l O) T ≃+ WCb l ⊗[ℤ_[l]] ↥T.L.T` to `(TensorProduct.comm O (OW l O) ↥T.L.T).toAddEquiv.trans ((AlgebraTensorModule.cancelBaseChange ℤ_[l] O O ↥T.L.T (WCb l)).toAddEquiv.trans (TensorProduct.comm ℤ_[l] ↥T.L.T (WCb l)).toAddEquiv)`. Establish `h : ∀ y, E (kappa T y) = y` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x => exact congrArg (fun y : ↥T.L.T => w ⊗ₜ[ℤ_[l]] y) (one_smul O x)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Conclude with `⟨Function.LeftInverse.injective h, fun y => ⟨E y, E.injective (h _)⟩⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem kappa_bijective (T : LocLat G ℚ_[l] K O) :
     letI := zlLat T
@@ -707,7 +705,7 @@ structure BKMod (T : Lat a O K ϖ) where
   isBK : IsBK I
 
 /- English proof (translation)
-Establish `: Nontrivial O` using `(algebraMap O K).domain_nontrivial`. Establish `: Nontrivial (OW l O)` using `(GlobalTheory.WittTensorFixed.baseChange_flat (O := O) (frobW l) (GlobalTheory.ArtinSchreierWitt.main l).1 (GlobalTheory.ArtinSchreierWitt.main l).2.1 (GlobalTheory.WittTensorFixed.algebraMap_WCb_injective l)).2.2.nontrivial`. Use `T.L.free` as an intermediate fact. Rewrite using `[← Module.finrank_fintype_fun_eq_card (OW l O), I.j.finrank_eq, Module.finrank_baseChange]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Ident.card_eq {G : Type} [Group G] [TopologicalSpace G] {t : Wq l a →ₐ[ℤ_[l]] O} {ϖ : PiSys l e}
     {P : PhiMod O K l e a ι} {T : LocLat G ℚ_[l] K O} (I : Ident t ϖ P T) :
@@ -746,9 +744,9 @@ namespace BKFunctor
 variable {t ϖ} {C : Lat a O K ϖ → Prop} (F : BKFunctor t ϖ C)
 
 /- English proof (translation)
-Use `(F.isMapOf hT hT _).unique fun v => ?_` and prove the remaining obligations. Rewrite using `[homW_scalar, LinearMapClass.map_smul_of_tower]`. Proceed by induction on `(F.obj T hT).I.j v using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul w x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← tmul_smul]`. Conclude with `congrArg (fun y : ↥T.L.T => w ⊗ₜ[O] y) (Subtype.ext (algebraMap_smul K c (x : T.V)).symm)`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_smul {T : Lat a O K ϖ} (hT : C T) (c : O) :
     F.map hT hT (latSmul T c) = BK.Hom.scalar _ c := by
@@ -762,9 +760,9 @@ theorem map_smul {T : Lat a O K ϖ} (hT : C T) (c : O) :
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use `(F.isMapOf hT hT _).unique fun v => ?_` and prove the remaining obligations. Rewrite using `[homW_scalar, one_smul]`. Proceed by induction on `(F.obj T hT).I.j v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x => rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, ← hx, ← hy]`.
+Treat this case separately.
 -/
 theorem map_id {T : Lat a O K ϖ} (hT : C T) : F.map hT hT (latId T) = BK.Hom.scalar _ 1 := by
   refine (F.isMapOf hT hT _).unique fun v => ?_
@@ -775,9 +773,9 @@ theorem map_id {T : Lat a O K ϖ} (hT : C T) : F.map hT hT (latId T) = BK.Hom.sc
   | add x y hx hy => rw [map_add, ← hx, ← hy]
 
 /- English proof (translation)
-Use `(F.isMapOf hT hT'' _).unique fun v => ?_` and prove the remaining obligations. Rewrite using `[homW_comp, F.isMapOf, F.isMapOf]`. Proceed by induction on `(F.obj T hT).I.j v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w x => rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem map_comp {T T' T'' : Lat a O K ϖ} (hT : C T) (hT' : C T') (hT'' : C T'') (g : LatHom T'.L T''.L)
     (f : LatHom T.L T'.L) : F.map hT hT'' (latComp g f) = (F.map hT' hT'' g).comp (F.map hT hT' f) := by
@@ -820,25 +818,25 @@ Both sides reduce to the same expression.
 theorem N_apply (v : Vec K a ι) : D.N v = (X : K⟦X⟧) • D.nabla v := rfl
 
 /- English proof (translation)
-Simplify using `[desc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem desc_zero (v : Vec K a ι) : D.desc 0 v = v := by simp [desc]
 
 /- English proof (translation)
-Rewrite using `[desc, descPochhammer_succ_right, map_mul, Module.End.mul_apply, ← desc, map_sub, Polynomial.aeval_X, map_natCast, LinearMap.sub_apply, Module.End.natCast_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem desc_succ (i : ℕ) (v : Vec K a ι) : D.desc (i + 1) v = D.desc i (D.N v - i • v) := by
   rw [desc, descPochhammer_succ_right, map_mul, Module.End.mul_apply, ← desc, map_sub, Polynomial.aeval_X,
     map_natCast, LinearMap.sub_apply, Module.End.natCast_apply]
 
 /- English proof (translation)
-The claim follows from `P.MM.smul_mem (uIn (S O K e)) (D.mem_MM m hm)`.
+A detailed English derivation is pending.
 -/
 theorem N_mem {m : Vec K a ι} (hm : m ∈ P.MM) : D.N m ∈ P.MM :=
   P.MM.smul_mem (uIn (S O K e)) (D.mem_MM m hm)
 
 /- English proof (translation)
-Proceed by induction on `i generalizing m with`. Consider the case `zero => rwa [desc_zero]`. Consider the case `succ i ih => rw [desc_succ]`. Conclude with `ih (sub_mem (D.N_mem hm) (nsmul_mem hm i))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem desc_mem (i : ℕ) {m : Vec K a ι} (hm : m ∈ P.MM) : D.desc i m ∈ P.MM := by
   induction i generalizing m with
@@ -902,7 +900,7 @@ omit hl [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Modul
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem mx_unitMod (τ : ZMod a) : (unitMod l a e O K ι).mx τ = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
@@ -911,7 +909,7 @@ omit hl [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Modul
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-Rewrite using `[← (unitMod l a e O K ι).mx_mul_mxInv τ, mx_unitMod, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mxInv_unitMod (τ : ZMod a) : (unitMod l a e O K ι).mxInv τ = 1 := by
   rw [← (unitMod l a e O K ι).mx_mul_mxInv τ, mx_unitMod, one_mul]
@@ -920,7 +918,7 @@ omit hl [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Modul
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-The claim follows from `mem_tot.trans (forall_congr' fun τ => by rw [PhiMod.mem_extc_iff, mxInv_unitMod, Matrix.one_mulVec, mem_vecs])`.
+A detailed English derivation is pending.
 -/
 theorem mem_ext_unitMod {B : Subalgebra O K⟦X⟧} {v : Vec K a ι} :
     v ∈ (unitMod l a e O K ι).ext B ↔ ∀ τ i, v τ i ∈ B :=
@@ -928,9 +926,7 @@ theorem mem_ext_unitMod {B : Subalgebra O K⟦X⟧} {v : Vec K a ι} :
     rw [PhiMod.mem_extc_iff, mxInv_unitMod, Matrix.one_mulVec, mem_vecs])
 
 /- English proof (translation)
-Rewrite using `[frobMat, ← Matrix.map_one (ϖ.iW t K) (map_zero _) (map_one _)]`. Use `congr 1`. Use `ext1 i j`. Use `ext1 τ`. Express the relevant statement in the definitionally equal form `(1 : Matrix ι ι (invE l e (A O K))) i j = _`.
-
-Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem frobMat_unitMod : frobMat t ϖ (unitMod l a e O K ι) = 1 := by
   rw [frobMat, ← Matrix.map_one (ϖ.iW t K) (map_zero _) (map_one _)]
@@ -955,7 +951,7 @@ omit [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.F
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-Introduce `m _` and use `funext fun τ => funext fun i => by rw [Pi.smul_apply, Pi.smul_apply, PhiMod.phi_apply, mx_unitMod, Matrix.one_mulVec] change PowerSeries.derivative K ((unitMod l a e O K ι).phi m τ i) = _ * frob K l (PowerSeries.derivative K (m (τ - 1) i)) rw [PhiMod.phi_apply, mx_unitMod, Matrix …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitConn_frobCompat : (unitConn (O := O) (K := K) l a e ι).FrobCompat := fun m _ =>
   funext fun τ => funext fun i => by
@@ -973,13 +969,13 @@ theorem unitConn_frobCompat : (unitConn (O := O) (K := K) l a e ι).FrobCompat :
 omit [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] in
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_sum_monomial_add l e hf r`. Take `⟨h, hh, hf⟩` from `hN N le_rfl`. Establish `key : ∀ (i : ℕ) (p h : K⟦X⟧), (∀ n, N ≤ n → coeff n p = 0) → h ∈ S O K e → ∃ p' h', (∀ n, N ≤ n + i → coeff n p' = 0) ∧ h' ∈ S O K e ∧ (PowerSeries.derivative K)^[i] (p + (l : K⟦X⟧) ^ r * h) = p' + (l : K⟦X⟧) ^ r * h'`. Introduce `i p h hp hh`. Proceed by induction on `i with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact ⟨p, h, hp, hh, rfl⟩`. Consider the case `succ i ih`. Take `⟨p', h', h1, h2, h3⟩` from `ih`. Use `⟨PowerSeries.derivative K p', _, fun n hn => ?_, derivative_mem_S h2, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_derivative, h1 _ (by omega), zero_mul]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.iterate_succ_apply', h3, map_add, ← Nat.cast_pow, ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`. Use `⟨N, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨p', h', h1, h2, h3⟩` from `key i (∑ n ∈ Finset.range N, monomial n (coeff n f)) h (fun n hn => by`. Simplify using `[coeff_monomial, hn]) hh`. Use `⟨h', h2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf, h3, show p' = 0 from PowerSeries.ext fun n => h1 n (by omega), zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_iterate_derivative {f : K⟦X⟧} (hf : f ∈ S O K e) (r : ℕ) : ∃ i₀ : ℕ, ∀ i ≥ i₀,
     ∃ h ∈ S O K e, (PowerSeries.derivative K)^[i] f = (l : K⟦X⟧) ^ r * h := by
@@ -1005,7 +1001,7 @@ theorem exists_iterate_derivative {f : K⟦X⟧} (hf : f ∈ S O K e) (r : ℕ) 
 omit [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] in
 
 /- English proof (translation)
-Introduce `m hm r` and use `by choose N hN using fun p : ZMod a × ι => exists_iterate_derivative (l := l) (mem_ext_unitMod.1 hm p.1 p.2) r refine ⟨Finset.univ.sup N, fun i hi => ?_⟩ choose h hh e1 using fun p => hN p i ((Finset.le_sup (Finset.mem_univ p)).trans hi) refine ⟨fun τ j => h (τ, j), mem_ext_unitM …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitConn_topNilp : (unitConn (O := O) (K := K) l a e ι).TopNilp := fun m hm r => by
   choose N hN using fun p : ZMod a × ι => exists_iterate_derivative (l := l) (mem_ext_unitMod.1 hm p.1 p.2) r
@@ -1022,7 +1018,7 @@ omit hl [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Modul
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-Proceed by induction on `i generalizing m with`. Consider the case `zero => simp [Conn.desc_zero, descN]`. Consider the case `succ i ih`. Rewrite using `[Conn.desc_succ, ih, descN, descN, descPochhammer_succ_right, map_mul, Module.End.mul_apply, map_sub, Polynomial.aeval_X, map_natCast, LinearMap.sub_apply, Module.End.natCast_apply]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitConn_desc (i : ℕ) (m : Vec K a ι) (τ : ZMod a) (j : ι) :
     (unitConn (O := O) (K := K) l a e ι).desc i m τ j = descN K i (m τ j) := by
@@ -1044,7 +1040,7 @@ def unitIdent (T : LocLat G ℚ_[l] K O) (b : Module.Basis ι O ↥T.L.T) :
       AlgHom.toLinearMap_apply, LinearMap.id_apply]
 
 /- English proof (translation)
-Simplify using `only [unitIdent, Module.Basis.equivFun_symm_apply, Module.Basis.baseChange_apply, smul_tmul', smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem unitIdent_j (T : LocLat G ℚ_[l] K O) (b : Module.Basis ι O ↥T.L.T) (v : ι → OW l O) :
     (unitIdent t ϖ T b).j v = ∑ i, v i ⊗ₜ[O] b i := by
@@ -1052,7 +1048,7 @@ theorem unitIdent_j (T : LocLat G ℚ_[l] K O) (b : Module.Basis ι O ↥T.L.T) 
     smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Apply `(unitIdent t ϖ T b).j.injective` to reduce the goal to its premises. Rewrite using `[Ident.j_act, unitIdent_j, unitIdent_j, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => congrArg (fun y : ↥T.L.T => galOW O s (v i) ⊗ₜ[O] y) (Subtype.ext (hg _))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitIdent_act (T : LocLat G ℚ_[l] K O) (b : Module.Basis ι O ↥T.L.T) (s : GQ l) {g : G}
     (hg : ∀ x, T.ρ g x = x) (v : ι → OW l O) : (unitIdent t ϖ T b).act s g v = galCoef O ι s v := by
@@ -1066,9 +1062,9 @@ variable {ϖ} in
 def IsTriv (T : Lat a O K ϖ) : Prop := ∀ g x, T.ρ g x = x
 
 /- English proof (translation)
-Rewrite using `[unitIdent_j, map_sum, Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : toW t ϖ _ ⟨m, mem_ME_of_mem_M hm⟩ i = inclO l O (ϖ.iTot t K fun τ => ⟨m τ i, mem_tot.1 hm τ i⟩)` using `ϖ.iW_of_mem t K fun τ => ⟨m τ i, mem_tot.1 hm τ i⟩`. Rewrite using `[h1, h, map_sum, map_sum, sum_tmul]`. Use `Finset.sum_congr rfl fun k _ => (kappa_tmul T _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, map_smul, PiSys.iTot_toAc, inclO_tmul, smul_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kappa_sum (T : LocLat G ℚ_[l] K O) (b : Module.Basis ι O ↥T.L.T) {J : Type} [Fintype J] (o : J → O)
     (x : J × ι → (Wq l a)⟦X⟧) (m : Vec K a ι) (hm : m ∈ (unitMod l a e O K ι).M)
@@ -1086,11 +1082,11 @@ theorem kappa_sum (T : LocLat G ℚ_[l] K O) (b : Module.Basis ι O ↥T.L.T) {J
   rw [map_smul, map_smul, PiSys.iTot_toAc, inclO_tmul, smul_tmul]
 
 /- English proof (translation)
-Set `_` to `zlLat T`. Establish `: IsScalarTower ℤ_[l] O ↥T.L.T` using `⟨fun z x y => by rw [Algebra.smul_def, mul_smul]; rfl⟩`. Set `o` to `Module.Free.chooseBasis ℤ_[l] O`. Establish `key : ∀ x : Module.Free.ChooseBasisIndex ℤ_[l] O × ι → (Wq l a)⟦X⟧, unitPowMap (ϖ.field a) (o.smulTower b) (fun p => ϖ.ev a (x p)) = ∑ p, inclW l (ϖ.ev a (x p)) ⊗ₜ[ℤ_[l]] (o p.1 • b p.2)` using `fun x => by`. Simplify using `only [unitPowMap_apply, Module.Basis.smulTower_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key2 : ∀ y : TW (OW l O) T, (∃ x : Module.Free.ChooseBasisIndex ℤ_[l] O × ι → (Wq l a)⟦X⟧, y = kappa T (unitPowMap (ϖ.field a) (o.smulTower b) (fun p => ϖ.ev a (x p)))) ↔ ∃ (m : Vec K a ι) (hm : m ∈ (unitMod l a e O K ι).M), y = (unitIdent t ϖ T b).j (toW t ϖ _ ⟨m, mem_ME_of_mem_ …` using `fun y => by`. Simplify using `only [key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Establish `hm : (fun τ i => (((∑ k, o k • toAc t K (x (k, i))) τ : A O K) : K⟦X⟧)) ∈ (unitMod l a e O K ι).M` using `mem_tot.2 fun τ i => Subtype.prop _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨_, hm, kappa_sum t ϖ T b o x _ hm fun _ => rfl⟩`. Introduce and unpack `⟨m, hm, rfl⟩ choose x hx using fun i => exists_eq_sum_toAc t K o fun τ => ⟨m τ i, mem_tot.1 hm τ i⟩`. Conclude with `⟨fun p => x p.2 p.1, (kappa_sum t ϖ T b o (fun p => x p.2 p.1) m hm hx).symm⟩`. Conclude with `⟨_, unitPowMap _ (o.smulTower b), realises_unitPow _ _ _ fun g x => Subtype.ext (hT g x), key2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem isBK_unitIdent {T : Lat a O K ϖ} (hT : IsTriv T) (b : Module.Basis ι O ↥T.L.T) :
     IsBK (unitIdent t ϖ T b) := by
@@ -1133,7 +1129,7 @@ def constHom (Y : Matrix κ ι O) : BK.Hom (unitMod l a e O K ι) (unitMod l a e
     simp [algebraMap_eq_C]
 
 /- English proof (translation)
-Rewrite using `[← (inclO l O).commutes, ← (ϖ.iTot t K).commutes]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem homMat_constHom (Y : Matrix κ ι O) (i : κ) (j : ι) :
     (homMat t ϖ (constHom (K := K) l a e Y)).map (inclO l O) i j = algebraMap O _ (Y i j) := by
@@ -1141,9 +1137,9 @@ theorem homMat_constHom (Y : Matrix κ ι O) (i : κ) (j : ι) :
   rfl
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[unitIdent_j, unitIdent_j, latW]`. Generalize the expression as in `(f.f.restrictScalars O).restrict f.T_le = φ`. Simplify using `only [homW_apply, Matrix.mulVec, dotProduct, homMat_constHom, map_sum, TensorProduct.map_tmul, LinearMap.id_apply, sum_tmul, LinearMap.toMatrix_apply]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← b'.sum_repr (φ (b j)), tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, smul_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMapOf_constHom {T T' : LocLat G ℚ_[l] K O} (b : Module.Basis ι O ↥T.L.T)
     (b' : Module.Basis κ O ↥T'.L.T) (f : LatHom T.L T'.L) :
@@ -1167,7 +1163,7 @@ def trivFunctor : BKFunctor t ϖ (IsTriv : Lat a O K ϖ → Prop) where
   isMapOf _ _ f := isMapOf_constHom t ϖ _ _ f
 
 /- English proof (translation)
-Introduce `c` and use `by rw [unitIdent_act t ϖ T b s hg, inclL_apply, inclL_apply, frobMat_unitMod, Matrix.one_mulVec, Matrix.one_mulVec, Matrix.one_mulVec] exact funext fun i => galOW_inclO s (c i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLMat_unitIdent (T : LocLat G ℚ_[l] K O) (b : Module.Basis ι O ↥T.L.T) (s : GQ l) {g : G}
     (hg : ∀ x, T.ρ g x = x) : (unitIdent t ϖ T b).IsLMat s g 1 := fun c => by
@@ -1176,7 +1172,7 @@ theorem isLMat_unitIdent (T : LocLat G ℚ_[l] K O) (b : Module.Basis ι O ↥T.
   exact funext fun i => galOW_inclO s (c i)
 
 /- English proof (translation)
-Introduce `g` and use `⟨(Ident.exists_isLMat_iff _ _ _).1 ⟨1, isLMat_unitIdent t ϖ T b g (hT g)⟩, fun v hv => by rw [Ident.gal, unitIdent_act t ϖ T b (g : GQ l) (hT g)] exact galCoef_mem_MA _ (g : GQ l) hv⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem stable_unitIdent {T : Lat a O K ϖ} (hT : IsTriv T) (b : Module.Basis ι O ↥T.L.T) :
     (unitIdent t ϖ T b).Stable := fun g =>
@@ -1185,7 +1181,7 @@ theorem stable_unitIdent {T : Lat a O K ϖ} (hT : IsTriv T) (b : Module.Basis ι
     exact galCoef_mem_MA _ (g : GQ l) hv⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun τ _ => congrArg (fun y => idem (constC t) τ * ϖ.iS O K y) (Subtype.ext (by change ((unitMod l a e O K ι).mxInv τ *ᵥ v.1 τ) j = v.1 τ j rw [mxInv_unitMod, Matrix.one_mulVec]))`.
+A detailed English derivation is pending.
 -/
 theorem toCris_unitMod (v : (unitMod l a e O K ι).MM) (j : ι) : toCris t ϖ _ v j =
     ∑ τ, idem (constC t) τ * ϖ.iS O K ⟨v.1 τ j, mem_ext_unitMod.1 v.2 τ j⟩ :=
@@ -1196,7 +1192,7 @@ theorem toCris_unitMod (v : (unitMod l a e O K ι).MM) (j : ι) : toCris t ϖ _ 
 omit [NeZero e] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] in
 
 /- English proof (translation)
-Establish `h : ∀ x ∈ Kunr l a, (g : GQ l) x = x` using `fun x hx => (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 x (ϖ.Kunr_le_field a hx)`. Rewrite using `[idem, constC, AlgHom.comp_apply, galOCr_toOCr, galOA_constA t h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem galOCr_idem (g : ↥(GK (ϖ.field a))) (τ : ZMod a) :
     galOCr O g (idem (constC t) τ) = idem (constC t) τ := by
@@ -1205,7 +1201,7 @@ theorem galOCr_idem (g : ↥(GK (ϖ.field a))) (τ : ZMod a) :
   rw [idem, constC, AlgHom.comp_apply, galOCr_toOCr, galOA_constA t h]
 
 /- English proof (translation)
-Introduce `g` and use `by refine ⟨1, isLMat_unitIdent t ϖ T b g (hT g), fun m r => ?_⟩ have hm := mem_ext_unitMod.1 m.2 choose N hN using fun p : ZMod a × ι => ϖ.taylor_S a O K g ⟨m.1 p.1 p.2, hm p.1 p.2⟩ r refine ⟨Finset.univ.sup N, fun n hn => ?_⟩ choose z hz using fun p => hN p n ((Finset.le_sup (Fi …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem taylor_unitIdent {T : Lat a O K ϖ} (hT : IsTriv T) (b : Module.Basis ι O ↥T.L.T) :
     (unitIdent t ϖ T b).Taylor (unitConn l a e ι) := fun g => by
@@ -1227,7 +1223,7 @@ omit [NeZero a] [NeZero e] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.F
   [NormedAlgebra ℚ_[l] K] in
 
 /- English proof (translation)
-Introduce `m _` and use `funext fun τ => funext fun i => by change PowerSeries.derivative K (∑ j, algebraMap O K⟦X⟧ (Y i j) * m τ j) = ∑ j, algebraMap O K⟦X⟧ (Y i j) * PowerSeries.derivative K (m τ j) simp only [map_sum, algebraMap_eq_C, ← smul_eq_C_mul, Derivation.map_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem natural_constHom (Y : Matrix κ ι O) :
     (unitConn (K := K) l a e ι).Natural (unitConn l a e κ) (constHom l a e Y) := fun m _ =>
@@ -1264,12 +1260,12 @@ def unitLat : LocLat G ℚ_[l] K O where
 omit [NeZero e] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isTriv_unitLat : IsTriv (unitLat ↥(GK (ϖ.field a)) : Lat a O K ϖ) := fun _ _ => rfl
 
 /- English proof (translation)
-Establish `: Nontrivial O` using `(algebraMap O K).domain_nontrivial`. Conclude with `(LinearEquiv.ofInjective (Algebra.linearMap O K) IsUnitBall.inj).finrank_eq.symm.trans (Module.finrank_self O)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example : ((trivFunctor (K := K) t ϖ).obj _ (isTriv_unitLat ϖ)).n = 1 := by
   have : Nontrivial O := (algebraMap O K).domain_nontrivial
@@ -1277,7 +1273,7 @@ example : ((trivFunctor (K := K) t ϖ).obj _ (isTriv_unitLat ϖ)).n = 1 := by
     (Module.finrank_self O)
 
 /- English proof (translation)
-Rewrite using `[mem_Treal, phiW_apply, frobMat_unitMod, Matrix.one_mulVec, funext_iff]`. Conclude with `forall_congr' fun i => ⟨(GlobalTheory.WittTensorFixed.baseChange_flat (O := O) (frobW l) (GlobalTheory.ArtinSchreierWitt.main l).1 (GlobalTheory.ArtinSchreierWitt.main l).2.1 (GlobalTheory.WittTensorFixed.algebraMap_WCb_injective l)).2.1 _, fun ⟨c, hc⟩ => by rw [hc]; exact (frobO …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (v : ι → OW l O) : v ∈ Treal t ϖ (unitMod l a e O K ι) ↔ ∀ i, ∃ c : O, v i = algebraMap O _ c := by
   rw [mem_Treal, phiW_apply, frobMat_unitMod, Matrix.one_mulVec, funext_iff]
@@ -1287,7 +1283,7 @@ example (v : ι → OW l O) : v ∈ Treal t ϖ (unitMod l a e O K ι) ↔ ∀ i,
     fun ⟨c, hc⟩ => by rw [hc]; exact (frobOW l O).commutes c⟩
 
 /- English proof (translation)
-Establish `h : frobMat t ϖ (rankOne O K l e fun _ : ZMod a => 1) () () = inclO l O (1 ⊗ₜ ϖ.ev a (eis l a e))`. Rewrite using `[← ϖ.iTot_E t K, ← ϖ.iW_of_mem t K]`. Conclude with `congrArg (ϖ.iW t K) (funext fun τ => Subtype.ext ((mx_rankOne (j := fun _ : ZMod a => 1) (τ := τ) (n := 1) rfl).trans (pow_one _)))`. Rewrite using `[mem_Treal, phiW_apply, funext_iff, Unique.forall_iff, ← h]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (v : Unit → OW l O) : v ∈ Treal t ϖ (rankOne O K l e fun _ : ZMod a => 1) ↔
     inclO l O (1 ⊗ₜ ϖ.ev a (eis l a e)) * frobOW l O (v ()) = v () := by
@@ -1320,7 +1316,7 @@ abbrev CrysBKFunctorOL [HasUnr a LL] (Pl : LocPrime l) : Type 1 :=
   CrysBKFunctor ↥LL.1 (thetaW a LL) ϖ Pl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨trivConn _ _⟩`.
+Supply the required witnesses or components.
 -/
 example [HasUnr a LL] : Nonempty (trivFunctor (K := ↥LL.1) (thetaW a LL) ϖ).IntConn := ⟨trivConn _ _⟩
 

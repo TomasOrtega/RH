@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i π D d B α β N hN h₁ h₂`. Establish `key : ∀ m, ∃ c : Fin d → Γ(Z, N), ∑ l, c l * tN B α h₁ l = tN B β h₂ m`. Introduce `m`. Establish `hm : tN B β h₂ m ∈ Ideal.span (Set.range (tN B α h₁))`. Rewrite using `[← kerRes B α hN h₁, kerRes B β hN h₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.subset_span ⟨m, rfl⟩`. Conclude with `Ideal.mem_span_range_iff_exists_fun.1 hm`. Use `choose G hG using key`. Conclude with `⟨Matrix.of G, fun m => (hG m).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.trExists :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (α β : B.ι) {N : Z.Opens} (_ : IsAffineOpen N) (h₁ : N ≤ B.V α) (h₂ : N ≤ B.V β), ∃ G : Matrix (Fin d) (Fin d) Γ(Z, N), IsTr B α β h₁ h₂ G := by

@@ -18,13 +18,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace RD
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d)
 /- English proof (translation)
-Establish `hmem : (mat2 w₀)ᵀ * dbl (incM F d.Y.J) * (mat2 w₀).map (cA σ) = dbl (incM F d.Y.J)` using `w₀.2`. Establish `hmat : mat2 w₀ = incM F d.b.1 * inFrame d.b w₀ * incM F (d.b⁻¹).1`. Simplify using `only [inFrame, ← Matrix.mul_assoc]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Krd.bb_k d, Matrix.one_mul, Matrix.mul_assoc, _root_.PositivityTheory.SiegelWeilFormula.Krd.bb_k d, Matrix.mul_one]`. Establish `hc` using `congrArg (d.cw w) hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[_root_.PositivityTheory.SiegelWeilFormula.Krd.cw_mul_k d, _root_.PositivityTheory.SiegelWeilFormula.Krd.cw_mul_k d, _root_.PositivityTheory.SiegelWeilFormula.Place.cw_cA_k d, _root_.PositivityTheory.SiegelWeilFormula.Krd.cw_transpose_k d, _root_.PositivityTheory.SiegelWeilFormul …`. Use `set P := d.b.1.map (d.B.emb w).1`. Use `set Pi := (d.b⁻¹).1.map (d.B.emb w).1`. Use `set D := (dbl d.Y.J).map (d.B.emb w).1`. Use `set Wc := wM d.n ((ε : ℤ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPiP : Pi * P = 1`. Simplify using `only [Pi, P]`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hQ` using `_root_.PositivityTheory.SiegelWeilFormula.Krd.hQ_w_k d R.hε w`. Apply `eps_of_unit d.ok.hn ε R.ε` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPiP, hQ, Matrix.transpose_one, Krd.mapStar_one, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Pᵀ * ((P * Wc * Pi)ᵀ * D * (P * Wc * Pi).map star) * P.map star := by`. Simplify using `only [Matrix.transpose_mul, Krd.mapStar_mul, Matrix.mul_assoc]`. Use `_ = Krd.Qc d.n R.ε := by rw [hc, hQ]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.isW_eps (w : InfinitePlace F) {ε : ℤˣ} {w₀ : d.G} (h : d.IsW ε w₀) : ε = R.ε := by
   have hmem : (mat2 w₀)ᵀ * dbl (incM F d.Y.J) * (mat2 w₀).map (cA σ) = dbl (incM F d.Y.J) := w₀.2

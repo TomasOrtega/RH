@@ -10,19 +10,19 @@ open scoped Real ContDiff
 namespace GlobalTheory.TorsionForm.FlatAcyc.Cross
 
 /- English proof (translation)
-The claim follows from `map_sum (wedgeR i) w s`.
+A detailed English derivation is pending.
 -/
 theorem wedge_finsum {m : ℕ} {ι : Type} (s : Finset ι) (i : Fin m) (w : ι → Ext m) :
     wedge i (∑ k ∈ s, w k) = ∑ k ∈ s, wedge i (w k) := map_sum (wedgeR i) w s
 
 /- English proof (translation)
-The claim follows from `map_sum (contrR i) w s`.
+A detailed English derivation is pending.
 -/
 theorem contr_finsum {m : ℕ} {ι : Type} (s : Finset ι) (i : Fin m) (w : ι → Ext m) :
     contr i (∑ k ∈ s, w k) = ∑ k ∈ s, contr i (w k) := map_sum (contrR i) w s
 
 /- English proof (translation)
-Rewrite using `[d01_smul (φ := fun _ => c) (differentiableAt_const c) hF]`. Simplify using `[d01]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d01_const_smul {g m : ℕ} (c : ℂ) {F : (Fin g → ℂ) → Ext m} {z : Fin g → ℂ}
     (hF : DifferentiableAt ℝ F z) (v : Fin g → ℂ) :
@@ -31,7 +31,7 @@ theorem d01_const_smul {g m : ℕ} (c : ℂ) {F : (Fin g → ℂ) → Ext m} {z 
   simp [d01]
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `wedge_contr_add _ _`. Rewrite using `[wedge_contr_of_ne (fun e => h (dzb_bijective.1 e).symm)]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem anticomm {g : ℕ} (c d : Fin g) (Y : Ext (0 + 0 + g)) :
     wedge (dzb 0 d) (contr (dzb 0 c) Y) + contr (dzb 0 c) (wedge (dzb 0 d) Y) =
@@ -41,23 +41,21 @@ theorem anticomm {g : ℕ} (c d : Fin g) (Y : Ext (0 + 0 + g)) :
   · rw [wedge_contr_of_ne (fun e => h (dzb_bijective.1 e).symm)]; simp
 
 /- English proof (translation)
-Use `set X : Fin g → Fin g → Ext (0 + 0 + g) := fun a d => d10 (fun z' => d01 f z' (ev d)) z (ev a) + d10 ψ z (ev a) • d01 f z (ev d) with hX`. Establish `h1 : dbarAdjF G ψ (dbarF f) z = -∑ a, ∑ c, ∑ d, G a c • contr (dzb 0 c) (wedge (dzb 0 d) (X a d))`. Establish `e : ∀ a, d10 (dbarF f) z (ev a) + d10 ψ z (ev a) • dbarF f z = ∑ d, wedge (dzb 0 d) (X a d)`. Introduce `a`. Establish `: d10 (dbarF f) z (ev a) = ∑ d, wedge (dzb 0 d) (d10 (fun z' => d01 f z' (ev d)) z (ev a))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `d10_finset_sum' Finset.univ (F := fun d z' => wedge (dzb 0 d) (d01 f z' (ev d))) (P := z) (fun d _ => (wedgeR (dzb 0 d)).differentiableAt.comp z (hf01 _ z)) (ev a)` as an intermediate fact. Use `this.trans (Finset.sum_congr rfl fun d _ => ?_)` and prove the remaining obligations. Conclude with `dz_wedge_comm _ (hf01 _ z) _`. Rewrite using `[this, dbarF, Finset.smul_sum, ← Finset.sum_add_distrib]`. Simplify using `only [hX, wedge_add, wedge_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [dbarAdjF, e, contr_finsum, Finset.smul_sum]`. Establish `hd : ∀ a, DifferentiableAt ℝ (fun z' => d10 f z' (ev a) + d10 ψ z' (ev a) • f z') z` using `fun a => (hf10 _ z).add ((hψ10 _ z).smul (hf z))`. Establish `hd2 : ∀ a c, DifferentiableAt ℝ (fun z' => contr (dzb 0 c) (d10 f z' (ev a) + d10 ψ z' (ev a) • f z')) z` using `fun a c => (contrR (dzb 0 c)).differentiableAt.comp z (hd a)`. Establish `hd3 : ∀ a c, DifferentiableAt ℝ (fun z' => G a c • contr (dzb 0 c) (d10 f z' (ev a) + d10 ψ z' (ev a) • f z')) z` using `fun a c => (hd2 a c).const_smul (G a c)`. Establish `h2 : ∀ d, d01 (dbarAdjF G ψ f) z (ev d) = -∑ a, ∑ c, G a c • contr (dzb 0 c) (X a d + d01 (fun z' => d10 ψ z' (ev a)) z (ev d) • f z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `d`. Establish `e0 : dbarAdjF G ψ f = fun z' => -∑ a, ∑ c, G a c • contr (dzb 0 c) (d10 f z' (ev a) + d10 ψ z' (ev a) • f z')` using `rfl`. Rewrite using `[e0, d01_neg, d01_sum _ (fun a _ => DifferentiableAt.fun_sum fun c _ => hd3 a c)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[d01_sum _ (fun c _ => hd3 a c)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[d01_const_smul _ (hd2 a c), dbar_contraction_comm _ (hd a), dbar_add_vector (F := fun z' => d10 f z' (ev a)) (G := fun z' => d10 ψ z' (ev a) • f z') (hf10 _ z) ((hψ10 _ z).smul (hf z)), d01_smul (φ := fun z' => d10 ψ z' (ev a)) (hψ10 _ z) (hf z), hmix]`. Simplify using `only [hX]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h3 : dbarF (dbarAdjF G ψ f) z = -(∑ a, ∑ c, ∑ d, G a c • wedge (dzb 0 d) (contr (dzb 0 c) (X a d))) - ∑ a, ∑ c, ∑ d, (G a c * d01 (fun z' => d10 ψ z' (ev a)) z (ev d)) • wedge (dzb 0 d) (contr (dzb 0 c) (f z))`. Rewrite using `[dbarF]`. Simplify using `only [h2, wedge_neg, wedge_finsum, wedge_smul, contr_add, contr_smul, wedge_add, Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm, sub_eq_add_neg, ← neg_add, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul]`. Establish `h4 : (∑ a, ∑ c, ∑ d, G a c • wedge (dzb 0 d) (contr (dzb 0 c) (X a d))) + ∑ a, ∑ c, ∑ d, G a c • contr (dzb 0 c) (wedge (dzb 0 d) (X a d)) = ∑ a, ∑ c, G a c • X a c`. Simplify using `only [← Finset.sum_add_distrib, ← smul_add, anticomm, ← Finset.smul_sum, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[h1, h3, ← h4]`.
-
-Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem dbarF_dbarAdjF_add {g : ℕ} (G : Matrix (Fin g) (Fin g) ℂ) (ψ : (Fin g → ℂ) → ℂ)
     (f : (Fin g → ℂ) → Ext (0 + 0 + g)) (hf : Differentiable ℝ f) (hψ : Differentiable ℝ ψ)

@@ -5,23 +5,23 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Introduce `O _ bar φ X _ _ _ m m' δ γ i k a hδ hγ hk he j hj`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hδ.strict`. Establish `eδ : φ.evalZ (k • δ i) = k * φ.evalZ (δ i)`. Use `hδ.linear (Pi.single i (k : ℝ)) fun l => by` as an intermediate fact. Distinguish the cases in `h : l = i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Simplify using `only [Pi.single_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Rewrite using `[InvFun.evalZ]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x y`. Simplify using the standard rewrite rules. Establish `eγ : φ.evalZ (∑ j, a j • γ j) = ∑ j, (a j : ℝ) * φ.evalZ (γ j)`. Use `hγ.linear (fun j => (a j : ℝ)) fun j => by positivity` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[InvFun.evalZ]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x y`. Simplify using `[LinearMap.sum_apply]`. Establish `ℓδ : (ℓ (k • δ i) : ℝ) = k * (N * φ.evalZ (δ i))`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul, ← h1 i, nsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression. Establish `ℓγ : (ℓ (∑ j, a j • γ j) : ℝ) = ∑ j, (a j : ℝ) * ℓ (γ j)`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Simplify using `[map_nsmul]`. Establish `key : ∑ j, (a j : ℝ) * ((ℓ (γ j) : ℝ) - N * φ.evalZ (γ j)) = 0`. Establish `e1 : (ℓ (∑ j, a j • γ j) : ℝ) = N * φ.evalZ (∑ j, a j • γ j)`. Rewrite using `[← he, ℓδ, eδ]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `e1` using `[ℓγ, eγ, Finset.mul_sum]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, e1]`. Rewrite using `[sub_eq_zero]`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `nn : ∀ j ∈ Finset.univ, 0 ≤ (a j : ℝ) * ((ℓ (γ j) : ℝ) - N * φ.evalZ (γ j))` using `fun j _ => mul_nonneg (by positivity) (sub_nonneg.2 (h2 _ (hγ.mem j) (hγ.nonneg j)))`. Establish `z` using `(Finset.sum_eq_zero_iff_of_nonneg nn).1 key j (Finset.mem_univ _)`. Establish `ha : (a j : ℝ) ≠ 0` using `by exact_mod_cast hj.ne'`. Establish `heq : (N : ℝ) * φ.evalZ (γ j) = ℓ (γ j)`. Use `(mul_eq_zero.1 z).resolve_left ha` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3 _ (hγ.mem j) (hγ.nonneg j) heq`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cell_gen_mem_cone_of_smul : ∀ {O : Type} [CommRing O] (bar : O → O) (φ : InvFun O) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m m' : ℕ} (δ : Fin m → LinearMap.BilinForm ℤ X) (γ : Fin m' → LinearMap.BilinForm ℤ X)

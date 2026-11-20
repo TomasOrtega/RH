@@ -9,7 +9,7 @@ open scoped Pointwise
 namespace GlobalTheory.LatPair
 
 /- English proof (translation)
-Take `⟨q⟩ : Nonempty (Unif k)` from `inferInstance`. Establish `e : Red L ≃ₗ[𝓀[k]] Module.Dual 𝓀[k] (Red L)` using `(Module.Free.chooseBasis 𝓀[k] (Red L)).toDualEquiv`. Establish `e' : {x : Red L // x ≠ 0} ≃ {f : Module.Dual 𝓀[k] (Red L) // f ≠ 0}` using `e.toEquiv.subtypeEquiv (fun x => by simp)`. Use `Finset.card_eq_of_equiv ?_` and prove the remaining obligations. Conclude with `(Equiv.subtypeEquivRight (fun P => mem_withLat)).trans ((latEquiv L).symm.trans (e'.symm.trans ((kerEquiv L q).trans (Equiv.subtypeEquivRight (fun P => mem_withKer.symm)))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_withLat_eq_card_withKer {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : Type} (L : Submodule (↥𝒪[k]) (n → k))

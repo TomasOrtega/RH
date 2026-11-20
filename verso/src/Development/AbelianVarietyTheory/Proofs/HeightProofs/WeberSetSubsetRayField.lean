@@ -16,15 +16,13 @@ set_option autoImplicit false in
 open NumberField IsDedekindDomain Polynomial in
 open scoped IntermediateField in
 /- English proof (translation)
-Introduce `K _ _ h2 hd L hL n hn R _ _ hR`. Take `⟨hM, S, hS⟩` from `_root_.GlobalTheory.WeberSplitAny.splits_completely_of_three_le K h2 hd L hL n hn`. Establish `hn0 : 0 < n` using `by omega`. Establish `hN : Ideal.absNorm (Ideal.span {(n : 𝓞 K)}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn0.ne'` after adjusting the coercions. Establish `hMR : IntermediateField.adjoin (↥K) (_root_.GlobalTheory.FieldSize.weberSet L n) ≤ R`. Apply `_root_.GlobalTheory.Bauer.le_of_finite_split_not_split (↥K) ℂ R _` to reduce the goal to its premises. Use `((Ideal.finite_setOfPred_absNorm_le (S := 𝓞 K) (S.sup id + Ideal.absNorm (Ideal.span {(n : 𝓞 K)}))).preimage (f := fun v : HeightOneSpectrum (𝓞 K) => v.asIdeal) (fun a _ b _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `𝔭 ⟨hp, hsplit, hnot⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Distinguish the cases in `hpS : Ideal.absNorm 𝔭.asIdeal ∈ S`. Conclude with `le_add_right (Finset.le_sup (f := id) hpS)`. Distinguish the cases in `hn𝔭 : (n : 𝓞 K) ∈ 𝔭.asIdeal`. Use `le_add_left (Nat.le_of_dvd (Nat.pos_of_ne_zero hN) ?_)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).mpr hn𝔭)`. It suffices to derive a contradiction. Take `⟨π, hπ, hπ1⟩` from `(_root_.GlobalTheory.FieldSize.RaySplit.ncard_eq_finrank_iff (↥K) (↥R) n hn0 hR 𝔭 hn𝔭).mp hsplit`. Apply `hnot` to reduce the goal to its premises. Rewrite `hp`, `hpS`, the goal using `[hπ]`.
-
-Conclude with `hS π _ hp hpS rfl hπ1`. Conclude with `fun x hx => hMR (IntermediateField.subset_adjoin _ _ hx)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem weberSet_subset_of_isRay_span_natCast :
     ∀ (K : IntermediateField ℚ ℂ) [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 →
@@ -63,7 +61,7 @@ open NumberField IsDedekindDomain Polynomial in
 open scoped IntermediateField in
 
 /- English proof (translation)
-Introduce `K _ _ h2 hd L hL n _ hn R _ _ hR` and use `weberSet_subset_of_isRay_span_natCast K h2 hd L hL n hn R hR`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldSize.InRay.weberSet_subset :
     ∀ (K : IntermediateField ℚ ℂ) [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 →

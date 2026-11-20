@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 namespace GlobalTheory.CompanionTheory.Ar.Cmp.JoinBlock
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp, rename_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `[mConeMap, hv]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem mConeMap_rename {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
     (κ : K → K') (v : (Σ k, ι k) → Σ k, ι' k) {Ω : Type} [Field Ω] (y : (Σ k, ι' k) → Ω)
@@ -26,7 +26,7 @@ theorem mConeMap_rename {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → T
     simp [mConeMap, hv]
 
 /- English proof (translation)
-Use extensionality with `f`. Simplify using `only [imageZ, mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `mConeMap y (rename v f) = 0 ↔ _`. Rewrite using `[mConeMap_rename κ v y hv f]`. Conclude with `map_eq_zero_iff _ (rename_injective κ hκ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imageZ_coord {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
     (κ : K → K') (v : (Σ k, ι k) → Σ k, ι' k) {Ω : Type} [Field Ω] (y : (Σ k, ι' k) → Ω)
@@ -39,11 +39,11 @@ theorem imageZ_coord {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type
   exact map_eq_zero_iff _ (rename_injective κ hκ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k''`. Simplify using `only [pullDeg]`. Distinguish the cases in `h' : ∃ k', κ' k' = k''`. Take `⟨k', rfl⟩` from `h'`. Rewrite using `[hκ'.extend_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hκ.extend_apply]`. Conclude with `(hκ'.comp hκ).extend_apply a 0 k`. Establish `h2 : ¬∃ k, (κ' ∘ κ) k = κ' k'` using `fun ⟨k, hk⟩ => h ⟨k, hκ' hk⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h2]`. Both sides reduce to the same expression. Establish `h2 : ¬∃ k, (κ' ∘ κ) k = k''` using `fun ⟨k, hk⟩ => h' ⟨κ k, hk⟩`. Rewrite using `[Function.extend_apply' _ _ _ h', Function.extend_apply' _ _ _ h2]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullDeg_comp {K K' K'' : Type} (κ : K → K') (κ' : K' → K'')
     (hκ : Function.Injective κ) (hκ' : Function.Injective κ') (a : K → ℤ) :
@@ -70,17 +70,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Cmp
 open GlobalTheory.CompanionTheory.Ar.Cmp.JoinBlock in
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `K₁ _ ι₁ _ K₂ _ ι₂ _ Ω y₁ y₂`. Use `⟨⟨Sum.inl_injective, ?_, fun _ => rfl, ?_⟩, ⟨Sum.inr_injective, ?_, fun _ => rfl, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Consider the cases of `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨k', i⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, i⟩, rfl⟩`. Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Consider the cases of `h`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨k', i⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, i⟩, rfl⟩`. Use function extensionality and compare the values at `⟨k, i⟩`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `⟨k, i⟩`. Both sides reduce to the same expression. Introduce `K _ ι _ K' _ ι' _ κ v Ω _ y h`. Conclude with `imageZ_coord κ v y h.1 h.2.2.1`. Introduce `K _ ι _ K' _ ι' _ K'' _ ι'' _ κ v κ' v' h h'`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hκ, hv, hc, hs⟩` from `h`. Take `⟨hκ', hv', hc', hs'⟩` from `h'`. Use `⟨⟨hκ'.comp hκ, hv'.comp hv, fun p => ?_, ?_⟩, pullDeg_comp κ κ' hκ hκ'⟩` and prove the remaining obligations. Simplify using `[hc', hc]`. Introduce and unpack `q ⟨k, hk⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨q', rfl⟩` from `hs' q ⟨κ k, hk⟩`. Establish `h1 : q'.1 = κ k` using `hκ' ((hc' q').symm.trans hk.symm)`. Take `⟨p, rfl⟩` from `hs q' ⟨k, h1.symm⟩`. Conclude with `⟨p, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem join_block_maps : (∀ (K₁ : Type) [Fintype K₁] (ι₁ : K₁ → Type) [∀ k, Fintype (ι₁ k)] (K₂ : Type) [Fintype K₂] (ι₂ : K₂ → Type) [∀ k, Fintype (ι₂ k)] (Ω : Type) (y₁ : (Σ k, ι₁ k) → Ω) (y₂ : (Σ k, ι₂ k) → Ω), IsBlockMap Sum.inl (joinInl ι₁ ι₂) ∧ IsBlockMap Sum.inr (joinInr ι₁ ι₂) ∧ joinVec y₁ y₂ ∘ joinInl ι₁ ι₂ = y₁ ∧ joinVec y₁ y₂ ∘ joinInr ι₁ ι₂ = y₂) ∧ (∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (κ : K → K') (v : (Σ k, ι k) → Σ k, ι' k) (Ω : Type) [Field Ω] (y : (Σ k, ι' k) → Ω), IsBlockMap κ v → imageZ v (mCoordIdeal y) = mCoordIdeal (y ∘ v)) ∧ (∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (K'' : Type) [Fintype K''] (ι'' : K'' → Type) [∀ k, Fintype (ι'' k)] (κ : K → K') (v : (Σ k, ι k) → Σ k, ι' k) (κ' : K' → K'') (v' : (Σ k, ι' k) → Σ k, ι'' k), IsBlockMap κ v → IsBlockMap κ' v' → IsBlockMap (κ' ∘ κ) (v' ∘ v) ∧ ∀ a, pullDeg (κ' ∘ κ) a = pullDeg κ' (pullDeg κ a)) := by
   refine ⟨?_, ?_, ?_⟩

@@ -19,9 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SeriesTie
 
 /- English proof (translation)
-Use `haveI : ∀ c, IsNoetherian R (C c) := fun c => isNoetherian_of_fg_of_noetherian _ (hC c)`. Set `ev : L →ₗ[R] ∀ c, C c` to `{ toFun := fun f c => ⟨f.1 (y c), hmem f.1 f.2 c⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hev : Function.Injective ev`. Use `(injective_iff_map_eq_zero ev).2 fun f hf => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (hinj f.1 f.2 fun c => congrArg Subtype.val (congrFun hf c))`.
-
-Use `haveI : IsNoetherian R L := isNoetherian_of_injective ev hev`. Conclude with `Module.Finite.iff_fg.1 inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fg_of_eval {R G W I : Type} [CommRing R] [IsNoetherianRing R] [AddCommGroup W] [Module R W] [Finite I]
     (L : Submodule R (G → W)) (y : I → G) (C : I → Submodule R W) (hC : ∀ c, (C c).FG)
@@ -43,9 +41,9 @@ variable {D : D7} {S T : HSp D} {K : Type} [Field K] [NumberField K] {σ : K →
   {emb : D.what₂.Tau → (D.host.E →+* K)} {O : Subring ℂ}
 
 /- English proof (translation)
-Establish `hlaw : B.HasLaw t f` using `((B.mem_formsC).1 hf).2`. Use function extensionality and compare the values at `h`. Take `⟨c, ⟨γ, k, e⟩, -⟩` from `hy h`. Establish `h1` using `hlaw γ (y c) k`. Rewrite `h1` using `[h0 c, map_zero, smul_zero, ← e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_reps (B : Base S T) (t : Twist D Circle) {I : Type} {y : I → Bridge.Gf S}
     (hy : Bridge.IsReps (Bridge.ratF S) (B.levJ t) y) {f : Bridge.Gf S → PolF D T.rank S.rank} (hf : f ∈ B.formsC t)
@@ -58,7 +56,7 @@ theorem eq_zero_of_reps (B : Base S T) (t : Twist D Circle) {I : Type} {y : I �
   exact h1
 
 /- English proof (translation)
-The claim follows from `fg_of_eval _ y (fun c => B.coefLat σ emb O (y c)) hfg (fun _ hf c => ((B.mem_mtLat σ emb O).1 hf).2 (y c)) fun _ hf h0 => eq_zero_of_reps B t hy ((B.mem_mtLat σ emb O).1 hf).1 h0`.
+A detailed English derivation is pending.
 -/
 theorem mtLat_fg_of_reps [IsNoetherianRing O] (B : Base S T) (t : Twist D Circle) {I : Type} [Finite I] {y : I → Bridge.Gf S}
     (hy : Bridge.IsReps (Bridge.ratF S) (B.levJ t) y) (hfg : ∀ c, (B.coefLat σ emb O (y c)).FG) :
@@ -69,11 +67,9 @@ theorem mtLat_fg_of_reps [IsNoetherianRing O] (B : Base S T) (t : Twist D Circle
 end Eval
 
 /- English proof (translation)
-Introduce `D N X ρ hρ i j b k Q ψ hT`. Take `⟨hg, ha, -⟩` from `GlobalTheory.T.twistingCharacter_admissibleGaloisTwist_good D N X ρ hρ i j b k Q ψ hT`. Establish `hc` using `hρ.classes i j b _ hg ha`. Use `haveI : IsNoetherianRing (ρ.eOk i b k).range := isNoetherianRing_of_surjective (X.Ok i k) _ (ρ.eOk i b k).rangeRestrict (ρ.eOk i b k).rangeRestrict_surjective`. Establish `hB` using `hρ.base i j b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mtLat_fg_of_reps _ _ hc.reps fun c => ?_` and prove the remaining obligations. Use `(GlobalTheory.T.fockHarmonicLattice_fg_and_spans_value_space D _ _ _ _ _ _ _ _ _ hB.wt (fun τ => ?_) (hρ.isCoefRing_k i b k) ?_).1` and prove the remaining obligations. Establish `h1` using `hB.sig τ`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (tauE D τ)`. Rewrite `h2` using `[← h1]`.
-
-Conclude with `h2.le`. Conclude with `Formalism.UG.P.csGlob_lattice _ (Module.Finite.iff_fg.2 hB.frame.sdS.1.fg) hB.frame.sdS.1.span_eq_top _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latFG_of_good : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (ρ : Setup X), ρ.Good → ρ.LatFG := by
   intro D N X ρ hρ i j b k Q ψ hT

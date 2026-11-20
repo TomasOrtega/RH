@@ -7,12 +7,12 @@ import Development.EtaleCohomology.TateTwists.EtaleSimplicialSchemeCocycleVanish
 namespace LateralTheory.Fix.EtaleSchemeGlobalSectionCohomologyClass
 
 /- English proof (translation)
-The claim follows from `LateralTheory.EtaleFoundations.etale_chain_cochain_eval_differential_formula_holds`.
+A detailed English derivation is pending.
 -/
 theorem delta : LateralTheory.EtaleFoundations.EtaleSimplicialCochainEvaluationDifferentialFormula := LateralTheory.EtaleFoundations.etale_chain_cochain_eval_differential_formula_holds
 
 /- English proof (translation)
-The claim follows from `LateralTheory.EtaleFoundations.etaleSimplicialCochain_scheme_class_of_evaluation_properties LateralTheory.EtaleFoundations.etale_simplicial_chains_cochain_mk_of_compatible_sections delta LateralTheory.EtaleFoundations.etaleSimplicialCochain_evaluation_properties_of_components (La …`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : LateralTheory.EtaleFoundations.EtaleSchemeGlobalSectionCohomologyClass :=
   LateralTheory.EtaleFoundations.etaleSimplicialCochain_scheme_class_of_evaluation_properties LateralTheory.EtaleFoundations.etale_simplicial_chains_cochain_mk_of_compatible_sections delta

@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.DivisionRowsRationalLattice
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProjectionLattices.CGIntegral
 
 /- English proof (translation)
-The claim follows from `PI.Dv.GLP.glatProj`.
+A detailed English derivation is pending.
 -/
 theorem g_lattice_projection : PI.Dv.GLatProj := PI.Dv.GLP.glatProj

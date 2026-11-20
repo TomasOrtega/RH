@@ -8,15 +8,13 @@ open scoped Pointwise
 namespace GlobalTheory.CompanionTheory.TorusCh.CyclicVector
 
 /- English proof (translation)
-Apply `Matrix.exists_mulVec_eq_zero_iff.2` to reduce the goal to its premises. Establish `: Fact (Irreducible p)` using `⟨hp⟩`. Set `L` to `AdjoinRoot p`. Set `f` to `(Algebra.ofId K L).mapMatrix (m := Fin n)`. Set `M' : Matrix (Fin n) (Fin n) L` to `γ.map (algebraMap K L)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : f (aeval γ p) = aeval M' p` using `(Polynomial.aeval_algHom_apply f γ p).symm`. Establish `hroot : M'.charpoly.IsRoot (AdjoinRoot.root p)`. Rewrite using `[Matrix.charpoly_map, IsRoot.def, eval_map, ← aeval_def, AdjoinRoot.aeval_eq, AdjoinRoot.mk_eq_zero]`. Conclude with `hd`. Establish `hs : AdjoinRoot.root p ∈ spectrum L M'` using `Matrix.mem_spectrum_iff_isRoot_charpoly.2 hroot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `spectrum.subset_polynomial_aeval M' (p.map (algebraMap K L)) ⟨_, hs, rfl⟩`. Rewrite `h2` using `[aeval_map_algebraMap]`. Establish `h0 : eval (AdjoinRoot.root p) (p.map (algebraMap K L)) = 0`. Rewrite using `[eval_map, ← aeval_def, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]`. Use `beta_reduce at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[h0, spectrum.zero_mem_iff]`. Establish `h3 : (aeval M' p).det = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h2 ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hne))`. Establish `h4 : (algebraMap K L) (aeval γ p).det = 0`.
-
-Rewrite using `[RingHom.map_det, ← h3, ← hf]`. Both sides reduce to the same expression. Conclude with `(map_eq_zero_iff _ (algebraMap K L).injective).1 h4`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_aeval_mulVec_eq_zero {K : Type} [Field K] {n : ℕ}
     (γ : Matrix (Fin n) (Fin n) K) (p : K[X]) (hp : Irreducible p) (hd : p ∣ γ.charpoly) :
@@ -48,29 +46,27 @@ theorem exists_ne_zero_aeval_mulVec_eq_zero {K : Type} [Field K] {n : ℕ}
   exact (map_eq_zero_iff _ (algebraMap K L).injective).1 h4
 
 /- English proof (translation)
-Use `set χ := γ.charpoly with hχ`. Establish `hχ0 : χ ≠ 0` using `(Matrix.charpoly_monic γ).ne_zero`. Establish `hsq : Squarefree χ` using `hs.squarefree`. Set `S : Finset K[X]` to `(UniqueFactorizationMonoid.normalizedFactors χ).toFinset`. Establish `hSirr : ∀ p ∈ S, Irreducible p` using `fun p hp => UniqueFactorizationMonoid.irreducible_of_normalized_factor p (Multiset.mem_toFinset.1 hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSdvd : ∀ p ∈ S, p ∣ χ` using `fun p hp => UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors (Multiset.mem_toFinset.1 hp)`. Establish `hw : ∀ p : K[X], ∃ w : Fin n → K, p ∈ S → w ≠ 0 ∧ aeval γ p *ᵥ w = 0`. Introduce `p`. Distinguish the cases in `hp : p ∈ S`. Take `⟨w, h1, h2⟩` from `exists_ne_zero_aeval_mulVec_eq_zero γ p (hSirr p hp) (hSdvd p hp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨w, fun _ => ⟨h1, h2⟩⟩`. Conclude with `⟨0, fun h => absurd h hp⟩`. Use `choose w hw using hw`. Use `⟨∑ p ∈ S, w p, fun h hh => ?_⟩` and prove the remaining obligations. Establish `key : ∀ p ∈ S, p ∣ h`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `p hp`. Take `⟨q, hq⟩` from `hSdvd p hp`. Establish `hpi` using `hSirr p hp`. Establish `hpq : ¬ p ∣ q`. Introduce and unpack `⟨r, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpi.not_isUnit (hsq p ⟨r, by rw [hq]; ring⟩)`. Establish `hother : ∀ p' ∈ S, p' ≠ p → aeval γ q *ᵥ w p' = 0`. Introduce `p' hp' hne`. Establish `hd : p' ∣ q`. Establish `h1 : p' ∣ p * q` using `hq ▸ hSdvd p' hp'`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `(hSirr p' hp').prime.dvd_or_dvd h1 with h2 | h2` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Establish `hass : Associated p' p` using `(hSirr p' hp').associated_of_dvd hpi h2`. Establish `e1` using `UniqueFactorizationMonoid.normalize_normalized_factor p' (Multiset.mem_toFinset.1 hp')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e2` using `UniqueFactorizationMonoid.normalize_normalized_factor p (Multiset.mem_toFinset.1 hp)`. Rewrite using `[← e1, ← e2]`. Conclude with `normalize_eq_normalize_iff.2 ⟨hass.dvd, hass.symm.dvd⟩`. Conclude with `h2`. Take `⟨r, rfl⟩` from `hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_comm p' r, map_mul, ← Matrix.mulVec_mulVec, (hw p' hp').2, Matrix.mulVec_zero]`. Establish `hqv : aeval γ q *ᵥ (∑ p' ∈ S, w p') = aeval γ q *ᵥ w p`. Rewrite using `[Matrix.mulVec_sum, Finset.sum_eq_single_of_mem p hp]`. Introduce `p' hp' hne`. Conclude with `hother p' hp' hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hker : aeval γ (h * q) *ᵥ w p = 0`. Rewrite using `[map_mul, ← Matrix.mulVec_mulVec, ← hqv, Matrix.mulVec_mulVec, ← map_mul, mul_comm h q, map_mul, ← Matrix.mulVec_mulVec, hh, Matrix.mulVec_zero]`. Assume the negation of the conclusion as `hph`. Establish `hcop : IsCoprime p (h * q)` using `(hpi.coprime_iff_not_dvd.2 hph).mul_right (hpi.coprime_iff_not_dvd.2 hpq)`. Take `⟨a, b, hab⟩` from `hcop`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Apply `(hw p hp).1` to reduce the goal to its premises. Establish `hval` using `congrArg (fun t => aeval γ t *ᵥ w p) hab`. Simplify using `only [map_add, map_mul, map_one, Matrix.one_mulVec, Matrix.add_mulVec] at hval`. Rewrite using `[← hval, ← Matrix.mulVec_mulVec, (hw p hp).2, ← Matrix.mulVec_mulVec (M := aeval γ b), ← map_mul, hker]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hh0 : h = 0`. Simplify using `[hh0]`. Establish `hnd` using `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors hχ0).1 hsq`. Use `(UniqueFactorizationMonoid.dvd_iff_normalizedFactors_le_normalizedFactors hχ0 hh0).2 ((Multiset.le_iff_subset hnd).2 fun p hp => ?_)` and prove the remaining obligations. Establish `hpS : p ∈ S` using `Multiset.mem_toFinset.2 hp`.
-
-Establish `hnorm` using `UniqueFactorizationMonoid.normalize_normalized_factor p hp`. Conclude with `(UniqueFactorizationMonoid.mem_normalizedFactors_iff' hh0).2 ⟨hSirr p hpS, hnorm, key p hpS⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_vector_annihilator_dvd {K : Type} [Field K] {n : ℕ}
     (γ : Matrix (Fin n) (Fin n) K) (hs : γ.charpoly.Separable) :
@@ -142,13 +138,13 @@ theorem exists_vector_annihilator_dvd {K : Type} [Field K] {n : ℕ}
   exact (UniqueFactorizationMonoid.mem_normalizedFactors_iff' hh0).2 ⟨hSirr p hpS, hnorm, key p hpS⟩
 
 /- English proof (translation)
-Introduce `K _ n γ hs`. Take `⟨v, hv⟩` from `exists_vector_annihilator_dvd γ hs`. Use `⟨v, ?_⟩` and prove the remaining obligations. Set `T : K[X] →ₗ[K] (Fin n → K)` to `{ toFun := fun h => aeval γ h *ᵥ v map_add' := fun a b => by simp [Matrix.add_mulVec] map_smul' := fun c a => by simp [Matrix.smul_mulVec] }`. Set `F : (Fin n → K) →ₗ[K] (Fin n → K)` to `T ∘ₗ (degreeLT K n).subtype ∘ₗ (degreeLTEquiv K n).symm.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective F`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Establish `hd : γ.charpoly ∣ (((degreeLTEquiv K n).symm c : degreeLT K n) : K[X])` using `hv _ hc`. Establish `hdeg : (((degreeLTEquiv K n).symm c : degreeLT K n) : K[X]).degree < γ.charpoly.degree`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.charpoly_degree_eq_dim, Fintype.card_fin]`. Conclude with `Polynomial.mem_degreeLT.1 ((degreeLTEquiv K n).symm c).2`. Establish `h0` using `Polynomial.eq_zero_of_dvd_of_degree_lt hd hdeg`. Establish `h1 : (degreeLTEquiv K n).symm c = 0` using `Subtype.ext h0`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective F` using `LinearMap.injective_iff_surjective.1 hinj`. Introduce `y`. Take `⟨c, hc⟩` from `hsurj y`. Conclude with `⟨_, hc.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cyclic_vector : ∀ (K : Type) [Field K] (n : ℕ) (γ : Matrix (Fin n) (Fin n) K),
     γ.charpoly.Separable → ∃ v : Fin n → K, ∀ y : Fin n → K, ∃ h : K[X], y = aeval γ h *ᵥ v := by

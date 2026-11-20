@@ -13,28 +13,28 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (ell err
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `funext fun i => if_pos i.isLt`.
+A detailed English derivation is pending.
 -/
 theorem mixedForms_all {W : Type} [TopologicalSpace W] {D : ℕ} (Om : ReciprocityTheory.AnForm.M.LocPot W)
     (T : Fin (D + 1) → ReciprocityTheory.AnForm.M.LocPot W) : mixedForms Om T (D + 1) = T :=
   funext fun i => if_pos i.isLt
 
 /- English proof (translation)
-Introduce `D W _ _ _ S`. Establish `key : ∀ a, a ≤ D + 1 → ∀ η, 0 < η → ∃ ε₀, 0 < ε₀ ∧ ∃ t₁, 0 < t₁ ∧ ∀ ε t, 0 < ε → ε ≤ ε₀ → 0 < t → t ≤ t₁ → S.ell₀ ≤ ell t → S.J a ε t ≤ η`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_ η hη`. Take `⟨ε₀, hε₀, h⟩` from `h₀ S η hη`. Conclude with `⟨ε₀, hε₀, 1, one_pos, fun ε t hε hεle _ _ _ => h ε hε hεle t⟩`. Consider the case `succ a ih`. Introduce `haD η hη`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : a < D + 1` using `haD`. Take `⟨Cκ, hCκ, hR⟩` from `h₂ S`. Establish `hδ : 0 < η / (2 * (Cκ + 2))` using `by positivity`. Take `⟨τ, hτ, hE⟩` from `h₃ S a ha _ hδ`. Establish `ht₀ : 0 < min τ (Real.exp (-S.ell₀))` using `lt_min hτ (Real.exp_pos _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hell : S.ell₀ ≤ ell (min τ (Real.exp (-S.ell₀)))`. Establish `h : Real.log (min τ (Real.exp (-S.ell₀))) ≤ -S.ell₀` using `(Real.log_le_iff_le_exp ht₀).2 (min_le_right _ _)`. Use `show S.ell₀ ≤ Real.log (min τ (Real.exp (-S.ell₀)))⁻¹`. Rewrite using `[Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hRK⟩` from `hR a ha _ ht₀ hell`. Take `⟨ε₁, hε₁, t₂, ht₂, hih⟩` from `ih (Nat.le_of_succ_le haD) (η / (2 * (K + 1))) (by positivity)`. Use `⟨min ε₁ 1, lt_min hε₁ one_pos, min t₂ (min τ (Real.exp (-S.ell₀))), lt_min ht₂ ht₀, ?_⟩` and prove the remaining obligations. Introduce `ε t hε hεle ht htle htell`. Establish `hJ` using `hih ε t hε (hεle.trans (min_le_left _ _)) ht (htle.trans (min_le_left _ _)) htell`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPL` using `h₁ S a ha ε t hε ht htell`. Establish `hRep` using `hRK ε t hε (hεle.trans (min_le_right _ _)) ht (htle.trans (min_le_right _ _))`. Take `⟨hW, hD⟩` from `hE _ t ht (htle.trans (min_le_right _ _)) (min_le_left _ _) hell`. Establish `e1 : (1 + K) * S.J a ε t ≤ η / 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e2 : Cκ * S.errW a ha (min τ (Real.exp (-S.ell₀))) t + 2 * S.errDiv a ha (min τ (Real.exp (-S.ell₀))) t ≤ η / 2`. Use `mul_le_mul_of_nonneg_left hW hCκ` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `η hη`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ε₀, hε₀, t₁, ht₁, h⟩` from `key (D + 1) le_rfl η hη`. Use `⟨ε₀, hε₀, t₁, ht₁, fun ε t hε hεle ht htle htell => ?_⟩` and prove the remaining obligations. Use `h ε t hε hεle ht htle htell` as an intermediate fact. Rewrite `this` using `[UIData.J, UIData.T, mixedForms_all]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UniformIntegrability.proof (h₀ : GreenMassZero.Statement) (h₁ : GreenMassStep.Statement)
     (h₂ : GreenMassReplace.Statement) (h₃ : GreenMassError.Statement) :

@@ -15,9 +15,9 @@ section
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Establish `key : G.Xa k ≤ (G'.Xa k).comap (n : V →ₗ[K] V)` using `by show Submodule.span K _ ≤ _`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hb' : b.val < k` using `hb`. Establish `h1 : n (G.e b.castSucc) - G'.e b.castSucc ∈ G'.Xa b.val` using `h b.castSucc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : n (G.e b.castSucc) = (n (G.e b.castSucc) - G'.e b.castSucc) + G'.e b.castSucc` using `by abel`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearEquiv.coe_coe]`. Rewrite using `[h2]`. Conclude with `(G'.Xa k).add_mem (xa_mono G' hb'.le h1) (e_mem_xa G' b hb')`. Conclude with `key hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_xa {G G' : FlagD H r} {n : V ≃ₗ[K] V} (h : ∀ a : Fin (r + 1), n (G.e a) - G'.e a ∈ G'.Xa a.val)
     (k : ℕ) {x : V} (hx : x ∈ G.Xa k) : n x ∈ G'.Xa k := by
@@ -35,11 +35,11 @@ theorem map_xa {G G' : FlagD H r} {n : V ≃ₗ[K] V} (h : ∀ a : Fin (r + 1), 
   exact key hx
 
 /- English proof (translation)
-Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `x hx`. Establish `key : G'.Xa k ≤ (G.Xa k).comap (n.symm : V →ₗ[K] V)` using `by show Submodule.span K _ ≤ _`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hb' : b.val < k` using `hb`. Establish `h1 : n (G.e b.castSucc) - G'.e b.castSucc ∈ G'.Xa b.val` using `h b.castSucc`. Establish `h2` using `ih b.val hb' _ h1`. Establish `e1 : n.symm (G'.e b.castSucc) = G.e b.castSucc - n.symm (n (G.e b.castSucc) - G'.e b.castSucc)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, LinearEquiv.symm_apply_apply, sub_sub_cancel]`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearEquiv.coe_coe]`. Rewrite using `[e1]`. Conclude with `(G.Xa k).sub_mem (e_mem_xa G b hb') (xa_mono G hb'.le h2)`. Conclude with `key hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_xa {G G' : FlagD H r} {n : V ≃ₗ[K] V} (h : ∀ a : Fin (r + 1), n (G.e a) - G'.e a ∈ G'.Xa a.val)
     (k : ℕ) : ∀ x ∈ G'.Xa k, n.symm x ∈ G.Xa k := by
@@ -62,7 +62,7 @@ theorem symm_xa {G G' : FlagD H r} {n : V ≃ₗ[K] V} (h : ∀ a : Fin (r + 1),
     exact key hx
 
 /- English proof (translation)
-Establish `h1` using `symm_xa h a.val _ (h a)`. Establish `e1 : n.symm (G'.e a) - G.e a = -(n.symm (n (G.e a) - G'.e a))`. Rewrite using `[map_sub, LinearEquiv.symm_apply_apply, neg_sub]`. Rewrite using `[e1]`. Conclude with `(G.Xa a.val).neg_mem h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_gr {G G' : FlagD H r} {n : V ≃ₗ[K] V} (h : ∀ a : Fin (r + 1), n (G.e a) - G'.e a ∈ G'.Xa a.val)
     (a : Fin (r + 1)) : n.symm (G'.e a) - G.e a ∈ G.Xa a.val := by
@@ -73,9 +73,9 @@ theorem symm_gr {G G' : FlagD H r} {n : V ≃ₗ[K] V} (h : ∀ a : Fin (r + 1),
   exact (G.Xa a.val).neg_mem h1
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[Fin.val_last]`. Conclude with `h.2.2.2 _ F.zperp`. Consider the case `cast b`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.coe_castSucc]`. Conclude with `h.2.2.1 b`.
+A detailed English derivation is pending.
 -/
 theorem inN_gr {F : FlagD H r} {n : V ≃ₗ[K] V} (h : F.InN (n : V →ₗ[K] V)) (a : Fin (r + 1)) :
     n (F.e a) - F.e a ∈ F.Xa a.val := by
@@ -88,7 +88,7 @@ theorem inN_gr {F : FlagD H r} {n : V ≃ₗ[K] V} (h : F.InN (n : V →ₗ[K] V
     exact h.2.2.1 b
 
 /- English proof (translation)
-Establish `e1 : n (M.e a) - G'.e a = n (M.e a - G.e a) + (n (G.e a) - G'.e a)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `(G'.Xa a.val).add_mem (map_xa h a.val (hM a)) (h a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gr_comp {G G' M : FlagD H r} {n : V ≃ₗ[K] V} (h : ∀ a : Fin (r + 1), n (G.e a) - G'.e a ∈ G'.Xa a.val)
     (hM : SameGr G M) (a : Fin (r + 1)) : n (M.e a) - G'.e a ∈ G'.Xa a.val := by
@@ -102,11 +102,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Use `⟨fun G => ⟨1, GlobalTheory.UnipStab.inN_one, one_smul _ _, fun a => by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `G G' ⟨n, hn, hΛ, hG⟩`. Use `⟨n⁻¹, GlobalTheory.UnipStab.inN_inv hn, ?_, fun a => symm_gr hG a⟩` and prove the remaining obligations. Use `conv_lhs => rw [← hΛ]`. Conclude with `inv_smul_smul n Λ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `G G' G'' ⟨n, hn, hΛ, hG⟩ ⟨m, hm, hΛ', hG'⟩`. Use `⟨m * n, GlobalTheory.UnipStab.inN_mul hm hn, by rw [mul_smul, hΛ, hΛ'], fun a => ?_⟩` and prove the remaining obligations. Establish `e1 : (m * n) (G.e a) - G''.e a = m (n (G.e a) - G'.e a) + (m (G'.e a) - G''.e a)`. Rewrite using `[LinearEquiv.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[e1]`. Conclude with `(G''.Xa a.val).add_mem (map_xa hG' a.val (hG a)) (hG' a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frEqv_equivalence (F : FlagD H r) (Λ : Submodule (𝓞 K) V) : Equivalence (FrEqv F Λ) := by
   refine ⟨fun G => ⟨1, GlobalTheory.UnipStab.inN_one, one_smul _ _, fun a => by simp⟩, ?_, ?_⟩
@@ -122,13 +120,13 @@ theorem frEqv_equivalence (F : FlagD H r) (Λ : Submodule (𝓞 K) V) : Equivale
     exact (G''.Xa a.val).add_mem (map_xa hG' a.val (hG a)) (hG' a)
 
 /- English proof (translation)
-Take `⟨n, hn, hΛ, hG⟩` from `h`. Establish `hiso : n ∈ isomGrp H` using `(mem_isomGrp H n).2 fun x y => hn.1 x y`. Apply the tactic sequence `obtain ⟨N', he, -, -, -, hd, -, hrest⟩ := GlobalTheory.T.exists_hermFramePairNormalForm_moved_by_isometry K V H hK r N n hiso`. Use `⟨N', ⟨hd.trans hN.1, fun a => ?_, fun a => ?_⟩, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[(he a).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : n (N.F.e a) - F.e a = n (N.F.e a - F.e a) + (n (F.e a) - F.e a)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `(F.Xa a.val).add_mem (GlobalTheory.UnipStab.map_Xa hn a.val (hN.2.1 a)) (inN_gr hn a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(he a).2]`. Conclude with `gr_comp hG hN.2.2 a`. Establish `h1` using `(hrest 0 Λ).1`. Rewrite `h1` using `[hΛ]`. Then use the resulting hypothesis. Establish `h1` using `hrest g Λ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h1` using `[hΛ]`. Conclude with `⟨h1.2.1, h1.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem move (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {F G G' : FlagD H r} {𝔡 : Ideal (𝓞 K)} {Λ : Submodule (𝓞 K) V}
     (h : FrEqv F Λ G G') (N : NF H r) (hN : Adapt F G 𝔡 N) :
@@ -157,9 +155,9 @@ namespace GlobalTheory.DegAsm
 open FrameEqv
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r F 𝔡 Λ`. Use `⟨frEqv_equivalence F Λ, fun G G' h => ⟨?_, fun N hN => move hK h N hN⟩⟩` and prove the remaining obligations. Establish `sub : ∀ {G G' : FlagD H r}, FrEqv F Λ G G' → (fun N : NF H r => N.om Λ) '' {N | Adapt F G 𝔡 N} ⊆ (fun N : NF H r => N.om Λ) '' {N | Adapt F G' 𝔡 N}`. Introduce `G G' h x hx`. Take `⟨N, hN, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N', hN', hom, -⟩` from `move hK h N hN`. Conclude with `⟨N', hN', hom⟩`. Unfold `omI`. Rewrite using `[Set.Subset.antisymm (sub h) (sub ((frEqv_equivalence F Λ).symm h))]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frEqv_invariants : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (F : FlagD H r) (𝔡 : Ideal (𝓞 K)) (Λ : Submodule (𝓞 K) V), Equivalence (FrEqv F Λ) ∧ ∀ G G' : FlagD H r, FrEqv F Λ G G' → omI F G 𝔡 Λ = omI F G' 𝔡 Λ ∧ ∀ N : NF H r, Adapt F G 𝔡 N → ∃ N' : NF H r, Adapt F G' 𝔡 N' ∧ N'.om Λ = N.om Λ ∧ ∀ g : ℕ, (N'.IsTerm g Λ ↔ N.IsTerm g Λ) ∧ N'.gI g Λ = N.gI g Λ := by
   intro K V _ _ _ _ _ _ _ _ H hK r F 𝔡 Λ

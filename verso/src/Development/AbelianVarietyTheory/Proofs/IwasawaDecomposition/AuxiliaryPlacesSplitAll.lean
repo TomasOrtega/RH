@@ -13,11 +13,11 @@ namespace GlobalTheory.SplitPrimeAuxiliary
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `((Ideal.span_singleton_prime hpz.ne_zero).2 hpz).isMaximal (by simpa using hp.ne_zero)`. Establish `hlo : P.LiesOver (Ideal.span {(p : ℤ)})`. Use `⟨hmax.eq_of_le (Ideal.IsPrime.under ℤ P).ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hP`. Establish `horb` using `Algebra.IsInvariant.orbit_eq_primesOver ℤ (𝓞 E) Gal(E/ℚ) (Ideal.span {(p : ℤ)}) P`. Establish `hidx` using `MulAction.index_stabilizer Gal(E/ℚ) P`. Rewrite `hidx` using `[horb, h, ← IsGalois.card_aut_eq_finrank]`. Establish `hmul` using `(MulAction.stabilizer Gal(E/ℚ) P).card_mul_index`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmul` using `[hidx]`. Establish `h1 : Nat.card (MulAction.stabilizer Gal(E/ℚ) P) = 1` using `Nat.eq_of_mul_eq_mul_right Nat.card_pos (by rw [hmul, one_mul])`. Establish `hb` using `Subgroup.card_eq_one.1 h1`. Establish `hm : σ ∈ MulAction.stabilizer Gal(E/ℚ) P` using `hσ`. Rewrite `hm` using `[hb, Subgroup.mem_bot]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_one_of_smul_eq (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] {p : ℕ} (hp : p.Prime)
     (h : ((Ideal.span {(p : ℤ)}).primesOver (𝓞 E)).ncard = Module.finrank ℚ E)
@@ -41,9 +41,9 @@ theorem eq_one_of_smul_eq (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] 
   rwa [hb, Subgroup.mem_bot] at hm
 
 /- English proof (translation)
-Establish `: IsCMField H.E` using `H.isCMField_hostE`. Introduce `h`. Apply `IsCMField.complexConj_ne_one H.E` to reduce the goal to its premises. Use extensionality with `z`. Establish `: IsCMField.complexConj H.E z = H.conj z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Apply `H.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`. Rewrite using `[this, h]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_ne_one {R : Ranks} (H : Host R) : H.conj ≠ 1 := by
   have : IsCMField H.E := H.isCMField_hostE
@@ -57,11 +57,11 @@ theorem conj_ne_one {R : Ranks} (H : Host R) : H.conj ≠ 1 := by
   rfl
 
 /- English proof (translation)
-Establish `: IsGalois ℚ H.E` using `H.hostE_isGalois`. Use `v.isPrime` as an intermediate fact. Assume the negation of the conclusion as `hs`. Apply `conj_ne_one H` to reduce the goal to its premises. Rewrite using `[← inv_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `eq_one_of_smul_eq H.E hp h v.asIdeal hv _ (Eq.symm ?_)` and prove the remaining obligations. Use `v.isMaximal.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Ideal.mem_inv_pointwise_smul_iff]`. Assume the negation of the conclusion as `hx'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hs ⟨x, hx, fun y hy => ?_⟩` and prove the remaining obligations. Establish `: y = H.conj • x` using `RingOfIntegers.ext hy`. Rewrite using `[this]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isSplitPl_of_split {R : Ranks} (H : Host R) {p : ℕ} (hp : p.Prime)
     (h : ((Ideal.span {(p : ℤ)}).primesOver (𝓞 H.E)).ncard = Module.finrank ℚ H.E)
@@ -81,7 +81,7 @@ theorem isSplitPl_of_split {R : Ranks} (H : Host R) {p : ℕ} (hp : p.Prime)
   rwa [this]
 
 /- English proof (translation)
-Introduce `_ hL`. Use `StepW.of_all fun K B f T w _ _ _ P x _ v hv => ?_` and prove the remaining obligations. Break down `hv with hv | hv` into its components or cases. Conclude with `isSplitPl_of_split B.host B.host.pde_prime B.toPre.pde_split.1 v hv`. Conclude with `isSplitPl_of_split B.host B.host.pde'_prime B.toPre.pde_split.2 v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem auxiliary_primes_split : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => ∀ _ : LC hL x, ∀ v, v ∈ placesOver (Dof x).host.E (Dof x).host.pde ∨ v ∈ placesOver (Dof x).host.E (Dof x).host.pde' → IsSplitPl (Dof x).host v := by
   intro _ hL

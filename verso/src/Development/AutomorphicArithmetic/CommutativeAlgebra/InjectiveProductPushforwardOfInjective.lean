@@ -15,7 +15,7 @@ private noncomputable def lamMap (W : C) (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {T T'
   Finsupp.lsum ℕ fun g => (Finsupp.lsingle (h.unop ≫ g)).comp (P.map h).hom
 
 /- English proof (translation)
-Simplify using `[lamMap]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma lamMap_single (W : C) (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {T T' : Cᵒᵖ} (h : T ⟶ T')
     (g : T.unop ⟶ W) (m : P.obj T) :
@@ -45,7 +45,7 @@ private lemma mr_single {A : Type} {M N : Type 1} [AddCommGroup M] [AddCommGroup
   simp
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun f : Z ⟶ X => (P.map f.op).hom m) h`. Simplify using `only [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at e`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma pmap_op (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {X Y Y' Z : C}
     (a : Y ⟶ X) (b : Z ⟶ Y) (c : Y' ⟶ X) (d : Z ⟶ Y') (h : b ≫ a = d ≫ c) (m : P.obj (op X)) :
@@ -55,7 +55,7 @@ private lemma pmap_op (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {X Y Y' Z : C}
   exact e
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun f : X ⟶ X => (P.map f.op).hom m) h`. Simplify using `only [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at e`. Simplify using `using e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma pmap_id (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {X Y : C}
     (a : Y ⟶ X) (b : X ⟶ Y) (h : b ≫ a = 𝟙 X) (m : P.obj (op X)) :
@@ -94,7 +94,7 @@ private noncomputable def lamF (W : C) : (Cᵒᵖ ⥤ ModuleCat.{1} S) ⥤ (Cᵒ
     rfl
 
 /- English proof (translation)
-The claim follows from `mr_single _ g m`.
+A detailed English derivation is pending.
 -/
 private lemma lamF_map_single (W : C) {P Q : Cᵒᵖ ⥤ ModuleCat.{1} S} (φ : P ⟶ Q) (T : Cᵒᵖ)
     (g : T.unop ⟶ W) (m : P.obj T) :
@@ -153,7 +153,7 @@ private noncomputable def invApp (W : C) {P Q : Cᵒᵖ ⥤ ModuleCat.{1} S}
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Simplify using `only [invApp, Finsupp.lsum_single, LinearMap.comp_apply]`. Apply the tactic sequence `try rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma invApp_single (W : C) {P Q : Cᵒᵖ ⥤ ModuleCat.{1} S}
     (u : P ⟶ (prod.functor.obj W).op ⋙ Q) (T : Cᵒᵖ) (g : T.unop ⟶ W) (m : P.obj T) :
@@ -245,7 +245,7 @@ private noncomputable def UpperTheory.PwInj.sheafAdj (R : Type) [CommRing R] (W 
       (ModuleCat.{1} (ULift.{1} R)) Scheme.etaleTopology.{0} Scheme.etaleTopology.{0}).symm)
 
 /- English proof (translation)
-Introduce `R _ W J _`. Conclude with `Injective.injective_of_adjoint (UpperTheory.PwInj.sheafAdj R W) J`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.injective_productPushforward_of_injective :
     ∀ (R : Type) [CommRing R] (W : Scheme.{0}) (J : Shv R) [Injective J], Injective ((pw R W).obj J) := by

@@ -9,9 +9,9 @@ namespace GlobalTheory.AlmostEt
 variable {L : Type} [Field L] {G : Type} [Group G] [MulSemiringAction G L]
 
 /- English proof (translation)
-Unfold `Moves`. Use `push_neg`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, h⟩`. Conclude with `⟨r, hr, fun x hx => h x (Subfield.mem_top x) hx⟩`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨r, hr, h⟩`. Conclude with `⟨r, hr, fun x _ hx => h x hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem not_moves_top_iff (v : Valuation L ℝ≥0) (σ : G) :
     ¬ Moves v ⊤ σ ↔ ∃ r : ℝ≥0, r < 1 ∧ ∀ x : L, v x ≤ 1 → v (σ • x - x) ≤ r := by
@@ -52,11 +52,11 @@ def smallSubgroup (v : Valuation L ℝ≥0) (hv : ∀ (g : G) (x : L), v (g • 
     exact h1 _ hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `σ hσ g`. Express the relevant statement in the definitionally equal form `¬ Moves v ⊤ σ at hσ`. Express the relevant statement in the definitionally equal form `¬ Moves v ⊤ (g * σ * g⁻¹)`. Rewrite `hσ`, the goal using `[not_moves_top_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨r, hr, h1⟩` from `hσ`. Use `⟨r, hr, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hy : v (g⁻¹ • x) ≤ 1` using `by rw [hv]; exact hx`. Establish `e : (g * σ * g⁻¹) • x - x = g • (σ • (g⁻¹ • x) - g⁻¹ • x)`. Rewrite using `[smul_sub, mul_smul, mul_smul, smul_inv_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hv]`. Conclude with `h1 _ hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallSubgroup_normal (v : Valuation L ℝ≥0) (hv : ∀ (g : G) (x : L), v (g • x) = v x) :
     (smallSubgroup v hv).Normal := by
@@ -74,11 +74,11 @@ theorem smallSubgroup_normal (v : Valuation L ℝ≥0) (hv : ∀ (g : G) (x : L)
   exact h1 _ hy
 
 /- English proof (translation)
-Introduce `L _ v G _ _ _ hv`. Use `⟨smallSubgroup v hv, smallSubgroup_normal v hv, fun σ => Iff.rfl, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ τ : G, ∃ r : ℝ≥0, r < 1 ∧ (¬ Moves v ⊤ τ → ∀ x : L, v x ≤ 1 → v (τ • x - x) ≤ r)`. Introduce `τ`. Distinguish the cases in `h : Moves v ⊤ τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨0, zero_lt_one, fun h' => absurd h h'⟩`. Take `⟨r, hr, h1⟩` from `(not_moves_top_iff v τ).1 h`. Conclude with `⟨r, hr, fun _ => h1⟩`. Use `choose f hf1 hf2 using hc`. Use `letI := Fintype.ofFinite G`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.univ.sup f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sup_lt_iff zero_lt_one]`. Conclude with `fun τ _ => hf1 τ`. Introduce `τ hτ x hx`. Conclude with `(hf2 τ hτ x hx).trans (Finset.le_sup (f := f) (Finset.mem_univ τ))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_normal_not_moves_uniform :
     ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (G : Type) [Group G] [MulSemiringAction G L]

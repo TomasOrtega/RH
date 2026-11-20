@@ -19,7 +19,7 @@ section closed
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qj20.aa_closed P hRd hadd hmul hzero m hm u f hf`.
+A detailed English derivation is pending.
 -/
 theorem aa_closed (P : (Mat k r → E) → Prop)
     (hRd : ∀ (X : Mat k r) (f : Mat k r → E), inLie k r X → P f → P (RdV X f))
@@ -30,7 +30,7 @@ theorem aa_closed (P : (Mat k r → E) → Prop)
   _root_.UpperTheory.Reformulated.B.Qj20.aa_closed P hRd hadd hmul hzero m hm u f hf
 
 /- English proof (translation)
-Take `⟨U₁, f₁', hU₁, hg₁, hf₁, he₁⟩` from `h₁`. Take `⟨U₂, f₂', hU₂, hg₂, hf₂, he₂⟩` from `h₂`. Conclude with `⟨U₁ ∩ U₂, fun x => f₁' x + f₂' x, hU₁.inter hU₂, ⟨hg₁, hg₂⟩, (hf₁.mono Set.inter_subset_left).add (hf₂.mono Set.inter_subset_right), fun x hx hxG => by show f₁ x + f₂ x = f₁' x + f₂' x; rw [he₁ x hx.1 hxG, he₂ x hx.2 hxG]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_add' {m : ℕ∞} {f₁ f₂ : Mat k r → E} {g : Mat k r} (h₁ : Loc m f₁ g) (h₂ : Loc m f₂ g) :
     Loc m (fun x => f₁ x + f₂ x) g := by
@@ -41,7 +41,7 @@ theorem loc_add' {m : ℕ∞} {f₁ f₂ : Mat k r → E} {g : Mat k r} (h₁ : 
     fun x hx hxG => by show f₁ x + f₂ x = f₁' x + f₂' x; rw [he₁ x hx.1 hxG, he₂ x hx.2 hxG]⟩
 
 /- English proof (translation)
-Take `⟨U, f', hU, hgU, hf, he⟩` from `h`. Conclude with `⟨U ∩ V, fun x => φ x • f' x, hU.inter hV, ⟨hgU, hgV⟩, (hφ.mono Set.inter_subset_right).smul (hf.mono Set.inter_subset_left), fun x hx hxG => by show φ x • f x = φ x • f' x; rw [he x hx.1 hxG]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_smulFun {m : ℕ∞} (φ : Mat k r → ℂ) {V : Set (Mat k r)} (hV : IsOpen V)
     (hφ : ContDiffOn ℝ (m : WithTop ℕ∞) φ V) {f : Mat k r → E} {g : Mat k r} (hgV : g ∈ V) (h : Loc m f g) :
@@ -52,13 +52,13 @@ theorem loc_smulFun {m : ℕ∞} (φ : Mat k r → ℂ) {V : Set (Mat k r)} (hV 
     fun x hx hxG => by show φ x • f x = φ x • f' x; rw [he x hx.1 hxG]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem loc_zero' {m : ℕ∞} {g : Mat k r} : Loc m (fun _ => (0 : E)) g :=
   ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Use `aa_closed (fun f => Loc ⊤ f g) (fun X f hX hf => ?_) (fun _ _ h₁ h₂ => loc_add' h₁ h₂) (fun φ hφ f hf => loc_smulFun φ isOpen_univ hφ.contDiffOn (Set.mem_univ g) hf) loc_zero' m hm u f h` and prove the remaining obligations. Establish `hf' : Loc ((⊤ : ℕ∞) + 1) f g` using `by rw [top_add]; exact hf`. Conclude with `loc_RdV hX hf'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem loc_AAop {f : Mat k r → E} {g : Mat k r} (h : Loc ⊤ f g) (m : ℕ) (hm : m ≤ r) (u : ℂ) :
     Loc ⊤ (C3.AAop k r m hm u f) g := by
@@ -68,7 +68,7 @@ theorem loc_AAop {f : Mat k r → E} {g : Mat k r} (h : Loc ⊤ f g) (m : ℕ) (
   exact loc_RdV hX hf'
 
 /- English proof (translation)
-Use `aa_closed (fun f => ∀ x ∈ U, x ∈ GV k r → f x = 0) (fun X f hX hf => ?_) (fun f₁ f₂ h₁ h₂ x hx hxG => by simp [h₁ x hx hxG, h₂ x hx hxG]) (fun φ _ f hf x hx hxG => by simp [hf x hx hxG]) (fun _ _ _ => rfl) m hm u f h` and prove the remaining obligations. Introduce `x hx hxG`. Rewrite using `[rdV_congr (f₂ := fun _ => (0 : E)) hU hx hxG hX (fun y hy hyG => hf y hy hyG)]`. Simplify using `[RdV]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zero_AAop {f : Mat k r → E} {U : Set (Mat k r)} (hU : IsOpen U) (h : ∀ x ∈ U, x ∈ GV k r → f x = 0)
     (m : ℕ) (hm : m ≤ r) (u : ℂ) : ∀ x ∈ U, x ∈ GV k r → C3.AAop k r m hm u f x = 0 := by
@@ -90,21 +90,19 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ Bs F y hF`. Take `⟨hs, ⟨R, hR⟩, ⟨ε, hε, hG⟩⟩` from `hF`. Establish `hGc : Continuous fun g : Mat k r => Gf k r Bs.z Bs.z' g` using `(Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf Bs.z Bs.z').continuous`. Establish `hvan : ∀ U : Set (Mat k r), IsOpen U → (∀ x ∈ U, x ∈ GV k r → F x = 0) → ∀ x ∈ U, x ∈ GV k r → PBN.aaTop Bs y F x = 0`. Introduce `U hU hF0 x hx hxG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `zero_AAop hU hF0 r le_rfl ((y : ℂ) + ((2 * r + k : ℕ) : ℂ) / 2) x hx hxG` as an intermediate fact. Simplify using `only [PBN.aaTop, this, smul_zero]`. Establish `hUε : IsOpen {x : Mat k r | Gf k r Bs.z Bs.z' x < ε}` using `isOpen_lt hGc continuous_const`. Establish `hFε : ∀ x ∈ {x : Mat k r | Gf k r Bs.z Bs.z' x < ε}, x ∈ GV k r → F x = 0`. Introduce `x hx hxG`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `absurd (hG x hxG h) (not_le.mpr hx)`. Use `⟨?_, ⟨R, ?_⟩, ⟨ε, hε, ?_⟩⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Distinguish the cases in `hlt : Gf k r Bs.z Bs.z' g₀ < ε`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨_, fun _ => 0, hUε, hlt, contDiffOn_const, fun x hx hxG => hvan _ hUε hFε x hx hxG⟩`. Use `push Not at hlt`. Establish `hD : Dmin k r Bs.z Bs.z' g₀ (Fin.last (r + 1)) ≠ 0`. Introduce `h0`. Establish `h1 : 0 ≤ Tz k r Bs.z * Tz k r Bs.z' * Complex.normSq (Dmin k r Bs.z Bs.z' g₀ ⟨r, by omega⟩)` using `mul_nonneg (mul_pos Bs.T_pos Bs.T'_pos).le (Complex.normSq_nonneg _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Gf, h0, map_zero] at hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDc : ContDiff ℝ (⊤ : ℕ∞) fun x : Mat k r => Dmin k r Bs.z Bs.z' x (Fin.last (r + 1))` using `Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin Bs.z Bs.z' _`. Establish `hV : IsOpen {x : Mat k r | Dmin k r Bs.z Bs.z' x (Fin.last (r + 1)) ≠ 0}` using `isOpen_ne_fun hDc.continuous continuous_const`. Establish `hloc : Loc ⊤ (C3.AAop k r r le_rfl ((y : ℂ) + ((2 * r + k : ℕ) : ℂ) / 2) F) g₀` using `loc_AAop (hs g₀ hg₀) r le_rfl _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `loc_smulFun (fun x => (Dmin k r Bs.z Bs.z' x (Fin.last (r + 1)))⁻¹) hV (hDc.contDiffOn.inv fun x hx => hx) hD hloc`. Introduce `g hg hne`. Assume the negation of the conclusion as `hgt`. Use `push Not at hgt`. Establish `hU : IsOpen {x : Mat k r | R < gN x}` using `isOpen_lt continuous_const Formalism.FourierDecayAlt.P.B6.gN_continuous`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hne (hvan _ hU (fun x hx hxG => ?_) g hgt hg)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `absurd (hR x hxG h) (not_le.mpr hx)`. Introduce `g hg hne`. Assume the negation of the conclusion as `hlt`.
-
-Use `push Not at hlt`. Conclude with `hne (hvan _ hUε hFε g hlt hg)`.
+A detailed English derivation is pending.
 -/
 theorem raising_compact_support : PBN.AACpt := by
   intro k r Wp Wq _ _ _ _ Bs F y hF

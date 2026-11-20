@@ -41,7 +41,7 @@ section Points
 variable {k : Type} [CommRing k]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap _ = spMap _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem algOverHom_comp {A B C : Type} [CommRing A] [Algebra k A] [CommRing B] [Algebra k B] [CommRing C] [Algebra k C]
     (f : A →ₐ[k] B) (h : B →ₐ[k] C) : algOverHom h ≫ algOverHom f = algOverHom (h.comp f) := by
@@ -50,7 +50,7 @@ theorem algOverHom_comp {A B C : Type} [CommRing A] [Algebra k A] [CommRing B] [
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `Spec.map_id _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem algOverHom_id (A : Type) [CommRing A] [Algebra k A] : algOverHom (AlgHom.id k A) = 𝟙 _ := by
   apply Over.OverMorphism.ext

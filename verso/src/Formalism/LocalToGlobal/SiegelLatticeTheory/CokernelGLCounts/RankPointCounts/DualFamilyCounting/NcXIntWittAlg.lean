@@ -12,14 +12,14 @@ section Form
 variable {S : Type} [CommRing S] (s : S →+* S) {n : ℕ} (J : Matrix (Fin n) (Fin n) S)
 
 /- English proof (translation)
-Simplify using `only [hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot (x y : Fin n → S) :
     hform s J x y = (fun i => s (x i)) ⬝ᵥ (J *ᵥ y) := by
   simp only [hform, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot, ← sub_dotProduct]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_left (x y z : Fin n → S) :
     hform s J (x - y) z = hform s J x z - hform s J y z := by
@@ -29,14 +29,14 @@ theorem hform_sub_left (x y z : Fin n → S) :
   simp
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot, mulVec_sub, dotProduct_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_sub_right (x y z : Fin n → S) :
     hform s J x (y - z) = hform s J x y - hform s J x z := by
   rw [hform_eq_dot, hform_eq_dot, hform_eq_dot, mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot, ← add_dotProduct]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (x y z : Fin n → S) :
     hform s J (x + y) z = hform s J x z + hform s J y z := by
@@ -46,14 +46,14 @@ theorem hform_add_left (x y z : Fin n → S) :
   simp
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot, mulVec_add, dotProduct_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_add_right (x y z : Fin n → S) :
     hform s J x (y + z) = hform s J x y + hform s J x z := by
   rw [hform_eq_dot, hform_eq_dot, hform_eq_dot, mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, ← smul_eq_mul, ← smul_dotProduct]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hform_smul_left (a : S) (x y : Fin n → S) :
     hform s J (a • x) y = s a * hform s J x y := by
@@ -63,24 +63,24 @@ theorem hform_smul_left (a : S) (x y : Fin n → S) :
   simp
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_smul_right (a : S) (x y : Fin n → S) :
     hform s J x (a • y) = a * hform s J x y := by
   rw [hform_eq_dot, hform_eq_dot, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_left (y : Fin n → S) : hform s J 0 y = 0 := by simp [hform]
 
 /- English proof (translation)
-Simplify using `[hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_right (x : Fin n → S) : hform s J x 0 = 0 := by simp [hform]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.cons_induction with`. Consider the case `empty => simp [hform_zero_right]`. Consider the case `cons i t hi ih => rw [Finset.sum_cons, Finset.sum_cons, hform_add_right, hform_smul_right, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hform_sum_right {ι : Type} (t : Finset ι) (c : ι → S) (v : ι → Fin n → S) (z : Fin n → S) :
     hform s J z (∑ i ∈ t, c i • v i) = ∑ i ∈ t, c i * hform s J z (v i) := by
@@ -89,7 +89,7 @@ theorem hform_sum_right {ι : Type} (t : Finset ι) (c : ι → S) (v : ι → F
   | cons i t hi ih => rw [Finset.sum_cons, Finset.sum_cons, hform_add_right, hform_smul_right, ih]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.cons_induction with`. Consider the case `empty => simp [hform_zero_left]`. Consider the case `cons i t hi ih => rw [Finset.sum_cons, Finset.sum_cons, hform_add_left, hform_smul_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hform_sum_left {ι : Type} (t : Finset ι) (c : ι → S) (v : ι → Fin n → S) (z : Fin n → S) :
     hform s J (∑ i ∈ t, c i • v i) z = ∑ i ∈ t, s (c i) * hform s J (v i) z := by
@@ -98,9 +98,9 @@ theorem hform_sum_left {ι : Type} (t : Finset ι) (c : ι → S) (v : ι → Fi
   | cons i t hi ih => rw [Finset.sum_cons, Finset.sum_cons, hform_add_left, hform_smul_left, ih]
 
 /- English proof (translation)
-Establish `hJ' : ∀ i j, s (J i j) = J j i` using `fun i j => by`. Use `congrFun (congrFun hJ j) i` as an intermediate fact. Simplify `this` using `[cT]`. Simplify using `only [hform, map_sum, map_mul, hs, hJ']`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_conj (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (x y : Fin n → S) :
     s (hform s J x y) = hform s J y x := by
@@ -113,14 +113,14 @@ theorem hform_conj (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (x y : Fin n → 
   ring
 
 /- English proof (translation)
-Simplify using `[hform, Pi.single_apply, apply_ite]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_single (i j : Fin n) :
     hform s J (Pi.single i 1) (Pi.single j 1) = J i j := by
   simp [hform, Pi.single_apply, apply_ite]
 
 /- English proof (translation)
-Rewrite using `[mulVec_single_one, mulVec_single_one]`. Simplify using `only [hform, Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.col_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_entry (T : Matrix (Fin n) (Fin n) S) (i j : Fin n) :
     (cT s T * J * T) i j = hform s J (T *ᵥ Pi.single i 1) (T *ᵥ Pi.single j 1) := by
@@ -130,7 +130,7 @@ theorem hform_entry (T : Matrix (Fin n) (Fin n) S) (i j : Fin n) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[hform_entry, h, hform_single]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitary_of (T : Matrix (Fin n) (Fin n) S) (h : ∀ z w, hform s J (T *ᵥ z) (T *ᵥ w) = hform s J z w) :
     cT s T * J * T = J := by
@@ -141,7 +141,7 @@ def rT (u : Fin n → S) (ci lam : S) : Matrix (Fin n) (Fin n) S :=
   s lam • (1 - ci • vecMulVec u (vecMul (fun i => s (u i)) J))
 
 /- English proof (translation)
-Rewrite using `[rT, smul_mulVec, sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, ← dotProduct_mulVec, ← hform_eq_dot, op_smul_eq_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rT_mulVec (u : Fin n → S) (ci lam : S) (z : Fin n → S) :
     rT s J u ci lam *ᵥ z = s lam • (z - (ci * hform s J u z) • u) := by
@@ -149,9 +149,9 @@ theorem rT_mulVec (u : Fin n → S) (ci lam : S) (z : Fin n → S) :
     ← hform_eq_dot, op_smul_eq_smul, smul_smul]
 
 /- English proof (translation)
-Establish `e3 : s ci * s c = 1` using `by rw [← map_mul, e2, map_one]`. Establish `hconj` using `hform_conj s J hs hJ`. Rewrite using `[rT_mulVec, rT_mulVec]`. Simplify using `only [hform_smul_left, hform_smul_right, hform_sub_left, hform_sub_right, map_mul, hs, hconj]`. Rewrite using `[huu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(hform s J z w - ci * hform s J u w * hform s J z u - s ci * hform s J z u * (hform s J u w - ci * hform s J u w * (c + s c))) * hlam + hform s J z u * hform s J u w * (s ci * e2 + ci * e3)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rT_preserves (hs : ∀ z, s (s z) = z) (hJ : IsHerm s J) (u : Fin n → S) (c ci lam : S)
     (hlam : lam * s lam = 1) (huu : hform s J u u = c + s c) (e2 : ci * c = 1) (z w : Fin n → S) :
@@ -170,7 +170,7 @@ def pM {a : ℕ} (t : Finset (Fin a)) (y : Fin a → Fin n → S) (β' : Fin a �
   ∑ i ∈ t, β' i • vecMulVec (y i) (vecMul (fun k => s (y i k)) J)
 
 /- English proof (translation)
-Unfold `pM`. Proceed by induction on `t using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons i t hi ih`. Rewrite using `[Finset.sum_cons, Finset.sum_cons, add_mulVec, ih, smul_mulVec, vecMulVec_mulVec, ← dotProduct_mulVec, ← hform_eq_dot, op_smul_eq_smul, smul_smul]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pM_mulVec {a : ℕ} (t : Finset (Fin a)) (y : Fin a → Fin n → S) (β' : Fin a → S) (z : Fin n → S) :
     pM s J t y β' *ᵥ z = ∑ i ∈ t, (β' i * hform s J (y i) z) • y i := by
@@ -188,7 +188,7 @@ section Int
 variable {S : Type} [CommRing S] (O : Subring S)
 
 /- English proof (translation)
-Simplify using `only [mulVec, dotProduct]`. Conclude with `O.sum_mem fun j _ => O.mul_mem (hM k j) (hz j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {n : ℕ} (M : Matrix (Fin n) (Fin n) S) (hM : ∀ i j, M i j ∈ O) (z : Fin n → S)
     (hz : ∀ k, z k ∈ O) (k : Fin n) : (M *ᵥ z) k ∈ O := by
@@ -196,7 +196,7 @@ theorem mulVec_mem {n : ℕ} (M : Matrix (Fin n) (Fin n) S) (hM : ∀ i j, M i j
   exact O.sum_mem fun j _ => O.mul_mem (hM k j) (hz j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `O.sum_mem fun k _ => O.mul_mem (hM i k) (hN k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem' {n : ℕ} (M N : Matrix (Fin n) (Fin n) S) (hM : ∀ i j, M i j ∈ O) (hN : ∀ i j, N i j ∈ O)
     (i j : Fin n) : (M * N) i j ∈ O := by
@@ -204,7 +204,7 @@ theorem mul_mem' {n : ℕ} (M N : Matrix (Fin n) (Fin n) S) (hM : ∀ i j, M i j
   exact O.sum_mem fun k _ => O.mul_mem (hM i k) (hN k j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [O.one_mem, O.zero_mem]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem' {n : ℕ} (i j : Fin n) : (1 : Matrix (Fin n) (Fin n) S) i j ∈ O := by
   rw [Matrix.one_apply]
@@ -215,14 +215,14 @@ variable (s : S →+* S) (hsO : ∀ z ∈ O, s z ∈ O)
 include hsO
 
 /- English proof (translation)
-The claim follows from `O.sum_mem fun i _ => O.sum_mem fun j _ => O.mul_mem (O.mul_mem (hsO _ (hx i)) (hJ i j)) (hy j)`.
+A detailed English derivation is pending.
 -/
 theorem hform_mem {n : ℕ} (J : Matrix (Fin n) (Fin n) S) (hJ : ∀ i j, J i j ∈ O) (x y : Fin n → S)
     (hx : ∀ k, x k ∈ O) (hy : ∀ k, y k ∈ O) : hform s J x y ∈ O :=
   O.sum_mem fun i _ => O.sum_mem fun j _ => O.mul_mem (O.mul_mem (hsO _ (hx i)) (hJ i j)) (hy j)
 
 /- English proof (translation)
-Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `hsO _ (hM j i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cT_mem {n : ℕ} (M : Matrix (Fin n) (Fin n) S) (hM : ∀ i j, M i j ∈ O) (i j : Fin n) :
     cT s M i j ∈ O := by
@@ -230,7 +230,7 @@ theorem cT_mem {n : ℕ} (M : Matrix (Fin n) (Fin n) S) (hM : ∀ i j, M i j ∈
   exact hsO _ (hM j i)
 
 /- English proof (translation)
-Simplify using `only [vecMulVec_apply, vecMul, dotProduct]`. Conclude with `O.mul_mem (hu i) (O.sum_mem fun k _ => O.mul_mem (hsO _ (hu k)) (hJ k j))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vmv_mem {n : ℕ} (J : Matrix (Fin n) (Fin n) S) (hJ : ∀ i j, J i j ∈ O) (u : Fin n → S)
     (hu : ∀ k, u k ∈ O) (i j : Fin n) : vecMulVec u (vecMul (fun k => s (u k)) J) i j ∈ O := by
@@ -238,7 +238,7 @@ theorem vmv_mem {n : ℕ} (J : Matrix (Fin n) (Fin n) S) (hJ : ∀ i j, J i j �
   exact O.mul_mem (hu i) (O.sum_mem fun k _ => O.mul_mem (hsO _ (hu k)) (hJ k j))
 
 /- English proof (translation)
-Simplify using `only [rT, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Conclude with `O.mul_mem (hsO _ hlam) (O.sub_mem (one_mem' O i j) (O.mul_mem hci (vmv_mem O s hsO J hJ u hu i j)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rT_mem {n : ℕ} (J : Matrix (Fin n) (Fin n) S) (hJ : ∀ i j, J i j ∈ O) (u : Fin n → S)
     (hu : ∀ k, u k ∈ O) (ci lam : S) (hci : ci ∈ O) (hlam : lam ∈ O) (i j : Fin n) : rT s J u ci lam i j ∈ O := by
@@ -246,7 +246,7 @@ theorem rT_mem {n : ℕ} (J : Matrix (Fin n) (Fin n) S) (hJ : ∀ i j, J i j ∈
   exact O.mul_mem (hsO _ hlam) (O.sub_mem (one_mem' O i j) (O.mul_mem hci (vmv_mem O s hsO J hJ u hu i j)))
 
 /- English proof (translation)
-Simplify using `only [pM, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `O.sum_mem fun k _ => O.mul_mem (hβ' k) (vmv_mem O s hsO J hJ (y k) (hy k) i j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pM_mem {n a : ℕ} (J : Matrix (Fin n) (Fin n) S) (hJ : ∀ i j, J i j ∈ O) (t : Finset (Fin a))
     (y : Fin a → Fin n → S) (hy : ∀ i k, y i k ∈ O) (β' : Fin a → S) (hβ' : ∀ i, β' i ∈ O) (i j : Fin n) :

@@ -12,9 +12,9 @@ namespace GlobalTheory.Cyc.LayerGroup
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `key : ∀ x : Om l, x ∈ IntermediateField.fixedField (Subgroup.zpowers (σ : Om l ≃ₐ[ℚ_[l]] Om l)) ↔ σ x = x`. Introduce `x`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Use `⟨fun h => h σ (Subgroup.mem_zpowers σ), fun h f hf => ?_⟩` and prove the remaining obligations. Establish `hst : Subgroup.zpowers (σ : Om l ≃ₐ[ℚ_[l]] Om l) ≤ MulAction.stabilizer (Om l ≃ₐ[ℚ_[l]] Om l) x` using `Subgroup.zpowers_le.mpr (MulAction.mem_stabilizer_iff.mpr h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `MulAction.mem_stabilizer_iff.mp (hst hf)`. Unfold `Gj Ks`. Rewrite using `[IntermediateField.fixingSubgroup_sup, Subgroup.mem_inf, IntermediateField.mem_fixingSubgroup_iff, ← Subgroup.zpowers_le, ← IntermediateField.le_iff_le, IntermediateField.adjoin_le_iff]`. Conclude with `and_congr Iff.rfl ⟨fun h x hx => (key x).mp (h hx), fun h x hx => (key x).mpr (h x hx)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_layer_iff (K : FinExt l) (s : ℕ) (σ : GQ l) :
     σ ∈ Gj K s ↔ (∀ x ∈ K0 K, σ x = x) ∧ ∀ x : Om l, x ^ (l ^ s) = 1 → σ x = x := by
@@ -35,7 +35,7 @@ theorem mem_layer_iff (K : FinExt l) (s : ℕ) (σ : GQ l) :
   exact and_congr Iff.rfl ⟨fun h x hx => (key x).mp (h hx), fun h x hx => (key x).mpr (h x hx)⟩
 
 /- English proof (translation)
-Unfold `K0 at hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff K.1 τ).mp hτ x (SetLike.le_def.mp inf_le_left hx)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem absoluteGalois_apply_eq_self_of_mem_maxUnramified (K : FinExt l) {τ : GQ l} (hτ : τ ∈ GK K) {x : Om l} (hx : x ∈ K0 K) :
     τ x = x := by
@@ -43,11 +43,11 @@ private theorem absoluteGalois_apply_eq_self_of_mem_maxUnramified (K : FinExt l)
   exact (IntermediateField.mem_fixingSubgroup_iff K.1 τ).mp hτ x (SetLike.le_def.mp inf_le_left hx)
 
 /- English proof (translation)
-Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Establish `hg : (g : GQ l) ∈ GK K` using `g.2`. Establish `hgi : ((g : GQ l))⁻¹ ∈ GK K` using `inv_mem hg`. Rewrite `hn`, the goal using `[mem_layer_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨h0, h1⟩` from `hn`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g : GQ l) ((n : GQ l) (((g : GQ l))⁻¹ x)) = x`. Rewrite using `[absoluteGalois_apply_eq_self_of_mem_maxUnramified K hgi hx, h0 x hx, absoluteGalois_apply_eq_self_of_mem_maxUnramified K hg hx]`. Express the relevant statement in the definitionally equal form `(g : GQ l) ((n : GQ l) (((g : GQ l))⁻¹ x)) = x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hy : (((g : GQ l))⁻¹ x) ^ (l ^ s) = 1` using `by rw [← map_pow, hx, map_one]`. Rewrite using `[h1 _ hy]`. Conclude with `AlgEquiv.apply_symm_apply (g : GQ l) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normal_layer (K : FinExt l) (s : ℕ) : ((Gj K s).subgroupOf (GK K)).Normal := by
 
@@ -66,13 +66,13 @@ theorem normal_layer (K : FinExt l) (s : ℕ) : ((Gj K s).subgroupOf (GK K)).Nor
     exact AlgEquiv.apply_symm_apply (g : GQ l) x
 
 /- English proof (translation)
-Introduce `l _ K s h`. Establish `: IsGalois ℚ_[l] (Om l)` using `IsAlgClosure.isGalois ℚ_[l] (AlgebraicClosure ℚ_[l])`. Establish `: FiniteDimensional ℚ_[l] (Ks K s)` using `GlobalTheory.Cyc.TwistLift.finite_Ks K s`. Establish `: FiniteDimensional ℚ_[l] K.1` using `K.2`. Establish `hle : Gj K s ≤ GK K` using `IntermediateField.fixingSubgroup_le h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKs : Module.finrank ℚ_[l] (Ks K s) = (Gj K s).index` using `IntermediateField.finrank_eq_fixingSubgroup_index _ (Ks K s)`. Establish `hK : Module.finrank ℚ_[l] K.1 = (GK K).index` using `IntermediateField.finrank_eq_fixingSubgroup_index _ K.1`. Establish `hmul : ((Gj K s).subgroupOf (GK K)).index * (GK K).index = (Gj K s).index` using `Subgroup.relIndex_mul_index hle`. Establish `hKpos : 0 < Module.finrank ℚ_[l] K.1` using `Module.finrank_pos`. Establish `hKspos : 0 < Module.finrank ℚ_[l] (Ks K s)` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidx : ((Gj K s).subgroupOf (GK K)).index ≠ 0`. Introduce `h0`. Rewrite `hmul` using `[h0, zero_mul, ← hKs]`. Use linear arithmetic over natural numbers and integers. Use `⟨normal_layer K s, ⟨hidx⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IntermediateField.fixingSubgroup_isOpen (Ks K s)).preimage continuous_subtype_val`. Rewrite using `[hKs, ← hmul, ← hK, padicValNat.mul hidx hKpos.ne']`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem layer_group : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ), K.1 ≤ Ks K s → ((Gj K s).subgroupOf (GK K)).Normal ∧ ((Gj K s).subgroupOf (GK K)).FiniteIndex ∧ IsOpen (((Gj K s).subgroupOf (GK K) : Subgroup ↥(GK K)) : Set ↥(GK K)) ∧ padicValNat l ((Gj K s).subgroupOf (GK K)).index = padicValNat l (Module.finrank ℚ_[l] ↥(Ks K s)) - padicValNat l (Module.finrank ℚ_[l] ↥K.1) := by
   intro l _ K s h

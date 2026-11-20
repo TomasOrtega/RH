@@ -12,11 +12,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.AdT
 
 /- English proof (translation)
-Introduce `B X I hI a P v hP u P' hP' hv'`. Establish `hok` using `(GlobalTheory.BasePrimes.primes_ok B X).1`. Establish `hT : ((B.primes X).T u : 𝓞 B.fields.E) ∉ P.1.asIdeal` using `GlobalTheory.MuOffMove.level_notMem_rowSG hok hI.sel_ok (hI.T_mem u) P.2`. Establish `hpi : (B.primes X).piT u ∈ P'.asIdeal` using `Formalism.L2.Col.decoFin_mem_of_mem_divs hP'`. Establish `hTP' : ((B.primes X).T u : 𝓞 B.fields.E) ∈ P'.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hok.piT_norm u]`. Conclude with `Ideal.mul_mem_right _ _ hpi`. Break down `Formalism.L2.Col.rll_over_cases B.sp.cm hP hv' with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `hT hTP'`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite `hTP'` using `[Formalism.L2.Col.mem_conjP, map_natCast]`. Conclude with `hT hTP'`.
+A detailed English derivation is pending.
 -/
 theorem vT_notOver_SBof : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (a : I.ι) (P : SBof I a) (v : HeightOneSpectrum (𝓞 B.host.F)), Formalism.L2.Col.IsOver v P.1 → ∀ (u : B.Word), ∀ P' ∈ (B.primes X).vT u, ¬ Formalism.L2.Col.IsOver v P' := by
   intro B X I hI a P v hP u P' hP' hv'

@@ -11,17 +11,15 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
   Formalism.FourierDecayAlt.P5.HerD
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hdat hl0 hle hz hz' hπ hπ' l hl u v hu hv c hc s Wv hW`. Establish `hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ` using `hdat.2.1`. Use `haveI := sfinite_of_isHaarOn _ μ hμ`. Establish `hl2u` using `fun b => wave_operator_le_l2_subspace P z z' π π' μ hμ D hz hz' hπ hπ' l (hu b)`. Establish `hl2v` using `fun b => wave_operator_le_l2_subspace P z z' π π' μ hμ D hz hz' hπ hπ' l (hv b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW1 : ∀ c' : Fin P.r → ℂ, ‖fsv s (c' l)‖ = 1` using `fun c' => HerC.norm_fsv s (c' l)`. Establish `hl' : l.castSucc = 0`. Use `ext`. Simplify using `[hl]`. Establish `keyu : ∀ b, LevelSquareIntegrable μ l.castSucc (u b) c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Rewrite using `[hl']`. Conclude with `(hl2u b).2 c`. Establish `keyv : ∀ b, LevelSquareIntegrable μ l.castSucc (v b) c`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hl']`. Conclude with `(hl2v b).2 c`. Establish `keyW : ∀ b, LevelSquareIntegrable μ l.castSucc (Wv (u b)) c`. Introduce `b`. Establish `h` using `keyu b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `LevelSquareIntegrable at h ⊢`. Simplify using `only [waveOut_pairAt_self μ hW hW1]`. Conclude with `h`. Establish `hd` using `dens_int μ hμ l (fun b => Wv (u b)) v (fun b => mul_lc hW _ (hl2u b).1) (fun b => (hl2v b).1) c keyW keyv`. Rewrite using `[← hd.2]`.
-
-Repeatedly rewrite using `[waveOut_dens μ l s hW u v c]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wave_outgoing_orbital : WaveOutJ := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hdat hl0 hle hz hz' hπ hπ' l hl u v hu hv c hc s Wv hW

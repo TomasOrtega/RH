@@ -10,14 +10,14 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 open Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Rewrite using `[qa_brk_eq, qa_PhiZ_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma qa_brk_Phi {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (I : TIdx mu) :
     brk mu I = qa_PhiZ n ((detU n ^ mu (lastIdx n) : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) (qa_P ℤ I) := by
   rw [qa_brk_eq, qa_PhiZ_apply]
 
 /- English proof (translation)
-Rewrite using `[dualWeyl_eq_span_tableauBideterminant ℤ hmu, Submodule.map_span, ← Set.range_comp]`. Unfold `SMu`. Use `congr 2`. Use function extensionality and compare the values at `I`. Conclude with `qa_brk_Phi mu I`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem qa_SMu_eq {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) :
     SMu mu = (dualWeyl ℤ n n (qa_nu mu)).map
@@ -29,9 +29,9 @@ theorem qa_SMu_eq {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (hmu : Dominant mu) 
   exact qa_brk_Phi mu I
 
 /- English proof (translation)
-Introduce `n _ mu hmu`. Establish `he : (fun I : {I : TIdx mu // StdT I} => brk mu I.1) = (qa_PhiZ n ((detU n ^ mu (lastIdx n) : (GLCoord ℤ n)ˣ) : GLCoord ℤ n)) ∘ fun I : {I : TIdx mu // StdT I} => qa_P ℤ I.1`. Use function extensionality and compare the values at `I`. Conclude with `qa_brk_Phi mu I.1`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `(linearIndependent_standard_tableauBideterminant ℤ mu).map' (qa_PhiZ n _) (LinearMap.ker_eq_bot.mpr (qa_PhiZ_inj n _ (Units.isUnit _)))`. Rewrite using `[qa_SMu_eq hmu, dualWeyl_eq_span_standard_tableauBideterminant ℤ hmu, Submodule.map_span, ← Set.range_comp, he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standard_basis_theorem : SBasis := by
   intro n _ mu hmu

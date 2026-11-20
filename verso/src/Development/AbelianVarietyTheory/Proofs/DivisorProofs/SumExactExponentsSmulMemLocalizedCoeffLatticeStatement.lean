@@ -6,7 +6,7 @@ import Formalism.LocalToGlobal.Divisibility.RowLat
 open NumberField IsDedekindDomain Formalism.L2.DIV
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OntoExponentsLat.exZ_sum_smul_mem_locP_delAtr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSumExactExponentsSmulMemLocalizedCoeffLattice.lean&line=130#L130)
 -/

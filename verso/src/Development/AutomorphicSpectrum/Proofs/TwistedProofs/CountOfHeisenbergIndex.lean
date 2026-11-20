@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.InertCount
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ : L} {σ : L →+* L} {q N : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `((hH L ϖ σ q N hU).1 w hw).1`. Use function extensionality and compare the values at `i`. Establish `h2` using `h1 i.rev`. Simplify using `only [h0, Pi.zero_apply, Fin.rev_rev, zero_eq_neg] at h2`. Conclude with `(map_eq_zero_iff σ σ.injective).mp h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_zero (hH : Heis) (hU : IsUnramInv ϖ σ q) {w : GU σ (N + 2)} (hw : w ∈ radQ σ N)
     (h0 : rowOf w = 0) : colOf w = 0 := by
@@ -20,9 +20,9 @@ theorem col_zero (hH : Heis) (hU : IsUnramInv ϖ σ q) {w : GU σ (N + 2)} (hw :
   exact (map_eq_zero_iff σ σ.injective).mp h2
 
 /- English proof (translation)
-Take `⟨hr, hc, hk⟩` from `(hH L ϖ σ q N hU).2.1 u hu w hw`. Establish `hcz` using `col_zero hH hU hw h0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, h0, add_zero]`. Rewrite using `[hc, hcz, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, hcz, dotProduct_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_row_zero (hH : Heis) (hU : IsUnramInv ϖ σ q) {u w : GU σ (N + 2)} (hu : u ∈ radQ σ N)
     (hw : w ∈ radQ σ N) (h0 : rowOf w = 0) :
@@ -35,7 +35,7 @@ theorem mul_row_zero (hH : Heis) (hU : IsUnramInv ϖ σ q) {u w : GU σ (N + 2)}
   · rw [hk, hcz, dotProduct_zero, add_zero]
 
 /- English proof (translation)
-Establish `h` using `((hH L ϖ σ q N hU).1 w hw).2.1`. Rewrite `h` using `[h0, zero_dotProduct]`. Rewrite using `[add_comm]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_corner (hH : Heis) (hU : IsUnramInv ϖ σ q) {w : GU σ (N + 2)} (hw : w ∈ radQ σ N)
     (h0 : rowOf w = 0) : σ (cornerOf w) + cornerOf w = 0 := by
@@ -45,9 +45,9 @@ theorem trace_corner (hH : Heis) (hU : IsUnramInv ϖ σ q) {w : GU σ (N + 2)} (
   exact h
 
 /- English proof (translation)
-Take `⟨hr, hc, hk⟩` from `mul_row_zero hH hU hu hw h0`. Unfold `GlobalTheory.InertZeta.Small at hs ⊢`. Take `⟨hs1, hs2⟩` from `hs`. Use `⟨fun j => by rw [hr]; exact hs1 j, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, hc, hk]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ϖ ^ f * (cornerOf u + cornerOf w - rowOf u ⬝ᵥ D *ᵥ colOf u) = ϖ ^ f * (cornerOf u - rowOf u ⬝ᵥ D *ᵥ colOf u) + ϖ ^ f * cornerOf w` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem hs2 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_mul (hH : Heis) (hU : IsUnramInv ϖ σ q) {e f : ℕ} {C D : Matrix (Fin N) (Fin N) L}
     {u w : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hw : w ∈ radQ σ N) (h0 : rowOf w = 0)
@@ -63,9 +63,9 @@ theorem small_mul (hH : Heis) (hU : IsUnramInv ϖ σ q) {e f : ℕ} {C D : Matri
   exact add_mem hs2 hx
 
 /- English proof (translation)
-Take `⟨hr, hc, hk⟩` from `mul_row_zero hH hU hu hw h0`. Unfold `GlobalTheory.InertZeta.Small at hs hs'`. Establish `h2` using `hs'.2`. Rewrite `h2` using `[hr, hc, hk]`. Establish `e : ϖ ^ f * cornerOf w = ϖ ^ f * (cornerOf u + cornerOf w - rowOf u ⬝ᵥ D *ᵥ colOf u) - ϖ ^ f * (cornerOf u - rowOf u ⬝ᵥ D *ᵥ colOf u)` using `by ring`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `sub_mem h2 hs.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_of_small (hH : Heis) (hU : IsUnramInv ϖ σ q) {e f : ℕ} {C D : Matrix (Fin N) (Fin N) L}
     {u w : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hw : w ∈ radQ σ N) (h0 : rowOf w = 0)
@@ -80,13 +80,11 @@ theorem corner_of_small (hH : Heis) (hU : IsUnramInv ϖ σ q) {e f : ℕ} {C D :
   exact sub_mem h2 hs.2
 
 /- English proof (translation)
-Take `⟨τ, hτ, hτ1⟩` from `exists_trace_one hU`. Establish `hσσ : ∀ x, σ (σ x) = x` using `hU.1`. Establish `hσint : ∀ x ∈ intL L, σ x ∈ intL L` using `fun x hx => by`. Express the relevant statement in the definitionally equal form `Valued.v (σ x) ≤ 1`. Rewrite using `[hU.2.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hσs : σ (-∑ j, ρ j * σ (ρ j.rev)) = -∑ j, ρ j * σ (ρ j.rev)`. Rewrite using `[map_neg, map_sum]`. Use `congr 1`. Simplify using `only [map_mul, hσσ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `Fintype.sum_equiv Fin.revPerm _ _ (fun j => by simp only [Fin.revPerm_apply, Fin.rev_rev]; ring)`. Take `⟨u, hu, hrow, hcorner⟩` from `(hH L ϖ σ q N hU).2.2 ρ (τ * -∑ j, ρ j * σ (ρ j.rev)) (by rw [map_mul, hσs, ← add_mul, hτ1, one_mul])`. Use `⟨u, hu, ?_, hrow⟩` and prove the remaining obligations. Rewrite using `[((hH L ϖ σ q N hU).1 u hu).2.2]`. Use `⟨fun j => by rw [hrow]; exact hρ j, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hcorner]`. Conclude with `mul_mem hτ (neg_mem (sum_mem fun j _ => mul_mem (hρ j) (hσint _ (hρ j.rev))))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_lift (hH : Heis) (hU : IsUnramInv ϖ σ q) (ρ : Fin N → L) (hρ : ∀ j, ρ j ∈ intL L) :
     ∃ k ∈ radQ σ N, k ∈ KU σ (N + 2) ∧ rowOf k = ρ := by
@@ -110,9 +108,9 @@ theorem exists_int_lift (hH : Heis) (hU : IsUnramInv ϖ σ q) (ρ : Fin N → L)
   exact mul_mem hτ (neg_mem (sum_mem fun j _ => mul_mem (hρ j) (hσint _ (hρ j.rev))))
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul ((KU σ (N + 2)).subgroupOf (radQ σ N)) v`. Rewrite using `[hh]`. Establish `hk : ((h : radQ σ N) : GU σ (N + 2)) ∈ KU σ (N + 2)` using `Subgroup.mem_subgroupOf.mp h.2`. Establish `hkr : ((h : radQ σ N) : GU σ (N + 2)) ∈ radQ σ N` using `(h : radQ σ N).2`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hs`. Establish `h2` using `hinv _ (v * h).2 _ (inv_mem hkr) (inv_mem hk) hs`. Simplify using `using h2`. Introduce `hs`. Conclude with `hinv _ v.2 _ hkr hk hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem small_out {e f : ℕ} {C D : Matrix (Fin N) (Fin N) L}
     (hinv : ∀ u ∈ radQ σ N, ∀ k ∈ radQ σ N, k ∈ KU σ (N + 2) → Small ϖ e f C D u → Small ϖ e f C D (u * k))
@@ -130,7 +128,7 @@ theorem small_out {e f : ℕ} {C D : Matrix (Fin N) (Fin N) L}
     exact hinv _ v.2 _ hkr hk hs
 
 /- English proof (translation)
-Simplify using `only [Matrix.vecMul, dotProduct, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vecMul_smul_apply (c : L) (r : Fin N → L) (C : Matrix (Fin N) (Fin N) L) (j : Fin N) :
     (r ᵥ* (c • C)) j = c * (r ᵥ* C) j := by
@@ -138,7 +136,7 @@ theorem vecMul_smul_apply (c : L) (r : Fin N → L) (C : Matrix (Fin N) (Fin N) 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (pow_mem hϖ e) (hC i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_smul {ϖ : L} (hϖ : ϖ ∈ intL L) (e : ℕ) {C : Matrix (Fin N) (Fin N) L} (hC : IsInt C) :
     IsInt (ϖ ^ e • C) := by
@@ -147,7 +145,7 @@ theorem isInt_smul {ϖ : L} (hϖ : ϖ ∈ intL L) (e : ℕ) {C : Matrix (Fin N) 
   exact mul_mem (pow_mem hϖ e) (hC i j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_smul, Fintype.card_fin, map_mul, map_pow, map_pow, hϖ, hdet, ← pow_mul, ← WithZero.exp_nsmul, ← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -163,7 +161,7 @@ theorem v_det_smul {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (e l :
   ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem eq_of_neg_add_out {G : Type*} [AddGroup G] {S : AddSubgroup G} (y y' : G ⧸ S)
     (h : -y.out + y'.out ∈ S) : y = y' := by
@@ -172,19 +170,17 @@ theorem eq_of_neg_add_out {G : Type*} [AddGroup G] {S : AddSubgroup G} (y y' : G
     _ = y' := QuotientAddGroup.out_eq' y'
 
 /- English proof (translation)
-The claim follows from `QuotientAddGroup.eq.mp (QuotientAddGroup.out_eq' (QuotientAddGroup.mk a : G ⧸ S)).symm`.
+A detailed English derivation is pending.
 -/
 theorem neg_add_out_mem {G : Type*} [AddGroup G] {S : AddSubgroup G} (a : G) :
     -a + (QuotientAddGroup.mk a : G ⧸ S).out ∈ S := QuotientAddGroup.eq.mp (QuotientAddGroup.out_eq' (QuotientAddGroup.mk a : G ⧸ S)).symm
 
 /- English proof (translation)
-Take `⟨hr1, -, hk1⟩` from `(hH L ϖ σ q N hU).2.1 1 (one_mem _) 1 (one_mem _)`. Rewrite `hr1`, `hk1` using `[mul_one]`. Establish `hrow1 : rowOf (1 : GU σ (N + 2)) = 0`. Establish `e : rowOf (1 : GU σ (N + 2)) + rowOf (1 : GU σ (N + 2)) = rowOf (1 : GU σ (N + 2)) + 0` using `by rw [add_zero]; exact hr1.symm`. Conclude with `add_left_cancel e`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcor1 : cornerOf (1 : GU σ (N + 2)) = 0`. Rewrite `hk1` using `[hrow1, zero_dotProduct, add_zero]`. Establish `e : cornerOf (1 : GU σ (N + 2)) + cornerOf (1 : GU σ (N + 2)) = cornerOf (1 : GU σ (N + 2)) + 0` using `by rw [add_zero]; exact hk1.symm`. Conclude with `add_left_cancel e`. Take `⟨hr, -, hk⟩` from `(hH L ϖ σ q N hU).2.1 u hu u⁻¹ (inv_mem hu)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr` using `[mul_inv_cancel, hrow1]`. Rewrite `hk` using `[mul_inv_cancel, hcor1]`. Use `⟨?_, fun h0 => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite `hk` using `[h0, zero_dotProduct, add_zero]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem inv_lemma' (hH : Heis) (hU : IsUnramInv ϖ σ q) {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) :
     rowOf u⁻¹ = -rowOf u ∧ (rowOf u = 0 → cornerOf u⁻¹ = -cornerOf u) := by
@@ -208,45 +204,43 @@ private theorem inv_lemma' (hH : Heis) (hU : IsUnramInv ϖ σ q) {u : GU σ (N +
       _ = -cornerOf u := by rw [← hk]; abel
 
 /- English proof (translation)
-Unfold `GlobalTheory.InertZeta.Count`. Introduce `L _ _ ϖ σ q N hU C D l e f hC hdet hsurj hinv`. Establish `hϖv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hU.2.2.2.1`. Establish `hϖ : ϖ ∈ intL L`. Express the relevant statement in the definitionally equal form `Valued.v ϖ ≤ 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hϖv, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions. Establish `hrowS : ∀ u : GU σ (N + 2), Small ϖ e f C D u → rowOf u ∈ preLat (ϖ ^ e • C)` using `fun u hs => by`. Unfold `GlobalTheory.InertZeta.Small at hs`. Conclude with `mem_preLat.mpr fun j => by rw [vecMul_smul_apply]; exact hs.1 j`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hub : ∀ b : (↥(preLat (ϖ ^ e • C)) ⧸ (intV L N).addSubgroupOf (preLat (ϖ ^ e • C))), ∃ u ∈ radQ σ N, rowOf u = ((Quotient.out b : preLat (ϖ ^ e • C)) : Fin N → L) ∧ Small ϖ e f C D u` using `fun b => hsurj _ (fun j => by`. Establish `h1` using `(mem_preLat.mp (Quotient.out b : preLat (ϖ ^ e • C)).2) j`. Rewrite using `[vecMul_smul_apply] at h1)` and apply the resulting hypothesis. Use `choose ub hubR hubrow hubS using hub`. Establish `hwt : ∀ t : (↥(traceZero σ (ϖ ^ f)) ⧸ (traceZero σ 1).addSubgroupOf (traceZero σ (ϖ ^ f))), ∃ w ∈ radQ σ N, rowOf w = 0 ∧ cornerOf w = ((Quotient.out t : traceZero σ (ϖ ^ f)) : L)` using `fun t => (hH L ϖ σ q N hU).2.2 0 _ (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `(mem_traceZero.mp (Quotient.out t : traceZero σ (ϖ ^ f)).2).2`. Simplify using `only [Pi.zero_apply, zero_mul, Finset.sum_const_zero, neg_zero]`. Rewrite using `[add_comm]`. Conclude with `h1)`. Use `choose wt hwtR hwtrow hwtcorner using hwt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwtint : ∀ t, ϖ ^ f * cornerOf (wt t) ∈ intL L` using `fun t => by`. Rewrite using `[hwtcorner]`. Conclude with `(mem_traceZero.mp (Quotient.out t : traceZero σ (ϖ ^ f)).2).1`. Establish `key_row : ∀ b t, rowOf (ub b * wt t) = ((Quotient.out b : preLat (ϖ ^ e • C)) : Fin N → L)` using `fun b t => by`. Rewrite using `[((hH L ϖ σ q N hU).2.1 _ (hubR b) _ (hwtR t)).1, hwtrow, add_zero, hubrow]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `G : (↥(preLat (ϖ ^ e • C)) ⧸ (intV L N).addSubgroupOf (preLat (ϖ ^ e • C))) × (↥(traceZero σ (ϖ ^ f)) ⧸ (traceZero σ 1).addSubgroupOf (traceZero σ (ϖ ^ f))) → {x : RadQuot σ N // Small ϖ e f C D (Quotient.out x : radQ σ N).1}` to `fun p => ⟨QuotientGroup.mk (⟨ub p.1 * wt p.2, mul_mem (hubR p.1) (hwtR p.2)⟩ : radQ σ N), (small_out hinv _).mpr (small_mul hH hU (hubR p.1) (hwtR p.2) (hwtrow p.2) (hubS p.1) (hwtint p.2))⟩`. Establish `hinj : Function.Injective G`. Introduce and unpack `⟨b, t⟩ ⟨b', t'⟩ hGG`. Establish `h1 : (QuotientGroup.mk (⟨ub b * wt t, mul_mem (hubR b) (hwtR t)⟩ : radQ σ N) : RadQuot σ N) = QuotientGroup.mk (⟨ub b' * wt t', mul_mem (hubR b') (hwtR t')⟩ : radQ σ N)` using `congrArg Subtype.val hGG`. Establish `hz : (ub b * wt t)⁻¹ * (ub b' * wt t') ∈ KU σ (N + 2)` using `Subgroup.mem_subgroupOf.mp (QuotientGroup.eq.mp h1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzR : (ub b * wt t)⁻¹ * (ub b' * wt t') ∈ radQ σ N` using `mul_mem (inv_mem (mul_mem (hubR b) (hwtR t))) (mul_mem (hubR b') (hwtR t'))`. Take `⟨hzrow, hzcorner⟩` from `(((hH L ϖ σ q N hU).1 _ hzR).2.2).mp hz`. Establish `hrowz : rowOf ((ub b * wt t)⁻¹ * (ub b' * wt t')) = -((Quotient.out b : preLat (ϖ ^ e • C)) : Fin N → L) + ((Quotient.out b' : preLat (ϖ ^ e • C)) : Fin N → L)`. Rewrite using `[((hH L ϖ σ q N hU).2.1 _ (inv_mem (mul_mem (hubR b) (hwtR t))) _ (mul_mem (hubR b') (hwtR t'))).1, (inv_lemma' hH hU (mul_mem (hubR b) (hwtR t))).1, key_row, key_row]`. Establish `hbb : b = b'` using `eq_of_neg_add_out b b' (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[AddSubgroup.mem_addSubgroupOf, mem_intV]`. Introduce `i`. Establish `h2` using `hzrow i`. Rewrite `h2` using `[hrowz]`. Simplify using `using h2)`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hbb` using the available equality. Establish `hz' : (ub b * wt t)⁻¹ * (ub b * wt t') = (wt t)⁻¹ * wt t'` using `by group`. Rewrite `hzcorner` using `[hz']`. Take `⟨-, -, hk⟩` from `(hH L ϖ σ q N hU).2.1 _ (inv_mem (hwtR t)) _ (hwtR t')`. Rewrite `hzcorner` using `[hk, (inv_lemma' hH hU (hwtR t)).2 (hwtrow t), (inv_lemma' hH hU (hwtR t)).1, hwtrow, neg_zero, zero_dotProduct, add_zero, hwtcorner, hwtcorner]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htt : t = t'` using `eq_of_neg_add_out t t' (by`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, mem_traceZero]`. Use `⟨by simpa using hzcorner, ?_⟩` and prove the remaining obligations. Establish `h1` using `(mem_traceZero.mp (Quotient.out t : traceZero σ (ϖ ^ f)).2).2`. Establish `h2` using `(mem_traceZero.mp (Quotient.out t' : traceZero σ (ϖ ^ f)).2).2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg, map_add, map_neg]`. Take the linear combination `-h1 + h2)`. Rewrite using `[htt]`. Establish `hsurjG : Function.Surjective G`. Introduce and unpack `⟨x, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxv : (QuotientGroup.mk (Quotient.out x) : RadQuot σ N) = x` using `QuotientGroup.out_eq' x`. Establish `hvS : Small ϖ e f C D (Quotient.out x : radQ σ N).1` using `hx`. Establish `hvrow` using `hrowS _ hvS`. Take `⟨b, hb⟩ : ∃ b : (↥(preLat (ϖ ^ e • C)) ⧸ (intV L N).addSubgroupOf (preLat (ϖ ^ e • C))), b = QuotientAddGroup.mk (⟨rowOf (Quotient.out x : radQ σ N).1, hvrow⟩ : preLat (ϖ ^ e • C))` from `⟨_, rfl⟩`. Establish `hρ` using `neg_add_out_mem (S := (intV L N).addSubgroupOf (preLat (ϖ ^ e • C))) (⟨rowOf (Quotient.out x : radQ σ N).1, hvrow⟩ : preLat (ϖ ^ e • C))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hρ` using `[← hb, AddSubgroup.mem_addSubgroupOf, mem_intV]`. Take `⟨k, hkR, hkK, hkrow⟩` from `exists_int_lift hH hU (fun i => -rowOf (Quotient.out x : radQ σ N).1 i + ((Quotient.out b : preLat (ϖ ^ e • C)) : Fin N → L) i) (fun i => by simpa using hρ i)`. Establish `hv'row : rowOf ((Quotient.out x : radQ σ N).1 * k) = ((Quotient.out b : preLat (ϖ ^ e • C)) : Fin N → L)`. Rewrite using `[((hH L ϖ σ q N hU).2.1 _ (Quotient.out x).2 _ hkR).1, hkrow]`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hv'S : Small ϖ e f C D ((Quotient.out x : radQ σ N).1 * k)` using `hinv _ (Quotient.out x).2 _ hkR hkK hvS`. Establish `hwR : ((ub b)⁻¹ * ((Quotient.out x : radQ σ N).1 * k)) ∈ radQ σ N` using `mul_mem (inv_mem (hubR b)) (mul_mem (Quotient.out x).2 hkR)`. Establish `hw0 : rowOf ((ub b)⁻¹ * ((Quotient.out x : radQ σ N).1 * k)) = 0`. Rewrite using `[((hH L ϖ σ q N hU).2.1 _ (inv_mem (hubR b)) _ (mul_mem (Quotient.out x).2 hkR)).1, (inv_lemma' hH hU (hubR b)).1, hubrow, hv'row, neg_add_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmul : ub b * ((ub b)⁻¹ * ((Quotient.out x : radQ σ N).1 * k)) = (Quotient.out x : radQ σ N).1 * k` using `by group`. Establish `hcw` using `corner_of_small hH hU (hubR b) hwR hw0 (hubS b) (by rw [hmul]; exact hv'S)`. Establish `htr` using `trace_corner hH hU hwR hw0`. Take `⟨t, ht⟩ : ∃ t : (↥(traceZero σ (ϖ ^ f)) ⧸ (traceZero σ 1).addSubgroupOf (traceZero σ (ϖ ^ f))), t = QuotientAddGroup.mk (⟨cornerOf ((ub b)⁻¹ * ((Quotient.out x : radQ σ N).1 * k)), mem_traceZero.mpr ⟨hcw, htr⟩⟩ : traceZero σ (ϖ ^ f))` from `⟨_, rfl⟩`. Use `⟨(b, t), Subtype.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (QuotientGroup.mk (⟨ub b * wt t, mul_mem (hubR b) (hwtR t)⟩ : radQ σ N) : RadQuot σ N) = x`. Rewrite using `[← hxv]`. Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises. Rewrite using `[Subgroup.mem_subgroupOf]`. Use `show (ub b * wt t)⁻¹ * (Quotient.out x : radQ σ N).1 ∈ KU σ (N + 2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : (ub b * wt t)⁻¹ * (Quotient.out x : radQ σ N).1 = ((wt t)⁻¹ * ((ub b)⁻¹ * ((Quotient.out x : radQ σ N).1 * k))) * k⁻¹` using `by group`. Rewrite using `[hy]`. Use `mul_mem ?_ (inv_mem hkK)` and prove the remaining obligations. Establish `hRR : (wt t)⁻¹ * ((ub b)⁻¹ * ((Quotient.out x : radQ σ N).1 * k)) ∈ radQ σ N` using `mul_mem (inv_mem (hwtR t)) hwR`. Use `(((hH L ϖ σ q N hU).1 _ hRR).2.2).mpr ⟨fun j => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hr, -, -⟩` from `(hH L ϖ σ q N hU).2.1 _ (inv_mem (hwtR t)) _ hwR`. Rewrite using `[hr, (inv_lemma' hH hU (hwtR t)).1, hwtrow, hw0]`. Simplify using the standard rewrite rules. Take `⟨-, -, hk⟩` from `(hH L ϖ σ q N hU).2.1 _ (inv_mem (hwtR t)) _ hwR`. Rewrite using `[hk, (inv_lemma' hH hU (hwtR t)).2 (hwtrow t), (inv_lemma' hH hU (hwtR t)).1, hwtrow, neg_zero, zero_dotProduct, add_zero, hwtcorner]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hm` using `neg_add_out_mem (S := (traceZero σ 1).addSubgroupOf (traceZero σ (ϖ ^ f))) (⟨cornerOf ((ub b)⁻¹ * ((Quotient.out x : radQ σ N).1 * k)), mem_traceZero.mpr ⟨hcw, htr⟩⟩ : traceZero σ (ϖ ^ f))`. Rewrite `hm` using `[← ht, AddSubgroup.mem_addSubgroupOf, mem_traceZero]`. Simplify using `using neg_mem hm.1`. Establish `hbij : Function.Bijective G` using `⟨hinj, hsurjG⟩`. Establish `h1` using `hL L ϖ σ q N hU (ϖ ^ e • C) (l + N * e) (isInt_smul hϖ e hC) (v_det_smul hϖv e l hdet)`.
-
-Establish `h2` using `hT L ϖ σ q f hU`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem count (hH : Heis) (hL : LatIndex) (hT : TraceIndex) : Count := by
   unfold GlobalTheory.InertZeta.Count

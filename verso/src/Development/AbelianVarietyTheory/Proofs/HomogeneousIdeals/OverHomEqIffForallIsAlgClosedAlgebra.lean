@@ -15,7 +15,7 @@ section Ext
 variable {T Y S : Scheme.{u}}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e _ _ _ => e ▸ rfl, fun H => ext_of_fromSpecResidueField_eq f g s Set.univ dense_univ (fun x _ => H (T.residueField x) (T.fromSpecResidueField x)) h⟩`.
+Supply the required witnesses or components.
 -/
 theorem hom_eq_iff_forall_field [IsReduced T] (s : Y ⟶ S) [IsSeparated s] {f g : T ⟶ Y}
     (h : f ≫ s = g ≫ s) :
@@ -24,7 +24,7 @@ theorem hom_eq_iff_forall_field [IsReduced T] (s : Y ⟶ S) [IsSeparated s] {f g
     (fun x _ => H (T.residueField x) (T.fromSpecResidueField x)) h⟩
 
 /- English proof (translation)
-Use `⟨fun e _ _ _ _ => e ▸ rfl, fun H => (hom_eq_iff_forall_field s h).mpr fun k _ x => ?_⟩` and prove the remaining obligations. Set `ι : Spec (.of (AlgebraicClosure k)) ⟶ Spec (.of k)` to `Spec.map (CommRingCat.ofHom (algebraMap k (AlgebraicClosure k)))`. Establish `: Surjective ι` using `⟨fun y => ⟨default, Subsingleton.elim _ _⟩⟩`. Use `ext_of_isDominant_of_isSeparated s (by simp only [Category.assoc, h]) ι ?_` and prove the remaining obligations. Simplify `H _ (ι ≫ x)` using `only [Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hom_eq_iff_forall_isAlgClosed [IsReduced T] (s : Y ⟶ S) [IsSeparated s] {f g : T ⟶ Y}
     (h : f ≫ s = g ≫ s) :
@@ -37,7 +37,7 @@ theorem hom_eq_iff_forall_isAlgClosed [IsReduced T] (s : Y ⟶ S) [IsSeparated s
   simpa only [Category.assoc] using H _ (ι ≫ x)
 
 /- English proof (translation)
-Use `⟨fun e _ _ _ _ => e ▸ rfl, fun H => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Use `(hom_eq_iff_forall_field Y.hom ((Over.w f).trans (Over.w g).symm)).mpr fun k _ x => ?_` and prove the remaining obligations. Conclude with `congrArg (·.left) (H k (x ≫ T.hom) (Over.homMk x rfl))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem over_hom_eq_iff_forall_field {T Y : Over S} [IsReduced T.left] [IsSeparated Y.hom]
     {f g : T ⟶ Y} :
@@ -50,7 +50,7 @@ theorem over_hom_eq_iff_forall_field {T Y : Over S} [IsReduced T.left] [IsSepara
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Use `⟨fun e _ _ _ _ _ => e ▸ rfl, fun H => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Use `(hom_eq_iff_forall_isAlgClosed Y.hom ((Over.w f).trans (Over.w g).symm)).mpr fun k _ _ x => ?_` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `Spec.map_surjective (x ≫ T.hom)`. Use `letI : Algebra R k := φ.hom.toAlgebra`. Conclude with `congrArg (·.left) (H k (Over.homMk x hφ.symm))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem over_hom_eq_iff_forall_isAlgClosed_algebra {T Y : Over (Spec (.of R))} [IsReduced T.left]
     [IsSeparated Y.hom] {f g : T ⟶ Y} :
@@ -64,7 +64,7 @@ theorem over_hom_eq_iff_forall_isAlgClosed_algebra {T Y : Over (Spec (.of R))} [
   exact congrArg (·.left) (H k (Over.homMk x hφ.symm))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e _ _ _ _ => e ▸ rfl, fun H => over_hom_eq_iff_forall_isAlgClosed_algebra.mpr fun k _ _ _ x => H k x⟩`.
+Supply the required witnesses or components.
 -/
 theorem over_hom_eq_iff_forall_field_algebra {T Y : Over (Spec (.of R))} [IsReduced T.left]
     [IsSeparated Y.hom] {f g : T ⟶ Y} :
@@ -74,7 +74,7 @@ theorem over_hom_eq_iff_forall_field_algebra {T Y : Over (Spec (.of R))} [IsRedu
     fun H => over_hom_eq_iff_forall_isAlgClosed_algebra.mpr fun k _ _ _ x => H k x⟩
 
 /- English proof (translation)
-The claim follows from `IsNilpotent.eq_zero (nilpotent_iff_mem_prime.mpr fun p _ => Ideal.algebraMap_residueField_eq_zero.mp (h p.ResidueField (algebraMap A _)))`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_field {A : Type u} [CommRing A] [_root_.IsReduced A] {a : A}
     (h : ∀ (k : Type u) [Field k] (φ : A →+* k), φ a = 0) : a = 0 :=
@@ -90,11 +90,9 @@ section Algebra
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.mp (hP.ge (Submodule.mem_top (x := 1)))`. Establish `e : Q = (∑ i, a i * Q i) • P`. Use extensionality with `j`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Finset.sum_mul, ← one_mul (Q j), ← ha, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by linear_combination a i * h i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (∑ i, a i * Q i)`. Rewrite using `[← Ideal.span_singleton_eq_top, _root_.eq_top_iff, ← hQ, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[congrFun e j]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`.
-
-Conclude with `⟨hu.unit, e⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_smul_of_minors {ι : Type*} [Fintype ι] {P Q : ι → A}
     (hP : Ideal.span (Set.range P) = ⊤) (hQ : Ideal.span (Set.range Q) = ⊤)
@@ -112,9 +110,7 @@ theorem exists_unit_smul_of_minors {ι : Type*} [Fintype ι] {P Q : ι → A}
   exact ⟨hu.unit, e⟩
 
 /- English proof (translation)
-Use `by_contra! H`. Establish `: Ideal.span (Set.range P) ≤ IsLocalRing.maximalIdeal A`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `H i`.
-
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal A).ne_top (top_le_iff.mp (h.span_eq_top ▸ this))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsUnimodularSol.exists_isUnit [IsLocalRing A] {V : WeierstrassCurve A} {P : Fin 3 → A}
     (h : IsUnimodularSol V P) : ∃ i, IsUnit (P i) := by
@@ -126,9 +122,7 @@ theorem IsUnimodularSol.exists_isUnit [IsLocalRing A] {V : WeierstrassCurve A} {
   exact (IsLocalRing.maximalIdeal.isMaximal A).ne_top (top_le_iff.mp (h.span_eq_top ▸ this))
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.equation, ?_⟩, fun ⟨h, h0⟩ => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h.exists_isUnit`. Introduce and unpack `rfl`. Conclude with `hi.ne_zero rfl`. Take `⟨i, hi⟩` from `Function.ne_iff.mp h0`.
-
-Conclude with `.of_isUnit h i (Ne.isUnit hi)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isUnimodularSol_iff_ne_zero {k : Type*} [Field k] {V : WeierstrassCurve k}
     {P : Fin 3 → k} : IsUnimodularSol V P ↔ V.toProjective.Equation P ∧ P ≠ 0 := by
@@ -140,14 +134,14 @@ theorem isUnimodularSol_iff_ne_zero {k : Type*} [Field k] {V : WeierstrassCurve 
     exact .of_isUnit h i (Ne.isUnit hi)
 
 /- English proof (translation)
-The claim follows from `isUnimodularSol_iff_ne_zero.mpr ⟨h.left, AddLaw.ne_zero_of_nonsingular h⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsUnimodularSol.of_nonsingular {k : Type*} [Field k] {V : WeierstrassCurve k}
     {P : Fin 3 → k} (h : V.toProjective.Nonsingular P) : IsUnimodularSol V P :=
   isUnimodularSol_iff_ne_zero.mpr ⟨h.left, AddLaw.ne_zero_of_nonsingular h⟩
 
 /- English proof (translation)
-The claim follows from `isUnimodularSol_iff_ne_zero.trans (AddLaw.nonsingular_iff_of_Δ_ne_zero V.isUnit_Δ.ne_zero P).symm`.
+A detailed English derivation is pending.
 -/
 theorem isUnimodularSol_iff_nonsingular {k : Type*} [Field k] {V : WeierstrassCurve k}
     [V.IsElliptic] {P : Fin 3 → k} : IsUnimodularSol V P ↔ V.toProjective.Nonsingular P :=
@@ -155,14 +149,14 @@ theorem isUnimodularSol_iff_nonsingular {k : Type*} [Field k] {V : WeierstrassCu
     (AddLaw.nonsingular_iff_of_Δ_ne_zero V.isUnit_Δ.ne_zero P).symm
 
 /- English proof (translation)
-The claim follows from `isUnimodularSol_iff_nonsingular.mp h`.
+A detailed English derivation is pending.
 -/
 theorem IsUnimodularSol.nonsingular {k : Type*} [Field k] {V : WeierstrassCurve k}
     [V.IsElliptic] {P : Fin 3 → k} (h : IsUnimodularSol V P) : V.toProjective.Nonsingular P :=
   isUnimodularSol_iff_nonsingular.mp h
 
 /- English proof (translation)
-Use `eq_zero_of_forall_field fun k _ φ => ?_` and prove the remaining obligations. Use `h k φ` as an intermediate fact. Express the relevant statement in the definitionally equal form `(V.toProjective.map φ).Equation _ at this`. Rewrite `this` using `[WeierstrassCurve.Projective.Equation, WeierstrassCurve.Projective.map_polynomial, MvPolynomial.eval_map, ← MvPolynomial.eval₂_comp]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem equation_of_forall_field {A : Type u} [CommRing A] [_root_.IsReduced A]
     {V : WeierstrassCurve A} {P : Fin 3 → A}
@@ -178,7 +172,7 @@ def unimodularSetoid (V : WeierstrassCurve A) : Setoid {P : Fin 3 → A // IsUni
   (MulAction.orbitRel Aˣ (Fin 3 → A)).comap Subtype.val
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ((unimodularSetoid V).symm h).imp fun _ e => e.symm, fun h => (unimodularSetoid V).symm (h.imp fun _ e => e.symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem unimodularSetoid_iff {V : WeierstrassCurve A}
     (P Q : {P : Fin 3 → A // IsUnimodularSol V P}) :
@@ -197,16 +191,16 @@ section Injective
 variable {A : Type u} [CommRing A]
 
 /- English proof (translation)
-Rewrite using `[← Ideal.span_singleton_eq_top, ← PrimeSpectrum.iSup_basicOpen_eq_top_iff', iSup_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem basicOpen_eq_top_iff (a : A) : PrimeSpectrum.basicOpen a = ⊤ ↔ IsUnit a := by
   rw [← Ideal.span_singleton_eq_top, ← PrimeSpectrum.iSup_basicOpen_eq_top_iff',
     iSup_singleton]
 
 /- English proof (translation)
-Establish `hi' : IsUnit (Q i)`. Establish `h₁` using `ptHom_preimage_coordOpen W ρ P hP i`. Rewrite `h₁` using `[e, ptHom_preimage_coordOpen]`. Conclude with `(basicOpen_eq_top_iff _).mp (h₁.trans ((basicOpen_eq_top_iff _).mpr hi))`. Rewrite `e` using `[ptHom_eq_awayChart W i ρ P hP hi, ptHom_eq_awayChart W i ρ Q hQ hi', cancel_mono]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : awayEval W i ρ P hP.equation hi = awayEval W i ρ Q hQ.equation hi'` using `congrArg (·.hom) (Spec.map_injective e)`. Rewrite using `[← awayEval_awayCoord_mul W i ρ P hP.equation hi j, ← awayEval_awayCoord_mul W i ρ P hP.equation hi l, ← awayEval_awayCoord_mul W i ρ Q hQ.equation hi' j, ← awayEval_awayCoord_mul W i ρ Q hQ.equation hi' l, e']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem minors_of_isUnit {ρ : R →+* A} {P Q : Fin 3 → A}
     {hP : IsUnimodularSol (W.map ρ) P} {hQ : IsUnimodularSol (W.map ρ) Q}
@@ -226,11 +220,11 @@ private theorem minors_of_isUnit {ρ : R →+* A} {P Q : Fin 3 → A}
   ring
 
 /- English proof (translation)
-Use `⟨fun e j l => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← Submodule.mem_bot A]`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem _ (Set.range P) hP.span_eq_top _ ?_` and prove the remaining obligations. Introduce and unpack `⟨_, i, rfl⟩`. Set `φ` to `algebraMap A (Localization.Away (P i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Establish `e' : ptHom W (φ.comp ρ) (φ ∘ P) (hP.map_comp φ) = ptHom W (φ.comp ρ) (φ ∘ Q) (hQ.map_comp φ)`. Rewrite using `[← SpecMap_ptHom W ρ P hP, ← SpecMap_ptHom W ρ Q hQ, e]`. Establish `h` using `minors_of_isUnit W e' (i := i) (IsLocalization.Away.algebraMap_isUnit (P i)) j l`. Establish `h0 : φ (P j * Q l - P l * Q j) = 0`. Rewrite using `[map_sub, map_mul, map_mul, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `(IsLocalization.map_eq_zero_iff (.powers (P i)) _ _).mp h0`. Conclude with `⟨n, hn⟩`. Take `⟨v, rfl⟩` from `exists_unit_smul_of_minors hP.span_eq_top hQ.span_eq_top h`. Conclude with `(ptHom_smul W ρ P hP v.isUnit).symm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ptHom_eq_ptHom_iff_minors {ρ : R →+* A} {P Q : Fin 3 → A}
     (hP : IsUnimodularSol (W.map ρ) P) (hQ : IsUnimodularSol (W.map ρ) Q) :
@@ -253,7 +247,7 @@ theorem ptHom_eq_ptHom_iff_minors {ρ : R →+* A} {P Q : Fin 3 → A}
     exact (ptHom_smul W ρ P hP v.isUnit).symm
 
 /- English proof (translation)
-Use `⟨fun e => exists_unit_smul_of_minors hP.span_eq_top hQ.span_eq_top ((ptHom_eq_ptHom_iff_minors W hP hQ).mp e), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨v, rfl⟩`. Conclude with `(ptHom_smul W ρ P hP v.isUnit).symm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ptHom_eq_ptHom_iff {ρ : R →+* A} {P Q : Fin 3 → A}
     (hP : IsUnimodularSol (W.map ρ) P) (hQ : IsUnimodularSol (W.map ρ) Q) :
@@ -266,7 +260,7 @@ theorem ptHom_eq_ptHom_iff {ρ : R →+* A} {P Q : Fin 3 → A}
 variable [Algebra R A] {P Q : Fin 3 → A}
 
 /- English proof (translation)
-The claim follows from `ptHom_eq_ptHom_iff_minors W hP.of_baseChange hQ.of_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem pt_eq_pt_iff_minors (hP : IsUnimodularSol (W.baseChange A) P)
     (hQ : IsUnimodularSol (W.baseChange A) Q) :
@@ -274,7 +268,7 @@ theorem pt_eq_pt_iff_minors (hP : IsUnimodularSol (W.baseChange A) P)
   ptHom_eq_ptHom_iff_minors W hP.of_baseChange hQ.of_baseChange
 
 /- English proof (translation)
-The claim follows from `ptHom_eq_ptHom_iff W hP.of_baseChange hQ.of_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem pt_eq_pt_iff (hP : IsUnimodularSol (W.baseChange A) P)
     (hQ : IsUnimodularSol (W.baseChange A) Q) :
@@ -282,7 +276,7 @@ theorem pt_eq_pt_iff (hP : IsUnimodularSol (W.baseChange A) P)
   ptHom_eq_ptHom_iff W hP.of_baseChange hQ.of_baseChange
 
 /- English proof (translation)
-The claim follows from `Iff.trans ⟨fun e => congrArg (·.left) e, fun e => Over.OverMorphism.ext e⟩ (pt_eq_pt_iff W hP hQ)`.
+A detailed English derivation is pending.
 -/
 theorem ptOver_eq_ptOver_iff (hP : IsUnimodularSol (W.baseChange A) P)
     (hQ : IsUnimodularSol (W.baseChange A) Q) :
@@ -297,11 +291,11 @@ section Local
 variable {A : Type u} [CommRing A]
 
 /- English proof (translation)
-Establish `hr : Set.range f ⊆ Set.range (awayChart W i)`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← Scheme.Hom.coe_opensRange, opensRange_awayChart]`. Conclude with `hi.ge (Set.mem_univ x)`. Take `⟨g, hg⟩` from `Spec.map_surjective (IsOpenImmersion.lift (awayChart W i) f hr)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : f = ptHom W (g.hom.comp (awayConst W i)) (g.hom ∘ awayCoord W i) ((isUnimodularSol_awayCoord W i).map_comp g.hom)`. Rewrite using `[← SpecMap_awayChart, CommRingCat.ofHom_hom, hg, IsOpenImmersion.lift_fac]`. Establish `hρ : g.hom.comp (awayConst W i) = ρ`. Rewrite `hf` using `[e, ptHom_toSpec]`. Conclude with `congrArg (·.hom) (Spec.map_injective hf)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Substitute `hρ` using the available equality. Conclude with `⟨_, _, by simp, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_ptHom_of_preimage_eq_top (ρ : R →+* A) (f : Spec (.of A) ⟶ scheme W)
     (hf : f ≫ toSpec W = Spec.map (CommRingCat.ofHom ρ)) (i : Fin 3)
@@ -322,9 +316,9 @@ theorem exists_eq_ptHom_of_preimage_eq_top (ρ : R →+* A) (f : Spec (.of A) �
   exact ⟨_, _, by simp, e⟩
 
 /- English proof (translation)
-Establish `: ∃ i, f (IsLocalRing.closedPoint A) ∈ coordOpen W i`. Break down `(coordOpen_one_sup_coordOpen_two W).ge (Set.mem_univ (f (IsLocalRing.closedPoint A))) with h | h` into its components or cases. Use `exacts [⟨_, h⟩, ⟨_, h⟩]`. Take `⟨i, hi⟩` from `this`. Take `⟨P, h, -, e⟩` from `exists_eq_ptHom_of_preimage_eq_top W ρ f hf i (Scheme.preimage_eq_top_of_closedPoint_mem (R := .of A) f hi)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨P, h, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_ptHom [IsLocalRing A] (ρ : R →+* A) (f : Spec (.of A) ⟶ scheme W)
     (hf : f ≫ toSpec W = Spec.map (CommRingCat.ofHom ρ)) :
@@ -341,7 +335,7 @@ theorem exists_eq_ptHom [IsLocalRing A] (ρ : R →+* A) (f : Spec (.of A) ⟶ s
 variable [Algebra R A]
 
 /- English proof (translation)
-The claim follows from `exists_eq_ptHom W _ f hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_pt [IsLocalRing A] (f : Spec (.of A) ⟶ scheme W)
     (hf : f ≫ toSpec W = Spec.map (CommRingCat.ofHom (algebraMap R A))) :
@@ -349,7 +343,7 @@ theorem exists_eq_pt [IsLocalRing A] (f : Spec (.of A) ⟶ scheme W)
   exists_eq_ptHom W _ f hf
 
 /- English proof (translation)
-Take `⟨P, h, e⟩` from `exists_eq_pt W f.left (Over.w f)`. Conclude with `⟨P, h, Over.OverMorphism.ext e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_ptOver [IsLocalRing A]
     (f : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R A))) ⟶ schemeOver W) :
@@ -373,7 +367,7 @@ Both sides reduce to the same expression.
 variable (A) in
 
 /- English proof (translation)
-Introduce and unpack `⟨P⟩ ⟨Q⟩ e`. Conclude with `Quotient.sound ((unimodularSetoid_iff P Q).mpr ((ptOver_eq_ptOver_iff W P.2 Q.2).mp e))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ptClass_injective : Function.Injective (ptClass W A) := by
   rintro ⟨P⟩ ⟨Q⟩ e
@@ -382,7 +376,7 @@ theorem ptClass_injective : Function.Injective (ptClass W A) := by
 variable (A) in
 
 /- English proof (translation)
-Use `⟨ptClass_injective W A, fun f => ?_⟩` and prove the remaining obligations. Take `⟨P, h, rfl⟩` from `exists_eq_ptOver W f`. Conclude with `⟨Quotient.mk _ ⟨P, h⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ptClass_bijective [IsLocalRing A] : Function.Bijective (ptClass W A) := by
   refine ⟨ptClass_injective W A, fun f => ?_⟩
@@ -421,7 +415,7 @@ Both sides reduce to the same expression.
     (zeroOver W A).left = Spec.map (CommRingCat.ofHom (algebraMap R A)) ≫ zero W := rfl
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (SpecMap_algebraMap_zero W A)`.
+A detailed English derivation is pending.
 -/
 theorem zeroOver_eq_ptOver (A : Type u) [CommRing A] [Algebra R A] :
     zeroOver W A = ptOver W (A := A) ![0, 1, 0] (isUnimodularSol_zero _) :=
@@ -450,13 +444,13 @@ Both sides reduce to the same expression.
     ofProjectivePoint W k ⟨h⟩ = ptOver W P (.of_nonsingular h) := rfl
 
 /- English proof (translation)
-The claim follows from `(zeroOver_eq_ptOver W k).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ofProjectivePoint_zero : ofProjectivePoint W k 0 = zeroOver W k :=
   (zeroOver_eq_ptOver W k).symm
 
 /- English proof (translation)
-Introduce and unpack `@⟨⟨P⟩, hP⟩ @⟨⟨Q⟩, hQ⟩ e`. Take `⟨v, hv⟩` from `(ptOver_eq_ptOver_iff W (.of_nonsingular hQ) (.of_nonsingular hP)).mp e.symm`. Conclude with `WeierstrassCurve.Projective.Point.ext (Quotient.sound ⟨v, hv.symm⟩)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ofProjectivePoint_injective : Function.Injective (ofProjectivePoint W k) := by
   rintro @⟨⟨P⟩, hP⟩ @⟨⟨Q⟩, hQ⟩ e
@@ -468,7 +462,7 @@ def ofAffinePoint (p : (W.baseChange k).toAffine.Point) :
   ofProjectivePoint W k (WeierstrassCurve.Projective.Point.fromAffine p)
 
 /- English proof (translation)
-The claim follows from `ofProjectivePoint_zero W k`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ofAffinePoint_zero : ofAffinePoint W k 0 = zeroOver W k :=
   ofProjectivePoint_zero W k
@@ -484,7 +478,7 @@ Both sides reduce to the same expression.
 variable {k} in
 
 /- English proof (translation)
-Conclude with `congrArg (ofProjectivePoint W k) ((WeierstrassCurve.Projective.Point.toAffineAddEquiv _).symm_apply_apply p)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ofAffinePoint_toAffineLift (p : (W.baseChange k).toProjective.Point) :
     ofAffinePoint W k p.toAffineLift = ofProjectivePoint W k p := by
@@ -495,7 +489,7 @@ Conclude with `congrArg (ofProjectivePoint W k) ((WeierstrassCurve.Projective.Po
 variable {k} in
 
 /- English proof (translation)
-The claim follows from `ofAffinePoint_toAffineLift W ⟨(WeierstrassCurve.Projective.nonsingularLift_iff P).mpr h⟩`.
+A detailed English derivation is pending.
 -/
 theorem ofAffinePoint_toAffine {P : Fin 3 → k} (h : (W.baseChange k).toProjective.Nonsingular P) :
     ofAffinePoint W k (WeierstrassCurve.Projective.Point.toAffine (W.baseChange k).toProjective P) =
@@ -505,7 +499,7 @@ theorem ofAffinePoint_toAffine {P : Fin 3 → k} (h : (W.baseChange k).toProject
 variable {k} in
 
 /- English proof (translation)
-The claim follows from `h.right ▸ ofAffinePoint_toAffine W h.left`.
+A detailed English derivation is pending.
 -/
 theorem ofAffinePoint_of_represents {P : Fin 3 → k} {p : (W.baseChange k).toAffine.Point}
     (h : AddLaw.Represents (W.baseChange k).toProjective P p) :
@@ -513,7 +507,7 @@ theorem ofAffinePoint_of_represents {P : Fin 3 → k} {p : (W.baseChange k).toAf
   h.right ▸ ofAffinePoint_toAffine W h.left
 
 /- English proof (translation)
-Conclude with `(ofProjectivePoint_injective W k).comp (WeierstrassCurve.Projective.Point.toAffineAddEquiv (W.baseChange k).toProjective).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem ofAffinePoint_injective : Function.Injective (ofAffinePoint W k) := by
   classical
@@ -524,7 +518,7 @@ theorem ofAffinePoint_injective : Function.Injective (ofAffinePoint W k) := by
 variable {k K} in
 
 /- English proof (translation)
-The claim follows from `(SpecMap_pt W P (.of_nonsingular h) f).symm`.
+A detailed English derivation is pending.
 -/
 theorem ofProjectivePoint_comp_left (f : k →ₐ[R] K) {P : Fin 3 → k}
     (h : (W.baseChange k).toProjective.NonsingularLift (Quotient.mk _ P))
@@ -536,7 +530,7 @@ theorem ofProjectivePoint_comp_left (f : k →ₐ[R] K) {P : Fin 3 → k}
 variable {k K} in
 
 /- English proof (translation)
-Break down `p with _ | ⟨a, b, h⟩` into its components or cases. Use `Eq.trans ?_ (SpecMap_pt W ![0, 1, 0] (isUnimodularSol_zero _) (f.restrictScalars R)).symm` and prove the remaining obligations. Apply the tactic sequence `exact pt_congr W ![0, 1, 0] (isUnimodularSol_zero _) (by ext i; fin_cases i <;> simp) _`. Use `Eq.trans ?_ (SpecMap_pt W ![a, b, 1] (isUnimodularSol_some h.left) (f.restrictScalars R)).symm` and prove the remaining obligations. Apply the tactic sequence `exact pt_congr W ![f a, f b, 1] (isUnimodularSol_some ((W.toAffine.baseChange_nonsingular f.injective ..).mpr h).left) (by ext i; fin_cases i <;> simp) _`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ofAffinePoint_map_left [DecidableEq k] [DecidableEq K] {S : Type*} [CommRing S]
     [Algebra R S] [Algebra S k] [IsScalarTower R S k] [Algebra S K] [IsScalarTower R S K]
@@ -555,7 +549,7 @@ theorem ofAffinePoint_map_left [DecidableEq k] [DecidableEq K] {S : Type*} [Comm
 variable [(W.baseChange k).IsElliptic] [(W.baseChange K).IsElliptic]
 
 /- English proof (translation)
-Use `⟨ofProjectivePoint_injective W k, fun f => ?_⟩` and prove the remaining obligations. Take `⟨P, h, rfl⟩` from `exists_eq_ptOver W f`. Conclude with `⟨⟨(WeierstrassCurve.Projective.nonsingularLift_iff P).mpr h.nonsingular⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ofProjectivePoint_bijective : Function.Bijective (ofProjectivePoint W k) := by
   refine ⟨ofProjectivePoint_injective W k, fun f => ?_⟩
@@ -563,7 +557,7 @@ theorem ofProjectivePoint_bijective : Function.Bijective (ofProjectivePoint W k)
   exact ⟨⟨(WeierstrassCurve.Projective.nonsingularLift_iff P).mpr h.nonsingular⟩, rfl⟩
 
 /- English proof (translation)
-Conclude with `(ofProjectivePoint_bijective W k).comp (WeierstrassCurve.Projective.Point.toAffineAddEquiv (W.baseChange k).toProjective).symm.bijective`.
+A detailed English derivation is pending.
 -/
 theorem ofAffinePoint_bijective : Function.Bijective (ofAffinePoint W k) := by
   classical
@@ -592,14 +586,14 @@ Both sides reduce to the same expression.
     affinePointEquiv W k p = ofAffinePoint W k p := rfl
 
 /- English proof (translation)
-The claim follows from `(Equiv.symm_apply_eq _).mpr (ofProjectivePoint_zero W k).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projectivePointEquiv_symm_zeroOver :
     (projectivePointEquiv W k).symm (zeroOver W k) = 0 :=
   (Equiv.symm_apply_eq _).mpr (ofProjectivePoint_zero W k).symm
 
 /- English proof (translation)
-The claim follows from `(Equiv.symm_apply_eq _).mpr (ofAffinePoint_zero W k).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem affinePointEquiv_symm_zeroOver :
     (affinePointEquiv W k).symm (zeroOver W k) = 0 :=
@@ -608,7 +602,7 @@ The claim follows from `(Equiv.symm_apply_eq _).mpr (ofAffinePoint_zero W k).sym
 variable {k} in
 
 /- English proof (translation)
-The claim follows from `(Equiv.symm_apply_eq _).mpr rfl`.
+A detailed English derivation is pending.
 -/
 theorem projectivePointEquiv_symm_ptOver (P : Fin 3 → k)
     (h : IsUnimodularSol (W.baseChange k) P) :
@@ -619,7 +613,7 @@ theorem projectivePointEquiv_symm_ptOver (P : Fin 3 → k)
 variable {k} in
 
 /- English proof (translation)
-The claim follows from `(Equiv.symm_apply_eq _).mpr (ofAffinePoint_toAffine W h.nonsingular).symm`.
+A detailed English derivation is pending.
 -/
 theorem affinePointEquiv_symm_ptOver (P : Fin 3 → k) (h : IsUnimodularSol (W.baseChange k) P) :
     (affinePointEquiv W k).symm (ptOver W P h) =
@@ -629,7 +623,7 @@ theorem affinePointEquiv_symm_ptOver (P : Fin 3 → k) (h : IsUnimodularSol (W.b
 variable {k K} in
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `(affinePointEquiv W k).surjective x`. Rewrite using `[Equiv.symm_apply_apply, Equiv.symm_apply_eq]`. Conclude with `Over.OverMorphism.ext (h.trans (ofAffinePoint_map_left W f p).symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affinePointEquiv_symm_of_left_eq [DecidableEq k] [DecidableEq K] {S : Type*} [CommRing S]
     [Algebra R S] [Algebra S k] [IsScalarTower R S k] [Algebra S K] [IsScalarTower R S K]
@@ -646,7 +640,7 @@ theorem affinePointEquiv_symm_of_left_eq [DecidableEq k] [DecidableEq K] {S : Ty
 end Field
 
 /- English proof (translation)
-The claim follows from `have : IsSeparated (schemeOver W).hom := inferInstanceAs (IsSeparated (toSpec W)) over_hom_eq_iff_forall_field_algebra`.
+A detailed English derivation is pending.
 -/
 theorem hom_schemeOver_eq_iff {T : Over (Spec (.of R))} [IsReduced T.left]
     {f g : T ⟶ schemeOver W} :
@@ -656,7 +650,7 @@ theorem hom_schemeOver_eq_iff {T : Over (Spec (.of R))} [IsReduced T.left]
   over_hom_eq_iff_forall_field_algebra
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ hP hQ => pt_eq_pt_iff W hP hQ, fun A _ _ _ => ⟨ptClassEquiv W A, fun _ _ => rfl⟩, fun _ => ⟨fun k _ _ => affinePointEquiv W k, fun k _ _ => projectivePointEquiv W k, fun k _ _ => ⟨congrArg (·.left) (ofAffinePoint_zero W k), congrArg (·.left) (ofProjectivePoint_zero …`.
+Supply the required witnesses or components.
 -/
 theorem points :
     (∀ (A : Type u) [CommRing A] [Algebra R A] (P Q : Fin 3 → A)
@@ -702,7 +696,7 @@ theorem points :
       (hom_eq_iff_forall_field Y.hom ((Over.w f).trans (Over.w g).symm))⟩
 
 /- English proof (translation)
-Introduce `e`. Simplify using `using (pt_eq_pt_iff_minors _ _ _).mp e 1 2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 example : pt (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) (A := ℤ) ![0, 0, 1]
     (isUnimodularSol_some (by simp [WeierstrassCurve.baseChange])) ≠
@@ -713,7 +707,7 @@ example : pt (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) (A := ℤ) ![0, 0, 1]
   simpa using (pt_eq_pt_iff_minors _ _ _).mp e 1 2
 
 /- English proof (translation)
-The claim follows from `have : (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ).IsElliptic := ⟨Ne.isUnit (by norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈])⟩ ofAffinePoint_bijective _ k`.
+A detailed English derivation is pending.
 -/
 example (k : Type) [Field k] [Algebra ℚ k] : Function.Bijective
     (ofAffinePoint (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ) k) :=

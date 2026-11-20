@@ -2,11 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ n r B q h`. Establish `he : augmentationIdealKernel B.u = (B.GroupAlgebraKernelIdeal : Set (MonoidAlgebra B.B F.G₀))`. Establish `: B.u.D.chBar (pairGens B.u) = B.GroupAlgebraKernelIdeal`. Unfold `UniversalOrdinaryDeterminantRing.GroupAlgebraKernelIdeal UniversalOrdinaryDeterminantRing.E0gens GDet.chBar pairGens`. Rewrite using `[Set.union_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `augmentationIdealKernel`. Rewrite using `[this]`. Both sides reduce to the same expression. Use `⟨B.kap q, inferInstance, B.toKap q, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Unfold `UniversalOrdinaryDeterminantRing.toKap`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, map_eq_zero, Ideal.algebraMap_residueField_eq_zero]`. Rewrite using `[RingHom.comp_id, he]`. Conclude with `h.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.thickNonSS :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (q : PrimeSpectrum B.B), B.IsThick q → NonSS (augmentationIdealKernel B.u) (RingHom.id B.B) q.asIdeal := by

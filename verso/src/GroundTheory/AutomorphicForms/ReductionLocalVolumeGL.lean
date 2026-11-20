@@ -39,7 +39,7 @@ theorem coe_expDiag (x : Fin (m + 1) → ℝ) :
       diagPosOf ⟨fun i => Real.exp (x i), fun i => Real.exp_pos _⟩ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Units.val_mul, coe_expDiag, coe_diagPosOf, diagonal_mul_diagonal, Pi.add_apply, Real.exp_add, RCLike.ofReal_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem expDiag_add (x y : Fin (m + 1) → ℝ) :
     expDiag 𝕜 m (x + y) = expDiag 𝕜 m x * expDiag 𝕜 m y := by
@@ -51,13 +51,13 @@ theorem expDiag_add (x y : Fin (m + 1) → ℝ) :
 variable [MeasurableSpace (GL (Fin (m + 1)) 𝕜)] [BorelSpace (GL (Fin (m + 1)) 𝕜)]
 
 /- English proof (translation)
-Establish `hmeas : Measurable (expDiag 𝕜 m)` using `(expDiag 𝕜 m).continuous.measurable`. Establish `h1 : IsFiniteMeasureOnCompacts (Measure.map (expDiag 𝕜 m) (volume : Measure (Fin (m + 1) → ℝ)))`. Use `⟨fun C hC => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hmeas hC.isClosed.measurableSet]`. Rewrite using `[← (expDiag 𝕜 m).image_symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hC.image (expDiag 𝕜 m).symm.continuous).measure_lt_top`. Establish `h2 : (Measure.map (expDiag 𝕜 m) (volume : Measure (Fin (m + 1) → ℝ))).IsMulLeftInvariant`. Use `⟨fun a => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(expDiag 𝕜 m).surjective a`. Rewrite using `[Measure.map_map (measurable_const_mul _) hmeas]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun x => expDiag 𝕜 m z * x) ∘ expDiag 𝕜 m = expDiag 𝕜 m ∘ (fun x => z + x)`. Use function extensionality and compare the values at `x`. Simplify using `[expDiag_add]`. Rewrite using `[this, ← Measure.map_map hmeas (measurable_const_add z), map_add_left_eq_self]`. Establish `h3 : (Measure.map (expDiag 𝕜 m) (volume : Measure (Fin (m + 1) → ℝ))).IsOpenPosMeasure`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun U hU hne => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hmeas hU.measurableSet]`. Conclude with `(hU.preimage (expDiag 𝕜 m).continuous).measure_ne_zero volume (hne.preimage (expDiag 𝕜 m).surjective)`. Conclude with `{}`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_map_expDiag :
     (Measure.map (expDiag 𝕜 m) (volume : Measure (Fin (m + 1) → ℝ))).IsHaarMeasure := by
@@ -86,15 +86,13 @@ section Coordinates
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set x : GL (Fin n) 𝕜 := ((a' : GL (Fin n) 𝕜) * u')⁻¹ * ((a : GL (Fin n) 𝕜) * u) with hx`. Establish `hxB : x ∈ upperPosSubgroup (Fin n) 𝕜` using `mul_mem (inv_mem (mul_mem (diagPosSubgroup_le_upperPosSubgroup a'.2) (upperUnipotentSubgroup_le_upperPosSubgroup u'.2))) (mul_mem (diagPosSubgroup_le_upperPosSubgroup a.2) (upperUnipotentSubgroup_le_upperPosSubgroup u.2))`. Establish `hxK : x = Unitary.toUnits k' * (Unitary.toUnits k)⁻¹`. Rewrite using `[hx, inv_mul_eq_iff_eq_mul, ← mul_assoc, ← h, mul_inv_cancel_right]`. Establish `hxU : (x : Matrix (Fin n) (Fin n) 𝕜) ∈ unitaryGroup (Fin n) 𝕜`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxK, ← map_inv, ← map_mul]`. Conclude with `(k' * k⁻¹).2`. Establish `hx1 : x = 1` using `Units.ext (eq_one_of_mem_unitaryGroup_of_isUpperTriangular hxU hxB.1 hxB.2)`. Establish `hau : (a : GL (Fin n) 𝕜) * u = a' * u'`. Rewrite `hx1` using `[hx, inv_mul_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx1.symm`. Establish `hdiag : ∀ (c : diagPosSubgroup (Fin n) 𝕜) (v : upperUnipotentSubgroup (Fin n) 𝕜) (i : Fin n), (((c : GL (Fin n) 𝕜) * v : GL (Fin n) 𝕜) : Matrix (Fin n) (Fin n) 𝕜) i i = ((c : GL (Fin n) 𝕜) : Matrix (Fin n) (Fin n) 𝕜) i i` using `fun c v i => by`. Rewrite using `[Units.val_mul, eq_diagonal_of_mem_diagPos c.2, diagonal_mul, v.2.2 i, mul_one, diagonal_apply_eq]`. Establish `haa : a = a'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[eq_diagonal_of_mem_diagPos a.2, eq_diagonal_of_mem_diagPos a'.2]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← hdiag a u i, ← hdiag a' u' i, hau]`.
-
-Use `⟨haa, ?_⟩` and prove the remaining obligations. Substitute `haa` using the available equality. Conclude with `Subtype.ext (mul_left_cancel hau)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ANK_unique {a a' : diagPosSubgroup (Fin n) 𝕜} {u u' : upperUnipotentSubgroup (Fin n) 𝕜}
     {k k' : unitaryGroup (Fin n) 𝕜}
@@ -135,7 +133,7 @@ def unipotentPart (b : Matrix (Fin n) (Fin n) 𝕜) : StrictUpperIndex (Fin n) �
   fun p => b p.1.1 p.1.2 / b p.1.2 p.1.2
 
 /- English proof (translation)
-Establish `hdet : (b : Matrix (Fin n) (Fin n) 𝕜).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 b.isUnit).ne_zero`. Rewrite `hdet` using `[det_of_isUpperTriangular hb]`. Conclude with `Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_self_ne_zero_of_isUpperTriangular {b : GL (Fin n) 𝕜}
     (hb : (b : Matrix (Fin n) (Fin n) 𝕜).IsUpperTriangular) (i : Fin n) :
@@ -146,9 +144,9 @@ theorem apply_self_ne_zero_of_isUpperTriangular {b : GL (Fin n) 𝕜}
   exact Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ i)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_diagonal, coe_unipotentOfCoords, Matrix.add_apply, one_apply, strictUpperMatrix_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i < j`. Simplify using `only [hij, h, if_false, dite_true, zero_add, unipotentPart]`. Rewrite using `[div_mul_cancel₀ _ (apply_self_ne_zero_of_isUpperTriangular hb j)]`. Simplify using `only [hij, h, if_false, dite_false, add_zero, zero_mul]`. Conclude with `(hb (lt_of_le_of_ne (not_lt.1 h) (Ne.symm hij))).symm`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unipotentOfCoords_unipotentPart_mul {b : GL (Fin n) 𝕜}
     (hb : (b : Matrix (Fin n) (Fin n) 𝕜).IsUpperTriangular) :
@@ -179,17 +177,13 @@ def phaseUnitary (τ : Fin n → 𝕜) (hτ : ∀ i, τ i ≠ 0) : unitaryGroup 
 variable [MeasurableSpace (GL (Fin n) 𝕜)] [BorelSpace (GL (Fin n) 𝕜)]
 
 /- English proof (translation)
-Establish `hb0` using `apply_self_ne_zero_of_isUpperTriangular hb`. Use `set ar : PosDiag (Fin n) := ⟨fun i => ‖(b : Matrix (Fin n) (Fin n) 𝕜) i i‖ * r.1 i, fun i => mul_pos (norm_pos_iff.2 (hb0 i)) (r.2 i)⟩ with har`. Use `set a : diagPosSubgroup (Fin n) 𝕜 := diagPosHomeomorph ar with ha`. Use `set nU : upperUnipotentSubgroup (Fin n) 𝕜 := unipotentCoordsHomeomorph (unipotentPart (b : Matrix (Fin n) (Fin n) 𝕜)) with hnU`. Use `set φ := phaseUnitary (fun i => (b : Matrix (Fin n) (Fin n) 𝕜) i i) hb0 with hφ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, diagConj a⁻¹ nU, φ * k₀, ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hkey : b * diagPosOf r = (nU : GL (Fin n) 𝕜) * (a : GL (Fin n) 𝕜) * Unitary.toUnits φ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul, hnU, coe_unipotentCoordsHomeomorph, ha, coe_diagPosHomeomorph, coe_diagPosOf, coe_diagPosOf, Unitary.val_toUnits_apply, show ((φ : unitaryGroup (Fin n) 𝕜) : Matrix (Fin n) (Fin n) 𝕜) = diagonal fun i => (b : Matrix (Fin n) (Fin n) 𝕜) …`. Use `conv_lhs => rw [← unipotentOfCoords_unipotentPart_mul hb]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, mul_assoc, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Establish `h0 : (‖(b : Matrix (Fin n) (Fin n) 𝕜) i i‖ : 𝕜) ≠ 0`. Conclude with `(norm_pos_iff.2 (hb0 i)).ne'` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[har]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hkey, map_mul]`. Express the relevant statement in the definitionally equal form `(nU : GL (Fin n) 𝕜) * (a : GL (Fin n) 𝕜) * Unitary.toUnits φ * Unitary.toUnits k₀ = (a : GL (Fin n) 𝕜) * ((a : GL (Fin n) 𝕜)⁻¹ * (nU : GL (Fin n) 𝕜) * (a : GL (Fin n) 𝕜)⁻¹⁻¹) * (Unitary.toUnits φ * Unitary.toUnits k₀)`.
-
-Use `group`. Rewrite using `[ha, coe_diagPosHomeomorph, coe_diagPosOf, diagonal_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_diagConj, coe_diagConj]`. Simplify using `only [Subgroup.coe_inv]`.
-
-Use `group`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ANK_of_siegel {b : GL (Fin n) 𝕜} (hb : (b : Matrix (Fin n) (Fin n) 𝕜).IsUpperTriangular)
     (r : PosDiag (Fin n)) (k₀ : unitaryGroup (Fin n) 𝕜) :
@@ -239,7 +233,7 @@ theorem exists_ANK_of_siegel {b : GL (Fin n) 𝕜} (hb : (b : Matrix (Fin n) (Fi
 end Coordinates
 
 /- English proof (translation)
-Establish `h : star (k : Matrix (Fin n) (Fin n) 𝕜) * k = 1` using `k.2.1`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[det_mul, det_one, star_eq_conjTranspose, det_conjTranspose, RCLike.star_def, RCLike.conj_mul]`. Establish `h3 : ‖(k : Matrix (Fin n) (Fin n) 𝕜).det‖ ^ 2 = 1` using `by exact_mod_cast h2`. Use polynomial arithmetic with `[norm_nonneg (k : Matrix (Fin n) (Fin n) 𝕜).det]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_det_unitary {n : ℕ} (k : unitaryGroup (Fin n) 𝕜) :
     ‖(k : Matrix (Fin n) (Fin n) 𝕜).det‖ = 1 := by
@@ -251,7 +245,7 @@ theorem norm_det_unitary {n : ℕ} (k : unitaryGroup (Fin n) 𝕜) :
   nlinarith [norm_nonneg (k : Matrix (Fin n) (Fin n) 𝕜).det]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, det_mul, det_mul, norm_mul, norm_mul, det_of_isUpperTriangular hb, coe_diagPosOf, det_diagonal, Unitary.val_toUnits_apply, norm_det_unitary, mul_one, norm_prod, norm_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[RCLike.norm_ofReal, abs_of_pos (r.2 i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_det_siegel {n : ℕ} {b : GL (Fin n) 𝕜}
     (hb : (b : Matrix (Fin n) (Fin n) 𝕜).IsUpperTriangular) (r : PosDiag (Fin n))
@@ -272,21 +266,17 @@ def chamberGL (t : ℝ) : Set (GL (Fin (m + 1)) 𝕜) :=
   (fun r => diagPosOf r) '' {r : PosDiag (Fin (m + 1)) | ∀ l : Fin m, t * r.1 l.succ ≤ r.1 l.castSucc}
 
 /- English proof (translation)
-Use `set C : Set (GL (Fin (m + 1)) 𝕜) := {g | ∀ i j, (g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i j = if i = j then ((RCLike.re ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i i) : ℝ) : 𝕜) else 0} ∩ {g | ∀ i, 0 ≤ RCLike.re ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i i)} ∩ {g | ∀ l : F …`. Establish `hent : ∀ i j, Continuous fun g : GL (Fin (m + 1)) 𝕜 => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i j` using `fun i j => (continuous_apply_apply i j).comp (Units.continuous_val (M := Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜))`. Establish `hCc : IsClosed C`. Use `IsClosed.inter (IsClosed.inter ?_ ?_) ?_` and prove the remaining obligations. Simplify using `only [setOf_forall]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq (hent i j) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `RCLike.continuous_ofReal.comp (RCLike.continuous_re.comp (hent i i))`. Conclude with `continuous_const`. Simplify using `only [setOf_forall]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `isClosed_iInter fun i => isClosed_le continuous_const (RCLike.continuous_re.comp (hent i i))`. Simplify using `only [setOf_forall]`. Conclude with `isClosed_iInter fun l => isClosed_le (continuous_const.mul (RCLike.continuous_re.comp (hent _ _))) (RCLike.continuous_re.comp (hent _ _))`. Use `hCc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`. Use `⟨⟨fun i j => ?_, fun i => ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_diagPosOf, diagonal_apply] split_ifs with h`. Substitute `h` using the available equality.
+Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using `using (r.2 i).le`. Simplify using `using hr l`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩ set d : Fin (m + 1) → ℝ := fun i => RCLike.re ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i i)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : (g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) = diagonal fun i => (d i : 𝕜)`. Use extensionality with `i j`. Rewrite using `[h1 i j, diagonal_apply]`. Establish `hdet : (g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`. Rewrite `hdet` using `[hg, det_diagonal]`.
-
-Establish `hd : ∀ i, 0 < d i` using `fun i => lt_of_le_of_ne (h2 i) (fun h => by`. Apply `Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ i)` to reduce the goal to its premises. Rewrite using `[← h]`. Use the proof step `simp)`. Use `⟨⟨d, hd⟩, fun l => h3 l, Units.ext ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[coe_diagPosOf, hg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_chamberGL (t : ℝ) : IsClosed (chamberGL (𝕜 := 𝕜) (m := m) t) := by
   set C : Set (GL (Fin (m + 1)) 𝕜) :=
@@ -345,13 +335,13 @@ def siegelGL (ω : Set (GL (Fin (m + 1)) 𝕜)) (t c₁ c₂ : ℝ) : Set (GL (F
 
 open scoped Pointwise in
 /- English proof (translation)
-Establish `hdet : Continuous fun g : GL (Fin (m + 1)) 𝕜 => ‖(g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜).det‖` using `(Continuous.matrix_det (Units.continuous_val (M := Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜))).norm`. Use `set Kset : Set (GL (Fin (m + 1)) 𝕜) := Set.range fun k : unitaryGroup (Fin (m + 1)) 𝕜 => Unitary.toUnits k`. Establish `hK : IsCompact Kset` using `isCompact_range continuous_unitary_toUnits`. Establish `h1 : IsClosed (ω * chamberGL (𝕜` using `𝕜) (m := m) t) := (isClosed_chamberGL t).smul_left_of_isCompact hω`. Establish `h2 : IsClosed ((ω * chamberGL (𝕜` using `𝕜) (m := m) t) * Kset) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (ω * chamberGL (𝕜` using `𝕜) (m := m) t) * Kset = (Kset⁻¹ * (ω * chamberGL (𝕜 := 𝕜) (m := m) t)⁻¹)⁻¹ := by`. Rewrite using `[_root_.mul_inv_rev, inv_inv, inv_inv]`. Rewrite using `[this]`. Conclude with `(h1.inv.smul_left_of_isCompact hK.inv).inv`. Establish `: siegelGL ω t c₁ c₂ = {g : GL (Fin (m + 1)) 𝕜 | c₁ ≤ ‖(g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜).det‖} ∩ {g : GL (Fin (m + 1)) 𝕜 | ‖(g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜).det‖ ≤ c₂} ∩ ((ω * chamberGL (𝕜` using `𝕜) (m := m) t) * Kset) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb, b, hbω, r, hr, k, rfl⟩`. Conclude with `⟨⟨ha, hb⟩, _, ⟨b, hbω, _, ⟨r, hr, rfl⟩, rfl⟩, _, ⟨k, rfl⟩, rfl⟩`. Introduce and unpack `⟨⟨ha, hb⟩, _, ⟨b, hbω, _, ⟨r, hr, rfl⟩, rfl⟩, _, ⟨k, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ha, hb, b, hbω, r, hr, k, rfl⟩`. Rewrite using `[this]`. Conclude with `((isClosed_le continuous_const hdet).inter (isClosed_le hdet continuous_const)).inter h2`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_siegelGL {ω : Set (GL (Fin (m + 1)) 𝕜)} (hω : IsCompact ω) (t c₁ c₂ : ℝ) :
     IsClosed (siegelGL ω t c₁ c₂) := by
@@ -381,53 +371,45 @@ theorem isClosed_siegelGL {ω : Set (GL (Fin (m + 1)) 𝕜)} (hω : IsCompact ω
   exact ((isClosed_le continuous_const hdet).inter (isClosed_le hdet continuous_const)).inter h2
 
 /- English proof (translation)
-Establish `hent : ∀ i j, Continuous fun g : GL (Fin (m + 1)) 𝕜 => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i j` using `fun i j => (continuous_apply_apply i j).comp (Units.continuous_val (M := Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜))`. Establish `hb0 : ∀ b ∈ ω, ∀ i, (b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i i ≠ 0` using `fun b hb i => apply_self_ne_zero_of_isUpperTriangular (hωB b hb) i`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM0, hM⟩ : ∃ M : ℝ, 0 < M ∧ ∀ b ∈ ω, ∀ l : Fin m, ‖(b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.succ l.succ‖ ≤ M * ‖(b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.castSucc l.castSucc‖ := by`. Establish `hcont : ContinuousOn (fun b : GL (Fin (m + 1)) 𝕜 => ∑ l : Fin m, ‖(b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.succ l.succ‖ / ‖(b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.castSucc l.castSucc‖) ω` using `continuousOn_finset_sum _ fun l _ => ContinuousOn.div (hent _ _).norm.continuousOn (hent _ _).norm.continuousOn fun b hb => norm_ne_zero_iff.2 (hb0 b hb _)`. Take `⟨B, hB⟩` from `hω.exists_bound_of_continuousOn hcont`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨max B 1, lt_of_lt_of_le one_pos (le_max_right _ _), fun b hb l => ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < ‖(b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.castSucc l.castSucc‖` using `norm_pos_iff.2 (hb0 b hb _)`. Rewrite using `[← div_le_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Use `set s : ℝ := t / M with hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hs0 : 0 < s` using `div_pos ht hM0`. Use `set Vset : Set (StrictUpperIndex (Fin (m + 1)) → 𝕜) := (fun b : GL (Fin (m + 1)) 𝕜 => unipotentPart (b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜)) '' ω with hVset`. Establish `hVc : IsCompact Vset` using `hω.image_of_continuousOn (continuousOn_pi.2 fun p => ContinuousOn.div (hent _ _).continuousOn (hent _ _).continuousOn fun b hb => hb0 b hb _)`. Use `set Nc : Set (upperUnipotentSubgroup (Fin (m + 1)) 𝕜) := unipotentCoordsHomeomorph '' Vset with hNc`. Establish `hNcc : IsCompact Nc` using `hVc.image unipotentCoordsHomeomorph.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNcm : MeasurableSet Nc` using `hNcc.isClosed.measurableSet`. Use `set R : Set (diagPosSubgroup (Fin (m + 1)) 𝕜) := {a | (∀ l : Fin m, s * RCLike.re (((a : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.succ l.succ) ≤ RCLike.re (((a : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.castSucc l.castSucc)) ∧ c₁ ≤ ∏ i, R …`. Establish `hentA : ∀ i j, Continuous fun a : diagPosSubgroup (Fin (m + 1)) 𝕜 => RCLike.re (((a : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i j)` using `fun i j => RCLike.continuous_re.comp ((hent i j).comp continuous_subtype_val)`. Establish `hRc : IsClosed R`. Rewrite using `[hR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.setOf_and]`. Use `IsClosed.inter ?_ (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Simplify using `only [setOf_forall]`. Conclude with `isClosed_iInter fun l => isClosed_le (continuous_const.mul (hentA _ _)) (hentA _ _)`. Conclude with `isClosed_le continuous_const (continuous_finsetProd _ fun i _ => hentA i i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `isClosed_le (continuous_finsetProd _ fun i _ => hentA i i) continuous_const`. Establish `hRm : MeasurableSet R` using `hRc.measurableSet`. Establish `hpt : ∀ (a : diagPosSubgroup (Fin (m + 1)) 𝕜) (u : upperUnipotentSubgroup (Fin (m + 1)) 𝕜) (k : unitaryGroup (Fin (m + 1)) 𝕜), (siegelGL ω t c₁ c₂).indicator (1 : GL (Fin (m + 1)) 𝕜 → ℝ≥0∞) ((a : GL (Fin (m + 1)) 𝕜) * (u : GL (Fin (m + 1)) 𝕜) * Unitary.toUnits k) ≤ R.indicator (1 …`. Introduce `a u k`. Distinguish the cases in `hS : (a : GL (Fin (m + 1)) 𝕜) * (u : GL (Fin (m + 1)) 𝕜) * Unitary.toUnits k ∈ siegelGL ω t c₁ c₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `swap`. Rewrite using `[indicator_of_notMem hS]`. Conclude with `zero_le`. Take `⟨hd1, hd2, b, hbω, r, hr, k₀, hg⟩` from `hS`. Take `⟨a', u', k', heq', hdiag', hconj'⟩` from `exists_ANK_of_siegel (hωB b hbω) r k₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨rfl, rfl⟩` from `ANK_unique (hg.trans heq')`. Establish `hre : ∀ i, RCLike.re (((a : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i i) = ‖(b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i i‖ * r.1 i` using `fun i => by`. Rewrite using `[hdiag' i, RCLike.ofReal_re]`. Establish `hdet` using `norm_det_siegel (hωB b hbω) r k₀`. Rewrite `hd1`, `hd2` using `[hg, hdet]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `haR : a ∈ R`. Use `⟨fun l => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hre, hre]`. Establish `h1` using `hM b hbω l`. Establish `h2` using `hr l`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb1 : 0 ≤ ‖(b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.castSucc l.castSucc‖` using `norm_nonneg _`. Establish `hr1` using `(r.2 l.succ).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `_ ≤ ‖(b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) l.castSucc l.castSucc‖ * r.1 l.castSucc := mul_le_mul_of_nonneg_left h2 hb1`. Simplify using `only [hre]`. Conclude with `hd1`. Simplify using `only [hre]`. Conclude with `hd2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnc : diagConj a u ∈ Nc`. Rewrite using `[hconj']`. Conclude with `⟨_, ⟨b, hbω, rfl⟩, rfl⟩`. Rewrite using `[indicator_of_mem (show _ ∈ siegelGL ω t c₁ c₂ from ⟨by rw [hg, hdet]; exact hd1, by rw [hg, hdet]; exact hd2, b, hbω, r, hr, k₀, hg⟩), indicator_of_mem haR, indicator_of_mem hnc]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `set μK : Measure (unitaryGroup (Fin (m + 1)) 𝕜) := Measure.haar with hμK`. Use `set μN : Measure (upperUnipotentSubgroup (Fin (m + 1)) 𝕜) := Measure.haar with hμN`. Use `haveI := isHaarMeasure_map_expDiag (𝕜 := 𝕜) (m := m)`. Use `set μA : Measure (diagPosSubgroup (Fin (m + 1)) 𝕜) := Measure.map (expDiag 𝕜 m) (volume : Measure (Fin (m + 1) → ℝ)) with hμA`. Take `⟨c, -, hc⟩` from `hANK μK μA μN`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hSm : MeasurableSet (siegelGL ω t c₁ c₂)` using `(isClosed_siegelGL hω t c₁ c₂).measurableSet`. Rewrite using `[← lintegral_indicator_one hSm, hc _ (measurable_one.indicator hSm)]`. Use `ENNReal.mul_lt_top ENNReal.coe_lt_top ?_` and prove the remaining obligations. Establish `hK : μK univ < ⊤` using `isCompact_univ.measure_lt_top`. Establish `hNcfin : μN Nc < ⊤` using `hNcc.measure_lt_top`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `set δi : diagPosSubgroup (Fin (m + 1)) 𝕜 → ℝ≥0∞ := fun a => ((iwasawaDelta (a : GL (Fin (m + 1)) 𝕜) : ℝ≥0∞))⁻¹ with hδi`. Establish `hinner : ∀ a : diagPosSubgroup (Fin (m + 1)) 𝕜, ∫⁻ u, ∫⁻ k, (siegelGL ω t c₁ c₂).indicator (1 : GL (Fin (m + 1)) 𝕜 → ℝ≥0∞) ((a : GL (Fin (m + 1)) 𝕜) * (u : GL (Fin (m + 1)) 𝕜) * Unitary.toUnits k) ∂μK ∂μN ≤ μK univ * μN Nc * R.indicator δi a`. Introduce `a`. Establish `hpre : μN (diagConj a ⁻¹' Nc) = δi a * μN Nc`. Rewrite using `[← Measure.map_apply (continuous_diagConj a).measurable hNcm, map_diagConj_haar, Measure.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const]`. Simplify using `only [indicator, mem_preimage, Pi.one_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = (R.indicator (1 : diagPosSubgroup (Fin (m + 1)) 𝕜 → ℝ≥0∞) a * μK univ) * μN (diagConj a ⁻¹' Nc) := by`. Rewrite using `[lintegral_const_mul _ (measurable_one.indicator (hNcm.preimage (continuous_diagConj a).measurable)), lintegral_indicator_one (hNcm.preimage (continuous_diagConj a).measurable)]`. Use `_ = μK univ * μN Nc * R.indicator δi a := by`. Rewrite using `[hpre]`. Simplify using `only [indicator, Pi.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> ring`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_const_mul _ (Measurable.indicator ?_ hRm)` and prove the remaining obligations. Conclude with `(ENNReal.continuous_coe.comp continuous_iwasawaDelta_diagPos).measurable.inv`. Use `_ < ⊤ := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ENNReal.mul_lt_top (ENNReal.mul_lt_top hK hNcfin) ?_` and prove the remaining obligations. Establish `hmeasF : Measurable (R.indicator δi)` using `(ENNReal.continuous_coe.comp continuous_iwasawaDelta_diagPos).measurable.inv.indicator hRm`. Establish `he : (1 : ℝ) ≤ (Module.finrank ℝ 𝕜 : ℝ)` using `Nat.one_le_cast.2 Module.finrank_pos`. Rewrite using `[hμA, lintegral_map hmeasF (expDiag 𝕜 m).continuous.measurable]`. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) (lintegral_chamber_lt_top m he (Real.log s) (Real.log c₁) (Real.log c₂))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : expDiag 𝕜 m x ∈ R`. Establish `hre : ∀ i, RCLike.re ((((expDiag 𝕜 m x : diagPosSubgroup (Fin (m + 1)) 𝕜) : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) i i) = Real.exp (x i)` using `fun i => by rw [coe_expDiag, coe_diagPosOf, diagonal_apply_eq, RCLike.ofReal_re]`. Establish `hx'` using `hx`. Take `⟨h1, h2, h3⟩` from `hx`. Simplify using `only [hre] at h1 h2 h3`.
-
-Rewrite `h2`, `h3` using `[← Real.exp_sum]`. Establish `hc₂ : 0 < c₂` using `lt_of_lt_of_le (Real.exp_pos _) h3`. Establish `hmem : x ∈ {x : Fin (m + 1) → ℝ | (∀ l : Fin m, Real.log s ≤ x l.castSucc - x l.succ) ∧ Real.log c₁ ≤ ∑ i, x i ∧ ∑ i, x i ≤ Real.log c₂}`. Use `⟨fun l => ?_, (Real.log_le_iff_le_exp hc₁).2 h2, (Real.le_log_iff_exp_le hc₂).2 h3⟩` and prove the remaining obligations. Rewrite using `[Real.log_le_iff_le_exp hs0, Real.exp_sub, le_div_iff₀ (Real.exp_pos _)]`.
-
-Conclude with `h1 l`. Rewrite using `[indicator_of_mem hx', indicator_of_mem hmem]`. Apply `le_of_eq` to reduce the goal to its premises. Rewrite using `[hδi]`. Simplify using `only`.
-
-Rewrite using `[coe_expDiag]`. Establish `hD : ((iwasawaDelta (diagPosOf ⟨fun i => Real.exp (x i), fun i => Real.exp_pos _⟩ : GL (Fin (m + 1)) 𝕜) : ℝ)) = Real.exp ((Module.finrank ℝ 𝕜 : ℝ) * ∑ p : StrictUpperIndex (Fin (m + 1)), (x p.1.1 - x p.1.2))`. Rewrite using `[iwasawaDelta_diagPosOf, Finset.mul_sum, Real.exp_sum]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_sub, ← Real.exp_nat_mul]`.
-
-Rewrite using `[← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_inv_of_pos (by rw [hD]; exact Real.exp_pos _), hD, ← Real.exp_neg]`. Rewrite using `[indicator_of_notMem hx]`. Conclude with `zero_le`.
+A detailed English derivation is pending.
 -/
 theorem measure_siegelGL_lt_top [MeasurableSpace (unitaryGroup (Fin (m + 1)) 𝕜)]
     [BorelSpace (unitaryGroup (Fin (m + 1)) 𝕜)] (μ : Measure (GL (Fin (m + 1)) 𝕜))

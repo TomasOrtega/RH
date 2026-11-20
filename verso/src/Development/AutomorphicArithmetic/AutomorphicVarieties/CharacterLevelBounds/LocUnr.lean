@@ -10,15 +10,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Introduce `hl`. Establish `hg : ((Nat.gcd p l : ℕ) : ℤ) = (p : ℤ) * Nat.gcdA p l + (l : ℤ) * Nat.gcdB p l` using `Nat.gcd_eq_gcd_ab p l`. Rewrite `hg` using `[h.gcd_eq_one, Nat.cast_one]`. Establish `hΩ : (1 : Ω) = (p : Ω) * ((Nat.gcdA p l : ℤ) : Ω) + (l : Ω) * ((Nat.gcdB p l : ℤ) : Ω)`. Use `congrArg (fun z : ℤ => (z : Ω)) hg` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hint : ∀ z : ℤ, A.valuation (z : Ω) ≤ 1` using `fun z => A.valuation_le_one ⟨(z : Ω), intCast_mem A z⟩`. Establish `h1 : A.valuation ((p : Ω) * ((Nat.gcdA p l : ℤ) : Ω)) < 1`. Rewrite using `[Valuation.map_mul]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hint _`. Use `_ < 1 := by rw [mul_one]; exact hp`. Establish `h2 : A.valuation ((l : Ω) * ((Nat.gcdB p l : ℤ) : Ω)) < 1`. Rewrite using `[Valuation.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hint _`. Use `_ < 1 := by rw [mul_one]; exact hl`. Establish `h3` using `Valuation.map_add_lt A.valuation h1 h2`. Rewrite `h3` using `[← hΩ, Valuation.map_one]`.
-
-Conclude with `lt_irrefl _ h3`.
+A detailed English derivation is pending.
 -/
 private theorem not_both {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {p l : ℕ} (h : Nat.Coprime p l)
     (hp : A.valuation (p : Ω) < 1) : ¬ A.valuation (l : Ω) < 1 := by
@@ -47,43 +45,39 @@ private theorem not_both {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {p l :
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ _ _ _ e n ψ he hn hopen hpow p A hp hpl hAp U' U h hU' hU`. Substitute `hU' hU` using the available equality. Take `⟨hnorm, _, γ, hγ, hcl, hcyc⟩` from `decCyc Ω p A hp hAp`. Use `haveI := hnorm`. Take `⟨_, hζ, heOtop, hchar⟩` from `rootVal l O n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hchar`. Establish `hlprime : l.Prime` using `Fact.out`. Establish `hlA : ¬ A.valuation (l : Ω) < 1` using `not_both A ((Nat.coprime_primes hp hlprime).2 hpl) hAp`. Establish `hIneCyc : Ine (F` using `ℚ) A ≤ (cycZ ℚ Ω l).ker := (places ℚ Ω l A).2.2.2 hlA`. Establish `hcont : ContAction (rho l e ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : IsOpen ((ψ⁻¹).ker : Set (G ℚ Ω))`. Establish `hkk : (ψ⁻¹).ker = ψ.ker`. Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[hkk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hopen`. Conclude with `(contTw ℚ Ω l).2.2 O ψ⁻¹ (-(e : ℤ)) hk`. Establish `hK` using `kerResCyc O (G ℚ Ω) (QO l O) (rho l e ψ) hcont (Ine (F := ℚ) A) (Dec (F := ℚ) A) h γ hγ hcl`. Establish `hact : ∀ g m, rho l e ψ g m = (((ψ g)⁻¹ * (chiO ℚ Ω l O g) ^ (-(e : ℤ)) : Oˣ) : O) • m`. Introduce `g m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[rho, twist₂, scalRep_apply]`. Both sides reduce to the same expression. Establish `hchiIne : ∀ g ∈ Ine (F` using `ℚ) A, chiO ℚ Ω l O g = 1 := by`. Introduce `g hg`. Establish `h1 : cycZ ℚ Ω l g = 1` using `hIneCyc hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[chiO, h1]`. Establish `hchiγ : ((chiO ℚ Ω l O γ : Oˣ) : O) = (p : O)`. Establish `h1` using `hcyc l hpl.symm`. Use `show algebraMap ℤ_[l] O ((cycZ ℚ Ω l γ : ℤ_[l]ˣ) : ℤ_[l]) = (p : O)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `map_natCast (algebraMap ℤ_[l] O) p`. Establish `hψn : ∀ g, (ψ g) ^ n = 1`. Introduce `g`. Use `congrArg (fun f => f g) hpow` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Ine (F` using `ℚ) A ≤ ψ.ker → Function.Injective (resU (rho l e ψ) h) := by`. Introduce `hker`. Apply `hK.2` to reduce the goal to its premises. Introduce `m _`. Use `set c : Oˣ := (ψ γ)⁻¹ * (chiO ℚ Ω l O γ) ^ (-(e : ℤ)) with hcdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hc1 : (c : O) - 1 ≠ 0`. Introduce `h0`. Establish `hcU : c = 1` using `Units.ext (sub_eq_zero.mp h0)`. Establish `h2 : c ^ n = 1` using `by rw [hcU, one_pow]`. Establish `key : (chiO ℚ Ω l O γ) ^ (e * n) = (c ^ n)⁻¹`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcdef, mul_pow, inv_pow, hψn γ, inv_one, one_mul, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[h2, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hv` using `congrArg (fun u : Oˣ => (u : O)) key`. Simplify using `only [Units.val_pow_eq_pow_val, hchiγ, Units.val_one] at hv`. Establish `hv' : ((p ^ (e * n) : ℕ) : O) = ((1 : ℕ) : O)` using `by push_cast; exact hv`. Establish `hnat` using `Nat.cast_injective hv'`. Conclude with `absurd hnat (Nat.one_lt_pow (Nat.mul_ne_zero he hn) hp.one_lt).ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m', hm'⟩` from `(qoFacts l O).2.2.1 ((c : O) - 1) hc1 m`. Use `⟨m', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[H0U, mem_riemannRochSpace_iff_regularAt_everywhere]`. Introduce `g`. Rewrite using `[MonoidHom.comp_apply, Subgroup.coe_subtype, hact, hchiIne g g.2, hker g.2]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[hact, ← hm', sub_smul, one_smul]`. Use `⟨?_, hinj⟩` and prove the remaining obligations. Distinguish the cases in `hker : Ine (F := ℚ) A ≤ ψ.ker`. Establish `hbot : LinearMap.ker (resU (rho l e ψ) h) = ⊥` using `LinearMap.ker_eq_bot.mpr (hinj hker)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hbot]`. Simplify using the standard rewrite rules. Take `⟨g, hg, hgk⟩` from `SetLike.not_le_iff_exists.mp hker set ζ : O := (((ψ g)⁻¹ : Oˣ) : O) with hζdef`. Establish `hζn : ζ ^ n = 1`. Rewrite using `[hζdef, ← Units.val_pow_eq_pow_val, inv_pow, hψn g, inv_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hζ1 : ζ ≠ 1`. Introduce `h1`. Apply `hgk` to reduce the goal to its premises. Rewrite using `[MonoidHom.mem_ker]`. Establish `: ((ψ g)⁻¹ : Oˣ) = 1` using `Units.ext h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inv_eq_one.mp this`. Establish `hsub : H0U (rho l e ψ) (Ine (F` using `ℚ) A) ≤ ((ζ - 1) • LinearMap.id : QO l O →ₗ[O] QO l O).ker := by`. Introduce `m hm`. Rewrite `hm` using `[H0U, mem_riemannRochSpace_iff_regularAt_everywhere]`. Establish `h1` using `hm ⟨g, hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[MonoidHom.comp_apply, Subgroup.coe_subtype, hact, hchiIne g hg]`. Simplify using `only [one_zpow, mul_one] at h1`. Rewrite using `[LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, sub_smul, one_smul, hζdef, h1, sub_self]`. Establish `hbound : Module.length O (H0U (rho l e ψ) (Ine (F` using `ℚ) A)) ≤ (n.factorization l : ℕ∞) * eO l O := by`. Use `(Module.length_le_of_injective (Submodule.inclusion hsub) (Submodule.inclusion_injective hsub)).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[(qoFacts l O).2.2.2]`. Conclude with `hζ ζ hζn hζ1`. Establish `hfin : Module.length O (H0U (rho l e ψ) (Ine (F` using `ℚ) A)) ≠ ⊤ := ne_top_of_le_ne_top (WithTop.mul_ne_top (ENat.coe_ne_top _) heOtop) hbound`. Establish `hmono : H0U (rho l e ψ) (Dec (F` using `ℚ) A) ≤ H0U (rho l e ψ) (Ine (F := ℚ) A) := by`. Introduce `m hm`.
-
-Rewrite `hm`, the goal using `[H0U, mem_riemannRochSpace_iff_regularAt_everywhere]`. Introduce `g`. Conclude with `hm ⟨g, h g.2⟩`. Conclude with `(hK.1 hfin).trans ((Module.length_le_of_injective (Submodule.inclusion hmono) (Submodule.inclusion_injective hmono)).trans hbound)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.locUnr :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (e n : ℕ) (ψ : G ℚ Ω →* Oˣ), e ≠ 0 → n ≠ 0 → IsOpen (ψ.ker : Set (G ℚ Ω)) → ψ ^ n = 1 →

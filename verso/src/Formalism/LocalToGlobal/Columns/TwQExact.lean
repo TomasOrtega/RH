@@ -19,7 +19,7 @@ def FrExact (q : QLoc hc n Q Θ) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af 
   decoOf ST SG x = p.deco ∧ ∀ P : Q, q.at P x = bc (q.phi P) (qGL n (p.fr P))
 
 /- English proof (translation)
-Use `⟨h.1, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[h.2 P, inv_mul_cancel]`. Conclude with `(q.U P).one_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FrExact.over {q : QLoc hc n Q Θ} {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {p : DecoF E n ST SG Q} (h : FrExact q x p) :
     FrOver q x p := by
@@ -28,13 +28,11 @@ theorem FrExact.over {q : QLoc hc n Q Θ} {x : GL (Fin n) (E ⊗[F] Formalism.L2
   exact (q.U P).one_mem
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨ptOf hc n ST SG p.deco, decoOf_ptOf hc n ST SG hS p.deco, fun P hP => absurd hP (Finset.notMem_empty P)⟩`. Consider the case `insert P S hPS ih`. Take `⟨x, hx, hxS⟩` from `ih`. Take `⟨κ, hκU, hκS, hκ⟩` from `qdf_lift q P _ (qdf_frLat q x p hx P)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hput : rll_put n (qv F P.1) κ⁻¹ ∈ K1 hc n ST SG` using `put_mem_kOne_of_not_over ST SG (fun P' hP' => hQ.off P P' (Or.inl hP')) (fun P' hP' => hQ.off P P' (Or.inr hP')) (rll_put_mem_UAd hc n (qv F P.1) (qdf_inv_mem_UPts hκU)) (qdf_inv_mem_stab hκS)`. Establish `hputU : rll_put n (qv F P.1) κ⁻¹ ∈ UAd hc n` using `rll_put_mem_UAd hc n (qv F P.1) (qdf_inv_mem_UPts hκU)`. Use `⟨x * ⟨_, hputU⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show decoOf ST SG ((x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * rll_put n (qv F P.1) κ⁻¹) = _`. Rewrite using `[decoration_mul_principal hc n ST SG _ hput, hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P' hP' show q.at P' ((x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * rll_put n (qv F P.1) κ⁻¹) = _`. Break down `Finset.mem_insert.1 hP' with rfl | hP'` into its components or cases. Rewrite using `[qdf_at_put_self, map_inv, hκ] group`. Establish `hne : qv F P'.1 ≠ qv F P.1` using `fun h => hPS (hQ.inj P' P h ▸ hP')`. Rewrite using `[qdf_at_put_ne q P' _ _ hne]`.
-
-Conclude with `hxS P' hP'`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adelic_point_of_local_frames_exact (hS : DecoPtSurj hc n ST SG) (hQ : QOff (F := F) ST SG Q) (q : QLoc hc n Q Θ)
     (p : DecoF E n ST SG Q) (S : Finset Q) :
@@ -64,7 +62,7 @@ theorem exists_adelic_point_of_local_frames_exact (hS : DecoPtSurj hc n ST SG) (
         exact hxS P' hP'
 
 /- English proof (translation)
-Take `⟨x, h1, h2⟩` from `exists_adelic_point_of_local_frames_exact hS hQ q p Finset.univ`. Conclude with `⟨x, h1, fun P => h2 P (Finset.mem_univ P)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qdf_surj_exact (hS : DecoPtSurj hc n ST SG) (hQ : QOff (F := F) ST SG Q) (q : QLoc hc n Q Θ) (p : DecoF E n ST SG Q) :
     ∃ x : UAd hc n, FrExact q x.1 p := by

@@ -29,11 +29,11 @@ def DblPerm : Prop :=
       doubleRowFormSum E a b (x ∘ π) = doubleRowFormSum E a b x
 
 /- English proof (translation)
-Introduce `A _ _ n t E hE a b u`. Establish `hx : (fun k : Fin t => u - (t : ℂ) + 1 + ((k : ℕ) : ℂ)) ∘ (Fin.revPerm : Equiv.Perm (Fin t)) = fun k : Fin t => u - (k : ℂ)`. Use function extensionality and compare the values at `k`. Establish `hk : (k : ℕ) + 1 ≤ t` using `k.isLt`. Simplify using `only [Function.comp_apply, Fin.revPerm_apply, Fin.val_rev, Nat.cast_sub hk, Nat.cast_add, Nat.cast_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `h1 A n t E hE a b u`. Establish `e2` using `h2 A n t E hE a b u`. Establish `e3` using `h3 A n t E hE a b (fun k : Fin t => u - (t : ℂ) + 1 + ((k : ℕ) : ℂ)) Fin.revPerm`. Rewrite `e3` using `[hx, e1, e2]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf : (t.factorial : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero t`. Establish `e4` using `congrArg (fun y : A => ((t.factorial : ℂ)⁻¹) • y) e3`. Simplify using `only [smul_smul, inv_mul_cancel₀ hf, one_smul] at e4`. Conclude with `e4`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowForm_of (h1 : DblDec) (h2 : DblInc) (h3 : DblPerm) : PI.RowForm := by
   intro A _ _ n t E hE a b u
@@ -54,7 +54,7 @@ theorem rowForm_of (h1 : DblDec) (h2 : DblInc) (h3 : DblPerm) : PI.RowForm := by
   exact e4
 
 /- English proof (translation)
-Unfold `PI.QmRowForm`. Conclude with `rowForm_of h1 h2 h3`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qmRowForm_of (h1 : DblDec) (h2 : DblInc) (h3 : DblPerm) : PI.QmRowForm := by
   unfold PI.QmRowForm

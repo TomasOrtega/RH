@@ -12,7 +12,7 @@ open scoped RealInnerProductSpace ContDiff Real ComplexOrder Topology
 namespace GlobalTheory.Mem.Lift.Ccr
 
 /- English proof (translation)
-Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, h₁, h₂, h₃, h₄]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_comb {A : Type} [Ring A] [Algebra ℂ A] (p p' q q' : A) (s t c₁ c₂ c₃ c₄ : ℂ)
     (h₁ : p * q = q * p + c₁ • (1 : A)) (h₂ : p * q' = q' * p + c₂ • (1 : A))
@@ -22,7 +22,7 @@ theorem comm_comb {A : Type} [Ring A] [Algebra ℂ A] (p p' q q' : A) (s t c₁ 
   module
 
 /- English proof (translation)
-Set `b : (ι → ℂ) →ₗ[ℝ] (ι → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun x y => (star y ⬝ᵥ H *ᵥ x).im) (fun x x' y => by simp [mulVec_add, dotProduct_add]) (fun r x y => by simp [mulVec_smul, dotProduct_smul]) (fun x y y' => by simp [add_dotProduct]) (fun r x y => by simp [smul_dotProduct])`. Conclude with `⟨LinearMap.toContinuousLinearMap (LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ b), fun x y => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_om {ι : Type} [Fintype ι] (H : Matrix ι ι ℂ) :
     ∃ om : (ι → ℂ) →L[ℝ] (ι → ℂ) →L[ℝ] ℝ, ∀ x y, om x y = (star y ⬝ᵥ H *ᵥ x).im := by
@@ -34,7 +34,7 @@ theorem exists_om {ι : Type} [Fintype ι] (H : Matrix ι ι ℂ) :
   exact ⟨LinearMap.toContinuousLinearMap (LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ b), fun x y => rfl⟩
 
 /- English proof (translation)
-Establish `h : star (star x ⬝ᵥ H *ᵥ x) = star x ⬝ᵥ H *ᵥ x`. Rewrite using `[← star_dotProduct_star, star_star, star_mulVec, hH, dotProduct_mulVec]`. Conclude with `Complex.conj_eq_iff_im.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_self {ι : Type} [Fintype ι] {H : Matrix ι ι ℂ} (hH : Hᴴ = H) (x : ι → ℂ) :
     (star x ⬝ᵥ H *ᵥ x).im = 0 := by
@@ -43,7 +43,7 @@ theorem im_self {ι : Type} [Fintype ι] {H : Matrix ι ι ℂ} (hH : Hᴴ = H) 
   exact Complex.conj_eq_iff_im.mp h
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, conjTranspose_nonsing_inv, hH, ← dotProduct_mulVec, mulVec_mulVec, nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hd), one_mulVec, dotProduct_single]`. Apply the tactic sequence `by_cases h : k = l <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pair_inv {ι : Type} [Fintype ι] [DecidableEq ι] {H : Matrix ι ι ℂ} (hH : Hᴴ = H) (hd : H.det ≠ 0) (k l : ι) :
     star (H⁻¹ *ᵥ Pi.single l 1) ⬝ᵥ H *ᵥ Pi.single k 1 = if k = l then (1 : ℂ) else 0 := by
@@ -56,21 +56,21 @@ end GlobalTheory.Mem.Lift.Ccr
 open GlobalTheory.Mem.Lift.Ccr in
 
 /- English proof (translation)
-Introduce `ι _ _ H hH hd B _ _ ρ hρ`. Take `⟨om, hom⟩` from `exists_om H`. Establish `hρ' : IsHeis (fun x y => om x y) ρ` using `by simpa only [hom] using hρ`. Establish `key` using `GlobalTheory.T.heisenbergSmoothVector_derivative_calculus (ι → ℂ) B om ρ (fun x => by rw [hom, im_self hH]) hρ'`. Set `D : (ι → ℂ) → Module.End ℂ (smS ρ)` to `fun v => { toFun := fun f => ⟨dH ρ v f.1, (key f.1 f.2).1 v⟩ map_add' := fun f g => Subtype.ext (dH_add v f.2 g.2) map_smul' := fun a f => Subtype.ext (dH_smul v a f.2) }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hD : ∀ u v, D u * D v = D v * D u + (2 * π * I * ((star v ⬝ᵥ H *ᵥ u).im : ℂ)) • (1 : Module.End ℂ (smS ρ))`. Introduce `u v`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Use `(key f.1 f.2).2.2.2.2 u v` as an intermediate fact. Rewrite `this` using `[hom, sub_eq_iff_eq_add']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hc : ∀ (u v : ι → ℂ) (s t : ℂ), (D u + s • D (I • u)) * (D v + t • D (I • v)) = (D v + t • D (I • v)) * (D u + s • D (I • u)) + (2 * π * I * ((1 + s * t) * (star v ⬝ᵥ H *ᵥ u).im + (s - t) * (star v ⬝ᵥ H *ᵥ u).re)) • (1 : Module.End ℂ (smS ρ))`. Introduce `u v s t`. Rewrite using `[comm_comb _ _ _ _ s t _ _ _ _ (hD u v) (hD u (I • v)) (hD (I • u) v) (hD (I • u) (I • v))]`. Use `congr 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [star_smul, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hII : (1 : ℂ) + I * I = 0` using `by simp`. Use `⟨fun k => D (Pi.single k 1) + (-I) • D (I • Pi.single k 1), fun l => (-(1 / (4 * π)) : ℂ) • (D (H⁻¹ *ᵥ Pi.single l 1) + I • D (I • H⁻¹ *ᵥ Pi.single l 1)), fun k f => ?_, fun k f => rfl, fun k l => ?_, fun k l => ?_, fun k l => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[xOp, sub_eq_add_neg, ← neg_smul]`. Both sides reduce to the same expression. Use `beta_reduce`. Rewrite using `[hc]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_mul_assoc, mul_smul_comm]`. Rewrite using `[hc]`. Simplify using the standard rewrite rules. Simplify using `only [smul_mul_assoc, mul_smul_comm]`. Rewrite using `[hc (Pi.single k 1), pair_inv hH hd, ← smul_sub, sub_add_cancel_left, ← neg_smul, smul_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : k = l`. Simplify using `only [h, if_true, one_im, one_re, ofReal_zero, ofReal_one]`. Establish `hp : (π : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Establish `: (-(1 / (4 * π)) : ℂ) * -(2 * π * I * ((1 + -I * I) * 0 + (-I - I) * 1)) = 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-4) * hII`. Rewrite using `[this, one_smul]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Lift.exists_isCCR_xOp_dOp : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (H : Matrix ι ι ℂ), Hᴴ = H → H.det ≠ 0 → ∀ (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] (ρ : (ι → ℂ) → B →L[ℂ] B), IsHeis (fun x y => (star y ⬝ᵥ H *ᵥ x).im) ρ → ∃ x d : ι → Module.End ℂ (smS ρ), (∀ k f, (x k f).1 = xOp ρ k f.1) ∧ (∀ k f, (d k f).1 = dOp ρ H k f.1) ∧ IsCCR x d := by
   intro ι _ _ H hH hd B _ _ ρ hρ

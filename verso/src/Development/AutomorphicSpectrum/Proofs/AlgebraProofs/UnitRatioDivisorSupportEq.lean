@@ -21,9 +21,9 @@ section Rel
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Set `φ : MvPolynomial K Ω →ₐ[ℤ] Ω` to `(aeval (fun _ : K => (1 : Ω)) : MvPolynomial K Ω →ₐ[Ω] Ω).restrictScalars ℤ`. Establish `e : φ.comp (mConeMap y) = aeval y`. Use `MvPolynomial.algHom_ext fun p => ?_` and prove the remaining obligations. Simplify using `[φ, mConeMap]`. Establish `h0 : mConeMap y h = 0` using `hh`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← e, AlgHom.comp_apply, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_zero_of_mem_mCoordIdeal (y : (Σ k, ι k) → Ω) {h : MRing ι}
     (hh : h ∈ mCoordIdeal y) : aeval y h = 0 := by
@@ -36,15 +36,15 @@ theorem aeval_eq_zero_of_mem_mCoordIdeal (y : (Σ k, ι k) → Ω) {h : MRing ι
   rw [← e, AlgHom.comp_apply, h0, map_zero]
 
 /- English proof (translation)
-Take `⟨p, hpm, hp⟩` from `hθ`. Use `set n := p.natDegree`. Rewrite `hp` using `[hpm.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finsetSum, Polynomial.eval₂_mul, Polynomial.eval₂_C] at hp`. Use `⟨n, fun j => C (p.coeff j), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Use `LowerBoundFree.mem_mCoordIdeal_of_aeval_eq_zero y (d := n • d) ?_ ?_` and prove the remaining obligations. Use `LocalRep.isMultiHomog_add (SectionOrderAtPoint.isMultiHomog_pow' hf n) (SectionOrderAtPoint.isMultiHomog_sum' _ _ fun j hj => ?_)` and prove the remaining obligations. Establish `h1` using `LocalRep.isMultiHomog_mul (LocalRep.isMultiHomog_mul (LocalRep.isMultiHomog_C (ι := ι) (p.coeff j)) (SectionOrderAtPoint.isMultiHomog_pow' hf j)) (SectionOrderAtPoint.isMultiHomog_pow' hg (n - j))`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `hj' : j ≤ n` using `(Finset.mem_range.mp hj).le`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul, zero_add]`. Rewrite using `[← add_mul, Nat.add_sub_cancel' hj']`. Establish `hsum : ∀ j ∈ Finset.range n, aeval y (C (p.coeff j) * f ^ j * g ^ (n - j)) = aeval y g ^ n * (algebraMap ℤ Ω (p.coeff j) * θ ^ j)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Establish `hj' : j ≤ n` using `(Finset.mem_range.mp hj).le`. Establish `e3 : aeval y g ^ n = aeval y g ^ j * aeval y g ^ (n - j)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hj']`. Simplify using `only [map_mul, map_pow, aeval_C, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_sum, Finset.sum_congr rfl hsum, ← Finset.mul_sum, map_pow, he, mul_pow]`. Take the linear combination `(aeval y g ^ n) * hp`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_monic_rel (y : (Σ k, ι k) → Ω) {f g : MRing ι} {d : K → ℕ} {θ : Ω}
     (hf : IsMultiHomog f d) (hg : IsMultiHomog g d) (hθ : IsIntegral ℤ θ)
@@ -86,9 +86,9 @@ theorem exists_monic_rel (y : (Σ k, ι k) → Ω) {f g : MRing ι} {d : K → �
 end Rel
 
 /- English proof (translation)
-Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.2`. Establish `hbW : b ∈ W` using `hW.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self b))`. Establish `h1 : (1 : R) ∉ W` using `(Ideal.ne_top_iff_one W).mp hWp.ne_top`. Establish `haW : a ∈ W` using `SectionOrderAtPoint.mem_of_rel hWp hbW h1 c (hPW hrel)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨hWp, sup_le hPW ((Ideal.span_singleton_le_iff_mem _).mpr haW)⟩, fun Q hQ hQW => ?_⟩` and prove the remaining obligations. Conclude with `(eq_of_le_of_mem_minimalPrimes hP hW hQ.1 (le_sup_left.trans hQ.2) (hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self a))) ha hQW).ge`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_of_rel {R : Type*} [CommRing R] [IsNoetherianRing R] {P W : Ideal R}
     (hP : P.IsPrime) {a b : R} (ha : a ∉ P) {n : ℕ} (c : ℕ → R)
@@ -104,15 +104,15 @@ theorem mem_minimalPrimes_of_rel {R : Type*} [CommRing R] [IsNoetherianRing R] {
     (hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self a))) ha hQW).ge
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D d f g θ hV hf hg hgy hθ0 hθ hθi he`. Establish `hP : (mCoordIdeal y).IsPrime` using `hV.2.1.1`. Establish `hfy : aeval y f ≠ 0`. Rewrite using `[he]`. Conclude with `mul_ne_zero hθ0 hgy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfP : f ∉ mCoordIdeal y` using `fun h => hfy (aeval_eq_zero_of_mem_mCoordIdeal y h)`. Establish `hgP : g ∉ mCoordIdeal y` using `fun h => hgy (aeval_eq_zero_of_mem_mCoordIdeal y h)`. Take `⟨n, c, hrel⟩` from `exists_monic_rel y hf hg hθ he`. Take `⟨m, c', hrel'⟩` from `exists_monic_rel y hg hf hθi (by rw [he, ← mul_assoc, inv_mul_cancel₀ hθ0, one_mul])`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `W`. Conclude with `⟨fun h => ⟨mem_minimalPrimes_of_rel hP hgP c' hrel' h.1, h.2⟩, fun h => ⟨mem_minimalPrimes_of_rel hP hfP c hrel h.1, h.2⟩⟩`. Introduce `W hW`. Establish `hWg` using `hW.1`. Establish `hWf` using `mem_minimalPrimes_of_rel hP hfP c hrel hWg`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWp : W.IsPrime` using `hWg.1.1`. Establish `hPW : mCoordIdeal y ≤ W` using `le_sup_left.trans hWg.1.2`. Establish `h1 : (1 : MRing ι) ∉ W` using `(Ideal.ne_top_iff_one W).mp hWp.ne_top`. Set `pW : PrimeSpectrum (MRing ι)` to `⟨W, hWp⟩`. Establish `hle1` using `SectionOrderAtPoint.locLen_le_of_rel hP hfP hgP pW hPW h1 c hrel (locLen_ne_top hWg)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle2` using `SectionOrderAtPoint.locLen_le_of_rel hP hgP hfP pW hPW h1 c' hrel' (locLen_ne_top hWf)`. Use `congrArg ENat.toNat (le_antisymm hle2 hle1)` as an intermediate fact. Simplify `this` using `[multAt, hWp, locLen]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem divCycle_eq_of_unit_ratio : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (d : K → ℕ) (f g : MRing ι) (θ : Ω), IsArithVar (mCoordIdeal y) (D + 1) → IsMultiHomog f d → IsMultiHomog g d → aeval y g ≠ 0 → θ ≠ 0 → IsIntegral ℤ θ → IsIntegral ℤ θ⁻¹ → aeval y f = θ * aeval y g → divSupp (mCoordIdeal y) f = divSupp (mCoordIdeal y) g ∧ ∀ W ∈ divSupp (mCoordIdeal y) g, multAt ((mCoordIdeal y) ⊔ Ideal.span {f}) W = multAt ((mCoordIdeal y) ⊔ Ideal.span {g}) W := by
   intro K _ ι _ Ω _ y D d f g θ hV hf hg hgy hθ0 hθ hθi he

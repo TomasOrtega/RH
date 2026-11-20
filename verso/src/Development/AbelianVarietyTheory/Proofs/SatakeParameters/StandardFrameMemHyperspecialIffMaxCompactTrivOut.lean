@@ -11,9 +11,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `D hF V n Ps hstd sp κ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, e, f, hef, hs⟩`. Conclude with `⟨(hstd.2 κ).2 hK, (GlobalTheory.LabelTransport.suppF_iff_trivOutside D sp hF V n Ps hstd e f hef κ).1 hs⟩`. Introduce and unpack `⟨hU, hT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨-, e, f, hef, -⟩` from `GlobalTheory.DefLiftHecke.one_mem_hyp V sp.w`. Conclude with `⟨(hstd.2 κ).1 hU, e, f, hef, (GlobalTheory.LabelTransport.suppF_iff_trivOutside D sp hF V n Ps hstd e f hef κ).2 hT⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.FrameHyp.mem_hyp_iff : ∀ {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : TH.HSp D} {n : ℕ}
     (Ps : Formalism.IndefR.principalLevelFrame.RowPsi V n), GlobalTheory.NJoin.StdFrame hF Ps → ∀ (sp : SplitPlace D.host.E)

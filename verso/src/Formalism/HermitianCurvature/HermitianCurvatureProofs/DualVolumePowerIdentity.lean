@@ -7,15 +7,15 @@ open Finset Real
 namespace Easy
 
 /- English proof (translation)
-Establish `hpi : (0 : ℝ) < 2 * π` using `by positivity`. Use `set e : ℤ := (2 * i : ℤ) - 3 - 2 * r with he`. Use `set f : ℤ := (Fintype.card ι : ℤ) with hf`. Establish `h1 : (2 * r : ℤ) + 3 - 2 * i = -e` using `by rw [he]; ring`. Establish `h2 : ((2 * r + 2 : ℤ) - 2 * ((i : ℤ) - 1)) = -e + 1` using `by rw [he]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ← zpow_natCast, ← hf]`. Establish `hg0 : g ≠ 0` using `hg.ne'`. Establish `hrd0 : rd ≠ 0` using `hrd.ne'`. Establish `hpi0 : (2 * π) ≠ 0` using `hpi.ne'`. Generalize the expression as in `2 * π = A at hpi0 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k1 : ((A / g) ^ e) ^ f = A ^ (e * f) / g ^ (e * f)`. Rewrite using `[← zpow_mul, div_zpow]`. Establish `k2 : (g * rd ^ (-e)) ^ (-f) = (g ^ f)⁻¹ * rd ^ (e * f)`. Rewrite using `[mul_zpow, ← zpow_mul, zpow_neg, show (-e * -f) = e * f by ring]`. Establish `k3 : (A / rd) ^ (e * f) = A ^ (e * f) / rd ^ (e * f)` using `div_zpow _ _ _`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `k4 : g ^ ((-e + 1) * f) = (g ^ (e * f))⁻¹ * g ^ f`. Rewrite using `[show ((-e + 1) * f) = -(e * f) + f by ring, zpow_add₀ hg0, zpow_neg]`. Rewrite using `[k1, k2, k3, k4]`. Establish `: g ^ (e * f) ≠ 0` using `zpow_ne_zero _ hg0`. Establish `: g ^ f ≠ 0` using `zpow_ne_zero _ hg0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `: rd ^ (e * f) ≠ 0` using `zpow_ne_zero _ hrd0`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem dual_volume_power_identity (ι : Type) [Fintype ι] (c : ι → ℝ) (g rd : ℝ) (r i : ℕ) (hg : 0 < g) (hrd : 0 < rd) :
     (∏ v, c v * (2 * π / g) ^ ((2 * i : ℤ) - 3 - 2 * r)) /
@@ -48,22 +48,22 @@ theorem dual_volume_power_identity (ι : Type) [Fintype ι] (c : ι → ℝ) (g 
 end Easy
 
 /- English proof (translation)
-Introduce `ι _ c g rd r i hg hrd`. Conclude with `Easy.dual_volume_power_identity ι c g rd r i hg hrd`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dual_size_identity : Formalism.FourierDecayAlt.DualSizeIdentity := by
   intro ι _ c g rd r i hg hrd
   exact Easy.dual_volume_power_identity ι c g rd r i hg hrd
 
 /- English proof (translation)
-Introduce `V _ _ ip hadd hsmul hconj z x T T' Dr hT hzz hxx`. Establish `hadd2 : ∀ w x y, ip w (x + y) = ip w x + ip w y`. Introduce `w x y`. Rewrite using `[hconj (x + y) w, hadd, map_add, ← hconj, ← hconj]`. Establish `hsmul2 : ∀ (s : ℂ) w y, ip w (s • y) = starRingEnd ℂ s * ip w y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s w y`. Rewrite using `[hconj (s • y) w, hsmul, map_mul, ← hconj]`. Establish `hT0 : (T : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Use `set ζ := ip x z with hζ`. Establish `hzx : ip z x = starRingEnd ℂ ζ` using `hconj x z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[hsmul, hadd, hsmul, hzz]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsmul, hsmul2, hadd, hadd2, hadd2, hsmul, hsmul, hsmul2, hsmul2, hxx, hzz, hzx, ← hζ]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Complex.normSq_apply, Complex.div_re, Complex.div_im, Complex.mul_re, Complex.mul_im]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Complex.normSq_apply, Complex.div_re, Complex.div_im, Complex.mul_re, Complex.mul_im]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem omega_norm_formula : Formalism.FourierDecayAlt.OmNorm := by
   intro V _ _ ip hadd hsmul hconj z x T T' Dr hT hzz hxx

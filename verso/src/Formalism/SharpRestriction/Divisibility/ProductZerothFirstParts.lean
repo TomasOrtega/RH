@@ -296,7 +296,7 @@ structure Prov (D : Formalism.BasicNotions.D7) where
   oneLetterPartitionColumnBound : ∀ i, (nu1 i).colLen 0 ≤ (D.jet.loc1 i).N0
 
 /- English proof (translation)
-Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Simplify using `only [Formalism.BasicNotions.Ranks.N, Nat.add_sub_cancel]`. Use polynomial arithmetic with `[Nat.zero_le R.t]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem N_pred_lt (R : Formalism.BasicNotions.Ranks) (j : ℕ) (h : 1 ≤ j) : R.N (j - 1) < R.N j := by
   obtain ⟨i, rfl⟩ : ∃ i, j = i + 1 := ⟨j - 1, by omega⟩
@@ -304,7 +304,7 @@ theorem N_pred_lt (R : Formalism.BasicNotions.Ranks) (j : ℕ) (h : 1 ≤ j) : R
   nlinarith [Nat.zero_le R.t]
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Ranks.N`. Conclude with `R.k_even.add (R.t_odd.add_one.mul_left j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem N_even (R : Formalism.BasicNotions.Ranks) (j : ℕ) : Even (R.N j) := by
   unfold Formalism.BasicNotions.Ranks.N
@@ -324,7 +324,7 @@ def Prov.loc1 {D : Formalism.BasicNotions.D7} (X : Prov D) (i : D.jet.Sit1) : Lo
   nu_rows := X.oneLetterPartitionColumnBound i
 
 /- English proof (translation)
-Use `show Even ((D.jet.loc i).N0 * (D.jet.loc i).N1)`. Rewrite using `[D.jet.N0_eq i]`. Conclude with `(N_even D.R _).mul_right _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Prov.loc_even {D : Formalism.BasicNotions.D7} (X : Prov D) (i : D.jet.Sit) : Even ((X.loc i).N0 * (X.loc i).N1) := by
   show Even ((D.jet.loc i).N0 * (D.jet.loc i).N1)
@@ -332,7 +332,7 @@ theorem Prov.loc_even {D : Formalism.BasicNotions.D7} (X : Prov D) (i : D.jet.Si
   exact (N_even D.R _).mul_right _
 
 /- English proof (translation)
-Use `show Even ((D.jet.loc1 i).N0 * (D.jet.loc1 i).N1)`. Rewrite using `[D.jet.firstJet_lowerRank_eq i]`. Conclude with `(N_even D.R _).mul_right _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Prov.one_letter_local_even_product {D : Formalism.BasicNotions.D7} (X : Prov D) (i : D.jet.Sit1) : Even ((X.loc1 i).N0 * (X.loc1 i).N1) := by
   show Even ((D.jet.loc1 i).N0 * (D.jet.loc1 i).N1)
@@ -340,12 +340,12 @@ theorem Prov.one_letter_local_even_product {D : Formalism.BasicNotions.D7} (X : 
   exact (N_even D.R _).mul_right _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(D.jet.loc i).five_le_l, X.loc_even i⟩`.
+Supply the required witnesses or components.
 -/
 theorem Prov.loc_inp {D : Formalism.BasicNotions.D7} (X : Prov D) (i : D.jet.Sit) : (X.loc i).Inp := ⟨(D.jet.loc i).five_le_l, X.loc_even i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(D.jet.loc1 i).five_le_l, X.one_letter_local_even_product i⟩`.
+Supply the required witnesses or components.
 -/
 theorem Prov.one_letter_local_input {D : Formalism.BasicNotions.D7} (X : Prov D) (i : D.jet.Sit1) : (X.loc1 i).Inp := ⟨(D.jet.loc1 i).five_le_l, X.one_letter_local_even_product i⟩
 
@@ -370,7 +370,7 @@ def PointsLemma (C : ℝ) : Prop := ∀ i, 5 ≤ (X.loc1 i).l → (X.loc1 i).Thm
 def Stmt (C : ℝ) : Prop := admitted D X → Conclusion1 D X C ∧ Conclusion2 D X C ∧ PointsLemma D X C ∧ Conclusion4
 
 /- English proof (translation)
-Unfold `Stmt admitted adm1 adm3 Conclusion1 Conclusion2 PointsLemma`. Introduce and unpack `⟨h1, -, h3⟩`. Use `⟨fun i hl => (h.1 _ (h1 i ⟨hl, X.loc_even i⟩)).1, fun i hl => (h.1 _ (h1 i ⟨hl, X.loc_even i⟩)).2, fun i hl => h.2 _ (h3 i ⟨hl, X.one_letter_local_even_product i⟩), h4⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem statement_of_all_bounds {C : ℝ} (h : ExportAllConjugates C) (h4 : Conclusion4) : Stmt D X C := by
   unfold Stmt admitted adm1 adm3 Conclusion1 Conclusion2 PointsLemma
@@ -400,9 +400,9 @@ def ErrorExponentStatement (C : ℝ) : Prop :=
     Conclusion1 (Fm.D x i) (XF x hx i) C ∧ Conclusion2 (Fm.D x i) (XF x hx i) C ∧ PointsLemma (Fm.D x i) (XF x hx i) C) ∧ Conclusion4
 
 /- English proof (translation)
-Unfold `ErrorExponentStatement at h`. Unfold `AdmF at hadm`. Unfold `Conclusion1Family Conclusion2Family Conclusion3Family`. Take `⟨h2, hall⟩` from `hadm`. Take `⟨hrec, h4⟩` from `h h2`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨fun x hx i => (hrec x hx i (hall x hx i)).1, fun x hx i => (hrec x hx i (hall x hx i)).2.1, fun x hx i => (hrec x hx i (hall x hx i)).2.2, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem ErrorExponentStatement.of_AdmF {Fm : Formalism.MainNotions.FamP eps} {XF : ProvF Fm} {C : ℝ} (h : ErrorExponentStatement Fm XF C) (hadm : AdmF Fm XF) :
     Conclusion1Family Fm XF C ∧ Conclusion2Family Fm XF C ∧ Conclusion3Family Fm XF C ∧ Conclusion4 := by
@@ -423,7 +423,7 @@ def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
   ∃ C : ℝ, Formalism.MainNotions.Closed 𝒞 (fun Fm CH => KudlaFamilyStatement C Fm CH)
 
 /- English proof (translation)
-Unfold `KudlaFamilyStatement ErrorExponentStatement`. Introduce `XF _`. Use `⟨fun x hx i hadm => ?_, h4⟩` and prove the remaining obligations. Take `⟨a, b, c, _⟩` from `statement_of_all_bounds (Fm.D x i) (XF x hx i) h h4 hadm`. Conclude with `⟨a, b, c⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem family_statement_of_all_bounds {C : ℝ} (h : ExportAllConjugates C) (h4 : Conclusion4) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (CH : ℝ) :
     KudlaFamilyStatement C Fm CH := by
@@ -434,7 +434,7 @@ theorem family_statement_of_all_bounds {C : ℝ} (h : ExportAllConjugates C) (h4
   exact ⟨a, b, c⟩
 
 /- English proof (translation)
-Take `⟨⟨C, hC⟩, h4⟩` from `h hSB`. Use `⟨C, 1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => family_statement_of_all_bounds hC h4 Fm CH⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem closed_statement_of_all_local (h : RealisationStatementAll) (hSB : MinorProdSpanHasCompl) (𝒞 : Formalism.MainNotions.FamClass) : ClosedAbsoluteShare 𝒞 := by
   obtain ⟨⟨C, hC⟩, h4⟩ := h hSB

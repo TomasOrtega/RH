@@ -12,9 +12,9 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.IsoXDecay
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' hev hB hsig φ hφ N K hN`. Take `⟨S, hSf, hSs, hS⟩` from `GlobalTheory.T.schwartz_finite_approximation F E σ B n d₁ X W₁ M₁ H.y hB hM₁ φ hφ N hN`. Establish `hC : ∀ Φ, Φ ∈ S → ∃ C : ℝ, ∀ w : Fin d₁ → E, (∀ i, ∃ o : 𝓞 E, (N : E) * w i = o) → ‖thetaSum F (e' (M₁.co.rho B.ψ (realAd F 1 • Matrix.vecMulVec (incV F H.y) (incV F w)) Φ))‖ * (1 + ∑ i, ∑ v : InfinitePlace E, v (w i)) ^ K ≤ C` using `fun Φ hΦ => GlobalTheory.T.evaluation_map_intertwines hKP F E σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' hev hB hsig Φ (hSs hΦ) N K hN`. Use `choose! C hC using hC`. Use `⟨∑ Φ ∈ hSf.toFinset, max (C Φ) 0, fun w hw => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦS, hΦe⟩` from `hS w hw`. Rewrite using `[hΦe]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem thetaSum_decay : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d₁ : ℕ) (X : Spc F E n) (W₁ : Spc F E d₁) (M₁ : Model σ X W₁), M₁.IsGood B.ψ →

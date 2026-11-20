@@ -25,7 +25,7 @@ def eS : Fin n ≃ Fin (pP ε) ⊕ Fin (pQ ε) :=
     (Equiv.sumCongr (Fintype.equivFin _) (Fintype.equivFin _))
 
 /- English proof (translation)
-Unfold `eS`. Use `first`. Consider the case `(simp; done)`. Consider the case `(simp; exact ((Fintype.equivFin _).symm a).2)`. Consider the case `exact ((Fintype.equivFin _).symm a).2`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eS_symm_inl (a : Fin (pP ε)) : ε ((eS ε).symm (Sum.inl a)) = true := by
   unfold eS
@@ -35,7 +35,7 @@ theorem eS_symm_inl (a : Fin (pP ε)) : ε ((eS ε).symm (Sum.inl a)) = true := 
     | exact ((Fintype.equivFin _).symm a).2
 
 /- English proof (translation)
-Unfold `eS`. Use `first`. Consider the case `(simp; done)`. Consider the case `(simpa using ((Fintype.equivFin _).symm b).2)`. Consider the case `(simp; simpa using ((Fintype.equivFin _).symm b).2)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eS_symm_inr (b : Fin (pQ ε)) : ε ((eS ε).symm (Sum.inr b)) = false := by
   unfold eS
@@ -48,16 +48,16 @@ abbrev rA : Matrix (Fin n) (Fin n) ℂ ≃ₐ[ℂ] Matrix (Fin (pP ε) ⊕ Fin (
   reindexAlgEquiv ℂ ℂ (eS ε)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rA_conj (M : Matrix (Fin n) (Fin n) ℂ) : (rA ε M)ᴴ = rA ε Mᴴ := by
   ext i j
   simp [Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [rA, reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Formalism.REAL.Jm, HcS.UG.Jpq, Matrix.diagonal_apply, (eS ε).symm.injective.eq_iff]`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, eS_symm_inl, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `by_cases h : a = b <;> simp [h, eS_symm_inr, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rA_Jm : rA ε (Formalism.REAL.Jm ε) = HcS.UG.Jpq (pP ε) (pQ ε) := by
   ext i j
@@ -70,7 +70,7 @@ theorem rA_Jm : rA ε (Formalism.REAL.Jm ε) = HcS.UG.Jpq (pP ε) (pQ ε) := by
   · by_cases h : a = b <;> simp [h, eS_symm_inr, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[rA_conj, ← rA_Jm, ← map_mul, ← map_mul, (rA ε).injective.eq_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rA_mem_iff (M : Matrix (Fin n) (Fin n) ℂ) :
     (rA ε M)ᴴ * HcS.UG.Jpq (pP ε) (pQ ε) * rA ε M = HcS.UG.Jpq (pP ε) (pQ ε) ↔ Formalism.REAL.inUJ ε M := by
@@ -78,7 +78,7 @@ theorem rA_mem_iff (M : Matrix (Fin n) (Fin n) ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[rA_conj, ← rA_Jm, ← map_mul, ← map_mul, ← map_add, ← map_zero (rA ε), (rA ε).injective.eq_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rA_skew_iff (M : Matrix (Fin n) (Fin n) ℂ) :
     (rA ε M)ᴴ * HcS.UG.Jpq (pP ε) (pQ ε) + HcS.UG.Jpq (pP ε) (pQ ε) * rA ε M = 0 ↔
@@ -86,13 +86,13 @@ theorem rA_skew_iff (M : Matrix (Fin n) (Fin n) ℂ) :
   rw [rA_conj, ← rA_Jm, ← map_mul, ← map_mul, ← map_add, ← map_zero (rA ε), (rA ε).injective.eq_iff]
 
 /- English proof (translation)
-Conclude with `LinearMap.continuous_of_finiteDimensional (rA ε).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rA : Continuous (rA ε) := by
   exact LinearMap.continuous_of_finiteDimensional (rA ε).toLinearMap
 
 /- English proof (translation)
-Conclude with `LinearMap.continuous_of_finiteDimensional (rA ε).symm.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rA_symm : Continuous (rA ε).symm := by
   exact LinearMap.continuous_of_finiteDimensional (rA ε).symm.toLinearMap
@@ -113,7 +113,7 @@ def phiF (g : Formalism.REAL.UJ ε) : HcS.BasicNotions.UpqT (pP ε) (pQ ε) :=
         HcS.BasicNotions.UpqT (pP ε) (pQ ε))
 
 /- English proof (translation)
-Rewrite using `[← rA_mem_iff, AlgEquiv.apply_symm_apply]`. Conclude with `(HcInf.mem_Upq_iff _ _ _).1 (h : HcS.UG.Upq (pP ε) (pQ ε)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiB_mem (h : HcS.BasicNotions.UpqT (pP ε) (pQ ε)) :
     Formalism.REAL.inUJ ε ((rA ε).symm (HcS.BasicNotions.UpqT.mat h)) := by
@@ -159,7 +159,7 @@ def phiU : Formalism.REAL.UJ ε ≃* HcS.BasicNotions.UpqT (pP ε) (pQ ε) where
     exact map_mul (rA ε) _ _
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (HcInf.isClosedEmbedding_mat _ _).isInducing.continuous_iff.mpr ((continuous_rA ε).comp (Units.continuous_val.comp continuous_subtype_val))`. Consider the case `exact (HcInf.isClosedEmbedding_mat _ _).toIsInducing.continuous_iff.mpr ((continuous_rA ε).comp (Units.continuous_val.comp continuous_subtype_val))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_phiF : Continuous (phiF ε) := by
   first
@@ -169,14 +169,14 @@ theorem continuous_phiF : Continuous (phiF ε) := by
       ((continuous_rA ε).comp (Units.continuous_val.comp continuous_subtype_val))
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toS : Continuous fun h : HcS.BasicNotions.UpqT (pP ε) (pQ ε) =>
     ((HcInf.toS _ _ h : HcS.UG.Upq (pP ε) (pQ ε)) : GL (Fin (pP ε) ⊕ Fin (pQ ε)) ℂ) :=
   continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `((Continuous.units_map (rMs ε) (continuous_rA_symm ε)).comp (continuous_toS ε)).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_phiB : Continuous (phiB ε) :=
   ((Continuous.units_map (rMs ε) (continuous_rA_symm ε)).comp (continuous_toS ε)).subtype_mk _
@@ -208,13 +208,13 @@ theorem psiL_val (x : gLie ε) :
       rA ε (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h1 : rA ε (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) = rA ε (unrealify (y : EuclideanSpace ℝ (Fin n × Fin n × Bool)))`. Rewrite using `[← psiL_val, ← psiL_val, hxy]`. Establish `h2` using `(rA ε).injective h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← re_unr n (x : EuclideanSpace ℝ _), ← re_unr n (y : EuclideanSpace ℝ _)]`. Conclude with `congrArg (reLin n) h2`. Introduce `Y set X := (rA ε).symm Y.1 with hX`. Establish `hY : Y.1ᴴ * HcS.UG.Jpq (pP ε) (pQ ε) + HcS.UG.Jpq (pP ε) (pQ ε) * Y.1 = 0` using `Y.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsk : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0`. Rewrite using `[← rA_skew_iff, hX, AlgEquiv.apply_symm_apply]`. Conclude with `hY`. Use `⟨⟨(WithLp.equiv 2 _).symm (realifyFun X), skewLie_holds n ε X hsk⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[psiL_val]`. Use `show rA ε (unrealify ((WithLp.equiv 2 _).symm (realifyFun X))) = _`. Rewrite using `[unr_re, hX, AlgEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem psiL_bij : Function.Bijective (psiL ε) := by
   constructor
@@ -249,7 +249,7 @@ theorem psiC_val (x : gLie ε) :
       rA ε (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) := rfl
 
 /- English proof (translation)
-Establish `e1 : HcS.BasicNotions.UpqT.mat (phiC ε g) = rA ε (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)) : Matrix (Fin n) (Fin n) ℂ)` using `phiF_mat ε g`. Rewrite using `[e1, psiC_val, one_add_one_eq_two, ← map_ofNat (rA ε) 2, ← map_sub, ← map_mul, ← map_add, (rA ε).injective.eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_iff (g : Formalism.REAL.UJ ε) (x : gLie ε) :
     HcS.BasicNotions.UpqT.mat (phiC ε g) * ((1 + 1) - (psiC ε x).1) =
@@ -263,9 +263,9 @@ theorem rel_iff (g : Formalism.REAL.UJ ε) (x : gLie ε) :
     (rA ε).injective.eq_iff]
 
 /- English proof (translation)
-Establish `h : IsUnit ((1 + 1) - ((psiC ε x : HcS.BasicNotions.lieU (pP ε) (pQ ε)) : Matrix (Fin (pP ε) ⊕ Fin (pQ ε)) (Fin (pP ε) ⊕ Fin (pQ ε)) ℂ)).det` using `hx`. Rewrite `h` using `[psiC_val]`. Establish `e : (1 + 1 : Matrix (Fin (pP ε) ⊕ Fin (pQ ε)) (Fin (pP ε) ⊕ Fin (pQ ε)) ℂ) - rA ε (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) = rA ε (2 - unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)))`. Rewrite using `[map_sub, map_ofNat, one_add_one_eq_two]`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[Matrix.det_reindex_self]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_of_mem_cayley_domain (x : gLie ε) (hx : psiC ε x ∈ HcInf.D0 (pP ε) (pQ ε)) :
     IsUnit (2 - unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))).det := by
@@ -280,9 +280,9 @@ theorem isUnit_of_mem_cayley_domain (x : gLie ε) (hx : psiC ε x ∈ HcInf.D0 (
   simpa [Matrix.det_reindex_self] using h
 
 /- English proof (translation)
-Establish `hc : IsUnit ((2 + unrealify x) * (2 - unrealify x)⁻¹) ∧ Formalism.REAL.inUJ ε ((2 + unrealify x) * (2 - unrealify x)⁻¹)`. Rewrite using `[h]`. Conclude with `⟨(g : (Matrix (Fin n) (Fin n) ℂ)ˣ).isUnit, g.2⟩`. Unfold `cayR`. Rewrite using `[dif_pos hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[IsUnit.unit_spec]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayR_eq (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) (g : Formalism.REAL.UJ ε)
     (h : (2 + unrealify x) * (2 - unrealify x)⁻¹ = (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)) : Matrix (Fin n) (Fin n) ℂ)) :
@@ -296,7 +296,7 @@ theorem cayR_eq (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) (g : Formalism
   rw [IsUnit.unit_spec]; exact h
 
 /- English proof (translation)
-Rewrite using `[← h, Matrix.mul_nonsing_inv_cancel_right _ _ hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cay_mat (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) (M : Matrix (Fin n) (Fin n) ℂ)
     (hu : IsUnit (2 - unrealify x).det) (h : M * (2 - unrealify x) = 2 + unrealify x) :
@@ -310,31 +310,25 @@ end CDX
 open CDX in
 
 /- English proof (translation)
-Introduce `n ε`. Use `set φ := phiC ε with hφ`. Use `set ψ := psiC ε with hψ`. Use `set φM := φ.toHomeomorph.toMeasurableEquiv with hφM`. Use `set ψM := ψ.toHomeomorph.toMeasurableEquiv with hψM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : Measure (HcS.BasicNotions.UpqT (pP ε) (pQ ε)) := (Formalism.REAL.muG ε).map φM with hm`. Use `haveI : m.IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map (Formalism.REAL.muG ε) φ`. Use `set lam : Measure (HcS.BasicNotions.lieU (pP ε) (pQ ε)) := (volume : Measure (gLie ε)).map ψM with hlam`. Use `haveI : lam.IsAddHaarMeasure := ψ.isAddHaarMeasure_map volume`. Take `⟨D, hD, hDm, f, hfm, hfc, -, hfT, hmap⟩` from `HcHDC.cayDensU (pP ε) (pQ ε) m lam`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hψ0 : ψ 0 = 0` using `map_zero ψ`. Establish `hψc : ContinuousAt ψ 0` using `ψ.continuous.continuousAt`. Establish `hN1 : ψ ⁻¹' D ∈ 𝓝 (0 : gLie ε)` using `hψc.preimage_mem_nhds (by rw [hψ0]; exact hD)`. Establish `hN2 : ψ ⁻¹' HcInf.D0 (pP ε) (pQ ε) ∈ 𝓝 (0 : gLie ε)` using `hψc.preimage_mem_nhds (by rw [hψ0]; exact HcInf.isOpen_cell_domain.mem_nhds HcInf.zero_mem_cayley_domain)`. Establish `hN3 : ψ ⁻¹' {X | f X ≠ ⊤} ∈ 𝓝 (0 : gLie ε)` using `hψc.preimage_mem_nhds (by rw [hψ0]; exact hfc.eventually_ne hfT)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r₀, hr₀, hball⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem (Filter.inter_mem hN1 hN2) hN3)`. Use `⟨r₀, hr₀, fun x => (f (ψ x)).toReal, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.measurable_toReal.comp (hfm.comp ψ.continuous.measurable)`. Establish `h1 : ContinuousAt (fun x => f (ψ x)) 0` using `ContinuousAt.comp (x := 0) (by rw [hψ0]; exact hfc) hψc`. Establish `h2 : ContinuousAt ENNReal.toReal (f (ψ 0))` using `ENNReal.continuousAt_toReal (by rw [hψ0]; exact hfT)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ContinuousAt.comp (f := fun x => f (ψ x)) (x := 0) h2 h1`. Introduce `S hS hSm`. Establish `hpt : ∀ x ∈ S, ψ x ∈ D ∧ ψ x ∈ HcInf.D0 (pP ε) (pQ ε) ∧ f (ψ x) ≠ ⊤` using `fun x hx => ⟨(hball (hS hx)).1.1, (hball (hS hx)).1.2, (hball (hS hx)).2⟩`. Use `set T := ψM '' S with hTdef`. Establish `hT : MeasurableSet T` using `ψM.measurableSet_image.2 hSm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTD : T ⊆ D` using `by rintro _ ⟨x, hx, rfl⟩; exact (hpt x hx).1`. Establish `hset : φM ⁻¹' HcInf.cayS T = (fun x : gLie ε => cayR ε (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) '' S`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, ⟨x, hx, rfl⟩, hgX⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Establish `hu` using `isUnit_of_mem_cayley_domain ε x (hpt x hx).2.1`. Conclude with `cayR_eq ε _ g (cay_mat _ _ hu ((rel_iff ε g x).1 hgX))`. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hD0` using `(hpt x hx).2.1`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hu` using `isUnit_of_mem_cayley_domain ε x hD0`. Use `set h := HcInf.cayF (pP ε) (pQ ε) (ψ x) with hh`. Establish `hs` using `HcInf.cayF_spec (ψ x) hD0`. Establish `hrel` using `(rel_iff ε (φ.symm h) x).1 (by rw [ContinuousMulEquiv.apply_symm_apply]; exact hs)`. Establish `hc : cayR ε (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = φ.symm h` using `cayR_eq ε _ _ (cay_mat _ _ hu hrel)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨ψ x, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show HcS.BasicNotions.UpqT.mat (φ (cayR ε (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)))) * _ = _`. Rewrite using `[hc, ContinuousMulEquiv.apply_symm_apply]`. Conclude with `hs`. Establish `hsetD : HcInf.cayInv (pP ε) (pQ ε) ⁻¹' T ∩ HcInf.cayS D = HcInf.cayS T`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hgT, X, hXD, hgX⟩`. Establish `e` using `HcInf.cayley_inverse_iff _ _ g X hgX`. Conclude with `⟨X, e ▸ hgT, hgX⟩`.
-
-Introduce and unpack `⟨X, hXT, hgX⟩`. Establish `e` using `HcInf.cayley_inverse_iff _ _ g X hgX`. Conclude with `⟨show HcInf.cayInv _ _ g ∈ T from e ▸ hXT, X, hTD hXT, hgX⟩`. Establish `hmeasT` using `HcInf.cayley_inverse_measurable (pP ε) (pQ ε) hT`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Measure.map_apply (HcInf.cayley_inverse_measurable _ _) hT, Measure.restrict_apply hmeasT, hsetD]`. Use `_ = ∫⁻ X in T, f X ∂lam := by`. Rewrite using `[hmap, withDensity_apply _ hT, Measure.restrict_restrict hT, Set.inter_eq_left.2 hTD]`. Use `_ = ∫⁻ x in S, f (ψ x) := by`. Rewrite using `[hlam, MeasurableEquiv.restrict_map, hTdef, MeasurableEquiv.preimage_image, lintegral_map_equiv]`.
-
-Both sides reduce to the same expression. Use `_ = ∫⁻ x in S, ENNReal.ofReal ((f (ψ x)).toReal) := by`. Use `setLIntegral_congr_fun hSm (fun x hx => ?_)` and prove the remaining obligations. Conclude with `(ENNReal.ofReal_toReal (hpt x hx).2.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem cayDensEx_holds : CayDensEx := by
   intro n ε

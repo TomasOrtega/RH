@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `using Nat.totient_le (l ^ k)`. Rewrite using `[Nat.totient_prime_pow hl (by omega), Nat.totient_prime_pow hl hn]`. Establish `: n + k - 1 = k + (n - 1)` using `by omega`. Rewrite using `[this, pow_add, mul_assoc]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem totient_prime_pow_add_le_pow_mul_totient (l : ℕ) (hl : l.Prime) (n k : ℕ) :
     (l ^ (n + k)).totient ≤ l ^ k * (l ^ n).totient := by
@@ -17,27 +17,25 @@ private theorem totient_prime_pow_add_le_pow_mul_totient (l : ℕ) (hl : l.Prime
     rw [this, pow_add, mul_assoc]
 
 /- English proof (translation)
-Introduce `l hl K _ _ _`. Establish `hp : l.Prime` using `hl.out`. Take `⟨N, hN, ⟨φ⟩⟩` from `CF.kwHom K`. Take `⟨e, f₀, hf₀, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' l hp.one_lt.ne'`. Establish `hf₀c : f₀.Coprime l` using `((Nat.Prime.coprime_iff_not_dvd hp).2 hf₀).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf₀pos : 0 < f₀`. Break down `Nat.eq_zero_or_pos f₀ with h | h` into its components or cases. Simplify using `[h] at hN`. Conclude with `h`. Establish `hlc : (l + 1).Coprime l`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨f₀ * (l + 1), f₀ * (l + 1) * l ^ e, Nat.Coprime.mul hf₀c hlc, ?_, ?_⟩` and prove the remaining obligations. Establish `: 1 < l + 1` using `by have := hp.one_lt; omega`. Combine the equalities or inequalities in the displayed calculation. Introduce `n n₀ K' _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set m := n + (e + n₀) with hm`. Use `set M := f₀ * (l + 1) * l ^ m with hM`. Establish `hMpos : 0 < M`. Use `hp.pos` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NeZero M := ⟨hMpos.ne'⟩`. Set `L` to `CyclotomicField M K'`. Use `haveI : Module.Finite K' L := IsCyclotomicExtension.finite {M} K' L`. Use `haveI : NumberField L := NumberField.of_module_finite K' L`. Establish `hdvdN : l ^ e * f₀ ∣ M`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(l + 1) * l ^ (n + n₀), ?_⟩` and prove the remaining obligations. Rewrite using `[hM, hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdvdm : l ^ n ∣ M`. Use `⟨f₀ * (l + 1) * l ^ (e + n₀), ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hM, hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcyc : IsCyclotomicExtension {M} ℚ L` using `embCyc (l ^ e * f₀) (l ^ n) M K K' L hdvdN hdvdm ⟨φ⟩`. Use `⟨m, L, inferInstance, inferInstance, inferInstance, hcyc, by omega, ?_⟩` and prove the remaining obligations. Establish `hL : Module.finrank ℚ L = M.totient` using `IsCyclotomicExtension.Rat.finrank M L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlnpos : 0 < l ^ n` using `pow_pos hp.pos n`. Establish `hK' : (l ^ n).totient ≤ Module.finrank ℚ K'`. Establish `hz` using `IsCyclotomicExtension.zeta_spec (l ^ n) K K'`. Establish `h1` using `Polynomial.cyclotomic_eq_minpoly_rat hz hlnpos`. Establish `h2` using `minpoly.natDegree_le (A := ℚ) (IsCyclotomicExtension.zeta (l ^ n) K K')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h2` using `[← h1, Polynomial.natDegree_cyclotomic]`. Conclude with `h2`. Establish `htow` using `Module.finrank_mul_finrank ℚ K' L`. Establish `htot : M.totient ≤ f₀ * (l + 1) * l ^ e * l ^ n₀ * (l ^ n).totient`. Establish `hco : (f₀ * (l + 1)).Coprime (l ^ m)` using `(Nat.Coprime.mul hf₀c hlc).pow_right m`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hM, Nat.totient_mul hco]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `htpos : 0 < (l ^ n).totient` using `Nat.totient_pos.2 hlnpos`.
-
-Use `Nat.le_of_mul_le_mul_right ?_ htpos` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.embed :
     ∀ (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [NumberField K] [IsAbelianGalois ℚ K], ∃ f D : ℕ, f.Coprime l ∧ 1 < f ∧ ∀ (n n₀ : ℕ) (K' : Type) [Field K'] [NumberField K'] [Algebra K K'] [IsCyclotomicExtension {l ^ n} K K'], ∃ (m : ℕ) (L : Type) (_ : Field L) (_ : NumberField L) (_ : Algebra K' L) (_ : IsCyclotomicExtension {f * l ^ m} ℚ L), n₀ ≤ m ∧ Module.finrank K' L ≤ D * l ^ n₀ := by

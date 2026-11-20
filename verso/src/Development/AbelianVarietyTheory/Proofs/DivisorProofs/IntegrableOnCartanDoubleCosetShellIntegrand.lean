@@ -9,13 +9,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic
 namespace GlobalTheory.ShellInt
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ϖ ν e hν a μ _ φ hφ n z`. Establish `hcomp : IsCompact (shellSet ϖ n : Set (GL (Fin a) k))` using `(isCompact_KO.mul isCompact_singleton).mul isCompact_KO`. Set `χ : GL (Fin a) k →* ℂ` to `{ toFun := fun g => (ν (gdet g) : ℂ) * apow (gdet g) z map_one' := by simp map_mul' := fun g h => by simp only [gdet_mul, map_mul, Units.val_mul, apow_mul]; ring }`. Establish `hχ1 : ∀ g ∈ detCong (ϖ ^ e) (Fin a), χ g = 1`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ν (gdet g) = 1` using `hν _ hg.2`. Establish `h2 : apow (gdet g) z = 1` using `apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hg.1) z`. Simplify using `[χ, h1, h2]`. Establish `hχc : Continuous χ`. Use `continuous_of_continuousAt_one χ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : (fun _ => (1 : ℂ)) =ᶠ[nhds (1 : GL (Fin a) k)] χ` using `by filter_upwards [(isOpen_detCong (ϖ ^ e) (Fin a)).mem_nhds (one_mem _)] with g hg`. Conclude with `(hχ1 g hg).symm`. Use `(continuousAt_const (x := (1 : GL (Fin a) k)) (y := (1 : ℂ))).congr hev` as an intermediate fact. Simplify using `using this`. Establish `hcont : Continuous (fun g : GL (Fin a) k => φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hφ.1.continuous.comp Units.continuous_val).mul hχc`. Use `h.congr fun g => ?_` and prove the remaining obligations. Simplify using `[χ, mul_assoc]`. Conclude with `hcont.continuousOn.integrableOn_compact hcomp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrableOn_shell : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ϖ : kˣ) (ν : kˣ →* ℂˣ) (e : ℕ), CondLE ϖ e ν →

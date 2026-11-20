@@ -15,7 +15,7 @@ open Formalism.L2.FormalSeriesBounds Formalism.L2.FormalSeriesBounds.PartialDeri
 variable {C : Type} [Field C] [CharZero C] {dd : ℕ}
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[Formalism.G.LogCR.pderiv_subst (a := fun p : Fin 1 × Fin dd => (![P] : Fin 1 → Pt C n dd) p.1 p.2) (fun p => by obtain ⟨k, j⟩ := p; fin_cases k; exact hP j) f q, Fintype.sum_prod_type, Fin.sum_univ_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pderiv_eval_single {n : ℕ} {P : Pt C n dd} (hP : ∀ j, constantCoeff (P j) = 0) (f : PS C 1 dd)
     (q : Fin n × Fin dd) :
@@ -26,9 +26,9 @@ theorem pderiv_eval_single {n : ℕ} {P : Pt C n dd} (hP : ∀ j, constantCoeff 
   rfl
 
 /- English proof (translation)
-Unfold `ev`. Establish `: (fun p : Fin 1 × Fin dd => (![pt C dd 0] : Fin 1 → Pt C 1 dd) p.1 p.2) = X`. Use function extensionality and compare the values at `p`. Take `⟨k, j⟩` from `p`. Use `fin_cases k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem germEval_oneStandardPoint_self (f : PS C 1 dd) : ev (n := 1) ![pt C dd 0] f = f := by
   unfold ev
@@ -37,9 +37,9 @@ theorem germEval_oneStandardPoint_self (f : PS C 1 dd) : ev (n := 1) ![pt C dd 0
   rw [this, subst_self]; rfl
 
 /- English proof (translation)
-Unfold `ev`. Establish `: (fun p : Fin 1 × Fin dd => (![(0 : Pt C n dd)] : Fin 1 → Pt C n dd) p.1 p.2) = 0`. Use function extensionality and compare the values at `p`. Take `⟨k, j⟩` from `p`. Use `fin_cases k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this, subst_zero_eq_C_constantCoeff, show algebraMap C C = RingHom.id C from rfl, map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ev_zero_pt {n : ℕ} (f : PS C 1 dd) : ev (n := n) ![(0 : Pt C n dd)] f = MvPowerSeries.C (constantCoeff f) := by
   unfold ev
@@ -49,7 +49,7 @@ theorem ev_zero_pt {n : ℕ} (f : PS C 1 dd) : ev (n := n) ![(0 : Pt C n dd)] f 
   rfl
 
 /- English proof (translation)
-Use `show pderiv C q (X (k, j)) = _`. Rewrite using `[pderiv_X, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_pt {n : ℕ} (q : Fin n × Fin dd) (k : Fin n) (j : Fin dd) :
     pderiv C q (pt C dd k j) = if (k, j) = q then 1 else 0 := by
@@ -57,15 +57,13 @@ theorem pderiv_pt {n : ℕ} (q : Fin n × Fin dd) (k : Fin n) (j : Fin dd) :
   rw [pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-The claim follows from `z0_p0 _ fun j => z0_pt 0 j`.
+A detailed English derivation is pending.
 -/
 theorem constant_zero_first_then_zero : Z0 (![pt C (n := 1) dd 0, 0] : Fin 2 → Pt C 1 dd) :=
   z0_p0 _ fun j => z0_pt 0 j
 
 /- English proof (translation)
-Rewrite using `[← G.comm i, ev_ev (z0_pp 1 0) constant_zero_first_then_zero]`. Establish `e : (fun k j => ev (n` using `1) ![pt C dd 0, 0] ((![pt C (n := 2) dd 1, pt C dd 0] : Fin 2 → Pt C 2 dd) k j)) = ![0, pt C dd 0] := by`. Use function extensionality and compare the values at `k j`. Use `fin_cases k`. Conclude with `ev_X constant_zero_first_then_zero 1 j`.
-
-Conclude with `ev_X constant_zero_first_then_zero 0 j`. Rewrite using `[e]`. Conclude with `G.unit i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formalGroupLaw_ev_x_zero (G : FGLaw C dd) (i : Fin dd) : ev (n := 1) ![pt C dd 0, 0] (G.F i) = X ((0 : Fin 1), i) := by
   rw [← G.comm i, ev_ev (z0_pp 1 0) constant_zero_first_then_zero]
@@ -87,7 +85,7 @@ def cmp (P : Pt C 1 dd) (A : Matrix (Fin dd) (Fin dd) (PS C 1 dd)) : Matrix (Fin
   fun k i => ev ![P] (A k i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k i`. Simplify using `only [cmp, Matrix.mul_apply]`. Rewrite using `[ev_sum (z0_1 P hP)]`. Conclude with `Finset.sum_congr rfl fun j _ => ev_mul (z0_1 P hP) _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_mul {P : Pt C 1 dd} (hP : ∀ j, constantCoeff (P j) = 0) (A B : Matrix (Fin dd) (Fin dd) (PS C 1 dd)) :
     cmp P (A * B) = cmp P A * cmp P B := by
@@ -97,7 +95,7 @@ theorem cmp_mul {P : Pt C 1 dd} (hP : ∀ j, constantCoeff (P j) = 0) (A B : Mat
   exact Finset.sum_congr rfl fun j _ => ev_mul (z0_1 P hP) _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k i`. Simplify using `only [cmp, Matrix.one_apply]`. Use `split_ifs`. Conclude with `ev_one _`. Rewrite using `[show (0 : PS C 1 dd) = MvPowerSeries.C 0 from (map_zero _).symm, ev_C]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_one (P : Pt C 1 dd) : cmp P (1 : Matrix (Fin dd) (Fin dd) (PS C 1 dd)) = 1 := by
   funext k i
@@ -107,25 +105,23 @@ theorem cmp_one (P : Pt C 1 dd) : cmp P (1 : Matrix (Fin dd) (Fin dd) (PS C 1 dd
   · rw [show (0 : PS C 1 dd) = MvPowerSeries.C 0 from (map_zero _).symm, ev_C]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k i`. Establish `hAdd : addOf Y.B.G.F (pt C (n` using `2) dd 0) (pt C dd 1) = Y.B.G.F :=`. Use function extensionality and compare the values at `fun j => PartialDerivEval.eval_points_two _`. Establish `h1` using `Y.lg_add k`. Rewrite `h1` using `[hAdd]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg (pderiv C ((1 : Fin 2), i)) h1`. Establish `hd0 : ∀ g : PS C 1 dd, pderiv C ((1 : Fin 2), i) (ev (n` using `2) ![pt C dd 0] g) = 0 := by`. Introduce `g`. Rewrite using `[pderiv_eval_single (P := pt C (n := 2) dd 0) (fun j => z0_pt 0 j)]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pderiv_pt, if_neg (fun h => absurd (Prod.mk.inj h).1 (by decide)), mul_zero]`. Establish `hd1 : ∀ g : PS C 1 dd, pderiv C ((1 : Fin 2), i) (ev (n` using `2) ![pt C dd 1] g) = ev (n := 2) ![pt C dd 1] (pderiv C ((0 : Fin 1), i) g) := by`. Introduce `g`. Rewrite using `[pderiv_eval_single (P := pt C (n := 2) dd 1) (fun j => z0_pt 1 j), Finset.sum_eq_single i (fun j _ hj => by rw [pderiv_pt, if_neg (fun h => hj (Prod.mk.inj h).2), mul_zero]) (fun h => absurd (Finset.mem_univ i) h), pderiv_pt, if_pos rfl, mul_one]`. Rewrite `h2` using `[map_add, pderiv_eval_single (P := Y.B.G.F) Y.B.G.const, hd0, hd1, zero_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg (ev (n := 1) ![pt C dd 0, 0]) h2`. Rewrite `h3` using `[ev_sum constant_zero_first_then_zero]`. Establish `hL : ∀ j, ev (n` using `1) ![pt C dd 0, 0] (ev ![Y.B.G.F] (pderiv C ((0 : Fin 1), j) (Y.lg k))) = pderiv C ((0 : Fin 1), j) (Y.lg k) := by`. Introduce `j`. Rewrite using `[ev_ev (z0_1 _ Y.B.G.const) constant_zero_first_then_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun k' j' => ev (n` using `1) ![pt C dd 0, 0] ((![Y.B.G.F] : Fin 1 → Pt C 2 dd) k' j')) = ![pt C dd 0] := by`. Use function extensionality and compare the values at `k' j'`. Use `fin_cases k'`. Conclude with `formalGroupLaw_ev_x_zero Y.B.G j'`. Rewrite using `[e, germEval_oneStandardPoint_self]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : ∀ g : PS C 1 dd, ev (n` using `1) ![pt C dd 0, 0] (ev ![pt C (n := 2) dd 1] g) = MvPowerSeries.C (constantCoeff g) := by`. Introduce `g`. Rewrite using `[ev_ev (z0_1 (pt C (n := 2) dd 1) (fun j => z0_pt 1 j)) constant_zero_first_then_zero]`. Establish `e : (fun k' j' => ev (n` using `1) ![pt C dd 0, 0] ((![pt C (n := 2) dd 1] : Fin 1 → Pt C 2 dd) k' j')) = ![(0 : Pt C 1 dd)] := by`. Use function extensionality and compare the values at `k' j'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `fin_cases k'`. Conclude with `ev_X constant_zero_first_then_zero 1 j'`. Rewrite using `[e, ev_zero_pt]`. Simplify using `only [ev_mul constant_zero_first_then_zero, hL] at h3`. Rewrite `h3` using `[hR]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Jac, JF]`. Rewrite using `[h3]`. Establish `hc : constantCoeff (pderiv C ((0 : Fin 1), i) (Y.lg k)) = if k = i then 1 else 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add, Y.lg_lin k _ (by simp), coeff_X]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hki, if_neg (fun h => hki (by`. Use `(Finsupp.single_left_inj one_ne_zero).1 h` as an intermediate fact.
-
-Conclude with `(Prod.mk.inj this).2.symm)), zero_mul]`. Rewrite using `[hc]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem JL_JF {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) :
     Jac Y.lg * JF Y.B.G = 1 := by
@@ -184,17 +180,15 @@ theorem JL_JF {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul]`. Use `show ev (n := 1) ![(0 : Pt C 1 dd)] (Y.lg k) = 0`. Rewrite using `[ev_zero_pt]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: constantCoeff (Y.lg k) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, Y.lg_lin k 0 (by simp), coeff_zero_X]`. Rewrite using `[this, map_zero]`. Consider the case `succ n ih`. Establish `hA : Z0 (![mulL Y.B.G.F n, pt C (n` using `1) dd 0] : Fin 2 → Pt C 1 dd) := fun k' j => by fin_cases k'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `multiplication_constantCoeff_zero Y.B.G n j`. Conclude with `z0_pt 0 j`. Establish `hAdd : addOf Y.B.G.F (pt C (n` using `2) dd 0) (pt C dd 1) = Y.B.G.F :=`. Use function extensionality and compare the values at `fun j => PartialDerivEval.eval_points_two _`. Establish `h1` using `congrArg (ev ![mulL Y.B.G.F n, pt C (n := 1) dd 0]) (Y.lg_add k)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1` using `[hAdd, ev_add hA, ev_ev (z0_1 _ Y.B.G.const) hA, ev_ev (z0_1 _ (fun j => z0_pt 0 j)) hA, ev_ev (z0_1 _ (fun j => z0_pt 1 j)) hA]`. Establish `e1 : (fun k' j => ev ![mulL Y.B.G.F n, pt C (n` using `1) dd 0] ((![Y.B.G.F] : Fin 1 → Pt C 2 dd) k' j)) = ![mulL Y.B.G.F (n + 1)] := by`. Use function extensionality and compare the values at `k' j`. Use `fin_cases k'`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e2 : (fun k' j => ev ![mulL Y.B.G.F n, pt C (n` using `1) dd 0] ((![pt C (n := 2) dd 0] : Fin 1 → Pt C 2 dd) k' j)) = ![mulL Y.B.G.F n] := by`. Use function extensionality and compare the values at `k' j`. Use `fin_cases k'`. Conclude with `ev_X hA 0 j`. Establish `e3 : (fun k' j => ev ![mulL Y.B.G.F n, pt C (n` using `1) dd 0] ((![pt C (n := 2) dd 1] : Fin 1 → Pt C 2 dd) k' j)) = ![pt C (n := 1) dd 0] := by`.
-
-Use function extensionality and compare the values at `k' j`. Use `fin_cases k'`. Conclude with `ev_X hA 1 j`. Rewrite `h1` using `[e1, e2, e3, germEval_oneStandardPoint_self, ih]`. Rewrite using `[h1, succ_nsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lg_mulL {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) (n : ℕ) (k : Fin dd) :
     ev (n := 1) ![mulL Y.B.G.F n] (Y.lg k) = n • Y.lg k := by
@@ -229,7 +223,7 @@ theorem lg_mulL {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V
     rw [h1, succ_nsmul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k i`. Establish `h` using `congrArg (pderiv C ((0 : Fin 1), i)) (lg_mulL Y n k)`. Rewrite `h` using `[pderiv_eval_single (multiplication_constantCoeff_zero Y.B.G n), map_nsmul]`. Rewrite using `[Matrix.mul_apply, Matrix.smul_apply]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jac_mulL {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) (n : ℕ) :
     cmp (mulL Y.B.G.F n) (Jac Y.lg) * Jac (mulL Y.B.G.F n) = n • Jac Y.lg := by
@@ -240,9 +234,9 @@ theorem jac_mulL {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C 
   exact h
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `intS_sum _ fun s _ => ?_` and prove the remaining obligations. Establish `hp : IntS V (∏ i, M (s i) i)` using `Finset.prod_induction _ (IntS V) (fun a b ha hb => intS_mul ha hb) intS_one fun i _ => hM _ _`. Break down `Int.units_eq_one_or (Equiv.Perm.sign s) with h | h` into its components or cases. Rewrite using `[h, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Rewrite using `[h, Units.neg_smul, one_smul]`. Conclude with `intS_neg hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intS_det {V : VF C} {σ : Type} (M : Matrix (Fin dd) (Fin dd) (MvPowerSeries σ C))
     (hM : ∀ k i, IntS V (M k i)) : IntS V M.det := by
@@ -255,9 +249,7 @@ theorem intS_det {V : VF C} {σ : Type} (M : Matrix (Fin dd) (Fin dd) (MvPowerSe
   · rw [h, Units.neg_smul, one_smul]; exact intS_neg hp
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_apply]`. Use `intS_det _ fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_apply]`. Use `split_ifs`. Rewrite using `[Pi.single_apply]`.
-
-Use `split_ifs`. Conclude with `intS_one`. Conclude with `intS_zero`. Conclude with `hM _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intS_adj {V : VF C} {σ : Type} (M : Matrix (Fin dd) (Fin dd) (MvPowerSeries σ C))
     (hM : ∀ k i, IntS V (M k i)) (k i : Fin dd) : IntS V (M.adjugate k i) := by
@@ -271,13 +263,13 @@ theorem intS_adj {V : VF C} {σ : Type} (M : Matrix (Fin dd) (Fin dd) (MvPowerSe
   · exact hM _ _
 
 /- English proof (translation)
-Unfold `JF`. Rewrite using `[constantCoeff_ev constant_zero_first_then_zero]`. Establish `hA : Z0 (![(0 : Pt C 1 dd), pt C (n` using `1) dd 0] : Fin 2 → Pt C 1 dd) := fun k' j => by fin_cases k'`. Conclude with `map_zero _`. Conclude with `z0_pt 0 j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg (pderiv C ((0 : Fin 1), i)) (G.unit k)`. Rewrite `h` using `[pderiv_eval_pair hA]`. Establish `h0 : ∀ j, pderiv C ((0 : Fin 1), i) ((0 : Pt C 1 dd) j) = 0` using `fun j => map_zero _`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, h0, mul_zero, Finset.sum_const_zero, zero_add, pderiv_pt, pderiv_X] at h`. Rewrite `h` using `[Finset.sum_eq_single i (fun x _ hx => by rw [if_neg (by simp [hx]), mul_zero]) (fun h' => absurd (Finset.mem_univ i) h'), if_pos rfl, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg constantCoeff h`. Rewrite `h2` using `[constantCoeff_ev hA]`. Rewrite using `[h2, Pi.single_apply]`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h' => hki (Prod.mk.inj h').2), if_neg hki, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem JF_const (G : FGLaw C dd) (k i : Fin dd) :
     constantCoeff (JF G k i) = if k = i then 1 else 0 := by
@@ -302,7 +294,7 @@ theorem JF_const (G : FGLaw C dd) (k i : Fin dd) :
   · rw [if_neg (fun h' => hki (Prod.mk.inj h').2), if_neg hki, map_zero]
 
 /- English proof (translation)
-Use `intS_ev constant_zero_first_then_zero (fun k' j => ?_) (intS_pderiv (Y.intF k) _)` and prove the remaining obligations. Use `fin_cases k'`. Conclude with `intS_X _`. Conclude with `intS_zero`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem JF_int {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) (k i : Fin dd) :
     IntS V (JF Y.B.G k i) := by
@@ -312,13 +304,13 @@ theorem JF_int {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V 
   · exact intS_zero
 
 /- English proof (translation)
-Establish `h1 : JF Y.B.G * Jac Y.lg = 1` using `mul_eq_one_comm.1 (JL_JF Y)`. Use `set δ := (JF Y.B.G).det with hδ`. Establish `hδ0 : constantCoeff δ = 1`. Rewrite using `[hδ, RingHom.map_det]`. Establish `: (constantCoeff : MvPowerSeries (Fin 1 × Fin dd) C →+* C).mapMatrix (JF Y.B.G) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `k' i'`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, JF_const, Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one]`. Establish `hδi : IntS V δ` using `intS_det _ (JF_int Y)`. Establish `hw : δ * δ⁻¹ = 1` using `MvPowerSeries.mul_inv_cancel δ (by rw [hδ0]; exact one_ne_zero)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwi : IntS V δ⁻¹` using `intS_of_mul_eq_one hw hδ0 hδi`. Establish `hadj : (JF Y.B.G).adjugate = δ • Jac Y.lg`. Rewrite using `[← Matrix.mul_one (JF Y.B.G).adjugate, ← h1, ← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`. Establish `e : Jac Y.lg k i = δ⁻¹ * (JF Y.B.G).adjugate k i`. Rewrite using `[hadj, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, mul_comm δ⁻¹ δ, hw, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `intS_mul hwi (intS_adj _ (JF_int Y) k i)`.
+A detailed English derivation is pending.
 -/
 theorem JL_int {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) (k i : Fin dd) :
     IntS V (Jac Y.lg k i) := by
@@ -342,7 +334,7 @@ theorem JL_int {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V 
   exact intS_mul hwi (intS_adj _ (JF_int Y) k i)
 
 /- English proof (translation)
-Establish `h1 : cmp (mulL Y.B.G.F n) (Jac Y.lg) * cmp (mulL Y.B.G.F n) (JF Y.B.G) = 1`. Rewrite using `[← cmp_mul (multiplication_constantCoeff_zero Y.B.G n), JL_JF, cmp_one]`. Establish `h2` using `mul_eq_one_comm.1 h1`. Rewrite using `[← Matrix.one_mul (Jac (mulL Y.B.G.F n)), ← h2, Matrix.mul_assoc, jac_mulL, Matrix.mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem jac_l {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) (n : ℕ) :
     Jac (mulL Y.B.G.F n) = n • (cmp (mulL Y.B.G.F n) (JF Y.B.G) * Jac Y.lg) := by
@@ -358,23 +350,21 @@ namespace Formalism.L2.FormalSeriesBounds
 open MulLFrob MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y k μ hμ`. Take `⟨i, hi⟩` from `hμ`. Establish `hl` using `V.l_prime`. Establish `hm0 : μ ((0 : Fin 1), i) ≠ 0` using `fun h => hi (h ▸ dvd_zero _)`. Use `set ν := μ - Finsupp.single ((0 : Fin 1), i) 1 with hν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνμ : ν + Finsupp.single ((0 : Fin 1), i) 1 = μ`. Rewrite using `[hν]`. Use `tsub_add_cancel_of_le ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hνi : ν ((0 : Fin 1), i) + 1 = μ ((0 : Fin 1), i)`. Rewrite using `[← hνμ, Finsupp.add_apply, Finsupp.single_eq_same]`. Establish `hJ` using `congrFun (congrFun (jac_l Y V.l) k) i`. Establish `hc` using `congrArg (coeff ν) hJ`. Simplify using `only [Jac] at hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[coeff_pderiv, hνμ, Matrix.smul_apply, map_nsmul]`. Establish `hI : IntS V ((cmp (mulL Y.B.G.F V.l) (JF Y.B.G) * Jac Y.lg) k i)`. Rewrite using `[Matrix.mul_apply]`. Use `PartialDerivEval.intS_sum _ fun j _ => PartialDerivEval.intS_mul ?_ (JL_int Y j i)` and prove the remaining obligations. Use `PartialDerivEval.intS_ev (PartialDerivEval.z0_1 _ (FirstUnitSeriesIntegrality.multiplication_constantCoeff_zero Y.B.G V.l)) (fun k' j' => ?_) (JF_int Y k j)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `fin_cases k'`. Conclude with `FirstUnitSeriesIntegrality.mulL_int Y.B.G Y.intF V.l j'`. Establish `hmm : V.MM (coeff μ (mulL Y.B.G.F V.l k) * ((ν ((0 : Fin 1), i) : C) + 1))`. Rewrite using `[hc, nsmul_eq_mul]`. Conclude with `GmExArith.mm_mul_int GmExArith.mm_l (hI ν)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : IsCoprime ((V.l : ℕ) : ℤ) ((μ ((0 : Fin 1), i) : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hl).2 hi)`. Take `⟨a, b, hab⟩` from `hcop`. Establish `hab' : (a : C) * (V.l : C) + (b : C) * ((μ ((0 : Fin 1), i) : ℕ) : C) = 1`. Use `congrArg (Int.cast : ℤ → C) hab` as an intermediate fact. Move the coercions through the operations in `at this`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `this`. Establish `hmC : ((ν ((0 : Fin 1), i) : C) + 1) = ((μ ((0 : Fin 1), i) : ℕ) : C)`. Rewrite using `[← hνi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmm` using `[hmC]`. Establish `hcint : V.Ge 0 (coeff μ (mulL Y.B.G.F V.l k))` using `FirstUnitSeriesIntegrality.mulL_int Y.B.G Y.intF V.l k μ`. Establish `e : coeff μ (mulL Y.B.G.F V.l k) = (a : C) * ((V.l : C) * coeff μ (mulL Y.B.G.F V.l k)) + (b : C) * (coeff μ (mulL Y.B.G.F V.l k) * ((μ ((0 : Fin 1), i) : ℕ) : C))`. Take the linear combination `(coeff μ (mulL Y.B.G.F V.l k)) * hab'.symm`. Rewrite using `[e]`.
-
-Conclude with `GmExArith.mm_add (GmExArith.mm_int_mul (GmExArith.ge_intCast' a) (GmExArith.mm_mul_int GmExArith.mm_l hcint)) (GmExArith.mm_int_mul (GmExArith.ge_intCast' b) hmm)`.
+A detailed English derivation is pending.
 -/
 theorem mulLFrob_holds : MulLFrobSt := by
   intro C _ _ V O _ _ dd Y k μ hμ

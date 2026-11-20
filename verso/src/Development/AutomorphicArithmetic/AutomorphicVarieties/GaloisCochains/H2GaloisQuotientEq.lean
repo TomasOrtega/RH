@@ -13,11 +13,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 section SlopeTestRemainingChoices
 
 /- English proof (translation)
-Use `haveI : Module.Finite k V := by haveI := Module.Finite.equiv f.quotKerEquivRange.symm`. Conclude with `Module.Finite.of_submodule_quotient (LinearMap.ker f)`. Use `⟨this, ?_⟩` and prove the remaining obligations. Establish `e` using `LinearMap.finrank_range_add_finrank_ker (f.domRestrict U)`. Establish `a : finrank k (LinearMap.range (f.domRestrict U)) ≤ finrank k U'` using `Submodule.finrank_mono (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `h x.1 x.2)`. Establish `b : finrank k (LinearMap.ker (f.domRestrict U)) ≤ finrank k (LinearMap.ker f)`. Rewrite using `[← Submodule.finrank_map_subtype_eq]`. Use `Submodule.finrank_mono ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem hg_rank {k V W : Type} [Field k] [AddCommGroup V] [Module k V] [AddCommGroup W] [Module k W]
     (f : V →ₗ[k] W) [Module.Finite k (LinearMap.ker f)] [Module.Finite k W] (U : Submodule k V) (U' : Submodule k W)
@@ -39,13 +37,11 @@ private theorem hg_rank {k V W : Type} [Field k] [AddCommGroup V] [Module k V] [
   omega
 
 /- English proof (translation)
-Set `u : J → J.map t` to `fun j => ⟨t j.1, j.1, j.2, rfl⟩`. Establish `hu : Continuous u` using `(ht.comp continuous_subtype_val).subtype_mk _`. Set `φ : eqHom ρ (D.map t) (J.map t) →ₗ[k] eqHom (ρ.comp t) D J` to `{ toFun := fun f => ⟨fun j => f.1 (u j), f.2.1.comp_continuous hu, fun a b => by`. Rewrite using `[← f.2.2.1]`. Conclude with `congrArg f.1 (Subtype.ext (map_mul t a.1 b.1)),`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `fun d hd j j' h => f.2.2.2 (t d) ⟨d, hd, rfl⟩ (u j) (u j') (by`. Express the relevant statement in the definitionally equal form `t j'.1 = t d * t j.1 * (t d)⁻¹`. Rewrite using `[h, map_mul, map_mul, map_inv])⟩`. Use the proof step `map_add' := fun _ _ => rfl`. Use the proof step `map_smul' := fun _ _ => rfl }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hφ : Function.Injective φ`. Introduce `f g h`. Use `Subtype.ext (funext ?_)` and prove the remaining obligations. Introduce and unpack `⟨_, j, hj, rfl⟩`. Conclude with `congrFun (congrArg Subtype.val h) ⟨j, hj⟩`.
-
-Conclude with `⟨Module.Finite.of_injective φ hφ, LinearMap.finrank_le_finrank_of_injective hφ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem hg_eqHom {k Γ Γ' M : Type} [Field k] [Group Γ] [TopologicalSpace Γ] [Group Γ'] [TopologicalSpace Γ']
     [AddCommGroup M] [Module k M] (ρ : Representation k Γ' M) (t : Γ →* Γ') (ht : Continuous t) (D J : Subgroup Γ)
@@ -71,11 +67,9 @@ private theorem hg_eqHom {k Γ Γ' M : Type} [Field k] [Group Γ] [TopologicalSp
   exact ⟨Module.Finite.of_injective φ hφ, LinearMap.finrank_le_finrank_of_injective hφ⟩
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsGalois F Ω := {}`. Use `haveI : CompactSpace (Dec (F := F) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Take `⟨φ, -, h2, h3⟩` from `decZhat F Ω v A hA`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `haveI : ((Ine (F := F) A ⊓ K).subgroupOf (Dec (F := F) A)).Normal := inferInstanceAs ((Ine (F := F) A).subgroupOf (Dec (F := F) A) ⊓ K.subgroupOf _).Normal`. Take `⟨b, hb, -, hz⟩` from `H2_unramified_inflation l (Dec (F := F) A) k M (ρ.comp π) (hρ.comp (hπ.prodMap continuous_id)) ((Ine (F := F) A).subgroupOf (Dec (F := F) A)) ((Ine (F := F) A ⊓ K).subgroupOf (Dec (F := F) A)) φ (Subgroup.comap_mono inf_le_left) (((isClosed_Ine A).inter (K.isClosed_of_isOpen hK)) …`. Rewrite using `[Subgroup.relIndex_subgroupOf (Ine_le_Dec _), Subgroup.inf_relIndex_left]`. Conclude with `fun h => hl (h.trans (Subgroup.relIndex_dvd_index_of_normal _ _)))`. Use the proof step `(fun j hj => by rw [MonoidHom.comp_apply, h1 j hj, map_one]) h2 h3 (restrictCocycles2 ρ π hπ z)`.
-
-Use the proof step `(fun s t j hj j' hj' => by simp only [restrictCocycles2_apply, map_mul, h1 j hj, h1 j' hj', mul_one])`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (restrictCocycles2 ρ π hπ z) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `(separated_dvr_second_cohomology_mem _ _).2 ⟨b, hb.continuous, funext fun p => (hz p.1 p.2).symm⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hg_loc {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ)
     [Fact l.Prime] {v : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} (hA : IsPlaceOver A v)
@@ -108,29 +102,25 @@ private theorem hg_loc {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `P F Ω _ _ _ _ _ l _ hF S K Γ _ _ _ _ _ _ π h k _ _ _ M _ _ _ _ _ ρ hρ c hc A hA`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsGalois F Ω := {}`. Use `haveI := h.normal`. Choose the witnesses or unpack the hypotheses as in `⟨A', hA', rfl⟩ : ∃ A' : HeightOneSpectrum (𝓞 F) → ValuationSubring Ω, (∀ v, IsPlaceOver (A' v) v) ∧ A = fun v : S => A' v.1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun v => if hv : v ∈ S then A ⟨v, hv⟩ else (exists_isPlaceOver Ω v).choose, fun v => ?_, funext fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Simplify `hA ⟨v, hv⟩` using `only [dif_pos hv]`. Simplify `(exists_isPlaceOver Ω v).choose_spec` using `only [dif_neg hv]`. Simplify using `only [dif_pos v.2]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S', p, hSS, hp, hps, rfl, hker⟩` from `levelS F Ω l S K Γ π h`. Use `haveI hcl := isClosed_NS Ω (S' : Set (HeightOneSpectrum (𝓞 F)))`. Use `haveI : TotallyDisconnectedSpace (GS Ω (S' : Set (HeightOneSpectrum (𝓞 F)))) := (AlgebraTools.totallyDisconnected_quot _ _ hcl).1`. Establish `hS' : ContainsAbove S' l` using `fun v hv => hSS (h.above v hv)`. Establish `hρ' : ContAction (ρ.comp p)` using `hρ.comp (hp.prodMap continuous_id)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hkill : ∀ q, q ∉ S → ∀ g ∈ Ine (F` using `F) (A' q) ⊓ K, p (toGS Ω _ g) = 1 := by`. Introduce `q hq g hg`. Establish `: g ∈ (p.comp (toGS Ω _)).ker`. Rewrite using `[h.ker]`. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨q, hq, A' q, hA' q, hg⟩`. Conclude with `this`. Set `n : HeightOneSpectrum (𝓞 F) → ℕ` to `fun v => finrank k (H2 ((ρ.comp p).comp (locHom (S' : Set (HeightOneSpectrum (𝓞 F))) (A' v))))`. Establish `hq : ∀ q : {v // v ∈ S' ∧ v ∉ S}, Module.Finite k (eqHom (ρ.comp p) ((Dec (F` using `F) (A' q.1)).map (toGS Ω _)) ((Ine (F := F) (A' q.1) ⊓ K).map (toGS Ω _))) ∧ finrank k (eqHom (ρ.comp p) ((Dec (F := F) (A' q.1)).map (toGS Ω _)) ((Ine (F := F) (A' q.1) ⊓ K).map (toGS Ω _))) ≤ n q.1 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `q`. Take `⟨a1, a2⟩` from `tameEq P.lf P.lt P.le F Ω l q.1 (A' q.1) (hA' _) (fun hv => q.2.2 (h.above _ hv)) K h.isOpen h.idx k M ((ρ.comp p).comp (toGS Ω _)) (hρ'.comp ((continuous_toGS Ω _).prodMap continuous_id)) (fun g hg => by rw [MonoidHom.comp_apply, MonoidHom.comp_apply, hkill _ q.2.2 g hg, map_one …`. Take `⟨b1, b2⟩` from `hg_eqHom (ρ.comp p) (toGS Ω _) (continuous_toGS Ω _) (Dec (F := F) (A' q.1)) (Ine (F := F) (A' q.1) ⊓ K)`. Conclude with `⟨b1, b2.trans a2.le⟩`. Take `⟨g1, g2, g3⟩` from `globEuler P.gf P.ge F Ω l h.odd hF S' hS' k M (ρ.comp p) hρ' c hc`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `tail` using `ptTail P.lf P.gf P.pt F Ω l h.odd S' hS' (fun v => A' v.1) (fun v => hA' v.1) k M (ρ.comp p) hρ'`. Use `letI : Fintype {v // v ∈ S' ∧ v ∉ S} := Fintype.subtype (S' \ S) fun _ => Finset.mem_sdiff`. Take `⟨i1, i2, i3⟩` from `inflKer l _ Γ p hp hps k M ρ hρ {v // v ∈ S' ∧ v ∉ S} (fun q => (Dec (F := F) (A' q.1)).map (toGS Ω _)) (fun q => (Ine (F := F) (A' q.1) ⊓ K).map (toGS Ω _)) (hker A' hA') (fun q => (hq q).1) g1`. Take `⟨r1, r2⟩` from `hg_rank (resH2 ρ p hp) (Sha2 ρ (fun v : S => (p.comp (toGS Ω _)).comp (Dec (F := F) (A' v.1)).subtype) fun v => h.cont.comp continuous_subtype_val) (Sha2 (ρ.comp p) (fun v : S' => locHom (S' : Set (HeightOneSpectrum (𝓞 F))) (A' v.1)) fun v => continuous_locHom _ (A' v.1)) (by`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Sha2, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Introduce `v`. Establish `e : resH2 (ρ.comp p) (locHom (S' : Set (HeightOneSpectrum (𝓞 F))) (A' v.1)) (continuous_locHom _ _) (resH2 ρ p hp x) = resH2 ρ ((p.comp (toGS Ω _)).comp (Dec (F` using `F) (A' v.1)).subtype) (h.cont.comp continuous_subtype_val) x := by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use `e.trans ?_` and prove the remaining obligations. Distinguish the cases in `hv : v.1 ∈ S`. Conclude with `hx ⟨v.1, hv⟩`. Conclude with `hg_loc l (hA' v.1) K h.isOpen h.idx _ _ (fun g hg => hkill _ hv g.1 hg) ρ hρ x)`. Use `⟨i1, r1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e0 : H0 (ρ.comp p) = H0 ρ`. Use extensionality with `m`. Conclude with `⟨fun hm g => by obtain ⟨g, rfl⟩ := hps g; exact hm g, fun hm g => hm (p g)⟩`. Rewrite `g3` using `[e0]`. Establish `s1 : ∑ v : S', n v.1 = ∑ v : S, n v.1 + ∑ q : {v // v ∈ S' ∧ v ∉ S}, n q.1`.
-
-Rewrite using `[Finset.sum_coe_sort S' n, Finset.sum_coe_sort S n, ← Finset.sum_sdiff hSS, add_comm, Finset.sum_subtype (S' \ S) (p := fun v => v ∈ S' ∧ v ∉ S) (fun _ => Finset.mem_sdiff) n]`. Establish `s2` using `Finset.sum_le_sum (s := Finset.univ) fun q _ => (hq q).2`. Express the relevant statement in the definitionally equal form `_ + ∑ v : S', n v.1 = _ at tail`. Use `beta_reduce`. Express the relevant statement in the definitionally equal form `_ + ∑ v : S, n v.1 + _ + _ ≤ _ + ∑ w, finrank k (LinearMap.ker ((ρ.comp p) (toGS Ω _ (c w)) - 1)) + finrank k (Loc.H0dual (cycF F Ω l k) ((ρ.comp p).comp (toGS Ω _)))`.
-
-Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GC.H2_galois_quotient_eq :
     Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], IsTotallyReal F → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (π : G F Ω →* Γ) (h : GLink l S K π) (k : Type) [Field k] [Finite k] [CharP k l] (M : Type) [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k Γ M), ContAction ρ →

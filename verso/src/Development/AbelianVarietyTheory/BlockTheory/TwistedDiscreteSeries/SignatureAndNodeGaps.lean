@@ -27,7 +27,7 @@ def SignatureAndGaps : Prop :=
     ∀ x ∈ parA (Ptw D) j τ, ∀ y ∈ parA (Ptw D) j τ, x.2 ≠ y.2 → h₀ ≤ |((x.1 - y.1 : ℚ) : ℝ)|
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `h4` using `h1 τ 0 D.R.two_le_m`. Establish `h5 : (1800 : ℝ) < ((D.R.r + D.R.m * D.R.t : ℕ) : ℝ)` using `by exact_mod_cast h3`. Establish `h6 : (1800 : ℝ) ^ 3 < ((D.R.r + D.R.m * D.R.t : ℕ) : ℝ) ^ 3` using `pow_lt_pow_left₀ h5 (by norm_num) (by norm_num)`. Establish `h7 : (0 : ℝ) ≤ D.R.t` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

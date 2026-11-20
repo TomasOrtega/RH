@@ -15,7 +15,7 @@ open GlobalTheory.Unf
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Introduce `D` and use `GlobalTheory.T.weilDatumDescendsToWittCore_of_exists D (GlobalTheory.T.exists_weilDatum_hermitianPair D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weil_data_descend : ∀ D : D7, Descent D :=
   fun D => GlobalTheory.T.weilDatumDescendsToWittCore_of_exists D (GlobalTheory.T.exists_weilDatum_hermitianPair D)

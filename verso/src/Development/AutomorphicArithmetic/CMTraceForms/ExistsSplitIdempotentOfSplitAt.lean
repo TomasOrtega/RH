@@ -9,15 +9,15 @@ namespace UpperTheory.Depth.SplitIdem
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hsq : H.bar H.rt ^ 2 = H.rt ^ 2` using `by rw [← map_pow, H.rt_sq]; simp`. Establish `hrt : H.bar H.rt = -H.rt`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h | h` into its components or cases. It suffices to derive a contradiction. Establish `h1 : IsCMField.complexConj E (H.rt : E) = (H.rt : E)` using `by rw [← H.bar_eq, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h2` using `IsCMField.complexEmbedding_complexConj E τ (H.rt : E)`. Rewrite `h2` using `[h1]`. Establish `h3 : τ (H.rt : E) ^ 2 = -(H.d : ℂ)`. Rewrite using `[← map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h4 : (τ (H.rt : E)).im = 0` using `Complex.conj_eq_iff_im.1 h2.symm`. Establish `h5` using `congrArg Complex.re h3`. Simplify using `[sq, h4] at h5`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[mul_self_nonneg (τ (H.rt : E)).re]`. Conclude with `h`. Apply `mul_left_cancel₀ (by norm_num : (2 : 𝓞 E) ≠ 0)` to reduce the goal to its premises. Use `congrArg H.bar H.two_weight_eq_one_add_root` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_add, map_one, hrt, map_ofNat]`. Take the linear combination `this + H.two_weight_eq_one_add_root`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem cmHost_bar_halfIntegerGenerator (H : Host E) : H.bar H.w0 = 1 - H.w0 := by
   have hsq : H.bar H.rt ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
@@ -44,13 +44,13 @@ private theorem cmHost_bar_halfIntegerGenerator (H : Host E) : H.bar H.w0 = 1 - 
   linear_combination this + H.two_weight_eq_one_add_root
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : ℤ_[2])‖ < 1`. Use `PadicInt.norm_p (p := 2)` as an intermediate fact. Simplify using `only [Nat.cast_ofNat] at this`. Rewrite using `[this]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hlt : ∀ x : ℤ_[2], ‖2 * x‖ < 1` using `fun x => by`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one x)) h2`. Take `⟨β, hβ, -⟩` from `hensels_lemma (p := 2) (R := ℤ_[2]) (F := Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (2 * (k : ℤ_[2]))) (a := 0) (by`. Simplify using `using hlt k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hu : IsUnit (1 - 2 * β)`. Apply `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits` to reduce the goal to its premises. Rewrite using `[PadicInt.mem_nonunits]`. Conclude with `hlt β`. Take `⟨γ, hγ⟩` from `hu.exists_left_inv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨β, γ, ?_, hγ⟩` and prove the remaining obligations. Simplify using `only [map_add, map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_self, RingHom.id_apply] at hβ`. Take the linear combination `hβ`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_root_two (k : ℕ) : ∃ β γ : ℤ_[2], β * β = β - 2 * k ∧ γ * (1 - 2 * β) = 1 := by
   have h2 : ‖(2 : ℤ_[2])‖ < 1 := by
@@ -74,23 +74,21 @@ private theorem exists_root_two (k : ℕ) : ∃ β γ : ℤ_[2], β * β = β - 
   linear_combination hβ
 
 /- English proof (translation)
-Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality. Conclude with `exists_root_two k`. Establish `hj : jacobiSym (-(d : ℤ)) p = 1` using `hs.resolve_left h2`. Establish `hne : ((-(d : ℤ) : ℤ) : ZMod p) ≠ 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hj` using `[← jacobiSym.legendreSym.to_jacobiSym, (legendreSym.eq_zero_iff p _).2 h]`. Conclude with `zero_ne_one hj`. Take `⟨r, hr⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hj`. Take `⟨a, rfl⟩` from `ZMod.intCast_surjective r`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (a : ZMod p) ≠ 0` using `fun h => hne (by rw [hr, h, mul_zero])`. Establish `h2' : ((2 : ℤ) : ZMod p) ≠ 0`. Rewrite using `[Ne, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Introduce `h`. Establish `: p ∣ 2` using `by exact_mod_cast h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hp.out Nat.prime_two).1 this)`. Establish `hunit : ∀ n : ℤ, (n : ZMod p) ≠ 0 → ‖(n : ℤ_[p])‖ = 1` using `fun n hn => by`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun h => hn ?_)` and prove the remaining obligations. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `(PadicInt.norm_int_lt_one_iff_dvd n).1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hlt : ‖((a ^ 2 + d : ℤ) : ℤ_[p])‖ < 1`. Rewrite using `[PadicInt.norm_int_lt_one_iff_dvd, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hr ⊢`. Take the linear combination `-hr`. Establish `hder : ‖((2 * a : ℤ) : ℤ_[p])‖ = 1` using `hunit _ (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[Int.cast_mul]`. Conclude with `mul_ne_zero h2' ha)`. Take `⟨α, hα, -⟩` from `hensels_lemma (p := p) (R := ℤ_[p]) (F := Polynomial.X ^ 2 + Polynomial.C (d : ℤ_[p])) (a := (a : ℤ_[p])) (by`. Move the coercions through the operations in `at hlt hder`. Establish `e1 : Polynomial.aeval (a : ℤ_[p]) (Polynomial.X ^ 2 + Polynomial.C (d : ℤ_[p])) = (a : ℤ_[p]) ^ 2 + d`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e2 : Polynomial.aeval (a : ℤ_[p]) (Polynomial.derivative (Polynomial.X ^ 2 + Polynomial.C (d : ℤ_[p]))) = 2 * (a : ℤ_[p])`. Simplify using `[one_add_one_eq_two]`. Rewrite using `[e1, e2, hder, one_pow]`. Conclude with `hlt)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_self, RingHom.id_apply] at hα`. Take `⟨u, hu⟩` from `(PadicInt.isUnit_iff.2 (hunit 2 h2')).exists_left_inv`. Take `⟨v, hv⟩` from `(PadicInt.isUnit_iff.2 (hunit _ hne)).exists_left_inv`. Move the coercions through the operations in `at hu hv`. Establish `hk' : (d : ℤ_[p]) + 1 = 8 * k` using `by exact_mod_cast congrArg (Nat.cast : ℕ → ℤ_[p]) hk`.
-
-Use `⟨u * (1 - α), v * α, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `u ^ 2 * hα - u ^ 2 * hk' + (u * (1 - α) - 2 * k * (2 * u + 1)) * hu`. Take the linear combination `hv + v * hα - v * α * (1 - α) * hu`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exists_root (p : ℕ) [hp : Fact p.Prime] (d k : ℕ) (hk : d + 1 = 8 * k) (hs : SplitAt d p) :
     ∃ β γ : ℤ_[p], β * β = β - 2 * k ∧ γ * (1 - 2 * β) = 1 := by
@@ -143,33 +141,31 @@ private theorem exists_root (p : ℕ) [hp : Fact p.Prime] (d k : ℕ) (hk : d + 
 end UpperTheory.Depth.SplitIdem
 
 /- English proof (translation)
-Introduce `p _ E _ _ _ H hs`. Use `letI := H.starRing`. Take `⟨k, hk⟩ : ∃ k : ℕ, H.d + 1 = 8 * k` from `⟨(H.d + 1) / 8, by have := H.d_mod; omega⟩`. Take `⟨β, γ, hβ, hγ⟩` from `UpperTheory.Depth.SplitIdem.exists_root p H.d k hk hs`. Establish `hw : H.w0 * H.w0 = H.w0 - 2 * k`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ (by norm_num : (4 : 𝓞 E) ≠ 0)` to reduce the goal to its premises. Establish `hk' : (H.d : 𝓞 E) + 1 = 8 * k` using `by exact_mod_cast congrArg (Nat.cast : ℕ → 𝓞 E) hk`. Take the linear combination `(2 * H.w0 - 1 + H.rt) * H.two_weight_eq_one_add_root + H.rt_sq - hk'`. Set `ι : ℤ_[p] →+* ℤ_[p] ⊗[ℤ] 𝓞 E` to `algebraMap _ _`. Set `j : 𝓞 E →+* ℤ_[p] ⊗[ℤ] 𝓞 E` to `(Algebra.TensorProduct.includeRight : 𝓞 E →ₐ[ℤ] ℤ_[p] ⊗[ℤ] 𝓞 E).toRingHom`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hβ' : ι β * ι β = ι β - 2 * k`. Use `congrArg ι hβ` as an intermediate fact. Simplify `this` using `only [map_mul, map_sub, map_ofNat, map_natCast]`. Establish `hγ' : ι γ * (1 - 2 * ι β) = 1`. Use `congrArg ι hγ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [map_mul, map_sub, map_ofNat, map_one]`. Establish `hw' : j H.w0 * j H.w0 = j H.w0 - 2 * k`. Use `congrArg j hw` as an intermediate fact. Simplify `this` using `only [map_mul, map_sub, map_ofNat, map_natCast]`. Establish `hsι : ∀ x, sig p (𝓞 E) (ι x) = ι x` using `fun x => (sig p (𝓞 E)).commutes x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsj : sig p (𝓞 E) (j H.w0) = 1 - j H.w0`. Establish `h1 : sig p (𝓞 E) (j H.w0) = j (H.bar H.w0)` using `by show sig p (𝓞 E) (1 ⊗ₜ H.w0) = 1 ⊗ₜ (H.bar H.w0)`. Unfold `sig`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, UpperTheory.Depth.SplitIdem.cmHost_bar_halfIntegerGenerator, map_sub, map_one]`. Establish `hsum : ι γ * (j H.w0 - ι β) + sig p (𝓞 E) (ι γ * (j H.w0 - ι β)) = 1`. Rewrite using `[map_mul, map_sub, hsι, hsι, hsj]`. Take the linear combination `hγ'`. Use `haveI : Nontrivial (ℤ_[p] ⊗[ℤ] 𝓞 E) := Module.FaithfullyFlat.rTensor_nontrivial ℤ (𝓞 E) ℤ_[p]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ι γ * (j H.w0 - ι β), 1 - 2 * β, ?_, ?_, ?_, hsum, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `(ι γ) ^ 2 * hw' - (ι γ) ^ 2 * hβ' + ι γ * (j H.w0 - ι β) * hγ'`. Introduce `h`. Rewrite `hsum` using `[h, map_zero, add_zero]`. Conclude with `zero_ne_one hsum`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hsum` using `[h, map_one]`. Conclude with `one_ne_zero (add_left_cancel (hsum.trans (add_zero _).symm))`. Establish `hk' : (H.d : ℤ_[p]) + 1 = 8 * k` using `by exact_mod_cast congrArg (Nat.cast : ℕ → ℤ_[p]) hk`. Take the linear combination `4 * hβ + hk'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `O _ _ _ _ σ`. Establish `hτ : tauExt (p` using `p) σ (ι γ * (j H.w0 - ι β)) = algebraMap ℤ_[p] O γ * (σ H.w0 - algebraMap ℤ_[p] O β) := by`. Establish `h1 : ∀ x, tauExt (p` using `p) σ (ι x) = algebraMap ℤ_[p] O x := fun x => (tauExt σ).commutes x`. Establish `h2 : tauExt (p` using `p) σ (j H.w0) = σ H.w0 := by show tauExt (p := p) σ (1 ⊗ₜ H.w0) = _`. Unfold `tauExt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Rewrite using `[map_mul, map_sub, h1, h1, h2]`. Establish `hg : algebraMap ℤ_[p] O γ * (1 - 2 * algebraMap ℤ_[p] O β) = 1`. Use `congrArg (algebraMap ℤ_[p] O) hγ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [map_mul, map_sub, map_ofNat, map_one]`. Establish `hr : 2 * σ H.w0 = 1 + σ H.rt`. Use `congrArg σ H.two_weight_eq_one_add_root` as an intermediate fact. Simplify `this` using `only [map_mul, map_add, map_ofNat, map_one]`. Establish `ha : algebraMap ℤ_[p] O (1 - 2 * β) = 1 - 2 * algebraMap ℤ_[p] O β`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_sub, map_ofNat, map_one]`. Establish `h2 : (2 : O) ≠ 0` using `two_ne_zero`. Simplify using `only [Emb, Set.mem_setOf_eq]`. Rewrite using `[map_sub (tauExt σ) 1, map_one, hτ, ha]`. Use `set g := algebraMap ℤ_[p] O γ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `set b := algebraMap ℤ_[p] O β`. Use `⟨⟨fun h => ?_, fun h => ?_⟩, ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Take the linear combination `2 * (1 - 2 * b) * h - 2 * (σ H.w0 - b) * hg - hr`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Take the linear combination `g * hr + g * h + 2 * hg`.
-
-Take the linear combination `-2 * (1 - 2 * b) * h - 2 * (σ H.w0 - b) * hg - hr`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Take the linear combination `- g * hr - g * h`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_splitIdempotent_of_splitAt :
     ∀ (p : ℕ) [Fact p.Prime] (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), SplitAt H.d p →

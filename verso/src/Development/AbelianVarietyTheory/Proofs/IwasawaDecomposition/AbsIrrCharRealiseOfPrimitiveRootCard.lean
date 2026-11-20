@@ -12,31 +12,29 @@ variable {G : Type} [Group G] [Fintype G]
 omit [Fintype G] in
 
 /- English proof (translation)
-Establish `hcard : (Nat.card G : k) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Use `letI : Invertible (Nat.card G : k) := invertibleOfNonzero hcard`. Establish `h1` using `Representation.card_inv_mul_sum_char_mul_char_eq_finrank ρ ρ`. Rewrite `h1` using `[h, inv_mul_cancel₀ hcard]`. Establish `hfr : Module.finrank k (ρ.IntertwiningMap ρ) = 1` using `by exact_mod_cast h1.symm`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnt : Nontrivial V`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `h0 : ∀ g, ρ.character g = 0` using `fun g => by`. Rewrite using `[Representation.character, Subsingleton.elim (ρ g) 0, map_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h0, zero_mul, Finset.sum_const_zero] at h`. Conclude with `hcard h.symm`. Set `idI : ρ.IntertwiningMap ρ` to `⟨LinearMap.id, fun g => by rw [LinearMap.id_comp, LinearMap.comp_id]⟩`. Establish `hid0 : idI ≠ 0`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Conclude with `hv (congrArg (fun φ : ρ.IntertwiningMap ρ => φ.toLinearMap v) e)`. Establish `hcG : (Fintype.card G : k) ≠ 0` using `by rw [← Nat.card_eq_fintype_card]; exact hcard`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun e => ?_⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Conclude with `(top_ne_bot : (⊤ : Submodule k V) ≠ ⊥) (congrArg Subrepresentation.toSubmodule e).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hU : U.toSubmodule = ⊥`. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective hU)`. Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `show U.toSubmodule = ⊤`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W0, hW0⟩` from `Submodule.exists_isCompl U.toSubmodule`. Set `q : V →ₗ[k] V` to `U.toSubmodule.subtype ∘ₗ Submodule.projectionOnto U.toSubmodule W0 hW0`. Establish `hqU : ∀ u ∈ U.toSubmodule, q u = u` using `fun u hu => congrArg Subtype.val (Submodule.projectionOnto_apply_left hW0 ⟨u, hu⟩)`. Establish `hqR : ∀ v, q v ∈ U.toSubmodule` using `fun v => (Submodule.projectionOnto _ _ hW0 v).2`. Establish `hinv : ∀ g, ∀ v ∈ U.toSubmodule, ρ g v ∈ U.toSubmodule` using `fun g v hv => U.apply_mem_toSubmodule g hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hρρ : ∀ g (v : V), ρ g (ρ g⁻¹ v) = v` using `fun g v => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Set `P : V →ₗ[k] V` to `(Fintype.card G : k)⁻¹ • ∑ g : G, ρ g ∘ₗ q ∘ₗ ρ g⁻¹`. Establish `hPv : ∀ v, P v = (Fintype.card G : k)⁻¹ • ∑ g : G, ρ g (q (ρ g⁻¹ v))` using `fun v => by`. Simplify using `[P, LinearMap.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hPI : ∀ h, P ∘ₗ ρ h = ρ h ∘ₗ P`. Introduce `h`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hPv, hPv, map_smul, map_sum]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use `Fintype.sum_equiv (Equiv.mulLeft h⁻¹) _ _ (fun g => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, mul_inv_rev, inv_inv, map_mul, Module.End.mul_apply]`. Rewrite using `[hρρ]`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' idI hid0).mp hfr ⟨P, hPI⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcv : ∀ v, c • v = P v` using `fun v => congrArg (fun φ : ρ.IntertwiningMap ρ => φ.toLinearMap v) hc`. Establish `hPU : ∀ u ∈ U.toSubmodule, P u = u` using `fun u hu => by`. Rewrite using `[hPv]`. Establish `: ∀ g : G, ρ g (q (ρ g⁻¹ u)) = u` using `fun g => by rw [hqU _ (hinv _ _ hu), hρρ]`. Simplify using `only [this, Finset.sum_const, Finset.card_univ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul k, smul_smul, inv_mul_cancel₀ hcG, one_smul]`. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU`. Establish `hc1 : c = 1`. Establish `e1` using `hcv u`. Rewrite `e1` using `[hPU u hu]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (c - 1) • u = 0` using `by rw [sub_smul, e1, one_smul, sub_self]`. Break down `smul_eq_zero.mp this with h2 | h2` into its components or cases. Conclude with `sub_eq_zero.mp h2`. Conclude with `absurd h2 hu0`. Rewrite using `[Submodule.eq_top_iff']`.
-
-Introduce `v`. Establish `e2` using `hcv v`. Rewrite `e2` using `[hc1, one_smul]`. Rewrite using `[e2, hPv]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun g _ => hinv g _ (hqR _))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_sum_char_mul_char_inv [Fintype G] {k : Type} [Field k] [CharZero k] {V : Type}
     [AddCommGroup V] [Module k V] [FiniteDimensional k V] (ρ : Representation k G V)
@@ -110,7 +108,7 @@ theorem isIrreducible_of_sum_char_mul_char_inv [Fintype G] {k : Type} [Field k] 
       exact Submodule.smul_mem _ _ (Submodule.sum_mem _ fun g _ => hinv g _ (hqR _))
 
 /- English proof (translation)
-Rewrite using `[Representation.character, LinearMap.trace_eq_matrix_trace _ (Pi.basisFun _ (Fin n)), LinearMap.toMatrix_eq_toMatrix']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem character_eq_trace_toMatrix' {k : Type} [Field k] {n : ℕ} (ρ : Representation k G (Fin n → k)) (g : G) :
     ρ.character g = Matrix.trace (LinearMap.toMatrix' (ρ g)) := by
@@ -124,7 +122,7 @@ def mapScalars {K k : Type} [Field K] [Field k] (f : K →+* k) {n : ℕ} (ρ : 
       ((LinearMap.toMatrixAlgEquiv' : Module.End K (Fin n → K) ≃ₐ[K] Matrix (Fin n) (Fin n) K).toRingEquiv.toMonoidHom.comp ρ))
 
 /- English proof (translation)
-Rewrite using `[character_eq_trace_toMatrix', character_eq_trace_toMatrix']`. Simplify using `[mapScalars, Matrix.trace, Matrix.diag, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem character_mapScalars {K k : Type} [Field K] [Field k] (f : K →+* k) {n : ℕ}
     (ρ : Representation K G (Fin n → K)) (g : G) : (mapScalars f ρ).character g = f (ρ.character g) := by
@@ -132,15 +130,15 @@ theorem character_mapScalars {K k : Type} [Field K] [Field k] (f : K →+* k) {n
   simp [mapScalars, Matrix.trace, Matrix.diag, map_sum]
 
 /- English proof (translation)
-Use `haveI : CharZero K := σ.charZero`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Establish `hψC : GlobalTheory.BI.IsChar ℂ ℂ ψ`. Take `⟨n, ρ, -, hρ⟩` from `hψ`. Conclude with `⟨n, ρ, fun g => by rw [← hρ]; rfl⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨m, τ, hτ⟩` from `GlobalTheory.BI.isChar_of_isPrimitiveRoot K ℂ (Fintype.card G) z Fintype.card_ne_zero hz G (fun g => pow_card_eq_one) ψ hψC`. Establish `hτσ : ∀ g, σ (τ.character g) = ψ g` using `fun g => (hτ g).symm`. Use `⟨τ.character, ?_, hτσ⟩` and prove the remaining obligations. Set `A` to `AlgebraicClosure K`. Set `ρ' : Representation A G (Fin m → A)` to `mapScalars (algebraMap K A) τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hch : ∀ g, ρ'.character g = algebraMap K A (τ.character g)` using `character_mapScalars _ τ`. Use `⟨m, ρ', isIrreducible_of_sum_char_mul_char_inv ρ' ?_, hch⟩` and prove the remaining obligations. Establish `horth` using `Formalism.L2.Col.gx_orth (G := G) (k := ℂ) hψ hψ`. Rewrite `horth` using `[if_pos rfl]`. Establish `hcardC : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsumC : ∑ g, ψ g * ψ g⁻¹ = (Nat.card G : ℂ)`. Rewrite using `[← mul_one (Nat.card G : ℂ), ← horth, ← mul_assoc, mul_inv_cancel₀ hcardC, one_mul]`. Establish `hsumK : ∑ g, τ.character g * τ.character g⁻¹ = (Nat.card G : K)`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_natCast, ← hsumC]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_mul, hτσ, hτσ]`. Simplify using `only [hch, ← map_mul, ← map_sum, hsumK, map_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem absIrr_realise_of_isPrimitiveRoot {K : Type} [Field K] (σ : K →+* ℂ) (z : K)
     (hz : IsPrimitiveRoot z (Fintype.card G)) (ψ : G → ℂ) (hψ : ψ ∈ Formalism.L2.Col.gxIrrSet (G := G) ℂ) :

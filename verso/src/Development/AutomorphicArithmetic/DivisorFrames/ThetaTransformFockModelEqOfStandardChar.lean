@@ -21,11 +21,11 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open GlobalTheory.RealDict GlobalTheory.RealDict.FockMap
 
 /- English proof (translation)
-Use `choose ξ hξ using fun v => Function.ne_iff.1 (h0 v)`. Establish `hS` using `Filter.eventually_cofinite.1 hs`. Set `y : Fin n × Fin d → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F` to `fun k => ∑ v ∈ hS.toFinset, singleFin v (ξ v k)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `finprod_induction (· ≠ (0 : ℂ)) one_ne_zero (fun _ _ => mul_ne_zero) fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : v ∈ hS.toFinset`. Establish `: (fun k => evalV F v (y k)) = ξ v` using `funext fun k => by`. Rewrite using `[map_sum, Finset.sum_eq_single_of_mem v hv fun v' _ h => evalV_singleFin_ne h.symm _, evalV_singleFin_self]`. Rewrite using `[this]`. Conclude with `hξ v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (fun k => evalV F v (y k)) = 0` using `funext fun k => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun v' h => evalV_singleFin_ne (fun e : v = v' => hv (e ▸ h)) _`. Rewrite using `[this, of_not_not (mt hS.mem_toFinset.2 hv), Set.indicator_of_mem (by exact fun _ => zero_mem _)]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finPart_ne {F : Type} [Field F] [NumberField F] {n d : ℕ}
     (φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n × Fin d → Fv F v) → ℂ) (h0 : ∀ v, φ v ≠ 0)
@@ -51,27 +51,25 @@ private theorem finPart_ne {F : Type} [Field F] [NumberField F] {n d : ℕ}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨-, -, tinj, tth, -⟩` from `th_laws Mo hψ hθ hX hW hM`. Take `⟨Dr, hD1, hD2, hD3⟩` from `exists_der Mo hStd`. Take `⟨y, hy⟩` from `hy`. Take `⟨Θ, hΘ⟩ : ∃ Θ, Θ = thL Mo hψ hθ hX hW hM hg` from `⟨_, rfl⟩`. Establish `hΘ' : ∀ f : SInf D.host.F (Fin M.rank × Fin X.rank), th ψ ε Mo (pureA D.host.F f g) = Θ f` using `fun f => by rw [hΘ]; rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hv` using `[hΘ']`. Simplify using `only [hΘ']`. Establish `hd : ∀ t z f, Formalism.IndefR.Datum.dRho (heisO ψ (sgn ε M) X) θ t z (Θ f) = Θ (Dr (dir ε M X θ t z) f)` using `hΘ ▸ dRho_thL Mo hψ hθ hX hW hM hD1 hg`. Establish `hi : Function.Injective Θ` using `fun f f' h => by`. Establish `e` using `tinj _ (pureA_mem f hg) _ (pureA_mem f' hg) (by rw [hΘ] at h; exact h)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DFunLike.ext _ _ fun a => ?_` and prove the remaining obligations. Establish `e2` using `congrFun e (GlobalTheory.RealLift.ptAt a y)`. Rewrite `e2` using `[GlobalTheory.RealLift.pureA_ptAt, GlobalTheory.RealLift.pureA_ptAt]`. Conclude with `mul_right_cancel₀ hy e2`. Establish `hg₀ : ∀ t z, Dr (dir ε M X θ t z) g₀ + Complex.I • Dr (dir ε M X θ t (cplxO ((frSgn ε A).cart t) (B.cart t) z)) g₀ = 0` using `fun t z => hi (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : annih (heisO ψ (sgn ε M) X) θ t (cplxO ((frSgn ε A).cart t) (B.cart t)) z (Θ g₀) = 0` using `hv.2 t z`. Rewrite `h` using `[annih, hd, hd, ← map_smul, ← map_add]`. Rewrite using `[h, map_zero])`. Set `um : FVar D X.rank M.rank → Matrix (Fin X.rank) (Fin M.rank) ℂ` to `fun k => Formalism.IndefR.Datum.unitMap ((frSgn ε A).onb k.1) (B.onb k.1) k.2.1 k.2.2`. Set `Cr : FVar D X.rank M.rank → SInf D.host.F (Fin M.rank × Fin X.rank) → SInf D.host.F (Fin M.rank × Fin X.rank)` to `fun k f => ((fockScale D k.1 : ℂ)⁻¹) • (Dr (dir ε M X θ k.1 (um k)) f - Complex.I • Dr (dir ε M X θ k.1 (cplxO ((frSgn ε A).cart k.1) (B.cart k.1) (um k))) f)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Φ : PolF D X.rank M.rank →ₗ[ℂ] SInf D.host.F (Fin M.rank × Fin X.rank)` to `(MvPolynomial.basisMonomials _ ℂ).constr ℂ fun k => (Multiset.toList (Finsupp.toMultiset k)).foldr Cr g₀`. Establish `hΦ : Θ ∘ₗ Φ = pureTensorO ψ θ (sgn ε M) X (frSgn ε A).cart B.cart (frSgn ε A).onb B.onb (Θ g₀)`. Use `(MvPolynomial.basisMonomials _ ℂ).ext fun k => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, pureTensorO, pureTensorL, Module.Basis.constr_basis, Module.Basis.constr_basis, opPow]`. Proceed by induction on `(Finsupp.toMultiset k).toList with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `nil => rfl`. Consider the case `cons i l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ← ih, aPlusAll, Formalism.IndefR.Datum.aPlus, crea, hd, hd, ← map_smul, ← map_sub, ← map_smul]`. Establish `hΦ' : ∀ P, Θ (Φ P) = ptF ψ θ (frSgn ε A) B (Θ g₀) P` using `fun P => LinearMap.congr_fun hΦ P`. Establish `hsum : ∀ u, At (evI D.host.F) u → ∀ f, Dr u f = ∑ t, Dr (dir ε M X θ t (compAt θ t (toO (sgn ε M).gram u))) f` using `fun u hu f => by`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hD3 _ _ _ fun t => dir_at hθ t _, ← eq_sum_dir hθ hu]`. Establish `hG : Mo.IsGauss ψ τ g₀` using `⟨fun _ => 1, fun u u' hu hu' hrel f f' hf hf' => by`. Rewrite using `[hD2 u hu _ _ hf, hD2 u' hu' _ _ hf', hsum u hu, hsum u' hu', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[compAt_cplx hθ A B hc (fun w => by simpa using hrel w) t, eq_neg_of_add_eq_zero_left (hg₀ t (compAt θ t (toO (sgn ε M).gram u))), smul_neg, smul_smul, Complex.I_mul_I, neg_one_smul, neg_neg]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : ∀ u, At (evI D.host.F) u → ∀ f ∈ Mo.Pol ψ τ, Dr u f ∈ Mo.Pol ψ τ` using `fun u hu f hf => Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 hf N hN) _ (hD1 u hu f)`. Use `⟨Φ, le_antisymm ?_ (sInf_le ⟨fun f hf => ?_, ?_⟩), hΦ'⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.constr_range, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `(Finsupp.toMultiset k).toList with`. Consider the case `nil => exact Submodule.mem_sInf.2 fun N hN => hN.1 g₀ hG`. Consider the case `cons i l ih`. Conclude with `Submodule.smul_mem _ _ (sub_mem (hP _ (dir_at hθ _ _) _ ih) (Submodule.smul_mem _ _ (hP _ (dir_at hθ _ _) _ ih)))`. Take `⟨z, rfl⟩` from `gauss_line Mo ψ τ hCM hStd h2X h2W f g₀ hG g0 hf`.
+Treat this case separately. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ z ⟨1, hi ((hΦ' 1).trans (GlobalTheory.LieScalar.ptF_one _ _ _))⟩`. Introduce and unpack `u hu _ ⟨P, rfl⟩ f₁ h1`. Rewrite using `[hD2 u hu _ _ h1, hsum u hu]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `dRho_ptF (frSgn ε A) B hψ hθ hv t (compAt θ t (toO (sgn ε M).gram u)) P`.
-
-Conclude with `⟨Q, hi (by rw [← hd, hΦ', hΦ', hQ])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fock_of {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {ε : Bool} {M X : HSp D} {Xs : Spc D.host.F D.host.E M.rank}
     {Ws : Spc D.host.F D.host.E X.rank} (Mo : Model D.sp.cm.sig Xs Ws)
@@ -162,11 +160,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `D ψ θ hψ hθ ε M X k hk Xs Ws Mo hX hW hM A B τ hc f₀ φ hf hφ hφ' hφ0 hv`. Substitute `hk` using the available equality. Establish `hF : GlobalTheory.BigNZ.Fam Mo φ` using `⟨hφ, hφ'⟩`. Establish `h2X : ∀ w, Xs.θ w * Xs.θ w = 1` using `fun w => by`. Take `⟨t, -, h, -⟩` from `hc w`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h, Matrix.smul_mul, Matrix.mul_smul, (GlobalTheory.ChainFr.Model.isCartanInv_cart A t).1, smul_smul]`. Apply the tactic sequence `cases ε <;> simp`. Establish `h2W : ∀ w, Ws.θ w * Ws.θ w = 1` using `fun w => by`. Take `⟨t, -, -, h⟩` from `hc w`. Establish `h' : Ws.θ w = (B.cart t).map (starRingEnd ℂ)` using `h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h', ← Matrix.map_mul, (GlobalTheory.ChainFr.Model.isCartanInv_cart B t).1, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `fock_of Mo hψ hθ A B (GlobalTheory.AdelicU.isCMExt_host D) (GlobalTheory.BaseGoodPlace.isStd_of_isStdChar hψ) hX hW hM h2X h2W hc f₀ hf (hF.sb hM) (finPart_ne φ hφ0 (hF.std hM)) hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.theta_transform_fock_model_eq_of_standard_char :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

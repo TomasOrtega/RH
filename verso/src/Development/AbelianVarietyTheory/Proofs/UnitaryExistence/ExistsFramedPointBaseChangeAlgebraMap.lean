@@ -18,7 +18,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'')
     (g : R →+* R') : spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -27,30 +27,30 @@ theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing 
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_alg {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) :
     (dualMap ψ).comp (algebraMap S (DualNumber S)) = (algebraMap T (DualNumber T)).comp ψ := by
   ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fst_comp_dualMap {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) :
     (TrivSqZeroExt.fstHom T T T).toRingHom.comp (dualMap ψ) = ψ.comp (TrivSqZeroExt.fstHom S S S).toRingHom := by
   ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_epsMul {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (a : S) :
     (dualMap ψ).comp (epsMul a) = (epsMul (ψ a)).comp (dualMap ψ) := by
   ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h1, ← Category.assoc, spMap_comp_spMap, dualMap_comp_alg, ← spMap_comp_spMap, Category.assoc]`. Rewrite using `[← Category.assoc, spMap_comp_spMap, fst_comp_dualMap, ← spMap_comp_spMap, Category.assoc, h2]`. Establish `e : (Over.homMk (spMap ψ) rfl : Over.mk (spMap ψ ≫ x) ⟶ Over.mk x) ≫ (1 : Over.mk x ⟶ Xo.univ.t.G) = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Hom.one_def]`. Rewrite using `[← e, Over.comp_left]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tan_bc {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S ⟶ Xo.X}
     {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) :
@@ -66,7 +66,7 @@ theorem tan_bc {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S
     rfl
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[Category.assoc, hv a, ← Category.assoc, spMap_comp_spMap, dualMap_comp_epsMul, ← spMap_comp_spMap, Category.assoc]`. Use `congr 3`. Conclude with `ψ.commutes _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eig_bc {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (ψ : S →ₐ[c.F] T)
     (τ : E →+* ℂ) {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsEigAt c τ v) :
@@ -78,15 +78,15 @@ theorem eig_bc {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c
   exact ψ.commutes _
 
 /- English proof (translation)
-Introduce `hB E _ _ _ H Dw l Xo c S _ _ T _ _ φ y`. Take `⟨s', hs', -⟩` from `GlobalTheory.T.existsUnique_scaledBaseChange_fibreSection E H Dw l Xo S T φ.toRingHom 1 y.x (spMap φ.toRingHom ≫ y.x) rfl y.s`. Establish `hnz : SecNZ y.x y.s` using `GlobalTheory.T.fibreSectionNowhereZero_of_generates hB E H Dw l Xo S y.x y.s y.gen`. Establish `hnz' : SecNZ (spMap φ.toRingHom ≫ y.x) s'` using `fun p' => (GlobalTheory.Frames.secBC_nonvanishing_iff E H Dw l Xo S T φ.toRingHom y.x _ rfl y.s s' hs' p').2 (hnz _)`. Establish `hgen : SecGen (spMap φ.toRingHom ≫ y.x) s'` using `GlobalTheory.T.fibreSectionGenerates_of_nowhereZero hB E H Dw l Xo T _ s' hnz'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨{ x := spMap φ.toRingHom ≫ y.x x_over := ?_ u := fun τ i => spMap (dualMap φ.toRingHom) ≫ y.u τ i tan := fun τ i => tan_bc φ.toRingHom (y.tan τ i) eig := fun τ i => eig_bc φ τ (y.eig τ i) basis := fun τ w hw he => GlobalTheory.T.framedPoint_eigenbasis_baseChange E H Dw l Xo c S …` and prove the remaining obligations. Rewrite using `[Category.assoc, y.x_over]`. Unfold `sOf`. Rewrite using `[spMap_comp_spMap, ← RingHom.comp_assoc]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `r`. Simplify using the standard rewrite rules. Take `⟨pm, h1, h2, h3⟩` from `hs'`. Use `⟨pm, h1, h2, fun i h => ?_⟩` and prove the remaining obligations. Establish `h4` using `h3 i h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : scal y.x (1 : S) i = 1`. Unfold `scal`. Rewrite using `[map_one]`. Simplify using `[Out.liftFun]`. Rewrite `h4` using `[h5, _root_.one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem exists_frMap : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S), ∃ z : FrPt Xo c T, FrMap φ y z := by
   intro hB E _ _ _ H Dw l Xo c S _ _ T _ _ φ y

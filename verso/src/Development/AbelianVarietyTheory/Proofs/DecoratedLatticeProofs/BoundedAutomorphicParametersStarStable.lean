@@ -34,7 +34,7 @@ namespace GlobalTheory.LFun.StarParam
 open GlobalTheory.LFun GlobalTheory.AdelicU GlobalTheory.FinZeta
 
 /- English proof (translation)
-Break down `hx with ⟨hv, e, he, hx⟩ | ⟨hw, c, ϖ, e, α, hU, he, hx, hB⟩` into its components or cases. Conclude with `Or.inl ⟨hv, e, he, IsSatVecGL.of_map f (fun g y => hf _ y) hi hx⟩`. Conclude with `Or.inr ⟨hw, c, ϖ, e, α, hU, he, IsSatVecU.of_map hU f (fun g y => hf _ y) hi hx, hB⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem isParamVec_of_map {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)}
@@ -48,15 +48,13 @@ theorem isParamVec_of_map {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   · exact Or.inr ⟨hw, c, ϖ, e, α, hU, he, IsSatVecU.of_map hU f (fun g y => hf _ y) hi hx, hB⟩
 
 /- English proof (translation)
-Introduce `f hf B hB w hw`. Establish `hcm` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `hJ` using `GlobalTheory.Mem.VolExists.isHermND D.sp.cm V`. Establish `hv : w.under (𝓞 D.host.F) ∉ S` using `hw`. Establish `hd` using `SelfDual.isSelfDualAt_frameLat D V (w.under (𝓞 D.host.F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hun` using `(GlobalTheory.T.boundedAutomorphicRightTranslation_unitarisable_bounded D V).1`. Establish `hloc : GlobalTheory.LGrp.IsUnitarisable ((bddRep V).comp (embV V (w.under (𝓞 D.host.F))))`. Take `⟨b, b1, b2, b3⟩` from `hun`. Conclude with `⟨b, b1, b2, fun g => b3 _⟩`. Establish `hpar : ∀ (u : HeightOneSpectrum (𝓞 D.host.E)) (h : u.under (𝓞 D.host.F) = w.under (𝓞 D.host.F)), IsParamVec D.sp.cm.sig V.gram (frameLat V) h ((bddRep V).comp (embV V (w.under (𝓞 D.host.F)))) (⟨f, hf⟩ : bddAut V) (B u)` using `fun u h => isParamVec_of_map (bddAut V).subtype (fun _ _ => rfl) Subtype.val_injective (hB _ hv u h)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨fun w' h' hne => ?_, fun hns => ?_⟩` and prove the remaining obligations. Establish `hB' : B w' = (B w).map (·⁻¹)` using `ConjPlace.eq_map_inv_of_isParamVec hcm hJ hd hne (hpar w rfl) (hpar w' h')`. Break down `hpar w rfl with ⟨-, e, he, hsat⟩ | ⟨hi, -⟩` into its components or cases. Rewrite using `[hB', GlobalTheory.T.satakeParameterGL_star_eq_inv_of_unitarisable _ w _ _ _ _ (B w) (hloc.imp fun _ hb => ⟨hb.1, hb.2.1, fun g => hb.2.2 (e.symm g)⟩) hsat]`. Conclude with `absurd (ConjPlace.isSplit_of_ne hne rfl h') (not_isSplit_of_isInertAt hi)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hpar w rfl with ⟨hs, -⟩ | ⟨-, c, ϖ, e, α, hUI, he, hsat, hBw⟩` into its components or cases. Conclude with `absurd hs hns`. Rewrite using `[hBw]`. Use `bcParam_eq_of_satU_eq (α := fun i => star (α i)) hUI (GlobalTheory.T.unitarySatakeTransform_star_parameter_eq_of_unitarisable _ ϖ c _ _ hUI _ _ _ α (hloc.imp fun _ hb => ⟨hb.1, hb.2.1, fun g => hb.2.2 (e.symm g)⟩) hsat)` as an intermediate fact. Use `conv_rhs => rw [← this]`.
-
-Simplify using `[GlobalTheory.LGrp.bcParam, star_inv, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem param_star (D : D7) (V : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
     ∀ f ∈ GlobalTheory.FinZeta.bddAut V, ∀ B : GlobalTheory.LFun.Fam D.host.E, GlobalTheory.LFun.IsParamFunV V S f B →

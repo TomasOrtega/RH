@@ -23,11 +23,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalis
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Take `⟨hP, hV0, -, -, sV, sW, -⟩` from `GlobalTheory.AdTh.RecPairCore.isPair_record_core D G Pl0 T0 A Ks R F hR i A.μ0 hV`. Establish `hχ : (Lift.chrTh (R.toLevCh.mu A.μ0) R.eta ((i : ℕ) + 1)).1 = R.mu0 ((i : ℕ) + 1)` using `MonoidHom.ext fun x => by show R.mu0 ((i : ℕ) + 1) x * R.xi A.μ0 x = _`. Rewrite using `[GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (χ := R.xi A.μ0) (hR.lev.xi_base ▸ hR.lev.xi A.μ0) x, mul_one]`. Establish `hl : Formalism.L2.Pj.latHat (Wc D i) = GlobalTheory.AdLat.hat D.host.F (R.ΛW i : Set (Fin (Wc D i).rank → D.host.E))`. Rewrite using `[GlobalTheory.PrincInLevel.eq_latC (hR.lev.βW i)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.Member.latHat_eq_hat_and_gram D _).1`. Establish `mv : ∀ {g k}, Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g k → ∀ u, u ∈ _ → actO (Vc D i) (Wc D i) 1 k u ∈ _` using `fun hk => GlobalTheory.MovedLat.actO_mem (Vc D i) (Wc D i) 1 _ (R.ΛV i) (R.ΛV i) (R.ΛW i) (R.ΛW i) (fun z hz => by rw [map_one, Units.val_one, Matrix.one_mulVec]; exact hz) (fun z hz => by rw [← hl] at hz ⊢; exact GlobalTheory.DictMove.mulVec_mem_latHat (hR.lev.βW i) hk hz)`. Use `GlobalTheory.T.weilRep_lattice_stabilizer_vacuum_eq_det_char_smul D _ _ _ _ _ _ _ hP mu (hχ ▸ hmu) H _ _ hV0 sV sW _ (GlobalTheory.FrameEquiv.isCartanInv_cart_model (R.MW i (sg0 D A))) _ (hR.thP.vP i A.μ0).1 k hk.1 fun u => ⟨mv hk u, fun hu => ?_⟩` and prove the remaining obligations. Establish `h` using `mv (GlobalTheory.ProjComm.isLift_inv hk) _ hu`. Rewrite `h` using `[actO_one_left, actO_one_left, ← Matrix.mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.Theta.mt at h`. Rewrite `h` using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem om_lift_vac_core {F : Face D A} (hR : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (hV : VStd D i) (H : Geo.Tor.Host D.host.E)
     {mu : GA D (Wc D i) → ℂ} (hmu : MuVal (Wc D i) (R.mu0 ((i : ℕ) + 1)) mu) {g : G} {k : GA D (Wc D i)}
@@ -54,19 +54,17 @@ theorem om_lift_vac_core {F : Face D A} (hR : GlobalTheory.Hk3.Core R F) (i : Fi
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `_ D G _ _ Pl0 T0 A T _ R F κ v₀ hR ht i Tp tup O hO cc hcc u g k hk f hf`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `h` using `ht.laws`. Establish `hact` using `hO.act.1`. Use `⟨GlobalTheory.GeoLevel.actLev_mem_cuspA h.toLawsM hj hact (κ i) g hf, fun p => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ : GoodEmb T.Q.c O.s0` using `T.good_σ₀`. Take `⟨_, _, -, hd⟩` from `h.dictU _ hj _ hσ`. Take `⟨hr, g₀, e, F₀, ik, φ, th, -, -, hth, hL⟩` from `h.adPin _ hj _ hσ`. Take `⟨-, hA, -, -, -, -, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Establish `hU` using `h.unf _ hj _ hσ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpq` using `hU.1 ▸ (show 1 ≤ D.R.r from (hnum _ hj).2.1)`. Establish `hmod` using `GlobalTheory.AdTh.models_at_record_core D G Pl0 T0 A T R F κ v₀ hR ht i O.s0 rfl`. Establish `hn : (κ i).n = (Vc D i).rank` using `(hmod (O.dict p).1).2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hmu : MuVal (Wc D i) (R.mu0 ((i : ℕ) + 1)) O.mu`. Rewrite using `[← chiTie_of_chiR T R ht.alg h.pins.2.2.1 ht.chiR i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `muVal_cast O.hV (h.muVal _ hj _ hσ)`. Establish `hmul : ∀ a b, O.mu (a * b) = O.mu a * O.mu b` using `GlobalTheory.GeoLevel.castDict_mu_mul (h.muUnit _ hj _ hσ).1 O.hV`. Establish `hag` using `GlobalTheory.LiftAgrees.levAgrees_of_isLift R i hR.lev _ (iotaW T i) (Mfr T.Q.l) O.lev (GlobalTheory.LevelAction.latEmb_iotaW T h i) (h.pins.2.1.1 ▸ hO.lift.lev) g k hk`. Establish `hs : f ∈ sec (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (wtA (κ i)) (Vc D i).rank` using `hn ▸ ((mem_cusp _ _ _ _ _ _).1 hf).1`. Establish `key` using `value_move O.hV hr (rank_Wc i) (T.iota _) hσ hU hpq hA (fun c => (hmod c).1) hL hth hd.2.2.2.1 (h.muUnit _ hj _ hσ).2.2.2 (GlobalTheory.AdTh.RecPairCore.isPair_record_core D G Pl0 T0 A _ R F hR i A.μ0 hO.lift.std).1 (hR.thP.vP i A.μ0).1.2.theta hmul (fun a => norm_ne_zero_iff.1 ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, ew⟩` from `hag a ha`. Use `⟨-w, neg_mem hw, ?_⟩` and prove the remaining obligations. Rewrite using `[h.pins.2.1.1]`. Conclude with `eq_add_nsmul_neg ew⟩`. Use the proof step `(om_lift_vac_core hR i hO.lift.std T.Q.H hmu hk) (f' := actLev T.Q.c O.lev2 g f) hs (fun y => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨ρ, ν, -, hν, hm⟩` from `mvPt_spec hact.total g y`. Conclude with `⟨ρ, ν, _, hν, hm, evalAt_actL hact (h.evalWD _ hj) frMap_trans_id g hs.1 y⟩) p`. Establish `h1` using `chi_mul_mu hR.lev i hmu hk`. Express the relevant statement in the definitionally equal form `u * cc (O.dict p).1 * O.mu p * rdU _ _ (O.dict p).1 (O.dict p).2 = _ * (u * cc (O.dict (p * k)).1 * O.mu (p * k) * rdU _ f (O.dict (p * k)).1 (O.dict (p * k)).2)`. Rewrite using `[hmul]`.
-
-Take the linear combination `u * O.mu p * key - u * O.mu p * cc (O.dict (p * k)).1 * rdU (T.U ((i : ℕ) + 1) O.s0) f (O.dict (p * k)).1 (O.dict (p * k)).2 * h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem equivAt_of_ccIs_core : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ cc, CcIs R.θ (Vc D i) (Wc D i) (rank_Wc i) (T.U ((i : ℕ) + 1) O.s0) O.dict O.mu (T.x₀ ((i : ℕ) + 1) O.s0) (R.ωP i A.μ0) (R.vacP i) cc → ∀ u : ℂ, O.EquivAt (κ i) (u • cc) := by
   intro _ D G _ _ Pl0 T0 A T _ R F κ v₀ hR ht i Tp tup O hO cc hcc u g k hk f hf

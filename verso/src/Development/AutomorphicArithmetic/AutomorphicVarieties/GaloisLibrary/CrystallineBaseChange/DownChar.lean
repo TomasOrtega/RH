@@ -8,11 +8,9 @@ open UpperHalfPlane hiding I
 open scoped MatrixGroups ModularForm
 
 /- English proof (translation)
-Distinguish the cases in `hd : IsUnit d`. Conclude with `⟨0, by simpa using hd⟩`. Take `⟨a, b, e⟩` from `h`. Establish `hN : IsUnit N`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one e with h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (isUnit_of_mul_isUnit_right h) hd`. Conclude with `isUnit_of_mul_isUnit_right h`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: IsUnit ((d + N * 1) + -d)` using `by simpa using hN`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add this with h | h` into its components or cases.
-
-Conclude with `h`. Conclude with `absurd h.neg (by simpa using hd)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem loc_unit {R : Type} [CommRing R] [IsLocalRing R] {d N : R} (h : IsCoprime d N) : ∃ y, IsUnit (d + N * y) := by
   by_cases hd : IsUnit d
@@ -36,16 +34,16 @@ private noncomputable def jj : (∀ v : HeightOneSpectrum (𝓞 ℚ), v.adicComp
   map_add' _ _ := FiniteAdeleRing.ext _ fun _ => rfl
 
 /- English proof (translation)
-Rewrite using `[Ohat, Subring.mem_iInf]`. Conclude with `fun v => (x v).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem jj_mem (x) : jj x ∈ Ohat ℚ := by
   rw [Ohat, Subring.mem_iInf]
   exact fun v => (x v).2
 
 /- English proof (translation)
-Use `choose y hy using fun v : HeightOneSpectrum (𝓞 ℚ) => loc_unit (h.map (Int.castRingHom (v.adicCompletionIntegers ℚ)))`. Establish `hu : IsUnit ((d : ∀ v : HeightOneSpectrum (𝓞 ℚ), v.adicCompletionIntegers ℚ) + N * y)` using `Pi.isUnit_iff.2 fun v => by simpa using hy v`. Take `⟨w, hw⟩` from `hu`. Use `⟨Units.map jj.toMonoidHom w, ⟨jj_mem _, jj_mem _⟩, jj y, jj_mem _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `jj w - d = _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ex_unit {d : ℤ} {N : ℕ} (h : IsCoprime d (N : ℤ)) :
     ∃ u, IsZU u ∧ ∃ y ∈ Ohat ℚ, (u : Af ℚ) - d = N * y := by
@@ -60,7 +58,7 @@ private theorem ex_unit {d : ℤ} {N : ℕ} (h : IsCoprime d (N : ℤ)) :
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) S) i j - s ((1 : Matrix (Fin 2) (Fin 2) R) i j) + s (Matrix.scalar (Fin 2) u.val i j) = Matrix.scalar (Fin 2) (1 - s 1 + s u.val) i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem corner_sc {R S : Type} [CommRing R] [CommRing S] (s : R →ₙ+* S) (u : Rˣ) :
     cornerGL 2 s (GeneralLinearGroup.scalar (Fin 2) u) = GeneralLinearGroup.scalar (Fin 2) (Units.map (corner s) u) := by
@@ -70,19 +68,19 @@ private theorem corner_sc {R S : Type} [CommRing R] [CommRing S] (s : R →ₙ+*
   by_cases e : i = j <;> simp [Matrix.one_apply, e]
 
 /- English proof (translation)
-Take `⟨c, hc⟩ : (N : ℤ) ∣ δ 1 0` from `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 (Gamma0_mem.1 hδ0)`. Establish `hdet : δ 0 0 * δ 1 1 - δ 0 1 * δ 1 0 = 1`. Use `δ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Take `⟨u, hu, y, hy, hd⟩` from `ex_unit (d := δ 1 1) (N := N) ⟨δ 0 0, -(δ 0 1 * c), by rw [hc] at hdet; linear_combination hdet⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hI : ∀ n : ℤ, (n : Af ℚ) ∈ Ohat ℚ` using `fun n => intCast_mem _ n`. Establish `hδ : ∀ (δ : SL(2, ℤ)) a b, (toF (Matrix.SpecialLinearGroup.mapGL ℚ δ)).val a b = ((δ a b : ℤ) : Af ℚ)`. Introduce `δ a b`. Use `show algebraMap ℚ (Af ℚ) (algebraMap ℤ ℚ (δ a b)) = _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : ∀ a b, ((toF (Matrix.SpecialLinearGroup.mapGL ℚ δ))⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) u).val a b = (((δ⁻¹ : SL(2, ℤ)) a b : ℤ) : Af ℚ) * u`. Introduce `a b`. Rewrite using `[← map_inv, ← map_inv, Units.val_mul, ← hδ]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ a b, (((toF (Matrix.SpecialLinearGroup.mapGL ℚ δ))⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) u)⁻¹).val a b = (u⁻¹ : (Af ℚ)ˣ) * ((δ a b : ℤ) : Af ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[_root_.mul_inv_rev, inv_inv, ← map_inv, Units.val_mul, ← hδ]`. Generalize the expression as in `u⁻¹ = v`. Simplify using the standard rewrite rules. Establish `i10 : (δ⁻¹ : SL(2, ℤ)) 1 0 = -δ 1 0` using `by rw [Matrix.SpecialLinearGroup.SL2_inv_expl]; rfl`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i11 : (δ⁻¹ : SL(2, ℤ)) 1 1 = δ 0 0` using `by rw [Matrix.SpecialLinearGroup.SL2_inv_expl]; rfl`. Establish `hdet' : ((δ 0 0 : ℤ) : Af ℚ) * (δ 1 1 : ℤ) - (δ 0 1 : ℤ) * (N * c) = 1`. Rewrite `hdet` using `[hc]`. Conclude with `congrArg (Int.cast : ℤ → Af ℚ) hdet` after adjusting the coercions. Use `⟨u, hu, (memK N _).2 ⟨fun a b => ?_, fun a b => ?_, ⟨-(c * u), neg_mem (mul_mem (hI _) hu.1), ?_⟩, (δ 0 0 : ℤ) * y + (δ 0 1 : ℤ) * c, add_mem (mul_mem (hI _) hy) (mul_mem (hI _) (hI _)), ?_⟩, y, hy, hd⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `mul_mem (hI _) hu.1`. Rewrite using `[e2]`. Conclude with `mul_mem hu.2 (hI _)`. Rewrite using `[e1, i10, hc]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, i11]`. Take the linear combination `((δ 0 0 : ℤ) : Af ℚ) * hd + hdet'`.
+A detailed English derivation is pending.
 -/
 private theorem ex_K {N : ℕ} (δ : SL(2, ℤ)) (hδ0 : δ ∈ Gamma0 N) : ∃ u, IsZU u ∧
     (toF (Matrix.SpecialLinearGroup.mapGL ℚ δ))⁻¹ * Matrix.GeneralLinearGroup.scalar (Fin 2) u ∈ K1G N ∧
@@ -121,9 +119,9 @@ private theorem ex_K {N : ℕ} (δ : SL(2, ℤ)) (hδ0 : δ ∈ Gamma0 N) : ∃ 
   · rw [e1, i11]; linear_combination ((δ 0 0 : ℤ) : Af ℚ) * hd + hdet'
 
 /- English proof (translation)
-Establish `e : (aff (Units.mk0 z.im z.im_pos.ne') z.re).val = !![z.im, z.re; 0, 1]` using `rfl`. Establish `hd : (!![z.im, z.re; 0, 1] : Matrix (Fin 2) (Fin 2) ℝ).det = z.im` using `by simp`. Establish `hz : (z.im : ℂ) * Complex.I + z.re = z`. Rewrite using `[add_comm]`. Conclude with `Complex.re_add_im z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, nsl, hd, abs_of_pos z.im_pos, sign_pos z.im_pos]`. Simplify using `[hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem nsl_aff (k : ℕ) (f : ℍ → ℂ) (z : ℍ) :
     nsl k f (aff (Units.mk0 z.im z.im_pos.ne') z.re).val UpperHalfPlane.I = ((z.im ^ ((k : ℝ) / 2) : ℝ) : ℂ) * f z := by
@@ -135,17 +133,17 @@ private theorem nsl_aff (k : ℕ) (f : ℍ → ℂ) (z : ℍ) :
   simp [hz]
 
 /- English proof (translation)
-Introduce `k N hN χ ω hω f φ hφ hc δ hδ`. Take `⟨u, hu, hK, hd⟩` from `ex_K δ hδ`. Use `set β := Matrix.SpecialLinearGroup.mapGL ℚ δ with hβ`. Establish `h2` using `hω.unit u hu _ hd`. Establish `s3 : GeneralLinearGroup.scalar (Fin 2) (finId ℚ u) = finGL ℚ 2 (GeneralLinearGroup.scalar (Fin 2) u)` using `(corner_sc _ u).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ' : (toR β).val = δ.1.map (Int.cast : ℤ → ℝ)`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(Rat.castHom ℝ) (algebraMap ℤ ℚ (δ i j)) = _`. Simplify using the standard rewrite rules. Establish `key : ∀ x : GL (Fin 2) ℝ, nsl k f x.val UpperHalfPlane.I = ((ω.1 (finId ℚ u) : ℂˣ) : ℂ) * nsl k f (toR β * x).val UpperHalfPlane.I`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `e : GeneralLinearGroup.scalar (Fin 2) (finId ℚ u) * (ratGL ℚ 2 1 * (upR (toR β * x) * finGL ℚ 2 1)) = ratGL ℚ 2 β * (upR x * finGL ℚ 2 ((toF β)⁻¹ * GeneralLinearGroup.scalar (Fin 2) u))`. Establish `c : ∀ (x : GL (Fin 2) ℝ) (y : GL (Fin 2) (Af ℚ)) (w : GA ℚ 2), finGL ℚ 2 y * (upR x * w) = upR x * (finGL ℚ 2 y * w)` using `fun x y w => by rw [← mul_assoc, ← upR_comm, mul_assoc]`. Rewrite using `[s3, ratGL_eq β, map_one, one_mul]`. Simplify using `only [mul_assoc, c]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc, map_mul, map_inv, mul_inv_cancel_left, map_one, mul_one]`. Rewrite using `[← hφ β x _ hK, ← e, hc, hφ 1 _ 1 (one_mem _)]`. Use function extensionality and compare the values at `z`. Establish `h` using `key (aff (Units.mk0 z.im z.im_pos.ne') z.re)`. Establish `hdet : 0 < (aff (Units.mk0 z.im z.im_pos.ne') z.re).val.det`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (aff (Units.mk0 z.im z.im_pos.ne') z.re).val = !![z.im, z.re; 0, 1]` using `rfl`. Rewrite using `[e]`. Simplify using `using z.im_pos`. Rewrite `h` using `[Units.val_mul, ← (nslMul k f).1 _ _ (toR β).det_ne_zero hdet, hβ', (nslSl k f).1, nsl_aff, nsl_aff]`. Establish `hne : ((z.im ^ ((k : ℝ) / 2) : ℝ) : ℂ) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Real.rpow_pos_of_pos z.im_pos _).ne'` after adjusting the coercions. Use `mul_left_cancel₀ hne ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(-χ ((δ 1 1 : ℤ) : ZMod N)) * h - (((z.im ^ ((k : ℝ) / 2) : ℝ) : ℂ) * (f ∣[(k : ℤ)] δ) z) * h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.downChar :
     UpperTheory.V.Br.DownChar := by

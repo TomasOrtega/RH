@@ -14,13 +14,11 @@ open Matrix
 namespace GlobalTheory.FlagZ.Univ
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Use `set b := stalkStd X N x`. Use `set c : Fin N → X.presheaf.stalk x := (g⁻¹).1 *ᵥ (b.repr v) with hc`. Establish `hgc : g.1 *ᵥ c = b.repr v`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `key : ∀ i, ∑ j, c j * g.1 i j = b.repr v i`. Introduce `i`. Use `congrFun hgc i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hv : v = ∑ j, c j • ∑ i, g.1 i j • b i`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, key]`. Conclude with `(b.sum_repr v).symm`.
-
-Rewrite using `[hv]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, j.2, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSpan_units_top {X : Scheme.{0}} {N : ℕ} {x : X} (g : GL (Fin N) (X.presheaf.stalk x)) :
     colSpan g.1 N = ⊤ := by
@@ -45,13 +43,13 @@ theorem colSpan_units_top {X : Scheme.{0}} {N : ℕ} {x : X} (g : GL (Fin N) (X.
 variable (ι : Type) [Fintype ι] (N : ℕ)
 
 /- English proof (translation)
-Simplify using `[stalkStep, colSpan_units_top]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stalkStep_self (τ : ι) (y : Fl ι N) : stalkStep ι N τ N y = ⊤ := by
   simp [stalkStep, colSpan_units_top]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `e : stalkStep ι N τ (Fin.last N : ℕ) x = ⊤` using `by rw [Fin.val_last, stalkStep_self]`. Use `show _ ∈ stalkStep ι N τ (Fin.last N : ℕ) x`. Rewrite using `[e]`. Conclude with `Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sub_last (τ : ι) (V : (Fl ι N).Opens) (s : Γ(freeModule (Fl ι N) (Fin N), V)) :
     s ∈ (sub ι N τ (Fin.last N)).sec V := by
@@ -68,7 +66,7 @@ instance isIso_sub_incl_last (τ : ι) : IsIso (sub ι N τ (Fin.last N)).incl :
     Category.id_comp]
 
 /- English proof (translation)
-Introduce `ι _ N τ`. Establish `h` using `isIso_sub_incl_last ι N τ`. Unfold `incl`. Conclude with `@IsIso.comp_isIso _ _ _ _ _ _ _ h _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isIso_incl_last : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι), IsIso (incl ι N τ (Fin.last N)) := by
   intro ι _ N τ

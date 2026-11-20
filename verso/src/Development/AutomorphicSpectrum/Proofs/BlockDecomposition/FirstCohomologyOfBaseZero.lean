@@ -30,9 +30,9 @@ section Kunneth
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Express the relevant statement in the definitionally equal form `mp F ψ x ⊗ₜ[R] mp F (𝟙 b) y = mp F ψ x ⊗ₜ[R] y`. Rewrite using `[mp_id]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem mp_box_left {T T' : C} (ψ : T ⟶ T') (b : C) (u : F.obj T ⊗[R] F.obj b) :
     mp (box F) (show ((T, b) : C × C) ⟶ (T', b) from (ψ, 𝟙 b)) u = (mp F ψ).toLinearMap.rTensor _ u := by
@@ -44,9 +44,9 @@ theorem mp_box_left {T T' : C} (ψ : T ⟶ T') (b : C) (u : F.obj T ⊗[R] F.obj
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Express the relevant statement in the definitionally equal form `mp F (𝟙 a) x ⊗ₜ[R] mp F ψ y = x ⊗ₜ[R] mp F ψ y`. Rewrite using `[mp_id]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem mp_box_right (a : C) {T T' : C} (ψ : T ⟶ T') (u : F.obj a ⊗[R] F.obj T) :
     mp (box F) (show ((a, T) : C × C) ⟶ (a, T') from (𝟙 a, ψ)) u = (mp F ψ).toLinearMap.lTensor _ u := by
@@ -60,9 +60,9 @@ theorem mp_box_right (a : C) {T T' : C} (ψ : T ⟶ T') (u : F.obj a ⊗[R] F.ob
 variable {F}
 
 /- English proof (translation)
-Establish `e1` using `Z1.comp f (show ((a, b) : C × C) ⟶ (a', b) from (φ, 𝟙 b)) (show ((a', b) : C × C) ⟶ (a', b') from (𝟙 a', ψ))`. Establish `e2` using `Z1.comp f (show ((a, b) : C × C) ⟶ (a, b') from (𝟙 a, ψ)) (show ((a, b') : C × C) ⟶ (a', b') from (φ, 𝟙 b'))`. Rewrite `e1` using `[mp_box_right]`. Rewrite `e2` using `[mp_box_left]`. Rewrite using `[← e1, ← e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem box_square (f : Z1 (box F)) {a a' b b' : C} (φ : a ⟶ a') (ψ : b ⟶ b') :
     (mp F ψ).toLinearMap.lTensor _ (f.1 (a, b) (a', b) (φ, 𝟙 b)) + f.1 (a', b) (a', b') (𝟙 a', ψ) =
@@ -78,25 +78,23 @@ theorem box_square (f : Z1 (box F)) {a a' b b' : C} (φ : a ⟶ a') (ψ : b ⟶ 
 end Kunneth
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Establish `hz : ∀ b : C, ∃ t : Z1 F ⊗[R] F.obj b, ∀ (T T' : C) (φ : T ⟶ T'), (evZ F φ).rTensor _ t = f.1 (T, b) (T', b) (φ, 𝟙 b)` using `fun b ↦ by haveI := hf b`. Set `f₀ : ∀ (T T' : C) (_ : T ⟶ T'), F.obj T' ⊗[R] F.obj b` to `fun T T' φ ↦ f.1 (T, b) (T', b) (φ, 𝟙 b)`. Use `GlobalTheory.T.flat_cocycle_tensor_representation R C F (F.obj b) f₀ ?_` and prove the remaining obligations. Introduce `T T' T'' φ ψ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `Z1.comp f (show ((T, b) : C × C) ⟶ (T', b) from (φ, 𝟙 b)) (show ((T', b) : C × C) ⟶ (T'', b) from (ψ, 𝟙 b))`. Rewrite `e` using `[mp_box_left]`. Rewrite using `[← e]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `choose t ht using hz`. Establish `hcomp : ∀ (b b' : C) (ψ : b ⟶ b'), (H1.mk F).rTensor _ (t b') = (mp F ψ).toLinearMap.lTensor (H1 F) ((H1.mk F).rTensor _ (t b))` using `fun b b' ψ ↦ by haveI := hf b'`. Establish `k` using `GlobalTheory.T.cocycle_tensor_coboundary_class_zero R C F (F.obj b') (t b' - (mp F ψ).toLinearMap.lTensor (Z1 F) (t b)) (fun a ↦ f.1 (a, b) (a, b') (𝟙 a, ψ)) (fun T T' φ ↦ by`. Establish `e : (evZ F φ).rTensor _ ((mp F ψ).toLinearMap.lTensor (Z1 F) (t b)) = (mp F ψ).toLinearMap.lTensor _ ((evZ F φ).rTensor _ (t b))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor, LinearMap.lTensor_comp_rTensor]`. Establish `s` using `box_square f φ ψ`. Rewrite using `[map_sub, e, ht, ht]`. Conclude with `sub_eq_sub_iff_add_eq_add.2 (by rw [add_comm, ← s, add_comm]))`. Establish `e : (H1.mk F).rTensor _ ((mp F ψ).toLinearMap.lTensor (Z1 F) (t b)) = (mp F ψ).toLinearMap.lTensor _ ((H1.mk F).rTensor _ (t b))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor, LinearMap.lTensor_comp_rTensor]`. Rewrite `k` using `[map_sub, e, sub_eq_zero]`. Conclude with `k`. Take `⟨x, hx, -⟩` from `hU (H1 F) (fun b ↦ (H1.mk F).rTensor _ (t b)) hcomp`. Take `⟨z, rfl⟩` from `H1.mk_surjective F x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hg : ∀ b : C, ∃ g : ∀ T : C, F.obj T ⊗[R] F.obj b, ∀ (T T' : C) (φ : T ⟶ T'), (evZ F φ).rTensor _ (z ⊗ₜ[R] (1 : F.obj b) - t b) = g T' - (mp F φ).toLinearMap.rTensor _ (g T)` using `fun b ↦ GlobalTheory.T.class_zero_cocycle_tensor_coboundary R C F (F.obj b) _ (by`. Rewrite using `[map_sub, LinearMap.rTensor_tmul, hx b, sub_self])`. Use `choose g hg using hg`. Set `G : C0 (box F)` to `fun T ↦ g T.2 T.1`. Set `f' : Z1 (box F)` to `f - (boxL F).pullbackOneCocycle z + (d0 (box F)).codRestrict (Z1 (box F)) (commAlgFunctorCoboundaryZero_mem_cocyclesOne _) G`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : ∀ (a a' b : C) (φ : a ⟶ a'), f'.1 (a, b) (a', b) (φ, 𝟙 b) = 0` using `fun a a' b φ ↦ by`. Establish `e` using `hg b a a' φ`. Rewrite `e` using `[map_sub, LinearMap.rTensor_tmul, ht]`. Establish `e2 : mp (box F) (show ((a, b) : C × C) ⟶ (a', b) from (φ, 𝟙 b)) (G (a, b)) = (mp F φ).toLinearMap.rTensor _ (g b a)` using `mp_box_left F φ b _`. Establish `e3 : f'.1 (a, b) (a', b) (φ, 𝟙 b) = f.1 (a, b) (a', b) (φ, 𝟙 b) - (z.1 a a' φ) ⊗ₜ[R] (1 : F.obj b) + (g b a' - mp (box F) (show ((a, b) : C × C) ⟶ (a', b) from (φ, 𝟙 b)) (G (a, b)))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e3, e2, ← e]`. Express the relevant statement in the definitionally equal form `_ - z.1 a a' φ ⊗ₜ[R] (1 : F.obj b) + (z.1 a a' φ ⊗ₜ[R] (1 : F.obj b) - _) = 0`. Normalize the expressions using the abelian group laws. Take `⟨y, hy⟩` from `GlobalTheory.T.cocycle_on_product_from_second_factor R C F hU f' hv`. Use `⟨H1.mk F z, H1.mk F y, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, ← map_add, H1.mk_eq_mk]`. Use `⟨-G, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, map_neg]`. Establish `: (f' : C1 (box F)) = f.1 - ((boxL F).pullbackOneCocycle z).1 + d0 (box F) G` using `rfl`. Express the relevant statement in the definitionally equal form `-d0 (box F) G = f.1 - (((boxL F).pullbackOneCocycle z).1 + f'.1)`.
-
-Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem kunneth (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C] [Quiver.IsThin C]
     (F : C ⥤ CommAlgCat.{0} R) (hf : ∀ T, Module.Flat R (F.obj T)) (hU : USt F) (c : H1 (box F)) :
@@ -164,7 +162,7 @@ theorem kunneth (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C] [
   abel
 
 /- English proof (translation)
-Use `haveI : IsAffine (𝟙_ (Over (Sp R))).left := inferInstanceAs (IsAffine (Sp R))`. Conclude with `H1.eq_zero_of_isInitial _ (T₀ := op ⟨⊤, isAffineOpen_top _⟩) (Limits.IsInitial.ofUniqueHom (fun U ↦ (homOfLE (show U.unop ≤ ⟨⊤, isAffineOpen_top _⟩ from le_top (a := U.unop.1))).op) fun _ _ ↦ rfl) c`.
+A detailed English derivation is pending.
 -/
 theorem first_cohomology_of_base_zero (R : Type) [CommRing R] (c : HO1 (𝟙_ (Over (Sp R))).hom) : c = 0 := by
   haveI : IsAffine (𝟙_ (Over (Sp R))).left := inferInstanceAs (IsAffine (Sp R))
@@ -173,15 +171,15 @@ theorem first_cohomology_of_base_zero (R : Type) [CommRing R] (c : HO1 (𝟙_ (O
         le_top (a := U.unop.1))).op) fun _ _ ↦ rfl) c
 
 /- English proof (translation)
-The claim follows from `CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull (wOver (𝟙 X))) (pairRes _ X.hom) (pairIdTrans X.left) (fun _ _ ↦ rfl) a`.
+A detailed English derivation is pending.
 -/
 theorem isPullO_id (R : Type) [CommRing R] (X : Over (Sp R)) (a : HO1 X.hom) : IsPullO (wOver (𝟙 X)) a a :=
   CoefMap.pullCohomologyOne_eq_of_natTrans (pairPull (wOver (𝟙 X))) (pairRes _ X.hom) (pairIdTrans X.left) (fun _ _ ↦ rfl) a
 
 /- English proof (translation)
-Introduce `hD hL hB hS R _ A _ g hA hg P _ S M _ _ z hz`. Use `letI : Module Rᵐᵒᵖ M := Module.compHom M ((RingEquiv.toOpposite R).symm.toRingHom)`. Use `haveI : IsCentralScalar R M := ⟨fun r m ↦ rfl⟩`. Take `⟨A', _, φ, hA', hg', hpb⟩` from `GlobalTheory.T.abelian_scheme_base_change_exists R (TrivSqZeroExt R M) A g hA hg`. Use `hA.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA'.proper` as an intermediate fact. Take `⟨S', m, -⟩` from `hB R (TrivSqZeroExt R M) A.left A'.left A.hom A'.hom φ hpb inferInstance P S`. Establish `hSt : Stein (OSys A'.hom S')` using `((hL _ _ _ _ _ (resSys A'.hom S') (hD _ _ A'.hom inferInstance P S')).2.2).1 (hS _ A' g hA' hg')`. Conclude with `GlobalTheory.T.exists_unique_constant_of_compatible_family R Pᵒᵖ (OSys A.hom S) M _ m hSt z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ust_abelian : DescentSt → LowSt → SysBCSt → SteinSt → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →
@@ -198,7 +196,7 @@ theorem ust_abelian : DescentSt → LowSt → SysBCSt → SteinSt → ∀ (R : T
   exact GlobalTheory.T.exists_unique_constant_of_compatible_family R Pᵒᵖ (OSys A.hom S) M _ m hSt z hz
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isPullO_comp_block_decomposition R X Y Z f g a b c h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem isPullO_comp (R : Type) [CommRing R] {X Y Z : Over (Sp R)} (f : X ⟶ Y) (g : Y ⟶ Z)
     (a : HO1 Z.hom) (b : HO1 Y.hom) (c : HO1 X.hom) (h1 : IsPullO (wOver g) a b) (h2 : IsPullO (wOver f) b c) :
@@ -206,21 +204,21 @@ theorem isPullO_comp (R : Type) [CommRing R] {X Y Z : Over (Sp R)} (f : X ⟶ Y)
   GlobalTheory.T.isPullO_comp_block_decomposition R X Y Z f g a b c h1 h2
 
 /- English proof (translation)
-Unfold `IsPullO at *`. Rewrite using `[map_add, map_add, h, h']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullO_add {R : Type} [CommRing R] {X Y : Over (Sp R)} (f : X ⟶ Y) {a a' : HO1 Y.hom} {b b' : HO1 X.hom}
     (h : IsPullO (wOver f) a b) (h' : IsPullO (wOver f) a' b') : IsPullO (wOver f) (a + a') (b + b') := by
   unfold IsPullO at *; rw [map_add, map_add, h, h']
 
 /- English proof (translation)
-The claim follows from `(existsUnique_isPullO (wOver f) a).unique h h'`.
+A detailed English derivation is pending.
 -/
 theorem isPullO_unique {R : Type} [CommRing R] {X Y : Over (Sp R)} (f : X ⟶ Y) {a : HO1 Y.hom} {b b' : HO1 X.hom}
     (h : IsPullO (wOver f) a b) (h' : IsPullO (wOver f) a b') : b = b' :=
   (existsUnique_isPullO (wOver f) a).unique h h'
 
 /- English proof (translation)
-Establish `h1` using `isPullO_pullHO1 (wOver u) a`. Rewrite `h1` using `[first_cohomology_of_base_zero R (pullHO1 (wOver u) a)]`. Establish `h2` using `isPullO_comp R t u a 0 0 h1 ((map_zero _).trans (map_zero _).symm)`. Conclude with `isPullO_unique _ h h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullO_through_unit {R : Type} [CommRing R] {X Y : Over (Sp R)} (t : X ⟶ 𝟙_ (Over (Sp R)))
     (u : 𝟙_ (Over (Sp R)) ⟶ Y) (a : HO1 Y.hom) (b : HO1 X.hom) (h : IsPullO (wOver (t ≫ u)) a b) : b = 0 := by
@@ -230,23 +228,23 @@ theorem isPullO_through_unit {R : Type} [CommRing R] {X Y : Over (Sp R)} (t : X 
   exact isPullO_unique _ h h2
 
 /- English proof (translation)
-Introduce `hD hL hB hS R _ A _ g hA hg c h1 h2`. Establish `hA2` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Use `hA.proper` as an intermediate fact. Use `hA2.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, _, _, ⟨S⟩⟩` from `GlobalTheory.T.exists_finite_semilattice_system R A.left A.hom inferInstance inferInstance`. Take `⟨Q, _, S', m, hm, hfst, hsnd⟩` from `GlobalTheory.T.product_first_cohomology_comparison R A P S`. Establish `hU` using `ust_abelian hD hL hB hS R A g hA hg P S`. Establish `hb` using `(hL _ _ _ _ _ (resSys A.hom S) (hD R _ A.hom inferInstance P S)).1`. Establish `hb'` using `(hL _ _ _ _ _ (resSys (A ⊗ A).hom S') (hD R _ (A ⊗ A).hom inferInstance Q S')).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Finite Pᵒᵖ := Finite.of_injective Opposite.unop Opposite.unop_injective`. Take `⟨w, hw⟩` from `hm ((resSys (A ⊗ A).hom S').pull1 c)`. Take `⟨x, y, rfl⟩` from `kunneth R Pᵒᵖ (OSys A.hom S) (fun T ↦ GlobalTheory.T.smooth_sections_affine_flat R _ A.hom inferInstance _) hU w`. Take `⟨x₀, rfl⟩` from `hb.2 x`. Take `⟨y₀, rfl⟩` from `hb.2 y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `isPullO_pullHO1 (wOver (fst A A)) x₀`. Establish `e2` using `isPullO_pullHO1 (wOver (snd A A)) y₀`. Establish `hc : c = pullHO1 (wOver (fst A A)) x₀ + pullHO1 (wOver (snd A A)) y₀`. Apply `hb'.1` to reduce the goal to its premises. Rewrite using `[map_add, hfst _ _ e1, hsnd _ _ e2, ← hw, map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set c₁ := pullHO1 (wOver (fst A A)) x₀ with hc₁`. Use `set c₂ := pullHO1 (wOver (snd A A)) y₀ with hc₂`. Establish `a1` using `isPullO_pullHO1 (wOver (lift (𝟙 A) (1 : A ⟶ A))) c₁`. Establish `a2` using `isPullO_pullHO1 (wOver (lift (𝟙 A) (1 : A ⟶ A))) c₂`. Establish `b1` using `isPullO_pullHO1 (wOver (lift (1 : A ⟶ A) (𝟙 A))) c₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2` using `isPullO_pullHO1 (wOver (lift (1 : A ⟶ A) (𝟙 A))) c₂`. Establish `k1` using `isPullO_comp R _ _ _ _ _ e1 a1`. Establish `k2` using `isPullO_comp R _ _ _ _ _ e2 a2`. Establish `l1` using `isPullO_comp R _ _ _ _ _ e1 b1`. Establish `l2` using `isPullO_comp R _ _ _ _ _ e2 b2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k1` using `[lift_fst]`. Rewrite `k2` using `[lift_snd, Hom.one_def]`. Rewrite `l1` using `[lift_fst, Hom.one_def]`. Rewrite `l2` using `[lift_snd]`. Establish `z2` using `isPullO_through_unit _ _ _ _ k2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z3` using `isPullO_through_unit _ _ _ _ l1`. Establish `u1` using `isPullO_unique _ k1 (isPullO_id R A x₀)`. Establish `u2` using `isPullO_unique _ l2 (isPullO_id R A y₀)`. Rewrite `h1`, `h2` using `[hc]`. Establish `v1` using `isPullO_unique _ h1 (isPullO_add _ a1 a2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `v2` using `isPullO_unique _ h2 (isPullO_add _ b1 b2)`. Rewrite `v1` using `[z2, add_zero, u1]`. Rewrite `v2` using `[z3, zero_add, u2]`. Rewrite using `[hc, hc₁, hc₂, ← v1, ← v2, map_zero, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem axOSt : DescentSt → LowSt → SysBCSt → SteinSt → AxOSt := by
   intro hD hL hB hS R _ A _ g hA hg c h1 h2

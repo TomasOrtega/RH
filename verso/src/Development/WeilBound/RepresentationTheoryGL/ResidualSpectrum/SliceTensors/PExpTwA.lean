@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Rs.ExponentTwist
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Rewrite using `[IsTotallyComplex.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem card_places : ((Module.finrank ℚ E : ℕ) : ℂ) = 2 * (Fintype.card (InfinitePlace E) : ℂ) := by
   rw [IsTotallyComplex.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
@@ -26,7 +26,7 @@ theorem chiDet_absC_val (a : ℕ) (s : ℂ) (g : GA E a) :
       Complex.exp (s * (GlobalTheory.Mem.Chr.CharModel.logNorm E (Matrix.GeneralLinearGroup.det g) : ℂ)) := rfl
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => if i < r then t else 0), Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Use `congr 2`. Rewrite using `[show Finset.filter (fun x => x < r) (Finset.range N) = Finset.range r by ext x; simp; omega]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_ite_lt {N r : ℕ} (h : r ≤ N) (t : ℂ) :
     ∑ i : Fin N, (if (i : ℕ) < r then t else 0) = r * t := by
@@ -37,7 +37,7 @@ theorem sum_ite_lt {N r : ℕ} (h : r ≤ N) (t : ℂ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun (i : Fin N) (_ : InfinitePlace E) => Complex.exp (if (i : ℕ) < r then (t : ℂ) else 0)).det w = _`. Rewrite using `[Matrix.det_diagonal, Finset.prod_apply, ← Complex.exp_sum, sum_ite_lt h]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem det_aInf_apply {N r : ℕ} (h : r ≤ N) (t : ℝ) (w : InfinitePlace E) :
     ((Matrix.GeneralLinearGroup.det (aInf E N r t) : (Cinf E)ˣ) : Cinf E) w = Complex.exp ((r * t : ℝ) : ℂ) := by
@@ -47,7 +47,7 @@ theorem det_aInf_apply {N r : ℕ} (h : r ≤ N) (t : ℝ) (w : InfinitePlace E)
   push_cast; rfl
 
 /- English proof (translation)
-Rewrite using `[chiDet_absC_val, aT, det_infGL, Model.logNorm_infId]`. Simplify using `only [det_aInf_apply h, Complex.norm_exp_ofReal, Real.log_exp, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[card_places]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -60,7 +60,7 @@ theorem chiDet_aT {N r : ℕ} (h : r ≤ N) (z : ℂ) (t : ℝ) :
   push_cast; ring
 
 /- English proof (translation)
-Use `congrArg (infGL E a) (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.scalar (Fin a) (expU fun _ : InfinitePlace E => (t : ℂ)).val = Matrix.diagonal _`. Use extensionality with `i j`. Simplify using `[Matrix.scalar_apply, expU]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem splitCentre_eq (a : ℕ) (t : ℝ) : splitCentre E a t = aT E a a t := by
   refine congrArg (infGL E a) (Units.ext ?_)

@@ -11,19 +11,19 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFullHecke.FractionGeneratorsArcs
 
 /- English proof (translation)
-Establish `e : Mono (spMap β) ↔ Epi (CommRingCat.ofHom β)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : Mono (Scheme.Spec.map (CommRingCat.ofHom β).op)` using `h`. Use `Scheme.Spec.mono_of_mono_map h'` as an intermediate fact.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(inferInstance : Epi (CommRingCat.ofHom β).op.unop)`. Introduce `h`. Conclude with `(inferInstance : Mono (Scheme.Spec.map (CommRingCat.ofHom β).op))`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `h x`. Set `K : Subfield F` to `Subfield.closure (Set.range β)`. Set `β₁ : O →+* K` to `β.codRestrict K fun r => Subfield.subset_closure ⟨r, rfl⟩`. Establish `h₁ : Epi (CommRingCat.ofHom β₁ ≫ CommRingCat.ofHom K.subtype)` using `h`. Establish `h₂ : Epi (CommRingCat.ofHom K.subtype)` using `epi_of_epi (CommRingCat.ofHom β₁) _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower ℚ K F` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `h₃ : Module.Finite K F` using `Module.Finite.of_restrictScalars_finite ℚ K F`. Take `⟨⟨x', hx'⟩, rfl⟩` from `RingHom.surjective_of_epi_of_finite (CommRingCat.ofHom K.subtype) h₃ x`. Take `⟨p, hp, q, hq, rfl⟩` from `Subfield.mem_closure_iff.1 hx'`. Establish `hc : Subring.closure (Set.range β) = β.range` using `Subring.closure_eq β.range`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hp`, `hq` using `[hc]`. Take `⟨r, rfl⟩` from `hp`. Take `⟨s, rfl⟩` from `hq`. Distinguish the cases in `hs : β s = 0`. Conclude with `⟨0, 1, by simp, by simp [hs]⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨r, s, hs, div_mul_cancel₀ _ hs⟩`. Introduce `h`. Use `⟨fun {A} f g hfg => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Take `⟨r, s, hs, hx⟩` from `h x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k : ∀ r, f.hom (β r) = g.hom (β r)` using `fun r => congrArg (fun q => q.hom r) hfg`. Establish `hu : IsUnit (f.hom (β s))` using `(IsUnit.mk0 _ hs).map f.hom`. Use `hu.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[← map_mul, hx, k r, k s, ← map_mul, hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_spMap_iff {O F : Type} [CommRing O] [Field F] [CharZero F] [FiniteDimensional ℚ F] (β : O →+* F) :
     Mono (spMap β) ↔ GeneratesFrac β := by
@@ -63,13 +63,13 @@ theorem mono_spMap_iff {O F : Type} [CommRing O] [Field F] [CharZero F] [FiniteD
     rw [← map_mul, hx, k r, k s, ← map_mul, hx]
 
 /- English proof (translation)
-Establish `key : ∀ {T : Scheme.{0}} (t : T ⟶ S'), IsProper (pullback.snd G'.hom t) ↔ IsProper (pullback.snd G.hom (t ≫ f))`. Introduce `T t`. Establish `hp` using `(IsPullback.of_hasPullback G'.hom t).paste_horiz h`. Establish `e` using `hp.isoPullback_hom_snd`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `_`. Rewrite using `[← hp.isoPullback_inv_snd]`. Use `infer_instance`. Introduce `_`. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `infer_instance`. Prove the components needed by the constructor for the conclusion. Introduce `hx K _ _ t ⟨p, hp⟩`. Conclude with `(key t).2 (hx K (t ≫ f) ⟨p, by rw [← hp]; simp⟩)`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K` to `AlgebraicClosure (S'.residueField x)`. Set `t : Sp K ⟶ S'` to `Spec.map (CommRingCat.ofHom (algebraMap (S'.residueField x) K)) ≫ S'.fromSpecResidueField x`. Establish `p : Sp K` using `(default : PrimeSpectrum K)`. Establish `ht : t p = x` using `Scheme.fromSpecResidueField_apply x _`. Conclude with `abLocusOne S G hG K (t ≫ f) ((key t).1 (hx K t ⟨p, ht⟩)) ⟨p, congrArg (fun z => f z) ht⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_abLocus_pullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G]
     (hG : IsSemiAbelian G) {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsPullback φ G'.hom G.hom f) (x : S') :

@@ -6,7 +6,7 @@ open NumberField GroundTheory.Heights₂.Heights
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Lines.exists_principal_extension | exact GlobalTheory.CompanionTheory.Lines.exists_principal_extension | (intros; apply GlobalTheory.CompanionTheory.Lines.exists_principal_extension <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ideal_norm_principal_in_extension : ∀ (K : Type) [Field K] [NumberField K] (I : Ideal (𝓞 K)), I ≠ ⊥ → ∃ (K' : Type) (_ : Field K') (_ : NumberField K') (_ : Algebra K K') (y : 𝓞 K'), y ≠ 0 ∧ y ∈ I.map (algebraMap (𝓞 K) (𝓞 K')) ∧ |((Algebra.norm ℚ (y : K') : ℚ) : ℝ)| = (I.absNorm : ℝ) ^ Module.finrank K K' := by
   first | exact @GlobalTheory.CompanionTheory.Lines.exists_principal_extension | exact GlobalTheory.CompanionTheory.Lines.exists_principal_extension | (intros; apply GlobalTheory.CompanionTheory.Lines.exists_principal_extension <;> assumption)

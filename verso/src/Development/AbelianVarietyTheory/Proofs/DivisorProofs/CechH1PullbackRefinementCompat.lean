@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CechPoset
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.mk_le_mk.2 (Prod.mk_le_mk.2 ⟨cov_mono D'' hD'' h, cov_mono D' hD' h⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pr_monotone {κ : Type} [LinearOrder κ] {X' X'' : Scheme.{0}} {ψ : X'' ⟶ X'} (D' : κ → X'.Opens)
     (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D' i)) (D'' : κ → X''.Opens)
@@ -22,9 +22,9 @@ theorem pr_monotone {κ : Type} [LinearOrder κ] {X' X'' : Scheme.{0}} {ψ : X''
   Subtype.mk_le_mk.2 (Prod.mk_le_mk.2 ⟨cov_mono D'' hD'' h, cov_mono D' hD' h⟩)
 
 /- English proof (translation)
-Establish `hp : (pairPull w).pull1 y = (pairRes ψ s'').pull1 (pullHO1 w y)` using `isPullO_pullHO1 w y`. Generalize the expression as in `pullHO1 w y = z at hp`. Set `n` to `CoefMap.restrict (OPair ψ s'') (pr_monotone D' hD' D'' hD'' hle).functor.op`. Establish `h1 : (CoefMap.restrict (OAff s'') (cov_mono D'' hD'').functor.op).pull1 z = n.pull1 ((pairRes ψ s'').pull1 z)`. Use `Eq.trans ?_ ((pairRes ψ s'').pullCohomologyOne_comp n z)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ ((pairRes ψ s'').comp n) { app U := 𝟙 _ } (fun U b ↦ mp_id (OAff s'') _ b) z`. Rewrite using `[h1, ← hp]`. Use `((pairPull w).pullCohomologyOne_comp n y).symm.trans (Eq.trans ?_ (CoefMap.pullCohomologyOne_comp _ _ y))` and prove the remaining obligations. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app U := 𝟙 _ } (fun U b ↦ by erw [mp_id]) y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restrict_pull1_pullHO1 {R' R'' : Type} [CommRing R'] [CommRing R''] {X' X'' : Scheme.{0}}
     {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {σ : R' →+* R''} {ψ : X'' ⟶ X'}

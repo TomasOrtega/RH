@@ -26,9 +26,9 @@ open scoped Matrix
 namespace UpperTheory.V.Z.Sym.W
 
 /- English proof (translation)
-Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hM]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral (K := ℚ) ζ).mem_nhds ?_) fun s hs => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `fun ζ _ => Subgroup.one_mem _`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hf s fun ζ hζ => hs ζ hζ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem open_ker_of_kills {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {C : Type} [Group C] {M : ℕ} (hM : 0 < M)
     {f : G ℚ Ω →* C} (hf : KillsMu M f) : IsOpen (f.ker : Set (G ℚ Ω)) := by
@@ -44,7 +44,7 @@ private theorem open_ker_of_kills {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClo
     exact hf s fun ζ hζ => hs ζ hζ
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open f).2 fun x => ⟨(fun y => x * y) '' (f.ker : Set Γ), (Homeomorph.mulLeft x).isOpenMap _ h, ⟨1, one_mem _, by simp⟩, ?_⟩)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `[MonoidHom.mem_ker.1 hy]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 private theorem cont_of_open_ker {Γ C : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group C] [TopologicalSpace C]
     (f : Γ →* C) (h : IsOpen (f.ker : Set Γ)) : Continuous f := by
@@ -54,9 +54,9 @@ private theorem cont_of_open_ker {Γ C : Type} [Group Γ] [TopologicalSpace Γ] 
   simp [MonoidHom.mem_ker.1 hy]
 
 /- English proof (translation)
-Establish `hv : Continuous fun s => ((tw r δ) s).val`. Establish `e : (fun s => ((tw r δ) s).val) = fun s => (δ s).val • (r s).val` using `funext fun s => tw_val r δ s`. Rewrite using `[e]`. Conclude with `(Units.continuous_val.comp hδ).smul (Units.continuous_val.comp h)`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_def, ← Units.val_inv_eq_inv_val, ← map_inv]`. Conclude with `hv.comp continuous_inv`.
+A detailed English derivation is pending.
 -/
 private theorem cont_twist {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] {n : ℕ}
     {r : Γ →* GL (Fin n) (Qbar l)} {δ : Γ →* (Qbar l)ˣ} (h : Continuous r) (hδ : Continuous δ) : Continuous (tw r δ) := by
@@ -69,7 +69,7 @@ private theorem cont_twist {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [Topo
   exact hv.comp continuous_inv
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Use `AlgEquiv.ext fun x => j.injective ?_` and prove the remaining obligations. Simplify using `[AlgEquiv.mul_apply, hj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem cc_mul_self {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {c : G ℚ Ω} (hc : Sd.IsCC c) : c * c = 1 := by
   obtain ⟨j, hj⟩ := hc
@@ -77,7 +77,7 @@ private theorem cc_mul_self {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   simp [AlgEquiv.mul_apply, hj]
 
 /- English proof (translation)
-Introduce `hl` and use `hA (by obtain ⟨t, rfl⟩ := h rw [Nat.cast_mul, map_mul] exact mul_lt_one_of_lt_of_le hl ((A.valuation_le_one_iff _).2 (natCast_mem A t)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem not_lt_of_dvd {Ω : Type} [Field Ω] {l M : ℕ} (h : l ∣ M) {A : ValuationSubring Ω} (hA : ¬ A.valuation (M : Ω) < 1) :
     ¬ A.valuation (l : Ω) < 1 := fun hl => hA (by
@@ -86,16 +86,16 @@ private theorem not_lt_of_dvd {Ω : Type} [Field Ω] {l M : ℕ} (h : l ∣ M) {
   exact mul_lt_one_of_lt_of_le hl ((A.valuation_le_one_iff _).2 (natCast_mem A t)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`.
+Supply the required witnesses or components.
 -/
 private theorem closure_of (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K]
     [Algebra K Ω] : IsAlgClosure K Ω :=
   ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩
 
 /- English proof (translation)
-Use `haveI := closure_of Ω L`. Establish `h1 : ∀ x : K, ∃ y : L, algebraMap L Ω y = algebraMap K Ω x` using `fun x => (InfiniteGalois.mem_range_algebraMap_iff_fixed (k := L) _).2 fun f => h (galEmb_mem ℚ L Ω f) x`. Use `choose f hf using h1`. Establish `hi` using `(algebraMap L Ω).injective`. Set `g : K →+* L` to `{ toFun := f map_one' := hi (by simp [hf]) map_mul' := fun a b => hi (by simp [hf]) map_zero' := hi (by simp [hf]) map_add' := fun a b => hi (by simp [hf]) }`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Supply the required witnesses or components.
 
-Use `letI := g.toAlgebra`. Conclude with `⟨_, IsScalarTower.of_algebraMap_eq fun x => (hf x).symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem tower_of {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K L : Type) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K Ω] [Algebra L Ω] (h : galOf ℚ L Ω ≤ galOf ℚ K Ω) :
@@ -115,7 +115,7 @@ private theorem tower_of {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ 
   exact ⟨_, IsScalarTower.of_algebraMap_eq fun x => (hf x).symm⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gram_two {k : Type} [Field k] (M : Matrix (Fin 2) (Fin 2) k) :
     Mᵀ * !![0, 1; -1, 0] * M = M.det • !![0, 1; -1, 0] := by
@@ -123,9 +123,9 @@ private theorem gram_two {k : Type} [Field k] (M : Matrix (Fin 2) (Fin 2) k) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring
 
 /- English proof (translation)
-Set `J : GL (Fin 2) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp)`. Establish `eJ : (J : Matrix (Fin 2) (Fin 2) k) = !![0, 1; -1, 0]` using `rfl`. Use `⟨J * (ρ c)⁻¹, fun s s' h => ?_⟩` and prove the remaining obligations. Establish `e1 : J * (ρ c)⁻¹ * ρ (e s') = J * ρ (e s) * (ρ c)⁻¹`. Rewrite using `[h, map_mul, map_mul, map_inv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `e2 : (J : Matrix (Fin 2) (Fin 2) k) * (ρ (e s) : Matrix (Fin 2) (Fin 2) k) * (((ρ c)⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) = ((J * (ρ c)⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) * (ρ (e s') : Matrix (Fin 2) (Fin 2) k)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, ← Units.val_mul, e1]`. Rewrite using `[Matrix.mul_assoc, ← e2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, eJ, gram_two, Units.val_mul, eJ, Matrix.smul_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pair_of {Γ Δ k : Type} [Group Γ] [Group Δ] [Field k] (ρ : Γ →* GL (Fin 2) k) (e : Δ →* Γ) (c : Γ) :
     ∃ P : GL (Fin 2) k, ∀ s s' : Δ, e s' = c * e s * c⁻¹ →
@@ -143,11 +143,11 @@ private theorem pair_of {Γ Δ k : Type} [Group Γ] [Group Δ] [Field k] (ρ : �
   rw [Matrix.mul_assoc, ← e2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, eJ, gram_two, Units.val_mul, eJ, Matrix.smul_mul]
 
 /- English proof (translation)
-Use `MonoidHom.ext fun s => Units.ext ?_` and prove the remaining obligations. Establish `hd : (δ s : k) ≠ 0` using `(δ s).ne_zero`. Establish `h0 : (r s : Matrix (Fin 2) (Fin 2) k).det ≠ 0`. Use `((Matrix.GeneralLinearGroup.det (r s)).ne_zero)` as an intermediate fact. Simplify `this` using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hD : ((tw r δ s : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k).det = (δ s : k) ^ 2 * (r s : Matrix (Fin 2) (Fin 2) k).det`. Rewrite using `[tw_val, Matrix.det_smul]`. Simplify using the standard rewrite rules. Simplify using `only [ad0, tw_val, MonoidHom.comp_apply, MonoidHom.inv_apply, Units.coe_map, MonoidHom.coe_coe]`. Simplify using `only [Units.val_inv_eq_inv_val, Matrix.GeneralLinearGroup.val_det_apply, hD, ← tw_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [tw_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom] <;> field_simp`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adjoint_zero_twist {Γ k : Type} [Group Γ] [Field k] (r : Γ →* GL (Fin 2) k) (δ : Γ →* kˣ) : ad0 (tw r δ) = ad0 r := by
   refine MonoidHom.ext fun s => Units.ext ?_
@@ -164,11 +164,11 @@ private theorem adjoint_zero_twist {Γ k : Type} [Group Γ] [Field k] (r : Γ �
   fin_cases i <;> fin_cases j <;> simp [symSquareMatrixHom] <;> field_simp
 
 /- English proof (translation)
-Establish `key : ∀ {d : G ℚ Ω}, Sd.IsCC d → ∀ x : L, d (algebraMap L Ω x) = algebraMap L Ω (IsCMField.complexConj L x)`. Introduce and unpack `d ⟨j, hj⟩ x`. Apply `j.injective` to reduce the goal to its premises. Use `IsCMField.complexEmbedding_complexConj L (j.comp (algebraMap L Ω)) x` as an intermediate fact. Rewrite using `[hj]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Introduce `x`. Establish `e : (c⁻¹ : G ℚ Ω) (algebraMap L Ω x) = algebraMap L Ω (IsCMField.complexConj L x)`. Establish `h2` using `key h (IsCMField.complexConj L x)`. Establish `h3 : IsCMField.complexConj L (IsCMField.complexConj L x) = x` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Rewrite using `[← h2]`. Conclude with `(c.symm_apply_apply _).trans rfl`. Rewrite using `[AlgEquiv.mul_apply, e, key h₁]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cc_diff {Ω L : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Field L] [NumberField L] [IsCMField L] [Algebra L Ω]
     {c c₁ : G ℚ Ω} (h : Sd.IsCC c) (h₁ : Sd.IsCC c₁) : c₁ * c⁻¹ ∈ galOf ℚ L Ω := by

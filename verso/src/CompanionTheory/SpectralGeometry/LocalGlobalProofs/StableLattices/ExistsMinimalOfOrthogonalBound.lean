@@ -9,27 +9,23 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.OrthoFamily
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `S _ _ hS`. Conclude with `(hS (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0) (fun i => i.elim0)).elim`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hSL hS0 hS`. Distinguish the cases in `hmin : ∀ T ∈ L, T ≤ S → T = ⊥ ∨ T = S`. Conclude with `⟨S, hSL, hS0, hmin⟩`. Use `push_neg at hmin`. Take `⟨T, hTL, hTS, hT0, hTne⟩` from `hmin`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ih T hTL hT0 ?_` and prove the remaining obligations. Introduce `f hfL hf0 hfT hpw`. Use `haveI : CompleteSpace T := (hcl T hTL).completeSpace_coe`. Establish `hR0 : S ⊓ Tᗮ ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hTne` to reduce the goal to its premises. Establish `hsup` using `Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hTS`. Rewrite `hsup` using `[inf_comm, h, sup_bot_eq]`. Conclude with `hsup`. Establish `ho : ∀ j, (S ⊓ Tᗮ) ⟂ f j` using `fun j => inf_le_right.trans (Submodule.orthogonal_le (hfT j))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Apply `hS (Fin.cons (S ⊓ Tᗮ) f)` to reduce the goal to its premises. Introduce `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => rw [Fin.cons_zero]`. Conclude with `hinf S hSL T hTL`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j => rw [Fin.cons_succ]`. Conclude with `hfL j`. Introduce `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => rw [Fin.cons_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hR0`. Consider the case `succ j => rw [Fin.cons_succ]`. Conclude with `hf0 j`. Introduce `i`. Proceed by induction on `i using Fin.cases with`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [Fin.cons_zero]`. Conclude with `inf_le_left`. Consider the case `succ j => rw [Fin.cons_succ]`. Conclude with `(hfT j).trans hTS`. Introduce `i k hik`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `k using Fin.cases with`. Consider the case `zero => exact absurd rfl hik`. Consider the case `succ j`.
-
-Rewrite using `[Fin.cons_zero, Fin.cons_succ]`. Conclude with `ho j`. Consider the case `succ j`. Proceed by induction on `k using Fin.cases with`. Consider the case `zero`.
-
-Rewrite using `[Fin.cons_zero, Fin.cons_succ]`. Conclude with `(ho j).symm`. Consider the case `succ j'`. Rewrite using `[Fin.cons_succ, Fin.cons_succ]`. Conclude with `hpw (fun h => hik (congrArg Fin.succ h))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_minimal_of_no_family_below
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -92,7 +88,7 @@ theorem exists_minimal_of_no_family_below
             exact hpw (fun h => hik (congrArg Fin.succ h))
 
 /- English proof (translation)
-Introduce `H _ _ _ L m S₀ hcl hinf hS₀ hS₀0 hfam`. Conclude with `exists_minimal_of_no_family_below L hcl hinf (m + 1) S₀ hS₀ hS₀0 (fun f hfL hf0 _ => hfam f hfL hf0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_minimal_of_orthogonal_bound :
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (L : Set (Submodule ℂ H)) (m : ℕ)

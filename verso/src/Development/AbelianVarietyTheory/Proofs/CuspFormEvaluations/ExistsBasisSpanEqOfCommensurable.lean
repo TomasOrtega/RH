@@ -9,17 +9,15 @@ open NumberField Complex ReciprocityTheory.ChartRestriction.G.I2 ReciprocityTheo
 open ReciprocityTheory.GeometryOfNumbersTheory (stdLat)
 
 /- English proof (translation)
-Establish `hM0 : (M : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `h2' : ∀ x ∈ L, (M : ℝ) • x ∈ Submodule.span ℤ (Set.range b)`. Introduce `x hx`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `h2 x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : L → Submodule.span ℤ (Set.range b)` to `fun x => ⟨(M : ℝ) • (x : V), h2' x x.2⟩`. Establish `hfc : Continuous f` using `(continuous_const.smul continuous_subtype_val).subtype_mk _`. Establish `hfi : Function.Injective f`. Introduce `x y h`. Establish `h' : (M : ℝ) • (x : V) = (M : ℝ) • (y : V)` using `congrArg Subtype.val h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (smul_right_injective V hM0 h')`. Establish `: DiscreteTopology L` using `DiscreteTopology.of_continuous_injective hfc hfi`. Establish `: IsZLattice ℝ L`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← b.span_eq, Submodule.span_le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hm : M • b i ∈ L` using `h1 (b i) (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hbi : b i = (M : ℝ)⁻¹ • (M • b i)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℝ, smul_smul, inv_mul_cancel₀ hM0, one_smul]`. Rewrite using `[SetLike.mem_coe, hbi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`. Use `ZLattice.module_free ℝ L` as an intermediate fact. Use `ZLattice.module_finite ℝ L` as an intermediate fact. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ L) = Fintype.card κ`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, ZLattice.rank ℝ L, Module.finrank_eq_card_basis b]`.
-
-Conclude with `⟨((Module.Free.chooseBasis ℤ L).reindex (Fintype.equivOfCardEq hcard)).ofZLatticeBasis ℝ L, Module.Basis.ofZLatticeBasis_span ℝ L _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis_span_eq_of_commensurable {V κ : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [Fintype κ] (b : Module.Basis κ ℝ V)
@@ -57,11 +55,11 @@ theorem exists_basis_span_eq_of_commensurable {V κ : Type} [NormedAddCommGroup 
     Module.Basis.ofZLatticeBasis_span ℝ L _⟩
 
 /- English proof (translation)
-Establish `hme : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `key : ∀ t : Set W, ⨍ v in e ⁻¹' t, f (e v) ∂μ = ⨍ w in t, f w ∂(μ.map e)`. Introduce `t`. Rewrite using `[average_eq, average_eq, hme.restrict_map μ t, hme.integral_map]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[measureReal_def, measureReal_def, Measure.map_apply hme.measurable MeasurableSet.univ, Set.preimage_univ]`. Rewrite using `[key s]`. Establish `hc` using `Measure.isAddLeftInvariant_eq_smul (μ.map e) ν`. Establish `hpos` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (μ.map e) ν`. Use `set c := Measure.addHaarScalarFactor (μ.map e) ν`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : (c : ℝ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Rewrite using `[hc, average_eq, average_eq, Measure.restrict_smul, integral_smul_nnreal_measure, measureReal_nnreal_smul_apply, NNReal.smul_def, smul_smul]`. Use `congr 1`. Rewrite using `[mul_inv, mul_comm (c : ℝ)⁻¹, mul_assoc, inv_mul_cancel₀ hc0, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setAverage_comp_equiv {V W F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
@@ -90,7 +88,7 @@ theorem setAverage_comp_equiv {V W F : Type} [NormedAddCommGroup V] [NormedSpace
 variable {E : Type} [Field E] [NumberField E] {dim : (E →+* ℂ) → ℕ} {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `e1 : Hf v (flat a) = HC (flat.symm v) a`. Rewrite using `[← HC_flat_symm v (flat a), ContinuousLinearEquiv.symm_apply_apply]`. Simplify using `only [hU, Function.comp, PT.U, e1, Hf_flat, map_sub, ContinuousLinearEquiv.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem translate_comp_flat_symm (X : PT E)
     (U : ℕ → EuclideanSpace ℂ (Fin n × Idx X.dim) → (EuclideanSpace ℂ (Fin n × Idx X.dim) → ℂ) →
@@ -107,11 +105,11 @@ theorem translate_comp_flat_symm (X : PT E)
 open Classical in
 
 /- English proof (translation)
-Establish `hd : ∀ l : Letter n dim, (flat (n` using `n) (ι := Idx dim)).symm (EuclideanSpace.single l 1) = dir l := fun l => by`. Rewrite using `[← flat_dir, ContinuousLinearEquiv.symm_apply_apply]`. Establish `hit : ∀ (i : ℕ) (x : EuclideanSpace ℂ (Fin n × Idx dim)), iteratedFDeriv ℂ i (F ∘ (flat (n` using `n) (ι := Idx dim)).symm) x = (iteratedFDeriv ℂ i F ((flat (n := n) (ι := Idx dim)).symm x)).compContinuousLinearMap fun _ => ((flat (n := n) (ι := Idx dim)).symm : EuclideanSpace ℂ (Fin n × Idx dim) →L[ℂ] (Fin n → Vsp dim)) := by`. Introduce `i x`. Establish `h` using `(flat (n := n) (ι := Idx dim)).symm.iteratedFDerivWithin_comp_right F (uniqueDiffOn_univ (𝕜 := ℂ)) (x := x) (Set.mem_univ _) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `only [Set.preimage_univ, iteratedFDerivWithin_univ]`. Unfold `polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hit, ContinuousLinearEquiv.symm_apply_apply, ContinuousMultilinearMap.compContinuousLinearMap_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearEquiv.coe_coe, hd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polyDeriv_comp_flat_symm (P : MvPolynomial (Letter n dim) ℂ)
     (F : (Fin n → Vsp dim) → ℂ) (v : Fin n → Vsp dim) :
@@ -137,7 +135,7 @@ theorem polyDeriv_comp_flat_symm (P : MvPolynomial (Letter n dim) ℂ)
   simp only [ContinuousLinearEquiv.coe_coe, hd]
 
 /- English proof (translation)
-Simplify using `only [GT.ptN2, PT.ptN2, Function.comp, ContinuousLinearEquiv.symm_apply_apply, HC_self_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pointwiseNorm_comp_flatten_symm_eq (X : PT E) (Y : GT (Fin n × Idx X.dim)) (q : ℕ)
     (F : (Fin n → Vsp X.dim) → ℂ) (v : Fin n → Vsp X.dim) :
@@ -145,27 +143,25 @@ theorem pointwiseNorm_comp_flatten_symm_eq (X : PT E) (Y : GT (Fin n × Idx X.di
   simp only [GT.ptN2, PT.ptN2, Function.comp, ContinuousLinearEquiv.symm_apply_apply, HC_self_re]
 
 /- English proof (translation)
-Establish `hper : ∀ γ : Fin n → Vsp X.dim, (∀ k, γ k ∈ X.L) → ∀ v, X.ptN2 q F (v + γ) = X.ptN2 q F v`. Introduce `γ hγ v`. Establish `hFv` using `hF.2 γ hγ v`. Establish `heps : ‖(∏ k, (X.eps (γ k) : ℂ))‖ = 1`. Rewrite using `[norm_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases X.eps_pm _ (hγ k) with h | h <;> simp [h]`. Establish `hre : (HC (v + γ) (v + γ)).re = (HC v v).re + 2 * (HC v γ).re + (HC γ γ).re`. Rewrite using `[HC_add_left, HC_add_right, HC_add_right, HC_conj v γ]`. Simplify using `only [Complex.add_re, Complex.conj_re]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsq : ∀ a b c : ℝ, (Real.exp a * c) ^ 2 * Real.exp b = c ^ 2 * Real.exp (2 * a + b)`. Introduce `a b c`. Rewrite using `[show 2 * a + b = a + a + b by ring, Real.exp_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `PT.ptN2`. Rewrite using `[hFv, norm_mul, norm_mul, norm_pow, heps, one_pow, one_mul, Complex.norm_exp, hsq, hre]`. Use `congr 2`. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.mul_im, Complex.natCast_re, Complex.natCast_im, Complex.ofReal_re, Complex.ofReal_im, Complex.div_ofNat_re, mul_zero, zero_mul, sub_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlat : lat Y.b = lat (TiledBoundaries.bT X n)`. Use extensionality with `w`. Establish `h` using `hY (flat.symm w)`. Rewrite `h` using `[ContinuousLinearEquiv.apply_symm_apply]`. Rewrite using `[h, TiledBoundaries.mem_latT, ← flat_symm_eq_eT_symm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ v, Y.ptN2 q (F ∘ flat.symm) (flat v) = X.ptN2 q F v` using `pointwiseNorm_comp_flatten_symm_eq X Y q F`. Establish `hgc : Continuous (Y.ptN2 q (F ∘ flat.symm))`. Establish `hFc : Continuous F` using `hF.1.continuous`. Unfold `GT.ptN2`. Conclude with `((hFc.comp flat.symm.continuous).norm.pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (continuous_norm.pow 2)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hgper : ∀ γ ∈ lat Y.b, ∀ w, Y.ptN2 q (F ∘ flat.symm) (w + γ) = Y.ptN2 q (F ∘ flat.symm) w`. Introduce `γ hγ w`. Establish `hγ' : ∀ k, flat.symm γ k ∈ X.L`. Rewrite using `[← hY, ContinuousLinearEquiv.apply_symm_apply]`. Conclude with `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hper (flat.symm γ) hγ' (flat.symm w)`. Rewrite `h` using `[← hg, ← hg, map_add, ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.apply_symm_apply]`. Conclude with `h`. Establish `h1 : Y.l2 q (F ∘ flat.symm) = ⨍ w in ZSpan.fundamentalDomain (TiledBoundaries.bT X n), Y.ptN2 q (F ∘ flat.symm) w`. Establish `h` using `average_fundamentalDomain_eq_real volume Y.b (TiledBoundaries.bT X n) (Y.ptN2 q (F ∘ flat.symm)) hgc hgper hlat.symm.le 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `only [add_zero] at h`. Rewrite using `[GT.l2]`. Conclude with `h.symm`. Set `e : (Fin n → Vsp X.dim) ≃L[ℝ] EuclideanSpace ℂ (Fin n × Idx X.dim)` to `{ toLinearEquiv := (flat (n := n) (ι := Idx X.dim)).toLinearEquiv.restrictScalars ℝ continuous_toFun := (flat (n := n) (ι := Idx X.dim)).continuous continuous_invFun := (flat (n := n) (ι := Idx X.dim)).symm.continuous }`. Establish `hpre : e ⁻¹' ZSpan.fundamentalDomain (TiledBoundaries.bT X n) = X.fd n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[TiledBoundaries.fd_eq]`. Unfold `TiledBoundaries.bT`. Rewrite using `[ZSpan.fundamentalDomain_reindex, ← ZSpan.map_fundamentalDomain]`. Use extensionality with `v`. Rewrite using `[Set.mem_preimage, show e v = ((TiledBoundaries.eT X n).restrictScalars ℝ) v from flat_eq_eT X v]`.
-
-Conclude with `(LinearEquiv.injective _).mem_set_image`. Rewrite using `[h1, setAverage_comp_equiv (volume : Measure (Fin n → Vsp X.dim)) volume e, hpre, PT.l2]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `hg v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem l2_comp_flat_symm_eq_l2 (X : PT E) (Y : GT (Fin n × Idx X.dim))
     (hY : ∀ γ, flat γ ∈ lat Y.b ↔ ∀ k, γ k ∈ X.L) (q : ℕ) {F : (Fin n → Vsp X.dim) → ℂ}
@@ -239,13 +235,13 @@ theorem l2_comp_flat_symm_eq_l2 (X : PT E) (Y : GT (Fin n × Idx X.dim))
   exact hg v
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hG`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hG.1.comp (flat (n := n) (ι := Idx X.dim)).differentiable`. Simplify `h` using `[Function.comp_def]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `γ hγ v`. Establish `h` using `hG.2 (flat γ) ((hY γ).2 hγ) (flat v)`. Simplify using `only [Function.comp, ← map_add, ContinuousLinearEquiv.symm_apply_apply, hka γ hγ, Hf_flat] at h`. Conclude with `h`. Introduce `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hF.1.comp (flat (n := n) (ι := Idx X.dim)).symm.differentiable, ?_⟩` and prove the remaining obligations. Introduce `γ' hγ' w`. Establish `hγ : ∀ k, flat.symm γ' k ∈ X.L`. Rewrite using `[← hY, ContinuousLinearEquiv.apply_symm_apply]`. Conclude with `hγ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hF.2 _ hγ (flat.symm w)`. Establish `hk` using `hka _ hγ`. Rewrite `hk` using `[ContinuousLinearEquiv.apply_symm_apply]`. Simplify using `only [Function.comp, map_add, hk]`. Rewrite using `[h, HC_flat_symm, HC_flat_symm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_flat_symm_mem_sec_iff (X : PT E) (Y : GT (Fin n × Idx X.dim))
     (hY : ∀ γ, flat γ ∈ lat Y.b ↔ ∀ k, γ k ∈ X.L) (q : ℕ)
@@ -277,13 +273,13 @@ theorem comp_flat_symm_mem_sec_iff (X : PT E) (Y : GT (Fin n × Idx X.dim))
 variable [IsCMField E]
 
 /- English proof (translation)
-Establish `hact : ∀ v : Vsp dim, act w₀ v = actE (w₀ : E) v` using `fun v => (actE_coe w₀ v).symm`. Simplify using `only [hact]`. Establish `hsplit : (fun k => actE (w₀ : E) ((γ + δ) k)) = (fun k => actE (w₀ : E) (γ k)) + (fun k => actE (w₀ : E) (δ k))`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, actE_add_right]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1 : HC δ (fun k => actE (w₀ : E) (γ k)) = starRingEnd ℂ (HC γ (fun k => actE (cc (w₀ : E)) (δ k)))`. Rewrite using `[HC_conj (fun k => actE (w₀ : E) (γ k)) δ, HC_actE]`. Establish `h3 : HC γ δ = HC γ (fun k => actE (cc (w₀ : E)) (δ k)) + HC γ (fun k => actE (w₀ : E) (δ k))`. Rewrite using `[← HC_add_right]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[Pi.add_apply, ← actE_add_left, show cc (w₀ : E) + w₀ = 1 by rw [add_comm]; exact hw, actE_one]`. Rewrite using `[hsplit, HC_add_left, HC_add_right, HC_add_right, h1]`. Establish `h3'` using `congrArg Complex.im h3`. Simplify using `only [Complex.add_im] at h3'`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.add_im, Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem im_HC_act_add (w₀ : 𝓞 E) (hw : (w₀ : E) + cc (w₀ : E) = 1) (γ δ : Fin n → Vsp dim) :
     (HC (γ + δ) fun k => act w₀ ((γ + δ) k)).im =
@@ -314,7 +310,7 @@ theorem im_HC_act_add (w₀ : 𝓞 E) (hw : (w₀ : E) + cc (w₀ : E) = 1) (γ 
 variable {X : PT E} {Λ' : Submodule (𝓞 E) (Fin n → E)}
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `im_HC_int hfg hint hdual hγ (act_mem_tensorLat w₀ hγ)`. Rewrite using `[tensorEps_of_int w₀ γ m hm, ← zpow_natCast, ← zpow_mul]`. Conclude with `Even.neg_one_zpow ⟨m, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorEps_sq_of_mem (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
@@ -325,9 +321,9 @@ theorem tensorEps_sq_of_mem (hfg : Λ'.FG)
   exact Even.neg_one_zpow ⟨m, by push_cast; ring⟩
 
 /- English proof (translation)
-Unfold `tensorEps`. Rewrite using `[im_HC_act_add w₀ hw γ δ]`. Take `⟨c, hc⟩` from `im_HC_int hfg hint hdual hγ (act_mem_tensorLat w₀ hδ)`. Take `⟨d, hd⟩` from `im_HC_int hfg hint hdual hγ hδ`. Rewrite using `[hc, hd, ← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c - d, ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tensorEps_add_of_mem (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
@@ -346,17 +342,17 @@ theorem tensorEps_add_of_mem (hfg : Λ'.FG)
   ring
 
 /- English proof (translation)
-Take `⟨M, hM, hM1, hM2⟩` from `exists_nsmul_commensurable (X := X) hfg hint hdual`. Set `L : Submodule ℤ (EuclideanSpace ℂ (Fin n × Idx X.dim))` to `(tensorLat X Λ').map (((flat (n := n) (ι := Idx X.dim)).toLinearEquiv.restrictScalars ℤ : _ ≃ₗ[ℤ] _) : (Fin n → Vsp X.dim) →ₗ[ℤ] EuclideanSpace ℂ (Fin n × Idx X.dim))`. Establish `hmemL : ∀ γ, flat γ ∈ L ↔ γ ∈ tensorLat X Λ'`. Introduce `γ`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨γ', hγ', h⟩`. Establish `hγγ : γ' = γ` using `flat.injective h`. Rewrite using `[← hγγ]`. Conclude with `hγ'`. Introduce `h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨γ, h, rfl⟩`. Establish `hlatT : ∀ w, w ∈ lat (TiledBoundaries.bT X n) ↔ ∀ k, flat.symm w k ∈ X.L`. Introduce `w`. Rewrite using `[TiledBoundaries.mem_latT, flat_symm_eq_eT_symm]`. Establish `h1 : ∀ x ∈ Submodule.span ℤ (Set.range (TiledBoundaries.bT X n)), M • x ∈ L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `h` using `hM1 _ ((hlatT x).1 hx)`. Rewrite using `[← ContinuousLinearEquiv.apply_symm_apply flat x, ← map_nsmul]`. Conclude with `(hmemL _).2 h`. Establish `h2 : ∀ x ∈ L, M • x ∈ Submodule.span ℤ (Set.range (TiledBoundaries.bT X n))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨γ, hγ, rfl⟩`. Use `(hlatT _).2 fun k => ?_` and prove the remaining obligations. Establish `hfl : (((flat (n` using `n) (ι := Idx X.dim)).toLinearEquiv.restrictScalars ℤ : _ ≃ₗ[ℤ] _) : (Fin n → Vsp X.dim) →ₗ[ℤ] EuclideanSpace ℂ (Fin n × Idx X.dim)) γ = flat γ := rfl`. Rewrite using `[hfl, ← map_nsmul, ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `hM2 γ hγ k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b', hb'⟩` from `exists_basis_span_eq_of_commensurable (TiledBoundaries.bT X n) L hM h1 h2`. Use `⟨b', fun γ => ?_⟩` and prove the remaining obligations. Use `show flat γ ∈ Submodule.span ℤ (Set.range b') ↔ _`. Rewrite using `[hb', hmemL]`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis_tensorLat (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
@@ -399,17 +395,17 @@ theorem exists_basis_tensorLat (hfg : Λ'.FG)
   rw [hb', hmemL]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_basis_tensorLat (X := X) hfg hint hdual`. Establish `hmem : ∀ x, x ∈ lat b ↔ flat.symm x ∈ tensorLat X Λ'` using `fun x => by`. Rewrite using `[← hb, ContinuousLinearEquiv.apply_symm_apply]`. Set `g : tensorLat X Λ' →+ lat b` to `{ toFun := fun γ => ⟨flat (γ : Fin n → Vsp X.dim), (hb γ).2 γ.2⟩ map_zero' := by`. Use `ext`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use the proof step `map_add' := fun x y => by`. Use `ext`. Simplify using `}`. Use `⟨⟨b, ?_, ?_, fun x => tensorEps w₀ (flat.symm x), ?_⟩, hb, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hx hy`. Rewrite using `[← HC_flat_symm]`. Conclude with `im_HC_int hfg hint hdual ((hmem x).1 hx) ((hmem y).1 hy)`. Introduce `φ`. Take `⟨γ0, hγ0, hφ⟩` from `exists_im_HC_eq hfg hint hdual (φ.comp g)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨flat γ0, (hb γ0).2 hγ0, fun y => ?_⟩` and prove the remaining obligations. Establish `hy : flat.symm (y : EuclideanSpace ℂ (Fin n × Idx X.dim)) ∈ tensorLat X Λ'` using `(hmem y).1 y.2`. Establish `hyy : g ⟨flat.symm (y : EuclideanSpace ℂ (Fin n × Idx X.dim)), hy⟩ = y`. Use `ext`. Simplify using `[g]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hφ ⟨flat.symm (y : EuclideanSpace ℂ (Fin n × Idx X.dim)), hy⟩`. Rewrite `h` using `[AddMonoidHom.comp_apply, hyy]`. Rewrite using `[h]`. Use `show (HC γ0 (flat.symm (y : EuclideanSpace ℂ (Fin n × Idx X.dim)))).im = _`. Rewrite using `[← Hf_flat, ContinuousLinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Conclude with `norm_tensorEps w₀ _`. Introduce `γ show tensorEps w₀ (flat.symm (flat γ)) = _`. Rewrite using `[ContinuousLinearEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_tensorTorus (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
@@ -451,13 +447,13 @@ theorem exists_tensorTorus (hfg : Λ'.FG)
     rw [ContinuousLinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `⟨exists_tensorTorus hfg hint hdual w₀, ?_, ?_, fun U hU q a F => translate_comp_flat_symm X U hU q a F⟩` and prove the remaining obligations. Introduce `Y hY hka`. Establish `hmem : ∀ x, x ∈ lat Y.b ↔ flat.symm x ∈ tensorLat X Λ'` using `fun x => by`. Rewrite using `[← hY, ContinuousLinearEquiv.apply_symm_apply]`. Establish `hka' : ∀ x, Y.ka x = tensorEps w₀ (flat.symm x)` using `fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hka, ContinuousLinearEquiv.apply_symm_apply]`. Use `⟨fun x hx => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hka']`. Conclude with `tensorEps_sq_of_mem hfg hint hdual w₀ ((hmem x).1 hx)`. Rewrite using `[hka', hka', hka', map_add, tensorEps_add_of_mem hfg hint hdual w₀ hw ((hmem x).1 hx) ((hmem y).1 hy), HC_flat_symm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `heps Y hY hka`. Establish `hY' : ∀ γ, flat γ ∈ lat Y.b ↔ ∀ k, γ k ∈ X.L` using `fun γ => by`. Rewrite using `[hY, mem_tensorLat_stdLat]`. Establish `hka1 : ∀ γ : Fin n → Vsp X.dim, (∀ k, γ k ∈ X.L) → Y.ka (flat γ) = (∏ k, (X.eps (γ k) : ℂ)) ^ 1` using `fun γ hγ => by`. Rewrite using `[pow_one, hka, tensorEps_eq_prod_eps X w₀ heps hγ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun F => comp_flat_symm_mem_sec_iff X Y hY' 1 hka1 F, fun F hF => ⟨(comp_flat_symm_mem_sec_iff X Y hY' 1 hka1 F).2 hF, l2_comp_flat_symm_eq_l2 X Y hY' 1 hF⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem principal_torus_of_selfDual (X : PT E) (Λ' : Submodule (𝓞 E) (Fin n → E)) (hfg : Λ'.FG)
     (hint : ∀ x ∈ Λ', ∀ y ∈ Λ', IsIntegral ℤ (herm 1 x y))
@@ -503,7 +499,7 @@ theorem principal_torus_of_selfDual (X : PT E) (Λ' : Submodule (𝓞 E) (Fin n 
       ⟨(comp_flat_symm_mem_sec_iff X Y hY' 1 hka1 F).2 hF, l2_comp_flat_symm_eq_l2 X Y hY' 1 hF⟩⟩
 
 /- English proof (translation)
-Take `⟨Y, h1, h2⟩` from `exists_tensorTorus (X := X) (n := n) stdLat_fg (fun _ hx => mem_stdLat_iff_herm.1 hx) (fun _ hx => mem_stdLat_iff_herm.2 hx) w₀`. Conclude with `⟨Y, fun γ => (h1 γ).trans mem_tensorLat_stdLat, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (X : PT E) (w₀ : 𝓞 E) :
     ∃ Y : GT (Fin n × Idx X.dim), (∀ γ, flat γ ∈ lat Y.b ↔ ∀ k, γ k ∈ X.L) ∧

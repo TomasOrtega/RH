@@ -12,43 +12,35 @@ universe u
 noncomputable section
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hex hloc c x hx hxP W hW hϖW`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Take `⟨hWp, hPW, hrelW⟩` from `le_and_isRelevant_of_divCycle_ne_zero hW`. Establish `hWmin : W ∈ (P ⊔ Ideal.span {x}).minimalPrimes`. Unfold `divCycle at hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs at hW with h`. Conclude with `h.1`. Conclude with `absurd rfl hW`. Establish `hxW : x ∈ W` using `hWmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x))`. Take `⟨j₀, hj₀⟩` from `hloc W hWp hPW hrelW hϖW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `choose v w hvW hvw using hj₀`. Establish `hu₀ : u j₀ ∉ P`. Introduce `h0`. Take `⟨j, hj⟩` from `hex`. Establish `h1 : v j * u j ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2` using `P.add_mem (hvw j) (P.mul_mem_left (w j) h0)`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis. Break down `hPp.mem_or_mem h1 with h2 | h2` into its components or cases. Conclude with `hvW j (hPW h2)`. Conclude with `hj h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set V : MRing ι O := ∏ j, v j with hV`. Use `set a : J → MRing ι O := fun j => w j * ∏ i ∈ Finset.univ.erase j, v i with ha_def`. Establish `hVW : V ∉ W`. Introduce `h`. Take `⟨j, -, hj⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hvW j hj`. Establish `ha : ∀ j, V * u j - u j₀ * a j ∈ P`. Introduce `j`. Establish `e : V * u j - u j₀ * a j = (∏ i ∈ Finset.univ.erase j, v i) * (v j * u j - w j * u j₀)`. Simplify using `only [hV, ha_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ v (Finset.mem_univ j)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `P.mul_mem_left _ (hvw j)`. Establish `hVa : V - a j₀ ∈ P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (V - a j₀) * u j₀ ∈ P`. Establish `h2` using `ha j₀`. Rewrite `h2` using `[show V * u j₀ - u j₀ * a j₀ = (V - a j₀) * u j₀ by ring]`. Then use the resulting hypothesis. Conclude with `(hPp.mem_or_mem h1).resolve_right hu₀`. Establish `haW : a j₀ ∉ W` using `fun h => hVW (by simpa using W.add_mem (hPW hVa) h)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Wt : Ideal (MRing (extIdx ι J) O) := (Ideal.map (Polynomial.C : MRing ι O →+* Polynomial (MRing ι O)) W).comap (aeval (R := O) (chartSubst a)) with hWt`. Establish `hWtp : Wt.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hcomap : ∀ s, liftForm (J` using `J) s ∈ Wt ↔ s ∈ W := by`. Introduce `s`. Rewrite using `[hWt, Ideal.mem_comap, aeval_chartSubst_liftForm]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using Ideal.mem_map_C_iff.mp h 0`. Introduce `h`. Conclude with `Ideal.mem_map_of_mem _ h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBWt : blowUpOf P u ≤ Wt` using `fun F hF => Ideal.map_mono hPW (aeval_chartSubst_mem_of_mem_blowUpOf hPp hu₀ ha hF)`. Establish `hxWt : liftForm x ∈ Wt` using `(hcomap x).2 hxW`. Establish `hrelWt : IsRelevant Wt`. Introduce and unpack `(_ | k)`. Use `⟨j₀, fun h => haW ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hWt, Ideal.mem_comap]`. Simplify using `only [aeval_X, chartSubst] at h`. Simplify using `using Ideal.mem_map_C_iff.mp h 1`. Take `⟨i, hi⟩` from `hrelW k`. Use `⟨i, fun h => hi ((hcomap _).1 ?_)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[liftForm_X]`. Conclude with `h`. Establish `hmin : Wt ∈ (blowUpOf P u ⊔ Ideal.span {liftForm x}).minimalPrimes`. Use `⟨⟨hWtp, sup_le hBWt ((Ideal.span_singleton_le_iff_mem _).mpr hxWt)⟩, fun Q hQ hQWt => ?_⟩` and prove the remaining obligations. Establish `hQp` using `hQ.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBQ : blowUpOf P u ≤ Q` using `le_sup_left.trans hQ.2`. Establish `hxQ : liftForm x ∈ Q` using `hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hle : Q.comap (liftForm (J` using `J)) ≤ W := fun s hs => (hcomap s).1 (hQWt hs)`. Establish `hQ₀ : Q.comap (liftForm (J` using `J)) = W := le_antisymm hle (hWmin.2 ⟨Ideal.comap_isPrime _ _, sup_le (fun p hp => hBQ (liftForm_mem_blowUpOf hp)) ((Ideal.span_singleton_le_iff_mem _).mpr hxQ)⟩ hle)`. Introduce `F hF`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `mem_of_aeval_chartSubst_mem hQp hQ₀.ge j₀ (fun h => haW ?_) (fun j => hBQ ?_) hF` and prove the remaining obligations. Rewrite using `[← hQ₀]`. Conclude with `h`. Apply `mem_blowUpOf_of_sub` to reduce the goal to its premises. Establish `e : u j * a j₀ - u j₀ * a j = (V * u j - u j₀ * a j) - u j * (V - a j₀)` using `by ring`.
-
-Rewrite using `[e]`. Conclude with `P.sub_mem (ha j) (P.mul_mem_left _ hVa)`. Use `⟨Wt, ?_, fun h => hϖW ((hcomap _).1 (by rw [liftForm_C]; exact h)), ?_⟩` and prove the remaining obligations. Unfold `divCycle`. Rewrite using `[dif_pos ⟨hmin, hrelWt⟩]`.
-
-Establish `hne` using `length_localizedQuot_ne_top (blowUpOf P u ⊔ Ideal.span {liftForm x}) Wt hmin`. Establish `hnz : multAt (blowUpOf P u ⊔ Ideal.span {liftForm x}) Wt ≠ 0`. Unfold `multAt`. Rewrite using `[Ne, Module.length_eq_zero_iff, LocalizedModule.subsingleton_iff]`. Introduce `hs`.
-
-Take `⟨r, hr, hr0⟩` from `hs (Ideal.Quotient.mk _ 1)`. Rewrite `hr0` using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, mul_one, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hr (hmin.1.2 hr0)`. Establish `htn : (multAt (blowUpOf P u ⊔ Ideal.span {liftForm x}) Wt).toNat ≠ 0` using `fun h0 => (ENat.toNat_eq_zero.mp h0).elim hnz hne`. Conclude with `htn` after adjusting the coercions.
-
-Use extensionality with `s`. Rewrite using `[Ideal.mem_comap]`. Conclude with `hcomap s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlowUpHorizontalLift.full : BlowUpHorizontalLift.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hex hloc c x hx hxP W hW hϖW

@@ -22,11 +22,9 @@ open scoped Classical
 namespace GlobalTheory.FlagCoverVal
 
 /- English proof (translation)
-Take `⟨u, ⟨wu, cu⟩, -⟩` from `hπ' Y π fl`. Take `⟨v, ⟨wv, cv⟩, -⟩` from `hπ Y' π' fl'`. Establish `huv : u ≫ v = 𝟙 Y`. Take `⟨z, -, hz⟩` from `hπ Y π fl`. Establish `w₃ : (u ≫ v) ≫ π = π` using `by rw [Category.assoc, wv, wu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hz _ ⟨w₃, flagCompat_comp π fl π' fl' v wv cv π fl u wu cu w₃⟩).trans (hz _ ⟨Category.id_comp π, flagCompat_id π fl _⟩).symm`. Establish `hvu : v ≫ u = 𝟙 Y'`. Take `⟨z, -, hz⟩` from `hπ' Y' π' fl'`. Establish `w₃ : (v ≫ u) ≫ π' = π'` using `by rw [Category.assoc, wu, wv]`. Conclude with `(hz _ ⟨w₃, flagCompat_comp π' fl' π fl u wu cu π' fl' v wv cv w₃⟩).trans (hz _ ⟨Category.id_comp π', flagCompat_id π' fl' _⟩).symm`.
-
-Conclude with `⟨u, wu, ⟨v, huv, hvu⟩, cu⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isIso_compat {B Y Y' : Scheme.{0}} {π : Y ⟶ B} {π' : Y' ⟶ B} {ι : Type} {E : ι → B.Modules} {r : ι → ℕ}
     {fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)}
@@ -50,7 +48,7 @@ theorem exists_isIso_compat {B Y Y' : Scheme.{0}} {π : Y ⟶ B} {π' : Y' ⟶ B
   exact ⟨u, wu, ⟨v, huv, hvu⟩, cu⟩
 
 /- English proof (translation)
-The claim follows from `GenericBaseChange.eq_genericPoint_of_specializes (hy.2 _ (LineBundleBaseChange.map_genericPoint_of_mem F.π y hy.1))`.
+A detailed English derivation is pending.
 -/
 theorem eq_genericPoint_of_isTop {X : Scheme.{0}} [IsIntegral X] {E : X.Modules} {r : ℕ} (F : FlagSp E r)
     [IsIntegral F.Y] {y : F.Y} (hy : F.IsTop (genericPoint X) y) : y = genericPoint F.Y :=
@@ -58,7 +56,7 @@ theorem eq_genericPoint_of_isTop {X : Scheme.{0}} [IsIntegral X] {E : X.Modules}
     (hy.2 _ (LineBundleBaseChange.map_genericPoint_of_mem F.π y hy.1))
 
 /- English proof (translation)
-Establish `hF` using `GlobalTheory.T.generic_point_pullback_residue_field GlobalTheory.T.isField_of_unique_prime_stalk f g (GlobalTheory.T.spec_tensor_preimmersion _ _ _) (h ▸ hg)`. Rewrite using `[GlobalTheory.T.residue_degree_fst_eq_finrank f g _ hF, GlobalTheory.T.finrank_tensor_residue_degree]`. Express the relevant statement in the definitionally equal form `g.residueDegree (Limits.pullback.snd f g (genericPoint _)) = _`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem residueDegree_fst {X Y S : Scheme.{0}} [IsIntegral Y] (f : X ⟶ S) (g : Y ⟶ S) [IsIntegral (Limits.pullback f g)]
     (h : Limits.pullback.snd f g (genericPoint (Limits.pullback f g : Scheme.{0})) = genericPoint Y)
@@ -71,19 +69,17 @@ theorem residueDegree_fst {X Y S : Scheme.{0}} [IsIntegral Y] (f : X ⟶ S) (g :
   rw [h]
 
 /- English proof (translation)
-Introduce `hA k _ B₀ B _ _ q₀ q e hq₀ β w hβ L g h H F₀ F₁ N a ⟨y₀, Φ, hy₀, hΦ, ha⟩`. Substitute `w` using the available equality. Use `hq₀.isLocallyNoetherian` as an intermediate fact. Use `hβ.1.isLocallyNoetherian` as an intermediate fact. Establish `A₀` using `((FlagTop.main k B₀ q₀ _ hq₀ L g h.isVB).2 F₀).1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A₁, -, T₁⟩` from `(FlagTop.main k B _ _ hβ.1 _ g (h.isVB.pullback β)).2 F₁`. Take `⟨y₁, hy₁, -⟩` from `T₁ (genericPoint B)`. Use `A₀.isIntegral` as an intermediate fact. Use `A₁.isIntegral` as an intermediate fact. Take `rfl` from `eq_genericPoint_of_isTop F₀ hy₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_genericPoint_of_isTop F₁ hy₁`. Take `⟨_, hc⟩` from `Gen.isCov_pullback_fst hq₀ A₀ hβ (fun _ : Unit => h.isVB) F₀.univ`. Take `⟨u, wu, _, cu⟩` from `exists_isIso_compat F₁.univ (FlagBaseChange.isFlagBundle_pullFlag B₀ F₀.Y B F₀.π β Unit _ _ _ F₀.univ)`. Establish `hu : u (genericPoint F₁.Y) = genericPoint (Limits.pullback F₀.π β : Scheme.{0})`. Take `⟨y, hy⟩` from `u.homeomorph.surjective (genericPoint _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `LineBundleBaseChange.map_genericPoint_of_mem u y hy`. Establish `du : u.residueDegree (genericPoint F₁.Y) = 1` using `GlobalTheory.Published.residueDegree_of_isClosedImmersion u _`. Establish `hs : Limits.pullback.snd F₀.π β (genericPoint (Limits.pullback F₀.π β : Scheme.{0})) = genericPoint B`. Rewrite using `[← hu, ← Scheme.Hom.comp_apply, wu]`. Conclude with `hy₁.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w₁ : Limits.pullback.fst F₀.π β ≫ F₀.π ≫ q₀ = Limits.pullback.snd F₀.π β ≫ β ≫ q₀` using `Limits.pullback.condition_assoc q₀`. Establish `w₂ : u ≫ Limits.pullback.snd F₀.π β ≫ β ≫ q₀ = F₁.π ≫ β ≫ q₀` using `by rw [reassoc_of% wu]`. Establish `e₁ : e + 2 + g.choose 2 = (e + 1 + g.choose 2) + 1` using `by omega`. Rewrite `hΦ` using `[e₁, isHtFun_generic_iff]`. Establish `P₁` using `(hA.arProj k _ _ _ _ _ A₀ (w₁ ▸ hc.1) _ w₁ hc.2.1 hc.2.2).2 _ _ Φ hΦ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P₂` using `(hA.arProj k _ _ _ _ _ (w₁ ▸ hc.1) A₁ u w₂ hu (du.trans_ne one_ne_zero)).2 _ _ _ P₁`. Establish `P₃` using `((hA.arIso k _ _ _ A₁).2 _ _ _ P₂).2.1 (F₁.fam (H.pull β rfl) (N.pull β rfl)) (by`. Introduce and unpack `(_ | i)`. Conclude with `((Gen.isometric_sq Limits.pullback.condition N rfl rfl w₁ rfl).pull u w₂).trans ((HermLB.isometric_of_refines (HermLB.refines_pull_pull (N.pull β rfl) _ rfl u w₂ (by rw [wu]))).trans (HermLB.isometric_pull_of_eq _ wu _ rfl))`. Conclude with `((Gen.isometric_grLB_pull_ofIso (H.pull F₀.π rfl) _ w₁ (Gen.isIsometry_sqIso Limits.pullback.condition h rfl rfl w₁ rfl) F₀.fl i).pull u w₂).trans (VMetric.isometric_grLB_of_steps_pull _ _ _ _ _ _ (H.pull β rfl) _ F₁.fl u wu (cu ()) w₂ i).symm)`.
-
-Use `⟨_, _, hy₁, by rw [e₁, isHtFun_generic_iff]; exact P₃, ?_⟩` and prove the remaining obligations. Rewrite using `[du, residueDegree_fst _ _ hs hβ.2.2, LinearMap.smul_apply, LinearMap.smul_apply, ha]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isVal_pull : ArCalc → ∀ (k : Type) [CommRing k] (B₀ B : Scheme.{0}) [IsIntegral B₀] [IsIntegral B] (q₀ : B₀ ⟶ Sp k) (q : B ⟶ Sp k) (e : ℕ), IsArithVar q₀ (e + 1) → ∀ (β : B ⟶ B₀) (w : β ≫ q₀ = q), FlagChain.IsCov q₀ (e + 1) β → ∀ (L : B₀.Modules) (g : ℕ) (h : VMetric q₀ L g) (H : h.IsCInf) (F₀ : FlagSp L g) (F₁ : FlagSp ((Scheme.Modules.pullback β).obj L) g) (N : HermLB q₀) (a : ℝ), F₀.IsVal H N (genericPoint B₀) e a → F₁.IsVal (H.pull β w) (N.pull β w) (genericPoint B) e ((β.residueDegree (genericPoint B) : ℝ) * a) := by
   intro hA k _ B₀ B _ _ q₀ q e hq₀ β w hβ L g h H F₀ F₁ N a ⟨y₀, Φ, hy₀, hΦ, ha⟩

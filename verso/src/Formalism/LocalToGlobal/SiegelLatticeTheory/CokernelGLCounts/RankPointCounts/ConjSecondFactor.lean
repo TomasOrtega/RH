@@ -15,13 +15,13 @@ variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
   (δ : ∀ p : PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word) {p : PlF D}
 
 /- English proof (translation)
-Introduce `i j` and use `⟨h.2.1 i j, fun e => e ▸ h.1 i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem loUni_of_int {l : MP p} (h : Formalism.MainNotions.S.TieN.IntLow (M p) l) : IsLoUni l :=
   fun i j => ⟨h.2.1 i j, fun e => e ▸ h.1 i⟩
 
 /- English proof (translation)
-Introduce `i j` and use `⟨h.2.1 i j, fun e => e ▸ h.1 i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem upUni_of_int {l : MP p} (h : Formalism.MainNotions.S.TieN.IntUp (M p) l) : IsUpUni l :=
   fun i j => ⟨h.2.1 i j, fun e => e ▸ h.1 i⟩
@@ -30,7 +30,7 @@ section
 variable (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U)
 
 /- English proof (translation)
-Simplify using `only [g0, Prod.fst_mul, Prod.fst_inv, Units.val_mul, Units.inv_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_first_factor (x : GG p) :
     (((g0 M δ hA L U hL hU * x * (g0 M δ hA L U hL hU)⁻¹).1 : GLp p) : MP p) =
@@ -38,7 +38,7 @@ theorem conj_first_factor (x : GG p) :
   simp only [g0, Prod.fst_mul, Prod.fst_inv, Units.val_mul, Units.inv_mk]
 
 /- English proof (translation)
-Simplify using `only [g0, Prod.snd_mul, Prod.snd_inv, MulOpposite.unop_mul, MulOpposite.unop_inv, MulOpposite.unop_op, Units.val_mul, Units.inv_mk]`. Rewrite using `[Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_second_factor (x : GG p) :
     ((((g0 M δ hA L U hL hU * x * (g0 M δ hA L U hL hU)⁻¹).2).unop : GLp p) : MP p) =
@@ -48,35 +48,25 @@ theorem conj_second_factor (x : GG p) :
   rw [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hLL : lOf δ M p L⁻¹ U⁻¹ * lOf δ M p L U = 1` using `lp_inv M δ hA L U hL hU`. Establish `hLL' : lOf δ M p L U * lOf δ M p L⁻¹ U⁻¹ = 1` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ rfl).mp hLL`. Establish `hUU : ρOf δ M p L U * ρOf δ M p L⁻¹ U⁻¹ = 1` using `up_inv M δ hA L U hL hU`. Establish `hUU' : ρOf δ M p L⁻¹ U⁻¹ * ρOf δ M p L U = 1` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ rfl).mp hUU`. Use `set Lp := lOf δ M p L U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Lpi := lOf δ M p L⁻¹ U⁻¹`. Use `set Up := ρOf δ M p L U`. Use `set Upi := ρOf δ M p L⁻¹ U⁻¹`. Use `set Y := Y0 M δ u u' w p`. Establish `key : ∀ a b : MP p, (Lp * a * Lpi) * (Lp * Y * Up) * (Upi * b * Up) = Lp * (a * Y * b) * Up`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Lp * (a * Y * b) * Up := by rw [hLL, hUU]; simp only [Matrix.mul_one, Matrix.mul_assoc]`. Use extensionality with `x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_cj]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨hy1, hy2⟩` from `hy`. Take `⟨_, _, hy3⟩` from `y.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show Formalism.MainNotions.S.TieN.IntLow (M p) _`. Rewrite using `[conj_first_factor]`. Conclude with `hy1`. Use `show Formalism.MainNotions.S.TieN.IntUp (M p) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[conj_second_factor]`. Conclude with `hy2`. Use `show _ * XP M δ u u' w L U * _ = XP M δ u u' w L U`. Rewrite using `[conj_first_factor, conj_second_factor]`. Use `show (Lp * _ * Lpi) * (Lp * Y * Up) * (Upi * _ * Up) = Lp * Y * Up`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `congrArg (fun z => Lp * z * Up) hy3`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Establish `h1' : Formalism.MainNotions.S.TieN.IntLow (M p) (Lp * ((x.1 : GLp p) : MP p) * Lpi)`. Use `h1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[show Formalism.MainNotions.S.TieN.IntLow (M p) _ = _ from rfl, conj_first_factor]`. Conclude with `this`. Establish `h2' : Formalism.MainNotions.S.TieN.IntUp (M p) (Upi * ((x.2.unop : GLp p) : MP p) * Up)`. Use `h2` as an intermediate fact. Rewrite `this` using `[show Formalism.MainNotions.S.TieN.IntUp (M p) _ = _ from rfl, conj_second_factor]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `this`. Establish `h3' : (Lp * ((x.1 : GLp p) : MP p) * Lpi) * (Lp * Y * Up) * (Upi * ((x.2.unop : GLp p) : MP p) * Up) = Lp * Y * Up`. Use `h3` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ * XP M δ u u' w L U * _ = XP M δ u u' w L U at this`. Rewrite `this` using `[conj_first_factor, conj_second_factor]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `this`. Rewrite `h3'` using `[key]`. Establish `hst : ((x.1 : GLp p) : MP p) * Y * ((x.2.unop : GLp p) : MP p) = Y`. Use `congrArg (fun z => Lpi * z * Upi) h3'` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hLL, hUU, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Lpi * (Lp * (((x.1 : GLp p) : MP p) * Y * ((x.2.unop : GLp p) : MP p)) * Up) * Upi := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Lpi * (Lp * Y * Up) * Upi := this`. Use `_ = Y := by`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hlo : IsLoUni ((x.1 : GLp p) : MP p)`. Establish `e : ((x.1 : GLp p) : MP p) = Lpi * (Lp * ((x.1 : GLp p) : MP p) * Lpi) * Lp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hLL, Matrix.one_mul, Matrix.mul_one]`.
-
-Use `_ = Lpi * (Lp * ((x.1 : GLp p) : MP p) * Lpi) * Lp := by simp only [Matrix.mul_assoc]`. Rewrite using `[e]`. Conclude with `ZsVolGrp.isLoUni_mul (ZsVolGrp.isLoUni_mul (lOf_loUni M δ hA _ _ (ZsVolGrp.isLoUni_inv hL).1 (ZsVolGrp.isUpUni_inv hU).1) (loUni_of_int M h1')) (lOf_loUni M δ hA _ _ hL hU)`. Establish `hup : IsUpUni ((x.2.unop : GLp p) : MP p)`. Establish `e : ((x.2.unop : GLp p) : MP p) = Up * (Upi * ((x.2.unop : GLp p) : MP p) * Up) * Upi`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hUU, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Up * (Upi * ((x.2.unop : GLp p) : MP p) * Up) * Upi := by simp only [Matrix.mul_assoc]`. Rewrite using `[e]`. Conclude with `ZsVolGrp.isUpUni_mul (ZsVolGrp.isUpUni_mul (ρOf_upUni M δ hA _ _ hL hU) (upUni_of_int M h2')) (ρOf_upUni M δ hA _ _ (ZsVolGrp.isLoUni_inv hL).1 (ZsVolGrp.isUpUni_inv hU).1)`.
-
-Conclude with `⟨⟨x, hlo, hup, hst⟩, ⟨h1', h2'⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cShape (w : Point D.host.E (D.R.rS + 1)) : CShapeAt M δ u u' w hA L U hL hU := by
   have hLL : lOf δ M p L⁻¹ U⁻¹ * lOf δ M p L U = 1 := lp_inv M δ hA L U hL hU

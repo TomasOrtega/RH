@@ -41,7 +41,7 @@ def TieSizes (O : OnObj S P c) (Rk : Ranks) (sc : Scale) (T2 : ℕ) : Prop :=
 def TieUnit (Z : IndefScale Bs) (Rk : Ranks) (sc : Scale) (T2 : ℕ) : Prop := Z.E1u = boundUnit Rk sc T2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨rfl, rfl, rfl, rfl, rfl⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (O : OnObj S P c) (Z : IndefScale Bs) (Rk : Ranks) (sc : Scale) (T2 : ℕ) :
     TieSizes ({ O with x := sc.x, eps := sc.eps, f := Rk.f, m := Rk.m, Nc := budgetNc Rk sc T2 } : OnObj S P c) Rk sc T2 ∧

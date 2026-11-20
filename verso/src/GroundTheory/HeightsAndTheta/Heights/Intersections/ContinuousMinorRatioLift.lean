@@ -20,15 +20,15 @@ def minorRatio (b a : Ω → ℂ) : ℝ :=
   ‖fun il : Ω × Ω => a il.1 * b il.2 - a il.2 * b il.1‖ / ‖a‖
 
 /- English proof (translation)
-The claim follows from `div_nonneg (norm_nonneg _) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem minorRatio_nonneg (b a : Ω → ℂ) : 0 ≤ minorRatio b a :=
   div_nonneg (norm_nonneg _) (norm_nonneg _)
 
 /- English proof (translation)
-Unfold `minorRatio`. Establish `h : (fun il : Ω × Ω => (μ • a) il.1 * b il.2 - (μ • a) il.2 * b il.1) = μ • fun il : Ω × Ω => a il.1 * b il.2 - a il.2 * b il.1`. Use function extensionality and compare the values at `il`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, norm_smul, norm_smul]`. Conclude with `mul_div_mul_left _ _ (norm_ne_zero_iff.mpr hμ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorRatio_smul (b a : Ω → ℂ) {μ : ℂ} (hμ : μ ≠ 0) : minorRatio b (μ • a) = minorRatio b a := by
   unfold minorRatio
@@ -41,9 +41,9 @@ theorem minorRatio_smul (b a : Ω → ℂ) {μ : ℂ} (hμ : μ ≠ 0) : minorRa
   exact mul_div_mul_left _ _ (norm_ne_zero_iff.mpr hμ)
 
 /- English proof (translation)
-Unfold `minorRatio`. Establish `h : (fun il : Ω × Ω => b il.1 * b il.2 - b il.2 * b il.1) = 0`. Use function extensionality and compare the values at `il`. Simplify using `only [Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, norm_zero, zero_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem minorRatio_self (b : Ω → ℂ) : minorRatio b b = 0 := by
   unfold minorRatio
@@ -54,7 +54,7 @@ theorem minorRatio_self (b : Ω → ℂ) : minorRatio b b = 0 := by
   rw [h, norm_zero, zero_div]
 
 /- English proof (translation)
-Unfold `minorRatio`. Use `ContinuousAt.div ?_ continuous_norm.continuousAt (norm_ne_zero_iff.mpr ha)` and prove the remaining obligations. Use `(continuous_norm.comp (continuous_pi fun il => ?_)).continuousAt` and prove the remaining obligations. Conclude with `((continuous_apply il.1).mul continuous_const).sub ((continuous_apply il.2).mul continuous_const)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousAt_minorRatio (b : Ω → ℂ) {a : Ω → ℂ} (ha : a ≠ 0) :
     ContinuousAt (minorRatio b) a := by
@@ -64,13 +64,11 @@ theorem continuousAt_minorRatio (b : Ω → ℂ) {a : Ω → ℂ} (ha : a ≠ 0)
   exact ((continuous_apply il.1).mul continuous_const).sub ((continuous_apply il.2).mul continuous_const)
 
 /- English proof (translation)
-Unfold `minorRatio at h`. Rewrite `h` using `[div_eq_zero_iff, or_iff_left (norm_ne_zero_iff.mpr ha), norm_eq_zero]`. Establish `hm : ∀ i l, a i * b l = a l * b i` using `fun i l => by`. Use `congrFun h (i, l)` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.mp this`. Choose the witnesses or unpack the hypotheses as in `⟨l0, hl0⟩ : ∃ l0, b l0 ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hb (funext hc)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `heq : a = (a l0 / b l0) • b`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hl0]`. Conclude with `hm i l0`.
-
-Use `⟨a l0 / b l0, fun h0 => ha ?_, heq⟩` and prove the remaining obligations. Rewrite using `[heq, h0, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_minorRatio {b a : Ω → ℂ} (hb : b ≠ 0) (ha : a ≠ 0) (h : minorRatio b a = 0) :
     ∃ μ : ℂ, μ ≠ 0 ∧ a = μ • b := by
@@ -97,13 +95,13 @@ end Minor
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => continuous_finsetProd _ fun _ _ => continuous_apply _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_segre : Continuous (segre : ((Σ k, ι k) → ℂ) → ((k : K) → ι k) → ℂ) :=
   continuous_pi fun _ => continuous_finsetProd _ fun _ _ => continuous_apply _
 
 /- English proof (translation)
-Use `choose p hp using hz`. Introduce `h`. Use `congrFun h p` as an intermediate fact. Simplify using `only [segre, Pi.zero_apply] at this`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun k _ => hp k) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segre_ne_zero {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : segre z ≠ 0 := by
   choose p hp using hz
@@ -116,9 +114,9 @@ variable {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
   {P' J' : Ideal (MRing ι')} {n : ℕ} (R : AnLogRes P' J' n) {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `R.A.cover x`. Establish `hu : R.A.chart j x ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x` using `⟨(R.A.chart j).map_source hj, by rw [Set.mem_preimage, (R.A.chart j).left_inv hj]; exact R.mem_U x⟩`. Establish `h1 : ContinuousAt (fun x' => R.lift x ((R.A.chart j).symm (R.A.chart j x'))) x` using `ContinuousAt.comp (f := R.A.chart j) (g := fun w => R.lift x ((R.A.chart j).symm w)) (analyticAt_lift_chart R x j hu).continuousAt ((R.A.chart j).continuousAt hj)`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(R.A.chart j).open_source.mem_nhds hj] with x' hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(R.A.chart j).left_inv hx']`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_lift (x : R.X) : ContinuousAt (fun x' => R.lift x x') x := by
   obtain ⟨j, hj⟩ := R.A.cover x
@@ -132,9 +130,9 @@ theorem continuousAt_lift (x : R.X) : ContinuousAt (fun x' => R.lift x x') x := 
   rw [(R.A.chart j).left_inv hx']
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.mpr fun x' => ?_` and prove the remaining obligations. Establish `hne : segre (R.lift x' x') ≠ 0` using `segre_ne_zero (R.mem x' x' (R.mem_U x')).1`. Establish `h1 : ContinuousAt (fun x'' => minorRatio b (segre (R.lift x' x''))) x'` using `ContinuousAt.comp (g := minorRatio b) (continuousAt_minorRatio b hne) (continuous_segre.continuousAt.comp (continuousAt_lift R x'))`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(R.isOpen_U x').mem_nhds (R.mem_U x')] with x'' hx''`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ, hμeq⟩` from `segre_of_sameOrbit (R.compat x'' x' x'' ⟨R.mem_U x'', hx''⟩)`. Rewrite using `[hμeq, minorRatio_smul b _ hμ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_minorRatio_lift [DecidableEq K'] (b : ((k : K') → ι' k) → ℂ) :
     Continuous (fun x' : R.X => minorRatio b (segre (R.lift x' x'))) := by
@@ -149,31 +147,27 @@ theorem continuous_minorRatio_lift [DecidableEq K'] (b : ((k : K') → ι' k) �
   rw [hμeq, minorRatio_smul b _ hμ]
 
 /- English proof (translation)
-Establish `hxB : R.lift x x ∉ mcPts J'` using `fun h => hx (Or.inl (Or.inl h))`. Establish `hz'` using `R.mem x x (R.mem_U x)`. Take `⟨j, hj⟩` from `R.A.cover x`. Establish `hgood : AnalyticAt ℂ (pullQ R v Ψ ∘ (R.A.chart j).symm) (R.A.chart j x) ∧ LinearMap.det (fderiv ℂ (pullQ R v Ψ ∘ (R.A.chart j).symm) (R.A.chart j x) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) ≠ 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hx (Or.inr ⟨j, hj, h⟩)`. Take `⟨e, he⟩` from `hasStrictFDerivAt_equiv hgood.1 hgood.2`. Establish `hinj` using `(he.toOpenPartialHomeomorph (pullQ R v Ψ ∘ (R.A.chart j).symm)).injOn`. Use `set V := (R.A.chart j).source ∩ (R.A.chart j) ⁻¹' (he.toOpenPartialHomeomorph (pullQ R v Ψ ∘ (R.A.chart j).symm)).source with hVdef`. Establish `hVo : IsOpen V` using `(R.A.chart j).isOpen_inter_preimage (he.toOpenPartialHomeomorph (pullQ R v Ψ ∘ (R.A.chart j).symm)).open_source`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxV : x ∈ V` using `⟨hj, he.mem_toOpenPartialHomeomorph_source⟩`. Establish `hb : segre (R.lift x x) ≠ 0` using `segre_ne_zero hz'.1`. Establish `hθc` using `continuous_minorRatio_lift R (segre (R.lift x x))`. Establish `hθpos : ∀ x' ∈ Vᶜ, 0 < minorRatio (segre (R.lift x x)) (segre (R.lift x' x'))`. Introduce `x' hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `lt_of_le_of_ne (minorRatio_nonneg _ _) (Ne.symm fun h0 => hx' ?_)` and prove the remaining obligations. Take `⟨μ, hμ, hμeq⟩` from `eq_smul_of_minorRatio hb (segre_ne_zero (R.mem x' x' (R.mem_U x')).1) h0`. Establish `hso : SameOrbit (R.lift x' x') (R.lift x x)` using `sameOrbit_of_segre hz'.1 μ hμ hμeq`. Rewrite using `[← R.inj x x' hxB (sameOrbit_comm hso)]`. Conclude with `hxV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨m0, hm0, hm0le⟩ : ∃ m0 : ℝ, 0 < m0 ∧ ∀ x' ∈ Vᶜ, m0 ≤ minorRatio (segre (R.lift x x)) (segre (R.lift x' x')) := by`. Break down `(Vᶜ).eq_empty_or_nonempty with hC | hC` into its components or cases. Conclude with `⟨1, one_pos, fun x' hx' => by rw [hC] at hx'; exact absurd hx' (Set.notMem_empty x')⟩`. Take `⟨x1, hx1, hmin⟩` from `(hVo.isClosed_compl.isCompact).exists_isMinOn hC hθc.continuousOn`. Conclude with `⟨_, hθpos x1 hx1, fun x' hx' => isMinOn_iff.mp hmin x' hx'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hDc : ContinuousAt (fun z : (Σ k', ι' k') → ℂ => minorRatio (segre (R.lift x x)) (segre z)) (R.lift x x)` using `ContinuousAt.comp (g := minorRatio (segre (R.lift x x))) (continuousAt_minorRatio _ hb) continuous_segre.continuousAt`. Take `⟨ε1, hε1, hball1⟩` from `Metric.continuousAt_iff.mp hDc m0 hm0`. Choose the witnesses or unpack the hypotheses as in `⟨g, hgJ, hg0⟩ : ∃ g ∈ J', eval (R.lift x x) (map (Int.castRingHom ℂ) g) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hxB ⟨hz'.1, h⟩`. Establish `hgc : ContinuousAt (fun z : (Σ k', ι' k') → ℂ => eval z (map (Int.castRingHom ℂ) g)) (R.lift x x)` using `(MvPolynomial.continuous_eval _).continuousAt`. Take `⟨ε2, hε2, hball2⟩` from `Metric.continuousAt_iff.mp hgc _ (norm_pos_iff.mpr hg0)`. Use `⟨min ε1 ε2, lt_min hε1 hε2, fun z'' hz'' hzv hd => ?_⟩` and prove the remaining obligations. Establish `hd1 : dist z'' (R.lift x x) < ε1` using `lt_of_lt_of_le hd (min_le_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd2 : dist z'' (R.lift x x) < ε2` using `lt_of_lt_of_le hd (min_le_right _ _)`. Establish `hzB : z'' ∉ mcPts J'`. Introduce `h`. Establish `h2 : dist (eval z'' (map (Int.castRingHom ℂ) g)) (eval (R.lift x x) (map (Int.castRingHom ℂ) g)) < ‖eval (R.lift x x) (map (Int.castRingHom ℂ) g)‖` using `hball2 hd2`. Rewrite `h2` using `[h.2 g hgJ, dist_zero_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h2`. Take `⟨x'', hx''⟩` from `R.surj z'' hz'' hzB`. Establish `hθx'' : minorRatio (segre (R.lift x x)) (segre (R.lift x'' x'')) < m0`. Take `⟨μ, hμ, hμeq⟩` from `segre_of_sameOrbit hx''`. Establish `h1 : dist (minorRatio (segre (R.lift x x)) (segre z'')) (minorRatio (segre (R.lift x x)) (segre (R.lift x x))) < m0` using `hball1 hd1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[minorRatio_self, Real.dist_eq, sub_zero]`. Rewrite using `[hμeq, minorRatio_smul _ _ hμ]`. Conclude with `lt_of_le_of_lt (le_abs_self _) h1`. Establish `hx''V : x'' ∈ V`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (hm0le x'' hc) (not_le.mpr hθx'')`. Establish `hso : SameOrbit (pullPt R v x'') (pullPt R v x)` using `sameOrbit_tr (sameOrbit_comp hv hx'') hzv`. Establish `hq : pullQ R v Ψ x'' = pullQ R v Ψ x`. Take `⟨μ, hμ, hμeq⟩` from `segre_of_sameOrbit hso`. Use function extensionality and compare the values at `i`.
-
-Simplify using `only [pullQ, hμeq, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_div_mul_left _ _ hμ`. Establish `hxx : x'' = x`. Establish `h1 : (pullQ R v Ψ ∘ (R.A.chart j).symm) (R.A.chart j x'') = (pullQ R v Ψ ∘ (R.A.chart j).symm) (R.A.chart j x)`. Simplify using `only [Function.comp_apply, (R.A.chart j).left_inv hx''V.1, (R.A.chart j).left_inv hj, hq]`.
-
-Establish `h2 : R.A.chart j x'' = R.A.chart j x` using `hinj hx''V.2 hxV.2 (by rw [HasStrictFDerivAt.toOpenPartialHomeomorph_coe]; exact h1)`. Conclude with `(R.A.chart j).injOn hx''V.1 hj h2`. Rewrite `hx''` using `[hxx]`. Conclude with `sameOrbit_comm hx''`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isolated_of_not_pullBad (hv : IsBlockMap κ v)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) {x : R.X} (hx : x ∉ pullBad R v Ψ) :
@@ -261,11 +255,11 @@ theorem isolated_of_not_pullBad (hv : IsBlockMap κ v)
   exact sameOrbit_comm hx''
 
 /- English proof (translation)
-Establish `hF` using `fibreFinite K ι (imageZ v P') n Ψ hP hΨ y`. Use `choose! uw huw using fun w (hw : w ∈ fibre (imageZ v P') Ψ y) => hw`. Use `choose T hT using fun w => hIsol K ι K' ι' κ v P' n hv hP' (uw w)`. Use `(hF.biUnion fun w _ => (T w).finite_toSet.biUnion fun t _ => (orbit_subsingleton R t).finite).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hqx, hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxB : R.lift x x ∉ mcPts J'` using `fun h => hx (Or.inl (Or.inl h))`. Establish `h0x : Ψ (segre (pullPt R v x)) 0 ≠ 0` using `fun h => hx (Or.inl (Or.inr h))`. Establish `hw` using `IntersectionWithSection.pullW_mem_fibre hv hP R Ψ h0x`. Rewrite `hw` using `[show pullQ R v Ψ x = y from hqx]`. Take `⟨hu1, hu2, -⟩` from `huw _ hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hso : SameOrbit (pullPt R v x) (uw (pullW R v Ψ x))` using `sameOrbit_of_segre hu1.1 (Ψ (segre (pullPt R v x)) 0) h0x (by rw [hu2]; simp [pullW, smul_smul, mul_inv_cancel₀ h0x])`. Take `⟨ε, hε, hiso⟩` from `isolated_of_not_pullBad R hv Ψ hx`. Take `⟨t, ht, hxt⟩` from `hT (pullW R v Ψ x) (R.lift x x) (R.mem x x (R.mem_U x)) hso ⟨ε, hε, fun z'' hz'' hzu hd => hiso z'' hz'' (sameOrbit_tr hzu (sameOrbit_comm hso)) hd⟩`. Conclude with `Set.mem_biUnion hw (Set.mem_biUnion (Finset.mem_coe.mpr ht) ⟨hxB, hxt⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pullFib_finite (hIsol : FibreIsolFinite.Statement) (hv : IsBlockMap κ v)
     (hP' : IsArithVar P' (n + 1)) (hP : IsArithVar (imageZ v P') (n + 1))

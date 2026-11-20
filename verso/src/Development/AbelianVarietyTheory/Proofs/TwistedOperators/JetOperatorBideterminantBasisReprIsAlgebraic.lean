@@ -12,19 +12,19 @@ abbrev algPol (σ : Type) : Subring (MvPolynomial σ ℂ) :=
   (MvPolynomial.map (algebraMap (algebraicClosure ℚ ℂ) ℂ)).range
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X v, map_X _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem X_mem {σ : Type} (v : σ) : (X v : MvPolynomial σ ℂ) ∈ algPol σ := ⟨X v, map_X _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨monomial u ⟨c, mem_algebraicClosure_iff.2 hc⟩, by rw [map_monomial]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem monomial_mem {σ : Type} (u : σ →₀ ℕ) {c : ℂ} (hc : IsAlgebraic ℚ c) :
     monomial u c ∈ algPol σ :=
   ⟨monomial u ⟨c, mem_algebraicClosure_iff.2 hc⟩, by rw [map_monomial]; rfl⟩
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `hp`. Rewrite using `[coeff_map]`. Conclude with `mem_algebraicClosure_iff.1 (q.coeff m).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_isAlgebraic {σ : Type} {p : MvPolynomial σ ℂ} (hp : p ∈ algPol σ) (m : σ →₀ ℕ) :
     IsAlgebraic ℚ (p.coeff m) := by
@@ -33,9 +33,9 @@ theorem coeff_isAlgebraic {σ : Type} {p : MvPolynomial σ ℂ} (hp : p ∈ algP
   exact mem_algebraicClosure_iff.1 (q.coeff m).2
 
 /- English proof (translation)
-Use `choose N hN using h`. Use `⟨(Matrix.of N).det, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hN]`.
+A detailed English derivation is pending.
 -/
 theorem det_mem {σ : Type} {s : ℕ} (M : Matrix (Fin s) (Fin s) (MvPolynomial σ ℂ))
     (h : ∀ p q, M p q ∈ algPol σ) : M.det ∈ algPol σ := by
@@ -47,9 +47,9 @@ theorem det_mem {σ : Type} {s : ℕ} (M : Matrix (Fin s) (Fin s) (MvPolynomial 
   simp [hN]
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `hp`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨C a, by simp [algebraMap_eq]⟩`. Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `add_mem hp hq`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p v hp => rw [map_mul, map_mul, map_X, aeval_X]`. Conclude with `mul_mem hp (hg v)`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mem {σ τ : Type} {p : MvPolynomial σ ℂ} (hp : p ∈ algPol σ) (g : σ → MvPolynomial τ ℂ)
     (hg : ∀ v, g v ∈ algPol τ) : aeval g p ∈ algPol τ := by
@@ -60,11 +60,9 @@ theorem aeval_mem {σ τ : Type} {p : MvPolynomial σ ℂ} (hp : p ∈ algPol σ
   | mul_X p v hp => rw [map_mul, map_mul, map_X, aeval_X]; exact mul_mem hp (hg v)
 
 /- English proof (translation)
-Unfold `bVVfun ten`. Use `prod_mem fun τ _ => ?_` and prove the remaining obligations. Take `⟨-, -, K, sz, hsz, I, -, -, hb⟩` from `(Formalism.GradedWeylDivisibility.sSBasis ℂ n n (lam τ).natW).choose_spec.2 (j τ)`. Establish `hb' : ssB ℂ (lam τ).natW (j τ) = Formalism.GradedWeylDivisibility.bideterminant ℂ sz hsz I` using `hb`. Use `show Formalism.GradedWeylDivisibility.blockEmb ℂ τ (ssB ℂ (lam τ).natW (j τ)) ∈ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb']`. Establish `hB : Formalism.GradedWeylDivisibility.bideterminant ℂ sz hsz I ∈ algPol (Fin n × Fin n)`. Unfold `Formalism.GradedWeylDivisibility.bideterminant Formalism.GradedWeylDivisibility.initMinor`. Conclude with `prod_mem fun k _ => det_mem _ fun p q => X_mem _`. Take `⟨q, hq⟩` from `hB`.
-
-Conclude with `⟨Formalism.GradedWeylDivisibility.blockEmb _ τ q, by rw [← hq]; exact map_rename _ _ _⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bVVfun_mem {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (j : VVIdx lam) :
     bVVfun ℂ lam j ∈ algPol (ι × Fin n × Fin n) := by
@@ -83,13 +81,13 @@ theorem bVVfun_mem {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-The claim follows from `det_mem _ fun _ _ => X_mem _`.
+A detailed English derivation is pending.
 -/
 theorem frDet_mem (τ : ι) : frDet ℂ a τ ∈ algPol (ι × Fin a × Fin a) :=
   det_mem _ fun _ _ => X_mem _
 
 /- English proof (translation)
-Unfold `subD`. Use `aeval_mem hP _ fun v => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `sum_mem fun β _ => mul_mem (X_mem _) (X_mem _)`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subD_mem {P : Pol ℂ ι a} (hP : P ∈ algPol (ι × Fin a × Fin a)) :
     subD ℂ ι a b P ∈ algPol ((ι × Fin b × Fin b) ⊕ DVar ι a b) := by
@@ -100,7 +98,7 @@ theorem subD_mem {P : Pol ℂ ι a} (hP : P ∈ algPol (ι × Fin a × Fin a)) :
   · exact zero_mem _
 
 /- English proof (translation)
-Establish `h1 : (monomial m c : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) ℂ) = c • basisMonomials _ ℂ m`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, jetLin, Module.Basis.constr_basis, smul_monomial, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetLin_monomial (J : (DVar ι a b →₀ ℕ) → ℂ) (m : (ι × Fin b × Fin b) ⊕ DVar ι a b →₀ ℕ) (c : ℂ) :
     jetLin J (monomial m c) =
@@ -110,7 +108,7 @@ theorem jetLin_monomial (J : (DVar ι a b →₀ ℕ) → ℂ) (m : (ι × Fin b
   rw [h1, map_smul, jetLin, Module.Basis.constr_basis, smul_monomial, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[p.as_sum, map_sum]`. Use `sum_mem fun m _ => ?_` and prove the remaining obligations. Rewrite using `[jetLin_monomial]`. Conclude with `monomial_mem _ ((coeff_isAlgebraic hp m).mul (hJ _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetLin_mem (J : (DVar ι a b →₀ ℕ) → ℂ) (hJ : ∀ m, IsAlgebraic ℚ (J m))
     {p : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) ℂ} (hp : p ∈ algPol _) :
@@ -121,7 +119,7 @@ theorem jetLin_mem (J : (DVar ι a b →₀ ℕ) → ℂ) (hJ : ∀ m, IsAlgebra
   exact monomial_mem _ ((coeff_isAlgebraic hp m).mul (hJ _))
 
 /- English proof (translation)
-Unfold `jetMap`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply]`. Use `jetLin_mem J hJ (subD_mem (mul_mem hP (prod_mem fun τ _ => pow_mem (frDet_mem τ) _)))` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem jetMap_mem (J : (DVar ι a b →₀ ℕ) → ℂ) (hJ : ∀ m, IsAlgebraic ℚ (J m)) (nn : ι → ℕ)
     {P : Pol ℂ ι a} (hP : P ∈ algPol (ι × Fin a × Fin a)) :
@@ -131,13 +129,13 @@ theorem jetMap_mem (J : (DVar ι a b →₀ ℕ) → ℂ) (hJ : ∀ m, IsAlgebra
   refine jetLin_mem J hJ (subD_mem (mul_mem hP (prod_mem fun τ _ => pow_mem (frDet_mem τ) _)))
 
 /- English proof (translation)
-Use `set A := algebraicClosure ℚ ℂ`. Take `⟨pr, hpr⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap A ℂ) (LinearMap.ker_eq_bot.2 (algebraMap A ℂ).injective)`. Establish `hp : ∀ c : A, pr (algebraMap A ℂ c) = c` using `fun c => LinearMap.congr_fun hpr c`. Establish `key : ∑ k, x k • v k = ∑ k, (algebraMap A ℂ (pr (x k))) • v k`. Use extensionality with `m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hcoef : ∀ k, ∃ c : A, (v k).coeff m = algebraMap A ℂ c` using `fun k => by`. Take `⟨q, hq⟩` from `hvA k`. Conclude with `⟨q.coeff m, by rw [← hq, coeff_map]⟩`. Use `choose c hc using hcoef`. Take `⟨q, hq⟩` from `hQ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (∑ k, x k • v k).coeff m = algebraMap A ℂ (pr ((∑ k, x k • v k).coeff m))`. Rewrite using `[← hq, coeff_map, hp]`. Rewrite using `[h1]`. Simplify using `only [coeff_sum, coeff_smul, smul_eq_mul, hc, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: x k * algebraMap A ℂ (c k) = c k • x k` using `by rw [Algebra.smul_def, mul_comm]`. Rewrite using `[this, map_smul, smul_eq_mul, map_mul, mul_comm]`. Establish `h0` using `Fintype.linearIndependent_iff.1 hv (fun k => x k - algebraMap A ℂ (pr (x k))) (by simp only [sub_smul, Finset.sum_sub_distrib, key, sub_self]) k`. Rewrite using `[sub_eq_zero.1 h0]`. Conclude with `mem_algebraicClosure_iff.1 (pr (x k)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent {σ κ : Type} [Fintype κ] (v : κ → MvPolynomial σ ℂ) (hv : LinearIndependent ℂ v)
     (hvA : ∀ k, v k ∈ algPol σ) (x : κ → ℂ) (hQ : ∑ k, x k • v k ∈ algPol σ) (k : κ) :
@@ -166,11 +164,11 @@ theorem descent {σ κ : Type} [Fintype κ] (v : κ → MvPolynomial σ ℂ) (hv
   exact mem_algebraicClosure_iff.1 (pr (x k)).2
 
 /- English proof (translation)
-Introduce `ι _ a b lam lam' J nn hJ hV i j`. Establish `hQV : jetMap J nn (bVVfun ℂ lam j) ∈ VV ℂ lam'` using `hV J _ (by rw [← bVV_coe]; exact (bVV ℂ lam j).2)`. Establish `hop : jetOp lam lam' J nn (bVV ℂ lam j) = ⟨_, hQV⟩`. Simplify using `only [jetOp, retrVV, LinearMap.comp_apply, Submodule.subtype_apply, bVV_coe]`. Conclude with `Submodule.projectionOnto_apply_left _ ⟨_, hQV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hop]`. Establish `hsum : jetMap J nn (bVVfun ℂ lam j) = ∑ k, (bVV ℂ lam').repr ⟨_, hQV⟩ k • bVVfun ℂ lam' k`. Use `congrArg Subtype.val ((bVV ℂ lam').sum_repr ⟨_, hQV⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bVV_coe] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `descent (bVVfun ℂ lam') (bVVfun_spec ℂ lam').1 (bVVfun_mem lam') _ ?_ i` and prove the remaining obligations. Rewrite using `[← hsum]`. Conclude with `jetMap_mem J hJ nn (bVVfun_mem lam j)`.
+A detailed English derivation is pending.
 -/
 theorem repr_jetOp_isAlgebraic : ∀ {ι : Type} [Fintype ι] {a b : ℕ} (lam : ι → Formalism.BasicNotions.DomWeight a)
     (lam' : ι → Formalism.BasicNotions.DomWeight b) (J : (DVar ι a b →₀ ℕ) → ℂ) (nn : ι → ℕ), (∀ m, IsAlgebraic ℚ (J m)) →

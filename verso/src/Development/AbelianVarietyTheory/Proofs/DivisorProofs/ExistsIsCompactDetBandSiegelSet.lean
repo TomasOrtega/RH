@@ -12,15 +12,15 @@ namespace GlobalTheory.SiegelBand
 open GroundTheory.Automorphic GroundTheory.Global GroundTheory.Global.IdeleGroup
 
 /- English proof (translation)
-Establish `hQ0 : 0 ≤ Q` using `zero_le_one.trans hQ`. Establish `key : ∀ m : ℕ, ∀ i j : Fin a, (j : ℕ) = i + m → ρ i ≤ Q ^ m * ρ j ∧ ρ j ≤ Q ^ m * ρ i`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `i j h`. Establish `: i = j` using `Fin.ext (by omega)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i j h`. Set `j' : Fin a` to `⟨i + m, by omega⟩`. Take `⟨h1, h2⟩` from `ih i j' rfl`. Take `⟨h3, h4⟩` from `hadj j' j (by simp [j']; omega)`. Establish `hpm : 0 ≤ Q ^ m` using `pow_nonneg hQ0 m`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Break down `le_total (i : ℕ) j with hij | hij` into its components or cases. Establish `h` using `(key ((j : ℕ) - i) i j (by omega)).1`.
+Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hQ (by omega)) (hρ j).le)`. Establish `h` using `(key ((i : ℕ) - j) j i (by omega)).2`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hQ (by omega)) (hρ j).le)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_pow_mul_of_adjacent {a : ℕ} (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i) {Q : ℝ} (hQ : 1 ≤ Q)
     (hadj : ∀ i j : Fin a, (j : ℕ) = i + 1 → ρ i ≤ Q * ρ j ∧ ρ j ≤ Q * ρ i) (i j : Fin a) :
@@ -54,7 +54,7 @@ theorem le_pow_mul_of_adjacent {a : ℕ} (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < 
     exact h.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hQ (by omega)) (hρ j).le)
 
 /- English proof (translation)
-Unfold `absDetA`. Rewrite using `[Reduction.adeleAbs_units (K := E)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absDetA_eq {E : Type} [Field E] [NumberField E] {a : ℕ} (g : GA E a) :
     absDetA g = (ideleModule E (AdelicGLn.det E a g) : ℝ) := by
@@ -63,46 +63,38 @@ theorem absDetA_eq {E : Type} [Field E] [NumberField E] {a : ℕ} (g : GA E a) :
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem posIdele_congr {E : Type} [Field E] [NumberField E] {x y : ℝ} (hx : 0 < x) (hy : 0 < y) (h : x = y) :
     Reduction.posIdele (K := E) x hx = Reduction.posIdele (K := E) y hy := by
   subst h; rfl
 
 /- English proof (translation)
-Introduce `E _ _ a ω hω t R ht`. Use `set d := Module.finrank ℚ E with hd`. Establish `hd0 : 0 < d` using `Module.finrank_pos`. Establish `hfc : Continuous fun b : GA E a => (ideleModule E (AdelicGLn.det E a b) : ℝ)` using `continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det E a))`. Take `⟨B₁, B₂, hB₁, hB₁₂, hB⟩` from `Reduction.exists_pos_bounds hω hfc (fun b _ => (ideleModule E (AdelicGLn.det E a b)).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB₂ : 0 < B₂` using `hB₁.trans_le hB₁₂`. Use `set X₁ : ℝ := min 1 B₂⁻¹ with hX₁def`. Use `set X₂ : ℝ := max 1 (2 / B₁) with hX₂def`. Establish `hX₁ : 0 < X₁` using `lt_min one_pos (inv_pos.2 hB₂)`. Use `set Q : ℝ := max 1 (max R t⁻¹) with hQdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hQ : 1 ≤ Q` using `le_max_left _ _`. Use `set Qa : ℝ := (Q ^ a) ^ a with hQadef`. Establish `hQa : 0 < Qa` using `pow_pos (pow_pos (zero_lt_one.trans_le hQ) _) _`. Use `set lo : ℝ := min 1 (X₁ / Qa) with hlodef`. Use `set hi : ℝ := max 1 (Qa * X₂) with hhidef`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hlo : 0 < lo` using `lt_min one_pos (div_pos hX₁ hQa)`. Set `g : {r : ℝ // 0 < r} → IdeleGroup E` to `fun r => Reduction.posIdele (K := E) r.1 r.2`. Establish `hg : Continuous g` using `Reduction.continuous_posIdele_subtype`. Set `h : (Fin a → ℝ) → (Fin a → IdeleGroup E)` to `fun ρ i => g ⟨max (ρ i) lo, hlo.trans_le (le_max_right _ _)⟩`. Establish `hh : Continuous h` using `continuous_pi fun i => hg.comp (((continuous_apply i).max continuous_const).subtype_mk fun ρ => hlo.trans_le (le_max_right _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `F : (Fin a → ℝ) → GA E a` to `fun ρ => Reduction.diagUnits a (h ρ)`. Establish `hF : Continuous F` using `(Reduction.continuous_diagUnits (K := E) a).comp hh`. Establish `hT : IsCompact (F '' Set.pi Set.univ (fun _ => Set.Icc lo hi))` using `(isCompact_univ_pi fun _ => isCompact_Icc).image hF`. Establish `hband : band E a = {g | 1 ≤ (ideleModule E (AdelicGLn.det E a g) : ℝ)} ∩ {g | (ideleModule E (AdelicGLn.det E a g) : ℝ) ≤ 2}`. Use extensionality with `g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[band, absDetA_eq]`. Establish `hclosed : IsClosed (band E a)`. Rewrite using `[hband]`. Conclude with `(isClosed_le continuous_const hfc).inter (isClosed_le hfc continuous_const)`. Use `⟨ω * (F '' Set.pi Set.univ (fun _ => Set.Icc lo hi)) * (Reduction.maxCompact (K := E) (n := a) : Set (GA E a)) ∩ band E a, ((hω.mul hT).mul Reduction.isCompact_maxCompact).inter_right hclosed, Set.inter_subset_right, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `b hb ρ hρ hlow hup k hk hmem`. Use `⟨?_, hmem⟩` and prove the remaining obligations. Use `set P : ℝ := ∏ i, ρ i with hPdef`. Establish `hP : 0 < P` using `Finset.prod_pos fun i _ => hρ i`. Establish `hdet` using `Reduction.det_mul_mul b (Reduction.diagUnits a fun i => Reduction.posIdele (K := E) (ρ i) (hρ i)) k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hdet` using `[Reduction.ideleModule_det_diagUnits_posIdele ρ hρ, Reduction.mem_normOneGL.1 (Reduction.maxCompact_le_normOneGL hk), mul_one]`. Establish `hm` using `hmem`. Simplify using `only [band, Set.mem_setOf_eq, absDetA_eq] at hm`. Rewrite `hm` using `[hdet]`. Take `⟨h1, h2⟩` from `hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hbb` using `hB b hb`. Establish `hPd1 : P ^ d ≤ 2 / B₁`. Rewrite using `[le_div_iff₀ hB₁]`. Combine the equalities or inequalities in the displayed calculation. Establish `hPd2 : B₂⁻¹ ≤ P ^ d`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[inv_le_iff_one_le_mul₀' hB₂]`. Combine the equalities or inequalities in the displayed calculation. Establish `hPlow : X₁ ≤ P`. Break down `le_or_gt 1 P with h | h` into its components or cases. Conclude with `(min_le_left _ _).trans h`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(min_le_right _ _).trans (hPd2.trans (pow_le_of_le_one hP.le h.le hd0.ne'))`. Establish `hPup : P ≤ X₂`. Break down `le_or_gt P 1 with h | h` into its components or cases. Conclude with `h.trans (le_max_left _ _)`. Conclude with `(le_self_pow₀ h.le hd0.ne').trans (hPd1.trans (le_max_right _ _))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Prove the components needed by the constructor for the conclusion.
 
-Establish `hadj : ∀ i j : Fin a, (j : ℕ) = i + 1 → ρ i ≤ Q * ρ j ∧ ρ j ≤ Q * ρ i`. Introduce `i j hij`. Prove the components needed by the constructor for the conclusion. Conclude with `(hup i j hij).trans (mul_le_mul_of_nonneg_right ((le_max_left _ _).trans (le_max_right _ _)) (hρ j).le)`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hratio` using `le_pow_mul_of_adjacent ρ hρ hQ hadj`. Establish `hbox : ∀ i, ρ i ∈ Set.Icc lo hi`. Introduce `i`. Establish `ha0 : a ≠ 0` using `by have := i.2; omega`. Establish `hup' : ρ i ^ a ≤ Qa * P`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hlow' : P ≤ Qa * ρ i ^ a`. Combine the equalities or inequalities in the displayed calculation. Prove the components needed by the constructor for the conclusion. Break down `le_or_gt 1 (ρ i) with h | h` into its components or cases.
-
-Conclude with `(min_le_left _ _).trans h`. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Use `(pow_le_of_le_one (hρ i).le h.le ha0).trans' ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hQa, mul_comm]`. Conclude with `hPlow.trans hlow'`.
-
-Break down `le_or_gt (ρ i) 1 with h | h` into its components or cases. Conclude with `h.trans (le_max_left _ _)`. Conclude with `(le_self_pow₀ h.le ha0).trans (hup'.trans ((mul_le_mul_of_nonneg_left hPup hQa.le).trans (le_max_right _ _)))`. Establish `hFρ : F ρ = Reduction.diagUnits a (fun i => Reduction.posIdele (K` using `E) (ρ i) (hρ i)) := by show Reduction.diagUnits a (h ρ) = _`. Use `congr 1`.
-
-Use function extensionality and compare the values at `i`. Conclude with `posIdele_congr _ _ (max_eq_left (hbox i).1)`. Rewrite using `[← hFρ]`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul hb ⟨ρ, fun i _ => hbox i, rfl⟩) hk`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_band_siegel : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ω : Set (GA E a)), IsCompact ω →
     ∀ t R : ℝ, 0 < t → ∃ C : Set (GA E a), IsCompact C ∧ C ⊆ band E a ∧

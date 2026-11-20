@@ -28,7 +28,7 @@ section Lin
 variable {R : Type} [CommRing R] {p q : ℕ}
 
 /- English proof (translation)
-Establish `e` using `(hA.mul hB).eq_fromBlocks`. Rewrite `e` using `[← Matrix.submatrix_mul_equiv A B _ (blockEquiv p q) _, hA.eq_fromBlocks, hB.eq_fromBlocks, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Conclude with `⟨by simpa using e.1.symm, by simpa using e.2.2.2.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem blocks_mul {A B : Matrix (Fin (p + q)) (Fin (p + q)) R} (hA : IsBlockDiag p A) (hB : IsBlockDiag p B) :
     omBlock (A * B) = omBlock A * omBlock B ∧ wBlock (A * B) = wBlock A * wBlock B := by
@@ -38,20 +38,20 @@ theorem blocks_mul {A B : Matrix (Fin (p + q)) (Fin (p + q)) R} (hA : IsBlockDia
   exact ⟨by simpa using e.1.symm, by simpa using e.2.2.2.symm⟩
 
 /- English proof (translation)
-The claim follows from `Matrix.submatrix_one _ (omEmb_strictMono p q).injective`.
+A detailed English derivation is pending.
 -/
 theorem omBlock_one : omBlock (1 : Matrix (Fin (p + q)) (Fin (p + q)) R) = 1 :=
   Matrix.submatrix_one _ (omEmb_strictMono p q).injective
 
 /- English proof (translation)
-Introduce `a b h` and use `by rw [Matrix.conjTranspose_apply, hA b a fun e => h e.symm, star_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isBlockDiag_conjTranspose {N j : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : IsBlockDiag j A) :
     IsBlockDiag j Aᴴ := fun a b h => by
   rw [Matrix.conjTranspose_apply, hA b a fun e => h e.symm, star_zero]
 
 /- English proof (translation)
-Establish `e : (omBlock (Γ.map (starRingEnd ℂ)))ᵀ⁻¹ = ((omBlock Γ)ᵀ⁻¹).map (starRingEnd ℂ)` using `by show ((omBlock Γ)ᵀᴴᵀ)⁻¹ = ((omBlock Γ)ᵀ⁻¹)ᴴᵀ`. Rewrite using `[← Matrix.transpose_nonsing_inv, ← Matrix.conjTranspose_nonsing_inv]`. Unfold `blockG`. Rewrite using `[e, ← Matrix.submatrix_map, Matrix.fromBlocks_map]`. Simplify using `only [Matrix.map_zero _ (map_zero (starRingEnd ℂ))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -66,9 +66,9 @@ theorem blockG_conj (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `b` using `(PositivityTheory.Xgp.t_c_bm_exists_blockpos p q Γ hΓ).1`. Establish `b'` using `(PositivityTheory.Xgp.t_c_bm_exists_blockpos p q Γ' hΓ').1`. Establish `c` using `isBlockDiag_conjTranspose bR`. Establish `e1 : (omBlock Rz')⁻¹ = omBlock Rz` using `Matrix.inv_eq_right_inv (by rw [← (blocks_mul bR' bR).1, e, omBlock_one])`. Use `b'.ext_blocks ((c.mul b).mul bR) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(blocks_mul (c.mul b) bR).1, (blocks_mul c b).1, omBlock_blockG, omBlock_blockG, eo, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_inv_rev, Matrix.mul_inv_rev, e1]`. Establish `: (omBlock Rz')ᵀᴴᵀ⁻¹ = omBlock Rzᴴ` using `by show ((omBlock Rz')ᴴ)⁻¹ = (omBlock Rz)ᴴ`. Rewrite using `[← Matrix.conjTranspose_nonsing_inv, e1]`. Rewrite using `[this]`. Rewrite using `[(blocks_mul (c.mul b) bR).2, (blocks_mul c b).2, wBlock_blockG, wBlock_blockG, ew]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -94,9 +94,9 @@ theorem blockG_change {Γ Γ' Rz Rz' : Matrix (Fin (p + q)) (Fin (p + q)) ℂ} (
 end Lin
 
 /- English proof (translation)
-Establish `hm : colFrame b S c ∈ Submodule.span (regAt ξ q) (Set.range b)`. Rewrite using `[← h.2, h'.2]`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Take `⟨t, ht⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hm`. Establish `h0 : ∑ i, (S i c - t i) • b i = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Conclude with `sub_eq_zero.2 ht.symm`. Use `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 h.1 _ h0 a)` as an intermediate fact. Rewrite using `[this]`. Conclude with `(t a).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_coeff {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {V : Type}
     [AddCommGroup V] [Module Ω V] {L : Lat ξ V} {r : ℕ} {b : Fin r → V} {S : Matrix (Fin r) (Fin r) Ω} {q : Cpt ξ}
@@ -117,9 +117,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {M : FlagModel y (CMType H) (D.p + D.q) D.p} {𝔐 : HodgeCpt Y S M.x}
 
 /- English proof (translation)
-Establish `hu : IsUnit (F.T τ).det` using `(hF.1 τ).2.isUnit`. Establish `bR : IsBlockDiag D.p ((F.T τ)⁻¹ * F'.T τ)` using `((hF.1 τ).1.inv hu).mul (hF'.1 τ).1`. Establish `e` using `blocks_mul (hF.1 τ).1 bR`. Rewrite `e` using `[Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Use `⟨bR, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `FlagTie.wFrame`. Rewrite using `[e.2, colFrame_mul]`. Unfold `FlagTie.omFrame`. Rewrite using `[e.1, colFrame_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frames_rel (tie : FlagTie M 𝔐) {F F' : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk} (hF : M.IsFrame F)
     (hF' : M.IsFrame F') (τ : CMType H) :
@@ -137,13 +137,11 @@ theorem frames_rel (tie : FlagTie M 𝔐) {F F' : FrameData ι (CMType H) (D.p +
     rw [e.1, colFrame_mul]
 
 /- English proof (translation)
-Take `⟨bR, ew, eo⟩` from `frames_rel tie hF hF' τ`. Take `⟨f1, f2⟩` from `tie.frames_centre hw hF gd τ`. Take `⟨f1', f2'⟩` from `tie.frames_centre hw hF' gd' τ`. Rewrite `f1'` using `[ew]`. Rewrite `f2'` using `[eo]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ a b, ((F.T τ)⁻¹ * F'.T τ) a b ∈ regAt 𝔐.ξ ⟨centre z, 𝔐.all _⟩`. Introduce `a b`. Take `⟨a, rfl⟩` from `(blockEquiv D.p D.q).surjective a`. Take `⟨b, rfl⟩` from `(blockEquiv D.p D.q).surjective b`. Establish `e` using `congrFun (congrFun bR.eq_fromBlocks a) b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[Matrix.submatrix_apply]`. Rewrite using `[e]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Use `exacts [frame_coeff f2 f2' a b, zero_mem _, zero_mem _, frame_coeff f1 f1' a b]`. Use `choose s hs using key`.
-
-Conclude with `⟨Matrix.of fun a b => (Scheme.stalkClosedPointTo z).hom (s a b), fun a b => ⟨𝔐.all _, s a b, hs a b, rfl⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem change_reg (tie : FlagTie M 𝔐) {F F' : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk} (hF : M.IsFrame F)
     (hF' : M.IsFrame F') (τ : CMType H) {z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X} {w : (Σ k, baseIdx ι M.blk k) → ℂ}
@@ -167,15 +165,15 @@ theorem change_reg (tie : FlagTie M 𝔐) {F F' : FrameData ι (CMType H) (D.p +
   exact ⟨Matrix.of fun a b => (Scheme.stalkClosedPointTo z).hom (s a b), fun a b => ⟨𝔐.all _, s a b, hs a b, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨bR, -, eo⟩` from `frames_rel tie hF hF' τ`. Take `⟨bR', -, -⟩` from `frames_rel tie hF' hF τ`. Establish `hu : IsUnit (F.T τ).det` using `(hF.1 τ).2.isUnit`. Establish `hu' : IsUnit (F'.T τ).det` using `(hF'.1 τ).2.isUnit`. Establish `e1 : omBlock ((F'.T τ)⁻¹ * F.T τ) * omBlock ((F.T τ)⁻¹ * F'.T τ) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← (blocks_mul bR' bR).1, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu, Matrix.nonsing_inv_mul _ hu', omBlock_one]`. Establish `e2 : (omBlock ((F.T τ)⁻¹ * F'.T τ))ᵀ⁻¹ = (omBlock ((F'.T τ)⁻¹ * F.T τ))ᵀ`. Rewrite using `[← Matrix.transpose_nonsing_inv, Matrix.inv_eq_left_inv e1]`. Establish `e3` using `fun k => colFrame_dual _ _ hv (omBlock ((F.T τ)⁻¹ * F'.T τ)) (Matrix.isUnit_det_of_left_inverse e1) k m`. Rewrite `e3` using `[e2, ← eo]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Generalize the expression as in `hd : dualFam tie F' τ m - colFrame (dualFam tie F τ) (omBlock ((F'.T τ)⁻¹ * F.T τ))ᵀ m = d`. Establish `h1 : ∀ k, tie.omFrame F' τ k d = 0` using `fun k => by rw [← hd, map_sub, e3, hv', sub_self]`. Establish `e4 : (tie.eO τ : Fin D.q → _) = colFrame (tie.omFrame F' τ) (omBlock (F'.T τ)⁻¹)`. Unfold `FlagTie.omFrame`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← colFrame_mul, ← (blocks_mul (hF'.1 τ).1 ((hF'.1 τ).1.inv hu')).1, Matrix.mul_nonsing_inv _ hu', omBlock_one, colFrame_one]`. Establish `h2 : ∀ k, tie.eO τ k d = 0` using `fun k => by`. Rewrite using `[e4]`. Simplify using `[colFrame, h1]`. Use `(Module.forall_dual_apply_eq_zero_iff M.Ω d).1 fun ψ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (tie.eO τ).sum_repr ψ, LinearMap.sum_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [LinearMap.smul_apply, h2, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_change (tie : FlagTie M 𝔐) {F F' : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk} (hF : M.IsFrame F)
     (hF' : M.IsFrame F') (τ : CMType H)
@@ -207,7 +205,7 @@ theorem dual_change (tie : FlagTie M 𝔐) {F F' : FrameData ι (CMType H) (D.p 
   exact Finset.sum_eq_zero fun k _ => by rw [LinearMap.smul_apply, h2, smul_zero]
 
 /- English proof (translation)
-The claim follows from `let ⟨v, hv, h'⟩ := h ⟨fun a => v (e a), fun a => hv (e a), fun a a' => h' (e a) (e a')⟩`.
+A detailed English derivation is pending.
 -/
 theorem gramAt_sub {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {Li : Type} [AddCommGroup Li] [Module Ω Li] {M : LieModel G ξ Li}
@@ -217,21 +215,21 @@ theorem gramAt_sub {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj 
   ⟨fun a => v (e a), fun a => hv (e a), fun a a' => h' (e a) (e a')⟩
 
 /- English proof (translation)
-Simplify using `[gb, gbS, ← blockEquiv_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gb_om (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk) (τ : CMType H) (a : Fin D.q) :
     gb tie F τ (omEmb D.p D.q a) = dualFam tie F τ a := by
   simp [gb, gbS, ← blockEquiv_inl]
 
 /- English proof (translation)
-Simplify using `[gb, gbS, ← blockEquiv_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gb_w (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk) (τ : CMType H) (a : Fin D.p) :
     gb tie F τ (wEmb D.p D.q a) = tie.wFrame F τ a := by
   simp [gb, gbS, ← blockEquiv_inr]
 
 /- English proof (translation)
-Establish `h` using `(omBundle_dualFrame 𝔐 τ _ (tie.frames_centre hw hF gd τ).2).1`. Unfold `dualFam`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualFam_spec (tie : FlagTie M 𝔐) {F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk} (hF : M.IsFrame F)
     (τ : CMType H) {z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X} {w : (Σ k, baseIdx ι M.blk k) → ℂ}
@@ -249,7 +247,7 @@ def Gr (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.bl
       𝔐.M.GramAt 𝔐.t.PP.L z (gb tie F τ) Γ ∧ Γ.PosDef ∧ G = blockG Γ
 
 /- English proof (translation)
-Take `⟨hF, gd, z, Γ, hw, -, -, hp, rfl⟩` from `h`. Conclude with `⟨hF, (GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie w).2 ⟨z, 𝔐.all _, hw⟩, gd, PositivityTheory.Xgp.t_c_bm_exists_blockpos _ _ Γ hp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gr_good (tie : FlagTie M 𝔐) (F τ w G) (h : Gr tie F τ w G) : M.IsFrame F ∧ w ∈ mcPts (mCoordIdeal M.x) ∧
     M.GoodAt F (mCoordIdeal w) ∧ IsBlockDiag D.p G ∧ G.PosDef := by
@@ -258,7 +256,7 @@ theorem gr_good (tie : FlagTie M 𝔐) (F τ w G) (h : Gr tie F τ w G) : M.IsFr
     PositivityTheory.Xgp.t_c_bm_exists_blockpos _ _ Γ hp⟩
 
 /- English proof (translation)
-Take `⟨hF, gd, z, Γ, hw, h'⟩` from `h`. Establish `hz' : CoordsAt 𝔐.ξ M.x z (torusSmul cv w)` using `(((GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ).2.2 z w (𝔐.all _) hw).2 _).2 ⟨fun k => Units.mk0 (cv k) (hc k), rfl⟩`. Use `⟨hF, ?_, z, Γ, hz', h'⟩` and prove the remaining obligations. Rewrite using `[← ptIdeal_centre hz' (𝔐.all _), ptIdeal_centre hw]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem gr_tor (tie : FlagTie M 𝔐) (F τ w G) (cv : NonPluckerBlocks M.blk → ℂ) (hc : ∀ k, cv k ≠ 0) (h : Gr tie F τ w G) :
     Gr tie F τ (torusSmul cv w) G := by
@@ -270,11 +268,9 @@ theorem gr_tor (tie : FlagTie M 𝔐) (F τ w G) (cv : NonPluckerBlocks M.blk �
   rwa [← ptIdeal_centre hz' (𝔐.all _), ptIdeal_centre hw]
 
 /- English proof (translation)
-Take `⟨hF, gd, z, Γ, hw, hi, hΓ, hp, rfl⟩` from `h`. Establish `hcc` using `GlobalTheory.T.conjugate_point_same_centre 𝔐.X M.Ω 𝔐.ξ _ _ M.x z w`. Use `⟨hF, ?_, _, _, hcc.2 hw, ?_, GlobalTheory.T.gramAt_conj_point_map_conj E H D l Xo c Y S M.Ω _ _ M.x 𝔐 z _ _ _ hΓ, ?_, (blockG_conj Γ).symm⟩` and prove the remaining obligations. Establish `e : mCoordIdeal (conjVec w) = mCoordIdeal w` using `(ptIdeal_centre (hcc.2 hw) (𝔐.all _)).symm.trans ((congrArg (ptIdeal 𝔐.ξ M.x) (Subtype.ext hcc.1)).trans (ptIdeal_centre hw (𝔐.all _)))`. Rewrite using `[e]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `show centre _ ∈ _`. Rewrite using `[hcc.1]`. Conclude with `hi`. Use `show (Γᴴᵀ).PosDef`. Rewrite using `[hp.1.eq]`.
-
-Conclude with `hp.transpose`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gr_conj (tie : FlagTie M 𝔐) (F τ w G) (h : Gr tie F τ w G) :
     Gr tie F τ (conjVec w) (G.map (starRingEnd ℂ)) := by
@@ -294,21 +290,19 @@ theorem gr_conj (tie : FlagTie M 𝔐) (F τ w G) (h : Gr tie F τ w G) :
     exact hp.transpose
 
 /- English proof (translation)
-Establish `hm` using `(gr_good tie F τ w G h).2.1`. Take `⟨hF, gd, z, Γ, hw, hi, hΓ, hp, rfl⟩` from `h`. Take `⟨hF', gd', z', Γ', hw', -, hΓ', hp', rfl⟩` from `h'`. Establish `tp` using `GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ`. Take `rfl : z = z'` from `(tp.1 w hw.1 (tp.2.2 z w (𝔐.all _) hw).1).unique ⟨𝔐.all _, hw⟩ ⟨𝔐.all _, hw'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpol` using `GlobalTheory.T.interior_point_polarised E H D l Xo c Y S M.Ω _ _ M.x 𝔐 z hi`. Take `⟨Rz, hR⟩` from `change_reg tie hF hF' τ hw gd gd'`. Take `⟨Rz', hR'⟩` from `change_reg tie hF' hF τ hw gd' gd`. Establish `tv` using `GlobalTheory.T.valAt_iff_value_at 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie z w (𝔐.all _) hw`. Take `⟨bR, ew, -⟩` from `frames_rel tie hF hF' τ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨bR', -, -⟩` from `frames_rel tie hF' hF τ`. Set `RA : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) (CPts.regRing M.x w)` to `Matrix.of fun a b => ⟨_, _, (tv _ _).1 (hR a b)⟩`. Set `RA' : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) (CPts.regRing M.x w)` to `Matrix.of fun a b => ⟨_, _, (tv _ _).1 (hR' a b)⟩`. Establish `e1 : RA.map (CPts.regRing M.x w).subtype = (F.T τ)⁻¹ * F'.T τ` using `by ext a b; rfl`. Establish `e1' : RA'.map (CPts.regRing M.x w).subtype = (F'.T τ)⁻¹ * F.T τ` using `by ext a b; rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : RA.map (CPts.regVal hm) = Rz` using `by ext a b; exact valAt_eq hm ((tv _ _).1 (hR a b))`. Establish `e2' : RA'.map (CPts.regVal hm) = Rz'` using `by ext a b; exact valAt_eq hm ((tv _ _).1 (hR' a b))`. Establish `b1 : IsBlockDiag D.p Rz`. Establish `: IsBlockDiag D.p RA` using `fun a b hab => Subtype.ext (bR a b hab)`. Conclude with `e2 ▸ this.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1' : IsBlockDiag D.p Rz'`. Establish `: IsBlockDiag D.p RA'` using `fun a b hab => Subtype.ext (bR' a b hab)`. Conclude with `e2' ▸ this.map _`. Establish `e3 : Rz' * Rz = 1`. Establish `: RA' * RA = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.map_injective (CPts.regRing M.x w).subtype_injective` to reduce the goal to its premises. Use `show (RA' * RA).map _ = Matrix.map 1 _`. Rewrite using `[Matrix.map_mul, e1, e1', Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (hF.1 τ).2.isUnit, Matrix.nonsing_inv_mul _ (hF'.1 τ).2.isUnit]`. Rewrite using `[← e2, ← e2', ← Matrix.map_mul, this, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨Rz, fun a b => (tv _ _).1 (hR a b), (Matrix.isUnit_det_of_left_inverse e3).ne_zero, blockG_change hp hp' b1 b1' e3 ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.gram_matrix_two_frames E H D l Xo c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _ _ (omBlock ((F'.T τ)⁻¹ * F.T τ))ᵀ _ hpol (gramAt_sub hΓ (omEmb D.p D.q)) (gramAt_sub hΓ' (omEmb D.p D.q)) (fun m => ?_) fun a b => hR' _ _` and prove the remaining obligations. Simplify using `only [gb_om]`. Rewrite using `[dual_change tie hF hF' τ (dualFam_spec tie hF τ hw gd) (dualFam_spec tie hF' τ hw gd') m]`. Simplify using `[colFrame]`. Use `GlobalTheory.T.gram_matrix_two_frames E H D l Xo c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _ _ (wBlock ((F.T τ)⁻¹ * F'.T τ)) _ hpol (gramAt_sub hΓ (wEmb D.p D.q)) (gramAt_sub hΓ' (wEmb D.p D.q)) (fun m => ?_) fun a b => hR _ _` and prove the remaining obligations.
-
-Simplify using `only [gb_w]`. Conclude with `congrFun ew m`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gr_comp (tie : FlagTie M 𝔐) (F F' τ w G G') (h : Gr tie F τ w G) (h' : Gr tie F' τ w G') :
     ∃ Rz : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) ℂ,
@@ -360,9 +354,9 @@ theorem gr_comp (tie : FlagTie M 𝔐) (F F' τ w G G') (h : Gr tie F τ w G) (h
 end PositivityTheory.Xgp.c_bm_exists_hom
 
 /- English proof (translation)
-Introduce `E _ _ _ H D Xo l c Y S K _ ι _ Φ _ y M 𝔐 tie n Rb s hInt q O F _ hF hgd`. Use `choose hom h1 h2 h3 using PositivityTheory.Xgp.c_bm_exists_hom.exists_hom (PositivityTheory.Xgp.c_bm_exists_hom.gr_good tie) (PositivityTheory.Xgp.c_bm_exists_hom.gr_tor tie) (PositivityTheory.Xgp.c_bm_exists_hom.gr_conj tie) (PositivityTheory.Xgp.c_bm_exists_hom.gr_comp tie)`. Use `⟨hom, h1, fun i x hx p => h2 p _ _ _ ?_, fun p z _ _ _ _ => h3 p z⟩` and prove the remaining obligations. Take `⟨z, -, hz⟩` from `(GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie _).1 (Rb.mem x x (Rb.mem_U x))`. Establish `hi` using `(hInt x z hz).1 hx.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, g2, -⟩` from `PositivityTheory.Xgp.t_c_bm_exists_gram E H D Xo l c Y S K ι Φ y M 𝔐 tie (F i) (hF i) p.1 _ z hz hi (hgd i x hx.1)`. Conclude with `⟨hF i, hgd i x hx.1, z, _, hz, hi, g1, g2, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_c_bm_exists_hom : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (M : FlagModel y (CMType H) (D.p + D.q) D.p) (𝔐 : HodgeCpt Y S M.x) (tie : FlagTie M 𝔐), ∀ (n : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (s : Rb.X → Rb.X → ℂ), (∀ (x : Rb.X) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X), CoordsAt 𝔐.ξ M.x z (Rb.lift x x) → (x ∉ bdry s ↔ 𝔐.Interior z)) → ∀ (q : ℕ) (O : Fin q → Set Rb.X) (F : Fin q → FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk), (∀ x, ∃ l, x ∈ O l) → (∀ l, M.IsFrame (F l)) → (∀ l, ∀ x ∈ O l, M.GoodAt (F l) (mCoordIdeal (Rb.lift x x))) → ∃ hom : CMType H × Fin (D.p + D.q) → HermLine ι, (∀ p, (hom p).a = M.dy p) ∧ (∀ l, ∀ x ∈ O l \ bdry s, ∀ p, M.IsInducedAt (F l) (Rb.lift x x) p (blockG (baseGram tie (F l) p.1 Rb x)) (hom p)) ∧ ∀ p, ∀ z ∈ mcPts (mCoordIdeal y), ∀ x, x ∉ bdry s → SameOrbit (basePart M.blk z) (Rb.lift x x) → (hom p).h (fun q => starRingEnd ℂ (z q)) = (hom p).h z := by
   intro E _ _ _ H D Xo l c Y S K _ ι _ Φ _ y M 𝔐 tie n Rb s hInt q O F _ hF hgd

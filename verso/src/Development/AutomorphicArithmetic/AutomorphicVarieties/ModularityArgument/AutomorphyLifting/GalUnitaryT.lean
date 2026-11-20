@@ -22,17 +22,17 @@ def WDT (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin n) (Qbar l)) (y : WD h)
 variable {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin n) (Qbar l)} {y : WD h}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨y, k, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem WDT.of_isWDOf (k : IsWDOf ι r y) : WDT ι r y := ⟨y, k, fun _ => rfl⟩
 /- English proof (translation)
-Take `⟨x, hx, k⟩` from `k`. Conclude with `k g ▸ hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem WDT.isWDOf (k : WDT ι r y) (g : Gd y) : IsWDOf ι r y := by
   obtain ⟨x, hx, k⟩ := k
   exact k g ▸ hx
 /- English proof (translation)
-Take `⟨x, hx, k⟩` from `k`. Conclude with `⟨x, hx.of_conj hl P hP, k⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem WDT.of_conj (k : WDT ι r y) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {r' : G E Ω →* GL (Fin n) (Qbar l)}
     (P : GL (Fin n) (Qbar l)) (hP : ∀ g : ↥(Weil h), P * r g = r' g * P) : WDT ι r' y := by
@@ -69,7 +69,7 @@ def HasHTAt (r : G F Ω →* GL (Fin n) (Qbar l)) (HT : (F →+* Qbar l) → Mul
 
 omit [IsAlgClosure F Ω] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem hasHT_iff {r : G F Ω →* GL (Fin n) (Qbar l)} {HT : (F →+* Qbar l) → Multiset ℤ} :
     HasHT r HT ↔ ∀ w, HasHTAt r HT w := Iff.rfl

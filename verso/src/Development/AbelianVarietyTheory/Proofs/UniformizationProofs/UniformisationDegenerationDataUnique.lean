@@ -22,7 +22,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UnifUniq
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨t, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cast {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ φ' : K → (Y ⟶ X)} {ε : K → ℤ}
     (h : φ' = φ) (t : LB.Gen (LB.LinComb L φ ε)) : ∃ b : LB.Gen (LB.LinComb L φ' ε),
@@ -33,7 +33,7 @@ theorem exists_cast {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ φ'
   exact ⟨t, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨w, hw⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_transport {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F F' : X' ⟶ X} (h : F' = F)
     (P : ∀ F : X' ⟶ X, LB.Iso L' (L.pull F) → Prop) (w : LB.Iso L' (L.pull F)) (hw : P F w) : ∃ w', P F' w' := by
@@ -43,7 +43,7 @@ theorem exists_transport {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F F' : X' 
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsOpenImmersion.lift (jK R ⁻¹ᵁ W).ι (𝟙 _) (by rintro _ ⟨y, rfl⟩ rw [Scheme.Opens.range_ι] have hy : jK R y = genericPoint (Spec (CommRingCat.of R)) := by rw [genericPoint_eq_bot_of_affine] apply PrimeSpectrum.ext show Ideal.comap (algebraMap R (FractionRing R)) (PrimeSpectrum.as …`.
+Supply the required witnesses or components.
 -/
 theorem exists_section (W : (Spec (CommRingCat.of R)).Opens) (hW : genericPoint (Spec (CommRingCat.of R)) ∈ W) :
     ∃ r : (TK R).left ⟶ (jK R ⁻¹ᵁ W).toScheme, r ≫ (jK R ⁻¹ᵁ W).ι = 𝟙 _ :=
@@ -60,17 +60,15 @@ theorem exists_section (W : (Spec (CommRingCat.of R)).Opens) (hW : genericPoint 
     rw [hy]; exact hW), IsOpenImmersion.lift_fac _ _ _⟩
 
 /- English proof (translation)
-Establish `hs` using `specOf_id R`. Take `⟨r, hr₀⟩` from `exists_section W hW`. Establish `hE' : eSec D'.P.A ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = specOf (RingHom.id R) ≫ eSec D.P.A`. Rewrite using `[hE, hs]`. Conclude with `(Category.id_comp _).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : ∀ x, D'.xK x ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R)) = D.xK (xe x)` using `fun x => by show (jK R ≫ (D'.c x).left) ≫ _ = jK R ≫ (D.c (xe x)).left`. Rewrite using `[Category.assoc, hc]`. Use `⟨⟨e, he, w, hw, hE', ?_, xe, fun x => ?_, W, ψW, r ≫ (jK R ∣_ W), ?_, fun x => ?_⟩, rfl, HEq.rfl, rfl⟩` and prove the remaining obligations. Use `(maps_iff w _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf (RingHom.id R)) _ (rigPull_le (G' := D'.P.A) (G := D.P.A) _ (specOf (RingHom.id R)) hE' D.P.L) (fun _ => rfl)).2 ?_` and prove the remaining obligations. Establish `: ∀ q : (𝟙_ (Over (Spec (CommRingCat.of R)))).left ⟶ (𝟙_ (Over (Spec (CommRingCat.of R)))).left, q = 𝟙 _ → PMaps w (K` using `PUnit) (fun _ => eSec D'.P.A) (fun _ => eSec D.P.A) (fun _ => 1) D'.rig D.rig q := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ rfl`. Conclude with `hr`. Conclude with `this _ hs`. Rewrite using `[hc]`. Conclude with `((congrArg (· ≫ (D.c (xe x)).left) hs).trans (Category.id_comp _)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, hr₀, hs]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Take `⟨b, hb, vb⟩` from `exists_cast (K := PUnit) (ε := fun _ => -1) (φ' := fun _ => D'.xK x ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf (RingHom.id R))) (φ := fun _ => D.xK (xe x)) (funext fun _ => hx x) (D.psi (xe x))`. Use `⟨b, fun jN jL => ?_, corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `unit_ext fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `v` using `hψ x _ (𝟙 _) y jN (fun _ => jL) (fun k => Set.mem_iInter.1 (GeneratorPullback.mapsAt_le_b _ _ _ _ jN jL hy) k) (fun k => Set.mem_iInter.1 (GeneratorPullback.mapsAt_le_a _ _ _ _ jN jL hy) k)`. Rewrite `v` using `[Category.id_comp, Fintype.prod_unique]`. Use `(gm_res _ y _ hy _).trans ((hb _ _ y jN).trans (v.trans (Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res _ y _ hy _))))))` and prove the remaining obligations. Conclude with `(map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull (𝟙 _) _ y _ hy _))`. Establish `v` using `val_corr hJ (ψW.psi_eq (xe x)) r`.
-
-Rewrite `v` using `[val_pull hJ, val_pull hJ, hr₀]`. Rewrite using `[vb, val_pull hJ, Category.id_comp, v]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullDeg_id (D D' : DegPre R) (W : (Spec (CommRingCat.of R)).Opens)
     (hW : genericPoint (Spec (CommRingCat.of R)) ∈ W) (ψW : PsiOn D W)
@@ -125,23 +123,21 @@ namespace GlobalTheory
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hG hS hA R _ _ _ I hR D D' A A' G _ _ hsa U U' wL hwg hwm`. Establish `hs` using `specOf_id R`. Establish `he₀ : eSec G ≫ 𝟙 G.left = 𝟙 _ ≫ eSec G` using `(Category.comp_id _).trans (Category.id_comp _).symm`. Establish `g₁` using `(isGen_iff _).2 (isoPullId_pgen hwg (rfl : 𝟙 G.left = 𝟙 _))`. Establish `m₁` using `isoPullId_maps hwm (rfl : 𝟙 G.left = 𝟙 _) rfl he₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Φ, w, hΦ⟩` from `GlobalTheory.T.uniformisation_polarised_abelianSchemes_iso hG hS hA R I hR D D' A A' G hsa U.toUnifPre U'.toUnifPre _ he₀ g₁ m₁`. Establish `hhom` using `abelianPartIso_isMonHom_and_rigidified R I hR D D' A A' G hsa U.toUnifPre U'.toUnifPre _ he₀ g₁ m₁ Φ w hΦ`. Take `⟨xe, hxe⟩` from `unifPre_characterGroup_iso R I hR D D' A A' G hsa U.toUnifPre U'.toUnifPre`. Establish `hc` using `GlobalTheory.T.unifPre_c_and_coord_correspond_alt hG R I hR D D' A A' G hsa U.toUnifPre U'.toUnifPre Φ w hΦ.1 hhom.1 (fun e => (hΦ.2 e).1) xe hxe`. Establish `hψ` using `GlobalTheory.T.uniformisation_trivialisations_correspond hG hS R I hR D D' A A' G hsa U.toUnifPre U'.toUnifPre _ he₀ g₁ m₁ (U.expand 1 le_rfl) (U'.expand 1 le_rfl) Φ w hΦ hhom xe hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin` using `UnifLinear.identification_linear R I hR D D' A A' G hsa U.toUnifPre U'.toUnifPre Φ (fun e => (hΦ.2 e).1) xe hxe`. Take `⟨hmon, hrig⟩` from `hhom`. Take `⟨hc₁, hc₂⟩` from `hc`. Establish `gp : IsGrpPullback D'.toPre.P.A D.toPre.P.A (specOf (RingHom.id R)) Φ.hom.left` using `(isGrpPullback_of_iso Φ).congr hs.symm rfl`. Take `⟨e, me, hF⟩` from `grpPullback_iso gp (isGrpPullback_pullback D.toPre.P.A (specOf (RingHom.id R)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hE : eSec D'.toPre.P.A ≫ Φ.hom.left = eSec D.toPre.P.A`. Rewrite using `[eSec, eSec, ← Over.comp_left, IsMonHom.one_hom]`. Establish `hc₁' : ∀ x, (D'.toPre.c x).left ≫ Φ.hom.left = (D.toPre.c (xe x)).left` using `fun x => by`. Rewrite using `[← Over.comp_left, hc₁]`. Establish `hact : ∀ (a' : D'.toPre.P.A ⟶ D'.toPre.P.A) (a : D.toPre.P.A ⟶ D.toPre.P.A), a' ≫ Φ.hom = Φ.hom ≫ a → a' ≫ e.hom = e.hom ≫ (Over.pullback (specOf (RingHom.id R))).map a` using `fun a' a h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `a₂ : ((Over.pullback (specOf (RingHom.id R))).map a).left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)) = pullback.fst _ _ ≫ a.left` using `pullback.lift_fst _ _ _`. Establish `h'` using `congrArg (fun q => q.left) h`. Simplify using `only [Over.comp_left] at h'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc]`. Use `(congrArg (a'.left ≫ ·) hF).trans (h'.trans (Eq.symm ?_))` and prove the remaining obligations. Use `(congrArg (e.hom.left ≫ ·) a₂).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ a.left) hF`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Over.w (a' ≫ e.hom)).trans (Over.w (e.hom ≫ (Over.pullback (specOf (RingHom.id R))).map a)).symm`. Establish `hlin' : ∀ (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] [Module O D'.toPre.X] (ιD : D.toPre.OAct O) (ιD' : D'.toPre.OAct O) (ιA : A.OAct O) (ιA' : A'.OAct O) (ιG : RingAct G O), U.OLinear O ιD ιA ιG → U'.OLinear O ιD' ιA' ιG → (∀ (a : O) (y : D'.toPre.X), xe (a • y) = a • …` using `fun O _ _ _ _ ιD ιD' ιA ιA' ιG h h' => ⟨(hlin O ιD ιD' ιA ιA' ιG h h').1, fun a => hact _ _ ((hlin O ιD ιD' ιA ιA' ιG h h').2 a)⟩`. Take `⟨w', g', r', ψ', t', s'⟩` from `UnifUniq.exists_transport hF (fun (F : D'.toPre.P.A.left ⟶ D.toPre.P.A.left) (w : LB.Iso D'.toPre.P.L (D.toPre.P.L.pull F)) => w.IsGen ∧ PMaps w (K := PUnit) (fun _ => eSec D'.toPre.P.A) (fun _ => eSec D.toPre.P.A) (fun _ => 1) D'.toPre.rig D.toPre.rig (𝟙 _) ∧ (∀ x, PMaps w (K := …`. Establish `hp : ∀ n : ℕ, (U'.gt n).pG.left ≫ e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)) = (U.gt n).pG.left` using `fun n => (congrArg (_ ≫ ·) hF).trans (hΦ.2 n).1`. Establish `hO : ∀ (n : ℕ) (x : D'.toPre.X) (k : Fin 4), D'.toPre.Oφ ((U'.gt n).pG) x k ≫ e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)) = 𝟙 _ ≫ D.toPre.Oφ ((U.gt n).pG) (xe x) k` using `fun n x k => (congrArg (_ ≫ ·) hF).trans (((hc₂ n).2 x).1 k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, ⟨ψW⟩⟩` from `psiOnExists R I hR D`. Take `⟨hD, e₁, e₂, e₃⟩` from `UnifUniq.exists_isPullDeg_id D.toPre D'.toPre W hW ψW e me w' g' ((congrArg (_ ≫ ·) hF).trans hE) r' xe (fun x => (congrArg (_ ≫ ·) hF).trans (hc₁' x)) ψ'`. Substitute `e₁ e₃` using the available equality. Take `rfl` from `eq_of_heq e₂`. Use `⟨hD, fun n => ⟨hp n, fun x => ⟨hO n x, ?_⟩, fun jM jM' jL' jL => res_eq_of_gm fun y hy => ?_⟩, hlin'⟩` and prove the remaining obligations.
-
-Conclude with `(maps_iff hD.w _ _ _ _ _ (𝟙 _) _ (GeneratorPullback.pullAlong_le D.toPre.P.L _ _ _ _ (hO n x)) (fun _ => rfl)).2 (t' n x)`. Establish `H` using `s' n y (jM PUnit.unit) jM' jL jL' (mem_pull.1 hy.1.2.1) (mem_pull.1 hy.1.1.2.1) hy.2.1 hy.2.2`. Conclude with `(congrArg₂ (· * ·) (gm_pull (𝟙 _) _ y _ hy.1.1.1 _) rfl).trans (H.trans (congrArg₂ (· * ·) rfl (gm_pull (𝟙 _) _ y _ hy.2 _).symm))`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unifUniq : GlobalFnsSt → SecBaseChangeSt → AmpleSt → UnifUniqSt := by
   intro hG hS hA R _ _ _ I hR D D' A A' G _ _ hsa U U' wL hwg hwm

@@ -15,11 +15,9 @@ set_option autoImplicit false
 namespace GlobalTheory.ConjRiemannPos
 
 /- English proof (translation)
-Use `set N : ℕ := Ideal.absNorm c with hNdef`. Establish `hN : N ≠ 0` using `by rwa [hNdef, Ne, Ideal.absNorm_eq_zero_iff]`. Establish `hNc : (N : OF E) ∈ c` using `Ideal.absNorm_mem c`. Take `⟨m, hm, hym⟩` from `PI.AdCpctDenWork.exists_nat_adele (F := E) ((y⁻¹ : (Af E)ˣ) : Af E)`. Establish `key` using `GlobalTheory.CMVal.PicFin.mul_mem_hatO hNc (y := (m : Af E) * ((y⁻¹ : (Af E)ˣ) : Af E)) (fun v => hym v)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(N : E) * m, ?_, ?_⟩` and prove the remaining obligations. Use `show algebraMap E (Af E) ((N : E) * m) * _ ∈ hatO c`. Rewrite `key` using `[map_natCast, map_natCast]`. Rewrite using `[map_mul, map_natCast, map_natCast, _root_.mul_assoc]`. Conclude with `key`.
-
-Conclude with `mul_ne_zero (Nat.cast_ne_zero.mpr hN) (Nat.cast_ne_zero.mpr hm.ne')`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_mem_lattice {E : Type} [Field E] [NumberField E] (c : Ideal (OF E)) (y : (Af E)ˣ)
     (hc : c ≠ ⊥) : ∃ u ∈ lattice c y, u ≠ 0 := by
@@ -36,39 +34,35 @@ theorem exists_ne_zero_mem_lattice {E : Type} [Field E] [NumberField E] (c : Ide
   · exact mul_ne_zero (Nat.cast_ne_zero.mpr hN) (Nat.cast_ne_zero.mpr hm.ne')
 
 /- English proof (translation)
-Introduce `K _ _ d δ io _ hd hδ g hg E _ _ _ _ I _ φ hφ c y hc n e h Hm hn hdiag _ hH`. Take `⟨u, hu, hu0⟩` from `exists_ne_zero_mem_lattice c y hc`. Use `set N : ℕ := Ideal.absNorm c with hNdef`. Establish `hN : N ≠ 0` using `by rwa [hNdef, Ne, Ideal.absNorm_eq_zero_iff]`. Establish `hNc : (N : OF E) ∈ c` using `Ideal.absNorm_mem c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set δ' : E := algebraMap K E δ with hδ'`. Establish `hδ'2 : δ' ^ 2 = -(d : E)` using `by rw [hδ', ← map_pow, hδ]; simp`. Establish `hint : IsIntegral ℤ δ'`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Establish `e1 : algebraMap ℤ E (-(d : ℤ)) = -(d : E)` using `by simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hδ'2, ← e1]`. Conclude with `isIntegral_algebraMap`. Set `b : 𝓞 E` to `⟨δ', hint⟩`. Establish `hb : algebraMap (𝓞 E) E b = δ'` using `rfl`. Establish `hmem : (N : E) * δ' ∈ orderC c` using `mem_orderC.2 ⟨0, algebraMap (OF E) (𝓞 E) (N : OF E) * b, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hNc), by simp [hb]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu' : (N : E) * δ' * u ∈ lattice c y` using `by show algebraMap E (Af E) _ * _ ∈ hatO c`. Rewrite using `[map_mul, _root_.mul_assoc]`. Conclude with `mul_mem (algebraMap_mem_hatO hmem) hu`. Use `⟨u, hu, (N : E) * δ' * u, hu', ?_⟩` and prove the remaining obligations. Use `set w : ℂ := io δ with hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hφδ : ∀ i, φ i δ' = w` using `fun i => by rw [hδ', ← RingHom.comp_apply, hφ i]`. Establish `hw2 : w ^ 2 = -(d : ℂ)` using `by rw [hw, ← map_pow, hδ]; simp`. Establish `hre` using `congrArg Complex.re hw2`. Establish `him` using `congrArg Complex.im hw2`. Simplify using `only [pow_two, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdR : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `hwre : w.re = 0`. Assume the negation of the conclusion as `hne`. Establish `h0 : w.im = 0`. Establish `: 2 * w.re * w.im = 0` using `by linarith`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 this with h1 | h1` into its components or cases. Conclude with `absurd (by linarith : w.re = 0) hne`. Conclude with `h1`. Rewrite `hre` using `[h0]`. Use polynomial arithmetic with `[mul_self_nonneg w.re]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hwim : w.im ^ 2 = d` using `by rw [hwre] at hre; nlinarith`. Establish `hφu' : ∀ i, φ i ((N : E) * δ' * u) = (N : ℂ) * w * φ i u` using `fun i => by`. Rewrite using `[map_mul, map_mul, map_natCast, hφδ]`. Use `set P : ℝ := ∑ i, h i * Complex.normSq (φ i u) with hP`. Establish `hS : (∑ i, h i * (φ i u * starRingEnd ℂ (φ i ((N : E) * δ' * u))).im) = -((N : ℝ) * w.im) * P`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hP, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hφu']`. Simplify using `only [map_mul, Complex.conj_natCast, Complex.mul_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.natCast_re, Complex.natCast_im, hwre, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hPpos : 0 < P`. Establish `hz : (fun j => φ (e j) u) ≠ 0`. Introduce `h0`. Use `congrFun h0 ⟨0, hn⟩` as an intermediate fact. Conclude with `(map_ne_zero (φ (e ⟨0, hn⟩))).2 hu0 this`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hdiag _ hz` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.mulVec_diagonal, dotProduct, Complex.re_sum, Pi.star_apply]`. Rewrite using `[hP, ← e.sum_comp]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.star_def, Complex.conj_re, Complex.conj_im, Complex.mul_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `set W : Fin n → ℂ := fun j => g (φ (e j) u) with hWdef`. Establish `hW' : (star fun j => g (φ (e j) ((N : E) * δ' * u))) = (starRingEnd ℂ ((N : ℂ) * w)) • star W`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Pi.star_apply, Pi.smul_apply, smul_eq_mul, hWdef, hφu', map_mul, map_natCast, hw, hg δ, star_mul', Complex.star_def]`. Establish `hWne : W ≠ 0`. Introduce `h0`. Use `congrFun h0 ⟨0, hn⟩` as an intermediate fact. Conclude with `(map_ne_zero g).2 ((map_ne_zero (φ (e ⟨0, hn⟩))).2 hu0) this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ` using `hH W hWne`. Use `set Q : ℂ := W ⬝ᵥ Hm.mulVec (star W) with hQdef`. Establish `hQ' : (W ⬝ᵥ Hm.mulVec (star fun j => g (φ (e j) ((N : E) * δ' * u)))).im = -((N : ℝ) * w.im) * Q.re`. Rewrite using `[hW', Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, ← hQdef]`. Simplify using `only [map_mul, Complex.conj_natCast, Complex.mul_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.natCast_re, Complex.natCast_im, hwre]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hwim0 : w.im ≠ 0`. Introduce `h0`. Rewrite `hwim` using `[h0]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `hNR : (0 : ℝ) < N` using `by exact_mod_cast Nat.pos_of_ne_zero hN`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hS]`. Conclude with `mul_ne_zero (neg_ne_zero.2 (mul_ne_zero hNR.ne' hwim0)) hPpos.ne'`. Rewrite using `[hS, hQ']`.
-
-Establish `hk : 0 < ((N : ℝ) * w.im) ^ 2` using `by positivity`. Establish `: -((N : ℝ) * w.im) * P * (-((N : ℝ) * w.im) * Q.re) = ((N : ℝ) * w.im) ^ 2 * (P * Q.re)` using `by ring`. Rewrite using `[this]`. Conclude with `mul_pos hk (mul_pos hPpos hQ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_pos_pair : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ g : ℂ ≃+* ℂ, (∀ x, g (io x) = io x) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I]

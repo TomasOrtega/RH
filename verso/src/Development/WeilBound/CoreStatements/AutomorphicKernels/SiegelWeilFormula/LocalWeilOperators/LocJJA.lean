@@ -12,7 +12,7 @@ namespace PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h2` using `congrArg Matrix.toBlocks₂₁ h`. Simplify using `[wM, Krd.Qc, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply] at h2`. Establish `h3` using `congrFun (congrFun h2 ⟨0, hn⟩) ⟨0, hn⟩`. Simplify using `at h3`. Conclude with `Units.ext (by exact_mod_cast h3)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eps_of_unit {n : ℕ} (hn : 1 ≤ n) (ε ε' : ℤˣ)
     (h : (wM n ((ε : ℤ) : ℂ))ᵀ * Krd.Qc n ε' * (wM n ((ε : ℤ) : ℂ)).map star = Krd.Qc n ε') : ε = ε' := by
@@ -27,13 +27,11 @@ namespace RD
 variable {d : SD σ} (R : RD d)
 
 /- English proof (translation)
-Establish `hmem : (mat2 w₀)ᵀ * dbl (incM F d.Y.J) * (mat2 w₀).map (cA σ) = dbl (incM F d.Y.J)` using `w₀.2`. Establish `hmat : mat2 w₀ = incM F d.b.1 * inFrame d.b w₀ * incM F (d.b⁻¹).1`. Simplify using `only [inFrame, ← Matrix.mul_assoc]`. Rewrite using `[Krd.bb d, Matrix.one_mul, Matrix.mul_assoc, Krd.bb d, Matrix.mul_one]`. Establish `hc` using `congrArg (d.cw w) hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[Krd.cw_mul d, Krd.cw_mul d, Place.cw_cA d, Krd.cw_transpose d, Krd.dbl_incM d, Krd.cw_incM d, hmat, Krd.cw_mul d, Krd.cw_mul d, Krd.cw_incM d, Krd.cw_incM d, RD.cw_wM h w]`. Use `set P := d.b.1.map (d.B.emb w).1`. Use `set Pi := (d.b⁻¹).1.map (d.B.emb w).1`. Use `set D := (dbl d.Y.J).map (d.B.emb w).1`. Use `set Wc := wM d.n ((ε : ℤ) : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPiP : Pi * P = 1`. Simplify using `only [Pi, P]`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hQ` using `Krd.hQ_w d R.hε w`. Apply `eps_of_unit d.ok.hn ε R.ε` to reduce the goal to its premises.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPiP, hQ, Matrix.transpose_one, Krd.mapStar_one, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Pᵀ * ((P * Wc * Pi)ᵀ * D * (P * Wc * Pi).map star) * P.map star := by`. Simplify using `only [Matrix.transpose_mul, Krd.mapStar_mul, Matrix.mul_assoc]`. Use `_ = Krd.Qc d.n R.ε := by rw [hc, hQ]`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isW_eps (w : InfinitePlace F) {ε : ℤˣ} {w₀ : d.G} (h : d.IsW ε w₀) : ε = R.ε := by
   have hmem : (mat2 w₀)ᵀ * dbl (incM F d.Y.J) * (mat2 w₀).map (cA σ) = dbl (incM F d.Y.J) := w₀.2

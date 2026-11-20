@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.AdmFrobTriple
 
 /- English proof (translation)
-Introduce `h2`. Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 h)`. Take `⟨a, b, hab⟩` from `hc.map (Int.castRingHom (𝓞 E))`. Establish `h1' : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal` using `h1`. Establish `h2' : ((q : ℕ) : 𝓞 E) ∈ v.asIdeal` using `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1') (Ideal.mul_mem_left _ _ h2')`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_mem_placesOver_of_ne (E : Type) [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (h : p ≠ q) {v : HeightOneSpectrum (𝓞 E)} (h1 : v ∈ placesOver E p) : v ∉ placesOver E q := by
@@ -29,9 +29,9 @@ theorem not_mem_placesOver_of_ne (E : Type) [Field E] [NumberField E] {p q : ℕ
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1') (Ideal.mul_mem_left _ _ h2')
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero (algebraMap ℤ_[l] O) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, hI.hasBasis_nhds_zero.tendsto_right_iff]`. Introduce `n _`. Establish `hl : (0 : ℝ) < (l : ℝ) ^ (-(n : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds (0 : ℤ_[l]) hl] with x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[mem_closedBall_zero_iff, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hO n)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_algebraMap_padicInt {O : Type} [CommRing O] [TopologicalSpace O] [IsTopologicalRing O]
     {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O] (I : Ideal O) (hI : IsAdic I) (hO : (l : O) ∈ I) :
@@ -47,11 +47,11 @@ theorem continuous_algebraMap_padicInt {O : Type} [CommRing O] [TopologicalSpace
   exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hO n)
 
 /- English proof (translation)
-Establish `hdeg : M.charpolyRev.natDegree < n + 1`. Rewrite using `[← Matrix.reverse_charpoly]`. Use `Polynomial.reverse_natDegree_le M.charpoly` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1` using `Polynomial.eval_eq_sum_range' hdeg (1 : R)`. Simplify using `only [one_pow, mul_one] at h1`. Rewrite using `[← h1, Matrix.charpolyRev, ← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.map_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.smul_apply, RingHom.mapMatrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_coeff_charpolyRev {R : Type} [CommRing R] [Nontrivial R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) :
     ∑ k ∈ Finset.range (n + 1), M.charpolyRev.coeff k = (1 - M).det := by
@@ -71,7 +71,7 @@ theorem sum_coeff_charpolyRev {R : Type} [CommRing R] [Nontrivial R] {n : ℕ} (
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `h.map (algebraMap (D.ntw.O0 i) (D.ntw.O i))`. Rewrite `h2` using `[map_natCast]`. Conclude with `D.ntw.O_l i h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mem (i : D.ntw.Tw) : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i) := by
   intro h
@@ -80,7 +80,7 @@ theorem l_mem (i : D.ntw.Tw) : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ∈ IsLocalRing.
   exact D.ntw.O_l i h2
 
 /- English proof (translation)
-The claim follows from `(continuous_algebraMap_padicInt _ (D.ntw.twistBaseCoefficientRing_isAdic i) (l_mem i)).comp (Units.continuous_val.comp (continuous_cycZ D.host.E D.nd.Om (D.ntw.l i)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_twistCyclotomicCharacter (i : D.ntw.Tw) :
     Continuous fun g : Gen.GE D.nd => ((eps0 D.ntw i g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) :=
@@ -88,9 +88,9 @@ theorem continuous_twistCyclotomicCharacter (i : D.ntw.Tw) :
     (Units.continuous_val.comp (continuous_cycZ D.host.E D.nd.Om (D.ntw.l i)))
 
 /- English proof (translation)
-Establish `h2 : v ∈ (D.ntw.pD i : Set _)` using `hv`. Rewrite `h2` using `[D.ntw.pD_eq]`. Establish `hl` using `(D.ntw.lPrime i).out`. Use `split_ifs at h2 with h`. Use `⟨not_mem_placesOver_of_ne _ D.host.pde'_prime hl ?_ h2, fun k => not_mem_placesOver_of_ne _ D.host.pde'_prime (D.host.g_prime k) (D.host.pde_ne_g k).2 h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `D.host.pde_ne.symm`. Conclude with `⟨not_mem_placesOver_of_ne _ D.host.pde_prime hl (Ne.symm h) h2, fun k => not_mem_placesOver_of_ne _ D.host.pde_prime (D.host.g_prime k) (D.host.pde_ne_g k).1 h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pD_not (i : D.ntw.Tw) (v) (hv : v ∈ D.ntw.pD i) :
     v ∉ placesOver D.host.E (D.ntw.l i) ∧ ∀ k, v ∉ placesOver D.host.E (D.host.g k) := by
@@ -109,7 +109,7 @@ end GlobalTheory.AdmFrobTriple
 namespace GlobalTheory.AdmFrobTriple
 
 /- English proof (translation)
-Simplify using `only [Tmat, MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_pow_eq_pow_val, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eta_smul {D : D7} (i : D.ntw.Tw) (s : D.ntw.Sig i) (σ : Gen.GE D.nd) :
     ((((eps0 D.ntw i) ^ D.R.t * (chiS i s)⁻¹) σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) •
@@ -119,23 +119,21 @@ theorem eta_smul {D : D7} (i : D.ntw.Tw) (s : D.ntw.Sig i) (σ : Gen.GE D.nd) :
     Units.val_pow_eq_pow_val, mul_smul]
 
 /- English proof (translation)
-Introduce `D i s hU hH _`. Use `⟨(eps0 D.ntw i) ^ D.R.t * (chiS i s)⁻¹, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun g : Gen.GE D.nd => (((chiS i s g)⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)`. Repeatedly rewrite using `[← map_inv]`. Conclude with `(D.ntw.twistCharacterFamily_continuous i _ _).comp continuous_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `he : (fun g : Gen.GE D.nd => ((((eps0 D.ntw i) ^ D.R.t * (chiS i s)⁻¹) g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)) = fun g => ((eps0 D.ntw i g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) ^ D.R.t * (((chiS i s g)⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)`. Use function extensionality and compare the values at `g`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_pow_eq_pow_val]`. Rewrite using `[he]`. Conclude with `((continuous_twistCyclotomicCharacter i).pow _).mul hc`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `P hP _ A hA σ hσ`. Establish `hPl : P ∉ placesOver D.host.E (D.ntw.l i)` using `fun h => hP (D.ntw.twistExcludedPlaces_contains_residueChar i h)`. Establish `hPg : ∀ k, P ∉ placesOver D.host.E (D.host.g k)` using `fun k h => hP (D.ntw.placesOver_subset_exceptional i k h)`. Establish `hPd : P ∉ D.ntw.pD i` using `fun h => hP (D.ntw.primes_subset_exceptional i h)`. Establish `h1 : D.ntw.rhoS i s σ = 1` using `hU P hPl hPg A hA σ hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : chiS i s σ = 1` using `D.ntw.twistCharacterFamily_unramified i _ _ P hPl hPg hPd A hA σ hσ`. Establish `h3 : eps0 D.ntw i σ = 1` using `(GlobalTheory.TripleGal.eps0_unram_frob D i P hPl A hA).1 σ hσ`. Simplify using `[MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.inv_apply, h1, h2, h3]`. Introduce `v hv A hA`. Take `⟨hl, hg⟩` from `pD_not i v hv`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ σ ∈ Ine (F` using `D.host.E) A, D.ntw.rhoS i s σ = 1 := fun σ hσ => hU v hl hg A hA σ hσ`. Establish `h3 : ∀ σ ∈ Ine (F` using `D.host.E) A, eps0 D.ntw i σ = 1 := (GlobalTheory.TripleGal.eps0_unram_frob D i v hl A hA).1`. Establish `h2` using `D.ntw.twistCharacterFamily_at_auxiliaryPlaces i (D.ntw.jS i s) (D.ntw.side i s) v hv A hA`. Consider the cases of `hb : D.ntw.side i s`. Use `left`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ hσ`. Establish `h2' : chiS i s σ = (D.ntw.delta i σ)⁻¹`. Use `h2 σ hσ` as an intermediate fact. Rewrite `this` using `[hb]`. Simplify `this` using `[chiS, hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.inv_apply, h1 σ hσ, h2', h3 σ hσ]`. Use `right`. Introduce `σ hσ`. Establish `h2' : chiS i s σ = D.ntw.delta i σ`. Use `h2 σ hσ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hb]`. Simplify `this` using `[chiS, hb]`. Simplify using `[MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.inv_apply, h1 σ hσ, h2', h3 σ hσ]`. Introduce `P hP hs σ hσ`. Rewrite using `[eta_smul, ← sum_coeff_charpolyRev, map_sum]`.
-
-Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Conclude with `hH P hP hs σ hσ k (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adm8At_of_hkFrob : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i), UnrRho i s → HkFrob i s →
     characterTwistExists D.ntw D.nexp i s := by

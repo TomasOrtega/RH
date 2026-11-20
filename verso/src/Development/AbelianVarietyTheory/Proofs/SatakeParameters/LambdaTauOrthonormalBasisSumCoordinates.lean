@@ -11,9 +11,9 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 namespace GlobalTheory.KerStd.HypCoord
 
 /- English proof (translation)
-Establish `h1 : A.adjugate.map f = (A.map f).adjugate`. Use `RingHom.map_adjugate f A` as an intermediate fact. Simplify `this` using `[RingHom.mapMatrix_apply]`. Establish `h2 : (A.map f).det = f A.det`. Use `RingHom.map_det f A` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this.symm` using `[RingHom.mapMatrix_apply]`. Rewrite using `[Matrix.inv_def, Matrix.inv_def, Matrix.map_smul' _ _ _ (map_mul f), h1, h2, Ring.inverse_eq_inv', Ring.inverse_eq_inv', map_inv₀]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_field_hom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ} (A : Matrix (Fin n) (Fin n) K) :
     (A⁻¹).map f = (A.map f)⁻¹ := by
@@ -24,17 +24,17 @@ theorem map_inv_field_hom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : 
   rw [Matrix.inv_def, Matrix.inv_def, Matrix.map_smul' _ _ _ (map_mul f), h1, h2, Ring.inverse_eq_inv', Ring.inverse_eq_inv', map_inv₀]
 
 /- English proof (translation)
-Introduce `D p _ lam σ hσ hcl N N' L L' P P' _ _ r b hb k z a b₀`. Take `⟨ρ, hρ⟩` from `exists_ringHom_rhoK D lam σ hσ hcl z`. Use `set τ := tauPl D z with hτ`. Set `ι : MaximalUnramifiedExtension p →+* ℂ_[p]` to `(MaximalUnramifiedExtension p).subtype`. Establish `hfun : ∀ y, ι (ρ y) = tauEmb D lam τ y` using `fun y => (hρ y).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrho : rhoK D lam z = fun y => ρ y` using `funext fun y => (hρ y).1`. Establish `hinv : ∀ a a₁, ((((P τ).map (rhoK D lam z))⁻¹ a a₁ : MaximalUnramifiedExtension p) : ℂ_[p]) = ((P τ).map (tauEmb D lam τ))⁻¹ a a₁`. Introduce `a a₁`. Establish `e2 : (P τ).map (tauEmb D lam τ) = ((P τ).map ρ).map ι`. Use extensionality with `u v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hfun]`. Rewrite using `[hrho, e2, ← map_inv_field_hom ι]`. Both sides reduce to the same expression. Establish `hg : ∀ i, ((gK D lam P P' b z a b₀ i : MaximalUnramifiedExtension p) : ℂ_[p]) = ∑ b₁ : Fin N', ∑ a₁ : Fin N, Formalism.L2.KerInert.RepFrame.lamBc D lam b (τ, b₁, a₁) i * (tauEmb D lam τ (P' τ b₁ b₀) * ((P τ).map (tauEmb D lam τ))⁻¹ a a₁)`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gK, ← hτ]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, coe_rhoK D lam σ hσ hcl, hinv, mul_assoc, ← hτ]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hg, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_congr rfl fun b₁ _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[← mul_assoc, ← Finset.sum_mul, hb k]`. Break down `k with ⟨t, c, d⟩` into its components or cases. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality.
+Rewrite the conclusion repeatedly using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[chgB, Prod.ext_iff, ite_and]`. Simplify using `[chgB, Prod.ext_iff, ht, Ne.symm ht]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lamB_sum_gK : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p), UnrOK (MaximalUnramifiedExtension p) p σ → (IsResidueClassZero D p ∨ IsSg D p) → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E) (P' : D.what₂.Tau → Matrix (Fin N') (Fin N') D.host.E), StdBases D lam L P → StdBases D lam L' P' → ∀ (r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), Formalism.L2.KerInert.RepFrame.LamONB D lam b → ∀ (k : D.what₂.Tau × Fin N' × Fin N) (z : Bool × HH D) (a : Fin N) (b₀ : Fin N'), ∑ i, Formalism.L2.KerInert.RepFrame.lamB D lam b k i * ((gK D lam P P' b z a b₀ i : MaximalUnramifiedExtension p) : ℂ_[p]) = chgB D lam P P' k ((0 : ZMod 1), (tauPl D z, a, b₀)) := by
   intro D p _ lam σ hσ hcl N N' L L' P P' _ _ r b hb k z a b₀

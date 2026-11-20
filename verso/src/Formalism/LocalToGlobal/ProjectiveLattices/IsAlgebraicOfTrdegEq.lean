@@ -19,7 +19,7 @@ def HomQ (x : Fin N → L) (f : L) : Prop :=
     MvPolynomial.aeval x B ≠ 0 ∧ f = MvPolynomial.aeval x A / MvPolynomial.aeval x B
 
 /- English proof (translation)
-Take `⟨e, A, B, hA, hB, hBx, rfl⟩` from `hf`. Take `⟨e', A', B', hA', hB', hBx', rfl⟩` from `hg`. Conclude with `⟨e + e', A * A', B * B', hA.mul hA', hB.mul hB', by rw [map_mul]; exact mul_ne_zero hBx hBx', by rw [map_mul, map_mul, div_mul_div_comm]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem homQ_mul {x : Fin N → L} {f g : L} (hf : HomQ K x f) (hg : HomQ K x g) : HomQ K x (f * g) := by
   obtain ⟨e, A, B, hA, hB, hBx, rfl⟩ := hf
@@ -28,7 +28,7 @@ theorem homQ_mul {x : Fin N → L} {f g : L} (hf : HomQ K x f) (hg : HomQ K x g)
     by rw [map_mul, map_mul, div_mul_div_comm]⟩
 
 /- English proof (translation)
-Take `⟨e, A, B, hA, hB, hBx, rfl⟩` from `hf`. Take `⟨e', A', B', hA', hB', hBx', rfl⟩` from `hg`. Conclude with `⟨e + e', A * B' + B * A', B * B', (hA.mul hB').add (hB.mul hA'), hB.mul hB', by rw [map_mul]; exact mul_ne_zero hBx hBx', by rw [map_add, map_mul, map_mul, map_mul, div_add_div _ _ hBx hBx']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem homQ_add {x : Fin N → L} {f g : L} (hf : HomQ K x f) (hg : HomQ K x g) : HomQ K x (f + g) := by
   obtain ⟨e, A, B, hA, hB, hBx, rfl⟩ := hf
@@ -38,7 +38,7 @@ theorem homQ_add {x : Fin N → L} {f g : L} (hf : HomQ K x f) (hg : HomQ K x g)
     by rw [map_add, map_mul, map_mul, map_mul, div_add_div _ _ hBx hBx']⟩
 
 /- English proof (translation)
-Take `⟨e, A, B, hA, hB, hBx, rfl⟩` from `hf`. Distinguish the cases in `hAx : MvPolynomial.aeval x A = 0`. Rewrite using `[hAx, zero_div, inv_zero]`. Conclude with `⟨0, 0, 1, MvPolynomial.isHomogeneous_zero _ _ _, MvPolynomial.isHomogeneous_one _ _, by simp, by simp⟩`. Conclude with `⟨e, B, A, hB, hA, hAx, by rw [inv_div]⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem homQ_inv {x : Fin N → L} {f : L} (hf : HomQ K x f) : HomQ K x f⁻¹ := by
   obtain ⟨e, A, B, hA, hB, hBx, rfl⟩ := hf
@@ -48,13 +48,13 @@ theorem homQ_inv {x : Fin N → L} {f : L} (hf : HomQ K x f) : HomQ K x f⁻¹ :
   · exact ⟨e, B, A, hB, hA, hAx, by rw [inv_div]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, MvPolynomial.C c, 1, MvPolynomial.isHomogeneous_C _ _, MvPolynomial.isHomogeneous_one _ _, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem homQ_algebraMap (x : Fin N → L) (c : K) : HomQ K x (algebraMap K L c) :=
   ⟨0, MvPolynomial.C c, 1, MvPolynomial.isHomogeneous_C _ _, MvPolynomial.isHomogeneous_one _ _, by simp, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, MvPolynomial.X m, MvPolynomial.X k₀, MvPolynomial.isHomogeneous_X _ _, MvPolynomial.isHomogeneous_X _ _, by simpa using hx, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem homQ_ratio (x : Fin N → L) (m k₀ : Fin N) (hx : x k₀ ≠ 0) : HomQ K x (x m / x k₀) :=
   ⟨1, MvPolynomial.X m, MvPolynomial.X k₀, MvPolynomial.isHomogeneous_X _ _, MvPolynomial.isHomogeneous_X _ _,
@@ -70,7 +70,7 @@ def homQField (x : Fin N → L) : IntermediateField K L where
   inv_mem' := fun _ hf => homQ_inv hf
 
 /- English proof (translation)
-Establish `hle : IntermediateField.adjoin K (Set.range fun m => x m / x k₀) ≤ homQField K x`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `homQ_ratio x m k₀ hx`. Conclude with `hle hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem homQ_of_mem_adjoin (x : Fin N → L) (k₀ : Fin N) (hx : x k₀ ≠ 0) {f : L}
     (hf : f ∈ IntermediateField.adjoin K (Set.range fun m => x m / x k₀)) : HomQ K x f := by
@@ -81,9 +81,7 @@ theorem homQ_of_mem_adjoin (x : Fin N → L) (k₀ : Fin N) (hx : x k₀ ≠ 0) 
   exact hle hf
 
 /- English proof (translation)
-Establish `hs` using `trdeg_add_eq K F (A := L)`. Rewrite `hs` using `[hF, hL]`. Establish `h0 : Algebra.trdeg F L = 0`. Break down `Cardinal.add_eq_left_iff.1 hs with h | h` into its components or cases. Conclude with `absurd ((le_max_left _ _).trans h) (not_le.2 ((Cardinal.natCast_lt_aleph0 (n := d))))`.
-
-Conclude with `h`. Conclude with `trdeg_eq_zero_iff.1 h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_trdeg_eq (F : IntermediateField K L) (d : ℕ) (hF : Algebra.trdeg K F = d)
     (hL : Algebra.trdeg K L = d) : Algebra.IsAlgebraic F L := by
@@ -96,23 +94,21 @@ theorem isAlgebraic_of_trdeg_eq (F : IntermediateField K L) (d : ℕ) (hF : Alge
   exact trdeg_eq_zero_iff.1 h0
 
 /- English proof (translation)
-Use `set F := IntermediateField.adjoin K (Set.range fun m => x m / x k₀) with hFdef`. Take `⟨p, hpm, hp⟩` from `((halg.isAlgebraic a).isIntegral : IsIntegral F a)`. Establish `hq : ∀ i, HomQ K x ((p.coeff i : F) : L)` using `fun i => homQ_of_mem_adjoin x k₀ hx (p.coeff i).2`. Use `choose e A B hA hB hBx hf using hq`. Take `⟨n, hn⟩ : ∃ n, p.natDegree = n` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : MvPolynomial (Fin N) K := MvPolynomial.X k₀ * ∏ i ∈ Finset.range n, B i with hPdef`. Establish `hPh : P.IsHomogeneous (1 + ∑ i ∈ Finset.range n, e i)` using `(MvPolynomial.isHomogeneous_X K k₀).mul (MvPolynomial.IsHomogeneous.prod _ _ _ fun i _ => hB i)`. Establish `hPx : MvPolynomial.aeval x P = x k₀ * ∏ i ∈ Finset.range n, MvPolynomial.aeval x (B i)`. Rewrite using `[hPdef, map_mul, MvPolynomial.aeval_X, map_prod]`. Establish `hPx0 : MvPolynomial.aeval x P ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hPx]`. Conclude with `mul_ne_zero hx (Finset.prod_ne_zero_iff.2 fun i _ => hBx i)`. Use `⟨1 + ∑ i ∈ Finset.range n, e i, n, P, fun i => P ^ (n - i - 1) * (MvPolynomial.X k₀ * ∏ j ∈ (Finset.range n).erase i, B j) * A i, by omega, hPh, hPx0, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Establish `hS : ∑ j ∈ Finset.range n, e j = e i + ∑ j ∈ (Finset.range n).erase i, e j` using `(Finset.add_sum_erase _ _ (Finset.mem_range.2 hi)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `((hPh.pow (n - i - 1)).mul ((MvPolynomial.isHomogeneous_X K k₀).mul (MvPolynomial.IsHomogeneous.prod ((Finset.range n).erase i) B e fun j _ => hB j))).mul (hA i)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Take `⟨t, ht⟩ : ∃ t, n - i = t + 1` from `⟨n - i - 1, by omega⟩`. Rewrite using `[ht, Nat.add_sub_cancel, hS]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `beta_reduce`. Establish `hp' : Polynomial.aeval a p = 0` using `by rw [Polynomial.aeval_def]; exact hp`. Rewrite `hp'` using `[Polynomial.aeval_eq_sum_range, Finset.sum_range_succ, hpm.coeff_natDegree, one_smul, hn]`. Establish `key : ∀ i ∈ Finset.range n, MvPolynomial.aeval x (P ^ (n - i - 1) * (MvPolynomial.X k₀ * ∏ j ∈ (Finset.range n).erase i, B j) * A i) * (MvPolynomial.aeval x P * a) ^ i = MvPolynomial.aeval x P ^ n * (p.coeff i • a ^ i)`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi'` using `Finset.mem_range.1 hi`. Establish `hPi : MvPolynomial.aeval x P = x k₀ * (MvPolynomial.aeval x (B i) * ∏ j ∈ (Finset.range n).erase i, MvPolynomial.aeval x (B j))`. Rewrite using `[hPx, ← Finset.mul_prod_erase _ _ hi]`. Establish `hsm : p.coeff i • a ^ i = MvPolynomial.aeval x (A i) / MvPolynomial.aeval x (B i) * a ^ i`. Rewrite using `[Algebra.smul_def, IntermediateField.algebraMap_apply, hf i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨t, ht⟩ : ∃ t, n - i = t + 1` from `⟨n - i - 1, by omega⟩`. Establish `hpow : MvPolynomial.aeval x P ^ n = MvPolynomial.aeval x P ^ t * MvPolynomial.aeval x P * MvPolynomial.aeval x P ^ i`. Rewrite using `[← pow_succ, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsm, hpow]`. Simplify using `only [map_mul, map_pow, MvPolynomial.aeval_X, map_prod]`. Rewrite using `[ht, Nat.add_sub_cancel, hPi]`. Clear denominators, using `[hBx i]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[Finset.sum_congr rfl key, ← Finset.mul_sum, mul_pow, ← mul_add, add_comm, hp', mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_homInt (x : Fin N → L) (k₀ : Fin N) (hx : x k₀ ≠ 0)
     (halg : Algebra.IsAlgebraic (IntermediateField.adjoin K (Set.range fun m => x m / x k₀)) L) (a : L) :
@@ -181,9 +177,9 @@ def IntFormSt {wL : WeightFamilies.Wt D j} {N : ℕ} (w : Fin N → (recB h.toLa
       evC hG Z ((g : (recB h.toLawsCore).Cusp j (wsmul k wL)) : T.R j) = b
 
 /- English proof (translation)
-Introduce `Z a`. Take `⟨k₀, hx0, htrF⟩` from `hB2 Z`. Establish `halg` using `isAlgebraic_of_trdeg_eq _ _ htrF (htr Z)`. Take `⟨k, n, P, cf, hk, hP, hP0, hcf, heq⟩` from `exists_homInt (K := T.Q.c.F) _ k₀ hx0 halg a`. Take `⟨g, hg⟩` from `hint Z k n cf _ hk hcf heq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, g, P, hP, hP0, by rw [hg, mul_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem birSt_of (htr : FnTrdeg (T.Q.Xo j) T.Q.c (WeightFamilies.dimY D j)) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData (recPlus h j hj) ka wL wF)
@@ -200,7 +196,7 @@ theorem birSt_of (htr : FnTrdeg (T.Q.Xo j) T.Q.c (WeightFamilies.dimY D j)) {ka 
   exact ⟨k, g, P, hP, hP0, by rw [hg, mul_comm]⟩
 
 /- English proof (translation)
-The claim follows from `birSt_of h j hj hG htr G hBig.2 hint`.
+A detailed English derivation is pending.
 -/
 theorem birSt_of_big (htr : FnTrdeg (T.Q.Xo j) T.Q.c (WeightFamilies.dimY D j)) {ka wL wF : WeightFamilies.Wt D j}
     (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (hBig : BigAt h j hj hG G) (hint : IntFormSt h j hG G.w) :

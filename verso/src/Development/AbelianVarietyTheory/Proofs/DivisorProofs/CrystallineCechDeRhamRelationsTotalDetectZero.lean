@@ -18,14 +18,14 @@ section Gen
 variable {C : Type u} [Category.{0} C]
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cx_H1_mk_eq_zero_iff (K : Cx C) (x : K.Z1) :
     (QuotientAddGroup.mk x : K.H1) = 0 ↔ ∃ g, K.D0 g = x.1 := by
   rw [QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cx_H2_mk_eq_zero_iff (K : Cx C) (x : K.Z2) :
     (QuotientAddGroup.mk x : K.H2) = 0 ↔ ∃ g, K.D1 g = x.1 := by
@@ -34,9 +34,9 @@ theorem cx_H2_mk_eq_zero_iff (K : Cx C) (x : K.Z2) :
 variable {R : Type} [CommRing R] (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Use `show Cx.D1 _ _ = 0`. Use `Prod.ext ?_ (Prod.ext (funext fun _ ↦ funext fun _ ↦ funext fun _ ↦ rfl) (funext fun _ ↦ rfl))` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Use `f.2 φ ψ` as an intermediate fact. Express the relevant statement in the definitionally equal form `(mp F ψ) (f.1 T T' φ) - f.1 T T'' (φ ≫ ψ) + f.1 T' T'' ψ = 0`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem single1_mem (f : GlobalTheory.CatCoh.Z1 F) :
     ((f.1 : (Coef.ofAlg F).c1), (fun _ ↦ PUnit.unit : (Coef.zero C).c0)) ∈ (Cx.single (Coef.ofAlg F)).Z1 := by
@@ -48,9 +48,9 @@ theorem single1_mem (f : GlobalTheory.CatCoh.Z1 F) :
   rw [this]; abel
 
 /- English proof (translation)
-Rewrite using `[cx_H1_mk_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g, by rw [← hg]; rfl⟩`. Introduce and unpack `⟨g, hg⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨g, Prod.ext (by rw [← hg]; rfl) (Subsingleton.elim _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem single_H1_mk_eq_zero_iff (x : (Cx.single (Coef.ofAlg F)).Z1) :
     (QuotientAddGroup.mk x : (Cx.single (Coef.ofAlg F)).H1) = 0 ↔ ∃ g, GlobalTheory.CatCoh.d0 F g = x.1.1 := by
@@ -68,7 +68,7 @@ section Gen2
 variable {C : Type u} [Category.{0} C] {R : Type} [CommRing R] (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-Introduce `T T' T'' φ ψ`. Establish `h : Cx.D1 _ x.1 = 0` using `x.2`. Use `congrArg (fun c ↦ c.1 T T' T'' φ ψ) h` as an intermediate fact. Express the relevant statement in the definitionally equal form `(mp F ψ) (x.1.1 T T' φ) - x.1.1 T T'' (φ ≫ ψ) + x.1.1 T' T'' ψ = 0 at this`. Take the linear combination `-this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem single_fst_mem_Z1 (x : (Cx.single (Coef.ofAlg F)).Z1) : x.1.1 ∈ GlobalTheory.CatCoh.Z1 F := by
   intro T T' T'' φ ψ
@@ -78,7 +78,7 @@ theorem single_fst_mem_Z1 (x : (Cx.single (Coef.ofAlg F)).Z1) : x.1.1 ∈ Global
   linear_combination -this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun T T' T'' T''' φ ψ χ ↦ z.2 φ ψ χ, fun _ _ _ _ _ ↦ Subsingleton.elim _ _, fun _ _ _ ↦ Subsingleton.elim _ _, fun _ ↦ Subsingleton.elim _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem single2_mem (z : GlobalTheory.CatCoh.Z2 F) :
     ((z.1 : (Coef.ofAlg F).c2), (fun _ _ _ ↦ PUnit.unit : (Coef.zero C).c1), (fun _ ↦ PUnit.unit : (Coef.zero C).c0))
@@ -87,15 +87,15 @@ theorem single2_mem (z : GlobalTheory.CatCoh.Z2 F) :
     fun _ ↦ Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ _ φ ψ χ ↦ x.2.1 _ _ _ _ φ ψ χ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem single_fst_mem_Z2 (x : (Cx.single (Coef.ofAlg F)).Z2) : x.1.1 ∈ GlobalTheory.CatCoh.Z2 F :=
   fun _ _ _ _ φ ψ χ ↦ x.2.1 _ _ _ _ φ ψ χ
 
 /- English proof (translation)
-Rewrite using `[cx_H2_mk_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Conclude with `⟨g.1, by rw [← hg]; rfl⟩`. Introduce and unpack `⟨g, hg⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(g, fun _ ↦ PUnit.unit), Prod.ext (by rw [← hg]; rfl) (Subsingleton.elim _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem single_H2_mk_eq_zero_iff (x : (Cx.single (Coef.ofAlg F)).Z2) :
     (QuotientAddGroup.mk x : (Cx.single (Coef.ofAlg F)).H2) = 0 ↔ ∃ g, GlobalTheory.CatCoh.d1 F g = x.1.1 := by
@@ -113,7 +113,7 @@ section Lift
 variable {D : Data} (Λ : Lift D)
 
 /- English proof (translation)
-Use `⟨fun U V a ↦ ?_, fun U ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.fst_sub, Pi.sub_apply, h.1 U V a, h'.1 U V a, map_sub]`. Simplify using `only [Prod.snd_sub, Pi.sub_apply, h.2 U, h'.2 U, map_sub, Submodule.Quotient.mk_sub]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem smoothLiftThickenings_restrictionOne_sub {k k' : ((KK D.κ D.t).res Λ.L).T1} {w w' : Tot1 (OAff D.s)} (h : Λ.Res1 k w)
     (h' : Λ.Res1 k' w') : Λ.Res1 (k - k') (w - w') := by
@@ -122,7 +122,7 @@ theorem smoothLiftThickenings_restrictionOne_sub {k k' : ((KK D.κ D.t).res Λ.L
   · simp only [Prod.snd_sub, Pi.sub_apply, h.2 U, h'.2 U, map_sub, Submodule.Quotient.mk_sub]
 
 /- English proof (translation)
-Use `⟨fun U V W a b ↦ ?_, fun U V a ↦ ?_, fun U ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.fst_sub, Pi.sub_apply, h.1 U V W a b, h'.1 U V W a b, map_sub]`. Simplify using `only [Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, h.2.1 U V a, h'.2.1 U V a, map_sub, Submodule.Quotient.mk_sub]`. Simplify using `only [Prod.snd_sub, Pi.sub_apply, h.2.2 U, h'.2.2 U, map_sub, Submodule.Quotient.mk_sub]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem smoothLiftThickenings_restrictionTwo_sub {k k' : ((KK D.κ D.t).res Λ.L).T2} {w w' : Tot2 (OAff D.s)} (h : Λ.Res2 k w)
     (h' : Λ.Res2 k' w') : Λ.Res2 (k - k') (w - w') := by
@@ -139,19 +139,17 @@ section Main
 variable (D : Data) (Λ : Lift D)
 
 /- English proof (translation)
-Establish `hfn` using `(GlobalTheory.T.fnMap_pullbackBijective12_kk_and_res D.R D.I D.κ D.X₀ D.t D.X D.i).1.1`. Establish `hres` using `(GlobalTheory.T.lift_restriction_bijective_low_degrees D Λ).1`. Take `⟨hW, hK, hZ⟩` from `GlobalTheory.T.compatibleFormsCochains_eq_deRhamCochains_smoothLift.1 D Λ`. Establish `key : ∀ k : (KK D.κ D.t).Z1, (∃ g, GlobalTheory.CatCoh.d0 (O D.κ D.t) g = k.1.1) ↔ ∃ g, ((KK D.κ D.t).res Λ.L).D0 g = ((KK D.κ D.t).resMap Λ.L).p1 k.1` using `fun k ↦ by`. Establish `e` using `(map_eq_zero_iff _ hfn.1 (x := (QuotientAddGroup.mk k : (KK D.κ D.t).H1))).trans (map_eq_zero_iff _ hres.1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((single_H1_mk_eq_zero_iff (O D.κ D.t) ((KK D.κ D.t).fnMap.z1 k)).symm.trans e).trans (cx_H1_mk_eq_zero_iff _ (((KK D.κ D.t).resMap Λ.L).z1 k))`. Use `⟨fun c ↦ ?_, fun h ↦ ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `GlobalTheory.CatCoh.H1.mk_surjective _ c`. Take `⟨x, hx⟩` from `hfn.2 (QuotientAddGroup.mk ⟨_, single1_mem (O D.κ D.t) f⟩)`. Take `⟨k, rfl⟩` from `QuotientAddGroup.mk_surjective x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `(single_H1_mk_eq_zero_iff (O D.κ D.t) ((KK D.κ D.t).fnMap.z1 k - ⟨_, single1_mem _ f⟩)).1 (by rw [QuotientAddGroup.mk_sub]; exact sub_eq_zero.2 hx)`. Take `⟨w, hw, -⟩` from `hW (((KK D.κ D.t).resMap Λ.L).p1 k.1)`. Establish `hwZ : w ∈ cechDeRhamTotalCocyclesOne (OAff D.s)` using `((hZ _ _ hw).1).1 (((KK D.κ D.t).resMap Λ.L).z1 k).2`. Use `⟨Hyp1.mk _ ⟨w, hwZ⟩, k, ⟨k.1.1, single_fst_mem_Z1 _ ((KK D.κ D.t).fnMap.z1 k)⟩, ⟨w, hwZ⟩, ?_, rfl, rfl, hw⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, GlobalTheory.CatCoh.H1.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨g, hg⟩`. Take `⟨w, rfl⟩` from `Hyp1.mk_surjective _ h`. Take `⟨k0, hk0, -⟩` from `hK w.1`. Establish `hk0Z : k0 ∈ ((KK D.κ D.t).res Λ.L).Z1` using `((hZ _ _ hk0).1).2 w.2`. Take `⟨x, hx⟩` from `hres.2 (QuotientAddGroup.mk ⟨k0, hk0Z⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨g, hg⟩` from `(cx_H1_mk_eq_zero_iff _ (((KK D.κ D.t).resMap Λ.L).z1 k - ⟨k0, hk0Z⟩)).1 (by rw [QuotientAddGroup.mk_sub]; exact sub_eq_zero.2 hx)`. Take `⟨w1, hw1, -⟩` from `hW (((KK D.κ D.t).resMap Λ.L).p1 k.1)`. Establish `hw1Z : w1 ∈ cechDeRhamTotalCocyclesOne (OAff D.s)` using `((hZ _ _ hw1).1).1 (((KK D.κ D.t).resMap Λ.L).z1 k).2`. Take `⟨g', hg'⟩` from `(hZ _ _ (smoothLiftThickenings_restrictionOne_sub Λ hw1 hk0)).2.1 ⟨g, hg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.CatCoh.H1.mk _ ⟨k.1.1, single_fst_mem_Z1 _ ((KK D.κ D.t).fnMap.z1 k)⟩, k, _, ⟨w1, hw1Z⟩, rfl, ?_, rfl, hw1⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, Hyp1.mk_eq_zero]`. Conclude with `⟨g', hg'⟩`. Introduce and unpack `c h ⟨k, f, w, rfl, rfl, hkf, hR⟩`. Rewrite using `[GlobalTheory.CatCoh.H1.mk_eq_zero, Hyp1.mk_eq_zero, ← hkf]`.
-
-Conclude with `(key k).trans (hZ _ _ hR).2`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crystallineCechDeRham_degreeOne_relation_total : (∀ c, ∃ h, Λ.Rel1 c h) ∧ (∀ h, ∃ c, Λ.Rel1 c h) ∧
     ∀ c h, Λ.Rel1 c h → (c = 0 ↔ h = 0) := by
@@ -196,19 +194,19 @@ theorem crystallineCechDeRham_degreeOne_relation_total : (∀ c, ∃ h, Λ.Rel1 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hfn` using `(GlobalTheory.T.fnMap_pullbackBijective12_kk_and_res D.R D.I D.κ D.X₀ D.t D.X D.i).1.2`. Establish `hres` using `(GlobalTheory.T.lift_restriction_bijective_low_degrees D Λ).2`. Take `⟨hW, hK, hZ⟩` from `GlobalTheory.T.compatibleFormsCochains_eq_deRhamCochains_smoothLift.2 D Λ`. Establish `key : ∀ k : (KK D.κ D.t).Z2, (∃ g, GlobalTheory.CatCoh.d1 (O D.κ D.t) g = k.1.1) ↔ ∃ g, ((KK D.κ D.t).res Λ.L).D1 g = ((KK D.κ D.t).resMap Λ.L).p2 k.1` using `fun k ↦ by`. Establish `e` using `(map_eq_zero_iff _ hfn.1 (x := (QuotientAddGroup.mk k : (KK D.κ D.t).H2))).trans (map_eq_zero_iff _ hres.1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((single_H2_mk_eq_zero_iff (O D.κ D.t) ((KK D.κ D.t).fnMap.z2 k)).symm.trans e).trans (cx_H2_mk_eq_zero_iff _ (((KK D.κ D.t).resMap Λ.L).z2 k))`. Use `⟨fun c ↦ ?_, fun h ↦ ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `GlobalTheory.CatCoh.H2.mk_surjective _ c`. Take `⟨x, hx⟩` from `hfn.2 (QuotientAddGroup.mk ⟨_, single2_mem (O D.κ D.t) f⟩)`. Take `⟨k, rfl⟩` from `QuotientAddGroup.mk_surjective x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `(single_H2_mk_eq_zero_iff (O D.κ D.t) ((KK D.κ D.t).fnMap.z2 k - ⟨_, single2_mem _ f⟩)).1 (by rw [QuotientAddGroup.mk_sub]; exact sub_eq_zero.2 hx)`. Take `⟨w, hw, -⟩` from `hW (((KK D.κ D.t).resMap Λ.L).p2 k.1)`. Establish `hwZ : w ∈ cechDeRhamTotalCocyclesTwo (OAff D.s)` using `((hZ _ _ hw).1).1 (((KK D.κ D.t).resMap Λ.L).z2 k).2`. Use `⟨Hyp2.mk _ ⟨w, hwZ⟩, k, ⟨k.1.1, single_fst_mem_Z2 _ ((KK D.κ D.t).fnMap.z2 k)⟩, ⟨w, hwZ⟩, ?_, rfl, rfl, hw⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, GlobalTheory.CatCoh.H2.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨g, hg⟩`. Take `⟨w, rfl⟩` from `Hyp2.mk_surjective _ h`. Take `⟨k0, hk0, -⟩` from `hK w.1`. Establish `hk0Z : k0 ∈ ((KK D.κ D.t).res Λ.L).Z2` using `((hZ _ _ hk0).1).2 w.2`. Take `⟨x, hx⟩` from `hres.2 (QuotientAddGroup.mk ⟨k0, hk0Z⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨g, hg⟩` from `(cx_H2_mk_eq_zero_iff _ (((KK D.κ D.t).resMap Λ.L).z2 k - ⟨k0, hk0Z⟩)).1 (by rw [QuotientAddGroup.mk_sub]; exact sub_eq_zero.2 hx)`. Take `⟨w1, hw1, -⟩` from `hW (((KK D.κ D.t).resMap Λ.L).p2 k.1)`. Establish `hw1Z : w1 ∈ cechDeRhamTotalCocyclesTwo (OAff D.s)` using `((hZ _ _ hw1).1).1 (((KK D.κ D.t).resMap Λ.L).z2 k).2`. Establish `hR : Λ.Res2 (((KK D.κ D.t).resMap Λ.L).p2 k.1 - k0) (w1 - w.1)` using `smoothLiftThickenings_restrictionTwo_sub Λ hw1 hk0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `((hZ _ _ hR).2).1`. Take `⟨g', hg'⟩` from `hE ⟨g, by rw [hg, AddSubgroup.coe_sub]; rfl⟩`. Use `⟨GlobalTheory.CatCoh.H2.mk _ ⟨k.1.1, single_fst_mem_Z2 _ ((KK D.κ D.t).fnMap.z2 k)⟩, k, _, ⟨w1, hw1Z⟩, rfl, ?_, rfl, hw1⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, Hyp2.mk_eq_zero]`. Conclude with `⟨g', hg'⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `c h ⟨k, f, w, rfl, rfl, hkf, hR⟩`. Rewrite using `[GlobalTheory.CatCoh.H2.mk_eq_zero, Hyp2.mk_eq_zero, ← hkf]`. Conclude with `(key k).trans (hZ _ _ hR).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crystallineCechDeRham_degreeTwo_relation_total : (∀ c, ∃ h, Λ.Rel2 c h) ∧ (∀ h, ∃ c, Λ.Rel2 c h) ∧
     ∀ c h, Λ.Rel2 c h → (c = 0 ↔ h = 0) := by
@@ -255,7 +253,7 @@ theorem crystallineCechDeRham_degreeTwo_relation_total : (∀ c, ∃ h, Λ.Rel2 
 end Main
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨crystallineCechDeRham_degreeOne_relation_total, crystallineCechDeRham_degreeTwo_relation_total⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_total_zero : (∀ (D : Data) (Λ : Lift D), (∀ c, ∃ h, Λ.Rel1 c h) ∧ (∀ h, ∃ c, Λ.Rel1 c h) ∧
     ∀ c h, Λ.Rel1 c h → (c = 0 ↔ h = 0)) ∧ ∀ (D : Data) (Λ : Lift D), (∀ c, ∃ h, Λ.Rel2 c h) ∧

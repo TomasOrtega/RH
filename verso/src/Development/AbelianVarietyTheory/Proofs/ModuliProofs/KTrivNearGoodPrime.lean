@@ -18,11 +18,11 @@ open GlobalTheory.ZM.NearBuild
 namespace GlobalTheory.ZM.NearBuild
 
 /- English proof (translation)
-Use `⟨IsPullback.of_hasPullback G.hom f, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`. Establish `h` using `GlobalTheory.UU.toBase_mul_pullback G f T x y`. Establish `ex : x₀ = Out.toBase (A` using `G) (A' := (Over.pullback f).obj G) (g := pullback.fst G.hom f) pullback.condition x := by`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[hx, Out.toBase]`. Establish `ey : y₀ = Out.toBase (A` using `G) (A' := (Over.pullback f).obj G) (g := pullback.fst G.hom f) pullback.condition y := by`. Use `ext`. Simplify using `[hy, Out.toBase]`. Rewrite using `[ex, ey, ← h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Out.toBase]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem isGrpPullback_pullback_fst {S S' : Scheme.{0}} (G : Over S) [GrpObj G] (f : S' ⟶ S) :
     IsGrpPullback ((Over.pullback f).obj G) G f (pullback.fst G.hom f) := by
@@ -39,13 +39,11 @@ private theorem isGrpPullback_pullback_fst {S S' : Scheme.{0}} (G : Over S) [Grp
   simp [Out.toBase]
 
 /- English proof (translation)
-Introduce `o _ g N' J b Mat κ R _ _ β v A _ L act Q q₀ hq hP`. Take `⟨K, _, _, x, s, t, hker, hgood⟩` from `mem_objPrimes.1 hq`. Take `⟨hab, -, hLB, -, -, hamp, -, hfib⟩` from `hP`. Take `⟨ψ, hψ, hiso⟩` from `hfib K x s t hgood`. Take `⟨e, he, hcomp⟩` from `grpPullback_iso (isGrpPullback_pullback_fst A (spMap x)) hψ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := he`. Establish `hLB' : (L.pull (pullback.fst A.hom (spMap x))).IsLB` using `pull_isLB hLB _`. Establish `hLt : (t.L.pull e.hom.left).IsLB` using `pull_isLB t.isLB _`. Establish `hψL : (L.pull ψ).IsLB` using `pull_isLB hLB ψ`. Establish `hcls : LBIso (L.pull (pullback.fst A.hom (spMap x))) (t.L.pull e.hom.left)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.CechPic.cls_eq_iff hLB' hLt, GlobalTheory.CechPic.cls_pull hLB _ hLB', GlobalTheory.CechPic.cls_pull t.isLB _ hLt, ← hcomp, GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.cls_pull hLB ψ hψL, ← (GlobalTheory.CechPic.cls_eq_iff t.isLB hψL).2 hiso]`. Establish `hfibK` using `(amplePt (Sp K) K (𝟙 _) t.A _ e.hom.left (isGrpPullback_of_iso e) t.L _ t.isLB hLB' hcls t.ample t.ktriv).2`. Take `⟨f, hf, hk⟩` from `kTriv_away_of_kTriv_fibre globalFns_holds R A L K x hab hLB hamp hfibK`. Use `⟨f, fun h => hf ?_, hk⟩` and prove the remaining obligations. Rewrite `h` using `[← hker, RingHom.mem_ker]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kTriv_near_good_prime : ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) (R : Type) [CommRing R] [IsNoetherianRing R] (β : o →+* R) (v : Ix g (N' ^ 2) → R) (A : Over (Sp R)) [GrpObj A] (L : LB A.left) (act : J → (A ⟶ A)) (Q : Fin (2 * g) → (Out.baseOver (Sp R) ⟶ A)) (q₀ : Ideal R), q₀ ∈ objPrimes b Mat κ β v → PolFam b Mat κ β v A L act Q → ∃ f : R, f ∉ q₀ ∧ Out.KTriv ((Over.pullback (spMap (loc f))).obj A) (L.pull (pullback.fst A.hom (spMap (loc f)))) := by
   intro o _ g N' J b Mat κ R _ _ β v A _ L act Q q₀ hq hP

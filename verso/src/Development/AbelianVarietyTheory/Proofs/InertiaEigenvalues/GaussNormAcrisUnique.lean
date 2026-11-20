@@ -11,7 +11,7 @@ open Filter Topology
 namespace GlobalTheory.PMon.Gauss
 
 /- English proof (translation)
-The claim follows from `|a - b| ≤ t := by rcases le_total a b with h | h · rw [abs_of_nonpos (sub_nonpos.2 h)] rcases le_max_iff.1 hba with h' | h' · linarith · linarith · rw [abs_of_nonneg (sub_nonneg.2 h)] rcases le_max_iff.1 hab with h' | h' · linarith · linarith`.
+A detailed English derivation is pending.
 -/
 theorem abs_sub_le_of_le_max {a b t : ℝ} (ht : 0 ≤ t) (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a ≤ max b t) (hba : b ≤ max a t) :
     |a - b| ≤ t := by
@@ -28,7 +28,7 @@ theorem abs_sub_le_of_le_max {a b t : ℝ} (ht : 0 ≤ t) (ha : 0 ≤ a) (hb : 0
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l)) l, hN.2.2.2.2]`. Conclude with `GlobalTheory.GaussSlope.gauss_l l hρ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGauss_natCast {ρ : ℝ} (hρ : 0 ≤ ρ) {N : Formalism.Per.Acris l → ℝ} (hN : IsGauss l ρ N) :
     N (l : Formalism.Per.Acris l) = ρ := by
@@ -36,16 +36,16 @@ theorem isGauss_natCast {ρ : ℝ} (hρ : 0 ≤ ρ) {N : Formalism.Per.Acris l �
   exact GlobalTheory.GaussSlope.gauss_l l hρ
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GaussSlope.map_pow_mul N hN.2.2.2.1, isGauss_natCast hρ hN]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isGauss_pow_mul {ρ : ℝ} (hρ : 0 ≤ ρ) {N : Formalism.Per.Acris l → ℝ} (hN : IsGauss l ρ N)
     (k : ℕ) (x : Formalism.Per.Acris l) : N ((l : Formalism.Per.Acris l) ^ k * x) = ρ ^ k * N x := by
   rw [GlobalTheory.GaussSlope.map_pow_mul N hN.2.2.2.1, isGauss_natCast hρ hN]
 
 /- English proof (translation)
-Take `⟨k, a, ha⟩` from `GlobalTheory.GaussSlope.exists_pow_mul_eq l s`. Establish `h1` using `congrArg N ha`. Establish `h2` using `congrArg N' ha`. Rewrite `h1` using `[isGauss_pow_mul hρ.le hN, hN.2.2.2.2]`. Rewrite `h2` using `[isGauss_pow_mul hρ.le hN', hN'.2.2.2.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk : ρ ^ k ≠ 0` using `pow_ne_zero _ hρ.ne'`. Conclude with `mul_left_cancel₀ hk (h1.trans h2.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isGauss_eq_on_acris0 {ρ : ℝ} (hρ : 0 < ρ) {N N' : Formalism.Per.Acris l → ℝ} (hN : IsGauss l ρ N)
     (hN' : IsGauss l ρ N') (s : Formalism.Per.Acris0 l) :
@@ -60,9 +60,9 @@ theorem isGauss_eq_on_acris0 {ρ : ℝ} (hρ : 0 < ρ) {N N' : Formalism.Per.Acr
   exact mul_left_cancel₀ hk (h1.trans h2.symm)
 
 /- English proof (translation)
-Take `⟨h01, hadd, hneg, -, -⟩` from `id hN`. Establish `hz : N ((l : Formalism.Per.Acris l) ^ r * z) ≤ ρ ^ r`. Rewrite using `[isGauss_pow_mul hρ hN]`. Conclude with `mul_le_of_le_one_right (pow_nonneg hρ _) (h01 z).2`. Apply `abs_sub_le_of_le_max (pow_nonneg hρ _) (h01 _).1 (h01 _).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(hadd _ _).trans (max_le_max le_rfl hz)`. Use `hadd (s + (l : Formalism.Per.Acris l) ^ r * z) (-((l : Formalism.Per.Acris l) ^ r * z))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right, hneg]`. Conclude with `this.trans (max_le_max le_rfl hz)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGauss_abs_sub_le {ρ : ℝ} (hρ : 0 ≤ ρ) {N : Formalism.Per.Acris l → ℝ} (hN : IsGauss l ρ N)
     (s z : Formalism.Per.Acris l) (r : ℕ) : |N (s + (l : Formalism.Per.Acris l) ^ r * z) - N s| ≤ ρ ^ r := by
@@ -77,13 +77,13 @@ theorem isGauss_abs_sub_le {ρ : ℝ} (hρ : 0 ≤ ρ) {N : Formalism.Per.Acris 
     exact this.trans (max_le_max le_rfl hz)
 
 /- English proof (translation)
-Introduce `l _ ρ N N' hρl hρ1 hN hN'`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hρ : 0 < ρ` using `(inv_pos.2 hl).trans_le hρl`. Use function extensionality and compare the values at `x`. Establish `hb : ∀ r : ℕ, |N x - N' x| ≤ 2 * ρ ^ r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `r`. Take `⟨s, z, hx⟩` from `(GlobalTheory.MemLoc.acris_basic l).2.2.1 x r`. Establish `e` using `isGauss_eq_on_acris0 hρ hN hN' s`. Establish `h1` using `isGauss_abs_sub_le hρ.le hN (algebraMap (Formalism.Per.Acris0 l) (Formalism.Per.Acris l) s) z r`. Establish `h2` using `isGauss_abs_sub_le hρ.le hN' (algebraMap (Formalism.Per.Acris0 l) (Formalism.Per.Acris l) s) z r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[← hx]`. Rewrite `h1` using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `ht : Tendsto (fun r : ℕ => 2 * ρ ^ r) atTop (𝓝 (2 * 0))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one hρ.le hρ1).const_mul 2`. Rewrite `ht` using `[mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : |N x - N' x| ≤ 0` using `ge_of_tendsto' ht hb`. Conclude with `sub_eq_zero.1 (abs_nonpos_iff.1 h0)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isGauss_unique : ∀ (l : ℕ) [Fact l.Prime] (ρ : ℝ) (N N' : Formalism.Per.Acris l → ℝ), (l : ℝ)⁻¹ ≤ ρ → ρ < 1 →
     IsGauss l ρ N → IsGauss l ρ N' → N = N' := by

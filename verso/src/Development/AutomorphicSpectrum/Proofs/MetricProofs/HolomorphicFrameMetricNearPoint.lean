@@ -16,33 +16,33 @@ section Holo
 variable {e : ℕ} {S : Type} [TopologicalSpace S]
 
 /- English proof (translation)
-Introduce `j` and use `(h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hU))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_mono (A : FinHolAtlas e S) {U V : Set S} {f : S → ℂ} (h : A.HoloOn V f) (hU : U ⊆ V) :
     A.HoloOn U f :=
   fun j => (h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hU))
 
 /- English proof (translation)
-Introduce `_ _ _` and use `analyticAt_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_const (A : FinHolAtlas e S) (U : Set S) (c : ℂ) : A.HoloOn U fun _ => c := fun _ _ _ =>
   analyticAt_const
 
 /- English proof (translation)
-Introduce `j u hu` and use `(hf j u hu).mul (hg j u hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_mul (A : FinHolAtlas e S) {U : Set S} {f g : S → ℂ} (hf : A.HoloOn U f) (hg : A.HoloOn U g) :
     A.HoloOn U fun w => f w * g w := fun j u hu => (hf j u hu).mul (hg j u hu)
 
 /- English proof (translation)
-Introduce `j u hu` and use `(hf j u hu).zpow (h0 _ hu.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_zpow (A : FinHolAtlas e S) {U : Set S} {f : S → ℂ} (hf : A.HoloOn U f)
     (h0 : ∀ w ∈ U, f w ≠ 0) (n : ℤ) : A.HoloOn U fun w => f w ^ n := fun j u hu =>
   (hf j u hu).zpow (h0 _ hu.2)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using holoOn_const A U 1`. Consider the case `insert i s hi ih`. Establish `h` using `holoOn_mul A (hf i (Finset.mem_insert_self i s)) (ih fun k hk => hf k (Finset.mem_insert_of_mem hk))`. Simplify `h` using `only [Finset.prod_insert hi]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem holoOn_prod (A : FinHolAtlas e S) {U : Set S} {κ : Type} (s : Finset κ) {f : κ → S → ℂ}
     (hf : ∀ i ∈ s, A.HoloOn U (f i)) : A.HoloOn U fun w => ∏ i ∈ s, f i w := by
@@ -54,11 +54,11 @@ theorem holoOn_prod (A : FinHolAtlas e S) {U : Set S} {κ : Type} (s : Finset κ
     simpa only [Finset.prod_insert hi] using h
 
 /- English proof (translation)
-Establish `h` using `StepW.ValHolo.holoOn_eval A (b := fun w (q : Fin N × Fin N) => H w q.1 q.2) (fun q => hH q.1 q.2) (minorIJ (Matrix.of fun r s => (MvPolynomial.X (r, s) : MvPolynomial (Fin N × Fin N) ℤ)) I J)`. Establish `e : (fun w => minorIJ (H w) I J) = fun w => eval (fun q : Fin N × Fin N => H w q.1 q.2) (map (Int.castRingHom ℂ) (minorIJ (Matrix.of fun r s => (MvPolynomial.X (r, s) : MvPolynomial (Fin N × Fin N) ℤ)) I J))`. Use function extensionality and compare the values at `w`. Set `f : MvPolynomial (Fin N × Fin N) ℤ →+* ℂ` to `(eval fun q : Fin N × Fin N => H w q.1 q.2).comp (map (Int.castRingHom ℂ))`. Establish `hm : (Matrix.of fun r s => (MvPolynomial.X (r, s) : MvPolynomial (Fin N × Fin N) ℤ)).map f = H w`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `r s`. Simplify using `[f]`. Use `minorIJ_map f (Matrix.of fun r s => (MvPolynomial.X (r, s) : MvPolynomial (Fin N × Fin N) ℤ)) I J` as an intermediate fact. Rewrite `this` using `[hm]`. Conclude with `this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem holoOn_minor (A : FinHolAtlas e S) {U : Set S} {N : ℕ} {H : S → Matrix (Fin N) (Fin N) ℂ}
     (hH : ∀ r s, A.HoloOn U fun w => H w r s) (I J : Finset (Fin N)) :
@@ -81,7 +81,7 @@ theorem holoOn_minor (A : FinHolAtlas e S) {U : Set S} {N : ℕ} {H : S → Matr
   exact h
 
 /- English proof (translation)
-Use `choose W hW hyW hWV hh h0 using key`. Establish `hsub : ∀ i, V ∩ ⋂ i, W i ⊆ W i` using `fun i => Set.inter_subset_right.trans (Set.iInter_subset _ i)`. Use `⟨V ∩ ⋂ i, W i, hV.inter (isOpen_iInter_of_finite hW), ⟨hy, Set.mem_iInter.2 hyW⟩, Set.inter_subset_left, ?_, ?_⟩` and prove the remaining obligations. Conclude with `holoOn_prod A _ fun i _ => holoOn_zpow A (holoOn_mono A (hh i) (hsub i)) (fun w hw => h0 i w (hsub i hw)) (n i)`. Conclude with `fun w hw => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (h0 i w (hsub i hw))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem prod_local (A : FinHolAtlas e S) {V : Set S} {y₀ : S} {N : ℕ} (hV : IsOpen V) (hy : y₀ ∈ V)
     (g : Fin N → S → ℂ) (n : Fin N → ℤ)
@@ -99,7 +99,7 @@ theorem prod_local (A : FinHolAtlas e S) {V : Set S} {y₀ : S} {N : ℕ} (hV : 
 end Holo
 
 /- English proof (translation)
-Establish `h` using `FrameChange.detFac_ne_zero hj i hT hd`. Rewrite `h` using `[detFac, if_pos hi.ge]`. Conclude with `left_ne_zero_of_mul h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_w_ne {N j : ℕ} (hj : j ≤ N) (i : Fin N) (hi : (i : ℕ) + 1 = j) {T : Matrix (Fin N) (Fin N) ℂ}
     (hT : IsBlockDiag j T) (hd : T.det ≠ 0) : minorIJ T (wIdx N j) (wIdx N j) ≠ 0 := by
@@ -108,7 +108,7 @@ theorem minor_w_ne {N j : ℕ} (hj : j ≤ N) (i : Fin N) (hi : (i : ℕ) + 1 = 
   exact left_ne_zero_of_mul h
 
 /- English proof (translation)
-Establish `h` using `FrameChange.detFac_ne_zero hj i hT hd`. Rewrite `h` using `[detFac, if_pos hi]`. Conclude with `right_ne_zero_of_mul h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_om_ne {N j : ℕ} (hj : j ≤ N) (i : Fin N) (hi : (i : ℕ) + 1 = N) {T : Matrix (Fin N) (Fin N) ℂ}
     (hT : IsBlockDiag j T) (hd : T.det ≠ 0) : minorIJ T (omIdx N j) (omIdx N j) ≠ 0 := by
@@ -117,7 +117,7 @@ theorem minor_om_ne {N j : ℕ} (hj : j ≤ N) (i : Fin N) (hi : (i : ℕ) + 1 =
   exact right_ne_zero_of_mul h
 
 /- English proof (translation)
-Introduce `e`. Establish `h` using `(reg_mul hz hs hi).2`. Rewrite `h` using `[mul_inv_cancel₀ h0, e, zero_mul]`. Conclude with `one_ne_zero (((ValRing.regAt_valAt_ring K ι Ω x z hz).2.2.2.1).symm.trans h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_ne {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal x)) {s : Ω} (h0 : s ≠ 0)
@@ -128,21 +128,17 @@ theorem val_ne {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] 
   exact one_ne_zero (((ValRing.regAt_valAt_ring K ι Ω x z hz).2.2.2.1).symm.trans h)
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M e X _ A V y₀ zb Hm F τ a hV hy hzb hpt hgood hHm hdiag`. Use `prod_local A hV hy (fun i w => if IsProperStep N j i then 1 else valAt M.x (F.υ (τ, i)) (zb w) * (if (i : ℕ) + 1 = j then (if (a : ℕ) < j then minorIJ (Hm w) (wIdx N j) (wIdx N j) else 1) else minorIJ (Hm w) (omIdx N j) (omIdx N j))) (fun i => xiCoef τ a (τ, i)) fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hp : IsProperStep N j i`. Use `⟨V, hV, hy, subset_rfl, ?_, fun w _ => ?_⟩` and prove the remaining obligations. Simplify using `only [if_pos hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `holoOn_const A V 1`. Simplify using `only [if_pos hp]`. Conclude with `one_ne_zero`. Establish `hnone : M.blk (τ, i) = none` using `(M.blk_none (τ, i)).2 hp`. Take `⟨W, hW, hyW, hWV, hval⟩` from `StepW.ValHolo.holoOn_valAt _ _ M.Ω M.x (F.υ (τ, i)) e X A V zb y₀ hV hy hzb hpt ((hgood y₀ hy).2.2 _ hnone).2.1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : A.HoloOn W fun w => (if (i : ℕ) + 1 = j then (if (a : ℕ) < j then minorIJ (Hm w) (wIdx N j) (wIdx N j) else 1) else minorIJ (Hm w) (omIdx N j) (omIdx N j))`. Establish `hH : ∀ r s, A.HoloOn W fun w => Hm w r s` using `fun r s => holoOn_mono A (hHm r s) hWV`. Distinguish the cases in `h1 : (i : ℕ) + 1 = j`. Distinguish the cases in `h2 : (a : ℕ) < j`. Simplify using `only [if_pos h1, if_pos h2]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `holoOn_minor A hH _ _`. Simplify using `only [if_pos h1, if_neg h2]`. Conclude with `holoOn_const A W 1`. Simplify using `only [if_neg h1]`. Conclude with `holoOn_minor A hH _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨W, hW, hyW, hWV, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [if_neg hp]`. Conclude with `holoOn_mul A hval hm`. Simplify using `only [if_neg hp]`. Establish `hwV` using `hWV hw`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hv : valAt M.x (F.υ (τ, i)) (zb w) ≠ 0` using `val_ne (hpt w hwV) ((hgood w hwV).2.2 _ hnone).1 ((hgood w hwV).2.2 _ hnone).2.1 ((hgood w hwV).2.2 _ hnone).2.2`. Use `mul_ne_zero hv ?_` and prove the remaining obligations. Distinguish the cases in `h1 : (i : ℕ) + 1 = j`. Distinguish the cases in `h2 : (a : ℕ) < j`. Simplify using `only [if_pos h1, if_pos h2]`.
-
-Conclude with `minor_w_ne M.j_le i h1 (hdiag w hwV).1 (hdiag w hwV).2`. Simplify using `only [if_pos h1, if_neg h2]`. Conclude with `one_ne_zero`. Simplify using `only [if_neg h1]`. Establish `h3 : (i : ℕ) + 1 = N`.
-
-Assume the negation of the conclusion as `h3`. Conclude with `hp ⟨h1, h3⟩`. Conclude with `minor_om_ne M.j_le i h3 (hdiag w hwV).1 (hdiag w hwV).2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem improper_factor : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (V : Set X) (y₀ : X) (zb : X → (Σ k, baseIdx ι M.blk k) → ℂ) (Hm : X → Matrix (Fin N) (Fin N) ℂ) (F : FrameData ι Ψ N M.Ω M.blk) (τ : Ψ) (a : Fin N), IsOpen V → y₀ ∈ V → (∀ q, A.HoloOn V fun w => zb w q) → (∀ w ∈ V, zb w ∈ mcPts (mCoordIdeal M.x)) → (∀ w ∈ V, M.GoodAt F (mCoordIdeal (zb w))) → (∀ r s, A.HoloOn V fun w => Hm w r s) → (∀ w ∈ V, IsBlockDiag j (Hm w) ∧ (Hm w).det ≠ 0) → ∃ V' : Set X, IsOpen V' ∧ y₀ ∈ V' ∧ V' ⊆ V ∧ A.HoloOn V' (fun w => ∏ i : Fin N, (if IsProperStep N j i then 1 else valAt M.x (F.υ (τ, i)) (zb w) * (if (i : ℕ) + 1 = j then (if (a : ℕ) < j then minorIJ (Hm w) (wIdx N j) (wIdx N j) else 1) else minorIJ (Hm w) (omIdx N j) (omIdx N j))) ^ xiCoef τ a (τ, i)) ∧ ∀ w ∈ V', (∏ i : Fin N, (if IsProperStep N j i then 1 else valAt M.x (F.υ (τ, i)) (zb w) * (if (i : ℕ) + 1 = j then (if (a : ℕ) < j then minorIJ (Hm w) (wIdx N j) (wIdx N j) else 1) else minorIJ (Hm w) (omIdx N j) (omIdx N j))) ^ xiCoef τ a (τ, i)) ≠ 0 := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M e X _ A V y₀ zb Hm F τ a hV hy hzb hpt hgood hHm hdiag

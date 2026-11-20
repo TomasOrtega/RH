@@ -35,9 +35,9 @@ def secMap {A B : LB X} (q : B.ι → A.ι) (hq : ∀ b, B.U b ≤ A.U (q b))
     exact h
 
 /- English proof (translation)
-Introduce `I V c hV hc φ hφ`. Take `⟨ψ, hψ⟩` from `hA I V (fun a => q (c a)) (fun a => (hV a).trans (hq _)) hc φ (by`. Introduce `a b d`. Establish `h` using `hφ a b d`. Rewrite `h` using `[← hg, res_val, rs_rs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h)`. Use `⟨ψ, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hψ a b, ← hg (c a) (c b), res_val, rs_rs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem h1_vanishing_of_refinement {A B : LB X} (q : B.ι → A.ι) (hq : ∀ b, B.U b ≤ A.U (q b))
     (hg : ∀ b b', res (inf_le_inf (hq b) (hq b')) (A.g (q b) (q b')) = B.g b b') (hA : FirstCohomologyVanishes A) : FirstCohomologyVanishes B := by
@@ -57,21 +57,21 @@ section PullPull
 variable {X' Y Y₀ : Scheme.{0}} (M : LB Y₀) (π : Y ⟶ Y₀) (π' : X' ⟶ Y)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_unfold (j : (M.pull (π' ≫ π)).ι) :
     (M.pull (π' ≫ π)).U j ≤ ((M.pull π).pull π').U (fun _ => j) :=
   fun _ hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 (Set.mem_iInter.1 hy k) k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_fold (j : ((M.pull π).pull π').ι) :
     ((M.pull π).pull π').U j ≤ (M.pull (π' ≫ π)).U (fun u => j u u) :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (Set.mem_iInter.1 hy k) k
 
 /- English proof (translation)
-Use `(LB.lcg_pull (M.pull π) π' j j').trans ?_` and prove the remaining obligations. Use `(congrArg (fun x => res (LB.wchart_pu_le (M.pull π) π' j j') (pullU π' _ x)) (LB.lcg_pull M π (j PUnit.unit) (j' PUnit.unit))).trans ?_` and prove the remaining obligations. Conclude with `LB.pull_res_comp π' π _ _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem g_pull_pull (j j' : ((M.pull π).pull π').ι)
     (h : ((M.pull π).pull π').U j ⊓ ((M.pull π).pull π').U j' ≤
@@ -83,7 +83,7 @@ theorem g_pull_pull (j j' : ((M.pull π).pull π').ι)
   exact LB.pull_res_comp π' π _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `LB.lcg_pull M (π' ≫ π) j j'`.
+A detailed English derivation is pending.
 -/
 theorem g_pull_comp (j j' : (M.pull (π' ≫ π)).ι)
     (h : (M.pull (π' ≫ π)).U j ⊓ (M.pull (π' ≫ π)).U j' ≤
@@ -92,7 +92,7 @@ theorem g_pull_comp (j j' : (M.pull (π' ≫ π)).ι)
   LB.lcg_pull M (π' ≫ π) j j'
 
 /- English proof (translation)
-Use `(congrArg (res _) (g_pull_pull M π π' (fun _ => j) (fun _ => j') (fun y hy => ⟨Set.mem_iInter.1 (Set.mem_iInter.1 hy.1 PUnit.unit) PUnit.unit, Set.mem_iInter.1 (Set.mem_iInter.1 hy.2 PUnit.unit) PUnit.unit⟩))).trans ?_` and prove the remaining obligations. Conclude with `(LB.res_res _ _ _).trans (g_pull_comp M π π' j j' (fun y hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hg_unfold (j j' : (M.pull (π' ≫ π)).ι) :
     res (inf_le_inf (le_unfold M π π' j) (le_unfold M π π' j'))
@@ -104,7 +104,7 @@ theorem hg_unfold (j j' : (M.pull (π' ≫ π)).ι) :
     (fun y hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩)).symm
 
 /- English proof (translation)
-Use `(congrArg (res _) (g_pull_comp M π π' (fun u => j u u) (fun u => j' u u) (fun y hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩))).trans ?_` and prove the remaining obligations. Conclude with `(LB.res_res _ _ _).trans (g_pull_pull M π π' j j' (fun y hy => ⟨Set.mem_iInter.1 (Set.mem_iInter.1 hy.1 PUnit.unit) PUnit.unit, Set.mem_iInter.1 (Set.mem_iInter.1 hy.2 PUnit.unit) PUnit.unit⟩)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hg_fold (j j' : ((M.pull π).pull π').ι) :
     res (inf_le_inf (le_fold M π π' j) (le_fold M π π' j'))
@@ -116,7 +116,7 @@ theorem hg_fold (j j' : ((M.pull π).pull π').ι) :
       Set.mem_iInter.1 (Set.mem_iInter.1 hy.2 PUnit.unit) PUnit.unit⟩)).symm
 
 /- English proof (translation)
-The claim follows from `h1_vanishing_of_refinement (A := (M.pull π).pull π') (B := M.pull (π' ≫ π)) (fun j _ => j) (le_unfold M π π') (hg_unfold M π π') hH`.
+A detailed English derivation is pending.
 -/
 theorem h1_vanishing_pull_comp (hH : FirstCohomologyVanishes ((M.pull π).pull π')) : FirstCohomologyVanishes (M.pull (π' ≫ π)) :=
   h1_vanishing_of_refinement (A := (M.pull π).pull π') (B := M.pull (π' ≫ π)) (fun j _ => j) (le_unfold M π π') (hg_unfold M π π') hH
@@ -138,15 +138,13 @@ def secPullPull : LB.Sec (M.pull (π' ≫ π)) ≃ LB.Sec ((M.pull π).pull π')
 end PullPull
 
 /- English proof (translation)
-Establish `paste : ∀ (R' : Type) [CommRing R'] (g : R →+* R') (X' : Scheme.{0}) (π' : X' ⟶ Y) (f' : X' ⟶ Spec (CommRingCat.of R')), IsPullback π' f' f (Spec.map (CommRingCat.ofHom g)) → IsPullback (π' ≫ π) f' f₀ (Spec.map (CommRingCat.ofHom (g.comp φ)))`. Introduce `R' _ g X' π' f' h`. Establish `h'` using `h.paste_horiz hπ`. Rewrite `h'` using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Then use the resulting hypothesis. Establish `hD₀ : ∀ (R' : Type) [CommRing R'] (g : R →+* R'), (P.D₀.map φ).map g = P.D₀.map (g.comp φ)` using `fun _ _ _ => by ext; rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hD₁ : ∀ (R' : Type) [CommRing R'] (g : R →+* R'), (P.D₁.map φ).map g = P.D₁.map (g.comp φ)` using `fun _ _ _ => by ext; rfl`. Conclude with `⟨{ a := P.a b := P.b c := P.c D₀ := P.D₀.map φ D₁ := P.D₁.map φ comp := by rw [← Matrix.map_mul, P.comp, Matrix.map_zero _ (map_zero φ)] I := P.I W := fun i => π ⁻¹ᵁ P.W i ch := fun i _ => P.ch i le := fun i => le_pull M₀ π (P.le i) cover := by`. Use `top_unique fun y _ => ?_` and prove the remaining obligations. Establish `hy : π y ∈ ⨆ i, P.W i` using `by rw [P.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Use `u := fun k i => (π.app (P.W i)).hom (P.u k i)`. Use `sec := fun R' _ g X' π' f' h => by`. Take `⟨E₀, hE⟩` from `P.sec R' (g.comp φ) X' (π' ≫ π) f' (paste R' g X' π' f' h)`. Use `⟨(Equiv.subtypeEquivRight (fun v => by rw [hD₀])).trans (E₀.trans (secPullPull M₀ π π')), fun v i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (hE ⟨v.1, by rw [← hD₀]; exact v.2⟩ i)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rs X' _ (rs X' _ _) = _`. Rewrite using `[rs_rs]`. Both sides reduce to the same expression. Conclude with `:= fun R' _ g X' π' f' h hH w hw => by`.
-
-Rewrite `hw` using `[hD₁]`. Take `⟨v, hv⟩` from `P.exact R' (g.comp φ) X' (π' ≫ π) f' (paste R' g X' π' f' h) (h1_vanishing_pull_comp M₀ π π' hH) w hw`. Conclude with `⟨v, by rw [hD₀]; exact hv⟩ }⟩`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem perf_pull {R₀ R : Type} [CommRing R₀] [CommRing R] (φ : R₀ →+* R) {Y₀ Y : Scheme.{0}}
     (f₀ : Y₀ ⟶ Spec (CommRingCat.of R₀)) (f : Y ⟶ Spec (CommRingCat.of R)) (π : Y ⟶ Y₀)

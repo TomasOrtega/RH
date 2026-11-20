@@ -38,7 +38,7 @@ instance : Preorder (EtNbhd R) where
   le_trans i j k := fun ⟨f, hf⟩ ⟨g, hg⟩ => ⟨g.comp f, by rw [← AlgHom.comp_assoc, hg, hf]⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [q, RingHom.mem_ker, Ideal.mem_comap]`. Rewrite using `[← hf]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem q_eq_comap {i j : EtNbhd R} (f : i.A →ₐ[R] j.A) (hf : j.pt.comp f = i.pt) :
     i.q = j.q.comap (f : i.A →+* j.A) := by

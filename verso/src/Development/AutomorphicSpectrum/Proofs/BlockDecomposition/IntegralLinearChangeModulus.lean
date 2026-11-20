@@ -13,9 +13,9 @@ open MeasureTheory
 namespace GlobalTheory.CompanionTheory.BZPhiPG.Scale
 
 /- English proof (translation)
-Introduce `a b h`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `not_isCoprime_zero_zero h`. Conclude with `⟨b⁻¹, by simp [hb]⟩`. Conclude with `⟨0, by simp [ha]⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sr1_field (k : Type) [Field k] : GlobalTheory.HaarLin.HasStableRangeOne k := by
   intro a b h
@@ -30,7 +30,7 @@ theorem sr1_field (k : Type) [Field k] : GlobalTheory.HaarLin.HasStableRangeOne 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (Fin t → k) := _root_.borel _`. Use `haveI : BorelSpace (Fin t → k) := ⟨rfl⟩`. Unfold `muD`. Use `infer_instance`.
+Equip the data with the indicated structure. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isAddHaar_muD (t : ℕ) : @Measure.IsAddHaarMeasure _ _ _ (_root_.borel _) (muD k t) := by
   letI : MeasurableSpace (Fin t → k) := _root_.borel _
@@ -39,7 +39,7 @@ theorem isAddHaar_muD (t : ℕ) : @Measure.IsAddHaarMeasure _ _ _ (_root_.borel 
   infer_instance
 
 /- English proof (translation)
-Use `haveI : SecondCountableTopology k := GlobalTheory.HaarScaleMatrix.secondCountable_of_localField k`. Establish `h` using `GlobalTheory.HaarLin.map_mulVec_of_mem_TD k (Fin t) (A⁻¹ : GL (Fin t) k).val (GlobalTheory.HaarLin.Gauss.mem_TD_of_isUnit_det k (sr1_field k) (Fin t) _ (Matrix.GeneralLinearGroup.det (A⁻¹ : GL (Fin t) k)).isUnit) (Matrix.GeneralLinearGroup.det (A⁻¹ : GL (Fin t) k)) rfl (muD k t) …`. Rewrite using `[h, map_inv, map_inv, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_muD (t : ℕ) (A : GL (Fin t) k) :
     @Measure.map _ _ (_root_.borel _) (_root_.borel _) (fun d : Fin t → k => (A⁻¹ : GL (Fin t) k).val *ᵥ d) (muD k t) =
@@ -52,7 +52,7 @@ theorem map_muD (t : ℕ) (A : GL (Fin t) k) :
   rw [h, map_inv, map_inv, inv_inv]
 
 /- English proof (translation)
-Use `show ((absPow k (((1 : ℝ)) : ℂ) (Matrix.GeneralLinearGroup.det A) : ℂˣ) : ℂ) = _`. Rewrite using `[val_absPow, Complex.ofReal_one, Complex.cpow_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_dpow_one (t : ℕ) (A : GL (Fin t) k) :
     ((dpow t 1 A : ℂˣ) : ℂ) = ((distribHaarChar k (Matrix.GeneralLinearGroup.det A) : ℝ) : ℂ) := by
@@ -61,17 +61,15 @@ theorem val_dpow_one (t : ℕ) (A : GL (Fin t) k) :
   rfl
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (Fin t → k) := _root_.borel _`. Use `haveI : BorelSpace (Fin t → k) := ⟨rfl⟩`. Use `haveI : (muD k t).IsAddHaarMeasure := isAddHaar_muD t`. Use `set f : (Fin t → k) → (Fin t → k) := fun d => (A⁻¹ : GL (Fin t) k).val *ᵥ d with hf`. Establish `fc : Continuous f` using `Continuous.matrix_mulVec continuous_const continuous_id`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `fm : Measurable f` using `fc.measurable`. Use `set a : NNReal := distribHaarChar k (Matrix.GeneralLinearGroup.det A) with ha`. Establish `hmeas : ∀ y : W, muD k t ((φ ∘ f) ⁻¹' {y}) = a • muD k t (φ ⁻¹' {y})`. Introduce `y`. Establish `hS : MeasurableSet (φ ⁻¹' {y})` using `(l.isOpen_fiber y).measurableSet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Set.preimage_comp, ← Measure.map_apply fm hS, map_muD t A]`. Both sides reduce to the same expression. Set `S : Finset W` to `(GlobalTheory.CompanionTheory.Rodier.SmIntEl.finite_range l c).toFinset`. Establish `hS : ∀ x, φ x ∈ S` using `fun x => (Set.Finite.mem_toFinset _).2 ⟨x, rfl⟩`. Establish `e₀ : GlobalTheory.CompanionTheory.Rodier.smInt (muD k t) (id ∘ (φ ∘ f)) = ∑ y ∈ S, ((((muD k t) ((φ ∘ f) ⁻¹' {y})).toReal : ℝ) : ℂ) • id y` using `GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_comp (muD k t) (φ ∘ f) id S (fun x => hS _) (fun y _ => ((l.comp_continuous fc).isOpen_fiber y).measurableSet) (fun y _ hy => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hmeas y]`. Conclude with `ENNReal.mul_ne_top ENNReal.coe_ne_top (GlobalTheory.CompanionTheory.Rodier.SmIntEl.measure_level_ne_top _ c hy))`. Establish `e₁ : GlobalTheory.CompanionTheory.Rodier.smInt (muD k t) (id ∘ φ) = ∑ y ∈ S, ((((muD k t) (φ ⁻¹' {y})).toReal : ℝ) : ℂ) • id y` using `GlobalTheory.CompanionTheory.Rodier.SmIntEl.smInt_comp (muD k t) φ id S hS (fun y _ => (l.isOpen_fiber y).measurableSet) (fun y _ hy => GlobalTheory.CompanionTheory.Rodier.SmIntEl.measure_level_ne_top _ c hy)`. Establish `e₀' : GlobalTheory.CompanionTheory.Rodier.smInt (muD k t) (fun d => φ (f d)) = _` using `e₀`. Establish `e₁' : GlobalTheory.CompanionTheory.Rodier.smInt (muD k t) φ = _` using `e₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_dpow_one]`. Use `e₀'.trans ?_` and prove the remaining obligations. Rewrite using `[e₁', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hmeas y, ENNReal.toReal_smul, smul_smul]`.
-
-Use `congr 1`. Simplify using `[NNReal.smul_def, ← ha]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smInt_mulVec (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (t : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (A : GL (Fin t) k) (φ : (Fin t → k) → W)

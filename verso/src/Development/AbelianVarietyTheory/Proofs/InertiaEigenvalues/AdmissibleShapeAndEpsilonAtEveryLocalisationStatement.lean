@@ -4,7 +4,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.admissible_shape_and_epsilon_at_every_localisation.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAdmissibleShapeAndEpsilonAtEveryLocalisation.lean&line=9#L9)
 -/

@@ -29,20 +29,20 @@ def FEat (ψ : AddChar F Circle) (μ₁ μ₂ c : Fˣ →* ℂˣ) (s : ℂ) (W :
       ∫ a, W (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2) ∂multHaar F
 
 /- English proof (translation)
-Simplify using `[FEat, integrable_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem FEat.zero (ψ : AddChar F Circle) (μ₁ μ₂ c : Fˣ →* ℂˣ) (s : ℂ) :
     FEat ψ μ₁ μ₂ c s (0 : GL (Fin 2) F → ℂ) := by
   simp [FEat, integrable_zero]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Take `⟨h1', h2', h3'⟩` from `h'`. Establish `e1 : (fun a : Fˣ => (W + W') (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) = (fun a : Fˣ => W (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) + (fun a : Fˣ => W' (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - …`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (fun a : Fˣ => (W + W') (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) = (fun a : Fˣ => W (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) + (fun a : Fˣ => W' (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2))`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `h1.add h1'`. Rewrite using `[e2]`. Conclude with `h2.add h2'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, e2, integral_add' h1 h1', integral_add' h2 h2', h3, h3']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem FEat.add {ψ : AddChar F Circle} {μ₁ μ₂ c : Fˣ →* ℂˣ} {s : ℂ} {W W' : GL (Fin 2) F → ℂ}
     (h : FEat ψ μ₁ μ₂ c s W) (h' : FEat ψ μ₁ μ₂ c s W') : FEat ψ μ₁ μ₂ c s (W + W') := by
@@ -68,21 +68,21 @@ theorem FEat.add {ψ : AddChar F Circle} {μ₁ μ₂ c : Fˣ →* ℂˣ} {s : �
     ring
 
 /- English proof (translation)
-Use `⟨hα.1.mul hβ.1, fun x => ?_⟩` and prove the remaining obligations. Simplify using `[hα.2 x, hβ.2 x]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isUnit1_mul {α β : Fˣ →* ℂˣ} (hα : IsUnit1 α) (hβ : IsUnit1 β) : IsUnit1 (α * β) := by
   refine ⟨hα.1.mul hβ.1, fun x => ?_⟩
   simp [hα.2 x, hβ.2 x]
 
 /- English proof (translation)
-Use `⟨continuous_quasiChar_inv hα.1, fun x => ?_⟩` and prove the remaining obligations. Simplify using `[hα.2 x]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isUnit1_inv {α : Fˣ →* ℂˣ} (hα : IsUnit1 α) : IsUnit1 α⁻¹ := by
   refine ⟨continuous_quasiChar_inv hα.1, fun x => ?_⟩
   simp [hα.2 x]
 
 /- English proof (translation)
-Establish `hm : ((modulus (a : F) : ℝ) : ℂ) ≠ 0`. Use `modulus_ne_zero a.ne_zero` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `Complex.cpow_add _ _ hm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_add (a : Fˣ) (s t : ℂ) : mp a (s + t) = mp a s * mp a t := by
   have hm : ((modulus (a : F) : ℝ) : ℂ) ≠ 0 := by
@@ -91,14 +91,14 @@ theorem mp_add (a : Fˣ) (s t : ℂ) : mp a (s + t) = mp a s * mp a t := by
   exact Complex.cpow_add _ _ hm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous continuous_neg, hf.2.comp_homeomorph (Homeomorph.neg F)⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_neg_mem {f : F → ℂ} (hf : f ∈ schwartzBruhat F) :
     (fun x => f (-x)) ∈ schwartzBruhat F :=
   ⟨hf.1.comp_continuous continuous_neg, hf.2.comp_homeomorph (Homeomorph.neg F)⟩
 
 /- English proof (translation)
-Unfold `localFourier`. Use `integral_neg_eq_self (fun x => f x * (ψ (x * (-y)) : ℂ)) (selfDualMeasure ψ)` as an intermediate fact. Rewrite using `[← this]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem localFourier_comp_neg (ψ : AddChar F Circle) (f : F → ℂ) (y : F) :
     localFourier (selfDualMeasure ψ) ψ (fun x => f (-x)) y =
@@ -110,51 +110,49 @@ theorem localFourier_comp_neg (ψ : AddChar F Circle) (f : F → ℂ) (y : F) :
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[rt, pt, w0, Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rightTranslate_pureTensor_weyl (f g : F → ℂ) : rt (pt f g) (w0 : GL (Fin 2) F) = pt g (fun x => f (-x)) := by
   funext x
   simp [rt, pt, w0, Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[w0, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_weyl_GL2 : GeneralLinearGroup.det (w0 : GL (Fin 2) F) = 1 := by
   ext
   simp [w0, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]
 
 /- English proof (translation)
-Simplify using `[mp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mp_one_left (s : ℂ) : mp (1 : Fˣ) s = 1 := by
   simp [mp]
 
 /- English proof (translation)
-Use `set T := localFourier (selfDualMeasure ψ) ψ with hT`. Establish `hTf : T f ∈ schwartzBruhat F` using `localFourier_mem_schwartzBruhat _ hψ.1 hψ.2.1 hf`. Establish `hTg : T g ∈ schwartzBruhat F` using `localFourier_mem_schwartzBruhat _ hψ.1 hψ.2.1 hg`. Establish `hβ : IsUnit1 (μ₁⁻¹ * μ₂)` using `isUnit1_mul (isUnit1_inv h₁) h₂`. Establish `h1c : IsUnit1 (μ₁ * c)` using `isUnit1_mul h₁ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2c : IsUnit1 (μ₂ * c)` using `isUnit1_mul h₂ hc`. Establish `s0' : 0 < (1 - s).re` using `by simpa using s1`. Take `⟨pI, pE⟩` from `GlobalTheory.CompanionTheory.DoubleTate.sdz F f hf (fun x => T g (-x)) (comp_neg_mem hTg) (μ₂ * c) (μ₁⁻¹ * μ₂) h2c hβ s s0`. Take `⟨dI, dE⟩` from `GlobalTheory.CompanionTheory.DoubleTate.sdz F g hg (T f) hTf (μ₁ * c)⁻¹ (μ₁⁻¹ * μ₂) (isUnit1_inv h1c) hβ (1 - s) s0'`. Establish `ch1 : (μ₂ * c) * (μ₁⁻¹ * μ₂)⁻¹ = μ₁ * c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Establish `n2 : ((μ₂ a : ℂˣ) : ℂ) ≠ 0` using `(μ₂ a).ne_zero`. Establish `n1 : ((μ₁ a : ℂˣ) : ℂ) ≠ 0` using `(μ₁ a).ne_zero`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, mul_inv, inv_inv]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `ch2 : (μ₁ * c)⁻¹ * (μ₁⁻¹ * μ₂)⁻¹ = (μ₂ * c)⁻¹`. Use extensionality with `a`. Establish `n2 : ((μ₂ a : ℂˣ) : ℂ) ≠ 0` using `(μ₂ a).ne_zero`. Establish `n1 : ((μ₁ a : ℂˣ) : ℂ) ≠ 0` using `(μ₁ a).ne_zero`. Establish `n3 : ((c a : ℂˣ) : ℂ) ≠ 0` using `(c a).ne_zero`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, mul_inv, inv_inv]`. Clear the denominators using the available nonvanishing facts. Rewrite `pE` using `[ch1, localZeta_comp_neg]`. Rewrite `dE` using `[ch2]`. Establish `ePrimal : (fun a : Fˣ => W2 ψ μ₁ μ₂ (pt f g) (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) = fun a : Fˣ => (((μ₂ * c) a : ℂˣ) : ℂ) * mp a s * ∫ h : Fˣ, (((μ₁⁻¹ * μ₂) h : ℂˣ) : ℂ) * f ((h : F) * a) * T g (-((h⁻¹ : Fˣ) : F)) ∂multHaar F`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[GlobalTheory.CompanionTheory.WhittakerTorus.swd F ψ hψ μ₁ μ₂ h₁ h₂ f hf g hg a]`. Establish `: mp a s = mp a (1 / 2) * mp a (s - 1 / 2)`. Rewrite using `[← mp_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `eDual : (fun a : Fˣ => W2 ψ μ₁ μ₂ (pt f g) (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) = fun a : Fˣ => (((μ₁ * c)⁻¹ a : ℂˣ) : ℂ) * mp a (1 - s) * ∫ h : Fˣ, (((μ₁⁻¹ * μ₂) h : ℂˣ) : ℂ) * g ((h : F) * a) * T f ((h⁻¹ : Fˣ) : F) ∂multHaar F` using `by clear pI pE dI dE ch1 ch2 ePrimal`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Establish `hS` using `(GlobalTheory.CompanionTheory.WhittakerTrans.sTrans F ψ hψ μ₁ μ₂ h₁ h₂ (pt f g) (GlobalTheory.CompanionTheory.WhNe.pt_mem_plane hf hg) w0).2 (dg2 a 1)`. Rewrite using `[hS, det_weyl_GL2, rightTranslate_pureTensor_weyl, GlobalTheory.CompanionTheory.WhittakerTorus.swd F ψ hψ μ₁ μ₂ h₁ h₂ g hg _ (comp_neg_mem hf) a]`. Establish `hin : ∀ h : Fˣ, localFourier (selfDualMeasure ψ) ψ (fun x => f (-x)) (-((h⁻¹ : Fˣ) : F)) = T f ((h⁻¹ : Fˣ) : F)` using `fun h => by`. Rewrite using `[localFourier_comp_neg, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hin]`. Establish `: mp a (1 - s) = mp a (1 / 2) * mp a (1 / 2 - s)`. Rewrite using `[← mp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mp_one_left]`. Establish `n1 : ((μ₁ a : ℂˣ) : ℂ) ≠ 0` using `(μ₁ a).ne_zero`. Establish `n2 : ((μ₂ a : ℂˣ) : ℂ) ≠ 0` using `(μ₂ a).ne_zero`. Establish `n3 : ((c a : ℂˣ) : ℂ) ≠ 0` using `(c a).ne_zero`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, map_one, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(∫ h : Fˣ, ((μ₁ h : ℂˣ) : ℂ)⁻¹ * ((μ₂ h : ℂˣ) : ℂ) * g ((h : F) * a) * T f ((h : F)⁻¹) ∂multHaar F) = I`. Clear the denominators using the available nonvanishing facts. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eDual]`. Conclude with `dI`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ePrimal]`. Conclude with `pI`. Establish `t1` using `(GlobalTheory.CompanionTheory.TateFE.sTate F ψ hψ (μ₂ * c) h2c f hf s s0 s1).1`. Establish `t2` using `(GlobalTheory.CompanionTheory.TateFE.sTate F ψ hψ (μ₁ * c) h1c g hg s s0 s1).2`. Rewrite using `[eDual, ePrimal, dE, pE, t1, t2]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fe_pt {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ₁ μ₂ : Fˣ →* ℂˣ} (h₁ : IsUnit1 μ₁)
     (h₂ : IsUnit1 μ₂) {c : Fˣ →* ℂˣ} (hc : IsUnit1 c) {s : ℂ} (s0 : 0 < s.re) (s1 : s.re < 1)
@@ -231,13 +229,13 @@ theorem fe_pt {ψ : AddChar F Circle} (hψ : IsStd ψ) {μ₁ μ₂ : Fˣ →* �
     ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂ φ hφ c hc s s0 s1`. Take `⟨n, f, g, hfg, rfl⟩` from `GlobalTheory.CompanionTheory.PlanePure.schwartzBruhat2_eq_sum_pt F φ hφ`. Establish `key : ∀ t : Finset (Fin n), (∑ i ∈ t, pt (f i) (g i)) ∈ GodementSectionLocal.schwartzBruhat2 F ∧ FEat ψ μ₁ μ₂ c s (W2 ψ μ₁ μ₂ (∑ i ∈ t, pt (f i) (g i)))`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `empty`. Use `⟨by simpa using Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Establish `hz` using `(GlobalTheory.CompanionTheory.WhitLin.whittaker_linear_in_schwartz_bruhat F ψ hψ μ₁ μ₂ h₁ h₂ 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _)).2 0`. Simplify using `only [zero_smul] at hz`. Simplify `FEat.zero ψ μ₁ μ₂ c s` using `[hz]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert i t hi ih`. Establish `hp` using `GlobalTheory.CompanionTheory.WhNe.pt_mem_plane (hfg i).1 (hfg i).2`. Rewrite using `[Finset.sum_insert hi]`. Use `⟨Submodule.add_mem _ hp ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.CompanionTheory.WhitLin.whittaker_linear_in_schwartz_bruhat F ψ hψ μ₁ μ₂ h₁ h₂ _ hp _ ih.1).1]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(fe_pt hψ h₁ h₂ hc s0 s1 (hfg i).1 (hfg i).2).add ih.2`. Conclude with `(key Finset.univ).2`.
+A detailed English derivation is pending.
 -/
 theorem feGen : FeGen := by
   intro F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂ φ hφ c hc s s0 s1

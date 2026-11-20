@@ -21,7 +21,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.CovHt.HtTop
 
 /- English proof (translation)
-Use `D.eight_le_f` as an intermediate fact. Rewrite using `[D.host.finrank_E']`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_lt_half_finrank (D : D7) : 2 < Module.finrank ℚ D.host.E / 2 := by
   have := D.eight_le_f
@@ -34,7 +34,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} {p : PtAt ex Csz} {i : Fin D.R.m} {Y : Cov p i}
 
 /- English proof (translation)
-Use `haveI hTC : IsTotallyComplex Y.d.c₂.F := ⟨fun v => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Conclude with `fun e => GlobalTheory.CompHt.conj_comp_ne (c := Y.d.c₂) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩`. Establish `hd' : 0 < compDeg Y.U Z (wtOf (dat p i) u1 0)` using `by exact_mod_cast hd`. Conclude with `GlobalTheory.ImageHeightNonneg.imageHeight_nonneg hP _ _ _ _ _ _ _ _ w abelian₂ hG.1 (fun σ f => petOn_conj _ _ _ _ Z _ σ f) hG.2.2 hw hd'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ht_add_log_nonneg (hP : Hypotheses2) {u1 : AllWt.Weight (dat p i)} {Z : Comp Y.d.Xo₂ Y.d.c₂} {n : ℕ}
     {w : Fin n → cuspOn Y.U Z (wtOf (dat p i) u1 0)} {abelian₂ : ℝ}
@@ -49,13 +49,13 @@ theorem ht_add_log_nonneg (hP : Hypotheses2) {u1 : AllWt.Weight (dat p i)} {Z : 
   exact GlobalTheory.ImageHeightNonneg.imageHeight_nonneg hP _ _ _ _ _ _ _ _ w abelian₂ hG.1 (fun σ f => petOn_conj _ _ _ _ Z _ σ f) hG.2.2 hw hd'
 
 /- English proof (translation)
-Establish `h1ρ : 0 < 1 - rhoB (dat p i) u1` using `by linarith`. Establish `hdelpos : 0 < topDeg Y.U Z (uPrime (dat p i) u1)` using `lt_of_lt_of_le (mul_pos h1ρ hd) hdel`. Establish `hf` using `two_lt_half_finrank D`. Use `set hc := htCost Y.d.l₂ B * l1 (uPrime (dat p i) u1) with hhc`. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hA` using `(le_compVolSlope_iff Y.U (xiR D) 8 (mixVals Y.d.Xo₂ Y.d.c₂ B) hdelpos s).1 hs cs`. Establish `hB` using `GlobalTheory.CovHtCmp.compVol_le_volL_deep D p.T.toCore ((i : ℕ) + 1) Y e o hY hf hHT Z u1 (uPrime (dat p i) u1) cc B cs ε hM hε`. Establish `hC` using `GlobalTheory.T.cusp_form_good_birational_bound hPX hP D p.T.toCore ((i : ℕ) + 1) Y e o hY hf Z u1 n w abelian₂ (cs + cc + hc + ε) hGo hBir hM.1 hd hw (by linarith)`. Establish `hABC` using `hA.trans (hB.trans hC)`. Establish `hpos : 0 ≤ Y.dg u1 Z * (Y.ht u1 Z + (cs + cc + hc + ε))` using `mul_nonneg hd.le (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hABC` using `[ENNReal.ofReal_le_ofReal_iff hpos]`. Express the relevant statement in the definitionally equal form `delPrime Y.U Z u1 * (s + cs) ≤ _ at hABC`. Establish `key : (1 - rhoB (dat p i) u1) * max 0 (s + cs) * Y.dg u1 Z ≤ (Y.ht u1 Z + cs + (cc + hc) + ε) * Y.dg u1 Z`. Break down `le_total (s + cs) 0 with h | h` into its components or cases. Rewrite using `[max_eq_left h, mul_zero, zero_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg (by linarith) hd.le`. Rewrite using `[max_eq_right h]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right key hd`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem slope_le_ht (hPX : GlobalTheory.CovTop.HypothesesX) (hP : Hypotheses2) {e : ℕ} {o : ℝ} (hY : Y.Good e o) (hHT : HTCmp Y.d.Xo₂ Y.d.c₂)
     {u1 : AllWt.Weight (dat p i)} {Z : Comp Y.d.Xo₂ Y.d.c₂} {n : ℕ}
@@ -96,19 +96,17 @@ theorem slope_le_ht (hPX : GlobalTheory.CovTop.HypothesesX) (hP : Hypotheses2) {
   exact le_of_mul_le_mul_right key hd
 
 /- English proof (translation)
-Take `⟨abelian₂, hLam, hSb⟩` from `hS`. Take `⟨cc, hcc, hccb, hMZ⟩` from `hM`. Take `⟨-, g, hgap, herr0, herrb, hht0, hhtb⟩` from `hB`. Take `⟨sl, hsl, hX⟩` from `hmean (uPrime (dat p i) u1) g hgap`. Take `⟨δ, hδ, hδZ⟩` from `hDeg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdg : ∀ Z, 0 < Y.dg u1 Z` using `fun Z => lt_of_lt_of_le hδ (hδZ Z).1`. Establish `hLam1 : 1 ≤ abelian₂`. Take `⟨Z⟩` from `hne`. Take `⟨n, w, hw⟩` from `hLam Z`. Conclude with `hw.one_le`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcs : 0 ≤ Real.log abelian₂` using `Real.log_nonneg hLam1`. Establish `hl1 : 0 ≤ l1 (uPrime (dat p i) u1)` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hhc : 0 ≤ htCost Y.d.l₂ (bndB (uPrime (dat p i) u1) g) * l1 (uPrime (dat p i) u1)` using `mul_nonneg hht0 hl1`. Establish `hT : (0 : ℝ) ≤ lenT p i PP` using `Nat.cast_nonneg _`. Establish `hnn : ∀ Z, 0 ≤ Y.ht u1 Z + Real.log abelian₂` using `fun Z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, w, hw⟩` from `hLam Z`. Conclude with `ht_add_log_nonneg hP hw (hGe Z).1 (hdg Z)`. Establish `e1 : 0 ≤ Cs * unitE p` using `mul_nonneg hs0 hU`. Establish `e2 : 0 ≤ Cm * unitE p` using `mul_nonneg hm0 hU`. Establish `e3 : 0 ≤ Cb * unitE p` using `mul_nonneg hb0 hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e4 : 0 ≤ C0 * Cb * unitE p` using `mul_nonneg (mul_nonneg h0 hb0) hU`. Use `⟨Real.log abelian₂, cc + htCost Y.d.l₂ (bndB (uPrime (dat p i) u1) g) * l1 (uPrime (dat p i) u1), C0 * errX (ell D) (uPrime (dat p i) u1) g, sl, hcs, add_nonneg hcc hhc, mul_nonneg h0 herr0, hnn, fun Z => ?_, hX, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, w, hw⟩` from `hLam Z`. Conclude with `slope_le_ht hPX hP hY hHT hw (hGe Z).1 (hGe Z).2.1 (hGe Z).2.2 hρ (hdg Z) (hMZ Z) hcc hhc le_rfl (hnn Z) (hsl Z)`. Establish `: (lenT p i PP : ℝ) * (C0 * errX (ell D) (uPrime (dat p i) u1) g) ≤ C0 * Cb * unitE p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left herrb h0`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[mul_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem heightAt_of (hPX : GlobalTheory.CovTop.HypothesesX) (hP : Hypotheses2) {e : ℕ} {o : ℝ} (hY : Y.Good e o) (hHT : HTCmp Y.d.Xo₂ Y.d.c₂)
     {C0 Cs Cm Cb PP : ℝ} (h0 : 0 ≤ C0) (hs0 : 0 ≤ Cs) (hm0 : 0 ≤ Cm) (hb0 : 0 ≤ Cb) (hU : 0 ≤ unitE p)
@@ -154,11 +152,11 @@ theorem heightAt_of (hPX : GlobalTheory.CovTop.HypothesesX) (hP : Hypotheses2) {
 end Point
 
 /- English proof (translation)
-Introduce `hPX hP hDG hSz hDg hSh hGe hMu hBu hDS`. Take `⟨C0, h0, hDS⟩` from `hDS`. Use `Closed.imp ((((((hDG.and hSz).and hDg).and hSh).and hGe).and hMu).and hBu) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hF`. Take `⟨⟨⟨⟨⟨⟨⟨C1, -, a1⟩, ⟨C2, -, a2⟩⟩, ⟨C3, -, a3⟩⟩, ⟨C4, c4, a4⟩⟩, ⟨C5, -, a5⟩⟩, ⟨C6, c6, a6⟩⟩, ⟨C7, c7, a7⟩⟩` from `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨C4 + C6 + C7 + C0 * C7, by positivity, ?_⟩` and prove the remaining obligations. Take `⟨x0, hall⟩` from `((((((a1.and a2).and a3).and a4).and a5).and a6).and a7)`. Use `⟨x0, fun x hx hle ι p hp i hm Y hY u1 hq => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨b1, b2⟩, b3⟩, b4⟩, b5⟩, b6⟩, b7⟩` from `hall x hx hle ι p hp`. Establish `hDGa` using `b1 i hm Y hY`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hb1, hbE, -, -, -, -, hρ⟩` from `b2 i`. Establish `hU : 0 ≤ unitE p` using `by linarith`. Establish `hρ1 : rhoB (dat p i) u1 < 1` using `((hρ hm).2 u1 hq).2.2.1`. Establish `hBu` using `b7 i hm Y hY u1 hq`. Conclude with `heightAt_of hPX hP hY.1 (GlobalTheory.CovHt.htCmp_of_hypotheses hP _ _ _ _ _ _) h0 c4 c6 c7 hU (hDS _ p.T p.fw.laws (Formalism.BasicNotions.ParameterChoice'.m_sq_le_k (Fm.params x hx ι)) ((i : ℕ) + 1) (by omega) hm Y _ _ hY.1 hBu.1) hDGa.2.2.2.2.2.2.1 hρ1 (b3 i hm Y hY u1 hq) (b4 …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem height_of_steps : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → DeepGood → Size → Deg → Short → Geom → MultC → Budget →
     (∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → D.R.m ^ 2 ≤ D.R.k → ∀ j : ℕ, 1 ≤ j → j < D.R.m → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → Y.d.l₂.M'.primeFactors.card ≤ 15 → MeanAll Y.U (xiR D) (ell D) C) →

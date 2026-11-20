@@ -18,7 +18,7 @@ variable {m n : ℕ} {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e : ℤ} {sL
   {s₀ : ℂ} {Ht : G → ℝ≥0} {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
 /- English proof (translation)
-Establish `hnull : NullSec ε c (Q - Q')` using `(hS m n ε c t p q e sL ρ hL (Q - Q')).2 (fun y => by simp [map_sub, h y])`. Establish `key` using `hLC m n ε c hL.cpos ((LinearMap.proj g).comp I) (fun a b P => hD.Iinv g a b P) (Q - Q') hnull`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, map_sub, Pi.sub_apply] at key`. Conclude with `sub_eq_zero.mp key`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_eq_of_sL (hS : SecZero) (hLC : LC) (hL : LocData ε c t p q e sL ρ) (hD : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ)
     {Q Q' : PX m n} (h : ∀ y, sL Q y = sL Q' y) (g : G) : I Q g = I Q' g := by
@@ -29,9 +29,9 @@ theorem I_eq_of_sL (hS : SecZero) (hLC : LC) (hL : LocData ε c t p q e sL ρ) (
   exact sub_eq_zero.mp key
 
 /- English proof (translation)
-Take `⟨x', y, S, r, hr, hg, hx⟩` from `hD.split x`. Establish `hs : ∀ Q : PX m n, sec Q x = S * sL Q y` using `fun Q => by`. Rewrite using `[hg]`. Conclude with `(hx y).2 Q`. Simplify using `only [hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs P, hP y, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hs (QQ j)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hz_comb (hD : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) {N : ℕ} {P : PX m n} {QQ : Fin N → PX m n} {cc : Fin N → ℂ}
     (hP : ∀ y, sL P y = ∑ j, cc j * sL (QQ j) y) (z : ℂ) (x : G) :
@@ -49,7 +49,7 @@ theorem hz_comb (hD : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) {N : ℕ}
 end
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mulVec_sum {N : ℕ} (A B : Matrix (Fin N) (Fin N) ℂ) (v : Fin N → ℂ) (j : Fin N) :
     ∑ i, A j i * ∑ l, B i l * v l = ∑ l, (A * B) j l * v l := by
@@ -59,7 +59,7 @@ theorem mulVec_sum {N : ℕ} (A B : Matrix (Fin N) (Fin N) ℂ) (v : Fin N → �
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Use `Differentiable.fun_sum fun σ _ => ?_` and prove the remaining obligations. Use `Differentiable.fun_mul (differentiable_const _) ?_` and prove the remaining obligations. Conclude with `Differentiable.fun_finset_prod fun i _ => h (σ i) i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem det_diff_lemma {N : ℕ} {A : ℂ → Matrix (Fin N) (Fin N) ℂ}
     (h : ∀ i j, Differentiable ℂ fun w => A w i j) : Differentiable ℂ fun w => (A w).det := by
@@ -69,9 +69,9 @@ private theorem det_diff_lemma {N : ℕ} {A : ℂ → Matrix (Fin N) (Fin N) ℂ
   exact Differentiable.fun_finset_prod fun i _ => h (σ i) i
 
 /- English proof (translation)
-Simplify using `only [Matrix.adjugate_apply]`. Use `det_diff_lemma (A := fun w => (A w).updateRow b (Pi.single a 1)) fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `hib : i = b`. Substitute `hib` using the available equality. Simplify using `only [Matrix.updateRow_self]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `differentiable_const _`. Simplify using `only [Matrix.updateRow_ne hib]`. Conclude with `h i j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem adj_diff_lemma_2 {N : ℕ} {A : ℂ → Matrix (Fin N) (Fin N) ℂ}
     (h : ∀ i j, Differentiable ℂ fun w => A w i j) (a b : Fin N) :
@@ -86,9 +86,7 @@ private theorem adj_diff_lemma_2 {N : ℕ} {A : ℂ → Matrix (Fin N) (Fin N) �
     exact h i j
 
 /- English proof (translation)
-Break down `(hf.analyticAt z).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨a, ha⟩` from `ha`. Establish `hon : AnalyticOnNhd ℂ f univ` using `fun x _ => hf.analyticAt x`. Conclude with `ha (hon.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (mem_univ z) h (mem_univ a))`.
-
-Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ev_ne_lemma_3 {f : ℂ → ℂ} (hf : Differentiable ℂ f) (ha : ∃ a, f a ≠ 0) (z : ℂ) :
     ∀ᶠ w in 𝓝[≠] z, f w ≠ 0 := by
@@ -100,29 +98,27 @@ private theorem ev_ne_lemma_3 {f : ℂ → ℂ} (hf : Differentiable ℂ f) (ha 
   · exact h
 
 /- English proof (translation)
-Establish `hdt : Differentiable ℂ fun w => (M' w).det` using `det_diff_lemma hM`. Establish `hadj : ∀ a b, Differentiable ℂ fun w => (M' w).adjugate a b` using `adj_diff_lemma_2 hM`. Establish `hdt0 : (M' s₀).det = 1` using `by rw [hM0, Matrix.det_one]`. Establish `hgb0 : (∑ i, (M' s₀).adjugate j i * Ah i s₀) / (M' s₀).det = Ah j s₀`. Rewrite using `[hdt0, div_one, hM0, Matrix.adjugate_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply]`. Establish `hDev` using `ev_ne_lemma_3 hD hDne`. Establish `hdtev` using `ev_ne_lemma_3 hdt ⟨s₀, by rw [hdt0]; exact one_ne_zero⟩`. Establish `hne : ∀ z, ∀ᶠ w in 𝓝[≠] z, w ≠ s₀`. Introduce `z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : z = s₀`. Substitute `h` using the available equality. Conclude with `self_mem_nhdsWithin`. Conclude with `nhdsWithin_le_nhds (isOpen_compl_singleton.mem_nhds h)`. Set `f : ℂ → ℂ` to `Function.update (fun w => (∑ i, (M' w).adjugate j i * B i w) / (D w * (M' w).det)) s₀ ((∑ i, (M' s₀).adjugate j i * Ah i s₀) / (M' s₀).det)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnumV : DifferentiableOn ℂ (fun w => ∑ i, (M' w).adjugate j i * Ah i w) V` using `DifferentiableOn.fun_sum fun i _ => (hadj j i).differentiableOn.mul (hAh i)`. Establish `hgbA : AnalyticAt ℂ (fun w => (∑ i, (M' w).adjugate j i * Ah i w) / (M' w).det) s₀` using `(hnumV.analyticAt (hVo.mem_nhds hs₀V)).div (hdt.analyticAt s₀) (by rw [hdt0]; exact one_ne_zero)`. Establish `hf_eq : f =ᶠ[𝓝 s₀] fun w => (∑ i, (M' w).adjugate j i * Ah i w) / (M' w).det`. Establish `h1 : ∀ᶠ w in 𝓝[≠] s₀, f w = (∑ i, (M' w).adjugate j i * Ah i w) / (M' w).det` using `by filter_upwards [hDev s₀, hne s₀, nhdsWithin_le_nhds (hUo.mem_nhds hs₀), nhdsWithin_le_nhds (hVo.mem_nhds hs₀V)] with w hDw hw hwU hwV`. Simplify using `only [f, Function.update_of_ne hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∑ i, (M' w).adjugate j i * B i w = D w * ∑ i, (M' w).adjugate j i * Ah i w`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hBA w hwV hwU hDw i]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h2, mul_div_mul_left _ _ hDw]`. Use `filter_upwards [eventually_nhdsWithin_iff.mp h1] with w hw`. Distinguish the cases in `h : w = s₀`. Substitute `h` using the available equality. Simplify using `only [f, Function.update_self]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw h`. Establish `hfA : AnalyticAt ℂ f s₀` using `hgbA.congr hf_eq.symm`. Establish `hfM : MeromorphicOn f U`. Introduce `w hw`. Establish `hnum : AnalyticAt ℂ (fun w => ∑ i, (M' w).adjugate j i * B i w) w` using `(DifferentiableOn.fun_sum fun i _ => (hadj j i).differentiableOn.mul (hB i)).analyticAt (hUo.mem_nhds hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hden : AnalyticAt ℂ (fun w => D w * (M' w).det) w` using `(hD.fun_mul hdt).analyticAt w`. Use `(hnum.meromorphicAt.div hden.meromorphicAt).congr ?_` and prove the remaining obligations. Use `filter_upwards [hne w] with v hv`. Simplify using `only [f, Function.update_of_ne hv, Pi.div_apply]`. Establish `hmain` using `hG U f (Ej j) σ s₀ hUo hUr hs₀ hfM hfA hσU (hEd j) ?_`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfs : f s₀ = Ah j s₀`. Simplify using `only [f, Function.update_self]`. Conclude with `hgb0`. Rewrite `hmain` using `[hfs]`. Conclude with `hmain`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Establish `hzo : rightOf σ ∈ 𝓝 z` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hz`. Use `filter_upwards [hDev z, hdtev z, hne z, nhdsWithin_le_nhds hzo] with w hDw hdw hw hwσ`. Simplify using `only [f, Function.update_of_ne hw]`. Establish `h3 : ∑ i, (M' w).adjugate j i * B i w = D w * ((M' w).det * Ej j w)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∑ i, (M' w).adjugate j i * B i w = D w * ∑ i, (M' w).adjugate j i * ∑ l, M' w i l * Ej l w`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hBE w hwσ i]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[h2, mulVec_sum, Matrix.adjugate_mul]`. Simplify using `[Matrix.smul_apply, Matrix.one_apply]`. Rewrite using `[h3, ← mul_assoc, mul_div_cancel_left₀ _ (mul_ne_zero hDw hdw)]`.
+A detailed English derivation is pending.
 -/
 private theorem glue_core_lemma_4 (hG : Glue) {N : ℕ} {s₀ : ℂ} {U V : Set ℂ} {σ : ℝ} {D : ℂ → ℂ}
     {M' : ℂ → Matrix (Fin N) (Fin N) ℂ} {B Ah Ej : Fin N → ℂ → ℂ}
@@ -203,9 +199,9 @@ private theorem glue_core_lemma_4 (hG : Glue) {N : ℕ} {s₀ : ℂ} {U V : Set 
     rw [h3, ← mul_assoc, mul_div_cancel_left₀ _ (mul_ne_zero hDw hdw)]
 
 /- English proof (translation)
-Use `⟨∑ r ∈ d.roots.toFinset, ‖r‖, fun z hz h0 => ?_⟩` and prove the remaining obligations. Establish `hmem : z ∈ d.roots.toFinset`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hd]`. Conclude with `h0`. Establish `h1 : ‖z‖ ≤ ∑ r ∈ d.roots.toFinset, ‖r‖` using `Finset.single_le_sum (f := fun r => ‖r‖) (fun r _ => norm_nonneg r) hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : z.re ≤ ‖z‖` using `Complex.re_le_norm z`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem poly_ev_lemma_5 {d : Polynomial ℂ} (hd : d ≠ 0) :
     ∃ σ : ℝ, ∀ z : ℂ, σ < z.re → d.eval z ≠ 0 := by
@@ -219,7 +215,7 @@ private theorem poly_ev_lemma_5 {d : Polynomial ℂ} (hd : d ≠ 0) :
   linarith
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using holValueAt_const 0 s₀`. Consider the case `insert a T ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a T)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hv_sum_lemma_6 {s₀ : ℂ} {ι : Type*} (T : Finset ι) {f : ι → ℂ → ℂ} {z : ι → ℂ}
     (h : ∀ i ∈ T, HolValueAt (f i) s₀ (z i)) :
@@ -232,39 +228,37 @@ private theorem hv_sum_lemma_6 {s₀ : ℂ} {ι : Type*} (T : Finset ι) {f : ι
     exact (h a (Finset.mem_insert_self a T)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `m n ε c t p q e sL ρ hL hGS G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I Λ hD P g`. Use `letI : MeasurableSpace ↥(KR n) := borel _`. Use `haveI : BorelSpace ↥(KR n) := ⟨rfl⟩`. Take `⟨W, hWfd, hPW, hWst, -⟩` from `hL.kfin P`. Take `⟨ν, κ, hν, hκ, hproj, hlift⟩` from `hP m n ε c t p q e sL ρ hL W hWfd hWst`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hν`. Take `⟨N, yy, QQ, cc, M, hQW, hPc, hM0, hMd, hyy, hint⟩` from `hB m n ε c t p q e sL ρ hL W hWfd hWst ν κ hν hκ hproj hlift P hPW`. Take `⟨σf, hEdiff, hsum, hfar⟩` from `hFar m n ε c t p q e sL ρ hL G Pp Γ ι s₀ Ht sec I Λ hD`. Take `⟨r, σv, F, hr, -, hFc, hFd, hF0, -, hFhv⟩` from `hV m n ε c t p q e sL ρ hL hGS G Pp Γ ι s₀ Ht sec I Λ hD`. Take `⟨U, d, Ee, σe, hUo, hUr, hs₀U, hd, hEd, hEc, -, hEeq⟩` from `hD.eis`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σd, hσd⟩` from `poly_ev_lemma_5 hd`. Take `⟨σU, hσU⟩` from `hUr.1`. Establish `hdne : ∃ a, d.eval a ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hd (Polynomial.funext fun a => by simp [h a])`. Establish `hTS : ∀ i x, ∫ k, κ k * I 1 (x * ι (↑k * yy i)) ∂ν = I (QQ i) x` using `fun i x => hT m n ε c t p q e sL ρ hL G Pp Γ ι s₀ Ht sec I Λ hD W hWfd hWst ν κ hν hκ hproj hlift x (yy i) (QQ i) (hQW i) (hyy i)`. Establish `hmap : ∀ i, Continuous fun k : ↥(KR n) => g * ι (↑k * yy i)` using `fun i => continuous_const.mul (hD.ιcont.comp ((continuous_mul_right (yy i)).comp continuous_subtype_val))`. Establish `hAh : ∀ i, DifferentiableOn ℂ (fun z => ∫ k, κ k * F z (g * ι (↑k * yy i)) ∂ν) (Metric.ball s₀ r)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Use `(hH (↥(KR n)) ν univ isCompact_univ (by simp) (Metric.ball s₀ r) (fun k z => κ k * F z (g * ι (↑k * yy i))) Metric.isOpen_ball ?_ ?_).1` and prove the remaining obligations. Use `ContinuousOn.mul (hκ.comp continuous_fst).continuousOn ?_` and prove the remaining obligations. Conclude with `hFc.comp (Continuous.continuousOn (continuous_snd.prodMk ((hmap i).comp continuous_fst))) (fun y hy => ⟨hy.2, mem_univ _⟩)`. Conclude with `fun k _ => (hFd _).const_mul _`. Establish `hBd : ∀ i, DifferentiableOn ℂ (fun z => ∫ k, κ k * Ee z (g * ι (↑k * yy i)) ∂ν) U`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Introduce `i`. Use `(hH (↥(KR n)) ν univ isCompact_univ (by simp) U (fun k z => κ k * Ee z (g * ι (↑k * yy i))) hUo ?_ ?_).1` and prove the remaining obligations. Use `ContinuousOn.mul (hκ.comp continuous_fst).continuousOn ?_` and prove the remaining obligations. Conclude with `hEc.comp (Continuous.continuousOn (continuous_snd.prodMk ((hmap i).comp continuous_fst))) (fun y hy => ⟨hy.2, mem_univ _⟩)`. Conclude with `fun k _ => (hEd _).const_mul _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEF : ∀ w ∈ Metric.ball s₀ r, w ∈ U → d.eval w ≠ 0 → ∀ x, Ee w x = d.eval w * F w x`. Introduce `w hwV hwU hdw x`. Establish `hH' : IsExtAt (fun z => GlobalTheory.Eis.cosetSum Pp Γ (fun x' => ↑↑(Ht x') ^ (z - s₀) * sec 1 x') x) w (fun z => Ee z x / d.eval z)`. Use `⟨U, hwU, hUr, fun z hz => ?_, ⟨max σe σd, fun z hz => ?_⟩⟩` and prove the remaining obligations. Conclude with `((hEd x).analyticAt (hUo.mem_nhds hz)).meromorphicAt.div ((Polynomial.differentiable d).analyticAt z).meromorphicAt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz1 : σe < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`. Establish `hz2 : σd < z.re` using `lt_of_le_of_lt (le_max_right _ _) hz`. Simplify using `only`. Rewrite using `[(hEeq z hz1).2 x, mul_div_cancel_left₀ _ (hσd z hz2)]`. Establish `hv` using `hFhv x w hwV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[hH'.holValueAt_iff]`. Establish `hcont : ContinuousAt (fun z => Ee z x / d.eval z) w` using `((hEd x).continuousOn.continuousAt (hUo.mem_nhds hwU)).div (Polynomial.continuous d).continuousAt hdw`. Establish `h1 : F w x = Ee w x / d.eval w` using `tendsto_nhds_unique hv (hcont.tendsto.mono_left nhdsWithin_le_nhds)`. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ j, HolValueAt (fun z => GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z (QQ j)) g) s₀ (∫ k, κ k * F s₀ (g * ι (↑k * yy j)) ∂ν)`. Introduce `j`. Use `glue_core_lemma_4 (σ := max (max σe σf) σU) (D := fun w => d.eval w) (M' := fun w => M (w - s₀)) (B := fun i z => ∫ k, κ k * Ee z (g * ι (↑k * yy i)) ∂ν) (Ah := fun i z => ∫ k, κ k * F z (g * ι (↑k * yy i)) ∂ν) (Ej := fun j z => GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z (QQ …` and prove the remaining obligations. Introduce `w hwV hwU hdw i`. Rewrite using `[← MeasureTheory.integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hEF w hwV hwU hdw]`. Expand and normalize the polynomial expressions, which then agree. Introduce `l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hEdiff (QQ l) g).mono fun z hz => lt_of_le_of_lt (le_trans (le_max_right σe σf) (le_max_left _ σU)) hz`. Introduce `w hw i`. Establish `hwe : σe < w.re` using `lt_of_le_of_lt (le_trans (le_max_left σe σf) (le_max_left _ σU)) hw`. Establish `hwf : σf < w.re` using `lt_of_le_of_lt (le_trans (le_max_right σe σf) (le_max_left _ σU)) hw`. Rewrite using `[← hfar ν κ N yy QQ M hν hκ hint w hwf g i, ← MeasureTheory.integral_const_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[(hEeq w hwe).2]`. Establish `e1 : hz Ht sec s₀ w 1 = fun x => ↑↑(Ht x) ^ (w - s₀) * sec 1 x` using `rfl`. Rewrite using `[e1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key' : ∀ j, HolValueAt (fun z => GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z (QQ j)) g) s₀ (I (QQ j) g)`. Introduce `j`. Establish `h` using `key j`. Simplify using `only [hF0] at h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[hTS]`. Then use the resulting hypothesis. Establish `hIP : I P g = ∑ j, cc j * I (QQ j) g`. Establish `h` using `I_eq_of_sL hS hLC hL hD (Q := P) (Q' := ∑ j, cc j • QQ j) (fun y => by simp [map_sum, map_smul, hPc y]) g`. Rewrite using `[h]`. Simplify using `[map_sum, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsumHV` using `hv_sum_lemma_6 Finset.univ (s₀ := s₀) (f := fun j z => cc j * GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z (QQ j)) g) (z := fun j => cc j * I (QQ j) g) (fun j _ => (holValueAt_const (cc j) s₀).mul (key' j))`. Rewrite using `[hIP]`. Use `hsumHV.congr ⟨σf, fun z hzr => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ qq : GlobalTheory.Eis.Cosets Pp Γ, GlobalTheory.Eis.term Pp Γ (fun x => ↑↑(Ht x) ^ (z - s₀) * sec P x) g qq = ∑ j, cc j * GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z (QQ j)) g qq` using `fun qq => hz_comb hD hPc z _`. Establish `hs` using `Summable.tsum_finsetSum (s := Finset.univ) (f := fun j qq => cc j * GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z (QQ j)) g qq) (fun j _ => (hsum (QQ j) g z hzr).mul_left (cc j))`.
-
-Simplify using `only [GlobalTheory.Eis.cosetSum]`. Rewrite using `[tsum_congr hc, hs]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[tsum_mul_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absThm_gen (hV : VacOut) (hP : ProjOp) (hT : TSGen) (hB : Basis) (hFar : FarRight) (hS : SecZero) (hLC : LC)
     (hH : HolParam) (hG : Glue) : AbsThm := by

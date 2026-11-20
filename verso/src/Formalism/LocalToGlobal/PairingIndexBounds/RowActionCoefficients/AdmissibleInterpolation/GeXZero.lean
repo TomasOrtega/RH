@@ -12,7 +12,7 @@ def geX (x : Kc) (g : ℝ) : Prop :=
 variable {p Oc}
 
 /- English proof (translation)
-Introduce `a b hb hab`. Rewrite using `[mul_pow, mul_assoc]`. Conclude with `Oc.mul_mem (Oc.pow_mem hu b) (hx a b hb hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geX_mul {u x : Kc} {g : ℝ} (hu : u ∈ Oc) (hx : geX p Oc x g) : geX p Oc (u * x) g := by
   intro a b hb hab
@@ -20,7 +20,7 @@ theorem geX_mul {u x : Kc} {g : ℝ} (hu : u ∈ Oc) (hx : geX p Oc x g) : geX p
   exact Oc.mul_mem (Oc.pow_mem hu b) (hx a b hb hab)
 
 /- English proof (translation)
-Introduce `a b hb _`. Rewrite using `[zero_pow hb.ne', zero_mul]`. Conclude with `Oc.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geX_zero (g : ℝ) : geX p Oc (0 : Kc) g := by
   intro a b hb _
@@ -28,18 +28,18 @@ theorem geX_zero (g : ℝ) : geX p Oc (0 : Kc) g := by
   exact Oc.zero_mem
 
 /- English proof (translation)
-Establish `h` using `geX_mul (Oc.neg_mem Oc.one_mem) hx`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem geX_neg {x : Kc} {g : ℝ} (hx : geX p Oc x g) : geX p Oc (-x) g := by
   have h := geX_mul (Oc.neg_mem Oc.one_mem) hx
   simpa using h
 
 /- English proof (translation)
-Introduce `a b hb hab`. Break down `eq_or_ne y 0 with rfl | hy0` into its components or cases. Simplify using `using hx a b hb hab`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Simplify using `using hy a b hb hab`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `hval (x / y) with h | h` into its components or cases. Establish `e : (x + y) ^ b * (p : Kc) ^ (-a) = (1 + x / y) ^ b * (y ^ b * (p : Kc) ^ (-a))`. Rewrite using `[← mul_assoc, ← mul_pow, add_mul, one_mul, div_mul_cancel₀ x hy0, add_comm y x]`. Rewrite using `[e]`. Conclude with `Oc.mul_mem (Oc.pow_mem (Oc.add_mem Oc.one_mem h) b) (hy a b hb hab)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[inv_div]`. Establish `e : (x + y) ^ b * (p : Kc) ^ (-a) = (1 + y / x) ^ b * (x ^ b * (p : Kc) ^ (-a))`. Rewrite using `[← mul_assoc, ← mul_pow, add_mul, one_mul, div_mul_cancel₀ y hx0]`. Rewrite using `[e]`. Conclude with `Oc.mul_mem (Oc.pow_mem (Oc.add_mem Oc.one_mem h) b) (hx a b hb hab)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geX_add (hval : ∀ x : Kc, x ∈ Oc ∨ x⁻¹ ∈ Oc) {x y : Kc} {g : ℝ} (hx : geX p Oc x g) (hy : geX p Oc y g) :
     geX p Oc (x + y) g := by

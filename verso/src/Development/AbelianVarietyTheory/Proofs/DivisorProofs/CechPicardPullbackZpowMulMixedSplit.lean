@@ -17,9 +17,9 @@ namespace GlobalTheory.CubeMixed
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat k`. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast, natCast_zsmul]`. Conclude with `lam_pow_left hL hΘ x z k`. Consider the case `negSucc k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `h` using `lam_mul_left hL hΘ (x ^ (k + 1)) (x ^ (k + 1))⁻¹ z`. Rewrite `h` using `[mul_inv_cancel, lam_one_left, lam_pow_left hL hΘ]`. Rewrite using `[zpow_negSucc, negSucc_zsmul]`. Conclude with `eq_neg_of_add_eq_zero_right h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_zpow_left {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB)
     (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) (x z : T ⟶ G) (n : ℤ) :
@@ -35,7 +35,7 @@ theorem lam_zpow_left {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G
     exact eq_neg_of_add_eq_zero_right h.symm
 
 /- English proof (translation)
-Rewrite using `[lam_zpow_left hL hΘ, lam_comm, lam_zpow_left hL hΘ, lam_comm, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_zpow_zpow {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB)
     (hΘ : ∃ t : LB.Gen (Theta G L), t.IsGen) (x y : T ⟶ G) (m n : ℤ) :
@@ -43,7 +43,7 @@ theorem lam_zpow_zpow {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G
   rw [lam_zpow_left hL hΘ, lam_comm, lam_zpow_left hL hΘ, lam_comm, smul_smul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `CechPic.pull ((toUnit T).left ≫ (η : 𝟙_ (Over (Sp K)) ⟶ A).left) c = 0`. Rewrite using `[pull_comp, GlobalTheory.AmpleStabFinite.pull_spec_local (K := K) _ c, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_one_eq_zero {K : Type} [Field K] {A T : Over (Sp K)} [GrpObj A] (c : CechPic.Pic A.left) :
     CechPic.pull (1 : T ⟶ A).left c = 0 := by
@@ -51,9 +51,9 @@ theorem pull_one_eq_zero {K : Type} [Field K] {A T : Over (Sp K)} [GrpObj A] (c 
   rw [pull_comp, GlobalTheory.AmpleStabFinite.pull_spec_local (K := K) _ c, map_zero]
 
 /- English proof (translation)
-Introduce `K _ A _ hA L hL T x y m n a b`. Establish `: IsCommMonObj A` using `hA.comm`. Establish `hΘ : ∃ t : LB.Gen (Theta A L), t.IsGen` using `GlobalTheory.SymMulPull.hasGen_theta GlobalTheory.CubeTop.cubeTheorem hA hL`. Establish `key : ∀ (c : CechPic.Pic A.left) (u v : T ⟶ A), CechPic.pull (u * v).left c = CechPic.pull u.left c + CechPic.pull v.left c + lam c u v`. Introduce `c u v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `lam`. Rewrite using `[pull_one_eq_zero]`. Normalize the expressions using the abelian group laws. Rewrite using `[mul_inv, key, key, ← zpow_neg, ← zpow_neg, lam_zpow_zpow hL hΘ, lam_zpow_zpow hL hΘ, neg_mul_neg]`. Use `module`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixed_mul : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (hL : L.IsLB) (T : Over (Sp K)) (x y : T ⟶ A) (m n a b : ℤ), a • GlobalTheory.CechPic.pull (x ^ m * y ^ n).left (GlobalTheory.CechPic.cls L hL) + b • GlobalTheory.CechPic.pull ((x ^ m * y ^ n)⁻¹).left (GlobalTheory.CechPic.cls L hL) = (a • GlobalTheory.CechPic.pull (x ^ m).left (GlobalTheory.CechPic.cls L hL) + b • GlobalTheory.CechPic.pull ((x ^ m)⁻¹).left (GlobalTheory.CechPic.cls L hL)) + (a • GlobalTheory.CechPic.pull (y ^ n).left (GlobalTheory.CechPic.cls L hL) + b • GlobalTheory.CechPic.pull ((y ^ n)⁻¹).left (GlobalTheory.CechPic.cls L hL)) + ((a + b) * (m * n)) • GlobalTheory.CechPic.lam (GlobalTheory.CechPic.cls L hL) x y := by
   intro K _ A _ hA L hL T x y m n a b

@@ -6,17 +6,15 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ μ _ _ f hfc hf1 hfi`. Establish `hf1' : ‖f 1‖ₑ ≠ 0` using `enorm_ne_zero.2 hf1`. Establish `hc0 : ‖f 1‖ₑ / 2 ≠ 0` using `by simp [hf1']`. Establish `hcT : ‖f 1‖ₑ / 2 ≠ ⊤` using `(ENNReal.div_lt_top enorm_ne_top two_ne_zero).ne`. Establish `hUo : IsOpen {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}` using `isOpen_lt continuous_const hfc.enorm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1U : (1 : G) ∈ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}` using `ENNReal.half_lt_self hf1' enorm_ne_top`. Establish `hUfin : μ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ} < ⊤`. Combine the equalities or inequalities in the displayed calculation. Establish `hσ : SigmaFinite μ`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun g : G => (fun y => g⁻¹ * y) ⁻¹' {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}) (fun g => hUo.preimage (continuous_const.mul continuous_id))`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Measure.sigmaFinite_of_countable (hTc.image fun g : G => (fun y => g⁻¹ * y) ⁻¹' {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, -, rfl⟩`. Rewrite using `[measure_preimage_mul]`. Conclude with `hUfin`. Rewrite using `[Set.sUnion_image, hT]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ⟨x, ?_⟩` and prove the remaining obligations. Use `show x⁻¹ * x ∈ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}`. Rewrite using `[inv_mul_cancel]`. Conclude with `h1U`. Establish `key : μ.inv = μ` using `by open Pointwise in`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVo : IsOpen ({x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ} ∩ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}⁻¹)` using `hUo.inter hUo.inv`. Use `open Pointwise in`. Establish `hV0 : μ ({x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ} ∩ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}⁻¹) ≠ 0` using `(hVo.measure_pos μ ⟨1, h1U, by simpa using h1U⟩).ne'`. Use `open Pointwise in`. Establish `hVT : μ ({x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ} ∩ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}⁻¹) ≠ ⊤` using `((measure_mono Set.inter_subset_left).trans_lt hUfin).ne`.
-
-Use `open Pointwise in`. Establish `hVinv : μ.inv ({x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ} ∩ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}⁻¹) = μ ({x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ} ∩ {x : G | ‖f 1‖ₑ / 2 < ‖f x‖ₑ}⁻¹)`. Rewrite using `[Measure.inv_apply, Set.inter_inv, inv_inv, Set.inter_comm]`. Rewrite using `[measure_eq_div_smul μ.inv μ hV0 hVT, hVinv, ENNReal.div_self hV0 hVT, one_smul]`. Conclude with `⟨hσ, ⟨key⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_and_isInvInvariant_of_continuous_integrable :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]

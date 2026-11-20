@@ -11,25 +11,23 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential IsLocalRing TensorP
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k R _ _ _ _ _ _ _ s hs m y hy`. Establish `hsurj : Function.Surjective (algebraMap R (ResidueField R))` using `residue_surjective`. Use `haveI := hy.isAlgebraic_field`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin k (Set.range fun j => residue R (y j))) (ResidueField R) := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Take `⟨b, hb⟩` from `exists_basis_kaehler_of_algebraicIndependent hy.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : maximalIdeal R = Ideal.span {s}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer s).1 hs`. Establish `hker : RingHom.ker (algebraMap R (ResidueField R)) = maximalIdeal R` using `ker_residue`. Establish `hs0 : algebraMap R (ResidueField R) s = 0`. Rewrite using `[← RingHom.mem_ker, hker, hmax]`. Conclude with `Ideal.mem_span_singleton_self s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Finite R Ω[R⁄k] := inferInstance`. Use `set N := Submodule.span R (insert (D k R s) (Set.range fun j => D k R (y j))) with hN`. Establish `hmb : ∀ x : R, mapBaseChange k R (ResidueField R) ((1 : ResidueField R) ⊗ₜ[R] D k R x) = D k (ResidueField R) (algebraMap R (ResidueField R) x)` using `fun x => by rw [mapBaseChange_tmul, one_smul, map_D]`. Establish `key : ∀ ω : Ω[R⁄k], ∃ n ∈ N, (1 : ResidueField R) ⊗ₜ[R] ω = (1 : ResidueField R) ⊗ₜ[R] n`. Introduce `ω`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `c` to `b.repr (mapBaseChange k R (ResidueField R) ((1 : ResidueField R) ⊗ₜ[R] ω))`. Set `c' : Fin m → R` to `fun i => Function.surjInv hsurj (c i)`. Establish `hc' : ∀ i, algebraMap R (ResidueField R) (c' i) = c i` using `fun i => Function.surjInv_eq hsurj _`. Establish `h0 : mapBaseChange k R (ResidueField R) ((1 : ResidueField R) ⊗ₜ[R] (ω - ∑ i, c' i • D k R (y i))) = 0`. Rewrite using `[tmul_sub, map_sub, tmul_sum, map_sum, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `conv_lhs => rw [← b.sum_repr (mapBaseChange k R (ResidueField R) ((1 : ResidueField R) ⊗ₜ[R] ω))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hb, tmul_smul, ← algebraMap_smul (ResidueField R) (c' i), map_smul, hmb, hc']`. Both sides reduce to the same expression. Take `⟨t, ht⟩` from `(exact_kerCotangentToTensor_mapBaseChange k R (ResidueField R) hsurj _).mp h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨⟨a, ha⟩, rfl⟩` from `Ideal.toCotangent_surjective _ t`. Establish `ha'` using `ha`. Rewrite `ha'` using `[hker, hmax, Ideal.mem_span_singleton']`. Take `⟨r, rfl⟩` from `ha'`. Rewrite `ht` using `[kerCotangentToTensor_toCotangent]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : (1 : ResidueField R) ⊗ₜ[R] D k R (r * s) = (1 : ResidueField R) ⊗ₜ[R] (r • D k R s)`. Rewrite using `[Derivation.leibniz, tmul_add, add_eq_left]`. Establish `: (1 : ResidueField R) ⊗ₜ[R] (s • D k R r) = (algebraMap R (ResidueField R) s) • ((1 : ResidueField R) ⊗ₜ[R] D k R r)`. Rewrite using `[algebraMap_smul, tmul_smul]`. Rewrite using `[this, hs0, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `⟨r • D k R s + ∑ i, c' i • D k R (y i), ?_, ?_⟩` and prove the remaining obligations. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_insert _ _))) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_insert_of_mem _ ⟨i, rfl⟩)))`. Establish `e2 : ω = (ω - ∑ i, c' i • D k R (y i)) + ∑ i, c' i • D k R (y i)` using `(sub_add_cancel _ _).symm`. Rewrite using `[e2, tmul_add, ← ht, e1, ← tmul_add]`. Rewrite using `[← IsLocalRing.map_tensorProduct_mk_eq_top, eq_top_iff]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z _`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul c ω`. Take `⟨c₀, rfl⟩` from `hsurj c`.
-
-Take `⟨n, hn, hω⟩` from `key ω`. Use `⟨c₀ • n, N.smul_mem _ hn, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, TensorProduct.mk_apply, ← hω, ← algebraMap_smul (ResidueField R) c₀, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `add x z hx hz => exact add_mem (hx trivial) (hz trivial)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_D_uniformizer_transcendenceBasis : ∀ (k R : Type) [Field k] [CharZero k] [CommRing R]
     [IsDomain R] [IsDiscreteValuationRing R] [Algebra k R] [Algebra.EssFiniteType k R] (s : R),

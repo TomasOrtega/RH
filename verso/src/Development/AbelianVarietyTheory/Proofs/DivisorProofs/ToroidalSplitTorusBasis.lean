@@ -18,37 +18,33 @@ namespace GlobalTheory.HalfGeo
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z K _ _ ξ₀ q hq hζ hsplit N b`. Take `⟨ζ₀, hζ₀⟩` from `hζ`. Establish `hq0 : 0 < q` using `Nat.pos_of_ne_zero hq`. Use `haveI : NeZero q := ⟨hq⟩`. Set `Ω` to `AlgebraicClosure K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `io : K →+* Ω` to `algebraMap K Ω`. Use `haveI := epi_spMap_field io`. Set `x : Sp Ω ⟶ Xo.XF c` to `spMap io ≫ ξ₀`. Take `⟨-, I, -⟩` from `Z.oF.geom Ω x (Spec.preimage (x ≫ pullback.fst _ _ ≫ Xo.s)).hom (Spec.map_preimage _).symm`. Establish `hev : ∀ a, I.ev q a ^ q = 1` using `fun a => (I.onto q hq0 _).2 ⟨a, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd : ∀ m, ∃ s : Over.mk ξ₀ ⟶ Z.oF.t.G, spMap io ≫ s.left = (I.ev q (b m)).left` using `fun m => gram_descend Z.oF.t.G Z.t.G Z.j Z.m.φ Z.m.cart io ξ₀ q (hsplit Ω io) _ (hev _)`. Use `choose s hs using hd`. Set `hKo : Over.mk x ⟶ Over.mk ξ₀` to `Over.homMk (spMap io) rfl`. Establish `hKl : hKo.left = spMap io` using `rfl`. Establish `hinj : ∀ a a' : Over.mk ξ₀ ⟶ Z.oF.t.G, hKo ≫ a = hKo ≫ a' → a = a'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a a' e`. Use `ext1`. Use `congrArg (fun u => u.left) e` as an intermediate fact. Conclude with `(cancel_epi (spMap io)).1 this`. Establish `hs' : ∀ m, hKo ≫ s m = I.ev q (b m)` using `fun m => by ext1; exact hs m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hst : ∀ m, s m ^ q = 1` using `fun m => hinj _ _ (by rw [MonObj.comp_pow, hs', hev, MonObj.comp_one])`. Establish `hp1 : IsPrimitiveRoot (io ζ₀) q` using `hζ₀.map_of_injective io.injective`. Establish `hp2 : IsPrimitiveRoot (I.ζ q : Ω) q` using `(I.ζ_prim q hq0).map_of_injective (f := Units.coeHom Ω) Units.val_injective`. Take `⟨i, -, hi⟩` from `hp1.eq_pow_of_pow_eq_one hp2.pow_eq_one`. Establish `hne : ζ₀ ^ i ≠ 0` using `pow_ne_zero _ (hζ₀.ne_zero hq)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `ζ : Kˣ` to `Units.mk0 _ hne`. Establish `hmap : Units.map (io : K →* Ω) ζ = I.ζ q`. Use `ext`. Simplify using `[ζ, ← hi]`. Establish `hminj : Function.Injective (Units.map (io : K →* Ω))` using `Units.map_injective io.injective`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨s, ζ, ?_, ⟨hst, fun m m' => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsPrimitiveRoot.of_map_of_injective (f := Units.map (io : K →* Ω)) (by rw [hmap]; exact I.ζ_prim q hq0) hminj`. Set `P` to `GlobalTheory.Obj.toPolAV Z.oF`. Take `⟨cq, hcq, -⟩` from `GlobalTheory.LevelCompare.weil_existsUnique P q (s m) (s m') (hst m) (hst m')`. Take `⟨u, rfl⟩` from `GlobalTheory.Ex.Specialise.unitOn_bijective.2 cq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `(GlobalTheory.LevelCompare.weil_skew_natural P q (Over.mk ξ₀)).2 (Over.mk x) hKo (s m) (s m') (unitOn u) hcq`. Rewrite `hN` using `[hKl, GlobalTheory.Ex.Specialise.map_unitOn]`. Establish `hI` using `I.isom q hq0 (b m) (b m')`. Rewrite `hI` using `[← hs', ← hs']`. Establish `t : ∀ m, (hKo ≫ s m) ^ q = 1` using `fun m => by rw [hs', hev]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `(GlobalTheory.LevelCompare.weil_existsUnique P q (hKo ≫ s m) (hKo ≫ s m') (t m) (t m')).unique hN hI`. Establish `e2` using `GlobalTheory.Ex.Specialise.unitOn_bijective.1 e1`. Rewrite `e2` using `[← hmap, ← map_zpow]`. Establish `e3` using `hminj e2`. Rewrite `hcq` using `[e3]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hcq`. Introduce `a ha`. Take `⟨y, hy⟩` from `(I.onto q hq0 (hKo ≫ a)).1 (by rw [← MonObj.comp_pow, ha, MonObj.comp_one])`. Set `ev : Multiplicative Dw.La →* (Over.mk x ⟶ Z.oF.t.G)` to `MonoidHom.mk' (fun u => I.ev q u.toAdd) (fun u v => I.add q _ _)`. Set `pb : (Over.mk ξ₀ ⟶ Z.oF.t.G) →* (Over.mk x ⟶ Z.oF.t.G)` to `MonoidHom.mk' (fun u => hKo ≫ u) (fun u v => MonObj.comp_mul _ _ _)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun m => (b.repr y m % q).toNat, hinj _ _ ?_⟩` and prove the remaining obligations. Establish `e1 : hKo ≫ a = ev (Multiplicative.ofAdd (∑ m, b.repr y m • b m))`. Rewrite using `[b.sum_repr, ← hy]`. Both sides reduce to the same expression. Rewrite using `[e1, ofAdd_sum, map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `_ = pb _`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[ofAdd_zsmul, map_zpow, map_pow]`. Express the relevant statement in the definitionally equal form `I.ev q (b m) ^ _ = (hKo ≫ s m) ^ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs', ← zpow_natCast, Int.toNat_of_nonneg (Int.emod_nonneg _ (by exact_mod_cast hq))]`. Conclude with `zpow_eq_zpow_emod' _ (hev _)`. Introduce `α m`. Set `ev : Multiplicative Dw.La →* (Over.mk x ⟶ Z.oF.t.G)` to `MonoidHom.mk' (fun u => I.ev q u.toAdd) (fun u v => I.add q _ _)`. Set `pb : (Over.mk ξ₀ ⟶ Z.oF.t.G) →* (Over.mk x ⟶ Z.oF.t.G)` to `MonoidHom.mk' (fun u => hKo ≫ u) (fun u v => MonObj.comp_mul _ _ _)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Establish `e1 : hKo ≫ s m ≫ Z.oF.t.act.act α = ev (Multiplicative.ofAdd (∑ m', b.repr (α • b m) m' • b m'))`. Rewrite using `[b.sum_repr, ← Category.assoc, hs']`. Conclude with `(I.lin q α (b m)).symm`. Rewrite using `[e1, ofAdd_sum, map_prod]`.
-
-Express the relevant statement in the definitionally equal form `_ = pb _`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun m' _ => ?_` and prove the remaining obligations. Rewrite using `[ofAdd_zsmul, map_zpow, map_zpow, GlobalTheory.EqHalf.latMat_apply]`. Express the relevant statement in the definitionally equal form `I.ev q (b m') ^ _ = (hKo ≫ s m') ^ _`.
-
-Rewrite using `[hs']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)

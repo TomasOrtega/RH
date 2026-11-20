@@ -17,13 +17,13 @@ open Formalism.L2.SG.AdBridge
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
 /- English proof (translation)
-Use `letI : Algebra I.F ℂ := v.embedding.toAlgebra`. Set `evI : Ainf I.F →ₐ[I.F] ℂ` to `{ toRingHom := (InfinitePlace.Completion.extensionEmbedding v).comp (Pi.evalRingHom (fun w : InfinitePlace I.F => w.Completion) v) commutes' := fun c => evV_algebraMap I v c }`. Set `φA : I.E →ₐ[I.F] ℂ` to `{ I.φ v with commutes' := I.φ_over v }`. Set `θ'` to `Algebra.TensorProduct.lift evI φA (fun _ _ => Commute.all _ _)`. Establish `key : ∀ z : AF I.F ⊗[I.F] I.E, thetaV I v z = θ' (Algebra.TensorProduct.map (fstA I.F) (AlgHom.id I.F I.E) z)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `tmul a x`. Rewrite using `[thetaV_tmul, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lift_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Establish `e : M.map (thetaV I v) = (M.map (Algebra.TensorProduct.map (fstA I.F) (AlgHom.id I.F I.E))).map θ'`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `key _`. Rewrite using `[e, hM]`. Conclude with `Matrix.map_one _ (map_zero θ') (map_one θ')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_thetaV_eq_one (I : AutInst) (v : InfinitePlace I.F) (M : Matrix (Fin I.n) (Fin I.n) (AF I.F ⊗[I.F] I.E))
     (hM : M.map (Algebra.TensorProduct.map (fstA I.F) (AlgHom.id I.F I.E)) = 1) : M.map (thetaV I v) = 1 := by
@@ -49,9 +49,9 @@ theorem map_thetaV_eq_one (I : AutInst) (v : InfinitePlace I.F) (M : Matrix (Fin
   exact Matrix.map_one _ (map_zero θ') (map_one θ')
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `(hB x).1 v`. Establish `hP : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show uMat (x.1 v) = 1`. Rewrite using `[h1]`. Unfold `ofHAInf`. Rewrite using `[hz]`. Rewrite using `[map_thetaV_eq_one I v _ hx, Matrix.mul_one, Matrix.nonsing_inv_mul _ hP]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_eq_one_of_bridge (I : AutInst) (e : I.GA ≃ₜ* HAd I) (hB : IsBridge I e) (x : I.GA) (z : HAd I)
     (hz : e x = z) (hx : (hmat I z).map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA I.F) (AlgHom.id I.F I.E)) = 1) :
@@ -68,7 +68,7 @@ theorem fst_eq_one_of_bridge (I : AutInst) (e : I.GA ≃ₜ* HAd I) (hB : IsBrid
   rw [map_thetaV_eq_one I v _ hx, Matrix.mul_one, Matrix.nonsing_inv_mul _ hP]
 
 /- English proof (translation)
-Use `fst_eq_one_of_bridge _ _ (Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D) _ y ((Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply y) ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun g : GL (Fin (D.sp.Y 0).rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E) => g.val) (MonoidHom.mem_ker.1 hy)`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iota_fst_eq_one {D : D7} (y : GA D (D.sp.Y 0)) (hy : y ∈ GfC (D.sp.Y 0)) :
     (Formalism.IndefR.RationalEmbedding.iota D y).1 = 1 := by
@@ -79,13 +79,13 @@ theorem iota_fst_eq_one {D : D7} (y : GA D (D.sp.Y 0)) (hy : y ∈ GfC (D.sp.Y 0
   exact h
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hx`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castGA_fst {I I' : AutInst} (h : I = I') (x : I.GA) (hx : x.1 = 1) : (castGA h x).1 = 1 := by
   subst h; exact hx
 
 /- English proof (translation)
-The claim follows from `castGA_fst h.symm _ (iota_fst_eq_one y hy)`.
+A detailed English derivation is pending.
 -/
 theorem real_one {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (y : GA D (D.sp.Y 0)) (hy : y ∈ GfC (D.sp.Y 0)) : (iotaX X h y).1 = 1 :=
@@ -103,7 +103,7 @@ section Frame
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hU i j) (hw j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_intAf (U : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (hU : ∀ i j, U i j ∈ Formalism.L2.Herm.intAf F E) (w : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)
@@ -112,13 +112,11 @@ theorem mulVec_mem_intAf (U : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm
   exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hU i j) (hw j)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hM`. Establish `hint : ∀ v : GL (Fin n) (Formalism.L2.Herm.intAf F E), ∀ i j, (Formalism.L2.DIV.intGL F E n v).val i j ∈ Formalism.L2.Herm.intAf F E` using `fun v i j => (v.val i j).2`. Establish `e : (β⁻¹).val *ᵥ ((Formalism.L2.DIV.frGL β u).val *ᵥ x) = (Formalism.L2.DIV.intGL F E n u).val *ᵥ ((β⁻¹).val *ᵥ x)`. Establish `: Formalism.L2.DIV.frGL β u = β * Formalism.L2.DIV.intGL F E n u * β⁻¹` using `rfl`. Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `group`. Rewrite using `[hF, hF, e]`. Prove the components needed by the constructor for the conclusion. Introduce `hw i`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mulVec_mem_intAf _ (hint u) _ hw i`. Introduce `hw i`. Establish `e2 : (β⁻¹).val *ᵥ x = (Formalism.L2.DIV.intGL F E n u⁻¹).val *ᵥ ((Formalism.L2.DIV.intGL F E n u).val *ᵥ ((β⁻¹).val *ᵥ x))`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e2]`.
-
-Conclude with `mulVec_mem_intAf _ (hint u⁻¹) _ hw i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hatL_iff_of_St {β M : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hF : Formalism.L2.DIV.IsFrame β Λ) (hM : M ∈ Formalism.L2.DIV.St β) (x : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
@@ -155,9 +153,9 @@ open scoped TensorProduct
 open Matrix Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Unfold `ofHAFin`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Proceed by induction on `(hmat I z i j) using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a x`. Rewrite using `[tauF_tmul, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.comm_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem ofHAFin_eq (I : AutInst) (z : HAd I) :
     ofHAFin I z = ((hmat I z).map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA I.F) (AlgHom.id I.F I.E))).map
@@ -173,7 +171,7 @@ theorem ofHAFin_eq (I : AutInst) (z : HAd I) :
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[(hB x).2, hz, ofHAFin_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fmat_eq_of_bridge (I : AutInst) (e : I.GA ≃ₜ* HAd I) (hB : IsBridge I e) (x : I.GA) (z : HAd I)
     (hz : e x = z) : I.fmat x.2 =
@@ -182,7 +180,7 @@ theorem fmat_eq_of_bridge (I : AutInst) (e : I.GA ≃ₜ* HAd I) (hB : IsBridge 
   rw [(hB x).2, hz, ofHAFin_eq]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `⟨_, hz, (D.sp.Y 0).frame.equivFun.apply_symm_apply z⟩`. Introduce and unpack `⟨w, hw, rfl⟩ show (D.sp.Y 0).frame.equivFun.symm ((D.sp.Y 0).frame.equivFun w) ∈ (D.sp.Y 0).L0`. Simplify using `using hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Lv_iff {D : D7} (z : Fin (D.sp.Y 0).rank → D.host.E) :
     z ∈ Formalism.L2.SG.InstExistsPf.Lv D ↔ z ∈ Formalism.L2.Herm.crdLat (D.sp.Y 0) (D.sp.Y 0).L0 := by
@@ -194,9 +192,9 @@ theorem Lv_iff {D : D7} (z : Fin (D.sp.Y 0).rank → D.host.E) :
     simpa using hw
 
 /- English proof (translation)
-Use `show Submodule.span _ _ = Submodule.span _ _`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z, hz⟩, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨z, (Lv_iff z).1 hz, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨⟨z, (Lv_iff z).2 hz⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Lf_eq {D : D7} :
     @Eq (Submodule (Formalism.MainNotions.S.IntAf (Formalism.L2.SG.InstExistsPf.instOf D).F (Formalism.L2.SG.InstExistsPf.instOf D).E)
@@ -221,7 +219,7 @@ open scoped TensorProduct
 open Matrix Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hM`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use `show a * β * Formalism.L2.DIV.intGL F E n u * (a * β)⁻¹ = a * (β * Formalism.L2.DIV.intGL F E n u * β⁻¹) * a⁻¹`. Use `group`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conj_mem_St {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {β a M : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hM : M ∈ Formalism.L2.DIV.St β) :
@@ -232,7 +230,7 @@ theorem conj_mem_St {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   group
 
 /- English proof (translation)
-Establish `hfm` using `fmat_eq_of_bridge _ _ (Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D) (Formalism.IndefR.RationalEmbedding.iota D y) y ((Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply y)`. Introduce `x`. Use `show x ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf ↔ ((Formalism.L2.SG.InstExistsPf.instOf D).fmat (Formalism.IndefR.RationalEmbedding.iota D y).2) *ᵥ x ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf`. Rewrite using `[hfm, Lf_eq]`. Conclude with `mem_hatL_iff_of_St hF hy x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_snd_mem_Kset {D : D7} (β : GL (Fin (D.sp.Y 0).rank) (EAf D))
     (hF : Formalism.L2.DIV.IsFrame β (Formalism.L2.Herm.crdLat (D.sp.Y 0) (D.sp.Y 0).L0)) (y : GA D (D.sp.Y 0))
@@ -247,7 +245,7 @@ theorem iota_snd_mem_Kset {D : D7} (β : GL (Fin (D.sp.Y 0).rank) (EAf D))
   exact mem_hatL_iff_of_St hF hy x
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hx`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castGA_snd_Kset {I I' : AutInst} (h : I = I') (x : I.GA) (hx : x.2 ∈ I.Kset) : (castGA h x).2 ∈ I'.Kset := by
   subst h; exact hx
@@ -257,13 +255,11 @@ end GlobalTheory.SeeMatchOnto
 namespace GlobalTheory.SeeMatchOnto
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hLev hGrp hMod cG t hιE hpin hE0 ht hConj hFrame γ`. Take `⟨κ, hκf, hκp, hκr⟩` from `GlobalTheory.LevelRowsObj.liftsExist hLev (cG.symm γ)`. Use `set y : GA D (Yc D 0) := t * κ * t⁻¹ with hydef`. Establish `hy : y ∈ GfC (Yc D 0)` using `(GfC _).mul_mem ((GfC _).mul_mem ht hκf) ((GfC _).inv_mem ht)`. Establish `h1` using `real_one X h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : (iotaX X h).symm (1, (iotaX X h y).2) = y`. Rewrite using `[← h1]`. Conclude with `(iotaX X h).symm_apply_apply y`. Use `⟨(iotaX X h y).2, ?_, ?_⟩` and prove the remaining obligations. Establish `hS : finE (Yc D 0) y ∈ Formalism.L2.DIV.St (finE (Yc D 0) t * R.βY 0)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hydef, map_mul, map_mul, map_inv]`. Conclude with `conj_mem_St (Formalism.L2.DIV.parLev_St hκp)`. Conclude with `castGA_snd_Kset h.symm _ (iota_snd_mem_Kset _ hFrame y hS)`. Establish `hk : kap X h t (iotaX X h y).2 = κ`. Unfold `kap`.
-
-Rewrite using `[hy']`. Use `show (t⁻¹ * (t * κ * t⁻¹) * t : GA D (Yc D 0)) = κ`. Use `group`. Rewrite using `[hk, hκr, MulEquiv.apply_symm_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onto : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → ∀ (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (t : GA D (Yc D 0)), (∀ x : X.B.I.E, HEq (X.ιE x) x) → (∃ (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ R.Pg) (iso : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ZMod (D.host.g kv.1) ≃+* kP (plg kv).1), (∀ kv, ((plg kv : R.Pg) : Pl D.host.E) = D.naut.plGw kv.1 kv.2) ∧ (∀ g, D.what₂.embLL ((idemOf A.X).coeff g) = D.ntypes.e0.coeff ((R.eG.trans cG) g)) ∧ (∀ kv, R.C.P.Div kv.1 (plg kv).1) ∧ ∀ g kv, R.eG g (plg kv) = Formalism.UG.bc (iso kv : ZMod (D.host.g kv.1) →+* kP (plg kv).1) ((R.eG.trans cG) g kv)) → IdempotentRealFixed D → t ∈ GfC (Yc D 0) → ConjLevel (t)⁻¹ (levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) (levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) ((iotaX X h).toMulEquiv ⁻¹' {x : X.B.I.GA | x.1 = 1 ∧ x.2 ∈ X.K2}) (fun k => star (X.chi2 ((iotaX X h).toMulEquiv k).2)) → IsFrame (finE (Yc D 0) t * R.βY 0) (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → ∀ γ : G0g D.nd, ∃ k ∈ X.B.I.Kset, cG (rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) (kap X h t k))) = γ := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hLev hGrp hMod cG t hιE hpin hE0 ht hConj hFrame γ

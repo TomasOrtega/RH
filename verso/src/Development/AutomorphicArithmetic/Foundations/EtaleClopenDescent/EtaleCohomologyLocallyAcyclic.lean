@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaurentPolynomialCo
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.etale_cohomology_locally_acyclic`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.etale_cohomology_locally_acyclic :
     GlobalTheory.EtC.C5 :=

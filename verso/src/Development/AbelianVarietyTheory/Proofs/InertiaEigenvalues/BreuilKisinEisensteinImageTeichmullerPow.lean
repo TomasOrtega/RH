@@ -10,9 +10,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.EisImage
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Establish `h1 : c * WittVector.teichmuller l ((u⁻¹ : Oˣ) : O) - 1 ∈ Ideal.span {(l : WittVector l O)}`. Rewrite using `[← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_mul, map_one, ← hu, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, Units.mul_inv, sub_self]`. Establish `h2` using `IsAdicComplete.le_jacobson_bot (Ideal.span {(l : WittVector l O)}) h1`. Establish `h3` using `Ideal.isUnit_of_sub_one_mem_jacobson_bot _ h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isUnit_of_mul_isUnit_left h3`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_constantCoeff {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [CharP O l] [PerfectRing O l]
     (c : WittVector l O) (h : IsUnit (WittVector.constantCoeff c)) : IsUnit c := by
@@ -25,13 +25,11 @@ theorem isUnit_of_constantCoeff {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
   exact isUnit_of_mul_isUnit_left h3
 
 /- English proof (translation)
-Establish `h1 : Polynomial.C l ∣ (P - Polynomial.X ^ P.natDegree).divX`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Rewrite using `[Polynomial.coeff_divX, Polynomial.coeff_sub, Polynomial.coeff_X_pow]`. Break down `lt_trichotomy (i + 1) P.natDegree with h | h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_neg h.ne, sub_zero]`. Conclude with `hc _ h`. Rewrite using `[if_pos h, h, hm.coeff_natDegree, sub_self]`. Conclude with `dvd_zero _`. Rewrite using `[if_neg h.ne', sub_zero, Polynomial.coeff_eq_zero_of_natDegree_lt h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `dvd_zero _`. Take `⟨G, hG⟩` from `h1`. Use `⟨G, ?_⟩` and prove the remaining obligations. Establish `h2` using `Polynomial.X_mul_divX_add (P - Polynomial.X ^ P.natDegree)`. Rewrite `h2` using `[hG, Polynomial.coeff_sub, Polynomial.coeff_X_pow, if_neg hd.ne, sub_zero, h0, map_mul]`.
-
-Take the linear combination `-h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_eq {R : Type} [CommRing R] (l : R) (P : Polynomial R) (hm : P.Monic) (hd : 0 < P.natDegree)
     (hc : ∀ i < P.natDegree, l ∣ P.coeff i) (w : R) (h0 : P.coeff 0 = l * w) :
@@ -55,13 +53,13 @@ theorem exists_eq {R : Type} [CommRing R] (l : R) (P : Polynomial R) (hm : P.Mon
   linear_combination -h2
 
 /- English proof (translation)
-Introduce `l _ K bk O _ _ _ _ ψ hψ`. Take `⟨w₀, hw₀⟩` from `bk.coeff_zero`. Take `⟨G, hG⟩` from `exists_eq (l : Wq l bk.a) bk.Ep bk.monic bk.deg_pos bk.dvd_coeff w₀ hw₀`. Set `f : Polynomial (Wq l bk.a) →+* WittVector l O` to `(WittVector.map ψ).comp (bk.ev.comp (Polynomial.coeToPowerSeries.ringHom))`. Establish `hX : f Polynomial.X = WittVector.teichmuller l (ψ bk.flat)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `WittVector.map ψ (bk.ev ((Polynomial.X : Polynomial (Wq l bk.a)) : (Wq l bk.a)⟦X⟧)) = _`. Rewrite using `[Polynomial.coe_X, bk.ev_X, WittVector.map_teichmuller]`. Use `⟨f (Polynomial.C (w₀ : Wq l bk.a) + Polynomial.X * G), ?_, ?_⟩` and prove the remaining obligations. Apply `isUnit_of_constantCoeff` to reduce the goal to its premises. Establish `hu : IsUnit (WittVector.constantCoeff (f (Polynomial.C (w₀ : Wq l bk.a))))` using `((w₀.isUnit.map Polynomial.C).map f).map _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[map_add, map_mul, hX, map_add, map_mul, WittVector.constantCoeff_apply (WittVector.teichmuller l _), WittVector.teichmuller_coeff_zero]`. Assume the negation of the conclusion as `hn`. Establish `h1 : ψ bk.flat * WittVector.constantCoeff (f G) ∈ IsLocalRing.maximalIdeal O` using `Ideal.mul_mem_right _ _ hψ`. Establish `h2` using `Ideal.sub_mem _ (show _ ∈ IsLocalRing.maximalIdeal O from hn) h1`. Rewrite `h2` using `[add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 hu`. Establish `h1` using `congrArg f hG`. Rewrite `h1` using `[map_add, map_pow, hX, map_mul, map_natCast Polynomial.C, map_natCast f]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_E_eq : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (O : Type) [CommRing O] [IsLocalRing O] [CharP O l] [PerfectRing O l] (ψ : OCb l →+* O), ¬ IsUnit (ψ bk.flat) → ∃ w : WittVector l O, IsUnit w ∧ WittVector.map ψ (bk.ev bk.E) = WittVector.teichmuller l (ψ bk.flat) ^ bk.Ep.natDegree + ((l : ℕ) : WittVector l O) * w := by
   intro l _ K bk O _ _ _ _ ψ hψ

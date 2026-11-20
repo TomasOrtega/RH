@@ -9,9 +9,9 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩ : ∃ φ, u = Spec.map φ` from `⟨Spec.preimage u, (Spec.map_preimage u).symm⟩`. Establish `hφ : φ.hom.comp (algebraMap κ B) = algebraMap κ Λ`. Establish `h' : Spec.map (CommRingCat.ofHom (algebraMap κ B) ≫ φ) = Spec.map (CommRingCat.ofHom (algebraMap κ Λ))`. Rewrite using `[Spec.map_comp]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h''` using `Spec.map_injective h'`. Conclude with `congrArg CommRingCat.Hom.hom h''`. Use `⟨{ toRingHom := φ.hom, commutes' := fun r => RingHom.congr_fun hφ r }, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma exists_alg {κ B Λ : Type} [Field κ] [CommRing B] [Algebra κ B] [CommRing Λ] [Algebra κ Λ]
     (u : Sp Λ ⟶ Sp B) (h : u ≫ spMap (algebraMap κ B) = spMap (algebraMap κ Λ)) :
@@ -28,31 +28,29 @@ private lemma exists_alg {κ B Λ : Type} [Field κ] [CommRing B] [Algebra κ B]
   rfl
 
 /- English proof (translation)
-Introduce `hS κ _ A _ P d hRep hcard Λ _ _ _ ε g hP hInf`. Take `⟨B, _, _, hfin, hfree, hrank, i, hmono, hiff⟩` from `hRep`. Use `haveI : Mono i := hmono`. Establish `key : ∀ (Λ' : Type) [CommRing Λ'] [Algebra κ Λ'] (ν : B →ₐ[κ] Λ'), spMap ν.toRingHom ≫ spMap (algebraMap κ B) = spMap (algebraMap κ Λ')`. Introduce `Λ' _ _ ν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `r`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hid : spMap (algebraMap κ κ) = 𝟙 (Sp κ)` using `by simp [spMap]`. Set `F : (B →ₐ[κ] κ) → { g // P (𝟙_ (Over (Sp κ))) g }` to `fun ν => ⟨Over.homMk (U := 𝟙_ (Over (Sp κ))) (V := algPt κ B) (spMap ν.toRingHom) (by show spMap ν.toRingHom ≫ spMap (algebraMap κ B) = 𝟙 _`. Rewrite using `[key κ ν, hid]) ≫ i,`. Use the proof step `(hiff _ _).1 ⟨_, rfl⟩⟩`. Establish `hF : Function.Bijective F`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `ν₁ ν₂ h`. Establish `h1` using `congrArg Subtype.val h`. Establish `h2` using `(cancel_mono i).1 h1`. Establish `h3` using `congrArg CommaMorphism.left h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h4 : CommRingCat.ofHom ν₁.toRingHom = CommRingCat.ofHom ν₂.toRingHom` using `Spec.map_injective h3`. Use extensionality with `x`. Conclude with `congrArg (fun φ => φ.hom x) h4`. Introduce and unpack `⟨g₀, hg₀⟩`. Take `⟨y, hy⟩` from `(hiff _ _).2 hg₀`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ν, hν⟩` from `exists_alg (Λ := κ) y.left (by`. Rewrite using `[hid]`. Conclude with `Over.w y)`. Use `⟨ν, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show _ ≫ i = g₀`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Use `congr 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[hν]`. Establish `hpts : Nat.card (B →ₐ[κ] κ) = Module.finrank κ B`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hrank, ← hcard]`. Conclude with `Nat.card_congr (Equiv.ofBijective F hF)`. Take `⟨y, hy⟩` from `(hiff _ _).2 hP`. Take `⟨ν, hν⟩` from `exists_alg y.left (Over.w y)`. Establish `hsplit` using `hS κ B Λ hpts ε ν`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `e1 : spMap ν.toRingHom = spMap (algebraMap κ Λ) ≫ spMap (ε.comp ν).toRingHom` using `by conv_lhs => rw [hsplit] dsimp only [spMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `e2 : spMap ε.toRingHom ≫ spMap (algebraMap κ Λ) = 𝟙 (Sp κ)` using `by dsimp only [spMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ε.toRingHom.comp (algebraMap κ Λ) = RingHom.id κ from by ext r; simp]`. Simplify using the standard rewrite rules. Establish `gl : g.left = y.left ≫ i.left`. Rewrite using `[← hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `one_l : ∀ T : Over (Sp κ), (1 : T ⟶ A).left = T.hom ≫ η[A].left`. Introduce `T`. Use `show (toUnit T ≫ η[A]).left = _`. Rewrite using `[Over.comp_left]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : spMap ε.toRingHom ≫ g.left = (1 : 𝟙_ (Over (Sp κ)) ⟶ A).left` using `hInf`. Rewrite `hI` using `[one_l, gl, hν, e1]`. Simplify using `only [← Category.assoc, e2, Category.id_comp] at hI`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[one_l, gl, hν, e1, Category.assoc, hI]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.infE_of :
     SplitAlg → InfE := by

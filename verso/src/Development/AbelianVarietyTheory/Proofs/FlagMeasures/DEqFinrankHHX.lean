@@ -21,7 +21,7 @@ namespace GlobalTheory.RowsCount
 open Formalism Formalism.L2 Formalism.L2.SG in
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.ProjRows.projRowsR_of schur_orthogonality_idempotent convolution_projection isConvIdempotent_pi Formalism.L2.SG.Pf.regular_representation_unitary`.
+A detailed English derivation is pending.
 -/
 theorem projRowsR : Formalism.L2.SG.ProjRows.ProjRowsR :=
   Formalism.L2.SG.ProjRows.projRowsR_of schur_orthogonality_idempotent convolution_projection isConvIdempotent_pi
@@ -30,14 +30,14 @@ theorem projRowsR : Formalism.L2.SG.ProjRows.ProjRowsR :=
 open Formalism Formalism.L2 Formalism.L2.SG in
 
 /- English proof (translation)
-Introduce `I μf _ _` and use `(PI.WAU.adUnimod_of PI.WAU.kg_subgroup PI.WAU.maximal_compact_isCompact PI.WAU.compact_countable PI.adelic_index_eq) I μf inferInstance`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unimodGf : Formalism.L2.SG.Pf.UnimodGf := fun I μf _ _ =>
   (PI.WAU.adUnimod_of PI.WAU.kg_subgroup PI.WAU.maximal_compact_isCompact PI.WAU.compact_countable
     PI.adelic_index_eq) I μf inferInstance
 
 /- English proof (translation)
-Introduce `D X h`. Conclude with `(Formalism.L2.SG.RowsDef.RowsAut.D_eq_finrank_HH (Formalism.L2.SG.Pf.rows_bijective projRowsR unimodGf) X.B _ (fun v => (X.ds v).2.2.1) (fun v => (X.ds v).2.2.2.1) (GlobalTheory.LowestVectorDegree.isFdeg_fdegOf_lowest D X) (fun v => (X.low v).1) (GlobalTheory.ProdFactor.integrabl …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem D_eq_finrank_HHX : ∀ (D : D7) (X : HidaSetting D),
     Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) → X.B.D = Module.finrank ℂ (HHX X) := by

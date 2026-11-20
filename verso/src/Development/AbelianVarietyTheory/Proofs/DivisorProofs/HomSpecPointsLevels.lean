@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 namespace GlobalTheory.PDForm
 
 /- English proof (translation)
-Use `IsAffineOpen.SpecMap_appLE_fromSpec x U.2 (isAffineOpen_top _) h` as an intermediate fact. Rewrite `this` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Use `⟨(x.appLE U.1 ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom).hom, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map (x.appLE U.1 ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom) ≫ U.2.fromSpec = x`. Rewrite using `[Spec.map_comp, Category.assoc, this, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_spMap_affPt {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (U : X.affineOpens)
     {C : Type} [CommRing C] (x : Sp C ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ U.1) :
@@ -23,13 +23,13 @@ theorem exists_spMap_affPt {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ S
     Category.id_comp]
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_spMap_eq {A C : Type} [CommRing A] [CommRing C] {g g' : A →+* C} (h : spMap g = spMap g') : g = g' :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Establish `: Mono (affPt s U)` using `@IsOpenImmersion.mono _ _ _ (IsAffineOpen.isOpenImmersion_fromSpec U.2)`. Conclude with `eq_of_spMap_eq ((cancel_mono _).1 h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_spMap_affPt {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (U : X.affineOpens)
     {C : Type} [CommRing C] {g g' : Sec s U.1 →+* C} (h : spMap g ≫ affPt s U = spMap g' ≫ affPt s U) : g = g' := by
@@ -37,7 +37,7 @@ theorem eq_of_spMap_affPt {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp
   exact eq_of_spMap_eq ((cancel_mono _).1 h)
 
 /- English proof (translation)
-Take `⟨s₀, hpb, ht⟩` from `D.red`. Rewrite using `[ht, hpb.w]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_over (D : Data) : D.i ≫ D.s = D.t := by
   obtain ⟨s₀, hpb, ht⟩ := D.red
@@ -46,9 +46,9 @@ theorem red_over (D : Data) : D.i ≫ D.s = D.t := by
 variable {D : Data} (Λ : Lift D)
 
 /- English proof (translation)
-Establish `hI : ∀ r ∈ D.I, algebraMap D.R T.B r ∈ T.J` using `fun r hr ↦ T.dp.1 (Ideal.mem_map_of_mem _ hr)`. Use `IsDPMorphism.on_span (S := algebraMap D.R (Λ.L.obj U).B '' D.I) _ _ (Λ.gen U) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Simplify using `using hI r hr`. Introduce and unpack `n _ ⟨r, hr, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Rewrite using `[(Λ.L.obj U).dp.2 r hr]`. Simplify using `using (T.dp.2 (n := n) r hr).symm`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Lift.isDPMorphism (U : AffOp D.X) (T : Thick D.κ D.t) (φ : (Λ.L.obj U).B →ₐ[D.R] T.B) :
     IsDPMorphism (Λ.L.obj U).δ T.δ (φ : (Λ.L.obj U).B →+* T.B) := by
@@ -61,13 +61,11 @@ theorem Lift.isDPMorphism (U : AffOp D.X) (T : Thick D.κ D.t) (φ : (Λ.L.obj U
     simpa using (T.dp.2 (n := n) r hr).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Set `φ : (Λ.L.obj U).B →ₐ[D.R] T.B` to `y.comp (Λ.e U).symm.toAlgHom`. Establish `hφ : ∀ a, φ (Λ.e U a) = y a` using `fun a ↦ by simp [φ]`. Establish `hd` using `Λ.isDPMorphism U T φ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ₀ : (Λ.L.obj U).B₀ →+* T.B₀` to `RingHom.liftOfSurjective (Λ.L.obj U).π (Λ.L.obj U).surj ⟨T.π.comp (φ : (Λ.L.obj U).B →+* T.B), fun b hb ↦ (T.ker _).2 (hd.1 (Ideal.mem_map_of_mem _ (((Λ.L.obj U).ker b).1 hb)))⟩`. Establish `hc : ∀ b, φ₀ ((Λ.L.obj U).π b) = T.π (φ b)` using `fun b ↦ RingHom.liftOfRightInverse_comp_apply _ _ _ _ b`. Use `⟨⟨φ, φ₀, hc, hd, ?_⟩, hφ⟩` and prove the remaining obligations. Use `D.mono_i` as an intermediate fact. Rewrite using `[← cancel_mono D.i, Category.assoc, ← Λ.pt U, ← h, ← Category.assoc, ← Cris.spMap_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `RingHom.ext fun a ↦ (hc _).trans (congrArg T.π (hφ a))`. Introduce and unpack `⟨b, hb⟩`. Rewrite using `[← b.pt, Category.assoc, ← Λ.pt U, ← Category.assoc, ← Cris.spMap_comp]`. Use `congr 2`.
-
-Conclude with `RingHom.ext fun a ↦ ((b.comm _).trans (congrArg T.π (hb a))).symm`.
+Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Lift.hom_iff (U : AffOp D.X) (T : Thick D.κ D.t) (y : Sec D.s U.unop.1 →ₐ[D.R] T.B) :
     spMap (T.π.comp (y : Sec D.s U.unop.1 →+* T.B)) ≫ affPt D.s U.unop = T.x ≫ D.i ↔
@@ -93,11 +91,11 @@ theorem Lift.hom_iff (U : AffOp D.X) (T : Thick D.κ D.t) (y : Sec D.s U.unop.1 
     exact RingHom.ext fun a ↦ ((b.comm _).trans (congrArg T.π (hb a))).symm
 
 /- English proof (translation)
-Introduce `D Λ`. Use `⟨Λ.hom_iff, fun U T h ↦ ?_, fun U C _ g g' h ↦ eq_of_spMap_affPt _ _ h, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_spMap_affPt D.s U.unop _ h`. Use `⟨g, hg, fun r ↦ ?_⟩` and prove the remaining obligations. Establish `: spMap (g.comp (algebraMap D.R (Sec D.s U.unop.1))) = spMap (T.π.comp (algebraMap D.R T.B))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Cris.spMap_comp, ← affPt_w, ← Category.assoc, hg, Category.assoc, red_over, T.w]`. Conclude with `RingHom.congr_fun (eq_of_spMap_eq this) r`. Take `⟨N₀, h⟩` from `(isDPNilpotent_iff_exists_isLevel D.κ).1 D.nil`. Use `⟨N₀, fun N hN U ↦ ?_⟩` and prove the remaining obligations. Establish `h' : fil D.κ N = ⊥` using `eq_bot_iff.2 (le_of_le_of_eq (ExpBij.dpFil_anti D.κ hN) h)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fil_le_map_fil _ _ D.κ _ _ (Λ.L.obj U).δ _ (Λ.L.obj U).dp (Λ.gen U) N` as an intermediate fact. Rewrite `this` using `[h', Ideal.map_bot]`. Conclude with `eq_bot_iff.2 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lift.hom_spec : ∀ (D : Data) (Λ : Lift D), (∀ (U : AffOp D.X) (T : Thick D.κ D.t) (y : Sec D.s U.unop.1 →ₐ[D.R] T.B), spMap (T.π.comp (y : Sec D.s U.unop.1 →+* T.B)) ≫ affPt D.s U.unop = T.x ≫ D.i ↔ ∃ b : Λ.L.obj U ⟶ T, ∀ a, b.φ (Λ.e U a) = y a) ∧ (∀ (U : AffOp D.X) (T : Thick D.κ D.t), ⊤ ≤ (T.x ≫ D.i) ⁻¹ᵁ U.unop.1 → ∃ g : Sec D.s U.unop.1 →+* T.B₀, spMap g ≫ affPt D.s U.unop = T.x ≫ D.i ∧ ∀ r, g (algebraMap D.R _ r) = T.π (algebraMap D.R T.B r)) ∧ (∀ (U : AffOp D.X) (C : Type) [CommRing C] (g g' : Sec D.s U.unop.1 →+* C), spMap g ≫ affPt D.s U.unop = spMap g' ≫ affPt D.s U.unop → g = g') ∧ ∃ N₀, ∀ N, N₀ ≤ N → ∀ U, IsLev (Λ.L.obj U).δ N := by
   intro D Λ

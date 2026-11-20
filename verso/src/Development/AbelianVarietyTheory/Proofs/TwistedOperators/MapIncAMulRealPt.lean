@@ -21,7 +21,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues Recip
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [realPt, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, incA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, TensorProduc …`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_incA_mul_realPt (S T : HSp D) (M : Matrix (Fin T.rank) (Fin T.rank) D.host.E)
     (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -32,9 +32,9 @@ theorem map_incA_mul_realPt (S T : HSp D) (M : Matrix (Fin T.rank) (Fin T.rank) 
     Algebra.TensorProduct.tmul_mul_tmul, one_mul, TensorProduct.tmul_sum]
 
 /- English proof (translation)
-Establish `e : res T (sg0 D A) = T.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `res_embLL T ht.alg ht.laws.pins.2.2.1`. Establish `hg : GoodEmb T.Q.c (res T (sg0 D A))` using `e ▸ T.toCore.good_σ₀`. Take `rfl : σ = res T (sg0 D A)` from `hσ.trans e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, h1, h2, -⟩` from `(GlobalTheory.HolDict.BaseFrame.baseFrT_of_tieIn D G Pl0 T0 A T R κ v₀ hM ht i _ hg hV).2.2 h`. Conclude with `⟨γ, h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frAt {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
@@ -51,13 +51,13 @@ theorem exists_frAt {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn 
   exact ⟨γ, h1, h2⟩
 
 /- English proof (translation)
-Introduce `D hHk hSL hVF G _ _ Pl0 T0 A T _ R F κ v₀ hLev hGrp hFam hMod hThP hTie i σ hσ hV P p k α Rc hS h hx ph b hph hbON hpin γ' hγ'`. Take `⟨γ, hγ, hfr⟩` from `exists_frAt hMod hTie i σ hσ hV h`. Take `⟨M, hM⟩` from `Formalism.IndefR.Eqv.mt_GQ _ (mul_mem hγ (inv_mem hγ'))`. Take `⟨_, Wt, ⟨Y⟩⟩` from `exists_witness T i σ hV hTie.laws.toLawsM (hσ ▸ T.toCore.good_σ₀) h`. Use `⟨γ, hγ, hfr, M, hM, Wt, Y, fun Z w hw => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hω` using `hThP.ωP i A.μ0`. Establish `hv : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vacP i)` using `(hThP.vP i A.μ0).1.2.theta`. Establish `key : thetaAt R.ψ (R.ωP i A.μ0) (R.vacP i) (γ' * h) (realPt (Vc D i) (Wc D i) Z) = thetaAt R.ψ (R.ωP i A.μ0) (R.vacP i) (γ * h) (realPt (Vc D i) (Wc D i) (M * Z))`. Rewrite using `[thetaAt_eq, thetaAt_eq]`. Establish `e : ((1 : GA D (Vc D i)), γ' * h) = (1, (γ * γ'⁻¹)⁻¹) * (1, γ * h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[mul_assoc]`. Rewrite using `[e, map_mul, Module.End.mul_apply, GlobalTheory.RawLift.Move.om_rat_inv_apply hω (mul_mem hγ (inv_mem hγ')) (hω.om_pres _ _ hv), GlobalTheory.RawLift.Move.actO_one_left, hM, map_incA_mul_realPt]`. Establish `h1` using `hpin h γ hγ hfr hx Wt Y (M * Z) w hw`. Rewrite using `[key]`. Establish `h3 : Complex.exp (Real.pi / 2 * ∑ c, hermForm Y.Hm (w c) (w c)) * ∏ c, Complex.exp (-(Real.pi / 2 * hermForm Y.Hm (w c) (w c))) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Complex.exp_sum, ← Complex.exp_add, Finset.sum_neg_distrib, Finset.mul_sum, add_neg_cancel, Complex.exp_zero]`. Rewrite using `[Finset.prod_mul_distrib]`. Take the linear combination `(∏ c, Complex.exp (-(Real.pi / 2 * hermForm Y.Hm (w c) (w c)))) * h1 - thetaAt R.ψ (R.ωP i A.μ0) (R.vacP i) (γ * h) (realPt (Vc D i) (Wc D i) (M * Z)) * h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem frame_change : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D →
     ∀ (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)

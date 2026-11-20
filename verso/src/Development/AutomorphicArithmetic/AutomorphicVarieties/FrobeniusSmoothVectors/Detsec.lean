@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuat
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-The claim follows from `ringKrullDim_eq_of_ringEquiv (RingEquiv.ofBijective (Ideal.quotientMap J p le_rfl) ⟨Ideal.quotientMap_injective, Ideal.quotientMap_surjective hp⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Fr.detsec_dim {R S : Type} [CommRing R] [CommRing S] (p : R →+* S)
     (hp : Function.Surjective p) (J : Ideal S) : ringKrullDim (R ⧸ J.comap p) = ringKrullDim (S ⧸ J) :=
@@ -18,17 +18,15 @@ private theorem UpperTheory.V.Fr.detsec_dim {R S : Type} [CommRing R] [CommRing 
     ⟨Ideal.quotientMap_injective, Ideal.quotientMap_surjective hp⟩)
 
 /- English proof (translation)
-Establish `e` using `Ideal.comap_minimalPrimes_eq_of_surjective hp J`. Establish `hs : ∀ P Q : Ideal S, P.comap p ⊔ Q.comap p = (P ⊔ Q).comap p` using `fun P Q => by conv_rhs => rw [← Ideal.map_comap_of_surjective p hp P, ← Ideal.map_comap_of_surjective p hp Q, ← Ideal.map_sup, Ideal.comap_map_of_surjective p hp]`. Conclude with `(sup_eq_left.2 (le_sup_of_le_left (Ideal.comap_mono bot_le))).symm`. Establish `mm : ∀ P : Ideal S, (P.comap p).map p = P` using `Ideal.map_comap_of_surjective p hp`. Unfold `Chained`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun P hP => detsec_dim p hp P ▸ h1 _ ⟨P, hP, rfl⟩, fun P hP Q hQ => ?_⟩` and prove the remaining obligations. Use `Relation.ReflTransGen.lift (fun I : Ideal R => I.map p) (p := fun P Q => P ∈ J.minimalPrimes ∧ Q ∈ J.minimalPrimes ∧ (D : WithBot ℕ∞) ≤ ringKrullDim (S ⧸ (P ⊔ Q))) ?_ _ _ (h2 _ ⟨P, hP, rfl⟩ _ ⟨Q, hQ, rfl⟩)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [Function.onFun, mm]`. Introduce and unpack `_ _ ⟨⟨P, hP, rfl⟩, ⟨Q, hQ, rfl⟩, h⟩`. Simplify using `only [Function.onFun, mm]`. Rewrite `h` using `[hs, detsec_dim p hp]`. Conclude with `⟨hP, hQ, (congrArg₂ (fun A B : Ideal S => (D : WithBot ℕ∞) ≤ ringKrullDim (S ⧸ (A ⊔ B))) (mm P) (mm Q)).mpr h⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Rewrite using `[detsec_dim p hp]`. Conclude with `h1 P hP`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨P, hP, rfl⟩ _ ⟨Q, hQ, rfl⟩`. Use `Relation.ReflTransGen.lift (fun I : Ideal S => I.comap p) ?_ _ _ (h2 P hP Q hQ)` and prove the remaining obligations. Introduce and unpack `P Q ⟨hP, hQ, h⟩`. Use `⟨⟨P, hP, rfl⟩, ⟨Q, hQ, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, detsec_dim p hp]`.
-
-Conclude with `h`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Fr.detsec_comap {R S : Type} [CommRing R] [CommRing S] (p : R →+* S)
     (hp : Function.Surjective p) (J : Ideal S) (D : ℕ) : Chained (J.comap p) D ↔ Chained J D := by
@@ -63,13 +61,11 @@ private theorem UpperTheory.V.Fr.detsec_comap {R S : Type} [CommRing R] [CommRin
       exact h
 
 /- English proof (translation)
-Use `set K := Ideal.span (Set.range fun s => (MvPowerSeries.X s - MvPowerSeries.C (a s) : MvPowerSeries σ R)) with hK`. Establish `h1 : K ≤ RingHom.ker (F : MvPowerSeries σ R →+* R)`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Simplify using `[RingHom.mem_ker, hC, hX]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (fun G hG => ?_) h1` and prove the remaining obligations. Use `haveI := co_mvps O R σ`. Use `haveI : Nontrivial (MvPowerSeries σ R ⧸ K) := Ideal.Quotient.nontrivial_iff.2 fun h => RingHom.ker_ne_top _ (top_le_iff.1 (h ▸ h1))`. Use `haveI := co_quot O _ _ (Ideal.Quotient.mkₐ O K) (Ideal.Quotient.mkₐ_surjective O K)`. Set `c : R →ₐ[O] MvPowerSeries σ R` to `{ (MvPowerSeries.C : R →+* MvPowerSeries σ R) with commutes' := fun _ => MvPowerSeries.algebraMap_apply.symm }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `f : R →ₐ[O] MvPowerSeries σ R ⧸ K` to `(Ideal.Quotient.mkₐ O K).comp c`. Establish `hf : ∀ s, f (a s) ∈ maximalIdeal _` using `fun s => by`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`. Conclude with `ha s`. Establish `key` using `(co_ev O R _ σ f (fun s => f (a s)) hf).unique (y₁ := Ideal.Quotient.mkₐ O K) (y₂ := f.comp F) ⟨fun _ => rfl, fun s => Ideal.Quotient.eq.2 (Ideal.subset_span ⟨s, rfl⟩)⟩ ⟨fun x => by simp [hC], fun s => by simp [hX]⟩`.
-
-Establish `h2 : F G = 0` using `hG`. Establish `h3` using `DFunLike.congr_fun key G`. Rewrite `h3` using `[AlgHom.comp_apply, h2, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Fr.detsec_ker (O : Type) [CommRing O] [IsLocalRing O] (R : Type) [CommRing R] [Algebra O R]
     [IsCO O R] (σ : Type) [Finite σ] (a : σ → R) (ha : ∀ s, a s ∈ maximalIdeal R)
@@ -101,19 +97,17 @@ private theorem UpperTheory.V.Fr.detsec_ker (O : Type) [CommRing O] [IsLocalRing
   exact Ideal.Quotient.eq_zero_iff_mem.1 h3
 
 /- English proof (translation)
-Use `haveI := co_mvps O R σ`. Use `haveI : Nontrivial (MvPowerSeries σ R ⧸ I) := Ideal.Quotient.nontrivial_iff.2 fun h => hI.ne_top (by rw [h, Ideal.radical_top])`. Use `haveI hco := co_quot O _ _ (Ideal.Quotient.mkₐ O I) (Ideal.Quotient.mkₐ_surjective O I)`. Establish `hF : Function.Surjective (F : MvPowerSeries σ R →+* R)` using `fun x => ⟨MvPowerSeries.C x, hC x⟩`. Set `e : σ ⊕ Fin b → MvPowerSeries σ R` to `Sum.elim (fun s => MvPowerSeries.X s - MvPowerSeries.C (a s)) fun i => MvPowerSeries.C (f i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `he : ∀ s, e s ∈ maximalIdeal (MvPowerSeries σ R)` using `fun s => by`. Rewrite using `[← res_eq_zero_iff O, ← res_map F, res_eq_zero_iff]`. Break down `s with s | i` into its components or cases. Simplify using `[e, hC, hX]`. Simplify `hf i` using `[e, hC]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `q : Fin (Fintype.card σ + b) ≃ σ ⊕ Fin b` to `(Fintype.equivFinOfCardEq (by simp)).symm`. Establish `hn : (nilradical (MvPowerSeries σ R ⧸ I)).IsPrime`. Establish `h1 : nilradical (MvPowerSeries σ R ⧸ I) = I.radical.map (Ideal.Quotient.mk I)`. Rewrite using `[Ideal.map_radical_of_surjective Ideal.Quotient.mk_surjective (by simp), Ideal.map_quotient_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by simpa using Ideal.le_radical)`. Establish `h` using `c1ch (MvPowerSeries σ R ⧸ I) (Fintype.card σ + b) D (fun i => Ideal.Quotient.mk I (e (q i))) hn ⟨O, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hco⟩ (fun i => by`. Use `he (q i)` as an intermediate fact. Rewrite `this` using `[← res_eq_zero_iff O, ← res_map (Ideal.Quotient.mkₐ O I), res_eq_zero_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Conclude with `this)`. Use the proof step `(hd.trans (ringKrullDim_le_of_surjective (Ideal.Quotient.factor I.le_radical) (Ideal.Quotient.factor_surjective _)))`. Rewrite `h` using `[← detsec_comap (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective]`. Rewrite using `[← detsec_comap _ hF]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : Ideal.span (Set.range fun i => Ideal.Quotient.mk I (e (q i))) = (Ideal.span (Set.range e)).map (Ideal.Quotient.mk I)`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Conclude with `congrArg _ (q.surjective.range_comp (Ideal.Quotient.mk I ∘ e))`. Establish `h2 : Ideal.span (Set.range f) = (Ideal.span (Set.range fun i => (MvPowerSeries.C (f i) : MvPowerSeries σ R))).map (F : MvPowerSeries σ R →+* R)`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`.
-
-Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `(hC _).symm`. Rewrite using `[h1, h2, ← Ideal.map_sup, Ideal.comap_map_of_surjective _ hF, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, detsec_ker O R σ a ha F hC hX, Set.Sum.elim_range, Ideal.span_union]`. The two sides agree by associativity and commutativity.
+Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Fr.detsec_sec (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [Algebra O R]
@@ -168,11 +162,11 @@ private theorem UpperTheory.V.Fr.detsec_sec (O : Type) [CommRing O] [IsDomain O]
   ac_rfl
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot`. Rewrite `h3` using `[WithBot.add_bot]`. Conclude with `absurd h3.symm (by exact_mod_cast WithBot.coe_ne_bot)`. Consider the case `coe x`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `x using ENat.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe x => lift y to ℕ using ne_top_of_le_ne_top (ENat.coe_ne_top _) h2`. Establish `h5 : y ≤ g + 1` using `by exact_mod_cast h2`. Establish `h6 : y + x = D + 1 + b + (g + 1) + c` using `by exact_mod_cast h3`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : D + 1 + (c + b) ≤ x` using `by omega`. Conclude with `h7` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Fr.detsec_num (x : WithBot ℕ∞) (y : ℕ∞) (D b g c : ℕ) (h2 : y ≤ (g + 1 : ℕ))
     (h3 : (y : WithBot ℕ∞) + x = (D + 1 + b + (g + 1) : ℕ) + (c : WithBot ℕ∞)) :
@@ -192,13 +186,13 @@ private theorem UpperTheory.V.Fr.detsec_num (x : WithBot ℕ∞) (y : ℕ∞) (D
       exact_mod_cast h7
 
 /- English proof (translation)
-Use `haveI := co_mvps O R ((Fin (g + 1) × Fin (g + 1)) ⊕ Fin (g + 1))`. Use `haveI : IsDomain (MvPowerSeries ((Fin (g + 1) × Fin (g + 1)) ⊕ Fin (g + 1)) R) := NoZeroDivisors.to_isDomain _`. Set `v : (Fin (g + 1) × Fin (g + 1)) ⊕ Fin (g + 1) → R` to `Sum.elim (fun p => M p.1 p.2) m`. Establish `hv : ∀ s, v s ∈ maximalIdeal R`. Introduce and unpack `(p | j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hM _ _`. Conclude with `hm _`. Take `⟨F, ⟨hC, hX⟩, -⟩` from `co_ev O R R _ (AlgHom.id O R) v hv`. Take `⟨h1, h2⟩` from `UpperTheory.V.CA.g_detps R g`. Establish `h3` using `@co_caten O _ _ _ _ _ _ _ _ _ _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, hd, Nat.card_eq_fintype_card]`. Establish `h4` using `detsec_sec O R _ v hv F hC hX _ h1 b D f hf (detsec_num _ _ D b g _ h2 h3)`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Set.union_assoc, Ideal.span_union, Ideal.map_span, Set.image_union, Set.image_singleton, ← Set.range_comp, RingHom.map_det]`. Use `congr 4`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `i`. Simplify using `[hX, v, Matrix.mulVec, dotProduct]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[hX, v]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Fr.detsec_gen (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [IsDomain R] [Algebra O R] [IsCO O R] (b g D : ℕ)
@@ -229,11 +223,9 @@ private theorem UpperTheory.V.Fr.detsec_gen (O : Type) [CommRing O] [IsDomain O]
     simp [hX, v]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ a b g D f M hab hf hM`. Use `haveI := co_mvps O O (Fin a ⊕ Fin (g + 1))`. Use `haveI : IsDomain (MvPowerSeries (Fin a ⊕ Fin (g + 1)) O) := NoZeroDivisors.to_isDomain _`. Establish `hm : ∀ x : MvPowerSeries (Fin a ⊕ Fin (g + 1)) O, MvPowerSeries.constantCoeff x ∈ maximalIdeal O → x ∈ maximalIdeal (MvPowerSeries (Fin a ⊕ Fin (g + 1)) O)` using `fun x hx hu => hx (MvPowerSeries.isUnit_iff_constantCoeff.1 hu)`. Use `detsec_gen O _ b g D f M _ ?_ (fun i => hm _ (hf i)) (fun i j => hm _ (hM i j)) fun j => hm _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one, Nat.card_sum, Nat.card_fin, Nat.card_fin, hab]`. Establish `: D + 1 + b + (g + 1) = 1 + (b + D + (g + 1))` using `by omega`. Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Rewrite using `[MvPowerSeries.constantCoeff_X]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.detsec :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (a b g D : ℕ) (f : Fin b → MvPowerSeries (Fin a ⊕ Fin (g + 1)) O) (M : Matrix (Fin (g + 1)) (Fin (g + 1)) (MvPowerSeries (Fin a ⊕ Fin (g + 1)) O)), a = b + D → (∀ i, MvPowerSeries.constantCoeff (f i) ∈ maximalIdeal O) → (∀ i j, MvPowerSeries.constantCoeff (M i j) ∈ maximalIdeal O) → Chained (Ideal.span (Set.range f ∪ Set.range (M *ᵥ fun j => MvPowerSeries.X (.inr j)) ∪ {M.det})) D := by

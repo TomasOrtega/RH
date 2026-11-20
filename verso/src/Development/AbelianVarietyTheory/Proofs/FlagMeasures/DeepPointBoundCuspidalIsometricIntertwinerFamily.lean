@@ -20,15 +20,15 @@ noncomputable section
 namespace GlobalTheory.DeepFamilyGap
 
 /- English proof (translation)
-Unfold `AutInst.NA`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `hdet : IsUnit (I.P v).det` using `by first`. Consider the case `exact (Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Consider the case `exact I.P_unit v`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hg : I.P v * uMat ((1 : I.GA).1 v) * (I.P v)⁻¹ = 1`. Rewrite using `[show uMat ((1 : I.GA).1 v) = 1 from rfl, mul_one]`. Conclude with `Matrix.mul_nonsing_inv _ hdet`. Rewrite using `[hg]`. Unfold `AutInst.InUnipRad`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `x _`. Unfold `Formalism.UG.hform`. Simplify using the standard rewrite rules. Establish `hf : I.fmat (1 : I.GA).2 = 1` using `by first`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `rfl`. Consider the case `simp`. Consider the case `exact map_one _`. Rewrite using `[hf]`. Unfold `AutInst.InUnipRad`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `x _`. Unfold `Formalism.UG.hform`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_NA (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) : (1 : I.GA) ∈ I.NA W := by
   unfold AutInst.NA
@@ -59,7 +59,7 @@ theorem one_mem_NA (I : AutInst) (W : Submodule I.E (Fin I.n → I.E)) : (1 : I.
     simp
 
 /- English proof (translation)
-Use `⟨rfl, fun _ => 0, fun _ => 0, fun v => ⟨(GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.gLie (I.ε v)).zero_mem, (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.gLie (I.ε v)).zero_mem⟩, ?_, fun v => by simp, fun s t => ⟨1, ?_, fun v => ?_⟩⟩` and prove the remaining obligations. Simplify `h` using `[GlobalTheory.SobolevBound.hs_eq_trace]`. Conclude with `one_mem_NA I W`. Rewrite using `[smul_zero, smul_zero, NormedSpace.exp_zero, mul_one, mul_one]`. Conclude with `one_mul _`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem self_mem_omega (I : AutInst) (x : I.GA) (W : Submodule I.E (Fin I.n → I.E)) {ρ : ℝ} (h : 0 ≤ ρ) :
     x ∈ omega I x W ρ := by
@@ -71,14 +71,14 @@ theorem self_mem_omega (I : AutInst) (x : I.GA) (W : Submodule I.E (Fin I.n → 
     exact one_mul _
 
 /- English proof (translation)
-Unfold `beP`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem beP_nonneg (n : ℕ) (b : ℝ) (P : ℕ) : 0 ≤ beP n b P := by
   unfold beP
   positivity
 
 /- English proof (translation)
-Unfold `beP`. Establish `: (P : ℝ) ≤ Q` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem monotone₂ (n : ℕ) (b : ℝ) {P Q : ℕ} (h : P ≤ Q) : beP n b P ≤ beP n b Q := by
   unfold beP
@@ -86,13 +86,13 @@ theorem monotone₂ (n : ℕ) (b : ℝ) {P Q : ℕ} (h : P ≤ Q) : beP n b P �
   linarith
 
 /- English proof (translation)
-Establish `hβ0 : 0 ≤ β` using `le_trans (beP_nonneg _ _ _) hβ`. Establish `hc0 : 0 ≤ 2 * ρ * Real.sqrt B.I.f * β` using `mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hρ) (Real.sqrt_nonneg _)) hβ0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `P hP y hy u hu`. Establish `hPP : P = P₀` using `by simpa using hP`. Substitute `hPP` using the available equality. Simplify using `using h0 y hy u hu`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `P hP y hy u hu`. Establish `hP' : (P + 1) + k = P₀` using `by omega`. Establish `hM' : 0 ≤ (2 * ρ * Real.sqrt B.I.f * β) ^ k * M` using `mul_nonneg (pow_nonneg hc0 _) hM`. Establish `key` using `GlobalTheory.DeepStep.step_bound B b ρ ((2 * ρ * Real.sqrt B.I.f * β) ^ k * M) P D T Fr x W hg hW hcov (hS P) hR hC hM' (ih (P + 1) hP') y hy u hu`. Establish `hle : beP B.I.n b P ≤ β` using `le_trans (monotone₂ _ _ (by omega : P ≤ P₀)) hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem iterate (B : RowsAut) (b ρ M β : ℝ) (P₀ : ℕ) (D : ℕ)
     (T : Fin D → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund)) (Fr : Fin D → B.Hs → B.I.GA → ℂ) (x : B.I.GA)
@@ -129,11 +129,11 @@ theorem iterate (B : RowsAut) (b ρ M β : ℝ) (P₀ : ℕ) (D : ℕ)
       _ = (2 * ρ * Real.sqrt B.I.f * β) ^ (k + 1) * M * ‖u‖ := by ring
 
 /- English proof (translation)
-Establish `hs : 1 ≤ Real.sqrt n`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`. Conclude with `Real.sqrt_le_sqrt hn`. Establish `ht0 : 0 < t` using `by linarith`. Establish `hτt : τ ^ 2 ≤ 4 * t ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 4 * Real.sqrt n / t ^ 2 ≤ 16 * Real.sqrt n / τ ^ 2`. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : 1 ≤ Real.sqrt n / τ ^ 2`. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : 17 * Real.sqrt n / τ ^ 2 = 16 * Real.sqrt n / τ ^ 2 + Real.sqrt n / τ ^ 2` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mult_le {n τ t : ℝ} (hn : 1 ≤ n) (hτ : 0 < τ) (hτ1 : τ < 1 / 2) (ht : τ / 2 ≤ t) :
     1 + 4 * Real.sqrt n / t ^ 2 ≤ 17 * Real.sqrt n / τ ^ 2 := by
@@ -152,25 +152,23 @@ theorem mult_le {n τ t : ℝ} (hn : 1 ≤ n) (hτ : 0 < τ) (hτ1 : τ < 1 / 2)
   linarith
 
 /- English proof (translation)
-Introduce `B Cg n₀ d p q b c x D T Fr hn₀ hq hCH hc hτ hR hiso hcusp`. Take `⟨hDS, -, hn₀n, hq2, -, -, hb2, -, -, hg, -⟩` from `id hCH`. Take `⟨-, hrd, hf, -, -, -, hrk, -, -, -, -, htau, -⟩` from `GlobalTheory.Dec.countHyp_numerics B Cg n₀ d p q b hn₀ hCH`. Take `⟨htau2, hb19⟩` from `htau hq`. Establish `hn8 : 8 ≤ B.I.n` using `le_trans hn₀ hn₀n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn1 : 1 ≤ B.I.n` using `by omega`. Establish `hτpos : 0 < least B.I x` using `((GlobalTheory.CountSteps.steps B.I x 1 one_pos).2.2.2.2.2.2.2.2 hn1).1`. Establish `hτhalf : least B.I x < 1 / 2` using `lt_trans hτ htau2`. Establish `hτ1 : tau1 B.I x = least B.I x` using `min_eq_right hτhalf.le`. Take `⟨W, hW, hcov⟩` from `GlobalTheory.DeepCover.unipotent_orbit_cover B.I x B.g q hg hn1 (fun v => (hrk v).le) hτhalf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hτX : least B.I x ≤ ((B.I.n : ℝ) * B.I.f * B.I.rd * B.g * b)⁻¹ ^ (11 * q)` using `hτ.le`. Establish `hex` using `GlobalTheory.deep_region_exponents B.I.n B.I.f q B.I.rd B.g b (least B.I x) hn8 hf hq hq2 hrd hb2 (by exact_mod_cast hg) hτpos hτX`. Establish `hrho : GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh B q (least B.I x) ≤ Real.log 2` using `hex.1`. Establish `hρ0 : 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh B q (least B.I x)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hg0 : (1 : ℝ) ≤ B.g` using `by exact_mod_cast hg`. Conclude with `div_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (by positivity) (Real.sqrt_nonneg _)) (by linarith)) (by linarith)) (Real.rpow_nonneg (by linarith) _)) (by norm_num)`. Establish `hS : ∀ P, StepBoundAt B b P` using `GlobalTheory.T.discreteSeries_stepBound_of_countingHypotheses B Cg n₀ d p q b hn₀ hCH`. Establish `hβ : beP B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + B.I.n ^ 2 * B.I.f) = GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + Globa …` using `rfl`. Establish `hβ0 : 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hβ]`. Conclude with `beP_nonneg _ _ _`. Establish `hβle : beP B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B) ≤ GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + GlobalTheory.Indefinite …`. Rewrite using `[← hβ]`. Conclude with `monotone₂ _ _ (Nat.le_add_right _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : 0 < ∏ v, c v` using `Finset.prod_pos fun v _ => GlobalTheory.SobolevBound.gauge_pos (hc v)`. Establish `hN : B.I.n ^ 2 * B.I.f = GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B` using `rfl`. Establish `hK0 : 0 ≤ (6 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B)) ^ GlobalTheory.IndefiniteRowSideFullH …` using `div_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (pow_nonneg (by linarith) _) (Real.exp_pos _).le) (pow_nonneg (by positivity) _)) (Nat.cast_nonneg _)) hc0.le) ENNReal.toReal_nonneg`. Establish `h0 : ∀ y ∈ omega B.I x W (GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh B q (least B.I x)), ∀ u ∈ VP B (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B), ‖vv B Fr u y‖ ≤ Real.sqrt ((6 * GlobalTheory.IndefiniteRowSideFullHecke.Dee …`. Introduce `y hy u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.SobolevBound.sobolev_bound B b c (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B) D T Fr hn8 hg hb19 hc hS hR hiso y u hu`. Rewrite `hs` using `[hβ, hN]`. Establish `ht : least B.I x / 2 ≤ tau1 B.I y`. Rewrite using `[← hτ1]`. Conclude with `GlobalTheory.OmegaLeast.half_truncatedLeastLatticeSize_le_unipotentNeighbourhood B.I x W _ hn1 hrho y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm` using `mult_le (n := (B.I.n : ℝ)) (by exact_mod_cast hn1) hτpos hτhalf ht`. Establish `hle : ‖vv B Fr u y‖ ^ 2 ≤ ((6 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B)) ^ GlobalTheory.Indef …`. Use `hs.trans ?_` and prove the remaining obligations. Use `gcongr`. Use `Real.sqrt_le_sqrt hle` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.sqrt_sq (norm_nonneg _), Real.sqrt_mul hK0, Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.DeepFamilyGap.iterate B b (GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh B q (least B.I x)) _ _ (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B) D T Fr x W hg hW hcov hS hR hcusp hρ0 (Real.sqrt_nonneg _) hβle h0 (8 …`. Rewrite `key` using `[(GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.tens_w_mem B hDS 0).2, mul_one]`. Establish `hA0 : 0 ≤ 2 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh B q (least B.I x) * Real.sqrt B.I.f * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + Glo …` using `mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hρ0) (Real.sqrt_nonneg _)) hβ0`. Establish `hsq` using `pow_le_pow_left₀ (norm_nonneg _) key 2`.
-
-Rewrite `hsq` using `[mul_pow, ← pow_mul, Real.sq_sqrt hK0]`. Use `hsq.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[show 8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B * 2 = 16 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B by ring]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deep_bound_family : ∀ (B : RowsAut) (Cg : ℝ) (n₀ : ℕ) (d : InfinitePlace B.I.F → ℝ) (p q : ℕ) (b : ℝ) (c : InfinitePlace B.I.F → ℝ) (x : B.I.GA) (D : ℕ) (T : Fin D → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund)) (Fr : Fin D → B.Hs → B.I.GA → ℂ), 8 ≤ n₀ → 1 ≤ q → CountHyp B Cg n₀ d p q b → (∀ v, IsGauge (B.I.ε v) (c v)) → least B.I x < tauStar B q b → (∀ i, IsReps B (T i) (Fr i)) → (∀ i u, ‖T i u‖ = ‖u‖) → (∀ i u, B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext (T i u))) → ‖vv B Fr (B.tens B.w) x‖ ^ 2 ≤ (2 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh B q (least B.I x) * Real.sqrt B.I.f * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B)) ^ (16 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B) * (6 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B)) ^ GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B * Real.exp B.I.f * (17 * Real.sqrt B.I.n / least B.I x ^ 2) ^ (2 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B) * (D : ℝ) * (∏ v, c v) / (B.μf (B.I.Kg B.g)).toReal := by
   intro B Cg n₀ d p q b c x D T Fr hn₀ hq hCH hc hτ hR hiso hcusp

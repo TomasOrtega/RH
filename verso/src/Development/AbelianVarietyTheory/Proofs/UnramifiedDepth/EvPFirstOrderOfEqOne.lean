@@ -12,13 +12,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.AlphaPair
 
 /- English proof (translation)
-Distinguish the cases in `h0 : k = 0`. Substitute `h0` using the available equality. Rewrite using `[Finset.sum_eq_zero fun i _ => if_neg fun h => by simpa using congrFun h i]`. Simplify using the standard rewrite rules. Take `⟨i, hi⟩` from `Function.ne_iff.1 h0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hi : k i ≠ 0` using `hi`. Rewrite using `[Finset.prod_eq_zero (f := fun i => (0 : A) ^ k i) (Finset.mem_univ i) (zero_pow hi), zero_add, Finset.sum_eq_single i (fun j _ hj => if_neg fun h => hi (by rw [h]; simp [hj.symm])) (by simp)]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finset.prod_eq_single i (fun j _ hj => by simp [hj]) (by simp)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Distinguish the cases in `h1 : k i = 1`. Take `⟨j, hj⟩` from `Function.ne_iff.1 h`. Establish `hji : j ≠ i` using `by rintro rfl; simp [h1] at hj`. Establish `hj0 : k j ≠ 0` using `by simpa [hji] using hj`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), ← Finset.mul_prod_erase _ _ (Finset.mem_erase.2 ⟨hji, Finset.mem_univ j⟩), h1, pow_one]`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hj0`. Rewrite using `[hm, pow_succ', mul_assoc (x j), ← mul_assoc (x i), hx, zero_mul]`. Use `Finset.prod_eq_zero (Finset.mem_univ i) (pow_eq_zero_of_le (m := 2) (by omega) ?_)` and prove the remaining obligations. Rewrite using `[pow_two, hx]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pow_of_mul_eq_zero {A κ : Type} [CommRing A] [Fintype κ] [DecidableEq κ] (x : κ → A)
     (hx : ∀ i j, x i * x j = 0) (k : κ → ℕ) :
@@ -47,27 +47,25 @@ theorem prod_pow_of_mul_eq_zero {A κ : Type} [CommRing A] [Fintype κ] [Decidab
       rw [pow_two, hx]
 
 /- English proof (translation)
-Establish `hx : ∀ i j, (u i • e) * (u j • e) = 0` using `fun i j => by`. Rewrite using `[smul_mul_smul_comm, ← pow_two, he, smul_zero]`. Take `⟨N₁, -, h₁⟩` from `evBasic_exists_pow b hb`. Take `⟨N₂, -, h₂⟩` from `evBasic_exists_pow b' hb'`. Take `⟨N, hN, h₁, h₂⟩ : ∃ N, 2 ≤ N ∧ (∀ j, b j ^ N = 0) ∧ ∀ j, b' j ^ N = 0` from `⟨N₁ + N₂ + 2, by omega, fun j => pow_eq_zero_of_le (by omega) (h₁ j), fun j => pow_eq_zero_of_le (by omega) (h₂ j)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h3 : ∀ x : Fin d → A, (∀ j, x j ^ N = 0) → ∀ q : Fin 3 × Fin d, (![x, b, b'] : Fin 3 → Fin d → A) q.1 q.2 ^ N = 0`. Introduce and unpack `x hx ⟨i, j⟩`. Use `fin_cases i`. Use `exacts [hx j, h₁ j, h₂ j]`. Establish `h2 : ∀ q : Fin 2 × Fin d, (![b, b'] : Fin 2 → Fin d → A) q.1 q.2 ^ N = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`. Use `exacts [h₁ j, h₂ j]`. Establish `hp : ∀ (x : Fin d → A) (n : Fin 3 × Fin d → ℕ), ∏ q : Fin 3 × Fin d, (![x, b, b'] : Fin 3 → Fin d → A) q.1 q.2 ^ n q = (∏ j, x j ^ n (0, j)) * ∏ q : Fin 2 × Fin d, (![b, b'] : Fin 2 → Fin d → A) q.1 q.2 ^ n (q.1.succ, q.2)`. Introduce `x n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_prod_type, Fin.prod_univ_succ, Fintype.prod_prod_type]`. Both sides reduce to the same expression. Unfold `evP`. Rewrite using `[evBasic_nEval_eq_tEval _ _ N (h3 _ fun j => pow_eq_zero_of_le hN (by rw [pow_two, hx])), evBasic_nEval_eq_tEval _ _ N (h3 0 fun j => zero_pow (by omega)), evBasic_nEval_eq_tEval _ _ N h2, evBasic_tEval_eq_sum, evBasic_tEval_eq_sum, evBasic_tEval_eq_sum]`. Simplify using `only [hp, prod_pow_of_mul_eq_zero _ hx, add_mul, mul_add, Finset.sum_add_distrib, Pi.zero_apply, add_right_inj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ mu, MvPowerSeries.coeff mu (c2 ph u) = ∑ i, u i * MvPowerSeries.coeff (mu.mapDomain (fun q : Fin 2 × Fin d => (q.1.succ, q.2)) + Finsupp.single ((0 : Fin 3), i) 1) ph` using `fun _ => rfl`. Simplify using `only [hc, map_sum, Finset.sum_mul, Finset.mul_sum, ite_mul, mul_ite, zero_mul, mul_zero]`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (t := Finset.univ)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective (fun q : Fin 2 × Fin d => ((q.1.succ, q.2) : Fin 3 × Fin d))` using `fun q q' h => by`. Simplify using `only [Prod.mk.injEq, Fin.succ_inj] at h`. Conclude with `Prod.ext h.1 h.2`. Use `Finset.sum_nbij' (fun n q => n (q.1.succ, q.2)) (fun m q => (Fin.cons (Pi.single i 1) (fun a j => m (a, j)) : Fin 3 → Fin d → ℕ) q.1 q.2) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `n hn`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.mem_filter, Fintype.mem_piFinset] at hn ⊢`. Conclude with `fun q => hn.1 _`. Introduce `m hm`. Simplify using `only [Finset.mem_filter, Fintype.mem_piFinset] at hm ⊢`. Use `⟨?_, rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨a, j⟩`. Use `Fin.cases ?_ (fun a => hm (a, j)) a` and prove the remaining obligations. Simplify using `only [Fin.cons_zero, Finset.mem_range, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> omega`. Introduce `n hn`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `⟨a, j⟩`. Conclude with `Fin.cases (congrFun (Finset.mem_filter.1 hn).2 j).symm (fun _ => rfl) a`. Introduce `m _`. Both sides reduce to the same expression. Introduce `n hn`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hn0 : ∀ j, n (0, j) = (Pi.single i 1 : Fin d → ℕ) j` using `congrFun (Finset.mem_filter.1 hn).2`. Establish `: (Finsupp.equivFunOnFinite.symm fun q : Fin 2 × Fin d => n (q.1.succ, q.2)).mapDomain (fun q : Fin 2 × Fin d => ((q.1.succ, q.2) : Fin 3 × Fin d)) + Finsupp.single ((0 : Fin 3), i) 1 = Finsupp.equivFunOnFinite.symm n`. Use extensionality with `⟨a, j⟩`. Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_notin_range _ _ (by rintro ⟨q, hq⟩; exact Fin.succ_ne_zero _ (congrArg Prod.fst hq))]`.
-
-Simplify using `[hn0, Finsupp.single_apply, Pi.single_apply, eq_comm]`. Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_apply hinj _ (a, j), Finsupp.single_eq_of_ne (fun h => Fin.succ_ne_zero _ (congrArg Prod.fst h))]`. Simplify using the standard rewrite rules. Rewrite using `[this, map_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evalPoints_first_order_of_sq_eq_zero {R : Type} [CommRing R] {d : ℕ} (ph : PS R 3 d) {A : Type} [CommRing A] [Algebra R A]
     (e : A) (he : e ^ 2 = 0) (u : Fin d → R) (b b' : Fin d → A) (hb : ∀ j, IsNilpotent (b j))
@@ -146,13 +144,11 @@ theorem evalPoints_first_order_of_sq_eq_zero {R : Type} [CommRing R] {d : ℕ} (
     ring
 
 /- English proof (translation)
-Introduce `R _ d ph hph A _ _ e he u b b' hb hb'`. Rewrite using `[evalPoints_first_order_of_sq_eq_zero ph e he u b b' hb hb']`. Use `congr 1`. Establish `hn : ∀ q : Fin 2 × Fin d, IsNilpotent ((![b, b'] : Fin 2 → Fin d → A) q.1 q.2)`. Introduce and unpack `⟨i, j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `fin_cases i`. Use `exacts [hb j, hb' j]`. Establish `h` using `congrArg (fun f => nEval f fun q : Fin 2 × Fin d => (![b, b'] : Fin 2 → Fin d → A) q.1 q.2) hph`. Use `beta_reduce at h`. Rewrite `h` using `[nEval_one hn, ev, ChartCompare.nEval_subst _ _ _ _ hn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← h, evP]`. Use `congr 1`. Use function extensionality and compare the values at `⟨i, j⟩`. Use `fin_cases i`. Conclude with `(ChartCompare.nEval_zero _ hn).symm`.
-
-Conclude with `(ChartCompare.nEval_X _ hn (0, j)).symm`. Conclude with `(ChartCompare.nEval_X _ hn (1, j)).symm`. Apply the tactic sequence `rintro ⟨i, j⟩ fin_cases i <;> simp [pt]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem evalPoints_first_order_of_eq_one : ∀ (R : Type) [CommRing R] (d : ℕ) (ph : PS R 3 d), ev (n := 2) ![0, pt R d 0, pt R d 1] ph = 1 → ∀ (A : Type) [CommRing A] [Algebra R A] (e : A), e ^ 2 = 0 → ∀ (u : Fin d → R) (b b' : Fin d → A), (∀ j, IsNilpotent (b j)) → (∀ j, IsNilpotent (b' j)) → evP ![fun j => u j • e, b, b'] ph = 1 + e * evP ![b, b'] (c2 ph u) := by
   intro R _ d ph hph A _ _ e he u b b' hb hb'

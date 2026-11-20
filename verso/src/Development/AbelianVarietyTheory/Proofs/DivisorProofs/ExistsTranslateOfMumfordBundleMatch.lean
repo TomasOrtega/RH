@@ -18,9 +18,9 @@ namespace GlobalTheory.MumCmp
 open GlobalTheory.CechPic GlobalTheory.AbDual
 
 /- English proof (translation)
-Take `⟨U, hU, t, ht⟩` from `P.sym (IsLocalRing.closedPoint R)`. Take `rfl : U = ⊤` from `DVR.eq_top_of_closedPoint_mem U hU`. Establish `h` using `(cls_eq_zero_iff (LB.isLB_linComb P.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `h` using `[cls_linComb P.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_smul, neg_smul, pull_comp] at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨m, hm⟩ : ∃ m : P.A.left ⟶ (P.A.hom ⁻¹ᵁ ⊤).toScheme, m ≫ (P.A.hom ⁻¹ᵁ ⊤).ι = 𝟙 _` from `⟨P.A.left.topIso.inv, P.A.left.topIso.inv_hom_id⟩`. Establish `h'` using `congrArg (pull m) h`. Rewrite `h'` using `[map_add, map_neg, map_zero, ← pull_comp m, ← pull_comp m, hm, pull_id, pull_id, add_neg_eq_zero]`. Conclude with `h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_inv_cls {R : Type} [CommRing R] [IsLocalRing R] (P : PolAV (Sp R)) :
     pull (GrpObj.inv : P.A ⟶ P.A).left (cls P.L P.isLB) = cls P.L P.isLB := by
@@ -36,7 +36,7 @@ theorem pull_inv_cls {R : Type} [CommRing R] [IsLocalRing R] (P : PolAV (Sp R)) 
   exact h'
 
 /- English proof (translation)
-Establish `e : (1 : Y ⟶ G) = toUnit Y ≫ η[G]` using `rfl`. Rewrite using `[e, Over.comp_left, pull_comp, GlobalTheory.DualOpen.pic_sp_local_eq_zero R (pull η[G].left d), map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_one_eq_zero {R : Type} [CommRing R] [IsLocalRing R] {G Y : Over (Sp R)} [GrpObj G] (d : Pic G.left) :
     pull (1 : Y ⟶ G).left d = 0 := by
@@ -44,39 +44,37 @@ theorem pull_one_eq_zero {R : Type} [CommRing R] [IsLocalRing R] {G Y : Over (Sp
   rw [e, Over.comp_left, pull_comp, GlobalTheory.DualOpen.pic_sp_local_eq_zero R (pull η[G].left d), map_zero]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D₀ D β hβ hw`. Use `D.P.isAb.comm` as an intermediate fact. Use `D₀.P.isAb.comm` as an intermediate fact. Establish `hL₀` using `D₀.P.isLB`. Establish `hL` using `D.P.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c₀ := cls D₀.P.L hL₀ with hc₀`. Use `set c := cls D.P.L hL with hc`. Establish `hd : IsDual D.P.A D.P.A (abelian₂ D.P.A D.P.L)` using `CompanionTheory.PfDual.kTrivDual R D.P.A D.P.g D.P.isAb D.P.smoothDim D.P.L hL D.P.ktriv`. Establish `hΛ : (abelian₂ D.P.A D.P.L).IsLB` using `hd.isLB`. Establish `e : ∀ (Y : Over (Sp R)) (a t : Y ⟶ D.P.A), evc hΛ a t = lam c a t` using `fun Y a t ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[evc, show cls _ hΛ = lam c (fst D.P.A D.P.A) (snd D.P.A D.P.A) from cls_cube_two hL _ _ hΛ, pull_lam, lift_fst, lift_snd]`. Establish `l₁ : ∀ (Y : Over (Sp R)) (a a' t : Y ⟶ D.P.A), lam c (a * a') t = lam c a t + lam c a' t` using `fun Y a a' t ↦ by`. Rewrite using `[← e, ← e, ← e]`. Conclude with `(isAdditive_iff hΛ).1 hd.additive Y a a' t`. Establish `l₂ : ∀ (Y : Over (Sp R)) (a t t' : Y ⟶ D.P.A), lam c a (t * t') = lam c a t + lam c a t'` using `fun Y a t t' ↦ by rw [lam_comm, l₁, lam_comm _ t, lam_comm _ t']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨wΛ, hwΛ⟩` from `hw`. Establish `hΛ₀ : (abelian₂ D₀.P.A D₀.P.L).IsLB` using `LB.isLB_linComb hL₀ _ _`. Establish `eΛ : lam c₀ (fst D₀.P.A D₀.P.A) (snd D₀.P.A D₀.P.A) = lam c (fst D₀.P.A D₀.P.A ≫ β.hom) (snd D₀.P.A D₀.P.A ≫ β.hom)`. Establish `h` using `(cls_eq_iff hΛ₀ (pull_isLB hΛ _)).2 ⟨wΛ, hwΛ⟩`. Establish `h₁ : cls _ hΛ₀ = lam c₀ (fst D₀.P.A D₀.P.A) (snd D₀.P.A D₀.P.A)` using `cls_cube_two hL₀ _ _ hΛ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : cls _ hΛ = lam c (fst D.P.A D.P.A) (snd D.P.A D.P.A)` using `cls_cube_two hL _ _ hΛ`. Rewrite using `[← h₁, h, cls_pull hΛ, h₂, pull_lam, lift_fst, lift_snd]`. Establish `s₁ : ∀ (Y : Over (Sp R)) (u v : Y ⟶ D₀.P.A), lam c₀ u v = lam c (u ≫ β.hom) (v ≫ β.hom)` using `fun Y u v ↦ by`. Establish `h` using `congrArg (pull (lift u v).left) eΛ`. Simplify `h` using `only [pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `Fadd : ∀ (Y : Over (Sp R)) (a a' : Y ⟶ D.P.A), pull ((a * a') ≫ β.inv).left c₀ - pull (a * a').left c = (pull (a ≫ β.inv).left c₀ - pull a.left c) + (pull (a' ≫ β.inv).left c₀ - pull a'.left c)`. Introduce `Y a a'`. Establish `h` using `s₁ Y (a ≫ β.inv) (a' ≫ β.inv)`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id, lam, pull_one_eq_zero, add_zero] at h`. Rewrite using `[MonObj.mul_comp, ← sub_eq_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Establish `h'` using `sub_eq_zero.2 h`. Use `h' using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Set `N : LB (D.P.A ⊗ 𝟙_ (Over (Sp R))).left` to `tens (D₀.P.L.pull (fst D.P.A (𝟙_ (Over (Sp R))) ≫ β.inv).left) (dual (D.P.L.pull (fst D.P.A (𝟙_ (Over (Sp R)))).left))`. Establish `hN : N.IsLB` using `isLB_tens (pull_isLB hL₀ _) (isLB_dual (pull_isLB hL _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `clsN : cls N hN = pull (fst D.P.A (𝟙_ (Over (Sp R))) ≫ β.inv).left c₀ - pull (fst D.P.A (𝟙_ (Over (Sp R)))).left c`. Rewrite using `[show cls N hN = _ from cls_tens (pull_isLB hL₀ _) (isLB_dual (pull_isLB hL _)) hN, cls_dual (pull_isLB hL _), cls_pull hL₀, cls_pull hL, sub_eq_add_neg]`. Establish `evN : ∀ (Y : Over (Sp R)) (a : Y ⟶ D.P.A) (t : Y ⟶ 𝟙_ (Over (Sp R))), evc hN a t = pull (a ≫ β.inv).left c₀ - pull a.left c`. Introduce `Y a t`. Rewrite using `[evc, clsN, map_sub, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, lift_fst_assoc, lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hadd : IsAdditive N` using `(isAdditive_iff hN).2 fun Y a a' t ↦ by rw [evN, evN, evN, Fadd]`. Take `⟨b, hb, -⟩` from `hd.univ _ N hN hadd`. Establish `eb` using `(cls_eq_iff hN (pull_isLB hΛ _)).2 hb`. Establish `key : ∀ (Y : Over (Sp R)) (a : Y ⟶ D.P.A), pull (a ≫ β.inv).left c₀ - pull a.left c = lam c a (toUnit Y ≫ b)`. Introduce `Y a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h : evc hN a (toUnit Y) = evc hΛ a (toUnit Y ≫ b)`. Establish `h` using `congrArg (pull (lift a (toUnit Y)).left) eb`. Rewrite `h` using `[cls_pull hΛ]`. Express the relevant statement in the definitionally equal form `evc hN a (toUnit Y) = pull (lift a (toUnit Y)).left (evc hΛ (fst D.P.A (𝟙_ (Over (Sp R)))) (snd D.P.A (𝟙_ (Over (Sp R))) ≫ b)) at h`. Rewrite `h` using `[pull_evc, lift_fst, lift_snd_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h`. Rewrite using `[← evN Y a (toUnit Y), h, e]`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Establish `sym₀ : pull (GrpObj.inv : D₀.P.A ⟶ D₀.P.A).left c₀ = c₀` using `pull_inv_cls D₀.P`. Establish `sym : pull (GrpObj.inv : D.P.A ⟶ D.P.A).left c = c` using `pull_inv_cls D.P`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `odd : ∀ (Y : Over (Sp R)) (a : Y ⟶ D.P.A), lam c a (toUnit Y ≫ b) + lam c a (toUnit Y ≫ b) = 0`. Introduce `Y a`. Establish `ia : a⁻¹ = a ≫ GrpObj.inv` using `rfl`. Establish `ia' : (a ≫ β.inv)⁻¹ = (a ≫ β.inv) ≫ GrpObj.inv` using `rfl`. Establish `h₁ : lam c a⁻¹ (toUnit Y ≫ b) = lam c a (toUnit Y ≫ b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← key, ← key, GrpObj.inv_comp, ia, ia']`. Simplify using `only [Over.comp_left, pull_comp, sym₀, sym]`. Establish `h₂ : lam c (a⁻¹ * a) (toUnit Y ≫ b) = 0` using `by rw [inv_mul_cancel, lam_one_left]`. Rewrite `h₂` using `[l₁, h₁]`. Conclude with `h₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `two : b * b = 1`. Use `hd.eq_one (b * b) ((triv_ev_iff hΛ _ _).2 ?_)` and prove the remaining obligations. Establish `hs : snd D.P.A (𝟙_ (Over (Sp R))) = toUnit _` using `toUnit_unique _ _`. Rewrite using `[e, hs, MonObj.comp_mul, l₂, odd]`. Establish `e₁ : (1 : 𝟙_ (Over (Sp R)) ⟶ D.P.A) = η[D.P.A]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[show (1 : 𝟙_ (Over (Sp R)) ⟶ D.P.A) = toUnit _ ≫ η[D.P.A] from rfl, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Conclude with `two.trans e₁`. Establish `hC : (LB.LinComb D.P.L (twφ D₀ D β.hom b) twε).IsLB` using `LB.isLB_linComb hL _ _`. Use `(cls_eq_iff hL₀ hC).1 ?_` and prove the remaining obligations. Establish `h` using `key D₀.P.A β.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Iso.hom_inv_id, Over.id_left, pull_id, sub_eq_iff_eq_add]`. Establish `e₁ : padd D.P.A β.hom (toUnit D₀.P.A ≫ b) = β.hom * (toUnit D₀.P.A ≫ b)` using `rfl`. Establish `e₂ : toUnit D₀.P.A ≫ η[D.P.A] = 1` using `rfl`. Rewrite using `[cls_linComb hL, Fin.sum_univ_three]`. Simplify using `only [twφ, twε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, one_smul, neg_smul, e₁, e₂]`.
-
-Rewrite using `[← hc, ← hc₀, h, lam]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_translate_of_lam : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (D₀ D : DegPre R)
   (β : D₀.P.A ≅ D.P.A), IsMonHom β.hom →

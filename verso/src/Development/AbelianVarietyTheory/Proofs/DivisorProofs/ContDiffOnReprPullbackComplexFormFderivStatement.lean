@@ -7,7 +7,7 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open scoped ContDiff ComplexConjugate Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PullSmooth.contDiffOn_repr_pull_fderiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContDiffOnReprPullbackComplexFormFderiv.lean&line=28#L28)
 -/

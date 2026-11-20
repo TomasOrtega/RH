@@ -13,7 +13,7 @@ namespace FiniteSeparatingModel
 variable {σ : Type} {e : ℕ}
 
 /- English proof (translation)
-Establish `hc : (aeval (R` using `ℚ) z).toRingHom.comp (aeval (R := ℚ) ℓ).toRingHom = (aeval fun j => aeval z (ℓ j)).toRingHom := by`. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> intro <;> simp`. Use `Polynomial.hom_eval₂ Q (aeval (R := ℚ) ℓ).toRingHom (aeval (R := ℚ) z).toRingHom g` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_eval₂ (ℓ : Fin e → MvPolynomial σ ℚ) (Q : Polynomial (MvPolynomial (Fin e) ℚ))
     (g : MvPolynomial σ ℚ) (z : σ → ℂ) :
@@ -27,9 +27,9 @@ theorem aeval_eval₂ (ℓ : Fin e → MvPolynomial σ ℚ) (Q : Polynomial (MvP
   exact this
 
 /- English proof (translation)
-Take `⟨q, hpq, hdvd⟩` from `p.exists_eq_pow_rootMultiplicity_mul_and_not_dvd hp.ne_zero 0`. Simplify using `only [map_zero, sub_zero] at hpq hdvd`. Use `⟨q, ?_, ?_, fun h => hdvd (Polynomial.X_dvd_iff.mpr h)⟩` and prove the remaining obligations. Rewrite `hp` using `[hpq]`. Conclude with `(Polynomial.monic_X.pow _).of_mul_monic_left hp`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpf` using `[hpq, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow]`. Conclude with `(hP.mem_or_mem hpf).resolve_left fun h => hf (hP.mem_of_pow_mem _ h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_monic_coeff_zero_ne {P : Ideal (MvPolynomial σ ℚ)} (hP : P.IsPrime)
     (ℓ : Fin e → MvPolynomial σ ℚ) {f : MvPolynomial σ ℚ} (hf : f ∉ P)
@@ -47,11 +47,11 @@ theorem exists_monic_coeff_zero_ne {P : Ideal (MvPolynomial σ ℚ)} (hP : P.IsP
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Set `φ : MvPolynomial (Fin e) ℚ →+* MvPolynomial σ ℚ ⧸ P` to `(Ideal.Quotient.mk P).comp (aeval ℓ).toRingHom`. Set `_ : Algebra (MvPolynomial (Fin e) ℚ) (MvPolynomial σ ℚ ⧸ P)` to `φ.toAlgebra`. Establish `key : ∀ Q : Polynomial (MvPolynomial (Fin e) ℚ), Polynomial.aeval (Ideal.Quotient.mk P u) Q = Ideal.Quotient.mk P (Q.eval₂ (aeval ℓ).toRingHom u)` using `fun Q => by rw [Polynomial.aeval_def, Polynomial.hom_eval₂]; rfl`. Establish `hφ : Function.Injective (algebraMap (MvPolynomial (Fin e) ℚ) (MvPolynomial σ ℚ ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Conclude with `hinj q (Ideal.Quotient.eq_zero_iff_mem.mp hq)`. Establish `: Module.IsTorsionFree (MvPolynomial (Fin e) ℚ) (MvPolynomial σ ℚ ⧸ P)` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hφ`. Take `⟨p, hpm, hp⟩` from `hint u`. Establish `hu : IsIntegral (MvPolynomial (Fin e) ℚ) (Ideal.Quotient.mk P u)` using `⟨p, hpm, by rw [← Polynomial.aeval_def, key]; exact Ideal.Quotient.eq_zero_iff_mem.mpr hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨minpoly _ (Ideal.Quotient.mk P u), minpoly.monic hu, ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← key]`. Conclude with `minpoly.aeval _ _`. Conclude with `minpoly.isIntegrallyClosed_dvd hu (by rw [key]; exact Ideal.Quotient.eq_zero_iff_mem.mpr hQ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_minpoly {P : Ideal (MvPolynomial σ ℚ)} (hP : P.IsPrime)
     (ℓ : Fin e → MvPolynomial σ ℚ) (hinj : ∀ q : MvPolynomial (Fin e) ℚ, aeval ℓ q ∈ P → q = 0)
@@ -80,19 +80,19 @@ theorem exists_minpoly {P : Ideal (MvPolynomial σ ℚ)} (hP : P.IsPrime)
   · exact minpoly.isIntegrallyClosed_dvd hu (by rw [key]; exact Ideal.Quotient.eq_zero_iff_mem.mpr hQ)
 
 /- English proof (translation)
-Set `k : σ ≃ Fin (Fintype.card σ)` to `Fintype.equivFin σ`. Set `q : (σ → ℂ) → Polynomial ℂ` to `fun z => ∑ i, Polynomial.C (z i - x i) * Polynomial.X ^ (k i : ℕ)`. Establish `hq : ∀ z, z ≠ x → q z ≠ 0`. Introduce `z hz h`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hz`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `congrArg (fun r => Polynomial.coeff r (k i : ℕ)) h`. Simplify using `only [q, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at h1`. Rewrite `h1` using `[Finset.sum_eq_single i]`. Rewrite `h1` using `[if_pos rfl]`. Conclude with `hi (sub_eq_zero.mp h1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `h'`. Conclude with `hj (k.injective (Fin.ext h'.symm))`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Q : Polynomial ℂ` to `∏ z ∈ S.erase x, q z`. Establish `hQ : Q ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun z hz => hq z (Finset.ne_of_mem_erase hz)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℚ, Q.eval (c : ℂ) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Apply `Set.infinite_range_of_injective (Rat.cast_injective (α := ℂ))` to reduce the goal to its premises. Use `(Q.roots.toFinset.finite_toSet).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Simplify using `[Polynomial.mem_roots hQ, h c]`. Use `⟨∑ i, C (c ^ (k i : ℕ)) * X i, fun z hz hzu => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hzx`. Establish `hev : aeval z (∑ i, C (c ^ (k i : ℕ)) * X i) - aeval x (∑ i, C (c ^ (k i : ℕ)) * X i) = (q z).eval (c : ℂ)`. Simplify using `only [map_sum, map_mul, aeval_C, aeval_X, q, Polynomial.eval_finsetSum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eq_ratCast (algebraMap ℚ ℂ)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hev` using `[hzu, sub_self]`. Rewrite `hc` using `[Polynomial.eval_prod]`. Conclude with `Finset.prod_ne_zero_iff.mp hc z (Finset.mem_erase.mpr ⟨hzx, hz⟩) hev.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_separating [Fintype σ] (S : Finset (σ → ℂ)) (x : σ → ℂ) :
     ∃ u : MvPolynomial σ ℚ, ∀ z ∈ S, aeval z u = aeval x u → z = x := by
@@ -139,15 +139,15 @@ theorem exists_separating [Fintype σ] (S : Finset (σ → ℂ)) (x : σ → ℂ
 end FiniteSeparatingModel
 
 /- English proof (translation)
-Introduce `σ _ P f x hP hf _`. Take `⟨e, ℓ, hinj, hint⟩` from `hN σ P hP.ne_top`. Use `choose p hpm hp using hint`. Set `yx : Fin e → ℂ` to `fun j => aeval x (ℓ j)`. Set `S : Finset (σ → ℂ)` to `Fintype.piFinset fun i => ((p (X i)).map (aeval yx).toRingHom).roots.toFinset`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : ∀ z : σ → ℂ, (∀ g ∈ P, aeval z g = 0) → (fun j => aeval z (ℓ j)) = yx → z ∈ S`. Introduce `z hz hzl`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `i`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots ((hpm _).map _).ne_zero, Polynomial.IsRoot, Polynomial.eval_map, ← hzl]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hz _ (hp (X i))` as an intermediate fact. Rewrite `this` using `[FiniteSeparatingModel.aeval_eval₂, aeval_X]`. Then use the resulting hypothesis. Take `⟨u, hu⟩` from `FiniteSeparatingModel.exists_separating S x`. Take `⟨G, hGm, hGu, hGdvd⟩` from `FiniteSeparatingModel.exists_minpoly hP ℓ hinj (fun g => ⟨p g, hpm g, hp g⟩) u`. Take `⟨q, -, hqf, hq0⟩` from `FiniteSeparatingModel.exists_monic_coeff_zero_ne hP ℓ hf (hpm f) (hp f)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e, ℓ, u, G, q.coeff 0, 1, hGm, hq0, one_ne_zero, fun i => ⟨p (X i), hpm _, fun z hz => ?_⟩, fun z hz => ?_, fun z hz hc hfz => ?_, fun y t _ ht => hL σ P e ℓ u G (fun g => ⟨p g, hpm g, hp g⟩) hGdvd y t ht, fun z hz hzl hzu => hu z (hS z hz hzl) hzu⟩` and prove the remaining obligations. Use `hz _ (hp (X i))` as an intermediate fact. Rewrite `this` using `[FiniteSeparatingModel.aeval_eval₂, aeval_X]`. Then use the resulting hypothesis. Use `hz _ hGu` as an intermediate fact. Rewrite `this` using `[FiniteSeparatingModel.aeval_eval₂]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc` to reduce the goal to its premises. Use `hz _ hqf` as an intermediate fact. Rewrite `this` using `[FiniteSeparatingModel.aeval_eval₂, hfz, Polynomial.eval₂_at_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiniteSeparatingModel.proof (hN : NoetherProjection.Statement)
     (hL : RootsLiftToZeros.Statement) : FiniteSeparatingModel.Statement := by

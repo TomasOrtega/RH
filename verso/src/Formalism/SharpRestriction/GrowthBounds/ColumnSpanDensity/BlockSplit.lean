@@ -16,27 +16,25 @@ private noncomputable def bspZ (n : ℕ) (z : O) : Submodule O (Fin n → O) :=
   LinearMap.range (z • (LinearMap.id : (Fin n → O) →ₗ[O] (Fin n → O)))
 
 /- English proof (translation)
-Use `haveI : ValuationRing O := ((IsDiscreteValuationRing.TFAE O (IsDiscreteValuationRing.not_isField O)).out 0 1).mp (inferInstance : IsDiscreteValuationRing O)`. Take `⟨m, S⟩` from `Submodule.smithNormalForm (Pi.basisFun O (Fin n)) (LinearMap.range (Matrix.mulVecLin A))`. Set `T : Finset (Fin m)` to `Finset.univ.filter (fun k => S.a k ∣ z)`. Set `e : Fin T.card ≃ T` to `T.equivFin.symm`. Use `choose x hx using fun k : Fin m => (S.bN k).2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : ∀ t : T, ∃ c, z = S.a t.1 * c` using `fun t => (Finset.mem_filter.mp t.2).2`. Use `choose c hc' using hc`. Set `w : Fin T.card → (Fin n → O)` to `fun i => c (e i) • x (e i).1`. Establish `hAw : ∀ i, Matrix.mulVec A (w i) = z • S.bM (S.f (e i).1)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hx (e i).1`. Rewrite `h1` using `[Matrix.mulVecLin_apply]`. Use `show Matrix.mulVec A (c (e i) • x (e i).1) = _`. Rewrite using `[Matrix.mulVec_smul, h1, S.snf, smul_smul, hc' (e i), mul_comm]`. Use `⟨T.card, fun i => S.bM (S.f (e i).1), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Establish `e2` using `congrArg Subtype.val (S.bN.sum_repr ⟨y, hy⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e2`. Rewrite using `[← e2]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[S.snf]`. Distinguish the cases in `hk : S.a k ∣ z`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨e.symm ⟨k, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk⟩⟩, by simp⟩`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Take `⟨d, hd⟩` from `(ValuationRing.dvd_total (S.a k) z).resolve_left hk`. Establish `hdm : d ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Introduce `hu`. Conclude with `hk ⟨↑hu.unit⁻¹, by rw [hd, mul_assoc, IsUnit.mul_val_inv, mul_one]⟩`. Rewrite using `[hd, mul_comm, ← smul_smul]`. Conclude with `Submodule.smul_mem_smul hdm ⟨S.bM (S.f k), rfl⟩`. Use `⟨Matrix.of fun i r => S.bM.coord (S.f (e i).1) (fun j => if r = j then 1 else 0), Matrix.of fun r i => w i r, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `i i'`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Establish `hcol : ∀ r, (A * Matrix.of fun r i => w i r) r i' = (z • S.bM (S.f (e i').1)) r`. Introduce `r`. Rewrite using `[← hAw i']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Simplify using `only [hcol, Matrix.of_apply]`. Establish `hφ : ∑ r, S.bM.coord (S.f (e i).1) (fun j => if r = j then 1 else 0) * (z • S.bM (S.f (e i').1)) r = S.bM.coord (S.f (e i).1) (z • S.bM (S.f (e i').1))`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ (S.bM.coord (S.f (e i).1)) (z • S.bM (S.f (e i').1))]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul, mul_comm]`. Rewrite using `[hφ, map_smul, Module.Basis.coord_apply, Module.Basis.repr_self, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, smul_eq_mul]`. Distinguish the cases in `hii : i = i'`. Substitute `hii` using the available equality. Simplify using the standard rewrite rules.
-
-Establish `hne : S.f (e i).1 ≠ S.f (e i').1` using `fun h => hii (e.injective (Subtype.ext (S.f.injective h)))`. Simplify using `[Finsupp.single_apply, hne, hii]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bsp_one (n : ℕ) (z : O) (A : Matrix (Fin n) (Fin n) O) :
     ∃ (ν : ℕ) (v : Fin ν → (Fin n → O)),
@@ -106,23 +104,19 @@ private theorem bsp_one (n : ℕ) (z : O) (A : Matrix (Fin n) (Fin n) O) :
       simp [Finsupp.single_apply, hne, hii]
 
 /- English proof (translation)
-Use `choose ν v hv P Q hPQ using fun j => bsp_one n z (A j)`. Use `⟨ν, ?_, fun j => ⟨P j, Q j, hPQ j⟩⟩` and prove the remaining obligations. Set `V : (Σ j, Fin (ν j)) → (Fin n → O)` to `fun jk => v jk.1 jk.2`. Set `W : Submodule O (Fin n → O)` to `Submodule.span O (Set.range V)`. Establish `hvW : ∀ j, Submodule.span O (Set.range (v j)) ≤ W`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨⟨j, k⟩, rfl⟩`. Establish `hsum : ∀ (s : Finset J) (x : Fin n → O), Matrix.mulVec (∑ j ∈ s, A j) x = ∑ j ∈ s, Matrix.mulVec (A j) x`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s x`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, Matrix.add_mulVec, ih]`. Establish `hZ : bspZ n z ≤ W ⊔ IsLocalRing.maximalIdeal O • bspZ n z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : (z • (LinearMap.id : (Fin n → O) →ₗ[O] (Fin n → O))) x = ∑ j, Matrix.mulVec (A j) x`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, ← hsum, h, Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[hx]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `sup_le_sup_right (hvW j) _ (hv j ⟨x, rfl⟩)`. Establish `hfg : (bspZ n z).FG`. Unfold `bspZ`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hjac : IsLocalRing.maximalIdeal O ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Establish `hZW : bspZ n z ≤ W` using `Submodule.le_of_le_smul_of_le_jacobson_bot hfg hjac hZ`. Set `f` to `z • (LinearMap.id : (Fin n → O) →ₗ[O] (Fin n → O))`. Establish `hinj : LinearMap.ker f = ⊥`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `x y hxy`. Conclude with `smul_right_injective _ hz hxy`. Establish `hli : LinearIndependent O (fun i : Fin n => f (Pi.basisFun O (Fin n) i))` using `(Pi.basisFun O (Fin n)).linearIndependent.map' f hinj`. Establish `hle` using `linearIndependent_le_span' _ hli (Set.range V) (by`.
-
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hZW ⟨_, rfl⟩)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hle` using `[Cardinal.mk_fintype]`. Conclude with `hle` after adjusting the coercions.
-
-Use `_ ≤ Fintype.card (Σ j, Fin (ν j)) := Fintype.card_range_le V`. Use `_ = ∑ j, ν j := by simp [Fintype.card_sigma]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockSplit {J : Type} [Fintype J] (n : ℕ) (z : O) (hz : z ≠ 0)
     (A : J → Matrix (Fin n) (Fin n) O) (h : ∑ j, A j = z • (1 : Matrix (Fin n) (Fin n) O)) :
@@ -176,7 +170,7 @@ theorem blockSplit {J : Type} [Fintype J] (n : ℕ) (z : O) (hz : z ≠ 0)
     _ = ∑ j, ν j := by simp [Fintype.card_sigma]
 
 /- English proof (translation)
-Introduce `O _ _ _ J _ n z hz A h`. Conclude with `blockSplit n z hz A h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockSplitting_holds : BlockSplit := by
   intro O _ _ _ J _ n z hz A h

@@ -15,9 +15,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 namespace GlobalTheory.Mem.DeltaZero
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := G)`. Establish `hζ` using `Complex.isPrimitiveRoot_exp m hm`. Establish `hζ'` using `hζ.isUnit_unit hm`. Use `set ζ : ℂˣ := (hζ.isUnit hm).unit`. Establish `ho : orderOf ζ ∣ orderOf g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hζ'.eq_orderOf, orderOf_eq_card_of_forall_mem_zpowers hg]`. Conclude with `h`. Use `⟨monoidHomOfForallMemZpowers hg ho, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.eq_iff_eq_on_generator hg, MonoidHom.pow_apply, monoidHomOfForallMemZpowers_apply_gen, MonoidHom.one_apply]`. Conclude with `hζ'.pow_eq_one_iff_dvd n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_char_of_dvd {G : Type} [Group G] [IsCyclic G] {m : ℕ} (hm : m ≠ 0) (h : m ∣ Nat.card G) :
     ∃ θ : G →* ℂˣ, ∀ n : ℕ, θ ^ n = 1 ↔ m ∣ n := by
@@ -34,11 +34,9 @@ theorem exists_char_of_dvd {G : Type} [Group G] [IsCyclic G] {m : ℕ} (hm : m �
   exact hζ'.pow_eq_one_iff_dvd n
 
 /- English proof (translation)
-Establish `hne : Ideal.span {((p : ℕ) : 𝓞 K)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Establish `h1 : IsUnit (algebraMap ℤ (𝓞 K) (p : ℤ))` using `by simpa using hu`. Establish `h2 : IsUnit (p : ℤ)` using `isUnit_of_map_unit _ _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.prime_iff_prime_int.1 hp).not_isUnit h2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hmem : ((p : ℕ) : 𝓞 K) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
-
-Conclude with `hp.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hmem))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_place_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) :
     ∃ Q : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ Q.asIdeal := by
@@ -55,15 +53,15 @@ theorem exists_place_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p
   exact hp.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hmem))
 
 /- English proof (translation)
-Establish `hc : Nat.card (𝓞 L ⧸ w.asIdeal) = p`. Rewrite using `[← hw, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 L ⧸ w.asIdeal)` using `Nat.finite_of_card_ne_zero (hc ▸ hp.ne_zero)`. Set `_ : Fintype (𝓞 L ⧸ w.asIdeal)` to `Fintype.ofFinite _`. Set `ρ : ZMod p ≃+* (𝓞 L ⧸ w.asIdeal)` to `ZMod.ringEquivOfPrime _ hp (by rw [← Nat.card_eq_fintype_card, hc])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨ω.comp (Units.map (ρ.symm : (𝓞 L ⧸ w.asIdeal) →* ZMod p)), fun a ha b hb => ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply]`. Use `congr 1`. Use `ext`. Simplify using `[hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `u`. Use `congrArg (fun f => f (Units.map (ρ : ZMod p →* (𝓞 L ⧸ w.asIdeal)) u)) h` as an intermediate fact. Simplify using `only [MonoidHom.pow_apply, MonoidHom.comp_apply, MonoidHom.one_apply] at this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : Units.map (ρ.symm : (𝓞 L ⧸ w.asIdeal) →* ZMod p) (Units.map (ρ : ZMod p →* (𝓞 L ⧸ w.asIdeal)) u) = u` using `by ext; simp`. Rewrite `this` using `[e]`. Simplify using `[MonoidHom.pow_apply, this]`. Introduce `h`. Use `MonoidHom.ext fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.pow_apply, MonoidHom.comp_apply, ← MonoidHom.pow_apply, h, MonoidHom.one_apply, MonoidHom.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_residue_read {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) {p : ℕ} (hp : p.Prime)
     (hw : Ideal.absNorm w.asIdeal = p) (ω : (ZMod p)ˣ →* ℂˣ) :
@@ -97,31 +95,29 @@ private theorem exists_residue_read {L : Type} [Field L] [NumberField L] (w : He
 open Classical in
 
 /- English proof (translation)
-Introduce `R H p hp h15 hs`. Take `⟨c, hc, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `hce : c.toRingEquiv = H.conj.toRingEquiv` using `RingEquiv.ext hc`. Establish `hsp` using `GlobalTheory.Mem.Chr.splitsC_main R H p hp hs`. Take `⟨Q, hQ⟩` from `exists_place_over H.K hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Fact p.Prime` using `⟨hp⟩`. Use `H.galois` as an intermediate fact. Establish `: IsGalois H.K H.E` using `IsGalois.tower_top_of_isGalois ℚ H.K H.E`. Take `⟨ω, hω⟩` from `exists_char_of_dvd (G := (ZMod p)ˣ) (m := 15) (by norm_num) (by rw [Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime hp]; omega)`. Establish `hθ : ∀ w : HeightOneSpectrum (𝓞 H.E), ∃ θ : (𝓞 H.E ⧸ w.asIdeal)ˣ →* ℂˣ, (OverP H p w → ∀ (a : ℕ) (ha : a.Coprime p) (b : (𝓞 H.E ⧸ w.asIdeal)ˣ), (b : 𝓞 H.E ⧸ w.asIdeal) = Ideal.Quotient.mk w.asIdeal (a : 𝓞 H.E) → θ b = ω (ZMod.unitOfCoprime a ha)) ∧ (OverP H p w → ∀ n : ℕ, θ ^ n = …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w`. Distinguish the cases in `h : OverP H p w`. Take `⟨θ, h1, h2⟩` from `exists_residue_read w hp (hsp w h).1 ω`. Conclude with `⟨θ, fun _ => h1, fun _ n => (h2 n).trans (hω n)⟩`. Conclude with `⟨1, fun h' => absurd h' h, fun h' => absurd h' h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose θ hθ1 hθ2 using hθ`. Set `S : Finset (HeightOneSpectrum (𝓞 H.E))` to `aboveF (L := H.E) H.K Q`. Establish `hS : ∀ w, w ∈ S ↔ w.under (𝓞 H.K) = Q` using `fun w => by`. Simplify using `only [S, aboveF, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hov : ∀ w ∈ S, OverP H p w` using `fun w hw => by`. Establish `h1` using `hQ`. Rewrite `h1` using `[← (hS w).1 hw]`. Establish `h2 : algebraMap (𝓞 H.K) (𝓞 H.E) ((p : ℕ) : 𝓞 H.K) ∈ w.asIdeal` using `h1`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hres` using `UpperTheory.prod_residue_char_norm_one_unit_eq_one H.K H.E p hp Q S hS (fun w hw => ⟨(hsp w (hov w hw)).1, (hsp w (hov w hw)).2.1⟩) ω θ (by`. Introduce `w hw a ha`. Establish `hu : IsUnit (Ideal.Quotient.mk w.asIdeal (a : 𝓞 H.E))`. Take `⟨s, t, hst⟩ : IsCoprime ((a : ℕ) : 𝓞 H.E) ((p : ℕ) : 𝓞 H.E)` from `Nat.Coprime.cast ha`. Establish `h0 : Ideal.Quotient.mk w.asIdeal ((p : ℕ) : 𝓞 H.E) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hov w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (Ideal.Quotient.mk w.asIdeal) hst`. Rewrite `h1` using `[map_add, map_mul, map_mul, h0, mul_zero, add_zero, map_one]`. Conclude with `IsUnit.of_mul_eq_one_right _ h1`. Conclude with `⟨hu.unit, hu.unit_spec, hθ1 w (hov w hw) a ha _ hu.unit_spec⟩)`. Take `⟨χ, -, ht, hi, htame, hunr, -, hord⟩` from `GlobalTheory.Mem.Chr.AntiExist.exists_hecke_trivOn H.F H.E c (R.Psi) (embPsi H) hcm (fun _ => 0) S θ (by`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw w' hcj hw'`. Rewrite `hcj` using `[hce]`. Conclude with `((hsp w (hov w hw)).2.2.2 Q hQ w' hcj).2.1 ((hS w).1 hw) ((hS w').1 hw'))`. Use the proof step `(by`. Introduce `ζ hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hres ζ (H.der.norm_mu _ hζ)`. Establish `h2 : ∏ w ∈ S, ((θ w (Units.map (Ideal.Quotient.mk w.asIdeal).toMonoidHom ζ) : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.coe_prod]`. Conclude with `congrArg Units.val h1 |>.trans Units.val_one`. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `simp)`. Use `⟨χ, GlobalTheory.T.heckeChar_finiteOrder_of_trivial_at_infinity H.E χ fun k => ?_, ht, htame, fun v hv => hunr v (fun h => hv (hov v h)) ?_, fun v hv n => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hi k]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw hcj`. Rewrite `hcj` using `[hce]`. Conclude with `hv ((hsp w (hov w hw)).2.2.2 Q hQ v hcj).1`. Distinguish the cases in `h : v ∈ S`. Conclude with `(hord v h n).1.trans (hθ2 v hv n)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨w, hw, -⟩` from `existsUnique_conjPl c.toRingEquiv.symm v`. Establish `hcj : ConjPl c.toRingEquiv w v` using `fun x => by`. Use `hw (c.toRingEquiv x)` as an intermediate fact. Rewrite `this` using `[RingEquiv.symm_apply_apply]`. Conclude with `this.symm`.
-
-Establish `hwo : OverP H p w`. Use `((conjPl_iff_mem _ w v).1 hcj _ _ ?_).2 hv` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hwS : w ∈ S` using `(hS w).2 (((hsp w hwo).2.2.2 Q hQ v (hce ▸ hcj)).2.2 fun e => h ((hS v).2 e))`. Conclude with `((hord w hwS n).2 v hcj).trans (hθ2 w hwo n)`.
+A detailed English derivation is pending.
 -/
 theorem delta_exists : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (p : ℕ), p.Prime → p % 15 = 1 → SplitsC H.E p → DeltaExists (H := H) p := by
   intro R H p hp h15 hs

@@ -9,17 +9,17 @@ open Ad3 Ad3.S
 namespace GlobalTheory.CompanionTheory.CuspHeight
 
 /- English proof (translation)
-Set `Φ` to `Complex.measurableEquivRealProd`. Set `s : Set (ℝ × ℝ)` to `Set.Icc (-(1 / 2) : ℝ) (1 / 2) ×ˢ Set.Ioi (1 / 4 : ℝ)`. Set `gg : ℝ → ℝ≥0∞` to `fun y => ((((1 / ‖y‖₊) ^ 2 : ℝ≥0)) : ℝ≥0∞)`. Rewrite using `[volume_eq_lintegral]`. Establish `hsub : (UpperHalfPlane.coe '' {z : ℍ | |z.re| ≤ 1 / 2 ∧ 1 / 2 ≤ z.im}) ⊆ Φ ⁻¹' s`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, ⟨h1, h2⟩, rfl⟩`. Establish `h3` using `abs_le.1 h1`. Simplify using `only [Set.mem_preimage, s, Set.mem_prod, Set.mem_Icc, Set.mem_Ioi, Φ, Complex.measurableEquivRealProd_apply]`. Use `⟨⟨h3.1, h3.2⟩, ?_⟩` and prove the remaining obligations. Establish `: (1 / 2 : ℝ) ≤ (z : ℂ).im` using `h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `(lintegral_mono_set hsub).trans_lt ?_` and prove the remaining obligations. Establish `h1` using `Complex.volume_preserving_equiv_real_prod.setLIntegral_comp_preimage_emb Φ.measurableEmbedding (fun p : ℝ × ℝ => gg p.2) s`. Establish `h2 : ∫⁻ a in Φ ⁻¹' s, ((((1 / ‖a.im‖₊) ^ 2 : ℝ≥0)) : ℝ≥0∞) = ∫⁻ a in Φ ⁻¹' s, gg (Φ a).2` using `rfl`. Rewrite using `[h2, h1, Measure.volume_eq_prod, ← Measure.prod_restrict]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∫⁻ p : ℝ × ℝ, gg p.2 ∂((volume.restrict (Set.Icc (-(1 / 2) : ℝ) (1 / 2))).prod (volume.restrict (Set.Ioi (1 / 4 : ℝ)))) = (∫⁻ _ in Set.Icc (-(1 / 2) : ℝ) (1 / 2), 1) * ∫⁻ y in Set.Ioi (1 / 4 : ℝ), gg y`. Rewrite using `[← lintegral_prod_mul aemeasurable_const (by fun_prop)]`. Simplify using the standard rewrite rules. Rewrite using `[h3]`. Use `ENNReal.mul_lt_top (by simp) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : ∫⁻ y in Set.Ioi (1 / 4 : ℝ), gg y = ∫⁻ y in Set.Ioi (1 / 4 : ℝ), ENNReal.ofReal (y ^ (-2 : ℝ))`. Use `setLIntegral_congr_fun measurableSet_Ioi fun y hy => ?_` and prove the remaining obligations. Establish `hy0 : (0 : ℝ) < y` using `lt_trans (by norm_num) hy`. Simplify using `only [gg]`. Rewrite using `[← ENNReal.ofReal_coe_nnreal]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Real.rpow_neg hy0.le]`. Simplify using `[abs_of_pos hy0]`. Rewrite using `[h4]`. Conclude with `(integrableOn_Ioi_rpow_of_lt (by norm_num) (by norm_num)).lintegral_lt_top`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_strip_lt_top : volume {z : ℍ | |z.re| ≤ 1 / 2 ∧ 1 / 2 ≤ z.im} < ⊤ := by
   let Φ := Complex.measurableEquivRealProd
@@ -60,7 +60,7 @@ theorem volume_strip_lt_top : volume {z : ℍ | |z.re| ≤ 1 / 2 ∧ 1 / 2 ≤ z
   exact (integrableOn_Ioi_rpow_of_lt (by norm_num) (by norm_num)).lintegral_lt_top
 
 /- English proof (translation)
-Introduce `z hz`. Use `⟨hz.2, ?_⟩` and prove the remaining obligations. Establish `h` using `ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz`. Use polynomial arithmetic with `[z.im_pos]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem fd_subset_strip : (𝒟 : Set ℍ) ⊆ {z : ℍ | |z.re| ≤ 1 / 2 ∧ 1 / 2 ≤ z.im} := by
   intro z hz
@@ -69,13 +69,13 @@ theorem fd_subset_strip : (𝒟 : Set ℍ) ⊆ {z : ℍ | |z.re| ≤ 1 / 2 ∧ 1
   nlinarith [z.im_pos]
 
 /- English proof (translation)
-The claim follows from `(measure_mono fd_subset_strip).trans_lt volume_strip_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem volume_fd_lt_top : volume (𝒟 : Set ℍ) < ⊤ :=
   (measure_mono fd_subset_strip).trans_lt volume_strip_lt_top
 
 /- English proof (translation)
-Establish `h1 : IsClosed {z : ℍ | 1 ≤ Complex.normSq (z : ℂ)}` using `isClosed_le continuous_const (Complex.continuous_normSq.comp continuous_coe)`. Establish `h2 : IsClosed {z : ℍ | |z.re| ≤ 1 / 2}` using `isClosed_le (continuous_abs.comp continuous_re) continuous_const`. Conclude with `(h1.inter h2).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableSet_fd : MeasurableSet (𝒟 : Set ℍ) := by
   have h1 : IsClosed {z : ℍ | 1 ≤ Complex.normSq (z : ℂ)} :=
@@ -85,17 +85,15 @@ theorem measurableSet_fd : MeasurableSet (𝒟 : Set ℍ) := by
   exact (h1.inter h2).measurableSet
 
 /- English proof (translation)
-Establish `: ((toConjAct (σ : GL (Fin 2) ℝ)⁻¹) • Γ).IsArithmetic`. Simplify using `[(show Rat.castHom ℝ = algebraMap ℚ ℝ by rfl), map_inv, Matrix.SpecialLinearGroup.map_mapGL] using! Subgroup.IsArithmetic.conj Γ (Matrix.SpecialLinearGroup.mapGL ℚ σ)⁻¹`. Set `h` to `CuspForm.translate f (σ : GL (Fin 2) ℝ)`. Take `⟨c, hc, hO⟩` from `CuspFormClass.exp_decay_atImInfty' h`. Establish `hh : ∀ τ, h τ = ((f : ℍ → ℂ) ∣[k] σ) τ` using `fun τ => rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun τ : ℍ => ‖h τ‖ * (1 + τ.im) ^ m`. Establish `: Continuous (h : ℍ → ℂ)` using `(ModularFormClass.holo h).continuous`. Conclude with `(this.norm).mul ((continuous_const.add UpperHalfPlane.continuous_im).pow m)`. Establish `h1 : (fun t : ℝ => Real.exp (-c * t) * (1 + t) ^ m) =O[atTop] fun _ => (1 : ℝ)`. Establish `h2` using `((isLittleO_pow_exp_pos_mul_atTop m hc).isBigO).comp_tendsto (tendsto_atTop_add_const_left atTop (1 : ℝ) tendsto_id)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(isBigO_refl (fun t : ℝ => Real.exp (-c * t)) atTop).mul h2`. Use `h3.trans (IsBigO.of_bound (Real.exp c) (Eventually.of_forall fun t => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp, id, ← Real.exp_add, norm_one, mul_one]`. Rewrite using `[Real.norm_of_nonneg (Real.exp_pos _).le]`. Conclude with `le_of_eq (by congr 1; ring)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (fun τ : ℍ => ‖h τ‖ * (1 + τ.im) ^ m) =O[atImInfty] fun z : ℍ => z.im ^ (0 : ℝ)`. Establish `h5` using `hO.norm_left.mul (isBigO_refl (fun τ : ℍ => (1 + τ.im) ^ m) atImInfty)`. Use `h5.trans ?_` and prove the remaining obligations. Simplify using `only [Real.rpow_zero]`. Conclude with `h1.comp_tendsto (tendsto_comap (f := fun τ : ℍ => τ.im) (x := atTop))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨F, hF⟩` from `ModularGroup.exists_bound_fundamental_domain_of_isBigO hcont h4`. Use `⟨F, fun τ hτ => ?_⟩` and prove the remaining obligations. Use `hF τ hτ` as an intermediate fact. Simplify using `only [Real.rpow_zero, mul_one] at this`. Rewrite using `[← hh]`.
-
-Conclude with `(le_abs_self _).trans (by simpa [Real.norm_eq_abs] using this)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_slash (k : ℤ) (Γ : Subgroup (GL (Fin 2) ℝ)) [Γ.IsArithmetic]
     (f : CuspForm Γ k) (σ : SL(2, ℤ)) (m : ℕ) :
@@ -131,11 +129,11 @@ theorem exists_bound_slash (k : ℤ) (Γ : Subgroup (GL (Fin 2) ℝ)) [Γ.IsArit
   exact (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using this)
 
 /- English proof (translation)
-Establish `h3 : ‖(τ : ℂ)‖ ≤ 1 + τ.im`. Establish `h4` using `Complex.norm_le_abs_re_add_abs_im (τ : ℂ)`. Establish `h5 : |(τ : ℂ).im| = τ.im` using `abs_of_pos h2`. Establish `h6 : |(τ : ℂ).re| ≤ 1 / 2` using `h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h7 : ‖(p : ℂ)‖ = |(p : ℝ)|` using `by simp`. Establish `h8 : ‖(q : ℂ)‖ = |(q : ℝ)|` using `by simp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h7, h8]`. Establish `: 0 ≤ |(q : ℝ)|` using `abs_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left h3 (abs_nonneg (p : ℝ))` as an intermediate fact. Use polynomial arithmetic with `[τ.im_pos]`. Use `_ = _ := by push_cast; ring`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_lin_le (p q : ℤ) (τ : ℍ) (h1 : |τ.re| ≤ 1 / 2) (h2 : 0 < τ.im) :
     ‖(p : ℂ) * (τ : ℂ) + q‖ ≤ ((|p| + |q| : ℤ) : ℝ) * (1 + τ.im) := by
@@ -156,11 +154,11 @@ theorem norm_lin_le (p q : ℤ) (τ : ℍ) (h1 : |τ.re| ≤ 1 / 2) (h2 : 0 < τ
     _ = _ := by push_cast; ring
 
 /- English proof (translation)
-Establish `hD : ((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ) ≠ 0`. Simplify `UpperHalfPlane.denom_ne_zero (σ : GL (Fin 2) ℝ) τ` using `[ModularGroup.denom_apply]`. Establish `hn : ‖((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ)‖ ≠ 0` using `norm_ne_zero_iff.2 hD`. Establish `him : (σ • τ).im = τ.im / ‖((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ)‖ ^ 2`. Rewrite using `[ModularGroup.im_smul_eq_div_normSq, Complex.normSq_eq_norm_sq, ModularGroup.denom_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hco : ((σ • τ : ℍ) : ℂ) = (((σ 0 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 0 1 : ℤ)) / (((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ))`. Rewrite using `[UpperHalfPlane.coe_specialLinearGroup_apply]`. Simplify using the standard rewrite rules. Establish `key : ∀ a b y : ℝ, a ≠ 0 → y ≠ 0 → (1 + (b / a) ^ 2) / (y / a ^ 2) = (a ^ 2 + b ^ 2) / y`. Introduce `a b y ha hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Clear the denominators using the available nonvanishing facts. Unfold `Ht`. Rewrite using `[hco, norm_div, him]`. Conclude with `key _ _ _ hn τ.im_ne_zero`.
+Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ht_smul (σ : SL(2, ℤ)) (τ : ℍ) :
     Ht (σ • τ) = (‖((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ)‖ ^ 2 +
@@ -182,15 +180,15 @@ theorem Ht_smul (σ : SL(2, ℤ)) (τ : ℍ) :
   exact key _ _ _ hn τ.im_ne_zero
 
 /- English proof (translation)
-Use `set P : ℝ := ((|σ 1 0| + |σ 1 1| : ℤ) : ℝ) with hP`. Use `set Q : ℝ := ((|σ 0 0| + |σ 0 1| : ℤ) : ℝ) with hQ`. Establish `hP0 : 0 ≤ P` using `by rw [hP]; exact_mod_cast (by positivity : 0 ≤ |σ 1 0| + |σ 1 1|)`. Establish `hQ0 : 0 ≤ Q` using `by rw [hQ]; exact_mod_cast (by positivity : 0 ≤ |σ 0 0| + |σ 0 1|)`. Use `⟨P ^ k * (2 * (P ^ 2 + Q ^ 2)) ^ A, by positivity, fun τ hτ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `fd_subset_strip hτ`. Establish `hy : 0 < τ.im` using `τ.im_pos`. Establish `h1` using `norm_lin_le (σ 1 0) (σ 1 1) τ hs.1 hy`. Establish `h2` using `norm_lin_le (σ 0 0) (σ 0 1) τ hs.1 hy`. Establish `hu : 0 ≤ 1 + τ.im` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Ht (σ • τ) ≤ 2 * (P ^ 2 + Q ^ 2) * (1 + τ.im) ^ 2`. Rewrite using `[Ht_smul, div_le_iff₀ hy]`. Establish `h4 : ‖((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ)‖ ^ 2 ≤ (P * (1 + τ.im)) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Establish `h5 : ‖((σ 0 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 0 1 : ℤ)‖ ^ 2 ≤ (Q * (1 + τ.im)) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h2 2`. Establish `h6 : 0 ≤ (P ^ 2 + Q ^ 2) * (1 + τ.im) ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h7 : 1 ≤ 2 * τ.im` using `by linarith [hs.2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h8 : 0 ≤ Ht (σ • τ)`. Unfold `Ht`. Use `(σ • τ).im_pos` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation.
 
-Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow (2 * (P ^ 2 + Q ^ 2)), ← pow_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_height_bound (σ : SL(2, ℤ)) (k A : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ τ ∈ 𝒟,
     ‖((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ)‖ ^ k * Ht (σ • τ) ^ A ≤ C * (1 + τ.im) ^ (k + 2 * A) := by
@@ -225,7 +223,7 @@ theorem exists_height_bound (σ : SL(2, ℤ)) (k A : ℕ) : ∃ C : ℝ, 0 ≤ C
         ring
 
 /- English proof (translation)
-Unfold `Ht`. Use `Continuous.div ?_ UpperHalfPlane.continuous_im fun z => z.im_ne_zero` and prove the remaining obligations. Conclude with `continuous_const.add (continuous_coe.norm.pow 2)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_Ht : Continuous Ht := by
   unfold Ht
@@ -233,19 +231,19 @@ theorem continuous_Ht : Continuous Ht := by
   exact continuous_const.add (continuous_coe.norm.pow 2)
 
 /- English proof (translation)
-Introduce `k N _ f σ A`. Set `φ : ℍ → ℍ` to `fun z => σ • z`. Establish `hcf : Continuous (f : ℍ → ℂ)` using `(ModularFormClass.holo f).continuous`. Establish `hG : Continuous fun z : ℍ => ‖f z‖ * Ht z ^ A` using `hcf.norm.mul (continuous_Ht.pow A)`. Establish `hφ : Continuous φ` using `continuous_const_smul (σ : GL (Fin 2) ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmp : MeasurePreserving φ volume volume` using `measurePreserving_smul (σ : GL (Fin 2) ℝ) volume`. Establish `hemb : MeasurableEmbedding φ` using `(MeasurableEquiv.smul (σ : GL (Fin 2) ℝ)).measurableEmbedding`. Establish `hpre : φ ⁻¹' {z | σ⁻¹ • z ∈ 𝒟} = 𝒟`. Use extensionality with `z`. Simplify using `[φ, -ModularGroup.sl_moeb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hmp.integrableOn_comp_preimage hemb, hpre]`. Take `⟨F, hF⟩` from `exists_bound_slash (k : ℤ) _ f σ (k + 2 * A)`. Take `⟨C, hC0, hC⟩` from `exists_height_bound σ k A`. Use `Measure.integrableOn_of_bounded (M := C * F) volume_fd_lt_top.ne (hG.comp hφ).aestronglyMeasurable ((ae_restrict_iff' measurableSet_fd).2 (Eventually.of_forall fun τ hτ => ?_))` and prove the remaining obligations. Establish `hsl : ‖f (σ • τ)‖ = ‖((f : ℍ → ℂ) ∣[(k : ℤ)] σ) τ‖ * ‖((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ)‖ ^ k`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hD : ‖((σ 1 0 : ℤ) : ℂ) * (τ : ℂ) + (σ 1 1 : ℤ)‖ ≠ 0`. Use `norm_ne_zero_iff.2 ?_` and prove the remaining obligations. Simplify `UpperHalfPlane.denom_ne_zero (σ : GL (Fin 2) ℝ) τ` using `[ModularGroup.denom_apply]`. Rewrite using `[ModularForm.SL_slash_apply, norm_mul, norm_zpow, ModularGroup.denom_apply]`. Simplify using `only [zpow_neg, zpow_natCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Establish `h1` using `hC τ hτ`. Establish `h2` using `hF τ hτ`. Establish `h8 : 0 ≤ Ht (σ • τ)`. Unfold `Ht`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(σ • τ).im_pos` as an intermediate fact. Check the signs of the components of the expression. Establish `h9 : 0 ≤ ‖((f : ℍ → ℂ) ∣[(k : ℤ)] σ) τ‖` using `norm_nonneg _`. Simplify using `only [Function.comp, φ]`. Rewrite using `[Real.norm_of_nonneg (by positivity), hsl]`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ‖((f : ℍ → ℂ) ∣[(k : ℤ)] σ) τ‖ * (C * (1 + τ.im) ^ (k + 2 * A)) := by gcongr`. Use `_ = C * (‖((f : ℍ → ℂ) ∣[(k : ℤ)] σ) τ‖ * (1 + τ.im) ^ (k + 2 * A)) := by ring`. Use `_ ≤ C * F := by gcongr`.
+Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integrableOn_translate_fd : D1 := by
   intro k N _ f σ A

@@ -7,9 +7,9 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M N hN p hp`. Take `⟨h1, h2⟩` from `cobTail p`. Establish `h3` using `(h2 (h1 hp)).2`. Establish `h4` using `(cobLaws (shF W)).2.2.2.2.2.2.2 M.F.rev (M.J'.toContinuousLinearEquiv : L W →L[ℂ] H) (fun t h => by show M.J' (sh W t h) = M.F.U (-t) (M.J' h)`. Rewrite using `[M.hJ', neg_neg]) _ h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5` using `((cobLaws M.F).2.2.2.1 _).1 h4`. Establish `h6` using `((cobLaws M.F).2.1 _ _ h5 (hN (∫ x, p x))).1`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.nAll :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (N : W →ₗ[ℂ] V), M.IsN N → ∀ p : L W, Bdd p → M.F.Cob (M.J' p - M.J (one V (N (∫ x, p x)))) := by

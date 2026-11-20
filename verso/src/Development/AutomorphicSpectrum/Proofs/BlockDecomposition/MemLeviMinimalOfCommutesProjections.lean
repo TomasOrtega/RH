@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ParCocompact
 
 /- English proof (translation)
-Use extensionality with `k i`. Establish `h` using `congrArg (fun M => (M * C) k i) (hc i)`. Simplify using `only [Matrix.mul_assoc, Matrix.vecMulVec_mul, Matrix.mul_vecMulVec, Matrix.vecMulVec_apply] at h`. Establish `h1 : (L i ᵥ* C) i = 1`. Use `congrFun (congrFun hL i) i` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`. Rewrite `h` using `[h1, mul_one]`. Rewrite using `[Matrix.mul_diagonal, ← Matrix.mul_assoc]`. Simplify `h` using `[Matrix.mul_apply, Matrix.mulVec, Matrix.vecMul, dotProduct]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_eq_mul_diagonal_of_comm {R : Type} [CommRing R] {n r : ℕ} {G : Matrix (Fin n) (Fin n) R}
     {C : Matrix (Fin n) (Fin r) R} {L : Matrix (Fin r) (Fin n) R} (hL : L * C = 1)
@@ -29,25 +29,25 @@ theorem mul_eq_mul_diagonal_of_comm {R : Type} [CommRing R] {n r : ℕ} {G : Mat
   simpa [Matrix.mul_apply, Matrix.mulVec, Matrix.vecMul, dotProduct] using h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW γ hγ hcomm`. Establish `hF` using `pfrA h hJ hW`. Establish `hinj : Function.Injective (inclR (F` using `F) (AF F) : E → AF F ⊗[F] E) := fun a b hab => congrFun (GlobalTheory.CompanionTheory.RedCov.ratV_injective (F := F) (E := E) (n := 1) (show ratV F (fun _ : Fin 1 => a) = ratV F (fun _ : Fin 1 => b) from funext fun _ => hab)) 0`. Establish `key : ∀ p ∈ ratPts σ J, ∃ M : Matrix (Fin n) (Fin n) E, (matHom _ σ J p).1 = M.map (inclR (F` using `F) (AF F)) := by`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp2 : (p.1 : GL (Fin n) (AF F ⊗[F] E)) ∈ Subgroup.map (Formalism.UG.bc (inclR (F` using `F) (AF F))) (Formalism.UG.UJ (σ : E →+* E) J) := hp`. Take `⟨g, -, hg⟩` from `Subgroup.mem_map.1 hp2`. Use `⟨g.1, ?_⟩` and prove the remaining obligations. Rewrite using `[show (matHom _ σ J p).1 = ((p.1 : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) _) from rfl, ← hg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `bmRat : ∀ p ∈ ratPts σ J, ∃ M : Matrix (Fin r) (Fin r) E, Bm σ J X Y p = M.map (inclR (F` using `F) (AF F)) := by`. Introduce `p hp`. Take `⟨M, hM⟩` from `key p hp`. Use `⟨cT (σ : E →+* E) Y * J * (M * X), ?_⟩` and prove the remaining obligations. Rewrite using `[Bm, coefM, hM, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, PositivityTheory.ThKR.cT_map_inclR]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hrow : ∀ C : Matrix (Fin n) (Fin r) E, cT (sigR (AF F) σ) (adMat F C) * JR (AF F) J = (cT (σ : E →+* E) C * J).map (inclR (F` using `F) (AF F)) := by`. Introduce `C`. Rewrite using `[Matrix.map_mul, PositivityTheory.ThKR.cT_map_inclR]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hP : ∀ (C D : Matrix (Fin n) (Fin r) E) (i : Fin r), (lineProj σ J C D i).map (inclR (F` using `F) (AF F)) = Matrix.vecMulVec (fun k => adMat F C k i) ((cT (sigR (AF F) σ) (adMat F D) * JR (AF F) J : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) i) := by`. Introduce `C D i`. Rewrite using `[hrow]`. Use extensionality with `a b`. Simplify using `only [lineProj, rowOf, Matrix.vecMulVec_apply, Matrix.map_apply, adMat, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hX` using `mul_eq_mul_diagonal_of_comm (G := (matHom _ σ J γ).1) hF.yx (fun i => by`. Use `hcomm (Sum.inl i)` as an intermediate fact. Rewrite using `[projFam, Sum.elim_inl, hP] at this)` and apply the resulting hypothesis. Establish `hY` using `mul_eq_mul_diagonal_of_comm (G := (matHom _ σ J γ).1) hF.xy (fun i => by`. Use `hcomm (Sum.inr i)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[projFam, Sum.elim_inr, hP] at this)` and apply the resulting hypothesis. Use `⟨⟨_, _, hX, hY⟩, ⟨Matrix.diagonal _, Matrix.blockTriangular_diagonal _, hX, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `hp : γ ∈ minPar σ J X` using `⟨_, Matrix.blockTriangular_diagonal _, hX⟩`. Establish `hp'` using `inv_mem_minPar h hJ hW hp`. Use `⟨uU σ J X Y h hJ hW hp hp' i, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[val_uU h hJ hW hp hp' i, Bm_eq hF hX]`. Take `⟨M, hM⟩` from `bmRat γ hγ`. Take `⟨M', hM'⟩` from `bmRat γ⁻¹ (inv_mem hγ)`. Establish `hu1 : ((uU σ J X Y h hJ hW hp hp' i : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = inclR (F` using `F) (AF F) (M i i) := by`. Rewrite using `[val_uU h hJ hW hp hp' i, hM]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hu2 : (((uU σ J X Y h hJ hW hp hp' i)⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = inclR (F` using `F) (AF F) (M' i i) := by show Bm σ J X Y γ⁻¹ i i = _`. Rewrite using `[hM']`. Both sides reduce to the same expression. Establish `he : M i i * M' i i = 1` using `hinj (by rw [map_mul, ← hu1, ← hu2, Units.mul_inv, map_one])`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `he' : M' i i * M i i = 1` using `by rw [mul_comm]; exact he`. Establish `hu : uU σ J X Y h hJ hW hp hp' i = Units.map (inclR (F` using `F) (E := E) (AF F) : E →* AF F ⊗[F] E) ⟨M i i, M' i i, he, he'⟩ := Units.ext (by rw [hu1]; rfl)`. Rewrite using `[hu]`. Conclude with `GlobalTheory.Doubling.absE_inclR _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_leviMin_of_comm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ γ ∈ ratPts σ J, (∀ k, (matHom _ σ J γ).1 * (projFam σ J X Y k).map (inclR (F := F) (AF F)) = (projFam σ J X Y k).map (inclR (F := F) (AF F)) * (matHom _ σ J γ).1) → γ ∈ leviMin σ J X Y ∧ γ ∈ minParOne σ J X := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW γ hγ hcomm

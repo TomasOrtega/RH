@@ -7,11 +7,11 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory.FibreDensity
 
 /- English proof (translation)
-Introduce `hpos`. Establish `hev : ∀ᶠ x in nhds b, h b / 2 < h x`. Establish `h1 : ∀ᶠ x in nhdsWithin b B, h b / 2 < h x` using `(hh b hb).eventually (lt_mem_nhds (by linarith))`. Rewrite `h1` using `[hB.nhdsWithin_eq hb]`. Then use the resulting hypothesis. Take `⟨U, hUsub, hUo, hbU⟩` from `mem_nhds_iff.1 (Filter.inter_mem (hB.mem_nhds hb) hev)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hbK, hKU⟩` from `exists_compact_subset hUo hbU`. Establish `hKB : K ⊆ B` using `fun x hx => (hUsub (hKU hx)).1`. Establish `hKh : ∀ x ∈ K, h b / 2 < h x` using `fun x hx => (hUsub (hKU hx)).2`. Establish `hle : ∫ _ in K, h b / 2 ∂ν ≤ ∫ x in K, h x ∂ν` using `setIntegral_mono_on (continuousOn_const.integrableOn_compact hK) ((hh.mono hKB).integrableOn_compact hK) hK.measurableSet (fun x hx => (hKh x hx).le)`. Rewrite `hle` using `[setIntegral_const, h0 K hK hKB, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hKpos : 0 < ν K` using `lt_of_lt_of_le (isOpen_interior.measure_pos ν ⟨b, hbK⟩) (measure_mono interior_subset)`. Establish `hreal : 0 < ν.real K` using `ENNReal.toReal_pos hKpos.ne' hK.measure_lt_top.ne`. Use `mul_pos hreal (half_pos hpos)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem not_pos_of_setIntegral_isCompact_eq_zero {X : Type} [TopologicalSpace X] [T2Space X]
     [LocallyCompactSpace X] [MeasurableSpace X] [BorelSpace X] (ν : Measure X)
@@ -38,7 +38,7 @@ theorem not_pos_of_setIntegral_isCompact_eq_zero {X : Type} [TopologicalSpace X]
   linarith
 
 /- English proof (translation)
-Establish `h1` using `not_pos_of_setIntegral_isCompact_eq_zero ν hB hh h0 hb`. Establish `h2 : ¬ 0 < -h b` using `not_pos_of_setIntegral_isCompact_eq_zero ν hB (h := fun x => -h x) hh.neg (fun S hS hSB => by rw [integral_neg, h0 S hS hSB, neg_zero]) hb`. Combine the linear relations using `[not_lt.1 h1, not_lt.1 h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_zero_of_setIntegral_isCompact_eq_zero {X : Type} [TopologicalSpace X] [T2Space X]
     [LocallyCompactSpace X] [MeasurableSpace X] [BorelSpace X] (ν : Measure X)
@@ -51,11 +51,11 @@ theorem eq_zero_of_setIntegral_isCompact_eq_zero {X : Type} [TopologicalSpace X]
   linarith [not_lt.1 h1, not_lt.1 h2]
 
 /- English proof (translation)
-Establish `hk : ContinuousOn (fun x => g x - h x) B` using `hg.sub hh`. Establish `hint : ∀ S : Set X, IsCompact S → S ⊆ B → ∫ x in S, (g x - h x) ∂ν = 0`. Introduce `S hS hSB`. Rewrite using `[integral_sub ((hg.mono hSB).integrableOn_compact hS) ((hh.mono hSB).integrableOn_compact hS), h0 S hS hSB, sub_self]`. Establish `hre : (g b - h b).re = 0` using `eq_zero_of_setIntegral_isCompact_eq_zero ν hB (h := fun x => (g x - h x).re) (Complex.continuous_re.comp_continuousOn hk) (fun S hS hSB => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `Complex.reCLM.integral_comp_comm ((hk.mono hSB).integrableOn_compact (μ := ν) hS).integrable`. Simplify using `only [Complex.reCLM_apply] at e`. Rewrite using `[e, hint S hS hSB, Complex.zero_re]) hb`. Establish `him : (g b - h b).im = 0` using `eq_zero_of_setIntegral_isCompact_eq_zero ν hB (h := fun x => (g x - h x).im) (Complex.continuous_im.comp_continuousOn hk) (fun S hS hSB => by`. Establish `e` using `Complex.imCLM.integral_comp_comm ((hk.mono hSB).integrableOn_compact (μ := ν) hS).integrable`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.imCLM_apply] at e`. Rewrite using `[e, hint S hS hSB, Complex.zero_im]) hb`. Establish `hz : g b - h b = 0` using `Complex.ext (by simpa using hre) (by simpa using him)`. Conclude with `sub_eq_zero.1 hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_setIntegral_isCompact_eq {X : Type} [TopologicalSpace X] [T2Space X]
     [LocallyCompactSpace X] [MeasurableSpace X] [BorelSpace X] (ν : Measure X)
@@ -84,23 +84,23 @@ theorem eq_of_setIntegral_isCompact_eq {X : Type} [TopologicalSpace X] [T2Space 
   exact sub_eq_zero.1 hz
 
 /- English proof (translation)
-Introduce `V X _ _ _ _ _ _ _ _ μ f ν _ _ B fib φ g hf hB hfib hφ hφc hφ0 hdens`. Take `⟨hconc, hdis, hreg⟩` from `hfib`. Take `⟨hgc, hgint⟩` from `hdens`. Establish `hφm : Measurable φ` using `hφ.measurable`. Take `⟨hφi, hGc⟩` from `hreg φ hφ hφc (Set.subset_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set G : X → ℝ := fun b => ∫ v, φ v ∂(fib b) with hG`. Establish `hG0 : ∀ b, 0 ≤ G b` using `fun b => integral_nonneg (fun v => hφ0 v)`. Establish `hlin : ∀ b ∈ B, ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib b) = ENNReal.ofReal (G b)` using `fun b hb => (ofReal_integral_eq_lintegral_ofReal (hφi b hb) (Filter.Eventually.of_forall hφ0)).symm`. Establish `key : ∀ S : Set X, IsCompact S → S ⊆ B → ∫ x in S, g x ∂ν = ∫ x in S, ((G x : ℝ) : ℂ) ∂ν`. Introduce `S hS hSB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet S` using `hS.measurableSet`. Establish `hpre : MeasurableSet (f ⁻¹' S)` using `hf.measurable hSm`. Establish `hL : ∫⁻ v in f ⁻¹' S, ENNReal.ofReal (φ v) ∂μ = ∫⁻ b in S, ENNReal.ofReal (G b) ∂ν`. Establish `h2` using `hdis ((f ⁻¹' S).indicator (fun v => ENNReal.ofReal (φ v))) ((ENNReal.measurable_ofReal.comp hφm).indicator hpre)`. Rewrite `h2` using `[Measure.restrict_univ, lintegral_indicator hpre]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← lintegral_indicator hSm]`. Apply `lintegral_congr` to reduce the goal to its premises. Introduce `b`. Establish `hae : ∀ᵐ v ∂(fib b), f v = b`. Rewrite using `[ae_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono_null ?_ (hconc b)` and prove the remaining obligations. Introduce `v hv`. Simplify using `using hv`. Distinguish the cases in `hbS : b ∈ S`. Rewrite using `[Set.indicator_of_mem hbS, ← hlin b (hSB hbS)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with v hv`. Simplify using `[hv, hbS]`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_congr_ae` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hae] with v hv`. Simplify using `[hv, hbS]`. Use `_ = S.indicator (fun b => ENNReal.ofReal (G b)) b := by`. Simplify using `[hbS]`. Establish `hGS : IntegrableOn G S ν` using `(hGc.mono hSB).integrableOn_compact hS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hφS : ∫ v in f ⁻¹' S, φ v ∂μ = ∫ b in S, G b ∂ν`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hφ0) hφ.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hG0) hGS.integrable.aestronglyMeasurable, hL]`. Establish `e` using `hgint S hS hSB`. Simplify using `only [Set.image_id] at e`. Rewrite using `[← e, integral_complex_ofReal, integral_complex_ofReal, hφS]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Establish `hgb : g b = ((G b : ℝ) : ℂ)` using `eq_of_setIntegral_isCompact_eq ν hB hgc (Complex.continuous_ofReal.comp_continuousOn hGc) key hb`. Use `⟨hgb, ?_⟩` and prove the remaining obligations. Rewrite using `[hlin b hb, hgb, Complex.ofReal_re]`.
+A detailed English derivation is pending.
 -/
 theorem contDensityOn_eq_fibre_integral : ∀ (V X : Type) [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V] [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [MeasurableSpace X] [BorelSpace X] (μ : Measure V) (f : V → X) (ν : Measure X) [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν] (B : Set X) (fib : X → Measure V) (φ : V → ℝ) (g : X → ℂ), Continuous f → IsOpen B → IsFibreFamily μ f id Set.univ ν B fib → Continuous φ → HasCompactSupport φ → (∀ v, 0 ≤ φ v) → IsContDensityOn μ f id ν B (fun v => (φ v : ℂ)) g → ∀ b ∈ B, g b = ((∫ v, φ v ∂(fib b) : ℝ) : ℂ) ∧ ∫⁻ v, ENNReal.ofReal (φ v) ∂(fib b) = ENNReal.ofReal (g b).re := by
   intro V X _ _ _ _ _ _ _ _ μ f ν _ _ B fib φ g hf hB hfib hφ hφc hφ0 hdens

@@ -10,7 +10,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PolTest
 
 /- English proof (translation)
-The claim follows from `Finset.prod_eq_one fun _ _ => by rw [h]; erw [map_one, map_one]; exact one_zpow _`.
+A detailed English derivation is pending.
 -/
 theorem linComb_g_eq_one {X Y : Scheme.{0}} {K : Type} [Fintype K] (L : LB X)
     (h : ∀ i j, L.g i j = 1) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
@@ -18,7 +18,7 @@ theorem linComb_g_eq_one {X Y : Scheme.{0}} {K : Type} [Fintype K] (L : LB X)
   Finset.prod_eq_one fun _ _ => by rw [h]; erw [map_one, map_one]; exact one_zpow _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, fun i j => by rw [h, _root_.one_mul]; dsimp only; rw [map_one, map_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_gen_of_g_eq_one {X : Scheme.{0}} (L : LB X) (h : ∀ i j, L.g i j = 1) :
     ∃ t : LB.Gen L, t.IsGen :=
@@ -27,14 +27,14 @@ theorem exists_gen_of_g_eq_one {X : Scheme.{0}} (L : LB X) (h : ∀ i j, L.g i j
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_gen_of_g_eq_one _ (linComb_g_eq_one _ (fun _ _ => rfl) _ _), fun _ => ⟨⊤, trivial, exists_gen_of_g_eq_one _ (linComb_g_eq_one _ (fun _ _ => rfl) _ _)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem rigidified_sym_triv : Rigidified A (trivLB A.left) ∧ Out.Sym A (trivLB A.left) :=
   ⟨exists_gen_of_g_eq_one _ (linComb_g_eq_one _ (fun _ _ => rfl) _ _),
     fun _ => ⟨⊤, trivial, exists_gen_of_g_eq_one _ (linComb_g_eq_one _ (fun _ _ => rfl) _ _)⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨exists_gen_of_g_eq_one _ (linComb_g_eq_one _ (fun i => PEmpty.elim i) _ _), fun _ => ⟨⊤, trivial, exists_gen_of_g_eq_one _ (linComb_g_eq_one _ (fun i => PEmpty.elim i) _ _)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem rigidified_sym_noChart :
     Rigidified A ⟨PEmpty, PEmpty.elim, fun i => i.elim⟩ ∧
@@ -43,7 +43,7 @@ theorem rigidified_sym_noChart :
     fun _ => ⟨⊤, trivial, exists_gen_of_g_eq_one _ (linComb_g_eq_one _ (fun i => PEmpty.elim i) _ _)⟩⟩
 
 /- English proof (translation)
-Set `P` to `zeroPolAV S`. Use `⟨@PolAV.mk S P.A P.grp P.isAb n ?_ P.L P.isLB P.rigid P.sym P.ample P.ktriv, rfl⟩` and prove the remaining obligations. Establish `: IsEmpty P.A.left` using `‹IsEmpty S›`. Conclude with `⟨fun x => isEmptyElim x⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_polAV_dim_of_isEmpty (S : Scheme.{0}) [IsEmpty S] (n : ℕ) :
     ∃ P : PolAV S, P.g = n := by
@@ -53,7 +53,7 @@ theorem exists_polAV_dim_of_isEmpty (S : Scheme.{0}) [IsEmpty S] (n : ℕ) :
   exact ⟨fun x => isEmptyElim x⟩
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.H1.dim_unique P.A.hom P.smoothDim h (eSec P.A s)`.
+A detailed English derivation is pending.
 -/
 theorem dim_eq_of_nonempty {S : Scheme.{0}} (s : S) (P : PolAV S) {n : ℕ}
     (h : SmoothOfRelativeDimension n P.A.hom) : P.g = n :=

@@ -63,9 +63,9 @@ def HeckeCorrespondenceStatement : Prop :=
     HeckeCorrespondence Xo
 
 /- English proof (translation)
-Use `⟨fun a x hx => ?_, fun x hx a _ => ?_, inferInstance, by simp⟩` and prove the remaining obligations. Use `t.act.hom a` as an intermediate fact. Rewrite `hx`, the goal using `[Subgroup.mem_bot]`. Rewrite using `[hx, MonObj.one_comp]`. Use `t.act.hom a` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[Subgroup.mem_bot]`. Rewrite using `[hx, MonObj.one_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 example {k : Type} [Field k] (t : SAB H (Sp k)) (P : Ideal (𝓞 E)) : IsHeckeDatum t P 0 ⊥ := by
   refine ⟨fun a x hx => ?_, fun x hx a _ => ?_, inferInstance, by simp⟩
@@ -77,7 +77,7 @@ example {k : Type} [Field k] (t : SAB H (Sp k)) (P : Ideal (𝓞 E)) : IsHeckeDa
     rw [hx, MonObj.one_comp]
 
 /- English proof (translation)
-Take `⟨x₁, x₂, x₃, rfl, ⟨h₁, -⟩, ⟨-, h₂⟩, ⟨h₃, -⟩⟩` from `hx`. Rewrite `h₂` using `[Subgroup.mem_bot]`. Establish `hc : ∀ u v : Pts t, Commute u v` using `fun u v => mul_comm u v`. Rewrite using `[(hc _ _).mul_pow, (hc _ _).mul_pow, h₁, h₂, h₃, _root_.mul_one, _root_.mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 example {k : Type} [Field k] (t : SAB H (Sp k)) (p : ℕ) (P : Ideal (𝓞 E)) (x : Pts t)
     (hx : x ∈ heckeKernel t p P ⊥) : x ^ p = 1 := by

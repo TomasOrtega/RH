@@ -14,7 +14,7 @@ namespace GlobalTheory.KerIK
 open Cardinal
 
 /- English proof (translation)
-Take `⟨D0, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, eq⟩` from `h`. Consider the cases of `eq`. Conclude with `⟨iK u v hg⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem kf_hom_of_isRec {sc : Scale} {D : D7} {Gt : GatTies D} {c : LatCmp D} {H : Formalism.L2.Herm.Herm0 D}
     {F : ∀ u, Formalism.L2.Forms.Forms0 D u} (h : IsRecG sc D Gt c H F) (u : D.what₂.Word) (v : D.what₂.places.Pl)
@@ -25,14 +25,14 @@ theorem kf_hom_of_isRec {sc : Scale} {D : D7} {Gt : GatTies D} {c : LatCmp D} {H
   exact ⟨iK u v hg⟩
 
 /- English proof (translation)
-Use `Algebra.IsAlgebraic.cardinalMk_le_max ℚ D.what₂.LL` as an intermediate fact. Rewrite `this` using `[Cardinal.mkRat, max_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mk_LL_le (D : D7) : #D.what₂.LL ≤ ℵ₀ := by
   have := Algebra.IsAlgebraic.cardinalMk_le_max ℚ D.what₂.LL
   rwa [Cardinal.mkRat, max_self] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(w.D Z).what₂.places.resChar_prime v⟩ ∃ iK : ((w.D Z).gat u v hg).Kf →+* ℂ_[(w.D Z).what₂.places.resChar v], ∀ (x : (w.D Z).what₂.LL) (hx : (w.D Z).what₂.embLL x ∈ algebraicClosure ℚ ℂ), iK (t.cmp.embW u v hg x) = E.lam v ⟨(w.D Z).what₂.embLL x, hx⟩ := by intro K B f T w _ _ _ Z …`.
+Supply the required witnesses or components.
 -/
 theorem exists_iK : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T), K.Over B.toPre → Forced K B T → Pinned K B f T w →
     ∀ (Z : w.Lt) (t : ColumnDataSplitPrimes K w Z) (Wt : Set B.places.Pl) (nch : NChoice (w.D Z)) (_ : NchT w Z Wt nch) (Y : DivX (w.D Z)),

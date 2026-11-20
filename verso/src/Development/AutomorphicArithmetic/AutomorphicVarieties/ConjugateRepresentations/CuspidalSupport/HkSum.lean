@@ -8,11 +8,11 @@ open GlobalTheory.PRep (fixed)
 namespace UpperTheory.V.Cj.S
 
 /- English proof (translation)
-Introduce `E _ _ w n V _ _ ρ ϖ hϖ hu _ j hj x hx`. Establish `hr` using `satake_range_eq (n := n) w hϖ hu Final.TjCosets hj`. Unfold `heckeVec`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.univ.image (fun i : SatakeIdx w hϖ (n := n) j => ((satakeB w hϖ hu i : GL (Fin n) (w.adicCompletion E)) : GL (Fin n) (w.adicCompletion E) ⧸ KGL w n))) ?_]`. Rewrite using `[Finset.sum_image (fun i _ i' _ h => satakeB_inj w hϖ hu h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (KGL w n) (satakeB w hϖ hu i)`. Establish `hfix : ρ (k : GL (Fin n) (w.adicCompletion E)) x = x` using `GlobalTheory.LGrp.mem_fixed.1 hx _ k.2`. Rewrite using `[hk, satake_Tj_eq, Set.indicator_of_mem (satake_Tset_right w (satakeB_mem w hϖ hu i) k.2), Pi.one_apply, one_smul, map_mul, Module.End.mul_apply, hfix]`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : Tj ℂ n (Ov E w) ϖ j y.out ≠ 0` using `fun h0 => hy (by simp only [h0, zero_smul])`. Establish `hy' : y ∈ Set.range _` using `hr.ge ((satake_Tj_ne_zero_iff w ℂ ϖ j _).1 hT)`. Take `⟨i, rfl⟩` from `hy'`. Conclude with `Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_univ i))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hkSum : HkSum := by
   intro E _ _ w n V _ _ ρ ϖ hϖ hu _ j hj x hx

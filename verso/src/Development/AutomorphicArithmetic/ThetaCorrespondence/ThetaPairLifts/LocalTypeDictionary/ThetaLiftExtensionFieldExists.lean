@@ -21,7 +21,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 namespace GlobalTheory.RowEx
 /- English proof (translation)
-Introduce `hw hm P hJ ht K WC LM TA FS` and use `exField_of_keyFin_exKey keyFin_holds (exKey_of (_root_.GlobalTheory.RowEx.twisted_grid_existence_of_identity P) (isEx_of_separates FS (_root_.GlobalTheory.RowEx.twisted_linear_bound P (_root_.GlobalTheory.PairLift.thetaPairLift_cuspidal_of_hypotheses P)) (_root_.GlobalTheory.RowE …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_extension_field_of_join : GlobalTheory.Published.HoweDualityReal → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → ExField :=
   fun hw hm P hJ ht K WC LM TA FS =>
@@ -51,7 +51,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowEx.exists_extension_field_of_join | exact _root_.GlobalTheory.RowEx.exists_extension_field_of_join | (intros; apply _root_.GlobalTheory.RowEx.exists_extension_field_of_join <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_lift_extension_field_exists : GlobalTheory.Published.HoweDualityReal → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → ExField := by
   first | exact @_root_.GlobalTheory.RowEx.exists_extension_field_of_join | exact _root_.GlobalTheory.RowEx.exists_extension_field_of_join | (intros; apply _root_.GlobalTheory.RowEx.exists_extension_field_of_join <;> assumption)

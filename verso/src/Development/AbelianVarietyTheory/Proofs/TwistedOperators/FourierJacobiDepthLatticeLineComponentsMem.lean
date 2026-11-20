@@ -23,9 +23,9 @@ open GlobalTheory.AscFin
 namespace GlobalTheory.LineFB
 
 /- English proof (translation)
-Unfold `latO`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Rewrite using `[← neg_neg (Matrix.of _)]`. Use `neg_mem (AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, ?_⟩)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i j`. Simplify using `[negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latO_negSp_le' {D : D7} (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) : latO (negSp S) T LS LT P ≤ latO S T LS LT P := by
@@ -38,17 +38,17 @@ theorem latO_negSp_le' {D : D7} (S T : HSp D) (LS : Set (Fin S.rank → D.host.E
   simp [negSp_gram, Finset.sum_neg_distrib, TensorProduct.tmul_neg]
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W M hM F hF σ h h' u hu`. Take `⟨-, hfr, hline⟩` from `GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hD T L μ0 hL sc G W M hM F hF`. Establish `hx` using `AddSubgroup.mem_comap.1 hu`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, HypDec.matrixExtendByZero_apply, HypDec.wittDecomp_inclAnisotropicHom_apply] at hx`. Establish `hSc : IsSelfDualC (G.V (.core (2 * (σ + 1) + 1))) (G.Λ (.core (2 * (σ + 1) + 1)))` using `(G.isV (X := .core (2 * (σ + 1) + 1)) (by simp [Node.InRange]; omega) (fun j e => Node.noConfusion e)).sd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hSg : IsSelfDualC (G.V (.grid (2 * (σ + 1) + 1) 0)) (G.Λ (.grid (2 * (σ + 1) + 1) 0))` using `(G.isV (X := .grid (2 * (σ + 1) + 1) 0) (by simp [Node.InRange]; omega) (fun j e => by simp at e)).sd`. Establish `hTg : IsSelfDualC (G.V (.grid (2 * σ + 2) 0)) (G.Λ (.grid (2 * σ + 2) 0))` using `(G.isV (X := .grid (2 * σ + 2) 0) (by simp [Node.InRange]; omega) (fun j e => by simp at e)).sd`. Establish `hℓ` using `(hfr σ h').2.2.1`. Establish `hℓ'` using `hline (σ + 1)`. Establish `h0` using `(hfr σ h').1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ∀ y ∈ G.Λ (.core (2 * (σ + 1) + 1)), (F.dJ (σ + 1) h).i₀ *ᵥ y ∈ G.Λ (.grid (2 * (σ + 1) + 1) 0)` using `GlobalTheory.T.wittCoreEmbedding_mulVec_mem_lattice_of_splits _ (GlobalTheory.T.mem_selfDualLattice_of_mem_all_latticeCompletions hSg) fun v => ((hfr (σ + 1) h).2.1 v).2`. Establish `hq : ∀ t ∈ G.Λ (.grid (2 * σ + 2) 0), ((F.oB σ h').qB * (F.dB σ h').q0) *ᵥ t ∈ idLat (G.pl.stA sc ^ (σ + 1) * (G.pl.stAbar sc ^ (σ + 1))⁻¹) (Submodule.span (𝓞 D.host.E) {F.ζ 0})`. Introduce `t ht`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `GlobalTheory.T.orthogonalSummandProjection_mem_lattice_of_splits _ (GlobalTheory.T.mem_selfDualLattice_of_mem_all_latticeCompletions hℓ) (hfr σ h').2.2.2 _ (GlobalTheory.T.q0_mulVec_mem_of_splits _ (GlobalTheory.T.mem_selfDualLattice_of_mem_all_latticeCompletions h0) (fun v => (( …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ((F.oB σ h').resT _ u).2 = rat ((F.oB σ h').qB * (F.dB σ h').q0) * ((F.dB σ h').j0 * u * (F.dJ (σ + 1) h).p0) * rat (F.dJ (σ + 1) h).i₀`. Rewrite using `[OrthDec.resT_apply, rat_mul]`. Express the relevant statement in the definitionally equal form `_ = (F.oB σ h').pB * (F.dB σ h').p0 * ((F.dB σ h').j0 * u * (F.dJ (σ + 1) h).p0) * (F.dJ (σ + 1) h).j0`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (F.dB σ h').p0, HypDec.p0_j0, Matrix.one_mul, HypDec.p0_j0, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Establish `hz` using `GlobalTheory.T.rationalMatrix_sandwich_mem_completed_homLattice_selfDual hSg hSc hℓ _ _ hj hq _ (latO_negSp_le' _ _ _ _ _ hx.1)`. Take `⟨e, he, -⟩` from `W.cosVec_is`. Establish `hd` using `GlobalTheory.T.rationalMatrix_sandwich_mem_completed_ideal_latticeHom G.modul _ ((F.oB σ h').qB * (F.dB σ h').q0) hj hq _ (hx.2 e he)`. Use `GlobalTheory.T.completedHomLattice_modulus_depth_mem_shift hD μ0 hL G _ _ _ hSc hℓ hℓ' _ hz ⟨e, he, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hd` using `[Matrix.mul_smul, Matrix.smul_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem line_mem : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m),
     ∀ u ∈ (pcFB W F σ h h').Γ₀, ((F.oB σ h').resT _ u).2 ∈ lineLat F (σ + 1) := by

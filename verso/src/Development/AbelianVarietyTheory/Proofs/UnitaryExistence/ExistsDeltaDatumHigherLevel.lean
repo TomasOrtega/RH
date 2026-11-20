@@ -21,7 +21,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.LevelCover
 
 /- English proof (translation)
-Establish `: CompactSpace ↥(pullback f x)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f x)`. Take `⟨p, -⟩` from `(pullback.snd f x).surjective (default : PrimeSpectrum F)`. Take `⟨q, -, hq⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback f x)) ⟨p, trivial⟩`. Use `⟨pointOfClosedPoint (pullback.snd f x) q hq ≫ pullback.fst f x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_of_finite_surjective {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}} (f : X ⟶ Y)
     [IsFinite f] [Surjective f] (x : Sp F ⟶ Y) : ∃ b : Sp F ⟶ X, b ≫ f = x := by
@@ -32,9 +32,9 @@ theorem exists_lift_of_finite_surjective {F : Type} [Field F] [IsAlgClosed F] {X
   rw [Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]
 
 /- English proof (translation)
-Use `⟨fun p q φ y z _ => by simp, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Establish `: wchar (ex Dw 0 0) t = 1`. Unfold `wchar`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases i <;> simp [ex]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_mem_sec_zero {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) :
@@ -47,13 +47,13 @@ theorem one_mem_sec_zero {E : Type} [Field E] [NumberField E] [IsCMField E]
   simp [this]
 
 /- English proof (translation)
-Establish `hw : x ≫ Xo.s = spMap (algebraMap c.F k) ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[hx, sOf, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨b, hb⟩` from `exists_lift_of_finite_surjective rF (pullback.lift x (spMap (algebraMap c.F k)) hw)`. Use `⟨b ≫ pullback.fst _ _, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, ← h₁, ← Category.assoc, hb, pullback.lift_fst]`. Establish `e : b ≫ pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hc.le).toRingHom = spMap (algebraMap c.F k)`. Rewrite using `[← h₂, ← Category.assoc, hb, pullback.lift_snd]`. Take `⟨g, hg⟩` from `Spec.map_surjective (b ≫ pullback.snd _ _ : Sp k ⟶ Sp c₂.F)`. Rewrite `e` using `[← Category.assoc, ← hg, ← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e'` using `Spec.map_injective e`. Establish `hgk : g = CommRingCat.ofHom (algebraMap c₂.F k)`. Use extensionality with `a`. Establish `ha : IntermediateField.inclusion hc.le ⟨a.1, hc.ge a.2⟩ = a` using `rfl`. Use `congrArg (fun f : CommRingCat.of c.F ⟶ CommRingCat.of k => f.hom ⟨a.1, hc.ge a.2⟩) e'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at this`. Rewrite `this` using `[← hk]`. Conclude with `this`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ← hg, hgk, sOf, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_point_over {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l l₂ : Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -87,13 +87,13 @@ theorem exists_point_over {E : Type} [Field E] [NumberField E] [IsCMField E]
     rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hr n pd I l₂ Xo₂ c₂ hF hd hM hcop hMb hI`. Establish `hL` using `GlobalTheory.firstFiveLaws.1`. Take `⟨r, jK, m, -, -, he, heA, -, hrF⟩` from `(GlobalTheory.T.moduliScheme_levelMaps_heckePoints'.2 E H Dw hr).1 l l₂ Xo Xo₂ hd`. Take `⟨rF, h₁, h₂, hfin, -, hsur, -⟩` from `hrF c c₂ hF.symm`. Take `⟨st, nab, hnab⟩` from `GlobalTheory.CanonConn.exists_isNab hL E H Dw l₂ Xo₂ c₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `d : DeltaDat Xo c n` to `{ pd := pd, I := I, l₂ := l₂, Xo₂ := Xo₂, c₂ := c₂, hF := hF, r := r, m := m, nab₂ := nab, cδ := 1, φδ := fun _ => 1 }`. Establish `hdiv : l₂.M / l.M = pd`. Rewrite using `[hM]; exact Nat.mul_div_cancel_left _ (by have := l.three_le; omega)`. Use `⟨d, rfl, rfl, rfl, HEq.rfl, HEq.rfl, rfl, ⟨hd, hM, hcop, hMb, hI, ⟨?_, heA⟩, ?_, one_mem_sec_zero Xo₂ c₂, ?_⟩, st, hnab⟩` and prove the remaining obligations. Rewrite `he` using `[hdiv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `he`. Introduce `k _ _ _ i₂ hk y`. Take `⟨x₂, hx, hs⟩` from `@exists_point_over E _ _ _ H Dw l l₂ Xo c Xo₂ c₂ hF.symm r rF hfin hsur h₁ h₂ k _ _ _ i₂ hk y.x y.x_over`. Take `⟨y₂, -, hy⟩` from `(GlobalTheory.T.framedPoints_lift_to_levelCover hL E H Dw l Xo c n d).1 k hk y x₂ hx hs`. Conclude with `⟨y₂, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ _ _ y₂`. Establish `h` using `GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw l₂ Xo₂ c₂ k y₂`. Establish `e : evR d.Xo₂ d.c₂ d.cδ y₂ = 1` using `evalAt_one _ _ y₂ h`. Rewrite using `[e]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_deltaDat_isLev : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ (n pd : ℕ) (I : Ideal (𝓞 E)) (l₂ : Level H) (Xo₂ : Moduli Dw l₂) (c₂ : Coeff l₂), c₂.F = c.F → l.Dvd l₂ → l₂.M = l.M * pd → pd.Coprime l.M → l₂.Mb = l.Mb * I → I ⊔ I.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ → ∃ d : DeltaDat Xo c n, d.pd = pd ∧ d.I = I ∧ d.l₂ = l₂ ∧ HEq d.Xo₂ Xo₂ ∧ HEq d.c₂ c₂ ∧ d.cδ = 1 ∧ d.IsLev ∧ ∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂ := by
   intro E _ _ _ H Dw l Xo c hr n pd I l₂ Xo₂ c₂ hF hd hM hcop hMb hI

@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Univ.MemBall
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ star x ⬝ᵥ x` using `dotProduct_star_self_nonneg x`. Establish `hz` using `Complex.nonneg_iff.1 h0`. Establish `heq : star x ⬝ᵥ x = (((star x ⬝ᵥ x).re : ℝ) : ℂ)`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `using hz.2.symm`. Use `⟨(star x ⬝ᵥ x).re, hz.1, heq, fun hx => ?_⟩` and prove the remaining obligations. Establish `hp : 0 < star x ⬝ᵥ x` using `dotProduct_star_self_pos_iff.2 hx`. Conclude with `(Complex.pos_iff.1 hp).1`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sqLen {m : Type} [Fintype m] (x : m → ℂ) :
     ∃ r : ℝ, 0 ≤ r ∧ star x ⬝ᵥ x = (r : ℂ) ∧ (x ≠ 0 → 0 < r) := by
@@ -28,28 +28,28 @@ theorem exists_sqLen {m : Type} [Fintype m] (x : m → ℂ) :
   exact (Complex.pos_iff.1 hp).1
 
 /- English proof (translation)
-Rewrite using `[sub_mulVec, one_mulVec, dotProduct_sub, ← mulVec_mulVec, dotProduct_mulVec, vecMul_conjTranspose, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qf_one_sub {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] (A : Matrix m n ℂ) (w : n → ℂ) :
     star w ⬝ᵥ ((1 - Aᴴ * A) *ᵥ w) = star w ⬝ᵥ w - star (A *ᵥ w) ⬝ᵥ (A *ᵥ w) := by
   rw [sub_mulVec, one_mulVec, dotProduct_sub, ← mulVec_mulVec, dotProduct_mulVec, vecMul_conjTranspose, star_star]
 
 /- English proof (translation)
-Use `posDef_iff_dotProduct_mulVec.2 ⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `[IsHermitian, conjTranspose_sub, conjTranspose_mul]`. Establish `hq` using `qf_one_sub Aᴴ v`. Rewrite `hq` using `[conjTranspose_conjTranspose]`. Rewrite using `[hq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc0, hc, hcp⟩` from `exists_sqLen v`. Take `⟨a, ha0, ha, hap⟩` from `exists_sqLen (Aᴴ *ᵥ v)`. Rewrite using `[hc, ha, ← Complex.ofReal_sub]`. Establish `hcpos` using `hcp hv`. It suffices to establish `hac : a < c from by exact_mod_cast sub_pos.2 hac`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Distinguish the cases in `hw : Aᴴ *ᵥ v = 0`. Establish `: a = 0`. Establish `: (a : ℂ) = 0` using `by rw [← ha, hw]; simp`. Conclude with `this` after adjusting the coercions. Rewrite using `[this]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hcpos`. Establish `hapos` using `hap hw`. Use `set w := Aᴴ *ᵥ v with hwdef`. Take `⟨b, hb0, hb, -⟩` from `exists_sqLen (A *ᵥ w)`. Establish `hba : b < a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(posDef_iff_dotProduct_mulVec.1 h).2 hw`. Rewrite `h1` using `[qf_one_sub, ha, hb, ← Complex.ofReal_sub]`. Establish `: (0 : ℝ) < a - b` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpv : star (A *ᵥ w) ⬝ᵥ v = (a : ℂ)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, ← hwdef, ha]`. Establish `hvp : star v ⬝ᵥ (A *ᵥ w) = (a : ℂ)`. Rewrite using `[dotProduct_mulVec, ← star_star (star v ᵥ* A)]`. Rewrite using `[star_vecMul, star_star, ← hwdef, ha]`. Establish `hu` using `dotProduct_star_self_nonneg ((c : ℂ) • (A *ᵥ w) - (a : ℂ) • v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hexp : star ((c : ℂ) • (A *ᵥ w) - (a : ℂ) • v) ⬝ᵥ ((c : ℂ) • (A *ᵥ w) - (a : ℂ) • v) = ((c * (c * b - a ^ 2) : ℝ) : ℂ)`. Simplify using `only [star_sub, star_smul, dotProduct_sub, sub_dotProduct, dotProduct_smul, smul_dotProduct, hb, hc, hpv, hvp]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu` using `[hexp]`. Establish `hu' : 0 ≤ c * (c * b - a ^ 2)` using `by exact_mod_cast hu`. Establish `h2 : 0 ≤ c * b - a ^ 2` using `nonneg_of_mul_nonneg_right hu' hcpos`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem posDef_adjoint {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (A : Matrix m n ℂ)
     (h : (1 - Aᴴ * A).PosDef) : (1 - A * Aᴴ).PosDef := by
@@ -94,24 +94,24 @@ theorem posDef_adjoint {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [Dec
   nlinarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨posDef_adjoint A, fun h => by simpa using posDef_adjoint Aᴴ (by simpa using h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem posDef_adjoint_iff {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (A : Matrix m n ℂ) :
     (1 - Aᴴ * A).PosDef ↔ (1 - A * Aᴴ).PosDef :=
   ⟨posDef_adjoint A, fun h => by simpa using posDef_adjoint Aᴴ (by simpa using h)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k`. Establish `hinj : Function.Injective (fun i : m => (i, k))` using `fun a b hab => (Prod.ext_iff.1 hab).1`. Use `h.submatrix hinj` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `a b`. Simplify using `[blockDiagonal_apply]`. Introduce `h`. Use `posDef_iff_dotProduct_mulVec.2 ⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[IsHermitian, blockDiagonal_conjTranspose]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `(h k).1`. Establish `hmv : ∀ i k, (blockDiagonal M *ᵥ x) (i, k) = (M k *ᵥ fun i => x (i, k)) i`. Introduce `i k`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec, dotProduct, Fintype.sum_prod_type_right, blockDiagonal_apply]`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hsum : star x ⬝ᵥ (blockDiagonal M *ᵥ x) = ∑ k, star (fun i => x (i, k)) ⬝ᵥ (M k *ᵥ fun i => x (i, k))`. Simplify using `only [dotProduct, Fintype.sum_prod_type_right, hmv]`. Both sides reduce to the same expression. Rewrite using `[hsum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨i, k⟩, hp⟩` from `Function.ne_iff.1 hx`. Use `Finset.sum_pos' (fun k _ => (h k).posSemidef.dotProduct_mulVec_nonneg _) ⟨k, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `(posDef_iff_dotProduct_mulVec.1 (h k)).2 (Function.ne_iff.2 ⟨i, ?_⟩)` and prove the remaining obligations. Simplify using `using hp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem posDef_blockDiagonal_iff {m o : Type} [Fintype m] [Fintype o] [DecidableEq m] [DecidableEq o]
     (M : o → Matrix m m ℂ) : (blockDiagonal M).PosDef ↔ ∀ k, (M k).PosDef := by
@@ -147,17 +147,17 @@ theorem posDef_blockDiagonal_iff {m o : Type} [Fintype m] [Fintype o] [Decidable
     simpa using hp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Prove the components needed by the constructor for the conclusion. Establish `h1 : (fromBlocks A 0 0 D).submatrix (Sum.inl : m → m ⊕ n) Sum.inl = A`. Use extensionality with `a c`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Conclude with `h1 ▸ h.submatrix Sum.inl_injective`. Establish `h1 : (fromBlocks A 0 0 D).submatrix (Sum.inr : n → m ⊕ n) Sum.inr = D`. Use extensionality with `a c`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `h1 ▸ h.submatrix Sum.inr_injective`. Introduce and unpack `⟨hA, hD⟩`. Use `posDef_iff_dotProduct_mulVec.2 ⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[IsHermitian, fromBlocks_conjTranspose, hA.1, hD.1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : star x ⬝ᵥ (fromBlocks A 0 0 D *ᵥ x) = star (x ∘ Sum.inl) ⬝ᵥ (A *ᵥ (x ∘ Sum.inl)) + star (x ∘ Sum.inr) ⬝ᵥ (D *ᵥ (x ∘ Sum.inr))`. Rewrite using `[fromBlocks_mulVec]`. Simplify using `[dotProduct, Fintype.sum_sum_type]`. Rewrite using `[hsum]`. Establish `h1` using `hA.posSemidef.dotProduct_mulVec_nonneg (x ∘ Sum.inl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `hD.posSemidef.dotProduct_mulVec_nonneg (x ∘ Sum.inr)`. Take `⟨p, hp⟩` from `Function.ne_iff.1 hx`. Break down `p with i | i` into its components or cases. Use `add_pos_of_pos_of_nonneg ((posDef_iff_dotProduct_mulVec.1 hA).2 (Function.ne_iff.2 ⟨i, ?_⟩)) h2` and prove the remaining obligations. Simplify using `using hp`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `add_pos_of_nonneg_of_pos h1 ((posDef_iff_dotProduct_mulVec.1 hD).2 (Function.ne_iff.2 ⟨i, ?_⟩))` and prove the remaining obligations. Simplify using `using hp`.
+A detailed English derivation is pending.
 -/
 theorem posDef_fromBlocks_diag_iff {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (A : Matrix m m ℂ) (D : Matrix n n ℂ) : (fromBlocks A 0 0 D).PosDef ↔ A.PosDef ∧ D.PosDef := by
@@ -189,7 +189,7 @@ theorem posDef_fromBlocks_diag_iff {m n : Type} [Fintype m] [Fintype n] [Decidab
       simpa using hp
 
 /- English proof (translation)
-Rewrite using `[posDef_adjoint_iff Z, ← PosDef.transpose_iff (M := 1 - Z * Zᴴ)]`. Establish `: (1 - Z * Zᴴ)ᵀ = 1 - Zᵀᴴ * Zᵀ`. Rewrite using `[transpose_sub, transpose_one, transpose_mul]`. Use `congr 2`. Rewrite using `[this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem posDef_transpose_block {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (Z : Matrix m n ℂ) :
     (1 - Zᵀᴴ * Zᵀ).PosDef ↔ (1 - Zᴴ * Z).PosDef := by
@@ -206,11 +206,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.Univ
 open MemBall in
 
 /- English proof (translation)
-Establish `hblk : (1 : Matrix (Ix Ψ j j') (Ix Ψ j j') ℂ) - (bigZ q t)ᴴ * bigZ q t = blockDiagonal fun τ => fromBlocks (1 - (ballMat q t τ)ᴴ * ballMat q t τ) 0 0 (1 - (ballMat q t τ)ᵀᴴ * (ballMat q t τ)ᵀ)`. Rewrite using `[bigZ, blockDiagonal_conjTranspose, ← blockDiagonal_mul, ← blockDiagonal_one, ← blockDiagonal_sub]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `only [Pi.sub_apply, Pi.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply]`. Simplify using `only [conjTranspose_zero, mul_zero, zero_mul, add_zero, zero_add, ← fromBlocks_one]`. Apply the tactic sequence `ext (a | a) (c | c) <;> simp [Matrix.one_apply]`. Establish `hsub : (1 : Matrix (Fin g) (Fin g) ℂ) - (bigZe e q t)ᴴ * bigZe e q t = ((1 : Matrix (Ix Ψ j j') (Ix Ψ j j') ℂ) - (bigZ q t)ᴴ * bigZ q t).submatrix e.symm e.symm`. Rewrite using `[bigZe, conjTranspose_submatrix, submatrix_mul_equiv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a c`. Simplify using `[Matrix.one_apply]`. Establish `hequiv : ((1 - (bigZ q t)ᴴ * bigZ q t).submatrix e.symm e.symm).PosDef ↔ (1 - (bigZ q t)ᴴ * bigZ q t).PosDef` using `⟨fun h => by simpa using h.submatrix e.injective, fun h => h.submatrix e.symm.injective⟩`. Rewrite using `[hsub, hequiv, hblk, posDef_blockDiagonal_iff]`. Simplify using `only [posDef_fromBlocks_diag_iff, posDef_transpose_block, and_self]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

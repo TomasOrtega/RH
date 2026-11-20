@@ -47,9 +47,9 @@ theorem conjForm_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (T 
 end GlobalTheory.AdmConj
 
 /- English proof (translation)
-Introduce `F _ _ κ _ l hl l' hl' g hg`. Establish `hg' : (fun y => star (g y)) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)` using `⟨hg.1.comp star, hg.2.comp_left (g := star) (star_zero ℂ)⟩`. Take `⟨T₀, hT₀⟩` from `hl _ hg'`. Use `⟨GlobalTheory.AdmConj.conjForm T₀, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[hl', GlobalTheory.AdmConj.conjForm_apply, ← hT₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, GlobalTheory.AdmConj.conjCLM_apply, star_mul']`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.AdmConj.conj_mem_adm : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ l ∈ (adeleClass F).adm κ,
     ∀ l' : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ, (∀ Φ, l' Φ = starRingEnd ℂ (l (fun x => starRingEnd ℂ (Φ x)))) →

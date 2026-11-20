@@ -11,15 +11,15 @@ namespace CompanionTheory.Rg.BcB.G3.QuadFieldP
 open QuadraticAlgebra
 
 /- English proof (translation)
-Introduce `h`. Set `_` to `(τ.comp (algebraMap (maximalRealSubfield E) K)).toAlgebra`. Set `φ : E →ₐ[maximalRealSubfield E] ℂ` to `IsAlgClosed.lift`. Establish `h1 : (φ s) ^ 2 = τ (algebraMap (maximalRealSubfield E) K d)`. Rewrite using `[← map_pow, ← hd, φ.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hu : starRingEnd ℂ (φ s) = - φ s`. Establish `h'` using `IsCMField.complexEmbedding_complexConj E φ.toRingHom s`. Simplify `h'.symm` using `[hs]`. Establish `hu0 : φ s ≠ 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h0; exact hs0 (φ.toRingHom.injective (by simpa using h0))`. Rewrite `h` using `[← h1]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h with h2 | h2` into its components or cases. Apply `hu0` to reduce the goal to its premises. Establish `: starRingEnd ℂ (φ s) = φ s` using `by rw [← h2]; exact ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h3 : (2 : ℂ) * φ s = 0` using `by linear_combination hu - this`. Simplify using `using h3`. Apply `hu0` to reduce the goal to its premises. Establish `: starRingEnd ℂ (φ s) = φ s`. Use `congrArg Neg.neg ht` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h2, map_neg, neg_neg, neg_neg]`. Conclude with `this`. Establish `h3 : (2 : ℂ) * φ s = 0` using `by linear_combination hu - this`. Simplify using `using h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem not_sq_of_real (E : Type) [Field E] [NumberField E] [IsCMField E] (s : E)
     (d : maximalRealSubfield E) (hs0 : s ≠ 0) (hs : IsCMField.complexConj E s = -s)
@@ -56,23 +56,23 @@ namespace CompanionTheory.Rg.BcB.G3
 
 open QuadFieldP QuadraticAlgebra in
 /- English proof (translation)
-Introduce `E _ _ _ s d hs0 hs hd K _ _ _ hKr`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, ← IsTotallyReal.finrank, ← IsCMField.card_infinitePlace_eq_card_infinitePlace E, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero …`. Generalize the expression as in `hδ : algebraMap (maximalRealSubfield E) K d = δ`. Establish `hkey : ∀ (τ : K →+* ℂ) (t : ℂ), starRingEnd ℂ t = t → t ^ 2 ≠ τ δ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Introduce `τ t ht`. Rewrite using `[← hδ]`. Conclude with `not_sq_of_real E s d hs0 hs hd K τ t ht`. Establish `hns : ∀ r : K, r ^ 2 ≠ δ + 0 * r`. Introduce `r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `τ : K →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Establish `hre` using `ComplexEmbedding.isReal_iff.1 (IsTotallyReal.complexEmbedding_isReal τ)`. Use `hkey τ (τ r) ?_ ?_` and prove the remaining obligations. Rewrite using `[← ComplexEmbedding.conjugate_coe_eq, hre]`. Rewrite using `[← map_pow, hr, zero_mul, add_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Fact (∀ r : K, r ^ 2 ≠ δ + 0 * r)` using `⟨hns⟩`. Establish `hq` using `GlobalTheory.QuadSymbol.Model.isQuadratic δ`. Establish `hnf` using `GlobalTheory.QuadSymbol.Model.numberField δ`. Establish `: FiniteDimensional K (QuadraticAlgebra K δ 0)` using `Module.Finite.of_basis (QuadraticAlgebra.basis δ 0)`. Use `⟨QuadraticAlgebra K δ 0, inferInstance, hnf, inferInstance, hq, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Introduce `hre`. Set `e` to `w.embedding`. Use `hkey (e.comp (algebraMap K _)) (e (ω : QuadraticAlgebra K δ 0)) ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ComplexEmbedding.conjugate_coe_eq, hre]`. Rewrite using `[RingHom.comp_apply, ← map_pow, sq, omega_mul_omega_eq_algebraMap]`. Simplify using the standard rewrite rules. Introduce `x`. Rewrite using `[GlobalTheory.QuadSymbol.mem_globalNorms_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.QuadSymbol.Model.mem_normGroup_sqrt (A := K) δ (x := x)`. Rewrite `key` using `[GlobalTheory.QuadSymbol.mem_normGroup_iff]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply] at key`. Rewrite using `[← key]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz⟩`. Use `⟨(Algebra.TensorProduct.lid K _).symm z, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.norm_eq_of_algEquiv, hz]`. Introduce and unpack `⟨z, hz⟩`. Use `⟨Algebra.TensorProduct.lid K _ z, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.norm_eq_of_algEquiv, hz]`. Introduce `u x`. Conclude with `GlobalTheory.QuadSymbol.Model.mem_normGroup_sqrt δ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem quadField_pf : QuadField := by
   intro E _ _ _ s d hs0 hs hd K _ _ _ hKr

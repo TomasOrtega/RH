@@ -5,13 +5,13 @@ namespace Formalism.L2.SG.Pf.RelativeIndexFlags.Filt
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Establish `hs : MulAction.stabilizer R (((1 : G) : G ⧸ A)) = A.subgroupOf R`. Use extensionality with `r`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf]`. Express the relevant statement in the definitionally equal form `((((r : G) * 1 : G)) : G ⧸ A) = ((1 : G) : G ⧸ A) ↔ _`. Rewrite using `[mul_one, QuotientGroup.eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `ho : MulAction.orbit R (((1 : G) : G ⧸ A)) = Set.univ`. Use extensionality with `q`. Simplify using `only [Set.mem_univ, iff_true]`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `H y`. Take `⟨r, hr, a, ha, rfl⟩` from `h y`. Use `⟨⟨r, hr⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((((r : G) * 1 : G)) : G ⧸ A) = ((r * a : G) : G ⧸ A)`. Rewrite using `[mul_one, QuotientGroup.eq]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using ha`. Rewrite using `[Subgroup.relIndex, ← hs, MulAction.index_stabilizer, ho, Set.ncard_univ, Subgroup.index_eq_card]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_eq_index_of_mul (A R : Subgroup G)
     (h : ∀ y : G, ∃ r ∈ R, ∃ a ∈ A, y = r * a) : A.relIndex R = A.index := by
@@ -35,11 +35,11 @@ theorem relIndex_eq_index_of_mul (A R : Subgroup G)
     Subgroup.index_eq_card]
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.relIndex_subgroupOf hBB]`. Use `relIndex_eq_index_of_mul (A.subgroupOf B') (B.subgroupOf B') ?_` and prove the remaining obligations. Introduce `y`. Take `⟨b, hb, a, ha, hy⟩` from `h y.1 y.2`. Establish `haB : a ∈ B'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: a = b⁻¹ * y.1` using `by rw [hy]; group`. Rewrite using `[this]`. Conclude with `B'.mul_mem (B'.inv_mem (hBB hb)) y.2`. Use `⟨⟨b, hBB hb⟩, ?_, ⟨a, haB⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`. Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `ha`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hy]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_of_mul (A B B' : Subgroup G) (hBB : B ≤ B')
     (h : ∀ y ∈ B', ∃ b ∈ B, ∃ a ∈ A, y = b * a) : A.relIndex B = A.relIndex B' := by
@@ -56,7 +56,7 @@ theorem relIndex_eq_of_mul (A B B' : Subgroup G) (hBB : B ≤ B')
   · apply Subtype.ext; simp [hy]
 
 /- English proof (translation)
-Unfold `Subgroup.relIndex`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, hL x.2⟩⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem inf_relIndex_of_le (H N L : Subgroup G) (hL : L ≤ N) :
     (H ⊓ N).relIndex L = H.relIndex L := by
@@ -67,13 +67,13 @@ theorem inf_relIndex_of_le (H N L : Subgroup G) (hL : L ≤ N) :
   exact ⟨fun h => h.1, fun h => ⟨h, hL x.2⟩⟩
 
 /- English proof (translation)
-Establish `e1` using `Subgroup.relIndex_inf_mul_relIndex H (H ⊔ N) X`. Rewrite `e1` using `[show H ⊓ (H ⊔ N) = H from inf_of_le_left le_sup_left]`. Establish `e2 : (H ⊔ N).relIndex X = (H ⊔ N).relIndex (X ⊔ N)`. Use `relIndex_eq_of_mul _ _ _ le_sup_left ?_` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, z, hz, rfl⟩` from `(Subgroup.mem_sup_of_normal_right).1 hy`. Conclude with `⟨x, hx, z, Subgroup.mem_sup_right hz, rfl⟩`. Establish `e3 : H.relIndex (X ⊓ N) = H.relIndex ((H ⊔ N) ⊓ X)`. Use `relIndex_eq_of_mul _ _ _ ?_ ?_` and prove the remaining obligations. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨Subgroup.mem_sup_right hy.2, hy.1⟩`. Introduce `y hy`. Take `⟨h, hh, z, hz, hyz⟩` from `(Subgroup.mem_sup_of_normal_right).1 hy.1`. Use `⟨y * h⁻¹, ⟨X.mul_mem hy.2 (X.inv_mem (hHX hh)), ?_⟩, h, hh, by group⟩` and prove the remaining obligations. Rewrite using `[← hyz]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: h * z * h⁻¹ ∈ N` using `hN.conj_mem z hz h`. Simplify `this` using `[mul_assoc]`. Rewrite using `[← e1, ← e3, e2, inf_relIndex_of_le H N (X ⊓ N) inf_le_right]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_split (N : Subgroup G) [hN : N.Normal] (H X : Subgroup G) (hHX : H ≤ X) :
     H.relIndex X = (H ⊓ N).relIndex (X ⊓ N) * (H ⊔ N).relIndex (X ⊔ N) := by
@@ -99,7 +99,7 @@ theorem relIndex_split (N : Subgroup G) [hN : N.Normal] (H X : Subgroup G) (hHX 
 abbrev cj (g : G) (A : Subgroup G) : Subgroup G := A.map (MulAut.conj g).toMonoidHom
 
 /- English proof (translation)
-Simplify using `[cj, Subgroup.mem_map, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cj (g : G) (A : Subgroup G) (y : G) : y ∈ cj g A ↔ ∃ x ∈ A, g * x * g⁻¹ = y := by
   simp [cj, Subgroup.mem_map, MulAut.conj_apply]

@@ -8,7 +8,7 @@ import Formalism.SharpRestriction.ElevenLe
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.AtG
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AtG.ramCols_true` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FRamifiedColumnsTrueColumnsEqConcrete.lean&line=18#L18)
 -/

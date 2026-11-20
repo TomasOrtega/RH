@@ -28,13 +28,13 @@ def specMap (ψ : MRing ι →+* E) (S : Finset K) : MRing ι →ₐ[ℤ] MvPoly
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-The claim follows from `aeval_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem specMap_X (ψ : MRing ι →+* E) (S : Finset K) (p : Σ k, ι k) :
     specMap ψ S (X p) = cS E S p.1 * MvPolynomial.C (ψ (X p)) := aeval_X _ _
 
 /- English proof (translation)
-Establish `e : (aeval fun p => MvPolynomial.C (ψ (X p)) : MRing ι →ₐ[ℤ] MvPolynomial K E) = ((MvPolynomial.C : E →+* MvPolynomial K E).comp ψ).toIntAlgHom` using `MvPolynomial.algHom_ext fun p => by rw [aeval_X]; rfl`. Rewrite using `[specMap, regularityLocalResidue_holds.aeval_blockScale_int hg, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem specMap_form (ψ : MRing ι →+* E) (S : Finset K) {g : MRing ι} {a : K → ℕ} (hg : IsMultiHomog g a) :
     specMap ψ S g = (∏ k, cS E S k ^ a k) * MvPolynomial.C (ψ g) := by
@@ -45,35 +45,33 @@ theorem specMap_form (ψ : MRing ι →+* E) (S : Finset K) {g : MRing ι} {a : 
   rfl
 
 /- English proof (translation)
-Set `Q : Finset K → Ideal (MRing ι)` to `fun S => RingHom.ker (specMap ψ S)`. Establish `hQp : ∀ S, (Q S).IsPrime` using `fun S => RingHom.ker_isPrime _`. Establish `hmem : ∀ S g, g ∈ Q S ↔ specMap ψ S g = 0` using `fun S g => RingHom.mem_ker`. Establish `hPQ : P < Q ∅`. Take `⟨T, hT, hPT⟩` from `hPh`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `SetLike.lt_iff_le_and_exists.mpr ⟨?_, u, ?_, huP⟩` and prove the remaining obligations. Rewrite using `[hPT, Ideal.span_le]`. Introduce `g hg`. Take `⟨b, hb⟩` from `hT g hg`. Rewrite using `[SetLike.mem_coe, hmem, specMap_form ψ ∅ hb, hPψ g b hb (hPT ▸ Ideal.subset_span hg), map_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmem, specMap_form ψ ∅ hu, hψu, map_zero, mul_zero]`. Establish `hstep : ∀ S k, k ∉ S → Q S < Q (insert k S)`. Introduce `S k hk`. Set `ρ : MvPolynomial K E →+* MvPolynomial K E` to `(aeval fun k' => if k' = k then (0 : MvPolynomial K E) else MvPolynomial.X k').toRingHom`. Establish `e : ρ.comp (specMap ψ S).toRingHom = (specMap ψ (insert k S)).toRingHom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `MvPolynomial.ringHom_ext (fun n => by simp) fun q => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, specMap_X, map_mul]`. Use `congr 1`. Distinguish the cases in `h1 : q.1 ∈ S`. Simplify using `[ρ, cS, h1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : q.1 = k`. Substitute `h2` using the available equality. Simplify using `[ρ, cS, h1]`. Simplify using `[ρ, cS, h1, h2]`. Simplify using `[ρ]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `SetLike.lt_iff_le_and_exists.mpr ⟨fun g hg => ?_, X ⟨k, j k⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hg`, the goal using `[hmem]`. Use `congrArg (fun f => f g) e` as an intermediate fact. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite using `[← this, hg, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmem, specMap_X]`. Simplify using `[cS]`. Rewrite using `[hmem, specMap_X, hj, map_one, mul_one]`. Simplify using `only [cS, if_neg hk]`. Conclude with `MvPolynomial.X_ne_zero k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Qt : Ideal (MRing ι)` to `RingHom.ker ((Int.castRingHom (ZMod 2)).comp MvPolynomial.constantCoeff)`. Establish `hQt : Qt.IsPrime` using `RingHom.ker_isPrime _`. Establish `huniv : ∀ g, specMap ψ Finset.univ g = MvPolynomial.C ((MvPolynomial.constantCoeff g : ℤ) : E)`. Introduce `g`. Establish `e : (specMap ψ Finset.univ).toRingHom = (MvPolynomial.C : E →+* MvPolynomial K E).comp ((Int.castRingHom E).comp MvPolynomial.constantCoeff)` using `MvPolynomial.ringHom_ext (fun n => by simp) fun q => by simp [specMap_X, cS]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun f => f g) e`. Establish `hc2 : MvPolynomial.constantCoeff (2 : MRing ι) = 2`. Rewrite using `[show (2 : MRing ι) = MvPolynomial.C 2 from (map_ofNat MvPolynomial.C 2).symm, constantCoeff_C]`. Establish `hlast : Q Finset.univ < Qt`. Use `SetLike.lt_iff_le_and_exists.mpr ⟨fun g hg => ?_, 2, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hg` using `[hmem, huniv, MvPolynomial.C_eq_zero, Int.cast_eq_zero]`. Simplify using `[Qt, RingHom.mem_ker, hg]`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, hc2, map_ofNat]`. Both sides reduce to the same expression. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hmem, huniv, MvPolynomial.C_eq_zero, Int.cast_eq_zero, hc2]`. Conclude with `two_ne_zero h`. Establish `chain : ∀ S : Finset K, (S.card : WithBot ℕ∞) + ringKrullDim (MRing ι ⧸ Q S) ≤ ringKrullDim (MRing ι ⧸ Q ∅)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `empty => simp`. Consider the case `@insert k S hk ih`. Establish `: (Q S).IsPrime` using `hQp S`. Establish `: (Q (insert k S)).IsPrime` using `hQp _`. Establish `h1` using `HorizNotMem.ringKrullDim_quotient_add_one_le (hstep S k hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_insert_of_notMem hk]`. Combine the equalities or inequalities in the displayed calculation. Establish `: (Q ∅).IsPrime` using `hQp _`. Establish `: (Q Finset.univ).IsPrime` using `hQp _`. Establish `h0` using `HorizNotMem.ringKrullDim_quotient_add_one_le hPQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `HorizNotMem.ringKrullDim_quotient_add_one_le hlast`. Establish `hc` using `chain Finset.univ`. Establish `: IsDomain (MRing ι ⧸ Qt)` using `Ideal.Quotient.isDomain _`. Establish `h3 : (0 : WithBot ℕ∞) ≤ ringKrullDim (MRing ι ⧸ Qt)` using `ringKrullDim_nonneg_of_nontrivial`. Rewrite `hc` using `[Finset.card_univ]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_add_two_le [CharZero E] (ψ : MRing ι →+* E) (j : ∀ k, ι k) (hj : ∀ k, ψ (X ⟨k, j k⟩) = 1)
     {P : Ideal (MRing ι)} [P.IsPrime] (hPh : IsMultiHomogIdeal P)
@@ -173,7 +171,7 @@ theorem card_add_two_le [CharZero E] (ψ : MRing ι →+* E) (j : ∀ k, ι k) (
 end Chain
 
 /- English proof (translation)
-Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, a, hv, hu, hva, rfl⟩`. Conclude with `Subring.subset_closure ⟨u, v, a, hv, fun h => nonZeroDivisors.ne_zero hv (Ideal.Quotient.eq_zero_iff_mem.mpr h), hu, hva, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem funField_le_locRing (P : Ideal (MRing ι)) [P.IsPrime] : funField P ≤ locRing P P := by
   refine Subring.closure_le.mpr ?_
@@ -186,61 +184,53 @@ end RegularityFunctionFieldNumber
 open regularityEmbedding_holds in
 
 /- English proof (translation)
-Introduce `K _ ι _ P hP`. Take `⟨-, ⟨hPp, hPh, hPr⟩, hhor, hdim⟩` from `hP`. Use `hPp` as an intermediate fact. Establish `hfrac : ∀ x ∈ funField P, ∃ (u v : MRing ι) (a : K → ℕ), IsMultiHomog u a ∧ IsMultiHomog v a ∧ v ∉ P ∧ x * toFrac P v = toFrac P u` using `fun x hx => LocRingFrac.proof K ι P P hPp hPp le_rfl x (RegularityFunctionFieldNumber.funField_le_locRing P hx)`. Establish `hv0 : ∀ v : MRing ι, v ∉ P → toFrac P v ≠ 0` using `fun v hv h => hv (toFrac_eq_zero.mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : IsField (funField P)`. Use `⟨⟨0, 1, fun h => zero_ne_one (congrArg Subtype.val h)⟩, mul_comm, fun {x} hx => ?_⟩` and prove the remaining obligations. Take `⟨u, v, a, hu, hv, hvP, hx'⟩` from `hfrac x x.2`. Establish `huP : u ∉ P` using `fun h => by`. Rewrite `hx'` using `[toFrac_eq_zero.mpr h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx (Subtype.ext ((mul_eq_zero.mp hx').resolve_right (hv0 v hvP)))`. Take `⟨y, hy⟩` from `exists_funField_mul_eq hv hu huP`. Establish `hy' : (y : FractionRing (MRing ι ⧸ P)) * toFrac P u = toFrac P v` using `hy`. Use `⟨y, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `e : ((x : FractionRing (MRing ι ⧸ P)) * y) * toFrac P u = 1 * toFrac P u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hy', one_mul]`. Conclude with `hx'`. Conclude with `mul_right_cancel₀ (hv0 u huP) e`. Use `⟨hF, ?_⟩` and prove the remaining obligations. Establish `hY : ∀ n : ℕ, (n : FractionRing (MRing ι ⧸ P)) = 0 → n = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n hn`. Establish `h1 : toFrac P (n : MRing ι) = 0` using `by rw [map_natCast]; exact hn`. Establish `h3 : ((n : ℤ)) ∈ P.comap (MvPolynomial.C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `toFrac_eq_zero.mp h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `h3` using `[show P.comap (MvPolynomial.C : ℤ →+* MRing ι) = ⊥ from hhor, Ideal.mem_bot]`. Conclude with `h3` after adjusting the coercions. Establish `: CharZero (FractionRing (MRing ι ⧸ P))` using `charZero_of_inj_zero hY`. Use `choose j hj using hPr`. Establish `hr : ∀ p : Σ k, ι k, ∃ x : funField P, (x : FractionRing (MRing ι ⧸ P)) * toFrac P (X ⟨p.1, j p.1⟩) = toFrac P (X p)` using `fun p => exists_funField_mul_eq (isMultiHomog_X_single p.1 p.2) (isMultiHomog_X_single p.1 (j p.1)) (hj p.1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose r hr using hr`. Set `ρ : (Σ k, ι k) → FractionRing (MRing ι ⧸ P)` to `fun p => r p`. Set `φ : MRing ι →+* FractionRing (MRing ι ⧸ P)` to `eval₂Hom (Int.castRingHom _) ρ`. Establish `hφ : ∀ (g : MRing ι) (a : K → ℕ), IsMultiHomog g a → φ g * toFrac P (∏ k, (X ⟨k, j k⟩ : MRing ι) ^ a k) = toFrac P g` using `fun g a hg => by`. Rewrite using `[← chartHom_mul j r hr hg, chartHom_coe]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφr : ∀ (g v : MRing ι) (a : K → ℕ), IsMultiHomog g a → IsMultiHomog v a → ∀ x : FractionRing (MRing ι ⧸ P), x * toFrac P v = toFrac P g → φ g = x * φ v`. Introduce `g v a hg hv x hx`. Apply `mul_right_cancel₀ (toFrac_prod_ne_zero j hj a)` to reduce the goal to its premises. Rewrite using `[hφ g a hg, mul_assoc, hφ v a hv, hx]`. Set `D : Subalgebra ℚ (FractionRing (MRing ι ⧸ P))` to `Algebra.adjoin ℚ (Set.range ρ)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `hφD : ∀ g, φ g ∈ D`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C n`. Rewrite using `[eval₂Hom_C, eq_intCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `intCast_mem D n`. Consider the case `add f g hf hg => rw [map_add]`. Conclude with `add_mem hf hg`. Consider the case `mul_X f p hf`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `mul_mem hf ?_` and prove the remaining obligations. Rewrite using `[eval₂Hom_X']`. Conclude with `Algebra.subset_adjoin ⟨p, rfl⟩`. Establish `hDF : ∀ x ∈ D, x ∈ funField P`. Introduce `x hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x ∈ D.toSubring` using `hx`. Rewrite `hx'` using `[Algebra.adjoin_eq_ring_closure]`. Use `(Subring.closure_le.mpr (Set.union_subset ?_ ?_)) hx'` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hden : ((q.den : funField P)) ≠ 0` using `fun h => by`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `only [Subring.coe_natCast, ZeroMemClass.coe_zero, Nat.cast_eq_zero] at this`. Conclude with `q.den_ne_zero this`. Take `⟨w, hw⟩` from `hF.mul_inv_cancel hden`. Establish `hw' : ((q.den : FractionRing (MRing ι ⧸ P))) * w = 1`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `congrArg Subtype.val hw` as an intermediate fact. Simplify using `using this`. Rewrite using `[eq_ratCast, Rat.cast_def, div_eq_mul_inv, ← eq_inv_of_mul_eq_one_right hw']`. Conclude with `mul_mem (intCast_mem _ _) w.2`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `(r p).2`. Establish `hunit : ∀ d ∈ D, d ≠ 0 → d⁻¹ ∈ D`. Introduce `d hdD hd0`. Assume the negation of the conclusion as `hinv`. Set `d' : D` to `⟨d, hdD⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnu : ¬ IsUnit d'`. Introduce `hu`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.mp hu`. Apply `hinv` to reduce the goal to its premises. Establish `e : d * (w : FractionRing (MRing ι ⧸ P)) = 1` using `congrArg Subtype.val hw`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← eq_inv_of_mul_eq_one_right e]`. Conclude with `w.2`. Take `⟨m, hm, hdm⟩` from `Ideal.exists_le_maximal (Ideal.span {d'}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Set `_ : Field (D ⧸ m)` to `Ideal.Quotient.field m`. Establish `hcz : CharZero (D ⧸ m)` using `charZero_of_inj_zero fun n hn => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Assume the negation of the conclusion as `hn0`. Establish `hu : IsUnit (n : D)` using `isUnit_iff_exists_inv.mpr ⟨algebraMap ℚ D (n : ℚ)⁻¹, by`. Rewrite using `[← map_natCast (algebraMap ℚ D) n, ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.mpr hn0), map_one]⟩`. Establish `hmem : (n : D) ∈ m`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn`. Conclude with `hm.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem hu)`. Set `ψ : MRing ι →+* D ⧸ m` to `(Ideal.Quotient.mk m).comp (φ.codRestrict D hφD)`. Establish `hψ : ∀ g, ψ g = Ideal.Quotient.mk m ⟨φ g, hφD g⟩` using `fun g => rfl`. Take `⟨u, v, a, hu, hv, hvP, hdu⟩` from `hfrac d (hDF d hdD)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `huP : u ∉ P` using `fun h => by`. Rewrite `hdu` using `[toFrac_eq_zero.mpr h]`. Conclude with `hd0 ((mul_eq_zero.mp hdu).resolve_right (hv0 v hvP))`. Establish `key` using `RegularityFunctionFieldNumber.card_add_two_le (E := D ⧸ m) ψ j (fun k => ?_) hPh (fun g b hg hgP => ?_) hu huP ?_`. Rewrite `key` using `[hdim]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : Fintype.card K + 2 ≤ 1 + Fintype.card K` using `by exact_mod_cast key`. Use linear arithmetic over natural numbers and integers. Establish `e1 : φ (X ⟨k, j k⟩) = 1`. Rewrite using `[eval₂Hom_X']`. Conclude with `mul_right_cancel₀ (hv0 _ (hj k)) ((hr ⟨k, j k⟩).trans (one_mul _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hψ]`. Establish `e2 : (⟨φ (X ⟨k, j k⟩), hφD _⟩ : D) = 1` using `Subtype.ext e1`. Rewrite using `[e2, map_one]`. Establish `e1 : φ g = 0`. Use `hφ g b hg` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `this` using `[toFrac_eq_zero.mpr hgP]`. Conclude with `(mul_eq_zero.mp this).resolve_right (toFrac_prod_ne_zero j hj b)`. Rewrite using `[hψ]`. Establish `e2 : (⟨φ g, hφD _⟩ : D) = 0` using `Subtype.ext e1`. Rewrite using `[e2, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hψ, Ideal.Quotient.eq_zero_iff_mem]`. Establish `e : (⟨φ u, hφD u⟩ : D) = d' * ⟨φ v, hφD v⟩` using `Subtype.ext (hφr u v a hu hv d hdu)`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (hdm (Ideal.subset_span rfl))`. Establish `hFD : ∀ x ∈ funField P, x ∈ D`.
-
-Introduce `x hx`. Take `⟨u, v, a, hu, hv, hvP, hx'⟩` from `hfrac x hx`. Establish `hφv : φ v ≠ 0` using `fun h => hv0 v hvP (by`. Use `hφ v a hv` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`.
-
-Conclude with `this.symm)`. Establish `e : x = φ u * (φ v)⁻¹`. Rewrite using `[hφr u v a hu hv x hx', mul_assoc, mul_inv_cancel₀ hφv, mul_one]`. Rewrite using `[e]`. Conclude with `mul_mem (hφD u) (hunit _ (hφD v) hφv)`.
-
-Establish `hDft : Algebra.FiniteType ℚ D` using `(Subalgebra.fg_iff_finiteType D).mp ⟨Finset.univ.image ρ, by rw [Finset.coe_image, Finset.coe_univ, Set.image_univ]⟩`. Set `_ : Field (funField P)` to `hF.toField`. Establish `: CharZero (funField P)` using `charZero_of_inj_zero fun n hn => hY n (by`. Use `congrArg Subtype.val hn` as an intermediate fact. Simplify using `using this)`.
-
-Set `e : funField P ≃+* D` to `{ toFun := fun x => ⟨x, hFD x x.2⟩ invFun := fun y => ⟨y, hDF y y.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_mul' := fun _ _ => rfl map_add' := fun _ _ => rfl }`. Establish `: Algebra.FiniteType ℚ (funField P)` using `hDft.equiv e.symm.toRatAlgEquiv`. Establish `: Module.Finite ℚ (funField P)` using `finite_of_finite_type_of_isJacobsonRing ℚ (funField P)`. Conclude with `⟨⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem RegularityFunctionFieldNumber.proof : RegularityFunctionFieldNumber.Statement := by
   intro K _ ι _ P hP

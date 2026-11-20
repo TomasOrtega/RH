@@ -12,9 +12,9 @@ open Formalism.TwoAdicCyclotomicDecomposition
 namespace RealCyclotomicSubfield
 
 /- English proof (translation)
-Establish `hn : ‖z‖ = 1`. Establish `h1` using `congrArg norm hz`. Rewrite `h1` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg z) hm).mp h1`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma conj_root {z : ℂ} {m : ℕ} (hm : m ≠ 0) (hz : z ^ m = 1) : starRingEnd ℂ z = z⁻¹ := by
   have hn : ‖z‖ = 1 := by
@@ -25,7 +25,7 @@ lemma conj_root {z : ℂ} {m : ℕ} (hm : m ≠ 0) (hz : z ^ m = 1) : starRingEn
   simp
 
 /- English proof (translation)
-Establish `h1 : (ψ ζ) ^ m = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Establish `hc` using `conj_root hm h1`. Simplify using `only [map_add, map_inv₀]`. Rewrite using `[hc, inv_inv, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma real_theta {K : Type*} [Field K] {m : ℕ} (hm : m ≠ 0) {ζ : K} (hζ : IsPrimitiveRoot ζ m)
     (ψ : K →+* ℂ) : starRingEnd ℂ (ψ (ζ + ζ⁻¹)) = ψ (ζ + ζ⁻¹) := by
@@ -35,11 +35,11 @@ lemma real_theta {K : Type*} [Field K] {m : ℕ} (hm : m ≠ 0) {ζ : K} (hζ : 
   rw [hc, inv_inv, add_comm]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (ψ ζ) ^ m = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Establish `hc` using `conj_root hm h1`. Establish `hne : ψ ζ ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h0, zero_pow hm]`. Conclude with `zero_ne_one h1`. Establish `heq : ψ ζ = (ψ ζ)⁻¹` using `h.symm.trans hc`. Establish `hsq : ψ (ζ ^ 2) = ψ 1`. Rewrite using `[map_pow, map_one, sq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `h2 (hζ.dvd_of_pow_eq_one 2 (ψ.injective hsq))`.
+A detailed English derivation is pending.
 -/
 lemma not_real_zeta {K : Type*} [Field K] {m : ℕ} (hm : m ≠ 0) (h2 : ¬ m ∣ 2) {ζ : K}
     (hζ : IsPrimitiveRoot ζ m) (ψ : K →+* ℂ) : starRingEnd ℂ (ψ ζ) ≠ ψ ζ := by
@@ -58,9 +58,9 @@ lemma not_real_zeta {K : Type*} [Field K] {m : ℕ} (hm : m ≠ 0) (h2 : ¬ m �
   exact h2 (hζ.dvd_of_pow_eq_one 2 (ψ.injective hsq))
 
 /- English proof (translation)
-Introduce `x hx`. Establish `key : Subfield.closure (Set.range (algebraMap ℚ K) ∪ {t}) ≤ ((starRingEnd ℂ).comp φ).eqLocusField φ`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `y (⟨q, rfl⟩ | hy)`. Use `show (starRingEnd ℂ) (φ (algebraMap ℚ K q)) = φ (algebraMap ℚ K q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.map_rat_algebraMap]`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `ht`. Conclude with `key hx`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma real_on_adjoin {K : Type*} [Field K] [Algebra ℚ K] (t : K) (φ : K →+* ℂ)
     (ht : starRingEnd ℂ (φ t) = φ t) : ∀ x ∈ ℚ⟮t⟯, starRingEnd ℂ (φ x) = φ x := by
@@ -77,13 +77,11 @@ lemma real_on_adjoin {K : Type*} [Field K] [Algebra ℚ K] (t : K) (φ : K →+*
   exact key hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `key : Subfield.closure (Set.range (algebraMap ℚ L) ∪ {t}) ≤ (((σ : E →+* E).eqLocusField (RingHom.id E)).map (E.val : E →+* L))`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `y (⟨q, rfl⟩ | hy)`. Use `Subfield.mem_map.mpr ⟨(q : E), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show σ (q : E) = (q : E)`. Conclude with `map_ratCast σ q`. Rewrite using `[eq_ratCast (algebraMap ℚ L) q]`. Conclude with `map_ratCast (E.val : E →+* L) q`. Rewrite `hy` using `[Set.mem_singleton_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Substitute `hy` using the available equality. Use `Subfield.mem_map.mpr ⟨⟨y, hle (mem_adjoin_simple_self ℚ y)⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show σ _ = _`. Conclude with `Subtype.ext hσ`. Take `⟨y, hy, hyx⟩` from `Subfield.mem_map.mp (key hx)`.
-
-Establish `hyx' : y = x` using `Subtype.ext hyx`. Substitute `hyx'` using the available equality. Conclude with `hy`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma fix_on_adjoin {L : Type*} [Field L] [Algebra ℚ L] {E : IntermediateField ℚ L}
     (σ : E ≃ₐ[ℚ] E) {t : L} (hle : ℚ⟮t⟯ ≤ E)
@@ -112,7 +110,7 @@ lemma fix_on_adjoin {L : Type*} [Field L] [Algebra ℚ L] {E : IntermediateField
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `Nat.le_of_dvd (by norm_num) h`. Establish `h2 : 2 ^ 2 ≤ 2 ^ (e + 2)` using `Nat.pow_le_pow_right (by norm_num) (by omega)`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma two_pow_not_dvd (e : ℕ) : ¬ (2 ^ (e + 2)) ∣ 2 := by
   intro h
@@ -121,7 +119,7 @@ lemma two_pow_not_dvd (e : ℕ) : ¬ (2 ^ (e + 2)) ∣ 2 := by
   omega
 
 /- English proof (translation)
-Introduce `x hx φ`. Conclude with `real_on_adjoin (ζ + ζ⁻¹) φ (real_theta (by positivity) hζ φ) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma real_subfield_real_embeddings {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))) :
     ∀ x ∈ F1 ζ, ∀ φ : L →+* ℂ, starRingEnd ℂ (φ x) = φ x := by
@@ -129,7 +127,7 @@ lemma real_subfield_real_embeddings {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ
   exact real_on_adjoin (ζ + ζ⁻¹) φ (real_theta (by positivity) hζ φ) x hx
 
 /- English proof (translation)
-Introduce `h`. Set `φ : L →+* ℂ` to `(IsAlgClosed.lift : L →ₐ[ℚ] ℂ).toRingHom`. Conclude with `not_real_zeta (by positivity) (two_pow_not_dvd e) hζ φ (real_subfield_real_embeddings hζ ζ h φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma zeta_not_mem {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))) : ζ ∉ F1 ζ := by
   intro h
@@ -137,19 +135,19 @@ lemma zeta_not_mem {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))) :
   exact not_real_zeta (by positivity) (two_pow_not_dvd e) hζ φ (real_subfield_real_embeddings hζ ζ h φ)
 
 /- English proof (translation)
-Conclude with `add_mem (mem_adjoin_simple_self ℚ ζ) (inv_mem (mem_adjoin_simple_self ℚ ζ))`.
+A detailed English derivation is pending.
 -/
 lemma theta_mem_adj (ζ : L) : ζ + ζ⁻¹ ∈ ℚ⟮ζ⟯ := by
   exact add_mem (mem_adjoin_simple_self ℚ ζ) (inv_mem (mem_adjoin_simple_self ℚ ζ))
 
 /- English proof (translation)
-Conclude with `adjoin_simple_le_iff.mpr (theta_mem_adj ζ)`.
+A detailed English derivation is pending.
 -/
 lemma attached_subfield_le_adjoin_simple (ζ : L) : F1 ζ ≤ ℚ⟮ζ⟯ := by
   exact adjoin_simple_le_iff.mpr (theta_mem_adj ζ)
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ ζ` using `Algebra.IsIntegral.isIntegral ζ`. Rewrite using `[IntermediateField.adjoin.finrank hint, ← Polynomial.cyclotomic_eq_minpoly_rat hζ (by positivity), Polynomial.natDegree_cyclotomic, Nat.totient_prime_pow Nat.prime_two (by omega)]`. Establish `h3 : e + 2 - 1 = e + 1` using `by omega`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma finrank_cyc {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))) :
     Module.finrank ℚ ℚ⟮ζ⟯ = 2 ^ (e + 1) := by
@@ -161,7 +159,7 @@ lemma finrank_cyc {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))) :
   simp
 
 /- English proof (translation)
-Rewrite `hx` using `[← IntermediateField.adjoin_map]`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `hyx' : y = x` using `Subtype.ext hyx`. Substitute `hyx'` using the available equality. Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private lemma mem_adjoin_of_val_mem_adjoin_image {L' : Type*} [Field L'] [CharZero L'] (Z : IntermediateField ℚ L')
     (S : Set Z) (x : Z) (hx : (x : L') ∈ adjoin ℚ (Z.val '' S)) : x ∈ adjoin ℚ S := by
@@ -172,21 +170,19 @@ private lemma mem_adjoin_of_val_mem_adjoin_image {L' : Type*} [Field L'] [CharZe
   exact hy
 
 /- English proof (translation)
-Establish `hzK : z ∉ ℚ⟮z + z⁻¹⟯`. Introduce `hz'`. Set `φ : M →+* ℂ` to `(IsAlgClosed.lift : M →ₐ[ℚ] ℂ).toRingHom`. Conclude with `not_real_zeta hm h2 hz φ (real_on_adjoin _ φ (real_theta hm hz φ) z hz')`. Establish `htop' : adjoin ℚ⟮z + z⁻¹⟯ ({z} : Set M) = ⊤`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ ℚ⟮z⟯` using `htop ▸ IntermediateField.mem_top`. Establish `key : Subfield.closure (Set.range (algebraMap ℚ M) ∪ {z}) ≤ (adjoin ℚ⟮z + z⁻¹⟯ ({z} : Set M)).toSubfield`. Rewrite using `[Subfield.closure_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y (⟨q, rfl⟩ | hy)`. Rewrite using `[eq_ratCast (algebraMap ℚ M) q]`. Conclude with `SubfieldClass.ratCast_mem _ q`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_adjoin_simple_self _ y`. Conclude with `key hx`. Establish `hint : IsIntegral ℚ⟮z + z⁻¹⟯ z` using `IsIntegral.tower_top (Algebra.IsIntegral.isIntegral (R := ℚ) z)`. Rewrite using `[← IntermediateField.finrank_top', ← htop', IntermediateField.adjoin.finrank hint]`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `θK : ℚ⟮z + z⁻¹⟯` to `⟨z + z⁻¹, mem_adjoin_simple_self ℚ _⟩`. Establish `hmon : (X ^ 2 - C θK * X + 1 : (ℚ⟮z + z⁻¹⟯)[X]).Monic` using `by monicity!`. Establish `hdeg : (X ^ 2 - C θK * X + 1 : (ℚ⟮z + z⁻¹⟯)[X]).natDegree = 2` using `by compute_degree!`. Establish `hroot : aeval z (X ^ 2 - C θK * X + 1 : (ℚ⟮z + z⁻¹⟯)[X]) = 0`. Establish `hz0 : z ≠ 0` using `hz.ne_zero hm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_sub, map_mul, map_pow, aeval_X, aeval_C, map_one]`. Use `show z ^ 2 - (z + z⁻¹) * z + 1 = 0`. Rewrite using `[add_mul, inv_mul_cancel₀ hz0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hdeg]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `natDegree_le_natDegree (minpoly.min _ z hmon hroot)`. Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `hpos` using `minpoly.natDegree_pos hint`. Establish `h1 : (minpoly ℚ⟮z + z⁻¹⟯ z).natDegree = 1` using `by omega`. Take `⟨k, hk⟩` from `minpoly.natDegree_eq_one_iff.mp h1`.
-
-Establish `hk' : (k : M) = z` using `hk`. Conclude with `hzK ((congrArg (fun w => w ∈ ℚ⟮z + z⁻¹⟯) hk').mp k.2)`.
+A detailed English derivation is pending.
 -/
 private lemma finrank_adjoin_add_inv_eq_two_of_isPrimitiveRoot {M : Type*} [Field M] [CharZero M] [FiniteDimensional ℚ M]
     {m : ℕ} (hm : m ≠ 0) (h2 : ¬ m ∣ 2) {z : M} (hz : IsPrimitiveRoot z m) (htop : ℚ⟮z⟯ = ⊤) :
@@ -232,15 +228,13 @@ private lemma finrank_adjoin_add_inv_eq_two_of_isPrimitiveRoot {M : Type*} [Fiel
     exact hzK ((congrArg (fun w => w ∈ ℚ⟮z + z⁻¹⟯) hk').mp k.2)
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ ζ` using `Algebra.IsIntegral.isIntegral ζ`. Use `haveI : FiniteDimensional ℚ ℚ⟮ζ⟯ := adjoin.finiteDimensional hint`. Set `z : ℚ⟮ζ⟯` to `AdjoinSimple.gen ℚ ζ`. Establish `hz : IsPrimitiveRoot z (2 ^ (e + 2))` using `(show IsPrimitiveRoot ((ℚ⟮ζ⟯).val z) (2 ^ (e + 2)) from hζ).of_map_of_injective Subtype.val_injective`. Establish `htop : ℚ⟮z⟯ = ⊤`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Apply `mem_adjoin_of_val_mem_adjoin_image` to reduce the goal to its premises. Rewrite using `[Set.image_singleton]`. Conclude with `x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `finrank_adjoin_add_inv_eq_two_of_isPrimitiveRoot (by positivity) (two_pow_not_dvd e) hz htop`. Establish `hmul` using `Module.finrank_mul_finrank ℚ ℚ⟮z + z⁻¹⟯ ℚ⟮ζ⟯`. Rewrite `hmul` using `[h2, finrank_cyc hζ]`. Establish `hval : (ℚ⟮ζ⟯).val (z + z⁻¹) = ζ + ζ⁻¹` using `rfl`. Establish `hmin : minpoly ℚ (z + z⁻¹) = minpoly ℚ (ζ + ζ⁻¹)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `minpoly.algHom_eq (ℚ⟮ζ⟯).val Subtype.val_injective (z + z⁻¹)`. Rewrite `h5` using `[hval]`. Conclude with `h5.symm`. Establish `heq : Module.finrank ℚ ℚ⟮z + z⁻¹⟯ = Module.finrank ℚ (F1 ζ)`. Rewrite using `[IntermediateField.adjoin.finrank (Algebra.IsIntegral.isIntegral (z + z⁻¹)), hmin]`.
-
-Conclude with `(IntermediateField.adjoin.finrank (Algebra.IsIntegral.isIntegral (ζ + ζ⁻¹))).symm`. Rewrite using `[← heq]`. Rewrite `hmul` using `[pow_succ]`. Conclude with `Nat.eq_of_mul_eq_mul_right (by norm_num) hmul`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finrank_real_subfield {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))) :
     Module.finrank ℚ (F1 ζ) = 2 ^ e := by
@@ -271,33 +265,27 @@ lemma finrank_real_subfield {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e
   exact Nat.eq_of_mul_eq_mul_right (by norm_num) hmul
 
 /- English proof (translation)
-Introduce `x`. Establish `hint : IsIntegral ℚ ζ` using `Algebra.IsIntegral.isIntegral ζ`. Use `haveI : FiniteDimensional ℚ ℚ⟮ζ⟯ := adjoin.finiteDimensional hint`. Set `z : ℚ⟮ζ⟯` to `AdjoinSimple.gen ℚ ζ`. Establish `hz : IsPrimitiveRoot z (2 ^ (e + 2))` using `(show IsPrimitiveRoot ((ℚ⟮ζ⟯).val z) (2 ^ (e + 2)) from hζ).of_map_of_injective Subtype.val_injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (2 : ℕ) ^ (e + 2) ≠ 0` using `by positivity`. Establish `hK : ∀ y ∈ ℚ⟮z + z⁻¹⟯, y ∈ maximalRealSubfield ℚ⟮ζ⟯`. Introduce `y hy`. Rewrite using `[NumberField.mem_maximalRealSubfield_iff]`. Introduce `φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `real_on_adjoin _ φ (real_theta hm hz φ) y hy`. Establish `himg : (ℚ⟮ζ⟯).val '' {z + z⁻¹} = {ζ + ζ⁻¹}`. Rewrite using `[Set.image_singleton]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hx`. Establish `hxK : x ∈ ℚ⟮z + z⁻¹⟯`. Establish `htop : ℚ⟮z⟯ = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mem_adjoin_of_val_mem_adjoin_image` to reduce the goal to its premises. Rewrite using `[Set.image_singleton]`. Conclude with `w.2`. Establish `h2` using `finrank_adjoin_add_inv_eq_two_of_isPrimitiveRoot hm (two_pow_not_dvd e) hz htop`. Establish `hintx : IsIntegral ℚ⟮z + z⁻¹⟯ x` using `IsIntegral.tower_top (Algebra.IsIntegral.isIntegral (R := ℚ) x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hle : (minpoly ℚ⟮z + z⁻¹⟯ x).natDegree ≤ 2` using `h2 ▸ minpoly.natDegree_le x`. Assume the negation of the conclusion as `hxK`. Establish `hne1 : (minpoly ℚ⟮z + z⁻¹⟯ x).natDegree ≠ 1`. Introduce `h1`. Take `⟨k, hk⟩` from `minpoly.natDegree_eq_one_iff.mp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hxK` to reduce the goal to its premises. Rewrite using `[← hk]`. Conclude with `k.2`. Establish `hpos` using `minpoly.natDegree_pos hintx`. Establish `hdeg2 : (minpoly ℚ⟮z + z⁻¹⟯ x).natDegree = 2` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hA : adjoin ℚ⟮z + z⁻¹⟯ ({x} : Set ℚ⟮ζ⟯) = ⊤` using `IntermediateField.eq_of_le_of_finrank_eq le_top (by rw [IntermediateField.adjoin.finrank hintx, hdeg2, IntermediateField.finrank_top', h2])`. Establish `hsub : (adjoin ℚ⟮z + z⁻¹⟯ ({x} : Set ℚ⟮ζ⟯)).toSubfield ≤ maximalRealSubfield ℚ⟮ζ⟯` using `by show Subfield.closure (Set.range (algebraMap ℚ⟮z + z⁻¹⟯ ℚ⟮ζ⟯) ∪ {x}) ≤ _`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `y (⟨k, rfl⟩ | hy)`. Conclude with `hK _ k.2`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `hx`. Establish `hzA : z ∈ adjoin ℚ⟮z + z⁻¹⟯ ({x} : Set ℚ⟮ζ⟯)`. Rewrite using `[hA]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `IntermediateField.mem_top`. Establish `hzR : z ∈ maximalRealSubfield ℚ⟮ζ⟯` using `hsub hzA`. Rewrite `hzR` using `[NumberField.mem_maximalRealSubfield_iff]`. Set `φ : ℚ⟮ζ⟯ →+* ℂ` to `(IsAlgClosed.lift : ℚ⟮ζ⟯ →ₐ[ℚ] ℂ).toRingHom`. Conclude with `not_real_zeta hm (two_pow_not_dvd e) hz φ (hzR φ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : Subfield.closure (Set.range (algebraMap ℚ ℚ⟮ζ⟯) ∪ {z + z⁻¹}) ≤ (F1 ζ).toSubfield.comap ((ℚ⟮ζ⟯).val : ℚ⟮ζ⟯ →+* L)`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `y (⟨q, rfl⟩ | hy)`. Use `show ((ℚ⟮ζ⟯).val : ℚ⟮ζ⟯ →+* L) (algebraMap ℚ ℚ⟮ζ⟯ q) ∈ (F1 ζ).toSubfield`. Rewrite using `[eq_ratCast (algebraMap ℚ ℚ⟮ζ⟯) q, map_ratCast]`.
-
-Conclude with `SubfieldClass.ratCast_mem _ q`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Use `show ζ + ζ⁻¹ ∈ F1 ζ`. Conclude with `mem_adjoin_simple_self ℚ _`.
-
-Conclude with `key hxK`. Introduce `hx`. Apply `hK` to reduce the goal to its premises. Apply `mem_adjoin_of_val_mem_adjoin_image` to reduce the goal to its premises. Rewrite using `[himg]`.
-
-Conclude with `hx`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma maxReal_iff {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))) :
     ∀ x : ℚ⟮ζ⟯, x ∈ maximalRealSubfield ℚ⟮ζ⟯ ↔ (x : L) ∈ F1 ζ := by
@@ -378,13 +366,13 @@ end RealCyclotomicSubfield
 
 open RealCyclotomicSubfield in
 /- English proof (translation)
-Introduce `e q d hq L _ _ ζ a b h`. Establish `hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))` using `h.1`. Use `⟨?_, maxReal_iff hζ, finrank_real_subfield hζ, real_subfield_real_embeddings hζ, ?_⟩` and prove the remaining obligations. Conclude with `hζ.intermediateField_adjoin_isCyclotomicExtension ℚ`. Introduce `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, h3, -⟩` from `hSpec e q d hq L ζ a b h σ`. Use `haveI : Fact (1 < 2 ^ (e + 2)) := ⟨by`. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `h3 1`. Establish `hc1 : hcl e 1 = 1` using `QuotientGroup.mk_one _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_one, ZMod.val_one, pow_one, hc1] at key`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `hσ`. Conclude with `fix_on_adjoin (t := ζ + ζ⁻¹) σ (le_sup_right : F1 ζ ≤ E0 a b ⊔ F1 ζ) hσ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hfix`. Establish `h4` using `hfix (thE ζ a b) (mem_adjoin_simple_self ℚ _)`. Rewrite using `[h4]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem real_subfield_of_galois_spec (hSpec : HostGalSpec) : TwoPowerCyclotomicLayerRealSubfieldCharacterization := by
   intro e q d hq L _ _ ζ a b h
@@ -409,31 +397,29 @@ theorem real_subfield_of_galois_spec (hSpec : HostGalSpec) : TwoPowerCyclotomicL
       rfl
 
 /- English proof (translation)
-Introduce `e q d hq L _ _ ζ a b h`. Take `⟨-, hfin, -, -⟩` from `hGal e q d hq L ζ a b h`. Establish `hb : b ^ 2 = -(d : L)` using `h.2.2.1`. Establish `hbE : (bE ζ a b) ^ 2 = -(d : hostE ζ a b)` using `Subtype.ext (by push_cast; exact hb)`. Use `set c : ℂ := Complex.I * (Real.sqrt d : ℂ) with hcdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : (0 : ℝ) < d` using `by exact_mod_cast hq.2.1.pos`. Establish `hc2 : c ^ 2 = -(d : ℂ)`. Rewrite using `[hcdef, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt hd0.le]`. Simplify using the standard rewrite rules. Establish `hc0 : c ≠ 0` using `mul_ne_zero Complex.I_ne_zero (by exact_mod_cast (Real.sqrt_pos.mpr hd0).ne')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : starRingEnd ℂ c = -c`. Rewrite using `[hcdef, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcne : c ≠ -c`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc0` to reduce the goal to its premises. Establish `h2c : (2 : ℂ) * c = 0` using `by linear_combination h'`. Simplify using `using h2c`. Establish `hroots : ∀ φ : hostE ζ a b →+* ℂ, φ (bE ζ a b) = c ∨ φ (bE ζ a b) = -c`. Introduce `φ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsq : (φ (bE ζ a b)) ^ 2 = c ^ 2`. Rewrite using `[hc2, ← map_pow, hbE, map_neg, map_natCast]`. Conclude with `sq_eq_sq_iff_eq_or_eq_neg.mp hsq`. Establish `ha : ∀ φ : hostE ζ a b →+* ℂ, φ ∈ cmType ζ a b d ↔ (starRingEnd ℂ).comp φ ∉ cmType ζ a b d`. Introduce `φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show φ (bE ζ a b) = c ↔ ¬ ((starRingEnd ℂ).comp φ) (bE ζ a b) = c`. Rewrite using `[RingHom.comp_apply]`. Apply the tactic sequence `rcases hroots φ with h1 | h1 <;> rw [h1]`. Rewrite using `[hcc]`. Conclude with `⟨fun _ => hcne.symm, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_neg, hcc, neg_neg]`. Conclude with `⟨fun h' => absurd h' hcne.symm, fun h' => absurd rfl h'⟩`. Use `⟨ha, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : NumberField (hostE ζ a b) := {}`. Set `f : (hostE ζ a b →+* ℂ) → (hostE ζ a b →+* ℂ)` to `fun φ => (starRingEnd ℂ).comp φ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hinv : Function.Involutive f` using `fun φ => RingHom.ext fun x => by simp [f]`. Establish `hpre : f ⁻¹' (cmType ζ a b d) = (cmType ζ a b d)ᶜ`. Use extensionality with `φ`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff]`. Conclude with `⟨fun h1 h2 => ((ha φ).mp h2) h1, fun h1 => by`.
+Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h2`. Conclude with `h1 ((ha φ).mpr h2)⟩`. Establish `himg : f '' (cmType ζ a b d) = (cmType ζ a b d)ᶜ`. Rewrite using `[Set.image_eq_preimage_of_inverse hinv.leftInverse hinv.rightInverse, hpre]`. Establish `hcard` using `Set.ncard_add_ncard_compl (cmType ζ a b d)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hcard` using `[← himg, Set.ncard_image_of_injective _ hinv.injective, Nat.card_eq_fintype_card, NumberField.Embeddings.card, hfin, pow_succ]`. Use linear arithmetic over natural numbers and integers. Introduce `φ hφ σ`. Establish `hφ' : φ (bE ζ a b) = c` using `hφ`. Use `show φ (σ (bE ζ a b)) = c ↔ galE e ζ a b σ ∈ Psi e`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Psi, MonoidHom.mem_ker]`. Use `show _ ↔ sgn σ (bE ζ a b) = 1`. Unfold `sgn`. Distinguish the cases in `hs : σ (bE ζ a b) = bE ζ a b`. Rewrite using `[if_pos hs, hs, hφ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => rfl, fun _ => rfl⟩`. Establish `hsb : σ (bE ζ a b) = -(bE ζ a b)`. Establish `hsq : (σ (bE ζ a b)) ^ 2 = (bE ζ a b) ^ 2`. Rewrite using `[← map_pow, hbE, map_neg, map_natCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h' | h'` into its components or cases.
-
-Conclude with `absurd h' hs`. Conclude with `h'`. Rewrite using `[if_neg hs, hsb, map_neg, hφ']`. Conclude with `⟨fun h' => absurd h'.symm hcne, fun h' => absurd h' (by decide)⟩`.
+A detailed English derivation is pending.
 -/
 theorem hostCMType_of (hGal : HostGalois) (hSpec : HostGalSpec) : HostCMType := by
   intro e q d hq L _ _ ζ a b h
@@ -504,7 +490,7 @@ theorem hostCMType_of (hGal : HostGalois) (hSpec : HostGalSpec) : HostCMType := 
       exact ⟨fun h' => absurd h'.symm hcne, fun h' => absurd h' (by decide)⟩
 
 /- English proof (translation)
-Conclude with `⟨real_subfield_of_galois_spec hSpec, hostCMType_of hGal hSpec⟩`.
+Supply the required witnesses or components.
 -/
 theorem real_subfield_and_cm_type (hGal : HostGalois) (hSpec : HostGalSpec) : TwoPowerCyclotomicLayerRealSubfieldCharacterization ∧ HostCMType := by
   exact ⟨real_subfield_of_galois_spec hSpec, hostCMType_of hGal hSpec⟩

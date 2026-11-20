@@ -9,27 +9,27 @@ namespace GlobalTheory.LKRes.Model
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) = a ⊗ₜ[ℚ_[p]] (1 : Qr p r)`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigKQ_inclK (r : ℕ) (a : K) : sigKQ p K r (inclK p K r a) = inclK p K r a := by
   change Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) (a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) = a ⊗ₜ[ℚ_[p]] (1 : Qr p r)
   rw [Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) ((1 : K) ⊗ₜ[ℚ_[p]] b) = (1 : K) ⊗ₜ[ℚ_[p]] frobQ p r b`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigKQ_inclQ (r : ℕ) (b : Qr p r) : sigKQ p K r (inclQ p K r b) = inclQ p K r (frobQ p r b) := by
   change Algebra.TensorProduct.map (AlgHom.id ℚ_[p] K) (frobQ p r) ((1 : K) ⊗ₜ[ℚ_[p]] b) = (1 : K) ⊗ₜ[ℚ_[p]] frobQ p r b
   rw [Algebra.TensorProduct.map_tmul, map_one]
 
 /- English proof (translation)
-The claim follows from `norm_map_GK p (Q0 p) (frobK p (Q0 p)) b`.
+A detailed English derivation is pending.
 -/
 theorem frobQ_norm (r : ℕ) (b : Qr p r) : ‖((frobQ p r b : Qr p r) : PadicAlgCl p)‖ = ‖(b : PadicAlgCl p)‖ :=
   norm_map_GK p (Q0 p) (frobK p (Q0 p)) b
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.LKLoc.intR, Subring.mem_comap] at *`. Use `(mem_Obar_iff (p := p)).1 hb` as an intermediate fact. Conclude with `(mem_Obar_iff (p := p)).2 (by show ‖((frobQ p r b : Qr p r) : PadicAlgCl p)‖ ≤ 1`. Rewrite using `[frobQ_norm]`. Conclude with `this)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobQ_intR (r : ℕ) (b : Qr p r) (hb : b ∈ GlobalTheory.LKLoc.intR p (Q0 p) r) :
     frobQ p r b ∈ GlobalTheory.LKLoc.intR p (Q0 p) r := by
@@ -40,9 +40,9 @@ theorem frobQ_intR (r : ℕ) (b : Qr p r) (hb : b ∈ GlobalTheory.LKLoc.intR p 
     rw [frobQ_norm]; exact this)
 
 /- English proof (translation)
-Establish `: intKQ p K r ≤ (intKQ p K r).comap (sigKQ p K r).toRingHom`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Simplify using `only [SetLike.mem_coe, Subring.mem_comap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[sigKQ_inclK]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.subset_closure (Or.inl ⟨a, rfl⟩)`. Simplify using `only [SetLike.mem_coe, Subring.mem_comap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[sigKQ_inclQ]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨_, frobQ_intR p r b.1 b.2⟩, rfl⟩)`. Conclude with `this hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigKQ_intKQ (r : ℕ) (x : KQ p K r) (hx : x ∈ intKQ p K r) : sigKQ p K r x ∈ intKQ p K r := by
   have : intKQ p K r ≤ (intKQ p K r).comap (sigKQ p K r).toRingHom := by
@@ -55,7 +55,7 @@ theorem sigKQ_intKQ (r : ℕ) (x : KQ p K r) (hx : x ∈ intKQ p K r) : sigKQ p 
   exact this hx
 
 /- English proof (translation)
-Take `⟨h, rfl⟩` from `hg`. Use `⟨GeneralLinearGroup.map ((sigKQ p K r).toRingHom.restrict (intKQ p K r) (intKQ p K r) (fun x hx => sigKQ_intKQ p K r x hx)) h, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[sigRes, GeneralLinearGroup.map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sigRes_Kres (n r : ℕ) (g : GL (Fin n) (KQ p K r)) (hg : g ∈ Kres p K n r) :
     sigRes p K n r g ∈ Kres p K n r := by
@@ -66,13 +66,13 @@ theorem sigRes_Kres (n r : ℕ) (g : GL (Fin n) (KQ p K r)) (hg : g ∈ Kres p K
   simp [sigRes, GeneralLinearGroup.map]
 
 /- English proof (translation)
-Simplify using `[nrmRes]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrmRes_one (n : ℕ) (δ : GL (Fin n) (KQ p K 1)) : nrmRes p K n 1 δ = δ := by
   simp [nrmRes]
 
 /- English proof (translation)
-Unfold `KQ`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 example (n r : ℕ) : Nontrivial (KQ p K r) := by
   unfold KQ; infer_instance
@@ -81,11 +81,9 @@ def mulMap (r : ℕ) : KQ p K r →ₐ[ℚ_[p]] PadicAlgCl p :=
   Algebra.TensorProduct.productMap K.val (Qr p r).val
 
 /- English proof (translation)
-Establish `: intKQ p K r ≤ (Obar p).toSubring.comap (mulMap p K r).toRingHom`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Simplify using `only [SetLike.mem_coe, Subring.mem_comap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Express the relevant statement in the definitionally equal form `(mulMap p K r (a.1 ⊗ₜ[ℚ_[p]] (1 : Qr p r))) ∈ Obar p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `show (a.1 : PadicAlgCl p) * 1 ∈ Obar p`. Rewrite using `[mul_one]`. Conclude with `a.2`. Simplify using `only [SetLike.mem_coe, Subring.mem_comap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Express the relevant statement in the definitionally equal form `(mulMap p K r ((1 : K) ⊗ₜ[ℚ_[p]] b.1)) ∈ Obar p`.
-
-Use `show 1 * (b.1 : PadicAlgCl p) ∈ Obar p`. Rewrite using `[one_mul]`. Conclude with `b.2`. Conclude with `(mem_Obar_iff (p := p)).1 (this hx)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulMap_intKQ (r : ℕ) (x : KQ p K r) (hx : x ∈ intKQ p K r) : ‖mulMap p K r x‖ ≤ 1 := by
   have : intKQ p K r ≤ (Obar p).toSubring.comap (mulMap p K r).toRingHom := by
@@ -102,11 +100,11 @@ theorem mulMap_intKQ (r : ℕ) (x : KQ p K r) (hx : x ∈ intKQ p K r) : ‖mulM
   exact (mem_Obar_iff (p := p)).1 (this hx)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `mulMap_intKQ p K r _ h`. Establish `h2 : mulMap p K r (inclK p K r (p : K)⁻¹) = (p : PadicAlgCl p)⁻¹` using `by show (((p : K)⁻¹ : K) : PadicAlgCl p) * 1 = _`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, norm_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp : ‖(p : PadicAlgCl p)‖ < 1`. Establish `h` using `Padic.norm_p_lt_one (p := p)`. Rewrite `h` using `[← PadicAlgCl.norm_extends]`. Simplify using `using h`. Establish `hp0 : 0 < ‖(p : PadicAlgCl p)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(one_lt_inv₀ hp0).2 hp` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem inv_p_not_mem_intKQ (r : ℕ) : inclK p K r (p : K)⁻¹ ∉ intKQ p K r := by
   intro h
@@ -124,11 +122,11 @@ theorem inv_p_not_mem_intKQ (r : ℕ) : inclK p K r (p : K)⁻¹ ∉ intKQ p K r
   linarith
 
 /- English proof (translation)
-Introduce `h`. Establish `hp : (p : K)⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Set `g0 : GL (Fin 1) K` to `GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal fun _ => (p : K)⁻¹) (by simp [hp])`. Set `g : GL (Fin 1) (KQ p K r)` to `GeneralLinearGroup.map (inclK p K r).toRingHom g0`. Establish `hg : g ∈ Kres p K 1 r` using `by rw [h]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hg`. Establish `e` using `congrArg (fun x : GL (Fin 1) (KQ p K r) => (x : Matrix (Fin 1) (Fin 1) (KQ p K r)) 0 0) hk`. Simplify using `only [g, g0, GeneralLinearGroup.map] at e`. Apply `inv_p_not_mem_intKQ p K r` to reduce the goal to its premises. Establish `: ((k : Matrix (Fin 1) (Fin 1) (intKQ p K r)) 0 0 : KQ p K r) ∈ intKQ p K r` using `SetLike.coe_mem _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `at e ⊢`. Conclude with `e.symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Kres_ne_top (r : ℕ) : Kres p K 1 r ≠ ⊤ := by
   intro h
@@ -146,7 +144,7 @@ theorem Kres_ne_top (r : ℕ) : Kres p K 1 r ≠ ⊤ := by
   exact e.symm
 
 /- English proof (translation)
-Establish `h` using `(isFrob_frobK (p := p) (K := Q0 p) inferInstance).isFrobOn r b b.2 hb`. Rewrite `h` using `[show qK p (Q0 p) = p from residue_cardinality_base_field]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobQ_congr (r : ℕ) (b : Qr p r) (hb : ‖(b : PadicAlgCl p)‖ ≤ 1) :
     ‖((frobQ p r b : Qr p r) : PadicAlgCl p) - (b : PadicAlgCl p) ^ p‖ < 1 := by
@@ -155,11 +153,11 @@ theorem frobQ_congr (r : ℕ) (b : Qr p r) (hb : ‖(b : PadicAlgCl p)‖ ≤ 1)
   exact h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hK : FiniteDimensional ℚ_[p] (Q0 p)` using `inferInstance`. Establish `h` using `(IsFrobOn.pow_fixes_iff p (Q0 p) hK (by omega : 0 < r) ((isFrob_frobK hK).isFrobOn r) 1).1 (by`. Introduce `x hx`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one]`. Distinguish the cases in `h0 : (⟨x, hx⟩ : Qr p r) = 0`. Establish `: x = 0` using `congrArg Subtype.val h0`. Rewrite using `[this, map_zero]`. Conclude with `congrArg Subtype.val (hc ⟨x, hx⟩ h0))`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Nat.le_of_dvd one_pos h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_frobQ_ne {r : ℕ} (hr : 2 ≤ r) : ∃ b : Qr p r, b ≠ 0 ∧ frobQ p r b ≠ b := by
   by_contra hc
@@ -176,18 +174,18 @@ theorem exists_frobQ_ne {r : ℕ} (hr : 2 ≤ r) : ∃ b : Qr p r, b ≠ 0 ∧ f
   omega
 
 /- English proof (translation)
-The claim follows from `haveI : Nontrivial (KQ p K r) := by unfold KQ; infer_instance (inclQ p K r).toRingHom.injective`.
+A detailed English derivation is pending.
 -/
 theorem inclQ_injective (r : ℕ) : Function.Injective (inclQ p K r) :=
   haveI : Nontrivial (KQ p K r) := by unfold KQ; infer_instance
   (inclQ p K r).toRingHom.injective
 
 /- English proof (translation)
-Introduce `h`. Take `⟨b, hb0, hb⟩` from `exists_frobQ_ne p hr`. Set `g0 : GL (Fin 1) (Qr p r)` to `GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal fun _ => b) (by simp [hb0])`. Set `g : GL (Fin 1) (KQ p K r)` to `GeneralLinearGroup.map (inclQ p K r).toRingHom g0`. Establish `hg : g ∈ twCentRes p K 1 r 1` using `by rw [h]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : g * 1 = 1 * sigRes p K 1 r g` using `hg`. Rewrite `e` using `[mul_one, one_mul]`. Establish `e'` using `congrArg (fun x : GL (Fin 1) (KQ p K r) => (x : Matrix (Fin 1) (Fin 1) (KQ p K r)) 0 0) e`. Establish `e'' : inclQ p K r b = sigKQ p K r (inclQ p K r b)`. Simplify `e'` using `[g, g0, sigRes, GeneralLinearGroup.map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e''` using `[sigKQ_apply_inclQ]`. Conclude with `hb (inclQ_injective p K r e'').symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twCentRes_one_ne_top {r : ℕ} (hr : 2 ≤ r) : twCentRes p K 1 r 1 ≠ ⊤ := by
   intro h
@@ -204,7 +202,7 @@ theorem twCentRes_one_ne_top {r : ℕ} (hr : 2 ≤ r) : twCentRes p K 1 r 1 ≠ 
   exact hb (inclQ_injective p K r e'').symm
 
 /- English proof (translation)
-Use `show _ * 1 = 1 * sigRes p K n r _`. Rewrite using `[mul_one, one_mul]`. Use extensionality with `i j`. Simplify using `[sigRes, GeneralLinearGroup.map, sigKQ_apply_inclK]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_inclK_mem_twCentRes_one (n r : ℕ) (g : GL (Fin n) K) :
     GeneralLinearGroup.map (inclK p K r).toRingHom g ∈ twCentRes p K n r 1 := by
@@ -214,9 +212,9 @@ theorem map_inclK_mem_twCentRes_one (n r : ℕ) (g : GL (Fin n) K) :
   simp [sigRes, GeneralLinearGroup.map, sigKQ_apply_inclK]
 
 /- English proof (translation)
-Establish `h : Module.finrank ℚ_[p] (Qr p r) = r`. Use `finrank_Kn p (Q0 p) inferInstance hr` as an intermediate fact. Simplify using `using this`. Establish `e : Module.finrank ℚ_[p] (K ⊗[ℚ_[p]] Qr p r) = Module.finrank ℚ_[p] K * Module.finrank ℚ_[p] (Qr p r)` using `Module.finrank_tensorProduct`. Rewrite `e` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem finrank_KQ {r : ℕ} (hr : 0 < r) : Module.finrank ℚ_[p] (KQ p K r) = Module.finrank ℚ_[p] K * r := by
   have h : Module.finrank ℚ_[p] (Qr p r) = r := by
@@ -228,11 +226,9 @@ theorem finrank_KQ {r : ℕ} (hr : 0 < r) : Module.finrank ℚ_[p] (KQ p K r) = 
   exact e
 
 /- English proof (translation)
-Use `haveI := normal_of_gl_one (Kres p K 1 1)`. Establish `hT : GlobalTheory.BCT.twCent (sigRes p K 1 1) γ = ⊤`. Rewrite using `[sigRes_degree_one]`. Use `eq_top_iff.2 fun g _ => ?_` and prove the remaining obligations. Use `show g * γ = γ * g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, mul_comm]`. Take `⟨x, hx⟩` from `orbSum_of_twCent_eq_top (sigRes p K 1 1) (Kres p K 1 1) γ hT`.
-
-Rewrite using `[TOResU, GlobalTheory.LKLoc.twOrbU, hx, locPart_of_normal, hT, top_inf_eq, GlobalTheory.LKLoc.volRat, Subgroup.relIndex_eq_one.2 hU]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem TOResU_gl_one_of_le (γ : GL (Fin 1) (KQ p K 1)) (U : Subgroup (GL (Fin 1) (KQ p K 1)))
     (hU : U ≤ Kres p K 1 1) (φ : GL (Fin 1) (KQ p K 1) → ℂ) :
@@ -252,15 +248,13 @@ theorem TOResU_gl_one_of_le (γ : GL (Fin 1) (KQ p K 1)) (U : Subgroup (GL (Fin 
   ring
 
 /- English proof (translation)
-Establish `hc : ∀ {R : Type} [CommRing R] (a b : GL (Fin 1) R), a * b = b * a` using `fun a b => by`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : GlobalTheory.BCT.twCent (sigHT p m 1 1 Kw) γ = ⊤`. Use `eq_top_iff.2 fun g _ => ?_` and prove the remaining obligations. Establish `hs : sigHT p m 1 1 Kw g = g`. Use `Prod.ext ?_ (funext fun i => ?_)` and prove the remaining obligations. Use `show GlobalTheory.LKLoc.sig p (Q0 p) 1 1 g.1 = g.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `DFunLike.congr_fun (frobQ_degree_one p) ((g.1 : Matrix (Fin 1) (Fin 1) (Qr p 1)) i j)`. Use `show sigRes p (Kw i) 1 1 (g.2 i) = g.2 i`. Rewrite using `[sigRes_degree_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show g * γ = γ * sigHT p m 1 1 Kw g`. Rewrite using `[hs]`. Conclude with `Prod.ext (hc _ _) (funext fun i => hc _ _)`. Rewrite using `[TOHT_gl_one, TOHTU, GlobalTheory.LKLoc.twOrbU]`. Use `haveI : (KHT p m 1 1 Kw).Normal := ⟨fun k hk x => ⟨(normal_of_gl_one _).conj_mem k.1 hk.1 x.1, fun i hi => (normal_of_gl_one (Kres p (Kw i) 1 1)).conj_mem (k.2 i) (hk.2 i hi) (x.2 i)⟩⟩`.
-
-Take `⟨x, hx⟩` from `orbSum_of_twCent_eq_top (sigHT p m 1 1 Kw) (KHT p m 1 1 Kw) γ hT`. Rewrite using `[hx, locPart_of_normal, twCentHT, GlobalTheory.LKLoc.volRat_self]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem TOHT_torus_degree_one (m : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p))
     (γ : GHT p m 1 1 Kw) (φ : GHT p m 1 1 Kw → ℂ) : TOHT p m 1 1 Kw γ φ = φ γ := by
@@ -289,9 +283,9 @@ theorem TOHT_torus_degree_one (m : ℕ) (Kw : Fin m → IntermediateField ℚ_[p
   simp
 
 /- English proof (translation)
-Use `⟨?_, fun i hi => sigRes_Kres p (Kw i) n r _ (hg.2 i hi)⟩` and prove the remaining obligations. Take `⟨h, e⟩` from `hg.1`. Use `⟨GeneralLinearGroup.map ((frobQ p r).toRingHom.restrict (GlobalTheory.LKLoc.intR p (Q0 p) r) (GlobalTheory.LKLoc.intR p (Q0 p) r) (fun x hx => frobQ_intR p r x hx)) h, ?_⟩` and prove the remaining obligations. Use `show _ = GlobalTheory.LKLoc.sig p (Q0 p) 1 r g.1`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigHT_KHT (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) (g : GHT p m n r Kw)
     (hg : g ∈ KHT p m n r Kw) : sigHT p m n r Kw g ∈ KHT p m n r Kw := by
@@ -305,13 +299,13 @@ theorem sigHT_KHT (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (Padic
   rfl
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (m n r : ℕ) (Kw : Fin m → IntermediateField ℚ_[p] (PadicAlgCl p)) : TopologicalSpace (GHT p m n r Kw) :=
   inferInstance
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[p] (Qr p r) := finiteDimensional_Kn p (Q0 p) inferInstance hr`. Use `haveI : FiniteDimensional ℚ_[p] (KQ p K r) := inferInstanceAs (Module.Finite ℚ_[p] (K ⊗[ℚ_[p]] Qr p r))`. Use `haveI : IsModuleTopology ℚ_[p] (KQ p K r) := ⟨rfl⟩`. Conclude with `IsModuleTopology.isTopologicalRing ℚ_[p] (KQ p K r)`.
+A detailed English derivation is pending.
 -/
 theorem isTopologicalRing_KQ (hK : FiniteDimensional ℚ_[p] K) {r : ℕ} (hr : 0 < r) :
     IsTopologicalRing (KQ p K r) := by

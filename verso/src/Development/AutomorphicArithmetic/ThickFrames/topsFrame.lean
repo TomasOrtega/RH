@@ -7,15 +7,13 @@ import Development.AutomorphicArithmetic.ThickFrames.topsGroup
 open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 
 /- English proof (translation)
-Introduce `eps Co Lb heps`. Take `⟨Cb, x₀, hCb, hmain⟩` from `topsGroup eps Co Lb heps`. Use `⟨Cb, x₀, hCb, ?_⟩` and prove the remaining obligations. Introduce `x hx φ L₂ h1 h2 h3 h4 bs hbs PP hp ω hω hord`. Establish `hcard : (Fintype.card φ.A : ℝ) = φ.ord`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Nat.card_eq_fintype_card, Formalism.HC.Frame.natCard_A]`. Establish `hidx : (φ.A0.index : ℝ) = φ.o`. Rewrite using `[Formalism.HC.Frame.index_A0_eq_o]`. Take `⟨TT, t1, t2, t3, t4⟩` from `hmain x hx φ.A φ.A0 L₂ (by rw [hcard]; exact h1) (by rw [hcard]; exact h2) (by rw [hidx]; exact h3) h4 bs hbs PP hp ω hω hord`. Use `⟨TT, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcard]`. Conclude with `t1`. Rewrite using `[← hcard]`. Conclude with `t2`. Introduce `γ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `t3 γ` as an intermediate fact. Rewrite `this` using `[hidx]`. Unfold `Formalism.HC.Frame.lam`. Use `this using 4` and compare the differences between its conclusion and the goal. Rewrite using `[← hcard]`.
-
-Use `t4 using 6` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.topsFrame :
     ∀ eps Co Lb : ℝ, 0 < eps → ∃ Cb x₀ : ℝ, 0 < Cb ∧ ∀ x ≥ x₀, ∀ (φ : Formalism.HC.Frame) (L₂ : ℕ),

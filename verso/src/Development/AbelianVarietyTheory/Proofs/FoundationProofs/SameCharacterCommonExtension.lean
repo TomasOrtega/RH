@@ -6,11 +6,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.Proof.dvr_of_reflects_facts
 
 /- English proof (translation)
-Use `haveI : ValuationRing O := ValuationRing.iff_dvd_total.2 ⟨fun x y => (ValuationRing.dvd_total (g x) (g y)).imp (hd x y) (hd y x)⟩`. Use `haveI : WfDvdMonoid O := ⟨by`. Use `Subrelation.wf (r := InvImage DvdNotUnit g) ?_ (InvImage.wf g wellFounded_dvdNotUnit)` and prove the remaining obligations. Introduce and unpack `x y ⟨hx, c, hc, rfl⟩`. Use `⟨fun h => hx (hg (by simpa using h)), g c, fun h => hc ?_, by simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `isUnit_of_dvd_one (hd c 1 (by simpa using h.dvd))⟩`. Use `haveI : IsPrincipalIdealRing O := ((IsBezout.TFAE (R := O)).out 3 1).1 ‹WfDvdMonoid O›`. Use `{ not_a_field' := fun h => ht0 ?_ }` and prove the remaining obligations. Establish `: t ∈ IsLocalRing.maximalIdeal O` using `ht`. Rewrite `this` using `[h]`.
-
-Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dvr_of_reflects {O A : Type} [CommRing O] [IsDomain O] [CommRing A] [IsDomain A]
     [IsDiscreteValuationRing A] (g : O →+* A) (hg : Function.Injective g)
@@ -30,27 +28,27 @@ theorem dvr_of_reflects {O A : Type} [CommRing O] [IsDomain O] [CommRing A] [IsD
   simpa using this
 
 /- English proof (translation)
-Establish `iA` using `IsFractionRing.injective A (FractionRing A)`. Establish `iB` using `IsFractionRing.injective B (FractionRing B)`. Set `O₁ : Subring K` to `(algebraMap A (FractionRing A)).range.comap jA`. Establish `hmem : ∀ x, x ∈ O₁ ↔ ∃ a, algebraMap A _ a = jA x` using `fun x => Iff.rfl`. Set `f : O₀ →+* O₁` to `f₀.codRestrict O₁ (fun c => (hmem _).2 ⟨fA c, (hjA c).symm⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : ∀ c, (f c : K) = f₀ c` using `fun c => rfl`. Establish `lift : ∀ {C : Type} [CommRing C] [IsDomain C] (j : K →+* FractionRing C), (∀ x : O₁, ∃ a, algebraMap C _ a = j x) → ∃ g : O₁ →+* C, ∀ x, algebraMap C _ (g x) = j x`. Introduce `C _ _ j h`. Establish `iC` using `IsFractionRing.injective C (FractionRing C)`. Use `choose g hg using h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨{ toFun := g map_one' := iC (by simp [hg]) map_mul' := fun x y => iC (by simp [hg]) map_zero' := iC (by simp [hg]) map_add' := fun x y => iC (by simp [hg]) }, hg⟩`. Take `⟨gA, hgA⟩` from `lift jA (fun x => (hmem x).1 x.2)`. Establish `gAi : Function.Injective gA` using `fun x y h => Subtype.ext (jA.injective (by rw [← hgA, ← hgA, h]))`. Establish `cA : gA.comp f = fA` using `RingHom.ext fun c => iA (by rw [RingHom.comp_apply, hgA, hf, hjA])`. Establish `hint : ∀ x : O₁, ∃ a, algebraMap B _ a = jB x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨p, hp, hpx⟩` from `hAi (gA x)`. Establish `h1 : p.eval₂ f x = 0` using `gAi (by rw [Polynomial.hom_eval₂, cA, hpx, map_zero])`. Establish `h2` using `congrArg (jB.comp O₁.subtype) h1`. Rewrite `h2` using `[Polynomial.hom_eval₂, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIntegrallyClosed.algebraMap_eq_of_integral ⟨p.map fB, hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `e : (algebraMap B (FractionRing B)).comp fB = (jB.comp O₁.subtype).comp f` using `RingHom.ext fun c => (hjB c).symm`. Rewrite using `[e]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨gB, hgB⟩` from `lift jB hint`. Establish `gBi : Function.Injective gB` using `fun x y h => Subtype.ext (jB.injective (by rw [← hgB, ← hgB, h]))`. Establish `cB : gB.comp f = fB` using `RingHom.ext fun c => iB (by rw [RingHom.comp_apply, hgB, hf, hjB])`. Establish `hd : ∀ x y, gA x ∣ gA y → x ∣ y`. Introduce and unpack `x y ⟨c, hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hx : x = 0`. Establish `: y = 0` using `gAi (by rw [hc, hx]; simp)`. Simplify using `[this]`. Establish `hx' : (x : K) ≠ 0` using `fun h => hx (Subtype.ext h)`. Establish `hx'' : jA x ≠ 0` using `by simpa using hx'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨y / x, (hmem _).2 ⟨c, ?_⟩⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, eq_div_iff hx'', ← hgA, ← hgA, hc, map_mul, mul_comm]`. Simplify using `[mul_div_cancel₀ _ hx']`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O₀`. Establish `hcB : ∀ c, gB (f c) = fB c` using `fun c => by rw [← cB]; rfl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnu : ¬ IsUnit (gB (f ϖ))` using `fun h => hϖ.not_isUnit (hBl.map_nonunit _ (hcB ϖ ▸ h))`. Establish `ht0 : f ϖ ≠ 0` using `fun h => hϖ.ne_zero (hB (by rw [← hcB, h, map_zero, map_zero]))`. Use `haveI hD : IsDiscreteValuationRing O₁ := dvr_of_reflects gA gAi hd (f ϖ) ht0 (fun h => hnu (h.map gB))`. Use `⟨O₁, hD, f, gA, gB, hmem, hgA, hgB, gAi, gBi, ⟨fun x h => isUnit_of_dvd_one (hd x 1 (by simpa using h.dvd))⟩, ⟨fun x h => ?_⟩, cA, cB⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O₁`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx`. Establish `hπx : π ∣ x`. Establish `: x ∈ IsLocalRing.maximalIdeal O₁` using `hx`. Rewrite `this` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Establish `hu : IsUnit (gB π)` using `isUnit_of_dvd_unit (map_dvd gB hπx) h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, u, hn⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ht0 hπ`. Apply `hnu` to reduce the goal to its premises. Rewrite using `[hn, map_mul, map_pow]`. Conclude with `(u.isUnit.map gB).mul (hu.pow n)`.
+A detailed English derivation is pending.
 -/
 theorem common_of_field {O₀ A B K : Type} [CommRing O₀] [IsDomain O₀] [IsDiscreteValuationRing O₀]
     [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
@@ -129,23 +127,23 @@ theorem common_of_field {O₀ A B K : Type} [CommRing O₀] [IsDomain O₀] [IsD
   exact (u.isUnit.map gB).mul (hu.pow n)
 
 /- English proof (translation)
-Introduce `Γ O₀ A B _ _ _ _ _ _ _ _ _ _ fA fB _ hAi hB hBl ψA ψB hS`. Establish `iA` using `IsFractionRing.injective A (FractionRing A)`. Establish `iB` using `IsFractionRing.injective B (FractionRing B)`. Use `letI : Algebra O₀ A := fA.toAlgebra`. Use `letI : Algebra O₀ B := fB.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Set `αA : MonoidAlgebra O₀ Γ →+* A` to `(MonoidAlgebra.lift O₀ A Γ ((Units.coeHom A).comp ψA)).toRingHom`. Set `αB : MonoidAlgebra O₀ Γ →+* B` to `(MonoidAlgebra.lift O₀ B Γ ((Units.coeHom B).comp ψB)).toRingHom`. Establish `hker : ∀ F, αA F = 0 ↔ αB F = 0`. Introduce `F`. Simplify using `only [αA, αB, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MonoidAlgebra.lift_apply, Algebra.smul_def]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hS _`. Establish `aA : ∀ c, αA (algebraMap O₀ _ c) = fA c` using `fun c => AlgHom.commutes _ c`. Establish `aB : ∀ c, αB (algebraMap O₀ _ c) = fB c` using `fun c => AlgHom.commutes _ c`. Establish `oA : ∀ g, αA (MonoidAlgebra.of O₀ Γ g) = ψA g` using `fun g => MonoidAlgebra.lift_of _ g`. Establish `oB : ∀ g, αB (MonoidAlgebra.of O₀ Γ g) = ψB g` using `fun g => MonoidAlgebra.lift_of _ g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `R : Subring A` to `αA.range`. Set `q : MonoidAlgebra O₀ Γ →+* R` to `αA.rangeRestrict`. Establish `hq : Function.Surjective q` using `αA.rangeRestrict_surjective`. Set `φ : R →+* B` to `q.liftOfSurjective hq ⟨αB, fun F hF => (hker F).1 (congrArg Subtype.val (RingHom.mem_ker.1 hF))⟩`. Establish `hφ : ∀ F, φ (q F) = αB F` using `fun F => RingHom.liftOfRightInverse_comp_apply _ _ _ _ F`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `φi : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Take `⟨F, rfl⟩` from `hq r`. Conclude with `Subtype.ext ((hker F).2 (by rw [← hφ, hr]))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `K` to `FractionRing R`. Set `jA : K →+* FractionRing A` to `IsFractionRing.lift (g := (algebraMap A _).comp R.subtype) (iA.comp Subtype.val_injective)`. Set `jB : K →+* FractionRing B` to `IsFractionRing.lift (g := (algebraMap B _).comp φ) (iB.comp φi)`. Set `p : MonoidAlgebra O₀ Γ →+* K` to `(algebraMap R K).comp q`. Establish `pA : ∀ F, jA (p F) = algebraMap A _ (αA F)` using `fun F => IsFractionRing.lift_algebraMap _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `pB : ∀ F, jB (p F) = algebraMap B _ (αB F)` using `fun F => by`. Rewrite using `[← hφ]`. Conclude with `IsFractionRing.lift_algebraMap _ _`. Take `⟨O₁, hD, f, gA, gB, hmem, hgA, hgB, gAi, gBi, lA, lB, cA, cB⟩` from `common_of_field fA fB hAi hB hBl (p.comp (algebraMap O₀ _)) jA jB (fun c => by rw [RingHom.comp_apply, pA, aA]) (fun c => by rw [RingHom.comp_apply, pB, aB])`. Set `p₁ : MonoidAlgebra O₀ Γ →+* O₁` to `p.codRestrict O₁ (fun F => (hmem _).2 ⟨_, (pA F).symm⟩)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Set `ψ : Γ →* O₁ˣ` to `(p₁.toMonoidHom.comp (MonoidAlgebra.of O₀ Γ)).toHomUnits`. Use `⟨O₁, inferInstance, inferInstance, hD, f, gA, gB, ψ, gAi, gBi, lA, lB, cA, cB, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Apply `iA` to reduce the goal to its premises. Rewrite using `[← oA, ← pA]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgA _`. Use extensionality with `g`. Apply `iB` to reduce the goal to its premises. Rewrite using `[← oB, ← pB]`. Conclude with `hgB _`.
+A detailed English derivation is pending.
 -/
 theorem common : ∀ (Γ O₀ A B : Type) [Group Γ] [CommRing O₀] [IsDomain O₀] [IsDiscreteValuationRing O₀] [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] (fA : O₀ →+* A) (fB : O₀ →+* B), Function.Injective fA → fA.IsIntegral → Function.Injective fB → IsLocalHom fB → ∀ (ψA : Γ →* Aˣ) (ψB : Γ →* Bˣ), SameChar fA fB ψA ψB → ∃ (O₁ : Type) (_ : CommRing O₁) (_ : IsDomain O₁) (_ : IsDiscreteValuationRing O₁) (f : O₀ →+* O₁) (gA : O₁ →+* A) (gB : O₁ →+* B) (ψ : Γ →* O₁ˣ), Function.Injective gA ∧ Function.Injective gB ∧ IsLocalHom gA ∧ IsLocalHom gB ∧ gA.comp f = fA ∧ gB.comp f = fB ∧ (Units.map gA.toMonoidHom).comp ψ = ψA ∧ (Units.map gB.toMonoidHom).comp ψ = ψB := by
   intro Γ O₀ A B _ _ _ _ _ _ _ _ _ _ fA fB _ hAi hB hBl ψA ψB hS

@@ -8,7 +8,7 @@ variable {K L Ω : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Fi
   [Algebra K Ω] [IsScalarTower K L Ω]
 
 /- English proof (translation)
-Establish `h : IsIntegral A b` using `hb.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem int_mem (A : ValuationSubring Ω) {b : Ω} (hb : IsIntegral ℤ b) : b ∈ A := by
   have h : IsIntegral A b := hb.tower_top
@@ -18,23 +18,21 @@ private theorem int_mem (A : ValuationSubring Ω) {b : Ω} (hb : IsIntegral ℤ 
 
 omit [NumberField L] in
 /- English proof (translation)
-Conclude with `int_mem A (RingOfIntegers.isIntegral_coe x).algebraMap`.
+A detailed English derivation is pending.
 -/
 private theorem int_mem' (A : ValuationSubring Ω) (x : 𝓞 L) : algebraMap L Ω (x : L) ∈ A := by
   exact int_mem A (RingOfIntegers.isIntegral_coe x).algebraMap
 
 /- English proof (translation)
-Set `f : 𝓞 L →+* A` to `{ toFun := fun x => ⟨algebraMap L Ω (x : L), int_mem' A x⟩ map_one' := by ext; simp map_mul' := by intro x y; ext; simp map_zero' := by ext; simp map_add' := by intro x y; ext; simp }`. Establish `hmem : ∀ x : 𝓞 L, x ∈ (IsLocalRing.maximalIdeal A).comap f ↔ A.valuation (algebraMap L Ω (x : L)) < 1`. Introduce `x`. Rewrite using `[Ideal.mem_comap, ValuationSubring.valuation_lt_one_iff]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hv : ∀ y : 𝓞 K, algebraMap L Ω ((algebraMap (𝓞 K) (𝓞 L) y : 𝓞 L) : L) = algebraMap K Ω (y : K)`. Introduce `y`. Rewrite using `[IsScalarTower.algebraMap_apply K L Ω]`. Use `congr 1`. Take `⟨y, hyv, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Establish `hyP : algebraMap (𝓞 K) (𝓞 L) y ∈ (IsLocalRing.maximalIdeal A).comap f`. Rewrite using `[hmem, hv]`. Conclude with `(hA y).mpr hyv`. Use `⟨⟨(IsLocalRing.maximalIdeal A).comap f, Ideal.comap_isPrime f _, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hyP` using `[h, Ideal.mem_bot]`. Apply `hy0` to reduce the goal to its premises. Establish `h1 : algebraMap K Ω (y : K) = 0`. Rewrite using `[← hv, hyP]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (y : K) = 0` using `(map_eq_zero_iff _ (algebraMap K Ω).injective).mp h1`. Conclude with `h2` after adjusting the coercions. Introduce `x`. Conclude with `(hmem x).symm`. Use `⟨Ideal.ext fun z => ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `z ∈ v.asIdeal ↔ algebraMap (𝓞 K) (𝓞 L) z ∈ (IsLocalRing.maximalIdeal A).comap f`. Rewrite using `[hmem, hv]`. Conclude with `(hA z).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem place_between {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 K)} (hA : IsPlaceOver A v) :
     ∃ w : HeightOneSpectrum (𝓞 L), IsPlaceOver A w ∧ w.asIdeal.LiesOver v.asIdeal := by
@@ -79,16 +77,16 @@ variable [IsGalois K L]
 
 omit [NumberField K] [NumberField L] in
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormal_commutes σ L (x : L)`.
+A detailed English derivation is pending.
 -/
 private theorem coe_res_smul (σ : G K Ω) (x : 𝓞 L) :
     algebraMap L Ω ((AlgEquiv.restrictNormalHom L σ • x : 𝓞 L) : L) = σ (algebraMap L Ω (x : L)) :=
   AlgEquiv.restrictNormal_commutes σ L (x : L)
 
 /- English proof (translation)
-Establish `hq : Nat.card (𝓞 K ⧸ w.asIdeal.under (𝓞 K)) = normV v`. Rewrite using `[← h.over]`. Both sides reduce to the same expression. Introduce `x`. Rewrite using `[hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(hw _).mp ?_` and prove the remaining obligations. Simplify using `only [MulSemiringAction.toAlgHom_apply, map_sub, map_pow, coe_res_smul]`. Conclude with `hσ.2 _ ((A.valuation_le_one_iff _).mpr (int_mem' A x))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem res_frob {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 L)} {v : HeightOneSpectrum (𝓞 K)}
     (hw : IsPlaceOver A w) [h : w.asIdeal.LiesOver v.asIdeal] {σ : G K Ω} (hσ : IsFrob (F := K) A (normV v) σ) :
@@ -106,11 +104,11 @@ end SlopeTestRemainingChoices
 
 open GroundTheory.Global in
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ A v σ hA hσ`. Use `haveI := IsAlgClosure.isAlgClosed K (K := Ω)`. Take `⟨w, hw, hlo⟩` from `place_between (L := hilbertClassField K Ω) hA`. Establish `hf` using `res_frob hw hσ`. Establish `h2` using `IsArithFrobAt.arithFrobAt (𝓞 K) Gal(hilbertClassField K Ω/K) w.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hin` using `hf.mul_inv_mem_inertia h2`. Establish `hcard : Nat.card (Ideal.inertia Gal(hilbertClassField K Ω/K) w.asIdeal) = 1`. Rewrite using `[natCard_inertia v w]`. Conclude with `(isUnramifiedIn_iff_ramificationIdx K (hilbertClassField K Ω) v).mp ((isUnramifiedEverywhere_hilbertClassField K Ω).1 v) w hlo`. Rewrite `hin` using `[Subgroup.eq_bot_of_card_eq _ hcard, Subgroup.mem_bot, mul_inv_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `artCl primeCl`. Rewrite using `[MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_eq, hilbertClassFieldArtinEquiv_mk0 K Ω v w]`. Conclude with `hin`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.artFrob :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (σ : G K Ω), IsPlaceOver A v → IsFrob (F := K) A (normV v) σ → artCl K Ω σ = primeCl v := by

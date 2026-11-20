@@ -43,7 +43,7 @@ Both sides reduce to the same expression.
 @[simp] theorem archimedeanProjection_apply (a : archGroup K n) : archP K n a = archProj K n (a : ArchUnits K n) := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_archProj.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archP : Continuous (archP K n) :=
   continuous_archProj.comp continuous_subtype_val

@@ -7,13 +7,13 @@ open scoped ComplexConjugate
 noncomputable section
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ω a`. Simplify using `[mulF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulF_one' (B : Base) {A : Type} (u : Fn B A) : mulF B (fun x => x ^ (0:ℝ)) u = u := by
   funext ω a; simp [mulF]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ω a`. Establish `h : mulF B (fun _ : ℝ => (1:ℝ)) u = u` using `by funext ω a; simp [mulF]`. Simplify using `[dS, conjS, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dS_zero (B : Base) {A A' : Type} (T : Fn B A → Fn B A') (u : Fn B A) : dS B T u 0 = T u := by
   funext ω a
@@ -21,18 +21,18 @@ theorem dS_zero (B : Base) {A A' : Type} (T : Fn B A → Fn B A') (u : Fn B A) :
   simp [dS, conjS, h]
 
 /- English proof (translation)
-The claim follows from `dS_zero B _ _`.
+A detailed English derivation is pending.
 -/
 theorem ds_zero {B : Base} (S : Step B) (Y : ℝ) : S.ds Y 0 = S.gX Y := dS_zero B _ _
 
 /- English proof (translation)
-Introduce `p`. Proceed by induction on `p with`. Consider the case `zero => intro s`. Simplify using `using hm s`. Consider the case `succ p ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `s`. Establish `hlim : ∀ ω, Tendsto (fun n : ℕ => ((1 : ℝ) / ((n : ℝ) + 1))⁻¹ • (iteratedDeriv p (fun s => F s ω) (s + 1 / ((n : ℝ) + 1)) - iteratedDeriv p (fun s => F s ω) s)) atTop (𝓝 (iteratedDeriv (p + 1) (fun s => F s ω) s))`. Introduce `ω`. Establish `hd : Differentiable ℝ (iteratedDeriv p (fun s => F s ω))` using `(hsm ω).differentiable_iteratedDeriv p (by exact_mod_cast WithTop.coe_lt_top _)`. Establish `h1` using `(hd s).hasDerivAt.tendsto_slope_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[iteratedDeriv_succ]`. Use `h1.comp ?_` and prove the remaining obligations. Use `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat, ?_⟩` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall (fun n => by`. Establish `: (0:ℝ) < 1 / ((n : ℝ) + 1)` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.ne')`. Use `measurable_of_tendsto_metrizable (f := fun (n : ℕ) ω => ((1 : ℝ) / ((n : ℝ) + 1))⁻¹ • (iteratedDeriv p (fun s => F s ω) (s + 1 / ((n : ℝ) + 1)) - iteratedDeriv p (fun s => F s ω) s)) ?_ ?_` and prove the remaining obligations. Introduce `n`. Conclude with `((ih _).sub (ih _)).const_smul (((1 : ℝ) / ((n : ℝ) + 1))⁻¹)`. Conclude with `tendsto_pi_nhds.2 hlim`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem meas_iterDeriv {Ω : Type} [MeasurableSpace Ω] (F : ℝ → Ω → ℂ)
     (hsm : ∀ ω, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun s => F s ω)) (hm : ∀ s, Measurable (F s)) :
@@ -62,11 +62,9 @@ theorem meas_iterDeriv {Ω : Type} [MeasurableSpace Ω] (F : ℝ → Ω → ℂ)
     · exact tendsto_pi_nhds.2 hlim
 
 /- English proof (translation)
-Introduce `B S hMeas hI4 Y hY p k`. Take `⟨c, hc⟩` from `hI4 Y hY`. Use `meas_iterDeriv (fun s ω => S.gs Y s ω k) (fun ω => by` as an intermediate fact. Establish `: (fun s : ℝ => S.gs Y s ω k) = fun s : ℝ => ∑ q ∈ range (S.r + 1 + 1), (s : ℂ) ^ q * c q ω k`. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hc s ω k`. Rewrite using `[this]`. Apply `ContDiff.sum` to reduce the goal to its premises. Introduce `q _`. Conclude with `(Complex.ofRealCLM.contDiff.pow q).mul contDiff_const)`.
-
-Use the proof step `(fun s => (hMeas.2.2 Y hY).2 s k) p 0`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dsMeas : DsMeas := by
   intro B S hMeas hI4 Y hY p k
@@ -82,11 +80,11 @@ theorem dsMeas : DsMeas := by
   exact this
 
 /- English proof (translation)
-Introduce `hCauchy hMarkovV hTF hTR hTS hTB hTL hCT hLeib hTZ hCI hAdj hEF hCS hSh hMk hTermB hGeom hES hAbs hUB hFat hDom`. Introduce `B S c σ CR Cd CP h4 hCR hCd hCP hL hLbig hImp hInt Y hY`. Establish `hImp'` using `hImp`. Take `⟨hMeas, hWPos, hPReg, hI3, hAdjB, hJet, hI4, hI4', hI5a, hRes, hWR, hPR⟩` from `hImp`. Establish `hσ : (0:ℝ) ≤ σ` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hStar : S.Star σ` using `hAdj hCauchy hLeib hCT hCI hTS hTR B S c σ h4 hMeas hWPos hI3 hAdjB hJet hI4 hI4' hInt`. Establish `hUni : Uniform B S σ CR Cd CP` using `hUB hAdj hTermB hES hAbs hEF hSh hMk hCS hCI hTZ hGeom hTR hTS hTB hLeib hCT hCauchy hMarkovV B S c σ CR Cd CP h4 hCR hCd hCP hL hLbig hImp' hInt`. Establish `hCoef : S.CoefInt σ` using `hCI B S σ hσ hMeas hWPos hI4 hI4'`. Establish `hF : ∀ p : ℕ, Integrable (LE.sq B (S.d Y) (S.ds Y p)) B.μ`. Introduce `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hFat hTR hTL B (Bool × S.ι) (S.d Y) (S.ds Y p) σ _ hσ (fun ω a => (hWPos.2 Y hY ω a).le) (fun a => (hMeas.2.2 Y hY).1 a) (fun a => hDs B S hMeas hI4 Y hY p a) (fun ε hε => hCoef ε hε Y hY p) (fun ε hε => hUni ε hε Y hY p)).1`. Use `⟨?_, hDom hTR hTL hTB hTZ hCauchy B S σ h4 hMeas hWPos hI4 hStar hInt Y hY hF⟩` and prove the remaining obligations. Use `hF 0` as an intermediate fact. Rewrite `this` using `[ds_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem stepClaimFromSteps (hDs : DsMeas) : StepClaimFromSteps := by
   intro hCauchy hMarkovV hTF hTR hTS hTB hTL hCT hLeib hTZ hCI hAdj hEF hCS hSh hMk hTermB hGeom hES hAbs hUB hFat hDom
@@ -109,7 +107,7 @@ theorem stepClaimFromSteps (hDs : DsMeas) : StepClaimFromSteps := by
   rwa [ds_zero] at this
 
 /- English proof (translation)
-Establish `h1 : S.En ε σ Y / |S.P Y| ≤ S.Esup ε σ` using `le_csSup hb ⟨Y, hY, rfl⟩`. Establish `hpos : 0 < |S.P Y|` using `abs_pos.mpr (hP.2 Y hY)`. Rewrite `h1` using `[div_le_iff₀ hpos]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem en_le_esup {B : Base} (S : Step B) (ε σ : ℝ) (hb : BddAbove (S.Eset ε σ)) (hP : S.PReg) (Y : ℝ) (hY : Y ∈ S.J) :
     S.En ε σ Y ≤ S.Esup ε σ * |S.P Y| := by
@@ -118,21 +116,19 @@ theorem en_le_esup {B : Base} (S : Step B) (ε σ : ℝ) (hb : BddAbove (S.Eset 
   rwa [div_le_iff₀ hpos] at h1
 
 /- English proof (translation)
-Introduce `hCS hSh hMk hCI hEF hTB hCauchy hMarkovV B S c σ ε CR Cd CP h4 hε hCR hCd hCP hL hImp Y hY p`. Take `⟨hMeas, hWPos, hPReg, hI3, hAdjB, hJet, hI4, hI4', hI5a, hRes, hWR, hPR⟩` from `hImp`. Establish `hσ : (0:ℝ) ≤ σ` using `by linarith`. Establish `hb` using `hEF B S σ ε hε hPReg hI4'`. Establish `hCoef : S.CoefInt σ` using `hCI B S σ hσ hMeas hWPos hI4 hI4'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hCS hTB hCauchy B S σ ε h4 hε hMeas hWPos hI4 hI4' hCoef Y hY p`. Establish `h2` using `hSh B S σ ε CR Cd CP hσ hε hCR hCd hCP hMeas hWPos hPReg hI4' hI5a hRes hWR hPR hb`. Establish `h3` using `hMk hMarkovV B S σ ε (C7 CR Cd CP * S.Esup ε σ * |S.P Y|) hσ hε hL hMeas hWPos hI4 hI4' Y hY (fun s hs => h2 Y s hY hs) p`. Establish `h4'` using `en_le_esup S ε σ hb hPReg Y hY`. Establish `hEn0 : 0 ≤ S.En ε σ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `integral_nonneg` to reduce the goal to its premises. Introduce `ω`. Apply `mul_nonneg` to reduce the goal to its premises. Conclude with `Real.rpow_nonneg (div_nonneg (B.G_pos ω).le (by have := B.G_pos ω; linarith)) _`. Conclude with `Finset.sum_nonneg (fun a _ => mul_nonneg (hWPos.2 Y hY ω a).le (by positivity))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q := S.Esup ε σ * |S.P Y| with hQ`. Establish `hQ0 : 0 ≤ Q` using `le_trans hEn0 h4'`. Establish `hC7 : 0 ≤ C7 CR Cd CP` using `by unfold C7; positivity`. Use `set m := 2 * ((S.r : ℝ) + 1) ^ 2 / S.L with hm`. Establish `hm0 : 0 ≤ m` using `by rw [hm]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : √(S.En ε σ Y) ≤ √Q` using `Real.sqrt_le_sqrt h4'`. Establish `e2 : √(S.Dn ε σ Y p) ≤ m ^ p * (√(C7 CR Cd CP) * √Q)`. Establish `: S.Dn ε σ Y p ≤ (m ^ p) ^ 2 * (C7 CR Cd CP * Q)`. Establish `e : (m ^ p) ^ 2 * (C7 CR Cd CP * Q) = m ^ (2 * p) * (C7 CR Cd CP * S.Esup ε σ * |S.P Y|)`. Rewrite using `[hQ, ← pow_mul, mul_comm p 2]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h3`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity), Real.sqrt_mul hC7]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpre : 0 ≤ Real.exp 1 * (4 * σ) ^ p` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_left e1 hpre) e2 (Real.sqrt_nonneg _) (by positivity)` to reduce the goal to its premises. Use `_ = Real.exp 1 * √(C7 CR Cd CP) * (√Q * √Q) * ((4 * σ) * m) ^ p := by rw [mul_pow]; ring`. Use `_ = Real.exp 1 * √(C7 CR Cd CP) * S.Esup ε σ * |S.P Y| * (8 * σ * ((S.r : ℝ) + 1) ^ 2 / S.L) ^ p := by`.
-
-Rewrite using `[Real.mul_self_sqrt hQ0, hQ, hm]`. Establish `: 4 * σ * (2 * ((S.r : ℝ) + 1) ^ 2 / S.L) = 8 * σ * ((S.r : ℝ) + 1) ^ 2 / S.L` using `by ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem termBound : TermBound := by
   intro hCS hSh hMk hCI hEF hTB hCauchy hMarkovV B S c σ ε CR Cd CP h4 hε hCR hCd hCP hL hImp Y hY p
@@ -176,9 +172,9 @@ theorem termBound : TermBound := by
         rw [this]; ring
 
 /- English proof (translation)
-Introduce `B S σ ε A hL hb h`. Establish `hne : (S.Eset ε σ).Nonempty` using `⟨_, S.a, ⟨le_refl _, by linarith⟩, rfl⟩`. Establish `: S.Esup ε σ ≤ A + S.Esup ε σ / 2`. Apply `csSup_le hne` to reduce the goal to its premises. Introduce and unpack `_ ⟨Y, hY, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `h Y hY`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem absorb : Absorb := by
   intro B S σ ε A hL hb h
@@ -190,13 +186,13 @@ theorem absorb : Absorb := by
   linarith
 
 /- English proof (translation)
-Introduce `hAdj hTermB hES hAbs hEF hSh hMk hCS hCI hTZ hGeom hTR hTS hTB hLeib hCT hCauchy hMarkovV`. Introduce `B S c σ CR Cd CP h4 hCR hCd hCP hL hLbig hImp hInt ε hε Y hY p`. Establish `hImp'` using `hImp`. Take `⟨hMeas, hWPos, hPReg, hI3, hAdjB, hJet, hI4, hI4', hI5a, hRes, hWR, hPR⟩` from `hImp`. Establish `hσ : (0:ℝ) ≤ σ` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hStar : S.Star σ` using `hAdj hCauchy hLeib hCT hCI hTS hTR B S c σ h4 hMeas hWPos hI3 hAdjB hJet hI4 hI4' hInt`. Establish `hb` using `hEF B S σ ε hε hPReg hI4'`. Establish `hT` using `hTermB hCS hSh hMk hCI hEF hTB hCauchy hMarkovV B S c σ ε CR Cd CP h4 hε hCR hCd hCP hL hImp'`. Establish `hE` using `hES hTZ hGeom hTR B S c σ ε CR Cd CP h4 hε hCR hCd hCP hL hLbig hImp' hInt hStar hT`. Establish `hA` using `hAbs B S σ ε S.A0 hL.le hb hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hSh B S σ ε CR Cd CP hσ hε hCR hCd hCP hMeas hWPos hPReg hI4' hI5a hRes hWR hPR hb`. Establish `h3` using `hMk hMarkovV B S σ ε (C7 CR Cd CP * S.Esup ε σ * |S.P Y|) hσ hε hL hMeas hWPos hI4 hI4' Y hY (fun s hs => h2 Y s hY hs) p`. Establish `hC7 : 0 ≤ C7 CR Cd CP` using `by unfold C7; positivity`. Use `le_trans h3 ?_` and prove the remaining obligations. Establish `hm : 0 ≤ (2 * ((S.r : ℝ) + 1) ^ 2 / S.L) ^ (2 * p)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: C7 CR Cd CP * S.Esup ε σ * |S.P Y| ≤ C7 CR Cd CP * (2 * S.A0) * |S.P Y|`. Apply `mul_le_mul_of_nonneg_right _ (abs_nonneg _)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hA hC7`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem uniformBound : UniformBound := by
   intro hAdj hTermB hES hAbs hEF hSh hMk hCS hCI hTZ hGeom hTR hTS hTB hLeib hCT hCauchy hMarkovV
@@ -223,9 +219,9 @@ theorem uniformBound : UniformBound := by
     _ = _ := by ring
 
 /- English proof (translation)
-Proceed by induction on `R with`. Consider the case `zero => simp`. Consider the case `succ R ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Establish `h1 : 0 ≤ x ^ (R + 1)` using `by positivity`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : x ^ (R + 1 + 1) = x ^ (R + 1) * x` using `pow_succ _ _`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem geom_sum_mul_pred (x : ℝ) (hx0 : 0 ≤ x) (hx : x ≤ 1/2) (R : ℕ) : ∑ p ∈ Icc 1 R, x ^ p ≤ 2 * x - 2 * x ^ (R + 1) := by
   induction R with
@@ -237,13 +233,13 @@ theorem geom_sum_mul_pred (x : ℝ) (hx0 : 0 ≤ x) (hx : x ≤ 1/2) (R : ℕ) :
     nlinarith
 
 /- English proof (translation)
-Introduce `c x R hc hx0 hx`. Use `set K := Real.exp 1 * √c with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Establish `hden : 0 < 2 * (1 + 2 * Real.exp 1 * √c)` using `by positivity`. Establish `hx2 : x ≤ 1 / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans hx ?_` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ hden (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `geom_sum_mul_pred x hx0 hx2 R`. Establish `h2 : 0 ≤ x ^ (R + 1)` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∑ p ∈ Icc 1 R, x ^ p ≤ 2 * x` using `by linarith`. Rewrite using `[← Finset.mul_sum]`. Establish `h4 : x * (2 * (1 + 2 * K)) ≤ 1`. Use `hx` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ hden]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[hK, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem geomSum : GeomSum := by
   intro c x R hc hx0 hx
@@ -266,11 +262,11 @@ theorem geomSum : GeomSum := by
     _ ≤ 1 / 2 := by nlinarith
 
 /- English proof (translation)
-Introduce `B S ε σ Y`. Unfold `Step.term Step.En`. Rewrite using `[ds_zero]`. Simplify using `only [Nat.factorial_zero, Nat.cast_one, div_one]`. Rewrite using `[← integral_complex_ofReal]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `ω`. Establish `hG` using `B.G_pos ω`. Simplify using `only [ld, iteratedDeriv_zero, Real.exp_log hG, pr, LE.sq]`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -293,7 +289,7 @@ theorem termZero : TermZero := by
   ring
 
 /- English proof (translation)
-Proceed by induction on `R with`. Consider the case `zero => simp`. Consider the case `succ R ih => rw [Finset.sum_Icc_succ_top (by omega), ih, Finset.sum_range_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sum_Icc_one (f : ℕ → ℝ) (R : ℕ) : ∑ p ∈ Icc 1 R, f p = ∑ i ∈ range R, f (i + 1) := by
   induction R with
@@ -301,31 +297,29 @@ theorem sum_Icc_one (f : ℕ → ℝ) (R : ℕ) : ∑ p ∈ Icc 1 R, f p = ∑ i
   | succ R ih => rw [Finset.sum_Icc_succ_top (by omega), ih, Finset.sum_range_succ]
 
 /- English proof (translation)
-The claim follows from `Real.rpow_nonneg (div_nonneg (B.G_pos ω).le (by have := B.G_pos ω; linarith)) _`.
+A detailed English derivation is pending.
 -/
 theorem th_nonneg (B : Base) (ε σ : ℝ) (hε : 0 < ε) (ω : B.Ω) : 0 ≤ th ε σ (B.G ω) :=
   Real.rpow_nonneg (div_nonneg (B.G_pos ω).le (by have := B.G_pos ω; linarith)) _
 
 /- English proof (translation)
-Introduce `hTZ hGeom hTR B S c σ ε CR Cd CP h4 hε hCR hCd hCP hL hLbig hImp hInt hStar hT Y hY`. Take `⟨hMeas, hWPos, hPReg, hI3, hAdjB, hJet, hI4, hI4', hI5a, hRes, hWR, hPR⟩` from `hImp`. Establish `hσ : (0:ℝ) ≤ σ` using `by linarith`. Establish `hP : 0 < |S.P Y|` using `abs_pos.mpr (hPReg.2 Y hY)`. Establish `hC7 : 0 ≤ C7 CR Cd CP` using `by unfold C7; positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq0 : ∀ ω, 0 ≤ LE.sq B S.dw S.X ω` using `fun ω => Finset.sum_nonneg (fun a _ => mul_nonneg (hWPos.1 ω a).le (by positivity))`. Establish `hAth : S.Ath ε σ ≤ S.A0`. Apply `integral_mono_of_nonneg` to reduce the goal to its premises. Conclude with `Filter.Eventually.of_forall (fun ω => mul_nonneg (th_nonneg B ε σ hε ω) (hsq0 ω))`. Conclude with `hInt`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Filter.Eventually.of_forall (fun ω => by`. Use `(hTR ε σ (B.G ω) hε hσ (B.G_pos ω)).2` as an intermediate fact. Simplify using `using mul_le_mul_of_nonneg_right this (hsq0 ω))`. Establish `hE0 : 0 ≤ S.Esup ε σ`. Apply `Real.sSup_nonneg` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨Y', hY', rfl⟩`. Apply `div_nonneg _ (abs_nonneg _)` to reduce the goal to its premises. Apply `integral_nonneg` to reduce the goal to its premises. Introduce `ω`. Conclude with `mul_nonneg (th_nonneg B ε σ hε ω) (Finset.sum_nonneg (fun a _ => mul_nonneg (hWPos.2 Y' hY' ω a).le (by positivity)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set x := 8 * σ * ((S.r : ℝ) + 1) ^ 2 / S.L with hx`. Establish `hx0 : 0 ≤ x` using `by rw [hx]; positivity`. Establish `hden : 0 < 2 * (1 + 2 * Real.exp 1 * √(C7 CR Cd CP))` using `by positivity`. Establish `hx1 : x ≤ 1 / (2 * (1 + 2 * Real.exp 1 * √(C7 CR Cd CP)))`. Rewrite using `[le_div_iff₀ hden, hx, div_mul_eq_mul_div, div_le_one hL]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG` using `hGeom (C7 CR Cd CP) x (S.r + 1) hC7 hx0 hx1`. Rewrite `hG` using `[sum_Icc_one]`. Establish `hs` using `hStar ε hε Y hY`. Rewrite `hs` using `[Finset.sum_range_succ', hTZ]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnorm : ‖∑ i ∈ range (S.r + 1), S.term ε σ Y (i + 1)‖ ≤ S.Esup ε σ * |S.P Y| / 2`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Use `hT Y hY (i + 1)` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = (S.Esup ε σ * |S.P Y|) * ∑ i ∈ range (S.r + 1), (Real.exp 1 * √(C7 CR Cd CP) * x ^ (i + 1)) := by`. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ (S.Esup ε σ * |S.P Y|) * (1 / 2) := mul_le_mul_of_nonneg_left hG (by positivity)`. Use `_ = _ := by ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hre : S.En ε σ Y = |S.P Y| * S.Ath ε σ - (∑ i ∈ range (S.r + 1), S.term ε σ Y (i + 1)).re`. Use `congrArg Complex.re hs` as an intermediate fact. Simplify using `only [Complex.ofReal_re, Complex.add_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre2 : -(∑ i ∈ range (S.r + 1), S.term ε σ Y (i + 1)).re ≤ S.Esup ε σ * |S.P Y| / 2`.
-
-Use `Complex.abs_re_le_norm (∑ i ∈ range (S.r + 1), S.term ε σ Y (i + 1))` as an intermediate fact. Establish `h2` using `neg_abs_le (∑ i ∈ range (S.r + 1), S.term ε σ Y (i + 1)).re`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_iff₀ hP]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem energyStep : EnergyStep := by
   intro hTZ hGeom hTR B S c σ ε CR Cd CP h4 hε hCR hCd hCP hL hLbig hImp hInt hStar hT Y hY
@@ -384,7 +378,7 @@ theorem energyStep : EnergyStep := by
   nlinarith
 
 /- English proof (translation)
-Introduce `B S σ ε hε hP hI`. Establish `hc : ContinuousOn (fun Y => S.En ε σ Y / |S.P Y|) S.J` using `(hI ε hε).2.div (hP.1.abs) (fun Y hY => abs_ne_zero.mpr (hP.2 Y hY))`. Conclude with `(isCompact_Icc.image_of_continuousOn hc).bddAbove`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eFinite : EFinite := by
   intro B S σ ε hε hP hI
@@ -393,7 +387,7 @@ theorem eFinite : EFinite := by
   exact (isCompact_Icc.image_of_continuousOn hc).bddAbove
 
 /- English proof (translation)
-Establish `h1 : ‖x + y‖ ≤ ‖x‖ + ‖y‖` using `norm_add_le x y`. Establish `h2 : ‖x + y‖ ^ 2 ≤ (‖x‖ + ‖y‖) ^ 2`. Apply `pow_le_pow_left₀ (norm_nonneg _) h1` to reduce the goal to its premises. Establish `h3 : 0 ≤ (c * ‖x‖ - ‖y‖) ^ 2` using `sq_nonneg _`. Establish `h4 : c * ‖x + y‖ ^ 2 ≤ c * (‖x‖ + ‖y‖) ^ 2` using `mul_le_mul_of_nonneg_left h2 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -406,29 +400,25 @@ theorem norm_add_sq_le (x y : ℂ) (c : ℝ) (hc : 0 ≤ c) : c * ‖x + y‖ ^ 
   nlinarith
 
 /- English proof (translation)
-Use `set u1 : S.ι → ℂ := fun i => S.gX (Y + s) ω (false, i) with hu1`. Use `set u2 : S.ι → ℂ := fun i => S.gX (Y + s) ω (true, i) with hu2`. Use `set t : S.ι → ℂ := fun i => ∑ j, (S.ee Y ω i j - S.ee (Y + s) ω i j) * u1 j with ht`. Use `set A := ∑ i, S.d Y ω (false, i) * ‖u1 i‖ ^ 2 with hA`. Use `set Bq := ∑ i, S.d Y ω (true, i) * ‖u2 i‖ ^ 2 with hBq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Tq := ∑ i, S.d Y ω (true, i) * ‖t i‖ ^ 2 with hTq`. Use `set V := ∑ i, S.d Y ω (true, i) * ‖u2 i + t i‖ ^ 2 with hV`. Establish `hd : ∀ k, 0 ≤ S.d Y ω k` using `fun k => (hW.2 Y hY ω k).le`. Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg (fun i _ => mul_nonneg (hd _) (by positivity))`. Establish `hB0 : 0 ≤ Bq` using `Finset.sum_nonneg (fun i _ => mul_nonneg (hd _) (by positivity))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : Tq ≤ CR ^ 2 * A` using `hRes Y s hY hYs ω u1`. Establish `hL : LE.sq B (S.d Y) (S.gs Y s) ω = V + A`. Unfold `LE.sq`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_bool]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[(h5 Y s hY hYs ω i).2]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(h5 Y s hY hYs ω i).1]`. Establish `hR : Bq + A ≤ Cd * LE.sq B (S.d (Y + s)) (S.gX (Y + s)) ω`. Unfold `LE.sq`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_bool, mul_add, Finset.mul_sum, Finset.mul_sum]`. Apply `add_le_add` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[← mul_assoc]; exact mul_le_mul_of_nonneg_right (hWR Y s hY hYs ω _) (by positivity)`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← mul_assoc]; exact mul_le_mul_of_nonneg_right (hWR Y s hY hYs ω _) (by positivity)`. Establish `hVb : CR * V ≤ CR * (1 + CR) * Bq + (1 + CR) * Tq`. Rewrite using `[hV, hBq, hTq, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `mul_le_mul_of_nonneg_left (norm_add_sq_le (u2 i) (t i) CR hCR) (hd (true, i))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `key : V + A ≤ (1 + CR) ^ 2 * (Bq + A)`. Break down `hCR.eq_or_lt with h0 | hpos` into its components or cases. Establish `hT0 : Tq ≤ 0` using `by rw [← h0] at hT; simpa using hT`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ i ∈ (Finset.univ : Finset S.ι), S.d Y ω (true, i) * ‖t i‖ ^ 2 = 0`. Apply `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => mul_nonneg (hd _) (by positivity))).1` to reduce the goal to its premises. Conclude with `le_antisymm hT0 (Finset.sum_nonneg (fun i _ => mul_nonneg (hd _) (by positivity)))`. Establish `hVB : V = Bq`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i hi`. Establish `h1` using `hz i hi`. Establish `h2 : t i = 0`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h (hW.2 Y hY ω _).ne'`.
-
-Simplify using `using h`. Rewrite using `[h2, add_zero]`. Rewrite using `[hVB, ← h0]`. Simplify using the standard rewrite rules. Establish `: CR * V ≤ CR * ((1 + CR) * Bq + (1 + CR) * CR * A)` using `by nlinarith`.
-
-Establish `hV2 : V ≤ (1 + CR) * Bq + (1 + CR) * CR * A` using `le_of_mul_le_mul_left this hpos`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hL]`. Conclude with `le_trans key (mul_le_mul_of_nonneg_left hR (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_pt {B : Base} (S : Step B) (CR Cd : ℝ) (hCR : 0 ≤ CR) (hCd : 0 ≤ Cd) (hW : S.WPos) (h5 : S.ShiftFormula)
     (hRes : S.Residues CR) (hWR : S.WeightRatio Cd) (Y s : ℝ) (hY : Y ∈ S.J) (hYs : Y + s ∈ S.J) (ω : B.Ω) :
@@ -485,7 +475,7 @@ theorem shift_pt {B : Base} (S : Step B) (CR Cd : ℝ) (hCR : 0 ≤ CR) (hCd : 0
   exact le_trans key (mul_le_mul_of_nonneg_left hR (by positivity))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ω a`. Establish `h : mulF B (fun _ : ℝ => (1:ℝ)) S.X = S.X` using `by funext ω a; simp [mulF]`. Simplify using `[Step.gs, Step.gX, conjS, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gs_zero {B : Base} (S : Step B) (Y : ℝ) : S.gs Y 0 = S.gX Y := by
   funext ω a
@@ -493,15 +483,15 @@ theorem gs_zero {B : Base} (S : Step B) (Y : ℝ) : S.gs Y 0 = S.gX Y := by
   simp [Step.gs, Step.gX, conjS, h]
 
 /- English proof (translation)
-Introduce `B S σ ε CR Cd CP hσ hε hCR hCd hCP hMeas hW hP hI4' h5 hRes hWR hPR hb Y s hY hYs`. Establish `hint : Integrable (fun ω => th ε σ (B.G ω) * LE.sq B (S.d (Y + s)) (S.gX (Y + s)) ω) B.μ`. Use `(hI4' ε hε).1 (Y + s) hYs 0` as an intermediate fact. Rewrite `this` using `[gs_zero]`. Then use the resulting hypothesis. Establish `h1 : S.Ens ε σ Y s ≤ (1 + CR) ^ 2 * Cd * S.En ε σ (Y + s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `Step.Ens Step.En`. Rewrite using `[← integral_const_mul]`. Apply `integral_mono_of_nonneg` to reduce the goal to its premises. Conclude with `Filter.Eventually.of_forall (fun ω => mul_nonneg (th_nonneg B ε σ hε ω) (Finset.sum_nonneg (fun a _ => mul_nonneg (hW.2 Y hY ω a).le (by positivity))))`. Conclude with `hint.const_mul _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Filter.Eventually.of_forall (fun ω => by`. Use `mul_le_mul_of_nonneg_left (shift_pt S CR Cd hCR hCd hW h5 hRes hWR Y s hY hYs ω) (th_nonneg B ε σ hε ω)` as an intermediate fact. Simplify using `only`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : S.En ε σ (Y + s) / |S.P (Y + s)| ≤ S.Esup ε σ` using `le_csSup hb ⟨Y + s, hYs, rfl⟩`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < |S.P (Y + s)|` using `abs_pos.mpr (hP.2 _ hYs)`. Rewrite `h2` using `[div_le_iff₀ hpos]`. Establish `hEn0 : 0 ≤ S.En ε σ (Y + s)` using `integral_nonneg (fun ω => mul_nonneg (th_nonneg B ε σ hε ω) (Finset.sum_nonneg (fun a _ => mul_nonneg (hW.2 _ hYs ω a).le (by positivity))))`. Establish `hE0 : 0 ≤ S.Esup ε σ`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : S.Esup ε σ * |S.P (Y + s)| ≤ S.Esup ε σ * (CP * |S.P Y|)` using `mul_le_mul_of_nonneg_left (hPR Y s hY hYs) hE0`. Establish `hk : 0 ≤ (1 + CR) ^ 2 * Cd` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem shiftBound : ShiftBound := by
   intro B S σ ε CR Cd CP hσ hε hCR hCd hCP hMeas hW hP hI4' h5 hRes hWR hPR hb Y s hY hYs
@@ -536,7 +526,7 @@ theorem shiftBound : ShiftBound := by
     _ = C7 CR Cd CP * S.Esup ε σ * |S.P Y| := by unfold C7; ring
 
 /- English proof (translation)
-The claim follows from `stepClaimFromSteps dsMeas`.
+A detailed English derivation is pending.
 -/
 theorem stepClaimFromSteps_full : StepClaimFromSteps := stepClaimFromSteps dsMeas
 

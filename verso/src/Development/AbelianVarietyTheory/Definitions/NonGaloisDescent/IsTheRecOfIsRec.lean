@@ -21,14 +21,14 @@ def RecUnique : Prop :=
     IsRecLit h rc → IsRecLit h rc' → rc' = rc
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hrc, fun rc' h' => H E Ω A w h rc rc' hrc h'⟩`.
+Supply the required witnesses or components.
 -/
 theorem RecUnique.isTheRec (H : RecUnique) {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h}
     (hrc : IsRecLit h rc) : IsTheRec h rc :=
   ⟨hrc, fun rc' h' => H E Ω A w h rc rc' hrc h'⟩
 
 /- English proof (translation)
-The claim follows from `H.isTheRec hrc.toLit`.
+A detailed English derivation is pending.
 -/
 theorem RecUnique.isTheRec_of_isRec (H : RecUnique) {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h}
     (hrc : IsRec h rc) : IsTheRec h rc :=

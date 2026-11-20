@@ -17,9 +17,7 @@ section Homog
 variable {κ : Type} [Fintype κ] {ι : κ → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_C (c : ℤ) : IsMultiHomog (C c : MRing ι) 0 := by
   classical
@@ -31,7 +29,7 @@ theorem isMultiHomog_C (c : ℤ) : IsMultiHomog (C c : MRing ι) 0 := by
   · exact absurd rfl hm
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ProjLine.isMultiHomog_one`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `ProjLine.mhMul (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_prod {σ : Type} (s : Finset σ) (f : σ → MRing ι) (d : σ → κ → ℕ)
     (h : ∀ a ∈ s, IsMultiHomog (f a) (d a)) : IsMultiHomog (∏ a ∈ s, f a) (∑ a ∈ s, d a) := by
@@ -44,7 +42,7 @@ theorem isMultiHomog_prod {σ : Type} (s : Finset σ) (f : σ → MRing ι) (d :
       (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
 /- English proof (translation)
-Establish `h` using `isMultiHomog_prod (Finset.univ : Finset κ) (fun k => (X ⟨k, c k⟩ : MRing ι)) (fun k => fun k1 => if k1 = k then 1 else 0) (fun k _ => ProjLine.isMultiHomog_X ⟨k, c k⟩)`. Establish `hs : (∑ k : κ, (fun k1 : κ => if k1 = k then 1 else 0 : κ → ℕ)) = fun _ => 1`. Use function extensionality and compare the values at `k1`. Simplify using `[Finset.sum_apply]`. Rewrite `h` using `[hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isMultiHomog_chartMonomial (c : ∀ k, ι k) :
     IsMultiHomog (∏ k, (X ⟨k, c k⟩ : MRing ι)) (fun _ => 1) := by
@@ -64,18 +62,18 @@ variable {κ : Type} [Fintype κ] {ι : κ → Type} [∀ k, Fintype (ι k)] {Ω
   {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ}
 
 /- English proof (translation)
-Rewrite using `[mCoordIdeal, RingHom.mem_ker, ConeTrdeg.mConeMap_of_isMultiHomog y hf, h0, map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_mCoordIdeal_of_aeval {f : MRing ι} {d : κ → ℕ} (hf : IsMultiHomog f d)
     (h0 : aeval y f = 0) : f ∈ mCoordIdeal y := by
   rw [mCoordIdeal, RingHom.mem_ker, ConeTrdeg.mConeMap_of_isMultiHomog y hf, h0, map_zero, zero_mul]
 
 /- English proof (translation)
-Take `⟨d, g, h1, hg, hh, hy, hyg, hz1, hzg⟩` from `h`. Take `⟨d', g', h1', hg', hh', hy', hyg', hz1', hzg'⟩` from `h'`. Establish `hm : IsMultiHomog (g * h1' - g' * h1) (d + d')`. Rewrite using `[sub_eq_add_neg]`. Use `ProjLine.mhAdd (ProjLine.mhMul hg hh') (ProjLine.mhNeg ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_comm]`. Conclude with `ProjLine.mhMul hg' hh`. Establish `h0 : aeval y (g * h1' - g' * h1) = 0`. Rewrite using `[map_sub, map_mul, map_mul, hyg, hyg']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hz0` using `hz.2 _ (mem_mCoordIdeal_of_aeval hm h0)`. Rewrite `hz0` using `[map_sub, map_mul, map_mul, eval_sub, eval_mul, eval_mul, hzg, hzg', sub_eq_zero]`. Establish `hne : eval z (map (Int.castRingHom ℂ) h1) * eval z (map (Int.castRingHom ℂ) h1') ≠ 0` using `mul_ne_zero hz1 hz1'`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `hz0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IsValueAt.unique {a : Ω} {v v' : ℂ} (hz : z ∈ mcPts (mCoordIdeal y))
     (h : IsValueAt y a z v) (h' : IsValueAt y a z v') : v = v' := by
@@ -97,7 +95,7 @@ theorem IsValueAt.unique {a : Ω} {v v' : ℂ} (hz : z ∈ mcPts (mCoordIdeal y)
   linear_combination hz0
 
 /- English proof (translation)
-Establish `hr : RegularAt y a z` using `⟨v, h⟩`. Rewrite using `[valAt, dif_pos hr]`. Conclude with `IsValueAt.unique hz hr.choose_spec h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_eq {a : Ω} {v : ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) (h : IsValueAt y a z v) :
     valAt y a z = v := by
@@ -106,7 +104,7 @@ theorem valAt_eq {a : Ω} {v : ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) (h : IsVa
   exact IsValueAt.unique hz hr.choose_spec h
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `h`. Rewrite using `[valAt_eq hz hv]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem RegularAt.isValueAt {a : Ω} (hz : z ∈ mcPts (mCoordIdeal y)) (h : RegularAt y a z) :
     IsValueAt y a z (valAt y a z) := by
@@ -114,11 +112,11 @@ theorem RegularAt.isValueAt {a : Ω} (hz : z ∈ mcPts (mCoordIdeal y)) (h : Reg
   rwa [valAt_eq hz hv]
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hy, hyg, hz, hzg⟩` from `ha`. Take `⟨d', g', h', hg', hh', hy', hyg', hz', hzg'⟩` from `hb`. Use `⟨d + d', g * g', h * h', ProjLine.mhMul hg hg', ProjLine.mhMul hh hh', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hy hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Rewrite using `[hyg, hyg']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, eval_mul]`. Conclude with `mul_ne_zero hz hz'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, eval_mul]`. Rewrite using `[hzg, hzg']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsValueAt.mul {a b : Ω} {v w : ℂ} (ha : IsValueAt y a z v) (hb : IsValueAt y b z w) :
     IsValueAt y (a * b) z (v * w) := by
@@ -137,13 +135,11 @@ theorem IsValueAt.mul {a b : Ω} {v w : ℂ} (ha : IsValueAt y a z v) (hb : IsVa
     ring
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hy, hyg, hz, hzg⟩` from `ha`. Take `⟨d', g', h', hg', hh', hy', hyg', hz', hzg'⟩` from `hb`. Establish `hd : IsMultiHomog (g' * h) (d + d')`. Rewrite using `[add_comm]`. Conclude with `ProjLine.mhMul hg' hh`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d + d', g * h' + g' * h, h * h', ProjLine.mhAdd (ProjLine.mhMul hg hh') hd, ProjLine.mhMul hh hh', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hy hy'`. Simplify using `only [map_add, map_mul]`. Rewrite using `[hyg, hyg']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, eval_mul]`. Conclude with `mul_ne_zero hz hz'`. Simplify using `only [map_add, map_mul, eval_add, eval_mul]`. Rewrite using `[hzg, hzg']`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem IsValueAt.add {a b : Ω} {v w : ℂ} (ha : IsValueAt y a z v) (hb : IsValueAt y b z w) :
     IsValueAt y (a + b) z (v + w) := by
@@ -166,7 +162,7 @@ theorem IsValueAt.add {a b : Ω} {v w : ℂ} (ha : IsValueAt y a z v) (hb : IsVa
     ring
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hy, hyg, hz, hzg⟩` from `ha`. Use `⟨d, -g, h, ProjLine.mhNeg hg, hh, hy, ?_, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, hyg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_neg, eval_neg, hzg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -179,25 +175,25 @@ theorem IsValueAt.neg {a : Ω} {v : ℂ} (ha : IsValueAt y a z v) : IsValueAt y 
     ring
 
 /- English proof (translation)
-Use `⟨0, C n, 1, isMultiHomog_C n, ProjLine.isMultiHomog_one, by simp, by simp, by simp, by simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isValueAt_intCast (n : ℤ) : IsValueAt y (n : Ω) z (n : ℂ) := by
   refine ⟨0, C n, 1, isMultiHomog_C n, ProjLine.isMultiHomog_one, by simp, by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Simplify using `using isValueAt_intCast (y := y) (z := z) 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isValueAt_one : IsValueAt y (1 : Ω) z 1 := by
   simpa using isValueAt_intCast (y := y) (z := z) 1
 
 /- English proof (translation)
-Simplify using `using isValueAt_intCast (y := y) (z := z) 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isValueAt_zero : IsValueAt y (0 : Ω) z 0 := by
   simpa using isValueAt_intCast (y := y) (z := z) 0
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isValueAt_zero`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsValueAt.sum {σ : Type} (s : Finset σ) {a : σ → Ω} {v : σ → ℂ}
     (h : ∀ i ∈ s, IsValueAt y (a i) z (v i)) : IsValueAt y (∑ i ∈ s, a i) z (∑ i ∈ s, v i) := by
@@ -209,19 +205,19 @@ theorem IsValueAt.sum {σ : Type} (s : Finset σ) {a : σ → Ω} {v : σ → �
     exact (h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ha.choose_spec.mul hb.choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem RegularAt.mul {a b : Ω} (ha : RegularAt y a z) (hb : RegularAt y b z) : RegularAt y (a * b) z :=
   ⟨_, ha.choose_spec.mul hb.choose_spec⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ha.choose_spec.add hb.choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem RegularAt.add {a b : Ω} (ha : RegularAt y a z) (hb : RegularAt y b z) : RegularAt y (a + b) z :=
   ⟨_, ha.choose_spec.add hb.choose_spec⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simpa using isValueAt_zero⟩`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `(h i (Finset.mem_insert_self i s)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RegularAt.sum {σ : Type} (s : Finset σ) {a : σ → Ω} (h : ∀ i ∈ s, RegularAt y (a i) z) :
     RegularAt y (∑ i ∈ s, a i) z := by
@@ -235,7 +231,7 @@ theorem RegularAt.sum {σ : Type} (s : Finset σ) {a : σ → Ω} (h : ∀ i ∈
 omit [Fintype κ] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[eval_map, eval_map, eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eval_conj (f : MRing ι) (z : (Σ k, ι k) → ℂ) :
     eval (fun p => starRingEnd ℂ (z p)) (map (Int.castRingHom ℂ) f) =
@@ -245,7 +241,7 @@ theorem eval_conj (f : MRing ι) (z : (Σ k, ι k) → ℂ) :
   exact RingHom.ext_int _ _
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hy, hyg, hz, hzg⟩` from `ha`. Use `⟨d, g, h, hg, hh, hy, hyg, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_conj]`. Conclude with `(map_ne_zero _).2 hz`. Rewrite using `[eval_conj, eval_conj, hzg, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsValueAt.conj {a : Ω} {v : ℂ} (ha : IsValueAt y a z v) :
     IsValueAt y a (fun p => starRingEnd ℂ (z p)) (starRingEnd ℂ v) := by
@@ -256,9 +252,9 @@ theorem IsValueAt.conj {a : Ω} {v : ℂ} (ha : IsValueAt y a z v) :
   · rw [eval_conj, eval_conj, hzg, map_mul]
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hy, hyg, hz, hzg⟩` from `ha`. Use `⟨d, g, h, hg, hh, hy, hyg, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_smul_homog h d hh]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hs k)) hz`. Rewrite using `[eval_smul_homog h d hh, eval_smul_homog g d hg, hzg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem IsValueAt.smul {a : Ω} {v : ℂ} (s : κ → ℂ) (hs : ∀ k, s k ≠ 0) (ha : IsValueAt y a z v) :
     IsValueAt y a (fun p => s p.1 * z p) v := by
@@ -270,15 +266,13 @@ theorem IsValueAt.smul {a : Ω} {v : ℂ} (s : κ → ℂ) (hs : ∀ k, s k ≠ 
     ring
 
 /- English proof (translation)
-Establish `hden : NumbersDVR.segreVec y c ≠ 0`. Introduce `h0`. Establish `hm` using `mem_mCoordIdeal_of_aeval (y := y) (isMultiHomog_chartMonomial c) (by simpa [NumbersDVR.segreVec] using h0)`. Use `hz.2 _ hm` as an intermediate fact. Simplify using `only [map_prod, map_X, eval_prod, eval_X] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_ne_zero_iff.2 (fun k _ => hc k) this`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨c', rfl⟩` from `hx`. Establish `hz0 : eval z (map (Int.castRingHom ℂ) (∏ k, (X ⟨k, c k⟩ : MRing ι))) ≠ 0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_prod, map_X, eval_prod, eval_X]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Use `⟨eval z (map (Int.castRingHom ℂ) (∏ k, (X ⟨k, c' k⟩ : MRing ι))) / eval z (map (Int.castRingHom ℂ) (∏ k, (X ⟨k, c k⟩ : MRing ι))), fun _ => 1, ∏ k, (X ⟨k, c' k⟩ : MRing ι), ∏ k, (X ⟨k, c k⟩ : MRing ι), isMultiHomog_chartMonomial c', isMultiHomog_chartMonomial c, ?_, ?_, hz0, ?_⟩` and prove the remaining obligations. Simplify `hden` using `[NumbersDVR.segreVec]`. Simplify using `only [map_prod, aeval_X] show NumbersDVR.segreVec y c' = NumbersDVR.segreVec y c' / NumbersDVR.segreVec y c * NumbersDVR.segreVec y c`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_cancel₀ _ hden]`. Rewrite using `[div_mul_cancel₀ _ hz0]`. Consider the case `algebraMap r`. Conclude with `⟨r, by simpa using isValueAt_intCast (y := y) (z := z) r⟩`. Consider the case `add a b _ _ ha hb => exact ha.add hb`.
-
-Consider the case `mul a b _ _ ha hb => exact ha.mul hb`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem regularAt_of_mem_chartRing (hz : z ∈ mcPts (mCoordIdeal y)) {c : ∀ k, ι k}
     (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) {a : Ω} (ha : a ∈ chartRing ℤ (NumbersDVR.segreVec y) c) :

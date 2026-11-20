@@ -5,9 +5,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.FLam
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FixedPointApproximation.exists_fixed`. Consider the case `exact _root_.GlobalTheory.FixedPointApproximation.exists_fixed`. Consider the case `(apply _root_.GlobalTheory.FixedPointApproximation.exists_fixed <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FixedPointApproximation.exists_fixed <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FixedPointApproximation.exists_fixed <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FixedPointApproximation.exists_fixed ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_fixed {B : Type} [CommRing B] (q : B) [h : IsAdicComplete (Ideal.span {q}) B]
     (σ : B →+* B) (hσ : σ q = q) (w : B) : ∃ c : B, c = -w + q * σ c := by
@@ -20,9 +20,9 @@ theorem exists_fixed {B : Type} [CommRing B] (q : B) [h : IsAdicComplete (Ideal.
   | (intros; exact _root_.GlobalTheory.FixedPointApproximation.exists_fixed ..)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(n : B) * hx`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_add_pow_of_sq {B : Type} [CommRing B] (x : B) (hx : x * x = 0) (n : ℕ) :
     (1 + x) ^ n = 1 + n * x := by
@@ -33,7 +33,7 @@ theorem one_add_pow_of_sq {B : Type} [CommRing B] (x : B) (hx : x * x = 0) (n : 
     linear_combination (n : B) * hx
 
 /- English proof (translation)
-Unfold `Sandwich.mu`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, map_sub, map_one, WittVector.map_teichmuller, frobenius_def, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem frobenius_mu (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (ε : PreTilt O p) :
@@ -44,13 +44,13 @@ theorem frobenius_mu (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬Is
   ring
 
 /- English proof (translation)
-Establish `tf : ∀ x : F.B, (p : F.B) * x = 0 → x = 0`. Introduce `x hx`. Establish `h1 : (p : F.Q) * algebraMap F.B F.Q x = 0`. Rewrite using `[← map_natCast (algebraMap F.B F.Q), ← map_mul, hx, map_zero]`. Establish `h2` using `(F.frame.unit_p.mul_right_eq_zero).1 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `F.frame.inj (by rw [h2, map_zero])`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `tf` to reduce the goal to its premises. Establish `e1 : (p : F.B) * F.σ F.τ = F.a (WittVector.frobenius (Sandwich.mu ε))`. Rewrite using `[← F.σ_a, ← F.p_τ, map_mul, map_natCast]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : F.a (WittVector.frobenius (Sandwich.mu ε)) = p * (p * F.τ)`. Establish `hsq : (p * F.τ) * (p * F.τ) = 0`. Rewrite using `[show (p : F.B) * F.τ * (p * F.τ) = p * p * (F.τ * F.τ) by ring, F.τ_sq, mul_zero]`. Rewrite using `[frobenius_mu, map_sub, map_pow, map_add, map_one, ← F.p_τ, add_comm, one_add_pow_of_sq _ hsq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_sub, e1, e2, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem σ_τ {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] {ε : PreTilt O p} (F : BFrame ε) :
@@ -78,9 +78,9 @@ end GlobalTheory.FLam
 open GlobalTheory.FLam in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ ε _ F u hu`. Take `⟨w, hw⟩` from `hu`. Use `haveI : IsAdicComplete (Ideal.span {(p : F.B)}) F.B := F.frame.complete`. Take `⟨c, hc⟩` from `exists_fixed (p : F.B) F.σ (map_natCast F.σ p) w`. Use `⟨1 + F.τ * c, ⟨c, by ring⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu' : u = 1 + F.τ * w` using `by rw [← hw]; ring`. Rewrite using `[map_add, map_one, map_mul, σ_τ, hu']`. Establish `hτ` using `F.τ_sq`. Take the linear combination `(-(w * c)) * hτ - F.τ * hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FLam.exists_lam : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ u : F.B, F.τ ∣ u - 1 → ∃ l : F.B, F.τ ∣ l - 1 ∧ F.σ l = u * l := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ ε _ F u hu

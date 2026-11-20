@@ -23,9 +23,7 @@ variable (hσ : IsKFinite σ) {c : Submodule (MonoidAlgebra ℂ K) σ.asModule}
   (hc : c ∈ isotypicComponents (MonoidAlgebra ℂ K) σ.asModule)
 
 /- English proof (translation)
-Use `haveI := isSemisimpleModule_asModule hσ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: isoProj hc (v : σ.asModule) ∈ c` using `isoProj_mem_isotypicComponent hc _`. Conclude with `h ▸ this`.
-
-Introduce `h`. Conclude with `isoProj_apply_of_mem hc h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kProj_apply_eq_self_iff {v : X} : kProj hσ hc v = v ↔ (v : σ.asModule) ∈ c := by
   haveI := isSemisimpleModule_asModule hσ
@@ -37,20 +35,20 @@ theorem kProj_apply_eq_self_iff {v : X} : kProj hσ hc v = v ↔ (v : σ.asModul
     exact isoProj_apply_of_mem hc h
 
 /- English proof (translation)
-Use `haveI := isSemisimpleModule_asModule hσ`. Conclude with `isoProj_mem_isotypicComponent hc _`.
+A detailed English derivation is pending.
 -/
 theorem kProj_mem_component (v : X) : (kProj hσ hc v : σ.asModule) ∈ c := by
   haveI := isSemisimpleModule_asModule hσ
   exact isoProj_mem_isotypicComponent hc _
 
 /- English proof (translation)
-The claim follows from `(kProj_apply_eq_self_iff hσ hc).2 (kProj_mem_component hσ hc v)`.
+A detailed English derivation is pending.
 -/
 theorem kProj_kProj (v : X) : kProj hσ hc (kProj hσ hc v) = kProj hσ hc v :=
   (kProj_apply_eq_self_iff hσ hc).2 (kProj_mem_component hσ hc v)
 
 /- English proof (translation)
-Use `haveI := isSemisimpleModule_asModule hσ`. Use `show σ.asModuleEquiv (isoProj hc (σ.asModuleEquiv.symm (σ k v))) = σ k (σ.asModuleEquiv (isoProj hc (σ.asModuleEquiv.symm v)))`. Rewrite using `[Representation.asModuleEquiv_symm_map_rho, map_smul, Representation.asModuleEquiv_map_smul, MonoidAlgebra.of_apply, Representation.asAlgebraHom_single_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kProj_σ (k : K) (v : X) : kProj hσ hc (σ k v) = σ k (kProj hσ hc v) := by
   haveI := isSemisimpleModule_asModule hσ
@@ -60,7 +58,7 @@ theorem kProj_σ (k : K) (v : X) : kProj hσ hc (σ k v) = σ k (kProj hσ hc v)
     MonoidAlgebra.of_apply, Representation.asAlgebraHom_single_one]
 
 /- English proof (translation)
-Use `haveI := isSemisimpleModule_asModule hσ`. Set `f : Representation.IntertwiningMap σ σ` to `⟨T, hT⟩`. Conclude with `isoProj_comm hc (Representation.IntertwiningMap.equivLinearMapAsModule σ σ f) v`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem kProj_comm {T : End ℂ X} (hT : ∀ k, T * σ k = σ k * T) (v : X) :
     kProj hσ hc (T v) = T (kProj hσ hc v) := by
@@ -69,7 +67,7 @@ theorem kProj_comm {T : End ℂ X} (hT : ∀ k, T * σ k = σ k * T) (v : X) :
   exact isoProj_comm hc (Representation.IntertwiningMap.equivLinearMapAsModule σ σ f) v
 
 /- English proof (translation)
-Use `haveI := isSemisimpleModule_asModule hσ`. Set `P : Subrepresentation σ` to `⟨Y, fun k y hy => hY k y hy⟩`. Conclude with `isoProj_mem hc (Subrepresentation.subrepresentationSubmoduleOrderIso P) hy`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem kProj_mem {Y : Submodule ℂ X} (hY : ∀ k, ∀ y ∈ Y, σ k y ∈ Y) {y : X} (hy : y ∈ Y) :
     kProj hσ hc y ∈ Y := by
@@ -78,7 +76,7 @@ theorem kProj_mem {Y : Submodule ℂ X} (hY : ∀ k, ∀ y ∈ Y, σ k y ∈ Y) 
   exact isoProj_mem hc (Subrepresentation.subrepresentationSubmoduleOrderIso P) hy
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨kProj_kProj hσ hc, fun Y _ hy => kProj_mem hσ hc (hsub Y) hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem isWinProj_kProj {M : Type*} [Monoid M] {ρ : Representation ℂ M X}
     (hsub : ∀ Y : Subrepresentation ρ, ∀ k, ∀ y ∈ Y.toSubmodule, σ k y ∈ Y.toSubmodule) :
@@ -86,13 +84,11 @@ theorem isWinProj_kProj {M : Type*} [Monoid M] {ρ : Representation ℂ M X}
   ⟨kProj_kProj hσ hc, fun Y _ hy => kProj_mem hσ hc (hsub Y) hy⟩
 
 /- English proof (translation)
-Use `haveI := isSemisimpleModule_asModule hσ`. Set `P : Subrepresentation σ` to `⟨Y, fun k y hy => hY k y hy⟩`. Use `set N := Subrepresentation.subrepresentationSubmoduleOrderIso P`. Establish `hN0 : N ≠ ⊥`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hY0` to reduce the goal to its premises. Establish `: P = ⊥`. Use `congrArg (Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := σ)).symm h` as an intermediate fact. Rewrite `this` using `[OrderIso.symm_apply_apply, OrderIso.map_bot]`. Then use the resulting hypothesis. Use `congrArg Subrepresentation.toSubmodule this` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨S, hSatom, hSN⟩` from `(eq_bot_or_exists_atom_le N).resolve_left hN0`. Establish `hS : IsSimpleModule (MonoidAlgebra ℂ K) S` using `(isSimpleModule_iff_isAtom).2 hSatom`. Take `⟨s, hs, hs0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hSatom.1`. Use `⟨isotypicComponent (MonoidAlgebra ℂ K) σ.asModule S, ⟨S, hS, rfl⟩, s, hSN hs, hs0, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(kProj_apply_eq_self_iff hσ _).2 (Submodule.le_isotypicComponent S hs)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_kProj_eq_self {Y : Submodule ℂ X} (hY : ∀ k, ∀ y ∈ Y, σ k y ∈ Y) (hY0 : Y ≠ ⊥) :
     ∃ (c : Submodule (MonoidAlgebra ℂ K) σ.asModule)

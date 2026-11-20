@@ -8,7 +8,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hT E Ω _ _ _ _ _ _ n hn π Y hY A v w h h' g _ i hi hI τ τ' hτ hτ' hM f hf hs s hS`. Take `⟨c, d, hd, θ, hpos, hθ, hv⟩` from `hT E Ω n hn π Y hY A v w h h' g i hi hI τ τ' hτ hτ' hM f hf hs`. Use `haveI : CharZero (w.adicCompletion Y.K) := charZero_of_injective_algebraMap (algebraMap Y.K _).injective`. Conclude with `UpperTheory.Gal.TypesAndIwahori.unlinked_of_typeVec _ n c d hd hpos _ τ'.ρ τ'.smooth τ'.irred (GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp Y.K n Y.π w τ' hτ') θ hθ hv s hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.mixUnlinked : MixType → MixUnlinked := by
   intro hT E Ω _ _ _ _ _ _ n hn π Y hY A v w h h' g _ i hi hI τ τ' hτ hτ' hM f hf hs s hS

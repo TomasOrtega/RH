@@ -13,7 +13,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 
 /- English proof (translation)
-Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]`. Conclude with `(spectralNorm_eq_of_equiv τ x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CommonReading.norm_aut {l : ℕ} [Fact l.Prime] (τ : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (x : PadicAlgCl l) :
     ‖τ x‖ = ‖x‖ := by
@@ -21,7 +21,7 @@ theorem GlobalTheory.CommonReading.norm_aut {l : ℕ} [Fact l.Prime] (τ : Padic
   exact (spectralNorm_eq_of_equiv τ x).symm
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CommonReading.norm_aut, ← PadicAlgCl.valuation_coe]`. Conclude with `x.2.2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CommonReading.norm_aut_le {l : ℕ} [Fact l.Prime] (τ : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)
     (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (x : Formalism.L2.TwC.intOf l K) : ‖τ x‖ ≤ 1 := by
@@ -38,11 +38,9 @@ def Reads (D : D7) (C : NChoice D) (w : D.what₂.places.Pl) {Λ : Type} [Field 
     ∀ x : D.what₂.LL, τ (e x) = ι (C.embW w x)
 
 /- English proof (translation)
-Substitute `hl` using the available equality. Use `haveI := C.Oe_fin w`. Take `⟨σ, ι, h1, h2⟩` from `GlobalTheory.CommonReading.exists_common (C.Oe_inj w) ((Subring.subtype _).comp (F.eOk (C.twI w) (C.k' w)).toRingHom) (Subtype.val_injective.comp (F.eOk (C.twI w) (C.k' w)).injective) (fun y => (F.eOk (C.twI w) (C.k' w) y).2.2) (C.embW w) e fun x => (C.embW_w w x).symm.trans (he …`. Use `⟨σ.symm.toAlgHom.toRingHom.comp ((Subring.subtype _).comp (F.eO0 (C.twI w)).toRingHom), ⟨ℂ_[D.ntw.l (C.twI w)], inferInstance, (algebraMap (PadicAlgCl (D.ntw.l (C.twI w))) ℂ_[D.ntw.l (C.twI w)]).comp σ.toAlgHom.toRingHom, ι, fun y => ?_, fun x => (h2 x).symm⟩, fun y => ?_, ⟨(F.K0 …` and prove the remaining obligations. Rewrite using `[h1]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((hF.eOk_alg _ _ _).trans (hF.eO_alg _ y)).symm` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.CommonReading.norm_aut_le σ.symm _ (F.eO0 (C.twI w) y)`. Use `haveI := (F.K0 (C.twI w)).2`. Conclude with `LinearEquiv.finiteDimensional (IntermediateField.equivMap _ σ.symm.toAlgHom).toLinearEquiv`.
-
-Introduce and unpack `z _ ⟨⟩`. Express the relevant statement in the definitionally equal form `σ.symm (F.eO0 (C.twI w) _ : PadicAlgCl _) = _`. Rewrite using `[hF.ringSpec_baseIntegersEquiv_algebraMap, AlgEquiv.commutes]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reads (D : D7) (C : NChoice D) (F : TwFrameC D) {low : Finset ℕ} (hF : TwistFrameLowIndexCompatibility D F low) (w : D.what₂.places.Pl)
     (l : ℕ) [Fact l.Prime] (hl : D.ntw.l (C.twI w) = l) (e : D.what₂.LL →+* PadicAlgCl l)
@@ -72,9 +70,9 @@ theorem exists_reads (D : D7) (C : NChoice D) (F : TwFrameC D) {low : Finset ℕ
     rw [hF.ringSpec_baseIntegersEquiv_algebraMap, AlgEquiv.commutes]
 
 /- English proof (translation)
-Take `⟨Ω, _, τ, ι, h1, h2⟩` from `h`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h1, h2, hC.emb_side w hw x]`. Establish `: (if C.sd w then D.ntw.emb0 (C.twI w) x else D.ntw.emb0b (C.twI w) x) = algebraMap _ (FractionRing (D.ntw.O0 (C.twI w))) y`. Apply the tactic sequence `rw [hy]; split_ifs <;> rfl`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, fracOe, IsFractionRing.map, IsLocalization.map_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Reads.emb {D : D7} {C : NChoice D} (hC : ChoiceC D C) {w : D.what₂.places.Pl} (hw : TwistedAt D w) {Λ : Type} [Field Λ]
     {e : D.what₂.LL →+* Λ} {φ : D.ntw.O0 (C.twI w) →+* Λ} (h : Reads D C w e φ) (x : D.LL0) (y : D.ntw.O0 (C.twI w))
@@ -90,7 +88,7 @@ theorem Reads.emb {D : D7} {C : NChoice D} (hC : ChoiceC D C) {w : D.what₂.pla
   rfl
 
 /- English proof (translation)
-The claim follows from `let ⟨Ω, i, τ, ι, h1, h2⟩ := h ⟨Ω, i, τ.comp q, ι, h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem Reads.of_comp {D : D7} {C : NChoice D} {w : D.what₂.places.Pl} {Λ Λ' : Type} [Field Λ] [Field Λ'] (q : Λ →+* Λ')
     {e : D.what₂.LL →+* Λ} {φ : D.ntw.O0 (C.twI w) →+* Λ} (h : Reads D C w (q.comp e) (q.comp φ)) : Reads D C w e φ :=
@@ -108,13 +106,13 @@ def TwReads {D : D7} (C : NChoice D) (X : LocNd (lay0 D)) (T : LocTw X) : Prop :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem oneField_withLoc {D : D7} (L : LocAll (lay0 D)) (C : NChoice D) :
     OneField (withLoc L) (chL L C) ↔ TwReads C L.X L.T := Iff.rfl
 
 /- English proof (translation)
-Introduce `F`. Rewrite using `[← map_eq_zero_iff j₁ h₁, ← map_eq_zero_iff j₂ h₂]`. Simplify using `only [Finsupp.sum, map_sum, map_mul, hf, hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sameChar_of_inj {O₀ O₁ O₂ Γ Ω : Type} [CommRing O₀] [CommRing O₁] [CommRing O₂] [Group Γ] [CommRing Ω]
     (f₁ : O₀ →+* O₁) (f₂ : O₀ →+* O₂) (ψ₁ : Γ →* O₁ˣ) (ψ₂ : Γ →* O₂ˣ) (j₁ : O₁ →+* Ω) (j₂ : O₂ →+* Ω)
@@ -125,9 +123,9 @@ theorem sameChar_of_inj {O₀ O₁ O₂ Γ Ω : Type} [CommRing O₀] [CommRing 
   simp only [Finsupp.sum, map_sum, map_mul, hf, hψ]
 
 /- English proof (translation)
-Introduce `a`. Take `⟨f, hf, Ω, _, ιA, ιB, h1, h2⟩` from `h a`. Take `⟨ψ0, -, hw, hl⟩` from `hT.psi_eq`. Use `(GlobalTheory.PtCore.sameTwistAt_iff D a _ _ _).2 ⟨hT.twOf_eq a, f, hf, ?_⟩` and prove the remaining obligations. Use `sameChar_of_inj _ _ _ _ (ιA.comp (algebraMap (D.nd.O a) (FractionRing (D.nd.O a)))) (ιB.comp ((algebraMap (C.Oe (D.nd.w a)) (FractionRing (C.Oe (D.nd.w a)))).comp (algebraMap (D.ntw.Ok (C.twI (D.nd.w a)) (C.k' (D.nd.w a))) (C.Oe (D.nd.w a))))) (ιA.injective.comp (IsFractionRing.i …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2 ((ψ0 (D.nd.w a) g : (D.what₂.LL)ˣ) : D.what₂.LL)` as an intermediate fact. Rewrite `this` using `[hl, hw]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameTwist_of_oneField (D : D7) (C : NChoice D) (hT : NChTie D C) (h : OneField D C) : GlobalTheory.PtCore.SameTwist D C := by
   intro a

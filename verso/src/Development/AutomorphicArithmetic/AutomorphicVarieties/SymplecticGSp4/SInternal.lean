@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Establish `h` using `(W.A.val.toLinearMap.iSupIndep_map Subtype.val_injective (gr_internal O X R W).submodule_iSupIndep)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Rewrite using `[WPres.gr, Submodule.map_comap_eq, eq_comm, inf_eq_right]`. Introduce `x hx`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨x, W.part_le_A hx⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem part_indep {O X R : Type} [CommRing O] [AddCommGroup X] [DecidableEq X] [CommRing R] [Algebra O R]
     (W : WPres O X R) : iSupIndep W.part := by
@@ -21,11 +21,11 @@ private theorem part_indep {O X R : Type} [CommRing O] [AddCommGroup X] [Decidab
   exact ⟨⟨x, W.part_le_A hx⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `congrArg (Subalgebra.map W.A.val) (gr_gen O R X W)`. Rewrite `h` using `[AlgHom.map_adjoin, Algebra.map_top, Subalgebra.range_val]`. Rewrite using `[← h]`. Use `congr 1`. Rewrite using `[Set.image_union]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨⟨x, W.part_le_A hx⟩, hx, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Use extensionality with `x`. Simplify using `[WPres.zA, WPres.z]`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem part_gen {O X R : Type} [CommRing O] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     [CommRing R] [Algebra O R] (W : WPres O X R) :
@@ -46,15 +46,15 @@ private theorem part_gen {O X R : Type} [CommRing O] [AddCommGroup X] [Module.Fr
     simp [WPres.zA, WPres.z]
 
 /- English proof (translation)
-Establish `hz : ∀ i, W.z i ∈ maximalIdeal R`. Introduce `i`. Set `ψ : R →+* ResidueField O` to `(IsLocalRing.residue O).comp (W.origin org).toRingHom`. Establish `hψ : Function.Surjective ψ`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Conclude with `⟨algebraMap O R a, by simp [ψ]⟩`. Establish `heq : RingHom.ker ψ = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective ψ hψ)`. Rewrite using `[← heq, RingHom.mem_ker]`. Simplify using `[ψ, WPres.z, WPres.origin_π]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hhom : IsHomog O W.wt (RingHom.ker (π.comp W.π))`. Establish `h` using `(homog_span O R X W κ (fun i => ⟨g i, W.part_le_A (hg i)⟩) c (fun i => Submodule.mem_comap.mpr (hg i))).1`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `f`. Rewrite using `[RingHom.mem_ker, Ideal.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show π (W.π f) = 0 ↔ W.π f ∈ Ideal.span (Set.range g)`. Rewrite using `[← ker, RingHom.mem_ker]`. Use `⟨W.quot π surj hhom, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Conclude with `Submodule.map_comp W.π.toLinearMap π.toLinearMap (wtPart O W.wt w)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i show π (W.z i) ∈ maximalIdeal S`. Rewrite using `[← res_eq_zero_iff O S, res_map, res_eq_zero_iff]`. Conclude with `hz i`.
+A detailed English derivation is pending.
 -/
 private theorem quot_pres {O X R S : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] [AddCommGroup X] [DecidableEq X] [CommRing R] [Algebra O R] [IsCO O R]
@@ -90,15 +90,15 @@ private theorem quot_pres {O X R S : Type} [CommRing O] [IsLocalRing O] [IsNoeth
     exact hz i
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D _ M`. Set `g : Fin (M.r + 1) ⊕ Fin M.r' ⊕ Fin M.m → M.R` to `Sum.elim M.F (Sum.elim M.E M.Z)`. Set `cw : Fin (M.r + 1) ⊕ Fin M.r' ⊕ Fin M.m → ℤ × ℤ` to `Sum.elim (fun _ => -wPs) (Sum.elim (fun _ => wPs) (fun _ => 0))`. Establish `hg : ∀ i, g i ∈ M.W.part (cw i)`. Introduce and unpack `(i | i | i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `M.hF i`. Conclude with `M.hE i`. Conclude with `(M.hZ i).1`. Establish `hker : RingHom.ker M.π = Ideal.span (Set.range g)`. Rewrite using `[M.ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [g, Set.Sum.elim_range, Set.union_assoc]`. Take `⟨WS, hpart, hzm⟩` from `quot_pres M.W M.org M.π M.surj g cw hg hker`. Establish `hp : WS.part = M.sPart` using `funext hpart`. Establish `hA : WS.A = M.SS`. Unfold `WPres.A Model.SS`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Reduce the equality to equality of the corresponding arguments. Use `haveI := WS.fin`. Use `⟨by rw [← hp]; exact part_indep WS, ⟨Finset.univ.image WS.z, ?_, ?_⟩, WS, hpart, hzm⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `⟨WS.wt i, by rw [← hp]; exact WS.z_mem i⟩`. Rewrite using `[← hA, ← part_gen WS, ← hp]`. Use `congr 2`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.sInternal :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, iSupIndep M.sPart ∧ (∃ s : Finset M.S, (∀ x ∈ s, ∃ w, x ∈ M.sPart w) ∧ Algebra.adjoin c.O ((M.sPart 0 : Set M.S) ∪ s) = M.SS) ∧ ∃ WS : WPres c.O (ℤ × ℤ) M.S, (∀ w, WS.part w = M.sPart w) ∧ ∀ i, WS.z i ∈ maximalIdeal M.S := by

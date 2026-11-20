@@ -23,7 +23,7 @@ def subrepCompOrderIso {G : Type*} [Group G] {V : Type*} [AddCommGroup V] [Modul
   map_rel_iff' := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(OrderIso.isSimpleOrder_iff (subrepCompOrderIso ρ α)).2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp {G : Type*} [Group G] {V : Type*} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) [ρ.IsIrreducible] (α : G ≃* G) :
@@ -31,7 +31,7 @@ theorem isIrreducible_comp {G : Type*} [Group G] {V : Type*} [AddCommGroup V] [M
   (OrderIso.isSimpleOrder_iff (subrepCompOrderIso ρ α)).2 inferInstance
 
 /- English proof (translation)
-The claim follows from `_root_.GroundTheory.Variant₂.N1.map_thetaT_eq_self μ`.
+A detailed English derivation is pending.
 -/
 theorem map_thetaT_eq [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] :
@@ -39,11 +39,11 @@ theorem map_thetaT_eq [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F
   _root_.GroundTheory.Variant₂.N1.map_thetaT_eq_self μ
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (GL (Fin n) F)` to `_root_.borel _`. Establish `: BorelSpace (GL (Fin n) F)` using `⟨rfl⟩`. Use `set μ : Measure (GL (Fin n) F) := haar`. Establish `: μ.IsMulRightInvariant` using `Measures.isMulRightInvariant_GL F n μ`. Establish `: μ.IsInvInvariant` using `⟨Measures.inv_eq_self_GL F n μ⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (thetaT : GL (Fin n) F ≃* GL (Fin n) F)` using `continuous_thetaT`. Establish `hc' : Continuous (thetaT : GL (Fin n) F ≃* GL (Fin n) F).symm` using `continuous_thetaT`. Use `isIrreducible_contragredient hπ` as an intermediate fact. Use `isIrreducible_comp π (thetaT : GL (Fin n) F ≃* GL (Fin n) F)` as an intermediate fact. Use `nonempty_equiv_of_distChar_eq (μ := μ) (isAdmissible_contragredient hπ) (isAdmissible_comp _ hc hc' hπ) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Rewrite using `[distChar_contragredient, distChar_comp μ _ hc hc' (map_thetaT_eq μ) hπ]`. Establish `e : compHomeoL (mulEquivHomeo (thetaT : GL (Fin n) F ≃* GL (Fin n) F) hc hc').symm f = compHomeoL transposeHomeo (compHomeoL (Homeomorph.inv (GL (Fin n) F)) f)` using `Subtype.ext (funext fun x => rfl)`. Rewrite using `[e, distribution_transpose_invariant (distChar μ π hπ) (fun g f => distChar_biTranslL μ hπ g f)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_contragredient {V : Type*} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) F) V) (hπ : IsAdmissible π) [π.IsIrreducible] :
@@ -71,7 +71,7 @@ noncomputable def longestWeyl : GL (Fin n) F := permGL F (Fin.revPerm (n := n))
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Rewrite using `[longestWeyl, ← map_mul]`. Establish `: (Fin.revPerm (n` using `n)) * Fin.revPerm = 1 := Equiv.ext fun i => by simp`. Rewrite using `[this, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem longestWeyl_mul_self : (longestWeyl : GL (Fin n) F) * longestWeyl = 1 := by
   rw [longestWeyl, ← map_mul]
@@ -81,7 +81,7 @@ theorem longestWeyl_mul_self : (longestWeyl : GL (Fin n) F) * longestWeyl = 1 :=
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Establish `hs : sigma g = longestWeyl * transposeGL g * longestWeyl` using `Units.ext (by rw [coe_sigma, sigmaMat_eq, Units.val_mul, Units.val_mul, coe_transposeGL]; rfl)`. Establish `hw : (longestWeyl : GL (Fin n) F)⁻¹ = longestWeyl` using `inv_eq_of_mul_eq_one_right longestWeyl_mul_self`. Rewrite using `[theta, hs, thetaT_apply]`. Simplify using `only [_root_.mul_inv_rev, hw, mul_assoc, longestWeyl_mul_self, mul_one]`. Rewrite using `[← mul_assoc, longestWeyl_mul_self, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaT_eq_longestWeyl (g : GL (Fin n) F) :
     thetaT g = longestWeyl * theta g * longestWeyl := by
@@ -94,17 +94,17 @@ theorem thetaT_eq_longestWeyl (g : GL (Fin n) F) :
   rw [← mul_assoc, longestWeyl_mul_self, one_mul]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : equivariantFunctionals π (fun u : Iwasawa.unipotent F n => psiN ψ₀ (u : GL (Fin n) F)) = ⊥`. Rewrite using `[h0, rank_bot]`. Conclude with `zero_le_one`. Use `rank_whittaker_le_one_of_contragredient ψ₀ hψ hψ₁ π hπ ?_` and prove the remaining obligations. Take `⟨ℓ, hℓ, hℓ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E⟩` from `nonempty_equiv_contragredient π hπ`. Use `set w₀ : GL (Fin n) F := longestWeyl`. Set `ℓ' : Module.Dual ℂ (smoothVectors (Representation.dual π))` to `ℓ ∘ₗ π w₀ ∘ₗ E.toLinearEquiv.toLinearMap`. Establish `hℓ' : ∀ x, ℓ' x = ℓ (π w₀ (E.toLinearEquiv x))` using `fun _ => rfl`. Establish `hmem : ℓ' ∈ equivariantFunctionals (contragredient π) (fun u : Iwasawa.unipotent F n => (psiN ψ₀ (u : GL (Fin n) F))⁻¹)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u x`. Rewrite using `[hℓ', hℓ', Representation.Equiv.toLinearEquiv_apply, E.toIntertwiningMap.isIntertwining, ← Representation.Equiv.toLinearEquiv_apply]`. Simplify using `only [MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom, Function.comp_apply]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, thetaT_eq_longestWeyl]`. Establish `e : w₀ * (longestWeyl * theta (u : GL (Fin n) F) * longestWeyl) = theta (u : GL (Fin n) F) * w₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [w₀, ← mul_assoc, longestWeyl_mul_self, one_mul]`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Use `hℓ ⟨theta (u : GL (Fin n) F), theta_mem_unipotent u.2⟩ (π w₀ (E.toLinearEquiv x))` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, psiN_theta ψ₀ u.2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hbot`. Rewrite `hmem` using `[hbot]`. Establish `h0' : ℓ' = 0` using `(Submodule.mem_bot ℂ).1 hmem`. Apply `hℓ0` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun φ : Module.Dual ℂ (smoothVectors (Representation.dual π)) => φ (E.toLinearEquiv.symm (π w₀ v))) h0'` as an intermediate fact. Simplify using `only [hℓ', LinearEquiv.apply_symm_apply, LinearMap.zero_apply] at this`. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, longestWeyl_mul_self, map_one, Module.End.one_apply]`. Rewrite using `[this, LinearMap.zero_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_whittaker_le_one (ψ₀ : AddChar F ℂ) (hψ : Continuous ψ₀) (hψ₁ : ψ₀ ≠ 1)
     {V : Type*} [AddCommGroup V] [Module ℂ V]

@@ -6,9 +6,9 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 namespace GlobalTheory.KZ.ES
 
 /- English proof (translation)
-Establish `hmm : 0 < (m * m').det` using `by rw [Matrix.det_mul]; exact mul_pos h h'`. Unfold `toGQ`. Rewrite using `[dif_pos hmm, dif_pos h, dif_pos h']`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Matrix.GeneralLinearGroup.mkOfDetNeZero, Units.val_mul] at *`. Conclude with `Matrix.map_mul (f := Int.castRingHom ℚ)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toGQ_mul_pos' (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' : 0 < m'.det) :
     toGQ (m * m') = toGQ m * toGQ m' := by
@@ -21,9 +21,9 @@ theorem toGQ_mul_pos' (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' : 
   exact Matrix.map_mul (f := Int.castRingHom ℚ)
 
 /- English proof (translation)
-Set `γ : SL(2, ℤ)` to `⟨!![1, ((t * M : ℕ) : ℤ); 0, 1], by simp [Matrix.det_fin_two]⟩`. Establish `hγ : γ ∈ CongruenceSubgroup.Gamma M`. Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[γ]`. Establish `e : toGQ !![1, ((t * M : ℕ) : ℤ); 0, 1] = ofSL γ` using `Betti.toGQ_sl γ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hf γ hγ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sl_trans_of_lev {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (M : ℕ) (f : X.K)
     (hf : Lev X M f) (t : ℕ) : X.sl (toGQ !![1, ((t * M : ℕ) : ℤ); 0, 1]) f = f := by
@@ -35,21 +35,19 @@ theorem sl_trans_of_lev {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* �
   rw [e]; exact hf γ hγ
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X M M' q f hq hdvd hcop hlev`. Take `⟨e, rfl⟩` from `hdvd`. Establish `hqe : Nat.Coprime q e` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left e M) hcop`. Use `set g : ℕ → X.K := fun i => X.sl (toGQ !![1, ((i : ℤ) * (M : ℤ)); 0, (q : ℤ)]) f with hg`. Establish `step : ∀ j : ℕ, X.sl (toGQ !![1, ((j : ℤ) * ((M * e : ℕ) : ℤ)); 0, (q : ℤ)]) f = g (j * e % q)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `hm : !![1, ((j : ℤ) * ((M * e : ℕ) : ℤ)); 0, (q : ℤ)] = !![1, (((j * e / q) * M : ℕ) : ℤ); 0, 1] * !![1, (((j * e % q : ℕ) : ℤ) * (M : ℤ)); 0, (q : ℤ)]`. Establish `hd` using `Nat.mod_add_div (j * e) q`. Generalize the expression as in `j * e % q = a at hd ⊢`. Generalize the expression as in `j * e / q = b at hd ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hdz : (a : ℤ) + (q : ℤ) * (b : ℤ) = (j : ℤ) * (e : ℤ)` using `by exact_mod_cast hd`. Apply the tactic sequence `ext i k; fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `(M : ℤ) * hdz.symm`. Establish `h1 : (0 : ℤ) < (!![1, (((j * e / q) * M : ℕ) : ℤ); 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`.
+Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℤ) < (!![1, (((j * e % q : ℕ) : ℤ) * (M : ℤ)); 0, (q : ℤ)] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hq` after adjusting the coercions. Rewrite using `[hm, toGQ_mul_pos' _ _ h1 h2, X.sl_mul, sl_trans_of_lev X M f hlev]`. Establish `hinj : Set.InjOn (fun j => j * e % q) (Finset.range q : Set ℕ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a ha b hb hab`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`. Establish `h' : a * e ≡ b * e [MOD q]` using `hab`. Use `Nat.ModEq.cancel_right_of_coprime (by simpa [Nat.gcd_comm] using hqe) h'` as an intermediate fact. Simplify `this` using `[Nat.ModEq, Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `himg : (Finset.range q).image (fun j => j * e % q) = Finset.range q`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_image, Finset.mem_range] at hx ⊢`. Take `⟨j, _, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.mod_lt _ hq`. Rewrite using `[Finset.card_image_of_injOn hinj]`. Unfold `Nq`. Repeatedly rewrite using `[step]`. Use `show ∏ j ∈ Finset.range q, g j = _`.
-
-Rewrite using `[← Finset.prod_image (f := g) hinj, himg]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Nq_eq_of_dvd : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     ∀ (M M' q : ℕ) (f : X.K), 0 < q → M ∣ M' → Nat.Coprime q M' → Lev X M f → Nq X M q f = Nq X M' q f := by

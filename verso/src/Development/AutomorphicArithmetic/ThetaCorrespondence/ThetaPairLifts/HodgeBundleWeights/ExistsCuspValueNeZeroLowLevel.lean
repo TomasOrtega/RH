@@ -21,9 +21,9 @@ set_option synthInstance.maxHeartbeats 400000
 noncomputable section
 namespace GlobalTheory.CovTop.LowNonzero
 /- English proof (translation)
-Establish `hP1` using `_root_.GlobalTheory.T.covering_topology_refinement hP`. Take `⟨TF⟩` from `_root_.GlobalTheory.T.torFlag_nonempty_of_one_le_dimFlag hP1 _ _ _ _ Y.d.Xo₂ Y.d.c₂ hD`. Establish `hfree` using `_root_.GlobalTheory.T.hodge_bundle_base_point_free_on_open hP1 hG hQ hP.q15 hP.q16 hS hT hN _ _ _ _ _ _ TF Z _ Y.U hY.geo hD _ hla ⟨GlobalTheory.T.cuspForms_extend_vanish_compactifiedFlagSpace _ _ _ Y _ _ hY hf Z TF _, vanBd_le_space _ _ _ Y _ _ hY hf Z TF _⟩`. Use `haveI := (GlobalTheory.T.flagSpace_component_smooth_projective_connected _ _ _ _ _ _ TF Z hY.geo).2.2`. Use `haveI : ConnectedSpace (Y₀ TF.X Z) := GeometricallyConnected.connectedSpace_of_subsingleton (str₀ TF.X Z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, hs0⟩` from `ne_zero_of_noBase hfree (dense_U₀ TF.X Z).nonempty`. Use `⟨(ofSpace TF.X Z Y.U _ ⟨s, hs⟩).1, (ofSpace TF.X Z Y.U _ ⟨s, hs⟩).2, fun h0 => hs0 ?_⟩` and prove the remaining obligations. Establish `h1 : ofSpace TF.X Z Y.U _ ⟨s, hs⟩ = 0` using `Subtype.ext h0`. Conclude with `congrArg Subtype.val (ofSpace_injective TF.X Z Y.U _ (h1.trans (map_zero _).symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cusp_value_ne_zero_low_level (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted)
     (hS : GlobalTheory.Published.SiegelToroidalIntegral) (hT : GlobalTheory.Published.ToroidalChartsForFan)
@@ -43,13 +43,13 @@ theorem exists_cusp_value_ne_zero_low_level (hP : _root_.GlobalTheory.CovTop.Pub
   have h1 : ofSpace TF.X Z Y.U _ ⟨s, hs⟩ = 0 := Subtype.ext h0
   exact congrArg Subtype.val (ofSpace_injective TF.X Z Y.U _ (h1.trans (map_zero _).symm))
 /- English proof (translation)
-Introduce `hP hG hQ hS hT hN`. Establish `R` using `GlobalTheory.T.weight_conditions_at_index`. Establish `W` using `GlobalTheory.T.weight_parameter_strict_antitone GlobalTheory.CovTop.SizeRows.size`. Establish `B` using `wtBig_run`. Unfold `Covers Lifts at *`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(R.and (W.and B)).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩, ⟨C3, h3, e3⟩⟩` from `h`. Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and (e2.and e3)`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hA, hB, hC⟩` from `hx0 x hx hle ι p hp`. Take `⟨hL, -, -, hf, hj, -⟩` from `hA i hi`. Take `⟨-, -, -, -, -, ⟨w, -, hw⟩, -⟩` from `hB i hi`. Establish `hbig` using `hC i hi`. Take `⟨Z⟩` from `GlobalTheory.CovTop.good_comp_nonempty _ p.T hL _ hj Y _ _ hY.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Z, _root_.GlobalTheory.CovTop.LowNonzero.exists_cusp_value_ne_zero_low_level hP hG hQ hS hT hN Y hY.1 hf hbig.one_le Z _ ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `gapGe_wt_add_parWt _ hbig _ w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nonzero_cusp_form_uM_of_charts : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → Covers fun Fm x _ ι p i Y _ _ => ∃ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ f ∈ cuspOn Y.U Z (wtOf (dat p i) (uM p i) 0), f ≠ 0 := by
   intro hP hG hQ hS hT hN
@@ -86,7 +86,7 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.LowNonzero.exists_nonzero_cusp_form_uM_of_charts | exact _root_.GlobalTheory.CovTop.LowNonzero.exists_nonzero_cusp_form_uM_of_charts | (intros; apply _root_.GlobalTheory.CovTop.LowNonzero.exists_nonzero_cusp_form_uM_of_charts <;> assumpti …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_nonzero_cusp_form_of_fan_charts : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → Covers fun Fm x _ ι p i Y _ _ => ∃ Z : Comp Y.d.Xo₂ Y.d.c₂, ∃ f ∈ cuspOn Y.U Z (wtOf (dat p i) (uM p i) 0), f ≠ 0 := by
   first | exact @_root_.GlobalTheory.CovTop.LowNonzero.exists_nonzero_cusp_form_uM_of_charts | exact _root_.GlobalTheory.CovTop.LowNonzero.exists_nonzero_cusp_form_uM_of_charts | (intros; apply _root_.GlobalTheory.CovTop.LowNonzero.exists_nonzero_cusp_form_uM_of_charts <;> assumption)

@@ -10,11 +10,11 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `p hp h4`. Take `⟨e, -⟩` from `GlobalTheory.T.nonzeroSquares_sum_equiv_Ico_mod_four p hp h4`. Establish `hc` using `Fintype.card_congr e`. Rewrite `hc` using `[Fintype.card_sum]`. Establish `h2 : Fintype.card (Finset.Ico 1 p : Finset ℕ) = p - 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `hc` using `[h2]`. Establish `hp2` using `hp.two_le`. Establish `hsum : 2 * Fintype.card (Sq p) + 1 = p` using `by omega`. Use `⟨hsum, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.odd_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_sq_mod_prime : ∀ (p : ℕ), p.Prime → p % 4 = 3 →
     2 * Fintype.card (Sq p) + 1 = p ∧ Odd (Fintype.card (Sq p)) := by

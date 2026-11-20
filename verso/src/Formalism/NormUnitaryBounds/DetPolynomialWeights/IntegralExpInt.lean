@@ -7,11 +7,11 @@ noncomputable section
 namespace Formalism.NormUnitaryCountingLemmas.ExponentialIntegralMeasures
 
 /- English proof (translation)
-Rewrite using `[← intervalIntegral.integral_of_le (by positivity)]`. Use `split_ifs with hk`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Establish `hc : (k : ℂ) * I ≠ 0` using `mul_ne_zero (by exact_mod_cast hk) I_ne_zero`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_exp_mul_complex hc]`. Establish `h1 : Complex.exp ((k : ℂ) * I * ((2 * Real.pi : ℝ) : ℂ)) = 1`. Rewrite using `[← Complex.exp_int_mul_two_pi_mul_I k]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma integral_exp_int (k : ℤ) :
     ∫ θ in Set.Ioc (0:ℝ) (2 * Real.pi), Complex.exp ((k : ℂ) * I * (θ : ℂ)) =
@@ -30,46 +30,40 @@ abbrev mu1 : Measure ℝ := volume.restrict (Set.Ioc (0:ℝ) (2 * Real.pi))
 abbrev muT (G : ℕ) : Measure (Fin G → ℝ) := Measure.pi (fun _ : Fin G => mu1)
 
 /- English proof (translation)
-Rewrite using `[Measure.real, Measure.pi_univ, ENNReal.toReal_prod]`. Simplify using `[Real.volume_Ioc, Real.pi_pos.le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma muT_real_univ (G : ℕ) : (muT G).real Set.univ = (2 * Real.pi) ^ G := by
   rw [Measure.real, Measure.pi_univ, ENNReal.toReal_prod]
   simp [Real.volume_Ioc, Real.pi_pos.le]
 
 /- English proof (translation)
-Use `set zθ : (Fin G → ℝ) → Fin G → ℂ := fun θ i => (r i : ℂ) * Complex.exp ((θ i : ℂ) * I) with hzθ`. Use `set w : (Fin G → ℝ) → ℂ := fun θ => ∏ i, Complex.exp (-(e i : ℂ) * I * (θ i : ℂ)) with hw`. Use `set F : (Fin G → ℕ) → (Fin G → ℝ) → ℂ := fun e' θ => c e' * (∏ i, zθ θ i ^ e' i) * w θ with hF`. Use `set a : (Fin G → ℕ) → ℂ := fun e' => c e' * ∏ i, ((r i : ℂ)) ^ e' i with ha`. Use `set k : (Fin G → ℕ) → Fin G → ℤ := fun e' i => (e' i : ℤ) - (e i : ℤ) with hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `key : ∀ e' θ, F e' θ = a e' * ∏ i, Complex.exp (((k e' i : ℤ) : ℂ) * I * (θ i : ℂ))`. Introduce `e' θ`. Simplify using `only [hF, ha, hw, hzθ, hk]`. Rewrite using `[mul_assoc, mul_assoc, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[mul_pow, ← Complex.exp_nat_mul, mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hnormexp : ∀ (m : ℤ) (t : ℝ), ‖Complex.exp ((m : ℂ) * I * (t : ℂ))‖ = 1`. Introduce `m t`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnormF : ∀ e' θ, ‖F e' θ‖ = ‖a e'‖`. Introduce `e' θ`. Rewrite using `[key, norm_mul, norm_prod]`. Simplify using `[hnormexp]`. Establish `hcont : ∀ e', Continuous (F e')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e'`. Establish `: F e' = fun θ => a e' * ∏ i, Complex.exp (((k e' i : ℤ) : ℂ) * I * (θ i : ℂ))`. Use function extensionality and compare the values at `(key e')`. Rewrite using `[this]`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : ∀ e', Integrable (F e') (muT G)`. Introduce `e'`. Conclude with `Integrable.of_bound (hcont e').aestronglyMeasurable ‖a e'‖ (Filter.Eventually.of_forall fun θ => (hnormF e' θ).le)`. Establish `hsumr : Summable a` using `(hΘ (fun i => (r i : ℂ))).summable`. Establish `hsum : Summable fun e' => ∫ θ, ‖F e' θ‖ ∂(muT G)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Repeatedly rewrite using `[hnormF, integral_const, smul_eq_mul]`. Conclude with `(summable_norm_iff.mpr hsumr).mul_left _`. Establish `htsum : ∀ θ, ∑' e', F e' θ = Θ (zθ θ) * w θ` using `fun θ => ((hΘ (zθ θ)).mul_right (w θ)).tsum_eq`. Establish `hI : ∀ e', ∫ θ, F e' θ ∂(muT G) = a e' * ∏ i, (if k e' i = 0 then ((2 * Real.pi : ℝ) : ℂ) else 0)`. Introduce `e'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[key]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Rewrite using `[integral_fintype_prod_eq_prod (μ := fun _ : Fin G => mu1) (fun i (t : ℝ) => Complex.exp (((k e' i : ℤ) : ℂ) * I * (t : ℂ)))]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Introduce `i _`. Conclude with `integral_exp_int (k e' i)`. Establish `hmain : ∫ θ, Θ (zθ θ) * w θ ∂(muT G) = a e * ((2 * Real.pi : ℝ) : ℂ) ^ G`. Repeatedly rewrite using `[← htsum]`. Rewrite using `[← integral_tsum_of_summable_integral_norm hint hsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[tsum_eq_single e]`. Rewrite using `[hI]`. Use `congr 1`. Simplify using `[hk]`. Introduce `e' he'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, e' i ≠ e i := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `he' (funext h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: k e' i ≠ 0` using `by simp only [hk]; omega`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (if_neg this), mul_zero]`. Establish `hbound : ‖∫ θ, Θ (zθ θ) * w θ ∂(muT G)‖ ≤ B * (muT G).real Set.univ`. Apply `norm_integral_le_of_norm_le_const` to reduce the goal to its premises. Use `Filter.Eventually.of_forall fun θ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_mul, hw, norm_prod]`. Establish `: ∀ i ∈ Finset.univ, ‖Complex.exp (-(e i : ℂ) * I * (θ i : ℂ))‖ = 1`. Introduce `i _`. Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[Finset.prod_congr rfl this, Finset.prod_const_one, mul_one]`. Conclude with `hB θ`. Rewrite `hbound` using `[hmain, muT_real_univ, norm_mul, norm_pow]`. Establish `h2pi : (0:ℝ) < (2 * Real.pi) ^ G` using `by positivity`. Establish `hn2 : ‖((2 * Real.pi : ℝ) : ℂ)‖ = 2 * Real.pi`.
-
-Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Rewrite `hbound` using `[hn2]`. Establish `ha' : ‖a e‖ = ‖c e‖ * ∏ i, |r i| ^ e i`. Simplify using `only [ha, norm_mul, norm_prod, norm_pow, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[← ha']`.
-
-Conclude with `le_of_mul_le_mul_right hbound h2pi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchy_torus (G : ℕ) (Θ : (Fin G → ℂ) → ℂ) (c : (Fin G → ℕ) → ℂ)
     (hΘ : ∀ z : Fin G → ℂ, HasSum (fun e : Fin G → ℕ => c e * ∏ i, z i ^ e i) (Θ z))

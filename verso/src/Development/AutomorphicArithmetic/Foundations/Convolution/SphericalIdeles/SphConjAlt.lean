@@ -15,11 +15,11 @@ namespace UpperTheory.ConvolutionTheory.Sph
 
 open scoped Fin.NatCast Fin.CommRing in
 /- English proof (translation)
-Establish `key : ∀ (t : ℕ) (i : Fin (m + 1)), P (i + (t : Fin (m + 1))) → P i`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro i hi`. Simplify using `using hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ t ih`. Introduce `i hi`. Use `ih i (h _ ?_)` and prove the remaining obligations. Rewrite `hi` using `[Nat.cast_succ, ← add_assoc]`. Conclude with `hi`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `key (j - k).val k ?_` and prove the remaining obligations. Rewrite using `[Fin.cast_val_eq_self]`. Simplify using `using hj`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem round_cycle {m : ℕ} {P : Fin (m + 1) → Prop} (h : ∀ i, P (i + 1) → P i) (j k : Fin (m + 1)) (hj : P j) :
     P k := by
@@ -37,9 +37,7 @@ private theorem round_cycle {m : ℕ} {P : Fin (m + 1) → Prop} (h : ∀ i, P (
   simpa using hj
 
 /- English proof (translation)
-Simplify using `only [fixL, fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.id_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h g hg`. Conclude with `h _ ⟨g, hg, rfl⟩`. Introduce and unpack `h _ ⟨g, hg, rfl⟩`.
-
-Conclude with `h g hg`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem mem_fixL {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
     {w : Pl K} {J : Subgroup (GL (Fin n) (w.adicCompletion K))} {f : LL μ} :
@@ -52,13 +50,13 @@ private theorem mem_fixL {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Me
     exact h g hg
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 h`. Take `⟨hxV, hxf⟩` from `Submodule.mem_inf.1 hx`. Establish `hxf'` using `mem_fixL.1 hxf`. Use `(Submodule.ne_bot_iff _).2 ⟨θ.U x, Submodule.mem_inf.2 ⟨?_, mem_fixL.2 fun k hk => ?_⟩, fun h0 => hx0 ?_⟩` and prove the remaining obligations. Rewrite using `[← hV]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hxV`. Take `⟨⟨ε, hε⟩, hint, -⟩` from `splitLoc F E p (e i) (hs _) n`. Take `⟨-, hint', -⟩` from `splitLoc F E p (e (i + 1)) (hs _) n`. Choose the witnesses or unpack the hypotheses as in `⟨g, rfl⟩ : ∃ g, mapGL n (completionMap p (e i).1) g = k := by`. Take `⟨g, hg⟩` from `ε.surjective k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g, (hε g).symm.trans hg⟩`. Establish `hg` using `(hint g).1 hk`. Establish `h2` using `(twistPerm F E σ hσ m n μ θ hθ).2.1 p D e he i g x`. Rewrite `h2` using `[hxf' _ ((hint' g).2 hg)]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Dp.twUnitary E n μ θ).1 x` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `norm_eq_zero.1 this.symm`.
+A detailed English derivation is pending.
 -/
 private theorem fix_step {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E]
     {σ : E ≃ₐ[F] E} (hσ : ∀ τ, τ ∈ Subgroup.zpowers σ) {m n : ℕ} {μ : Measure (normOneGL E n)} [μ.IsHaarMeasure]
@@ -90,15 +88,13 @@ private theorem fix_step {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
 end UpperTheory.ConvolutionTheory.Sph
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn μ _ θ hθ V hV w w' hww h`. Set `u : PlacesOver E (w.under (𝓞 F))` to `⟨w, inferInstance⟩`. Establish `hl : w'.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal`. Rewrite using `[hww]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `u' : PlacesOver E (w.under (𝓞 F))` to `⟨w', hl⟩`. Distinguish the cases in `hs : GM.Split E (w.under (𝓞 F))`. Take `⟨m, hm⟩ : ∃ m, Module.finrank F E = m + 1` from `⟨Module.finrank F E - 1, by have := hp.pos; omega⟩`. Take `⟨D, e, -, he⟩` from `finSplit F E σ hσ m hm _ u hs`. Establish `hstep` using `fun i => fix_step hσ hθ _ hs D e he hV i`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Q : PlacesOver E (w.under (𝓞 F)) → Prop` to `fun a => V ⊓ fixL μ a.1 (GLnLocal.integralGL (a.1.adicCompletion E) n) ≠ ⊥`. Take `⟨j, hj⟩` from `e.surjective u`. Take `⟨k, hk⟩` from `e.surjective u'`. Establish `hQ : Q (e k)` using `round_cycle (P := fun i => Q (e i)) hstep j k (by`. Express the relevant statement in the definitionally equal form `Q (e j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj]`. Conclude with `h)`. Rewrite `hQ` using `[hk]`. Conclude with `hQ`. Use `(T.places F E hp).2.2.2.1 _ hs u u'` as an intermediate fact.
-
-Establish `hw : w' = w` using `congrArg Subtype.val this`. Substitute `hw` using the available equality. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Sph.sphConj :
     UpperTheory.ConvolutionTheory.Sph.SphConj := by

@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.RgEisSo
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hreal : ComplexEmbedding.IsReal (w.comap (algebraMap F E)).embedding` using `InfinitePlace.isReal_iff.1 (IsTotallyReal.isReal _)`. Establish `h : InfinitePlace.mk (w.embedding.comp (algebraMap F E)) = InfinitePlace.mk (w.comap (algebraMap F E)).embedding`. Rewrite using `[InfinitePlace.mk_embedding, ← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]`. Break down `InfinitePlace.mk_eq_iff.1 h with h | h` into its components or cases. Conclude with `congrArg (fun f : F →+* ℂ => f x) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h' : w.embedding.comp (algebraMap F E) = (w.comap (algebraMap F E)).embedding`. Establish `h2 : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate (w.embedding.comp (algebraMap F E))) = w.embedding.comp (algebraMap F E)` using `star_star _`. Rewrite using `[← h2, h]`. Conclude with `ComplexEmbedding.isReal_iff.1 hreal`. Conclude with `congrArg (fun f : F →+* ℂ => f x) h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embedding_algebraMap_of_totallyReal (hF : IsTotallyReal F) (w : InfinitePlace E) (x : F) :
     w.embedding (algebraMap F E x) = (w.comap (algebraMap F E)).embedding x := by
@@ -34,7 +34,7 @@ theorem embedding_algebraMap_of_totallyReal (hF : IsTotallyReal F) (w : Infinite
     exact congrArg (fun f : F →+* ℂ => f x) h'
 
 /- English proof (translation)
-Establish `h` using `(denseRange_coe (v := w.comap (algebraMap F E))).equalizer (g := fun z => extensionEmbedding w (algebraMap (w.comap (algebraMap F E)).Completion w.Completion z)) (h := fun z => extensionEmbedding (w.comap (algebraMap F E)) z) ((isometry_extensionEmbedding w).continuous.comp LiesO …`. Conclude with `congrFun h z`. Establish `e` using `LiesOver.completionMap_coe (v := w.comap (algebraMap F E)) (w := w) k show extensionEmbedding w (LiesOver.completionMap (k : (w.comap (algebraMap F E)).Completion)) = extensionEmbedding (w.comap (algebraMap F E)) (k : (w.comap (algebraMap F E)).Completion)`. Rewrite using `[e, extensionEmbedding_coe, extensionEmbedding_coe]`. Conclude with `embedding_algebraMap_of_totallyReal hF w _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extensionEmbedding_algebraMap_of_totallyReal (hF : IsTotallyReal F) (w : InfinitePlace E)
     (z : (w.comap (algebraMap F E)).Completion) :
@@ -53,7 +53,7 @@ theorem extensionEmbedding_algebraMap_of_totallyReal (hF : IsTotallyReal F) (w :
     exact embedding_algebraMap_of_totallyReal hF w _
 
 /- English proof (translation)
-Establish `h : eqv F E (nuCM F E x) = GroundTheory.Global.AdeleBaseChange.adeleMap F E x` using `GroundTheory.BlockD.ThmBHecke.adeleEquiv_algebraMap x`. Use `show extensionEmbedding w (GroundTheory.Automorphic.Reduction.infEval w (eqv F E (nuCM F E x))) = extensionEmbedding _ (GroundTheory.Automorphic.Reduction.infEval _ x)`. Rewrite using `[h]`. Conclude with `extensionEmbedding_algebraMap_of_totallyReal hF w _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_nuCM (σ : E →ₐ[F] E) (χ : Chr F E) (hF : IsTotallyReal F) (w : InfinitePlace E) (x : 𝔸[F]) :
     (adCM σ χ).φ w (nuCM F E x) = (adStd F).φ (w.comap (algebraMap F E)) x := by
@@ -69,7 +69,7 @@ end GlobalTheory.CompanionTheory.RgEisSo
 namespace GlobalTheory.CompanionTheory.RgEisSo
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ χ c hcm _ _ _`. Use `haveI : IsTotallyReal F := hcm.1`. Use `⟨fun w => ⟨w.comap (algebraMap F E), fun x => phi_nuCM σ χ hcm.1 w x⟩, fun v => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `InfinitePlace.comap_surjective (k := F) (K := E) v`. Conclude with `⟨w, fun x => phi_nuCM σ χ hcm.1 w x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bInf : BInf := by
   intro F E _ _ _ _ _ σ χ c hcm _ _ _

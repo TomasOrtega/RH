@@ -9,11 +9,9 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-Set `V : OpenSubgroup (GL (Fin n) (Af E))` to `{ carrier := {k | TR.finRep E n k φ = φ} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Use the proof step `isOpen' := (π.cusp φ hφ).1.level }`. Take `⟨S, hS⟩` from `hL E n V`.
-
-Use `⟨S, fun g k hk => ?_⟩` and prove the remaining obligations. Establish `h : TR.finRep E n k φ = φ` using `hS k hk`. Conclude with `congrArg (fun ψ : TR.Sm E n => ψ.1 g) h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lev (hL : LevelS) {E : Type} [Field E] [NumberField E] [IsTotallyReal E] {n : ℕ} (π : CuspSub E n)
     (φ : TR.Sm E n) (hφ : φ ∈ π.V) :
@@ -35,18 +33,18 @@ private theorem lev (hL : LevelS) {E : Type} [Field E] [NumberField E] [IsTotall
   exact congrArg (fun ψ : TR.Sm E n => ψ.1 g) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w hw => hk.1 w (h hw), hk.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem inKS_mono {E : Type} [Field E] [NumberField E] {n : ℕ} {S T : Finset (HeightOneSpectrum (𝓞 E))}
     (h : S ⊆ T) {k : GL (Fin n) (Af E)} (hk : InKS T k) : InKS S k :=
   ⟨fun w hw => hk.1 w (h hw), hk.2⟩
 
 /- English proof (translation)
-Introduce `hP hL E _ _ _ n π π' hs φ hφ φ' hφ'`. Take `⟨S₁, h₁⟩` from `lev hL π φ hφ`. Take `⟨S₂, h₂⟩` from `lev hL π' φ' hφ'`. Establish `hf` using `Filter.eventually_cofinite.1 ((hP E).2.and hs)`. Establish `hB : ∀ w : HeightOneSpectrum (𝓞 E), ∃ B : Multiset ℂˣ, w ∉ hf.toFinset → GoodAt w (psiL w) ∧ π.HasSat w B ∧ π'.HasSat w B` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w ∈ hf.toFinset`. Conclude with `⟨0, fun h => absurd hw h⟩`. Rewrite `hw` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Take `⟨hg, B, hB⟩` from `hw`. Conclude with `⟨B, fun _ => ⟨hg, hB⟩⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose B hB using hB`. Use `⟨hf.toFinset ∪ (S₁ ∪ S₂), B, fun w hw => hB w fun h => hw (Finset.mem_union_left _ h), fun g k hk => h₁ g k (inKS_mono ?_ hk), fun g k hk => h₂ g k (inKS_mono ?_ hk)⟩` and prove the remaining obligations. Conclude with `Finset.subset_union_left.trans Finset.subset_union_right`. Conclude with `Finset.subset_union_right.trans Finset.subset_union_right`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.setUp :
     UpperTheory.V.Af.Smo.PsiLoc → UpperTheory.V.Af.Smo.LevelS → UpperTheory.V.Af.Smo.SetUp := by

@@ -31,13 +31,13 @@ variable {L : AddSubgroup (n → R)} {L' : AddSubgroup (m → R)}
 
 omit [Fintype m] [DecidableEq m] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨loc' y h, L'.sub_mem h (loc' y h)⟩, fun h => by simpa using L'.add_mem h.1 h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_iff_parts (loc' : ∀ y ∈ L', f • y ∈ L') (y : m → R) : y ∈ L' ↔ f • y ∈ L' ∧ y - f • y ∈ L' :=
   ⟨fun h => ⟨loc' y h, L'.sub_mem h (loc' y h)⟩, fun h => by simpa using L'.add_mem h.1 h.2⟩
 
 /- English proof (translation)
-Establish `e1 : M'.mulVec y - f • M'.mulVec y = y - f • y`. Use `congrArg (fun A => Matrix.mulVec A y) hs` as an intermediate fact. Simplify using `only [Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, smul_sub] at this`. Take the linear combination `(exp := 1) -this`. Rewrite using `[mem_iff_parts loc' y, mem_iff_parts loc' (M'.mulVec y), e1, lat_inv h1 hL y, lat_inv h1 hL (M'.mulVec y), Matrix.mulVec_mulVec, ← conj_inv h1 h2 hc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul M, ← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem stab_iff_conj (h1 : J * J' = 1) (h2 : J' * J = 1) (hc : M' * J = J * M)
     (hL : ∀ y, f • y ∈ L ↔ f • J.mulVec y ∈ L') (loc' : ∀ y ∈ L', f • y ∈ L') (hs : f • (M' - 1) = M' - 1)
@@ -56,17 +56,17 @@ section Coset
 variable {D : D7} {V V' : HSp D}
 
 /- English proof (translation)
-Take `⟨ha, hb⟩` from `h`. Prove the components needed by the constructor for the conclusion. Introduce `γ' hγ'`. Use `⟨hR' _ hγ', ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `Φ.surjective ⟨γ', hR' _ hγ'⟩`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : γ' = (Φ γ : GA D V')` from `by rw [hγ]`. Take `⟨-, k₁, h₁, k₂, h₂, e⟩` from `ha _ ((hRR γ).2 hγ')`. Use `⟨_, (hKK ⟨k₁, hK _ h₁⟩).1 h₁, _, (hKK ⟨k₂, hK _ h₂⟩).1 h₂, ?_⟩` and prove the remaining obligations. Establish `e' : γ = ⟨k₁, hK _ h₁⟩ * α * ⟨k₂, hK _ h₂⟩` using `Subtype.ext e`. Rewrite using `[e', map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce and unpack `x ⟨k₁', h₁, k₂', h₂, rfl⟩`. Take `⟨k₁, e₁⟩` from `Φ.surjective ⟨k₁', hK' _ h₁⟩`. Take `rfl : k₁' = (Φ k₁ : GA D V')` from `by rw [e₁]`. Take `⟨k₂, e₂⟩` from `Φ.surjective ⟨k₂', hK' _ h₂⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : k₂' = (Φ k₂ : GA D V')` from `by rw [e₂]`. Take `⟨γ, ⟨hγ, hx⟩, hu⟩` from `hb _ ⟨_, (hKK k₁).2 h₁, _, (hKK k₂).2 h₂, rfl⟩`. Establish `key : ∀ g : GfC V, ((g : GA D V)⁻¹ * (k₁ * α * k₂) ∈ K) ↔ ((Φ g : GA D V')⁻¹ * (Φ k₁ * Φ α * Φ k₂) ∈ K')` using `fun g => by`. Use `hKK (g⁻¹ * (k₁ * α * k₂))` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_mul, map_inv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `⟨Φ ⟨γ, (ha γ hγ).1⟩, ⟨(hRR ⟨γ, _⟩).1 hγ, (key ⟨γ, _⟩).1 hx⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `γ' ⟨h3, h4⟩`. Take `⟨g, e₃⟩` from `Φ.surjective ⟨γ', hR' _ h3⟩`. Take `rfl : γ' = (Φ g : GA D V')` from `by rw [e₃]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: g = ⟨γ, (ha γ hγ).1⟩` using `Subtype.ext (hu g ⟨(hRR g).2 h3, (key g).2 h4⟩)`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetRep_transfer (Φ : GfC V ≃* GfC V') {K : Set (GA D V)} {K' : Set (GA D V')} (hK : ∀ k ∈ K, k ∈ GfC V)
     (hK' : ∀ k ∈ K', k ∈ GfC V') (hKK : ∀ k : GfC V, (k : GA D V) ∈ K ↔ (Φ k : GA D V') ∈ K')
@@ -109,13 +109,13 @@ section Div
 variable {R : Type} [CommRing R] {m n : ℕ}
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Take `⟨B, a1, a2, a3, a4⟩` from `h`. Establish `hfe : f * e = e` using `by rw [mul_comm, hef]`. Use `⟨J * B, fun z hz => ?_, fun y hy => ?_, fun y hy => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `(hL (e • B.mulVec z)).1 (loc _ (a1 z hz))` as an intermediate fact.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_smul, smul_smul, hfe, Matrix.mulVec_mulVec]`. Then use the resulting hypothesis. Take `⟨z, hz, e2⟩` from `a2 _ ((lat_inv h1 hL y).1 (loc' y hy))`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Use `congrArg J.mulVec e2` as an intermediate fact. Rewrite `this` using `[smul_smul, hef, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨z, hz, e2⟩` from `a3 _ ((lat_inv h1 hL y).1 (loc' y hy))`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Use `congrArg J.mulVec e2` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul M, smul_smul, hef, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← conj_eq h1 hc]`. Then use the resulting hypothesis. Take `⟨y, hy, e2⟩` from `a4 z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `⟨_, (hL y).1 (loc y hy), ?_⟩` and prove the remaining obligations. Use `congrArg J.mulVec e2` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hc]`. Rewrite using `[Matrix.mulVec_smul, smul_smul, hef, Matrix.mulVec_mulVec]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_conj (hr : m = n) {e f : R} {J : Matrix (Fin m) (Fin n) R} {J' : Matrix (Fin n) (Fin m) R}
     {M : Matrix (Fin n) (Fin n) R} {M' : Matrix (Fin m) (Fin m) R} {L : AddSubgroup (Fin n → R)} {L' : AddSubgroup (Fin m → R)}
@@ -157,7 +157,7 @@ end Div
 variable {D : D7}
 
 /- English proof (translation)
-Break down `h with ⟨h, rfl⟩ | ⟨rfl, -⟩` into its components or cases. Rewrite using `[mul_add, h.1.1, h.1.2.1, add_zero]`. Conclude with `hf`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_of_isPrimeIdem {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D} (h : IsPrimeIdem P e f) (hf : f * f = f) :
     e * f = e := by
@@ -166,7 +166,7 @@ theorem mul_of_isPrimeIdem {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D} (h 
   · exact hf
 
 /- English proof (translation)
-Rewrite using `[finMat_eq, supp_map_iff]`. Use `⟨fun hs i j => congrArg (finPart D) (hs i j), fun hs i j => ?_⟩` and prove the remaining obligations. Establish `hs4` using `(supp_map_iff (infPart D) f (mt V α)).1 (by rw [inf_eq hα, sub_self, smul_zero])`. Conclude with `GlobalTheory.SplitScalar.adele_ext (hs4 i j) (hs i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem suppF_iff (f : Formalism.L2.Theta.AE D) {V : HSp D} {α : GA D V} (hα : α ∈ GfC V) :
     SuppF V f α ↔ finPart D f • (finMat D.sp.cm.sig V.gram α - 1) = finMat D.sp.cm.sig V.gram α - 1 := by
@@ -178,15 +178,15 @@ theorem suppF_iff (f : Formalism.L2.Theta.AE D) {V : HSp D} {α : GA D V} (hα :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨hfr, -, -, h01, h10⟩` from `hB`. Establish `key : ∀ z, z ∈ Formalism.L2.NTheta.LamHat V ↔ (fun i => swapAE D (z i)) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) (GlobalTheory.LevSplit.L0sub V) := fun z => GlobalTheory.LevSplit.latHat_iff (GlobalTheory.LevSplit.L0sub V) z`. Take `⟨u, hu⟩` from `GlobalTheory.LevSplit.idem_div_int hP N N (by simp) hN hN`. Establish `hu' : (u : Lev.EAf D) * (N : Lev.EAf D) = GlobalTheory.LevSplit.finSw D f`. Rewrite using `[← hu, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨φ, hφ'⟩ : ∃ φ : Formalism.L2.Herm.intAf D.host.F D.host.E, (φ : Lev.EAf D) = GlobalTheory.LevSplit.finSw D f` from `⟨u * oToS D.host.F D.host.E N, hu⟩`. Establish `hε : GlobalTheory.LevSplit.finSw D f * GlobalTheory.LevSplit.finSw D f = GlobalTheory.LevSplit.finSw D f`. Rewrite using `[← map_mul, hff]`. Establish `hsw : (fun a => swapAE D (finPart D f * y a)) = fun a => GlobalTheory.LevSplit.finSw D f * swapAE D (y a)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun a => map_mul _ _ _`. Establish `a01` using `GlobalTheory.LevSplit.hatL_smul (F := D.host.F) (GlobalTheory.LevSplit.L0sub V) Λ N h01`. Establish `a10` using `GlobalTheory.LevSplit.hatL_smul (F := D.host.F) Λ (GlobalTheory.LevSplit.L0sub V) N h10`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(key _).2 ?_` and prove the remaining obligations. Rewrite using `[hsw, ← hφ']`. Conclude with `Submodule.smul_mem _ φ ((key y).1 hy)`. Use `(key _).trans (Iff.trans ?_ (hfr _))` and prove the remaining obligations. Rewrite using `[hsw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨GlobalTheory.LatLoc.loc_transfer _ _ N u _ hu' hε a01 _, GlobalTheory.LatLoc.loc_transfer _ _ N u _ hu' hε a10 _⟩`.
+A detailed English derivation is pending.
 -/
 theorem lamHat_loc (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ)
     {P : Pl D.host.E} {e f : Formalism.L2.Theta.AE D} (hB : IsBaseFrame V β Λ N) (hN : ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal)
@@ -221,15 +221,13 @@ theorem lamHat_loc (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodul
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, hO, hP, p1, p2, hd, -, -, hα, ⟨hlen, hdiv⟩, hR, hC⟩` from `h`. Take `⟨-, -, T3, -⟩` from `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V`. Take `⟨hff, -, hG, -⟩` from `T3 P e f hP`. Establish `hef : finPart D e * finPart D f = finPart D e` using `by rw [← RingHom.map_mul, mul_of_isPrimeIdem hP hff]`. Establish `hc'` using `fun g => conj_inv h1 h2 (hc g)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ g : GfC V, SuppF V f g ↔ SuppF V' f (Φ g)` using `fun g => by`. Rewrite using `[suppF_iff f g.2, suppF_iff f (Φ g).2]`. Conclude with `⟨supp_conj h1 (hc g), supp_conj h2 (hc' g)⟩`. Use `⟨e, f, ϖ, Φ ⟨α, hG α hα⟩, hO, hP, p1, p2, hd, fun _ _ => Iff.rfl, fun _ _ _ => rfl, (hS ⟨α, _⟩).1 hα, ⟨hlen.trans hr.symm, ?_⟩, fun γ' hγ' => ?_, ?_⟩` and prove the remaining obligations. Conclude with `div_conj hr (intAE D) (fun i => finPart D (incA D ((ϖ : D.host.E) ^ (d.getD i 0)))) hef h1 (hc ⟨α, hG α hα⟩) (hL e f hP) (loc e f hP) (loc' e f hP) hdiv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g, e₃⟩` from `Φ.surjective ⟨γ', hR' _ hγ'⟩`. Take `rfl : γ' = (Φ g : GA D V')` from `by rw [e₃]`. Conclude with `(hS g).1 (hR _ ((hRR g).2 hγ'))`. Use `cosetRep_transfer Φ (fun k hk => hk.1.1) (fun k hk => hk.1.1) (fun k => ?_) hR' hRR ⟨α, hG α hα⟩ hC` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨-, a, -⟩, b⟩`. Establish `b'` using `(hS k).1 b`. Conclude with `⟨⟨(Φ k).2, stab_iff_conj h1 h2 (hc k) (hL e f hP) (loc' e f hP) ((suppF_iff f (Φ k).2).1 b') a, fun v hv => absurd hv (Finset.notMem_empty v)⟩, b'⟩`. Introduce and unpack `⟨⟨-, a, -⟩, b⟩`. Establish `b'` using `(hS k).2 b`.
-
-Conclude with `⟨⟨k.2, stab_iff_conj h2 h1 (hc' k) (lat_inv h1 (hL e f hP)) (loc e f hP) ((suppF_iff f k.2).1 b') a, fun v hv => absurd hv (Finset.notMem_empty v)⟩, b'⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transfer {V V' : HSp D} (hr : V'.rank = V.rank) {P : Pl D.host.E}
     (J : Matrix (Fin V'.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))
@@ -273,17 +271,17 @@ theorem transfer {V V' : HSp D} (hr : V'.rank = V.rank) {P : Pl D.host.E}
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D V V' β β' Pg j Φ Λ Λ' N N' hB hB' hI P hN hN' d B`. Take `⟨hr, u, hu, -⟩` from `hI.frame`. Take `⟨⟨j', h1, h2⟩, hlat⟩` from `frame_inv (Formalism.L2.Herm.intAf D.host.F D.host.E) β β' (finCongr hr) (intGL D.host.F D.host.E V'.rank u) u.val (u⁻¹).val rfl rfl j hu`. Establish `h1'` using `map_mul_one (unswap D) h1`. Establish `h2'` using `map_mul_one (unswap D) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ g : GfC V, HMul.hMul (finMat D.sp.cm.sig V'.gram (Φ g : GA D V')) (j.map (unswap D)) = HMul.hMul (j.map (unswap D)) (finMat D.sp.cm.sig V.gram (g : GA D V))` using `fun g => by`. Establish `hc` using `map_conj (unswap D) (hI.conj g)`. Rewrite `hc` using `[finE_unswap, finE_unswap]`. Then use the resulting hypothesis. Take `⟨-, -, T3, -⟩` from `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V`. Establish `hff : ∀ e f, IsPrimeIdem P e f → f * f = f` using `fun e f h => (T3 P e f h).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL : ∀ e f, IsPrimeIdem P e f → ∀ y, finPart D f • y ∈ Formalism.L2.NTheta.LamHat V ↔ finPart D f • (j.map (unswap D)).mulVec y ∈ Formalism.L2.NTheta.LamHat V'`. Introduce `e f he y`. Use `((lamHat_loc V β Λ N hB hN he (hff e f he) y).2.trans (hlat _)).trans (Iff.trans ?_ (lamHat_loc V' β' Λ' N' hB' hN' he (hff e f he) _).2.symm)` and prove the remaining obligations. Rewrite using `[mulVec_map_inv (unswap D) (swapAE D) swap_unswap]`. Establish `loc : ∀ e f, IsPrimeIdem P e f → ∀ y ∈ Formalism.L2.NTheta.LamHat V, finPart D f • y ∈ Formalism.L2.NTheta.LamHat V` using `fun e f he y => (lamHat_loc V β Λ N hB hN he (hff e f he) y).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `loc' : ∀ e f, IsPrimeIdem P e f → ∀ y ∈ Formalism.L2.NTheta.LamHat V', finPart D f • y ∈ Formalism.L2.NTheta.LamHat V'` using `fun e f he y => (lamHat_loc V' β' Λ' N' hB' hN' he (hff e f he) y).1`. Establish `hRR : ∀ k : GfC V, (k : GA D V) ∈ B.map ⟨Subtype.val, Subtype.val_injective⟩ ↔ (Φ k : GA D V') ∈ (B.map Φ.toEquiv.toEmbedding).map ⟨Subtype.val, Subtype.val_injective⟩` using `fun k => (Finset.mem_map' (⟨Subtype.val, Subtype.val_injective⟩ : GfC V ↪ GA D V)).trans ((Finset.mem_map' Φ.toEquiv.toEmbedding).symm.trans (Finset.mem_map' (⟨Subtype.val, Subtype.val_injective⟩ : GfC V' ↪ GA D V')).symm)`. Prove the components needed by the constructor for the conclusion. Use `transfer hr.symm _ _ h1' h2' Φ.toMulEquiv hc hL loc loc' (fun k hk => ?_) hRR` and prove the remaining obligations. Take `⟨g, -, rfl⟩` from `Finset.mem_map.1 hk`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `g.2`. Use `transfer hr _ _ h2' h1' Φ.toMulEquiv.symm (fun g => ?_) (fun e f he => lat_inv h1' (hL e f he)) loc' loc (fun k hk => ?_) (fun k => ?_)` and prove the remaining obligations. Take `⟨g, rfl⟩` from `Φ.toMulEquiv.surjective g`. Rewrite using `[MulEquiv.symm_apply_apply]`. Conclude with `conj_inv h1' h2' (hc g)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, -, rfl⟩` from `Finset.mem_map.1 hk`. Conclude with `g.2`. Take `⟨g, rfl⟩` from `Φ.toMulEquiv.surjective k`. Rewrite using `[MulEquiv.symm_apply_apply]`. Conclude with `(hRR g).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sphOp_iff : ∀ {D : D7} (V V' : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (β' : GL (Fin V'.rank) (Lev.EAf D)) (Pg : Finset (Pl D.host.E)) (j : Matrix (Fin V'.rank) (Fin V.rank) (Lev.EAf D)) (Φ : GfC V ≃ₜ* GfC V') (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)) (N N' : ℕ), IsBaseFrame V β Λ N → IsBaseFrame V' β' Λ' N' → GlobalTheory.CuspMult.IsFinIso V V' β β' Pg j Φ → ∀ (P : Pl D.host.E), ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal → ((N' : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal → ∀ (d : List ℤ) (B : Finset (GfC V)), GlobalTheory.Hk3.SphOp V P d (B.map ⟨Subtype.val, Subtype.val_injective⟩) ↔ GlobalTheory.Hk3.SphOp V' P d ((B.map Φ.toEquiv.toEmbedding).map ⟨Subtype.val, Subtype.val_injective⟩) := by
   intro D V V' β β' Pg j Φ Λ Λ' N N' hB hB' hI P hN hN' d B

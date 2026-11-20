@@ -5,12 +5,12 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Scala
 namespace UpperTheory.Gal.Int.Geo.Pl
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Gal.Spc.specTopG wtOf_holds`.
+A detailed English derivation is pending.
 -/
 theorem specTop_holds : SpecTop := UpperTheory.Gal.Spc.specTopG wtOf_holds
 
 /- English proof (translation)
-The claim follows from `exists_unitaryGroupDatum_of_vector_exponent_spectral vecEx_holds expOf_holds specTop_holds`.
+A detailed English derivation is pending.
 -/
 theorem planEx_holds : PlanEx := exists_unitaryGroupDatum_of_vector_exponent_spectral vecEx_holds expOf_holds specTop_holds
 

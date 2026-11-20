@@ -5,41 +5,35 @@ open NumberField IsDedekindDomain Filter Topology
 namespace GlobalTheory.FinAdeleNbhd
 
 /- English proof (translation)
-Introduce `F _ _ κ _ V hV`. Rewrite `hV` using `[nhds_pi, Filter.mem_pi']`. Take `⟨J, s, hs, hJs⟩` from `hV`. Use `set W : Set (FiniteAdeleRing (𝓞 F) F) := ⋂ i, s i with hWdef`. Establish `hW : W ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)` using `Filter.iInter_mem.2 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWV : ∀ y : κ → FiniteAdeleRing (𝓞 F) F, (∀ i, y i ∈ W) → y ∈ V` using `fun y hy => hJs fun i _ => Set.mem_iInter.1 (hy i) i`. Set `R : IsDedekindDomain.HeightOneSpectrum (𝓞 F) → Type` to `fun v => v.adicCompletion F`. Set `A : ∀ v, Set (R v)` to `fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))`. Set `e` to `RestrictedProduct.structureMap R A Filter.cofinite`. Establish `he : Continuous e` using `(RestrictedProduct.isEmbedding_structureMap).continuous`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `p : ∀ v, A v` to `fun v => ⟨0, (v.adicCompletionIntegers F).zero_mem⟩`. Establish `hep : (e p : FiniteAdeleRing (𝓞 F) F) = 0` using `rfl`. Establish `hpre : e ⁻¹' W ∈ 𝓝 p` using `he.continuousAt.preimage_mem_nhds (by rw [hep]; exact hW)`. Rewrite `hpre` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hIt⟩` from `hpre`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : ∀ v, ∃ u ∈ 𝓝 (0 : R v), Subtype.val ⁻¹' u ⊆ t v` using `fun v => (mem_nhds_subtype (A v) (p v) (t v)).1 (ht v)`. Use `choose u hu0 hut using hu`. Establish `hG : ∀ v, ∃ G : OpenAddSubgroup (R v), (G : Set (R v)) ⊆ u v` using `fun v => NonarchimedeanAddGroup.is_nonarchimedean _ (hu0 v)`. Use `choose G hGu using hG`. Set `O : ∀ v, AddSubgroup (R v)` to `fun v => (v.adicCompletionIntegers F).toSubring.toAddSubgroup`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOset : ∀ v, ((O v : AddSubgroup (R v)) : Set (R v)) = A v` using `fun v => rfl`. Establish `hOopen : ∀ v, IsOpen (A v)` using `fun v => Valued.isOpen_valuationSubring _`. Establish `hOcpt : ∀ v, IsCompact (A v)` using `fun v => isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Set `N : ∀ v, AddSubgroup (R v)` to `fun v => if v ∈ I then (G v).toAddSubgroup ⊓ O v else O v`. Establish `hNO : ∀ v, ∀ x ∈ N v, x ∈ A v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `v x hx`. Distinguish the cases in `hv : v ∈ I`. Simplify using `only [N, hv, if_true] at hx`. Conclude with `hx.2`. Simplify using `only [N, hv, if_false] at hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `hNG : ∀ v ∈ I, ∀ x ∈ N v, x ∈ (G v : Set (R v))`. Introduce `v hv x hx`. Simplify using `only [N, hv, if_true] at hx`. Conclude with `hx.1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hNopen : ∀ v, IsOpen (N v : Set (R v))`. Introduce `v`. Distinguish the cases in `hv : v ∈ I`. Simplify using `only [N, hv, if_true, AddSubgroup.coe_inf]`. Conclude with `(G v).isOpen.inter (hOopen v)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [N, hv, if_false]`. Conclude with `hOopen v`. Establish `hNcpt : ∀ v, IsCompact (N v : Set (R v))`. Introduce `v`. Distinguish the cases in `hv : v ∈ I`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [N, hv, if_true, AddSubgroup.coe_inf]`. Conclude with `(hOcpt v).inter_left (G v).isClosed`. Simplify using `only [N, hv, if_false]`. Conclude with `hOcpt v`. Use `⟨N, hNopen, hNcpt, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `filter_upwards [I.eventually_cofinite_notMem] with v hv`. Simplify using `only [N, hv, if_false]`. Both sides reduce to the same expression. Set `P : Set (FiniteAdeleRing (𝓞 F) F)` to `{a | ∀ v, a v ∈ N v}`. Establish `hPeq : P = {a : FiniteAdeleRing (𝓞 F) F | ∀ v, v ∉ I → a v ∈ A v} ∩ ⋂ v ∈ I, (fun a : FiniteAdeleRing (𝓞 F) F => a v) ⁻¹' (N v : Set (R v))`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Simplify using `only [P, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun v _ => hNO v _ (h v), fun v _ => h v⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨h1, h2⟩ v`. Distinguish the cases in `hv : v ∈ I`. Conclude with `h2 v hv`. Use `h1 v hv` as an intermediate fact. Simplify using `only [N, hv, if_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `this`. Establish `hPopen : IsOpen P`. Rewrite using `[hPeq]`. Use `IsOpen.inter (RestrictedProduct.isOpen_forall_imp_mem hOopen) ?_` and prove the remaining obligations. Conclude with `isOpen_biInter_finset fun v _ => (hNopen v).preimage (RestrictedProduct.continuous_eval v)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hP0 : (0 : FiniteAdeleRing (𝓞 F) F) ∈ P` using `fun v => (N v).zero_mem`. Establish `: (Set.univ : Set κ).pi (fun _ => P) ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F)` using `set_pi_mem_nhds Set.finite_univ fun i _ => hPopen.mem_nhds hP0`. Use `Filter.mem_of_superset this ?_` and prove the remaining obligations. Introduce `y hy i v`. Conclude with `hy i (Set.mem_univ i) v`.
-
-Introduce `y hy`. Apply `hWV` to reduce the goal to its premises. Introduce `i`. Establish `hyi : ∀ v, (y i) v ∈ N v` using `fun v => hy i v`. Set `x : ∀ v, A v` to `fun v => ⟨(y i) v, hNO v _ (hyi v)⟩`.
-
-Establish `hex : (e x : FiniteAdeleRing (𝓞 F) F) = y i` using `rfl`. Establish `hxI : x ∈ (I : Set _).pi t`. Introduce `v hv`. Apply `hut v` to reduce the goal to its premises. Use `show (y i) v ∈ u v`.
-
-Conclude with `hGu v (hNG v hv _ (hyi v))`. Establish `h` using `hIt hxI`. Establish `h' : (e x : FiniteAdeleRing (𝓞 F) F) ∈ W` using `h`. Rewrite `h'` using `[hex]`. Conclude with `h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prod_openCompact_subset :
     ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (V : Set (κ → FiniteAdeleRing (𝓞 F) F)),

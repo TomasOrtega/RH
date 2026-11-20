@@ -11,15 +11,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc NumberField IsDedekindDom
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Introduce `h` and use `hs (Nat.mem_primeFactors.2 ⟨hl, h, H.QS_pos.ne'⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_dvd_QS {l : ℕ} (hl : l.Prime) (hs : l ∉ H.small) : ¬ l ∣ H.QS := fun h =>
   hs (Nat.mem_primeFactors.2 ⟨hl, h, H.QS_pos.ne'⟩)
 
 /- English proof (translation)
-Introduce `h`. Break down `(Nat.Prime.dvd_mul hl).1 h with h1 | h1` into its components or cases. Break down `(Nat.Prime.dvd_mul hl).1 h1 with h2 | h2` into its components or cases. Conclude with `not_dvd_QS H hl hs h2`. Conclude with `hq ((Nat.prime_dvd_prime_iff_eq hl H.hyp.1).1 h2)`.
-
-Conclude with `hd ((Nat.prime_dvd_prime_iff_eq hl H.hyp.2.1).1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_dvd_condN {l : ℕ} (hl : l.Prime) (hs : l ∉ H.small) (hq : l ≠ H.q) (hd : l ≠ H.d) : ¬ l ∣ H.condN := by
   intro h
@@ -30,13 +28,13 @@ theorem not_dvd_condN {l : ℕ} (hl : l.Prime) (hs : l ∉ H.small) (hq : l ≠ 
   · exact hd ((Nat.prime_dvd_prime_iff_eq hl H.hyp.2.1).1 h1)
 
 /- English proof (translation)
-Establish `hq` using `H.hyp.1`. Establish `hd` using `H.hyp.2.1`. Establish `h8` using `H.hyp.2.2.1`. Establish `h16` using `H.hyp.2.2.2.1`. Establish `e : H.condN.factorization l = H.QS.factorization l + H.q.factorization l + H.d.factorization l` using `by show (H.QS * H.q * H.d).factorization l = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.factorization_mul (mul_ne_zero H.QS_pos.ne' hq.ne_zero) hd.ne_zero, Nat.factorization_mul H.QS_pos.ne' hq.ne_zero]`. Both sides reduce to the same expression. Rewrite using `[e, hq.factorization, hd.factorization, Finsupp.single_apply, Finsupp.single_apply]`. Distinguish the cases in `h1 : H.q = l`. Establish `hs` using `factorization_eq_zero H (h1 ▸ q_not_mem H)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2 : H.d ≠ l` using `by omega`. Rewrite using `[if_pos h1, if_neg h2, hs]`. Conclude with `⟨by simp, fun h => by omega⟩`. Distinguish the cases in `h2 : H.d = l`. Establish `hs` using `factorization_eq_zero H (h2 ▸ d_not_mem H)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_neg h1, if_pos h2, hs]`. Conclude with `⟨by simp, fun h => by omega⟩`. Rewrite using `[if_neg h1, if_neg h2]`. Conclude with `⟨by simp, fun _ => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem factorization_condN_le {l : ℕ} (hl : l.Prime) :
     H.condN.factorization l ≤ max 1 (H.QS.factorization l) ∧ (l = 2 → H.condN.factorization l ≤ H.QS.factorization l) := by
@@ -63,15 +61,13 @@ theorem factorization_condN_le {l : ℕ} (hl : l.Prime) :
       exact ⟨by simp, fun _ => by simp⟩
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hN` using `H.toHostRaw.condN_ne_zero`. Use `H.toHostRaw.image_mem_of_roots J (MaximalUnramifiedExtension l ⊔ IntermediateField.adjoin ℚ_[l] {y : Om l | y ^ (l ^ s) = 1}).toSubfield (fun y hy => ?_) x` and prove the remaining obligations. Use `set a := l ^ H.condN.factorization l with ha`. Use `set b := H.condN / a with hb`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : a * b = H.condN` using `Nat.ordProj_mul_ordCompl_eq_self _ _`. Establish `hco : Nat.Coprime a b` using `(Nat.coprime_ordCompl hl hN).pow_left _`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[zero_pow hN]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hy`. Establish `hbez` using `Nat.gcd_eq_gcd_ab a b`. Rewrite `hbez` using `[hco.gcd_eq_one]`. Establish `e : y = (y ^ a) ^ (Nat.gcdA a b) * (y ^ b) ^ (Nat.gcdB a b)`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add₀ hy0, ← hbez]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h1 : y ^ a ∈ MaximalUnramifiedExtension l` using `IntermediateField.subset_adjoin _ _ ⟨b, Nat.ordCompl_pos l hN, Nat.not_dvd_ordCompl hl hN, by rw [← pow_mul, hab, hy]⟩`. Establish `h2 : y ^ b ∈ IntermediateField.adjoin ℚ_[l] {y : Om l | y ^ (l ^ s) = 1}`. Use `IntermediateField.subset_adjoin _ _ ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `pow_dvd_pow l hs`.
-
-Use `show (y ^ b) ^ (l ^ s) = 1`. Rewrite using `[hc, ← ha, ← pow_mul, ← mul_assoc, mul_comm b a, hab, pow_mul, hy, one_pow]`. Use `show y ∈ MaximalUnramifiedExtension l ⊔ IntermediateField.adjoin ℚ_[l] {y : Om l | y ^ (l ^ s) = 1}`. Rewrite using `[e]`. Conclude with `mul_mem (zpow_mem ((le_sup_left : MaximalUnramifiedExtension l ≤ _) h1) _) (zpow_mem ((le_sup_right : IntermediateField.adjoin ℚ_[l] {y : Om l | y ^ (l ^ s) = 1} ≤ _) h2) _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_mem_Kur_sup {l : ℕ} [Fact l.Prime] (J : H.E →+* Om l) {s : ℕ} (hs : H.condN.factorization l ≤ s) (x : H.E) :
     J x ∈ MaximalUnramifiedExtension l ⊔ IntermediateField.adjoin ℚ_[l] {y : Om l | y ^ (l ^ s) = 1} := by
@@ -105,13 +101,13 @@ theorem image_mem_Kur_sup {l : ℕ} [Fact l.Prime] (J : H.E →+* Om l) {s : ℕ
     (zpow_mem ((le_sup_right : IntermediateField.adjoin ℚ_[l] {y : Om l | y ^ (l ^ s) = 1} ≤ _) h2) _)
 
 /- English proof (translation)
-Introduce `hs`. Take `⟨P, hPp, hP0⟩` from `P`. Establish `h2` using `H.toHostAx.mem_sq_of_dvd_QS H.QS_exact hl (Nat.dvd_of_mem_primeFactors hs) P hP`. Establish `he' : P.ramificationIdx ℤ = 1` using `he`. Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl).irreducible`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 H.E)) (Ideal.span {(l : ℤ)}) = Ideal.span {(l : 𝓞 H.E)}`. Rewrite using `[Ideal.map_span]`. Simplify using the standard rewrite rules. Establish `hle : Ideal.map (algebraMap ℤ (𝓞 H.E)) (Ideal.span {(l : ℤ)}) ≤ P`. Rewrite using `[hmap, Ideal.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hP`. Establish `: P.LiesOver (Ideal.span {(l : ℤ)})` using `⟨hmax.eq_of_le (Ideal.comap_ne_top _ hPp.ne_top) (Ideal.map_le_iff_le_comap.mp hle)⟩`. Establish `hb : Ideal.span {(l : ℤ)} ≠ ⊥` using `by simpa using hl.ne_zero`. Rewrite `he'` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(l : ℤ)}) P hb]`. Use `(Ideal.ramificationIdx'_ne_one_iff hle).2 ?_ he'` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using h2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_mem_of_ramIdx_one {l : ℕ} (hl : l.Prime) (P : HeightOneSpectrum (𝓞 H.E)) (hP : (l : 𝓞 H.E) ∈ P.asIdeal)
     (he : P.asIdeal.ramificationIdx ℤ = 1) : l ∉ H.small := by
@@ -139,17 +135,15 @@ Evaluate the decidable proposition.
 theorem zmod_two_quadratic_ne_zero : ∀ v : ZMod 2, v ^ 2 - v + 1 ≠ 0 := by decide
 
 /- English proof (translation)
-Introduce `hc`. Establish `h8` using `H.hyp.2.2.1`. Take `⟨k, hk⟩ : ∃ k, H.q = 8 * k + 3` from `⟨H.q / 8, by omega⟩`. Establish `hx : ((1 + H.sqq) / 2) ^ 2 - (1 + H.sqq) / 2 + ((2 * k + 1 : ℕ) : H.E) = 0`. Establish `h` using `H.sqq_sq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hk]`. Move the coercions through the operations in `at h ⊢`. Take the linear combination `(1 / 4 : H.E) * h`. Establish `hi : IsIntegral ℤ ((1 + H.sqq) / 2)`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((2 * k + 1 : ℕ) : ℤ), by monicity!, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hx`. Set `z : 𝓞 H.E` to `⟨_, hi⟩`. Establish `hz : z ^ 2 - z + ((2 * k + 1 : ℕ) : 𝓞 H.E) = 0`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `only [map_add, map_sub, map_pow, map_natCast, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `hx`. Use `haveI := P.isPrime`. Use `haveI : Finite (𝓞 H.E ⧸ P.asIdeal) := Nat.finite_of_card_ne_zero (by omega)`. Use `letI := Fintype.ofFinite (𝓞 H.E ⧸ P.asIdeal)`. Use `haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Set `e` to `ZMod.ringEquivOfPrime (𝓞 H.E ⧸ P.asIdeal) Nat.prime_two (Nat.card_eq_fintype_card.symm.trans hc)`. Establish `h` using `congrArg (fun t => e.symm (Ideal.Quotient.mk P.asIdeal t)) hz`. Simplify using `only [map_add, map_sub, map_pow, map_natCast, map_zero] at h`. Generalize the expression as in `e.symm (Ideal.Quotient.mk P.asIdeal z) = u at h`. Move the coercions through the operations in `at h`.
-
-Establish `h2 : (2 : ZMod 2) = 0` using `rfl`. Rewrite `h` using `[h2, zero_mul, zero_add]`. Conclude with `zmod_two_quadratic_ne_zero u h`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_ne_two (P : HeightOneSpectrum (𝓞 H.E)) : Nat.card (𝓞 H.E ⧸ P.asIdeal) ≠ 2 := by
   intro hc

@@ -11,14 +11,14 @@ namespace CoreD
 variable {m n : ℕ} {ε : Fin m → Bool}
 
 /- English proof (translation)
-Simplify using `[opMono, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opMono_add (t : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →₀ ℕ) (f g : PX m n) :
     opMono t (f + g) = opMono t f + opMono t g := by
   simp [opMono, map_add, mul_add]
 
 /- English proof (translation)
-Simplify using `[opMono, map_smul, mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opMono_smul (t : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →₀ ℕ) (r : ℂ) (f : PX m n) :
     opMono t (r • f) = r • opMono t f := by
@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
 @[simp] theorem opL_apply (s : Sym m n) (f : PX m n) : opL s f = op s f := rfl
 
 /- English proof (translation)
-Unfold `op`. Use `Finset.sum_subset h fun t _ ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[mem_support_iff, not_not]`. Rewrite using `[ht, zero_smul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem op_eq (s : Sym m n) (T : Finset _) (h : s.support ⊆ T) (f : PX m n) :
     op s f = ∑ t ∈ T, s.coeff t • opMono t f := by
@@ -45,7 +45,7 @@ theorem op_eq (s : Sym m n) (T : Finset _) (h : s.support ⊆ T) (f : PX m n) :
   rw [ht, zero_smul]
 
 /- English proof (translation)
-Rewrite using `[op_eq (s₁ + s₂) (s₁.support ∪ s₂.support) support_add, op_eq s₁ (s₁.support ∪ s₂.support) Finset.subset_union_left, op_eq s₂ (s₁.support ∪ s₂.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun t _ => by rw [coeff_add, add_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_add_sym (s₁ s₂ : Sym m n) (f : PX m n) : op (s₁ + s₂) f = op s₁ f + op s₂ f := by
   classical
@@ -54,7 +54,7 @@ theorem op_add_sym (s₁ s₂ : Sym m n) (f : PX m n) : op (s₁ + s₂) f = op 
   exact Finset.sum_congr rfl fun t _ => by rw [coeff_add, add_smul]
 
 /- English proof (translation)
-Rewrite using `[op_eq (r • s) s.support support_smul, op, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun t _ => by rw [coeff_smul, smul_eq_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_smul_sym (s : Sym m n) (r : ℂ) (f : PX m n) : op (r • s) f = r • op s f := by
   classical
@@ -62,7 +62,7 @@ theorem op_smul_sym (s : Sym m n) (r : ℂ) (f : PX m n) : op (r • s) f = r �
   exact Finset.sum_congr rfl fun t _ => by rw [coeff_smul, smul_eq_mul, mul_smul]
 
 /- English proof (translation)
-Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp [op]`. Consider the case `insert a F ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, op_add_sym, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem op_sum_sym {ι : Type*} (F : Finset ι) (g : ι → Sym m n) (f : PX m n) :
     op (∑ i ∈ F, g i) f = ∑ i ∈ F, op (g i) f := by
@@ -72,7 +72,7 @@ theorem op_sum_sym {ι : Type*} (F : Finset ι) (g : ι → Sym m n) (f : PX m n
   | insert a F ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, op_add_sym, ih]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 fun p ⟨s, hs, _, hp⟩ => ?_` and prove the remaining obligations. Substitute `hp` using the available equality. Express the relevant statement in the definitionally equal form `monomial s 1 ∈ MvPolynomial.supported ℂ {k | inF1 ε k}`. Rewrite using `[MvPolynomial.mem_supported, vars_monomial one_ne_zero]`. Conclude with `fun k hk => hs k hk`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem box_le_first_family (R : Set (Fin m → ℕ)) : box (n := n) ε R ≤ F1 ε := by
   refine Submodule.span_le.2 fun p ⟨s, hs, _, hp⟩ => ?_
@@ -105,9 +105,9 @@ variable (hS : SymKComm)
 include hS
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Establish `hf : f.1 ∈ F1 ε` using `box_le_first_family R f.2`. Establish `hF1 : ∀ (i j : Fin n) (g : box (n` using `n) ε R), (KopL ε i j g.1) ∈ F1 ε := fun i j g => box_le_first_family R (hV i j g.1 g.2)`. Simplify using `only [rr, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.comp_apply, Submodule.coe_subtype, OmH, LinearMap.sum_apply, Module.End.mul_apply, opL]`. Express the relevant statement in the definitionally equal form `op (Om ε x.1) f.1 = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Om_apply, op_sum_sym]`. Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Establish `hx : SymbolInFirstFamily ε x.1` using `symbol_first_family_of_mem x.2`. Establish `hx' : SymbolInFirstFamily ε (symK ε ij.2 ij.1 x.1)` using `symbol_first_family_of_mem (symK_mem _ _ x.2)`. Rewrite using `[hS m n ε ij.1 ij.2 _ hx' f.1 hf, hS m n ε ij.2 ij.1 _ hx f.1 hf, hS m n ε ij.2 ij.1 _ hx _ (hF1 ij.1 ij.2 f)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -127,9 +127,9 @@ theorem rr_Om (N : ℕ) (x : S (n := n) ε N) : rr R N (OmS ε N x) = OmH R hV (
   rfl
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial k a`. Simplify using `only [Polynomial.aeval_monomial, Module.End.mul_apply, LinearMap.map_smul_of_tower, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply, map_smul]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, Module.End.mul_apply, ih, rr_Om R hV hS, pow_succ, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rr_aeval (N : ℕ) (q : Polynomial ℂ) (x : S (n := n) ε N) :
     rr R N (Polynomial.aeval (OmS ε N) q x) = Polynomial.aeval (OmH R hV) q (rr R N x) := by
@@ -146,7 +146,7 @@ theorem rr_aeval (N : ℕ) (q : Polynomial ℂ) (x : S (n := n) ε N) :
 end main
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Polynomial.divX_mul_X_add q]`. Rewrite using `[map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.add_apply, Module.End.mul_apply, h, map_zero, zero_add, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply, Polynomial.coeff_zero_eq_eval_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_ker {V : Type*} [AddCommGroup V] [Module ℂ V] (T : Module.End ℂ V) (v : V) (h : T v = 0)
     (q : Polynomial ℂ) : Polynomial.aeval T q v = q.eval 0 • v := by
@@ -160,17 +160,17 @@ end CoreD
 open CoreD in
 
 /- English proof (translation)
-Introduce `m n ε c hc R t ht htk`. Take `⟨-, -, -, hF4, hF5⟩` from `hF m n ε c hc`. Establish `hadj : ∀ (i j : Fin n) (s u : Sym m n), psi (symK ε i j s) u = psi s (symK ε j i u)` using `fun i j s u => by`. Use `(hF5 i j s u).2` as an intermediate fact. Simplify `this` using `[psi]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hV : ∀ (i j : Fin n), ∀ f ∈ box ε (R : Set (Fin m → ℕ)), KopL ε i j f ∈ box ε (R : Set (Fin m → ℕ))` using `fun i j f hf => hF4 i j _ f hf`. Take `⟨s, hs1, hs2⟩` from `hD m n ε R t (fun f hf => box_le_first_family _ (ht f hf))`. Use `set N := s.totalDegree`. Set `x : S (n` to `n) ε N := ⟨s, mem_S_of hs1⟩`. Take `⟨q, hq0, hq⟩` from `exists_q hadj N`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set y := Polynomial.aeval (OmS ε N) q x with hy`. Establish `ht' : OmH (R : Set (Fin m → ℕ)) hV (t ∘ₗ (box ε (R : Set (Fin m → ℕ))).subtype) = 0`. Rewrite using `[OmH, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun ij _ => ?_` and prove the remaining obligations. Establish `h0 : Ad (KopL ε ij.2 ij.1) (KV (R : Set (Fin m → ℕ)) hV ij.2 ij.1) (t ∘ₗ (box ε (R : Set (Fin m → ℕ))).subtype) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Simplify using `[Ad, KV, LinearMap.restrict_apply, htk ij.2 ij.1 f.1 f.2]`. Rewrite using `[Module.End.mul_apply, h0, map_zero]`. Establish `hrx : rr (R : Set (Fin m → ℕ)) N x = t ∘ₗ (box ε (R : Set (Fin m → ℕ))).subtype`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs2 f.1 f.2`. Establish `hry : rr (R : Set (Fin m → ℕ)) N y = t ∘ₗ (box ε (R : Set (Fin m → ℕ))).subtype`. Rewrite using `[hy, rr_aeval _ hV hS, hrx, aeval_ker _ _ ht', hq0, one_smul]`. Establish `hy0 : Om ε y.1 = 0` using `congrArg Subtype.val (hq x)`. Establish `hsym : ∀ i j, symK ε i j y.1 = 0` using `symK_eq_zero_of_Om hadj _ hy0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨w, hw, hwf⟩` from `hI hFFT m n ε c hc y.1 (symbol_first_family_of_mem y.2) hsym`. Use `⟨w, hw, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : op y.1 f = t f` using `LinearMap.congr_fun hry ⟨f, hf⟩`. Rewrite using `[← h1, hwf f (box_le_first_family _ hf)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equivLift_of (hFFT : PositivityTheory.Rg.Sw.FFT) (_hSF : SemiFam) (hD : Dens) (hS : SymKComm) (hI : InvOp)
     (hF : FormFacts) : EquivLift := by

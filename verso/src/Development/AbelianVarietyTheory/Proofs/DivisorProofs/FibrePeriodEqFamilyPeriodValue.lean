@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F B _ 𝒜 _ h𝒜 σ e z hz y hy A _ hA φ m L u hE τ hτ P hP c per hper l`. Set `u' : Unif (⟨(fibFam u).V, (fibFam u).τ.comp τ, fun l ↦ (fibFam u).hol (τ l)⟩ : Fam Empty g Λ) (A.hom ≫ 𝟙 _) (algebraMap ℂ (Hol (fibFam u).V))` to `{ E := (fibUnif u).E w := (fibUnif u).w per := fun l p hp ↦ (fibUnif u).per (τ l) p hp hol := (fibUnif u).hol }`. Establish `h1` using `GlobalTheory.T.period_comp_translationGroup_hom (fibUnif u) τ u' rfl _ _ (hP (m.pull c))`. Establish `h2` using `GlobalTheory.AnPer.isPeriod_pull1_eq_comap u' e (GlobalTheory.abelianScheme_left_isSeparated_of_affine A hA) (GlobalTheory.abelianScheme_left_isSeparated_of_affine 𝒜 h𝒜) (fun _ ↦ z) analyticOnNhd_const (fun _ _ ↦ hz) LinearMap.id (AddMonoidHom.id Λ) (fun l _ _ ↦ (hτ l).symm) y φ …`. Establish `hp : (0 : Empty → ℂ) ∈ (fibFam u).V` using `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun f ↦ Hol.fn f 0) h2`. Simplify using `only [Hol.fn_comap _ _ _ _ hp] at h3`. Conclude with `(Hol.fn_algebraMap _ hp).symm.trans h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem period_fibre_eq_value : PFix := by
   intro I _ g Λ _ F B _ 𝒜 _ h𝒜 σ e z hz y hy A _ hA φ m L u hE τ hτ P hP c per hper l

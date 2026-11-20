@@ -32,9 +32,9 @@ namespace GlobalTheory.BotPairSmallTw
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Establish `e : nuH G t i j = nuH G μ₀ i j * L.xiH t`. Simplify using `only [nuH, hL.xi_base, mul_one, div_eq_mul_inv]`. Conclude with `mul_right_comm _ _ _`. Establish `h0` using `GlobalTheory.BotPairSmall.CondNu.nuH_inv_eq_one_of_cong hL G i j u hu (hatId_mono (modT_mul_conj_le G t) h)`. Establish `h1` using `GlobalTheory.BotPairSmall.CondXi.xiH_eq_one_of_cong hL G t u hu h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_inv]`. Express the relevant statement in the definitionally equal form `((nuH G μ₀ i j)⁻¹.1 * (L.xiH t)⁻¹.1) (finIdl D u) = 1`. Rewrite using `[MonoidHom.mul_apply, h0, one_mul]`. Express the relevant statement in the definitionally equal form `((L.xiH t).1 (finIdl D u))⁻¹ = 1`. Rewrite using `[h1, inv_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuH_inv_eq_one {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T) (i j : Fin D.R.m) (u : (AE D)ˣ)
     (hu : IntU D u) (h : (u : AE D) - 1 ∈ hatId D (modT G t * D.host.conj • modT G t)) :
@@ -50,11 +50,11 @@ theorem nuH_inv_eq_one {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T)
   rw [h1, inv_one]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hb : D.host.𝔟 ≤ M` using `le_sup_right.trans hle`. Establish `h0 : M ≠ ⊥` using `fun e => ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D (eq_bot_iff.2 (e ▸ hb))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P : HeightOneSpectrum (𝓞 D.host.E)` to `⟨M, hM.isPrime, h0⟩`. Establish `h2 : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∈ M` using `GlobalTheory.HalfCompare.two_q_mem (P := P) (Ideal.dvd_iff_le.2 hb)`. Take `⟨a, ha, b, hb', e⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 h)`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hb'`. Establish `e1` using `congrArg (MulSemiringAction.toRingHom _ (𝓞 D.host.E) D.host.conj) e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e1` using `[map_add, map_mul, map_natCast, map_one]`. Use `hM.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e1]`. Conclude with `M.add_mem (hle (Ideal.mem_sup_left (Ideal.smul_mem_pointwise_smul D.host.conj _ _ ha))) (M.mul_mem_left _ h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_isCoprime_halfDifferent {I : Ideal (𝓞 D.host.E)}
     (h : IsCoprime I (Ideal.span {((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E)})) : IsCoprime (D.host.conj • I) D.host.𝔟 := by
@@ -74,11 +74,11 @@ theorem conj_isCoprime_halfDifferent {I : Ideal (𝓞 D.host.E)}
   exact M.add_mem (hle (Ideal.mem_sup_left (Ideal.smul_mem_pointwise_smul D.host.conj _ _ ha))) (M.mul_mem_left _ h2)
 
 /- English proof (translation)
-Unfold `modT`. Use `IsCoprime.mul_left ?_ (IsCoprime.prod_left fun w hw => ?_)` and prove the remaining obligations. Take `⟨N, hN, hm⟩` from `GlobalTheory.FunObj.StdDatum.HalfDiff.exists_nat_mem_condE G.pl ⟨hpq, hpq'⟩`. Take `⟨x, y, e⟩ : IsCoprime ((N : ℕ) : 𝓞 D.host.E) ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E)` from `Nat.Coprime.cast hN`. Rewrite using `[Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one, ← e]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mul_mem_left _ _ hm)) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))`. Simplify using `only [twPl, GlobalTheory.FunObj.locPl, Finset.mem_filter, Finset.mem_union] at hw`. Establish `hP : w ∈ L.Q t` using `hw.1.resolve_left hw.2`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `heq` using `w.isMaximal.eq_of_le hne le_sup_left`. Establish `h2q : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal` using `heq.symm.le (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Use `(hL.Q_off t w hP).1 ?_` and prove the remaining obligations. Rewrite using `[show D.host.QS * D.host.q * D.host.d * D.sp.T = (D.host.QS * D.host.q) * (D.host.d * D.sp.T) by ring, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ h2q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modT_isCoprime_two_q {μ₀ : T} (hL : L.Is μ₀) (hpq : Nat.Coprime D.host.pde (D.host.QS * D.host.q)) (hpq' : Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
     (G : GridData L sc) (t : T) : IsCoprime (modT G t) (Ideal.span {((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E)}) := by
@@ -102,26 +102,26 @@ theorem modT_isCoprime_two_q {μ₀ : T} (hL : L.Is μ₀) (hpq : Nat.Coprime D.
     exact Ideal.mul_mem_right _ _ h2q
 
 /- English proof (translation)
-The claim follows from `conj_isCoprime_halfDifferent (modT_isCoprime_two_q hL hpq hpq' G t)`.
+A detailed English derivation is pending.
 -/
 theorem conj_modT_isCoprime_halfDifferent {μ₀ : T} (hL : L.Is μ₀) (hpq : Nat.Coprime D.host.pde (D.host.QS * D.host.q)) (hpq' : Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
     (G : GridData L sc) (t : T) : IsCoprime (D.host.conj • modT G t) D.host.𝔟 :=
   conj_isCoprime_halfDifferent (modT_isCoprime_two_q hL hpq hpq' G t)
 
 /- English proof (translation)
-Introduce `D T L sc μ₀ _ hL hpq hpq' G t δ t0 hc ht i j χα hα χν hν hn`. Take `⟨h1, h2, h3⟩` from `ranks_exact D i j`. Establish `hd : Even (botBig D i j + botSmall D i j)` using `⟨halfRank D i j - (D.R.m - (j + 1)) / 2 - (D.R.m - j) / 2, by omega⟩`. Take `⟨e0, hv, h0⟩` from `GlobalTheory.Vacuum.exists_vacuum D ⊤ δ hc t0 ht (botSmall D i j) (botBig D i j + botSmall D i j) (hd.mul_left _)`. Take `⟨W, hW1, hW2, hW3, hW4⟩` from `GlobalTheory.FinWeil.exists_weil_of_vacuum D ⊤ δ hc _ _ e0 hv.1 h0 χα χν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm` using `modT_ne_bot G t`. Establish `hcop` using `GlobalTheory.SqTop.modT_sup_conj hL G t`. Establish `hcond : ∀ u : (AE D)ˣ, IntU D u → (u : AE D) - 1 ∈ hatId D (modT G t * D.host.conj • modT G t) → W.chV'.f u = 1`. Introduce `u hu h`. Rewrite using `[hW2, hν, nuH_inv_eq_one hL G t i j u hu h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨R, hR1, hR2⟩` from `GlobalTheory.CongReps.exists_reps D (botSmall D i j) _ (GlobalTheory.BotPairSmall.conj_smul_ne_bot D hm)`. Establish `hTT` using `GlobalTheory.BotPairSmall.cvec_conj_mem_TT D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl`. Establish `hK` using `GlobalTheory.T.weilAction_cosetVector_fixed_principalCongruence D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl`. Establish `hS` using `GlobalTheory.StdSumFix.stdSum_fix_eig D δ _ _ e0 W _ _ hTT hK R hR1 hR2`. Establish `hN` using `absNorm_modT G t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidx` using `GlobalTheory.BotPairSmall.blockJ_relIndex D (modT G t) hm (botBig D i j) (botBig D i j + botSmall D i j)`. Establish `hQ : 1 ≤ levQ G.pl * Qn G t`. Rewrite using `[← hN]`. Conclude with `Nat.one_le_iff_ne_zero.2 (Ideal.absNorm_eq_zero_iff.not.2 hm)`. Establish `heig : ∀ h ∈ GlobalTheory.BotPairSmall.blockJ D (modT G t) (botBig D i j) (botBig D i j + botSmall D i j), ∃ c : ℂ, ‖c‖ = 1 ∧ W.Om 1 h (∑ r ∈ R, W.Om r 1 (GlobalTheory.BotPairSmall.cvec D δ (D.host.conj • modT G t) (botBig D i j) (botSmall D i j) (botBig D i j + botSmall D i j) e …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Take `⟨k, hk, c, hc1, e⟩` from `GlobalTheory.T.cosetVector_blockLevel_unimodular_eigen D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl h hh`. Conclude with `⟨c, hc1, hS.2 h k c hk e⟩`. Use `⟨{ crv := hc, pt0 := ht, a := botSmall D i j, d := botBig D i j + botSmall D i j, a_le := Nat.le_add_left _ _, d_even := hd, e0 := e0, vac := hv, W := W, n := fun τ => ((χν.n τ - ((botBig D i j + botSmall D i j : ℕ) : ℤ)) / 2).toNat, wt := ?_, F := ∑ r ∈ R, W.Om r 1 (GlobalTheory …` and prove the remaining obligations. Introduce `τ show 2 * (((χν.n τ - ((botBig D i j + botSmall D i j : ℕ) : ℤ)) / 2).toNat : ℤ) = W.ep' * W.chV'.n τ - _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW4, hW2]`. Take `⟨r, hr⟩` from `χν.par τ`. Use `hn τ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show W.chV.f x ^ W.ep = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW3, zpow_one, hW1, hα]`. Use `show W.chV'.f x ^ W.ep' = _`. Rewrite using `[hW4, zpow_one, hW2, hν]`.
+A detailed English derivation is pending.
 -/
 theorem smallPair_exists_tw : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, GlobalTheory.NormSum.Inp D → L.Is μ₀ → Nat.Coprime D.host.pde (D.host.QS * D.host.q) → Nat.Coprime D.host.pde' (D.host.QS * D.host.q) → ∀ (G : GridData L sc) (t : T) {δ t0 : ℂ}, Crv D ⊤ δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D ⊤ δ) t0 → ∀ (i j : Fin D.R.m) (χα : HeckeU D (botSmall D i j)), (∀ x, χα.f x = (alphaH L t i j).1 (finIdl D x)) → ∀ (χν : HeckeU D (botBig D i j + botSmall D i j)), (∀ x, χν.f x = (nuH G t i j)⁻¹.1 (finIdl D x)) → (∀ τ, ((botBig D i j + botSmall D i j : ℕ) : ℤ) ≤ χν.n τ) → ∃ P' : GlobalTheory.NormSum.Pair D ⊤ δ t0 (levQ G.pl * Qn G t), P'.a = botSmall D i j ∧ P'.d = botBig D i j + botSmall D i j ∧ HasChars P' (alphaH L t i j) (nuH G t i j)⁻¹ ∧ IsStdDatum P' (D.host.conj • modT G t) (botBig D i j) ∧ IsBlockLevel P' (modT G t) (botBig D i j) := by
   intro D T L sc μ₀ _ hL hpq hpq' G t δ t0 hc ht i j χα hα χν hν hn

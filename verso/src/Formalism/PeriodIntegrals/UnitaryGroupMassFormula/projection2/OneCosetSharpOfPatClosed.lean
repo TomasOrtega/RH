@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.projection2.Assemble
 namespace PI.OneCosetSharp.W
 
 /- English proof (translation)
-Introduce `k _ _ ψ₀ χ k₀ m t j n' c n hk hm hm4 hj1 hj2 hc ha hb`. Conclude with `⟨h1 k ψ₀ χ k₀ m t j n' c n ⟨hk, hm, hm4, hj1, hj2, hc, ha, hb⟩ , h2 k ψ₀ χ k₀ m t j n' c n ⟨hk, hm, hm4, hj1, hj2, hc, ha, hb⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem oneCosetSharp_of (h1 : Claim1) (h2 : Claim2) : OneCosetSharp := by
   intro k _ _ ψ₀ χ k₀ m t j n' c n hk hm hm4 hj1 hj2 hc ha hb
@@ -11,7 +11,7 @@ theorem oneCosetSharp_of (h1 : Claim1) (h2 : Claim2) : OneCosetSharp := by
     h2 k ψ₀ χ k₀ m t j n' c n ⟨hk, hm, hm4, hj1, hj2, hc, ha, hb⟩⟩
 
 /- English proof (translation)
-The claim follows from `oneCosetSharp_of (claim1_of hP hK hN hG) h2`.
+A detailed English derivation is pending.
 -/
 theorem oneCosetSharp_of_patClosed (hP : PatClosed) (hK : KappaZero) (hN : NElem) (hG : GaStep) (h2 : Claim2) :
     OneCosetSharp :=

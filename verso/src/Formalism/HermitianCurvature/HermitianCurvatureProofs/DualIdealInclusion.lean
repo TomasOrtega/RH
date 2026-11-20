@@ -5,9 +5,9 @@ namespace Formalism.FourierDecayAlt.P.Dual
 open NumberField FractionalIdeal
 
 /- English proof (translation)
-Establish `hgE : (g : E) ≠ 0` using `by exact_mod_cast hg`. Rewrite using `[mul_inv (dd ^ ν), spanSingleton_inv]`. Establish `h1 : spanSingleton (nonZeroDivisors (𝓞 E)) (g : E) * spanSingleton _ (((g : E) ^ 2)⁻¹) = spanSingleton _ ((g : E)⁻¹)`. Rewrite using `[spanSingleton_mul_spanSingleton]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[show dd ^ (-(ν + 1)) = dd⁻¹ * (dd ^ ν)⁻¹ by`. Rewrite using `[neg_add, zpow_add₀ hdd, _root_.zpow_neg, zpow_neg_one, mul_comm]]`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alg {E : Type} [Field E] [NumberField E] (dd : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
     (hdd : dd ≠ 0) (ν g : ℤ) (hg : g ≠ 0) :
@@ -23,11 +23,11 @@ theorem alg {E : Type} [Field E] [NumberField E] (dd : FractionalIdeal (nonZeroD
   rw [← h1]; ring
 
 /- English proof (translation)
-Introduce `E _ _ dd h1 ν g hg La hLa`. Establish `hdd : dd ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, _root_.inv_zero]`. Conclude with `dual_ne_zero ℤ ℚ (one_ne_zero (α := FractionalIdeal (nonZeroDivisors (𝓞 E)) E)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgE : (g : E) ≠ 0` using `by exact_mod_cast hg`. Establish `hJ : dd ^ ν * spanSingleton (nonZeroDivisors (𝓞 E)) ((g : E) ^ 2) ≠ 0` using `mul_ne_zero (zpow_ne_zero _ hdd) (by simp [spanSingleton_eq_zero_iff, hgE])`. Establish `hLa0 : La ≠ 0` using `fun h => hJ (le_antisymm (by simpa [h] using hLa) (FractionalIdeal.zero_le _))`. Establish `hd` using `(dual_le_dual ℤ ℚ hLa0 hJ).mpr hLa`. Rewrite `hd` using `[dual_eq_mul_inv ℤ ℚ (dd ^ ν * spanSingleton _ ((g : E) ^ 2)), h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem dual_ideal_inclusion : Formalism.FourierDecayAlt.L.DualIdealInclusion := by
   intro E _ _ dd h1 ν g hg La hLa
@@ -45,13 +45,13 @@ theorem dual_ideal_inclusion : Formalism.FourierDecayAlt.L.DualIdealInclusion :=
     _ = _ := alg dd hdd ν g hg
 
 /- English proof (translation)
-Introduce `E _ _ dd h1 ν g hg La hLa x hx`. Establish `hdd : dd ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, _root_.inv_zero]`. Conclude with `dual_ne_zero ℤ ℚ (one_ne_zero (α := FractionalIdeal (nonZeroDivisors (𝓞 E)) E)) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgE : (g : E) ≠ 0` using `by exact_mod_cast hg`. Establish `hJ : dd ^ ν * spanSingleton (nonZeroDivisors (𝓞 E)) ((g : E) ^ 2) ≠ 0` using `mul_ne_zero (zpow_ne_zero _ hdd) (by simp [spanSingleton_eq_zero_iff, hgE])`. Establish `hy : x * (g : E)⁻¹ ∈ dual ℤ ℚ (dd ^ ν * spanSingleton _ ((g : E) ^ 2))`. Rewrite using `[mem_dual hJ]`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hx a (hLa a ha)` as an intermediate fact. Rewrite using `[Algebra.traceForm_apply]`. Use `this using 2` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Rewrite `hy` using `[dual_eq_mul_inv ℤ ℚ, h1]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← alg dd hdd ν g hg]`. Use `mul_mem_mul (mem_spanSingleton_self (nonZeroDivisors (𝓞 E)) (g : E)) hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dual_third_group_integral : Formalism.FourierDecayAlt.L.DualLatticeInclusion := by
   intro E _ _ dd h1 ν g hg La hLa x hx
@@ -76,10 +76,10 @@ theorem dual_third_group_integral : Formalism.FourierDecayAlt.L.DualLatticeInclu
 end Formalism.FourierDecayAlt.P.Dual
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Dual.dual_third_group_integral`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.dual_third_group_holds : Formalism.FourierDecayAlt.L.DualLatticeInclusion := Formalism.FourierDecayAlt.P.Dual.dual_third_group_integral
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Dual.dual_ideal_inclusion`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.dual_third_group_ideal : Formalism.FourierDecayAlt.L.DualIdealInclusion := Formalism.FourierDecayAlt.P.Dual.dual_ideal_inclusion

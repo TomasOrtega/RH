@@ -13,19 +13,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha g _ i hi y hy hdz V hV`. Take `⟨n, c⟩` from `y`. Establish `hn : 0 < n` using `hy.1`. Establish `hcl : GlobalTheory.LocLanglands.cls c.rep = (⟨n, c⟩ : IrrGL (HeightOneSpectrum.adicCompletion E w))` using `IrrGL.of_rep ⟨n, c⟩`. Take `⟨D⟩` from `UpperTheory.Zero.LLC.extEx E Ω A w h g i hi n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨R, hR⟩, hRT⟩` from `UpperTheory.Zero.LLC.resEx E Ω A w h g i hi n hn D`. Establish `hT` using `hRT R hR`. Take `⟨τ, hτ, hinf⟩` from `(UpperTheory.Zero.LLC.typeEx E Ω A w h g i hi n hn c.rep).1 (by rw [hcl]; exact hy) (by rw [hcl]; exact hdz)`. Take `⟨hNex, -, hNchar, -⟩` from `UpperTheory.Zero.LLC.nameLaws g n hn D.K hT.rank`. Take `⟨θ, hθ, hθτ⟩` from `hNex τ hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hIF : ∀ W : WD h, UpperTheory.Zero.LLC.Par a ⟨n, c⟩ W → UpperTheory.Zero.LLC.InFor g n R θ W` using `fun W hW => (hW.type g i hi n hn D R hR θ hθ τ hτ hθτ c.rep hcl hinf).2`. Take `⟨ω, -, hω, -⟩` from `(UpperTheory.Zero.LLC.clBasic _ (⟨n, c⟩ : IrrGL _)).1`. Take `⟨-, hθu, hVu⟩` from `UpperTheory.Zero.LLC.tameUniq E Ω A w h g n D.K R hT θ hθ V (hIF V hV)`. Use `⟨fun V' hV' => hVu V' hV.irr hV'.irr hV.tame hV'.tame (hIF V' hV') (fun s => by rw [hV.central ω hω s, hV'.central ω hω s]), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨m, c'⟩ hy' hdz' hV'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hm : m = n` using `hV'.dim.symm.trans hV.dim`. Substitute `m` using the available equality. Establish `hcl' : GlobalTheory.LocLanglands.cls c'.rep = (⟨n, c'⟩ : IrrGL (HeightOneSpectrum.adicCompletion E w))` using `IrrGL.of_rep ⟨n, c'⟩`. Take `⟨τ', hτ', hinf'⟩` from `(UpperTheory.Zero.LLC.typeEx E Ω A w h g i hi n hn c'.rep).1 (by rw [hcl']; exact hy') (by rw [hcl']; exact hdz')`. Take `⟨θ', hθ', hθτ'⟩` from `hNex τ' hτ'`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hIF' : UpperTheory.Zero.LLC.InFor g n R θ' V` using `(hV'.type g i hi n hn D R hR θ' hθ' τ' hτ' hθτ' c'.rep hcl' hinf').2`. Take `⟨j, -, rfl⟩` from `hθu θ' hIF'`. Establish `hch : τ'.character = τ.character` using `hNchar τ τ' θ j hτ hτ' hθ hθτ hθτ'`. Take `⟨ω', -, hω', -⟩` from `(UpperTheory.Zero.LLC.clBasic _ (⟨n, c'⟩ : IrrGL _)).1`. Establish `hωω : ω' = ω`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `z`. Take `⟨s, rfl⟩` from `ha.surj z`. Conclude with `(hV'.central ω' hω' s).symm.trans (hV.central ω hω s)`. Substitute `ω'` using the available equality. Establish `hdet` using `UpperTheory.Zero.LLC.detByType E Ω A w h g i hi n hn c.rep c'.rep τ τ' ω hτ hch hinf hinf' hω hω'`.
-
-Conclude with `hcl'.symm.trans (hdet.trans hcl)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.LLC.parUniq :
     UpperTheory.Zero.LLC.ParUniq := by

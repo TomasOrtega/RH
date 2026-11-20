@@ -6,19 +6,17 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.WedgeOf
 
 /- English proof (translation)
-Introduce `R A B _ _ _ _ _ n hA hB f hf`. Take `⟨fA, pA, rA⟩` from `hA`. Take `⟨fB, pB, rB⟩` from `hB`. Take `⟨g, hg⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Establish `hg' : ∀ b, f (g b) = b` using `fun b => LinearMap.congr_fun hg b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `s : A →ₗ[R] LinearMap.ker f` to `LinearMap.codRestrict (LinearMap.ker f) (LinearMap.id - g ∘ₗ f) (fun a => by`. Simplify using `[LinearMap.mem_ker, hg'])`. Establish `hs : s ∘ₗ (LinearMap.ker f).subtype = LinearMap.id`. Use extensionality with `x`. Establish `hx : f x.1 = 0` using `x.2`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[s, hx]`. Establish `hsurj : Function.Surjective s` using `fun x => ⟨x.1, LinearMap.congr_fun hs x⟩`. Use `haveI : Module.Finite R (LinearMap.ker f) := Module.Finite.of_surjective s hsurj`. Use `haveI : Module.Projective R (LinearMap.ker f) := Module.Projective.of_split (LinearMap.ker f).subtype s hs`. Set `E : (LinearMap.ker f × B) ≃ₗ[R] A` to `LinearEquiv.ofLinear ((LinearMap.ker f).subtype.coprod g) (s.prod f) (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext a <;> simp [s, hg'])`. Use the proof step `(by`. Apply the tactic sequence `ext x <;> simp [s, hg'])`. Establish `hsub : Subsingleton (LinearMap.ker f)`. Rewrite using `[← Module.rankAtStalk_eq_zero_iff_subsingleton (R := R)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Establish `h1` using `congrFun (Module.rankAtStalk_prod (R := R) (LinearMap.ker f) B) p`. Establish `h2` using `Module.rankAtStalk_eq_of_equiv (R := R) E`. Establish `h3` using `congrFun h2 p`. Simplify using `only [Pi.add_apply] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[h1, rA p, rB p]`. Simplify using `using h3`. Use `⟨?_, hf⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
-
-Establish `: (⟨a, ha⟩ : LinearMap.ker f) = 0` using `Subsingleton.elim _ _`. Simplify using `using congrArg Subtype.val this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bijective_of_surjective_of_VB : ∀ (R A B : Type) [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] (n : ℕ), VB R A n → VB R B n → ∀ f : A →ₗ[R] B,

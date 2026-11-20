@@ -12,11 +12,9 @@ variable {F E : Type*} [Field F] [Field E] [Algebra F E] [Algebra.IsQuadraticExt
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Introduce `M g x hx w`. Use `set k : GL ι ℂ := ((g⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w with hk`. Establish `hne : invApply g (vecAt v x) w ≠ 0`. Introduce `hz`. Establish `hz' : (k : Matrix ι ι ℂ) *ᵥ vecAt v x w = 0` using `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((k⁻¹ : GL ι ℂ) : Matrix ι ι ℂ) *ᵥ ((k : Matrix ι ι ℂ) *ᵥ vecAt v x w) = 0`. Rewrite using `[hz', mulVec_zero]`. Rewrite `h2` using `[mulVec_mulVec, Units.inv_mul, one_mulVec]`. Conclude with `h₁ x hx w h2`. Establish `hpos` using `(M.posDef w).dotProduct_mulVec_pos hne`.
-
-Conclude with `(Complex.pos_iff.mp hpos).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem WeightPos.proof (h : GroundTheory.Automorphic.HermitianForm F E W) (v : Basis ι E W)
     (h₁ : VecAtNeZero.Statement v) : WeightPos.Statement h v := by

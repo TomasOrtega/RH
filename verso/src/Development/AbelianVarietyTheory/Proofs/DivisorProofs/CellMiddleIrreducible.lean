@@ -9,11 +9,11 @@ open scoped TensorProduct
 namespace GlobalTheory.IndLineGL
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hK a a' m α₀ β₀ hαs hβs hαu hβu b h`. Establish `c0` using `b.2.2 0`. Establish `c2` using `b.2.2 2`. Simplify using `only [Fintype.card_fin, Fintype.sum_bool] at c0 c2`. Establish `e0 : blk3 m 0 = 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : blk3 m 2 = 1` using `rfl`. Establish `ht : b.1 true 0 = b.1 true 2` using `by omega`. Establish `z0 : (((b.1 false 0 : ℕ) : ℂ) - (b.1 false 2 : ℕ)) / 2 = 0` using `by rw [h, sub_self, zero_div]`. Establish `z1 : (((b.1 true 0 : ℕ) : ℂ) - (b.1 true 2 : ℕ)) / 2 = 0` using `by rw [ht, sub_self, zero_div]`. Unfold `cellMid`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[z0, z1, absPow_zero, mul_one, mul_one]`. Conclude with `GlobalTheory.Published.BernsteinUnitaryProductIrreducible.prod₂_detRep hK.base.bernsteinUnitaryProductIrreducible _ (GlobalTheory.Published.BernsteinUnitaryProductIrreducible.detRep_hyp _ hαs hαu).1 (GlobalTheory.Published.BernsteinUnitaryProductIrreducible.detRep_hyp _ hαs hαu). …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellMid_isIrreducible_of_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.ThK.KP → ∀ (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →

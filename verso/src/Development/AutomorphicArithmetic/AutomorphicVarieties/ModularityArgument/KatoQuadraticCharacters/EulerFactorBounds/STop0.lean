@@ -9,15 +9,13 @@ open scoped MatrixGroups Matrix Classical
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N _ x c d w g hH hLw hLift n r`. Take `⟨ws, hws⟩` from `hLw`. Establish `api` using `sApi Ω ε X l`. Establish `inv` using `sInvApi Ω ε X l N w`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hn` using the available equality. Conclude with `⟨fun σ _ => (inv 0).2.2.2.2.2.2.1 _, fun σ _ τ _ => (api 0).2.2.2.2.2.2.2.2.1 _ _, ⟨∅, fun σ _ τ _ _ => (api 0).2.2.2.2.2.2.2.2.1 _ _⟩⟩`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hL0 : r + n ≠ 0` using `by omega`. Establish `hM0 : N * l ^ (r + n) ≠ 0` using `mul_ne_zero (NeZero.ne N) (pow_ne_zero _ hlp.ne_zero)`.
+Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero (N * l ^ (r + n)) := ⟨hM0⟩`. Establish `hMeq : topM l n r (N * N) = N * (N * l ^ (r + n))`. Unfold `topM`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : NeZero (topM l n r (N * N)) := ⟨by rw [hMeq]; exact mul_ne_zero (NeZero.ne N) hM0⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLev : Lev l n N (N * l ^ (r + n)) (topM l n r (N * N)) g` using `⟨hMeq, ⟨l ^ (r + n), by ring⟩, ⟨N * l ^ r, by ring⟩, hn, hH.cop, hH.g0⟩`. Establish `hLv : Lv c d (N * l ^ (r + n))` using `hH.lv hlp.ne_zero (NeZero.ne N) rfl`. Establish `hdvdl : l ∣ N * l ^ (r + n)` using `Dvd.dvd.mul_left (dvd_pow_self l hL0) N`. Establish `hOk` using `ok_UV (M := N * l ^ (r + n)) (L := r + n) hlp hH.odd hH.cop (by omega) hdvdl x`. Take `⟨β, hβ, hcg⟩` from `sTopRel Ω ε X l n N (N * l ^ (r + n)) (topM l n r (N * N)) w g hLev hLift c d ws hws hLv _ _ hOk _ _ (ixU_toQ rfl x) (ixV_toQ rfl)`.
-
-Conclude with `sTopCocG Ω ε X l n N _ _ w g hLev hLift _ _ hOk (ws n _) (hws.coc n _ hLv) _ β hβ hcg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sTop0 :
     UpperTheory.V.Z.Kato.Nb.STop0 := by

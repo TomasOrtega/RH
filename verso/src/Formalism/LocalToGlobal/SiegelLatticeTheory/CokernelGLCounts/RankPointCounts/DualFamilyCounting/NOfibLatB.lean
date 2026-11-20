@@ -20,13 +20,13 @@ open Alg LatA
 variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
 
 /- English proof (translation)
-Introduce `c` and use `⟨by rw [map_add, (hv c).1, (hw c).1, add_zero], by rw [map_add, (hv c).2, (hw c).2, add_zero]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem inW_add {v w : (VS D).V} (hv : InW X v) (hw : InW X w) : InW X (v + w) := fun c =>
   ⟨by rw [map_add, (hv c).1, (hw c).1, add_zero], by rw [map_add, (hv c).2, (hw c).2, add_zero]⟩
 
 /- English proof (translation)
-Introduce `e` and use `⟨by rw [hT_sumR]; exact Finset.sum_eq_zero fun d _ => by rw [(hv d e).1, mul_zero], by rw [hT_sumR]; exact Finset.sum_eq_zero fun d _ => by rw [(hv d e).2, mul_zero]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem inW_sum (s : Finset (Fin D.R.rS)) (c : Fin D.R.rS → D.host.E) (v : Fin D.R.rS → (VS D).V)
     (hv : ∀ d, InW X (v d)) : InW X (∑ d ∈ s, c d • v d) := fun e =>
@@ -34,11 +34,11 @@ theorem inW_sum (s : Finset (Fin D.R.rS)) (c : Fin D.R.rS → D.host.E) (v : Fin
    by rw [hT_sumR]; exact Finset.sum_eq_zero fun d _ => by rw [(hv d e).2, mul_zero]⟩
 
 /- English proof (translation)
-Use `set v := pW X (n (X.fY a)) + ∑ d, Bq (X := X) n d a • xq X n d with hv`. Establish `hvW : InW X v` using `inW_add (pW_inW X _) (inW_sum _ _ _ fun d => xq_inW (X := X) d)`. Establish `horth : ∀ w, InW X w → (VS D).hT v w = 0`. Introduce `w hw`. Rewrite using `[hv, map_add, LinearMap.add_apply, hT_sumL, omega_rel hn a hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [neg_add_cancel]`. Establish `hall : ∀ y, (VS D).hT v y = 0`. Introduce `y`. Rewrite using `[decomp X y, map_add, map_add, hT_sumR, hT_sumR, horth _ (pW_inW X y)]`. Establish `h1 : ∀ c, (VS D).hT v (X.eX c) = 0` using `fun c => by rw [hsw, (hvW c).1, star_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ c, (VS D).hT v (X.fY c) = 0` using `fun c => by rw [hsw, (hvW c).2, star_zero]`. Simplify using `only [h1, h2, mul_zero, Finset.sum_const_zero, add_zero]`. Establish `hv0 : v = 0` using `(VS D).nondeg.1 v hall`. Conclude with `eq_neg_of_add_eq_zero_left hv0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pW_nf (hn : NFl X u n) (a : Fin D.R.rS) :
     pW X (n (X.fY a)) = -∑ d, Bq (X := X) n d a • xq X n d := by
@@ -58,14 +58,14 @@ theorem pW_nf (hn : NFl X u n) (a : Fin D.R.rS) :
   exact eq_neg_of_add_eq_zero_left hv0
 
 /- English proof (translation)
-Use `conv_lhs => rw [nw hn hw]`. Rewrite using `[pW_add, pW_sum_e, add_zero, pW_of_inW X hw]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pW_nw (hn : NFl X u n) {w : (VS D).V} (hw : InW X w) : pW X (n w) = w := by
   conv_lhs => rw [nw hn hw]
   rw [pW_add, pW_sum_e, add_zero, pW_of_inW X hw]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [pW]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, pW_add, pW_smul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pW_sum (s : Finset (Fin D.R.rS)) (c : Fin D.R.rS → D.host.E) (v : Fin D.R.rS → (VS D).V) :
     pW X (∑ d ∈ s, c d • v d) = ∑ d ∈ s, c d • pW X (v d) := by
@@ -74,13 +74,13 @@ theorem pW_sum (s : Finset (Fin D.R.rS)) (c : Fin D.R.rS → D.host.E) (v : Fin 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, pW_add, pW_smul, ih]
 
 /- English proof (translation)
-Establish `hdet : X0.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hup i j hij)]`. Simplify using `[hd]`. Establish `hU : IsUnit X0.det` using `by rw [hdet]; exact isUnit_one`. Establish `hXY : X0 * X0⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYup : ∀ b a, a < b → X0⁻¹ b a = 0`. Establish `hbt : X0.BlockTriangular id` using `fun i j hij => hup i j hij`. Use `haveI : Invertible X0 := Matrix.invertibleOfIsUnitDet X0 hU`. Conclude with `fun b a h => Matrix.blockTriangular_inv_of_blockTriangular hbt h`. Use `⟨hYup, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hXY a) a`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ a), hd, one_mul]`. Establish `hz : ∑ e ∈ Finset.univ.erase a, X0 a e * X0⁻¹ e a = 0`. Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase he) with h1 | h1` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hup a e h1, zero_mul]`. Rewrite using `[hYup e a h1, mul_zero]`. Rewrite `h` using `[hz, add_zero]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_up (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (hup : ∀ b a, a < b → X0 b a = 0)
     (hd : ∀ a, X0 a a = 1) : (∀ b a, a < b → X0⁻¹ b a = 0) ∧ ∀ a, X0⁻¹ a a = 1 := by
@@ -109,43 +109,39 @@ end LatB
 open LatB LatA Alg in
 
 /- English proof (translation)
-Introduce `D X u n hn hLQ`. Take `⟨hXs, hxs, hMs⟩` from `hLQ`. Establish `hup : ∀ b a, a < b → Xq X n b a = 0` using `fun b a h => Xq_lower hn h`. Establish `hd : ∀ a, Xq X n a a = 1` using `Xq_diag hn`. Establish `hXs' : ∀ b a, b < a → Xq X n b a ∈ aaD D b * (aaD D a)⁻¹` using `hXs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMs' : ∀ b a, Mq X n b a ∈ aaD D b * aaD D a` using `hMs`. Establish `hXinv` using `shape_inv (Xq X n) hup hd hXs'`. Take `⟨hYup, hYd⟩` from `inv_up (Xq X n) hup hd`. Establish `hdet : IsUnit (Xq X n).det` using `by rw [Xq_det hn]; exact isUnit_one`. Establish `hAeq : Xq X n * Mq X n = Aq X n`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Mq`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hdet]`. Establish `hA : ∀ b a, Aq X n b a ∈ aaD D b * aaD D a`. Rewrite using `[← hAeq]`. Conclude with `shape_mul (Xq X n) (Mq X n) hup hd hXs' hMs'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBeq : Bq (X` using `X) n = ((Xq X n)⁻¹)ᴴ := by`. Establish `h` using `XB hn`. Rewrite using `[Matrix.conjTranspose_nonsing_inv]`. Conclude with `(Matrix.inv_eq_right_inv h).symm`. Establish `hB : ∀ d a, Bq (X` using `X) n d a ∈ (aaD D d)⁻¹ * aaD D a := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `d a`. Rewrite using `[hBeq, Matrix.conjTranspose_apply]`. Break down `lt_trichotomy a d with h | h | h` into its components or cases. Rewrite using `[mul_comm]`. Conclude with `SS_mul (SS_aaD a) (SS_inv (SS_aaD d)) _ (hXinv a d h)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[hYd, star_one, mul_comm]`. Conclude with `one_mem_aa a`. Rewrite using `[hYup a d h, star_zero]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ x ∈ (VS D).L0, n x ∈ (VS D).L0`. Introduce `x hx`. Take `⟨hf, he, hw⟩` from `(mem_hermitianStandardLattice_iff_pairing_integral X x).1 hx`. Establish `hwW : InW X (pW X x)` using `pW_inW X x`. Establish `hnx : n x = ∑ c, (VS D).hT (X.fY c) x • n (X.eX c) + ∑ c, (VS D).hT (X.eX c) x • n (X.fY c) + n (pW X x)` using `by conv_lhs => rw [decomp X x]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add, map_sum, map_smul]`. Rewrite using `[mem_hermitianStandardLattice_iff_pairing_integral X]`. Use `⟨fun b => ?_, fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hnx, map_add, map_add, hT_sumR, hT_sumR, row hn b hwW]`. Use `Submodule.add_mem _ (Submodule.add_mem _ (Submodule.sum_mem _ fun c _ => ?_) (Submodule.sum_mem _ fun c _ => ?_)) (hT_aaLb_mem X (hxs b) hw)` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (VS D).hT (X.fY c) x * Xq X n b c ∈ aaD D b`. Break down `lt_trichotomy c b with h | h | h` into its components or cases. Rewrite using `[hup b c h, mul_zero]`. Conclude with `Submodule.zero_mem _`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, mul_one]`. Conclude with `hf c`. Establish `e : aaD D c * (aaD D b * (aaD D c)⁻¹) = aaD D b`. Rewrite using `[mul_comm, mul_assoc, inv_mul_cancel₀ (aa_ne c), mul_one]`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.mul_mem_mul (hf c) (hXs' b c h)`. Use `show (VS D).hT (X.eX c) x * Aq X n b c ∈ aaD D b`. Establish `e : (aaD D c)⁻¹ * (aaD D b * aaD D c) = aaD D b`. Rewrite using `[mul_comm, mul_assoc, mul_inv_cancel₀ (aa_ne c), mul_one]`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.mul_mem_mul (he c) (hA b c)`. Rewrite using `[hnx, map_add, map_add, hT_sumR, hT_sumR]`. Establish `h1 : ∀ c, (VS D).hT (X.eX b) (n (X.eX c)) = 0` using `fun c => by`. Rewrite using `[Xq_expand hn c, hT_sumR]`. Simplify using `only [X.ee, mul_zero, Finset.sum_const_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : (VS D).hT (X.eX b) (n (pW X x)) = 0`. Rewrite using `[nw hn hwW, map_add, hT_sumR, (hwW b).1, zero_add]`. Simplify using `only [X.ee, mul_zero, Finset.sum_const_zero]`. Simplify using `only [h1, h2, mul_zero, Finset.sum_const_zero, zero_add, add_zero]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (VS D).hT (X.eX c) x * Bq (X := X) n b c ∈ (aaD D b)⁻¹`. Establish `e : (aaD D c)⁻¹ * ((aaD D b)⁻¹ * aaD D c) = (aaD D b)⁻¹`. Rewrite using `[mul_comm, mul_assoc, mul_inv_cancel₀ (aa_ne c), mul_one]`. Rewrite using `[← e]`. Conclude with `FractionalIdeal.mul_mem_mul (he c) (hB b c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hnx, pW_add, pW_add, pW_sum, pW_sum, pW_nw hn hwW]`. Establish `h1 : ∀ c, pW X (n (X.eX c)) = 0` using `fun c => by rw [Xq_expand hn c, pW_sum_e]`. Simplify using `only [h1, smul_zero, Finset.sum_const_zero, zero_add, pW_nf hn]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun c _ => ?_) hw` and prove the remaining obligations. Rewrite using `[smul_neg, Finset.smul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `smul_aaLb X ?_ (hxs d)` and prove the remaining obligations. Establish `e : (aaD D c)⁻¹ * ((aaD D d)⁻¹ * aaD D c) = (aaD D d)⁻¹`. Rewrite using `[mul_comm, mul_assoc, mul_inv_cancel₀ (aa_ne c), mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `FractionalIdeal.mul_mem_mul (he c) (hB d c)`. Establish `hle : Formalism.HermitianLatticesTheory.gmap n (VS D).L0 ≤ (VS D).L0`. Introduce `y hy`. Rewrite `hy` using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`.
-
-Use `hsub _ hy` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hU0 : Formalism.HermitianLatticesTheory.dual (VS D).hT (VS D).L0 = (VS D).L0` using `(VS D).baseLattice_isUnimodular`. Establish `hUg : Formalism.HermitianLatticesTheory.dual (VS D).hT (Formalism.HermitianLatticesTheory.gmap n (VS D).L0) = Formalism.HermitianLatticesTheory.gmap n (VS D).L0`. Rewrite using `[Formalism.MainNotions.BridgeLemma₂.c3sub_dual_gmap _ n hn.1, hU0]`.
-
-Use `le_antisymm hle ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[← hUg, Formalism.HermitianLatticesTheory.isomAct_mem_dual]`. Rewrite `hx` using `[← hU0, Formalism.HermitianLatticesTheory.isomAct_mem_dual]`. Conclude with `fun y hy => hx y (hle hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem dictLatB_holds : DictLatB := by
   intro D X u n hn hLQ

@@ -12,16 +12,16 @@ section
 variable {O : Type} [CommRing O] [IsLocalRing O]
 
 /- English proof (translation)
-Rewrite using `[← res_eq_zero_iff O, res_map f, res_eq_zero_iff]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem map_max {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R']
     (f : R →ₐ[O] R') {x : R} (hx : x ∈ maximalIdeal R) : f x ∈ maximalIdeal R' := by
   rwa [← res_eq_zero_iff O, res_map f, res_eq_zero_iff]
 
 /- English proof (translation)
-Establish `hne : I ≠ ⊤` using `fun e => by`. Use `h0 1 (e ▸ Submodule.mem_top)` as an intermediate fact. Simplify using `at this`. Use `haveI := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsCO O (A ⧸ I) := co_quot O A _ (Ideal.Quotient.mkₐ O I) (Ideal.Quotient.mkₐ_surjective O I)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A ⧸ I, inferInstance, inferInstance, inferInstance, Ideal.Quotient.mkₐ O I, fun x hx => Ideal.Quotient.eq_zero_iff_mem.2 hx, fun R' _ _ f hf => ⟨Ideal.Quotient.liftₐ I f hf, rfl, fun g hg => ?_⟩⟩` and prove the remaining obligations. Use `Ideal.Quotient.algHom_ext _ ?_` and prove the remaining obligations. Rewrite using `[hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem quot_univ {A K : Type} [CommRing A] [Algebra O A] [IsCO O A] [CommRing K] [Algebra O K] [Nontrivial K]
     (I : Ideal A) (f0 : A →ₐ[O] K) (h0 : ∀ x ∈ I, f0 x = 0) :
@@ -40,11 +40,11 @@ private theorem quot_univ {A K : Type} [CommRing A] [Algebra O A] [IsCO O A] [Co
   rfl
 
 /- English proof (translation)
-Take `⟨n, a, ha⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian (maximalIdeal A))`. Establish `ham : ∀ s, a s ∈ maximalIdeal A` using `fun s => ha ▸ Submodule.subset_span ⟨s, rfl⟩`. Use `haveI := co_mvps O O (Fin n)`. Take `⟨F, ⟨-, hF⟩, -⟩` from `co_ev O O A (Fin n) (Algebra.ofId O A) a ham`. Use `⟨n, F, co_surj O _ A F (le_trans ?_ le_sup_left)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha, Submodule.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[← hF]`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Introduce `hu`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `MvPowerSeries.isUnit_iff_constantCoeff.1 hu` as an intermediate fact. Simplify using `at this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pres [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     (A : Type) [CommRing A] [Algebra O A] [IsCO O A] :
@@ -63,7 +63,7 @@ private theorem pres [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
   simp at this
 
 /- English proof (translation)
-Introduce `hu`. Use `MvPowerSeries.isUnit_iff_constantCoeff.1 hu` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem X_mem {R σ : Type} [CommRing R] [IsLocalRing R] (s : σ) :
     (X s : MvPowerSeries σ R) ∈ maximalIdeal (MvPowerSeries σ R) := by
@@ -75,17 +75,15 @@ private noncomputable def Ca (O : Type) [CommRing O] (σ R : Type) [CommRing R] 
   IsScalarTower.toAlgHom O R (MvPowerSeries σ R)
 
 /- English proof (translation)
-Take `⟨n, π, hπ⟩` from `pres (O := O) A`. Use `haveI := co_mvps O O (Fin n)`. Use `haveI := co_mvps O B (Fin n)`. Use `haveI := (co_res O).1`. Take `⟨e, ⟨-, he⟩, -⟩` from `co_ev O O (MvPowerSeries (Fin n) B) (Fin n) (Algebra.ofId O _) X X_mem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ext0 : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (F G : MvPowerSeries (Fin n) O →ₐ[O] R'), (∀ s, F (X s) = G (X s)) → F = G` using `fun R' _ _ _ F G h => (co_ev O O R' (Fin n) (Algebra.ofId O _) (fun s => G (X s)) fun s => map_max G (X_mem s)).unique ⟨F.commutes, h⟩ ⟨G.commutes, fun _ => rfl⟩`. Establish `key : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (j' : A →ₐ[O] R') (i' : B →ₐ[O] R'), ∃! F : MvPowerSeries (Fin n) B →ₐ[O] R', F.comp e = j'.comp π ∧ F.comp (Ca O _ B) = i'`. Introduce `R' _ _ _ j' i'`. Take `⟨F, ⟨h1, h2⟩, h3⟩` from `co_ev O B R' (Fin n) i' (fun s => j' (π (X s))) fun s => map_max (j'.comp π) (X_mem s)`. Use `⟨F, ⟨ext0 _ _ _ fun s => by simp [he, h2], AlgHom.ext h1⟩, fun G hG => h3 G ⟨fun x => ?_, fun s => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `DFunLike.congr_fun hG.2 x`. Rewrite using `[← he]`. Conclude with `DFunLike.congr_fun hG.1 (X s)`. Establish `kill : ∀ (R' : Type) [CommRing R'] [Algebra O R'] (j' : A →ₐ[O] R') (F : MvPowerSeries (Fin n) B →ₐ[O] R'), F.comp e = j'.comp π → ∀ x ∈ (RingHom.ker π).map e, F x = 0`. Introduce `R' _ _ j' F hF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Ideal.map_le_iff_le_comap (K := RingHom.ker F).2 fun x hx => ?_` and prove the remaining obligations. Use `show F (e x) = 0`. Rewrite using `[show F (e x) = j' (π x) from DFunLike.congr_fun hF x, show π x = 0 from hx, map_zero]`. Take `⟨F0, ⟨hF0, -⟩, -⟩` from `key _ (res O A) (res O B)`. Take `⟨S, _, _, _, p, hp, hS⟩` from `quot_univ _ F0 (kill _ _ _ hF0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `H : RingHom.ker π.toRingHom ≤ RingHom.ker (p.comp e).toRingHom` using `fun x hx => hp _ (Ideal.mem_map_of_mem _ hx)`. Set `j : A →ₐ[O] S` to `AlgHom.liftOfSurjective π hπ (p.comp e) H`. Establish `hj : j.comp π = p.comp e` using `AlgHom.ext fun x => AlgHom.liftOfSurjective_apply π hπ (p.comp e) H x`. Use `⟨S, inferInstance, inferInstance, inferInstance, j, p.comp (Ca O _ B), fun R' _ _ _ j' i' => ?_⟩` and prove the remaining obligations. Take `⟨F, ⟨h1, h2⟩, h3⟩` from `key R' j' i'`.
-
-Take `⟨g, hg, hg'⟩` from `hS R' F (kill _ _ _ h1)`. Use `⟨g, ⟨(AlgHom.cancel_right hπ).1 ?_, ?_⟩, fun g' h' => hg' g' (h3 _ ⟨?_, h'.2⟩)⟩` and prove the remaining obligations. Rewrite using `[AlgHom.comp_assoc, hj, ← AlgHom.comp_assoc, hg, h1]`. Rewrite using `[← AlgHom.comp_assoc, hg, h2]`. Rewrite using `[AlgHom.comp_assoc, ← hj, ← AlgHom.comp_assoc, h'.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coprod2 [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     (A B : Type) [CommRing A] [Algebra O A] [IsCO O A] [CommRing B] [Algebra O B] [IsCO O B] :
@@ -140,7 +138,7 @@ private def Cut (O R : Type) [CommRing O] [IsLocalRing O] [CommRing R] [Algebra 
     P R' f ↔ ∀ x ∈ I, f x = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ideal.span {x - y}, fun R' _ _ _ f => by constructor · intro h z hz obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 hz simp [h] · intro h have := h _ (Ideal.mem_span_singleton_self _) rwa [map_sub, sub_eq_zero] at this⟩`.
+Supply the required witnesses or components.
 -/
 private theorem Cut.eq (x y : R) : Cut O R fun _ _ _ _ f => f x = f y :=
   ⟨Ideal.span {x - y}, fun R' _ _ _ f => by
@@ -153,7 +151,7 @@ private theorem Cut.eq (x y : R) : Cut O R fun _ _ _ _ f => f x = f y :=
       rwa [map_sub, sub_eq_zero] at this⟩
 
 /- English proof (translation)
-Use `choose I hI using h`. Use `⟨⨆ i, I i, fun R' _ _ _ f => ?_⟩` and prove the remaining obligations. Simplify using `only [hI]`. Conclude with `(iSup_le_iff (f := I) (a := RingHom.ker f)).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Cut.all {κ : Sort*} {P : κ → ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'], (R →ₐ[O] R') → Prop}
     (h : ∀ i, Cut O R (P i)) : Cut O R fun R' _ _ _ f => ∀ i, P i R' f := by
@@ -163,7 +161,7 @@ private theorem Cut.all {κ : Sort*} {P : κ → ∀ (R' : Type) [CommRing R'] [
   exact (iSup_le_iff (f := I) (a := RingHom.ker f)).symm
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `h`. Take `⟨J, hJ⟩` from `h'`. Use `⟨I ⊔ J, fun R' _ _ _ f => ?_⟩` and prove the remaining obligations. Simplify using `only [hI, hJ]`. Conclude with `(sup_le_iff (a := I) (b := J) (c := RingHom.ker f)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Cut.and {P Q : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'], (R →ₐ[O] R') → Prop}
     (h : Cut O R P) (h' : Cut O R Q) : Cut O R fun R' _ _ _ f => P R' f ∧ Q R' f := by
@@ -174,7 +172,7 @@ private theorem Cut.and {P Q : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsC
   exact (sup_le_iff (a := I) (b := J) (c := RingHom.ker f)).symm
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `h`. Conclude with `⟨I, fun R' _ _ _ f => (e R' f).trans (hI R' f)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem Cut.congr {P Q : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'], (R →ₐ[O] R') → Prop}
     (h : Cut O R P) (e : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R'), Q R' f ↔ P R' f) :
@@ -183,13 +181,13 @@ private theorem Cut.congr {P Q : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [I
   exact ⟨I, fun R' _ _ _ f => (e R' f).trans (hI R' f)⟩
 
 /- English proof (translation)
-The claim follows from `(Cut.all fun a => Cut.all fun b => Cut.eq (x a b) (y a b)).congr fun _ _ _ _ _ => Matrix.ext_iff.symm`.
+A detailed English derivation is pending.
 -/
 private theorem Cut.mat {ι : Type} (x y : Matrix ι ι R) : Cut O R fun _ _ _ _ f => x.map f = y.map f :=
   (Cut.all fun a => Cut.all fun b => Cut.eq (x a b) (y a b)).congr fun _ _ _ _ _ => Matrix.ext_iff.symm
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `h`. Take `⟨A', _, _, _, p, hp, hA⟩` from `quot_univ I f0 ((hI K f0).1 h0)`. Conclude with `⟨A', inferInstance, inferInstance, inferInstance, p, (hI A' p).2 hp, fun R' _ _ _ f hf => hA R' f ((hI R' f).1 hf)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem Cut.univ [IsCO O R] {P : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'], (R →ₐ[O] R') → Prop}
     (h : Cut O R P) {K : Type} [CommRing K] [Algebra O K] [IsCO O K] (f0 : R →ₐ[O] K) (h0 : P K f0) :
@@ -205,27 +203,27 @@ variable {ι X : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup X] {w : ι �
 
 omit [IsLocalRing O] [IsCO O R] in
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => f.commutes _`.
+A detailed English derivation is pending.
 -/
 private theorem map_alg {R' : Type} [CommRing R'] [Algebra O R'] (f : R →ₐ[O] R') (M : Matrix ι ι O) :
     (M.map (algebraMap O R)).map f = M.map (algebraMap O R') := Matrix.ext fun _ _ => f.commutes _
 
 omit [IsLocalRing O] [IsCO O R] in
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 private theorem mmul {R' : Type} [CommRing R'] [Algebra O R'] (f : R →ₐ[O] R') (M N : Matrix ι ι R) :
     (M * N).map f = M.map f * N.map f := Matrix.map_mul
 
 omit [IsLocalRing O] [IsCO O R] in
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero f) (map_one f)`.
+A detailed English derivation is pending.
 -/
 private theorem mone {R' : Type} [CommRing R'] [Algebra O R'] (f : R →ₐ[O] R') :
     (1 : Matrix ι ι R).map f = 1 := Matrix.map_one _ (map_zero f) (map_one f)
 
 /- English proof (translation)
-Use `((Cut.mat (h.transpose * Φ.JR R * h) (Φ.JR R)).and (Cut.all fun a => Cut.all fun b => Cut.all fun (_ : Φ.blk a ≠ Φ.blk b) => Cut.eq (h a b) 0)).congr fun R' _ _ _ f => ?_` and prove the remaining obligations. Establish `e : (h.map f).map (res O R') = 1`. Rewrite using `[← hh]`. Conclude with `Matrix.ext fun a b => res_map f _`. Simplify using `only [FormData.HH, FormData.JR, mmul, map_alg, e, and_true, map_zero, Matrix.map_apply, Matrix.transpose_map]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cut_HH (h : Matrix ι ι R) (hh : h.map (res O R) = 1) :
     Cut O R fun _ _ _ _ f => Φ.HH (h.map f) := by
@@ -236,7 +234,7 @@ private theorem cut_HH (h : Matrix ι ι R) (hh : h.map (res O R) = 1) :
   simp only [FormData.HH, FormData.JR, mmul, map_alg, e, and_true, map_zero, Matrix.map_apply, Matrix.transpose_map]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, fun a b h => Matrix.one_apply_ne fun e => h (e ▸ rfl), mone _⟩`.
+Supply the required witnesses or components.
 -/
 private theorem HH_one : Φ.HH (1 : Matrix ι ι R) :=
   ⟨by simp, fun a b h => Matrix.one_apply_ne fun e => h (e ▸ rfl), mone _⟩
@@ -250,16 +248,16 @@ private theorem hom_map {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R'] (f 
     (s : Γ) : (r.map f).hom s = (r.hom s).map f := rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.ext (r.red s)`.
+A detailed English derivation is pending.
 -/
 private theorem hom_res (r : Lift O rbar R) (s : Γ) : (r.hom s).map (res O R) = rbar s := Matrix.ext (r.red s)
 
 variable [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
 
 /- English proof (translation)
-Use `(Cut.all fun s => cut_HH Φ (r.hom s * (r0.hom s⁻¹).map (algebraMap O R)) ?_).congr fun R' _ _ _ f => ?_` and prove the remaining obligations. Establish `e : (r0.hom s⁻¹).map (algebraMap O (ResidueField O)) = rbar s⁻¹`. Rewrite using `[← hom_res r0]`. Conclude with `Matrix.ext fun a b => ((res O O).commutes _).symm`. Rewrite using `[mmul, map_alg, hom_res, e, ← map_mul, mul_inv_cancel, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [FormData.InH, mmul, map_alg, hom_map]`.
+A detailed English derivation is pending.
 -/
 private theorem cut_InH (r0 : Lift O rbar O) (r : Lift O rbar R) :
     Cut O R fun R' _ _ _ f => Φ.InH r0.hom R' (r.map f) := by
@@ -271,7 +269,7 @@ private theorem cut_InH (r0 : Lift O rbar O) (r : Lift O rbar R) :
   · simp only [FormData.InH, mmul, map_alg, hom_map]
 
 /- English proof (translation)
-Introduce `s` and use `by have e : (r0.hom s⁻¹).map (algebraMap O O) = r0.hom s⁻¹ := rfl rw [e, ← map_mul, mul_inv_cancel, map_one] exact HH_one Φ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem InH_self (r0 : Lift O rbar O) : Φ.InH r0.hom O r0 := fun s => by
   have e : (r0.hom s⁻¹).map (algebraMap O O) = r0.hom s⁻¹ := rfl
@@ -286,17 +284,15 @@ variable {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicCom
   {rbar : Γ →* Matrix ι ι (ResidueField O)}
 
 /- English proof (translation)
-Take `⟨S, _, _, _, j, i, hS⟩` from `coprod2 (O := O) R0 B`. Use `haveI := co_mvps O S (T × ι × ι)`. Set `Y : T → Matrix ι ι (MvPowerSeries (T × ι × ι) S)` to `fun v => Matrix.of fun a b => X (v, a, b)`. Establish `hY : ∀ (R' : Type) [CommRing R'] [Algebra O R'] (f : MvPowerSeries (T × ι × ι) S →ₐ[O] R') v, (1 + Y v).map f = 1 + Matrix.of fun a b => f (X (v, a, b))` using `fun R' _ _ f v => by`. Rewrite using `[Matrix.map_add _ (map_add f), mone]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨MvPowerSeries (T × ι × ι) S, inferInstance, inferInstance, inferInstance, (Ca O _ S).comp i, u.map ((Ca O _ S).comp j), fun v => 1 + Y v, fun v => ?_, fun R' _ _ _ i' r' α' hα => ?_⟩` and prove the remaining obligations. Rewrite using `[hY, add_eq_left]`. Conclude with `Matrix.ext fun a b => (res_eq_zero_iff O _ _).2 (X_mem _)`. Take `⟨j', hj, hj'⟩` from `(hu R').2 r' trivial`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, ⟨hg1, hg2⟩, hg⟩` from `hS R' j' i'`. Take `⟨f, ⟨h1, h2⟩, h3⟩` from `co_ev O S R' (T × ι × ι) g (fun s => (α' s.1 - 1) s.2.1 s.2.2) fun s => by`. Rewrite using `[← res_eq_zero_iff O]`. Establish `: (α' s.1 - 1).map (res O R') = 0` using `by rw [Matrix.map_sub _ (map_sub _), hα, mone, sub_self]`. Conclude with `congrFun (congrFun this s.2.1) s.2.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1' : f.comp (Ca O _ S) = g` using `AlgHom.ext h1`. Use `⟨f, ⟨?_, ?_, fun v => ?_⟩, fun f' ⟨k1, k2, k3⟩ => h3 f' ⟨fun x => ?_, fun s => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, h1', hg2]`. Rewrite using `[← hj, ← hg1, ← h1']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hY, ← eq_sub_iff_add_eq']`. Conclude with `Matrix.ext fun a b => h2 (v, a, b)`. Conclude with `DFunLike.congr_fun (hg (f'.comp (Ca O _ S)) ⟨hj' _ k2, k1⟩) x`. Use `k3 s.1` as an intermediate fact. Rewrite `this` using `[hY, ← eq_sub_iff_add_eq']`.
-
-Conclude with `congrFun (congrFun this s.2.1) s.2.2`.
+A detailed English derivation is pending.
 -/
 private theorem all_univ {R0 : Type} [CommRing R0] [Algebra O R0] [IsCO O R0] (u : Lift O rbar R0)
     (hu : Represents (fun _ _ _ _ _ => True) u) (T : Type) [Finite T]
@@ -334,19 +330,19 @@ private theorem all_univ {R0 : Type} [CommRing R0] [Algebra O R0] [IsCO O R0] (u
       exact congrFun (congrFun this s.2.1) s.2.2
 
 /- English proof (translation)
-Use `haveI := (co_res O).1`. Take `⟨A, _, _, _, i, r, α, hα, hA⟩` from `all_univ u hu F.T B`. Establish `c1 : Cut O A fun R' _ _ _ f => Φ.InH r0.hom R' (r.map f) ∧ (∀ v, Φ.HH ((α v).map f)) ∧ (α F.v0).map f = 1 ∧ ∀ v s, (r.map f).hom (F.φ v s) * (α v).map f = (α v).map f * ((ρ v).hom s).map (f.comp i)`. Use `((cut_InH Φ r0 r).and ((Cut.all fun v => cut_HH Φ _ (hα v)).and ((Cut.mat (α F.v0) 1).and (Cut.all fun v => Cut.all fun s => Cut.mat (r.hom (F.φ v s) * α v) (α v * ((ρ v).hom s).map i))))).congr fun R' _ _ _ f => ?_` and prove the remaining obligations. Simplify using `only [mone, mmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e0 : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (r' : Lift O rbar R'), r'.map (res O R') = r0.map (res O O)` using `fun R' _ _ _ r' => Lift.ext (MonoidHom.ext fun s => (hom_res r' s).trans (hom_res r0 s).symm)`. Take `⟨A1, _, _, _, p, ⟨p1, p2, p3, p4⟩, hA1⟩` from `c1.univ (res O A) (by`. Use `⟨?_, fun v => ?_, hα _, fun v s => ?_⟩` and prove the remaining obligations. Rewrite using `[e0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨I, hI⟩` from `cut_InH Φ r0 r0`. Use `(hI _ _).2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[show x = 0 from (hI O (AlgHom.id O O)).1 (InH_self Φ r0) x hx, map_zero]`. Rewrite using `[hα]`. Conclude with `HH_one Φ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hα, mul_one, one_mul, hom_map, hom_res]`. Conclude with `Matrix.ext fun a b => ((res_map i _).trans ((ρ v).red s a b)).symm)`. Establish `c2 : Cut O A1 fun R' _ _ _ f => ∀ q, L q R' (((r.map p).map f).comap (F.ψ q) (F.hψ q))` using `Cut.all fun q => (hL q).closed A1 ((r.map p).comap (F.ψ q) (F.hψ q)) fun s => by`. Use `p1 (F.ψ q s)` as an intermediate fact. Rewrite `this` using `[← map_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A2, _, _, _, p', hp', hA2⟩` from `c2.univ (res O A1) (fun q => by`. Rewrite using `[e0]`. Take `⟨I, hI⟩` from `(hL q).closed O (r0.comap (F.ψ q) (F.hψ q)) (InH_self Φ (r0.comap (F.ψ q) (F.hψ q)))`. Use `(hI _ (res O O)).2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[show x = 0 from (hI O (AlgHom.id O O)).1 (hL0 q) x hx, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨A2, inferInstance, inferInstance, inferInstance, (p'.comp p).comp i, r.map (p'.comp p), fun v => (α v).map (p'.comp p), ?_, fun R' _ _ _ i' r' α' ⟨k1, k2, k3, k4, k5⟩ => ?_⟩` and prove the remaining obligations. Take `⟨I, hI⟩` from `c1`. Take `⟨q1, q2, q3, q4⟩` from `(hI A2 (p'.comp p)).2 fun x hx => by`. Rewrite using `[AlgHom.comp_apply, (hI A1 p).1 ⟨p1, p2, p3, p4⟩ x hx, map_zero]`. Conclude with `⟨q1, hp', q2, q3, q4⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, ⟨rfl, rfl, h3⟩, hf⟩` from `hA R' i' r' α' fun v => (k3 v).2.2`. Take `rfl : α' = fun v => (α v).map f` from `funext fun v => (h3 v).symm`. Take `⟨g, rfl, hg⟩` from `hA1 R' f ⟨k1, k3, k4, k5⟩`. Take `⟨g', rfl, hg'⟩` from `hA2 R' g k2`. Conclude with `⟨g', ⟨rfl, rfl, fun _ => rfl⟩, fun g'' h => hg' g'' (hg _ (hf ((g''.comp p').comp p) h))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem framed_of_univ {X : Type} [AddCommGroup X] {w : ι → X} (Φ : FormData O w)
     {R0 : Type} [CommRing R0] [Algebra O R0] [IsCO O R0] (u : Lift O rbar R0)
@@ -401,11 +397,9 @@ private theorem framed_of_univ {X : Type} [AddCommGroup X] {w : ι → X} (Φ : 
 end
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ ι X _ _ _ w Φ _ _ _ Γ _ _ _ rbar r0 _ _ _ _ _ hΦ F L _ hL hL0 B _ _ _ ρ _ _`. Establish `hc : IsLocallyConstant rbar`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Use `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun b => (r0.cont a b 1).eventually_eq x` as an intermediate fact. Use `filter_upwards [this] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h` using `Ideal.Quotient.eq.1 (hy a b)`. Rewrite `h` using `[pow_one, ← res_eq_zero_iff O, map_sub, sub_eq_zero, r0.red, r0.red]`. Conclude with `h`. Take `⟨R0, _, _, _, u, hu⟩` from `univ_lift l O Γ ι rbar hΦ hc`.
-
-Conclude with `framed_of_univ Φ u hu r0 F L hL hL0 B ρ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.framed_univ :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ [Finite (ResidueField O)] [CharP (ResidueField O) l] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (rbar : Γ →* Matrix ι ι (ResidueField O)) (r0 : Lift O rbar O) (hbar : Φ.Normalises rbar), Φ.Normalises r0.hom → ∀ [CompactSpace Γ] [TotallyDisconnectedSpace Γ] [T2Space Γ], PhiCond Γ l → ∀ (F : Frame Γ) (L : ∀ q, Cond O (rbar.comp (F.ψ q))), (∀ q, ∀ n ∈ F.N q, rbar (F.ψ q n) = 1) → (∀ q, Φ.IsLocCond (r0.hom.comp (F.ψ q)) (F.N q) (L q)) → (∀ q, L q O (r0.comap (F.ψ q) (F.hψ q))) →

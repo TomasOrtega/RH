@@ -3,13 +3,13 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConstOneMem
 open GlobalTheory.UseLoc.Cases
 
 /- English proof (translation)
-Introduce `O LL _ _ _ _ lam a hlam`. Establish `hK : algebraMap O LL (lam ^ a) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ hlam`. Establish `hmem : ∀ s : LL, Submodule.Quotient.mk (p` using `intO (O := O) LL) s ∈ Xq LL lam a ↔ ∃ c : O, algebraMap O LL c = lam ^ a • s := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Simplify using `only [Xq, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Iff.rfl`. Use `⟨⟨Submodule.Quotient.mk (algebraMap O LL (lam ^ a))⁻¹, (hmem _).2 ⟨1, ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, mul_inv_cancel₀ hK, map_one]`. Introduce and unpack `⟨x, hx⟩`. Take `⟨s, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨c, hc⟩` from `(hmem s).1 hx`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : s = c • (algebraMap O LL (lam ^ a))⁻¹`. Rewrite using `[Algebra.smul_def, hc, Algebra.smul_def, mul_comm (algebraMap O LL (lam ^ a)) s, mul_assoc, mul_inv_cancel₀ hK, mul_one]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk s = c • Submodule.Quotient.mk (p := intO (O := O) LL) (algebraMap O LL (lam ^ a))⁻¹`. Rewrite using `[← Submodule.Quotient.mk_smul, ← hs]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.exists_cyclic_generator_lam_power_quotient :
     ∀ {O : Type} (LL : Type) [CommRing O] [Field LL] [Algebra O LL], Function.Injective (algebraMap O LL) →

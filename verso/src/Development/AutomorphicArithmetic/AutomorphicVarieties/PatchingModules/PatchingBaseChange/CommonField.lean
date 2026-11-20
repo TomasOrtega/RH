@@ -4,7 +4,7 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe15.common_field`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.common_field :
     ∀ (B κ₁ κ₂ : Type) [CommRing B] [Field κ₁] [Field κ₂] (f₁ : B →+* κ₁) (f₂ : B →+* κ₂), RingHom.ker f₁ = RingHom.ker f₂ → ∃ (κ : Type) (_ : Field κ) (j₁ : κ₁ →+* κ) (j₂ : κ₂ →+* κ), j₁.comp f₁ = j₂.comp f₂ :=

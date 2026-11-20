@@ -9,12 +9,12 @@ namespace UpperTheory.Top
 open Formalism.BasicNotions Formalism.MainNotions Formalism.HC HostParam.Seam GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `_ c h hq` and use `exists_host R H0 h hq c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem admissible_ranks_of_CMDatum (R : Ranks) (H0 : HostAx R.toFrame) : admitted R H0 := fun _ c h hq => exists_host R H0 h hq c
 
 /- English proof (translation)
-Introduce `eps heps heps'`. Take `⟨x0, hx0⟩` from `GlobalTheory.EX.exists_ranks_rankVal_frame eps heps heps'`. Use `⟨x0, fun s φ H0 hs hx hlo hup => ?_⟩` and prove the remaining obligations. Take `⟨R, h, hRV⟩` from `hx0 s hs hx φ hlo hup`. Conclude with `⟨R, h, hRV, admissible_ranks_of_CMDatum R _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissibleClassesTwistedChar : ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (φ : Frame) (H0 : HostAx φ),
     s.eps = eps → x0 ≤ s.x → s.x ^ (2 + 8 * s.eps) ≤ (φ.ord : ℝ) → (φ.ord : ℝ) ≤ 2 * s.x ^ (2 + 8 * s.eps) →

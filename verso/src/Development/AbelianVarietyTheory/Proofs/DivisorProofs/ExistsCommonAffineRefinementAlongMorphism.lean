@@ -43,11 +43,11 @@ end GlobalTheory.LBObs
 namespace GlobalTheory.LBObs
 
 /- English proof (translation)
-Introduce `X Z φ C C' _ _ _ _ G G' hG hG'`. Use `⟨RefineTriple φ G G', inferInstance, inferInstance, RefineTriple.pair φ G G', RefineTriple.idx φ G G', RefineTriple.idx' φ G G', ⟨{ app := fun d ↦ (homOfLE d.2.1).op }⟩, ⟨{ app := fun d ↦ (homOfLE d.2.2).op }⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `z U hz`. Take `⟨t, ht, -⟩` from `hG.1 (φ z) ⊤ trivial`. Take `⟨t', ht', hle⟩` from `hG'.1 z (U ⊓ φ ⁻¹ᵁ opOf G t) ⟨hz, ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨(⟨((G'.obj t').unop, (G.obj t).unop), fun y hy ↦ (hle hy).2⟩, t, t'), le_rfl, le_rfl⟩, ht', fun y hy ↦ (hle hy).1⟩` and prove the remaining obligations. Introduce `d₁ d₂ z U hz h₁ h₂`. Establish `k₁ : φ z ∈ d₁.1.1.1.2.1` using `d₁.1.1.2 h₁`. Establish `k₂ : φ z ∈ d₂.1.1.1.2.1` using `d₂.1.1.2 h₂`. Take `⟨t, a₁, a₂, ht, hle⟩` from `hG.2 d₁.1.2.1 d₂.1.2.1 (φ z) (d₁.1.1.1.2.1 ⊓ d₂.1.1.1.2.1) ⟨k₁, k₂⟩ (d₁.2.1 k₁) (d₂.2.1 k₂)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t', b₁, b₂, ht', hle'⟩` from `hG'.2 d₁.1.2.2 d₂.1.2.2 z (U ⊓ d₁.1.1.1.1.1 ⊓ d₂.1.1.1.1.1 ⊓ φ ⁻¹ᵁ opOf G t) ⟨⟨⟨hz, h₁⟩, h₂⟩, ht⟩ (d₁.2.2 h₁) (d₂.2.2 h₂)`. Set `d : RefineTriple φ G G'` to `⟨(⟨((G'.obj t').unop, (G.obj t).unop), fun y hy ↦ (hle' hy).2⟩, t, t'), le_rfl, le_rfl⟩`. Use `⟨d, ⟨homOfLE ⟨?_, a₁, b₁⟩⟩, ⟨homOfLE ⟨?_, a₂, b₂⟩⟩, ht', fun y hy ↦ (hle' hy).1.1.1⟩` and prove the remaining obligations. Conclude with `Prod.le_def.2 ⟨fun y hy ↦ (hle' hy).1.1.2, fun y hy ↦ (hle hy).1⟩`. Conclude with `Prod.le_def.2 ⟨fun y hy ↦ (hle' hy).1.2, fun y hy ↦ (hle hy).2⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pair_refine : ∀ (X Z : Scheme.{0}) (φ : Z ⟶ X) (C C' : Type) [Category.{0} C] [Category.{0} C'] [Quiver.IsThin C] [Quiver.IsThin C'] (G : C ⥤ AffOp X) (G' : C' ⥤ AffOp Z), IsBas (opOf G) → IsBas (opOf G') → ∃ (D : Type) (_ : Category.{0} D) (_ : Quiver.IsThin D) (K : D ⥤ (Pair φ)ᵒᵖ) (H : D ⥤ C) (H' : D ⥤ C'), Nonempty (H ⋙ G ⟶ K ⋙ pairSnd φ) ∧ Nonempty (H' ⋙ G' ⟶ K ⋙ pairFst φ) ∧ IsBas (opOf (K ⋙ pairFst φ)) := by
   intro X Z φ C C' _ _ _ _ G G' hG hG'

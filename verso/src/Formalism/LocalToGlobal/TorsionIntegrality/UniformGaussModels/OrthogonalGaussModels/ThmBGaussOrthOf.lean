@@ -19,16 +19,16 @@ namespace CAux
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem coeffIn {W : WeierstrassCurve ℂ_[p]} (h : IntCurve W) :
     Formalism.L2.Th1.C.CoeffIn (unitBall ℂ_[p]) W :=
   ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1⟩
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `h : ¬ (p : ℤ) ∣ (2 : ℤ)`. Introduce `h`. Establish `h' : p ∣ 2` using `by exact_mod_cast h`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h')`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.L2.Th1.D.GaussNormEstimates.normZ_one (l := p) h` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_two (h2 : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   have hp : p.Prime := Fact.out
@@ -40,14 +40,14 @@ theorem norm_two (h2 : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   simpa using this
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ne_two {dK : ℕ} (hmod : dK % 4 = 3) (hd : p ∣ dK) : p ≠ 2 := by
   rintro rfl
   omega
 
 /- English proof (translation)
-Establish `h : (p : ℤ) ∣ (dK : ℤ)` using `by exact_mod_cast hd`. Use `(Formalism.L2.Th1.D.GaussNormEstimates.normZ_lt (l := p)).2 h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_d_lt {dK : ℕ} (hd : p ∣ dK) : ‖(dK : ℂ_[p])‖ < 1 := by
   have h : (p : ℤ) ∣ (dK : ℤ) := by exact_mod_cast hd
@@ -55,17 +55,17 @@ theorem norm_d_lt {dK : ℕ} (hd : p ∣ dK) : ‖(dK : ℂ_[p])‖ < 1 := by
   simpa using this
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.mpr (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem d_ne {dK : ℕ} (hmod : dK % 4 = 3) : (dK : ℂ_[p]) ≠ 0 :=
   Nat.cast_ne_zero.mpr (by omega)
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Take `⟨m, rfl⟩` from `hd`. Establish `hm : ¬ p ∣ m`. Introduce `h`. Take `⟨k, rfl⟩` from `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : p * p ∣ p * (p * k)` using `⟨k, by ring⟩`. Conclude with `hp.one_lt.ne' (Nat.isUnit_iff.1 (hsq p h1))`. Establish `h : ¬ (p : ℤ) ∣ (m : ℤ)` using `by exact_mod_cast hm`. Establish `h1` using `Formalism.L2.Th1.D.GaussNormEstimates.normZ_one (l := p) h`. Rewrite using `[Nat.cast_mul, norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ‖(m : ℂ_[p])‖ = 1` using `by simpa using h1`. Rewrite using `[h2, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_d_eq {dK : ℕ} (hsq : Squarefree dK) (hd : p ∣ dK) : ‖(dK : ℂ_[p])‖ = ‖(p : ℂ_[p])‖ := by
   have hp : p.Prime := Fact.out
@@ -82,7 +82,7 @@ theorem norm_d_eq {dK : ℕ} (hsq : Squarefree dK) (hd : p ∣ dK) : ‖(dK : �
   rw [h2, mul_one]
 
 /- English proof (translation)
-Take `⟨hlp, -, -, -, hu⟩` from `Formalism.L2.Th1.C.curveFrame ℂ_[p] (unitBall ℂ_[p]) _ (coeffIn hW)`. Conclude with `⟨hlp, hu, (Formalism.L2.Th1.C.phOIsPh ℂ_[p] _ _ _ hlp.1 hlp.2.1).2.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frame (L : PeriodPair) (ι : ℂ ≃+* ℂ_[p]) (hW : IntCurve (curveL p L ι)) :
     Formalism.L2.Th1.C.IsLogPair (logSer (curveL p L ι)) (expSer (curveL p L ι)) ∧
@@ -96,9 +96,9 @@ end CAux
 open CAux
 
 /- English proof (translation)
-Introduce `dK L _ hmod hcm p _ hd ι hW H _ _ N0 N1 n _ A u th Q2 hA hth _ hQ0 hQ hid ω₀ hω hω2 κ _ r s N hr hN hpN hs`. Take `⟨hlp, hu, hph0⟩` from `frame L ι hW`. Establish `hSh` using `hS dK L hmod hcm p hd ι hW`. Take `⟨G, hG, hΘ⟩` from `hK p L ι (ne_two hmod hd) hW n ω₀ hω hω2 κ r s N hr hN hpN hs`. Use `⟨hSh.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΘ]`. Conclude with `Formalism.L2.Th1.G.kernelShape ℂ_[p] _ _ _ dK hlp hu hph0 hSh (d_ne hmod) H N0 N1 n (fun _ => 1) A u th Q2 (norm_two (ne_two hmod hd)) (fun _ => by simp) hA hth hQ0 hQ hid G hG`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ShapeOrthD_of (hS : ShapeCM) (hK : KernelJoint) : ShapeOrthD := by
   intro dK L _ hmod hcm p _ hd ι hW H _ _ N0 N1 n _ A u th Q2 hA hth _ hQ0 hQ hid ω₀ hω hω2 κ _ r s N hr
@@ -112,9 +112,9 @@ theorem ShapeOrthD_of (hS : ShapeCM) (hK : KernelJoint) : ShapeOrthD := by
     (norm_two (ne_two hmod hd)) (fun _ => by simp) hA hth hQ0 hQ hid G hG
 
 /- English proof (translation)
-Introduce `dK L _ hmod hcm p _ hd ι hW H _ _ N0 N1 n _ A u th Q2 hA hth hu1 hQ0 hQ hid ω₀ hω hω2 κ _ r s N hr hN hpN hs`. Take `⟨hlp, hu, hph0⟩` from `frame L ι hW`. Establish `hSh` using `hS dK L hmod hcm p hd ι hW`. Take `⟨G, hG, hΘ⟩` from `hK p L ι (ne_two hmod hd) hW n ω₀ hω hω2 κ r s N hr hN hpN hs`. Rewrite using `[hΘ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.L2.Th1.G.kernelThmB ℂ_[p] _ _ _ dK hlp hu hph0 hSh (norm_pos_iff.mpr (d_ne hmod)) (norm_d_lt hd) H N0 N1 n (fun _ => 1) A u th Q2 (norm_two (ne_two hmod hd)) (fun _ => by simp) hA hth hu1 hQ0 hQ hid G hG`.
+A detailed English derivation is pending.
 -/
 theorem ThmBOrth_of (hS : ShapeCM) (hK : KernelJoint) : ThmBOrth := by
   intro dK L _ hmod hcm p _ hd ι hW H _ _ N0 N1 n _ A u th Q2 hA hth hu1 hQ0 hQ hid ω₀ hω hω2 κ _ r s N hr
@@ -127,9 +127,9 @@ theorem ThmBOrth_of (hS : ShapeCM) (hK : KernelJoint) : ThmBOrth := by
     H N0 N1 n (fun _ => 1) A u th Q2 (norm_two (ne_two hmod hd)) (fun _ => by simp) hA hth hu1 hQ0 hQ hid G hG
 
 /- English proof (translation)
-Introduce `dK L hsq hmod hcm p _ hd ι hW H _ _ N0 N1 n _ A u th Q2 hA hth hu1 hQ0 hQ hid ω₀ hω hω2 κ _ r s N hr hN hpN hs`. Take `⟨hlp, hu, hph0⟩` from `frame L ι hW`. Establish `hSh` using `hS dK L hmod hcm p hd ι hW`. Establish `hSh' : Formalism.L2.Th1.G.ShapeAt (logSer (curveL p L ι)) (expSer (curveL p L ι)) (phC p L ι) p`. Use `⟨?_, hSh.2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← norm_d_eq hsq hd]`. Conclude with `hSh.1`. Take `⟨G, hG, hΘ⟩` from `hK p L ι (ne_two hmod hd) hW n ω₀ hω hω2 κ r s N hr hN hpN hs`. Rewrite using `[hΘ]`. Conclude with `Formalism.L2.Th1.G.kernelThmBGauss p _ _ _ hlp hu hph0 hSh' H N0 N1 n (fun _ => 1) A u th Q2 (norm_two (ne_two hmod hd)) (fun _ => by simp) hA hth hu1 hQ0 hQ hid G hG`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThmBGaussOrth_of (hS : ShapeCM) (hK : KernelJoint) : ThmBGaussOrth := by
   intro dK L hsq hmod hcm p _ hd ι hW H _ _ N0 N1 n _ A u th Q2 hA hth hu1 hQ0 hQ hid ω₀ hω hω2 κ _ r s N hr
@@ -146,7 +146,7 @@ theorem ThmBGaussOrth_of (hS : ShapeCM) (hK : KernelJoint) : ThmBGaussOrth := by
     H N0 N1 n (fun _ => 1) A u th Q2 (norm_two (ne_two hmod hd)) (fun _ => by simp) hA hth hu1 hQ0 hQ hid G hG
 
 /- English proof (translation)
-Introduce `dK L _ hmod hcm p _ h2 hd ι hW n _ ω₀ hω hω2 κ _ r s N hr hN hpN hs`. Take `⟨hlp, hu, hph0⟩` from `frame L ι hW`. Take `⟨G, hG, hΘ⟩` from `hK p L ι h2 hW n ω₀ hω hω2 κ r s N hr hN hpN hs`. Rewrite using `[hΘ]`. Conclude with `Formalism.L2.Th1.G.kernelTwo ℂ_[p] _ _ _ hlp hu hph0 (hJ dK L hmod hcm p h2 hd ι hW) n (fun _ => 1) (fun _ => by simp) G hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntOpOrth_of (hJ : JetsCM) (hK : KernelJoint) : IntOpOrth := by
   intro dK L _ hmod hcm p _ h2 hd ι hW n _ ω₀ hω hω2 κ _ r s N hr hN hpN hs

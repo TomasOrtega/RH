@@ -13,13 +13,9 @@ namespace GlobalTheory.HaarSplit
 open scoped ENNReal NNReal
 
 /- English proof (translation)
-Introduce `D Y ν hν`. Use `haveI : LocallyCompactSpace (GinfC Y) := (GlobalTheory.AdelicSplit.isClosed_GinfC' Y).locallyCompactSpace`. Use `haveI : LocallyCompactSpace (GfC Y) := (GlobalTheory.AdelicSplit.isClosed_GfC' Y).locallyCompactSpace`. Use `set e := GlobalTheory.AdelicSplit.splitEquiv Y with he_def`. Establish `he : (⇑e : GinfC Y × GfC Y → GA D Y) = fun q => (q.1 : GA D Y) * q.2` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `m₀ : Measure (GinfC Y)` to `Measure.haar`. Set `μ : Measure (GfC Y)` to `Measure.haar`. Use `haveI hρ : ((m₀.prod μ).map e).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map _ e`. Use `set c := Measure.haarScalarFactor ν ((m₀.prod μ).map e) with hc_def`. Establish `hc : ν = c • (m₀.prod μ).map e` using `Measure.isMulLeftInvariant_eq_smul _ _`.
-
-Establish `hc0 : c ≠ 0` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure _ _).ne'`. Use `haveI hm : ((c : ℝ≥0∞) • m₀).IsHaarMeasure := Measure.IsHaarMeasure.smul _ (by simpa using hc0) ENNReal.coe_ne_top`. Use `⟨(c : ℝ≥0∞) • m₀, μ, hm, inferInstance, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Conclude with `e.toHomeomorph.measurableEmbedding`.
-
-Rewrite using `[← he, Measure.prod_smul_left, Measure.map_smul, hc, ENNReal.smul_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_eq_map_prod : ∀ (D : D7) (Y : HSp D) (ν : Measure (GA D Y)), ν.IsHaarMeasure → ∃ (m : Measure (GinfC Y)) (μ : Measure (GfC Y)), m.IsHaarMeasure ∧ μ.IsHaarMeasure ∧ SigmaFinite m ∧ SigmaFinite μ ∧ MeasurableEmbedding (fun q : GinfC Y × GfC Y => (q.1 : GA D Y) * q.2) ∧ ν = (m.prod μ).map (fun q : GinfC Y × GfC Y => (q.1 : GA D Y) * q.2) := by
   intro D Y ν hν

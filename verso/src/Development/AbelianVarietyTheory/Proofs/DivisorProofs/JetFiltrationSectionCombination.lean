@@ -39,7 +39,7 @@ theorem topCoeff_mk {k : ℕ} (p : MvPolynomial (Fin k) R) :
     topCoeff R k (Ideal.Quotient.mk _ p) = coeff (topMon k) p := rfl
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [TrivSqZeroExt.algebraMap_eq_inl]`. Consider the case `add p q hp hq => rw [map_add, TrivSqZeroExt.fst_add, hp, hq, coeff_add]`. Consider the case `mul_X p n hp => simp [← constantCoeff_eq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem fst_aeval {k : ℕ} (c : Fin k → R) (p : MvPolynomial (Fin k) R) :
     (aeval (fun b => (TrivSqZeroExt.inr (c b) : DualNumber R)) p).fst = coeff 0 p := by
@@ -49,11 +49,11 @@ theorem fst_aeval {k : ℕ} (c : Fin k → R) (p : MvPolynomial (Fin k) R) :
   | mul_X p n hp => simp [← constantCoeff_eq]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r`. Establish `: (0 : Fin k →₀ ℕ) ≠ Finsupp.single a 1` using `(Finsupp.single_ne_zero.2 one_ne_zero).symm`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl, coeff_C, this]`. Consider the case `add p q hp hq => rw [map_add, TrivSqZeroExt.snd_add, hp, hq, coeff_add]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p n hp`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, fst_aeval, aeval_X, coeff_mul_X']`. Distinguish the cases in `h : n = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: n ∉ (Finsupp.single a 1).support` using `by simp [h]`. Simplify using `[this, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem snd_aeval {k : ℕ} (a : Fin k) (p : MvPolynomial (Fin k) R) :
     (aeval (fun b => (TrivSqZeroExt.inr ((Pi.single a 1 : Fin k → R) b) : DualNumber R)) p).snd
@@ -71,13 +71,13 @@ theorem snd_aeval {k : ℕ} (a : Fin k) (p : MvPolynomial (Fin k) R) :
       simp [this, h]
 
 /- English proof (translation)
-Simplify using `[topMon, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem degree_topMon (k : ℕ) : Finsupp.degree (topMon k) = k := by
   simp [topMon, map_sum]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Use `(mem_pow_idealOfVars_iff n p).1 hp _ (mem_support_iff.2 h0)` as an intermediate fact. Rewrite `this` using `[degree_topMon]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coeff_top_of_mem {k n : ℕ} (h : k < n) {p : MvPolynomial (Fin k) R} (hp : p ∈ idealOfVars (Fin k) R ^ n) :
     coeff (topMon k) p = 0 := by
@@ -87,9 +87,9 @@ theorem coeff_top_of_mem {k n : ℕ} (h : k < n) {p : MvPolynomial (Fin k) R} (h
   omega
 
 /- English proof (translation)
-Rewrite using `[← pow_one (idealOfVars (Fin k) R), mem_pow_idealOfVars_iff]`. Introduce `x hx`. Assume the negation of the conclusion as `h`. Establish `: x = 0` using `(Finsupp.degree_eq_zero_iff x).1 (by omega)`. Substitute `this` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `mem_support_iff.1 hx hp`.
+A detailed English derivation is pending.
 -/
 theorem mem_idealOfVars {k : ℕ} {p : MvPolynomial (Fin k) R} (hp : coeff 0 p = 0) : p ∈ idealOfVars (Fin k) R := by
   rw [← pow_one (idealOfVars (Fin k) R), mem_pow_idealOfVars_iff]
@@ -100,11 +100,11 @@ theorem mem_idealOfVars {k : ℕ} {p : MvPolynomial (Fin k) R} (hp : coeff 0 p =
   exact mem_support_iff.1 hx hp
 
 /- English proof (translation)
-Rewrite using `[mem_pow_idealOfVars_iff]`. Introduce `x hx`. Assume the negation of the conclusion as `h`. Break down `Nat.lt_or_ge (Finsupp.degree x) 1 with h2 | h2` into its components or cases. Establish `: x = 0` using `(Finsupp.degree_eq_zero_iff x).1 (by omega)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `mem_support_iff.1 hx hp`. Establish `h3 : Finsupp.degree x = 1` using `by omega`. Establish `: ∃ a, x = Finsupp.single a 1`. Use `(Finsupp.sum_eq_one_iff x).1 (by simpa [Finsupp.degree_apply, Finsupp.sum] using h3)` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨a, rfl⟩` from `this`. Conclude with `mem_support_iff.1 hx (h1 a)`.
+A detailed English derivation is pending.
 -/
 theorem mem_idealOfVars_sq {k : ℕ} {p : MvPolynomial (Fin k) R} (hp : coeff 0 p = 0)
     (h1 : ∀ a, coeff (Finsupp.single a 1) p = 0) : p ∈ idealOfVars (Fin k) R ^ 2 := by
@@ -123,7 +123,7 @@ theorem mem_idealOfVars_sq {k : ℕ} {p : MvPolynomial (Fin k) R} (hp : coeff 0 
     exact mem_support_iff.1 hx (h1 a)
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite `hz` using `[lineMap_mk, fst_aeval]`. Rewrite using `[← map_pow, ← map_mul, topCoeff_mk]`. Conclude with `coeff_top_of_mem h (Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow (mem_idealOfVars hz) i))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topCoeff_eq_zero {k i : ℕ} (h : k < i) (u z : EpsAlg R k) (hz : (lineMap 0 z).fst = 0) :
     topCoeff R k (u * z ^ i) = 0 := by
@@ -134,7 +134,7 @@ theorem topCoeff_eq_zero {k i : ℕ} (h : k < i) (u z : EpsAlg R k) (hz : (lineM
   exact coeff_top_of_mem h (Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow (mem_idealOfVars hz) i))
 
 /- English proof (translation)
-Establish `h : ∀ a, topMon k a = 1` using `fun a => by simp [topMon, Finsupp.finsetSum_apply, Finsupp.single_apply]`. Establish `hs : (topMon k).support = Finset.univ` using `by ext a; simp [h]`. Rewrite using `[Finsupp.multinomial_eq, hs, Nat.multinomial]`. Simplify using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem multinomial_topMon (k : ℕ) : (topMon k).multinomial = k.factorial := by
   have h : ∀ a, topMon k a = 1 := fun a => by simp [topMon, Finsupp.finsetSum_apply, Finsupp.single_apply]
@@ -143,17 +143,17 @@ theorem multinomial_topMon (k : ℕ) : (topMon k).multinomial = k.factorial := b
   simp [h]
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Simplify using `only [lineMap_mk, fst_aeval, snd_aeval] at hz hd ⊢`. Rewrite using `[← map_pow, ← map_mul, topCoeff_mk]`. Use `set J := idealOfVars (Fin k) R`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set l : MvPolynomial (Fin k) R := C d * ∑ a, X a with hl`. Establish `hl0 : coeff 0 l = 0` using `by simp [hl, coeff_sum]`. Establish `hl1 : ∀ a, coeff (Finsupp.single a 1) l = d` using `fun a => by`. Simplify using `[hl, coeff_sum, coeff_X', Finsupp.single_left_inj]`. Establish `hp : p ∈ J` using `mem_idealOfVars hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlJ : l ∈ J` using `mem_idealOfVars hl0`. Establish `h2 : p - l ∈ J ^ 2` using `mem_idealOfVars_sq (by simp [hz, hl0]) (fun a => by simp [hd, hl1])`. Establish `h3 : ∀ n : ℕ, p ^ n - l ^ n ∈ J ^ (n + 1)`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `: p ^ (n + 1) - l ^ (n + 1) = (p ^ n - l ^ n) * p + l ^ n * (p - l)` using `by ring`. Rewrite using `[this]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ J (n + 1)]`. Conclude with `Ideal.mul_mem_mul ih hp`. Rewrite using `[show n + 1 + 1 = n + 2 from rfl, pow_add J n 2]`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_pow hlJ n) h2`. Establish `hq : q - C (coeff 0 q) ∈ J` using `mem_idealOfVars (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4 : q * p ^ k = C (coeff 0 q) * l ^ k + (q * (p ^ k - l ^ k) + l ^ k * (q - C (coeff 0 q)))` using `by ring`. Establish `h5 : q * (p ^ k - l ^ k) + l ^ k * (q - C (coeff 0 q)) ∈ J ^ (k + 1)` using `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (h3 k)) (by rw [pow_succ J k]; exact Ideal.mul_mem_mul (Ideal.pow_mem_pow hlJ k) hq)`. Rewrite using `[h4, coeff_add, coeff_top_of_mem (Nat.lt_succ_self k) h5, add_zero, hl, mul_pow, ← map_pow, coeff_C_mul, coeff_C_mul, coeff_sum_X_pow_of_fintype, if_pos, multinomial_topMon, _root_.mul_assoc]`. Simplify `degree_topMon k` using `[Finsupp.degree_apply, Finsupp.sum]`.
+A detailed English derivation is pending.
 -/
 theorem topCoeff_eq {k : ℕ} (u z : EpsAlg R k) (d : R) (hz : (lineMap 0 z).fst = 0)
     (hd : ∀ a, (lineMap (Pi.single a 1) z).snd = d) :
@@ -190,9 +190,9 @@ theorem topCoeff_eq {k : ℕ} (u z : EpsAlg R k) (d : R) (hz : (lineMap 0 z).fst
   simpa [Finsupp.degree_apply, Finsupp.sum] using degree_topMon k
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite `hz` using `[lineMap_mk, fst_aeval]`. Establish `: idealOfVars (Fin k) R ≤ (nilradical (EpsAlg R k)).comap (Ideal.Quotient.mk _)`. Rewrite using `[idealOfVars, Ideal.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨2, by rw [sq]; exact eps_mul_self R a⟩`. Conclude with `this (mem_idealOfVars hz)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_fst {k : ℕ} (z : EpsAlg R k) (hz : (lineMap 0 z).fst = 0) : IsNilpotent z := by
   obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective z
@@ -204,9 +204,9 @@ theorem isNilpotent_of_fst {k : ℕ} (z : EpsAlg R k) (hz : (lineMap 0 z).fst = 
   exact this (mem_idealOfVars hz)
 
 /- English proof (translation)
-Establish `: (lineMap c).comp (epsIncl R a) = epsScaleA R (c a)`. Apply `DualNumber.algHom_ext` to reduce the goal to its premises. Establish `: epsIncl R a DualNumber.eps = eps R a` using `by simp [epsIncl]`. Rewrite using `[AlgHom.comp_apply, this, eps, lineMap_mk, aeval_X]`. Apply the tactic sequence `ext <;> simp [epsScaleA, epsScaleR]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `congrArg (fun f : DualNumber R →ₐ[R] DualNumber R => (f : DualNumber R →+* DualNumber R)) this`.
+A detailed English derivation is pending.
 -/
 theorem lineMap_epsIncl {k : ℕ} (c : Fin k → R) (a : Fin k) :
     ((lineMap c : EpsAlg R k →ₐ[R] DualNumber R) : EpsAlg R k →+* DualNumber R).comp
@@ -228,21 +228,21 @@ def vh (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U) →+
   (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom.comp (x.appLE U ⊤ h).hom
 
 /- English proof (translation)
-Rewrite using `[valR, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_eq (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) : valR x U f = vh x U h f := by
   rw [valR, dif_pos h]; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem vh_congr {x y : Sp A ⟶ X} (e : x = y) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ y ⁻¹ᵁ U) :
     vh x U h = vh y U h' := by subst e; rfl
 
 /- English proof (translation)
-Establish `h1 : (spMap ψ ≫ x).appLE U ⊤ h' = x.appLE U ⊤ h ≫ (spMap ψ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Establish `h2` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)`. Establish `h3` using `congrArg (fun q => q.hom ((x.appLE U ⊤ h).hom f)) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [vh, h1, RingHom.comp_apply, CommRingCat.hom_comp]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem vh_spMap {B : Type} [CommRing B] (ψ : A →+* B) (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (h' : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ U) (f : Γ(X, U)) : vh (spMap ψ ≫ x) U h' f = ψ (vh x U h f) := by
@@ -255,7 +255,7 @@ theorem vh_spMap {B : Type} [CommRing B] (ψ : A →+* B) (x : Sp A ⟶ X) (U : 
   exact h3
 
 /- English proof (translation)
-Establish `h1 : X.presheaf.map (homOfLE hVU).op ≫ x.appLE V ⊤ h' = x.appLE U ⊤ h` using `Scheme.Hom.map_appLE _ _ _`. Simplify using `only [vh, ← h1, RingHom.comp_apply, CommRingCat.hom_comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem vh_res (x : Sp A ⟶ X) {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) :
     vh x V h' (resG X hVU f) = vh x U h f := by
@@ -263,11 +263,11 @@ theorem vh_res (x : Sp A ⟶ X) {U V : X.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x �
   simp only [vh, ← h1, RingHom.comp_apply, CommRingCat.hom_comp]
 
 /- English proof (translation)
-Establish `h1 : p.appLE ⊤ U le_top ≫ x.appLE U ⊤ h = (spMap ψ).appTop`. Use `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← hx, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Establish `h2` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) h2`. Establish `h4` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) h1`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h3 h4`. Simplify using `only [vh, Geo.Tor.constFn, RingHom.comp_apply]`. Use `erw [h4, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem vh_const {R : Type} [CommRing R] (ψ : R →+* A) (p : X ⟶ Sp R) (x : Sp A ⟶ X) (hx : x ≫ p = spMap ψ)
     (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (a : R) : vh x U h (Geo.Tor.constFn p U a) = ψ a := by
@@ -284,9 +284,9 @@ theorem vh_const {R : Type} [CommRing R] (ψ : R →+* A) (p : X ⟶ Sp R) (x : 
   simp
 
 /- English proof (translation)
-Establish `e' : x.appLE U ⊤ h = y.appLE U ⊤ h'`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of A)).hom]`. Conclude with `CommRingCat.hom_ext e`. Establish `hT : IsAffineOpen (⊤ : (Sp A).Opens)` using `isAffineOpen_top _`. Establish `a1` using `IsAffineOpen.SpecMap_appLE_fromSpec x hU hT h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `IsAffineOpen.SpecMap_appLE_fromSpec y hU hT h'`. Rewrite `a1` using `[e', a2]`. Use `haveI : IsIso hT.fromSpec := by rw [IsAffineOpen.fromSpec_top]; infer_instance`. Conclude with `((cancel_epi _).1 a1).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_vh {x y : Sp A ⟶ X} {U : X.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ y ⁻¹ᵁ U)
     (e : vh x U h = vh y U h') : x = y := by
@@ -301,11 +301,9 @@ theorem eq_of_vh {x y : Sp A ⟶ X} {U : X.Opens} (hU : IsAffineOpen U) (h : ⊤
   exact ((cancel_epi _).1 a1).symm
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : (x.appLE U ⊤ h).hom f = 0`. Apply `(Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Scheme.basicOpen_appLE x ⊤ U h f`. Use `erw [h1] at h2`. Rewrite `h2` using `[Scheme.basicOpen_zero, top_inf_eq]`. Take `⟨p⟩ : Nonempty (Sp A)` from `inferInstanceAs (Nonempty (PrimeSpectrum A))`. Use `hf (show p ∈ (⊤ : (Sp A).Opens) from trivial)` as an intermediate fact.
-
-Rewrite `this` using `[← h2]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vh_ne_zero [Nontrivial A] (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U))
     (hf : ⊤ ≤ x ⁻¹ᵁ X.basicOpen f) : vh x U h f ≠ 0 := by
@@ -322,9 +320,9 @@ theorem vh_ne_zero [Nontrivial A] (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x 
   exact this
 
 /- English proof (translation)
-Introduce `p _`. Establish `: p ∈ Set.range (PrimeSpectrum.comap ψ)`. Rewrite using `[range_comap_of_surjective _ ψ hs]`. Use `(PrimeSpectrum.mem_zeroLocus _ _).2 ?_` and prove the remaining obligations. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, hn⟩` from `hn z hz`. Conclude with `(show PrimeSpectrum A from p).isPrime.mem_of_pow_mem n (by rw [hn]; exact Ideal.zero_mem _)`. Take `⟨q, rfl⟩` from `this`. Conclude with `h (show (show Sp B from q) ∈ (⊤ : (Sp B).Opens) from trivial)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem top_le_of_nil {B : Type} [CommRing B] (ψ : A →+* B) (hs : Function.Surjective ψ)
     (hn : ∀ z, ψ z = 0 → IsNilpotent z) (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ (spMap ψ ≫ x) ⁻¹ᵁ U) :
@@ -350,7 +348,7 @@ def linePt {k : ℕ} (c : Fin k → R) : epsR R ⟶ epsT R k :=
     (spMap_comp_eq R (lineMap c))
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap _ = spMap (epsScaleR (c a))`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, lineMap_epsIncl]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linePt_epsIn {k : ℕ} (c : Fin k → R) (a : Fin k) : linePt c ≫ epsIn R a = epsScale R (c a) := by
   apply Over.OverMorphism.ext
@@ -358,9 +356,7 @@ theorem linePt_epsIn {k : ℕ} (c : Fin k → R) (a : Fin k) : linePt c ≫ epsI
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, lineMap_epsIncl]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (epsScaleR (1 : R)) = 𝟙 _`. Establish `: epsScaleR (1 : R) = RingHom.id _`. Apply the tactic sequence `ext x <;> simp [epsScaleR]`. Rewrite using `[this]`.
-
-Conclude with `Spec.map_id _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsScale_one : epsScale R 1 = 𝟙 _ := by
   apply Over.OverMorphism.ext
@@ -371,7 +367,7 @@ theorem epsScale_one : epsScale R 1 = 𝟙 _ := by
   exact Spec.map_id _
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (epsScaleR (0 : R)) = spMap (algebraMap R (DualNumber R)) ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext x <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem epsScale_zero : epsScale R 0 = toUnit _ ≫ TanComb.zeroPt := by
   apply Over.OverMorphism.ext
@@ -383,13 +379,13 @@ theorem epsScale_zero : epsScale R 0 = toUnit _ ≫ TanComb.zeroPt := by
 variable {G : Over (Sp R)} [GrpObj G]
 
 /- English proof (translation)
-Rewrite using `[epsScale_zero, Category.assoc, (TanComb.isTangent_iff y).1 hy, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem epsScale_zero_comp {y : epsR R ⟶ G} (hy : IsTangent y) : epsScale R 0 ≫ y = 1 := by
   rw [epsScale_zero, Category.assoc, (TanComb.isTangent_iff y).1 hy, MonObj.comp_one]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [MonObj.comp_one]`. Consider the case `cons a l ih => rw [List.prod_cons, MonObj.comp_mul, ih, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_prod {S T : Over (Sp R)} (f : S ⟶ T) (l : List (T ⟶ G)) : f ≫ l.prod = (l.map (f ≫ ·)).prod := by
   induction l with
@@ -397,7 +393,7 @@ theorem comp_prod {S T : Over (Sp R)} (f : S ⟶ T) (l : List (T ⟶ G)) : f ≫
   | cons a l ih => rw [List.prod_cons, MonObj.comp_mul, ih, List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SecJet.epsPt, comp_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← Category.assoc, linePt_epsIn]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem linePt_epsPt {k : ℕ} (c : Fin k → R) (y : epsR R ⟶ G) :
     linePt c ≫ epsPt y k = (List.ofFn fun a => epsScale R (c a) ≫ y).prod := by
@@ -408,7 +404,7 @@ theorem linePt_epsPt {k : ℕ} (c : Fin k → R) (y : epsR R ⟶ G) :
   rw [← Category.assoc, linePt_epsIn]
 
 /- English proof (translation)
-Rewrite using `[linePt_epsPt]`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `epsScale_zero_comp hy`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem linePt_zero {k : ℕ} {y : epsR R ⟶ G} (hy : IsTangent y) : linePt 0 ≫ epsPt y k = 1 := by
   rw [linePt_epsPt]
@@ -418,7 +414,7 @@ theorem linePt_zero {k : ℕ} {y : epsR R ⟶ G} (hy : IsTangent y) : linePt 0 �
   exact epsScale_zero_comp hy
 
 /- English proof (translation)
-Rewrite using `[linePt_epsPt, List.ofFn_eq_map, List.prod_map_eq_pow_single a]`. Simplify using `[epsScale_one]`. Introduce `b hb _`. Rewrite using `[Pi.single_eq_of_ne hb]`. Conclude with `epsScale_zero_comp hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linePt_single {k : ℕ} {y : epsR R ⟶ G} (hy : IsTangent y) (a : Fin k) :
     linePt (Pi.single a 1) ≫ epsPt y k = y := by
@@ -436,15 +432,15 @@ Both sides reduce to the same expression.
 theorem one_left : (1 : epsR R ⟶ G).left = spMap (algebraMap R (DualNumber R)) ≫ orig G := rfl
 
 /- English proof (translation)
-The claim follows from `TanComb.zeroPt_w`.
+A detailed English derivation is pending.
 -/
 theorem fst_comp_alg : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _ :=
   TanComb.zeroPt_w
 
 /- English proof (translation)
-Use `top_le_of_nil (TrivSqZeroExt.fstHom R R R).toRingHom (fun r => ⟨TrivSqZeroExt.inl r, rfl⟩) ?_ _ U ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hz' : z.fst = 0` using `hz`. Use `⟨2, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [sq, hz']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (show Sp (DualNumber R) ⟶ G.left from y.left) = orig G` using `hy`. Rewrite using `[this]`. Conclude with `he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_tangent {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} (he : ⊤ ≤ orig G ⁻¹ᵁ U) :
     ⊤ ≤ (show Sp (DualNumber R) ⟶ G.left from y.left) ⁻¹ᵁ U := by
@@ -457,7 +453,7 @@ theorem top_le_tangent {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} 
     rw [this]; exact he
 
 /- English proof (translation)
-Establish `: spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (show Sp (DualNumber R) ⟶ G.left from y.left) = orig G` using `hy`. Rewrite using `[← vh_congr this U (by rw [this]; exact he) he, vh_spMap _ _ _ (top_le_tangent hy he)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fst_vh_tangent {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} (he : ⊤ ≤ orig G ⁻¹ᵁ U)
     (f : Γ(G.left, U)) : (vh (A := DualNumber R) y.left U (top_le_tangent hy he) f).fst = vh (orig G) U he f := by
@@ -466,15 +462,15 @@ theorem fst_vh_tangent {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} 
   rfl
 
 /- English proof (translation)
-Rewrite using `[TanComb.isTangent_iff, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_one : IsTangent (1 : epsR R ⟶ G) := by
   rw [TanComb.isTangent_iff, MonObj.comp_one]
 
 /- English proof (translation)
-Use `top_le_of_nil ((TrivSqZeroExt.fstHom R R R).toRingHom.comp ((lineMap 0 : EpsAlg R k →ₐ[R] DualNumber R) : EpsAlg R k →+* DualNumber R)) (fun r => ⟨algebraMap R _ r, by simp [TrivSqZeroExt.algebraMap_eq_inl]⟩) isNilpotent_of_fst _ U ?_` and prove the remaining obligations. Establish `h1 : spMap ((TrivSqZeroExt.fstHom R R R).toRingHom.comp ((lineMap 0 : EpsAlg R k →ₐ[R] DualNumber R) : EpsAlg R k →+* DualNumber R)) ≫ (show Sp (EpsAlg R k) ⟶ G.left from (epsPt y k).left) = orig G`. Establish `h2 : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (linePt 0 ≫ epsPt y k).left = orig G`. Rewrite using `[linePt_zero hy]`. Conclude with `isTangent_one`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `he`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_epsPt {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} (he : ⊤ ≤ orig G ⁻¹ᵁ U) (k : ℕ) :
     ⊤ ≤ (show Sp (EpsAlg R k) ⟶ G.left from (epsPt y k).left) ⁻¹ᵁ U := by
@@ -492,7 +488,7 @@ theorem top_le_epsPt {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} (h
   rw [h1]; exact he
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Conclude with `(vh_spMap ((lineMap c : EpsAlg R k →ₐ[R] DualNumber R) : EpsAlg R k →+* DualNumber R) _ U (top_le_epsPt hy he k) (top_le_tangent hw he) f).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem lineMap_vh {y w : epsR R ⟶ G} (hy : IsTangent y) (hw : IsTangent w) {U : G.left.Opens}
     (he : ⊤ ≤ orig G ⁻¹ᵁ U) {k : ℕ} (c : Fin k → R) (hc : linePt c ≫ epsPt y k = w) (f : Γ(G.left, U)) :
@@ -503,7 +499,7 @@ theorem lineMap_vh {y w : epsR R ⟶ G} (hy : IsTangent y) (hw : IsTangent w) {U
     (top_le_epsPt hy he k) (top_le_tangent hw he) f).symm
 
 /- English proof (translation)
-Rewrite using `[jetVal]`. Use `erw [valR_eq _ _ (top_le_epsPt hy he k)]`. Rewrite using `[map_mul, map_pow]`. Use `topCoeff_eq_zero h _ _ ?_` and prove the remaining obligations. Use `erw [lineMap_vh hy isTangent_one he 0 (linePt_zero hy), fst_vh_tangent isTangent_one he, hz]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jetVal_eq_zero {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} (he : ⊤ ≤ orig G ⁻¹ᵁ U) {k i : ℕ}
     (h : k < i) (u z : Γ(G.left, U)) (hz : vh (orig G) U he z = 0) : jetVal y k U (u * z ^ i) = 0 := by
@@ -514,9 +510,7 @@ theorem jetVal_eq_zero {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} 
   erw [lineMap_vh hy isTangent_one he 0 (linePt_zero hy), fst_vh_tangent isTangent_one he, hz]
 
 /- English proof (translation)
-Rewrite using `[jetVal]`. Use `erw [valR_eq _ _ (top_le_epsPt hy he k)]`. Rewrite using `[map_mul, map_pow]`. Use `(topCoeff_eq _ _ (vh (A := DualNumber R) y.left U (top_le_tangent hy he) z).snd ?_ ?_).trans ?_` and prove the remaining obligations. Use `erw [lineMap_vh hy isTangent_one he 0 (linePt_zero hy), fst_vh_tangent isTangent_one he, hz]`.
-
-Introduce `a erw [lineMap_vh hy hy he _ (linePt_single hy a)]`. Use `erw [lineMap_vh hy isTangent_one he 0 (linePt_zero hy), fst_vh_tangent isTangent_one he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jetVal_eq {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} (he : ⊤ ≤ orig G ⁻¹ᵁ U) (k : ℕ)
     (u z : Γ(G.left, U)) (hz : vh (orig G) U he z = 0) :
@@ -532,9 +526,9 @@ theorem jetVal_eq {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} (he :
   · erw [lineMap_vh hy isTangent_one he 0 (linePt_zero hy), fst_vh_tangent isTangent_one he]
 
 /- English proof (translation)
-Simplify using `only [jetVal]`. Establish `h : ∀ g, valR (A` using `EpsAlg R k) (epsPt y k).left U g = vh (A := EpsAlg R k) (epsPt y k).left U (top_le_epsPt hy he k) g := fun g => valR_eq _ _ _ g`. Use `erw [h]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `erw [h]`. Rewrite using `[map_mul, vh_const (algebraMap R (EpsAlg R k)) G.hom _ (Over.w (epsPt y k)), ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem jetVal_comb {y : epsR R ⟶ G} (hy : IsTangent y) {U : G.left.Opens} (he : ⊤ ≤ orig G ⁻¹ᵁ U) (k : ℕ)
     {r : ℕ} (c : Fin r → R) (f : Fin r → Γ(G.left, U)) :
@@ -575,13 +569,11 @@ def monoSec {X : Scheme.{0}} {L : LB X} {a : ℕ} (s t : (lbPow L a).Sec) {n i :
     exact key _ _ _
 
 /- English proof (translation)
-Use `haveI : Unique (Sp K) := inferInstanceAs (Unique (PrimeSpectrum K))`. Establish `h1 : x default ∈ Out.nonzeroLocus s` using `hs (show (default : Sp K) ∈ (⊤ : (Sp K).Opens) from trivial)`. Rewrite `h1` using `[Out.nonzeroLocus, TopologicalSpace.Opens.mem_iSup]`. Take `⟨k, hk⟩` from `h1`. Establish `hk' : ⊤ ≤ x ⁻¹ᵁ X.basicOpen (s.f k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p _`. Rewrite using `[Subsingleton.elim p default]`. Conclude with `hk`. Establish `hkU : ⊤ ≤ x ⁻¹ᵁ H.U k` using `hk'.trans (x.preimage_mono (X.basicOpen_le _))`. Establish `hkl : ⊤ ≤ x ⁻¹ᵁ (H.U k ⊓ H.U l)` using `fun p hp => ⟨hkU hp, hl hp⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `vh_ne_zero x _ hkU _ hk'`. Establish `h3` using `congrArg (vh x _ hkl) (s.compat k l)`. Rewrite `h3` using `[map_mul]`. Use `erw [vh_res x _ hkU hkl, vh_res x _ hl hkl] at h3`. Introduce `h0`.
-
-Rewrite `h3` using `[h0, mul_zero]`. Conclude with `h2 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vh_sec_ne_zero {K : Type} [Field K] {X : Scheme.{0}} {H : LB X} (s : H.Sec) (x : Sp K ⟶ X) (l : H.ι)
     (hl : ⊤ ≤ x ⁻¹ᵁ H.U l) (hs : ⊤ ≤ x ⁻¹ᵁ Out.nonzeroLocus s) : vh x (H.U l) hl (s.f l) ≠ 0 := by
@@ -605,23 +597,21 @@ theorem vh_sec_ne_zero {K : Type} [Field K] {X : Scheme.{0}} {H : LB X} (s : H.S
 variable {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G]
 
 /- English proof (translation)
-Use `haveI : Unique (Sp K) := inferInstanceAs (Unique (PrimeSpectrum K))`. Take `⟨hc, hs⟩` from `hs`. Establish `h1 : orig G default ∈ ⨆ i ∈ (Set.univ : Set J), Out.nonzeroLocus (s i)` using `by rw [hc]; trivial`. Simplify using `only [TopologicalSpace.Opens.mem_iSup] at h1`. Take `⟨i, -, hi⟩` from `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨haff, r, hr, hgen⟩` from `hs i trivial`. Establish `hV : ⊤ ≤ orig G ⁻¹ᵁ Out.nonzeroLocus (s i)`. Introduce `p _`. Rewrite using `[Subsingleton.elim p default]`. Conclude with `hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `vh_sec_ne_zero (s i) (orig G) l hl hV`. Establish `hj : ∃ j, (vh (A` using `DualNumber K) y.left _ (top_le_tangent hy hV) (r j)).snd ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Apply `hy1` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `eq_of_vh (A := DualNumber K) haff (top_le_tangent hy hV) (top_le_tangent isTangent_one hV) ?_` and prove the remaining obligations. Use `RingHom.eq_of_eqOn_set_dense hgen ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨j, rfl⟩)`. Conclude with `(vh_const (algebraMap K (DualNumber K)) G.hom _ (Over.w y) _ _ a).trans (vh_const (algebraMap K (DualNumber K)) G.hom _ (Over.w (1 : epsR K ⟶ G)) _ _ a).symm`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Conclude with `(fst_vh_tangent hy hV _).trans (fst_vh_tangent isTangent_one hV _).symm`. Use `(hn j).trans ?_` and prove the remaining obligations. Use `vh_spMap (algebraMap K (DualNumber K)) (orig G) _ hV (top_le_tangent isTangent_one hV) (r j)` as an intermediate fact. Use `erw [this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Take `⟨j, hj⟩` from `hj`. Establish `key : vh (A` using `DualNumber K) y.left _ (top_le_tangent hy hl) ((secComb G.hom ![1, -vh (orig G) _ hV (r j)] ![s j, s i]).f l) = (vh (A := DualNumber K) y.left _ (top_le_tangent hy hV) (r j) - algebraMap K _ (vh (orig G) _ hV (r j))) * vh (A := DualNumber K) y.left _ (top_le_tangent hy hl) ((s i) …`. Establish `hW : ⊤ ≤ (show Sp (DualNumber K) ⟶ G.left from y.left) ⁻¹ᵁ (Out.nonzeroLocus (s i) ⊓ H.U l)` using `fun p hp => ⟨top_le_tangent hy hV hp, top_le_tangent hy hl hp⟩`. Establish `h3` using `congrArg (vh _ _ hW) (hr j l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, vh_res _ _ (top_le_tangent hy hl) hW, vh_res _ _ (top_le_tangent hy hl) hW, vh_res _ _ (top_le_tangent hy hV) hW]`. Simplify using `only [secComb, Fin.sum_univ_two, map_add, map_mul, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[vh_const (algebraMap K (DualNumber K)) G.hom _ (Over.w y), vh_const (algebraMap K (DualNumber K)) G.hom _ (Over.w y)]`. Use `erw [h3]`. Simplify using `only [map_one, map_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf : (vh (A` using `DualNumber K) y.left _ (top_le_tangent hy hV) (r j) - algebraMap K _ (vh (orig G) _ hV (r j))).fst = 0 := by`. Rewrite using `[TrivSqZeroExt.fst_sub, fst_vh_tangent hy hV]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Use `⟨s i, secComb G.hom ![1, -vh (orig G) _ hV (r j)] ![s j, s i], h0, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← fst_vh_tangent hy hl, key, TrivSqZeroExt.fst_mul, hf, zero_mul]`. Rewrite using `[key, TrivSqZeroExt.snd_mul, hf, fst_vh_tangent hy hl, zero_smul, zero_add, TrivSqZeroExt.snd_sub]`. Simplify `hj` using `[TrivSqZeroExt.algebraMap_eq_inl, h0]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_sep {H : LB G.left} {J : Type} (s : J → H.Sec) (hs : GlobalTheory.ZH.ImmBy G.hom H s Set.univ)
     {y : epsR K ⟶ G} (hy : IsTangent y) (hy1 : y ≠ 1) (l : H.ι) (hl : ⊤ ≤ orig G ⁻¹ᵁ H.U l) :
@@ -679,9 +669,9 @@ theorem exists_sep {H : LB G.left} {J : Type} (s : J → H.Sec) (hs : GlobalTheo
     simpa [TrivSqZeroExt.algebraMap_eq_inl, h0] using hj
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : tanComb 0 v = 1`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `w hw`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `epsScale_zero_comp (hv.1 a)`. Take `⟨c, -, hc⟩` from `hv.2 1 isTangent_one`. Conclude with `hx ((hc x (h ▸ isLieComb_tanComb x v)).trans (hc 0 (h0 ▸ isLieComb_tanComb 0 v)).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tanComb_ne_one {m : ℕ} {v : Fin m → (epsR K ⟶ G)} (hv : IsLieBasis v) {x : Fin m → K} (hx : x ≠ 0) :
     tanComb x v ≠ 1 := by
@@ -695,7 +685,7 @@ theorem tanComb_ne_one {m : ℕ} {v : Fin m → (epsR K ⟶ G)} (hv : IsLieBasis
   exact hx ((hc x (h ▸ isLieComb_tanComb x v)).trans (hc 0 (h0 ▸ isLieComb_tanComb 0 v)).symm)
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => trivial`. Consider the case `succ i ih => exact ⟨ih fun k hk => h k (by omega), h i (by omega)⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mem_filt {V : Type} [AddCommGroup V] [Module K V] (j : ℕ → V →ₗ[K] K) (c : V) (i : ℕ)
     (h : ∀ k < i, j k c = 0) : c ∈ filt j i := by
@@ -712,13 +702,13 @@ namespace GlobalTheory.SecJet
 open Orders in
 
 /- English proof (translation)
-Introduce `K _ _ P m v x n r b i₀ c₀ hv hx _ hb hi₀ hc₀ i hi`. Take `⟨M, s, hs⟩` from `GlobalTheory.ZH.CrdMove.immBy_lbPow GlobalTheory.allSixLaws.1.ample K P 4 le_rfl`. Establish `hy` using `isTangent_tanComb K P.A m v x hv.1`. Establish `hl : ⊤ ≤ orig P.A ⁻¹ᵁ (lbPow P.L 4).U i₀` using `hi₀`. Take `⟨s₀, s₁, h0, h1, h2⟩` from `exists_sep s hs hy (tanComb_ne_one hv hx) i₀ hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hb.2 (monoSec s₀ s₁ hi)`. Establish `key : ∀ k, jetFun (tanComb x v) i₀ c₀ b k c = c₀⁻¹ * jetVal (tanComb x v) k ((lbPow P.L 4).U i₀) (s₀.f i₀ ^ (n - i) * s₁.f i₀ ^ i)`. Introduce `k`. Establish `h3 : (secComb P.A.hom c b).f i₀ = (monoSec s₀ s₁ hi).f i₀` using `congrArg (fun q => q.f i₀) hc`. Establish `h4` using `jetVal_comb hy (U := (lbPow P.L (4 * n)).U i₀) hi₀ k c (fun a => (b a).f i₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[jetFun_apply]`. Simplify using `only [_root_.mul_assoc]`. Rewrite using `[← Finset.mul_sum, ← h4]`. Use `congr 1`. Conclude with `congrArg (jetVal (tanComb x v) k ((lbPow P.L (4 * n)).U i₀)) h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, mem_filt _ _ _ fun k hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, jetVal_eq_zero hy hl hk _ _ h1, mul_zero]`. Rewrite using `[key, jetVal_eq hy hl i _ _ h1, map_pow]`. Conclude with `mul_ne_zero (inv_ne_zero hc₀) (mul_ne_zero (mul_ne_zero (pow_ne_zero _ h0) (pow_ne_zero _ h2)) (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero i)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_filt_jetFun_ne_zero :
     ∀ (K'' : Type) [Field K''] [NumberField K''] (P : Out.PolAV (Sp K'')) (m : ℕ) (v' : Fin m → (epsR K'' ⟶ P.A)) (x : Fin m → K'') (n r : ℕ) (b : Fin r → (lbPow P.L (4 * n)).Sec) (i₀ : (lbPow P.L (4 * n)).ι) (c₀ : K''), IsLieBasis v' → x ≠ 0 → 1 ≤ n → Function.Bijective (fun c : Fin r → K'' => secComb P.A.hom c b) → ⊤ ≤ (eSec P.A) ⁻¹ᵁ (lbPow P.L (4 * n)).U i₀ → c₀ ≠ 0 → ∀ i ≤ n, ∃ c ∈ filt (jetFun (tanComb x v') i₀ c₀ b) i, jetFun (tanComb x v') i₀ c₀ b i c ≠ 0 := by

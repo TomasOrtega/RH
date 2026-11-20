@@ -7,9 +7,9 @@ namespace GlobalTheory.EvaluationSum
 open GlobalTheory.SeriesTie
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `tmul a f => exact ⟨1, fun _ => a, fun _ => f, by simp [evK_tmul]⟩`. Consider the case `add t₁ t₂ h₁ h₂`. Take `⟨n₁, a₁, x₁, e₁⟩` from `h₁`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨n₂, a₂, x₂, e₂⟩` from `h₂`. Use `⟨n₁ + n₂, Fin.append a₁ a₂, Fin.append x₁ x₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, e₁, e₂, Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evK_eq_sum {D : Formalism.BasicNotions.D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
     {A3 : Formalism.L2.DIV.FamIn3 (Formalism.BasicNotions.Rows.Data.LL (Formalism.BasicNotions.D7.what₂ D)) Γ Pl0 I0 (List Nat) T (Formalism.BasicNotions.Ranks.m (Formalism.BasicNotions.D7.R D))}

@@ -12,7 +12,7 @@ namespace GlobalTheory.LeviGramDual
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Fintype.sum_sigma, Finset.sum_eq_single a]`. Simplify using `[blockDiagonal'_apply_eq]`. Introduce `b _ hb`. Conclude with `Finset.sum_eq_zero fun k _ => by simp [blockDiagonal'_apply', Ne.symm hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bd_mul {ι : Type} [Fintype ι] [DecidableEq ι] {d : ι → Type} [∀ a, Fintype (d a)]
     [∀ a, DecidableEq (d a)] {p : Type} (g : ∀ a, Matrix (d a) (d a) R) (X : Matrix (Σ a, d a) p R)
@@ -25,7 +25,7 @@ theorem bd_mul {ι : Type} [Fintype ι] [DecidableEq ι] {d : ι → Type} [∀ 
   · simp
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Fintype.sum_sigma, Finset.sum_eq_single b]`. Simplify using `[blockDiagonal'_apply_eq]`. Introduce `a _ ha`. Conclude with `Finset.sum_eq_zero fun k _ => by simp [blockDiagonal'_apply', ha]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_bd {ι : Type} [Fintype ι] [DecidableEq ι] {d : ι → Type} [∀ a, Fintype (d a)]
     [∀ a, DecidableEq (d a)] {p : Type} (X : Matrix p (Σ a, d a) R) (g : ∀ a, Matrix (d a) (d a) R)
@@ -38,7 +38,7 @@ theorem mul_bd {ι : Type} [Fintype ι] [DecidableEq ι] {d : ι → Type} [∀ 
   · simp
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (Units.mul_inv g) x) x`. Rewrite `h` using `[mul_apply, Fintype.sum_subsingleton _ x, one_apply_eq]`. Rewrite using `[Subsingleton.elim y x, Subsingleton.elim z x, Subsingleton.elim w x]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem one_by_one {ι : Type} [Fintype ι] [DecidableEq ι] [Subsingleton ι] (g : GL ι R) (x y z w : ι) :
     (g : Matrix ι ι R) x y * ((g⁻¹ : GL ι R) : Matrix ι ι R) z w = 1 := by
@@ -53,9 +53,9 @@ namespace GlobalTheory.LeviGramDual
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use extensionality with `⟨a, i⟩ ⟨b, j⟩`. Rewrite using `[submatrix_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[leviEmb_apply_same, blockDiagonal'_apply_eq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviEmb_apply_ne R e g h, blockDiagonal'_apply_ne _ _ _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_sub {R : Type} [CommRing R] {m n : ℕ} (e : Ix m ≃ Fin n)
     (g : Levi R (fun i : Fin 3 => Fin (blk3 m i))) :
@@ -67,7 +67,7 @@ theorem levi_sub {R : Type} [CommRing R] {m n : ℕ} (e : Ix m ≃ Fin n)
   · rw [leviEmb_apply_ne R e g h, blockDiagonal'_apply_ne _ _ _ h]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `[gam]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gam_sub {R : Type} [CommRing R] {m n : ℕ} (e : Ix m ≃ Fin n) (K : Matrix (Fin m) (Fin m) R) :
     (gam e K).submatrix e e = gamS K := by
@@ -156,23 +156,23 @@ Both sides reduce to the same expression.
 end Entries
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by have := i.2; have := j.2; simp [blk3] at *; omega)`.
+A detailed English derivation is pending.
 -/
 theorem sub0 {m : ℕ} (i j : Fin (blk3 m 0)) : i = j := Fin.ext (by have := i.2; have := j.2; simp [blk3] at *; omega)
 /- English proof (translation)
-The claim follows from `Fin.ext (by have := i.2; have := j.2; simp [blk3] at *; omega)`.
+A detailed English derivation is pending.
 -/
 theorem sub2 {m : ℕ} (i j : Fin (blk3 m 2)) : i = j := Fin.ext (by have := i.2; have := j.2; simp [blk3] at *; omega)
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Fin.sum_univ_three]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum3 {M : Type} [AddCommMonoid M] {m : ℕ} (f : Ix m → M) :
     ∑ p, f p = ∑ y : Fin (blk3 m 0), f ⟨0, y⟩ + ∑ y : Fin (blk3 m 1), f ⟨1, y⟩ + ∑ y : Fin (blk3 m 2), f ⟨2, y⟩ := by
   rw [Fintype.sum_sigma, Fin.sum_univ_three]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_subsingleton _ j, Fintype.sum_subsingleton _ i, transpose_apply]`. Conclude with `one_by_one g i i j j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_pos {ι : Type} [Fintype ι] [DecidableEq ι] [Subsingleton ι] (g : GL ι R) (i j : ι) :
     ∑ x, (∑ k, (g : Matrix ι ι R)ᵀ i k) * ((g⁻¹ : GL ι R) : Matrix ι ι R) x j = 1 := by
@@ -180,7 +180,7 @@ theorem corner_pos {ι : Type} [Fintype ι] [DecidableEq ι] [Subsingleton ι] (
   exact one_by_one g i i j j
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_subsingleton _ j, Fintype.sum_subsingleton _ i, transpose_apply, mul_neg_one, neg_mul, one_by_one g i i j j]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_neg {ι : Type} [Fintype ι] [DecidableEq ι] [Subsingleton ι] (g : GL ι R) (i j : ι) :
     ∑ x, (∑ k, (g : Matrix ι ι R)ᵀ i k * -1) * ((g⁻¹ : GL ι R) : Matrix ι ι R) x j = -1 := by
@@ -188,9 +188,9 @@ theorem corner_neg {ι : Type} [Fintype ι] [DecidableEq ι] [Subsingleton ι] (
     one_by_one g i i j j]
 
 /- English proof (translation)
-Establish `hA : gT A * gT A⁻¹ = 1` using `Units.ext (by`. Rewrite using `[Units.val_mul, gT_val, gT_val, ← transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, transpose_one])`. Establish `hG : gT A * K * (K⁻¹ * gT A⁻¹ * K) = K`. Rewrite using `[mul_assoc, ← mul_assoc K, ← mul_assoc K, mul_inv_cancel, one_mul, ← mul_assoc, hA, one_mul]`. Establish `hM` using `congrArg (fun g : GL (Fin m) R => (g : Matrix (Fin m) (Fin m) R) i j) hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, gT_val] at hM`. Rewrite using `[← hM, mul_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_apply]`. Simplify using `only [Units.val_mul, gT_val]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mid {m : ℕ} (A K : GL (Fin m) R) (i j : Fin m) :
     ∑ x, (∑ k, (A : Matrix (Fin m) (Fin m) R)ᵀ i k * (K : Matrix (Fin m) (Fin m) R) k x) *
@@ -208,7 +208,7 @@ theorem mid {m : ℕ} (A K : GL (Fin m) R) (i j : Fin m) :
   simp only [Units.val_mul, gT_val]
 
 /- English proof (translation)
-Rewrite using `[← mul_apply, Units.inv_mul, one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem invK {m : ℕ} (K : GL (Fin m) R) (i j : Fin m) :
     ∑ y, ((K⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) i y * (K : Matrix (Fin m) (Fin m) R) y j =
@@ -216,7 +216,7 @@ theorem invK {m : ℕ} (K : GL (Fin m) R) (i j : Fin m) :
   rw [← mul_apply, Units.inv_mul, one_apply]
 
 /- English proof (translation)
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, one_apply_eq]`. Establish `hne : (⟨1, i⟩ : Ix m) ≠ ⟨1, j⟩` using `fun h' => h (eq_of_heq (Sigma.mk.inj_iff.1 h').2)`. Rewrite using `[one_apply_ne hne, if_neg h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_apply_middle_block {m : ℕ} (i j : Fin (blk3 m 1)) :
     (1 : Matrix (Ix m) (Ix m) R) ⟨1, i⟩ ⟨1, j⟩ = if i = j then 1 else 0 := by
@@ -226,13 +226,13 @@ theorem one_apply_middle_block {m : ℕ} (i j : Fin (blk3 m 1)) :
     rw [one_apply_ne hne, if_neg h]
 
 /- English proof (translation)
-Use extensionality with `⟨a, i⟩ ⟨b, j⟩`. Rewrite using `[mul_apply, sum3]`. Apply the tactic sequence `rcases (show a = 0 ∨ a = 1 ∨ a = 2 by fin_cases a <;> simp) with rfl | rfl | rfl <;>`. Apply the tactic sequence `rcases (show b = 0 ∨ b = 1 ∨ b = 2 by fin_cases b <;> simp) with rfl | rfl | rfl`. Apply the tactic sequence `all_goals simp only [gamS_02, gamS_20, gamS_11, gamInv_02, gamInv_20, gamInv_11, gamS_00, gamInv_00, gamS_01, gamInv_01, gamS_10, gamInv_10, gamS_12, gamInv_12, gamS_21, gamInv_21, gamS_22, gamInv_22, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `sub0 i j`. Rewrite using `[one_apply_eq, Finset.sum_const, Finset.card_univ, Fintype.card_fin, neg_mul_neg, mul_one]`. Use `show (1 : ℕ) • (1 : R) = 1`. Simplify using the standard rewrite rules. Simplify using `[one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[one_apply]`. Simplify using `[one_apply]`. Conclude with `(invK K i j).trans (one_apply_middle_block i j).symm`. Simplify using `[one_apply]`. Simplify using `[one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[one_apply]`. Take `rfl` from `sub2 i j`. Rewrite using `[one_apply_eq, Finset.sum_const, Finset.card_univ, Fintype.card_fin, mul_one]`. Use `show (1 : ℕ) • (1 : R) = 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gamInv_mul {m : ℕ} (K : GL (Fin m) R) :
     gamInv ((K⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) * gamS (K : Matrix (Fin m) (Fin m) R) = 1 := by
@@ -258,11 +258,9 @@ theorem gamInv_mul {m : ℕ} (K : GL (Fin m) R) :
     simp
 
 /- English proof (translation)
-Use `haveI : Subsingleton (Fin (blk3 m 0)) := ⟨sub0⟩`. Use `haveI : Subsingleton (Fin (blk3 m 2)) := ⟨sub2⟩`. Rewrite using `[blockDiagonal'_transpose]`. Use extensionality with `⟨a, i⟩ ⟨b, j⟩`. Rewrite using `[mul_bd]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [bd_mul]`. Apply the tactic sequence `rcases (show a = 0 ∨ a = 1 ∨ a = 2 by fin_cases a <;> simp) with rfl | rfl | rfl <;>`. Apply the tactic sequence `rcases (show b = 0 ∨ b = 1 ∨ b = 2 by fin_cases b <;> simp) with rfl | rfl | rfl`. Apply the tactic sequence `all_goals simp only [gamS_02, gamS_20, gamS_11, gamInv_02, gamInv_20, gamInv_11, gamS_00, gamInv_00, gamS_01, gamInv_01, gamS_10, gamInv_10, gamS_12, gamInv_12, gamS_21, gamInv_21, gamS_22, gamInv_22, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_one]`. Conclude with `corner_pos (l 0) i j`.
-
-Conclude with `mid (l 1) K i j`. Conclude with `corner_neg (l 2) i j`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem key {m : ℕ} (K : GL (Fin m) R) (l : Levi R (fun i : Fin 3 => Fin (blk3 m i))) :
     (blockDiagonal' fun a => (l a : Matrix _ _ R))ᵀ * gamS (K : Matrix (Fin m) (Fin m) R) *
@@ -286,17 +284,15 @@ namespace GlobalTheory.SplitCoord
 open GlobalTheory.LeviGramDual
 
 /- English proof (translation)
-Establish `hs : ∀ A B : Matrix (Fin n) (Fin n) R, (A * B).submatrix e e = A.submatrix e e * B.submatrix e e` using `fun A B => (submatrix_mul_equiv A B e e e).symm`. Establish `h1` using `congrArg (fun M : Matrix (Fin n) (Fin n) R => M.submatrix e e) h`. Simplify using `only [hs] at h1`. Rewrite `h1` using `[← transpose_submatrix, levi_sub, gam_sub]`. Use `set B := blockDiagonal' fun a => (l a : Matrix (Fin (blk3 m a)) (Fin (blk3 m a)) R) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set Bi := blockDiagonal' fun a => ((l⁻¹) a : Matrix (Fin (blk3 m a)) (Fin (blk3 m a)) R) with hBi`. Establish `hBB : Biᵀ * Bᵀ = 1`. Rewrite using `[← transpose_mul, hB, hBi, ← blockDiagonal'_mul]`. Establish `: (fun a => (l a : Matrix (Fin (blk3 m a)) (Fin (blk3 m a)) R) * ((l⁻¹) a : Matrix (Fin (blk3 m a)) (Fin (blk3 m a)) R)) = 1`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.mul_inv (l a)`. Rewrite using `[this, blockDiagonal'_one, transpose_one]`. Use `set C := gamInv ((K⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) * Biᵀ with hC`. Establish `hC1 : C * (Bᵀ * gamS (K : Matrix (Fin m) (Fin m) R)) = 1`. Rewrite using `[hC, mul_assoc, ← mul_assoc Biᵀ, hBB, one_mul, gamInv_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : (N' : Matrix (Fin n) (Fin n) R).submatrix e e = blockDiagonal' fun a => (levDual K l a : Matrix (Fin (blk3 m a)) (Fin (blk3 m a)) R)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hC1, one_mul]`. Use `_ = C * (Bᵀ * gamS (K : Matrix (Fin m) (Fin m) R) * (N' : Matrix (Fin n) (Fin n) R).submatrix e e) := by`. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use `_ = C * (Bᵀ * gamS (K : Matrix (Fin m) (Fin m) R) * blockDiagonal' fun a => (levDual K l a : Matrix (Fin (blk3 m a)) (Fin (blk3 m a)) R)) := by`. Rewrite using `[h1, key K l]`. Use `_ = blockDiagonal' fun a => (levDual K l a : Matrix (Fin (blk3 m a)) (Fin (blk3 m a)) R) := by`. Rewrite using `[← mul_assoc, hC1, one_mul]`. Rewrite `hN` using `[← levi_sub e (levDual K l)]`.
-
-Use extensionality with `i j`. Take `⟨p, rfl⟩` from `e.surjective i`. Take `⟨q, rfl⟩` from `e.surjective j`. Conclude with `congrFun (congrFun hN p) q`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_leviEmb_levDual_of_gram (R : Type) [Field R] (m n : ℕ) (e : Ix m ≃ Fin n) (K : GL (Fin m) R)
     (l : Levi R (fun i : Fin 3 => Fin (blk3 m i))) (N' : GL (Fin n) R)

@@ -12,13 +12,11 @@ open scoped TensorProduct Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.placesCountable F`. Establish `he : ∀ S, ∫ b in UH σ bs n S, f b ∂ν = ∫ b, (UH σ bs n S).indicator f b ∂ν` using `fun S => (integral_indicator (measurableSet_UH σ hCM bs n S)).symm`. Repeatedly rewrite using `[he]`. Use `tendsto_integral_filter_of_dominated_convergence (fun y => ‖f y‖) ?_ ?_ hf.norm ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun S => hf.aestronglyMeasurable.indicator (measurableSet_UH σ hCM bs n S)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Filter.Eventually.of_forall fun S => Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Distinguish the cases in `h : y ∈ UH σ bs n S`. Simplify using `[Set.indicator_of_mem h]`. Simplify using `[Set.indicator_of_notMem h]`. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : {v : HeightOneSpectrum (𝓞 F) | ¬ hermV σ v (hermFin σ y) ∈ latH σ bs v n}.Finite` using `Filter.eventually_cofinite.1 (GlobalTheory.CompanionTheory.SiegelND.Coef.Lim.ev_latH σ bs y)`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop hfin.toFinset] with S hS`. Establish `hmem : y ∈ UH σ bs n S`. Introduce `v hv`.
-
-Assume the negation of the conclusion as `hcon`. Conclude with `hv (hS (hfin.mem_toFinset.2 hcon))`. Simplify using `[Set.indicator_of_mem hmem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_UH (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (bs : Module.Basis (Fin d) F E) (n : ℕ)
     (ν : Measure (HermR (AF F) σ n)) (f : HermR (AF F) σ n → ℂ) (hf : Integrable f ν) :

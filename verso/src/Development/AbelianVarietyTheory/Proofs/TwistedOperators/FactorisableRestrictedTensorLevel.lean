@@ -37,21 +37,19 @@ variable {ι G H : Type} {Γ Hs : ι → Type} [Group G] [∀ i, Group (Γ i)] [
   {B : (∀ i, Hs i) → H}
 
 /- English proof (translation)
-Use `set Y := (Submodule.span ℂ {z | ∃ y, Restr ξ y ∧ (∀ i, y i ∈ U i) ∧ z = B y}).topologicalClosure with hY`. Use `haveI : CompleteSpace Y := (Submodule.isClosed_topologicalClosure _).completeSpace_coe`. Take `⟨a, ha, u, hu, rfl⟩` from `Y.exists_add_mem_mem_orthogonal x`. Establish `h1 : ∀ z, Restr ξ z → ∀ i, ∀ w ∈ (U i)ᗮ, ⟪a, B (Function.update z i w)⟫_ℂ = 0` using `fun z hz i w hw => by`. Establish `: Y ≤ (ℂ ∙ B (Function.update z i w))ᗮ` using `Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨y, hy, hyU, rfl⟩`. Use `Submodule.mem_orthogonal_singleton_iff_inner_left.2 ?_` and prove the remaining obligations. Rewrite using `[h.inner_update hz hy, Submodule.inner_right_of_mem_orthogonal (hyU i) hw, zero_mul]))`. Use the proof step `(Submodule.isClosed_orthogonal _)`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_left.1 (this ha)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : ∀ z, Restr ξ z → ∀ i, ∀ w ∈ (U i)ᗮ, ⟪u, B (Function.update z i w)⟫_ℂ = 0` using `fun z hz i w hw => by`. Use `hx z hz i w hw` as an intermediate fact. Rewrite `this` using `[inner_add_left, h1 z hz i w hw, zero_add]`. Then use the resulting hypothesis. Establish `h3 : ∀ s : Finset ι, ∀ y, Restr ξ y → (∀ i ∉ s, y i ∈ U i) → ⟪u, B y⟫_ℂ = 0` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `empty`. Introduce `y hy hyU`. Conclude with `Submodule.inner_left_of_mem_orthogonal (K := Y) (Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨y, hy, fun i => hyU i (by simp), rfl⟩)) hu`. Consider the case `insert i s hi ih`. Introduce `y hy hyU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, c, hc, e⟩` from `(U i).exists_add_mem_mem_orthogonal (y i)`. Establish `e1 : B y = B (Function.update y i b) + B (Function.update y i c)`. Use `h.pure_update hy i 1 b c` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul, ← e, Function.update_eq_self]`. Then use the resulting hypothesis. Rewrite using `[e1, inner_add_right, h2 y hy i c hc, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `ih _ (SmallThetaModules.restr_update hy i b) fun j hj => ?_` and prove the remaining obligations. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hji]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hyU j (by simp [hji, hj])`. Establish `h4 : u = 0` using `h.ext fun y hy => by`. Establish `hf : ({i | y i ≠ ξ i} ∪ {i | ξ i ∈ U i}ᶜ).Finite` using `Set.Finite.union hy hξ`. Rewrite using `[inner_zero_right, inner_eq_zero_symm]`. Use `h3 hf.toFinset y hy fun i hi => ?_` and prove the remaining obligations.
-
-Simplify using `only [Set.Finite.mem_toFinset, Set.mem_union, Set.mem_setOf_eq, Set.mem_compl_iff, not_or, not_not] at hi`. Conclude with `hi.1 ▸ hi.2`. Rewrite using `[h4, add_zero]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_closure_span_of_orthogonal [DecidableEq ι] [CompleteSpace H] (h : IsRestrTensor p δ ξ π B)
     (U : ∀ i, Submodule ℂ (Hs i)) [∀ i, (U i).HasOrthogonalProjection] (hξ : ∀ᶠ i in cofinite, ξ i ∈ U i) (x : H)
@@ -98,11 +96,11 @@ theorem mem_closure_span_of_orthogonal [DecidableEq ι] [CompleteSpace H] (h : I
   rwa [h4, add_zero]
 
 /- English proof (translation)
-Establish `hr` using `SmallThetaModules.restr_update hy v`. Establish `h0 : B (Function.update y v 0) = 0` using `h.ext fun z hz => by simp [h.inner_update hy hz]`. Set `T : Hs v →ₗ[ℂ] H` to `{ toFun := fun x => B (Function.update y v x) map_add' := fun a b => by simpa using h.pure_update hy v 1 a b map_smul' := fun c a => by simpa [h0] using h.pure_update hy v c a 0 }`. Establish `hT : ∀ x, ‖T x‖ ≤ √‖∏ᶠ (u) (_ : u ≠ v), ⟪y u, y u⟫_ℂ‖ * ‖x‖` using `fun x => by`. Establish `e` using `h.inner_update hy (hr x) v x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Function.update_self, finprod_congr fun u => finprod_congr fun hu : u ≠ v => by`. Rewrite `e` using `[Function.update_of_ne hu]]`. Establish `e'` using `congrArg norm e`. Rewrite `e'` using `[norm_mul, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Use `le_of_sq_le_sq (le_of_eq ?_) (by positivity)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow, Real.sq_sqrt (norm_nonneg _), mul_comm]`. Simplify `e'` using `[T]`. Conclude with `⟨T.mkContinuous _ hT, fun _ => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_update_clm [DecidableEq ι] (h : IsRestrTensor p δ ξ π B) {y : ∀ i, Hs i} (hy : Restr ξ y) (v : ι) :
     ∃ T : Hs v →L[ℂ] H, ∀ w, T w = B (Function.update y v w) := by
@@ -129,14 +127,14 @@ def fixedSub {G X : Type} [Group G] [NormedAddCommGroup X] [InnerProductSpace �
     (K : Subgroup G) : Submodule ℂ X := ⨅ k ∈ K, LinearMap.ker ((ρ k - 1 : X →L[ℂ] X) : X →ₗ[ℂ] X)
 
 /- English proof (translation)
-Simplify using `[fixedSub, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_fixedSub {G X : Type} [Group G] [NormedAddCommGroup X] [InnerProductSpace ℂ X] {ρ : G →* (X →L[ℂ] X)}
     {K : Subgroup G} {x : X} : x ∈ fixedSub ρ K ↔ ∀ k ∈ K, ρ k x = x := by
   simp [fixedSub, sub_eq_zero]
 
 /- English proof (translation)
-Establish `: (fixedSub ρ K : Set X) = ⋂ k ∈ K, {x | ρ k x = x}`. Use extensionality with `x`. Simplify using `[mem_fixedSub]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun k _ => isClosed_eq (ρ k).continuous continuous_id`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_fixedSub {G X : Type} [Group G] [NormedAddCommGroup X] [InnerProductSpace ℂ X]
     (ρ : G →* (X →L[ℂ] X)) (K : Subgroup G) : IsClosed (fixedSub ρ K : Set X) := by
@@ -146,9 +144,9 @@ theorem isClosed_fixedSub {G X : Type} [Group G] [NormedAddCommGroup X] [InnerPr
   exact isClosed_biInter fun k _ => isClosed_eq (ρ k).continuous continuous_id
 
 /- English proof (translation)
-Rewrite using `[← ContinuousLinearMap.adjoint_inner_left]`. Use `Submodule.inner_right_of_mem_orthogonal (mem_fixedSub.2 fun k hk => ext_inner_right ℂ fun z => ?_) hw` and prove the remaining obligations. Take `⟨z, rfl⟩ : ∃ z', z = ρ k z'` from `⟨ρ k⁻¹ z, by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]⟩`. Rewrite using `[inner_map_map hρ, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.adjoint_inner_left, hT]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hx k hk, hτ]`.
+A detailed English derivation is pending.
 -/
 theorem inner_eq_zero_of_fixed {Γ X H : Type} [Group Γ] [TopologicalSpace Γ] [NormedAddCommGroup X]
     [InnerProductSpace ℂ X] [CompleteSpace X] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -163,17 +161,15 @@ theorem inner_eq_zero_of_fixed {Γ X H : Type} [Group Γ] [TopologicalSpace Γ] 
   conv_rhs => rw [← hx k hk, hτ]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J H _ _ π hπ R ξ B h Kp hξ x hx`. Use `haveI := hπ.complete`. Use `haveI := fun v => (R v).isIrr.complete`. Set `K : ∀ v, Subgroup (GPl σ J v)` to `fun v => match v with`. Consider the case `.inl _ => ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `.inr v => Kp v`. Use `haveI : ∀ v, CompleteSpace (fixedSub (R v).π (K v)) := fun v => (isClosed_fixedSub _ _).completeSpace_coe`. Establish `hK : ∀ y : ∀ v, (R v).H, ∀ w, y (.inl w) ∈ fixedSub (R (.inl w)).π (K (.inl w))` using `fun y w => mem_fixedSub.2 fun k hk => by`. Rewrite using `[Subgroup.mem_bot.1 hk, map_one, ContinuousLinearMap.one_apply]`. Establish `key` using `mem_closure_span_of_orthogonal h (fun v => fixedSub (R v).π (K v)) ?_ x ?_`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `Submodule.topologicalClosure_mono (Submodule.span_mono ?_) key` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, hyU, rfl⟩`. Conclude with `⟨y, hy, fun v => mem_fixedSub.1 (hyU (.inr v)), rfl⟩`. Use `(Set.Finite.image Sum.inr hξ).subset ?_` and prove the remaining obligations. Introduce and unpack `(w | v) hv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (hK ξ w) hv`. Conclude with `⟨v, fun e => hv (mem_fixedSub.2 e), rfl⟩`. Introduce `z hz v w hw`. Take `⟨T, hT⟩` from `exists_update_clm h hz v`. Rewrite using `[← hT]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `inner_eq_zero_of_fixed (R v).isIrr.unitary (τ := fun g => π (embPl σ J v g)) (fun g a b => inner_map_map hπ.unitary _ a b) T (fun g a => ?_) (K := K v) ?_ hw` and prove the remaining obligations. Rewrite using `[hT, hT, h.apply_embPl (SmallThetaModules.restr_update hz v a), Function.update_self, Function.update_idem]`. Break down `v with v | v` into its components or cases. Introduce `k hk`. Rewrite using `[Subgroup.mem_bot.1 hk, map_one, map_one, ContinuousLinearMap.one_apply]`.
-
-Conclude with `hx v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_span_fixed : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (π : GAd σ J →* (H →L[ℂ] H)), IsIrrUnitary π → ∀ (R : ∀ v, IrrU (GPl σ J v)) (ξ : ∀ v, (R v).H) (B : (∀ v, (R v).H) → H), IsFactorisation σ J (fun v => (R v).π) ξ π B → ∀ (Kp : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GLoc σ J v)), (∀ᶠ v in cofinite, ∀ k ∈ Kp v, (R (.inr v)).π k (ξ (.inr v)) = ξ (.inr v)) → ∀ x : H, (∀ v, ∀ k ∈ Kp v, π (emb σ J v k) x = x) → x ∈ (Submodule.span ℂ {z | ∃ y, Restr ξ y ∧ (∀ v, ∀ k ∈ Kp v, (R (.inr v)).π k (y (.inr v)) = y (.inr v)) ∧ z = B y}).topologicalClosure := by
   intro F E _ _ _ _ _ σ n J H _ _ π hπ R ξ B h Kp hξ x hx

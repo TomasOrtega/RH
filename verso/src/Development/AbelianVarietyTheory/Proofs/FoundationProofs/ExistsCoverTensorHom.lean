@@ -11,7 +11,7 @@ namespace GlobalTheory
 namespace FockEmb
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Simplify using `[Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jpq_eq_diagonal (p q : ℕ) :
     Formalism.UG.Jpq p q = Matrix.diagonal (fun a => if a.isLeft then (1 : ℂ) else -1) := by
@@ -21,9 +21,9 @@ theorem Jpq_eq_diagonal (p q : ℕ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Jpq_eq_diagonal, Jpq_eq_diagonal, Jpq_eq_diagonal, Matrix.diagonal_kronecker_diagonal, Matrix.reindex_apply, Matrix.submatrix_diagonal_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Take `⟨l, rfl⟩` from `(lineEquiv p q r s).surjective x`. Simplify using `only [Function.comp, Equiv.symm_apply_apply, lineEquiv_isLeft]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases l with ⟨a | a, c | c⟩ <;> simp [linePos]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reindex_kron_J (p q r s : ℕ) :
     Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s)
@@ -58,14 +58,14 @@ theorem kronGL_val {p q r s : ℕ} (g : GL (Ix p q) ℂ) (h : GL (Ix r s) ℂ) :
         ((g : Mat p q) ⊗ₖ (h : Mat r s)) := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Upq_iff {p q : ℕ} (g : GL (Ix p q) ℂ) :
     g ∈ Formalism.UG.Upq p q ↔ (g : Mat p q)ᴴ * Formalism.UG.Jpq p q * (g : Mat p q) = Formalism.UG.Jpq p q :=
   Iff.rfl
 
 /- English proof (translation)
-Rewrite `*` using `[mem_Upq_iff]`. Rewrite using `[kronGL_val, ← reindex_kron_J]`. Simplify using `only [Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv]`. Rewrite using `[Matrix.conjTranspose_kronecker, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, hg, hh]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem kronGL_mem {p q r s : ℕ} {g : GL (Ix p q) ℂ} {h : GL (Ix r s) ℂ}
     (hg : g ∈ Formalism.UG.Upq p q) (hh : h ∈ Formalism.UG.Upq r s) :
@@ -77,7 +77,7 @@ theorem kronGL_mem {p q r s : ℕ} {g : GL (Ix p q) ℂ} {h : GL (Ix r s) ℂ}
     hg, hh]
 
 /- English proof (translation)
-Rewrite using `[kronGL_val, Matrix.det_reindex_self, Matrix.det_kronecker]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kronGL_det {p q r s : ℕ} (g : GL (Ix p q) ℂ) (h : GL (Ix r s) ℂ) :
     ((kronGL p q r s (g, h) : GL _ ℂ) : Mat (p * r + q * s) (p * s + q * r)).det =
@@ -90,15 +90,13 @@ end FockEmb
 open FockEmb in
 
 /- English proof (translation)
-Introduce `p q r s T0 T1 T2`. Establish `key : ∀ x : T1.G × T2.G, ∃! y : T0.G, T0.cov y = kronGL p q r s (T1.cov x.1, T2.cov x.2) ∧ T0.sq y = T1.sq x.1 ^ (r + s) * T2.sq x.2 ^ (p + q)`. Introduce `x`. Apply `T0.bij _ (kronGL_mem (T1.cov_mem _) (T2.cov_mem _))` to reduce the goal to its premises. Rewrite using `[kronGL_det, ← T1.sq_sq, ← T2.sq_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `choose f hf huniq using key`. Use `⟨MonoidHom.mk' f ?_, fun g h => ?_, fun g h => (hf (g, h)).2⟩` and prove the remaining obligations. Introduce `x y`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation.
 
-Use `symm`. Apply `huniq` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Rewrite using `[map_mul, (hf x).1, (hf y).1, ← map_mul]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, (hf x).2, (hf y).2]`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, map_mul, mul_pow]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Use `show ((T0.cov (f (g, h)) : GL _ ℂ) : Mat (p * r + q * s) (p * s + q * r)) = _`. Rewrite using `[(hf (g, h)).1]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_cover_tensor_hom :
     ∀ (p q r s : ℕ) (T0 : GrpData (p * r + q * s) (p * s + q * r)) (T1 : GrpData p q) (T2 : GrpData r s), ∃ emb : T1.G × T2.G →* T0.G, (∀ g h, ((T0.cov (emb (g, h)) : GL _ ℂ) : Mat (p * r + q * s) (p * s + q * r)) = Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s) (Matrix.kroneckerMap (· * ·) ((T1.cov g : GL _ ℂ) : Mat p q) ((T2.cov h : GL _ ℂ) : Mat r s))) ∧ ∀ g h, T0.sq (emb (g, h)) = T1.sq g ^ (r + s) * T2.sq h ^ (p + q) := by

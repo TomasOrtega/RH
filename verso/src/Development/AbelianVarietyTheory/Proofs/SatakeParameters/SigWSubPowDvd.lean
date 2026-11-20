@@ -16,9 +16,7 @@ namespace GlobalTheory.TwU
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `haveI : (Ideal.span {(p : W)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hirr`. Use `letI : Field (W ⧸ Ideal.span {(p : W)}) := Ideal.Quotient.field _`. Use `haveI : Finite (W ⧸ Ideal.span {(p : W)}) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`. Use `letI := Fintype.ofFinite (W ⧸ Ideal.span {(p : W)})`. Establish `h` using `FiniteField.pow_card (Ideal.Quotient.mk (Ideal.span {(p : W)}) x)`.
-
-Rewrite `h` using `[← Nat.card_eq_fintype_card, hcard, ← map_pow, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `h`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_card_sub_dvd {n : ℕ} {W : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     (hirr : Irreducible (p : W)) (hcard : Nat.card (W ⧸ Ideal.span {(p : W)}) = p ^ n) (x : W) :
@@ -34,9 +32,9 @@ theorem pow_card_sub_dvd {n : ℕ} {W : Type} [CommRing W] [IsDomain W] [IsDiscr
   exact h
 
 /- English proof (translation)
-Establish `h0 : WittVector.constantCoeff (Formalism.MainNotions.FormalGroupSystem.sigW p y - y ^ p) = 0`. Rewrite using `[map_sub, map_pow]`. Use `show (WittVector.frobenius y).coeff 0 - y.coeff 0 ^ p = 0`. Rewrite using `[WittVector.coeff_frobenius_charP, sub_self]`. Establish `hnu : ¬ IsUnit (Formalism.MainNotions.FormalGroupSystem.sigW p y - y ^ p)` using `fun hu => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hu.map (WittVector.constantCoeff (p := p) (R := Formalism.L2.G.Pend.kb p))` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `not_isUnit_zero this`. Establish `hm` using `(IsLocalRing.mem_maximalIdeal _).2 hnu`. Rewrite `hm` using `[(WittVector.irreducible p (k := Formalism.L2.G.Pend.kb p)).maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sigW_sub_pow_dvd (y : Formalism.L2.G.Pend.WW p) : (p : Formalism.L2.G.Pend.WW p) ∣ Formalism.MainNotions.FormalGroupSystem.sigW p y - y ^ p := by
   have h0 : WittVector.constantCoeff (Formalism.MainNotions.FormalGroupSystem.sigW p y - y ^ p) = 0 := by
@@ -55,7 +53,7 @@ abbrev sigRes (G : Formalism.MainNotions.G.GAtP p) (v : Fin G.P.nV) : G.P.W v �
   PI.WittUnramWork.sigW (IsFractionRing.injective (G.P.W v) (G.P.Qq v)) (G.P.σ v) (G.P.setting v).frob
 
 /- English proof (translation)
-The claim follows from `haveI := (G.P.setting v).frac_alt PI.WittUnramWork.sigW_spec _ _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem sigRes_spec (G : Formalism.MainNotions.G.GAtP p) (v : Fin G.P.nV) (x : G.P.W v) :
     algebraMap (G.P.W v) (G.P.Qq v) (sigRes G v x) = G.P.σ v (algebraMap (G.P.W v) (G.P.Qq v) x) :=
@@ -63,9 +61,9 @@ theorem sigRes_spec (G : Formalism.MainNotions.G.GAtP p) (v : Fin G.P.nV) (x : G
   PI.WittUnramWork.sigW_spec _ _ _ x
 
 /- English proof (translation)
-Proceed by induction on `s generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ s ih`. Rewrite using `[pow_succ]`. Use `show (G.P.σ v ^ s) (G.P.σ v (algebraMap (G.P.W v) (G.P.Qq v) x)) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sigRes_spec, ih, ← Function.iterate_succ_apply]`.
+A detailed English derivation is pending.
 -/
 theorem sigRes_pow (G : Formalism.MainNotions.G.GAtP p) (v : Fin G.P.nV) (s : ℕ) (x : G.P.W v) :
     (G.P.σ v ^ s) (algebraMap (G.P.W v) (G.P.Qq v) x) = algebraMap (G.P.W v) (G.P.Qq v) ((sigRes G v)^[s] x) := by
@@ -77,11 +75,11 @@ theorem sigRes_pow (G : Formalism.MainNotions.G.GAtP p) (v : Fin G.P.nV) (s : �
     rw [← sigRes_spec, ih, ← Function.iterate_succ_apply]
 
 /- English proof (translation)
-Establish `hS` using `G.P.setting v`. Establish `hq : ∀ x : G.P.W v, (p : G.P.W v) ∣ x ^ (p ^ G.P.n' v) - x` using `pow_card_sub_dvd hS.p_unif hS.res_card`. Establish `h` using `GlobalTheory.T.ringHom_witt_algClosure_eq_of_congr_mod_prime p (G.P.n' v) (G.P.W v) (by have := hS.two_le; omega) hq (r.comp (sigRes G v)) ((Formalism.MainNotions.FormalGroupSystem.sigW p).comp r) (fun y => by`. Take `⟨z, hz⟩` from `haveI := hS.frac_alt PI.WittUnramWork.sigW_lift (IsFractionRing.injective (G.P.W v) (G.P.Qq v)) (G.P.σ v) hS.frob y`. Take `⟨c, hc⟩` from `sigW_sub_pow_dvd (r y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r z - c, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hz, map_add, map_mul, map_pow, map_natCast]`. Rewrite `hc` using `[sub_eq_iff_eq_add]`. Rewrite using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `ring)`. Conclude with `congrArg (fun f => f x) h`.
+A detailed English derivation is pending.
 -/
 theorem map_sigRes (G : Formalism.MainNotions.G.GAtP p) (v : Fin G.P.nV) (r : G.P.W v →+* Formalism.L2.G.Pend.WW p) (x : G.P.W v) :
     r (sigRes G v x) = Formalism.MainNotions.FormalGroupSystem.sigW p (r x) := by
@@ -101,15 +99,15 @@ theorem map_sigRes (G : Formalism.MainNotions.G.GAtP p) (v : Fin G.P.nV) (r : G.
   exact congrArg (fun f => f x) h
 
 /- English proof (translation)
-Introduce `p _ G hV`. Take `⟨E⟩` from `GlobalTheory.T.nonempty_coefficient_field_embedding_padic_complex p G hV`. Set `φ : ∀ v, G.P.W v →+* ℂ_[p]` to `fun v => (E.iK.comp (G.P.ι v)).comp (algebraMap (G.P.W v) (G.P.Qq v))`. Establish `hφ1 : ∀ v x, ‖φ v x‖ ≤ 1` using `fun v x => by show ‖E.iK (G.P.ι v (algebraMap _ _ x))‖ ≤ 1`. Rewrite using `[(G.P.setting v).ι_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `E.int _`. Establish `hφr : ∀ v x, φ v x ∈ (Formalism.L2.G.Pend.wToC p).range` using `fun v x => by`. Establish `hS` using `G.P.setting v`. Conclude with `GlobalTheory.T.mem_range_witt_algClosure_of_bounded_ringHom p (G.P.n' v) (G.P.W v) (by have := hS.two_le; omega) (pow_card_sub_dvd hS.p_unif hS.res_card) hS.eq_sum_herm_smul_frame_of_inW (φ v) (hφ1 v) x`. Set `eW : Formalism.L2.G.Pend.WW p ≃+* (Formalism.L2.G.Pend.wToC p).range` to `RingEquiv.ofBijective (Formalism.L2.G.Pend.wToC p).rangeRestrict ⟨fun a b h => Formalism.L2.G.Pend.wToC_injective p (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `rd : ∀ v, G.P.W v →+* Formalism.L2.G.Pend.WW p` to `fun v => eW.symm.toRingHom.comp ((φ v).codRestrict (Formalism.L2.G.Pend.wToC p).range (hφr v))`. Establish `hrd : ∀ v x, Formalism.L2.G.Pend.wToC p (rd v x) = φ v x` using `fun v x => by`. Use `congrArg Subtype.val (eW.apply_symm_apply ((φ v).codRestrict (Formalism.L2.G.Pend.wToC p).range (hφr v) x))` as an intermediate fact. Conclude with `this`. Use `⟨⟨E, rd, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Introduce `v s x`. Establish `hit : ∀ y, rd v ((sigRes G v)^[s] y) = (Formalism.MainNotions.FormalGroupSystem.sigW p)^[s] (rd v y)`. Proceed by induction on `s with`. Consider the case `zero => intro y`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ s ih => intro y`. Rewrite using `[Function.iterate_succ_apply, ih, map_sigRes, ← Function.iterate_succ_apply]`. Rewrite using `[sigRes_pow, Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap, ← hit, hrd]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nonempty_cEmbC : ∀ (p : ℕ) [Fact p.Prime] (G : GAtP p), 0 < G.P.nV → Nonempty (CEmbC G) := by
   intro p _ G hV

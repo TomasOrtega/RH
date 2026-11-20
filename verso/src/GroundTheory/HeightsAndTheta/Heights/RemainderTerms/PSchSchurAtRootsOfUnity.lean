@@ -10,7 +10,7 @@ open MvPolynomial Finset
 noncomputable section
 
 /- English proof (translation)
-Establish `h1 : (Iic i).card • 1 ≤ ∑ j ∈ Iic i, nu j` using `Finset.card_nsmul_le_sum _ _ _ fun j hj => le_trans hi (hanti (Finset.mem_Iic.mp hj))`. Establish `h2 : ∑ j ∈ Iic i, nu j ≤ ∑ j, nu j` using `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Rewrite `h1` using `[Fin.card_Iic, smul_eq_mul, mul_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem schurAtRoots_place_lt {r k : ℕ} (nu : Fin r → ℕ) (hanti : Antitone nu)
     (hsum : ∑ i, nu i = k) (i : Fin r) (hi : 1 ≤ nu i) : (i : ℕ) < k := by
@@ -22,35 +22,29 @@ theorem schurAtRoots_place_lt {r k : ℕ} (nu : Fin r → ℕ) (hanti : Antitone
   omega
 
 /- English proof (translation)
-Introduce `N r k nu hk hkN hanti hsum`. Use `set nu' : Fin k → ℕ := fun i => if h : (i : ℕ) < r then nu ⟨i, h⟩ else 0 with hnu'`. Establish `hplace` using `schurAtRoots_place_lt nu hanti hsum`. Establish `hanti' : Antitone nu'`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hnu']`. Distinguish the cases in `hj : (j : ℕ) < r`. Establish `hi : (i : ℕ) < r` using `lt_of_le_of_lt (Fin.le_def.mp hij) hj`. Rewrite using `[dif_pos hi, dif_pos hj]`. Conclude with `hanti (Fin.le_def.mpr (Fin.le_def.mp hij))`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_neg hj]`. Conclude with `Nat.zero_le _`. Establish `hsum' : ∑ i, nu' i = k` using `by set g : ℕ → ℕ := fun i => if h : i < r then nu ⟨i, h⟩ else 0 with hg`. Establish `e1 : ∑ i, nu' i = ∑ i ∈ range k, g i`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : ∑ i, nu i = ∑ i ∈ range r, g i`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hg, dif_pos i.isLt]`. Establish `hgk : ∀ i, k ≤ i → g i = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `i hi`. Simplify using `only [hg]`. Use `split_ifs with h`. Assume the negation of the conclusion as `hne`. Use `hplace ⟨i, h⟩ (Nat.one_le_iff_ne_zero.mpr hne)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish `hgr : ∀ i, r ≤ i → g i = 0`. Introduce `i hi; simp only [hg]; rw [dif_neg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ∑ i ∈ range k, g i = ∑ i ∈ range (r + k), g i` using `Finset.sum_subset (Finset.range_mono (by omega)) fun i _ hni => hgk i (not_lt.mp (fun h => hni (Finset.mem_range.mpr h)))`. Establish `e4 : ∑ i ∈ range r, g i = ∑ i ∈ range (r + k), g i` using `Finset.sum_subset (Finset.range_mono (by omega)) fun i _ hni => hgr i (not_lt.mp (fun h => hni (Finset.mem_range.mpr h)))`. Rewrite using `[e1, e3, ← e4, ← e2, hsum]`. Rewrite using `[h1 (Fin N) r k nu hanti hsum, h2 N k k _ hk hkN, h3 k nu' hk hanti' hsum']`. Establish `hcond : (∀ i : Fin k, (i : ℕ) ≠ 0 → nu' i ≤ 1) ↔ (∀ i : Fin r, (i : ℕ) ≠ 0 → nu i ≤ 1)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H i hi0`. Distinguish the cases in `hz : nu i = 0`. Rewrite using `[hz]`. Conclude with `Nat.zero_le _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hik` using `hplace i (Nat.one_le_iff_ne_zero.mpr hz)`. Use `H ⟨i, hik⟩ hi0` as an intermediate fact. Simplify using `only [hnu', dif_pos i.isLt] at this`. Conclude with `this`. Introduce `H i hi0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hnu']`. Use `split_ifs with h`. Conclude with `H ⟨i, h⟩ hi0`. Conclude with `Nat.zero_le _`. Establish `hcard : (univ.filter fun i : Fin k => (i : ℕ) ≠ 0 ∧ nu' i = 1).card = (univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ nu i = 1).card`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Finset.card_bij' (fun i hi => ⟨i, by` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hnu'] at hi`. Assume the negation of the conclusion as `h`. Rewrite `hi` using `[dif_neg h]`. Use the proof step `omega⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(fun i hi => ⟨i, by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hi`. Conclude with `hplace i (by omega)⟩) ?_ ?_ ?_ ?_`. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hnu'] at hi ⊢`.
-
-Take `⟨h0, h1⟩` from `hi`. Use `split_ifs at h1 with h`. Conclude with `⟨h0, h1⟩`. Introduce `i hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hnu'] at hi ⊢`.
-
-Use `⟨hi.1, ?_⟩` and prove the remaining obligations. Rewrite using `[dif_pos i.isLt]`. Conclude with `hi.2`. Introduce `i hi`. Both sides reduce to the same expression.
-
-Introduce `i hi`. Both sides reduce to the same expression. Simplify using `only [hcond, hcard]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SchSchurAtRootsOfUnity.proof (h1 : SchSchurRowsToK.Statement)
     (h2 : SchSchurEvalMatrix.Statement) (h3 : SchJTMatrixDetAtRoots.Statement) :

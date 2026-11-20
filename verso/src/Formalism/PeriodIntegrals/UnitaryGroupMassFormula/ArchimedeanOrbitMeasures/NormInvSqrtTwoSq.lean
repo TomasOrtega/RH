@@ -10,33 +10,33 @@ open MeasureTheory Matrix
 def sgn {n : ℕ} (ε : Fin n → Bool) (i : Fin n) : ℂ := if ε i then 1 else -1
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self {n : ℕ} (ε : Fin n → Bool) (i : Fin n) : sgn ε i * sgn ε i = 1 := by
   unfold sgn
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_sgn {n : ℕ} (ε : Fin n → Bool) (i : Fin n) : star (sgn ε i) = sgn ε i := by
   unfold sgn
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Complex.conj_I`.
+A detailed English derivation is pending.
 -/
 theorem star_I' : star Complex.I = -Complex.I := Complex.conj_I
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_sgn {n : ℕ} (ε : Fin n → Bool) (i : Fin n) : ‖sgn ε i‖ = 1 := by
   unfold sgn
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_apply, Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, sgn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lie_apply {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (Mᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * M) i j = star (M j i) * sgn ε j + sgn ε i * M i j := by
@@ -47,14 +47,14 @@ def cpx {k m : ℕ} (u : EuclideanSpace ℝ (Fin k × Fin m × Bool)) (a : Fin k
   ⟨u (a, b, true), u (a, b, false)⟩
 
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp [cpx]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpx_add {k m : ℕ} (u v : EuclideanSpace ℝ (Fin k × Fin m × Bool)) (a b) :
     cpx (u + v) a b = cpx u a b + cpx v a b := by
   apply Complex.ext <;> simp [cpx]
 
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp [cpx]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpx_smul {k m : ℕ} (c : ℝ) (u : EuclideanSpace ℝ (Fin k × Fin m × Bool)) (a b) :
     cpx (c • u) a b = (c : ℂ) * cpx u a b := by
@@ -67,15 +67,15 @@ theorem cpx_eq {k m : ℕ} (u : EuclideanSpace ℝ (Fin k × Fin m × Bool)) :
     Matrix.of (cpx u) = Matrix.of ((reimE (r := k) (m := m)).symm u) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp [cpx, reim]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpx_reim {k m : ℕ} (Y : Matrix (Fin k) (Fin m) ℂ) (a b) : cpx (reim Y) a b = Y a b := by
   apply Complex.ext <;> simp [cpx, reim]
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool, Complex.sq_norm, Complex.normSq_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cpx, Real.norm_eq_abs, sq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_cpx_sq {k m : ℕ} (u : EuclideanSpace ℝ (Fin k × Fin m × Bool)) :
     ‖u‖ ^ 2 = ∑ a, ∑ b, ‖cpx u a b‖ ^ 2 := by
@@ -89,13 +89,13 @@ theorem norm_cpx_sq {k m : ℕ} (u : EuclideanSpace ℝ (Fin k × Fin m × Bool)
 def r2 : ℂ := ((Real.sqrt 2)⁻¹ : ℝ)
 
 /- English proof (translation)
-Rewrite using `[r2, ← Complex.ofReal_mul, inv_mul_cancel₀ (Real.sqrt_ne_zero'.mpr two_pos), Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_sqrt_two_mul : r2 * (Real.sqrt 2 : ℂ) = 1 := by
   rw [r2, ← Complex.ofReal_mul, inv_mul_cancel₀ (Real.sqrt_ne_zero'.mpr two_pos), Complex.ofReal_one]
 
 /- English proof (translation)
-Rewrite using `[r2, Complex.norm_real, Real.norm_eq_abs, sq_abs, inv_pow, Real.sq_sqrt (by norm_num)]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem norm_inv_sqrt_two_sq : ‖r2‖ ^ 2 = 1 / 2 := by
   rw [r2, Complex.norm_real, Real.norm_eq_abs, sq_abs, inv_pow, Real.sq_sqrt (by norm_num)]
@@ -122,32 +122,32 @@ def xiL : EuclideanSpace ℝ (Fin k × Fin m × Bool) × EuclideanSpace ℝ η �
     split_ifs <;> (try simp [cpx_smul, Complex.real_smul, Complex.conj_ofReal]) <;> ring
 
 /- English proof (translation)
-Simplify using `[xiF, (eS a).2, (eS b).2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xi_SS (z) (a b : Fin k) : xiF ε S eS eU H z (eS a) (eS b) = 0 := by
   simp [xiF, (eS a).2, (eS b).2]
 
 /- English proof (translation)
-Simplify using `[xiF, (eS a).2, (eU b).2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xi_SU (z) (a : Fin k) (b : Fin m) : xiF ε S eS eU H z (eS a) (eU b) = r2 * cpx z.1 a b := by
   simp [xiF, (eS a).2, (eU b).2]
 
 /- English proof (translation)
-Simplify using `[xiF, (eU a).2, (eS b).2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xi_US (z) (a : Fin m) (b : Fin k) :
     xiF ε S eS eU H z (eU a) (eS b) = -(sgn ε (eU a) * sgn ε (eS b)) * star (r2 * cpx z.1 b a) := by
   simp [xiF, (eU a).2, (eS b).2]
 
 /- English proof (translation)
-Simplify using `[xiF, (eU a).2, (eU b).2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xi_UU (z) (a b : Fin m) : xiF ε S eS eU H z (eU a) (eU b) = sgn ε (eU a) * Complex.I * H z.2 a b := by
   simp [xiF, (eU a).2, (eU b).2]
 
 /- English proof (translation)
-Establish `h : ∑ i, f i = ∑ x : ↥S, f ↑x + ∑ x : {i // i ∉ S}, f ↑x`. Use `(Fintype.sum_subtype_add_sum_subtype (fun i => i ∈ S) f).symm` and compare the differences between its conclusion and the goal. Conclude with `h.trans (congrArg₂ (· + ·) (eS.sum_comp (fun x => f x)).symm (eU.sum_comp (fun x => f x)).symm)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_split {M : Type} [AddCommMonoid M] (f : Fin n → M) : ∑ i, f i = ∑ a, f (eS a) + ∑ a, f (eU a) := by
   have h : ∑ i, f i = ∑ x : ↥S, f ↑x + ∑ x : {i // i ∉ S}, f ↑x := by
@@ -155,7 +155,7 @@ theorem sum_split {M : Type} [AddCommMonoid M] (f : Fin n → M) : ∑ i, f i = 
   exact h.trans (congrArg₂ (· + ·) (eS.sum_comp (fun x => f x)).symm (eU.sum_comp (fun x => f x)).symm)
 
 /- English proof (translation)
-Simplify using `only [sum_split S eS eU, xi_SS, xi_SU, xi_US, xi_UU, norm_zero, norm_mul, norm_neg, norm_star, norm_sgn, Complex.norm_I, mul_pow, norm_inv_sqrt_two_sq, one_mul, mul_one]`. Rewrite using `[norm_cpx_sq z.1, ← hn z.2]`. Establish `hc : ∑ x : Fin m, ∑ y : Fin k, ‖cpx z.1 y x‖ ^ 2 = ∑ y : Fin k, ∑ x : Fin m, ‖cpx z.1 y x‖ ^ 2` using `Finset.sum_comm`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero, zero_add, Finset.sum_add_distrib, ← Finset.mul_sum]`. Rewrite using `[hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -172,11 +172,11 @@ theorem xi_norm (hn : ∀ t, ∑ i, ∑ j, ‖H t i j‖ ^ 2 = ‖t‖ ^ 2) (z) 
   ring
 
 /- English proof (translation)
-Use `⟨?_, fun i hi j hj => by simp [xiF, hi, hj]⟩` and prove the remaining obligations. Establish `hHe : ∀ a b, star (H z.2 b a) = H z.2 a b` using `fun a b => by`. Establish `h` using `congrFun (congrFun (hH z.2) a) b`. Rewrite `h` using `[Matrix.conjTranspose_apply]`. Then use the resulting hypothesis. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components.
 
-Rewrite using `[lie_apply, Matrix.zero_apply]`. Apply the tactic sequence `by_cases hi : i ∈ S <;> by_cases hj : j ∈ S`. Simplify using `[xiF, hi, hj]`. Simplify using `only [xiF, dif_pos hi, dif_neg hj, star_mul', star_neg, star_star, star_sgn]`. Take the linear combination `(-(sgn ε i) * (r2 * cpx z.1 (eS.symm ⟨i, hi⟩) (eU.symm ⟨j, hj⟩))) * sgn_mul_self ε j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [xiF, dif_pos hj, dif_neg hi, star_mul']`. Take the linear combination `(-(sgn ε j) * (star r2 * star (cpx z.1 (eS.symm ⟨j, hj⟩) (eU.symm ⟨i, hi⟩)))) * sgn_mul_self ε i`. Simplify using `only [xiF, dif_neg hi, dif_neg hj, star_mul', star_sgn, star_I', hHe]`. Take the linear combination `(Complex.I * (H z.2 (eU.symm ⟨i, hi⟩) (eU.symm ⟨j, hj⟩))) * sgn_mul_self ε i - (Complex.I * (H z.2 (eU.symm ⟨i, hi⟩) (eU.symm ⟨j, hj⟩))) * sgn_mul_self ε j`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem xi_mem (hH : ∀ t, (H t)ᴴ = H t) (z) :
     (xiF ε S eS eU H z)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * xiF ε S eS eU H z = 0 ∧
@@ -197,13 +197,13 @@ theorem xi_mem (hH : ∀ t, (H t)ᴴ = H t) (z) :
     linear_combination (Complex.I * (H z.2 (eU.symm ⟨i, hi⟩) (eU.symm ⟨j, hj⟩))) * sgn_mul_self ε i - (Complex.I * (H z.2 (eU.symm ⟨i, hi⟩) (eU.symm ⟨j, hj⟩))) * sgn_mul_self ε j
 
 /- English proof (translation)
-Establish `hξ : ∀ i j, star (ξ j i) * sgn ε j + sgn ε i * ξ i j = 0` using `fun i j => by`. Establish `h` using `congrFun (congrFun h1 i) j`. Rewrite `h` using `[lie_apply, Matrix.zero_apply]`. Then use the resulting hypothesis. Set `u : EuclideanSpace ℝ (Fin k × Fin m × Bool)` to `reim (Matrix.of fun a b => (Real.sqrt 2 : ℂ) * ξ (eS a) (eU b))`. Set `M : Matrix (Fin m) (Fin m) ℂ` to `Matrix.of fun a b => -Complex.I * sgn ε (eU a) * ξ (eU a) (eU b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hM : Mᴴ = M`. Use extensionality with `a b`. Simplify using `only [M, Matrix.conjTranspose_apply, Matrix.of_apply, star_mul', star_neg, star_I', star_sgn]`. Take the linear combination `Complex.I * hξ (eU a) (eU b)`. Take `⟨t, ht⟩` from `hs M hM`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `e2 : ∀ w : ℂ, r2 * ((Real.sqrt 2 : ℂ) * w) = w` using `fun w => by rw [← mul_assoc, inv_sqrt_two_mul, one_mul]`. Use `⟨(u, t), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `by_cases hi : i ∈ S <;> by_cases hj : j ∈ S`. Simplify using `[xiF, hi, hj, h2 i hi j hj]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [xiF, dif_pos hi, dif_neg hj, u, cpx_reim, Matrix.of_apply, Equiv.apply_symm_apply, e2]`. Simplify using `only [xiF, dif_neg hi, dif_pos hj, u, cpx_reim, Matrix.of_apply, Equiv.apply_symm_apply, e2]`. Take the linear combination `(-(sgn ε i)) * hξ i j + ξ i j * sgn_mul_self ε i`. Simplify using `only [xiF, dif_neg hi, dif_neg hj, ht, M, Matrix.of_apply, Equiv.apply_symm_apply]`. Take the linear combination `(-(sgn ε i) ^ 2 * ξ i j) * Complex.I_sq + ξ i j * sgn_mul_self ε i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem xi_onto (hs : ∀ M : Matrix (Fin m) (Fin m) ℂ, Mᴴ = M → ∃ t, H t = M) (ξ : Matrix (Fin n) (Fin n) ℂ)
     (h1 : ξᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * ξ = 0) (h2 : ∀ i ∈ S, ∀ j ∈ S, ξ i j = 0) :
@@ -231,9 +231,9 @@ theorem xi_onto (hs : ∀ M : Matrix (Fin m) (Fin m) ℂ, Mᴴ = M → ∃ t, H 
     linear_combination (-(sgn ε i) ^ 2 * ξ i j) * Complex.I_sq + ξ i j * sgn_mul_self ε i
 
 /- English proof (translation)
-Establish `hxi : ∀ z, ∃ x, L x = xiL ε S eS eU H z` using `fun z => hLs _ (xi_mem ε S eS eU H hH z).1 (xi_mem ε S eS eU H hH z).2`. Set `Λ` to `liftL L (inj_of_frob L hnL) (xiL ε S eS eU H) hxi`. Establish `hΛ : ∀ z, L (Λ z) = xiF ε S eS eU H z` using `fun z => liftL_spec L (inj_of_frob L hnL) _ hxi z`. Use `⟨Λ, mp_of_isom_prod Λ (fun a b => ?_) ?_, hΛ⟩` and prove the remaining obligations. Rewrite using `[← hnL, hΛ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `xi_norm ε S eS eU H hnH (a, b)`. Introduce `x`. Take `⟨z, hz⟩` from `xi_onto ε S eS eU H hsH (L x) (hL x).1 (hL x).2`. Conclude with `⟨z, inj_of_frob L hnL ((hΛ z).trans hz)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dom_exists {ι : Type} [Fintype ι] (L : EuclideanSpace ℝ ι →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ)
     (hL : ∀ x, (L x)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * L x = 0 ∧ ∀ i ∈ S, ∀ j ∈ S, L x i j = 0)

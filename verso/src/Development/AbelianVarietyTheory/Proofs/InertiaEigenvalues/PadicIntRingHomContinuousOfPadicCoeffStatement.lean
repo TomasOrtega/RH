@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FactorMemCocyc
 open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC ReciprocityTheory.ChartRestriction.T2 GlobalTheory.LocDualInt
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.padicInt_ringHom_continuous_of_padicCoeff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FPadicIntRingHomContinuousOfPadicCoeff.lean&line=11#L11)
 -/

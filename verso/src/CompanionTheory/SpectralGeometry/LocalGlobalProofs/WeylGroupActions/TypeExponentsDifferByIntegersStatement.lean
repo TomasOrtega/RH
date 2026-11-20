@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Jets.WigMap
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.CutBP2 Formalism.FourierDecayAlt.P.CutBPEq Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.GapInt.type_param_diff_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FWeylGroupActions%2FTypeExponentsDifferByIntegers.lean&line=14#L14)
 -/

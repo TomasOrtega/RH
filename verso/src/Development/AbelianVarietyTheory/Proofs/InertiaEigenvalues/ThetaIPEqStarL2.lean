@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.RawLift.GoodModulus
 
 /- English proof (translation)
-Unfold `thetaIP GlobalTheory.AdelicScalar.l2 Formalism.IndefR.Lift.pet`. Use `show _ = (starRingEnd ℂ) _`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem thetaInner_eq_star_l2 {D : D7} {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO S T')) (x y : WO S T' → ℂ) :
     thetaIP μ 𝓕 x y = star (GlobalTheory.AdelicScalar.l2 μ 𝓕 x y) := by
@@ -34,13 +34,13 @@ theorem thetaInner_eq_star_l2 {D : D7} {S T' : HSp D} (μ : Measure (WO S T')) (
   simp [mul_comm]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ v f hf hoff k hk`. Take `⟨a, rfl⟩` from `GlobalTheory.T.exists_local_preimage_of_supportedAtPlace D (Wc D i) v f hf k hk`. Establish `hW` using `hL.thP.ωP i t`. Establish `hvac` using `GlobalTheory.T.pairFixedVector_latticeVacuum_offLevels D G Pl0 T A Ks R F hL i t v f hf hoff`. Establish `hunr` using `GlobalTheory.T.weilDatumCharacters_unramified_offLevels D G Pl0 T A Ks R F hL i t v f hf hoff`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, hφ, hc⟩` from `GlobalTheory.VacCoef.vac_coef D R.ψ (Vc D i) (Wc D i) _ _ (R.ωP i t) hW μ 𝓕 hμ v hunr`. Establish `hmod` using `GlobalTheory.T.sphericalKernel_normSq_mul_latticeIndex_eq_one D (Wc D i) (Vc D i).rank _ v φ hφ (fun w h => (hunr w h).1) a`. Establish `h1` using `hc a (R.vP i t) (R.vP i t) hvac hvac`. Establish `hne` using `(vecNe D G Pl0 T A Ks R F hL hF i t μ 𝓕 hμ).1`. Establish `hne' : GlobalTheory.AdelicScalar.l2 μ 𝓕 (R.vP i t) (R.vP i t) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[thetaInner_eq_star_l2, h, star_zero]`. Establish `e : coef R i t μ 𝓕 (GlobalTheory.FinZeta.embV (Wc D i) v a) = star (φ a)`. Unfold `coef`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[thetaInner_eq_star_l2, thetaInner_eq_star_l2, h1, star_mul', mul_div_assoc, div_self (star_ne_zero.2 hne'), mul_one]`. Rewrite using `[e, norm_star]`. Conclude with `hmod`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodMod : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i t, GoodMod R i t := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ v f hf hoff k hk

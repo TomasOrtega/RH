@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-The claim follows from `CechOne.h1Zero_of_exactAt_one f hM hc hA ((cechComplex_exactAt_succ_iff (secCube f M D) 0).2 h)`.
+A detailed English derivation is pending.
 -/
 theorem firstCohomologyVanishes_of_exact_secCube (R : Type) [CommRing R] (Y : Scheme.{0})
     (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y) (κ : Type) [LinearOrder κ] [Fintype κ]

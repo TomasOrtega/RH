@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
     derOf h hfst hc b = (h b).snd := rfl
 
 /- English proof (translation)
-Use extensionality with `b`. Rewrite using `[hfst, hfst']`. Use `congrArg (fun D : Derivation R₀ B K => D b) e` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma derOf_injective (h h' : B →+* DualNumber K) (hfst : ∀ b, (h b).fst = algebraMap B K b)
     (hc : ∀ a : R₀, (h (algebraMap R₀ B a)).snd = 0)
@@ -45,7 +45,7 @@ lemma derOf_injective (h h' : B →+* DualNumber K) (hfst : ∀ b, (h b).fst = a
     simpa using this
 
 /- English proof (translation)
-Establish `: D.liftKaehlerDifferential = D'.liftKaehlerDifferential` using `e.ext h`. Rewrite using `[← Derivation.liftKaehlerDifferential_comp D, ← Derivation.liftKaehlerDifferential_comp D', this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma derivation_eq_of_basis {ι : Type} (e : Module.Basis ι B Ω[B⁄R₀]) (D D' : Derivation R₀ B K)
     (h : ∀ j, D.liftKaehlerDifferential (e j) = D'.liftKaehlerDifferential (e j)) : D = D' := by
@@ -53,9 +53,9 @@ lemma derivation_eq_of_basis {ι : Type} (e : Module.Basis ι B Ω[B⁄R₀]) (D
   rw [← Derivation.liftKaehlerDifferential_comp D, ← Derivation.liftKaehlerDifferential_comp D', this]
 
 /- English proof (translation)
-Set `φ : Ω[B⁄R₀] →ₗ[B] K` to `{ toFun := fun ω => ∑ i, c i * (Ds i).liftKaehlerDifferential ω map_add' := fun x y => by simp [mul_add, Finset.sum_add_distrib] map_smul' := fun b x => by`. Simplify using `only [map_smul, RingHom.id_apply, smul_eq_mul, Algebra.smul_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => by ring }` and prove the remaining obligations. Establish `: D.liftKaehlerDifferential = φ`. Apply `Derivation.liftKaehlerDifferential_unique` to reduce the goal to its premises.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Simplify using `[φ, Derivation.liftKaehlerDifferential_comp_D, h]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma liftKaehler_eq_sum {ι : Type} [Fintype ι] (D : Derivation R₀ B K) (Ds : ι → Derivation R₀ B K)
     (c : ι → K) (h : ∀ x, D x = ∑ i, c i * Ds i x) (ω : Ω[B⁄R₀]) :
@@ -83,27 +83,25 @@ namespace FirstOrderPoints
 open TrivSqZeroExt
 
 /- English proof (translation)
-Introduce `R₀ B K _ _ _ _ n hsm ι _ hcard R hR hinj g hgfst hg`. Use `haveI : Algebra.IsStandardSmooth R₀ B := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth n`. Set `ρ : B →+* K` to `(TrivSqZeroExt.fstHom K K (ι → K)).toRingHom.comp R`. Use `letI : Algebra B K := ρ.toAlgebra`. Use `letI : Algebra R₀ K := (ρ.comp (algebraMap R₀ B)).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower R₀ B K := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Nontrivial B := ρ.domain_nontrivial`. Establish `hfin : Module.finrank B Ω[B⁄R₀] = n`. Use `Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (R := R₀) (S := B) n` as an intermediate fact. Rewrite `this` using `[← Module.finrank_eq_rank]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Set `e` to `Module.finBasisOfFinrankEq B Ω[B⁄R₀] hfin`. Set `hM : (ι → K) → B →+* DualNumber K` to `fun M => (TrivSqZeroExt.map (Fintype.linearCombination K M)).toRingHom.comp R`. Establish `hMfst : ∀ M b, (hM M b).fst = algebraMap B K b` using `fun M b => by`. Simplify using `[hM, ρ, RingHom.algebraMap_toAlgebra]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hR0 : ∀ a : R₀, (R (algebraMap R₀ B a)).snd = 0` using `fun a => by`. Use `congrArg TrivSqZeroExt.snd (hR a)` as an intermediate fact. Simplify using `using this`. Establish `hMc : ∀ M (a : R₀), (hM M (algebraMap R₀ B a)).snd = 0` using `fun M a => by`. Simplify using `[hM, hR0 a]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `D : (ι → K) → Derivation R₀ B K` to `fun M => derOf (hM M) (hMfst M) (hMc M)`. Establish `hD : ∀ M x, D M x = ∑ i, M i * D (Pi.single i 1) x`. Introduce `M x`. Simplify using `[D, hM, Fintype.linearCombination_apply, Pi.single_apply, mul_comm]`. Set `w : ι → (Fin n → K)` to `fun i j => (D (Pi.single i 1)).liftKaehlerDifferential (e j)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `L` to `Fintype.linearCombination K w`. Establish `hL : ∀ M, L M = fun j => (D M).liftKaehlerDifferential (e j)`. Introduce `M`. Use function extensionality and compare the values at `j`. Rewrite using `[liftKaehler_eq_sum (D M) (fun i => D (Pi.single i 1)) M (hD M)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[L, w, Fintype.linearCombination_apply, Finset.sum_apply]`. Establish `Linj : Function.Injective L`. Introduce `M M' hMM`. Apply `hinj` to reduce the goal to its premises. Apply `derOf_injective (hM M) (hM M') (hMfst M) (hMc M) (hMfst M') (hMc M')` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `derivation_eq_of_basis e` to reduce the goal to its premises. Introduce `j`. Rewrite `hMM` using `[hL, hL]`. Conclude with `congrFun hMM j`. Establish `Lsurj : Function.Surjective L` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [hcard])).mp Linj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hgfst' : ∀ b, (g b).fst = algebraMap B K b` using `fun b => hgfst b`. Establish `hgc : ∀ a : R₀, (g (algebraMap R₀ B a)).snd = 0` using `fun a => by`. Use `congrArg TrivSqZeroExt.snd (hg a)` as an intermediate fact. Simplify using `using this`. Take `⟨M, hMeq⟩` from `Lsurj (fun j => (derOf g hgfst' hgc).liftKaehlerDifferential (e j))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨M, ?_⟩` and prove the remaining obligations. Use `derOf_injective g (hM M) hgfst' hgc (hMfst M) (hMc M) ?_` and prove the remaining obligations. Apply `derivation_eq_of_basis e` to reduce the goal to its premises. Introduce `j`. Rewrite `hMeq` using `[hL]`.
-
-Conclude with `(congrFun hMeq j).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_linearCombination_eq :
     ∀ (R₀ B K : Type) [CommRing R₀] [CommRing B] [Algebra R₀ B] [Field K] (n : ℕ),

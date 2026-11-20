@@ -11,11 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RealMult
 
 /- English proof (translation)
-Introduce `N M s V hs hn hc W hW L _ h hh`. Establish `hA` using `GlobalTheory.T.flat_affine_open_units N M s hs W hW`. Conclude with `GlobalTheory.T.tensor_rational_injectivity N {W' : M.Opens // IsAffineOpen W' ∧ W' ≤ W ⊓ V} Γ(M, W) (fun i => Γ(M, i.1)) (fun i => (M.presheaf.map (homOfLE (i.2.2.trans inf_le_left)).op).hom) hA.1 (fun i => (GlobalTheory.T.flat_affine_open_units N M s hs i.1 i.2.1).1) hA.2 (fun h …`. Take `⟨h1, h2⟩` from `GlobalTheory.T.normal_fibres_char_unit N M s V hn hc ℚ (by exact_mod_cast hN0) W hW`. Conclude with `GlobalTheory.T.rational_tensor_vanishing_local M V W hW ℚ h1 h2 h' (fun W' hW' hle => hh' ⟨W', hW', hle⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun p hp hpN h' hh' => by haveI := Fact.mk hp`. Take `⟨h1, h2⟩` from `GlobalTheory.T.normal_fibres_char_unit N M s V hn hc (ZMod p) (by`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `hpN) W hW`. Conclude with `GlobalTheory.T.rational_tensor_vanishing_local M V W hW (ZMod p) h1 h2 h' (fun W' hW' hle => hh' ⟨W', hW', hle⟩))`.
-
-Use `L h (fun i => hh i.1 i.2.1 i.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem rTensor_eq_zero_of_restrict_affine_inf : ∀ (N : ℕ) (M : Scheme.{0}) (s : M ⟶ Sp (Localization.Away (N : ℤ))) (V : M.Opens), Flat s →
   (∀ (K : Type) [Field K] (t : Sp K ⟶ Sp (Localization.Away (N : ℤ))), Geo.Tor.IsNormalScheme (pullback s t)) →

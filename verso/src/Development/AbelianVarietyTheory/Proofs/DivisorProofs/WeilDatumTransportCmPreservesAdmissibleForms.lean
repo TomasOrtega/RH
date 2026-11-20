@@ -29,7 +29,7 @@ namespace GlobalTheory.WeilAdmCM
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.standardTraceAdelicAddChar_finite_rational_eq_exp F ψ hψ x`.
+A detailed English derivation is pending.
 -/
 theorem std_fin (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (x : F) :
     ψ (pairA F 0 (algebraMap F (Af F) x)) =
@@ -37,7 +37,7 @@ theorem std_fin (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (x : F) :
   GlobalTheory.T.standardTraceAdelicAddChar_finite_rational_eq_exp F ψ hψ x
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.standardAddChar_archimedean_eq_exp_nondegenerate F ψ hψ`.
+A detailed English derivation is pending.
 -/
 theorem std_beta (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) :
     ∃ β : mixedEmbedding.mixedSpace F →ₗ[ℝ] ℝ,
@@ -46,7 +46,7 @@ theorem std_beta (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) :
   GlobalTheory.T.standardAddChar_archimedean_eq_exp_nondegenerate F ψ hψ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.WeilAdm.fixed_schroedinger_invariant_compactSupport_bounded_annihilator ψ (fun O hO => GlobalTheory.ScalarAnnih.exists_compact_annihilator_finiteAdeles_traceChar F ψ hψ.1 (std_fin ψ hψ) O hO) κ M hM`.
+A detailed English derivation is pending.
 -/
 theorem fixed_invariant_compactSupport (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (κ : Type) [Fintype κ]
     (M : AddSubgroup ((κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)))
@@ -59,25 +59,23 @@ theorem fixed_invariant_compactSupport (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ
     (fun O hO => GlobalTheory.ScalarAnnih.exists_compact_annihilator_finiteAdeles_traceChar F ψ hψ.1 (std_fin ψ hψ) O hO) κ M hM
 
 /- English proof (translation)
-Take `⟨β, hβ1, hnd⟩` from `std_beta ps hψ`. Take `⟨n, Q, P, hQP⟩` from `GlobalTheory.T.exists_linear_model_archimedean_schroedinger_standard F ps β hβ1 hnd κ`. Take `⟨c, hc⟩` from `GlobalTheory.T.lintegral_sq_comp_continuousLinearEquiv_mixedSpace F κ n Q`. Set `CQ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) Q`. Set `CQi` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (F := ℂ) Q.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hCQ : ∀ f, ⇑(CQ f) = ⇑f ∘ ⇑Q` using `fun f => SchwartzMap.compCLMOfContinuousLinearEquiv_apply ℂ Q f`. Establish `hCQi : ∀ g, ⇑(CQi g) = ⇑g ∘ ⇑Q.symm` using `fun g => SchwartzMap.compCLMOfContinuousLinearEquiv_apply ℂ Q.symm g`. Establish `hQQ : ∀ f, CQi (CQ f) = f` using `fun f => by`. Use extensionality with `z`. Rewrite using `[hCQi, hCQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hQQ' : ∀ g, CQ (CQi g) = g` using `fun g => by`. Use extensionality with `z`. Rewrite using `[hCQ, hCQi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `A' : GlobalTheory.RealWeil.Sch (Fin n) →ₗ[ℂ] GlobalTheory.RealWeil.Sch (Fin n)` to `CQ.toLinearMap ∘ₗ A ∘ₗ CQi.toLinearMap`. Establish `hA'apply : ∀ g, A' g = CQ (A (CQi g))` using `fun g => rfl`. Set `L' : (Fin n ⊕ Fin n → ℝ) ≃ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)` to `P.trans (L.trans P.symm)`. Establish `hbound : ∀ g, ∫⁻ x, ‖A' g x‖ₑ ^ 2 ≤ C * ∫⁻ x, ‖g x‖ₑ ^ 2`. Introduce `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∫⁻ x, ‖A' g x‖ₑ ^ 2 = c * ∫⁻ z, ‖A (CQi g) z‖ₑ ^ 2`. Rewrite using `[← hc]`. Simplify using `only [hA'apply, hCQ, Function.comp_apply]`. Establish `e2 : ∫⁻ x, ‖g x‖ₑ ^ 2 = c * ∫⁻ z, ‖CQi g z‖ₑ ^ 2`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hCQi, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply]`. Rewrite using `[e1, e2, ← mul_assoc, mul_comm C c, mul_assoc]`. Conclude with `mul_le_mul' le_rfl (hA _)`. Establish `hint : ∀ w (g g' : GlobalTheory.RealWeil.Sch (Fin n)), ⇑g' = GlobalTheory.RealWeil.rhoFun w ⇑g → ⇑(A' g') = GlobalTheory.RealWeil.rhoFun (L' w) ⇑(A' g)`. Introduce `w g g' hg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ⇑(CQi g') = GlobalTheory.WeilAdm.schrInf F ps (P w) ⇑(CQi g)`. Use `congrArg (fun u => u ∘ ⇑Q.symm) (hQP w ⇑(CQi g))` as an intermediate fact. Simplify using `only [Function.comp_assoc, ContinuousLinearEquiv.self_comp_symm, Function.comp_id] at this`. Rewrite using `[this, hCQi, hg, ← hCQ, hQQ']`. Establish `h2` using `hI (P w) (CQi g) (CQi g') h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL' : P (L' w) = L (P w)` using `P.apply_symm_apply _`. Establish `h3 : ⇑(A (CQi g')) = GlobalTheory.WeilAdm.schrInf F ps (P (L' w)) ⇑(A (CQi g))`. Rewrite using `[h2]`. Conclude with `congrArg (fun v => GlobalTheory.WeilAdm.schrInf F ps v ⇑(A (CQi g))) hL'.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous A'` using `GlobalTheory.T.continuous_of_lie_intertwine_l2 (Fin n) L' A' C hC hbound (GlobalTheory.T.derived_action_intertwines_of_group (Fin n) L'.toLinearMap A' C hC hbound hint)`. Establish `hAeq : ⇑A = fun f => CQi (A' (CQ f))`. Use function extensionality and compare the values at `f`. Rewrite using `[hA'apply, hQQ, hQQ]`. Rewrite using `[hAeq]`.
-
-Conclude with `CQi.continuous.comp (hcont.comp CQ.continuous)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realcont (ps : AddChar (AF F) ℂ) (hψ : IsStd ps) (κ : Type) [Fintype κ]
     (L : ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) ≃ₗ[ℝ]
@@ -139,21 +137,21 @@ open GlobalTheory.WeilAdm in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l hl g hg`. Take `⟨M, hMo, hM⟩` from `GlobalTheory.WeilAdm.pureA_fixed_fin F ψ hψ.1 κ g hg`. Take `⟨M', hM'o, hM'⟩` from `GlobalTheory.WeilAdm.fintrans F κ B M hMo`. Take `⟨U, K, hUo, hUc, hK, hfix⟩` from `fixed_invariant_compactSupport ψ hψ κ M' hM'o`. Take `⟨R, hRsb, hdec⟩` from `GlobalTheory.WeilAdm.eq_sum_pureA_coset_indicator F κ U K hUo hUc hK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `GlobalTheory.WeilAdm.infLin_main F κ B`. Take `⟨μ, hμ, C, c, hC, hc0, hcT, hpure, hslice⟩` from `GlobalTheory.WeilAdm.HaarSplit.haar_pure_slice_bounds F κ g hg U hUo`. Establish `hpA : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, GlobalTheory.WeilM.pureA F f g ∈ GlobalTheory.WeilM.schA F κ` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `hfixed : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, ∀ m ∈ M', GlobalTheory.WeilM.schr ψ (finE2 F m) (O (GlobalTheory.WeilM.pureA F f g)) = O (GlobalTheory.WeilM.pureA F f g)`. Introduce `f m hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m0, hm0, hB⟩` from `hM' m hm`. Rewrite using `[← hB, ← himpl _ _ (hpA f), hM m0 hm0]`. Establish `hs : ∀ (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (r : κ → FiniteAdeleRing (𝓞 F) F), ∃ s : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, ∀ z, s z = slice F (O (GlobalTheory.WeilM.pureA F f g)) r z` using `fun f r => exists_schwartz_slice _ (hpres _ (hpA f)) r`. Use `choose sl hsl using hs`. Set `A : (κ → FiniteAdeleRing (𝓞 F) F) → (SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →ₗ[ℂ] SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)` to `fun r => { toFun := fun f => sl f r map_add' := fun f f' => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Rewrite using `[SchwartzMap.add_apply, hsl, hsl, hsl, show ⇑(f + f') = ⇑f + ⇑f' from funext fun _ => rfl, pureA_add, map_add]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun a f => by`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[SchwartzMap.smul_apply, hsl, hsl, show ⇑(a • f) = a • ⇑f from funext fun _ => rfl, pureA_smul, map_smul]`. Use `rfl }`. Establish `hA : ∀ r f, ⇑(A r f) = slice F (O (GlobalTheory.WeilM.pureA F f g)) r` using `fun r f => funext (hsl f r)`. Establish `hcont : ∀ r, Continuous (A r)`. Introduce `r`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `realcont ψ hψ κ L (A r) (C / c) (ENNReal.div_ne_top hC hc0) (fun f => ?_) (fun v f f' hf => ?_)` and prove the remaining obligations. Establish `h1` using `hslice _ (hpres _ (hpA f)) (hfix _ (hfixed f)).1 r`. Rewrite `h1` using `[hunit μ hμ _ (hpA f)]`. Establish `h2` using `h1.trans (hpure f)`. Rewrite using `[hA, ← ENNReal.mul_div_right_comm, ENNReal.le_div_iff_mul_le (Or.inl hc0) (Or.inl hcT), mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Rewrite using `[hA, hA, hf, pureA_schrInf, himpl _ _ (hpA f), hL, slice_schr]`. Establish `hT : ∀ r ∈ R, ∃ T : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] ℂ, ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, l (GlobalTheory.WeilM.pureA F f (Set.indicator {y | y - r ∈ U} fun _ => (1 : ℂ))) = T f` using `fun r hr => hl _ (hRsb r hr)`. Use `choose T hT using hT`. Use `⟨∑ r ∈ R.attach, (T r.1 r.2).comp ⟨A r.1, hcont r.1⟩, fun f => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦ` using `hdec (O (GlobalTheory.WeilM.pureA F f g)) (hfix _ (hfixed f)).1 (hfix _ (hfixed f)).2`. Rewrite using `[LinearMap.comp_apply, hΦ, map_sum, ContinuousLinearMap.sum_apply, ← Finset.sum_attach R]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← hA, hT r.1 r.2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem weilAdmissible_of_heisenberg_unitary (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (κ : Type) [Fintype κ]
     (B : ((κ → AF F) × (κ → AF F)) ≃ₗ[AF F] ((κ → AF F) × (κ → AF F)))
@@ -221,9 +219,9 @@ end GlobalTheory.WeilAdmCM
 namespace GlobalTheory.WeilAdmCM
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ0 hξσ χS χT hcS hcT hrS hrT ω hω JA JB ξ hJA hJB κ _ co hco om htr p l hl`. Establish `hP : (∀ p, ∀ φ ∈ schA F κ, om p φ ∈ schA F κ) ∧ ∀ p w, ∀ φ ∈ schA F κ, om p (co.rho B.ψ w φ) = co.rho B.ψ (actAB (cA σ) p w) (om p φ)` using `GlobalTheory.T.transportedWeilDatum_CM_preserves_schwartz_heisenberg F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hξσ χS χT hcS hcT hrS hrT ω hω JA JB ξ hJA hJB κ co hco om htr`. Establish `hU : IsUnitaryOn (adeleClass F) om` using `GlobalTheory.T.weilDatumTransport_cmExtension_isUnitaryOn F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hξσ χS χT hcS hcT hrS hrT ω hω JA JB ξ hJA hJB κ co hco om htr`. Use `weilAdmissible_of_heisenberg_unitary B.ψ hB.std κ (co.e.symm.trans ((GlobalTheory.WeilAdm.actLin _ p).trans co.e)) (om p) (hP.1 p) (fun w φ hφ => ?_) (fun μ hμ φ hφ => hU μ hμ p φ hφ) l hl` and prove the remaining obligations. Establish `h` using `hP.2 p (co.e.symm w) φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.WeilM.Darboux.rho, LinearEquiv.apply_symm_apply] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transport_adm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

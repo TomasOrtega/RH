@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Col
 open scoped Matrix ComplexOrder
 
 /- English proof (translation)
-Rewrite using `[dotProduct]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum]`. Simplify using `only [wForm, Finset.sum_apply, Pi.smul_apply, star_sum, star_smul, sum_dotProduct, smul_dotProduct, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul, Finset.mul_sum, Finset.sum_mul, Pi.star_apply]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem wForm_sum {C ι κ : Type} [Fintype C] [Fintype ι] [Fintype κ] (w : C → ℕ) (G : Matrix ι ι ℂ) (u : κ → C → ι → ℂ)
     (a b : κ → ℂ) : star a ⬝ᵥ (Matrix.of fun i j => wForm w G (u i) (u j)) *ᵥ b = wForm w G (∑ i, a i • u i) (∑ i, b i • u i) := by
@@ -34,9 +34,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 omit [NumberField K] in
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr x, ← b.sum_repr y]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_mul, dotProduct, Matrix.mulVec, Matrix.map_apply, Matrix.of_apply, Finset.mul_sum, RingHom.id_apply, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply, hx i φ, starRingEnd_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem map_pair {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] (b : Basis ι K V) (p : V →ₗ⋆[K] V →ₗ[K] K)
     (φ : K →+* ℂ) (x y : V) (hx : ∀ i, b.repr x i ∈ cmMax K) :
@@ -54,7 +54,7 @@ variable (S : CSD K) (v : InfinitePlace K)
 def coAt (f : S.Cl → S.V) : S.Cl → S.ιV → ℂ := fun c i => v.embedding (S.bV.repr (f c) i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c k`. Use `conv_lhs => rw [← S.basis.sum_repr x]`. Simplify using `only [coAt, AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, Finsupp.coe_finset_sum, Finsupp.coe_smul, smul_eq_mul, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coAt_sum (x : S.Forms) :
     coAt S v (x : S.Cl → S.V) = ∑ i, v.embedding (S.basis.repr x i) • coAt S v (S.basis i : S.Cl → S.V) := by
@@ -64,9 +64,9 @@ theorem coAt_sum (x : S.Forms) :
     map_smul, Finsupp.coe_finset_sum, Finsupp.coe_smul, smul_eq_mul, map_mul]
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := v.embedding.toAlgebra`. Set `f : S.Forms →ₗ[K] (S.Cl × S.ιV → K)` to `LinearMap.pi fun p => S.bV.coord p.2 ∘ₗ LinearMap.proj p.1 ∘ₗ S.Forms.subtype`. Establish `hf : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `φ hφ`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Conclude with `S.bV.forall_coord_eq_zero_iff.1 fun k => congrFun hφ (c, k)`. Conclude with `(linearIndependent_algebraMap_comp_iff (S := ℂ)).2 (S.basis.linearIndependent.map' f hf)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coAt_indep : LinearIndependent ℂ fun i => fun p : S.Cl × S.ιV => coAt S v (S.basis i : S.Cl → S.V) p.1 p.2 := by
   letI : Algebra K ℂ := v.embedding.toAlgebra
@@ -81,7 +81,7 @@ theorem coAt_indep : LinearIndependent ℂ fun i => fun p : S.Cl × S.ιV => coA
   exact (linearIndependent_algebraMap_comp_iff (S := ℂ)).2 (S.basis.linearIndependent.map' f hf)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, CSD.H, Matrix.of_apply, CSD.csum, wForm, map_sum, map_mul, map_inv₀, map_natCast]`. Conclude with `Finset.sum_congr rfl fun c _ => congrArg _ (map_pair S.bV S.pair v.embedding _ _ (S.basis_rat hb i c))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem H_map (hb : S.HasRatBasis) : S.H.map v.embedding = Matrix.of fun i j =>
     wForm S.wt (S.gramV.map v.embedding) (coAt S v (S.basis i : S.Cl → S.V)) (coAt S v (S.basis j : S.Cl → S.V)) := by
@@ -90,11 +90,11 @@ theorem H_map (hb : S.HasRatBasis) : S.H.map v.embedding = Matrix.of fun i j =>
   exact Finset.sum_congr rfl fun c _ => congrArg _ (map_pair S.bV S.pair v.embedding _ _ (S.basis_rat hb i c))
 
 /- English proof (translation)
-Rewrite using `[H_map S v hb]`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun a ha => ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.of_apply]`. Conclude with `wForm_conj _ hG.1 _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wForm_sum]`. Use `lt_of_le_of_ne (wForm_nonneg _ hG.posSemidef _) fun h0 => ha ?_` and prove the remaining obligations. Establish `h1` using `wForm_eq_zero _ S.wt_pos hG h0.symm`. Use function extensionality and compare the values at `i`. Use `Fintype.linearIndependent_iff.1 (coAt_indep S v) a ?_ i` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Simplify using `using congrFun (congrFun h1 p.1) p.2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem H_posDef (hb : S.HasRatBasis) (hG : (S.gramV.map v.embedding).PosDef) : (S.H.map v.embedding).PosDef := by
   rw [H_map S v hb]
@@ -111,9 +111,9 @@ theorem H_posDef (hb : S.HasRatBasis) (hG : (S.gramV.map v.embedding).PosDef) : 
     simpa using congrFun (congrFun h1 p.1) p.2
 
 /- English proof (translation)
-Establish `hm` using `(frameOfSpec _ _ (H_posDef S v hb hG)).2`. Establish `h1` using `wForm_sum S.wt (S.gramV.map v.embedding) (fun i => coAt S v (S.basis i : S.Cl → S.V)) (Formalism.HermitianLatticesTheory.vecAt S.basis v x) (Formalism.HermitianLatticesTheory.vecAt S.basis v x)`. Rewrite `h1` using `[← H_map S v hb, ← hm, metOf, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Rewrite using `[coAt_sum S v x]`. Use `Eq.trans ?_ h1` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_pow, ← Complex.conj_mul']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem normAt_sq (hb : S.HasRatBasis) (hG : (S.gramV.map v.embedding).PosDef) (x : S.Forms) :
     ((Formalism.HermitianLatticesTheory.normAt S.basis (stdFrame S.H) v x ^ 2 : ℝ) : ℂ) =
@@ -134,7 +134,7 @@ variable (T : GSD K) (h : T.Ok) (hr : ∀ (g : T.G) i j, T.bV.repr (T.ρ g (T.bV
 include hr in
 
 /- English proof (translation)
-Use `⟨fun _ => Iff.rfl, fun v (x : T.EqFun) => ?_⟩` and prove the remaining obligations. Conclude with `(normAt_sq (T.toCSD h) v (FormsDescent.hasRatBasis_of_act _ fun c γ => hr γ.1) (hG v) (T.res h x)).trans (ipAt_eq T h v x x).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFormsOf_toH (hG : ∀ v : InfinitePlace K, (T.gramV.map v.embedding).PosDef) (N : Submodule (𝓞 K) T.EqFun) :
     IsFormsOf T h N (T.toH h N) (LinearEquiv.refl _ _) := by
@@ -145,11 +145,11 @@ theorem isFormsOf_toH (hG : ∀ v : InfinitePlace K, (T.gramV.map v.embedding).P
 include h hr in
 
 /- English proof (translation)
-Set `u : T.ιV → Unit → T.ιV → ℂ` to `fun k _ i => v.embedding (T.bV.repr (T.ρ g (T.bV k)) i)`. Establish `h1` using `wForm_sum (fun _ => 1) (T.gramV.map v.embedding) u (fun i => v.embedding (T.bV.repr x i)) (fun i => v.embedding (T.bV.repr x i))`. Establish `e1 : (Matrix.of fun i j => wForm (fun _ => 1) (T.gramV.map v.embedding) (u i) (u j)) = T.gramV.map v.embedding`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, wForm, Finset.univ_unique, Finset.sum_singleton, Nat.cast_one, inv_one, one_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `(map_pair T.bV T.pair v.embedding _ _ fun k => hr g k i).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h.inv]`. Both sides reduce to the same expression. Establish `e2 : (∑ i, v.embedding (T.bV.repr x i) • u i) = fun _ i => v.embedding (T.bV.repr (T.ρ g x) i)`. Use function extensionality and compare the values at `c k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `conv_rhs => rw [← T.bV.sum_repr x]`. Simplify using `only [u, Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, Finsupp.coe_finset_sum, Finsupp.coe_smul, smul_eq_mul, map_mul]`. Rewrite `h1` using `[e1, e2]`. Rewrite using `[pairAt_eq, pairAt_eq, h1]`. Simplify using `only [wForm, Finset.univ_unique, Finset.sum_singleton, Nat.cast_one, inv_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairAt_rho (g : T.G) (x : T.V) : T.pairAt v (T.ρ g x) (T.ρ g x) = T.pairAt v x x := by
   let u : T.ιV → Unit → T.ιV → ℂ := fun k _ i => v.embedding (T.bV.repr (T.ρ g (T.bV k)) i)
@@ -173,7 +173,7 @@ theorem pairAt_rho (g : T.G) (x : T.V) : T.pairAt v (T.ρ g x) (T.ρ g x) = T.pa
 include hr in
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `T.outSec.exists_smul s c`. Rewrite using `[T.wt_eq, ← hg, T.card_stab_smul, φ.2, pairAt_rho v T h hr]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ipAt_sec (s : T.Sec) (φ : T.EqFun) : T.ipAt h v φ φ = letI := h.fintypeCl
     ∑ c, ((Nat.card (MulAction.stabilizer T.G (s.rep c)) : ℕ) : ℂ)⁻¹ *

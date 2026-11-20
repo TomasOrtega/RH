@@ -11,16 +11,14 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E]
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem HA_ext {R : Type} [CommRing R] [Algebra F R] {g h : HA R σ J}
     (e : ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = HA.mat R σ J h) :
     g = h := Subtype.ext (Units.ext e)
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun g : HA R σ J => ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E))` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `hc.matrix_map hφ`. Establish `hc : Continuous fun g : HA R σ J => (((HA.mat R σ J g)⁻¹ : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E))` using `Units.continuous_coe_inv.comp continuous_subtype_val`.
-
-Conclude with `hc.matrix_map hφ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_haMap {R R' : Type} [CommRing R] [Algebra F R] [TopologicalSpace R] [CommRing R']
     [Algebra F R'] [TopologicalSpace R'] (φ : R →ₐ[F] R') (hφ : Continuous (tensMap (E := E) φ)) :
@@ -43,9 +41,9 @@ def mix (M1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) (M2 : Matrix (Fin n) (Fin n)
   Matrix.of fun i j => (QQ R1 R2).symm (M1 i j, M2 i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mix, Matrix.mul_apply, Matrix.of_apply, ← map_mul, Prod.mk_mul_mk, ← map_sum]`. Use `congr 1`. Use `ext`. Simplify using `only [Prod.fst_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.snd_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mix_mul (M1 N1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) (M2 N2 : Matrix (Fin n) (Fin n) (R2 ⊗[F] E)) :
     mix R1 R2 M1 M2 * mix R1 R2 N1 N2 = mix R1 R2 (M1 * N1) (M2 * N2) := by
@@ -57,7 +55,7 @@ theorem mix_mul (M1 N1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) (M2 N2 : Matrix (
   · simp only [Prod.snd_sum]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mix, Matrix.of_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `map_one _`. Conclude with `map_zero _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mix_one : mix (n := n) (F := F) (E := E) R1 R2 1 1 = 1 := by
   ext i j
@@ -67,7 +65,7 @@ theorem mix_one : mix (n := n) (F := F) (E := E) R1 R2 1 1 = 1 := by
   · exact map_zero _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, mix, Matrix.of_apply]`. Conclude with `congrArg Prod.fst ((QQ R1 R2).apply_symm_apply (M1 i j, M2 i j))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mixMatrix_map_first (M1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) (M2 : Matrix (Fin n) (Fin n) (R2 ⊗[F] E)) :
     (mix R1 R2 M1 M2).map (q1 R1 R2) = M1 := by
@@ -76,7 +74,7 @@ theorem mixMatrix_map_first (M1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) (M2 : Ma
   exact congrArg Prod.fst ((QQ R1 R2).apply_symm_apply (M1 i j, M2 i j))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, mix, Matrix.of_apply]`. Conclude with `congrArg Prod.snd ((QQ R1 R2).apply_symm_apply (M1 i j, M2 i j))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mixMatrix_map_second (M1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) (M2 : Matrix (Fin n) (Fin n) (R2 ⊗[F] E)) :
     (mix R1 R2 M1 M2).map (q2 R1 R2) = M2 := by
@@ -85,7 +83,7 @@ theorem mixMatrix_map_second (M1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) (M2 : M
   exact congrArg Prod.snd ((QQ R1 R2).apply_symm_apply (M1 i j, M2 i j))
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, mix, Matrix.of_apply]`. Conclude with `(QQ R1 R2).symm_apply_apply (M i j)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mix_split (M : Matrix (Fin n) (Fin n) ((R1 × R2) ⊗[F] E)) :
     mix R1 R2 (M.map (q1 R1 R2)) (M.map (q2 R1 R2)) = M := by
@@ -100,23 +98,23 @@ def mixGL (g1 : GL (Fin n) (R1 ⊗[F] E)) (g2 : GL (Fin n) (R2 ⊗[F] E)) : GL (
   inv_val := by rw [mix_mul, Units.inv_mul, Units.inv_mul, mix_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, inclR, q1, tensMap, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem formMatrix_map_first : (JR (R1 × R2) J).map (q1 (F := F) R1 R2) = JR R1 J := by
   ext i j
   simp [JR, inclR, q1, tensMap, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, inclR, q2, tensMap, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem formMatrix_map_second : (JR (R1 × R2) J).map (q2 (F := F) R1 R2) = JR R2 J := by
   ext i j
   simp [JR, inclR, q2, tensMap, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Establish `hc : ∀ x : R ⊗[F] E, tensMap (E` using `E) φ (sigR R σ x) = sigR R' σ (tensMap (E := E) φ x) := by`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [tensMap, sigR, Algebra.TensorProduct.map_tmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, hc]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem unitary_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R')
     (X : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
@@ -134,11 +132,11 @@ theorem unitary_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Alge
   simp only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, hc]
 
 /- English proof (translation)
-Use `show Formalism.UG.cT (sigR (R1 × R2) σ) (mix R1 R2 (g1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) g2) * JR (R1 × R2) J * mix R1 R2 (g1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) g2 = JR (R1 × R2) J`. Establish `e1` using `unitary_map σ J (AlgHom.fst F R1 R2) (mix R1 R2 (g1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) g2)`. Establish `e2` using `unitary_map σ J (AlgHom.snd F R1 R2) (mix R1 R2 (g1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) g2)`. Rewrite `e1` using `[mixMatrix_map_first, formMatrix_map_first]`. Rewrite `e2` using `[mixMatrix_map_second, formMatrix_map_second]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1' : Formalism.UG.cT (sigR R1 σ) (g1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) * JR R1 J * (g1 : Matrix (Fin n) (Fin n) (R1 ⊗[F] E)) = JR R1 J` using `h1`. Establish `h2' : Formalism.UG.cT (sigR R2 σ) (g2 : Matrix (Fin n) (Fin n) (R2 ⊗[F] E)) * JR R2 J * (g2 : Matrix (Fin n) (Fin n) (R2 ⊗[F] E)) = JR R2 J` using `h2`. Rewrite `e1` using `[h1', ← formMatrix_map_first J R1 R2]`. Rewrite `e2` using `[h2', ← formMatrix_map_second J R1 R2]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(QQ R1 R2).injective` to reduce the goal to its premises. Rewrite using `[QQ_apply, QQ_apply]`. Conclude with `Prod.ext (congrFun (congrFun e1 i) j) (congrFun (congrFun e2 i) j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixGL_mem (g1 : GL (Fin n) (R1 ⊗[F] E)) (g2 : GL (Fin n) (R2 ⊗[F] E)) (h1 : g1 ∈ HR R1 σ J)
     (h2 : g2 ∈ HR R2 σ J) : mixGL R1 R2 g1 g2 ∈ HR (R1 × R2) σ J := by
@@ -164,7 +162,7 @@ def unsplit (p : HA R1 σ J × HA R2 σ J) : HA (R1 × R2) σ J :=
     mixGL_mem σ J R1 R2 _ _ (show ↥(HR R1 σ J) from p.1).2 (show ↥(HR R2 σ J) from p.2).2⟩ : HR (R1 × R2) σ J)
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `(continuous_QQ_symm R1 R2).comp ((hA.matrix_elem i j).prodMk (hB.matrix_elem i j))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_mix {X : Type} [TopologicalSpace X] [TopologicalSpace R1] [TopologicalSpace R2]
     {A : X → Matrix (Fin n) (Fin n) (R1 ⊗[F] E)} {B : X → Matrix (Fin n) (Fin n) (R2 ⊗[F] E)}
@@ -173,26 +171,26 @@ theorem continuous_mix {X : Type} [TopologicalSpace X] [TopologicalSpace R1] [To
   exact (continuous_QQ_symm R1 R2).comp ((hA.matrix_elem i j).prodMk (hB.matrix_elem i j))
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matHA (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] :
     Continuous fun g : HA R σ J => ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) := Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `Units.continuous_coe_inv.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matHA_inv (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] :
     Continuous fun g : HA R σ J =>
       (((HA.mat R σ J g)⁻¹ : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) := Units.continuous_coe_inv.comp continuous_subtype_val
 
 /- English proof (translation)
-Set `f : HA (R1 × R2) σ J →* HA R1 σ J × HA R2 σ J` to `MonoidHom.prod (haMap σ J (AlgHom.fst F R1 R2)) (haMap σ J (AlgHom.snd F R1 R2))`. Establish `hl : ∀ g, unsplit σ J R1 R2 (f g) = g`. Introduce `g`. Apply `HA_ext σ J` to reduce the goal to its premises. Conclude with `mix_split R1 R2 _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hr : ∀ p, f (unsplit σ J R1 R2 p) = p`. Introduce `p`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `HA_ext σ J` to reduce the goal to its premises. Conclude with `mixMatrix_map_first R1 R2 _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Apply `HA_ext σ J` to reduce the goal to its premises. Conclude with `mixMatrix_map_second R1 R2 _ _`. Set `e0 : HA (R1 × R2) σ J ≃* HA R1 σ J × HA R2 σ J` to `MulEquiv.mk ⟨⇑f, unsplit σ J R1 R2, hl, hr⟩ f.map_mul`. Establish `c1 : Continuous e0` using `(continuous_haMap σ J _ (continuous_first_factor_proj R1 R2)).prodMk (continuous_haMap σ J _ (continuous_second_factor_proj R1 R2))`. Establish `c2 : Continuous e0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_mix R1 R2 ((continuous_matHA σ J R1).comp continuous_fst) ((continuous_matHA σ J R2).comp continuous_snd)`. Conclude with `continuous_mix R1 R2 ((continuous_matHA_inv σ J R1).comp continuous_fst) ((continuous_matHA_inv σ J R2).comp continuous_snd)`. Conclude with `⟨⟨e0, c1, c2⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem splitIso_gen [TopologicalSpace R1] [TopologicalSpace R2] :
     ∃ e : HA (R1 × R2) σ J ≃ₜ* HA R1 σ J × HA R2 σ J,
@@ -230,7 +228,7 @@ namespace MassDataMassesW
 open NumberField
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ n J`. Conclude with `SplitW.splitIso_gen σ J _ _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem splitIso_holds : SplitIso := by
   intro F E _ _ _ _ σ n J

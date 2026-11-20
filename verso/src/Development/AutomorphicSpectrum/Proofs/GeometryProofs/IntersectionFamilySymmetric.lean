@@ -8,9 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
 /- English proof (translation)
-Introduce `K _ ι _ I hI P e L i hP hL`. Set `σ : Equiv.Perm (Fin (e + 1))` to `(finSuccEquivLast (n := e)).trans (finSuccEquiv' i).symm`. Establish `h : (Fin.snoc (fun j : Fin e => L (i.succAbove j)) (L i) : Fin (e + 1) → HermLine ι) = L ∘ σ`. Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[σ]`. Simplify using `[σ]`. Rewrite using `[h]`. Conclude with `(hI.1 P (e + 1) L σ hP hL).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem movePositionToLast : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ), IsIntersectionFamily I → ∀ (P : Ideal (MRing ι)) (e : ℕ) (L : Fin (e + 1) → HermLine ι) (i : Fin (e + 1)), IsArithVar P (e + 1) → (∀ j, IsSmoothHerm (L j)) → I P (e + 1) L = I P (e + 1) (Fin.snoc (fun j : Fin e => L (i.succAbove j)) (L i)) := by
   intro K _ ι _ I hI P e L i hP hL

@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open MvPolynomial Finset Coinv
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => i) n, Finset.sum_range_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Coinv.sum_staircase_exponents (f n : ℕ) :
     ∑ v : Fin f × Fin n, (v.2 : ℕ) = coinvTop f n := by
@@ -17,9 +17,9 @@ theorem Coinv.sum_staircase_exponents (f n : ℕ) :
   rfl
 
 /- English proof (translation)
-Introduce `f n e he`. Establish `hle : ∀ v ∈ (Finset.univ : Finset (Fin f × Fin n)), e v ≤ (v.2 : ℕ)` using `fun v _ => he v`. Rewrite using `[Finsupp.degree_eq_sum, ← Coinv.sum_staircase_exponents f n]`. Use `⟨Finset.sum_le_sum hle, fun hEq => ?_⟩` and prove the remaining obligations. Establish `hall` using `(Finset.sum_eq_sum_iff_of_le hle).1 hEq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `[staircase, hall v (Finset.mem_univ v)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem CoinvStaircaseDegree.proof : CoinvStaircaseDegree.Statement := by
   intro f n e he

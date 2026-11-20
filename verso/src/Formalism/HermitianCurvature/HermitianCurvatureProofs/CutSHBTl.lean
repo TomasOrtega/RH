@@ -5,37 +5,29 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ k r z z' π π' X L hX S _ _ l w a b`. Use `set Qa : Subalgebra ℂ (Module.End ℂ (RadSp k r z z' π π')) := Algebra.adjoin ℂ (Set.range (X.op l)) with hQa`. Set `good : Pr (RadSp k r z z' π π') → Prop` to `fun x => x.1 ∈ Qa ∧ x.2.unop ∈ Qa`. Establish `hop : ∀ i, X.op l i ∈ Qa` using `fun i => Algebra.subset_adjoin ⟨i, rfl⟩`. Establish `gmul : ∀ x y, good x → good y → good (x * y)` using `fun x y hx hy => ⟨Subalgebra.mul_mem _ hx.1 hy.1, Subalgebra.mul_mem _ hy.2 hx.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gadd : ∀ x y, good x → good y → good (x + y)` using `fun x y hx hy => ⟨Subalgebra.add_mem _ hx.1 hy.1, Subalgebra.add_mem _ hx.2 hy.2⟩`. Establish `gneg : ∀ x, good x → good (-x)` using `fun x hx => ⟨Subalgebra.neg_mem _ hx.1, Subalgebra.neg_mem _ hx.2⟩`. Establish `gzero : good 0` using `⟨Subalgebra.zero_mem _, Subalgebra.zero_mem _⟩`. Establish `gone : good 1` using `⟨Subalgebra.one_mem _, Subalgebra.one_mem _⟩`. Establish `gstar : ∀ x, good x → good (star x)` using `fun x hx => ⟨hx.2, hx.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `galg : ∀ c : ℂ, good (algebraMap ℂ (Pr (RadSp k r z z' π π')) c)` using `fun c => ⟨Subalgebra.algebraMap_mem _ c, Subalgebra.algebraMap_mem _ (starRingEnd ℂ c)⟩`. Establish `gp : good (L.p l)`. Rewrite using `[hX.1 l]`. Conclude with `⟨hop 0, Subalgebra.neg_mem _ (hop 3)⟩`. Establish `gc : good (L.c l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX.2.2.1 l]`. Conclude with `⟨hop 1, hop 4⟩`. Establish `gci : good (L.ci l)`. Rewrite using `[hX.2.2.2.1 l]`. Conclude with `⟨hop 2, hop 5⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hTs : ∀ (Y : ℂ) (i j : Fin 2), good ((Wd.Ts (site L l) Y) i j)`. Introduce `Y i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `only [Wd.Ts, site, Formalism.YangianSpanCharacter.T.Tm, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_fin_const, Fin.zero_eta, Fin.mk_one]`. Conclude with `gadd _ _ (galg Y) gp`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `gneg _ gc`. Conclude with `gci`. Conclude with `gzero`. Establish `hmulA : ∀ M N : Wd.SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π')), (∀ a b, good (M a b)) → (∀ a b, good (N a b)) → ∀ a b, good ((M * N) a b)`. Introduce `M N hM hN a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_induction _ good (fun x y hx hy => gadd x y hx hy) gzero (fun c _ => ?_)` and prove the remaining obligations. Conclude with `gmul _ _ (hM a c) (hN c b)`. Establish `hsumA : ∀ (ι : Type) (t : Finset ι) (f : ι → Wd.SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))), (∀ i, ∀ a b, good (f i a b)) → ∀ a b, good ((∑ i ∈ t, f i) a b)`. Introduce `ι t f hf a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sum_apply]`. Conclude with `Finset.sum_induction _ good (fun x y hx hy => gadd x y hx hy) gzero (fun i _ => hf i a b)`. Establish `heU : ∀ (x : S) (i j : Fin 2), ∀ a b, good ((Wd.eU (A` using `Pr (RadSp k r z z' π π')) x i j : Wd.SlopeTestRemainingChoices S _) a b) := by`. Introduce `x i j a b`. Unfold `Wd.eU`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Conclude with `gone`. Conclude with `gzero`. Establish `hio : ∀ y, good y → ∀ a b, good ((Wd.io (S` using `S) y) a b) := by`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy a b`. Unfold `Wd.io`. Rewrite using `[Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `gzero`. Establish `hvlet : ∀ lt : Wd.Letter ℂ S, ∀ a b, good ((Wd.vlet (site L l) lt) a b)`. Introduce `lt`. Unfold `Wd.vlet Wd.ins`. Use `hsumA _ _ _ (fun i => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `hsumA _ _ _ (fun j => ?_)` and prove the remaining obligations. Use `hmulA _ _ (heU _ i j) ?_` and prove the remaining obligations. Introduce `a b`. Unfold `Wd.lift0`. Rewrite using `[Matrix.map_apply]`.
-
-Use `hio _ ?_ a b` and prove the remaining obligations. Use `split_ifs`. Conclude with `hTs _ i j`. Rewrite using `[Matrix.map_apply]`. Conclude with `gstar _ (hTs _ i j)`.
-
-Establish `hbT : ∀ w' : List (Wd.Letter ℂ S), ∀ a b, good ((Wd.bT (site L l) w') a b)`. Introduce `w'`. Proceed by induction on `w' with`. Consider the case `nil`. Introduce `a b`.
-
-Simplify using `only [Wd.bT]`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `gone`. Conclude with `gzero`.
-
-Consider the case `cons lt w' ih`. Introduce `a b`. Simplify using `only [Wd.bT]`. Conclude with `hmulA _ _ (hvlet lt) ih a b`. Conclude with `(hbT w a b).1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem boundary_torus_adjoin : CutSH.BTlAdjoin := by
   intro Wp Wq _ _ _ _ _ _ k r z z' π π' X L hX S _ _ l w a b

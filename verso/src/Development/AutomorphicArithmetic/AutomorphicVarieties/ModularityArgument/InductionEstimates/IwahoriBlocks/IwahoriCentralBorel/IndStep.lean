@@ -12,27 +12,25 @@ open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.Cus
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `G _ _ _ Γ _ V _ _ Y _ _ P ρ y f hL hy hf hfe`. Take `⟨B, _, _, m, e, hm, he⟩` from `tensIso ρ y f hL.irr hL.schur hy hf hfe`. Take `⟨K, hK, hPK⟩` from `hL.iwa`. Take `⟨E, hE⟩` from `indTens P K ρ m hK hPK`. Establish `hirr` using `(tensSimple (smInd P ρ) m hL.indIrr hL.indSchur hm).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `L : GlobalTheory.PRep.smoothPart (ind P ρ) ⊗[ℂ] B →ₗ[ℂ] (G → Y)` to `(e.toLinearMap.compLeft G).comp ((Submodule.subtype _).comp E.toLinearMap)`. Establish `hLa : ∀ x t, L x t = e ((E x).1 t)` using `fun _ _ => rfl`. Establish `hact : ∀ g c x t, L (extTensor (smInd P ρ) m (g, c) x) t = y (1, c) (L x (t * g))`. Introduce `g c x t`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `h1 : extTensor (smInd P ρ) m (g, c) (a ⊗ₜ[ℂ] b) = smInd P ρ g a ⊗ₜ[ℂ] m c b`. Simplify using `[extTensor]`. Establish `h2 : extTensor ρ m (1, c) (a.1.1 (t * g) ⊗ₜ[ℂ] b) = a.1.1 (t * g) ⊗ₜ[ℂ] m c b`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[extTensor]`. Rewrite using `[h1, hLa, hLa, hE, hE, ← he, h2]`. Both sides reduce to the same expression. Consider the case `add x x' hx hx' => simp only [map_add, Pi.add_apply, hx, hx']`. Establish `hsurj : ∀ z ∈ IndF P.subtype (y.comp (MonoidHom.inl P Γ)) ⊤, ∃ x, L x = z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `hlaw : ∀ (p : P) g, z (p * g) = y (p, 1) (z g)` using `hz.1.2`. Establish `hz' : (fun g => e.symm (z g)) ∈ IndF P.subtype ((extTensor ρ m).comp (MonoidHom.inl P Γ)) ⊤`. Use `⟨⟨fun _ => trivial, fun p g => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `e.injective show e (e.symm (z (p * g))) = e (extTensor ρ m (p, 1) (e.symm (z g)))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[he, e.apply_symm_apply, e.apply_symm_apply, hlaw]`. Use `GlobalTheory.SmGL.mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds hz.2 (by simp)) fun u hu => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `h2 : z (x * u) = z x` using `congrFun hu x`. Use `show e.symm (z (x * u)) = e.symm (z x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Use `⟨E.symm ⟨_, hz'⟩, funext fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hLa, E.apply_symm_apply]`. Conclude with `e.apply_symm_apply _`. Introduce `Q hQ hG hΓ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `Q' : Subrepresentation (extTensor (smInd P ρ) m)` to `⟨Q.comap L, by`. Introduce and unpack `⟨g, c⟩ x hx`. Establish `h1` using `hΓ c _ (hG g _ hx)`. Establish `h2 : L (extTensor (smInd P ρ) m (g, c) x) = fun t => y (1, c) (L x (t * g))` using `funext (hact g c x)`. Use `show L _ ∈ Q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2]`. Conclude with `h1⟩`. Break down `hirr.eq_bot_or_eq_top Q' with h | h` into its components or cases. Use `left`. Use `(Submodule.eq_bot_iff _).2 fun q hq => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hsurj q (hQ hq)`. Establish `hx : x ∈ Q'.toSubmodule` using `hq`. Rewrite `hx` using `[h]`. Establish `hx0 : x = 0` using `hx`. Rewrite using `[hx0, map_zero]`.
-
-Use `right`. Use `le_antisymm hQ fun z hz => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsurj z hz`. Establish `hx : x ∈ Q'.toSubmodule` using `by rw [h]; trivial`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.indStep :
     ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {Γ : Type} [Group Γ] {V : Type} [AddCommGroup V] [Module ℂ V] {Y : Type} [AddCommGroup Y] [Module ℂ Y] (P : Subgroup G) (ρ : Representation ℂ P V) (y : Representation ℂ (P × Γ) Y) (f : V →ₗ[ℂ] Y), LocOk P ρ →

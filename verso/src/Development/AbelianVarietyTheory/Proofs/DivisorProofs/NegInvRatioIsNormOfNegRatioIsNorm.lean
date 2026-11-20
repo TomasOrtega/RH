@@ -6,19 +6,19 @@ open scoped TensorProduct Quaternion
 namespace GlobalTheory.PlaneSU.NormSwap
 
 /- English proof (translation)
-Introduce `F E _ _ _ σ δ b hb0 hb1 hsq f₁ f₂ hf₁ hf₂ R _ _ ε t hε`. Set `B` to `Algebra.TensorProduct.basis R b`. Establish `hB : ∀ i, B i = 1 ⊗ₜ[F] b i` using `fun i => Algebra.TensorProduct.basis_apply b i`. Establish `h0 : B 0 = 1` using `by rw [hB, hb0]; rfl`. Establish `h1 : B 1 * B 1 = algebraMap F R δ • B 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hB, hB, Algebra.TensorProduct.tmul_mul_tmul, hsq, hb0, Algebra.algebraMap_eq_smul_one (A := E), TensorProduct.tmul_smul, one_mul, algebraMap_smul]`. Establish `hs : ∀ (r : R) (e : E), sigR R σ (r ⊗ₜ[F] e) = r ⊗ₜ[F] σ e` using `fun r e => rfl`. Establish `key : ∀ x y : R, (x • B 0 + y • B 1) * sigR R σ (x • B 0 + y • B 1) = algebraMap R (R ⊗[F] E) (x ^ 2 - algebraMap F R δ * y ^ 2)`. Introduce `x y`. Establish `e : sigR R σ (x • B 0 + y • B 1) = x • B 0 - y • B 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_add, hB, hB, TensorProduct.smul_tmul', TensorProduct.smul_tmul', hs, hs, hb1, hb0, map_one, TensorProduct.tmul_neg, sub_eq_add_neg]`. Rewrite using `[e]`. Rewrite `h1`, the goal using `[h0]`. Generalize the expression as in `algebraMap F R δ = d at h1 ⊢`. Simplify using `only [Algebra.smul_def, mul_one, map_sub, map_mul, map_pow] at h1 ⊢`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(algebraMap R (R ⊗[F] E) y) ^ 2) * h1`. Establish `hz` using `B.sum_repr t`. Rewrite `hz` using `[Fin.sum_univ_two]`. Use `set p₀ := B.repr t 0`. Use `set q₀ := B.repr t 1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hε` using `[← hz, key, IsScalarTower.algebraMap_apply F R (R ⊗[F] E), ← map_add, ← map_mul]`. Establish `hinj : Function.Injective (algebraMap R (R ⊗[F] E))`. Use `Algebra.TensorProduct.includeLeft_injective (R := F) (S := F) (A := R) (B := E) (algebraMap F E).injective` as an intermediate fact. Introduce `x y hxy`. Apply `this` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hxy` using `[Algebra.TensorProduct.algebraMap_apply]`. Establish `h : ε * (p₀ ^ 2 - algebraMap F R δ * q₀ ^ 2 + algebraMap F R (f₁ / f₂)) = 0` using `hinj (by rw [hε, map_zero])`. Use `set c := algebraMap F R (f₂ / f₁)`. Establish `hca : c * algebraMap F R (f₁ / f₂) = 1`. Rewrite using `[← map_mul, div_mul_div_comm, mul_comm f₂ f₁, div_self (mul_ne_zero hf₁ hf₂), map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨c * p₀, c * q₀, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg]`. Take the linear combination `(-c ^ 2) * h + ε * c * hca`.
+A detailed English derivation is pending.
 -/
 theorem neg_inv_ratio_norm : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (δ : F) (b : Module.Basis (Fin 2) F E), b 0 = 1 → σ (b 1) = -b 1 → b 1 * b 1 = algebraMap F E δ → ∀ f₁ f₂ : F, f₁ ≠ 0 → f₂ ≠ 0 → ∀ (R : Type) [CommRing R] [Algebra F R] (ε : R) (t : R ⊗[F] E), algebraMap R (R ⊗[F] E) ε * (t * sigR R σ t + algebraMap F (R ⊗[F] E) (f₁ / f₂)) = 0 → ∃ p q : R, ε * (algebraMap F R (-(f₂ / f₁)) - (p ^ 2 - algebraMap F R δ * q ^ 2)) = 0 := by
   intro F E _ _ _ σ δ b hb0 hb1 hsq f₁ f₂ hf₁ hf₂ R _ _ ε t hε

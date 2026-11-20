@@ -17,21 +17,19 @@ noncomputable section
 namespace GlobalTheory.EtaleKlt
 
 /- English proof (translation)
-Introduce `M W _ _ _ _ p f _ n m _ _ U D₀ D₁ hU hm hD y hy`. Use `haveI := SmoothOfRelativeDimension.smooth n p`. Use `haveI := SmoothOfRelativeDimension.smooth n (f ≫ p)`. Use `haveI : GlobalTheory.IsNormalScheme M := ModifSections.isNormalScheme_of_smooth (f ≫ p)`. Use `haveI : GlobalTheory.IsNormalScheme W := ModifSections.isNormalScheme_of_smooth p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnM` using `NadelApp.topologicalKrullDim_eq_of_smooth M (f ≫ p) n`. Establish `hnW` using `NadelApp.topologicalKrullDim_eq_of_smooth W p n`. Establish `hne : ∀ η : RatForms p n, η ≠ 0 → ratPull p f n η ≠ 0` using `GlobalTheory.T.rationalTopFormPullback_ne_zero_of_etale M W p f n U hU ⟨y, hy⟩`. Establish `hlog : ∀ (η : RatForms p n) (m' : ℕ) (g : W.functionFieldˣ), η ≠ 0 → IsLogEqn p (qWeil D₀ m) η (f y) m' g → IsLogEqn (f ≫ p) (qWeil D₁ m) (ratPull p f n η) y m' (Units.map (functionFieldMap f).toMonoidHom g)`. Introduce `η m' g hη h z hz E' hE'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hzU : z ∈ U` using `hz.mem_open U.isOpen hy`. Take `⟨E, hE, hord, hform⟩` from `GlobalTheory.T.exists_primeDivisor_etalePullback_orders M W p f n U hU z hzU E' hE'`. Establish `key` using `h (f z) (hz.map f.continuous) E hE`. Take `⟨d, hd⟩` from `D₀.exists_isEqn (f z)`. Establish `hd'` using `hD z d hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmult : D₁.mult z = D₀.mult (f z)`. Rewrite using `[hd'.mult_eq, hd.mult_eq, ← hE'.ord_eq, ← hE.ord_eq, hord]`. Rewrite using `[hform η hη, hord, ← key]`. Simplify using `[qWeil, hmult]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hk`. Take `⟨η, hη, hG⟩` from `isLogCanonicalMultiple_canonical (p := p) (n := n) hnW D₀ hm`. Take `⟨g, hg⟩` from `(m • canonical p n + D₀).exists_isEqn (f y)`. Establish `h1` using `hG (f y) g hg`. Use `(h1.kltAt_iff hnW hη hm).2 fun E hE => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨E', hE', hord, hform⟩` from `GlobalTheory.T.primeDivisor_lift_along_etale_map M W p f n U hU y hy E hE`. Establish `h2` using `((hlog η m g hη h1).kltAt_iff hnM (hne η hη) hm).1 hk E' hE'`. Rewrite `h2` using `[discrep, hord, hform η hη]`. Conclude with `h2`. Introduce and unpack `⟨η, m', g, hη, hm', h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ratPull p f n η, m', _, hne η hη, hm', hlog η m' g hη h1, fun E' hE' => ?_⟩` and prove the remaining obligations. Take `⟨E, hE, hord, hform⟩` from `GlobalTheory.T.primeDivisorOver_restrict_etale M W p f n U hU y hy E' hE'`. Establish `h3` using `h2 E hE`. Rewrite `h3`, the goal using `[discrep]`. Rewrite using `[hord, hform η hη]`.
-
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem kltAt_iff_etale : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] [IsLocallyNoetherian M] [IsLocallyNoetherian W] (p : W ⟶ Sp ℂ) (f : M ⟶ W) [IsDominant f] (n m : ℕ) [SmoothOfRelativeDimension n p] [SmoothOfRelativeDimension n (f ≫ p)] (U : M.Opens) (D₀ : CartierDiv W) (D₁ : CartierDiv M), Etale (U.ι ≫ f) → 0 < m → (∀ x g, D₀.IsEqn (f x) g → D₁.IsEqn x (Units.map (GlobalTheory.functionFieldMap f).toMonoidHom g)) → ∀ y ∈ U, (GlobalTheory.Discrepancy.KltAt (f ≫ p) n (GlobalTheory.Discrepancy.qWeil D₁ m) y ↔ GlobalTheory.Discrepancy.KltAt p n (GlobalTheory.Discrepancy.qWeil D₀ m) (f y)) := by
   intro M W _ _ _ _ p f _ n m _ _ U D₀ D₁ hU hm hD y hy

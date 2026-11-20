@@ -30,9 +30,9 @@ variable {p : Y ⟶ Sp k} {P B N : LB Y} {O O' : Y.Opens}
 def Regular (f : H0 p P O) : Prop := ∀ y hy i hi, germ i y hy hi f ∈ nonZeroDivisors (Y.presheaf.stalk y)
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero (C.mul τ)).2 fun f hf => ?_` and prove the remaining obligations. Use `ext_germ fun y hy => ?_` and prove the remaining obligations. Take `⟨t, ha, hb, hc⟩` from `C.cover y`. Use `⟨C.b t, hb, ?_⟩` and prove the remaining obligations. Establish `e` using `C.germ_mul τ f t y hy ha hb hc`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[hf, map_zero]`. Rewrite using `[map_zero]`. Conclude with `(mul_left_mem_nonZeroDivisors_eq_zero_iff (hτ y hy (C.a t) ha)).1 e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Regular.injective_mul {τ : H0 p P O} (hτ : Regular τ) (C : ProdChart P B N) :
     Function.Injective (C.mul τ) := by
@@ -46,27 +46,25 @@ theorem Regular.injective_mul {τ : H0 p P O} (hτ : Regular τ) (C : ProdChart 
   exact (mul_left_mem_nonZeroDivisors_eq_zero_iff (hτ y hy (C.a t) ha)).1 e.symm
 
 /- English proof (translation)
-Establish `key : ∀ y : O, ∃ (t : C.τ) (V : Y.Opens) (u : Γ(Y, V)) (_ : (y : Y) ∈ V) (hV : V ≤ O ⊓ (P.U (C.a t) ⊓ B.U (C.b t) ⊓ N.U (C.c t))), ∀ z (hz : z ∈ V), germ (C.c t) z (hV hz).1 (hV hz).2.2 g = germ (C.a t) z (hV hz).1 (hV hz).2.1.1 τ * ger z hz u`. Introduce and unpack `⟨y, hy⟩`. Take `⟨t, ha, hb, hc⟩` from `C.cover y`. Take `⟨q, hq⟩` from `h t y hy ha hc hb`. Take `⟨U, hyU, s, hs⟩` from `Y.presheaf.germ_exist q`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `V0 : Y.Opens` to `(O ⊓ (P.U (C.a t) ⊓ B.U (C.b t) ⊓ N.U (C.c t))) ⊓ U`. Establish `hy0 : y ∈ V0` using `⟨⟨hy, ⟨ha, hb⟩, hc⟩, hyU⟩`. Establish `h1 : V0 ≤ O ⊓ N.U (C.c t)` using `fun z hz => ⟨hz.1.1, hz.1.2.2⟩`. Establish `h2 : V0 ≤ O ⊓ P.U (C.a t)` using `fun z hz => ⟨hz.1.1, hz.1.2.1.1⟩`. Establish `h3 : V0 ≤ U` using `fun z hz => hz.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A : Γ(Y, V0)` to `resG Y h1 (g.loc (C.c t)) - resG Y h2 (τ.loc (C.a t)) * resG Y h3 s`. Establish `gA : ∀ z (hz : z ∈ V0), ger z hz A = germ (C.c t) z (h1 hz).1 (h1 hz).2 g - germ (C.a t) z (h2 hz).1 (h2 hz).2 τ * ger z (h3 hz) s`. Introduce `z hz`. Simplify using `only [A, map_sub, map_mul, ger_resG, germ_apply]`. Establish `hA : ger y hy0 A = ger y hy0 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[gA, map_zero, hq]`. Establish `: ger y (h3 hy0) s = q` using `hs`. Rewrite using `[this, sub_self]`. Take `⟨V1, hyV1, i1, i2, hV1⟩` from `Y.presheaf.germ_eq y hy0 hy0 A 0 hA`. Establish `hle : V1 ≤ V0` using `i1.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨t, V1, resG Y (hle.trans h3) s, hyV1, fun z hz => (hle hz).1, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e0 : ger z (hle hz) A = 0`. Establish `e1 : ger z hz (Y.presheaf.map i1.op A) = ger z hz (Y.presheaf.map i2.op 0)` using `congrArg _ hV1`. Rewrite `e1` using `[map_zero]`. Use `erw [ger_resG] at e1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using e1`. Rewrite `e0` using `[gA, sub_eq_zero]`. Rewrite using `[e0, ger_resG]`. Use `choose t V u hyV hV hu using key`. Take `⟨f, hf⟩` from `exists_of_germs (p := p) (O := O) C.isLB₂ V (fun s => C.b (t s)) (fun s _ hz => (hV s hz).1) (fun s _ hz => (hV s hz).2.1.2) (fun y hy => ⟨⟨y, hy⟩, hyV ⟨y, hy⟩⟩) u (fun z s s' h h' => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `hτ z (hV s h).1 (C.a (t s)) (hV s h).2.1.1`. Establish `E1` using `germ_change (p := p) (C.c (t s)) (C.c (t s')) z (hV s h).1 (hV s h).2.2 (hV s' h').2.2 g`. Establish `E2` using `germ_change (p := p) (C.a (t s)) (C.a (t s')) z (hV s h).1 (hV s h).2.1.1 (hV s' h').2.1.1 τ`. Establish `R` using `congrArg Units.val (C.rule z (t s) (t s') ⟨(hV s h).2.1.1, (hV s h).2.1.2, (hV s h).2.2⟩ ⟨(hV s' h').2.1.1, (hV s' h').2.1.2, (hV s' h').2.2⟩)`. Rewrite `R` using `[Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hu s z h`. Establish `h2` using `hu s' z h'`. Establish `key : germ (C.a (t s)) z (hV s h).1 (hV s h).2.1.1 τ * (ger z h (u s) - (tr B z (C.b (t s)) (C.b (t s')) : Y.presheaf.stalk z) * ger z h' (u s')) = 0`. Take the linear combination `(-1 : Y.presheaf.stalk z) * h1 + E1 + (tr N z (C.c (t s)) (C.c (t s')) : Y.presheaf.stalk z) * h2 + (germ (C.a (t s')) z (hV s' h').1 (hV s' h').2.1.1 τ * ger z h' (u s')) * R - ((tr B z (C.b (t s)) (C.b (t s')) : Y.presheaf.stalk z) * ger z h' (u s')) * E2`. Conclude with `sub_eq_zero.1 ((mul_left_mem_nonZeroDivisors_eq_zero_iff hn).1 key))`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨f, C.sec_ext fun t' y hy ha hb hc => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩ : ∃ s : O, s = ⟨y, hy⟩` from `⟨_, rfl⟩`. Establish `hz : y ∈ V s` using `hs ▸ hyV ⟨y, hy⟩`. Establish `E1` using `germ_change (p := p) (C.c t') (C.c (t s)) y hy hc (hV s hz).2.2 g`. Establish `E2` using `germ_change (p := p) (C.a t') (C.a (t s)) y hy ha (hV s hz).2.1.1 τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E3` using `germ_change (p := p) (C.b t') (C.b (t s)) y hy hb (hV s hz).2.1.2 f`. Establish `E4` using `hf s y hz`. Establish `R` using `congrArg Units.val (C.rule y t' (t s) ⟨ha, hb, hc⟩ ⟨(hV s hz).2.1.1, (hV s hz).2.1.2, (hV s hz).2.2⟩)`. Rewrite `R` using `[Units.val_mul]`. Establish `h1` using `hu s y hz`.
-
-Rewrite using `[C.germ_mul _ _ t' y hy ha hb hc]`. Take the linear combination `germ (C.b t') y hy hb f * E2 + ((tr P y (C.a t') (C.a (t s)) : Y.presheaf.stalk y) * germ (C.a (t s)) y (hV s hz).1 (hV s hz).2.1.1 τ) * E3 + ((tr P y (C.a t') (C.a (t s)) : Y.presheaf.stalk y) * germ (C.a (t s)) y (hV s hz).1 (hV s hz).2.1.1 τ * (tr B y (C.b t') (C.b (t s)) : Y. …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Regular.exists_mul_eq {τ : H0 p P O} (hτ : Regular τ) (C : ProdChart P B N) (g : H0 p N O)
     (h : ∀ t y hy ha hc, y ∈ B.U (C.b t) → germ (C.a t) y hy ha τ ∣ germ (C.c t) y hy hc g) :
@@ -141,11 +139,11 @@ theorem Regular.exists_mul_eq {τ : H0 p P O} (hτ : Regular τ) (C : ProdChart 
     (germ (C.a (t s)) y (hV s hz).1 (hV s hz).2.1.1 τ * ger y hz (u s)) * R
 
 /- English proof (translation)
-Establish `ext : ∀ f g : H0 p B O, (∀ i, f.loc i = g.loc i) → f = g` using `fun f g e => Subtype.ext (funext e)`. Establish `ext2 : ∀ f g : H0 p B O, (∀ i z (hz : z ∈ O) (hi : z ∈ B.U i), germ i z hz hi f = germ i z hz hi g) → f = g` using `fun f g e => ext f g fun i => fun_ext_ger fun z hz => (germ_apply i z hz.1 hz.2 f).symm.trans ((e i z hz.1 hz.2).trans (germ_apply i z hz.1 hz.2 g))`. Use `(injective_iff_map_eq_zero (restr h : H0 p B O →ₗ[k] H0 p B O')).2 fun f hf => ext2 f 0 fun i => ?_` and prove the remaining obligations. Establish `h0 : f.loc i = 0`. Apply `eq_zero_of_basicOpen_eq_bot` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨w, hw1, hw2⟩` from `hd.inter_open_nonempty _ (Y.basicOpen (f.loc i)).isOpen ⟨x, hx⟩`. Establish `hwW : w ∈ O ⊓ B.U i` using `Y.basicOpen_le _ hw1`. Establish `hu : IsUnit (ger w hwW (f.loc i))` using `(Y.mem_basicOpen (f.loc i) w hwW).1 hw1`. Establish `e : ger w hwW (f.loc i) = 0` using `(germ_apply i w hwW.1 hwW.2 f).symm.trans ((germ_restr h i w hw2 hwW.2 f).symm.trans (by rw [hf, map_zero]))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(not_isUnit_zero (e ▸ hu)).elim`. Introduce `z hz hi`. Rewrite using `[map_zero, germ_apply, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restr_injective_of_dense [IsReduced Y] (h : O' ≤ O) (hd : Dense (O' : Set Y)) :
     Function.Injective (restr h : H0 p B O → H0 p B O') := by
@@ -169,16 +167,16 @@ theorem restr_injective_of_dense [IsReduced Y] (h : O' ≤ O) (hd : Dense (O' : 
 def IsoOver (r : T ⟶ Y) (O : Y.Opens) : Prop := ∀ V ≤ O, IsIso (r.app V)
 
 /- English proof (translation)
-Introduce `V hV`. Conclude with `r.isIso_app V (hV.trans h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isoOver_of_isOpenImmersion (r : T ⟶ Y) [IsOpenImmersion r] (h : O ≤ r.opensRange) : IsoOver r O := by
   intro V hV
   exact r.isIso_app V (hV.trans h)
 
 /- English proof (translation)
-Introduce `V hV`. Establish `hι : ∀ W : T.Opens, W ≤ r ⁻¹ᵁ O → IsIso ((r ⁻¹ᵁ O).ι.app W)` using `fun W hW => (r ⁻¹ᵁ O).ι.isIso_app W (by rwa [Scheme.Opens.opensRange_ι])`. Establish `hc : IsIso (((r ⁻¹ᵁ O).ι ≫ r).app V)`. Rewrite using `[← morphismRestrict_ι]`. Conclude with `isoOver_of_isOpenImmersion _ (by rwa [Scheme.Hom.opensRange_comp_of_isIso, Scheme.Opens.opensRange_ι]) V le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[Scheme.Hom.comp_app]`. Establish `h2` using `hι (r ⁻¹ᵁ V) (r.preimage_mono hV)`. Conclude with `@IsIso.of_isIso_comp_right _ _ _ _ _ _ _ h2 hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isoOver_of_isIso (r : T ⟶ Y) [IsIso (r ∣_ O)] : IsoOver r O := by
   intro V hV
@@ -192,7 +190,7 @@ theorem isoOver_of_isIso (r : T ⟶ Y) [IsIso (r ∣_ O)] : IsoOver r O := by
   exact @IsIso.of_isIso_comp_right _ _ _ _ _ _ _ h2 hc
 
 /- English proof (translation)
-Take `rfl` from `le_antisymm e e'`. Use `h V hV` as an intermediate fact. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `(asIso (r.app V)).commRingCatIsoToRingEquiv.bijective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsoOver.bijective {r : T ⟶ Y} (h : IsoOver r O) {V : Y.Opens} (hV : V ≤ O) {W : T.Opens}
     (e : W ≤ r ⁻¹ᵁ V) (e' : r ⁻¹ᵁ V ≤ W) : Function.Bijective (r.appLE V W e).hom := by
@@ -204,35 +202,33 @@ theorem IsoOver.bijective {r : T ⟶ Y} (h : IsoOver r O) {V : Y.Opens} (hV : V 
 def pIdx (B : LB Y) (r : T ⟶ Y) (i : B.ι) : (B.pull r).ι := fun _ => i
 
 /- English proof (translation)
-Conclude with `mem_pull`.
+A detailed English derivation is pending.
 -/
 theorem mem_pIdx {r : T ⟶ Y} {i : B.ι} {z : T} : z ∈ (B.pull r).U (pIdx B r i) ↔ r z ∈ B.U i := by
   exact mem_pull
 
 /- English proof (translation)
-Take `rfl` from `le_antisymm e e'`. Establish `extY : ∀ f g : H0 p B O, (∀ i, f.loc i = g.loc i) → f = g` using `fun f g hfg => Subtype.ext (funext hfg)`. Establish `extT : ∀ f g : H0 (r ≫ p) (B.pull r) (r ⁻¹ᵁ O), (∀ i, f.loc i = g.loc i) → f = g` using `fun f g hfg => Subtype.ext (funext hfg)`. Establish `hle : ∀ i : B.ι, r ⁻¹ᵁ O ⊓ (B.pull r).U (pIdx B r i) ≤ r ⁻¹ᵁ (O ⊓ B.U i)` using `fun i z hz => ⟨hz.1, mem_pIdx.1 hz.2⟩`. Establish `hge : ∀ i : B.ι, r ⁻¹ᵁ (O ⊓ B.U i) ≤ r ⁻¹ᵁ O ⊓ (B.pull r).U (pIdx B r i)` using `fun i z hz => ⟨hz.1, mem_pIdx.2 hz.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bij : ∀ i : B.ι, Function.Bijective (r.appLE (O ⊓ B.U i) _ (hle i)).hom` using `fun i => h.bijective inf_le_left (hle i) (hge i)`. Establish `hloc : ∀ (f : H0 p B O) (i : B.ι), (H0.pull r e f).loc (pIdx B r i) = (r.appLE (O ⊓ B.U i) _ (hle i)).hom (f.loc i)`. Introduce `f i`. Use `fun_ext_ger fun z hz => ?_` and prove the remaining obligations. Rewrite using `[ger_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(germ_apply (pIdx B r i) z hz.1 hz.2 (H0.pull r e f)).symm.trans ?_` and prove the remaining obligations. Use `(germ_pull r e (pIdx B r i) z hz.1 hz.2 f).trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (germ_apply i (r z) _ _ f)`. Use `⟨fun f g hfg => extY f g fun i => (bij i).1 ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hloc, ← hloc, hfg]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose a ha using fun i => (bij i).2 (g.loc (pIdx B r i))`. Establish `hg : ∀ (i : B.ι) (z : T) (hz : z ∈ r ⁻¹ᵁ O) (hzi : z ∈ (B.pull r).U (pIdx B r i)), (r.stalkMap z).hom (ger (r z) (show r z ∈ O ⊓ B.U i from ⟨hz, mem_pIdx.1 hzi⟩) (a i)) = germ (pIdx B r i) z hz hzi g`. Introduce `i z hz hzi`. Use `(ger_appLE r (hle i) z ⟨hz, hzi⟩ (a i)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[ha i]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `(germ_apply _ _ _ _ g).symm`. Take `⟨f, hf⟩` from `exists_of_germs (p := p) (O := O) hB (fun i => O ⊓ B.U i) id (fun _ => inf_le_left) (fun _ => inf_le_right) (fun y hy => (exists_chart hB y).imp fun _ hi => ⟨hy, hi⟩) a (fun y i i' hy hy' => by`. Set `V2 : Y.Opens` to `O ⊓ B.U i ⊓ B.U i'`. Establish `l1 : V2 ≤ O ⊓ B.U i` using `fun x hx => hx.1`. Establish `l2 : V2 ≤ B.U i ⊓ B.U i'` using `fun x hx => ⟨hx.1.2, hx.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `l3 : V2 ≤ O ⊓ B.U i'` using `fun x hx => ⟨hx.1.1, hx.2⟩`. Set `F : Γ(Y, V2)` to `resG Y l1 (a i) - resG Y l2 (B.g i i').val * resG Y l3 (a i')`. Establish `gF : ∀ x (hx : x ∈ V2), ger x hx F = ger x (l1 hx) (a i) - ger x (l2 hx) (B.g i i').val * ger x (l3 hx) (a i')`. Introduce `x hx`. Simplify using `only [F, map_sub, map_mul, ger_resG]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : F = 0`. Apply `(h.bijective (V := V2) (fun x hx => hx.1.1) le_rfl le_rfl).1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `fun_ext_ger fun z hz => ?_` and prove the remaining obligations. Rewrite using `[ger_appLE, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(congrArg (r.stalkMap z).hom (gF (r z) hz)).trans ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul]`. Establish `hz1 : z ∈ r ⁻¹ᵁ O` using `hz.1.1`. Establish `hzi : z ∈ (B.pull r).U (pIdx B r i)` using `mem_pIdx.2 hz.1.2`. Establish `hzi' : z ∈ (B.pull r).U (pIdx B r i')` using `mem_pIdx.2 hz.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E1` using `hg i z hz1 hzi`. Establish `E2` using `hg i' z hz1 hzi'`. Establish `E3` using `germ_change (p := r ≫ p) (pIdx B r i) (pIdx B r i') z hz1 hzi hzi' g`. Establish `E6 : ((tr (B.pull r) z (pIdx B r i) (pIdx B r i') : T.presheaf.stalk z)) = (r.stalkMap z).hom (ger (r z) (l2 hz) (B.g i i').val)`. Establish `E4` using `congrArg Units.val (tr_pull B r z hzi hzi')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `E4` using `[Units.coe_map]`. Rewrite using `[E4]`. Conclude with `congrArg (fun x => (r.stalkMap z).hom x) (val_tr B (r z) (l2 hz))`. Take the linear combination `E1 + E3 + germ (pIdx B r i') z hz1 hzi' g * E6 - (r.stalkMap z).hom (ger (r z) (l2 hz) (B.g i i').val) * E2`. Establish `e0` using `gF y ⟨hy, hy'.2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e0` using `[hF, map_zero]`. Use `show ger y hy (a i) = (tr B y i i' : Y.presheaf.stalk y) * ger y hy' (a i')`. Rewrite using `[val_tr B y (l2 ⟨hy, hy'.2⟩)]`. Conclude with `(sub_eq_zero.1 e0.symm))`. Establish `hfa : ∀ i, f.loc i = a i` using `fun i => fun_ext_ger fun y hy => (germ_apply i y hy.1 hy.2 f).symm.trans (hf i y hy)`.
-
-Use `⟨f, extT _ _ fun j => ?_⟩` and prove the remaining obligations. Use `show (H0.pull r e f).loc (pIdx B r (j PUnit.unit)) = g.loc (pIdx B r (j PUnit.unit))`. Rewrite using `[hloc, hfa, ha]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsoOver.bijective_pull {r : T ⟶ Y} (h : IsoOver r O) (hB : B.IsLB) {W : T.Opens} (e : W ≤ r ⁻¹ᵁ O)
     (e' : r ⁻¹ᵁ O ≤ W) : Function.Bijective (H0.pull (p := p) (B := B) r e) := by
@@ -311,26 +307,26 @@ theorem IsoOver.bijective_pull {r : T ⟶ Y} (h : IsoOver r O) (hB : B.IsLB) {W 
 def toSec (f : H0 p B ⊤) : B.Sec := (Equiv.ofBijective _ (bijective_ofSec_top (p := p) (B := B))).symm f
 
 /- English proof (translation)
-Conclude with `(Equiv.ofBijective _ (bijective_ofSec_top (p := p) (B := B))).apply_symm_apply f`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ofSec_toSec (f : H0 p B ⊤) : ofSec p ⊤ (toSec f) = f := by
   exact (Equiv.ofBijective _ (bijective_ofSec_top (p := p) (B := B))).apply_symm_apply f
 
 /- English proof (translation)
-Rewrite using `[← restr_ofSec (le_top : O ≤ ⊤), ofSec_toSec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofSec_toSec' (O : Y.Opens) (f : H0 p B ⊤) : ofSec p O (toSec f) = restr le_top f := by
   rw [← restr_ofSec (le_top : O ≤ ⊤), ofSec_toSec]
 
 /- English proof (translation)
-Rewrite using `[← germ_ofSec (p := p) i y (memTop y) hi, ofSec_toSec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ger_toSec (f : H0 p B ⊤) (i : B.ι) (y : Y) (hi : y ∈ B.U i) :
     ger y hi ((toSec f).f i) = germ i y (memTop y) hi f := by
   rw [← germ_ofSec (p := p) i y (memTop y) hi, ofSec_toSec]
 
 /- English proof (translation)
-Use `show ger y h (powFn (secToPow t n) fun _ => i) = _`. Rewrite using `[secToPow, powFn_powSecMk]`. Use `erw [ger_resG]`. Conclude with `map_pow _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ger_secToPow (t : P.Sec) (n : ℕ) (i : P.ι) (y : Y) (hi : y ∈ P.U i) (h : y ∈ (lbZPow P n).U fun _ => i) :
     ger y h ((secToPow t n).f fun _ => i) = ger y hi (t.f i) ^ n := by
@@ -365,9 +361,9 @@ variable {Λ Λ' : Type} [AddCommGroup Λ] [AddCommGroup Λ'] {B : Λ → LB Y} 
 abbrev θ (a : Λ) (y : Y) (j j' : C.J) : (Y.presheaf.stalk y)ˣ := tr (B a) y (C.idx a j) (C.idx a j')
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `e` using `C.add 0 0 y j j' h h'`. Rewrite `e` using `[add_zero]`. Rewrite using `[zero_nsmul, pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_cancel (e.symm.trans (mul_one _).symm)`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul, pow_succ, ← ih]`. Conclude with `C.add (n • a) a y j j' h h'`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul (a : Λ) (n : ℕ) {y : Y} {j j' : C.J} (h : y ∈ C.U j) (h' : y ∈ C.U j') :
     C.θ (n • a) y j j' = C.θ a y j j' ^ n := by
@@ -510,7 +506,7 @@ section Base
 variable {p : Y ⟶ Sp k} {B : LB Y} (hB : B.IsLB)
 
 /- English proof (translation)
-Use extensionality with `U a`. Rewrite using `[mem_ideal_iff_ger I U a, mem_ideal_iff_ger I' U a]`. Simplify using `only [h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ideal_ext_stalk {I I' : Y.IdealSheafData} (h : ∀ y, stalkId I y = stalkId I' y) : I = I' := by
   ext U a
@@ -520,7 +516,7 @@ theorem ideal_ext_stalk {I I' : Y.IdealSheafData} (h : ∀ y, stalkId I y = stal
 def baseIdeal (W : Submodule k (H0 p B ⊤)) : Y.IdealSheafData := cutIdeal hB fun s : W => toSec s.1
 
 /- English proof (translation)
-Rewrite using `[baseIdeal, stalkId_cutIdeal hB _ i y hi]`. Use `congr 2`. Use function extensionality and compare the values at `s`. Conclude with `ger_toSec s.1 i y hi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stalkId_baseIdeal (W : Submodule k (H0 p B ⊤)) (i : B.ι) (y : Y) (hi : y ∈ B.U i) :
     stalkId (baseIdeal hB W) y = Ideal.span (Set.range fun s : W => germ i y (memTop y) hi s.1) := by
@@ -530,7 +526,7 @@ theorem stalkId_baseIdeal (W : Submodule k (H0 p B ⊤)) (i : B.ι) (y : Y) (hi 
   exact ger_toSec s.1 i y hi
 
 /- English proof (translation)
-Rewrite using `[baseIdeal, mem_support_cutIdeal]`. Conclude with `⟨fun h s hs => h ⟨s, hs⟩, fun h s => h s.1 s.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_support_baseIdeal (W : Submodule k (H0 p B ⊤)) (y : Y) :
     y ∈ (baseIdeal hB W).support ↔ ∀ s ∈ W, y ∉ nonzeroLocus (toSec s) := by
@@ -538,13 +534,11 @@ theorem mem_support_baseIdeal (W : Submodule k (H0 p B ⊤)) (y : Y) :
   exact ⟨fun h s hs => h ⟨s, hs⟩, fun h s => h s.1 s.2⟩
 
 /- English proof (translation)
-Use `ideal_ext_stalk fun y => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hB y`. Rewrite using `[stalkId_baseIdeal hB _ j y hj, stalkId_cutIdeal hB v j y hj]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨⟨s, hs⟩, rfl⟩`. Use `show germ j y (memTop y) hj s ∈ _`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `Ideal.subset_span ⟨i, (germ_ofSec j y (memTop y) hj (v i)).symm⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Ideal.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Ideal.add_mem _ ha hb`.
-
-Consider the case `smul c a _ ha => rw [germ_smul]`. Conclude with `Ideal.mul_mem_left _ _ ha`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Ideal.subset_span ⟨⟨ofSec p ⊤ (v i), Submodule.subset_span ⟨i, rfl⟩⟩, germ_ofSec j y (memTop y) hj (v i)⟩`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem baseIdeal_span {ι : Type} (v : ι → B.Sec) :
     baseIdeal hB (Submodule.span k (Set.range fun i => ofSec p ⊤ (v i))) = cutIdeal hB v := by
@@ -567,9 +561,9 @@ theorem baseIdeal_span {ι : Type} (v : ι → B.Sec) :
     exact Ideal.subset_span ⟨⟨ofSec p ⊤ (v i), Submodule.subset_span ⟨i, rfl⟩⟩, germ_ofSec j y (memTop y) hj (v i)⟩
 
 /- English proof (translation)
-Establish `e` using `eq_comap_of_stalk (I := baseIdeal hB W) (I' := cutIdeal (LB.isLB_pull hB r) fun s : W => secPull (toSec s.1) r) (φ := r) (fun z => stalkId_cutIdeal_secPull hB _ z)`. Rewrite using `[← e, stalkId_cutIdeal _ _ j z hj]`. Use `congr 2`. Use function extensionality and compare the values at `s`. Use `(secGer_chartSec (chartPullPull B r) (fun s : W => toSec s.1) j z hj s).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (germ_pull r le_top j z (memTop z) hj s.1).symm` and prove the remaining obligations. Use `congr 1`. Conclude with `ger_toSec s.1 _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem stalkId_comap_baseIdeal (W : Submodule k (H0 p B ⊤)) (r : T ⟶ Y) (j : (B.pull r).ι) (z : T)
     (hj : z ∈ (B.pull r).U j) : stalkId ((baseIdeal hB W).comap r) z =
@@ -614,7 +608,7 @@ def ofSec [IsIntegral Y] {P : LB Y} (hP : P.IsLB) (t : P.Sec) {y₀ : Y} (ht : y
 variable {I : Y.IdealSheafData} (Δ : Cartier I)
 
 /- English proof (translation)
-Establish `e` using `stalkId_cutIdeal Δ.isLB (fun _ : Unit => Δ.t) i y hi`. Rewrite `e` using `[Δ.cut]`. Rewrite using `[e]`. Conclude with `congrArg Ideal.span Set.range_const`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkId_eq (i : Δ.P.ι) (y : Y) (hi : y ∈ Δ.P.U i) : stalkId I y = Ideal.span {ger y hi (Δ.t.f i)} := by
   have e := stalkId_cutIdeal Δ.isLB (fun _ : Unit => Δ.t) i y hi
@@ -623,7 +617,7 @@ theorem stalkId_eq (i : Δ.P.ι) (y : Y) (hi : y ∈ Δ.P.U i) : stalkId I y = I
   exact congrArg Ideal.span Set.range_const
 
 /- English proof (translation)
-Establish `e` using `mem_support_cutIdeal Δ.isLB (fun _ : Unit => Δ.t) y`. Rewrite `e` using `[Δ.cut]`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_nonzeroLocus (y : Y) : y ∈ nonzeroLocus Δ.t ↔ y ∉ I.support := by
   have e := mem_support_cutIdeal Δ.isLB (fun _ : Unit => Δ.t) y
@@ -632,7 +626,7 @@ theorem mem_nonzeroLocus (y : Y) : y ∈ nonzeroLocus Δ.t ↔ y ∉ I.support :
   simp
 
 /- English proof (translation)
-Introduce `y hy i hi`. Rewrite using `[germ_ofSec]`. Conclude with `Δ.reg i y hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regular (p : Y ⟶ Sp k) (O : Y.Opens) : Regular (H0.ofSec p O Δ.t) := by
   intro y hy i hi
@@ -642,7 +636,7 @@ theorem regular (p : Y ⟶ Sp k) (O : Y.Opens) : Regular (H0.ofSec p O Δ.t) := 
 def pow (n : ℕ) : (lbZPow Δ.P n).Sec := secToPow Δ.t n
 
 /- English proof (translation)
-Establish `e` using `germ_ofSec (p := p) (O := O) (B := lbZPow Δ.P n) (fun _ => i) y hy h (Δ.pow n)`. Conclude with `e.trans (ger_secToPow Δ.t n i y hi h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem germ_pow (p : Y ⟶ Sp k) {O : Y.Opens} (n : ℕ) (i : Δ.P.ι) (y : Y) (hy : y ∈ O) (hi : y ∈ Δ.P.U i)
     (h : y ∈ (lbZPow Δ.P n).U fun _ => i) :
@@ -651,9 +645,9 @@ theorem germ_pow (p : Y ⟶ Sp k) {O : Y.Opens} (n : ℕ) (i : Δ.P.ι) (y : Y) 
   exact e.trans (ger_secToPow Δ.t n i y hi h)
 
 /- English proof (translation)
-Introduce `y hy j hj`. Establish `hi : y ∈ Δ.P.U (j PUnit.unit)` using `(mem_zpow_U (j := j PUnit.unit)).1 hj`. Establish `e` using `Δ.germ_pow p n (j PUnit.unit) y hy hi hj`. Establish `u` using `((isUnit_ger_iff Δ.t hi).2 ((Δ.mem_nonzeroLocus y).2 (hO y hy))).pow n`. Rewrite `u` using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `u`.
+A detailed English derivation is pending.
 -/
 theorem nowhereZero_pow (p : Y ⟶ Sp k) {O : Y.Opens} (hO : ∀ y ∈ O, y ∉ I.support) (n : ℕ) :
     NowhereZero (H0.ofSec p O (Δ.pow n)) := by
@@ -673,7 +667,7 @@ namespace Cartier
 abbrev moving : LB T := LB.div (B.pull r) Δ.P
 
 /- English proof (translation)
-Conclude with `LB.isLB_div (LB.isLB_pull hB r) Δ.isLB`.
+A detailed English derivation is pending.
 -/
 theorem isLB_moving : Δ.moving.IsLB := by
   exact LB.isLB_div (LB.isLB_pull hB r) Δ.isLB
@@ -682,13 +676,13 @@ def incl (O : T.Opens) : H0 (r ≫ p) Δ.moving O →ₗ[k] H0 (r ≫ p) (B.pull
   (divChart (LB.isLB_pull hB r) Δ.isLB).mul (H0.ofSec _ O Δ.t)
 
 /- English proof (translation)
-Conclude with `Regular.injective_mul (Δ.regular _ O) _`.
+A detailed English derivation is pending.
 -/
 theorem incl_injective (O : T.Opens) : Function.Injective (Δ.incl O) := by
   exact Regular.injective_mul (Δ.regular _ O) _
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `Regular.exists_mul_eq (Δ.regular _ ⊤) (divChart (LB.isLB_pull hB r) Δ.isLB) (H0.pull r le_top w.1) (fun t' z hz ha hc _ => by`. Rewrite using `[germ_ofSec, ← Ideal.mem_span_singleton, ← Δ.stalkId_eq t'.2 z ha, stalkId_comap_baseIdeal hB W r t'.1 z hc]`. Conclude with `Ideal.subset_span ⟨w, rfl⟩)`. Conclude with `⟨f, hf⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pull_mem_range (w : W) : H0.pull r le_top w.1 ∈ LinearMap.range (Δ.incl ⊤) := by
   obtain ⟨f, hf⟩ := Regular.exists_mul_eq (Δ.regular _ ⊤) (divChart (LB.isLB_pull hB r) Δ.isLB) (H0.pull r le_top w.1)
@@ -702,14 +696,14 @@ def lift : W →ₗ[k] H0 (r ≫ p) Δ.moving ⊤ :=
     (H0.pull r le_top ∘ₗ W.subtype).codRestrict _ Δ.pull_mem_range
 
 /- English proof (translation)
-Use `show Δ.incl ⊤ ((LinearEquiv.ofInjective _ (Δ.incl_injective ⊤)).symm ⟨H0.pull r le_top w.1, Δ.pull_mem_range w⟩) = _`. Conclude with `congrArg Subtype.val ((LinearEquiv.ofInjective _ (Δ.incl_injective ⊤)).apply_symm_apply ⟨H0.pull r le_top w.1, Δ.pull_mem_range w⟩)`.
+A detailed English derivation is pending.
 -/
 theorem incl_lift (w : W) : Δ.incl ⊤ (Δ.lift w) = H0.pull r le_top w.1 := by
   show Δ.incl ⊤ ((LinearEquiv.ofInjective _ (Δ.incl_injective ⊤)).symm ⟨H0.pull r le_top w.1, Δ.pull_mem_range w⟩) = _
   exact congrArg Subtype.val ((LinearEquiv.ofInjective _ (Δ.incl_injective ⊤)).apply_symm_apply ⟨H0.pull r le_top w.1, Δ.pull_mem_range w⟩)
 
 /- English proof (translation)
-Rewrite using `[← germ_ofSec (p := r ≫ p) j.2 z (memTop z) hj.2, ← Δ.incl_lift w]`. Conclude with `((divChart (LB.isLB_pull hB r) Δ.isLB).germ_mul _ _ j z (memTop z) hj.2 hj hj.1).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_lift (w : W) (j : Δ.moving.ι) (z : T) (hj : z ∈ Δ.moving.U j) :
     ger z hj.2 (Δ.t.f j.2) * germ j z (memTop z) hj (Δ.lift w) =
@@ -718,23 +712,19 @@ theorem germ_lift (w : W) (j : Δ.moving.ι) (z : T) (hj : z ∈ Δ.moving.U j) 
   exact ((divChart (LB.isLB_pull hB r) Δ.isLB).germ_mul _ _ j z (memTop z) hj.2 hj hj.1).symm
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Opens.mem_iSup]`. Take `⟨j, hj⟩` from `exists_chart Δ.isLB_moving z`. Establish `hG : ∀ w : W, ger z hj.2 (Δ.t.f j.2) * germ j z (memTop z) hj (Δ.lift w) = germ j.1 z (memTop z) hj.1 (H0.pull r le_top w.1)` using `fun w => Δ.germ_lift w j z hj`. Set `J : Ideal (T.presheaf.stalk z)` to `Ideal.span (Set.range fun i => germ j z (memTop z) hj (Δ.lift (v i)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hJ : ∀ w : W, germ j z (memTop z) hj (Δ.lift w) ∈ J`. Introduce `w`. Establish `hw : w ∈ Submodule.span k (Set.range v)` using `by rw [hv]; exact Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hx`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `J.zero_mem`. Consider the case `add a b _ _ ha hb => rw [map_add, map_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `J.add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul, germ_smul]`. Conclude with `J.mul_mem_left _ ha`. Establish `hT : ger z hj.2 (Δ.t.f j.2) ∈ Ideal.span (Set.range fun s : W => germ j.1 z (memTop z) hj.1 (H0.pull r le_top s.1))`. Rewrite using `[← stalkId_comap_baseIdeal hB W r j.1 z hj.1, Δ.stalkId_eq j.2 z hj.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Establish `hsub : Ideal.span (Set.range fun s : W => germ j.1 z (memTop z) hj.1 (H0.pull r le_top s.1)) ≤ Ideal.span {ger z hj.2 (Δ.t.f j.2)} * J`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Use `show germ j.1 z (memTop z) hj.1 (H0.pull r le_top s.1) ∈ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hG s]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) (hJ s)`. Take `⟨x, hx, hx'⟩` from `Ideal.mem_span_singleton_mul.1 (hsub hT)`. Establish `hn` using `Δ.reg j.2 z hj.2`. Establish `h1 : x = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ger z hj.2 (Δ.t.f j.2) * (x - 1) = 0` using `by rw [mul_sub, hx', mul_one, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_left_mem_nonZeroDivisors_eq_zero_iff hn).1 e)`. Establish `htop : J = ⊤` using `(Ideal.eq_top_iff_one _).2 (h1 ▸ hx)`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
-
-Establish `hle : J ≤ IsLocalRing.maximalIdeal _`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
-
-Apply `hne i` to reduce the goal to its premises. Rewrite using `[← isUnit_ger_iff _ hj, ger_toSec]`. Conclude with `hu`. Rewrite `hle` using `[htop]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 hle)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_nonzeroLocus {ι : Type} {v : ι → W} (hv : Submodule.span k (Set.range v) = ⊤) :
     ⨆ i, nonzeroLocus (toSec (Δ.lift (v i))) = ⊤ := by
@@ -823,7 +813,7 @@ abbrev opn : M.X.Opens := M.σ ⁻¹ᵁ U
 instance : SmoothOfRelativeDimension D M.str := M.smooth
 
 /- English proof (translation)
-Use `M.iso` as an intermediate fact. Conclude with `(isoOver_of_isIso M.σ).bijective_pull hB (le_refl _) (le_refl _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_pull {B : LB Y} (hB : B.IsLB) :
     Function.Bijective (H0.pull (p := p) (B := B) M.σ (le_refl M.opn)) := by
@@ -831,15 +821,13 @@ theorem bijective_pull {B : LB Y} (hB : B.IsLB) :
   exact (isoOver_of_isIso M.σ).bijective_pull hB (le_refl _) (le_refl _)
 
 /- English proof (translation)
-Establish `hr : Set.range x.base ⊆ Set.range U.ι.base`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hx (show s ∈ (⊤ : S.Opens) from trivial)`. Set `x'` to `IsOpenImmersion.lift U.ι x hr`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx' : x' ≫ U.ι = x` using `IsOpenImmersion.lift_fac _ _ _`. Use `M.iso` as an intermediate fact. Use `⟨x' ≫ inv (M.σ ∣_ U) ≫ M.opn.ι, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `show (x' ≫ inv (M.σ ∣_ U) ≫ M.opn.ι) ≫ M.σ = x`. Rewrite using `[Category.assoc, Category.assoc, ← morphismRestrict_ι, IsIso.inv_hom_id_assoc, hx']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : z ≫ M.σ = x` using `hz`. Establish `hr' : Set.range z.base ⊆ Set.range M.opn.ι.base`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `h1 : x.base s ∈ U` using `hx (show s ∈ (⊤ : S.Opens) from trivial)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[← hz]`. Conclude with `h1`. Set `z'` to `IsOpenImmersion.lift M.opn.ι z hr'`. Establish `hz' : z' ≫ M.opn.ι = z` using `IsOpenImmersion.lift_fac _ _ _`. Establish `e : z' ≫ (M.σ ∣_ U) = x'`.
-
-Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hz', hz, hx']`. Rewrite using `[← hz', ← e, Category.assoc, IsIso.hom_inv_id_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_lift {S : Scheme.{0}} (x : S ⟶ Y) (hx : ⊤ ≤ x ⁻¹ᵁ U) : ∃! z : S ⟶ M.X, z ≫ M.σ = x := by
   have hr : Set.range x.base ⊆ Set.range U.ι.base := by
@@ -878,9 +866,9 @@ def trans (M' : Modif M.str M.opn D) : Modif p U D where
 end Modif
 
 /- English proof (translation)
-Establish `hv` using `Adelic.projSys.isVariety ℚ 1 le_rfl`. Establish `: IsIntegral (PSpace ℚ 1)` using `hv.isIntegral`. Establish `hg` using `Adelic.projSys.gen_mem ℚ 1 1`. Establish `e` using `ProjSpace.nonzeroLocus_coord ℚ 1 1`. Set `M` to `Modif.refl hv.smooth hv.proj ((ProjSpace.chart ℚ 1 1).isOpen.dense ⟨_, hg⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Δ` to `Cartier.ofSec (ProjSpace.O1_isLB ℚ 1) (ProjSpace.coord ℚ 1 1) (e.ge hg)`. Conclude with `⟨_, M, { Δ with cut := (baseIdeal_span _ _).symm.trans (Scheme.IdealSheafData.comap_id _).symm }, e, fun h => AmpleModel.coord_ne_top ℚ (e.trans h)⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 example : ∃ (W : Submodule ℚ (H0 (PSpace.str ℚ 1) (ProjSpace.O1 ℚ 1) ⊤))
     (M : Modif (PSpace.str ℚ 1) (ProjSpace.chart ℚ 1 1) 1)

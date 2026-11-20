@@ -10,47 +10,35 @@ noncomputable section
 namespace GlobalTheory.LocExt
 
 /- English proof (translation)
-Introduce `R V R' _ _ _ _ _ _ _ ψ ρ hV hψ hρ hfin`. Take `⟨hnoeth, hnorm, hcomp, hchar⟩` from `hV`. Use `letI : Algebra R R' := ρ.toAlgebra`. Use `haveI : Module.Finite R R' := hfin`. Use `haveI : Algebra.IsIntegral R R' := Algebra.IsIntegral.of_finite R R'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : (RingHom.ker ψ).IsPrime := RingHom.ker_isPrime ψ`. Take `⟨q, -, hqprime, hq⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker ψ) (⊥ : Ideal R') (by`. Introduce `x hx`. Establish `h0 : ρ x = 0` using `Ideal.mem_bot.1 (Ideal.mem_comap.1 hx)`. Rewrite using `[hρ (h0.trans (map_zero ρ).symm)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `zero_mem _)`. Use `haveI := hqprime`. Set `K` to `FractionRing V`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective V K)`. Set `Ω` to `AlgebraicClosure K`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ιK : V →+* Ω` to `(algebraMap K Ω).comp (algebraMap V K)`. Establish `hιK : Function.Injective ιK` using `(algebraMap K Ω).injective.comp (IsFractionRing.injective V K)`. Set `P` to `q.comap (algebraMap R R')`. Set `ψb : R ⧸ P →+* V` to `Ideal.Quotient.lift P ψ (fun a ha => by`. Establish `: a ∈ RingHom.ker ψ` using `hq ▸ ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `RingHom.mem_ker.1 this)`. Establish `hψb : Function.Injective ψb`. Use `(injective_iff_map_eq_zero ψb).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h1 : ψ a = 0` using `hx`.
+Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : a ∈ P` using `by rw [show P = RingHom.ker ψ from hq]; exact RingHom.mem_ker.2 h1`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h2`. Use `letI : Algebra (R ⧸ P) Ω := (ιK.comp ψb).toAlgebra`. Use `haveI : Module.IsTorsionFree (R ⧸ P) (R' ⧸ q) := Module.isTorsionFree_iff_algebraMap_injective.2 Ideal.algebraMap_quotient_injective`. Use `haveI : Module.IsTorsionFree (R ⧸ P) Ω := Module.isTorsionFree_iff_algebraMap_injective.2 (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Function.Injective (ιK.comp ψb)`. Conclude with `hιK.comp hψb)`. Use `haveI : Algebra.IsAlgebraic (R ⧸ P) (R' ⧸ q) := Algebra.IsIntegral.isAlgebraic`. Set `φb : (R' ⧸ q) →ₐ[R ⧸ P] Ω` to `IsAlgClosed.lift`. Set `φ : R' →+* Ω` to `φb.toRingHom.comp (Ideal.Quotient.mk q)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφρ : ∀ r, φ (ρ r) = ιK (ψ r)` using `fun r => by`. Use `φb.commutes (Ideal.Quotient.mk P r)` as an intermediate fact. Conclude with `this`. Establish `hint : ∀ x : R', ∃ p : Polynomial V, p.Monic ∧ p.eval₂ ιK (φ x) = 0` using `fun x => by`. Take `⟨p, hmon, hp⟩` from `Algebra.IsIntegral.isIntegral (R := R) x`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Use `⟨p.map ψ, hmon.map ψ, ?_⟩` and prove the remaining obligations. Establish `hc : ιK.comp ψ = φ.comp (algebraMap R R')` using `RingHom.ext fun r => (hφρ r).symm`. Rewrite using `[Polynomial.eval₂_map, hc, ← Polynomial.hom_eval₂, hp, map_zero]`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := R) (M := R')`. Set `L : IntermediateField K Ω` to `IntermediateField.adjoin K ((φ '' (s : Set R')) : Set Ω)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hintK : ∀ x : R', IsIntegral K (φ x)` using `fun x => by`. Take `⟨p, hmon, hp⟩` from `hint x`. Use `⟨p.map (algebraMap V K), hmon.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional K L := IntermediateField.finiteDimensional_adjoin (by`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `hintK x)`. Establish `hmem : ∀ x : R', φ x ∈ L` using `fun x => by`. Establish `hx : x ∈ Submodule.span R (s : Set R')` using `hs ▸ Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin K _ ⟨y, hy, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem L`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `add_mem hy hz`. Consider the case `smul r y _ hy`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `mul_mem ?_ hy` and prove the remaining obligations. Establish `: φ (algebraMap R R' r) = algebraMap K Ω (algebraMap V K (ψ r))` using `hφρ r`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `L.algebraMap_mem _`. Set `φL : R' →+* L` to `φ.codRestrict L hmem`. Set `W` to `integralClosure V L`. Use `haveI hWf : Module.Finite V W := IsIntegralClosure.finite V K L W`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsLocalRing W := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isLocalRing_finite_domain (R := V) W`. Establish `hVL : Function.Injective (algebraMap V L)`. Rewrite using `[IsScalarTower.algebraMap_eq V K L]`. Conclude with `(algebraMap K L).injective.comp (IsFractionRing.injective V K)`. Establish `hinjW : Function.Injective (algebraMap V W)` using `fun x y h => hVL (congrArg Subtype.val h)`.
-
-Establish `hran : ∀ x : R', φL x ∈ W` using `fun x => by`. Take `⟨p, hmon, hp⟩` from `hint x`. Use `⟨p, hmon, ?_⟩` and prove the remaining obligations. Apply `Subtype.val_injective` to reduce the goal to its premises. Establish `h` using `Polynomial.hom_eval₂ p (algebraMap V L) (algebraMap L Ω) (φL x)`.
-
-Use `h.trans ?_` and prove the remaining obligations. Conclude with `hp`. Set `ψ' : R' →+* W` to `φL.codRestrict W hran`. Establish `hcomm : ψ'.comp ρ = (algebraMap V W).comp ψ` using `RingHom.ext fun r => by`. Apply `Subtype.val_injective` to reduce the goal to its premises.
-
-Apply `Subtype.val_injective` to reduce the goal to its premises. Conclude with `hφρ r`. Use `haveI : CharZero W := charZero_of_injective_algebraMap hinjW`. Establish `h1 : (maximalIdeal W).comap (algebraMap V W) = maximalIdeal V` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal W))`. Establish `hlocW : IsLocalHom (algebraMap V W)` using `((local_hom_TFAE _).out 0 4).2 h1`.
-
-Use `⟨W, inferInstance, inferInstance, inferInstance, algebraMap V W, ψ', ⟨IsNoetherianRing.of_finite V W, integralClosure.isIntegrallyClosedOfFiniteExtension K, CompleteFiniteExtension.isAdicComplete_of_finite_local V W, inferInstance⟩, hinjW, RingHom.finite_algebraMap.2 hWf, hlocW, …` and prove the remaining obligations. Use `((local_hom_TFAE ψ').out 0 4).2 ?_` and prove the remaining obligations. Establish `hmR : (maximalIdeal W).comap (ψ'.comp (algebraMap R R')) = maximalIdeal R`. Establish `h2 : (maximalIdeal V).comap ψ = maximalIdeal R` using `((local_hom_TFAE _).out 0 4).1 hψ`. Express the relevant statement in the definitionally equal form `(maximalIdeal W).comap (ψ'.comp ρ) = maximalIdeal R`.
-
-Rewrite using `[hcomm, ← Ideal.comap_comap, h1, h2]`. Establish `hQ : ((maximalIdeal W).comap ψ').IsMaximal`. Apply `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := R)` to reduce the goal to its premises. Rewrite using `[Ideal.comap_comap, hmR]`. Conclude with `maximalIdeal.isMaximal R`.
-
-Conclude with `IsLocalRing.eq_maximalIdeal hQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCN_common_of_finite : ∀ (R₀ A R' : Type) [CommRing R₀] [IsLocalRing R₀] [CommRing A] [IsDomain A] [IsLocalRing A] [CommRing R'] [IsLocalRing R'] (φ : R₀ →+* A) (ρ : R₀ →+* R'), IsCN A → IsLocalHom φ → Function.Injective ρ → ρ.Finite → ∃ (A₁ : Type) (_ : CommRing A₁) (_ : IsDomain A₁) (_ : IsLocalRing A₁) (ι : A →+* A₁) (σ : R' →+* A₁), IsCN A₁ ∧ Function.Injective ι ∧ ι.Finite ∧ IsLocalHom ι ∧ IsLocalHom σ ∧ σ.comp ρ = ι.comp φ := by
   intro R V R' _ _ _ _ _ _ _ ψ ρ hV hψ hρ hfin

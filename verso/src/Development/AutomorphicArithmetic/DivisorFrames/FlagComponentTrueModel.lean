@@ -18,7 +18,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (C : FlagCpt Z e)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `expo`. Rewrite using `[Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp)]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem expo_single_eq (a a' : ℕ → Bool) (R : Option ℝ) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) (n : ℤ) :
     expo Dw (Finsupp.single (a, R, st) n) = expo Dw (Finsupp.single (a', R, st) n) := by
@@ -27,7 +27,7 @@ private theorem expo_single_eq (a a' : ℕ → Bool) (R : Option ℝ) (st : ((E 
   rw [Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp)]
 
 /- English proof (translation)
-Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> exact expo_single_eq _ _ _ _ _`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem expo_root_eq (a a' : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) :
     expo Dw (rootSym Dw a R τ i) = expo Dw (rootSym Dw a' R τ i) := by
@@ -35,9 +35,9 @@ private theorem expo_root_eq (a a' : ℕ → Bool) (R : Option ℝ) (τ : E →+
   split_ifs <;> exact expo_single_eq _ _ _ _ _
 
 /- English proof (translation)
-Unfold `lgOf`. Rewrite using `[expo_single_eq a a']`. Use `split_ifs with hp`. Simplify using `only`. Rewrite using `[Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem lgOf_single_eq (a a' : ℕ → Bool) (R : Option ℝ) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) (n : ℤ)
     (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt C.Y) (h : a (resP v) = a' (resP v)) :
@@ -52,7 +52,7 @@ private theorem lgOf_single_eq (a a' : ℕ → Bool) (R : Option ℝ) (st : ((E 
   · rfl
 
 /- English proof (translation)
-Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> exact lgOf_single_eq C _ _ _ _ _ v ε y h`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lgOf_root_eq (a a' : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ)
     (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt C.Y) (h : a (resP v) = a' (resP v)) :
@@ -61,7 +61,7 @@ private theorem lgOf_root_eq (a a' : ℕ → Bool) (R : Option ℝ) (τ : E →+
   split_ifs <;> exact lgOf_single_eq C _ _ _ _ _ v ε y h
 
 /- English proof (translation)
-Unfold `rootSym at hs`. Apply the tactic sequence `split_ifs at hs <;> rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hs)]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem root_support (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) (s : Sym E)
     (hs : s ∈ (rootSym Dw a R τ i).support) : s.1 = a := by
@@ -71,13 +71,11 @@ private theorem root_support (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z F _ _ ε C _ hX M ρ' hM hρ τ a R p N`. Set `a' : ℕ → Bool` to `fun q => a p && decide (q = p)`. Establish `ha' : {q | a' q = true}.Finite` using `(Set.finite_singleton p).subset fun q hq => by`. Establish `hq' : (a p && decide (q = p)) = true` using `hq`. Simplify using `only [Bool.and_eq_true, decide_eq_true_eq] at hq'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hq'.2`. Take `⟨V₀, hV⟩` from `UpperTheory.exists_cover_power_readings F C.Y N (fun i => divOf C (expo Dw (rootSym Dw a' R τ i))) (fun i => lgOf C (rootSym Dw a' R τ i)) fun i => fromModel_lgOf C GlobalTheory.ShFam.Pad.HTBound.htBound hX M ρ' hM hρ _ fun s hs => by`. Rewrite using `[root_support a' R τ i s hs]`. Conclude with `ha'`. Use `⟨V₀, fun V b g h₁ h₂ i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm, h⟩` from `hV V b g h₁ h₂ p i`. Rewrite using `[expo_root_eq a a']`. Use `⟨m, hm, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨U, r, hU, h₃, h₄⟩` from `h x hx`. Use `⟨U, r, hU, h₃, fun v e y z yt ht hy => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[lgOf_root_eq C a a' R τ i v e y (by rw [ht.1]; simp [a'])]`. Conclude with `h₄ v e y z yt ht hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.flag_component_true_model :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (F : Type) [Field F] [NumberField F] (ε : F ≃+* c.F) (C : FlagCpt Z ε) [IsLocallyNoetherian Z.X], Z.X.IsSeparated → ∀ (M : GlobalTheory.TrueGeo.Model C.Y) (ρ' : M.X ⟶ Z.X), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X → M.j ≫ ρ' = C.π ≫ genι Z → ∀ (τ : E →+* ℂ) (a : ℕ → Bool) (R : Option ℝ) (p N : ℕ), ∃ V₀ : Cover C.Y, ∀ (V : Cover C.Y) (b : V.X ⟶ V₀.X) (g : V.G ⟶ V₀.G), V.j ≫ b = g ≫ V₀.j → g ≫ V₀.π = V.π → ∀ i : Fin N, PowRead V p (genAt (divOf C (expo Dw (rootSym Dw a R τ i)))) (lgOf C (rootSym Dw a R τ i)) := by

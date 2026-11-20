@@ -33,20 +33,20 @@ Both sides reduce to the same expression.
 theorem cO_coe (x : 𝓞 K) : ((cO K x : 𝓞 K) : K) = star (x : K) := rfl
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[cO_coe, cO_coe, star_star]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cO_cO (x : 𝓞 K) : cO K (cO K x) = x := by
   apply RingOfIntegers.ext
   rw [cO_coe, cO_coe, star_star]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hs.2, by rw [cO_cO]; exact hs.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem cO_mem_Tw {w : HeightOneSpectrum (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Tw w) : cO K s ∈ Tw w :=
   ⟨hs.2, by rw [cO_cO]; exact hs.1⟩
 
 /- English proof (translation)
-Use `Submonoid.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `s ⟨hs, hs'⟩`. Conclude with `⟨hs, hs' (cO K s) rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem hcompl_le_Tw (w : HeightOneSpectrum (𝓞 K)) :
     Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal ≤ Tw w := by
@@ -55,7 +55,7 @@ theorem hcompl_le_Tw (w : HeightOneSpectrum (𝓞 K)) :
   exact ⟨hs, hs' (cO K s) rfl⟩
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul K r v).symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_coe {m : Type*} (r : 𝓞 K) (v : m → K) : r • v = (r : K) • v :=
   (algebraMap_smul K r v).symm
@@ -64,7 +64,7 @@ def InS (w : HeightOneSpectrum (𝓞 K)) (x : K) : Prop :=
   ∃ s ∈ Tw w, ∃ r : 𝓞 K, (s : K) * x = r
 
 /- English proof (translation)
-Take `⟨s, hs, r, hr⟩` from `h`. Use `⟨cO K s, cO_mem_Tw hs, cO K r, ?_⟩` and prove the remaining obligations. Rewrite using `[cO_coe, cO_coe, ← hr, star_mul']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem InS.star' {w : HeightOneSpectrum (𝓞 K)} {x : K} (h : InS w x) : InS w (star x) := by
   obtain ⟨s, hs, r, hr⟩ := h
@@ -72,11 +72,11 @@ theorem InS.star' {w : HeightOneSpectrum (𝓞 K)} {x : K} (h : InS w x) : InS w
   rw [cO_coe, cO_coe, ← hr, star_mul']
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, (Tw w).one_mem, by simp⟩`. Consider the case `@insert a S ha ih`. Take `⟨t, ht, hS⟩` from `ih (fun k hk => h k (Finset.mem_insert_of_mem hk))`. Take `⟨s, hs, r, hr⟩` from `h a (Finset.mem_insert_self a S)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s * t, (Tw w).mul_mem hs ht, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Conclude with `⟨t * r, by show (s : K) * (t : K) * x k = (t : K) * (r : K); linear_combination (t : K) * hr⟩`. Take `⟨r', hr'⟩` from `hS k hk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s * r', by show (s : K) * (t : K) * x k = (s : K) * (r' : K); linear_combination (s : K) * hr'⟩`.
+Supply the required witnesses or components.
 -/
 theorem common_den {w : HeightOneSpectrum (𝓞 K)} {ι : Type*} (S : Finset ι) (x : ι → K)
     (h : ∀ k ∈ S, InS w (x k)) : ∃ s ∈ Tw w, ∀ k ∈ S, ∃ r : 𝓞 K, (s : K) * x k = r := by
@@ -94,19 +94,19 @@ theorem common_den {w : HeightOneSpectrum (𝓞 K)} {ι : Type*} (S : Finset ι)
       exact ⟨s * r', by show (s : K) * (t : K) * x k = (s : K) * (r' : K); linear_combination (s : K) * hr'⟩
 
 /- English proof (translation)
-Simplify using `[vw, FractionalIdeal.spanSingleton_zero, FractionalIdeal.count_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vw_zero (w : HeightOneSpectrum (𝓞 K)) : vw w (0 : K) = 0 := by
   simp [vw, FractionalIdeal.spanSingleton_zero, FractionalIdeal.count_zero]
 
 /- English proof (translation)
-Simplify using `[vw, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vw_one (w : HeightOneSpectrum (𝓞 K)) : vw w (1 : K) = 0 := by
   simp [vw, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K w (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 ha) (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 hb)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_mul (w : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (hb : b ≠ 0) :
     vw w (a * b) = vw w a + vw w b := by
@@ -116,7 +116,7 @@ theorem vw_mul (w : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (hb : b
       (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 hb)]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_pow (w : HeightOneSpectrum (𝓞 K)) (a : K) (m : ℕ) :
     vw w (a ^ m) = (m : ℤ) * vw w a := by
@@ -124,7 +124,7 @@ theorem vw_pow (w : HeightOneSpectrum (𝓞 K)) (a : K) (m : ℕ) :
   rw [← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[show (r : K) = algebraMap (𝓞 K) K r from rfl, ← FractionalIdeal.coeIdeal_span_singleton]`. Conclude with `FractionalIdeal.count_coe_nonneg K w _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vw_int_nonneg (w : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) : 0 ≤ vw w (r : K) := by
   unfold vw
@@ -132,11 +132,11 @@ theorem vw_int_nonneg (w : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) : 0 ≤ vw w
   exact FractionalIdeal.count_coe_nonneg K w _
 
 /- English proof (translation)
-Establish `hr0 : r ≠ 0` using `fun h => hr (h ▸ w.asIdeal.zero_mem)`. Establish `hJ : Ideal.span {r} ≠ (0 : Ideal (𝓞 K))`. Rewrite using `[Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hr0`. Unfold `vw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (r : K) = algebraMap (𝓞 K) K r from rfl, ← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K w hJ]`. Establish `h2 : ¬ w.asIdeal ∣ Ideal.span {r}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hr`. Establish `h3` using `mt (Associates.count_ne_zero_iff_dvd hJ w.irreducible).1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[not_not]`. Simplify using `[h3]`.
+A detailed English derivation is pending.
 -/
 theorem vw_unit (w : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) (hr : r ∉ w.asIdeal) :
     vw w (r : K) = 0 := by
@@ -154,7 +154,7 @@ theorem vw_unit (w : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) (hr : r ∉ w.asId
   simp [h3]
 
 /- English proof (translation)
-Introduce `h`. Apply `hs.1` to reduce the goal to its premises. Establish `: s = 0` using `RingOfIntegers.ext (by simpa using h)`. Rewrite using `[this]`. Conclude with `w.asIdeal.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tw_ne_zero {w : HeightOneSpectrum (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Tw w) : (s : K) ≠ 0 := by
   intro h
@@ -163,7 +163,7 @@ theorem Tw_ne_zero {w : HeightOneSpectrum (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Tw 
   rw [this]; exact w.asIdeal.zero_mem
 
 /- English proof (translation)
-Rewrite using `[hform, Matrix.toLinearMapₛₗ₂'_apply]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, starRingEnd_apply, RingHom.id_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hform_apply {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (y x : Fin n → K) :
     hform H y x = star y ⬝ᵥ (H *ᵥ x) := by
@@ -173,7 +173,7 @@ theorem hform_apply {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (y x : Fin n → K)
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.SelectionLemmas.main H P M hM l g hl hdual w e he`.
+A detailed English derivation is pending.
 -/
 theorem main {n D : ℕ} (H : Matrix (Fin n) (Fin n) K) (P : Matrix (Fin D) (Fin n) K)
     (M : Submodule (𝓞 K) (Fin n → K)) (hM : M.FG) (l g : ℕ) (hl : 0 < l)
@@ -185,7 +185,7 @@ theorem main {n D : ℕ} (H : Matrix (Fin n) (Fin n) K) (P : Matrix (Fin D) (Fin
 end ReductionFirst
 
 /- English proof (translation)
-Introduce `K _ _ _ _ K0 _ v0 _ n D H _ _ P _ M hM l g hl hdual w e he`. Conclude with `ReductionFirst.main H P M hM.fg l g hl hdual w e he`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem reduction_lemma_first : LemmaRa := by
   intro K _ _ _ _ K0 _ v0 _ n D H _ _ P _ M hM l g hl hdual w e he

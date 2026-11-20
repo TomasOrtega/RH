@@ -22,7 +22,7 @@ def pullSec' {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → 
   exact pullSec L φ ε s h
 
 /- English proof (translation)
-Take `rfl : φ' = fun k => h ≫ φ k` from `funext hφ`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 lemma pullSec'_f {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (s : LB.Sec (LB.LinComb L φ ε)) (h : Z ⟶ Y) (φ' : K → (Z ⟶ X)) (hφ : ∀ k, φ' k = h ≫ φ k)
@@ -33,7 +33,7 @@ lemma pullSec'_f {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K 
   rfl
 
 /- English proof (translation)
-Take `rfl : W = V` from `le_antisymm h1 h2`. Establish `e : homOfLE h1 = 𝟙 W` using `Subsingleton.elim _ _`. Rewrite `h` using `[e]`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma map_inj_of_le_ge {X : Scheme.{0}} {V W : X.Opens} (h1 : W ≤ V) (h2 : V ≤ W) {a b : Γ(X, V)}
     (h : (X.presheaf.map (homOfLE h1).op).hom a = (X.presheaf.map (homOfLE h1).op).hom b) : a = b := by
@@ -50,9 +50,9 @@ def secK (U : UnifPre I D A G) (s : H0 U.LG.L 1) : U.SecK 1 :=
   pullSec' U.LG.L _ _ s (pullback.fst G.hom (jK R)) _ (fun _ => (Category.comp_id _).symm)
 
 /- English proof (translation)
-Introduce `j₁ j₂ hc`. Establish `hj : j₁ = j₂` using `funext fun k => by`. Rewrite using `[Subsingleton.elim k 0]`. Conclude with `hc (Sum.inl 0) (Sum.inr 0) (Category.comp_id _).symm`. Substitute `hj` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[secK, pullSec'_f]`. Establish `h1 : resTop (LB.wchart U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R)) j₁ ⊓ LB.wchart U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R) ≫ 𝟙 G.left) j₁) (1 : Γ(pullback G.hom (jK R), ⊤)) = 1` using `map_one _`. Rewrite using `[h1, _root_.one_mul, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma secK_rel (U : UnifPre I D A G) (s : H0 U.LG.L 1) :
     GeneratorPullback.SecScal U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R)) (fun _ => ((1 : ℕ) : ℤ)) (secK U s)
@@ -70,13 +70,13 @@ lemma secK_rel (U : UnifPre I D A G) (s : H0 U.LG.L 1) :
   rfl
 
 /- English proof (translation)
-Introduce `(j : Fin 1 → U.LG.L.ι)`. Establish `hc : LB.Coh U.LG.L (Sum.elim (fun _ : Fin 1 => pullback.fst G.hom (jK R)) (fun k : Fin 1 => pullback.fst G.hom (jK R) ≫ (fun _ : Fin 1 => 𝟙 G.left) k)) (Sum.elim j j)`. Introduce `a b _`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> exact congrArg j (Subsingleton.elim _ _)`. Establish `e1` using `h1 j j hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `e2` using `h2 j j hc`. Establish `h1' : resTop (LB.wchart U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R)) j ⊓ LB.wchart U.LG.L (fun k : Fin 1 => pullback.fst G.hom (jK R) ≫ (fun _ : Fin 1 => 𝟙 G.left) k) j) (1 : Γ(pullback G.hom (jK R), ⊤)) = 1` using `map_one _`. Rewrite `e1` using `[h1', _root_.one_mul]`. Rewrite `e2` using `[← e1]`. Establish `hle : pullback.fst G.hom (jK R) ⁻¹ᵁ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) j ≤ LB.wchart U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R)) j ⊓ LB.wchart U.LG.L (fun k : Fin 1 => pullback.fst G.hom (jK R) ≫ (fun _ : Fin 1 => 𝟙 G.left) k) j` using `fun x hx => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx k⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `app_fst_jF_injective G.hom` to reduce the goal to its premises. Apply `map_inj_of_le_ge (inf_le_right.trans (wchart_comp_le _ _ j)) hle` to reduce the goal to its premises. Use `e2.trans ?_` and prove the remaining obligations. Establish `e3 : (((pullback.fst G.hom (jK R)).app (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) j)).hom (toW G.hom (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) j) r * (show Γ(G.left, LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) j) from s.f j))) = toW (pullback.fst G.hom (jK R) ≫ G.hom) _ r …`. Rewrite using `[map_mul, app_toW]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `erw [e3, map_mul, toW_res, resTop_scal, toW_congr pullback.condition.symm]`.
+A detailed English derivation is pending.
 -/
 theorem sec_eq_of_secScal (U : UnifPre I D A G) [Flat G.hom] (s σ : H0 U.LG.L 1) (sK : U.SecK 1) (r : R)
     (h1 : GeneratorPullback.SecScal U.LG.L (fun _ : Fin 1 => pullback.fst G.hom (jK R)) (fun _ => ((1 : ℕ) : ℤ)) sK

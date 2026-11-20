@@ -12,19 +12,17 @@ noncomputable section
 namespace FSInv
 
 /- English proof (translation)
-Introduce `N n P Q R hPn hQn hRn c`. Establish `hint : ∀ A B : MvPolynomial (Fin (N + 1)) ℂ, A ∈ H0 N n → B ∈ H0 N n → Integrable (fsPair (N` using `N) n A B) (fsMeasure N) := by`. Introduce `A B hA hB`. Establish `hcont : Continuous (fsPair (N` using `N) n A B) := by`. Rewrite using `[ProjTopology.continuous_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : fsPair (N` using `N) n A B ∘ Projectivization.mk' ℂ = fun v : {v : Fin (N + 1) → ℂ // v ≠ 0} => conj (eval v.1 A) * eval v.1 B / ((norm2 v.1 ^ (2 * n) : ℝ) : ℂ) := by`. Use function extensionality and compare the values at `⟨v, hv⟩`. Conclude with `hP N n A B hA hB v hv`. Rewrite using `[e]`. Establish `hc : Continuous fun v : Fin (N + 1) → ℂ => norm2 v` using `Real.continuous_sqrt.comp (continuous_finsetSum _ fun j _ => (continuous_norm.comp (continuous_apply j)).pow 2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.div ?_ (Complex.continuous_ofReal.comp ((hc.comp continuous_subtype_val).pow _)) fun v => ?_` and prove the remaining obligations. Conclude with `(Complex.continuous_conj.comp ((continuous_eval A).comp continuous_subtype_val)).mul ((continuous_eval B).comp continuous_subtype_val)`. Conclude with `(pow_pos (euclideanNorm_pos v.2) _).ne'` after adjusting the coercions. Conclude with `hcont.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : fsPair (N` using `N) n (P + c • Q) R = fun x => fsPair n P R x + conj c * fsPair n Q R x := by`. Use function extensionality and compare the values at `x`. Simplify using `only [fsPair, map_add, smul_eval, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[l2Inner, e, integral_add (hint P R hPn hRn) ((hint Q R hQn hRn).const_mul _), integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `e : fsPair (N` using `N) n R (P + c • Q) = fun x => fsPair n R P x + c * fsPair n R Q x := by`. Use function extensionality and compare the values at `x`. Simplify using `only [fsPair, map_add, smul_eval]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[l2Inner, e, integral_add (hint R P hRn hPn) ((hint R Q hRn hQn).const_mul _), integral_const_mul]`. Both sides reduce to the same expression. Establish `e : fsPair (N` using `N) n Q P = fun x => conj (fsPair n P Q x) := by`. Use function extensionality and compare the values at `x`. Simplify using `only [fsPair, map_div₀, map_mul, Complex.conj_conj, Complex.conj_ofReal]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[l2Inner, e, integral_conj]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Sesq.proof (hP : PairMk.Statement) : Sesq.Statement := by
   intro N n P Q R hPn hQn hRn c

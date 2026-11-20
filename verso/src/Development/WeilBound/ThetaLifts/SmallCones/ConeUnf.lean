@@ -20,13 +20,11 @@ variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n
   {S : Submodule ℂ (Fn F n d)}
 
 /- English proof (translation)
-Use `set J : Fin m → (AE F E)ˣ × UA σ X₁.J → ℂ := fun i x => theta om₀ (e (M.co.rho B.ψ (u x.1) (Ψ i))) x.2 h₁ * ((ν x.1 : ℂ) * ((absE F E x.1 : ℝ) : ℂ) ^ z) with hJ`. Establish `hJi : ∀ i, Integrable (J i) (μ.prod (M₀.μ.restrict M₀.dom))` using `fun i => h.int _ (hΨ i) h₁`. Establish `key : ∀ k : K, ∫⁻ l, ∫⁻ g in M₀.dom, ‖theta om₀ (e (M.co.rho B.ψ (u l) (om (k.1, 1) Φ))) g h₁ * ((ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z)‖ₑ ∂M₀.μ ∂μ ≤ ∑ i, ‖c i k‖ₑ * ∫⁻ x, ‖J i x‖ₑ ∂(μ.prod (M₀.μ.restrict M₀.dom))` using `fun k => by`. Establish `e1 : ∀ l g, theta om₀ (e (M.co.rho B.ψ (u l) (om (k.1, 1) Φ))) g h₁ * ((ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z) = ∑ i, c i k * J i (l, g)` using `fun l g => by`. Simplify using `only [hd, h.val_sum _ hΨ, hJ, Finset.sum_mul, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [e1]`. Establish `hi : Integrable (fun x => ∑ i, c i k * J i x) (μ.prod (M₀.μ.restrict M₀.dom))` using `integrable_finset_sum _ fun i _ => (hJi i).const_mul _`. Rewrite using `[← lintegral_prod (fun x => ‖∑ i, c i k * J i x‖ₑ) hi.1.enorm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_finset_sum' _ fun i _ => (hJi i).1.enorm.const_mul _]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun i _ => lintegral_const_mul'' _ (hJi i).1.enorm`. Use `(lintegral_mono key).trans_lt ?_` and prove the remaining obligations. Rewrite using `[lintegral_finset_sum' _ fun i _ => (hc i).1.enorm.mul_const _]`. Use `ENNReal.sum_lt_top.2 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const'' _ (hc i).1.enorm]`.
-
-Conclude with `ENNReal.mul_lt_top (hc i).2 (hJi i).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LineOK.fin [SFinite μ] [SFinite M₀.μ] (h : LineOK B M om M₀ om₀ e μ u ν z S) {K : Subgroup (UA σ X.J)} (μK : Measure K)
     {Φ : Fn F n d} {m : ℕ} {Ψ : Fin m → Fn F n d} {c : Fin m → K → ℂ} (hΨ : ∀ i, Ψ i ∈ S) (hc : ∀ i, Integrable (c i) μK)
@@ -58,13 +56,13 @@ theorem LineOK.fin [SFinite μ] [SFinite M₀.μ] (h : LineOK B M om M₀ om₀ 
   exact ENNReal.mul_lt_top (hc i).2 (hJi i).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `h.fin μK hΨ hc hd 1 using 3 with k` and compare the differences between its conclusion and the goal. Rewrite using `[← hι]`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Prove the components needed by the constructor for the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [← hf, enorm_mul]`. Rewrite using `[lintegral_mul_const' _ _ (by simp)]`. Use `congr 1`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Unfold `coneI`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← hι']`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Model.I, mul_assoc, ← integral_mul_const, hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem LineOK.unf [SFinite μ] [SFinite M₀.μ] (h : LineOK B M om M₀ om₀ e μ u ν z S) {K : Subgroup (UA σ X.J)} (μK : Measure K)
     {Φ : Fn F n d} {m : ℕ} {Ψ : Fin m → Fn F n d} {c : Fin m → K → ℂ} (hΨ : ∀ i, Ψ i ∈ S) (hc : ∀ i, Integrable (c i) μK)

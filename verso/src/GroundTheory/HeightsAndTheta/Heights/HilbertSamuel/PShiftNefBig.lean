@@ -20,7 +20,7 @@ namespace ShiftedNefBig
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Simplify using `only [geoNum]`. Use `split_ifs with h`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geoNum_one_add (W : Ideal (MRing ι)) (a b : K → ℤ) (q : ℤ) :
     geoNum 1 W (fun _ => q • a + b) = q * geoNum 1 W (fun _ => a) + geoNum 1 W (fun _ => b) := by
@@ -31,9 +31,7 @@ theorem geoNum_one_add (W : Ideal (MRing ι)) (a b : K → ℤ) (q : ℤ) :
   · simp
 
 /- English proof (translation)
-Simplify using `only [geoNum]`. Use `split_ifs with h`. Use `Finset.sum_nonneg fun k _ => mul_nonneg zero_le_one ?_` and prove the remaining obligations. Use `finsum_nonneg fun W' => finsum_nonneg fun _ => mul_nonneg (Nat.cast_nonneg _) ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> positivity`.
-
-Conclude with `le_rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem geoNum_one_one_nonneg (W : Ideal (MRing ι)) : 0 ≤ geoNum 1 W (fun _ => (1 : K → ℤ)) := by
   simp only [geoNum]
@@ -48,11 +46,9 @@ end ShiftedNefBig
 open ShiftedNefBig in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D A P0 _ har _ hP0 hs hnef hc q _`. Establish `ha : (HermLine.zcomb A (fsH ι) (q : ℤ) 1).a = (q : ℤ) • A.a + 1` using `by show (q : ℤ) • A.a + (1 : ℤ) • (fsH ι).a = _`. Rewrite using `[one_smul]`. Both sides reduce to the same expression. Use `⟨hP0, PerturbSemipos.proof K ι P0 (mCoordIdeal y) A q 1 hs (Nat.cast_nonneg q) zero_le_one, HermLine.zcomb_isConjInvariantH hc (fsH_isConjInvariantH ι) _ _, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ha]`. Introduce `W hW hPW hch hdim`. Rewrite using `[geoNum_one_add]`. Conclude with `add_nonneg (mul_nonneg (Nat.cast_nonneg q) (hnef W hW hPW hch hdim)) (geoNum_one_one_nonneg W)`. Rewrite using `[ha]`.
-
-Conclude with `hB K ι (mCoordIdeal y) D A.a har (nefOnGenericDeg_of_semipos NefOnGenericOfSemipos.proof hD hP0 hs) q`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ShiftNefBig.proof (hD : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement)
     (hB : NefPlusAmpleDegree.Statement) : ShiftNefBig.Statement := by

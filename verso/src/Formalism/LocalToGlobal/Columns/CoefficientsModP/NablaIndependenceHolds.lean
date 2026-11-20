@@ -22,15 +22,13 @@ def nbGen (S : ι → Set (MvPolynomial (Fin n × Fin n) K)) : Set (Pol K ι n) 
   {P | ∃ f : ι → MvPolynomial (Fin n × Fin n) K, (∀ τ, f τ ∈ S τ) ∧ P = ten f}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Unfold `Formalism.GradedWeylDivisibility.tensorLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Establish `h1 : ∀ τ, Formalism.GradedWeylDivisibility.blockEmb K τ (F τ) ∈ Submodule.span R ((fun f => Formalism.GradedWeylDivisibility.blockEmb K (S` using `ι) τ f) '' S τ) := by`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `τ`. Establish `h` using `Submodule.mem_map_of_mem (f := ((Formalism.GradedWeylDivisibility.blockEmb K (S := ι) (k := n) (n := n) τ).toLinearMap.restrictScalars R)) (hF τ)`. Rewrite `h` using `[Submodule.map_span]`. Conclude with `h`. Establish `h2 : ∏ τ, Formalism.GradedWeylDivisibility.blockEmb K τ (F τ) ∈ Submodule.span R (∏ τ, ((fun f => Formalism.GradedWeylDivisibility.blockEmb K (S` using `ι) τ f) '' S τ)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.prod_span]`. Conclude with `Formalism.L2.Col.prod_mem_prod_sub _ _ _ fun τ _ => h1 τ`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Set.mem_finsetProd]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg, rfl⟩` from `hx`. Establish `hg' : ∀ τ, ∃ f ∈ S τ, Formalism.GradedWeylDivisibility.blockEmb K (S` using `ι) τ f = g τ := fun τ => hg (Finset.mem_univ τ)`. Use `choose f hf hfg using hg'`. Conclude with `⟨f, hf, by simp only [ten, hfg]⟩`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨f, fun τ => Submodule.subset_span (hf τ), rfl⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nb_tensorLat_span (R : Type) [CommRing R] [Algebra R K] (S : ι → Set (MvPolynomial (Fin n × Fin n) K)) :
     Formalism.GradedWeylDivisibility.tensorLat R K (fun τ => Submodule.span R (S τ)) = Submodule.span R (nbGen S) := by
@@ -68,9 +66,9 @@ def nbWord (K : Type) [Field K] {n : ℕ} (ν : Fin n → ℕ) : Set (MvPolynomi
   Set.range fun w : List (Fin n × Fin n × ℕ) => Formalism.GradedWeylDivisibility.applyWord K w (Formalism.GradedWeylDivisibility.hw K le_rfl ν)
 
 /- English proof (translation)
-Unfold `nablaSq`. Rewrite using `[Formalism.GradedWeylDivisibility.standardMonomialSpanDomain R n n lam.natW, Submodule.map_span]`. Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨N, sz, hsz, I, h, rfl⟩, rfl⟩`. Conclude with `⟨N, sz, hsz, I, h, Formalism.GradedWeylDivisibility.ldlat_map_bidet _ _ _ _⟩`. Introduce and unpack `⟨N, sz, hsz, I, h, rfl⟩`. Conclude with `⟨_, ⟨N, sz, hsz, I, h, rfl⟩, Formalism.GradedWeylDivisibility.ldlat_map_bidet _ _ _ _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem nb_map_nablaSq (R : Type) [CommRing R] [IsDomain R] [Algebra R K] (lam : DomWeight n) :
     (nablaSq R n lam).map (mapAlgHom (σ := Fin n × Fin n) (Algebra.ofId R K)).toLinearMap =
@@ -86,9 +84,9 @@ theorem nb_map_nablaSq (R : Type) [CommRing R] [IsDomain R] [Algebra R K] (lam :
     exact ⟨_, ⟨N, sz, hsz, I, h, rfl⟩, Formalism.GradedWeylDivisibility.ldlat_map_bidet _ _ _ _⟩
 
 /- English proof (translation)
-Unfold `delSq Formalism.GradedWeylDivisibility.weyl`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Unfold `nbWord`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `w`. Use `show MvPolynomial.map (algebraMap R K) _ = _`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_map_delSq (R : Type) [CommRing R] [Algebra R K] (lam : DomWeight n) :
     (delSq R n lam).map (mapAlgHom (σ := Fin n × Fin n) (Algebra.ofId R K)).toLinearMap =
@@ -111,7 +109,7 @@ variable {K : Type} [Field K] [NumberField K]
 local notation "Ow" => Formalism.L2.Col.Ow
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul (Ow w) (t : 𝓞 K), smul_smul, IsLocalization.mk'_spec', algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nb_mk'_smul {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum (𝓞 K)) [Module (Ow w) V]
     [IsScalarTower (𝓞 K) (Ow w) V] (a : 𝓞 K) (t : w.asIdeal.primeCompl) (x : V) :
@@ -119,7 +117,7 @@ theorem nb_mk'_smul {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightO
   rw [← algebraMap_smul (Ow w) (t : 𝓞 K), smul_smul, IsLocalization.mk'_spec', algebraMap_smul]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact GlobalTheory.LocalSpanCriterion.span_local_iff .. | (apply GlobalTheory.LocalSpanCriterion.span_local_iff <;> assumption) | (intros; apply GlobalTheory.LocalSpanCriterion.span_local_iff <;> assumption) | (apply @GlobalTheory.LocalSpanCriterion.span_local_iff <;> ass …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nb_mem_span_ow {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum (𝓞 K)) [Module (Ow w) V]
     [IsScalarTower (𝓞 K) (Ow w) V] (T : Set V) (x : V) :
@@ -129,7 +127,7 @@ theorem nb_mem_span_ow {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : Heig
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : (fun τ => (nablaSq (𝓞 K) n (lam τ)).map (toK K _)) = fun τ => Submodule.span (𝓞 K) (bideterminantsOfShape K (lam τ).natW)` using `funext fun τ => nb_map_nablaSq (𝓞 K) (lam τ)`. Rewrite using `[nabStd, h, nb_tensorLat_span]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nb_nabStd_eq (lam : ι → DomWeight n) :
     nabStd K lam = Submodule.span (𝓞 K) (nbGen fun τ => bideterminantsOfShape K (lam τ).natW) := by
@@ -138,7 +136,7 @@ theorem nb_nabStd_eq (lam : ι → DomWeight n) :
   rw [nabStd, h, nb_tensorLat_span]
 
 /- English proof (translation)
-Establish `h : (fun τ => (delSq (𝓞 K) n (lam τ)).map (toK K _)) = fun τ => Submodule.span (𝓞 K) (nbWord K (lam τ).natW)` using `funext fun τ => nb_map_delSq (𝓞 K) (lam τ)`. Rewrite using `[delStd, h, nb_tensorLat_span]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nb_delStd_eq (lam : ι → DomWeight n) :
     delStd K lam = Submodule.span (𝓞 K) (nbGen fun τ => nbWord K (lam τ).natW) := by
@@ -155,7 +153,7 @@ def nbDelW (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) : Submodu
     (delSq (Ow w) n (lam τ)).map (mapAlgHom (σ := Fin n × Fin n) (Algebra.ofId (Ow w) K)).toLinearMap
 
 /- English proof (translation)
-Establish `h : (fun τ => (nablaSq (Ow w) n (lam τ)).map (mapAlgHom (σ` using `Fin n × Fin n) (Algebra.ofId (Ow w) K)).toLinearMap) = fun τ => Submodule.span (Ow w) (bideterminantsOfShape K (lam τ).natW) := funext fun τ => nb_map_nablaSq (Ow w) (lam τ)`. Rewrite using `[nbNabW, h, nb_tensorLat_span, nb_nabStd_eq, nb_mem_span_ow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nb_mem_nabW (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) (x : Pol K ι n) :
     x ∈ nbNabW w lam ↔ x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (nabStd K lam) := by
@@ -165,7 +163,7 @@ theorem nb_mem_nabW (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) 
   rw [nbNabW, h, nb_tensorLat_span, nb_nabStd_eq, nb_mem_span_ow]
 
 /- English proof (translation)
-Establish `h : (fun τ => (delSq (Ow w) n (lam τ)).map (mapAlgHom (σ` using `Fin n × Fin n) (Algebra.ofId (Ow w) K)).toLinearMap) = fun τ => Submodule.span (Ow w) (nbWord K (lam τ).natW) := funext fun τ => nb_map_delSq (Ow w) (lam τ)`. Rewrite using `[nbDelW, h, nb_tensorLat_span, nb_delStd_eq, nb_mem_span_ow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nb_mem_delW (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) (x : Pol K ι n) :
     x ∈ nbDelW w lam ↔ x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (delStd K lam) := by
@@ -181,11 +179,9 @@ section Stab
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.GradedWeylDivisibility.tensorLat at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨fun τ => sqAct K n (lam τ) (g τ) (F τ), fun τ => h τ _ (hF τ), ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `actTen K ι n lam g F`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul r x _ hx => rw [LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nb_stab_gen (R : Type) [CommRing R] [Algebra R K] (lam : ι → DomWeight n)
     (M : ι → Submodule R (MvPolynomial (Fin n × Fin n) K)) (g : ι → GL (Fin n) K)
@@ -202,7 +198,7 @@ theorem nb_stab_gen (R : Type) [CommRing R] [Algebra R K] (lam : ι → DomWeigh
   | smul r x _ hx => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `h : Matrix.GeneralLinearGroup.det (Formalism.UG.bc φ g) = Units.map (φ : R →* S) (Matrix.GeneralLinearGroup.det g)`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Formalism.UG.bc, RingHom.map_det]`. Unfold `detPow`. Rewrite using `[h, ← map_zpow (Units.map (φ : R →* S))]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -216,7 +212,7 @@ theorem nb_map_detPow {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (g
   rfl
 
 /- English proof (translation)
-Unfold `sqAct`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul, nb_map_detPow, Formalism.GradedWeylDivisibility.ldtwist_map_rowAct]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem nb_map_sqAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (lam : DomWeight n) (g : GL (Fin n) R)
     (f : MvPolynomial (Fin n × Fin n) R) :
@@ -232,11 +228,11 @@ section Scale
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Establish `hcs` using `Formalism.GradedWeylDivisibility.colSums K n n ν f hf`. Establish `h1 : (fun v : Fin n × Fin n => ∑ b : Fin n, (C ((c • A) v.1 b) * X (b, v.2) : MvPolynomial (Fin n × Fin n) K)) = fun v => C c * ∑ b : Fin n, C (A v.1 b) * X (b, v.2)`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, C_mul, mul_assoc]`. Unfold `Formalism.GradedWeylDivisibility.rowAct`. Rewrite using `[h1, aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h2 : ∑ v : Fin n × Fin n, m v = ∑ t, ν t`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Fintype.sum_prod_type_right]`. Conclude with `Finset.sum_congr rfl fun t _ => hcs m hm t`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h2]`. Rewrite using `[smul_eq_C_mul, C_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nb_rowAct_smul (c : K) (A : Matrix (Fin n) (Fin n) K) (ν : Fin n → ℕ) (f : MvPolynomial (Fin n × Fin n) K)
     (hf : f ∈ Formalism.GradedWeylDivisibility.dualWeyl K n n ν) :
@@ -259,9 +255,9 @@ theorem nb_rowAct_smul (c : K) (A : Matrix (Fin n) (Fin n) K) (ν : Fin n → �
   ring
 
 /- English proof (translation)
-Unfold `VV Formalism.GradedWeylDivisibility.tensorLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Rewrite using `[map_prod, map_prod, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_smul]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n _).1 τ (F τ), (Formalism.GradedWeylDivisibility.blockActTensor K K ι n n _).1 τ (F τ), nb_rowAct_smul c (A τ) _ _ (hF τ), map_smul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, smul_add]`. Consider the case `smul r x _ hx => rw [map_smul, map_smul, hx, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem nb_blockAct_smul (lam : ι → DomWeight n) (c : K) (A : ι → Matrix (Fin n) (Fin n) K) (x : Pol K ι n)
     (hx : x ∈ VV K lam) :
@@ -287,42 +283,42 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 local notation "Ow" => Formalism.L2.Col.Ow
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul K r F).symm`.
+A detailed English derivation is pending.
 -/
 theorem nb_osmul {σ : Type} (r : 𝓞 K) (F : MvPolynomial σ K) : r • F = (algebraMap (𝓞 K) K r) • F :=
   (algebraMap_smul K r F).symm
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul K r F).symm`.
+A detailed English derivation is pending.
 -/
 theorem nb_wsmul {σ : Type} (w : HeightOneSpectrum (𝓞 K)) (r : Ow w) (F : MvPolynomial σ K) :
     r • F = (algebraMap (Ow w) K r) • F :=
   (algebraMap_smul K r F).symm
 
 /- English proof (translation)
-The claim follows from `one_smul _ _`.
+A detailed English derivation is pending.
 -/
 theorem nb_one_smul {σ : Type} (x : MvPolynomial σ K) : (1 : 𝓞 K) • x = x := one_smul _ _
 
 /- English proof (translation)
-The claim follows from `mul_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem nb_mul_smul {σ : Type} (a b : 𝓞 K) (x : MvPolynomial σ K) : (a * b) • x = a • b • x := mul_smul _ _ _
 
 /- English proof (translation)
-The claim follows from `smul_comm _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem nb_smul_comm {σ : Type} (a b : 𝓞 K) (x : MvPolynomial σ K) : a • b • x = b • a • x := smul_comm _ _ _
 
 /- English proof (translation)
-The claim follows from `lc_mem_locP w L x`.
+A detailed English derivation is pending.
 -/
 theorem nb_mem_locP {σ : Type} (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) (MvPolynomial σ K))
     (x : MvPolynomial σ K) : x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L ↔ ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • x ∈ L :=
   lc_mem_locP w L x
 
 /- English proof (translation)
-The claim follows from `smul_mem_localized_iff w L hs x`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_locP_iff_of_notMem {σ : Type} (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) (MvPolynomial σ K))
     {s : 𝓞 K} (hs : s ∉ w.asIdeal) (x : MvPolynomial σ K) :
@@ -330,7 +326,7 @@ theorem smul_mem_locP_iff_of_notMem {σ : Type} (w : HeightOneSpectrum (𝓞 K))
   smul_mem_localized_iff w L hs x
 
 /- English proof (translation)
-The claim follows from `L.smul_mem r hx`.
+A detailed English derivation is pending.
 -/
 theorem nb_smul_mem {σ : Type} (L : Submodule (𝓞 K) (MvPolynomial σ K)) (r : 𝓞 K) {x : MvPolynomial σ K}
     (hx : x ∈ L) : r • x ∈ L := L.smul_mem r hx
@@ -341,9 +337,9 @@ def NbStab (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n)) : Pr
     ∀ x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal T, actP lam g x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal T
 
 /- English proof (translation)
-Introduce `w u g hg x hx`. Rewrite `hx`, the goal using `[← nb_mem_nabW]`. Use `nb_stab_gen (Ow w) lam _ g ?_ x hx` and prove the remaining obligations. Introduce and unpack `τ _ ⟨f0, hf0, rfl⟩`. Establish `hg' : g τ = Formalism.UG.bc (algebraMap (Ow w) K) (u τ)` using `Units.ext (hg τ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨sqAct (Ow w) n (lam τ) (u τ) f0, (factSqStable (Ow w) n (lam τ) (u τ)).1 f0 hf0, ?_⟩` and prove the remaining obligations. Rewrite using `[hg']`. Conclude with `nb_map_sqAct (algebraMap (Ow w) K) (lam τ) (u τ) f0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_stab_nab (lam : ι → DomWeight n) : NbStab lam (nabStd K lam) := by
   intro w u g hg x hx
@@ -356,9 +352,9 @@ theorem nb_stab_nab (lam : ι → DomWeight n) : NbStab lam (nabStd K lam) := by
   exact nb_map_sqAct (algebraMap (Ow w) K) (lam τ) (u τ) f0
 
 /- English proof (translation)
-Introduce `w u g hg x hx`. Rewrite `hx`, the goal using `[← nb_mem_delW]`. Use `nb_stab_gen (Ow w) lam _ g ?_ x hx` and prove the remaining obligations. Introduce and unpack `τ _ ⟨f0, hf0, rfl⟩`. Establish `hg' : g τ = Formalism.UG.bc (algebraMap (Ow w) K) (u τ)` using `Units.ext (hg τ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨sqAct (Ow w) n (lam τ) (u τ) f0, (factSqStable (Ow w) n (lam τ) (u τ)).2 f0 hf0, ?_⟩` and prove the remaining obligations. Rewrite using `[hg']`. Conclude with `nb_map_sqAct (algebraMap (Ow w) K) (lam τ) (u τ) f0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_stab_del (lam : ι → DomWeight n) : NbStab lam (delStd K lam) := by
   intro w u g hg x hx
@@ -371,7 +367,7 @@ theorem nb_stab_del (lam : ι → DomWeight n) : NbStab lam (delStd K lam) := by
   exact nb_map_sqAct (algebraMap (Ow w) K) (lam τ) (u τ) f0
 
 /- English proof (translation)
-Use `choose u hu using fun τ => lc_unitOw w (hB τ) (hB' τ)`. Establish `h1` using `hT w u (B'⁻¹ * B) hu _ h`. Rewrite `h1` using `[← polyAction_mul, mul_assoc, mul_inv_cancel, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nb_indep {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} (hT : NbStab lam T)
     (w : HeightOneSpectrum (𝓞 K)) (M : ι → Submodule (𝓞 K) (Fin n → K)) (B B' : ι → GL (Fin n) K)
@@ -382,21 +378,21 @@ theorem nb_indep {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)
   rwa [← polyAction_mul, mul_assoc, mul_inv_cancel, mul_one] at h1
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam w M B B' hB hB' F`. Conclude with `⟨nb_indep (nb_stab_nab lam) w M B B' hB hB' F, nb_indep (nb_stab_nab lam) w M B' B hB' hB F⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nablaIndependence_holds : NabIndep := by
   intro K _ _ ι _ n lam w M B B' hB hB' F
   exact ⟨nb_indep (nb_stab_nab lam) w M B B' hB hB' F, nb_indep (nb_stab_nab lam) w M B' B hB' hB F⟩
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam w M B B' hB hB' F`. Conclude with `⟨nb_indep (nb_stab_del lam) w M B B' hB hB' F, nb_indep (nb_stab_del lam) w M B' B hB' hB F⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem deltaIndependence_holds : DelIndep := by
   intro K _ _ ι _ n lam w M B B' hB hB' F
   exact ⟨nb_indep (nb_stab_del lam) w M B B' hB hB' F, nb_indep (nb_stab_del lam) w M B' B hB' hB F⟩
 
 /- English proof (translation)
-Simplify using `only [transLat, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nb_mem_transLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n))
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (F : Pol K ι n) :
@@ -405,11 +401,11 @@ theorem nb_mem_transLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol 
   simp only [transLat, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[nb_mem_transLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨actP lam B⁻¹ F, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : actP lam B⁻¹ F ∈ ⨅ w : HeightOneSpectrum (𝓞 K), Formalism.HermitianLatticesTheory.localization₂ w.asIdeal T`. Rewrite using `[Submodule.mem_iInf]`. Conclude with `fun w => h w B fun _ => rfl`. Rewrite `h1` using `[lc_iInf_locP]`. Then use the resulting hypothesis. Rewrite using `[LinearMap.coe_restrictScalars, ← polyAction_mul, mul_inv_cancel, polyAction_one₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨F0, hF0, rfl⟩ w B' hB'`. Use `nb_indep hT w (fun τ => colLat (B τ)) B B' (fun _ => rfl) hB' _ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.coe_restrictScalars, ← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Conclude with `lc_le_locP w T hF0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_free {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} (hT : NbStab lam T)
     (B : ι → GL (Fin n) K) :
@@ -430,7 +426,7 @@ theorem nb_free {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)}
     exact lc_le_locP w T hF0
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam B`. Conclude with `⟨nb_free (nb_stab_nab lam) B, nb_free (nb_stab_del lam) B⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nablaDeltaFree_holds : NabDelFree := by
   intro K _ _ ι _ n lam B
@@ -445,11 +441,11 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 local notation "Ow" => Formalism.L2.Col.Ow
 
 /- English proof (translation)
-Unfold `nbNabW Formalism.GradedWeylDivisibility.tensorLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨F, fun τ => ?_, rfl⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f0, hf0, h⟩` from `hF τ`. Rewrite using `[← h]`. Conclude with `Formalism.GradedWeylDivisibility.dualWeylMap (Ow w) K (algebraMap (Ow w) K) n n _ f0 hf0`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul r x _ hx => rw [nb_wsmul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem nb_nabW_le_VV (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) (x : Pol K ι n) (hx : x ∈ nbNabW w lam) :
     x ∈ VV K lam := by
@@ -466,9 +462,9 @@ theorem nb_nabW_le_VV (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n
   | smul r x _ hx => rw [nb_wsmul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Use `choose U hU using h1`. Establish `e : d • h = (Matrix.of U).map (algebraMap (Ow w) K)`. Use extensionality with `a b`. Simplify using `[hU]`. Establish `e2 : d ^ (n * k) * h.det ^ k = (d • h).det ^ k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_smul, Fintype.card_fin, mul_pow, pow_mul]`. Rewrite using `[e2, e, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `Subring.pow_mem _ (RingHom.mem_range_self _ _) k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_det_pow_mem (w : HeightOneSpectrum (𝓞 K)) (d : K) (h : Matrix (Fin n) (Fin n) K)
     (h1 : ∀ a b, d * h a b ∈ (algebraMap (Ow w) K).range) (k : ℕ) :
@@ -483,9 +479,9 @@ theorem nb_det_pow_mem (w : HeightOneSpectrum (𝓞 K)) (d : K) (h : Matrix (Fin
   exact Subring.pow_mem _ (RingHom.mem_range_self _ _) k
 
 /- English proof (translation)
-Take `⟨k, rfl | rfl⟩` from `e.eq_nat_or_neg`. Establish `: detPow K n g (k : ℤ) = (g : Matrix (Fin n) (Fin n) K).det ^ k`. Simplify using `[detPow]`. Rewrite using `[this, Int.natAbs_natCast]`. Conclude with `nb_det_pow_mem w d _ h1 k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: detPow K n g (-(k : ℤ)) = ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).det ^ k`. Unfold `detPow`. Rewrite using `[zpow_neg, ← inv_zpow, ← map_inv, zpow_natCast, Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[this, Int.natAbs_neg, Int.natAbs_natCast]`. Conclude with `nb_det_pow_mem w d _ h2 k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_det_scale (w : HeightOneSpectrum (𝓞 K)) (d : K) (g : GL (Fin n) K)
     (h1 : ∀ a b, d * (g : Matrix (Fin n) (Fin n) K) a b ∈ (algebraMap (Ow w) K).range)
@@ -506,13 +502,13 @@ theorem nb_det_scale (w : HeightOneSpectrum (𝓞 K)) (d : K) (g : GL (Fin n) K)
 def nbN (lam : ι → DomWeight n) : ℕ := (∑ τ, ∑ t, (lam τ).natW t) + ∑ τ, n * (lam τ).detShift.natAbs
 
 /- English proof (translation)
-Establish `hxV` using `nb_nabW_le_VV w lam x hx`. Establish `e1 : d ^ nbN lam • actP lam g x = ((∏ τ, d ^ (n * (lam τ).detShift.natAbs) * detPow K n (g τ) (lam τ).detShift)) • Formalism.GradedWeylDivisibility.blockAct K (fun τ => d • ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ) x`. Rewrite using `[nb_blockAct_smul lam d _ x hxV, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Simplify using `only [actP, trAct, detTwK, nbN, LinearMap.smul_apply, AlgHom.toLinearMap_apply, smul_smul, pow_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Establish `h3 : (∏ τ, d ^ (n * (lam τ).detShift.natAbs) * detPow K n (g τ) (lam τ).detShift) ∈ (algebraMap (Ow w) K).range` using `Subring.prod_mem _ fun τ _ => nb_det_scale w d (g τ) (h1 τ) (h2 τ) _`. Take `⟨r, hr⟩` from `h3`. Rewrite using `[← hr, ← nb_wsmul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ r ?_` and prove the remaining obligations. Use `(Formalism.GradedWeylDivisibility.blockActTensor (Ow w) K ι n n _).2 _ _ ?_ x hx` and prove the remaining obligations. Introduce and unpack `τ _ ⟨f0, hf0, rfl⟩`. Use `choose U hU using h1 τ`. Establish `e : d • ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ = ((Matrix.of U)ᵀ).map (algebraMap (Ow w) K)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[hU]`. Use `⟨Formalism.GradedWeylDivisibility.rowAct (Ow w) (Matrix.of U)ᵀ f0, Formalism.GradedWeylDivisibility.dualWeylRowStable (Ow w) n n _ _ f0 hf0, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Formalism.GradedWeylDivisibility.ldtwist_map_rowAct (algebraMap (Ow w) K) _ f0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_scaleW (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) (d : K) (g : ι → GL (Fin n) K)
     (h1 : ∀ τ a b, d * (g τ : Matrix (Fin n) (Fin n) K) a b ∈ (algebraMap (Ow w) K).range)
@@ -544,7 +540,7 @@ theorem nb_scaleW (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) (d
   exact Formalism.GradedWeylDivisibility.ldtwist_map_rowAct (algebraMap (Ow w) K) _ f0
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[← nb_mem_nabW]`. Rewrite using `[nb_osmul, map_pow]`. Conclude with `nb_scaleW w lam _ g (fun τ a b => (mem_localized_one_iff w _).1 (h1 τ a b)) (fun τ a b => (mem_localized_one_iff w _).1 (h2 τ a b)) x hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_scale (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) (d : 𝓞 K) (g : ι → GL (Fin n) K)
     (h1 : ∀ τ a b, algebraMap (𝓞 K) K d * (g τ : Matrix (Fin n) (Fin n) K) a b ∈
@@ -559,9 +555,7 @@ theorem nb_scale (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) (d 
     (fun τ a b => (mem_localized_one_iff w _).1 (h2 τ a b)) x hx
 
 /- English proof (translation)
-Use `choose d hd0 hd1 hd2 using fun τ => lc_sandwich (M τ) (hM τ)`. Use `⟨∏ τ, d τ, Finset.prod_ne_zero_iff.mpr fun τ _ => hd0 τ, fun τ => ⟨fun x hx => ?_, fun x hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ τ), mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hd1 τ x hx)`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ τ), mul_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ (hd2 τ x hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_sandwich_fam (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ τ, (∀ x ∈ M τ, d • x ∈ colLat (1 : GL (Fin n) K)) ∧
@@ -575,9 +569,9 @@ theorem nb_sandwich_fam (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ 
     exact Submodule.smul_mem _ _ (hd2 τ x hx)
 
 /- English proof (translation)
-Establish `h0 : IsBasisAt w (colLat (1 : GL (Fin n) K)) 1` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Use `lc_entries w hB h0 d (fun x hx => lc_le_locP w _ (h1 x hx)) a b` as an intermediate fact. Rewrite `this` using `[inv_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `a b`. Use `lc_entries w h0 hB d (fun x hx => lc_le_locP w _ (h2 x hx)) a b` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nb_entries (w : HeightOneSpectrum (𝓞 K)) (M : Submodule (𝓞 K) (Fin n → K)) (B : GL (Fin n) K)
     (hB : IsBasisAt w M B) (d : 𝓞 K) (h1 : ∀ x ∈ M, d • x ∈ colLat (1 : GL (Fin n) K))
@@ -604,14 +598,14 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 local notation "Ow" => Formalism.L2.Col.Ow
 
 /- English proof (translation)
-Take `⟨w⟩` from `Formalism.L2.Col.nonempty_places K`. Conclude with `nb_nabW_le_VV w lam x ((nb_mem_nabW w lam x).2 (lc_le_locP w _ hx))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nb_nabStd_le_VV (lam : ι → DomWeight n) (x : Pol K ι n) (hx : x ∈ nabStd K lam) : x ∈ VV K lam := by
   obtain ⟨w⟩ := Formalism.L2.Col.nonempty_places K
   exact nb_nabW_le_VV w lam x ((nb_mem_nabW w lam x).2 (lc_le_locP w _ hx))
 
 /- English proof (translation)
-Establish `h : (fun τ => nablaSq K n (lam τ)) = fun τ => Submodule.span K (bideterminantsOfShape K (lam τ).natW)`. Use function extensionality and compare the values at `fun τ => Formalism.GradedWeylDivisibility.standardMonomialSpanDomain K n n (lam τ).natW`. Rewrite using `[VV, h, nb_tensorLat_span]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem nb_VV_eq_bid (lam : ι → DomWeight n) :
     VV K lam = Submodule.span K (nbGen fun τ => bideterminantsOfShape K (lam τ).natW) := by
@@ -620,7 +614,7 @@ theorem nb_VV_eq_bid (lam : ι → DomWeight n) :
   rw [VV, h, nb_tensorLat_span]
 
 /- English proof (translation)
-Establish `h : (fun τ => nablaSq K n (lam τ)) = fun τ => Submodule.span K (nbWord K (lam τ).natW)`. Use function extensionality and compare the values at `fun τ => Formalism.L2.Col.nablaSq_eq_delSq K (lam τ)`. Rewrite using `[VV, h, nb_tensorLat_span]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem nb_VV_eq_word (lam : ι → DomWeight n) :
     VV K lam = Submodule.span K (nbGen fun τ => nbWord K (lam τ).natW) := by
@@ -629,11 +623,11 @@ theorem nb_VV_eq_word (lam : ι → DomWeight n) :
   rw [VV, h, nb_tensorLat_span]
 
 /- English proof (translation)
-Establish `hs` using `fun τ => (Formalism.GradedWeylDivisibility.sSBasis (𝓞 K) n n (lam τ).natW).choose_spec.1.2.1`. Establish `h : (fun τ => (nablaSq (𝓞 K) n (lam τ)).map (toK K _)) = fun τ => Submodule.span (𝓞 K) (Set.range fun i => toK K _ ((Formalism.GradedWeylDivisibility.sSBasis (𝓞 K) n n (lam τ).natW).choose i))`. Use function extensionality and compare the values at `τ`. Unfold `nablaSq`. Rewrite using `[← hs τ, Submodule.map_span, ← Set.range_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[nabStd, h, nb_tensorLat_span]`. Apply `Submodule.fg_span` to reduce the goal to its premises. Establish `: ∀ τ, Finite (Formalism.GradedWeylDivisibility.ssIdx n n (lam τ).natW)` using `fun _ => (Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype`. Use `((Set.Finite.pi' fun τ => Set.finite_range fun i => toK K _ ((Formalism.GradedWeylDivisibility.sSBasis (𝓞 K) n n (lam τ).natW).choose i)).image fun f => ten f).subset ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨f, hf, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem nb_nabStd_fg (lam : ι → DomWeight n) : (nabStd K lam).FG := by
   have hs := fun τ => (Formalism.GradedWeylDivisibility.sSBasis (𝓞 K) n n (lam τ).natW).choose_spec.1.2.1
@@ -652,11 +646,9 @@ theorem nb_nabStd_fg (lam : ι → DomWeight n) : (nabStd K lam).FG := by
   exact ⟨f, hf, rfl⟩
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hA`. Establish `h' : ∀ x : S, ∃ d : 𝓞 K, d ≠ 0 ∧ d • (x : V) ∈ B` using `fun x => h x (Submodule.subset_span x.2)`. Use `choose d hd0 hd using h'`. Use `⟨∏ x : S, d x, Finset.prod_ne_zero_iff.mpr fun x _ => hd0 x, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨x, hx⟩ : S)), mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hd ⟨x, hx⟩)`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nb_common {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (A B : Submodule (𝓞 K) V) (hA : A.FG)
     (h : ∀ x ∈ A, ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ B) : ∃ c : 𝓞 K, c ≠ 0 ∧ ∀ x ∈ A, c • x ∈ B := by
@@ -677,13 +669,13 @@ def NbComm (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n)) : Pr
   ∃ c : 𝓞 K, c ≠ 0 ∧ (∀ x ∈ nabStd K lam, c • x ∈ T) ∧ T ≤ nabStd K lam
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_ne_zero, fun x hx => by rwa [nb_one_smul], le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem nb_comm_nab (lam : ι → DomWeight n) : NbComm lam (nabStd K lam) :=
   ⟨1, one_ne_zero, fun x hx => by rwa [nb_one_smul], le_rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `nb_common (nabStd K lam) (delStd K lam) (nb_nabStd_fg lam) (fun x hx => by`. Use `lc_exists_smul_mem (delStd K lam) ?_` and prove the remaining obligations. Rewrite using `[nb_delStd_eq, Submodule.span_span_of_tower, ← nb_VV_eq_word]`. Conclude with `nb_nabStd_le_VV lam x hx)`. Conclude with `⟨c, hc, h, delStd_le_nabStd K lam⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nb_comm_del (lam : ι → DomWeight n) : NbComm lam (delStd K lam) := by
   obtain ⟨c, hc, h⟩ := nb_common (nabStd K lam) (delStd K lam) (nb_nabStd_fg lam) (fun x hx => by
@@ -704,7 +696,7 @@ theorem nb_transLat_eq (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K
     (M : ι → Submodule (𝓞 K) (Fin n → K)) : transLat lam T M = ⨅ w, nbAt lam T M w := rfl
 
 /- English proof (translation)
-Simplify using `only [nbAt, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nb_mem_at (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n))
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (w : HeightOneSpectrum (𝓞 K)) (F : Pol K ι n) :
@@ -713,15 +705,15 @@ theorem nb_mem_at (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n
   simp only [nbAt, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]
 
 /- English proof (translation)
-The claim follows from `LinearMap.map_smul_of_tower _ r F`.
+A detailed English derivation is pending.
 -/
 theorem actP_smul₂ (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (r : 𝓞 K) (F : Pol K ι n) :
     actP lam g (r • F) = r • actP lam g F := LinearMap.map_smul_of_tower _ r F
 
 /- English proof (translation)
-Use `le_antisymm ?_ (lc_le_locP w _)` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, hx⟩` from `(nb_mem_locP w _ x).1 hx`. Rewrite `hx`, the goal using `[nb_mem_at]`. Introduce `B hB`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hx B hB` as an intermediate fact. Rewrite `this` using `[actP_smul₂, smul_mem_locP_iff_of_notMem w _ hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nb_at_closed (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n))
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (w : HeightOneSpectrum (𝓞 K)) :
@@ -735,13 +727,13 @@ theorem nb_at_closed (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K �
   rwa [actP_smul₂, smul_mem_locP_iff_of_notMem w _ hs] at this
 
 /- English proof (translation)
-Take `⟨c, hc0, hc1, hc2⟩` from `hc`. Take `⟨d, hd0, hd⟩` from `nb_sandwich_fam M hM`. Use `⟨c * d ^ nbN lam, mul_ne_zero hc0 (pow_ne_zero _ hd0), fun w x hx => ?_, fun w x hx => ?_⟩` and prove the remaining obligations. Use `choose B hB using fun τ => latticeBasisExists_holds K n (M τ) (hM τ) w`. Establish `h1` using `localization_mono w.asIdeal hc2 ((nb_mem_at lam T M w x).1 hx B hB)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `nb_scale w lam d B (fun τ => (nb_entries w (M τ) (B τ) (hB τ) d (hd τ).1 (hd τ).2).1) (fun τ => (nb_entries w (M τ) (B τ) (hB τ) d (hd τ).1 (hd τ).2).2) _ h1`. Rewrite `h2` using `[← polyAction_mul, mul_inv_cancel, polyAction_one₂]`. Rewrite using `[nb_mul_smul]`. Conclude with `nb_smul_mem _ c h2`. Rewrite using `[nb_mem_at]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `B hB`. Establish `h2` using `nb_scale w lam d B⁻¹ (fun τ => (nb_entries w (M τ) (B τ) (hB τ) d (hd τ).1 (hd τ).2).2) (fun τ a b => by`. Use `(nb_entries w (M τ) (B τ) (hB τ) d (hd τ).1 (hd τ).2).1 a b` as an intermediate fact. Simplify using `using this) x (lc_le_locP w _ hx)`. Rewrite using `[nb_mul_smul, actP_smul₂, actP_smul₂]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, h3⟩` from `(nb_mem_locP w _ _).1 h2`. Use `(nb_mem_locP w _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[nb_smul_comm]`. Conclude with `hc1 _ h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_at_comm {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} (hc : NbComm lam T)
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
@@ -771,11 +763,11 @@ theorem nb_at_comm {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι 
     exact hc1 _ h3
 
 /- English proof (translation)
-Take `⟨e, he, h1, h2⟩` from `nb_at_comm hc M hM`. Rewrite using `[nb_transLat_eq, localized_iInf (nbAt lam T M) (nabStd K lam) e he (nb_at_closed lam T M) h1 h2 w]`. Use extensionality with `F`. Rewrite using `[nb_mem_at]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨actP lam B⁻¹ F, h B hB, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.coe_restrictScalars, ← polyAction_mul, mul_inv_cancel, polyAction_one₂]`. Introduce and unpack `⟨F0, hF0, rfl⟩ B' hB'`. Use `nb_indep hT w M B B' hB hB' _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.coe_restrictScalars, ← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Conclude with `hF0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nb_loc {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} (hT : NbStab lam T) (hc : NbComm lam T)
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ))
@@ -796,16 +788,16 @@ theorem nb_loc {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} 
     exact hF0
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam M hM w B hB`. Conclude with `⟨nb_loc (nb_stab_nab lam) (nb_comm_nab lam) M hM w B hB, nb_loc (nb_stab_del lam) (nb_comm_del lam) M hM w B hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nablaDeltaLocal_holds : NabDelLoc := by
   intro K _ _ ι _ n lam M hM w B hB
   exact ⟨nb_loc (nb_stab_nab lam) (nb_comm_nab lam) M hM w B hB, nb_loc (nb_stab_del lam) (nb_comm_del lam) M hM w B hB⟩
 
 /- English proof (translation)
-Take `⟨e, he, h1, h2⟩` from `nb_at_comm hc M hM`. Use `⟨e, he, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[nb_transLat_eq, Submodule.mem_iInf]`. Establish `: e • x ∈ ⨅ w : HeightOneSpectrum (𝓞 K), Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (nabStd K lam)`. Rewrite using `[Submodule.mem_iInf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun w => h1 w x (hx w)`. Rewrite `this` using `[lc_iInf_locP]`. Then use the resulting hypothesis. Rewrite using `[nb_transLat_eq, Submodule.mem_iInf]`. Conclude with `fun w => h2 w x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nb_global {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} (hc : NbComm lam T)
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
@@ -822,9 +814,9 @@ theorem nb_global {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n
     exact fun w => h2 w x hx
 
 /- English proof (translation)
-Take `⟨e, he, h1, -⟩` from `nb_global hc M hM`. Establish `h` using `nb_nabStd_le_VV lam _ (h1 F hF)`. Rewrite `h` using `[nb_osmul]`. Establish `he' : algebraMap (𝓞 K) K e ≠ 0`. Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `(VV K lam).smul_mem (algebraMap (𝓞 K) K e)⁻¹ h` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ he', one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nb_le_VV {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} (hc : NbComm lam T)
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) (F : Pol K ι n)
@@ -838,26 +830,24 @@ theorem nb_le_VV {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)
   rwa [smul_smul, inv_mul_cancel₀ he', one_smul] at this
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam M hM F hF`. Conclude with `nb_le_VV (nb_comm_nab lam) M hM F hF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nablaLeVV_holds : NabLeVV := by
   intro K _ _ ι _ n lam M hM F hF
   exact nb_le_VV (nb_comm_nab lam) M hM F hF
 
 /- English proof (translation)
-Take `⟨e, he, h1, h2⟩` from `nb_global hc M hM`. Establish `he' : algebraMap (𝓞 K) K e ≠ 0`. Rewrite using `[Ne, FaithfulSMul.algebraMap_eq_zero_iff]` and apply the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Set `φ : VV K lam →ₗ[𝓞 K] Pol K ι n` to `e • ((VV K lam).subtype.restrictScalars (𝓞 K))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression.
 
-Establish `hφ : Function.Injective φ`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h3 : e • (x : Pol K ι n) = e • (y : Pol K ι n)` using `hxy`. Rewrite `h3` using `[nb_osmul, nb_osmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective _ he' h3`. Use `Submodule.fg_of_fg_map_injective φ hφ (Submodule.FG.of_le (nb_nabStd_fg lam) ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `h1 _ hx`. Apply `Submodule.map_injective_of_injective (f := (VV K lam).subtype) (VV K lam).injective_subtype` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Submodule.map_top, Submodule.range_subtype, Submodule.map_span]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_trans (le_of_eq (nb_VV_eq_bid lam)) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce `P hP`. Establish `hP1 : P ∈ nabStd K lam`. Rewrite using `[nb_nabStd_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span hP`. Establish `hP2` using `h2 P hP1`. Establish `hP3 : e • P ∈ VV K lam` using `nb_le_VV hc M hM _ hP2`. Establish `hP4 : e • P ∈ Submodule.span K ((VV K lam).subtype '' ((transLat lam T M).comap ((VV K lam).subtype.restrictScalars (𝓞 K)) : Set (VV K lam)))` using `Submodule.subset_span ⟨⟨e • P, hP3⟩, hP2, rfl⟩`. Use `Submodule.smul_mem _ (algebraMap (𝓞 K) K e)⁻¹ hP4` as an intermediate fact.
-
-Rewrite `this` using `[nb_osmul, smul_smul, inv_mul_cancel₀ he', one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nb_lattice {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι n)} (hc : NbComm lam T)
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (hM : ∀ τ, Submodule.IsLattice K (M τ)) :
@@ -897,7 +887,7 @@ theorem nb_lattice {lam : ι → DomWeight n} {T : Submodule (𝓞 K) (Pol K ι 
       rwa [nb_osmul, smul_smul, inv_mul_cancel₀ he', one_smul] at this
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam M hM`. Conclude with `⟨nb_lattice (nb_comm_nab lam) M hM, nb_lattice (nb_comm_del lam) M hM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nablaDeltaLattice_holds : NabDelLattice := by
   intro K _ _ ι _ n lam M hM

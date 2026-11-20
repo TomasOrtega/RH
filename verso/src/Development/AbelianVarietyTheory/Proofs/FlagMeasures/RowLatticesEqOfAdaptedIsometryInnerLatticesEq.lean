@@ -18,21 +18,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[frame, FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_castSucc {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (i : Fin D.R.rS) :
     frame F (Fin.castSucc i) = F.fl.e i := by
   simp [frame, FlagG.fvec]
 
 /- English proof (translation)
-Simplify using `[frame, FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_last {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
     frame F (Fin.last D.R.rS) = F.fl.z := by
   simp [frame, FlagG.fvec]
 
 /- English proof (translation)
-Simplify using `only [Xflag, Xsp, FlagG.Xa, FlagG.X]`. Use `congr 1`. Establish `: {i : Fin D.R.rS | i.1 < D.R.rS} = Set.univ` using `by ext i; simp [i.2]`. Rewrite using `[this, Set.image_univ]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem xflag_top {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : Xflag F D.R.rS = Xsp F := by
   simp only [Xflag, Xsp, FlagG.Xa, FlagG.X]
@@ -41,13 +41,13 @@ theorem xflag_top {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : Xflag F D.R.rS = 
   rw [this, Set.image_univ]
 
 /- English proof (translation)
-Conclude with `Submodule.span_mono (Set.image_mono fun k (hk : k.1 < i) => (lt_of_lt_of_le hk h : k.1 < j))`.
+A detailed English derivation is pending.
 -/
 theorem xflag_mono {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {i j : ℕ} (h : i ≤ j) : Xflag F i ≤ Xflag F j := by
   exact Submodule.span_mono (Set.image_mono fun k (hk : k.1 < i) => (lt_of_lt_of_le hk h : k.1 < j))
 
 /- English proof (translation)
-Simplify using `only [Xflag, FlagG.Xa]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem xflag_eq_range {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (j : ℕ) :
     Xflag F j = Submodule.span D.host.E (Set.range fun i : {i : Fin D.R.rS // i.1 < j} => F.fl.e i.1) := by
@@ -56,7 +56,7 @@ theorem xflag_eq_range {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (j : ℕ) :
   ext x; simp
 
 /- English proof (translation)
-Rewrite using `[(LinearEquiv.ofEq _ _ (xflag_eq_range F j)).finrank_eq]`. Conclude with `finrank_span_eq_card (F.fl.e_indep.comp (fun i : {i : Fin D.R.rS // i.1 < j} => i.1) Subtype.val_injective)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_xflag_eq {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (j : ℕ) :
     Module.finrank D.host.E (Xflag F j) = Fintype.card {i : Fin D.R.rS // i.1 < j} := by
@@ -64,18 +64,18 @@ theorem finrank_xflag_eq {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (j : ℕ) :
   exact finrank_span_eq_card (F.fl.e_indep.comp (fun i : {i : Fin D.R.rS // i.1 < j} => i.1) Subtype.val_injective)
 
 /- English proof (translation)
-Rewrite using `[finrank_xflag_eq, finrank_xflag_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_xflag {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (G : LFlag (VS D) D.R.rS T') (j : ℕ) :
     Module.finrank D.host.E (Xflag F j) = Module.finrank D.host.E (Xflag G j) := by
   rw [finrank_xflag_eq, finrank_xflag_eq]
 
 /- English proof (translation)
-Simplify using `only [Xflag, FlagG.Xa]`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Establish `h1` using `hg.2 (Fin.castSucc i)`. Rewrite `h1` using `[frame_castSucc, frame_castSucc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (g : (VS D).V →ₗ[D.host.E] (VS D).V) (F.fl.e i) = (g (F.fl.e i) - G.fl.e i) + G.fl.e i`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `add_mem ?_ (Submodule.subset_span ⟨i, hi, rfl⟩)` and prove the remaining obligations. Establish `hle` using `xflag_mono G (show (Fin.castSucc i).val ≤ j from le_of_lt hi)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hle h1`.
+A detailed English derivation is pending.
 -/
 theorem map_xflag_le {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg : Adapt g F G) (j : ℕ) :
     (Xflag F j).map (g : (VS D).V →ₗ[D.host.E] (VS D).V) ≤ Xflag G j := by
@@ -92,7 +92,7 @@ theorem map_xflag_le {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg
   exact hle h1
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional D.host.E (Xflag G j) := FiniteDimensional.span_of_finite D.host.E ((Set.toFinite _).image _)`. Use `Submodule.eq_of_le_of_finrank_eq (map_xflag_le hg j) ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.finrank_map_eq]`. Conclude with `finrank_xflag F G j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_xflag {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg : Adapt g F G) (j : ℕ) :
     (Xflag F j).map (g : (VS D).V →ₗ[D.host.E] (VS D).V) = Xflag G j := by
@@ -103,16 +103,16 @@ theorem map_xflag {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg : 
   exact finrank_xflag F G j
 
 /- English proof (translation)
-Rewrite using `[← xflag_top, ← xflag_top]`. Conclude with `map_xflag hg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_xsp {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg : Adapt g F G) :
     (Xsp F).map (g : (VS D).V →ₗ[D.host.E] (VS D).V) = Xsp G := by
   rw [← xflag_top, ← xflag_top]; exact map_xflag hg _
 
 /- English proof (translation)
-Use `⟨mul_mem hg'.1 hg.1, fun a => ?_⟩` and prove the remaining obligations. Establish `e : (g' * g) (frame F a) - frame H a = g' (g (frame F a) - frame G a) + (g' (frame G a) - frame H a)`. Express the relevant statement in the definitionally equal form `g' (g (frame F a)) - frame H a = _`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e]`. Use `add_mem ?_ (hg'.2 a)` and prove the remaining obligations. Rewrite using `[← map_xflag hg' a.val]`. Conclude with `Submodule.mem_map_of_mem (hg.2 a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adapt_mul {T : D.host.E} {F G H : LFlag (VS D) D.R.rS T} {g g' : GV D} (hg : Adapt g F G)
     (hg' : Adapt g' G H) : Adapt (g' * g) F H := by
@@ -126,13 +126,13 @@ theorem adapt_mul {T : D.host.E} {F G H : LFlag (VS D) D.R.rS T} {g g' : GV D} (
   exact Submodule.mem_map_of_mem (hg.2 a)
 
 /- English proof (translation)
-Use `⟨inv_mem hg.1, fun a => ?_⟩` and prove the remaining obligations. Establish `hm` using `map_xflag hg a.val`. Establish `h2` using `hg.2 a`. Rewrite `h2` using `[← hm]`. Take `⟨y, hy, hye⟩` from `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : g⁻¹ (frame G a) - frame F a = -y`. Establish `: g (frame F a - y) = frame G a`. Rewrite using `[map_sub]`. Simplify using `only [LinearEquiv.coe_coe] at hye`. Rewrite using `[hye]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[← this]`. Use `show g.symm (g (frame F a - y)) - frame F a = -y`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `neg_mem hy`.
+A detailed English derivation is pending.
 -/
 theorem adapt_inv {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg : Adapt g F G) :
     Adapt g⁻¹ G F := by
@@ -150,9 +150,9 @@ theorem adapt_inv {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg : 
   rw [e]; exact neg_mem hy
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Simplify using `only [Xsp, FlagG.X] at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Conclude with `F.fl.z_orth i`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem z_mem_orth {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : F.fl.z ∈ orth (VS D) (Xsp F) := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
@@ -165,9 +165,9 @@ theorem z_mem_orth {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : F.fl.z ∈ orth 
   | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Use `⟨hn.1, fun a => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[frame_last, Fin.val_last, xflag_top]`. Conclude with `hn.2.2 _ (z_mem_orth F)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cast i`. Rewrite using `[frame_castSucc, Fin.coe_castSucc]`. Conclude with `hn.2.1 i.1 _ (Submodule.subset_span ⟨i, by simp, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrat_adapt {T : D.host.E} {F : LFlag (VS D) D.R.rS T} {n : GV D} (hn : n ∈ NRat F) : Adapt n F F := by
   refine ⟨hn.1, fun a => ?_⟩
@@ -180,27 +180,27 @@ theorem nrat_adapt {T : D.host.E} {F : LFlag (VS D) D.R.rS T} {n : GV D} (hn : n
     exact hn.2.1 i.1 _ (Submodule.subset_span ⟨i, by simp, rfl⟩)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_mul (a b : GV D) (M : LV D) :
     Formalism.HermitianLatticesTheory.gmap (a * b) M = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b M) := by
   ext x; simp [Formalism.HermitianLatticesTheory.gmap]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_one (M : LV D) : Formalism.HermitianLatticesTheory.gmap (1 : GV D) M = M := by
   ext x; simp [Formalism.HermitianLatticesTheory.gmap]
 
 /- English proof (translation)
-Use `congrArg (Formalism.HermitianLatticesTheory.gmap g⁻¹) h` as an intermediate fact. Rewrite `this` using `[← gmap_mul, ← gmap_mul, inv_mul_cancel, gmap_one, gmap_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gmap_inj (g : GV D) {M N : LV D} (h : Formalism.HermitianLatticesTheory.gmap g M = Formalism.HermitianLatticesTheory.gmap g N) : M = N := by
   have := congrArg (Formalism.HermitianLatticesTheory.gmap g⁻¹) h
   rwa [← gmap_mul, ← gmap_mul, inv_mul_cancel, gmap_one, gmap_one] at this
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [toO, Submodule.mem_map, Submodule.restrictScalars_mem, LinearMap.restrictScalars_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_toO (g : GV D) (U : Submodule D.host.E (VS D).V) :
     (toO (VS D) U).map ((g : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E)) =
@@ -209,11 +209,11 @@ theorem map_toO (g : GV D) (U : Submodule D.host.E (VS D).V) :
   simp only [toO, Submodule.mem_map, Submodule.restrictScalars_mem, LinearMap.restrictScalars_apply]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker, Submodule.mem_map, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩ x ⟨u, hu, rfl⟩`. Rewrite using `[hg u w]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw u hu`. Introduce `h`. Use `⟨g.symm y, fun x hx => ?_, by simp⟩` and prove the remaining obligations. Use `h (g x) ⟨x, hx, rfl⟩` as an intermediate fact. Rewrite using `[← hg x (g.symm y)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem map_orth {g : GV D} (hg : g ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (U : Submodule D.host.E (VS D).V) :
     (orth (VS D) U).map (g : (VS D).V →ₗ[D.host.E] (VS D).V) =
@@ -230,7 +230,7 @@ theorem map_orth {g : GV D} (hg : g ∈ Formalism.HermitianLatticesTheory.isom (
     simpa using this
 
 /- English proof (translation)
-Establish `hinj : Function.Injective ((g : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E))` using `g.injective`. Simplify using `only [Lsub, Lrep, Formalism.HermitianLatticesTheory.gmap]`. Rewrite using `[Submodule.map_inf _ hinj, Submodule.map_sup, Submodule.map_inf _ hinj, map_toO, map_toO, map_orth hg.1, map_xsp hg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lsub_map {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg : Adapt g F G) (Λ : LV D) :
     Lsub (Formalism.HermitianLatticesTheory.gmap g Λ) G = Formalism.HermitianLatticesTheory.gmap g (Lsub Λ F) := by
@@ -241,9 +241,9 @@ theorem lsub_map {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {g : GV D} (hg : A
     map_xsp hg]
 
 /- English proof (translation)
-Introduce `D X Y v B ψ₀ ψ₁ Λa Λb ha hb A0 A1 hL`. Establish `As : Adapt (ψ₁⁻¹ * ψ₀) (lf D (X.Fu v)) (lf D (X.Fu v))` using `adapt_mul A0 (adapt_inv A1)`. Establish `hsub : Lsub (Formalism.HermitianLatticesTheory.gmap (ψ₁⁻¹ * ψ₀) Λa) (lf D (X.Fu v)) = Lsub Λb (lf D (X.Fu v))`. Apply `gmap_inj ψ₁` to reduce the goal to its premises. Rewrite using `[← lsub_map A1, ← lsub_map A1, ← gmap_mul, mul_inv_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL`. Take `⟨n, hn, hnΛ⟩` from `GlobalTheory.T.row_lattices_same_inner_differ_by_rational_unipotent D _ (X.Fu v) Λa Λb (ψ₁⁻¹ * ψ₀) ((Y.rowsOK v).1 Λa ha) ((Y.rowsOK v).1 Λb hb) As hsub`. Establish `Ans : Adapt (n * (ψ₁⁻¹ * ψ₀)) (lf D (X.Fu v)) (lf D (X.Fu v))` using `adapt_mul As (nrat_adapt hn)`. Apply the tactic sequence `have heq : Λa = Λb := (GlobalTheory.T.row_representatives_up_to_frame_adapted_isometry D X Y v v).2 Λb hb Λa ha _ Ans hnΛ`. Conclude with `⟨heq.symm, n, hn, Ans, hnΛ.trans heq.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem side : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (v : D.what₂.Word) (B : LFlag (VS D) D.R.rS ((Tu D v : ℕ) : D.host.E)) (ψ₀ ψ₁ : GV D) (Λa Λb : LV D), Λa ∈ Y.what₂ v → Λb ∈ Y.what₂ v → Adapt ψ₀ (lf D (X.Fu v)) B → Adapt ψ₁ (lf D (X.Fu v)) B → Lsub (Formalism.HermitianLatticesTheory.gmap ψ₀ Λa) B = Lsub (Formalism.HermitianLatticesTheory.gmap ψ₁ Λb) B → Λb = Λa ∧ ∃ n ∈ NRat (lf D (X.Fu v)), n * (ψ₁⁻¹ * ψ₀) ∈ Aut0 (lf D (X.Fu v)) Λa := by
   intro D X Y v B ψ₀ ψ₁ Λa Λb ha hb A0 A1 hL

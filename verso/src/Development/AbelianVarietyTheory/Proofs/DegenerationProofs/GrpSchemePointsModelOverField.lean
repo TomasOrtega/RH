@@ -13,7 +13,7 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS.ModelPoints
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Establish `h` using `isGrpPullback_pullback H f`. Use `⟨MulEquiv.ofBijective (pushHom h T) ⟨fun x y e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w])), fun y => ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Conclude with `⟨Over.homMk (h.1.lift y.left T.hom (Over.w y)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem exists_push_equiv {S S' : Scheme.{0}} (f : S' ⟶ S) (H : Over S) [GrpObj H] (T : Over S')
     (s : T.left ⟶ S) (hs : s = T.hom ≫ f) :
@@ -27,7 +27,7 @@ theorem exists_push_equiv {S S' : Scheme.{0}} (f : S' ⟶ S) (H : Over S) [GrpOb
     Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ toFun := fun x => x ≫ e.hom invFun := fun y => y ≫ e.inv left_inv := fun x => by simp right_inv := fun x => by simp map_mul' := fun x y => MonObj.mul_comp x y e.hom }, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_comp_equiv {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H] (e : G ≅ H) [IsMonHom e.hom]
     (T : Over S) : ∃ π : (T ⟶ G) ≃* (T ⟶ H), ∀ y, π.symm y = y ≫ e.inv :=
@@ -38,9 +38,9 @@ theorem exists_comp_equiv {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H] 
      map_mul' := fun x y => MonObj.mul_comp x y e.hom }, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨π₁, p₁⟩` from `exists_push_equiv f A (Over.mk t) s₁ h₁`. Take `⟨π₂, p₂⟩` from `exists_push_equiv g G (Over.mk t) s₂ h₂`. Take `⟨π, p⟩` from `exists_comp_equiv e (Over.mk t)`. Use `⟨π₁.symm.trans (π.symm.trans π₂), fun x z hz hz' => ?_⟩` and prove the remaining obligations. Establish `hx : π₁.symm x = Over.homMk z hz'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `Over.OverMorphism.ext (hz.symm.trans (p₁ (Over.homMk z hz')).symm)`. Use `show (π₂ (π.symm (π₁.symm x))).left = _`. Rewrite using `[p₂, p, hx, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_equiv {S₁ S₂ S : Scheme.{0}} (f : S ⟶ S₁) (g : S ⟶ S₂) (A : Over S₁) [GrpObj A]
     (G : Over S₂) [GrpObj G] (e : (Over.pullback g).obj G ≅ (Over.pullback f).obj A) [IsMonHom e.hom]
@@ -60,7 +60,7 @@ theorem exists_equiv {S₁ S₂ S : Scheme.{0}} (f : S ⟶ S₁) (g : S ⟶ S₂
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem spMap_comp_of_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {f : A →+* B} {g : B →+* C}
     {h : A →+* C} (e : g.comp f = h) : spMap h = spMap g ≫ spMap f := by
@@ -68,9 +68,9 @@ theorem spMap_comp_of_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {
   exact Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Spec.map_surjective a`. Take `⟨b, rfl⟩` from `Spec.map_surjective b`. Rewrite `e` using `[← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`. Use `congr 1`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `hg (congrArg (fun q => q.hom x) e)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_cancel {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {g : B →+* C}
     (hg : Function.Injective g) {a b : Sp B ⟶ Sp A} (e : spMap g ≫ a = spMap g ≫ b) : a = b := by
@@ -82,15 +82,15 @@ theorem spMap_cancel {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {g : 
   exact hg (congrArg (fun q => q.hom x) e)
 
 /- English proof (translation)
-Introduce `K W L _ _ _ _ _ A _ G _ ⟨e, he⟩ Ω _ _ _ j hK hW`. Take `⟨θ, hθ⟩` from `exists_equiv (spMap (algebraMap K L)) (spMap (algebraMap W L)) A G e (spMap j) _ _ (spMap_comp_of_eq hK) (spMap_comp_of_eq hW)`. Use `⟨θ, fun τ hτ x x' hx => ?_, fun K' _ i j' hj x y hy ρ hρ => ?_⟩` and prove the remaining obligations. Establish `w : x.left ≫ A.hom = spMap j ≫ spMap (algebraMap K L)` using `(Over.w x).trans (spMap_comp_of_eq hK)`. Rewrite using `[hθ x (pullback.lift x.left (spMap j) w) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _), hθ x' (spMap τ ≫ pullback.lift x.left (spMap j) w) (by rw [Category.assoc, pullback.lift_fst, hx]) (by rw [Category.assoc, pullback.lift_snd, ← spMap_comp_of_eq hτ]), Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `w : y ≫ A.hom = spMap i ≫ spMap (algebraMap K L)`. Apply `spMap_cancel j'.injective` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hy, ← Category.assoc, ← spMap_comp_of_eq hj]`. Conclude with `(Over.w x).trans (spMap_comp_of_eq hK)`. Establish `w' : (pullback.lift y (spMap i) w ≫ e.inv.left ≫ pullback.fst G.hom (spMap (algebraMap W L))) ≫ G.hom = spMap ρ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : e.inv.left ≫ pullback.snd G.hom (spMap (algebraMap W L)) = pullback.snd A.hom (spMap (algebraMap K L))` using `Over.w e.inv`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition, reassoc_of% h₁, pullback.lift_snd_assoc]`. Conclude with `(spMap_comp_of_eq hρ.symm).symm`. Establish `hU : spMap j' ≫ spMap ρ = spMap (algebraMap W Ω)` using `(spMap_comp_of_eq (by rw [hρ, ← RingHom.comp_assoc, hj, hW])).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `U : Over.mk (spMap (algebraMap W Ω)) ⟶ Over.mk (spMap ρ)` to `Over.homMk (spMap j') hU`. Set `y' : Over.mk (spMap ρ) ⟶ G` to `Over.homMk _ w'`. Establish `hxy : θ x = U ≫ y'`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hθ x (spMap j' ≫ pullback.lift y (spMap i) w) (by rw [Category.assoc, pullback.lift_fst, hy]) (by rw [Category.assoc, pullback.lift_snd, ← spMap_comp_of_eq hj]), Category.assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `⟨y', fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hxy, ← MonObj.comp_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem points_model : ∀ (K W L : Type) [Field K] [CommRing W] [Field L] [Algebra K L] [Algebra W L] (A : Over (Sp K)) [GrpObj A] (G : Over (Sp W)) [GrpObj G], IsModel (L := L) A G → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [Algebra W Ω] (j : L →+* Ω), j.comp (algebraMap K L) = algebraMap K Ω → j.comp (algebraMap W L) = algebraMap W Ω → ∃ θ : (Over.mk (spMap (algebraMap K Ω)) ⟶ A) ≃* (Over.mk (spMap (algebraMap W Ω)) ⟶ G), (∀ τ : Ω →+* Ω, τ.comp j = j → ∀ x x', x'.left = spMap τ ≫ x.left → (θ x').left = spMap τ ≫ (θ x).left) ∧ ∀ (K' : Type) [Field K'] (i : L →+* K') (j' : K' →+* Ω), j'.comp i = j → ∀ (x : Over.mk (spMap (algebraMap K Ω)) ⟶ A) (y : Sp K' ⟶ A.left), spMap j' ≫ y = x.left → ∀ ρ : W →+* K', ρ = i.comp (algebraMap W L) → ∃ y' : Over.mk (spMap ρ) ⟶ G, ∀ c : ℕ, spMap j' ≫ (y' ^ c).left = (θ (x ^ c)).left := by
   intro K W L _ _ _ _ _ A _ G _ ⟨e, he⟩ Ω _ _ _ j hK hW

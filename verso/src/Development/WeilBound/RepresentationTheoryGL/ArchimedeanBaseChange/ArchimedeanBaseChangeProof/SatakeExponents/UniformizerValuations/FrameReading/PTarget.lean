@@ -13,7 +13,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.Tail
 
 /- English proof (translation)
-Unfold `qU`. Use `split_ifs with h`. Conclude with `zpow_add _ x y`. Conclude with `(mul_one 1).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qU_add {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (x y : ℤ) :
     qU w (x + y) = qU w x * qU w y := by
@@ -23,17 +23,17 @@ theorem qU_add {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (x 
   · exact (mul_one 1).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ n w s sg ξ ξa ξb hstd hchi`. Establish `hk : ∀ k : Fin n, chiOf w s ξa ξb k = chiN w ξ k` using `fun k => congrFun hchi k`. Prove the components needed by the constructor for the conclusion. Introduce `i`. Establish `h` using `hk (s.e (Sum.inl i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `he` using `hstd (s.e (Sum.inl i))`. Simplify using `only [chiOf, chiN, Equiv.symm_apply_apply, Sum.elim_inl] at h`. Simplify using `only [Equiv.symm_apply_apply, Sum.elim_inl] at he`. Rewrite `h` using `[he, mul_assoc, ← mul_assoc (qU w _), mul_comm (qU w _) (ξa i), mul_assoc (ξa i), ← qU_add]`. Establish `hr : rh n ↑(s.e (Sum.inl i)) - rh s.a ↑i + (↑s.a - 1 - 2 * ↑↑i) = rh n ↑(s.e (Sum.inl i))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [rh]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hr, ← mul_assoc]`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_comm]`. Conclude with `mul_right_cancel h`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `h` using `hk (s.e (Sum.inr j))`. Establish `he` using `hstd (s.e (Sum.inr j))`. Simplify using `only [chiOf, chiN, Equiv.symm_apply_apply, Sum.elim_inr] at h`. Simplify using `only [Equiv.symm_apply_apply, Sum.elim_inr] at he`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[he, mul_assoc, ← mul_assoc (qU w _), mul_comm (qU w _) (ξb j), mul_assoc (ξb j), ← qU_add]`. Establish `hr : rh n ↑(s.e (Sum.inr j)) - rh s.b ↑j + (↑s.b - 1 - 2 * ↑↑j) = rh n ↑(s.e (Sum.inr j))`. Simplify using `only [rh]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hr, ← mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq, mul_comm]`. Conclude with `mul_right_cancel h`.
+A detailed English derivation is pending.
 -/
 theorem targetAlg : TargetAlg := by
   intro E _ _ _ n w s sg ξ ξa ξb hstd hchi
@@ -67,9 +67,9 @@ theorem targetAlg : TargetAlg := by
     exact mul_right_cancel h
 
 /- English proof (translation)
-Introduce `n s sg ξ hξ hsg`. Establish `hn : ∀ k, ‖((ξ k * (sg k)⁻¹ : ℂˣ) : ℂ)‖ = ‖((ξ k : ℂˣ) : ℂ)‖` using `fun k => by`. Rewrite using `[Units.val_mul, norm_mul, Units.val_inv_eq_inv_val, norm_inv, hsg k, inv_one, mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hn]`. Conclude with `hξ _ _ (s.monoL.monotone hij)`. Introduce `i j hij`. Simplify using `only [hn]`. Conclude with `hξ _ _ (s.monoR.monotone hij)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem monoRes : MonoRes := by
   intro n s sg ξ hξ hsg

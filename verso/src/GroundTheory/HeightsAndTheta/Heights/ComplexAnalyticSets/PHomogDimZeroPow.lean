@@ -11,9 +11,9 @@ noncomputable section
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[originIdeal_eq_ker, RingHom.mem_ker]`. Assume the negation of the conclusion as `h0`. Establish `h1 : homogeneousComponent 0 f ∈ I`. Use `hI 0 hf` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[show (DirectSum.decompose (homogeneousSubmodule (Fin n) ℂ) f 0 : MvPolynomial (Fin n) ℂ) = homogeneousComponent 0 f from decomposition.decompose'_apply _ _]`. Then use the resulting hypothesis. Rewrite `h1` using `[homogeneousComponent_zero, ← constantCoeff_eq]`. Conclude with `hne (I.eq_top_of_isUnit_mem h1 (isUnit_iff_ne_zero.2 h0 |>.map C))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_originIdeal_of_isHomogeneous {n : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)}
     (hI : I.IsHomogeneous (homogeneousSubmodule (Fin n) ℂ)) (hne : I ≠ ⊤) : I ≤ originIdeal n := by
@@ -28,9 +28,9 @@ theorem le_originIdeal_of_isHomogeneous {n : ℕ} {I : Ideal (MvPolynomial (Fin 
   exact hne (I.eq_top_of_isUnit_mem h1 (isUnit_iff_ne_zero.2 h0 |>.map C))
 
 /- English proof (translation)
-Establish `: Ring.KrullDimLE 0 (R ⧸ K)` using `Ring.krullDimLE_iff.2 (by exact_mod_cast hK)`. Establish `hsurj` using `Ideal.Quotient.mk_surjective (I := K)`. Establish `: (Q.map (Ideal.Quotient.mk K)).IsPrime` using `Ideal.map_isPrime_of_surjective hsurj (by rwa [Ideal.mk_ker])`. Establish `hmax` using `Ideal.isMaximal_of_isPrime (Q.map (Ideal.Quotient.mk K))`. Use `Ideal.comap_isMaximal_of_surjective _ hsurj (K := Q.map (Ideal.Quotient.mk K))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.comap_map_of_surjective _ hsurj, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 hKQ]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isMaximal_of_isPrime_of_quotient_dim_le_zero {R : Type*} [CommRing R] {K Q : Ideal R}
     (hK : ringKrullDim (R ⧸ K) ≤ 0) (hQ : Q.IsPrime) (hKQ : K ≤ Q) : Q.IsMaximal := by
@@ -44,11 +44,9 @@ theorem isMaximal_of_isPrime_of_quotient_dim_le_zero {R : Type*} [CommRing R] {K
     sup_eq_left.2 hKQ] at this
 
 /- English proof (translation)
-Introduce `n K hK hdim`. Apply `Ideal.exists_pow_le_of_le_radical_of_fg _ (Submodule.fg_span (Set.finite_range _))` to reduce the goal to its premises. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf fun P ⟨hKP, hP⟩ => ?_` and prove the remaining obligations. Use `set 𝒜 := homogeneousSubmodule (Fin n) ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcP : (P.homogeneousCore 𝒜).toIdeal.IsPrime` using `hP.homogeneousCore`. Establish `hKc : K ≤ (P.homogeneousCore 𝒜).toIdeal`. Rewrite using `[← hK.toIdeal_homogeneousCore_eq_self]`. Conclude with `Ideal.homogeneousCore_mono 𝒜 hKP`. Establish `hmax` using `isMaximal_of_isPrime_of_quotient_dim_le_zero hdim hcP hKc`.
-
-Establish `hle` using `le_originIdeal_of_isHomogeneous (P.homogeneousCore 𝒜).isHomogeneous hmax.ne_top`. Conclude with `((hmax.eq_of_le (originIdeal_isMaximal n).ne_top hle).symm.le).trans (Ideal.toIdeal_homogeneousCore_le 𝒜 P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HomogDimZeroPow.proof : HomogDimZeroPow.Statement := by
   intro n K hK hdim

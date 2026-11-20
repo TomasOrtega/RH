@@ -23,7 +23,7 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
 /- English proof (translation)
-Establish `h0 : s.toSequenceOfBlowups.transitionMap (le_refl 0) = 𝟙 (s.toSequenceOfBlowups.schemeAt 0)`. Rewrite using `[SequenceOfBlowups.transitionMap_def]`. Establish `hid : (CategoryTheory.homOfLE (le_refl (0 : ℕ))).op = 𝟙 (Opposite.op (0 : ℕ))` using `rfl`. Rewrite using `[hid, CategoryTheory.Functor.map_id]`. Rewrite using `[SequenceOfBlowups.projectionToBase_def, h0, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem projectionToBase_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.toSequenceOfBlowups.projectionToBase 0 = s.toSequenceOfBlowups.isoZero.hom := by
@@ -34,7 +34,7 @@ theorem projectionToBase_zero (s : MarkedSequenceOfBlowups p I m E) :
   rw [SequenceOfBlowups.projectionToBase_def, h0, Category.id_comp]
 
 /- English proof (translation)
-Establish `h : s.toSequenceOfBlowups.transitionMapSucc i ≫ s.toSequenceOfBlowups.projectionToBase i = s.toSequenceOfBlowups.projectionToBase (i + 1)`. Rewrite using `[s.toSequenceOfBlowups.blowupMorphism_eq_transitionMap i]`. Conclude with `s.toSequenceOfBlowups.transitionMap_comp_projectionToBase (Nat.le_succ i)`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem projectionToBase_succ_apply (s : MarkedSequenceOfBlowups p I m E) (i : ℕ)
     (x : ↥(s.toSequenceOfBlowups.schemeAt (i + 1))) :
@@ -48,7 +48,7 @@ theorem projectionToBase_succ_apply (s : MarkedSequenceOfBlowups p I m E) (i : �
   rfl
 
 /- English proof (translation)
-Rewrite using `[← s.ideal_succ i hi]`. Conclude with `fun U => Ideal.mul_le_right`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comap_ideal_le_ideal_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ)
     (hi : i < s.toSequenceOfBlowups.length) :
@@ -57,7 +57,7 @@ theorem comap_ideal_le_ideal_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ
   exact fun U => Ideal.mul_le_right
 
 /- English proof (translation)
-Use `subset_trans (SetLike.coe_subset_coe.mpr (Scheme.IdealSheafData.support_antitone (s.comap_ideal_le_ideal_succ i hi))) ?_` and prove the remaining obligations. Conclude with `(Scheme.IdealSheafData.support_comap _ _).le`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem support_ideal_succ_subset_preimage (s : MarkedSequenceOfBlowups p I m E) (i : ℕ)
     (hi : i < s.toSequenceOfBlowups.length) :
@@ -71,7 +71,7 @@ theorem support_ideal_succ_subset_preimage (s : MarkedSequenceOfBlowups p I m E)
 end MarkedSequenceOfBlowups
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hV.locallyOfFiniteType`. Establish `: AlgebraicGeometry.QuasiCompact T.structMap` using `hV.quasiCompact`. Establish `: AlgebraicGeometry.IsNoetherian (Spec (CommRingCat.of T.base))` using `inferInstance`. Conclude with `isNoetherian_of_locallyOfFiniteType T.structMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem MarkedIdealWithBoundary.IsAdmissible.isNoetherian {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) :
     AlgebraicGeometry.IsNoetherian T.scheme := by

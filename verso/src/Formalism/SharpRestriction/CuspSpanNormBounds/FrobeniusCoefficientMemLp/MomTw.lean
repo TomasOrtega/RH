@@ -23,7 +23,7 @@ def twTi (k r : ℕ) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ :=
   Matrix.diagonal (fun i => star (twD k r i))
 
 /- English proof (translation)
-Rewrite using `[star_pow, ← mul_pow]`. Establish `: (-Complex.I) * star (-Complex.I) = 1`. Simplify using the standard rewrite rules. Rewrite using `[this, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem negI_pow_mul_star (n : ℕ) : (-Complex.I) ^ n * star ((-Complex.I) ^ n) = 1 := by
   rw [star_pow, ← mul_pow]
@@ -32,7 +32,7 @@ theorem negI_pow_mul_star (n : ℕ) : (-Complex.I) ^ n * star ((-Complex.I) ^ n)
   rw [this, one_pow]
 
 /- English proof (translation)
-Unfold `twD`. Use `split_ifs`. Conclude with `negI_pow_mul_star _`. Conclude with `negI_pow_mul_star _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twD_mul_star (i : Fin (2 * r + k + 1)) : twD k r i * star (twD k r i) = 1 := by
   unfold twD
@@ -42,15 +42,15 @@ theorem twD_mul_star (i : Fin (2 * r + k + 1)) : twD k r i * star (twD k r i) = 
   · simp
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `twD_mul_star i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_twD_mul (i : Fin (2 * r + k + 1)) : star (twD k r i) * twD k r i = 1 := by
   rw [mul_comm]; exact twD_mul_star i
 
 /- English proof (translation)
-Unfold `twT twTi`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `twD_mul_star i`.
+A detailed English derivation is pending.
 -/
 theorem twT_mul_twTi : twT k r * twTi k r = 1 := by
   unfold twT twTi
@@ -61,7 +61,7 @@ theorem twT_mul_twTi : twT k r * twTi k r = 1 := by
   exact twD_mul_star i
 
 /- English proof (translation)
-Unfold `twT twTi`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `star_twD_mul i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem twTi_mul_twT : twTi k r * twT k r = 1 := by
   unfold twT twTi
@@ -71,17 +71,17 @@ theorem twTi_mul_twT : twTi k r * twT k r = 1 := by
   exact star_twD_mul i
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv twT_mul_twTi`.
+A detailed English derivation is pending.
 -/
 theorem twT_inv : (twT k r)⁻¹ = twTi k r := Matrix.inv_eq_right_inv twT_mul_twTi
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv twTi_mul_twT`.
+A detailed English derivation is pending.
 -/
 theorem twTi_inv : (twTi k r)⁻¹ = twT k r := Matrix.inv_eq_right_inv twTi_mul_twT
 
 /- English proof (translation)
-Unfold `twT twTi`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twT_conjTranspose : (twT k r)ᴴ = twTi k r := by
   unfold twT twTi
@@ -89,11 +89,11 @@ theorem twT_conjTranspose : (twT k r)ᴴ = twTi k r := by
   rfl
 
 /- English proof (translation)
-Unfold `twD`. Break down `hi with hi | hj` into its components or cases. Establish `hj1 : ¬ j.val < r` using `by omega`. Establish `hj2 : r + k < j.val` using `by omega`. Rewrite using `[if_pos hi, if_neg hj1, if_pos hj2]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hi1 : ¬ i.val < r` using `by omega`. Establish `hi2 : r + k < i.val` using `by omega`. Rewrite using `[if_neg hi1, if_pos hi2, if_pos hj]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem twD_pair (i j : Fin (2 * r + k + 1)) (h : i.val + j.val = 2 * r + k) (hi : i.val < r ∨ j.val < r) :
     twD k r i = twD k r j := by
@@ -111,20 +111,18 @@ theorem twD_pair (i j : Fin (2 * r + k + 1)) (h : i.val + j.val = 2 * r + k) (hi
     omega
 
 /- English proof (translation)
-Unfold `twD`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twD_Wb (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) : twD k r i = 1 := by
   unfold twD
   rw [if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Use `show (twT k r)ᴴ * Hpk k r * twT k r = Hpk k r`. Rewrite using `[twT_conjTranspose]`. Unfold `twTi twT`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Hpk`. Use `split_ifs with h1 h2 h3 h4`. Rewrite using `[mul_one, twD_pair i j h1.2 (Or.inl h1.1), star_twD_mul]`. Rewrite using `[mul_one, twD_pair i j h2.2 (Or.inr h2.1), star_twD_mul]`. Take `⟨ha, hb, rfl⟩` from `h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[twD_Wb i ha hb]`. Simplify using the standard rewrite rules. Take `⟨ha, hb, rfl⟩` from `h3`. Rewrite using `[twD_Wb i ha hb]`. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twT_mem_UH : twT k r ∈ UH (Hpk k r) := by
   show (twT k r)ᴴ * Hpk k r * twT k r = Hpk k r
@@ -143,18 +141,18 @@ theorem twT_mem_UH : twT k r ∈ UH (Hpk k r) := by
   · simp
 
 /- English proof (translation)
-Establish `h` using `WeylGroupFacts.uh_inv (k := k) (r := r) twT_mem_UH`. Rewrite `h` using `[twT_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem twTi_mem_UH : twTi k r ∈ UH (Hpk k r) := by
   have h := WeylGroupFacts.uh_inv (k := k) (r := r) twT_mem_UH
   rwa [twT_inv] at h
 
 /- English proof (translation)
-Unfold `twT`. Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Rewrite using `[hh.1 i j hj] split_ifs with e`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hh.2 i j hi] split_ifs with e`.
+Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[twD_Wb i (by omega) (by omega), twD_Wb j (by omega) (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twT_comm_block {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : WeylGroupFacts.block k r h) :
     twT k r * h = h * twT k r := by
@@ -175,7 +173,7 @@ theorem twT_comm_block {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
       ring
 
 /- English proof (translation)
-Unfold `twT twTi`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twT_conj_apply (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j : Fin (2 * r + k + 1)) :
     (twT k r * g * twTi k r) i j = twD k r i * g i j * star (twD k r j) := by
@@ -183,9 +181,9 @@ theorem twT_conj_apply (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Rewrite `hn`, the goal using `[WeylGroupFacts.nset_iff]`. Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul twT_mem_UH hn.1) twTi_mem_UH, fun i j hj hi => ?_⟩` and prove the remaining obligations. Rewrite using `[twT_conj_apply, hn.2 i j hj hi]`. Use `split_ifs with e`. Substitute `e` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, twD_mul_star]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twT_conj_N {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hn : n ∈ Nset k r) :
     twT k r * n * twTi k r ∈ Nset k r := by
@@ -197,9 +195,9 @@ theorem twT_conj_N {n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} 
   · simp
 
 /- English proof (translation)
-Unfold `twTi`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hz i hi, mul_zero]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twD_Wb i (by omega) (by omega)]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twTi_mulVec_Wb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : twTi k r *ᵥ z = z := by
   unfold twTi
@@ -210,7 +208,7 @@ theorem twTi_mulVec_Wb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : twT
   · rw [twD_Wb i (by omega) (by omega)]; simp
 
 /- English proof (translation)
-Unfold `twD`. Rewrite using `[if_pos (show a < r by omega), if_pos (show a + 1 < r by omega)]`. Establish `e : r - a = (r - (a + 1)) + 1` using `by omega`. Rewrite using `[e, pow_succ, mul_comm ((-Complex.I) ^ (r - (a + 1))) (-Complex.I), mul_assoc, negI_pow_mul_star, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem twD_eI_succ (a : ℕ) (ha : a + 1 < r) (hi : a < 2 * r + k + 1) (hi' : a + 1 < 2 * r + k + 1) :
     twD k r ⟨a, hi⟩ * star (twD k r ⟨a + 1, hi'⟩) = -Complex.I := by
@@ -220,7 +218,7 @@ theorem twD_eI_succ (a : ℕ) (ha : a + 1 < r) (hi : a < 2 * r + k + 1) (hi' : a
   rw [e, pow_succ, mul_comm ((-Complex.I) ^ (r - (a + 1))) (-Complex.I), mul_assoc, negI_pow_mul_star, mul_one]
 
 /- English proof (translation)
-Unfold `twD`. Rewrite using `[if_pos (show r - 1 < r by omega)]`. Establish `e : r - (r - 1) = 1` using `by omega`. Rewrite using `[e, pow_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem twD_last (hr : 0 < r) (hi : r - 1 < 2 * r + k + 1) : twD k r ⟨r - 1, hi⟩ = -Complex.I := by
   unfold twD
@@ -229,11 +227,11 @@ theorem twD_last (hr : 0 < r) (hi : r - 1 < 2 * r + k + 1) : twD k r ⟨r - 1, h
   rw [e, pow_one]
 
 /- English proof (translation)
-Unfold `ell`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[twT_conj_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `twD_eI_succ (k := k) (r := r) a.val h (eI k r a).isLt (eI k r ⟨a.val + 1, h⟩).isLt` as an intermediate fact. Simplify using `only [eI] at this ⊢`. Rewrite using `[mul_comm (twD k r _) (g _ _), mul_assoc, this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Matrix.mulVec_mulVec, twTi_mulVec_Wb hz, ← Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `twT`. Rewrite using `[Matrix.mulVec_diagonal]`. Establish `hr : a.val = r - 1` using `by omega`. Establish `: eI k r a = ⟨r - 1, by omega⟩` using `Fin.ext (by simp [eI, hr])`. Rewrite using `[this, twD_last (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twT_ell {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     ell k r z (twT k r * g * twTi k r) = -Complex.I * ell k r z g := by
@@ -253,7 +251,7 @@ theorem twT_ell {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : Matrix 
     rw [this, twD_last (by omega)]
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[twT_ell hz, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem twT_psi {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
@@ -262,9 +260,9 @@ theorem twT_psi {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ)
   rw [twT_ell hz, mul_assoc]
 
 /- English proof (translation)
-Unfold `twTi bvec`. Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem twTi_mulVec_bvec (i : Fin (2 * r + k + 1)) : twTi k r *ᵥ bvec i = star (twD k r i) • bvec i := by
   unfold twTi bvec
@@ -278,13 +276,13 @@ def spanA (k r : ℕ) (a : Fin (r + 1)) : Submodule ℂ (Fin (2 * r + k + 1) →
   Submodule.span ℂ (Set.range fun b : {b : Fin r // b.val < a.val} => bvec (eI k r b.1))
 
 /- English proof (translation)
-Unfold `spanA at hy ⊢`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Establish `e : Matrix.diagonal d *ᵥ bvec (eI k r b.1) = d (eI k r b.1) • bvec (eI k r b.1)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `bvec`. Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `h : j = eI k r b.1`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem diag_mulVec_mem_spanA (d : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) {y : Fin (2 * r + k + 1) → ℂ}
     (hy : y ∈ spanA k r a) : Matrix.diagonal d *ᵥ y ∈ spanA k r a := by
@@ -310,7 +308,7 @@ def sA (k r : ℕ) (a : Fin (r + 1)) : ℂ := if h : a.val < r then star (twD k 
 def tA (k r : ℕ) (a : Fin (r + 1)) : ℂ := if h : a.val < r then twD k r (eI k r ⟨a.val, h⟩) else 1
 
 /- English proof (translation)
-Unfold `sA tA`. Use `split_ifs`. Conclude with `star_twD_mul _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sA_mul_tA (a : Fin (r + 1)) : sA k r a * tA k r a = 1 := by
   unfold sA tA; split_ifs
@@ -318,13 +316,13 @@ theorem sA_mul_tA (a : Fin (r + 1)) : sA k r a * tA k r a = 1 := by
   · simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold twD; split_ifs <;> simp [norm_pow]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_twD (i : Fin (2 * r + k + 1)) : ‖twD k r i‖ = 1 := by
   unfold twD; split_ifs <;> simp [norm_pow]
 
 /- English proof (translation)
-Unfold `sA`. Use `split_ifs`. Rewrite using `[norm_star, norm_twD]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_sA (a : Fin (r + 1)) : ‖sA k r a‖ = 1 := by
   unfold sA; split_ifs
@@ -332,7 +330,7 @@ theorem norm_sA (a : Fin (r + 1)) : ‖sA k r a‖ = 1 := by
   · simp
 
 /- English proof (translation)
-Unfold `fvec sA`. Use `split_ifs`. Conclude with `twTi_mulVec_bvec _`. Rewrite using `[twTi_mulVec_Wb hz, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twTi_mulVec_fvec {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin (r + 1)) :
     twTi k r *ᵥ fvec k r z a = sA k r a • fvec k r z a := by
@@ -342,7 +340,7 @@ theorem twTi_mulVec_fvec {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a 
   · rw [twTi_mulVec_Wb hz, one_smul]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.eucl`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Complex.normSq_mul]`. Rewrite using `[← Finset.mul_sum, Real.sqrt_mul (Complex.normSq_nonneg _), Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eucl_smul (s : ℂ) (v : Fin (2 * r + k + 1) → ℂ) : Formalism.MainNotions.S.eucl (s • v) = ‖s‖ * Formalism.MainNotions.S.eucl v := by
   unfold Formalism.MainNotions.S.eucl
@@ -351,13 +349,13 @@ theorem eucl_smul (s : ℂ) (v : Fin (2 * r + k + 1) → ℂ) : Formalism.MainNo
     Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.lA`. Use `congr 1`. Establish `hinv : (twT k r * g)⁻¹ = g⁻¹ * twTi k r` using `by rw [Matrix.mul_inv_rev, twT_inv]`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨tA k r a • (twTi k r *ᵥ y), Submodule.smul_mem _ _ (diag_mulVec_mem_spanA _ a hy), ?_⟩` and prove the remaining obligations. Rewrite using `[hinv, ← Matrix.mulVec_mulVec, Matrix.mulVec_sub, twTi_mulVec_fvec hz]`. Establish `e : sA k r a • fvec k r z a - twTi k r *ᵥ y = sA k r a • (fvec k r z a - tA k r a • (twTi k r *ᵥ y))`. Rewrite using `[smul_sub, smul_smul, sA_mul_tA, one_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mulVec_smul, eucl_smul, norm_sA, one_mul]`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨sA k r a • (twT k r *ᵥ y), Submodule.smul_mem _ _ (diag_mulVec_mem_spanA _ a hy), ?_⟩` and prove the remaining obligations. Rewrite using `[hinv, ← Matrix.mulVec_mulVec]`. Establish `e : twTi k r *ᵥ (fvec k r z a - sA k r a • (twT k r *ᵥ y)) = sA k r a • (fvec k r z a - y)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_sub, twTi_mulVec_fvec hz, Matrix.mulVec_smul, Matrix.mulVec_mulVec, twTi_mul_twT, Matrix.one_mulVec, smul_sub]`. Rewrite using `[e, Matrix.mulVec_smul, eucl_smul, norm_sA, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lA_twT {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a : Fin (r + 1)) :

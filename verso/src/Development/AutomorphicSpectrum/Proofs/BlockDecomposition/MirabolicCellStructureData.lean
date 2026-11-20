@@ -14,9 +14,9 @@ section Alg
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(Subgroup.mem_subgroupOf.1 hu : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show ((u : GL (Fin (n + 1)) k) : Matrix _ _ k) (Fin.castSucc a) (Fin.castSucc b) = _`. Rewrite using `[← hv]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[unip, colMat, one_apply, Fin.castSucc_ne_last]`.
+A detailed English derivation is pending.
 -/
 theorem mirProj_eq_one_of_mem {n : ℕ} (u : Mir k n) (hu : u ∈ MirUin k n) : mirabolicProjection k n u = 1 := by
   obtain ⟨v, hv⟩ := (Subgroup.mem_subgroupOf.1 hu : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)
@@ -27,13 +27,13 @@ theorem mirProj_eq_one_of_mem {n : ℕ} (u : Mir k n) (hu : u ∈ MirUin k n) : 
   simp [unip, colMat, one_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Establish `hb : ∀ a b : Fin n, ((u : GL (Fin (n + 1)) k) : Matrix _ _ k) (Fin.castSucc a) (Fin.castSucc b) = if a = b then 1 else 0`. Introduce `a b`. Use `congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) a b) hu` as an intermediate fact. Conclude with `(this : ((u : GL (Fin (n + 1)) k) : Matrix _ _ k) (Fin.castSucc a) (Fin.castSucc b) = _).trans (by simp [one_apply])`. Establish `hl` using `(mem_Mir_iff k (u : GL (Fin (n + 1)) k)).1 u.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_subgroupOf.2 ⟨Multiplicative.ofAdd fun a => ((u : GL (Fin (n + 1)) k) : Matrix _ _ k) (Fin.castSucc a) (Fin.last n), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Establish `hlb` using `congrFun hl b`. Proceed by induction on `a using Fin.lastCases with`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `last`. Rewrite using `[hlb]`. Apply the tactic sequence `induction b using Fin.lastCases <;> simp [unip, colMat, one_apply, eLast, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]`. Consider the case `cast a`. Proceed by induction on `b using Fin.lastCases with`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `last => simp [unip, colMat, one_apply, Fin.castSucc_ne_last]`. Consider the case `cast b`. Rewrite using `[hb]`. Simplify using `[unip, colMat, one_apply, Fin.castSucc_ne_last]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_mirProj_eq_one' {n : ℕ} (u : Mir k n) (hu : mirabolicProjection k n u = 1) : u ∈ MirUin k n := by
   have hb : ∀ a b : Fin n, ((u : GL (Fin (n + 1)) k) : Matrix _ _ k) (Fin.castSucc a) (Fin.castSucc b) = if a = b then 1 else 0 := by
@@ -57,14 +57,14 @@ theorem mem_of_mirProj_eq_one' {n : ℕ} (u : Mir k n) (hu : mirabolicProjection
       simp [unip, colMat, one_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Use `⟨fun u hu g => mem_of_mirProj_eq_one' _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mirProj_eq_one_of_mem u hu, mul_one, map_inv, mul_inv_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mirUin_normal (n : ℕ) : (MirUin k n).Normal := by
   refine ⟨fun u hu g => mem_of_mirProj_eq_one' _ ?_⟩
   rw [map_mul, map_mul, mirProj_eq_one_of_mem u hu, mul_one, map_inv, mul_inv_cancel]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(Subgroup.mem_subgroupOf.1 ha : ((a : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)`. Take `⟨w, hw⟩` from `(Subgroup.mem_subgroupOf.1 hb : ((b : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (a : GL (Fin (n + 1)) k) * (b : GL (Fin (n + 1)) k) = (b : GL (Fin (n + 1)) k) * (a : GL (Fin (n + 1)) k)`. Rewrite using `[← hv, ← hw, ← map_mul, mul_comm, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mirUin_comm {n : ℕ} {a b : Mir k n} (ha : a ∈ MirUin k n) (hb : b ∈ MirUin k n) : a * b = b * a := by
   obtain ⟨v, hv⟩ := (Subgroup.mem_subgroupOf.1 ha : ((a : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)
@@ -90,11 +90,11 @@ def prodSub {n : ℕ} (L₁ L₂ : Subgroup (Mir k n)) (h₁ : L₁ ≤ MirUin k
     exact mirUin_comm (MirUin k n |>.inv_mem (h₁ ha)) (MirUin k n |>.inv_mem (h₂ hb))
 
 /- English proof (translation)
-Establish `hp : (g : GL (Fin ((i + 1) + (t + 1) + 1)) k) ∈ GlobalTheory.SmGL.parab k (ePG (i + 1) (t + 1))` using `hg`. Establish `hlt` using `l.isLt`. Establish `h0` using `mem_parab_iff.1 hp true false (⟨l.val - (i + 1), by omega⟩ : Fin (t + 1)) (Fin.castSucc c : Fin (i + 1 + 1)) (by decide)`. Establish `e1 : ePG (i + 1) (t + 1) ⟨true, (⟨l.val - (i + 1), by omega⟩ : Fin (t + 1))⟩ = l`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[ePG, two]`. Use linear arithmetic over natural numbers and integers. Establish `e2 : ePG (i + 1) (t + 1) ⟨false, (Fin.castSucc c : Fin (i + 1 + 1))⟩ = Fin.castLE (by omega) c`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[ePG, two]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[e1, e2]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hpg_entry {i t : ℕ} (g : Mir k ((i + 1) + t + 1)) (hg : g ∈ HPG k (i + 1) (t + 1))
     (l : Fin ((i + 1) + t + 2)) (hl : i < l.val) (hl2 : l.val ≠ (i + 1) + t + 1) (c : Fin (i + 1)) :
@@ -114,15 +114,15 @@ theorem hpg_entry {i t : ℕ} (g : Mir k ((i + 1) + t + 1)) (hg : g ∈ HPG k (i
   exact h0
 
 /- English proof (translation)
-Introduce `c`. Rewrite using `[_root_.mul_inv_rev]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : l.val ≤ i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `hx ⟨l.val, by omega⟩` as an intermediate fact. Establish `e : Fin.castLE (by omega) (⟨l.val, by omega⟩ : Fin (i + 1)) = l` using `Fin.ext rfl`. Rewrite `this` using `[e]`. Rewrite using `[this, zero_mul]`. Distinguish the cases in `h2 : l.val = (i + 1) + t + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e : l = Fin.last _` using `Fin.ext h2`. Establish `hm` using `(mem_Mir_iff k ((h⁻¹ : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k)).1 (h⁻¹).2`. Establish `hc` using `congrFun hm (Fin.castLE (by omega) c)`. Rewrite using `[e, hc]`. Establish `: Fin.castLE (by omega) c ≠ Fin.last ((i + 1) + t + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e'`. Use `congrArg Fin.val e'` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[eLast, Pi.single_apply, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rw [hpg_entry _ ((HPG k (i + 1) (t + 1)).inv_mem hh) l (by omega) h2 c, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Cl_left {i t : ℕ} (h : Mir k ((i + 1) + t + 1)) (hh : h ∈ HPG k (i + 1) (t + 1)) (x : Mir k ((i + 1) + t + 1))
     (hx : x ∈ Cl k i t) : h * x ∈ Cl k i t := by
@@ -149,13 +149,13 @@ theorem Cl_left {i t : ℕ} (h : Mir k ((i + 1) + t + 1)) (hh : h ∈ HPG k (i +
     · rw [hpg_entry _ ((HPG k (i + 1) (t + 1)).inv_mem hh) l (by omega) h2 c, mul_zero]
 
 /- English proof (translation)
-Introduce `c`. Take `⟨w, hw⟩` from `(Subgroup.mem_subgroupOf.1 ((MirUin k ((i + 1) + t + 1)).inv_mem hu) : ((u⁻¹ : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k) ∈ MirU k ((i + 1) + t + 1))`. Rewrite using `[_root_.mul_inv_rev]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Rewrite using `[← hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ((unip k ((i + 1) + t + 1) w : GL (Fin ((i + 1) + t + 2)) k) : Matrix (Fin ((i + 1) + t + 2)) (Fin ((i + 1) + t + 2)) k) = 1 + colMat k _ w.toAdd` using `rfl`. Rewrite using `[hv, add_mul, one_mul, Matrix.add_apply, hx c, zero_add, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = Fin.last _`. Establish `hm` using `(mem_Mir_iff k ((x⁻¹ : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k)).1 (x⁻¹).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hc` using `congrFun hm (Fin.castLE (by omega) c)`. Rewrite using `[hl, hc]`. Establish `: Fin.castLE (by omega) c ≠ Fin.last ((i + 1) + t + 1)`. Introduce `e'`. Use `congrArg Fin.val e'` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[eLast, Pi.single_apply, this]`. Simplify using `[colMat, hl]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Cl_right {i t : ℕ} (x : Mir k ((i + 1) + t + 1)) (hx : x ∈ Cl k i t) (u : Mir k ((i + 1) + t + 1))
     (hu : u ∈ MirUin k ((i + 1) + t + 1)) : x * u ∈ Cl k i t := by
@@ -188,11 +188,11 @@ section Top
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `he : ((mirChar k ψ n).ker : Set (MirUin k (n + 1))) = (fun u : MirUin k (n + 1) => GlobalTheory.CompanionTheory.BZFun.lastCol k u (Fin.last n)) ⁻¹' {x : k | ψ x = 1}`. Use extensionality with `u`. Take `⟨w, hw⟩` from `(Subgroup.mem_subgroupOf.1 u.2 : ((u : Mir k (n + 1)) : GL (Fin (n + 2)) k) ∈ MirU k (n + 1))`. Establish `hl : GlobalTheory.CompanionTheory.BZFun.lastCol k u (Fin.last n) = w.toAdd (Fin.last n)`. Simplify using `only [GlobalTheory.CompanionTheory.BZFun.lastCol, ← hw]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `unip_apply_castSucc_last k (n + 1) w _`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_setOf_eq, hl, mirChar_eq k ψ n u w hw.symm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Circle.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg Units.val h`. Introduce `h`. Rewrite using `[h, map_one]`. Rewrite using `[he]`. Conclude with `(GlobalTheory.CompanionTheory.BZFun.isOpen_addChar_eq_one k ψ hψ).preimage ((continuous_apply _).comp (GlobalTheory.CompanionTheory.BZFun.continuous_lastCol k (n + 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mirChar_ker_open (ψ : AddChar k Circle) (hψ : Continuous ψ) (n : ℕ) :
     IsOpen ((mirChar k ψ n).ker : Set (MirUin k (n + 1))) := by
@@ -216,9 +216,9 @@ theorem mirChar_ker_open (ψ : AddChar k Circle) (hψ : Continuous ψ) (n : ℕ)
     ((continuous_apply _).comp (GlobalTheory.CompanionTheory.BZFun.continuous_lastCol k (n + 1)))
 
 /- English proof (translation)
-Establish `hc : Continuous fun p : Mir k ((i + 1) + t + 1) => (((p⁻¹ : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k) : Matrix (Fin ((i + 1) + t + 2)) (Fin ((i + 1) + t + 2)) k)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_inv)`. Establish `he : Cl k i t = ⋂ c : Fin (i + 1), {p : Mir k ((i + 1) + t + 1) | (((p⁻¹ : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k) : Matrix (Fin ((i + 1) + t + 2)) (Fin ((i + 1) + t + 2)) k) (Fin.castSucc (Fin.last ((i + 1) + t))) (Fin.castLE (by omega) c) = 0}`. Use extensionality with `p`. Simplify using `[Cl]`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_iInter fun c => isClosed_eq (hc.matrix_elem _ _) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_Cl (i t : ℕ) : IsClosed (Cl k i t) := by
   have hc : Continuous fun p : Mir k ((i + 1) + t + 1) =>
@@ -237,9 +237,9 @@ theorem isClosed_Cl (i t : ℕ) : IsClosed (Cl k i t) := by
 end Top
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ i t`. Use `⟨mirUin_normal _, mirChar_ker_open ψ hψ _, isClosed_Cl i t, fun h hh x hx => Cl_left h hh x hx, fun x hx u hu => Cl_right x hx u hu, fun L₁ L₂ h₁ h₂ c₁ c₂ => ⟨prodSub L₁ L₂ h₁ h₂, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `(MirUin k _).mul_mem (h₁ ha) (h₂ hb)`. Conclude with `(c₁.mul c₂ : IsCompact ((L₁ : Set (Mir k ((i + 1) + t + 1))) * (L₂ : Set (Mir k ((i + 1) + t + 1)))))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `a ha`. Conclude with `⟨a, ha, 1, L₂.one_mem, mul_one a⟩`. Introduce `b hb`. Conclude with `⟨1, L₁.one_mem, b, hb, one_mul b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (hψ : Continuous ψ) (i t : ℕ),
   (MirUin k ((i + 1) + t + 1)).Normal ∧ IsOpen ((mirChar k ψ ((i + 1) + t)).ker : Set (MirUin k ((i + 1) + t + 1))) ∧

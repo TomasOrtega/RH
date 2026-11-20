@@ -5,61 +5,55 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set φ : (ℝ → ℝ) → Matrix n n ℂ := fun f => U * diagonal (fun j => ((f (μ j) : ℝ) : ℂ)) * Uᴴ with hφ`. Establish `hcongr : ∀ f g : ℝ → ℝ, (∀ x, f x = g x) → φ f = φ g`. Introduce `f g h`. Rewrite using `[show f = g from funext h]`. Establish `hmul : ∀ f g : ℝ → ℝ, φ f * φ g = φ (fun x => f x * g x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f g`. Simplify using `only [hφ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.mul_one, diagonal_mul_diagonal]`. Simplify using `only [Complex.ofReal_mul]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsmul : ∀ (c : ℝ) (f : ℝ → ℝ), (c : ℂ) • φ f = φ (fun x => c * f x)`. Introduce `c f`. Simplify using `only [hφ]`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← diagonal_smul]`. Use `congr 3`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Establish `hherm : ∀ f : ℝ → ℝ, (φ f).IsHermitian`. Introduce `f`. Simplify using `only [hφ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `isHermitian_mul_mul_conjTranspose` to reduce the goal to its premises. Rewrite using `[isHermitian_diagonal_iff]`. Introduce `j`. Conclude with `Complex.conj_ofReal _`. Establish `hid : Y = φ (fun x => x)` using `hY`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set K := Uᴴ * J * U with hK`. Establish `hJK : J = U * K * Uᴴ`. Rewrite using `[hK]`. Combine the equalities or inequalities in the displayed calculation. Establish `hKD : K * diagonal (fun j => (μ j : ℂ)) = -(diagonal (fun j => (μ j : ℂ)) * K)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun M => Uᴴ * M * U) hJ`. Simplify using `only [hY] at e`. Establish `a1 : Uᴴ * (J * (U * diagonal (fun j => (μ j : ℂ)) * Uᴴ)) * U = K * diagonal (fun j => (μ j : ℂ)) * (Uᴴ * U)`. Simplify using `only [hK, Matrix.mul_assoc]`. Establish `a2 : Uᴴ * (-(U * diagonal (fun j => (μ j : ℂ)) * Uᴴ * J)) * U = -((Uᴴ * U) * diagonal (fun j => (μ j : ℂ)) * K)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hK, Matrix.mul_assoc, Matrix.mul_neg, Matrix.neg_mul]`. Rewrite `e` using `[a1, a2, h1, Matrix.mul_one, Matrix.one_mul]`. Conclude with `e`. Establish `hkey : ∀ f : ℝ → ℝ, J * φ f = φ (fun x => f (-x)) * J`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hK2 : K * diagonal (fun j => ((f (μ j) : ℝ) : ℂ)) = diagonal (fun j => ((f (-μ j) : ℝ) : ℂ)) * K`. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun hKD i) j`. Simplify using `only [mul_diagonal, diagonal_mul, Matrix.neg_apply] at e ⊢`. Distinguish the cases in `h0 : K i j = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h0]`. Establish `: (μ j : ℂ) = -(μ i : ℂ)`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : μ j = -μ i` using `by exact_mod_cast this`. Rewrite using `[h3, mul_comm]`. Simplify using `only [hφ]`. Rewrite using `[hJK]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = U * (diagonal (fun j => ((f (-μ j) : ℝ) : ℂ)) * (Uᴴ * U) * K) * Uᴴ := by`. Rewrite using `[h1, Matrix.mul_one, Matrix.mul_one, hK2]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Establish `hs1 : ∀ x : ℝ, x * Real.sign x = |x|`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Break down `lt_trichotomy x 0 with h | h | h` into its components or cases. Rewrite using `[Real.sign_of_neg h, abs_of_neg h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sign_of_pos h, abs_of_pos h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs2 : ∀ x : ℝ, |x| * Real.sign x = x`. Introduce `x`. Break down `lt_trichotomy x 0 with h | h | h` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.sign_of_neg h, abs_of_neg h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`. Rewrite using `[Real.sign_of_pos h, abs_of_pos h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `⟨Finset.univ.image (fun j => |μ j|), fun ν => φ (fun x => if |x| = ν then Real.sign x else 0), fun ν => φ (fun x => if |x| = ν then 1 else 0), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hsmul]`. Simplify using `only [hφ]`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, hY]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [diagonal_apply_eq]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single |μ i|]`. Simplify using `only [if_true, hs2]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_image_of_mem (fun j => |μ j|) (Finset.mem_univ i)) h`. Simplify using `[diagonal_apply_ne _ hij]`. Introduce `ν clear hY hK hKD hJK hφ clear_value φ beta_reduce`. Use `⟨hherm _, hherm _, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul, hid, hmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hcongr` to reduce the goal to its premises. Introduce `x`. Use `split_ifs with h`. Rewrite using `[hs1, h, mul_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsmul, hid, hmul]`. Apply `hcongr` to reduce the goal to its premises. Introduce `x`. Use `split_ifs with h`. Rewrite using `[mul_comm, hs1, h, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[hsmul, hid, hmul]`. Apply `hcongr` to reduce the goal to its premises. Introduce `x`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← h, hs2, mul_one]`. Simplify using the standard rewrite rules. Rewrite using `[hsmul, hid, hmul]`. Apply `hcongr` to reduce the goal to its premises. Introduce `x`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Rewrite using `[← h, hs2, one_mul]`. Simplify using the standard rewrite rules. Establish `: ∀ f : ℝ → ℝ, -φ f = φ (fun x => -f x)`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hsmul (-1) f` as an intermediate fact. Simplify using `using this`. Rewrite using `[hkey, ← Matrix.neg_mul, this]`. Use `congr 1`. Apply `hcongr` to reduce the goal to its premises.
-
-Introduce `x`. Rewrite using `[abs_neg]`. Use `split_ifs with h`. Conclude with `Real.sign_neg`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hkey]`. Use `congr 1`. Apply `hcongr` to reduce the goal to its premises. Introduce `x`. Rewrite using `[abs_neg]`.
-
-Introduce `ν ν' clear hY hK hKD hJK hφ hkey hs1 hs2 hherm hsmul hid clear_value φ beta_reduce`. Conclude with `(hmul _ _).trans ((hcongr _ _ fun x => mul_comm _ _).trans (hmul _ _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem spectral_parts_of_diag {n : Type} [Fintype n] [DecidableEq n] (Y J U : Matrix n n ℂ)
     (μ : n → ℝ) (h1 : Uᴴ * U = 1) (h2 : U * Uᴴ = 1)
@@ -215,7 +209,7 @@ theorem spectral_parts_of_diag {n : Type} [Fintype n] [DecidableEq n] (Y J U : M
     exact (hmul _ _).trans ((hcongr _ _ fun x => mul_comm _ _).trans (hmul _ _).symm)
 
 /- English proof (translation)
-Introduce `n _ _ Y J hY hJ`. Use `spectral_parts_of_diag Y J (hY.eigenvectorUnitary : Matrix n n ℂ) hY.eigenvalues ?_ ?_ ?_ hJ` and prove the remaining obligations. Conclude with `hY.eigenvectorUnitary.2.1`. Conclude with `hY.eigenvectorUnitary.2.2`. Conclude with `hY.spectral_theorem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hermitian_spectral_parts_anticommute :
     ∀ (n : Type) [Fintype n] [DecidableEq n] (Y J : Matrix n n ℂ), Y.IsHermitian →

@@ -23,11 +23,9 @@ namespace GlobalTheory.MixDensPull
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
 /- English proof (translation)
-Establish `hz'` using `(H z hz).1`. Establish `hj` using `mem_of_mem_linComb (m := fun _ => PtsOver.map π hπ _ z) (fun _ => rfl) (mem_pick (φ.pull π hπ).isLB z) PUnit.unit`. Rewrite using `[chernMat, chernMat, c.hess_eq hφ hz' hj (mem_pick _ _), AlgChart.hess, AlgChart.hess, ← (H z hz).2, ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr]`. Use `filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source hz)] with v hv`. Establish `hw` using `c'.e.map_target hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂⟩` from `H _ hw`. Rewrite `h₂` using `[c'.e.right_inv hv]`. Establish `e₁ : c.e.symm v = PtsOver.map π hπ (spMap σ) (c'.e.symm v)`. Conclude with `(congrArg c.e.symm h₂).trans (c.e.left_inv h₁)`. Rewrite using `[e₁]`.
-
-Conclude with `congrArg _ (φ.pull_φ π hπ _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernMat_pull (π : Y ⟶ X) (hπ : π ≫ p = q) {B : LB X} {φ : Weight p σ B} (hφ : φ.IsCInf)
     (c : AlgChart p σ D) (c' : AlgChart q σ D)
@@ -49,7 +47,7 @@ theorem chernMat_pull (π : Y ⟶ X) (hπ : π ≫ p = q) {B : LB X} {φ : Weigh
   exact congrArg _ (φ.pull_φ π hπ _ _)
 
 /- English proof (translation)
-Rewrite using `[bcMat, bcMat, Met.bcForm_eq hS' a' _ c' H' hz ha' (Met.exists_adapted hS' h₁' h₃' z).choose_spec, Met.bcForm_eq hS a _ c H hy ha (Met.exists_adapted hS h₁ h₃ y).choose_spec]`. Unfold `Met.bcForm`. Rewrite using `[extTrace_congr hg, he]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcMat_eq_of_gram {S : ShortComplex X.Modules} {S' : ShortComplex Y.Modules}
     {r s : ℕ} {h : Met p σ S.X₂ (r + s)} {h' : Met q σ S'.X₂ (r + s)} (hS : S.ShortExact)
@@ -69,13 +67,11 @@ theorem bcMat_eq_of_gram {S : ShortComplex X.Modules} {S' : ShortComplex Y.Modul
 variable {E : X.Modules} {r : ℕ} {h : VMetric p E r}
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Met.exists_adapted (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i) (PtsOver.map π hπ (spMap σ) z)`. Establish `ha' : z ∈ ptsIn q σ (π ⁻¹ᵁ a.U)` using `ha`. Establish `H₁ : (h.stepMet fl i).IsCInf` using `H.restrict _ _`. Establish `H₂ : ((h.pull π hπ).stepMet (fl.pull π) i).IsCInf` using `(H.pull π hπ).restrict _ _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsOpen (c'.e.source ∩ ptsIn q σ (π ⁻¹ᵁ a.U))` using `c'.e.open_source.inter (isOpen_ptsIn _)`. Establish `hn` using `(ChartGlue.isOpen_over c'.e hS).mem_nhds (ChartGlue.mem_over c'.e hz (S := _) ⟨hz, ha'⟩)`. Use `bcMat_eq_of_gram _ _ _ _ _ _ (H₁ σ) (H₂ σ) a (VMetric.pullStep fl π i a) c c' (he z hz).1 hz ha ha' (he z hz).2 ?_` and prove the remaining obligations. Use `filter_upwards [hn] with v hv`. Take `⟨h₁, h₃⟩` from `hv.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₁ : c.e.symm v = PtsOver.map π hπ _ (c'.e.symm v)`. Take `⟨h₂, this⟩` from `he _ h₁`. Rewrite `this` using `[c'.e.right_inv hv.1]`. Conclude with `(congrArg c.e.symm this).trans (c.e.left_inv h₂)`. Rewrite using `[e₁]`.
-
-Conclude with `VMetric.gram_pullStep h hπ a h₃`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagMat_pull (H : h.IsCInf) (fl : Vert.Flag E r) (π : Y ⟶ X) (hπ : π ≫ p = q)
     (c : AlgChart p σ D) (c' : AlgChart q σ D)
@@ -102,7 +98,7 @@ theorem flagMat_pull (H : h.IsCInf) (fl : Vert.Flag E r) (π : Y ⟶ X) (hπ : �
   exact VMetric.gram_pullStep h hπ a h₃
 
 /- English proof (translation)
-The claim follows from `IsForm.isDens_mix (GlobalTheory.T.chern_matrix_is_form k X p σ (d + 1) _ _ (N.cInf σ)) (IsForm.sum Finset.univ fun i => GlobalTheory.T.bott_chern_matrix_is_form k X p σ (d + 1) _ _ _ _ (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i) ((show (h.stepMet fl i).I …`.
+A detailed English derivation is pending.
 -/
 theorem isDens_flagDens (H : h.IsCInf) (fl : Vert.Flag E r) (N : HermLB p) (d : ℕ) (σ : k →+* ℂ) :
     IsDens (flagDens h fl N d σ) :=
@@ -112,23 +108,23 @@ theorem isDens_flagDens (H : h.IsCInf) (fl : Vert.Flag E r) (N : HermLB p) (d : 
       ((show (h.stepMet fl i).IsCInf from H.restrict _ _) σ))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [hτ.1 c c' y hy hy', mul_neg], fun c => (hτ.2 c).neg⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDens_neg {τ : AlgChart p σ D → CxPts p σ → ℝ} (hτ : IsDens τ) : IsDens fun c y => -τ c y :=
   ⟨fun c c' y hy hy' => by beta_reduce; rw [hτ.1 c c' y hy hy', mul_neg], fun c => (hτ.2 c).neg⟩
 
 /- English proof (translation)
-Take `⟨U, hUη, hU⟩` from `GlobalTheory.T.exists_open_etaleChart_covering_complexPoints hX hY π hπ hη hδ`. Take `⟨hcard, hchart, hlift⟩` from `hU σ`. Use `CxPts.t2Space_cxPts_of_isProjOver σ hY.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := σ) hX.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := σ) hY.isProjOver` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ U = ptsIn q σ (π ⁻¹ᵁ U)`. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, mem_ptsIn]`. Both sides reduce to the same expression. Establish `hcY : (ptsIn q σ (π ⁻¹ᵁ U))ᶜ = {z : CxPts q σ | z.1 (IsLocalRing.closedPoint ℂ) ∈ ((π ⁻¹ᵁ U : Y.Opens) : Set Y)ᶜ}`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `z`. Simplify using `[mem_ptsIn]`. Establish `hcX : (ptsIn p σ U)ᶜ = {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ ((U : X.Opens) : Set X)ᶜ}`. Use extensionality with `y`. Simplify using `[mem_ptsIn]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h0Y` using `GlobalTheory.T.closed_subset_partition_null k Y q D hY ((π ⁻¹ᵁ U : Y.Opens) : Set Y)ᶜ (π ⁻¹ᵁ U).isOpen.isClosed_compl (by simp [hη, hUη]) σ τ'`. Establish `h0X` using `GlobalTheory.T.closed_subset_partition_null k X p D hX ((U : X.Opens) : Set X)ᶜ U.isOpen.isClosed_compl (by simp [hUη]) σ τ`. Rewrite `h0Y` using `[← hcY]`. Rewrite `h0X` using `[← hcX]`. Establish `h3 : part τ' (PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ U) = (π.residueDegree (genericPoint Y) : ℝ≥0∞) * part τ (ptsIn p σ U)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `part`. Use `CoverChern.glueMeas_preimage_of_cover_on (fun c c' => c.holo_trans c') (fun c c' y hy hy' => ?_) (fun c c' => c.holo_trans c') (fun c c' y hy hy' => ?_) (PtsOver.continuous_map π hπ _) (isOpen_ptsIn U) hcard (fun z hz => ?_) (isOpen_ptsIn U).measurableSet subset_rfl` and prove the remaining obligations. Rewrite using `[hτ.1 c c' y hy hy', ENNReal.ofReal_mul (sq_nonneg _)]`. Rewrite using `[hτ'.1 c c' y hy hy', ENNReal.ofReal_mul (sq_nonneg _)]`. Take `⟨c, hc⟩` from `hchart _ hz`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hz', hc'⟩` from `hlift z hz c hc`. Conclude with `⟨c, c', hz', hc, fun w hw _ => ⟨(hc' w hw).2, by rw [he c c' hc' w hw]⟩⟩`. Rewrite `h3` using `[hpre]`. Rewrite using `[← measure_add_measure_compl (isOpen_ptsIn (π ⁻¹ᵁ U)).measurableSet, h0Y, add_zero, h3, ← measure_add_measure_compl (isOpen_ptsIn (p := p) (σ := σ) U).measurableSet, h0X, add_zero]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem part_univ [IsIntegral X] [IsIntegral Y] (hX : IsArithVar p D) (hY : IsArithVar q D)
     (π : Y ⟶ X) (hπ : π ≫ p = q) (hη : π (genericPoint Y) = genericPoint X)
@@ -178,11 +174,11 @@ theorem part_univ [IsIntegral X] [IsIntegral Y] (hX : IsArithVar p D) (hY : IsAr
     ← measure_add_measure_compl (isOpen_ptsIn (p := p) (σ := σ) U).measurableSet, h0X, add_zero]
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ p d ρ hX hρ E r h H fl N`. Take `⟨hY, hη, hδ⟩` from `hρ`. Establish `key : ∀ σ, total (flagDens (h.pull ρ rfl) (fl.pull ρ) (N.pull ρ rfl) d σ) = (ρ.residueDegree (genericPoint Y) : ℝ) * total (flagDens h fl N d σ)`. Introduce `σ`. Establish `hτ` using `isDens_flagDens H fl N d σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hτ'` using `isDens_flagDens (H.pull ρ rfl) (fl.pull ρ) (N.pull ρ rfl) d σ`. Establish `he : ∀ (c : AlgChart p σ (d + 1)) (c' : AlgChart (ρ ≫ p) σ (d + 1)), (∀ w ∈ c'.e.source, PtsOver.map ρ rfl (spMap σ) w ∈ c.e.source ∧ c'.e w = c.e (PtsOver.map ρ rfl (spMap σ) w)) → ∀ w ∈ c'.e.source, flagDens (h.pull ρ rfl) (fl.pull ρ) (N.pull ρ rfl) d σ c' w = flagDens h fl N d …` using `fun c c' hc w hw => by`. Rewrite using `[flagDens, flagDens, flagMat_pull H fl ρ rfl c c' hc hw, ← chernMat_pull ρ rfl (N.cInf σ) c c' hc hw]`. Both sides reduce to the same expression. Rewrite using `[total, total, part_univ hX hY ρ rfl hη hδ hτ hτ' he, part_univ hX hY ρ rfl hη hδ (isDens_neg hτ) (isDens_neg hτ') fun c c' hc w hw => by rw [he c c' hc w hw], ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_natCast, mul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `hX.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Rewrite using `[bcPair, bcPair, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => key σ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcPair_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (d : ℕ) (ρ : Y ⟶ X), IsArithVar p (d + 1) → FlagChain.IsCov p (d + 1) ρ → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r), h.IsCInf → ∀ (fl : Vert.Flag E r) (N : HermLB p), bcPair (h.pull ρ rfl) (fl.pull ρ) (N.pull ρ rfl) d = (ρ.residueDegree (genericPoint Y) : ℝ) * bcPair h fl N d := by
   intro k _ X Y _ _ p d ρ hX hρ E r h H fl N

@@ -9,7 +9,7 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.VDblEigSplit
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT v _ _ hunr _ _`. Conclude with `vdbl_eigen_of_unr F E σ B a a' G X om om' hT v hunr`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vDouble_eigenfunction_split : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -36,7 +36,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.VDblEigSplit.vDouble_eigenfunction_split | exact _root_.GlobalTheory.VDblEigSplit.vDouble_eigenfunction_split | (intros; apply _root_.GlobalTheory.VDblEigSplit.vDouble_eigenfunction_split <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.vDouble_eigenspace_split_of_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

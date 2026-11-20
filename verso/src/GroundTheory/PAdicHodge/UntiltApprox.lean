@@ -12,15 +12,13 @@ namespace GroundTheory.PAdicHodge
 open Polynomial
 
 /- English proof (translation)
-Break down `CharP.exists' K with h | ⟨q, hq, hqK⟩` into its components or cases. Use `infer_instance`. Establish `hqp : q = p`. Assume the negation of the conclusion as `hne`. Establish `: NeZero q` using `⟨hq.out.ne_zero⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : ¬ q ∣ p` using `fun h => hne ((Nat.prime_dvd_prime_iff_eq hq.out (Fact.out : p.Prime)).1 h)`. Establish `hp0 : (p : ZMod q) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `hdvd`. Use `set u := (p : ZMod q)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (p : ZMod q) * u = 1` using `mul_inv_cancel₀ hp0`. Establish `h2` using `congrArg (ZMod.castHom (dvd_refl q) K) h1`. Rewrite `h2` using `[map_mul, map_one, map_natCast, ZMod.castHom_apply, ZMod.cast_eq_val]`. Establish `h3 : ‖(p : K)‖ * ‖((u.val : ℕ) : K)‖ = 1`. Rewrite using `[← norm_mul, h2, norm_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h4 : ‖((u.val : ℕ) : K)‖ ≤ 1` using `(isUltrametricDist_iff_forall_norm_natCast_le_one.1 inferInstance) _`. Establish `h5` using `IsPerfectoidField.norm_natCast_lt_one (K := K) (p := p)`. Use polynomial arithmetic with `[norm_nonneg ((u.val : ℕ) : K), norm_nonneg (p : K)]`. Substitute `hqp` using the available equality. Use `IsPerfectoidField.perfectRing (K := K) q` as an intermediate fact.
-
-Conclude with `PerfectRing.toPerfectField K q`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perfectField_of_isPerfectoidField (K : Type*) [NontriviallyNormedField K]
     [IsUltrametricDist K] (p : ℕ) [Fact p.Prime] [IsPerfectoidField K p] : PerfectField K := by
@@ -58,7 +56,7 @@ local notation "𝒪C♭" => PreTilt (normInteger C) p
 omit [IsUltrametricDist K] [IsUltrametricDist C] [Fact p.Prime] [IsPerfectoidField K p]
   [IsPerfectoidField C p] in
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap K C), norm_algebraMap']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_eq_of_normedAlgebra : ‖(p : C)‖ = ‖(p : K)‖ := by
   rw [← map_natCast (algebraMap K C), norm_algebraMap']
@@ -66,61 +64,49 @@ theorem norm_natCast_eq_of_normedAlgebra : ‖(p : C)‖ = ‖(p : K)‖ := by
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Distinguish the cases in `hαβ : α = β`. Conclude with `⟨N, le_rfl, inferInstance, β, hβ, by rw [hαβ, sub_self, norm_zero, mul_zero]⟩`. Use `set F := untiltField K C p N with hFdef`. Establish `hδ : 0 < ‖α - β‖` using `norm_pos_iff.2 (sub_ne_zero.2 hαβ)`. Establish `: CompleteSpace K` using `IsPerfectoidField.completeSpace p`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompleteSpace F` using `FiniteDimensional.complete K F`. Take `⟨c, hc1, hc2⟩` from `exists_norm_mem_Ioc (K := K) p hδ (b := ‖α - β‖ / ε) (by rw [lt_div_iff₀ hε0]; nlinarith)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc1` using `[norm_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set c' : C := algebraMap K C c`. Establish `hc'0 : c' ≠ 0` using `(map_ne_zero_iff _ (algebraMap K C).injective).2 hc0`. Establish `hnc' : ‖c'‖ = ‖c‖` using `norm_algebraMap' C c`. Establish `hαF : IsIntegral F α` using `hα.tower_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q := minpoly F α`. Establish `hQm : Q.Monic` using `minpoly.monic hαF`. Use `set e := Q.natDegree with hedef`. Establish `he0 : 0 < e` using `minpoly.natDegree_pos hαF`. Establish `hed : e ≤ (minpoly K α).natDegree`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hdvd : Q ∣ (minpoly K α).map (algebraMap K F)` using `minpoly.dvd_map_of_isScalarTower K F α`. Use `Polynomial.natDegree_le_of_dvd hdvd (Polynomial.map_ne_zero (minpoly.ne_zero hα))` as an intermediate fact. Rewrite `this` using `[natDegree_map]`. Then use the resulting hypothesis. Use `set βF : F := ⟨β, hβ⟩`. Use `set cF : F := algebraMap K F c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcF : cF ≠ 0` using `(map_ne_zero_iff _ (algebraMap K F).injective).2 hc0`. Use `set Qt : F[X] := Polynomial.C (cF⁻¹ ^ e) * Q.comp (Polynomial.C βF + Polynomial.C cF * X)`. Use `set R := (Q.map (algebraMap F C)).roots`. Establish `hQt : Qt.map (algebraMap F C) = (R.map fun γ => X - Polynomial.C ((γ - β) / c')).prod` using `map_scale_eq_prod (E := C) hQm βF cF hcF`. Establish `hQne : Q.map (algebraMap F C) ≠ 0` using `Polynomial.map_ne_zero (minpoly.ne_zero hαF)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hαR : α ∈ R`. Rewrite using `[mem_roots hQne, IsRoot, eval_map_algebraMap]`. Conclude with `minpoly.aeval F α`. Establish `hdist : ∀ γ ∈ R, ‖γ - β‖ = ‖α - β‖`. Introduce `γ hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hγ' : aeval γ Q = 0`. Use `(mem_roots hQne).1 hγ` as an intermediate fact. Rewrite `this` using `[IsRoot, eval_map_algebraMap]`. Then use the resulting hypothesis. Establish `hconj : IsConjRoot F α γ` using `(isConjRoot_iff_mem_minpoly_rootSet hαF).2 (mem_rootSet.2 ⟨minpoly.ne_zero hαF, hγ'⟩)`. Use `norm_eq_of_isConjRoot (F := F) (E := C) (hαF.sub isIntegral_algebraMap) (hconj.sub_algebraMap βF)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Establish `hrootle : ∀ r ∈ R.map (fun γ => (γ - β) / c'), ‖r‖ ≤ 1`. Introduce `r hr`. Take `⟨γ, hγ, rfl⟩` from `Multiset.mem_map.1 hr`. Rewrite using `[norm_div, hdist γ hγ, hnc']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `div_le_one_of_le₀ hc1.le (norm_nonneg _)`. Use `set Qt' := Qt.map (algebraMap F C) with hQt'def`. Establish `hQt' : Qt' = ((R.map (fun γ => (γ - β) / c')).map fun r => X - Polynomial.C r).prod`. Rewrite using `[hQt, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcoef : ∀ n, ‖Qt'.coeff n‖ ≤ 1` using `fun n => by`. Rewrite using `[hQt']`. Conclude with `norm_coeff_prod_X_sub_C_le_one hrootle n`. Establish `hcard : Multiset.card R = e`. Rewrite using `[← (IsAlgClosed.splits (Q.map (algebraMap F C))).natDegree_eq_card_roots, natDegree_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQt'deg : Qt'.natDegree = e`. Rewrite using `[hQt', natDegree_multiset_prod_X_sub_C_eq_card, Multiset.card_map, hcard]`. Establish `hQt'mon : Qt'.Monic`. Rewrite using `[hQt']`. Conclude with `monic_multiset_prod_of_monic _ _ fun r _ => monic_X_sub_C r`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : (↑Qt'.coeffs : Set C) ⊆ normInteger C`. Introduce `x hx`. Take `⟨n, -, rfl⟩` from `Polynomial.mem_coeffs_iff.1 hx`. Conclude with `mem_normInteger.2 (hcoef n)`. Use `set Qi := Qt'.toSubring (normInteger C) hsub`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hQi : Qi.map (normInteger C).subtype = Qt'` using `Polynomial.map_toSubring _ _ hsub`. Establish `hQimon : Qi.Monic`. Use `Polynomial.monic_of_injective (normInteger C).subtype_injective ?_` and prove the remaining obligations. Rewrite using `[hQi]`. Conclude with `hQt'mon`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQideg : Qi.natDegree = e`. Rewrite using `[← hQt'deg, ← hQi, natDegree_map_eq_of_injective (normInteger C).subtype_injective]`. Establish `hz1 : ‖(α - β) / c'‖ ≤ 1` using `hrootle _ (Multiset.mem_map.2 ⟨α, hαR, rfl⟩)`. Use `set z : normInteger C := ⟨(α - β) / c', mem_normInteger.2 hz1⟩`. Establish `hz : Qi.eval z = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Apply `(normInteger C).subtype_injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← eval₂_at_apply, ← eval_map, hQi, hQt, eval_multiset_prod]`. Use `Multiset.prod_eq_zero (Multiset.mem_map.2 ⟨_, Multiset.mem_map.2 ⟨α, hαR, rfl⟩, ?_⟩)` and prove the remaining obligations. Simplify using `[z]`. Establish `happ : ∀ m, ∃ a : 𝒪C♭, m < e → a ∈ integerTilt K C p N ∧ Ideal.Quotient.mk (Ideal.span {(p : normInteger C)}) (Qi.coeff m) = PreTilt.coeff 0 a`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `m`. Distinguish the cases in `hm : m < e`. Establish `hy : ((Qt.coeff m : F) : C) ∈ F` using `(Qt.coeff m).2`. Establish `hy1 : ‖((Qt.coeff m : F) : C)‖ ≤ 1`. Use `hcoef m` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hQt'def, coeff_map]`. Then use the resulting hypothesis. Take `⟨a, ha, hab⟩` from `happrox _ hy hy1`. Use `⟨a, fun _ => ⟨ha, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← PreTilt.mk_untilt_eq_coeff_zero, mk_eq_mk_iff_norm_sub_le, norm_natCast_eq_of_normedAlgebra (K := K)]`. Establish `: ((Qi.coeff m : normInteger C) : C) = ((Qt.coeff m : F) : C)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← (normInteger C).subtype_apply, ← coeff_map, hQi, hQt'def, coeff_map]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hab`. Conclude with `⟨0, fun h => absurd h hm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose a ha using happ`. Establish `hdeg : 0 < Qi.natDegree` using `hQideg ▸ he0`. Take `⟨b, hbroot, hbnorm⟩` from `exists_root_norm_sub_untilt_pow_le (C := C) (p := p) hQimon hdeg a (fun m hm => (ha m (hQideg ▸ hm)).2) hz`. Rewrite `hbnorm`, `hbroot` using `[hQideg]`. Establish `hbμ : ‖(z : C) - ((PreTilt.untilt b : normInteger C) : C)‖ ≤ μ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ‖(z : C) - ((PreTilt.untilt b : normInteger C) : C)‖ ^ e ≤ μ ^ e`. Use `hbnorm.trans ?_` and prove the remaining obligations. Rewrite using `[norm_natCast_eq_of_normedAlgebra (K := K)]`. Conclude with `hμ.trans (pow_le_pow_of_le_one hμ0 hμ1 hed)`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) hμ0 he0.ne').1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set b' : C♭ := algebraMap 𝒪C♭ C♭ b`. Use `set g : C♭[X] := (monicOfCoeffs e a).map (algebraMap 𝒪C♭ C♭)`. Establish `hgmon : g.Monic` using `(monic_monicOfCoeffs e a).map _`. Establish `hgmem : ∀ n, g.coeff n ∈ N`. Introduce `n`.
-
-Rewrite using `[coeff_map, coeff_monicOfCoeffs]`. Use `split_ifs with h1 h2`. Rewrite using `[map_one]`. Conclude with `one_mem N`. Conclude with `(ha n h2).1`.
-
-Rewrite using `[map_zero]`. Conclude with `zero_mem N`. Establish `hlift : g ∈ Polynomial.lifts (algebraMap N C♭)` using `(lifts_iff_coeff_lifts g).2 fun n => ⟨⟨g.coeff n, hgmem n⟩, rfl⟩`. Take `⟨gN, hgN, -, hgNmon⟩` from `lifts_and_natDegree_eq_and_monic hlift hgmon`. Establish `hbN : IsIntegral N b'`.
-
-Use `⟨gN, hgNmon, ?_⟩` and prove the remaining obligations. Rewrite using `[← eval_map, hgN, eval_map, eval₂_at_apply, hbroot, map_zero]`. Establish `hbK : IsIntegral K♭ b'` using `isIntegral_trans b' hbN`. Establish `: FiniteDimensional K♭ (IntermediateField.adjoin K♭ {b'})` using `IntermediateField.adjoin.finiteDimensional hbK`. Use `set N' := N ⊔ IntermediateField.adjoin K♭ {b'}`.
-
-Establish `hb'N' : b' ∈ N'` using `(le_sup_right : IntermediateField.adjoin K♭ {b'} ≤ N') (IntermediateField.mem_adjoin_simple_self K♭ b')`. Use `⟨N', le_sup_left, inferInstance, β + c' * ((PreTilt.untilt b : normInteger C) : C), ?_, ?_⟩` and prove the remaining obligations. Use `add_mem (untiltField_mono le_sup_left hβ) (mul_mem ?_ ?_)` and prove the remaining obligations. Conclude with `IntermediateField.algebraMap_mem _ c`. Use `tiltSharp_mem_untiltField (K := K) (N := N') hb'N'` as an intermediate fact.
-
-Rewrite `this` using `[tiltSharp_algebraMap]`. Then use the resulting hypothesis. Establish `hsplit : α - (β + c' * ((PreTilt.untilt b : normInteger C) : C)) = c' * ((z : C) - ((PreTilt.untilt b : normInteger C) : C))`. Simplify using `only [z]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hsplit, norm_mul, hnc']`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_untiltField_norm_sub_le [IsAlgClosed C] [IsAlgClosed C♭]
     (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
@@ -281,31 +267,29 @@ theorem exists_untiltField_norm_sub_le [IsAlgClosed C] [IsAlgClosed C♭]
       _ = μ / ε * ‖α - β‖ := by ring
 
 /- English proof (translation)
-Use `set d := (minpoly K α).natDegree`. Take `⟨μ, hμ0, hμ1, hμ⟩` from `exists_lt_one_le_pow (IsPerfectoidField.norm_natCast_lt_one (K := K) (p := p)) d`. Use `set ε := (1 + μ) / 2`. Establish `hε0 : 0 < ε` using `by simp only [ε]; linarith`. Establish `hε1 : ε < 1` using `by simp only [ε]; linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set lam := μ / ε`. Establish `hlam0 : 0 ≤ lam` using `div_nonneg hμ0.le hε0.le`. Establish `hlam1 : lam < 1`. Rewrite using `[div_lt_one hε0]`. Simplify using `only [ε]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `iter : ∀ k : ℕ, ∃ N : IntermediateField K♭ C♭, FiniteDimensional K♭ N ∧ ∃ β ∈ untiltField K C p N, ‖α - β‖ ≤ lam ^ k * ‖α‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨⊥, inferInstance, 0, zero_mem _, by simp⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Take `⟨N, hN, β, hβ, hβα⟩` from `ih`. Use `hN` as an intermediate fact. Use `hfin N hN` as an intermediate fact. Take `⟨N', -, hN', β', hβ', hle⟩` from `exists_untiltField_norm_sub_le N (happrox N hN) hα hμ0.le hμ1.le hμ hε0 hε1 hβ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨N', hN', β', hβ', hle.trans ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_comm (lam ^ k) lam, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hβα hlam0`. Use `set T : Finset C := ((minpoly K α).aroots C).toFinset.erase α`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ0, hρ⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ∀ α' ∈ T, ρ ≤ ‖α - α'‖ := by`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Distinguish the cases in `hT : T.Nonempty`. Use `⟨T.inf' hT fun α' => ‖α - α'‖, ?_, fun α' h => Finset.inf'_le _ h⟩` and prove the remaining obligations. Rewrite using `[Finset.lt_inf'_iff]`. Introduce `α' h`. Conclude with `norm_pos_iff.2 (sub_ne_zero.2 (Ne.symm (Finset.ne_of_mem_erase h)))`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨1, one_pos, fun α' h => absurd ⟨α', h⟩ hT⟩`. Distinguish the cases in `hα0 : α = 0`. Conclude with `⟨⊥, inferInstance, by rw [hα0]; exact zero_mem _⟩`. Establish `hαn : 0 < ‖α‖` using `norm_pos_iff.2 hα0`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (div_pos hρ0 hαn) hlam1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, hN, β, hβ, hβα⟩` from `iter k`. Establish `hclose : ‖α - β‖ < ρ`. Use `hβα.trans_lt ?_` and prove the remaining obligations. Rewrite `hk` using `[lt_div_iff₀ hαn]`. Then use the resulting hypothesis. Use `hN` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hfin N hN` as an intermediate fact. Use `set F := untiltField K C p N`. Establish `: CompleteSpace K` using `IsPerfectoidField.completeSpace p`. Establish `: CompleteSpace F` using `FiniteDimensional.complete K F`. Establish `: PerfectField K` using `perfectField_of_isPerfectoidField K p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsepK : IsSeparable K α` using `Algebra.IsSeparable.isSeparable K (⟨α, hα⟩ : algebraicClosure K C) |> fun h => by`. Rewrite `h` using `[IsSeparable, IntermediateField.minpoly_eq]`. Then use the resulting hypothesis. Establish `hsep : IsSeparable F α` using `hsepK.tower_top F`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `mem_range_of_norm_sub_lt (F := F) (E := C) ⟨β, hβ⟩ hsep fun α' hα' hne => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hclose.trans_le (hρ α' ?_)` and prove the remaining obligations. Rewrite using `[Finset.mem_erase, Multiset.mem_toFinset]`. Use `⟨Ne.symm hne, ?_⟩` and prove the remaining obligations. Establish `hαF : IsIntegral F α` using `hα.tower_top`. Establish `h1 : aeval α' (minpoly F α) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hα']`. Conclude with `minpoly.aeval F α'`. Establish `h2 : aeval α' ((minpoly K α).map (algebraMap K F)) = 0`. Take `⟨r, hr⟩` from `minpoly.dvd_map_of_isScalarTower K F α`. Rewrite using `[hr, map_mul, h1, zero_mul]`.
-
-Rewrite `h2` using `[aeval_map_algebraMap]`. Rewrite using `[mem_aroots]`. Conclude with `⟨minpoly.ne_zero hα, h2⟩`. Rewrite using `[← hc]`. Conclude with `(c : F).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_untiltField_of_approx [IsAlgClosed C] [IsAlgClosed C♭]
     (hfin : ∀ N : IntermediateField K♭ C♭, FiniteDimensional K♭ N →
@@ -386,9 +370,9 @@ theorem exists_mem_untiltField_of_approx [IsAlgClosed C] [IsAlgClosed C♭]
   exact (c : F).2
 
 /- English proof (translation)
-Establish `: PerfectField K` using `perfectField_of_isPerfectoidField K p`. Take `⟨γ, hγ⟩` from `Field.exists_primitive_element K L`. Establish `hγi : IsIntegral K (γ : C)` using `(IsIntegral.of_finite K γ).map (IsScalarTower.toAlgHom K L C)`. Take `⟨N, hN, hmem⟩` from `exists_mem_untiltField_of_approx hfin happrox hγi`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL : L = IntermediateField.adjoin K {(γ : C)}`. Rewrite using `[← IntermediateField.lift_adjoin_simple, hγ, IntermediateField.lift_top]`. Rewrite using `[hL, IntermediateField.adjoin_simple_le_iff]`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_le_untiltField_of_approx [IsAlgClosed C] [IsAlgClosed C♭]
     (hfin : ∀ N : IntermediateField K♭ C♭, FiniteDimensional K♭ N →
@@ -409,7 +393,7 @@ theorem exists_le_untiltField_of_approx [IsAlgClosed C] [IsAlgClosed C♭]
   exact hmem
 
 /- English proof (translation)
-The claim follows from `exists_mem_untiltField_of_approx (fun N hN => by have := hN; infer_instance) (fun N hN _ hy hy1 => by have := hN; exact exists_norm_sub_untilt_le N hy hy1) hα`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_untiltField [IsAlgClosed C] {α : C} (hα : IsIntegral K α) :
     ∃ N : IntermediateField K♭ C♭, FiniteDimensional K♭ N ∧ α ∈ untiltField K C p N :=
@@ -417,7 +401,7 @@ theorem exists_mem_untiltField [IsAlgClosed C] {α : C} (hα : IsIntegral K α) 
     (fun N hN _ hy hy1 => by have := hN; exact exists_norm_sub_untilt_le N hy hy1) hα
 
 /- English proof (translation)
-The claim follows from `exists_le_untiltField_of_approx (fun N hN => by have := hN; infer_instance) (fun N hN _ hy hy1 => by have := hN; exact exists_norm_sub_untilt_le N hy hy1) L`.
+A detailed English derivation is pending.
 -/
 theorem exists_le_untiltField [IsAlgClosed C] (L : IntermediateField K C) [FiniteDimensional K L] :
     ∃ N : IntermediateField K♭ C♭, FiniteDimensional K♭ N ∧ L ≤ untiltField K C p N :=

@@ -38,7 +38,7 @@ def diagExp (col : ∀ σ : T, Fin (r σ) → Fin n) (a : T × ℕ → ℕ) : Le
   ∑ σ : T, ∑ i : Fin (r σ), Finsupp.single ⟨σ, i, col σ i⟩ (a (σ, i.val))
 
 /- English proof (translation)
-Simplify using `[minorProd, gap]`.
+Simplify using the standard rewrite rules.
 -/
 example (col : ∀ σ : T, Fin (r σ) → Fin n) : minorProd r n R col 0 = 1 := by
   simp [minorProd, gap]
@@ -94,7 +94,7 @@ def push {n : ℕ} (g : Matrix (Fin n) (Fin n) E) :
   aeval fun ℓ => letB c ℓ.1 ℓ.2.1 (fun k => g k ℓ.2.2)
 
 /- English proof (translation)
-Simplify using `[push, letB]`.
+Simplify using the standard rewrite rules.
 -/
 example {n : ℕ} (g : Matrix (Fin n) (Fin n) E) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) (j : Fin n) :
     push c g (X (⟨σ, i, j⟩ : LtN Dw n)) = ∑ k, C (embF c σ (g k j)) * X (⟨σ, i, k⟩ : LtN Dw n) := by
@@ -208,7 +208,7 @@ def MovesDatum {n : ℕ} (J : Subgroup (UA E n)) (ψ : J →* c.Fˣ) (ph : (Fin 
       ∀ x, ph (fun a => ∑ b, κ a b • x b) = ((ψ k : c.Fˣ) : c.F) * ph x
 
 /- English proof (translation)
-Simplify using `[MovesDatum, FixesDatum]`.
+Simplify using the standard rewrite rules.
 -/
 example {n : ℕ} (J : Subgroup (UA E n)) (ph : (Fin n → ConjQ Dw l) → c.F) :
     MovesDatum c J 1 ph ↔ FixesDatum c J ph := by

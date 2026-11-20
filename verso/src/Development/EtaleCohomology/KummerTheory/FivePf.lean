@@ -9,14 +9,14 @@ open LateralTheory.KummerTheory.ContCut
 variable {K : Type 1} [Category.{0} K]
 
 /- English proof (translation)
-Rewrite using `[G.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapc (G : K ⥤ AddCommGrpCat.{1}) {a b d : K} (f : a ⟶ b) (g : b ⟶ d) (x : G.obj a) :
     (G.map g).hom ((G.map f).hom x) = (G.map (f ≫ g)).hom x := by
   rw [G.map_comp]; rfl
 
 /- English proof (translation)
-Use `congrArg (fun φ => φ.hom x) (α.naturality h)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natap {F G : K ⥤ AddCommGrpCat.{1}} (α : F ⟶ G) {k k' : K} (h : k ⟶ k') (x : F.obj k) :
     (α.app k').hom ((F.map h).hom x) = (G.map h).hom ((α.app k).hom x) := by
@@ -24,7 +24,7 @@ theorem natap {F G : K ⥤ AddCommGrpCat.{1}} (α : F ⟶ G) {k k' : K} (h : k �
   exact this
 
 /- English proof (translation)
-Use `congrArg (fun φ => (φ.app k).hom x) (S.comm n)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem commap {X U V W : ℤ → K ⥤ AddCommGrpCat.{1}} (S : MVSeq X U V W) (n : ℤ) (k : K) (x : (X n).obj k) :
     ((S.a n).app k).hom (((S.f n).app k).hom x) = ((S.b n).app k).hom (((S.g n).app k).hom x) := by
@@ -34,39 +34,39 @@ theorem commap {X U V W : ℤ → K ⥤ AddCommGrpCat.{1}} (S : MVSeq X U V W) (
 variable {J : Type} [SmallCategory J] {D : J ⥤ K}
 
 /- English proof (translation)
-The claim follows from `natap α (c.ι.app j) x`.
+A detailed English derivation is pending.
 -/
 theorem natι {F G : K ⥤ AddCommGrpCat.{1}} (α : F ⟶ G) (c : Cocone D) (j : J) (x : F.obj (D.obj j)) :
     (α.app c.pt).hom ((F.map (c.ι.app j)).hom x) = (G.map (c.ι.app j)).hom ((α.app (D.obj j)).hom x) :=
   natap α (c.ι.app j) x
 
 /- English proof (translation)
-Rewrite using `[mapc, c.w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem push (G : K ⥤ AddCommGrpCat.{1}) (c : Cocone D) {j k : J} (f : j ⟶ k) (y : G.obj (D.obj j)) :
     (G.map (c.ι.app k)).hom ((G.map (D.map f)).hom y) = (G.map (c.ι.app j)).hom y := by
   rw [mapc, c.w]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨j1, u, hu⟩` from `(hU (m + 1)).1 (((S.f (m + 1)).app c.pt).hom x)`. Take `⟨j2, v, hv⟩` from `(hV (m + 1)).1 (((S.g (m + 1)).app c.pt).hom x)`. Take `⟨k, g1, g2, -⟩` from `IsFilteredOrEmpty.cocone_objs j1 j2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e0 : ((W (m + 1)).map (c.ι.app k)).hom (((S.a (m + 1)).app (D.obj k)).hom (((U (m + 1)).map (D.map g1)).hom u) - ((S.b (m + 1)).app (D.obj k)).hom (((V (m + 1)).map (D.map g2)).hom v)) = 0`. Rewrite using `[map_sub, ← natι (S.a (m + 1)), ← natι (S.b (m + 1)), push, push, hu, hv, commap, sub_self]`. Take `⟨k2, f2, h2⟩` from `(hW (m + 1)).2 k _ e0`. Rewrite `h2` using `[map_sub, ← natap (S.a (m + 1)), ← natap (S.b (m + 1)), sub_eq_zero]`. Take `⟨x', hx1, hx2⟩` from `S.exUV (m + 1) (D.obj k2) _ _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨xi, hxi⟩ : ∃ xi : (X (m + 1)).obj c.pt, xi = ((X (m + 1)).map (c.ι.app k2)).hom x'` from `⟨_, rfl⟩`. Establish `hfd : ((S.f (m + 1)).app c.pt).hom (x - xi) = 0`. Rewrite using `[map_sub, hxi, natι (S.f (m + 1)), hx1, push, push, hu, sub_self]`. Establish `hgd : ((S.g (m + 1)).app c.pt).hom (x - xi) = 0`. Rewrite using `[map_sub, hxi, natι (S.g (m + 1)), hx2, push, push, hv, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `S.exX m c.pt _ hfd hgd`. Take `⟨j3, w0, hw0⟩` from `(hW m).1 w`. Take `⟨k4, g3, g4, -⟩` from `IsFilteredOrEmpty.cocone_objs k2 j3`. Use `⟨k4, ((X (m + 1)).map (D.map g3)).hom x' + ((X (m + 1)).map (D.map g4)).hom (((S.δ m).app (D.obj j3)).hom w0), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, push, push, ← natι (S.δ m), hw0, hw, ← hxi]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_sub_cancel _ _`. Introduce `j y hy`. Establish `hfy : ((U (m + 1)).map (c.ι.app j)).hom (((S.f (m + 1)).app (D.obj j)).hom y) = 0`. Rewrite using `[← natι (S.f (m + 1)), hy, map_zero]`. Take `⟨k1, f1, h1⟩` from `(hU (m + 1)).2 j _ hfy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgy : ((V (m + 1)).map (c.ι.app k1)).hom (((V (m + 1)).map (D.map f1)).hom (((S.g (m + 1)).app (D.obj j)).hom y)) = 0`. Rewrite using `[push, ← natι (S.g (m + 1)), hy, map_zero]`. Take `⟨k2, f2, h2⟩` from `(hV (m + 1)).2 k1 _ hgy`. Establish `hf1 : ((S.f (m + 1)).app (D.obj k2)).hom (((X (m + 1)).map (D.map (f1 ≫ f2))).hom y) = 0`. Rewrite using `[natap, D.map_comp, ← mapc, h1, map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg1 : ((S.g (m + 1)).app (D.obj k2)).hom (((X (m + 1)).map (D.map (f1 ≫ f2))).hom y) = 0`. Rewrite using `[natap, D.map_comp, ← mapc, h2]`. Take `⟨w, hw⟩` from `S.exX m (D.obj k2) _ hf1 hg1`. Establish `hdw : ((S.δ m).app c.pt).hom (((W m).map (c.ι.app k2)).hom w) = 0`. Rewrite using `[natι (S.δ m), hw, push, hy]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, huv⟩` from `(S.exW m c.pt _).1 hdw`. Take `⟨j1, u0, hu0⟩` from `(hU m).1 u`. Take `⟨j2, v0, hv0⟩` from `(hV m).1 v`. Take `⟨k3, g1, g2, -⟩` from `IsFilteredOrEmpty.cocone_objs j1 j2`. Take `⟨k4, g3, g4, -⟩` from `IsFilteredOrEmpty.cocone_objs k2 k3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : ((W m).map (c.ι.app k4)).hom (((W m).map (D.map g3)).hom w - (((S.a m).app (D.obj k4)).hom (((U m).map (D.map (g1 ≫ g4))).hom u0) - ((S.b m).app (D.obj k4)).hom (((V m).map (D.map (g2 ≫ g4))).hom v0))) = 0`. Rewrite using `[map_sub, map_sub, push, ← natι (S.a m), ← natι (S.b m), push, push, hu0, hv0, huv, sub_self]`. Take `⟨k5, g5, h5⟩` from `(hW m).2 k4 _ he`. Rewrite `h5` using `[map_sub, sub_eq_zero, mapc, map_sub, ← natap (S.a m), ← natap (S.b m)]`. Use `⟨k5, (f1 ≫ f2) ≫ g3 ≫ g5, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.map_comp, ← mapc, ← hw, ← natap (S.δ m), D.map_comp, h5]`. Conclude with `(S.exW m _ _).2 ⟨_, _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem five_succ [IsFiltered J] (X U V W : ℤ → K ⥤ AddCommGrpCat.{1}) (S : MVSeq X U V W) (c : Cocone D)
     (hU : ∀ n, Lim (U n) c) (hV : ∀ n, Lim (V n) c) (hW : ∀ n, Lim (W n) c) (m : ℤ) : Lim (X (m + 1)) c := by
@@ -124,7 +124,7 @@ theorem five_succ [IsFiltered J] (X U V W : ℤ → K ⥤ AddCommGrpCat.{1}) (S 
     exact (S.exW m _ _).2 ⟨_, _, rfl⟩
 
 /- English proof (translation)
-Introduce `J _ _ K _ X U V W ⟨S⟩ D c hU hV hW n`. Use `five_succ X U V W S c hU hV hW (n - 1)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Five_of : LateralTheory.KummerTheory.ContCut.Five := by
   intro J _ _ K _ X U V W ⟨S⟩ D c hU hV hW n

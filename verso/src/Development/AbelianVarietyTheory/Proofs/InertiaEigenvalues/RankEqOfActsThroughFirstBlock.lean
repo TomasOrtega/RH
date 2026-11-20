@@ -6,11 +6,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : (LinearMap.range F.mulVecLin).map (e : (Fin n → K) →ₗ[K] _) = (LinearMap.range ε.mulVecLin).map (LinearMap.inl K (Fin r → K) (Fin t → K))`. Use extensionality with `⟨a, b⟩`. Simplify using `only [Submodule.mem_map, LinearMap.mem_range, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨u, rfl⟩, hx⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `hx` using `[LinearEquiv.coe_coe, h]`. Conclude with `⟨_, ⟨(e u).1, rfl⟩, by simpa using hx⟩`. Introduce and unpack `⟨_, ⟨v, rfl⟩, hx⟩`. Use `⟨_, ⟨e.symm (v, 0), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hx`. Unfold `Matrix.rank`. Rewrite using `[← LinearEquiv.finrank_map_eq e, key]`. Conclude with `(Submodule.equivMapOfInjective _ LinearMap.inl_injective _).finrank_eq.symm`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.rank_eq_of_acts_through_first_block {K : Type} [Field K] {n r t : ℕ}
     (e : (Fin n → K) ≃ₗ[K] ((Fin r → K) × (Fin t → K))) (F : Matrix (Fin n) (Fin n) K)

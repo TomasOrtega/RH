@@ -13,7 +13,7 @@ variable {σ W W' : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
   [NormedAddCommGroup W'] [NormedSpace ℂ W']
 
 /- English proof (translation)
-Simplify using `only [Finsupp.card_toMultiset]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem card_toMultiset_eq_degree (m : σ →₀ ℕ) :
     Multiset.card (Finsupp.toMultiset m) = m.degree := by
@@ -21,7 +21,7 @@ theorem card_toMultiset_eq_degree (m : σ →₀ ℕ) :
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `(MvPolynomial.mem_support_iff.mp hm) (hP.coeff_eq_zero h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem degree_eq_of_mem_support {P : MvPolynomial σ ℂ} {a : ℕ} (hP : P.IsHomogeneous a)
     {m : σ →₀ ℕ} (hm : m ∈ P.support) : m.degree = a := by
@@ -29,7 +29,7 @@ theorem degree_eq_of_mem_support {P : MvPolynomial σ ℂ} {a : ℕ} (hP : P.IsH
   exact (MvPolynomial.mem_support_iff.mp hm) (hP.coeff_eq_zero h)
 
 /- English proof (translation)
-Simplify using `only [polyDeriv_monomial_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem polyDeriv_eq_sum_monomial (P : MvPolynomial σ ℂ) (u : σ → W) (F : W → ℂ) (x : W) :
     polyDeriv P u F x =
@@ -38,7 +38,7 @@ theorem polyDeriv_eq_sum_monomial (P : MvPolynomial σ ℂ) (u : σ → W) (F : 
   rfl
 
 /- English proof (translation)
-Unfold `polyDeriv`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_add_apply (contDiff_of_differentiable_fd hF _).contDiffAt (contDiff_of_differentiable_fd hG _).contDiffAt]`. Simplify using `only [ContinuousMultilinearMap.add_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -54,7 +54,7 @@ theorem polyDeriv_add_fun [FiniteDimensional ℂ W] (P : MvPolynomial σ ℂ) (u
   ring
 
 /- English proof (translation)
-Unfold `polyDeriv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_const_smul_apply (contDiff_of_differentiable_fd hF _).contDiffAt]`. Simplify using `only [ContinuousMultilinearMap.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -69,7 +69,7 @@ theorem polyDeriv_smul_fun [FiniteDimensional ℂ W] (P : MvPolynomial σ ℂ) (
   ring
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.I2.polyDeriv_sum P u s c F (fun i hi k => contDiff_of_differentiable_fd (hF i hi) k) x`.
+A detailed English derivation is pending.
 -/
 theorem polyDeriv_sum_fun [FiniteDimensional ℂ W] {κ : Type*} (P : MvPolynomial σ ℂ) (u : σ → W)
     (s : Finset κ) (c : κ → ℂ) (F : κ → W → ℂ) (hF : ∀ i ∈ s, Differentiable ℂ (F i)) (x : W) :
@@ -78,7 +78,7 @@ theorem polyDeriv_sum_fun [FiniteDimensional ℂ W] {κ : Type*} (P : MvPolynomi
     (fun i hi k => contDiff_of_differentiable_fd (hF i hi) k) x
 
 /- English proof (translation)
-Unfold `polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h` using `φ.iteratedFDerivWithin_comp_right F uniqueDiffOn_univ (Set.mem_univ (φ x)) (Multiset.card (Finsupp.toMultiset m))`. Rewrite `h` using `[Set.preimage_univ, iteratedFDerivWithin_univ, iteratedFDerivWithin_univ]`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -93,7 +93,7 @@ theorem polyDeriv_comp_equiv (P : MvPolynomial σ ℂ) (u : σ → W) (F : W' �
   rfl
 
 /- English proof (translation)
-Unfold `polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[φ.iteratedFDeriv_comp_right (contDiff_of_differentiable_fd hF _) x le_rfl]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polyDeriv_comp_clm [FiniteDimensional ℂ W'] (P : MvPolynomial σ ℂ) (u : σ → W)
     {F : W' → ℂ} (hF : Differentiable ℂ F) (φ : W →L[ℂ] W') (x : W) :
@@ -104,9 +104,9 @@ theorem polyDeriv_comp_clm [FiniteDimensional ℂ W'] (P : MvPolynomial σ ℂ) 
   rfl
 
 /- English proof (translation)
-Unfold `polyDeriv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMultilinearMap.map_smul_univ _ (fun _ => c), Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Establish `h : c ^ Multiset.card (Finsupp.toMultiset m) = c ^ a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[card_toMultiset_eq_degree, degree_eq_of_mem_support hP hm]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem polyDeriv_smul_dir {P : MvPolynomial σ ℂ} {a : ℕ} (hP : P.IsHomogeneous a) (c : ℂ)
     (u : σ → W) (F : W → ℂ) (x : W) :
@@ -122,7 +122,7 @@ theorem polyDeriv_smul_dir {P : MvPolynomial σ ℂ} {a : ℕ} (hP : P.IsHomogen
   ring
 
 /- English proof (translation)
-Rewrite using `[← polyDeriv_smul_dir hP]`. Conclude with `polyDeriv_comp_clm P u hF (c • ContinuousLinearMap.id ℂ W) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyDeriv_comp_smul_at [FiniteDimensional ℂ W] {P : MvPolynomial σ ℂ} {a : ℕ}
     (hP : P.IsHomogeneous a) (c : ℂ) (u : σ → W) {F : W → ℂ} (hF : Differentiable ℂ F) (x : W) :
@@ -131,7 +131,7 @@ theorem polyDeriv_comp_smul_at [FiniteDimensional ℂ W] {P : MvPolynomial σ �
   exact polyDeriv_comp_clm P u hF (c • ContinuousLinearMap.id ℂ W) x
 
 /- English proof (translation)
-Rewrite using `[polyDeriv_comp_smul_at hP c u hF, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_comp_smul [FiniteDimensional ℂ W] {P : MvPolynomial σ ℂ} {a : ℕ}
     (hP : P.IsHomogeneous a) (c : ℂ) (u : σ → W) {F : W → ℂ} (hF : Differentiable ℂ F) :
@@ -143,13 +143,13 @@ section Euclid
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Simplify using `[Hf, PiLp.inner_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_eq_inner (v w : EuclideanSpace ℂ ι) : Hf v w = inner ℂ w v := by
   simp [Hf, PiLp.inner_apply]
 
 /- English proof (translation)
-Establish `h1 : Differentiable ℂ fun v : EuclideanSpace ℂ ι => Hf v y`. Simplify using `only [Hf_eq_inner]`. Conclude with `(innerSL ℂ y).differentiable`. Establish `h2 : Differentiable ℂ fun v : EuclideanSpace ℂ ι => F (v - y)` using `hF.comp (differentiable_id.sub_const y)`. Conclude with `(((h1.const_mul _).sub_const _).cexp).mul h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiable_translate (q : ℕ) (y : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ ι → ℂ}
     (hF : Differentiable ℂ F) :
@@ -163,9 +163,9 @@ theorem differentiable_translate (q : ℕ) (y : EuclideanSpace ℂ ι) {F : Eucl
   exact (((h1.const_mul _).sub_const _).cexp).mul h2
 
 /- English proof (translation)
-Establish `hre : (q * Real.pi * Hf v y - q * Real.pi * Hf y y / 2 : ℂ).re = q * Real.pi * (inner ℂ y v : ℂ).re - q * Real.pi * ‖y‖ ^ 2 / 2`. Rewrite using `[Hf_eq_inner, Hf_eq_inner, inner_self_eq_norm_sq_to_K]`. Simplify using `[← Complex.ofReal_pow]`. Establish `hn : ‖v - y‖ ^ 2 = ‖y‖ ^ 2 - 2 * (inner ℂ y v : ℂ).re + ‖v‖ ^ 2`. Rewrite using `[norm_sub_rev, @norm_sub_sq ℂ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[norm_mul, Complex.norm_exp, hre, hn, mul_pow, mul_comm _ (‖F (v - y)‖ ^ 2), mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_translate (q : ℕ) (y : EuclideanSpace ℂ ι) (F : EuclideanSpace ℂ ι → ℂ)
     (v : EuclideanSpace ℂ ι) :
@@ -188,19 +188,19 @@ theorem norm_translate (q : ℕ) (y : EuclideanSpace ℂ ι) (F : EuclideanSpace
 open Classical in
 
 /- English proof (translation)
-Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hq`. Use `set t : ℝ := Real.sqrt q with ht`. Establish `ht0 : 0 < t` using `Real.sqrt_pos.mpr hq0`. Establish `ht2 : t ^ 2 = q` using `Real.sq_sqrt hq0.le`. Establish `htc : (t : ℂ) ≠ 0` using `by exact_mod_cast ht0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G : EuclideanSpace ℂ ι → ℂ := fun v => F ((t : ℂ)⁻¹ • v) with hGdef`. Establish `hG : Differentiable ℂ G` using `hF.comp (g := F) (f := fun v => (t : ℂ)⁻¹ • v) (by fun_prop)`. Establish `hGS : ∀ v, ‖G v‖ ^ 2 * Real.exp (-Real.pi * ‖v‖ ^ 2) ≤ S`. Introduce `v`. Establish `h` using `hS ((t : ℂ)⁻¹ • v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : -(q * Real.pi) * ‖(t : ℂ)⁻¹ • v‖ ^ 2 = -Real.pi * ‖v‖ ^ 2`. Rewrite using `[norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg ht0.le, mul_pow, inv_pow, ht2]`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hFG : F = fun v => G ((t : ℂ) • v)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Simplify using `only [hGdef, smul_smul, inv_mul_cancel₀ htc, one_smul]`. Establish `hb : ‖polyDeriv P (fun i => EuclideanSpace.single i 1) G 0‖ ≤ (∑ m ∈ P.support, ‖P.coeff m‖) * (Real.sqrt S * (Real.pi * Real.exp 1 * a) ^ ((a : ℝ) / 2))`. Rewrite using `[polyDeriv_eq_sum_monomial, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun m hm => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `h` using `gCauchy ι G hG S hGS m`. Rewrite `h` using `[degree_eq_of_mem_support hP hm]`. Then use the resulting hypothesis. Establish `hpow : t ^ a = (q : ℝ) ^ ((a : ℝ) / 2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ht, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul hq0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : ((q : ℝ) * Real.pi * Real.exp 1 * a) ^ ((a : ℝ) / 2) = t ^ a * (Real.pi * Real.exp 1 * a) ^ ((a : ℝ) / 2)`. Rewrite using `[hpow, ← Real.mul_rpow hq0.le (by positivity)]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hFG, polyDeriv_comp_smul hP _ _ hG, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg ht0.le, hsplit]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_polyDeriv_le (q : ℕ) (hq : 1 ≤ q) (F : EuclideanSpace ℂ ι → ℂ)
     (hF : Differentiable ℂ F) (S : ℝ)
@@ -259,7 +259,7 @@ end Jet
 open Classical in
 
 /- English proof (translation)
-Establish `hfun : U q y F = fun v => cexp (q * Real.pi * Hf v y - q * Real.pi * Hf y y / 2) * F (v - y)` using `funext (hU q y F)`. Rewrite using `[hfun]`. Use `Jet.norm_polyDeriv_le q hq _ (Jet.differentiable_translate q y hF) S (fun v => ?_) P a hP` and prove the remaining obligations. Rewrite using `[Jet.norm_translate]`. Conclude with `hS _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translate_jet_bound {ι : Type} [Fintype ι] (U : ℕ → EuclideanSpace ℂ ι → (EuclideanSpace ℂ ι → ℂ) → EuclideanSpace ℂ ι → ℂ)
     (hU : ∀ (q : ℕ) a F v, U q a F v = cexp (q * Real.pi * Hf v a - q * Real.pi * Hf a a / 2) * F (v - a))

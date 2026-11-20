@@ -8,7 +8,7 @@ open scoped NNReal
 namespace GlobalTheory.AlmostEt
 
 /- English proof (translation)
-Break down `le_total a b with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Conclude with `le_max_right _ _`. Rewrite using `[max_eq_left h]; exact (mul_le_of_le_one_left (by positivity) hc).trans (le_max_left _ _)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nnreal_mul_max_le (a b c : ℝ≥0) (hc : c ≤ 1) : c * max a b ≤ max a (c * b) := by
   rcases le_total a b with h | h
@@ -16,33 +16,25 @@ lemma nnreal_mul_max_le (a b c : ℝ≥0) (hc : c ≤ 1) : c * max a b ≤ max a
   · rw [max_eq_left h]; exact (mul_le_of_le_one_left (by positivity) hc).trans (le_max_left _ _)
 
 /- English proof (translation)
-Introduce `L _ v p hp F θ hθ hvp hF α y hα hy hβα`. Use `set β := α - y with hβ`. Use `set A := v (p : L) * v β * v α ^ (p - 1) with hA`. Establish `hyα : v y ≤ v α`. Establish `: y = α - β` using `by rw [hβ]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(Valuation.map_sub v α β).trans (max_le le_rfl hβα)`. Establish `hpp : p - 1 + 1 = p` using `Nat.sub_add_cancel hp.one_lt.le`. Use `set u := α ^ p - y ^ p with hu`. Establish `huF : u ∈ F` using `F.sub_mem hα (F.pow_mem hy p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : v (u - β ^ p) ≤ A`. Use `GlobalTheory.T.valuation_add_pow_sub_pow_sub_pow_le L v p hp y β` as an intermediate fact. Establish `e : y + β = α` using `by rw [hβ]; ring`. Rewrite `this` using `[e]`. Use `this.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Use `gcongr`. Conclude with `max_le hyα hβα`. Use `set M := max A (v β ^ p) with hM`. Establish `hvu : v u ≤ M`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: u = (u - β ^ p) + β ^ p` using `by ring`. Rewrite using `[this]`. Use `(Valuation.map_add v _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_pow]`. Conclude with `max_le_max h1 le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hwF, hw⟩` from `hF u huF`. Establish `hw' : v (u - w ^ p) ≤ v u` using `hw.trans (mul_le_of_le_one_left (by positivity) hθ)`. Establish `hwM : v w ^ p ≤ M`. Establish `: w ^ p = u - (u - w ^ p)` using `by ring`. Rewrite using `[← Valuation.map_pow, this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Valuation.map_sub v _ _).trans (max_le le_rfl hw')).trans hvu`. Establish `h2 : v (β ^ p - w ^ p) ≤ max A (θ * v β ^ p)`. Establish `: β ^ p - w ^ p = -(u - β ^ p) + (u - w ^ p)` using `by ring`. Rewrite using `[this]`. Use `(Valuation.map_add v _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_neg]`. Conclude with `h1.trans (le_max_left _ _)`. Conclude with `(hw.trans (mul_le_mul_of_nonneg_left hvu (by positivity))).trans (nnreal_mul_max_le _ _ _ hθ)`. Use `⟨y + w, F.add_mem hy hwF, ?_⟩` and prove the remaining obligations. Use `set γ := β - w with hγ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : α - (y + w) = γ` using `by rw [hγ, hβ]; ring`. Rewrite using `[e2]`. Use `set m := max (v w) (v γ) with hm`. Establish `hmβ : m ≤ max (v β) (v w)` using `max_le (le_max_right _ _) ((Valuation.map_sub v β w))`. Establish `hmM : m ^ p ≤ M`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(pow_le_pow_left₀ (by positivity) hmβ p).trans ?_` and prove the remaining obligations. Break down `le_total (v β) (v w) with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Conclude with `hwM`. Rewrite using `[max_eq_left h]`.
-
-Conclude with `le_max_right _ _`. Establish `h3 : v ((w + γ) ^ p - w ^ p - γ ^ p) ≤ max A (v (p : L) * v β ^ p)`. Use `(GlobalTheory.T.valuation_add_pow_sub_pow_sub_pow_le L v p hp w γ).trans ?_` and prove the remaining obligations. Establish `: v (p : L) * v γ * m ^ (p - 1) ≤ v (p : L) * m ^ p`. Rewrite using `[mul_assoc, ← hpp, pow_succ, mul_comm (m ^ (p - 1)) m, hpp]`.
-
-Use `gcongr`. Conclude with `le_max_right _ _`. Use `this.trans ((mul_le_mul_of_nonneg_left hmM (by positivity)).trans (nnreal_mul_max_le _ _ _ hvp))` and prove the remaining obligations. Establish `e3 : γ ^ p = (β ^ p - w ^ p) - ((w + γ) ^ p - w ^ p - γ ^ p)`. Establish `: w + γ = β` using `by rw [hγ]; ring`.
-
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Valuation.map_pow, e3]`. Use `(Valuation.map_sub v _ _).trans (max_le (h2.trans ?_) (h3.trans ?_))` and prove the remaining obligations. Conclude with `max_le_max le_rfl (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`.
-
-Conclude with `max_le_max le_rfl (mul_le_mul_of_nonneg_right (le_max_right _ _) (by positivity))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_approxRoot_step : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ), p.Prime →
     ∀ (F : Subfield L) (θ : ℝ≥0), θ ≤ 1 → v (p : L) ≤ 1 →

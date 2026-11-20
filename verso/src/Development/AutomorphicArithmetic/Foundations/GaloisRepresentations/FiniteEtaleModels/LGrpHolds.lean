@@ -8,29 +8,27 @@ open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `Γ _ K K₀ K₁ KN KM hMN hNK hN0 hM1 h10 hnorm hdec b₀ hb₀ u hu`. Take `⟨a, haK, ha0, hau⟩` from `hdec u⁻¹ (inv_mem hu)`. Establish `hconj : ∀ m ∈ KM, a⁻¹ * m * a ∈ KM`. Introduce `m hm`. Simplify using `using hnorm a⁻¹ (inv_mem ha0) m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmem : ∀ (c : ↥K ⧸ KN.subgroupOf K) (n : ↥KN ⧸ KM.subgroupOf KN), b₀⁻¹ * ((Quotient.out c : ↥K) : Γ) * ((Quotient.out n : ↥KN) : Γ) * u⁻¹ ∈ K₁ → b₀⁻¹ * ((Quotient.out c : ↥K) : Γ) * ((Quotient.out n : ↥KN) : Γ) * a ∈ K ⊓ K₁`. Introduce `c n hcn`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `K.mul_mem (K.mul_mem (K.mul_mem (K.inv_mem hb₀) (Quotient.out c).2) (hNK (Quotient.out n).2)) haK`. Establish `hua : u * a ∈ K₁` using `by simpa using K₁.inv_mem hau`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show b₀⁻¹ * ((Quotient.out c : ↥K) : Γ) * ((Quotient.out n : ↥KN) : Γ) * a = (b₀⁻¹ * ((Quotient.out c : ↥K) : Γ) * ((Quotient.out n : ↥KN) : Γ) * u⁻¹) * (u * a) by group]`. Conclude with `K₁.mul_mem hcn hua`. Use `Eq.trans (b := Nat.card ((K ⊓ K₁ : Subgroup Γ) ⧸ KM.subgroupOf (K ⊓ K₁))) ?_ rfl` and prove the remaining obligations. Use `Nat.card_eq_of_bijective (fun cn => (QuotientGroup.mk ⟨_, hmem cn.1.1 cn.1.2 cn.2⟩ : (K ⊓ K₁ : Subgroup Γ) ⧸ KM.subgroupOf (K ⊓ K₁))) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨c₁, n₁⟩, h₁⟩ ⟨⟨c₂, n₂⟩, h₂⟩ h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at h`. Establish `h' : ((Quotient.out n₁ : ↥KN) : Γ)⁻¹ * ((Quotient.out c₁ : ↥K) : Γ)⁻¹ * ((Quotient.out c₂ : ↥K) : Γ) * ((Quotient.out n₂ : ↥KN) : Γ) ∈ KM`. Use `hnorm a ha0 _ h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `hc : c₁ = c₂`. Rewrite using `[← QuotientGroup.out_eq' c₁, ← QuotientGroup.out_eq' c₂, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `KN.mul_mem (KN.mul_mem (Quotient.out n₁).2 (hMN h')) (KN.inv_mem (Quotient.out n₂).2)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Substitute using the available equality. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Substitute `hc` using the available equality. Establish `hn : n₁ = n₂`. Rewrite using `[← QuotientGroup.out_eq' n₁, ← QuotientGroup.out_eq' n₂, QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Substitute using the available equality. Both sides reduce to the same expression.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `h' using 1` and compare the differences between its conclusion and the goal. Use `group`. Substitute `hn` using the available equality. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x`. Take `⟨x, hK, hK1⟩` from `x`. Set `g : ↥K` to `⟨b₀ * x * a⁻¹, K.mul_mem (K.mul_mem hb₀ hK) (K.inv_mem haK)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (KN.subgroupOf K) g`. Establish `hkN : ((k : ↥K) : Γ) ∈ KN` using `k.2`. Set `n₀ : ↥KN` to `⟨((k : ↥K) : Γ)⁻¹, KN.inv_mem hkN⟩`. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul (KM.subgroupOf KN) n₀`. Establish `hmM : ((m : ↥KN) : Γ) ∈ KM` using `m.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Establish `key : ((Quotient.out (QuotientGroup.mk g : ↥K ⧸ KN.subgroupOf K) : ↥K) : Γ) * ((Quotient.out (QuotientGroup.mk n₀ : ↥KN ⧸ KM.subgroupOf KN) : ↥KN) : Γ) = b₀ * x * a⁻¹ * ((m : ↥KN) : Γ)`. Rewrite using `[hk, hm]`. Simplify using `only [Subgroup.coe_mul, g, n₀]`. Use `group`. Use `⟨⟨(QuotientGroup.mk g, QuotientGroup.mk n₀), ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[mul_assoc b₀⁻¹, key, show b₀⁻¹ * (b₀ * x * a⁻¹ * ((m : ↥KN) : Γ)) * u⁻¹ = x * (a⁻¹ * ((m : ↥KN) : Γ) * a) * (a⁻¹ * u⁻¹) by group]`. Conclude with `K₁.mul_mem (K₁.mul_mem hK1 (hM1 (hconj _ hmM))) hau`. Simplify using `only`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
-
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[mul_assoc b₀⁻¹, key, show (b₀⁻¹ * (b₀ * x * a⁻¹ * ((m : ↥KN) : Γ)) * a)⁻¹ * x = (a⁻¹ * ((m : ↥KN) : Γ) * a)⁻¹ by group]`. Conclude with `KM.inv_mem (hconj _ hmM)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.lGrp_holds :
     LGrp := by

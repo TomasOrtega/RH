@@ -6,25 +6,23 @@ namespace GlobalTheory
 open Module
 
 /- English proof (translation)
-Introduce `g r M I hr hskew hdet hI`. Use `set B : LinearMap.BilinForm ℚ (Fin r → ℚ) := Matrix.toBilin' M with hBdef`. Establish `hB : ∀ v w, B v w = v ⬝ᵥ M *ᵥ w` using `fun v w => by`. Simplify using `[hBdef, Matrix.toBilin'_apply']`. Establish `hskewB : ∀ v w, B v w = - B w v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v w`. Rewrite using `[hB, hB, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hskew, Matrix.neg_mulVec, neg_dotProduct, dotProduct_comm]`. Establish `hBalt : ∀ v, B v v = 0` using `fun v => by have := hskewB v v; linarith`. Establish `hnd : B.Nondegenerate` using `LinearMap.BilinForm.nondegenerate_toBilin'_of_det_ne_zero' M hdet`. Establish `hIB : ∀ x ∈ I, ∀ y ∈ I, B x y = 0` using `fun x hx y hy => by rw [hB]; exact hI x hx y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `P : ℕ → Prop` to `fun n => ∃ L : Submodule ℚ (Fin r → ℚ), I ≤ L ∧ (∀ x ∈ L, ∀ y ∈ L, B x y = 0) ∧ finrank ℚ L = n`. Establish `PI : P (finrank ℚ I)` using `⟨I, le_rfl, hIB, rfl⟩`. Establish `hIr : finrank ℚ I ≤ r` using `by simpa using Submodule.finrank_le I`. Take `⟨L, hIL, hLiso, hLdim⟩ : P (Nat.findGreatest P r)` from `Nat.findGreatest_spec hIr PI`. Establish `hmax : ∀ v, (∀ l ∈ L, B v l = 0) → v ∈ L`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hvL`. Assume the negation of the conclusion as `hv`. Establish `hlt : L < L ⊔ Submodule.span ℚ {v}` using `lt_of_le_of_ne le_sup_left (fun h => hv (by`. Rewrite using `[h]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self v)))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiso : ∀ x ∈ L ⊔ Submodule.span ℚ {v}, ∀ y ∈ L ⊔ Submodule.span ℚ {v}, B x y = 0`. Introduce `x hx y hy`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨a', ha', b', hb', rfl⟩` from `Submodule.mem_sup.mp hy`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c', rfl⟩` from `Submodule.mem_span_singleton.mp hb'`. Establish `h1` using `hLiso a ha a' ha'`. Establish `h2` using `hvL a' ha'`. Establish `h3 : B a v = 0` using `by rw [hskewB, hvL a ha, neg_zero]`. Establish `h4` using `hBalt v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[map_add, map_smul, h1, h2, h3, h4]`. Establish `hP : P (finrank ℚ ↥(L ⊔ Submodule.span ℚ {v}))` using `⟨_, hIL.trans le_sup_left, hiso, rfl⟩`. Establish `h5` using `Nat.le_findGreatest (by simpa using Submodule.finrank_le (L ⊔ Submodule.span ℚ {v})) hP`. Establish `h6` using `Submodule.finrank_lt_finrank_of_lt hlt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hLo : B.orthogonal L = L`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Conclude with `hmax x (fun l hl => by rw [hskewB, hx l hl, neg_zero])`. Introduce `x hx l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hLiso l hl x hx`. Establish `hdim` using `LinearMap.BilinForm.finrank_orthogonal hnd L`. Rewrite `hdim` using `[hLo]`. Establish `hV : finrank ℚ (Fin r → ℚ) = r` using `by simp`. Rewrite `hdim` using `[hV]`.
-
-Establish `hLr : finrank ℚ L ≤ r` using `by simpa using Submodule.finrank_le L`. Use `⟨L, hIL, fun x hx y hy => by rw [← hB]; exact hLiso x hx y hy, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_lagrangian_containing_isotropic_rat : ∀ (g r : ℕ) (Mq : Matrix (Fin r) (Fin r) ℚ) (I : Submodule ℚ (Fin r → ℚ)), r = 2 * g → Mqᵀ = -Mq → Mq.det ≠ 0 → (∀ x ∈ I, ∀ y ∈ I, x ⬝ᵥ Mq *ᵥ y = 0) → ∃ L : Submodule ℚ (Fin r → ℚ), I ≤ L ∧ (∀ x ∈ L, ∀ y ∈ L, x ⬝ᵥ Mq *ᵥ y = 0) ∧ Module.finrank ℚ L = g := by
   classical

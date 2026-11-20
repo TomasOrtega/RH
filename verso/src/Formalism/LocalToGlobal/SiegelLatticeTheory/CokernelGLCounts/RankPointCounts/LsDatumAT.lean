@@ -24,7 +24,7 @@ def ThCorr (M : Model F E) (r : ℕ) : Prop :=
       (w₁ ∈ t₁.abelian₂ ↔ w₂ ∈ t₂.abelian₂)
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Substitute `h` using the available equality. Conclude with `φ.injective.mem_set_image.symm`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_image_eq {A B : Type} [AddCommGroup A] [Module E A] [AddCommGroup B] [Module E B]
     (φ : A ≃ₗ[E] B) {S : Set A} {T : Set B} (h : φ '' S = T) {a : A} {b : B} (hab : φ a = b) :
@@ -34,11 +34,11 @@ theorem mem_iff_of_image_eq {A B : Type} [AddCommGroup A] [Module E A] [AddCommG
   exact φ.injective.mem_set_image.symm
 
 /- English proof (translation)
-Introduce `V _ _ H t₁ t₂ φ φ' hg₁ hg₂ hR w₁ hw₁ w₂ hw₂ he he'`. Take `⟨hL, -, hL', -, hι⟩` from `hR`. Establish `e1` using `mem_iff_of_image_eq φ hL he`. Establish `e2` using `mem_iff_of_image_eq φ' hL' he'`. Consider the cases of `hs : M.split with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `none`. Conclude with `(lemma0L_holds M r hs V H t₁ hg₁ w₁ hw₁).trans ((and_congr e1 e2).trans (lemma0L_holds M r hs V H t₂ hg₂ w₂ hw₂).symm)`. Consider the case `some g`. Establish `hinj : Function.Injective (Prod.map φ' φ)` using `φ'.injective.prodMap φ.injective`. Establish `e3` using `hinj.mem_set_image (s := H.iotaGraph g t₁) (a := (H.mkW t₁.f' ⟨w₁, mem_perp_isotropicSpan_of_mem_framePerp' H hw₁⟩, H.mkW t₁.f ⟨w₁, mem_perp_isotropicSpan_of_mem_framePerp H hw₁⟩))`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[hι g hs, Prod.map_apply, he, he']`. Conclude with `(lemma0G_holds M r g hs V H t₁ hg₁ w₁ hw₁).trans ((and_congr e1 (and_congr e2 e3.symm)).trans (lemma0G_holds M r g hs V H t₂ hg₂ w₂ hw₂).symm)`.
+A detailed English derivation is pending.
 -/
 theorem thCorr_holds (M : Model F E) (r : ℕ) : ThCorr M r := by
   intro V _ _ H t₁ t₂ φ φ' hg₁ hg₂ hR w₁ hw₁ w₂ hw₂ he he'

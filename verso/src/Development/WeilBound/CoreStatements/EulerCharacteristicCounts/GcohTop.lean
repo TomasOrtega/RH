@@ -9,12 +9,12 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel
 namespace PositivityTheory.LocalTateOrthogonality.Gcoh
 
 /- English proof (translation)
-The claim follows from `tate_of gcRep gc0 gc1 gc2 gcField gcMu`.
+A detailed English derivation is pending.
 -/
 theorem top_tate : Formalism.GaloisCohomology.LocalTateDualityK := tate_of gcRep gc0 gc1 gc2 gcField gcMu
 
 /- English proof (translation)
-The claim follows from `locfin_of gcField`.
+A detailed English derivation is pending.
 -/
 theorem top_locfin : Formalism.GaloisCohomology.LocalFinitenessK := locfin_of gcField
 

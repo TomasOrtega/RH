@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.ThK.DescStepCusp
 
 /- English proof (translation)
-Introduce `h0` and use `h.2 (by have e : (J.map σ).det = (σ : E →+* E) J.det := by rw [RingHom.map_det]; rfl rw [Matrix.det_smul, e, h0, map_zero, mul_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_herm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {c : E} (h : IsHermND σ (c • J.map σ)) : J.det ≠ 0 := fun h0 => h.2 (by
@@ -31,7 +31,7 @@ theorem det_ne_zero_of_herm {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [Matrix.det_smul, e, h0, map_zero, mul_zero])
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨⟨GlobalTheory.StdPar.isAutOn_const σ J X Y S K 0, fun S' _ => GlobalTheory.StdPar.isConstAlong_const σ J X S' 0⟩, 0, h, fun ψ _ μ 𝓕 _ _ g g' => ⟨?_, ?_, ?_⟩⟩ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cuspComp_of_const_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} {S : Finset (Fin r)}
@@ -41,31 +41,29 @@ theorem cuspComp_of_const_zero {F E : Type} [Field F] [NumberField F] [Field E] 
     fun ψ _ μ 𝓕 _ _ g g' => ⟨?_, ?_, ?_⟩⟩ <;> simp
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ hcm n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram χa χb za zb Kh S hβ hS hV`. Introduce `f hf c₀ hc₀ hND₁`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Break down `Nat.eq_zero_or_pos n₁ with h0 | hpos` into its components or cases. Introduce `φ' _ K _ r Xf Yf hWF S' hS'`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-It suffices to derive a contradiction. Apply `hS'` to reduce the goal to its premises. Introduce `k _`. Substitute `h0` using the available equality. Use `congrFun (congrFun hWF.xy k) k` as an intermediate fact.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `[Matrix.mul_apply] at this`. Establish `hND : IsHermND σ (c₀ • W.J.map σ)` using `GlobalTheory.PlaneHermTransfer.isHermND_of_plane F E σ hcm n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram hpos c₀ hc₀ hND₁`. Establish `hdet₁ : W₁.J.det ≠ 0` using `det_ne_zero_of_herm hND₁`. Establish `hdet : W.J.det ≠ 0` using `det_ne_zero_of_herm hND`. Take `⟨M, hMc, hML, hMr⟩` from `GlobalTheory.LeviPlaneSection.leviSection W W₁ H hσ hsk hn hxx hyy hxy horth hgram hdet₁`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcc` using `GlobalTheory.UnipCocptForm.cocompact_unip_form W W₁ H hcm hsk hn hxx hyy hxy horth hgram hdet hdet₁`. Establish `hdom` using `GlobalTheory.ThK.UnipDomPlaneAlg.exists_haar_fundamentalDomain_one_alg F E σ hcm n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram hdet hdet₁`. Establish `hreg` using `GlobalTheory.ThK.DescB.Nondeg.alphaSpan_reg H χa χb za zb Kh S hcc hdom M hMc hML hMr hS hβ`. Introduce `φ' hφ' K hK r Xf Yf hWF S' hS'`. Establish `eφ : φ' = fun x => f ((toGAd hσ W₁.J hc₀).symm x)` using `funext fun x => hφ' _ x rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `eφ` using the available equality. Use `clear hφ'`. Establish `lin` using `GlobalTheory.CuspCompZeroLin.isCuspComp_sub_zero F E σ hcm n₁ _ hND₁ r Xf Yf hWF K S'`. Establish `tr : ∀ g : UA σ W₁.J → ℂ, Continuous g → (∀ γ ∈ ratU σ W₁.J, ∀ x, g (γ * x) = g x) → Continuous (fun x => g ((toGAd hσ W₁.J hc₀).symm x)) ∧ ∀ γ ∈ GlobalTheory.AdelicU.ratPts σ (c₀ • W₁.J.map σ), ∀ x, g ((toGAd hσ W₁.J hc₀).symm (γ * x)) = g ((toGAd hσ W₁.J hc₀).symm x)`. Introduce `g hgc hgi`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hgc.comp (GlobalTheory.ThK.GLTwo.continuous_toGAd hσ W₁.J hc₀).2, fun γ hγ x => ?_⟩` and prove the remaining obligations. Establish `hγ' : (toGAd hσ W₁.J hc₀).symm γ ∈ ratU σ W₁.J`. Rewrite using `[← GlobalTheory.ThK.GLTwo.toGAd_mem_ratPts hσ W₁.J hc₀, MulEquiv.apply_symm_apply]`. Conclude with `hγ`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Proceed by induction.
 
-Conclude with `hgi _ hγ' _`. It suffices to establish `key : GlobalTheory.StdPar.IsCuspComp σ (c₀ • W₁.J.map σ) Xf Yf S' K (fun x => f ((toGAd hσ W₁.J hc₀).symm x)) 0 from key`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f₀, hf₀, fa, fb, hs, h, -, -, hx'⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hfb` using `hβ f₀ hf₀ fa fb hs`. Substitute `hfb` using the available equality. Establish `hct : IsCT H f₀ fa` using `by simpa using hs.1`. Take `⟨hfc, hfi⟩` from `hS f₀ hf₀`. Establish `ex : x = fun h₁ => fa (M h₁ * h)` using `funext fun h₁ => hx' h₁ (M h₁) (hML h₁)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `ex` using the available equality. Conclude with `GlobalTheory.T.hyperbolic_plane_orthogonal_gram_skew hKP F E σ hcm n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram hdom χa za f₀ fa hfc hfi hct hs.2.1 M hMc hML hMr h c₀ hc₀ hND₁ hND (hV f₀ hf₀ c₀ hc₀ hND) _ (fun g g' e => by`. Establish `e' : (toGAd hσ W₁.J hc₀).symm g' = g` using `Subtype.ext e.symm`. Simplify using `only [e']) K hK r Xf Yf hWF S' hS'`. Consider the case `zero`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `e : (fun x => (0 : UA σ W₁.J → ℂ) ((toGAd hσ W₁.J hc₀).symm x)) = fun _ => 0` using `rfl`. Rewrite using `[e]`. Conclude with `cuspComp_of_const_zero (GlobalTheory.StdPar.isConstAlong_const σ (c₀ • W₁.J.map σ) Xf S' 0)`. Consider the case `add x y hxm hym hx hy`. Take `⟨cx, ix⟩` from `tr x (hreg x hxm).1 (hreg x hxm).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨cy, iy⟩` from `tr y (hreg y hym).1 (hreg y hym).2`. Use `lin _ _ (-1) cx cy (fun γ hγ g => by simpa using ix γ hγ g) (fun γ hγ g => by simpa using iy γ hγ g) hx hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Consider the case `smul z x hxm hx`. Take `⟨cx, ix⟩` from `tr x (hreg x hxm).1 (hreg x hxm).2`. Establish `h0` using `cuspComp_of_const_zero (φ := fun _ => (0 : ℂ)) (Y := Yf) (K := K) (GlobalTheory.StdPar.isConstAlong_const σ (c₀ • W₁.J.map σ) Xf S' 0)`. Use `lin (fun _ => 0) _ (-z) continuous_const cx (fun _ _ _ => rfl) (fun γ hγ g => by simpa using ix γ hγ g) h0 hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cuspComp_alphaSpan_eq_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

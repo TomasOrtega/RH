@@ -48,13 +48,13 @@ theorem ofEquiv_h (t : (ofEquiv e ε h' hs a' hk).A) :
     (ofEquiv e ε h' hs a' hk).h t = h' (ofEquivIso e ε h' hs a' hk t) := rfl
 
 /- English proof (translation)
-The claim follows from `ε.apply_symm_apply a'`.
+A detailed English derivation is pending.
 -/
 theorem ofEquiv_generator : ofEquivIso e ε h' hs a' hk (ofEquiv e ε h' hs a' hk).a0 = a' :=
   ε.apply_symm_apply a'
 
 /- English proof (translation)
-Use `show addOrderOf (ofEquiv e ε h' hs a' hk).a0 = _`. Use `conv_rhs => rw [← ofEquiv_generator e ε h' hs a' hk]`. Conclude with `(addOrderOf_injective (ofEquivIso e ε h' hs a' hk).toAddMonoidHom (ofEquivIso e ε h' hs a' hk).injective _).symm`.
+A detailed English derivation is pending.
 -/
 theorem ofEquiv_order : (ofEquiv e ε h' hs a' hk).n0 = addOrderOf a' := by
   show addOrderOf (ofEquiv e ε h' hs a' hk).a0 = _
@@ -86,13 +86,13 @@ theorem ofGroup_h (t : (ofGroup e h' hs a' hk).A) :
     (ofGroup e h' hs a' hk).h t = h' (ofGroupIso e h' hs a' hk t) := rfl
 
 /- English proof (translation)
-The claim follows from `ofEquiv_generator e (n := Fintype.card A') (Fintype.equivFin A').symm h' hs a' hk`.
+A detailed English derivation is pending.
 -/
 theorem ofGroup_generator : ofGroupIso e h' hs a' hk (ofGroup e h' hs a' hk).a0 = a' :=
   ofEquiv_generator e (n := Fintype.card A') (Fintype.equivFin A').symm h' hs a' hk
 
 /- English proof (translation)
-The claim follows from `ofEquiv_order e (n := Fintype.card A') (Fintype.equivFin A').symm h' hs a' hk`.
+A detailed English derivation is pending.
 -/
 theorem ofGroup_order : (ofGroup e h' hs a' hk).n0 = addOrderOf a' :=
   ofEquiv_order e (n := Fintype.card A') (Fintype.equivFin A').symm h' hs a' hk
@@ -105,13 +105,13 @@ def cycIso (e : ℕ) : Multiplicative (ZMod (2 ^ e)) ≃* HGrp e :=
   Classical.choose (hostGroup e).2.2.2.2.2.2.2.2
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hostGroup e).2.2.2.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem cycIso_one (e : ℕ) : cycIso e (Multiplicative.ofAdd 1) = hcl e (u5 (e + 2)) :=
   Classical.choose_spec (hostGroup e).2.2.2.2.2.2.2.2
 
 /- English proof (translation)
-Use `haveI : NeZero (2 ^ e) := ⟨pow_ne_zero _ two_ne_zero⟩`. Establish `h1 : Multiplicative.ofAdd i = (Multiplicative.ofAdd (1 : ZMod (2 ^ e))) ^ i.val`. Rewrite using `[← ofAdd_nsmul, nsmul_one, ZMod.natCast_zmod_val]`. Rewrite using `[h1, map_pow, cycIso_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycIso_apply (e : ℕ) (i : ZMod (2 ^ e)) :
     cycIso e (Multiplicative.ofAdd i) = hcl e (u5 (e + 2)) ^ i.val := by
@@ -125,7 +125,7 @@ def cycHom (e : ℕ) : ZMod (2 ^ e) →+ Additive (HGrp e) :=
     rw [ofAdd_add, map_mul, ofMul_mul])
 
 /- English proof (translation)
-Use `show Additive.ofMul (cycIso e (Multiplicative.ofAdd i)) = _`. Rewrite using `[cycIso_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycHom_apply (e : ℕ) (i : ZMod (2 ^ e)) :
     cycHom e i = Additive.ofMul (hcl e (u5 (e + 2)) ^ i.val) := by
@@ -133,7 +133,7 @@ theorem cycHom_apply (e : ℕ) (i : ZMod (2 ^ e)) :
   rw [cycIso_apply]
 
 /- English proof (translation)
-Use `show Function.Bijective (fun i => Additive.ofMul (cycIso e (Multiplicative.ofAdd i)))`. Conclude with `Additive.ofMul.bijective.comp ((cycIso e).bijective.comp Multiplicative.ofAdd.bijective)`.
+A detailed English derivation is pending.
 -/
 theorem cycHom_bijective (e : ℕ) : Function.Bijective (cycHom e) := by
   show Function.Bijective (fun i => Additive.ofMul (cycIso e (Multiplicative.ofAdd i)))
@@ -142,7 +142,7 @@ theorem cycHom_bijective (e : ℕ) : Function.Bijective (cycHom e) := by
 def idxZMod (n : ℕ) [NeZero n] : Idx n ≃ ZMod n := (ZMod.finEquiv n).toEquiv
 
 /- English proof (translation)
-Break down `n with _ | k` into its components or cases. Conclude with `(NeZero.ne 0 rfl).elim`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem idxZMod_val (n : ℕ) [NeZero n] (t : Idx n) : (idxZMod n t).val = Fin.val (n := n) t := by
   rcases n with _ | k
@@ -150,7 +150,7 @@ theorem idxZMod_val (n : ℕ) [NeZero n] (t : Idx n) : (idxZMod n t).val = Fin.v
   · rfl
 
 /- English proof (translation)
-The claim follows from `(cycHom_bijective e).1 (by rw [hk, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem cycHom_ker (e : ℕ) (a' : ZMod (2 ^ e)) (k : ℤ) (hk : cycHom e (k • a') = 0) : k • a' = 0 :=
   (cycHom_bijective e).1 (by rw [hk, map_zero])
@@ -176,20 +176,20 @@ Both sides reduce to the same expression.
 theorem frameCyc_ord : (frameCyc e a').ord = 2 ^ e := rfl
 
 /- English proof (translation)
-The claim follows from `idxZMod_val (2 ^ e) t`.
+A detailed English derivation is pending.
 -/
 theorem frameCyc_val (t : (frameCyc e a').A) : (frameCycIso e a' t).val = t.val :=
   idxZMod_val (2 ^ e) t
 
 /- English proof (translation)
-Rewrite using `[show (frameCyc e a').h t = cycHom e (frameCycIso e a' t) from rfl, cycHom_apply, frameCyc_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameCyc_h (t : (frameCyc e a').A) :
     (frameCyc e a').h t = Additive.ofMul (hcl e (u5 (e + 2)) ^ t.val) := by
   rw [show (frameCyc e a').h t = cycHom e (frameCycIso e a' t) from rfl, cycHom_apply, frameCyc_val]
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `h1 : ∀ t, (frameCyc e a').h t = cycHom e (frameCycIso e a' t)` using `fun t => rfl`. Rewrite `hxy` using `[h1, h1]`. Conclude with `(frameCycIso e a').injective ((cycHom_bijective e).1 hxy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameCyc_h_injective : Function.Injective (frameCyc e a').h := by
   intro x y hxy
@@ -198,19 +198,19 @@ theorem frameCyc_h_injective : Function.Injective (frameCyc e a').h := by
   exact (frameCycIso e a').injective ((cycHom_bijective e).1 hxy)
 
 /- English proof (translation)
-The claim follows from `Frame.ofEquiv_generator e (idxZMod (2 ^ e)) (cycHom e) (cycHom_bijective e).2 a' (cycHom_ker e a')`.
+A detailed English derivation is pending.
 -/
 theorem frameCyclic_generator : frameCycIso e a' (frameCyc e a').a0 = a' :=
   Frame.ofEquiv_generator e (idxZMod (2 ^ e)) (cycHom e) (cycHom_bijective e).2 a' (cycHom_ker e a')
 
 /- English proof (translation)
-The claim follows from `Frame.ofEquiv_order e (idxZMod (2 ^ e)) (cycHom e) (cycHom_bijective e).2 a' (cycHom_ker e a')`.
+A detailed English derivation is pending.
 -/
 theorem frameCyclic_order : (frameCyc e a').n0 = addOrderOf a' :=
   Frame.ofEquiv_order e (idxZMod (2 ^ e)) (cycHom e) (cycHom_bijective e).2 a' (cycHom_ker e a')
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem frameCyc_twoGroup : (frameCyc e a').TwoGroup := ⟨e, rfl⟩
 
@@ -221,14 +221,14 @@ def cyclicFrame (e : ℕ) : Frame := frameCyc e 1
 def cyclicFramePow (e j : ℕ) : Frame := frameCyc e (2 ^ j)
 
 /- English proof (translation)
-Use `show (frameCyc e 1).n0 = _`. Rewrite using `[frameCyclic_order, ZMod.addOrderOf_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclicFrame_order (e : ℕ) : (cyclicFrame e).n0 = 2 ^ e := by
   show (frameCyc e 1).n0 = _
   rw [frameCyclic_order, ZMod.addOrderOf_one]
 
 /- English proof (translation)
-Use `show (frameCyc e 1).ord / (frameCyc e 1).n0 = 1`. Rewrite using `[frameCyclic_order, ZMod.addOrderOf_one, frameCyc_ord]`. Conclude with `Nat.div_self (pow_pos two_pos e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclicFrame_index (e : ℕ) : (cyclicFrame e).o = 1 := by
   show (frameCyc e 1).ord / (frameCyc e 1).n0 = 1
@@ -236,14 +236,14 @@ theorem cyclicFrame_index (e : ℕ) : (cyclicFrame e).o = 1 := by
   exact Nat.div_self (pow_pos two_pos e)
 
 /- English proof (translation)
-Use `show frameCycIso e 1 (s • (frameCyc e 1).a0) = _`. Rewrite using `[map_nsmul, frameCyclic_generator, nsmul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclicFrame_digit (e s : ℕ) : frameCycIso e 1 ((frameCyc e 1).dig s) = (s : ZMod (2 ^ e)) := by
   show frameCycIso e 1 (s • (frameCyc e 1).a0) = _
   rw [map_nsmul, frameCyclic_generator, nsmul_one]
 
 /- English proof (translation)
-Use `show (frameCyc e (2 ^ j)).n0 = _`. Rewrite using `[frameCyclic_order]`. Establish `h1 : ((2 ^ j : ℕ) : ZMod (2 ^ e)) = (2 : ZMod (2 ^ e)) ^ j` using `by simp`. Rewrite using `[← h1, ZMod.addOrderOf_coe _ (pow_ne_zero _ two_ne_zero), Nat.gcd_eq_right (Nat.pow_dvd_pow 2 hj), Nat.pow_div hj two_pos]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclicFramePow_order (e j : ℕ) (hj : j ≤ e) : (cyclicFramePow e j).n0 = 2 ^ (e - j) := by
   show (frameCyc e (2 ^ j)).n0 = _
@@ -253,7 +253,7 @@ theorem cyclicFramePow_order (e j : ℕ) (hj : j ≤ e) : (cyclicFramePow e j).n
     Nat.gcd_eq_right (Nat.pow_dvd_pow 2 hj), Nat.pow_div hj two_pos]
 
 /- English proof (translation)
-Use `show (cyclicFramePow e j).ord / (cyclicFramePow e j).n0 = _`. Rewrite using `[cyclicFramePow_order e j hj]`. Use `show 2 ^ e / 2 ^ (e - j) = _`. Rewrite using `[Nat.pow_div (Nat.sub_le e j) two_pos, Nat.sub_sub_self hj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclicFramePow_index (e j : ℕ) (hj : j ≤ e) : (cyclicFramePow e j).o = 2 ^ j := by
   show (cyclicFramePow e j).ord / (cyclicFramePow e j).n0 = _

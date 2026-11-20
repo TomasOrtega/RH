@@ -12,19 +12,19 @@ open NumberField Matrix Complex GlobalTheory.SUVol GlobalTheory.RiemConst Recipr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `unfold angles; split_ifs <;> simp [Finset.sum_add_distrib]; ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem angles_add (φ ψ : Fin (r - 1) → ℝ) (a : Fin r) : angles (φ + ψ) a = angles φ a + angles ψ a := by
   unfold angles; split_ifs <;> simp [Finset.sum_add_distrib]; ring
 
 /- English proof (translation)
-Apply the tactic sequence `unfold angles; split_ifs <;> simp [Finset.mul_sum]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem angles_smul (c : ℝ) (φ : Fin (r - 1) → ℝ) (a : Fin r) : angles (c • φ) a = c * angles φ a := by
   unfold angles; split_ifs <;> simp [Finset.mul_sum]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold angles; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem angles_zero (a : Fin r) : angles (0 : Fin (r - 1) → ℝ) a = 0 := by
   unfold angles; split_ifs <;> simp
@@ -35,13 +35,13 @@ def anglesL (r : ℕ) : (Fin (r - 1) → ℝ) →ₗ[ℝ] (Fin r → ℝ) where
   map_smul' c φ := funext fun a => angles_smul c φ a
 
 /- English proof (translation)
-The claim follows from `((continuous_apply a).comp (LinearMap.continuous_of_finiteDimensional (anglesL r)) :)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_angles (a : Fin r) : Continuous fun φ : Fin (r - 1) → ℝ => angles φ a :=
   ((continuous_apply a).comp (LinearMap.continuous_of_finiteDimensional (anglesL r)) :)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, of_apply, mul_apply, transpose_apply, map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G M = Mᵀ * G.map τ * M.map (starRingEnd ℂ) := by
@@ -50,9 +50,9 @@ theorem gram_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M : Matrix (F
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (hx τ)`. Rewrite `h` using `[gram_eq, det_mul, det_mul, det_transpose, det_diagonal]`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `h` using `[h0, zero_mul, zero_mul]`. Use `(Finset.prod_ne_zero_iff.2 fun a _ => ?_) h.symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `unfold sgn; split_ifs <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUnit_det_of_isOrth {X : Data E r} {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) :
     IsUnit (mat x τ).det := by

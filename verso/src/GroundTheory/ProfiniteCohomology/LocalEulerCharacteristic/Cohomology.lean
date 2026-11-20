@@ -21,7 +21,7 @@ noncomputable def rootsOfUnityTwoInv (l : ℕ) (V : OpenSubgroup Gal(Ksep/K)) :
     (cohomologyMap (kummerSequenceRes (K := K) (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K))).f 2).hom.toAddMonoidHom
 
 /- English proof (translation)
-The claim follows from `AddMonoidHom.comp_apply _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem rootsOfUnityTwoInv_apply (V : OpenSubgroup Gal(Ksep/K))
     (x : cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l)) 2) :
@@ -32,7 +32,7 @@ theorem rootsOfUnityTwoInv_apply (V : OpenSubgroup Gal(Ksep/K))
 include hl in
 
 /- English proof (translation)
-The claim follows from `((localClassFormationOfIsSepClosure K Ksep).inv_bijective V).1.comp (cohomologyMap_f_injective_of_subsingleton (kummerSequenceRes_shortExact (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K)) hl) 1 (subsingleton_cohomology_one_galUnits_open K Ksep V))`.
+A detailed English derivation is pending.
 -/
 theorem rootsOfUnityTwoInv_injective (V : OpenSubgroup Gal(Ksep/K)) :
     Function.Injective (rootsOfUnityTwoInv (K := K) (Ksep := Ksep) l V) :=
@@ -44,13 +44,13 @@ theorem rootsOfUnityTwoInv_injective (V : OpenSubgroup Gal(Ksep/K)) :
 include hl in
 
 /- English proof (translation)
-Establish `: NeZero l` using `⟨by rintro rfl; exact hl Nat.cast_zero⟩`. Use `set F := localClassFormationOfIsSepClosure K Ksep`. Use `set S := kummerSequenceRes (K := K) (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K))`. Establish `hS : S.ShortExact` using `kummerSequenceRes_shortExact l _ hl`. Use extensionality with `q`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `exists_zmodToQZ_eq ?_` and prove the remaining obligations. Establish `e : l • (cohomologyMap S.f 2).hom x = 0` using `(cohomologyMap_kummerSequenceRes_g_apply l (V : Subgroup Gal(Ksep/K)) 2 _).symm.trans (cohomologyMap_g_cohomologyMap_f_apply (S := S) 2 x)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[rootsOfUnityTwoInv_apply]`. Conclude with `(map_nsmul (F.inv V) l _).symm.trans ((congrArg (F.inv V) e).trans (map_zero _))`. Introduce and unpack `⟨a, rfl⟩`. Take `⟨y, hy⟩` from `(F.inv_bijective V).2 (zmodToQZ l a)`. Establish `hny : l • y = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `(F.inv_bijective V).1` to reduce the goal to its premises. Rewrite using `[map_nsmul, hy, ← map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, map_zero, map_zero]`. Take `⟨x, hx⟩` from `exists_cohomologyMap_f_eq hS 2 y ((cohomologyMap_kummerSequenceRes_g_apply l (V : Subgroup Gal(Ksep/K)) 2 y).trans hny)`. Conclude with `⟨x, (rootsOfUnityTwoInv_apply V x).trans ((congrArg (F.inv V) hx).trans hy)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_rootsOfUnityTwoInv (V : OpenSubgroup Gal(Ksep/K)) :
     (rootsOfUnityTwoInv (K := K) (Ksep := Ksep) l V).range = (zmodToQZ l).range := by
@@ -99,7 +99,7 @@ noncomputable def cohomologyTwoRootsEquiv :
 variable [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
 
 /- English proof (translation)
-Rewrite using `[cohomologyConj_two_galRootsOfUnity_eq_id hl h g]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyTwoRootsEquiv_cohomologyConj (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype

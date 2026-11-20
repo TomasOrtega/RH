@@ -18,7 +18,7 @@ namespace GlobalTheory.SumRepAdd
 open Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_continuous_ladicGalRep_model_finite_ext_host`.
+A detailed English derivation is pending.
 -/
 theorem exists_model : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (a : ℕ) (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)),
     Continuous (fun g => ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) →
@@ -27,7 +27,7 @@ theorem exists_model : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (a : ℕ) (ρ : G D
       mapRep (algebraMap ↥LL'.1 (Qbar l)) ρ₁ = ρ := GlobalTheory.T.exists_continuous_ladicGalRep_model_finite_ext_host
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.sumRep_deRham_iff_and_multiplicity_add`.
+A detailed English derivation is pending.
 -/
 theorem dsum_local : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] (Gw : Subgroup (Ω ≃ₐ[E] Ω)) (O : Type) [CommRing O]
@@ -38,13 +38,13 @@ theorem dsum_local : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf
         Bw.multE P LL' (Formalism.MainNotions.SumRepresentations.At.sumRep r₁ r₂) τ' c = Bw.multE P LL' r₁ τ' c + Bw.multE P LL' r₂ τ' c := GlobalTheory.T.sumRep_deRham_iff_and_multiplicity_add
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_finitePlace_over_l_of_hostEmbedding_qbar`.
+A detailed English derivation is pending.
 -/
 theorem exists_place : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (τ : D.host.E →+* Qbar l), ∃ w : PlE D.host,
     w ∈ placesOver D.host.E l ∧ ∀ x : 𝓞 D.host.E, ‖τ (x : D.host.E)‖ < 1 ↔ x ∈ w.asIdeal := GlobalTheory.T.exists_finitePlace_over_l_of_hostEmbedding_qbar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_completionEmbedding_inducing_hostEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (w : PlE D.host) (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     [TopologicalSpace O] (Bw : LocBridge l D.host.E D.nd.Om (Dec (F := D.host.E) (D.nd.plOm.1 w)) O),
@@ -52,7 +52,7 @@ theorem exists_ext : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (w : PlE D.host) (O :
     ∀ LL' : FinExt l, Bw.LL.1 ≤ LL'.1 → ∃ τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1, GlobalTheory.Pst.IsInduced Bw τ τ' := GlobalTheory.T.exists_completionEmbedding_inducing_hostEmbedding
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.weilDeligneParamOfLadicRep_sumRep_awayFrom_l_host`.
+A detailed English derivation is pending.
 -/
 theorem wdOf_sumRep_away : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a b : ℕ)
     (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) (ρ' : G D.host.E D.nd.Om →* GL (Fin b) (Qbar l))
@@ -63,7 +63,7 @@ theorem wdOf_sumRep_away : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (ι : Qbar l �
       (GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι ρ).lpSum (GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι ρ') := GlobalTheory.T.weilDeligneParamOfLadicRep_sumRep_awayFrom_l_host
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.weilDeligneParamAboveL_directSum_potSemistable`.
+A detailed English derivation is pending.
 -/
 theorem wdAt_sumRep : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (ι : Om l ≃+* ℂ) (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
@@ -75,7 +75,7 @@ theorem wdAt_sumRep : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAin
         (GlobalTheory.Pst.wdAt P ι Bw h hj r).lpSum (GlobalTheory.Pst.wdAt P ι Bw h hj r') := GlobalTheory.T.weilDeligneParamAboveL_directSum_potSemistable
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.weilDeligneParamAbove_l_independent_localEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem wdAt_bridge : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (ι : Om l ≃+* ℂ) (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
@@ -105,7 +105,7 @@ theorem sumRep_apply (r₁ : Γ →* GL (Fin a) k) (r₂ : Γ →* GL (Fin b) k)
         (finSumFinEquiv.symm i) (finSumFinEquiv.symm j) := rfl
 
 /- English proof (translation)
-Use extensionality with `g i j`. Express the relevant statement in the definitionally equal form `f (((Formalism.MainNotions.SumRepresentations.At.sumRep r₁ r₂ g : GL (Fin (a + b)) k) : Matrix (Fin (a + b)) (Fin (a + b)) k) i j) = _`. Rewrite using `[sumRep_apply, sumRep_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [mapRep]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mapRep_sumRep (f : k →+* k') (r₁ : Γ →* GL (Fin a) k) (r₂ : Γ →* GL (Fin b) k) :
     mapRep f (Formalism.MainNotions.SumRepresentations.At.sumRep r₁ r₂) = Formalism.MainNotions.SumRepresentations.At.sumRep (mapRep f r₁) (mapRep f r₂) := by
@@ -115,7 +115,7 @@ theorem mapRep_sumRep (f : k →+* k') (r₁ : Γ →* GL (Fin a) k) (r₂ : Γ 
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [mapRep]
 
 /- English proof (translation)
-Use extensionality with `g i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem comp_sumRep {Δ : Type} [Group Δ] (φ : Δ →* Γ) (r₁ : Γ →* GL (Fin a) k) (r₂ : Γ →* GL (Fin b) k) :
     (Formalism.MainNotions.SumRepresentations.At.sumRep r₁ r₂).comp φ = Formalism.MainNotions.SumRepresentations.At.sumRep (r₁.comp φ) (r₂.comp φ) := by
@@ -123,9 +123,7 @@ theorem comp_sumRep {Δ : Type} [Group Δ] (φ : Δ →* Γ) (r₁ : Γ →* GL 
   rfl
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [sumRep_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j`. Conclude with `h₁.matrix_elem i j`. Conclude with `continuous_const`.
-
-Conclude with `continuous_const`. Conclude with `h₂.matrix_elem i j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cont_sumRep [TopologicalSpace Γ] [TopologicalSpace k] (r₁ : Γ →* GL (Fin a) k) (r₂ : Γ →* GL (Fin b) k)
     (h₁ : Continuous fun g => ((r₁ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k))
@@ -149,7 +147,7 @@ section W
 variable (D : D7) (T : WDTie D.nd D.naut) (W : WDSide D T) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
 
 /- English proof (translation)
-Use `⟨continuous_matrix fun i j => continuous_induced_rng.2 ?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp (hc.matrix_elem i j)).congr fun g => rfl`. Use extensionality with `g i j`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem model_enlarge {a : ℕ} {L₁ L₂ : FinExt l} (h : L₁.1 ≤ L₂.1) (ρ₁ : G D.host.E D.nd.Om →* GL (Fin a) ↥L₁.1)
     (hc : Continuous (fun g => ((ρ₁ g : GL (Fin a) ↥L₁.1) : Matrix (Fin a) (Fin a) ↥L₁.1))) :
@@ -162,7 +160,7 @@ theorem model_enlarge {a : ℕ} {L₁ L₂ : FinExt l} (h : L₁.1 ≤ L₂.1) (
   · ext g i j; rfl
 
 /- English proof (translation)
-Take `⟨L₁, h₁, ρ₁, c₁, e₁⟩` from `exists_model D l a ρ hρ L₀`. Take `⟨L₂, h₂, ρ₂, c₂, e₂⟩` from `exists_model D l b ρ' hρ' L₁`. Take `⟨c, e⟩` from `model_enlarge D l h₂ ρ₁ c₁`. Conclude with `⟨L₂, h₁.trans h₂, _, ρ₂, c, c₂, e.trans e₁, e₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem two_models {a b : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l))
     (ρ' : G D.host.E D.nd.Om →* GL (Fin b) (Qbar l))
@@ -180,7 +178,7 @@ theorem two_models {a b : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)
   exact ⟨L₂, h₁.trans h₂, _, ρ₂, c, c₂, e.trans e₁, e₂⟩
 
 /- English proof (translation)
-Take `⟨LL, Bw, hj, -⟩` from `W.above l ι ρ w hw`. Take `⟨LL', hL, ρ₁, ρ₂, c₁, c₂, rfl, rfl⟩` from `two_models D l ρ ρ' hρ hρ' Bw.LL`. Take `⟨-, H⟩` from `W.loc l ι w hw _ Bw hj ((algebraMap ↥Bw.LL.1 (Om l)).comp Bw.toLL) (fun _ => rfl)`. Rewrite using `[← mapRep_sumRep, (H LL' hL a ρ₁ c₁).2.1, (H LL' hL b ρ₂ c₂).2.1, (H LL' hL (a + b) _ (cont_sumRep ρ₁ ρ₂ c₁ c₂)).2.1, comp_sumRep]`. Conclude with `(dsum_local l (D.loc l) (D.locA l) ⟨D.locT l⟩ _ _ _ _ Bw LL' a b _ _).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dR_sum {a b : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l))
     (ρ' : G D.host.E D.nd.Om →* GL (Fin b) (Qbar l))
@@ -205,13 +203,13 @@ section W2
 variable (D : D7) (T : WDTie D.nd D.naut) (W : WDSide D T) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
 
 /- English proof (translation)
-Take `⟨w, hw, hτw⟩` from `exists_place D l τ`. Take `⟨d₁, d₂⟩` from `hτ w hτw`. Establish `d₃` using `(dR_sum D T W l ι ρ ρ' hρ hρ' w hw).2 ⟨d₁, d₂⟩`. Take `⟨LL, Bw, hj, -⟩` from `W.above l ι ρ w hw`. Take `⟨LL', hL, ρ₁, ρ₂, c₁, c₂, rfl, rfl⟩` from `two_models D l ρ ρ' hρ hρ' Bw.LL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ', hτ'⟩` from `exists_ext D l w _ Bw hj τ hτw LL' hL`. Take `⟨-, H⟩` from `W.loc l ι w hw _ Bw hj ((algebraMap ↥Bw.LL.1 (Om l)).comp Bw.toLL) (fun _ => rfl)`. Take `⟨-, dd₁, -, J₁⟩` from `H LL' hL a ρ₁ c₁`. Take `⟨-, dd₂, -, J₂⟩` from `H LL' hL b ρ₂ c₂`. Take `⟨-, dd₃, -, J₃⟩` from `H LL' hL (a + b) _ (cont_sumRep ρ₁ ρ₂ c₁ c₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `d₃`, the goal using `[← mapRep_sumRep]`. Use extensionality with `c`. Establish `k₁` using `(J₁ τ τ' hτ').2 (dd₁.1 d₁) c`. Establish `k₂` using `(J₂ τ τ' hτ').2 (dd₂.1 d₂) c`. Establish `k₃` using `(J₃ τ τ' hτ').2 (dd₃.1 d₃) c`.
+Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `k₃` using `[comp_sumRep, (dsum_local l (D.loc l) (D.locA l) ⟨D.locT l⟩ _ _ _ _ Bw LL' a b _ _).2 τ' c, ← k₁, ← k₂]`. Rewrite using `[Multiset.count_add]`. Conclude with `k₃` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jumps_sum {a b : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l))
     (ρ' : G D.host.E D.nd.Om →* GL (Fin b) (Qbar l))
@@ -241,7 +239,7 @@ theorem jumps_sum {a b : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l))
   exact_mod_cast k₃
 
 /- English proof (translation)
-Apply `(T.e w).injective` to reduce the goal to its premises. Rewrite using `[T.sum, W.away l ι _ w hw, W.away l ι ρ w hw, W.away l ι ρ' w hw]`. Conclude with `wdOf_sumRep_away D l ι a b ρ ρ' w hw hρ hρ'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wd_sum_away {a b : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l))
     (ρ' : G D.host.E D.nd.Om →* GL (Fin b) (Qbar l))
@@ -254,9 +252,9 @@ theorem wd_sum_away {a b : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l
   exact wdOf_sumRep_away D l ι a b ρ ρ' w hw hρ hρ'
 
 /- English proof (translation)
-Take `⟨LL', hL, r₁, c₁, rfl⟩` from `exists_model D l m r hr B.LL`. Take `⟨-, H⟩` from `W.loc l ι w hw _ B hj ((algebraMap ↥B.LL.1 (Om l)).comp B.toLL) (fun _ => rfl)`. Establish `hd'` using `(H LL' hL m r₁ c₁).2.1`. Establish `hm : GlobalTheory.Pst.IsModel B (GlobalTheory.Pst.resDec D.nd.plOm.1 (mapRep (algebraMap ↥LL'.1 (Qbar l)) r₁) w) LL' (r₁.comp (Dec (F` using `D.host.E) (D.nd.plOm.1 w)).subtype) := ⟨hL, rfl⟩`. Establish `hdR : GlobalTheory.Pst.IsdRAt (D.loc l) B (GlobalTheory.Pst.resDec D.nd.plOm.1 (mapRep (algebraMap ↥LL'.1 (Qbar l)) r₁) w)` using `(hm.isdRAt_iff (D.loc l)).2 (hd'.1 hd)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hB.isPstAt (D.locT l) B _ (hr.comp continuous_subtype_val) hdR`.
+A detailed English derivation is pending.
 -/
 theorem pst_of_dR (hB : GlobalTheory.Published.DeRhamPotSemistable) {m : ℕ} (r : G D.host.E D.nd.Om →* GL (Fin m) (Qbar l))
     (hr : Continuous (fun g => ((r g : GL (Fin m) (Qbar l)) : Matrix (Fin m) (Fin m) (Qbar l))))
@@ -273,13 +271,13 @@ theorem pst_of_dR (hB : GlobalTheory.Published.DeRhamPotSemistable) {m : ℕ} (r
   exact hB.isPstAt (D.locT l) B _ (hr.comp continuous_subtype_val) hdR
 
 /- English proof (translation)
-Establish `d₃` using `(dR_sum D T W l ι ρ ρ' hρ hρ' w hw).2 ⟨d₁, d₂⟩`. Establish `c₃` using `cont_sumRep ρ ρ' hρ hρ'`. Take `⟨p_power_smul_sub_sum, B1, j1, E1⟩` from `W.above l ι ρ w hw`. Take `⟨logJacobianTwoPoints, B2, j2, E2⟩` from `W.above l ι ρ' w hw`. Take `⟨ColumnLift, B3, j3, E3⟩` from `W.above l ι (Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ') w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `tie : Nonempty (LocTied l (D.loc l) (D.locA l))` using `⟨D.locT l⟩`. Apply `(T.e w).injective` to reduce the goal to its premises. Rewrite using `[T.sum, E1, E2, E3]`. Establish `p31` using `pst_of_dR D T W l ι hB _ c₃ w hw d₃ B1 j1`. Establish `p33` using `pst_of_dR D T W l ι hB _ c₃ w hw d₃ B3 j3`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p11` using `pst_of_dR D T W l ι hB _ hρ w hw d₁ B1 j1`. Establish `p21` using `pst_of_dR D T W l ι hB _ hρ' w hw d₂ B1 j1`. Establish `p22` using `pst_of_dR D T W l ι hB _ hρ' w hw d₂ B2 j2`. Rewrite using `[wdAt_bridge l (D.loc l) (D.locA l) tie ι D.host.E D.nd.Om (D.nd.plOm.1 w) w _ _ B3 B1 (D.nd.plOm.2 w) j3 j1 (a + b) _ (c₃.comp continuous_subtype_val) p33 p31, wdAt_bridge l (D.loc l) (D.locA l) tie ι D.host.E D.nd.Om (D.nd.plOm.1 w) w _ _ B2 B1 (D.nd.plOm.2 w) j2 j1 b _ (hρ'.co …`. Rewrite `p31`, the goal using `[GlobalTheory.Pst.resDec, comp_sumRep]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `wdAt_sumRep l (D.loc l) (D.locA l) tie ι D.host.E D.nd.Om (D.nd.plOm.1 w) w _ B1 (D.nd.plOm.2 w) j1 a b _ _ p11 p21 p31`.
+A detailed English derivation is pending.
 -/
 theorem wd_sum_above (hB : GlobalTheory.Published.DeRhamPotSemistable) {a b : ℕ} (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l))
     (ρ' : G D.host.E D.nd.Om →* GL (Fin b) (Qbar l))
@@ -310,11 +308,9 @@ theorem wd_sum_above (hB : GlobalTheory.Published.DeRhamPotSemistable) {a b : �
 end W2
 
 /- English proof (translation)
-Introduce `hB hL D P i a b ρ ρ' hρ hρ'`. Use `⟨fun w hw => ?_, fun w h₁ h₂ => ?_, fun τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[(P.wdOf i _ _ w).2.2.2.1, (P.wdOf i _ ρ w).2.2.2.1, (P.wdOf i _ ρ' w).2.2.2.1]`. Conclude with `dR_sum D P.T P.wd (D.nd.l i) (D.naut.iotaQC i) ρ ρ' hρ hρ' w hw`. Rewrite using `[(P.wdOf i _ _ w).1, (P.wdOf i _ ρ w).1, (P.wdOf i _ ρ' w).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w ∈ placesOver D.host.E (D.nd.l i)`. Establish `d₁` using `(P.wdOf i _ ρ w).2.2.2.1.1 (h₁.resolve_left (not_not.2 hw))`. Establish `d₂` using `(P.wdOf i _ ρ' w).2.2.2.1.1 (h₂.resolve_left (not_not.2 hw))`. Conclude with `wd_sum_above D P.T P.wd (D.nd.l i) (D.naut.iotaQC i) hB ρ ρ' hρ hρ' w hw d₁ d₂`. Conclude with `wd_sum_away D P.T P.wd (D.nd.l i) (D.naut.iotaQC i) ρ ρ' hρ hρ' w hw`.
-
-Take `⟨w₀, -, -⟩` from `exists_place D (D.nd.l i) τ`. Rewrite using `[(P.wdOf i _ _ w₀).2.2.2.2 τ, (P.wdOf i _ ρ w₀).2.2.2.2 τ, (P.wdOf i _ ρ' w₀).2.2.2.2 τ]`. Conclude with `jumps_sum D P.T P.wd (D.nd.l i) (D.naut.iotaQC i) ρ ρ' hρ hρ' τ fun w hw => ⟨(P.wdOf i _ ρ w).2.2.2.1.1 (hτ w hw).1, (P.wdOf i _ ρ' w).2.2.2.1.1 (hτ w hw).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.DeRhamPotSemistable → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ i : D.nd.Loc, (∀ a b (ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin a) (Qbar (D.nd.l i))) (ρ' : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin b) (Qbar (D.nd.l i))), Formalism.MainNotions.SumRepresentations.At.ContQ D.nd i ρ → Formalism.MainNotions.SumRepresentations.At.ContQ D.nd i ρ' → (∀ w ∈ placesOver D.host.E (D.nd.l i), D.naut.IsdRW i (Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ') w ↔ D.naut.IsdRW i ρ w ∧ D.naut.IsdRW i ρ' w) ∧ (∀ w, Formalism.MainNotions.SumRepresentations.At.WDok D.nd D.naut i ρ w → Formalism.MainNotions.SumRepresentations.At.WDok D.nd D.naut i ρ' w → D.naut.wdOf i (Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ') w = D.naut.lpSum (D.naut.wdOf i ρ w) (D.naut.wdOf i ρ' w)) ∧ (∀ τ, (∀ w, InducesW D.nd i τ w → D.naut.IsdRW i ρ w ∧ D.naut.IsdRW i ρ' w) → D.naut.jumpsW i (Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ') τ = D.naut.jumpsW i ρ τ + D.naut.jumpsW i ρ' τ)) := by
   intro hB hL D P i a b ρ ρ' hρ hρ'

@@ -16,9 +16,9 @@ section Local
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-Use `hp` as an intermediate fact. Take `⟨a, s, hs, e⟩` from `(mem_locIn_iff A p _).mp hb`. Introduce `hbp`. Establish `hs0 : (s : Ω) ≠ 0` using `fun h => hs (by rw [show s = 0 from Subtype.ext h]; exact p.zero_mem)`. Establish `: s = a * b` using `Subtype.ext (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Clear denominators, using `at e` for the nonvanishing conditions. Take the linear combination `e)`. Conclude with `hs (this ▸ p.mul_mem_left a hbp)`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_mem_of_inv_mem_locIn (A : Subalgebra S Ω) (p : Ideal A) (hp : p.IsPrime) (b : A)
     (hb0 : (b : Ω) ≠ 0) (hb : (b : Ω)⁻¹ ∈ locIn A p) : b ∉ p := by
@@ -41,11 +41,11 @@ variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
   (M : Submonoid S) [IsLocalization M S']
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `IsLocalization.map_units S' (⟨m, hm⟩ : M)`. Establish `hu' : (u : S') = algebraMap S S' m` using `hu`. Establish `e : algebraMap S Ω m = algebraMap S' Ω u`. Rewrite using `[IsScalarTower.algebraMap_apply S S' Ω, ← hu']`. Establish `h1 : algebraMap S' Ω u * algebraMap S' Ω ↑u⁻¹ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hne : algebraMap S Ω m ≠ 0` using `fun h => by`. Rewrite `h` using `[e]`. Rewrite `h1` using `[h, zero_mul]`. Conclude with `zero_ne_one h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hne, e ▸ Subalgebra.algebraMap_mem _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[e, inv_eq_of_mul_eq_one_right h1]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_units {m : S} (hm : m ∈ M) (A' : Subalgebra S' Ω) :
     algebraMap S Ω m ≠ 0 ∧ algebraMap S Ω m ∈ A' ∧ (algebraMap S Ω m)⁻¹ ∈ A' := by
@@ -62,7 +62,7 @@ theorem algebraMap_mem_units {m : S} (hm : m ∈ M) (A' : Subalgebra S' Ω) :
   exact Subalgebra.algebraMap_mem _ _
 
 /- English proof (translation)
-Introduce `h`. Take `⟨hne, hmem, hinv⟩` from `algebraMap_mem_units M hm A'`. Establish `h'` using `p'.mul_mem_left (⟨_, hinv⟩ : A') h`. Rewrite `h'` using `[show (⟨_, hinv⟩ : A') * ⟨_, hmem⟩ = 1 from Subtype.ext (by simp [inv_mul_cancel₀ hne])]`. Conclude with `hp'.ne_top ((Ideal.eq_top_iff_one _).mpr h')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_not_mem_prime {m : S} (hm : m ∈ M) (A' : Subalgebra S' Ω) (p' : Ideal A')
     (hp' : p'.IsPrime) : (⟨algebraMap S Ω m, (algebraMap_mem_units M hm A').2.1⟩ : A') ∉ p' := by
@@ -80,15 +80,13 @@ def inclHom (A : Subalgebra S Ω) (A' : Subalgebra S' Ω) (hle : ∀ a ∈ A, a 
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `u ⟨a', b', hb', rfl⟩`. Take `⟨m₁, hm₁, h₁⟩` from `hden a' a'.2`. Take `⟨m₂, hm₂, h₂⟩` from `hden b' b'.2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `n₁` using `(algebraMap_mem_units M hm₁ A').1`. Establish `n₂` using `(algebraMap_mem_units M hm₂ A').1`. Establish `nb : (b' : Ω) ≠ 0` using `fun h => hb' (by rw [show b' = 0 from Subtype.ext h]; exact p'.zero_mem)`. Use `Subring.subset_closure ⟨⟨_, mul_mem (Subalgebra.algebraMap_mem A m₂) h₁⟩, ⟨_, mul_mem (Subalgebra.algebraMap_mem A m₁) h₂⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `e : inclHom A A' hle ⟨_, mul_mem (Subalgebra.algebraMap_mem A m₁) h₂⟩ = ⟨algebraMap S Ω m₁, (algebraMap_mem_units M hm₁ A').2.1⟩ * (⟨algebraMap S Ω m₂, (algebraMap_mem_units M hm₂ A').2.1⟩ * b')` using `Subtype.ext rfl`. Rewrite `h` using `[e]`. Break down `hp'.mem_or_mem h with h | h` into its components or cases. Conclude with `algebraMap_not_mem_prime M hm₁ A' p' hp' h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hp'.mem_or_mem h with h | h` into its components or cases. Conclude with `algebraMap_not_mem_prime M hm₂ A' p' hp' h`. Conclude with `hb' h`. Use `show (a' : Ω) / b' = algebraMap S Ω m₂ * (algebraMap S Ω m₁ * a') / (algebraMap S Ω m₁ * (algebraMap S Ω m₂ * b'))`. Clear the denominators using the available nonvanishing facts.
-
-Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `u ⟨a, b, hb, rfl⟩`. Conclude with `Subring.subset_closure ⟨inclHom A A' hle a, inclHom A A' hle b, hb, rfl⟩`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem locIn_comap_inclHom (A : Subalgebra S Ω) (A' : Subalgebra S' Ω) (hle : ∀ a ∈ A, a ∈ A')
     (hden : ∀ a ∈ A', ∃ m ∈ M, algebraMap S Ω m * a ∈ A) (p' : Ideal A') (hp' : p'.IsPrime) :
@@ -122,13 +120,11 @@ theorem locIn_comap_inclHom (A : Subalgebra S Ω) (A' : Subalgebra S' Ω) (hle :
     exact Subring.subset_closure ⟨inclHom A A' hle a, inclHom A A' hle b, hb, rfl⟩
 
 /- English proof (translation)
-Set `_` to `(inclHom A A' hle).toAlgebra`. Use `(isLocalization_iff _ _).mpr ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, m, hm, rfl⟩`. Take `⟨hne, hmem, hinv⟩` from `algebraMap_mem_units M hm A'`. Use `IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show algebraMap S Ω m * (algebraMap S Ω m)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hne`. Introduce `z`. Take `⟨m, hm, h⟩` from `hden z z.2`. Use `⟨(⟨_, h⟩, ⟨algebraMap S A m, Submonoid.mem_map_of_mem _ hm⟩), Subtype.ext ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (z : Ω) * algebraMap S Ω m = algebraMap S Ω m * z`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y hxy`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h' : ((algebraMap A A' x : A') : Ω) = (algebraMap A A' y : A')` using `congrArg Subtype.val hxy`.
-
-Rewrite using `[show x = y from Subtype.ext h']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalization_inclHom (A : Subalgebra S Ω) (A' : Subalgebra S' Ω) (hle : ∀ a ∈ A, a ∈ A')
     (hden : ∀ a ∈ A', ∃ m ∈ M, algebraMap S Ω m * a ∈ A) :
@@ -154,7 +150,7 @@ theorem isLocalization_inclHom (A : Subalgebra S Ω) (A' : Subalgebra S' Ω) (hl
 variable {K : Type} {ι : K → Type}
 
 /- English proof (translation)
-Establish `hle : chartRingOver S y c ≤ (chartRingOver S' y c).restrictScalars S` using `Algebra.adjoin_le fun x hx => (Algebra.subset_adjoin hx : x ∈ Algebra.adjoin S' _)`. Conclude with `fun a ha => hle ha`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chartRingOver_le (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) :
     ∀ a ∈ chartRingOver S y c, a ∈ chartRingOver S' y c := by
@@ -163,13 +159,13 @@ theorem chartRingOver_le (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) :
   exact fun a ha => hle ha
 
 /- English proof (translation)
-Use extensionality with `z`. Establish `hden : ∀ c, ∀ a ∈ chartRingOver S' y c, ∃ m ∈ M, algebraMap S Ω m * a ∈ chartRingOver S y c` using `fun c a ha => exists_mul_mem_adjoin_of_isLocalization (S' := S') M _ ha`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, p', hp', rfl⟩`. Use `⟨⟨c, hc, p'.comap (inclHom _ _ (chartRingOver_le (S := S) (S' := S') y c)), by have := hp'; infer_instance, locIn_comap_inclHom M _ _ _ (hden c) p' hp'⟩, fun m hm => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hne, hmem, hinv⟩` from `algebraMap_mem_units M hm (chartRingOver S' y c)`. Conclude with `Subring.subset_closure ⟨1, ⟨_, hmem⟩, algebraMap_not_mem_prime M hm _ p' hp', by simp⟩`. Introduce and unpack `⟨⟨c, hc, p, hp, rfl⟩, hM⟩`. Set `_` to `(inclHom _ _ (chartRingOver_le (S := S) (S' := S') y c)).toAlgebra`. Use `isLocalization_inclHom M _ _ (chartRingOver_le (S := S) (S' := S') y c) (hden c)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : Disjoint ((M.map (algebraMap S (chartRingOver S y c)) : Submonoid (chartRingOver S y c)) : Set (chartRingOver S y c)) (p : Set (chartRingOver S y c))`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨m, hm, rfl⟩ hmp`. Conclude with `not_mem_of_inv_mem_locIn _ p hp _ (algebraMap_mem_units M hm (chartRingOver S' y c)).1 (hM m hm) hmp`. Establish `hp'` using `IsLocalization.isPrime_of_isPrime_disjoint (M.map (algebraMap S (chartRingOver S y c))) (chartRingOver S' y c) p hp hd`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, hc, _, hp', ?_⟩` and prove the remaining obligations. Rewrite using `[locIn_comap_inclHom M _ _ _ (hden c) _ hp']`. Use `congr 1`. Conclude with `(IsLocalization.under_map_of_isPrime_disjoint (M.map (algebraMap S (chartRingOver S y c))) (chartRingOver S' y c) hp hd).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem modelPts_localization (y : (Σ k, ι k) → Ω) :
     modelPts S' y = {z | z ∈ modelPts S y ∧ ∀ m ∈ M, (algebraMap S Ω m)⁻¹ ∈ z} := by
@@ -202,7 +198,7 @@ theorem modelPts_localization (y : (Σ k, ι k) → Ω) :
 end Loc
 
 /- English proof (translation)
-Introduce `S _ K ι Ω _ _ y k₀ S' _ _ _ _ M _ h`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Establish `e : modelPts S y = modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀))` using `h.2`. Use `show modelPts S' y = modelPts S' (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀))`. Rewrite using `[modelPts_localization M y, modelPts_localization M (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)), e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ModelWithBaseLocalization.proof : ModelWithBaseLocalization.Statement := by
   intro S _ K ι Ω _ _ y k₀ S' _ _ _ _ M _ h

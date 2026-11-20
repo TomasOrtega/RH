@@ -21,7 +21,7 @@ namespace GlobalTheory.MixUnip
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.OrientedHeis.symplOH_self (S := S) (T := T) (a + b)`. Rewrite `h` using `[GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_self, GlobalTheory.OrientedHeis.symplOH_self, zero_add, add_zero]`. Conclude with `eq_neg_of_add_eq_zero_right h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplOH_antisymm {S T : HSp D} (a b : WO S T) : symplOH S T b a = -symplOH S T a b := by
   have h := GlobalTheory.OrientedHeis.symplOH_self (S := S) (T := T) (a + b)
@@ -30,19 +30,19 @@ theorem symplOH_antisymm {S T : HSp D} (a b : WO S T) : symplOH S T b a = -sympl
   exact eq_neg_of_add_eq_zero_right h
 
 /- English proof (translation)
-Simplify using `[symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_zero_left' {S T : HSp D} (y : WO S T) : symplO S T 0 y = 0 := by
   simp [symplO, hO]
 
 /- English proof (translation)
-Rewrite using `[symplOH, ← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_eq_two {S T : HSp D} (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := by
   rw [symplOH, ← add_mul, ← map_add, add_halves, map_one, one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_smul (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (w : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T w (c • f) = c • heisO ψ S T w f := by
@@ -51,7 +51,7 @@ theorem heisO_smul (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (w : WO S T) (
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [HypDec.mixS, heisO_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mixS_smul (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
     (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)) (c : ℂ) (f : WO S T → ℂ) (x : Mx D T.rank ρ) :
@@ -61,25 +61,23 @@ theorem mixS_smul (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (
   rw [← integral_const_mul]
 
 /- English proof (translation)
-Introduce `D ψ S S₀ T ρ d χS χT om hom μ 𝓕 hμ f hf x`. Establish `hstd` using `hom.std`. Take `⟨hth, hcomp, -⟩` from `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hstd S T`. Take `⟨-, -, hmove⟩` from `GlobalTheory.T.weil_operators_witt_parabolic_origin_to_point D ψ S S₀ T ρ d χS χT om hom μ 𝓕 hμ f hf x`. Establish `hzB` using `fun g (hg : IsThetaFunO ψ S T g) => (GlobalTheory.T.mixedCoordinate_origin_unipotentRadical_invariant D ψ S S₀ T ρ d χS χT om hom μ 𝓕 hμ g hg).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzC` using `fun g (hg : IsThetaFunO ψ S T g) => (GlobalTheory.T.mixedCoordinate_origin_unipotentRadical_invariant D ψ S S₀ T ρ d χS χT om hom μ 𝓕 hμ g hg).2`. Establish `eX : ∀ (a : Mx D T.rank ρ) (g : WO S T → ℂ), IsThetaFunO ψ S T g → d.mixS T ψ μ 𝓕 (heisO ψ S T (d.extX T a) g) 0 = d.mixS T ψ μ 𝓕 g a` using `fun a g hg => by`. Use `(GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hstd S S₀ T ρ d ⟨μ, 𝓕, hμ⟩ g hg).1 0 a` as an intermediate fact. Simplify `this` using `only [zero_add]`. Establish `eY : ∀ (a : Mx D T.rank ρ) (g : WO S T → ℂ), IsThetaFunO ψ S T g → d.mixS T ψ μ 𝓕 (heisO ψ S T (d.extY T a) g) x = ψ (symplO S T (d.extX T x) (d.extY T a)) • d.mixS T ψ μ 𝓕 g x` using `fun a g hg => (GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hstd S S₀ T ρ d ⟨μ, 𝓕, hμ⟩ g hg).2.1 x a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `jointCmpEmbeddingY : ∀ (a : Mx D T.rank ρ) (g : WO S T → ℂ), IsThetaFunO ψ S T g → d.mixS T ψ μ 𝓕 (heisO ψ S T (d.extY T a) g) 0 = d.mixS T ψ μ 𝓕 g 0` using `fun a g hg => by`. Use `(GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hstd S S₀ T ρ d ⟨μ, 𝓕, hμ⟩ g hg).2.1 0 a` as an intermediate fact. Rewrite `this` using `[map_zero, GlobalTheory.MixUnip.symplO_zero_left', AddChar.map_zero_eq_one, one_smul]`. Conclude with `this`. Use `⟨fun b => ?_, fun c => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set X := d.extX T x set Z := d.ext0 T (x ⬝ b) set a := x ⬝ (half D • (b ⬝ plus S₀ b))`. Establish `hXY : symplOH S T X (d.extY T a) = 0`. Establish `e : pairS T x a = half D * hO S₀ T (x ⬝ b) (x ⬝ b)`. Rewrite using `[← pairS_plus]`. Simplify using `only [a, pairS, Matrix.mul_smul, adj_smul, cA_half, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_of_add_self (F := D.host.F) ?_` and prove the remaining obligations. Rewrite using `[HypDec.symplOH_extX_extY, e, trHalf_half, ← symplOH_eq, GlobalTheory.OrientedHeis.symplOH_self, add_zero]`. Establish `hXY' : symplOH S T X (d.extY T (-a)) = 0`. Establish `h` using `GlobalTheory.OrientedHeis.symplOH_add_right (S := S) (T := T) X (d.extY T a) (d.extY T (-a))`. Rewrite `h` using `[← map_add, add_neg_cancel, map_zero, symplOH_zero_right, hXY, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm`. Establish `hkey : heisO ψ S T (X ⬝ mt S (d.nB b)) f = heisO ψ S T (d.extY T (-a)) (heisO ψ S T X (heisO ψ S T Z f))`. Rewrite using `[hcomp X Z f, HypDec.wittDecomp_sympl_extIsotropic_extAnisotropic, AddChar.map_zero_eq_one, one_smul, hcomp, GlobalTheory.OrientedHeis.symplOH_add_right, HypDec.wittDecomp_sympl_extDual_extAnisotropic, add_zero, GlobalTheory.MixUnip.symplOH_antisymm, hXY', neg_zero, AddChar.map_z …`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hmove (d.nB b), hzB _ (hth _ _ hf), hkey, jointCmpEmbeddingY _ _ (hth _ _ (hth _ _ hf)), eX _ _ (hth _ _ hf)]`. Conclude with `(GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hstd S S₀ T ρ d ⟨μ, 𝓕, hμ⟩ f hf).2.2.1 x (x ⬝ b)`. Establish `hq : d.qS T c x = symplOH S T (d.extX T x) (d.extY T (x ⬝ c.1))` using `rfl`. Establish `hL : d.mixS T ψ μ 𝓕 (heisO ψ S T (d.extX T x) (heisO ψ S T (d.extY T (x ⬝ c.1)) f)) 0 = ψ (d.qS T c x) • ψ (d.qS T c x) • d.mixS T ψ μ 𝓕 f x`. Establish `h2` using `eY (x ⬝ c.1) f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `eX x (heisO ψ S T (d.extY T (x ⬝ c.1)) f) (hth _ _ hf)`. Rewrite using `[h3, h2, GlobalTheory.MixUnip.symplO_eq_two, AddChar.map_add_eq_mul, ← hq, mul_smul]`. Establish `hc' : heisO ψ S T (d.extX T x) (heisO ψ S T (d.extY T (x ⬝ c.1)) f) = ψ (d.qS T c x) • heisO ψ S T (d.extX T x + d.extY T (x ⬝ c.1)) f` using `hcomp _ _ _`. Establish `h1` using `congrArg (fun g => d.mixS T ψ μ 𝓕 g 0) hc'`. Rewrite `h1` using `[hL, GlobalTheory.MixUnip.mixS_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ψ (d.qS T c x) ≠ 0`. Establish `h` using `AddChar.map_add_eq_mul ψ (d.qS T c x) (-d.qS T c x)`. Rewrite `h` using `[add_neg_cancel, AddChar.map_zero_eq_one]`. Conclude with `left_ne_zero_of_mul_eq_one h.symm`. Rewrite using `[hmove (d.nC c), hzC _ (hth _ _ hf), HypDec.extX_nC]`.
-
-Conclude with `(smul_right_injective _ hne h1).symm`.
+A detailed English derivation is pending.
 -/
 theorem mixS_unip : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)), IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f → ∀ x : Mx D T.rank ρ, (∀ b, d.mixS T ψ μ 𝓕 (om (d.nB b, 1) f) x = heisO ψ S₀ T (x ⬝ b) (d.mixS T ψ μ 𝓕 (f) x)) ∧ ∀ c, d.mixS T ψ μ 𝓕 (om (d.nC c, 1) f) x = ψ (d.qS T c x) • d.mixS T ψ μ 𝓕 (f) x := by
   intro D ψ S S₀ T ρ d χS χT om hom μ 𝓕 hμ f hf x

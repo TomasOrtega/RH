@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 /- English proof (citation)
-Apply `GlobalTheory.EtC.isIso_chains_map_of_isIso_free` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FChainsIsoOfFreeIso.lean&line=7#L7)
 -/

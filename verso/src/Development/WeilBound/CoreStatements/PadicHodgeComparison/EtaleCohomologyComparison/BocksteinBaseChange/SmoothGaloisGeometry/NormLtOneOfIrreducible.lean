@@ -10,18 +10,16 @@ namespace CrystallineSemistableComparison
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Use `show (x : PadicAlgCl l) ∈ GroundTheory.PAdicHodge.normInteger (PadicAlgCl l) ↔ _`. Conclude with `GroundTheory.PAdicHodge.mem_normInteger`.
+A detailed English derivation is pending.
 -/
 theorem mem_OK (x : K) : x ∈ OK l K ↔ ‖(x : PadicAlgCl l)‖ ≤ 1 := by
   show (x : PadicAlgCl l) ∈ GroundTheory.PAdicHodge.normInteger (PadicAlgCl l) ↔ _
   exact GroundTheory.PAdicHodge.mem_normInteger
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Use `show _ ↔ spectralValue (minpoly ℚ_[l] x) ≤ 1`. Rewrite using `[spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l])` using `(lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
-
-Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIntegral_iff_norm_le (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -38,7 +36,7 @@ theorem isIntegral_iff_norm_le (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖
     exact ⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_OK, ← isIntegral_iff_norm_le]`. Use `show _ ↔ IsIntegral ℤ_[l] x`. Conclude with `(isIntegral_algHom_iff (K.val.restrictScalars ℤ_[l]) Subtype.val_injective)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OK_eq : OK l K = (integralClosure ℤ_[l] K).toSubring := by
   ext x
@@ -47,18 +45,18 @@ theorem OK_eq : OK l K = (integralClosure ℤ_[l] K).toSubring := by
   exact (isIntegral_algHom_iff (K.val.restrictScalars ℤ_[l]) Subtype.val_injective)
 
 /- English proof (translation)
-The claim follows from `(mem_OK _).1 a.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_OK_le (a : OK l K) : ‖((a : K) : PadicAlgCl l)‖ ≤ 1 := (mem_OK _).1 a.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h1` using `norm_OK_le (u : OK l K)`. Establish `h2` using `norm_OK_le ((u⁻¹ : (OK l K)ˣ) : OK l K)`. Establish `h3 : ((((u : OK l K) : K) : PadicAlgCl l)) * (((((u⁻¹ : (OK l K)ˣ) : OK l K) : K) : PadicAlgCl l)) = 1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun z : OK l K => ((z : K) : PadicAlgCl l)) u.mul_inv` as an intermediate fact. Conclude with `this`. Establish `h4` using `congrArg norm h3`. Rewrite `h4` using `[norm_mul, norm_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Establish `ha : (a : K) ≠ 0`. Introduce `e`. Rewrite `h` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Use `isUnit_iff_exists_inv.2 ⟨⟨(a : K)⁻¹, (mem_OK _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_inv, norm_inv, h, inv_one]`. Use `show (a : K) * (a : K)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_OK_iff (a : OK l K) : IsUnit a ↔ ‖((a : K) : PadicAlgCl l)‖ = 1 := by
   constructor
@@ -82,13 +80,13 @@ theorem isUnit_OK_iff (a : OK l K) : IsUnit a ↔ ‖((a : K) : PadicAlgCl l)‖
       exact mul_inv_cancel₀ ha
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_ne (norm_OK_le ϖ) fun e => h.not_isUnit ((isUnit_OK_iff ϖ).2 e)`.
+A detailed English derivation is pending.
 -/
 theorem norm_lt_one_of_irreducible {ϖ : OK l K} (h : Irreducible ϖ) : ‖((ϖ : K) : PadicAlgCl l)‖ < 1 :=
   lt_of_le_of_ne (norm_OK_le ϖ) fun e => h.not_isUnit ((isUnit_OK_iff ϖ).2 e)
 
 /- English proof (translation)
-Introduce `e`. Apply `h.ne_zero` to reduce the goal to its premises. Conclude with `Subtype.ext (Subtype.ext e)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_irreducible {ϖ : OK l K} (h : Irreducible ϖ) : ((ϖ : K) : PadicAlgCl l) ≠ 0 := by
   intro e
@@ -96,17 +94,15 @@ theorem ne_zero_of_irreducible {ϖ : OK l K} (h : Irreducible ϖ) : ((ϖ : K) : 
   exact Subtype.ext (Subtype.ext e)
 
 /- English proof (translation)
-Establish `h0` using `ne_zero_of_irreducible h`. Establish `h1` using `norm_lt_one_of_irreducible h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((ϖ ^ n : OK l K) : K) ≠ 0`. Introduce `e`. Apply `h0` to reduce the goal to its premises. Establish `: ((ϖ : K) : PadicAlgCl l) ^ n = 0`. Use `congrArg (fun z : K => (z : PadicAlgCl l)) e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Conclude with `pow_eq_zero_iff'.1 this |>.1`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Conclude with `⟨⟨0, 1⟩, by simp [hz]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz' : 0 < ‖(z : PadicAlgCl l)‖` using `norm_pos_iff.2 (by exact_mod_cast hz)`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 hz') h1`. Use `⟨⟨⟨z * (ϖ : K) ^ n, (mem_OK _).2 ?_⟩, ⟨ϖ ^ n, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `show ‖((z * (ϖ : K) ^ n : K) : PadicAlgCl l)‖ ≤ 1`. Rewrite using `[IntermediateField.coe_mul, IntermediateField.coe_pow, norm_mul, norm_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression.
 
-Use `mul_lt_mul_of_pos_left hn hz'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hz'.ne']`. Conclude with `this.le`. Both sides reduce to the same expression. Introduce `x y e`.
-
-Conclude with `⟨1, by simpa using Subtype.ext e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem OK_away {ϖ : OK l K} (h : Irreducible ϖ) : IsLocalization.Away ϖ K := by
   have h0 := ne_zero_of_irreducible h
@@ -146,11 +142,9 @@ instance : IsLocalRing (OK l K) := .of_nonunits_add fun a b ha hb => by
   exact ((PadicAlgCl.isNonarchimedean l _ _).trans_lt (max_lt h1 h2)).ne
 
 /- English proof (translation)
-Establish `hded : IsDedekindDomain (OK l K)`. Rewrite using `[OK_eq]`. Conclude with `IsIntegralClosure.isDedekindDomain ℤ_[l] ℚ_[l] K (integralClosure ℤ_[l] K)`. Establish `hlm : ((l : ℕ) : OK l K) ∈ IsLocalRing.maximalIdeal (OK l K)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_OK_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((((l : ℕ) : OK l K) : K)) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[e, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one.ne`. Establish `hnf : ¬ IsField (OK l K)` using `fun hf => by`. Rewrite `hlm` using `[IsLocalRing.isField_iff_maximalIdeal_eq.mp hf, Ideal.mem_bot]`.
-
-Conclude with `(Fact.out : l.Prime).ne_zero (Nat.cast_injective (R := OK l K) (by simpa using hlm))`. Conclude with `((IsDiscreteValuationRing.TFAE _ hnf).out 0 2).mpr hded`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OK_dvr : IsDiscreteValuationRing (OK l K) := by
   have hded : IsDedekindDomain (OK l K) := by

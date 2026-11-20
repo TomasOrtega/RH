@@ -13,9 +13,9 @@ namespace GlobalTheory.RealGal.SignChar
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
 /- English proof (translation)
-Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `τ.commutes (⟨x, hx⟩ : K)`. Introduce `hσ`. Conclude with `⟨IntermediateField.fixingSubgroupEquiv K ⟨σ, hσ⟩, by ext x; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_res (K : IntermediateField F Ω) :
     (res F Ω ↥K).range = K.fixingSubgroup := by
@@ -29,7 +29,7 @@ theorem range_res (K : IntermediateField F Ω) :
     exact ⟨IntermediateField.fixingSubgroupEquiv K ⟨σ, hσ⟩, by ext x; rfl⟩
 
 /- English proof (translation)
-Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Use `haveI : FiniteDimensional F Q.K := Module.finite_of_finrank_eq_succ Q.two`. Conclude with `⟨by rw [← IntermediateField.finrank_eq_fixingSubgroup_index, Q.two], Q.K.fixingSubgroup_isOpen⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem index_fix [IsAlgClosure F Ω] (Q : QCM F Ω) :
     Q.K.fixingSubgroup.index = 2 ∧ IsOpen (Q.K.fixingSubgroup : Set (G F Ω)) := by
@@ -51,9 +51,9 @@ noncomputable def sign [IsAlgClosure F Ω] (Q : QCM F Ω) : G F Ω →* ℤˣ wh
     · rw [if_pos (h.2 (iff_of_false ha hb)), if_neg ha, if_neg hb]; decide
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker]`. Simplify using `only [sign, MonoidHom.coe_mk, OneHom.coe_mk]`. Use `split_ifs with h`. Simplify using `[h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, iff_false]`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 theorem ker_sign [IsAlgClosure F Ω] (Q : QCM F Ω) : (sign Q).ker = Q.K.fixingSubgroup := by
   ext σ
@@ -65,15 +65,15 @@ theorem ker_sign [IsAlgClosure F Ω] (Q : QCM F Ω) : (sign Q).ker = Q.K.fixingS
     decide
 
 /- English proof (translation)
-Consider the cases of `Q`. Consider the cases of `Q'`. Consider the cases of `h`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem QCM.ext' {Q Q' : QCM F Ω} (h : Q.K = Q'.K) : Q = Q' := by
   cases Q; cases Q'; cases h; rfl
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _`. Use `⟨sign, ?_, fun Q => ⟨by rw [ker_sign, range_res], by rw [ker_sign]; exact (index_fix Q).2⟩⟩` and prove the remaining obligations. Introduce `Q Q' h`. Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Establish `hk : Q.K.fixingSubgroup = Q'.K.fixingSubgroup` using `by rw [← ker_sign, ← ker_sign, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `QCM.ext'` to reduce the goal to its premises. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup Q.K, ← InfiniteGalois.fixedField_fixingSubgroup Q'.K, hk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω], ∃ η : QCM F Ω → (G F Ω →* ℤˣ), Function.Injective η ∧ ∀ Q, (η Q).ker = (res F Ω ↥Q.K).range ∧ IsOpen ((η Q).ker : Set (G F Ω)) := by
   intro F Ω _ _ _ _ _

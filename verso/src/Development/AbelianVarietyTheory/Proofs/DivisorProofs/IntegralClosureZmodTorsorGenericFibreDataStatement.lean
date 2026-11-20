@@ -9,7 +9,7 @@ open IsLocalRing Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.ClosureData.closureData) | (exact GlobalTheory.ClosureData.closureData) | (intros; apply GlobalTheory.ClosureData.closureData <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integralClosure_zmodTorsor_genericFibre_data : ∀ (A R : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [CommRing R] [Algebra A R]
     [Nontrivial R] [Module.Flat A R] [IsNoetherianRing R],

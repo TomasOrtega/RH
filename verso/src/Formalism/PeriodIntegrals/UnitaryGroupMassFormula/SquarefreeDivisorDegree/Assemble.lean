@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarefreeDivisorDegree
 namespace PI.SqfDivDeg.W
 
 /- English proof (translation)
-The claim follows from `sqfDivDeg_of hA mainCount`.
+A detailed English derivation is pending.
 -/
 theorem sqfDivDeg_of_rootDense (hA : RootDense) : PI.SqfDivDeg.Claim :=
   sqfDivDeg_of hA mainCount

@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hz : ∑ i ∈ s, f i = 0` using `Finset.sum_eq_zero (fun i hi => by have := hne i hi; omega)`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem exists_pos_of_sum_pos {ι : Type*} (s : Finset ι) (f : ι → ℕ)
     (h : 0 < ∑ i ∈ s, f i) : ∃ i ∈ s, 0 < f i := by
@@ -18,17 +18,15 @@ private theorem exists_pos_of_sum_pos {ι : Type*} (s : Finset ι) (f : ι → �
   omega
 
 /- English proof (translation)
-Unfold `colExp`. Rewrite using `[Finsupp.finset_sum_apply]`. Simplify using `only [Finsupp.single_apply, Prod.mk.injEq]`. Distinguish the cases in `ht : t.val < h`. Rewrite using `[dif_pos ht]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single ⟨t.val, ht⟩]`. Establish `e : Fin.castLE hh ⟨t.val, ht⟩ = t` using `Fin.ext rfl`. Distinguish the cases in `hca : c ⟨t.val, ht⟩ = a`. Rewrite using `[if_pos ⟨hca, e⟩, if_pos hca]`. Rewrite using `[if_neg (fun hh' => hca hh'.1), if_neg hca]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `p _ hp`. Rewrite using `[if_neg]`. Introduce and unpack `⟨_, h2⟩`. Establish `h3 : p.val = t.val` using `congrArg Fin.val h2`. Conclude with `hp (Fin.ext h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite using `[dif_neg ht]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨_, h2⟩`. Establish `h3 : p.val = t.val` using `congrArg Fin.val h2`. Establish `h4` using `p.isLt`. Apply `ht` to reduce the goal to its premises.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem colExp_apply {r n h : ℕ} (c : Fin h → Fin r) (hh : h ≤ n) (a : Fin r)
     (t : Fin n) :
@@ -61,9 +59,7 @@ private theorem colExp_apply {r n h : ℕ} (c : Fin h → Fin r) (hh : h ≤ n) 
     omega
 
 /- English proof (translation)
-Simplify using `only [colExp_apply]`. Distinguish the cases in `ht : t.val < h`. Simplify using `only [dif_pos ht]`. Conclude with `Finset.sum_ite_eq S (c ⟨t.val, ht⟩) (fun _ => 1)`. Simplify using `only [dif_neg ht]`.
-
-Conclude with `Finset.sum_const_zero`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_colExp_apply_eq_ite_mem {r n h : ℕ} (c : Fin h → Fin r) (hh : h ≤ n)
     (S : Finset (Fin r)) (t : Fin n) :
@@ -77,77 +73,69 @@ private theorem sum_colExp_apply_eq_ite_mem {r n h : ℕ} (c : Fin h → Fin r) 
     exact Finset.sum_const_zero
 
 /- English proof (translation)
-Introduce `r n ν m hcol hint_r _hm`. Establish `hstep : ∀ l j : Fin n, j.val = l.val + 1 → 0 < ν j → 0 < ν l`. Introduce `l j hlj hj`. Rewrite `hj` using `[← hcol j]`. Take `⟨a, -, ha⟩` from `exists_pos_of_sum_pos _ _ hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (∑ b : Fin r with b ≤ a, m (b, j)) ≤ 0 + ∑ b : Fin r with b < a, m (b, l)` using `hint_r l j hlj a`. Establish `h2 : m (a, j) ≤ ∑ b : Fin r with b ≤ a, m (b, j)` using `Finset.single_le_sum (f := fun b => m (b, j)) (fun _ _ => Nat.zero_le _) (by simp)`. Establish `h3 : (∑ b : Fin r with b < a, m (b, l)) ≤ ∑ b, m (b, l)` using `Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)`. Rewrite using `[← hcol l]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hdown : ∀ (d : ℕ) (t t' : Fin n), t.val = t'.val + d → 0 < ν t → 0 < ν t'`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `t t' htt ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : t = t'` using `Fin.ext (by omega)`. Rewrite using `[← e]`. Conclude with `ht`. Consider the case `succ d ih`. Introduce `t t' htt ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : t'.val + d < n` using `by have := t.isLt; omega`. Conclude with `ih ⟨t'.val + d, hs⟩ t' rfl (hstep ⟨t'.val + d, hs⟩ t (by show t.val = t'.val + d + 1; omega) ht)`. Establish `hmono : ∀ t t' : Fin n, t' ≤ t → 0 < ν t → 0 < ν t'`. Introduce `t t' hle ht`. Establish `hle' : t'.val ≤ t.val` using `hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hdown (t.val - t'.val) t t' (by omega) ht`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh, hiff⟩ : ∃ h : ℕ, h ≤ n ∧ ∀ t : Fin n, t.val < h ↔ 0 < ν t := by`. Use `⟨(Finset.univ.filter (fun t : Fin n => 0 < ν t)).card, ?_, ?_⟩` and prove the remaining obligations. Conclude with `le_trans (Finset.card_filter_le _ _) (by rw [Finset.card_univ, Fintype.card_fin])`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `ht`. Assume the negation of the conclusion as `hnt`. Establish `hsub : Finset.univ.filter (fun t : Fin n => 0 < ν t) ⊆ Finset.Iio t`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hs` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hst`. Use `push_neg at hst`. Conclude with `hnt (hmono s t hst hs.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `Finset.card_le_card hsub`. Rewrite `hc` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers. Introduce `ht`. Establish `hsub : Finset.Iic t ⊆ Finset.univ.filter (fun t : Fin n => 0 < ν t)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s hs`. Rewrite `hs` using `[Finset.mem_Iic]`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, hmono t s hs ht⟩`. Establish `hc` using `Finset.card_le_card hsub`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers. Establish `hex : ∀ p : Fin h, ∃ a : Fin r, 0 < m (a, Fin.castLE hh p) ∧ ∀ b : Fin r, 0 < m (b, Fin.castLE hh p) → a ≤ b`. Introduce `p`. Establish `hp : 0 < ν (Fin.castLE hh p)` using `(hiff _).1 p.isLt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hp` using `[← hcol]`. Take `⟨a, -, ha⟩` from `exists_pos_of_sum_pos _ _ hp`. Establish `hS : (Finset.univ.filter (fun b : Fin r => 0 < m (b, Fin.castLE hh p))).Nonempty` using `⟨a, Finset.mem_filter.mpr ⟨Finset.mem_univ _, ha⟩⟩`. Use `⟨(Finset.univ.filter (fun b : Fin r => 0 < m (b, Fin.castLE hh p))).min' hS, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Finset.mem_filter.mp (Finset.min'_mem _ hS)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `b hb`. Conclude with `Finset.min'_le _ b (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩)`. Use `choose c hc1 hc2 using hex`. Establish `hc1' : ∀ (t : Fin n) (ht : t.val < h), 0 < m (c ⟨t.val, ht⟩, t)`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Fin.castLE hh ⟨t.val, ht⟩ = t` using `Fin.ext rfl`. Establish `h1` using `hc1 ⟨t.val, ht⟩`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Establish `hc2' : ∀ (t : Fin n) (ht : t.val < h) (b : Fin r), 0 < m (b, t) → c ⟨t.val, ht⟩ ≤ b`. Introduce `t ht b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Fin.castLE hh ⟨t.val, ht⟩ = t` using `Fin.ext rfl`. Apply `hc2 ⟨t.val, ht⟩ b` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `hb`. Establish `hcstep : ∀ (l j : Fin n) (hl : l.val < h) (hj : j.val < h), j.val = l.val + 1 → c ⟨l.val, hl⟩ < c ⟨j.val, hj⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l j hl hj hlj`. Establish `h1 : (∑ b : Fin r with b ≤ c ⟨j.val, hj⟩, m (b, j)) ≤ 0 + ∑ b : Fin r with b < c ⟨j.val, hj⟩, m (b, l)` using `hint_r l j hlj (c ⟨j.val, hj⟩)`. Establish `h2 : m (c ⟨j.val, hj⟩, j) ≤ ∑ b : Fin r with b ≤ c ⟨j.val, hj⟩, m (b, j)` using `Finset.single_le_sum (f := fun b => m (b, j)) (fun _ _ => Nat.zero_le _) (by simp)`. Establish `h3` using `hc1' j hj`. Establish `h4 : 0 < ∑ b : Fin r with b < c ⟨j.val, hj⟩, m (b, l)` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb, hbpos⟩` from `exists_pos_of_sum_pos _ _ h4`. Rewrite `hb` using `[Finset.mem_filter]`. Conclude with `lt_of_le_of_lt (hc2' l hl b hbpos) hb.2`. Establish `hcstep' : ∀ p q : Fin h, q.val = p.val + 1 → c p < c q`. Introduce `p q hpq`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hcstep (Fin.castLE hh p) (Fin.castLE hh q) p.isLt q.isLt hpq` as an intermediate fact. Conclude with `this`. Establish `hkey : ∀ (d : ℕ) (p q : Fin h), q.val = p.val + d + 1 → c p < c q`. Introduce `d`. Proceed by induction on `d with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Consider the case `zero`. Introduce `p q hpq`. Conclude with `hcstep' p q (by omega)`. Consider the case `succ d ih`. Introduce `p q hpq`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : p.val + d + 1 < h` using `by have := q.isLt; omega`. Conclude with `lt_trans (ih p ⟨p.val + d + 1, hs⟩ rfl) (hcstep' ⟨p.val + d + 1, hs⟩ q (by show q.val = p.val + d + 1 + 1; omega))`. Establish `hcmono : StrictMono c`. Introduce `p q hpq`. Establish `hpq' : p.val < q.val` using `hpq`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hkey (q.val - p.val - 1) p q (by omega)`. Establish `hle : ∀ (a : Fin r) (t : Fin n), colExp c hh (a, t) ≤ m (a, t)`. Introduce `a t`. Rewrite using `[colExp_apply]`. Distinguish the cases in `ht : t.val < h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dif_pos ht]`. Distinguish the cases in `hca : c ⟨t.val, ht⟩ = a`. Rewrite using `[if_pos hca]`. Establish `h1` using `hc1' t ht`. Rewrite `h1` using `[hca]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hca]`. Conclude with `Nat.zero_le _`. Rewrite using `[dif_neg ht]`. Conclude with `Nat.zero_le _`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ x, (m - colExp c hh) x = m x - colExp c hh x`. Introduce `x`. Use `first`. Consider the case `exact Finsupp.tsub_apply _ _ _`. Consider the case `simp`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `rfl`. Establish `hpart : ∀ (S : Finset (Fin r)) (t : Fin n), ∑ b ∈ S, (m - colExp c hh) (b, t) = ∑ b ∈ S, m (b, t) - (if ht : t.val < h then (if c ⟨t.val, ht⟩ ∈ S then 1 else 0) else 0)`. Introduce `S t`. Establish `hadd : ∑ b ∈ S, (m - colExp c hh) (b, t) + ∑ b ∈ S, colExp c hh (b, t) = ∑ b ∈ S, m (b, t)`. Rewrite using `[← Finset.sum_add_distrib]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[hsub]`. Conclude with `Nat.sub_add_cancel (hle b t)`. Rewrite `hadd` using `[sum_colExp_apply_eq_ite_mem]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : ∀ t : Fin n, ¬ t.val < h → ∀ S : Finset (Fin r), ∑ b ∈ S, m (b, t) = 0`. Introduce `t ht S`. Establish `hν : ν t = 0`. Use `(hiff t).not.mp ht` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : ∑ b ∈ S, m (b, t) ≤ ∑ b, m (b, t)` using `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Rewrite `h1` using `[hcol t, hν]`. Use linear arithmetic over natural numbers and integers. Use `⟨h, hh, c, hcmono, hiff, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `first`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Consider the case `exact Finsupp.le_def.mpr (fun x => hle x.1 x.2)`. Consider the case `exact fun x => hle x.1 x.2`. Consider the case `(intro x; exact hle x.1 x.2)`. Introduce `l j hlj a show (∑ b : Fin r with b ≤ a, (m - colExp c hh) (b, j)) ≤ 0 + ∑ b : Fin r with b < a, (m - colExp c hh) (b, l)`. Rewrite using `[hpart, hpart]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (∑ b : Fin r with b ≤ a, m (b, j)) ≤ 0 + ∑ b : Fin r with b < a, m (b, l)` using `hint_r l j hlj a`. Distinguish the cases in `hl : l.val < h`. Distinguish the cases in `hcl : c ⟨l.val, hl⟩ < a`. Establish `hmemL : c ⟨l.val, hl⟩ ∈ Finset.univ.filter (fun b : Fin r => b < a)` using `Finset.mem_filter.mpr ⟨Finset.mem_univ _, hcl⟩`. Rewrite using `[dif_pos hl, if_pos hmemL]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Distinguish the cases in `hj : j.val < h`. Distinguish the cases in `hcj : c ⟨j.val, hj⟩ ≤ a`. Establish `hmemJ : c ⟨j.val, hj⟩ ∈ Finset.univ.filter (fun b : Fin r => b ≤ a)` using `Finset.mem_filter.mpr ⟨Finset.mem_univ _, hcj⟩`. Rewrite using `[dif_pos hj, if_pos hmemJ]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∑ b : Fin r with b ≤ a, m (b, j) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb` using `[Finset.mem_filter]`. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hcj (le_trans (hc2' j hj b (Nat.pos_of_ne_zero hne)) hb.2)`. Use linear arithmetic over natural numbers and integers. Establish `hz` using `hzero j hj (Finset.univ.filter (fun b : Fin r => b ≤ a))`. Use linear arithmetic over natural numbers and integers. Establish `hz : ∑ b : Fin r with b < a, m (b, l) = 0`.
-
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb` using `[Finset.mem_filter]`. Assume the negation of the conclusion as `hne`. Conclude with `hcl (lt_of_le_of_lt (hc2' l hl b (Nat.pos_of_ne_zero hne)) hb.2)`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hz` using `hzero l hl (Finset.univ.filter (fun b : Fin r => b < a))`. Use linear arithmetic over natural numbers and integers. Introduce `t`. Rewrite using `[hpart, hcol t]`.
-
-Distinguish the cases in `ht : t.val < h`. Rewrite using `[dif_pos ht, if_pos (Finset.mem_univ _), if_pos ht]`. Rewrite using `[dif_neg ht, if_neg ht]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semistandardPeel : SSYTPeel := by
   intro r n ν m hcol hint_r _hm

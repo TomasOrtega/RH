@@ -22,7 +22,7 @@ namespace GlobalTheory.GridJoin
 open GlobalTheory.Grid GlobalTheory.ChiGrid
 
 /- English proof (translation)
-Take `⟨⟨T, hT⟩, h1⟩` from `h`. Conclude with `(h1 T hT).trans (h'.2 T hT).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isThetaAt_unique {D : D7} {m n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → Mx D m n → AF D.host.F}
     {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {c : ℂ}
@@ -31,11 +31,11 @@ theorem isThetaAt_unique {D : D7} {m n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {
   exact (h1 T hT).trans (h'.2 T hT).symm
 
 /- English proof (translation)
-Substitute `hS hT hI hψ` using the available equality. Take `rfl` from `eq_of_heq hΛ₁`. Take `rfl` from `eq_of_heq hΛ₂`. Take `rfl` from `eq_of_heq hf`. Use `choose κ hκ using hA`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun c => cv (κ c), fun c => ?_, fun c => ⟨κ c, HEq.rfl⟩, fun κ' => ?_⟩` and prove the remaining obligations. Use `show IsThetaAt ψ _ _ e _ 1 f (Grid.cosetInd S T e I c) (cv (κ c))`. Rewrite using `[hκ c]`. Conclude with `hcv (κ c)`. Take `⟨c, hc⟩` from `hB κ'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c, heq_of_eq ?_⟩` and prove the remaining obligations. Establish `h1` using `hcv (κ c)`. Establish `h2` using `hcv κ'`. Rewrite `h1` using `[← hκ c, hc]`. Conclude with `isThetaAt_unique h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cosetVec_of_match {D : D7} {S T : Grid.Node D} {V₁ V₂ : HSp D}
     {Λ₁ : Submodule (𝓞 D.host.E) (Fin V₁.rank → D.host.E)} {Λ₂ : Submodule (𝓞 D.host.E) (Fin V₂.rank → D.host.E)}
@@ -72,9 +72,9 @@ namespace GlobalTheory.GridJoin
 open GlobalTheory.Grid GlobalTheory.ChiGrid
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Take `⟨c, hc⟩` from `hR.lev.βY 0 (by have := D.R.two_le_m; omega)`. Conclude with `hc.1`. Consider the case `succ k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(hsp.vert k 0 hi (Nat.zero_le _)).frame`. Conclude with `hc.1`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_col {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
@@ -89,7 +89,7 @@ theorem isFrame_col {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} 
     exact hc.1
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc hDC hHC hH F hR hsc G' W hW G hsp hch hag hcos i hi f hf`. Establish `hA` using `GlobalTheory.T.homLatticeCosetIndicator_primePowers_integralCoset (G.V (i + 1) 0) (G.V i 0) G.idem (G.toPlaceDat.W R.Pg) G.toPlaceDat.depth (isFrame_col hR hsp (by omega)) (isFrame_col hR hsp hi.le) hch.places.idem`. Establish `hB` using `GlobalTheory.T.exists_homLatticeCosetIndicator_eq_latticeHomCoset (G.V (i + 1) 0) (G.V i 0) G.idem (G.toPlaceDat.W R.Pg) G.toPlaceDat.depth (isFrame_col hR hsp (by omega)) (isFrame_col hR hsp hi.le) hch.places.idem`. Conclude with `exists_cosetVec_of_match (I := G.lvl R) (hag.vert (i + 1) 0 (by omega) (Nat.zero_le _)).sp (hag.vert i 0 hi.le (Nat.zero_le _)).sp (hag.vert (i + 1) 0 (by omega) (Nat.zero_le _)).lat (hag.vert i 0 hi.le (Nat.zero_le _)).lat hag.lvl hW.ψ (W.vac i) (W.cosVec i) (hcos i hi) hA hB f …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_cosData_agree : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → HostHyp D → ∀ {F : Face D A}, GlobalTheory.Hk3.Core R F → sc.cGap = 1 → ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} (W : G'.Weil), W.Over R → ∀ G : GlobalTheory.Grid.GridPre R, G.IsSpaces → G.IsChars → SpAgree G W → (∀ i, i < D.R.m → ∀ κ : G'.CosAt i, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) G.idem (latO (G'.pS (.chi i 0)) (G'.pT (.chi i 0)) (G'.latS (.chi i 0) : Set _) (G'.latT (.chi i 0) : Set _) fun _ => True) 1 (W.vac i) (cosInd G.idem κ) (W.cosVec i κ)) → ∀ i, i < D.R.m → ∀ f : WO (G.V (i + 1) 0).V (G.V i 0).V → ℂ, HEq f (W.vac i) → ∃ v : G.toGridSp.Cos R i → (WO (G.V (i + 1) 0).V (G.V i 0).V → ℂ), (∀ c, GlobalTheory.Grid.IsCosetVec R.ψ true (G.V (i + 1) 0) (G.V i 0) G.idem (G.lvl R) c f (v c)) ∧ (∀ c, ∃ κ, HEq (v c) (W.cosVec i κ)) ∧ ∀ κ, ∃ c, HEq (v c) (W.cosVec i κ) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc hDC hHC hH F hR hsc G' W hW G hsp hch hag hcos i hi f hf

@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ l _ hl A`. Establish `hc : ∀ n : ℕ, Nat.card {x : A.Pt // x ^ (l ^ n) = 1} = l ^ (2 * A.dim * n)`. Introduce `n`. Establish `h` using `GlobalTheory.T.card_torsion_geometricPoints_eq_pow_two_dim K A (l ^ n) (by push_cast; exact pow_ne_zero _ hl)`. Rewrite using `[h, ← pow_mul, mul_comm n]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `GlobalTheory.TateFree.free_finite_finrank A.Pt l (2 * A.dim) hc`. Use `⟨h1, h2, h3, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_baseChange, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tl_free_finrank : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 → ∀ (A : AbVar K), Module.Free ℤ_[l] (Tl l A) ∧ Module.Finite ℤ_[l] (Tl l A) ∧ Module.finrank ℤ_[l] (Tl l A) = 2 * A.dim ∧ Module.Finite ℚ_[l] (Vl l A) ∧ Module.finrank ℚ_[l] (Vl l A) = 2 * A.dim := by
   intro K _ l _ hl A

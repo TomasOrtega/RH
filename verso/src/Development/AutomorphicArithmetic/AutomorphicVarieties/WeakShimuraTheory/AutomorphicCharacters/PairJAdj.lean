@@ -5,14 +5,14 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 private def UpperTheory.V.Ws.pairJ (k : Type) [Field k] : M4 k := !![0,0,0,1; 0,0,1,0; 0,-1,0,0; -1,0,0,0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [pairJ, Matrix.mul_apply, Fin.sum_univ_four]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem UpperTheory.V.Ws.pairJ_sq (k : Type) [Field k] : pairJ k * pairJ k = -1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [pairJ, Matrix.mul_apply, Fin.sum_univ_four]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[pairJ, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.V.Ws.pairJ_adj {k : Type} [Field k] (X : M4 k) :
     X.transpose * pairJ k = pairJ k * adj X := by
@@ -21,11 +21,9 @@ private theorem UpperTheory.V.Ws.pairJ_adj {k : Type} [Field k] (X : M4 k) :
     simp [pairJ, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev]
 
 /- English proof (translation)
-Introduce `k Γ _ _ r μ h c`. Use `⟨⟨pairJ k * r c⁻¹, -(r c * pairJ k), ?_, ?_⟩, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_neg, mul_assoc, ← mul_assoc (r c⁻¹), ← map_mul, inv_mul_cancel, map_one, one_mul, pairJ_sq, neg_neg]`. Rewrite using `[neg_mul, mul_assoc, ← mul_assoc (pairJ k), pairJ_sq, neg_mul, one_mul, mul_neg, neg_neg, ← map_mul, mul_inv_cancel, map_one]`. Use `show (r s).transpose * (pairJ k * r c⁻¹) * r (c * s * c⁻¹) = (μ s : k) • (pairJ k * r c⁻¹)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : r c⁻¹ * r (c * s * c⁻¹) = r s * r c⁻¹`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`. Establish `hs : adj (r s) * r s = (μ s : k) • (1 : M4 k)` using `h s`.
-
-Rewrite using `[mul_assoc, mul_assoc, e, ← mul_assoc, pairJ_adj, mul_assoc, ← mul_assoc (adj _), hs, smul_mul_assoc, one_mul, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.auPair :
     ∀ {k Γ : Type} [Field k] [Group Γ] (r : Γ →* M4 k) (μ : Γ →* kˣ), (∀ g, IsGSp (μ g : k) (r g)) → ∀ c : Γ, ∃ P : GL (Fin 4) k, ∀ s : Γ, (r s).transpose * (P : M4 k) * r (c * s * c⁻¹) = (μ s : k) • (P : M4 k) := by

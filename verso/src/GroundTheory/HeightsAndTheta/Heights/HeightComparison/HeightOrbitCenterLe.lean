@@ -13,7 +13,7 @@ def OrbitCenterLe.Statement : Prop :=
       v (evalCone (coordVec x) F) ≤ ∏ k, (⨆ i, v (coordVec x k i)) ^ d k
 
 /- English proof (translation)
-The claim follows from `(geoMultiHomog_iff _ _).mpr (isWeightedHomogeneous_chartMonomial _ _)`.
+A detailed English derivation is pending.
 -/
 example : Geo.IsMultiHomog (ι := blockIdx (fun _ : Unit ↦ 1)) (chartMonomial (fun _ ↦ 0) 1) 1 :=
   (geoMultiHomog_iff _ _).mpr (isWeightedHomogeneous_chartMonomial _ _)

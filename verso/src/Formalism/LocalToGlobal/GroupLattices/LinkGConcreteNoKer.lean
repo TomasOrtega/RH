@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨x0, h0⟩` from `h.and (Ev.x1 Fm)`. Use `⟨x0, fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨ht, hx1⟩` from `h0 x hx i`. Take `⟨G⟩` from `ht hx1`. Conclude with `stdSubAt_of_ring _ G.ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stdSubF_of_tied {eps : ℝ} (Fm : FamP eps) (h : GroupCompatibilityFamily Fm) : Ev Fm fun x i => Joints.StdSubAt (Fm.D x i) := by
   obtain ⟨x0, h0⟩ := h.and (Ev.x1 Fm)
@@ -21,7 +21,7 @@ theorem stdSubF_of_tied {eps : ℝ} (Fm : FamP eps) (h : GroupCompatibilityFamil
   exact stdSubAt_of_ring _ G.ring
 
 /- English proof (translation)
-Take `⟨x0, h0⟩` from `h.and (Ev.x1 Fm)`. Use `⟨x0, fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨ht, hx1⟩` from `h0 x hx i`. Take `⟨G⟩` from `ht hx1`. Conclude with `gatE_of_gatIs _ G.herm.lev0 (fun u => Triv.trivStabU (G.herm.lev0 u) (Fm.D x i).host.g_prime (Fm.D x i).host.g_ne) G.gat`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gatEF_of_tied {eps : ℝ} (Fm : FamP eps) (h : GroupCompatibilityFamily Fm) : Ev Fm fun x i => TrivialStabiliserFiniteClasses (Fm.D x i) := by
   obtain ⟨x0, h0⟩ := h.and (Ev.x1 Fm)
@@ -32,7 +32,7 @@ theorem gatEF_of_tied {eps : ℝ} (Fm : FamP eps) (h : GroupCompatibilityFamily 
     (fun u => Triv.trivStabU (G.herm.lev0 u) (Fm.D x i).host.g_prime (Fm.D x i).host.g_ne) G.gat
 
 /- English proof (translation)
-Use `Cmp.npDescF_of_valRatF Fm ?_` and prove the remaining obligations. Take `⟨x0, h0⟩` from `h`. Conclude with `⟨x0, fun x hx i hx1 => by`. Take `⟨G⟩` from `h0 x hx i hx1`. Conclude with `Cmp.CmpTied.valRat G.cmp⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem npDescF_of_tied {eps : ℝ} (Fm : FamP eps) (h : GroupCompatibilityFamily Fm) : NPDescF Fm := by
   refine Cmp.npDescF_of_valRatF Fm ?_
@@ -42,7 +42,7 @@ theorem npDescF_of_tied {eps : ℝ} (Fm : FamP eps) (h : GroupCompatibilityFamil
     exact Cmp.CmpTied.valRat G.cmp⟩
 
 /- English proof (translation)
-Use `link_of_numbers_proved 𝒞 h ?_ h2 (hT.imp fun Fm _ _ ht => npDescF_of_tied Fm ht)` and prove the remaining obligations. Conclude with `((hT.and hsys).and hsysS).imp fun Fm _ _ hh => { gatE := gatEF_of_tied Fm hh.1.1 stdSub := stdSubF_of_tied Fm hh.1.1 localSystemLowTerm := hh.1.2 localSystemSizeLowTerm := hh.2 }`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem linkG_concrete (𝒞 : FamClass) (h : Loc)
     (hT : Closed 𝒞 fun Fm _ => GroupCompatibilityFamily Fm)
@@ -58,7 +58,7 @@ theorem linkG_concrete (𝒞 : FamClass) (h : Loc)
       localSystemSizeLowTerm := hh.2 }
 
 /- English proof (translation)
-The claim follows from `link_of_local_closed 𝒞 h (hT.imp fun Fm _ _ ht => gatEF_of_tied Fm ht) (hT.imp fun Fm _ _ ht => stdSubF_of_tied Fm ht) h2 (hT.imp fun Fm _ _ ht => npDescF_of_tied Fm ht)`.
+A detailed English derivation is pending.
 -/
 theorem linkG_concrete_noKer (𝒞 : FamClass) (h : Loc)
     (hT : Closed 𝒞 fun Fm _ => GroupCompatibilityFamily Fm) (h2 : Closed 𝒞 fun Fm _ => Adm2F Fm) :
@@ -67,7 +67,7 @@ theorem linkG_concrete_noKer (𝒞 : FamClass) (h : Loc)
     h2 (hT.imp fun Fm _ _ ht => npDescF_of_tied Fm ht)
 
 /- English proof (translation)
-The claim follows from `linkG_concrete_noKer 𝒞 loc_proved hT h2`.
+A detailed English derivation is pending.
 -/
 theorem linkG_concrete5 (𝒞 : FamClass) (hT : Closed 𝒞 fun Fm _ => GroupCompatibilityFamily Fm) (h2 : Closed 𝒞 fun Fm _ => Adm2F Fm) :
     Closed 𝒞 fun Fm _ => LinkG Fm :=

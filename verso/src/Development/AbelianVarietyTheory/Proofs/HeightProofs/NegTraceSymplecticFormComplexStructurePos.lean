@@ -10,7 +10,7 @@ namespace GlobalTheory.FockCompare
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h` using `(hP.kronecker hQ).dotProduct_mulVec_pos (x := fun p : Fin m × Fin n => x p.1 p.2) (fun h0 => hx (by ext i j; exact congrFun h0 (i, j)))`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [dotProduct, mulVec, Fintype.sum_prod_type, Finset.mul_sum, kroneckerMap_apply, Pi.star_apply]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -26,7 +26,7 @@ theorem sum_kron_pos {m n : ℕ} {P : Matrix (Fin m) (Fin m) ℂ} {Q : Matrix (F
   rw [Complex.star_def]; ring
 
 /- English proof (translation)
-Establish `e : (t.map (starRingEnd ℂ))ᵀ = tᴴ` using `by ext i j; rfl`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem IsCart.adj_mul {n : ℕ} {G t : Matrix (Fin n) (Fin n) ℂ} (h : IsCart G t) :
     (t.map (starRingEnd ℂ))ᵀ * G = G * t := by
@@ -36,11 +36,11 @@ theorem IsCart.adj_mul {n : ℕ} {G t : Matrix (Fin n) (Fin n) ℂ} (h : IsCart 
     _ = G * t := by rw [← Matrix.mul_assoc, h.2.1]
 
 /- English proof (translation)
-Unfold `hC actC`. Use `split_ifs with hr`. Establish `p` using `sum_kron_pos h.2.2.transpose h'.2.2 x hx`. Simplify using `only [Matrix.transpose_apply] at p`. Rewrite `p`, the goal using `[GlobalTheory.DualPairCheck.sum_small]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Use `p using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← h.adj_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `p` using `sum_kron_pos h.2.2 h'.2.2.transpose x hx`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.transpose_apply] at p`. Rewrite `p`, the goal using `[GlobalTheory.DualPairCheck.sum_large]`. Use `p using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← h'.adj_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hC_actC_pos {D : D7} (V W : HSp D) (τ : D.what₂.Tau) (t : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (t' : Matrix (Fin W.rank) (Fin W.rank) ℂ) (h : IsCart (gramAt D V τ) t) (h' : IsCart (gramAt D W τ) t')
@@ -62,9 +62,9 @@ theorem hC_actC_pos {D : D7} (V W : HSp D) (τ : D.what₂.Tau) (t : Matrix (Fin
     simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `D V W τ s s' h h' x hx`. Establish `p` using `hC_actC_pos V W τ _ _ h h' x hx`. Establish `q` using `xi_zero_im_pos D τ`. Unfold `symplC jAt`. Rewrite using `[hC_smul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p1, p2⟩` from `Complex.pos_iff.1 p`. Simplify using `only [Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, ← p2]`. Use polynomial arithmetic with `[mul_pos p1 q]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem symplC_jAt_neg : ∀ (D : D7) (V W : HSp D) (τ : D.what₂.Tau) (s : Module.End D.host.E V.V)
     (s' : Module.End D.host.E W.V), IsCart (gramAt D V τ) (thAt V τ s) → IsCart (gramAt D W τ) (thAt W τ s') →

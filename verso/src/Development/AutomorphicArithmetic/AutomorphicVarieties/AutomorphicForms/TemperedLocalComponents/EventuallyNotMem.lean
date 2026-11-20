@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.ThetaPull
 namespace UpperTheory.V.Af
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by rw [CG.HasInfChar.infChar_eq (π := CG.mk π) (h τ)] refine ⟨Multiset.Nodup.map (fun i j e => hm.injective ?_) Finset.univ.nodup, fun z hz => ?_⟩ · exact_mod_cast add_left_cancel e · obtain ⟨i, -, rfl⟩ := Multiset.mem_map.1 hz …`.
+A detailed English derivation is pending.
 -/
 private theorem regAlg_of_infOf {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} {m : Fin n → ℤ}
     (hm : StrictAnti m) {π : CuspSub K n} (h : ∀ τ, π.HasInfChar τ (infOf m)) : (CG.mk π).IsRegAlg := (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by
@@ -21,7 +21,7 @@ private theorem regAlg_of_infOf {K : Type} [Field K] [NumberField K] [IsTotallyC
     exact ⟨m i, add_comm _ _⟩
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {(M : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 (by omega)`. Use `(Ideal.finite_factors h0).subset fun w hw => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 (not_not.1 hw)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem eventually_notMem {K : Type} [Field K] [NumberField K] {M : ℕ} (hM : 1 ≤ M) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite, (M : 𝓞 K) ∉ w.asIdeal := by
@@ -32,7 +32,7 @@ private theorem eventually_notMem {K : Type} [Field K] [NumberField K] {M : ℕ}
   exact Ideal.dvd_span_singleton.2 (not_not.1 hw)
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `hc`. Establish `h1` using `Sep.of_equiv (ρ := π.finPart.comp (thetaGL n (cFin K))) (ρ' := π.finPart) T fun g v => hT (.fin g) v`. Establish `h2` using `Sep.of_equiv (ρ := π'.finPart.comp (thetaGL n (cFin K))) (ρ' := (thetaSub π').finPart) ((pull K n).submoduleMap π'.V) fun g v => Subtype.ext (act_pull (.fin g) v.1).symm`. Establish `e : σ.symm.trans σ = RingEquiv.refl ℂ` using `σ.symm_trans_self`. Conclude with `⟨e ▸ ((h'.trans h1.2).trans (h.comp _)).trans h2.1, e ▸ ((h2.2.trans (h'.comp _)).trans h1.1).trans h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem sep_theta {K : Type} [Field K] [NumberField K] [IsCMField K] {n : ℕ} {π π' : CuspSub K n} {σ : ℂ ≃+* ℂ}
     (hc : π.IsCsd) (h : Sep σ π.finPart π'.finPart) (h' : Sep σ.symm π'.finPart π.finPart) :
@@ -48,11 +48,11 @@ end UpperTheory.V.Af
 
 open UpperTheory.V.Af in
 /- English proof (translation)
-Introduce `P K _ _ _ n hn m hm M hM σ π ⟨hinf, hdual, hfix⟩`. Take `⟨π', τ, τ', h1, h2, h3, h4⟩` from `P.conjC K n (by omega) π (regAlg_of_infOf hm hinf) σ`. Take `⟨hs, hs'⟩` from `sep_of_conj h1 h2 h3`. Establish `hfix'` using `hs.hasFixed hfix`. Use `⟨π', ⟨fun φ => ?_, ?_, hfix'⟩, fun w B hB => (hs.comp _).exists_hasSatGL (hs'.comp _) hB⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : σ.toRingHom.comp (σ.symm.toRingHom.comp φ) = φ` using `RingHom.ext fun x => σ.apply_symm_apply _`. Conclude with `e ▸ h4 _ _ (hinf _)`. Take `⟨ht, ht'⟩` from `sep_theta (GlobalTheory.CsdBack.isCsd_of_paired P.litN.aut.fin K n π (P.litN.aut.gk K n π) hdual) hs hs'`. Use `GlobalTheory.LocGlobDual.Model.dualIsConj_of_isCsd (P.litN.aut.gk K n π') (isCsd_of_iso (Quotient.exact (P.litN.aut.js.1.strong_multiplicity_one (by omega) (CG.mk (thetaSub π')) (CG.mk π') ?_)))` and prove the remaining obligations. Use `(eventually_notMem hM).mono fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `satK P K n M π' hfix' w hw`. Conclude with `⟨B, (ht.comp _).hasSatGL_refl (ht'.comp _) hB, hB⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.conjK :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.ConjK := by

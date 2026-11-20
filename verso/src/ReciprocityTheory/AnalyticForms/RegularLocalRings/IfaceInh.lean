@@ -7,9 +7,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Use extensionality with `f`. Simplify using `only [ptIdeal, RingHom.mem_ker, Ideal.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h`, the goal using `[MvPolynomial.eq_C_of_isEmpty f]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `using h`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ptIdeal_fin_zero (p : Fin 0 → ℂ) : ptIdeal p = ⊥ := by
   ext f
@@ -28,9 +28,9 @@ def locRingBotEquiv (p : Fin 0 → ℂ) : locPt p ≃+* locRing (⊥ : Ideal (Mv
   (RingEquiv.quotientBot (locPt p)).symm.trans (Ideal.quotEquivOfEq Ideal.map_bot.symm)
 
 /- English proof (translation)
-Use `isRegularLocalRing_of_jacobian (⊥ : Ideal (MvPolynomial (Fin 0) ℂ)) p ?_ (fun i : Fin 0 => i.elim0) (fun i => i.elim0) linearIndependent_empty_type ?_` and prove the remaining obligations. Introduce `h hh`. Rewrite `hh` using `[Ideal.mem_bot]`. Simplify using `[hh]`. Use `⟨⊥, ?_, bot_le, by simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.minimalPrimes_eq_subsingleton_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem locRing_bot_fin_zero_regular_and_dim_zero (p : Fin 0 → ℂ) :
     IsRegularLocalRing (locRing (⊥ : Ideal (MvPolynomial (Fin 0) ℂ)) p) ∧
@@ -45,13 +45,13 @@ private theorem locRing_bot_fin_zero_regular_and_dim_zero (p : Fin 0 → ℂ) :
     rfl
 
 /- English proof (translation)
-The claim follows from `(locRing_bot_fin_zero_regular_and_dim_zero p).1`.
+A detailed English derivation is pending.
 -/
 theorem locRing_bot_regular (p : Fin 0 → ℂ) :
     IsRegularLocalRing (locRing (⊥ : Ideal (MvPolynomial (Fin 0) ℂ)) p) := (locRing_bot_fin_zero_regular_and_dim_zero p).1
 
 /- English proof (translation)
-Simplify using `using (locRing_bot_fin_zero_regular_and_dim_zero p).2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem locRing_bot_dim (p : Fin 0 → ℂ) :
     ringKrullDim (locRing (⊥ : Ideal (MvPolynomial (Fin 0) ℂ)) p) = 0 := by

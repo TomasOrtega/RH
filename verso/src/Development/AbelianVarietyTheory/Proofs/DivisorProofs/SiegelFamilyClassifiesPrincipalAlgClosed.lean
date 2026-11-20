@@ -13,9 +13,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegelFieldClass
 
 /- English proof (translation)
-Set `ξ : Sp V` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V)`. Establish `hξ : ξ ∈ {x : Sp V | (spMap β x).asIdeal = ⊥}` using `by show (PrimeSpectrum.comap (CommRingCat.ofHom β).hom ⟨⊥, Ideal.isPrime_bot⟩).asIdeal = ⊥`. Simplify using `only [PrimeSpectrum.comap_asIdeal, CommRingCat.hom_ofHom]`. Conclude with `(RingHom.injective_iff_ker_eq_bot β).1 hβ`. Establish `hd : Dense ({ξ} : Set (Sp V))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dense_iff_closure_eq]`. Use `show closure ({(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V)} : Set (PrimeSpectrum V)) = Set.univ`. Rewrite using `[PrimeSpectrum.closure_singleton]`. Conclude with `PrimeSpectrum.zeroLocus_bot`. Conclude with `hd.mono (Set.singleton_subset_iff.2 hξ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_generic {A V : Type} [CommRing A] [CommRing V] [IsDomain V] (β : A →+* V)
     (hβ : Function.Injective β) : Dense {x : Sp V | (spMap β x).asIdeal = ⊥} := by
@@ -32,9 +32,9 @@ theorem dense_generic {A V : Type} [CommRing A] [CommRing V] [IsDomain V] (β : 
   exact hd.mono (Set.singleton_subset_iff.2 hξ)
 
 /- English proof (translation)
-Introduce `g n hg hn hodd F K _ _ β c hc`. Take `⟨V, _, _, βV, π, cV, hinj, hcomp, hpr, hpb⟩` from `GlobalTheory.T.principal_siegel_object_exists_charZero_lift g n hg hn hodd K β c hc`. Take `⟨f, hf, hfpb⟩` from `F.rep (Sp V) (spMap βV) cV inferInstance (dense_generic βV hinj) hpr`. Use `⟨spMap π ≫ f, ?_, GlobalTheory.SiegelPullComp.pb_comp hfpb hpb⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hf, ← hcomp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem classifies_algClosed : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (K : Type) [Field K] [IsAlgClosed K] (β : cycAway n →+* K) (c : SiegPre g n (zetaAway n) (spMap β)), c.Principal → ∃ f : Sp K ⟶ F.X, f ≫ F.s = spMap β ∧ SiegPB c F.univ f := by
   intro g n hg hn hodd F K _ _ β c hc

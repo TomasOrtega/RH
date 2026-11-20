@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry LateralTheory.E.t_E2Cut
 namespace LateralTheory.E.NormPf.OpenPf
 
 /- English proof (translation)
-Introduce `p hp hd`. Take `⟨a, ha⟩` from `h (p.map e.symm.toRingHom) (hp.map _) (by rwa [Polynomial.natDegree_map_eq_of_injective e.symm.injective])`. Use `⟨e a, ?_⟩` and prove the remaining obligations. Establish `hq : (p.map e.symm.toRingHom).map e.toRingHom = p`. Rewrite using `[Polynomial.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Simplify using the standard rewrite rules. Rewrite using `[← hq, Polynomial.eval_map]`. Establish `h2` using `Polynomial.eval₂_at_apply (p := p.map e.symm.toRingHom) e.toRingHom a`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe] at h2 ha ⊢`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, ha, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aic_of_equiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) (h : GlobalTheory.EtC.AIC R) : GlobalTheory.EtC.AIC S := by
   intro p hp hd
@@ -24,9 +24,9 @@ theorem aic_of_equiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) (h :
   rw [h2, ha, map_zero]
 
 /- English proof (translation)
-Introduce `Z U hZ hU`. Establish `: IsIntegral Z` using `hZ.1`. Establish `: Nonempty U` using `hU.to_subtype`. Use `⟨inferInstance, fun V hV hVne => ?_⟩` and prove the remaining obligations. Establish `hV' : IsAffineOpen (U.ι ''ᵁ V)` using `hV.image_of_isOpenImmersion U.ι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hne : ((U.ι ''ᵁ V : Z.Opens) : Set Z).Nonempty`. Take `⟨x, hx⟩` from `hVne`. Conclude with `⟨U.ι x, x, hx, rfl⟩`. Conclude with `aic_of_equiv (U.ι.appIso V).commRingCatIsoToRingEquiv (hZ.2 _ hV' hne)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem openNbhdIC : OpenNbhdIC := by
   intro Z U hZ hU

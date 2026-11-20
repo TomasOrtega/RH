@@ -3,18 +3,18 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Use `revert j`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem zcases (j : ZMod 2) : j = 0 ∨ j = 1 := by
   revert j; decide
 
 /- English proof (translation)
-Simplify using `[sg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sg0 (K : Type) [CommRing K] : sg K 0 = 1 := by simp [sg]
 
 /- English proof (translation)
-Use `show (-1 : K) ^ ((1 : ZMod 2).val) = -1`. Rewrite using `[show (1 : ZMod 2).val = 1 from rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sg1 (K : Type) [CommRing K] : sg K 1 = -1 := by
   show (-1 : K) ^ ((1 : ZMod 2).val) = -1
@@ -22,7 +22,7 @@ private theorem sg1 (K : Type) [CommRing K] : sg K 1 = -1 := by
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases zcases i with rfl | rfl <;> rcases zcases j with rfl | rfl`. Simplify using `[sg0]`. Simplify using `[sg0]`. Simplify using `[sg0]`. Rewrite using `[show (1 : ZMod 2) + 1 = 0 from rfl, sg0, sg1]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,7 +35,7 @@ private theorem sg_add (K : Type) [CommRing K] (i j : ZMod 2) : sg K (i + j) = s
     ring
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [sg0]`. Consider the case `succ k ih => rw [succ_nsmul, sg_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem sg_nsmul (K : Type) [CommRing K] (m : ℕ) (i : ZMod 2) : sg K (m • i) = sg K i ^ m := by
   induction m with
@@ -43,9 +43,9 @@ private theorem sg_nsmul (K : Type) [CommRing K] (m : ℕ) (i : ZMod 2) : sg K (
   | succ k ih => rw [succ_nsmul, sg_add, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply]`. Simplify using `only [Finsupp.prod, Finsupp.sum, ← sg_nsmul]`. Generalize the expression as in `n.support = t`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Simplify using `[sg0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, sg_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sg_weight (K : Type) [CommRing K] {ι : Type} (wt : ι → ZMod 2) (n : ι →₀ ℕ) :
     (n.prod fun s m => sg K (wt s) ^ m) = sg K (Finsupp.weight wt n) := by
@@ -59,36 +59,32 @@ private theorem sg_weight (K : Type) [CommRing K] {ι : Type} (wt : ι → ZMod 
     rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, sg_add]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases zcases j with rfl | rfl <;> simp [sg0, sg1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem coeff_sg (O : Type) [CommRing O] {ι : Type} (j : ZMod 2) (y : MvPowerSeries ι O) (n : ι →₀ ℕ) :
     MvPowerSeries.coeff n (sg _ j * y) = sg O j * MvPowerSeries.coeff n y := by
   rcases zcases j with rfl | rfl <;> simp [sg0, sg1]
 
 /- English proof (translation)
-Introduce `O _ h2 ι _ wt`. Establish `hsq : ∀ i : ZMod 2, sg O i * sg O i = 1`. Introduce `i`. Rewrite using `[← sg_add]`. Break down `zcases i with rfl | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `sg0 O`. Rewrite using `[show (1 : ZMod 2) + 1 = 0 from rfl]`. Conclude with `sg0 O`. Establish `hne : ∀ i j : ZMod 2, i ≠ j → sg O i = - sg O j`. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases zcases i with rfl | rfl <;> rcases zcases j with rfl | rfl`. Conclude with `absurd rfl hij`. Simplify using `[sg0, sg1]`. Simplify using `[sg0, sg1]`. Conclude with `absurd rfl hij`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `a : ι → O` to `fun s => sg O (wt s)`. Establish `hcoef : ∀ y n, MvPowerSeries.coeff n (MvPowerSeries.rescale a y) = sg O (Finsupp.weight wt n) * MvPowerSeries.coeff n y`. Introduce `y n`. Rewrite using `[MvPowerSeries.coeff_rescale, sg_weight]`. Set `τ : MvPowerSeries ι O →ₐ[O] MvPowerSeries ι O` to `AlgHom.mk (MvPowerSeries.rescale a) (fun r => by`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use extensionality with `n`. Use `show MvPowerSeries.coeff n (MvPowerSeries.rescale a (algebraMap O _ r)) = _`. Rewrite using `[hcoef]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[sg0]`. Rewrite using `[MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, MvPowerSeries.coeff_C, if_neg hn, mul_zero])`. Establish `hτ : ∀ y n, MvPowerSeries.coeff n (τ y) = sg O (Finsupp.weight wt n) * MvPowerSeries.coeff n y` using `hcoef`. Use `⟨τ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `n`. Rewrite using `[hτ, hτ, ← mul_assoc, hsq, one_mul]`. Introduce `j`. Use extensionality with `y`. Use `show τ y = sg _ j * y ↔ ∀ n, Finsupp.weight wt n ≠ j → MvPowerSeries.coeff n y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h n hn`. Use `congrArg (MvPowerSeries.coeff n) h` as an intermediate fact. Rewrite `this` using `[hτ, coeff_sg, hne _ _ hn]`. Establish `h' : 2 * MvPowerSeries.coeff n y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-sg O j) * this - (2 * MvPowerSeries.coeff n y) * hsq j`. Conclude with `(h2.mul_right_eq_zero).mp h'`. Introduce `h`. Use extensionality with `n`. Rewrite using `[hτ, coeff_sg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hn : Finsupp.weight wt n = j`. Rewrite using `[hn]`. Rewrite using `[h n hn, mul_zero, mul_zero]`. Introduce `j y`. Use extensionality with `n`.
-
-Rewrite using `[two_mul, map_add, coeff_wcomp, map_add, coeff_sg, hτ]`. Use `split_ifs with hn`. Rewrite using `[hn]`. Take the linear combination `(-MvPowerSeries.coeff n y) * hsq j`. Rewrite using `[hne _ _ hn]`.
-
-Take the linear combination `MvPowerSeries.coeff n y * hsq j`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.ep_ps :
     ∀ (O : Type) [CommRing O], IsUnit (2 : O) → ∀ (ι : Type) [Finite ι] (wt : ι → ZMod 2), ∃ τ : MvPowerSeries ι O →ₐ[O] MvPowerSeries ι O, (∀ y, τ (τ y) = y) ∧ (∀ j, evp τ j = wtPart O wt j) ∧ ∀ j y, (2 : MvPowerSeries ι O) * wcomp O wt j y = y + sg _ j * τ y := by

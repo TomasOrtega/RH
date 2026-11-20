@@ -23,9 +23,9 @@ section Places
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
 /- English proof (translation)
-Introduce `h`. Simplify using `only [rowsN, colIdx, Finset.mem_image] at h`. Take `⟨v, hv, hvi⟩` from `h`. Establish `hl : (l : HeightOneSpectrum (𝓞 D.host.E)) ∈ dc.col` using `l.2`. Establish `hvl : v = l` using `idx_inj i dc (Finset.mem_union_left _ (Finset.mem_union_left _ hv)) (Finset.mem_union_left _ (Finset.mem_union_right _ hl)) hvi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hvl` using the available equality. Conclude with `Finset.disjoint_left.1 dc.disj hv hl`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem col_not_row (l : Col i dc) : colIdx i dc l ∉ rowsN i dc := by
   intro h
@@ -38,9 +38,9 @@ theorem col_not_row (l : Col i dc) : colIdx i dc l ∉ rowsN i dc := by
   exact Finset.disjoint_left.1 dc.disj hv hl
 
 /- English proof (translation)
-Introduce `hq`. Simplify using `only [rowsN, qsN, Finset.mem_image] at hw hq`. Take `⟨v, hv, rfl⟩` from `hw`. Take `⟨u, hu, huv⟩` from `hq`. Establish `huv' : u = v` using `idx_inj i dc (Finset.mem_union_right _ hu) (Finset.mem_union_left _ (Finset.mem_union_left _ hv)) huv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `huv'` using the available equality. Conclude with `D.nd.SQ_l i u (Or.inr hu) ((dc.cover u).1 (Or.inl hv))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem row_not_q (w : ℕ) (hw : w ∈ rowsN i dc) : w ∉ qsN i dc := by
   intro hq

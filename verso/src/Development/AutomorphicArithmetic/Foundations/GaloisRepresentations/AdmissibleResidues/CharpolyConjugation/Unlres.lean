@@ -11,17 +11,15 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ ι n r w A K _ _ _ _ _ v hw hv h`. Take `⟨s, j, hj, ⟨hdec, hres⟩, hroot⟩` from `h`. Establish `hu : v.under (𝓞 F) = w`. Establish `h1 : IsPlaceOver A (v.under (𝓞 F))` using `GlobalTheory.AboveL.SatBC.isPlaceOver_under hv`. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(h1 x).symm.trans (hw x)`. Establish `hN : normV v = normV w ^ v.asIdeal.inertiaDeg (𝓞 F)`. Use `GlobalTheory.AboveL.SatBC.normV_under_pow F K v` as an intermediate fact. Rewrite `this` using `[hu]`. Then use the resulting hypothesis. Establish `hf : 1 ≤ v.asIdeal.inertiaDeg (𝓞 F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos (v.asIdeal.inertiaDeg (𝓞 F)) with h0 | h0` into its components or cases. It suffices to derive a contradiction. Rewrite `hN` using `[h0, pow_zero]`. Establish `hne : v.asIdeal ≠ ⊤` using `v.isPrime.ne_top`. Conclude with `hne (Ideal.absNorm_eq_one_iff.1 hN)`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h0`. Use `set f := v.asIdeal.inertiaDeg (𝓞 F) with hfdef`. Establish `hpow : normV v ^ j = normV w ^ (f * j)` using `by rw [hN, pow_mul]`. Use `⟨s.restrictScalars F, f * j, Nat.mul_pos hf hj, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `hdec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Use `hres x hx` as an intermediate fact. Rewrite `this` using `[hpow]`. Conclude with `this`. Introduce `α hα hα'`.
-
-Establish `e : ((normV v : ℕ) : ℂ) ^ j = ((normV w : ℕ) : ℂ) ^ (f * j)` using `by exact_mod_cast hpow`. Use `hroot α hα ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hα'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.L.unlres :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] (v : HeightOneSpectrum (𝓞 K)), IsPlaceOver A w → IsPlaceOver A v → UnlAt ι (r.comp (AlgEquiv.restrictScalarsHom F : G K Ω →* G F Ω)) v A → UnlAt ι r w A := by

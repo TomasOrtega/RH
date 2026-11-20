@@ -12,14 +12,14 @@ def Nr (U : Set V) (A : Γ →* (V →L[ℝ] V)) (φ : V → ℝ) (h : V) (γ : 
   ∃ hm : A γ⁻¹ h ∈ U, (⟨A γ⁻¹ h, hm⟩ : U) ∈ closure {x : U | φ x ≠ 0}
 
 /- English proof (translation)
-Conclude with `(hf.contDiffAt (hU.mem_nhds hh)).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem diffAt_of {U : Set V} (hU : IsOpen U) {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]
     {f : V → F} (hf : ContDiffOn ℝ (⊤ : ℕ∞) f U) {h : V} (hh : h ∈ U) : DifferentiableAt ℝ f h := by
   exact (hf.contDiffAt (hU.mem_nhds hh)).differentiableAt (by simp)
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ (⊤ : ℕ∞) (fun x => φ (A γ⁻¹ x)) U` using `H.smooth.comp (A γ⁻¹).contDiff.contDiffOn (fun x hx => H.mapsTo γ⁻¹ x hx)`. Conclude with `h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_contDiffOn {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (H : Hyp U A φ) (γ : Γ) :
     ContDiffOn ℝ (⊤ : ℕ∞) (psi A φ γ) U := by
@@ -28,11 +28,11 @@ theorem psi_contDiffOn {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ
   exact h1
 
 /- English proof (translation)
-Establish `hp : A γ⁻¹ h ∈ U` using `H.mapsTo _ h hh`. Establish `hn : (⟨A γ⁻¹ h, hp⟩ : U) ∉ closure {x : U | φ x ≠ 0}` using `fun hc => hγ ⟨hp, hc⟩`. Set `g : U → U` to `fun x => ⟨A γ⁻¹ x, H.mapsTo _ x x.2⟩`. Establish `hg : Continuous g` using `((A γ⁻¹).continuous.comp continuous_subtype_val).subtype_mk _`. Establish `h1 : ∀ᶠ x in 𝓝 (⟨h, hh⟩ : U), g x ∈ (closure {x : U | φ x ≠ 0})ᶜ` using `hg.continuousAt (isClosed_closure.isOpen_compl.mem_nhds hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ x in 𝓝 (⟨h, hh⟩ : U), psi A φ γ x.1 = 0` using `h1.mono fun x hx => by`. Establish `h3 : g x ∉ {x : U | φ x ≠ 0}` using `fun h' => hx (subset_closure h')`. Simplify using `only [Set.mem_setOf_eq, not_not] at h3`. Conclude with `h3`. Establish `h4 : ∀ᶠ x in Filter.map (fun x : U => (x : V)) (𝓝 (⟨h, hh⟩ : U)), psi A φ γ x = 0` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[map_nhds_subtype_val, H.isOpen.nhdsWithin_eq hh]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem nr_eventually {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (H : Hyp U A φ) {h : V}
     (hh : h ∈ U) {γ : Γ} (hγ : ¬ Nr U A φ h γ) : psi A φ γ =ᶠ[𝓝 h] fun _ => 0 := by
@@ -52,7 +52,7 @@ theorem nr_eventually {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ}
   exact h4
 
 /- English proof (translation)
-Rewrite using `[(nr_eventually H hh hγ).fderiv_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nr_fderiv {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (H : Hyp U A φ) {h : V}
     (hh : h ∈ U) {γ : Γ} (hγ : ¬ Nr U A φ h γ) : fderiv ℝ (psi A φ γ) h = 0 := by
@@ -60,9 +60,9 @@ theorem nr_fderiv {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (H 
   simp
 
 /- English proof (translation)
-Take `⟨hm1, hc1⟩` from `h1`. Take `⟨hm2, hc2⟩` from `h2`. Establish `key : A (γ⁻¹ * γ')⁻¹ (A γ⁻¹ h) = A γ'⁻¹ h`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul]`. Rewrite using `[show (γ⁻¹ * γ')⁻¹ * γ⁻¹ = γ'⁻¹ by group]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hm : A (γ⁻¹ * γ')⁻¹ (A γ⁻¹ h) ∈ U` using `by rw [key]; exact hm2`. Use `hOv (γ⁻¹ * γ') ⟨A γ⁻¹ h, hm1⟩ hc1 hm ?_` and prove the remaining obligations. Use `hc2 using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem nr_mul {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} {O : Set Γ}
     (hOv : ∀ γ, ∀ h : U, h ∈ closure {x : U | φ x ≠ 0} → ∀ hm : A γ⁻¹ h ∈ U,
@@ -79,9 +79,9 @@ theorem nr_mul {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} {O : S
   exact Subtype.ext key
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hz : ∀ γ, φ (A γ⁻¹ h) = 0` using `fun γ => by`. Assume the negation of the conclusion as `h0`. Conclude with `hne ⟨γ, H.mapsTo _ h hh, subset_closure h0⟩`. Establish `hs` using `H.sum_one h hh`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hz, finsum_zero] at hs`. Conclude with `zero_ne_one hs`.
+A detailed English derivation is pending.
 -/
 theorem nr_exists {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (H : Hyp U A φ) {h : V}
     (hh : h ∈ U) : ∃ γ, Nr U A φ h γ := by
@@ -94,7 +94,7 @@ theorem nr_exists {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (H 
   exact zero_ne_one hs
 
 /- English proof (translation)
-Establish `hfin : (Set.pi Set.univ (fun _ : Fin (k + 2) => O)).Finite` using `Set.Finite.pi (fun _ => hO)`. Take `⟨B, hB⟩` from `(hfin.image (fun τ => |c τ|)).bddAbove`. Use `⟨max B 0, le_max_right _ _, fun τ hτ => ?_⟩` and prove the remaining obligations. Conclude with `le_trans (hB ⟨τ, fun i _ => hτ i, rfl⟩) (le_max_left _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem c_bdd {O : Set Γ} (hO : O.Finite) {k : ℕ} (c : (Fin (k + 2) → Γ) → ℝ) :
     ∃ C, 0 ≤ C ∧ ∀ τ : Fin (k + 2) → Γ, (∀ i, τ i ∈ O) → |c τ| ≤ C := by
@@ -104,7 +104,7 @@ theorem c_bdd {O : Set Γ} (hO : O.Finite) {k : ℕ} (c : (Fin (k + 2) → Γ) �
   exact le_trans (hB ⟨τ, fun i _ => hτ i, rfl⟩) (le_max_left _ _)
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[ContinuousAlternatingMap.alternatizeUncurryFin_apply, Fin.removeNth, Function.comp_def]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem alt_smulRight_comp {n : ℕ} (f : V →L[ℝ] ℝ) (b : V [⋀^Fin n]→L[ℝ] ℝ) (T : V →L[ℝ] V) :
     (ContinuousAlternatingMap.alternatizeUncurryFin (f.smulRight b)).compContinuousLinearMap T =
@@ -115,7 +115,7 @@ theorem alt_smulRight_comp {n : ℕ} (f : V →L[ℝ] ℝ) (b : V [⋀^Fin n]→
   rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[ContinuousAlternatingMap.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sum_compCLM {ι : Type} {n : ℕ} (s : Finset ι) (X : ι → V [⋀^Fin n]→L[ℝ] ℝ)
     (T : V →L[ℝ] V) :
@@ -124,7 +124,7 @@ theorem sum_compCLM {ι : Type} {n : ℕ} (s : Finset ι) (X : ι → V [⋀^Fin
   simp [ContinuousAlternatingMap.sum_apply]
 
 /- English proof (translation)
-Introduce `n`. Consider the cases of `n with`. Consider the case `zero => exact hγ`. Consider the case `succ n => exact hσ n`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem nr_cons {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} {h : V} {γ : Γ} {σ : ℕ → Γ}
     (hγ : Nr U A φ h γ) (hσ : ∀ n, Nr U A φ h (σ n)) : ∀ n, Nr U A φ h (cons γ σ n) := by
@@ -134,29 +134,27 @@ theorem nr_cons {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} {h : 
   | succ n => exact hσ n
 
 /- English proof (translation)
-Take `⟨C0, hC0, hC0b⟩` from `c_bdd hO c`. Proceed by induction on `j with`. Consider the case `zero`. Use `⟨C0, hC0, fun h hh T M hM hT σ hσ => ?_⟩` and prove the remaining obligations. Establish `e : (eta A φ c 0 σ h).compContinuousLinearMap T = ContinuousAlternatingMap.constOfIsEmpty ℝ V (Fin 0) (c fun i => σ i)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[eta.eq_1]`. Use extensionality with `m`. Simplify using the standard rewrite rules. Rewrite using `[e, ContinuousAlternatingMap.norm_constOfIsEmpty, pow_zero, mul_one, Real.norm_eq_abs]`. Rewrite using `[← hc.inv (σ 0)⁻¹ (fun i => σ i)]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC0b _ (fun i => nr_mul hOv (hσ 0) (hσ i))`. Consider the case `succ j ih`. Take `⟨Cj, hCj, hCjb⟩` from `ih`. Use `⟨(hO.toFinset.card : ℝ) * (((j : ℝ) + 1) * Cj), mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (by positivity) hCj), fun h hh T M hM hT σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨s, W, hW, hWU, hs⟩` from `hL H h hh`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hloc : Kf A φ (eta A φ c j) σ =ᶠ[𝓝 h] fun x => ∑ γ ∈ s, psi A φ γ x • eta A φ c j (cons γ σ) x` using `by filter_upwards [hW] with x hx show ∑ᶠ γ, psi A φ γ x • eta A φ c j (cons γ σ) x = _`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `γ hγ`. Assume the negation of the conclusion as `hγs`. Conclude with `(Function.mem_support.mp hγ) (by simp [hs γ hγs x hx])`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdψ : ∀ γ, DifferentiableAt ℝ (psi A φ γ) h` using `fun γ => diffAt_of H.isOpen (psi_contDiffOn H γ) hh`. Establish `hdη : ∀ γ, DifferentiableAt ℝ (eta A φ c j (cons γ σ)) h` using `fun γ => diffAt_of H.isOpen (hS H k c j (cons γ σ)).1 hh`. Establish `hder : fderiv ℝ (Kf A φ (eta A φ c j) σ) h = ∑ γ ∈ s, (psi A φ γ h • fderiv ℝ (eta A φ c j (cons γ σ)) h + (fderiv ℝ (psi A φ γ) h).smulRight (eta A φ c j (cons γ σ) h))`. Rewrite using `[hloc.fderiv_eq, fderiv_fun_sum (A := fun γ x => psi A φ γ x • eta A φ c j (cons γ σ) x) (fun γ _ => by exact (hdψ γ).smul (hdη γ))]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fderiv_fun_smul (hdψ γ) (hdη γ)`. Establish `heta : eta A φ c (j + 1) σ h = ∑ γ ∈ s, ContinuousAlternatingMap.alternatizeUncurryFin ((fderiv ℝ (psi A φ γ) h).smulRight (eta A φ c j (cons γ σ) h))`. Rewrite using `[show eta A φ c (j + 1) σ = extDeriv (Kf A φ (eta A φ c j) σ) from eta.eq_2 A φ c σ j]`. Use `show ContinuousAlternatingMap.alternatizeUncurryFin (fderiv ℝ (Kf A φ (eta A φ c j) σ) h) = _`. Rewrite using `[hder, ← ContinuousAlternatingMap.alternatizeUncurryFinCLM_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_smul, ContinuousAlternatingMap.alternatizeUncurryFinCLM_apply, ContinuousAlternatingMap.alternatizeUncurryFinCLM_apply]`. Establish `hz : ContinuousAlternatingMap.alternatizeUncurryFin (fderiv ℝ (eta A φ c j (cons γ σ)) h) = 0` using `hCl H k c j (cons γ σ) h hh`. Rewrite using `[hz, smul_zero, zero_add]`. Take `⟨γ0, hγ0⟩` from `nr_exists H hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hcard : (s.filter (Nr U A φ h)).card ≤ hO.toFinset.card`. Apply `Finset.card_le_card_of_injOn (fun γ => γ0⁻¹ * γ)` to reduce the goal to its premises. Introduce `γ hγ`. Simplify using `only [Finset.coe_filter, Finset.mem_filter, Set.mem_setOf_eq, Finset.mem_coe] at hγ`. Simplify using `only [Finset.coe_filter, Set.Finite.coe_toFinset, Set.Finite.mem_toFinset, Finset.mem_coe]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `nr_mul hOv hγ0 hγ.2`. Introduce `a _ b _ hab`. Conclude with `mul_left_cancel hab`. Establish `hB : 0 ≤ ((j : ℝ) + 1) * (M * (Cj * M ^ j))` using `mul_nonneg (by positivity) (mul_nonneg hM (mul_nonneg hCj (pow_nonneg hM _)))`. Establish `hterm : ∀ γ ∈ s, ‖ContinuousAlternatingMap.alternatizeUncurryFin (((fderiv ℝ (psi A φ γ) h).comp T).smulRight ((eta A φ c j (cons γ σ) h).compContinuousLinearMap T))‖ ≤ if Nr U A φ h γ then ((j : ℝ) + 1) * (M * (Cj * M ^ j)) else 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `γ _`. Use `split_ifs with hγ`. Use `(ContinuousAlternatingMap.norm_alternatizeUncurryFin_le _).trans ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul (hT γ) (hCjb h hh T M hM hT _ (nr_cons hγ hσ)) (norm_nonneg _) hM) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `(ContinuousAlternatingMap.norm_alternatizeUncurryFin_le _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply, nr_fderiv H hh hγ]`. Simplify using the standard rewrite rules. Rewrite using `[heta, sum_compCLM]`. Simplify using `only [alt_smulRight_comp]`.
-
-Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum hterm).trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem claim {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (hL : PLoc U A φ)
     (hS : PSmooth U A φ) (hCl : PClosed U A φ) (H : Hyp U A φ) {O : Set Γ} (hO : O.Finite)
@@ -250,11 +248,11 @@ theorem claim {U : Set V} {A : Γ →* (V →L[ℝ] V)} {φ : V → ℝ} (hL : P
       _ = (hO.toFinset.card : ℝ) * (((j : ℝ) + 1) * Cj) * M ^ (j + 1) := by ring
 
 /- English proof (translation)
-Introduce `Hy O hO hOv _ k c hc`. Take `⟨C, -, hC⟩` from `claim hL hS hCl Hy hO hOv c hc (k + 1)`. Use `⟨C, fun h hh T M hM hT => ?_⟩` and prove the remaining obligations. Take `⟨γ0, hγ0⟩` from `nr_exists Hy hh`. Establish `e1 : eta A φ c (k + 1) (fun _ => 1) = eta A φ c (k + 1) (skip 0 (cons γ0 fun _ => 1))` using `hD k c (k + 1) _ _ (fun n _ => by simp [skip, cons])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : eta A φ c (k + 1) (skip 1 (cons γ0 fun _ => 1)) = eta A φ c (k + 1) (fun _ => γ0)` using `hD k c (k + 1) _ _ (fun n hn => by`. Establish `hn0 : n = 0` using `by omega`. Substitute `hn0` using the available equality. Simplify using `[skip, cons])`. Establish `e3 : eta A φ c (k + 1) (skip 0 (cons γ0 fun _ => 1)) h = eta A φ c (k + 1) (skip 1 (cons γ0 fun _ => 1)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e0` using `hCoc Hy k c hc (k + 1) le_rfl (cons γ0 fun _ => 1) h hh`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Simplify `e0` using `[delG, Finset.sum_range_succ, sub_eq_add_neg]`. Rewrite using `[e1, e3, e2]`. Conclude with `hC h hh T M hM hT _ (fun _ => hγ0)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pBound (U : Set V) (A : Γ →* (V →L[ℝ] V)) (φ : V → ℝ) (hL : PLoc U A φ)
     (hS : PSmooth U A φ) (hCl : PClosed U A φ) (hCoc : PCoc U A φ) (hD : PDep A φ) :

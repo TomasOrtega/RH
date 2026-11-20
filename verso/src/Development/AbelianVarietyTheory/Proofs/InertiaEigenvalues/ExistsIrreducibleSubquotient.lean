@@ -15,15 +15,15 @@ def gen (ρ : Representation ℂ G V) (x : V) : Subrepresentation ρ where
     exact h ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem self_mem_gen (ρ : Representation ℂ G V) (x : V) : x ∈ (gen ρ x).toSubmodule :=
   Submodule.subset_span ⟨1, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨v, hv⟩ -`. Establish `h : (gen ρ x).toSubmodule ≤ M.toSubmodule.map (gen ρ x).toSubmodule.subtype`. Express the relevant statement in the definitionally equal form `Submodule.span ℂ _ ≤ _`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨_, M.apply_mem_toSubmodule g hx, rfl⟩`. Take `⟨w, hw, rfl⟩` from `h hv`. Conclude with `hw`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_top_of_mem (ρ : Representation ℂ G V) (x : V) (M : Subrepresentation (gen ρ x).toRepresentation)
     (hx : (⟨x, self_mem_gen ρ x⟩ : (gen ρ x).toSubmodule) ∈ M.toSubmodule) : M.toSubmodule = ⊤ := by
@@ -38,13 +38,11 @@ theorem eq_top_of_mem (ρ : Representation ℂ G V) (x : V) (M : Subrepresentati
   exact hw
 
 /- English proof (translation)
-Establish `key` using `zorn_le_nonempty₀ {N : Subrepresentation ρ | x ∉ N.toSubmodule} ?_ ⊥ hx`. Take `⟨m, -, hm⟩` from `key`. Conclude with `⟨m, hm⟩`. Introduce `c hc hch y hy`. Establish `hne : (Subrepresentation.toSubmodule '' c).Nonempty` using `⟨_, y, hy, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : DirectedOn (· ≤ ·) (Subrepresentation.toSubmodule '' c)`. Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩`. Take `⟨d, hd, h1, h2⟩` from `hch.directedOn a ha b hb`. Conclude with `⟨_, ⟨d, hd, rfl⟩, h1, h2⟩`. Use `⟨⟨sSup (Subrepresentation.toSubmodule '' c), fun g v hv => ?_⟩, fun h => ?_, fun z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hv`, the goal using `[Submodule.mem_sSup_of_directed hne hd]`. Take `⟨_, ⟨a, ha, rfl⟩, hv⟩` from `hv`. Conclude with `⟨_, ⟨a, ha, rfl⟩, a.apply_mem_toSubmodule g hv⟩`. Take `⟨_, ⟨a, ha, rfl⟩, hv⟩` from `(Submodule.mem_sSup_of_directed hne hd).1 h`. Conclude with `hc ha hv`.
-
-Conclude with `(le_sSup ⟨z, hz, rfl⟩ : z.toSubmodule ≤ sSup (Subrepresentation.toSubmodule '' c))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_maximal (ρ : Representation ℂ G V) (x : V) (hx : x ≠ 0) :
     ∃ M : Subrepresentation ρ, Maximal (fun N : Subrepresentation ρ => x ∉ N.toSubmodule) M := by
@@ -75,15 +73,13 @@ theorem quot_mk (ρ : Representation ℂ G V) (M : Subrepresentation ρ) (g : G)
     quot ρ M g (M.toSubmodule.mkQ v) = M.toSubmodule.mkQ (ρ g v) := rfl
 
 /- English proof (translation)
-Establish `hx0 : M.toSubmodule.mkQ x ≠ 0` using `fun h => hM.1 ((Submodule.Quotient.mk_eq_zero _).1 h)`. Use `haveI : Nontrivial (Subrepresentation (quot ρ M)) := ⟨⟨⊥, ⊤, fun h => hx0 (by`. Establish `h1 : M.toSubmodule.mkQ x ∈ (⊤ : Subrepresentation (quot ρ M)).toSubmodule` using `Submodule.mem_top`. Rewrite `h1` using `[← h]`. Conclude with `h1)⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨fun T => ?_⟩` and prove the remaining obligations. Set `T' : Subrepresentation ρ` to `⟨T.toSubmodule.comap M.toSubmodule.mkQ, fun g v hv => T.apply_mem_toSubmodule g hv⟩`. Distinguish the cases in `hx : x ∈ T'.toSubmodule`. Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `M.toSubmodule.mkQ_surjective w`. Establish `: v ∈ T'.toSubmodule` using `by rw [hcyc T' hx]; trivial`. Conclude with `this`. Use `left`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : M ≤ T'` using `fun v hv => by`. Express the relevant statement in the definitionally equal form `M.toSubmodule.mkQ v ∈ T.toSubmodule`. Establish `: M.toSubmodule.mkQ v = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hv`. Rewrite using `[this]`. Conclude with `zero_mem _`.
-
-Establish `hge : T' ≤ M` using `hM.2 hx hle`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `eq_bot_iff.2 fun w hw => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `M.toSubmodule.mkQ_surjective w`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (hge (show v ∈ T' from hw))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quot_irreducible (ρ : Representation ℂ G V) (x : V)
     (hcyc : ∀ N : Subrepresentation ρ, x ∈ N.toSubmodule → N.toSubmodule = ⊤) (M : Subrepresentation ρ)
@@ -115,11 +111,11 @@ theorem quot_irreducible (ρ : Representation ℂ G V) (x : V)
     exact (Submodule.Quotient.mk_eq_zero _).2 (hge (show v ∈ T' from hw))
 
 /- English proof (translation)
-Set `x' : (gen ρ x).toSubmodule` to `⟨x, self_mem_gen ρ x⟩`. Establish `hx' : x' ≠ 0` using `fun h => hx (congrArg Subtype.val h)`. Take `⟨M, hM⟩` from `exists_maximal (gen ρ x).toRepresentation x' hx'`. Use `⟨_, inferInstance, inferInstance, quot _ M, M.toSubmodule.mkQ x', quot_irreducible _ x' (eq_top_of_mem ρ x) M hM, ⟨gen ρ x, ⟨M.toSubmodule.mkQ, fun g => LinearMap.ext fun v => (quot_mk _ M g v).symm⟩, M.toSubmodule.mkQ_surjective⟩, fun h => hM.1 ((Submodule.Quotient.mk_eq_zero _) …` and prove the remaining obligations. Establish `h' : ∑ i ∈ s, c i • (gen ρ x).toRepresentation (f i) x' = b • x'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Conclude with `h`. Establish `h2` using `congrArg M.toSubmodule.mkQ h'`. Rewrite `h2` using `[map_sum, map_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `only [map_smul, quot_mk]`.
+A detailed English derivation is pending.
 -/
 theorem exists_irreducible_subquotient (G V : Type) [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (x : V)
     (hx : x ≠ 0) :

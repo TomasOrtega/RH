@@ -27,7 +27,7 @@ namespace GlobalTheory.CosetOrth.Pairing
 variable {D : D7}
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (GlobalTheory.LatVac.eq_zero_of_parts _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, RingHom.map_mul, RingHom.map_mul, hσ, mul_zero, mul_zero, sub_self]`. Establish `e1 : finPart D (cA D ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] e)) = finPart D (incA D (star e))` using `rfl`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, RingHom.map_mul, e1, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_fin_mul (e : D.host.E) (σ : AE D) (hσ : infPart D σ = 0) :
     cA D ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] e) * σ = incA D (star e) * σ := by
@@ -37,13 +37,11 @@ theorem cA_fin_mul (e : D.host.E) (σ : AE D) (hσ : infPart D σ = 0) :
     rw [RingHom.map_sub, RingHom.map_mul, RingHom.map_mul, e1, sub_self]
 
 /- English proof (translation)
-Unfold `hO`. Rewrite using `[hS, hT, inv_one]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single c]`. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, one_mul, mul_one]`. Introduce `d _ hd`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hd), RingHom.map_zero, mul_zero, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply_ne (Ne.symm hb), RingHom.map_zero, zero_mul, zero_mul, zero_mul]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hO_of_gram_one (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (x y : WO S T) :
     hO S T x y = ∑ a, ∑ c, cA D (y c a) * x c a := by
@@ -66,13 +64,13 @@ def rowMat (S T : HSp D) (p : Fin T.rank) (f : Fin S.rank → AE D) : WO S T :=
   Matrix.of fun c a => if c = p then f a else 0
 
 /- English proof (translation)
-Rewrite using `[hO_of_gram_one S T hS hT]`. Establish `h1 : ∀ a, (∑ c, cA D (finPt (S` using `S) (T := T) rfl rfl r (unitBlock D o S.rank T.rank) c a) * rowMat S T p f c a) = incA D (star (-(r⁻¹ * if p.1 = o + a.1 then 1 else 0))) * f a := by`. Introduce `a`. Rewrite using `[Finset.sum_eq_single p]`. Establish `: rowMat S T p f p a = f a` using `if_pos rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `cA_fin_mul _ _ (hf a)`. Introduce `c _ hc`. Establish `: rowMat S T p f c a = 0` using `if_neg hc`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_congr rfl fun a _ => h1 a, Finset.sum_eq_single j]`. Rewrite using `[if_pos hp, mul_one, star_neg, RingHom.map_neg, neg_mul]`. Introduce `a _ ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ¬ p.1 = o + a.1` using `fun h => ha (Fin.ext (by omega))`. Rewrite using `[if_neg this, mul_zero, neg_zero, star_zero, RingHom.map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hO_rowMat (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (r : D.host.E) (o : ℕ) (j : Fin S.rank)
     (p : Fin T.rank) (hp : p.1 = o + j.1) (f : Fin S.rank → AE D) (hf : ∀ a, infPart D (f a) = 0) :
@@ -98,15 +96,13 @@ theorem hO_rowMat (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (r : D.host.
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `h1 : mt T 1 = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[MonoidHom.map_one]`. Both sides reduce to the same expression. Unfold `actO`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, Matrix.one_mul]`. Use function extensionality and compare the values at `c a`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hc : c = p`. Establish `e : ∀ k, rowMat S T p (Pi.single i σ) c k = (Pi.single i σ : Fin S.rank → AE D) k` using `fun k => if_pos hc`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e' : rowMat S T p (fun a => σ * mt S g⁻¹ i a) c a = σ * mt S g⁻¹ i a` using `if_pos hc`. Rewrite using `[e', Finset.sum_eq_single i]`. Rewrite using `[e, Pi.single_eq_same]`. Introduce `k _ hk`. Rewrite using `[e, Pi.single_eq_of_ne hk, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `e : ∀ k, rowMat S T p (Pi.single i σ) c k = 0` using `fun k => if_neg hc`. Establish `e' : rowMat S T p (fun a => σ * mt S g⁻¹ i a) c a = 0` using `if_neg hc`. Rewrite using `[e']`.
-
-Conclude with `Finset.sum_eq_zero fun k _ => by rw [e, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_rowMat (S T : HSp D) (g : GA D S) (p : Fin T.rank) (i : Fin S.rank) (σ : AE D) :
     actO S T g 1 (rowMat S T p (Pi.single i σ)) = rowMat S T p fun a => σ * mt S g⁻¹ i a := by
@@ -131,9 +127,9 @@ theorem actO_rowMat (S T : HSp D) (g : GA D S) (p : Fin T.rank) (i : Fin S.rank)
     exact Finset.sum_eq_zero fun k _ => by rw [e, zero_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c a`. Use `show 2 • (if c = p then (Pi.single i σ : Fin S.rank → AE D) a else 0) = if c = p then (Pi.single i (2 * σ) : Fin S.rank → AE D) a else 0`. Distinguish the cases in `hc : c = p`. Rewrite using `[if_pos hc, if_pos hc]`. Distinguish the cases in `ha : a = i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, Pi.single_eq_same, Pi.single_eq_same, two_nsmul, two_mul]`. Rewrite using `[Pi.single_eq_of_ne ha, Pi.single_eq_of_ne ha, nsmul_zero]`. Rewrite using `[if_neg hc, if_neg hc, nsmul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_smul_rowMat (S T : HSp D) (p : Fin T.rank) (i : Fin S.rank) (σ : AE D) :
     2 • rowMat S T p (Pi.single i σ) = rowMat S T p (Pi.single i (2 * σ)) := by
@@ -148,9 +144,7 @@ theorem two_smul_rowMat (S T : HSp D) (p : Fin T.rank) (i : Fin S.rank) (σ : AE
   · rw [if_neg hc, if_neg hc, nsmul_zero]
 
 /- English proof (translation)
-Use `⟨?_, fun c a => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c a show infPart D (if c = p then f a else 0) = 0 split_ifs`. Conclude with `h0 a`. Conclude with `RingHom.map_zero _`. Use `show InHat I (algebraMap D.host.E (FA D) r * fe D (if c = p then f a else 0)) split_ifs`.
-
-Conclude with `h1 a`. Rewrite using `[RingHom.map_zero, mul_zero]`. Conclude with `inHat_zero I`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hatPt_rowMat (S T : HSp D) (r : D.host.E) (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (p : Fin T.rank)
     (f : Fin S.rank → AE D) (h0 : ∀ a, infPart D (f a) = 0) (h1 : ∀ a, InHat I (algebraMap D.host.E (FA D) r * fe D (f a))) :
@@ -173,14 +167,14 @@ theorem units_mul_relation_rearrange_commRing {R : Type} [CommRing R] (x y s a b
   ring
 
 /- English proof (translation)
-Rewrite using `[map_add, map_neg, AddChar.map_add_eq_mul, ← h, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem addChar_linearMap_neg_add_eq_one {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (ψ : AddChar R ℂ) (t : M →ₗ[R] R) (A B : M)
     (h : ψ (t A) = ψ (t B)) : ψ (t (B + -A)) = 1 := by
   rw [map_add, map_neg, AddChar.map_add_eq_mul, ← h, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * z)) (hO_rowMat S T hS hT r o j p hp f hf)`.
+A detailed English derivation is pending.
 -/
 theorem symplO_rowMat (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (r : D.host.E) (o : ℕ) (j : Fin S.rank)
     (p : Fin T.rank) (hp : p.1 = o + j.1) (f : Fin S.rank → AE D) (hf : ∀ a, infPart D (f a) = 0) :
@@ -189,7 +183,7 @@ theorem symplO_rowMat (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (r : D.h
   congrArg (fun z => Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * z)) (hO_rowMat S T hS hT r o j p hp f hf)
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = i`. Rewrite using `[ha, Pi.single_eq_same]`. Conclude with `hs`. Rewrite using `[Pi.single_eq_of_ne ha]`. Conclude with `RingHom.map_zero _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_inf {n : ℕ} (i : Fin n) (s : AE D) (hs : infPart D s = 0) (a : Fin n) :
     infPart D ((Pi.single i s : Fin n → AE D) a) = 0 := by
@@ -198,7 +192,7 @@ theorem single_inf {n : ℕ} (i : Fin n) (s : AE D) (hs : infPart D s = 0) (a : 
   · rw [Pi.single_eq_of_ne ha]; exact RingHom.map_zero _
 
 /- English proof (translation)
-The claim follows from `hatPt_rowMat S T r I p _ (single_inf i σ hσ) fun a => by by_cases ha : a = i · rw [ha, Pi.single_eq_same]; exact h1 · rw [Pi.single_eq_of_ne ha, RingHom.map_zero, mul_zero]; exact inHat_zero I`.
+A detailed English derivation is pending.
 -/
 theorem hatPt_single (S T : HSp D) (r : D.host.E) (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (p : Fin T.rank)
     (i : Fin S.rank) (σ : AE D) (hσ : infPart D σ = 0) (h1 : InHat I (algebraMap D.host.E (FA D) r * fe D σ)) :
@@ -209,7 +203,7 @@ theorem hatPt_single (S T : HSp D) (r : D.host.E) (I : FractionalIdeal (𝓞 D.h
     · rw [Pi.single_eq_of_ne ha, RingHom.map_zero, mul_zero]; exact inHat_zero I
 
 /- English proof (translation)
-Rewrite using `[actO_rowMat]`. Use `hatPt_rowMat S T r I p _ (fun a => by rw [RingHom.map_mul, hσ, zero_mul]) fun a => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, ← mul_assoc]`. Conclude with `h2 a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hatPt_act (S T : HSp D) (r : D.host.E) (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (p : Fin T.rank) (g : GA D S)
     (i : Fin S.rank) (σ : AE D) (hσ : infPart D σ = 0)
@@ -220,7 +214,7 @@ theorem hatPt_act (S T : HSp D) (r : D.host.E) (I : FractionalIdeal (𝓞 D.host
   rw [RingHom.map_mul, ← mul_assoc]; exact h2 a
 
 /- English proof (translation)
-Distinguish the cases in `ha : j = i`. Rewrite using `[ha, Pi.single_eq_same, Matrix.one_apply_eq, mul_one]`. Rewrite using `[Pi.single_eq_of_ne ha, Matrix.one_apply_ne (Ne.symm ha), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem single_eq_mul_one {R : Type} [CommRing R] {n : ℕ} (i j : Fin n) (s : R) :
     (Pi.single i s : Fin n → R) j = s * (1 : Matrix (Fin n) (Fin n) R) i j := by
@@ -229,7 +223,7 @@ theorem single_eq_mul_one {R : Type} [CommRing R] {n : ℕ} (i j : Fin n) (s : R
   · rw [Pi.single_eq_of_ne ha, Matrix.one_apply_ne (Ne.symm ha), mul_zero]
 
 /- English proof (translation)
-Rewrite `h` using `[single_eq_mul_one]`. Rewrite using `[Matrix.sub_apply, units_mul_relation_rearrange_commRing]`. Conclude with `addChar_linearMap_neg_add_eq_one ψ _ _ _ h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_lower_bound_of_rank_split {R M : Type} [CommRing R] [CommRing M] [Algebra R M] (ψ : AddChar R ℂ) {n : ℕ} (x y s : M) (i j : Fin n)
     (N : Matrix (Fin n) (Fin n) M)
@@ -240,9 +234,9 @@ theorem degree_lower_bound_of_rank_split {R M : Type} [CommRing R] [CommRing M] 
   exact addChar_linearMap_neg_add_eq_one ψ _ _ _ h
 
 /- English proof (translation)
-Introduce `D ψ S T r I o g hS hT ho H σ i j hσ h1 h2`. Take `⟨p, hp⟩ : ∃ p : Fin T.rank, p.1 = o + j.1` from `⟨⟨o + j.1, by have := j.2; omega⟩, rfl⟩`. Establish `h2σ : infPart D (2 * σ) = 0` using `by rw [RingHom.map_mul, hσ, mul_zero]`. Establish `key` using `H (rowMat S T p (Pi.single i σ)) (hatPt_single S T r I p i σ hσ h1) (hatPt_act S T r I p g i σ hσ h2)`. Rewrite `key` using `[two_smul_rowMat, actO_rowMat]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a1` using `symplO_rowMat S T hS hT r o j p hp _ (single_inf i _ h2σ)`. Establish `a2` using `symplO_rowMat S T hS hT r o j p hp (fun a => 2 * σ * mt S g⁻¹ i a) (fun a => by rw [RingHom.map_mul, h2σ, zero_mul])`. Conclude with `degree_lower_bound_of_rank_split ψ _ _ _ i j _ ((congrArg ψ a1).symm.trans (key.trans (congrArg ψ a2)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem char_trace_eq_one : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (r : D.host.E) (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
   (o : ℕ) (g : GA D S), S.gram = 1 → T.gram = 1 → o + S.rank ≤ T.rank →

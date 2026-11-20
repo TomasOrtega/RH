@@ -3,39 +3,31 @@ import Mathlib
 open NumberField
 
 /- English proof (translation)
-Introduce `gA gB p ΛA ΛB J hA hB hJ hsurj l hl`. Use `set Φ : (Fin p → (Fin gA → ℂ)) →ₗ[ℝ] (Fin gB → ℂ) := ∑ a, ((J a).restrictScalars ℝ).comp (LinearMap.proj a) with hΦ`. Establish `hΦapp : ∀ x, Φ x = ∑ a, J a (x a)`. Introduce `x`. Simplify using `[hΦ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Sz : Submodule ℤ (Fin gB → ℂ)` to `Submodule.map (Φ.restrictScalars ℤ) (Submodule.pi Set.univ (fun _ => ΛA))`. Establish `hSzB : Sz ≤ ΛB`. Introduce and unpack `y ⟨x, hx, rfl⟩`. Use `show Φ x ∈ ΛB`. Rewrite using `[hΦapp]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.sum_mem _ (fun a _ => hJ a (x a) (Submodule.mem_pi.mp hx a (Set.mem_univ a)))`. Use `haveI : Countable ΛB := TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Establish `hΦs : ∀ u, ∃ v, Φ v = u`. Introduce `u`. Assume the negation of the conclusion as `hu`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_neg at hu`. Use `choose v hv using fun t : ℝ => hsurj (t • u)`. Set `f : ℝ → ΛB` to `fun t => ⟨t • u - Φ (v t), by rw [hΦapp]; exact hv t⟩`. Establish `hf : Function.Injective f`. Introduce `t t' htt`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : t • u - Φ (v t) = t' • u - Φ (v t')` using `congrArg Subtype.val htt`. Assume the negation of the conclusion as `hne`. Apply `hu ((t - t')⁻¹ • (v t - v t'))` to reduce the goal to its premises. Rewrite using `[map_smul, map_sub]`. Establish `h2 : (t - t') • u = Φ (v t) - Φ (v t')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sub_smul, sub_eq_sub_iff_sub_eq_sub]`. Conclude with `h1`. Rewrite using `[← h2, smul_smul, inv_mul_cancel₀ (sub_ne_zero.mpr hne), one_smul]`. Conclude with `Cardinal.not_countable_real (Set.countable_univ_iff.mpr hf.countable)`. Establish `hspan : Submodule.span ℝ (Sz : Set (Fin gB → ℂ)) = ⊤`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `u -`. Take `⟨v, rfl⟩` from `hΦs u`. Rewrite using `[hΦapp]`. Use `Submodule.sum_mem _ (fun a _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hva : v a ∈ Submodule.span ℝ (ΛA : Set (Fin gA → ℂ))`. Rewrite using `[hA]`. Discharge the goal by the elementary cases of `trivial`. Establish `hsub : ((J a).restrictScalars ℝ) '' (ΛA : Set (Fin gA → ℂ)) ⊆ (Sz : Set (Fin gB → ℂ))`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Pi.single a z, Submodule.mem_pi.mpr (fun b _ => ?_), ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `using hz`. Simplify using `[Pi.single_eq_of_ne hb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show Φ (Pi.single a z) = J a z`. Rewrite using `[hΦapp, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Conclude with `Submodule.span_mono hsub ((Submodule.span_image _).ge (Submodule.mem_map_of_mem hva))`. Take `⟨t, htS, htspan, hti⟩` from `exists_linearIndependent ℝ (Sz : Set (Fin gB → ℂ))`. Set `b : Module.Basis t ℝ (Fin gB → ℂ)` to `Module.Basis.mk hti (by simp only [Subtype.range_coe, htspan, hspan, le_refl])`. Use `haveI : Finite t := Module.Finite.finite_basis b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Fintype t := Fintype.ofFinite t`. Establish `hbS : ∀ i, b i ∈ Sz` using `fun i => by`. Rewrite using `[Module.Basis.mk_apply]`. Conclude with `htS i.2`. Establish `hzS : Submodule.span ℤ (Set.range b) ≤ Sz` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hbS i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : DiscreteTopology ΛB.toAddSubgroup := ‹DiscreteTopology ΛB›`. Use `haveI : DiscreteTopology (ΛB : Set (Fin gB → ℂ)) := ‹DiscreteTopology ΛB›`. Establish `hcl : IsClosed (ΛB : Set (Fin gB → ℂ))` using `AddSubgroup.isClosed_of_discrete (H := ΛB.toAddSubgroup)`. Establish `hfin : ((ZSpan.fundamentalDomain b) ∩ (ΛB : Set (Fin gB → ℂ))).Finite` using `Metric.finite_isBounded_inter_isClosed (isDiscrete_iff_discreteTopology.mpr ‹_›) (ZSpan.fundamentalDomain_isBounded b) hcl`. Establish `hmem : ∀ n : ℕ, ZSpan.fract b (n • l) ∈ (ZSpan.fundamentalDomain b) ∩ (ΛB : Set (Fin gB → ℂ))`.
-
-Introduce `n`. Use `⟨ZSpan.fract_mem_fundamentalDomain b _, ?_⟩` and prove the remaining obligations. Rewrite using `[ZSpan.fract_apply]`. Conclude with `ΛB.sub_mem (ΛB.nsmul_mem hl n) (hSzB (hzS (ZSpan.floor b (n • l)).2))`. Take `⟨m, n, hmn, heq⟩` from `hfin.exists_lt_map_eq_of_forall_mem hmem`.
-
-Establish `hdiff : (n - m) • l ∈ Sz`. Establish `h1 : (n - m) • l = n • l - m • l`. Rewrite using `[eq_sub_iff_add_eq, ← add_nsmul, Nat.sub_add_cancel hmn.le]`. Rewrite `heq` using `[ZSpan.fract_apply, ZSpan.fract_apply]`. Establish `h2 : n • l - m • l = (ZSpan.floor b (n • l) : Fin gB → ℂ) - ZSpan.floor b (m • l)`.
-
-Rewrite using `[sub_eq_sub_iff_sub_eq_sub]`. Conclude with `heq.symm`. Rewrite using `[h1, h2]`. Conclude with `Sz.sub_mem (hzS (ZSpan.floor b _).2) (hzS (ZSpan.floor b _).2)`. Take `⟨x, hx, hxe⟩` from `hdiff`.
-
-Use `⟨n - m, x, Nat.sub_pos_of_lt hmn, fun a => Submodule.mem_pi.mp hx a (Set.mem_univ a), ?_⟩` and prove the remaining obligations. Rewrite using `[← hxe]`. Conclude with `hΦapp x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_nsmul_mem_sum_image_lattice_of_surjective_mod :
     ∀ (gA gB p : ℕ) (ΛA : Submodule ℤ (Fin gA → ℂ)) (ΛB : Submodule ℤ (Fin gB → ℂ))

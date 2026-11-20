@@ -8,9 +8,9 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open GroundTheory.Automorphic.AdelicGLn
 
 /- English proof (translation)
-Rewrite using `[mem_integralFiniteGL_iff]`. Use `⟨fun h w => GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => h.1 i j w, fun i j => ?_⟩, fun h => ⟨fun i j w => (GlobalTheory.AdelicU.mem_GLint_iff.1 (h w)).1 i j, fun i j w => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `h.2 i j w`. Use `(GlobalTheory.AdelicU.mem_GLint_iff.1 (h w)).2 i j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← map_inv]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem int_iff {E : Type} [Field E] [NumberField E] {N : ℕ} (u : GL (Fin N) (Af E)) :
     u ∈ integralFiniteGL E N ↔ ∀ w, GeneralLinearGroup.map (pLoc E w) u ∈ KGL w N := by
@@ -23,15 +23,13 @@ private theorem int_iff {E : Type} [Field E] [NumberField E] {N : ℕ} (u : GL (
     rwa [← map_inv] at this
 
 /- English proof (translation)
-Introduce `E _ _ _ N bad K ho hl`. Take `⟨L, hL, hle, hconj, -⟩` from `UpperTheory.exists_open_level_normalized_by_integralFiniteGL E N K ho`. Set `K' : Subgroup (GL (Fin N) (Af E))` to `{ carrier := {u | u ∈ integralFiniteGL E N ∧ ∀ c ∈ integralFiniteGL E N, c⁻¹ * u * c ∈ K} one_mem' := ⟨one_mem _, fun c _ => by simpa using K.one_mem⟩ mul_mem' := fun {a b} ha hb => ⟨mul_mem ha.1 hb.1, fun c hc => by`. Simplify `K.mul_mem (ha.2 c hc) (hb.2 c hc)⟩` using `[mul_assoc]`. Use the proof step `inv_mem' := fun {a} ha => ⟨inv_mem ha.1, fun c hc => by simpa [mul_assoc] using K.inv_mem (ha.2 c hc)⟩ }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K', fun u hu => by simpa using hu.2 1 (one_mem _), ⟨?_, fun u hu => (int_iff u).1 hu.1, fun w hw k hk => ⟨?_, fun c hc => ?_⟩⟩, fun c hc u hu => ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_mono (H₁ := L ⊓ integralFiniteGL E N) (fun u hu => ⟨hu.2, fun c hc => hle (hconj c hc u hu.1)⟩) (hL.inter (isOpen_integralFiniteGL E N))`. Use `(int_iff _).2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_locGL]` and apply the resulting hypothesis. Rewrite using `[pLoc_locGL_of_ne h]`. Conclude with `one_mem _`. Establish `h1` using `(int_iff c).1 hc w`. Establish `e : c⁻¹ * locGL E N w k * c = locGL E N w ((GeneralLinearGroup.map (pLoc E w) c)⁻¹ * k * GeneralLinearGroup.map (pLoc E w) c)` using `PositivityTheory.Rg.Rs.C3.Fl.glAf_ext fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Simplify using `only [map_mul, map_inv, pLoc_locGL]`. Simplify using `only [map_mul, map_inv, pLoc_locGL_of_ne h, mul_one, inv_mul_cancel, inv_one]`. Rewrite using `[e]`.
-
-Conclude with `hl w hw _ (mul_mem (mul_mem (inv_mem h1) hk) h1)`. Establish `h1` using `(int_iff c).2 hc`. Conclude with `⟨mul_mem (mul_mem (inv_mem h1) hu.1) h1, fun c' hc' => by simpa [mul_assoc] using hu.2 (c * c') (mul_mem h1 hc')⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.levShrink :
     LevShrink := by

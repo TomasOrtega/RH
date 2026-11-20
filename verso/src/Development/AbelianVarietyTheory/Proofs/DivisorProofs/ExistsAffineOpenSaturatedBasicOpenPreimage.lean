@@ -11,17 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Pinch
 
 /- English proof (translation)
-Introduce `B' C Y i q hi hq hB y O hO hyO`. Establish `hF : (q ⁻¹' {q y}).Finite` using `q.finite_preimage_singleton (q y)`. Take `⟨V₀, hV₀, hFV₀⟩` from `hB ((hF.image i).toFinset)`. Establish `hY₀ : IsAffineOpen (i ⁻¹ᵁ V₀)` using `hV₀.preimage i`. Take `⟨h, hFh, hhO⟩` from `GlobalTheory.exists_basicOpen_le_of_finite hY₀ (q ⁻¹ᵁ O) hF (fun x hx ↦ hFV₀ _ (by simpa using ⟨x, hx, rfl⟩)) (fun x hx ↦ by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hx`. Simplify using `[hx, hyO])`. Establish `hcl : IsClosed (q '' (Y.basicOpen h : Set Y)ᶜ)` using `q.isClosedMap _ (Y.basicOpen h).isOpen.isClosed_compl`. Establish `hyW : q y ∉ q '' (Y.basicOpen h : Set Y)ᶜ`. Introduce and unpack `⟨x, hx, hxy⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hx (hFh (by simpa using hxy))`. Set `W : C.Opens` to `⟨(q '' (Y.basicOpen h : Set Y)ᶜ)ᶜ, hcl.isOpen_compl⟩`. Take `⟨r, hrW, hyr⟩` from `hO.exists_basicOpen_le (V := W) ⟨q y, hyW⟩ hyO`. Establish `hle : q ⁻¹ᵁ C.basicOpen r ≤ Y.basicOpen h`. Introduce `x hx`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hxh`. Conclude with `hrW hx ⟨x, hxh, rfl⟩`. Establish `hbo : q ⁻¹ᵁ C.basicOpen r = Y.basicOpen (q.app O r)` using `Scheme.preimage_basicOpen q r`. Take `⟨f', hf'⟩` from `hY₀.basicOpen_basicOpen_is_basicOpen h (Y.presheaf.map (homOfLE hhO).op (q.app O r))`. Rewrite `hf'` using `[Scheme.basicOpen_res, ← hbo, inf_eq_right.mpr hle]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `i.app_surjective V₀ hV₀ f'`. Use `⟨B'.basicOpen t, r, hV₀.basicOpen t, ?_, ?_⟩` and prove the remaining obligations. Establish `: y ∈ i ⁻¹ᵁ B'.basicOpen t`. Rewrite using `[Scheme.preimage_basicOpen, ht, hf']`. Conclude with `hyr`.
-
-Conclude with `this`. Rewrite using `[Scheme.preimage_basicOpen, ht, hf']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_affine_basicOpen_nbhd : ∀ (B' C Y : Scheme.{0}) (i : Y ⟶ B') (q : Y ⟶ C), IsClosedImmersion i →
     IsFinite q → FinAff B' → ∀ (y : Y) (O : C.Opens), IsAffineOpen O → q y ∈ O →

@@ -9,9 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `key : Function.Surjective (Formalism.BasicNotions.Examples₂.LocF.emb w (D.host.g k) hw)`. Use `GlobalTheory.TypeRec.Model.emb_surjective _ _ _ (fun h => ?_) (GlobalTheory.TameLabels.normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) hw)` and prove the remaining obligations. Establish `h0 : Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(D.host.g_prime k).ne_zero` after adjusting the coercions. Establish `hs` using `(UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors h0).2 (Formalism.MainNotions.ModuliIntegralCharts.H1.GSplit.split_of_ncard (D.host.g_prime k) (D.nd.g_split k)).2`. Use `hs w.asIdeal (by rw [← sq, Ideal.dvd_span_singleton]; exact h)` as an intermediate fact. Conclude with `w.isPrime.ne_top (Ideal.isUnit_iff.1 this)`. Conclude with `⟨_, this, RingEquiv.ofBijective _ ⟨RingHom.injective _, key⟩, Formalism.BasicNotions.Examples₂.LocF.emb_cont _ _ hw⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.One.M.isQg_of_over (D : D7) (k : Fin 2) (w : PlE D.host) (hw : w ∈ placesOver D.host.E (D.host.g k)) :
     UpperTheory.One.M.IsQg (w.adicCompletion D.host.E) := by

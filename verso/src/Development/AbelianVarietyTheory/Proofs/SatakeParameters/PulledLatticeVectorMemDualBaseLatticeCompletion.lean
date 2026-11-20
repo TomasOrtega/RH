@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.MemDual
 
 /- English proof (translation)
-Simplify using `[prV, inclE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prV_inclE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (e : E) :
@@ -25,7 +25,7 @@ theorem prV_inclE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   simp [prV, inclE]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `tmul a b => simp [prV, sigR]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prV_sigR {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
@@ -36,9 +36,9 @@ theorem prV_sigR {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   | tmul a b => simp [prV, sigR]
 
 /- English proof (translation)
-Establish `hg' : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (k : Matrix (Fin n) (Fin n) _) * J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) * (k : Matrix (Fin n) (Fin n) _) = J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) := hk`. Express the relevant statement in the definitionally equal form `cT (sigR σ (v.adicCompletion F)) ((k : Matrix (Fin n) (Fin n) _).map (prV (E := E) v)) * J.map (inclE (F := F) (v.adicCompletion F)) * ((k : Matrix (Fin n) (Fin n) _).map (prV (E := E) v)) = J.map (inclE (F := F) (v.adicCompletion F))`. Establish `h1 : cT (sigR σ (v.adicCompletion F)) ((k : Matrix (Fin n) (Fin n) _).map (prV (E` using `E) v)) = (cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (k : Matrix (Fin n) (Fin n) _)).map (prV (E := E) v) := by`. Use extensionality with `i j`. Simplify using `[cT, prV_sigR]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hJ' : (J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F))).map (prV (E := E) v) = J.map (inclE (F := F) (v.adicCompletion F)) := by`. Use extensionality with `i j`. Simplify using `[prV_inclE]`. Rewrite using `[h1, ← hJ', ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_prV_mem_UPts {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
@@ -61,11 +61,11 @@ theorem bc_prV_mem_UPts {F E : Type} [Field F] [NumberField F] [Field E] [Number
   rw [h1, ← hJ', ← Matrix.map_mul, ← Matrix.map_mul, hg']
 
 /- English proof (translation)
-Unfold `pullV`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Establish `hc : (((ratA F c)⁻¹ : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) = ((c⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E).map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) := by`. Rewrite using `[← map_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hc]`. Use extensionality with `i`. Use `RingHom.map_mulVec (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) ((c⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) ((c : Matrix (Fin N) (Fin N) E) *ᵥ y) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pullV_ratA_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (c : GL (Fin N) E) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (y : Fin N → E) :
@@ -89,17 +89,15 @@ end GlobalTheory.MemDual
 namespace GlobalTheory.MemDual
 
 /- English proof (translation)
-Introduce `R F E _ _ _ _ _ _ sp N J hJ c a x hx Lb hfin hspan hdual v y hy`. Take `⟨y', hy', rfl⟩` from `hy`. Use `set σ : E →ₐ[F] E := sp.cm.sig with hσ`. Use `set Λ := latAd x Lb with hΛ`. Use `set xv := bc (prV (E := E) v) x with hxv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLb : Submodule.IsLattice E Lb` using `⟨Module.Finite.iff_fg.mp hfin, hspan⟩`. Establish `hLam : Submodule.IsLattice E Λ`. Establish `hlat : Formalism.L2.PairingIndexBounds.F.latAd x Lb = Formalism.UG.CS.globLat x Lb` using `Submodule.span_eq (Formalism.UG.CS.globLat x Lb)`. Rewrite using `[hΛ, hlat]`. Conclude with `Formalism.UG.P.csGlob_lattice Lb hfin hspan x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxU : xv ∈ UPts σ J (v.adicCompletion F)` using `bc_prV_mem_UPts σ J v hx`. Establish `hcarry` using `GlobalTheory.LocCarry.mem_latS_latAd_iff x Lb hfin hspan v`. Establish `hpull : (fun l => prV (E` using `E) v (pullV (F := F) (ratA F c * x) ((c : Matrix (Fin N) (Fin N) E) *ᵥ y') l)) = ((xv⁻¹ : GL (Fin N) _) : Matrix (Fin N) (Fin N) _) *ᵥ fun i => inclE (F := F) (v.adicCompletion F) (y' i) := by`. Rewrite using `[pullV_ratA_mul, GlobalTheory.LocCarry.prV_mulVec, hxv, GlobalTheory.LocCarry.coe_bc_inv]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show (fun l => prV (E := E) v (pullV (F := F) (ratA F c * x) ((c : Matrix (Fin N) (Fin N) E) *ᵥ y') l)) ∈ _`. Rewrite using `[hpull]`. Establish `hsub : compan (sp` using `sp) J a Λ ≤ Λ ⊔ dualL (σ : E →+* E) J Λ := sup_le_sup_left (Submodule.smul_le_right) _`. Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.mp (hsub hy')`. Establish `hadd : (fun i => inclE (F` using `F) (v.adicCompletion F) ((p + q) i)) = (fun i => inclE (F := F) (v.adicCompletion F) (p i)) + fun i => inclE (F := F) (v.adicCompletion F) (q i) := by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[hadd, Matrix.mulVec_add]`. Establish `hmono : latS (F` using `F) (v.adicCompletion F) (intV E v) Lb ≤ latS (F := F) (v.adicCompletion F) (intV E v) (dualL (σ : E →+* E) J Lb) := Submodule.span_mono (Set.image_mono fun z hz => Submodule.subset_span (hdual z hz))`. Use `add_mem ?_ ?_` and prove the remaining obligations.
-
-Conclude with `hmono ((hcarry _).1 (Submodule.subset_span ⟨p, hp, rfl⟩))`. Conclude with `(GlobalTheory.DualCompletion.dual_move F E σ N J v Λ Lb xv hJ hLam hLb hxU hcarry _).1 (Submodule.subset_span ⟨q, hq, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_latS_dual_of_latCo : ∀ {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E), IsUnit J.det → ∀ (c : GL (Fin N) E) (a : 𝓞 E)

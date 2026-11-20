@@ -25,7 +25,7 @@ noncomputable def divisorSum : CurveDivisor W →+ W.toAffine.Point :=
 omit [DecidableEq F] in
 @[simp]
 /- English proof (translation)
-Simplify using `[divisorDegree]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divisorDegree_single (P : W.toAffine.Point) (n : ℤ) :
     divisorDegree W (Finsupp.single P n) = n := by
@@ -33,7 +33,7 @@ theorem divisorDegree_single (P : W.toAffine.Point) (n : ℤ) :
 
 @[simp]
 /- English proof (translation)
-Simplify using `[divisorSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem divisorSum_single (P : W.toAffine.Point) (n : ℤ) :
     divisorSum W (Finsupp.single P n) = n • P := by
@@ -51,7 +51,7 @@ noncomputable def pointOfIdeal (v : HeightOneSpectrum W.toAffine.CoordinateRing)
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Simplify using `only [pointOfIdeal, Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pointOfIdeal_affinePointEquiv (p : {xy : F × F // W.toAffine.Nonsingular xy.1 xy.2}) :
     pointOfIdeal W (affinePointEquiv W p) = .some _ _ p.2 := by
@@ -59,7 +59,7 @@ theorem pointOfIdeal_affinePointEquiv (p : {xy : F × F // W.toAffine.Nonsingula
 
 omit [DecidableEq F] in
 /- English proof (translation)
-The claim follows from `pointOfIdeal_affinePointEquiv W ⟨(x, y), h⟩`.
+A detailed English derivation is pending.
 -/
 theorem pointOfIdeal_heightOneOfNonsingular {x y : F} (h : W.toAffine.Nonsingular x y) :
     pointOfIdeal W (heightOneOfNonsingular h) = .some x y h :=
@@ -67,7 +67,7 @@ theorem pointOfIdeal_heightOneOfNonsingular {x y : F} (h : W.toAffine.Nonsingula
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Introduce `v w h`. Simplify using `only [pointOfIdeal, Point.some.injEq] at h`. Conclude with `(affinePointEquiv W).symm.injective (Subtype.ext (Prod.ext h.1 h.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pointOfIdeal_injective : Function.Injective (pointOfIdeal W) := by
   intro v w h
@@ -76,7 +76,7 @@ theorem pointOfIdeal_injective : Function.Injective (pointOfIdeal W) := by
 
 omit [DecidableEq F] in
 /- English proof (translation)
-The claim follows from `Point.some_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem pointOfIdeal_ne_zero (v : HeightOneSpectrum W.toAffine.CoordinateRing) :
     pointOfIdeal W v ≠ 0 :=
@@ -84,7 +84,7 @@ theorem pointOfIdeal_ne_zero (v : HeightOneSpectrum W.toAffine.CoordinateRing) :
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact absurd rfl hP`. Consider the case `some x y h => exact ⟨_, pointOfIdeal_heightOneOfNonsingular W h⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem exists_pointOfIdeal_eq {P : W.toAffine.Point} (hP : P ≠ 0) :
     ∃ v, pointOfIdeal W v = P := by
@@ -98,16 +98,16 @@ noncomputable def affinePart (D : CurveDivisor W) :
 
 omit [DecidableEq F] in
 /- English proof (translation)
-The claim follows from `Finsupp.comapDomain_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem affinePart_apply (D : CurveDivisor W) (v : HeightOneSpectrum W.toAffine.CoordinateRing) :
     affinePart W D v = D (pointOfIdeal W v) :=
   Finsupp.comapDomain_apply _ _ _ _
 
 /- English proof (translation)
-Use extensionality with `P`. Rewrite using `[Finsupp.add_apply]`. Break down `eq_or_ne P 0 with rfl | hP` into its components or cases. Rewrite using `[Finsupp.mapDomain_of_notMem_range _ _ (fun ⟨v, hv⟩ => pointOfIdeal_ne_zero W v hv), Finsupp.single_eq_same, zero_add]`. Take `⟨v, rfl⟩` from `exists_pointOfIdeal_eq W hP`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finsupp.mapDomain_apply (pointOfIdeal_injective W), affinePart_apply, Finsupp.single_apply, if_neg (pointOfIdeal_ne_zero W v).symm, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_mapDomain_affinePart_add (D : CurveDivisor W) :
     D = Finsupp.mapDomain (pointOfIdeal W) (affinePart W D) + Finsupp.single 0 (D 0) := by
@@ -121,7 +121,7 @@ theorem eq_mapDomain_affinePart_add (D : CurveDivisor W) :
       if_neg (pointOfIdeal_ne_zero W v).symm, add_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_mapDomain_affinePart_add W D]`. Rewrite using `[map_add, divisorDegree_single, divisorDegree, Finsupp.liftAddHom_apply, Finsupp.sum_mapDomain_index_addMonoidHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem divisorDegree_eq (D : CurveDivisor W) :
     divisorDegree W D = (affinePart W D).sum (fun _ n => n) + D 0 := by
@@ -131,7 +131,7 @@ theorem divisorDegree_eq (D : CurveDivisor W) :
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_mapDomain_affinePart_add W D]`. Rewrite using `[map_add, divisorSum_single, smul_zero, add_zero, divisorSum, Finsupp.liftAddHom_apply, Finsupp.sum_mapDomain_index_addMonoidHom]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divisorSum_eq (D : CurveDivisor W) :
     divisorSum W D = (affinePart W D).sum (fun v n => n • pointOfIdeal W v) := by
@@ -151,7 +151,7 @@ noncomputable def idealOfExps (D : HeightOneSpectrum W.toAffine.CoordinateRing �
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Rewrite using `[idealOfExps, Finsupp.prod, Units.coe_prod, Finsupp.prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, unitOfIdeal, Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_idealOfExps (D : HeightOneSpectrum W.toAffine.CoordinateRing →₀ ℤ) :
     ((idealOfExps W D : (FractionalIdeal W.toAffine.CoordinateRing⁰ W.toAffine.FunctionField)ˣ) :
@@ -164,7 +164,7 @@ theorem val_idealOfExps (D : HeightOneSpectrum W.toAffine.CoordinateRing →₀ 
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Rewrite using `[val_idealOfExps]`. Conclude with `FractionalIdeal.count_finsuppProd _ v D`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_idealOfExps (D : HeightOneSpectrum W.toAffine.CoordinateRing →₀ ℤ)
     (v : HeightOneSpectrum W.toAffine.CoordinateRing) :
@@ -174,7 +174,7 @@ theorem count_idealOfExps (D : HeightOneSpectrum W.toAffine.CoordinateRing →�
   exact FractionalIdeal.count_finsuppProd _ v D
 
 /- English proof (translation)
-Establish `hu : CoordinateRing.XYIdeal' (W` using `W.toAffine) ((affinePointEquiv W).symm v).2 = unitOfIdeal W v := by`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[CoordinateRing.XYIdeal'_eq, unitOfIdeal, Units.val_mk0, ← affinePointEquiv_apply_asIdeal, Equiv.apply_symm_apply]`. Rewrite using `[pointOfIdeal, Point.toClass_some, hu]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toClass_pointOfIdeal (v : HeightOneSpectrum W.toAffine.CoordinateRing) :
     Point.toClass (W := W.toAffine) (pointOfIdeal W v) =
@@ -188,7 +188,7 @@ theorem toClass_pointOfIdeal (v : HeightOneSpectrum W.toAffine.CoordinateRing) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum, map_sum, idealOfExps, Finsupp.prod, map_prod, ofMul_prod]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, toClass_pointOfIdeal, map_zpow, ofMul_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toClass_sum (D : HeightOneSpectrum W.toAffine.CoordinateRing →₀ ℤ) :
     Point.toClass (W := W.toAffine) (D.sum fun v n => n • pointOfIdeal W v) =
@@ -200,7 +200,7 @@ theorem toClass_sum (D : HeightOneSpectrum W.toAffine.CoordinateRing →₀ ℤ)
 omit [DecidableEq F] in
 
 /- English proof (translation)
-Rewrite using `[← FractionalIdeal.finprod_heightOneSpectrum_factorization' W.toAffine.FunctionField hI, ← FractionalIdeal.finprod_heightOneSpectrum_factorization' W.toAffine.FunctionField hJ]`. Repeatedly rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem fractionalIdeal_eq_of_count_eq
     {I J : FractionalIdeal W.toAffine.CoordinateRing⁰ W.toAffine.FunctionField} (hI : I ≠ 0)
@@ -212,11 +212,11 @@ theorem fractionalIdeal_eq_of_count_eq
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Rewrite using `[ClassGroup.mk_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf⟩`. Establish `hI : (I : FractionalIdeal W.toAffine.CoordinateRing⁰ W.toAffine.FunctionField) = FractionalIdeal.spanSingleton _ f`. Rewrite using `[← FractionalIdeal.coeToSubmodule_inj, FractionalIdeal.coe_spanSingleton]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`. Use `⟨f, ?_, hI⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hI` using `[FractionalIdeal.spanSingleton_zero]`. Conclude with `I.ne_zero hI`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨f, -, hf⟩`. Use `⟨f, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, FractionalIdeal.coe_spanSingleton]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classGroup_mk_eq_one_iff
     (I : (FractionalIdeal W.toAffine.CoordinateRing⁰ W.toAffine.FunctionField)ˣ) :
@@ -255,7 +255,7 @@ noncomputable def divisorOf (f : W.toAffine.FunctionField) : CurveDivisor W :=
   Finsupp.mapDomain (pointOfIdeal W) (affineDivisorOf W f) + Finsupp.single 0 (ordInfty W f)
 
 /- English proof (translation)
-Rewrite using `[divisorOf, Finsupp.add_apply, Finsupp.mapDomain_apply (pointOfIdeal_injective W), Finsupp.single_apply, if_neg (pointOfIdeal_ne_zero W v).symm, add_zero, affineDivisorOf_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorOf_pointOfIdeal (f : W.toAffine.FunctionField)
     (v : HeightOneSpectrum W.toAffine.CoordinateRing) :
@@ -265,7 +265,7 @@ theorem divisorOf_pointOfIdeal (f : W.toAffine.FunctionField)
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Rewrite using `[divisorOf, Finsupp.add_apply, Finsupp.mapDomain_of_notMem_range _ _ (fun ⟨v, hv⟩ => pointOfIdeal_ne_zero W v hv), Finsupp.single_eq_same, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorOf_zero_apply (f : W.toAffine.FunctionField) :
     divisorOf W f 0 = ordInfty W f := by
@@ -274,7 +274,7 @@ theorem divisorOf_zero_apply (f : W.toAffine.FunctionField) :
     Finsupp.single_eq_same, zero_add]
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact divisorOf_zero_apply W f`. Consider the case `some x y h`. Rewrite using `[ordPoint_some, ← pointOfIdeal_heightOneOfNonsingular W h, divisorOf_pointOfIdeal]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorOf_apply (f : W.toAffine.FunctionField) (P : W.toAffine.Point) :
     divisorOf W f P = ordPoint W P f := by
@@ -284,7 +284,7 @@ theorem divisorOf_apply (f : W.toAffine.FunctionField) (P : W.toAffine.Point) :
     rw [ordPoint_some, ← pointOfIdeal_heightOneOfNonsingular W h, divisorOf_pointOfIdeal]
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[affinePart_apply, divisorOf_pointOfIdeal, affineDivisorOf_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem affinePart_divisorOf (f : W.toAffine.FunctionField) :
     affinePart W (divisorOf W f) = affineDivisorOf W f := by
@@ -292,7 +292,7 @@ theorem affinePart_divisorOf (f : W.toAffine.FunctionField) :
   rw [affinePart_apply, divisorOf_pointOfIdeal, affineDivisorOf_apply]
 
 /- English proof (translation)
-Use extensionality with `P`. Rewrite using `[Finsupp.add_apply, divisorOf_apply, divisorOf_apply, divisorOf_apply, ordPoint_mul W P hf hg]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorOf_mul {f g : W.toAffine.FunctionField} (hf : f ≠ 0) (hg : g ≠ 0) :
     divisorOf W (f * g) = divisorOf W f + divisorOf W g := by
@@ -300,7 +300,7 @@ theorem divisorOf_mul {f g : W.toAffine.FunctionField} (hf : f ≠ 0) (hg : g �
   rw [Finsupp.add_apply, divisorOf_apply, divisorOf_apply, divisorOf_apply, ordPoint_mul W P hf hg]
 
 /- English proof (translation)
-Establish `h` using `divisorOf_mul W (one_ne_zero (α := W.toAffine.FunctionField)) one_ne_zero`. Rewrite `h` using `[mul_one]`. Conclude with `(add_eq_left.mp h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divisorOf_one : divisorOf W 1 = 0 := by
   have h := divisorOf_mul W (one_ne_zero (α := W.toAffine.FunctionField)) one_ne_zero
@@ -309,7 +309,7 @@ theorem divisorOf_one : divisorOf W 1 = 0 := by
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_support_subset _ (s := (affineDivisorOf W f).support) (by rw [← Finsupp.fun_support_eq]; rfl), Finsupp.sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_affineDivisorOf (f : W.toAffine.FunctionField) :
     (affineDivisorOf W f).sum (fun _ n => n) = ∑ᶠ v, ordAtIdeal W v f := by
@@ -319,7 +319,7 @@ theorem sum_affineDivisorOf (f : W.toAffine.FunctionField) :
 
 omit [DecidableEq F] in
 /- English proof (translation)
-The claim follows from `finite_support_count W _`.
+A detailed English derivation is pending.
 -/
 theorem finite_support_ordAtIdeal (f : W.toAffine.FunctionField) :
     (Function.support fun v => ordAtIdeal W v f).Finite :=
@@ -327,7 +327,7 @@ theorem finite_support_ordAtIdeal (f : W.toAffine.FunctionField) :
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Repeatedly rewrite using `[ordAtIdeal_algebraMap]`. Conclude with `(natDegree_norm_eq_finsum_count W ha).symm`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_ordAtIdeal_algebraMap {a : W.toAffine.CoordinateRing} (ha : a ≠ 0) :
     ∑ᶠ v, ordAtIdeal W v (algebraMap _ W.toAffine.FunctionField a) =
@@ -338,13 +338,13 @@ theorem finsum_ordAtIdeal_algebraMap {a : W.toAffine.CoordinateRing} (ha : a ≠
 omit [DecidableEq F] in
 
 /- English proof (translation)
-Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective W.toAffine.CoordinateRing⁰ f`. Simplify using `only at hf ⊢`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hf (IsLocalization.mk'_zero _)`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hs : (s : W.toAffine.CoordinateRing) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Establish `hs' : algebraMap _ W.toAffine.FunctionField (s : W.toAffine.CoordinateRing) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ W.toAffine.FunctionField)).mpr hs`. Establish `hsa` using `IsLocalization.mk'_spec W.toAffine.FunctionField a s`. Establish `h1 : ∀ v, ordAtIdeal W v (algebraMap _ W.toAffine.FunctionField a) = ordAtIdeal W v (IsLocalization.mk' W.toAffine.FunctionField a s) + ordAtIdeal W v (algebraMap _ W.toAffine.FunctionField (s : W.toAffine.CoordinateRing))` using `fun v => by rw [← hsa, ordAtIdeal_mul W v hf hs']`. Establish `h2 : ordInfty W (algebraMap _ W.toAffine.FunctionField a) = ordInfty W (IsLocalization.mk' W.toAffine.FunctionField a s) + ordInfty W (algebraMap _ W.toAffine.FunctionField (s : W.toAffine.CoordinateRing))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsa, ordInfty_mul W hf hs']`. Establish `e1` using `finsum_ordAtIdeal_algebraMap W ha`. Establish `e2` using `finsum_ordAtIdeal_algebraMap W hs`. Rewrite `e1` using `[h1]`. Rewrite `e1` using `[finsum_add_distrib (finite_support_ordAtIdeal W _) (finite_support_ordAtIdeal W _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[ordInfty_algebraMap W ha, ordInfty_algebraMap W hs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem finsum_ordAtIdeal_add_ordInfty {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     ∑ᶠ v, ordAtIdeal W v f + ordInfty W f = 0 := by
@@ -373,7 +373,7 @@ theorem finsum_ordAtIdeal_add_ordInfty {f : W.toAffine.FunctionField} (hf : f �
   linarith
 
 /- English proof (translation)
-Rewrite using `[divisorDegree_eq, affinePart_divisorOf, sum_affineDivisorOf, divisorOf_zero_apply]`. Conclude with `finsum_ordAtIdeal_add_ordInfty W hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divisorDegree_divisorOf {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     divisorDegree W (divisorOf W f) = 0 := by
@@ -382,7 +382,7 @@ theorem divisorDegree_divisorOf {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
 
 omit [DecidableEq F] in
 /- English proof (translation)
-The claim follows from `fractionalIdeal_eq_of_count_eq W (Units.ne_zero _) (spanSingleton_ne_zero W hf) fun v => by rw [count_idealOfExps, affineDivisorOf_apply, ordAtIdeal]`.
+A detailed English derivation is pending.
 -/
 theorem val_idealOfExps_affineDivisorOf {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     ((idealOfExps W (affineDivisorOf W f) :
@@ -393,7 +393,7 @@ theorem val_idealOfExps_affineDivisorOf {f : W.toAffine.FunctionField} (hf : f �
     fun v => by rw [count_idealOfExps, affineDivisorOf_apply, ordAtIdeal]
 
 /- English proof (translation)
-Rewrite using `[divisorSum_eq, affinePart_divisorOf, ← Point.toClass_eq_zero, toClass_sum, ofMul_eq_zero, classGroup_mk_eq_one_iff]`. Conclude with `⟨f, hf, val_idealOfExps_affineDivisorOf W hf⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem divisorSum_divisorOf {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     divisorSum W (divisorOf W f) = 0 := by
@@ -402,13 +402,11 @@ theorem divisorSum_divisorOf {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
   exact ⟨f, hf, val_idealOfExps_affineDivisorOf W hf⟩
 
 /- English proof (translation)
-Establish `hc : ClassGroup.mk W.toAffine.FunctionField (idealOfExps W (affinePart W D)) = 1`. Establish `h` using `toClass_sum W (affinePart W D)`. Rewrite `h` using `[← divisorSum_eq, hsum, map_zero]`. Conclude with `ofMul_eq_zero.mp h.symm`. Take `⟨f, hf, hI⟩` from `(classGroup_mk_eq_one_iff W _).mp hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `haff : affineDivisorOf W f = affinePart W D`. Use extensionality with `v`. Rewrite using `[affineDivisorOf_apply, ordAtIdeal, ← hI, count_idealOfExps]`. Establish `hinf : ordInfty W f = D 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `finsum_ordAtIdeal_add_ordInfty W hf`. Establish `h2` using `divisorDegree_eq W D`. Rewrite `h2` using `[hdeg, ← haff, sum_affineDivisorOf]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[divisorOf, haff, hinf]`.
-
-Conclude with `(eq_mapDomain_affinePart_add W D).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_divisorOf_eq {D : CurveDivisor W} (hdeg : divisorDegree W D = 0)
     (hsum : divisorSum W D = 0) :
@@ -431,7 +429,7 @@ theorem exists_divisorOf_eq {D : CurveDivisor W} (hdeg : divisorDegree W D = 0)
   exact (eq_mapDomain_affinePart_add W D).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨divisorDegree_divisorOf W hf, divisorSum_divisorOf W hf⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `exists_divisorOf_eq W h1 h2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_divisorOf_eq_iff (D : CurveDivisor W) :
     (∃ f : W.toAffine.FunctionField, f ≠ 0 ∧ divisorOf W f = D) ↔
@@ -452,7 +450,7 @@ noncomputable def divisorHom : Additive W.toAffine.FunctionFieldˣ →+ CurveDiv
 noncomputable def principalDivisors : AddSubgroup (CurveDivisor W) := (divisorHom W).range
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨_, u.toMul.ne_zero, rfl⟩`. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨Additive.ofMul (Units.mk0 f hf), rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_principalDivisors_iff (D : CurveDivisor W) :
     D ∈ principalDivisors W ↔ ∃ f : W.toAffine.FunctionField, f ≠ 0 ∧ divisorOf W f = D := by
@@ -472,7 +470,7 @@ noncomputable def divisorSumDegreeZero : degreeZeroDivisors W →+ W.toAffine.Po
 
 omit [IsAlgClosed F] [W.IsElliptic] [DecidableEq F] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `divisorDegree W _ = 0`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem single_sub_single_zero_mem (P : W.toAffine.Point) :
     Finsupp.single P 1 - Finsupp.single 0 1 ∈ degreeZeroDivisors W := by
@@ -481,7 +479,7 @@ theorem single_sub_single_zero_mem (P : W.toAffine.Point) :
 
 omit [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Introduce `P`. Use `⟨⟨_, single_sub_single_zero_mem W P⟩, ?_⟩` and prove the remaining obligations. Simplify using `[divisorSumDegreeZero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem divisorSumDegreeZero_surjective : Function.Surjective (divisorSumDegreeZero W) := by
   intro P
@@ -489,7 +487,7 @@ theorem divisorSumDegreeZero_surjective : Function.Surjective (divisorSumDegreeZ
   simp [divisorSumDegreeZero]
 
 /- English proof (translation)
-Use extensionality with `⟨D, hD⟩`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf, mem_principalDivisors_iff, exists_divisorOf_eq_iff]`. Conclude with `⟨fun h => ⟨hD, h⟩, fun h => h.2⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ker_divisorSumDegreeZero :
     (divisorSumDegreeZero W).ker = (principalDivisors W).addSubgroupOf (degreeZeroDivisors W) := by

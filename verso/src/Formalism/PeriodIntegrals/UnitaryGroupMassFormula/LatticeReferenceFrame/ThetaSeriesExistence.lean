@@ -10,9 +10,9 @@ namespace PI.ScRefExists.TH
 variable (I : Formalism.MainNotions.S.AutInst)
 
 /- English proof (translation)
-Establish `hg0 : (g : 𝓞 I.E) ≠ 0`. Introduce `h`. Establish `h2` using `congrArg (fun x : 𝓞 I.E => (x : I.E)) h`. Establish `h3 : (g : I.E) = 0` using `by simpa using h2`. Establish `h4 : g = 0` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hg0`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanG_ne (g : ℕ) (hg : 1 ≤ g) : Ideal.span {(g : 𝓞 I.E)} ≠ 0 := by
   have hg0 : (g : 𝓞 I.E) ≠ 0 := by
@@ -28,7 +28,7 @@ def primesG (g : ℕ) (hg : 1 ≤ g) : Finset (HeightOneSpectrum (𝓞 I.E)) :=
   (Ideal.finite_factors (spanG_ne I g hg)).toFinset
 
 /- English proof (translation)
-Unfold `primesG`. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_primesG (g : ℕ) (hg : 1 ≤ g) (P : HeightOneSpectrum (𝓞 I.E)) :
     P ∈ primesG I g hg ↔ (g : 𝓞 I.E) ∈ P.asIdeal := by
@@ -36,11 +36,11 @@ theorem mem_primesG (g : ℕ) (hg : 1 ≤ g) (P : HeightOneSpectrum (𝓞 I.E)) 
   rw [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
 
 /- English proof (translation)
-Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf fun J hJ => ?_` and prove the remaining obligations. Take `⟨hJle, hJp⟩` from `hJ`. Establish `hgJ : (g : 𝓞 I.E) ∈ J` using `hJle (Ideal.mem_span_singleton_self _)`. Establish `hJ0 : J ≠ ⊥`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `spanG_ne I g hg` to reduce the goal to its premises. Rewrite using `[Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Rewrite `hgJ` using `[h]`. Conclude with `(Submodule.mem_bot _).mp hgJ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `Q : HeightOneSpectrum (𝓞 I.E)` to `⟨J, hJp, hJ0⟩`. Establish `hQ : Q ∈ primesG I g hg` using `(mem_primesG I g hg Q).mpr hgJ`. Conclude with `Ideal.prod_le_inf.trans (Finset.inf_le hQ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prod_le_radical (g : ℕ) (hg : 1 ≤ g) :
     (∏ P ∈ primesG I g hg, P.asIdeal) ≤ (Ideal.span {(g : 𝓞 I.E)}).radical := by
@@ -59,9 +59,9 @@ theorem prod_le_radical (g : ℕ) (hg : 1 ≤ g) :
   exact Ideal.prod_le_inf.trans (Finset.inf_le hQ)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hz`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht]`. Use `first`. Consider the case `(push_cast; ring)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [mul_comm]`.
+A detailed English derivation is pending.
 -/
 private lemma sk_GE_of_mem_span_natCast (g : ℕ) (z : 𝓞 I.E) (hz : z ∈ Ideal.span {(g : 𝓞 I.E)}) :
     PI.ScRefExists.Sk.GE I g (z : I.E) := by
@@ -73,37 +73,31 @@ private lemma sk_GE_of_mem_span_natCast (g : ℕ) (z : 𝓞 I.E) (hz : z ∈ Ide
     | simp [mul_comm]
 
 /- English proof (translation)
-Introduce `I g hg hS`. Use `letI : LinearOrder (HeightOneSpectrum (𝓞 I.E)) := by first`. Consider the case `exact linearOrderOfSTO WellOrderingRel`. Consider the case `exact IsWellOrder.linearOrder WellOrderingRel`. Take `⟨N, hN⟩ : ∃ N : ℕ, (∏ P ∈ primesG I g hg, P.asIdeal) ^ N ≤ Ideal.span {(g : 𝓞 I.E)}` from `by first`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `exact Ideal.exists_pow_le_of_le_radical_of_fg (prod_le_radical I g hg) (IsNoetherian.noetherian _)`. Consider the case `exact Ideal.exists_pow_le_of_le_radical_of_fg (IsNoetherian.noetherian _) (prod_le_radical I g hg)`. Take `⟨θ, hθ⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := primesG I g hg) (fun P : HeightOneSpectrum (𝓞 I.E) => P.asIdeal) (fun _ => N) (fun P _ => P.prime) (fun P _ Q _ h e => h (HeightOneSpectrum.ext e)) (fun P => if (P : HeightOneSpectrum (𝓞 I.E)) < cj I P then (1 : 𝓞 I.E) else 0)`. Establish `h1 : ∀ P ∈ primesG I g hg, P < cj I P → θ - 1 ∈ P.asIdeal ^ N`. Introduce `P hP h`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hθ P hP` using `[h]`. Establish `h0 : ∀ P ∈ primesG I g hg, ¬ P < cj I P → θ ∈ P.asIdeal ^ N`. Introduce `P hP h`. Simplify `hθ P hP` using `[h]`. Establish `hcjS : ∀ P ∈ primesG I g hg, cj I P ∈ primesG I g hg`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `P hP`. Rewrite `hP`, the goal using `[mem_primesG]`. Rewrite using `[mem_cj, map_natCast]`. Conclude with `hP`. Establish `hsg : ∀ (P : HeightOneSpectrum (𝓞 I.E)) (z : 𝓞 I.E), z ∈ (cj I P).asIdeal ^ N → sg I z ∈ P.asIdeal ^ N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P z hz`. Establish `h2` using `Ideal.mem_map_of_mem (sg I) hz`. Rewrite `h2` using `[Ideal.map_pow, show (cj I P).asIdeal = P.asIdeal.comap (sg I) from rfl, Ideal.map_comap_of_surjective _ (fun y => ⟨sg I y, sg_sg I y⟩)]`. Then use the resulting hypothesis. Establish `hloc : ∀ P ∈ primesG I g hg, θ * θ - θ ∈ P.asIdeal ^ N ∧ θ * sg I θ ∈ P.asIdeal ^ N ∧ 1 - θ - sg I θ ∈ P.asIdeal ^ N`. Introduce `P hP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : cj I P ≠ P` using `cj_ne I g hg hS P ((mem_primesG I g hg P).mp hP)`. Distinguish the cases in `hlt : P < cj I P`. Establish `ha` using `h1 P hP hlt`. Establish `hb : θ ∈ (cj I P).asIdeal ^ N` using `h0 (cj I P) (hcjS P hP) (by rw [cj_cj]; exact lt_asymm hlt)`. Establish `hb'` using `hsg P θ hb`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : θ * θ - θ = (θ - 1) * θ` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ ha`. Conclude with `Ideal.mul_mem_left _ _ hb'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : 1 - θ - sg I θ = -(θ - 1) - sg I θ` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Submodule.neg_mem _ ha) hb'`. Establish `ha` using `h0 P hP hlt`. Establish `hlt' : cj I P < cj I (cj I P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cj_cj]`. Conclude with `lt_of_le_of_ne (not_lt.mp hlt) hne`. Establish `hb'` using `hsg P _ (h1 (cj I P) (hcjS P hP) hlt')`. Rewrite `hb'` using `[map_sub, map_one]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : θ * θ - θ = θ * (θ - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ ha`. Conclude with `Ideal.mul_mem_right _ _ ha`. Establish `e : 1 - θ - sg I θ = -θ - (sg I θ - 1)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Submodule.neg_mem _ ha) hb'`. Establish `key : (primesG I g hg).inf (fun P : HeightOneSpectrum (𝓞 I.E) => P.asIdeal ^ N) = (∏ P ∈ primesG I g hg, P.asIdeal) ^ N`. Rewrite using `[← Finset.prod_pow]`. Conclude with `IsDedekindDomain.inf_prime_pow_eq_prod _ _ _ (fun P _ => P.prime) (fun P _ Q _ h e => h (HeightOneSpectrum.ext e))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ z : 𝓞 I.E, (∀ P ∈ primesG I g hg, z ∈ P.asIdeal ^ N) → z ∈ Ideal.span {(g : 𝓞 I.E)}`. Introduce `z hz`. Apply `hN` to reduce the goal to its premises. Rewrite using `[← key]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).mp (Finset.le_inf fun P hP => (Ideal.span_singleton_le_iff_mem _).mpr (hz P hP))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨θ, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((θ * θ - θ : 𝓞 I.E) : I.E) = (θ : I.E) * θ - θ` using `by push_cast; ring`. Rewrite using `[← e]`. Conclude with `sk_GE_of_mem_span_natCast I g _ (hmem _ fun P hP => (hloc P hP).1)`. Establish `e : ((θ * sg I θ : 𝓞 I.E) : I.E) = (θ : I.E) * star (θ : I.E)`.
-
-Rewrite using `[← sg_coe]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`. Conclude with `sk_GE_of_mem_span_natCast I g _ (hmem _ fun P hP => (hloc P hP).2.1)`.
-
-Establish `e : ((1 - θ - sg I θ : 𝓞 I.E) : I.E) = 1 - (θ : I.E) - star (θ : I.E)`. Rewrite using `[← sg_coe]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`.
-
-Conclude with `sk_GE_of_mem_span_natCast I g _ (hmem _ fun P hP => (hloc P hP).2.2)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_series_existence : PI.ScRefExists.Sk.ThetaEx := by
   intro I g hg hS

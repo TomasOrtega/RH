@@ -12,11 +12,11 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μv hμv νv hνv fibV hfibV d b Φf Φv hp`. Establish `hS` using `hc a ha2 (gramE σ J X0) hT hdet d b (fun _ => (0 : ℂ)) (fun _ => (0 : ℂ)) Φf Φv continuous_const (rapidDecay_of_compact b _ continuous_const HasCompactSupport.zero) Formalism.L2.SG.Pf.NcWeil.isSmoothCc_zero hp (fun X => by simp)`. Take `⟨μ, hμ⟩` from `hS.1`. Take `⟨𝓕, h𝓕⟩` from `(hS.2 μ hμ).1`. Establish `h3` using `((hS.2 μ hμ).2 𝓕 h𝓕).2 ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨μinf, hμinf⟩` from `h3.1`. Take `⟨νinf, hνinf⟩` from `(h3.2 μinf hμinf).1`. Take `⟨ginf, gv, _, hdv, hm, _⟩` from `(((h3.2 μinf hμinf).2 νinf hνinf).2 μv hμv).2 νv hνv`. Use `hm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(h2 F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v (μv v) (hμv v) (νv v) (hνv v) (fibV v) (hfibV v) (Φv v) (gv v) (hp.1 v) (hdv v)).symm`.
+A detailed English derivation is pending.
 -/
 theorem multFib_of (h2 : DensFibV) : MultFib := by
   intro F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μv hμv νv hνv fibV hfibV d b Φf Φv hp
@@ -41,11 +41,11 @@ def LatSB : Prop :=
     IsSB ((latV (M := M) (n := n) b v).indicator (1 : (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J hJ _ha _hc a _ha1 _ha2 X0 hT _hdet ψ _hψ`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hE.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hE.2.2.2`. Use `⟨fun μinf hμinf νinf hνinf fib1 fib2 hf1 hf2 Φinf _ _ => ?_, fun v μv hμv νv hνv fib1 fib2 hf1 hf2 Φv _ => ?_⟩` and prove the remaining obligations. Use `hμinf.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hνinf.1` as an intermediate fact. Rewrite using `[FibUniq.fib_eq_tens σ hσ J hJ.1 a (Ainf F) (isOpen_units_Ainf F) (lip_ainf F) μinf νinf fib1 fib2 hf1 hf2]`. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Use `hμv.1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hνv.1` as an intermediate fact. Rewrite using `[FibUniq.fib_eq_tens σ hσ J hJ.1 a (Fv F v) (isOpen_units_Fv F v) (TensAllW.lip_field _) μv νv fib1 fib2 hf1 hf2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibPin_holds : FibPin := by
   intro F E _ _ _ _ _ σ hE M J hJ _ha _hc a _ha1 _ha2 X0 hT _hdet ψ _hψ
@@ -65,18 +65,18 @@ theorem fibPin_holds : FibPin := by
       μv νv fib1 fib2 hf1 hf2]
 
 /- English proof (translation)
-The claim follows from `fibPin_holds`.
+A detailed English derivation is pending.
 -/
 theorem fibPin_of (_h1 : DensFibInf) (_h2 : DensFibV) (_hL : LatSB) : FibPin := fibPin_holds
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ`. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [hE.2.2.1]; norm_num)`. Set `b` to `Module.finBasis F E`. Set `Lv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin a → Fin M → Fv F v ⊗[F] E) → ℂ` to `fun v => (latV b v).indicator 1`. Establish `hp : IsPureFin b (fun X => ∏ᶠ v, Lv v (projV v X)) Lv` using `⟨fun v => hL F E _ M a b v, Filter.Eventually.of_forall fun v => rfl, fun X => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS` using `hc a ha2 (gramE σ J X0) hT hdet _ b (fun _ => (0 : ℂ)) (fun _ => (0 : ℂ)) (fun X => ∏ᶠ v, Lv v (projV v X)) Lv continuous_const (rapidDecay_of_compact b _ continuous_const HasCompactSupport.zero) Formalism.L2.SG.Pf.NcWeil.isSmoothCc_zero hp (fun X => by simp)`. Take `⟨μ, hμ⟩` from `hS.1`. Take `⟨𝓕, h𝓕⟩` from `(hS.2 μ hμ).1`. Establish `h3` using `((hS.2 μ hμ).2 𝓕 h𝓕).2 ψ hψ`. Take `⟨μinf, hμinf⟩` from `h3.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨νinf, hνinf⟩` from `(h3.2 μinf hμinf).1`. Establish `h4` using `((h3.2 μinf hμinf).2 νinf hνinf)`. Take `⟨μv, hμv⟩` from `h4.1`. Take `⟨νv, hνv⟩` from `(h4.2 μv hμv).1`. Take `⟨fibInf, hfi⟩` from `hI F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμinf νinf hνinf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose fibV hfv using fun v => hV F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v (μv v) (hμv v) (νv v) (hνv v)`. Conclude with `⟨μinf, νinf, μv, νv, fibInf, fibV, hμinf, hνinf, hμv, hνv, hfi, hfv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locEx_of (hI : FibInfEx) (hV : FibVEx) (hL : LatSB) : LocEx := by
   intro F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ
@@ -104,7 +104,7 @@ theorem locEx_of (hI : FibInfEx) (hV : FibVEx) (hL : LatSB) : LocEx := by
   exact ⟨μinf, νinf, μv, νv, fibInf, fibV, hμinf, hνinf, hμv, hνv, hfi, hfv⟩
 
 /- English proof (translation)
-The claim follows from `exOmT_of (locEx_of hI hV hL) hU (fibPin_of hDI hDV hL) (multFib_of hDV) hR`.
+A detailed English derivation is pending.
 -/
 theorem exOmT_of_steps (hI : FibInfEx) (hV : FibVEx) (hL : LatSB) (hU : SdUniq)
     (hDI : DensFibInf) (hDV : DensFibV) (hR : RestrProd) : ExOmT :=

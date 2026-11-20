@@ -18,9 +18,9 @@ def HasCuspImage (f : Sm E a) : Prop :=
     f ∈ W ∧ IsStable W ∧ p f ≠ 0 ∧ ∀ (o : Op E a), ∀ g ∈ W, p (act o g) = τ.op o (p g)
 
 /- English proof (translation)
-Take `⟨W, τ, p, h1, h2, h3, h4⟩` from `h`. Establish `e : ∀ o g, Q (act o g) = act o (Q g)` using `fun o g => LinearMap.congr_fun (hQ o).eq g`. Use `⟨W.comap Q, τ, p ∘ₗ Q, h1, fun o g hg => ?_, h3, fun o g hg => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Q _ ∈ W`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 o _ hg`. Express the relevant statement in the definitionally equal form `p (Q _) = _`. Rewrite using `[e]`. Conclude with `h4 o _ hg`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasCuspImage.of_commute {Q : Module.End ℂ (Sm E a)} (hQ : ∀ o, Commute Q (act o)) {f : Sm E a}
     (h : HasCuspImage (Q f)) : HasCuspImage f := by
@@ -33,9 +33,9 @@ theorem HasCuspImage.of_commute {Q : Module.End ℂ (Sm E a)} (hQ : ∀ o, Commu
     rw [e]; exact h4 o _ hg
 
 /- English proof (translation)
-Take `⟨W, τ, p, h1, h2, h3, h4⟩` from `h`. Use `⟨W.map (CuspRep.mulChi a χ).toLinearMap, τ.twist χ, (τ.toTwist χ).toLinearMap ∘ₗ p ∘ₗ (CuspRep.mulChi a χ).symm.toLinearMap, ⟨f, h1, rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `o _ ⟨φ, hφ, rfl⟩`. Conclude with `⟨_, add_mem (W.smul_mem _ (h2 o φ hφ)) (W.smul_mem _ hφ), (act_mulChi χ o φ).symm⟩`. Simplify using `using h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `o _ ⟨φ, hφ, rfl⟩`. Simplify using `only [LinearEquiv.coe_coe, LinearMap.comp_apply, act_mulChi, LinearEquiv.symm_apply_apply, CuspSub.op_toTwist, map_add p, map_smul p, h4 o φ hφ]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem HasCuspImage.mulChi {f : Sm E a} (h : HasCuspImage f) (χ : HChar E) : HasCuspImage (mulChi a χ f) := by
   obtain ⟨W, τ, p, h1, h2, h3, h4⟩ := h
@@ -49,11 +49,11 @@ theorem HasCuspImage.mulChi {f : Sm E a} (h : HasCuspImage f) (χ : HChar E) : H
       CuspSub.op_toTwist, map_add p, map_smul p, h4 o φ hφ]
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ (Module.End ℂ (Sm E a))` to `Subalgebra.centralizer ℂ {T}`. Establish `hS : ∀ {z}, z ∈ S ↔ Commute T z`. Introduce `z`. Simplify using `[S, Subalgebra.mem_centralizer_iff, Commute, SemiconjBy]`. Establish `hV : ∀ X, lie E a X ∈ S` using `fun X => hS.2 (hT X)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hE : ∀ τ i j, Eop τ i j ∈ S` using `fun τ i j => S.smul_mem (S.sub_mem (hV _) (S.smul_mem (hV _) _)) _`. Use `hS.1 ((Algebra.adjoin_le (S := S) ?_) hz)` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `S.add_mem ?_ (hE _ _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem commute_Zalg {T : Module.End ℂ (Sm E a)} (hT : ∀ X, Commute T (lie E a X)) {z : Module.End ℂ (Sm E a)}
     (hz : z ∈ Zalg E a) : Commute T z := by
@@ -74,17 +74,17 @@ theorem commute_Zalg {T : Module.End ℂ (Sm E a)} (hT : ∀ X, Commute T (lie E
   · exact S.zero_mem
 
 /- English proof (translation)
-Use `set Q : Module.End ℂ (Sm E a) := rs a z - algebraMap ℂ _ c`. Establish `hQ : ∀ o, Commute Q (act o)` using `fun o => (rs_act z o).sub_left (Algebra.commutes c _)`. Establish `ev : ∀ g, (Q f).1 g = f.1 (g * GeneralLinearGroup.scalar (Fin a) z) - c * f.1 g` using `fun g => rfl`. Establish `hc` using `ContAut.continuous_of_isOpen_stab E a f h.1.level`. Use `⟨⟨fun γ g => by rw [ev, ev, mul_assoc, h.1.left, h.1.left], ?_, ?_, ?_, fun g => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.1.level.mem_nhds (by simp)) fun k hk => ?_)` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (hQ (.fin k)).eq f).symm.trans (congrArg Q hk)`. Use `h.1.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E a k f)).map Q) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, LinearMap.congr_fun (hQ (.cpt k)).eq f⟩`. Use `h.1.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z f) '' Zalg E a)).map Q) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨y, hy, rfl⟩, LinearMap.congr_fun (commute_Zalg (fun X => hQ (.lie X)) hy).eq f⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, N, h1⟩` from `h.1.growth (g * GeneralLinearGroup.scalar (Fin a) z)`. Take `⟨C', N', h2⟩` from `h.1.growth g`. Use `⟨|C| + ‖c‖ * |C'|, N + N', fun y => ?_⟩` and prove the remaining obligations. Establish `h0` using `one_le_height y`. Establish `e1 : ‖f.1 (g * infGL E a y * GeneralLinearGroup.scalar (Fin a) z)‖ ≤ |C| * height y ^ (N + N')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← CuspRep.scalar_comm, ← mul_assoc]`. Conclude with `(h1 y).trans (mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h0 (by omega)) (by positivity) (abs_nonneg _))`. Establish `e2 : ‖f.1 (g * infGL E a y)‖ ≤ |C'| * height y ^ (N + N')` using `(h2 y).trans (mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h0 (by omega)) (by positivity) (abs_nonneg _))`. Rewrite using `[ev, add_mul, mul_assoc ‖c‖]`. Use `(norm_sub_le _ _).trans (add_le_add e1 ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left e2 (norm_nonneg _)`. Introduce `r h0 h1 _ _ ν 𝓕 hν h𝓕 g`. Simplify using `only [ev, mul_assoc]`. Rewrite using `[integral_sub (integrableOn_unip hc h.1.left ν h𝓕 _) ((integrableOn_unip hc h.1.left ν h𝓕 _).const_mul c), integral_const_mul, h.2 r h0 h1 ν 𝓕 hν h𝓕, h.2 r h0 h1 ν 𝓕 hν h𝓕, mul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCuspForm_rs_sub {f : Sm E a} (h : IsCuspForm f) (z : (Ad E)ˣ) (c : ℂ) :
     IsCuspForm ((rs a z - algebraMap ℂ _ c) f) := by
@@ -127,9 +127,7 @@ abbrev dSplit (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ
   lie E a (scL a 1)
 
 /- English proof (translation)
-Use `h.zfin` as an intermediate fact. Set `L : ℂ[X] →ₗ[ℂ] Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z f) '' Zalg E a)` to `LinearMap.codRestrict _ (LinearMap.applyₗ f ∘ₗ (aeval (dSplit E a)).toLinearMap) fun p => Submodule.subset_span ⟨_, (Algebra.adjoin_le (S := Zalg E a) (Set.singleton_subset_iff.2 (lie_mem_Zalg 1))) (Polynomial.aeval_mem_adjoin_singleton ℂ _), rfl⟩`. Use `by_contra! hc`. Establish `hi : Function.Injective L` using `(injective_iff_map_eq_zero L).2 fun p hp => by`. Assume the negation of the conclusion as `h0`.
-
-Conclude with `hc p h0 (congrArg Subtype.val hp)`. Conclude with `Polynomial.not_finite (Module.Finite.of_injective L hi)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_aeval_eq_zero {f : Sm E a} (h : IsAutForm f) : ∃ p : ℂ[X], p ≠ 0 ∧ aeval (dSplit E a) p f = 0 := by
   have := h.zfin
@@ -144,19 +142,19 @@ theorem exists_aeval_eq_zero {f : Sm E a} (h : IsAutForm f) : ∃ p : ℂ[X], p 
   exact Polynomial.not_finite (Module.Finite.of_injective L hi)
 
 /- English proof (translation)
-Take `⟨p, hp, hf⟩` from `exists_aeval_eq_zero h.1`. Proceed by induction on `hn : p.natDegree generalizing p f with`. Consider the case `zero`. Rewrite `hp`, `hf` using `[eq_C_of_natDegree_eq_zero hn]`. Conclude with `absurd (by simpa using hf) (not_or.2 ⟨by simpa using hp, h0⟩)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Take `⟨c, hc⟩` from `IsAlgClosed.exists_root p (by`. Rewrite using `[degree_eq_natDegree hp, hn]`. Conclude with `n.succ_ne_zero)` after adjusting the coercions. Take `⟨q, rfl⟩` from `dvd_iff_isRoot.2 hc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : q ≠ 0` using `right_ne_zero_of_mul hp`. Establish `hqn : q.natDegree = n`. Rewrite `hn` using `[natDegree_mul (X_sub_C_ne_zero c) hq, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Establish `e1 : dSplit E a (aeval (dSplit E a) q f) = c • aeval (dSplit E a) q f`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hf` using `[map_mul, Module.End.mul_apply]`. Simplify `hf` using `[sub_eq_zero]`. Set `Q : ℝ → Module.End ℂ (Sm E a)` to `fun t => rs a (infId E (expU fun _ : InfinitePlace E => (t : ℂ))) - algebraMap ℂ _ (Complex.exp (c * t))`. Establish `hQ : ∀ t o, Commute (Q t) (act o)` using `fun t o => (rs_act _ o).sub_left (Algebra.commutes _ _)`. Distinguish the cases in `hz : ∀ t, Q t f = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `H f c h h0 fun t g => ?_` and prove the remaining obligations. Rewrite using `[splitCentre_comm, splitCentre_eq_scalar]`. Conclude with `sub_eq_zero.1 (congrFun (congrArg Subtype.val (hz t)) g)`. Take `⟨t, ht⟩` from `not_forall.1 hz`. Use `HasCuspImage.of_commute (hQ t) (ih (f := Q t f) (isCuspForm_rs_sub h _ _) ht q hq ?_ hqn)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Commute (Q t) (aeval (dSplit E a) q)`. Use `commute_Zalg (fun X => hQ t (.lie X)) ?_` and prove the remaining obligations. Conclude with `(Algebra.adjoin_le (S := Zalg E a) (Set.singleton_subset_iff.2 (lie_mem_Zalg 1))) (Polynomial.aeval_mem_adjoin_singleton ℂ _)`. Rewrite using `[← Module.End.mul_apply, ← e2.eq, Module.End.mul_apply]`. Establish `e3 : scL a (fun _ : InfinitePlace E => (t : ℂ)) = t • scL (E` using `E) a 1 := by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j w`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`. Use `rs_exp (fun _ : InfinitePlace E => (t : ℂ)) (c * t) (aeval (dSplit E a) q f) (by` as an intermediate fact. Rewrite using `[e3, map_smul, LinearMap.smul_apply, e1, mul_comm, mul_smul, Complex.coe_smul])`. Conclude with `sub_eq_zero.2 this`.
+A detailed English derivation is pending.
 -/
 theorem hasCuspImage_of_eigen (H : ∀ (f : Sm E a) (c : ℂ), IsCuspForm f → f ≠ 0 →
     (∀ (t : ℝ) g, f.1 (splitCentre E a t * g) = Complex.exp (c * t) * f.1 g) → HasCuspImage f)
@@ -213,11 +211,11 @@ def cpowChar (s : ℂ) : HChar E :=
       exact (congrArg (fun r : ℝ => Complex.exp (s * Real.log r)) h).trans (by simp))⟩
 
 /- English proof (translation)
-Set `D : ℝ →+ ℝ` to `AddMonoidHom.mk' (fun t => Real.log (ideleNorm (E := E) (GeneralLinearGroup.det (splitCentre E a t)))) fun x y => by`. Rewrite using `[splitCentre_add, map_mul, map_mul, Real.log_mul (ideleNorm_ne_zero _) (ideleNorm_ne_zero _)]`. Establish `hD : Continuous D` using `(continuous_ideleNorm.comp (GeneralLinearGroup.continuous_det.comp GlobalTheory.OneRep.SplitTwist.continuous_splitCentre)).log fun _ => ideleNorm_ne_zero _`. Establish `hDt : ∀ t, D t = t * D 1` using `fun t => by simpa using map_real_smul D hD t 1`. Establish `hD1 : 0 < D 1`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `0 < Real.log (ideleNorm (E := E) (GeneralLinearGroup.det (splitCentre E a 1)))`. Rewrite using `[det_splitCentre_one, map_pow, Real.log_pow]`. Conclude with `mul_pos (by exact_mod_cast ha) (Real.log_pos (one_lt_ideleNorm_eIdele E))`. Use `⟨cpowChar E (c / D 1), fun t => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp (c / D 1 * (D t : ℝ)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `: (D 1 : ℂ) ≠ 0` using `by exact_mod_cast hD1.ne'`. Rewrite using `[hDt t]`. Use `push_cast`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_chiDet_splitCentre (ha : 0 < a) (c : ℂ) :
     ∃ χ : HChar E, ∀ t : ℝ, ((chiDet a χ (splitCentre E a t) : ℂˣ) : ℂ) = Complex.exp (c * t) := by
@@ -239,9 +237,9 @@ theorem exists_chiDet_splitCentre (ha : 0 < a) (c : ℂ) :
   congr 1; field_simp
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Conclude with `H f h h0 fun t g => congrArg f.1 (Subsingleton.elim _ _)`. Use `hasCuspImage_of_eigen (fun f c h h0 hc => ?_) h h0` and prove the remaining obligations. Take `⟨χ, hχ⟩` from `exists_chiDet_splitCentre (E := E) ha (-c)`. Use `(H _ (h.mulChi χ) ((map_ne_zero_iff _ (mulChi a χ).injective).2 h0) fun t g => by` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulChi_apply, mulChi_apply, map_mul, Units.val_mul, hχ, hc, mul_mul_mul_comm, ← Complex.exp_add]`. Use the proof step `simp).mulChi χ⁻¹`. Rewrite `this` using `[← mulChi_mul, mul_inv_cancel, mulChi_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasCuspImage_of_invariant (H : ∀ f : Sm E a, IsCuspForm f → f ≠ 0 →
     (∀ (t : ℝ) g, f.1 (splitCentre E a t * g) = f.1 g) → HasCuspImage f)

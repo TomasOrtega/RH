@@ -27,11 +27,11 @@ def chartPullTwo {X Y Y' Y'' : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ
       (gm_pull_g (LB.LinComb L φ ε) n h y (fun _ => j) (fun _ => j') (le j hj) (le j' hj')).symm }
 
 /- English proof (translation)
-Set `a : ChartPull (cubeLB G x L) (abelian₂ G L) m.left` to `cubePull L m _ _ hx`. Set `b : ChartPull (cubeLB G' x' L') ((abelian₂ G' L').pull n.left) m.left` to `chartPullTwo L' _ _ _ m.left n.left (psum_left_pull (m ≫ n) _ _ hx')`. Use `⟨pullIso a b w, pullIso_isGen a b hw, fun Z p z J' J hJ' hJ => ?_⟩` and prove the remaining obligations. Establish `mA` using `Good.mem hJ (fun I : ULift (Finset (Fin 2)) => (psum G x I.down).left) p`. Establish `mB` using `Good.mem hJ' (fun I : ULift (Finset (Fin 2)) => (psum G' x' I.down).left) p`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((adjVal_of (pullIso a b w) p z J' J _ _ (fun _ => rfl) (fun _ => rfl)).trans (gm_pullIso a b w p z (_, _) ⟨mB, mA⟩)).trans ?_` and prove the remaining obligations. Establish `e₁ : (fun I : ULift (Finset (Fin 2)) => J (p ≫ (psum G x I.down).left)) = fun I => J ((p ≫ m.left) ≫ (psum G (x2 G) I.down).left)` using `funext fun I => by`. Rewrite using `[psum_left_pull m _ _ hx I, Category.assoc]`. Establish `e₂ : (fun I : ULift (Finset (Fin 2)) => J' (p ≫ (psum G' x' I.down).left)) = fun I => J' ((p ≫ m.left) ≫ n.left ≫ (psum G' (x2 G') I.down).left)` using `funext fun I => by`. Rewrite using `[psum_left_pull (m ≫ n) _ _ hx' I, Over.comp_left, Category.assoc, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_pull_lam {S : Scheme.{0}} {T G G' : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
     {L : LB G.left} {L' : LB G'.left} {n : G2 G ⟶ G2 G'} (w : LB.Iso (abelian₂ G L) ((abelian₂ G' L').pull n.left))
@@ -57,15 +57,13 @@ theorem exists_pull_lam {S : Scheme.{0}} {T G G' : Over S} [GrpObj G] [IsCommMon
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ I D D' F`. Set `m : (pol D').B ⊗ (pol D).B ⟶ G2 (pol D).B` to `lift (fst _ _ ≫ F.pr) (snd _ _)`. Set `n : G2 (pol D).B ⟶ G2 (pol D').B` to `lift (fst _ _ ≫ F.inc) (snd _ _ ≫ F.inc ≫ F.o.onB.act F.f)`. Set `w₀ : LB.Iso (abelian₂ (pol D).B (pol D).M.L) ((abelian₂ (pol D').B (pol D').M.L).pull n.left)` to `F.w`. Take `⟨w, gw, hw⟩` from `exists_pull_lam w₀ F.w_gen m ![fst (pol D').B (pol D).B ≫ F.pr, snd (pol D').B (pol D).B] ![fst (pol D').B (pol D).B ≫ F.o.onB.act F.e, snd (pol D').B (pol D).B ≫ F.inc ≫ F.o.onB.act F.f] (fun i => by fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `(lift_fst _ _).symm`. Conclude with `(lift_snd _ _).symm)`. Use the proof step `(fun i => by fin_cases i`. Use `Eq.symm ((Category.assoc _ _ _).trans ((congrArg (m ≫ ·) (lift_fst _ _)).trans ?_))` and prove the remaining obligations. Use `(lift_fst_assoc _ _ _).trans ((Category.assoc _ _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg (fst (pol D').B (pol D).B ≫ ·) F.pr_inc`. Use `Eq.symm ((Category.assoc _ _ _).trans ((congrArg (m ≫ ·) (lift_snd _ _)).trans ?_))` and prove the remaining obligations. Conclude with `lift_snd_assoc _ _ _)`. Use `⟨w, gw, fun y y' z J₁ J₂ hJ₁ hJ₂ => ?_⟩` and prove the remaining obligations. Establish `hP : (lift (toUnit (TK R) ≫ D.toPre.c (F.xp y)) (toUnit (TK R) ≫ D.toPre.c y')).left = (lift (toUnit (TK R) ≫ (pol D').c y) (toUnit (TK R) ≫ (pol D).c y')).left ≫ m.left`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun q : TK R ⟶ G2 (pol D).B => q.left) (Eq.symm ((comp_lift _ _ _).trans ?_))` and prove the remaining obligations. Use `congrArg₂ lift ((lift_fst_assoc _ _ _).trans ((Category.assoc _ _ _).trans ?_)) (lift_snd _ _)` and prove the remaining obligations. Conclude with `congrArg (toUnit (TK R) ≫ ·) (c_xp F y).symm`. Establish `e` using `F.tau (F.xp y) y' z J₁ J₂ hJ₁ hJ₂`. Rewrite `e` using `[F.xi_xp, hP]`.
-
-Use `((GlobalTheory.PolDeg.Wit.exists_tau D.toPre _ _).choose_spec.2 _ _ z J₂ hJ₂).trans (e.trans ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (hw _ _ z J₁ J₂ hJ₁ hJ₂).symm ((GlobalTheory.PolDeg.Wit.exists_tau D'.toPre (F.e • y) (F.f • F.xi y')).choose_spec.2 _ _ z J₁ hJ₁).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_pull : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D' : DegData R I) (F : Factor D.toPre D'.toPre), ∃ w : LB.Iso (cubeLB (pol D).B ![fst (pol D').B (pol D).B ≫ F.pr, snd (pol D').B (pol D).B] (pol D).M.L) (cubeLB (pol D').B ![fst (pol D').B (pol D).B ≫ F.o.onB.act F.e, snd (pol D').B (pol D).B ≫ F.inc ≫ F.o.onB.act F.f] (pol D').M.L), w.IsGen ∧ ∀ y y' z J₁ J₂, Good (pol D').M.L z J₁ → Good (pol D).M.L z J₂ → val ((pol D).tau (F.xp y) y') (𝟙 _) z J₂ = adjVal w (lift (toUnit (TK R) ≫ (pol D').c y) (toUnit (TK R) ≫ (pol D).c y')).left z J₁ J₂ * val ((pol D').tau ((DistribMulAction.toAddMonoidHom D'.toPre.X F.e) y) (((DistribMulAction.toAddMonoidHom D'.toPre.X F.f).comp F.xi) y')) (𝟙 _) z J₁ := by
   intro R _ _ I D D' F

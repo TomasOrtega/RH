@@ -23,7 +23,7 @@ set_option autoImplicit false
 namespace GlobalTheory.RecSec
 
 /- English proof (translation)
-Take `⟨m, i, hi, rfl⟩` from `h`. Use `isProper_str R m` as an intermediate fact. Establish `: IsProper (i ≫ PSpace.str R m)` using `inferInstance`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsProjOver f) : CompactSpace X := by
@@ -33,11 +33,11 @@ theorem compactSpace_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X
   exact QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str R m)
 
 /- English proof (translation)
-Establish `: CompactSpace X` using `compactSpace_of_projOver hp`. Establish `hfin` using `Δ.finite_support_mult`. Establish `hsub (G : X → ℝ) : (Function.support fun z => (Δ.mult z : ℝ) * G z).Finite` using `hfin.subset fun z hz => by`. Simplify using `only [Function.mem_support] at hz ⊢`. Introduce `h0; exact hz (by simp [h0])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← finsum_add_distrib (hsub _) (hsub _)]`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : Δ.mult z = 0`. Simplify using `[h0]`. Establish `hz1 : Order.coheight z = 1` using `CartierDiv.coheight_eq_one_of_mult_ne_zero h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcl : topologicalKrullDim (closure ({z} : Set X)) = e` using `(GlobalTheory.T.coheight_eq_one_iff_closure_dim_projective F X p e hp hdim z).1 hz1`. Establish `h₁` using `(GlobalTheory.T.mixedChernForm_finite_integrable_pointClosure P F X p σ hp e (Function.update L i A) z hcl).2.2.2 B b (hb z h0)`. Establish `h₂` using `(GlobalTheory.T.mixedChernForm_finite_integrable_pointClosure P F X p σ hp e (Function.update L i C) z hcl).2.2.2 B b (hb z h0)`. Rewrite using `[GlobalTheory.T.pointClosureIntegral_update_tensor_additive F X p σ hp e L i A C (B.logSec b) z h₁ h₂, mul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_update_tens (P : GlobalTheory.Published.Principalisation) {F : Type} [Field F] {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] {p : X ⟶ Sp F} {σ : F →+* ℂ} {e : ℕ} (hp : IsProjOver p)
@@ -64,7 +64,7 @@ theorem finsum_update_tens (P : GlobalTheory.Published.Principalisation) {F : Ty
   rw [GlobalTheory.T.pointClosureIntegral_update_tensor_additive F X p σ hp e L i A C (B.logSec b) z h₁ h₂, mul_add]
 
 /- English proof (translation)
-Simplify using `only [side, Fin.cons_update]`. Establish `hA` using `GlobalTheory.T.log_norm_section_integrable_mixedChern_projective P F X p σ (e + 1) hp hdim (Function.update (Fin.cons N L) i.succ A) M s hs`. Establish `hC` using `GlobalTheory.T.log_norm_section_integrable_mixedChern_projective P F X p σ (e + 1) hp hdim (Function.update (Fin.cons N L) i.succ C) M s hs`. Rewrite using `[(GlobalTheory.T.mixedChernIntegral_additive_in_factor F X p σ hp (e + 1) (Fin.cons N L) i.succ A C (M.logSec s) hA hC).2, finsum_update_tens P hp hdim Δ B b hb L i A C]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem side_update_tens (P : GlobalTheory.Published.Principalisation) {F : Type} [Field F] {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] {p : X ⟶ Sp F} {σ : F →+* ℂ} {e : ℕ} (hp : IsProjOver p)
@@ -82,17 +82,17 @@ theorem side_update_tens (P : GlobalTheory.Published.Principalisation) {F : Type
   ring
 
 /- English proof (translation)
-Introduce `P F _ X _ _ p σ e hp hdim L M N s hs t ht hcod hgM hgN`. Set `Df : (Fin e → MLine p σ) → ℝ` to `fun L => side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) - side M L (N.logSec t) (M.logSec s) (divOfSec N.φ.isLB t ht)`. Establish `hbt : ∀ z, (divOfSec M.φ.isLB s hs).mult z ≠ 0 → z ∈ nonzeroLocus t` using `fun z h0 => (hcod z (CartierDiv.coheight_eq_one_of_mult_ne_zero h0)).resolve_left fun hz => (notMem_supp_divOfSec.2 hz) (CartierDiv.mem_supp_of_mult_ne_zero h0)`. Establish `hbs : ∀ z, (divOfSec N.φ.isLB t ht).mult z ≠ 0 → z ∈ nonzeroLocus s` using `fun z h0 => (hcod z (CartierDiv.coheight_eq_one_of_mult_ne_zero h0)).resolve_right fun hz => (notMem_supp_divOfSec.2 hz) (CartierDiv.mem_supp_of_mult_ne_zero h0)`. Establish `hadd : ∀ (L : Fin e → MLine p σ) (i : Fin e) (A C : MLine p σ), Df (Function.update L i (A.tens C)) = Df (Function.update L i A) + Df (Function.update L i C)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `L i A C`. Simplify using `only [Df, side_update_tens P hp hdim N M s hs _ N t hbt L i A C, side_update_tens P hp hdim M N t ht _ M s hbs L i A C]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : ∀ L : Fin e → MLine p σ, (∀ i, (L i).φ.SemiPosReg (e + 1)) → Df L = 0` using `fun L hL => sub_eq_zero.2 (GlobalTheory.T.generatedBundles_reciprocity_semiPositive P F X p σ e hp hdim L M N s hs t ht hcod hL hgM hgN)`. Establish `key : ∀ (S : Finset (Fin e)) (L : Fin e → MLine p σ), (∀ i, i ∉ S → (L i).φ.SemiPosReg (e + 1)) → Df L = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact fun L hL => hpos L fun i => hL i (Finset.notMem_empty i)`. Consider the case `insert a S ha ih`. Introduce `L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Q, hQ, hAQ⟩` from `GlobalTheory.T.exists_semiPos_twist_metrisedLineBundle F X p σ hp (e + 1) (L a)`. Establish `hgood : ∀ R : MLine p σ, R.φ.SemiPosReg (e + 1) → Df (Function.update L a R) = 0`. Introduce `R hR`. Use `ih _ fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hia : i = a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hia` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hR`. Rewrite using `[Function.update_of_ne hia]`. Conclude with `hL i (by simp [hia, hi])`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hadd L a (L a) Q`. Rewrite `h` using `[hgood _ hAQ, hgood _ hQ, Function.update_eq_self]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `key Finset.univ L fun i hi => absurd (Finset.mem_univ i) hi` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem reciprocity_sec : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → ∀ (L : Fin e → MLine p σ) (M N : MLine p σ) (s : M.B.Sec) (hs : genericPoint X ∈ nonzeroLocus s) (t : N.B.Sec) (ht : genericPoint X ∈ nonzeroLocus t), (∀ z : X, Order.coheight z = 1 → z ∈ nonzeroLocus s ∨ z ∈ nonzeroLocus t) → (∃ (n : ℕ) (u : Fin n → M.B.Sec), ⨆ i, nonzeroLocus (u i) = ⊤) → (∃ (n : ℕ) (u : Fin n → N.B.Sec), ⨆ i, nonzeroLocus (u i) = ⊤) → side N L (M.logSec s) (N.logSec t) (divOfSec M.φ.isLB s hs) = side M L (N.logSec t) (M.logSec s) (divOfSec N.φ.isLB t ht) := by
   intro P F _ X _ _ p σ e hp hdim L M N s hs t ht hcod hgM hgN

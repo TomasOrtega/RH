@@ -22,13 +22,13 @@ Both sides reduce to the same expression.
     (galAct s n g : Matrix (Fin n) (Fin n) k') i j = s ((g : Matrix (Fin n) (Fin n) k') i j) := rfl
 
 /- English proof (translation)
-Use extensionality with `g i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 @[simp] theorem galAct_one (n : ℕ) : galAct (1 : k' ≃ₐ[k] k') n = MonoidHom.id _ := by
   ext g i j; rfl
 
 /- English proof (translation)
-Use extensionality with `g i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem galAct_mul (s t : k' ≃ₐ[k] k') (n : ℕ) : galAct (s * t) n = (galAct s n).comp (galAct t n) := by
   ext g i j; rfl
@@ -43,7 +43,7 @@ Both sides reduce to the same expression.
     (incl k' n γ : Matrix (Fin n) (Fin n) k') i j = algebraMap k k' ((γ : Matrix (Fin n) (Fin n) k) i j) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem galAct_incl (s : k' ≃ₐ[k] k') {n : ℕ} (γ : GL (Fin n) k) : galAct s n (incl k' n γ) = incl k' n γ := by
   ext i j; simp
@@ -69,13 +69,13 @@ def HasLevelTrace (π : Representation ℂ G V) (K : Subgroup G) (A : V →ₗ[�
   FiniteDimensional ℂ (fixed π K) ∧ ∃ T, IsLevelProj π K A T ∧ LinearMap.trace ℂ _ T = c
 
 /- English proof (translation)
-Introduce `v` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLevelProj_id (π : Representation ℂ G V) (K : Subgroup G) :
     IsLevelProj π K LinearMap.id LinearMap.id := fun v => by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, _, isLevelProj_id π K, LinearMap.trace_id ℂ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasLevelTrace_id (π : Representation ℂ G V) (K : Subgroup G) [FiniteDimensional ℂ (fixed π K)] :
     HasLevelTrace π K LinearMap.id (Module.finrank ℂ (fixed π K)) :=
@@ -89,9 +89,9 @@ variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {π : Representa
   {A : V →ₗ[ℂ] V}
 
 /- English proof (translation)
-Use extensionality with `v`. Establish `h1 : ((T v : V) - T' v) ∈ fixed π K` using `sub_mem (T v).2 (T' v).2`. Establish `h2 : ((T v : V) - T' v) ∈ twKer π K 1`. Use `sub_mem (hT v) (hT' v)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `sub_eq_zero.1 (Submodule.disjoint_def.1 hd _ h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem IsLevelProj.unique (hd : Disjoint (fixed π K) (twKer π K 1)) {T T' : fixed π K →ₗ[ℂ] fixed π K}
     (hT : IsLevelProj π K A T) (hT' : IsLevelProj π K A T') : T = T' := by
@@ -103,7 +103,7 @@ theorem IsLevelProj.unique (hd : Disjoint (fixed π K) (twKer π K 1)) {T T' : f
   exact sub_eq_zero.1 (Submodule.disjoint_def.1 hd _ h1 h2)
 
 /- English proof (translation)
-Take `⟨_, T, hT, rfl⟩` from `h`. Take `⟨_, T', hT', rfl⟩` from `h'`. Rewrite using `[hT.unique hd hT']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasLevelTrace.unique (hd : Disjoint (fixed π K) (twKer π K 1)) {c c' : ℂ} (h : HasLevelTrace π K A c)
     (h' : HasLevelTrace π K A c') : c = c' := by
@@ -128,14 +128,14 @@ def IsTwInt (s : k' ≃ₐ[k] k') (P : Representation ℂ (GL (Fin n) k') W) (I 
   (∀ g, P (galAct s n g) ∘ₗ I = I ∘ₗ P g) ∧ 0 < Module.finrank k k' ∧ I ^ Module.finrank k k' = 1
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_pow_eq_one hI.2.2 hI.2.1.ne'`.
+A detailed English derivation is pending.
 -/
 theorem IsTwInt.isUnit {s : k' ≃ₐ[k] k'} {P : Representation ℂ (GL (Fin n) k') W} {I : W →ₗ[ℂ] W}
     (hI : IsTwInt k s P I) : IsUnit I :=
   IsUnit.of_pow_eq_one hI.2.2 hI.2.1.ne'
 
 /- English proof (translation)
-Rewrite using `[Units.eq_mul_inv_iff_mul_eq, IsUnit.unit_spec]`. Conclude with `hI.1 g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTwInt.conj {s : k' ≃ₐ[k] k'} {P : Representation ℂ (GL (Fin n) k') W} {I : W →ₗ[ℂ] W}
     (hI : IsTwInt k s P I) (g : GL (Fin n) k') : P (galAct s n g) = I * P g * ((hI.isUnit.unit⁻¹ : (W →ₗ[ℂ] W)ˣ) : W →ₗ[ℂ] W) := by
@@ -143,9 +143,9 @@ theorem IsTwInt.conj {s : k' ≃ₐ[k] k'} {P : Representation ℂ (GL (Fin n) k
   exact hI.1 g
 
 /- English proof (translation)
-Introduce `x`. Establish `hx : (x : GL (Fin n) k') ∈ K.map (galAct s n)` using `by rw [hK]; exact x.2`. Take `⟨y, hy, e⟩` from `Subgroup.mem_map.1 hx`. Establish `h1` using `LinearMap.congr_fun (hI.1 y) v`. Simplify using `only [LinearMap.comp_apply] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : P y v = v` using `by simpa using hv ⟨y, hy⟩`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[← e, h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTwInt.mem_fixed {s : k' ≃ₐ[k] k'} {P : Representation ℂ (GL (Fin n) k') W} {I : W →ₗ[ℂ] W}
     (hI : IsTwInt k s P I) {K : Subgroup (GL (Fin n) k')} (hK : IsStable s K) {v : W} (hv : v ∈ fixed P K) :
@@ -185,16 +185,16 @@ def IsLBCCl (s : k' ≃ₐ[k] k') (x : IrrGL k) (y : IrrGL k') : Prop :=
     IsLBC s π.ρ P.ρ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g => by rw [hP, hP], hd, one_pow _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTwInt_of_triv (s : k' ≃ₐ[k] k') (hd : 0 < Module.finrank k k') {P : Representation ℂ (GL (Fin n) k') ℂ}
     (hP : ∀ g, P g = LinearMap.id) : IsTwInt k s P LinearMap.id :=
   ⟨fun g => by rw [hP, hP], hd, one_pow _⟩
 
 /- English proof (translation)
-Establish `htop : fixed P K = ⊤`. Use extensionality with `v`. Simplify using `[fixed, eig, hP]`. Establish `h1 : Module.finrank ℂ (fixed P K) = 1`. Rewrite using `[htop, finrank_top, Module.finrank_self]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hasLevelTrace_id P K` as an intermediate fact. Rewrite `this` using `[h1, Nat.cast_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasLevelTrace_of_triv {G : Type} [Group G] {P : Representation ℂ G ℂ} (hP : ∀ g, P g = LinearMap.id)
     (K : Subgroup G) : HasLevelTrace P K LinearMap.id 1 := by
@@ -206,27 +206,27 @@ theorem hasLevelTrace_of_triv {G : Type} [Group G] {P : Representation ℂ G ℂ
   rwa [h1, Nat.cast_one] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.univ, Filter.univ_mem, fun K _ _ _ => by rw [hP]; exact hasLevelTrace_of_triv hP K⟩`.
+Supply the required witnesses or components.
 -/
 theorem charVal_of_triv {P : Representation ℂ (GL (Fin n) k) ℂ} (hP : ∀ g, P g = LinearMap.id) (γ : GL (Fin n) k) :
     CharVal P γ 1 :=
   ⟨Set.univ, Filter.univ_mem, fun K _ _ _ => by rw [hP]; exact hasLevelTrace_of_triv hP K⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.univ, Filter.univ_mem, fun K _ _ _ _ => by rw [hP]; exact hasLevelTrace_of_triv hP K⟩`.
+Supply the required witnesses or components.
 -/
 theorem twCharVal_of_triv (s : k' ≃ₐ[k] k') {P : Representation ℂ (GL (Fin n) k') ℂ} (hP : ∀ g, P g = LinearMap.id)
     (g' : GL (Fin n) k') : TwCharVal k s P LinearMap.id g' 1 :=
   ⟨Set.univ, Filter.univ_mem, fun K _ _ _ _ => by rw [hP]; exact hasLevelTrace_of_triv hP K⟩
 
 /- English proof (translation)
-Use `ext`. Simplify using `[SmGL.ofChar]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ofChar_one_apply {G : Type} [Group G] (g : G) : SmGL.ofChar (1 : G →* ℂˣ) g = LinearMap.id := by
   ext; simp [SmGL.ofChar]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isSmooth_ofChar_iff _).2 isSmoothChar_one, isIrreducible_ofChar _, (isSmooth_ofChar_iff _).2 isSmoothChar_one, isIrreducible_ofChar _, LinearMap.id, isTwInt_of_triv s hd ofChar_one_apply, fun g' _ γ _ => ⟨1, twCharVal_of_triv s ofChar_one_apply g', charVal_of_triv ofChar_one_ap …`.
+Supply the required witnesses or components.
 -/
 theorem isLBC_one (s : k' ≃ₐ[k] k') (hd : 0 < Module.finrank k k') :
     IsLBC s (SmGL.ofChar (1 : GL (Fin n) k →* ℂˣ)) (SmGL.ofChar (1 : GL (Fin n) k' →* ℂˣ)) :=
@@ -238,7 +238,7 @@ theorem isLBC_one (s : k' ≃ₐ[k] k') (hd : 0 < Module.finrank k k') :
 end Lift
 
 /- English proof (translation)
-Simplify using `[norm, one_pow, galAct_one, List.prod_ofFn, Finset.prod_const]`.
+Simplify using the standard rewrite rules.
 -/
 example {k k' : Type} [Field k] [Field k'] [Algebra k k'] {n : ℕ} (g : GL (Fin n) k') :
     norm k (1 : k' ≃ₐ[k] k') g = g ^ Module.finrank k k' := by

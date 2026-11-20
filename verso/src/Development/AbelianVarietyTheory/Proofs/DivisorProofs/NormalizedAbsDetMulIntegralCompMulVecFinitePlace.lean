@@ -9,9 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.InertLagChar
 
 /- English proof (translation)
-Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `h2 : m = MeasurableSpace.pi` using `hm.trans (@BorelSpace.measurable_eq (Fin N → k) _ MeasurableSpace.pi Pi.borelSpace).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `h2` using the available equality. Establish `hc` using `Measure.isAddLeftInvariant_eq_smul ν (Measure.pi fun _ : Fin N => (Measure.addHaar : Measure k))`. Rewrite using `[hc, integral_smul_nnreal_measure, integral_smul_nnreal_measure, ← GlobalTheory.WeilM.integral_comp_mulVec (Measure.addHaar : Measure k) T f, mul_smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem haarChar_det_mul_integral_comp_mulVec_localField (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (m : MeasurableSpace (Fin N → k)) (hm : m = borel _)
@@ -29,7 +29,7 @@ theorem haarChar_det_mul_integral_comp_mulVec_localField (k : Type) [Field k] [V
     ← GlobalTheory.WeilM.integral_comp_mulVec (Measure.addHaar : Measure k) T f, mul_smul_comm]
 
 /- English proof (translation)
-Introduce `F _ _ v N ν hν T f`. Conclude with `haarChar_det_mul_integral_comp_mulVec_localField (Fv F v) N _ rfl ν hν T f`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nabs_det_mul_integral_comp_mulVec :
     ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (N : ℕ) (ν : @Measure (Fin N → Fv F v) (borel _)),

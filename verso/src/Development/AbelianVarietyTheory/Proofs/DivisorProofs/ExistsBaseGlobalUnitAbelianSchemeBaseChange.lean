@@ -12,9 +12,9 @@ set_option autoImplicit false
 namespace GlobalTheory.CharKer
 
 /- English proof (translation)
-Introduce `S X A Z _ hA p q h D`. Take `⟨c, hc⟩` from `exists_pullTop_snd A Z hA (pullTop h.isoPullback.inv D)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h₁ : h.isoPullback.hom ≫ (snd A Z).left = q` using `h.isoPullback_hom_snd`. Establish `h₂` using `congrArg (pullTop h.isoPullback.hom) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h₁]`. Use `(pullTop_pullTop_comp _ _ c).symm.trans (h₂.trans ?_)` and prove the remaining obligations. Rewrite using `[pullTop_pullTop_comp, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_pullTop_of_isPullback : ∀ {S X : Scheme.{0}} (A Z : Over S) [GrpObj A], IsAbelianScheme A → ∀ (p : X ⟶ A.left) (q : X ⟶ Z.left), IsPullback p q A.hom Z.hom → ∀ D : Γ(X, ⊤)ˣ, ∃ c : Γ(Z.left, ⊤)ˣ, GlobalTheory.CharKer.pullTop q c = D := by
   intro S X A Z _ hA p q h D

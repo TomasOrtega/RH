@@ -25,19 +25,19 @@ namespace GlobalTheory.UnitaryInjAtPlaceSkew
 open GlobalTheory.UnitaryInjAtPlace GlobalTheory.EmbChart GlobalTheory.LeviAtPlace
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d W r s hB hW v t h₁ hh₁ h₂ hh₂ heq`. Establish `hcm` using `hB.cm`. Establish `hJ : IsUnit (W.J.map t).det`. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `h0` using `det_ne_zero_of_sig (hW.sig (InfinitePlace.mk φ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : W.J.det ≠ 0` using `fun e => h0 (by`. Rewrite using `[Matrix.det_smul, show W.J.map _ = RingHom.mapMatrix _ W.J from rfl, ← RingHom.map_det, e, map_zero, mul_zero])`. Rewrite using `[show W.J.map t = (t : E →+* Fv F v).mapMatrix W.J from rfl, ← RingHom.map_det]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero _).2 h1)`. Establish `u₁` using `unitary_at_components v t h₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u₂` using `unitary_at_components v t h₂`. Rewrite `u₁` using `[heq]`. Use `set A := ((mat h₂).map (piW t))ᵀ * W.J.map t with hA`. Establish `hAu : IsUnit A.det`. Establish `hd` using `congrArg Matrix.det u₂`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left (hd ▸ hJ)`. Establish `hQ : (mat h₁).map (piW (t.comp σ)) = (mat h₂).map (piW (t.comp σ))`. Rewrite using `[← Matrix.nonsing_inv_mul_cancel_left _ ((mat h₁).map (piW (t.comp σ))) hAu, ← Matrix.nonsing_inv_mul_cancel_left _ ((mat h₂).map (piW (t.comp σ))) hAu, u₁, u₂]`. Establish `hpi : ∀ (h : UA σ W.J) (τ : E →ₐ[F] Fv F v), (mat h).map (piW τ) = ((mat h).map (compFin F E v)).map (splitProj τ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h τ`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Establish `hY : (mat h₁).map (compFin F E v) = (mat h₂).map (compFin F E v)`. Use `mat_split_ext hcm t ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hpi, ← hpi, heq]`. Rewrite using `[← hpi, ← hpi, hQ]`. Establish `hz : At (evFin F v) (mat h₁ - mat h₂)`. Introduce `u hu`. Establish `e : mat h₁ - mat h₂ = (mat h₁ - 1) - (mat h₂ - 1)` using `by abel`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_sub, hh₁ u hu, hh₂ u hu, sub_zero]`. Establish `h0 : (mat h₁ - mat h₂).map (compFin F E v) = 0`. Rewrite using `[Matrix.map_sub _ (fun x y => map_sub _ x y), hY, sub_self]`. Establish `hm` using `mat_eq_zero_of_at v _ hz h0`. Conclude with `Subtype.ext (Units.ext (sub_eq_zero.1 hm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_piW_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d : ℕ) (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s → ∀ (v : Pl F) (t : E →ₐ[F] Fv F v),

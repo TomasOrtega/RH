@@ -13,7 +13,7 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   {H : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : E}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks T]`. Simplify using `[blockSS, orthProj, incl, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockSS_eq (K T : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     blockSS K T = T.toBlocks₁₁ + orthCoeff K * T.toBlocks₂₁ := by
@@ -21,7 +21,7 @@ theorem blockSS_eq (K T : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
   simp [blockSS, orthProj, incl, fromCols_mul_fromBlocks, fromCols_mul_fromRows]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks T]`. Simplify using `[blockQQ, quotMap, orthLift, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem blockQQ_eq (K T : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     blockQQ K T = T.toBlocks₂₂ - T.toBlocks₂₁ * orthCoeff K := by
@@ -30,9 +30,9 @@ theorem blockQQ_eq (K T : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
   abel
 
 /- English proof (translation)
-Establish `h` using `transpose_mul_conn hu ξ`. Rewrite `h` using `[← fromBlocks_toBlocks (H z)ᵀ, ← fromBlocks_toBlocks (conn H z ξ), fromBlocks_multiply]`. Establish `h1` using `congrArg toBlocks₁₁ h`. Rewrite `h1` using `[toBlocks_fromBlocks₁₁]`. Establish `hs' : IsUnit (H z).toBlocks₁₁ᵀ.det` using `by rwa [det_transpose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[blockSS_eq, conn, show (mdel (fun x => subGram (H x)) z ξ)ᵀ = (mdel H z ξ)ᵀ.toBlocks₁₁ from rfl, ← h1, show (H z)ᵀ.toBlocks₁₁ = (H z).toBlocks₁₁ᵀ from rfl, show (H z)ᵀ.toBlocks₁₂ = (H z).toBlocks₂₁ᵀ from rfl, subGram, Matrix.mul_add, nonsing_inv_mul_cancel_left _ _ hs', orthCoef …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conn_sub (hu : IsUnit (H z).det) (hs : IsUnit (subGram (H z)).det) (ξ : E) :
     conn (fun x => subGram (H x)) z ξ = blockSS (H z) (conn H z ξ) := by
@@ -50,14 +50,14 @@ theorem conn_sub (hu : IsUnit (H z).det) (hs : IsUnit (subGram (H z)).det) (ξ :
 omit [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E] [Fintype l] [DecidableEq l] in
 
 /- English proof (translation)
-The claim follows from `(h.subGram.transpose.inv (by rwa [det_transpose])).mul (h.submatrix Sum.inr Sum.inl).transpose`.
+A detailed English derivation is pending.
 -/
 theorem mContDiffAt_orthCoeff {k : WithTop ℕ∞} (h : MContDiffAt k H z)
     (hs : IsUnit (subGram (H z)).det) : MContDiffAt k (fun x => orthCoeff (H x)) z :=
   (h.subGram.transpose.inv (by rwa [det_transpose])).mul (h.submatrix Sum.inr Sum.inl).transpose
 
 /- English proof (translation)
-Use `extForm_eq_neg_secondFormAdj h hh hu hs η` as an intermediate fact. Rewrite `this` using `[extForm_eq_neg_mdbar, neg_inj]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mdbar_orthCoeff (h : MContDiffAt 1 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian)
     (hu : IsUnit (H z).det) (hs : IsUnit (subGram (H z)).det) (η : E) :
@@ -66,9 +66,9 @@ theorem mdbar_orthCoeff (h : MContDiffAt 1 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).
   rwa [extForm_eq_neg_mdbar, neg_inj] at this
 
 /- English proof (translation)
-Establish `h1 : MContDiffAt 1 H z` using `h.of_le one_le_two`. Establish `hc : MContDiffAt 1 (fun x => conn H x ξ) z` using `h.conn hu (by norm_num) ξ`. Establish `he : (fun x => conn (fun x => subGram (H x)) x ξ) =ᶠ[𝓝 z] fun x => (conn H x ξ).toBlocks₁₁ + orthCoeff (H x) * (conn H x ξ).toBlocks₂₁` using `by filter_upwards [h.eventually_isUnit hu, h.subGram.eventually_isUnit hs] with x a b`. Rewrite using `[conn_sub (H := H) a b, blockSS_eq]`. Establish `c11 : MContDiffAt 1 (fun x => (conn H x ξ).toBlocks₁₁) z` using `hc.submatrix Sum.inl Sum.inl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c21 : MContDiffAt 1 (fun x => (conn H x ξ).toBlocks₂₁) z` using `hc.submatrix Sum.inr Sum.inl`. Establish `ho` using `mContDiffAt_orthCoeff h1 hs`. Rewrite using `[curv, mdbar_congr he, mdbar_add c11 (ho.mul c21), mdbar_mul ho c21, mdbar_orthCoeff h1 hh hu hs, blockSS_eq, secondForm_eq, show (curv H z ξ η).toBlocks₁₁ = -mdbar (fun x => (conn H x ξ).toBlocks₁₁) z η from rfl, show (curv H z ξ η).toBlocks₂₁ = -mdbar (fun x => (conn H x ξ).toB …`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem curv_sub (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian)
     (hu : IsUnit (H z).det) (hs : IsUnit (subGram (H z)).det) (ξ η : E) :
@@ -91,13 +91,13 @@ theorem curv_sub (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermi
   abel
 
 /- English proof (translation)
-Use `(eq_conn_of_compatible (H := fun x => quotGram (H x)) (isUnit_det_quotGram hu hs) ?_).symm` and prove the remaining obligations. Establish `hA : MContDiffAt 1 (fun x => (H x).toBlocks₁₁) z` using `h.subGram`. Establish `hB : MContDiffAt 1 (fun x => (H x).toBlocks₁₂) z` using `h.submatrix Sum.inl Sum.inr`. Establish `hC : MContDiffAt 1 (fun x => (H x).toBlocks₂₁) z` using `h.submatrix Sum.inr Sum.inl`. Establish `hD : MContDiffAt 1 (fun x => (H x).toBlocks₂₂) z` using `h.submatrix Sum.inr Sum.inr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : IsUnit (H z).toBlocks₁₁.det` using `hs`. Establish `e` using `conn_transpose_mul hu ξ`. Rewrite `e` using `[← fromBlocks_toBlocks (conn H z ξ)ᵀ, ← fromBlocks_toBlocks (H z), fromBlocks_multiply]`. Establish `e11` using `congrArg toBlocks₁₁ e`. Establish `e12` using `congrArg toBlocks₁₂ e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e21` using `congrArg toBlocks₂₁ e`. Establish `e22` using `congrArg toBlocks₂₂ e`. Simplify using `only [toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂] at e11 e12 e21 e22`. Simplify using `only [quotGram, sub_eq_add_neg]`. Rewrite using `[mdel_add hD ((hC.mul (hA.inv hs')).mul hB).neg, mdel_neg, mdel_mul (hC.mul (hA.inv hs')) hB, mdel_mul hC (hA.inv hs'), mdel_inv hA hs', show mdel (fun x => (H x).toBlocks₁₁) z ξ = (mdel H z ξ).toBlocks₁₁ from rfl, show mdel (fun x => (H x).toBlocks₁₂) z ξ = (mdel H z ξ).toBlocks …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hs']`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem conn_quot (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det)
     (hs : IsUnit (subGram (H z)).det) (ξ : E) :
@@ -133,9 +133,9 @@ theorem conn_quot (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det)
   abel
 
 /- English proof (translation)
-Establish `h1 : MContDiffAt 1 H z` using `h.of_le one_le_two`. Establish `hc : MContDiffAt 1 (fun x => conn H x ξ) z` using `h.conn hu (by norm_num) ξ`. Establish `he : (fun x => conn (fun x => quotGram (H x)) x ξ) =ᶠ[𝓝 z] fun x => (conn H x ξ).toBlocks₂₂ + -((conn H x ξ).toBlocks₂₁ * orthCoeff (H x))` using `by filter_upwards [h.eventually_two, h.eventually_isUnit hu, h.subGram.eventually_isUnit hs] with x c a b`. Rewrite using `[conn_quot (c.of_le one_le_two) a b, blockQQ_eq, sub_eq_add_neg]`. Establish `c22 : MContDiffAt 1 (fun x => (conn H x ξ).toBlocks₂₂) z` using `hc.submatrix Sum.inr Sum.inr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c21 : MContDiffAt 1 (fun x => (conn H x ξ).toBlocks₂₁) z` using `hc.submatrix Sum.inr Sum.inl`. Establish `ho` using `mContDiffAt_orthCoeff h1 hs`. Rewrite using `[curv, mdbar_congr he, mdbar_add c22 (c21.mul ho).neg, mdbar_neg, mdbar_mul c21 ho, mdbar_orthCoeff h1 hh hu hs, blockQQ_eq, secondForm_eq, show (curv H z ξ η).toBlocks₂₂ = -mdbar (fun x => (conn H x ξ).toBlocks₂₂) z η from rfl, show (curv H z ξ η).toBlocks₂₁ = -mdbar (fun x => ( …`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem curv_quot (h : MContDiffAt 2 H z) (hh : ∀ᶠ x in 𝓝 z, (H x).IsHermitian)
     (hu : IsUnit (H z).det) (hs : IsUnit (subGram (H z)).det) (ξ η : E) :
@@ -162,29 +162,27 @@ def pairFrame (z : ℂ) : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ :=
   fromBlocks 1 0 (of fun _ _ => z) 1
 
 /- English proof (translation)
-Apply the tactic sequence `ext (a | a) (b | b) <;> simp [tautPairGram, pairFrame, mul_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tautPairGram_eq (z : ℂ) :
     tautPairGram z = (pairFrame z)ᵀ * (fun _ : ℂ => 1) z * (pairFrame z)ᴴᵀ := by
   ext (a | a) (b | b) <;> simp [tautPairGram, pairFrame, mul_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `rintro (a | a) (b | b) <;> simp only [pairFrame, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, of_apply] <;> fun_prop`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mContDiffAt_pairFrame (k : WithTop ℕ∞) (z : ℂ) : MContDiffAt k pairFrame z := by
   rintro (a | a) (b | b) <;> simp only [pairFrame, fromBlocks_apply₁₁, fromBlocks_apply₁₂,
     fromBlocks_apply₂₁, fromBlocks_apply₂₂, of_apply] <;> fun_prop
 
 /- English proof (translation)
-Simplify using `[pairFrame, det_fromBlocks_zero₁₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_pairFrame (z : ℂ) : (pairFrame z).det = 1 := by
   simp [pairFrame, det_fromBlocks_zero₁₂]
 
 /- English proof (translation)
-Use `⟨isOpen_univ, fun a b z _ => ?_, fun z _ => ?_⟩` and prove the remaining obligations. Simplify using `only [funext tautPairGram_eq]`. Conclude with `((((mContDiffAt_pairFrame ∞ z).transpose.mul (mContDiffAt_const 1)).mul (mContDiffAt_pairFrame ∞ z).conjTranspose.transpose) a b).contDiffWithinAt`. Rewrite using `[tautPairGram_eq, ← PosDef.transpose_iff]`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_one]`.
-
-Conclude with `PosDef.conjTranspose_mul_self _ (mulVec_injective_iff_isUnit.2 ((isUnit_iff_isUnit_det _).2 (by simp [det_pairFrame])))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPosFrame_tautPairGram : IsPosFrame Set.univ tautPairGram := by
   refine ⟨isOpen_univ, fun a b z _ => ?_, fun z _ => ?_⟩
@@ -197,7 +195,7 @@ theorem isPosFrame_tautPairGram : IsPosFrame Set.univ tautPairGram := by
       ((isUnit_iff_isUnit_det _).2 (by simp [det_pairFrame])))
 
 /- English proof (translation)
-Rewrite using `[funext tautPairGram_eq, curv_changeFrame (mContDiffAt_const 1) (by simp) (mContDiffAt_pairFrame 2 z) (by simp [det_pairFrame]) (Eventually.of_forall fun x η => ?_)]`. Simplify using the standard rewrite rules. Apply the tactic sequence `ext (a | a) (b | b) <;> simp only [mdbar_apply, pairFrame, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, of_apply] <;>`. Apply the tactic sequence `rw [dbar_eq_zero (by fun_prop)] <;> rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem curv_tautPairGram (z ξ η : ℂ) : curv tautPairGram z ξ η = 0 := by
   rw [funext tautPairGram_eq, curv_changeFrame (mContDiffAt_const 1) (by simp)
@@ -209,9 +207,9 @@ theorem curv_tautPairGram (z ξ η : ℂ) : curv tautPairGram z ξ η = 0 := by
       rw [dbar_eq_zero (by fun_prop)] <;> rfl
 
 /- English proof (translation)
-Establish `h : tautPairGram 0 = 1`. Apply the tactic sequence `rw [← fromBlocks_one]; ext (a | a) (b | b) <;> simp [tautPairGram]`. Use extensionality with `a b`. Rewrite using `[secondForm_eq, conn, h, transpose_one, inv_one, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `del (fun x : ℂ => x) 0 ξ = ξ`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[del_eq_fderiv differentiableAt_fun_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem secondForm_tautPairGram (ξ : ℂ) : secondForm tautPairGram 0 ξ = of fun _ _ => ξ := by
   have h : tautPairGram 0 = 1 := by
@@ -222,11 +220,11 @@ theorem secondForm_tautPairGram (ξ : ℂ) : secondForm tautPairGram 0 ξ = of f
   rw [del_eq_fderiv differentiableAt_fun_id]; simp
 
 /- English proof (translation)
-Establish `h : tautPairGram 0 = 1`. Apply the tactic sequence `rw [← fromBlocks_one]; ext (a | a) (b | b) <;> simp [tautPairGram]`. Establish `h1 : subGram (1 : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ) = 1`. Rewrite using `[← fromBlocks_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : quotGram (1 : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ) = 1`. Establish `: toBlocks₂₁ (1 : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ) = 0`. Rewrite using `[← fromBlocks_one]`. Both sides reduce to the same expression. Rewrite using `[quotGram, this, Matrix.zero_mul, Matrix.zero_mul, sub_zero, ← fromBlocks_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[secondFormAdj, h, h1, h2, secondForm_tautPairGram]`. Use extensionality with `a b`. Simplify using `[adj]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem secondFormAdj_tautPairGram (η : ℂ) :
     secondFormAdj tautPairGram 0 η = of fun _ _ => conj η := by
@@ -242,9 +240,9 @@ theorem secondFormAdj_tautPairGram (η : ℂ) :
   ext a b; simp [adj]
 
 /- English proof (translation)
-Establish `h` using `isPosFrame_tautPairGram.isHermFrame`. Establish `hs` using `isPosFrame_tautPairGram.sub.isHermFrame.isUnit 0 trivial`. Establish `a` using `h.two (z := 0) trivial`. Establish `b` using `h.eventually_herm (z := 0) trivial`. Establish `c` using `h.isUnit 0 trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[curv_sub a b c hs, curv_quot a b c hs, extTrace, extFormAdj_eq_neg_secondForm (h.one trivial) b c hs, extForm_eq_neg_secondFormAdj (h.one trivial) b c hs, curv_tautPairGram, secondForm_tautPairGram, secondFormAdj_tautPairGram]`. Simplify using `[blockSS, blockQQ, mul_apply, trace, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem curv_sub_quot_tautPairGram (ξ η : ℂ) :
     curv (fun x => subGram (tautPairGram x)) 0 ξ η () () = -(ξ * conj η) ∧
@@ -262,7 +260,7 @@ theorem curv_sub_quot_tautPairGram (ξ η : ℂ) :
   simp [blockSS, blockQQ, mul_apply, trace, mul_comm]
 
 /- English proof (translation)
-Simplify using `[wedge]`.
+Simplify using the standard rewrite rules.
 -/
 example : wedge (fun ξ η : Fin 2 → ℂ => ξ 0 * conj (η 0)) (fun ξ η => ξ 1 * conj (η 1))
       ![1, 0] ![1, 0] ![0, 1] ![0, 1] = 1 ∧
@@ -271,7 +269,7 @@ example : wedge (fun ξ η : Fin 2 → ℂ => ξ 0 * conj (η 0)) (fun ξ η => 
   simp [wedge]
 
 /- English proof (translation)
-Introduce `h` and use `by simpa using (h 0 rfl).1.diag_pos (i := 0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (C : ℝ) : ¬ OneFormBound {0} (fun _ : Fin 1 → ℂ => (0 : Matrix (Fin 1) (Fin 1) ℂ))
     (fun _ => 1) (fun _ _ => 1) C := fun h => by

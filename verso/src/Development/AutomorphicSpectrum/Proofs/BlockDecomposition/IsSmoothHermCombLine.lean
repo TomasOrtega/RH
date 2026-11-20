@@ -27,7 +27,7 @@ section Line
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_sum_eq_prod {α : Type} (s : Finset α) {x : ℝ} (hx : x ≠ 0) (f : α → ℤ) :
     x ^ (∑ o ∈ s, f o) = ∏ o ∈ s, x ^ f o := by
@@ -91,7 +91,7 @@ def RepBy (M : HermLB (mpStr ℤ m n)) (A : HermLine (Bk n))
         Real.exp ((M.φ σ₀).φ i y / 2)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isHermRep_iff (M : HermLB (mpStr ℤ m n)) (A : HermLine (Bk n)) : IsHermRep M A ↔ ∃ u, RepBy M A u := Iff.rfl
 
@@ -197,9 +197,9 @@ def Polar : Prop := ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype
         F (D + 1) (Fin.snoc (fun _ : Fin D => combLine A n) A₀)
 
 /- English proof (translation)
-Use `ContDiffOn.congr (f := fun z => ∏ o, (A o).h z ^ a o) ?_ fun z hz => if_pos hz` and prove the remaining obligations. Use `contDiffOn_prod fun o _ => ?_` and prove the remaining obligations. Establish `hp : ∀ z ∈ {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}, (A o).h z ≠ 0` using `fun z hz => ((A o).pos z hz).ne'`. Consider the cases of `a o with`. Consider the case `ofNat k => simpa only [Int.ofNat_eq_natCast, zpow_natCast] using (h o).pow k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `negSucc k`. Simplify using `only [zpow_negSucc]`. Conclude with `((h o).pow (k + 1)).inv fun z hz => pow_ne_zero _ (hp z hz)`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_combLine {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {κ : Type} [Fintype κ]
     {A : κ → HermLine ι} (h : ∀ o, IsSmoothHerm (A o)) (a : κ → ℤ) : IsSmoothHerm (combLine A a) := by
@@ -213,7 +213,7 @@ theorem isSmoothHerm_combLine {K : Type} [Fintype K] {ι : K → Type} [∀ k, F
     exact ((h o).pow (k + 1)).inv fun z hz => pow_ne_zero _ (hp z hz)
 
 /- English proof (translation)
-Rewrite using `[genericPoint_closure]`. Conclude with `IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ X).isHomeomorph`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_closure_generic (X : Scheme.{0}) [IsIntegral X] :
     topologicalKrullDim (closure ({genericPoint X} : Set X)) = topologicalKrullDim X := by
@@ -221,25 +221,23 @@ theorem dim_closure_generic (X : Scheme.{0}) [IsIntegral X] :
   exact IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ X).isHomeomorph
 
 /- English proof (translation)
-Introduce `m n X _ _ i _ D hX ι _ M₀ M t₀ tM Φ hΦ nn h hh r hr`. Take `⟨A₀, s₀, R₀, c₀⟩` from `h₁ m n M₀ t₀`. Use `choose A sA RA cA using fun j => h₁ m n (M j) (tM j)`. Set `M' : Option ι → HermLB (mpStr ℤ m n)` to `fun o => o.elim M₀ M`. Set `A' : Option ι → HermLine (Bk n)` to `fun o => o.elim A₀ A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `sA' : ∀ o, IsSmoothHerm (A' o)`. Introduce and unpack `(_ | j)`. Use `exacts [s₀, sA j]`. Establish `RA' : ∀ o, IsHermRep (M' o) (A' o)`. Introduce and unpack `(_ | j)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `exacts [R₀, RA j]`. Establish `hC` using `hX.charZero`. Take `⟨-, hp₃, hp₄, -⟩` from `h₃ m n X i (D + 1) hX.dim_eq`. Establish `hhor : IsHorizontal (ptIdeal (i (genericPoint X)))` using `hp₃.2 hC`. Establish `hP` using `hp₄ hhor`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `diag : ∀ a : Option ι → ℤ, Φ (lin (fun o => (a o : ℝ)) ^ (D + 1)) = II (Fin (m + 1)) (Bk n) (ptIdeal (i (genericPoint X))) (D + 1) fun _ => combLine A' a`. Introduce `a`. Take `⟨h', H', e⟩` from `hΦ.1 a`. Establish `eL : (fun o : Option ι => o.elim (M₀.restr i) fun j => (M j).restr i) = fun o => (M' o).restr i`. Use function extensionality and compare the values at `o`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `cases o <;> rfl`. Rewrite `H'` using `[eL]`. Establish `H''` using `(isometric_comb_pull M' a i rfl).isArithHeight hX H'`. Establish `Rc` using `h₂ m n _ M' A' RA' a`. Establish `e₂` using `hH m n _ _ Rc (isSmoothHerm_combLine sA' a) X i h' H'' (genericPoint X) (D + 1) ((dim_closure_generic X).trans hX.dim_eq)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e, e₂, cycVal]`. Conclude with `if_pos hhor`. Establish `RN` using `h₂ m n ι M A RA nn`. Establish `sB` using `isSmoothHerm_combLine sA nn`. Establish `iso` using `isometric_comb_pull (fun j => M j) nn i rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh'` using `iso.isArithHeight hX hh`. Establish `hI` using `h₈ m n (comb M nn) M₀ X i D hX r hr`. Take `⟨f, g, hfg, hrat⟩` from `h₅ m n M₀ A₀ R₀ X i r hr`. Establish `hcyc` using `h₆ m n M₀ A₀ R₀ X i D hX r hr f g hfg hrat (cycVal II (combLine A nn) D)`. Establish `hint` using `h₇ m n (comb M nn) M₀ _ A₀ RN R₀ X i D hX sB s₀ r hr f g hfg hrat`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hrr` using `hR _ _ (II _ (Bk n)) (hII.1 _ _) _ D (fun _ => combLine A nn) A₀ f g hP (fun _ => sB) s₀ hfg`. Establish `hpol` using `h₉ _ (Bk n) (fun e L => II _ (Bk n) (ptIdeal (i (genericPoint X))) e L) D ι A₀ A s₀ sA c₀ cA (fun L s hs => (hII.1 _ _).1 _ _ L s hP hs) (fun L j B C hs hB hC => hII.2.1 _ _ _ _ L j B C hP hs hB hC) Φ diag nn`. Use `⟨fun σ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[iso.chernIntegrableOn_eq σ D]`. Conclude with `hI σ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `e₁ : (comb (fun j => (M j).restr i) nn).archInt (M₀.restr i) D hr = ((comb M nn).restr i).archInt (M₀.restr i) D hr`. Simplify using `only [HermLB.archInt, iso.chernInt_eq]`. Establish `e₂ : ∑ᶠ z, (((M₀.restr i).div hr).mult z : ℝ) * h z = ∑ᶠ z, (((M₀.restr i).div hr).mult z : ℝ) * cycVal II (combLine A nn) D (ptIdeal (i z))`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : ((M₀.restr i).div hr).mult z = 0`.
-
-Simplify using `[hz]`. Rewrite using `[hH m n _ _ RN sB X i h hh' z D (h₄ X _ D hX z (CartierDiv.coheight_eq_one_of_mult_ne_zero hz))]`. Rewrite using `[hpol, hrr, e₁, hint, e₂, hcyc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mixZ_of (h₁ : ExistsRead) (h₂ : ReadComb) (h₃ : PtDict) (h₄ : CodimOne) (h₅ : ExistsRat) (h₆ : CycleOfRat)
     (h₇ : ArchIntEq) (h₈ : ArchIntegrableOn) (h₉ : Polar) (hR : RatRStatement) (II : IntersectionSystem)

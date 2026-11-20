@@ -21,9 +21,9 @@ def FujitaVanishing.Statement : Prop :=
       ∀ i : ℕ, 1 ≤ i → Subsingleton (KH.cechHc ι 𝓜 (m • H + N) i)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[Module.mem_annihilator]`. Introduce `z`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `V.mul_mem_right r hx`.
+A detailed English derivation is pending.
 -/
 theorem le_annihilator_quotient {R : Type} [CommRing R] (V : Ideal R) :
     V ≤ Module.annihilator R (R ⧸ V) := by

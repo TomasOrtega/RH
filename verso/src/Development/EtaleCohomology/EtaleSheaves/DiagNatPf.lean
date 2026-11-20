@@ -4,9 +4,9 @@ namespace LateralTheory.E.DiagNatPf
 open LateralTheory.E.PartDiagCut
 
 /- English proof (translation)
-Introduce `B _ I P Q h`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `b`. Use function extensionality and compare the values at `e`. Simplify using `only [stageMap, βP, RingHom.comp_apply, RingHom.pi_apply, Pi.evalRingHom_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `(IsLocalization.map_eq (S := Localization (S I (par h e).1)) _ b).trans (by rfl)`.
+A detailed English derivation is pending.
 -/
 theorem DiagNat_of : LateralTheory.E.PartDiagCut.DiagNat := by
   intro B _ I P Q h

@@ -14,12 +14,12 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨planeHerm, planeSkew⟩`.
+Supply the required witnesses or components.
 -/
 theorem planeEx : PlaneEx := ⟨planeHerm, planeSkew⟩
 
 /- English proof (translation)
-The claim follows from `pairEx_of modelEx (weilEx_of h)`.
+A detailed English derivation is pending.
 -/
 theorem pairEx (h : WeilPairExists) : PairEx := pairEx_of modelEx (weilEx_of h)
 

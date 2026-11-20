@@ -6,15 +6,15 @@ namespace Formalism.FourierDecayAlt.P.CutBP.JmuHC
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `D using Finset.induction_on_max with`. Consider the case `empty => simp`. Consider the case `insert m D hlt ih`. Establish `hm : m ∉ D` using `fun h => lt_irrefl _ (hlt m h)`. Establish `h0' : 0 ∉ D` using `fun h => h0 (mem_insert_of_mem h)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero fun e => h0 (e ▸ mem_insert_self m D)`. Establish `hcard : D.card + 1 ≤ m`. Establish `hsub : D ⊆ (range m).erase 0` using `fun x hx => mem_erase.2 ⟨fun e => h0' (e ▸ hx), mem_range.2 (hlt x hx)⟩`. Use `card_le_card hsub` as an intermediate fact. Rewrite `this` using `[card_erase_of_mem (mem_range.2 hm0), card_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[prod_insert hm, card_insert_of_notMem hm]`. Establish `ih'` using `ih h0'`. Establish `hP : 0 ≤ ∏ d ∈ D, (1 + 1 / (d : ℝ))` using `prod_nonneg fun d _ => by positivity`. Establish `hc : ((D.card : ℝ) + 1) ≤ (m : ℝ)` using `by exact_mod_cast hcard`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : (0 : ℝ) < (D.card : ℝ) + 1` using `by positivity`. Establish `h1 : 1 + 1 / (m : ℝ) ≤ 1 + 1 / ((D.card : ℝ) + 1)`. Use `one_div_le_one_div_of_le hc0 hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem prod_one_add_inv_le (D : Finset ℕ) (h0 : 0 ∉ D) : ∏ d ∈ D, (1 + 1 / (d : ℝ)) ≤ D.card + 1 := by
   induction D using Finset.induction_on_max with
@@ -47,31 +47,29 @@ theorem prod_one_add_inv_le (D : Finset ℕ) (h0 : 0 ∉ D) : ∏ d ∈ D, (1 + 
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hne : ∀ t ∈ T, x s ≠ x t` using `fun t ht e => hs (hinj e ▸ ht)`. Rewrite using `[← prod_filter_mul_prod_filter_not T (fun t => x t < x s)]`. Establish `hlow : ∏ t ∈ T.filter (fun t => ¬ x t < x s), |x s + 1 - x t| / |x s - x t| ≤ 1`. Apply `prod_le_one (fun t _ => by positivity)` to reduce the goal to its premises. Introduce `t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ht, hlt⟩` from `mem_filter.1 ht`. Establish `hgt : x s < x t` using `lt_of_le_of_ne (not_lt.1 hlt) (hne t ht)`. Take `⟨m, hmv⟩` from `hint t s`. Establish `hm1 : (1 : ℝ) ≤ x t - x s`. Rewrite using `[hmv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℤ) < m` using `by exact_mod_cast (hmv ▸ sub_pos.2 hgt)`. Conclude with `this` after adjusting the coercions. Rewrite using `[div_le_one (abs_pos.2 (sub_ne_zero.2 (hne t ht)))]`. Rewrite using `[abs_of_nonpos (by linarith), abs_of_neg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Use `set Tp := T.filter (fun t => x t < x s) with hTp`. Set `dN : Fin n → ℕ` to `fun t => (⌊x s - x t⌋).toNat`. Establish `hdN : ∀ t ∈ Tp, ((dN t : ℕ) : ℝ) = x s - x t ∧ 1 ≤ x s - x t`. Introduce `t ht`. Take `⟨-, hlt⟩` from `mem_filter.1 ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hmv⟩` from `hint s t`. Establish `hm0 : (0 : ℤ) < m` using `by exact_mod_cast (hmv ▸ sub_pos.2 hlt)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [dN, hmv, Int.floor_intCast]`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg hm0.le]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmv]`. Conclude with `hm0` after adjusting the coercions. Establish `hinjOn : Set.InjOn dN Tp`. Introduce `t ht t' ht' e`. Establish `h1` using `(hdN t ht).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `(hdN t' ht').1`. Apply `hinj` to reduce the goal to its premises. Establish `: x s - x t = x s - x t'` using `by rw [← h1, ← h2, e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hup : ∏ t ∈ Tp, |x s + 1 - x t| / |x s - x t| = ∏ d ∈ Tp.image dN, (1 + 1 / (d : ℝ))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[prod_image hinjOn]`. Use `prod_congr rfl fun t ht => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hdN t ht`. Rewrite using `[h1, abs_of_pos (by linarith), abs_of_pos (by linarith)]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hD0 : 0 ∉ Tp.image dN`. Introduce `h`. Take `⟨t, ht, e⟩` from `mem_image.1 h`. Establish `h1` using `hdN t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[e]`. Simplify using `at h1`. Combine the linear relations using `[h1.1, h1.2]`. Establish `hbound` using `prod_one_add_inv_le (Tp.image dN) hD0`. Rewrite `hbound` using `[card_image_of_injOn hinjOn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTcard : Tp.card + 1 ≤ n`. Establish `h1 : Tp.card ≤ T.card` using `card_le_card (filter_subset _ _)`. Establish `h2 : T.card < n`. Use `card_lt_card (Finset.ssubset_iff_subset_ne.2 ⟨subset_univ T, fun e => hs (e ▸ mem_univ s)⟩)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use linear arithmetic over natural numbers and integers. Establish `hupnn : 0 ≤ ∏ t ∈ Tp, |x s + 1 - x t| / |x s - x t|` using `prod_nonneg fun t _ => by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, hup]`. Use `hbound.trans ?_` and prove the remaining obligations.
-
-Conclude with `hTcard` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_ratio_le (x : Fin n → ℝ) (hinj : Function.Injective x) (hint : ∀ a b, ∃ m : ℤ, x a - x b = m)
     (s : Fin n) (T : Finset (Fin n)) (hs : s ∉ T) :
@@ -146,13 +144,13 @@ theorem prod_ratio_le (x : Fin n → ℝ) (hinj : Function.Injective x) (hint : 
 def numHC (x : Fin n → ℝ) : ℝ := ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), |x a - x b|
 
 /- English proof (translation)
-Establish `h1 : ∀ a : Fin n, ∏ b ∈ univ.erase a, g a b = (∏ b ∈ univ.filter (fun b : Fin n => a < b), g a b) * ∏ b ∈ univ.filter (fun b : Fin n => b < a), g a b`. Introduce `a`. Rewrite using `[← prod_union]`. Use `congr 1`. Use extensionality with `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_erase, mem_univ, and_true, mem_union, mem_filter, true_and]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro h; rcases lt_or_gt_of_ne h with h | h <;> [exact Or.inr h; exact Or.inl h]`. Apply the tactic sequence `rintro (h | h) <;> [exact ne_of_gt h; exact ne_of_lt h]`. Rewrite using `[disjoint_filter]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ h1 h2`. Conclude with `lt_asymm h1 h2`. Rewrite using `[prod_congr rfl (fun a _ => h1 a), prod_mul_distrib, sq]`. Use `congr 1`. Establish `hB : ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => b < a), g a b = ∏ b : Fin n, ∏ a ∈ univ.filter (fun a : Fin n => b < a), g a b` using `prod_comm' (by intro a b; simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB]`. Conclude with `prod_congr rfl fun b _ => prod_congr rfl fun a _ => hg b a`.
+A detailed English derivation is pending.
 -/
 theorem sq_prod_lt (g : Fin n → Fin n → ℝ) (hg : ∀ a b, g a b = g b a) :
     (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), g a b) ^ 2 = ∏ a : Fin n, ∏ b ∈ univ.erase a, g a b := by
@@ -178,35 +176,31 @@ theorem sq_prod_lt (g : Fin n → Fin n → ℝ) (hg : ∀ a b, g a b = g b a) :
   exact prod_congr rfl fun b _ => prod_congr rfl fun a _ => hg b a
 
 /- English proof (translation)
-Use `set y : Fin n → ℝ := fun i => x i + if i ∈ I then 1 else 0 with hydef`. Use `set f : Fin n → Fin n → ℝ := fun a b => |y a - y b| / |x a - x b| with hf`. Establish `hx0 : ∀ a b, a ≠ b → |x a - x b| ≠ 0` using `fun a b h => abs_ne_zero.2 (sub_ne_zero.2 fun e => h (hinj e))`. Establish `hfs : ∀ a b, f a b = f b a` using `fun a b => by simp only [hf, abs_sub_comm]`. Establish `hy : ∀ a b, a ≠ b → |y a - y b| = f a b * |x a - x b|` using `fun a b h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hf]`. Rewrite using `[div_mul_cancel₀ _ (hx0 a b h)]`. Establish `hf1 : ∀ a b, a ≠ b → (a ∈ I ↔ b ∈ I) → f a b = 1`. Introduce `a b h hab`. Simplify using `only [hf, hydef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `: (x a + if a ∈ I then 1 else 0) - (x b + if b ∈ I then 1 else 0) = x a - x b`. Distinguish the cases in `ha : a ∈ I`. Rewrite using `[if_pos ha, if_pos (hab.1 ha)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg ha, if_neg (fun hb => ha (hab.2 hb))]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, div_self (hx0 a b h)]`. Establish `hsqy : numHC y ^ 2 = ∏ a : Fin n, ∏ b ∈ univ.erase a, |y a - y b|` using `sq_prod_lt _ fun a b => abs_sub_comm _ _`. Establish `hsqx : numHC x ^ 2 = ∏ a : Fin n, ∏ b ∈ univ.erase a, |x a - x b|` using `sq_prod_lt _ fun a b => abs_sub_comm _ _`. Establish `hsplit : ∏ a : Fin n, ∏ b ∈ univ.erase a, |y a - y b| = (∏ a : Fin n, ∏ b ∈ univ.erase a, f a b) * numHC x ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsqx, ← prod_mul_distrib]`. Use `prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← prod_mul_distrib]`. Conclude with `prod_congr rfl fun b hb => hy a b (ne_of_mem_erase hb).symm`. Use `set Pr := ∏ s ∈ I, ∏ t ∈ univ \ I, f s t with hPr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation.
 
-Establish `hff : ∏ a : Fin n, ∏ b ∈ univ.erase a, f a b = Pr ^ 2`. Establish `hin : ∀ a ∈ I, ∏ b ∈ univ.erase a, f a b = ∏ b ∈ univ \ I, f a b`. Introduce `a ha`. Use `symm`. Apply `prod_subset` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b hb`. Rewrite `hb` using `[mem_sdiff]`. Conclude with `mem_erase.2 ⟨fun e => hb.2 (e ▸ ha), mem_univ b⟩`. Introduce `b hb hb'`. Establish `hba : b ≠ a` using `ne_of_mem_erase hb`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation.
 
-Establish `hbI : b ∈ I`. Assume the negation of the conclusion as `h`. Conclude with `hb' (mem_sdiff.2 ⟨mem_univ b, h⟩)`. Conclude with `hf1 a b hba.symm ⟨fun _ => hbI, fun _ => ha⟩`. Establish `hout : ∀ a ∉ I, ∏ b ∈ univ.erase a, f a b = ∏ b ∈ I, f a b`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Use `symm`. Apply `prod_subset` to reduce the goal to its premises. Introduce `b hb`. Conclude with `mem_erase.2 ⟨fun e => ha (e ▸ hb), mem_univ b⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb hb'`. Establish `hba : b ≠ a` using `ne_of_mem_erase hb`. Conclude with `hf1 a b hba.symm ⟨fun h => absurd h ha, fun h => absurd h hb'⟩`. Rewrite using `[← prod_filter_mul_prod_filter_not univ (fun a => a ∈ I)]`. Establish `e1 : univ.filter (fun a : Fin n => a ∈ I) = I` using `by ext a; simp`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : univ.filter (fun a : Fin n => a ∉ I) = univ \ I` using `by ext a; simp`. Rewrite using `[e1, e2, prod_congr rfl hin, prod_congr rfl (fun a ha => hout a (mem_sdiff.1 ha).2)]`. Establish `hC : ∏ a ∈ univ \ I, ∏ b ∈ I, f a b = ∏ b ∈ I, ∏ a ∈ univ \ I, f a b` using `prod_comm`. Rewrite using `[hC, sq]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `prod_congr rfl fun s _ => prod_congr rfl fun t _ => hfs t s`. Establish `hP0 : 0 ≤ Pr` using `prod_nonneg fun s _ => prod_nonneg fun t _ => by positivity`. Establish `hPn : Pr ≤ (n : ℝ) ^ I.card`. Rewrite using `[← prod_const]`. Use `prod_le_prod (fun s _ => prod_nonneg fun t _ => by positivity) fun s hs => ?_` and prove the remaining obligations.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∏ t ∈ univ \ I, f s t = ∏ t ∈ univ \ I, |x s + 1 - x t| / |x s - x t|`. Use `prod_congr rfl fun t ht => ?_` and prove the remaining obligations. Establish `htI : t ∉ I` using `(mem_sdiff.1 ht).2`. Simplify using `only [hf, hydef, if_pos hs, if_neg htI]`. Use `congr 1`.
-
-Put the polynomial expressions in normal form. Rewrite using `[e]`. Conclude with `prod_ratio_le x hinj hint s (univ \ I) (fun h => (mem_sdiff.1 h).2 hs)`. Establish `hny : 0 ≤ numHC y` using `prod_nonneg fun a _ => prod_nonneg fun b _ => abs_nonneg _`. Establish `hnx : 0 ≤ numHC x` using `prod_nonneg fun a _ => prod_nonneg fun b _ => abs_nonneg _`.
-
-Establish `hsq : numHC y ^ 2 ≤ ((n : ℝ) ^ I.card * numHC x) ^ 2`. Rewrite using `[hsqy, hsplit, hff, mul_pow]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hP0 hPn 2) (sq_nonneg _)`. Conclude with `(pow_le_pow_iff_left₀ hny (by positivity) two_ne_zero).1 hsq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem numHC_addI_le (x : Fin n → ℝ) (hinj : Function.Injective x) (hint : ∀ a b, ∃ m : ℤ, x a - x b = m)
     (I : Finset (Fin n)) :
@@ -289,9 +283,9 @@ theorem numHC_addI_le (x : Fin n → ℝ) (hinj : Function.Injective x) (hint : 
   exact (pow_le_pow_iff_left₀ hny (by positivity) two_ne_zero).1 hsq
 
 /- English proof (translation)
-Unfold `PI.UpqRep.fdegHC`. Establish `hD : 0 ≤ ∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))` using `prod_nonneg fun a _ => prod_nonneg fun b hb => by`. Use `(mem_filter.1 hb).2` as an intermediate fact. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[mul_div_assoc']`. Conclude with `div_le_div_of_nonneg_right (numHC_addI_le x hinj hint I) hD`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdegHC_addI_le (x : Fin n → ℝ) (hinj : Function.Injective x) (hint : ∀ a b, ∃ m : ℤ, x a - x b = m)
     (I : Finset (Fin n)) :

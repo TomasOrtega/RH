@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem trForm_apply (X Y : Matrix (Fin n) (Fin n) ℂ) : trForm n X Y = ((X * Yᴴ).trace).re := rfl
 
 /- English proof (translation)
-Establish `: Y * Xᴴ = (X * Yᴴ)ᴴ` using `by rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[trForm_apply, trForm_apply, this, Matrix.trace_conjTranspose, Complex.star_def, Complex.conj_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trForm_comm (X Y : Matrix (Fin n) (Fin n) ℂ) : trForm n X Y = trForm n Y X := by
   have : Y * Xᴴ = (X * Yᴴ)ᴴ := by rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]
@@ -35,7 +35,7 @@ theorem trForm_comm (X Y : Matrix (Fin n) (Fin n) ℂ) : trForm n X Y = trForm n
     Complex.conj_re]
 
 /- English proof (translation)
-Simplify using `only [trForm_apply, hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `norm_cast`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem hs_eq (g : Matrix (Fin n) (Fin n) ℂ) : hs g = trForm n g g := by
   simp only [trForm_apply, hs, Matrix.trace, Matrix.diag, Matrix.mul_apply,
@@ -45,7 +45,7 @@ theorem hs_eq (g : Matrix (Fin n) (Fin n) ℂ) : hs g = trForm n g g := by
   norm_cast
 
 /- English proof (translation)
-Unfold `hs`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem hs_nonneg (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hs g := by
   unfold hs; positivity
@@ -57,7 +57,7 @@ def coord (E : Fin d → Matrix (Fin n) (Fin n) ℂ) :
   map_smul' c X := by ext i; simp
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq]`. Simplify using `[coord]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_coord (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
     ‖coord E X‖ = Real.sqrt (∑ i, trForm n X (E i) ^ 2) := by
@@ -65,7 +65,7 @@ theorem norm_coord (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (X : Matrix (Fin n
   simp [coord]
 
 /- English proof (translation)
-Simplify using `[map_sum, LinearMap.sum_apply, hE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trForm_sum (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hE : ∀ i k, trForm n (E i) (E k) = if i = k then 1 else 0) (a : Fin d → ℝ) (k : Fin d) :
@@ -73,7 +73,7 @@ theorem trForm_sum (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
   simp [map_sum, LinearMap.sum_apply, hE]
 
 /- English proof (translation)
-Rewrite using `[hs_eq, map_sum (trForm n (∑ i, a i • E i))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, trForm_sum E hE, smul_eq_mul, sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hs_sum (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hE : ∀ i k, trForm n (E i) (E k) = if i = k then 1 else 0) (a : Fin d → ℝ) :
@@ -83,11 +83,11 @@ theorem hs_sum (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
   rw [map_smul, trForm_sum E hE, smul_eq_mul, sq]
 
 /- English proof (translation)
-Rewrite using `[norm_coord]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Use `set S := ∑ i, trForm n X (E i) • E i with hS`. Establish `h1 : trForm n S S = ∑ i, trForm n X (E i) ^ 2` using `by rw [← hs_eq, hS, hs_sum E hE]`. Establish `h2 : trForm n X S = ∑ i, trForm n X (E i) ^ 2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, sq]`. Establish `h3` using `hs_nonneg (X - S)`. Rewrite `h3` using `[hs_eq, map_sub, LinearMap.map_sub₂, LinearMap.map_sub₂, trForm_comm S X, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bessel (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hE : ∀ i k, trForm n (E i) (E k) = if i = k then 1 else 0) (X : Matrix (Fin n) (Fin n) ℂ) :
@@ -106,7 +106,7 @@ theorem bessel (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
   linarith
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℝ).1 hX`. Rewrite using `[norm_coord, hs_sum E hE]`. Simplify using `only [trForm_sum E hE]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_coord_span (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hE : ∀ i k, trForm n (E i) (E k) = if i = k then 1 else 0) (X : Matrix (Fin n) (Fin n) ℂ)
@@ -118,7 +118,7 @@ theorem norm_coord_span (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `hu : (uMat g)ᴴ * Jm ε * uMat g = Jm ε` using `g.2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem uMat_inv (g : UJ ε) : uMat g⁻¹ = Jm ε * (uMat g)ᴴ * Jm ε := by
   have hu : (uMat g)ᴴ * Jm ε * uMat g = Jm ε := g.2
@@ -128,9 +128,9 @@ theorem uMat_inv (g : UJ ε) : uMat g⁻¹ = Jm ε * (uMat g)ᴴ * Jm ε := by
     _ = _ := by rw [uMat_mul_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h1 : uMat g⁻¹ - 1 = Jm ε * (uMat g - 1)ᴴ * Jm ε`. Rewrite using `[uMat_inv, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Jm_mul_self]`. Rewrite using `[h1, hs_eq, hs_eq, trForm_apply, trForm_apply]`. Use `set X := uMat g - 1`. Establish `h2 : Jm ε * Xᴴ * Jm ε * (Jm ε * Xᴴ * Jm ε)ᴴ = Jm ε * (Xᴴ * (Jm ε * Jm ε) * X * Jm ε)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Jm_conjTranspose, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[h2, Jm_mul_self, Matrix.mul_one, Matrix.trace_mul_comm, Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one, Matrix.trace_mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_inv_sub_one (g : UJ ε) : hs (uMat g⁻¹ - 1) = hs (uMat g - 1) := by
   have h1 : uMat g⁻¹ - 1 = Jm ε * (uMat g - 1)ᴴ * Jm ε := by
@@ -145,7 +145,7 @@ theorem hs_inv_sub_one (g : UJ ε) : hs (uMat g⁻¹ - 1) = hs (uMat g - 1) := b
     Matrix.mul_one, Matrix.trace_mul_comm]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.GaugeConst.mem_lieJ, uMat_inv]`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Jm_conjTranspose, Matrix.conjTranspose_conjTranspose, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc (Jm ε) (Jm ε), Jm_mul_self, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sub_inv_mem_lie (g : UJ ε) : uMat g - uMat g⁻¹ ∈ GlobalTheory.GaugeConst.lieJ ε := by
   rw [GlobalTheory.GaugeConst.mem_lieJ, uMat_inv]
@@ -157,23 +157,21 @@ theorem sub_inv_mem_lie (g : UJ ε) : uMat g - uMat g⁻¹ ∈ GlobalTheory.Gaug
 
 open scoped Matrix.Norms.Frobenius in
 /- English proof (translation)
-Establish `key : ∀ g : UJ ε, uMat g - 1 ∈ A → uMat g - uMat g⁻¹ ∈ Submodule.span ℝ (Set.range E)`. Introduce `g hg`. Use `(hsp _).1 ⟨?_, sub_inv_mem_lie g⟩` and prove the remaining obligations. Use `A.sub_mem hg (inv_sub_one_mem A hA g hg)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hv` using `Submodule.sub_mem _ (key g hg) (key h hh)`. Rewrite `hg'`, `hh'` using `[← hs_inv_sub_one, GlobalTheory.GaugeConst.sqrt_hs]`. Establish `e1 : uMat g⁻¹ * (uMat g - uMat h) * uMat h⁻¹ = uMat h⁻¹ - uMat g⁻¹`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, uMat_inv_mul, Matrix.one_mul, Matrix.mul_assoc, uMat_mul_inv, Matrix.mul_one]`. Use `set v := uMat g - uMat g⁻¹ - (uMat h - uMat h⁻¹) with hvdef`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set D := uMat g - uMat h with hD`. Use `set a := uMat g⁻¹ - 1 with ha`. Use `set b := uMat h⁻¹ - 1 with hb`. Establish `e2 : v = (2 : ℝ) • D + (a * D * b + a * D + D * b)`. Establish `: a * D * b + a * D + D * b = uMat g⁻¹ * D * uMat h⁻¹ - D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[ha, hb]`. Use `noncomm_ring`. Rewrite using `[this, e1, hvdef, hD, two_smul]`. Normalize the expressions using the abelian group laws. Use `set R := a * D * b + a * D + D * b with hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0` using `norm_nonneg a`. Establish `hb0` using `norm_nonneg b`. Establish `hD0` using `norm_nonneg D`. Establish `n1 : ‖a * D‖ ≤ δ * ‖D‖` using `(Matrix.frobenius_norm_mul a D).trans (mul_le_mul_of_nonneg_right hg'.le hD0)`. Establish `n2 : ‖D * b‖ ≤ ‖D‖ * δ` using `(Matrix.frobenius_norm_mul D b).trans (mul_le_mul_of_nonneg_left hh'.le hD0)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3 : ‖a * D * b‖ ≤ δ * ‖D‖` using `(Matrix.frobenius_norm_mul _ b).trans ((mul_le_of_le_one_right (norm_nonneg _) (hh'.le.trans hδ)).trans n1)`. Establish `n4 : ‖R‖ ≤ 3 * δ * ‖D‖`. Use `norm_add₃_le (a := a * D * b) (b := a * D) (c := D * b)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `p1` using `norm_coord_span E hE v hv`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `p2` using `bessel E hE R`. Rewrite `p1`, `p2`, the goal using `[GlobalTheory.GaugeConst.sqrt_hs]`. Establish `p3 : ‖coord E v‖ ≤ 2 * ‖coord E D‖ + ‖coord E R‖`. Rewrite using `[e2, map_add, map_smul]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[norm_smul, Real.norm_two]`. Establish `p4 : 2 * ‖D‖ ≤ ‖v‖ + ‖R‖`. Establish `: (2 : ℝ) • D = v - R` using `by rw [e2, add_sub_cancel_right]`. Establish `h5` using `norm_sub_le v R`. Rewrite `h5` using `[← this, norm_smul, Real.norm_two]`. Then use the resulting hypothesis.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lower (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hA : ∀ X ∈ A, ∀ Y ∈ A, X * Y ∈ A)
@@ -229,11 +227,11 @@ theorem lower (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (E : Fin d → Ma
   linarith
 
 /- English proof (translation)
-Introduce `n ε A d E hA hE hsp κ hκ`. Establish `hk : κ⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hκ`. Establish `hk0 : 0 < κ⁻¹` using `inv_pos.2 (by linarith)`. Use `⟨(1 - κ⁻¹) / 3, by linarith, fun g h hg hh hg' hh' => ?_⟩` and prove the remaining obligations. Establish `e : (WithLp.toLp 2 (fun i => (((uMat g - 1) * (E i)ᴴ).trace).re) : EuclideanSpace ℝ (Fin d)) - (WithLp.toLp 2 (fun i => (((uMat h - 1) * (E i)ᴴ).trace).re) : EuclideanSpace ℝ (Fin d)) = coord E (uMat g - uMat h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `coord E (uMat g - 1) - coord E (uMat h - 1) = _`. Rewrite using `[← map_sub, sub_sub_sub_cancel_right]`. Rewrite using `[e]`. Use `⟨bessel E hE _, ?_⟩` and prove the remaining obligations. Establish `h1` using `lower A E hA hE hsp _ (by linarith) g h hg hh hg' hh'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : 1 - 3 * ((1 - κ⁻¹) / 3) = κ⁻¹` using `by ring`. Rewrite `h1` using `[h2]`. Conclude with `(inv_mul_le_iff₀ (by linarith)).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_almost_isometric : ∀ (n : ℕ) (ε : Fin n → Bool) (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) (d : ℕ) (E : Fin d → Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ A, ∀ Y ∈ A, X * Y ∈ A) → (∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0) → (∀ X, (X ∈ A ∧ Formalism.REAL.inG ε X) ↔ X ∈ Submodule.span ℝ (Set.range E)) → ∀ κ : ℝ, 1 < κ → ∃ δ : ℝ, 0 < δ ∧ ∀ g h : Formalism.REAL.UJ ε, uMat g - 1 ∈ A → uMat h - 1 ∈ A → Real.sqrt (Formalism.REAL.hs (uMat g - 1)) < δ → Real.sqrt (Formalism.REAL.hs (uMat h - 1)) < δ → ‖(WithLp.toLp 2 (fun i => (((uMat g - 1) * (E i)ᴴ).trace).re) : EuclideanSpace ℝ (Fin d)) - (WithLp.toLp 2 (fun i => (((uMat h - 1) * (E i)ᴴ).trace).re) : EuclideanSpace ℝ (Fin d))‖ ≤ Real.sqrt (Formalism.REAL.hs (uMat g - uMat h)) ∧ Real.sqrt (Formalism.REAL.hs (uMat g - uMat h)) ≤ κ * ‖(WithLp.toLp 2 (fun i => (((uMat g - 1) * (E i)ᴴ).trace).re) : EuclideanSpace ℝ (Fin d)) - (WithLp.toLp 2 (fun i => (((uMat h - 1) * (E i)ᴴ).trace).re) : EuclideanSpace ℝ (Fin d))‖ := by
   intro n ε A d E hA hE hsp κ hκ

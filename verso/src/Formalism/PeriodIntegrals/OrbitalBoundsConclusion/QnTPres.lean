@@ -2,6 +2,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MinorSmoothness.SecondC
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnTInv
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.Q.TPresMain.qnTPres_of qnTInv`.
+A detailed English derivation is pending.
 -/
 theorem qnTPres : Formalism.FourierDecayAlt.Q.TPreservesFF := Formalism.FourierDecayAlt.Q.TPresMain.qnTPres_of qnTInv

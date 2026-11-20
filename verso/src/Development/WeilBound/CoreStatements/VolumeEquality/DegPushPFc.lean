@@ -37,13 +37,13 @@ def varE (ι : K → Type) (ι' : K' → Type) :
 variable {Ω₁ : Type} [Field Ω₁] {Ω : Type} [Field Ω] [Algebra Ω₁ Ω]
 
 /- English proof (translation)
-Establish `key : ∀ f, mConeMap (joinPt (fun x => algebraMap Ω₁ Ω (y x)) y') (rename inlV f) = rename Sum.inl (MvPolynomial.map (algebraMap Ω₁ Ω) (mConeMap y f))`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp]`. Simplify using `[mConeMap, inlV, joinPt]`. Use extensionality with `f`. Simplify using `only [imageZ, Ideal.mem_comap, mCoordIdeal, RingHom.mem_ker]`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (rename inlV).toRingHom f = rename inlV f from rfl, key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `MvPolynomial.map_injective _ (algebraMap Ω₁ Ω).injective` to reduce the goal to its premises. Apply `MvPolynomial.rename_injective _ Sum.inl_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, map_zero, map_zero]`. Introduce `h`. Rewrite using `[h, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem image_join (y : (Σ b, ι b) → Ω₁) (y' : (Σ b, ι' b) → Ω) :
     imageZ inlV (mCoordIdeal (joinPt (fun x => algebraMap Ω₁ Ω (y x)) y')) = mCoordIdeal y := by
@@ -68,13 +68,13 @@ theorem image_join (y : (Σ b, ι b) → Ω₁) (y' : (Σ b, ι' b) → Ω) :
     rw [h, map_zero, map_zero]
 
 /- English proof (translation)
-Establish `key : ∀ f : MRing ι, (aeval (fun p : Σ b, ι b => ν (C (y p) * X p.1)) : MRing ι →ₐ[ℤ] Φ) f = ν (mConeMap y f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p n hp`. Rewrite using `[map_mul, hp, map_mul (mConeMap y), map_mul ν, aeval_X]`. Use `congr 1`. Simplify using `[mConeMap]`. Use extensionality with `f`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [mCoordIdeal, RingHom.mem_ker]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `hν` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h, map_zero]`. Introduce `h`. Rewrite using `[h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_aeval_cone {Φ : Type} [Field Φ] (y : (Σ b, ι b) → Ω) (ν : MvPolynomial K Ω →+* Φ) (hν : Function.Injective ν) :
     RingHom.ker (aeval (fun p : Σ b, ι b => ν (C (y p) * X p.1)) : MRing ι →ₐ[ℤ] Φ) = mCoordIdeal y := by
@@ -99,33 +99,29 @@ theorem ker_aeval_cone {Φ : Type} [Field Φ] (y : (Σ b, ι b) → Ω) (ν : Mv
     rw [h, map_zero]
 
 /- English proof (translation)
-Use `set φ : MRing ι →ₐ[ℤ] Φ := aeval (fun p : Σ b, ι b => algebraMap (MvPolynomial K Ω₁) Φ (C (y p) * X p.1)) with hφ`. Establish `key : ∀ f : MRing ι, φ f = algebraMap (MvPolynomial K Ω₁) Φ (mConeMap y f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [hφ, mConeMap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Rewrite using `[map_mul, hp, map_mul (mConeMap y), map_mul (algebraMap _ Φ), hφ, aeval_X]`. Use `congr 1`. Simplify using `[mConeMap]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap (MvPolynomial K Ω₁) Φ)` using `IsFractionRing.injective _ _`. Use `set S := Subfield.closure (Set.range φ) with hS`. Establish `hmem : ∀ f, algebraMap (MvPolynomial K Ω₁) Φ (mConeMap y f) ∈ S`. Introduce `f`. Rewrite using `[← key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subfield.subset_closure ⟨f, rfl⟩`. Establish `hC : ∀ s : Ω₁, algebraMap (MvPolynomial K Ω₁) Φ (C s) ∈ S`. Introduce `s`. Take `⟨d, g, h, hg, hh, hne0, heq⟩` from `hb s`. Establish `eg` using `ConeTrdeg.mConeMap_of_isMultiHomog y hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eh` using `ConeTrdeg.mConeMap_of_isMultiHomog y hh`. Establish `hM : (∏ k : K, (X k : MvPolynomial K Ω₁) ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun k _ => pow_ne_zero _ (X_ne_zero k))`. Establish `hCne : (C (aeval y h) : MvPolynomial K Ω₁) ≠ 0`. Rewrite using `[Ne, MvPolynomial.C_eq_zero]`. Conclude with `hne0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hden : algebraMap (MvPolynomial K Ω₁) Φ (mConeMap y h) ≠ 0`. Rewrite using `[eh]`. Introduce `h0`. Use `hinj (h0.trans (map_zero _).symm)` as an intermediate fact. Conclude with `mul_ne_zero hCne hM this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: algebraMap (MvPolynomial K Ω₁) Φ (C s) = algebraMap (MvPolynomial K Ω₁) Φ (mConeMap y g) / algebraMap (MvPolynomial K Ω₁) Φ (mConeMap y h)`. Rewrite using `[eq_div_iff hden, ← map_mul, eg, eh, heq]`. Use `congr 1`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `div_mem (hmem g) (hmem h)`. Establish `hX : ∀ k : K, algebraMap (MvPolynomial K Ω₁) Φ (X k) ∈ S`. Introduce `k`. Take `⟨j, hj⟩` from `hne k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (X k : MvPolynomial K Ω₁) = C (y ⟨k, j⟩)⁻¹ * mConeMap y (X ⟨k, j⟩)`. Simplify using `only [mConeMap, aeval_X]`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hj, map_one, one_mul]`. Rewrite using `[e1, map_mul]`. Conclude with `mul_mem (hC _) (hmem _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hall : ∀ a : MvPolynomial K Ω₁, algebraMap (MvPolynomial K Ω₁) Φ a ∈ S`. Introduce `a`. Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C s => exact hC s`. Consider the case `add p q hp hq => rw [map_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem hp hq`. Consider the case `mul_X p n hp => rw [map_mul]`. Conclude with `mul_mem hp (hX n)`. Establish `hc : c ∈ S`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial K Ω₁) c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_mem (hall a) (hall b)`. Establish `hsub : Subring.closure (Set.range φ) ≤ φ.toRingHom.range` using `Subring.closure_le.mpr (by`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `⟨f, rfl⟩)`. Take `⟨u, hu, v, hv, huv⟩` from `Subfield.mem_closure_iff.mp hc`.
-
-Take `⟨f, rfl⟩` from `hsub hu`. Take `⟨g, rfl⟩` from `hsub hv`. Distinguish the cases in `hg0 : φ.toRingHom g = 0`. Use `⟨0, 1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[← huv, hg0, div_zero, map_zero, zero_div]`.
-
-Conclude with `⟨f, g, hg0, huv.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gen_cone {Φ : Type} [Field Φ] [Algebra (MvPolynomial K Ω₁) Φ] [IsFractionRing (MvPolynomial K Ω₁) Φ]
     {y : (Σ b, ι b) → Ω₁} (hb : Birational y) (hne : ∀ k, ∃ j, y ⟨k, j⟩ ≠ 0) (c : Φ) :
@@ -203,31 +199,29 @@ theorem gen_cone {Φ : Type} [Field Φ] [Algebra (MvPolynomial K Ω₁) Φ] [IsF
 
 open Classical in
 /- English proof (translation)
-Set `B` to `MvPolynomial K' Ω`. Set `Φ` to `FractionRing (MvPolynomial K Ω₁)`. Set `Φ'` to `FractionRing (MvPolynomial K B)`. Set `ν : MvPolynomial K B →+* Φ'` to `algebraMap _ _`. Establish `hν : Function.Injective ν` using `IsFractionRing.injective _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `sumRingEquiv Ω K K'`. Set `ν' : MvPolynomial (K ⊕ K') Ω →+* Φ'` to `ν.comp e.toRingHom`. Establish `hν' : Function.Injective ν'` using `hν.comp e.injective`. Establish `hg : Function.Injective (ν.comp (MvPolynomial.map (algebraMap Ω₁ B)))` using `hν.comp (MvPolynomial.map_injective _ (algebraMap Ω₁ B).injective)`. Set `L : Φ →+* Φ'` to `IsFractionRing.lift hg`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `letI alg : Algebra Φ Φ' := L.toAlgebra`. Use `haveI : ∀ b, Fintype (Sum.elim ι ι' b) := fun b => by`. Apply the tactic sequence `cases b <;> dsimp <;> infer_instance`. Establish `he : ∀ (c : Ω) (q : Σ b, Sum.elim ι ι' b), e (C c * X q.1) = match q with`. Consider the case `⟨Sum.inl k, _⟩ => C (C c) * X k`.
+Equip the data with the indicated structure. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `⟨Sum.inr k, _⟩ => C (C c * X k) := by`. Apply the tactic sequence `rintro c ⟨(k | k), i⟩ <;> simp [e, sumRingEquiv_C, sumRingEquiv_X_inl, sumRingEquiv_X_inr]`. Set `ψ` to `pointConeMap Ω₁ y'`. Establish `ha : ∀ c : Ω₁, algebraMap Ω₁ Φ c = algebraMap (MvPolynomial K Ω₁) Φ (C c)`. Introduce `c`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply Ω₁ (MvPolynomial K Ω₁) Φ, MvPolynomial.algebraMap_eq]`. Establish `hL : ∀ r, L (algebraMap (MvPolynomial K Ω₁) Φ r) = ν (MvPolynomial.map (algebraMap Ω₁ B) r)`. Introduce `r`. Conclude with `IsFractionRing.lift_algebraMap hg r`. Establish `hbc` using `ker_baseChange (algebraMap Ω₁ Φ) ha ν hν L hL ψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Φ, Φ', fun p => algebraMap (MvPolynomial K Ω₁) Φ (C (y p) * X p.1), fun q => ν' (C (joinPt (fun x => algebraMap Ω₁ Ω (y x)) y' q) * X q.1), ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[image_join]`. Conclude with `ker_aeval_cone y (algebraMap (MvPolynomial K Ω₁) Φ) (IsFractionRing.injective _ _)`. Conclude with `gen_cone hb hne`. Conclude with `ker_aeval_cone _ ν' hν'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `p`. Rewrite using `[RingHom.algebraMap_toAlgebra]`. Use `show ν (e _) = L _`. Rewrite using `[IsFractionRing.lift_algebraMap, he]`. Simplify using `[inlV, joinPt, ν]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `r N`. Establish `hdeg : (fun j => fibreDeg Sum.inl (Sum.elim (0 : K → ℤ) (N j))) = fun j => N j ∘ (blkE K K').symm`. Use function extensionality and compare the values at `j b`. Take `⟨(k | k), h⟩` from `b`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd ⟨k, rfl⟩ h`. Both sides reduce to the same expression. Rewrite using `[hdeg]`. Simplify using `only`. Rewrite using `[← FieldNumbers.RenameIntNum.full Φ K' (FibreBlock (Sum.inl : K → K ⊕ K')) ι' (fibreIdx (Sum.elim ι ι') Sum.inl) (blkE K K') (varE ι ι') (fun v => rfl)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : ∀ P : Ideal (NumbersDVR.MRing ι' Ω₁), intNum Φ (Ideal.map (MvPolynomial.map (algebraMap Ω₁ Φ)) P) N = intNum Ω₁ P N`. Introduce `P`. Unfold `intNum`. Use `congr 2`. Use function extensionality and compare the values at `m`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `FieldNumbers.hilbFn_map P m`. Use `Eq.trans ?_ (hmap (RingHom.ker ψ))` and prove the remaining obligations. Rewrite using `[← hbc]`. Use `congr 1`. Use extensionality with `f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ideal.mem_comap, fibreIdeal, RingHom.mem_ker, MvPolynomial.aeval_rename]`. Rewrite using `[MvPolynomial.aeval_eq_eval₂Hom]`. Use `congr! 3`. Use function extensionality and compare the values at `s`. Take `⟨k, i⟩` from `s`.
-
-Establish `h1` using `he (y' ⟨k, i⟩) ⟨Sum.inr k, i⟩`. Simplify using `only [Function.comp_apply, varE, Equiv.coe_fn_mk, ν', RingHom.comp_apply, joinPt]`. Use `show ν (e (C (y' ⟨k, i⟩) * X (Sum.inr k))) = _`. Rewrite using `[h1]`. Simplify using `[ψ, pointConeMap]`.
+A detailed English derivation is pending.
 -/
 theorem exists_genFibre {y : (Σ b, ι b) → Ω₁} (y' : (Σ b, ι' b) → Ω) (hb : Birational y) (hne : ∀ k, ∃ j, y ⟨k, j⟩ ≠ 0) :
     ∃ G : GenFibre inlV (mCoordIdeal (joinPt (fun x => algebraMap Ω₁ Ω (y x)) y')), ∀ (r : ℕ) (N : Fin r → K' → ℤ),

@@ -15,9 +15,9 @@ def opOn {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (S : Submod
   map_smul' c v := Subtype.ext (hsm c v v.2)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `all_goals first`. Consider the case `(funext k; simp [Formalism.REAL.Tm, apply_ite])`. Consider the case `(congr 1; funext k; simp [Formalism.REAL.Tm, apply_ite])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem qdet_map {A B : Type*} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] {n : ℕ} (φ : A →ₐ[ℂ] B)
     (E : Fin n → Fin n → A) (u : ℂ) :

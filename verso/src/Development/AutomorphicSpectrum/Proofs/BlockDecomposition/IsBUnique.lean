@@ -10,11 +10,11 @@ open IsDedekindDomain NumberField
 namespace GlobalTheory.CompanionTheory.MuC
 
 /- English proof (translation)
-Introduce `D p e g x x' h h'`. Take `⟨⟨y, hy⟩, hx⟩` from `h`. Take `⟨-, hx'⟩` from `h'`. Establish `key : ∀ z : hermS D p e, mm (lowC g) z.1.1 = e • lowD g → z.1.1 = mm y (e • lowD g)`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : e • z.1.1 = z.1.1` using `z.2`. Rewrite using `[← hz]`. Use `show z.1.1 = y * (lowC g * z.1.1)`. Rewrite using `[← Matrix.mul_assoc]`. Establish `hy' : y * lowC g = e • (1 : Mx D p p)` using `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy', Matrix.smul_mul, Matrix.one_mul, hs]`. Conclude with `Subtype.ext (Subtype.ext ((key x hx).trans (key x' hx').symm))`.
+A detailed English derivation is pending.
 -/
 theorem isB_unique : ∀ {D : D7} {p : ℕ} {e : AE D} {g : G D p} {x x' : hermS D p e} (h : IsB e g x) (h' : IsB e g x'), x = x' := by
   intro D p e g x x' h h'

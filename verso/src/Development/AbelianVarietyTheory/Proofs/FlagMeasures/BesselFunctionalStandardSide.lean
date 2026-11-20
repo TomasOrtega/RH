@@ -18,18 +18,18 @@ namespace GlobalTheory.SgInf.KernelRe
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`.
+A detailed English derivation is pending.
 -/
 theorem hpk_unit : IsUnit (Hpk k r).det :=
   Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1
 
 /- English proof (translation)
-The claim follows from `((uHGroup _ _ hpk_unit).2.2 a ha).1`.
+A detailed English derivation is pending.
 -/
 theorem GG_unit {a : Mat k r} (ha : a ∈ GG k r) : IsUnit a.det := ((uHGroup _ _ hpk_unit).2.2 a ha).1
 
 /- English proof (translation)
-The claim follows from `((uHGroup _ _ hpk_unit).2.2 a ha).2`.
+A detailed English derivation is pending.
 -/
 theorem GG_inv {a : Mat k r} (ha : a ∈ GG k r) : a⁻¹ ∈ GG k r := ((uHGroup _ _ hpk_unit).2.2 a ha).2
 
@@ -48,11 +48,9 @@ def lmulEquiv (a : Mat k r) (ha : IsUnit a.det) : Mt k r ≃ᵐ Mt k r where
     (continuous_const.matrix_mul (continuous_id (X := Mat k r)))
 
 /- English proof (translation)
-Establish `hyu : IsUnit y⁻¹.det` using `GG_unit (GG_inv hy)`. Establish `hmap : μG.map (lmulM y⁻¹) = μG` using `hμ.2.2.2 _ (GG_inv hy)`. Establish `hme : MeasurableEmbedding (lmulM (k` using `k) (r := r) y⁻¹) := (lmulEquiv y⁻¹ hyu).measurableEmbedding`. Unfold `rconv`. Use `conv_lhs => rw [← hmap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hme.integral_map]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Use `show e (Matrix.of (lmulM y⁻¹ g)) • W (y * Matrix.of (lmulM y⁻¹ g)) = _`. Use `show e (y⁻¹ * Matrix.of g) • W (y * (y⁻¹ * Matrix.of g)) = _`.
-
-Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (GG_unit hy), Matrix.one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rconv_eq_translate {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
     (μG : Measure (Mt k r)) (e : Mat k r → ℂ) (W : Mat k r → Wp) (hμ : IsHaarOn (GG k r) μG)
@@ -71,15 +69,15 @@ theorem rconv_eq_translate {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ
   rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (GG_unit hy), Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide ν hν W hWG hWν hW hL2 y hy`. Take `⟨hz, hT, hπ, hμS, _⟩` from `hSide`. Establish `hcl` using `GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT`. Establish `hun` using `(GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hμS`. Establish `hμG : IsHaarOn (GG k r) μG` using `hStd.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWeil` using `GlobalTheory.T.weil_formula_besselUnitary_integrable k r (Sset k r z) μG μS ν hcl.2.2.2.1 hμG hμS hun hν`. Establish `hFint : Integrable (fun g : Mt k r => star (coef σ w w (y⁻¹ * Matrix.of g)) • W (Matrix.of g)) μG` using `GlobalTheory.T.integrable_besselCoefficient_smul_equivariant k r σ w a μG d z c π μS hStd ⟨hz, hT, hπ, hμS, inferInstance⟩ ν hν W hWG hWν hW hL2 y hy`. Take `⟨hI, hEq⟩` from `hWeil.2.2.2.1 Wp _ hFint`. Establish `hae : ∀ᵐ x ∂ν, (∫ s, star (coef σ w w (y⁻¹ * Matrix.of (lmulM (Matrix.of s) x))) • W (Matrix.of (lmulM (Matrix.of s) x)) ∂μS) = be (psiGen k r z c) π μS σ (σ y w) (σ (Matrix.of x) w) (W (Matrix.of x))`. Establish `h0 : ∀ᵐ x ∂ν, Matrix.of x ∈ GG k r`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ae_iff]`. Simplify using `using hWeil.2.1`. Use `filter_upwards [h0] with x hx`. Conclude with `GlobalTheory.T.bessel_inner_integral_eq_form k r σ w a μG d z c π μS hStd ⟨hz, hT, hπ, hμS, inferInstance⟩ W hW y hy x hx`. Establish `hfd : fdegH μG σ w = d` using `GlobalTheory.T.besselFormalDegree_eq_of_schurOrthogonality k r σ μG d w hStd.2.2.2.2.2.1 (by`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Use `hStd.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this)`. Use `⟨hI.congr hae, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[rconv_eq_translate μG _ W hμG hy]`. Establish `hfun : (fun g : Mt k r => eFun μG σ w (y⁻¹ * Matrix.of g) • W (Matrix.of g)) = fun g => (d : ℂ) • (star (coef σ w w (y⁻¹ * Matrix.of g)) • W (Matrix.of g))`. Use function extensionality and compare the values at `g`. Simplify using `only [eFun, hfd, coef, smul_smul]`. Rewrite using `[hfun, integral_smul, hEq, integral_congr_ae hae]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_rconv : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) , Std σ w a μG d → Side z π μS → ∀ ν : Measure (Mt k r), IsQuotMeas μG μS ν → ∀ W : Mat k r → Wp, AEStronglyMeasurable (fun x : Mt k r => W (Matrix.of x)) μG → AEStronglyMeasurable (fun x : Mt k r => W (Matrix.of x)) ν → IsSPsiEquiv z (psiGen k r z c) π W → l2SG ν W < ⊤ → ∀ y ∈ GG k r, Integrable (fun g : Mt k r => be (psiGen k r z c) π μS σ (σ y w) (σ (Matrix.of g) w) (W (Matrix.of g))) ν ∧ rconv μG (eFun μG σ w) W y = (d : ℂ) • ∫ g, be (psiGen k r z c) π μS σ (σ y w) (σ (Matrix.of g) w) (W (Matrix.of g)) ∂ν := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide ν hν W hWG hWν hW hL2 y hy

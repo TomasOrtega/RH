@@ -7,7 +7,7 @@ import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PSemilocalLengthSum
 set_option maxSynthPendingDepth 1
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.FieldNumbers.SemilocalLengthSum.proof.{u} GroundTheory.Heights₂.Heights.FieldNumbers.FibreFinite.proof GroundTheory.Heights₂.Heights.AutoClose.FieldNumbers_SemilocalFiniteRank GroundTheory.Heights₂.Heights.AutoClose.FieldNumbers_DegZeroLocalRing Gro …`.
+A detailed English derivation is pending.
 -/
 theorem GroundTheory.Heights₂.Heights.AutoClose.FieldNumbers_SemilocalLengthSum.{u} : GroundTheory.Heights₂.Heights.FieldNumbers.SemilocalLengthSum.Statement.{u} :=
   @GroundTheory.Heights₂.Heights.FieldNumbers.SemilocalLengthSum.proof.{u} GroundTheory.Heights₂.Heights.FieldNumbers.FibreFinite.proof GroundTheory.Heights₂.Heights.AutoClose.FieldNumbers_SemilocalFiniteRank GroundTheory.Heights₂.Heights.AutoClose.FieldNumbers_DegZeroLocalRing GroundTheory.Heights₂.Heights.FieldNumbers.FiniteAlgebraLengthSum.proof GroundTheory.Heights₂.Heights.AutoClose.FieldNumbers_SemilocalMaxIdeals

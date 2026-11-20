@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.DnLat
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem locP_congr {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] {p q : Ideal R} [p.IsPrime] [q.IsPrime]
     (h : p = q) (L : Submodule R W) : Formalism.HermitianLatticesTheory.localization₂ p L = Formalism.HermitianLatticesTheory.localization₂ q L := by
@@ -18,13 +18,11 @@ theorem locP_congr {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W] {p q
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `TDat.extF`. Use `split_ifs with h`. Take `⟨s, hs, z, hz, hgz⟩` from `h.choose_spec`. Establish `hsy : s • y ∈ M` using `hz ▸ z.2`. Establish `e` using `modP.ext_spec P M g y hs hsy`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ez : z = ⟨s • y, hsy⟩` using `Subtype.ext hz`. Substitute `ez` using the available equality. Apply `mul_left_cancel₀ (mk_ne_zero hs)` to reduce the goal to its premises. Rewrite using `[e, ← hgz]`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • y ∈ M`. It suffices to derive a contradiction. Take `⟨s, hs, hsy⟩` from `hy`. Conclude with `h ⟨modP.ext P M g y, s, hs, ⟨s • y, hsy⟩, rfl, (modP.ext_spec P M g y hs hsy).symm⟩`. Unfold `modP.ext`.
-
-Rewrite using `[dif_neg hy]`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extF_eq (M : Submodule (𝓞 E) (Fin n → E)) (P : HeightOneSpectrum (𝓞 E))
     (g : Module.Dual (Res P) (TDat.Red M P)) (y : Fin n → E) : TDat.extF M P g y = modP.ext P M g y := by
@@ -49,11 +47,9 @@ theorem extF_eq (M : Submodule (𝓞 E) (Fin n → E)) (P : HeightOneSpectrum (�
 variable {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Establish `e : TDat.extF (d.dnN P) P.1 g = modP.ext P.1 (d.dnN P) g` using `funext (extF_eq _ _ g)`. Rewrite using `[e]`. Establish `hF` using `modP.ext_funAt P.1 (d.dnN P) g`. Use `hd.dn P hP hF.add hF.smul hF.off ?_` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, g z ≠ 0 := by`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Conclude with `hg (LinearMap.ext H)`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
-
-Conclude with `⟨x.1, x.2, by rw [modP.ext_of_mem]; exact hz⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ok_dn_extF {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P) {M : Submodule (𝓞 E) (Fin n → E)}
     (hM : M = d.dnN P) (g : Module.Dual (Res P.1) (TDat.Red M P.1)) (hg : g ≠ 0) :
@@ -71,7 +67,7 @@ theorem ok_dn_extF {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG
   exact ⟨x.1, x.2, by rw [modP.ext_of_mem]; exact hz⟩
 
 /- English proof (translation)
-Rewrite using `[hd'.locP_Lsh ha P]`. Use `show Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (d.dnN P) = _`. Rewrite using `[(hd.dnN_spec P hne).2.2.2, tud_locP_L ha ⟨d, hd⟩ P]`. Conclude with `le_antisymm (localization_le_of_smul_mem (one_notMem P.1) fun x hx => by rw [one_smul]; exact lv_kerAt_le ⟨d, hd⟩ ha P hx) (localization_le_of_smul_mem (ha.off P) fun x hx => lv_smul_LshKer_mem ⟨d, hd⟩ ha P hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locP_Lsh_dn {a : 𝓞 E} (ha : SepElt ST a) {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hne : conjPrime₂ P.1 ≠ P.1)
     {f' : Sp E n → 𝓞 E ⧸ P.1.asIdeal} (hd' : (d.dn P f').Ok) :
@@ -84,11 +80,11 @@ theorem locP_Lsh_dn {a : 𝓞 E} (ha : SepElt ST a) {d : Deco E n ST SG} (hd : d
     (localization_le_of_smul_mem (ha.off P) fun x hx => lv_smul_LshKer_mem ⟨d, hd⟩ ha P hx)
 
 /- English proof (translation)
-Substitute `hγ` using the available equality. Use extensionality with `x`. Unfold `Formalism.L2.Forms.mulLat`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Substitute using the available equality. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Establish `h` using `(hS.lsh_smul b (S.mv b d) (S.rep (S.cl b d)) y).2 hy`. Rewrite `h` using `[S.mv_smul]`. Then use the resulting hypothesis. Introduce `hx`. Use `⟨((S.gam b (S.mv b d))⁻¹ : GL (Fin n) E).1 *ᵥ x, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hS.lsh_smul b (S.mv b d) (S.rep (S.cl b d)) _).1 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, S.mv_smul]`. Conclude with `hx`. Use `show (S.gam b (S.mv b d) : Matrix (Fin n) (Fin n) E) *ᵥ (((S.gam b (S.mv b d))⁻¹ : GL (Fin n) E).1 *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulLat_Lsh_rep {K : Type} [Field K] [NumberField K] [StarRing K] (S : GStep E K n) (hS : S.Ok) (b : S.β) (d : S.D b)
     {γ : Matrix (Fin n) (Fin n) E} (hγ : γ = (S.gam b (S.mv b d) : Matrix (Fin n) (Fin n) E)) :
@@ -115,15 +111,15 @@ open GlobalTheory.Mem.Col2.DnLat in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a i hi bad Ch chOf K eY eV L hK hY hV hL v β c g hg γ hγ`. Take `⟨hg1, -, hcrd⟩` from `(GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 i hi`. Establish `hlat` using `(hcrd u a).1`. Establish `hPv : PvG (D` using `I.rec7 l Z) (I.resT l u a) v = (v.1 : HeightOneSpectrum (𝓞 B.fields.E)).asIdeal := by`. Unfold `PvG resT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use extensionality with `x`. Conclude with `Submodule.Quotient.mk_eq_zero _`. Rewrite using `[@locP_congr _ _ _ _ _ (PvG (D := I.rec7 l Z) (I.resT l u a) v) _ (RingHom.ker_isPrime _) v.1.isPrime hPv, @locP_congr _ _ _ _ _ (PvG (D := I.rec7 l Z) (I.resT l u a) v) _ (RingHom.ker_isPrime _) v.1.isPrime hPv, hlat, hlat]`. Establish `hdual : ∀ M : Submodule (𝓞 (I.rec7 l Z).host.E) (Fin ((I.rec7 l Z).R.N i) → (I.rec7 l Z).host.E), LdG (I.rec7 l Z) i hi M = Formalism.HermitianLatticesTheory.dual (hStd (I.rec7 l Z).host.E ((I.rec7 l Z).R.N i)) M` using `fun M => by`. Unfold `LdG`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg1]`. Unfold `dualL`. Conclude with `rlc_span_dualSet (I.rec7 l Z).sp.cm _ M`. Establish `hok : (I.atIn u a).Ok` using `l.lev u a`. Establish `hT` using `hok.tied i`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSok : (I.stp u a i).Ok` using `(l.ch u a).step i`. Establish `hmul` using `mulLat_Lsh_rep (I.stp u a i) hSok c.1.1 (((I.atIn u a).A i).dnPt v c.1 g) (congrArg Units.val hγ)`. Establish `hm` using `moveHyp_of_ok l.pr u v`. Establish `hMove : MoveHyp ((B.primes X).vT u) ∅ v` using `⟨hm.ne, hm.st, fun w => absurd w.2 (Finset.notMem_empty _)⟩`. Establish `hsep` using `sepElt_of_ok l.pr u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOk` using `ok_dn_extF (hT.ok c.1.1 ((I.stp u a i).rep c.1)) v hMove (hT.dnN_eq c.1.1 ((I.stp u a i).rep c.1) v) g hg`. Establish `key : Formalism.HermitianLatticesTheory.localization₂ (v.1 : HeightOneSpectrum (𝓞 B.fields.E)).asIdeal (Formalism.L2.Forms.mulLat γ.1.1 ((I.stp u a i).Lsh c.1.1 ((I.stp u a i).rep ((I.stp u a i).cl c.1.1 (((I.atIn u a).A i).dnPt v c.1 g))))) = Formalism.HermitianLatticesTheory.lo …`. Use `(congrArg (Formalism.HermitianLatticesTheory.localization₂ (v.1 : HeightOneSpectrum (𝓞 B.fields.E)).asIdeal) (hmul.trans ((hT.Lsh_eq _ _).trans (congrArg Deco.Lsh (hT.dn_deco _ _ _ _ hOk))))).trans ?_` and prove the remaining obligations. Conclude with `locP_Lsh_dn hsep (hT.ok _ _) v hMove.ne hOk`. Conclude with `(congrArg (fun M => Formalism.HermitianLatticesTheory.localization₂ (v.1 : HeightOneSpectrum (𝓞 B.fields.E)).asIdeal (Formalism.L2.Forms.mulLat γ.1.1 M)) (hdual _)).trans key`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.TC.dn_locP_lat : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 B.host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1))) (eY : (I.chain l u a).Y i ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) i hi) (eV : (I.atT l u a).vT ≃ {v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) // (B.T u : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal}) (L : LevelCompatibleLattices (D := (I.rec7 l Z)) (I.fm l u a) (B.T u) (I.resT l u a) i hi fun c => latCrd (I.rec7 l Z) i hi (I.latAt u a i c)), I.ReadsK l Z u a i hi chOf K → I.IdY l Z u a i hi eY → I.IdV l u a eV → I.IdL l Z u a i hi L → ∀ (v : (I.atT l u a).vT) (β : Ch) (c : {c // chOf c = β}) (g : Module.Dual (Res v.1) (((I.atIn u a).A i).lk v c.1)), g ≠ 0 → ∀ (γ : UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi)), (γ.1 : GL (Fin (B.R.N i)) B.fields.E) = (I.stp u a i).gam c.1.1 ((I.stp u a i).mv c.1.1 (((I.atIn u a).A i).dnPt v c.1 g)) → Formalism.HermitianLatticesTheory.localization₂ (PvG (I.resT l u a) v) (mulLat γ.1.1 (LdG (I.rec7 l Z) i hi (latCrd (I.rec7 l Z) i hi (I.latAt u a i ((I.fm l u a).dn i v c.1 g))))) = Formalism.HermitianLatticesTheory.localization₂ (PvG (I.resT l u a) v) (latCrd (I.rec7 l Z) i hi (I.latAt u a i c.1)) := by
   intro B X I hI hP l Z u a i hi bad Ch chOf K eY eV L hK hY hV hL v β c g hg γ hγ

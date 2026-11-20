@@ -17,9 +17,9 @@ open GlobalTheory.TorusExt
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρ p _ y₀ u k k' d pk x hk hd hk' hx`. Establish `hA : AdmBase u.V (maximalIdeal u.V)` using `⟨inferInstance, inferInstance, inferInstance, u.complete⟩`. Establish `hB` using `u.D.tau_bimult`. Establish `e : k' • pk.g = iota hB (PadicAlgCl p) (d • pk.y)`. Rewrite using `[hk', ← smul_smul, qk_nsmul hB, map_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨qkMk hB (d • pk.y) pk.g e, rfl, ?_⟩` and prove the remaining obligations. Establish `L` using `GlobalTheory.PeriodsAnyChar.qkToAkU_level GlobalTheory.firstFiveLaws u.V _ hA u.D u.A u.G u.semi u.U (PadicAlgCl p) k d k' hk hd (by rw [hk', Nat.mul_comm]) pk (qkMk hB (d • pk.y) pk.g e) x`. Conclude with `(L.1 rfl rfl).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_qkPt_rescale : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (k k' d : ℕ) (pk : QkPt u.D.toPre (PadicAlgCl p) k) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), 1 ≤ k → 1 ≤ d → k' = d * k → QkToAkU u.U.toUnifPre (PadicAlgCl p) k pk x → ∃ pk' : QkPt u.D.toPre (PadicAlgCl p) k', pk'.y = d • pk.y ∧ QkToAkU u.U.toUnifPre (PadicAlgCl p) k' pk' x := by
   intro o Ω _ _ _ S ρ p _ y₀ u k k' d pk x hk hd hk' hx

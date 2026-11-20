@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Introduce `S G' G _ _ j p`. Use `⟨prop_of_isPowGrp @QuasiCompact p, fun hs hc => ?_⟩` and prove the remaining obligations. Take `⟨e, he, hw⟩` from `exists_iso_powObj p`. Use `geomConnected_powObj G j` as an intermediate fact. Use `smooth_isMultiplicative` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Smooth (powObj G j).hom` using `prop_powObj @Smooth G hs j`. Use `geomConnected_of_isIso e` as an intermediate fact. Rewrite using `[hw]`. Conclude with `GeometricallyConnected.comp _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quasiCompact_geomConnected_pow : ∀ (S : Scheme.{0}) (G' G : Over S) [GrpObj G'] [GrpObj G] (j : ℕ) (p : IsPowGrp G' G j), (QuasiCompact G.hom → QuasiCompact G'.hom) ∧ (Smooth G.hom → GeometricallyConnected G.hom → GeometricallyConnected G'.hom) := by
   intro S G' G _ _ j p

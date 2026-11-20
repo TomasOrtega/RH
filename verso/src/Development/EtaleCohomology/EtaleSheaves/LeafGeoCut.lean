@@ -30,9 +30,9 @@ def LeafBdry : Prop := ∀ {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B), Is
   topologicalKrullDim (pullback p ι : Scheme.{0}) < topologicalKrullDim Y
 
 /- English proof (translation)
-Introduce `k _ _ X _ p _ hd`. Take `⟨Ω, iF, iA, iK, C0, c0, hc0, hall⟩` from `hV k p hd`. Use `⟨Ω, iF, iA, iK, C0, c0, hc0, fun C1 C2 γ1 γ2 h1 h2 s1 s2 => ?_⟩` and prove the remaining obligations. Take `⟨B, Y0, Y1, Y2, b, V, π, g1, g2, h, s, u0, u1, u2, iB, pb, hs, m0, m1, m2, f1, f2, dB, irr, dY, fin, ne, P0, P1, P2, w1, w2⟩` from `hall C1 C2 γ1 γ2 h1 h2 s1 s2`. Take `⟨W, ι, hι, hWV⟩` from `hC B V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, W, Y0, Y1, Y2, b, ι, V, π, g1, g2, h, s, u0, u1, u2, iB, pb, hι, hWV, hs, m0, m1, m2, f1, f2, dB, lt_of_lt_of_le (hB π ι hι irr fin (hWV ▸ ne)) dY, P0, P1, P2, w1, w2⟩`.
+Supply the required witnesses or components.
 -/
 theorem goal_of (hV : LeafGeoV) (hC : LeafClosed) (hB : LeafBdry) : LateralTheory.E.E4.LeafGeo := by
   intro k _ _ X _ p _ hd

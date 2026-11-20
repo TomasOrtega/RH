@@ -11,15 +11,13 @@ namespace Formalism.HermitianLattices.Ext.L3
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
 /- English proof (translation)
-Establish `htop : LinearMap.range (idealPowerSpanBounds.trF hF) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨𝔭, h𝔭, hle⟩` from `Ideal.exists_le_maximal (LinearMap.range (idealPowerSpanBounds.trF hF)) hne`. Take `⟨θ, hθ⟩` from `idealPowerSpanBounds.exists_theta hK hF h𝔭`. Establish `hmem : ∀ z : 𝓞 K, z + conjO K z ∈ extP K 𝔭` using `fun z => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← idealPowerSpanBounds.trF_spec hF]`. Conclude with `Ideal.mem_map_of_mem _ (hle ⟨z, rfl⟩)`. Establish `h2 : (2 : 𝓞 K) ∈ extP K 𝔭`. Use `hmem 1` as an intermediate fact. Rewrite `this` using `[map_one, one_add_one_eq_two]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hsq : (θ - conjO K θ) * (θ - conjO K θ) ∈ extP K 𝔭`. Establish `: (θ - conjO K θ) * (θ - conjO K θ) = (θ + conjO K θ) * (θ + conjO K θ) - 2 * (2 * (θ * conjO K θ))` using `by ring`. Rewrite using `[this]`. Conclude with `sub_mem (Ideal.mul_mem_left _ _ (hmem θ)) (Ideal.mul_mem_right _ _ h2)`. Establish `h1 : (θ - conjO K θ) ∈ extP K 𝔭 ^ 1` using `idealPowerSpanBounds.mem_of_unit_mul_mem hθ (by rwa [pow_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (1 : 𝓞 K) ∈ extP K 𝔭 ^ 1` using `idealPowerSpanBounds.mem_of_unit_mul_mem hθ (by rwa [mul_one])`. Establish `h3` using `(idealPowerSpanBounds.mem_pow_iff (K := K) 𝔭 1 1).1 (by rwa [map_one])`. Rewrite `h3` using `[pow_one]`. Conclude with `h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Take `⟨z, hz⟩ : a ∈ LinearMap.range (idealPowerSpanBounds.trF hF)` from `htop ▸ Submodule.mem_top`.
-
-Conclude with `⟨z, by rw [← idealPowerSpanBounds.trF_spec hF, hz]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_add_conj_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (a : 𝓞 F) :
     ∃ z : 𝓞 K, z + conjO K z = algebraMap (𝓞 F) (𝓞 K) a := by

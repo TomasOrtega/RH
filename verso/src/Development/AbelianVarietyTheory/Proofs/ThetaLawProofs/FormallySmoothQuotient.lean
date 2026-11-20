@@ -7,15 +7,15 @@ namespace GlobalTheory.HenselZero
 open IsLocalRing GlobalTheory.SqZero
 
 /- English proof (translation)
-Use `Algebra.FormallySmooth.of_comp_surjective fun B _ _ I hI g => ?_` and prove the remaining obligations. Take `⟨g', hg'⟩` from `Algebra.FormallySmooth.comp_surjective R S I hI (g.comp (Ideal.Quotient.mkₐ R _))`. Establish `hg : ∀ a, Ideal.Quotient.mk I (g' a) = g (Ideal.Quotient.mk _ a)` using `fun a => congr($hg' a)`. Establish `hf : ∀ i, g' (f i) ∈ I` using `fun i => by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hg, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span (Set.mem_range_self i)), map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `M : Matrix ι ι B` to `Matrix.of fun i k => g' (τ k (f i))`. Establish `hM : IsUnit M.det`. Use `h.map g'` as an intermediate fact. Rewrite `this` using `[AlgHom.map_det]`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `t : ι → B` to `M⁻¹.mulVec fun i => - g' (f i)`. Establish `ht : ∀ k, t k ∈ I` using `fun k => Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (neg_mem (hf i))`. Establish `hMt : M.mulVec t = fun i => - g' (f i)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hM, Matrix.one_mulVec]`. Establish `h0 : ∀ i j, t i * t j = 0` using `fun i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.mul_mem_mul (ht i) (ht j)` as an intermediate fact. Rewrite `this` using `[← sq, hI]`. Then use the resulting hypothesis. Use `⟨Ideal.Quotient.liftₐ _ (addDers τ g' t h0) fun a ha => ?_, ?_⟩` and prove the remaining obligations. Use `(Ideal.span_le (I := RingHom.ker (addDers τ g' t h0))).2 ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: ∑ k, g' (τ k (f i)) * t k = - g' (f i)` using `congrFun hMt i`. Use `show addDers τ g' t h0 (f i) = 0`. Rewrite using `[addDers_apply, this, add_neg_cancel]`. Use `Ideal.Quotient.algHom_ext _ (AlgHom.ext fun a => ?_) show Ideal.Quotient.mk I (addDers τ g' t h0 a) = g (Ideal.Quotient.mk _ a)` and prove the remaining obligations. Rewrite using `[addDers_apply, map_add, hg, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (ht k)), add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formallySmooth_quotient {R S ι : Type} [CommRing R] [CommRing S] [Algebra R S] [Algebra.FormallySmooth R S]
     [Fintype ι] [DecidableEq ι] (f : ι → S) (τ : ι → Derivation R S S)
@@ -50,9 +50,9 @@ theorem formallySmooth_quotient {R S ι : Type} [CommRing R] [CommRing S] [Algeb
       (Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (ht k)), add_zero]
 
 /- English proof (translation)
-Set `_ : Algebra S K` to `(u : S →+* K).toAlgebra`. Establish `: IsScalarTower R S K` using `IsScalarTower.of_algebraMap_eq fun r => (u.commutes r).symm`. Set `D' : Derivation R S K` to `Derivation.mk' D hD`. Take `⟨l, hl⟩` from `Module.projective_lifting_property (Algebra.linearMap S K) D'.liftKaehlerDifferential hu`. Use `⟨l.compDer (KaehlerDifferential.D R S), fun a => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congr($hl (KaehlerDifferential.D R S a))).trans (D'.liftKaehlerDifferential_comp_D a)`.
+A detailed English derivation is pending.
 -/
 theorem exists_derivation_lift {R S K : Type} [CommRing R] [CommRing S] [Algebra R S] [Algebra.FormallySmooth R S]
     [CommRing K] [Algebra R K] (u : S →ₐ[R] K) (hu : Function.Surjective u) (D : S →ₗ[R] K)
@@ -65,21 +65,19 @@ theorem exists_derivation_lift {R S K : Type} [CommRing R] [CommRing S] [Algebra
   exact (congr($hl (KaehlerDifferential.D R S a))).trans (D'.liftKaehlerDifferential_comp_D a)
 
 /- English proof (translation)
-Set `u' : S →ₐ[O] ResidueField O` to `⟨u, hu⟩`. Establish `hs : Function.Surjective u'` using `fun c => by`. Take `⟨r, rfl⟩` from `residue_surjective c`. Conclude with `⟨_, hu r⟩`. Establish `hker : RingHom.ker u = maximalIdeal S` using `eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective u hs)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hτ : ∀ k, ∃ τ : Derivation O S S, ∀ a, u (τ a) = (χ k a).snd` using `fun k => exists_derivation_lift u' hs { toFun := fun a => (χ k a).snd map_add' := fun a b => by simp map_smul' := fun r a => by`. Rewrite using `[Algebra.smul_def, map_mul, h₂, Algebra.smul_def]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl] }`. Use `fun a b => by simp [h₁, mul_comm]; rfl`. Use `choose τ hτ using hτ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : IsUnit (Matrix.of fun i k => τ k (f i)).det`. Rewrite using `[← notMem_maximalIdeal, ← hker, RingHom.mem_ker, RingHom.map_det]`. Use `fun h => hd (Eq.trans ?_ h)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hτ k _).symm`. Use `formallySmooth_quotient f τ hunit` as an intermediate fact. Establish `hle : Ideal.span (Set.range f) ≤ RingHom.ker u'` using `Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hf i)`. Take `⟨g, hg⟩` from `Algebra.FormallySmooth.exists_mkₐ_comp_eq_of_isAdicComplete (I := maximalIdeal O) (Ideal.Quotient.liftₐ (Ideal.span (Set.range f)) u' fun a ha => hle ha)`. Set `ψ : S →ₐ[O] O` to `g.comp (Ideal.Quotient.mkₐ O _)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ∀ a, residue O (ψ a) = u a` using `fun a => congr($hg (Ideal.Quotient.mk _ a))`. Establish `hle' : Ideal.span (Set.range f) ≤ RingHom.ker ψ` using `fun a ha => by show g (Ideal.Quotient.mk _ a) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 ha, map_zero]`. Use `⟨ψ, hψ, le_antisymm (Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal S) (IsNoetherian.noetherian _) (maximalIdeal_le_jacobson _) fun a ha => ?_) hle'⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha₀ : ψ a = 0` using `ha`. Establish `ha' : a ∈ maximalIdeal S` using `by rw [← hker, RingHom.mem_ker, ← hψ, ha₀, map_zero]`. Use `replace ha' := hm ha'`. Rewrite `ha'` using `[hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Take `⟨b, hb, c, hc, rfl⟩` from `Submodule.mem_sup.1 ha'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.1 hc`. Use `Submodule.add_mem_sup hb (Submodule.smul_mem_smul (r := algebraMap O S π) (n := c) ?_ ?_)` and prove the remaining obligations. Rewrite using `[← hker, RingHom.mem_ker, hu, residue_eq_zero_iff]`. Conclude with `hπ.not_isUnit`. Establish `hb₀ : ψ b = 0` using `hle' hb`.
-
-Rewrite `ha₀` using `[map_add, hb₀, zero_add, map_mul, AlgHom.commutes]`. Conclude with `(mul_eq_zero.1 ha₀).resolve_left hπ.ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algHom_ker_eq {O S ι : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CommRing S] [IsLocalRing S] [IsNoetherianRing S] [Algebra O S]

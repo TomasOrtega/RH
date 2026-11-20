@@ -9,9 +9,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Use `⟨dslope f 1, ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[← differentiableOn_univ]`. Conclude with `(Complex.differentiableOn_dslope Filter.univ_mem).2 hf`. Use `sub_smul_dslope f 1 s` as an intermediate fact. Rewrite `this` using `[h1, sub_zero, smul_eq_mul]`.
-
-Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_entire_div_sub_one {f : ℂ → ℂ} (hf : Differentiable ℂ f) (h1 : f 1 = 0) :
     ∃ g : ℂ → ℂ, Differentiable ℂ g ∧ ∀ s, f s = (s - 1) * g s := by
@@ -23,7 +21,7 @@ lemma exists_entire_div_sub_one {f : ℂ → ℂ} (hf : Differentiable ℂ f) (h
     exact this.symm
 
 /- English proof (translation)
-Establish `e : D.coef χ = ∑ c, (χ c : ℂ) • D.cnt c`. Use function extensionality and compare the values at `n`. Simplify using `[RayData.coef, Finset.sum_apply]`. Rewrite using `[e, LSeries_sum (fun c _ => (h c).smul _)]`. Simplify using `[LSeries_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma RayData.LSeries_coef_eq_sum {K : Type} [Field K] [NumberField K] {M : ℕ} (D : RayData K M)
     (χ : D.G →* ℂˣ) (s : ℂ) (h : ∀ c, LSeriesSummable (D.cnt c) s) :
@@ -35,29 +33,27 @@ lemma RayData.LSeries_coef_eq_sum {K : Type} [Field K] [NumberField K] {M : ℕ}
   simp [LSeries_smul]
 
 /- English proof (translation)
-Introduce `K _ _ _ hK M hM D χ₀ hχ₀`. Take `⟨ρ, -, hZ⟩` from `GlobalTheory.T.ray_class_partial_zeta_continuation K hK M hM D`. Use `choose Z hZd hZ1 hZm hZs using hZ`. Set `Y : (D.G →* ℂˣ) → ℂ → ℂ` to `fun χ s => ∑ c, (χ c : ℂ) * Z c s`. Establish `hYd : ∀ χ, Differentiable ℂ (Y χ)` using `fun χ => Differentiable.fun_sum fun c _ => (hZd c).const_mul _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYm : ∀ χ, Y χ (-1) = 0` using `fun χ => by simp [Y, hZm]`. Establish `hYs : ∀ χ s, 1 < s.re → Y χ s = (s - 1) * LSeries (D.coef χ) s`. Introduce `χ s hs`. Rewrite using `[D.LSeries_coef_eq_sum χ s fun c => (hZs c s hs).1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hZs c s hs).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hY1 : ∀ χ, χ ≠ 1 → Y χ 1 = 0`. Introduce `χ hχ`. Establish `h0 : ∑ c, (χ c : ℂ) = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sum_hom_units_eq_zero ((Units.coeHom ℂ).comp χ) (by` as an intermediate fact. Introduce `h`. Apply `hχ` to reduce the goal to its premises. Use extensionality with `c`. Simplify using `using DFunLike.congr_fun h c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Simplify using `only [Y, hZ1]`. Rewrite using `[← Finset.sum_mul, h0, zero_mul]`. Establish `hL : ∀ χ : D.G →* ℂˣ, ∃ L : ℂ → ℂ, χ ≠ 1 → Differentiable ℂ L ∧ ∀ s : ℂ, 1 < s.re → L s = LSeries (D.coef χ) s`. Introduce `χ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hχ : χ = 1`. Conclude with `⟨0, fun h => absurd hχ h⟩`. Take `⟨g, hg, hg'⟩` from `exists_entire_div_sub_one (hYd χ) (hY1 χ hχ)`. Use `⟨g, fun _ => ⟨hg, fun s hs => ?_⟩⟩` and prove the remaining obligations. Establish `hs1 : s - 1 ≠ 0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_ne_zero]`. Introduce and unpack `rfl`. Simplify using `at hs`. Conclude with `mul_left_cancel₀ hs1 ((hg' s).symm.trans (hYs χ s hs))`. Use `choose L hL using hL`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨L χ₀, (hL χ₀ hχ₀).1, fun h0 => ?_, (hL χ₀ hχ₀).2⟩` and prove the remaining obligations. Take `⟨g, hg, hg'⟩` from `exists_entire_div_sub_one (hL χ₀ hχ₀).1 h0`. Use `haveI : NeZero ((Monoid.exponent D.G : ℕ) : ℂ) := ⟨by exact_mod_cast Monoid.exponent_ne_zero_of_finite⟩`. Use `haveI : Finite (D.G →* ℂˣ) := by`. Take `⟨e⟩` from `CommGroup.monoidHom_mulEquiv_of_hasEnoughRootsOfUnity D.G ℂ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finite.of_equiv _ e.toEquiv.symm`. Use `haveI : Fintype (D.G →* ℂˣ) := Fintype.ofFinite _`. Take `⟨b, hb0, hb1, hba, hbs⟩` from `GlobalTheory.T.dedekind_zeta_factorization_ray K M hM D`. Set `F : ℂ → ℂ` to `fun s => Y 1 s * (g s * ∏ χ ∈ (Finset.univ.erase 1).erase χ₀, L χ s)`. Establish `hFd : Differentiable ℂ F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(hYd 1).mul (hg.mul ?_)` and prove the remaining obligations. Use `Differentiable.fun_finset_prod fun χ hχ => (hL χ ?_).1` and prove the remaining obligations. Conclude with `Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hχ)`. Establish `hFs : {s : ℂ | (1 : ℝ) < s.re}.EqOn F (LSeries b)`. Introduce `s hs`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs' : 1 < s.re` using `hs`. Rewrite using `[hbs s hs', ← Finset.mul_prod_erase _ _ (Finset.mem_univ (1 : D.G →* ℂˣ)), ← Finset.mul_prod_erase _ _ (Finset.mem_erase.2 ⟨hχ₀, Finset.mem_univ χ₀⟩), ← (hL χ₀ hχ₀).2 s hs', hg' s]`. Simplify using `only [F]`. Rewrite using `[hYs 1 s hs', Finset.prod_congr rfl fun χ hχ => (hL χ (Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hχ))).2 s hs']`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hpos` using `LSeries.positive_of_differentiable_of_eqOn hb0 hb1 hFd (x := 1) (by exact_mod_cast hba) hFs (-1)`. Establish `: F ((-1 : ℝ) : ℂ) = 0`. Simplify using `[F, hYm]`. Rewrite `hpos` using `[this]`. Conclude with `lt_irrefl _ hpos`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rayLSeries_entire_ne_zero_one : ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∀ (M : ℕ), 2 ≤ M → ∀ (D : RayData K M) (χ : D.G →* ℂˣ), χ ≠ 1 → ∃ L : ℂ → ℂ, Differentiable ℂ L ∧ L 1 ≠ 0 ∧ ∀ s : ℂ, 1 < s.re → L s = LSeries (D.coef χ) s := by
   intro K _ _ _ hK M hM D χ₀ hχ₀

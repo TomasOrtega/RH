@@ -5,11 +5,11 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.PadicMvPowerSeriesExt
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective O A)`. Establish `h0 : s x = 0`. Use extensionality with `a`. Use `IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {(p : O)}) O) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `hx n`. Establish `hxy : x = ((p : O) ^ n) • y`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast, hy]`. Rewrite using `[hxy, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `dvd_mul_right _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.congr_fun hs x`. Rewrite `h1` using `[LinearMap.comp_apply, h0, map_zero, LinearMap.id_apply]`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_pow_dvd (p : ℕ) (O : Type) [CommRing O]
     [IsHausdorff (Ideal.span {(p : O)}) O] (A : Type) [CommRing A] [Algebra O A]
@@ -30,15 +30,13 @@ theorem eq_zero_of_forall_pow_dvd (p : ℕ) (O : Type) [CommRing O]
   exact h1.symm
 
 /- English proof (translation)
-Introduce `p O _ _ σ _ A _ _ _ _ F F' hX hF hF'`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `f`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_forall_pow_dvd p O A _ fun m => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N₁, hN₁⟩` from `hF m`. Take `⟨N₂, hN₂⟩` from `hF' m`. Use `set g := MvPowerSeries.trunc' O (Finsupp.equivFunOnFinite.symm fun _ : σ => max N₁ N₂) f with hg`. Establish `hpoly : F.comp (MvPolynomial.coeToMvPowerSeries.algHom O) = F'.comp (MvPolynomial.coeToMvPowerSeries.algHom O)` using `MvPolynomial.algHom_ext fun i => by simpa using hX i`. Establish `hg' : F (g : MvPowerSeries σ O) = F' (g : MvPowerSeries σ O)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using DFunLike.congr_fun hpoly g`. Establish `hlow : ∀ α : σ →₀ ℕ, α.degree < max N₁ N₂ → MvPowerSeries.coeff α (f - (g : MvPowerSeries σ O)) = 0`. Introduce `α hα`. Rewrite using `[map_sub, MvPolynomial.coeff_coe, hg, MvPowerSeries.coeff_trunc', if_pos, sub_self]`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Finsupp.le_degree i α).trans (by simpa using hα.le)`. Establish `hdiff : F f - F' f = F (f - (g : MvPowerSeries σ O)) - F' (f - (g : MvPowerSeries σ O))`. Rewrite using `[map_sub, map_sub, hg']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdiff]`.
-
-Conclude with `dvd_sub (hN₁ _ fun α h => hlow α (lt_of_lt_of_le h (le_max_left _ _))) (hN₂ _ fun α h => hlow α (lt_of_lt_of_le h (le_max_right _ _)))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algHom_ext : ∀ (p : ℕ) (O : Type) [CommRing O] [IsAdicComplete (Ideal.span {(p : O)}) O] (σ : Type) [Finite σ] (A : Type) [CommRing A] [Algebra O A] [Module.Finite O A] [Module.Projective O A] (F F' : MvPowerSeries σ O →ₐ[O] A), (∀ i, F (X i) = F' (X i)) → (∀ m : ℕ, ∃ N : ℕ, ∀ f, (∀ α : σ →₀ ℕ, α.degree < N → coeff α f = 0) → (p : A) ^ m ∣ F f) → (∀ m : ℕ, ∃ N : ℕ, ∀ f, (∀ α : σ →₀ ℕ, α.degree < N → coeff α f = 0) → (p : A) ^ m ∣ F' f) → F = F' := by
   classical

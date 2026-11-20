@@ -9,11 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
 /- English proof (translation)
-Introduce `R _ _ _ T _ _ Γ U hU`. Take `⟨H, A, hH, hA, hAf⟩` from `PositivityTheory.HtPt.Twhopf.sub_order R T Γ U hU`. Establish `key : Γ.btOrder U = indOrder H.subtype A`. Use extensionality with `f`. Rewrite using `[PositivityTheory.HtPt.Twhopf.mem_order R T Γ U f]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hf t`. Take `⟨s, hs⟩` from `(PositivityTheory.HtPt.Twhopf.reg_iff R T Γ U _).1 (hf t)`. Conclude with `(hAf _).2 ⟨s, fun t' h => hs t' h⟩`. Introduce `hf t`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(PositivityTheory.HtPt.Twhopf.reg_iff R T Γ U _).2 ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `(hAf _).1 (hf t)`. Conclude with `⟨s, fun t' h => hs ⟨t', (hH t').2 h⟩ h⟩`. Rewrite using `[key]`. Conclude with `PositivityTheory.HtPt.Twhopf.ind_hopf R T H H.subtype H.subtype_injective A hA`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Htat.SubgroupHopfOrder.btOrder_isHopfOrder_of_finOpenSub :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), Γ.IsFinOpenSub U → IsHopfOrder (Γ.btOrder U) := by
@@ -34,7 +34,7 @@ theorem PositivityTheory.HtPt.Htat.SubgroupHopfOrder.btOrder_isHopfOrder_of_finO
   exact PositivityTheory.HtPt.Twhopf.ind_hopf R T H H.subtype H.subtype_injective A hA
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Htat.SubgroupHopfOrder.btOrder_isHopfOrder_of_finOpenSub`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Htat.bt_sub_hopf : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (U : Γ.G.left.Opens), Γ.IsFinOpenSub U → IsHopfOrder (Γ.btOrder U) :=
   @PositivityTheory.HtPt.Htat.SubgroupHopfOrder.btOrder_isHopfOrder_of_finOpenSub

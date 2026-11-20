@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion | exact GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion | (intros; apply GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.thetaPoint_determines_and_end_determined_torsion : GlobalTheory.ThetaPtDeterminesSt ∧ GlobalTheory.EndDeterminedOnTorsionSt := by
   first | exact @GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion | exact GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion | (intros; apply GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion <;> assumption)

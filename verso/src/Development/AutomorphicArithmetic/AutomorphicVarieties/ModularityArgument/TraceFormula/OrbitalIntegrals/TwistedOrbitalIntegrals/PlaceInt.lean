@@ -5,7 +5,7 @@ import GroundTheory.AutomorphicForms.Measures
 open MeasureTheory ValuativeRel PositivityTheory.Rg.Tf.Loc
 
 /- English proof (translation)
-Use `⟨fun F _ _ v n => rfl, fun F E _ _ _ _ _ v w hw n => ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Use `⟨fun h => h w, fun h w' => ?_⟩` and prove the remaining obligations. Take `rfl` from `hw w'`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.placeInt :
     UpperTheory.V.Z.Tf.Orb.PlaceInt := by

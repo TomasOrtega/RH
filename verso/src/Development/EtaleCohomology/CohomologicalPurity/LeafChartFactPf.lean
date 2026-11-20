@@ -64,7 +64,7 @@ def wa (d : ℕ) (R : Type) [CommRing R] : sp (MvPolynomial (Fin d) R) ⟶ W d R
   prod.lift (Wpt (wvec1 MvPolynomial.X)) (spMap MvPolynomial.C)
 
 /- English proof (translation)
-Simplify using `only [wa, wb, prod.lift_map, Category.comp_id, wpt_incl]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem wa_wb (d : ℕ) (R : Type) [CommRing R] : wa d R ≫ wb d R =
     (prod.lift (Pj.pt (vec1 MvPolynomial.X)) (spMap MvPolynomial.C) :
@@ -73,11 +73,9 @@ theorem wa_wb (d : ℕ) (R : Type) [CommRing R] : wa d R ≫ wb d R =
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Mono (sch.map U.ι)`. Establish `h : ∀ n, Mono ((sch.map U.ι).app n)`. Introduce `n`. Establish `: ∀ V, Mono (((sch.map U.ι).app n).app V)`. Introduce `V`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mono_iff_injective]`. Introduce `f g h`. Express the relevant statement in the definitionally equal form `f ≫ U.ι = g ≫ U.ι at h`. Conclude with `(cancel_mono U.ι).1 h`. Conclude with `NatTrans.mono_of_mono_app _`.
-
-Conclude with `NatTrans.mono_of_mono_app _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem opn_mono {X : Scheme.{0}} (U : X.Opens) : Mono (opn U).hom := by
   change Mono (sch.map U.ι)
@@ -109,9 +107,9 @@ namespace LateralTheory.CohomologicalPurity.Thom.ExcP
 
 open Chart in
 /- English proof (translation)
-Introduce `hH q _ d R _ I hI hq Φ hΦ`. Use `hG.1 d R` as an intermediate fact. Establish `hab : wa d R ≫ wb d R = Φ.right` using `by rw [hΦ, wa_wb]`. Establish `hw : ((opn (off (MvPolynomial (Fin d) R) I)).hom ≫ wa d R) ≫ wb d R = Φ.left ≫ (pr d R).hom` using `by erw [Category.assoc, hab]; exact (Arrow.w Φ).symm`. Set `P : Arrow Spc` to `Arrow.mk (pullback.fst (wb d R) (pr d R).hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `β : P ⟶ pr d R` to `Arrow.homMk (pullback.snd _ _) (wb d R) pullback.condition.symm`. Set `α : opn (off (MvPolynomial (Fin d) R) I) ⟶ P` to `Arrow.homMk (pullback.lift _ _ hw) (wa d R) (pullback.lift_fst _ _ _)`. Use `⟨P, α, β, ?_, opn_mono _, (IsPullback.of_hasPullback (wb d R) (pr d R).hom).mono_fst_of_mono this, hL hH q d R I hI hq _ (pullback.lift_fst _ _ _), hR hH q d R hq, IsPullback.of_hasPullback _ _, hC hH q d R hq⟩` and prove the remaining obligations. Conclude with `hom_ext (hG.1 d R) (by rw [Arrow.comp_right]; exact hab)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LeafChartFact_of (hG : LeafGeo) (hC : LeafWCov) (hR : LeafWEqvR) (hL : LeafWEqvL) :
     LeafChartFact := by

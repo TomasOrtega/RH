@@ -13,11 +13,9 @@ open PositivityTheory.Rg.BcB.G8.Fin
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))` using `by first`. Consider the case `exact FaithfulSMul.algebraMap_injective _ _`. Consider the case `exact NoZeroSMulDivisors.algebraMap_injective _ _`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral v.asIdeal (by rw [(RingHom.injective_iff_ker_eq_bot _).mp hinj]; exact bot_le)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨Q, hQmax.isPrime, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQ]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`.
-
-Use `ext1`. Conclude with `hQ`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_under (v : PlF E) : ∃ w : Pl E, w.under (𝓞 (maximalRealSubfield E)) = v := by
   have hinj : Function.Injective (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) := by
@@ -46,7 +44,7 @@ def secEquiv {S : Set (Pl E)} (hS : IsSection S) : S ≃ PlF E :=
       exact ⟨⟨u, hu⟩, huw⟩)
 
 /- English proof (translation)
-Establish `hv : secEquiv hS u = u.1.under (𝓞 (maximalRealSubfield E))` using `rfl`. Establish `h : ∃ w ∈ S, w.under (𝓞 (maximalRealSubfield E)) = secEquiv hS u` using `⟨u.1, u.2, hv.symm⟩`. Rewrite using `[secPl, dif_pos h]`. Take `⟨h1, h2⟩` from `h.choose_spec`. Conclude with `congrArg some ((hS u.1).unique ⟨h1, h2.trans hv⟩ ⟨u.2, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem secPl_eq {S : Set (Pl E)} (hS : IsSection S) (u : S) :
     secPl S (secEquiv hS u) = some u.1 := by
@@ -57,7 +55,7 @@ theorem secPl_eq {S : Set (Pl E)} (hS : IsSection S) (u : S) :
   exact congrArg some ((hS u.1).unique ⟨h1, h2.trans hv⟩ ⟨u.2, rfl⟩)
 
 /- English proof (translation)
-Introduce `E _ _ _ S hS g`. Rewrite using `[show (∏ᶠ (w : Pl E) (_ : w ∈ S), g w) = ∏ᶠ u : S, g u from (finprod_set_coe_eq_finprod_mem S).symm]`. Apply the tactic sequence `exact finprod_eq_of_bijective (secEquiv hS) (secEquiv hS).bijective (fun u => by rw [secPl_eq hS u] <;> rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem reindex : Reindex := by
   intro E _ _ _ S hS g

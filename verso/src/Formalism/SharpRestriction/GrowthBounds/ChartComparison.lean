@@ -11,9 +11,9 @@ namespace Formalism.MainNotions.G.CmpJ
 open Formalism.BasicNotions Formalism.MainNotions.G Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms NumberField
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.locW at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (h y hy)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ h1 h2 => rw [map_add]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y _ h1`. Rewrite using `[Subring.smul_def, map_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ _ h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locW_map {LL : Type} [Field LL] [NumberField LL] (Pl : Rows.Places LL) (w : Pl.Pl) {V V' : Type} [AddCommGroup V] [Module LL V]
     [Module (𝓞 LL) V] [AddCommGroup V'] [Module LL V'] [Module (𝓞 LL) V'] (ε : V →ₗ[LL] V') (L : Submodule (𝓞 LL) V)
@@ -29,9 +29,9 @@ theorem locW_map {LL : Type} [Field LL] [NumberField LL] (Pl : Rows.Places LL) (
     exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `locW_map Pl w ε.toLinearMap L L' (fun x hx => (h x).1 hx) _ hy` as an intermediate fact. Rewrite `this` using `[LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `locW_map Pl w ε.symm.toLinearMap L' L (fun x hx => (h _).2 (by rw [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]; exact hx)) _ hy`.
+A detailed English derivation is pending.
 -/
 theorem locW_equiv {LL : Type} [Field LL] [NumberField LL] (Pl : Rows.Places LL) (w : Pl.Pl) {V V' : Type} [AddCommGroup V] [Module LL V]
     [Module (𝓞 LL) V] [AddCommGroup V'] [Module LL V'] [Module (𝓞 LL) V'] (ε : V ≃ₗ[LL] V') (L : Submodule (𝓞 LL) V)
@@ -111,7 +111,7 @@ def plc (Gt : GatTies D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GId
     Fin (D.gat u w h).P.nV := ⟨0, Formalism.MainNotions.G.Inhab.gatHasPlaces_of_ties Gt u w h⟩
 
 /- English proof (translation)
-The claim follows from `StepIn.valIntJ_of (S := (I.at' j hj).st) (c.embW u w h) w (H.twUnit j hj) (H.valIntN j hj)`.
+A detailed English derivation is pending.
 -/
 theorem CmpJHyp.valInt {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (j : ℕ) (hj : j + 1 ≤ D.R.m) :
     (I.at' j hj).st.ValIntJ (c.embW u w h) w :=
@@ -126,7 +126,7 @@ def cmpSJ {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (hS : BlockRationalityFi
   else 0
 
 /- English proof (translation)
-Unfold `cmpSJ`. Rewrite using `[dif_pos hj]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cmpSJ_apply {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (hS : BlockRationalityField) (j : ℕ) (hj : j + 1 ≤ D.R.m)
     (x : ((Tw.fm u μ).lat (j + 1)).V) :
@@ -136,7 +136,7 @@ theorem cmpSJ_apply {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (hS : BlockRat
   rfl
 
 /- English proof (translation)
-Introduce `j hj`. Establish `: IsFractionRing (gatJ Lv (j + 1)).O (gatJ Lv (j + 1)).Kf` using `((D.gat u w h).P.setting (plc Gt u w h)).frac_O`. Conclude with `StepIn.desc (S := (I.at' j hj).st) (c.embW u w h) (H.core j hj) (H.iwF j hj) (D.plEq w) (fun x => (D.val_nonneg_iff w x).symm.trans (c.embW_int u w h x)) (H.fin j hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem descUp {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (Gt : GatTies D) : DescUp c u w h Lv := by
   intro j hj
@@ -170,7 +170,7 @@ def kerAtMu_cmpJ (K : KerLabelsMu Tw u μ w h Lv) {I : CmpJIn Tw u μ w h Lv} (H
   kerAtMu K (stepsMu H hS Gt) (descUp H Gt) (plc Gt u w h)
 
 /- English proof (translation)
-The claim follows from `cmpSJ_apply H hS j hj x`.
+A detailed English derivation is pending.
 -/
 theorem kerAtMu_cmpJ_cmp (K : KerLabelsMu Tw u μ w h Lv) {I : CmpJIn Tw u μ w h Lv} (H : CmpJHyp c I) (hS : BlockRationalityField)
     (Gt : GatTies D) (j : ℕ) (hj : j + 1 ≤ D.R.m) (x : ((Tw.fm u μ).lat (j + 1)).V) :

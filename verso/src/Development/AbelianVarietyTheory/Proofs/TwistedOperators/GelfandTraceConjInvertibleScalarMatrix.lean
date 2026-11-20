@@ -9,9 +9,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use extensionality with `a b`. Simplify using `[Formalism.REAL.epow, Matrix.one_apply]`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use extensionality with `a b`. Rewrite using `[pow_succ, ← ih]`. Simplify using `[Formalism.REAL.epow, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem recursive_matrixPower_eq_matrix_pow {A : Type} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (k : ℕ) :
     Matrix.of (Formalism.REAL.epow E k) = (Matrix.of E) ^ k := by
@@ -25,7 +25,7 @@ theorem recursive_matrixPower_eq_matrix_pow {A : Type} [Ring A] {n : ℕ} (E : F
     simp [Formalism.REAL.epow, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Matrix.mul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.commutes, ← Algebra.smul_def, ← Algebra.smul_def, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem scalarMatrix_mul_algebraMatrix_mul_apply {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) A) (P Q : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
@@ -38,19 +38,19 @@ theorem scalarMatrix_mul_algebraMatrix_mul_apply {A : Type} [Ring A] [Algebra �
   rw [← Algebra.commutes, ← Algebra.smul_def, ← Algebra.smul_def, smul_smul, mul_comm]
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hd`. Use `set L : Matrix (Fin n) (Fin n) A := (algebraMap ℂ A).mapMatrix P.transpose with hL`. Use `set R : Matrix (Fin n) (Fin n) A := (algebraMap ℂ A).mapMatrix (P⁻¹).transpose with hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hLR : L * R = 1`. Rewrite using `[hL, hR, ← map_mul, ← Matrix.transpose_mul, h2, Matrix.transpose_one, map_one]`. Establish `hRL : R * L = 1`. Rewrite using `[hL, hR, ← map_mul, ← Matrix.transpose_mul, h1, Matrix.transpose_one, map_one]`. Establish `hE : Matrix.of (fun a b => ∑ c, ∑ d, (P c a * P⁻¹ b d) • E c d) = L * Matrix.of E * R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Rewrite using `[hL, hR, scalarMatrix_mul_algebraMatrix_mul_apply]`. Both sides reduce to the same expression. Establish `hpow : ∀ m : ℕ, (L * Matrix.of E * R) ^ m = L * (Matrix.of E) ^ m * R`. Introduce `m`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero => simp [hLR]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk` using `recursive_matrixPower_eq_matrix_pow (fun a b => ∑ c, ∑ d, (P c a * P⁻¹ b d) • E c d) k`. Rewrite `hk` using `[hE, hpow, ← recursive_matrixPower_eq_matrix_pow]`. Establish `hent : ∀ a, Formalism.REAL.epow (fun a b => ∑ c, ∑ d, (P c a * P⁻¹ b d) • E c d) k a a = ∑ c, ∑ d, (P c a * P⁻¹ a d) • Formalism.REAL.epow E k c d`. Introduce `a`. Use `congrFun (congrFun hk a) a` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[hL, hR, scalarMatrix_mul_algebraMatrix_mul_apply]`. Conclude with `this`. Unfold `Formalism.REAL.etr`. Simplify using `only [hent]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, ← Matrix.mul_apply, h1, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+A detailed English derivation is pending.
 -/
 theorem etr_conj_scalar_matrix {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
     (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) (k : ℕ) :

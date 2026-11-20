@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.Fam
 
 /- English proof (translation)
-Distinguish the cases in `hκ : κ = 0`. Substitute `hκ` using the available equality. Simplify using `[comb]`. Unfold `comb`. Rewrite using `[Finsupp.support_smul_eq hκ, Finset.smul_sum]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.smul_apply, smul_eq_mul, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_smul_coef {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (κ : ℂ) (d : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (κ • d) f = κ • comb ψ S T d f := by
@@ -30,9 +30,9 @@ theorem comb_smul_coef {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (
     rw [Finsupp.smul_apply, smul_eq_mul, mul_smul]
 
 /- English proof (translation)
-Take `⟨Φ, hSB, hval, hth⟩` from `h`. Use `⟨κ • Φ, ?_, fun γ => by simp [hval γ], ?_⟩` and prove the remaining obligations. Take `⟨hs, k, hk, hinv, hsupp⟩` from `hSB`. Use `⟨fun t ht => hs t fun h0 => ht (by simp [h0]), k, hk, fun v hv hv' t => by simp [hinv v hv hv' t], fun t ht => hsupp t fun h0 => ht (by simp [h0])⟩` and prove the remaining obligations. Unfold `IsThetaAt AllSome at hth ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨hth.1, fun T hT => ?_⟩` and prove the remaining obligations. Establish `h` using `hth.2 T hT`. Simplify using `only at h ⊢`. Rewrite using `[h, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRatDatum_const_mul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {e : AE D}
     {Ξ : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ} {f₀ f : WO S T → ℂ} (h : IsRatDatum ψ S T e Ξ f₀ f) (κ : ℂ) :
@@ -53,7 +53,7 @@ def chartRescale {Ch : ℕ → Type} (m : ℕ) (cc : ℕ → ℂ) (b : ∀ j, Ch
   | j + 1 => fun γ => if j < m then cc j * b j γ else 1
 
 /- English proof (translation)
-Take `⟨n, hn, hx⟩` from `h`. Introduce and unpack `rfl`. Simplify using `[zero_pow hn.ne'] at hx`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem datRoot_ne_zero {x : ℂ} (h : ∃ n : ℕ, 0 < n ∧ x ^ n = 1) : x ≠ 0 := by
   obtain ⟨n, hn, hx⟩ := h
@@ -61,7 +61,7 @@ theorem datRoot_ne_zero {x : ℂ} (h : ∃ n : ℕ, 0 < n ∧ x ^ n = 1) : x ≠
   simp [zero_pow hn.ne'] at hx
 
 /- English proof (translation)
-Take `⟨a, ha, hxa⟩` from `hx`. Take `⟨b, hb, hyb⟩` from `hy`. Use `⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, hxa, one_pow, mul_comm a b, pow_mul, hyb, one_pow, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem datRoot_mul {x y : ℂ} (hx : ∃ n : ℕ, 0 < n ∧ x ^ n = 1) (hy : ∃ n : ℕ, 0 < n ∧ y ^ n = 1) :
     ∃ n : ℕ, 0 < n ∧ (x * y) ^ n = 1 := by
@@ -71,7 +71,7 @@ theorem datRoot_mul {x y : ℂ} (hx : ∃ n : ℕ, 0 < n ∧ x ^ n = 1) (hy : �
   rw [mul_pow, pow_mul, hxa, one_pow, mul_comm a b, pow_mul, hyb, one_pow, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_pos, by simp⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `datRoot_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datRoot_prod {ι : Type*} (s : Finset ι) (x : ι → ℂ) (h : ∀ i ∈ s, ∃ n : ℕ, 0 < n ∧ x i ^ n = 1) :
     ∃ n : ℕ, 0 < n ∧ (∏ i ∈ s, x i) ^ n = 1 := by
@@ -83,31 +83,29 @@ theorem datRoot_prod {ι : Type*} (s : Finset ι) (x : ι → ℂ) (h : ∀ i �
     exact datRoot_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr hoT`. Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.true_geometry_row_pair_relation W hW u a ha hTr hoT`. Use `⟨C, hC0, fun t J hR => ?_⟩` and prove the remaining obligations. Take `⟨e₀, he₀, hAe⟩` from `GlobalTheory.T.true_geometry_twist_quadratic_level W hW u a ha hTr t J hR`. Take `⟨p, q, hA, hB, ⟨c0, hc0, h0⟩, hstep, hD⟩` from `GlobalTheory.T.true_geometry_row_pair_property W hW u a ha hTr hoT t J hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set Af : ∀ j, J.Ch j → ℂ := fun j α => p j α * (J.A.chr (j + 1) (J.A.xr j (J.ι j α)) : ℂ) with hAf`. Use `set Bf : ∀ j, J.Ch (j + 1) → ℂ := fun j γ => q j γ * ((J.A.chr (j + 1) (J.A.xr (j + 1) (J.ι (j + 1) γ)) : ℂ))⁻¹ with hBf`. Set `k : ℕ → ℂ` to `fun j => if h : j + 1 < B.R.m then (hstep j h).choose else 1`. Establish `hk : ∀ j, ∃ n : ℕ, 0 < n ∧ k j ^ n = 1` using `fun j => by`. Distinguish the cases in `h : j + 1 < B.R.m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [k, dif_pos h]`. Conclude with `(hstep j h).choose_spec.1`. Simplify using `only [k, dif_neg h]; exact ⟨1, one_pos, by simp⟩`. Set `cc : ℕ → ℂ` to `fun j => c0 * ∏ i ∈ Finset.range j, k i`. Establish `hcc : ∀ j, ∃ n : ℕ, 0 < n ∧ cc j ^ n = 1` using `fun j => datRoot_mul hc0 (datRoot_prod _ _ fun i _ => hk i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `s : ∀ j, J.Ch j → ℂ` to `chartRescale B.R.m cc Bf`. Establish `hs0 : ∀ α, s 0 α = 1` using `fun _ => rfl`. Establish `hsS : ∀ j γ, j < B.R.m → s (j + 1) γ = cc j * Bf j γ` using `fun j γ h => by show (if j < B.R.m then cc j * Bf j γ else 1) = _`. Rewrite using `[if_pos h]`. Establish `hsA : ∀ j, j < B.R.m → ∀ α, s j α * Af j α = cc j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _ α`. Rewrite using `[hs0, one_mul]`. Simplify using `[cc, Af, h0 α]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ j ih`. Introduce `hj γ`. Rewrite using `[hsS j γ (by omega)]`. Establish `hk' : k j = (hstep j hj).choose` using `by simp only [k, dif_pos hj]`. Use `(hstep j hj).choose_spec.2 γ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsroot : ∀ j α, ∃ n : ℕ, 0 < n ∧ s j α ^ n = 1`. Introduce `j`. Consider the cases of `j with`. Consider the case `zero => intro α; exact ⟨1, one_pos, by rw [hs0, one_pow]⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Consider the case `succ j`. Introduce `γ`. Distinguish the cases in `h : j < B.R.m`. Rewrite using `[hsS j γ h]`. Conclude with `datRoot_mul (hcc j) (hB j h γ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨1, one_pos, ?_⟩ show (if j < B.R.m then cc j * Bf j γ else 1) ^ 1 = 1` and prove the remaining obligations. Rewrite using `[if_neg h, one_pow]`. Use `⟨s, fun j α γ => s j α * (s (j + 1) γ)⁻¹ * (p j α * q j γ), fun _ => 1, hsroot, hs0, fun _ => ⟨1, one_pos, one_pow 1⟩, fun j hj α γ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hD e₀ he₀ j hj α γ _ _ (hC t J hR e₀ he₀ j hj α γ)`. Establish `h2` using `isRatDatum_const_mul h1 (s j α * (s (j + 1) γ)⁻¹ * J.wt j α)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[← hAe]`. Establish `hdQ : J.dQ s j α γ = (s j α * (s (j + 1) γ)⁻¹ * J.wt j α) • aconv (List.ofFn fun i => (J.E i).dL j (α i) (γ i))`. Simplify using `only [QJ.dQ, smul_smul]`. Rewrite using `[hdQ, comb_smul_coef]`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Name the introduced variables `z`. Use `beta_reduce`. Rewrite using `[GlobalTheory.T.true_geometry_twist_quadratic_value W hW u a ha hTr t J hR j hj α γ z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hjm : j < B.R.m` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hSA` using `hsA j hjm α`. Establish `hBn : Bf j γ ≠ 0` using `datRoot_ne_zero (hB j hjm γ)`. Establish `hcn : cc j ≠ 0` using `datRoot_ne_zero (hcc j)`. Use `beta_reduce`. Rewrite using `[hsS j γ hjm]`.
-
-Establish `hx : ((J.A.chr (j + 1) (J.A.xr (j + 1) (J.ι (j + 1) γ)) : ℂ)) ≠ 0`. Conclude with `Circle.coe_ne_zero _`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem QJ.dat_exists : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → (∀ r s, (a.g.oT B.R.m rfl).iA r s = if r.val = s.val then 1 else 0) → ∃ C : ℕ → ℂ, (∀ j, j < B.R.m → C j ≠ 0) ∧ ∀ t (J : QJ a t), J.Reads → ∃ s ζ ρ, J.Dat C s ζ ρ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr hoT

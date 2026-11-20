@@ -13,7 +13,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [IsTotallyComplex E] [Field Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (CG.mk π).IsLoc w (Quotient.mk _ σ)` using `hσ`. Rewrite using `[locParT, CG.IsLoc.unique E a _ w _ _ h1.loc h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locParT_eq_of_isLocComp (hT : UpperTheory.Zero.LLC.RecTExists) {π : CuspSub E a} {σ : SmIrr (GL (Fin a) (w.adicCompletion E))}
     (hσ : π.IsLocComp w σ) (h : IsPlaceOver A w) :
@@ -23,7 +23,7 @@ theorem locParT_eq_of_isLocComp (hT : UpperTheory.Zero.LLC.RecTExists) {π : Cus
   rfl
 
 /- English proof (translation)
-Establish `h1 : (CG.mk π).IsLoc w (Quotient.mk _ σ)` using `hσ`. Rewrite using `[CG.IsLoc.unique E a _ w _ _ h1.loc h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cls_loc_eq_of_isLocComp {π : CuspSub E a} {σ : SmIrr (GL (Fin a) (w.adicCompletion E))} (hσ : π.IsLocComp w σ) :
     (⟨a, ParLaws.toCl ((CG.mk π).loc w)⟩ : IrrGL (w.adicCompletion E)) = cls (ParLaws.toRep σ) := by
@@ -32,7 +32,7 @@ theorem cls_loc_eq_of_isLocComp {π : CuspSub E a} {σ : SmIrr (GL (Fin a) (w.ad
   rfl
 
 /- English proof (translation)
-The claim follows from `locParT_eq_of_isLocComp hT (CG.isLoc_ofChar χ w) h`.
+A detailed English derivation is pending.
 -/
 theorem locParT_ofChar_eq (hT : UpperTheory.Zero.LLC.RecTExists) (χ : HChar E) (h : IsPlaceOver A w) :
     locParT hT (CG.ofChar χ) h = locRecT hT h (.ofChar (χ.loc w) (ParLaws.isSmoothChar_loc χ w)) :=
@@ -41,9 +41,9 @@ theorem locParT_ofChar_eq (hT : UpperTheory.Zero.LLC.RecTExists) (χ : HChar E) 
 end GlobalTheory.CuspRep.ParLawsT
 
 /- English proof (translation)
-Introduce `hF hT E Ω _ _ _ _ _ _ A w a π χ h hg`. Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Take `⟨_, _, H⟩` from `isRecT_locRecT hT h`. Establish `hg' : UpperTheory.Zero.LLC.Good (cls (ParLaws.toRep σ))` using `cls_loc_eq_of_isLocComp hσ ▸ hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(locParT_eq_of_isLocComp hT (hσ.twist χ) h).trans ?_` and prove the remaining obligations. Rewrite using `[locParT_ofChar_eq, show locParT hT (Quotient.mk _ π) h = _ from locParT_eq_of_isLocComp hT hσ h, ← H.twist _ _ _ hg']`. Conclude with `congrArg _ (IrrGL.tw_of σ.ρ σ.smooth σ.irred _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspRep.ParLawsT.locParT_twist : ∀ (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hT : UpperTheory.Zero.LLC.RecTExists) (E Ω : Type) [Field E] [NumberField E] [IsTotallyComplex E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) (π : CG E a) (χ : HChar E) (h : IsPlaceOver A w), UpperTheory.Zero.LLC.Good (⟨a, ParLaws.toCl (π.loc w)⟩ : IrrGL (w.adicCompletion E)) → locParT hT (π.twist χ) h = (locParT hT π h).lpChar (locParT hT (CG.ofChar χ) h) := by
   intro hF hT E Ω _ _ _ _ _ _ A w a π χ h hg

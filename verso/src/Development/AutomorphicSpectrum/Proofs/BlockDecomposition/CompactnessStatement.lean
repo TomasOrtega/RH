@@ -18,7 +18,7 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Jp.Cmp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.reduction_unique_up_to_parabolic`.
+A detailed English derivation is pending.
 -/
 theorem red_unique : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field L] [Algebra O L] [IsFractionRing O L]
     (n : ℕ) (w : Lˣ) (κ : GL (Ix n) O) (h₁ h₂ : GL (Ix n) (IsLocalRing.ResidueField O)),
@@ -27,14 +27,14 @@ theorem red_unique : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValua
         h₂ = pM a d b * h₁ := GlobalTheory.T.reduction_unique_up_to_parabolic
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.level_square_congruence_conjugation`.
+A detailed English derivation is pending.
 -/
 theorem twist_gam : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field L] [Algebra O L] [IsFractionRing O L]
     (n : ℕ) (ϖ : O), Irreducible ϖ → ∀ w : Lˣ, (w : L) = algebraMap O L ϖ → ∀ γ ∈ Gam2 (n := n) ϖ,
       ∃ j' : GL (Ix n) O, inL γ * tauM w = tauM w * inL j' ∧ resK j' = 1 := GlobalTheory.T.level_square_congruence_conjugation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.residue_upper_unipotent_lift`.
+A detailed English derivation is pending.
 -/
 theorem twist_low : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field L] [Algebra O L] [IsFractionRing O L]
     (n : ℕ) (ϖ : O), Irreducible ϖ → ∀ w : Lˣ, (w : L) = algebraMap O L ϖ →
@@ -42,7 +42,7 @@ theorem twist_low : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuat
       ∃ j j' : GL (Ix n) O, inL j * tauM w = tauM w * inL j' ∧ resK j' = x := GlobalTheory.T.residue_upper_unipotent_lift
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.reduction_corank_eq_rank_lower_left`.
+A detailed English derivation is pending.
 -/
 theorem red_rank : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field L] [Algebra O L] [IsFractionRing O L]
     (n : ℕ) (ϖ : O), Irreducible ϖ → ∀ w : Lˣ, (w : L) = algebraMap O L ϖ →
@@ -50,34 +50,34 @@ theorem red_rank : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuati
       iD h = (lowerLeftBlock (resK κ)).rank := GlobalTheory.T.reduction_corank_eq_rank_lower_left
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.parabolic_double_coset_of_equal_corank`.
+A detailed English derivation is pending.
 -/
 theorem dbl : ∀ (k : Type) [Field k] (n : ℕ) (g₁ g₂ : GL (Ix n) k), iD g₁ = iD g₂ →
     ∃ (a d : GL (Fin n) k) (b : Matrix (Fin n) (Fin n) k) (x : GL (Ix n) k),
       x.1.toBlocks₁₂ = 0 ∧ g₂ = pM a d b * g₁ * x := GlobalTheory.T.parabolic_double_coset_of_equal_corank
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.average_over_maximal_compact_residue`.
+A detailed English derivation is pending.
 -/
 theorem avg_res : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fintype (IsLocalRing.ResidueField O)]
     (n : ℕ) (ϖ : O), Irreducible ϖ → ∀ f : GL (Ix n) (IsLocalRing.ResidueField O) → ℂ,
       avgK ϖ (fun κ => f (resK κ)) = sumG f / (Nat.card (GL (Ix n) (IsLocalRing.ResidueField O)) : ℂ) := GlobalTheory.T.average_over_maximal_compact_residue
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.average_invariant_right_translation`.
+A detailed English derivation is pending.
 -/
 theorem avg_right : ∀ (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) (ϖ : O) (φ : GL (Ix n) O → ℂ),
     (∀ κ, ∀ γ ∈ Gam2 (n := n) ϖ, φ (κ * γ) = φ κ) → ∀ j : GL (Ix n) O,
       avgK ϖ (fun κ => φ (κ * j)) = avgK ϖ φ := GlobalTheory.T.average_invariant_right_translation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.card_rank_lower_left_eq_lower_right`.
+A detailed English derivation is pending.
 -/
 theorem cnt_swap : ∀ (k : Type) [Field k] [Fintype k] (n i : ℕ),
     Nat.card {g : GL (Ix n) k // (lowerLeftBlock g).rank = i} = Nat.card {g : GL (Ix n) k // (dBlk g).rank = i} := GlobalTheory.T.card_rank_lower_left_eq_lower_right
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.card_fixed_lower_right_block`.
+A detailed English derivation is pending.
 -/
 theorem cnt_half : ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (D : Matrix (Fin n) (Fin n) k),
     Nat.card {g : GL (Ix n) k // dBlk g = D} =
@@ -85,14 +85,14 @@ theorem cnt_half : ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (D : Matrix (F
         Nat.card {C : Matrix (Fin n) (Fin n) k // (Matrix.fromCols C D).rank = n} := GlobalTheory.T.card_fixed_lower_right_block
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.card_completions_to_full_rank`.
+A detailed English derivation is pending.
 -/
 theorem cnt_cols : ∀ (k : Type) [Field k] [Fintype k] (n ρ : ℕ) (D : Matrix (Fin n) (Fin n) k), D.rank = ρ →
     Nat.card {C : Matrix (Fin n) (Fin n) k // (Matrix.fromCols C D).rank = n} =
       Fintype.card k ^ (n * ρ) * ∏ j ∈ Finset.range (n - ρ), (Fintype.card k ^ n - Fintype.card k ^ j) := GlobalTheory.T.card_completions_to_full_rank
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.card_rank_completion_symmetry`.
+A detailed English derivation is pending.
 -/
 theorem cnt_rank : ∀ (k : Type) [Field k] [Fintype k] (n ρ : ℕ), ρ ≤ n →
     Nat.card {D : Matrix (Fin n) (Fin n) k // D.rank = ρ} *
@@ -101,7 +101,7 @@ theorem cnt_rank : ∀ (k : Type) [Field k] [Fintype k] (n ρ : ℕ), ρ ≤ n �
         ∏ j ∈ Finset.range ρ, (Fintype.card k ^ n - Fintype.card k ^ j) := GlobalTheory.T.card_rank_completion_symmetry
 
 /- English proof (translation)
-Take `⟨a, d, b, κ', E, R⟩` from `hr`. Use `⟨a, d, b, κ' * j', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, e, ← mul_assoc, E, map_mul, mul_assoc]`. Rewrite using `[map_mul, R]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_mul {O L : Type} [CommRing O] [IsLocalRing O] [Field L] [Algebra O L] {n : ℕ} {w : Lˣ}
     {κ j j' : GL (Ix n) O} {h : GL (Ix n) (IsLocalRing.ResidueField O)} (hr : IsRed (O := O) w κ h)
@@ -112,11 +112,11 @@ theorem red_mul {O L : Type} [CommRing O] [IsLocalRing O] [Field L] [Algebra O L
   · rw [map_mul, R]
 
 /- English proof (translation)
-Establish `hd : dBlk (g * x) = dBlk g * x.1.toBlocks₂₂`. Establish `e : (g * x).1 = fromBlocks g.1.toBlocks₁₁ g.1.toBlocks₁₂ g.1.toBlocks₂₁ g.1.toBlocks₂₂ * fromBlocks x.1.toBlocks₁₁ x.1.toBlocks₁₂ x.1.toBlocks₂₁ x.1.toBlocks₂₂`. Simplify using `[fromBlocks_toBlocks]`. Unfold `dBlk`. Rewrite using `[e, fromBlocks_multiply, toBlocks_fromBlocks₂₂, hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hu : IsUnit x.1.toBlocks₂₂.det`. Establish `h0 : x.1 = fromBlocks x.1.toBlocks₁₁ 0 x.1.toBlocks₂₁ x.1.toBlocks₂₂`. Rewrite using `[← hx, fromBlocks_toBlocks]`. Establish `hd : IsUnit x.1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 x.isUnit`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hd` using `[h0, det_fromBlocks_zero₁₂]`. Conclude with `isUnit_of_mul_isUnit_right hd`. Unfold `iD`. Rewrite using `[hd, Matrix.rank_mul_eq_left_of_isUnit_det _ _ hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iD_mul_low {k : Type} [Field k] {n : ℕ} (g x : GL (Ix n) k) (hx : x.1.toBlocks₁₂ = 0) :
     iD (g * x) = iD g := by
@@ -137,7 +137,7 @@ theorem iD_mul_low {k : Type} [Field k] {n : ℕ} (g x : GL (Ix n) k) (hx : x.1.
   rw [hd, Matrix.rank_mul_eq_left_of_isUnit_det _ _ hu]
 
 /- English proof (translation)
-Establish `e : (x * y).1 = fromBlocks x.1.toBlocks₁₁ x.1.toBlocks₁₂ x.1.toBlocks₂₁ x.1.toBlocks₂₂ * fromBlocks y.1.toBlocks₁₁ y.1.toBlocks₁₂ y.1.toBlocks₂₁ y.1.toBlocks₂₂`. Simplify using `[fromBlocks_toBlocks]`. Rewrite using `[e, fromBlocks_multiply, toBlocks_fromBlocks₁₂, hx, hy]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem low_mul {k : Type} [Field k] {n : ℕ} (x y : GL (Ix n) k) (hx : x.1.toBlocks₁₂ = 0) (hy : y.1.toBlocks₁₂ = 0) :
     (x * y).1.toBlocks₁₂ = 0 := by
@@ -148,9 +148,7 @@ theorem low_mul {k : Type} [Field k] {n : ℕ} (x y : GL (Ix n) k) (hx : x.1.toB
   simp
 
 /- English proof (translation)
-Use `haveI := Unif.finite_quotient_level_square_congruence n hϖ`. Use `haveI := Fintype.ofFinite (GL (Ix n) O ⧸ Gam2 (n := n) ϖ)`. Unfold `avgK`. Simplify using `only [finsum_eq_sum_of_fintype, ← Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem avg_lin {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fintype (IsLocalRing.ResidueField O)]
     {n : ℕ} {ϖ : O} (hϖ : Irreducible ϖ) {ι : Type} (s : Finset ι) (c : ℂ) (F : ι → GL (Ix n) O → ℂ) :
@@ -164,7 +162,7 @@ theorem avg_lin {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   ring
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.range (n + 1)) (g := t) (fun x _ => Finset.mem_range.2 (Nat.lt_succ_of_le (ht x)))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => F i) (fun x hx => by rw [(Finset.mem_filter.1 hx).2])]`. Rewrite using `[Finset.sum_const, nsmul_eq_mul, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_fib {G : Type} [Fintype G] (t : G → ℕ) (n : ℕ) (ht : ∀ g, t g ≤ n) (F : ℕ → ℂ) :
     ∑ g, F (t g) = ∑ i ∈ Finset.range (n + 1), (Nat.card {g // t g = i} : ℂ) * F i := by
@@ -176,9 +174,9 @@ theorem sum_fib {G : Type} [Fintype G] (t : G → ℕ) (n : ℕ) (ht : ∀ g, t 
   rw [Finset.sum_const, nsmul_eq_mul, Nat.card_eq_fintype_card, Fintype.card_subtype]
 
 /- English proof (translation)
-Set `e : {g : GL (Ix n) k // (dBlk g).rank = ρ} ≃ Σ D : {D : Matrix (Fin n) (Fin n) k // D.rank = ρ}, {g : GL (Ix n) k // dBlk g = D.1}` to `{ toFun := fun g => ⟨⟨dBlk g.1, g.2⟩, ⟨g.1, rfl⟩⟩ invFun := fun s => ⟨s.2.1, by rw [s.2.2]; exact s.1.2⟩ left_inv := fun g => rfl right_inv := by`. Introduce and unpack `⟨⟨D, hD⟩, ⟨g, hg⟩⟩`. Simplify using `only at hg`. Substitute `hg` using the available equality. Use `rfl }`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality. Both sides reduce to the same expression.
 
-Rewrite using `[Nat.card_congr e, Nat.card_sigma]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => Nat.card {g : GL (Ix n) k // lowerLeftBlock g = 0 ∧ dBlk g = 1} * (Fintype.card k ^ (n * ρ) * ∏ j ∈ Finset.range (n - ρ), (Fintype.card k ^ n - Fintype.card k ^ j))) (fun D _ => by rw [cnt_half, cnt_cols k n ρ D.1 D.2])]`. Rewrite using `[Finset.sum_const, smul_eq_mul, Finset.card_univ, ← Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_by_rank {k : Type} [Field k] [Fintype k] (n ρ : ℕ) :
     Nat.card {g : GL (Ix n) k // (dBlk g).rank = ρ} =
@@ -203,13 +201,11 @@ theorem card_by_rank {k : Type} [Field k] [Fintype k] (n ρ : ℕ) :
   rw [Finset.sum_const, smul_eq_mul, Finset.card_univ, ← Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Establish `h1 : Nat.card {g : GL (Ix n) k // iD g = i} = Nat.card {g : GL (Ix n) k // (dBlk g).rank = n - i}`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun g => ?_)` and prove the remaining obligations. Establish `: (dBlk g).rank ≤ n` using `by simpa using (dBlk g).rank_le_card_width`. Unfold `iD`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[h1, cnt_swap, card_by_rank, card_by_rank]`. Establish `hr` using `cnt_rank k n i hi`. Establish `e1 : n - (n - i) = i` using `by omega`. Rewrite using `[e1]`. Establish `e2 : n * (n - i) + 2 * n * i = n * i + n * n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hi`. Simplify using `only [Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Use `set c := Nat.card {g : GL (Ix n) k // lowerLeftBlock g = 0 ∧ dBlk g = 1}`. Use `set q := Fintype.card k`.
-
-Use `set Ia := ∏ j ∈ Finset.range (n - i), (q ^ n - q ^ j)`. Use `set Ib := ∏ j ∈ Finset.range i, (q ^ n - q ^ j)`. Use `set Ra := Nat.card {D : Matrix (Fin n) (Fin n) k // D.rank = i}`. Use `set Rb := Nat.card {D : Matrix (Fin n) (Fin n) k // D.rank = n - i}`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem count {k : Type} [Field k] [Fintype k] (n i : ℕ) (hi : i ≤ n) :
     Nat.card {g : GL (Ix n) k // iD g = i} * Fintype.card k ^ (2 * n * i) =
@@ -239,11 +235,11 @@ theorem count {k : Type} [Field k] [Fintype k] (n i : ℕ) (hi : i ≤ n) :
     _ = Ra * (c * (q ^ (n * i) * Ia)) * q ^ (n * n) := by rw [pow_add]; ring
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (GL (Ix n) k)`. Unfold `sumG`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Establish `a` using `sum_fib (iD (k := k) (n := n)) n (fun g => by unfold iD; omega) (fun i => (Fintype.card k : ℂ) ^ (2 * n * i) * f i)`. Establish `b` using `sum_fib (fun h : GL (Ix n) k => (lowerLeftBlock h).rank) n (fun g => by simpa using (lowerLeftBlock g).rank_le_card_width) f`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a, b, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `c` using `count (k := k) n i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`. Establish `c'` using `congrArg (Nat.cast : ℕ → ℂ) c`. Move the coercions through the operations in `at c'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(f i) * c'`.
+A detailed English derivation is pending.
 -/
 theorem sum_weight {k : Type} [Field k] [Fintype k] (n : ℕ) (f : ℕ → ℂ) :
     sumG (fun g : GL (Ix n) k => (Fintype.card k : ℂ) ^ (2 * n * iD g) * f (iD g)) =
@@ -264,43 +260,39 @@ theorem sum_weight {k : Type} [Field k] [Fintype k] (n : ℕ) (f : ℕ → ℂ) 
   linear_combination (f i) * c'
 
 /- English proof (translation)
-Introduce `O L _ _ _ _ _ _ _ n ϖ hϖ w hw Ψ hΨ T hT`. Use `haveI := Fintype.ofFinite (GL (Ix n) (IsLocalRing.ResidueField O))`. Establish `hinv : ∀ κ h, IsRed (O` using `O) w κ h → Ψ h = Ψ (T κ) := by`. Introduce `κ h hr`. Take `⟨a, d, b, e⟩` from `red_unique O L n w κ (T κ) h (hT κ) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hΨ]`. Establish `hγ : ∀ κ, ∀ γ ∈ Gam2 (n` using `n) ϖ, Ψ (T (κ * γ)) = Ψ (T κ) := by`. Introduce `κ γ hg`. Take `⟨j', e, r⟩` from `twist_gam O L n ϖ hϖ w hw γ hg`. Use `red_mul (hT κ) e` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[r, mul_one]`. Conclude with `(hinv _ _ this).symm`. Establish `hx : ∀ x : GL (Ix n) (IsLocalRing.ResidueField O), x.1.toBlocks₁₂ = 0 → avgK ϖ (fun κ => Ψ (T κ * x)) = avgK ϖ (fun κ => Ψ (T κ))`. Introduce `x hl`. Take `⟨j, j', e, r⟩` from `twist_low O L n ϖ hϖ w hw x hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : (fun κ => Ψ (T κ * x)) = fun κ => Ψ (T (κ * j))`. Use function extensionality and compare the values at `κ`. Use `red_mul (hT κ) e` as an intermediate fact. Rewrite `this` using `[r]`. Conclude with `hinv _ _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `avg_right O n ϖ (fun κ => Ψ (T κ)) hγ j`. Use `set Pm : Finset (GL (Ix n) (IsLocalRing.ResidueField O)) := Finset.univ.filter (fun x => x.1.toBlocks₁₂ = 0) with hPm`. Establish `hmem : ∀ x, x ∈ Pm ↔ x.1.toBlocks₁₂ = 0` using `by simp [hPm]`. Establish `hN : (Pm.card : ℂ) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: (1 : GL (Ix n) (IsLocalRing.ResidueField O)) ∈ Pm`. Rewrite using `[hmem]`. Simplify using `[← fromBlocks_one]`. Conclude with `(Finset.card_pos.2 ⟨_, this⟩).ne'` after adjusting the coercions. Set `Φ : GL (Ix n) (IsLocalRing.ResidueField O) → ℂ` to `fun g => (Pm.card : ℂ)⁻¹ * ∑ x ∈ Pm, Ψ (g * x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hΦavg : avgK ϖ (fun κ => Φ (T κ)) = avgK ϖ (fun κ => Ψ (T κ))`. Use `avg_lin hϖ Pm (Pm.card : ℂ)⁻¹ (fun x κ => Ψ (T κ * x))` as an intermediate fact. Simplify using `only [Φ]`. Rewrite using `[this, Finset.sum_congr rfl (fun x h => hx x ((hmem x).1 h))]`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Establish `hΦ : ∀ g₁ g₂, iD g₁ = iD g₂ → Φ g₂ = Φ g₁`. Introduce `g₁ g₂ e`. Take `⟨a, d, b, x₀, h0, rfl⟩` from `dbl _ n g₁ g₂ e`. Simplify using `only [Φ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Establish `hinj : Set.InjOn (fun x => x₀ * x) (Pm : Set _)` using `fun _ _ _ _ h => mul_left_cancel h`. Establish `him : Pm.image (fun x => x₀ * x) = Pm`. Use `Finset.eq_of_subset_of_card_le ?_ ?_` and prove the remaining obligations. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨x, hxm, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `(hmem _).2 (low_mul _ _ h0 ((hmem _).1 hxm))`. Rewrite using `[Finset.card_image_of_injOn hinj]`. Use `conv_rhs => rw [← him]`. Rewrite using `[Finset.sum_image hinj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, hΨ]`. Set `f : ℕ → ℂ` to `fun i => if h : ∃ g, iD g = i then Φ h.choose else 0`. Establish `hf : ∀ g, Φ g = f (iD g)`. Introduce `g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h : ∃ g', iD g' = iD g` using `⟨g, rfl⟩`. Simplify using `only [f, dif_pos h]`. Conclude with `hΦ _ _ h.choose_spec`. Establish `hnum : sumG (fun g => (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * Ψ g) = sumG (fun g => (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * Φ g)`. Unfold `sumG`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Establish `h1 : ∀ x ∈ Pm, ∑ g, (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * Ψ (g * x) = ∑ g, (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * Ψ g`. Introduce `x hxm`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight x) (fun g => (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * Ψ g)]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.coe_mulRight]`. Rewrite using `[iD_mul_low g x ((hmem x).1 hxm)]`. Simplify using `only [Φ]`. Establish `h2 : ∑ g, (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * ((Pm.card : ℂ)⁻¹ * ∑ x ∈ Pm, Ψ (g * x)) = (Pm.card : ℂ)⁻¹ * ∑ x ∈ Pm, ∑ g, (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * Ψ (g * x)`. Rewrite using `[Finset.sum_comm (s := Pm), Finset.mul_sum]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, Finset.sum_congr rfl h1, Finset.sum_const, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ((Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (n * n)) ≠ 0`. Establish `: (Fintype.card (IsLocalRing.ResidueField O)) ≠ 0` using `Fintype.card_ne_zero`. Conclude with `pow_ne_zero _ (by exact_mod_cast this)`. Establish `hL : avgK ϖ (fun κ => Ψ (T κ)) = sumG (fun h : GL (Ix n) (IsLocalRing.ResidueField O) => f (lowerLeftBlock h).rank) / (Nat.card (GL (Ix n) (IsLocalRing.ResidueField O)) : ℂ)`. Rewrite using `[← hΦavg, ← avg_res O n ϖ hϖ (fun h : GL (Ix n) (IsLocalRing.ResidueField O) => f (lowerLeftBlock h).rank)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `κ`. Rewrite using `[hf, red_rank O L n ϖ hϖ w hw κ _ (hT κ)]`. Establish `hden` using `sum_weight (k := IsLocalRing.ResidueField O) n (fun _ => 1)`. Establish `hone : sumG (fun _ : GL (Ix n) (IsLocalRing.ResidueField O) => (1 : ℂ)) = (Nat.card (GL (Ix n) (IsLocalRing.ResidueField O)) : ℂ)`.
-
-Unfold `sumG`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, nsmul_eq_mul, mul_one, Finset.card_univ, Nat.card_eq_fintype_card]`. Simplify using `only [mul_one] at hden`. Rewrite using `[hL, hnum, hden, hone]`. Establish `hw2 : sumG (fun g => (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * Φ g) = sumG (fun g : GL (Ix n) (IsLocalRing.ResidueField O) => (Fintype.card (IsLocalRing.ResidueField O) : ℂ) ^ (2 * n * iD g) * f (iD g))`.
-
-Unfold `sumG`. Conclude with `finsum_congr fun g => by beta_reduce; rw [hf]`. Rewrite using `[hw2, sum_weight]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem jpCmp : JpCmp := by
   intro O L _ _ _ _ _ _ _ n ϖ hϖ w hw Ψ hΨ T hT

@@ -2,15 +2,15 @@ import Mathlib
 
 open MeasureTheory in
 /- English proof (translation)
-Introduce `X T _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ i hi a b Ψ ha hb hΨ hinv hA hB`. Establish `him : Measurable (i : T → X)` using `hi.measurable`. Establish `m1 : Measurable (fun p : X × T => i p.2 * p.1)` using `(him.comp measurable_snd).mul measurable_fst`. Establish `m2 : Measurable (fun p : X × T => i p.2⁻¹ * p.1)` using `(him.comp measurable_snd.inv).mul measurable_fst`. Establish `f1 : Measurable (Function.uncurry fun (x : X) (t : T) => Ψ x * a x * b (i t * x))` using `((hΨ.comp measurable_fst).mul (ha.comp measurable_fst)).mul (hb.comp m1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f2 : Measurable (Function.uncurry fun (x : X) (t : T) => Ψ x * b x * a (i t⁻¹ * x))` using `((hΨ.comp measurable_fst).mul (hb.comp measurable_fst)).mul (ha.comp m2)`. Establish `e1 : ∀ x : X, ∫⁻ t, Ψ x * a x * b (i t * x) ∂ν = Ψ x * a x`. Introduce `x`. Establish `hm : Measurable (fun t : T => b (i t * x))` using `hb.comp (him.mul_const x)`. Rewrite using `[lintegral_const_mul _ hm, hB x, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ x : X, ∫⁻ t, Ψ x * b x * a (i t⁻¹ * x) ∂ν = Ψ x * b x`. Introduce `x`. Establish `hm : Measurable (fun t : T => a (i t⁻¹ * x))` using `ha.comp ((him.comp measurable_inv).mul_const x)`. Rewrite using `[lintegral_const_mul _ hm, lintegral_inv_eq_self (fun t : T => a (i t * x)), hA x, mul_one]`. Establish `e3 : ∀ t : T, ∫⁻ x, Ψ x * a x * b (i t * x) ∂μ = ∫⁻ x, Ψ x * b x * a (i t⁻¹ * x) ∂μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t`. Rewrite using `[← lintegral_mul_left_eq_self (fun x => Ψ x * b x * a (i t⁻¹ * x)) (i t)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [hinv, map_inv, inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.Reformulated.B.Qf2.lintegral_swap_norm :
     ∀ {X T : Type} [inst : Group X]

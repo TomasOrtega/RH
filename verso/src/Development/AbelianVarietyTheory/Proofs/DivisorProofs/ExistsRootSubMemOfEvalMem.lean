@@ -4,19 +4,19 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.AbsIntClosedLocal
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f hf hdeg a₀ hmem`. Establish `: f = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero hdeg]`. Use `hf.coeff_natDegree` as an intermediate fact. Rewrite `this` using `[hdeg]`. Rewrite using `[this, map_one]`. Rewrite `hmem` using `[this, eval_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd ((Ideal.eq_top_iff_one _).2 hmem) (maximalIdeal.isMaximal T).ne_top`. Consider the case `succ n ih`. Introduce `f hf hdeg a₀ hmem`. Take `⟨r, hr⟩` from `hroot f hf (by omega)`. Establish `hrr : f.IsRoot r` using `hr`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv` using `(mul_divByMonic_eq_iff_isRoot (p := f) (a := r)).2 hrr`. Use `set g := f /ₘ (X - C r) with hg`. Establish `hgm : g.Monic` using `(monic_X_sub_C r).of_mul_monic_left (by rw [hdiv]; exact hf)`. Establish `hgdeg : g.natDegree = n`. Use `natDegree_divByMonic f (monic_X_sub_C r)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[natDegree_X_sub_C]`. Rewrite using `[hg, this, hdeg]`. Use linear arithmetic over natural numbers and integers. Establish `hev : f.eval a₀ = (a₀ - r) * g.eval a₀` using `by conv_lhs => rw [← hdiv]`. Simplify using `[eval_mul]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hmem` using `[hev]`. Break down `(maximalIdeal.isMaximal T).isPrime.mem_or_mem hmem with h | h` into its components or cases. Use `⟨r, hrr, ?_⟩` and prove the remaining obligations. Use `(maximalIdeal T).neg_mem h` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, ha'⟩` from `ih g hgm hgdeg a₀ h`. Use `⟨a, ?_, ha'⟩` and prove the remaining obligations. Rewrite using `[← hdiv]`. Simplify using `[IsRoot, eval_mul, ha.eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_root_sub_mem_of_eval_mem (T : Type) [CommRing T] [IsLocalRing T] [IsDomain T]
     (hroot : ∀ f : Polynomial T, f.Monic → 0 < f.natDegree → ∃ x : T, f.eval x = 0) :
@@ -58,13 +58,13 @@ theorem exists_root_sub_mem_of_eval_mem (T : Type) [CommRing T] [IsLocalRing T] 
       simp [IsRoot, eval_mul, ha.eq_zero]
 
 /- English proof (translation)
-Introduce `T _ _ ⟨hdom, hroot⟩`. Use `⟨⟨fun f hf a₀ h₁ _ => exists_root_sub_mem_of_eval_mem T hroot _ f hf rfl a₀ h₁⟩, ?_, ?_⟩` and prove the remaining obligations. Use `IsAlgClosed.of_exists_root _ (fun p hpm hpirr => ?_)` and prove the remaining obligations. Establish `hl : p ∈ lifts (residue T)` using `(mem_lifts p).2 (map_surjective _ residue_surjective p)`. Take `⟨q, hq, hqd, hqm⟩` from `lifts_and_natDegree_eq_and_monic hl hpm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hroot q hqm (by rw [hqd]; exact hpirr.natDegree_pos)`. Use `⟨residue T x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, eval_map, eval₂_hom, hx, map_zero]`. Introduce `n u hn`. Take `⟨x, hx⟩` from `hroot (X ^ n - C (u : T)) (monic_X_pow_sub_C _ hn.ne') (by rw [natDegree_X_pow_sub_C]; exact hn)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hxn : x ^ n = (u : T)`. Simplify using `only [eval_sub, eval_pow, eval_X, eval_C] at hx`. Conclude with `sub_eq_zero.1 hx`. Establish `hxu : IsUnit x` using `(isUnit_pow_iff hn.ne').1 (hxn ▸ u.isUnit)`. Use `⟨hxu.unit, Units.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hxn]`.
+A detailed English derivation is pending.
 -/
 theorem henselian_isAlgClosed_pow_surj :
     ∀ (T : Type) [CommRing T] [IsLocalRing T], (IsDomain T ∧ ∀ f : Polynomial T, f.Monic →

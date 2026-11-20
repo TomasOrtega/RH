@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A v h` and use `GlobalTheory.TameInertiaGen.exists_tameGenAt E Ω v A h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_tameGenAt_of_isPlaceOver :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]

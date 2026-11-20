@@ -11,7 +11,7 @@ universe w
 namespace GlobalTheory.CompanionTheory.CechSerre
 
 /- English proof (translation)
-Establish `hv : (K.col p).d q (z.1.1.1 p q) = 0` using `dv_lead K z.1.1.1 (D_zero K z.1) p q z.2`. Establish `h1 : (K.col p).cls (z.1.1.1 p q) hv = 0` using `Subsingleton.elim _ _`. Rewrite `h1` using `[(P.cls_surj _ q).2.1]`. Take `⟨W, hW, hl⟩` from `lower_vert K z.1.1.1 z.1.1.2 hpq z.2 0 0 (fun _ _ _ => rfl) (by simp) (by simpa using h1)`. Conclude with `lower K z W hW hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem clsZ_mem_Ff_succ {R : Type} [CommRing R] (K : DCx.{w} R) {n p q : ℕ} (hpq : p + q = n)
     (hS : Subsingleton ((K.col p).H q)) (z : Zf K n p) : clsZ K n p z ∈ Ff K n (p + 1) := by
@@ -23,11 +23,11 @@ theorem clsZ_mem_Ff_succ {R : Type} [CommRing R] (K : DCx.{w} R) {n p q : ℕ} (
   exact lower K z W hW hl
 
 /- English proof (translation)
-Introduce `p`. Proceed by induction on `p with`. Consider the case `zero`. Introduce `_`. Use `(Submodule.eq_top_iff').2 fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `⟨⟨z, fun p q hp => absurd hp (Nat.not_lt_zero p)⟩, rfl⟩`. Consider the case `succ p ih`. Introduce `hp`. Use `(Submodule.eq_top_iff').2 fun x => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : x ∈ Ff K (a + j) p` using `by rw [ih (by omega)]; exact Submodule.mem_top`. Take `⟨z, rfl⟩` from `hx`. Conclude with `clsZ_mem_Ff_succ K (q := a + j - p) (by omega) (h p _ (by omega)) z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Ff_eq_top_of_acyclic {R : Type} [CommRing R] (K : DCx.{w} R) (a j : ℕ)
     (h : ∀ p q, a < q → Subsingleton ((K.col p).H q)) : ∀ p, p ≤ j → Ff K (a + j) p = ⊤ := by
@@ -46,7 +46,7 @@ theorem Ff_eq_top_of_acyclic {R : Type} [CommRing R] (K : DCx.{w} R) (a j : ℕ)
     exact clsZ_mem_Ff_succ K (q := a + j - p) (by omega) (h p _ (by omega)) z
 
 /- English proof (translation)
-Introduce `R _ K a j h`. Conclude with `LinearMap.range_eq_top.1 (Ff_eq_top_of_acyclic K a j h j le_rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clsZ_surjective_of_acyclic : ∀ {R : Type} [CommRing R] (K : DCx.{w} R) (a j : ℕ),
     (∀ p q, a < q → Subsingleton ((K.col p).H q)) →

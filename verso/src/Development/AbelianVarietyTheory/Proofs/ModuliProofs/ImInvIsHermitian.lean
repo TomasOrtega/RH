@@ -30,7 +30,7 @@ def imInv (τ : Matrix (Fin h) (Fin h) ℂ) : Matrix (Fin h) (Fin h) ℂ :=
   (τ.map Complex.im)⁻¹.map fun x : ℝ => (x : ℂ)
 
 /- English proof (translation)
-Simplify using `only [hermForm, dotProduct, Matrix.mulVec, Matrix.map_apply, Finset.mul_sum, Complex.re_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply, Complex.star_def, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_real_re (M : Matrix (Fin h) (Fin h) ℝ) (z w : Fin h → ℂ) :
     (hermForm (M.map fun x : ℝ => (x : ℂ)) z w).re =
@@ -43,7 +43,7 @@ theorem hermForm_real_re (M : Matrix (Fin h) (Fin h) ℝ) (z w : Fin h → ℂ) 
   ring
 
 /- English proof (translation)
-Simplify using `only [hermForm, dotProduct, Matrix.mulVec, Matrix.map_apply, Finset.mul_sum, Complex.im_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply, Complex.star_def, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_real_im (M : Matrix (Fin h) (Fin h) ℝ) (z w : Fin h → ℂ) :
     (hermForm (M.map fun x : ℝ => (x : ℂ)) z w).im =
@@ -58,20 +58,20 @@ theorem hermForm_real_im (M : Matrix (Fin h) (Fin h) ℝ) (z w : Fin h → ℂ) 
 variable {τ : Matrix (Fin h) (Fin h) ℂ}
 
 /- English proof (translation)
-Unfold `imInv`. Conclude with `hp.inv.isHermitian.map _ fun x => by simp`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem imInv_isHermitian (hp : (τ.map Complex.im).PosDef) : (imInv τ).IsHermitian := by
   unfold imInv
   exact hp.inv.isHermitian.map _ fun x => by simp
 
 /- English proof (translation)
-Establish `hN` using `hp.inv`. Rewrite using `[imInv, hermForm_real_re]`. Establish `key : ∀ v : Fin h → ℝ, 0 ≤ v ⬝ᵥ (τ.map Complex.im)⁻¹.mulVec v` using `fun v => by`. Simplify using `using hN.posSemidef.dotProduct_mulVec_nonneg v`. Distinguish the cases in `hr : (fun i => (z i).re) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Establish `hi : (fun i => (z i).im) ≠ 0`. Introduce `hi`. Apply `hz` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using congrFun hr i`. Simplify using `using congrFun hi i`. Use `hN.dotProduct_mulVec_pos hi` as an intermediate fact. Simplify using `only [star_trivial] at this`. Combine the linear relations using `[key (fun i => (z i).re)]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hN.dotProduct_mulVec_pos hr` as an intermediate fact. Simplify using `only [star_trivial] at this`. Combine the linear relations using `[key (fun i => (z i).im)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem imInv_pos (hp : (τ.map Complex.im).PosDef) (z : Fin h → ℂ) (hz : z ≠ 0) :
     0 < (hermForm (imInv τ) z z).re := by
@@ -95,7 +95,7 @@ theorem imInv_pos (hp : (τ.map Complex.im).PosDef) (z : Fin h → ℂ) (hz : z 
     linarith [key (fun i => (z i).im)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `ReciprocityTheory.PTheta.ofRealVec`. Simplify using `[per_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem per_eq (x : Fin h ⊕ Fin h → ℤ) :
     per τ x = τ.mulVec (ReciprocityTheory.PTheta.ofRealVec fun i => (x (.inl i) : ℝ)) +
@@ -105,7 +105,7 @@ theorem per_eq (x : Fin h ⊕ Fin h → ℤ) :
   simp [per_apply]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.PTheta.ofRealVec`. Simplify using `[Matrix.mulVec, dotProduct, Complex.re_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem re_mulVec_ofRealVec (a : Fin h → ℝ) (i : Fin h) :
     ((τ.mulVec (ReciprocityTheory.PTheta.ofRealVec a)) i).re = ((τ.map Complex.re).mulVec a) i := by
@@ -113,7 +113,7 @@ private theorem re_mulVec_ofRealVec (a : Fin h → ℝ) (i : Fin h) :
   simp [Matrix.mulVec, dotProduct, Complex.re_sum]
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.PTheta.ofRealVec`. Simplify using `[Matrix.mulVec, dotProduct, Complex.im_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem im_mulVec_ofRealVec (a : Fin h → ℝ) (i : Fin h) :
     ((τ.mulVec (ReciprocityTheory.PTheta.ofRealVec a)) i).im = ((τ.map Complex.im).mulVec a) i := by
@@ -121,7 +121,7 @@ private theorem im_mulVec_ofRealVec (a : Fin h → ℝ) (i : Fin h) :
   simp [Matrix.mulVec, dotProduct, Complex.im_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[per_eq, Pi.add_apply, Complex.add_re, re_mulVec_ofRealVec]`. Simplify using `[ReciprocityTheory.PTheta.ofRealVec.eq_1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem re_per' (x : Fin h ⊕ Fin h → ℤ) :
     (fun i => (per τ x i).re) = (τ.map Complex.re).mulVec (fun i => (x (.inl i) : ℝ)) + fun i => (x (.inr i) : ℝ) := by
@@ -130,7 +130,7 @@ private theorem re_per' (x : Fin h ⊕ Fin h → ℤ) :
   simp [ReciprocityTheory.PTheta.ofRealVec.eq_1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[per_eq, Pi.add_apply, Complex.add_im, im_mulVec_ofRealVec]`. Simplify using `[ReciprocityTheory.PTheta.ofRealVec.eq_1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem im_per' (x : Fin h ⊕ Fin h → ℤ) :
     (fun i => (per τ x i).im) = (τ.map Complex.im).mulVec (fun i => (x (.inl i) : ℝ)) := by
@@ -139,17 +139,15 @@ private theorem im_per' (x : Fin h ⊕ Fin h → ℤ) :
   simp [ReciprocityTheory.PTheta.ofRealVec.eq_1]
 
 /- English proof (translation)
-Establish `hu : IsUnit (τ.map Complex.im).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hp.isUnit`. Establish `hYt : Matrix.transpose (τ.map Complex.im) = τ.map Complex.im`. Use `hp.isHermitian` as an intermediate fact. Rewrite `this` using `[Matrix.IsHermitian, Matrix.conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis. Establish `hXt : Matrix.transpose (τ.map Complex.re) = τ.map Complex.re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_map, hs.eq]`. Rewrite using `[imInv, hermForm_real_im, re_per', im_per', re_per', im_per']`. Use `set X := τ.map Complex.re`. Use `set Y := τ.map Complex.im`. Use `set a : Fin h → ℝ := fun i => (x (.inl i) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set b : Fin h → ℝ := fun i => (x (.inr i) : ℝ)`. Use `set c : Fin h → ℝ := fun i => (y (.inl i) : ℝ)`. Use `set d : Fin h → ℝ := fun i => (y (.inr i) : ℝ)`. Establish `e1 : Y⁻¹.mulVec (Y.mulVec c) = c`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∀ v, (Y.mulVec a) ⬝ᵥ (Y⁻¹.mulVec v) = a ⬝ᵥ v` using `fun v => by`. Rewrite using `[← hYt, ← Matrix.vecMul_transpose, hYt, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hYt, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Establish `e3 : (X.mulVec a) ⬝ᵥ c = a ⬝ᵥ (X.mulVec c)`. Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hXt, dotProduct_comm]`. Rewrite using `[e1, e2, add_dotProduct, e3, dotProduct_add]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hω : (omegaStd x y : ℝ) = a ⬝ᵥ d - b ⬝ᵥ c`. Simplify using `only [omegaStd, a, b, c, d, dotProduct]`. Use `push_cast`. Rewrite using `[Finset.sum_sub_distrib]`. Rewrite using `[hω]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem im_hermForm_per (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (x y : Fin h ⊕ Fin h → ℤ) :
     (hermForm (imInv τ) (per τ x) (per τ y)).im = omegaStd x y := by
@@ -182,11 +180,11 @@ theorem im_hermForm_per (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (x y 
   ring
 
 /- English proof (translation)
-Establish `hu : IsUnit (τ.map Complex.im).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hp.isUnit`. Establish `him : (τ.map Complex.im).mulVec a = 0`. Use function extensionality and compare the values at `i`. Use `congrArg (fun v => (v i).im) hab` as an intermediate fact. Simplify using `only [Pi.add_apply, Complex.add_im, im_mulVec_ofRealVec, Pi.zero_apply, Complex.zero_im] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[ReciprocityTheory.PTheta.ofRealVec.eq_1]`. Establish `ha : a = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`. Use `_ = 0 := by rw [← Matrix.mulVec_mulVec, him, Matrix.mulVec_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ha, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrArg (fun v => (v i).re) hab` as an intermediate fact. Simplify using `only [Pi.add_apply, Complex.add_re, re_mulVec_ofRealVec, ha, Matrix.mulVec_zero, Pi.zero_apply, Complex.zero_re, zero_add] at this`. Simplify `this` using `[ReciprocityTheory.PTheta.ofRealVec.eq_1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_mulVec_ofRealVec_add_eq_zero (hp : (τ.map Complex.im).PosDef) (a b : Fin h → ℝ)
     (hab : τ.mulVec (ReciprocityTheory.PTheta.ofRealVec a) + ReciprocityTheory.PTheta.ofRealVec b = 0) : a = 0 ∧ b = 0 := by
@@ -208,25 +206,23 @@ private theorem eq_zero_of_mulVec_ofRealVec_add_eq_zero (hp : (τ.map Complex.im
   simpa [ReciprocityTheory.PTheta.ofRealVec.eq_1] using this
 
 /- English proof (translation)
-Take `⟨P, hP⟩ : ∃ P : (Fin h ⊕ Fin h → ℝ) →ₗ[ℝ] (Fin h → ℂ), ∀ g, P g = τ.mulVec (ReciprocityTheory.PTheta.ofRealVec (fun i => g (.inl i))) + ReciprocityTheory.PTheta.ofRealVec (fun i => g (.inr i))` from `⟨{ toFun := fun g => τ.mulVec (ReciprocityTheory.PTheta.ofRealVec (fun i => g (.inl i))) + ReciprocityTheory.PTheta.ofRealVec (fun i => g (.inr i)) map_add' := fun g g' => by`. Use function extensionality and compare the values at `i`. Unfold `ReciprocityTheory.PTheta.ofRealVec`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.add_apply, Complex.ofReal_add, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `map_smul' := fun c g => by`. Use function extensionality and compare the values at `i`. Unfold `ReciprocityTheory.PTheta.ofRealVec`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.ofReal_mul, RingHom.id_apply, Complex.real_smul, mul_add, Finset.mul_sum]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring }, fun _ => rfl⟩`. Establish `hPinj : Function.Injective P`. Use `(injective_iff_map_eq_zero P).2 fun g hg => ?_` and prove the remaining obligations. Rewrite `hg` using `[hP]`. Take `⟨h1, h2⟩` from `eq_zero_of_mulVec_ofRealVec_add_eq_zero hp _ _ hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Use function extensionality and compare the values at `j`. Consider the cases of `j with`. Consider the case `inl i => exact congrFun h1 i`. Consider the case `inr i => exact congrFun h2 i`. Establish `hper : ∀ x, per τ x = P (fun j => (x j : ℝ))` using `fun x => by rw [hP, per_eq]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinj : Function.Injective (per τ)` using `fun x y hxy => by`. Rewrite `hxy` using `[hper, hper]`. Use function extensionality and compare the values at `j`. Conclude with `congrFun (hPinj hxy) j` after adjusting the coercions. Establish `hdim : Module.finrank ℝ (Fin h ⊕ Fin h → ℝ) = Module.finrank ℝ (Fin h → ℂ)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Module.finrank_fintype_fun_eq_card, Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex]`. Use linear arithmetic over natural numbers and integers. Use `set e := P.linearEquivOfInjective hPinj hdim with he`. Use `set b := (Pi.basisFun ℝ (Fin h ⊕ Fin h)).map e with hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hrepr : ∀ w j, b.repr w j = e.symm w j` using `fun w j => by`. Simplify using `[hb, Module.Basis.map_repr]`. Establish `hrange : LinearMap.range (per τ) = Submodule.span ℤ (Set.range b)`. Use extensionality with `w`. Rewrite using `[Module.Basis.mem_span_iff_repr_mem ℤ b w, LinearMap.mem_range]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hrepr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ j`. Use `⟨x j, ?_⟩` and prove the remaining obligations. Establish `: e.symm (P fun j => (x j : ℝ)) = fun j => (x j : ℝ)` using `e.symm_apply_apply _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hper, this]`. Simplify using the standard rewrite rules. Introduce `hw choose n hn using hw`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: (fun j => (n j : ℝ)) = e.symm w` using `funext fun j => by simpa using hn j`.
-
-Rewrite using `[hper, this]`. Conclude with `e.apply_symm_apply w`. Use `⟨hinj, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrange] infer_instance`. Rewrite using `[hrange, Submodule.span_span_of_tower, b.span_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_lattice (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :
     Function.Injective (per τ) ∧ DiscreteTopology (LinearMap.range (per τ)) ∧
@@ -299,23 +295,19 @@ def turn (h : ℕ) : (Fin h ⊕ Fin h → ℤ) ≃ₗ[ℤ] (Fin h ⊕ Fin h → 
   right_inv x := by ext (i | i) <;> simp
 
 /- English proof (translation)
-Establish `hinj` using `(per_lattice hs hp).1`. Use `set e := LinearEquiv.ofInjective (per τ) hinj with he`. Establish `hpe : ∀ a : LinearMap.range (per τ), per τ (e.symm a) = a` using `fun a => by`. Rewrite using `[← LinearEquiv.ofInjective_apply (per τ) (h := hinj) (e.symm a), ← he, e.apply_symm_apply]`. Take `⟨ω, hω⟩ : ∃ ω : LinearMap.BilinForm ℤ (Fin h ⊕ Fin h → ℤ), ∀ x y, ω x y = omegaStd x y` from `⟨LinearMap.mk₂ ℤ omegaStd (fun x x' y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [omegaStd, Pi.add_apply, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring)`. Use the proof step `(fun c x y => by`. Simplify using `only [omegaStd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun x y y' => by`. Simplify using `only [omegaStd, Pi.add_apply, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring)`. Use the proof step `(fun c x y => by`. Simplify using `only [omegaStd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => by ring), fun _ _ => rfl⟩`. Use `⟨ω.compl₁₂ e.symm.toLinearMap e.symm.toLinearMap, fun a b => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.compl₁₂_apply, hω, ← im_hermForm_per hs hp] erw [hpe, hpe]`. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Establish `hx : ∀ y, omegaStd (e.symm a) y = 0` using `fun y => by`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `LinearMap.congr_fun ha (e y)` as an intermediate fact. Simplify `this` using `[LinearMap.compl₁₂_apply, hω]`. Establish `hz : e.symm a = 0`. Use function extensionality and compare the values at `j`. Consider the cases of `j with`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `inl i`. Use `hx (fun k => if Sum.inr i = k then 1 else 0)` as an intermediate fact. Simplify `this` using `[omegaStd]`. Consider the case `inr i`. Use `hx (fun k => if Sum.inl i = k then 1 else 0)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[omegaStd]`. Simplify using `using congrArg e hz`. Introduce `φ set ψ := φ.comp e.toLinearMap with hψ`. Use `⟨e (Sum.elim (fun i => ψ (fun k => if Sum.inr i = k then 1 else 0)) (fun i => -ψ (fun k => if Sum.inl i = k then 1 else 0))), ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
-
-Take `⟨y, rfl⟩` from `e.surjective a`. Rewrite using `[LinearMap.compl₁₂_apply, hω]`. Use `erw [e.symm_apply_apply, e.symm_apply_apply]`. Establish `: φ (e y) = ψ y` using `rfl`. Rewrite using `[this, LinearMap.pi_apply_eq_sum_univ ψ y, Fintype.sum_sum_type]`.
-
-Simplify using `only [omegaStd, Sum.elim_inl, Sum.elim_inr, smul_eq_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_form (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :
     ∃ Ef : LinearMap.BilinForm ℤ (LinearMap.range (per τ)),
@@ -369,17 +361,17 @@ theorem exists_form (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :
     exact Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `hB0r : ∀ z, B z 0 = 0` using `fun z => by`. Use `h2 z 0 0` as an intermediate fact. Simplify using `using this`. Establish `hB0l : ∀ w, B 0 w = 0` using `fun w => by`. Use `h1 0 0 w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `step1 : ∀ z ∈ s, ∀ w, (B z w).im = 0`. Introduce `z hz w`. Establish `hw : w ∈ Submodule.span ℝ s` using `by rw [hs]; exact Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem w hw => exact h0 z hz w hw`. Consider the case `zero => simp [hB0r]`. Consider the case `add w w' _ _ ihw ihw' => rw [h2, Complex.add_im, ihw, ihw', add_zero]`. Consider the case `smul c w _ ihw => rw [← Complex.coe_smul, h4, Complex.im_ofReal_mul, ihw, mul_zero]`. Establish `step2 : ∀ z w, (B z w).im = 0`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `z w`. Establish `hz : z ∈ Submodule.span ℝ s` using `by rw [hs]; exact Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact step1 z hz w`. Consider the case `zero => simp [hB0l]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add z z' _ _ ihz ihz' => rw [h1, Complex.add_im, ihz, ihz', add_zero]`. Consider the case `smul c z _ ihz => rw [← Complex.coe_smul, h3, Complex.im_ofReal_mul, ihz, mul_zero]`. Apply `Complex.ext` to reduce the goal to its premises. Use `step2 (Complex.I • z) w` as an intermediate fact. Rewrite `this` using `[h3]`.
+Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Simplify using `using step2 z w`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_ext {V : Type} [AddCommGroup V] [Module ℂ V] (s : Set V) (hs : Submodule.span ℝ s = ⊤)
     (B : V → V → ℂ) (h1 : ∀ z z' w, B (z + z') w = B z w + B z' w) (h2 : ∀ z w w', B z (w + w') = B z w + B z w')

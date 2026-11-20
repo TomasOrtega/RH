@@ -9,11 +9,11 @@ namespace GlobalTheory.Proof.AbsNormSplitPlace
 open GlobalTheory.Proof.NarrowJetMoments
 
 /- English proof (translation)
-Take `⟨Q, Q', -, hm⟩` from `hs`. Establish `hN : Ideal.absNorm Q.asIdeal * Ideal.absNorm Q'.asIdeal = Ideal.absNorm v.asIdeal ^ 2`. Rewrite using `[← map_mul, ← hm, Ideal.absNorm_algebraMap]`. Use `congr 1`. Rewrite using `[← h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 F) F (𝓞 E) E).symm`. Establish `h1 : ∀ R : HeightOneSpectrum (𝓞 E), Ideal.absNorm R.asIdeal ≠ 1` using `fun R h => R.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Establish `hb` using `(hl.mul_eq_prime_sq_iff (h1 Q) (h1 Q')).1 hN`. Establish `hle : Q.asIdeal * Q'.asIdeal ≤ P.asIdeal`. Rewrite using `[← hm, ← hP, Ideal.under_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Ideal.map_comap_le`. Break down `P.isPrime.mul_le.1 hle with h | h` into its components or cases. Rewrite using `[← Q.isMaximal.eq_of_le P.isPrime.ne_top h, hb.1]`. Rewrite using `[← Q'.isMaximal.eq_of_le P.isPrime.ne_top h, hb.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_of_split {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} (hs : SplitAt E v) (hl : (Ideal.absNorm v.asIdeal).Prime)
@@ -36,7 +36,7 @@ theorem absNorm_of_split {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   · rw [← Q'.isMaximal.eq_of_le P.isPrime.ne_top h, hb.2]
 
 /- English proof (translation)
-Establish `h6 : ringChar (𝓞 F ⧸ v.asIdeal) ∣ Ideal.absNorm v.asIdeal`. Rewrite using `[← ringChar.spec, ← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.absNorm_mem _`. Use `haveI := v.isPrime`. Conclude with `((Nat.dvd_prime hl).1 h6).resolve_left CharP.ringChar_ne_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plc_eq_absNorm {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)}
     (hl : (Ideal.absNorm v.asIdeal).Prime) : ringChar (𝓞 F ⧸ v.asIdeal) = Ideal.absNorm v.asIdeal := by
@@ -47,15 +47,13 @@ theorem plc_eq_absNorm {F : Type} [Field F] [NumberField F] {v : HeightOneSpectr
   exact ((Nat.dvd_prime hl).1 h6).resolve_left CharP.ringChar_ne_one
 
 /- English proof (translation)
-Introduce `Z u sel S mu hZ hsel hT hg`. Establish `hPr` using `hZ.primes`. Establish `hTn : ∀ P ∈ rowSG Z.Pr sel mu, ((Z.Pr.T u : ℕ) : 𝓞 Z.X.E) ∉ P.asIdeal` using `fun P hP => notMem_rowSG hPr hsel (hPr.T_prime u) hT (hPr.T_ne_g u) hP`. Use `⟨fun P hP hP' => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases (mem_Sall sel mu u P).1 hP with h | h <;> rcases (mem_Sall sel mu u _).1 hP' with h' | h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `conj_piT_notMem hPr u ⟨conjPrime₂ P, h'⟩ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cO Z.X.E (Z.Pr.piT u) ∈ (conjPrime₂ P).asIdeal`. Rewrite using `[mem_conjP, cO_cO]`. Conclude with `decoFin_mem_of_mem_divs h`. Conclude with `hTn _ h' (natCast_mem_conjP.2 (T_mem hPr u ⟨P, h⟩))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hTn _ h (natCast_mem_conjP.1 (T_mem hPr u ⟨conjPrime₂ P, h'⟩))`. Conclude with `conjP_notMem_rowSG hZ.fields hPr hsel hg h h'`. Establish `key : (Formalism.L2.Col.qOf P).Prime ∧ ((∃ i, Formalism.L2.Col.qOf P = Z.Pr.g i) ∨ Formalism.L2.Col.qOf P ∉ S)` using `by classical`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Take `⟨i, hi⟩` from `mem_vGs_iff.1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : Formalism.L2.Col.qOf P = Z.Pr.g i` using `hPr.vG_norm i P hi`. Conclude with `⟨e ▸ hPr.g_prime i, Or.inl ⟨i, e⟩⟩`. Take `⟨v, hv, e⟩` from `good_of_mem_QE h`. Establish `e1 : Formalism.L2.Col.qOf P = Ideal.absNorm v.asIdeal` using `absNorm_of_split hZ.fields.rankE hv.1 hv.2.1.1 (e ▸ hsel v)`. Use `⟨e1 ▸ hv.2.1.1, Or.inr ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e1, ← plc_eq_absNorm hv.2.1.1]`. Conclude with `hv.2.2`. Use `⟨key.1, fun e => hTn P hP ?_, hTn P hP, key.2⟩` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `Ideal.absNorm_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (Z : Dat) (u : Z.Pr.Word) (sel : HeightOneSpectrum (𝓞 Z.X.F) → HeightOneSpectrum (𝓞 Z.X.E)) (S : Set ℕ) (mu : Tup Z.X.F Z.X.E Z.X.K S), Z.Ok → IsSel Z.X sel → Z.Pr.T u ∈ S → (∀ i, Z.Pr.g i ∈ S) → (∀ P ∈ Sall sel mu u, conjPrime₂ P ∉ Sall sel mu u) ∧ ∀ P ∈ rowSG Z.Pr sel mu, (Formalism.L2.Col.qOf P).Prime ∧ Formalism.L2.Col.qOf P ≠ Z.Pr.T u ∧ ((Z.Pr.T u : ℕ) : 𝓞 Z.X.E) ∉ P.asIdeal ∧ ((∃ i, Formalism.L2.Col.qOf P = Z.Pr.g i) ∨ Formalism.L2.Col.qOf P ∉ S) := by
   intro Z u sel S mu hZ hsel hT hg

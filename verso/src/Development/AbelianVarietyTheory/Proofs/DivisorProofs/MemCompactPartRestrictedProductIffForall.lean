@@ -38,7 +38,7 @@ def cptSub (T : Subgroup G) (hT : ∀ a ∈ T, ∀ b ∈ T, a * b = b * a) : Sub
     exact ha
 
 /- English proof (translation)
-Establish `: cptPart T = cptSub T hT` using `Subgroup.closure_eq (cptSub T hT)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_cptPart_iff (T : Subgroup G) (hT : ∀ a ∈ T, ∀ b ∈ T, a * b = b * a) (x : G) :
     x ∈ cptPart T ↔ x ∈ T ∧ IsCompact (closure (Subgroup.zpowers x : Set G)) := by
@@ -53,7 +53,7 @@ variable {X V : Type} {Y : V → Type} [Group X] [TopologicalSpace X] [IsTopolog
   {pf : ∀ v, X →* Y v} {K : ∀ v, Subgroup (Y v)}
 
 /- English proof (translation)
-Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun v => (hC v).isClosed.preimage (hX.continuous_pf v)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_setOf_forall_mem (hX : GlobalTheory.RestrMeas.IsRestrGroup (GlobalTheory.RestrMeas.noArch X) pf K)
     (C : ∀ v, Set (Y v)) (hC : ∀ v, IsCompact (C v)) : IsClosed {z : X | ∀ v, pf v z ∈ C v} := by
@@ -61,25 +61,21 @@ theorem isClosed_setOf_forall_mem (hX : GlobalTheory.RestrMeas.IsRestrGroup (Glo
   exact isClosed_iInter fun v => (hC v).isClosed.preimage (hX.continuous_pf v)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `C hC hCK`. Establish `hKg` using `hX.isCompact_level (fun e => e.elim) (fun e => e.elim)`. Conclude with `hKg.of_isClosed_subset (isClosed_setOf_forall_mem hX C hC) fun z hz => ⟨fun e => e.elim, fun v => hCK v (Finset.notMem_empty v) (hz v)⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `@insert v₀ S hv₀ ih`. Introduce `C hC hCK`. Take `⟨t, hcov⟩` from `(hC v₀).elim_finite_subcover (fun c : C v₀ => (c : Y v₀) • (K v₀ : Set (Y v₀))) (fun c => (hX.isOpen_K v₀).smul _) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, ⟨1, (K v₀).one_mem, by simp⟩⟩)`. Use `set C' : ∀ v, Set (Y v) := Function.update C v₀ (K v₀ : Set (Y v₀)) with hC'def`. Establish `hC' : ∀ v, IsCompact (C' v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `v`. Distinguish the cases in `h : v = v₀`. Substitute `h` using the available equality. Simplify using `only [hC'def, Function.update_self]`. Conclude with `hX.isCompact_K v`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hC'def, Function.update_of_ne h]`. Conclude with `hC v`. Establish `hC'K : ∀ v ∉ S, C' v ⊆ K v`. Introduce `v hv`. Distinguish the cases in `h : v = v₀`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Simplify using `only [hC'def, Function.update_self]`. Conclude with `subset_rfl`. Simplify using `only [hC'def, Function.update_of_ne h]`. Conclude with `hCK v (by simp [h, hv])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM'` using `ih C' hC' hC'K`. Establish `hl : ∀ c : Y v₀, ∃ x : X, ∀ v, pf v x = Pi.mulSingle v₀ c v`. Introduce `c`. Establish `hev : ∀ᶠ v in cofinite, (Pi.mulSingle v₀ c : ∀ v, Y v) v ∈ K v`. Rewrite using `[Filter.eventually_cofinite]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.finite_singleton v₀).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (by rw [Pi.mulSingle_eq_of_ne h]; exact (K v).one_mem)`. Take `⟨x, -, hx⟩` from `hX.exists_eq (fun e => e.elim) _ hev`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `choose xc hxc using hl`. Establish `hU : IsCompact (⋃ i ∈ t, xc (i : Y v₀) • {z : X | ∀ v, pf v z ∈ C' v})` using `t.isCompact_biUnion fun i _ => hM'.smul _`. Use `hU.of_isClosed_subset (isClosed_setOf_forall_mem hX C hC) fun z hz => ?_` and prove the remaining obligations. Take `⟨i, hi, hzi⟩` from `Set.mem_iUnion₂.1 (hcov (hz v₀))`. Take `⟨k, hk, hik⟩` from `Set.mem_smul_set.1 hzi`.
-
-Use `Set.mem_iUnion₂.2 ⟨i, hi, Set.mem_smul_set_iff_inv_smul_mem.2 fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, map_inv, hxc]`. Distinguish the cases in `h : v = v₀`. Substitute `h` using the available equality. Simplify using `only [Pi.mulSingle_eq_same, hC'def, Function.update_self]`.
-
-Rewrite using `[← hik, smul_eq_mul, inv_mul_cancel_left]`. Conclude with `hk`. Simplify using `only [Pi.mulSingle_eq_of_ne h, inv_one, one_mul, hC'def, Function.update_of_ne h]`. Conclude with `hz v`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCompact_setOf_forall_mem (hX : GlobalTheory.RestrMeas.IsRestrGroup (GlobalTheory.RestrMeas.noArch X) pf K)
     (S : Finset V) : ∀ C : ∀ v, Set (Y v), (∀ v, IsCompact (C v)) → (∀ v ∉ S, C v ⊆ K v) →
@@ -134,13 +130,13 @@ theorem isCompact_setOf_forall_mem (hX : GlobalTheory.RestrMeas.IsRestrGroup (Gl
       exact hz v
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v`. Establish `hi` using `h.image (hX.continuous_pf v)`. Use `hi.of_isClosed_subset isClosed_closure (closure_minimal ?_ hi.isClosed)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x ^ n, subset_closure (Subgroup.zpow_mem_zpowers x n), map_zpow _ _ _⟩`. Introduce `h`. Establish `hfin` using `Filter.eventually_cofinite.1 (hX.eventually_mem x)`. Establish `hCK : ∀ v ∉ hfin.toFinset, closure (Subgroup.zpowers (pf v x) : Set (Y v)) ⊆ K v`. Introduce `v hv`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Conclude with `closure_minimal (fun y hy => Subgroup.zpowers_le.2 hv hy) (hX.isCompact_K v).isClosed`. Establish `hM` using `isCompact_setOf_forall_mem hX hfin.toFinset _ h hCK`. Use `hM.of_isClosed_subset isClosed_closure (closure_minimal ?_ (isClosed_setOf_forall_mem hX _ h))` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩ v`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zpow]`. Conclude with `subset_closure (Subgroup.zpow_mem_zpowers _ n)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_closure_zpowers_iff (hX : GlobalTheory.RestrMeas.IsRestrGroup (GlobalTheory.RestrMeas.noArch X) pf K) (x : X) :
     IsCompact (closure (Subgroup.zpowers x : Set X)) ↔
@@ -167,9 +163,9 @@ theorem isCompact_closure_zpowers_iff (hX : GlobalTheory.RestrMeas.IsRestrGroup 
 end Restr
 
 /- English proof (translation)
-Introduce `X V Y _ _ _ _ _ _ _ _ pf K hX T Tv hT hTv x`. Establish `hTc : ∀ a ∈ T, ∀ b ∈ T, a * b = b * a` using `fun a ha b hb => hX.ext _ _ (fun e => e.elim) fun v => by`. Rewrite using `[map_mul, map_mul]`. Conclude with `hTv v _ ((hT a).1 ha v) _ ((hT b).1 hb v)`. Rewrite using `[mem_cptPart_iff T hTc, hT, isCompact_closure_zpowers_iff hX]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_cptPart_iff _ (hTv _)]`. Conclude with `⟨fun h v => ⟨h.1 v, h.2 v⟩, fun h => ⟨fun v => (h v).1, fun v => (h v).2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_cptPart_iff_forall : ∀ {X V : Type} {Y : V → Type} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [T2Space X] [∀ v, Group (Y v)] [∀ v, TopologicalSpace (Y v)] [∀ v, IsTopologicalGroup (Y v)] [∀ v, T2Space (Y v)] (pf : ∀ v, X →* Y v) (K : ∀ v, Subgroup (Y v)), GlobalTheory.RestrMeas.IsRestrGroup (GlobalTheory.RestrMeas.noArch X) pf K → ∀ (T : Subgroup X) (Tv : ∀ v, Subgroup (Y v)), (∀ x, x ∈ T ↔ ∀ v, pf v x ∈ Tv v) → (∀ v, ∀ a ∈ Tv v, ∀ b ∈ Tv v, a * b = b * a) → ∀ x, x ∈ cptPart T ↔ ∀ v, pf v x ∈ cptPart (Tv v) := by
   intro X V Y _ _ _ _ _ _ _ _ pf K hX T Tv hT hTv x

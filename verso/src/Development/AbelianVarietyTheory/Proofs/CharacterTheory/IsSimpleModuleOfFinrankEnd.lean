@@ -13,17 +13,15 @@ section Group
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Establish `hE : Nontrivial (Module.End R M)` using `Module.nontrivial_of_finrank_eq_succ h`. Establish `hM : Nontrivial M`. Assume the negation of the conclusion as `hM`. Rewrite `hM` using `[not_nontrivial_iff_subsingleton]`. Conclude with `not_subsingleton (Module.End R M) inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Nontrivial (Submodule R M)` using `(Submodule.nontrivial_iff R).2 hM`. Use `{ eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Take `⟨U', hU⟩` from `exists_isCompl U`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (1 : Module.End R M) one_ne_zero).1 h (U.subtype ∘ₗ U.projectionOnto U' hU)`. Distinguish the cases in `h0 : c = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `x hx`. Use `LinearMap.congr_fun hc x` as an intermediate fact. Rewrite `this` using `[h0, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : (U.subtype ∘ₗ U.projectionOnto U' hU) x = x`. Simplify using `using congrArg Subtype.val (Submodule.projectionOnto_apply_left hU ⟨x, hx⟩)`. Rewrite using `[← h2, ← this]`. Both sides reduce to the same expression. Use `right`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Use `LinearMap.congr_fun hc (c⁻¹ • x)` as an intermediate fact. Establish `h2 : (c • (1 : Module.End R M)) (c⁻¹ • x) = x`. Simplify using `[smul_smul, h0]`.
-
-Rewrite using `[← h2, this]`. Conclude with `Subtype.property _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSimpleModule_of_finrank_end {R M : Type} [Ring R] [Algebra ℂ R] [AddCommGroup M] [Module R M]
     [Module ℂ M] [IsScalarTower ℂ R M] [SMulCommClass R ℂ M] [IsSemisimpleModule R M]

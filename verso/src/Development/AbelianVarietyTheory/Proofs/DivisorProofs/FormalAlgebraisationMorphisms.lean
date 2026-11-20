@@ -21,7 +21,7 @@ instance isClosedImmersion_thick (I : Ideal R) (e : ℕ) : IsClosedImmersion (th
   IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Establish `hw : β e ≫ (Y (e + 1)).hom = (Y e).hom ≫ thickTrans R I e`. Rewrite using `[← cancel_mono (thick R I (e + 1)), Category.assoc, ← (hb (e + 1)).w, ← Category.assoc, hβ, (hb e).w, Category.assoc, thickTrans_comp]`. Use `IsPullback.of_right ?_ hw (hb (e + 1))` and prove the remaining obligations. Rewrite using `[hβ, thickTrans_comp]`. Conclude with `hb e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_trans {I : Ideal R} (X : Over (Spec (CommRingCat.of R)))
     (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
@@ -36,25 +36,21 @@ theorem isPullback_trans {I : Ideal R} (X : Over (Spec (CommRingCat.of R)))
   exact hb e
 
 /- English proof (translation)
-Introduce `R _ _ I hI X Z hX hZs hZl hZq Y β b hb hβ f hf hfβ`. Establish `hIj : I ≤ Ideal.jacobson ⊥` using `by haveI := hI`. Conclude with `IsAdicComplete.le_jacobson_bot I`. Set `fW : pullback X.hom Z.hom ⟶ Spec (CommRingCat.of R)` to `pullback.fst X.hom Z.hom ≫ X.hom`. Use `haveI : IsSeparated (pullback.fst X.hom Z.hom) := MorphismProperty.of_isPullback (P := @IsSeparated) (IsPullback.of_hasPullback X.hom Z.hom).flip hZs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyOfFiniteType (pullback.fst X.hom Z.hom) := MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) (IsPullback.of_hasPullback X.hom Z.hom).flip hZl`. Use `haveI : QuasiCompact (pullback.fst X.hom Z.hom) := MorphismProperty.of_isPullback (P := @QuasiCompact) (IsPullback.of_hasPullback X.hom Z.hom).flip hZq`. Establish `hAlg : Alg fW I` using `GlobalTheory.T.grothendieck_existence_closedSubschemes_separated R I hI _ fW inferInstance inferInstance inferInstance`. Establish `hcomm : ∀ e, b e ≫ X.hom = f e ≫ Z.hom` using `fun e => by rw [(hb e).w, hf e]`. Set `j : ∀ e, (Y e).left ⟶ pullback X.hom Z.hom` to `fun e => pullback.lift (b e) (f e) (hcomm e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj₁ : ∀ e, j e ≫ pullback.fst X.hom Z.hom = b e` using `fun e => pullback.lift_fst _ _ _`. Establish `hj₂ : ∀ e, j e ≫ pullback.snd X.hom Z.hom = f e` using `fun e => pullback.lift_snd _ _ _`. Establish `hbci : ∀ e, IsClosedImmersion (b e)` using `fun e => MorphismProperty.of_isPullback (P := @IsClosedImmersion) (hb e).flip inferInstance`. Establish `hjci : ∀ e, IsClosedImmersion (j e)` using `fun e => by haveI : IsClosedImmersion (j e ≫ pullback.fst X.hom Z.hom) := by rw [hj₁]; exact hbci e`. Conclude with `IsClosedImmersion.of_comp (j e) (pullback.fst X.hom Z.hom)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hjf : ∀ e, j e ≫ fW = (Y e).hom ≫ thick R I e` using `fun e => by`. Simplify using `only [fW]`. Rewrite using `[← Category.assoc, hj₁, (hb e).w]`. Establish `hjβ : ∀ e, β e ≫ j (e + 1) = j e` using `fun e => by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, hj₁, hj₁, hβ]`. Rewrite using `[Category.assoc, hj₂, hj₂, hfβ]`. Establish `hYp : ∀ e, IsProper (Y e).hom` using `fun e => MorphismProperty.of_isPullback (P := @IsProper) (hb e) hX`. Take `⟨T, i, c, hi, hip, hci, hcpb⟩` from `GlobalTheory.T.formal_algebraisation_tower R I _ fW hAlg Y β (isPullback_trans X Y β b hb hβ) hYp j hjci hjf hjβ`. Set `φ : T ⟶ X.left` to `i ≫ pullback.fst X.hom Z.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hφX : φ ≫ X.hom = i ≫ fW` using `Category.assoc _ _ _`. Use `haveI : IsProper (φ ≫ X.hom) := by rw [hφX]; exact hip`. Use `haveI : IsProper φ := IsProper.of_comp φ X.hom`. Establish `hcφ : ∀ e, c e ≫ φ = b e` using `fun e => by`. Simplify using `only [φ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, hci, hj₁]`. Use `haveI hφiso : IsIso φ := GlobalTheory.T.isIso_of_proper_isIso_on_reductions R I hIj T X.left φ X.hom inferInstance hX Y c (fun e => by rw [hφX]; exact hcpb e) (fun e => by rw [hcφ]; exact hb e)`. Set `gl : X.left ⟶ Z.left` to `inv φ ≫ i ≫ pullback.snd X.hom Z.hom`. Establish `hgw : gl ≫ Z.hom = X.hom`. Simplify using `only [gl, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pullback.condition, ← Category.assoc i, ← Category.assoc (inv φ)]`. Conclude with `IsIso.inv_hom_id_assoc φ X.hom`. Use `⟨Over.homMk gl hgw, fun e => ?_, fun g' hg' => ?_⟩` and prove the remaining obligations. Use `show b e ≫ gl = f e`. Simplify using `only [gl]`.
-
-Rewrite using `[← hcφ e, Category.assoc, IsIso.hom_inv_id_assoc, ← Category.assoc, hci, hj₂]`. Use `GlobalTheory.T.morphism_eq_of_eq_on_thickenings R I hIj X Z hX hZs Y b hb g' _ fun e => ?_` and prove the remaining obligations. Rewrite using `[hg' e]`. Use `show f e = b e ≫ gl`. Simplify using `only [gl]`.
-
-Rewrite using `[← hcφ e, Category.assoc, IsIso.hom_inv_id_assoc, ← Category.assoc, hci, hj₂]`.
+A detailed English derivation is pending.
 -/
 theorem formalAlgebraisation_morphisms : GlobalTheory.Published.FormalAlgebraisation.Morphisms := by
   intro R _ _ I hI X Z hX hZs hZl hZq Y β b hb hβ f hf hfβ

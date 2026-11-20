@@ -7,9 +7,9 @@ open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨c, d, e⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes ha hb).2 hne)`. Establish `e'` using `congrArg (Int.cast : ℤ → 𝓞 E) e`. Move the coercions through the operations in `at e'`. Use `u.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+A detailed English derivation is pending.
 -/
 private theorem seenShape_not_both {E : Type} [Field E] [NumberField E] {u : Plc E} {a b : ℕ} (ha : a.Prime) (hb : b.Prime)
     (hne : a ≠ b) (h1 : (a : 𝓞 E) ∈ u.asIdeal) (h2 : (b : 𝓞 E) ∈ u.asIdeal) : False := by
@@ -21,7 +21,7 @@ private theorem seenShape_not_both {E : Type} [Field E] [NumberField E] {u : Plc
   exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)
 
 /- English proof (translation)
-Establish `e` using `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc (GlobalTheory.SplitPts.conjE E) u)`. Rewrite using `[e, Ideal.mem_comap, map_natCast]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem seenShape_nat_mem_cj {E : Type} [Field E] [NumberField E] [IsCMField E] {u : Plc E} {m : ℕ}
     (h : (m : 𝓞 E) ∈ u.asIdeal) : (m : 𝓞 E) ∈ (UpperTheory.Gal.CertificateRingHomMap.cj u).asIdeal := by
@@ -30,23 +30,21 @@ private theorem seenShape_nat_mem_cj {E : Type} [Field E] [NumberField E] [IsCMF
   exact h
 
 /- English proof (translation)
-Introduce `hSK hSF hCF hLB hc E _ _ _ A n p _ S F x U w₀ Up V hodd hsc hgen hoff hq₀ r W haux N hrN hstab L hw Ty hty g θ hs`. Establish `key : ∀ k, Stab F V k → k ∈ S.L.KN r → k ∈ Ty.kerK` using `hSK E A n p S F x U w₀ Up V hodd hsc hgen hoff hq₀ r W haux N hrN hstab L hw Ty hty`. Break down `hs with ⟨hd, hst, hr, hθ⟩ | ⟨w, σ, i, B, hfree, hqr, hK, ⟨hi, hgK, ⟨hws, t, z, ht, hz, hh⟩, -⟩, hB, hθ⟩` into its components or cases. Use `⟨?_, Or.inl ⟨hd, key _ hst hr, hθ⟩⟩` and prove the remaining obligations. Rewrite using `[hd.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun k hk => key k (hstab k hk) (KN_anti hrN hk)`. Establish `hqw : ((σ.q : ℕ) : 𝓞 E) ∈ w.asIdeal` using `σ.atp.le (Ideal.subset_span (Set.mem_insert _ _))`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hpw : (p : 𝓞 E) ∉ w.asIdeal` using `fun h => seenShape_not_both σ.atp.prime hpp σ.atp.ne hqw h`. Set `w' : Spl E p` to `⟨w, hws, hpw⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hrU : ∀ u ∈ W, (r : 𝓞 E) ∈ u.1.asIdeal` using `haux.half.above`. Establish `hqU : ∀ u ∈ W, ((σ.q : ℕ) : 𝓞 E) ∉ u.1.asIdeal` using `fun u hu h => seenShape_not_both σ.atp.prime haux.prime hqr h (hrU u hu)`. Establish `hcen` using `hCF E A n hodd.pos x hgen σ.q σ.atp.prime σ.good.1 w hqw z hz`. Establish `hap1 : ∀ u ∈ W, GlobalTheory.Cong.Apart w u.1` using `fun u hu => ((hc E n u.1 u.2.1).2.1 w).2 ⟨fun e => hqU u hu (e ▸ hqw), fun e => seenShape_not_both (u := w) σ.atp.prime haux.prime hqr hqw (e ▸ seenShape_nat_mem_cj (hrU u hu))⟩`. Establish `hap2 : ∀ u ∈ W, GlobalTheory.Cong.Apart u.1 w` using `fun u hu => ((hc E n w hws).2.1 u.1).2 ⟨fun e => hqU u hu (e ▸ hqw), fun e => hqU u hu (e ▸ seenShape_nat_mem_cj hqw)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσK : σ.K₀ ≤ S.L.KN r`. Take `⟨-, h2, h3, -⟩` from `hLB p S.D S.G S.L`. Use `h2 _ _ _ _ σ.isLev (h3 r) (Ideal.mul_le_left.trans (Ideal.span_singleton_le_span_singleton.2 ?_))` and prove the remaining obligations. Establish `hd : r ∣ ordCompl[σ.q] N.1` using `Nat.dvd_ordCompl_of_dvd_not_dvd hrN fun h => hqr ((Nat.prime_dvd_prime_iff_eq σ.atp.prime haux.prime).1 h)`. Conclude with `Nat.cast_dvd_cast hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzi : ∀ a, (z ^ i)⁻¹ * a = a * (z ^ i)⁻¹` using `fun a => ((Commute.pow_left (show Commute z a from hcen.1 a) i).inv_left).eq`. Establish `hw0 : comp w₀ z = 1` using `(hz w₀).2 (hfree.2.2.2.1 w₀ V.shape.mem)`. Use `⟨?_, Or.inr ⟨w', t, z, i, B, hfree, hap1, hi, ht, hz, hB, ?_, ?_, ?_, ?_, ?_, hθ⟩⟩` and prove the remaining obligations. Rewrite using `[hgK]`. Conclude with `fun k hk => key k (hK k hk) (hσK hk)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun u hu => hcen.2 u fun h => seenShape_not_both σ.atp.prime hpp σ.atp.ne h hu`. Establish `e : (UpperTheory.Gal.CertificateRingHomMap.loc hws t * z ^ i)⁻¹ = UpperTheory.Gal.CertificateRingHomMap.loc hws t⁻¹ * (z ^ i)⁻¹`. Rewrite using `[_root_.mul_inv_rev, map_inv]`. Conclude with `hzi _`. Rewrite using `[hh, (hty.fac w').2 t⁻¹, ← map_inv F.j, e, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a', rfl⟩` from `F.surj a`. Rewrite using `[← map_mul, ← map_mul, hzi]`. Rewrite using `[hty.L_eq]`. Use `((hty.fac ⟨w₀, hw⟩).1 (z ^ i)⁻¹).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show comp w₀ (z ^ i)⁻¹ = 1`. Rewrite using `[map_inv, map_pow, hw0, one_pow, inv_one]`. Introduce `u hu`. Rewrite using `[hh, (hty.fac u).1, map_mul, map_pow, UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart hws (hap2 u hu), hcen.2 _ (hqU u hu), one_pow, one_mul]`. Rewrite using `[hgK]`.
-
-Conclude with `hSF E A n p S F x hgen N w' σ (L w') (hty.fac w')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pSeenShape :
     StabKer → SiteFact → CenFacts → LevBasic → UpperTheory.Gal.CertificateRingHomMap.LocComm → SeenShape := by

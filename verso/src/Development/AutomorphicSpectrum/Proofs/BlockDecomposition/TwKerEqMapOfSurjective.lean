@@ -6,9 +6,9 @@ open GlobalTheory.PRep
 namespace GlobalTheory.CompanionTheory.PRep
 
 /- English proof (translation)
-Unfold `GlobalTheory.PRep.twKer`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨n, w', rfl⟩`. Take `⟨v, rfl⟩` from `hf w'`. Conclude with `⟨ρ n v - (θ n : ℂ) • v, ⟨n, v, rfl⟩, by rw [map_sub, map_smul, hint]⟩`. Introduce and unpack `⟨_, ⟨n, v, rfl⟩, rfl⟩`. Conclude with `⟨n, f v, by rw [map_sub, map_smul, hint]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem twKer_eq_map_of_surjective {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ G W)
@@ -26,7 +26,7 @@ theorem twKer_eq_map_of_surjective {G V W : Type} [Group G] [AddCommGroup V] [Mo
     exact ⟨n, f v, by rw [map_sub, map_smul, hint]⟩
 
 /- English proof (translation)
-Introduce `ρ σ N θ f hf hint` and use `GlobalTheory.CompanionTheory.PRep.twKer_eq_map_of_surjective ρ σ N θ f hf hint`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twKer_map_closed : ∀ {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ G W) (N : Subgroup G)

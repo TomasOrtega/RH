@@ -14,7 +14,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualAbelianSchemeEx
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.abelianDualCrystal_of_dualAbelianScheme GlobalTheory.dualAbelianScheme`.
+A detailed English derivation is pending.
 -/
 theorem abelianDualCrystal : GlobalTheory.Published.AbelianDualCrystal :=
   GlobalTheory.abelianDualCrystal_of_dualAbelianScheme GlobalTheory.dualAbelianScheme

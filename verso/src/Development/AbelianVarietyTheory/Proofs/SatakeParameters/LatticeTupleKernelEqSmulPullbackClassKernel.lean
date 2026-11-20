@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.TwV.DelB
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem reV_pull_submatrix {D : D7} (T : TaylorLogMetric.Tor D) {a b N N' : ℕ} (ha : a = N) (hb : b = N')
     (e : Matrix (Fin N) (Fin N) D.host.E) (e' : Matrix (Fin N') (Fin N') D.host.E) (G : TaylorLogMetric.VC D N N' → ℂ) :
@@ -22,15 +22,15 @@ theorem reV_pull_submatrix {D : D7} (T : TaylorLogMetric.Tor D) {a b N N' : ℕ}
   rfl
 
 /- English proof (translation)
-Introduce `D _ _ _ _ _ _ _ _ u μ w hg Lv I H X _ std t J S hD d j hj La La' hLa hLa' z`. Establish `hj1 : j + 1 ≤ D.R.m` using `hj`. Establish `hj0 : j ≤ D.R.m` using `Nat.le_of_succ_le hj1`. Take `⟨-, -, hr, -⟩` from `GlobalTheory.T.siteSystem_ranks_eq_datum_ranks S`. Rewrite using `[GlobalTheory.T.kernelFunction_latticeTuple_pair_eq_adelic S hD j hj1 (hr j) (hr (j + 1)) La La' hLa hLa']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hV` using `GlobalTheory.T.thetaKernelFunction_adelicPoints_eq_pullback_classKernel J.A J.dtU J.a J.pins J.tie S.Xi S.muT S.law j hj1 (clsAt X H j La.1 La.2) (clsAt X H (j + 1) La'.1 La'.2) (J.pt std j _ La) (J.pt std (j + 1) hj1 La') (d.gam j _ La) (d.mem j _ La) (d.gam (j + 1) hj1 La') (d. …`. Establish `hN` using `(GlobalTheory.T.adelicCharacters_at_det_rational_isometry_rep_level J.A J.dtU J.a J.pins J.tie S.Xi S.muT S.law j hj (j + 1) hj1 (clsAt X H (j + 1) La'.1 La'.2) (J.pt std (j + 1) hj1 La') (d.gam (j + 1) hj1 La') (d.mem _ _ _) (d.kap (j + 1) hj1 La') (d.eq _ _ La' hLa')).2.2`. Establish `e1 : d.eM j La = (gMat J j hj0 (d.gam j hj0 La)).submatrix (Fin.cast (hr j)) (Fin.cast (hr j))`. Unfold `Dec.eM`. Rewrite using `[dif_pos ⟨hj0, hr j⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : d.eM (j + 1) La' = (gMat J (j + 1) hj1 (d.gam (j + 1) hj1 La')).submatrix (Fin.cast (hr (j + 1))) (Fin.cast (hr (j + 1)))`. Unfold `Dec.eM`. Rewrite using `[dif_pos ⟨hj1, hr (j + 1)⟩]`. Establish `e3 : thCl (X` using `sysS H X std) t u μ (clsAt X H) j La La' = reV (hr j) (hr (j + 1)) ((t.rd u μ).Th t.seam t.amb j (clsAt X H j La.1 La.2) (clsAt X H (j + 1) La'.1 La'.2)) := by`. Unfold `thCl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos ⟨hr j, hr (j + 1)⟩]`. Establish `e4 : d.sP S j La La' = S.muT (j + 1) (Matrix.GeneralLinearGroup.det (d.kap j hj0 La).1) * d.chi (j + 1) hj1 La' / (S.muT (j + 1) (Matrix.GeneralLinearGroup.det (d.kap (j + 1) hj1 La').1) * d.chi j hj0 La)`. Unfold `Dec.sP`. Rewrite using `[dif_pos hj1]`. Rewrite using `[e1, e2, e3, e4, ← reV_pull_submatrix]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ a b c e k p : ℂ, c ≠ 0 → e ≠ 0 → c * e * k = a * b * p → k = a * b / (c * e) * p`. Introduce `a b c e k p hc he h`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`. Conclude with `key _ _ _ _ _ _ hN (Units.ne_zero _) (hV (fun τ i k => z τ (Fin.cast (hr (j + 1)).symm i) (Fin.cast (hr j).symm k)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pullAt_of_dict : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     J.Dict std → ∀ (d : Dec J std), ∀ j < D.R.m, d.PullAt S j) := by

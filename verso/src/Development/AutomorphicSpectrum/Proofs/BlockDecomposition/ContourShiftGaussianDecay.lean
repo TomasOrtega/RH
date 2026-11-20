@@ -5,21 +5,21 @@ open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.Companion
 namespace GlobalTheory.CompanionTheory.TubeFourier.ShiftLine
 
 /- English proof (translation)
-Establish `hpt : ∀ c y : ℝ, (⟨c, y⟩ : ℂ) = (c : ℂ) + (y : ℂ) * Complex.I`. Introduce `c y`. Apply the tactic sequence `apply Complex.ext <;> simp`. Simplify using `only [hpt]`. Establish `hint : ∀ c ∈ Set.Icc a b, Integrable (fun y : ℝ => f ((c : ℂ) + (y : ℂ) * Complex.I))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c hc`. Establish `hcont : Continuous fun y : ℝ => f ((c : ℂ) + (y : ℂ) * Complex.I)` using `hd.continuousOn.comp_continuous (by fun_prop) (fun y => by simpa using hc)`. Use `((integrable_exp_neg_mul_sq one_pos).const_mul M).mono' hcont.aestronglyMeasurable (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Use `hb ((c : ℂ) + (y : ℂ) * Complex.I) (by simpa using hc)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hhor : ∀ s : ℝ, ‖∫ x in a..b, f ((x : ℂ) + (s : ℂ) * Complex.I)‖ ≤ M * Real.exp (-s ^ 2) * (b - a)`. Introduce `s`. Establish `h` using `intervalIntegral.norm_integral_le_of_norm_le_const (a := a) (b := b) (C := M * Real.exp (-s ^ 2)) (f := fun x : ℝ => f ((x : ℂ) + (s : ℂ) * Complex.I)) ?_`. Rewrite `h` using `[abs_of_nonneg (sub_nonneg.mpr hab)]`. Then use the resulting hypothesis. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[Set.uIoc_of_le hab]`. Use `hb ((x : ℂ) + (s : ℂ) * Complex.I) (by simp; exact ⟨hx.1.le, hx.2⟩)` as an intermediate fact. Simplify using `using this`. Establish `hrect : ∀ R : ℝ, 0 ≤ R → ((∫ x in a..b, f ((x : ℂ) + ((-R : ℝ) : ℂ) * Complex.I)) - ∫ x in a..b, f ((x : ℂ) + (R : ℂ) * Complex.I)) + Complex.I • (∫ y in (-R)..R, f ((b : ℂ) + (y : ℂ) * Complex.I)) - Complex.I • (∫ y in (-R)..R, f ((a : ℂ) + (y : ℂ) * Complex.I)) = 0`. Introduce `R _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Complex.integral_boundary_rect_eq_zero_of_differentiableOn f ⟨a, -R⟩ ⟨b, R⟩ ?_` and prove the remaining obligations. Use `hd.mono fun z hz => ?_` and prove the remaining obligations. Conclude with `(Set.uIcc_of_le hab).subset (Complex.mem_reProdIm.mp hz).1`. Establish `hexp : Tendsto (fun R : ℝ => Real.exp (-R ^ 2)) atTop (𝓝 0)` using `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp (tendsto_pow_atTop two_ne_zero))`. Establish `hH : Tendsto (fun R : ℝ => (∫ x in a..b, f ((x : ℂ) + ((-R : ℝ) : ℂ) * Complex.I)) - ∫ x in a..b, f ((x : ℂ) + (R : ℂ) * Complex.I)) atTop (𝓝 0)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : Tendsto (fun R : ℝ => 2 * (M * Real.exp (-R ^ 2) * (b - a))) atTop (𝓝 0)`. Simplify using `using ((hexp.const_mul M).mul_const (b - a)).const_mul 2`. Use `squeeze_zero_norm (fun R => ?_) hT` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[neg_sq]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hVa : Tendsto (fun R : ℝ => ∫ y in (-R)..R, f ((a : ℂ) + (y : ℂ) * Complex.I)) atTop (𝓝 (∫ y : ℝ, f ((a : ℂ) + (y : ℂ) * Complex.I)))` using `intervalIntegral_tendsto_integral (hint a ⟨le_rfl, hab⟩) tendsto_neg_atTop_atBot tendsto_id`. Establish `hVb : Tendsto (fun R : ℝ => ∫ y in (-R)..R, f ((b : ℂ) + (y : ℂ) * Complex.I)) atTop (𝓝 (∫ y : ℝ, f ((b : ℂ) + (y : ℂ) * Complex.I)))` using `intervalIntegral_tendsto_integral (hint b ⟨hab, le_rfl⟩) tendsto_neg_atTop_atBot tendsto_id`. Establish `hlim` using `(hH.add (hVb.const_smul Complex.I)).sub (hVa.const_smul Complex.I)`. Establish `heq : (0 : Y) + Complex.I • (∫ y : ℝ, f ((b : ℂ) + (y : ℂ) * Complex.I)) - Complex.I • (∫ y : ℝ, f ((a : ℂ) + (y : ℂ) * Complex.I)) = 0` using `tendsto_nhds_unique hlim (tendsto_const_nhds.congr' ((eventually_ge_atTop 0).mono fun R hR => (hrect R hR).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `heq` using `[zero_add, ← smul_sub, smul_eq_zero]`. Break down `heq with h | h` into its components or cases. Conclude with `absurd h Complex.I_ne_zero`. Conclude with `(sub_eq_zero.mp h).symm`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem integral_vertical_line_eq {Y : Type} [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
     (f : ℂ → Y) (a b M : ℝ) (hab : a ≤ b)
@@ -89,7 +89,7 @@ theorem integral_vertical_line_eq {Y : Type} [NormedAddCommGroup Y] [NormedSpace
   · exact (sub_eq_zero.mp h).symm
 
 /- English proof (translation)
-Introduce `Y _ _ _ f a b M hab hd hb`. Conclude with `integral_vertical_line_eq f a b M hab hd hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem shift_vertical_line : ∀ (Y : Type) [NormedAddCommGroup Y] [NormedSpace ℂ Y] [CompleteSpace Y]
     (f : ℂ → Y) (a b M : ℝ), a ≤ b → DifferentiableOn ℂ f {z : ℂ | z.re ∈ Set.Icc a b} →

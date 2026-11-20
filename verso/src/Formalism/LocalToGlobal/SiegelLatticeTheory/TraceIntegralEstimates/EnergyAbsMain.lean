@@ -17,17 +17,13 @@ namespace Formalism.L2.S.Pv.EnergyAbs
 open Formalism.L2.SG.Pf.EnergyAbs
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ _ HH _ _ _ σ d w V V' _ _ _ _ _ _ S S' μS μS' ν ν' τ τ' W W' C _ m h hσ hSch hw hS hS' hF hF' hν hν' hq hq' hW hW' hD hhm hOOi hB hC hC'`. Use `haveI := hν`. Use `haveI := hν'`. Use `haveI : SigmaFinite μS := hS.2.2.2.2.1`. Use `haveI : SigmaFinite μS' := hS'.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Ω, hΩ, hΩF⟩` from `folner_seq hS hF`. Take `⟨Ω', hΩ', hΩF'⟩` from `folner_seq hS' hF'`. Establish `hlim` using `folner_limit hσ hSch hw hS hν hq hW hC Ω hΩ hΩF`. Establish `hlim'` using `folner_limit hσ hSch hw hS' hν' hq' hW' hC' Ω' hΩ' hΩF'`. Establish `hd : 0 < d` using `hSch.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set φn : ℕ → G → ℝ≥0∞ := fun n g => ENNReal.ofReal (hsA (Xop μS ν μS' ν' σ d w W W' (Ω n) (Ω' n) g)) with hφn`. Establish `hφm : ∀ n, Measurable (φn n)` using `fun n => ENNReal.measurable_ofReal.comp (continuous_hsA_Xop hσ μS ν μS' ν' d w W W' (Ω n) (Ω' n)).measurable`. Use `set Fn : ℕ → C → ℝ≥0∞ := fun n c => (μS (Ω n) * μS' (Ω' n))⁻¹ * ∫⁻ s, ∫⁻ s', φn n (s * h c * s'⁻¹) ∂μS' ∂μS with hFn`. Establish `hpt : ∀ c, ENNReal.ofReal (hsA (∫ x, rk1A (W x) (W' ((h c)⁻¹ * x)) ∂μ)) ≤ liminf (fun n => Fn n c) atTop` using `fun c => point_lower hσ hS hS' hq hq' hW hW' Ω Ω' hΩ hΩ' hΩF hΩF' (fun n => continuous_hsA_Xop hσ μS ν μS' ν' d w W W' (Ω n) (Ω' n)) (h c) (hB c)`. Establish `hinner : ∀ n, Measurable (fun c => ∫⁻ s, ∫⁻ s', φn n (s * h c * s'⁻¹) ∂μS' ∂μS)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Establish `h3 : Measurable (fun r : (C × G) × G => φn n (r.1.2 * h r.1.1 * r.2⁻¹))` using `(hφm n).comp (((measurable_snd.comp measurable_fst).mul (hhm.comp (measurable_fst.comp measurable_fst))).mul measurable_snd.inv)`. Conclude with `h3.lintegral_prod_right'.lintegral_prod_right'`. Establish `hmeasF : ∀ n, Measurable (Fn n)` using `fun n => (hinner n).const_mul _`. Establish `hint : ∀ n, ∫⁻ c, Fn n c ∂m = (μS (Ω n) * μS' (Ω' n))⁻¹ * ENNReal.ofReal (d * (∑ i, ‖yv μS ν σ w W (Ω n) (stdOrthonormalBasis ℂ V i)‖ ^ 2) * (∑ j, ‖yv μS' ν' σ w W' (Ω' n) (stdOrthonormalBasis ℂ V' j)‖ ^ 2))`.
-
-Introduce `n`. Rewrite using `[lintegral_const_mul _ (hinner n), ← hD (φn n) (hφm n), lintegral_hsA_Xop hSch]`. Establish `htend` using `tendsto_energy hd (fun n => ⟨(hΩ n).2.2.1, (hΩ n).2.2.2⟩) (fun n => ⟨(hΩ' n).2.2.1, (hΩ' n).2.2.2⟩) hlim hlim'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hint]`.
-
-Conclude with `htend.liminf_eq`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem energyAbs_holds : EnergyAbs := by
   intro G _ _ _ _ _ _ _ _ μ _ _ HH _ _ _ σ d w V V' _ _ _ _ _ _ S S' μS μS' ν ν' τ τ' W W' C _ m h

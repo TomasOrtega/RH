@@ -31,9 +31,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Establish `ex : ∃ b, k ≤ b ∧ (b ∈ s ∨ b = m)` using `⟨m, hk, .inr rfl⟩`. Use `⟨Nat.findGreatest (· ∈ s) k, Nat.find ex, Nat.findGreatest_le k, (Nat.find_spec ex).1, ?_, (Nat.find_spec ex).2, fun e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : Nat.findGreatest (· ∈ s) k = 0`. Conclude with `.inr h`. Conclude with `.inl (Nat.findGreatest_of_ne_zero rfl h)`.
-
-Break down `le_total e k with h | h` into its components or cases. Conclude with `.inl (Nat.le_findGreatest h he)`. Conclude with `.inr (Nat.find_min' ex ⟨h, .inl he⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_gap (s : Finset ℕ) {k m : ℕ} (hk : k ≤ m) : ∃ a b, a ≤ k ∧ k ≤ b ∧ (a ∈ s ∨ a = 0) ∧ (b ∈ s ∨ b = m) ∧
     ∀ e ∈ s, e ≤ a ∨ b ≤ e := by
@@ -49,9 +47,9 @@ theorem exists_gap (s : Finset ℕ) {k m : ℕ} (hk : k ≤ m) : ∃ a b, a ≤ 
     · exact .inr (Nat.find_min' ex ⟨h, .inl he⟩)
 
 /- English proof (translation)
-Use `⟨MapComp.corr_refl Z, fun k _ w hw => ?_⟩` and prove the remaining obligations. Take `⟨mu, hmu, ht⟩` from `exists_isTrans_id (Y := Y) Z.i`. Take `⟨a, φ, e⟩` from `Z.exists_chart w hw`. Establish `h : Z.FlagAt w ((Z.fr a).bc φ)` using `(atlasOf Z).flagAt_fr (a := a) e`. Use `⟨𝟙 _, mu, _, ht, by simp, h, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h` using `only [hmu, Category.comp_id]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isMap_refl (Z : Mdl Y i₀) : IsMap Z Z (𝟙 _) := by
   refine ⟨MapComp.corr_refl Z, fun k _ w hw => ?_⟩
@@ -64,27 +62,25 @@ theorem isMap_refl (Z : Mdl Y i₀) : IsMap Z Z (𝟙 _) := by
 open Classical in
 
 /- English proof (translation)
-Use `isDiscreteValuationRing_V Z.i.c W hp hW` as an intermediate fact. Establish `: CharZero Z.i.c.F` using `RingHom.charZero Z.i.c.F.val.toRingHom`. Take `⟨g, hg⟩` from `ht`. Take `⟨D, hD⟩` from `GlobalTheory.T.exists_lattice_coordinates_step E H Dw Xo p W Y i₀ hp hW t Z g hg`. Take `⟨A, hA, α, hα⟩` from `GlobalTheory.DRFlag.Atlas.exists_refine E H Dw _ _ _ _ _ _ _ _ (atlasOf Z) D.C`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨cv, Dv, hc, hl, hgl⟩` from `GlobalTheory.T.atlas_lattice_coordinates E H Dw _ _ _ _ _ _ _ _ A D t.σ α hα`. Take `⟨a, b, ha, hb, ha', hb', gap⟩` from `exists_gap (Z.ty t.σ) t.le`. Establish `geo` using `geoOf Z`. Take `⟨X', f, q, κ, cl⟩` from `GlobalTheory.T.cells_of_charts_polynomial _ Z.X (Z.π ≫ (Y Z.i).s) geo.proj geo.normal geo.flat A.ch (fun j => (A.alg j).comp (Z.i.c.V W).subtype) (GVar (Dw.mult t.σ) a t.k b) (GPm (Dw.mult t.σ) a b) _ (fun j => gxi a b t.le (cv j)) (fun j => gell a b t.le (Dv j)) A.alg_s (fun j = …`. Apply the tactic sequence `obtain ⟨⟨w, hw⟩, h⟩ := GlobalTheory.T.cell_coordinates_base_change K _ _ _ a _ b _ t.le _ _ _ _ φ ψ' w' ha hb (hl j) (hl j') fun r hr => hgl K j j' φ _ e r (by rcases hr with rfl | rfl <;> tauto)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `⟨w, h w hw⟩)`. Set `ty'` to `Function.update Z.ty t.σ (insert t.k (Z.ty t.σ))`. Establish `t₁ : ty' t.σ = insert t.k (Z.ty t.σ)` using `Function.update_self _ _ _`. Establish `t₂ : ∀ σ', σ' ≠ t.σ → ty' σ' = Z.ty σ'` using `fun σ' h => Function.update_of_ne h _ _`. Take `⟨A', rel⟩` from `GlobalTheory.T.cell_atlas_from_lattice E H Dw _ _ _ _ _ _ _ _ A D t.σ α cv Dv a t.k b t.le X' f q κ ty' ha hb ha' hb' gap hα hc hl cl t₁ t₂`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcar : A'.ch.carrier = f ⁻¹' A.ch.carrier`. Rewrite using `[A'.cover, A.cover, Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp]`. Establish `geo' : Geo (Y Z.i) (f ≫ Z.π)` using `⟨by rw [Category.assoc]; exact cl.proj, cl.normal, by rw [Category.assoc]; exact cl.flat, A'.cover ▸ hcar ▸ cl.dense⟩`. Establish `up' : ∀ (K : Type) [Field K] (w : Sp K ⟶ X') (u : Vecs Dw (Y Z.i).t K), A'.FlagAt w u → ∃ U : TVecs Dw (Y Z.i).t ((w ≫ f) ≫ Z.π), up U = u` using `fun K _ w u hu => by`. Take `⟨a, φ, -, hfr, -⟩` from `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hfr` using `[← Category.assoc]`. Conclude with `exists_up fun σ i => (hfr.1 σ i).1`. Establish `down : ∀ (K : Type) [Field K] (w : Sp K ⟶ X') (u : Vecs Dw (Y Z.i).t K), A'.FlagAt w u → (atlasOf Z).FlagAt (w ≫ f) u` using `fun K _ w u hu => by`. Take `⟨U, rfl⟩` from `up' K w u hu`. Conclude with `(hA K _ _).1 ((rel K w U).1 hu).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `red : IsReduced X'`. Use `fun x => (cl.normal x).1` as an intermediate fact. Conclude with `isReduced_of_isReduced_stalk _`. Establish `pl : Planar D.Em f q` using `GlobalTheory.T.planar_of_dense_carriers _ _ _ _ _ _ D.Em f q A'.ch.carrier red (hcar ▸ cl.dense) fun K _ w hw β h => by`. Take `⟨j, φ, e⟩` from `A'.ch.exists_fac w (hw ⟨_, rfl⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hu` using `A'.flagAt_fr e`. Take `⟨U, hU⟩` from `up' K w _ hu`. Conclude with `⟨_, ((rel K w U).1 (hU ▸ hu)).2 β h⟩`. Take `⟨Z', e, hi, hty, m₁, m₂, -⟩` from `GlobalTheory.T.exists_model_of_atlas E H Dw Xo p W Y i₀ Z.i X' _ ty' A' Z.dvd Z.le geo'`. Establish `sub : ∀ σ, Z.ty σ ⊆ ty' σ` using `fun σ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : σ = t.σ`. Rewrite using `[h, t₁]`. Conclude with `Finset.subset_insert _ _`. Rewrite using `[t₂ σ h]`. Establish `hf : IsMap Z' Z (e.hom ≫ f)` using `⟨⟨hi ▸ ⟨dvd_rfl, le_rfl, dvd_rfl⟩, hi ▸ le_rfl, hty ▸ sub⟩, m₂ _ _ _ (atlasOf Z) f rfl down⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : MapsTo Z' A' e.hom`. Simplify `m₂ _ _ _ A' (𝟙 _) (Category.id_comp _) fun K _ w u h => by` using `only [Category.comp_id]`. Simplify `h` using `only [Category.comp_id]`. Use `⟨Z', hi, hty, ⟨_, hf⟩, GlobalTheory.T.lattice_step_atlas_pullback E H Dw Xo p W Y i₀ hp hW t Z g D hg hD A X' f q ty' A' hA rel pl Z' _ he hf (by rw [hty, t₁]; exact Finset.mem_insert_self _ _), fun Z'' ⟨g₀, hg₀⟩ hH => ?_⟩` and prove the remaining obligations. Establish `sub' : ∀ σ, ty' σ ⊆ Z''.ty σ` using `fun σ => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : σ = t.σ`. Rewrite using `[h, t₁]`. Conclude with `Finset.insert_subset hH.1 (hg₀.1.2.2 _)`. Rewrite using `[t₂ σ h]`. Conclude with `hg₀.1.2.2 _`.
-
-Take `⟨h, hh⟩` from `GlobalTheory.T.atlas_model_comparison E H Dw Xo p W Y i₀ Z.i _ _ ty' A' Z'' hp hW geo' hg₀.1.2.1 sub' (GlobalTheory.T.lattice_step_atlas_refinement E H Dw Xo p W Y i₀ hp hW t Z g D hg hD A X' f q ty' A' hA rel cl.ovr cl.lift Z'' g₀ hg₀ hH)`. Conclude with `⟨h ≫ e.inv, ⟨hi ▸ hg₀.1.1, hi ▸ hg₀.1.2.1, hty ▸ sub'⟩, m₁ Z'' h hh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_step (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) (t : Step Y i₀) (ht : ∃ g, IsMap Z t.B g) :
     ∃ Z' : Mdl Y i₀, Z'.i = Z.i ∧ Z'.ty = Function.update Z.ty t.σ (insert t.k (Z.ty t.σ)) ∧ (∃ f, IsMap Z' Z f) ∧
@@ -157,13 +153,13 @@ theorem exists_step (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i�
   exact ⟨h ≫ e.inv, ⟨hi ▸ hg₀.1.1, hi ▸ hg₀.1.2.1, hty ▸ sub'⟩, m₁ Z'' h hh⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W hp hW Y i₀ Z s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨Z, isFlagCl_empty ⟨_, isMap_refl Z⟩⟩`. Consider the case `insert t s _ ih`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z₁, hi, hty, ⟨f, hf⟩, hs, mn⟩` from `ih fun t' ht' => h t' (Finset.mem_insert_of_mem ht')`. Take `⟨g, hg⟩` from `h t (Finset.mem_insert_self _ _)`. Take `⟨Z₂, hi', hty', ⟨f', hf'⟩, ht, mn'⟩` from `exists_step hp hW Z₁ t ⟨_, MapComp.isMap_comp hf hg⟩`. Use `⟨Z₂, hi'.trans hi, fun σ => ?_, ⟨_, MapComp.isMap_comp hf' hf⟩, fun t' ht' => ?_, fun Z'' hg' hH => ?_⟩` and prove the remaining obligations. Rewrite using `[hty']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `r`. Distinguish the cases in `e : σ = t.σ`. Substitute `e` using the available equality. Simplify using `only [Function.update_self, hty, Finset.mem_insert, Finset.mem_union, mem_stepTy, exists_eq_or_imp, true_and]`. The claim follows by propositional logic.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Simplify using `only [Function.update_of_ne e, hty, Finset.mem_insert, Finset.mem_union, mem_stepTy, exists_eq_or_imp, Ne.symm e, false_and, false_or]`. Break down `Finset.mem_insert.1 ht' with rfl | ht'` into its components or cases. Conclude with `ht`. Conclude with `GlobalTheory.T.step_holds_of_map E H Dw Xo p W hp hW Y i₀ t' Z₁ Z₂ ⟨_, hf'⟩ (hs t' ht')`. Conclude with `mn' Z'' (mn Z'' hg' fun t' ht' => hH t' (Finset.mem_insert_of_mem ht')) (hH t (Finset.mem_insert_self _ _))`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_isFlagCl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ (Z : Mdl Y i₀) (s : Finset (Step Y i₀)), (∀ t ∈ s, ∃ f, IsMap Z t.B f) → ∃ Z', IsFlagCl Z s Z' := by
   classical

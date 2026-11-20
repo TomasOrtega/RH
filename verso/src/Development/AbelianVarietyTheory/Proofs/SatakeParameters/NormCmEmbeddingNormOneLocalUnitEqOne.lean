@@ -7,7 +7,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.UnitPos
 
 /- English proof (translation)
-Establish `h` using `E.compat v s.val y`. Establish `e : twG X E.toCEmb v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) y) = E.iK (X.G.P.ι v ((X.G.P.σ v ^ s.val) (algebraMap (X.G.P.W v) (X.G.P.Qq v) y)))` using `rfl`. Rewrite using `[e, h, Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap]`. Conclude with `Formalism.L2.G.Pend.norm_wToC_le p _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_twG_le {p : ℕ} [Fact p.Prime] (X : Sys p) (E : CEmbC X.G) (v : X.Pl) (s : Fin (X.G.P.n' v)) (y : X.G.P.W v) :
     ‖twG X E.toCEmb v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) y)‖ ≤ 1 := by
@@ -18,9 +18,9 @@ theorem norm_twG_le {p : ℕ} [Fact p.Prime] (X : Sys p) (E : CEmbC X.G) (v : X.
   exact Formalism.L2.G.Pend.norm_wToC_le p _
 
 /- English proof (translation)
-Establish `h1` using `norm_twG_le X E v s (y : X.G.P.W v)`. Establish `h2` using `norm_twG_le X E v s ((y⁻¹ : (X.G.P.W v)ˣ) : X.G.P.W v)`. Establish `hm : twG X E.toCEmb v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) (y : X.G.P.W v)) * twG X E.toCEmb v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) ((y⁻¹ : (X.G.P.W v)ˣ) : X.G.P.W v)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `hn` using `congrArg norm hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn` using `[norm_mul, norm_one]`. Establish `h0 : 0 ≤ ‖twG X E.toCEmb v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) (y : X.G.P.W v))‖` using `norm_nonneg _`. Establish `h0' : 0 ≤ ‖twG X E.toCEmb v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) ((y⁻¹ : (X.G.P.W v)ˣ) : X.G.P.W v))‖` using `norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_twG_unit {p : ℕ} [Fact p.Prime] (X : Sys p) (E : CEmbC X.G) (v : X.Pl) (s : Fin (X.G.P.n' v)) (y : (X.G.P.W v)ˣ) :
     ‖twG X E.toCEmb v s (algebraMap (X.G.P.W v) (X.G.P.Qq v) (y : X.G.P.W v))‖ = 1 := by
@@ -40,7 +40,7 @@ end GlobalTheory.TwV.UnitPos
 namespace GlobalTheory.TwV.UnitPos
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic x).algHom (TaylorLogMetric.embT D τ).toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embT_mem_qbar (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : TaylorLogMetric.embT D τ x ∈ TaylorLogMetric.Qbar := by
   rw [mem_algebraicClosure_iff]
@@ -51,15 +51,13 @@ end GlobalTheory.TwV.UnitPos
 open GlobalTheory.TwV.UnitPos in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hS ι hι b hb hloc τ`. Take `⟨⟨v, s⟩, rfl⟩` from `(hT.gat_pos u w hg).surjective τ`. Establish `hq` using `embT_mem_qbar D ((hT.gat_pos u w hg) ⟨v, s⟩) b`. Establish `e1 : ι (TaylorLogMetric.embT D ((hT.gat_pos u w hg) ⟨v, s⟩) b) = TaylorLogMetric.lamC S.lam (TaylorLogMetric.embT D ((hT.gat_pos u w hg) ⟨v, s⟩) b)`. Rewrite using `[TaylorLogMetric.lamC, dif_pos hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hι ⟨_, hq⟩`. Rewrite using `[e1, hS v s b]`. Take `⟨y, hy⟩` from `hloc v`. Use `split_ifs with ho`. Establish `hc : J.rho std v (D.host.conj b) = algebraMap _ _ (((y⁻¹ : ((sysS H X std).G.P.W v)ˣ)) : (sysS H X std).G.P.W v)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : J.rho std v (D.host.conj b) * J.rho std v b = 1`. Rewrite using `[← map_mul, mul_comm, hb, map_one]`. Establish `h2 : algebraMap ((sysS H X std).G.P.W v) ((sysS H X std).G.P.Qq v) (((y⁻¹ : ((sysS H X std).G.P.W v)ˣ)) : (sysS H X std).G.P.W v) * J.rho std v b = 1`. Rewrite using `[hy, ← map_mul, Units.inv_mul, map_one]`. Establish `hne : J.rho std v b ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `zero_ne_one h1`. Conclude with `mul_right_cancel₀ hne (h1.trans h2.symm)`. Rewrite using `[hc]`.
-
-Conclude with `norm_twG_unit _ S.E v s _`. Rewrite using `[hy]`. Conclude with `norm_twG_unit _ S.E v s y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.UnitPos.norm_embT_unit : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => S.Pos → ∀ ι : ℂ →+* ℂ_[D.what₂.places.resChar w], (∀ z : TaylorLogMetric.Qbar, ι z = S.lam z) → ∀ b : D.host.E, b * D.host.conj b = 1 → (∀ v, ∃ y : ((sysS H X std).G.P.W v)ˣ, J.rho std v b = algebraMap _ _ (y : (sysS H X std).G.P.W v)) → ∀ τ, ‖ι (TaylorLogMetric.embT D τ b)‖ = 1) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hS ι hι b hb hloc τ

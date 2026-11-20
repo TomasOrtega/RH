@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Hecke
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Take `⟨u, hu, k, hk, l, hl, he⟩` from `F.fact _ h`. Rewrite `hu`, `hk`, `hl` using `[Subgroup.mem_inf]`. Establish `hyl : y * l * y⁻¹ ∈ F.Lf` using `F.M_L y hy l hl.1`. Establish `key : (x⁻¹ * u) * (k * y⁻¹) * (y * l * y⁻¹) = 1`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨h1, h2⟩` from `F.uniq _ (F.Uf.mul_mem (F.Uf.inv_mem hx) hu.1) _ (F.Mf.mul_mem hk.1 (F.Mf.inv_mem hy)) _ hyl key`. Establish `hxu : x = u` using `inv_mul_eq_one.mp h1`. Establish `hyk : y = k` using `(mul_inv_eq_one.mp h2).symm`. Conclude with `⟨hxu ▸ hu.2, hyk ▸ hk.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem leviSum_split {G : Type} [Group G] {I : Subgroup G} (F : LeviFact I) {x y : G}
     (hx : x ∈ F.Uf) (hy : y ∈ F.Mf) (h : x * y ∈ I) : x ∈ I ∧ y ∈ I := by
@@ -22,35 +22,31 @@ private theorem leviSum_split {G : Type} [Group G] {I : Subgroup G} (F : LeviFac
   exact ⟨hxu ▸ hu.2, hyk ▸ hk.2⟩
 
 /- English proof (translation)
-Introduce `G _ I F m _ hm s hs hs1 r hr q`. Establish `hmM : m ∈ F.Mf` using `hm.1`. Establish `hsm : ∀ (g : I) (x : G), g • (x : G ⧸ I) = (((g : G) * x : G) : G ⧸ I)` using `fun g x => rfl`. Establish `huniq : ∀ a ∈ s, ∀ a' ∈ s, ∀ v ∈ r a, ∀ v' ∈ r a', ((v' * a' : G) : G ⧸ I) = ((v * a : G) : G ⧸ I) → a' = a ∧ v' = v`. Introduce `a ha a' ha' v hv v' hv' heq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvI` using `Subgroup.mem_inf.mp ((hr a ha).1 v hv)`. Establish `hv'I` using `Subgroup.mem_inf.mp ((hr a' ha').1 v' hv')`. Establish `hd : (v * a)⁻¹ * (v' * a') ∈ I` using `QuotientGroup.eq.mp heq.symm`. Take `⟨j, hj, j', hj', hja⟩` from `hs a ha`. Take `⟨j1, hj1, j1', hj1', hja'⟩` from `hs a' ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hj`, `hj'`, `hj1`, `hj1'` using `[Subgroup.mem_inf]`. Establish `hw : j⁻¹ * (v⁻¹ * v') * j⁻¹⁻¹ ∈ F.Uf` using `F.M_U _ (F.Mf.inv_mem hj.1) _ (F.Uf.mul_mem (F.Uf.inv_mem hvI.1) hv'I.1)`. Establish `hX : m⁻¹ * (j⁻¹ * (v⁻¹ * v') * j⁻¹⁻¹) * m⁻¹⁻¹ ∈ F.Uf` using `F.M_U _ (F.Mf.inv_mem hmM) _ hw`. Establish `hY : m⁻¹ * (j⁻¹ * j1) * m ∈ F.Mf` using `F.Mf.mul_mem (F.Mf.mul_mem (F.Mf.inv_mem hmM) (F.Mf.mul_mem (F.Mf.inv_mem hj.1) hj1.1)) hmM`. Establish `hXY : m⁻¹ * (j⁻¹ * (v⁻¹ * v') * j⁻¹⁻¹) * m⁻¹⁻¹ * (m⁻¹ * (j⁻¹ * j1) * m) ∈ I`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : m⁻¹ * (j⁻¹ * (v⁻¹ * v') * j⁻¹⁻¹) * m⁻¹⁻¹ * (m⁻¹ * (j⁻¹ * j1) * m) = j' * ((v * a)⁻¹ * (v' * a')) * j1'⁻¹`. Rewrite using `[hja, hja']`. Use `group`. Rewrite using `[he]`. Conclude with `I.mul_mem (I.mul_mem hj'.2 hd) (I.inv_mem hj1'.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYI` using `(leviSum_split F hX hY hXY).2`. Establish `haa : a' = a`. Use `(hs1 j1 (Subgroup.mem_inf.mpr hj1)).unique ⟨ha', ?_⟩ ⟨ha, ?_⟩` and prove the remaining obligations. Establish `he : a'⁻¹ * (j1 * m) = j1'⁻¹`. Rewrite using `[hja']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `group`. Rewrite using `[he]`. Conclude with `I.inv_mem hj1'.2`. Establish `he : a⁻¹ * (j1 * m) = j'⁻¹ * (m⁻¹ * (j⁻¹ * j1) * m)`. Rewrite using `[hja]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`. Rewrite using `[he]`. Conclude with `I.mul_mem (I.inv_mem hj'.2) hYI`. Substitute `haa` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `((hr a' ha).2 v' (Subgroup.mem_inf.mpr hv'I)).unique ⟨hv', ?_⟩ ⟨hv, ?_⟩` and prove the remaining obligations. Establish `he : a'⁻¹ * (v'⁻¹ * v') * a' = 1` using `by group`. Rewrite using `[he]`. Conclude with `I.one_mem`. Establish `he : a'⁻¹ * (v⁻¹ * v') * a' = (v * a')⁻¹ * (v' * a')` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he]`. Conclude with `hd`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Take `⟨⟨i, hi⟩, rfl⟩` from `MulAction.mem_orbit_iff.mp hq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨u', hu', j, hj, l, hl, hil⟩` from `F.fact i hi`. Take `⟨a, ⟨ha, hajm⟩, -⟩` from `hs1 j hj`. Take `⟨v, ⟨hv, hvu⟩, -⟩` from `(hr a ha).2 u' hu'`. Rewrite `hl`, `hj`, `hu'` using `[Subgroup.mem_inf]`. Establish `hq : (⟨i, hi⟩ : I) • (m : G ⧸ I) = ((v * a : G) : G ⧸ I)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsm]`. Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises. Establish `he : ((i : G) * m)⁻¹ * (v * a) = (m⁻¹ * l * m)⁻¹ * (a⁻¹ * (j * m))⁻¹ * (a⁻¹ * (v⁻¹ * u') * a)⁻¹`. Simplify using `only [hil]`. Use `group`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `I.mul_mem (I.mul_mem (I.inv_mem (hm.2.2 l (Subgroup.mem_inf.mpr hl))) (I.inv_mem hajm)) (I.inv_mem hvu)`. Rewrite using `[hq]`. Use `⟨(a, v), ⟨ha, hv, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `p' hp1 hp2 hp3`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `huniq a ha p'.1 hp1 v hv p'.2 hp2 hp3`. Conclude with `Prod.ext h1 h2`. Introduce and unpack `⟨⟨a, v⟩, ⟨ha, hv, rfl⟩, -⟩`. Take `⟨j, hj, j', hj', hja⟩` from `hs a ha`. Establish `hvI` using `Subgroup.mem_inf.mp ((hr a ha).1 v hv)`.
-
-Rewrite `hj`, `hj'` using `[Subgroup.mem_inf]`. Apply `MulAction.mem_orbit_iff.mpr` to reduce the goal to its premises. Use `⟨⟨v * j, I.mul_mem hvI.2 hj.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hsm]`. Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises.
-
-Establish `he : ((v * j : G) * m)⁻¹ * (v * a) = j'`. Rewrite using `[hja]`. Use `group`. Simplify using `only [he]`. Conclude with `hj'.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.leviSum :
     ∀ (G : Type) [Group G] (I : Subgroup G) (F : LeviFact I) (m : G), HeckePair I → F.Pos m → ∀ (s : Finset G), (∀ a ∈ s, ∃ j ∈ F.Mf ⊓ I, ∃ j' ∈ F.Mf ⊓ I, a = j * m * j') → (∀ j ∈ F.Mf ⊓ I, ∃! a, a ∈ s ∧ a⁻¹ * (j * m) ∈ I) → ∀ (r : G → Finset G), (∀ a ∈ s, (∀ u ∈ r a, u ∈ F.Uf ⊓ I) ∧ ∀ x ∈ F.Uf ⊓ I, ∃! u, u ∈ r a ∧ a⁻¹ * (u⁻¹ * x) * a ∈ I) → ∀ q : G ⧸ I, q ∈ MulAction.orbit I (m : G ⧸ I) ↔ ∃ p : G × G, (p.1 ∈ s ∧ p.2 ∈ r p.1 ∧ ((p.2 * p.1 : G) : G ⧸ I) = q) ∧ ∀ p' : G × G, p'.1 ∈ s → p'.2 ∈ r p'.1 → ((p'.2 * p'.1 : G) : G ⧸ I) = q → p' = p := by

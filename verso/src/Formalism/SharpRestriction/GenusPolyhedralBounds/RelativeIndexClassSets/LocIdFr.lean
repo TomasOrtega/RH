@@ -11,9 +11,9 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨P, hP, hP0⟩` from `RingOfIntegers.isIntegral_coe x`. Establish `h2 : IsIntegral (w.adicCompletionIntegers F) (ρ (x : E))`. Use `⟨P.map (Int.castRingHom _), hP.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `e : (algebraMap (w.adicCompletionIntegers F) (w.adicCompletion F)).comp (Int.castRingHom _) = ρ.comp (algebraMap ℤ E)` using `RingHom.ext_int _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, ← Polynomial.hom_eval₂, hP0, map_zero]`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := w.adicCompletionIntegers F) (K := w.adicCompletion F)).1 h2`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_int (w : HeightOneSpectrum (𝓞 F)) (ρ : E →+* w.adicCompletion F) (x : 𝓞 E) :
     ρ (x : E) ∈ w.adicCompletionIntegers F := by
@@ -29,9 +29,7 @@ theorem hom_int (w : HeightOneSpectrum (𝓞 F)) (ρ : E →+* w.adicCompletion 
   rw [← hy]; exact y.2
 
 /- English proof (translation)
-Establish `hle : intV E w ≤ (w.adicCompletionIntegers F).toSubring.comap ((RingHom.fst _ _).comp φ.toRingHom)`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨_, ⟨y, rfl⟩⟩, rfl⟩ | ⟨⟨c, hc⟩, rfl⟩)`. Conclude with `hom_int w (((RingHom.fst _ _).comp φ.toRingHom).comp (inclE (F := F) (w.adicCompletion F))) y`. Use `show (φ ((1 : E) ⊗ₜ[F] c)).1 ∈ w.adicCompletionIntegers F`.
-
-Rewrite using `[halg]`. Conclude with `hc`. Conclude with `hle hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_int (w : HeightOneSpectrum (𝓞 F))
     (φ : E ⊗[F] w.adicCompletion F ≃+* w.adicCompletion F × w.adicCompletion F)
@@ -47,11 +45,11 @@ theorem fst_int (w : HeightOneSpectrum (𝓞 F))
   exact hle hs
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `Formalism.MainNotions.Gaps.LG.sc_exists_iso sig h2 ψ b hb0 hb`. Use `⟨φ, fun x => ?_, fun a => ?_, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul x c`. Establish `: sigR sig K (x ⊗ₜ[F] c) = sig x ⊗ₜ[F] c` using `rfl`. Rewrite using `[this, hφ, hφ, hsig]`. Both sides reduce to the same expression. Rewrite using `[hφ]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `: inclE (F` using `F) K x = x ⊗ₜ[F] (1 : K) := rfl`. Rewrite using `[this, hφ, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_spl {K : Type} [Field K] [Algebra F K] (sig : E →ₐ[F] E) (hsig : ∀ x, sig (sig x) = x)
     (h2 : Module.finrank F E = 2) (b : E) (hb0 : b ≠ 0) (hb : sig b = -b) (ψ : E →ₐ[F] K) :
@@ -70,35 +68,31 @@ theorem exists_spl {K : Type} [Field K] [Algebra F K] (sig : E →ₐ[F] E) (hsi
     rw [this, hφ, one_mul]
 
 /- English proof (translation)
-Use `set π : E ⊗[F] w.adicCompletion F →+* w.adicCompletion F := (RingHom.fst _ _).comp φ.toRingHom with hπ`. Use `set ρ : E →+* w.adicCompletion F := π.comp (inclE (F := F) (w.adicCompletion F)) with hρ`. Establish `hπa : ∀ s, π s = (φ s).1` using `fun _ => rfl`. Establish `hinv : (((bc ρ B)⁻¹ : GL (Fin k) (w.adicCompletion F)) : Matrix (Fin k) (Fin k) (w.adicCompletion F)) = ((B⁻¹ : GL (Fin k) E) : Matrix (Fin k) (Fin k) E).map ρ`. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hval : ((bc ρ B : GL (Fin k) (w.adicCompletion F)) : Matrix (Fin k) (Fin k) (w.adicCompletion F)) = (B : Matrix (Fin k) (Fin k) E).map ρ` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxt⟩`. Establish `ht : t = fun a => π (x a)` using `funext fun a => (hxt a).symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[ht]`. Use `clear ht hxt`. Unfold `Formalism.L2.Herm.locL latS at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨l, hl, rfl⟩` from `hx`. Introduce `a`. Establish `e1 : ((((B⁻¹ : GL (Fin k) E) : Matrix (Fin k) (Fin k) E).map ρ) *ᵥ (fun b => π (inclE (F` using `F) (w.adicCompletion F) (l b)))) a = ρ ((((B⁻¹ : GL (Fin k) E) : Matrix (Fin k) (Fin k) E) *ᵥ l) a) := (RingHom.map_mulVec ρ _ l a).symm`. Rewrite using `[hinv, e1]`. Take `⟨y, hy⟩` from `h1 l hl a`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hy]`. Conclude with `hom_int w ρ y`. Consider the case `zero`. Introduce `a`. Establish `: (fun b => π ((0 : Fin k → E ⊗[F] w.adicCompletion F) b)) = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use function extensionality and compare the values at `b`. Simplify using the standard rewrite rules. Rewrite using `[this, mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `: (fun b => π ((x + y) b)) = (fun b => π (x b)) + fun b => π (y b)`. Use function extensionality and compare the values at `b`. Simplify using the standard rewrite rules. Rewrite using `[this, mulVec_add]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (hx a) (hy a)`. Consider the case `smul s x _ hx`. Introduce `a`. Establish `: (fun b => π ((s • x) b)) = π (s : E ⊗[F] w.adicCompletion F) • fun b => π (x b)`. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show π ((s : E ⊗[F] w.adicCompletion F) * x b) = π (s : E ⊗[F] w.adicCompletion F) * π (x b)`. Rewrite using `[map_mul]`. Rewrite using `[this, mulVec_smul]`. Conclude with `mul_mem (fst_int w φ halg _ s.2) (hx a)`. Introduce `hu set u : Fin k → w.adicCompletion F := (((bc ρ B)⁻¹ : GL (Fin k) (w.adicCompletion F)) : Matrix (Fin k) (Fin k) (w.adicCompletion F)) *ᵥ t with hudef`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht : t = (B : Matrix (Fin k) (Fin k) E).map ρ *ᵥ u`. Rewrite using `[← hval, hudef, mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Establish `hNv : Valued.v ((N : ℕ) : w.adicCompletion F) = 1`. Use `Formalism.MainNotions.Gaps.LG.sc_val_one w (N : 𝓞 F) hN` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN0 : ((N : ℕ) : w.adicCompletion F) ≠ 0`. Introduce `h0`. Rewrite `hNv` using `[h0, map_zero]`. Conclude with `zero_ne_one hNv`. Establish `hNi : ((N : ℕ) : w.adicCompletion F)⁻¹ ∈ w.adicCompletionIntegers F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hNv, inv_one]`. Set `s : Fin k → intV E w` to `fun i => ⟨(1 : E) ⊗ₜ[F] (u i * ((N : ℕ) : w.adicCompletion F)⁻¹), Formalism.MainNotions.Gaps.LG.sc_right_mem w _ (mul_mem (hu i) hNi)⟩`. Set `g : Fin k → Fin k → E ⊗[F] w.adicCompletion F` to `fun i a => inclE (F := F) (w.adicCompletion F) (((N : E) • ((B : Matrix (Fin k) (Fin k) E) *ᵥ Pi.single i 1)) a)`. Use `⟨∑ i, s i • g i, ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h2 i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hB : ∀ i, ((B : Matrix (Fin k) (Fin k) E) *ᵥ Pi.single i 1) a = (B : Matrix (Fin k) (Fin k) E) a i`. Introduce `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hterm : ∀ i, π ((s i • g i) a) = ρ ((B : Matrix (Fin k) (Fin k) E) a i) * u i`. Introduce `i`.
-
-Use `show π (((1 : E) ⊗ₜ[F] (u i * ((N : ℕ) : w.adicCompletion F)⁻¹)) * g i a) = _`. Rewrite using `[map_mul, hπa ((1 : E) ⊗ₜ[F] _), halg]`. Use `show u i * ((N : ℕ) : w.adicCompletion F)⁻¹ * ρ (((N : E) • ((B : Matrix (Fin k) (Fin k) E) *ᵥ Pi.single i 1)) a) = _`. Rewrite using `[Pi.smul_apply, smul_eq_mul, hB, map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[← hπa, Finset.sum_apply, map_sum, ht]`. Simplify using `only [hterm]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fr_lat_of {k : ℕ} (w : HeightOneSpectrum (𝓞 F))
     (φ : E ⊗[F] w.adicCompletion F ≃+* w.adicCompletion F × w.adicCompletion F)
@@ -195,13 +189,13 @@ theorem fr_lat_of {k : ℕ} (w : HeightOneSpectrum (𝓞 F))
       simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use `fr_lat_of w φ halg _ 1 (fun x hx a => ?_) T hT (fun i => ?_) t` and prove the remaining obligations. Rewrite using `[inv_one, Units.val_one, one_mulVec]`. Take `⟨y, hy⟩` from `Formalism.MainNotions.Gaps.LG.iw_Lb_le_std k pz hx a (Set.mem_univ a)`. Conclude with `⟨y, hy⟩`. Rewrite using `[Units.val_one, one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (T : E) • (Pi.single i 1 : Fin k → E) = (if i.1 = 0 then pzc else (T : 𝓞 E)) • Formalism.MainNotions.Gaps.LG.lbVec k pz i`. Use function extensionality and compare the values at `j`. Unfold `Formalism.MainNotions.Gaps.LG.lbVec`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def, mul_one]`. Use `split_ifs`. Rewrite using `[← hpz, mul_comm]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Pi.single_eq_of_ne hj, smul_zero]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_lat_LbOf {k : ℕ} (w : HeightOneSpectrum (𝓞 F))
     (φ : E ⊗[F] w.adicCompletion F ≃+* w.adicCompletion F × w.adicCompletion F)

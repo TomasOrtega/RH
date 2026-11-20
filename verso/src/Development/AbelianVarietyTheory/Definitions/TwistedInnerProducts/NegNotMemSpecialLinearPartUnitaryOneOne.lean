@@ -10,7 +10,7 @@ namespace GlobalTheory.LeviFactor.Model
 variable {n a : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : Flag n a}
 
 /- English proof (translation)
-Establish `h` using `inv_mul_Jm (ε := ε) g⁻¹`. Rewrite `h` using `[inv_inv]`. Rewrite using `[mulVec_mulVec, h, ← mulVec_mulVec, (((uPart ε L).inv_mem hg) y hy).2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem uPart_fix_J {L : Submodule ℂ (Fin n → ℂ)} {g : UJ ε} (hg : g ∈ uPart ε L) {y : Fin n → ℂ} (hy : y ∈ L) :
     uMat g *ᵥ (Jm ε *ᵥ y) = Jm ε *ᵥ y := by
@@ -19,7 +19,7 @@ theorem uPart_fix_J {L : Submodule ℂ (Fin n → ℂ)} {g : UJ ε} (hg : g ∈ 
   rw [mulVec_mulVec, h, ← mulVec_mulVec, (((uPart ε L).inv_mem hg) y hy).2]
 
 /- English proof (translation)
-Introduce `g hg` and use `by have k : ∀ i, ∀ y ∈ W i, uMat g *ᵥ y = y ∧ (uMat g)ᴴ *ᵥ y = y := fun i y hy => hg y (hW.2.1 (Fin.le_last i) hy) refine ⟨fun i y hy => by rw [(k i y hy).1, (k i y hy).2]; exact ⟨hy, hy⟩, fun i => ?_⟩ have := detOn_step (g := uMat g) (U := ⊥) (U' := W i) (c := 1) bot_le (d := Mo …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uPart_le (hW : IsIsoFlag ε j W) : uPart ε (W (Fin.last a)) ≤ leviOne ε W := fun g hg => by
   have k : ∀ i, ∀ y ∈ W i, uMat g *ᵥ y = y ∧ (uMat g)ᴴ *ᵥ y = y := fun i y hy => hg y (hW.2.1 (Fin.le_last i) hy)
@@ -29,7 +29,7 @@ theorem uPart_le (hW : IsIsoFlag ε j W) : uPart ε (W (Fin.last a)) ≤ leviOne
   simpa [detOn_bot] using this
 
 /- English proof (translation)
-Use `eq_bot_iff.2 fun g ⟨h1, h2⟩ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.RealIwasawa.eq_one_of_mul_mem_compact hW g ⟨fun i y hy => by rw [(h2 y (hW.2.1 (Fin.le_last _) hy)).1, sub_self]; exact zero_mem _, h1.2⟩ _ ((leviSub ε W).inv_mem h1.1.1) (by rw [mul_inv_cancel]; exact (compactSub ε).one_mem)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glPart_inf_uPart (hW : IsIsoFlag ε j W) : glPart ε W ⊓ uPart ε (W (Fin.last a)) = ⊥ := by
   refine eq_bot_iff.2 fun g ⟨h1, h2⟩ => ?_
@@ -38,7 +38,7 @@ theorem glPart_inf_uPart (hW : IsIsoFlag ε j W) : glPart ε W ⊓ uPart ε (W (
     ((leviSub ε W).inv_mem h1.1.1) (by rw [mul_inv_cancel]; exact (compactSub ε).one_mem)
 
 /- English proof (translation)
-Establish `h` using `glPart_inf_uPart hW`. Rewrite `h` using `[show W (Fin.last 0) = ⊥ from hW.1, uPart_bot, inf_top_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem glPart_zero {j : Fin 0 → ℕ} {W : Flag n 0} (hW : IsIsoFlag ε j W) : glPart ε W = ⊥ := by
   have h := glPart_inf_uPart hW
@@ -56,7 +56,7 @@ Both sides reduce to the same expression.
 theorem uMat_neg : uMat (neg ε) = -1 := rfl
 
 /- English proof (translation)
-Use `⟨fun i y hy => by simpa [uMat_neg, neg_mulVec] using hy, fun i => ?_⟩` and prove the remaining obligations. Use `detOn_step (g := uMat (neg ε)) (U := ⊥) (U' := W i) (c := -1) bot_le (d := Module.finrank ℂ (W i)) (by simp) (by simp) fun y hy => by simp [uMat_neg, neg_mulVec]` as an intermediate fact. Simplify `this` using `[detOn_bot]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem neg_mem_leviOne : neg ε ∈ leviOne ε W := by
   refine ⟨fun i y hy => by simpa [uMat_neg, neg_mulVec] using hy, fun i => ?_⟩
@@ -65,9 +65,9 @@ theorem neg_mem_leviOne : neg ε ∈ leviOne ε W := by
   simpa [detOn_bot] using this
 
 /- English proof (translation)
-Establish `e : ∀ y : Fin n → ℂ, uMat (neg ε) *ᵥ y - y = (-2 : ℂ) • y` using `fun y => by`. Rewrite using `[uMat_neg, neg_mulVec, one_mulVec]`. Use `module`. Use `⟨fun h y hy => ?_, fun h => ⟨neg_mem_leviOne, fun y hy => e y ▸ (W _).smul_mem _ (h y hy)⟩⟩` and prove the remaining obligations. Use `h.2 y hy` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[e, Submodule.smul_mem_iff _ (by norm_num)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem neg_mem_glPart_iff : neg ε ∈ glPart ε W ↔
     ∀ y : Fin n → ℂ, (∀ z ∈ W (Fin.last a), star z ⬝ᵥ (Jm ε *ᵥ y) = 0) → y ∈ W (Fin.last a) := by
@@ -78,9 +78,9 @@ theorem neg_mem_glPart_iff : neg ε ∈ glPart ε W ↔
   rwa [e, Submodule.smul_mem_iff _ (by norm_num)] at this
 
 /- English proof (translation)
-Use `and_congr_right fun hg => forall_congr' fun i => ?_` and prove the remaining obligations. Establish `e : ∀ h : ∀ y ∈ W i, Matrix.toLin' (uMat (neg ε)) y ∈ W i, LinearMap.det ((Matrix.toLin' (uMat (neg ε))).restrict h) = (-1) ^ Module.finrank ℂ (W i)` using `fun h => by`. Rewrite using `[show (Matrix.toLin' (uMat (neg ε))).restrict h = (-1 : ℂ) • LinearMap.id by`. Use extensionality with `y : 2`. Simplify using `[uMat_neg], LinearMap.det_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨fun h => ?_, fun h k => by rw [e, h.neg_one_pow]⟩` and prove the remaining obligations. Use `(e _).symm.trans (h fun y hy => (hg.1.1 i y hy).1)` as an intermediate fact. Rewrite `this` using `[neg_one_pow_eq_one_iff_even (by norm_num)]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem neg_mem_slPart_iff : neg ε ∈ slPart ε W ↔ neg ε ∈ glPart ε W ∧ ∀ i, Even (Module.finrank ℂ (W i)) := by
   refine and_congr_right fun hg => forall_congr' fun i => ?_
@@ -94,7 +94,7 @@ theorem neg_mem_slPart_iff : neg ε ∈ slPart ε W ↔ neg ε ∈ glPart ε W �
   rwa [neg_one_pow_eq_one_iff_even (by norm_num)] at this
 
 /- English proof (translation)
-The claim follows from `neg_mem_glPart_iff.2 fun y hy => by have h := hy ![1, 1] (Submodule.subset_span rfl) simp [Jm, e2, dotProduct, Matrix.mulVec, Fin.sum_univ_two, Matrix.diagonal] at h refine Submodule.mem_span_singleton.2 ⟨y 0, ?_⟩ ext i fin_cases i · simp · simp; linear_combination h`.
+A detailed English derivation is pending.
 -/
 theorem neg_mem_generalLinearPart_unitary_one_one : neg e2 ∈ glPart e2 W2 := neg_mem_glPart_iff.2 fun y hy => by
   have h := hy ![1, 1] (Submodule.subset_span rfl)
@@ -106,7 +106,7 @@ theorem neg_mem_generalLinearPart_unitary_one_one : neg e2 ∈ glPart e2 W2 := n
   · simp; linear_combination h
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := (neg_mem_slPart_iff.1 h).2 1 have h2 := isIsotropicFlag_unitary_one_one.2.2.1 0 have h3 : Module.finrank ℂ (W2 1) = 1 := by refine h2.trans ?_ change Module.finrank ℂ (⊥ : Submodule ℂ (Fin 2 → ℂ)) + 1 = 1 simp rw [h3] at h1 exact Nat.not_even_one h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem neg_notMem_specialLinearPart_unitary_one_one : neg e2 ∉ slPart e2 W2 := fun h => by
   have h1 := (neg_mem_slPart_iff.1 h).2 1
@@ -119,7 +119,7 @@ theorem neg_notMem_specialLinearPart_unitary_one_one : neg e2 ∉ slPart e2 W2 :
   exact Nat.not_even_one h1
 
 /- English proof (translation)
-Introduce `h` and use `by have := locSize_mU have h0 := h.1.2 0 have h1 := h.1.2 1 change (detOn (uMat mU) (W2 1) / detOn (uMat mU) (W2 0)) ^ (-(1 : ℝ) / ((1 : ℕ) : ℝ)) = 1 / 2 at this rw [h0, h1] at this norm_num at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mU_notMem_glPart : mU ∉ glPart e2 W2 := fun h => by
   have := locSize_mU
@@ -139,9 +139,7 @@ def emb : (Fin 2 → ℂ) →ₗ[ℂ] (Fin 4 → ℂ) where
 def W4 : Flag 4 1 := ![⊥, LinearMap.range emb]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.finrank_range_of_inj]`. Simplify using the standard rewrite rules. Introduce `u v h`. Use extensionality with `i`. Use `fin_cases i`.
-
-Conclude with `congrFun h 0`. Conclude with `congrFun h 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem finrank_siegel_flag : Module.finrank ℂ (LinearMap.range emb) = 2 := by
   rw [LinearMap.finrank_range_of_inj]
@@ -153,9 +151,9 @@ theorem finrank_siegel_flag : Module.finrank ℂ (LinearMap.range emb) = 2 := by
     · exact congrFun h 1
 
 /- English proof (translation)
-Use `⟨rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b hab fin_cases a <;> fin_cases b <;> simp_all [W4]`. Introduce `i fin_cases i`. Express the relevant statement in the definitionally equal form `Module.finrank ℂ (LinearMap.range emb) = Module.finrank ℂ (⊥ : Submodule ℂ (Fin 4 → ℂ)) + 2`. Rewrite using `[finrank_siegel_flag, finrank_bot]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨u, rfl⟩ _ ⟨v, rfl⟩`. Simplify using `[Jm, e4, emb, dotProduct, Matrix.mulVec, Fin.sum_univ_four, Matrix.diagonal]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem isIsotropicFlag_siegel : IsIsoFlag e4 ![2] W4 := by
   refine ⟨rfl, ?_, ?_, ?_⟩
@@ -169,13 +167,13 @@ theorem isIsotropicFlag_siegel : IsIsoFlag e4 ![2] W4 := by
     simp [Jm, e4, emb, dotProduct, Matrix.mulVec, Fin.sum_univ_four, Matrix.diagonal]
 
 /- English proof (translation)
-Use `⟨neg_mem_slPart_iff.2 ⟨neg_mem_glPart_iff.2 fun y hy => ?_, fun i => ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `h0` using `hy _ ⟨![1, 0], rfl⟩`. Establish `h1` using `hy _ ⟨![0, 1], rfl⟩`. Simplify using `[Jm, e4, emb, dotProduct, Matrix.mulVec, Fin.sum_univ_four, Matrix.diagonal] at h0 h1`. Use `⟨![y 0, y 1], ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [emb]`. Take the linear combination `h0`. Take the linear combination `h1`. Use `fin_cases i`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Even (Module.finrank ℂ (⊥ : Submodule ℂ (Fin 4 → ℂ)))`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `Even (Module.finrank ℂ (LinearMap.range emb))`. Rewrite using `[finrank_siegel_flag]`. Evaluate the decidable proposition.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact.
 
-Use `congrArg (fun g => uMat g 0 0) h` as an intermediate fact. Simplify using `[uMat_neg, uMat_one] at this`. Evaluate the numerical expressions using `at this`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem neg_mem_specialLinearPart_siegel : neg e4 ∈ slPart e4 W4 ∧ neg e4 ≠ 1 := by
   refine ⟨neg_mem_slPart_iff.2 ⟨neg_mem_glPart_iff.2 fun y hy => ?_, fun i => ?_⟩, fun h => ?_⟩
@@ -206,11 +204,11 @@ def refl3 : UJ e3 := ⟨⟨diagonal ![1, 1, -1], diagonal ![1, 1, -1],
     fin_cases i <;> fin_cases k <;> simp [Jm, e3, Matrix.mul_apply, Matrix.diagonal]⟩
 
 /- English proof (translation)
-Establish `e : uMat refl3 = diagonal ![1, 1, -1]` using `rfl`. Use `⟨fun y hy => ?_, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[e]`. Apply the tactic sequence `constructor <;> ext i <;> fin_cases i <;> simp [mulVec_diagonal]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congrArg (fun g => uMat g 2 2) h` as an intermediate fact. Simplify using `[e, uMat_one] at this`. Evaluate the numerical expressions using `at this`. Use `congrFun (h _ (Submodule.subset_span rfl)).1 0` as an intermediate fact. Simplify using `[uMat_neg, neg_mulVec] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions using `at this`.
+Evaluate the numerical expressions.
 -/
 theorem reflection_mem_unitaryPart : refl3 ∈ uPart e3 (Submodule.span ℂ {![1, 1, 0]}) ∧ refl3 ≠ 1 ∧
     neg e3 ∉ uPart e3 (Submodule.span ℂ {![1, 1, 0]}) := by

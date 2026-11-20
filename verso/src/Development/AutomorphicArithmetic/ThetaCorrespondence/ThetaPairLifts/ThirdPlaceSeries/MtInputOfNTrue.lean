@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.HeightCounting.Up.ParCopy
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.mp pack`. Take `⟨hcf, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Substitute `hcf` using the available equality.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `hr : rep = rep'` using `eq_of_heq hrep`. Substitute `hr` using the available equality. Set `T : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ A.wdT with }`. Set `Rw : RowSide (withLoc L)` to `{ A.row with }`. Use `⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem parIn_of_nTrue_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL D' cf' C' tp') (rep' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r)
@@ -32,7 +32,7 @@ theorem parIn_of_nTrue_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D
   refine ⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Establish `hm : mtL L M = M'` using `eq_of_heq hM`. Substitute `hm` using the available equality. Conclude with `⟨tp.tup, C.Q, { mt with }⟩`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_mtInput_of_nTrue {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : _root_.GlobalTheory.HeightCounting.NormChoiceRealisation hL D' cf' C' tp') (M' : MtFam D') (hM : HEq (mtL nt.L nt.M) M') :

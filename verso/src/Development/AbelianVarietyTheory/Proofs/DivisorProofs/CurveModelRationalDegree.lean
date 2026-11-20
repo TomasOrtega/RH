@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.RatFibreClosure
 
 /- English proof (translation)
-Establish `h : Algebra.IsPushout ℤ (𝓞 F) ℚ F` using `(Algebra.isLocalization_iff_isPushout (nonZeroDivisors ℤ) ℚ).1 inferInstance`. Establish `h'` using `(CommRingCat.isPushout_iff_isPushout (R := ℤ) (R' := 𝓞 F) (S := ℚ) (S' := F)).2 h`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ h'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPullback_spec_ringOfIntegers (F : Type) [Field F] [NumberField F] :
     IsPullback (spMap (algebraMap (𝓞 F) F)) (spMap (algebraMap ℚ F))
@@ -25,23 +25,21 @@ theorem isPullback_spec_ringOfIntegers (F : Type) [Field F] [NumberField F] :
   exact isPullback_SpecMap_of_isPushout _ _ _ _ h'
 
 /- English proof (translation)
-Introduce `F _ _ Y P Z hZ W w z hW hzw H M hM`. Use `letI iF : Algebra F Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) := algebraΓOfHom (redι Z ≫ Y.str)`. Use `letI iQ : Algebra ℚ Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) := ((algebraMap F Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤)).comp (algebraMap ℚ F)).toAlgebra`. Use `haveI : IsScalarTower ℚ F Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) := .of_algebraMap_eq fun _ ↦ rfl`. Establish `hi : ∀ r : F, (redι Z).appTop (algebraMap F Γ(Y.X, ⊤) r) = algebraMap F Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) r` using `fun _ ↦ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsIntegral (Scheme.IdealSheafData.vanishingIdeal Z).subscheme := isIntegral_red hZ.isIrreducible`. Establish `hC : VB.IsProjCurve F (Scheme.IdealSheafData.vanishingIdeal Z).subscheme`. Use `⟨inferInstance, (topologicalKrullDim_red Z).trans hZ.dim_eq, ?_⟩` and prove the remaining obligations. Rewrite using `[strHom_eq (f := redι Z ≫ Y.str) fun _ ↦ rfl]`. Take `⟨n, f, hf, hs⟩` from `Y.isProjOver`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨n, redι Z ≫ f, inferInstance, by rw [Category.assoc, hs]⟩`. Establish `H'` using `H.paste_vert (isPullback_spec_ringOfIntegers F)`. Use `set R := ratFibre (w ≫ P.p)`. Use `set e : (Scheme.IdealSheafData.vanishingIdeal Z).subscheme ≅ R := H'.isoIsPullback _ _ (ratFibre.isPullback (w ≫ P.p)) with he`. Establish `efst : e.hom ≫ ratFibre.fst (w ≫ P.p) = z` using `IsPullback.isoIsPullback_hom_fst _ _ H' (ratFibre.isPullback _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ r : ℚ, e.hom.appTop (algebraMap ℚ Γ(R, ⊤) r) = algebraMap ℚ Γ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme, ⊤) r` using `fun r ↦ RingHom.congr_fun (RingHom.ext_rat (e.hom.appTop.hom.comp (algebraMap ℚ _)) (algebraMap ℚ _)) r`. Use `set L := (M.pull w).pull (ratFibre.fst (w ≫ P.p)) with hLdef`. Use `set N := (M.pull P.j).pull (redι Z) with hNdef`. Establish `hL : L.IsLB` using `Semi.LB.isLB_pull (Semi.LB.isLB_pull hM _) _`. Establish `hN : N.IsLB` using `Semi.LB.isLB_pull (Semi.LB.isLB_pull hM _) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLe : (L.pull e.hom).IsLB` using `Semi.LB.isLB_pull hL _`. Establish `hcls : cls (L.pull e.hom) hLe = cls N hN`. Rewrite using `[cls_pull hL, cls_pull (Semi.LB.isLB_pull hM _), cls_pull hM, cls_pull (Semi.LB.isLB_pull hM _), cls_pull hM]`. Simplify using `only [← pull_comp, ← Category.assoc, efst, hzw]`. Establish `h₁ : chi ℚ (structureModule R) = chi ℚ (structureModule (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)` using `(chi_congr ℚ (asIso (unitToPush e.hom))).trans (chi_pushforward_of_isClosedImmersion hf _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ : chi ℚ (toMod L) = chi ℚ (twist (structureModule (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) N)`. Use `(chi_congr ℚ (Twist.unitTwistIso L)).symm.trans ?_` and prove the remaining obligations. Use `(chi_congr ℚ ((twistFunctor L).mapIso (asIso (unitToPush e.hom)))).trans ?_` and prove the remaining obligations. Use `(chi_twist_pushforward_of_isClosedImmersion hf _ L).trans ?_` and prove the remaining obligations. Conclude with `(nonempty_twist_iso_of_cls_eq _ hLe hN hcls).elim (chi_congr ℚ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h₃ : interNumRed F Z ![M.pull P.j] = chi F (twist (structureModule (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) N) - chi F (structureModule (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`. Establish `e₁` using `interNumOn_eq_interNum_pull (k := F) (L := ![M.pull P.j]) hi (fun i ↦ by fin_cases i; exact Semi.LB.isLB_pull hM _)`. Establish `e₂` using `hC.degLB_eq_interNum hN`. Rewrite `e₂` using `[VB.degLB_eq hN, ← chi_congr F (Twist.unitTwistIso N)]`. Rewrite using `[interNumRed_def, interNumSub_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `e₁.trans (Eq.trans ?_ e₂.symm)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression.
-
-Rewrite using `[ratDeg, degOfRank, h₁, h₂, h₃, GroundFieldChange.chi_fieldChange ℚ F (Scheme.IdealSheafData.vanishingIdeal Z).subscheme, GroundFieldChange.chi_fieldChange ℚ F (Scheme.IdealSheafData.vanishingIdeal Z).subscheme]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ratDeg_eq_finrank_mul_interNumRed : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (P : TrueGeo.Model Y) (Z : Closeds Y.X), IsCompleteCurve F Z → ∀ (W : Scheme.{0}) (w : W ⟶ P.X) (z : (Scheme.IdealSheafData.vanishingIdeal Z).subscheme ⟶ W), IsArithVar (w ≫ P.p) 1 → z ≫ w = redι Z ≫ P.j → IsPullback z (redι Z ≫ Y.str) (w ≫ P.p) (spMap (algebraMap (𝓞 F) F)) → ∀ M : LB P.X, M.IsLB → ratDeg (w ≫ P.p) (M.pull w) = (Module.finrank ℚ F : ℤ) * interNumRed F Z ![M.pull P.j] := by
   intro F _ _ Y P Z hZ W w z hW hzw H M hM

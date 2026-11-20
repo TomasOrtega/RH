@@ -11,7 +11,7 @@ def pick {α : Type*} [Zero α] (P : α → Prop) : α := by
   exact if h : ∃ a, P a then h.choose else 0
 
 /- English proof (translation)
-Unfold `pick`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pick_spec {α : Type*} [Zero α] {P : α → Prop} (h : ∃ a, P a) : P (pick P) := by
   unfold pick
@@ -37,9 +37,9 @@ def twRel (q : ℕ) (i : ℤ) (A : Type) [CommRing A] : Submodule (ULift.{1} (ZM
     x = Finsupp.single ξ 1 - Finsupp.single ζ (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q))}
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨ζ, ξ, a, hξ, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, map_sub, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Use `Submodule.subset_span ⟨Prim.map f ζ, Prim.map f ξ, a, ?_, rfl⟩` and prove the remaining obligations. Use `show f ξ.1 = f ζ.1 ^ _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hξ, map_pow]`.
+A detailed English derivation is pending.
 -/
 theorem twRel_le (q : ℕ) (i : ℤ) {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     twRel q i A ≤ (twRel q i B).comap (Finsupp.lmapDomain _ _ (Prim.map f)) := by
@@ -204,7 +204,7 @@ def redMap (Q q : ℕ) (i : ℤ) : SemiMap (res _ (tw Q i)) (res _ (tw q i)) :=
 def red (Q q : ℕ) (E : Spc) (n i : ℤ) : Ht Q E n i →+ Ht q E n i := (redMap Q q i).op.app E n
 
 /- English proof (translation)
-The claim follows from `(redMap Q q i).op.nat f n x`.
+A detailed English derivation is pending.
 -/
 theorem pull_red (Q q : ℕ) {E E' : Spc} (f : E ⟶ E') (n i : ℤ) (x : Ht Q E' n i) :
     pull _ f _ n (red Q q E' n i x) = red Q q E n i (pull _ f _ n x) :=
@@ -223,7 +223,7 @@ instance (k : ℕ) (E : Spc) (n i : ℤ) : Module ℤ_[l] (HtL l k E n i) :=
   Module.compHom (Ht (l ^ k) E n i) (PadicInt.toZModPow k)
 
 /- English proof (translation)
-Establish `h1 : PadicInt.toZModPow k r = ((PadicInt.toZModPow k' r).val : ZMod (l ^ k))`. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow k k' hk, RingHom.comp_apply, ZMod.castHom_apply, ZMod.cast_eq_val]`. Express the relevant statement in the definitionally equal form `PadicInt.toZModPow k r • (show Ht (l ^ k) E n i from x) = _`. Rewrite using `[h1, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem HtL.smul_eq (k k' : ℕ) (hk : k ≤ k') (E : Spc) (n i : ℤ) (r : ℤ_[l]) (x : HtL l k E n i) :
     r • x = (PadicInt.toZModPow k' r).val • x := by
@@ -250,13 +250,13 @@ def pullHl {E E' : Spc} (f : E ⟶ E') (n i : ℤ) : Hl l E' n i →ₗ[ℤ_[l]]
   map_smul' r x := Subtype.ext (funext fun k => (pullL (ZMod (l ^ k)) f (tw (l ^ k) i) n).map_smul (PadicInt.toZModPow k r) (x.1 k))
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext (funext fun k => pull_id _ E _ n (x.1 k))`.
+A detailed English derivation is pending.
 -/
 theorem pullHl_id (E : Spc) (n i : ℤ) : pullHl l (𝟙 E) n i = LinearMap.id :=
   LinearMap.ext fun x => Subtype.ext (funext fun k => pull_id _ E _ n (x.1 k))
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext (funext fun k => pull_comp _ f g _ n (x.1 k))`.
+A detailed English derivation is pending.
 -/
 theorem pullHl_comp {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (n i : ℤ) :
     pullHl l (f ≫ g) n i = (pullHl l f n i).comp (pullHl l g n i) :=

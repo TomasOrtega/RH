@@ -18,9 +18,7 @@ open GlobalTheory.TorusExt GlobalTheory.FormalPoint GlobalTheory.TorusModel Glob
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_ratio D.P.isLB (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Rewrite using `[prod_pt, hb, _root_.mul_one, Fintype.prod_empty]`. Use the proof step `simp) (g.s χ) (LB.oneGen D.P.L) (g.isGen χ)`. Use the proof step `(fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Use `⟨valR (𝟙 (Sp S)) ⊤ ρ.val, fun S' _ f z J hJ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hρ _ _ z J hJ, val_one, _root_.mul_one, ← FormalValue.valR_spMap f _ _ le_rfl, Category.comp_id]`. Conclude with `(toStkA_valR (spMap f) ⊤ z le_rfl ρ).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_char {S : Type} [CommRing S] {s : Sp S ⟶ Sp R} (g : GtPt D (Over.mk s)) (hb : g.b = 1) (χ : D.X) :
     ∃ u : S, ∀ (S' : Type) [CommRing S'] (f : S →+* S') (z : Sp S') J, Good D.P.L z J →
@@ -34,13 +32,11 @@ theorem exists_char {S : Type} [CommRing S] {s : Sp S ⟶ Sp R} (g : GtPt D (Ove
   exact (toStkA_valR (spMap f) ⊤ z le_rfl ρ).symm
 
 /- English proof (translation)
-Use `ConstTan.isLocalRing_dual R` as an intermediate fact. Take `⟨u, hu⟩` from `exists_char ν hb χ`. Take `⟨g₀, hz, hp⟩` from `ht`. Establish `h₁ : u.fst = 1`. Take `⟨I, hI⟩` from `ConstFam.exists_good' D.P.isLB (cpt R)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(val_one _).symm.trans ((val_corr hI (hz.2 χ) (𝟙 _)).symm.trans ((val_corr hI (hp.2 χ) (𝟙 _)).trans (val_pull hI _ _ _)))`. Rewrite `e` using `[Category.id_comp]`. Conclude with `toStkA_injective ((hu _ _ _ I hI).symm.trans ((congrArg Units.val e.symm).trans (map_one _).symm))`. Establish `h₂ : u.snd = φ χ`. Take `⟨I, hI⟩` from `ConstFam.exists_good' D.P.isLB (cpt (DualNumber R))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `(top_le_iff_cpt (𝟙 (Sp (DualNumber R))) _).2 (hI.mem (DegPre.gtφT D (epsR R) ν.b χ) (𝟙 _))`. Establish `e` using `hu _ (RingHom.id _) _ I hI`. Rewrite `e` using `[show spMap (RingHom.id (DualNumber R)) = 𝟙 _ from Spec.map_id _]`. Establish `e'` using `toStkA_injective ((toStkA_valR (𝟙 _) _ _ hm _).trans e)`. Conclude with `(congrArg TrivSqZeroExt.snd e').symm.trans ((hφ χ _ hm).trans ((congrArg (fun q => TrivSqZeroExt.fst q * φ χ) e').trans (by rw [RingHom.id_apply, h₁, _root_.one_mul])))`.
-
-Rewrite using `[hu _ f z J hJ, ← h₁, ← h₂, TrivSqZeroExt.inl_fst_add_inr_snd_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_tangent [IsLocalRing R] {φ : D.X → R} {ν : GtPt D (epsR R)} (ht : GtTanR ν) (hb : ν.b = 1)
     (hφ : ∀ (x : D.X) j, ⊤ ≤ LB.wchart D.P.L (DegPre.gtφT D (epsR R) ν.b x) j →
@@ -68,11 +64,11 @@ theorem val_tangent [IsLocalRing R] {φ : D.X → R} {ν : GtPt D (epsR R)} (ht 
   rw [hu _ f z J hJ, ← h₁, ← h₂, TrivSqZeroExt.inl_fst_add_inr_snd_eq]
 
 /- English proof (translation)
-Use `oa.onB.hom a` as an intermediate fact. Take `⟨b, v⟩` from `(isSmulPt_iff hG oa a ν ν').1 h`. Use `(isPull_iff (Over.homMk (spMap (epsScaleR s)) (LieCombBaseChange.epsScale_over s)) ν ν').2 ⟨by rw [b, hb, MonObj.one_comp, MonObj.comp_one], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `C : IsCub (th D (T` using `epsR R) y J) := isCub_cubV D.cub hJ`. Establish `e` using `(rosGen_add hG oa a hJ (1 : epsR R ⟶ D.P.A) 1 (cP D _ χ)).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.s01, C.face, C.s01, C.face, _root_.mul_one, _root_.one_mul]`. Establish `e₀ : val₂ (rosGen hG oa a) y J (cP D _ χ) ν.b = 1` using `by rw [hb]; exact mul_eq_left.1 e.symm`. Rewrite using `[v χ y J hJ, e₀, _root_.mul_one]`. Establish `e₁` using `val_tangent ht hb hφ (star a • χ) (RingHom.id _) y hJ`. Rewrite `e₁` using `[show spMap (RingHom.id (DualNumber R)) = 𝟙 _ from Spec.map_id _]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Units.ext (e₁.trans (Eq.trans (congrArg _ ?_) (val_tangent ht hb hφ χ (epsScaleR s) y hJ).symm))` and prove the remaining obligations. Rewrite using `[hs]`. Apply the tactic sequence `ext <;> simp [epsScaleR, _root_.mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isPull_of_isSmulPt [IsLocalRing R] (hG : GlobalFnsSt) {O : Type} [CommRing O] [StarRing O] [Module O D.X]
     (oa : D.OAct O) (a : O) (s : R) {φ : D.X → R} (hs : ∀ y, φ (star a • y) = s * φ y) {ν ν' : GtPt D (epsR R)}
@@ -105,7 +101,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped LaurentSeries
 
 /- English proof (translation)
-Introduce `x` and use `⟨fun i => by rw [(H x).1, Category.assoc, ConstTanRed.comp_gtφT D₀ k g₁.b g₀.b (Over.OverMorphism.ext p.1.symm) x i], fun Z r z J J' hJ hJ' => by rw [← (H x).2 Z r z J J' hJ hJ', val_corr hJ (p.2 x), val_pull hJ, Category.assoc]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tr_comp {R R₀ : Type} [CommRing R] [IsDomain R] [CommRing R₀] [IsDomain R₀] {D : Out.DegPre R}
     {D₀ : Out.DegPre R₀} {φ : D.P.A.left ⟶ D₀.P.A.left} {w : LB.Iso D.P.L (D₀.P.L.pull φ)} {e : D₀.X → D.X}
@@ -118,9 +114,9 @@ theorem tr_comp {R R₀ : Type} [CommRing R] [IsDomain R] [CommRing R₀] [IsDom
     rw [← (H x).2 Z r z J J' hJ hJ', val_corr hJ (p.2 x), val_pull hJ, Category.assoc]⟩
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W φ ρ ν v hρ ht hb hφ hv x`. Use `letI := H.starRing`. Take `⟨g, hg, hp⟩` from `ConstLie.exists_tr W hG hv`. Take `⟨ν', hν'⟩` from `TorusModel.exists_isSmulPt hG a.oa x ν`. Take `⟨g', hg'⟩` from `ConstLie.exists_tr_down hG W.spec.1 W.spec.2.1 W.e.toAddEquiv W.spec.2.2.2.2.1 (ConstLie.cstE A) (LieCombBaseChange.dualMap_over _) ν'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `s` using `ConstLie.Tr.smul hG W.spec.1 W.spec.2.1 W.e.surjective W.P.oD a.oa (fun x y => W.e.map_smul x y) W.spec.2.2.2.1 x (LieCombBaseChange.dualMap_over _) hg hg' hν'`. Establish `p` using `isPull_of_isSmulPt hG a.oa x (ρ x) (hρ x) ht hb hφ hν'`. Set `k : epsR (PowerSeries A) ⟶ epsR (PowerSeries A)` to `Over.homMk (spMap (epsScaleR (PowerSeries.C (R := A) (ρ x)))) (LieCombBaseChange.epsScale_over _)`. Establish `p'` using `ConstLie.Tr.cancel W.spec.1 W.e.surjective hg (tr_comp (T₁ := epsR A) hg' (Over.homMk (spMap (epsScaleR (ρ x))) (LieCombBaseChange.epsScale_over _)) p) k (LieCombBaseChange.dualMap_epsScale _ _).symm`. Conclude with `congrArg (fun q => q.left) ((ConstLie.main hG E H Dw l Xo c O β Y A b a χ W ν').1.unique (ConstLie.lieImg_of_tr W hg' (hp.smul hG W.P.lin x s)) (ConstLie.lieImg_of_tr W hg' (hp.pull k p')))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (φ : a.D₀.X →+ A) (ρ : 𝓞 E →+* A) (ν : Out.GtPt a.D₀ (epsR A)) (v : epsR (PowerSeries A) ⟶ W.t.G), (∀ (x : 𝓞 E) y, φ (H.bar x • y) = ρ x * φ y) → GtTanR ν → ν.b = Out.DegPre.zeroT a.D₀ (epsR A) → (∀ (x : a.D₀.X) j, ⊤ ≤ LB.wchart a.D₀.P.L (Out.DegPre.gtφT a.D₀ (epsR A) ν.b x) j → TrivSqZeroExt.snd (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) = TrivSqZeroExt.fst (valR (A := DualNumber A) (𝟙 _) _ ((ν.s x).s j).val) * φ x) → LieImg W ν v → ∀ x : 𝓞 E, (v ≫ W.t.act.act x).left = spMap (epsScaleR (PowerSeries.C (R := A) (ρ x))) ≫ v.left := by
   intro hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W φ ρ ν v hρ ht hb hφ hv x

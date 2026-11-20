@@ -3,15 +3,15 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.Qi43
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[Subgroup.sup_eq_closure]`. Proceed by induction on `hx using Subgroup.closure_induction with`. Consider the case `mem y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Break down `hy with hy | hy` into its components or cases. Conclude with `⟨y, hy, 1, K.one_mem, by simp⟩`. Take `⟨k, hk, rfl⟩` from `Subgroup.mem_map.mp hy`. Conclude with `⟨1, UQ.one_mem, k, hk, by simp⟩`. Consider the case `one => exact ⟨1, UQ.one_mem, 1, K.one_mem, by simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul y z _ _ hy hz`. Take `⟨u, hu, k, hk, rfl⟩` from `hy`. Take `⟨v, hv, l, hl, rfl⟩` from `hz`. Use `⟨u * v, UQ.mul_mem hu hv, k * l, K.mul_mem hk hl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, ← mul_assoc (J k), ← (hc v hv k).eq]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Consider the case `inv y _ hy`. Take `⟨u, hu, k, hk, rfl⟩` from `hy`. Use `⟨u⁻¹, UQ.inv_mem hu, k⁻¹, K.inv_mem hk, ?_⟩` and prove the remaining obligations. Rewrite using `[(hc u hu k).eq, mul_inv_rev, map_inv]`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨u, hu, k, hk, rfl⟩`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_left hu) (Subgroup.mem_sup_right (Subgroup.mem_map_of_mem J hk))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pb_mem {B C : Type} [Group B] [Group C] (J : B →* C) (UQ : Subgroup C)
     (hc : ∀ u ∈ UQ, ∀ g : B, Commute u (J g)) (K : Subgroup B) (x : C) :

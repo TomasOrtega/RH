@@ -18,7 +18,7 @@ namespace GlobalTheory.FunObj
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Conclude with `⟨h.1, h.2.le⟩`. Conclude with `h.elim`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem DefNode.inRange {X : Node} (h : DefNode D.R.m X) : X.InRange D.R.m := by
   rcases X with ⟨i, j⟩ | i | j
@@ -27,9 +27,7 @@ theorem DefNode.inRange {X : Node} (h : DefNode D.R.m X) : X.InRange D.R.m := by
   · exact h
 
 /- English proof (translation)
-Break down `X with ⟨_ | i, j⟩ | i | j` into its components or cases. Take `rfl` from `h.2`. Establish `e : G.V (.grid 0 D.R.m) = D.sp.X'` using `congrArg LSp.sp (colY_m L)`. Rewrite using `[e]`. Conclude with `D.sp.X'_sig`.
-
-Conclude with `(G.isV (X := .grid (i + 1) j) ⟨h.1, h.2.le⟩ (by simp)).sigOK`. Conclude with `h.elim`. Conclude with `(G.isV (X := .top j) h (by simp)).sigOK`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DefNode.sigOK (G : GridData L sc) {X : Node} (h : DefNode D.R.m X) : (G.V X).SigOK := by
   rcases X with ⟨_ | i, j⟩ | i | j
@@ -42,9 +40,7 @@ theorem DefNode.sigOK (G : GridData L sc) {X : Node} (h : DefNode D.R.m X) : (G.
   · exact (G.isV (X := .top j) h (by simp)).sigOK
 
 /- English proof (translation)
-Introduce `D T L sc G W U N p hp`. Take `⟨h1, h2⟩` from `hp.nodes`. Break down `p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩` into its components or cases. Conclude with `GlobalTheory.VacuumO.vacExists D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ (GlobalTheory.ChiGrid.WeilOver.sigOK_negSp (h2.sigOK G)) (h1.sigOK G) (fun τ => isCartanInv_neg (W.cart_is _ h2.inRange τ)) (fun τ => W.cart_is _ h1.inRange τ) _ _ (isSelfDualC_neg (N.selfDual h2)) (N.selfDual h1)`. Conclude with `hp.elim`.
-
-Conclude with `hp.elim`. Conclude with `GlobalTheory.VacuumO.vacExists D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ (h1.sigOK G) (h2.sigOK G) (fun τ => W.cart_is _ h1.inRange τ) (fun τ => W.cart_is _ h2.inRange τ) _ _ (N.selfDual h1) (N.selfDual h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vac_exists_of_defPair : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (W : G.Weil) {U : Set T} (N : GlobalTheory.FunObj.Std G U) (p : Pair T), GlobalTheory.FunObj.DefPair D.R.m p → ∃ f, IsVacO W.ψ W.θ _ _ (G.cartS W.cart p) (G.onT W.cart p) (N.latS p : Set _) (N.latT p : Set _) f := by
   intro D T L sc G W U N p hp

@@ -12,7 +12,7 @@ def quatMat (r₁ r₂ r₃ r₄ : ℚ) : Matrix (Fin 4) (Fin 4) ℚ :=
      r₄, -r₃, r₂, r₁]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [quatMat, Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem quatMat_transpose_mul (r₁ r₂ r₃ r₄ : ℚ) :
     (quatMat r₁ r₂ r₃ r₄)ᵀ * quatMat r₁ r₂ r₃ r₄ = (r₁ ^ 2 + r₂ ^ 2 + r₃ ^ 2 + r₄ ^ 2) • (1 : Matrix (Fin 4) (Fin 4) ℚ) := by
@@ -21,11 +21,11 @@ theorem quatMat_transpose_mul (r₁ r₂ r₃ r₄ : ℚ) :
     simp [quatMat, Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply] <;> ring
 
 /- English proof (translation)
-Take `⟨s₁, s₂, s₃, s₄, hs⟩` from `Nat.sum_four_squares (a.num.toNat * a.den)`. Establish `hnum : 0 < a.num` using `Rat.num_pos.mpr ha`. Establish `hden : (0 : ℚ) < a.den` using `by exact_mod_cast a.pos`. Use `⟨s₁ / a.den, s₂ / a.den, s₃ / a.den, s₄ / a.den, ?_⟩` and prove the remaining obligations. Establish `hcast : ((a.num.toNat * a.den : ℕ) : ℚ) = (a.num : ℚ) * a.den`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `push_cast`. Use `congr 1`. Conclude with `Int.toNat_of_nonneg hnum.le` after adjusting the coercions. Establish `h1 : ((s₁ : ℚ) ^ 2 + (s₂ : ℚ) ^ 2 + (s₃ : ℚ) ^ 2 + (s₄ : ℚ) ^ 2) = (a.num : ℚ) * a.den`. Rewrite using `[← hcast]`.
+Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs` after adjusting the coercions. Rewrite using `[div_pow, div_pow, div_pow, div_pow, ← add_div, ← add_div, ← add_div, h1, pow_two, ← div_div, mul_div_cancel_right₀ _ hden.ne', Rat.num_div_den]`.
+A detailed English derivation is pending.
 -/
 theorem rat_sum_four_squares (a : ℚ) (ha : 0 < a) :
     ∃ r₁ r₂ r₃ r₄ : ℚ, r₁ ^ 2 + r₂ ^ 2 + r₃ ^ 2 + r₄ ^ 2 = a := by
@@ -43,7 +43,7 @@ theorem rat_sum_four_squares (a : ℚ) (ha : 0 < a) :
     mul_div_cancel_right₀ _ hden.ne', Rat.num_div_den]
 
 /- English proof (translation)
-Take `⟨r₁, r₂, r₃, r₄, h⟩` from `rat_sum_four_squares a ha`. Conclude with `⟨quatMat r₁ r₂ r₃ r₄, by rw [quatMat_transpose_mul, h]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_quat (a : ℚ) (ha : 0 < a) :
     ∃ Q : Matrix (Fin 4) (Fin 4) ℚ, Qᵀ * Q = a • (1 : Matrix (Fin 4) (Fin 4) ℚ) := by
@@ -51,9 +51,9 @@ theorem exists_quat (a : ℚ) (ha : 0 < a) :
   exact ⟨quatMat r₁ r₂ r₃ r₄, by rw [quatMat_transpose_mul, h]⟩
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hQ j) k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] at h`. Establish `h' : ((∑ b, Q b j * Q b k : ℚ) : L) = ((a * if j = k then 1 else 0 : ℚ) : L)` using `by rw [h]`. Move the coercions through the operations in `at h'`. Rewrite using `[h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_mul_cast {L : Type*} [Field L] [CharZero L] (Q : Matrix (Fin 4) (Fin 4) ℚ) (a : ℚ)
     (hQ : Qᵀ * Q = a • (1 : Matrix (Fin 4) (Fin 4) ℚ)) (j k : Fin 4) :
@@ -67,11 +67,11 @@ theorem sum_mul_cast {L : Type*} [Field L] [CharZero L] (Q : Matrix (Fin 4) (Fin
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hc : ∀ b, c (∑ k, (Q b k : L) * y k) = ∑ k, (Q b k : L) * c (y k)`. Introduce `b`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_ratCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hc, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ j, ∑ b, ∑ k, (Q b j : L) * x j * ((Q b k : L) * c (y k)) = ∑ k, (∑ b, (Q b j : L) * (Q b k : L)) * (x j * c (y k))`. Introduce `j`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[this, sum_mul_cast Q a hQ, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem quat_herm {L F : Type*} [Field L] [CharZero L] [FunLike F L L] [RingHomClass F L L] (c : F) (Q : Matrix (Fin 4) (Fin 4) ℚ) (a : ℚ)
     (hQ : Qᵀ * Q = a • (1 : Matrix (Fin 4) (Fin 4) ℚ)) (x y : Fin 4 → L) :

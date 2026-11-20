@@ -14,7 +14,7 @@ private theorem val_rho (I : Ideal R) (c : ↥I) (r : R) :
         (1 : ↥(Submonoid.powers (reesGenerator I c))) := rfl
 
 /- English proof (translation)
-Establish `hn` using `pow_mem (chartRingHom_mem_nonZeroDivisors I c) n`. Establish `h0 : (x - y) * chartRingHom I c (c : R) ^ n = 0` using `by rw [sub_mul, h, sub_self]`. Conclude with `sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp hn).2 _ h0)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cancel_rho (I : Ideal R) (c : ↥I) (n : ℕ)
     {x y : HomogeneousLocalization.Away (reesGrading I) (reesGenerator I c)}
@@ -24,11 +24,11 @@ private theorem cancel_rho (I : Ideal R) (c : ↥I) (n : ℕ)
   exact sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp hn).2 _ h0)
 
 /- English proof (translation)
-Take `⟨n, x, hx, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective (reesGrading I) (reesGenerator_mem_reesGrading I c) z`. Establish `hx' : x ∈ reesGrading I n` using `by simpa using hx`. Take `⟨r, hr, hxr⟩` from `(mem_reesGrading_iff_monomial I n x).1 hx'`. Use `⟨n, r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, HomogeneousLocalization.ext_iff_val, HomogeneousLocalization.val_mul, val_rho, val_rho, HomogeneousLocalization.Away.val_mk, Localization.mk_mul, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hpow : ((reesGenerator I c ^ n : ↥(reesAlgebra I)) : Polynomial R) = Polynomial.monomial n ((c : R) ^ n)`. Rewrite using `[SubmonoidClass.coe_pow, reesGenerator_coe, Polynomial.monomial_pow, one_mul]`. Move the coercions through the operations in `[reesDegreeZeroEquiv_coe_coe, hxr, hpow]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `[Polynomial.C_mul_monomial, Polynomial.monomial_mul_C, mul_comm]`. Rewrite using `[← Polynomial.C_pow, Polynomial.monomial_mul_C]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_mul_pow_eq (I : Ideal R) (c : ↥I)
     (z : HomogeneousLocalization.Away (reesGrading I) (reesGenerator I c)) :
@@ -55,23 +55,21 @@ end UpperTheory.ChartGen
 
 open UpperTheory.ChartGen in
 /- English proof (translation)
-Introduce `R _ I M a hspan m`. Use `set c := a m with hc`. Use `set φ := MvPolynomial.eval₂Hom (chartRingHom I c) (fun l => chartFraction I c (a l)) with hφ`. Establish `hC : ∀ r : R, chartRingHom I c r ∈ φ.range` using `fun r => ⟨MvPolynomial.C r, by simp [hφ]⟩`. Establish `hX : ∀ l, chartFraction I c (a l) ∈ φ.range` using `fun l => ⟨MvPolynomial.X l, by simp [hφ]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfrac : ∀ b : ↥I, chartFraction I c b ∈ φ.range`. Introduce `b`. Establish `hb : (b : R) ∈ Ideal.span (Set.range fun l => (a l : R))` using `by rw [hspan]; exact b.2`. Take `⟨s, hs⟩` from `(Ideal.mem_span_range_iff_exists_fun).1 hb`. Establish `hw : ∑ l, chartRingHom I c (s l) * chartFraction I c (a l) ∈ φ.range` using `sum_mem fun l _ => mul_mem (hC _) (hX l)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `heq : chartFraction I c b = ∑ l, chartRingHom I c (s l) * chartFraction I c (a l)`. Apply `cancel_rho I c 1` to reduce the goal to its premises. Rewrite using `[pow_one, ← chartRingHom_coe_eq_chartFraction_mul, ← hs, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, chartRingHom_coe_eq_chartFraction_mul I c (a l), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Conclude with `hw`. Establish `hpow : ∀ (n : ℕ), ∀ r ∈ I ^ n, ∃ w ∈ φ.range, chartRingHom I c r = w * chartRingHom I c (c : R) ^ n`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => exact fun r _ => ⟨_, hC r, by simp⟩`. Consider the case `succ n ih`. Introduce `r hr`. Rewrite `hr` using `[pow_succ]`. Use `Submodule.mul_induction_on hr ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s hs b hb`. Take `⟨w, hw, hwe⟩` from `ih s hs`. Use `⟨w * chartFraction I c ⟨b, hb⟩, mul_mem hw (hfrac _), ?_⟩` and prove the remaining obligations. Establish `hbe` using `chartRingHom_coe_eq_chartFraction_mul I c ⟨b, hb⟩`. Rewrite using `[map_mul, hwe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only at hbe`. Rewrite using `[hbe]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x y ⟨wx, hwx, hx⟩ ⟨wy, hwy, hy⟩`. Conclude with `⟨wx + wy, add_mem hwx hwy, by rw [map_add, hx, hy, add_mul]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Take `⟨n, r, hr, hz⟩` from `exists_mul_pow_eq I c z`. Take `⟨w, hw, hwe⟩` from `hpow n r hr`. Establish `hzw : z = w` using `cancel_rho I c n (hz.trans hwe)`. Rewrite using `[hzw]`.
-
-Conclude with `hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.surjective_eval_blowupChart_of_span_eq :
     ∀ {R : Type} [CommRing R] (I : Ideal R) {M : ℕ} (a : Fin (M + 1) → ↥I), Ideal.span (Set.range fun l => (a l : R)) = I → ∀ m : Fin (M + 1), Function.Surjective (MvPolynomial.eval₂Hom (chartRingHom I (a m)) (fun l => chartFraction I (a m) (a l))) := by

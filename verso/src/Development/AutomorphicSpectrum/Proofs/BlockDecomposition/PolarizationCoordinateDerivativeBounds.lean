@@ -20,7 +20,7 @@ theorem pr_apply (i j : Fin 2) (h : M22) : pr i j h = (h i j : ℂ) := rfl
 def eps (d : Fin 2) : ℂ := if d = 0 then 1 else Complex.I
 
 /- English proof (translation)
-Unfold `eps`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_eps (d : Fin 2) : ‖eps d‖ = 1 := by
   unfold eps
@@ -29,7 +29,7 @@ theorem norm_eps (d : Fin 2) : ‖eps d‖ = 1 := by
 def alC : M22 →L[ℝ] ℂ := pr 0 0 + Complex.I • pr 1 0
 
 /- English proof (translation)
-Simplify using `[alC, al, pr_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem alC_apply (h : M22) : alC h = al h := by
   simp [alC, al, pr_apply, mul_comm]
@@ -37,19 +37,19 @@ theorem alC_apply (h : M22) : alC h = al h := by
 def rC (c d : Fin 2) : M22 →L[ℝ] ℂ := eps d • pr c 0
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases d <;> simp [al, rpol, eps, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem al_rpol (c d : Fin 2) (h : M22) : al (rpol c d h) = eps d * (h c 0 : ℂ) := by
   fin_cases d <;> simp [al, rpol, eps, mul_comm]
 
 /- English proof (translation)
-Simplify using `[rC, al_rpol, pr_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rC_apply (c d : Fin 2) (h : M22) : rC c d h = al (rpol c d h) := by
   simp [rC, al_rpol, pr_apply]
 
 /- English proof (translation)
-Establish `h1 : (al h).re = h 0 0` using `by simp [al]`. Establish `h2 : (al h).im = h 1 0` using `by simp [al]`. Use `fin_cases a`. Simplify `Complex.abs_re_le_norm (al h)` using `[h1]`. Simplify `Complex.abs_im_le_norm (al h)` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_entry_le (a : Fin 2) (h : M22) : ‖((h a 0 : ℝ) : ℂ)‖ ≤ ‖al h‖ := by
   have h1 : (al h).re = h 0 0 := by simp [al]
@@ -59,16 +59,16 @@ theorem norm_entry_le (a : Fin 2) (h : M22) : ‖((h a 0 : ℝ) : ℂ)‖ ≤ �
   · simpa [h2] using Complex.abs_im_le_norm (al h)
 
 /- English proof (translation)
-Rewrite using `[al_rpol, norm_mul, norm_eps, one_mul]`. Conclude with `norm_entry_le c h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_al_rpol_le (c d : Fin 2) (h : M22) : ‖al (rpol c d h)‖ ≤ ‖al h‖ := by
   rw [al_rpol, norm_mul, norm_eps, one_mul]
   exact norm_entry_le c h
 
 /- English proof (translation)
-Rewrite using `[al_rpol, norm_mul, norm_eps, one_mul]`. Distinguish the cases in `hcb : c = b`. Establish `: rpol a b h c 0 = h a 0` using `by simp [rpol, hcb]`. Rewrite using `[this]`. Conclude with `norm_entry_le a h`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: rpol a b h c 0 = 0` using `by simp [rpol, hcb]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_al_rpol_rpol_le (a b c d : Fin 2) (h : M22) :
     ‖al (rpol c d (rpol a b h))‖ ≤ ‖al h‖ := by
@@ -82,13 +82,13 @@ theorem norm_al_rpol_rpol_le (a b c d : Fin 2) (h : M22) :
     simp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.WeightClosed.alpha_ne_zero h hΔ`.
+A detailed English derivation is pending.
 -/
 theorem al_ne (h : M22) (hΔ : 0 < (Matrix.of h).det) : al h ≠ 0 :=
   GlobalTheory.CompanionTheory.WeightClosed.alpha_ne_zero h hΔ
 
 /- English proof (translation)
-Establish `hi : HasFDerivAt (fun x => (g x)⁻¹) ((-(g h ^ 2)⁻¹) • g') h` using `(hasDerivAt_inv h0).comp_hasFDerivAt h hg`. Simplify using `only [div_eq_mul_inv]`. Use `(hf.fun_mul hi).congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `X`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -104,9 +104,9 @@ theorem hasFDerivAt_quot {f g : M22 → ℂ} {f' g' : M22 →L[ℝ] ℂ} {h : M2
   ring
 
 /- English proof (translation)
-Establish `e : rho c d = fun x => rC c d x / alC x`. Use function extensionality and compare the values at `x`. Rewrite using `[rC_apply, alC_apply, rho]`. Rewrite using `[e]`. Use `hasFDerivAt_quot (rC c d).hasFDerivAt alC.hasFDerivAt (h := h) (by rwa [alC_apply])` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `only [rC_apply, alC_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasFDerivAt_rho (c d : Fin 2) (h : M22) (h0 : al h ≠ 0) :
     HasFDerivAt (rho c d)
@@ -123,7 +123,7 @@ def detC (h : M22) : M22 →L[ℝ] ℂ :=
   ((h 0 0 : ℂ) • pr 1 1 + (h 1 1 : ℂ) • pr 0 0) - ((h 0 1 : ℂ) • pr 1 0 + (h 1 0 : ℂ) • pr 0 1)
 
 /- English proof (translation)
-Simplify using `only [detC, dd, ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, pr_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem detC_apply (h X : M22) : detC h X = (dd h X : ℂ) := by
   simp only [detC, dd, ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
@@ -132,9 +132,9 @@ theorem detC_apply (h X : M22) : detC h X = (dd h X : ℂ) := by
   ring
 
 /- English proof (translation)
-Establish `e : (fun x : M22 => (((Matrix.of x).det : ℝ) : ℂ)) = fun x => pr 0 0 x * pr 1 1 x - pr 0 1 x * pr 1 0 x`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.det_fin_two]`. Simplify using `[pr_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((pr 0 0).hasFDerivAt.fun_mul (pr 1 1).hasFDerivAt).fun_sub ((pr 0 1).hasFDerivAt.fun_mul (pr 1 0).hasFDerivAt)`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_det (h : M22) :
     HasFDerivAt (fun x : M22 => (((Matrix.of x).det : ℝ) : ℂ)) (detC h) h := by
@@ -148,11 +148,11 @@ theorem hasFDerivAt_det (h : M22) :
     ((pr 0 1).hasFDerivAt.fun_mul (pr 1 0).hasFDerivAt)
 
 /- English proof (translation)
-Establish `e : tt = fun x => (((Matrix.of x).det : ℝ) : ℂ) / (alC x * alC x)`. Use function extensionality and compare the values at `x`. Rewrite using `[alC_apply, tt, sq]`. Establish `hsq : HasFDerivAt (fun x => alC x * alC x) (al h • alC + al h • alC) h`. Use `alC.hasFDerivAt.fun_mul (alC.hasFDerivAt (x := h))` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [alC_apply]`. Establish `hne : alC h * alC h ≠ 0`. Rewrite using `[alC_apply]`. Conclude with `mul_ne_zero h0 h0`. Use `hasFDerivAt_quot (hasFDerivAt_det h) hsq hne` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify `this` using `only [alC_apply, ← sq]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_tt (h : M22) (h0 : al h ≠ 0) :
     HasFDerivAt tt
@@ -172,26 +172,26 @@ theorem hasFDerivAt_tt (h : M22) (h0 : al h ≠ 0) :
   simpa only [alC_apply, ← sq] using this
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [dd, rpol, Matrix.det_fin_two] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dd_rpol (a b : Fin 2) (h : M22) :
     dd h (rpol a b h) = if a = b then (Matrix.of h).det else 0 := by
   fin_cases a <;> fin_cases b <;> simp [dd, rpol, Matrix.det_fin_two] <;> ring
 
 /- English proof (translation)
-Rewrite using `[tt, uu, norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hΔ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_tt (h : M22) (hΔ : 0 < (Matrix.of h).det) : ‖tt h‖ = uu h := by
   rw [tt, uu, norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hΔ]
 
 /- English proof (translation)
-Rewrite using `[(hasFDerivAt_rho c d h h0).fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, rC_apply, alC_apply]`. Establish `hA : 0 < ‖al h‖` using `norm_pos_iff.mpr h0`. Establish `b1 : ‖(al h)⁻¹ * al (rpol c d (rpol a b h))‖ ≤ 1`. Rewrite using `[norm_mul, norm_inv, inv_mul_le_iff₀ hA, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_al_rpol_rpol_le a b c d h`. Establish `b2 : ‖al (rpol c d h) * (-(al h ^ 2)⁻¹) * al (rpol a b h)‖ ≤ 1`. Rewrite using `[norm_mul, norm_mul, norm_neg, norm_inv, norm_pow]`. Establish `p1` using `norm_al_rpol_le c d h`. Establish `p2` using `norm_al_rpol_le a b h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ‖al (rpol c d h)‖ * ‖al (rpol a b h)‖ ≤ ‖al h‖ ^ 2`. Rewrite using `[sq]`. Conclude with `mul_le_mul p1 p2 (norm_nonneg _) (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 1 := div_le_one_of_le₀ this (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_fderiv_rho (a b c d : Fin 2) (h : M22) (h0 : al h ≠ 0) :
     ‖fderiv ℝ (rho c d) h (rpol a b h)‖ ≤ 2 := by
@@ -218,17 +218,15 @@ theorem norm_fderiv_rho (a b c d : Fin 2) (h : M22) (h0 : al h ≠ 0) :
     _ = 2 := by norm_num
 
 /- English proof (translation)
-Establish `h0` using `al_ne h hΔ`. Rewrite using `[(hasFDerivAt_tt h h0).fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, alC_apply, detC_apply, dd_rpol]`. Use `set δ : ℂ := if a = b then 1 else 0 with hδ`. Establish `hdd : (((if a = b then (Matrix.of h).det else 0 : ℝ)) : ℂ) = δ * (((Matrix.of h).det : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hδ]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hdd]`. Establish `key : (al h ^ 2)⁻¹ * (δ * (((Matrix.of h).det : ℝ) : ℂ)) + (((Matrix.of h).det : ℝ) : ℂ) * (-((al h ^ 2) ^ 2)⁻¹) * (al h * al (rpol a b h) + al h * al (rpol a b h)) = tt h * (δ - 2 * (al (rpol a b h) / al h))`. Rewrite using `[tt]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, norm_mul, norm_tt h hΔ, mul_comm]`. Establish `hA : 0 < ‖al h‖` using `norm_pos_iff.mpr h0`. Establish `huu : 0 ≤ uu h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_tt h hΔ]`. Conclude with `norm_nonneg _`. Use `mul_le_mul_of_nonneg_right ?_ huu` and prove the remaining obligations. Establish `n1 : ‖δ‖ ≤ 1`. Rewrite using `[hδ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `n2 : ‖2 * (al (rpol a b h) / al h)‖ ≤ 2`. Rewrite using `[norm_mul, norm_div]`. Establish `: ‖al (rpol a b h)‖ / ‖al h‖ ≤ 1` using `div_le_one_of_le₀ (norm_al_rpol_le a b h) hA.le`. Simplify using `using this`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_fderiv_tt (a b : Fin 2) (h : M22) (hΔ : 0 < (Matrix.of h).det) :
     ‖fderiv ℝ tt h (rpol a b h)‖ ≤ 3 * uu h := by
@@ -267,7 +265,7 @@ theorem norm_fderiv_tt (a b : Fin 2) (h : M22) (hΔ : 0 < (Matrix.of h).det) :
     _ = 3 := by norm_num
 
 /- English proof (translation)
-Introduce `a b c d h hΔ`. Establish `h0` using `al_ne h hΔ`. Conclude with `⟨(hasFDerivAt_rho c d h h0).differentiableAt, (hasFDerivAt_tt h h0).differentiableAt, norm_fderiv_rho a b c d h h0, norm_fderiv_tt a b h hΔ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem main : ∀ (a b c d : Fin 2) (h : M22), 0 < (Matrix.of h).det →
     DifferentiableAt ℝ (rho c d) h ∧ DifferentiableAt ℝ tt h ∧

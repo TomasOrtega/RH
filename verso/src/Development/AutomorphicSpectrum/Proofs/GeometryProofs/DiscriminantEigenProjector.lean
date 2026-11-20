@@ -17,7 +17,7 @@ noncomputable def dualScaled (m : J) : A :=
   ∑ n, (Algebra.traceMatrix ℤ a).adjugate m n • a n
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (Matrix.adjugate_mul (Algebra.traceMatrix ℤ a)) m) p`. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, _root_.mul_one, mul_zero] at h`. Rewrite using `[← h]`. Simplify using `only [dualScaled, Finset.sum_mul, map_sum, smul_mul_assoc, map_zsmul, smul_eq_mul, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_dualScaled_mul_basis (m p : J) :
     Algebra.trace ℤ A (dualScaled a m * a p) =
@@ -30,7 +30,7 @@ theorem trace_dualScaled_mul_basis (m p : J) :
     Algebra.traceMatrix_apply, Algebra.traceForm_apply]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← a.sum_repr y]`. Simplify using `only [Finset.mul_sum, map_sum, mul_smul_comm, map_zsmul, trace_dualScaled_mul_basis, smul_eq_mul, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_dualScaled_mul (m : J) (y : A) :
     Algebra.trace ℤ A (dualScaled a m * y) = a.repr y m * (Algebra.traceMatrix ℤ a).det := by
@@ -39,11 +39,11 @@ theorem trace_dualScaled_mul (m : J) (y : A) :
     smul_eq_mul, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `hz : (fun q => a.repr (x - y) q) = 0`. Apply `Matrix.eq_zero_of_vecMul_eq_zero hd` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Establish `h1 : Algebra.trace ℤ A ((x - y) * a p) = 0`. Rewrite using `[sub_mul, map_sub, H p, sub_self]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv at h1 => lhs`. Rewrite using `[← a.sum_repr (x - y)]`. Simplify using `only [Finset.sum_mul, map_sum, smul_mul_assoc, map_zsmul, smul_eq_mul] at h1`. Simplify `h1` using `[Matrix.vecMul, dotProduct, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`. Establish `: x - y = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `a.repr.injective` to reduce the goal to its premises. Use extensionality with `q`. Simplify using `using congrFun hz q`. Conclude with `sub_eq_zero.mp this`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_of_trace_mul_basis (hd : (Algebra.traceMatrix ℤ a).det ≠ 0) {x y : A}
     (H : ∀ p, Algebra.trace ℤ A (x * a p) = Algebra.trace ℤ A (y * a p)) : x = y := by
@@ -62,9 +62,9 @@ theorem eq_of_trace_mul_basis (hd : (Algebra.traceMatrix ℤ a).det ≠ 0) {x y 
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Apply `eq_of_trace_mul_basis a hd` to reduce the goal to its premises. Introduce `p`. Establish `h1 : b * dualScaled a n * a p = dualScaled a n * (b * a p)` using `by ring`. Rewrite using `[h1, trace_dualScaled_mul]`. Simplify using `only [Finset.sum_mul, map_sum, smul_mul_assoc, map_zsmul, trace_dualScaled_mul, Module.Basis.repr_self, smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_dualScaled (hd : (Algebra.traceMatrix ℤ a).det ≠ 0) (b : A) (n : J) :
     b * dualScaled a n = ∑ m, a.repr (b * a m) n • dualScaled a m := by
@@ -77,9 +77,9 @@ theorem mul_dualScaled (hd : (Algebra.traceMatrix ℤ a).det ≠ 0) (b : A) (n :
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Apply `eq_of_trace_mul_basis a hd` to reduce the goal to its premises. Introduce `k`. Establish `h1 : ∀ m, dualScaled a m * a m * a k = dualScaled a m * (a k * a m)` using `fun m => by ring`. Establish `h2 : (((Algebra.traceMatrix ℤ a).det : ℤ) : A) * a k = (Algebra.traceMatrix ℤ a).det • a k` using `by rw [zsmul_eq_mul]`. Rewrite using `[Finset.sum_mul, map_sum, h2, map_zsmul, Algebra.trace_eq_matrix_trace a (a k)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, trace_dualScaled_mul, Matrix.trace, Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, smul_eq_mul, Finset.mul_sum, ← Finset.sum_mul]`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => _root_.mul_comm _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_dualScaled_mul (hd : (Algebra.traceMatrix ℤ a).det ≠ 0) :
     ∑ m, dualScaled a m * a m = (((Algebra.traceMatrix ℤ a).det : ℤ) : A) := by
@@ -95,11 +95,11 @@ theorem sum_dualScaled_mul (hd : (Algebra.traceMatrix ℤ a).det ≠ 0) :
   exact Finset.sum_congr rfl fun _ _ => _root_.mul_comm _ _
 
 /- English proof (translation)
-Establish `hmul : ∀ m, ρ b (ρ (a m) v) = ∑ n, ((a.repr (b * a m) n : ℤ) : Ω) • ρ (a n) v`. Introduce `m`. Establish `h0 : ρ b (ρ (a m) v) = ρ (b * a m) v` using `by simp [map_mul]`. Rewrite using `[h0]`. Use `conv_lhs => rw [← a.sum_repr (b * a m)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply, Int.cast_smul_eq_zsmul]`. Establish `hc : ∀ n, σ b * σ (dualScaled a n) = ∑ m, σ (dualScaled a m) * ((a.repr (b * a m) n : ℤ) : Ω)`. Introduce `n`. Rewrite using `[← map_mul, mul_dualScaled a hd, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zsmul, zsmul_eq_mul, mul_comm]`. Simplify using `only [map_sum, map_smul, hmul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[hc n, Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equivariant (hd : (Algebra.traceMatrix ℤ a).det ≠ 0)
     {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V]
@@ -126,11 +126,9 @@ theorem equivariant (hd : (Algebra.traceMatrix ℤ a).det ≠ 0)
 end General
 
 /- English proof (translation)
-Introduce `F _ _`. Set `a` to `Module.finBasis ℤ (𝓞 F)`. Establish `hdet : (Algebra.traceMatrix ℤ a).det = NumberField.discr F`. Rewrite using `[← Algebra.discr_def, NumberField.discr_eq_discr]`. Establish `hd : (Algebra.traceMatrix ℤ a).det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdet]`. Conclude with `NumberField.discr_ne_zero F`. Use `⟨_, a, dualScaled a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_dualScaled_mul a hd, hdet]`. Introduce `Ω _ V _ _ ρ σ b v`.
-
-Conclude with `equivariant a hd ρ σ b v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_scaledCasimir :
     ∀ (F : Type) [Field F] [NumberField F], ∃ (n : ℕ) (a c : Fin n → 𝓞 F), (∑ m, c m * a m = (((NumberField.discr F : ℤ) : 𝓞 F))) ∧ ∀ (Ω : Type) [Field Ω] (V : Type) [AddCommGroup V] [Module Ω V] (ρ : 𝓞 F →+* Module.End Ω V) (σ : 𝓞 F →+* Ω) (b : 𝓞 F) (v : V), ρ b (∑ m, σ (c m) • ρ (a m) v) = σ b • ∑ m, σ (c m) • ρ (a m) v := by

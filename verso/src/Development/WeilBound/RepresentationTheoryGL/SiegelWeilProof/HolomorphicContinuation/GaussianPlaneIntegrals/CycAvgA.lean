@@ -26,27 +26,27 @@ def act (u : Matrix (Fin m) (Fin m) ℂ) (x : Fin m → Fin n → ℂ) : Fin m �
   fun a i => ∑ b, u a b * x b i
 
 /- English proof (translation)
-Simplify using `[subR, algebraMap_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem subR_C (u : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) : subR (n := n) u (C c) = C c := by
   simp [subR, algebraMap_eq]
 
 /- English proof (translation)
-Simplify using `[subR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem subR_X_false (u : Matrix (Fin m) (Fin m) ℂ) (a : Fin m) (i : Fin n) :
     subR u (X (a, i, false)) = ∑ b, C (u a b) * X (b, i, false) := by
   simp [subR]
 
 /- English proof (translation)
-Simplify using `[subR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem subR_X_true (u : Matrix (Fin m) (Fin m) ℂ) (a : Fin m) (i : Fin n) :
     subR u (X (a, i, true)) = ∑ b, C (star (u a b)) * X (b, i, true) := by
   simp [subR]
 
 /- English proof (translation)
-Break down `k with ⟨a, i, _ | _⟩` into its components or cases. Rewrite using `[subR_X_false]`. Simplify using `[pt, act]`. Rewrite using `[subR_X_true]`. Simplify using `[pt, act, star_sum]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_pt_var (u : Matrix (Fin m) (Fin m) ℂ) (x : Fin m → Fin n → ℂ) (k : Fin m × Fin n × Bool) :
     eval (pt x) (subR u (X k)) = pt (act u x) k := by
@@ -55,9 +55,7 @@ theorem eval_pt_var (u : Matrix (Fin m) (Fin m) ℂ) (x : Fin m → Fin n → �
   · rw [subR_X_true]; simp [pt, act, star_sum]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Use `next c => simp [evX_eq]`. Use `next p q hp hq => simp only [evX_eq, map_add] at *`. Rewrite using `[hp, hq]`. Use `next p k hp =>`.
-
-Simplify using `only [evX_eq, map_mul] at *`. Rewrite using `[hp, eval_pt_var, eval_X]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evX_subR (u : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) (x : Fin m → Fin n → ℂ) :
     evX (subR u P) x = evX P (act u x) := by
@@ -69,9 +67,9 @@ theorem evX_subR (u : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) (x : Fin m → Fi
     rw [hp, eval_pt_var, eval_X]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, i, _ | _⟩`. Simplify using `only [AlgHom.comp_apply, subR_X_false, map_sum, map_mul, subR_C]`. Simplify using `only [Finset.mul_sum, Matrix.mul_apply, map_sum, Finset.sum_mul, ← mul_assoc, ← C_mul]`. Conclude with `Finset.sum_comm`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, subR_X_true, map_sum, map_mul, subR_C]`. Simplify using `only [Finset.mul_sum, Matrix.mul_apply, star_sum, star_mul', map_sum, Finset.sum_mul, ← mul_assoc, ← C_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subR_comp (v w : Matrix (Fin m) (Fin m) ℂ) : (subR (n := n) v).comp (subR w) = subR (w * v) := by
   apply MvPolynomial.algHom_ext
@@ -84,7 +82,7 @@ theorem subR_comp (v w : Matrix (Fin m) (Fin m) ℂ) : (subR (n := n) v).comp (s
     exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, subR_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subR_subR (v w : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) : subR v (subR w P) = subR (w * v) P := by
   rw [← AlgHom.comp_apply, subR_comp]
@@ -92,7 +90,7 @@ theorem subR_subR (v w : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) : subR v (subR
 def sq (x : Fin m → Fin n → ℂ) : ℝ := ∑ a, ∑ i, ‖x a i‖ ^ 2
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofReal_sum_sq (z : Fin m → ℂ) : ((∑ a, ‖z a‖ ^ 2 : ℝ) : ℂ) = star z ⬝ᵥ z := by
   simp only [dotProduct, Pi.star_apply, Complex.ofReal_sum]
@@ -101,7 +99,7 @@ theorem ofReal_sum_sq (z : Fin m → ℂ) : ((∑ a, ‖z a‖ ^ 2 : ℝ) : ℂ)
   rfl
 
 /- English proof (translation)
-Establish `h : star (u *ᵥ z) ⬝ᵥ (u *ᵥ z) = star z ⬝ᵥ z`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, hu, Matrix.vecMul_one]`. Rewrite `h` using `[← ofReal_sum_sq, ← ofReal_sum_sq]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sq_mulVec (u : Matrix (Fin m) (Fin m) ℂ) (hu : uᴴ * u = 1) (z : Fin m → ℂ) :
     ∑ a, ‖(u *ᵥ z) a‖ ^ 2 = ∑ a, ‖z a‖ ^ 2 := by
@@ -111,7 +109,7 @@ theorem sum_sq_mulVec (u : Matrix (Fin m) (Fin m) ℂ) (hu : uᴴ * u = 1) (z : 
   exact_mod_cast h
 
 /- English proof (translation)
-Unfold `sq`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (f := fun a i => ‖x a i‖ ^ 2)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `sum_sq_mulVec u hu (fun b => x b i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sq_act (u : Matrix (Fin m) (Fin m) ℂ) (hu : uᴴ * u = 1) (x : Fin m → Fin n → ℂ) : sq (act u x) = sq x := by
   unfold sq
@@ -125,7 +123,7 @@ Both sides reduce to the same expression.
 theorem gs_eq (c : ℝ) (x : Fin m → Fin n → ℂ) : gs c x = Complex.exp (-(c * sq x : ℝ)) := rfl
 
 /- English proof (translation)
-Rewrite using `[gs_eq, gs_eq, sq_act u hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_act (c : ℝ) (u : Matrix (Fin m) (Fin m) ℂ) (hu : uᴴ * u = 1) (x : Fin m → Fin n → ℂ) :
     gs c (act u x) = gs c x := by
@@ -137,9 +135,9 @@ def actL (u : Matrix (Fin m) (Fin m) ℂ) : (Fin m → Fin n → ℂ) →ₗ[ℂ
   map_smul' c x := by funext a i; simp [act, Finset.mul_sum, mul_left_comm]
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.curry ℂ ℂ (Fin m) (Fin n)`. Establish `hL : actL (n` using `n) u = (e : _ →ₗ[ℂ] _) ∘ₗ Matrix.toLin' (Matrix.kroneckerMap (· * ·) u (1 : Matrix (Fin n) (Fin n) ℂ)) ∘ₗ (e.symm : _ →ₗ[ℂ] _) := by`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use function extensionality and compare the values at `a i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[actL, act, e, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.kroneckerMap_apply, Matrix.one_apply]`. Rewrite using `[hL, LinearMap.det_conj, LinearMap.det_toLin', Matrix.det_kronecker]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_actL (u : Matrix (Fin m) (Fin m) ℂ) : LinearMap.det (actL (n := n) u) = u.det ^ n := by
   let e := LinearEquiv.curry ℂ ℂ (Fin m) (Fin n)
@@ -151,13 +149,11 @@ theorem det_actL (u : Matrix (Fin m) (Fin m) ℂ) : LinearMap.det (actL (n := n)
   simp
 
 /- English proof (translation)
-Use `set f : (Fin m → Fin n → ℂ) →ₗ[ℝ] (Fin m → Fin n → ℂ) := (actL (n := n) u).restrictScalars ℝ with hf`. Establish `hn : ((Complex.normSq u.det : ℝ) : ℂ) = 1`. Establish `h` using `congrArg Matrix.det hu`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one]`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hn' : Complex.normSq u.det = 1` using `by exact_mod_cast hn`. Establish `hdet : LinearMap.det f = 1`. Rewrite using `[hf, LinearMap.det_restrictScalars, det_actL, map_pow, Algebra.norm_complex_apply, hn', one_pow]`. Establish `hfe : (act (n` using `n) u) = ⇑f := rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Rewrite using `[hfe]`. Use `⟨f.continuous_of_finiteDimensional.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar volume (by rw [hdet]; norm_num), hdet]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mp_act (u : Matrix (Fin m) (Fin m) ℂ) (hu : uᴴ * u = 1) :
     MeasurePreserving (act (n := n) u) volume volume := by
@@ -178,7 +174,7 @@ theorem mp_act (u : Matrix (Fin m) (Fin m) ℂ) (hu : uᴴ * u = 1) :
   simp
 
 /- English proof (translation)
-Break down `k with ⟨a, i, _ | _⟩` into its components or cases. Simplify using `only [pt, Bool.false_eq_true, if_false]`. Use `fun_prop`. Simplify using `only [pt, if_true]`. Use `fun_prop`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_pt (k : Fin m × Fin n × Bool) : Continuous fun x : Fin m → Fin n → ℂ => pt x k := by
   rcases k with ⟨a, i, _ | _⟩
@@ -186,11 +182,9 @@ theorem continuous_pt (k : Fin m × Fin n × Bool) : Continuous fun x : Fin m �
   · simp only [pt, if_true]; fun_prop
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Use `next c =>`. Establish `: evX (C c : PX m n) = fun _ => c` using `by funext x; simp [evX_eq]`. Rewrite using `[this]`. Conclude with `continuous_const`.
+Proceed by induction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `next p q hp hq =>`. Establish `: evX (p + q) = fun x => evX p x + evX q x` using `by funext x; simp [evX_eq]`. Rewrite using `[this]`. Conclude with `hp.add hq`. Use `next p k hp =>`.
-
-Establish `: evX (p * X k) = fun x => evX p x * pt x k` using `by funext x; simp [evX_eq]`. Rewrite using `[this]`. Conclude with `hp.mul (continuous_pt k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_evX (P : PX m n) : Continuous (evX P) := by
   induction P using MvPolynomial.induction_on
@@ -205,19 +199,19 @@ theorem continuous_evX (P : PX m n) : Continuous (evX P) := by
     rw [this]; exact hp.mul (continuous_pt k)
 
 /- English proof (translation)
-Unfold `gs`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gs (c : ℝ) : Continuous (gs (m := m) (n := n) c) := by
   unfold gs; fun_prop
 
 /- English proof (translation)
-Unfold `sq`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem sq_nonneg' (x : Fin m → Fin n → ℂ) : 0 ≤ sq x := by
   unfold sq; positivity
 
 /- English proof (translation)
-Unfold `sq`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_sq (x : Fin m → Fin n → ℂ) (a : Fin m) (i : Fin n) : ‖x a i‖ ^ 2 ≤ sq x := by
   unfold sq
@@ -227,9 +221,9 @@ theorem norm_le_sq (x : Fin m → Fin n → ℂ) (a : Fin m) (i : Fin n) : ‖x 
         Finset.single_le_sum (f := fun a' => ∑ i', ‖x a' i'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ a)
 
 /- English proof (translation)
-Establish `h1 : ‖x a i‖ ≤ 1 + ‖x a i‖ ^ 2` using `by nlinarith [sq_nonneg (‖x a i‖ - 1), norm_nonneg (x a i)]`. Establish `h2` using `norm_le_sq x a i`. Establish `h3 : 1 + δ * sq x ≤ Real.exp (δ * sq x)` using `by linarith [Real.add_one_le_exp (δ * sq x)]`. Establish `h4 : 0 ≤ sq x` using `sq_nonneg' x`. Establish `h5 : 1 ≤ Real.exp (δ * sq x)` using `Real.one_le_exp (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : sq x ≤ Real.exp (δ * sq x) / δ`. Rewrite using `[le_div_iff₀ hδ]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem coord_bound {δ : ℝ} (hδ : 0 < δ) (x : Fin m → Fin n → ℂ) (a : Fin m) (i : Fin n) :
     ‖x a i‖ ≤ (1 + 1 / δ) * Real.exp (δ * sq x) := by
@@ -245,19 +239,17 @@ theorem coord_bound {δ : ℝ} (hδ : 0 < δ) (x : Fin m → Fin n → ℂ) (a :
     _ = (1 + 1 / δ) * Real.exp (δ * sq x) := by ring
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Use `next c =>`. Introduce `ε hε`. Use `⟨‖c‖, fun x => ?_⟩` and prove the remaining obligations. Establish `: 1 ≤ Real.exp (ε * sq x)` using `Real.one_le_exp (mul_nonneg hε.le (sq_nonneg' x))`.
+Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [evX_eq, eval_C]`. Use polynomial arithmetic with `[norm_nonneg c]`. Use `next p q hp hq =>`. Introduce `ε hε`. Take `⟨C1, h1⟩` from `hp ε hε`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C2, h2⟩` from `hq ε hε`. Use `⟨C1 + C2, fun x => ?_⟩` and prove the remaining obligations. Establish `: evX (p + q) x = evX p x + evX q x` using `by simp [evX_eq]`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `next p k hp =>`. Introduce `ε hε`. Take `⟨C1, h1⟩` from `hp (ε / 2) (by linarith)`. Use `⟨max C1 0 * (1 + 1 / (ε / 2)), fun x => ?_⟩` and prove the remaining obligations. Establish `e : evX (p * X k) x = evX p x * pt x k` using `by simp [evX_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hk : ‖pt x k‖ ≤ (1 + 1 / (ε / 2)) * Real.exp (ε / 2 * sq x)`. Break down `k with ⟨a, i, _ | _⟩` into its components or cases. Establish `hb` using `coord_bound (δ := ε / 2) (by linarith) x a i`. Simplify using `only [pt, Bool.false_eq_true, if_false]`. Conclude with `hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `coord_bound (δ := ε / 2) (by linarith) x a i`. Simplify using `only [pt, if_true, norm_star]`. Conclude with `hb`. Establish `hp' : ‖evX p x‖ ≤ max C1 0 * Real.exp (ε / 2 * sq x)` using `(h1 x).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.exp_pos _).le)`. Rewrite using `[e, norm_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show ε * sq x = ε / 2 * sq x + ε / 2 * sq x by ring, Real.exp_add]; ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_bound (P : PX m n) : ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, ∀ x, ‖evX P x‖ ≤ C * Real.exp (ε * sq x) := by
   induction P using MvPolynomial.induction_on
@@ -299,7 +291,7 @@ theorem exp_bound (P : PX m n) : ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, ∀ x, �
           rw [show ε * sq x = ε / 2 * sq x + ε / 2 * sq x by ring, Real.exp_add]; ring
 
 /- English proof (translation)
-Establish `h` using `GaussianFourier.integral_rexp_neg_mul_sq_norm (V := ℂ) hb`. Simplify using `only [neg_mul] at h`. Rewrite using `[h, Complex.finrank_real_complex]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem integral_gauss_plane {b : ℝ} (hb : 0 < b) : ∫ z : ℂ, Real.exp (-(b * ‖z‖ ^ 2)) = Real.pi / b := by
   have h := GaussianFourier.integral_rexp_neg_mul_sq_norm (V := ℂ) hb
@@ -308,7 +300,7 @@ theorem integral_gauss_plane {b : ℝ} (hb : 0 < b) : ∫ z : ℂ, Real.exp (-(b
   norm_num
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h0` using `integral_undef h`. Rewrite `h0` using `[integral_gauss_plane hb]`. Conclude with `(div_pos Real.pi_pos hb).ne' h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_gauss_plane {b : ℝ} (hb : 0 < b) : Integrable (fun z : ℂ => Real.exp (-(b * ‖z‖ ^ 2))) := by
   by_contra h
@@ -317,11 +309,9 @@ theorem integrable_gauss_plane {b : ℝ} (hb : 0 < b) : Integrable (fun z : ℂ 
   exact (div_pos Real.pi_pos hb).ne' h0
 
 /- English proof (translation)
-Establish `hin : Integrable (fun y : Fin n → ℂ => ∏ i, Real.exp (-(b * ‖y i‖ ^ 2)))`. Use `Integrable.fintype_prod (ι := Fin n) (E := ℂ) (f := fun _ z => Real.exp (-(b * ‖z‖ ^ 2))) (μ := fun _ => (volume : Measure ℂ)) (fun _ => integrable_gauss_plane hb)` as an intermediate fact. Conclude with `this`. Establish `hout : Integrable (fun x : Fin m → Fin n → ℂ => ∏ a, ∏ i, Real.exp (-(b * ‖x a i‖ ^ 2)))`. Use `Integrable.fintype_prod (ι := Fin m) (E := Fin n → ℂ) (f := fun _ y => ∏ i, Real.exp (-(b * ‖y i‖ ^ 2))) (μ := fun _ => (volume : Measure (Fin n → ℂ))) (fun _ => hin)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `hout.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show ∏ a, ∏ i, Real.exp (-(b * ‖x a i‖ ^ 2)) = Real.exp (-(b * sq x))`. Unfold `sq`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]`.
-
-Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_exp_sq {b : ℝ} (hb : 0 < b) :
     Integrable (fun x : Fin m → Fin n → ℂ => Real.exp (-(b * sq x))) := by
@@ -341,9 +331,9 @@ theorem integrable_exp_sq {b : ℝ} (hb : 0 < b) :
   rw [Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `exp_bound P (c / 2) (by linarith)`. Use `Integrable.mono' ((integrable_exp_sq (b := c / 2) (by linarith)).const_mul C) ((continuous_evX P).mul (continuous_gs c)).aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, gs_eq, Complex.norm_exp, Complex.neg_re, Complex.ofReal_re]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.exp_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integrable_evX_gs {c : ℝ} (hc : 0 < c) (P : PX m n) : Integrable (fun x => evX P x * gs c x) := by
   obtain ⟨C, hC⟩ := exp_bound P (c / 2) (by linarith)
@@ -356,9 +346,9 @@ theorem integrable_evX_gs {c : ℝ} (hc : 0 < c) (P : PX m n) : Integrable (fun 
         rw [mul_assoc, ← Real.exp_add]; congr 2; ring
 
 /- English proof (translation)
-Unfold `mom`. Repeatedly rewrite using `[evX_subR]`. Establish `h : (fun x => evX P (act u x) * gs c x) = fun x => (fun y => evX P y * gs c y) (act u x)`. Use function extensionality and compare the values at `x`. Simplify using `only`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[gs_act c u hu]`. Rewrite using `[h, ← integral_map (f := fun y => evX P y * gs c y) (mp_act u hu).measurable.aemeasurable ((continuous_evX P).mul (continuous_gs c)).aestronglyMeasurable, (mp_act u hu).map_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mom_subR {c : ℝ} (u : Matrix (Fin m) (Fin m) ℂ) (hu : uᴴ * u = 1) (P : PX m n) :
     mom c (subR u P) = mom c P := by

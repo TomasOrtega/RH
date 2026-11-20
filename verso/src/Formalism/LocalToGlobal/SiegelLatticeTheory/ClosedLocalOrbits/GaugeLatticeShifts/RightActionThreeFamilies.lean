@@ -25,16 +25,16 @@ def hsInv (f : Formalism.L2.SG.PackageTie.HS Wq Wp) : Wq →L[ℂ] Wp :=
   ∑ i, (innerSL ℂ (stdOrthonormalBasis ℂ Wq i)).smulRight (f i)
 
 /- English proof (translation)
-Simplify using `[hsInv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInv_apply (f : Formalism.L2.SG.PackageTie.HS Wq Wp) (ξ : Wq) :
     hsInv f ξ = ∑ i, ⟪stdOrthonormalBasis ℂ Wq i, ξ⟫_ℂ • f i := by
   simp [hsInv]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `only [Formalism.L2.SG.PackageTie.hsEmb, LinearMap.coe_mk, AddHom.coe_mk, PiLp.toLp_apply, hsInv_apply]`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[(stdOrthonormalBasis ℂ Wq).inner_eq_one, one_smul]`. Introduce `i _ hij`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(stdOrthonormalBasis ℂ Wq).inner_eq_zero hij, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hsEmb_hsInv (f : Formalism.L2.SG.PackageTie.HS Wq Wp) : Formalism.L2.SG.PackageTie.hsEmb (hsInv f) = f := by
   ext j
@@ -46,9 +46,9 @@ theorem hsEmb_hsInv (f : Formalism.L2.SG.PackageTie.HS Wq Wp) : Formalism.L2.SG.
   · intro h; exact absurd (Finset.mem_univ j) h
 
 /- English proof (translation)
-Use extensionality with `ξ`. Rewrite using `[hsInv_apply]`. Simplify using `only [Formalism.L2.SG.PackageTie.hsEmb, LinearMap.coe_mk, AddHom.coe_mk, PiLp.toLp_apply]`. Use `conv_rhs => rw [← (stdOrthonormalBasis ℂ Wq).sum_repr' ξ]`. Rewrite using `[map_sum]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem hsInv_hsEmb (A : Wq →L[ℂ] Wp) : hsInv (Formalism.L2.SG.PackageTie.hsEmb A) = A := by
   ext ξ
@@ -59,7 +59,7 @@ theorem hsInv_hsEmb (A : Wq →L[ℂ] Wp) : hsInv (Formalism.L2.SG.PackageTie.hs
   simp [map_smul]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.hsNormSq_of_iso A _ P id (fun _ => rfl) (fun x => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem hsNormSq_comp_iso (A : Wq →L[ℂ] Wp) (P : Wq ≃ₗᵢ[ℂ] Wq) :
     hsNormSq (A.comp (P.symm.toContinuousLinearEquiv : Wq →L[ℂ] Wq)) = hsNormSq A :=
@@ -106,7 +106,7 @@ def hsR (P : Wq ≃ₗᵢ[ℂ] Wq) :
     simpa [Real.sqrt_sq (norm_nonneg _)] using this
 
 /- English proof (translation)
-Use `show Formalism.L2.SG.PackageTie.hsEmb ((hsInv (Formalism.L2.SG.PackageTie.hsEmb A)).comp _) = _`. Rewrite using `[hsInv_hsEmb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsR_emb (P : Wq ≃ₗᵢ[ℂ] Wq) (A : Wq →L[ℂ] Wp) :
     hsR (Wp := Wp) P (Formalism.L2.SG.PackageTie.hsEmb A) =
@@ -119,24 +119,24 @@ end HSc
 section StepsPf
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ hβ _ hn` and use `Formalism.L2.SG.Pf.SatGramActL.nlam_conj hβ hn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem autFConjN_holds : AutFConjN := fun _ _ _ _ _ hβ _ hn => Formalism.L2.SG.Pf.SatGramActL.nlam_conj hβ hn
 
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Introduce `D X u u' γ Ω x`. Use `FiniteDimensional.complete ℂ (X.Vpi u)` as an intermediate fact. Establish `hs : (γ : X.B.I.GA).1 ∈ Hinf X u'` using `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).1`. Use `set s : X.B.I.Ginf := (γ : X.B.I.GA).1 with hsdef`. Set `P` to `Formalism.L2.SG.Pf.SatGramActL.piUe u' s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L : (X.Vpi u' →L[ℂ] X.Vpi u) ≃L[ℂ] (X.Vpi u' →L[ℂ] X.Vpi u)` to `P.toContinuousLinearEquiv.arrowCongr (ContinuousLinearEquiv.refl ℂ (X.Vpi u))`. Establish `hsS : s ∈ X.SinfU u'` using `hinf_le_sinf X u' s hs`. Establish `hsS' : s⁻¹ ∈ X.SinfU u'` using `hinf_le_sinf X u' s⁻¹ ((Hinf X u').inv_mem hs)`. Establish `hL : ∀ f, L f = f.comp (X.piU u' s⁻¹)` using `fun f => by`. Use extensionality with `ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hrk : ∀ (v : X.Vpi u) (w : X.Vpi u'), rk1 v (X.piU u' s w) = L (rk1 v w)`. Introduce `v w`. Rewrite using `[hL]`. Use extensionality with `ξ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [rankOneInnerOperator_apply, ContinuousLinearMap.comp_apply]`. Use `congr 1`. Establish `e1 : X.piU u' s (X.piU u' s⁻¹ ξ) = ξ`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.mul_def, ← (X.piU_rep u').2.1 _ hsS _ hsS', mul_inv_cancel, (X.piU_rep u').1, ContinuousLinearMap.one_apply]`. Use `conv_lhs => rw [← e1]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `(X.piU_rep u').2.2.1 s hsS w (X.piU u' s⁻¹ ξ)`. Unfold `OO`. Establish `hpt : ∀ y, rk1 (X.Wu u y) (X.Wu u' ((x * s⁻¹)⁻¹ * y)) = L (rk1 (X.Wu u y) (X.Wu u' (x⁻¹ * y)))`. Introduce `y`. Establish `e : (x * s⁻¹)⁻¹ * y = s * (x⁻¹ * y)` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Formalism.L2.SG.Pf.SatGramActL.wu_left X u' hs, hrk]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[ContinuousLinearEquiv.integral_comp_comm, hL]`.
+A detailed English derivation is pending.
 -/
 theorem ooR_holds : OOR := by
   intro D X u u' γ Ω x
@@ -170,9 +170,9 @@ theorem ooR_holds : OOR := by
   rw [ContinuousLinearEquiv.integral_comp_comm, hL]
 
 /- English proof (translation)
-Establish `e : (((iotaF X w γ * h : Hfin X w) : X.B.I.Gf) * X.xu w)⁻¹ * ((h : X.B.I.Gf) * X.xu w) = (((h : X.B.I.Gf) * X.xu w)⁻¹ * (iotaF X w γ : X.B.I.Gf) * ((h : X.B.I.Gf) * X.xu w))⁻¹`. Use `push_cast`. Use `group`. Establish `hK : (((iotaF X w γ * h : Hfin X w) : X.B.I.Gf) * X.xu w)⁻¹ * ((h : X.B.I.Gf) * X.xu w) ∈ X.B.I.Kset`. Rewrite using `[e]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mem_Kset_inv X hk`. Establish `h2` using `(column_fixed_holds X w (iotaF X w γ * h) h hK).2`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kB_inv_fix_nxt {w : D.what₂.Word} (h : Hfin X w) (γ : Gam X w)
     (hk : ((h : X.B.I.Gf) * X.xu w)⁻¹ * (iotaF X w γ : X.B.I.Gf) * ((h : X.B.I.Gf) * X.xu w) ∈ X.B.I.Kset) :
@@ -189,11 +189,11 @@ theorem kB_inv_fix_nxt {w : D.what₂.Word} (h : Hfin X w) (γ : Gam X w)
   exact h2
 
 /- English proof (translation)
-Introduce `D X w h γ κ hκ hk`. Establish `h1 : (1 : X.B.I.Gf) ∈ X.B.I.Kset`. Establish `hh` using `mem_Kset_mul X hk (mem_Kset_inv X hk)`. Rewrite `hh` using `[mul_inv_cancel]`. Then use the resulting hypothesis. Establish `hf : ∀ a, CongG X (X.B.I.fmat (1 : X.B.I.Gf)⁻¹ *ᵥ X.f0 a) (X.f0 a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hK : (((1 : Hfin X w) : X.B.I.Gf) * X.xu w)⁻¹ * (((1 : Hfin X w) : X.B.I.Gf) * X.xu w) ∈ X.B.I.Kset`. Rewrite using `[inv_mul_cancel]`. Conclude with `h1`. Establish `hh` using `(column_fixed_holds X w 1 1 hK).1`. Simplify `hh` using `only [inv_mul_cancel, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hh` using `hB D X κ 1 _ hκ h1 (mem_Kset_inv X hk) hf (kB_inv_fix_nxt X h γ hk)`. Rewrite `hh` using `[one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem chiNR_holds (hB : Formalism.L2.SG.Pf.SatGramActL.ChiNBiAll) : ChiNR := by
   intro D X w h γ κ hκ hk
@@ -209,7 +209,7 @@ theorem chiNR_holds (hB : Formalism.L2.SG.Pf.SatGramActL.ChiNBiAll) : ChiNR := b
   rwa [one_mul] at hh
 
 /- English proof (translation)
-Unfold `kOf`. Rewrite using `[Prod.snd_mul]`. Use `group`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kOf_mul_right (u u' : D.what₂.Word) (a b : X.B.I.Gf) (x y : X.B.I.GA) :
     kOf X u u' a b (x * y) = kOf X u u' a b x * (((b * X.xu u')⁻¹ * y.2 * (b * X.xu u'))) := by
@@ -223,11 +223,11 @@ variable {D : D7} {X : HidaSetting D} {u u' : D.what₂.Word}
   {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)} {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
 
 /- English proof (translation)
-Establish `hβi : β⁻¹ ∈ Formalism.L2.SG.Saturated.AutF Λ' (lf D F0')` using `Formalism.L2.SG.Saturated.inv_mem_AutF' hβ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, hx, hy, hn, hn'⟩`. Use `⟨x, n, hx, hy, hn, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Formalism.L2.SG.Pf.SatGramActL.nlam_conj hβi hn'` as an intermediate fact. Establish `e : β⁻¹ * ((γ * β⁻¹)⁻¹ * n * (γ * β⁻¹)) * β⁻¹⁻¹ = γ⁻¹ * n * γ` using `by group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce and unpack `⟨x, n, hx, hy, hn, hn'⟩`. Use `⟨x, n, hx, hy, hn, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Formalism.L2.SG.Pf.SatGramActL.nlam_conj hβ hn'` as an intermediate fact. Establish `e : β * (γ⁻¹ * n * γ) * β⁻¹ = (γ * β⁻¹)⁻¹ * n * (γ * β⁻¹)` using `by group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem roset_mul_aut {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {β : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hβ : β ∈ Formalism.L2.SG.Saturated.AutF Λ' (lf D F0')) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
@@ -253,29 +253,27 @@ section Main
 open Formalism.L2.SG.Pf.SatGramActL in
 
 /- English proof (translation)
-Introduce `D X Y u u' hOI _ _ S hS q b hb`. Take `⟨γ, hk, rfl⟩` from `hb`. Establish `hk' : kB (Y.cs u') q.2.1 γ ∈ X.B.I.Kset` using `hk`. Take `⟨β, hx, hβ⟩` from `betaLift_holds D X u' (Y.what₂ u') (Y.cs u') q.2.1 q.2.2 γ hk'`. Establish `hs : (γ : X.B.I.GA).1 ∈ Hinf X u'` using `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF` using `Formalism.L2.SG.Pf.fundExistsC_holds D X Y u u'`. Establish `hl' : ∀ t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), positionT t = q → t.lam' = q.2.1` using `fun t ht => congrArg (fun r => (r.2 : Submodule (𝓞 D.host.E) (VS D).V)) ht`. Use `⟨tequiv (what₂ := Y.what₂ u) (rows' := Y.what₂ u') (γ : X.B.I.GA) β autFConjN_holds hx, hsR (piUe u' (γ : X.B.I.GA).1 hs), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t show (t ∈ S ∧ positionT t = q) ↔ (tmap (γ : X.B.I.GA) β autFConjN_holds hx t ∈ S ∧ positionT (tmap (γ : X.B.I.GA) β autFConjN_holds hx t) = q)`. Establish `hsl : positionT (tmap (γ : X.B.I.GA) β autFConjN_holds hx t) = positionT t` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hsl, mem_fam_iff Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') (toTerm_tmap _ β _ hx t) S hS]`. Introduce `t _ ht`. Establish `hβt : β ∈ Formalism.L2.SG.Saturated.AutF t.lam' (lf D (X.Fu u'))` using `(hl' t ht) ▸ hβ`. Establish `hkt : kB (Y.cs u') t.lam' γ ∈ X.B.I.Kset` using `(hl' t ht) ▸ hk'`. Use `show iotaOf Y.TR (Y.cs u) (Y.cs u') (tmap (γ : X.B.I.GA) β autFConjN_holds hx t) = iotaOf Y.TR (Y.cs u) (Y.cs u') t * (levi Y.TR (kB (Y.cs u') q.2.1 γ))⁻¹`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iotaOf_of_mk (hIR D X Y u u') (tmap (γ : X.B.I.GA) β autFConjN_holds hx t) (rmul (γ : X.B.I.GA) β hx hβt t.rep) (tmap_cls _ β _ hx t hβt)]`. Rewrite using `[iotaOf_of_mk (hIR D X Y u u') t t.rep (Quot.out_eq t.cls).symm]`. Establish `e1 : (rmul (γ : X.B.I.GA) β hx hβt t.rep).1.1 = t.rep.1.1 * (γ : X.B.I.GA)⁻¹` using `rfl`. Establish `e2 : ((((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) * X.xu u')⁻¹ * ((γ : X.B.I.GA)⁻¹).2 * (((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) * X.xu u')) = (kB (Y.cs u') t.lam' γ)⁻¹`. Establish `eg : (γ : X.B.I.GA).2 = (iotaF X u' γ : X.B.I.Gf)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.snd_inv, eg]`. Unfold `kB`. Use `group`. Establish `hG1 : Good X (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) t.rep.1.1)` using `Formalism.L2.SG.Closed.AdmPar_holds (Y.cs u) (Y.cs u') (Formalism.L2.SG.Full.Full.frameTie (X := X) u u') t`. Establish `hG2 : Good X (kB (Y.cs u') t.lam' γ)` using `satGramActLIota_kB_good (Y.cs u') t.lam' γ hkt`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show levi Y.TR (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) (t.rep.1.1 * (γ : X.B.I.GA)⁻¹)) = _`. Rewrite using `[kOf_mul_right, e2, levi_mul Y.TR hG1 (good_inv X hG2), levi_inv Y.TR hG2]`. Establish `hq2 : kB (Y.cs u') (q.2 : Submodule (𝓞 D.host.E) (VS D).V) γ = kB (Y.cs u') t.lam' γ` using `by rw [hl' t ht]`. Rewrite using `[hq2]`. Introduce `t _ ht`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβt : β ∈ Formalism.L2.SG.Saturated.AutF t.lam' (lf D (X.Fu u'))` using `(hl' t ht) ▸ hβ`. Establish `hkt : kB (Y.cs u') t.lam' γ ∈ X.B.I.Kset` using `(hl' t ht) ▸ hk'`. Use `show Formalism.L2.SG.PackageTie.hsEmb (ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') (tmap (γ : X.B.I.GA) β autFConjN_holds hx t)) = hsR (piUe u' (γ : X.B.I.GA).1 hs) (Formalism.L2.SG.PackageTie.hsEmb (ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t))`. Establish `hft` using `fundOf_spec hF t`. Establish `hΩ : IsSFund X.B.I (ROset X (X.Fu u) (X.Fu u') t.lam t.lam' (rmul (γ : X.B.I.GA) β hx hβt t.rep).1.2) (FundOf t)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `roset_mul_aut (X := X) (F0 := X.Fu u) (Λ := t.lam) hβt t.rep.1.2`. Use `hft using 2` and compare the differences between its conclusion and the goal. Conclude with `e`. Rewrite using `[ampN_of_mk (Y.FN u) (Y.FN u') (hAR D X Y u u') hF hOI (tmap (γ : X.B.I.GA) β autFConjN_holds hx t) (rmul (γ : X.B.I.GA) β hx hβt t.rep) (tmap_cls _ β _ hx t hβt) (FundOf t) hΩ]`. Rewrite using `[ampN_of_mk (Y.FN u) (Y.FN u') (hAR D X Y u u') hF hOI t t.rep (Quot.out_eq t.cls).symm (FundOf t) hft]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsR_emb]`. Use `congrArg (fun A => Formalism.L2.SG.PackageTie.hsEmb A) ?_` and prove the remaining obligations. Establish `e1 : (rmul (γ : X.B.I.GA) β hx hβt t.rep).1.1 = t.rep.1.1 * (γ : X.B.I.GA)⁻¹` using `rfl`. Establish `e2 : ((((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) * X.xu u')⁻¹ * ((γ : X.B.I.GA)⁻¹).2 * (((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) * X.xu u')) = (kB (Y.cs u') t.lam' γ)⁻¹`. Establish `eg : (γ : X.B.I.GA).2 = (iotaF X u' γ : X.B.I.Gf)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Prod.snd_inv, eg]`. Unfold `kB`. Use `group`. Establish `hκ` using `ChiLeft.kBB_mem Y u u' t.mem t.mem' t.rep`. Establish `eχ : chiN X (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) (t.rep.1.1 * (γ : X.B.I.GA)⁻¹)) = chiN X (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) t.rep.1.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[kOf_mul_right, e2]`. Conclude with `chiNR_holds hB D X u' ((Y.cs u').h ((Y.cs u').base t.lam')) γ _ hκ hkt`. Establish `eO : (t.rep.1.1 * (γ : X.B.I.GA)⁻¹).1 = t.rep.1.1.1 * ((γ : X.B.I.GA).1)⁻¹`. Rewrite using `[Prod.fst_mul, Prod.fst_inv]`. Establish `hU : (((piUe u' (γ : X.B.I.GA).1 hs).symm.toContinuousLinearEquiv : X.Vpi u' →L[ℂ] X.Vpi u')) = X.piU u' ((γ : X.B.I.GA).1)⁻¹`.
-
-Use extensionality with `v`. Both sides reduce to the same expression. Use `show ((scl (Y.FN u) (Y.FN u') (X := X) (u := u) (u' := u') * X.volK2 : ℝ) : ℂ) • (chiN X (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) (t.rep.1.1 * (γ : X.B.I.GA)⁻¹)) • (haveI := FiniteDimensional.complete ℂ (X.Vpi u) O …`. Rewrite using `[eχ, ooR_holds D X u u' γ (FundOf t) t.rep.1.1.1, hU]`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.smul_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_action_three_families (hB : ChiNBiAll) (hIR : IotaRepC) (hAR : AmpRepNC) : RightActC' := by
   intro D X Y u u' hOI _ _ S hS q b hb

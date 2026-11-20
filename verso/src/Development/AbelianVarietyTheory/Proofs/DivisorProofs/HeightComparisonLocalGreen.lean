@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain GlobalTheory.TrueGeo GlobalTheory.ProjVar Glob
 namespace GlobalTheory.HtDiff
 
 /- English proof (translation)
-The claim follows from `|∑ᶠ v, f₁ v - ∑ᶠ v, f₂ v| ≤ max 0 (c * ∑ v ∈ S, b v) := by have hsub : Function.support (fun v => f₁ v - f₂ v) ⊆ (S : Set V) := by intro v hv by_contra h exact hv (by simp [hS v h]) have h12 : Function.support f₁ ⊆ Function.support f₂ ∪ (S : Set V) := by intro v hv by_cases h : v …`.
+A detailed English derivation is pending.
 -/
 theorem abs_finsum_sub_le {V : Type} (f₁ f₂ b : V → ℝ) (S : Finset V) (c : ℝ)
     (hS : ∀ v ∉ S, f₁ v = f₂ v) (hb : ∀ v, |f₁ v - f₂ v| ≤ c * b v) :
@@ -35,7 +35,7 @@ theorem abs_finsum_sub_le {V : Type} (f₁ f₂ b : V → ℝ) (S : Finset V) (c
     simp
 
 /- English proof (translation)
-The claim follows from `|(∑ᶠ (z) (_ : p z), φ₁ z) - ∑ᶠ (z) (_ : p z), φ₂ z| ≤ (Nat.card {z // p z} : ℝ) * b := by have hs : ({z | p z} : Set Z).Finite := Set.finite_coe_iff.1 hp change |(∑ᶠ (z) (_ : z ∈ {z | p z}), φ₁ z) - ∑ᶠ (z) (_ : z ∈ {z | p z}), φ₂ z| ≤ (Nat.card ({z | p z} : Set Z) : ℝ) * b rw [fi …`.
+A detailed English derivation is pending.
 -/
 theorem abs_finsum_mem_sub_le {Z : Type} (p : Z → Prop) (hp : Finite {z // p z}) (φ₁ φ₂ : Z → ℝ) (b : ℝ)
     (hb : ∀ z, |φ₁ z - φ₂ z| ≤ b) :
@@ -54,7 +54,7 @@ end GlobalTheory.HtDiff
 open GlobalTheory.HtDiff in
 
 /- English proof (translation)
-The claim follows from `|A.ht x - ({ A with lg := g } : Adl C Y).ht x| ≤ K := by classical set c : ℕ := Nat.card {y : AlgPt Y // below y.1 = x} with hc set f₁ : HeightOneSpectrum (𝓞 F) → ℝ := fun v => if h : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v h.some y else 0 with hf₁ set …`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TrueGeo.Adl.abs_ht_sub_ht_with_lg_le {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F}
     (A : Adl C Y) (g : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ) (x : Y.X)

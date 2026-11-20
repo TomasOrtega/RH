@@ -13,11 +13,11 @@ open Formalism.BasicNotions GlobalTheory.Mem GlobalTheory.MemN NumberField IsDed
 namespace GlobalTheory.MemN
 
 /- English proof (translation)
-Introduce `B C W χ hsha heta hgood`. Take `⟨L⟩` from `GlobalTheory.T.local_stage_nonempty`. Take `⟨nd, hE, hχ, -⟩` from `GlobalTheory.T.exists_unramified_data_character B C W χ hsha`. Take `⟨tw, hT⟩` from `GlobalTheory.T.exists_twist_empty_local B C W nd hE`. Take `⟨A, hlab, hine⟩` from `GlobalTheory.T.exists_automorphic_unipotent_labels B C W nd hE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨bc⟩` from `GlobalTheory.T.base_change_nonempty B.R B.host W.what₂ nd A hE`. Take `⟨T, hT0, hy⟩` from `GlobalTheory.T.exists_types_idempotent_coefficients B C W χ nd A hE hχ hlab hine hgood`. Use `choose e he using hy`. Take `⟨Y, hY, ⟨th⟩⟩` from `GlobalTheory.T.exists_exponent_theta_data B C W nd tw hT e`. Use `⟨{ toLocStage := L nd := nd ntw := tw naut := A nbc := bc nexp := Y ntypes := T nStage_trivialCharacter_compat := hT0 nStage_trivialCharacter_coeff_eq := fun g => by rw [hY]; exact he g nth := th nbr := fun i => hE.elim i nbr_ind := fun i => hE.elim i self_good := fun i => hE.eli …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heta j w h1 h2]`. Conclude with `(Finset.sum_eq_zero fun i _ => hE.elim i).symm`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_nStage_provisional :
     ∀ (B : Base) (C : Cols B) (W : RowsRest B C) (χ : Chi B.toPre), ShaOK B.toPre W.shaLen →

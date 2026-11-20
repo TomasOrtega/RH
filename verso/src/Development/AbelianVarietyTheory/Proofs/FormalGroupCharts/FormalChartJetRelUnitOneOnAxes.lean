@@ -16,9 +16,9 @@ namespace GlobalTheory.ChartCmp.Axes
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `MvPowerSeries.nat_le_order fun e he => ?_` and prove the remaining obligations. Rewrite using `[map_sub, h e (by omega), sub_self]`. Introduce `h e he`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: MvPowerSeries.coeff e (f - g) = 0` using `MvPowerSeries.coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast Nat.lt_succ_of_le he) h)`. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem jEq_iff_order {σ : Type} (m : ℕ) (f g : MvPowerSeries σ R) :
     JEq m f g ↔ ((m + 1 : ℕ) : ℕ∞) ≤ MvPowerSeries.order (f - g) := by
@@ -32,7 +32,7 @@ theorem jEq_iff_order {σ : Type} (m : ℕ) (f g : MvPowerSeries σ R) :
     rwa [map_sub, sub_eq_zero] at this
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[jEq_iff_order]`. Rewrite using `[← sub_mul]`. Conclude with `h.trans (le_self_add.trans MvPowerSeries.le_order_mul)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jEq_mul_right {σ : Type} {m : ℕ} {f g : MvPowerSeries σ R} (u : MvPowerSeries σ R) (h : JEq m f g) :
     JEq m (f * u) (g * u) := by
@@ -41,13 +41,11 @@ theorem jEq_mul_right {σ : Type} {m : ℕ} {f g : MvPowerSeries σ R} (u : MvPo
   exact h.trans (le_self_add.trans MvPowerSeries.le_order_mul)
 
 /- English proof (translation)
-Introduce `e he`. Unfold `ev`. Rewrite using `[MvPowerSeries.coeff_subst (gt_hasSubst a ha), MvPowerSeries.coeff_subst (gt_hasSubst a ha)]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c.degree ≤ m`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h c hc]`. Establish `: MvPowerSeries.coeff e (c.prod fun s k => (a s.1 s.2) ^ k) = 0`. Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (MvPowerSeries.le_order_prod _ _)` and prove the remaining obligations. Establish `h1 : ((c.degree : ℕ) : ℕ∞) ≤ ∑ s ∈ c.support, MvPowerSeries.order ((a s.1 s.2) ^ c s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.degree_apply, Nat.cast_sum]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Conclude with `MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero _ (ha s.1 s.2)`. Use `lt_of_lt_of_le ?_ h1` and prove the remaining obligations. Conclude with `(by omega : e.degree < c.degree)` after adjusting the coercions.
-
-Rewrite using `[this, smul_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jEq_ev {d n n' m : ℕ} (a : Fin n → Pt R n' d) (ha : ∀ j, GP (a j)) {f g : PS R n d} (h : JEq m f g) :
     JEq m (ev a f) (ev a g) := by
@@ -70,7 +68,7 @@ theorem jEq_ev {d n n' m : ℕ} (a : Fin n → Pt R n' d) (ha : ∀ j, GP (a j))
     rw [this, smul_zero, smul_zero]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `MvPowerSeries.isUnit_iff_constantCoeff.2 hu`. Use `jEq_mul_right (↑u⁻¹ : MvPowerSeries σ R) h` as an intermediate fact. Rewrite `this` using `[_root_.mul_assoc, Units.mul_inv, _root_.mul_one]`. Conclude with `fun e he => (this e he).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jEq_one_of_idem {σ : Type} {m : ℕ} {e : MvPowerSeries σ R} (hu : IsUnit (MvPowerSeries.constantCoeff e))
     (h : JEq m e (e * e)) : JEq m e 1 := by
@@ -80,16 +78,16 @@ theorem jEq_one_of_idem {σ : Type} {m : ℕ} {e : MvPowerSeries σ R} (hu : IsU
   exact fun e he => (this e he).symm
 
 /- English proof (translation)
-Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vec3 {d m n : ℕ} (V : Fin m → Pt R n d) (a b c : Pt R m d) :
     (fun j => evP V (![a, b, c] j)) = ![evP V a, evP V b, evP V c] := by
   funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun p : Fin 2 × Fin d => (![(0 : Pt R n d), 0] p.1) p.2) (F i) = 0`. Establish `e : (fun p : Fin 2 × Fin d => (![(0 : Pt R n d), 0] p.1) p.2) = 0`. Use function extensionality and compare the values at `p`. Take `⟨j, l⟩` from `p`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[e]`. Conclude with `MvPowerSeries.subst_zero_of_constantCoeff_zero (hF i)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addOf_zero {d n : ℕ} (F : Fin d → PS R 2 d) (hF : ∀ i, MvPowerSeries.constantCoeff (F i) = 0) :
     addOf F (0 : Pt R n d) 0 = 0 := by
@@ -103,7 +101,7 @@ theorem addOf_zero {d n : ℕ} (F : Fin d → PS R 2 d) (hF : ∀ i, MvPowerSeri
   exact MvPowerSeries.subst_zero_of_constantCoeff_zero (hF i)
 
 /- English proof (translation)
-Establish `hV : ∀ j, GP (![(0 : Pt R n d), z] j)` using `pair_points_zero_constant gp_zero₂ hz`. Use `congrArg (ev ![0, z]) hf` as an intermediate fact. Rewrite `this` using `[gt_ev_ev' _ _ hV (triple_points_zero_constant gp_zero₂ (gp_pt 0) (gp_pt 1)), vec3, evP_zero _ hV, evP_pt _ hV, evP_pt _ hV, ev_one]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_zero_zero_gp_eq_one_of_ev_zero_pt_pt_eq_one {d n : ℕ} (f : PS R 3 d) (hf : ev (n := 2) ![0, pt R d 0, pt R d 1] f = 1) (z : Pt R n d) (hz : GP z) :
     ev ![0, 0, z] f = 1 := by
@@ -114,7 +112,7 @@ theorem ev_zero_zero_gp_eq_one_of_ev_zero_pt_pt_eq_one {d n : ℕ} (f : PS R 3 d
   exact this
 
 /- English proof (translation)
-Establish `hV : ∀ j, GP (![z, (0 : Pt R n d)] j)` using `pair_points_zero_constant hz gp_zero₂`. Use `congrArg (ev ![z, 0]) hf` as an intermediate fact. Rewrite `this` using `[gt_ev_ev' _ _ hV (triple_points_zero_constant (gp_pt 0) (gp_pt 1) gp_zero₂), vec3, evP_zero _ hV, evP_pt _ hV, evP_pt _ hV, ev_one]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_gp_zero_zero_eq_one_of_ev_pt_pt_zero_eq_one {d n : ℕ} (f : PS R 3 d) (hf : ev (n := 2) ![pt R d 0, pt R d 1, 0] f = 1) (z : Pt R n d) (hz : GP z) :
     ev ![z, 0, 0] f = 1 := by
@@ -129,17 +127,15 @@ end GlobalTheory.ChartCmp.Axes
 open GlobalTheory.ChartCmp.Axes in
 
 /- English proof (translation)
-Introduce `R _ d O _ _ m B B' φ φi ε h`. Establish `hφ : GP φ` using `h.inv.1`. Establish `hp : ∀ {n : ℕ} (j : Fin n), GP (pt R (n` using `n) d j) := fun j => gp_pt j`. Establish `hz : ∀ {n : ℕ}, GP (0 : Pt R n d)` using `gp_zero₂`. Establish `hc : ∀ {n : ℕ} (j : Fin n), GP (comp1 φ (pt R (n` using `n) d j)) := fun j => gp_comp1 φ _ hφ (hp j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : JEq m (ev (n` using `1) ![0, pt R (n := 1) d 0] ε) 1 := by`. Establish `hV : ∀ j, GP (![(0 : Pt R 1 d), 0, pt R (n` using `1) d 0] j) := triple_points_zero_constant hz hz (hp 0)`. Establish `H` using `jEq_ev _ hV h.ph1`. Rewrite `H` using `[gt_ev_mul _ hV, gt_ev_mul _ hV, gt_ev_mul _ hV, ev_zero_zero_gp_eq_one_of_ev_zero_pt_pt_eq_one _ B'.cocycleLeft_zero_fst _ (hp 0), _root_.one_mul, gt_ev_ev' _ _ hV (pair_points_zero_constant (gp_addOf _ B'.G.const _ _ (hp 0) (hp 1)) (hp 2)), gt_ev_ev' _ _ hV (triple_points_zero_ …`. Express the relevant statement in the definitionally equal form `JEq m (ev ![addOf B'.G.F 0 0, pt R (n := 1) d 0] ε) (ev ![comp1 φ 0, comp1 φ 0, comp1 φ (pt R (n := 1) d 0)] B.ph1 * (ev ![0, pt R (n := 1) d 0] ε * ev ![0, pt R (n := 1) d 0] ε)) at H`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `H` using `[addOf_zero _ B'.G.const, gt_comp1_zero φ hφ, ev_zero_zero_gp_eq_one_of_ev_zero_pt_pt_eq_one _ B.cocycleLeft_zero_fst _ (hc 0), _root_.one_mul]`. Use `jEq_one_of_idem ?_ H` and prove the remaining obligations. Rewrite using `[gt_const_ev_eq _ (pair_points_zero_constant hz (hp 0))]`. Conclude with `h.unit`. Establish `h2 : JEq m (ev (n` using `1) ![pt R (n := 1) d 0, 0] ε) 1 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : ∀ j, GP (![pt R (n` using `1) d 0, (0 : Pt R 1 d), 0] j) := triple_points_zero_constant (hp 0) hz hz`. Establish `H` using `jEq_ev _ hV h.ph2`. Rewrite `H` using `[gt_ev_mul _ hV, gt_ev_mul _ hV, gt_ev_mul _ hV, ev_gp_zero_zero_eq_one_of_ev_pt_pt_zero_eq_one _ B'.cocycleRight_zero_thd _ (hp 0), _root_.one_mul, gt_ev_ev' _ _ hV (pair_points_zero_constant (hp 0) (gp_addOf _ B'.G.const _ _ (hp 1) (hp 2))), gt_ev_ev' _ _ hV (triple_points_zero …`. Express the relevant statement in the definitionally equal form `JEq m (ev ![pt R (n := 1) d 0, addOf B'.G.F 0 0] ε) (ev ![comp1 φ (pt R (n := 1) d 0), comp1 φ 0, comp1 φ 0] B.ph2 * (ev ![pt R (n := 1) d 0, 0] ε * ev ![pt R (n := 1) d 0, 0] ε)) at H`. Rewrite `H` using `[addOf_zero _ B'.G.const, gt_comp1_zero φ hφ, ev_gp_zero_zero_eq_one_of_ev_pt_pt_zero_eq_one _ B.cocycleRight_zero_thd _ (hc 0), _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `jEq_one_of_idem ?_ H` and prove the remaining obligations. Rewrite using `[gt_const_ev_eq _ (pair_points_zero_constant (hp 0) hz)]`. Conclude with `h.unit`. Use `⟨?_, h1, h2⟩` and prove the remaining obligations. Use `h1 0 (by simp)` as an intermediate fact.
-
-Rewrite `this` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, gt_const_ev_eq _ (pair_points_zero_constant hz (hp 0)), map_one]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ChartCmp.jRel_axes : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (m : ℕ) (B B' : FB R d O) (φ φi : Pt R 1 d) (ε : PS R 2 d), JRel m B B' φ φi ε → MvPowerSeries.constantCoeff ε = 1 ∧ JEq m (ev (n := 1) ![0, pt R (n := 1) d 0] ε) 1 ∧ JEq m (ev (n := 1) ![pt R (n := 1) d 0, 0] ε) 1 := by
   intro R _ d O _ _ m B B' φ φi ε h

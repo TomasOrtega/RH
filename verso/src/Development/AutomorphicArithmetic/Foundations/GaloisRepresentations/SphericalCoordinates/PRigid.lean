@@ -7,19 +7,19 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `O _ bar g ρ Λ N D' t P w h hN hfull hper ⟨hiso, hmark⟩ hPw`. Take `⟨-, hinj, hd, hspan, Hm, -, hpos, hIm⟩` from `hper`. Set `σw : Module.End ℤ D'.La` to `(w.toLinearMap.toAddMonoidHom).toIntLinearMap`. Establish `hσ : ∀ a, σw a = w a` using `fun _ => rfl`. Set `hR : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `h.toLinearMap.restrictScalars ℝ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun u v => (hermForm Hm u v).im) (fun a b c => by simp [hermForm]) (fun r a b => by simp [hermForm]) (fun a b c => by simp [hermForm, Matrix.mulVec_add]) (fun r a b => by simp [hermForm, Matrix.mulVec_smul])`. Establish `hB : B.compl₁₂ hR hR = B`. Use `LinearMap.ext_on_range hspan fun a => LinearMap.ext_on_range hspan fun b => ?_` and prove the remaining obligations. Use `show (hermForm Hm (h (P a)) (h (P b))).im = (hermForm Hm (P a) (P b)).im`. Rewrite using `[← hPw, ← hPw, hIm, hIm, hiso]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : ∀ u, (hermForm Hm u u).re = B (Complex.I • u) u` using `fun u => by show _ = (hermForm Hm (Complex.I • u) u).im`. Simplify using `[hermForm]`. Establish `hbd` using `GlobalTheory.ExpUnique.isBounded_sublevel (q := fun u => (hermForm Hm u u).re) (by unfold hermForm; fun_prop) (fun r u => by`. Simplify using `only [hq]`. Rewrite using `[smul_comm, map_smul, map_smul, LinearMap.smul_apply, smul_smul, sq, smul_eq_mul]) hpos`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : σw = 1`. Use `GlobalTheory.ExpUnique.end_eq_one_of_invariant D'.La σw (fun a b hab => w.injective hab) (fun a => (hermForm Hm (P a) (P a)).re) (fun c => ?_) (fun a => ?_) N hN fun a => ?_` and prove the remaining obligations. Use `Set.Finite.of_finite_image (f := P) ((Metric.finite_isBounded_inter_isClosed (s := P.range) DiscreteTopology.isDiscrete (hbd c) AddSubgroup.isClosed_of_discrete).subset ?_) hinj.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨ha, a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : h (Complex.I • P a) = Complex.I • h (P a)` using `map_smul h _ _`. Simplify using `only [hq, hσ, hPw]`. Rewrite using `[← h1]`. Establish `h2` using `LinearMap.congr_fun₂ hB (Complex.I • P a) (P a)`. Rewrite `h2` using `[LinearMap.compl₁₂_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h2`. Take `⟨i, f, rfl⟩` from `hfull a`. Take `⟨e₀, he₀⟩` from `hmark i`. Use `⟨e₀ + w f - f, ?_⟩` and prove the remaining obligations. Establish `h3 : w (t i + N • f) = w (t i) + N • w f` using `by rw [map_add, map_nsmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hσ, h3, he₀, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws. Introduce `u`. Rewrite using `[← hσ, key]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.rigid_of :
     UpperTheory.Gal.W2.Rigid := by

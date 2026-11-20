@@ -6,7 +6,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n A A' hA`. Conclude with `h n A A' hA.1 hA.2`. Introduce `h n A B hB hAB`. Conclude with `h n A B ⟨hB, hAB⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DetMono.equiv :
     FourB.HermitianDetMono.Statement ↔ IndefiniteRowSideFullHecke.FourB.DetMono.Statement := by

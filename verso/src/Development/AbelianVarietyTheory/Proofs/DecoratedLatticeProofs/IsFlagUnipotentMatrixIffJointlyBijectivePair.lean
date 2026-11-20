@@ -7,13 +7,13 @@ namespace GlobalTheory.BesselChar.JointSplit
 variable {A R₁ R₂ : Type} [CommRing A] [CommRing R₁] [CommRing R₂]
 
 /- English proof (translation)
-Take `⟨⟨T, hT, hMT⟩, h2⟩` from `h`. Use `⟨⟨T.map f, fun j i hij => by simp [hT j i hij], ?_⟩, fun y₁ hy₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hMT, Matrix.map_add _ (map_add f), Matrix.map_mul]`. Use `choose l hl1 hl2 using hsurj`. Take `⟨y, hfy, hgy⟩ : ∃ y : Fin n → A, (fun i => f (y i)) = y₁ ∧ (fun i => g (y i)) = 0` from `⟨fun i => l (y₁ i) 0, funext fun i => hl1 _ _, funext fun i => hl2 _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKy : K *ᵥ y = 0`. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises. Use `congrFun (GlobalTheory.BesselChar.mulVec_map f K y) i` as an intermediate fact. Rewrite `this` using `[hfy, hy₁]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Use `congrFun (GlobalTheory.BesselChar.mulVec_map g K y) i` as an intermediate fact. Rewrite `this` using `[hgy, Matrix.mulVec_zero]`. Conclude with `this.symm`. Take `⟨a, ha⟩` from `h2 y hKy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => f (a i), ?_⟩` and prove the remaining obligations. Substitute `hfy` using the available equality. Rewrite using `[GlobalTheory.BesselChar.mulVec_map, GlobalTheory.BesselChar.mulVec_map, ha]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fwd (f : A →+* R₁) (g : A →+* R₂) (hinj : ∀ y, f y = 0 → g y = 0 → y = 0)
     (hsurj : ∀ a b, ∃ y, f y = a ∧ g y = b) {n ρ : ℕ} (E : Matrix (Fin n) (Fin ρ) A)
@@ -42,25 +42,23 @@ theorem fwd (f : A →+* R₁) (g : A →+* R₂) (hinj : ∀ y, f y = 0 → g y
     simp only [Pi.add_apply, map_add]
 
 /- English proof (translation)
-Use `choose l hl1 hl2 using hsurj`. Establish `l00 : l 0 0 = 0` using `hinj _ (hl1 0 0) (hl2 0 0)`. Establish `extM : ∀ {p q : ℕ} (X Y : Matrix (Fin p) (Fin q) A), X.map f = Y.map f → X.map g = Y.map g → X = Y`. Introduce `p q X Y hf hg`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun hf i) j`. Rewrite using `[map_sub, sub_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrFun (congrFun hg i) j`. Establish `extV : ∀ {p : ℕ} (x z : Fin p → A), (fun i => f (x i)) = (fun i => f (z i)) → (fun i => g (x i)) = (fun i => g (z i)) → x = z`. Introduce `p x z hf hg`. Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun hf i`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun hg i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨T₁, hT₁, e₁⟩, k₁⟩` from `h1`. Take `⟨⟨T₂, hT₂, e₂⟩, k₂⟩` from `h2`. Set `T : Matrix (Fin ρ) (Fin ρ) A` to `Matrix.of fun i j => l (T₁ i j) (T₂ i j)`. Establish `hTf : T.map f = T₁` using `by ext i j; exact hl1 _ _`. Establish `hTg : T.map g = T₂` using `by ext i j; exact hl2 _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨T, fun j i hij => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `show l (T₁ j i) (T₂ j i) = 0`. Rewrite using `[hT₁ j i hij, hT₂ j i hij, l00]`. Apply `extM` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_add _ (map_add f), Matrix.map_mul, hTf, e₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_add _ (map_add g), Matrix.map_mul, hTg, e₂]`. Establish `hy₁ : K.map f *ᵥ (fun i => f (y i)) = 0`. Rewrite using `[GlobalTheory.BesselChar.mulVec_map, hy]`. Use function extensionality and compare the values at `i`. Conclude with `map_zero f`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₂ : K.map g *ᵥ (fun i => g (y i)) = 0`. Rewrite using `[GlobalTheory.BesselChar.mulVec_map, hy]`. Use function extensionality and compare the values at `i`. Conclude with `map_zero g`. Take `⟨a₁, ha₁⟩` from `k₁ _ hy₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a₂, ha₂⟩` from `k₂ _ hy₂`. Establish `ea₁ : (fun i => f (l (a₁ i) (a₂ i))) = a₁` using `funext fun i => hl1 _ _`. Establish `ea₂ : (fun i => g (l (a₁ i) (a₂ i))) = a₂` using `funext fun i => hl2 _ _`. Use `⟨fun i => l (a₁ i) (a₂ i), extV _ _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.BesselChar.mulVec_map, ha₁] conv_lhs => rw [← ea₁, GlobalTheory.BesselChar.mulVec_map]`.
-
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, map_add]`. Rewrite using `[← GlobalTheory.BesselChar.mulVec_map, ha₂] conv_lhs => rw [← ea₂, GlobalTheory.BesselChar.mulVec_map]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bwd (f : A →+* R₁) (g : A →+* R₂) (hinj : ∀ y, f y = 0 → g y = 0 → y = 0)
     (hsurj : ∀ a b, ∃ y, f y = a ∧ g y = b) {n ρ : ℕ} (E : Matrix (Fin n) (Fin ρ) A)
@@ -114,7 +112,7 @@ theorem bwd (f : A →+* R₁) (g : A →+* R₂) (hinj : ∀ y, f y = 0 → g y
       simp only [Pi.add_apply, map_add]
 
 /- English proof (translation)
-Introduce `A R₁ R₂ _ _ _ f g hinj hsurj n ρ E K M`. Use `⟨fun h => ⟨fwd f g hinj hsurj E K M h, fwd g f (fun y hg hf => hinj y hf hg) (fun a b => (hsurj b a).imp fun _ h => h.symm) E K M h⟩, fun h => bwd f g hinj hsurj E K M h.1 h.2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem unip_iff_of_joint : ∀ {A R₁ R₂ : Type} [CommRing A] [CommRing R₁] [CommRing R₂] (f : A →+* R₁) (g : A →+* R₂), (∀ y, f y = 0 → g y = 0 → y = 0) → (∀ a b, ∃ y, f y = a ∧ g y = b) → ∀ {n ρ : ℕ} (E : Matrix (Fin n) (Fin ρ) A) (K : Matrix (Fin ρ) (Fin n) A) (M : Matrix (Fin n) (Fin n) A), GlobalTheory.BesselChar.Unip E K M ↔ GlobalTheory.BesselChar.Unip (E.map f) (K.map f) (M.map f) ∧ GlobalTheory.BesselChar.Unip (E.map g) (K.map g) (M.map g) := by
   intro A R₁ R₂ _ _ _ f g hinj hsurj n ρ E K M

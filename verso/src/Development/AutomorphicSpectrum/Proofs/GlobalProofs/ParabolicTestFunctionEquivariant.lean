@@ -15,7 +15,7 @@ section Alg
 variable {F : Type} [Field F]
 
 /- English proof (translation)
-Establish `hxy : x * y ≠ 0` using `mul_ne_zero hx hy`. Simplify using `only [chi0, dif_neg hx, dif_neg hy, dif_neg hxy]`. Rewrite using `[show Units.mk0 (x * y) hxy = Units.mk0 x hx * Units.mk0 y hy from Units.ext rfl, map_mul, Units.val_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem unramifiedCharExt_mul (δ : Fˣ →* ℂˣ) {x y : F} (hx : x ≠ 0) (hy : y ≠ 0) :
     chi0 δ (x * y) = chi0 δ x * chi0 δ y := by
@@ -25,18 +25,18 @@ theorem unramifiedCharExt_mul (δ : Fˣ →* ℂˣ) {x y : F} (hx : x ≠ 0) (hy
     Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [chi0, dif_neg hx]`. Conclude with `Units.ne_zero _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unramifiedCharExt_ne_zero (δ : Fˣ →* ℂˣ) {x : F} (hx : x ≠ 0) : chi0 δ x ≠ 0 := by
   simp only [chi0, dif_neg hx]
   exact Units.ne_zero _
 
 /- English proof (translation)
-Establish `hw : u / v ≠ 0` using `div_ne_zero hu hv`. Establish `h1 : chi0 δ (u / v) = 1`. Simplify using `only [chi0, dif_neg hw]`. Establish `: δ (Units.mk0 (u / v) hw) = 1`. Apply `tame` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : ((Units.mk0 (u / v) hw : Fˣ) : F) - 1 = (u - v) / v`. Simplify using `only [Units.val_mk0]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_div₀]`. Conclude with `(div_lt_one (nrm.pos hv)).2 h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `h2 : u = (u / v) * v` using `by field_simp`. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem extendedCharacter_congr_of_tame (nrm : AbsoluteValue F ℝ) (δ : Fˣ →* ℂˣ)
     (tame : ∀ x : Fˣ, nrm ((x : F) - 1) < 1 → δ x = 1) {u v : F} (hu : u ≠ 0) (hv : v ≠ 0)
@@ -56,7 +56,7 @@ theorem extendedCharacter_congr_of_tame (nrm : AbsoluteValue F ℝ) (δ : Fˣ �
     _ = chi0 δ v := by rw [unramifiedCharExt_mul δ hw hv, h1, one_mul]
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact O.sum_mem fun k _ => O.mul_mem (hX i k) (hY k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul {O : Subring F} {a b c : ℕ} {X : Matrix (Fin a) (Fin b) F}
     {Y : Matrix (Fin b) (Fin c) F} (hX : X ∈ intMat O a b) (hY : Y ∈ intMat O b c) :
@@ -64,14 +64,14 @@ theorem int_mul {O : Subring F} {a b c : ℕ} {X : Matrix (Fin a) (Fin b) F}
   rw [Matrix.mul_apply]; exact O.sum_mem fun k _ => O.mul_mem (hX i k) (hY k j)
 
 /- English proof (translation)
-Introduce `i j` and use `O.add_mem (hX i j) (hY i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_add {O : Subring F} {a b : ℕ} {X Y : Matrix (Fin a) (Fin b) F}
     (hX : X ∈ intMat O a b) (hY : Y ∈ intMat O a b) : X + Y ∈ intMat O a b :=
   fun i j => O.add_mem (hX i j) (hY i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by obtain ⟨o, ho, e⟩ := hX i j obtain ⟨p, hp, f⟩ := hY i j exact ⟨o + p, O.add_mem ho hp, by rw [Matrix.add_apply, e, f, mul_add]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem II_add {O : Subring F} {ϖ : F} {a b : ℕ} {X Y : Matrix (Fin a) (Fin b) F}
     (hX : X ∈ IIset O ϖ) (hY : Y ∈ IIset O ϖ) : X + Y ∈ IIset O ϖ := fun i j => by
@@ -80,7 +80,7 @@ theorem II_add {O : Subring F} {ϖ : F} {a b : ℕ} {X Y : Matrix (Fin a) (Fin b
   exact ⟨o + p, O.add_mem ho hp, by rw [Matrix.add_apply, e, f, mul_add]⟩
 
 /- English proof (translation)
-Introduce `i j` and use `by choose f hf hfe using hX refine ⟨∑ k, f i k * Y k j, O.sum_mem fun k _ => O.mul_mem (hf i k) (hY k j), ?_⟩ rw [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun k _ => by rw [hfe, mul_assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem II_mul_int {O : Subring F} {ϖ : F} {a b c : ℕ} {X : Matrix (Fin a) (Fin b) F}
     {Y : Matrix (Fin b) (Fin c) F} (hX : X ∈ IIset O ϖ) (hY : Y ∈ intMat O b c) :
@@ -91,7 +91,7 @@ theorem II_mul_int {O : Subring F} {ϖ : F} {a b c : ℕ} {X : Matrix (Fin a) (F
   exact Finset.sum_congr rfl fun k _ => by rw [hfe, mul_assoc]
 
 /- English proof (translation)
-Introduce `i j` and use `by choose f hf hfe using hY refine ⟨∑ k, X i k * f k j, O.sum_mem fun k _ => O.mul_mem (hX i k) (hf k j), ?_⟩ rw [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun k _ => by rw [hfe]; ring`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_mul_II {O : Subring F} {ϖ : F} {a b c : ℕ} {X : Matrix (Fin a) (Fin b) F}
     {Y : Matrix (Fin b) (Fin c) F} (hX : X ∈ intMat O a b) (hY : Y ∈ IIset O ϖ) :
@@ -102,7 +102,7 @@ theorem int_mul_II {O : Subring F} {ϖ : F} {a b c : ℕ} {X : Matrix (Fin a) (F
   exact Finset.sum_congr rfl fun k _ => by rw [hfe]; ring
 
 /- English proof (translation)
-Introduce `i j` and use `by obtain ⟨o, ho, e⟩ := hX i j rw [e]; exact O.mul_mem hϖ ho`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem II_int {O : Subring F} {ϖ : F} (hϖ : ϖ ∈ O) {a b : ℕ} {X : Matrix (Fin a) (Fin b) F}
     (hX : X ∈ IIset O ϖ) : X ∈ intMat O a b := fun i j => by
@@ -110,17 +110,15 @@ theorem II_int {O : Subring F} {ϖ : F} (hϖ : ϖ ∈ O) {a b : ℕ} {X : Matrix
   rw [e]; exact O.mul_mem hϖ ho
 
 /- English proof (translation)
-Set `P' : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨P i j, hP i j⟩`. Set `Q' : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨Q i j, hQ i j⟩`. Set `I : Ideal O` to `Ideal.span {(⟨ϖ, hϖ⟩ : O)}`. Establish `hm : (Ideal.Quotient.mk I).mapMatrix P' = (Ideal.Quotient.mk I).mapMatrix Q'`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Use `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton'.2 ?_)` and prove the remaining obligations. Take `⟨o, ho, e⟩` from `h i j`. Use `⟨⟨o, ho⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show o * ϖ = P i j - Q i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Conclude with `e.symm`. Establish `hd : Ideal.Quotient.mk I P'.det = Ideal.Quotient.mk I Q'.det`. Rewrite using `[RingHom.map_det, RingHom.map_det, hm]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 hd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPd : P.det = ((P'.det : O) : F)`. Establish `e : O.subtype.mapMatrix P' = P` using `by ext i j; rfl`. Use `RingHom.map_det O.subtype P'` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQd : Q.det = ((Q'.det : O) : F)`. Establish `e : O.subtype.mapMatrix Q' = Q` using `by ext i j; rfl`. Use `RingHom.map_det O.subtype Q'` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this.symm`.
-
-Establish `hv : (a : F) * ϖ = ((P'.det : O) : F) - ((Q'.det : O) : F)` using `congrArg Subtype.val ha`. Conclude with `⟨a, a.2, by rw [hPd, hQd, ← hv, mul_comm]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_congr {O : Subring F} {ϖ : F} (hϖ : ϖ ∈ O) {n : ℕ} {P Q : Matrix (Fin n) (Fin n) F}
     (hP : P ∈ intMat O n n) (hQ : Q ∈ intMat O n n) (h : P - Q ∈ IIset O ϖ) :
@@ -153,9 +151,9 @@ theorem det_congr {O : Subring F} {ϖ : F} (hϖ : ϖ ∈ O) {n : ℕ} {P Q : Mat
   exact ⟨a, a.2, by rw [hPd, hQd, ← hv, mul_comm]⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `hna (u - v) v` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hv]`. Conclude with `this.trans (max_le h.le le_rfl)`. Use `hna u (v - u)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_sub_cancel, hv, nrm.map_sub v u]`. Break down `le_max_iff.1 this with h' | h'` into its components or cases. Conclude with `h'`. Conclude with `absurd h (not_lt.2 h')`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem nrm_eq_one_of_close {nrm : AbsoluteValue F ℝ}
     (hna : ∀ x y : F, nrm (x + y) ≤ max (nrm x) (nrm y)) {u v : F} (hv : nrm v = 1)
@@ -181,9 +179,9 @@ def Supp (O : Subring F) (ϖ : F) {r d c : ℕ} (x : Matrix (Fin (r + d)) (Fin (
   bAA x ∈ Jset (GLint O r) ∧ bDA x ∈ IIset O ϖ ∧ bAD x ∈ intMat O r c ∧ bDD x ∈ intMat O d c
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `(GlobalTheory.T.mem_integralGL_iff_integral_unit_det hLF n g).1 hg`. Introduce and unpack `⟨h, hd⟩`. Establish `hne : M.det ≠ 0` using `fun h0 => by`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[h0, map_zero]`. Conclude with `zero_ne_one hd`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hne, ?_, rfl⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.mem_integralGL_iff_integral_unit_det hLF n _).2 ⟨h, hd⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Jset_iff (hLF : LF O ϖ nrm q) {n : ℕ} (M : Matrix (Fin n) (Fin n) F) :
     M ∈ Jset (GLint O n) ↔ M ∈ intMat O n n ∧ nrm M.det = 1 := by
@@ -197,21 +195,19 @@ theorem Jset_iff (hLF : LF O ϖ nrm q) {n : ℕ} (M : Matrix (Fin n) (Fin n) F) 
     exact (GlobalTheory.T.mem_integralGL_iff_integral_unit_det hLF n _).2 ⟨h, hd⟩
 
 /- English proof (translation)
-Take `⟨-, hϖ, -, hlt, -, hna, -⟩` from `NormalisedValue.main hLF`. Take `⟨e1, e2, e3, e4⟩` from `BlockMul.blocks_mul r d c c x (k : Matrix (Fin (r + c)) (Fin (r + c)) F)`. Establish `kint : ∀ i j, (k : Matrix (Fin (r + c)) (Fin (r + c)) F) i j ∈ O` using `hk.1.1`. Establish `ka : bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F) ∈ intMat O r r` using `fun i j => kint _ _`. Establish `kb : bAD (k : Matrix (Fin (r + c)) (Fin (r + c)) F) ∈ intMat O r c` using `fun i j => kint _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `kd : bDD (k : Matrix (Fin (r + c)) (Fin (r + c)) F) ∈ intMat O c c` using `fun i j => kint _ _`. Establish `kc : bDA (k : Matrix (Fin (r + c)) (Fin (r + c)) F) ∈ IIset O ϖ` using `hk.2`. Take `⟨hA, hC, hB, hD⟩` from `hx`. Take `⟨hAi, hAd⟩` from `(Jset_iff hLF _).1 hA`. Establish `hadet : nrm (bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det = 1` using `((GlobalTheory.T.parahoric_character_modulus_properties hLF δ hδ r c).2.1 k hk).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hV` using `int_mul hAi ka`. Establish `hW` using `int_mul_II hB kc`. Establish `hU : bAA (x * (k : Matrix (Fin (r + c)) (Fin (r + c)) F)) ∈ intMat O r r`. Rewrite using `[e1]`. Conclude with `int_add hV (II_int hϖ hW)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdiff : bAA (x * (k : Matrix (Fin (r + c)) (Fin (r + c)) F)) - bAA x * bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F) ∈ IIset O ϖ`. Rewrite using `[e1, add_sub_cancel_left]`. Conclude with `hW`. Take `⟨o, ho, hoe⟩` from `det_congr hϖ hU hV hdiff`. Establish `hVd : nrm (bAA x * bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det = 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_mul, map_mul, hAd, hadet, one_mul]`. Establish `hlt'` using `(hlt _).2 ⟨o, ho, hoe⟩`. Establish `hUd` using `nrm_eq_one_of_close hna hVd hlt'`. Establish `hUne : (bAA (x * (k : Matrix (Fin (r + c)) (Fin (r + c)) F))).det ≠ 0` using `fun h => by`. Rewrite `hUd` using `[h, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hUd`. Establish `hVne : (bAA x * bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det ≠ 0` using `fun h => by`. Rewrite `hVd` using `[h, map_zero]`. Conclude with `zero_ne_one hVd`. Use `⟨⟨(Jset_iff hLF _).2 ⟨hU, hUd⟩, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Conclude with `II_add (II_mul_int hC ka) (int_mul_II hD kc)`. Rewrite using `[e2]`. Conclude with `int_add (int_mul hAi kb) (int_mul hB kd)`. Rewrite using `[e4]`.
-
-Conclude with `int_add (int_mul (II_int hϖ hC) kb) (int_mul hD kd)`. Rewrite using `[extendedCharacter_congr_of_tame nrm δ hδ.tame hUne hVne (by rw [hVd]; exact hlt')]`. Rewrite `hVne`, the goal using `[Matrix.det_mul]`. Conclude with `unramifiedCharExt_mul δ (left_ne_zero_of_mul hVne) (right_ne_zero_of_mul hVne)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hLF : LF O ϖ nrm q) (δ : Fˣ →* ℂˣ) (hδ : Del nrm δ) {r d c : ℕ}
     {k : GL (Fin (r + c)) F} (hk : k ∈ parJ O ϖ r c) {x : Matrix (Fin (r + d)) (Fin (r + c)) F}
@@ -255,21 +251,17 @@ theorem step (hLF : LF O ϖ nrm q) (δ : Fˣ →* ℂˣ) (hδ : Del nrm δ) {r d
     exact unramifiedCharExt_mul δ (left_ne_zero_of_mul hVne) (right_ne_zero_of_mul hVne)
 
 /- English proof (translation)
-Introduce `F _ _ _ _ O ϖ nrm q hLF δ hδ r d c k hk x`. Distinguish the cases in `hx : Supp O ϖ x`. Take `⟨hs, hc⟩` from `step hLF δ hδ hk hx`. Establish `hp1 : phiQ O ϖ δ r d c x = (chi0 δ (bAA x).det)⁻¹`. Unfold `phiQ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `if_pos hx`. Establish `hp2 : phiQ O ϖ δ r d c (x * (k : Matrix (Fin (r + c)) (Fin (r + c)) F)) = (chi0 δ (bAA (x * (k : Matrix (Fin (r + c)) (Fin (r + c)) F))).det)⁻¹`. Unfold `phiQ`. Conclude with `if_pos hs`. Establish `hdet` using `((GlobalTheory.T.parahoric_character_modulus_properties hLF δ hδ r c).2.1 k hk).2.2.2.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAd` using `((Jset_iff hLF _).1 hx.1).2`. Establish `hadet` using `((GlobalTheory.T.parahoric_character_modulus_properties hLF δ hδ r c).2.1 k hk).2.1`. Establish `hAne : (bAA x).det ≠ 0` using `fun h => by`. Rewrite `hAd` using `[h, map_zero]`. Conclude with `zero_ne_one hAd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hane : (bAA (k : Matrix (Fin (r + c)) (Fin (r + c)) F)).det ≠ 0` using `fun h => by`. Rewrite `hadet` using `[h, map_zero]`. Conclude with `zero_ne_one hadet`. Establish `h1` using `unramifiedCharExt_ne_zero δ hAne`. Establish `h2` using `unramifiedCharExt_ne_zero δ hane`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hp1, hp2, hc, hdet]`. Clear the denominators using the available nonvanishing facts. Establish `hinv : k⁻¹ ∈ parJ O ϖ r c`. Take `⟨J, hJ, -⟩` from `Par.parJ_compact_open hLF r c`. Rewrite `hk`, the goal using `[← hJ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `J.inv_mem hk`. Establish `hs : ¬ Supp O ϖ (x * (k : Matrix (Fin (r + c)) (Fin (r + c)) F))` using `fun h => hx (by`. Use `(step hLF δ hδ hinv h).1` as an intermediate fact. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one] at this)` and apply the resulting hypothesis. Establish `hp1 : phiQ O ϖ δ r d c x = 0`.
-
-Unfold `phiQ`. Conclude with `if_neg hx`. Establish `hp2 : phiQ O ϖ δ r d c (x * (k : Matrix (Fin (r + c)) (Fin (r + c)) F)) = 0`. Unfold `phiQ`. Conclude with `if_neg hs`.
-
-Rewrite using `[hp1, hp2, mul_zero, mul_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiQ_eigen : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ},

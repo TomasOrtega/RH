@@ -7,15 +7,15 @@ namespace Formalism.LatticeBaseChangeAlt
 open Finset Matrix Polynomial
 
 /- English proof (translation)
-Introduce `ρ hρ`. Establish `hρ0 : (1:ℝ) ≤ ρ` using `by exact_mod_cast hρ`. Establish `hpos : (0:ℝ) < ρ` using `by linarith`. Establish `hx0 : 0 ≤ (ρ : ℝ) ^ (-(3 : ℝ) / 2) / 10` using `by positivity`. Establish `hρx : (ρ:ℝ) * ((ρ : ℝ) ^ (-(3 : ℝ) / 2) / 10) ≤ 1 / 10`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (ρ:ℝ) * (ρ:ℝ) ^ (-(3:ℝ)/2) = (ρ:ℝ) ^ (-(1:ℝ)/2)`. Rewrite using `[show (-(1:ℝ)/2) = 1 + (-(3:ℝ)/2) by norm_num, Real.rpow_add hpos, Real.rpow_one]`. Establish `h1 : (ρ:ℝ) ^ (-(1:ℝ)/2) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hρ0 (by norm_num)`. Rewrite using `[mul_div_assoc', e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : (1 + (ρ : ℝ) ^ (-(3 : ℝ) / 2) / 10) ^ ρ ≤ Real.exp ((ρ:ℝ) * ((ρ : ℝ) ^ (-(3 : ℝ) / 2) / 10))`. Rewrite using `[Real.exp_nat_mul]`. Conclude with `pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp ((ρ : ℝ) ^ (-(3 : ℝ) / 2) / 10)]) ρ`. Establish `h2 : Real.exp ((ρ:ℝ) * ((ρ : ℝ) ^ (-(3 : ℝ) / 2) / 10)) ≤ Real.exp (1/10)` using `Real.exp_le_exp.2 hρx`. Establish `h3 : Real.exp (1/10) ≤ 3/2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h4 : (3/2:ℝ)^10 < Real.exp (1/10) ^ 10` using `pow_lt_pow_left₀ hc (by norm_num) (by norm_num)`. Rewrite `h4` using `[← Real.exp_nat_mul]`. Evaluate the numerical expressions using `at h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[Real.exp_one_lt_d9]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem detPerturbNumeric : DetPerturbNumeric := by
   intro ρ hρ
@@ -45,23 +45,23 @@ theorem detPerturbNumeric : DetPerturbNumeric := by
   linarith
 
 /- English proof (translation)
-Introduce `𝕜 _ i κ _ w σ₀ ε Δmax hΔ`. Establish `hΔ0 : 0 ≤ Δmax` using `(norm_nonneg _).trans (hΔ σ₀)`. Establish `hdet : ∀ v : Fin i → Fin i → 𝕜, (Matrix.of fun a j => v j a).det = Matrix.detRowAlternating v`. Introduce `v`. Rewrite using `[← Matrix.det_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `c : Fin i → Option κ → 𝕜` to `fun j o => Option.elim o 1 (ε j)`. Set `τ : Fin i → Option κ → κ` to `fun j o => Option.elim o (σ₀ j) id`. Establish `hcol : (fun j => w (σ₀ j) + ∑ k, ε j k • w k) = fun j => ∑ o, c j o • w (τ j o)`. Use function extensionality and compare the values at `j`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Fintype.sum_option]`. Simplify using `[c, τ]`. Establish `h1` using `(Matrix.detRowAlternating (n := Fin i) (R := 𝕜)).toMultilinearMap.map_sum (fun j o => c j o • w (τ j o))`. Establish `h2 : ∀ r : Fin i → Option κ, (Matrix.detRowAlternating (n` using `Fin i) (R := 𝕜)).toMultilinearMap (fun j => c j (r j) • w (τ j (r j))) = (∏ j, c j (r j)) * Matrix.detRowAlternating (fun j => w (τ j (r j))) := by`. Introduce `r`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hpert : (Matrix.of fun a j => (w (σ₀ j) + ∑ k, ε j k • w k) a).det = ∑ r : Fin i → Option κ, (∏ j, c j (r j)) * Matrix.detRowAlternating (fun j => w (τ j (r j)))`. Rewrite using `[hdet (fun j => w (σ₀ j) + ∑ k, ε j k • w k), hcol]`. Conclude with `h1.trans (Finset.sum_congr rfl (fun r _ => h2 r))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbase : (Matrix.of fun a j => w (σ₀ j) a).det = Matrix.detRowAlternating (fun j => w (σ₀ j))` using `hdet _`. Set `r0 : Fin i → Option κ` to `fun _ => none`. Establish `hr0 : (∏ j, c j (r0 j)) * Matrix.detRowAlternating (fun j => w (τ j (r0 j))) = Matrix.detRowAlternating (fun j => w (σ₀ j))`. Simplify using `[c, τ, r0]`. Rewrite using `[hpert, hbase, ← Finset.add_sum_erase _ _ (Finset.mem_univ r0), hr0, add_sub_cancel_left]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ r : Fin i → Option κ, ‖(∏ j, c j (r j)) * Matrix.detRowAlternating (fun j => w (τ j (r j)))‖ ≤ (∏ j, ‖c j (r j)‖) * Δmax`. Introduce `r`. Rewrite using `[norm_mul, norm_prod]`. Apply `mul_le_mul_of_nonneg_left _ (Finset.prod_nonneg (fun _ _ => norm_nonneg _))` to reduce the goal to its premises. Use `hΔ (fun j => τ j (r j))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hdet]`. Then use the resulting hypothesis. Establish `hsum : ∏ j, (1 + ∑ k, ‖ε j k‖) = ∑ r : Fin i → Option κ, ∏ j, ‖c j (r j)‖`. Establish `e : ∀ j, (1 + ∑ k, ‖ε j k‖) = ∑ o, ‖c j o‖`. Introduce `j`. Rewrite using `[Fintype.sum_option]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[c]`. Repeatedly rewrite using `[e]`. Rewrite using `[Finset.prod_univ_sum]`. Apply the tactic sequence `try rw [Fintype.piFinset_univ]`. Establish `hr0n : ∏ j, ‖c j (r0 j)‖ = 1` using `by simp [c, r0]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul, Finset.sum_erase_eq_sub (Finset.mem_univ r0), hr0n, hsum]`.
+A detailed English derivation is pending.
 -/
 theorem detPerturbation : DetPerturbation := by
   intro 𝕜 _ i κ _ w σ₀ ε Δmax hΔ
@@ -123,11 +123,11 @@ theorem detPerturbation : DetPerturbation := by
         rw [← Finset.sum_mul, Finset.sum_erase_eq_sub (Finset.mem_univ r0), hr0n, hsum]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial K with hK | hK` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `e : (1 + (X : K[X]) • M.map C) = 1 - (X : K[X]) • (-M).map C`. Establish `hm : (-M).map C = -(M.map C)`. Use extensionality with `a b`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hm, smul_neg, sub_neg_eq_add]`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `(Matrix.charpolyRev (-M)).coeff i = M.det`. Rewrite using `[← Matrix.reverse_charpoly, Polynomial.coeff_reverse, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, Polynomial.revAt_le (le_refl i), Nat.sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Matrix.det_eq_sign_charpoly_coeff (-M)`. Rewrite `h` using `[Fintype.card_fin, Matrix.det_neg, Fintype.card_fin]`. Establish `hu : IsUnit ((-1 : K) ^ i)` using `(isUnit_one.neg).pow i`. Conclude with `(hu.mul_left_cancel h).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma coeff_top_det {K : Type*} [CommRing K] {i : ℕ} (M : Matrix (Fin i) (Fin i) K) :
     (det (1 + (X : K[X]) • M.map C)).coeff i = M.det := by
@@ -148,9 +148,9 @@ lemma coeff_top_det {K : Type*} [CommRing K] {i : ℕ} (M : Matrix (Fin i) (Fin 
     exact (hu.mul_left_cancel h).symm
 
 /- English proof (translation)
-Rewrite using `[← coeff_top_det (A * B)]`. Establish `h1 : (1 : Matrix (Fin i) (Fin i) K[X]) + (X : K[X]) • (A * B).map C = 1 + ((X : K[X]) • A.map C) * (B.map C)`. Rewrite using `[Matrix.map_mul, Matrix.smul_mul]`. Establish `h2 : (B.map C) * ((X : K[X]) • A.map C) = (X : K[X]) • (B * A).map C`. Rewrite using `[Matrix.mul_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[Matrix.map_mul]`. Rewrite using `[h1, det_one_add_mul_comm, h2, coeff_det_one_add_X_smul_eq_sum_minors]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma det_mul_eq_sum_principal {K : Type*} [CommRing K] {i n : ℕ} (A : Matrix (Fin i) (Fin n) K)
     (B : Matrix (Fin n) (Fin i) K) :
@@ -165,7 +165,7 @@ lemma det_mul_eq_sum_principal {K : Type*} [CommRing K] {i n : ℕ} (A : Matrix 
   rw [h1, det_one_add_mul_comm, h2, coeff_det_one_add_X_smul_eq_sum_minors]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self (S.orderIsoOfFin hS).toEquiv]`. Rewrite using `[show ((B * A).submatrix (Subtype.val : S → Fin n) Subtype.val).submatrix (S.orderIsoOfFin hS).toEquiv (S.orderIsoOfFin hS).toEquiv = B.submatrix (S.orderEmbOfFin hS) id * A.submatrix id (S.orderEmbOfFin hS) from by`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Finset.coe_orderIsoOfFin_apply]]`. Rewrite using `[Matrix.det_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma principal_minor_factor {K : Type*} [CommRing K] {i n : ℕ} (A : Matrix (Fin i) (Fin n) K)
     (B : Matrix (Fin n) (Fin i) K) (S : Finset (Fin n)) (hS : S.card = i) :
@@ -180,25 +180,23 @@ lemma principal_minor_factor {K : Type*} [CommRing K] {i n : ℕ} (A : Matrix (F
   rw [Matrix.det_mul]
 
 /- English proof (translation)
-Introduce `i N r M hM hNr`. Set `g : Finset (Fin N) → ℝ` to `fun S => if h : S.card = i then ‖(M.submatrix id (S.orderEmbOfFin h)).det‖ ^ 2 else 0`. Establish `h1 : (1 : ℂ) = ∑ S ∈ (Finset.univ : Finset (Fin N)).powersetCard i, ((Mᴴ * M).submatrix (Subtype.val : S → Fin N) Subtype.val).det`. Rewrite using `[← det_mul_eq_sum_principal M Mᴴ, hM, Matrix.det_one]`. Establish `h2 : ∀ S ∈ (Finset.univ : Finset (Fin N)).powersetCard i, ((Mᴴ * M).submatrix (Subtype.val : S → Fin N) Subtype.val).det = ((g S : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `S hS`. Establish `hc` using `(Finset.mem_powersetCard.1 hS).2`. Rewrite using `[principal_minor_factor M Mᴴ S hc]`. Simplify using `only [g, dif_pos hc]`. Establish `e : Mᴴ.submatrix (S.orderEmbOfFin hc) id = (M.submatrix id (S.orderEmbOfFin hc))ᴴ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[Matrix.conjTranspose_apply]`. Rewrite using `[e, Matrix.det_conjTranspose, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : (1 : ℝ) = ∑ S ∈ (Finset.univ : Finset (Fin N)).powersetCard i, g S`. Use `h1.trans (Finset.sum_congr rfl h2)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : ∀ S ∈ (Finset.univ : Finset (Fin N)).powersetCard i, g S < (2 : ℝ) ^ (-(r : ℝ))`. Introduce `S hS`. Establish `hc` using `(Finset.mem_powersetCard.1 hS).2`. Simplify using `only [g, dif_pos hc]`. Establish `h4` using `hcon _ (S.orderEmbOfFin hc).strictMono`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ‖(M.submatrix id (S.orderEmbOfFin hc)).det‖ ^ 2 < ((2 : ℝ) ^ (-(r : ℝ) / 2)) ^ 2` using `pow_lt_pow_left₀ h4 (norm_nonneg _) (by norm_num)`. Establish `h6 : ((2 : ℝ) ^ (-(r : ℝ) / 2)) ^ 2 = (2 : ℝ) ^ (-(r : ℝ))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]`. Evaluate the numerical expressions. Conclude with `h5.trans_eq h6`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hne : ((Finset.univ : Finset (Fin N)).powersetCard i).Nonempty`. Establish `h6` using `Finset.sum_lt_sum_of_nonempty hne hlt`. Rewrite `h6` using `[Finset.sum_const, nsmul_eq_mul, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]`. Establish `h7 : ((N.choose i : ℕ) : ℝ) ≤ (2 : ℝ) ^ (N : ℝ)`. Rewrite using `[Real.rpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Nat.choose_le_two_pow N i` after adjusting the coercions. Establish `h8 : (2 : ℝ) ^ (N : ℝ) * (2 : ℝ) ^ (-(r : ℝ)) ≤ 1`. Rewrite using `[← Real.rpow_add (by norm_num)]`. Apply `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num)` to reduce the goal to its premises. Establish `: (N : ℝ) ≤ r` using `by exact_mod_cast hNr`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h9 : ((N.choose i : ℕ) : ℝ) * (2 : ℝ) ^ (-(r : ℝ)) ≤ (2 : ℝ) ^ (N : ℝ) * (2 : ℝ) ^ (-(r : ℝ))` using `mul_le_mul_of_nonneg_right h7 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hne` using `[Finset.not_nonempty_iff_eq_empty]`. Rewrite `h3` using `[hne, Finset.sum_empty]`.
-
-Evaluate the numerical expressions using `at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem cauchyBinetMax : CauchyBinetMax := by
   intro i N r M hM hNr
@@ -257,21 +255,21 @@ theorem cauchyBinetMax : CauchyBinetMax := by
 
 open MeasureTheory in
 /- English proof (translation)
-Introduce `n P δ R hδ hδR hR hsep`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Simplify using `only [pow_zero]`. Establish `: P.card ≤ 1` using `Finset.card_le_one.2 (fun a _ b _ => PiLp.ext (fun i => Fin.elim0 i))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use `haveI : Nontrivial (EuclideanSpace ℝ (Fin n)) := Module.nontrivial_of_finrank_pos (R := ℝ) (by rw [finrank_euclideanSpace_fin]; exact hn) classical`. Establish `hd2 : 0 < δ / 2` using `by linarith`. Establish `hV0 : volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) 1) ≠ 0` using `(Metric.measure_ball_pos volume _ one_pos).ne'`. Establish `hVt : volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) 1) ≠ ⊤` using `measure_ball_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hball : ∀ (x : EuclideanSpace ℝ (Fin n)) (ρ : ℝ), 0 ≤ ρ → volume (Metric.ball x ρ) = ENNReal.ofReal (ρ ^ n) * volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) 1)`. Introduce `x ρ hρ`. Rewrite using `[Measure.addHaar_ball _ _ hρ, finrank_euclideanSpace_fin]`. Establish `hdisj : Set.PairwiseDisjoint (↑P : Set (EuclideanSpace ℝ (Fin n))) (fun x => Metric.ball x (δ / 2))`. Introduce `x hx y hy hxy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Metric.ball_disjoint_ball (by linarith [hsep x hx y hy hxy])`. Establish `hsub : (⋃ x ∈ P, Metric.ball x (δ / 2)) ⊆ Metric.ball (0 : EuclideanSpace ℝ (Fin n)) (R + δ / 2)`. Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨x, hx, hz⟩` from `hz`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Metric.mem_ball, dist_zero_right]`. Rewrite `hz` using `[Metric.mem_ball, dist_eq_norm]`. Use `norm_le_norm_add_norm_sub' z x` as an intermediate fact. Combine the linear relations using `[hR x hx]`. Establish `hmeas : volume (⋃ x ∈ P, Metric.ball x (δ / 2)) = ∑ x ∈ P, volume (Metric.ball x (δ / 2))` using `measure_biUnion_finset hdisj (fun x _ => measurableSet_ball)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∑ x ∈ P, volume (Metric.ball x (δ / 2)) ≤ volume (Metric.ball (0 : EuclideanSpace ℝ (Fin n)) (R + δ / 2))`. Rewrite using `[← hmeas]`. Conclude with `measure_mono hsub`. Simplify using `only [hball _ _ hd2.le, hball _ _ (by linarith : (0:ℝ) ≤ R + δ / 2), Finset.sum_const, nsmul_eq_mul] at key`. Rewrite `key` using `[← mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key2` using `(ENNReal.mul_le_mul_iff_left hV0 hVt).1 key`. Rewrite `key2` using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_le_ofReal_iff (pow_nonneg (by linarith) n)]`. Establish `hfin : (R + δ / 2) ^ n ≤ (3 * R / δ) ^ n * (δ / 2) ^ n`. Rewrite using `[← mul_pow]`. Apply `pow_le_pow_left₀ (by linarith)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : 3 * R / δ * (δ / 2) = 3 * R / 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_mul_le_mul_right (key2.trans hfin) (pow_pos hd2 n)`.
+A detailed English derivation is pending.
 -/
 theorem packingCount : PackingCount := by
   intro n P δ R hδ hδR hR hsep

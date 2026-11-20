@@ -4,9 +4,9 @@ import Mathlib.Algebra.Module.Lattice
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt C h1`. Use `⟨m, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hp : (0 : ℝ) < (l : ℝ) ^ m` using `by positivity`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow, inv_mul_le_iff₀ hp, mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha.trans hm.le`.
+A detailed English derivation is pending.
 -/
 private theorem exists_pow_mul_norm_le {l : ℕ} [Fact l.Prime] (C : ℝ) :
     ∃ m : ℕ, ∀ a : ℚ_[l], ‖a‖ ≤ C → ‖(l : ℚ_[l]) ^ m * a‖ ≤ 1 := by
@@ -18,23 +18,21 @@ private theorem exists_pow_mul_norm_le {l : ℕ} [Fact l.Prime] (C : ℝ) :
   exact ha.trans hm.le
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℚ_[l] V`. Set `S : Set V` to `Set.range fun p : G × Fin (finrank ℚ_[l] V) => ρ p.1 (b p.2)`. Establish `hc : Continuous fun g : G => fun i => b.equivFun (ρ g (b i))`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `(IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap).comp (h.comp (continuous_id.prodMk continuous_const))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `(isCompact_range hc).isBounded.exists_norm_le`. Take `⟨m, hm⟩` from `exists_pow_mul_norm_le (l := l) C`. Establish `hl : ((l : ℚ_[l]) ^ m) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Use `⟨Submodule.span ℤ_[l] S, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Set `N : Submodule ℤ_[l] V` to `Submodule.span ℤ_[l] (Set.range fun i => ((l : ℚ_[l]) ^ m)⁻¹ • b i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hN : N.FG` using `Submodule.fg_span (Set.finite_range _)`. Use `hN.of_le ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨g, i⟩, rfl⟩`. Establish `e` using `b.sum_repr (ρ g (b i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe]`. Rewrite using `[← e]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `hk : ‖b.repr (ρ g (b i)) k‖ ≤ C` using `((norm_le_pi_norm (b.equivFun (ρ g (b i))) k).trans (norm_le_pi_norm (fun i => b.equivFun (ρ g (b i))) i)).trans (hC _ ⟨g, rfl⟩)`. Set `z : ℤ_[l]` to `⟨_, hm _ hk⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: b.repr (ρ g (b i)) k • b k = z • (((l : ℚ_[l]) ^ m)⁻¹ • b k)`. Rewrite using `[← algebraMap_smul ℚ_[l] z, smul_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = ((l : ℚ_[l]) ^ m * b.repr (ρ g (b i)) k) * _`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `N.smul_mem z (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite using `[eq_top_iff, ← b.span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `Submodule.subset_span ⟨(1, i), by simp⟩`. Introduce `g x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨g', i⟩, rfl⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨(g * g', i), by simp⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.map_smul_of_tower]`.
-
-Conclude with `Submodule.smul_mem _ a hx`.
+A detailed English derivation is pending.
 -/
 private theorem exists_lattice {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G]
     {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V]
@@ -86,25 +84,23 @@ private theorem exists_lattice {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [To
     | smul a x _ hx => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ _ V _ _ _ _ _ _ _ _ _ ρ h`. Take `⟨L, hL, hst⟩` from `exists_lattice ρ h`. Establish `hr : finrank ℤ_[l] L = finrank ℚ_[l] V`. Unfold `Module.finrank`. Rewrite using `[Submodule.IsLattice.rank' ℚ_[l] L]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Set `bL : Basis (Fin (finrank ℚ_[l] V)) ℤ_[l] L` to `Module.finBasisOfFinrankEq ℤ_[l] L hr`. Set `b : Basis (Fin (finrank ℚ_[l] V)) ℚ_[l] V` to `bL.extendOfIsLattice ℚ_[l]`. Set `j : (Fin (finrank ℚ_[l] V) → ℤ_[l]) →ₗ[ℤ_[l]] V` to `L.subtype ∘ₗ bL.equivFun.symm.toLinearMap`. Establish `hj : ∀ x, j x = b.equivFun.symm (fun i => (x i : ℚ_[l]))` using `fun x => by`. Simplify using `only [j, b, LinearMap.comp_apply, LinearEquiv.coe_coe, Basis.equivFun_symm_apply, map_sum, map_smul, Submodule.subtype_apply, Basis.extendOfIsLattice_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(algebraMap_smul ℚ_[l] (x i) _).symm`. Set `e : (Fin (finrank ℚ_[l] V) → ℚ_[l]) ≃ₜ V` to `{ toEquiv := b.equivFun.symm.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap }`. Establish `hjo : IsOpenEmbedding j`. Establish `: (j : _ → V) = e ∘ Pi.map (fun _ => ((↑) : ℤ_[l] → ℚ_[l]))` using `funext hj`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `e.isOpenEmbedding.comp (IsOpenEmbedding.piMap fun _ => PadicInt.isOpenEmbedding_coe)`. Set `r : G → L →ₗ[ℤ_[l]] L` to `fun g => ((ρ g).restrictScalars ℤ_[l]).restrict (hst g)`. Set `ρT : Representation ℤ_[l] G (Fin (finrank ℚ_[l] V) → ℤ_[l])` to `{ toFun := fun g => bL.equivFun.toLinearMap ∘ₗ r g ∘ₗ bL.equivFun.symm.toLinearMap map_one' := by`. Use `LinearMap.ext fun x => bL.equivFun.symm.injective (Subtype.ext ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `ρ 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Use the proof step `map_mul' := fun g g' => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `LinearMap.ext fun x => bL.equivFun.symm.injective (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Module.End.mul_apply]`. Express the relevant statement in the definitionally equal form `ρ (g * g') _ = _`. Rewrite using `[map_mul]`. Use `rfl }`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ : ∀ g x, j (ρT g x) = ρ g (j x)` using `fun g x => by`. Express the relevant statement in the definitionally equal form `L.subtype (bL.equivFun.symm (bL.equivFun (r g (bL.equivFun.symm x)))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Use `⟨ρT, j, ?_, hjo, hρ, fun y => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[hjo.isEmbedding.continuous_iff]`. Establish `: (j ∘ fun p : G × (Fin (finrank ℚ_[l] V) → ℤ_[l]) => ρT p.1 p.2) = fun p => ρ p.1 (j p.2)`. Use function extensionality and compare the values at `fun p => hρ _ _`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.comp (continuous_fst.prodMk (hjo.continuous.comp continuous_snd))`. Take `⟨m, hm⟩` from `exists_pow_mul_norm_le (l := l) ‖b.equivFun y‖`. Use `⟨m, fun i => ⟨_, hm _ (norm_le_pi_norm (b.equivFun y) i)⟩, ?_⟩` and prove the remaining obligations. Use `(hj _).trans ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_eq, ← algebraMap_smul ℚ_[l] ((l : ℤ_[l]) ^ m) y, map_smul]`.
-
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(l : ℚ_[l]) ^ m * b.equivFun y i = _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_invariant_lattice_openEmbedding :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul ℚ_[l] V] (ρ : Representation ℚ_[l] G V), ContAction ρ → ∃ (ρT : Representation ℤ_[l] G (Fin (finrank ℚ_[l] V) → ℤ_[l])) (j : (Fin (finrank ℚ_[l] V) → ℤ_[l]) →ₗ[ℤ_[l]] V), ContAction ρT ∧ IsOpenEmbedding j ∧ (∀ g x, j (ρT g x) = ρ g (j x)) ∧ ∀ y : V, ∃ m : ℕ, (l : ℤ_[l]) ^ m • y ∈ LinearMap.range j := by

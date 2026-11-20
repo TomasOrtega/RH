@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using hg`. Consider the case `succ m ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `mul_mem_secZ ih hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_succ_mem_secZ {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ secZ Xo c e) (m : ℕ) :
     g ^ (m + 1) ∈ secZ Xo c ((m + 1) • e) := by
@@ -27,27 +27,25 @@ theorem pow_succ_mem_secZ {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ secZ Xo
     exact mul_mem_secZ ih hg
 
 /- English proof (translation)
-Introduce `x hx`. Establish `ho : IsOpen (U.X k).dom` using `FourierCoefficientDomain.isOpen_dom _`. Take `⟨n, hn, g, hg, hg0⟩` from `GlobalTheory.TrueCx.FlatConst.exists_sec_four hpq (U.un k ⟨x, hx⟩)`. Use `set M : ℕ := ∑ i : Ix Dw, (e i).natAbs with hMdef`. Establish `hM : ∀ i, -(4 * ((M + 1 : ℕ) : ℤ)) ≤ e i` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (e i).natAbs ≤ M` using `Finset.single_le_sum (f := fun i => (e i).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h2 : -((e i).natAbs : ℤ) ≤ e i`. Use `Int.natAbs_abs (e i)` as an intermediate fact. Rewrite using `[← Int.abs_eq_natAbs]`. Conclude with `neg_abs_le _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h3 : ((e i).natAbs : ℤ) ≤ M` using `by exact_mod_cast h1`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Set `a : (E →+* ℂ) × ℕ → ℕ` to `fun p => if h : p.2 < Dw.mult p.1 then (4 * ((M + 1 : ℕ) : ℤ) + e (some ⟨p.1, ⟨p.2, h⟩⟩)).toNat else 0`. Establish `hdom : Dom a ((M + 1) * n)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨fun τ i j hij => ?_, hn.mul_left _⟩` and prove the remaining obligations. Use `show a (τ, j) ≤ a (τ, i)`. Simplify using `only [a]`. Distinguish the cases in `hj : j < Dw.mult τ`. Establish `hi : i < Dw.mult τ` using `lt_of_le_of_lt hij hj`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hj, dif_pos hi]`. Conclude with `Int.toNat_le_toNat (by linarith [hanti τ ⟨i, hi⟩ ⟨j, hj⟩ hij])`. Rewrite using `[dif_neg hj]`. Conclude with `Nat.zero_le _`. Establish `hgp` using `pow_succ_mem_secZ (Xo := Xo) (c := c) (by rw [secZ_nat]; exact hg) M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hgf : g ^ (M + 1) * f ∈ sec Xo c a ((M + 1) * n)`. Rewrite using `[← secZ_nat]`. Use `mul_mem_secZ hgp hf using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ex, he0]`. Establish `hi` using `i.2`. Rewrite using `[Pi.add_apply, Pi.smul_apply]`. Simplify using `only [ex, a, dif_pos hi, nsmul_eq_mul]`. Rewrite using `[Int.toNat_of_nonneg (by linarith [hM (some ⟨τ, i⟩)])]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `d1` using `(hU.2.2.2.2.1 _ n ⟨fun _ _ _ _ => le_rfl, hn⟩ g hg k).1`. Establish `d2` using `(hU.2.2.2.2.1 _ _ hdom _ hgf k).1`. Establish `hx0 : rdU U g k x ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: rdU U g k x = toC (evR Xo c g (U.un k ⟨x, hx⟩))` using `dif_pos hx`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `a1` using `d1.differentiableAt (ho.mem_nhds hx)`. Establish `a2` using `d2.differentiableAt (ho.mem_nhds hx)`. Use `((a2.mul ((a1.pow (M + 1)).inv (pow_ne_zero _ hx0))).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Use `filter_upwards [a1.continuousAt.eventually_ne hx0] with y hy0`. Establish `e1 : rdU U (g ^ (M + 1) * f) k y = rdU U g k y ^ (M + 1) * rdU U f k y`. Rewrite using `[rdU_mul]`. Establish `: ∀ m : ℕ, rdU U (g ^ (m + 1)) = rdU U g ^ (m + 1)` using `fun m => by`. Proceed by induction on `m with`.
-
-Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ g (m + 1), rdU_mul, ih, ← pow_succ]`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[Pi.mul_apply, Pi.inv_apply, e1, Pi.pow_apply, mul_right_comm, mul_inv_cancel₀ (pow_ne_zero _ hy0), one_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_rdU_of_antitone {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} (hU : IsUnf U)
     (hpq : 1 ≤ Dw.p + Dw.q) {e : Ix Dw → ℤ} (he0 : e none = 0)
@@ -114,9 +112,9 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj 
   GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x hL e he0 s hs σ hσ k`. Distinguish the cases in `hanti : ∀ τ (i j : Fin (Dw.mult τ)), i ≤ j → e (some ⟨τ, j⟩) ≤ e (some ⟨τ, i⟩)`. Conclude with `(differentiableOn_rdU_of_antitone (hL.unf σ hσ) hL.pos he0 hanti hs k).continuousOn`. Use `push_neg at hanti`. Take `⟨τ, i, j, hij, hlt⟩` from `hanti`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hij' : i < j` using `lt_of_le_of_ne hij (by rintro rfl; exact lt_irrefl _ hlt)`. Rewrite using `[GlobalTheory.T.integerExponentSection_eq_zero_of_increasing_flag E H Dw l Xo c e τ i j hij' hlt s hs, map_zero]`. Conclude with `continuousOn_const`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_rdU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (e : Ix Dw → ℤ), e none = 0 → ∀ s ∈ secZ Xo c e, ∀ σ, GoodEmb c σ → ∀ k, ContinuousOn (rdU (U σ) s k) ((U σ).X k).dom := by
   intro E _ _ _ H Dw l Xo c r U x hL e he0 s hs σ hσ k

@@ -18,11 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SqLift
 
 /- English proof (translation)
-Establish `k` using `(liftMor κ h).comp M`. Establish `e1 : ∀ c, (liftMor κ₁ h₁).pull ((redMor h₂).pull c) = k.pull c` using `fun c ↦ GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) (by rw [Category.id_comp, e]) c`. Establish `e2 : ∀ c, M.pull ((liftMor κ h).pull c) = k.pull c` using `fun c ↦ GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) rfl c`. Prove the components needed by the constructor for the conclusion. Introduce `H c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `hs c`. Use `H c` as an intermediate fact. Rewrite `this` using `[crysToDR_apply, crysToDR_apply, e1, ← e2]`. Conclude with `this`. Introduce `H c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[crysToDR_apply, crysToDR_apply, e1, ← e2]`. Conclude with `H _`.
+A detailed English derivation is pending.
 -/
 theorem corr_crysToDR_step_iff {R R₁ R₀ : Type} [CommRing R] [CommRing R₁] [CommRing R₀] {I : Ideal R}
     {I₁ : Ideal R₁} {κ : DividedPowers I} {κ₁ : DividedPowers I₁} {π : R →+* R₀} {ρ : R →+* R₁}
@@ -49,27 +49,25 @@ theorem corr_crysToDR_step_iff {R R₁ R₀ : Type} [CommRing R] [CommRing R₁]
     exact H _
 
 /- English proof (translation)
-Introduce `P U R R₁ R₀ _ _ _ I J I₁ κ π hJ ρ κ₁ π₁ S L₂ L₁`. Introduce `g A₀ _ A' _ i' h' hA' hg F hF`. Establish `hπ : Function.Surjective π` using `S.comp ▸ S.surj₁.comp S.surj`. Establish `hrig` using `P.2.2.2.1`. Establish `hsp : spMap π = spMap π₁ ≫ spMap ρ` using `by rw [← S.comp, Cris.spMap_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `M : GrpMor κ (spMap π) A₀ κ₁ (spMap π₁) A₀ ρ (𝟙 _) (𝟙 _)` using `GrpMor.of_hom S.dp hsp (𝟙 A₀)`. Take `⟨A₁, _, i₁, i₂, h₁, h₂, e₁₂, hA₁, hg₁⟩` from `GlobalTheory.T.exists_intermediate_grpPullback_abelianScheme R R₁ R₀ ρ π₁ g A₀ A' i' (by rw [S.comp]; exact h') hA' hg`. Take `⟨F₁, hF₁, hF₁F⟩` from `GlobalTheory.T.group_scheme_divided_power_lift_tower P R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ S g A₀ A₁ A' i₁ i₂ i' h₁ h₂ h' e₁₂ hA' hg F hF`. Take `⟨B₁, _, j₁, k₁, hB₁, hgB₁, hfB₁⟩` from `L₁ g A₀ A₁ i₁ h₁ hA₁ hg₁ F₁ hF₁`. Take `⟨C, _, j₂, k₂, hC⟩` from `U R J hJ R₁ ρ S.surj S.kerJ B₁ hB₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgC : SmoothOfRelativeDimension g C.hom` using `GlobalTheory.T.smoothOfRelativeDimension_of_nilpotent_reduction R R₁ ρ S.surj (by rw [S.kerJ]; exact ⟨2, hJ⟩) g C B₁ j₂ k₂.1 hC.smooth hgB₁`. Establish `kC : IsGrpPullback A₀ C (spMap π) (j₁ ≫ j₂)` using `(k₁.comp k₂).congr hsp.symm rfl`. Establish `b' : Function.Bijective (crysToDR κ h')` using `AbelianDeRham.Rigid.crysToDR_bijective hrig hA' hg S.nil hπ S.ker h'`. Establish `bC : Function.Bijective (crysToDR κ kC)` using `AbelianDeRham.Rigid.crysToDR_bijective hrig hC hgC S.nil hπ S.ker kC`. Establish `bB₁ : Function.Bijective (crysToDR κ₁ k₁)` using `AbelianDeRham.Rigid.crysToDR_bijective hrig hB₁ hgB₁ S.nil₁ S.surj₁ S.ker₁ k₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s'` using `(hrig R A' g hA' hg I κ S.nil R₀ π hπ S.ker A₀ i' h').2`. Establish `sC` using `(hrig R C g hC hgC I κ S.nil R₀ π hπ S.ker A₀ _ kC).2`. Use `set E := F.comap (crysToDR κ h') with hE`. Use `set FC := E.map (crysToDR κ kC) with hFC`. Establish `hFCa : IsAdmissible k₂ FC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `hF.1`. Use `⟨⟨(N.comap (crysToDR κ h')).map (crysToDR κ kC), ?_⟩, fun y ↦ ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.orderIsoMapComap (LinearEquiv.ofBijective _ bC)).isCompl ((Submodule.orderIsoMapComap (LinearEquiv.ofBijective _ b')).symm.isCompl hN)`. Take `⟨d₁, rfl⟩` from `bB₁.2 y`. Establish `l1 : crysToDR κ₁ k₁ d₁ ∈ Fil B₁ ↔ ∃ d ∈ E, M.Corr d d₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Express the relevant statement in the definitionally equal form `d₁ ∈ liftFil κ₁ k₁ ↔ _`. Rewrite using `[hfB₁, Submodule.mem_comap, hF₁F]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, ex⟩`. Take `⟨d, rfl⟩` from `b'.2 x`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨d, hx, (corr_crysToDR_step_iff h₁ h₂ h' e₁₂ M s' d d₁).1 ex⟩`. Introduce and unpack `⟨d, hd, ed⟩`. Conclude with `⟨_, hd, (corr_crysToDR_step_iff h₁ h₂ h' e₁₂ M s' d d₁).2 ed⟩`. Rewrite using `[l1]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨d, hd, ed⟩`. Conclude with `⟨_, ⟨d, hd, rfl⟩, (corr_crysToDR_step_iff k₁ k₂ kC rfl M sC d d₁).2 ed⟩`. Introduce and unpack `⟨_, ⟨d, hd, rfl⟩, ex⟩`. Conclude with `⟨d, hd, (corr_crysToDR_step_iff k₁ k₂ kC rfl M sC d d₁).1 ex⟩`. Take `⟨A, _, j₃, k₃, hA, hgA, hfA⟩` from `L₂ g B₁ C j₂ k₂ hC hgC FC hFCa`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `kA : IsGrpPullback A₀ A (spMap π) (j₁ ≫ j₃)` using `(k₁.comp k₃).congr hsp.symm rfl`. Use `⟨A, inferInstance, j₁ ≫ j₃, kA, hA, hgA, ?_⟩` and prove the remaining obligations. Take `⟨N, -, hNC⟩` from `GlobalTheory.T.deRham_crystal_two_reductions_agree P R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ S g A₀ B₁ C j₁ j₂ (j₁ ≫ j₂) k₁ k₂ kC rfl hC hgC`. Take `⟨N', -, hNA⟩` from `GlobalTheory.T.deRham_crystal_two_reductions_agree P R R₁ R₀ I J I₁ κ π hJ ρ κ₁ π₁ S g A₀ B₁ A j₁ j₃ (j₁ ≫ j₃) k₁ k₃ kA rfl hA hgA`. Take `rfl : N' = N` from `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `d`. Express the relevant statement in the definitionally equal form `crysToDR κ kA d ∈ Fil A ↔ d ∈ E`. Rewrite using `[hNA d]`. Express the relevant statement in the definitionally equal form `_ ∈ liftFil (divided₂ hJ) k₃ ↔ _`. Rewrite using `[hfA, Submodule.mem_comap, ← hNC d]`.
-
-Conclude with `⟨fun ⟨d', hd', e⟩ ↦ bC.1 e ▸ hd', fun hd ↦ ⟨d, hd, rfl⟩⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liftObj_step : AbelianDeRham → AbelianUnobstructed → ∀ (R R₁ R₀ : Type) [CommRing R] [CommRing R₁]
     [CommRing R₀] (I J : Ideal R) (I₁ : Ideal R₁) (κ : DividedPowers I) (π : R →+* R₀)

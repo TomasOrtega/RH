@@ -11,14 +11,14 @@ def intAd (F : Type) [Field F] [NumberField F] : Set (FiniteAdeleRing (𝓞 F) F
   {a | ∀ v : HeightOneSpectrum (𝓞 F), a v ∈ v.adicCompletionIntegers F}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intAd (a : FiniteAdeleRing (𝓞 F) F) :
     a ∈ intAd F ↔ ∀ v : HeightOneSpectrum (𝓞 F), a v ∈ v.adicCompletionIntegers F :=
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isOpen_forall_mem (fun _ => Valued.isOpen_valuationSubring _)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_intAd : IsOpen (intAd F) :=
   RestrictedProduct.isOpen_forall_mem (fun _ => Valued.isOpen_valuationSubring _)
@@ -31,16 +31,16 @@ theorem natCast_mul_apply (n : ℕ) (a : FiniteAdeleRing (𝓞 F) F) (v : Height
   rfl
 
 /- English proof (translation)
-The claim follows from `natCast_mem _ n`.
+A detailed English derivation is pending.
 -/
 theorem natCast_mem_int (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
     (n : v.adicCompletion F) ∈ v.adicCompletionIntegers F :=
   natCast_mem _ n
 
 /- English proof (translation)
-Take `⟨b, hb, hbx⟩` from `adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {b}))`. Use `⟨Ideal.absNorm (Ideal.span {b}), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb0`. Establish `h1 : ((Ideal.absNorm (Ideal.span {b}) : ℕ) : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) c * algebraMap (𝓞 F) (v.adicCompletion F) b`. Rewrite using `[← map_mul, hc, map_natCast]`. Rewrite using `[h1, mul_assoc, mul_comm (algebraMap _ _ b) x]`. Conclude with `mul_mem (coe_mem_adicCompletionIntegers v c) hbx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_local (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) :
     ∃ n : ℕ, 0 < n ∧ (n : v.adicCompletion F) * x ∈ v.adicCompletionIntegers F := by
@@ -57,11 +57,9 @@ theorem exists_nat_local (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion 
     exact mul_mem (coe_mem_adicCompletionIntegers v c) hbx
 
 /- English proof (translation)
-Use `choose m hm0 hm using fun v => exists_nat_local (F := F) v (a v)`. Establish `hS : {v : HeightOneSpectrum (𝓞 F) | ¬ a v ∈ v.adicCompletionIntegers F}.Finite` using `Filter.eventually_cofinite.mp a.2`. Use `⟨∏ v ∈ hS.toFinset, m v, Finset.prod_pos (fun v _ => hm0 v), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[natCast_mul_apply]`. Distinguish the cases in `hw : w ∈ hS.toFinset`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m hw`. Rewrite using `[hk, Nat.cast_mul, mul_comm ((m w : ℕ) : w.adicCompletion F), mul_assoc]`. Conclude with `mul_mem (natCast_mem_int w k) (hm w)`. Establish `hw' : a w ∈ w.adicCompletionIntegers F`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hw (hS.mem_toFinset.mpr h)`. Conclude with `mul_mem (natCast_mem_int w _) hw'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_nat_adele (a : FiniteAdeleRing (𝓞 F) F) :
     ∃ n : ℕ, 0 < n ∧ (n : FiniteAdeleRing (𝓞 F) F) * a ∈ intAd F := by
@@ -85,15 +83,13 @@ end PI.AdCpctDenWork
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum PI.AdCpctDenWork in
 
 /- English proof (translation)
-Introduce `F _ _ C hC`. Use `choose m hm0 hm using fun a : FiniteAdeleRing (𝓞 F) F => exists_nat_adele a`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover (fun a => (fun x => (m a : FiniteAdeleRing (𝓞 F) F) * x) ⁻¹' intAd F) (fun a => isOpen_intAd.preimage (continuous_const_mul _)) (fun x _ => Set.mem_iUnion.mpr ⟨x, hm x⟩)`. Use `⟨∏ a ∈ t, m a, Finset.prod_pos (fun a _ => hm0 a), fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hfa⟩` from `Set.mem_iUnion₂.mp (ht hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m ha`. Establish `hfa' : (m a : FiniteAdeleRing (𝓞 F) F) * algebraMap F (FiniteAdeleRing (𝓞 F) F) f ∈ intAd F` using `hfa`. Establish `hA : algebraMap F (FiniteAdeleRing (𝓞 F) F) (((∏ a ∈ t, m a : ℕ) : F) * f) = (k : FiniteAdeleRing (𝓞 F) F) * ((m a : FiniteAdeleRing (𝓞 F) F) * algebraMap F (FiniteAdeleRing (𝓞 F) F) f)`. Rewrite using `[map_mul, map_natCast, hk, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hint : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F (((∏ a ∈ t, m a : ℕ) : F) * f) ≤ 1`. Introduce `v`. Rewrite using `[← valuedAdicCompletion_eq_valuation', ← mem_adicCompletionIntegers]`. Establish `h2 : (algebraMap F (FiniteAdeleRing (𝓞 F) F) (((∏ a ∈ t, m a : ℕ) : F) * f)) v ∈ v.adicCompletionIntegers F`. Rewrite using `[hA, natCast_mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_mem (natCast_mem_int v k) ((mem_intAd _).mp hfa' v)`. Rewrite `h2` using `[FiniteAdeleRing.algebraMap_apply]`. Conclude with `h2`. Take `⟨r, hr⟩` from `mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) _ hint`. Rewrite using `[← hr]`.
-
-Conclude with `RingOfIntegers.isIntegral_coe r`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PI.adCpctDen : PI.AdCpctDen := by
   intro F _ _ C hC

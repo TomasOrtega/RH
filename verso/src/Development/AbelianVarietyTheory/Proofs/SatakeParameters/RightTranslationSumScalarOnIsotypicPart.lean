@@ -21,15 +21,15 @@ section Main
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `hiso`. Use `set f : S := T.symm ⟨f', hf'⟩ with hfdef`. Establish `hTf : T f = ⟨f', hf'⟩` using `T.apply_symm_apply _`. Establish `hrt : ∀ h : GAf L n, ((T ⟨NG.rt L n h f, hS.stable h _ f.2⟩ : S') : GAf L n → W) = NG.rt L n h f'`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hT h f ⟨_, hS.stable h _ f.2⟩ rfl` as an intermediate fact. Rewrite using `[this, hTf]`. Establish `hffix : ∀ κ ∈ K, NG.rt L n κ (f : GAf L n → W) = f`. Introduce `κ hκ`. Establish `h1` using `hrt κ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hfix κ hκ]`. Establish `h2 : T ⟨_, hS.stable κ _ f.2⟩ = T f` using `Subtype.ext (by rw [h1, hTf])`. Conclude with `congrArg Subtype.val (T.injective h2)`. Establish `hcf` using `hc f f.2 hffix`. Set `σ : S` to `∑ γ ∈ R, (⟨NG.rt L n γ f, hS.stable _ _ f.2⟩ : S)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσ : (σ : GAf L n → W) = ∑ γ ∈ R, NG.rt L n γ f`. Rewrite using `[Submodule.coe_sum]`. Establish `hTσ : ((T σ : S') : GAf L n → W) = ∑ γ ∈ R, NG.rt L n γ f'`. Rewrite using `[map_sum, Submodule.coe_sum]`. Conclude with `Finset.sum_congr rfl fun γ _ => hrt γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : σ = c • f` using `Subtype.ext (by rw [hσ, Submodule.coe_smul]; exact hcf)`. Establish `h3` using `congrArg (fun y => ((T y : S') : GAf L n → W)) key`. Simplify using `only [map_smul, Submodule.coe_smul, hTσ, hTf] at h3`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem rtSum_iso {ρ : Representation ℂ (GQ L n) W} {S S' : Submodule ℂ (GAf L n → W)} (hS : NG.IsSubrep ρ S)
     (hiso : NG.IsoRep S S') (K : Subgroup (GAf L n)) (R : Finset (GAf L n)) (c : ℂ)
@@ -63,21 +63,19 @@ theorem rtSum_iso {ρ : Representation ℂ (GQ L n) W} {S S' : Submodule ℂ (GA
   exact h3
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `_ f hf _`. Simplify using `only [Finset.notMem_empty, iSup_false, iSup_bot, Submodule.mem_bot] at hf`. Substitute `hf` using the available equality.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Consider the case `insert a t ha ih`. Introduce `hsub f hf hfix`. Establish `haF : NG.IsIrrRep ρ a ∧ NG.IsoRep S a` using `hsub (Finset.mem_insert_self a t)`. Establish `htF : (↑t : Set _) ⊆ {S' | NG.IsIrrRep ρ S' ∧ NG.IsoRep S S'}` using `fun x hx => hsub (Finset.mem_insert_of_mem hx)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hf` using `[Finset.iSup_insert]`. Establish `hMst : ∀ h, ∀ g ∈ (⨆ i ∈ t, i), NG.rt L n h g ∈ (⨆ i ∈ t, i)` using `GlobalTheory.HeckeScalarAll.iSup_finset_stable' t (fun i hi => (htF hi).1.1.stable)`. Establish `hsubrep : NG.IsSubrep ρ (a ⊓ ⨆ i ∈ t, i)` using `⟨inf_le_left.trans haF.1.1.le, fun h g hg => ⟨haF.1.1.stable h g hg.1, hMst h g hg.2⟩⟩`. Break down `haF.1.2.2 _ hsubrep inf_le_left with h0 | htop` into its components or cases. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `hyfix : ∀ κ ∈ K, NG.rt L n κ y = y`. Introduce `κ hκ`. Establish `e` using `hfix κ hκ`. Rewrite `e` using `[map_add]`. Establish `hd : NG.rt L n κ y - y ∈ a ⊓ ⨆ i ∈ t, i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Submodule.sub_mem _ (haF.1.1.stable κ y hy) hy, ?_⟩` and prove the remaining obligations. Establish `h4 : NG.rt L n κ y - y = z - NG.rt L n κ z`. Rewrite using `[sub_eq_sub_iff_add_eq_add, e]`. Conclude with `add_comm _ _`. Rewrite using `[h4]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.sub_mem _ hz (hMst κ z hz)`. Rewrite `hd` using `[h0, Submodule.mem_bot, sub_eq_zero]`. Conclude with `hd`. Establish `hzfix : ∀ κ ∈ K, NG.rt L n κ z = z`. Introduce `κ hκ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hfix κ hκ`. Rewrite `e` using `[map_add, hyfix κ hκ]`. Conclude with `add_left_cancel e`. Establish `e1` using `rtSum_iso hS.1 haF.2 K R c hc y hy hyfix`. Establish `e2` using `ih htF z hz hzfix`.
-
-Simplify using `only [map_add, Finset.sum_add_distrib, e1, e2, smul_add]`. Establish `hle : a ≤ ⨆ i ∈ t, i` using `inf_eq_left.1 htop`. Conclude with `ih htF f ((sup_le hle le_rfl) hf) hfix`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rtSum_finset_sum {ρ : Representation ℂ (GQ L n) W} {S : Submodule ℂ (GAf L n → W)} (hS : NG.IsIrrRep ρ S)
     (K : Subgroup (GAf L n)) (R : Finset (GAf L n)) (c : ℂ)
@@ -131,7 +129,7 @@ theorem rtSum_finset_sum {ρ : Representation ℂ (GQ L n) W} {S : Submodule ℂ
 end Main
 
 /- English proof (translation)
-Introduce `L _ _ _ n W _ _ ρ S hS K R c hc f hf hfix`. Take `⟨t, ht, hft⟩` from `Submodule.mem_sSup_iff_exists_finset.1 hf`. Conclude with `rtSum_finset_sum hS K R c hc t ht f hft hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rtSum_isoTyp : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (GQ L n) W) (S : Submodule ℂ (GAf L n → W)), NG.IsIrrRep ρ S → ∀ (K : Subgroup (GAf L n)) (R : Finset (GAf L n)) (c : ℂ), (∀ f ∈ S, (∀ κ ∈ K, NG.rt L n κ f = f) → ∑ γ ∈ R, NG.rt L n γ f = c • f) → ∀ f ∈ NG.isoTyp ρ S, (∀ κ ∈ K, NG.rt L n κ f = f) → ∑ γ ∈ R, NG.rt L n γ f = c • f := by
   intro L _ _ _ n W _ _ ρ S hS K R c hc f hf hfix

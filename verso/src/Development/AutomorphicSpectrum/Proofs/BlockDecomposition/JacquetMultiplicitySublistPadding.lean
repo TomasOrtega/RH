@@ -9,15 +9,13 @@ namespace GlobalTheory.CompanionTheory.FineProd
 universe u
 
 /- English proof (translation)
-Establish `key : ∀ L : List (Fin W.length), L.Pairwise (· < ·) → (∀ j, j ∈ L ↔ c j = i) → ∃ o : Fin (L.map W.get).length → Fin W.length, StrictMono o ∧ (∀ j, c j = i ↔ j ∈ Set.range o) ∧ ∀ a, (L.map W.get).get a = W.get (o a)`. Introduce `L hpw hmem`. Establish `hlen : (L.map W.get).length = L.length` using `by simp`. Use `⟨fun a => L.get (Fin.cast hlen a), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hab' : Fin.cast hlen a < Fin.cast hlen b` using `by first`. Consider the case `exact hab`. Consider the case `simpa [Fin.lt_def] using hab`. Conclude with `List.pairwise_iff_get.1 hpw (Fin.cast hlen a) (Fin.cast hlen b) hab'`. Introduce `j`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hj`. Take `⟨n, hn⟩` from `List.mem_iff_get.1 ((hmem j).2 hj)`. Use `⟨Fin.cast hlen.symm n, ?_⟩` and prove the remaining obligations. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hn`. Consider the case `simpa using hn`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `(hmem _).1 (List.mem_iff_get.2 ⟨_, rfl⟩)`. Introduce `a`.
-
-Simplify using `[List.get_eq_getElem]`. Conclude with `key ((List.finRange W.length).filter (fun p => decide (c p = i))) ((List.pairwise_lt_finRange _).filter _) (fun j => by simp)`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_positions_univ {α : Type u} {h : ℕ} (W : List α) (c : Fin W.length → Fin h) (i : Fin h) :
     ∃ o : Fin (sub W c i).length → Fin W.length, StrictMono o ∧ (∀ j, c j = i ↔ j ∈ Set.range o) ∧
@@ -54,17 +52,17 @@ end GlobalTheory.CompanionTheory.FineProd
 namespace GlobalTheory.CompanionTheory.FineProd
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h N W c i Y hY h0 hd V _ _ π`. Take `⟨o, ho, hr, hg⟩` from `sub_positions_univ W c i`. Establish `hget : (sub W c i).get = fun a => Y (o a)`. Use function extensionality and compare the values at `a`. Rewrite using `[hg a, hY (o a) ((hr (o a)).2 ⟨a, rfl⟩)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ a, (Y (o a)).1 = N`. Rewrite using `[← hd]`. Establish `himg : ∑ j ∈ Finset.univ.image o, (Y j).1 = ∑ a, (Y (o a)).1` using `Finset.sum_image (fun a _ b _ e => ho.injective e)`. Rewrite using `[← himg]`. Use `Finset.sum_subset (Finset.subset_univ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j _ hj`. Use `h0 j ?_` and prove the remaining obligations. Introduce `e`. Take `⟨a, rfl⟩` from `(hr j).1 e`. Conclude with `hj (Finset.mem_image_of_mem o (Finset.mem_univ a))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnz : ∀ j, (Y j).1 ≠ 0 → j ∈ Set.range o`. Introduce `j hj`. Use `(hr j).1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `e`. Conclude with `hj (h0 j e)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg : ∑ a, ((sub W c i).get a).1 = N`. Rewrite using `[hget]`. Conclude with `hsum`. Establish `hcongr : ∀ {r : ℕ} (x y : Fin r → IrrGL k) (hx : ∑ a, (x a).1 = N) (hy : ∑ a, (y a).1 = N), x = y → jm x hx π = jm y hy π`. Introduce `r x y hx hy e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.T.jacquet_multiplicity_drop_zero_blocks Y hd o ho hnz hsum π, jmL, dif_pos hdeg]`. Conclude with `hcongr _ _ _ _ hget.symm`.
+A detailed English derivation is pending.
 -/
 theorem jm_row : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {h N : ℕ} (W : List (IrrGL k)) (c : Fin W.length → Fin h) (i : Fin h) (Y : Fin W.length → IrrGL k), (∀ j, c j = i → Y j = W.get j) → (∀ j, c j ≠ i → (Y j).1 = 0) → ∀ (hd : ∑ j, (Y j).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), jm Y hd π = jmL (sub W c i) π := by
   intro k _ _ _ _ h N W c i Y hY h0 hd V _ _ π

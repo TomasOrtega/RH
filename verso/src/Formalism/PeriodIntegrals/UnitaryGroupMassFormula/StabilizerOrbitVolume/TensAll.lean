@@ -20,9 +20,9 @@ def LIP (R : Type) [CommRing R] : Prop :=
     (∀ c, W *ᵥ c = 0 → c = 0) → ∃ P : Matrix n m R, P * W = 1
 
 /- English proof (translation)
-Introduce `m n _ _ _ _ W hW`. Establish `hker : LinearMap.ker (Matrix.toLin' W) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`. Conclude with `hW c (by simpa [Matrix.toLin'_apply] using hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' W) hker`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg LinearMap.toMatrix' hg`. Rewrite `h` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lip_field (K : Type) [Field K] : LIP K := by
   intro m n _ _ _ _ W hW
@@ -36,15 +36,15 @@ theorem lip_field (K : Type) [Field K] : LIP K := by
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at h
 
 /- English proof (translation)
-Introduce `m n _ _ _ _ W hW`. Establish `hP : ∀ i, ∃ P : Matrix n m (K i), P * W.map (fun x => x i) = 1`. Introduce `i`. Use `h i m n (W.map (fun x => x i)) (fun c hc => ?_)` and prove the remaining obligations. Establish `h0` using `hW (fun b => Pi.single i (c b)) ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `b`. Establish `hb` using `congr_fun (congr_fun h0 b) i`. Simplify using `using hb`. Use function extensionality and compare the values at `a j`. Distinguish the cases in `hj : j = i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Establish `ha` using `congr_fun hc a`. Simplify `ha` using `[Matrix.mulVec, dotProduct, Finset.sum_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.single_apply, hj]`. Use `choose P hP using hP`.
+Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of fun b a j => P j b a, ?_⟩` and prove the remaining obligations. Use extensionality with `a a' j`. Establish `hj` using `congr_fun (congr_fun (hP j) a) a'`. Rewrite `hj`, the goal using `[Matrix.mul_apply]`. Rewrite using `[Finset.sum_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Pi.mul_apply, Matrix.of_apply] at hj ⊢`. Rewrite using `[hj]`. Apply the tactic sequence `by_cases haa : a = a' <;> simp [Matrix.one_apply, haa]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lip_pi {ι : Type} [Fintype ι] [DecidableEq ι] (K : ι → Type) [∀ i, CommRing (K i)]
     (h : ∀ i, LIP (K i)) : LIP (∀ i, K i) := by
@@ -73,7 +73,7 @@ theorem lip_pi {ι : Type} [Fintype ι] [DecidableEq ι] (K : ι → Type) [∀ 
   by_cases haa : a = a' <;> simp [Matrix.one_apply, haa]
 
 /- English proof (translation)
-Establish `h1 : (P * W) *ᵥ c = 0` using `by rw [← Matrix.mulVec_mulVec, hc, Matrix.mulVec_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem inj_of_isUnit {R : Type} [CommRing R] {m n : Type} [Fintype m] [Fintype n]
     [DecidableEq n] (W : Matrix m n R) (P : Matrix n m R) (hP : IsUnit (P * W).det)
@@ -90,7 +90,7 @@ def wMat (R : Type) [CommRing R] [Algebra F R] {a M : ℕ} (X : Fin a → Fin M 
   fun p q => crd b R (((1 : R) ⊗ₜ[F] b q.2) * X q.1 p.1) p.2
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, wMat, crd, Finset.sum_mul, smul_mul_assoc, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wMat_mulVec (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     (X : Fin a → Fin M → R ⊗[F] E) (c : Fin a × Fin d → R) (j : Fin M) (l : Fin d) :
@@ -102,11 +102,11 @@ theorem wMat_mulVec (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h j`. Apply `(Algebra.TensorProduct.basis R b).repr.injective` to reduce the goal to its premises. Use extensionality with `l`. Establish `hl` using `congr_fun h (j, l)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `hl` using `[wMat_mulVec]`. Simplify `hl` using `[crd]`. Introduce `h`. Use function extensionality and compare the values at `q`. Take `⟨j, l⟩` from `q`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[wMat_mulVec, h j]`. Simplify using `[crd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wMat_mulVec_eq_zero (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     (X : Fin a → Fin M → R ⊗[F] E) (c : Fin a × Fin d → R) :
@@ -125,21 +125,19 @@ theorem wMat_mulVec_eq_zero (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     simp [crd]
 
 /- English proof (translation)
-Establish `hexp : ∀ y : R ⊗[F] E, ∑ k, crd b R y k • ((1 : R) ⊗ₜ[F] b k) = y`. Introduce `y`. Establish `hs` using `(Algebra.TensorProduct.basis R b).sum_repr y`. Simplify `hs` using `only [crd, Algebra.TensorProduct.basis_apply]`. Establish `hcrd : ∀ (g : Fin d → R) (l : Fin d), crd b R (∑ k, g k • ((1 : R) ⊗ₜ[F] b k)) l = g l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `g l`. Establish `hb : ∀ k, ((1 : R) ⊗ₜ[F] b k) = Algebra.TensorProduct.basis R b k` using `fun k => (Algebra.TensorProduct.basis_apply b k).symm`. Simplify using `only [crd, hb, map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Fintype.linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h c hc`. Rewrite `hc` using `[wMat_mulVec_eq_zero]`. Establish `hg` using `h (fun i => ∑ k, c (i, k) • ((1 : R) ⊗ₜ[F] b k)) (by`. Use function extensionality and compare the values at `j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `hc j)`. Use function extensionality and compare the values at `q`. Take `⟨i, k⟩` from `q`. Establish `hk` using `congrArg (fun y => crd b R y k) (hg i)`. Rewrite `hk` using `[hcrd]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hk` using `[crd]`. Introduce `h g hg i`. Establish `hc` using `h (fun q => crd b R (g q.1) q.2) (by`. Rewrite using `[wMat_mulVec_eq_zero]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj` using `congr_fun hg j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hj`. Rewrite using `[← hj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show (∑ k, crd b R (g i) k • ((1 : R) ⊗ₜ[F] b k)) * X i j = g i * X i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp])`. Rewrite using `[← hexp (g i)]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `hk` using `congr_fun hc (i, k)`. Simplify using `only [Pi.zero_apply] at hk`.
-
-Rewrite using `[hk, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linIndep_iff (R : Type) [CommRing R] [Algebra F R] {a M : ℕ}
     (X : Fin a → Fin M → R ⊗[F] E) :
@@ -190,7 +188,7 @@ variable [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] [Topologi
   [IsTopologicalRing R]
 
 /- English proof (translation)
-Use `continuous_matrix fun p q => ?_` and prove the remaining obligations. Conclude with `(continuous_crd b R p.2).comp (continuous_const.mul ((continuous_apply p.1).comp (continuous_apply q.1)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_wMat {a M : ℕ} :
     Continuous (fun X : Fin a → Fin M → R ⊗[F] E => wMat b R X) := by
@@ -200,11 +198,11 @@ theorem continuous_wMat {a M : ℕ} :
 
 include b in
 /- English proof (translation)
-Establish `hset : {X : Fin a → Fin M → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} = ⋃ P : Matrix (Fin a × Fin d) (Fin M × Fin d) R, {X | IsUnit (P * wMat b R X).det}`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion]`. Rewrite using `[linIndep_iff b R X]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Take `⟨P, hP⟩` from `hL _ _ (wMat b R X) h`. Use `⟨P, ?_⟩` and prove the remaining obligations. Rewrite using `[hP, Matrix.det_one]`. Conclude with `isUnit_one`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨P, hP⟩ c hc`. Conclude with `inj_of_isUnit (wMat b R X) P hP c hc`. Rewrite using `[hset]`. Conclude with `isOpen_iUnion fun P => hU.preimage ((continuous_const.matrix_mul (continuous_wMat b R)).matrix_det)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_linIndep (hU : IsOpen {r : R | IsUnit r}) (hL : LIP R) {a M : ℕ} :
     IsOpen {X : Fin a → Fin M → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} := by
@@ -234,7 +232,7 @@ open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.G
   PI.VolFromSW TensAllW
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, inferInstance, ?_, ?_, ?_, isOpen_linIndep (Module.finBasis F E) R hU hL⟩` and prove the remaining obligations. Conclude with `isClosed_HermR (R := R) σ a`. Conclude with `continuous_gramR (R := R) σ J`. Conclude with `fun X => gramR_mem (R := R) σ hσ J hJ X`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem tensFacts_of {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
@@ -249,22 +247,20 @@ theorem tensFacts_of {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimen
   · exact fun X => gramR_mem (R := R) σ hσ J hJ X
 
 /- English proof (translation)
-Conclude with `lip_pi (fun v : InfinitePlace F => v.Completion) (fun v => lip_field _)`.
+A detailed English derivation is pending.
 -/
 theorem lip_ainf (F : Type) [Field F] [NumberField F] : LIP (InfiniteAdeleRing F) := by
   classical
   exact lip_pi (fun v : InfinitePlace F => v.Completion) (fun v => lip_field _)
 
 /- English proof (translation)
-Unfold `TensAll`. Introduce `F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT _`. Use `show TensFacts F E σ M J a (Ainf F) ∧ ∀ v : HeightOneSpectrum (𝓞 F), TensFacts F E σ M J a (Fv F v)`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2 τ, hCM.2.2.2 τ, star_star]`. Establish `hUinf : IsOpen {r : Ainf F | IsUnit r}` using `by show IsOpen {r : (∀ w : InfinitePlace F, w.Completion) | IsUnit r}`. Establish `hset : {r : (∀ w : InfinitePlace F, w.Completion) | IsUnit r} = ⋂ w : InfinitePlace F, (fun r : (∀ w : InfinitePlace F, w.Completion) => r w) ⁻¹' {x | x ≠ 0}`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, Pi.isUnit_iff, isUnit_iff_ne_zero]`. Rewrite using `[hset]`. Conclude with `isOpen_iInter_of_finite fun w => isOpen_ne.preimage (continuous_apply w)`. Use `⟨tensFacts_of σ hσ J hJ.1 a (Ainf F) hUinf (lip_ainf F), fun v => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hUv : IsOpen {r : Fv F v | IsUnit r}`. Simplify using `only [isUnit_iff_ne_zero]`. Conclude with `isOpen_ne`. Use `haveI : LocallyCompactSpace (Fv F v) := locallyCompact_Fv (F := F) (v := v)`. Use `haveI : SecondCountableTopology (Fv F v) := secondCountable_Fv (F := F) (v := v)`.
-
-Conclude with `tensFacts_of σ hσ J hJ.1 a (Fv F v) hUv (lip_field _)`.
+A detailed English derivation is pending.
 -/
 theorem tensAll_holds : TensAll := by
   unfold TensAll

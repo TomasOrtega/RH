@@ -5,11 +5,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `R _ 𝔞 h𝔞 ι N N' H B' _ g hg`. Establish `key : ∀ (a : ℕ) (m : ι →₀ ℕ), MvPolynomial.coeff m (N.coeff a) - MvPolynomial.coeff m (N'.coeff a) ∈ 𝔞`. Introduce `a m`. Rewrite using `[← h𝔞.radical, ← Ideal.sInf_minimalPrimes, Ideal.mem_sInf]`. Introduce `𝔭 h𝔭`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨κ, _, f, hker, hf⟩` from `H 𝔭 h𝔭`. Rewrite using `[← hker, RingHom.mem_ker, map_sub, sub_eq_zero]`. Use `congrArg (fun p => MvPolynomial.coeff m (p.coeff a)) hf` as an intermediate fact. Simplify `this` using `[mapP, Polynomial.coeff_map, MvPolynomial.coeff_map]`. Use `Polynomial.ext fun a => MvPolynomial.ext _ _ fun m => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mapP, Polynomial.coeff_map, MvPolynomial.coeff_map]`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `hg _ (key a m)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.congrRad_of :
     CongrRad := by

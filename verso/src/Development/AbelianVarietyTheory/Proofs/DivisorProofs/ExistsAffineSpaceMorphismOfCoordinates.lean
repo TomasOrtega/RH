@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.HomFixPoint
 
 /- English proof (translation)
-Set `φ : MvPolynomial (Fin n) Rg →+* Γ(T, ⊤)` to `MvPolynomial.eval₂Hom (t.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of Rg)).inv.hom) x`. Establish `key : ∀ p, (T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin n) Rg))).inv p) = φ p`. Introduce `p`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, ← CommRingCat.comp_apply (Scheme.ΓSpecIso _).inv, ← Scheme.ΓSpecIso_inv_naturality, CommRingCat.comp_apply, Scheme.toSpecΓ_appTop]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ), ?_, ?_⟩` and prove the remaining obligations. Apply `ext_of_isAffine` to reduce the goal to its premises. Use `(Iso.cancel_iso_inv_left (Scheme.ΓSpecIso (CommRingCat.of Rg)) _ _).1 ?_` and prove the remaining obligations. Use extensionality with `r`. Establish `n2 : (affπ Rg n).appTop ((Scheme.ΓSpecIso (CommRingCat.of Rg)).inv r) = (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin n) Rg))).inv (MvPolynomial.C r)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression. Rewrite using `[CommRingCat.comp_apply, CommRingCat.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, n2, key]`. Simplify using `[φ]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `coord`. Rewrite using `[key]`. Simplify using `[φ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_affine_hom (Rg : Type) [CommRing Rg] (T : Scheme.{0}) (n : ℕ) (t : T ⟶ Sp Rg)
     (x : Fin n → Γ(T, ⊤)) :

@@ -10,7 +10,7 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `d F hF`. Take `⟨Q, hQ, hsum⟩` from `RestTerms.CoinvAboveTop.full ℚ d.f d.N (d.D + 1) F hF (by simp [RestTerms.Coinv.coinvTop, IndexData.D, RestTerms.topDegree])`. Use `⟨Q, hF, fun k _ τ => hQ k τ, ?_⟩` and prove the remaining obligations. Rewrite using `[RestTerms.IsPowerSumDecomposition, hsum]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem HomDecompExists.proof : HomDecompExists.Statement := by
   intro d F hF

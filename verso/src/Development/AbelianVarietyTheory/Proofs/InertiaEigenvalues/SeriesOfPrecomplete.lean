@@ -28,49 +28,49 @@ def matS (S : Subring R) : Subring (Matrix n n R) where
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `i j` and use `(hX i j).sub (hY i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.sub {m : ℕ} {X Y : Matrix n n R} (hX : NearM ι p t m X) (hY : NearM ι p t m Y) :
     NearM ι p t m (X - Y) := fun i j => (hX i j).sub (hY i j)
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `i j` and use `(hX i j).add (hY i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.add {m : ℕ} {X Y : Matrix n n R} (hX : NearM ι p t m X) (hY : NearM ι p t m Y) :
     NearM ι p t m (X + Y) := fun i j => (hX i j).add (hY i j)
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `i j` and use `(hX i j).neg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.neg {m : ℕ} {X : Matrix n n R} (hX : NearM ι p t m X) :
     NearM ι p t m (-X) := fun i j => (hX i j).neg
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `i j` and use `Near.of_mul m (X i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.of_smul (m : ℕ) (X : Matrix n n R) : NearM ι p t m ((p : R) • X) :=
   fun i j => Near.of_mul m (X i j)
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `i j` and use `(hX i j).mono hτ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.mono {τ : A} (hτ : ι τ = t) {m k : ℕ} (h : m ≤ k) {X : Matrix n n R}
     (hX : NearM ι p t k X) : NearM ι p t m X := fun i j => (hX i j).mono hτ h
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `i j` and use `(hX i j).cancel ht`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.cancel (ht : IsUnit t) {m k : ℕ} {X : Matrix n n R}
     (hX : NearM ι p t (k + m) (t ^ k • X)) : NearM ι p t m X := fun i j => (hX i j).cancel ht
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact Near.sum _ fun k _ => (hX i k).mul (hY k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.mul {m k : ℕ} {X Y : Matrix n n R} (hX : NearM ι p t m X) (hY : NearM ι p t k Y) :
     NearM ι p t (m + k) (X * Y) := fun i j => by
@@ -78,7 +78,7 @@ theorem NearM.mul {m k : ℕ} {X Y : Matrix n n R} (hX : NearM ι p t m X) (hY :
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Introduce `i j` and use `by have := (hX i j).mul_ι (τ ^ k) rwa [map_pow, hτ] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.smul {τ : A} (hτ : ι τ = t) {m : ℕ} (k : ℕ) {X : Matrix n n R}
     (hX : NearM ι p t m X) : NearM ι p t m (t ^ k • X) := fun i j => by
@@ -87,7 +87,7 @@ theorem NearM.smul {τ : A} (hτ : ι τ = t) {m : ℕ} (k : ℕ) {X : Matrix n 
 
 omit [Fintype n] in
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply] split_ifs · exact ⟨1, 0, by simp⟩ · exact Near.zero 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem NearM.one : NearM ι p t 0 (1 : Matrix n n R) := fun i j => by
   rw [Matrix.one_apply]
@@ -97,9 +97,7 @@ theorem NearM.one : NearM ι p t 0 (1 : Matrix n n R) := fun i j => by
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Use `choose k hk using h`. Use `⟨Finset.univ.sup fun q : n × n => k q.1 q.2, fun K' hK i j => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le ((Finset.le_sup (f := fun q : n × n => k q.1 q.2) (Finset.mem_univ (i, j))).trans hK)`. Use `(hk i j).mul_ι (τ ^ d)` as an intermediate fact. Rewrite `this` using `[map_pow, hτ, ← mul_assoc, ← pow_add, add_comm]`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pole {τ : A} (hτ : ι τ = t) (X : Matrix n n R)
     (h : ∀ i j, ∃ k, Near ι p t 0 (t ^ k * X i j)) :
@@ -113,15 +111,15 @@ theorem exists_pole {τ : A} (hτ : ι τ = t) (X : Matrix n n R)
   exact this
 
 /- English proof (translation)
-Establish `h1 : ∀ k, T^[k] y ∈ matS S ∧ NearM ι p t (k + m) (T^[k] y)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨hy, by rw [zero_add]; exact hy'⟩`. Consider the case `succ k ih => rw [Function.iterate_succ_apply']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨hTS _ ih.1, hT _ _ ih.2⟩`. Use `choose z hz hz' using fun i j => comp m (fun k => T^[k] y i j) (fun k => (h1 k).1 i j) (fun k => (h1 k).2 i j)`. Establish `h2 : ∀ k, NearM ι p t (k + m) (Matrix.of z - ∑ i ∈ Finset.range k, T^[i] y)` using `fun k i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.sum_apply]`. Conclude with `hz' i j k`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ∀ k, ∑ i ∈ Finset.range (k + 1), T^[i] y = y + T (∑ i ∈ Finset.range k, T^[i] y)`. Introduce `k`. Rewrite using `[Finset.sum_range_succ', map_sum, add_comm]`. Simplify using `only [Function.iterate_succ_apply', Function.iterate_zero_apply]`. Use `choose r hr using fun i j => meet ((Matrix.of z - y - T (Matrix.of z)) i j) fun k => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `((h2 (k + 1)).sub (hT k _ (h2 k))).mono hτ (show k ≤ k + 1 + m by omega)` as an intermediate fact. Rewrite `this` using `[h3, map_sub]`. Use `this i j using 1` and compare the differences between its conclusion and the goal. Use `congrFun (congrFun ?_ i) j` and prove the remaining obligations. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Matrix.of z, hz, by simpa using h2 0, Matrix.of r, ?_⟩` and prove the remaining obligations. Establish `: Matrix.of z - y - T (Matrix.of z) = (p : R) • Matrix.of r` using `Matrix.ext hr`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem contract {τ : A} (hτ : ι τ = t) {S : Subring R}
     (meet : ∀ x, (∀ m, Near ι p t m x) → ∃ r, x = (p : R) * r)
@@ -168,7 +166,7 @@ theorem opT_apply (φ : R →+* R) (X Y Z : Matrix n n R) :
     opT φ X Y Z = X * φ.mapMatrix Z * Y := rfl
 
 /- English proof (translation)
-Establish `h : NearM ι p t (p * (k + (2 * K + 1))) (φ.mapMatrix Z)` using `fun i j => h3 _ _ (hZ i j)`. Use `(hX.mul h).mul hY` as an intermediate fact. Rewrite `this` using `[smul_mul_assoc, smul_mul_assoc, mul_smul_comm, smul_smul, ← pow_add]`. Conclude with `NearM.cancel ht (k := K + K) (this.mono hτ (by nlinarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_opT {τ : A} (hτ : ι τ = t) (ht : IsUnit t) (hp : 2 ≤ p) {φ : R →+* R}
     (h3 : ∀ m x, Near ι p t m x → Near ι p t (p * m) (φ x)) {K : ℕ} {X Y : Matrix n n R}
@@ -181,14 +179,14 @@ theorem near_opT {τ : A} (hτ : ι τ = t) (ht : IsUnit t) (hp : 2 ≤ p) {φ :
   exact NearM.cancel ht (k := K + K) (this.mono hτ (by nlinarith))
 
 /- English proof (translation)
-Introduce `Z hZ` and use `mul_mem (mul_mem hX (show φ.mapMatrix Z ∈ matS S from fun i j => hφS _ (hZ i j))) hY`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem opT_mem {φ : R →+* R} {S : Subring R} (hφS : ∀ x ∈ S, φ x ∈ S) {X Y : Matrix n n R}
     (hX : X ∈ matS S) (hY : Y ∈ matS S) : ∀ Z ∈ matS S, opT φ X Y Z ∈ matS S :=
   fun Z hZ => mul_mem (mul_mem hX (show φ.mapMatrix Z ∈ matS S from fun i j => hφS _ (hZ i j))) hY
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Use `isUnit_of_mul_isUnit_left (y := Y.det) ?_` and prove the remaining obligations. Rewrite using `[← Matrix.det_mul, h, Matrix.det_one_add_smul, add_assoc, pow_two, ← mul_assoc, ← add_mul, mul_comm]`. Conclude with `hJ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mul_eq (hJ : ∀ x : R, IsUnit (1 + (p : R) * x)) {X Y r : Matrix n n R}
     (h : X * Y = 1 + (p : R) • r) : IsUnit X := by
@@ -199,7 +197,7 @@ theorem isUnit_of_mul_eq (hJ : ∀ x : R, IsUnit (1 + (p : R) * x)) {X Y r : Mat
   exact hJ _
 
 /- English proof (translation)
-Use `choose e r h using h`. Conclude with `⟨Matrix.of e, Matrix.of r, Matrix.ext h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_modSub {io : E →+* R} {X : Matrix n n R} (h : X ∈ matS (modSub io p)) :
     ∃ (e : Matrix n n E) (r : Matrix n n R), X = io.mapMatrix e + (p : R) • r := by
@@ -208,7 +206,7 @@ theorem exists_of_mem_modSub {io : E →+* R} {X : Matrix n n R} (h : X ∈ matS
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Use `choose u hu hu' using h`. Use `choose N hN using hu`. Conclude with `⟨Finset.univ.sup fun q : n × n => N q.1 q.2, Matrix.of u, fun i j => pow_mem_of_le hD (Finset.le_sup (f := fun q : n × n => N q.1 q.2) (Finset.mem_univ (i, j))) (hN i j), hu'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_approx {φ : R →+* R} {D : Subring R} {hD : ∀ x ∈ D, φ x ∈ D} {m : ℕ}
     {X : Matrix n n R} (h : ∀ i j, ∃ u ∈ perfSub φ D hD, Near ι p t m (X i j - u)) :
@@ -222,7 +220,7 @@ def Conj (φ : R →+* R) (S : Subring R) (F F' : Matrix n n R) : Prop :=
   ∃ V ∈ matS S, IsUnit V ∧ F * φ.mapMatrix V = V * F'
 
 /- English proof (translation)
-Take `⟨V, h1, h2, h3⟩` from `h`. Take `⟨V', h1', h2', h3'⟩` from `h'`. Conclude with `⟨V * V', mul_mem h1 h1', h2.mul h2', by`. Rewrite using `[map_mul, ← mul_assoc, h3, mul_assoc, h3', mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem Conj.trans {φ : R →+* R} {S : Subring R} {F F' F'' : Matrix n n R}
     (h : Conj φ S F F') (h' : Conj φ S F' F'') : Conj φ S F F'' := by
@@ -232,7 +230,7 @@ theorem Conj.trans {φ : R →+* R} {S : Subring R} {F F' F'' : Matrix n n R}
     rw [map_mul, ← mul_assoc, h3, mul_assoc, h3', mul_assoc]⟩
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => exact ⟨1, one_mem _, isUnit_one, by rw [map_one, mul_one, one_mul]; rfl⟩`. Consider the case `succ N ih`. Use `ih.trans ⟨(φ ^ N).mapMatrix F, fun i j => pow_mem_of_le hφS (Nat.zero_le N) (hF i j), hu.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -247,7 +245,7 @@ theorem conj_pow {φ : R →+* R} {S : Subring R} (hφS : ∀ x ∈ S, φ x ∈ 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rw [pow_zero, one_mul]`. Conclude with `h`. Consider the case `succ N ih => rw [pow_succ', pow_succ', mul_assoc]`. Conclude with `h3 _ _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem near_pow {φ : R →+* R} (h3 : ∀ m x, Near ι p t m x → Near ι p t (p * m) (φ x))
     (N m : ℕ) (x : R) (h : Near ι p t m x) : Near ι p t (p ^ N * m) ((φ ^ N) x) := by
@@ -256,9 +254,9 @@ theorem near_pow {φ : R →+* R} (h3 : ∀ m x, Near ι p t m x → Near ι p t
   | succ N ih => rw [pow_succ', pow_succ', mul_assoc]; exact h3 _ _ ih
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rw [pow_zero, one_mul]`. Conclude with `h`. Consider the case `succ N ih`. Establish `h1` using `h3 _ _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `hφt.trans (sub_dvd_pow_sub_pow _ _ (p ^ N * K))`. Establish `h2` using `h1.add (Near.of_mul (p * 0) (r * φ ((φ ^ N) x)))`. Rewrite `h2` using `[map_mul, map_pow, ← mul_assoc, ← hr, ← add_mul, add_sub_cancel, ← pow_mul, ← mul_assoc]`. Rewrite using `[pow_succ', pow_succ']`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pole_pow {φ : R →+* R} (h3 : ∀ m x, Near ι p t m x → Near ι p t (p * m) (φ x))
     (hφt : (p : R) ∣ t ^ p - φ t) (N K : ℕ) (x : R) (h : Near ι p t 0 (t ^ K * x)) :
@@ -275,7 +273,7 @@ theorem pole_pow {φ : R →+* R} (h3 : ∀ m x, Near ι p t m x → Near ι p t
     exact h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_pow_smul (f : E →+* R) (k : ℕ) (z : Matrix n n E) :
     f.mapMatrix ((p : E) ^ k • z) = (p : R) ^ k • f.mapMatrix z := by
@@ -283,7 +281,7 @@ theorem map_pow_smul (f : E →+* R) (k : ℕ) (z : Matrix n n E) :
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_natCast_smul (f : E →+* R) (z : Matrix n n E) :
     f.mapMatrix ((p : E) • z) = (p : R) • f.mapMatrix z := by
@@ -291,9 +289,9 @@ theorem map_natCast_smul (f : E →+* R) (z : Matrix n n E) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Use `ih fun i j => hsat _ ?_` and prove the remaining obligations. Use `h i j` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_succ', mul_smul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_smul {S : Subring R} (hsat : ∀ x, (p : R) * x ∈ S → x ∈ S) (k : ℕ)
     (X : Matrix n n R) (h : (p : R) ^ k • X ∈ matS S) : X ∈ matS S := by
@@ -306,31 +304,29 @@ theorem mem_of_pow_smul {S : Subring R} (hsat : ∀ x, (p : R) * x ∈ S → x �
     exact this
 
 /- English proof (translation)
-Establish `hpS : ∀ (k : ℕ), ∀ z ∈ matS S, (p : R) ^ k • z ∈ matS (n` using `n) S := fun k z hz i j => mul_mem (pow_mem (natCast_mem S p) k) (hz i j)`. Set `Inv : ℕ → Matrix n n R → Matrix n n E → Prop` to `fun k V D => V ∈ matS S ∧ ∃ v d ρ, V = 1 + (p : R) • v ∧ D = e + (p : E) • d ∧ F * φ.mapMatrix V - V * io.mapMatrix D = (p : R) ^ (k + 1) • ρ`. Establish `step : ∀ k V D, ∃ z d', Inv k V D → z ∈ matS S ∧ Inv (k + 1) (V + (p : R) ^ (k + 1) • z) (D + (p : E) ^ (k + 1) • d')`. Introduce `k V D`. Distinguish the cases in `h : Inv k V D`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Conclude with `⟨0, 0, fun h' => absurd h' h⟩`. Take `⟨hV, v, d, ρ, hv, hd, hρ⟩` from `h`. Establish `hρS : ρ ∈ matS S` using `mem_of_pow_smul hsat (k + 1) _ (hρ ▸ sub_mem (mul_mem hF (show φ.mapMatrix V ∈ matS S from fun i j => hφS _ (hV i j))) (mul_mem hV (show io.mapMatrix D ∈ matS S from fun i j => hioS _)))`. Take `⟨z, hz, d', r, hr⟩` from `hL ρ hρS`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, d', fun _ => ⟨hz, add_mem hV (hpS _ _ hz), v + (p : R) ^ k • z, d + (p : E) ^ k • d', r + r₀ * φ.mapMatrix z - v * io.mapMatrix d' - z * io.mapMatrix d - (p : R) ^ k • (z * io.mapMatrix d'), ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hv]`. Use `module`. Rewrite using `[hd]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : F * φ.mapMatrix z = io.mapMatrix e * φ.mapMatrix z + (p : R) • (r₀ * φ.mapMatrix z)`. Rewrite using `[he, add_mul, smul_mul_assoc]`. Establish `h3 : V * io.mapMatrix d' = io.mapMatrix d' + (p : R) • (v * io.mapMatrix d')`. Rewrite using `[hv, add_mul, smul_mul_assoc, one_mul]`. Establish `h4 : z * io.mapMatrix D = z * io.mapMatrix e + (p : R) • (z * io.mapMatrix d)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hd, map_add, map_natCast_smul, mul_add, mul_smul_comm]`. Simplify using `only [map_add, map_pow_smul, mul_add, add_mul, mul_smul_comm, smul_mul_assoc]`. Take the linear combination `(norm := module) hρ + (p : R) ^ (k + 1) • hr + (p : R) ^ (k + 1) • h2 - (p : R) ^ (k + 1) • h3 - (p : R) ^ (k + 1) • h4`. Use `choose z d hstep using step`. Set `q : ℕ → Matrix n n R × Matrix n n E` to `fun k => Nat.rec (1, e) (fun k x => (x.1 + (p : R) ^ (k + 1) • z k x.1 x.2, x.2 + (p : E) ^ (k + 1) • d k x.1 x.2)) k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hq : ∀ k, Inv k (q k).1 (q k).2`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `⟨one_mem _, 0, 0, r₀, by simp [q], by simp [q], ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `F * φ.mapMatrix 1 - 1 * io.mapMatrix e = _`. Rewrite using `[map_one, mul_one, one_mul, he, zero_add, pow_one, add_sub_cancel_left]`. Consider the case `succ k ih => exact (hstep k _ _ ih).2`. Establish `hs : ∀ k, (q k).1 = 1 + (p : R) • ∑ i ∈ Finset.range k, (p : R) ^ i • z i (q i).1 (q i).2 ∧ (q k).2 = e + (p : E) • ∑ i ∈ Finset.range k, (p : E) ^ i • d i (q i).1 (q i).2`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `k with`. Consider the case `zero => simp [q]`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, smul_add, smul_add, ← add_assoc, ← add_assoc, ← ih.1, ← ih.2, smul_smul, smul_smul, ← pow_succ', ← pow_succ']`. Conclude with `⟨rfl, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `choose s hsS a ha using fun i j => compS (fun k => z k (q k).1 (q k).2 i j) fun k => (hstep k _ _ (hq k)).1 i j`. Use `choose σ b hb using fun i j => compE fun k => d k (q k).1 (q k).2 i j`. Establish `ha' : ∀ k, 1 + (p : R) • Matrix.of s = (q k).1 + (p : R) ^ (k + 1) • Matrix.of fun i j => a i j k` using `fun k => by`. Establish `: Matrix.of s - ∑ i ∈ Finset.range k, (p : R) ^ i • z i (q i).1 (q i).2 = (p : R) ^ k • Matrix.of fun i j => a i j k` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ha i j k`. Take the linear combination `(norm := module) (p : R) • this - (hs k).1`. Establish `hb' : ∀ k, e + (p : E) • Matrix.of σ = (q k).2 + (p : E) ^ (k + 1) • Matrix.of fun i j => b i j k` using `fun k => by`. Establish `: Matrix.of σ - ∑ i ∈ Finset.range k, (p : E) ^ i • d i (q i).1 (q i).2 = (p : E) ^ k • Matrix.of fun i j => b i j k` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `hb i j k`. Take the linear combination `(norm := module) (p : E) • this - (hs k).2`. Use `⟨e + (p : E) • Matrix.of σ, 1 + (p : R) • Matrix.of s, add_mem (one_mem _) (by simpa using hpS 1 (Matrix.of s) hsS), isUnit_of_mul_eq hJ (mul_one _), ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `Matrix.ext fun i j => sep _ fun k => ?_` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, -, ρ, -, -, hρ⟩` from `hq k`. Rewrite using `[ha' k, hb' k]`. Generalize the expression as in `(Matrix.of fun i j => a i j k) = a'`. Generalize the expression as in `(Matrix.of fun i j => b i j k) = b'`. Establish `: F * φ.mapMatrix ((q k).1 + (p : R) ^ (k + 1) • a') - ((q k).1 + (p : R) ^ (k + 1) • a') * io.mapMatrix ((q k).2 + (p : E) ^ (k + 1) • b') = (p : R) ^ k • (p : R) • (ρ + F * φ.mapMatrix a' - (q k).1 * io.mapMatrix b' - a' * io.mapMatrix (q k).2 - (p : R) ^ (k + 1) • (a' * io.map …`.
-
-Simplify using `only [map_add, map_pow_smul, mul_add, add_mul, mul_smul_comm, smul_mul_assoc]`. Take the linear combination `(norm := module) hρ`. Rewrite using `[this]`. Conclude with `⟨_, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem padic_conj {φ : R →+* R} {io : E →+* R} {S : Subring R} (hφS : ∀ x ∈ S, φ x ∈ S)
     (hioS : ∀ e, io e ∈ S) (hsat : ∀ x, (p : R) * x ∈ S → x ∈ S)
@@ -442,7 +438,7 @@ variable {τ : A} (hτ : ι τ = t) (ht : IsUnit t) (hp : 2 ≤ p) {φ : R →+*
 include hτ hpole in
 omit [DecidableEq n] in
 /- English proof (translation)
-Take `⟨K₁, h₁⟩` from `exists_pole hτ F fun i j => hpole _`. Take `⟨K₂, h₂⟩` from `exists_pole hτ G fun i j => hpole _`. Conclude with `⟨max K₁ K₂, h₁ _ (le_max_left _ _), h₂ _ (le_max_right _ _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pole₂ (F G : Matrix n n R) :
     ∃ K, NearM ι p t 0 (t ^ K • F) ∧ NearM ι p t 0 (t ^ K • G) := by
@@ -453,17 +449,17 @@ theorem exists_pole₂ (F G : Matrix n n R) :
 include hτ ht hp h3 meet comp hφS hioS hpole h2 in
 
 /- English proof (translation)
-Take `⟨K, ha, hb⟩` from `exists_pole₂ hτ hpole (io.mapMatrix a) (io.mapMatrix b)`. Establish `hT` using `near_opT hτ ht hp h3 ha hb`. Establish `hTS` using `opT_mem hφS (show io.mapMatrix a ∈ matS S from fun i j => hioS _) (show io.mapMatrix b ∈ matS S from fun i j => hioS _)`. Take `⟨N, u, hN, hu⟩` from `exists_approx (X := y) fun i j => h2 _ (hy i j) (2 * K + 1)`. Proceed by induction on `N generalizing y u with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero`. Take `⟨e, r, her⟩` from `exists_of_mem_modSub (X := u) hN`. Establish `h : NearM ι p t (2 * K + 1) (y - io.mapMatrix e)`. Use `hu.add (NearM.of_smul _ r)` as an intermediate fact. Rewrite `this` using `[her]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Take `⟨z, hzS, -, r', hr'⟩` from `contract hτ meet comp _ _ hT hTS _ (sub_mem hy (show io.mapMatrix e ∈ matS S from fun i j => hioS _)) h`. Use `⟨z, hzS, ?_⟩` and prove the remaining obligations. Establish `: y - (z - opT φ (io.mapMatrix a) (io.mapMatrix b) z) = io.mapMatrix e + (p : R) • (-r')`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `(norm := module) -hr'`. Rewrite using `[this]`. Conclude with `fun i j => ⟨e i j, -r' i j, rfl⟩`. Consider the case `succ N ih`. Establish `h : (φ ^ N).mapMatrix (opT φ (io.mapMatrix a) (io.mapMatrix b) u) ∈ matS (modSub io p)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[opT_apply, map_mul, map_mul]`. Conclude with `mul_mem (mul_mem (fun i j => pow_mem_of_le hD (Nat.zero_le N) (io_mem io p _)) hN) fun i j => pow_mem_of_le hD (Nat.zero_le N) (io_mem io p _)`. Take `⟨z, hz, h'⟩` from `ih _ (hTS y hy) _ h (by`. Rewrite using `[← map_sub]`. Conclude with `(hT 0 _ (by rw [zero_add]; exact hu)).mono hτ (by omega))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y + z, add_mem hy hz, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Use `h' using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem onto_mod (a b : Matrix n n E) (y : Matrix n n R) (hy : y ∈ matS S) :
     ∃ z ∈ matS S, y - (z - opT φ (io.mapMatrix a) (io.mapMatrix b) z) ∈ matS (modSub io p) := by
@@ -505,25 +501,25 @@ theorem onto_mod (a b : Matrix n n E) (y : Matrix n n R) (hy : y ∈ matS S) :
 include hτ ht hp h3 meet comp hφS hioS hpole h2 in
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `hu.exists_right_inv`. Establish `hGS` using `hinv F G hF hG`. Take `⟨K, hKF, hKG⟩` from `exists_pole₂ hτ hpole F G`. Take `⟨N, u, hN, hu'⟩` from `exists_approx (X := F) fun i j => h2 _ (hF i j) (3 * K + 1)`. Take `⟨e, r, her⟩` from `exists_of_mem_modSub (X := (φ ^ N).mapMatrix u) hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hδ : NearM ι p t (p ^ N * (3 * K + 1)) ((φ ^ N).mapMatrix F - io.mapMatrix e)`. Establish `h : NearM ι p t (p ^ N * (3 * K + 1)) ((φ ^ N).mapMatrix (F - u))` using `fun i j => near_pow h3 N _ _ (hu' i j)`. Use `h.add (NearM.of_smul _ r)` as an intermediate fact. Rewrite `this` using `[map_sub, her]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Normalize the expressions using the abelian group laws. Establish `hF1 : NearM ι p t 0 (t ^ (p ^ N * K) • (φ ^ N).mapMatrix F)` using `fun i j => pole_pow h3 hφt N K _ (hKF i j)`. Establish `hG1 : NearM ι p t 0 (t ^ (p ^ N * K) • (φ ^ N).mapMatrix G)` using `fun i j => pole_pow h3 hφt N K _ (hKG i j)`. Establish `hF1S : (φ ^ N).mapMatrix F ∈ matS S` using `fun i j => pow_mem_of_le hφS (Nat.zero_le N) (hF i j)`. Establish `hG1S : (φ ^ N).mapMatrix G ∈ matS S` using `fun i j => pow_mem_of_le hφS (Nat.zero_le N) (hGS i j)`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGF : (φ ^ N).mapMatrix G * (φ ^ N).mapMatrix F = 1`. Rewrite using `[← map_mul, mul_eq_one_comm.1 hG, map_one]`. Establish `hc` using `conj_pow hφS hF hu N`. Establish `hu1` using `hu.map (φ ^ N).mapMatrix`. Establish `hBS : io.mapMatrix e ∈ matS S` using `fun i j => hioS _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `(φ ^ N).mapMatrix F = F₁ at *`. Generalize the expression as in `(φ ^ N).mapMatrix G = G₁ at *`. Establish `hB : NearM ι p t 0 (t ^ (p ^ N * K) • io.mapMatrix e)`. Use `hF1.sub ((hδ.mono hτ (Nat.zero_le _)).smul hτ (p ^ N * K))` as an intermediate fact. Rewrite `this` using `[← smul_sub, sub_sub_cancel]`. Then use the resulting hypothesis.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hy : NearM ι p t (2 * (p ^ N * K) + 1) (-((F₁ - io.mapMatrix e) * G₁))`. Use `NearM.neg (NearM.cancel ht (k := p ^ N * K) ?_)` and prove the remaining obligations. Rewrite using `[← mul_smul_comm]`. Establish `: 0 < p ^ N` using `pow_pos (by omega) N`. Conclude with `(hδ.mul hG1).mono hτ (by nlinarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hzS, hz, r₁, hr₁⟩` from `contract hτ meet comp _ _ (near_opT hτ ht hp h3 hB hG1) (opT_mem hφS hBS hG1S) _ (neg_mem (mul_mem (sub_mem hF1S hBS) hG1S)) hy`. Take `⟨W, -, -, r₂, hr₂⟩` from `contract hτ meet comp (AddMonoidHom.mulLeft (-z)) 0 (fun k X hX => (hz.neg.mul hX).mono hτ (by omega)) (fun X hX => mul_mem (neg_mem hzS) hX) 1 (one_mem _) NearM.one`. Establish `hU : IsUnit (1 + z)` using `isUnit_of_mul_eq hJ (Y := W) (r := r₂) (by`. Rewrite `hr₂` using `[AddMonoidHom.coe_mulLeft, neg_mul]`. Rewrite using `[add_mul, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := abel) hr₂)`. Take `⟨V, hV⟩` from `hU.exists_right_inv`. Establish `hVU` using `mul_eq_one_comm.1 hV`. Establish `hUS : 1 + z ∈ matS S` using `add_mem (one_mem _) hzS`. Establish `hVS` using `hinv _ _ hUS hV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVu : IsUnit V` using `isUnit_iff_exists.2 ⟨_, hVU, hV⟩`. Establish `key : (1 + z) * F₁ = io.mapMatrix e * φ.mapMatrix (1 + z) + (p : R) • (r₁ * F₁)`. Use `congrArg (· * F₁) hr₁` as an intermediate fact. Simplify using `only [add_mul, neg_mul, opT_apply, mul_assoc, hGF, mul_one, smul_mul_assoc] at this`. Rewrite using `[map_add, map_one, mul_add, mul_one, add_mul, one_mul, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Use `⟨(1 + z) * F₁ * φ.mapMatrix V, mul_mem (mul_mem hUS hF1S) (show φ.mapMatrix V ∈ matS S from fun i j => hφS _ (hVS i j)), (hU.mul hu1).mul (hVu.map _), hc.trans ⟨V, hVS, hVu, ?_⟩, e, r₁ * F₁ * φ.mapMatrix V, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, hVU, one_mul]`. Rewrite using `[key, add_mul, mul_assoc (io.mapMatrix e), ← map_mul, hV, map_one, mul_one, smul_mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mod (hφt : (p : R) ∣ t ^ p - φ t) (hJ : ∀ x : R, IsUnit (1 + (p : R) * x))
     (hinv : ∀ X Y : Matrix n n R, X ∈ matS S → X * Y = 1 → Y ∈ matS S)
@@ -593,13 +589,13 @@ theorem conj_mod (hφt : (p : R) ∣ t ^ p - φ t) (hJ : ∀ x : R, IsUnit (1 + 
 include hτ ht hp h3 meet comp hφS hioS hpole h2 in
 
 /- English proof (translation)
-Take `⟨F', hF', hu', hc, e, r, he⟩` from `conj_mod hτ ht hp h3 meet comp hφS hioS hD hpole h2 hφt hJ hinv F hF hu`. Take `⟨G, hG⟩` from `hu'.exists_right_inv`. Establish `hB : IsUnit (io.mapMatrix e)` using `isUnit_of_mul_eq hJ (Y := G) (r := -(r * G)) (by`. Rewrite using `[← hG, he, add_mul, smul_mul_assoc, smul_neg, add_neg_cancel_right])`. Establish `hue : IsUnit e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hB`, the goal using `[Matrix.isUnit_iff_isUnit_det]`. Conclude with `hrefl _ (by rwa [RingHom.map_det])`. Take `⟨e', he'⟩` from `hue.exists_left_inv`. Establish `hBB : io.mapMatrix e' * io.mapMatrix e = 1` using `by rw [← map_mul, he', map_one]`. Take `⟨e'', h⟩` from `padic_conj hφS hioS hsat hJ sep compS compE F' hF' e r he fun y hy => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, h⟩` from `onto_mod hτ ht hp h3 meet comp hφS hioS hD hpole h2 e e' _ (mul_mem hy (show io.mapMatrix e' ∈ matS S from fun i j => hioS _))`. Take `⟨d, r', hd⟩` from `exists_of_mem_modSub h`. Use `⟨z, hz, d * e, r' * io.mapMatrix e, ?_⟩` and prove the remaining obligations. Use `congrArg (· * io.mapMatrix e) hd` as an intermediate fact. Simplify using `only [add_mul, sub_mul, opT_apply, mul_assoc, hBB, mul_one, smul_mul_assoc] at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ← this]`. Normalize the expressions using the abelian group laws. Conclude with `⟨e'', hc.trans h⟩`.
+Normalize the expressions using the abelian group laws. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conj_io (hφt : (p : R) ∣ t ^ p - φ t) (hJ : ∀ x : R, IsUnit (1 + (p : R) * x))
     (hinv : ∀ X Y : Matrix n n R, X ∈ matS S → X * Y = 1 → Y ∈ matS S)
@@ -634,9 +630,9 @@ theorem conj_io (hφt : (p : R) ∣ t ^ p - φ t) (hJ : ∀ x : R, IsUnit (1 + (
   exact ⟨e'', hc.trans h⟩
 
 /- English proof (translation)
-Establish `hI : ∀ (k : ℕ) (a b : E), a ≡ b [SMOD (Ideal.span {(p : E)} ^ k • ⊤ : Submodule E E)] ↔ (p : E) ^ k ∣ a - b`. Introduce `k a b`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(p : E)}) (fun k => ∑ i ∈ Finset.range k, (p : E) ^ i * x i) (fun {m k} hmk => by`. Rewrite using `[hI, ← dvd_neg, neg_sub, ← Finset.sum_Ico_eq_sub _ hmk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.dvd_sum fun i hi => (pow_dvd_pow _ (Finset.mem_Ico.1 hi).1).mul_right _)`. Conclude with `⟨L, fun k => by`. Use `(hI k _ _).1 (hL k)` as an intermediate fact. Rewrite using `[← dvd_neg, neg_sub] at this⟩` and apply the resulting hypothesis.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem series_of_precomplete [IsPrecomplete (Ideal.span {(p : E)}) E] (x : ℕ → E) :
     ∃ y, ∀ k : ℕ, ∃ r, y - ∑ i ∈ Finset.range k, (p : E) ^ i * x i = (p : E) ^ k * r := by
@@ -654,7 +650,7 @@ theorem series_of_precomplete [IsPrecomplete (Ideal.span {(p : E)}) E] (x : ℕ 
     rwa [← dvd_neg, neg_sub] at this⟩
 
 /- English proof (translation)
-Rewrite using `[add_comm]`. Conclude with `Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot _ (Ideal.mem_span_singleton_self (p : R))) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_one_add [IsAdicComplete (Ideal.span {(p : R)}) R] (x : R) :
     IsUnit (1 + (p : R) * x) := by
@@ -663,7 +659,7 @@ theorem isUnit_one_add [IsAdicComplete (Ideal.span {(p : R)}) R] (x : R) :
     (IsAdicComplete.le_jacobson_bot _ (Ideal.mem_span_singleton_self (p : R))) x
 
 /- English proof (translation)
-Establish `h1 : g.mapMatrix X = X` using `Matrix.ext hX`. Establish `h2 : X * g.mapMatrix Y = 1` using `by rw [← h1, ← map_mul, h, map_one]`. Establish `h3 : g.mapMatrix Y = Y` using `(left_inv_eq_right_inv (mul_eq_one_comm.1 h) h2).symm`. Conclude with `congrFun (congrFun h3 i) j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_eq_of_mul_eq_one (g : R →+* R) {X Y : Matrix n n R} (hX : ∀ i j, g (X i j) = X i j)
     (h : X * Y = 1) (i j : n) : g (Y i j) = Y i j := by
@@ -673,7 +669,7 @@ theorem map_eq_of_mul_eq_one (g : R →+* R) {X Y : Matrix n n R} (hX : ∀ i j,
   exact congrFun (congrFun h3 i) j
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp t 1`. Conclude with `⟨-(t * r), by rw [h, hr]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dvd_pow_sub (hp : p.Prime) {t y : R} (h : y = (t + 1) ^ p - 1) : (p : R) ∣ t ^ p - y := by
   obtain ⟨r, hr⟩ := exists_add_pow_prime_eq hp t 1
@@ -695,28 +691,28 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (I : WIo R RA RW inclR φR gR πA)
 
 /- English proof (translation)
-Rewrite using `[← I.ioE_γ, hg, map_one, AlgHom.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem io_fixed (g : G) (hg : Γ.resΓ g = 1) (e : R.EE) : gR g (I.ioE e) = I.ioE e := by
   rw [← I.ioE_γ, hg, map_one, AlgHom.one_apply]
 
 /- English proof (translation)
-Rewrite using `[I.ioE_ext, I.io_π]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem io_pi : I.ioE (algebraMap (LetA O n) R.EE letπ) = inclR πA := by
   rw [I.ioE_ext, I.io_π]
 
 include I in
 /- English proof (translation)
-The claim follows from `io_pi I ▸ R.EE_π.map I.ioE`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_pi : IsUnit (inclR πA) := io_pi I ▸ R.EE_π.map I.ioE
 
 include I in
 /- English proof (translation)
-Establish `h : letφ (n` using `n) R.φ₀ letπ = (letπ + 1) ^ PD.p - 1 := by`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `R.φ₀ PowerSeries.X = (PowerSeries.X + 1) ^ PD.p - 1`. Rewrite using `[R.φ₀_X, R.q₀_def, add_comm]`. Rewrite using `[← io_pi I, ← I.ioE_φ, R.φE_ext, h, hp]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_pow, map_add, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frob_pi {p : ℕ} (hp : PD.p = p) : φR (inclR πA) = (inclR πA + 1) ^ p - 1 := by
   have h : letφ (n := n) R.φ₀ letπ = (letπ + 1) ^ PD.p - 1 := by
@@ -727,7 +723,7 @@ theorem frob_pi {p : ℕ} (hp : PD.p = p) : φR (inclR πA) = (inclR πA + 1) ^ 
   simp only [map_sub, map_pow, map_add, map_one]
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Use `haveI := R.EE_complete`. Conclude with `series_of_precomplete x`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem series_EE (R : WSer Γ) {p : ℕ} (hp : PD.p = p) (x : ℕ → R.EE) :
     ∃ y, ∀ k : ℕ, ∃ r, y - ∑ i ∈ Finset.range k, (p : R.EE) ^ i * x i = (p : R.EE) ^ k * r := by
@@ -736,7 +732,7 @@ theorem series_EE (R : WSer Γ) {p : ℕ} (hp : PD.p = p) (x : ℕ → R.EE) :
   exact series_of_precomplete x
 
 /- English proof (translation)
-The claim follows from `modSub_stable p I.ioE_φ`.
+A detailed English derivation is pending.
 -/
 theorem stable_io (p : ℕ) : ∀ x ∈ modSub (I.ioE : R.EE →+* RW) p,
     (φR : RW →+* RW) x ∈ modSub (I.ioE : R.EE →+* RW) p := modSub_stable p I.ioE_φ
@@ -745,32 +741,32 @@ def perfI (p : ℕ) : Subring RW :=
   perfSub (φR : RW →+* RW) (modSub (I.ioE : R.EE →+* RW) p) (stable_io I p)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, io_mem (I.ioE : R.EE →+* RW) p e⟩`.
+Supply the required witnesses or components.
 -/
 theorem ioE_mem_perfI (p : ℕ) (e : R.EE) : I.ioE e ∈ perfI I p :=
   ⟨0, io_mem (I.ioE : R.EE →+* RW) p e⟩
 
 /- English proof (translation)
-The claim follows from `I.ioE.commutes o ▸ ioE_mem_perfI I p _`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_perfI (p : ℕ) (o : O) : algebraMap O RW o ∈ perfI I p :=
   I.ioE.commutes o ▸ ioE_mem_perfI I p _
 
 /- English proof (translation)
-The claim follows from `h ▸ I.ioE_ext a ▸ ioE_mem_perfI I p _`.
+A detailed English derivation is pending.
 -/
 theorem mem_perfI_of_io (p : ℕ) {a : LetA O n} {b : RA} (h : I.io a = b) :
     inclR b ∈ perfI I p := h ▸ I.ioE_ext a ▸ ioE_mem_perfI I p _
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `R.EE_π.exists_right_inv`. Conclude with `⟨I.ioE u, ioE_mem_perfI I p u, by rw [← io_pi I, ← map_mul, hu, map_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_inv_perfI (p : ℕ) : ∃ u ∈ perfI I p, inclR πA * u = 1 := by
   obtain ⟨u, hu⟩ := R.EE_π.exists_right_inv
   exact ⟨I.ioE u, ioE_mem_perfI I p u, by rw [← io_pi I, ← map_mul, hu, map_one]⟩
 
 /- English proof (translation)
-Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.coe_pow]`. Express the relevant statement in the definitionally equal form `φR^[N] x ∈ _`. Rewrite using `[hx, ← io_pi I]`. Conclude with `pow_mem (add_mem (io_mem (I.ioE : R.EE →+* RW) p _) (one_mem _)) k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_perfI_of_iterate (p N k : ℕ) (x : RW) (hx : φR^[N] x = (inclR πA + 1) ^ k) :
     x ∈ perfI I p := by

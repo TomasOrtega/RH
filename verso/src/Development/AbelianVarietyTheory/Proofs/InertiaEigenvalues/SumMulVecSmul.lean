@@ -11,9 +11,9 @@ open PowerSeries Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Fo
 namespace GlobalTheory.WachTie
 
 /- English proof (translation)
-Establish `h : ∀ m, (fun i => (A i).mulVec (y i) m) = ∑ k, ((fun i => y i k) * (fun i => A i m k) : ι → E)`. Introduce `m`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Simplify using `only [h, map_sum, map_mul, Finset.sum_smul, Finset.smul_sum, mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem sum_mulVec_smul {ι E EE D O : Type} [CommRing O] [CommRing E] [CommRing EE] [Algebra O E]
     [Algebra O EE] [AddCommGroup D] [Module EE D] (jE : (ι → E) →ₐ[O] EE) {r : ℕ} (b : Fin r → D)
@@ -29,9 +29,9 @@ theorem sum_mulVec_smul {ι E EE D O : Type} [CommRing O] [CommRing E] [CommRing
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `hs : R.s ≠ 0`. Introduce `h`. Establish `h1` using `R.es`. Establish `h2` using `R.prime.two_le`. Rewrite `h1` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h` using `R.EE_X.map R.φE`. Rewrite `h` using `[R.φE_ext, R.φ_X, map_mul, map_pow]`. Conclude with `(isUnit_pow_iff hs).1 (isUnit_of_mul_isUnit_right h)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_ι_E {l : ℕ} {O : Type} [CommRing O] (R : Fr l O) : IsUnit (R.ι R.E) := by
   have hs : R.s ≠ 0 := by
@@ -45,17 +45,17 @@ theorem isUnit_ι_E {l : ℕ} {O : Type} [CommRing O] (R : Fr l O) : IsUnit (R.�
   exact (isUnit_pow_iff hs).1 (isUnit_of_mul_isUnit_right h)
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W l R j jE T r b _ hE _ S hγ hφ`. Take `⟨hext, -, -, hφE, hγE⟩` from `hE`. Use `⟨fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[coord_apply, coord_apply, map_sum]`. Use `(sum_mulVec_smul jE (fun k => (b k : W.DD T)) (fun i => Ring.inverse (R.ι R.E) ^ S.M • (S.Φ i).map R.ι) (fun i k => R.φE (x (i - 1) k))).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[W.φD_smul, ← hφE]`. Use `congr 1`. Establish `h1 : ∀ m, jE (fun i => (Ring.inverse (R.ι R.E) ^ S.M • (S.Φ i).map R.ι) m k) = jE (fun _ => Ring.inverse (R.ι R.E)) ^ S.M * algebraMap (LetA O n) W.EE (fun i => j (S.Φ i m k))`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hext, ← map_pow, ← map_mul]`. Both sides reduce to the same expression. Establish `h2 : jE (fun _ => Ring.inverse (R.ι R.E)) * algebraMap (LetA O n) W.EE (fun _ => j R.E) = 1`. Rewrite using `[← hext (fun _ => R.E), ← map_mul, ← map_one jE]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Conclude with `Ring.inverse_mul_cancel _ (isUnit_ι_E R)`. Simplify using `only [h1, mul_smul, algebraMap_smul]`. Rewrite using `[← Finset.smul_sum, ← hφ, ← algebraMap_smul W.EE ((fun _ => j R.E : LetA O n) ^ S.M), smul_smul, map_pow, ← mul_pow, h2, one_pow, one_smul]`. Rewrite using `[coord_apply, coord_apply, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(sum_mulVec_smul jE (fun k => (b k : W.DD T)) (fun i => (S.G i).map R.ι) (fun i k => R.γE (x i k))).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[W.γD_smul, ← hγE, hγ]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul W.EE (fun i => j (S.G i m k) : LetA O n), ← hext]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coord_comm_φ_γ : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n) {l : ℕ} (R : Fr l O) (j : O⟦X⟧ →ₐ[O] O⟦X⟧) (jE : (ZMod n → R.EE) →ₐ[O] W.EE) (T : LocLat G Qp LL O) {r : ℕ} (b : Module.Basis (Fin r) (LetA O n) ↥(W.N T)), FrTie W R j → EETie W R j jE → (∀ k, (b k : W.DD T) ∈ W.NΔ T) → ∀ S : Sys R n r, (∀ k, W.γD T W.gam (b k : W.DD T) = ∑ m, (fun i => j (S.G i m k) : LetA O n) • (b m : W.DD T)) → (∀ k, (fun _ => j R.E : LetA O n) ^ S.M • W.φD T (b k : W.DD T) = ∑ m, (fun i => j (S.Φ i m k) : LetA O n) • (b m : W.DD T)) → (∀ x, coord W R jE T (fun k => (b k : W.DD T)) (S.φD x) = W.φD T (coord W R jE T (fun k => (b k : W.DD T)) x)) ∧ ∀ x, coord W R jE T (fun k => (b k : W.DD T)) (S.γD x) = W.γD T W.gam (coord W R jE T (fun k => (b k : W.DD T)) x) := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W l R j jE T r b

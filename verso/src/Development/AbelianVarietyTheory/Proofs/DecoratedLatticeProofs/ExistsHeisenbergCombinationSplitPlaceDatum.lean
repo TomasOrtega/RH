@@ -16,14 +16,14 @@ namespace GlobalTheory.LocComb
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_add_index' (h := fun u (a : ℂ) => a • heisO ψ S T u f) (fun _ => zero_smul _ _) fun _ _ _ => add_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem comb_add (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c c' : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (c + c') f = comb ψ S T c f + comb ψ S T c' f :=
   Finsupp.sum_add_index' (h := fun u (a : ℂ) => a • heisO ψ S T u f) (fun _ => zero_smul _ _) fun _ _ _ => add_smul _ _ _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HeisComb.comb_eq_sum, GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum_smul_index' (h := fun u (a : ℂ) => a • heisO ψ S T u f) fun _ => zero_smul _ _, Finsupp.smul_sum]`. Simplify using `only [smul_eq_mul, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comb_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a : ℂ) (c : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     comb ψ S T (a • c) f = a • comb ψ S T c f := by
@@ -32,7 +32,7 @@ theorem comb_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a : ℂ) (c : 
   simp only [smul_eq_mul, mul_smul]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum_single_index (h := fun u (a : ℂ) => a • heisO ψ S T u f) (zero_smul _ _), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (y : WO S T) (f : WO S T → ℂ) :
     comb ψ S T (Finsupp.single y 1) f = heisO ψ S T y f := by
@@ -40,7 +40,7 @@ theorem comb_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (y : WO S T) 
     one_smul]
 
 /- English proof (translation)
-Take `⟨c', h1, h2⟩` from `(GlobalTheory.HeisComb.main D ψ S T).1 (Finsupp.single y 1) c`. Use `⟨c', fun w hw => ?_, fun f => by rw [h2, comb_single]⟩` and prove the remaining obligations. Take `⟨x, hx, z, hz, rfl⟩` from `h1 w hw`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hx), add_comm]`. Conclude with `(Witness.half_add hy).2 (hc z hz)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heis_comb (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {e : AE D} {y : WO S T} (hy : IsHalf e y) {c : WO S T →₀ ℂ}
     (hc : ∀ w ∈ c.support, IsHalf e w) :
@@ -57,7 +57,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hΦ.1.comp_continuous (continuous_add_const x), hΦ.2.comp_homeomorph (Homeomorph.addRight x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem trans_mem_SB {Φ : Matrix Y Y' k → ℂ} (hΦ : Φ ∈ SB (Matrix Y Y' k)) (x : Matrix Y Y' k) :
     (fun t => Φ (t + x)) ∈ SB (Matrix Y Y' k) :=
@@ -66,9 +66,9 @@ theorem trans_mem_SB {Φ : Matrix Y Y' k → ℂ} (hΦ : Φ ∈ SB (Matrix Y Y' 
 omit [DecidableEq Y] [DecidableEq Y'] in
 
 /- English proof (translation)
-Establish `hψ : IsLocallyConstant ψ`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Use `filter_upwards [((isOpen_cball d).preimage (continuous_sub_right x)).mem_nhds (show x - x ∈ cball d by simp [cball])] with z hz`. Rewrite using `[← add_sub_cancel x z, AddChar.map_add_eq_mul, (hd d).2 le_rfl _ hz, mul_one]`. Establish `h2 : IsLocallyConstant fun t : Matrix Y Y' k => Inhab.pairing ψ t b` using `(hψ.comp_continuous (f := fun t : Matrix Y Y' k => ∑ r, ∑ q, b r q * t r q) (by fun_prop)).comp fun z : Circle => (z : ℂ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨h2.mul hΦ.1, hΦ.2.mul_left⟩`.
+A detailed English derivation is pending.
 -/
 theorem modul_mem_SB {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) {Φ : Matrix Y Y' k → ℂ}
     (hΦ : Φ ∈ SB (Matrix Y Y' k)) (b : Matrix Y Y' k) : (fun t => Inhab.pairing ψ t b * Φ t) ∈ SB (Matrix Y Y' k) := by
@@ -82,21 +82,21 @@ theorem modul_mem_SB {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) 
   exact ⟨h2.mul hΦ.1, hΦ.2.mul_left⟩
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p Y Y' _ _ _ _ S T FS FT ψ hψ Φ₀ Φ hΦ₀`. Take `⟨⟨ψk, hψk⟩, hcn, -, -, -⟩` from `GlobalTheory.LocChar.weil_char_split D k p ψ hψ`. Take `⟨hcont, hne⟩` from `hcn ψk hψk`. Take `⟨d, hd⟩` from `exists_hasConductor_of_continuous ψk hcont hne`. Take `⟨hup, -, -, hsymk, hsurj⟩` from `GlobalTheory.LocSympl.halves_at_split D k p Y Y' S T FS FT ψ ψk hψk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hec, -⟩` from `p.split`. Establish `hce : cA D p.e * p.e = 0` using `by rw [mul_comm, hec]`. Establish `half1 : ∀ u : WO S T, IsHalf p.e u → IsHalf (p.e + cA D p.e) u` using `fun u hu i j => by`. Rewrite using `[add_mul, hu i j, ← hu i j, ← mul_assoc, hce, zero_mul, add_zero, hu i j]`. Establish `half2 : ∀ u : WO S T, IsHalf (cA D p.e) u → IsHalf (p.e + cA D p.e) u` using `fun u hu i j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_mul, hu i j, ← hu i j, ← mul_assoc, hec, zero_mul, zero_add, hu i j]`. Set `M : Submodule ℂ (SB (Matrix Y Y' k))` to `{ carrier := {Ψ | ∃ c : WO S T →₀ ℂ, (∀ w ∈ c.support, IsHalf (p.e + cA D p.e) w) ∧ ∀ Tm, p.IsModel ψ FS FT Tm → Tm Ψ = comb ψ S T c (Tm Φ₀)} zero_mem' := ⟨0, by simp, fun Tm _ => by simp [comb]⟩ add_mem' := by`. Introduce and unpack `a b ⟨c, h1, h2⟩ ⟨c', h1', h2'⟩`. Use `⟨c + c', fun w hw => ?_, fun Tm h => by rw [map_add, comb_add, h2 Tm h, h2' Tm h]⟩` and prove the remaining obligations. Conclude with `(Finset.mem_union.1 (Finsupp.support_add hw)).elim (h1 w) (h1' w)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `a b ⟨c, h1, h2⟩`. Conclude with `⟨a • c, fun w hw => h1 w (Finsupp.support_smul hw), fun Tm h => by rw [map_smul, comb_smul, h2 Tm h]⟩ }`. Establish `key : SB (Matrix Y Y' k) ≤ M.map (SB (Matrix Y Y' k)).subtype`. Use `Inhab.sb_le hd ?_ ?_ Φ₀.2 (fun h => hΦ₀ (Subtype.ext h)) ⟨Φ₀, ⟨Finsupp.single 0 1, fun w hw => ?_, fun Tm _ => ?_⟩, rfl⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `x _ ⟨Ψ, ⟨c, h1, h2⟩, rfl⟩`. Take `⟨c', h3, h4⟩` from `heis_comb ψ S T (half1 _ (hup x).1) h1`. Conclude with `⟨⟨_, trans_mem_SB Ψ.2 x⟩, ⟨c', h3, fun Tm h => by rw [h4, ← h2 Tm h]; exact h.trans x Ψ _ fun _ => rfl⟩, rfl⟩`. Introduce and unpack `b _ ⟨Ψ, ⟨c, h1, h2⟩, rfl⟩`. Take `⟨y, hy, hyb⟩` from `hsurj b`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', h3, h4⟩` from `heis_comb ψ S T (half2 _ hy) h1`. Use `⟨⟨_, modul_mem_SB hd Ψ.2 b⟩, ⟨c', h3, fun Tm h => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[h4, ← h2 Tm h]`. Use `h.modul y hy Ψ _ fun t => ?_` and prove the remaining obligations. Rewrite using `[hsymk t y hy, hyb t]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hw)]`. Conclude with `fun i j => mul_zero _`. Rewrite using `[comb_single]`. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show _ = ψ (symplOH S T w 0) * Tm Φ₀ (w + 0)`. Rewrite using `[symplOH, GlobalTheory.PlaceModel.symplO_zero_right, mul_zero, AddChar.map_zero_eq_one, one_mul, add_zero]`. Take `⟨Ψ, hΨ, e⟩` from `key Φ.2`. Rewrite using `[← show Ψ = Φ from Subtype.ext e]`. Conclude with `hΨ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_comb : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : HSp D) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ Φ₀ Φ : SB (Matrix Y Y' k), Φ₀ ≠ 0 → ∃ c : WO S T →₀ ℂ, (∀ w ∈ c.support, IsHalf (p.e + cA D p.e) w) ∧ ∀ Tm, p.IsModel ψ FS FT Tm → Tm Φ = comb ψ S T c (Tm Φ₀) := by
   intro D k _ _ _ _ p Y Y' _ _ _ _ S T FS FT ψ hψ Φ₀ Φ hΦ₀

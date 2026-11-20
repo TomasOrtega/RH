@@ -4,7 +4,7 @@ open CategoryTheory GlobalTheory.EtC
 namespace LateralTheory.EtaleFoundations.KTP
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Finsupp.lmapDomain _ _ _ (Finsupp.single ζ 1)) = _`. Simplify using `[Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem twGenR_nat {q : ℕ} (A B : CommRingCat.{0}) (f : A ⟶ B) (ζ : Prim q A) :
     ((twF q 1).map f).hom (twGenR A ζ) = twGenR B (Prim.map f.hom ζ) := by
@@ -13,7 +13,7 @@ theorem twGenR_nat {q : ℕ} (A B : CommRingCat.{0}) (f : A ⟶ B) (ζ : Prim q 
   rfl
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ.1) hp`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, map_mul, ζ.2.2, zero_mul] at h`. Conclude with `sub_eq_zero.1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prim_pow {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   obtain ⟨p, hp⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -22,7 +22,7 @@ theorem prim_pow {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 
   exact sub_eq_zero.1 h
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [mul_pow, prim_pow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem list_pow {q : ℕ} {A : Type} [CommRing A] (l : List (Prim q A)) : ((l.map fun ζ => ζ.1).prod) ^ q = 1 := by
   induction l with
@@ -30,7 +30,7 @@ theorem list_pow {q : ℕ} {A : Type} [CommRing A] (l : List (Prim q A)) : ((l.m
   | cons a l ih => simp [mul_pow, prim_pow, ih]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((q : ℕ) : ULift.{1} (ZMod q)) = 0`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[this, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem q_smul {q : ℕ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M] (x : M) : q • x = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]
@@ -41,11 +41,11 @@ theorem q_smul {q : ℕ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q
 variable {q : ℕ} {A : Type} [CommRing A] {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
 
 /- English proof (translation)
-Establish `hq : 1 ≤ q` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne q)`. Use `hl (l1 ++ (List.replicate (q - 1) l2).flatten) (by` as an intermediate fact. Simplify using `only [List.map_append, List.prod_append, List.map_flatten, List.map_replicate, List.prod_flatten, List.prod_replicate, h, ← pow_succ']`. Rewrite using `[Nat.sub_add_cancel hq, list_pow])`. Simplify using `only [List.map_append, List.sum_append, List.map_flatten, List.map_replicate, List.sum_flatten, List.sum_replicate] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `q_smul (q := q) (l2.map τ').sum`. Establish `h3 : q • (l2.map τ').sum = (q - 1) • (l2.map τ').sum + (l2.map τ').sum`. Rewrite using `[← succ_nsmul, Nat.sub_add_cancel hq]`. Rewrite `h2` using `[h3]`. Use `this.trans h2.symm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[add_comm ((q-1) • _) _]`. Conclude with `add_left_cancel (a := (q-1) • (l2.map τ').sum) (by rw [add_comm _ (List.sum _), this, add_comm])`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eq_of_prod_eq [NeZero q] (τ' : Prim q A → M)
     (hl : ∀ l : List (Prim q A), (l.map fun ζ => ζ.1).prod = 1 → (l.map τ').sum = 0)
@@ -80,13 +80,13 @@ def rel (q : ℕ) [NeZero q] (A : Type) [CommRing A] : Setoid Aˣ where
       exact ⟨m ++ l, by simp [hm, hl, mul_assoc]⟩
 
 /- English proof (translation)
-Set `S` to `rel q A`. Set `r : Aˣ → Aˣ` to `fun x => Quotient.out (s := S) (Quotient.mk S x)`. Establish `hr : ∀ x, S.r (r x) x` using `fun x => Quotient.exact (s := S) (Quotient.out_eq (s := S) (Quotient.mk S x))`. Set `L : Aˣ → List (Prim q A)` to `fun x => Classical.choose (hr x)`. Establish `hL : ∀ x : Aˣ, (x : A) = ((L x).map fun ζ => ζ.1).prod * (r x : A)` using `fun x => Classical.choose_spec (hr x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨fun x => ((L x).map τ').sum, ?_⟩` and prove the remaining obligations. Introduce `ζ v w h`. Establish `hvw : S.r v w` using `⟨[ζ], by simp [h]⟩`. Establish `hrr : r w = r v` using `by show Quotient.out (s := S) (Quotient.mk S w) = Quotient.out (s := S) (Quotient.mk S v)`. Rewrite using `[Quotient.sound (s := S) (S.iseqv.symm hvw)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ((L w).map fun ζ => ζ.1).prod = ((ζ :: L v).map fun ζ => ζ.1).prod`. Establish `e1` using `hL w`. Rewrite `e1` using `[h, hL v, hrr, ← mul_assoc]`. Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `((Units.isUnit (r v)).mul_left_inj).1 e1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ((L w).map τ').sum = ((L v).map τ').sum + τ' ζ`. Rewrite using `[sum_eq_of_prod_eq τ' hl _ _ key]`. Simplify using `[add_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_chi [NeZero q] (τ' : Prim q A → M)
     (hl : ∀ l : List (Prim q A), (l.map fun ζ => ζ.1).prod = 1 → (l.map τ').sum = 0) :
@@ -130,7 +130,7 @@ def Gm {A B : CommRingCat.{0}} (f : A ⟶ B) : Mo q T A →ₗ[R q] Mo q T B :=
   (T.map f).hom.prodMap (Finsupp.lmapDomain (R q) (R q) (Units.map f.hom.toMonoidHom))
 
 /- English proof (translation)
-Rewrite using `[← twGenR_nat]`. Conclude with `congrArg (fun g => ModuleCat.Hom.hom g (twGenR A ζ)) (τ.naturality f)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_nat {A B : CommRingCat.{0}} (f : A ⟶ B) (ζ : Prim q A) :
     (τ.app B).hom (twGenR B (Prim.map f.hom ζ)) = (T.map f).hom ((τ.app A).hom (twGenR A ζ)) := by
@@ -138,9 +138,9 @@ theorem tau_nat {A B : CommRingCat.{0}} (f : A ⟶ B) (ζ : Prim q A) :
   exact congrArg (fun g => ModuleCat.Hom.hom g (twGenR A ζ)) (τ.naturality f)
 
 /- English proof (translation)
-Rewrite using `[N, Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨⟨(Prim.map f.hom p.1.1, Units.map f.hom.toMonoidHom p.1.2.1, Units.map f.hom.toMonoidHom p.1.2.2), ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Units.coe_map, p.2, Prim.map]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[relv, Gm, tau_nat, Finsupp.mapDomain_sub, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem N_le {A B : CommRingCat.{0}} (f : A ⟶ B) : N q T τ A ≤ (N q T τ B).comap (Gm q T f) := by
   rw [N, Submodule.span_le]
@@ -170,7 +170,7 @@ def sec (A : CommRingCat.{0}) (v : (A : Type)ˣ) : (Gf q T τ).obj A :=
   Submodule.Quotient.mk (p := N q T τ A) ((0 : T.obj A), Finsupp.single v 1)
 
 /- English proof (translation)
-Use `show (Submodule.Quotient.mk (Gm q T f (0, Finsupp.single v 1)) : Mo q T B ⧸ N q T τ B) = Submodule.Quotient.mk (0, Finsupp.single _ 1)`. Simplify using `[Gm, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sec_nat (A B : CommRingCat.{0}) (f : A ⟶ B) (v : (A : Type)ˣ) :
     ((Gf q T τ).map f).hom (sec q T τ A v) = sec q T τ B (Units.map f.hom.toMonoidHom v) := by
@@ -179,9 +179,9 @@ theorem sec_nat (A B : CommRingCat.{0}) (f : A ⟶ B) (v : (A : Type)ˣ) :
   simp [Gm, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Establish `hm : relv q T τ A ⟨(ζ, v, w), h⟩ ∈ N q T τ A` using `Submodule.subset_span ⟨_, rfl⟩`. Establish `key : (Submodule.Quotient.mk (0, Finsupp.single w 1) : Mo q T A ⧸ N q T τ A) = Submodule.Quotient.mk (0, Finsupp.single v 1) + Submodule.Quotient.mk ((τ.app A).hom (twGenR A ζ), 0)`. Rewrite using `[← Submodule.Quotient.mk_add, Submodule.Quotient.eq]`. Use `hm using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [relv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem sec_rel (A : CommRingCat.{0}) (ζ : Prim q A) (v w : (A : Type)ˣ) (h : (w : (A : Type)) = ζ.1 * v) :
     sec q T τ A w = sec q T τ A v + ((iota q T τ).app A).hom ((τ.app A).hom (twGenR A ζ)) := by
@@ -194,11 +194,11 @@ theorem sec_rel (A : CommRingCat.{0}) (ζ : Prim q A) (v w : (A : Type)ˣ) (h : 
   exact key
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `exists_chi (M := T.obj A) (fun ζ => (τ.app A).hom (twGenR A ζ)) (hl A)`. Set `φ : Mo q T A →ₗ[R q] T.obj A` to `LinearMap.fst _ _ _ + (Finsupp.linearCombination (R q) χ) ∘ₗ LinearMap.snd _ _ _`. Establish `hN : N q T τ A ≤ LinearMap.ker φ`. Rewrite using `[N, Submodule.span_le]`. Introduce and unpack `_ ⟨⟨⟨ζ, v, w⟩, h⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `[φ, relv, hχ ζ v w h]`. Introduce `a b hab`. Establish `hab' : (Submodule.Quotient.mk (a, 0) : Mo q T A ⧸ N q T τ A) = Submodule.Quotient.mk (b, 0)` using `hab`. Rewrite `hab'` using `[Submodule.Quotient.eq]`. Use `hN hab'` as an intermediate fact.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[φ, sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem iota_inj [NeZero q]
     (hl : ∀ (A : CommRingCat.{0}) (l : List (Prim q A)), (l.map fun ζ => ζ.1).prod = 1 →
@@ -220,7 +220,7 @@ theorem iota_inj [NeZero q]
 end Cons
 
 /- English proof (translation)
-Introduce `q _ T τ hl`. Conclude with `⟨Gf q T τ, iota q T τ, iota_inj q T τ hl, sec q T τ, sec_nat q T τ, sec_rel q T τ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : MuTwistQuotientEmbedsInUnitTorsorPresheaf := by
   intro q _ T τ hl
@@ -229,7 +229,7 @@ end LateralTheory.EtaleFoundations.KTP
 
 namespace LateralTheory.EtaleFoundations
 /- English proof (translation)
-The claim follows from `KTP.main`.
+A detailed English derivation is pending.
 -/
 theorem mu_twist_quotient_embeds_in_unit_torsor_presheaf : MuTwistQuotientEmbedsInUnitTorsorPresheaf := KTP.main
 end LateralTheory.EtaleFoundations

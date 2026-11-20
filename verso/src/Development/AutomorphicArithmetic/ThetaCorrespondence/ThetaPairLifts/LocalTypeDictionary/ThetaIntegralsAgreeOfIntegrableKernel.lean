@@ -21,17 +21,15 @@ section Reg
 open MeasureTheory GlobalTheory.SquareComm GlobalTheory.RegCompare
 variable {D : D7}
 /- English proof (translation)
-Use `set S := algF ψ θ false A₁ B with hSdef`. Establish `hL : ∀ Φ ∈ S, ∀ γ ∈ GQ W₁, ∀ g h, thetaKO ωB (γ * g) h Φ = thetaKO ωB g h Φ` using `GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary D ψ θ hθ W₁ X A₁ B α (α / β) ωB hw`. Establish `hle : finRel ωB S ≤ S`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, Φ, hΦ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `S.sub_mem (hstab u hu Φ hΦ) hΦ`. Establish `hΨS : Ψ ∈ S` using `hle hΨ`. Establish `hrel` using `hΨ`. Rewrite `hrel` using `[finRel, Submodule.mem_span_set']`. Take `⟨n, c, g, hsum⟩` from `hrel`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose u hu Ψi hΨi hg using fun i => (g i).2`. Take `⟨z, hzG, hz0, hz⟩` from `_root_.GlobalTheory.T.twist_regulariser_isGood hP hK D ψ θ hθ W W₁ X A₁ B α β hT ν₁ 𝓕₁ hν₁ ωB hw n Ψi u hΨi hu`. Establish `hX : ∀ i, ModInt θ ωB ν₁ 𝓕₁ (wop ωB z (Ψi i)) ∧ ∃ u' ∈ GfC W₁, wop ωB z (ωB (u i, 1) (Ψi i)) = ωB (u', 1) (wop ωB z (Ψi i))` using `fun i => hz i`. Use `choose u' hu' hcomm using fun i => (hX i).2`. Establish `hXS : ∀ i, wop ωB z (Ψi i) ∈ S` using `fun i => wop_mem hstab hzG (hΨi i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXr` using `fun i => modInt_right hν₁ (hL _ (hXS i)) (hX i).1 (u' i)`. Establish `eΨ : Ψ = ∑ i, c i • (ωB (u i, 1) (Ψi i) - Ψi i)`. Establish `e : ∑ i, c i • (g i : WO W₁ X → ℂ) = ∑ i, c i • (ωB (u i, 1) (Ψi i) - Ψi i)` using `by simp only [hg]`. Rewrite using `[← e, hsum]`. Establish `eW : wop ωB z Ψ = ∑ i, c i • (ωB (u' i, 1) (wop ωB z (Ψi i)) - wop ωB z (Ψi i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eΨ, map_sum]`. Simplify using `only [map_smul, map_sub, hcomm]`. Establish `hJ : thetaInt ωB ν₁ 𝓕₁ (wop ωB z Ψ) = 0`. Establish `hi : ∀ i ∈ (Finset.univ : Finset (Fin n)), Intg ωB ν₁ 𝓕₁ (c i • (ωB (u' i, 1) (wop ωB z (Ψi i)) - wop ωB z (Ψi i)))` using `fun i _ => ((intg_of_modInt (hXr i).1).sub (intg_of_modInt (hX i).1)).smul _`. Rewrite using `[eW, thetaInt_sum _ hi]`.
-
-Simplify using `only [thetaInt_smul, thetaInt_sub (intg_of_modInt (hXr _).1) (intg_of_modInt (hX _).1), (hXr _).2, sub_self, smul_zero, Finset.sum_const_zero]`. Rewrite `hJ` using `[thetaInt_wop_of_intg hν₁ (hL Ψ hΨS) hint z]`. Conclude with `(smul_eq_zero.1 hJ).resolve_left hz0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaIntegral_eq_zero_of_finiteRelation (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
     {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {W W₁ X : HSp D} {A₁ : GlobalTheory.ChainFr.Fr W₁}
@@ -76,13 +74,13 @@ theorem thetaIntegral_eq_zero_of_finiteRelation (hP : _root_.GlobalTheory.FunPr.
   exact (smul_eq_zero.1 hJ).resolve_left hz0
 end Reg
 /- English proof (translation)
-Introduce `hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hM`. Take `⟨c, hc0, hc⟩` from `_root_.GlobalTheory.T.twisted_square_theta_integrals_eq hP hK hL D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hM`. Use `⟨c, hc0, fun Φ hΦ Φ' hΦ' hint hp => ?_⟩` and prove the remaining obligations. Take `⟨Φ₀, -, hrel, ⟨N, C, hmod⟩, hI⟩` from `hc Φ' hΦ'`. Establish `hp0 : p' Φ' = p' Φ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `map_finRel_eq_zero hM hrel` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hI Φ hΦ (hp.trans hp0)]`. Use `congr 1`. Establish `hlin : ∀ g h, thetaKO ωB g h (Φ' - Φ₀) = thetaKO ωB g h Φ' - thetaKO ωB g h Φ₀` using `fun g h => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [thetaKO, map_sub, _root_.Pi.sub_apply]`. Establish `hint' : ∀ h, MeasureTheory.IntegrableOn (fun g => thetaKO ωB g h (Φ' - Φ₀)) 𝓕₁ ν₁` using `fun h => by`. Simplify using `only [hlin]`. Conclude with `(hint h).sub (hmod h).1`. Establish `h0` using `_root_.GlobalTheory.ThetaAgreeConv.thetaIntegral_eq_zero_of_finiteRelation hP hK hθ hT hν₁ hM.weilB hM.mapB.stabM.1 hrel hint'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h`. Establish `e` using `congrFun h0 h`. Simplify using `only [GlobalTheory.SquareComm.thetaInt, hlin, _root_.Pi.zero_apply] at e ⊢`. Rewrite `e` using `[MeasureTheory.integral_sub (hint h) (hmod h).1]`. Conclude with `(sub_eq_zero.1 e).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaIntegrals_agree_of_integrable_kernel : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -130,7 +128,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaAgreeConv.thetaIntegrals_agree_of_integrable_kernel | exact _root_.GlobalTheory.ThetaAgreeConv.thetaIntegrals_agree_of_integrable_kernel | (intros; apply _root_.GlobalTheory.ThetaAgreeConv.thetaIntegrals_agree_of_integrable_kernel <;> assum …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.thetaIntegrals_agree_of_convergence : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

@@ -39,7 +39,7 @@ def orb (ρ : Representation ℂ G V) : V →ₗ[ℂ] (G → V) where
   map_smul' c x := by funext g; simp
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.LFun.map_heckeVec hK hh (ρ' := rightReg ℂ G V) (orb ρ) ?_ x, GlobalTheory.LFun.heckeVec_rightReg hK hh]`. Introduce `g y`. Use function extensionality and compare the values at `a`. Simplify using `[orb, rightReg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem orb_heckeVec (ρ : Representation ℂ G V) (hK : IsCommensurated K) {h : G → ℂ} (hh : h ∈ Hecke ℂ K) (x : V) :
     orb ρ (heckeVec ρ K h x) = hAct K h (orb ρ x) := by
@@ -49,13 +49,13 @@ theorem orb_heckeVec (ρ : Representation ℂ G V) (hK : IsCommensurated K) {h :
   simp [orb, rightReg]
 
 /- English proof (translation)
-Introduce `a b e` and use `by simpa [orb] using congrFun e 1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem orb_injective (ρ : Representation ℂ G V) : Function.Injective (orb ρ) := fun a b e => by
   simpa [orb] using congrFun e 1
 
 /- English proof (translation)
-Introduce and unpack `⟨γ, hγ⟩ g ⟨κ, hκ⟩`. Establish `: γ = 1` using `hγ`. Substitute `this` using the available equality. Simplify using `[orb, GlobalTheory.LGrp.mem_fixed.1 hx κ hκ]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem orb_mem {ρ : Representation ℂ G V} {x : V} (hx : x ∈ fixed ρ K) :
     orb ρ x ∈ AMF ℂ (⊥ : Subgroup G) K (1 : Representation ℂ (⊥ : Subgroup G) V) := by
@@ -65,7 +65,7 @@ theorem orb_mem {ρ : Representation ℂ G V} {x : V} (hx : x ∈ fixed ρ K) :
   simp [orb, GlobalTheory.LGrp.mem_fixed.1 hx κ hκ]
 
 /- English proof (translation)
-Apply `orb_injective ρ` to reduce the goal to its premises. Rewrite using `[orb_heckeVec ρ hK (Formalism.UG.Final.HeckeConvMem G K ℂ hK f₁ h₁ f₂ h₂), Formalism.UG.Final.HeckeActMul G ⊥ K ℂ V 1 hK f₁ h₁ f₂ h₂ _ (orb_mem hx), orb_heckeVec ρ hK h₁, orb_heckeVec ρ hK h₂]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeVec_conv (hK : IsCommensurated K) {f₁ f₂ : G → ℂ} (h₁ : f₁ ∈ Hecke ℂ K) (h₂ : f₂ ∈ Hecke ℂ K)
     (ρ : Representation ℂ G V) {x : V} (hx : x ∈ fixed ρ K) :
@@ -75,7 +75,7 @@ theorem heckeVec_conv (hK : IsCommensurated K) {f₁ f₂ : G → ℂ} (h₁ : f
     Formalism.UG.Final.HeckeActMul G ⊥ K ℂ V 1 hK f₁ h₁ f₂ h₂ _ (orb_mem hx), orb_heckeVec ρ hK h₁, orb_heckeVec ρ hK h₂]
 
 /- English proof (translation)
-Unfold `heckeVec`. Rewrite using `[← finsum_add_distrib (GlobalTheory.LFun.finite_heckeVec hK h₁ ρ x) (GlobalTheory.LFun.finite_heckeVec hK h₂ ρ x)]`. Conclude with `finsum_congr fun c => by simp [add_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_add (hK : IsCommensurated K) {f₁ f₂ : G → ℂ} (h₁ : f₁ ∈ Hecke ℂ K) (h₂ : f₂ ∈ Hecke ℂ K)
     (ρ : Representation ℂ G V) (x : V) :
@@ -85,7 +85,7 @@ theorem heckeVec_add (hK : IsCommensurated K) {f₁ f₂ : G → ℂ} (h₁ : f�
   exact finsum_congr fun c => by simp [add_smul]
 
 /- English proof (translation)
-Unfold `heckeVec`. Rewrite using `[smul_finsum]`. Conclude with `finsum_congr fun c => by simp [mul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_smul (z : ℂ) (f : G → ℂ) (ρ : Representation ℂ G V) (x : V) :
     heckeVec ρ K (z • f) x = z • heckeVec ρ K f x := by
@@ -94,7 +94,7 @@ theorem heckeVec_smul (z : ℂ) (f : G → ℂ) (ρ : Representation ℂ G V) (x
   exact finsum_congr fun c => by simp [mul_smul]
 
 /- English proof (translation)
-Unfold `heckeVec`. Rewrite using `[smul_finsum]`. Conclude with `finsum_congr fun c => by rw [map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_smul_vec (z : ℂ) (f : G → ℂ) (ρ : Representation ℂ G V) (x : V) :
     heckeVec ρ K f (z • x) = z • heckeVec ρ K f x := by
@@ -103,13 +103,13 @@ theorem heckeVec_smul_vec (z : ℂ) (f : G → ℂ) (ρ : Representation ℂ G V
   exact finsum_congr fun c => by rw [map_smul, smul_comm]
 
 /- English proof (translation)
-Simplify using `[heckeVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckeVec_zero (ρ : Representation ℂ G V) (x : V) : heckeVec ρ K (0 : G → ℂ) x = 0 := by
   simp [heckeVec]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [heckeVec_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, heckeVec_add hK (hf a (Finset.mem_insert_self _ _)) (Submodule.sum_mem _ fun i hi => hf i (Finset.mem_insert_of_mem hi)), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeVec_sum (hK : IsCommensurated K) {ι : Type} (s : Finset ι) (f : ι → G → ℂ) (hf : ∀ i ∈ s, f i ∈ Hecke ℂ K)
     (ρ : Representation ℂ G V) (x : V) :
@@ -125,7 +125,7 @@ theorem heckeVec_sum (hK : IsCommensurated K) {ι : Type} (s : Finset ι) (f : �
 def finv (f : G → ℂ) : G → ℂ := fun g => f g⁻¹
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[finv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem finv_finv (f : G → ℂ) : finv (finv f) = f := by
   funext g; simp [finv]
@@ -144,11 +144,11 @@ Both sides reduce to the same expression.
 theorem finv_zero : finv (0 : G → ℂ) = 0 := rfl
 
 /- English proof (translation)
-Take `⟨h1, S, hS⟩` from `hf`. Use `⟨fun a b g => ?_, S.image (·⁻¹), fun g hg => ?_⟩` and prove the remaining obligations. Use `h1 b⁻¹ a⁻¹ g⁻¹` as an intermediate fact. Simplify using `only [finv]`. Rewrite using `[← this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[mul_assoc]`. Take `⟨s, hs, a, b, e⟩` from `hS g⁻¹ hg`. Use `⟨s⁻¹, Finset.mem_image_of_mem _ hs, b⁻¹, a⁻¹, ?_⟩` and prove the remaining obligations. Establish `: g = (g⁻¹)⁻¹` using `by simp`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, e]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finv_mem {f : G → ℂ} (hf : f ∈ Hecke ℂ K) : finv f ∈ Hecke ℂ K := by
   classical
@@ -174,7 +174,7 @@ open GlobalTheory.Hk3.MinuscTopLocal (dU)
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.Final.GLintComm K v n`.
+A detailed English derivation is pending.
 -/
 theorem kComm (n : ℕ) : IsCommensurated (KGL v n) := Formalism.UG.Final.GLintComm K v n
 
@@ -185,7 +185,7 @@ abbrev repT (n c : ℕ) : Representation ℂ (GL (Fin n) (Cv v)) (Matrix (Fin n)
   (omega v n c).comp (MonoidHom.inr _ _)
 
 /- English proof (translation)
-Unfold `heckeVec`. Rewrite using `[← finsum_add_distrib (GlobalTheory.LFun.finite_heckeVec hK hf ρ x) (GlobalTheory.LFun.finite_heckeVec hK hf ρ y)]`. Conclude with `finsum_congr fun c => by simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeVec_add_vec {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {H : Subgroup G} (hK : IsCommensurated H)
     {f : G → ℂ} (hf : f ∈ Hecke ℂ H) (ρ : Representation ℂ G V) (x y : V) :
@@ -207,7 +207,7 @@ def Eig {n : ℕ} (B : Multiset ℂˣ) (f : GL (Fin n) (Cv v) → ℂ) (μ : ℂ
 variable {v}
 
 /- English proof (translation)
-Introduce `V _ _ ρ x hx` and use `by rw [heckeVec_add (kComm v n) m₁ m₂, h₁ V ρ x hx, h₂ V ρ x hx, add_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Eig.add {n : ℕ} {B : Multiset ℂˣ} {f₁ f₂ : GL (Fin n) (Cv v) → ℂ} {μ₁ μ₂ : ℂ}
     (h₁ : Eig v B f₁ μ₁) (h₂ : Eig v B f₂ μ₂) (m₁ : f₁ ∈ Hecke ℂ (KGL v n)) (m₂ : f₂ ∈ Hecke ℂ (KGL v n)) :
@@ -215,20 +215,20 @@ theorem Eig.add {n : ℕ} {B : Multiset ℂˣ} {f₁ f₂ : GL (Fin n) (Cv v) �
   rw [heckeVec_add (kComm v n) m₁ m₂, h₁ V ρ x hx, h₂ V ρ x hx, add_smul]
 
 /- English proof (translation)
-Introduce `V _ _ ρ x hx` and use `by rw [heckeVec_smul, h V ρ x hx, mul_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Eig.smul {n : ℕ} {B : Multiset ℂˣ} {f : GL (Fin n) (Cv v) → ℂ} {μ : ℂ} (z : ℂ)
     (h : Eig v B f μ) : Eig v B (z • f) (z * μ) := fun V _ _ ρ x hx => by
   rw [heckeVec_smul, h V ρ x hx, mul_smul]
 
 /- English proof (translation)
-Introduce `V _ _ ρ x _` and use `by rw [heckeVec_zero, zero_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eig_zero {n : ℕ} (B : Multiset ℂˣ) : Eig v B (0 : GL (Fin n) (Cv v) → ℂ) 0 := fun V _ _ ρ x _ => by
   rw [heckeVec_zero, zero_smul]
 
 /- English proof (translation)
-Introduce `V _ _ ρ x hx` and use `by rw [heckeVec_conv (kComm v n) m₁ m₂ ρ hx.2.1, h₂ V ρ x hx, heckeVec_smul_vec, h₁ V ρ x hx, smul_smul, mul_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Eig.conv {n : ℕ} {B : Multiset ℂˣ} {f₁ f₂ : GL (Fin n) (Cv v) → ℂ} {μ₁ μ₂ : ℂ}
     (h₁ : Eig v B f₁ μ₁) (h₂ : Eig v B f₂ μ₂) (m₁ : f₁ ∈ Hecke ℂ (KGL v n)) (m₂ : f₂ ∈ Hecke ℂ (KGL v n)) :
@@ -236,7 +236,7 @@ theorem Eig.conv {n : ℕ} {B : Multiset ℂˣ} {f₁ f₂ : GL (Fin n) (Cv v) �
   rw [heckeVec_conv (kComm v n) m₁ m₂ ρ hx.2.1, h₂ V ρ x hx, heckeVec_smul_vec, h₁ V ρ x hx, smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `V _ _ ρ x hx` and use `by rw [heckeVec_sum (kComm v n) s f m, Finset.sum_smul] exact Finset.sum_congr rfl fun i hi => h i hi V ρ x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Eig.sum {n : ℕ} {B : Multiset ℂˣ} {ι : Type} (s : Finset ι) (f : ι → GL (Fin n) (Cv v) → ℂ) (μ : ι → ℂ)
     (h : ∀ i ∈ s, Eig v B (f i) (μ i)) (m : ∀ i ∈ s, f i ∈ Hecke ℂ (KGL v n)) :
@@ -283,11 +283,9 @@ def subS (c : ℕ) : Submodule ℂ (GL (Fin c) (Cv v) → ℂ) where
     exact ⟨z * μ₁, p₁.smul z⟩
 
 /- English proof (translation)
-Use `GlobalTheory.LFun.heckeVec_dosetInd (ρ := ρ) (K := H) hx (a := z) (R := {z}) (fun γ hγ => by` as an intermediate fact. Rewrite using `[Finset.mem_singleton.1 hγ]`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨1, H.one_mem, 1, H.one_mem, by simp⟩)`. Use the proof step `(fun g hg => by`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨z, ⟨Finset.mem_singleton_self _, ?_⟩, fun y hy => Finset.mem_singleton.1 hy.1⟩` and prove the remaining obligations. Establish `e : z⁻¹ * (a * z * b) = a * b`. Rewrite using `[← hz a]`. Use `group`. Rewrite using `[e]`.
-
-Conclude with `H.mul_mem ha hb)`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem heckeVec_central {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {H : Subgroup G}
     (ρ : Representation ℂ G V) {x : V} (hx : x ∈ fixed ρ H) {z : G} (hz : ∀ g, z * g = g * z) :
@@ -307,7 +305,7 @@ theorem heckeVec_central {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] 
   simpa using this
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.diagJ]`. Simplify using `[Formalism.UG.diagJ, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diagJ_self (n : ℕ) (ϖ : Cv v) : Formalism.UG.diagJ n ϖ n = ϖ • (1 : Matrix (Fin n) (Fin n) (Cv v)) := by
   ext i j
@@ -323,13 +321,13 @@ def sc (n : ℕ) {ϖ : Cv v} (h0 : ϖ ≠ 0) : GL (Fin n) (Cv v) where
   inv_val := by simp [smul_smul, h0]
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp [sc])`.
+A detailed English derivation is pending.
 -/
 theorem sc_central (n : ℕ) {ϖ : Cv v} (h0 : ϖ ≠ 0) (g : GL (Fin n) (Cv v)) : sc v n h0 * g = g * sc v n h0 :=
   Units.ext (by simp [sc])
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.Final.TjEq (Cv v) (Ov K v) ϖ ℂ n n (sc v n h0) (by rw [diagJ_self]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem Tj_self (n : ℕ) {ϖ : Cv v} (h0 : ϖ ≠ 0) : Tj ℂ n (Ov K v) ϖ n = dosetInd ℂ (KGL v n) (sc v n h0) :=
   Formalism.UG.Final.TjEq (Cv v) (Ov K v) ϖ ℂ n n (sc v n h0) (by rw [diagJ_self]; rfl)

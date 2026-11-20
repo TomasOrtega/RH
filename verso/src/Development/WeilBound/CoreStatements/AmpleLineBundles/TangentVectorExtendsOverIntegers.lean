@@ -12,52 +12,50 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace CoverDenseAlt
 
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [dualMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_dualMap' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R')
     (g : R' →+* R'') : (dualMap g).comp (dualMap f) = dualMap (g.comp f) := by
   ext a <;> simp [dualMap]
 
 /- English proof (translation)
-Apply the tactic sequence `ext a <;> simp [dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_epsMul_ample_line_bundles {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (s : R) :
     (dualMap f).comp (GlobalTheory.CompanionTheory.Ar.epsMul s) = (GlobalTheory.CompanionTheory.Ar.epsMul (f s)).comp (dualMap f) := by
   ext a <;> simp [dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_spMap_ample_line_bundles {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R')
     (g : R' →+* R'') : spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ S x G _ _ _ E _ _ M v hv hloc`. Take `⟨EK, _, _, ⟨MK⟩⟩` from `lieModel_exists S G K (spMap (algebraMap O K) ≫ x)`. Take `⟨jK, hjK, -⟩` from `LieBaseChange.existsUnique_semilinear_lifts S G O K (algebraMap O K) x E EK M MK`. Take `⟨eK, rfl⟩` from `MK.onto v hv`. Set `I : Ideal O` to `{ carrier := {a | ∃ e, jK e = algebraMap O K a • eK} add_mem' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce and unpack `a b ⟨e, he⟩ ⟨e', he'⟩`. Conclude with `⟨e + e', by rw [map_add, he, he', map_add, add_smul]⟩`. Use the proof step `zero_mem' := ⟨0, by rw [map_zero, map_zero, zero_smul]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `a b ⟨e, he⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a • e, ?_⟩` and prove the remaining obligations. Rewrite using `[jK.map_smulₛₗ, he, smul_eq_mul, map_mul, mul_smul] }`. It suffices to establish `h1 : (1 : O) ∈ I by`. Take `⟨e, he⟩` from `h1`. Rewrite `he` using `[map_one, one_smul]`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Conclude with `hjK e`. Assume the negation of the conclusion as `h1`. Take `⟨P, hP, hIP⟩` from `I.exists_le_maximal ((Ideal.ne_top_iff_one I).2 h1)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hunit : ∀ y : P.primeCompl, IsUnit (algebraMap O K y)`. Introduce `y`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Introduce `h0`. Establish `h2 : (y : O) = 0` using `IsFractionRing.injective O K (by rw [h0, map_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `y.2 (h2 ▸ P.zero_mem)`. Set `c : Localization.AtPrime P →+* K` to `IsLocalization.lift hunit`. Establish `hc : c.comp (algebraMap O (Localization.AtPrime P)) = algebraMap O K` using `IsLocalization.lift_comp hunit`. Take `⟨w, hw, hvw⟩` from `hloc P c hc`. Take `⟨EP, _, _, ⟨MP⟩⟩` from `lieModel_exists S G (Localization.AtPrime P) (spMap (algebraMap O (Localization.AtPrime P)) ≫ x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Take `⟨jP, hjP, -⟩` from `LieBaseChange.existsUnique_semilinear_lifts S G O (Localization.AtPrime P) (algebraMap O (Localization.AtPrime P)) x E EP M MP`. Take `⟨eP, rfl⟩` from `MP.onto w hw`. Use `letI : Module O EP := Module.compHom EP (algebraMap O (Localization.AtPrime P))`. Use `haveI : IsScalarTower O (Localization.AtPrime P) EP := ⟨fun a b m => by`. Rewrite using `[Algebra.smul_def, mul_smul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `rfl⟩`. Set `β : E →ₗ[O] EP` to `{ toFun := jP map_add' := map_add jP map_smul' := fun a e => by`. Rewrite using `[jP.map_smulₛₗ]`. Use `rfl }`. Establish `hbc : IsBaseChange (Localization.AtPrime P) β` using `(LieProj.lie_finite_projective_baseChange S G O x E M).2.2 (Localization.AtPrime P) EP MP β (fun e => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hjP e`. Simplify using `only [LieModel.Lifts, Category.comp_id] at h2`. Conclude with `h2)`. Use `haveI : IsLocalizedModule P.primeCompl β := (isLocalizedModule_iff_isBaseChange P.primeCompl (Localization.AtPrime P) β).2 hbc`. Take `⟨⟨e, s⟩, hes⟩` from `IsLocalizedModule.surj P.primeCompl β eP`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hes' : jP e = algebraMap O (Localization.AtPrime P) (s : O) • eP` using `hes.symm`. Establish `hmem : (s : O) ∈ I`. Use `⟨e, ?_⟩` and prove the remaining obligations. Apply `MK.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h1` using `hjK e`. Establish `h2` using `hjP e`. Simplify using `only [LieModel.Lifts, Category.comp_id] at h1 h2`. Establish `h3 : (MK.pt (jK e)).left = spMap (dualMap c) ≫ (MP.pt (jP e)).left`. Rewrite using `[h1, h2, ← Category.assoc, spMap_comp_spMap_ample_line_bundles, dualMap_comp_dualMap', hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, hes', MP.smul, MK.smul, hvw, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Establish `h4` using `spMap_comp_spMap_ample_line_bundles (GlobalTheory.CompanionTheory.Ar.epsMul (algebraMap O (Localization.AtPrime P) (s : O))) (dualMap c)`. Establish `h5` using `spMap_comp_spMap_ample_line_bundles (dualMap c) (GlobalTheory.CompanionTheory.Ar.epsMul (c (algebraMap O (Localization.AtPrime P) (s : O))))`. Rewrite `h5` using `[← RingHom.comp_apply c, hc]`.
-
-Simplify using `only [spMap] at h4 h5 ⊢`. Rewrite using `[h4, dualMap_comp_epsMul_ample_line_bundles, h5]`. Rewrite using `[← RingHom.comp_apply c, hc]`. Conclude with `s.2 (hIP hmem)`.
+A detailed English derivation is pending.
 -/
 theorem tangent_vector_extends_over_integers : ∀ (O K : Type) [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K] (S : Scheme.{0}) (x : Sp O ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (E : Type) [AddCommGroup E] [Module O E] (M : LieModel G x E) (v : epsAt (spMap (algebraMap O K) ≫ x) ⟶ G), IsTanAt G _ v → (∀ (P : Ideal O) [P.IsMaximal] (c : Localization.AtPrime P →+* K), c.comp (algebraMap O _) = algebraMap O K → ∃ w : epsAt (spMap (algebraMap O (Localization.AtPrime P)) ≫ x) ⟶ G, IsTanAt G _ w ∧ v.left = spMap (dualMap c) ≫ w.left) → ∃ e, M.Lifts (algebraMap O K) (𝟙 G.left) e v := by
   intro O K _ _ _ _ _ S x G _ _ _ E _ _ M v hv hloc

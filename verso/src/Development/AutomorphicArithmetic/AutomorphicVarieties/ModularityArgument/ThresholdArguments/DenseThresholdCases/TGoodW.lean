@@ -20,7 +20,7 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.V.Z.Sym.W.GoodWeilCharpoly
 /- English proof (translation)
-Establish `ha` using `congrArg (eval a) h`. Establish `hb` using `congrArg (eval b) h`. Simplify using `only [eval_pow, eval_sub, eval_X, eval_one, eval_mul, eval_C, sub_self, zero_mul, mul_zero] at ha hb`. Conclude with `⟨sub_eq_zero.1 (pow_eq_zero_iff (two_ne_zero)|>.1 ha), sub_eq_zero.1 (pow_eq_zero_iff (two_ne_zero)|>.1 hb)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem one_of_sq {a b : ℂ} (h : (X - 1 : ℂ[X]) ^ 2 = (X - C a) * (X - C b)) : a = 1 ∧ b = 1 := by
   have ha := congrArg (eval a) h
@@ -30,40 +30,38 @@ private theorem one_of_sq {a b : ℂ} (h : (X - 1 : ℂ[X]) ^ 2 = (X - C a) * (X
 section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 /- English proof (translation)
-Rewrite using `[val_absPow, val_absPow, Complex.cpow_intCast, Complex.cpow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem absPow_int_val (m : ℤ) (x : kˣ) : (absPow k (m : ℂ) x : ℂ) = (absPow k 1 x : ℂ) ^ m := by
   rw [val_absPow, val_absPow, Complex.cpow_intCast, Complex.cpow_one]
 end Loc
 end UpperTheory.V.Z.Sym.W.GoodWeilCharpoly
 /- English proof (translation)
-Introduce `P L Ω _ _ _ _ _ l _ ι r w hlw hunr ⟨s, ⟨A, hA, hF⟩, hs⟩ τ hτ hPT`. Take `⟨rc, hrc⟩` from `_root_.UpperTheory.V.Z.Win.exRec'_alt P.litN hA`. Take `⟨a, ha, -⟩` from `hrc`. Take `⟨ψ, hψs, ⟨e⟩, -⟩` from `_root_.UpperTheory.V.Z.Sym.W.principal_series_of_statement_w P.litN L 2 w τ hPT`. Establish `hsub : IsSubquotient τ.ρ (prinSeries ψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `IsSubquotient.of_injective e.toIntertwiningMap e.toLinearEquiv.injective`. Establish `hE` using `_root_.UpperTheory.V.Z.Sym.W.eigW_alt P L Ω l ι 2 r w hlw A hA a ha τ hτ hPT ψ hψs hsub`. Set `x : Fin 2 → Weil hA → ℂˣ` to `fun i t => ψ i (a t) * absPow (w.adicCompletion L) (-((((2 : ℕ) : ℂ) - 1) / 2)) (a t)`. Establish `hpol : ∀ t : Weil hA, (r (t : G L Ω)).val.charpoly.map ι.toRingHom = (X - C (x 0 t : ℂ)) * (X - C (x 1 t : ℂ))`. Introduce `t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE t, psPol, Fin.prod_univ_two]`. Establish `hUo : ∀ i, ∀ u ∈ Hi.Uo (Kw w), ψ i u = 1`. Introduce `i u hu`. Take `⟨t, rfl⟩` from `ha.surj u`. Establish `hd : deg t = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `ha.ord_eq t`. Rewrite `h0` using `[ord_eq_zero_iff.2 hu]`. Use linear arithmetic over natural numbers and integers. Establish `hI : (t : G L Ω) ∈ Ine (F` using `L) A := deg_eq_zero_iff.1 hd`. Establish `h1` using `hpol t`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hunr A hA _ hI]`. Establish `h2 : ((1 : GL (Fin 2) (Qbar l)).val.charpoly).map ι.toRingHom = (X - 1 : ℂ[X]) ^ 2`. Simplify using `[Matrix.charpoly_one]`. Rewrite `h1` using `[h2]`. Take `⟨h3, h4⟩` from `GoodWeilCharpoly.one_of_sq h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv` using `isUnram_absPow (w.adicCompletion L) (-((((2 : ℕ) : ℂ) - 1) / 2)) (a t) hu`. Establish `hx : ∀ j, x j t = ψ j (a t)` using `fun j => by show ψ j (a t) * _ = _`. Rewrite using `[hv, mul_one]`. Establish `e0 : ψ 0 (a t) = 1` using `Units.ext (by rw [← hx 0]; exact h3)`. Establish `e1 : ψ 1 (a t) = 1` using `Units.ext (by rw [← hx 1]; exact h4)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `fin_cases i`. Conclude with `e0`. Conclude with `e1`. Set `s' : Weil hA` to `⟨s, mem_Weil_of_isFrob hA hF⟩`. Set `al : (Qbar l)ˣ` to `Units.map ι.symm.toRingHom.toMonoidHom (x 0 s')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `be : (Qbar l)ˣ` to `Units.map ι.symm.toRingHom.toMonoidHom (x 1 s')`. Establish `hal : ι (al : Qbar l) = (x 0 s' : ℂ)` using `by simp [al]`. Establish `hbe : ι (be : Qbar l) = (x 1 s' : ℂ)` using `by simp [be]`. Establish `hc : (r s).val.charpoly = (X - C (al : Qbar l)) * (X - C (be : Qbar l))`. Apply `Polynomial.map_injective ι.toRingHom ι.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hpol s'`. Rewrite `h1` using `[show ((s' : G L Ω)) = s from rfl]`. Rewrite using `[h1, Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.map_C]`. Simplify using `[hal, hbe]`. Establish `H : ∀ m : ℤ, |m| ≤ 2 → (ψ 0 / ψ 1) ^ 2 ≠ absPow (Kw w) (m : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `m hm he`. Apply `hs` to reduce the goal to its premises. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f : (Kw w)ˣ →* ℂˣ => ((f (a s') : ℂˣ) : ℂ)) he`. Establish `h2` using `(_root_.UpperTheory.V.Z.Sym.Ga.cyc_char_eq_abs_pow_and_norm_pow_deg_away_l P L Ω l ι w hlw A hA a ha s').1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq : (x 0 s' : ℂ) / (x 1 s' : ℂ) = (ψ 0 (a s') : ℂ) / (ψ 1 (a s') : ℂ)`. Simplify using `only [x, Units.val_mul]`. Conclude with `mul_div_mul_right _ _ (Units.ne_zero _)`. Simplify using `only [MonoidHom.pow_apply, MonoidHom.div_apply, Units.val_pow_eq_pow_val, Units.val_div_eq_div_val, GoodWeilCharpoly.absPow_int_val, ← h2, ← hq, ← hal, ← hbe] at h1`. Establish `h3 : ((al : Qbar l) / be) ^ 2 = Ga.ep l s ^ m`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ι.injective` to reduce the goal to its premises. Simplify `h1` using `[map_zpow₀]`. Establish `h4` using `(Ga.ufFacts (Qbar l) (r s)).1 al be hc`. Establish `hne : ((al : Qbar l) / be) ≠ 0` using `div_ne_zero al.ne_zero be.ne_zero`. Establish `h5 : ((al : Qbar l) / be)⁻¹ ^ 2 = Ga.ep l s ^ (-m)` using `by rw [inv_pow, h3, zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h4]`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_div_eq_div_val]`. Rewrite using `[← h3, ← h5]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `⟨ψ, hψs, ⟨e⟩, hUo, ⟨fun y hy => by simp [MonoidHom.div_apply, hUo 0 y hy, hUo 1 y hy], H⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.W.good_w_statement :
     _root_.UpperTheory.V.Z.Sym.W.GoodWAlt := by

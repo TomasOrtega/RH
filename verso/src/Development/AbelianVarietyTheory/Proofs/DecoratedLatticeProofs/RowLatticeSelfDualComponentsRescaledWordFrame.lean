@@ -23,7 +23,7 @@ def basY (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
   X.bas.reindex (finCongr (rank_eq X h)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[GlobalTheory.Core.SBesEx.cY, HidaSetting.crd, crdOf, basY, Module.Basis.repr_reindex]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cY_eq_basY (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (z : (VS D).V) :
     GlobalTheory.Core.SBesEx.cY X h z = (basY X h).equivFun z := by
@@ -31,7 +31,7 @@ theorem cY_eq_basY (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf
   simp [GlobalTheory.Core.SBesEx.cY, HidaSetting.crd, crdOf, basY, Module.Basis.repr_reindex]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Simplify `hw` using `[Formalism.L2.Herm.crd]`. Introduce `hy`. Conclude with `⟨_, hy, S.frame.equivFun.apply_symm_apply y⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_hermitianCoordinateLattice_iff (S : HSp D) (y : Fin S.rank → D.host.E) :
     y ∈ Formalism.L2.Herm.crdLat S S.L0 ↔ S.frame.equivFun.symm y ∈ S.L0 := by
@@ -42,9 +42,9 @@ theorem mem_hermitianCoordinateLattice_iff (S : HSp D) (y : Fin S.rank → D.hos
     exact ⟨_, hy, S.frame.equivFun.apply_symm_apply y⟩
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Establish `hι : ∀ x, ιE x = x` using `fun x => eq_of_heq (hId x)`. Establish `e1` using `hL y`. Establish `e2 : (∑ i, ιE (y i) • bas i) = ∑ k, y k • bas (Fin.cast hn k)` using `Finset.sum_congr rfl fun i _ => congrArg (· • bas i) (hι (y i))`. Use `Iff.trans ?_ (e1.trans (Eq.to_iff (congrArg (· ∈ (VS D).L0) e2)))` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_hermitianCoordinateLattice_iff]`. Use `show _ ↔ y ∈ Formalism.L2.SG.InstExistsPf.Lv D`. Rewrite using `[Formalism.L2.SG.InstExistsPf.mem_Lv, Module.Basis.equivFun_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_rowLatticeYZeroFrame_iff_basis_sum (I : Formalism.MainNotions.S.AutInst) (hI : I = Formalism.L2.SG.InstExistsPf.instOf D)
     (ιE : I.E ≃+* D.host.E) (hId : ∀ x : I.E, HEq (ιE x) x) (bas : Module.Basis (Fin I.n) D.host.E (VS D).V)
@@ -62,7 +62,7 @@ theorem mem_rowLatticeYZeroFrame_iff_basis_sum (I : Formalism.MainNotions.S.AutI
   rw [Formalism.L2.SG.InstExistsPf.mem_Lv, Module.Basis.equivFun_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_rowLatticeYZeroFrame_iff_basis_sum X.B.I h X.ιE hId X.bas X.L_eq (rank_eq X h), Module.Basis.equivFun_symm_apply]`. Simplify using `[basY]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_latS (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (hId : IdE X)
     (y : Fin (D.sp.Y 0).rank → D.host.E) :
@@ -71,14 +71,14 @@ theorem mem_latS (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.i
   simp [basY]
 
 /- English proof (translation)
-Rewrite using `[mem_latS X h hId, cY_eq_basY, LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cY_mem_latS (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (hId : IdE X) (z : (VS D).V) :
     GlobalTheory.Core.SBesEx.cY X h z ∈ latS D ↔ z ∈ (VS D).L0 := by
   rw [mem_latS X h hId, cY_eq_basY, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `(VS D).herm.eq x y` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hT_swap (x y : (VS D).V) : (VS D).hT y x = star ((VS D).hT x y) := by
   have := (VS D).herm.eq x y
@@ -92,13 +92,13 @@ namespace GlobalTheory.Core.Mi.LatMatch
 variable {D : D7}
 
 /- English proof (translation)
-Establish `key : (VS D).L0 ≤ (aaD D i : Submodule (𝓞 D.host.E) D.host.E).comap (((VS D).hT (X.fY i)).restrictScalars (𝓞 D.host.E))`. Rewrite using `[X.Lam_split]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show (VS D).hT (X.fY i) (x • X.eX a) ∈ (aaD D i : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[map_smul, smul_eq_mul, hT_swap, X.ef]`. Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality. Simplify using `using hx`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[hai]`. Introduce `x hx show (VS D).hT (X.fY i) x ∈ (aaD D i : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[((X.Lb_perp x hx) i).2]`. Conclude with `zero_mem _`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, x, hx, rfl⟩`. Use `show (VS D).hT (X.fY i) (x • X.fY a) ∈ (aaD D i : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[map_smul, X.ff, smul_zero]`. Conclude with `zero_mem _`. Conclude with `key hY`.
+A detailed English derivation is pending.
 -/
 theorem hT_fY_mem (X : HidaSetting D) (i : Fin D.R.rS) {Y : (VS D).V} (hY : Y ∈ (VS D).L0) :
     (VS D).hT (X.fY i) Y ∈ aaD D i := by
@@ -123,13 +123,13 @@ theorem hT_fY_mem (X : HidaSetting D) (i : Fin D.R.rS) {Y : (VS D).V} (hY : Y �
   exact key hY
 
 /- English proof (translation)
-Establish `key : (VS D).L0 ≤ (((aaD D i)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E).comap (((VS D).hT (X.eX i)).restrictScalars (𝓞 D.host.E))`. Rewrite using `[X.Lam_split]`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show (VS D).hT (X.eX i) (x • X.eX a) ∈ (((aaD D i)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[map_smul, X.ee, smul_zero]`. Conclude with `zero_mem _`. Introduce `x hx show (VS D).hT (X.eX i) x ∈ (((aaD D i)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[((X.Lb_perp x hx) i).1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `zero_mem _`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, x, hx, rfl⟩`. Use `show (VS D).hT (X.eX i) (x • X.fY a) ∈ (((aaD D i)⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[map_smul, smul_eq_mul, X.ef]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hai : i = a`. Substitute `hai` using the available equality. Simplify using `using hx`. Simplify using `[hai]`. Conclude with `key hY`.
+A detailed English derivation is pending.
 -/
 theorem hT_eX_mem (X : HidaSetting D) (i : Fin D.R.rS) {Y : (VS D).V} (hY : Y ∈ (VS D).L0) :
     (VS D).hT (X.eX i) Y ∈ (aaD D i)⁻¹ := by
@@ -157,9 +157,9 @@ theorem hT_eX_mem (X : HidaSetting D) (i : Fin D.R.rS) {Y : (VS D).V} (hY : Y �
   exact key hY
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Use `hT_fY_mem X i hc` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul, hT_swap, X.ef, if_pos rfl, star_one, mul_one]`. Then use the resulting hypothesis. Introduce `hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[X.Lam_split]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨i, c, hc, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eX_mem_iff (X : HidaSetting D) (i : Fin D.R.rS) (c : D.host.E) :
     c • X.eX i ∈ (VS D).L0 ↔ c ∈ aaD D i := by
@@ -172,9 +172,9 @@ theorem smul_eX_mem_iff (X : HidaSetting D) (i : Fin D.R.rS) (c : D.host.E) :
     exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨i, c, hc, rfl⟩))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Use `hT_eX_mem X i hc` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul, X.ef, if_pos rfl, mul_one]`. Then use the resulting hypothesis. Introduce `hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[X.Lam_split]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨i, c, hc, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_fY_mem_iff (X : HidaSetting D) (i : Fin D.R.rS) (c : D.host.E) :
     c • X.fY i ∈ (VS D).L0 ↔ c ∈ (aaD D i)⁻¹ := by
@@ -193,21 +193,21 @@ namespace GlobalTheory.Core.Mi.LatMatch
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_smul_dotProduct {n : ℕ} (c : D.host.E) (v w : Fin n → D.host.E) :
     star (c • v) ⬝ᵥ w = star c * (star v ⬝ᵥ w) := by
   simp only [dotProduct, Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[HypDec.qX, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qX_mulVec_apply {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (y : Fin S.rank → D.host.E) (i : Fin ρ) :
     (d.qX *ᵥ y) i = star (fun r => d.e' r i) ⬝ᵥ (S.gram *ᵥ y) := by
   rw [HypDec.qX, ← Matrix.mulVec_mulVec]; rfl
 
 /- English proof (translation)
-Rewrite using `[HypDec.qY, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qY_mulVec_apply {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (y : Fin S.rank → D.host.E) (i : Fin ρ) :
     (d.qY *ᵥ y) i = star (fun r => d.e r i) ⬝ᵥ (S.gram *ᵥ y) := by
@@ -218,25 +218,23 @@ end GlobalTheory.Core.Mi.LatMatch
 namespace GlobalTheory.Core.Mi.LatMatch
 
 /- English proof (translation)
-Introduce `D X h u ψ A B μ lam hId hF`. Establish `hcY_smul : ∀ (c : D.host.E) (z : (VS D).V), c • GlobalTheory.Core.SBesEx.cY X h z = GlobalTheory.Core.SBesEx.cY X h (c • z)`. Introduce `c z`. Rewrite using `[cY_eq_basY, cY_eq_basY, map_smul]`. Establish `hcol_e : ∀ i, (fun r => B.d.e r i) = GlobalTheory.Core.SBesEx.scl μ lam i • GlobalTheory.Core.SBesEx.cY X h (X.eX i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Use function extensionality and compare the values at `r`. Rewrite using `[hF.e]`. Both sides reduce to the same expression. Establish `hcol_e' : ∀ i, (fun r => B.d.e' r i) = (star (GlobalTheory.Core.SBesEx.scl μ lam i))⁻¹ • GlobalTheory.Core.SBesEx.cY X h (X.fY i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `i`. Use function extensionality and compare the values at `r`. Rewrite using `[hF.e']`. Both sides reduce to the same expression. Establish `colE : ∀ i (t : D.host.E), t • (fun r => B.d.e r i) ∈ latS D ↔ GlobalTheory.Core.SBesEx.scl μ lam i * t ∈ aaD D i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `i t`. Rewrite using `[hcol_e, smul_smul, hcY_smul, cY_mem_latS X h hId, smul_eX_mem_iff, mul_comm]`. Establish `colE' : ∀ i (t : D.host.E), t • (fun r => B.d.e' r i) ∈ latS D ↔ (star (GlobalTheory.Core.SBesEx.scl μ lam i))⁻¹ * t ∈ (aaD D i)⁻¹`. Introduce `i t`. Rewrite using `[hcol_e', smul_smul, hcY_smul, cY_mem_latS X h hId, smul_fY_mem_iff, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hdot` using `@star_smul_dotProduct D (D.sp.Y 0).rank`. Establish `hqX` using `qX_mulVec_apply B.d`. Establish `hqY` using `qY_mulVec_apply B.d`. Use `⟨GlobalTheory.LineSelfDual.isSelfDualC_selfDualLatticeCoordsInFrame D (D.sp.Y 0), ?_, colE, colE'⟩` and prove the remaining obligations. Introduce `y hy i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hY : (basY X h).equivFun.symm y ∈ (VS D).L0` using `(mem_latS X h hId y).1 hy`. Establish `hyY : y = GlobalTheory.Core.SBesEx.cY X h ((basY X h).equivFun.symm y)`. Rewrite using `[cY_eq_basY, LinearEquiv.apply_symm_apply]`. Use `set Y := (basY X h).equivFun.symm y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `hq : (B.d.qX *ᵥ y) i = (GlobalTheory.Core.SBesEx.scl μ lam i)⁻¹ * (VS D).hT (X.fY i) Y`. Rewrite using `[hqX, hcol_e', hdot, hyY, GlobalTheory.Core.SBesEx.cY_isom D X h hId Y (X.fY i), star_inv₀, star_star]`. Use `show (B.d.qX *ᵥ y) i • (fun r => B.d.e r i) ∈ latS D`. Rewrite using `[colE, hq]`. Distinguish the cases in `hs : GlobalTheory.Core.SBesEx.scl μ lam i = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, zero_mul]`. Conclude with `FractionalIdeal.mem_coe.mp (zero_mem _)`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hs, one_mul]`. Conclude with `hT_fY_mem X i hY`. Establish `hq : (B.d.qY *ᵥ y) i = star (GlobalTheory.Core.SBesEx.scl μ lam i) * (VS D).hT (X.eX i) Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hqY, hcol_e, hdot, hyY, GlobalTheory.Core.SBesEx.cY_isom D X h hId Y (X.eX i)]`. Use `show (B.d.qY *ᵥ y) i • (fun r => B.d.e' r i) ∈ latS D`. Rewrite using `[colE', hq]`. Distinguish the cases in `hs : star (GlobalTheory.Core.SBesEx.scl μ lam i) = 0`. Rewrite using `[hs, _root_.inv_zero, zero_mul]`.
-
-Conclude with `FractionalIdeal.mem_coe.mp (zero_mem _)`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hs, one_mul]`. Conclude with `hT_eX_mem X i hY`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latS_rescaled_frame : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (μ lam : D.host.E), GlobalTheory.Core.Mi.IdE X → B.FrameAt μ lam → IsSelfDualC (D.sp.Y 0) (latS D) ∧ (∀ y ∈ latS D, ∀ i, (fun r => (B.d.qX *ᵥ y) i * B.d.e r i) ∈ latS D ∧ (fun r => (B.d.qY *ᵥ y) i * B.d.e' r i) ∈ latS D) ∧ (∀ (i : Fin D.R.rS) (t : D.host.E), t • (fun r => B.d.e r i) ∈ latS D ↔ GlobalTheory.Core.SBesEx.scl μ lam i * t ∈ aaD D i) ∧ ∀ (i : Fin D.R.rS) (t : D.host.E), t • (fun r => B.d.e' r i) ∈ latS D ↔ (star (GlobalTheory.Core.SBesEx.scl μ lam i))⁻¹ * t ∈ (aaD D i)⁻¹ := by
   intro D X h u ψ A B μ lam hId hF

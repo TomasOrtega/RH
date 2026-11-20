@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.LineCech
 
 /- English proof (translation)
-The claim follows from `V.sheaf.eq_of_locally_eq' W ⊤ (fun _ => homOfLE le_top) hW.ge s t h`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext {V : Scheme.{0}} {κ : Type} (W : κ → V.Opens) (hW : ⨆ k, W k = ⊤) {s t : Γ(V, ⊤)}
     (h : ∀ k, (V.presheaf.map (homOfLE (le_top : W k ≤ ⊤)).op).hom s =
@@ -24,16 +24,16 @@ theorem sec_ext {V : Scheme.{0}} {κ : Type} (W : κ → V.Opens) (hW : ⨆ k, W
   V.sheaf.eq_of_locally_eq' W ⊤ (fun _ => homOfLE le_top) hW.ge s t h
 
 /- English proof (translation)
-The claim follows from `Units.ext (sec_ext W hW fun k => congrArg Units.val (h k))`.
+A detailed English derivation is pending.
 -/
 theorem unit_ext {V : Scheme.{0}} {κ : Type} (W : κ → V.Opens) (hW : ⨆ k, W k = ⊤) {s t : Γ(V, ⊤)ˣ}
     (h : ∀ k, res (le_top : W k ≤ ⊤) s = res (le_top : W k ≤ ⊤) t) : s = t :=
   Units.ext (sec_ext W hW fun k => congrArg Units.val (h k))
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `V.sheaf.existsUnique_gluing' W ⊤ (fun _ => homOfLE le_top) hW.ge t (fun k l => by`. Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality. Both sides reduce to the same expression. Establish `hs : Subsingleton Γ(V, W k ⊓ W l)` using `CommRingCat.subsingleton_of_isTerminal (V.sheaf.isTerminalOfEqEmpty (hd k l hkl))`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `@Subsingleton.elim _ hs _ _)`. Conclude with `⟨a, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_glue {V : Scheme.{0}} {κ : Type} (W : κ → V.Opens) (hW : ⨆ k, W k = ⊤)
     (hd : ∀ k l, k ≠ l → W k ⊓ W l = ⊥) (t : ∀ k, Γ(V, W k)) :
@@ -48,9 +48,9 @@ theorem exists_glue {V : Scheme.{0}} {κ : Type} (W : κ → V.Opens) (hW : ⨆ 
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_glue W hW hd fun k => (t k).val`. Take `⟨b, hb⟩` from `exists_glue W hW hd fun k => (t k).inv`. Establish `hab : a * b = 1` using `sec_ext W hW fun k => by`. Rewrite using `[map_mul, map_one, ha, hb]`. Conclude with `(t k).val_inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, fun k => Units.ext (ha k)⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem exists_glue_unit {V : Scheme.{0}} {κ : Type} (W : κ → V.Opens) (hW : ⨆ k, W k = ⊤)
     (hd : ∀ k l, k ≠ l → W k ⊓ W l = ⊥) (t : ∀ k, Γ(V, W k)ˣ) :
@@ -66,7 +66,7 @@ def pl {V X : Scheme.{0}} (x : V ⟶ X) {A : X.Opens} {B : V.Opens} (e : B ≤ x
   Units.map (x.appLE A B e).hom.toMonoidHom
 
 /- English proof (translation)
-Substitute `hxy` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pl_congr {V X : Scheme.{0}} {x y : V ⟶ X} (hxy : x = y) {A : X.Opens} {B : V.Opens} (e : B ≤ x ⁻¹ᵁ A)
     (t : Γ(X, A)ˣ) : pl x e t = pl y (hxy ▸ e) t := by
@@ -74,7 +74,7 @@ theorem pl_congr {V X : Scheme.{0}} {x y : V ⟶ X} (hxy : x = y) {A : X.Opens} 
   rfl
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g.appLE B B' e').hom ((x.appLE A B e).hom t.val) = ((g ≫ x).appLE A B' _).hom t.val`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE g x A B B' e e']`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pl_pl {V' V X : Scheme.{0}} (g : V' ⟶ V) (x : V ⟶ X) {A : X.Opens} {B : V.Opens} {B' : V'.Opens}
     (e : B ≤ x ⁻¹ᵁ A) (e' : B' ≤ g ⁻¹ᵁ B) (t : Γ(X, A)ˣ) :
@@ -85,7 +85,7 @@ theorem pl_pl {V' V X : Scheme.{0}} (g : V' ⟶ V) (x : V ⟶ X) {A : X.Opens} {
   rfl
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(V.presheaf.map (homOfLE h).op).hom ((x.appLE A B e).hom t.val) = (x.appLE A B' _).hom t.val`. Rewrite using `[← Scheme.Hom.appLE_map x e (homOfLE h).op]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_pl {V X : Scheme.{0}} (x : V ⟶ X) {A : X.Opens} {B B' : V.Opens}
     (e : B ≤ x ⁻¹ᵁ A) (h : B' ≤ B) (t : Γ(X, A)ˣ) : res h (pl x e t) = pl x (h.trans e) t := by
@@ -95,7 +95,7 @@ theorem res_pl {V X : Scheme.{0}} (x : V ⟶ X) {A : X.Opens} {B B' : V.Opens}
   rfl
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x.appLE A' B e).hom ((X.presheaf.map (homOfLE h).op).hom t.val) = (x.appLE A B _).hom t.val`. Rewrite using `[← Scheme.Hom.map_appLE x e (homOfLE h).op]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pl_res {V X : Scheme.{0}} (x : V ⟶ X) {A A' : X.Opens} {B : V.Opens}
     (e : B ≤ x ⁻¹ᵁ A') (h : A' ≤ A) (t : Γ(X, A)ˣ) :
@@ -106,7 +106,7 @@ theorem pl_res {V X : Scheme.{0}} (x : V ⟶ X) {A A' : X.Opens} {B : V.Opens}
   rfl
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(V.presheaf.map (homOfLE h').op).hom ((V.presheaf.map (homOfLE h).op).hom t.val) = (V.presheaf.map (homOfLE (h'.trans h)).op).hom t.val`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {V : Scheme.{0}} {A B C : V.Opens} (h : B ≤ A) (h' : C ≤ B) (t : Γ(V, A)ˣ) :
     res h' (res h t) = res (h'.trans h) t := by
@@ -117,7 +117,7 @@ theorem res_res {V : Scheme.{0}} {A B C : V.Opens} (h : B ≤ A) (h' : C ≤ B) 
   rfl
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem res_map_appTop {V' V : Scheme.{0}} (g : V' ⟶ V) {B' : V'.Opens} (t : Γ(V, ⊤)ˣ) :
     res (le_top : B' ≤ ⊤) (Units.map g.appTop.hom.toMonoidHom t) = pl g (A := ⊤) (fun _ _ => trivial) t := by
@@ -133,7 +133,7 @@ abbrev Yc : Scheme.{0} := ∐ fun i => (L.U i).toScheme
 def fc : Yc L ⟶ X := Sigma.desc fun i => (L.U i).ι
 
 /- English proof (translation)
-The claim follows from `Sigma.ι_desc _ _`.
+A detailed English derivation is pending.
 -/
 theorem ι_fc (i : L.ι) : Sigma.ι (fun i => (L.U i).toScheme) i ≫ fc L = (L.U i).ι := Sigma.ι_desc _ _
 
@@ -143,7 +143,7 @@ def piece (a : V ⟶ Yc L) (i : L.ι) : V.Opens :=
   a ⁻¹ᵁ (Sigma.ι (fun i => (L.U i).toScheme) i).opensRange
 
 /- English proof (translation)
-Introduce and unpack `v ⟨y, hy⟩`. Express the relevant statement in the definitionally equal form `(a ≫ fc L) v ∈ L.U i`. Rewrite using `[Scheme.Hom.comp_apply, ← hy, ← Scheme.Hom.comp_apply, ι_fc]`. Conclude with `y.2`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piece_le (a : V ⟶ Yc L) (i : L.ι) : piece a i ≤ (a ≫ fc L) ⁻¹ᵁ L.U i := by
   rintro v ⟨y, hy⟩
@@ -152,7 +152,7 @@ theorem piece_le (a : V ⟶ Yc L) (i : L.ι) : piece a i ≤ (a ≫ fc L) ⁻¹�
   exact y.2
 
 /- English proof (translation)
-Use `top_le_iff.1 fun v _ => ?_` and prove the remaining obligations. Take `⟨i, y, hy⟩` from `(sigmaOpenCover fun i => (L.U i).toScheme).exists_eq (a v)`. Conclude with `Opens.mem_iSup.2 ⟨i, ⟨y, hy⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iSup_piece (a : V ⟶ Yc L) : ⨆ i, piece a i = ⊤ := by
   refine top_le_iff.1 fun v _ => ?_
@@ -160,7 +160,7 @@ theorem iSup_piece (a : V ⟶ Yc L) : ⨆ i, piece a i = ⊤ := by
   exact Opens.mem_iSup.2 ⟨i, ⟨y, hy⟩⟩
 
 /- English proof (translation)
-Use `le_bot_iff.1 fun v hv => ?_` and prove the remaining obligations. Establish `hd` using `disjoint_opensRange_sigmaι (fun i => (L.U i).toScheme) i j hij`. Conclude with `(Opens.coe_disjoint.2 hd).le_bot ⟨hv.1, hv.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem piece_inf (a : V ⟶ Yc L) {i j : L.ι} (hij : i ≠ j) : piece a i ⊓ piece a j = ⊥ := by
   refine le_bot_iff.1 fun v hv => ?_
@@ -170,7 +170,7 @@ theorem piece_inf (a : V ⟶ Yc L) {i j : L.ι} (hij : i ≠ j) : piece a i ⊓ 
 def W2 (a b : V ⟶ Yc L) (p : L.ι × L.ι) : V.Opens := piece a p.1 ⊓ piece b p.2
 
 /- English proof (translation)
-Use `top_le_iff.1 fun v _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 ((iSup_piece a).ge (Set.mem_univ v))`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 ((iSup_piece b).ge (Set.mem_univ v))`. Conclude with `Opens.mem_iSup.2 ⟨(i, j), ⟨hi, hj⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iSup_doubleOverlap_eq_top (a b : V ⟶ Yc L) : ⨆ p, W2 a b p = ⊤ := by
   refine top_le_iff.1 fun v _ => ?_
@@ -179,7 +179,7 @@ theorem iSup_doubleOverlap_eq_top (a b : V ⟶ Yc L) : ⨆ p, W2 a b p = ⊤ := 
   exact Opens.mem_iSup.2 ⟨(i, j), ⟨hi, hj⟩⟩
 
 /- English proof (translation)
-Use `le_bot_iff.1 fun v hv => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : p.1 = q.1`. Establish `h2 : p.2 ≠ q.2` using `fun h2 => hpq (Prod.ext h1 h2)`. Conclude with `(piece_inf b h2).le ⟨hv.1.2, hv.2.2⟩`. Conclude with `(piece_inf a h1).le ⟨hv.1.1, hv.2.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem doubleOverlap_disjoint (a b : V ⟶ Yc L) (p q : L.ι × L.ι) (hpq : p ≠ q) : W2 a b p ⊓ W2 a b q = ⊥ := by
   refine le_bot_iff.1 fun v hv => ?_
@@ -189,7 +189,7 @@ theorem doubleOverlap_disjoint (a b : V ⟶ Yc L) (p q : L.ι × L.ι) (hpq : p 
   · exact (piece_inf a h1).le ⟨hv.1.1, hv.2.1⟩
 
 /- English proof (translation)
-Introduce `v hv` and use `⟨piece_le a i hv.1, by have := piece_le b j hv.2 rw [← h] at this exact this⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem doubleOverlap_le_preimage_inter {a b : V ⟶ Yc L} (h : a ≫ fc L = b ≫ fc L) (i j : L.ι) :
     W2 a b (i, j) ≤ (a ≫ fc L) ⁻¹ᵁ (L.U i ⊓ L.U j) := fun v hv =>
@@ -199,7 +199,7 @@ theorem doubleOverlap_le_preimage_inter {a b : V ⟶ Yc L} (h : a ≫ fc L = b �
     exact this⟩
 
 /- English proof (translation)
-The claim follows from `exists_glue_unit _ (iSup_doubleOverlap_eq_top a b) (doubleOverlap_disjoint a b) _`.
+A detailed English derivation is pending.
 -/
 theorem exists_u {a b : V ⟶ Yc L} (h : a ≫ fc L = b ≫ fc L) :
     ∃ w : Γ(V, ⊤)ˣ, ∀ p : L.ι × L.ι, res (le_top : W2 a b p ≤ ⊤) w =
@@ -209,7 +209,7 @@ theorem exists_u {a b : V ⟶ Yc L} (h : a ≫ fc L = b ≫ fc L) :
 def uc {a b : V ⟶ Yc L} (h : a ≫ fc L = b ≫ fc L) : Γ(V, ⊤)ˣ := (exists_u h).choose
 
 /- English proof (translation)
-Establish `e` using `(exists_u h).choose_spec (i, j)`. Rewrite using `[← res_res (le_top : W2 a b (i, j) ≤ ⊤) hB]`. Express the relevant statement in the definitionally equal form `res hB (res le_top (uc h)) = _`. Rewrite using `[show res (le_top : W2 a b (i, j) ≤ ⊤) (uc h) = _ from e, res_pl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem uc_spec {a b : V ⟶ Yc L} (h : a ≫ fc L = b ≫ fc L) (i j : L.ι) {B : V.Opens} (hB : B ≤ W2 a b (i, j)) :
     res (le_top : B ≤ ⊤) (uc h) = pl (a ≫ fc L) (hB.trans (doubleOverlap_le_preimage_inter h i j)) (L.g i j) := by
@@ -219,7 +219,7 @@ theorem uc_spec {a b : V ⟶ Yc L} (h : a ≫ fc L = b ≫ fc L) (i j : L.ι) {B
   rw [show res (le_top : W2 a b (i, j) ≤ ⊤) (uc h) = _ from e, res_pl]
 
 /- English proof (translation)
-Use `unit_ext _ (iSup_doubleOverlap_eq_top (g ≫ a) (g ≫ b)) fun p => ?_` and prove the remaining obligations. Take `⟨i, j⟩` from `p`. Establish `hg : W2 (g ≫ a) (g ≫ b) (i, j) ≤ g ⁻¹ᵁ W2 a b (i, j)` using `fun v hv => hv`. Rewrite using `[uc_spec h' i j le_rfl, res_map_appTop, ← pl_res g hg le_top, uc_spec h i j le_rfl, pl_pl, pl_congr (Category.assoc g a (fc L))]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem uc_nat {V' : Scheme.{0}} (g : V' ⟶ V) {a b : V ⟶ Yc L} (h : a ≫ fc L = b ≫ fc L)
     (h' : (g ≫ a) ≫ fc L = (g ≫ b) ≫ fc L) :
@@ -231,13 +231,13 @@ theorem uc_nat {V' : Scheme.{0}} (g : V' ⟶ V) {a b : V ⟶ Yc L} (h : a ≫ fc
     pl_congr (Category.assoc g a (fc L))]
 
 /- English proof (translation)
-Set `W3 : L.ι × L.ι × L.ι → V.Opens` to `fun p => piece a p.1 ⊓ piece b p.2.1 ⊓ piece c p.2.2`. Establish `hW3 : ⨆ p, W3 p = ⊤`. Use `top_le_iff.1 fun v _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 ((iSup_piece a).ge (Set.mem_univ v))`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 ((iSup_piece b).ge (Set.mem_univ v))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Opens.mem_iSup.1 ((iSup_piece c).ge (Set.mem_univ v))`. Conclude with `Opens.mem_iSup.2 ⟨(i, j, k), ⟨⟨hi, hj⟩, hk⟩⟩`. Use `unit_ext W3 hW3 fun p => ?_` and prove the remaining obligations. Take `⟨i, j, k⟩` from `p`. Establish `h1 : W3 (i, j, k) ≤ W2 a b (i, j)` using `fun v hv => hv.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : W3 (i, j, k) ≤ W2 b c (j, k)` using `fun v hv => ⟨hv.1.2, hv.2⟩`. Establish `h3 : W3 (i, j, k) ≤ W2 a c (i, k)` using `fun v hv => ⟨hv.1.1, hv.2⟩`. Establish `h4 : W3 (i, j, k) ≤ (a ≫ fc L) ⁻¹ᵁ (L.U i ⊓ L.U j ⊓ L.U k)` using `fun v hv => ⟨doubleOverlap_le_preimage_inter h i j (h1 hv), by`. Use `piece_le c k hv.2` as an intermediate fact. Rewrite `this` using `[← h', ← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this⟩`. Rewrite using `[map_mul, uc_spec h i j h1, uc_spec h' j k h2, uc_spec (h.trans h') i k h3, pl_congr h.symm _ (L.g j k), ← pl_res _ h4 (inf_le_left : L.U i ⊓ L.U j ⊓ L.U k ≤ L.U i ⊓ L.U j), ← pl_res _ h4 (le_inf (inf_le_left.trans inf_le_right) inf_le_right : L.U i ⊓ L.U j ⊓ L.U k ≤ L.U j ⊓ L.U …`.
+A detailed English derivation is pending.
 -/
 theorem uc_coc {a b c : V ⟶ Yc L} (hL : L.IsLB) (h : a ≫ fc L = b ≫ fc L) (h' : b ≫ fc L = c ≫ fc L) :
     uc h * uc h' = uc (h.trans h') := by
@@ -279,7 +279,7 @@ def toLine {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) : CrystallineSemistableComp
   coc _ _ _ h h' := uc_coc hL h h'
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(V.presheaf.map (homOfLE le_rfl).op).hom t.val = t.val`. Rewrite using `[show (homOfLE (le_refl (⊤ : V.Opens))).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_top {V : Scheme.{0}} (t : Γ(V, ⊤)ˣ) : res (le_top : (⊤ : V.Opens) ≤ ⊤) t = t := by
   refine Units.ext ?_
@@ -288,7 +288,7 @@ theorem res_top {V : Scheme.{0}} (t : Γ(V, ⊤)ˣ) : res (le_top : (⊤ : V.Ope
   rfl
 
 /- English proof (translation)
-Establish `hB : (⊤ : V.Opens) ≤ W2 (c ≫ Sigma.ι (fun i => (L.U i).toScheme) j) (d ≫ Sigma.ι (fun i => (L.U i).toScheme) k) (j, k)` using `fun v _ => ⟨⟨c v, rfl⟩, ⟨d v, rfl⟩⟩`. Establish `e1` using `uc_spec h j k hB`. Rewrite `e1` using `[res_top]`. Rewrite using `[e1, pl_congr (show (c ≫ Sigma.ι (fun i => (L.U i).toScheme) j) ≫ fc L = c ≫ (L.U j).ι by`. Rewrite using `[Category.assoc, ι_fc])]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem uc_of_charts {X V : Scheme.{0}} {L : LB X} {j k : L.ι} (c : V ⟶ (L.U j).toScheme) (d : V ⟶ (L.U k).toScheme)
     (h : (c ≫ Sigma.ι (fun i => (L.U i).toScheme) j) ≫ fc L = (d ≫ Sigma.ι (fun i => (L.U i).toScheme) k) ≫ fc L)
@@ -308,11 +308,9 @@ abbrev pullC {T X : Scheme.{0}} (L : LB X) (i : T ⟶ X) : LB T where
   g j k := pl i (fun _ hv => hv) (L.g j k)
 
 /- English proof (translation)
-Use `top_le_iff.1 fun v _ => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ (i v)))`. Conclude with `Opens.mem_iSup.2 ⟨j, hj⟩`. Use `g_self := by`. Introduce `(j : L.ι)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `res _ (pl i _ (L.g j j)) = 1`. Rewrite using `[res_pl, ← pl_res i (fun _ hv => hv) (le_inf le_rfl le_rfl : L.U j ≤ L.U j ⊓ L.U j), hL.g_self, map_one]`. Use `cocycle := by`. Introduce `(j : L.ι) (k : L.ι) (l : L.ι)`. Express the relevant statement in the definitionally equal form `res _ (pl i _ (L.g j k)) * res _ (pl i _ (L.g k l)) = res _ (pl i _ (L.g j l))`.
-
-Establish `e : i ⁻¹ᵁ L.U j ⊓ i ⁻¹ᵁ L.U k ⊓ i ⁻¹ᵁ L.U l ≤ i ⁻¹ᵁ (L.U j ⊓ L.U k ⊓ L.U l)` using `fun _ hv => hv`. Rewrite using `[res_pl, res_pl, res_pl, ← pl_res i e (inf_le_left : L.U j ⊓ L.U k ⊓ L.U l ≤ L.U j ⊓ L.U k), ← pl_res i e (le_inf (inf_le_left.trans inf_le_right) inf_le_right : L.U j ⊓ L.U k ⊓ L.U l ≤ L.U k ⊓ L.U l), ← map_mul, hL.cocycle, pl_res]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLB_pullC {T X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (i : T ⟶ X) : (pullC L i).IsLB where
   cover := by

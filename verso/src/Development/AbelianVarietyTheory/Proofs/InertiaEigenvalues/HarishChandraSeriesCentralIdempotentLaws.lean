@@ -11,9 +11,9 @@ open scoped Classical
 namespace GlobalTheory.GLq
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_image (f := fun p : R[X] => fun i : Fin (n + 1) => p.coeff i) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce `p hp q hq hpq`. Establish `hp' : p.natDegree = n` using `hp`. Establish `hq' : q.natDegree = n` using `hq`. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hi : i ≤ n`. Conclude with `congrFun hpq ⟨i, Nat.lt_succ_of_le hi⟩`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_natDegree_eq {R : Type} [Semiring R] [Finite R] (n : ℕ) :
     {f : R[X] | f.natDegree = n}.Finite := by
@@ -28,7 +28,7 @@ theorem finite_natDegree_eq {R : Type} [Semiring R] [Finite R] (n : ℕ) :
   · rw [coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]
 
 /- English proof (translation)
-Establish `hset : {χ : Gn g n → ℂ | IsIrr χ ∧ HasLabel L χ f} = ↑(hfin.toFinset.filter (fun χ => HasLabel L χ f))`. Use extensionality with `χ`. Simplify using `[Set.Finite.mem_toFinset]`. Rewrite using `[eSerC, hset, finsum_mem_coe_finset]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eSerC_eq_sum {g : ℕ} [Fact g.Prime] (L : LabelDatum g) (n : ℕ)
     (hfin : {χ : Gn g n → ℂ | IsIrr χ}.Finite) (f : (ZMod g)[X]) :
@@ -40,27 +40,23 @@ theorem eSerC_eq_sum {g : ℕ} [Fact g.Prime] (L : LabelDatum g) (n : ℕ)
   rw [eSerC, hset, finsum_mem_coe_finset]
 
 /- English proof (translation)
-Introduce `g _ L hg hG n`. Take `⟨hfin, hsum⟩` from `GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)`. Take `⟨huniq, hprops, -⟩` from `GlobalTheory.T.harishChandraSeriesLabel_exists_unique_GLn g L hg hG n`. Establish `horth` using `GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central (Gn g n)`. Establish `he : ∀ f, eSerC L n f = ∑ χ ∈ hfin.toFinset.filter (fun χ => HasLabel L χ f), zOf χ` using `fun f => eSerC_eq_sum L n hfin f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ f χ, χ ∈ hfin.toFinset.filter (fun χ => HasLabel L χ f) ↔ IsIrr χ ∧ HasLabel L χ f`. Introduce `f χ`. Simplify using `[Set.Finite.mem_toFinset]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he f, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Establish `hχi` using `((hmem f χ).1 hχ).1`. Rewrite using `[Finset.sum_congr rfl fun χ' hχ' => (horth χ χ' hχi ((hmem f χ').1 hχ').1).1, Finset.sum_ite_eq, if_pos hχ]`. Introduce `f a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he f, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun χ hχ => (horth χ χ ((hmem f χ).1 hχ).1 ((hmem f χ).1 hχ).1).2.1 a`. Introduce `f f' hff'`. Rewrite using `[he f, he f', Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun χ hχ => Finset.sum_eq_zero fun χ' hχ' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hi, hl⟩` from `(hmem f χ).1 hχ`. Take `⟨hi', hl'⟩` from `(hmem f' χ').1 hχ'`. Rewrite using `[(horth χ χ' hi hi').1, if_neg]`. Introduce and unpack `rfl`. Conclude with `hff' ((huniq χ hi).unique hl hl')`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Rewrite using `[he f]`. Conclude with `Finset.sum_eq_zero fun χ hχ => absurd (hprops χ f ((hmem f χ).1 hχ).2) hf`. Establish `hS` using `finite_natDegree_eq (R := ZMod g) n`. Establish `hSmem : ∀ f, f ∈ hS.toFinset.filter (fun f => f.Monic ∧ f.coeff 0 ≠ 0) ↔ f.Monic ∧ f.natDegree = n ∧ f.coeff 0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Introduce `f`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. The claim follows by propositional logic. Use `⟨_, hSmem, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[he f, Finset.sum_filter]`. Use `_ = ∑ χ ∈ hfin.toFinset, ∑ f ∈ hS.toFinset.filter (fun f => f.Monic ∧ f.coeff 0 ≠ 0), if HasLabel L χ f then zOf χ else 0 := Finset.sum_comm`. Use `_ = ∑ χ ∈ hfin.toFinset, zOf χ := by`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : IsIrr χ` using `hfin.mem_toFinset.1 hχ`. Take `⟨f0, hf0, hu⟩` from `huniq χ hi`. Rewrite using `[Finset.sum_eq_single f0]`. Rewrite using `[if_pos hf0]`. Introduce `b _ hb`.
-
-Rewrite using `[if_neg]`. Conclude with `fun h => hb (hu b h)`. Introduce `h0`. Conclude with `absurd ((hSmem f0).2 (hprops χ f0 hf0)) h0`. Use `_ = 1 := by`.
-
-Rewrite using `[← finsum_mem_coe_finset, Set.Finite.coe_toFinset]`. Conclude with `hsum`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSerC_laws : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g → Green → ∀ n : ℕ, (∀ f, eSerC L n f * eSerC L n f = eSerC L n f) ∧ (∀ f a, eSerC L n f * a = a * eSerC L n f) ∧ (∀ f f', f ≠ f' → eSerC L n f * eSerC L n f' = 0) ∧ (∀ f, ¬ (f.Monic ∧ f.natDegree = n ∧ f.coeff 0 ≠ 0) → eSerC L n f = 0) ∧ ∃ S : Finset (ZMod g)[X], (∀ f, f ∈ S ↔ f.Monic ∧ f.natDegree = n ∧ f.coeff 0 ≠ 0) ∧ ∑ f ∈ S, eSerC L n f = 1 := by
   intro g _ L hg hG n

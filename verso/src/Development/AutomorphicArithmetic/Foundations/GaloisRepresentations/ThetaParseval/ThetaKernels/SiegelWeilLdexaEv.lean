@@ -15,9 +15,9 @@ open PositivityTheory.SiegelWeilFormula.Ald
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 set_option linter.unusedSectionVars false
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε dd hd`. Use `⟨adelicCoordinatesEvalZeroForm_mem_admissible _, fun z Φ _ => evaluation_zero_unipotent_kill bs A Y b hb dd hd B.ψ z Φ, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hψ : ∀ x : F, B.ψ (algebraMap F (AF F) x) = 1` using `hB.std.2.1`. Establish `hs` using `(summable_of_mem_schA F hΦ).hasSum`. Establish `h` using `(Equiv.hasSum_iff (xiEquiv (m := m) bs b hb)).mpr hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : thetaSum F Φ = ∑' ξ : Fin m × Fin n × Fin 2 → F, Φ fun i => algebraMap F (AF F) (ξ i)` using `rfl`. Rewrite using `[e1]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Conclude with `evaluation_zero_antisymmetric bs A Y b hb dd hd B.ψ hψ Φ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sEv_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.SEv_k := by
   intro F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε dd hd

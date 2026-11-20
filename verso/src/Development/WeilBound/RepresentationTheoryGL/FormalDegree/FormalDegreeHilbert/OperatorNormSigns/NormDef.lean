@@ -17,9 +17,9 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `q0 at hq`. Break down `Nat.min_eq_zero_iff.1 hq with h | h` into its components or cases. Use `⟨false, fun a => ?_⟩` and prove the remaining obligations. Unfold `pOf at h`. Use `Finset.filter_eq_empty_iff.1 (Finset.card_eq_zero.1 h) (Finset.mem_univ a)` as an intermediate fact.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `using this`. Use `⟨true, fun a => ?_⟩` and prove the remaining obligations. Unfold `qOf at h`. Use `Finset.filter_eq_empty_iff.1 (Finset.card_eq_zero.1 h) (Finset.mem_univ a)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nd_const_sign {ε : Fin n → Bool} (hq : q0 ε = 0) : ∃ s : Bool, ∀ a, ε a = s := by
   unfold q0 at hq
@@ -34,7 +34,7 @@ theorem nd_const_sign {ε : Fin n → Bool} (hq : q0 ε = 0) : ∃ s : Bool, ∀
     simpa using this
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Jm, hs]`. Simplify using `[Jm, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem nd_Jm {ε : Fin n → Bool} {s : Bool} (hs : ∀ a, ε a = s) :
     Jm ε = (if s then (1 : ℂ) else -1) • (1 : Matrix (Fin n) (Fin n) ℂ) := by
@@ -44,9 +44,9 @@ theorem nd_Jm {ε : Fin n → Bool} {s : Bool} (hs : ∀ a, ε a = s) :
   · simp [Jm, h]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `nd_const_sign hq`. Use `set c : ℂ := if s then 1 else -1 with hc`. Apply the tactic sequence `have hc0 : c ≠ 0 := by simp only [hc]; split_ifs <;> norm_num`. Establish `hJ` using `nd_Jm hs`. Rewrite `hJ` using `[← hc]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Rewrite `hg'` using `[hJ, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Establish `hu : gᴴ * g = 1` using `smul_right_injective _ hc0 hg'`. Use `⟨Matrix.mem_unitaryGroup_iff'.2 (by rw [star_eq_conjTranspose]; exact hu), ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nd_mem_Kset {ε : Fin n → Bool} (hq : q0 ε = 0) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     g ∈ Kset ε := by
@@ -62,11 +62,11 @@ theorem nd_mem_Kset {ε : Fin n → Bool} (hq : q0 ε = 0) {g : Matrix (Fin n) (
   rw [hJ, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hn : ∀ v : T.V, ‖T.op k v‖ = ‖v‖`. Introduce `v`. Establish `hU` using `(T.τ k).2`. Establish `h1 : star (T.op k) * T.op k = 1` using `hU.1`. Establish `h2 : ⟪T.op k v, T.op k v⟫_ℂ = ⟪v, v⟫_ℂ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.star_eq_adjoint, h1, ContinuousLinearMap.one_apply]`. Rewrite `h2` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h3 : ‖T.op k v‖ ^ 2 = ‖v‖ ^ 2` using `by exact_mod_cast h2`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h3`. Unfold `hsOp`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [hn, (stdOrthonormalBasis ℂ T.V).orthonormal.1, one_pow, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem nd_hsOp_op {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (k : KG ε) :
     hsOp (T.op k) = (Module.finrank ℂ T.V : ℝ) := by
@@ -85,7 +85,7 @@ theorem nd_hsOp_op {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) 
     Fintype.card_fin, nsmul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `h1 : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [inUJ]`. Establish `e` using `psiM_equiv T μ k 1 h1`. Rewrite `e` using `[show toMK (1 : KG ε) = 1 from rfl, Matrix.mul_one, Matrix.mul_one, psiM_one]`. Rewrite using `[e]`. Simplify using `[KType.op, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nd_psiM_K {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (μ : Fin n → ℤ) (k : KG ε) :
     PsiM T μ (toMK k) = T.op k := by
@@ -96,7 +96,7 @@ theorem nd_psiM_K {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (
   simp [KType.op, map_one]
 
 /- English proof (translation)
-Establish `h0 : pmat z = 0`. Use extensionality with `a b`. Simplify using `[pmat, hs]`. Conclude with `(pmat_isHermitian z).eigenvalues_eq_zero_iff.2 h0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nd_pev_zero {ε : Fin n → Bool} {s : Bool} (hs : ∀ a, ε a = s) (z : PCoord ε → ℂ) : pev z = 0 := by
   have h0 : pmat z = 0 := by
@@ -105,7 +105,7 @@ theorem nd_pev_zero {ε : Fin n → Bool} {s : Bool} (hs : ∀ a, ε a = s) (z :
   exact (pmat_isHermitian z).eigenvalues_eq_zero_iff.2 h0
 
 /- English proof (translation)
-Unfold `Jac`. Use `Finset.prod_eq_one fun a _ => Finset.prod_eq_one fun b _ => ?_` and prove the remaining obligations. Rewrite using `[nd_pev_zero hs z]`. Simplify using `[shc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nd_jac_one {ε : Fin n → Bool} {s : Bool} (hs : ∀ a, ε a = s) (z : PCoord ε → ℂ) : Jac z = 1 := by
   unfold Jac
@@ -114,17 +114,17 @@ theorem nd_jac_one {ε : Fin n → Bool} {s : Bool} (hs : ∀ a, ε a = s) (z : 
   simp [shc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ab => ab.2.2 (by rw [hs, hs])⟩`.
+Supply the required witnesses or components.
 -/
 theorem nd_isEmpty {ε : Fin n → Bool} {s : Bool} (hs : ∀ a, ε a = s) : IsEmpty (PCoord ε) :=
   ⟨fun ab => ab.2.2 (by rw [hs, hs])⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `nd_const_sign hq`. Consider the cases of `s`. Use `right`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `pOf`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[hs]`. Unfold `qOf`. Simplify using `[hs]`. Use `left`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `pOf`. Simplify using `[hs]`. Unfold `qOf`. Simplify using `[hs]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nd_counts {ε : Fin n → Bool} (hq : q0 ε = 0) :
     (pOf ε = n ∧ qOf ε = 0) ∨ (pOf ε = 0 ∧ qOf ε = n) := by
@@ -140,7 +140,7 @@ theorem nd_counts {ε : Fin n → Bool} (hq : q0 ε = 0) :
     · unfold qOf; simp [hs]
 
 /- English proof (translation)
-Unfold `cPQ`. Establish `hpos : 0 < ∏ i ∈ range n, (i.factorial : ℝ)` using `Finset.prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos i`. Apply the tactic sequence `rcases nd_counts hq with ⟨hp, hq'⟩ | ⟨hp, hq'⟩ <;> rw [hp, hq'] <;> simp [hpos.ne']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nd_cPQ {ε : Fin n → Bool} (hq : q0 ε = 0) : cPQ ε = 1 := by
   unfold cPQ
@@ -149,9 +149,9 @@ theorem nd_cPQ {ε : Fin n → Bool} (hq : q0 ε = 0) : cPQ ε = 1 := by
   rcases nd_counts hq with ⟨hp, hq'⟩ | ⟨hp, hq'⟩ <;> rw [hp, hq'] <;> simp [hpos.ne']
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `nd_const_sign hq`. Use `nd_isEmpty hs` as an intermediate fact. Establish `h` using `lintegral_muCD ε (fun _ => 1) measurable_const`. Rewrite `h` using `[lintegral_one]`. Rewrite using `[h, nd_cPQ hq, ENNReal.ofReal_one, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∫⁻ z : PCoord ε → ℂ, ENNReal.ofReal (Jac z) = 1`. Simplify using `only [nd_jac_one hs, ENNReal.ofReal_one, lintegral_one]`. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_of_empty]`. Simplify using the standard rewrite rules. Simplify using `only [one_mul, hz, lintegral_one, measure_univ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem nd_muCD_univ {ε : Fin n → Bool} (hq : q0 ε = 0) : muCD ε Set.univ = 1 := by
   obtain ⟨s, hs⟩ := nd_const_sign hq
@@ -166,13 +166,13 @@ theorem nd_muCD_univ {ε : Fin n → Bool} (hq : q0 ε = 0) : muCD ε Set.univ =
   simp only [one_mul, hz, lintegral_one, measure_univ]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `nd_const_sign hq`. Rewrite using `[lemma7 T, dimVlam, prod_pairs_eq_factorial]`. Establish `hden : (∏ i ∈ range (pOf ε), (i.factorial : ℝ)) * ∏ i ∈ range (qOf ε), (i.factorial : ℝ) = ∏ i ∈ range n, (i.factorial : ℝ)`. Apply the tactic sequence `rcases nd_counts hq with ⟨hp, hq'⟩ | ⟨hp, hq'⟩ <;> rw [hp, hq'] <;> simp`. Rewrite using `[hden]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hf : (univ.filter fun b : Fin n => a < b ∧ ε a = ε b) = univ.filter fun b : Fin n => a < b`. Use extensionality with `b`. Simplify using `[hs]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `hn : nab ε a b = 0`. Unfold `nab`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[hs]`. Rewrite using `[hn, Nat.cast_zero, add_zero, abs_of_pos (sub_pos.2 (hl hb))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nd_finrank {ε : Fin n → Bool} (hq : q0 ε = 0) {lam : Fin n → ℝ} (hl : StrictAnti lam)
     (T : KType ε (lowK ε lam)) : (Module.finrank ℂ T.V : ℝ) = dimVlam lam := by
@@ -195,13 +195,11 @@ theorem nd_finrank {ε : Fin n → Bool} (hq : q0 ε = 0) {lam : Fin n → ℝ} 
   rw [hn, Nat.cast_zero, add_zero, abs_of_pos (sub_pos.2 (hl hb))]
 
 /- English proof (translation)
-Introduce `n ε hq lam hl T μ hμ`. Establish `hK : ∀ g : Formalism.REAL.UJ ε, hsOp (PsiM T μ (Formalism.MainNotions.S.umat g)) = (Module.finrank ℂ T.V : ℝ)`. Introduce `g`. Establish `hg : inUJ ε (Formalism.MainNotions.S.umat g)`. Establish `h` using `g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `inUJ Jm`. Conclude with `h`. Take `⟨u, hu⟩` from `exists_toMK (nd_mem_Kset hq hg)`. Rewrite using `[← hu, nd_psiM_K, nd_hsOp_op]`. Simplify using `only [hK, lintegral_const, nd_muCD_univ hq, mul_one]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← nd_finrank hq hl.1 T]`. Use `congr 1`. Establish `hpos : (0 : ℝ) < Module.finrank ℂ T.V`. Establish `: Nontrivial T.V` using `⟨⟨T.w, 0, fun h => by simpa [h] using T.w_norm⟩⟩`. Conclude with `Module.finrank_pos` after adjusting the coercions.
-
-Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem normDef : NormDef := by
   intro n ε hq lam hl T μ hμ

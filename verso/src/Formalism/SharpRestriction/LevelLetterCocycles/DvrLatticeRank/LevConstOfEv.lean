@@ -11,7 +11,7 @@ section PS
 variable {LL : Type*} [Field LL]
 
 /- English proof (translation)
-Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Rewrite using `[PowerSeries.coeff_zero_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, h0]`. Rewrite using `[PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_mk]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_X_mul_shift (f : PowerSeries LL) (h0 : constantCoeff f = 0) :
     f = X * mk (fun k => coeff (k + 1) f) := by
@@ -43,47 +43,47 @@ def ev (a : LetA O n) (i : ℤ) : LL :=
 variable {W c ζ Eπ h'}
 
 /- English proof (translation)
-The claim follows from `eq_X_mul_shift _ h0`.
+A detailed English derivation is pending.
 -/
 theorem levE_eq (h0 : constantCoeff (W.lev c ζ Eπ) = 0) : W.lev c ζ Eπ = X * Vs W c ζ Eπ :=
   eq_X_mul_shift _ h0
 
 /- English proof (translation)
-Rewrite using `[Vs, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_mk]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Vs_cc (h1 : coeff 1 (W.lev c ζ Eπ) ≠ 0) : constantCoeff (Vs W c ζ Eπ) ≠ 0 := by
   rw [Vs, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_mk]
   exact h1
 
 /- English proof (translation)
-Rewrite using `[Ui, ← mul_pow, PowerSeries.mul_inv_cancel _ (Vs_cc h1), one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Vs_Ui (h1 : coeff 1 (W.lev c ζ Eπ) ≠ 0) : Vs W c ζ Eπ ^ h' * Ui W c ζ Eπ h' = 1 := by
   rw [Ui, ← mul_pow, PowerSeries.mul_inv_cancel _ (Vs_cc h1), one_pow]
 
 /- English proof (translation)
-Rewrite using `[map_pow, levE_eq h0, mul_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levΛ_eq (h0 : constantCoeff (W.lev c ζ Eπ) = 0) :
     W.lev c ζ (Eπ ^ h') = X ^ h' * Vs W c ζ Eπ ^ h' := by
   rw [map_pow, levE_eq h0, mul_pow]
 
 /- English proof (translation)
-Rewrite using `[levΛ_eq h0, mul_assoc, Vs_Ui h1, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levΛ_Ui (h0 : constantCoeff (W.lev c ζ Eπ) = 0) (h1 : coeff 1 (W.lev c ζ Eπ) ≠ 0) :
     W.lev c ζ (Eπ ^ h') * Ui W c ζ Eπ h' = X ^ h' := by
   rw [levΛ_eq h0, mul_assoc, Vs_Ui h1, mul_one]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[if_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_of_lt (a : LetA O n) {i : ℤ} (hi : i + h' < 0) : ev W c ζ Eπ h' a i = 0 := by
   unfold ev
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[if_pos hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_eq (a : LetA O n) {i : ℤ} (hi : 0 ≤ i + h') :
     ev W c ζ Eπ h' a i = coeff (i + h').toNat (W.lev c ζ a * Ui W c ζ Eπ h') := by
@@ -91,7 +91,7 @@ theorem ev_eq (a : LetA O n) {i : ℤ} (hi : 0 ≤ i + h') :
   rw [if_pos hi]
 
 /- English proof (translation)
-Unfold `ev`. Use `split_ifs`. Rewrite using `[map_add (W.lev c ζ) a b, add_mul, map_add]`. Rewrite using `[add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_add (a b : LetA O n) (i : ℤ) :
     ev W c ζ Eπ h' (a + b) i = ev W c ζ Eπ h' a i + ev W c ζ Eπ h' b i := by
@@ -101,14 +101,14 @@ theorem ev_add (a b : LetA O n) (i : ℤ) :
   · rw [add_zero]
 
 /- English proof (translation)
-Unfold `ev`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ev_zero (i : ℤ) : ev W c ζ Eπ h' (0 : LetA O n) i = 0 := by
   unfold ev
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Finset.induction_on s (by rw [Finset.sum_empty, Finset.sum_empty, ev_zero]) ?_` and prove the remaining obligations. Introduce `x s hx ih`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx, ev_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_sum {ι : Type*} (s : Finset ι) (a : ι → LetA O n) (i : ℤ) :
     ev W c ζ Eπ h' (∑ k ∈ s, a k) i = ∑ k ∈ s, ev W c ζ Eπ h' (a k) i := by
@@ -118,7 +118,7 @@ theorem ev_sum {ι : Type*} (s : Finset ι) (a : ι → LetA O n) (i : ℤ) :
   rw [Finset.sum_insert hx, Finset.sum_insert hx, ev_add, ih]
 
 /- English proof (translation)
-Unfold `ev`. Use `split_ifs`. Rewrite using `[map_mul (W.lev c ζ), AlgHom.commutes, mul_assoc, ← Algebra.smul_def, PowerSeries.coeff_smul, Algebra.smul_def]`. Rewrite using `[mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_alg (x : O) (a : LetA O n) (i : ℤ) :
     ev W c ζ Eπ h' (algebraMap O (LetA O n) x * a) i = algebraMap O LL x * ev W c ζ Eπ h' a i := by
@@ -129,7 +129,7 @@ theorem ev_alg (x : O) (a : LetA O n) (i : ℤ) :
   · rw [mul_zero]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[map_mul (W.lev c ζ), Formalism.MainNotions.N.Ln34.ModelFPf.lev_letE (W := W) c ζ, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_letE (a : LetA O n) (i : ℤ) :
     ev W c ζ Eπ h' ((letE c : LetA O n) * a) i = ev W c ζ Eπ h' a i := by
@@ -137,16 +137,16 @@ theorem ev_letE (a : LetA O n) (i : ℤ) :
   rw [map_mul (W.lev c ζ), Formalism.MainNotions.N.Ln34.ModelFPf.lev_letE (W := W) c ζ, one_mul]
 
 /- English proof (translation)
-Rewrite using `[levΛ_eq h0, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem coeff_lev_pow_eq_zero_of_lt (h0 : constantCoeff (W.lev c ζ Eπ) = 0) (j : ℕ) (hj : j < h') :
     coeff j (W.lev c ζ (Eπ ^ h')) = 0 := by
   rw [levΛ_eq h0, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]
 
 /- English proof (translation)
-Establish `e1 : coeff i (W.lev c ζ a) = coeff (i + h') (W.lev c ζ (Eπ ^ h') * (W.lev c ζ a * Ui W c ζ Eπ h'))`. Establish `e : W.lev c ζ (Eπ ^ h') * (W.lev c ζ a * Ui W c ζ Eπ h') = W.lev c ζ a * X ^ h'`. Rewrite using `[← levΛ_Ui h0 h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, PowerSeries.coeff_mul_X_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_range]`. Rewrite using `[ev_eq a (by omega), show ((i : ℤ) - j + h').toNat = i + h' - j by omega]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coeff_lev_eq_sum_coeff_lev_pow_mul_ev (h0 : constantCoeff (W.lev c ζ Eπ) = 0) (h1 : coeff 1 (W.lev c ζ Eπ) ≠ 0)
     (a : LetA O n) (i : ℕ) :
@@ -164,13 +164,13 @@ private theorem coeff_lev_eq_sum_coeff_lev_pow_mul_ev (h0 : constantCoeff (W.lev
   rw [ev_eq a (by omega), show ((i : ℤ) - j + h').toNat = i + h' - j by omega]
 
 /- English proof (translation)
-Unfold `serMul serC`. Use `split_ifs with hi`. Take `⟨i', rfl⟩` from `Int.eq_ofNat_of_zero_le hi`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (i' + h' + 1)) ?_]`. Simplify using `only [smul_smul, ← Finset.sum_smul]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.toNat_natCast, coeff_lev_eq_sum_coeff_lev_pow_mul_ev h0 h1 a i']`. Introduce `j hj`. Rewrite `hj` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hj` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[ev_of_lt a (by omega), zero_smul, smul_zero]`. Establish `hz : (fun j : ℕ => coeff j (W.lev c ζ (Eπ ^ h')) • (fun k => ev W c ζ Eπ h' a k • d) (i - j)) = fun _ => 0`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j < h'`. Rewrite using `[coeff_lev_pow_eq_zero_of_lt h0 j hj, zero_smul]`. Simplify using `only`. Rewrite using `[ev_of_lt a (by omega), zero_smul, smul_zero]`. Rewrite using `[hz, finsum_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem serMul_ev (h0 : constantCoeff (W.lev c ζ Eπ) = 0) (h1 : coeff 1 (W.lev c ζ Eπ) ≠ 0)
     {V : Type} [AddCommGroup V] [Module LL V] (a : LetA O n) (d : V) (i : ℤ) :
@@ -198,9 +198,9 @@ theorem serMul_ev (h0 : constantCoeff (W.lev c ζ Eπ) = 0) (h1 : coeff 1 (W.lev
     rw [hz, finsum_zero]
 
 /- English proof (translation)
-Establish `e : W.lev c ζ a = (W.lev c ζ a * Ui W c ζ Eπ h') * Vs W c ζ Eπ ^ h'`. Rewrite using `[mul_assoc, mul_comm (Ui W c ζ Eπ h'), Vs_Ui h1, mul_one]`. Rewrite using `[e, PowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hev` using `h ((p.1 : ℤ) - h') (by omega)`. Rewrite `hev` using `[ev_eq a (by omega), show ((p.1 : ℤ) - h' + h').toNat = p.1 by omega]`. Rewrite using `[hev, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_zero_of_ev (h1 : coeff 1 (W.lev c ζ Eπ) ≠ 0) (a : LetA O n) (t₀ : ℤ)
     (h : ∀ t < t₀, ev W c ζ Eπ h' a t = 0) (i : ℕ) (hi : (i : ℤ) < t₀ + h') :
@@ -215,9 +215,9 @@ theorem lev_zero_of_ev (h1 : coeff 1 (W.lev c ζ Eπ) ≠ 0) (a : LetA O n) (t�
   rw [hev, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[coeff_lev_eq_sum_coeff_lev_pow_mul_ev h0 h1 a i, Finset.sum_eq_single i]`. Rewrite using `[sub_self, mul_comm]`. Introduce `j _ hji`. Distinguish the cases in `hjh : j < h'`. Rewrite using `[coeff_lev_pow_eq_zero_of_lt h0 j hjh, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h ((i : ℤ) - j) (by omega) (by omega), mul_zero]`. Introduce `hi'`. Conclude with `absurd (Finset.mem_range.mpr (by omega)) hi'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lev_const_of_ev (h0 : constantCoeff (W.lev c ζ Eπ) = 0) (h1 : coeff 1 (W.lev c ζ Eπ) ≠ 0)
     (a : LetA O n) (t₁ : ℤ) (h : ∀ t < t₁, t ≠ 0 → ev W c ζ Eπ h' a t = 0) (i : ℕ)

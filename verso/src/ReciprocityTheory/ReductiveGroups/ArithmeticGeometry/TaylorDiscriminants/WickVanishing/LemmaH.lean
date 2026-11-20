@@ -15,9 +15,9 @@ abbrev kapH (m : ℕ) {ι π : Type} [DecidableEq π] (c : ι → π) (s : ι �
   if c l = c l' ∧ s l = true ∧ s l' = false then (m : k) * betaH k (0, φ l) (u l', 0) else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l l'`. Use `show (if s l = true ∧ s l' = false then (m : k) * betaH k (0, φ l) (u l', 0) else 0) = (if c l = c l' ∧ s l = true ∧ s l' = false then (m : k) * betaH k (0, φ l) (u l', 0) else 0)`. Distinguish the cases in `hs : s l = true ∧ s l' = false`. Rewrite using `[if_pos hs]`. Distinguish the cases in `hc : c l = c l'`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ⟨hc, hs⟩]`. Rewrite using `[if_neg (fun h => hc h.1), hFU l l' (fun h => hc h.1), mul_zero]`. Rewrite using `[if_neg hs, if_neg (fun h => hs h.2)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapW_eq_kapH (m : ℕ) {ι π : Type} [DecidableEq π] (c : ι → π) (s : ι → Bool) (u φ : ι → Fin d → k)
     (hFU : OppositePairVanishing k c s (fun l => (0, φ l)) (fun l => (u l, 0))) :
@@ -33,18 +33,18 @@ theorem kapW_eq_kapH (m : ℕ) {ι π : Type} [DecidableEq π] (c : ι → π) (
   · rw [if_neg hs, if_neg (fun h => hs h.2)]
 
 /- English proof (translation)
-Conclude with `map_rat_smul (MvPolynomial.rename e) q X`.
+A detailed English derivation is pending.
 -/
 theorem rename_qsmul {ι τ : Type} (e : ι → τ) (q : ℚ) (X : MvPolynomial ι k) :
     MvPolynomial.rename e (q • X) = q • MvPolynomial.rename e X := by
   exact map_rat_smul (MvPolynomial.rename e) q X
 
 /- English proof (translation)
-Establish `hb0 : ∀ l, ((fun l => ((0 : Fin d → k), φ l)) l).1 = 0` using `fun l => rfl`. Establish `haa : ∀ l l', s l = s l' → betaH k (u l, (0 : Fin d → k)) (u l', 0) = 0`. Introduce `l l' _`. Simplify using `[betaH]`. Establish `hab : ∀ l l', s l = s l' → betaH k (u l, (0 : Fin d → k)) (0, φ l') = 0` using `fun l l' hs => hUF l l' (fun h => h.2 hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw` using `ordNabla_wick hN2 hN3 B h m s (fun l => (u l, 0)) (fun l => (0, φ l)) hb0 haa hab Q g`. Simplify using `only [Prod.mk_add_mk, add_zero, zero_add] at hw`. Establish `hdeg : (MvPolynomial.rename (sideE s) Q).totalDegree = Q.totalDegree` using `MvPolynomial.totalDegree_renameEquiv (R := k) (sideE s) Q`. Rewrite using `[hw, kapW_eq_kapH m c s u φ hFU, hdeg]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← rename_qsmul, ← ordNabla_eq B h m s (fun l => (u l, 0)) ?_, ordNabla_u hN2]`. Introduce `l l' _`. Conclude with `nablaL_comm hN2 B h m _ _ (by simp [betaH])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ordNabla_expand (hN2 : ConnectionCommutator) (hN3 : ConnectionKillsSeries) (B : FB R d O) (h : PS k 2 d) (m : ℕ) {ι π : Type}
     [Fintype ι] [DecidableEq π] (c : ι → π) (s : ι → Bool) (u φ : ι → Fin d → k)
@@ -71,7 +71,7 @@ theorem ordNabla_expand (hN2 : ConnectionCommutator) (hN3 : ConnectionKillsSerie
   exact nablaL_comm hN2 B h m _ _ (by simp [betaH])
 
 /- English proof (translation)
-Rewrite using `[ordNabla_expand hN2 hN3 B h m c s u φ hUF hFU Q g, map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Conclude with `hV R d O k B h hax m ι u _ g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ordNabla_value_expand (hV : ValueSt) (hN2 : ConnectionCommutator) (hN3 : ConnectionKillsSeries) (B : FB R d O) (h : PS k 2 d)
     (hax : ev (n := 1) ![0, pt k d 0] h = 0) (m : ℕ) {ι π : Type} [Fintype ι] [DecidableEq π] (c : ι → π)

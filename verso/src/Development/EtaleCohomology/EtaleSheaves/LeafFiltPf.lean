@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 theorem coe_zero' {K L : Cx R} {m : ℤ} : ((0 : Cocycle K L m) : Cochain K L m) = 0 := rfl
 
 /- English proof (translation)
-Establish `: (res R F).IsStrictlyGE 0` using `by unfold res; infer_instance`. Conclude with `CochainComplex.isZero_of_isStrictlyGE _ 0 q (by omega)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_zero (q : ℤ) (hq : q < 0) : IsZero ((res R F).X q) := by
   have : (res R F).IsStrictlyGE 0 := by unfold res; infer_instance
@@ -32,13 +32,13 @@ def V (s : ℤ) (z : Cocycle K (res R F) n) : Prop := ∀ p q (h : p + n = q), s
 def S (s : ℤ) : Set (HK R K F n) := {x | ∃ z : Cocycle K (res R F) n, CohomologyClass.mk z = x ∧ V K F n s z}
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem memS {s : ℤ} {x : HK R K F n} (h : x ∈ S K F n s) :
     ∃ z : Cocycle K (res R F) n, CohomologyClass.mk z = x ∧ V K F n s z := h
 
 /- English proof (translation)
-Establish `h0` using `Cochain.congr_v (Cocycle.δ_eq_zero z (n + 1)) s (d + 1) (by omega)`. Rewrite `h0` using `[δ_v n (n + 1) rfl _ s (d + 1) _ d (s + 1) (by omega) rfl, hz (s + 1) (d + 1) (by omega) (by omega)]`. Simplify using `using h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cocyc (s d : ℤ) (hd : s + n = d) (z : Cocycle K (res R F) n) (hz : V K F n s z) :
     z.1.v s d hd ≫ (res R F).d d (d + 1) = 0 := by
@@ -51,7 +51,7 @@ def clsC (s d : ℤ) (hd : s + n = d) (z : Cocycle K (res R F) n) (hz : V K F n 
   Cocycle.fromSingleMk (z.1.v s d hd) (zero_add d) (d + 1) rfl (cocyc K F n s d hd z hz)
 
 /- English proof (translation)
-The claim follows from `Cochain.fromSingleMk_v _ _`.
+A detailed English derivation is pending.
 -/
 theorem clsC_v (s d : ℤ) (hd : s + n = d) (z : Cocycle K (res R F) n) (hz : V K F n s z) :
     (clsC K F n s d hd z hz).1.v 0 d (zero_add d) =
@@ -59,9 +59,9 @@ theorem clsC_v (s d : ℤ) (hd : s + n = d) (z : Cocycle K (res R F) n) (hz : V 
   Cochain.fromSingleMk_v _ _
 
 /- English proof (translation)
-Take `⟨m, hm, β, hβ⟩` from `(CohomologyClass.mk_eq_zero_iff c).1 hc`. Take `rfl : e = m` from `by omega`. Use `⟨β, ?_⟩` and prove the remaining obligations. Use `Cochain.congr_v hβ 0 d (zero_add d)` as an intermediate fact. Rewrite `this` using `[δ_v e d hm β 0 d _ e 1 (by omega) rfl]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz1 : IsZero ((Sg X).X 1)` using `HomologicalComplex.isZero_single_obj_X _ _ _ _ (by simp)`. Rewrite `this` using `[hz1.eq_of_tgt ((Sg X).d 0 1) 0]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem CB (X : Shv R) (d : ℤ) (c : Cocycle (Sg X) (res R F) d) (hc : CohomologyClass.mk c = 0) (e : ℤ)
     (he : e + 1 = d) : ∃ β : Cochain (Sg X) (res R F) e,
@@ -76,13 +76,13 @@ theorem CB (X : Shv R) (d : ℤ) (c : Cocycle (Sg X) (res R F) d) (hc : Cohomolo
   simpa using this
 
 /- English proof (translation)
-Set `g : K.X s ⟶ (res R F).X e` to `(HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (K.X s)).inv ≫ β.v 0 e (zero_add e)`. Set `hh : Cochain K (res R F) (n - 1)` to `Cochain.single g (n - 1)`. Set `D : Cocycle K (res R F) n` to `Cocycle.mk (δ (n - 1) n hh) (n + 1) (by omega) (δ_δ _ _ _ _)`. Use `⟨z - D, ?_, ?_⟩` and prove the remaining obligations. Establish `hD : CohomologyClass.mk D = 0` using `(CohomologyClass.mk_eq_zero_iff D).2 ⟨n - 1, by omega, hh, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[CohomologyClass.mk_sub, hD, sub_zero]`. Introduce `p q hpq hp`. Establish `hDv : D.1.v p q hpq = (δ (n - 1) n hh).v p q hpq` using `rfl`. Simplify using `only [coe_sub', Cochain.sub_v, hDv]`. Rewrite using `[δ_v (n - 1) n (by omega) hh p q hpq (q - 1) (p + 1) rfl rfl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_eq_of_le (show s ≤ p by omega) with h | h` into its components or cases. Rewrite using `[hz p q hpq h, Cochain.single_v_eq_zero _ _ _ _ _ (by omega), Cochain.single_v_eq_zero _ _ _ _ _ (by omega)]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality. Take `rfl : q = d` from `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `rfl : e = q - 1` from `by omega`. Rewrite using `[Cochain.single_v, Cochain.single_v_eq_zero _ _ _ _ _ (by omega)]`. Simplify using `only [g, Category.assoc, hβ, Iso.inv_hom_id_assoc, comp_zero, smul_zero, add_zero, sub_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem KL (s d : ℤ) (hd : s + n = d) (z : Cocycle K (res R F) n) (hz : V K F n s z) (e : ℤ) (he : e + 1 = d)
     (β : Cochain (Sg (K.X s)) (res R F) e)
@@ -111,15 +111,15 @@ theorem KL (s d : ℤ) (hd : s + n = d) (z : Cocycle K (res R F) n) (hz : V K F 
       simp only [g, Category.assoc, hβ, Iso.inv_hom_id_assoc, comp_zero, smul_zero, add_zero, sub_self]
 
 /- English proof (translation)
-Set `φ : HK R K F n → HK R (Sg (K.X s)) F d` to `fun x => if h : x ∈ S K F n s then CohomologyClass.mk (clsC K F n s d hd (memS K F n h).choose (memS K F n h).choose_spec.2) else 0`. Establish `key : ∀ x ∈ S K F n s, ∀ x' ∈ S K F n s, φ x = φ x' → x - x' ∈ S K F n (s - 1)`. Introduce `x hx x' hx' he`. Simplify using `only [φ, dif_pos hx, dif_pos hx'] at he`. Establish `hz` using `(memS K F n hx).choose_spec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz'` using `(memS K F n hx').choose_spec`. Establish `h0 : CohomologyClass.mk (clsC K F n s d hd (memS K F n hx).choose hz.2 - clsC K F n s d hd (memS K F n hx').choose hz'.2) = 0`. Rewrite using `[CohomologyClass.mk_sub, he, sub_self]`. Take `⟨β, hβ⟩` from `CB F (K.X s) d _ h0 (d - 1) (by omega)`. Establish `hV : V K F n s ((memS K F n hx).choose - (memS K F n hx').choose)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p q h hp`. Simplify using `[Cochain.sub_v, hz.2 p q h hp, hz'.2 p q h hp]`. Take `⟨w, hw, hwV⟩` from `KL K F n s d hd _ hV (d - 1) (by omega) β (by`. Rewrite using `[hβ]`. Simplify using `only [coe_sub', Cochain.sub_v, clsC_v, Preadditive.comp_sub])`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨w, by rw [hw, CohomologyClass.mk_sub, hz.1, hz'.1], hwV⟩`. Set `g : HK R (Sg (K.X s)) F d → HK R K F n` to `fun t => if h : ∃ x ∈ S K F n s, φ x = t then h.choose else 0`. Use `((Set.finite_univ.prod hS).image (fun p => g p.1 + p.2)).subset ?_` and prove the remaining obligations. Introduce `x hx`. Establish `h : ∃ y ∈ S K F n s, φ y = φ x` using `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨(φ x, x - g (φ x)), ⟨trivial, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hg : g (φ x) = h.choose` using `by simp only [g, dif_pos h]`. Rewrite using `[hg]`. Conclude with `key x hx _ h.choose_spec.1 h.choose_spec.2.symm`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step (s d : ℤ) (hd : s + n = d) [Finite (HK R (Sg (K.X s)) F d)] (hS : (S K F n (s - 1)).Finite) :
     (S K F n s).Finite := by
@@ -154,9 +154,9 @@ theorem step (s d : ℤ) (hd : s + n = d) [Finite (HK R (Sg (K.X s)) F d)] (hS :
   · simp
 
 /- English proof (translation)
-Introduce and unpack `x ⟨z, rfl, hz⟩`. Establish `: z = 0`. Use `Cocycle.ext (Cochain.ext _ _ (fun p q hpq => ?_))` and prove the remaining obligations. Rewrite using `[coe_zero', Cochain.zero_v]`. Break down `lt_or_ge s p with h | h` into its components or cases.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hz p q hpq h`. Conclude with `(res_zero F q (by omega)).eq_of_tgt (z.1.v p q hpq) 0`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem base (s : ℤ) (hs : s + n < 0) : S K F n s ⊆ {0} := by
   rintro x ⟨z, rfl, hz⟩
@@ -169,17 +169,17 @@ theorem base (s : ℤ) (hs : s + n < 0) : S K F n s ⊆ {0} := by
   simp [this]
 
 /- English proof (translation)
-Introduce `_ R _ K _ F n hfin`. Establish `ind : ∀ k : ℕ, ∀ r : ℕ, 1 ≤ r → n < r + k → (S K F n (-(r : ℤ))).Finite`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro r _ hr; exact (Set.finite_singleton 0).subset (base K F n _ (by push_cast at hr; omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `r hr1 hr`. Distinguish the cases in `hk : n < r + k`. Conclude with `ih r hr1 hk`. Establish `: Finite (HK R (Sg (K.X (-(r : ℤ)))) F (n - r))` using `hfin r (by omega) (by push_cast at hr; omega)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ih (r + 1) (by omega) (by push_cast at hr ⊢; omega)`. Establish `e : (-((r + 1 : ℕ) : ℤ)) = -(r : ℤ) - 1` using `by push_cast; ring`. Rewrite `h2` using `[e]`. Conclude with `step K F n (-(r : ℤ)) (n - r) (by omega) h2`. Establish `hS` using `ind n.toNat 1 le_rfl (by omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (-((1 : ℕ) : ℤ)) = (0 : ℤ) - 1` using `by norm_num`. Rewrite `hS` using `[e]`. Establish `hsub : ((HK.pull R (LateralTheory.E.LeafSSCut.incl0 K) F n).ker : Set (HK R K F n)) ⊆ S K F n (0 - 1)`. Introduce `x hx`. Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : V K F n 0 z` using `fun p q hpq hp => (CochainComplex.isZero_of_isStrictlyLE K 0 p hp).eq_of_src _ _`. Establish `hc : CohomologyClass.mk (zcomp (Cocycle.ofHom (LateralTheory.E.LeafSSCut.incl0 K)) z (zero_add n)) = 0` using `hx`. Take `⟨β, hβ⟩` from `CB F (K.X 0) n _ hc (n - 1) (by omega)`. Take `⟨w, hw, hwV⟩` from `KL K F n 0 n (zero_add n) z hz (n - 1) (by omega) β (by`. Rewrite using `[hβ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((Cochain.ofHom (LateralTheory.E.LeafSSCut.incl0 K)).comp z.1 (zero_add n)).v 0 n (zero_add n) = _`. Rewrite using `[Cochain.comp_v _ _ (zero_add n) 0 0 n (by omega) (by omega), Cochain.ofHom_v]`. Simplify using `[LateralTheory.E.LeafSSCut.incl0, HomologicalComplex.mkHomFromSingle_f])`. Conclude with `⟨w, hw, hwV⟩`. Conclude with `(hS.subset hsub).to_subtype`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafFilt_of : LateralTheory.E.LeafSSCut.LeafFilt := by
   intro _ R _ K _ F n hfin

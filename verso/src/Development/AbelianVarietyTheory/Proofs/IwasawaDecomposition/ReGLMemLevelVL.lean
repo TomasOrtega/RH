@@ -16,16 +16,16 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem reGL_rfl_apply {a : ℕ} {R : Type} [CommRing R] (x : GL (Fin a) R) : reGL (rfl : a = a) R x = x := by
   ext i j
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem reL_rfl' {a : ℕ} (L : Submodule (𝓞 E) (Fin a → E)) : reL (rfl : a = a) L = L := by
   ext x
@@ -36,7 +36,7 @@ theorem reL_rfl' {a : ℕ} (L : Submodule (𝓞 E) (Fin a → E)) : reL (rfl : a
     exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `hJ` using the available equality. Rewrite using `[reGL_rfl_apply]`. Simplify using `only [finCongr_refl, Matrix.reindex_refl_refl]`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem reGL_mem_UPts (σ : E →ₐ[F] E) {a b : ℕ} (h : a = b) (G : Matrix (Fin a) (Fin a) E) (J : Matrix (Fin b) (Fin b) E)
     (hJ : J = G.reindex (finCongr h) (finCongr h)) (R : Type) [CommRing R] [Algebra F R] (x : GL (Fin a) (E ⊗[F] R)) :
@@ -47,7 +47,7 @@ theorem reGL_mem_UPts (σ : E →ₐ[F] E) {a b : ℕ} (h : a = b) (G : Matrix (
   simp only [finCongr_refl, Matrix.reindex_refl_refl]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `hJ` using the available equality. Rewrite using `[reGL_rfl_apply, reL_rfl']`. Simplify using `only [finCongr_refl, Matrix.reindex_refl_refl]`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem reGL_mem_levelVL (σ : E →ₐ[F] E) {a b : ℕ} (h : a = b) (G : Matrix (Fin a) (Fin a) E) (J : Matrix (Fin b) (Fin b) E)
     (hJ : J = G.reindex (finCongr h) (finCongr h)) (v : HeightOneSpectrum (𝓞 F)) (L : Submodule (𝓞 E) (Fin a → E))
@@ -59,13 +59,13 @@ theorem reGL_mem_levelVL (σ : E →ₐ[F] E) {a b : ℕ} (h : a = b) (G : Matri
   simp only [finCongr_refl, Matrix.reindex_refl_refl]
 
 /- English proof (translation)
-Establish `key : ∀ (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (v w : HeightOneSpectrum (𝓞 F)), w ≠ v → bc (prV (E` using `E) w) (Formalism.UG.P.afsplitU v 1 y) = bc (prV (E := E) w) y := by`. Introduce `y v w hw`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplitU_coe, Formalism.UG.P.afsplitC_prV_ne v w hw]`. Proceed by induction on `Q using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `empty => exact ⟨κ, hκ, by simp, fun v _ => rfl⟩`. Consider the case `@insert v Q hv ih`. Take `⟨y, hy, h1, h2⟩` from `ih`. Use `⟨Formalism.UG.P.afsplitU v 1 y, Formalism.UG.P.afsplitU_mem v σ J _ _ (one_mem _) hy, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Conclude with `Formalism.UG.P.afsplit_right1 w 1 y`. Rewrite using `[key y v w hwv]`. Conclude with `h1 w ((Finset.mem_insert.mp hw).resolve_left hwv)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hwv : w ≠ v` using `fun e => hw (e ▸ Finset.mem_insert_self v Q)`. Rewrite using `[key y v w hwv]`. Conclude with `h2 w (fun h => hw (Finset.mem_insert_of_mem h))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_off (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (Q : Finset (HeightOneSpectrum (𝓞 F)))
     (κ : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hκ : κ ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
@@ -110,7 +110,7 @@ def ulocQ (H0 : Formalism.L2.Herm.StepLevel hc S gp T f) (Q : Finset (HeightOneS
   if h : v ∈ Q then W v h else H0.Uloc v
 
 /- English proof (translation)
-Unfold `ulocQ`. Conclude with `dif_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ulocQ_pos (H0 : Formalism.L2.Herm.StepLevel hc S gp T f) (Q : Finset (HeightOneSpectrum (𝓞 F)))
     (W : ∀ v, v ∈ Q → Subgroup (GL (Fin S.rank) (E ⊗[F] v.adicCompletion F))) {v : HeightOneSpectrum (𝓞 F)} (h : v ∈ Q) :
@@ -119,7 +119,7 @@ theorem ulocQ_pos (H0 : Formalism.L2.Herm.StepLevel hc S gp T f) (Q : Finset (He
   exact dif_pos h
 
 /- English proof (translation)
-Unfold `ulocQ`. Conclude with `dif_neg h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ulocQ_neg (H0 : Formalism.L2.Herm.StepLevel hc S gp T f) (Q : Finset (HeightOneSpectrum (𝓞 F)))
     (W : ∀ v, v ∈ Q → Subgroup (GL (Fin S.rank) (E ⊗[F] v.adicCompletion F))) {v : HeightOneSpectrum (𝓞 F)} (h : v ∉ Q) :
@@ -187,29 +187,25 @@ def actOfRed {G : Type} [Group G] {ι : Type} {n : ℕ} {k : ι → Type} [∀ i
     rw [hm, Pi.mul_apply, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `hfq : ∀ β q, Finite (Wq q ⧸ Kc β q)` using `fun β q => by haveI := hfi β q infer_instance`. Set `fQ : ∀ β, G ⧸ H β → ∀ q, Wq q ⧸ Kc β q` to `fun β c => Quotient.liftOn' c (fun g q => ((zQ g q : Wq q) : Wq q ⧸ Kc β q)) (by`. Introduce `a b hab`. Establish `hm` using `((hH β (a⁻¹ * b)).mp (QuotientGroup.leftRel_apply.mp hab)).1`. Use function extensionality and compare the values at `q`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises. Simplify `hm q)` using `[map_mul, map_inv]`. Set `fG : ∀ β, G ⧸ H β → V` to `fun β c => Quotient.liftOn' c (fun g => g • w β) (by`. Introduce `a b hab`. Establish `hs` using `((hH β (a⁻¹ * b)).mp (QuotientGroup.leftRel_apply.mp hab)).2`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hs` using `[mul_smul, inv_smul_eq_iff]`. Conclude with `hs.symm)`. Establish `hinj : ∀ (y y' : Σ β, G ⧸ H β), fG y.1 y.2 = fG y'.1 y'.2 → (⟨y.1, fQ y.1 y.2⟩ : Σ β, ∀ q, Wq q ⧸ Kc β q) = ⟨y'.1, fQ y'.1 y'.2⟩ → y = y'`. Introduce and unpack `⟨β, c⟩ ⟨β', c'⟩ hG hQ`. Take `rfl : β = β'` from `congrArg Sigma.fst hQ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective c`. Take `⟨g', rfl⟩` from `QuotientGroup.mk_surjective c'`. Establish `hQ' : fQ β g = fQ β g'` using `eq_of_heq (Sigma.mk.inj hQ).2`. Establish `hG' : g • w β = g' • w β` using `hG`. Establish `hmem : g⁻¹ * g' ∈ H β`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hH β _).mpr ⟨fun q => ?_, ?_⟩` and prove the remaining obligations. Establish `hq : ((zQ g q : Wq q) : Wq q ⧸ Kc β q) = ((zQ g' q : Wq q) : Wq q ⧸ Kc β q)` using `congrFun hQ' q`. Use `QuotientGroup.eq.mp hq` as an intermediate fact. Simplify `this` using `[map_mul, map_inv]`. Rewrite using `[mul_smul, ← hG', inv_smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (Sigma.mk β) (QuotientGroup.eq.mpr hmem)`. Use `⟨Σ β, G ⧸ H β, Finite.of_injective (fun y => (fG y.1 y.2, (⟨y.1, fQ y.1 y.2⟩ : Σ β, ∀ q, Wq q ⧸ Kc β q))) (fun y y' h => hinj y y' (congrArg Prod.fst h) (congrArg Prod.snd h)), inferInstance, fun β => ⟨β, ((1 : G) : G ⧸ H β)⟩, fun y => fG y.1 y.2, Σ β, ∀ q, Wq q ⧸ Kc β q, fun y = …` and prove the remaining obligations. Introduce and unpack `⟨β, c⟩`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective c`. Use `⟨β, ⟨g, ?_⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `show (⟨β, g • ((1 : G) : G ⧸ H β)⟩ : Σ β, G ⧸ H β) = ⟨β, (g : G ⧸ H β)⟩`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, mul_one]`. Introduce and unpack `β' ⟨κ, hκ⟩`. Conclude with `congrArg Sigma.fst hκ`. Introduce `β κ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `e : κ • (⟨β, ((1 : G) : G ⧸ H β)⟩ : Σ β, G ⧸ H β) = ⟨β, (κ : G ⧸ H β)⟩` using `by show (⟨β, κ • ((1 : G) : G ⧸ H β)⟩ : Σ β, G ⧸ H β) = ⟨β, (κ : G ⧸ H β)⟩`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, mul_one]`. Use `show κ ∈ H β ↔ κ • (⟨β, ((1 : G) : G ⧸ H β)⟩ : Σ β, G ⧸ H β) = ⟨β, ((1 : G) : G ⧸ H β)⟩`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce `hk`. Conclude with `congrArg (Sigma.mk β) (QuotientGroup.eq.mpr (by simpa using hk))`. Introduce `hk`. Establish `h2 : (κ : G ⧸ H β) = ((1 : G) : G ⧸ H β)` using `eq_of_heq (Sigma.mk.inj hk).2`. Simplify using `using QuotientGroup.eq.mp h2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `κ ⟨β, c⟩`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective c`. Use `show fG β (κ • (g : G ⧸ H β)) = κ • fG β g`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul]`. Conclude with `mul_smul κ g (w β)`.
-
-Introduce and unpack `κ ⟨β, c⟩ hk`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective c`. Use `show (⟨β, fQ β (κ • (g : G ⧸ H β))⟩ : Σ β, ∀ q, Wq q ⧸ Kc β q) = ⟨β, fQ β g⟩`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul]`. Use `congrArg (Sigma.mk β) (funext fun q => ?_)` and prove the remaining obligations.
-
-Use `show ((zQ (κ * g) q : Wq q) : Wq q ⧸ Kc β q) = ((zQ g q : Wq q) : Wq q ⧸ Kc β q)`. Rewrite using `[map_mul, hk, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assemble {G : Type} [Group G] {Ch : Type} [Finite Ch] {Qt : Type} [Finite Qt] (Wq : Qt → Type) [∀ q, Group (Wq q)]
     (zQ : G →* ∀ q, Wq q) (Kc : Ch → ∀ q, Subgroup (Wq q)) (hfi : ∀ β q, (Kc β q).FiniteIndex) {V : Type} [Finite V]

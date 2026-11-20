@@ -7,37 +7,35 @@ namespace GlobalTheory
 open GlobalTheory.PositionData
 
 /- English proof (translation)
-Introduce `t up Fl Fc η S B W0 ht htη hB hS0 hFl hFc hW`. Establish `ht1 : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`. Establish `hFl' : ∀ z ∈ Fl, ((t : ℝ) - 1) / 2 - η ≤ (z : ℝ) ∧ (z : ℝ) ≤ ((t : ℝ) - 1) / 2 + η`. Introduce `z hz`. Establish `h` using `(hFl z hz).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [h.1, h.2]`. Establish `castToNat : ∀ x : ℤ, ((x.toNat : ℕ) : ℝ) = max (x : ℝ) 0`. Introduce `x`. Establish `h : ((x.toNat : ℕ) : ℤ) = max x 0` using `Int.toNat_eq_max x`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Int.cast_natCast, h]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hmn : ∀ (s : Finset ℤ) (H : s.Nonempty) (a : ℝ), (∀ y ∈ s, a ≤ (y : ℝ)) → a ≤ ((s.min' H : ℤ) : ℝ)` using `fun s H a h => h _ (Finset.min'_mem s H)`. Establish `hmx : ∀ (s : Finset ℤ) (H : s.Nonempty) (a : ℝ), (∀ y ∈ s, (y : ℝ) ≤ a) → ((s.max' H : ℤ) : ℝ) ≤ a` using `fun s H a h => h _ (Finset.max'_mem s H)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmxLo : ((mxLo t Fl : ℤ) : ℝ) ≤ ((t : ℝ) - 1) / 2 + η`. Apply `hmx` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_insert]`. Break down `hy with rfl | hy` into its components or cases.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hFl' y hy).2`. Consider the cases of `up`. Establish `hFc' : ∀ z ∈ Fc, ((t : ℝ) - 1) / 2 - W0 - S - η - 1 ≤ (z : ℝ)`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Establish `h` using `(hFc z hz).2`. Simplify using `only [Bool.false_eq_true, if_false] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ((t : ℝ) - 1) / 2 - W0 - S - η - 1 ≤ ((mnAll Fl Fc : ℤ) : ℝ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hmn` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_insert, Finset.mem_union]`. Break down `hy with rfl | hy | hy` into its components or cases. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[(hFl' y hy).1]`. Conclude with `hFc' y hy`. Establish `h0 : mnAll Fl Fc ≤ 0` using `Finset.min'_le _ _ (Finset.mem_insert_self _ _)`. Establish `hw : ((wS false Fl Fc : ℕ) : ℤ) = 1 - mnAll Fl Fc`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [wS, Bool.false_eq_true, if_false]`. Conclude with `Int.toNat_of_nonneg (by omega)`. Simplify using `only [PositionData.hS, Bool.false_eq_true, if_false]`. Rewrite using `[castToNat, hw]`. Apply `max_le` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hFc' : ∀ z ∈ Fc, (z : ℝ) ≤ ((t : ℝ) - 1) / 2 + W0 + S + η + 1`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h` using `(hFc z hz).2`. Simplify using `only [if_true] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ((mxAll t Fl Fc : ℤ) : ℝ) ≤ ((t : ℝ) - 1) / 2 + W0 + S + η + 1`. Apply `hmx` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `y hy`. Rewrite `hy` using `[Finset.mem_insert, Finset.mem_union]`. Break down `hy with rfl | hy | hy` into its components or cases. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear relations using `[(hFl' y hy).2]`. Conclude with `hFc' y hy`. Establish `h2 : ((t : ℝ) - 1) / 2 - η ≤ ((mnLo Fl : ℤ) : ℝ)`. Apply `hmn` to reduce the goal to its premises. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hy` using `[Finset.mem_insert]`. Break down `hy with rfl | hy` into its components or cases. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hFl' y hy).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : mnLo Fl ≤ 0` using `Finset.min'_le _ _ (Finset.mem_insert_self _ _)`. Establish `hw : ((wS true Fl Fc : ℕ) : ℤ) = 1 - mnLo Fl`. Simplify using `only [wS, if_true]`. Conclude with `Int.toNat_of_nonneg (by omega)`. Simplify using `only [PositionData.hS, if_true]`.
-
-Rewrite using `[castToNat, hw]`. Apply `max_le` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hS_le_bound : ∀ (t : ℕ) (up : Bool) (Fl Fc : Finset ℤ) (η S B W0 : ℝ), 1 ≤ t → (t : ℝ) ≤ η → 0 ≤ B → 0 ≤ S →
     (∀ z ∈ Fl, |(z : ℝ) - ((t : ℝ) - 1) / 2| ≤ η ∧ 2 * B + (t : ℝ) / 2 + 3 ≤ |(z : ℝ) - ((t : ℝ) - 1) / 2|) →

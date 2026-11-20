@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DiagonalPadicSubstituti
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DiagonalPadicSubstitution.ConstantCoeffSubstEqZero
 
 /- English proof (translation)
-The claim follows from `PI.BeDiagZp.beDiagZp_of PI.BeDiagZp.simeq_equivalence_additive PI.BeDiagZp.power_series_diagonal_linear PI.BeDiagZp.OpsW.substOps_holds PI.BeDiagZp.IdentW.ident_holds PI.BeDiagZp.cont_holds PI.BeDiagZp.intSubst_holds`.
+A detailed English derivation is pending.
 -/
 theorem diagonal_zp_identity : PI.BeDiagZp.Target :=
   PI.BeDiagZp.beDiagZp_of PI.BeDiagZp.simeq_equivalence_additive PI.BeDiagZp.power_series_diagonal_linear PI.BeDiagZp.OpsW.substOps_holds

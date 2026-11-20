@@ -5,11 +5,11 @@ open GlobalTheory.GalV (HTower)
 open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Cut
 
 /- English proof (translation)
-Introduce `Y' Y T' T j s t i s' t' d hj hr hst hs`. Use `haveI := hj.op`. Use `haveI := hr.op`. Establish `hpre : s ⁻¹ᵁ j.opensRange = i.opensRange`. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `s ⁻¹' Set.range j = Set.range i`. Rewrite using `[hr.rng]`. Use extensionality with `x`. Conclude with `⟨fun h => ⟨h, hst x h⟩, fun h => h.1⟩`. Establish `pb : IsPullback s' i j s` using `IsOpenImmersion.isPullback s' i j s hr.es.symm hpre`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hfin, het, hcard⟩` from `hs`. Use `⟨MorphismProperty.of_isPullback (P := @IsFinite) pb.flip hfin, MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Etale) pb.flip het, ?_⟩` and prove the remaining obligations. Introduce `K _ _ x`. Rewrite using `[← hcard K (x ≫ j)]`. Use `Nat.card_congr { toFun := fun y => ⟨y.1 ≫ i, by rw [Category.assoc, ← pb.w, ← Category.assoc, y.2]⟩ invFun := fun z => ⟨pb.lift x z.1 z.2.symm, pb.lift_fst _ _ _⟩ left_inv := fun y => Subtype.ext (pb.hom_ext (by simp [y.2]) (by simp)) right_inv := fun z => Subtype.ext (pb.lift_sn …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.Cut.fEtCut :
     UpperTheory.Gal.Int.Geo.Cut.FEtCut := by

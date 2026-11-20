@@ -23,30 +23,30 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `bigCell_of (lu_holds (E := E))`.
+A detailed English derivation is pending.
 -/
 theorem bigCellStatement_holds : BigCellStatement (E := E) := bigCell_of (lu_holds (E := E))
 
 /- English proof (translation)
-The claim follows from `kaUnfold_of (measInv_holds (E := E)) SumBoundStatement_holds`.
+A detailed English derivation is pending.
 -/
 theorem kaUnfoldStatement_holds : KaUnfoldStatement (E := E) :=
   kaUnfold_of (measInv_holds (E := E)) SumBoundStatement_holds
 
 /- English proof (translation)
-The claim follows from `PairUnfoldPf.pairUnfold_of (measInv_holds (E := E)) kaUnfoldStatement_holds (lu_holds (E := E))`.
+A detailed English derivation is pending.
 -/
 theorem pairUnfoldStatement_holds : PairUnfoldStatement (E := E) :=
   PairUnfoldPf.pairUnfold_of (measInv_holds (E := E)) kaUnfoldStatement_holds (lu_holds (E := E))
 
 /- English proof (translation)
-The claim follows from `extF_of (lu_holds (E := E)) (FrameMeasStatement_holds (E := E))`.
+A detailed English derivation is pending.
 -/
 theorem extFStatement_holds : ExtFStatement (E := E) :=
   extF_of (lu_holds (E := E)) (FrameMeasStatement_holds (E := E))
 
 /- English proof (translation)
-The claim follows from `onto_of hPoin hExtF (RGF.rhGradF_holds (E := E)) (exhaustG_holds (E := E)) kaUnfoldStatement_holds pairUnfoldStatement_holds bigCellStatement_holds (OFC.omFConn_of_cm (E := E))`.
+A detailed English derivation is pending.
 -/
 theorem onto_of_poin_extF (hPoin : PoinStatement (E := E)) (hExtF : ExtFStatement (E := E)) :
     OntoStatement (E := E) :=
@@ -54,19 +54,19 @@ theorem onto_of_poin_extF (hPoin : PoinStatement (E := E)) (hExtF : ExtFStatemen
     pairUnfoldStatement_holds bigCellStatement_holds (OFC.omFConn_of_cm (E := E))
 
 /- English proof (translation)
-The claim follows from `kronHolPsi_of_frameMeas (FrameMeasStatement_holds (E := E))`.
+A detailed English derivation is pending.
 -/
 theorem kronHolPsiStatement_holds : KronHolPsiStatement (E := E) :=
   kronHolPsi_of_frameMeas (FrameMeasStatement_holds (E := E))
 
 /- English proof (translation)
-The claim follows from `interp_of hP kronHolPsiStatement_holds`.
+A detailed English derivation is pending.
 -/
 theorem interp_of_poin (hP : PoinStatement (E := E)) : InterpStatement (E := E) :=
   interp_of hP kronHolPsiStatement_holds
 
 /- English proof (translation)
-The claim follows from `interpC_of hP kronHolPsiStatement_holds hη`.
+A detailed English derivation is pending.
 -/
 theorem interpC_of_poin (hP : PoinStatement (E := E))
     (hη : ∀ (r : ℕ) (X : Data E r) (Xa : ArchInM X), ∃ η : ℝ, 0 < η ∧ ∀ x0, IsOrth X x0 →
@@ -77,24 +77,24 @@ theorem interpC_of_poin (hP : PoinStatement (E := E))
     InterpCStatement (E := E) := interpC_of hP kronHolPsiStatement_holds hη
 
 /- English proof (translation)
-The claim follows from `onto_of_poin_extF (poin_holds (E := E)) extFStatement_holds`.
+A detailed English derivation is pending.
 -/
 theorem ontoStatement_holds : OntoStatement (E := E) :=
   onto_of_poin_extF (poin_holds (E := E)) extFStatement_holds
 
 /- English proof (translation)
-The claim follows from `interp_of_poin (poin_holds (E := E))`.
+A detailed English derivation is pending.
 -/
 theorem interpStatement_holds : InterpStatement (E := E) := interp_of_poin (poin_holds (E := E))
 
 /- English proof (translation)
-The claim follows from `interpC_of_poin (poin_holds (E := E)) hη`.
+A detailed English derivation is pending.
 -/
 theorem interpC_of_eta (hη : EtaStatement (E := E)) : InterpCStatement (E := E) :=
   interpC_of_poin (poin_holds (E := E)) hη
 
 /- English proof (translation)
-The claim follows from `interpC_of_eta (EtaPf.eta_holds (E := E))`.
+A detailed English derivation is pending.
 -/
 theorem interpCStatement_holds : InterpCStatement (E := E) := interpC_of_eta (EtaPf.eta_holds (E := E))
 

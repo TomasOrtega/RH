@@ -11,14 +11,14 @@ def FinAlg (T : Set ℂ) : Prop :=
   ∃ Z : Finset ℂ, (∀ z ∈ Z, IsAlgebraic ℚ z) ∧ T ⊆ (Subfield.closure (Z : Set ℂ) : Set ℂ)
 
 /- English proof (translation)
-Take `⟨Z, hZ, hsub⟩` from `h`. Conclude with `⟨Z, hZ, hT.trans hsub⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem FinAlg.mono {T T' : Set ℂ} (h : FinAlg T') (hT : T ⊆ T') : FinAlg T := by
   obtain ⟨Z, hZ, hsub⟩ := h
   exact ⟨Z, hZ, hT.trans hsub⟩
 
 /- English proof (translation)
-Use `⟨h.toFinset, fun z hz => ha z (h.mem_toFinset.mp hz), ?_⟩` and prove the remaining obligations. Rewrite using `[h.coe_toFinset]`. Conclude with `Subfield.subset_closure`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finAlg_of_finite {T : Set ℂ} (h : T.Finite) (ha : ∀ z ∈ T, IsAlgebraic ℚ z) : FinAlg T := by
   refine ⟨h.toFinset, fun z hz => ha z (h.mem_toFinset.mp hz), ?_⟩
@@ -26,9 +26,9 @@ theorem finAlg_of_finite {T : Set ℂ} (h : T.Finite) (ha : ∀ z ∈ T, IsAlgeb
   exact Subfield.subset_closure
 
 /- English proof (translation)
-Use `choose! Z hZ hsub using h`. Use `⟨hs.toFinset.biUnion Z, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨k, hk, hzk⟩` from `Finset.mem_biUnion.mp hz`. Conclude with `hZ k (hs.mem_toFinset.mp hk) z hzk`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.iUnion₂_subset fun k hk => (hsub k hk).trans (Subfield.closure_mono ?_)` and prove the remaining obligations. Introduce `z hz`. Conclude with `Finset.mem_biUnion.mpr ⟨k, hs.mem_toFinset.mpr hk, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem finAlg_biUnion {κ : Type} {s : Set κ} (hs : s.Finite) {T : κ → Set ℂ} (h : ∀ k ∈ s, FinAlg (T k)) :
     FinAlg (⋃ k ∈ s, T k) := by
@@ -43,9 +43,7 @@ theorem finAlg_biUnion {κ : Type} {s : Set κ} (hs : s.Finite) {T : κ → Set 
     exact Finset.mem_biUnion.mpr ⟨k, hs.mem_toFinset.mpr hk, hz⟩
 
 /- English proof (translation)
-Take `⟨Z, hZ, hsub⟩` from `h`. Take `⟨Z', hZ', hsub'⟩` from `h'`. Use `⟨Z ∪ Z', fun z hz => ?_, Set.union_subset ?_ ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.mp hz with hz | hz` into its components or cases. Conclude with `hZ z hz`.
-
-Conclude with `hZ' z hz`. Conclude with `hsub.trans (Subfield.closure_mono (by simp))`. Conclude with `hsub'.trans (Subfield.closure_mono (by simp))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem FinAlg.union {T T' : Set ℂ} (h : FinAlg T) (h' : FinAlg T') : FinAlg (T ∪ T') := by
   classical
@@ -59,7 +57,7 @@ theorem FinAlg.union {T T' : Set ℂ} (h : FinAlg T) (h' : FinAlg T') : FinAlg (
   · exact hsub'.trans (Subfield.closure_mono (by simp))
 
 /- English proof (translation)
-Take `⟨Z, hZ, hsub⟩` from `h`. Conclude with `⟨Z, hZ, SetLike.coe_subset_coe.mpr (Subfield.closure_le.mpr hsub)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem FinAlg.closure {T : Set ℂ} (h : FinAlg T) : FinAlg (Subfield.closure T : Set ℂ) := by
   obtain ⟨Z, hZ, hsub⟩ := h

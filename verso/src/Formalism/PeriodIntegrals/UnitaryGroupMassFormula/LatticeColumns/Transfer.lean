@@ -13,11 +13,11 @@ open scoped TensorProduct
 open Matrix
 
 /- English proof (translation)
-Establish `himg : ∀ a : G, φ '' DoubleCoset.doubleCoset a (Γ : Set G) (K : Set G) = DoubleCoset.doubleCoset (φ a) (Γ' : Set G') (K' : Set G')`. Introduce `a`. Substitute `hΓ hK` using the available equality. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨h, hh, k, hk, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hx`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨φ h, ⟨h, hh, rfl⟩, φ k, ⟨k, hk, rfl⟩, by simp [map_mul]⟩`. Introduce `hy`. Take `⟨h', ⟨h, hh, rfl⟩, k', ⟨k, hk, rfl⟩, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h * a * k, DoubleCoset.mem_doubleCoset.2 ⟨h, hh, k, hk, rfl⟩, by simp [map_mul]⟩`. Use `Nat.card_congr (Quotient.congr φ.toEquiv fun a b => ?_)` and prove the remaining obligations. Use `show DoubleCoset.doubleCoset a (Γ : Set G) (K : Set G) = DoubleCoset.doubleCoset b (Γ : Set G) (K : Set G) ↔ DoubleCoset.doubleCoset (φ a) (Γ' : Set G') (K' : Set G') = DoubleCoset.doubleCoset (φ b) (Γ' : Set G') (K' : Set G')`. Rewrite using `[← himg, ← himg]`. Conclude with `(Set.image_injective.2 φ.injective).eq_iff.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_dc_congr {G G' : Type} [Group G] [Group G'] (φ : G ≃* G') (Γ K : Subgroup G) (Γ' K' : Subgroup G')
     (hΓ : Γ.map φ.toMonoidHom = Γ') (hK : K.map φ.toMonoidHom = K') :
@@ -52,7 +52,7 @@ Both sides reduce to the same expression.
 theorem tfE_apply (I : Formalism.MainNotions.S.AutInst) (hb : AdBridgeIso I) (x : I.Gf) : tfE I hb x = tf I hb x := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV, swapE, Formalism.UG.inclE, inclR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_eq_swap (I : Formalism.MainNotions.S.AutInst) (w : Fin I.n → I.E) :
     ratV (F := I.F) (Af I.F) w = fun i => swapE I (Formalism.UG.inclE (F := I.F) (Af I.F) (w i)) := by
@@ -60,11 +60,11 @@ theorem ratV_eq_swap (I : Formalism.MainNotions.S.AutInst) (w : Fin I.n → I.E)
   simp [ratV, swapE, Formalism.UG.inclE, inclR]
 
 /- English proof (translation)
-Establish `hm` using `Bridge_mat I hb x`. Simplify using `only [lin, Matrix.mulVecLin_apply]`. Rewrite using `[hm, ratV_eq_swap]`. Establish `key : ∀ v : Fin I.n → I.E ⊗[I.F] Af I.F, (I.fmat x).map (swapE I) *ᵥ (fun i => swapE I (v i)) = fun i => swapE I ((I.fmat x *ᵥ v) i)`. Introduce `v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (swapE I : I.E ⊗[I.F] Af I.F →+* Af I.F ⊗[I.F] I.E) (I.fmat x) v i).symm`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `(swapE I).injective (congrFun h i)`. Introduce `h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_tf_fix_iff (I : Formalism.MainNotions.S.AutInst) (hb : AdBridgeIso I) (x : I.Gf) (w : Fin I.n → I.E) :
     lin (Af I.F) I.cm.sig I.J (tf I hb x) (ratV (F := I.F) (Af I.F) w) = ratV (F := I.F) (Af I.F) w ↔
@@ -87,17 +87,15 @@ theorem lin_tf_fix_iff (I : Formalism.MainNotions.S.AutInst) (hb : AdBridgeIso I
     rw [h]
 
 /- English proof (translation)
-Unfold `Hsub`. Rewrite using `[mem_stabT]`. Simplify using `only [lin_tf_fix_iff]`. Use `show (∀ y ∈ PoincareSetting.fixSet X u, X.B.I.fmat x *ᵥ Formalism.L2.SG.HidaSetting.incl X.B.I y = Formalism.L2.SG.HidaSetting.incl X.B.I y) ↔ _`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h b`. Use `Fin.addCases (fun i => ?_) (fun j => ?_) b` and prove the remaining obligations. Rewrite using `[tupH, Fin.append_left]`. Use `Fin.lastCases ?_ (fun k => ?_) i` and prove the remaining obligations. Rewrite using `[F0, Fin.snoc_last]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _ (Or.inr rfl)`. Rewrite using `[F0, Fin.snoc_castSucc]`. Conclude with `h _ (Or.inl (Or.inl ⟨k, rfl⟩))`. Rewrite using `[tupH, Fin.append_right]`. Conclude with `h _ (Or.inl (Or.inr ⟨j, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h y hy`. Break down `hy with ((⟨a, rfl⟩ | ⟨a, rfl⟩) | hz)` into its components or cases. Use `h (Fin.castAdd D.R.rS (Fin.castSucc a))` as an intermediate fact. Rewrite `this` using `[tupH, Fin.append_left, F0, Fin.snoc_castSucc]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Use `h (Fin.natAdd (D.R.rS + 1) a)` as an intermediate fact. Rewrite `this` using `[tupH, Fin.append_right]`. Conclude with `this`. Rewrite `hz` using `[Set.mem_singleton_iff]`. Substitute `hz` using the available equality.
-
-Use `h (Fin.castAdd D.R.rS (Fin.last D.R.rS))` as an intermediate fact. Rewrite `this` using `[tupH, Fin.append_left, F0, Fin.snoc_last]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Hfin_iff {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (x : X.B.I.Gf) :
     x ∈ PoincareSetting.Hfin X u ↔ tf X.B.I hb x ∈ Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) := by
@@ -132,9 +130,9 @@ theorem mem_Hfin_iff {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : 
       exact this
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mem_Hfin_iff X hb u x).1 hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Take `⟨x, rfl⟩` from `Bridge_tf_surjective X.B.I hb y`. Conclude with `⟨x, (mem_Hfin_iff X hb u x).2 hy, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_Hfin {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) :
     (PoincareSetting.Hfin X u).map (tfE X.B.I hb).toMonoidHom =
@@ -160,7 +158,7 @@ theorem hE_val {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what
       tf X.B.I hb (h : X.B.I.Gf) := rfl
 
 /- English proof (translation)
-Unfold `unitaryLevelClosureSubgroup`. Establish `: (Subtype.val ⁻¹' K2u X hb u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) = (unitaryLevelIntersection X hb hK u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))` using `rfl`. Rewrite using `[this, Subgroup.closure_eq]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_K2Hg {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (u : D.what₂.Word) :
     (unitaryLevelClosureSubgroup X hb u : Set (Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) = Subtype.val ⁻¹' K2u X hb u := by
@@ -170,13 +168,13 @@ theorem coe_K2Hg {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.L
   rw [this, Subgroup.closure_eq]
 
 /- English proof (translation)
-Rewrite using `[mem_conjugate_level_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, e⟩`. Establish `e' : tfE X.B.I hb (X.xu u * k * (X.xu u)⁻¹) = tfE X.B.I hb x`. Rewrite using `[map_mul, map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Use `(tfE X.B.I hb).injective e'` as an intermediate fact. Rewrite using `[← this]`. Simplify `hk` using `[mul_assoc]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h, ?_⟩` and prove the remaining obligations. Establish `: finHA X hb (X.xu u) * finHA X hb ((X.xu u)⁻¹ * x * X.xu u) * (finHA X hb (X.xu u))⁻¹ = tfE X.B.I hb (X.xu u * ((X.xu u)⁻¹ * x * X.xu u) * (X.xu u)⁻¹)`. Rewrite using `[map_mul, map_mul, map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc, tfE_apply]`.
+A detailed English derivation is pending.
 -/
 theorem mem_conjugate_level_finite_iff {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (x : X.B.I.Gf) :
     tf X.B.I hb x ∈ K2u X hb u ↔ (X.xu u)⁻¹ * x * X.xu u ∈ X.K2 := by
@@ -199,11 +197,11 @@ theorem mem_conjugate_level_finite_iff {D : D7} (X : HidaSetting D) (hb : AdBrid
     simp [mul_assoc, tfE_apply]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Subgroup.mem_map]`. Establish `hy : y ∈ unitaryLevelClosureSubgroup X hb u ↔ (y : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ K2u X hb u`. Rewrite using `[← SetLike.mem_coe, coe_K2Hg X hb hK u]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hy]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Rewrite using `[MulEquiv.coe_toMonoidHom, hE_val, mem_conjugate_level_finite_iff]`. Conclude with `hh`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h2`. Take `⟨h, rfl⟩` from `(hE X hb u).surjective y`. Use `⟨h, ?_, rfl⟩` and prove the remaining obligations. Rewrite `h2` using `[hE_val, mem_conjugate_level_finite_iff]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_Ku {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (u : D.what₂.Word) :
     (PoincareSetting.Ku X u hK).map (hE X hb u).toMonoidHom = unitaryLevelClosureSubgroup X hb u := by
@@ -224,7 +222,7 @@ theorem map_Ku {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.Lev
     exact h2
 
 /- English proof (translation)
-Establish `hB` using `(toHA_isBridge I hb γ).2`. Rewrite using `[hB]`. Use extensionality with `i j`. Simplify using `only [ofHAFin, Matrix.map_apply]`. Rewrite using `[← Bridge_tens_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -239,32 +237,30 @@ theorem fin_mat (I : Formalism.MainNotions.S.AutInst) (hb : AdBridgeIso I) (γ :
   rfl
 
 /- English proof (translation)
-Conclude with `RingHom.ext fun e => by simp [inclR, sigR]`.
+A detailed English derivation is pending.
 -/
 theorem inclR_comp_sig {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) : (inclR (F := F) R).comp (σ : E →+* E) = (sigR R σ).comp (inclR (F := F) R) := by
   exact RingHom.ext fun e => by simp [inclR, sigR]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, ⟨γ, rfl⟩, rfl⟩`. Take `⟨M, hM, -, hf⟩` from `(Subgroup.mem_inf.1 γ.2).1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show (HA.mat (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (tf X.B.I hb (γ : X.B.I.GA).2) : GL (Fin X.B.I.n) _) ∈ HFin (Af X.B.I.F) X.B.I.cm.sig X.B.I.J`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use `show (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (inclR (F := X.B.I.F) (Af X.B.I.F)) = _`. Rewrite using `[Bridge_mat, hf, Matrix.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Introduce `hy`. Establish `hy' : (HA.mat (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (y : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) : GL (Fin X.B.I.n) _) ∈ HFin (Af X.B.I.F) X.B.I.cm.sig X.B.I.J` using `hy`. Take `⟨M, hM, hMy⟩` from `Subgroup.mem_map.1 hy'`. Set `Hf : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J` to `⟨Formalism.UG.bc (inclR (F := X.B.I.F) (AF X.B.I.F)) M, Formalism.UG.P.bc_mem _ _ _ (inclR_comp_sig (AF X.B.I.F) X.B.I.cm.sig) _ M hM⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrat : Hf ∈ ratHA X.B.I` using `⟨M, hM, rfl⟩`. Rewrite `hrat` using `[← hGF (toHA X.B.I hb) (toHA_isBridge X.B.I hb)]`. Take `⟨γ, hγ, hγe⟩` from `hrat`. Establish `htf : tf X.B.I hb γ.2 = (y : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J)`. Apply `Bridge_HA_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Bridge_mat, ← fin_mat X.B.I hb γ, hγe]`. Rewrite using `[← hMy]`. Use `show ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (inclR (F := X.B.I.F) (AF X.B.I.F))).map (tensMap (E := X.B.I.E) (sndA X.B.I.F)) = (M : Matrix _ _ _).map (inclR (F := X.B.I.F) (Af X.B.I.F))`. Rewrite using `[Matrix.map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hγ2 : γ.2 ∈ PoincareSetting.Hfin X u` using `(mem_Hfin_iff X hb u γ.2).2 (htf ▸ y.2)`. Take `⟨M', hM', hinf, hfin⟩` from `hγ`. Establish `hγ1 : γ.1 ∈ PoincareSetting.Hinf X u`. Introduce `v x hx`. Establish `hfix : (M' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ x = x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0` using `hγ2 x hx`. Rewrite `h0` using `[hfin]`. Use function extensionality and compare the values at `i`. Use `PIW.AdelClassFin.DictRing.nontrivial (F := X.B.I.F)` as an intermediate fact. Apply `Formalism.UG.P.inclE_injective X.B.I.F X.B.I.E (Af X.B.I.F)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun h0 i`. Establish `h2` using `RingHom.map_mulVec (Formalism.UG.inclE (F := X.B.I.F) (E := X.B.I.E) (Af X.B.I.F)) (M' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) x i`. Conclude with `h2.trans h1`. Establish `hPP : X.B.I.P v * (X.B.I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v))`. Rewrite using `[hinf v]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [rv]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hPP, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h3` using `RingHom.map_mulVec (X.B.I.φ v) (M' : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) x i`.
-
-Rewrite `h3` using `[hfix]`. Conclude with `h3.symm`. Use `⟨⟨γ.2, hγ2⟩, ⟨⟨γ, Subgroup.mem_inf.2 ⟨⟨M', hM', hinf, hfin⟩, Subgroup.mem_prod.2 ⟨hγ1, hγ2⟩⟩⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `htf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem map_iotaF {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (hGF : AdBridgeGF X.B.I) :
     (PoincareSetting.iotaF X u).range.map (hE X hb u).toMonoidHom = GamHA X u := by
@@ -327,20 +323,20 @@ theorem map_iotaF {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.w
     exact htf
 
 /- English proof (translation)
-Introduce `D X hb hK u hGF _hL`. Conclude with `card_dc_congr (hE X hb u) _ _ _ _ (map_iotaF X hb u hGF) (map_Ku X hb hK u)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem class_sets_equal_card : ClassBijStep := by
   intro D X hb hK u hGF _hL
   exact card_dc_congr (hE X hb u) _ _ _ _ (map_iotaF X hb u hGF) (map_Ku X hb hK u)
 
 /- English proof (translation)
-Introduce `D X hb hK u hGF _hL hn x'`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Take `⟨hy1, hy2⟩` from `Subgroup.mem_inf.1 hy`. Rewrite `hy1` using `[← map_iotaF X hb u hGF]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h, ⟨γ, rfl⟩, rfl⟩` from `Subgroup.mem_map.1 hy1`. Take `⟨k', hk', hke⟩` from `Subgroup.mem_map.1 hy2`. Rewrite `hk'` using `[← map_Ku X hb hK u]`. Take `⟨k, hk, rfl⟩` from `Subgroup.mem_map.1 hk'`. Take `⟨x, rfl⟩` from `(hE X hb u).surjective x'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : PoincareSetting.iotaF X u γ = x * k * x⁻¹`. Apply `(hE X hb u).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `hke.symm`. Establish `h1 : x⁻¹ * PoincareSetting.iotaF X u γ * x ∈ PoincareSetting.Ku X u hK`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify `hk` using `[mul_assoc]`. Establish `h2` using `hn x γ h1`. Rewrite using `[Subgroup.mem_bot, h2]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stabilizers_trivial_of_neat : HAStabTrivStep := by
   intro D X hb hK u hGF _hL hn x'

@@ -9,7 +9,7 @@ open Formalism.IndefR.DatumF
 open MeasureTheory
 
 /- English proof (citation)
-Apply `GlobalTheory.SplitAnnF.exists_finset_ann_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilOrthogonalFiniteCover.lean&line=16#L16)
 -/

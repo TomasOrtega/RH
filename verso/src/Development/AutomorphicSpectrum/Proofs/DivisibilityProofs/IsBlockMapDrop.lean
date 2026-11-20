@@ -11,9 +11,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} {K : Type}
 
 /- English proof (translation)
-Use `⟨Subtype.val_injective, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨a, ha⟩, x⟩ ⟨⟨b, hb⟩, y⟩ h`. Establish `h' : (⟨a, x⟩ : Σ k, PIdx j k) = ⟨b, y⟩` using `h`. Consider the cases of `h'`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨k, x⟩ ⟨⟨k', hk⟩, rfl⟩`. Conclude with `⟨⟨⟨k', hk⟩, x⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isBlockMap_drop (j : K → FlBlock Ψ N) (k₀ : K) :
     IsBlockMap (Subtype.val : {k // k ≠ k₀} → K) (dropV j k₀) := by
@@ -26,13 +26,13 @@ theorem isBlockMap_drop (j : K → FlBlock Ψ N) (k₀ : K) :
     exact ⟨⟨⟨k', hk⟩, x⟩, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ f : MRing (PIdx (dropJ j k₀)), mConeMap (yPart j) (rename (dropV j k₀) f) = rename Subtype.val (mConeMap (yPart (dropJ j k₀)) f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp [hp, hq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp, rename_X]`. Use `congr 1`. Simplify using `[mConeMap, yPart, dropV, dropJ]`. Use extensionality with `f`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [imageZ, PPart, mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker]`. Use `show mConeMap (yPart j) (rename (dropV j k₀) f) = 0 ↔ _`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `rename_injective _ Subtype.val_injective (by rw [h, map_zero])`. Introduce `h`. Establish `h' : mConeMap (yPart (dropJ j k₀)) f = 0` using `h`. Rewrite using `[h', map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imageZ_drop [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (k₀ : K) :
     imageZ (dropV j k₀) (PPart j) = PPart (dropJ j k₀) := by

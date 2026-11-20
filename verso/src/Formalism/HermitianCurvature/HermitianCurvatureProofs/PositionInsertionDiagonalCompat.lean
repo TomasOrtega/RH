@@ -7,9 +7,9 @@ open Matrix Formalism.FourierDecayAlt.Wd
 variable {A S : Type} [Ring A] [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Simplify using `[h2]`. Simplify using `[Function.update_apply, hb, h3 b hb]`. Introduce and unpack `⟨h1, rfl⟩`. Conclude with `⟨h1, by simp, fun b hb => by simp [Function.update_apply, hb]⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cond_iff (a : S) (i j : Fin 2) (x y : Ix S) :
     (x a = i ∧ y a = j ∧ ∀ b, b ≠ a → x b = y b) ↔ (x a = i ∧ y = Function.update x a j) := by
@@ -24,9 +24,9 @@ theorem cond_iff (a : S) (i j : Fin 2) (x y : Ix S) :
     exact ⟨h1, by simp, fun b hb => by simp [Function.update_apply, hb]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Simplify using `[h1]`. Simplify using `[Function.update_apply, hb, h3 b hb]`. Introduce and unpack `⟨h2, rfl⟩`. Conclude with `⟨by simp, h2, fun b hb => by simp [Function.update_apply, hb]⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cond_iff' (a : S) (i j : Fin 2) (x y : Ix S) :
     (x a = i ∧ y a = j ∧ ∀ b, b ≠ a → x b = y b) ↔ (y a = j ∧ x = Function.update y a i) := by
@@ -41,7 +41,7 @@ theorem cond_iff' (a : S) (i j : Fin 2) (x y : Ix S) :
     exact ⟨by simp, h2, fun b hb => by simp [Function.update_apply, hb]⟩
 
 /- English proof (translation)
-Simplify using `only [eU, Matrix.of_apply]`. Conclude with `if_congr (cond_iff a i j x y) rfl rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
     (eU a i j : SlopeTestRemainingChoices S A) x y = if x a = i ∧ y = Function.update x a j then 1 else 0 := by
@@ -49,7 +49,7 @@ theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
   exact if_congr (cond_iff a i j x y) rfl rfl
 
 /- English proof (translation)
-Simplify using `only [eU, Matrix.of_apply]`. Conclude with `if_congr (cond_iff' a i j x y) rfl rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eU_apply' (a : S) (i j : Fin 2) (x y : Ix S) :
     (eU a i j : SlopeTestRemainingChoices S A) x y = if y a = j ∧ x = Function.update y a i then 1 else 0 := by
@@ -57,7 +57,7 @@ theorem eU_apply' (a : S) (i j : Fin 2) (x y : Ix S) :
   exact if_congr (cond_iff' a i j x y) rfl rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, eU_apply, ite_mul, one_mul, zero_mul]`. Apply the tactic sequence `by_cases hx : x a = i <;> simp [hx]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eU_mul_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     ((eU a i j : SlopeTestRemainingChoices S A) * B) x y = if x a = i then B (Function.update x a j) y else 0 := by
@@ -65,7 +65,7 @@ theorem eU_mul_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (
   by_cases hx : x a = i <;> simp [hx]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, eU_apply', mul_ite, mul_one, mul_zero]`. Apply the tactic sequence `by_cases hy : y a = j <;> simp [hy]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_eU_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     (B * (eU a i j : SlopeTestRemainingChoices S A)) x y = if y a = j then B x (Function.update y a i) else 0 := by
@@ -73,7 +73,7 @@ theorem mul_eU_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (
   by_cases hy : y a = j <;> simp [hy]
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[eU_mul_apply]`. Apply the tactic sequence `by_cases hx : x a = i <;> by_cases hjk : j = k <;> simp [hx, hjk, eU_apply, Function.update_idem]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eU_mul_eU (a : S) (i j k l : Fin 2) :
     (eU a i j : SlopeTestRemainingChoices S A) * eU a k l = if j = k then eU a i l else 0 := by
@@ -82,11 +82,11 @@ theorem eU_mul_eU (a : S) (i j k l : Fin 2) :
   by_cases hx : x a = i <;> by_cases hjk : j = k <;> simp [hx, hjk, eU_apply, Function.update_idem]
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[Matrix.sum_apply, Finset.sum_eq_single (x a)]`. Rewrite using `[eU_apply, Matrix.one_apply, Function.update_eq_self]`. Distinguish the cases in `h : x = y`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `h' : ¬ y = x` using `fun e => h e.symm`. Simplify using `[h, h']`. Introduce `i _ hi`. Rewrite using `[eU_apply, if_neg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h, _⟩`. Conclude with `hi h.symm`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_eU_diag (a : S) : ∑ i, (eU a i i : SlopeTestRemainingChoices S A) = 1 := by
   ext x y
@@ -104,7 +104,7 @@ theorem sum_eU_diag (a : S) : ∑ i, (eU a i i : SlopeTestRemainingChoices S A) 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use `show (eU c i j : SlopeTestRemainingChoices S A) * eU a k l = eU a k l * eU c i j`. Use extensionality with `x y`. Rewrite using `[eU_mul_apply, eU_mul_apply, eU_apply, eU_apply]`. Apply the tactic sequence `by_cases hxc : x c = i <;> by_cases hxa : x a = k <;>`. Simplify using `[Function.update_apply, hc, Ne.symm hc, hxc, hxa, Function.update_comm hc j l x]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
     Commute (eU c i j : SlopeTestRemainingChoices S A) (eU a k l) := by
@@ -115,9 +115,9 @@ theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
     simp [Function.update_apply, hc, Ne.symm hc, hxc, hxa, Function.update_comm hc j l x]
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_apply]`. Simplify using `only [eU, Matrix.of_apply]`. Rewrite using `[apply_ite star, star_one, star_zero]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2, h1, fun b hb => (h3 b hb).symm⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2, h1, fun b hb => (h3 b hb).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem star_eU [StarRing A] (a : S) (i j : Fin 2) :
     star (eU a i j : SlopeTestRemainingChoices S A) = eU a j i := by
@@ -133,9 +133,9 @@ theorem star_eU [StarRing A] (a : S) (i j : Fin 2) :
     exact ⟨h2, h1, fun b hb => (h3 b hb).symm⟩
 
 /- English proof (translation)
-Establish `key : ∀ i j k l : Fin 2, (eU a i j : SlopeTestRemainingChoices S A) * M i j * (eU a k l * N k l) = if j = k then eU a i l * (M i j * N k l) else 0`. Introduce `i j k l`. Establish `e1 : (eU a i j : SlopeTestRemainingChoices S A) * M i j * (eU a k l * N k l) = eU a i j * (M i j * eU a k l) * N k l`. Simplify using `only [mul_assoc]`. Rewrite using `[e1, ← (hM i j k l).eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (eU a i j : SlopeTestRemainingChoices S A) * (eU a k l * M i j) * N k l = (eU a i j * eU a k l) * (M i j * N k l)`. Simplify using `only [mul_assoc]`. Rewrite using `[e2, eU_mul_eU]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [ins, Fin.sum_univ_two, Matrix.mul_apply, add_mul, mul_add, key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
@@ -158,9 +158,9 @@ theorem ins_mul (a : S) (M N : M2 (SlopeTestRemainingChoices S A)) (hM : FreeOf2
   abel
 
 /- English proof (translation)
-Establish `key : ∀ i j : Fin 2, star ((eU a i j : SlopeTestRemainingChoices S A) * M i j) = eU a j i * star (M i j)`. Introduce `i j`. Establish `h` using `congrArg star (hM i j i j).eq`. Rewrite `h` using `[star_mul, star_mul, star_eU]`. Rewrite using `[star_mul, star_eU]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Simplify using `only [ins, Fin.sum_univ_two, star_add, key, Matrix.conjTranspose_apply]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem ins_star [StarRing A] (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (hM : FreeOf2 a M) :
     star (ins a M) = ins a Mᴴ := by
@@ -174,7 +174,7 @@ theorem ins_star [StarRing A] (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (
   abel
 
 /- English proof (translation)
-Simplify using `only [ins, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `sum_eU_diag a`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ins_one (a : S) : ins a (1 : M2 (SlopeTestRemainingChoices S A)) = 1 := by
   simp only [ins, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ,
@@ -182,7 +182,7 @@ theorem ins_one (a : S) : ins a (1 : M2 (SlopeTestRemainingChoices S A)) = 1 := 
   exact sum_eU_diag a
 
 /- English proof (translation)
-Simplify using `only [ins, d0, Matrix.diagonal_apply, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_mul, sum_eU_diag, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem insert_diagonal_extract (a : S) (b : SlopeTestRemainingChoices S A) : ins a (d0 b) = b := by
   simp only [ins, d0, Matrix.diagonal_apply, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ,
@@ -190,9 +190,9 @@ theorem insert_diagonal_extract (a : S) (b : SlopeTestRemainingChoices S A) : in
   rw [← Finset.sum_mul, sum_eU_diag, one_mul]
 
 /- English proof (translation)
-Introduce `k l`. Unfold `ins`. Apply `Commute.sum_right` to reduce the goal to its premises. Introduce `i _`. Apply `Commute.sum_right` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _`. Conclude with `(eU_comm_of_ne hc k l i j).mul_right (hM i j k l)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ins_free {a c : S} (hc : c ≠ a) (M : M2 (SlopeTestRemainingChoices S A)) (hM : FreeOf2 c M) :
     FreeOf c (ins a M) := by
@@ -205,9 +205,9 @@ theorem ins_free {a c : S} (hc : c ≠ a) (M : M2 (SlopeTestRemainingChoices S A
   exact (eU_comm_of_ne hc k l i j).mul_right (hM i j k l)
 
 /- English proof (translation)
-Unfold `ins`. Apply `Commute.sum_right` to reduce the goal to its premises. Introduce `i _`. Apply `Commute.sum_right` to reduce the goal to its premises. Introduce `j _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hb i j).symm.mul_right (hbM i j)`.
+A detailed English derivation is pending.
 -/
 theorem ins_comm (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (b : SlopeTestRemainingChoices S A) (hb : FreeOf a b)
     (hbM : ∀ i j, Commute b (M i j)) : Commute b (ins a M) := by
@@ -225,28 +225,28 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.Wd
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ a M N hM`. Conclude with `Wd1.ins_mul a M N hM`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem position_insertion_mul_compat : Formalism.FourierDecayAlt.Wd.InsMul := by
   intro K A S _ _ _ _ _ _ _ _ a M N hM
   exact Wd1.ins_mul a M N hM
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ a M hM`. Conclude with `Wd1.ins_star a M hM`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem position_insertion_star_compat : Formalism.FourierDecayAlt.Wd.InsStar := by
   intro K A S _ _ _ _ _ _ _ _ a M hM
   exact Wd1.ins_star a M hM
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ a b`. Conclude with `⟨Wd1.ins_one a, Wd1.insert_diagonal_extract a b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem position_insertion_diagonal_compat : Formalism.FourierDecayAlt.Wd.InsDiag := by
   intro K A S _ _ _ _ _ _ _ _ a b
   exact ⟨Wd1.ins_one a, Wd1.insert_diagonal_extract a b⟩
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ a M`. Conclude with `⟨fun c hc hM => Wd1.ins_free hc M hM, fun b hb hbM => Wd1.ins_comm a M b hb hbM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem position_insertion_free_compat : Formalism.FourierDecayAlt.Wd.InsFree := by
   intro K A S _ _ _ _ _ _ _ _ a M

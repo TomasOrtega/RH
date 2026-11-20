@@ -5,17 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `O W Q N _ _ _ _ _ _ _ _ _ π p hp hfix`. Establish `hker : p.ker ≤ MonoidHom.ker π` using `fun g hg => (MonoidHom.mem_ker).mpr (LinearMap.ext (hfix g ((MonoidHom.mem_ker).mp hg)))`. Set `e` to `QuotientGroup.quotientKerEquivOfSurjective p hp`. Set `π' : Representation O Q N` to `(QuotientGroup.lift p.ker π hker).comp e.symm.toMonoidHom`. Establish `hπ' : ∀ g, π' (p g) = π g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g`. Establish `he : e.symm (p g) = (g : W ⧸ p.ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show QuotientGroup.lift p.ker π hker (e.symm (p g)) = π g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, QuotientGroup.lift_mk]`. Establish `heig : ∀ ψ : Q →* Oˣ, eig π (ψ.comp p) = eig π' ψ`. Introduce `ψ`. Use extensionality with `x`. Simplify using `only [mem_eig]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h q`. Take `⟨g, rfl⟩` from `hp q`. Rewrite using `[hπ']`. Conclude with `h g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h g`. Rewrite using `[← hπ']`. Conclude with `h (p g)`. Establish `hsum : ∑ ψ : Q →* Oˣ, Module.length O (eig π (ψ.comp p)) = ∑ ψ : Q →* Oˣ, Module.length O (eig π' ψ)` using `Finset.sum_congr rfl fun ψ _ => congrArg (fun S : Submodule O N => Module.length O S) (heig ψ)`. Rewrite using `[hsum]`.
-
-Conclude with `⟨lenEigLe O Q N π', fun hu => (lenEigEq O Q N π' hu).1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.lenEigVia :
     ∀ (O W Q N : Type) [CommRing O] [IsDomain O] [Group W] [CommGroup Q] [Finite Q] [HasEnoughRootsOfUnity O (Monoid.exponent Q)]

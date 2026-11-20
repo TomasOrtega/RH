@@ -41,19 +41,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base HasExp Split
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation (spW spW₁ alpha beta)
 
 /- English proof (translation)
-Establish `hx : 11 ≤ D.host.splitBound` using `hR.size.2.1.eleven_le`. Establish `hcc : D.host.ccK = ⊤` using `hR.size.2.2.2.2.2.2.2.2.2.2.2.2.2`. Take `⟨⟨P, -, -⟩, -⟩` from `hR.size`. Establish `lev : ∀ p ∈ D.host.levelPrimes, p.Prime → Nat.Coprime p (D.host.QS * D.host.q * D.host.d)` using `fun p hp hpp => UpperTheory.Ram.Fun.coprime_condN_of_splitK D.host hpp (P.level_split p hp)`. Use `⟨hx, fun w hw => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) = ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E)`. Rewrite using `[hcc, Ideal.absNorm_top, mul_one]`. Rewrite using `[e1]`. Break down `Finset.mem_union.1 hw with hw | hw` into its components or cases. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p, hpv, hcop⟩ : ∃ p : ℕ, ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal ∧ Nat.Coprime p (D.host.QS * D.host.q * D.host.d) := by`. Break down `G.pl.mem_S0_of_sum_eq.1 hv with rfl | hv1` into its components or cases. Use `⟨q0 D, G.pl.basePlace_over_qZero, ?_⟩` and prove the remaining obligations. Establish `hs` using `(leastSplitAuxiliaryPrimeThetaChain_spec D).2.1`. Establish `hM : Nat.Coprime (Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D) (q0 D)`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.Coprime, Nat.gcd_rec, hs, Nat.gcd_one_left]`. Establish `hdv : D.host.QS * D.host.q * D.host.d ∣ Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D`. Unfold `LevelStarExponents.condE`. Conclude with `Dvd.dvd.mul_left dvd_rfl _`. Conclude with `(hM.coprime_dvd_left hdv).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `(S1_mem_OmF D).1 hv1 with h | h | h | h` into its components or cases. Conclude with `⟨_, h, lev _ (D.host.g_level 0) (D.host.g_prime 0)⟩`. Conclude with `⟨_, h, lev _ (D.host.g_level 1) (D.host.g_prime 1)⟩`. Conclude with `⟨_, h, lev _ D.host.pde_level.1 D.host.pde_prime⟩`. Conclude with `⟨_, h, lev _ D.host.pde_level.2 D.host.pde'_prime⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpw : ((p : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal`. Rewrite `hpv` using `[← G.pl.under_w hv, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hpv`. Conclude with `GlobalTheory.SquareConv.natCast_not_mem (G.pl.w v).isPrime.ne_top hcop hpw`. Introduce `hmem`.
-
-Apply `(hL.Q_off t w hw).1` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem standing_of_rec {D : D7} {large₂ : SizeData₂ D} (hR : Rec large₂) {T : Type} {Lc : LevCh D T} {μ₀ : T} (hL : Lc.Is μ₀)
     {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (t : T) : SquareStanding G t := by
@@ -99,19 +97,19 @@ section
 variable {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} {μ₀ : T}
 
 /- English proof (translation)
-The claim follows from `(node_isV G hL (X := .grid (i + 1) (j + 1)) ⟨by omega, by omega⟩).rank`.
+A detailed English derivation is pending.
 -/
 private theorem rank_weight_component_eq (hL : Lc.Is μ₀) (i j : Fin D.R.m) : (spW G i j).rank = rankV D (i + 1) (j + 1) :=
   (node_isV G hL (X := .grid (i + 1) (j + 1)) ⟨by omega, by omega⟩).rank
 
 /- English proof (translation)
-The claim follows from `(node_isV G hL (X := .grid i j) ⟨by omega, by omega⟩).rank`.
+A detailed English derivation is pending.
 -/
 private theorem rank_W₁ (hL : Lc.Is μ₀) (i j : Fin D.R.m) : (spW₁ G i j).rank = rankV D i j :=
   (node_isV G hL (X := .grid i j) ⟨by omega, by omega⟩).rank
 
 /- English proof (translation)
-Unfold `alpha GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps`. Rewrite using `[rank_W₁ hL]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem chs_α (hL : Lc.Is μ₀) (i j : Fin D.R.m) (t : T) : (GlobalTheory.SqStep.chs G i j t).α = alpha G t i j := by
   unfold alpha GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps
@@ -119,7 +117,7 @@ private theorem chs_α (hL : Lc.Is μ₀) (i j : Fin D.R.m) (t : T) : (GlobalThe
   rfl
 
 /- English proof (translation)
-Unfold `beta GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps`. Rewrite using `[rank_W₁ hL]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem chs_β (hL : Lc.Is μ₀) (i j : Fin D.R.m) (t : T) : (GlobalTheory.SqStep.chs G i j t).β = beta G i j := by
   unfold beta GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.eps
@@ -127,13 +125,11 @@ private theorem chs_β (hL : Lc.Is μ₀) (i j : Fin D.R.m) (t : T) : (GlobalThe
   rfl
 
 /- English proof (translation)
-Use `choose mα hα eα using fun t => GlobalTheory.T.hasArchimedeanCharExponents_conj_of_hasInfExp _ _ (fun τ => GlobalTheory.SquareExps.alpha_exp (G := G) hL t i j j.2 τ) τf hτf`. Take `⟨mβ, hβ, eβ⟩` from `GlobalTheory.T.hasArchimedeanCharExponents_conj_of_hasInfExp _ _ (fun τ => GlobalTheory.SquareExps.beta_exp (G := G) hL i j i.2 τ) τf hτf`. Use `⟨mα μ₀, mβ, fun t => ?_, hβ, fun w => ?_⟩` and prove the remaining obligations. Establish `e : mα μ₀ = mα t` using `funext fun w => by`. Use `(eα μ₀ w).trans (eα t w).symm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[e]`. Conclude with `hα t`. Establish `key` using `GlobalTheory.T.chiGridVertexRank_add_lt_two_exponent_add_centre sc.cGap (τf w) i j i.2 j.2`. Establish `h1` using `eα μ₀ w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h2` using `eβ w`. Establish `: (((rankV D (i + 1) (j + 1) + rankV D i j : ℕ) : ℤ) : ℚ) < ((mα μ₀ w - mβ w : ℤ) : ℚ)`. Move the coercions through the operations in `at h1 h2 key ⊢`. Rewrite using `[h1, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem exps (hL : Lc.Is μ₀) (i j : Fin D.R.m) (τf : InfinitePlace D.host.F → D.what₂.Tau)
     (hτf : ∀ w, ((starRingEnd ℂ).comp (tauE D (τf w))).comp (algebraMap D.host.F D.host.E) = w.embedding) :
@@ -159,9 +155,9 @@ private theorem exps (hL : Lc.Is μ₀) (i j : Fin D.R.m) (τf : InfinitePlace D
     exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hP`. Use `⟨(Finset.mem_union.1 h1).resolve_left h2, fun h => h2 ?_⟩` and prove the remaining obligations. Establish `hw : G.pl.w (P.under (𝓞 D.host.F)) ∈ G.pl.W0` using `Finset.mem_image_of_mem _ h`. Establish `hw' : G.pl.w (P.under (𝓞 D.host.F)) ∈ locPl G t` using `Finset.mem_union_left _ hw`. Establish `e` using `GlobalTheory.FunObj.Good.under_injOn hL G t hw' h1 (G.pl.under_w h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem under_notMem (hL : Lc.Is μ₀) (t : T) {P : HeightOneSpectrum (𝓞 D.host.E)} (hP : P ∈ twPl G t) :
     P ∈ Lc.Q t ∧ P.under (𝓞 D.host.F) ∉ G.pl.S0 := by
@@ -175,27 +171,25 @@ private theorem under_notMem (hL : Lc.Is μ₀) (t : T) {P : HeightOneSpectrum (
   exact hw
 
 /- English proof (translation)
-Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `D.sp.cm.deg2`. Take `⟨rα, rβ⟩` from `GlobalTheory.T.thetaGrid_alpha_beta_restrict_quadratic_pow_rank (G := G) hL t i j`. Rewrite `rα` using `[rank_W₁ hL]`. Rewrite `rβ` using `[rank_weight_component_eq hL]`. Establish `eα` using `chs_α (G := G) hL i j t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `eβ` using `chs_β (G := G) hL i j t`. Establish `eν : (GlobalTheory.SqStep.chs G i j t).ν = alpha G t i j / beta G i j`. Unfold `Chars.ν`. Rewrite using `[eα, eβ]`. Use `⟨?_, ?_, eα ▸ GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ h2 _ _ rα, eβ ▸ GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ h2 _ _ rβ, eα ▸ hα, eβ ▸ hβ, ?_, hsub, ?_, ?_, ?_, ⟨hv₁, hsp⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm` using `(hL.mu0 j).1`. Establish `hx` using `(hL.xi t).1`. Establish `he` using `hL.eta.1`. Use `⟨(hm.1.mul hx.1).mul (he.1.pow _), fun x => ?_⟩` and prove the remaining obligations. Establish `e1` using `hm.2 x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `hx.2 x`. Establish `e3` using `he.2 x`. Use `show Lc.mu0 ((j : ℕ) + 1) _ * Lc.xi t _ * (Lc.eta ^ _) _ = 1`. Rewrite using `[MonoidHom.pow_apply]`. Rewrite using `[e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hc` using `(G.ch.chi_eq (D.R.m - (i : ℕ)) (by omega) (by omega)).1`. Establish `he` using `hL.eta.1`. Use `⟨hc.1.mul (he.1.pow _), fun x => ?_⟩` and prove the remaining obligations. Establish `e1` using `hc.2 x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `he.2 x`. Use `show G.ch.chi (D.R.m - (i : ℕ)) _ * (Lc.eta ^ _) _ = 1`. Rewrite using `[MonoidHom.pow_apply, e1, e3]`. Simplify using the standard rewrite rules. Use `Finset.disjoint_right.2 fun v hv hv0 => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 hv`. Conclude with `(under_notMem hL t hP).2 hv0`. Introduce `w hw`. Rewrite using `[eν]`. Break down `Finset.mem_union.1 hw with hw | hw` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `(G.pl.mem_S0_of_sum_eq).1 hw with h | h` into its components or cases. Conclude with `GlobalTheory.T.not_unrAt_of_under_eq_v0 hL t i j w h`. Conclude with `GlobalTheory.T.alpha_div_beta_ramified_first hL t i j w h`. Take `⟨P, hP, e⟩` from `Finset.mem_image.1 hw`. Take `⟨h1, h2⟩` from `under_notMem hL t hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.T.alpha_div_beta_ramified_at_level hL t i j w P h1 e (e ▸ h2)`. Introduce `w hw`. Establish `hw' : w.under (𝓞 D.host.F) ∉ (GlobalTheory.SqStep.chs G i j t).T` using `hw`. Rewrite using `[eα]`. Establish `h0 : w.under (𝓞 D.host.F) ∉ G.pl.S0` using `fun h => hw' (Finset.mem_union_left _ h)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.T.alpha_unramified_outside hL t i j w h0 fun P hP e => hw' ?_` and prove the remaining obligations. Use `Finset.mem_union_right _ (Finset.mem_image.2 ⟨P, Finset.mem_filter.2 ⟨Finset.mem_union_right _ hP, fun h => ?_⟩, e⟩)` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Rewrite `e` using `[G.pl.under_w hv]`. Conclude with `h0 (e ▸ hv)`.
-
-Introduce `w hw`. Establish `hw' : w.under (𝓞 D.host.F) ∉ (GlobalTheory.SqStep.chs G i j t).T` using `hw`. Rewrite using `[eβ]`. Conclude with `GlobalTheory.T.beta_unramified_outside hL i j w (fun h => hw' (Finset.mem_union_left _ h))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chars_good (hL : Lc.Is μ₀) (t : T) (i j : Fin D.R.m) (B : Base D.host.F D.host.E)
     (hsub : (GlobalTheory.SqStep.chs G i j t).T ⊆ B.P) (hv₁ : B.v₁ ∉ (GlobalTheory.SqStep.chs G i j t).T) (hsp : SplitsFully D.host.E B.v₁)
@@ -261,7 +255,7 @@ private theorem chars_good (hL : Lc.Is μ₀) (t : T) (i j : Fin D.R.m) (B : Bas
 end
 
 /- English proof (translation)
-The claim follows from `| 0, _, h => by simpa using h | k + 1, b, h => fit_down_left_mul k b (Fit.down_left (by rw [show b + 2 * k + 2 = b + 2 * (k + 1) by ring]; exact h))`.
+A detailed English derivation is pending.
 -/
 private theorem fit_down_left_mul {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} {W : G.Weil}
     {i j : Fin D.R.m} {t μ₀ : T} {Bs : Base D.host.F D.host.E} {a' : ℕ} :
@@ -270,7 +264,7 @@ private theorem fit_down_left_mul {D : D7} {T : Type} {Lc : LevCh D T} {sc : Glo
   | k + 1, b, h => fit_down_left_mul k b (Fit.down_left (by rw [show b + 2 * k + 2 = b + 2 * (k + 1) by ring]; exact h))
 
 /- English proof (translation)
-The claim follows from `| 0, _, h => by simpa using h | k + 1, b, h => fit_down_right_mul k b (Fit.down_right (by rw [show b + 2 * k + 2 = b + 2 * (k + 1) by ring]; exact h))`.
+A detailed English derivation is pending.
 -/
 private theorem fit_down_right_mul {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} {W : G.Weil}
     {i j : Fin D.R.m} {t μ₀ : T} {Bs : Base D.host.F D.host.E} {a : ℕ} :
@@ -279,19 +273,17 @@ private theorem fit_down_right_mul {D : D7} {T : Type} {Lc : LevCh D T} {sc : Gl
   | k + 1, b, h => fit_down_right_mul k b (Fit.down_right (by rw [show b + 2 * k + 2 = b + 2 * (k + 1) by ring]; exact h))
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ he hx hR T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `W _ i j p q A A' WW X hX`. Use `choose τf hτf using (GlobalTheory.T.exists_conj_tauE_comp_algebraMap_eq_embedding (D := D))`. Use `⟨fun w => ⟨_, hτf w⟩, fun t => ?_⟩` and prove the remaining obligations. Establish `hst` using `standing_of_rec hR hL G t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨mα, mβ, hα, hβ, hκ⟩` from `exps (G := G) hL i j τf hτf`. Establish `hloc : ∀ v ∈ (GlobalTheory.SqStep.chs G i j t).T, ∃ w ∈ locPl G t, w.under (𝓞 D.host.F) = v`. Introduce `v hv`. Break down `Finset.mem_union.1 hv with hv | hv` into its components or cases. Conclude with `⟨G.pl.w v, Finset.mem_union_left _ (Finset.mem_image_of_mem _ hv), G.pl.under_w hv⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, e⟩` from `Finset.mem_image.1 hv`. Conclude with `⟨P, (Finset.mem_filter.1 hP).1, e⟩`. Establish `hτ` using `fun v : ((GlobalTheory.SqStep.chs G i j t).T : Finset (HeightOneSpectrum (𝓞 D.host.F))) => GlobalTheory.LocPlTau.exists_splitPrime_locPl hL t v.1 (hloc v.1 v.2)`. Use `choose τP hτP using hτ`. Take `⟨v₁, hv₁P, hv₁s, -, ⟨τ₁⟩⟩` from `GlobalTheory.T.exists_splitCompletely_auxiliary_place_outside_finset (G := G) hL t (GlobalTheory.SqStep.chs G i j t).T`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `B : Base D.host.F D.host.E` to `⟨W.ψ, fun w => ⟨_, hτf w⟩, mα, mβ, (GlobalTheory.SqStep.chs G i j t).T, τP, v₁, τ₁⟩`. Establish `hB : B.IsGood D.sp.cm.sig` using `GlobalTheory.T.isAdmissibleCMBaseData_of_squareTupleStanding hL W t hst B rfl hloc`. Establish `hsub₀ : (GlobalTheory.SqStep.chs G i j μ₀).T ⊆ (GlobalTheory.SqStep.chs G i j t).T`. Rewrite using `[GlobalTheory.SqStepArith.chs_T_base G hL i j]`. Conclude with `Finset.subset_union_left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hfit : Fit G W i j t μ₀ B (rankV D (i + 1) (j + 1)) (rankV D i j)`. Use `⟨⟨rfl, subset_rfl, hB.psiP, fun v hv => ?_⟩, hB, fun w => ⟨τf w, fun _ => rfl⟩, chars_good hL t i j B subset_rfl hv₁P hv₁s (hα t) hβ, chars_good hL μ₀ i j B hsub₀ (fun h => hv₁P (hsub₀ h)) hv₁s (hα μ₀) hβ, hκ⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `hloc v.1 hv`. Rewrite using `[hτP v w hw e]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨B, rfl, ?_⟩` and prove the remaining obligations. Take `⟨hp, hq, hA, hA', -⟩` from `hX`. Establish `e1 : rankV D (i + 1) (j + 1) = A.rank + 2 * (pp D j - p)` using `by omega`. Establish `e2 : rankV D i j = A'.rank + 2 * (qq D j - q)` using `by omega`. Rewrite `hfit` using `[e1, e2]`.
-
-Conclude with `fit_down_right_mul _ _ (fit_down_left_mul _ _ hfit)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exists_realEmbeddings_sharedBase_towerStage : GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)
     (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X →

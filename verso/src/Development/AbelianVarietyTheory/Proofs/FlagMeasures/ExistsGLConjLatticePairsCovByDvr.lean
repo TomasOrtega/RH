@@ -8,11 +8,11 @@ open scoped TensorProduct
 namespace GlobalTheory.St.G
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `hψ 1`. Set `p : M →ₗ[O] LinearMap.ker ψ` to `LinearMap.codRestrict _ (LinearMap.id - LinearMap.toSpanSingleton O M x₀ ∘ₗ ψ) (fun x => by simp [hx₀])`. Use `⟨LinearEquiv.ofLinearMap (p.prod ψ) ((LinearMap.ker ψ).subtype.coprod (LinearMap.toSpanSingleton O M x₀)) ?_ ?_, fun x => rfl⟩` and prove the remaining obligations. Apply `LinearMap.prod_ext` to reduce the goal to its premises. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `[p]`. Simplify using the standard rewrite rules. Use `ext`. Simplify using `[p, hx₀]`. Simplify using `[hx₀]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `[p]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_equiv_ker_prod {O M : Type} [CommRing O] [AddCommGroup M] [Module O M]
     (ψ : M →ₗ[O] O) (hψ : Function.Surjective ψ) :
@@ -34,9 +34,9 @@ theorem exists_equiv_ker_prod {O M : Type} [CommRing O] [AddCommGroup M] [Module
     simp [p]
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `exists_equiv_ker_prod ψ hψ`. Take `⟨E', hE'⟩` from `exists_equiv_ker_prod ψ' hψ'`. Establish `hk : Module.finrank O (LinearMap.ker ψ) = Module.finrank O (LinearMap.ker ψ')`. Establish `h₁` using `E.finrank_eq`. Establish `h₂` using `E'.finrank_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₁`, `h₂` using `[Module.finrank_prod, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers. Take `⟨k⟩` from `FiniteDimensional.nonempty_linearEquiv_of_finrank_eq hk`. Use `⟨E.trans ((k.prodCongr (LinearEquiv.refl O O)).trans E'.symm), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hE', ← hE]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -60,15 +60,15 @@ theorem exists_equiv_comp_eq_of_surjective {O M M' : Type} [CommRing O] [IsDomai
   simp
 
 /- English proof (translation)
-Establish `hs` using `(covBy_iff_quot_is_simple h.le).1 h`. Take `⟨I, hI, ⟨f⟩⟩` from `isSimpleModule_iff_quot_maximal.1 hs`. Take `rfl` from `IsLocalRing.eq_maximalIdeal hI`. Use `set m := IsLocalRing.maximalIdeal O`. Take `⟨ψ, hψ⟩` from `Module.projective_lifting_property m.mkQ (f.toLinearMap ∘ₗ (A.comap B.subtype).mkQ) m.mkQ_surjective`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ x, m.mkQ (ψ x) = f ((A.comap B.subtype).mkQ x)` using `fun x => LinearMap.congr_fun hψ x`. Establish `hmem : ∀ x : B, (x : V) ∈ A ↔ ψ x ∈ m`. Introduce `x`. Rewrite using `[← Submodule.Quotient.mk_eq_zero m, ← Submodule.mkQ_apply, key, LinearEquiv.map_eq_zero_iff, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Use `⟨ψ, ?_, hmem⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `f.surjective (m.mkQ 1)`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ y`. Establish `hu : IsUnit (ψ x)`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal]`. Introduce `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : m.mkQ 1 = 0`. Rewrite using `[← hy, ← key, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Rewrite `h1` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Use `⟨(r * hu.unit⁻¹.1) • x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_assoc, hu.val_inv_mul, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_form_of_covBy {O V : Type} [CommRing O] [IsLocalRing O] [AddCommGroup V]
     [Module O V] (A B : Submodule O V) [Module.Projective O B] (h : A ⋖ B) :
@@ -103,9 +103,9 @@ theorem exists_form_of_covBy {O V : Type} [CommRing O] [IsLocalRing O] [AddCommG
   rw [map_smul, smul_eq_mul, mul_assoc, hu.val_inv_mul, mul_one]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis O B`. Set `c` to `b.map e`. Set `g` to `(b.extendOfIsLattice K).equiv (c.extendOfIsLattice K) (Equiv.refl _)`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Establish `key : (g.toLinearMap.restrictScalars O) ∘ₗ B.subtype = B'.subtype ∘ₗ e.toLinearMap`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `b.ext fun i => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, Submodule.coe_subtype, g, c]`. Rewrite using `[← Module.Basis.extendOfIsLattice_apply K b i, Module.Basis.equiv_apply]`. Simplify using the standard rewrite rules. Conclude with `LinearMap.congr_fun key x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_extend_latticeEquiv {O K V : Type} [CommRing O] [IsDomain O]
     [IsPrincipalIdealRing O] [Field K] [Algebra O K] [IsFractionRing O K]
@@ -125,21 +125,19 @@ theorem exists_extend_latticeEquiv {O K V : Type} [CommRing O] [IsDomain O]
   exact LinearMap.congr_fun key x
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ n A B A' B' hB hB' hA hA' h h'`. Establish `: B.IsLattice K` using `⟨hB, eq_top_iff.2 (hA ▸ Submodule.span_mono (show (A : Set (Fin n → K)) ⊆ B from h.le))⟩`. Establish `: B'.IsLattice K` using `⟨hB', eq_top_iff.2 (hA' ▸ Submodule.span_mono (show (A' : Set (Fin n → K)) ⊆ B' from h'.le))⟩`. Establish `hr : Module.finrank O B = Module.finrank O B'`. Rewrite using `[Submodule.IsLattice.finrank_of_pi K B, Submodule.IsLattice.finrank_of_pi K B']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψ, hψs, hψ⟩` from `exists_form_of_covBy A B h`. Take `⟨ψ', hψs', hψ'⟩` from `exists_form_of_covBy A' B' h'`. Take `⟨e, he⟩` from `exists_equiv_comp_eq_of_surjective hr ψ hψs ψ' hψs'`. Take `⟨g, hg⟩` from `exists_extend_latticeEquiv (K := K) B B' e`. Establish `hBg : ∀ x, x ∈ B ↔ g x ∈ B'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[show g x = e ⟨x, hx⟩ from hg ⟨x, hx⟩]`. Conclude with `(e ⟨x, hx⟩).2`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `hy : ((e.symm ⟨g x, hx⟩ : B) : Fin n → K) = x` using `g.injective (by rw [hg]; simp)`. Rewrite using `[← hy]`. Conclude with `(e.symm _).2`. Establish `hpt : ∀ x (hx : x ∈ B), (⟨g x, (hBg x).1 hx⟩ : B') = e ⟨x, hx⟩` using `fun x hx => Subtype.ext (hg ⟨x, hx⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `G : GL (Fin n) K` to `⟨LinearMap.toMatrix' g.toLinearMap, LinearMap.toMatrix' g.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Establish `hG : ∀ x, G.1 *ᵥ x = g x` using `fun x => LinearMap.toMatrix'_mulVec _ x`. Use `⟨G, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hG]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hx`. Establish `hxB` using `h.le hx`. Establish `hgB` using `(hBg x).1 hxB`. Rewrite using `[hψ' ⟨g x, hgB⟩, hpt x hxB, he]`. Conclude with `(hψ ⟨x, hxB⟩).1 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hx`. Establish `hgB` using `h'.le hx`. Establish `hxB` using `(hBg x).2 hgB`. Rewrite using `[hψ ⟨x, hxB⟩, ← he, ← hpt x hxB]`. Conclude with `(hψ' ⟨g x, hgB⟩).1 hx`.
-
-Rewrite using `[hG]`. Conclude with `hBg x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_of_covBy : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] (n : ℕ) (A B A' B' : Submodule O (Fin n → K)), B.FG → B'.FG → Submodule.span K (A : Set (Fin n → K)) = ⊤ → Submodule.span K (A' : Set (Fin n → K)) = ⊤ → A ⋖ B → A' ⋖ B' → ∃ g : GL (Fin n) K, (∀ x, x ∈ A ↔ g.1 *ᵥ x ∈ A') ∧ ∀ x, x ∈ B ↔ g.1 *ᵥ x ∈ B' := by
   intro O K _ _ _ _ _ _ n A B A' B' hB hB' hA hA' h h'

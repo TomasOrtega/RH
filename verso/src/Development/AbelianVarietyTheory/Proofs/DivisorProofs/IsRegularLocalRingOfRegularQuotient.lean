@@ -5,11 +5,11 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.RegularAscent
 
 /- English proof (translation)
-Set `P : PrimeSpectrum R` to `⟨p, hp⟩`. Use `haveI : Nonempty (PrimeSpectrum R) := ⟨P⟩`. Establish `h1 : PrimeSpectrum.zeroLocus (p : Set R) = Set.Ici P`. Use extensionality with `x`. Simplify using `only [PrimeSpectrum.mem_zeroLocus, Set.mem_Ici]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : ringKrullDim (R ⧸ p) = (Order.coheight P : ℕ∞)`. Rewrite using `[ringKrullDim_quotient, h1, Order.coheight_eq_krullDim_Ici]`. Establish `h3 : p.height = Order.height P` using `PrimeSpectrum.height_eq_orderHeight P`. Rewrite using `[h2, h3, ← WithBot.coe_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ ≤ Order.krullDim (PrimeSpectrum R)`. Rewrite using `[Order.krullDim_eq_iSup_height_add_coheight_of_nonempty, WithBot.coe_le_coe]`. Conclude with `le_iSup (fun x : PrimeSpectrum R => Order.height x + Order.coheight x) P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_add_ringKrullDim_quotient_le {R : Type} [CommRing R] (p : Ideal R) [hp : p.IsPrime] :
     ((p.height : ℕ∞) : WithBot ℕ∞) + ringKrullDim (R ⧸ p) ≤ ringKrullDim R := by
@@ -28,13 +28,13 @@ theorem height_add_ringKrullDim_quotient_le {R : Type} [CommRing R] (p : Ideal R
   exact le_iSup (fun x : PrimeSpectrum R => Order.height x + Order.coheight x) P
 
 /- English proof (translation)
-Take `⟨s, hs, hsp⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank hfg`. Use `choose g hg using Ideal.Quotient.mk_surjective (I := p)`. Establish `hpm : p ≤ maximalIdeal R` using `le_maximalIdeal (Ideal.IsPrime.ne_top inferInstance)`. Establish `hmap : (maximalIdeal R).map (Ideal.Quotient.mk p) = maximalIdeal (R ⧸ p)` using `map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `h1 : Ideal.map (Ideal.Quotient.mk p) (Ideal.span (g '' s)) = maximalIdeal (R ⧸ p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_span, Set.image_image]`. Simplify `hsp` using `[hg]`. Establish `h2 : maximalIdeal R = Ideal.span (((s.image g) ∪ Finset.univ.image f : Finset R) : Set R)`. Establish `h3` using `congrArg (Ideal.comap (Ideal.Quotient.mk p)) (hmap.trans h1.symm)`. Rewrite `h3` using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.mpr hpm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, Finset.coe_union, Ideal.span_union, Finset.coe_image, Finset.coe_image, Finset.coe_univ, Set.image_univ, ← hf]`. Establish `h4` using `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.spanFinrank_span_finset_le ((s.image g) ∪ Finset.univ.image f)`. Rewrite `h4` using `[← h2]`. Establish `h5` using `Finset.card_union_le (s.image g) (Finset.univ.image f)`. Establish `h6 : (s.image g).card ≤ s.card` using `Finset.card_image_le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : (Finset.univ.image f).card ≤ r` using `Finset.card_image_le.trans (by simp)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem spanFinrank_maximalIdeal_le {R : Type} [CommRing R] [IsLocalRing R] (p : Ideal R)
     [p.IsPrime] [IsLocalRing (R ⧸ p)] (r : ℕ) (f : Fin r → R) (hf : p = Ideal.span (Set.range f))
@@ -66,11 +66,11 @@ theorem spanFinrank_maximalIdeal_le {R : Type} [CommRing R] [IsLocalRing R] (p :
   omega
 
 /- English proof (translation)
-Introduce `R _ _ _ p _ r f hf hh hreg`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Establish `hfg : (maximalIdeal (R ⧸ p)).FG` using `IsNoetherian.noetherian _`. Establish `hs` using `spanFinrank_maximalIdeal_le p r f hf hfg`. Establish `hq : ((maximalIdeal (R ⧸ p)).spanFinrank : WithBot ℕ∞) = ringKrullDim (R ⧸ p)` using `IsRegularLocalRing.spanFinrank_maximalIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `height_add_ringKrullDim_quotient_le p`. Rewrite `hd` using `[hh, ← hq]`. Use `le_trans ?_ hd` and prove the remaining obligations. Establish `: (((maximalIdeal R).spanFinrank : ℕ) : WithBot ℕ∞) ≤ (((r + (maximalIdeal (R ⧸ p)).spanFinrank : ℕ)) : WithBot ℕ∞)` using `by exact_mod_cast hs`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem isRegularLocalRing_of_quotient_prime :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (p : Ideal R) [p.IsPrime]

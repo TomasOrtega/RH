@@ -9,31 +9,27 @@ open GlobalTheory.CompanionTheory.Ar.RootHt GroundTheory.Heights₂.Heights
 namespace GlobalTheory.CompanionTheory.Ar.RootHt
 
 /- English proof (translation)
-Introduce `K _ J _ T Bd hT hcl hBdT hscale hloc`. Take `⟨A, hA⟩ : ∃ A : Set ((Σ k, J k) → ℂ), A = (⋂ p, {w | ‖w p‖ ≤ 1}) ∩ ⋂ k, ⋃ i, {w | ‖w ⟨k, i⟩‖ = 1}` from `⟨_, rfl⟩`. Establish `hAcl : IsClosed A`. Rewrite using `[hA]`. Conclude with `(isClosed_iInter fun p => isClosed_le (continuous_norm.comp (continuous_apply p)) continuous_const).inter (isClosed_iInter fun k => isClosed_iUnion_of_finite fun i => isClosed_eq (continuous_norm.comp (continuous_apply _)) continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA_le : ∀ w ∈ A, ∀ p, ‖w p‖ ≤ 1`. Introduce `w hw p`. Rewrite `hw` using `[hA]`. Conclude with `Set.mem_iInter.mp hw.1 p`. Establish `hA_ne : ∀ w ∈ A, ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw k`. Rewrite `hw` using `[hA]`. Take `⟨i, hi⟩` from `Set.mem_iUnion.mp (Set.mem_iInter.mp hw.2 k)`. Use `⟨i, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hi' : ‖w ⟨k, i⟩‖ = 1` using `hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hi'` using `[h0, norm_zero]`. Conclude with `zero_ne_one hi'`. Establish `hScl : IsClosed (T ∩ A)`. Apply `isClosed_of_closure_subset` to reduce the goal to its premises. Introduce `w hw`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hwT : w ∈ closure T` using `closure_mono Set.inter_subset_left hw`. Establish `hwA : w ∈ A` using `hAcl.closure_subset (closure_mono Set.inter_subset_right hw)`. Conclude with `⟨hcl w hwT (hA_ne w hwA), hwA⟩`. Establish `hSsub : T ∩ A ⊆ Metric.closedBall 0 1`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Conclude with `hA_le w hw.2`. Establish `hScpt : IsCompact (T ∩ A)` using `(isCompact_closedBall 0 1).of_isClosed_subset hScl hSsub`. Use `choose N hN C hC using fun w (hw : w ∈ T ∩ A) => hloc w hw.1`. Take `⟨t, ht⟩` from `hScpt.elim_nhds_subcover' N hN`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ s ∈ t, |C s.1 s.2|, ?_⟩` and prove the remaining obligations. Introduce `w x hBd`. Establish `hwT` using `hBdT w x hBd`. Establish `hmax : ∀ k, ∃ i, ∀ j, ‖w ⟨k, j⟩‖ ≤ ‖w ⟨k, i⟩‖`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i₀, -⟩` from `hT w hwT k`. Use `haveI : Nonempty (J k) := ⟨i₀⟩`. Conclude with `Finite.exists_max fun j => ‖w ⟨k, j⟩‖`. Use `choose m hm using hmax`. Establish `hmpos : ∀ k, 0 < ‖w ⟨k, m k⟩‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨i₀, hi₀⟩` from `hT w hwT k`. Conclude with `lt_of_lt_of_le (norm_pos_iff.mpr hi₀) (hm k i₀)`. Take `⟨c, hc⟩ : ∃ c : K → ℂ, c = fun k => ((‖w ⟨k, m k⟩‖⁻¹ : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `hc0 : ∀ k, c k ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[hc]`. Conclude with `Complex.ofReal_ne_zero.mpr (inv_ne_zero (hmpos k).ne')`. Establish `hBd'` using `hscale w x c hc0 hBd`. Establish `hnorm : ∀ (k : K) (j : J k), ‖c k * w ⟨k, j⟩‖ = ‖w ⟨k, j⟩‖ / ‖w ⟨k, m k⟩‖`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `k j`. Rewrite using `[hc, norm_mul, Complex.norm_real, norm_inv, norm_norm, div_eq_inv_mul]`. Establish `hw'S : (fun p => c p.1 * w p) ∈ T ∩ A`. Use `⟨hBdT _ _ hBd', ?_⟩` and prove the remaining obligations. Rewrite using `[hA]`.
-
-Use `⟨Set.mem_iInter.mpr fun p => ?_, Set.mem_iInter.mpr fun k => Set.mem_iUnion.mpr ⟨m k, ?_⟩⟩` and prove the remaining obligations. Take `⟨k, j⟩` from `p show ‖c k * w ⟨k, j⟩‖ ≤ 1`. Rewrite using `[hnorm]`. Conclude with `(div_le_one (hmpos k)).mpr (hm k j)`. Use `show ‖c k * w ⟨k, m k⟩‖ = 1`.
-
-Rewrite using `[hnorm]`. Conclude with `div_self (hmpos k).ne'`. Take `⟨s, hs, hsN⟩` from `Set.mem_iUnion₂.mp (ht hw'S)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bound_of_local_bounds_of_blockScale :
     ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (T : Set ((Σ k, J k) → ℂ))

@@ -20,13 +20,11 @@ section Forms
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_homogeneousComponent G, Finset.mul_sum]`. Rewrite using `[map_sum]`. Establish `hterm : ∀ i, homogeneousComponent d (P * homogeneousComponent i G) = if d = l + i then P * homogeneousComponent i G else 0` using `fun i => homogeneousComponent_of_mem ((hP.mul (homogeneousComponent_isHomogeneous i G)))`. Repeatedly rewrite using `[hterm]`. Distinguish the cases in `h : l ≤ d`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h]`. Apply the tactic sequence `have h2 : ∀ i, (if d = l + i then P * homogeneousComponent i G else 0) = if d - l = i then P * homogeneousComponent i G else 0 := fun i => by split_ifs <;> first | rfl | (exfalso; omega)`. Repeatedly rewrite using `[h2]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[homogeneousComponent_eq_zero, mul_zero]`. Simplify using `only [Finset.mem_range] at hm`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h]`.
-
-Conclude with `Finset.sum_eq_zero fun i _ => if_neg (by omega)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homogeneousComponent_mul_of_isHomogeneous {σ R : Type*} [CommRing R] {P : MvPolynomial σ R}
     {l : ℕ} (hP : P.IsHomogeneous l) (G : MvPolynomial σ R) (d : ℕ) :
@@ -54,13 +52,11 @@ theorem homogeneousComponent_mul_of_isHomogeneous {σ R : Type*} [CommRing R] {P
     exact Finset.sum_eq_zero fun i _ => if_neg (by omega)
 
 /- English proof (translation)
-Take `⟨G0, hG0⟩` from `IsNoetherian.noetherian (Ideal.span {h : Poly k N | h ∈ P ∧ ∃ e : ℕ, h.IsHomogeneous e})`. Establish `hmem : ∀ g ∈ G0, ∃ T : Finset (Poly k N), (T : Set (Poly k N)) ⊆ {h : Poly k N | h ∈ P ∧ ∃ e : ℕ, h.IsHomogeneous e} ∧ g ∈ Ideal.span (T : Set (Poly k N))`. Introduce `g hg`. Establish `hg' : g ∈ Ideal.span {h : Poly k N | h ∈ P ∧ ∃ e : ℕ, h.IsHomogeneous e}` using `hG0 ▸ Submodule.subset_span hg`. Conclude with `Submodule.mem_span_finite_of_mem_span hg'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! Tf hTf hgT using hmem`. Use `⟨G0.biUnion Tf, fun h hh => ?_, fun f hf e he => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hhg⟩` from `Finset.mem_biUnion.mp hh`. Conclude with `hTf g hg hhg`. Establish `h1 : f ∈ Ideal.span {h : Poly k N | h ∈ P ∧ ∃ e : ℕ, h.IsHomogeneous e}` using `Ideal.subset_span ⟨hf, e, he⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[← hG0]`. Use `(Submodule.span_le.mpr ?_) h1` and prove the remaining obligations. Introduce `g hg`. Use `Ideal.span_mono ?_ (hgT g hg)` and prove the remaining obligations. Introduce `z hz`.
-
-Conclude with `Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨g, hg, hz⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_finset_forms (P : Ideal (Poly k N)) :
     ∃ T : Finset (Poly k N), (∀ h ∈ T, h ∈ P ∧ ∃ e : ℕ, h.IsHomogeneous e) ∧
@@ -133,15 +129,13 @@ def idealGraded (P : Ideal (Poly k N)) : FinGradedSub (S := k) (x := x) Ω where
     · rw [map_zero]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Use `SubSystem.ext_sub fun I => le_antisymm ?_ ?_` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hs, hse, hm, hae, rfl⟩`. Establish `hm' : m ∈ Submodule.span k {z | ∃ (f : Poly k N) (e' : ℕ), f ∈ P ∧ f.IsHomogeneous e' ∧ (e' : ℤ) = a ∧ z = aeval x f}` using `hm`. Use `show (aeval x s)⁻¹ • m ∈ idealMod (x := x) P I`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_induction (p := fun m _ => (aeval x s)⁻¹ • m ∈ idealMod (x := x) P I) ?_ ?_ ?_ ?_ hm'` and prove the remaining obligations. Introduce and unpack `_ ⟨f, e', hfP, hf, he', rfl⟩`. Establish `hee : e' = e` using `by omega`. Substitute `hee` using the available equality. Conclude with `Submodule.subset_span ⟨f, s, e', hfP, hs, hf, hse, by rw [smul_eq_mul, div_eq_inv_mul]⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `r a _ ha`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_of_tower_mem _ r ha`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hfP, hs, hf, hse, rfl⟩`.
-
-Conclude with `Submodule.subset_span ⟨aeval x f, s, e, e, hs, hse, Submodule.subset_span ⟨f, e, hfP, hf, rfl, rfl⟩, by simp, by rw [smul_eq_mul, div_eq_inv_mul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem idealGraded_tildeSys (P : Ideal (Poly k N)) : (idealGraded x P).tildeSys 0 = idealSys x P := by
   refine SubSystem.ext_sub fun I => le_antisymm ?_ ?_
@@ -165,7 +159,7 @@ theorem idealGraded_tildeSys (P : Ideal (Poly k N)) : (idealGraded x P).tildeSys
       Submodule.subset_span ⟨f, e, hfP, hf, rfl, rfl⟩, by simp, by rw [smul_eq_mul, div_eq_inv_mul]⟩
 
 /- English proof (translation)
-Rewrite using `[idealGraded_tildeSys]`. Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Rewrite using `[SurjectiveClosed.twist_sub_eq_mul, SurjectiveClosed.twist_sub_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twist_idealSys_eq (Q : SubSystem k x Ω) (P : Ideal (Poly k N)) :
     Q.twist (idealSys x P) = ((idealGraded x P).tildeSys 0).twist Q := by
@@ -174,7 +168,7 @@ theorem twist_idealSys_eq (Q : SubSystem k x Ω) (P : Ideal (Poly k N)) :
   rw [SurjectiveClosed.twist_sub_eq_mul, SurjectiveClosed.twist_sub_eq_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `c`. Rewrite using `[hJg]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, e, hf, hfe, he, rfl⟩`. Conclude with `⟨f, e, hJP hf, hfe, he, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem piece_le_idealGraded {J P : Ideal (Poly k N)} (hJP : J ≤ P) (Jg : FinGradedSub (S := k) (x := x) Ω)
     (hJg : ∀ c : ℤ, Jg.piece c = Submodule.span k {z | ∃ (f : Poly k N) (e : ℕ), f ∈ J ∧
@@ -187,11 +181,11 @@ theorem piece_le_idealGraded {J P : Ideal (Poly k N)} (hJP : J ≤ P) (Jg : FinG
   exact ⟨f, e, hJP hf, hfe, he, rfl⟩
 
 /- English proof (translation)
-Introduce `f e hf hfe a z hz`. Establish `hz' : z ∈ Submodule.span k {z | ∃ (g : Poly k N) (e' : ℕ), g ∈ P ∧ g.IsHomogeneous e' ∧ (e' : ℤ) = a ∧ z = aeval x g}` using `hz`. Rewrite using `[hJg]`. Use `Submodule.span_induction (p := fun z _ => aeval x f • z ∈ Submodule.span k {z | ∃ (f : Poly k N) (e'' : ℕ), f ∈ J ∧ f.IsHomogeneous e'' ∧ (e'' : ℤ) = a + e ∧ z = aeval x f}) ?_ ?_ ?_ ?_ hz'` and prove the remaining obligations. Introduce and unpack `_ ⟨g, e', -, hg, he', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨f * g, e + e', J.mul_mem_right g hf, hfe.mul hg, by push_cast; omega, by rw [map_mul, smul_eq_mul]⟩`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ ha hb`. Introduce `r a _ ha`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ r ha`.
+A detailed English derivation is pending.
 -/
 theorem idealGraded_kill {J : Ideal (Poly k N)} (P : Ideal (Poly k N)) (Jg : FinGradedSub (S := k) (x := x) Ω)
     (hJg : ∀ c : ℤ, Jg.piece c = Submodule.span k {z | ∃ (f : Poly k N) (e : ℕ), f ∈ J ∧
@@ -219,31 +213,29 @@ section Lift
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Establish `hmem : ∀ J : Cech.Idx (support x) 1, (∑ j : J.1.1, Cech.sgn J.1.1 j • (s (Cech.face J j).1 - s J.1)) ∈ K.sub J.1` using `fun J => Submodule.sum_mem _ fun j _ => zsmul_mem (hcompat _ _ (Cech.face_subset J j)) _`. Set `w : Cech.Cochain (fun I => K.sub I) 1` to `fun J => ⟨_, hmem J⟩`. Establish `hres : ∀ (I J : Chart x) (h : I.1 ⊆ J.1) (y : K.sub I), ((K.res I J h y : K.sub J) : Ω) = y` using `fun _ _ _ _ => rfl`. Establish `hw : w ∈ LinearMap.ker (Cech.d (fun I => K.sub I) K.res 1)`. Rewrite using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `L`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Cech.d_apply]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower, hres, w, SurjectiveClosed.sum_sgn_smul_sub s, Pi.zero_apply, ZeroMemClass.coe_zero]`. Conclude with `SurjectiveClosed.sum_sgn_sum_sgn s L`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb : w ∈ Cech.bdry (fun I => K.sub I) K.res 1` using `SurjectiveClosed.mem_bdry_of_subsingleton hsub w hw`. Take `⟨v, hv⟩` from `LinearMap.mem_range.mp (show w ∈ LinearMap.range (Cech.d (fun I => K.sub I) K.res 0) from hb)`. Set `ψ : Finset (Fin (N + 1)) → Ω` to `fun T => if h : (T.Nonempty ∧ T ⊆ support x) ∧ T.card = 0 + 1 then s ⟨T, h.1⟩ - (v ⟨⟨T, h.1⟩, h.2⟩ : Ω) else 0`. Establish `hψ : ∀ I : Cech.Idx (support x) 0, ψ I.1.1 = s I.1 - (v I : Ω)` using `fun I => by`. Simplify using `only [ψ]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ⟨I.1.2, I.2⟩]`. Establish `hpair : ∀ J : Cech.Idx (support x) 1, ∑ j : J.1.1, Cech.sgn J.1.1 j • ψ (J.1.1.erase j) = 0`. Introduce `J`. Establish `e` using `congrArg (fun z : Cech.Cochain (fun I => K.sub I) 1 => ((z J : K.sub J.1) : Ω)) hv`. Rewrite `e` using `[Cech.d_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower, hres, w, SurjectiveClosed.sum_sgn_smul_sub s] at e`. Establish `hj : ∀ j : J.1.1, ψ (J.1.1.erase j) = s (Cech.face J j).1 - (v (Cech.face J j) : Ω)` using `fun j => hψ (Cech.face J j)`. Simplify using `only [hj, smul_sub, Finset.sum_sub_distrib]`. Rewrite using `[e, sub_self]`. Establish `hconst : ∀ a b : Fin (N + 1), x a ≠ 0 → x b ≠ 0 → ψ {a} = ψ {b}`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb`. Distinguish the cases in `hab : a = b`. Rewrite using `[hab]`. Establish `hsupp : ({a, b} : Finset (Fin (N + 1))) ⊆ support x`. Rewrite using `[Finset.insert_subset_iff, Finset.singleton_subset_iff]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(mem_support x).mpr ha, (mem_support x).mpr hb⟩`. Set `J : Cech.Idx (support x) 1` to `⟨⟨{a, b}, Finset.insert_nonempty _ _, hsupp⟩, Finset.card_pair hab⟩`. Establish `e` using `hpair J`. Establish `e2` using `Cech.sum_sgn_of_card_two (J := ({a, b} : Finset (Fin (N + 1)))) (Finset.card_pair hab)`. Rewrite `e` using `[Finset.sum_coe_sort ({a, b} : Finset (Fin (N + 1))) (fun j => Cech.sgn {a, b} j • ψ (({a, b} : Finset (Fin (N + 1))).erase j))]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e`, `e2` using `[Finset.sum_pair hab]`. Establish `ea : ({a, b} : Finset (Fin (N + 1))).erase a = {b}` using `Finset.erase_insert (by simpa using hab)`. Establish `eb : ({a, b} : Finset (Fin (N + 1))).erase b = {a}`. Rewrite using `[Finset.pair_comm]`. Conclude with `Finset.erase_insert (by simpa using Ne.symm hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[ea, eb, eq_neg_of_add_eq_zero_right e2, neg_smul, ← sub_eq_add_neg, ← smul_sub]`. Use `congrArg (fun z => Cech.sgn {a, b} a • z) e` as an intermediate fact. Simplify using `only [smul_smul, SurjectiveClosed.sgn_mul_self, one_smul, smul_zero, sub_eq_zero] at this`. Conclude with `this.symm`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Ω, ∀ a, x a ≠ 0 → t = ψ {a} := by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hne : ∃ i, x i ≠ 0`. Take `⟨i₀, hi₀⟩` from `hne`. Conclude with `⟨ψ {i₀}, fun a ha => hconst i₀ a hi₀ ha⟩`. Simplify using `only [not_exists, not_not] at hne`. Conclude with `⟨0, fun a ha => absurd (hne a) ha⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hdiff : ∀ I : Chart x, t - s I ∈ K.sub I`. Introduce `I`. Take `⟨a, haI⟩` from `I.2.1`. Establish `ha : x a ≠ 0` using `(mem_support x).mp (I.2.2 haI)`. Set `c1 : Cech.Idx (support x) 0` to `⟨⟨{a}, Finset.singleton_nonempty a, Finset.singleton_subset_iff.mpr (I.2.2 haI)⟩, Finset.card_singleton a⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub1 : c1.1.1 ⊆ I.1` using `Finset.singleton_subset_iff.mpr haI`. Rewrite using `[ht a ha, show ψ {a} = s c1.1 - (v c1 : Ω) from hψ c1, show s c1.1 - (v c1 : Ω) - s I = (s c1.1 - s I) - (v c1 : Ω) by ring]`. Conclude with `Submodule.sub_mem _ (hcompat c1.1 I hsub1) (K.mono c1.1 I hsub1 _ (v c1).2)`. Use `⟨t, ?_, hdiff⟩` and prove the remaining obligations. Rewrite using `[SubSystem.secs, Submodule.mem_iInf]`.
-
-Introduce `I`. Establish `: t = s I + (t - s I)` using `by ring`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (hs I) (hKQ I (hdiff I))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_of_subsingleton (Qc K : SubSystem S x Ω) (hKQ : ∀ I, K.sub I ≤ Qc.sub I)
     (hsub : Subsingleton (K.H 1)) (s : Chart x → Ω) (hs : ∀ I, s I ∈ Qc.sub I)
@@ -344,11 +336,11 @@ end StepThreeOnWLift
 open StepThreeOnWLift in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x T hK pp hpp`. Take `⟨Jg, hJg, hseq⟩` from `hSeq k Ω N x T`. Take `⟨cV, hV⟩` from `hVan k Ω N x T hK`. Establish `hle` using `piece_le_idealGraded (P := pp) hpp.1.2 Jg hJg`. Take `⟨cS, hS⟩` from `hTwo k Ω N x T hK Ω (idealGraded x pp) Jg hle (idealGraded_kill pp Jg hJg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨max cS (cV - T.c₁), fun b c hb hc s hs hcomp => ?_⟩` and prove the remaining obligations. Take `⟨b', rfl⟩ : ∃ b', b = b' + 1` from `⟨b - 1, by omega⟩`. Establish `hH : Subsingleton ((((T.L.pow (b' + 1)).twist (twistSys k x c)).twist (idealSys x pp)).H 1)`. Rewrite using `[twist_idealSys_eq]`. Use `SubSystem.subsingleton_H_one_of_quot _ ((Jg.tildeSys 0).twist ((T.L.pow (b' + 1)).twist (twistSys k x c))) (twist_tildeSys_mono hle _) ?_ (hS (b' + 1) c (le_trans (le_max_left _ _) hc))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `SubSystem.subsingleton_H_one_of_smul _ _ T.si T.si_ne (hseq b' c) (hV b' (c + T.c₁) (by linarith [le_max_right cS (cV - T.c₁)]))`. Conclude with `lift_of_subsingleton _ _ (SurjectiveClosed.twist_idealSys_le _ pp) hH s hs hcomp`.
+A detailed English derivation is pending.
 -/
 theorem StepThree.OnW.Lift.proof (hSeq : ClaimSeq.Statement.{u, w}) (hVan : ClaimVanish.Statement.{u, w})
     (hTwo : StepTwo.Statement.{u, w, w}) : StepThree.OnW.Lift.Statement.{u, w} := by

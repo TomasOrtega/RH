@@ -11,28 +11,28 @@ namespace GlobalTheory.HilbertNinety
 variable {F F' : Type} [Field F] [Field F'] [Algebra F F']
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (s : F' →+* F'))`.
+A detailed English derivation is pending.
 -/
 theorem mapS_mul (s : F' ≃ₐ[F] F') {n : ℕ} (x y : Matrix (Fin n) (Fin n) F') :
     (x * y).map s = x.map s * y.map s :=
   Matrix.map_mul (f := (s : F' →+* F'))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_add _ (map_add s) x y`.
+A detailed English derivation is pending.
 -/
 theorem mapS_add (s : F' ≃ₐ[F] F') {n : ℕ} (x y : Matrix (Fin n) (Fin n) F') :
     (x + y).map s = x.map s + y.map s :=
   Matrix.map_add _ (map_add s) x y
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapS_smul (s : F' ≃ₐ[F] F') {n : ℕ} (c : F') (x : Matrix (Fin n) (Fin n) F') :
     (c • x).map s = s c • x.map s := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[pow_succ, AlgEquiv.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapS_pow_succ (s : F' ≃ₐ[F] F') {n : ℕ} (j : ℕ) (x : Matrix (Fin n) (Fin n) F') :
     x.map ⇑(s ^ (j + 1)) = (x.map s).map ⇑(s ^ j) := by
@@ -46,7 +46,7 @@ theorem coe_galAct (s : F' ≃ₐ[F] F') {n : ℕ} (x : GL (Fin n) F') :
   rfl
 
 /- English proof (translation)
-Unfold `nrmG`. Rewrite using `[List.range_succ, List.map_append, List.prod_append]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nrmG_succ (s : F' ≃ₐ[F] F') {n : ℕ} (j : ℕ) (δ : GL (Fin n) F') :
     nrmG (galAct F F' n) s (j + 1) δ = nrmG (galAct F F' n) s j δ * galAct F F' n (s ^ j) δ := by
@@ -80,7 +80,7 @@ theorem tw_apply (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (Fin
       (v : Matrix (Fin n) (Fin n) F').map s * ((δ⁻¹ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [tw_apply, SetLike.val_smul, mapS_smul, smul_mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem tw_semilin (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (Fin n) (Fin n) F'))
     (hB : ∀ x ∈ B, x.map s ∈ B) (δ : GL (Fin n) F')
@@ -90,9 +90,9 @@ theorem tw_semilin (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (F
   simp only [tw_apply, SetLike.val_smul, mapS_smul, smul_mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing v with`. Consider the case `zero`. Use extensionality with `i k`. Simplify using `[nrmG]`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[pow_succ, Module.End.mul_apply, ih, tw_apply, mapS_mul, ← mapS_pow_succ, nrmG_succ, mul_inv_rev, Units.val_mul, ← map_inv, coe_galAct, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_pow (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (Fin n) (Fin n) F'))
     (hB : ∀ x ∈ B, x.map s ∈ B) (δ : GL (Fin n) F')
@@ -109,7 +109,7 @@ theorem tw_pow (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (Fin n
       Units.val_mul, ← map_inv, coe_galAct, mul_assoc]
 
 /- English proof (translation)
-Unfold `nrmG`. Apply `List.prod_eq_one` to reduce the goal to its premises. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `map_one _`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nrmG_one (s : F' ≃ₐ[F] F') {n : ℕ} (j : ℕ) :
     nrmG (galAct F F' n) s j (1 : GL (Fin n) F') = 1 := by
@@ -120,14 +120,14 @@ theorem nrmG_one (s : F' ≃ₐ[F] F') {n : ℕ} (j : ℕ) :
   exact map_one _
 
 /- English proof (translation)
-Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_finrank_eq_one [Finite F'] (s : F' ≃ₐ[F] F') : s ^ Module.finrank F F' = 1 := by
   rw [← IsGalois.card_aut_eq_finrank]
   exact pow_card_eq_one'
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[tw_pow, pow_finrank_eq_one, h1]`. Use extensionality with `i k`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tw_pow_finrank [Finite F'] (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (Fin n) (Fin n) F'))
     (hB : ∀ x ∈ B, x.map s ∈ B) (δ : GL (Fin n) F')
@@ -169,7 +169,7 @@ def sumMap (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (Fin n) (F
       Finset.mul_sum, Matrix.mul_smul]
 
 /- English proof (translation)
-The claim follows from `B.sum_mem fun i _ => B.smul_mem (v i).2.1 _`.
+A detailed English derivation is pending.
 -/
 theorem sumMap_mem (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (Fin n) (Fin n) F')) (δ : GL (Fin n) F')
     {ι : Type} [Fintype ι] (b : Module.Basis ι F F') (v : ι → keyP s B δ) :
@@ -177,15 +177,15 @@ theorem sumMap_mem (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (F
   B.sum_mem fun i _ => B.smul_mem (v i).2.1 _
 
 /- English proof (translation)
-Establish `hker : ∀ w : B, w ∈ LinearMap.ker (tw s B hB δ hδ - 1) ↔ (w : Matrix (Fin n) (Fin n) F').map s * ((δ⁻¹ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') = w`. Introduce `w`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, Module.End.one_apply, ← tw_apply s B hB δ hδ w]`. Conclude with `Subtype.ext_iff`. Set `toK : keyP s B δ → LinearMap.ker (tw s B hB δ hδ - 1)` to `fun p => ⟨⟨p, p.2.1⟩, (hker _).2 p.2.2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcoe : ∀ v : ι → keyP s B δ, (((∑ i, b i • ((toK (v i) : LinearMap.ker (tw s B hB δ hδ - 1)) : B)) : B) : Matrix (Fin n) (Fin n) F') = sumMap s B (keyP s B δ) b v`. Introduce `v`. Simplify using `[toK, sumMap]`. Use `⟨fun v w h => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h2 : (fun i => toK (v i)) = (fun i => toK (w i))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hbij.1` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[hcoe v, hcoe w, h]`. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h2 i` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun z : LinearMap.ker (tw s B hB δ hδ - 1) => ((z : B) : Matrix (Fin n) (Fin n) F')) this` as an intermediate fact. Simplify `this` using `[toK]`. Take `⟨u, hu⟩` from `hbij.2 ⟨y, hy⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => ⟨((u i : B) : Matrix (Fin n) (Fin n) F'), (u i : B).2, (hker _).1 (u i).2⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : B => (z : Matrix (Fin n) (Fin n) F')) hu` as an intermediate fact. Simplify `this` using `[sumMap]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sumMap_transfer (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matrix (Fin n) (Fin n) F'))
     (hB : ∀ x ∈ B, x.map s ∈ B) (δ : GL (Fin n) F')
@@ -225,31 +225,29 @@ theorem sumMap_transfer (s : F' ≃ₐ[F] F') {n : ℕ} (B : Subalgebra F' (Matr
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ s hs n B hB ε hεB hnrm`. Use `haveI hMf : Finite (Matrix (Fin n) (Fin n) F') := inferInstanceAs (Finite (Fin n → Fin n → F'))`. Use `haveI : Finite (GL (Fin n) F') := Finite.of_injective (fun u : GL (Fin n) F' => (u : Matrix (Fin n) (Fin n) F')) (fun u v h => Units.ext h)`. Establish `hinv : ((ε⁻¹ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') ∈ B`. Establish `hpos` using `(isOfFinOrder_of_finite ε).orderOf_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : ε⁻¹ = ε ^ (orderOf ε - 1)`. Use `(eq_inv_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Rewrite using `[← pow_succ, Nat.sub_add_cancel hpos, pow_orderOf_eq_one]`. Rewrite using `[he, Units.val_pow_eq_pow_val]`. Conclude with `pow_mem hεB _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : (((1 : GL (Fin n) F')⁻¹ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F') ∈ B`. Simplify using `using B.one_mem`. Use `set l := Module.finrank F F'`. Establish `hl : 0 < l` using `Module.finrank_pos`. Set `b` to `Module.finBasis F F'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT` using `GlobalTheory.T.galoisDescent_sum_basis_smul_ker_bijective F F' s hs B (tw s B hB ε hinv) (tw_semilin s B hB ε hinv) (tw_pow_finrank s B hB ε hinv hnrm) (Fin l) b`. Establish `hT0` using `GlobalTheory.T.galoisDescent_sum_basis_smul_ker_bijective F F' s hs B (tw s B hB 1 h1) (tw_semilin s B hB 1 h1) (tw_pow_finrank s B hB 1 h1 (nrmG_one s _)) (Fin l) b`. Take `⟨injM, surjM⟩` from `sumMap_transfer s B hB ε hinv b hT`. Take `⟨injN, surjN⟩` from `sumMap_transfer s B hB 1 h1 b hT0`. Establish `hrange : LinearMap.range (sumMap s B (keyP s B ε) b) = LinearMap.range (sumMap s B (keyP s B 1) b)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Take `⟨w, hw⟩` from `surjN _ (sumMap_mem s B ε b v)`. Conclude with `⟨w, hw⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Introduce and unpack `⟨v, rfl⟩`. Take `⟨w, hw⟩` from `surjM _ (sumMap_mem s B 1 b v)`. Conclude with `⟨w, hw⟩`. Set `e : (Fin l → keyP s B ε) ≃ₗ[fix s B] (Fin l → keyP s B 1)` to `((LinearEquiv.ofInjective _ injM).trans (LinearEquiv.ofEq _ _ hrange)).trans (LinearEquiv.ofInjective _ injN).symm`. Take `⟨ψ⟩` from `GlobalTheory.T.nonempty_linearEquiv_of_pi_fin_pow_finite (fix s B) (keyP s B ε) (keyP s B 1) l hl ⟨e⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1N : (1 : Matrix (Fin n) (Fin n) F') ∈ keyP s B 1` using `⟨B.one_mem, by simp [Matrix.map_one _ (map_zero s) (map_one s)]⟩`. Use `set x : Matrix (Fin n) (Fin n) F' := ((ψ.symm ⟨1, h1N⟩ : keyP s B ε) : Matrix (Fin n) (Fin n) F') with hxdef`. Establish `hxM : x ∈ keyP s B ε` using `(ψ.symm ⟨1, h1N⟩).2`. Establish `hgen : ∀ m : keyP s B ε, ∃ r : fix s B, (m : Matrix (Fin n) (Fin n) F') = (r : Matrix (Fin n) (Fin n) F') * x`. Introduce `m`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hmem : ((ψ m : keyP s B 1) : Matrix (Fin n) (Fin n) F') ∈ fix s B`. Use `⟨(ψ m).2.1, ?_⟩` and prove the remaining obligations. Use `(ψ m).2.2` as an intermediate fact. Simplify using `using this`. Set `r0 : fix s B` to `⟨_, hmem⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨r0, ?_⟩` and prove the remaining obligations. Establish `hr : (ψ m : keyP s B 1) = r0 • (⟨1, h1N⟩ : keyP s B 1)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Subring.smul_def, r0]`. Use `congrArg (fun z => ((ψ.symm z : keyP s B ε) : Matrix (Fin n) (Fin n) F')) hr` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.symm_apply_apply, map_smul, Submodule.coe_smul, Subring.smul_def, smul_eq_mul] at this`. Conclude with `this`. Take `⟨v, hv⟩` from `surjM 1 B.one_mem`. Use `choose r hr using fun i => hgen (v i)`. Use `set c : Matrix (Fin n) (Fin n) F' := ∑ i, b i • (r i : Matrix (Fin n) (Fin n) F')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcx : c * x = 1`. Rewrite using `[← hv]`. Simplify using `only [c, sumMap, LinearMap.coe_mk, AddHom.coe_mk, Finset.sum_mul, smul_mul_assoc, hr]`. Establish `hxc : x * c = 1` using `mul_eq_one_comm.1 hcx`. Set `X : GL (Fin n) F'` to `⟨x, c, hxc, hcx⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : (X : Matrix (Fin n) (Fin n) F') = x` using `rfl`. Use `⟨X, hX ▸ hxM.1, ?_⟩` and prove the remaining obligations. Establish `hsX : galAct F F' n s X = X * ε`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_galAct, Units.val_mul, hX]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]`. Use `_ = x * ε := by rw [hxM.2]`. Rewrite using `[hsX, inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem hilbert90_matrix_subalgebra_norm_one : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'),
     (∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) → ∀ (n : ℕ) (B : Subalgebra F' (Matrix (Fin n) (Fin n) F')),

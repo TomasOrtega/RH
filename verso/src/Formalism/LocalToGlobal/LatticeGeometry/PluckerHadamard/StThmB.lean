@@ -106,7 +106,7 @@ def ThmBI3R (E : ExtThmB U) : Prop :=
       (YU U h lev hlev).nefFib ((YU U h lev hlev).Mbar B lam s)
 
 /- English proof (translation)
-Introduce `_` and use `⟨1, one_pos, fun B lam s hB hr _ hs _ hd hg => h3 B lam s hB hr hs hd hg⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem thmBI3R_of (E : ExtThmB U) (h3 : ThmBI3 U h lev hlev E) : ThmBI3R U h lev hlev E :=
   fun _ => ⟨1, one_pos, fun B lam s hB hr _ hs _ hd hg => h3 B lam s hB hr hs hd hg⟩

@@ -7,7 +7,7 @@ import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FockMinorFunctional.fock_functional_nablaX` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FExistsFockFunctionalOnNablaXProducts.lean&line=39#L39)
 -/

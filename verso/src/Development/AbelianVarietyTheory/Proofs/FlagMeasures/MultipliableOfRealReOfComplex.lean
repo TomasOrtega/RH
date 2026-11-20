@@ -6,11 +6,11 @@ open scoped TensorProduct ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hc`. Establish `hc' : ∀ i, c i = ((c i).re : ℂ)` using `fun i => Complex.ext (by simp) (by simp [(hcr i).1])`. Establish `hre : HasProd (fun i => (c i).re) a.re`. Establish `h` using `(Complex.continuous_re.tendsto a).comp ha`. Use `h.congr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s`. Simplify using `only [Function.comp]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => hc' i), ← Complex.ofReal_prod, Complex.ofReal_re]`. Establish `h2 : HasProd (fun i => ENNReal.ofReal (c i).re) (ENNReal.ofReal a.re)`. Establish `h` using `(ENNReal.continuous_ofReal.tendsto a.re).comp hre`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.congr ?_` and prove the remaining obligations. Introduce `s`. Simplify using `only [Function.comp]`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg (fun i _ => (hcr i).2)]`. Conclude with `⟨h2.multipliable, by rw [h2.tprod_eq, ha.tprod_eq]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem multipliable_ofReal_re_of_complex (ι : Type) (c : ι → ℂ) (hc : Multipliable c)
     (hcr : ∀ i, (c i).im = 0 ∧ 0 ≤ (c i).re) :
@@ -33,7 +33,7 @@ theorem multipliable_ofReal_re_of_complex (ι : Type) (c : ι → ℂ) (hc : Mul
   exact ⟨h2.multipliable, by rw [h2.tprod_eq, ha.tprod_eq]⟩
 
 /- English proof (translation)
-The claim follows from `multipliable_ofReal_re_of_complex`.
+A detailed English derivation is pending.
 -/
 theorem multipliable_ofReal_re_of_complex' : ∀ (ι : Type) (c : ι → ℂ), Multipliable c → (∀ i, (c i).im = 0 ∧ 0 ≤ (c i).re) → Multipliable (fun i => ENNReal.ofReal (c i).re) ∧ ∏' i, ENNReal.ofReal (c i).re = ENNReal.ofReal (∏' i, c i).re :=
   multipliable_ofReal_re_of_complex

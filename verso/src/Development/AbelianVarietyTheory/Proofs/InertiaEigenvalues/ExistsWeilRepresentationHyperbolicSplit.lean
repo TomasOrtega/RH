@@ -19,11 +19,11 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A`. Use `⟨fun Φ => ?_, fun g h Φ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[Hyp.rg]`. Use function extensionality and compare the values at `p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hm : ((g * h : Matrix.SpecialLinearGroup (Fin 2) A.K) : Matrix (Fin 2) (Fin 2) A.K) = (g : Matrix (Fin 2) (Fin 2) A.K) * (h : Matrix (Fin 2) (Fin 2) A.K)` using `Matrix.SpecialLinearGroup.coe_mul g h`. Unfold `Hyp.rg`. Rewrite using `[hm]`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `ext <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weilHyp_rg : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E), (∀ Φ : A.K × A.K → ℂ, Hyp.rg A 1 Φ = Φ) ∧ ∀ (g h : SpecialLinearGroup (Fin 2) A.K) (Φ : A.K × A.K → ℂ), Hyp.rg A g (Hyp.rg A h Φ) = Hyp.rg A (g * h) Φ := by
   intro F E _ _ _ _ _ A
@@ -40,9 +40,9 @@ theorem weilHyp_rg : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyN
     ext <;> ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ν ψ x z Φ`. Use function extensionality and compare the values at `p`. Simplify using `only [Hyp.pt, Hyp.rg, nS, fourB, Hyp.kx, Et.psiK]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, mul_one, mul_zero, add_zero, zero_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `b`. Rewrite using `[show x * b * (p.1 * z + p.2) = z * x * (p.1 * b) + x * b * p.2 by ring, map_add, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weilHyp_nS : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ν : Measure A.K) (ψ : AddChar F ℂ) (x z : A.K) (Φ : A.K × A.K → ℂ), Hyp.pt A ν ψ x (fun p => A.psiK ψ (z * x * (p.1 * p.2)) * Φ p) = Hyp.rg A (nS z) (Hyp.pt A ν ψ x Φ) := by
   intro F E _ _ _ _ _ A ν ψ x z Φ
@@ -56,31 +56,29 @@ theorem weilHyp_nS : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyN
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ hK hL x μ hμ`. Take `⟨e, he, hse⟩` from `GlobalTheory.T.exists_idempotent_star_eq_one_sub_of_not_isField F E A hK hL`. Take `⟨hci, hcc, hN, hker, hsm, hunit⟩` from `GlobalTheory.T.idempotentCoordinates_structure F E A e he hse`. Take `⟨ν, hν⟩` from `GlobalTheory.T.exists_selfDual_haar_hyperbolicKernelPsiK F E A ψ hψ x`. Establish `hνH : ν.IsAddHaarMeasure` using `hν.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT` using `GlobalTheory.T.partialFourier_psiK_preserves_testFunctions F E A ψ hψ x ν hνH`. Establish `hDD` using `GlobalTheory.T.hyperbolicPartialFourier_twice_eq_reflection F E A ψ (x : A.K) ν hν`. Take `⟨hTcc, hTci⟩` from `GlobalTheory.T.isLocallyConstantCompactSupport_idempotentCoordinates_iff F E A e hci hcc`. Take `⟨hTrg, hTneg, hTsc, hTmul, hTlin⟩` from `GlobalTheory.T.isLocallyConstantCompactSupport_hyperbolic_operations F E A`. Take `⟨hpsi, hkerlc⟩` from `GlobalTheory.T.isLocallyConstant_etaleTraceAddChar_hermitianKernel F E A ψ hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hrg1, hrgm⟩` from `weilHyp_rg F E A`. Establish `hlin` using `GlobalTheory.T.hyperbolicPartialFourier_linear_on_test F E A ψ hψ (x : A.K) ν hνH`. Use `set P := Hyp.pt A ν ψ (x : A.K) with hP`. Establish `h4 : ∀ Φ, IsTest Φ → P (P (P (P Φ))) = Φ`. Introduce `Φ hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDD Φ hΦ, hDD _ (hTneg Φ hΦ)]`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Establish `hW : ∀ g φ, Hyp.wHyp A e ν ψ x g φ = fun y => P (P (P (Hyp.rg A g (P (fun p => φ (Hyp.cc A e p)))))) (Hyp.ci A e y)` using `fun _ _ => rfl`. Establish `hkey : ∀ g φ (Φ' : A.K × A.K → ℂ), IsTest Φ' → Hyp.rg A g (P (fun p => φ (Hyp.cc A e p))) = P Φ' → Hyp.wHyp A e ν ψ x g φ = fun y => Φ' (Hyp.ci A e y)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g φ Φ' hΦ' h`. Rewrite using `[hW, h, h4 Φ' hΦ']`. Establish `hetaK : ∀ s : A.Kˣ, A.etaK s = 1`. Introduce `s`. Establish `h1` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.2.1 (Hyp.cc A e ((s : A.K), 1)) (hunit s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[hN, mul_one]`. Then use the resulting hypothesis. Use `⟨Hyp.wHyp A e ν ψ x, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g φ hφ`. Rewrite using `[hW]`. Conclude with `hTci _ (hT _ (hT _ (hT _ (hTrg g _ (hT _ (hTcc φ hφ))))))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ hφ`. Rewrite using `[hW, hrg1, h4 _ (hTcc φ hφ)]`. Use function extensionality and compare the values at `y`. Use `show φ (Hyp.cc A e (Hyp.ci A e y)) = φ y`. Rewrite using `[hcc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `g h φ hφ`. Establish `hin : (fun p => Hyp.wHyp A e ν ψ x h φ (Hyp.cc A e p)) = P (P (P (Hyp.rg A h (P (fun p => φ (Hyp.cc A e p))))))`. Use function extensionality and compare the values at `p`. Rewrite using `[hW]`. Simplify using `only [hci]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hW (g * h) φ, hW g (Hyp.wHyp A e ν ψ x h φ), hin, h4 _ (hTrg h _ (hT _ (hTcc φ hφ))), hrgm]`. Introduce `g c φ φ' hφ hφ'`. Establish `hc1 : (fun p => (c • φ + φ') (Hyp.cc A e p)) = c • (fun p => φ (Hyp.cc A e p)) + (fun p => φ' (Hyp.cc A e p))` using `rfl`. Establish `t1` using `hTcc φ hφ`. Establish `t2` using `hTcc φ' hφ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hrl : ∀ (Φ Φ' : A.K × A.K → ℂ), Hyp.rg A g (c • Φ + Φ') = c • Hyp.rg A g Φ + Hyp.rg A g Φ'` using `fun _ _ => rfl`. Rewrite using `[hW, hW, hW, hc1, hlin c _ _ t1 t2, hrl, hlin c _ _ (hTrg g _ (hT _ t1)) (hTrg g _ (hT _ t2)), hlin c _ _ (hT _ (hTrg g _ (hT _ t1))) (hT _ (hTrg g _ (hT _ t2))), hlin c _ _ (hT _ (hT _ (hTrg g _ (hT _ t1)))) (hT _ (hT _ (hTrg g _ (hT _ t2))))]`. Both sides reduce to the same expression. Introduce `φ hφ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z y`. Establish `hΦ : IsTest (fun p : A.K × A.K => A.psiK ψ (z * (x : A.K) * (p.1 * p.2)) * φ (Hyp.cc A e p))` using `hTmul _ _ (hpsi.comp_continuous (by fun_prop)) (hTcc φ hφ)`. Rewrite using `[hkey (nS z) φ _ hΦ (weilHyp_nS F E A ν ψ (x : A.K) z _).symm]`. Simplify using `only`. Rewrite using `[← hN, hcc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s y`. Establish `hΦ : IsTest (fun p : A.K × A.K => (A.absK (s : A.K) : ℂ) * φ (Hyp.cc A e ((s : A.K) * p.1, (s : A.K) * p.2)))` using `hTmul _ _ (IsLocallyConstant.const _) (hTsc s _ (hTcc φ hφ))`. Rewrite using `[hkey (mS s) φ _ hΦ (GlobalTheory.T.hyperbolicPartialFourier_scale_eq_torusAction F E A ν hνH ψ (x : A.K) s (fun p => φ (Hyp.cc A e p))).symm]`. Simplify using `only`. Rewrite using `[hetaK, one_mul, ← hsm, hcc]`.
-
-Introduce `y`. Rewrite using `[one_mul]`. Conclude with `GlobalTheory.T.hyperbolicWeylAction_eq_fourierEtaleL F E A ψ (x : A.K) e ν μ hT hDD (fun Φ hΦ => hTrg _ Φ hΦ) hTcc hcc (hker ψ (x : A.K)) (hkerlc (x : A.K)) (GlobalTheory.T.selfDualMeasure_etaleHermitian_eq_coords F E A ψ hψ x e he hse ν μ hν hμ) φ hφ y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_hyperbolic : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → IsField A.K → ¬ IsField A.L → ∀ (x : A.Kˣ) (μ : Measure A.L), SelfDual μ (A.kerL ψ x) → ∃ W, A.IsWeil ψ x A.etaK μ 1 W := by
   intro F E _ _ _ _ _ A ψ hψ hK hL x μ hμ

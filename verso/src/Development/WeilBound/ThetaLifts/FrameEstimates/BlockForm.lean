@@ -11,13 +11,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace SignatureOfHermitianForm
 
 /- English proof (translation)
-Set `e : Fin n ≃ Fin r ⊕ Fin s` to `(finCongr h.symm).trans finSumFinEquiv.symm`. Set `A' : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e`. Establish `h1 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ)).submatrix e e`. Rewrite using `[← hA]`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[A', Matrix.mul_apply]`. Establish `h2 : A'.det * M.det * (A'.map star).det ≠ 0`. Rewrite using `[← Matrix.det_transpose A', ← Matrix.det_mul, ← Matrix.det_mul, h1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg]`. Simplify using the standard rewrite rules. Establish `h3 : A'.det ≠ 0` using `left_ne_zero_of_mul (left_ne_zero_of_mul h2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨right_ne_zero_of_mul (left_ne_zero_of_mul h2), fun x => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit A'` using `(Matrix.isUnit_iff_isUnit_det A').2 (Ne.isUnit h3)`. Take `⟨u, hu⟩` from `Matrix.mulVec_surjective_iff_isUnit.2 hu x`. Use `⟨u ∘ e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `only [A', Matrix.mulVec, dotProduct, Matrix.submatrix_apply, id, Function.comp]`. Rewrite using `[← e.sum_comp]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sig_sq {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : r + s = n) (A : Matrix (Fin n) (Fin r ⊕ Fin s) ℂ)
     (hA : Aᵀ * M * A.map star = Matrix.fromBlocks 1 0 0 (-1)) :
@@ -45,7 +45,7 @@ theorem sig_sq {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : r + s = n) (A
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.fromBlocks_mulVec]`. Simplify using `[dotProduct, Fintype.sum_sum_type, Matrix.neg_mulVec, Complex.mul_conj, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem block_form {r s : ℕ} (w : Fin r ⊕ Fin s → ℂ) :
     w ⬝ᵥ (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ)) *ᵥ star w
@@ -54,25 +54,23 @@ theorem block_form {r s : ℕ} (w : Fin r ⊕ Fin s → ℂ) :
   simp [dotProduct, Fintype.sum_sum_type, Matrix.neg_mulVec, Complex.mul_conj, sub_eq_add_neg]
 
 /- English proof (translation)
-Take `⟨h, A, hA⟩` from `h`. Use `choose u hu using fun i => (sig_sq h A hA).2 (x i)`. Set `L : (Fin k → ℂ) →ₗ[ℂ] (Fin r ⊕ Fin s → ℂ)` to `Fintype.linearCombination ℂ u`. Establish `hL : ∀ v, A *ᵥ L v = ∑ i, v i • x i`. Introduce `v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [L, Fintype.linearCombination_apply, Matrix.mulVec_sum, Matrix.mulVec_smul, hu]`. Establish `hinj : ∀ v, L v = 0 → v = 0`. Introduce `v hv`. Establish `h0` using `hL v`. Rewrite `h0` using `[hv, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Establish `h1` using `congrArg (fun z => z ⬝ᵥ M *ᵥ star (y j)) h0`. Simplify using `only [zero_dotProduct, sum_dotProduct, smul_dotProduct, hxy, smul_eq_mul, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_right hc`. Establish `hiso : ∀ v, ∑ i, Complex.normSq (L v (Sum.inl i)) = ∑ j, Complex.normSq (L v (Sum.inr j))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v`. Establish `h1` using `block_form (L v)`. Establish `h2 : (A *ᵥ L v) ⬝ᵥ M *ᵥ star (A *ᵥ L v) = 0`. Rewrite using `[hL]`. Simplify using `only [star_sum, star_smul, Matrix.mulVec_sum, Matrix.mulVec_smul, sum_dotProduct, smul_dotProduct, dotProduct_sum, dotProduct_smul, hxx, smul_zero, Finset.sum_const_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h3 : star (A *ᵥ L v) = A.map star *ᵥ star (L v)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite `h2` using `[h3, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA, h1]`. Conclude with `sub_eq_zero.1 (Complex.ofReal_eq_zero.1 h2)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : ∀ {m : ℕ} (f : Fin m → ℂ), ∑ i, Complex.normSq (f i) = 0 → ∀ i, f i = 0`. Introduce `m f hf i`. Conclude with `Complex.normSq_eq_zero.1 ((Finset.sum_eq_zero_iff_of_nonneg fun i _ => Complex.normSq_nonneg (f i)).1 hf i (Finset.mem_univ i))`. Use `le_min ?_ ?_` and prove the remaining obligations. Use `LinearMap.finrank_le_finrank_of_injective (f := (LinearMap.funLeft ℂ ℂ Sum.inl) ∘ₗ L) (by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `h1 : ∀ i, L v (Sum.inl i) = 0` using `fun i => congrFun hv i`. Establish `h2` using `hz (fun j => L v (Sum.inr j)) (by rw [← hiso]; simp [h1])`. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `(i | j)`. Conclude with `h1 i`. Conclude with `h2 j)`. Simplify using `using this`. Use `LinearMap.finrank_le_finrank_of_injective (f := (LinearMap.funLeft ℂ ℂ Sum.inr) ∘ₗ L) (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `h1 : ∀ i, L v (Sum.inr i) = 0` using `fun i => congrFun hv i`. Establish `h2` using `hz (fun j => L v (Sum.inl j)) (by rw [hiso]; simp [h1])`. Apply `hinj` to reduce the goal to its premises.
-
-Use extensionality with `(i | j)`. Conclude with `h2 i`. Conclude with `h1 j)`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sig_index {n r s k : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) (c : ℂ) (hc : c ≠ 0)
     (x y : Fin k → Fin n → ℂ) (hxx : ∀ i j, x i ⬝ᵥ M *ᵥ star (x j) = 0)
@@ -132,7 +130,7 @@ theorem sig_index {n r s k : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M
     simpa using this
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Simplify using `[dotProduct, Matrix.mulVec, hτ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_map {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (τ : E →+* ℂ)
     (hτ : ∀ x, τ (σ x) = star (τ x)) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : ℂ) (x y : Fin n → E) :
@@ -141,11 +139,11 @@ theorem form_map {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F
   simp [dotProduct, Matrix.mulVec, hτ]
 
 /- English proof (translation)
-Use `⟨?_, h.1, fun fr hfr => ?_⟩` and prove the remaining obligations. Take `⟨h, A, hA⟩` from `h`. Introduce `h0`. Apply `(sig_sq h A hA).1` to reduce the goal to its premises. Establish `: (J.map τ).det = τ J.det` using `(RingHom.map_det τ J).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_smul, this, h0, map_zero, mul_zero]`. Use `sig_index h c hc (fun i l => τ (fr.x i l)) (fun i l => τ (fr.y i l)) (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Use `hfr.xx i j` as an intermediate fact. Unfold `form at this`. Rewrite using `[form_map σ τ hτ, this, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `hfr.xy i j` as an intermediate fact. Unfold `form at this`. Rewrite using `[form_map σ τ hτ, this]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem of_sig {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (τ : E →+* ℂ) (hτ : ∀ x, τ (σ x) = star (τ x)) {n r s : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : ℂ) (hc : c ≠ 0)
@@ -169,9 +167,9 @@ theorem of_sig {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
 end SignatureOfHermitianForm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n X r s hX`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hτ` using `hB.cm.2.2.2 (B.emb w).1`. Break down `hX with hX | hX` into its components or cases. Use `SignatureOfHermitianForm.of_sig σ _ hτ X.J 1 one_ne_zero (r := r) (s := s) (by rw [one_smul]; exact hX.sig w)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `⟨⟨Or.inl hX.herm, this.1⟩, this.2⟩`. Use `SignatureOfHermitianForm.of_sig σ _ hτ X.J Complex.I Complex.I_ne_zero (hX.sig w)` as an intermediate fact. Conclude with `⟨⟨Or.inr hX.skew, this.1⟩, this.2⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem epsOf_of : EpsOf := by
   intro F E _ _ _ _ _ σ B hB n X r s hX

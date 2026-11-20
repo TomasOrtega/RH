@@ -5,19 +5,19 @@ namespace GlobalTheory
 open Module in
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F L`. Set `ε : Fin (Module.finrank F L) ≃ (L →ₐ[F] Ω)` to `Fintype.equivOfCardEq (by rw [AlgHom.card F L Ω, Fintype.card_fin])`. Set `E` to `Algebra.embeddingsMatrixReindex F Ω b ε`. Establish `hE : E.det ≠ 0`. Introduce `h0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two F Ω b ε`. Rewrite `h1` using `[show (Algebra.embeddingsMatrixReindex F Ω b ε).det = 0 from h0]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow] at h1`. Conclude with `Algebra.discr_not_zero_of_basis F b ((map_eq_zero _).mp h1)`. Establish `hEa : ∀ i k, E i k = ε k (b i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i k`. Simplify using `[E, Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix]`. Set `v : Fin (Module.finrank F L) → Ω` to `fun i => ∑ t, (b.repr (a t) i) • e t`. Establish `hv : Matrix.vecMul v E = 0`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.vecMul, dotProduct]`. Simplify using `only [Pi.zero_apply, hEa, v]`. Establish `hk` using `h (ε k)`. Rewrite using `[← hk]`. Repeatedly rewrite using `[Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr (a t), map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hv0 : v = 0` using `Matrix.eq_zero_of_vecMul_eq_zero hE hv`. Establish `hc : ∀ t i, b.repr (a t) i = 0`. Introduce `t i`. Use `congrFun hv0 i` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Fintype.linearIndependent_iff.mp he) (fun t => b.repr (a t) i) this t`. Use function extensionality and compare the values at `t`. Rewrite using `[Pi.zero_apply, ← b.sum_repr (a t)]`. Simplify using `[hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_mul_embeddings_eq_zero (F Ω L : Type) [Field F] [CharZero F] [Field Ω]
     [IsAlgClosed Ω] [Algebra F Ω] [Field L] [Algebra F L] [FiniteDimensional F L] (m : ℕ)

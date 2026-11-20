@@ -16,7 +16,7 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 open GlobalTheory.KeyEq
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KeyIsoNormal.val_iff_and_nrm_iff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaLawProofs%2FNormalFormsEqOfKeyDataIsoComplex.lean&line=208#L208)
 -/

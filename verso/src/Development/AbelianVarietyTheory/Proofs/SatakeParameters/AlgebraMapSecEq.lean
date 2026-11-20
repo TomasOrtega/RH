@@ -30,7 +30,7 @@ theorem algebraMap_sec_eq (s : X ⟶ Sp k) (U : X.Opens) (r : k) :
     algebraMap k (Sec s U) r = restrictGlobal X U (algebraMap k Γ(X, ⊤) r) := rfl
 
 /- English proof (translation)
-Use `letI := algΓ s`. Rewrite using `[algebra_compatible_smul (Sec s U) r x, map_smul, algebraMap_sec_eq]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toOm_smul_k (s : X ⟶ Sp k) (q : ℕ) (U : X.Opens) (r : k) (x : OmU s U q) :
     letI := algΓ s
@@ -103,7 +103,7 @@ def pairPtθ (hf : f ≫ s = s') : (pairPtX hf).G ⟶ (pairPtX' hf).G where
     ((pairPull (over_id hf)).naturality a b)))
 
 /- English proof (translation)
-The claim follows from `SemiHom.mOm_mOm _ _ _ (fun _ ↦ rfl) x`.
+A detailed English derivation is pending.
 -/
 theorem pairPtθ_compat (hf : f ≫ s = s') (q : ℕ) (p : (Pair f)ᵒᵖ)
     (x : (OmF (OPt s) q).obj ((pairPtX hf).G.obj p)) :

@@ -11,7 +11,7 @@ universe u
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Use `⟨fun y ⟨n, hn⟩ => HomogeneousLocalization.val_injective (𝒜 := 𝒜) (x := S) ?_⟩` and prove the remaining obligations. Rewrite using `[HomogeneousLocalization.val_zero]`. Use `IsReduced.eq_zero _ ⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← HomogeneousLocalization.val_pow, hn, HomogeneousLocalization.val_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma SectionsLatticeFS.isReduced_homogeneousLocalization {ι R A : Type*} [CommRing R]
     [CommRing A] [Algebra R A] [AddCommMonoid ι] [DecidableEq ι] {𝒜 : ι → Submodule R A}
@@ -23,9 +23,7 @@ lemma SectionsLatticeFS.isReduced_homogeneousLocalization {ι R A : Type*} [Comm
   rw [← HomogeneousLocalization.val_pow, hn, HomogeneousLocalization.val_zero]
 
 /- English proof (translation)
-Introduce `A _ _ N`. Establish `: ∀ x : projectiveSpace A N, _root_.IsReduced ((projectiveSpace A N).presheaf.stalk x)` using `fun x => by`. Use `x.isPrime` as an intermediate fact. Establish `: _root_.IsReduced (CommRingCat.of (HomogeneousLocalization.AtPrime (ProjSpace.grading A N) x.asHomogeneousIdeal.toIdeal))` using `SectionsLatticeFS.isReduced_homogeneousLocalization`. Conclude with `isReduced_of_injective _ (Proj.stalkIso (ProjSpace.grading A N) x).commRingCatIsoToRingEquiv.injective`.
-
-Conclude with `isReduced_of_isReduced_stalk (projectiveSpace A N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SectionsLatticeFS.PNReduced.proof : SectionsLatticeFS.PNReduced.Statement.{u} := by
   intro A _ _ N

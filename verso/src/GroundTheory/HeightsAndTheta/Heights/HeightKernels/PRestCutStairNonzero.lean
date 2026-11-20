@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Unfold `RestTerms.flagIntegral`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_sub, coeff_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem flagIntegral_sub_C_mul (f N : ℕ) (H S : RestTerms.RootRing f N) (b : ℚ) :
     RestTerms.flagIntegral f N (H - C b * S) =
@@ -19,9 +19,9 @@ theorem flagIntegral_sub_C_mul (f N : ℕ) (H S : RestTerms.RootRing f N) (b : �
   ring
 
 /- English proof (translation)
-Introduce `f N H hH hne hstair`. Take `⟨b, hb⟩` from `h₁ f N H hH`. Establish `hmem : H - C b * restStair f N ∈ restPsumIdeal f N` using `hb`. Establish `h0` using `h₂ f N _ hmem`. Rewrite `h0` using `[flagIntegral_sub_C_mul, hstair, mul_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne h0`.
+A detailed English derivation is pending.
 -/
 theorem RestCutStairNonzero.proof (h₁ : RestTerms.CoinvariantTopDegree.Statement)
     (h₂ : RestCutFlagKillsIdeal.Statement) : RestCutStairNonzero.Statement := by

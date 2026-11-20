@@ -37,7 +37,7 @@ def pairCovPull {R R' : Type} [CommRing R] [CommRing R'] {Z Y : Scheme.{0}} {J :
   smul p := semiHom_secPull w p.unop.1
 
 /- English proof (translation)
-Rewrite using `[← CoefMap.pullCohomologyOne_comp, ← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ (𝟙 _) (fun T b ↦ by rw [NatTrans.id_app, mp_id]) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairCov_pull1_eq {R R' : Type} [CommRing R] [CommRing R'] {Z Y : Scheme.{0}} {J : Type}
     (W : J → Z.Opens) {ι : Y ⟶ Z} {s : Z ⟶ Sp R} {s' : Y ⟶ Sp R'} {σ : R →+* R'}
@@ -48,27 +48,25 @@ theorem pairCov_pull1_eq {R R' : Type} [CommRing R] [CommRing R'] {Z Y : Scheme.
   exact CoefMap.pullCohomologyOne_eq_of_natTrans _ _ (𝟙 _) (fun T b ↦ by rw [NatTrans.id_app, mp_id]) x
 
 /- English proof (translation)
-Set `G : (PairCov W ι)ᵒᵖ ⥤ AffOp Y` to `pairCovIncl W ι ⋙ pairFst ι`. Establish `hcov : ∀ T : AffOp Y, ∃ (n : ℕ) (b : Fin n → (OAff s').obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp Y) (u : T ⟶ S), IsUnit (mp (OAff s') u (b i)) → ∃ (t : (PairCov W ι)ᵒᵖ) (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u`. Introduce `T`. Establish `hT : IsAffineOpen T.unop.1` using `T.unop.2`. Set `Gs : Set Γ(Y, T.unop.1)` to `{f | ∃ j, Y.basicOpen f ≤ ι ⁻¹ᵁ W j}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hG : Ideal.span Gs = ⊤`. Rewrite using `[← hT.self_le_iSup_basicOpen_iff]`. Introduce `x hx`. Establish `hxU : ι.base x ∈ ⨆ i, W i` using `by rw [hW]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hxU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hxf⟩` from `hT.exists_basicOpen_le (V := ι ⁻¹ᵁ W j) ⟨x, hj⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, ⟨j, hf⟩⟩, hxf⟩`. Take `⟨F, hFG, hF⟩` from `(Ideal.span_eq_top_iff_finite Gs).1 hG`. Use `⟨F.card, fun i ↦ (F.equivFin.symm i).1, ?_, ?_⟩` and prove the remaining obligations. Establish `hR : Set.range (fun i : Fin F.card ↦ (F.equivFin.symm i).1) = (F : Set Γ(Y, T.unop.1))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(F.equivFin.symm i).2`. Introduce `hf; exact ⟨F.equivFin ⟨f, hf⟩, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hR ▸ hF`. Introduce `i S u hu`. Take `⟨j, hj⟩` from `hFG (F.equivFin.symm i).2`. Use `set f : Γ(Y, T.unop.1) := (F.equivFin.symm i).1`. Establish `hB : IsAffineOpen (Y.basicOpen f)` using `hT.basicOpen f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hBT : Y.basicOpen f ≤ T.unop.1` using `Y.basicOpen_le f`. Establish `hSB : S.unop.1 ≤ Y.basicOpen f`. Establish `h1 : Y.basicOpen (Y.presheaf.map (homOfLE (leOfHom u.unop)).op f) = S.unop.1` using `Y.basicOpen_of_isUnit hu`. Rewrite `h1` using `[Scheme.basicOpen_res]`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `inf_le_right`. Set `p : Pair ι` to `⟨(⟨_, hB⟩, ⟨W j, hWa j⟩), hj⟩`. Set `t : PairCov W ι` to `⟨p, j, le_rfl⟩`. Use `⟨op t, (homOfLE (show (⟨_, hB⟩ : Y.affineOpens) ≤ T.unop from hBT)).op, (homOfLE (show S.unop ≤ (⟨_, hB⟩ : Y.affineOpens) from hSB)).op, ?_⟩` and prove the remaining obligations. Conclude with `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hdir : ∀ (t₁ t₂ : (PairCov W ι)ᵒᵖ) (S : AffOp Y), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (OAff s').obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp Y) (u : S ⟶ S'), IsUnit (mp (OAff s') u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ N …`. Introduce `t₁ t₂ S h₁ h₂`. Use `⟨1, fun _ ↦ 1, ?_, fun _ S' u _ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_eq_top_iff_finite]`. Conclude with `⟨{1}, by simp, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `t₁.unop.2`. Establish `hS'S : S'.unop.1 ≤ S.unop.1` using `leOfHom u.unop`. Establish `hS1 : S.unop.1 ≤ t₁.unop.1.1.1.1` using `leOfHom h₁.unop`. Establish `hS2 : S.unop.1 ≤ t₂.unop.1.1.1.1` using `leOfHom h₂.unop`. Set `A : Z.affineOpens` to `⟨t₁.unop.1.1.2.1 ⊓ t₂.unop.1.1.2.1, IsAffineOpen.inf t₁.unop.1.1.2.2 t₂.unop.1.1.2.2⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hA : S'.unop.1 ≤ ι ⁻¹ᵁ A.1` using `fun y hy ↦ ⟨t₁.unop.1.2 (hS1 (hS'S hy)), t₂.unop.1.2 (hS2 (hS'S hy))⟩`. Set `p₃ : Pair ι` to `⟨(S'.unop, A), hA⟩`. Set `t₃ : PairCov W ι` to `⟨p₃, j, inf_le_left.trans hj⟩`. Use `⟨op t₃, ⟨(homOfLE ?_).op⟩, ⟨(homOfLE ?_).op⟩, ⟨𝟙 _⟩⟩` and prove the remaining obligations. Conclude with `⟨hS'S.trans hS1, (inf_le_left : A.1 ≤ t₁.unop.1.1.2.1)⟩`.
-
-Conclude with `⟨hS'S.trans hS2, (inf_le_right : A.1 ≤ t₂.unop.1.1.2.1)⟩`. Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s'`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s') G H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') G H hcov hdir`. Conclude with `_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairCov_restrict_injective {R' : Type} [CommRing R'] {Z Y : Scheme.{0}} [Z.IsSeparated]
     {J : Type} (W : J → Z.Opens) (hW : ⨆ i, W i = ⊤) (hWa : ∀ i, IsAffineOpen (W i)) (ι : Y ⟶ Z)
@@ -144,7 +142,7 @@ end GlobalTheory.CechCmp
 namespace GlobalTheory.CechCmp
 
 /- English proof (translation)
-Simplify using `only [resG, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem appLE_resG_eq {Z Y : Scheme.{0}} (ι : Y ⟶ Z) {A V : Z.Opens} {T B : Y.Opens} (hV : V ≤ A)
     (e : T ≤ ι ⁻¹ᵁ V) (e' : B ≤ ι ⁻¹ᵁ A) (hT : T ≤ B) (x : Γ(Z, A)) :
@@ -152,15 +150,15 @@ theorem appLE_resG_eq {Z Y : Scheme.{0}} (ι : Y ⟶ Z) {A V : Z.Opens} {T B : Y
   simp only [resG, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Introduce `R _ Z _ s J W hW hWa R' _ σ Y s' ι w c hc ⟨h', hh'⟩`. Use `set y := GlobalTheory.CechDR.pullHO1 w (cmp s W hW c)`. Establish `e1 : (GlobalTheory.CechDR.pairPull w).pull1 (cmp s W hW c) = (pairRes ι s').pull1 y` using `isPullO_pullHO1 w _`. Apply `pairCov_restrict_injective W hW hWa ι s'` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (CoefMap.restrict (OAff s') (pairCovIncl W ι ⋙ pairFst ι)).pull1 y = (CoefMap.restrict (OPair ι s') (pairCovIncl W ι)).pull1 ((pairRes ι s').pull1 y)`. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `CoefMap.pullCohomologyOne_eq_of_natTrans _ _ (𝟙 _) (fun T b ↦ by rw [NatTrans.id_app, mp_id]) y`. Rewrite using `[e2, ← e1, pairCov_pull1_eq, restrict_cmp s W hW hc, CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`. Set `ix : PairCov W ι → J` to `fun p ↦ idx (⟨p.1.1.2, p.2⟩ : Bas W)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hix : ∀ p : PairCov W ι, p.1.1.1.1 ≤ ι ⁻¹ᵁ W (ix p)` using `fun p y hy ↦ le_idx (⟨p.1.1.2, p.2⟩ : Bas W) (p.1.2 hy)`. Use `⟨fun p ↦ -resG Y (hix p.unop) (h' (ix p.unop)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p q a`. Establish `hqp : q.unop.1.1.1.1 ≤ p.unop.1.1.1.1` using `Pair.le_fst (leOfHom a.unop)`. Express the relevant statement in the definitionally equal form `-resG Y (hix q.unop) (h' (ix q.unop)) - resG Y hqp (-resG Y (hix p.unop) (h' (ix p.unop))) = (ι.appLE _ _ _).hom (resG Z _ (c (ix p.unop) (ix q.unop)))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_neg, resG_resG']`. Establish `hT : q.unop.1.1.1.1 ≤ ι ⁻¹ᵁ W (ix p.unop) ⊓ ι ⁻¹ᵁ W (ix q.unop)` using `le_inf (hqp.trans (hix p.unop)) (hix q.unop)`. Establish `hV : q.unop.1.1.2.1 ≤ W (ix p.unop) ⊓ W (ix q.unop)` using `le_inf ((show q.unop.1.1.2.1 ≤ p.unop.1.1.2.1 from Pair.le_snd (leOfHom a.unop)).trans (le_idx (⟨p.unop.1.1.2, p.unop.2⟩ : Bas W))) (le_idx (⟨q.unop.1.1.2, q.unop.2⟩ : Bas W))`. Establish `k` using `appLE_resG_eq ι (A := W (ix p.unop) ⊓ W (ix q.unop)) (B := ι ⁻¹ᵁ W (ix p.unop) ⊓ ι ⁻¹ᵁ W (ix q.unop)) hV q.unop.1.2 (fun _ hx => hx) hT (c (ix p.unop) (ix q.unop))`. Use `Eq.trans ?_ k.symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hh', map_sub, resG_resG', resG_resG']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem pullHO1_cmp_eq_zero_of_coboundary : ∀ (R : Type) [CommRing R] (Z : Scheme.{0}) [Z.IsSeparated]
     (s : Z ⟶ Sp R) (J : Type) (W : J → Z.Opens) (hW : ⨆ i, W i = ⊤), (∀ i, IsAffineOpen (W i)) →

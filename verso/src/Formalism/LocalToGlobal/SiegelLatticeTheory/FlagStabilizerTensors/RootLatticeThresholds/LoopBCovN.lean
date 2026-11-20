@@ -20,9 +20,9 @@ def CovNFormula : Prop :=
     LoopTerm.covN (Y := Y) C u = (θ * (2 * D.host.v) ^ eN D) ^ Fintype.card D.what₂.Tau
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`. Establish `hd : (1 : ℝ) ≤ |(NumberField.discr D.host.E : ℝ)|`. Establish `h0 : NumberField.discr D.host.E ≠ 0` using `NumberField.discr_ne_zero D.host.E`. Establish `h1 : (1 : ℤ) ≤ |NumberField.discr D.host.E|` using `Int.one_le_abs h0`. Conclude with `h1` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (1 : ℝ) ≤ |(NumberField.discr D.host.E : ℝ)| ^ (1 / (Module.finrank ℚ D.host.E : ℝ))` using `Real.one_le_rpow hd (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rdE_ge_one (D : D7) : 1 ≤ 2 * D.host.v := by
   unfold Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE
@@ -35,21 +35,19 @@ theorem rdE_ge_one (D : D7) : 1 ≤ 2 * D.host.v := by
   linarith
 
 /- English proof (translation)
-Establish `hbpos : 0 < large₂.sc.b`. Unfold `Scale.b`. Conclude with `Real.exp_pos _`. Establish `hv` using `rdE_ge_one D`. Establish `hv0 : 0 < 2 * D.host.v` using `by linarith`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heN : 0 ≤ eN D`. Unfold `eN`. Check the signs of the components of the expression. Establish `hy1 : 1 ≤ (2 * D.host.v) ^ eN D` using `Real.one_le_rpow hv heN`. Establish `hlog0 : 0 ≤ eN D * Real.log (2 * D.host.v)` using `mul_nonneg heN (Real.log_nonneg hv)`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyexp : (2 * D.host.v) ^ eN D = Real.exp (Real.log (2 * D.host.v) * eN D)` using `Real.rpow_def_of_pos hv0 _`. Establish `hcov : ∀ w, LoopTerm.covN (Y` using `Y) C w = ((2 * D.host.v) ^ eN D) ^ Fintype.card D.what₂.Tau := by`. Introduce `w`. Rewrite using `[hF D X Y 1 C w one_pos, one_mul]`. Establish `hx : (LoopTerm.covN (Y` using `Y) C u * LoopTerm.covN (Y := Y) C u') ^ (1 / (2 * (Fintype.card D.what₂.Tau : ℝ))) = 1 ∨ (LoopTerm.covN (Y := Y) C u * LoopTerm.covN (Y := Y) C u') ^ (1 / (2 * (Fintype.card D.what₂.Tau : ℝ))) = (2 * D.host.v) ^ eN D := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcov u, hcov u', ← pow_add, ← two_mul]`. Break down `Nat.eq_zero_or_pos (Fintype.card D.what₂.Tau) with h0 | hpos` into its components or cases. Use `left`. Simplify using `[h0]`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`. Establish `hN : (0 : ℝ) < Fintype.card D.what₂.Tau` using `by exact_mod_cast hpos`. Establish `h2 : ((2 * Fintype.card D.what₂.Tau : ℕ) : ℝ) * (1 / (2 * (Fintype.card D.what₂.Tau : ℝ))) = 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h2, Real.rpow_one]`. Establish `hxb : ∀ z : ℝ, (z = 1 ∨ z = (2 * D.host.v) ^ eN D) → 1 ≤ z ∧ z ≤ (2 * D.host.v) ^ eN D`. Apply the tactic sequence `rintro z (rfl | rfl) <;> exact ⟨by linarith, by linarith⟩`. Take `⟨hx1, hx2⟩` from `hxb _ hx`. Establish `hup' : Real.log (2 * D.host.v) * eN D ≤ Real.log large₂.sc.b * (C1 * (D.R.m : ℝ) ^ 2)` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `LoopTerm.CovWinN normWin`. Use `⟨le_trans ?_ hx1, le_trans hx2 ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_def_of_pos hbpos]`. Establish `hneg : Real.log large₂.sc.b * -(C1 * (D.R.m : ℝ) ^ 2) ≤ 0` using `by nlinarith`. Conclude with `Real.exp_le_one_iff.mpr hneg`.
-
-Rewrite using `[hyexp, Real.rpow_def_of_pos hbpos]`. Conclude with `Real.exp_le_exp.mpr hup'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covWinN_of (hF : CovNFormula) {D : D7} {X : HidaSetting D} {Y : Full X} (C : Choice X 1) (large₂ : SizeData₂ D) {C1 : ℝ}
     (hC1 : 0 ≤ C1) (hup : eN D * Real.log (2 * D.host.v) ≤ C1 * (D.R.m : ℝ) ^ 2 * Real.log large₂.sc.b)
@@ -96,19 +94,17 @@ theorem covWinN_of (hF : CovNFormula) {D : D7} {X : HidaSetting D} {Y : Full X} 
     exact Real.exp_le_exp.mpr hup'
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hT, hC, hQ, -⟩` from `hS`. Take `⟨-, -, -, -, -, -, hr1, hr2⟩` from `hQ`. Establish `h2v : 2 * D.host.v = D.host.rdE` using `by unfold Formalism.BasicNotions.Host.v; ring`. Rewrite using `[h2v]`. Establish `hq : (1 : ℝ) ≤ D.host.q` using `by exact_mod_cast D.host.hyp.1.one_lt.le`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : (1 : ℝ) ≤ D.host.d` using `by exact_mod_cast D.host.hyp.2.1.one_lt.le`. Establish `hn : (1 : ℝ) ≤ D.R.n`. Establish `: 1 ≤ D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions. Establish `ht : (1 : ℝ) ≤ D.R.t` using `hT.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqd : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.q : ℝ) * D.host.d`. Establish `h1 : (1 : ℝ) ≤ (D.host.q : ℝ) * D.host.d` using `by nlinarith`. Rewrite using `[Real.sqrt_le_left (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcond : D.host.rdE ≤ Formalism.MainNotions.szCond large₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.szCond`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : (0 : ℝ) ≤ (D.host.QS : ℝ) * ((D.host.q : ℝ) * D.host.d)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hc1 : (1 : ℝ) ≤ Formalism.MainNotions.szCond large₂` using `le_trans hr1 hcond`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : 0 < large₂.sc.b` using `lt_of_lt_of_le (by norm_num) (Formalism.MainNotions.S.two_le_scb large₂)`. Establish `h36 : Formalism.MainNotions.szCond large₂ ^ 36 ≤ Real.sqrt large₂.sc.b`. Establish `: Formalism.MainNotions.szCond large₂ ^ 36 ≤ Formalism.MainNotions.szCond large₂ ^ 36 * (D.R.t : ℝ) ^ 150`. Establish `: (1 : ℝ) ≤ (D.R.t : ℝ) ^ 150` using `one_le_pow₀ ht`. Use polynomial arithmetic with `[pow_pos (lt_of_lt_of_le one_pos hc1) 36]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `this.trans hC`. Establish `hl` using `Real.log_le_log (pow_pos (lt_of_lt_of_le one_pos hc1) 36) h36`. Rewrite `hl` using `[Real.log_pow, Real.log_sqrt hb0.le]`. Establish `hl2` using `Real.log_le_log (lt_of_lt_of_le one_pos hr1) hcond`. Move the coercions through the operations in `at hl`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_rd_le {D : D7} (large₂ : SizeData₂ D) (hS : Formalism.MainNotions.SizesAt large₂) :
     Real.log (2 * D.host.v) ≤ Real.log large₂.sc.b / 72 := by
@@ -147,9 +143,9 @@ theorem log_rd_le {D : D7} (large₂ : SizeData₂ D) (hS : Formalism.MainNotion
   linarith
 
 /- English proof (translation)
-Unfold `eN`. Establish `h : (D.R.rS : ℝ) ≤ (D.R.m : ℝ) / 2`. Establish `: 2 * D.R.rS ≤ D.R.m` using `by unfold Formalism.BasicNotions.Ranks.rS; omega`. Establish `: (2 * D.R.rS : ℝ) ≤ D.R.m` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h0 : (0 : ℝ) ≤ D.R.rS` using `by positivity`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by have := D.R.two_le_m; exact_mod_cast (by omega : 1 ≤ D.R.m)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem eN_le (D : D7) : eN D ≤ (D.R.m : ℝ) ^ 2 / 2 := by
   unfold eN
@@ -162,9 +158,9 @@ theorem eN_le (D : D7) : eN D ≤ (D.R.m : ℝ) ^ 2 / 2 := by
   nlinarith
 
 /- English proof (translation)
-Establish `hv` using `rdE_ge_one D`. Establish `hl0 : 0 ≤ Real.log (2 * D.host.v)` using `Real.log_nonneg hv`. Establish `hl` using `log_rd_le large₂ hS`. Establish `he` using `eN_le D`. Establish `hb : 0 ≤ Real.log large₂.sc.b` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 0 ≤ (D.R.m : ℝ) ^ 2` using `by positivity`. Use `covWinN_of hF C large₂ (by linarith) ?_ u u'` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hb` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right hC1 hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem covWinN_sizes (hF : CovNFormula) {D : D7} {X : HidaSetting D} {Y : Full X} (C : Choice X 1) (large₂ : SizeData₂ D)
     (hS : Formalism.MainNotions.SizesAt large₂) {C1 : ℝ} (hC1 : 1 / 144 ≤ C1) (u u' : D.what₂.Word) :
@@ -184,7 +180,7 @@ theorem covWinN_sizes (hF : CovNFormula) {D : D7} {X : HidaSetting D} {Y : Full 
         exact mul_le_mul_of_nonneg_right hC1 hm
 
 /- English proof (translation)
-Rewrite using `[hF D X Y θ C u hθ, hF D X Y θ C u' hθ]`. Establish `h1` using `rdE_ge_one D`. Establish `h2 : 0 < θ * (2 * D.host.v) ^ eN D` using `mul_pos hθ (Real.rpow_pos_of_pos (by linarith) _)`. Conclude with `mul_pos (pow_pos h2 _) (pow_pos h2 _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem covN_pos (hF : CovNFormula) {D : D7} {X : HidaSetting D} {Y : Full X} {θ : ℝ} (hθ : 0 < θ) (C : Choice X θ)
     (u u' : D.what₂.Word) : 0 < LoopTerm.covN (Y := Y) C u * LoopTerm.covN (Y := Y) C u' := by

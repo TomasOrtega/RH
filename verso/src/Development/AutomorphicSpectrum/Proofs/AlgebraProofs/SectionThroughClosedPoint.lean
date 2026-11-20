@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Sections
 
 /- English proof (translation)
-Set `x₀` to `pointOfClosedPoint (pullback.snd X.hom (spMap (IsLocalRing.residue R))) y hy`. Take `⟨⟨s, hs⟩, e⟩` from `GlobalTheory.reducePoint_residue_surjective X.hom R (𝟙 _) ⟨x₀ ≫ pullback.fst _ _, by`. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc, Category.comp_id]⟩`. Establish `e' : spMap (IsLocalRing.residue R) ≫ s = x₀ ≫ pullback.fst _ _` using `congrArg Subtype.val e`. Use `⟨Over.homMk s hs, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : s (PrimeSpectrum.comap (IsLocalRing.residue R) (IsLocalRing.closedPoint (IsLocalRing.ResidueField R))) = pullback.fst X.hom (spMap (IsLocalRing.residue R)) (x₀ (IsLocalRing.closedPoint (IsLocalRing.ResidueField R)))` using `congr($e' (IsLocalRing.closedPoint (IsLocalRing.ResidueField R)))`. Rewrite `e2` using `[IsLocalRing.comap_closedPoint]`. Conclude with `e2.trans (congrArg _ (pointOfClosedPoint_apply _ y hy _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_fibre {R : Type} [CommRing R] [HenselianLocalRing R]
     [IsAlgClosed (IsLocalRing.ResidueField R)] (X : Over (Sp R)) (hX : Smooth X.hom)
@@ -44,9 +44,9 @@ theorem exists_section_fibre {R : Type} [CommRing R] [HenselianLocalRing R]
   exact e2.trans (congrArg _ (pointOfClosedPoint_apply _ y hy _))
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (spMap (IsLocalRing.residue R))` using `.spec_of_surjective _ IsLocalRing.residue_surjective`. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : z ∈ Set.range (pullback.fst X.hom (spMap (IsLocalRing.residue R))) := by`. Rewrite using `[GlobalTheory.range_fst_residue]`. Conclude with `hz`. Use `exists_section_fibre X hX y ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hc.preimage (pullback.fst X.hom (spMap (IsLocalRing.residue R))).continuous` as an intermediate fact. Rewrite `this` using `[← Set.image_singleton, Set.preimage_image_eq _ (pullback.fst X.hom (spMap (IsLocalRing.residue R))).isClosedEmbedding.injective]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_section_closed {R : Type} [CommRing R] [HenselianLocalRing R]
     [IsAlgClosed (IsLocalRing.ResidueField R)] (X : Over (Sp R)) (hX : Smooth X.hom) {z : X.left}
@@ -62,9 +62,9 @@ theorem exists_section_closed {R : Type} [CommRing R] [HenselianLocalRing R]
     (pullback.fst X.hom (spMap (IsLocalRing.residue R))).isClosedEmbedding.injective] at this
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (spMap (IsLocalRing.residue R))` using `.spec_of_surjective _ IsLocalRing.residue_surjective`. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : z ∈ Set.range (pullback.fst X.hom (spMap (IsLocalRing.residue R))) := by`. Rewrite using `[GlobalTheory.range_fst_residue]`. Conclude with `hz`. Establish `: JacobsonSpace ↥(pullback X.hom (spMap (IsLocalRing.residue R)))` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd X.hom (spMap (IsLocalRing.residue R)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hc'⟩` from `nonempty_inter_closedPoints (Z := pullback.fst X.hom (spMap (IsLocalRing.residue R)) ⁻¹' U) ⟨y, hzU⟩ (hU.preimage (pullback.fst X.hom (spMap (IsLocalRing.residue R))).continuous).isLocallyClosed`. Take `⟨s, hs⟩` from `exists_section_fibre X hX c hc'`. Conclude with `⟨s, hs ▸ hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_section_open {R : Type} [CommRing R] [HenselianLocalRing R]
     [IsAlgClosed (IsLocalRing.ResidueField R)] (X : Over (Sp R)) (hX : Smooth X.hom)
@@ -84,7 +84,7 @@ theorem exists_section_open {R : Type} [CommRing R] [HenselianLocalRing R]
   exact ⟨s, hs ▸ hc⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ X hX`. Use `⟨fun z hc hz => exists_section_closed X hX hz hc, ?_⟩` and prove the remaining obligations. Introduce and unpack `U ⟨z, hzU, hz⟩`. Conclude with `exists_section_open X hX U.isOpen hzU hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_section :
     ∀ (R : Type) [CommRing R] [HenselianLocalRing R] [IsAlgClosed (IsLocalRing.ResidueField R)] (X : Over (Sp R)), Smooth X.hom →

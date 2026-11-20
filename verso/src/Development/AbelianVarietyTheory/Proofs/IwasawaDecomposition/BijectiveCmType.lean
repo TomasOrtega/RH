@@ -8,15 +8,13 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 namespace GlobalTheory.Mem.CharAlg
 
 /- English proof (translation)
-Establish `hne : ∀ i j, φ i ≠ ComplexEmbedding.conjugate (φ j)`. Introduce `i j hij`. Establish `h1 : i = j` using `h.1 (by show InfinitePlace.mk (φ i) = InfinitePlace.mk (φ j)`. Rewrite using `[hij, InfinitePlace.mk_conjugate_eq])`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `IsTotallyComplex.complexEmbedding_not_isReal (φ i) (ComplexEmbedding.isReal_iff.2 hij.symm)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(i | i) (j | j) hij`. Establish `hij' : φ i = φ j` using `hij`. Conclude with `congrArg Sum.inl (h.1 (congrArg InfinitePlace.mk hij'))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd hij (hne i j)`. Conclude with `absurd hij.symm (hne j i)`. Establish `hij' : ComplexEmbedding.conjugate (φ i) = ComplexEmbedding.conjugate (φ j)` using `hij`. Use `congrArg Sum.inr (h.1 ?_)` and prove the remaining obligations. Use `show InfinitePlace.mk (φ i) = InfinitePlace.mk (φ j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Rewrite using `[← InfinitePlace.mk_conjugate_eq (φ i), hij', InfinitePlace.mk_conjugate_eq]`. Introduce `ψ`. Take `⟨i, hi⟩` from `h.2 (InfinitePlace.mk ψ)`. Break down `InfinitePlace.mk_eq_iff.1 hi with hi | hi` into its components or cases. Conclude with `⟨Sum.inl i, hi⟩`.
-
-Conclude with `⟨Sum.inr i, hi⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_cmType {L : Type} [Field L] [IsTotallyComplex L] {I : Type} (φ : I → L →+* ℂ)
     (h : Function.Bijective fun i => InfinitePlace.mk (φ i)) :
@@ -45,7 +43,7 @@ theorem bijective_cmType {L : Type} [Field L] [IsTotallyComplex L] {I : Type} (�
     · exact ⟨Sum.inr i, hi⟩
 
 /- English proof (translation)
-Rewrite using `[← (bijective_cmType φ h).prod_comp f, Fintype.prod_sum_type, Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_split {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {I : Type} [Fintype I] (φ : I → L →+* ℂ)
     (h : Function.Bijective fun i => InfinitePlace.mk (φ i)) (f : (L →+* ℂ) → ℂ) :
@@ -54,9 +52,9 @@ theorem prod_split {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {I 
   rfl
 
 /- English proof (translation)
-Set `e` to `Equiv.ofBijective _ (bijective_cmType φ h)`. Use `⟨fun ψ => Sum.elim a b (e.symm ψ), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hχ k, prod_split φ h]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : e.symm (φ i) = Sum.inl i` using `e.symm_apply_eq.2 rfl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : e.symm (ComplexEmbedding.conjugate (φ i)) = Sum.inr i` using `e.symm_apply_eq.2 rfl`. Simplify using `only [h1, h2, Sum.elim_inl, Sum.elim_inr, ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isAlg_of {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {I : Type} [Fintype I] (φ : I → L →+* ℂ)
     (h : Function.Bijective fun i => InfinitePlace.mk (φ i)) (χ : HChar L) (a b : I → ℤ)
@@ -71,7 +69,7 @@ theorem isAlg_of {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {I : 
   simp only [h1, h2, Sum.elim_inl, Sum.elim_inr, ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Establish `hc : starRingEnd ℂ z ≠ 0` using `by simpa using hz`. Establish `h : (z / ((‖z‖ : ℝ) : ℂ)) ^ (2 : ℤ) = z / starRingEnd ℂ z`. Rewrite using `[zpow_ofNat, div_pow, ← Complex.mul_conj', sq, mul_div_mul_left _ _ hz]`. Rewrite using `[zpow_mul, h, div_zpow, zpow_neg, div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem even_pow {z : ℂ} (hz : z ≠ 0) (c : ℤ) :
     (z / ((‖z‖ : ℝ) : ℂ)) ^ (2 * c) = z ^ c * (starRingEnd ℂ z) ^ (-c) := by
@@ -81,7 +79,7 @@ theorem even_pow {z : ℂ} (hz : z ≠ 0) (c : ℤ) :
   rw [zpow_mul, h, div_zpow, zpow_neg, div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `hc : starRingEnd ℂ z ≠ 0` using `by simpa using hz`. Establish `hn : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by simpa using hz`. Establish `he : (((-((2 * m + 1 : ℕ) : ℝ) / 2 : ℝ)) : ℂ) + (((-((2 * m + 1 : ℕ) : ℝ) / 2 : ℝ)) : ℂ) = -((2 * m + 1 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite using `[← Complex.cpow_add _ _ hn, he, Complex.cpow_neg, Complex.cpow_natCast, pow_succ, pow_mul, ← Complex.mul_conj', zpow_sub₀ hz, zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, zpow_one, zpow_one, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem odd_pow {z : ℂ} (hz : z ≠ 0) (m : ℕ) :
     ((z / ((‖z‖ : ℝ) : ℂ)) ^ (1 : ℤ))⁻¹ *
@@ -97,11 +95,11 @@ theorem odd_pow {z : ℂ} (hz : z ≠ 0) (m : ℕ) :
   field_simp
 
 /- English proof (translation)
-Introduce `R H`. Take `⟨c0, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Use `hcm.cplx` as an intermediate fact. Establish `hz : ∀ (i : R.Psi) (k : (H.E)ˣ), embPsi H i (k : H.E) ≠ 0` using `fun i k => by simp`. Use `⟨fun χ c hχ => isAlg_of (embPsi H) hcm.bij χ c (fun i => -c i) fun k => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hχ k]`. Conclude with `Finset.prod_congr rfl fun i _ => even_pow (hz i k) (c i)`. Introduce and unpack `η hη r ⟨m, rfl⟩`. Use `isAlg_of (embPsi H) hcm.bij _ (fun _ => -1 - (m : ℤ)) (fun _ => -(m : ℤ)) fun k => ?_` and prove the remaining obligations. Rewrite using `[HChar.inf_mul, HChar.inf_inv, Units.val_mul, Units.val_inv_eq_inv_val, hη k, (GlobalTheory.HeckeGal.Model.absPow_isAbsPow H.E _).2.2 k, prod_split (embPsi H) hcm.bij, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj]`. Conclude with `odd_pow (hz i k) m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlg_even_odd : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R), (∀ (χ : HChar H.E) (c : R.Psi → ℤ), χ.HasInf (embPsi H) (fun τ => 2 * c τ) → ∃ n, χ.IsAlg n) ∧ ∀ (η : HChar H.E), η.HasInf (embPsi H) (fun _ => 1) → ∀ r : ℕ, Odd r → ∃ n, (η⁻¹ * GlobalTheory.HeckeGal.Model.absPow H.E (-(r : ℝ) / 2)).IsAlg n := by
   intro R H

@@ -252,7 +252,7 @@ structure SlopeBoundConditions (Ca Cb Cf Cc C1 Cm Cn : ℝ) : Prop where
   compParams : ∀ j, (liftSlopeData R F I J hd j).q' ≠ 0 → CompParams Ca Cb (liftSlopeData R F I J hd j)
 
 /- English proof (translation)
-Substitute `hC` using the available equality. Conclude with `slope_bound_of_conditions Ca Cb Cf Cc C1 Cm Cn hCa hCb hCf hCc hC1 hCm (Sb R F) (F.fc (R.toCx F).zs).Z CH (slopeParameters R F I J hd) (liftSlopeData R F I J hd) (latticeFramesAtBaseLevel R F J) hL.kl hL.cn hL.fe hL.diff hL.norm hL.page hL.fac hL.degFlat hL.exportL hL.cut hL.shar …`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem covol_of_leaves (Ca Cb Cf Cc C1 Cm Cn : ℝ) (hCa : 0 ≤ Ca) (hCb : 0 ≤ Cb) (hCf : 0 ≤ Cf) (hCc : 0 ≤ Cc)
     (hC1 : 0 ≤ C1) (hCm : 0 ≤ Cm) (C CH : ℝ) (hC : C = slopeBoundConstant Ca Cb Cf Cc C1 Cm)
@@ -266,11 +266,9 @@ theorem covol_of_leaves (Ca Cb Cf Cc C1 Cm Cn : ℝ) (hCa : 0 ≤ Ca) (hCb : 0 �
     hL.rho hL.share hL.small hL.means hL.hs hL.sum hL.i13 hL.eps hL.descent hL.ph hL.gmin hL.compParams hD hdW hF hT
 
 /- English proof (translation)
-Use `⟨rfl, hb, ?_, hmain, hunit, ?_, fun j => ⟨?_, rfl⟩⟩` and prove the remaining obligations. Use `show (Fintype.card (Fin D.R.m) : ℝ) = (D.R.m : ℝ)`. Rewrite using `[Fintype.card_fin]`. Introduce `a b h`. Establish `h' : D.R.m - ((a : ℕ) + 1) = D.R.m - ((b : ℕ) + 1)` using `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `a.2`. Establish `hb` using `b.2`. Conclude with `Fin.ext (by omega)`. Use `show ((D.R.m - ((j : ℕ) + 1) : ℕ) : ℝ) + 1 ≤ (D.R.m : ℝ)`. Establish `hj` using `j.2`.
-
-Rewrite using `[← Nat.cast_add_one, Nat.cast_le]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem scaleTies_of (hb : (F.fc (R.toCx F).zs).Z.b = (slopeParameters R F I J hd).b)
     (hmain : ∀ j, (F.fc (R.toCx F).zs).Z.l3m j = (liftSlopeData R F I J hd j).main)

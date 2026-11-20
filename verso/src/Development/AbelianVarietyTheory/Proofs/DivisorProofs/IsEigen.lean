@@ -34,7 +34,7 @@ def eigenLB (π : X ⟶ Y) (E : ∀ V : Y.Opens, Γ(X, π ⁻¹ᵁ V)ˣ → Prop
   ⟨Chart π E, fun i => i.1.1, trans π E⟩
 
 /- English proof (translation)
-Introduce `x hx`. Express the relevant statement in the definitionally equal form `(ψ ≫ π).base x ∈ V`. Rewrite using `[e]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_pre {X₂ Z : Scheme.{0}} {π : X ⟶ Y} {ρ : X₂ ⟶ Z} {φ : Z ⟶ Y} {ψ : X₂ ⟶ X}
     (e : ψ ≫ π = ρ ≫ φ) (V : Y.Opens) : ρ ⁻¹ᵁ (φ ⁻¹ᵁ V) ≤ ψ ⁻¹ᵁ (π ⁻¹ᵁ V) := by

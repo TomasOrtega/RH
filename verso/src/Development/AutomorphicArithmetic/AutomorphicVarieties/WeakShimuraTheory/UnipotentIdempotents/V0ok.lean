@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h X Y V hD r hr`. Use `haveI : IsLocalHom (inc h) := (UpperTheory.V.Ws.P1.coefRes c).2.2.1 c' h`. Establish `hres : ∀ x : c.O, residue c'.O (inc h x) = ResidueField.map (inc h) (residue c.O x)` using `fun x => (ResidueField.map_residue _ x).symm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `i _ ⟨g, hg, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `MonoidHom.mem_ker.2 ((hr i g).trans (MonoidHom.mem_ker.1 ((cbFacts X hD).2.1 i _ Y.away0 hg)))`. Introduce and unpack `_ ⟨g, hg, rfl⟩ i j`. Use `(hr i g).trans (Eq.trans (Units.ext ?_) (hr j g).symm)` and prove the remaining obligations. Rewrite using `[X.cb_val, X.cb_val, map_mul, map_mul, hres, hres]`. Conclude with `congrArg (fun x => residue c'.O (X.κ g) * ResidueField.map (inc h) x) (Y.eq0 g hg i j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨g, hg, hne⟩` from `Y.om0`. Use `⟨V.pr g, ⟨g, hg, rfl⟩, fun h' => hne ?_⟩` and prove the remaining obligations. Establish `h1` using `(prFacts l T.L Ω Y.s V).2.2.1 c'.O (ResidueField c'.O) g`. Rewrite `h1` using `[h', Units.val_one]`. Establish `h2 : (chiO T.L Ω l c'.O g : c'.O) = inc h (chiO ℚ Ω l c.O (resQ T.L g))` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD.om_bar]`. Apply `(ResidueField.map (inc h)).injective` to reduce the goal to its premises. Rewrite using `[map_one, Raw.bar, ← hres, ← h2]`. Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lk.v0ok :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (X : OCh T c' h) (Y : SetD T) (V : Y.s.Lev), D.Good → ∀ r : W.Resid V.frame c'.O 4, (∀ i (g : G T.L Ω), r.chib i (V.pr g) = X.cb i g) → r.V0ok := by

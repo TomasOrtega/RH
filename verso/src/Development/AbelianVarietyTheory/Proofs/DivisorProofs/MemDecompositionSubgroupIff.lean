@@ -11,9 +11,9 @@ open scoped Pointwise
 namespace GlobalTheory.QuadSplit
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.decompositionSubgroup, MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Rewrite using `[← ValuationSubring.smul_mem_pointwise_smul_iff (g := g) (S := A) (x := x), h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← h]`. Simplify using `[AlgEquiv.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_decompositionSubgroup_iff' {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (A : ValuationSubring Ω)
     (g : Ω ≃ₐ[K] Ω) : g ∈ A.decompositionSubgroup K ↔ ∀ x, g x ∈ A ↔ x ∈ A := by

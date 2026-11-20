@@ -14,29 +14,27 @@ variable {m n : ℕ}
 def nbar (t : ℝ) : M2 n := fromBlocks 1 0 ((t : ℂ) • 1) 1
 
 /- English proof (translation)
-Simplify using `[InG, nbar, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inG_nbar (t : ℝ) : InG (nbar (n := n) t) := by
   simp [InG, nbar, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks y]`. Simplify using `[nbar, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nbar_block (y : M2 n) (t : ℝ) : (y * nbar t).toBlocks₂₁ = y.toBlocks₂₁ + (t : ℂ) • y.toBlocks₂₂ := by
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks y]
   simp [nbar, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Rewrite using `[JJ, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem JJ_mul_JJ_eq_neg_one : JJ n * JJ n = -1 := by
   rw [JJ, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]
   simp
 
 /- English proof (translation)
-Establish `hx' : xᴴ * JJ n * x = JJ n` using `hx`. Establish `h : (-(JJ n * xᴴ * JJ n)) * x = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.mul_assoc]`. Use `_ = 1 := by rw [hx', JJ_mul_JJ_eq_neg_one, neg_neg]`.
-
-Conclude with `(Matrix.isUnit_det_of_left_inverse h).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_of_inG (x : M2 n) (hx : InG x) : x.det ≠ 0 := by
   have hx' : xᴴ * JJ n * x = JJ n := hx
@@ -47,17 +45,15 @@ theorem det_ne_of_inG (x : M2 n) (hx : InG x) : x.det ≠ 0 := by
   exact (Matrix.isUnit_det_of_left_inverse h).ne_zero
 
 /- English proof (translation)
-Establish `hx' : xᴴ * JJ n * x = JJ n` using `hx`. Rewrite `hx'` using `[← Matrix.fromBlocks_toBlocks x]`. Simplify using `only [JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj] at hx'`. Simplify using `at hx'`. Take `⟨h1, h2, h3, h4⟩` from `hx'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hu : u1 x = Complex.I • x.toBlocks₂₁ + x.toBlocks₂₂` using `rfl`. Rewrite using `[hu]`. Use `set A := x.toBlocks₁₁`. Use `set B := x.toBlocks₁₂`. Use `set C := x.toBlocks₂₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := x.toBlocks₂₂`. Establish `e1 : Aᴴ * C = Cᴴ * A` using `eq_of_sub_eq_zero (by rw [sub_eq_neg_add]; exact h1)`. Establish `e2 : Aᴴ * D = 1 + Cᴴ * B` using `by rw [← h2]; abel`. Establish `e3 : Bᴴ * C = Dᴴ * A + -1` using `by rw [← h3]; abel`. Establish `e4 : Bᴴ * D = Dᴴ * B` using `eq_of_sub_eq_zero (by rw [sub_eq_neg_add]; exact h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : (Complex.I • A + B)ᴴ * (Complex.I • C + D) - (Complex.I • C + D)ᴴ * (Complex.I • A + B) = (-2 * Complex.I) • (1 : Matrix (Fin n) (Fin n) ℂ)`. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Complex.star_def, Complex.conj_I]`. Rewrite using `[e1, e2, e3, e4]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp [Complex.I_sq] <;> ring`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨v, hv, huv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 h0`. Establish `hs : star v ᵥ* (Complex.I • C + D)ᴴ = 0`. Rewrite using `[← Matrix.star_mulVec, huv, star_zero]`. Establish `hz : star v ⬝ᵥ (((Complex.I • A + B)ᴴ * (Complex.I • C + D) - (Complex.I • C + D)ᴴ * (Complex.I • A + B)) *ᵥ v) = 0`. Rewrite using `[Matrix.sub_mulVec, dotProduct_sub, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, huv, Matrix.mulVec_zero, dotProduct_zero, Matrix.dotProduct_mulVec, hs, zero_dotProduct, sub_zero]`.
-
-Rewrite `hz` using `[key, Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_smul, smul_eq_mul]`. Establish `h2I : (-2 * Complex.I) ≠ 0` using `by simp [Complex.I_ne_zero]`. Use `open ComplexOrder in`. Conclude with `hv (dotProduct_star_self_eq_zero.1 ((mul_eq_zero.1 hz).resolve_left h2I))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_first_cayley_block_ne_group (x : M2 n) (hx : InG x) : (u1 x).det ≠ 0 := by
   have hx' : xᴴ * JJ n * x = JJ n := hx

@@ -14,7 +14,7 @@ namespace MinkDiv
 variable {A : Type} [AddCommGroup A]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_add, map_add, map_nsmul, map_nsmul, hfg y, hfg (g y), hfg (g (g y)), hy, Nat.choose_succ_succ' n 1, Nat.choose_one_right]`. Simplify using `only [add_nsmul, smul_add, one_nsmul, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -29,25 +29,23 @@ theorem iterate_eq (f g : A →+ A) (hfg : ∀ z, f z = z + g z) (y : A) (hy : g
     abel
 
 /- English proof (translation)
-Use `set g : A →+ A := f - AddMonoidHom.id A with hg`. Establish `hfg : ∀ z, f z = z + g z` using `fun z => by simp [hg]`. Establish `key : ∀ k : ℕ, ∀ x : A, l ^ (k + 1) • x = 0 → g x = 0`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `x hx`. Use `hfix x (by simpa using hx)` as an intermediate fact. Simplify using `[hg, this]`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `h1 : ∀ z : A, l • z = 0 → g z = 0` using `fun z hz => ih z (by rw [pow_succ, mul_smul, hz, smul_zero])`. Establish `h2 : ∀ z : A, l ^ (k + 1 + 1) • z = 0 → l • g z = 0` using `fun z hz => by`. Rewrite using `[← map_nsmul]`. Conclude with `ih _ (by rw [← mul_smul, ← pow_succ]; exact hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hpl : p = l`. Substitute `hpl` using the available equality. Take `⟨y, rfl⟩` from `hdiv x`. Establish `hy : p ^ (k + 1 + 1 + 1) • y = 0` using `by rw [pow_succ, mul_smul]; exact hx`. Establish `e1 : p • p • g y = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_nsmul g p y]`. Conclude with `h2 _ hx`. Establish `e2 : p • g (g y) = 0`. Apply `h2` to reduce the goal to its premises. Rewrite using `[pow_succ, pow_succ, mul_smul, mul_smul, e1, smul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3 : g (g (g y)) = 0` using `h1 _ e2`. Establish `e4` using `iterate_eq f g hfg y e3 p`. Rewrite `e4` using `[hord y _ hy]`. Establish `h3 : 2 < p`. Break down `hp.two_le.lt_or_eq with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Substitute `h; exact absurd ho (by decide)` using the available equality. Take `⟨c, hc⟩` from `hp.dvd_choose_self (k := 2) (by norm_num) h3`. Rewrite `e4` using `[hc, mul_comm, mul_smul, e2, smul_zero, add_zero]`. Rewrite using `[map_nsmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(add_eq_left.mp e4.symm)`. Establish `e1 : l • g x = 0` using `h2 x hx`. Establish `e2 : g (g x) = 0` using `h1 _ e1`. Establish `e4` using `iterate_eq f g hfg x (by rw [e2, map_zero]) p`. Rewrite `e4` using `[hord x _ hx, e2, smul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5 : p • g x = 0` using `add_eq_left.mp e4.symm`. Establish `hc : Nat.Coprime p l` using `(Nat.coprime_primes hp hl).mpr hpl`. Establish `d1` using `addOrderOf_dvd_of_nsmul_eq_zero e5`. Establish `d2` using `addOrderOf_dvd_of_nsmul_eq_zero e1`. Establish `d3` using `Nat.dvd_gcd d1 d2`.
-
-Rewrite `d3` using `[hc, Nat.dvd_one]`. Conclude with `AddMonoid.addOrderOf_eq_one_iff.mp d3`. Introduce `a x hx`. Use `key a x (by rw [pow_succ', mul_smul, hx, smul_zero])` as an intermediate fact. Rewrite using `[hfg, this, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_case (l p : ℕ) (hl : l.Prime) (ho : Odd l) (hp : p.Prime) (f : A →+ A)
     (hdiv : ∀ x : A, ∃ y : A, l • y = x)
@@ -106,9 +104,9 @@ theorem prime_case (l p : ℕ) (hl : l.Prime) (ho : Odd l) (hp : p.Prime) (f : A
   rw [hfg, this, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `r using induction_on_primes with`. Consider the case `zero => exact absurd rfl hr`. Consider the case `one => intro f h _ a x hx`. Conclude with `h x a hx`. Consider the case `prime_mul p b hp ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hord hfix`. Establish `hb : b ≠ 0` using `by rintro rfl; simp at hr`. Establish `hc : ((f ^ p : AddMonoid.End A) : A → A) = f^[p]` using `AddMonoid.End.coe_pow _ _ _`. Use `ih hb (f ^ p) (fun x a hx => by rw [hc, ← Function.iterate_mul]; exact hord x a hx) (fun x hx => by rw [hc]; exact Function.iterate_fixed (hfix x hx) p)` as an intermediate fact. Conclude with `prime_case l p hl ho hp f hdiv (fun x a hx => by have h := this a x hx; rw [hc] at h; exact h) hfix`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem add_case (l : ℕ) (hl : l.Prime) (ho : Odd l)
     (hdiv : ∀ x : A, ∃ y : A, l • y = x) (r : ℕ) (hr : r ≠ 0) :
@@ -131,7 +129,7 @@ theorem add_case (l : ℕ) (hl : l.Prime) (ho : Odd l)
 end MinkDiv
 
 /- English proof (translation)
-Introduce `Q _ l u r hl ho hr hdiv hord hfix x a hx`. Conclude with `MinkDiv.add_case (A := Additive Q) l hl ho (fun x => hdiv x.toMul) r hr.ne' (MonoidHom.toAdditive u.toMonoidHom) (fun x _ _ => hord x.toMul) (fun x hx => hfix x.toMul hx) a (Additive.ofMul x) hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem minkowski_divisible : ∀ (Q : Type) [CommGroup Q] (l : ℕ) (u : Q ≃* Q) (r : ℕ), l.Prime → Odd l → 0 < r → (∀ x : Q, ∃ y : Q, y ^ l = x) → (∀ x, u^[r] x = x) → (∀ x, x ^ l = 1 → u x = x) → ∀ (x : Q) (a : ℕ), x ^ (l ^ a) = 1 → u x = x := by
   intro Q _ l u r hl ho hr hdiv hord hfix x a hx

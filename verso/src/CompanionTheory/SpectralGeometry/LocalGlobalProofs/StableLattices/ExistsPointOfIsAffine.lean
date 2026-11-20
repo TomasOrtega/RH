@@ -24,7 +24,7 @@ section Unique
 variable {S : Scheme.{0}} {A B T : Over S} [GrpObj B]
 
 /- English proof (translation)
-Establish `e₁` using `(GlobalTheory.BirigidLift.isAdditive_swap_iff hP).1 a₂ _ (fst A T) (snd A T ≫ (x * x'⁻¹)) (snd A T ≫ x')`. Rewrite `e₁` using `[← MonObj.comp_mul, inv_mul_cancel_right, e]`. Conclude with `mul_inv_eq_one.1 (r T _ ((triv_ev_iff hP _ _).2 (right_eq_add.1 e₁)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem point_ext {P : LB (A ⊗ B).left} (hP : P.IsLB) (a₂ : IsAdditive (swap P)) (r : RightZero A B P)
     {x x' : T ⟶ B} (e : evc hP (fst A T) (snd A T ≫ x) = evc hP (fst A T) (snd A T ≫ x')) : x = x' := by
@@ -39,11 +39,9 @@ section Level
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
 
 /- English proof (translation)
-Take `⟨ψ, rfl⟩ : ∃ ψ : R →+* C, spMap ψ = t` from `⟨(Spec.preimage t).hom, by simp [spMap]⟩`. Use `letI := ψ.toAlgebra`. Use `haveI := hA.proper`. Establish `H : IsPullback (fst A (Over.mk (spMap ψ))).left (snd A (Over.mk (spMap ψ))).left A.hom (spMap (algebraMap R C))` using `IsPullback.of_hasPullback _ _`. Take `⟨D, hD, N, hN, h⟩` from `GlobalTheory.CompanionTheory.Ar.Approx.lb_descends_fg R C A.left _ A.hom _ _ inferInstance inferInstance H M hM`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `w : spMap D.val.toRingHom ≫ spMap (algebraMap R D) = spMap ψ`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Use `haveI : Algebra.FiniteType R D := (Subalgebra.fg_iff_finiteType D).1 hD`. Use `⟨D, inferInstance, D.val.toRingHom, spMap (algebraMap R D), N, hN, w, Algebra.FiniteType.isNoetherianRing R D, ?_⟩` and prove the remaining obligations.
-
-Use `(cls_eq_iff hM (pull_isLB hN _)).2 (h _ ?_ ?_)` and prove the remaining obligations. Conclude with `lift_left_fst _ _`. Conclude with `lift_left_snd _ _ |>.trans rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_level [IsNoetherianRing R] (hA : IsAbelianScheme A) {C : Type} [CommRing C] (t : Sp C ⟶ Sp R)
     {M : LB (A ⊗ Over.mk t).left} (hM : M.IsLB) :
@@ -80,7 +78,7 @@ abbrev uniF (N : LB (A ⊗ T₀).left) : LB (A ⊗ (A ⊗ T₀)).left :=
     (ev N (snd A (A ⊗ T₀) ≫ fst A T₀) (snd A (A ⊗ T₀) ≫ snd A T₀))
 
 /- English proof (translation)
-Establish `hE : (uniE N).IsLB` using `pull_isLB hN _`. Establish `h₁` using `pull_isLB hN (lift (fst A (A ⊗ T₀)) (snd A (A ⊗ T₀) ≫ snd A T₀)).left`. Establish `h₂` using `pull_isLB hN (lift (snd A (A ⊗ T₀) ≫ fst A T₀) (snd A (A ⊗ T₀) ≫ snd A T₀)).left`. Establish `hF : (uniF N).IsLB` using `isLB_tens h₁ h₂`. Rewrite using `[← cls_eq_iff (pull_isLB hE _) (pull_isLB hF _), cls_pull hE, cls_pull hF, cls_tens h₁ h₂, cls_ev hN, cls_ev hN, cls_ev hN, map_add, pull_evc, pull_evc, pull_evc, MonObj.comp_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lbIso_uni_iff {N : LB (A ⊗ T₀).left} (hN : N.IsLB) (y : Y ⟶ A ⊗ (A ⊗ T₀)) :
     LBIso ((uniE N).pull y.left) ((uniF N).pull y.left) ↔
@@ -101,27 +99,23 @@ section Spread
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
 
 /- English proof (translation)
-Use `letI := i.toAlgebra`. Use `haveI := hA.proper`. Set `T₀ : Over (Sp R)` to `Over.mk tD`. Set `u : Over.mk (spMap i ≫ tD) ⟶ T₀` to `Over.homMk (spMap i) rfl`. Set `τ : A ⊗ (A ⊗ T₀) ⟶ T₀` to `snd A _ ≫ snd A T₀`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `pB : (A ⊗ (A ⊗ T₀)).left ⟶ Sp D` to `τ.left`. Establish `q₁ : ∀ T : Over (Sp R), QuasiCompact (snd A T).left` using `fun T ↦ inferInstanceAs (QuasiCompact (pullback.snd A.hom T.hom))`. Establish `q₂ : ∀ T : Over (Sp R), QuasiSeparated (snd A T).left` using `fun T ↦ inferInstanceAs (QuasiSeparated (pullback.snd A.hom T.hom))`. Use `haveI : QuasiCompact pB := by`. Use `q₁ T₀` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `q₁ (A ⊗ T₀)` as an intermediate fact. Conclude with `inferInstanceAs (QuasiCompact ((snd A (A ⊗ T₀)).left ≫ (snd A T₀).left))`. Use `haveI : QuasiSeparated pB := by`. Use `q₂ T₀` as an intermediate fact. Use `q₂ (A ⊗ T₀)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `inferInstanceAs (QuasiSeparated ((snd A (A ⊗ T₀)).left ≫ (snd A T₀).left))`. Establish `hE : (uniE N).IsLB` using `pull_isLB hN _`. Establish `hF : (uniF N).IsLB` using `isLB_tens (pull_isLB hN _) (pull_isLB hN _)`. Set `fC` to `pullback.fst pB (spMap (algebraMap D C))`. Set `c : Over.mk (fC ≫ (A ⊗ (A ⊗ T₀)).hom) ⟶ A ⊗ (A ⊗ T₀)` to `Over.homMk fC rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `wτ : pB ≫ tD = (A ⊗ (A ⊗ T₀)).hom` using `Over.w τ`. Set `τc : Over.mk (fC ≫ (A ⊗ (A ⊗ T₀)).hom) ⟶ Over.mk (spMap i ≫ tD)` to `Over.homMk (pullback.snd pB _) (by show pullback.snd pB (spMap (algebraMap D C)) ≫ spMap i ≫ tD = fC ≫ (A ⊗ (A ⊗ T₀)).hom`. Rewrite using `[← wτ, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ tD) (pullback.condition (f := pB) (g := spMap (algebraMap D C))).symm)`. Establish `hc : c ≫ τ = τc ≫ u` using `Over.OverMorphism.ext (pullback.condition (f := pB) (g := spMap (algebraMap D C)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `H` using `(lbIso_uni_iff hN c).2 (by`. Establish `hc' : c ≫ snd A _ ≫ snd A T₀ = τc ≫ u` using `hc`. Rewrite using `[hc', ← GlobalTheory.BirigidLift.evc_of_cls hN hM e, ← GlobalTheory.BirigidLift.evc_of_cls hN hM e, ← GlobalTheory.BirigidLift.evc_of_cls hN hM e]`. Conclude with `(isAdditive_iff hM).1 hadd _ _ _ _)`. Take `⟨s, H₁⟩` from `GlobalTheory.exists_finset_lbIso_adjoin pB _ _ hE hF H`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `D₁` to `Algebra.adjoin D (s : Set C)`. Set `j : D →+* D₁` to `algebraMap D D₁`. Use `haveI : Algebra.FiniteType D D₁ := (Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_adjoin_finset s)`. Use `⟨D₁, inferInstance, j, D₁.val.toRingHom, Algebra.FiniteType.isNoetherianRing D _, RingHom.ext fun x ↦ rfl, ?_⟩` and prove the remaining obligations. Set `f₁` to `pullback.fst pB (spMap (algebraMap D D₁))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `c₁ : Over.mk (f₁ ≫ (A ⊗ (A ⊗ T₀)).hom) ⟶ A ⊗ (A ⊗ T₀)` to `Over.homMk f₁ rfl`. Establish `K` using `(lbIso_uni_iff hN c₁).1 H₁`. Set `v : Over.mk (spMap j ≫ tD) ⟶ T₀` to `Over.homMk (spMap j) rfl`. Establish `hN₁ : (ev N (fst A (Over.mk (spMap j ≫ tD))) (snd A _ ≫ v)).IsLB` using `pull_isLB hN _`. Use `(isAdditive_iff hN₁).2 fun Y a a' t ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.BirigidLift.evc_of_cls hN hN₁ rfl, GlobalTheory.BirigidLift.evc_of_cls hN hN₁ rfl, GlobalTheory.BirigidLift.evc_of_cls hN hN₁ rfl]`. Take `⟨y, hy⟩ : ∃ y : Y ⟶ A ⊗ (A ⊗ T₀), y = lift a (lift a' (t ≫ v))` from `⟨_, rfl⟩`. Establish `y₁ : y ≫ fst A _ = a` using `by rw [hy, lift_fst]`. Establish `y₂ : y ≫ snd A _ ≫ fst A T₀ = a'` using `by rw [hy, lift_snd_assoc, lift_fst]`. Establish `y₃ : y ≫ snd A _ ≫ snd A T₀ = t ≫ v` using `by rw [hy, lift_snd_assoc, lift_snd]`.
-
-Establish `w : y.left ≫ pB = t.left ≫ spMap (algebraMap D D₁)` using `congrArg (fun q ↦ q.left) y₃`. Set `g : Y ⟶ Over.mk (f₁ ≫ (A ⊗ (A ⊗ T₀)).hom)` to `Over.homMk (pullback.lift y.left t.left w) (by show pullback.lift y.left t.left w ≫ f₁ ≫ (A ⊗ (A ⊗ T₀)).hom = Y.hom`. Rewrite using `[pullback.lift_fst_assoc]`. Conclude with `Over.w y)`. Establish `hg : g ≫ c₁ = y` using `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`.
-
-Establish `K'` using `congrArg (CechPic.pull g.left) K`. Rewrite `K'` using `[map_add, pull_evc, pull_evc, pull_evc, MonObj.comp_mul, ← Category.assoc g, ← Category.assoc g, ← Category.assoc g, hg, y₁, y₂, y₃]`. Conclude with `K'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_additive_level (hA : IsAbelianScheme A) {C D : Type} [CommRing C] [CommRing D] [IsNoetherianRing D]
     (i : D →+* C) (tD : Sp D ⟶ Sp R) {M : LB (A ⊗ Over.mk (spMap i ≫ tD)).left} (hM : M.IsLB) (hadd : IsAdditive M)
@@ -201,11 +195,11 @@ section Affine
 variable {R : Type} [CommRing R] [IsNoetherianRing R] {A B : Over (Sp R)} [GrpObj A]
 
 /- English proof (translation)
-Take `⟨D, _, i, tD, N, hN, rfl, _, e⟩` from `exists_level hA t hM`. Take `⟨D₁, _, j, i₁, _, rfl, ha⟩` from `exists_additive_level hA i tD hM hadd hN e`. Establish `hN₁` using `pull_isLB hN (lift (fst A (Over.mk (spMap j ≫ tD))) (snd A _ ≫ (Over.homMk (spMap j) rfl : Over.mk (spMap j ≫ tD) ⟶ Over.mk tD))).left`. Take `⟨x₁, hx₁⟩` from `U D₁ (spMap j ≫ tD) _ hN₁ ha`. Establish `hcomp : spMap (i₁.comp j) = spMap i₁ ≫ spMap j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `v : Over.mk (spMap j ≫ tD) ⟶ Over.mk tD` to `Over.homMk (spMap j) rfl`. Set `u₁ : Over.mk (spMap (i₁.comp j) ≫ tD) ⟶ Over.mk (spMap j ≫ tD)` to `Over.homMk (spMap i₁) (by show spMap i₁ ≫ spMap j ≫ tD = spMap (i₁.comp j) ≫ tD`. Rewrite using `[hcomp, Category.assoc])`. Establish `hv : (Over.homMk (spMap (i₁.comp j)) rfl : Over.mk (spMap (i₁.comp j) ≫ tD) ⟶ Over.mk tD) = u₁ ≫ v` using `Over.OverMorphism.ext hcomp`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨u₁ ≫ x₁, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hv, ← Category.assoc, ← GlobalTheory.BirigidLift.evc_of_cls hN hN₁ rfl, GlobalTheory.BirigidLift.evc_of_cls hP hN₁ ((cls_eq_iff hN₁ (pull_isLB hP _)).2 hx₁), Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_point_spec (hA : IsAbelianScheme A) {P : LB (A ⊗ B).left} (hP : P.IsLB) (U : UnivNoeth A B P)
     {C : Type} [CommRing C] (t : Sp C ⟶ Sp R) {M : LB (A ⊗ Over.mk t).left} (hM : M.IsLB) (hadd : IsAdditive M) :
@@ -234,13 +228,13 @@ section Pull
 variable {S : Scheme.{0}} {A T T' : Over S} [GrpObj A]
 
 /- English proof (translation)
-Rewrite using `[evc, lift_fst_snd, Over.id_left, pull_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_eq_evc {M : LB (A ⊗ T).left} (hM : M.IsLB) : cls M hM = evc hM (fst A T) (snd A T) := by
   rw [evc, lift_fst_snd, Over.id_left, pull_id]
 
 /- English proof (translation)
-Establish `hN : (ev M (fst A T') (snd A T' ≫ v)).IsLB` using `pull_isLB hM _`. Use `(isAdditive_iff hN).2 fun Y a a' t ↦ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.BirigidLift.evc_of_cls hM hN rfl, GlobalTheory.BirigidLift.evc_of_cls hM hN rfl, GlobalTheory.BirigidLift.evc_of_cls hM hN rfl]`. Conclude with `(isAdditive_iff hM).1 h _ _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdditive_ev {M : LB (A ⊗ T).left} (hM : M.IsLB) (h : IsAdditive M) (v : T' ⟶ T) :
     IsAdditive (ev M (fst A T') (snd A T' ≫ v)) := by
@@ -251,9 +245,9 @@ theorem isAdditive_ev {M : LB (A ⊗ T).left} (hM : M.IsLB) (h : IsAdditive M) (
   exact (isAdditive_iff hM).1 h _ _ _ _
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA (isGrpPullback_pullback A T.hom)`. Establish `hV` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG (isGrpPullback_pullback _ V.ι)`. Establish `h1 : Function.Surjective (pullback.snd (pullback.snd A.hom T.hom) V.ι).appTop.hom` using `(GlobalTheory.globalFns_holds _ _ hV).2`. Establish `e : (snd A T).left ∣_ V = (pullbackRestrictIsoRestrict (pullback.snd A.hom T.hom) V).inv ≫ pullback.snd (pullback.snd A.hom T.hom) V.ι` using `rfl`. Establish `h2` using `(ConcreteCategory.bijective_of_isIso ((pullbackRestrictIsoRestrict (pullback.snd A.hom T.hom) V).inv.app ⊤)).2.comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Scheme.Hom.comp_appTop]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_snd (hA : IsAbelianScheme A) (V : T.left.Opens) :
     Function.Surjective ((snd A T).left ∣_ V).appTop.hom := by
@@ -275,11 +269,11 @@ section Global
 variable {R : Type} [CommRing R] [IsNoetherianRing R] {A B : Over (Sp R)} [GrpObj A]
 
 /- English proof (translation)
-Set `e` to `T.left.isoSpec`. Set `t : Sp Γ(T.left, ⊤) ⟶ Sp R` to `e.inv ≫ T.hom`. Set `i : Over.mk t ⟶ T` to `Over.homMk e.inv rfl`. Set `i' : T ⟶ Over.mk t` to `Over.homMk e.hom (by show e.hom ≫ e.inv ≫ T.hom = T.hom`. Rewrite using `[e.hom_inv_id_assoc])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hii : i' ≫ i = 𝟙 T` using `Over.OverMorphism.ext e.hom_inv_id`. Establish `hN : (ev M (fst A (Over.mk t)) (snd A _ ≫ i)).IsLB` using `pull_isLB hM _`. Take `⟨x, hx⟩` from `exists_point_spec hA hP U t hN (isAdditive_ev hM hadd i)`. Use `⟨i' ≫ x, ?_⟩` and prove the remaining obligations. Establish `k` using `GlobalTheory.BirigidLift.evc_of_cls hP hN hx (fst A T) (snd A T ≫ i')`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `k` using `[GlobalTheory.BirigidLift.evc_of_cls hM hN rfl, Category.assoc, Category.assoc, hii, Category.comp_id]`. Rewrite using `[cls_eq_evc hM]`. Conclude with `k`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point_of_isAffine (hA : IsAbelianScheme A) {P : LB (A ⊗ B).left} (hP : P.IsLB)
     (U : UnivNoeth A B P) {T : Over (Sp R)} [IsAffine T.left] {M : LB (A ⊗ T).left} (hM : M.IsLB)
@@ -306,27 +300,23 @@ section Glue
 variable {R : Type} [CommRing R] [IsNoetherianRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
 
 /- English proof (translation)
-Set `𝒰` to `T.left.affineCover`. Set `Ti : ∀ i, Over (Sp R)` to `fun i ↦ Over.mk (𝒰.f i ≫ T.hom)`. Set `j : ∀ i, Ti i ⟶ T` to `fun i ↦ Over.homMk (𝒰.f i) rfl`. Establish `hN : ∀ i, (ev M (fst A (Ti i)) (snd A _ ≫ j i)).IsLB` using `fun i ↦ pull_isLB hM _`. Establish `loc : ∀ i, ∃ x : Ti i ⟶ B, cls _ (hN i) = evc hP (fst A _) (snd A _ ≫ x)` using `fun i ↦ by haveI : IsAffine (Ti i).left := inferInstanceAs (IsAffine (𝒰.X i))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `exists_point_of_isAffine hA hP U (hN i) (isAdditive_ev hM hadd _)`. Use `choose x hx using loc`. Establish `val : ∀ i {Y : Over (Sp R)} (a : Y ⟶ A) (t : Y ⟶ Ti i), evc hM a (t ≫ j i) = evc hP a (t ≫ x i)` using `fun i Y a t ↦ (GlobalTheory.BirigidLift.evc_of_cls hM (hN i) rfl a t).symm.trans (GlobalTheory.BirigidLift.evc_of_cls hP (hN i) (hx i) a t)`. Establish `ov : ∀ i i', pullback.fst (𝒰.f i) (𝒰.f i') ≫ (x i).left = pullback.snd (𝒰.f i) (𝒰.f i') ≫ (x i').left`. Introduce `i i'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `W : Over (Sp R)` to `Over.mk (pullback.fst (𝒰.f i) (𝒰.f i') ≫ 𝒰.f i ≫ T.hom)`. Set `a : W ⟶ Ti i` to `Over.homMk (pullback.fst _ _) rfl`. Set `b : W ⟶ Ti i'` to `Over.homMk (pullback.snd _ _) (by show pullback.snd (𝒰.f i) (𝒰.f i') ≫ 𝒰.f i' ≫ T.hom = pullback.fst (𝒰.f i) (𝒰.f i') ≫ 𝒰.f i ≫ T.hom`. Rewrite using `[← Category.assoc, ← pullback.condition, Category.assoc])`. Establish `hab : a ≫ j i = b ≫ j i'` using `Over.OverMorphism.ext pullback.condition`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `point_ext hP a₂ r (x := a ≫ x i) (x' := b ≫ x i') (by`. Rewrite using `[← Category.assoc, ← Category.assoc, ← val, ← val, Category.assoc, Category.assoc, hab])`. Conclude with `congrArg (fun q ↦ q.left) e`. Set `x₀ : T.left ⟶ B.left` to `𝒰.glueMorphisms (fun i ↦ (x i).left) ov`. Establish `hx₀ : ∀ i, 𝒰.f i ≫ x₀ = (x i).left` using `fun i ↦ 𝒰.ι_glueMorphisms _ ov i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `X : T ⟶ B` to `Over.homMk x₀ (𝒰.hom_ext _ _ fun i ↦ by show 𝒰.f i ≫ x₀ ≫ B.hom = 𝒰.f i ≫ T.hom`. Rewrite using `[reassoc_of% hx₀ i]`. Conclude with `Over.w (x i))`. Establish `hX : ∀ i, j i ≫ X = x i` using `fun i ↦ Over.OverMorphism.ext (hx₀ i)`. Use `⟨X, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨L, hL, hd⟩` from `cls_surj (cls M hM - evc hP (fst A T) (snd A T ≫ X))`. Establish `h0 : Triv L`. Use `GlobalTheory.CubeGlue.triv_of_locally_triv hL (snd A T).left (lift (1 : T ⟶ A) (𝟙 T)).left ((lift_left_snd _ _).trans (Over.id_left _)) (surjective_snd hA) ?_ ?_` and prove the remaining obligations. Use `(cls_eq_zero_iff (pull_isLB hL _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hL, hd, map_sub, cls_eq_evc hM, pull_evc, pull_evc, lift_fst, lift_snd_assoc, lift_snd, hadd.evc_one hM, a₁.evc_one hP, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Set `i` to `𝒰.idx z`. Set `V` to `(𝒰.f i).opensRange`. Use `⟨V, 𝒰.covers z, ?_⟩` and prove the remaining obligations. Set `W` to `(snd A T).left ⁻¹ᵁ V`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : Set.range (W.ι ≫ (snd A T).left) ⊆ Set.range (𝒰.f i)`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `y.2`. Set `l` to `IsOpenImmersion.lift (𝒰.f i) (W.ι ≫ (snd A T).left) hl`. Establish `hfac : l ≫ 𝒰.f i = W.ι ≫ (snd A T).left` using `IsOpenImmersion.lift_fac _ _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `Wo : Over (Sp R)` to `Over.mk (W.ι ≫ (A ⊗ T).hom)`. Set `w : Wo ⟶ A ⊗ T` to `Over.homMk W.ι rfl`. Set `t₀ : Wo ⟶ Ti i` to `Over.homMk l (by show l ≫ 𝒰.f i ≫ T.hom = W.ι ≫ (A ⊗ T).hom`. Rewrite using `[← Category.assoc, hfac, Category.assoc]`. Conclude with `congrArg (W.ι ≫ ·) (Over.w (snd A T)))`.
-
-Establish `ht : t₀ ≫ j i = w ≫ snd A T` using `Over.OverMorphism.ext hfac`. Use `(cls_eq_zero_iff (pull_isLB hL _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hL, hd]`. Use `show CechPic.pull w.left _ = 0`. Rewrite using `[map_sub, cls_eq_evc hM, pull_evc, pull_evc, ← Category.assoc w, ← ht, Category.assoc, hX, val, sub_self]`.
-
-Rewrite using `[← sub_eq_zero, ← hd]`. Conclude with `(cls_eq_zero_iff hL).2 h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point (hA : IsAbelianScheme A) {P : LB (A ⊗ B).left} (hP : P.IsLB) (a₁ : IsAdditive P)
     (a₂ : IsAdditive (swap P)) (r : RightZero A B P) (U : UnivNoeth A B P) {T : Over (Sp R)}
@@ -396,9 +386,9 @@ theorem exists_point (hA : IsAbelianScheme A) {P : LB (A ⊗ B).left} (hP : P.Is
 end Glue
 
 /- English proof (translation)
-Introduce `H R _ _ A B _ _ g hA hB gA gB P hD`. Establish `U` using `H R A B g hA hB gA gB P hD`. Use `⟨hD.isLB, hD.add₁, GlobalTheory.BirigidLift.triv_right hD.isLB hD.add₂, fun T M hM ha ↦ ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_point hA hD.isLB hD.add₁ hD.add₂ hD.right U hM ha`. Use `⟨x, (cls_eq_iff hM (pull_isLB hD.isLB _)).1 hx, fun y hy ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `point_ext hD.isLB hD.add₂ hD.right (((cls_eq_iff hM (pull_isLB hD.isLB _)).2 hy).symm.trans hx)`.
+A detailed English derivation is pending.
 -/
 theorem finDual_of_univNoeth : (∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, PreDual A B P → UnivNoeth A B P) → FinDual := by
   intro H R _ _ A B _ _ g hA hB gA gB P hD

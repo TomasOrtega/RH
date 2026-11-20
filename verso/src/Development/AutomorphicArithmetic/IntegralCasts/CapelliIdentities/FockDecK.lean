@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.SiegelWeilDatumProperties
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w f hf`. Take `⟨k, c, u, rfl⟩` from `Submodule.mem_span_set'.1 hf`. Use `choose P g hg hu using fun i => (u i).2`. Use `⟨k, fun i => P i w, fun i => c i • _, fun i => Submodule.smul_mem _ (c i) (Submodule.subset_span ⟨P i, g i, hg i, rfl⟩), Finset.sum_congr rfl fun i _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hu i]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `X`. Simplify using `only [PositivityTheory.SiegelWeilFormula.RD_k.tens, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_left_comm (PositivityTheory.SiegelWeilFormula.fP _ _), ← mul_assoc (PositivityTheory.SiegelWeilFormula.fP _ _), @Finset.mul_prod_erase _ _ _ (_) _ (fun v => PositivityTheory.SiegelWeilFormula.fP (P i v) (R.loc v X)) _ (Finset.mem_univ w)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Glb2.fock_dec_k :
     ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : NumberField E]

@@ -16,25 +16,25 @@ section V
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Introduce `q hq` and use `le_trans h (hx q hq)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem geQ_mono {x : WithTop ℚ} {s t : ℝ} (h : s ≤ t) (hx : geQ x t) : geQ x s :=
   fun q hq => le_trans h (hx q hq)
 
 /- English proof (translation)
-Take `⟨q, hq, h1⟩` from `hx`. Conclude with `⟨q, hq, le_trans h1 h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem leQ_mono {x : WithTop ℚ} {s t : ℝ} (h : s ≤ t) (hx : leQ x s) : leQ x t := by
   obtain ⟨q, hq, h1⟩ := hx
   exact ⟨q, hq, le_trans h1 h⟩
 
 /- English proof (translation)
-Introduce `q hq` and use `absurd hq (by simp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem geQ_top (t : ℝ) : geQ ⊤ t := fun q hq => absurd hq (by simp)
 
 /- English proof (translation)
-Introduce `q hq`. Rewrite `h` using `[hq]`. Take `⟨q', hq', h1⟩` from `WithTop.le_coe_iff.1 h`. Use `hx q' hq'` as an intermediate fact. Establish `h2 : (q' : ℝ) ≤ (q : ℝ)` using `by exact_mod_cast h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -47,9 +47,7 @@ theorem geQ_of_le {x y : WithTop ℚ} {t : ℝ} (h : x ≤ y) (hx : geQ x t) : g
   linarith
 
 /- English proof (translation)
-Establish `h` using `valuation_add_ge_min p x y`. Conclude with `geQ_of_le h (by`. Break down `le_total (vK p x) (vK p y) with h2 | h2` into its components or cases. Rewrite using `[min_eq_left h2]`. Conclude with `hx`.
-
-Rewrite using `[min_eq_right h2]`. Conclude with `hy)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geQ_add (x y : KK O) {t : ℝ} (hx : geQ (vK p x) t) (hy : geQ (vK p y) t) : geQ (vK p (x + y)) t := by
   have h := valuation_add_ge_min p x y
@@ -59,21 +57,21 @@ theorem geQ_add (x y : KK O) {t : ℝ} (hx : geQ (vK p x) t) (hy : geQ (vK p y) 
       · rw [min_eq_right h2]; exact hy)
 
 /- English proof (translation)
-Rewrite using `[valuation_neg]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geQ_neg (x : KK O) {t : ℝ} (hx : geQ (vK p x) t) : geQ (vK p (-x)) t := by
   rw [valuation_neg]; exact hx
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `geQ_add _ _ hx (geQ_neg _ hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geQ_sub (x y : KK O) {t : ℝ} (hx : geQ (vK p x) t) (hy : geQ (vK p y) t) : geQ (vK p (x - y)) t := by
   rw [sub_eq_add_neg]; exact geQ_add _ _ hx (geQ_neg _ hy)
 
 /- English proof (translation)
-Introduce `q hq`. Rewrite `hq` using `[valuation_mul_alt]`. Take `⟨a, b, ha, hb, hab⟩` from `WithTop.add_eq_coe.1 hq`. Establish `h1` using `hx a ha.symm`. Establish `h2` using `hy b hb.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hab]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem geQ_mul (x y : KK O) {s t : ℝ} (hx : geQ (vK p x) s) (hy : geQ (vK p y) t) : geQ (vK p (x * y)) (s + t) := by
   intro q hq
@@ -86,9 +84,9 @@ theorem geQ_mul (x y : KK O) {s t : ℝ} (hx : geQ (vK p x) s) (hy : geQ (vK p y
   linarith
 
 /- English proof (translation)
-Take `⟨a, ha, h1⟩` from `hx`. Take `⟨b, hb, h2⟩` from `hy`. Use `⟨a + b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[valuation_mul_alt, ha, hb]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem leQ_mul (x y : KK O) {s t : ℝ} (hx : leQ (vK p x) s) (hy : leQ (vK p y) t) : leQ (vK p (x * y)) (s + t) := by
   obtain ⟨a, ha, h1⟩ := hx
@@ -98,13 +96,13 @@ theorem leQ_mul (x y : KK O) {s t : ℝ} (hx : leQ (vK p x) s) (hy : leQ (vK p y
   · push_cast; linarith
 
 /- English proof (translation)
-Rewrite using `[valuation_zero_alt]`. Conclude with `geQ_top t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geQ_zero (t : ℝ) : geQ (vK p (0 : KK O)) t := by
   rw [valuation_zero_alt]; exact geQ_top t
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using geQ_zero t`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `geQ_add _ _ (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geQ_sum {ι : Type*} (s : Finset ι) (f : ι → KK O) {t : ℝ} (h : ∀ i ∈ s, geQ (vK p (f i)) t) :
     geQ (vK p (∑ i ∈ s, f i)) t := by
@@ -115,11 +113,11 @@ theorem geQ_sum {ι : Type*} (s : Finset ι) (f : ι → KK O) {t : ℝ} (h : �
     exact geQ_add _ _ (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Establish `h` using `valuation_mul_alt p (1 : KK O) 1`. Rewrite `h` using `[mul_one]`. Establish `hne : vK p (1 : KK O) ≠ ⊤`. Establish `h1` using `valuation_algebraMap_eq_alt (O := O) p 1 one_ne_zero`. Rewrite `h1` using `[map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `WithTop.coe_ne_top`. Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.1 hne`. Rewrite `h` using `[← hq, ← WithTop.coe_add, WithTop.coe_inj]`. Rewrite using `[← hq]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: q = 0` using `by linarith`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem valuation_one_eq_zero_alt : vK p (1 : KK O) = 0 := by
   have h := valuation_mul_alt p (1 : KK O) 1
@@ -135,7 +133,7 @@ theorem valuation_one_eq_zero_alt : vK p (1 : KK O) = 0 := by
   rw [this]; rfl
 
 /- English proof (translation)
-Introduce `q hq`. Rewrite `hq` using `[valuation_one_eq_zero_alt]`. Establish `: q = 0` using `by exact_mod_cast hq.symm`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem geQ_one : geQ (vK p (1 : KK O)) 0 := by
   intro q hq
@@ -144,15 +142,15 @@ theorem geQ_one : geQ (vK p (1 : KK O)) 0 := by
   rw [this]; simp
 
 /- English proof (translation)
-Take `⟨a, ha, h1⟩` from `hx`. Assume the negation of the conclusion as `hcon`. Establish `h2 : geQ (vK p (x + e)) (min s ((a : ℝ) + (s - t) / 2)) ∨ True` using `Or.inr trivial`. Establish `hlt : ((a : ℚ) : WithTop ℚ) < vK p (x + e)`. Assume the negation of the conclusion as `hle`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hle` using `[not_lt]`. Take `⟨b, hb, hba⟩` from `WithTop.le_coe_iff.1 hle`. Apply `hcon` to reduce the goal to its premises. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Establish `: (b : ℝ) ≤ (a : ℝ)` using `by exact_mod_cast hba`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlt2 : ((a : ℚ) : WithTop ℚ) < vK p (-e)`. Rewrite using `[valuation_neg]`. Assume the negation of the conclusion as `hle`. Rewrite `hle` using `[not_lt]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb, hba⟩` from `WithTop.le_coe_iff.1 hle`. Establish `h3` using `he b hb`. Establish `: (b : ℝ) ≤ (a : ℝ)` using `by exact_mod_cast hba`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `valuation_add_ge_min p (x + e) (-e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h4` using `[add_neg_cancel_right, ha]`. Conclude with `absurd h4 (not_le.2 (lt_min hlt hlt2))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leQ_add_of_lt (x e : KK O) {s t : ℝ} (hx : leQ (vK p x) t) (he : geQ (vK p e) s) (hst : t < s) :
     leQ (vK p (x + e)) t := by
@@ -181,11 +179,11 @@ theorem leQ_add_of_lt (x e : KK O) {s t : ℝ} (hx : leQ (vK p x) t) (he : geQ (
   exact absurd h4 (not_le.2 (lt_min hlt hlt2))
 
 /- English proof (translation)
-Use `dvr_fraction_field_char_zero hp S` as an intermediate fact. Establish `hD' : (Dn : KK O) ≠ 0` using `by exact_mod_cast hD`. Introduce `q hq`. Establish `h1 : (p : KK O) ^ κ * x / (Dn : KK O) * (Dn : KK O) = (p : KK O) ^ κ * x` using `by field_simp`. Establish `h2` using `congrArg (vK p) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[valuation_mul_alt, Formalism.MainNotions.G.Joints.vK_pow_mul S, valuation_natCast_padicVal hp S Dn hD, hq, ← WithTop.coe_add]`. Take `⟨a, b, ha, hb, hab⟩` from `WithTop.add_eq_coe.1 h2.symm`. Establish `h3` using `hx b hb.symm`. Establish `h4 : a = (κ : ℚ)` using `by exact_mod_cast ha`. Establish `h5 : ((a + b : ℚ) : ℝ) = ((q + (padicValNat p Dn : ℚ) : ℚ) : ℝ)` using `by rw [hab]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h5`. Rewrite `h5` using `[h4]`. Move the coercions through the operations in `at h5`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem geQ_scale (hp : p.Prime) (S : UniformizedDVR p O) (x : KK O) (κ Dn : ℕ) (hD : Dn ≠ 0) {t : ℝ}
     (hx : geQ (vK p x) t) :
@@ -206,11 +204,11 @@ theorem geQ_scale (hp : p.Prime) (S : UniformizedDVR p O) (x : KK O) (κ Dn : �
   linarith
 
 /- English proof (translation)
-Use `dvr_fraction_field_char_zero hp S` as an intermediate fact. Establish `hD' : (Dn : KK O) ≠ 0` using `by exact_mod_cast hD`. Take `⟨b, hb, h3⟩` from `hx`. Establish `h1 : (p : KK O) ^ κ * x / (Dn : KK O) * (Dn : KK O) = (p : KK O) ^ κ * x` using `by field_simp`. Establish `h2` using `congrArg (vK p) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[valuation_mul_alt, Formalism.MainNotions.G.Joints.vK_pow_mul S, valuation_natCast_padicVal hp S Dn hD, hb, ← WithTop.coe_add]`. Take `⟨q, c, hq, hc, hqc⟩` from `WithTop.add_eq_coe.1 h2`. Use `⟨q, hq.symm, ?_⟩` and prove the remaining obligations. Establish `h4 : c = (padicValNat p Dn : ℚ)` using `by exact_mod_cast hc`. Establish `h5 : ((q + c : ℚ) : ℝ) = (((κ : ℚ) + b : ℚ) : ℝ)` using `by rw [hqc]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h5`. Rewrite `h5` using `[h4]`. Move the coercions through the operations in `at h5`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem leQ_scale (hp : p.Prime) (S : UniformizedDVR p O) (x : KK O) (κ Dn : ℕ) (hD : Dn ≠ 0) {t : ℝ}
     (hx : leQ (vK p x) t) :
@@ -231,7 +229,7 @@ theorem leQ_scale (hp : p.Prime) (S : UniformizedDVR p O) (x : KK O) (κ Dn : �
   linarith
 
 /- English proof (translation)
-Establish `h : (0 : WithTop ℚ) ≤ vK p (algebraMap O (KK O) o)` using `(valuation_nonneg_iff_integral S _).2 ⟨o, rfl⟩`. Introduce `q hq`. Rewrite `h` using `[hq]`. Establish `: (0 : ℚ) ≤ q` using `by exact_mod_cast h`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geQ_alg (S : UniformizedDVR p O) (o : O) : geQ (vK p (algebraMap O (KK O) o)) 0 := by
   have h : (0 : WithTop ℚ) ≤ vK p (algebraMap O (KK O) o) := (valuation_nonneg_iff_integral S _).2 ⟨o, rfl⟩
@@ -241,9 +239,9 @@ theorem geQ_alg (S : UniformizedDVR p O) (o : O) : geQ (vK p (algebraMap O (KK O
   exact_mod_cast this
 
 /- English proof (translation)
-Apply `(valuation_nonneg_iff_integral S x).1` to reduce the goal to its premises. Proceed by induction on `hx : vK p x using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe q`. Use `h q hx` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℚ) ≤ q` using `by exact_mod_cast this`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_alg_of_geQ (S : UniformizedDVR p O) (x : KK O) (h : geQ (vK p x) 0) :
     ∃ o : O, x = algebraMap O (KK O) o := by
@@ -262,13 +260,13 @@ section C
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {σ τ : Type}
 
 /- English proof (translation)
-Introduce `mo` and use `geQ_mono h (hF mo)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CoefGe.mono {F : MvPolynomial σ (KK O)} {s t : ℝ} (h : s ≤ t) (hF : CoefGe p F t) : CoefGe p F s :=
   fun mo => geQ_mono h (hF mo)
 
 /- English proof (translation)
-Introduce `mo`. Rewrite using `[coeff_add]`. Conclude with `geQ_add _ _ (hF mo) (hG mo)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoefGe.add {F G : MvPolynomial σ (KK O)} {t : ℝ} (hF : CoefGe p F t) (hG : CoefGe p G t) :
     CoefGe p (F + G) t := by
@@ -277,7 +275,7 @@ theorem CoefGe.add {F G : MvPolynomial σ (KK O)} {t : ℝ} (hF : CoefGe p F t) 
   exact geQ_add _ _ (hF mo) (hG mo)
 
 /- English proof (translation)
-Introduce `mo`. Rewrite using `[coeff_zero]`. Conclude with `geQ_zero t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoefGe.zero (t : ℝ) : CoefGe p (0 : MvPolynomial σ (KK O)) t := by
   intro mo
@@ -285,7 +283,7 @@ theorem CoefGe.zero (t : ℝ) : CoefGe p (0 : MvPolynomial σ (KK O)) t := by
   exact geQ_zero t
 
 /- English proof (translation)
-Introduce `mo`. Rewrite using `[coeff_sum]`. Conclude with `geQ_sum _ _ fun i hi => h i hi mo`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoefGe.sum {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ (KK O)) {t : ℝ}
     (h : ∀ i ∈ s, CoefGe p (f i) t) : CoefGe p (∑ i ∈ s, f i) t := by
@@ -294,7 +292,7 @@ theorem CoefGe.sum {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ (KK 
   exact geQ_sum _ _ fun i hi => h i hi mo
 
 /- English proof (translation)
-Introduce `mo`. Rewrite using `[coeff_mul]`. Conclude with `geQ_sum _ _ fun x _ => geQ_mul _ _ (hF x.1) (hG x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoefGe.mul {F G : MvPolynomial σ (KK O)} {s t : ℝ} (hF : CoefGe p F s) (hG : CoefGe p G t) :
     CoefGe p (F * G) (s + t) := by
@@ -303,7 +301,7 @@ theorem CoefGe.mul {F G : MvPolynomial σ (KK O)} {s t : ℝ} (hF : CoefGe p F s
   exact geQ_sum _ _ fun x _ => geQ_mul _ _ (hF x.1) (hG x.2)
 
 /- English proof (translation)
-Introduce `mo'`. Rewrite using `[coeff_monomial]`. Use `split_ifs`. Conclude with `hc`. Conclude with `geQ_zero t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoefGe.monomial (mo : σ →₀ ℕ) {c : KK O} {t : ℝ} (hc : geQ (vK p c) t) :
     CoefGe p (MvPolynomial.monomial mo c) t := by
@@ -314,7 +312,7 @@ theorem CoefGe.monomial (mo : σ →₀ ℕ) {c : KK O} {t : ℝ} (hc : geQ (vK 
   · exact geQ_zero t
 
 /- English proof (translation)
-Establish `: (1 : MvPolynomial σ (KK O)) = MvPolynomial.monomial 0 1` using `rfl`. Rewrite using `[this]`. Conclude with `CoefGe.monomial _ geQ_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoefGe.one : CoefGe p (1 : MvPolynomial σ (KK O)) 0 := by
   have : (1 : MvPolynomial σ (KK O)) = MvPolynomial.monomial 0 1 := rfl
@@ -322,9 +320,9 @@ theorem CoefGe.one : CoefGe p (1 : MvPolynomial σ (KK O)) 0 := by
   exact CoefGe.monomial _ geQ_one
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `CoefGe.one`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `CoefGe.mul ih hF` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem CoefGe.pow {F : MvPolynomial σ (KK O)} (hF : CoefGe p F 0) (n : ℕ) : CoefGe p (F ^ n) 0 := by
   induction n with
@@ -335,9 +333,9 @@ theorem CoefGe.pow {F : MvPolynomial σ (KK O)} (hF : CoefGe p F 0) (n : ℕ) : 
     rwa [add_zero] at this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty]`. Conclude with `CoefGe.one`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `CoefGe.mul (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem CoefGe.prod {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ (KK O))
     (h : ∀ i ∈ s, CoefGe p (f i) 0) : CoefGe p (∏ i ∈ s, f i) 0 := by
@@ -349,16 +347,16 @@ theorem CoefGe.prod {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ (KK
     rwa [add_zero] at this
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial]`. Conclude with `CoefGe.monomial _ geQ_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoefGe.X_pow (v : σ) (n : ℕ) : CoefGe p ((X v : MvPolynomial σ (KK O)) ^ n) 0 := by
   rw [X_pow_eq_monomial]
   exact CoefGe.monomial _ geQ_one
 
 /- English proof (translation)
-Rewrite using `[aeval_def, eval₂_eq]`. Use `CoefGe.sum _ _ fun d _ => ?_` and prove the remaining obligations. Establish `h1 : CoefGe p (algebraMap (KK O) (MvPolynomial τ (KK O)) (F.coeff d)) t`. Rewrite using `[algebraMap_eq, C_apply]`. Conclude with `CoefGe.monomial _ (hF d)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `CoefGe.mul h1 (CoefGe.prod d.support (fun i => f i ^ d i) fun i _ => CoefGe.pow (hf i) _)`. Rewrite `h2` using `[add_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem CoefGe.aeval (f : σ → MvPolynomial τ (KK O)) (hf : ∀ v, CoefGe p (f v) 0) {F : MvPolynomial σ (KK O)} {t : ℝ}
     (hF : CoefGe p F t) : CoefGe p (MvPolynomial.aeval f F) t := by
@@ -377,7 +375,7 @@ section F
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_add_right {σ : Type} (G T₁ T₂ : MvPolynomial σ (KK O)) : fock G (T₁ + T₂) = fock G T₁ + fock G T₂ := by
   unfold fock
@@ -386,13 +384,13 @@ theorem fock_add_right {σ : Type} (G T₁ T₂ : MvPolynomial σ (KK O)) : fock
   rw [coeff_add]; ring
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `multDiv_kapFl O p S.p_mem (k := k) d α hα`. Establish `hD : (∏ s, (d s).factorial) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => Nat.factorial_ne_zero _`. Establish `h1 : (p : KK O) ^ (kapFl p k d) * ((expFact α : ℕ) : KK O) = (((∏ s, (d s).factorial : ℕ) : ℕ) : KK O) * algebraMap O (KK O) c`. Use `congrArg (algebraMap O (KK O)) hc` as an intermediate fact. Simplify `this` using `[map_mul, map_pow, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `q hq`. Establish `h2` using `congrArg (vK p) h1`. Rewrite `h2` using `[Formalism.MainNotions.G.Joints.vK_pow_mul S, hq, valuation_mul_alt, valuation_natCast_padicVal hp.out S _ hD, ← WithTop.coe_add]`. Take `⟨a, b, ha, hb, hab⟩` from `WithTop.add_eq_coe.1 h2.symm`. Establish `h3` using `geQ_alg S c b hb.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : a = (padicValNat p (∏ s, (d s).factorial) : ℚ)` using `by exact_mod_cast ha`. Establish `h5 : ((a + b : ℚ) : ℝ) = ((((kapFl p k d : ℕ) : ℚ) + q : ℚ) : ℝ)` using `by rw [hab]`. Move the coercions through the operations in `at h5`. Rewrite `h5` using `[h4]`. Move the coercions through the operations in `at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Unfold `twiceValuationFactorialProduct`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem geQ_expFact [hp : Fact p.Prime] (S : UniformizedDVR p O) {n' k : ℕ} (d : Fin n' → ℕ) (α : Fin n' × Fin k →₀ ℕ)
     (hα : ∀ s, multideg α s = d s) :
@@ -417,9 +415,9 @@ theorem geQ_expFact [hp : Fact p.Prime] (S : UniformizedDVR p O) {n' k : ℕ} (d
   linarith
 
 /- English proof (translation)
-Unfold `fock`. Use `geQ_sum _ _ fun m hm => ?_` and prove the remaining obligations. Establish `hm' : ∀ s, multideg m s = d s`. Use `(MvPolynomial.mem_restrictSupport_iff (KK O)).1 hd` as an intermediate fact. Conclude with `this hm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `geQ_mul _ _ (geQ_mul _ _ (hG m) (hT m)) (geQ_expFact S d m hm')`. Use `geQ_mono ?_ h1` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem geQ_fock [hp : Fact p.Prime] (S : UniformizedDVR p O) {n' k : ℕ} (d : Fin n' → ℕ)
     (G T : MvPolynomial (TV n' k) (KK O)) {t : ℝ} (hd : HasMultideg G d) (hG : CoefGe p G 0) (hT : CoefGe p T t) :

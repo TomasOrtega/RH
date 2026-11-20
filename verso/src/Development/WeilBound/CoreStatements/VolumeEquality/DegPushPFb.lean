@@ -7,41 +7,37 @@ namespace SheetDecomposition.PF
 open MvPolynomial
 
 /- English proof (translation)
-Take `⟨Θ, hΘ⟩ : ∃ f : MvPolynomial σ Φ →+* Φ', f = eval₂Hom L fun s => ν (C (ψ (X s)))` from `⟨_, rfl⟩`. It suffices to establish `main : RingHom.ker Θ = (RingHom.ker ψ).map (map a) by`. Substitute `hΘ` using the available equality. Conclude with `main`. Establish `hΘC : ∀ f : Φ, Θ (C f) = L f` using `fun f => by rw [hΘ, eval₂Hom_C]`.
+Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΘX : ∀ s : σ, Θ (X s) = ν (C (ψ (X s)))` using `fun s => by rw [hΘ, eval₂Hom_X']`. Take `⟨α, hα⟩ : ∃ f : MvPolynomial K (MvPolynomial σ k) →+* MvPolynomial σ Φ, f = eval₂Hom (map a) fun i => C (algebraMap (MvPolynomial K k) Φ (X i))` from `⟨_, rfl⟩`. Establish `hαC : ∀ p : MvPolynomial σ k, α (C p) = map a p` using `fun p => by rw [hα, eval₂Hom_C]`. Establish `hαX : ∀ i : K, α (X i) = C (algebraMap (MvPolynomial K k) Φ (X i))` using `fun i => by`. Rewrite using `[hα, eval₂Hom_X']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΘa : ∀ p : MvPolynomial σ k, Θ (map a p) = ν (C (ψ p))`. Establish `h : Θ.comp (map a) = ν.comp ((C : B →+* MvPolynomial K B).comp (ψ : MvPolynomial σ k →+* B))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, map_C, hΘC, ha, hL, RingHom.coe_coe, algHom_C]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Simplify using `only [RingHom.comp_apply, map_X, hΘX, RingHom.coe_coe]`. Introduce `p`. Conclude with `DFunLike.congr_fun h p`. Establish `hΘα : ∀ Q, Θ (α Q) = ν (map (ψ : MvPolynomial σ k →+* B) Q)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h : Θ.comp α = ν.comp (map (ψ : MvPolynomial σ k →+* B))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [RingHom.comp_apply, hαC, hΘa, map_C, RingHom.coe_coe]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, hαX, hΘC, hL, map_X]`. Introduce `Q`. Conclude with `DFunLike.congr_fun h Q`. Establish `hαmapC : ∀ p : MvPolynomial K k, α (map (C : k →+* MvPolynomial σ k) p) = C (algebraMap (MvPolynomial K k) Φ p)`. Establish `h : α.comp (map (C : k →+* MvPolynomial σ k)) = (C : Φ →+* MvPolynomial σ Φ).comp (algebraMap (MvPolynomial K k) Φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, map_C, hαC, ha]`. Introduce `i`. Simplify using `only [RingHom.comp_apply, map_X, hαX]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p`. Conclude with `DFunLike.congr_fun h p`. Establish `hCmem : ∀ q : MvPolynomial K k, C (algebraMap (MvPolynomial K k) Φ q) ∈ α.range` using `fun q => RingHom.mem_range.mpr ⟨_, hαmapC q⟩`. Establish `hXmem : ∀ s : σ, (X s : MvPolynomial σ Φ) ∈ α.range` using `fun s => RingHom.mem_range.mpr ⟨C (X s), by rw [hαC, map_X]⟩`. Establish `hden : ∀ P : MvPolynomial σ Φ, ∃ q : MvPolynomial K k, q ≠ 0 ∧ C (algebraMap (MvPolynomial K k) Φ q) * P ∈ α.range`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `P`. Use `MvPolynomial.induction_on (motive := fun P => ∃ q : MvPolynomial K k, q ≠ 0 ∧ C (algebraMap (MvPolynomial K k) Φ q) * P ∈ α.range) P ?_ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `intro f try dsimp only`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (MvPolynomial K k) f`. Use `⟨q, nonZeroDivisors.ne_zero hq, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← C_mul, mul_div_cancel₀ _ (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hq)]`. Conclude with `hCmem p`. Apply the tactic sequence `intro P₁ P₂ h₁ h₂ try dsimp only at h₁ h₂ ⊢`. Take `⟨q₁, hq₁, h₁⟩` from `h₁`. Take `⟨q₂, hq₂, h₂⟩` from `h₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `⟨q₁ * q₂, mul_ne_zero hq₁ hq₂, ?_⟩` and prove the remaining obligations. Establish `e : C (algebraMap (MvPolynomial K k) Φ (q₁ * q₂)) * (P₁ + P₂) = C (algebraMap (MvPolynomial K k) Φ q₂) * (C (algebraMap (MvPolynomial K k) Φ q₁) * P₁) + C (algebraMap (MvPolynomial K k) Φ q₁) * (C (algebraMap (MvPolynomial K k) Φ q₂) * P₂)`. Rewrite using `[map_mul, C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `add_mem (mul_mem (hCmem q₂) h₁) (mul_mem (hCmem q₁) h₂)`. Apply the tactic sequence `intro P s h try dsimp only at h ⊢`. Take `⟨q, hq, h⟩` from `h`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `mul_mem h (hXmem s)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `P hP`. Rewrite `hP` using `[RingHom.mem_ker]`. Take `⟨q, hq, hmem⟩` from `hden P`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Q, hQ⟩` from `RingHom.mem_range.mp hmem`. Establish `hQ0 : map (ψ : MvPolynomial σ k →+* B) Q = 0`. Apply `hν` to reduce the goal to its premises. Rewrite using `[map_zero, ← hΘα, hQ, map_mul, hP, mul_zero]`. Establish `hJ : α Q ∈ (RingHom.ker ψ).map (map a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Q.as_sum, map_sum]`. Use `Ideal.sum_mem _ fun v _ => ?_` and prove the remaining obligations. Rewrite using `[monomial_eq, map_mul, hαC]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hv` using `congrArg (coeff v) hQ0`. Rewrite `hv` using `[coeff_map, coeff_zero]`. Conclude with `hv`. Establish `hqne : algebraMap (MvPolynomial K k) Φ q ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hq)`. Establish `hP' : P = C (algebraMap (MvPolynomial K k) Φ q)⁻¹ * α Q`.
-
-Rewrite using `[hQ, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hqne, C_1, one_mul]`. Rewrite using `[hP']`. Conclude with `Ideal.mul_mem_left _ _ hJ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`.
-
-Rewrite `hp` using `[RingHom.mem_ker]`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hΘa, hp, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_baseChange {k B K σ Φ Φ' : Type} [Field k] [CommRing B] [Algebra k B] [Field Φ] [Field Φ']
     [Algebra (MvPolynomial K k) Φ] [IsFractionRing (MvPolynomial K k) Φ] (a : k →+* Φ)

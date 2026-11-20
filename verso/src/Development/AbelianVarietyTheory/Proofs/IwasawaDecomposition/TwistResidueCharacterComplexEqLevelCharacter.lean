@@ -13,7 +13,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.Mem.LevResXi
 
 /- English proof (translation)
-Introduce `X px I U L hI hV hL t w hw u`. Rewrite using `[xiR_eq_map_resChar X px I U L hI hV hL t w hw u]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem embLL_resChar_eq_xiR : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → ValsIn I → LevOf X I U L →

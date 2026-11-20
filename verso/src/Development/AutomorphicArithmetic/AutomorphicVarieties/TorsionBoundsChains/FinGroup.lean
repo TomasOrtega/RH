@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `S _ _ j`. Establish `hi : Function.Injective (groupHomology.iCycles (Rep.trivial ℤ S ℤ) (j + 1)).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Establish `hq : Function.Surjective (groupHomology.π (Rep.trivial ℤ S ℤ) (j + 1)).hom` using `fun x => groupHomology_induction_on x fun y => ⟨y, rfl⟩`. Establish `h` using `subquot (Fin (j + 1) → S) (groupHomology.cycles (Rep.trivial ℤ S ℤ) (j + 1)) (HZ S (j + 1)) (groupHomology.iCycles (Rep.trivial ℤ S ℤ) (j + 1)).hom.toAddMonoidHom (groupHomology.π (Rep.trivial ℤ S ℤ) (j + 1)).hom.toAddMonoidHom (Nat.card S) Nat.card_pos hi hq (kill S j)`. Rewrite `h` using `[Nat.card_fun, Nat.card_fin]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.V.KH.finGroup :
     ∀ (S : Type) [Group S] [Finite S] (j : ℕ),

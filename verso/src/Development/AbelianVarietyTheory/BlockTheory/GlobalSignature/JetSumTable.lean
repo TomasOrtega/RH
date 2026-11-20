@@ -24,7 +24,7 @@ def adj (x : HomE E a b) : HomE E b a := Matrix.toLin' (LinearMap.toMatrix' x).c
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[adj, Matrix.toLin'_apply, Matrix.mulVec_single_one]`. Simplify using `[LinearMap.toMatrix'_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adj_single (x : HomE E a b) (α : Fin a) (β : Fin b) :
     adj x (Pi.single β 1) α = star (x (Pi.single α 1) β) := by
@@ -53,11 +53,11 @@ def InIntClosure {H I : Type} (Sup : Set H) (tab : H → I → ℂ_[p]) (M : Set
       ∀ m ∈ F, ‖J m - c.sum fun x r => r * tab x m‖ < ε
 
 /- English proof (translation)
-Introduce `F _ ε hε`. Use `⟨Finsupp.single x 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Use `Finsupp.support_single_subset (Finset.mem_coe.1 hy)` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this ▸ hx`. Introduce `y`. Rewrite using `[Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `m _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hε]`.
+A detailed English derivation is pending.
 -/
 theorem InIntClosure.single {H I : Type} {Sup : Set H} (tab : H → I → ℂ_[p]) (M : Set I) {x : H} (hx : x ∈ Sup) :
     InIntClosure Sup tab M (tab x) := by

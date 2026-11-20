@@ -10,9 +10,9 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : ℕ}
 
 /- English proof (translation)
-Establish `: IsModuleTopology (Ainf F) (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Unfold `sizeInf`. Use `continuous_finsetSum _ fun k _ => continuous_finsetSum _ fun v _ => ?_` and prove the remaining obligations. Establish `hk : Continuous fun y : Ainf F ⊗[F] E => (Algebra.TensorProduct.basis (Ainf F) b).coord k y` using `IsModuleTopology.continuous_of_linearMap _`. Simplify using `only [← Module.Basis.coord_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_norm.comp ((continuous_apply v).comp hk)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_size (b : Module.Basis (Fin d) F E) :
     Continuous (sizeInf b : Ainf F ⊗[F] E → ℝ) := by
@@ -26,22 +26,22 @@ theorem continuous_size (b : Module.Basis (Fin d) F E) :
   exact continuous_norm.comp ((continuous_apply v).comp hk)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem size_nonneg (b : Module.Basis (Fin d) F E) (y : Ainf F ⊗[F] E) : 0 ≤ sizeInf b y :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => size_nonneg b _`.
+A detailed English derivation is pending.
 -/
 theorem tup_nonneg {M n : ℕ} (b : Module.Basis (Fin d) F E) (X : Fin n → Fin M → Ainf F ⊗[F] E) :
     0 ≤ sizeTup b X :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => size_nonneg b _
 
 /- English proof (translation)
-Unfold `sizeInf`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add]`. Conclude with `norm_add_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem size_add_le (b : Module.Basis (Fin d) F E) (x y : Ainf F ⊗[F] E) :
     sizeInf b (x + y) ≤ sizeInf b x + sizeInf b y := by
@@ -54,7 +54,7 @@ theorem size_add_le (b : Module.Basis (Fin d) F E) (x y : Ainf F ⊗[F] E) :
   exact norm_add_le _ _
 
 /- English proof (translation)
-Unfold `sizeInf`. Use `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Establish `h0 : ((0 : Fin d →₀ Ainf F) k) v = 0` using `rfl`. Rewrite using `[map_zero, h0, norm_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem size_zero (b : Module.Basis (Fin d) F E) : sizeInf b (0 : Ainf F ⊗[F] E) = 0 := by
   unfold sizeInf
@@ -63,7 +63,7 @@ theorem size_zero (b : Module.Basis (Fin d) F E) : sizeInf b (0 : Ainf F ⊗[F] 
   rw [map_zero, h0, norm_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [size_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(size_add_le b _ _).trans (by gcongr)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem size_sum_le {ι : Type} (b : Module.Basis (Fin d) F E) (s : Finset ι)
     (f : ι → Ainf F ⊗[F] E) : sizeInf b (∑ c ∈ s, f c) ≤ ∑ c ∈ s, sizeInf b (f c) := by
@@ -75,7 +75,7 @@ theorem size_sum_le {ι : Type} (b : Module.Basis (Fin d) F E) (s : Finset ι)
     exact (size_add_le b _ _).trans (by gcongr)
 
 /- English proof (translation)
-Unfold `sizeInf`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem coord_le_size (b : Module.Basis (Fin d) F E) (y : Ainf F ⊗[F] E) (j : Fin d)
     (v : InfinitePlace F) :
@@ -91,9 +91,7 @@ theorem coord_le_size (b : Module.Basis (Fin d) F E) (y : Ainf F ⊗[F] E) (j : 
         (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ j)
 
 /- English proof (translation)
-Use `set B := Algebra.TensorProduct.basis (Ainf F) b with hB`. Establish `hBB : ∀ i j, B.repr (B i * B j) k = algebraMap F (Ainf F) (b.repr (b i * b j) k)`. Introduce `i j`. Simplify using `[hB, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.basis_repr_tmul]`. Use `conv_lhs => rw [← B.sum_repr x, ← B.sum_repr y, Finset.sum_mul_sum]`.
-
-Simplify using `only [map_sum, Finsupp.coe_finsetSum, Finset.sum_apply, smul_mul_smul_comm, map_smul, Finsupp.smul_apply, hBB, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_mul (b : Module.Basis (Fin d) F E) (x y : Ainf F ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis (Ainf F) b).repr (x * y) k =
@@ -110,17 +108,15 @@ theorem repr_mul (b : Module.Basis (Fin d) F E) (x y : Ainf F ⊗[F] E) (k : Fin
     Finsupp.smul_apply, hBB, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨S₀, hS₀⟩` from `(Set.finite_range (fun p : Fin d × Fin d × Fin d × InfinitePlace F => ‖(algebraMap F (Ainf F) (b.repr (b p.1 * b p.2.1) p.2.2.1)) p.2.2.2‖)).bddAbove`. Use `set S := |S₀| with hS`. Establish `hS0 : 0 ≤ S` using `abs_nonneg _`. Establish `hs : ∀ i j k v, ‖(algebraMap F (Ainf F) (b.repr (b i * b j) k)) v‖ ≤ S` using `fun i j k v => (hS₀ ⟨(i, j, k, v), rfl⟩).trans (le_abs_self _)`. Use `⟨(d : ℝ) * d * S, by positivity, fun x y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set B := Algebra.TensorProduct.basis (Ainf F) b with hB`. Establish `hpt : ∀ k (v : InfinitePlace F), ‖B.repr (x * y) k v‖ ≤ (d : ℝ) * S * sizeInf b y * ∑ i, ‖B.repr x i v‖`. Introduce `k v`. Establish `hev : B.repr (x * y) k v = ∑ i, ∑ j, B.repr x i v * B.repr y j v * (algebraMap F (Ainf F) (b.repr (b i * b j) k)) v`. Rewrite using `[repr_mul b x y k]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_sum (Pi.evalRingHom (fun w : InfinitePlace F => w.Completion) v) (fun i => ∑ j, B.repr x i * B.repr y j * algebraMap F (Ainf F) (b.repr (b i * b j) k)) Finset.univ` as an intermediate fact. Use `this.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Conclude with `map_sum (Pi.evalRingHom (fun w : InfinitePlace F => w.Completion) v) _ _`. Rewrite using `[hev]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left (coord_le_size b y j v) (norm_nonneg _)) (hs i j k v) (norm_nonneg _) (mul_nonneg (norm_nonneg _) (size_nonneg b y))`. Use `_ = (d : ℝ) * S * sizeInf b y * ∑ i, ‖B.repr x i v‖ := by`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Finset.mul_sum]`. Use `_ = (d : ℝ) * d * S * sizeInf b x * sizeInf b y := by`.
-
-Establish `: sizeInf b x = ∑ v : InfinitePlace F, ∑ i, ‖B.repr x i v‖` using `Finset.sum_comm`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_size_mul_le (b : Module.Basis (Fin d) F E) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ x y : Ainf F ⊗[F] E, sizeInf b (x * y) ≤ K * sizeInf b x * sizeInf b y := by
@@ -168,13 +164,13 @@ theorem exists_size_mul_le (b : Module.Basis (Fin d) F E) :
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ d b n M C hC`. Take `⟨K, hK0, hK⟩` from `exists_size_mul_le b`. Establish `hcont : Continuous fun g : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E) => ∑ c, ∑ a, sizeInf b (g c a)` using `continuous_finsetSum _ fun c _ => continuous_finsetSum _ fun a _ => (continuous_size b).comp (continuous_id.matrix_elem c a)`. Take `⟨D, hD⟩` from `(hC.image hcont).bddAbove`. Use `⟨K * |D| + 1, by positivity, fun g hg X => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg' : ∀ c, ∑ a, sizeInf b (g c a) ≤ |D|` using `fun c => (Finset.single_le_sum (f := fun c => ∑ a, sizeInf b (g c a)) (fun _ _ => Finset.sum_nonneg fun _ _ => size_nonneg b _) (Finset.mem_univ c)).trans ((hD ⟨g, hg, rfl⟩).trans (le_abs_self _))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun c _ => (Finset.mul_sum _ _ _).symm`. Use `_ ≤ ∑ i, ∑ c, K * sizeInf b (X c i) * |D| := Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun c _ => mul_le_mul_of_nonneg_left (hg' c) (mul_nonneg hK0 (size_nonneg b _))`. Use `_ = K * |D| * sizeTup b X := by`. Unfold `sizeTup`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ ≤ (K * |D| + 1) * sizeTup b X := by`. Use polynomial arithmetic with `[tup_nonneg b X]`.
+A detailed English derivation is pending.
 -/
 theorem size_rmul_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ (n M : ℕ) (C : Set (Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E))), IsCompact C → ∃ c : ℝ, 0 < c ∧ ∀ g ∈ C, ∀ X : Fin n → Fin M → Ainf F ⊗[F] E, sizeTup b (rmul (Ainf F) X g) ≤ c * sizeTup b X := by
   intro F E _ _ _ _ _ σ _ d b n M C hC

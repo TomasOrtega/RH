@@ -14,13 +14,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.AuxiliaryWeightsExistence
 
 /- English proof (translation)
-Establish `walk : ∀ k : ℕ, ∀ i j : Fin p, j.1 = i.1 + k → g j ≤ g i`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: j = i` using `Fin.ext (by omega)`. Rewrite using `[this]`. Consider the case `succ k ih`. Introduce `i j hij`. Establish `hm : i.1 + k < p` using `by have := j.2; omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hstep` using `hg ⟨i.1 + k, hm⟩ (by have := j.2; simp only; omega)`. Establish `hj : (⟨i.1 + k + 1, by have` using `j.2; omega⟩ : Fin p) = j := Fin.ext (by simp only; omega)`. Rewrite `hstep` using `[hj]`. Conclude with `le_trans hstep (ih i ⟨i.1 + k, hm⟩ rfl)`. Use `⟨fun i j hij => walk (j.1 - i.1) i j (by have : i.1 ≤ j.1 := hij; omega), fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp : p - 1 < p` using `by have := i.2; omega`. Conclude with `le_trans (hl ⟨p - 1, hp⟩ (by simp only; have := i.2; omega)) (walk (p - 1 - i.1) i ⟨p - 1, hp⟩ (by simp only; have := i.2; omega))`.
+A detailed English derivation is pending.
 -/
 theorem antitone_nonneg_of_gaps {p : ℕ} (g : Fin p → ℤ)
     (hg : ∀ (i : Fin p) (h : i.1 + 1 < p), g ⟨i.1 + 1, h⟩ ≤ g i)
@@ -46,9 +46,9 @@ theorem antitone_nonneg_of_gaps {p : ℕ} (g : Fin p → ℤ)
     (walk (p - 1 - i.1) i ⟨p - 1, hp⟩ (by simp only; have := i.2; omega))
 
 /- English proof (translation)
-Rewrite `hL` using `[Int.fdiv_eq_ediv_of_nonneg _ hT.le]`. Establish `hdm` using `Int.mul_ediv_add_emod (c + 2) T'`. Establish `hlt` using `Int.emod_lt_of_pos (c + 2) hT`. Establish `hge` using `Int.emod_nonneg (c + 2) hT.ne'`. Rewrite `hdm` using `[← hL]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq : T' + 2 * r ≤ cL`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`. Establish `: T' * (cL + 1) ≤ T' * (T' + 2 * r)`. Apply `mul_le_mul_of_nonneg_left _ hT.le` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
 Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -69,13 +69,13 @@ theorem gap_key (c cL T' r : ℤ) (hT : 0 < T') (hr : 0 ≤ r) (hc : T' * (T' + 
   nlinarith
 
 /- English proof (translation)
-Establish `hT'z : (T' : ℤ) = T + Dm + 2` using `by rw [hT']; push_cast; ring`. Establish `hg` using `antitone_nonneg_of_gaps (fun i => ((T : ℤ) + Dm + 4) * l i - a i) ?_ ?_`. Use `⟨fun i => (((T : ℤ) + Dm + 4) * l i - a i).toNat, fun i j hij => Int.toNat_le_toNat (hg.1 hij), fun i => ?_⟩` and prove the remaining obligations. Establish `h0` using `hg.2 i`. Establish `hfi` using `hf i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at h0 ⊢`. Use `zify`. Rewrite using `[Int.toNat_of_nonneg h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i h`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk` using `gap_key (gapZ a i) (gapZ l i) T' r (by omega) (by positivity) (by exact_mod_cast hgap i h) (hL i h)`. Unfold `gapZ at hk`. Rewrite `hk` using `[dif_pos h, dif_pos h, hT'z]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `i h`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hlast i h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_block {p : ℕ} (a l f : Fin p → ℕ) (T Dm r T' : ℕ) (hT' : T' = T + Dm + 2)
     (hf : ∀ i, (f i : ℤ) = a i - T * l i)
@@ -105,13 +105,11 @@ theorem exists_block {p : ℕ} (a l f : Fin p → ℕ) (T Dm r T' : ℕ) (hT' : 
     linarith
 
 /- English proof (translation)
-Establish `hT : 0 < T + Dm + 2` using `by omega`. Rewrite using `[Int.fdiv_eq_ediv_of_nonneg _ hT.le]`. Establish `hdm` using `Int.mul_ediv_add_emod (a - c) (T + Dm + 2)`. Establish `hlt` using `Int.emod_lt_of_pos (a - c) hT`. Establish `hge` using `Int.emod_nonneg (a - c) hT.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q := (a - c) / (T + Dm + 2) with hq`. Use `set m := (a - c) % (T + Dm + 2) with hm`. Establish `h2q : c + T + Dm + 2 ≤ 2 * q`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (T + Dm + 2) * (2 * q) ≤ (T + Dm + 2) * (2 * T + Dm + 1)`. Apply `mul_le_mul_of_nonneg_left _ hT.le` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Establish `hT0 : (0 : ℤ) ≤ T` using `by omega`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h40 hT0, mul_le_mul_of_nonneg_right h40 hD, mul_nonneg hD hT0, mul_nonneg hD hD]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem le_mul_fdiv_sub_of_sq_le (a c T Dm : ℤ) (hD : 0 ≤ Dm) (h40 : 40 * (Dm + 2) ≤ T)
     (hc : c ≤ T) (ha : 2 * T ^ 2 ≤ a) :
@@ -136,35 +134,31 @@ private theorem le_mul_fdiv_sub_of_sq_le (a c T Dm : ℤ) (hD : 0 ≤ Dm) (h40 :
   nlinarith
 
 /- English proof (translation)
-Introduce `D B P j X large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hP`. Take `⟨-, hS, -, -, -⟩` from `hP`. Take `⟨-, hgP, hgM, hh0, -, hlP, hlM, -, hnP, -, hPW, -, -, -, hL, hF, -, -, -, h40, hcT, h40W, -, -, -, -⟩` from `hS`. Take `⟨hLn, hLP, hLM⟩` from `hL`. Take `⟨hFn, hFP, hFM⟩` from `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hTp : ((Tp D j Tn : ℕ) : ℤ) = Tn + WeightFamilies.dimY D j + 2` using `by unfold Tp; push_cast; ring`. Establish `h40z : 40 * ((WeightFamilies.dimY D j : ℤ) + 2) ≤ Tn` using `by exact_mod_cast h40`. Establish `hbigP : ∀ τ (i : Fin (D.R.sigW j).1), i.1 + 1 = (D.R.sigW j).1 → 2 * (Tn : ℤ) ^ 2 ≤ ka.aP τ i`. Introduce `τ i hi`. Establish `h1` using `hlP τ i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : 2 * (Tn : ℝ) ^ 2 ≤ ka.aP τ i` using `by linarith`. Conclude with `h2` after adjusting the coercions. Establish `hbigM : ∀ τ (i : Fin (D.R.sigW j).2), i.1 + 1 = (D.R.sigW j).2 → 2 * (Tn : ℤ) ^ 2 ≤ ka.aM τ i`. Introduce `τ i hi`. Establish `h1` using `hlM τ i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 2 * (Tn : ℝ) ^ 2 ≤ ka.aM τ i` using `by linarith`. Conclude with `h2` after adjusting the coercions. Establish `blockP : ∀ τ, ∃ w : Fin (D.R.sigW j).1 → ℕ, Antitone w ∧ ∀ i, w i + wF.aP τ i = (WeightFamilies.dimY D j + 4) * wL.aP τ i`. Introduce `τ`. Use `exists_block (ka.aP τ) (wL.aP τ) (wF.aP τ) Tn (WeightFamilies.dimY D j) D.R.r (Tp D j Tn) rfl (hFP τ) (hgP τ) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hl` using `hLP τ i`. Rewrite `hl` using `[if_pos hi]`. Conclude with `hl`. Introduce `i hi`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : ¬ (i.1 + 1 < (D.R.sigW j).1)` using `by omega`. Establish `hl` using `hLP τ i`. Rewrite `hl` using `[if_neg hn]`. Unfold `gapZ at hl`. Rewrite `hl` using `[dif_neg hn]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `le_mul_fdiv_sub_of_sq_le (ka.aP τ i) (((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r) Tn (WeightFamilies.dimY D j) (by positivity) h40z (by exact_mod_cast hcT) (hbigP τ i hi)`. Establish `e : (ka.aP τ i : ℤ) - ((WeightFamilies.dimY D j : ℤ) + 2) * nW - 2 * D.R.r = ka.aP τ i - (((WeightFamilies.dimY D j : ℤ) + 2) * nW + 2 * D.R.r)` using `by ring`. Rewrite using `[hl, e, hTp]`. Conclude with `hk`. Establish `blockM : ∀ τ, ∃ w : Fin (D.R.sigW j).2 → ℕ, Antitone w ∧ ∀ i, w i + wF.aM τ i = (WeightFamilies.dimY D j + 4) * wL.aM τ i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ`. Use `exists_block (ka.aM τ) (wL.aM τ) (wF.aM τ) Tn (WeightFamilies.dimY D j) D.R.r (Tp D j Tn) rfl (hFM τ) (hgM τ) ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Establish `hl` using `hLM τ i`. Rewrite `hl` using `[if_pos hi]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hl`. Introduce `i hi`. Establish `hn : ¬ (i.1 + 1 < (D.R.sigW j).2)` using `by omega`. Establish `hl` using `hLM τ i`. Rewrite `hl` using `[if_neg hn]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `gapZ at hl`. Rewrite `hl` using `[dif_neg hn]`. Establish `hk` using `le_mul_fdiv_sub_of_sq_le (ka.aM τ i) 0 Tn (WeightFamilies.dimY D j) (by positivity) h40z (by positivity) (hbigM τ i hi)`. Rewrite `hk` using `[sub_zero]`. Rewrite using `[hl, hTp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hk`. Use `choose bP hbPa hbPs using blockP`. Use `choose bM hbMa hbMs using blockM`. Establish `hnW : Even nW` using `hLn ▸ wL.n_even`. Establish `hle : nP ≤ (WeightFamilies.dimY D j + 4) * nW` using `le_trans hPW (by nlinarith)`.
+Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `hn2 : Even ((WeightFamilies.dimY D j + 4) * nW - nP)` using `(Nat.even_sub hle).2 ⟨fun _ => hnP, fun _ => hnW.mul_left _⟩`. Establish `hP2 : ∀ τ, Antitone (fun i => 2 * wL.aP τ i)` using `fun τ a b h => by`. Use `wL.aPlus_antitone τ h` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hM2 : ∀ τ, Antitone (fun i => 2 * wL.aM τ i)` using `fun τ a b h => by`. Use `wL.aM_anti τ h` as an intermediate fact. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `hn1 : Even (2 * nW - 2)` using `⟨nW - 1, by omega⟩`.
-
-Use `⟨⟨(⟨bP, bM, hbPa, hbMa, (WeightFamilies.dimY D j + 4) * nW - nP, hn2⟩ : WeightFamilies.Wt D j), ?_, hbPs, hbMs⟩, ⟨(⟨fun τ i => 2 * wL.aP τ i, fun τ i => 2 * wL.aM τ i, hP2, hM2, 2 * nW - 2, hn1⟩ : WeightFamilies.Wt D j), ?_, fun _ _ => rfl, fun _ _ => rfl⟩⟩` and prove the remaining obligations. Use `show (WeightFamilies.dimY D j + 4) * nW - nP + wF.n = (WeightFamilies.dimY D j + 4) * wL.n`. Rewrite using `[hFn, hLn]`. Conclude with `Nat.sub_add_cancel hle`. Use `show 2 * nW - 2 + 2 = 2 * nW`.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_auxiliaryWeights_at_runWeights : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (large₂ : SizeData₂ D) (H : KHyp)
     (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ),

@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CMDiscriminantSquare.Su
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CMDiscriminantSquare.FinrankTwoOf
 
 /- English proof (translation)
-The claim follows from `PIW.CMDiscSq.discSq_of PIW.CMDiscSq.relDiffTop PIW.CMDiscSq.relDegTwo`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.L2.SG.MassRatio.cm_discriminant_square : Formalism.L2.SG.MassRatio.DiscSq :=
   PIW.CMDiscSq.discSq_of PIW.CMDiscSq.relDiffTop PIW.CMDiscSq.relDegTwo

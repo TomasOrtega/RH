@@ -30,25 +30,23 @@ open scoped ENNReal Pointwise
 namespace UpperTheory.Dv.Fold
 
 /- English proof (translation)
-Set `T : G → Set G` to `fun h => (fun g => h⁻¹ * g) ⁻¹' D`. Establish `hsmul : ∀ δ : P, δ • D = T δ.1` using `fun δ => by`. Use extensionality with `g`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hdisj : ∀ δ δ' : G, δ ∈ P → δ' ∈ P → δ ≠ δ' → AEDisjoint μ (T δ) (T δ')`. Introduce `δ δ' hδ hδ' hne`. Use `hD.aedisjoint (show (⟨δ, hδ⟩ : P) ≠ ⟨δ', hδ'⟩ from fun h => hne (congrArg Subtype.val h))` as an intermediate fact. Rewrite `this` using `[Function.onFun, hsmul, hsmul]`. Then use the resulting hypothesis. Establish `hnm : ∀ h, NullMeasurableSet (T h) μ` using `fun h => hD.nullMeasurableSet.preimage (measurePreserving_mul_left μ h⁻¹).quasiMeasurePreserving`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hq : ∀ q : Q, q • (⋃ x, T (m x)) = ⋃ x, T (q.1 * m x)`. Introduce `q`. Rewrite using `[Set.smul_set_iUnion]`. Use `Set.iUnion_congr fun x => ?_` and prove the remaining obligations. Use extensionality with `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Use `show (m x)⁻¹ * (q.1⁻¹ * g) ∈ D ↔ (q.1 * m x)⁻¹ * g ∈ D`. Rewrite using `[mul_inv_rev, mul_assoc]`. Use `⟨{ nullMeasurableSet := NullMeasurableSet.iUnion fun x => hnm (m x), ae_covers := ?_, aedisjoint := ?_ }, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hD.ae_covers] with g ⟨δ, hδg⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hcov δ.1 δ.2`. Use `⟨⟨m i * δ.1, hi⟩, Set.mem_iUnion.2 ⟨i, ?_⟩⟩` and prove the remaining obligations. Use `show (m i)⁻¹ * (m i * δ.1 * g) ∈ D`. Rewrite using `[mul_assoc, inv_mul_cancel_left]`. Conclude with `hδg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q q' hqq'`. Rewrite using `[Function.onFun, hq, hq, AEDisjoint.iUnion_left_iff]`. Introduce `x`. Rewrite using `[AEDisjoint.iUnion_right_iff]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hdisj _ _ (mul_mem (hQP q.2) (hm x)) (mul_mem (hQP q'.2) (hm y))` to reduce the goal to its premises. Introduce `heq`. Establish `hxy : x = y`. Apply `huniq` to reduce the goal to its premises. Establish `e : m x * (m y)⁻¹ = q.1⁻¹ * q'.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, ← heq, inv_mul_cancel_left]`. Rewrite using `[e]`. Conclude with `Q.mul_mem (Q.inv_mem q.2) q'.2`. Substitute `hxy` using the available equality. Conclude with `hqq' (Subtype.ext (mul_right_cancel heq))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `f`. Establish `hpw : Pairwise (Function.onFun (AEDisjoint μ) fun i => T (m i))` using `fun i j hij => hdisj _ _ (hm i) (hm j) fun heq => hij (huniq i j (by rw [heq, mul_inv_cancel]; exact Q.one_mem))`. Rewrite using `[lintegral_iUnion₀ (fun i => hnm (m i)) hpw]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Use `(measurePreserving_mul_left μ (m i)⁻¹).setLIntegral_comp_preimage_emb (measurableEmbedding_mulLeft (m i)⁻¹) (fun g => f (m i * g)) D` as an intermediate fact.
-
-Simplify `this.symm` using `only [mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 private theorem fund_union {G ι : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] [Countable ι] (μ : Measure G)
     [μ.IsMulLeftInvariant] {P Q : Subgroup G} (hQP : Q ≤ P) (m : ι → G) (hm : ∀ i, m i ∈ P)
@@ -112,19 +110,15 @@ private abbrev prin (F : Type) [Field F] [NumberField F] [Algebra F E] (ξ : Eˣ
   Units.map (inclR (F := F) (AF F)).toMonoidHom ξ
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.LeviTorusH.sigma_invol hB.cm`. Establish `hc : ∀ a : AE F E, (cA σ).toRingHom ((cA σ).toRingHom a) = a` using `GlobalTheory.LeviTorusH.cA_invol hσ`. Establish `hJ : ∀ i j, (cA σ).toRingHom (incM F Y.J j i) = incM F Y.J i j`. Introduce `i j`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, incM, Matrix.map_apply, GlobalTheory.LeviTorusH.cA_incl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg _ (hH.herm i j)`. Establish `hXX : incV F H₀.x ⬝ᵥ incM F Y.J *ᵥ (fun i => (cA σ).toRingHom (incV F H₀.x i)) = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H₀.x i)) = fun i => cA σ (incV F H₀.x i) from rfl, GlobalTheory.LeviTorusH.form_incl]`. Conclude with `(congrArg _ hA.xx).trans (map_zero _)`. Establish `hYY : incV F H₀.y ⬝ᵥ incM F Y.J *ᵥ (fun i => (cA σ).toRingHom (incV F H₀.y i)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H₀.y i)) = fun i => cA σ (incV F H₀.y i) from rfl, GlobalTheory.LeviTorusH.form_incl]`. Conclude with `(congrArg _ hA.yy).trans (map_zero _)`. Establish `hXY : incV F H₀.x ⬝ᵥ incM F Y.J *ᵥ (fun i => (cA σ).toRingHom (incV F H₀.y i)) = 1`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H₀.y i)) = fun i => cA σ (incV F H₀.y i) from rfl, GlobalTheory.LeviTorusH.form_incl]`. Conclude with `(congrArg _ hA.xy).trans (map_one _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h01` using `GlobalTheory.LeviTorusH.torus_mul_inv hc hJ hXY t hXX hYY`. Establish `h10 : GlobalTheory.LeviTorusH.torusMat (cA σ).toRingHom (incM F Y.J) (incV F H₀.x) (incV F H₀.y) t⁻¹ * GlobalTheory.LeviTorusH.torusMat (cA σ).toRingHom (incM F Y.J) (incV F H₀.x) (incV F H₀.y) t = 1` using `by simpa only [inv_inv] using GlobalTheory.LeviTorusH.torus_mul_inv hc hJ hXY t⁻¹ hXX hYY`. Use `⟨⟨⟨GlobalTheory.LeviTorusH.torusMat (cA σ).toRingHom (incM F Y.J) (incV F H₀.x) (incV F H₀.y) t, _, h01, h10⟩, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.LeviTorusH.torus_unitary hc hJ hXY t hXX hYY`. Conclude with `GlobalTheory.LeviTorusH.torus_mulVec_x hXY t hXX`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `GlobalTheory.LeviTorusH.torus_mulVec_y hc hJ hXY t hYY`. Establish `hu : (incM F Y.J *ᵥ fun i => (cA σ).toRingHom (incV F H₀.y i)) ᵥ* incM F H₀.ι = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H₀.y i)) = fun i => cA σ (incV F H₀.y i) from rfl, GlobalTheory.LeviTorusH.vecMul_incM]`. Use function extensionality and compare the values at `j`. Conclude with `(congrArg _ (hA.orth (Pi.single j 1)).2).trans (map_zero _)`.
-
-Establish `hw : (incM F Y.J *ᵥ fun i => (cA σ).toRingHom (incV F H₀.x i)) ᵥ* incM F H₀.ι = 0`. Rewrite using `[show (fun i => (cA σ).toRingHom (incV F H₀.x i)) = fun i => cA σ (incV F H₀.x i) from rfl, GlobalTheory.LeviTorusH.vecMul_incM]`. Use function extensionality and compare the values at `j`. Conclude with `(congrArg _ (hA.orth (Pi.single j 1)).1).trans (map_zero _)`. Use `show GlobalTheory.LeviTorusH.torusMat (cA σ).toRingHom (incM F Y.J) (incV F H₀.x) (incV F H₀.y) t * incM F H₀.ι = incM F H₀.ι * 1`.
-
-Rewrite using `[Matrix.mul_one]`. Conclude with `GlobalTheory.LeviTorusH.torus_mul_of t _ hu hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_torus {B : Base F E} (hB : B.IsGood σ) {n n₁ r s i₀ i₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     {H₀ : Plane E n n₁} (hH : Y.IsHerm σ B r s) (hA : H₀.IsAdapted σ B Y Y₁ i₀ i₁) (t : (AE F E)ˣ) :
@@ -171,7 +165,7 @@ private theorem exists_torus {B : Base F E} (hB : B.IsGood σ) {n n₁ r s i₀ 
     exact GlobalTheory.LeviTorusH.torus_mul_of t _ hu hw
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem inv_line {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {k : UA σ J} {a : (AE F E)ˣ} {x : Fin n → AE F E}
     (hx : mat k *ᵥ x = a.1 • x) : mat k⁻¹ *ᵥ x = (a⁻¹).1 • x := by
@@ -180,15 +174,15 @@ private theorem inv_line {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {k : UA σ J} 
     _ = (a⁻¹).1 • x := by rw [← hx, Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (inclR (F := F) (AF F) : E →+* AE F E))`.
+A detailed English derivation is pending.
 -/
 private theorem incM_mul {m k l : ℕ} (A : Matrix (Fin m) (Fin k) E) (C : Matrix (Fin k) (Fin l) E) :
     incM F (A * C) = incM F A * incM F C := Matrix.map_mul (f := (inclR (F := F) (AF F) : E →+* AE F E))
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h` using `GlobalTheory.LeviElem.det_ne_of_sig _ (hW.sig w)`. Rewrite `h` using `[Matrix.det_smul]`. Establish `h'` using `right_ne_zero_of_mul h`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h'` to reduce the goal to its premises. Use `RingHom.map_det (B.emb w).1 W.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_skew {B : Base F E} {d r s : ℕ} {W : Spc F E d} (hW : W.IsSkew σ B r s) : W.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -202,9 +196,9 @@ private theorem det_skew {B : Base F E} {d r s : ℕ} {W : Spc F E d} (hW : W.Is
   exact this.symm
 
 /- English proof (translation)
-Establish `hd : A.det ≠ 0`. Introduce `h0`. Establish `h1 : (mat h).det = 0`. Rewrite using `[hA, show incM F A = (inclR (F := F) (AF F)).mapMatrix A from rfl, ← RingHom.map_det, h0, map_zero]`. Establish `h2` using `congrArg Matrix.det (mat_inv_mul h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.det_mul, h1, mul_zero, Matrix.det_one]`. Establish `h3 : inclR (F` using `F) (AF F) (0 : E) = inclR (F := F) (AF F) (1 : E) := by rw [map_zero, map_one, h2]`. Conclude with `zero_ne_one (inclR_inj h3)`. Conclude with `Subgroup.mem_subgroupOf.2 ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero A hd, Units.ext hA.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_ratU_of_mat {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {h : UA σ J} {A : Matrix (Fin n) (Fin n) E}
     (hA : mat h = incM F A) : h ∈ ratU σ J := by
@@ -219,21 +213,21 @@ private theorem mem_ratU_of_mat {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {h : UA
   exact Subgroup.mem_subgroupOf.2 ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero A hd, Units.ext hA.symm⟩
 
 /- English proof (translation)
-Take `⟨h₁, hu⟩` from `GlobalTheory.FlagRadDec.exists_proj hσ hI hsk hd p hp`. Take `⟨M, -, hM, -⟩` from `hI.exists_leviHom hσ hsk hd`. Set `π : Matrix (Fin n₁) (Fin n) E` to `(Y₁.J⁻¹)ᵀ * (Y.J * H.ι.map σ)ᵀ`. Establish `hπι : π * H.ι = 1`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [π, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hI.2.2.2.2.2, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), Matrix.transpose_one]`. Establish `hπx : π *ᵥ H.x = 0`. Simplify using `only [π]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_transpose (Y.J * _), GlobalTheory.FlagRadDec.x_vecMul hσ hI hsk, Matrix.mulVec_zero]`. Use `clear_value π`. Take `⟨g, hg, -⟩` from `rat_desc p hpr`. Establish `hmat : mat h₁ = incM F (π * g * H.ι)`. Use `matrix_ext_mulVec fun z => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hu z`. Establish `h0 : incM F π *ᵥ incV F H.x = 0`. Rewrite using `[← incV_mulVec, hπx]`. Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : incM F π * incM F H.ι = 1`. Rewrite using `[← incM_mul, hπι]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Use `congrArg (incM F π *ᵥ ·) ha` as an intermediate fact. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, h0, smul_zero, add_zero, Matrix.mulVec_mulVec] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `this` using `[← Matrix.mul_assoc (incM F π) (incM F H.ι), h1, Matrix.one_mul]`. Rewrite using `[← this, incM_mul, incM_mul, hg, Matrix.mul_assoc]`. Both sides reduce to the same expression. Use `⟨h₁, mem_ratU_of_mat hmat, M h₁, hM h₁, p * M h₁⁻¹, Subgroup.subset_closure ?_, by rw [map_inv]; group⟩` and prove the remaining obligations. Take `⟨mx, -, mι⟩` from `hM h₁⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Units.val_one, one_smul] at mx`. Use `⟨by rw [mat_mul, ← Matrix.mulVec_mulVec, mx, hp], fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hu (mat h₁⁻¹ *ᵥ z)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e : mat h₁ *ᵥ (mat h₁⁻¹ *ᵥ z) = z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← mat_mul, mul_inv_cancel]`. Simplify using `[mat]`. Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z, mι, ← Matrix.mulVec_mulVec, ha, e]`.
+A detailed English derivation is pending.
 -/
 private theorem fix_decomp (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     (hI : GlobalTheory.ThK.GLTwo.IsHypPlane σ H Y Y₁) (hsk : ∀ i j, σ (Y.J j i) = -Y.J i j) (hd : Y₁.J.det ≠ 0) (p : UA σ Y.J)
@@ -275,7 +269,7 @@ private theorem fix_decomp (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plan
   rw [mat_mul, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z, mι, ← Matrix.mulVec_mulVec, ha, e]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Doubling.absE_inclR]`. Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`. Rewrite using `[norm_mul, norm_mul, Circle.norm_coe]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem norm_thetaSum_smul {κ : Type} (χ : Chr F E) (z : ℝ) (ξ : Eˣ) (Φ : (κ → AF F) → ℂ) :
     ‖thetaSum F (((χ (prin F ξ) : ℂ) * (((absE F E (prin F ξ) : ℝ) ^ z : ℝ) : ℂ)) • Φ)‖ = ‖thetaSum F Φ‖ := by
@@ -291,13 +285,13 @@ variable {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b} {
   {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {om₁ : Rep σ G₁.V G₁.W} {om₁' : Rep σ G₁.V' G₁.W}
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.LeviTorusH.sigma_invol hT.base.cm`. Take `⟨m₀, hm₀⟩` from `GlobalTheory.T.exists_levi_element_adapted F E σ B a (b + 2) G X om om' hT (a + b) G₁.W H' _ _ hC.hH' (prin F η)`. Establish `hm₀r : m₀ ∈ ratU σ G.W.J` using `levi_mem_ratU (planeMap_bij hC.hH' hT.geo.hW.lat) η hm₀`. Establish `hp : mat (q * m₀⁻¹) *ᵥ incV F H'.x = incV F H'.x`. Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, inv_line hm₀.1, Matrix.mulVec_smul, hqx, smul_smul, Units.inv_mul, one_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h₁, hh₁, m, hm, u, hu, hdec⟩` from `fix_decomp hσ (GlobalTheory.ThK.GLTwo.IsAdapted.isHypPlane hC.hH') hT.geo.hW.skew (det_skew hT₁.geo.hW) (q * m₀⁻¹) (mul_mem hq (inv_mem hm₀r)) hp`. Establish `hΨ₀ : om' (1, m₀) Ψ ∈ schA F _` using `hT.weil'.isUSplitting.pres _ _ hΨ`. Establish `e1 : om' (1, q) Ψ = om' (1, u * m) (om' (1, m₀) Ψ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul om', Prod.mk_mul_mk, one_mul, ← hdec, inv_mul_cancel_right]`. Establish `e2` using `GlobalTheory.T.config_b_levi_torus_evaluation hK.base F E σ B a b G G₁ H H' hC e' he X om om' om₁ om₁' hT hT₁ 1 h₁ m hm u hu _ hΨ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3` using `GlobalTheory.T.config_b_levi_torus_evaluation hK.base F E σ B a b G G₁ H H' hC e' he X om om' om₁ om₁' hT hT₁ _ 1 m₀ hm₀ 1 (one_mem _) _ hΨ`. Rewrite `e3` using `[one_mul, Prod.mk_one_one, map_one om₁', Module.End.one_apply]`. Simplify using `only [one_mul, map_one, Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_smul] at e2`. Establish `e4` using `((GlobalTheory.T.theta_basic_properties hK.base F E σ B _ _ _ _ G₁.M' _ _ om₁' _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' hT₁)).1 _ (he.maps _ hΨ₀)).2.1 1 (one_mem _) h₁ hh₁ 1 1`. Simplify using `only [theta, mul_one] at e4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e4` using `[Prod.mk_one_one, map_one om₁', Module.End.one_apply]`. Rewrite using `[e1, e2, e4, e3, norm_thetaSum_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_right (hK : KP) (hC : CfgB B G G₁ H H') (he : IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e')
     (hT : IsTriple B G X om om') (hT₁ : IsTriple B G₁ X om₁ om₁') {q : UA σ G.W.J} (hq : q ∈ ratU σ G.W.J) (η : Eˣ)
@@ -324,19 +318,19 @@ private theorem norm_right (hK : KP) (hC : CfgB B G G₁ H H') (he : IsEv B G.M'
   rw [e1, e2, e4, e3, norm_thetaSum_smul]
 
 /- English proof (translation)
-Establish `hS` using `hT.weil'.isUSplitting`. Establish `hΨ : om' (g, γ w * h) Φ ∈ schA F _` using `hS.pres _ _ hΦ`. Use `set Ψ := om' (g, γ w * h) Φ with hΨd`. Use `set s := shiftB σ H H' (prin F ξ) with hs`. Establish `hρ : G.M'.co.rho B.ψ s Ψ ∈ schA F _` using `GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hT.base.std s Ψ hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set η : Eˣ := Units.map σ.toMonoidHom ξ⁻¹ with hη`. Establish `hηξ : cA σ (prin F ξ).1 * (prin F η).1 = 1` using `by show cA σ (inclR (F := F) (AF F) ξ) * inclR (F := F) (AF F) (σ (ξ⁻¹ : Eˣ)) = 1`. Rewrite using `[GlobalTheory.StabCosetDomain.cA_inclR, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `hqx : mat (γ w' * (γ w)⁻¹) *ᵥ incV F H'.x = (prin F η).1 • incV F H'.x`. Establish `h1 : mat (γ w)⁻¹ *ᵥ incV F H'.x = incV F w.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hγ w).2, Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec]`. Establish `h2 : w.1 = (η : E) • w'.1`. Rewrite using `[hw, smul_smul]`. Use `show _ = (σ (ξ⁻¹ : Eˣ) * σ ξ) • _`. Rewrite using `[← map_mul, Units.inv_mul, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, h1, h2, incV_smul, Matrix.mulVec_smul, (hγ w').2]`. Both sides reduce to the same expression. Establish `a1 : actAB (cA σ) ((m, 1) : UA σ G.V'.J × UA σ G.W.J) s = shiftB σ H H' 1`. Express the relevant statement in the definitionally equal form `mat m * s * (mat (1 : UA σ G.W.J))ᵀ = _`. Rewrite using `[show mat (1 : UA σ G.W.J) = 1 from rfl, Matrix.transpose_one, Matrix.mul_one, hs, shiftB, shiftB, Matrix.mul_smul, Matrix.mul_vecMulVec, hm.2.1, Matrix.smul_vecMulVec, smul_smul, ← map_mul, Units.mul_inv, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2 : actAB (cA σ) ((1, γ w' * (γ w)⁻¹) : UA σ G.V'.J × UA σ G.W.J) s = shiftB σ H H' 1`. Express the relevant statement in the definitionally equal form `mat (1 : UA σ G.V'.J) * s * (mat (γ w' * (γ w)⁻¹))ᵀ = _`. Rewrite using `[show mat (1 : UA σ G.V'.J) = 1 from rfl, Matrix.one_mul, hs, shiftB, shiftB, Matrix.smul_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, hqx, Matrix.vecMulVec_smul, smul_smul, hηξ, Units.val_one, map_one]`. Establish `b1` using `hS.impl (m, 1) s Ψ hΨ`. Establish `b2` using `hS.impl (1, γ w' * (γ w)⁻¹) s Ψ hΨ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `b1` using `[a1]`. Rewrite `b2` using `[a2]`. Establish `c1 : om' (m * g, γ w * h) Φ = om' (m, 1) Ψ`. Rewrite using `[hΨd, ← Module.End.mul_apply, ← map_mul om', Prod.mk_mul_mk, one_mul]`. Establish `c2 : om' (g, γ w' * h) Φ = om' (1, γ w' * (γ w)⁻¹) Ψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΨd, ← Module.End.mul_apply, ← map_mul om', Prod.mk_mul_mk, one_mul, mul_assoc, inv_mul_cancel_left]`. Establish `d1` using `(GlobalTheory.ThK.EvLawBLeft.globalLaw hK.base F E σ B a b G G₁ H H' hC e' he X om om' om₁ om₁' hT hT₁).2 _ 1 m hm _ hρ`. Rewrite `d1` using `[Prod.mk_one_one, map_one om₁', Module.End.one_apply, GlobalTheory.ThK.LemF.fac]`. Rewrite using `[termW, termW, c1, c2, ← b1, ← b2, d1, norm_thetaSum_smul, norm_right hK hC he hT hT₁ (mul_mem (hγ w').1 (inv_mem (hγ w).1)) η hqx hρ]`.
+A detailed English derivation is pending.
 -/
 private theorem norm_termW (hK : KP) (hC : CfgB B G G₁ H H') (he : IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e')
     (hT : IsTriple B G X om om') (hT₁ : IsTriple B G₁ X om₁ om₁') {γ : IsoV σ G.W.J → UA σ G.W.J}
@@ -386,13 +380,13 @@ private theorem norm_termW (hK : KP) (hC : CfgB B G G₁ H H') (he : IsEv B G.M'
 end Law
 
 /- English proof (translation)
-Take `⟨hr, l, hl⟩` from `hp`. Take `⟨g, hg, -⟩` from `rat_desc p hr`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Establish `hi : x i ≠ 0` using `hi`. Establish `h1 : inclR (F` using `F) (AF F) ((g *ᵥ x) i) = l.1 * inclR (F := F) (AF F) (x i) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun hl i` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `(congrFun (incV_mulVec (F := F) g x) i).trans this`. Establish `h2 : l.1 = inclR (F` using `F) (AF F) ((g *ᵥ x) i * (x i)⁻¹) := by`. Rewrite using `[map_mul, h1, mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (g *ᵥ x) i * (x i)⁻¹ ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, map_zero]`. Establish `h4 : inclR (F` using `F) (AF F) (0 : E) = inclR (F := F) (AF F) (1 : E) := by`. Rewrite using `[map_zero, map_one, ← l.mul_inv, h2, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `zero_ne_one (inclR_inj h4)`. Conclude with `⟨Units.mk0 _ h3, by rw [hl, h2]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 private theorem rat_scalar {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {x : Fin n → E} (hx : x ≠ 0) {p : UA σ J}
     (hp : p ∈ ratStab σ J x) : ∃ ξ : Eˣ, mat p *ᵥ incV F x = (prin F ξ).1 • incV F x := by
@@ -415,9 +409,9 @@ private theorem rat_scalar {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {x : Fin n �
   exact ⟨Units.mk0 _ h3, by rw [hl, h2]; rfl⟩
 
 /- English proof (translation)
-Set `S : Setoid (IsoV σ J)` to `⟨fun w w' => ∃ ξ : Eˣ, w.1 = (ξ : E) • w'.1, fun w => ⟨1, by simp⟩, fun ⟨ξ, h⟩ => ⟨ξ⁻¹, by rw [h, smul_smul, Units.inv_mul, one_smul]⟩, fun ⟨ξ, h⟩ ⟨η, h'⟩ => ⟨ξ * η, by rw [h, h', smul_smul, Units.val_mul]⟩⟩`. Use `⟨Set.range (Quotient.out (s := S)), ?_, fun w => ⟨_, ⟨Quotient.mk S w, rfl⟩, S.symm (Quotient.mk_out w)⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩ _ ⟨c', rfl⟩ ξ h`. Establish `: c = c'`. Rewrite using `[← Quotient.out_eq c, ← Quotient.out_eq c']`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Quotient.sound ⟨ξ, h⟩`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_reps {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     ∃ R : Set (IsoV σ J), GlobalTheory.ConeSmallClaim.NonProp R ∧ ∀ w : IsoV σ J, ∃ r ∈ R, ∃ ξ : Eˣ, w.1 = (ξ : E) • r.1 := by
@@ -443,23 +437,19 @@ end UpperTheory.Dv.Fold
 
 open UpperTheory.Dv.Fold GlobalTheory.StabCosetDomain GlobalTheory.ThKCtFin.LeftInvLevi in
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ _ _ _ γ hγ X om om' om₁ om₁' hT hT₁ Φ' hΦ hf hhf hIw 𝓓 h𝓓`. Establish `hσ` using `GlobalTheory.LeviTorusH.sigma_invol hT.base.cm`. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable Eˣ := Units.val_injective.countable`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Use `haveI := hT.geo.hM'.haar`. Establish `hΦS : Φ' ∈ schA F _` using `GlobalTheory.ThKRatInv.polData_le_schA B G.M' hT.geo.hM' (Submodule.mem_inf.1 hΦ).1`. Establish `hx0 : H.x ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hC.hH.xy` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `[form] at this`. Use `choose m hm using fun ξ : Eˣ => exists_torus hT.base hT.geo.hV' hC.hH (prin F ξ)`. Establish `hmr : ∀ ξ, m ξ ∈ ratU σ G.V'.J` using `fun ξ => levi_mem_ratU (planeMap_bij hC.hH hT.geo.hV'.lat) ξ (hm ξ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hfd, hint⟩` from `fund_union G.M'.μ (GlobalTheory.ConeSmallClaim.ratFix_le_ratStab G.V'.J H.x) m (fun ξ => ⟨hmr ξ, _, (hm ξ).1⟩) (fun p hp => by`. Take `⟨ξ, hξ⟩` from `rat_scalar hx0 hp`. Use `⟨ξ⁻¹, mul_mem (hmr _) hp.1, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, hξ, Matrix.mulVec_smul, (hm _).1, smul_smul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, one_smul])`. Use the proof step `(fun ξ η h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `h.2`. Rewrite `h2` using `[mat_mul, ← Matrix.mulVec_mulVec, inv_line (hm η).1, Matrix.mulVec_smul, (hm ξ).1, smul_smul, ← Units.val_mul, ← map_inv, ← map_mul]`. Establish `h3 : ((η⁻¹ * ξ : Eˣ) : E) • H.x = H.x` using `incV_inj (F := F) (by rw [incV_smul]; exact h2)`. Establish `h4 : ((η⁻¹ * ξ : Eˣ) : E) = 1` using `smul_left_injective E hx0 (h3.trans (one_smul E H.x).symm)`. Conclude with `(inv_mul_eq_one.1 (Units.ext h4)).symm) h𝓓`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR, hcov⟩` from `exists_reps (σ := σ) G.W.J`. Use `⟨_, R, hfd, hR, fun r h => ?_⟩` and prove the remaining obligations. Establish `hht : ∀ ξ g, hf (m ξ * g) = hf g` using `fun ξ g => by`. Take `⟨p, k, l, hk, hp, rfl⟩` from `hIw g`. Rewrite using `[← mul_assoc, hhf p k l hk hp, hhf (m ξ * p) k (l * prin F ξ) hk (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, hp, Matrix.mulVec_smul, (hm ξ).1, smul_smul, Units.val_mul]),`. Use the proof step `map_mul, GlobalTheory.Doubling.absE_inclR, mul_one]`. Establish `hsurj : Function.Surjective fun p : R × Eˣ => scaleIso p.2 p.1.1` using `fun w => by`. Take `⟨r, hr, ξ, hξ⟩` from `hcov w`. Use `⟨(⟨r, hr⟩, Units.map σ.toMonoidHom ξ), Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Use `show σ (σ ξ) • r.1 = w.1`. Rewrite using `[hσ, hξ]`. Use `(ENNReal.tsum_le_tsum_comp_of_surjective hsurj _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_prod']`. Use `tsum_congr fun w => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hint]`. Use `tsum_congr fun ξ => lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[hht, norm_termW hK hC he hT hT₁ hγ hΦS ξ (hm ξ) w.1 (scaleIso ξ w.1) rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.seesaw_evaluation_haar_volume : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

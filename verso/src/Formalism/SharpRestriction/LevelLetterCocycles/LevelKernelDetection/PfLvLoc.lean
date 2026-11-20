@@ -24,7 +24,7 @@ def evKD (W : LocWach PD LL O v n) (s : ℕ) (D : Type) [AddCommGroup D] [Module
   (TensorProduct.comm LL (KsW W s) D).trans (TensorProduct.piScalarRight LL LL D (Rs LL PD.p s))
 
 /- English proof (translation)
-Use `show TensorProduct.piScalarRight LL LL D _ (TensorProduct.comm LL (KsW W s) D (TensorProduct.comm LL D (KsW W s) ((TensorProduct.piScalarRight LL LL D _).symm F))) = F`. Rewrite using `[← TensorProduct.comm_symm LL (KsW W s) D, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evKD_toKsD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D] (F : Rs LL PD.p s → D) :
     evKD W s D (toKsD W s D F) = F := by
@@ -34,7 +34,7 @@ theorem evKD_toKsD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D] (F : Rs L
   rw [← TensorProduct.comm_symm LL (KsW W s) D, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f d`. Simplify using `[evKD, tD, LinearMap.rTensor_tmul, TensorProduct.piScalarRightHom_tmul, precomp_apply]`. Consider the case `add z z' hz hz' => rw [map_add, map_add, Pi.add_apply, hz, hz', map_add, Pi.add_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem evKD_tD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D] (b : (ZMod (PD.p ^ (s + 1)))ˣ)
     (z : KsW W s ⊗[LL] D) (ξ : Rs LL PD.p s) :
@@ -47,7 +47,7 @@ theorem evKD_tD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D] (b : (ZMod (
   | add z z' hz hz' => rw [map_add, map_add, Pi.add_apply, hz, hz', map_add, Pi.add_apply]
 
 /- English proof (translation)
-Apply `(evKD W s D).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `ξ`. Rewrite using `[evKD_tD, evKD_toKsD, evKD_toKsD]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem tD_toKsD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D] (b : (ZMod (PD.p ^ (s + 1)))ˣ)
     (F : Rs LL PD.p s → D) :
@@ -57,7 +57,7 @@ theorem tD_toKsD (s : ℕ) (D : Type) [AddCommGroup D] [Module LL D] (b : (ZMod 
   rw [evKD_tD, evKD_toKsD, evKD_toKsD]
 
 /- English proof (translation)
-Establish `: NeZero (PD.p ^ (s + 1))` using `⟨(pos_pow PD.p s).ne'⟩`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_eq_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dvd_sub_val (s : ℕ) (ω : ℤ_[PD.p]ˣ) :
     (PD.p : ℤ_[PD.p]) ^ (s + 1) ∣ (ω : ℤ_[PD.p]) - ((redU PD.p s ω : ZMod (PD.p ^ (s + 1))).val : ℤ_[PD.p]) := by
@@ -69,15 +69,13 @@ theorem dvd_sub_val (s : ℕ) (ω : ℤ_[PD.p]ˣ) :
 variable {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O} {T : LocLat G Qp LL O} {c : ZMod n}
 
 /- English proof (translation)
-Introduce `j`. Take `⟨g, hgD, hgχ⟩` from `hω j`. Apply `HahnModule.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `show ((((levW W uZ ιZ s).a j) ^ k : LLˣ) : LL) • tD (Dc W T c) (precomp LL PD.p s (redU PD.p s j.1)) (coefN Lb s T c y k) = coefN Lb s T c y k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [coefN]`. Rewrite using `[tD_toKsD, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `ζ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hx : W.γD T g (y : W.DD T) ∈ W.N T` using `by rw [hy g hgD]; exact y.2`. Establish `hprim : IsPrimitiveRoot (ζ : LL) (PD.p ^ (s + 1))` using `(mem_primitiveRoots (pos_pow PD.p s)).1 ζ.2`. Establish `hval : ((s + 1 : ℕ) : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ g : O) - (((redU PD.p s j.1 : ZMod (PD.p ^ (s + 1))).val : ℕ) : LL))`. Rewrite using `[hgχ, ← map_natCast (algebraMap O LL), ← map_natCast ιZ, ← map_sub, ← map_sub]`. Conclude with `hv s _ (dvd_sub_val s j.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `levB_Γ T hT g c ζ _ (s + 1) _ hprim hval rfl y hx k`. Establish `hyy : (⟨W.γD T g (y : W.DD T), hx⟩ : ↥(W.N T)) = y` using `Subtype.ext (hy g hgD)`. Rewrite `key` using `[hyy, hgχ]`. Rewrite using `[Pi.smul_apply, SetLike.val_smul]`. Use `show _ • Lb.levB T c (powR LL PD.p s (redU PD.p s j.1) ζ : LL) y k = Lb.levB T c ζ y k`.
-
-Rewrite using `[key, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expN_inv (Lb : LevB W) (hT : IsCrys PD T.ρ)
     (levB_Γ : ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → ∀ (g : W.Gam) (i : ZMod n) (ζ ζ' : LL) (j a : ℕ),
@@ -122,13 +120,11 @@ open LvLoc
 variable {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O} {T : LocLat G Qp LL O} {c : ZMod n}
 
 /- English proof (translation)
-Introduce `s x hx j`. Establish `he` using `expN_inv (c := c) (uZ := uZ) Lb hT levB_Γ hω hv s ⟨C.t c x, hx⟩ fun δ hδ => C.t_Δ c x δ hδ`. Establish `hz` using `hΔ s j κ`. Use `show Level.δ (levW W uZ ιZ s) j (Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s κ)) • expN Lb s T c ⟨C.t c x, hx⟩) = Ring.inverse (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s κ)) • expN Lb s T c ⟨C.t c x, hx⟩`. Distinguish the cases in `hu : IsUnit (HahnSeries.ofPowerSeries ℤ (KsW W s) (rhoL hR c s κ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hu`. Rewrite `hz`, the goal using `[← hu]`. Rewrite using `[Ring.inverse_unit]`. Establish `h1 : (u : HahnSeries ℤ (KsW W s)) • Level.δ (levW W uZ ιZ s) j (((u⁻¹ : (HahnSeries ℤ (KsW W s))ˣ) : HahnSeries ℤ (KsW W s)) • expN Lb s T c ⟨C.t c x, hx⟩) = expN Lb s T c ⟨C.t c x, hx⟩` using `by conv_lhs => rw [← hz]`. Rewrite using `[Level.δ, ← graded_semilinear_holds, smul_smul, Units.mul_inv, one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `he j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [h1]`. Rewrite using `[Ring.inverse_non_unit _ hu, zero_smul]`.
-
-Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locInv_holds (Lb : LevB W) (C : Coord W (baseIdOf hR) T) (κ : PowerSeries O)
     (hΔ : DeltaRho hR uZ ιZ c) (hT : IsCrys PD T.ρ)
@@ -170,7 +166,7 @@ theorem locInv_holds (Lb : LevB W) (C : Coord W (baseIdOf hR) T) (κ : PowerSeri
 namespace LvLoc
 
 /- English proof (translation)
-The claim follows from `| 0 => fun v hv => by simpa [Formalism.ExponentWindows.E.Lat.phiIt] using hv | k + 1 => fun v hv => by have ih := phiIt_mem L m hP i k v hv have e1 : i + ((k + 1 : ℕ) : ZMod n) - 1 = i + (k : ZMod n) := by push_cast; ring have h := hP (i + ((k + 1 : ℕ) : ZMod n)) _ (by rw [e1]; e …`.
+A detailed English derivation is pending.
 -/
 theorem phiIt_mem {O : Type} [CommRing O] {Bs : Formalism.ExponentWindows.E.Base O} {n : ℕ} {V : Type} [AddCommGroup V]
     [Module (PowerSeries O) V] (L : Formalism.ExponentWindows.E.Lat Bs n V) (m : ℕ) (hP : ∀ i, L.P5M i m) (i : ZMod n) :
@@ -193,11 +189,11 @@ theorem phiIt_mem {O : Type} [CommRing O] {Bs : Formalism.ExponentWindows.E.Base
     exact h
 
 /- English proof (translation)
-Introduce `x hx`. Use `show C.t i ((baseIdOf hR).Bs.q ^ m • (latOf C).φ i x) ∈ W.N T`. Rewrite using `[C.t_smul, map_pow, BaseId.d_q]`. Establish `h1 : C.t i ((latOf C).φ i x) = W.φD T (C.t (i - 1) x)` using `by show (((C.θ i) ((C.θ i).symm (φl W T i (C.θ (i - 1) x))) : ↥(DDl W T i)) : W.DD T) = _`. Rewrite using `[AddEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Establish `h2 : C.t (i - 1) x ∈ W.Nl T (i - 1)` using `Submodule.mem_map.2 ⟨_, hx, C.t_letter (i - 1) x⟩`. Establish `h4` using `qP_pow_mem hs hRA (W.N T) (hp5.1 i _ h2)`. Establish `e : qP W ^ m = qP W ^ (m - M i) * qP W ^ M i` using `by rw [← pow_add, Nat.sub_add_cancel (hm i)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_smul]`. Conclude with `(W.N T).smul_mem _ h4`.
+A detailed English derivation is pending.
 -/
 theorem latOf_P5M_of_p5_of_le (C : Coord W (baseIdOf hR) T) {M h : ZMod n → ℕ} (hp5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h)
     (hs : W.s = 1) (hRA : RingA W) (m : ℕ) (hm : ∀ i, M i ≤ m) (i : ZMod n) : (latOf C).P5M i m := by
@@ -218,13 +214,11 @@ theorem latOf_P5M_of_p5_of_le (C : Coord W (baseIdOf hR) T) {M h : ZMod n → �
 end LvLoc
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hL : ∀ i, (latOf C).P5M i m` using `latOf_P5M_of_p5_of_le C (hP5 T M h hT hJ) hs hRA m hm`. Rewrite using `[hκ, mul_comm, mul_smul]`. Establish `hw' : Λ • w ∈ (latOf C).pull (c - (ell : ZMod n)) ell` using `hw`. Establish `hc : c - (ell : ZMod n) + (ell : ZMod n) = c` using `sub_add_cancel _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.span_induction (p := fun y _ => (∏ s ∈ Finset.range ell, (baseIdOf hR).Bs.p s ^ m) • y ∈ (latOf C).N c) ?_ ?_ ?_ ?_ hw'` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `phiIt_mem (latOf C) m hL (c - (ell : ZMod n)) ell u hu` as an intermediate fact. Rewrite `this` using `[hc]`. Then use the resulting hypothesis. Rewrite using `[smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Introduce `y z _ _ hy hz`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Introduce `a y _ hy`.
-
-Rewrite using `[smul_smul, mul_comm, ← smul_smul]`. Conclude with `Submodule.smul_mem _ a hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_holds (C : Coord W (baseIdOf hR) T) (ell : ℕ) (Λ κ : PowerSeries O) {M h : ZMod n → ℕ}
     (hP5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (hT : IsCrys PD T.ρ) (hJ : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T M h)

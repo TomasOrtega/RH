@@ -12,11 +12,11 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (hr ▸ hp.pos)`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : IsCyclic (E ≃ₐ[F] E) := isCyclic_of_prime_card (p := p) (by rw [IsGalois.card_aut_eq_finrank, hr])`. Establish `hK : (primitiveRoots (Module.finrank F E) F).Nonempty` using `⟨ζ, by rw [hr, mem_primitiveRoots hp.pos]; exact hζ⟩`. Take `⟨θ, ⟨δ, hδ⟩, hθ⟩` from `exists_root_adjoin_eq_top_of_isCyclic F E hK`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hirr` using `irreducible_X_pow_sub_C_of_root_adjoin_eq_top hδ.symm hθ`. Rewrite `hirr`, `hδ` using `[hr]`. Establish `hmin : (X ^ p - C δ : F[X]) = minpoly F θ` using `minpoly.eq_of_irreducible_of_monic hirr (by simp [hδ]) (monic_X_pow_sub_C _ hp.ne_zero)`. Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root' (K := F) (L := E) (x := algebraMap F E ζ * θ) (y := θ) (Algebra.IsAlgebraic.isAlgebraic θ) (by`. Rewrite using `[← hmin]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_pow, aeval_X, aeval_C, mul_pow, ← map_pow, hζ.pow_eq_one, map_one, one_mul, hδ, sub_self])`. Use `⟨δ, θ, σ, hp, hζ, (X_pow_sub_C_irreducible_iff_of_prime hp).1 hirr, hδ.symm, hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic θ), hθ, IntermediateField.top_toSubalgebra]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isKum_of_finrank_prime (p : ℕ) (F E : Type) [Field F] [Field E] [Algebra F E]
     [IsGalois F E] (ζ : F) (hp : p.Prime) (hζ : IsPrimitiveRoot ζ p)
@@ -43,11 +43,11 @@ theorem exists_isKum_of_finrank_prime (p : ℕ) (F E : Type) [Field F] [Field E]
     (Algebra.IsAlgebraic.isAlgebraic θ), hθ, IntermediateField.top_toSubalgebra]
 
 /- English proof (translation)
-Introduce `p F E _ _ _ _ _ _ _ ζ hp hζ hr x hx hloc`. Take `⟨δ, θ, σ, hk⟩` from `exists_isKum_of_finrank_prime p F E ζ hp hζ hr`. Establish `hδ0 : δ ≠ 0` using `fun h => hk.nonpow 0 (by rw [h, zero_pow hp.ne_zero])`. Take `⟨S₁, -, hS₁⟩` from `exists_superset_mem_sUnits F {Units.mk0 δ hδ0, Units.mk0 x hx} ∅`. Take `⟨S, hS, hadm⟩` from `(exists_admissiblePlaces_superset_and_mono p F hp.pos).1 S₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfin : Units.mk0 x hx ∈ finNorm p F δ S`. Simplify using `only [finNorm, Subgroup.mem_iInf]`. Introduce `v _`. Conclude with `GlobalTheory.T.mem_unitsLocalKummerNorms_of_baseChange_norm p F E (v.adicCompletion F) ζ δ θ σ hk (Units.mk0 x hx) (hloc.1 v)`. Establish `hx'` using `GlobalTheory.T.sUnit_mem_kummerNorms_of_local_norms p F ζ (Units.mk0 δ hδ0) S hp hζ hadm (hS₁ S hS _ (by simp)) hk.nonpow (Units.mk0 x hx) (hS₁ S hS _ (by simp)) hfin`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `(mem_kNorm p (RingHom.id F) δ _).1 hx'`. Take `⟨-, -, -, -, -, ⟨e⟩, -⟩` from `kummer_galois p F E ζ δ θ σ hk`. Use `⟨e.symm y, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.norm_eq_of_algEquiv]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem np_of_finrank_prime_of_isPrimitiveRoot : ∀ (p : ℕ) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex F] [IsGalois F E] (ζ : F), p.Prime → IsPrimitiveRoot ζ p → Module.finrank F E = p → NP F E := by
   intro p F E _ _ _ _ _ _ _ ζ hp hζ hr x hx hloc

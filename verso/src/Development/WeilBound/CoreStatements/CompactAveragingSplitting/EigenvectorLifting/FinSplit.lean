@@ -35,9 +35,9 @@ def FinSplit : Prop := FinAt fun F E _ _ _ _ _ X v => v ∉ X.T ∧ Nonempty (E 
 def FinInert : Prop := FinAt fun F E _ _ _ _ _ X v => v ∉ X.T ∧ IsEmpty (E →ₐ[F] Fv F v)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT`. Establish `h : ∀ v, ∃ R, IsFinAt B G X om om' R v` using `fun v => by`. Distinguish the cases in `hv : v ∈ X.T`. Conclude with `h1 F E σ B a a' G X om om' hT v hv`. Break down `isEmpty_or_nonempty (E →ₐ[F] Fv F v) with he | he` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `h3 F E σ B a a' G X om om' hT v ⟨hv, he⟩`. Conclude with `h2 F E σ B a a' G X om om' hT v ⟨hv, he⟩`. Use `choose R hR using h`. Conclude with `⟨{ Pi := fun v => (R v).Pi v, p := fun v => (R v).p v, p' := fun v => (R v).p' v }, fun v => (hR v).onto, fun v => (hR v).onto', fun v => (hR v).inv, fun v => (hR v).inv', fun v => (hR v).equiv, fun v => (hR v).nontriv, fun v => (hR v).irred, fun v => (hR v).sph, fun v hv => (hR …`.
+A detailed English derivation is pending.
 -/
 theorem kFin_of (h1 : FinRam) (h2 : FinSplit) (h3 : FinInert) : GlobalTheory.ThK.KFin := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT

@@ -27,7 +27,7 @@ variable {S S' : Scheme.{0}} {G : CategoryTheory.Over S} {G' : CategoryTheory.Ov
   {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Conclude with `h.2 (CategoryTheory.Over.mk a) x y x₀ y₀ hx hy`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem push_mul (h : IsGrpPullback G' G f φ) {A : Scheme.{0}} {a : A ⟶ S'} {b : A ⟶ S} (hab : a ≫ f = b)
     (x y : CategoryTheory.Over.mk a ⟶ G') (x₀ y₀ : CategoryTheory.Over.mk b ⟶ G) (hx : x₀.left = x.left ≫ φ) (hy : y₀.left = y.left ≫ φ) :
@@ -36,7 +36,7 @@ theorem push_mul (h : IsGrpPullback G' G f φ) {A : Scheme.{0}} {a : A ⟶ S'} {
   exact h.2 (CategoryTheory.Over.mk a) x y x₀ y₀ hx hy
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Conclude with `(congrArg (fun z => z.left) (map_one (pushHom h (CategoryTheory.Over.mk a)))).symm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem push_one (h : IsGrpPullback G' G f φ) {A : Scheme.{0}} {a : A ⟶ S'} {b : A ⟶ S} (hab : a ≫ f = b) :
     (1 : CategoryTheory.Over.mk b ⟶ G).left = (1 : CategoryTheory.Over.mk a ⟶ G').left ≫ φ := by
@@ -44,7 +44,7 @@ theorem push_one (h : IsGrpPullback G' G f φ) {A : Scheme.{0}} {a : A ⟶ S'} {
   exact (congrArg (fun z => z.left) (map_one (pushHom h (CategoryTheory.Over.mk a)))).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem one_left_congr {A : Scheme.{0}} {a b : A ⟶ S} (h : a = b) :
     (1 : CategoryTheory.Over.mk a ⟶ G).left = (1 : CategoryTheory.Over.mk b ⟶ G).left := by
@@ -52,9 +52,9 @@ theorem one_left_congr {A : Scheme.{0}} {a b : A ⟶ S} (h : a = b) :
   rfl
 
 /- English proof (translation)
-Establish `wx : (x.left ≫ φ) ≫ G.hom = a ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, CategoryTheory.Over.w x]`. Both sides reduce to the same expression. Establish `wy : (y.left ≫ φ) ≫ G.hom = a ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, CategoryTheory.Over.w y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `W : CategoryTheory.Over.mk (a ≫ f) ⟶ G` to `CategoryTheory.Over.homMk (x.left ≫ φ) wx`. Set `W' : CategoryTheory.Over.mk (a ≫ f) ⟶ G` to `CategoryTheory.Over.homMk (y.left ≫ φ) wy`. Conclude with `(push_mul h rfl x y W W' rfl rfl).symm.trans (push_mul h₂ hab.symm x' y' W W' hx hy)`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem push_mul₂ {S₂ : Scheme.{0}} {G₂ : CategoryTheory.Over S₂} [GrpObj G₂] {f₂ : S₂ ⟶ S} {φ₂ : G₂.left ⟶ G.left}
     (h : IsGrpPullback G' G f φ) (h₂ : IsGrpPullback G₂ G f₂ φ₂) {A : Scheme.{0}} {a : A ⟶ S'} {a₂ : A ⟶ S₂}
@@ -72,7 +72,7 @@ theorem push_mul₂ {S₂ : Scheme.{0}} {G₂ : CategoryTheory.Over S₂} [GrpOb
   exact (push_mul h rfl x y W W' rfl rfl).symm.trans (push_mul h₂ hab.symm x' y' W W' hx hy)
 
 /- English proof (translation)
-The claim follows from `(push_one h hab).symm.trans (push_one h₂ rfl)`.
+A detailed English derivation is pending.
 -/
 theorem push_one₂ {S₂ : Scheme.{0}} {G₂ : CategoryTheory.Over S₂} [GrpObj G₂] {f₂ : S₂ ⟶ S} {φ₂ : G₂.left ⟶ G.left}
     (h : IsGrpPullback G' G f φ) (h₂ : IsGrpPullback G₂ G f₂ φ₂) {A : Scheme.{0}} {a : A ⟶ S'} {a₂ : A ⟶ S₂}
@@ -90,7 +90,7 @@ abbrev qe (y : FrPt Xo c F) : Spec (CommRingCat.of (DualNumber F)) ⟶ Xo.XF c :
   spMap (algebraMap F (DualNumber F)) ≫ Small.ptF y
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Small.ptF_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qe_fst (y : FrPt Xo c F) : qe y ≫ pullback.fst _ _ = spMap (algebraMap F (DualNumber F)) ≫ y.x := by
   rw [Category.assoc, Small.ptF_fst]
@@ -99,14 +99,14 @@ def liftP (Y : Model Xo c β) (y : FrPt Xo c F) (p : tEps y.x ⟶ Xo.univ.t.G) :
   CategoryTheory.Over.homMk (Y.m0.cart.1.lift p.left (qe y) ((CategoryTheory.Over.w p).trans (qe_fst y).symm)) (Y.m0.cart.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `Y.m0.cart.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pointLift_fst (Y : Model Xo c β) (y : FrPt Xo c F) (p : tEps y.x ⟶ Xo.univ.t.G) :
     (liftP Y y p).left ≫ Y.m0.toSABMap.φ = p.left :=
   Y.m0.cart.1.lift_fst _ _ _
 
 /- English proof (translation)
-Apply `Y.m0.cart.1.hom_ext` to reduce the goal to its premises. Conclude with `(pointLift_fst Y y p).trans h.symm`. Conclude with `(CategoryTheory.Over.w (liftP Y y p)).trans (CategoryTheory.Over.w P).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pointLift_eq (Y : Model Xo c β) (y : FrPt Xo c F) (p : tEps y.x ⟶ Xo.univ.t.G) (P : CategoryTheory.Over.mk (qe y) ⟶ Y.oF.t.G)
     (h : P.left ≫ Y.m0.toSABMap.φ = p.left) : (liftP Y y p).left = P.left := by
@@ -124,7 +124,7 @@ def Rd (p : tEps y.x ⟶ Xo.univ.t.G) (e : EC) : Prop :=
 variable {y}
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Category.assoc, ← hY]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem base_eq (hY : Small.ptY Y y = g ≫ f) :
     (spMap (algebraMap F (DualNumber F)) ≫ g) ≫ f = qe y ≫ Y.jQ ≫ pullback.fst _ _ := by
@@ -132,7 +132,7 @@ theorem base_eq (hY : Small.ptY Y y = g ≫ f) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `MC.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_zero : MC.pt 0 = 1 := by
   have h := MC.add 0 0
@@ -140,9 +140,7 @@ theorem pt_zero : MC.pt 0 = 1 := by
   exact mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)
 
 /- English proof (translation)
-Establish `h1 : (liftP Y y 1).left = (1 : CategoryTheory.Over.mk (qe y) ⟶ Y.oF.t.G).left`. Use `pointLift_eq Y y 1 1 ?_` and prove the remaining obligations. Conclude with `((push_one Y.m0.cart (qe_fst y)).symm).trans (one_left_congr rfl)`. Unfold `Rd`. Rewrite using `[h1, pt_zero]`.
-
-Conclude with `push_one₂ m.cart Y.m.cart (base_eq hY)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_one (hY : Small.ptY Y y = g ≫ f) : Rd m MC y 1 0 := by
   have h1 : (liftP Y y 1).left = (1 : CategoryTheory.Over.mk (qe y) ⟶ Y.oF.t.G).left := by
@@ -153,9 +151,7 @@ theorem rd_one (hY : Small.ptY Y y = g ≫ f) : Rd m MC y 1 0 := by
   exact push_one₂ m.cart Y.m.cart (base_eq hY)
 
 /- English proof (translation)
-Establish `h1 : (liftP Y y (p * p')).left = (liftP Y y p * liftP Y y p').left`. Use `pointLift_eq Y y _ _ ?_` and prove the remaining obligations. Conclude with `(push_mul Y.m0.cart (qe_fst y) (liftP Y y p) (liftP Y y p') p p' (pointLift_fst Y y p).symm (pointLift_fst Y y p').symm).symm`. Unfold `Rd`. Rewrite using `[h1, MC.add]`.
-
-Conclude with `push_mul₂ m.cart Y.m.cart (base_eq hY) (MC.pt e) (MC.pt e') (liftP Y y p) (liftP Y y p') h h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_mul (hY : Small.ptY Y y = g ≫ f) {p p' : tEps y.x ⟶ Xo.univ.t.G} {e e' : EC}
     (h : Rd m MC y p e) (h' : Rd m MC y p' e') : Rd m MC y (p * p') (e + e') := by
@@ -168,7 +164,7 @@ theorem rd_mul (hY : Small.ptY Y y = g ≫ f) {p p' : tEps y.x ⟶ Xo.univ.t.G} 
   exact push_mul₂ m.cart Y.m.cart (base_eq hY) (MC.pt e) (MC.pt e') (liftP Y y p) (liftP Y y p') h h'
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_base (a : F) : spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul a) ≫ spMap (algebraMap F (DualNumber F)) =
     spMap (algebraMap F (DualNumber F)) := by
@@ -177,11 +173,11 @@ theorem scale_base (a : F) : spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor
   ext r <;> simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `h1 : (liftP Y y p₂).left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul a) ≫ (liftP Y y p).left`. Apply `Y.m0.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[pointLift_fst, Category.assoc, pointLift_fst, hp]`. Establish `e₁` using `CategoryTheory.Over.w (liftP Y y p)`. Establish `e₂` using `CategoryTheory.Over.w (liftP Y y p₂)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e₂.trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, e₁]`. Use `show qe y = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul a) ≫ qe y`. Rewrite using `[qe, ← Category.assoc, scale_base]`. Unfold `Rd at h ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, MC.smul, Category.assoc, Category.assoc, h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rd_smul {p p₂ : tEps y.x ⟶ Xo.univ.t.G} {e : EC} (a : F)
     (hp : p₂.left = spMap (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul a) ≫ p.left) (h : Rd m MC y p e) :
@@ -200,7 +196,7 @@ theorem rd_smul {p p₂ : tEps y.x ⟶ Xo.univ.t.G} {e : EC} (a : F)
   rfl
 
 /- English proof (translation)
-The claim follows from `| 0, u, e, _ => by simpa using rd_one m MC hY | n + 1, u, e, h => by rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ] exact rd_mul m MC hY (h 0) (rd_prod hY n _ _ fun i => h i.succ)`.
+A detailed English derivation is pending.
 -/
 theorem rd_prod (hY : Small.ptY Y y = g ≫ f) :
     ∀ (n : ℕ) (u : Fin n → (tEps y.x ⟶ Xo.univ.t.G)) (e : Fin n → EC), (∀ i, Rd m MC y (u i) (e i)) →
@@ -214,9 +210,9 @@ theorem rd_prod (hY : Small.ptY Y y = g ≫ f) :
 end CombVal
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y X tX f m F _ _ g EC _ _ MC y hY n v hv e he cf w hc`. Take `⟨u, hu, rfl⟩` from `hc`. Use `⟨CategoryTheory.Over.w ((List.ofFn u).prod), ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ j, CombVal.Rd m MC y (CategoryTheory.Over.homMk (v j) (hv j).1 : tEps y.x ⟶ Xo.univ.t.G) (e j)` using `he`. Establish `h1 : ∀ j, CombVal.Rd m MC y (u j) (cf j • e j)` using `fun j => CombVal.rd_smul m MC (cf j) (hu j) (h0 j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `CombVal.rd_prod m MC hY n u (fun j => cf j • e j) h1`.
+A detailed English derivation is pending.
 -/
 theorem comb_val : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (X : Scheme.{0}) (tX : SAB H X) (f : X ⟶ Y.X) (m : SABMap tX Y.t f) (F : Type) [Field F] [Algebra c.F F] (g : Spec (CommRingCat.of F) ⟶ X) (EC : Type) [AddCommGroup EC] [Module F EC] (MC : LieModel tX.G g EC) (y : FrPt Xo c F), Small.ptY Y y = g ≫ f → ∀ (n : ℕ) (v : Fin n → (Spec (CommRingCat.of (DualNumber F)) ⟶ Xo.univ.t.G.left)) (hv : ∀ j, Formalism.L2.Pj.IsTanAt y.x (v j)) (e : Fin n → EC), (∀ j, (MC.pt (e j)).left ≫ m.φ = FinRd.Roots.LieBasis.tanW Y y (v j) (hv j).1) → ∀ (cf : Fin n → F) (w : Spec (CommRingCat.of (DualNumber F)) ⟶ Xo.univ.t.G.left), IsCombAt y.x v cf w → ∃ hw : w ≫ Xo.univ.t.G.hom = spMap (algebraMap F (DualNumber F)) ≫ y.x, (MC.pt (∑ j, cf j • e j)).left ≫ m.φ = FinRd.Roots.LieBasis.tanW Y y w hw := by
   intro E _ _ _ H Dw l Xo c O _ β Y X tX f m F _ _ g EC _ _ MC y hY n v hv e he cf w hc

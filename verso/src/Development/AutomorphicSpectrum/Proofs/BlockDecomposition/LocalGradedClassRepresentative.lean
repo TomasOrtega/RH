@@ -12,13 +12,13 @@ open GlobalTheory.CatH (face toLast)
 namespace GlobalTheory.CompanionTheory.ConeLocal
 
 /- English proof (translation)
-Introduce `K _ _ X q W d t s E ε hL σ m r hr hs`. Take `⟨hc, h1, -⟩` from `hL`. Take `⟨PQ, hPQ⟩` from `GlobalTheory.T.polynomial_transfer (dividedPowersBot K) q (Ideal.Quotient.mk ⊥) 1 s {W}`. Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {W})`. Establish `key` using `GlobalTheory.T.local_graded_vanishing PQ hF E σ hc r (fun r' hr' => (hPQ r' (by omega)).1) m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ha, hb⟩` from `key.2 0 (by simpa using hr)`. Use `⟨fun c => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, -, hx⟩` from `ha c`. Use `⟨fun I => ε.symm (x I), ?_⟩` and prove the remaining obligations. Simplify `hx` using `only [RingEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : ∀ I, ε (y I) ∈ (sFil (KS q s {W}) ((0 : ℕ) : ℤ)).S E.D` using `fun I => by`. Establish `e : (sFil (KS q s {W}) ((0 : ℕ) : ℤ)).S E.D = ⊤` using `E.D.obj.pdPow_zero`. Rewrite using `[e]`. Discharge the goal by the elementary cases of `trivial`. Use `hb (fun I => ε (y I)) h0 hy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `I`. Establish `h2` using `h1 _ (this I)`. Simplify using `using h2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem loc_coef : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {W : X.Opens} {d : ℕ} (t : Fin d → Γ(X, W)) (s : ℕ) (E : Frame (sP (KS q s {W})) d)
     (ε : Γ(X, W) ≃+* (sP (KS q s {W})).A.obj E.D), IsLoc q s t E ε → ∀ (σ : ∀ T, E.D ⟶ T) (m : ℕ) (r : ℤ), r = m → m + 1 ≤ s →

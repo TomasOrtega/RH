@@ -25,7 +25,7 @@ def iKp (c : ι) : KTp K d.D d.N →+* OmT d c :=
     (MvPolynomial.map (algebraMap K (Ω c)))
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.injective (MvPolynomial (TVar d.D d.N) (Ω c)) (OmT d c)).comp (MvPolynomial.map_injective _ (algebraMap K (Ω c)).injective)`.
+A detailed English derivation is pending.
 -/
 theorem iKp_injective (c : ι) : Function.Injective (iKp d c) :=
   (IsFractionRing.injective (MvPolynomial (TVar d.D d.N) (Ω c)) (OmT d c)).comp

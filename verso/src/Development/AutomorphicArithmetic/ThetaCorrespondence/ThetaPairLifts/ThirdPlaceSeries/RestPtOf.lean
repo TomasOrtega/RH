@@ -12,9 +12,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 noncomputable section
 namespace GlobalTheory.NLinkTameShape
 /- English proof (translation)
-Establish `hb : ((0 : ℕ) : ℝ) ≤ L.sc.b`. Simplify using `only [Nat.cast_zero]`. Unfold `Scale.b`. Conclude with `(Real.exp_pos _).le`. Establish `hL : 1 ≤ L.sc.L` using `by unfold Scale.L; exact Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fa` using `hS.facts`. Conclude with `(_root_.GlobalTheory.T.split_bound_of_params_alt hP.font hP.fin GlobalTheory.Published.cheb_holds D L HW F (rowC C₂) nch X 120 0 hS.canon P hL le_rfl hb (fa.admJ L hS.par) hS.par67 fa.toCore.admA fa.Conclusion1.1 fa.Conclusion1.2.2 fa.Conclusion2.1 fa.Conclusion2.2.2 fa.rhoBar fa …`.
+A detailed English derivation is pending.
 -/
 theorem restPt_of_alt (hP : Hypotheses₂) (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc)
     (F : FonOf D.loc D.locA HW) (X : KillingConditions.HubData D) (C₂ : ℝ) (hS : _root_.GlobalTheory.NLink.SetupAlt L nch HW X C₂) (i : D.nd.Loc)
@@ -27,23 +27,21 @@ theorem restPt_of_alt (hP : Hypotheses₂) (D : D7) (L : SizeData₂ D) (P : Par
     (fa.admJ L hS.par) hS.par67 fa.toCore.admA fa.Conclusion1.1 fa.Conclusion1.2.2 fa.Conclusion2.1 fa.Conclusion2.2.2 fa.rhoBar fa.large.2.1
     fa.large.2.2 fa.nct fa.trip fa.same fa.block fa.muUnr fa.depthG).2.2.2.2.2.2.2.1 i hi π hπ
 /- English proof (translation)
-Introduce `hP D L P nch HW F Cm X C₂ hS i hi π hπ _ S hG`. Establish `R` using `_root_.GlobalTheory.NLinkTameShape.restPt_of_alt hP D L P nch HW F X C₂ hS i hi π hπ`. Establish `hHG : HG D.nd D.naut i` using `⟨π, (D.Zgood_tie i π).1 hπ⟩`. Establish `h32` using `hS.facts.Conclusion2.1 i hHG (X.r i) R.good`. Establish `hx` using `(GlobalTheory.TameDesign.main D i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrb` using `isRhoBar_of_isRhoOf D i π (X.ρ i π) R.rho`. Introduce `v hv`. Establish `hl` using `D.nd.SQ_l i v hv`. Take `⟨ha, hb, hc⟩` from `h32 v hv hl`. Use `⟨(hx v hv).1, fun hq x => ?_, fun hk => ?_, fun hvS => ⟨?_, fun a => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hprod, Pm, hPm⟩` from `ha hq x`. Use `⟨fun γ hγ => by simpa [rO, chi1] using hprod γ hγ, ?_⟩` and prove the remaining obligations. Set `ψ : (Fin D.R.nV → KK D.nd i) ≃ₗ[KK D.nd i] (Fin D.R.nV → KK D.nd i)` to `LinearEquiv.ofLinear (Matrix.toLin' ((Pm⁻¹ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i))) (Matrix.toLin' ((Pm : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i))) (by rw [← Matrix.toLin'_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.toLin'_one]) (b …`. Use `⟨ψ.trans (Formalism.MainNotions.N.K.SplitLatticeDiagonal.splitL D.R.r D.R.t D.R.nV rfl), fun γ hγ u => ?_⟩` and prove the remaining obligations. Establish `hM` using `hPm γ hγ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ((Pm⁻¹ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)) * mapM (toK D.nd i) (rO D.nd i (X.r i) x) γ = Matrix.diagonal (fun k : Fin D.R.nV => if (k : ℕ) < D.R.r then 1 else algebraMap (D.nd.O i) (KK D.nd i) (chi1 D.nd i γ)) * ((Pm⁻¹ : GL _ _) : Matrix (Fin D.R.nV) (F …`. Rewrite using `[← hM]`. Establish `e : Pm⁻¹ * mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (X.r i x) γ = (Pm⁻¹ * mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (X.r i x) γ * Pm) * Pm⁻¹` using `by group`. Establish `e2` using `congrArg (fun g : GL (Fin D.R.nV) (Kf D.nd i) => (g : Matrix (Fin D.R.nV) (Fin D.R.nV) (Kf D.nd i))) e`. Simplify using `only [Units.val_mul] at e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e2`. Use `show Formalism.MainNotions.N.K.SplitLatticeDiagonal.splitL D.R.r D.R.t D.R.nV rfl (((Pm⁻¹ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (KK D.nd i)).mulVec ((mapM (toK D.nd i) (rO D.nd i (X.r i) x) γ).mulVec u)) = _`. Rewrite using `[Matrix.mulVec_mulVec, h1, ← Matrix.mulVec_mulVec]`. Conclude with `splitL_diagonal D.R.r D.R.t D.R.nV rfl _ _`. Take `⟨k, hk⟩` from `hk`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the first alternative.
 
-Establish `hvS : v ∈ D.nd.S i`. Use `(D.nd.S_def i v).2 ⟨?_, hl⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Pp, hU, hPp⟩` from `hb ⟨k, hk⟩ hvS`. Conclude with `⟨Pp, fun x γ hγ => hPp x γ hγ, hU⟩`. Conclude with `(hc hvS).1 (X.ρ i) π S (Formalism.MainNotions.SumRepresentations.At.inertia_props_of_idempotent_choice D.nd hG)`. Establish `H` using `(hc hvS).2 _ hrb a`. Take `⟨H0z, H1z, H2z⟩` from `H`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rhoBarTw_eq]`. Use `letI : TopologicalSpace (IsLocalRing.ResidueField (D.nd.O i)) := ⊥`. Use `haveI : DiscreteTopology (IsLocalRing.ResidueField (D.nd.O i)) := ⟨rfl⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : H0 ((twistRep (glRep (redRep D.nd i (X.ρ i π))) (Formalism.MainNotions.SumRepresentations.At.chiEpsBar D.nd i a)).comp (decS D.nd v)) = ⊥` using `H0z`.
-
-Rewrite using `[e]`. Use `infer_instance`. Use `H1z using 2` and compare the differences between its conclusion and the goal. Use `H2z using 2` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), _root_.GlobalTheory.NLink.SetupAlt L nch HW X C₂ → ∀ i, D.nd.l i ∉ TwistedPlaces.gset D → ∀ π ∈ D.nd.Zgood i, EmbeddingTypes.admG5 i (X.r i) (X.ρ i) π := by
   intro hP D L P nch HW F Cm X C₂ hS i hi π hπ _ S hG

@@ -18,11 +18,11 @@ variable {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finit
   {ψ lab : InvFun O} {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X]
 
 /- English proof (translation)
-Establish `b1` using `cone_bal hτ.mem hβ`. Establish `b2` using `cone_nonneg hτ.nonneg hβ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, -, h4, h5⟩`. Conclude with `GlobalTheory.T.psd_balanced_form_mem_cell_cone O bar hb q ψ lab hψ hl X hX hD m τ hτ β b1 b2 hβ x h1 h2 h4 h5`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `hs` using `cone_add hβ hx`. Use `⟨cone_bal hτ.mem hx, cone_nonneg hτ.nonneg hx, fun y hy => cone_vanish hx fun j => GlobalTheory.T.psd_balanced_form_vanishes_low_rank O bar hb q ψ lab hψ hl X hX hD m τ hτ β b1 b2 hβ hr j y hy, evalZ_add_of_linearOn_inRCone _ ψ X m τ hτ.linear _ _ hβ hx, le_antisymm ((lab_le hl h …` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `hx`. Use `carrierDim_le_of_add_cell _ bar q ψ lab hl X hX m τ hτ β b1 b2 _ (cone_bal hτ.mem hs) (cone_nonneg hτ.nonneg hs) hβ 1 c one_pos hc ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `LinearMap.ext₂ fun a b => by simp`.
+A detailed English derivation is pending.
 -/
 theorem inFace_iff (hb : CMOrd O bar) (hψ : IsPolyFan bar q ψ) (hl : IsCarrierDim bar q ψ lab)
     (hX : Module.finrank O X ≤ q) (hD : Dominates bar X) {m : ℕ} {τ : Fin m → LinearMap.BilinForm ℤ X}
@@ -46,7 +46,7 @@ theorem inFace_iff (hb : CMOrd O bar) (hψ : IsPolyFan bar q ψ) (hl : IsCarrier
     exact LinearMap.ext₂ fun a b => by simp
 
 /- English proof (translation)
-Simplify using `only [IsIndec, inFace_iff hb hψ hl hX hD hτ hβ hr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isIndec_iff (hb : CMOrd O bar) (hψ : IsPolyFan bar q ψ) (hl : IsCarrierDim bar q ψ lab)
     (hX : Module.finrank O X ≤ q) (hD : Dominates bar X) {m : ℕ} {τ : Fin m → LinearMap.BilinForm ℤ X}
@@ -59,27 +59,25 @@ theorem isIndec_iff (hb : CMOrd O bar) (hψ : IsPolyFan bar q ψ) (hl : IsCarrie
 end Face
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar hbar q ψ lab i hDom hψ hl X _ _ _ _ hX m v hv β hb hp hvβ hlab`. Establish `hD` using `hDom X`. Establish `hfan` using `hψ X hX`. Establish `: Module.Finite ℤ X` using `Module.Finite.trans O X`. Take `⟨n, τ, hτ, hβ, hr⟩` from `exists_min hl hX hv hvβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hF` using `inFace_iff hbar hψ hl hX hD hτ hβ hr.le`. Establish `hI` using `isIndec_iff hbar hψ hl hX hD hτ hβ hr.le`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : ∀ j, τ j = 0` using `fun j => eq_zero_of_diag (hτ.mem j).1 fun y => GlobalTheory.T.psd_balanced_form_vanishes_low_rank O bar hbar q ψ lab hψ hl X hX hD n τ hτ 0 hb hp hβ hr.le j y rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : Submodule.span ℤ (Set.range τ) = ⊥` using `Submodule.span_eq_bot.2 (by rintro _ ⟨j, rfl⟩; exact h0 j)`. Establish `h2 : genRank τ = 0` using `by rw [genRank, h1, finrank_bot]`. Rewrite `hr` using `[h2, hlab]`. Establish `: (0 : ℕ) = i + 1` using `by exact_mod_cast hr`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hfin` using `finite_indec_inRCone X n τ`. Use `set S := hfin.toFinset with hSdef`. Establish `hS : ∀ x, x ∈ S ↔ InRCone τ x ∧ x ≠ 0 ∧ ∀ y z, InRCone τ y → InRCone τ z → y ≠ 0 → z ≠ 0 → y + z ≠ x` using `fun x => by simp only [hSdef, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Establish `hSτ : ∀ x ∈ S, InRCone τ x` using `fun x hx => ((hS x).1 hx).1`. Establish `hcl : β ∈ AddSubmonoid.closure {y | IsIndec bar ψ lab β y}` using `GlobalTheory.T.mem_closure_sum_indecomposable_face_of_additive _ bar ψ lab X β (fun x y hx hy => ⟨(hF _).2 (cone_add ((hF _).1 hx) ((hF _).1 hy)), evalZ_add_of_linearOn_inRCone _ ψ X n τ hτ.linear _ _ ((hF _).1 hx) ((hF _).1 hy)⟩) (fun x hx => hfan.integral x hx.1 hx.2.1) (fun x …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd` using `evalZ_sum hτ.linear S hSτ`. Establish `hne : S.Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty]`. Establish `: {y | IsIndec bar ψ lab β y} = ∅` using `Set.eq_empty_of_forall_notMem fun y hy => by`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hS y).2 ((hI y).1 hy)` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `Finset.notMem_empty _ this`. Rewrite `hcl` using `[this, AddSubmonoid.closure_empty, AddSubmonoid.mem_bot]`. Conclude with `hβ0 hcl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ : ∑ x ∈ S, x ≠ 0` using `fun h => by`. Rewrite `hadd` using `[h, evalZ_zero']`. Use `(Finset.sum_pos (fun x hx => ?_) hne).ne hadd` and prove the remaining obligations. Conclude with `hfan.pos x (cone_bal hτ.mem (hSτ x hx)) (cone_nonneg hτ.nonneg (hSτ x hx)) ((hS x).1 hx).2.1`. Take `⟨g, β₀, hg, hgβ, hprim⟩` from `GlobalTheory.bilinForm_exists_primitive_of_ne_zero X _ hσ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hτ0 : InRCone τ β₀` using `(cone_smul_iff hg).1 (hgβ ▸ cone_sum hSτ)`. Establish `hge : lab.evalZ β ≤ lab.evalZ β₀`. Take `⟨k, γ, hγ, hγ0, hrγ⟩` from `exists_min hl hX hτ hτ0`. Establish `hσγ : InRCone γ (∑ x ∈ S, x)` using `hgβ ▸ (cone_smul_iff hg).2 hγ0`. Set `u : Fin S.card → LinearMap.BilinForm ℤ X` to `fun j => (S.equivFin.symm j : LinearMap.BilinForm ℤ X)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ {M : Type} [AddCommMonoid M] (f : LinearMap.BilinForm ℤ X → M), ∑ j, f (u j) = ∑ x ∈ S, f x` using `fun f => by`. Rewrite using `[← Finset.sum_coe_sort S f]`. Conclude with `S.equivFin.symm.sum_comp fun x => f x`. Establish `hu1 : ∑ j, u j = ∑ x ∈ S, x` using `hu fun x => x`. Establish `huτ : ∀ j, InRCone τ (u j)` using `fun j => hSτ _ (S.equivFin.symm j).2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall` using `inRCone_of_evalZ_sum_le _ bar ψ X k γ hγ _ u (fun j => cone_bal hτ.mem (huτ j)) (fun j => cone_nonneg hτ.nonneg (huτ j)) (by rw [hu1]; exact hσγ) (by rw [hu1, hu ψ.evalZ, hadd])`. Establish `hSγ : ∀ x ∈ S, InRCone γ x` using `fun x hx => by`. Simplify `hall (S.equivFin ⟨x, hx⟩)` using `[u]`. Establish `hβγ : InRCone γ β` using `AddSubmonoid.closure_induction (motive := fun x _ => InRCone γ x) (fun x hx => hSγ x ((hS x).2 ((hI x).1 hx))) cone_zero (fun _ _ _ _ => cone_add) hcl`. Conclude with `(lab_le hl hX hγ hβγ).trans hrγ.le`.
-
-Establish `hle : lab.evalZ β₀ ≤ lab.evalZ β` using `(lab_le hl hX hτ hτ0).trans hr.le`. Use `⟨β₀, ⟨cone_bal hτ.mem hτ0, cone_nonneg hτ.nonneg hτ0, hprim, (le_antisymm hle hge).trans hlab, S, fun x => (hS x).trans (isIndec_iff hbar hψ hl hX hD hτ hτ0 (hr.le.trans hge) x).symm, g, hg, hgβ⟩, ?_⟩` and prove the remaining obligations. Use `(cone_smul_iff hg).1 (hgβ ▸ cone_sum fun x hx => ?_)` and prove the remaining obligations. Take `⟨h1, h2, -, h4, h5⟩` from `(hF x).2 (hSτ x hx)`. Conclude with `GlobalTheory.T.psd_balanced_form_mem_cell_cone O bar hbar q ψ lab hψ hl X hX hD m v hv β hb hp hvβ x h1 h2 h4 h5`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isMarked_inRCone : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (ψ lab : InvFun O) (i : ℕ), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsCarrierDim bar q ψ lab → ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (m : ℕ) (v : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ v → ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone v β → lab.evalZ β = ((i + 1 : ℕ) : ℝ) → ∃ β₀ : LinearMap.BilinForm ℤ X, IsMarked bar ψ lab i X β₀ ∧ InRCone v β₀ := by
   intro O _ _ _ _ bar hbar q ψ lab i hDom hψ hl X _ _ _ _ hX m v hv β hb hp hvβ hlab

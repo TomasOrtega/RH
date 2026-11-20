@@ -38,20 +38,20 @@ def ratio (t : Fin r → ℝ) (s : Fin r) : ℝ :=
 def rbar (t : Fin r → ℝ) : ℝ := Finset.univ.fold max 1 (ratio t)
 
 /- English proof (translation)
-The claim follows from `Finset.le_fold_max _ |>.2 (Or.inl le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_rbar (t : Fin r → ℝ) : 1 ≤ rbar t := Finset.le_fold_max _ |>.2 (Or.inl le_rfl)
 
 /- English proof (translation)
-The claim follows from `(Finset.le_fold_max _).2 (Or.inr ⟨s, Finset.mem_univ s, le_rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ratio_le_rbar (t : Fin r → ℝ) (s : Fin r) : ratio t s ≤ rbar t :=
   (Finset.le_fold_max _).2 (Or.inr ⟨s, Finset.mem_univ s, le_rfl⟩)
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (Fin r), S.fold max 1 (ratio t) = 1 ∨ ∃ s, S.fold max 1 (ratio t) = ratio t s` using `fun S => by`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact Or.inl (by simp)`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.fold_insert ha]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Break down `max_choice (ratio t a) (S.fold max 1 (ratio t)) with e | e` into its components or cases. Conclude with `Or.inr ⟨a, e⟩`. Rewrite using `[e]`. Conclude with `ih`. Conclude with `key _`.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rbar_eq (t : Fin r → ℝ) : rbar t = 1 ∨ ∃ s, rbar t = ratio t s := by
   have key : ∀ S : Finset (Fin r), S.fold max 1 (ratio t) = 1 ∨ ∃ s, S.fold max 1 (ratio t) = ratio t s := fun S => by
@@ -65,7 +65,7 @@ theorem rbar_eq (t : Fin r → ℝ) : rbar t = 1 ∨ ∃ s, rbar t = ratio t s :
   exact key _
 
 /- English proof (translation)
-Unfold `ratio`. Use `split_ifs with h`. Conclude with `div_pos (ht.1 _) (ht.1 _)`. Conclude with `ht.1 _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ratio_pos {c : ℝ} {t : Fin r → ℝ} (ht : t ∈ cone r c) (s : Fin r) : 0 < ratio t s := by
   unfold ratio

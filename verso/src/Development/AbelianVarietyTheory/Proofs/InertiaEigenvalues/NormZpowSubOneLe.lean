@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.UnitNormPowerSubOne
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h1` using `IsUltrametricDist.norm_add_le_max (u - 1) (1 : C)`. Rewrite `h1` using `[sub_add_cancel, norm_one]`. Conclude with `h1.trans (max_le h.le le_rfl)`. Establish `h1` using `IsUltrametricDist.norm_add_le_max u (-(u - 1))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : u + -(u - 1) = 1` using `by ring`. Rewrite `h1` using `[e, norm_one, norm_neg]`. Break down `le_max_iff.mp h1 with h2 | h2` into its components or cases. Conclude with `h2`. Conclude with `absurd h (not_lt.mpr h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem norm_eq_one {C : Type} [NormedField C] [IsUltrametricDist C] (u : C)
     (h : ‖u - 1‖ < 1) : ‖u‖ = 1 := by
@@ -21,9 +21,9 @@ theorem norm_eq_one {C : Type} [NormedField C] [IsUltrametricDist C] (u : C)
     · exact absurd h (not_lt.mpr h2)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1` using `IsUltrametricDist.norm_add_le_max (u ^ n * (u - 1)) (u ^ n - 1)`. Establish `e : u ^ n * (u - 1) + (u ^ n - 1) = u ^ (n + 1) - 1` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, norm_mul, norm_pow, norm_eq_one u h, one_pow, one_mul]`. Conclude with `h1.trans (max_le le_rfl ih)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_sub_one_le {C : Type} [NormedField C] [IsUltrametricDist C] (u : C)
     (h : ‖u - 1‖ < 1) (n : ℕ) : ‖u ^ n - 1‖ ≤ ‖u - 1‖ := by
@@ -36,11 +36,11 @@ theorem norm_pow_sub_one_le {C : Type} [NormedField C] [IsUltrametricDist C] (u 
     exact h1.trans (max_le le_rfl ih)
 
 /- English proof (translation)
-Establish `hn` using `norm_eq_one u h`. Establish `hu : u ≠ 0`. Introduce `h0`. Rewrite `hn` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.eq_nat_or_neg i with ⟨n, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `norm_pow_sub_one_le u h n`. Establish `hp : u ^ n ≠ 0` using `pow_ne_zero n hu`. Establish `e : u ^ (-(n : ℤ)) - 1 = -((u ^ n)⁻¹ * (u ^ n - 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_neg, zpow_natCast, mul_sub, inv_mul_cancel₀ hp, mul_one, neg_sub]`. Rewrite using `[e, norm_neg, norm_mul, norm_inv, norm_pow, hn, one_pow, inv_one, one_mul]`. Conclude with `norm_pow_sub_one_le u h n`.
+A detailed English derivation is pending.
 -/
 theorem norm_zpow_sub_one_le {C : Type} [NormedField C] [IsUltrametricDist C] (u : C)
     (h : ‖u - 1‖ < 1) (i : ℤ) : ‖u ^ i - 1‖ ≤ ‖u - 1‖ := by

@@ -14,15 +14,15 @@ open GlobalTheory.Discrepancy GlobalTheory.QCoh
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ X q z z' hz hz' hpt`. Take `⟨⟨p, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K X).symm.surjective z`. Take `⟨⟨p', ψ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K X).symm.surjective z'`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hz hz' hpt ⊢`. Establish `e : p = p'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `(Scheme.Hom.comp_apply _ _ _).symm.trans (hpt.trans (Scheme.Hom.comp_apply _ _ _))`. Rewrite `h1` using `[Scheme.fromSpecResidueField_apply, Scheme.fromSpecResidueField_apply]`. Then use the resulting hypothesis. Substitute `e` using the available equality. Take `⟨χ, hχ⟩` from `Spec.map_surjective (X.fromSpecResidueField p ≫ q)`. Rewrite `hz`, `hz'` using `[Category.assoc, ← hχ, ← Spec.map_comp, ← Spec.map_id, Spec.map_inj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hφ : ∀ c, φ.hom (χ.hom c) = c` using `fun c => congrArg (fun g => g.hom c) hz`. Establish `hψ : ∀ c, ψ.hom (χ.hom c) = c` using `fun c => congrArg (fun g => g.hom c) hz'`. Establish `hsurj : Function.Surjective χ.hom`. Introduce `y`. Use `⟨φ.hom y, φ.hom.injective ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφ]`. Establish `: φ = ψ`. Use extensionality with `y`. Take `⟨c, rfl⟩` from `hsurj y`. Rewrite using `[hφ, hψ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem section_eq_of_point_eq : ∀ (K : Type) [Field K] (X : Scheme.{0}) (q : X ⟶ Sp K) (z z' : Sp K ⟶ X), z ≫ q = 𝟙 _ → z' ≫ q = 𝟙 _ → z (IsLocalRing.closedPoint K) = z' (IsLocalRing.closedPoint K) → z = z' := by
   intro K _ X q z z' hz hz' hpt

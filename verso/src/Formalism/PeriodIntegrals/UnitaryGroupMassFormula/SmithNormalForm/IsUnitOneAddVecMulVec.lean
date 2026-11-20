@@ -15,13 +15,13 @@ def Eqv (A B : Matrix ι ι R) : Prop :=
   ∃ U V : Matrix ι ι R, IsUnit U ∧ IsUnit V ∧ U * A * V = B
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 1, isUnit_one, isUnit_one, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Eqv.refl (A : Matrix ι ι R) : Eqv A A :=
   ⟨1, 1, isUnit_one, isUnit_one, by simp⟩
 
 /- English proof (translation)
-Take `⟨U, V, hU, hV, rfl⟩` from `h₁`. Take `⟨U', V', hU', hV', rfl⟩` from `h₂`. Conclude with `⟨U' * U, V * V', hU'.mul hU, hV.mul hV', by simp only [Matrix.mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Eqv.trans {A B C : Matrix ι ι R} (h₁ : Eqv A B) (h₂ : Eqv B C) : Eqv A C := by
   obtain ⟨U, V, hU, hV, rfl⟩ := h₁
@@ -29,27 +29,27 @@ theorem Eqv.trans {A B C : Matrix ι ι R} (h₁ : Eqv A B) (h₂ : Eqv B C) : E
   exact ⟨U' * U, V * V', hU'.mul hU, hV.mul hV', by simp only [Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-The claim follows from `h.trans ⟨U, 1, hU, isUnit_one, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem Eqv.mul_left {A B U : Matrix ι ι R} (h : Eqv A B) (hU : IsUnit U) : Eqv A (U * B) :=
   h.trans ⟨U, 1, hU, isUnit_one, by simp⟩
 
 /- English proof (translation)
-The claim follows from `h.trans ⟨1, V, isUnit_one, hV, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem Eqv.mul_right {A B V : Matrix ι ι R} (h : Eqv A B) (hV : IsUnit V) : Eqv A (B * V) :=
   h.trans ⟨1, V, isUnit_one, hV, by simp⟩
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_iff_isUnit_det A).2 (Matrix.isUnit_det_of_right_inverse h)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_mul_eq_one {A B : Matrix ι ι R} (h : A * B = 1) : IsUnit A :=
   (Matrix.isUnit_iff_isUnit_det A).2 (Matrix.isUnit_det_of_right_inverse h)
 
 /- English proof (translation)
-Establish `hT : vecMulVec u v * vecMulVec u v = 0`. Rewrite using `[vecMulVec_mul_vecMulVec, h]`. Use `ext`. Simplify using `[vecMulVec_apply]`. Apply `isUnit_of_mul_eq_one (B := 1 - vecMulVec u v)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[add_mul, mul_sub, mul_sub, hT]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_one_add_vecMulVec (u v : ι → R) (h : v ⬝ᵥ u = 0) :
     IsUnit (1 + vecMulVec u v) := by
@@ -59,7 +59,7 @@ theorem isUnit_one_add_vecMulVec (u v : ι → R) (h : v ⬝ᵥ u = 0) :
   rw [add_mul, mul_sub, mul_sub, hT]; simp
 
 /- English proof (translation)
-Rewrite using `[add_mul, one_mul, vecMulVec_mul, single_one_vecMul]`. Simplify using `[vecMulVec_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem addRow_apply (t : ι → R) (i : ι) (B : Matrix ι ι R) (a c : ι) :
     ((1 + vecMulVec t (Pi.single i 1)) * B) a c = B a c + t a * B i c := by
@@ -67,7 +67,7 @@ theorem addRow_apply (t : ι → R) (i : ι) (B : Matrix ι ι R) (a c : ι) :
   simp [vecMulVec_apply]
 
 /- English proof (translation)
-Rewrite using `[mul_add, mul_one, mul_vecMulVec, mulVec_single_one]`. Simplify using `[vecMulVec_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem addCol_apply (s : ι → R) (i : ι) (B : Matrix ι ι R) (a c : ι) :
     (B * (1 + vecMulVec (Pi.single i 1) s)) a c = B a c + B a i * s c := by
@@ -109,7 +109,7 @@ Both sides reduce to the same expression.
     blk b D i.succ k.succ = D i k := rfl
 
 /- English proof (translation)
-Use extensionality with `a c`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) a <;> refine Fin.cases ?_ (fun k => ?_) c <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_mul (b b' : R) (D D' : Matrix (Fin n) (Fin n) R) :
     blk b D * blk b' D' = blk (b * b') (D * D') := by
@@ -118,7 +118,7 @@ theorem blk_mul (b b' : R) (D D' : Matrix (Fin n) (Fin n) R) :
     simp [Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Use extensionality with `a c`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) a <;> refine Fin.cases ?_ (fun k => ?_) c <;>`. Simplify using `[Matrix.one_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blk_one : blk (1 : R) (1 : Matrix (Fin n) (Fin n) R) = 1 := by
   ext a c
@@ -126,7 +126,7 @@ theorem blk_one : blk (1 : R) (1 : Matrix (Fin n) (Fin n) R) = 1 := by
     simp [Matrix.one_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hU`. Apply `isUnit_of_mul_eq_one (B := blk 1 (↑u⁻¹ : Matrix (Fin n) (Fin n) R))` to reduce the goal to its premises. Rewrite using `[blk_mul, one_mul, Units.mul_inv, blk_one]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_blk_one {U : Matrix (Fin n) (Fin n) R} (hU : IsUnit U) : IsUnit (blk 1 U) := by
   obtain ⟨u, rfl⟩ := hU
@@ -134,7 +134,7 @@ theorem isUnit_blk_one {U : Matrix (Fin n) (Fin n) R} (hU : IsUnit U) : IsUnit (
   rw [blk_mul, one_mul, Units.mul_inv, blk_one]
 
 /- English proof (translation)
-Use extensionality with `a c`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) a <;> refine Fin.cases ?_ (fun k => ?_) c <;>`. Simplify using `[hr, hc]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem eq_blk (B : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (hr : ∀ k : Fin n, B 0 k.succ = 0)
     (hc : ∀ i : Fin n, B i.succ 0 = 0) :
@@ -144,7 +144,7 @@ theorem eq_blk (B : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (hr : ∀ k : Fin n, B
     simp [hr, hc]
 
 /- English proof (translation)
-Take `⟨U, V, hU, hV, rfl⟩` from `h`. Conclude with `⟨_, _, isUnit_blk_one hU, isUnit_blk_one hV, by simp [blk_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Eqv.blk {D D' : Matrix (Fin n) (Fin n) R} (h : Eqv D D') (b : R) :
     Eqv (blk b D) (blk b D') := by

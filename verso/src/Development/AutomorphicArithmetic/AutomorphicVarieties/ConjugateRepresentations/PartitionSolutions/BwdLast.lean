@@ -5,19 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 open UpperTheory.V.Cj.A UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Introduce `Γ V S I _ _ _ _ d G φ hφ C F hC q u hu hhd hvan`. Take `⟨P, hP1, hPeq, hPvan⟩` from `partOp Γ V S I d G φ hφ q`. Establish `hconst : ∀ i j : I, u [i] = u [j]`. Introduce `i j`. Establish `h` using `hhd [i, j] rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[UpperTheory.V.Lit.Geo.hd, Finset.sum_range_succ] at h`. Establish `h' : u [j] - u [i] = 0`. Rewrite using `[sub_eq_add_neg]`. Simplify using `using h`. Conclude with `(sub_eq_zero.mp h').symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P (fun i => u [i]), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ`. Establish `hinv : (fun i => (G.act q) γ (u [γ⁻¹ • i])) = fun i => u [i]`. Use function extensionality and compare the values at `i`. Establish `h` using `hu γ [γ⁻¹ • i] rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.map_nil, smul_inv_smul] at h`. Conclude with `h.symm`. Rewrite using `[← hPeq γ (fun i => u [i]), hinv]`. Introduce `x hx match x, hx with`. Consider the case `[i], _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfun : (fun j => u [j]) = fun _ => u [i]`. Use function extensionality and compare the values at `j`. Conclude with `hconst j i`. Rewrite using `[hfun, hP1]`. Introduce `s p hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hPvan` to reduce the goal to its premises. Introduce `i hne`. Use `hvan [i] rfl s p hp ?_` and prove the remaining obligations. Introduce `i' hi'`. Rewrite `hi'` using `[List.mem_singleton]`.
-
-Rewrite using `[hi']`. Conclude with `hC i s p hp hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.A.bwdLast :
     BwdLast := by

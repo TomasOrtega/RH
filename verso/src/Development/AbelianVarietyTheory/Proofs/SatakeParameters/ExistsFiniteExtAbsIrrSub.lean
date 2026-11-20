@@ -11,25 +11,21 @@ open Formalism.MainNotions Formalism.MainNotions.N
 namespace GlobalTheory.SplitField
 
 /- English proof (translation)
-Introduce `K Γ ι _ _ _ a ρ hss`. Establish `hdec` using `fun j => GlobalTheory.semisimple_matrix_rep_decomp (mapRep (algebraMap K (AlgebraicClosure K)) (ρ j)) (hss j)`. Use `choose n Vs hint hirr using hdec`. Set `b : ∀ j m, Module.Basis (Fin (Module.finrank (AlgebraicClosure K) (Vs j m))) (AlgebraicClosure K) (Vs j m)` to `fun j m => Module.finBasis (AlgebraicClosure K) (Vs j m)`. Set `S : Set (AlgebraicClosure K)` to `Set.range (fun p : (Σ j, Σ m : Fin (n j), Fin (Module.finrank (AlgebraicClosure K) (Vs j m)) × Fin a) => ((b p.1 p.2.1 p.2.2.1 : Vs p.1 p.2.1) : Fin a → AlgebraicClosure K) p.2.2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨K', _, _, _, f, hf, hS⟩` from `exists_finite_field S (Set.finite_range _)`. Use `⟨K', inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `set τ := mapRep (algebraMap K K') (ρ j) with hτ`. Establish `hcomp : mapRep f τ = mapRep (algebraMap K (AlgebraicClosure K)) (ρ j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hτ, mapRep_mapRep]`. Use `congr 1`. Conclude with `RingHom.ext hf`. Establish `hsp : ∀ m, Vs j m ≤ Submodule.span (AlgebraicClosure K) ((fun v => f ∘ v) '' {v : Fin a → K' | f ∘ v ∈ Vs j m})`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Vs j m = Submodule.span _ (Set.range fun k => ((b j m k : Vs j m) : Fin a → AlgebraicClosure K))`. Use `congrArg (Submodule.map (Vs j m).subtype) (b j m).span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype]`. Use `this.symm.trans ?_` and prove the remaining obligations. Rewrite using `[← Set.range_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Use `conv_lhs => rw [h1]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hc : ∀ i, ∃ c : K', f c = ((b j m k : Vs j m) : Fin a → AlgebraicClosure K) i` using `fun i => hS ⟨⟨j, m, k, i⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `choose c hc using hc`. Establish `hfc : f ∘ c = ((b j m k : Vs j m) : Fin a → AlgebraicClosure K)` using `funext hc`. Use `Submodule.subset_span ⟨c, ?_, ?_⟩` and prove the remaining obligations. Use `show f ∘ c ∈ Vs j m`. Rewrite using `[hfc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(b j m k).2`. Conclude with `hfc`. Take `⟨Us, hUi, hUs⟩` from `GlobalTheory.T.exists_internal_stable_decomposition_descends_to_subfield f τ (Vs j) (hint j) (fun m => hcomp ▸ (hirr j m).2.1) hsp`. Establish `hES : ∀ m, EndSpanned τ (Us m)`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `GlobalTheory.T.endSpannedByRepMatrices_of_scalarExtension f τ (Us m)` to reduce the goal to its premises. Rewrite using `[(hUs m).2, hcomp]`. Conclude with `GlobalTheory.T.endSpanned_of_isIrrSub_of_isAlgClosed' _ _ (hirr j m)`. Establish `hne : ∀ m, Us m ≠ ⊥`. Introduce `m h`.
-
-Apply `(hirr j m).1` to reduce the goal to its premises. Rewrite using `[← (hUs m).2, h]`. Simplify using the standard rewrite rules. Establish `hUirr : ∀ m, IsIrrSub τ (Us m)` using `fun m => isIrrSub_of_endSpanned τ (Us m) (hne m) (hUs m).1 (hES m)`. Introduce `W hW`.
-
-Take `⟨m, hm⟩` from `GlobalTheory.T.irreducible_subrep_iso_summand_of_isInternal τ Us hUi hUirr W hW`. Conclude with `absIrrSub_of_endSpanned τ W hW.1 hW.2.1 (endSpanned_of_isoSub τ W (Us m) hW.2.1 hm (hES m))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_finite_ext_absIrrSub : ∀ {K Γ ι : Type} [Field K] [Group Γ] [Finite ι] {a : ℕ} (ρ : ι → (Γ →* GL (Fin a) K)), (∀ j, IsSSRep (mapRep (algebraMap K (AlgebraicClosure K)) (ρ j))) → ∃ (K' : Type) (_ : Field K') (_ : Algebra K K') (_ : FiniteDimensional K K'), ∀ j W, IsIrrSub (mapRep (algebraMap K K') (ρ j)) W → AbsIrrSub (mapRep (algebraMap K K') (ρ j)) W := by
   intro K Γ ι _ _ _ a ρ hss

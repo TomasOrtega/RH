@@ -4,11 +4,9 @@ open scoped TensorProduct Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal R`. Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Algebra.FiniteType ℚ (R ⧸ m) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℚ m) Ideal.Quotient.mk_surjective`. Use `haveI : Module.Finite ℚ (R ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℚ (R ⧸ m)`. Use `haveI : CharZero (R ⧸ m) := algebraRat.charZero _`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hfin` using `(inferInstance : Module.Finite ℚ (R ⧸ m))`. Use `haveI : @FiniteDimensional ℚ (R ⧸ m) _ _ (@Algebra.toModule ℚ (R ⧸ m) _ _ DivisionRing.toRatAlgebra) := by`. Establish `e : (Ideal.Quotient.algebra ℚ : Algebra ℚ (R ⧸ m)) = DivisionRing.toRatAlgebra` using `Subsingleton.elim _ _`. Use `hfin` and compare the differences between its conclusion and the goal. Use `first`.
-
-Consider the case `exact (congrArg (@Algebra.toModule ℚ (R ⧸ m) _ _) e).symm`. Consider the case `(rw [← e]; rfl)`. Use `haveI : NumberField (R ⧸ m) := ⟨⟩`. Conclude with `⟨R ⧸ m, inferInstance, inferInstance, Ideal.Quotient.mk m, trivial⟩`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_numberField_of_finiteType_rat (R : Type) [CommRing R] [Nontrivial R] [Algebra ℚ R]
     [Algebra.FiniteType ℚ R] : ∃ (K : Type) (_ : Field K) (_ : NumberField K) (φ : R →+* K), True := by
@@ -29,19 +27,17 @@ theorem exists_numberField_of_finiteType_rat (R : Type) [CommRing R] [Nontrivial
   exact ⟨R ⧸ m, inferInstance, inferInstance, Ideal.Quotient.mk m, trivial⟩
 
 /- English proof (translation)
-Introduce `A _ _ _ hA a ha`. Take `⟨s, hs⟩` from `hA.out`. Set `F` to `FractionRing A`. Set `f : A →+* F` to `algebraMap A F`. Set `B : Subalgebra ℚ F` to `Algebra.adjoin ℚ (insert (f a)⁻¹ ((s.image f : Finset F) : Set F))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hmem : ∀ x : A, f x ∈ B`. Introduce `x`. Establish `hx : x ∈ Algebra.adjoin ℤ (s : Set A)` using `by rw [hs]; trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ (by simpa using ⟨x, hx, rfl⟩))`. Consider the case `algebraMap n`. Establish `: f (algebraMap ℤ A n) = algebraMap ℚ F (n : ℚ)` using `by simp [f]`. Rewrite using `[this]`. Conclude with `B.algebraMap_mem _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `B.add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `B.mul_mem hx hy`. Establish `hinv : (f a)⁻¹ ∈ B` using `Algebra.subset_adjoin (Set.mem_insert _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI hBft : Algebra.FiniteType ℚ B := by`. Rewrite using `[← Subalgebra.fg_iff_finiteType]`. Conclude with `⟨insert (f a)⁻¹ (s.image f), by simp [B]⟩`. Establish `hfa : f a ≠ 0`. Simplify `(IsFractionRing.injective A F).ne ha` using `[f]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `ψ : A →+* B` to `f.codRestrict B hmem`. Establish `hu : IsUnit (ψ a)`. Use `isUnit_iff_exists_inv.mpr ⟨⟨(f a)⁻¹, hinv⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show f a * (f a)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hfa`.
-
-Take `⟨K, _, _, φ, -⟩` from `exists_numberField_of_finiteType_rat B`. Conclude with `⟨K, inferInstance, inferInstance, φ.comp ψ, (hu.map φ).ne_zero⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_numberField_point_ne_zero :
     ∀ (A : Type) [CommRing A] [IsDomain A] [CharZero A], Algebra.FiniteType ℤ A →

@@ -9,13 +9,11 @@ noncomputable section
 namespace GlobalTheory.SemiUnfold
 
 /- English proof (translation)
-Use `letI : MeasurableSpace Γ := ⊤`. Use `haveI : MeasurableSMul Γ P := { measurable_const_smul := fun γ => measurable_const_mul (γ : P) measurable_smul_const := fun _ => measurable_from_top }`. Use `⟨NullMeasurableSet.iUnion fun i => h.nullMeasurableSet_smul _, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h.ae_covers] with x ⟨γ, hγ⟩`. Take `⟨δ, hδ, i, hi⟩` from `hsurj γ⁻¹ (inv_mem γ.2)`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨δ, hδ⟩⁻¹, Set.mem_iUnion.2 ⟨i, _, hγ, ?_⟩⟩` and prove the remaining obligations. Establish `: (r i : P) = δ⁻¹ * (γ : P)⁻¹` using `by rw [hi]; group`. Simplify using `[Subgroup.smul_def, this, mul_assoc]`. Introduce `δ δ' hne`. Establish `e : ∀ δ : Γ₀, δ • (⋃ i, r i • 𝓕) = ⋃ i, ((⟨δ.1, hle δ.2⟩ : Γ) * r i) • 𝓕` using `fun δ => by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.smul_set_iUnion]`. Use `Set.iUnion_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Both sides reduce to the same expression. Simplify using `only [Function.onFun, e]`.
-
-Use `AEDisjoint.iUnion_left_iff.2 fun i => AEDisjoint.iUnion_right_iff.2 fun j => h.aedisjoint fun he => hne ?_` and prove the remaining obligations. Conclude with `Subtype.ext (hinj _ δ.2 _ δ'.2 i j (congrArg Subtype.val he)).1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_iUnion {P ι : Type} [Group P] [MeasurableSpace P] [MeasurableMul P] [Countable ι]
     (μ : Measure P) [μ.IsMulLeftInvariant] (Γ₀ Γ : Subgroup P) [Countable Γ] (hle : Γ₀ ≤ Γ) (r : ι → Γ)
@@ -42,17 +40,15 @@ theorem isFundamentalDomain_iUnion {P ι : Type} [Group P] [MeasurableSpace P] [
     exact Subtype.ext (hinj _ δ.2 _ δ'.2 i j (congrArg Subtype.val he)).1
 
 /- English proof (translation)
-Use `letI : MeasurableSpace Γ := ⊤`. Use `haveI : MeasurableSMul Γ P := { measurable_const_smul := fun γ => measurable_const_mul (γ : P) measurable_smul_const := fun _ => measurable_from_top }`. Use `letI : MeasurableSpace Γ₀ := ⊤`. Use `haveI : MeasurableSMul Γ₀ P := { measurable_const_smul := fun γ => measurable_const_mul (γ : P) measurable_smul_const := fun _ => measurable_from_top }`. Use `haveI : Countable Γ₀ := (Subgroup.inclusion_injective hle).countable`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `isFundamentalDomain_iUnion μ Γ₀ Γ hle r hsurj hinj 𝓕 h`. Establish `hd : Pairwise (Function.onFun (AEDisjoint μ) fun i => r i • 𝓕)` using `fun i j hij => h.aedisjoint fun he => hij (hinj 1 (one_mem _) 1 (one_mem _) i j (by rw [he])).2`. Establish `hm : ∀ i, NullMeasurableSet (r i • 𝓕) μ` using `fun i => h.nullMeasurableSet_smul _`. Establish `hmi : ∀ i, Measurable fun x => φ (r i * x)` using `fun i => hφ.comp (measurable_const_mul _)`. Establish `hpre : ∀ i, (fun x => (r i : P) * x) ⁻¹' (r i • 𝓕) = 𝓕` using `fun i => Set.ext fun x => Set.smul_mem_smul_set_iff (a := r i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : ∑' i, ∫⁻ x in 𝓕, ‖φ (r i * x)‖ₑ ∂μ ≠ ∞`. Rewrite using `[← lintegral_tsum fun i => (hmi i).enorm.aemeasurable]`. Use `ne_of_lt (lt_of_le_of_lt (lintegral_mono (g := fun _ => ENNReal.ofReal C) fun x => ?_) ?_)` and prove the remaining obligations. Simplify using `only [← ofReal_norm_eq_enorm]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hC x).1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ENNReal.ofReal_le_ofReal (hC x).2`. Rewrite using `[lintegral_const, Measure.restrict_apply_univ]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin.lt_top`. Establish `hI : IntegrableOn φ (⋃ i, r i • 𝓕) μ`. Use `⟨hφ.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[HasFiniteIntegral, lintegral_iUnion₀ hm hd]`. Use `lt_of_eq_of_lt (tsum_congr fun i => ?_) hl.lt_top` and prove the remaining obligations. Rewrite using `[← (measurePreserving_mul_left μ (r i : P)).setLIntegral_comp_preimage_emb (measurableEmbedding_mulLeft _), hpre]`. Establish `hinv : ∀ (δ : Γ₀) x, φ (δ • x) = φ x` using `fun δ x => hφi δ δ.2 x`. Use `⟨(hU.integrableOn_iff h₀ hinv).1 hI, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hU.setIntegral_eq h₀ hinv, integral_iUnion_ae hm hd hI, integral_tsum (fun i => (hmi i).aestronglyMeasurable) hl]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[← (measurePreserving_mul_left μ (r i : P)).setIntegral_preimage_emb (measurableEmbedding_mulLeft _) φ, hpre]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_cosets {P ι : Type} [Group P] [MeasurableSpace P] [MeasurableMul P] [Countable ι]
     (μ : Measure P) [μ.IsMulLeftInvariant] (Γ₀ Γ : Subgroup P) [Countable Γ] (hle : Γ₀ ≤ Γ) (r : ι → Γ)
@@ -103,21 +99,17 @@ variable {G K : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loc
   [SecondCountableTopology K] [T2Space K] [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : LocallyCompactSpace (N ⊔ s.range : Subgroup G) := (isClosed_of_cocompact Γ _ hP).locallyCompactSpace`. Establish `hr : ∀ h ∈ ΓK, s h ∈ Γ` using `fun g hg => by simpa using (hrat 1 (one_mem _) g).2 ⟨one_mem _, hg⟩`. Use `letI act : MulAction (N × K) (N ⊔ s.range : Subgroup G) := { smul := fun p x => ⟨p.1 * x * (s p.2)⁻¹, mul_mem (mul_mem (Subgroup.mem_sup_left p.1.2) x.2) (inv_mem (Subgroup.mem_sup_right ⟨p.2, rfl⟩))⟩ one_smul := fun x => Subtype.ext (show ((1 : N) : G) * x * (s 1)⁻¹ = x by simp) …`.
+Establish an intermediate fact. Equip the data with the indicated structure. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[mul_assoc]) }`. Establish `hsm : ∀ (p : N × K) (x : (N ⊔ s.range : Subgroup G)), ((p • x : (N ⊔ s.range : Subgroup G)) : G) = p.1 * x * (s p.2)⁻¹` using `fun _ _ => rfl`. Use `haveI : ContinuousSMul (N × K) (N ⊔ s.range : Subgroup G) := ⟨Continuous.subtype_mk (by fun_prop) _⟩`. Establish `hsurj : Function.Surjective fun p : N × K => p • (1 : (N ⊔ s.range : Subgroup G))` using `fun x => by`. Take `⟨n, hn, h, hx⟩` from `mem_sup_decomp N s hc x.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(⟨n, hn⟩, h⁻¹), Subtype.ext (by simp [hsm, hx])⟩`. Use `haveI : MulAction.IsPretransitive (N × K) (N ⊔ s.range : Subgroup G) := ⟨fun x y => by`. Take `⟨p, rfl⟩` from `hsurj x`. Take `⟨q, rfl⟩` from `hsurj y`. Conclude with `⟨q * p⁻¹, by simp [smul_smul]⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hi : Function.Injective fun p : N × K => p • (1 : (N ⊔ s.range : Subgroup G))` using `fun p q he => by`. Establish `h1` using `congrArg Subtype.val he`. Simplify using `only [hsm, OneMemClass.coe_one, mul_one, ← map_inv] at h1`. Take `⟨h2, h3⟩` from `hinj _ p.1.2 _ q.1.2 _ _ h1`. Conclude with `Prod.ext (Subtype.ext h2) (inv_injective h3)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `e` to `(Equiv.ofBijective _ ⟨hi, hsurj⟩).toHomeomorphOfContinuousOpen (continuous_id.smul continuous_const) (isOpenMap_smul_of_sigmaCompact (G := N × K) (1 : (N ⊔ s.range : Subgroup G)))`. Take `⟨C, hC, hCs⟩` from `hP`. Set `q : N × K → N` to `fun p => ⟨s p.2 * p.1 * (s p.2)⁻¹, hc _ p.1.2 _⟩`. Establish `hq : Continuous q` using `Continuous.subtype_mk (by fun_prop) _`. Use `⟨q '' (e ⁻¹' C), (e.isCompact_preimage.2 hC).image hq, fun n => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ, hk⟩` from `hCs ⟨n, Subgroup.mem_sup_left n.2⟩`. Take `⟨δ, hδ, k, hx⟩` from `mem_sup_decomp N s hc γ.2`. Take `⟨h1, h2⟩` from `(hrat δ hδ k).1 (hx ▸ Subgroup.mem_subgroupOf.1 hγ)`. Use `⟨⟨_, hc δ hδ k⁻¹⟩, Subgroup.mem_subgroupOf.2 (mul_mem (mul_mem (hr _ (inv_mem h2)) h1) (inv_mem (hr _ (inv_mem h2)))), (⟨_, mul_mem hδ (hc n n.2 k)⟩, k⁻¹), ?_, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `: e (⟨_, mul_mem hδ (hc n n.2 k)⟩, k⁻¹) = γ * ⟨n, Subgroup.mem_sup_left n.2⟩` using `Subtype.ext (by show δ * (s k * n * (s k)⁻¹) * 1 * (s k⁻¹)⁻¹ = γ * n`.
-
-Rewrite using `[hx]`. Simplify using `[mul_assoc])`. Use `show e _ ∈ C`. Rewrite using `[this]` and apply the resulting hypothesis. Use `show s k⁻¹ * (δ * (s k * n * (s k)⁻¹)) * (s k⁻¹)⁻¹ = s k⁻¹ * δ * (s k⁻¹)⁻¹ * n`.
-
-Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cocompact_of_semi (Γ N : Subgroup G) [DiscreteTopology Γ] (hN : IsClosed (N : Set G)) (s : K →* G)
     (hs : Continuous s) (hc : ∀ n ∈ N, ∀ h, s h * n * (s h)⁻¹ ∈ N)
@@ -174,18 +166,16 @@ theorem cocompact_of_semi (Γ N : Subgroup G) [DiscreteTopology Γ] (hN : IsClos
     simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `Function.Injective.countable (f := fun g : Γ.subgroupOf P => (⟨g.1.1, g.2⟩ : Γ)) fun _ _ hgh => Subtype.ext (Subtype.ext (congrArg Subtype.val hgh :))`.
+A detailed English derivation is pending.
 -/
 theorem countable_subgroupOf (Γ P : Subgroup G) [Countable Γ] : Countable (Γ.subgroupOf P) :=
   Function.Injective.countable (f := fun g : Γ.subgroupOf P => (⟨g.1.1, g.2⟩ : Γ))
     fun _ _ hgh => Subtype.ext (Subtype.ext (congrArg Subtype.val hgh :))
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : LocallyCompactSpace (N ⊔ s.range : Subgroup G) := hP.locallyCompactSpace`. Use `haveI : SecondCountableTopology (N ⊔ s.range : Subgroup G) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI := countable_subgroupOf Γ N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := countable_subgroupOf Γ (N ⊔ s.range)`. Establish `hme` using `semiMap_me N s hN hs hinj`. Establish `hi` using `semiMap_injective N s hinj`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain ΓK μ h𝓕 (by rw [h1]; exact one_ne_zero) (by rw [h1]; exact ENNReal.one_ne_top)`. Use `haveI : ν.IsMulRightInvariant := GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain _ ν h𝓝 (by rw [k1]; exact one_ne_zero) (by rw [k1]; exact ENNReal.one_ne_top)`.
-
-Establish `hfd` using `isFundamentalDomain_semi N s hN hs hc hinj Γ ΓK hrat μ ν 𝓕 𝓝 h𝓕 h𝓝`. Rewrite `hfd` using `[semiMeas_eq, Subgroup.inf_subgroupOf_right]`. Establish `hm1 : (μ.prod ν).map (semiMap N s) (semiMap N s '' (𝓕 ×ˢ 𝓝)) = 1`. Rewrite using `[hme.map_apply, Set.preimage_image_eq _ hi, Measure.prod_prod, h1, k1, one_mul]`. Conclude with `eq_of_rightInvariant _ μ' _ 𝓕' _ hμ' h𝓕' h1' hme.sigmaFinite_map (isMulRightInvariant_semi N s hN hs hc μ ν) hfd hm1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_semiMap_eq (Γ N : Subgroup G) [DiscreteTopology Γ] [Countable Γ] (hN : IsClosed (N : Set G)) (s : K →* G)
     (hs : Continuous s) (hc : ∀ n ∈ N, ∀ h, s h * n * (s h)⁻¹ ∈ N)
@@ -217,13 +207,11 @@ theorem map_semiMap_eq (Γ N : Subgroup G) [DiscreteTopology Γ] [Countable Γ] 
     (isMulRightInvariant_semi N s hN hs hc μ ν) hfd hm1
 
 /- English proof (translation)
-Substitute `hPe` using the available equality. Take `⟨ν, 𝓝, hν, h𝓝, k1⟩` from `exists_mass_one Γ N (cocompact_of_semi Γ N hN s hs hc hinj ΓK hrat hP)`. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI := countable_subgroupOf Γ (N ⊔ s.range)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hme` using `semiMap_me N s hN hs hinj`. Establish `hi` using `semiMap_injective N s hinj`. Establish `he` using `map_semiMap_eq Γ N hN s hs hc hinj ΓK hrat (isClosed_of_cocompact Γ _ hP) μ 𝓕 h𝓕 h1 ν 𝓝 h𝓝 k1 μ' 𝓕' hμ' h𝓕' h1'`. Establish `hfd` using `isFundamentalDomain_semi N s hN hs hc hinj Γ ΓK hrat μ ν 𝓕 𝓝 h𝓕 h𝓝`. Rewrite `hfd` using `[semiMeas_eq, Subgroup.inf_subgroupOf_right, he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `letI : MeasurableSpace (Γ.subgroupOf (N ⊔ s.range)) := ⊤`. Use `haveI : MeasurableSMul (Γ.subgroupOf (N ⊔ s.range)) (N ⊔ s.range : Subgroup G) := { measurable_const_smul := fun γ => measurable_const_mul (γ : (N ⊔ s.range : Subgroup G)) measurable_smul_const := fun _ => measurable_from_top }`. Rewrite using `[h𝓕'.setIntegral_eq hfd (f := fun r => φ r.1) (fun γ x => hφi _ (Subgroup.mem_subgroupOf.1 γ.2) γ.1.2 _), ← he, hme.restrict_map, Set.preimage_image_eq _ hi, ← Measure.prod_restrict, hme.integral_map]`. Establish `: (fun p : K × N => φ (semiMap N s p).1) = fun p => ψ p.1` using `funext fun p => hφψ _ p.2.2 _`. Rewrite using `[this, integral_fun_fst, Measure.real, Measure.restrict_apply_univ, k1]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mean_factor (Γ N : Subgroup G) [DiscreteTopology Γ] [Countable Γ] (hN : IsClosed (N : Set G)) (s : K →* G)
     (hs : Continuous s) (hc : ∀ n ∈ N, ∀ h, s h * n * (s h)⁻¹ ∈ N)
@@ -258,19 +246,15 @@ theorem mean_factor (Γ N : Subgroup G) [DiscreteTopology Γ] [Countable Γ] (hN
   simp
 
 /- English proof (translation)
-Substitute `hPe` using the available equality. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SecondCountableTopology (N ⊔ s.range : Subgroup G) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI := countable_subgroupOf Γ (N ⊔ s.range)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hme` using `semiMap_me N s hN hs hinj`. Establish `hi` using `semiMap_injective N s hinj`. Establish `hr : ∀ h ∈ ΓK, s h ∈ Γ` using `fun g hg => by simpa using (hrat 1 (one_mem _) g).2 ⟨one_mem _, hg⟩`. Establish `he` using `map_semiMap_eq Γ N hN s hs hc hinj ΓK hrat hP μ 𝓕 h𝓕 h1 ν 𝓝 h𝓝 k1 μ' 𝓕' hμ' h𝓕' h1'`. Establish `hu : IsFundamentalDomain (⊥ : Subgroup K) Set.univ μ` using `IsFundamentalDomain.mk' MeasurableSet.univ.nullMeasurableSet fun _ => ⟨1, Set.mem_univ _, fun _ _ => Subsingleton.elim _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h𝓝' : IsFundamentalDomain ((Γ ⊓ N).subgroupOf N) 𝓝 ν` using `by rwa [Subgroup.inf_subgroupOf_right]`. Establish `hfd` using `isFundamentalDomain_semi N s hN hs hc hinj (Γ ⊓ N) ⊥ (fun n hn h => ⟨fun hm => by`. Take `⟨h2, h3⟩` from `hinj n hn _ (Subgroup.mem_inf.1 hm).2 h 1 (by simp)`. Conclude with `⟨h2 ▸ hm, Subgroup.mem_bot.2 h3⟩,`. Use `fun hm => by rw [Subgroup.mem_bot.1 hm.2, map_one, mul_one]; exact hm.1⟩) μ ν Set.univ 𝓝 hu h𝓝'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hfd` using `[semiMeas_eq, Subgroup.inf_subgroupOf_right, he]`. Take `⟨hI, hE⟩` from `unfold_cosets μ' ((Γ ⊓ N).subgroupOf (N ⊔ s.range)) (Γ.subgroupOf (N ⊔ s.range)) (fun x hx => Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hx)).1) (fun k : ΓK => ⟨⟨s k, Subgroup.mem_sup_right ⟨k, rfl⟩⟩, Subgroup.mem_subgroupOf.2 (hr _ k.2)⟩) (fun γ hγ …`. Take `⟨δ, hδ, k, hx⟩` from `mem_sup_decomp N s hc γ.2`. Take `⟨h2, h3⟩` from `(hrat δ hδ k).1 (hx ▸ Subgroup.mem_subgroupOf.1 hγ)`. Conclude with `⟨⟨δ, Subgroup.mem_sup_left hδ⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.2 ⟨h2, hδ⟩), ⟨k, h3⟩, Subtype.ext hx⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun δ hδ δ' hδ' i j hij => by`. Take `⟨h2, h3⟩` from `hinj _ (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hδ)).2 _ (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hδ')).2 _ _ (congrArg Subtype.val hij)`. Conclude with `⟨Subtype.ext h2, Subtype.ext h3⟩)`. Use the proof step `𝓕' h𝓕' (by rw [h1']; exact ENNReal.one_ne_top) _ hfd (fun r => φ r.1) (hφ.comp measurable_subtype_coe)`. Use the proof step `(fun δ hδ x => hφi _ (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hδ)).1 (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hδ)).2 _) C (fun x => hC x.1 x.2)`.
-
-Establish `hres : μ'.restrict (semiMap N s '' (Set.univ ×ˢ 𝓝)) = (μ.prod (ν.restrict 𝓝)).map (semiMap N s)`. Rewrite using `[← he, hme.restrict_map, Set.preimage_image_eq _ hi, ← Measure.prod_restrict, Measure.restrict_univ]`. Rewrite `hI` using `[IntegrableOn, hres, hme.integrable_map_iff]`. Use `⟨hI.integral_prod_left, hE.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hres, hme.integral_map]`.
-
-Conclude with `integral_prod (Function.uncurry fun h (n : N) => φ (n.1 * s h)) hI`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_semi (Γ N : Subgroup G) [DiscreteTopology Γ] [Countable Γ] (hN : IsClosed (N : Set G)) (s : K →* G)
     (hs : Continuous s) (hc : ∀ n ∈ N, ∀ h, s h * n * (s h)⁻¹ ∈ N)

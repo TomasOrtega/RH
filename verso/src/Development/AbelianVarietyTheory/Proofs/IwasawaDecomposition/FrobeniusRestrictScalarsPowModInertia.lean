@@ -12,11 +12,11 @@ open scoped Pointwise
 open NumberField IsDedekindDomain in
 open scoped Pointwise in
 /- English proof (translation)
-Establish `hdec : φ ∈ ValuationSubring.decompositionSubgroup F A` using `hφ.1`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨one_mem _, fun x _ => by simp⟩`. Consider the case `succ n ih`. Use `⟨Subgroup.pow_mem _ hdec _, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxq : A.valuation (x ^ q) ≤ 1` using `by rw [map_pow]; exact pow_le_one' hx q`. Establish `e : (φ ^ (n + 1)) x - x ^ q ^ (n + 1) = ((φ ^ n) (x ^ q) - (x ^ q) ^ q ^ n) + (φ ^ n) (φ x - x ^ q)`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, map_sub, pow_succ', pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_lt _ (ih.2 _ hxq) ?_` and prove the remaining obligations. Rewrite using `[_root_.ReciprocityTheory.Gal.valuation_apply_lt_one_iff (Subgroup.pow_mem _ hdec n)]`. Conclude with `hφ.2 x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FrobRestrict.isFrob_pow {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {A : ValuationSubring Ω} {q : ℕ} {φ : _root_.Formalism.ConjugateSelfDual.G F Ω} (hφ : _root_.Formalism.ConjugateSelfDual.IsFrob A q φ) (n : ℕ) :
@@ -39,7 +39,7 @@ theorem _root_.GlobalTheory.FrobRestrict.isFrob_pow {F Ω : Type} [Field F] [Num
 open NumberField IsDedekindDomain in
 open scoped Pointwise in
 /- English proof (translation)
-Simplify using `only [ValuationSubring.decompositionSubgroup, MulAction.mem_stabilizer_iff] at h ⊢`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma restrictScalars_mem_decompositionSubgroup {E Ω : Type} [Field E] [Field Ω]
     [Algebra E Ω] {K : IntermediateField E Ω} {A : ValuationSubring Ω} {ι : _root_.Formalism.ConjugateSelfDual.G K Ω}
@@ -51,13 +51,13 @@ private lemma restrictScalars_mem_decompositionSubgroup {E Ω : Type} [Field E] 
 open NumberField IsDedekindDomain in
 open scoped Pointwise in
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ K _ _ v w h A hw`. Establish `hnorm : _root_.Formalism.ConjugateSelfDual.normV w = _root_.Formalism.ConjugateSelfDual.normV v ^ w.asIdeal.inertiaDeg (𝓞 E)` using `by haveI : w.asIdeal.LiesOver v.asIdeal := ⟨h.symm⟩ haveI := v.isMaximal haveI := w.isMaximal`. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal v.asIdeal w.asIdeal]`. Unfold `_root_.Formalism.ConjugateSelfDual.normV`. Use `letI := Ideal.Quotient.field v.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Equip the data with the indicated structure.
 
-Conclude with `Module.natCard_eq_pow_finrank (K := 𝓞 E ⧸ v.asIdeal) (V := 𝓞 K ⧸ w.asIdeal)`. Use `⟨fun x => ?_, hnorm, fun ι hι => ?_, fun σ φ hσ hφ => ?_⟩` and prove the remaining obligations. Establish `e : (algebraMap K Ω) ((algebraMap (𝓞 E) (𝓞 K) x : 𝓞 K) : K) = algebraMap E Ω (x : E)`. Rewrite using `[IsScalarTower.algebraMap_apply E K Ω]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, hw, ← h, Ideal.mem_comap]`. Rewrite `hι`, the goal using `[_root_.ReciprocityTheory.Gal.mem_Ine]`. Conclude with `⟨restrictScalars_mem_decompositionSubgroup hι.1, hι.2⟩`. Establish `hσ' : _root_.Formalism.ConjugateSelfDual.IsFrob A (_root_.Formalism.ConjugateSelfDual.normV v ^ w.asIdeal.inertiaDeg (𝓞 E)) (σ.restrictScalars E)`. Rewrite using `[← hnorm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨restrictScalars_mem_decompositionSubgroup hσ.1, hσ.2⟩`. Establish `hφf` using `_root_.GlobalTheory.FrobRestrict.isFrob_pow hφ (w.asIdeal.inertiaDeg (𝓞 E))`. Establish `h1` using `_root_.ReciprocityTheory.Gal.inv_mul_mem_Ine_of_isFrob hφf hσ'`. Establish `h2` using `_root_.ReciprocityTheory.Gal.conj_mem_Ine (g := φ ^ w.asIdeal.inertiaDeg (𝓞 E)) hφf.1 h1`. Rewrite `h2` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FrobRestrict.frob_restrict : ∀ (E Ω : Type) [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] (K : IntermediateField E Ω) [FiniteDimensional E K] [NumberField K]

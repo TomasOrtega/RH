@@ -15,13 +15,13 @@ namespace GlobalTheory.PD.XCover
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `hr0`. Use `letI : Algebra (MvPolynomial (Fin d) k ⧸ RingHom.ker ψ) B := (RingHom.kerLift ψ).toAlgebra`. Establish `hfin : (RingHom.kerLift ψ).Finite`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `e : ψ = (RingHom.kerLift ψ).comp (Ideal.Quotient.mk _)`. Apply the tactic sequence `ext x <;> rfl`. Conclude with `RingHom.Finite.of_comp_finite (e ▸ hψ)`. Use `haveI : Algebra.IsIntegral (MvPolynomial (Fin d) k ⧸ RingHom.ker ψ) B := ⟨hfin.to_isIntegral⟩`. Establish `e1 : ringKrullDim B = ringKrullDim (MvPolynomial (Fin d) k ⧸ RingHom.ker ψ)` using `ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective (RingHom.kerLift_injective ψ)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ringKrullDim (MvPolynomial (Fin d) k ⧸ RingHom.ker ψ) ≤ ringKrullDim (MvPolynomial (Fin d) k ⧸ Ideal.span {r})` using `ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective (by rw [Ideal.span_singleton_le_iff_mem]; exact hr))`. Establish `e3` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hr0)`. Rewrite `e3` using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Establish `e4 : (d : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial (Fin d) k ⧸ Ideal.span {r})` using `(hB.symm.trans e1).le.trans e2`. Establish `h` using `(add_le_add e4 (le_refl (1 : WithBot ℕ∞))).trans e3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared.
 
-Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_fin, zero_add] at h`. Normalize the coercions in `at h`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem injective_mvPolynomial_of_finite_of_ringKrullDim {k B : Type} [Field k] [CommRing B] {d : ℕ}
     (ψ : MvPolynomial (Fin d) k →+* B) (hψ : ψ.Finite) (hB : ringKrullDim B = d) :
@@ -51,7 +51,7 @@ theorem injective_mvPolynomial_of_finite_of_ringKrullDim {k B : Type} [Field k] 
   omega
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.ProjSpace.chartAlgEquiv_X ℂ d i ⟨j, h⟩`. Rewrite `e` using `[GlobalTheory.ProjSpace.chartAlgEquiv_apply, GlobalTheory.ProjSpace.polyToAway, MvPolynomial.eval₂Hom_X']`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratioSec_eq_projSpace_ratio (d : ℕ) (i j : Fin (d + 1)) (h : j ≠ i) : ratioSec d i j = GlobalTheory.ProjSpace.ratio ℂ d i j := by
   have e := GlobalTheory.ProjSpace.chartAlgEquiv_X ℂ d i ⟨j, h⟩
@@ -59,19 +59,17 @@ theorem ratioSec_eq_projSpace_ratio (d : ℕ) (i j : Fin (d + 1)) (h : j ≠ i) 
   exact e
 
 /- English proof (translation)
-Introduce `d Z _ p _ inst hinst φ _ hφ hgen`. Substitute `hφ` using the available equality. Take `⟨hU, hψ₀⟩` from `(GlobalTheory.ProjSpace.isFinite_iff_pullRatio φ (U := fun i => φ ⁻¹ᵁ chart d i) (fun _ => rfl)).1 inferInstance 0`. Use `set c := (GlobalTheory.QCoh.Qcqs.baseRingHom (φ ≫ PSpace.str ℂ d) (φ ⁻¹ᵁ chart d 0)).hom with hc`. Use `set y := GlobalTheory.ProjSpace.pullRatio φ (φ ⁻¹ᵁ chart d 0) 0 le_rfl with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : MvPolynomial (Fin d) ℂ →+* Γ(Z, φ ⁻¹ᵁ chart d 0)` to `MvPolynomial.eval₂Hom c (fun j => y j.succ)`. Set `σ : MvPolynomial (Fin (d + 1)) ℂ →+* MvPolynomial (Fin d) ℂ` to `MvPolynomial.eval₂Hom MvPolynomial.C (Fin.cases 1 MvPolynomial.X)`. Establish `hcomp : ψ.comp σ = MvPolynomial.eval₂Hom c y`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `[ψ, σ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[ψ, σ, y]`. Simplify using `[ψ, σ]`. Establish `hψ : ψ.Finite` using `RingHom.Finite.of_comp_finite (hcomp ▸ hψ₀)`. Establish `hdim : ringKrullDim Γ(Z, φ ⁻¹ᵁ chart d 0) = d` using `GlobalTheory.SmoothDim.ringKrullDim_affineOpen ℂ Z (φ ≫ PSpace.str ℂ d) d inferInstance _ hU ⟨_, hgen 0⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ψ` using `injective_mvPolynomial_of_finite_of_ringKrullDim ψ hψ hdim`. Establish `hgerm : Function.Injective (Z.presheaf.germ (φ ⁻¹ᵁ chart d 0) (genericPoint Z) (hgen 0)).hom` using `germ_injective_of_isIntegral Z _ (hgen 0)`. Establish `key : (MvPolynomial.aeval (R` using `ℂ) (fun j : Fin d => rat φ 0 j.succ)).toRingHom = (Z.presheaf.germ (φ ⁻¹ᵁ chart d 0) (genericPoint Z) (hgen 0)).hom.comp ψ := by`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_C, RingHom.comp_apply, ψ, MvPolynomial.eval₂Hom_C]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hinst` using the available equality. Establish `e : (φ ≫ PSpace.str ℂ d).appLE ⊤ (φ ⁻¹ᵁ chart d 0) le_top = (φ ≫ PSpace.str ℂ d).appTop ≫ Z.presheaf.map (homOfLE le_top).op`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_map _ _ _).symm`. Rewrite using `[hc, GlobalTheory.QCoh.Qcqs.baseRingHom, CommRingCat.hom_comp, RingHom.comp_apply, e, CommRingCat.hom_comp, RingHom.comp_apply, TopCat.Presheaf.germ_res_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_X, RingHom.comp_apply, ψ, MvPolynomial.eval₂Hom_X']`. Rewrite using `[rat, dif_pos (hgen 0), hy, GlobalTheory.ProjSpace.pullRatio, ← ratioSec_eq_projSpace_ratio d 0 j.succ (Fin.succ_ne_zero j), Scheme.Hom.app_eq_appLE]`. Rewrite using `[algebraicIndependent_iff_injective_aeval]`. Establish `: ⇑(MvPolynomial.aeval (R` using `ℂ) (fun j : Fin d => rat φ 0 j.succ)) = ⇑((Z.presheaf.germ (φ ⁻¹ᵁ chart d 0) (genericPoint Z) (hgen 0)).hom.comp ψ) := congrArg DFunLike.coe key`.
-
-Rewrite using `[this]`. Conclude with `hgerm.comp hinj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_rat : ∀ (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ)
     [SmoothOfRelativeDimension d p] [inst : Algebra ℂ Z.functionField], inst = ffAlg p →

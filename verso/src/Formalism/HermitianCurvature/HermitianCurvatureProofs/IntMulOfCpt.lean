@@ -15,7 +15,7 @@ Both sides reduce to the same expression.
 theorem dZ_eq (f : ℂ → ℂ) (c : ℂ) : NF.dZ f c = (1 / 2 : ℂ) * (fderiv ℝ f c 1 - Complex.I * fderiv ℝ f c Complex.I) := rfl
 
 /- English proof (translation)
-Establish `hd : HasFDerivAt (fun w => conj (φ w)) ((Complex.conjCLE.toContinuousLinearMap).comp (fderiv ℝ φ c)) c` using `Complex.conjCLE.toContinuousLinearMap.hasFDerivAt.comp c h.hasFDerivAt`. Unfold `NF.dZ NF.dZb`. Rewrite using `[hd.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_mul, map_add, map_sub, Complex.conj_I, map_div₀, map_one, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dZ_conj {φ : ℂ → ℂ} {c : ℂ} (h : DifferentiableAt ℝ φ c) :
     NF.dZ (fun w => conj (φ w)) c = conj (NF.dZb φ c) := by
@@ -28,9 +28,9 @@ theorem dZ_conj {φ : ℂ → ℂ} {c : ℂ} (h : DifferentiableAt ℝ φ c) :
   ring
 
 /- English proof (translation)
-Establish `hinv` using `(hasDerivAt_inv hc).hasFDerivAt.restrictScalars ℝ`. Establish `hprod : HasFDerivAt (fun w => g w * w⁻¹) _ c` using `h.hasFDerivAt.mul hinv`. Establish `he : (fun w => g w / w) = fun w => g w * w⁻¹` using `by funext w; rw [div_eq_mul_inv]`. Unfold `NF.dZb`. Rewrite using `[he, hprod.fderiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.toSpanSingleton_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(g c)) * Complex.I_sq`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dZb_div {g : ℂ → ℂ} {c : ℂ} (hc : c ≠ 0) (h : DifferentiableAt ℝ g c) :
     NF.dZb (fun w => g w / w) c = NF.dZb g c / c := by
@@ -49,11 +49,11 @@ end Wirt
 section IBP
 
 /- English proof (translation)
-Establish `e1` using `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (v := (1 : ℂ)) h1 h2 h5 hf hG`. Establish `e2` using `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (v := Complex.I) h3 h4 h5 hf hG`. Establish `l1 : ∫ x, NF.dZ f x * G x = (1 / 2 : ℂ) * ((∫ x, fderiv ℝ f x 1 * G x) - Complex.I * ∫ x, fderiv ℝ f x Complex.I * G x)`. Rewrite using `[← integral_const_mul, ← integral_sub h1 (h3.const_mul _), ← integral_const_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Unfold `NF.dZ`. Expand and normalize the polynomial expressions, which then agree. Establish `l2 : ∫ x, f x * NF.dZ G x = (1 / 2 : ℂ) * ((∫ x, f x * fderiv ℝ G x 1) - Complex.I * ∫ x, f x * fderiv ℝ G x Complex.I)`. Rewrite using `[← integral_const_mul, ← integral_sub h2 (h4.const_mul _), ← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Unfold `NF.dZ`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[l1, l2, e1, e2]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -81,7 +81,7 @@ end IBP
 section Cpt
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun x => a x * b x)`. Use `ContinuousOn.continuous_of_tsupport_subset (ha.continuousOn.mul hb) isOpen_ne ?_` and prove the remaining obligations. Conclude with `(tsupport_mul_subset_left).trans hU`. Conclude with `hcont.integrable_of_hasCompactSupport hac.mul_right`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem int_mul_of_cpt {a b : ℂ → ℂ} (ha : Continuous a) (hac : HasCompactSupport a)
     (hU : tsupport a ⊆ {c | c ≠ 0}) (hb : ContinuousOn b {c | c ≠ 0}) : Integrable (fun x => a x * b x) := by
@@ -91,25 +91,23 @@ theorem int_mul_of_cpt {a b : ℂ → ℂ} (ha : Continuous a) (hac : HasCompact
   exact hcont.integrable_of_hasCompactSupport hac.mul_right
 
 /- English proof (translation)
-Use `set U : Set ℂ := {c | c ≠ 0} with hUdef`. Establish `hUo : IsOpen U` using `isOpen_ne`. Establish `hfU : tsupport f ⊆ U` using `fun x hx h => hf0 (h ▸ hx)`. Use `set G : ℂ → ℂ := fun w => conj (g w / w) with hGdef`. Establish `hinv : ContDiffOn ℝ 1 (fun w : ℂ => w⁻¹) U` using `fun x hx => (contDiffAt_inv ℝ hx).contDiffWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ContDiffOn ℝ 1 (fun w => g w / w) U`. Use `hg.mul hinv` as an intermediate fact. Simplify `this` using `only [div_eq_mul_inv]`. Establish `hGc : ContDiffOn ℝ 1 G U` using `Complex.conjCLE.toContinuousLinearMap.contDiff.comp_contDiffOn hq`. Establish `hGd : ∀ x ∈ U, DifferentiableAt ℝ G x` using `fun x hx => (hGc.differentiableOn one_ne_zero x hx).differentiableAt (hUo.mem_nhds hx)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgd : ∀ x ∈ U, DifferentiableAt ℝ g x` using `fun x hx => (hg.differentiableOn one_ne_zero x hx).differentiableAt (hUo.mem_nhds hx)`. Establish `hqd : ∀ x ∈ U, DifferentiableAt ℝ (fun w => g w / w) x` using `fun x hx => (hq.differentiableOn one_ne_zero x hx).differentiableAt (hUo.mem_nhds hx)`. Establish `hGf : ContinuousOn (fderiv ℝ G) U` using `hGc.continuousOn_fderiv_of_isOpen hUo le_rfl`. Establish `hfd : Differentiable ℝ f` using `hf.differentiable one_ne_zero`. Establish `hff : Continuous (fderiv ℝ f)` using `hf.continuous_fderiv one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hDf : ∀ v : ℂ, Continuous (fun x => fderiv ℝ f x v) ∧ HasCompactSupport (fun x => fderiv ℝ f x v) ∧ tsupport (fun x => fderiv ℝ f x v) ⊆ U`. Introduce `v`. Establish `h0 : (fun L : ℂ →L[ℝ] ℂ => L v) 0 = 0` using `rfl`. Use `⟨hff.clm_apply continuous_const, HasCompactSupport.comp_left (g := fun L : ℂ →L[ℝ] ℂ => L v) (hfc.fderiv (𝕜 := ℝ)) h0, ?_⟩` and prove the remaining obligations. Conclude with `((tsupport_comp_subset (g := fun L : ℂ →L[ℝ] ℂ => L v) h0 (fderiv ℝ f)).trans (tsupport_fderiv_subset ℝ (f := f))).trans hfU`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGv : ∀ v : ℂ, ContinuousOn (fun x => fderiv ℝ G x v) U` using `fun v => hGf.clm_apply continuousOn_const`. Establish `e` using `int_dZ_mul f G (fun x _ => hfd x) (fun x hx => hGd x (hfU hx)) (int_mul_of_cpt (hDf 1).1 (hDf 1).2.1 (hDf 1).2.2 hGc.continuousOn) (int_mul_of_cpt hf.continuous hfc hfU (hGv 1)) (int_mul_of_cpt (hDf Complex.I).1 (hDf Complex.I).2.1 (hDf Complex.I).2.2 hGc.continuousOn) (int_mul_o …`. Establish `hL : (fun c => c * NF.dZ f c * conj (g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) = fun c => NF.dZ f c * G c`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hc` using the available equality. Simplify using `[hGdef]`. Establish `hcc : conj c ≠ 0` using `(map_ne_zero _).mpr hc`. Establish `hn : ((‖c‖ ^ 2 : ℝ) : ℂ) = c * conj c`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hn, hGdef]`. Simplify using `only [map_div₀]`. Clear the denominators using the available nonvanishing facts. Establish `hR : (fun c => f c * conj (conj c * NF.dZb g c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) = fun c => f c * NF.dZ G c`. Use function extensionality and compare the values at `c`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `: f 0 = 0` using `image_eq_zero_of_notMem_tsupport hf0`. Simplify using `[this]`. Establish `hcc : conj c ≠ 0` using `(map_ne_zero _).mpr hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ((‖c‖ ^ 2 : ℝ) : ℂ) = c * conj c`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hdG : NF.dZ G c = conj (NF.dZb g c) / conj c`. Rewrite using `[hGdef, dZ_conj (hqd c hc), dZb_div hc (hgd c hc), map_div₀]`. Rewrite using `[hn, hdG, map_mul, Complex.conj_conj]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hL, hR]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pLogAdj_cpt (f g : ℂ → ℂ) (hf : ContDiff ℝ 1 f) (hfc : HasCompactSupport f) (hf0 : (0 : ℂ) ∉ tsupport f)
     (hg : ContDiffOn ℝ 1 g {c | c ≠ 0}) :

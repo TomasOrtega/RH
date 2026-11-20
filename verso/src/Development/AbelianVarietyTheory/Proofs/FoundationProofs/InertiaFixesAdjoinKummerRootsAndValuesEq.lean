@@ -6,7 +6,7 @@ open GlobalTheory.NeedB Polynomial
 namespace GlobalTheory.InertKummer
 
 /- English proof (translation)
-Establish `hu : IsUnit (⟨x, hx⟩ : B)` using `isUnit_iff_exists_inv.mpr ⟨⟨x⁻¹, hx'⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`. Conclude with `(B.valuation_eq_one_iff ⟨x, hx⟩).mp hu`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_eq_one_of_mem {Ω : Type} [Field Ω] (B : ValuationSubring Ω) {x : Ω} (hx : x ∈ B) (hx' : x⁻¹ ∈ B)
     (h0 : x ≠ 0) : B.valuation x = 1 := by
@@ -15,33 +15,29 @@ theorem valuation_eq_one_of_mem {Ω : Type} [Field Ω] (B : ValuationSubring Ω)
   exact (B.valuation_eq_one_iff ⟨x, hx⟩).mp hu
 
 /- English proof (translation)
-Introduce `k K Ω _ _ _ _ _ _ _ _ _ _ _ N ζ hN hζ a b α β ha ha' hb hb' ha0 hb0 hα hβ θ θ₀ hθ hθ₀ hθE hθ₀K B hB g hg c hcE hc0 hv`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hunit : ∀ x : K, x ∈ FunctionField.ringOfIntegers k K → x⁻¹ ∈ FunctionField.ringOfIntegers k K → x ≠ 0 → B.valuation (algebraMap K Ω x) = 1`. Introduce `x hx hx' hx0`. Use `valuation_eq_one_of_mem B (hB x hx) ?_ ((_root_.map_ne_zero _).mpr hx0)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv₀]`. Conclude with `hB _ hx'`. Establish `hNK0 : (N : K) ≠ 0`. Establish `: ((algebraMap k[X] K).comp Polynomial.C) (N : k) = (N : K)` using `map_natCast _ _`. Rewrite using `[← this]; exact (_root_.map_ne_zero _).mpr (by exact_mod_cast hN.ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNmem : (N : K) ∈ FunctionField.ringOfIntegers k K` using `Subalgebra.natCast_mem _ N`. Establish `hNinv : (N : K)⁻¹ ∈ FunctionField.ringOfIntegers k K`. Establish `: ((algebraMap k[X] K).comp Polynomial.C) ((N : k)⁻¹) = (N : K)⁻¹`. Rewrite using `[map_inv₀, map_natCast]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subalgebra.algebraMap_mem _ _`. Establish `hvN : B.valuation (N : Ω) = 1`. Use `hunit _ hNmem hNinv hNK0` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hroot : ∀ (γ : Ω) (x : K), x ∈ FunctionField.ringOfIntegers k K → x⁻¹ ∈ FunctionField.ringOfIntegers k K → x ≠ 0 → γ ^ N = algebraMap K Ω x → g γ = γ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ x hx hx' hx0 hγ`. Use `GlobalTheory.inert_fixes_root_of_unit_ratio K Ω B g N 1 γ hN hvN hg (map_one g) one_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[hγ]`. Conclude with `g.commutes x`. Rewrite using `[one_pow, div_one, hγ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hunit x hx hx' hx0`. Establish `hgα : g α = α` using `hroot α a ha ha' ha0 hα`. Establish `hgβ : g β = β` using `hroot β b hb hb' hb0 hβ`. Establish `hfix : g ∈ (IntermediateField.adjoin K {α, β}).fixingSubgroup`. Establish `hz : Subgroup.zpowers g ≤ (IntermediateField.adjoin K {α, β}).fixingSubgroup`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IntermediateField.le_iff_le, IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Establish `hgx : g x = x`. Break down `hx with rfl | hx` into its components or cases. Conclude with `hgα`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `hgβ`. Establish `hs : g ∈ MulAction.stabilizer (Ω ≃ₐ[K] Ω) x` using `hgx`. Introduce `f`. Establish `hf : (f : Ω ≃ₐ[K] Ω) ∈ MulAction.stabilizer (Ω ≃ₐ[K] Ω) x` using `Subgroup.zpowers_le.mpr hs f.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hf`. Conclude with `hz (Subgroup.mem_zpowers g)`. Establish `hfixE : ∀ x ∈ IntermediateField.adjoin K {α, β}, g x = x` using `fun x hx => hfix ⟨x, hx⟩`. Use `⟨hfix, ?_⟩` and prove the remaining obligations. Establish `hgθN : g (θ ^ N) = θ ^ N` using `hfixE _ hθE`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgθ₀N : g (θ₀ ^ N) = θ₀ ^ N`. Take `⟨y, hy⟩` from `hθ₀K`. Rewrite using `[← hy]`. Conclude with `g.commutes y`. Establish `hq : g (θ / θ₀) = θ / θ₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.inert_fixes_root_of_unit_ratio K Ω B g N c (θ / θ₀) hN hvN hg (hfixE c hcE) hc0 ?_ ?_` and prove the remaining obligations. Rewrite using `[div_pow, map_div₀, hgθN, hgθ₀N]`. Rewrite using `[div_pow, div_div]`. Conclude with `hv`. Establish `hq' : g θ₀ = g θ * θ₀ / θ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `hq` using `[map_div₀]`. Establish `hgθ₀0 : g θ₀ ≠ 0` using `(_root_.map_ne_zero g).mpr hθ₀`. Rewrite `hq` using `[div_eq_div_iff hgθ₀0 hθ₀]`. Rewrite using `[eq_div_iff hθ, hq, mul_comm]`. Establish `hξ : (g θ / θ) ^ N = 1`.
-
-Rewrite using `[div_pow, ← map_pow, hgθN, div_self (pow_ne_zero _ hθ)]`. Take `⟨i, hiN, hi⟩` from `hζ.eq_pow_of_pow_eq_one hξ`. Establish `hval : ((i : ZMod N)).val = i` using `ZMod.val_cast_of_lt hiN`. Establish `h1 : g θ = ζ ^ ((i : ZMod N)).val * θ`. Rewrite using `[hval, hi]`.
-
-Clear the denominators using the available nonvanishing facts. Establish `h2 : g θ₀ = ζ ^ ((i : ZMod N)).val * θ₀`. Rewrite using `[hq', h1]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[kum_eq_of hζ hθ _ h1, kum_eq_of hζ hθ₀ _ h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inert_fixes_adjoin_and_kum_eq : ∀ (k K Ω : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k[X] K] [Algebra (RatFunc k) K]
     [IsScalarTower k[X] (RatFunc k) K] [FiniteDimensional (RatFunc k) K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]

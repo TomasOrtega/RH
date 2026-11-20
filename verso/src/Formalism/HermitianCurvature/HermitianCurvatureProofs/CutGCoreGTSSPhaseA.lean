@@ -8,11 +8,11 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.SSPh
 def height (P : M.Par) (ρ : M.Ty P) : ℕ := ∑ i, ((ρ i : Fin _) : ℕ)
 
 /- English proof (translation)
-Rewrite `hl` using `[Finset.mem_Icc]`. Rewrite using `[Finset.sum_eq_single ⟨l - 1, by omega⟩]`. Rewrite using `[if_pos (by simp; omega)]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_ind (P : M.Par) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) :
     ∑ i : Fin (P.k - 1), (if (i : ℕ) + 1 = l then 1 else 0) = 1 := by
@@ -30,7 +30,7 @@ theorem sum_ind (P : M.Par) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `height`. Rewrite using `[Finset.sum_congr rfl (fun i _ => hU i), Finset.sum_add_distrib, sum_ind P l hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_height (P : M.Par) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) (ρ ρ' : M.Ty P) (hU : M.Up P l ρ ρ') :
     height P ρ' = height P ρ + 1 := by
@@ -38,15 +38,15 @@ theorem up_height (P : M.Par) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) (ρ ρ' : M
   rw [Finset.sum_congr rfl (fun i _ => hU i), Finset.sum_add_distrib, sum_ind P l hl]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ((ρ' i : Fin _) : ℕ) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `h` to reduce the goal to its premises. Unfold `height`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_eq_zero fun i _ => hall i`. Use `⟨(i : ℕ) + 1, ?_, fun j => if hj : j = i then ⟨((ρ' j : Fin _) : ℕ) - 1, Nat.lt_of_le_of_lt (Nat.sub_le _ _) (ρ' j).isLt⟩ else ρ' j, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_Icc]`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hj, dif_neg, not_false_eq_true]`. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce `h2`. Apply `hj` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Use linear arithmetic over natural numbers and integers.
 
-Use `ext`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem pred_exists (P : M.Par) (ρ' : M.Ty P) (h : height P ρ' ≠ 0) :
     ∃ l ∈ Icc 1 (P.k - 1), ∃ ρ, M.Up P l ρ ρ' := by
@@ -75,25 +75,23 @@ theorem pred_exists (P : M.Par) (ρ' : M.Ty P) (h : height P ρ' ≠ 0) :
         omega
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∃ u : M.Ty P → ℂ, (∀ ρ, ‖u ρ‖ = 1) ∧ ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρ', M.Up P l ρ ρ' → height P ρ' ≤ n → u ρ' = w l ρ ρ' * u ρ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨fun _ => 1, fun _ => by simp, fun l hl ρ ρ' hU hh => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hh` using `[up_height P l hl ρ ρ' hU]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Take `⟨u, hu1, hu⟩` from `ih`. Set `u' : M.Ty P → ℂ` to `fun ρ' => if hh : height P ρ' = n + 1 then (let hp := pred_exists P ρ' (by omega) w hp.choose hp.choose_spec.2.choose ρ' * u hp.choose_spec.2.choose) else u ρ'`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hu'1 : ∀ ρ, ‖u' ρ‖ = 1`. Introduce `ρ'`. Simplify using `only [u']`. Use `split_ifs with hh`. Establish `hp` using `pred_exists P ρ' (by omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, hw1 _ (pred_exists P ρ' (by omega)).choose_spec.1 _ _ (pred_exists P ρ' (by omega)).choose_spec.2.choose_spec, hu1, one_mul]`. Conclude with `hu1 ρ'`. Use `⟨u', hu'1, fun l hl ρ ρ' hU hh => ?_⟩` and prove the remaining obligations. Establish `hhρ` using `up_height P l hl ρ ρ' hU`. Establish `hρ : u' ρ = u ρ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [u']`. Rewrite using `[dif_neg (by omega)]`. Rewrite using `[hρ]`. Distinguish the cases in `hn : height P ρ' = n + 1`. Simplify using `only [u']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hn]`. Use `set hp := pred_exists P ρ' (by omega) with hpdef`. Use `set l0 := hp.choose with hl0`. Establish `hl0m : l0 ∈ Icc 1 (P.k - 1)` using `hp.choose_spec.1`. Use `set ρ0 := hp.choose_spec.2.choose with hρ0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hU0 : M.Up P l0 ρ0 ρ'` using `hp.choose_spec.2.choose_spec`. Use `show w l0 ρ0 ρ' * u ρ0 = w l ρ ρ' * u ρ`. Distinguish the cases in `hll : l0 = l`. Establish `e : ρ0 = ρ` using `Formalism.FourierDecayAlt.P.Mx4.up_inj P l ρ' ρ0 ρ (hll ▸ hU0) hU`. Rewrite using `[e, hll]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ, hσ1, hσ2⟩` from `Formalism.FourierDecayAlt.P.Mx4.up_mixed1 P l0 l (Ne.symm hll) ρ ρ' ρ0 hU hU0`. Establish `h0` using `up_height P l0 hl0m ρ0 ρ' hU0`. Establish `e1 : u ρ0 = w l σ ρ0 * u σ` using `hu l hl σ ρ0 hσ2 (by omega)`. Establish `e2 : u ρ = w l0 σ ρ * u σ` using `hu l0 hl0m σ ρ hσ1 (by omega)`. Establish `hc'` using `hcoc l0 hl0m l hl (Ne.symm hll) σ ρ ρ0 ρ' hσ1 hσ2 hU hU0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[e1, e2, ← mul_assoc, ← mul_assoc, hc']`. Establish `hle : height P ρ' ≤ n` using `by omega`. Simplify using `only [u']`. Rewrite using `[dif_neg hn]`. Conclude with `hu l hl ρ ρ' hU hle`.
-
-Take `⟨u, hu1, hu⟩` from `key (Finset.univ.sup (height P))`. Conclude with `⟨u, hu1, fun l hl ρ ρ' hU => hu l hl ρ ρ' hU (Finset.le_sup (Finset.mem_univ ρ'))⟩`.
+A detailed English derivation is pending.
 -/
 theorem phase_exists (P : M.Par) (w : ℕ → M.Ty P → M.Ty P → ℂ)
     (hw1 : ∀ l ∈ Icc 1 (P.k - 1), ∀ ρ ρ', M.Up P l ρ ρ' → ‖w l ρ ρ'‖ = 1)

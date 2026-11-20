@@ -17,7 +17,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceDualAtPlac
 namespace PositivityTheory.SiegelWeilFormula.Gunr
 
 /- English proof (translation)
-The claim follows from `almostGood_ofE GlobalTheory.T.unramified_finite_integral GlobalTheory.T.basic_character_unramified GlobalTheory.T.character_conductor_condition (locRingE_of GlobalTheory.T.residue_ring_structure GlobalTheory.T.fixed_field_structure GlobalTheory.T.uniformizer_existence (quadAt_of …`.
+A detailed English derivation is pending.
 -/
 theorem almostGood : AlmostGood :=
   almostGood_ofE GlobalTheory.T.unramified_finite_integral GlobalTheory.T.basic_character_unramified GlobalTheory.T.character_conductor_condition

@@ -15,7 +15,7 @@ open GlobalTheory.DeRham
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Use `haveI : IsAffineHom φ := MorphismProperty.of_isPullback (P := @IsAffineHom) h.flip inferInstance`. Conclude with `U.2.preimage φ`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_preimage_of_isPullback (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R']
     (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (φ : X' ⟶ X)
@@ -24,7 +24,7 @@ theorem isAffineOpen_preimage_of_isPullback (R R' : Type) [CommRing R] [CommRing
   exact U.2.preimage φ
 
 /- English proof (translation)
-Introduce `R R' _ _ _ X X' s s' φ h hF hC hF' hC' hfl hsu`. Establish `hb : Function.Bijective (liftSemi (pullForm h.w))` using `GlobalTheory.T.bijective_of_lTensor_bijective_of_flat_family R' _ _ (liftSemi (pullForm h.w)) X.affineOpens (fun U ↦ Sec s' (φ ⁻¹ᵁ U.1)) (fun U ↦ GlobalTheory.T.flat_sections_affineOpen_of_flat_scheme R' X' s' hfl ⟨_, isAffineOpen_preimage_of_isPullback R R' X X' s s' φ h U⟩) (Gl …`. Use `⟨LinearEquiv.ofBijective _ hb, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.ofBijective_apply, liftSemi_tmul, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_equiv_globForm_baseChange : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap R R'))), HasFrame (OAff s) → CohomZeroIsConstants (OAff s) → HasFrame (OAff s') → CohomZeroIsConstants (OAff s') → Flat s' → Surjective s' → ∃ e : R' ⊗[R] GlobForm s ≃ₗ[R'] GlobForm s', ∀ c, e (1 ⊗ₜ c) = GlobalTheory.CechDR.pullForm h.w c := by
   intro R R' _ _ _ X X' s s' φ h hF hC hF' hC' hfl hsu

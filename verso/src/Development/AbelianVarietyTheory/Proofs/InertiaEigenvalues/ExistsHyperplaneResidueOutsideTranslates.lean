@@ -7,23 +7,23 @@ open MeasureTheory Filter Topology
 open scoped InnerProductSpace BigOperators
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _ r t ϖ hϖ x hx`. Take `⟨a, ha, hA⟩` from `GlobalTheory.T.exists_residue_annihilator_of_not_standard_column_form_alt O K r t ϖ hϖ x hx`. Use `⟨a, ha, fun g hg L hL => ?_⟩` and prove the remaining obligations. Use `set S : Submodule K (Fin r ⊕ Fin t → K) := Submodule.span K (Set.range fun j => fun i => algebraMap O K (x i j)) with hS`. Set `U : Submodule O (Fin r ⊕ Fin t → O)` to `Submodule.comap ((Algebra.linearMap O K).compLeft (Fin r ⊕ Fin t)) (S.restrictScalars O)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU : ∀ u, u ∈ U ↔ (fun i => algebraMap O K (u i)) ∈ S` using `fun u => Iff.rfl`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_residue_first_block_factor_of_second O r t U a (fun u hu h2 => hA u ((hU u).1 hu) h2) (g : Matrix (Fin r) (Fin r) _) hg`. Take `⟨P, hP1, hP2⟩` from `GlobalTheory.T.dvr_matrix_proj_preimage_alt O K (Fin r ⊕ Fin t) S`. Use `set bt : Matrix (Fin r) (Fin t) O := b.map (Function.surjInv IsLocalRing.residue_surjective) with hbt`. Establish `hbt' : bt.map (IsLocalRing.residue O) = b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[hbt, Function.surjInv_eq]`. Use `set q₀ : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O := Matrix.fromBlocks L bt 0 1 with hq₀`. Establish `key : ∀ u ∈ U, ∀ i, IsLocalRing.residue O (Matrix.mulVec (1 - q₀) u i) = 0`. Introduce `u hu i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hb u hu`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[RingHom.map_mulVec, hq₀, Matrix.fromBlocks_map]`. Rewrite using `[Matrix.fromBlocks_mulVec]`. Break down `i with i | i` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun h1 i` as an intermediate fact. Simplify using `only [Sum.elim_inl, Pi.add_apply] at this ⊢`. Rewrite using `[hL, hbt']`. Simplify `this.symm` using `[Function.comp_def]`. Simplify using `[Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hPx : P * x = x`. Use extensionality with `i j`. Use `hP2 (fun i => x i j) (Submodule.subset_span ⟨j, rfl⟩)` as an intermediate fact. Conclude with `congrFun this i`. Use `set q := q₀ + (1 - q₀) * P with hq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hqx : q * x = x`. Rewrite using `[hq, Matrix.add_mul, Matrix.mul_assoc, hPx, Matrix.sub_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Establish `hqq : ∀ i j, IsLocalRing.residue O (q i j) = IsLocalRing.residue O (q₀ i j)`. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcol : (fun l => P l j) ∈ U`. Use `hP1 (Pi.single j 1)` as an intermediate fact. Rewrite using `[hU]`. Simplify `this` using `[Matrix.mulVec_single]`. Use `key _ hcol i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hq, Matrix.add_apply, map_add]`. Establish `e : ((1 - q₀) * P) i j = Matrix.mulVec (1 - q₀) (fun l => P l j) i` using `rfl`. Rewrite using `[e, this, add_zero]`. Take `⟨h, h1, h2, h3⟩` from `GlobalTheory.T.gl_factor_fromBlocks_mod_uniformizer_alt O r t ϖ hϖ g L hL bt q hqq`. Conclude with `⟨h, h1, h2, by rw [← Matrix.mul_assoc, h3, hqx]⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.gen_type_core : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r t : ℕ) (ϖ : O), Irreducible ϖ → ∀ x : Matrix (Fin r ⊕ Fin t) (Fin r) O, (¬ ∃ (g : GL (Fin r) K) (z : Matrix (Fin r ⊕ Fin t) (Fin r) O), x.map (algebraMap O K) * (g : Matrix (Fin r) (Fin r) K) = ((Matrix.fromRows (1 : Matrix (Fin r) (Fin r) O) (0 : Matrix (Fin t) (Fin r) O)) + ϖ • z).map (algebraMap O K)) → ∃ a : Fin r → IsLocalRing.ResidueField O, a ≠ 0 ∧ ∀ g : GL (Fin r) (IsLocalRing.ResidueField O), (∀ v, a ⬝ᵥ v = 0 → (g : Matrix (Fin r) (Fin r) (IsLocalRing.ResidueField O)).mulVec v = v) → ∀ L : Matrix (Fin r) (Fin r) O, L.map (IsLocalRing.residue O) = (g : Matrix (Fin r) (Fin r) (IsLocalRing.ResidueField O)) → ∃ h : GL (Fin r ⊕ Fin t) O, (∀ i j, (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) (Sum.inl i) (Sum.inl j) - (1 : Matrix (Fin r) (Fin r) O) i j ∈ Ideal.span {ϖ}) ∧ (∀ i j, (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) (Sum.inr i) (Sum.inl j) ∈ Ideal.span {ϖ}) ∧ (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) * (Matrix.fromBlocks L 0 0 (1 : Matrix (Fin t) (Fin t) O) * x) = x := by
   intro O K _ _ _ _ _ _ _ r t ϖ hϖ x hx

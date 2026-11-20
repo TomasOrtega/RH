@@ -17,13 +17,13 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {R : Type} [
   {z : Sp R ⟶ X}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ n, map_intCast _ n⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_int (hz : genPt ξ ⤳ centre z) (n : ℤ) : ValAt ξ z (n : Ω) (n : R) :=
   ⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ n, map_intCast _ n⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using val_one hz`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `val_mul (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_prod {T : Type} (s : Finset T) {a : T → Ω} {r : T → R} (hz : genPt ξ ⤳ centre z)
     (h : ∀ i ∈ s, ValAt ξ z (a i) (r i)) : ValAt ξ z (∏ i ∈ s, a i) (∏ i ∈ s, r i) := by
@@ -35,7 +35,7 @@ theorem val_prod {T : Type} (s : Finset T) {a : T → Ω} {r : T → R} (hz : ge
     exact val_mul (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C n => simpa using val_int hz n`. Consider the case `add p q hp hq => simpa only [map_add] using val_add hp hq`. Consider the case `mul_X p i hp => simpa only [map_mul, MvPolynomial.aeval_X] using val_mul hp (h i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem val_aeval {κ : Type} {a : κ → Ω} {r : κ → R} (hz : genPt ξ ⤳ centre z)
     (h : ∀ i, ValAt ξ z (a i) (r i)) (P : MvPolynomial κ ℤ) :
@@ -46,7 +46,7 @@ theorem val_aeval {κ : Type} {a : κ → Ω} {r : κ → R} (hz : genPt ξ ⤳ 
   | mul_X p i hp => simpa only [map_mul, MvPolynomial.aeval_X] using val_mul hp (h i)
 
 /- English proof (translation)
-Establish `h` using `TopCat.Presheaf.germ_stalkSpecializes X.presheaf hp p.2`. Establish `h2 : (X.presheaf.stalkSpecializes p.2).hom (X.presheaf.germ W p.1 hp Q) = X.presheaf.germ W (genPt ξ) hW Q`. Rewrite using `[← h]`. Both sides reduce to the same expression. Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genMap_germ {W : X.Opens} (hW : genPt ξ ∈ W) (Q : Γ(X, W)) (p : Cpt ξ) (hp : p.1 ∈ W) :
     genMap ξ p (X.presheaf.germ W p.1 hp Q) =
@@ -58,9 +58,9 @@ theorem genMap_germ {W : X.Opens} (hW : genPt ξ ∈ W) (Q : Γ(X, W)) (p : Cpt 
   exact congrArg (Scheme.stalkClosedPointTo ξ).hom h2
 
 /- English proof (translation)
-Take `⟨h, s, hs, rfl⟩` from `hv`. Establish `hs' : s = X.presheaf.germ W (centre z) hz Q` using `hξ.inj ⟨centre z, h⟩ (hs.trans (genMap_germ hW Q ⟨centre z, h⟩ hz).symm)`. Substitute `hs'` using the available equality. Use `Scheme.isLocalHom_stalkClosedPointTo' z` as an intermediate fact. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `fun hu => (hu.map (Scheme.stalkClosedPointTo z).hom).ne_zero`. Conclude with `fun hv => (isUnit_map_iff (Scheme.stalkClosedPointTo z).hom _).1 (isUnit_iff_ne_zero.2 hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_germ_iff (hξ : IsCptGen ξ) {W : X.Opens} (hW : genPt ξ ∈ W) (Q : Γ(X, W)) {z : Sp ℂ ⟶ X}
     (hz : centre z ∈ W) {v : ℂ}
@@ -79,7 +79,7 @@ def segreRatio {K : Type} [Fintype K] {J : K → Type} (c : (k : K) → J k) (w 
     (c' : (k : K) → J k) : ℂ := ∏ k, w ⟨k, c' k⟩ / w ⟨k, c k⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_div_distrib]`. Use `val_prod _ hz fun k _ => ?_` and prove the remaining obligations. Take `⟨r, hr, hr'⟩` from `(hw.2 k (c k) (isUnit_iff_ne_zero.2 (hc k))).2 (c' k)`. Rewrite using `[hr', mul_div_cancel_right₀ _ (hc k)]`. Conclude with `hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_segreRatio {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {z : Sp ℂ ⟶ X}
     {w : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w)
@@ -92,7 +92,7 @@ theorem val_segreRatio {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) 
   exact hr
 
 /- English proof (translation)
-Use `tendsto_finsetProd _ fun k _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply _).continuousAt).div ((continuous_apply _).continuousAt) (hc k)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousAt_segreRatio {K : Type} [Fintype K] {J : K → Type} {w₀ : (Σ k, J k) → ℂ}
     {c : (k : K) → J k} (hc : ∀ k, w₀ ⟨k, c k⟩ ≠ 0) (c' : (k : K) → J k) :
@@ -101,9 +101,9 @@ theorem continuousAt_segreRatio {K : Type} [Fintype K] {J : K → Type} {w₀ : 
   exact ((continuous_apply _).continuousAt).div ((continuous_apply _).continuousAt) (hc k)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C n => simpa using continuousAt_const`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p i hp`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Conclude with `hp.mul (continuousAt_segreRatio hc i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousAt_aeval_segreRatio {K : Type} [Fintype K] {J : K → Type} {w₀ : (Σ k, J k) → ℂ}
     {c : (k : K) → J k} (hc : ∀ k, w₀ ⟨k, c k⟩ ≠ 0) (P : MvPolynomial ((k : K) → J k) ℤ) :
@@ -122,15 +122,15 @@ end OpenNear
 open OpenNear in
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y hgen ht z₀ w₀ U hw₀ hU`. Use `choose c hc using hw₀.1`. Establish `hc' : ∀ k, w₀ ⟨k, c k⟩ ≠ 0` using `fun k => (hc k).ne_zero`. Establish `hin₀` using `in_chart (hgen (centre z₀)) hw₀ hc'`. Take `⟨W, hWa, hW⟩` from `ht.affine c hin₀.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz₀W : centre z₀ ∈ W` using `(hW _).2 ⟨hgen _, hin₀⟩`. Take `⟨Q, hQU, hQ₀⟩` from `hWa.exists_basicOpen_le (V := U) ⟨centre z₀, hU⟩ hz₀W`. Establish `hgW : genPt ξ ∈ W` using `(hgen _).mem_open W.isOpen hz₀W`. Establish `hreg : (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ W (genPt ξ) hgW Q) ∈ Algebra.adjoin ℤ (Set.range fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩)`. Rewrite using `[ht.ring c hin₀.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Conclude with `⟨X.presheaf.germ W p.1 ((hW _).2 ⟨p.2, hp⟩) Q, genMap_germ hgW Q p _⟩`. Rewrite `hreg` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨P, hP⟩` from `hreg`. Establish `hval : ∀ (z : Sp ℂ ⟶ X) (w : (Σ k, J k) → ℂ), CoordsAt ξ y z w → (∀ k, w ⟨k, c k⟩ ≠ 0) → ValAt ξ z ((Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ W (genPt ξ) hgW Q)) (MvPolynomial.aeval (segreRatio c w) P)`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z w hw hcw`. Rewrite using `[← hP]`. Conclude with `val_aeval (hgen _) (val_segreRatio (hgen _) hw hcw) P`. Establish `hne₀ : MvPolynomial.aeval (segreRatio c w₀) P ≠ 0` using `(isUnit_germ_iff ht.gen hgW Q hz₀W (hval z₀ w₀ hw₀ hc')).1 ((Scheme.mem_basicOpen X Q _ hz₀W).1 hQ₀)`. Use `⟨{w | (∀ k, w ⟨k, c k⟩ ≠ 0) ∧ MvPolynomial.aeval (segreRatio c w) P ≠ 0}, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Filter.Eventually.and ?_ ((continuousAt_aeval_segreRatio hc' P).eventually_ne hne₀)` and prove the remaining obligations. Conclude with `Filter.eventually_all.2 fun k => ((continuous_apply _).continuousAt).eventually_ne (hc' k)`. Introduce and unpack `z w ⟨hcw, hne⟩ hw`. Establish `hzW : centre z ∈ W` using `(hW _).2 ⟨hgen _, in_chart (hgen _) hw hcw⟩`. Conclude with `hQU ((Scheme.mem_basicOpen X Q _ hzW).2 ((isUnit_germ_iff ht.gen hgW Q hzW (hval z w hw hcw)).2 hne))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem open_near : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω),

@@ -24,7 +24,7 @@ abbrev prK (pG : IsPowGrp G' G j) (i : Fin j) : pullback G'.hom (jK R) ⟶ pullb
   ((Over.pullback (jK R)).map (pG.pr i)).left
 
 /- English proof (translation)
-Simplify using `only [prK, Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma prK_fst (pG : IsPowGrp G' G j) (i : Fin j) :
     prK pG i ≫ pullback.fst G.hom (jK R) = pullback.fst G'.hom (jK R) ≫ (pG.pr i).left := by
@@ -34,7 +34,7 @@ lemma prK_fst (pG : IsPowGrp G' G j) (i : Fin j) :
 variable {LG : LB G.left} {LG' : LB G'.left}
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hy.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma boxSec_le_a (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) :
     pullback.fst G'.hom (jK R) ⁻¹ᵁ (LB.div (boxLB LG pG.pr) LG').U (jN, jL) ≤
@@ -42,9 +42,7 @@ lemma boxSec_le_a (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) :
   fun _ hy => Set.mem_iInter.2 fun _ => hy.2
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h` using `Set.mem_iInter.1 hy.1 i`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show (pullback.fst G.hom (jK R)).base ((prK pG i).base y) ∈ (LG.U (jN i) : Set G.left)`. Rewrite using `[← Scheme.Hom.comp_apply, prK_fst, Scheme.Hom.comp_apply]`.
-
-Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma boxSec_le_b (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) (i : Fin j) :
     pullback.fst G'.hom (jK R) ⁻¹ᵁ (LB.div (boxLB LG pG.pr) LG').U (jN, jL) ≤
@@ -73,9 +71,9 @@ end BoxSec
 section BoxFam
 
 /- English proof (translation)
-Introduce `y hy`. Use `Set.mem_iInter.2 fun a => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 hy a`. Establish `h2` using `Set.mem_iInter.1 h1 i`. Use `show (φ a).base (p.base y) ∈ (L.U (jN a i) : Set X)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← hφ a, Scheme.Hom.comp_apply]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 lemma box_le_of_comp {X X' Y Y' : Scheme.{0}} (L : LB X) {j : ℕ} {Kx : Type} [Fintype Kx]
     (pr : Fin j → (X' ⟶ X)) (φ' : Kx → (Y' ⟶ X')) (φ : Kx → (Y ⟶ X)) (p : Y' ⟶ Y) (i : Fin j)

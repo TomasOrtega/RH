@@ -21,7 +21,7 @@ def TangentGraphLowerDensity.outPart {n : ℕ} (b : OrthonormalBasis (Fin n) ℂ
     (ContinuousLinearMap.pi fun j : {j : Fin n // j ∉ I} => innerSL ℂ (b j))
 
 /- English proof (translation)
-Simplify using `[TangentGraphLowerDensity.inPart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem TangentGraphLowerDensity.inPart_apply {n : ℕ}
     (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n))) (I : Finset (Fin n))
@@ -30,7 +30,7 @@ theorem TangentGraphLowerDensity.inPart_apply {n : ℕ}
   simp [TangentGraphLowerDensity.inPart]
 
 /- English proof (translation)
-Simplify using `[TangentGraphLowerDensity.outPart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem TangentGraphLowerDensity.outPart_apply {n : ℕ}
     (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n))) (I : Finset (Fin n))
@@ -39,7 +39,7 @@ theorem TangentGraphLowerDensity.outPart_apply {n : ℕ}
   simp [TangentGraphLowerDensity.outPart]
 
 /- English proof (translation)
-Use `PiLp.ext fun i => ?_` and prove the remaining obligations. Simplify using `[TangentGraphLowerDensity.inPart_apply, frameProj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem TangentGraphLowerDensity.inPart_eq_toLp {n : ℕ}
     (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n))) (I : Finset (Fin n))
@@ -49,7 +49,7 @@ theorem TangentGraphLowerDensity.inPart_eq_toLp {n : ℕ}
   simp [TangentGraphLowerDensity.inPart_apply, frameProj]
 
 /- English proof (translation)
-Rewrite using `[← b.repr.norm_map z, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq]`. Simplify using `only [TangentGraphLowerDensity.inPart_apply, TangentGraphLowerDensity.outPart_apply, OrthonormalBasis.repr_apply_apply]`. Use `(Fintype.sum_subtype_add_sum_subtype (fun i => i ∈ I) (fun i => ‖inner ℂ (b i) z‖ ^ 2)).symm using 3` and compare the differences between its conclusion and the goal. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem TangentGraphLowerDensity.norm_sq_split {n : ℕ}
     (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n))) (I : Finset (Fin n))
@@ -63,37 +63,35 @@ theorem TangentGraphLowerDensity.norm_sq_split {n : ℕ}
   congr 1; exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Introduce `n d b I₀ S Ω V g w₀ hcard hΩ _hV hw₀ hg hproj hSV htan θ hθ`. Use `set P := TangentGraphLowerDensity.inPart b I₀ with hPdef`. Use `set Q := TangentGraphLowerDensity.outPart b I₀ with hQdef`. Establish `hgd : DifferentiableAt ℂ g w₀` using `hg.differentiableAt (hΩ.mem_nhds hw₀)`. Establish `hQ0 : Q.comp (fderiv ℂ g w₀) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ContinuousLinearMap.ext fun v => PiLp.ext fun j => ?_` and prove the remaining obligations. Establish `h1 : HasFDerivAt (fun w => inner ℂ (b j) (g w)) ((innerSL ℂ (b (j : Fin n))).comp (fderiv ℂ g w₀)) w₀` using `(innerSL ℂ (b (j : Fin n))).hasFDerivAt.comp w₀ hgd.hasFDerivAt`. Establish `h2` using `h1.fderiv`. Rewrite `h2` using `[htan j j.2]`. Establish `h3` using `congrArg (fun L => L v) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h3.symm` using `[hQdef, TangentGraphLowerDensity.outPart_apply]`. Establish `hQd : HasFDerivAt (fun w => Q (g w)) (0 : (I₀ → ℂ) →L[ℂ] EuclideanSpace ℂ {j : Fin n // j ∉ I₀}) w₀`. Establish `h` using `Q.hasFDerivAt.comp w₀ hgd.hasFDerivAt`. Rewrite `h` using `[hQ0]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨η, hη, hθη⟩ : ∃ η : ℝ, 0 < η ∧ θ * (1 + η) ^ (2 * d) < 1 := by`. Establish `hc : Continuous fun η : ℝ => θ * (1 + η) ^ (2 * d)` using `by fun_prop`. Establish `h0 : ∀ᶠ η in 𝓝 (0 : ℝ), θ * (1 + η) ^ (2 * d) < 1` using `hc.continuousAt.eventually_lt continuousAt_const (by simpa using hθ.2)`. Establish `h0' : ∀ᶠ η in 𝓝[>] (0 : ℝ), θ * (1 + η) ^ (2 * d) < 1` using `nhdsWithin_le_nhds h0`. Take `⟨η, h1, h2⟩` from `(h0'.and (self_mem_nhdsWithin : Set.Ioi (0 : ℝ) ∈ 𝓝[>] (0 : ℝ))).exists`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨η, h2, h1⟩`. Establish `hlo` using `hasFDerivAt_iff_isLittleO.1 hQd`. Establish `hev : ∀ᶠ w in 𝓝 w₀, ‖Q (g w) - Q (g w₀)‖ ≤ η * ‖w - w₀‖ ∧ w ∈ Ω`. Use `((hlo.def hη).mono fun w hw => ?_).and (hΩ.mem_nhds hw₀)` and prove the remaining obligations. Simplify using `using hw`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hδw⟩` from `Metric.eventually_nhds_iff.1 hev`. Use `⟨(1 + η) * δ, by positivity, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `h1η : 0 < 1 + η` using `by linarith`. Use `set s := ρ / (1 + η) with hs`. Establish `hs0 : 0 < s` using `div_pos hρ.1 h1η`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hsδ : s < δ`. Rewrite using `[hs, div_lt_iff₀ h1η]`. Combine the linear relations using `[hρ.2]`. Use `set x₀ : EuclideanSpace ℂ I₀ := WithLp.toLp 2 w₀ with hx₀`. Establish `hPx : ∀ w ∈ Ω, P (g w) = WithLp.toLp 2 w` using `fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hPdef, TangentGraphLowerDensity.inPart_eq_toLp, hproj w hw]`. Establish `hsub : Metric.ball x₀ s ⊆ P '' (S ∩ Metric.ball (g w₀) ρ)`. Introduce `v hv`. Establish `hv' : ‖v - x₀‖ < s` using `by rwa [Metric.mem_ball, dist_eq_norm] at hv`. Establish `hww : ‖WithLp.ofLp v - w₀‖ ≤ ‖v - x₀‖`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Simplify `PiLp.norm_apply_le (v - x₀) i` using `[hx₀]`. Establish `hwδ : dist (WithLp.ofLp v) w₀ < δ`. Rewrite using `[dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hQw, hwΩ⟩` from `hδw hwδ`. Use `⟨g (WithLp.ofLp v), ⟨?_, ?_⟩, by rw [hPx _ hwΩ, WithLp.toLp_ofLp]⟩` and prove the remaining obligations. Establish `hm : g (WithLp.ofLp v) ∈ S ∩ V` using `hSV ▸ Set.mem_image_of_mem g hwΩ`. Conclude with `hm.1`. Rewrite using `[Metric.mem_ball, dist_eq_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit` using `TangentGraphLowerDensity.norm_sq_split b I₀ (g (WithLp.ofLp v) - g w₀)`. Establish `hPd : P (g (WithLp.ofLp v) - g w₀) = v - x₀`. Rewrite using `[map_sub, hPx _ hwΩ, hPx _ hw₀, WithLp.toLp_ofLp]`. Establish `hQd' : Q (g (WithLp.ofLp v) - g w₀) = Q (g (WithLp.ofLp v)) - Q (g w₀)` using `map_sub _ _ _`. Rewrite `hsplit` using `[← hPdef, ← hQdef, hPd, hQd']`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hle : ‖g (WithLp.ofLp v) - g w₀‖ ≤ ‖v - x₀‖ + ‖Q (g (WithLp.ofLp v)) - Q (g w₀)‖`. Use polynomial arithmetic with `[norm_nonneg (g (WithLp.ofLp v) - g w₀), norm_nonneg (v - x₀), norm_nonneg (Q (g (WithLp.ofLp v)) - Q (g w₀))]`. Combine the equalities or inequalities in the displayed calculation. Establish `hd0 : (0 : ℝ) ≤ ((2 * d : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hcardI : Fintype.card I₀ = d` using `by rw [Fintype.card_coe, hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `L` to `LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (Fintype.equivFinOfCardEq hcardI)`. Establish `hball : μH[((2 * d : ℕ) : ℝ)] (Metric.ball x₀ s) = ENNReal.ofReal (s ^ (2 * d)) * μH[((2 * d : ℕ) : ℝ)] (Metric.ball (0 : EuclideanSpace ℂ (Fin d)) 1)`. Rewrite using `[← VarietyLelongMono.euclBall_measure d (L x₀) hs0, ← L.image_ball, L.isometry.hausdorffMeasure_image (Or.inl hd0)]`. Establish `hLip : LipschitzWith 1 P` using `LipschitzWith.of_dist_le_mul fun x y => by`. Rewrite using `[dist_eq_norm, dist_eq_norm, ← map_sub, NNReal.coe_one, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `TangentGraphLowerDensity.norm_sq_split b I₀ (x - y)`. Rewrite `h` using `[← hPdef, ← hQdef]`. Use polynomial arithmetic with `[norm_nonneg (P (x - y)), norm_nonneg (x - y), norm_nonneg (Q (x - y))]`. Establish `hreal : θ * ρ ^ (2 * d) ≤ s ^ (2 * d)`. Establish `hpos : 0 < (1 + η) ^ (2 * d)` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hρp : 0 ≤ ρ ^ (2 * d)` using `by have := hρ.1; positivity`. Rewrite using `[hs, div_pow, le_div_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hLip.hausdorffMeasure_image_le hd0 (S ∩ Metric.ball (g w₀) ρ)`.
-
-Simplify using `using h`.
+A detailed English derivation is pending.
 -/
 theorem TangentGraphLowerDensity.proof : TangentGraphLowerDensity.Statement := by
   intro n d b I₀ S Ω V g w₀ hcard hΩ _hV hw₀ hg hproj hSV htan θ hθ

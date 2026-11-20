@@ -13,7 +13,7 @@ open Formalism.L2.SG Formalism.L2.SG.PoincareInHH Formalism.L2.SG.Pf.Unip
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (v : InfinitePlace X.B.I.F)
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[Finset.sum_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_eq_sum_cols {m p : Type*} [Fintype p] [DecidableEq p] (M : Matrix m p ℂ) (c : p → ℂ) :
     M *ᵥ c = ∑ k, c k • (M *ᵥ Pi.single k 1) := by
@@ -22,16 +22,16 @@ theorem mulVec_eq_sum_cols {m p : Type*} [Fintype p] [DecidableEq p] (M : Matrix
   simp [Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[mulVec_eq_sum_cols]`. Simplify using `only [Bv_col]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Bv_mulVec (c : Kap X → ℂ) : Bv X v *ᵥ c = ∑ k, c k • rv X.B.I v (bv X k) := by
   rw [mulVec_eq_sum_cols]
   simp only [Bv_col]
 
 /- English proof (translation)
-Rewrite using `[Bv_mulVec]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ Sum.inl '' S`. Take `⟨b, hb, rfl⟩` from `hk`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc k hk, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem Bv_mulVec_mem (S : Set (Fin D.R.rS)) (c : Kap X → ℂ) (hc : ∀ k, k ∉ Sum.inl '' S → c k = 0) :
     Bv X v *ᵥ c ∈ Submodule.span ℂ ((fun b => rv X.B.I v (X.eR b)) '' S) := by
@@ -44,11 +44,11 @@ theorem Bv_mulVec_mem (S : Set (Fin D.R.rS)) (c : Kap X → ℂ) (hc : ∀ k, k 
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Introduce `k hk`. Use `show (Bv' X v *ᵥ rv X.B.I v (bv X (Sum.inl b))) k = 0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Bv'_rv, Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `hk ⟨b, hb, rfl⟩`. Consider the case `zero => intro k _`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => intro k hk`. Rewrite using `[Matrix.mulVec_add, Pi.add_apply, hx k hk, hy k hk, add_zero]`. Consider the case `smul c x _ hx => intro k hk`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, hx k hk, smul_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bv'_mulVec_supp (S : Set (Fin D.R.rS)) {y : Fin X.B.I.n → ℂ}
     (hy : y ∈ Submodule.span ℂ ((fun b => rv X.B.I v (X.eR b)) '' S)) :
@@ -66,9 +66,9 @@ theorem Bv'_mulVec_supp (S : Set (Fin D.R.rS)) {y : Fin X.B.I.n → ℂ}
   | smul c x _ hx => intro k hk; rw [Matrix.mulVec_smul, Pi.smul_apply, hx k hk, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[Bv_mulVec, hJ_sum_right']`. Establish `e : ∀ k, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (bv X k)) = X.B.I.φ v (JB X (Sum.inl a) k)`. Introduce `k`. Rewrite using `[hJ_rv_sc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [e, JB_e_row]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hJ_e_Bv (a : Fin D.R.rS) (c : Kap X → ℂ) :
     hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (Bv X v *ᵥ c) = c (Sum.inr (Sum.inr a)) := by
@@ -82,7 +82,7 @@ theorem hJ_e_Bv (a : Fin D.R.rS) (c : Kap X → ℂ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[hJ_rv_sc]`. Use `hE_ez X u a` as an intermediate fact. Simplify using `only [hE] at this`. Rewrite using `[this, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermitian_basis_e_z_orthogonal (a : Fin D.R.rS) : hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) = 0 := by
   rw [hJ_rv_sc]
@@ -91,7 +91,7 @@ theorem hermitian_basis_e_z_orthogonal (a : Fin D.R.rS) : hJ (X.B.I.ε v) (rv X.
   rw [this, map_zero]
 
 /- English proof (translation)
-Rewrite using `[hJ_rv_sc]`. Use `(wb_mem X i a).1` as an intermediate fact. Simplify using `only [hE] at this`. Simplify using `only [bv, Sum.elim_inr, Sum.elim_inl]`. Rewrite using `[this, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_rv_e_w (a : Fin D.R.rS) (i : Fin (mW X)) :
     hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (bv X (Sum.inr (Sum.inl i)))) = 0 := by
@@ -115,9 +115,9 @@ Both sides reduce to the same expression.
 @[simp] theorem lvk_f (a : Fin D.R.rS) : lvk X (Sum.inr (Sum.inr a)) = 2 * D.R.rS + 1 - a.1 := rfl
 
 /- English proof (translation)
-Break down `k with a | i | a` into its components or cases. Conclude with `(hk a rfl).elim`. Simplify using the standard rewrite rules. Rewrite using `[lvk_f]`. Use `a.2` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem lvk_notinl (k : Kap X) (hk : ∀ b, k ≠ Sum.inl b) : D.R.rS + 1 ≤ lvk X k := by
   rcases k with a | i | a
@@ -128,25 +128,23 @@ theorem lvk_notinl (k : Kap X) (hk : ∀ b, k ≠ Sum.inl b) : D.R.rS + 1 ≤ lv
     omega
 
 /- English proof (translation)
-Use `set M := Bv' X v * g * Bv X v with hM`. Establish `hg : g - 1 = Bv X v * (M - 1) * Bv' X v`. Rewrite using `[hM, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Bv_mul_Bv']`. Simplify using `only [← Matrix.mul_assoc, Bv_mul_Bv', Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Bv_mul_Bv', Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgv : ∀ y, (g - 1) *ᵥ y = Bv X v *ᵥ ((M - 1) *ᵥ (Bv' X v *ᵥ y))`. Introduce `y`. Rewrite using `[hg, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Establish `hperp : ∀ y, (∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) y = 0) → (g - 1) *ᵥ y ∈ spanLt (fun a => rv X.B.I v (X.eR a)) D.R.rS`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set c := Bv' X v *ᵥ y with hc`. Establish `hyc : y = Bv X v *ᵥ c` using `by rw [hc, Matrix.mulVec_mulVec, Bv_mul_Bv', Matrix.one_mulVec]`. Establish `hcf : ∀ a, c (Sum.inr (Sum.inr a)) = 0`. Introduce `a`. Use `hJ_e_Bv X v a c` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hyc, hy a]`. Conclude with `this.symm`. Rewrite using `[hgv, ← hc]`. Use `Bv_mulVec_mem X v _ _ fun k hk => ?_` and prove the remaining obligations. Establish `hk' : ∀ b, k ≠ Sum.inl b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `b rfl`. Conclude with `hk ⟨b, b.2, rfl⟩`. Rewrite using `[mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `hlk` using `lvk_notinl X k hk'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `j with b | i | b` into its components or cases. Rewrite using `[hpat k _ (by rw [lvk_inl]; have := b.2; omega), zero_mul]`. Rewrite using `[hpat k _ (by rw [lvk_w]; omega), zero_mul]`. Rewrite using `[hcf b, mul_zero]`. Use `⟨⟨fun a => ?_, hperp _ fun a => hermitian_basis_e_z_orthogonal X u v a⟩, hperp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgv]`. Use `show Bv X v *ᵥ ((M - 1) *ᵥ (Bv' X v *ᵥ rv X.B.I v (bv X (Sum.inl a)))) ∈ _`. Rewrite using `[Bv'_rv]`. Use `Bv_mulVec_mem X v {b | b.1 < a.1} _ fun k hk => ?_` and prove the remaining obligations. Rewrite using `[mulVec_single_one]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `hpat k _ ?_` and prove the remaining obligations. Break down `k with b | i | b` into its components or cases. Establish `: ¬ b.1 < a.1` using `fun h => hk ⟨b, h, rfl⟩`. Simplify using `only [lvk, Sum.elim_inl]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [lvk, Sum.elim_inl, Sum.elim_inr]`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [lvk, Sum.elim_inl, Sum.elim_inr]`. Use `a.2` as an intermediate fact.
-
-Use `b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem inN_of_pat (g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)
     (hpat : InPat (lvk X) 1 (Bv' X v * g * Bv X v - 1)) :
@@ -196,13 +194,13 @@ theorem inN_of_pat (g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)
   · simp only [lvk, Sum.elim_inl, Sum.elim_inr]; have := a.2; have := b.2; omega
 
 /- English proof (translation)
-Introduce `i j hj hij`. Establish `hM : Bv' X v * g * Bv X v - 1 = Bv' X v * (g - 1) * Bv X v`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Bv'_mul_Bv]`. Establish `hcol : ((Bv' X v * g * Bv X v - 1 : Matrix (Kap X) (Kap X) ℂ)) i j = (Bv' X v *ᵥ ((g - 1) *ᵥ rv X.B.I v (bv X j))) i`. Rewrite using `[hM, ← Bv_col, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, mulVec_single_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hcol]`. Break down `j with a | w | a` into its components or cases. Use `Bv'_mulVec_supp X v {b | b.1 < a.1} (hg.1.1 a) i ?_` and prove the remaining obligations. Introduce and unpack `⟨b, hb, rfl⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [lvk, Sum.elim_inl, Set.mem_setOf_eq] at hij hb`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hg.2 _ fun a => hJ_rv_e_w X v a w`. Use `Bv'_mulVec_supp X v {b | b.1 < D.R.rS} h i ?_` and prove the remaining obligations. Introduce and unpack `⟨b, -, rfl⟩`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [lvk, Sum.elim_inl, Sum.elim_inr] at hij`. Use `b.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [lvk, Sum.elim_inr] at hj`. Use `a.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -234,7 +232,7 @@ theorem half_of_inN {g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ}
     omega
 
 /- English proof (translation)
-Establish `hs' : s⁻¹ ∈ X.NinfU u` using `(NinfSub X.eR (X.zR u)).inv_mem hs`. Establish `hMN : Mv X v s = sharp (JBv X v) (JBv' X v) (Mv X v s⁻¹)`. Use `Mv_inv X v s⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Conclude with `half_to_full (JBv_graded X v) (JBv'_graded X v) (JBv'_mul X v) (h₀ := D.R.rS + 1) (by omega) hMN (half_of_inN X u v (hs' v)) (half_of_inN X u v (hs v))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pat_of_mem {s : X.B.I.Ginf} (hs : s ∈ X.NinfU u) : InPat (lvk X) 1 (Mv X v s - 1) := by
   have hs' : s⁻¹ ∈ X.NinfU u := (NinfSub X.eR (X.zR u)).inv_mem hs

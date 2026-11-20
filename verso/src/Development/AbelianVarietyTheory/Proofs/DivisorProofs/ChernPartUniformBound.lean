@@ -19,7 +19,7 @@ open ReciprocityTheory.L2DbarEstimates (V cHess wd wdb)
 open scoped ContDiff ENNReal
 
 /- English proof (translation)
-Establish `h₁ : ContDiffAt ℝ n (Function.uncurry fun (x : ℝ × V D) (v : V D) => Θ (x.1, v)) (x₀, x₀.2)` using `ContDiffAt.comp (g := Θ) (f := fun w : (ℝ × V D) × V D => (w.1.1, w.2)) (x₀, x₀.2) h ((contDiff_fst.comp contDiff_fst).prodMk contDiff_snd).contDiffAt`. Conclude with `(h₁.fderiv contDiffAt_snd hmn).clm_apply contDiffAt_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_fderiv_snd {D : ℕ} {Θ : ℝ × V D → ℂ} {x₀ : ℝ × V D} {m n : WithTop ℕ∞} (h : ContDiffAt ℝ n Θ x₀)
     (hmn : m + 1 ≤ n) (e : V D) :
@@ -30,7 +30,7 @@ theorem contDiffAt_fderiv_snd {D : ℕ} {Θ : ℝ × V D → ℂ} {x₀ : ℝ ×
   exact (h₁.fderiv contDiffAt_snd hmn).clm_apply contDiffAt_const
 
 /- English proof (translation)
-Use `continuousAt_pi.2 fun j => continuousAt_pi.2 fun l => ?_` and prove the remaining obligations. Establish `h₁ : ContDiffAt ℝ 1 (fun x : ℝ × V D => wdb D l (fun v => Θ (x.1, v)) x.2) x₀` using `((contDiffAt_fderiv_snd h (by norm_num) _).add (contDiffAt_const.mul (contDiffAt_fderiv_snd h (by norm_num) _))).div_const 2`. Establish `h₂ : ContDiffAt ℝ 0 (fun x : ℝ × V D => wd D j (fun v => wdb D l (fun w => Θ (x.1, w)) v) x.2) x₀` using `((contDiffAt_fderiv_snd h₁ (by norm_num) _).sub (contDiffAt_const.mul (contDiffAt_fderiv_snd h₁ (by norm_num) _))).div_const 2`. Conclude with `h₂.continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousAt_cHess_snd {D : ℕ} {Θ : ℝ × V D → ℂ} {x₀ : ℝ × V D} (h : ContDiffAt ℝ 2 Θ x₀) :
     ContinuousAt (fun x : ℝ × V D => cHess D (fun v => Θ (x.1, v)) x.2) x₀ := by
@@ -45,15 +45,13 @@ theorem continuousAt_cHess_snd {D : ℕ} {Θ : ℝ × V D → ℂ} {x₀ : ℝ �
   exact h₂.continuousAt
 
 /- English proof (translation)
-Take `⟨ι, _, f, Φ, O, h₁, h₂, h₃, h₄, -, h₆⟩` from `h`. Establish `hi` using `mem_pick φ.isLB y`. Use `set i := pick φ.isLB y`. Use `set Θ : ℝ × V D → ℂ := fun x => ((φ.φ i (c.e.symm x.2) + Φ (x.1, f (c.e.symm x.2)) : ℝ) : ℂ) with hΘ`. Establish `hΘd : ContDiffAt ℝ 2 Θ (0, c.e y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁ : ContDiffAt ℝ 2 (fun x : ℝ × V D => φ.φ i (c.e.symm x.2)) (0, c.e y)` using `ContDiffAt.comp (g := fun v => φ.φ i (c.e.symm v)) (0, c.e y) (hφ.contDiffAt c hy hi) contDiffAt_snd`. Establish `a₂ : ContDiffAt ℝ 2 (fun x : ℝ × V D => f (c.e.symm x.2)) (0, c.e y)` using `ContDiffAt.comp (g := fun v => f (c.e.symm v)) (0, c.e y) ((h₁.contDiffAt_chart c hy).of_le (by norm_cast)) contDiffAt_snd`. Establish `a₃ : ContDiffAt ℝ 2 Φ (0, f (c.e.symm (c.e y)))`. Rewrite using `[c.e.left_inv hy]`. Conclude with `(h₄.contDiffAt (h₂.mem_nhds h₃)).of_le (by norm_cast)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₄ : ContDiffAt ℝ 2 (fun x : ℝ × V D => Φ (x.1, f (c.e.symm x.2))) (0, c.e y)` using `ContDiffAt.comp (g := Φ) (f := fun x : ℝ × V D => (x.1, f (c.e.symm x.2))) (0, c.e y) a₃ (contDiffAt_fst.prodMk a₂)`. Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp _ (a₁.add a₄)`. Use `set G : ℝ × V D → ℝ := fun x => D.factorial / Real.pi ^ D * (cHess D (fun v => Θ (x.1, v)) x.2).det.re with hG`. Establish `hGc : ContinuousAt G (0, c.e y)` using `continuousAt_const.mul (Complex.continuous_re.continuousAt.comp ((continuous_id.matrix_det).continuousAt.comp (continuousAt_cHess_snd hΘd)))`. Establish `hT : Tendsto (fun x : ℝ × CxPts p σ => G (t x.1, c.e x.2)) (atTop ×ˢ 𝓝 y) (𝓝 (G (0, c.e y)))` using `hGc.tendsto.comp ((ht.comp tendsto_fst).prodMk_nhds ((c.e.continuousAt hy).tendsto.comp tendsto_snd))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨|G (0, c.e y)| + 1, ?_⟩` and prove the remaining obligations. Take `⟨pa, ha, pb, hb, hab⟩` from `eventually_prod_iff.1 h₆`. Use `filter_upwards [hT.abs.eventually (ge_mem_nhds (lt_add_one _)), tendsto_fst.eventually ha, tendsto_snd.eventually hb.eventually_nhds, tendsto_snd.eventually (c.e.open_source.mem_nhds hy), tendsto_snd.eventually ((isOpen_ptsIn (B.U i)).mem_nhds hi)] with x hx hxa hxb hxs hxi`. Establish `e : (fun v => ((φ.addFn (u x.1)).φ i (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e x.2)] fun v => Θ (t x.1, v)`. Establish `hc` using `c.e.continuousAt_symm (c.e.map_source hxs)`.
-
-Rewrite `hc` using `[ContinuousAt, c.e.left_inv hxs]`. Use `filter_upwards [hc.eventually hxb] with v hv`. Simplify using `only [hΘ, Weight.addFn, hab hxa hv]`. Rewrite using `[c.chernDens_eq (hφ.addFn (hu x.1)) hxs hxi, AlgChart.hess, ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e]`. Conclude with `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FamAt.exists_bound_chernDens {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     {t : ℝ → ℝ} (ht : Tendsto t atTop (𝓝 0)) {B : LB X} {φ : Weight p σ B} (hφ : φ.IsCInf)
@@ -97,21 +95,17 @@ theorem FamAt.exists_bound_chernDens {k : Type} [CommRing k] {X : Scheme.{0}} {p
   exact hx
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX hS t ht σ B φ hφ u hu hF`. Use `hX.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver` as an intermediate fact. Take `⟨A⟩` from `hS σ`. Establish `hloc : ∀ y : CxPts p σ, ∃ U : Set (CxPts p σ), IsOpen U ∧ y ∈ U ∧ ∃ C : NNReal, ∀ᶠ R in atTop, ∀ ε : ℤˣ, (φ.addFn (u R)).chernPart D ε U ≤ (C : ENNReal)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨a, hy⟩` from `A.cover y`. Use `set c := A.chart a`. Take `⟨K, hK⟩` from `(hF y).exists_bound_chernDens ht hφ hu c hy`. Take `⟨pa, ha, pb, hb, hab⟩` from `eventually_prod_iff.1 hK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hball : ∀ᶠ z in 𝓝 y, c.e z ∈ Metric.closedBall (c.e y) 1` using `(c.e.continuousAt hy).eventually (Metric.closedBall_mem_nhds _ one_pos)`. Take `⟨U, hU, hUo, hyU⟩` from `eventually_nhds_iff.1 (hb.and (hball.and (c.e.open_source.mem_nhds hy)))`. Establish `hUs : U ⊆ c.e.source` using `fun z hz => (hU z hz).2.2`. Establish `hfin : ENNReal.ofReal K * volume (Metric.closedBall (c.e y) 1) ≠ ⊤` using `(ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top).ne`. Use `⟨U, hUo, hyU, (ENNReal.ofReal K * volume (Metric.closedBall (c.e y) 1)).toNNReal, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [ha] with R hR ε`. Rewrite using `[ENNReal.coe_toNNReal hfin, Weight.chernPart_apply (hφ.addFn (hu R)) ε c hUo.measurableSet hUs]`. Establish `hm` using `GlobalTheory.ChartGlue.measurableSet_image c.e hUo.measurableSet hUs`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hm ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `ENNReal.ofReal_le_ofReal ((le_abs_self _).trans ?_)` and prove the remaining obligations. Rewrite using `[c.e.left_inv (hUs hz), abs_mul]`. Use `hab hR (hU z hz).1` as an intermediate fact. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simpa using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `_ = ENNReal.ofReal K * volume (c.e '' U) := setLIntegral_const _ _`. Use `_ ≤ _ := by gcongr`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(hU z hz).2.1`. Use `choose U hUo hyU C hC using hloc`.
-
-Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover U hUo (fun y _ => Set.mem_iUnion.2 ⟨y, hyU y⟩)`. Use `⟨∑ y ∈ s, C y, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(eventually_all_finset s).2 fun y _ => hC y] with R hR ε`. Use `(measure_mono hs).trans ((measure_biUnion_finset_le s U).trans ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.coe_finset_sum]`.
-
-Conclude with `Finset.sum_le_sum fun y hy => hR y hy ε`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_chernPart_univ : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ t : ℝ → ℝ, Tendsto t atTop (𝓝 0) → ∀ (σ : k →+* ℂ) (B : LB X) (φ : Weight p σ B), φ.IsCInf → ∀ u : ℝ → CxPts p σ → ℝ, (∀ R y, CInfAt (u R) y) → (∀ y, FamAt t u (fun _ => 0) y) → ∃ C : NNReal, ∀ᶠ R in atTop, ∀ ε : ℤˣ, (φ.addFn (u R)).chernPart D ε Set.univ ≤ (C : ENNReal) := by
   intro k _ X _ p D hX hS t ht σ B φ hφ u hu hF

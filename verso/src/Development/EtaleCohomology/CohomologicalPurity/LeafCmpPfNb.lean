@@ -6,15 +6,13 @@ open CategoryTheory AlgebraicGeometry
 namespace LateralTheory.CohomologicalPurity.Cl
 
 /- English proof (translation)
-Introduce `X B B₀ _ _ w w₀ h₀ y hy`. Set `W : (Spec (CommRingCat.of B)).Opens` to `w ⁻¹ᵁ w₀.opensRange`. Establish `hs : IsOpen (X` using `PrimeSpectrum B) (W : Set (Spec (CommRingCat.of B))) := W.2`. Establish `hyW : (y : PrimeSpectrum B) ∈ (W : Set (Spec (CommRingCat.of B)))` using `hy`. Take `⟨_, ⟨g, rfl⟩, hyg, hsub⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := B)).exists_subset_of_mem_open hyW hs`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `l : B →+* Localization.Away g` to `algebraMap B (Localization.Away g)`. Establish `hr : Set.range (PrimeSpectrum.comap l) = PrimeSpectrum.basicOpen g` using `PrimeSpectrum.localization_away_comap_range (Localization.Away g) g`. Establish `H : Set.range (Spec.map (CommRingCat.ofHom l) ≫ w) ⊆ Set.range w₀`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: (Spec.map (CommRingCat.ofHom l)) t ∈ W` using `hsub (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : PrimeSpectrum.comap l t ∈ Set.range (PrimeSpectrum.comap l)` using `⟨t, rfl⟩`. Rewrite `h1` using `[hr]`. Conclude with `h1)`. Conclude with `this`. Set `u` to `IsOpenImmersion.lift w₀ _ H`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Localization.Away g, inferInstance, l, (Spec.preimage u).hom, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Scheme.isOpenImmersion_SpecMap_localizationAway (R := CommRingCat.of B) g`. Establish `h2 : (y : PrimeSpectrum B) ∈ Set.range (PrimeSpectrum.comap l)` using `by rw [hr]; exact hyg`. Take `⟨t, ht⟩` from `h2`. Conclude with `⟨show Spec (CommRingCat.of (Localization.Away g)) from t, ht⟩`.
-
-Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Conclude with `(IsOpenImmersion.lift_fac w₀ _ H).symm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafCmpNb_pf : LeafCmpNb := by
   intro X B B₀ _ _ w w₀ h₀ y hy
@@ -43,7 +41,7 @@ theorem LeafCmpNb_pf : LeafCmpNb := by
     exact (IsOpenImmersion.lift_fac w₀ _ H).symm
 
 /- English proof (translation)
-The claim follows from `LeafCmp_of hMat LeafCmpNb_pf hId`.
+A detailed English derivation is pending.
 -/
 theorem LeafCmp_of' (hMat : LeafMat) (hId : LeafCmpId) : LeafCmp := LeafCmp_of hMat LeafCmpNb_pf hId
 

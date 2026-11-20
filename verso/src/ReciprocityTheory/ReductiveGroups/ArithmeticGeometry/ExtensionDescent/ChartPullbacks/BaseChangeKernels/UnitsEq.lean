@@ -18,16 +18,16 @@ open Semi Geo.Tor PullGtPf
 section General
 
 /- English proof (translation)
-The claim follows from `(gm_res (𝟙 Z) z hle hz _).trans ((gm_pull (𝟙 Z) a z U (hle hz) u).trans (by rw [Category.id_comp]))`.
+A detailed English derivation is pending.
 -/
 theorem gmRP {X Z : Scheme.{0}} (a : Z ⟶ X) (z : Z) (U : X.Opens) (V : Z.Opens) (hle : V ≤ a ⁻¹ᵁ U)
     (hz : z ∈ V) (u : Γ(X, U)ˣ) : gm (𝟙 Z) z V (res hle (pullU a U u)) = gm a z U u :=
   (gm_res (𝟙 Z) z hle hz _).trans ((gm_pull (𝟙 Z) a z U (hle hz) u).trans (by rw [Category.id_comp]))
 
 /- English proof (translation)
-Establish `e : (lift (fst T G ≫ i) (snd T G) ≫ μ[G]) ≫ q = snd T G ≫ q`. Rewrite using `[← Hom.mul_def, MonObj.mul_comp, Category.assoc, hk, ← Hom.one_def, MonObj.comp_one, _root_.one_mul]`. Establish `e' : (lift (fst T G ≫ i) (snd T G) ≫ μ[G]).left ≫ q.left = (snd T G).left ≫ q.left`. Rewrite using `[← Over.comp_left, e, Over.comp_left]`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e₁` using `congrArg (fun g => g y) e'`. Simplify using `only [Scheme.Hom.comp_apply] at e₁`. Conclude with `(congrArg (· ∈ U) e₁).mpr hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_le_of_hom {S : Scheme.{0}} {B G T : Over S} [GrpObj G] [GrpObj B] (q : G ⟶ B)
     [IsMonHom q] (i : T ⟶ G) (hk : i ≫ q = toUnit _ ≫ η[B]) (U : B.left.Opens) :
@@ -44,13 +44,13 @@ theorem act_le_of_hom {S : Scheme.{0}} {B G T : Over S} [GrpObj G] [GrpObj B] (q
   exact (congrArg (· ∈ U) e₁).mpr hy
 
 /- English proof (translation)
-Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hsy : s₂ y ∈ W'` using `hy`. Establish `hby : b y ∈ s₁ ⁻¹ᵁ W`. Establish `e₁` using `congrArg (fun g => g y) hs`. Simplify using `only [Scheme.Hom.comp_apply] at e₁`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show s₁ (b y) ∈ W`. Rewrite using `[← e₁]`. Conclude with `hW' hsy`. Establish `hay : act₂ y ∈ W'` using `le₂ hy`. Establish `o` using `congrArg (gm b y (s₁ ⁻¹ᵁ W)) H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `o` using `[map_mul, gm_res b y _ hby, gm_res b y _ hby, gm_pull b act₁ y W (le₁ hby), gm_pull b f₁ y ⊤ trivial, gm_pull b s₁ y W hby, ← ha, ← hs, ← hf]`. Establish `e3 : gm f₂ y ⊤ c' = gm (f₂ ≫ h) y ⊤ c`. Substitute `hc` using the available equality. Use `(gm_res f₂ y (V := ⊤) (U := h ⁻¹ᵁ ⊤) (fun _ _ => trivial) trivial _).trans ?_` and prove the remaining obligations. Conclude with `gm_pull f₂ h y ⊤ trivial c`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, gmRP act₂ y W' _ le₂ hy, gmRP f₂ y ⊤ _ t₂ hy, gm_res act₂ y hW' hay, gm_pull act₂ a y W (hW' hay), e3]`. Establish `e2 : gm (𝟙 P₂) y (s₂ ⁻¹ᵁ W') (pullU s₂ W' (res hW' (pullU a W u))) = gm (s₂ ≫ a) y W u`. Rewrite using `[gm_pull (𝟙 P₂) s₂ y W' hsy, Category.id_comp, gm_res s₂ y hW' hsy, gm_pull s₂ a y W (hW' hsy)]`. Rewrite using `[e2]`. Conclude with `o`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equivPullL {T₁ T₂ Y Z P₁ P₂ : Scheme.{0}} (act₁ s₁ : P₁ ⟶ Y) (f₁ : P₁ ⟶ T₁)
     (act₂ s₂ : P₂ ⟶ Z) (f₂ : P₂ ⟶ T₂) (b : P₂ ⟶ P₁) (a : Z ⟶ Y) (h : T₂ ⟶ T₁)
@@ -95,9 +95,9 @@ section Torus
 variable {S S' : Scheme.{0}} (f : S' ⟶ S) (X : Type) [AddCommGroup X]
 
 /- English proof (translation)
-Set `w` to `Units.map (Scheme.ΓSpecIso (torusRing ZU X)).inv.hom.toMonoidHom (Units.map (AddMonoidAlgebra.of ZU X) (toUnits (Multiplicative.ofAdd χ)))`. Use `unit_ext fun x _ => ?_` and prove the remaining obligations. Establish `e3 : hT f X ≫ pullback.fst (splitTorusAff ZU X).hom (toZ S) = pullback.fst (splitTorusAff ZU X).hom (toZ S')` using `pullback.lift_fst _ _ _`. Establish `e1 : gm (𝟙 _) x ⊤ (charUnit S' X χ) = gm (pullback.fst (splitTorusAff ZU X).hom (toZ S')) x ⊤ w` using `gmRP (pullback.fst (splitTorusAff ZU X).hom (toZ S')) x ⊤ ⊤ _ trivial w`. Establish `e2 : gm (hT f X) x ⊤ (charUnit S X χ) = gm (hT f X ≫ pullback.fst (splitTorusAff ZU X).hom (toZ S)) x ⊤ w` using `(gm_res (hT f X) x (V := ⊤) (U := pullback.fst (splitTorusAff ZU X).hom (toZ S) ⁻¹ᵁ ⊤) _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `trivial _).trans (gm_pull _ _ x ⊤ trivial w)`. Rewrite `e2` using `[e3]`. Conclude with `(gmRP (hT f X) x ⊤ ⊤ _ trivial _).trans (e2.trans e1.symm)`.
+Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charUnit_hTB (χ : X) :
     res (fun _ _ => trivial : (⊤ : (splitTorus S' X).left.Opens) ≤ hT f X ⁻¹ᵁ ⊤)
@@ -140,7 +140,7 @@ def bm : (splitTorus S' X ⊗ (Over.pullback f).obj G).left ⟶ (splitTorus S X 
   (lift (uT f X) (vG f X)).left
 
 /- English proof (translation)
-Use `show _ = (lift (uT f X) (vG f X) ≫ snd _ _).left`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma bm_snd : (snd (splitTorus S' X) ((Over.pullback f).obj G)).left ≫ pullback.fst G.hom f =
     bm f X ≫ (snd (splitTorus S X) G).left := by
@@ -149,7 +149,7 @@ lemma bm_snd : (snd (splitTorus S' X) ((Over.pullback f).obj G)).left ≫ pullba
   rfl
 
 /- English proof (translation)
-Use `show _ = (lift (uT f X) (vG f X) ≫ fst _ _).left`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma bm_fst : (fst (splitTorus S' X) ((Over.pullback f).obj G)).left ≫ hT f X =
     bm f X ≫ (fst (splitTorus S X) G).left := by
@@ -158,9 +158,9 @@ lemma bm_fst : (fst (splitTorus S' X) ((Over.pullback f).obj G)).left ≫ hT f X
   rfl
 
 /- English proof (translation)
-Establish `hx : (lift (uT f X) (vG f X) ≫ fst (splitTorus S X) G ≫ i).left = (fst (splitTorus S' X) ((Over.pullback f).obj G) ≫ iB f X i).left ≫ pullback.fst G.hom f`. Rewrite using `[← Category.assoc, lift_fst, Over.comp_left, Over.comp_left, Category.assoc, iB_h]`. Conclude with `Category.assoc _ _ _`. Establish `hy : (lift (uT f X) (vG f X) ≫ snd (splitTorus S X) G).left = (snd (splitTorus S' X) ((Over.pullback f).obj G)).left ≫ pullback.fst G.hom f`. Rewrite using `[lift_snd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `key` using `(isGrpPullback_pullback G f).2 _ _ _ _ _ hx hy`. Rewrite using `[← Hom.mul_def, ← Hom.mul_def, ← key, ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma bm_act (i : splitTorus S X ⟶ G) :
     (lift (fst (splitTorus S' X) ((Over.pullback f).obj G) ≫ iB f X i)
@@ -188,7 +188,7 @@ attribute [local instance] SplitExt.free SplitExt.finite
 variable {S S' : Scheme.{0}} (f : S' ⟶ S) (E : SplitExt S) {G : Over S} [GrpObj G] (d : E.GtDatum G)
 
 /- English proof (translation)
-Use `haveI := d.q_hom`. Use `haveI : IsMonHom (qB f d.q) := isMonHom_of_grpPullback (isGrpPullback_pullback G f) (isGrpPullback_pullback E.B f) d.q (qB f d.q) (qB_h f d.q)`. Introduce `j`. Conclude with `act_le_of_hom (qB f d.q) (iB f E.X d.i) (iB_isKernel f E.X d.q d.i d.isKernel).w _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem actB_le : ∀ j : (pullExt f E).ChartIdx,
     (snd (splitTorus S' (pullExt f E).X) ((Over.pullback f).obj G)).left ⁻¹ᵁ
@@ -204,7 +204,7 @@ theorem actB_le : ∀ j : (pullExt f E).ChartIdx,
   exact act_le_of_hom (qB f d.q) (iB f E.X d.i) (iB_isKernel f E.X d.q d.i d.isKernel).w _
 
 /- English proof (translation)
-Introduce `j k`. Conclude with `equivPullL (act₁ := (lift (fst (splitTorus S E.X) G ≫ d.i) (snd (splitTorus S E.X) G) ≫ μ[G]).left) (s₁ := (snd (splitTorus S E.X) G).left) (f₁ := (fst (splitTorus S E.X) G).left) (act₂ := (lift (fst (splitTorus S' E.X) ((Over.pullback f).obj G) ≫ iB f E.X d.i) (snd (splitTorus S …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem equivB : ∀ (j : (pullExt f E).ChartIdx) (k : Module.Free.ChooseBasisIndex ℤ (pullExt f E).X),
     res (actB_le f E d j)

@@ -8,17 +8,15 @@ namespace GlobalTheory
 open Polynomial in
 
 /- English proof (translation)
-Use `haveI := c.fin`. Use `haveI := c.dvr`. Use `set x' : c.O := ⟨x, hx⟩`. Establish `hx0 : x' ≠ 0` using `fun h => h0 (congrArg Subtype.val h)`. Establish `hint : IsIntegral ℤ_[l] x'` using `Algebra.IsIntegral.isIntegral x'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hpm, hp⟩` from `hint`. Rewrite `hp` using `[← aeval_def]`. Take `⟨q, hpq, hq⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hpm.ne_zero 0`. Simplify using `only [map_zero, sub_zero] at hpq hq`. Rewrite `hq` using `[X_dvd_iff]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hqx : aeval x' q = 0`. Rewrite `hp` using `[hpq, map_mul, map_pow, aeval_X]`. Conclude with `(mul_eq_zero.mp hp).resolve_left (pow_ne_zero _ hx0)`. Take `⟨r, hr⟩` from `(X_dvd_sub_C : X ∣ q - C (q.coeff 0))`. Establish `hrel : algebraMap ℤ_[l] c.O (q.coeff 0) = x' * (-(aeval x' r))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `congrArg (aeval x') hr` as an intermediate fact. Rewrite `this` using `[map_sub, aeval_C, map_mul, aeval_X, hqx]`. Take the linear combination `-this`. Use `set a := q.coeff 0 with ha`. Use `set w : ℤ_[l]ˣ := PadicInt.unitCoeff hq`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspec : a = (w : ℤ_[l]) * (l : ℤ_[l]) ^ a.valuation` using `PadicInt.unitCoeff_spec hq`. Establish `haw : a * ((w⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) = (l : ℤ_[l]) ^ a.valuation`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm, ← mul_assoc]`. Simplify using the standard rewrite rules.
-
-Use `⟨a.valuation, (((-(aeval x' r)) * algebraMap ℤ_[l] c.O ((w⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) : c.O) : Qbar l), Subtype.property _, ?_⟩` and prove the remaining obligations. Establish `h2 : x' * ((-(aeval x' r)) * algebraMap ℤ_[l] c.O ((w⁻¹ : ℤ_[l]ˣ) : ℤ_[l])) = algebraMap ℤ_[l] c.O ((l : ℤ_[l]) ^ a.valuation)`. Rewrite using `[← mul_assoc, ← hrel, ← map_mul, haw]`. Establish `h3` using `congrArg Subtype.val h2`. Simplify using `using h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coefO_dvd_pow_l {l : ℕ} [Fact l.Prime] (c : Coef l) {x : Qbar l} (hx : x ∈ c.O)
     (h0 : x ≠ 0) : ∃ k : ℕ, ∃ u ∈ c.O, x * u = ((l : ℕ) : Qbar l) ^ k := by
@@ -61,31 +59,27 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ W c B _hW hWO`. Set `A : G ℚ Ω → Matrix (Fin 2) (Fin 2) (Qbar l)` to `fun s => mat W s - 1`. Establish `hAO : ∀ s i j, A s i j ∈ c.O`. Introduce `s i j`. Simplify using `only [A, Matrix.sub_apply, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `sub_mem (hWO s i j) (one_mem _)`. Simplify using `using hWO s i j`. Establish `hmv : ∀ s (w : Fin 2 → Qbar l) i, (mat W s *ᵥ w - w) i = A s i 0 * w 0 + A s i 1 * w 1`. Introduce `s w i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show mat W s *ᵥ w - w = A s *ᵥ w by simp [A, Matrix.sub_mulVec]]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Distinguish the cases in `h2 : ∃ s ∈ Ine (F := ℚ) B, ∃ s' ∈ Ine (F := ℚ) B, ∃ i i' : Fin 2, A s i 0 * A s' i' 1 - A s i 1 * A s' i' 0 ≠ 0`. Take `⟨s, hs, s', hs', i, i', hd⟩` from `h2`. Take `⟨k, u, hu, hdu⟩` from `coefO_dvd_pow_l c (sub_mem (mul_mem (hAO s i 0) (hAO s' i' 1)) (mul_mem (hAO s i 1) (hAO s' i' 0))) hd`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨k, fun Y v hY hYv => ⟨((l : ℕ) : Qbar l) ^ k • v, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hP` using `hY s i`. Establish `hQ` using `hY s' i'`. Rewrite `hP` using `[hYv s hs, hmv]`. Rewrite `hQ` using `[hYv s' hs', hmv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Use `fin_cases j`. Establish `e : ((l : ℕ) : Qbar l) ^ k • v 0 = u * (A s' i' 1 * (A s i 0 * v 0 + A s i 1 * v 1) - A s i 1 * (A s' i' 0 * v 0 + A s' i' 1 * v 1))`. Rewrite using `[smul_eq_mul]`. Take the linear combination `(-(v 0)) * hdu`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fin.zero_eta, Fin.isValue, Pi.smul_apply]`. Rewrite using `[e]`. Conclude with `mul_mem hu (sub_mem (mul_mem (hAO _ _ _) hP) (mul_mem (hAO _ _ _) hQ))`. Establish `e : ((l : ℕ) : Qbar l) ^ k • v 1 = u * (A s i 0 * (A s' i' 0 * v 0 + A s' i' 1 * v 1) - A s' i' 0 * (A s i 0 * v 0 + A s i 1 * v 1))`. Rewrite using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `(-(v 1)) * hdu`. Simplify using `only [Fin.mk_one, Fin.isValue, Pi.smul_apply]`. Rewrite using `[e]`. Conclude with `mul_mem hu (sub_mem (mul_mem (hAO _ _ _) hQ) (mul_mem (hAO _ _ _) hP))`. Introduce `s₀ hs₀`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hYv s₀ hs₀, smul_sub, Matrix.mulVec_smul]`. Use `push_neg at h2`. Distinguish the cases in `h1 : ∃ s ∈ Ine (F := ℚ) B, ∃ i j, A s i j ≠ 0`. Take `⟨s, hs, i, j, hα⟩` from `h1`. Take `⟨k, u, hu, hαu⟩` from `coefO_dvd_pow_l c (hAO s i j) hα`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨k, fun Y v hY hYv => ⟨Pi.single j (u * Y s i), ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `j'`. Break down `eq_or_ne j' j with rfl | h` into its components or cases. Simplify using `using mul_mem hu (hY s i)`. Simplify using `[h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `s' hs'`. Establish `hc : Y s i = A s i 0 * v 0 + A s i 1 * v 1` using `by rw [hYv s hs, hmv]`. Use extensionality with `i'`. Rewrite using `[Pi.smul_apply, hmv, hYv s' hs', hmv, hc]`. Establish `hdet` using `h2 s hs s' hs' i i'`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `fin_cases j`. Simplify using `only [Fin.zero_eta, Fin.isValue] at hαu ⊢`. Simplify using `[Pi.single_apply]`. Take the linear combination `(-(A s' i' 0 * v 0 + A s' i' 1 * v 1)) * hαu + u * v 1 * hdet`. Simplify using `only [Fin.mk_one, Fin.isValue] at hαu ⊢`.
-
-Simplify using `[Pi.single_apply]`. Take the linear combination `(-(A s' i' 0 * v 0 + A s' i' 1 * v 1)) * hαu - u * v 0 * hdet`. Use `push_neg at h1`. Use `⟨0, fun Y v _ hYv => ⟨0, fun _ => zero_mem _, fun s hs => ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i`.
-
-Rewrite using `[Pi.smul_apply, hYv s hs, hmv, hmv]`. Simplify using `[h1 s hs]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rat_unram_to_int_unram : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : R2 Ω l) (c : Coef l) (B : ValuationSubring Ω), Continuous W → (∀ s i j, mat W s i j ∈ c.O) → ∃ m : ℕ, ∀ (Y : G ℚ Ω → Fin 2 → Qbar l) (v : Fin 2 → Qbar l), (∀ s i, Y s i ∈ c.O) → (∀ s ∈ Ine (F := ℚ) B, Y s = mat W s *ᵥ v - v) → ∃ t : Fin 2 → Qbar l, (∀ i, t i ∈ c.O) ∧ ∀ s ∈ Ine (F := ℚ) B, (((l : ℕ) : Qbar l) ^ m) • Y s = mat W s *ᵥ t - t := by
   intro l _ Ω _ _ W c B _hW hWO

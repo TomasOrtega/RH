@@ -20,19 +20,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TrPass
 
 /- English proof (translation)
-Use `set Ex : Finset K := (S.filter C).image (fun a => f a k0)`. Use `haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Establish `hinf : ((Ex : Set K)ᶜ).Infinite` using `Ex.finite_toSet.infinite_compl`. Use `haveI := hinf.to_subtype`. Set `e : ℕ ↪ ((Ex : Set K)ᶜ : Set K)` to `Infinite.natEmbedding _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set U := S.filter (fun a => ¬ C a)`. Set `idx : α → ℕ` to `fun a => if h : a ∈ U then ((U.equivFin ⟨a, h⟩ : Fin U.card) : ℕ) else 0`. Use `⟨fun a => if C a then f a else fun _ => (e (idx a) : K), fun a ha => by simp [ha], ?_⟩` and prove the remaining obligations. Introduce `a ha a' ha' hne hC`. Establish `hidx : ∀ b ∈ S, ¬ C b → ∀ b' ∈ S, ¬ C b' → idx b = idx b' → b = b'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `b hb hCb b' hb' hCb' h`. Establish `hbU : b ∈ U` using `Finset.mem_filter.2 ⟨hb, hCb⟩`. Establish `hbU' : b' ∈ U` using `Finset.mem_filter.2 ⟨hb', hCb'⟩`. Simplify using `only [idx, dif_pos hbU, dif_pos hbU'] at h`. Use `U.equivFin.injective (Fin.ext h)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg Subtype.val this`. Establish `hnot : ∀ n, (e n : K) ∉ Ex` using `fun n => (e n).2`. Distinguish the cases in `h1 : C a`. Establish `h2 : ¬ C a'` using `fun h2 => hC ⟨h1, h2⟩`. Simplify using `only [if_pos h1, if_neg h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `h`. Establish `hm : f a k0 ∈ Ex` using `Finset.mem_image.2 ⟨a, Finset.mem_filter.2 ⟨ha, h1⟩, rfl⟩`. Rewrite `hm` using `[h]`. Conclude with `hnot _ hm`. Distinguish the cases in `h2 : C a'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [if_neg h1, if_pos h2]`. Introduce `h`. Establish `hm : f a' k0 ∈ Ex` using `Finset.mem_image.2 ⟨a', Finset.mem_filter.2 ⟨ha', h2⟩, rfl⟩`. Rewrite `hm` using `[← h]`. Conclude with `hnot _ hm`.
-
-Simplify using `only [if_neg h1, if_neg h2]`. Introduce `h`. Conclude with `hne (hidx a ha h1 a' ha' h2 (e.injective (Subtype.ext h)))`.
+A detailed English derivation is pending.
 -/
 theorem sep_extend {α κ K : Type} [Field K] [CharZero K] (S : Finset α) (C : α → Prop) (f : α → κ → K) (k0 : κ) :
     ∃ g : α → κ → K, (∀ a, C a → g a = f a) ∧
@@ -77,27 +75,25 @@ end GlobalTheory.TrPass
 namespace GlobalTheory.TrPass
 
 /- English proof (translation)
-Introduce `hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hLI hCW hEx hSch hJ hAbs hPB hPP`. Establish `hlab : ∀ (j : Fin D.R.m) P d, IsLab (Yc D 0) P d ↔ IsLab (Wc D j) P d`. Introduce `j P d`. Rewrite using `[GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing, GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing]`. Establish `h1 : (Yc D 0).rank = D.R.r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), Nat.zero_min]`. Simplify using `[Ranks.rankY]`. Establish `h2 : (Wc D j).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) j.2`. Rewrite using `[h1, h2]`. Set `Wit : ∀ j : Fin D.R.m, A3.fam3.base3.Ix → (Pl D.host.E → List ℤ → ℂ) → ((A3.liftI j A3.A.μ0).OpIx → D.what₂.LL) → Prop` to `fun j p c s => R.Carries p c ∧ ∃ x : (A3.A.fam.L j A3.A.μ0).S.Forms, x ∈ BlockGood.goodR (A3.A.fam.L j A3.A.μ0) (A3.A.fam.lvlA F.P0 F.ψ0) ∧ (∀ i, (A3.liftI j A3.A.μ0).opAll i x = s i • x) ∧ R.thG j A3.A.μ0 (R.jV j A3.A.μ0 x) ∈ R.Wc' j c ∧ R.thG j A3.A.μ0 (R.jV j A3.A.μ0 x) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `key : ∀ j p c s p' c' s', Wit j p c s → Wit j p' c' s' → ∀ Q : A3.okI A3.A.μ0, ((∀ y, p.1.2 (Q.1, y) = p'.1.2 (Q.1, y)) ↔ ∀ y, s (Sum.inr (Q, y)) = s' (Sum.inr (Q, y)))`. Introduce `j p c s p' c' s' hw hw' Q`. Take `⟨hc, x, -, hx, hxW, hx0⟩` from `hw`. Take `⟨hc', x', -, hx', hxW', hx0'⟩` from `hw'`. Rewrite using `[GlobalTheory.T.inertTypeEigenvalues_iff_labelEigensystems_rows hHowe R F hLI hCW hEx hSch hJ hPB hPP p p' c c' hc hc' Q, GlobalTheory.T.liftInertEigenvalues_iff_thetaImageEigensystem hHowe R F hLI hCW hEx hSch hJ hAbs j c c' s s' x x' hx hxW hx0 hx' hxW' hx0' Q]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `forall_congr' fun d => imp_congr_left (hlab j _ d)`. Set `Cons : Fin D.R.m → (I0 × List ℕ → D.what₂.LL) → Prop` to `fun j a => ∃ p c s, Wit j p c s ∧ p.1.2 = a`. Set `f : Fin D.R.m → (I0 × List ℕ → D.what₂.LL) → I0 × List ℕ → D.what₂.LL` to `fun j a k => if h : Cons j a then (if hk : k.1 ∈ A3.okI A3.A.μ0 then h.choose_spec.choose_spec.choose (Sum.inr (⟨k.1, hk⟩, k.2)) else 0) else 0`. Establish `hf : ∀ j a (h : Cons j a) (Q : A3.okI A3.A.μ0) y, f j a (Q.1, y) = h.choose_spec.choose_spec.choose (Sum.inr (Q, y))`. Introduce `j a h Q y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, dif_pos h, dif_pos Q.2]`. Establish `hspec : ∀ j a (h : Cons j a), Wit j h.choose h.choose_spec.choose h.choose_spec.choose_spec.choose ∧ h.choose.1.2 = a` using `fun j a h => h.choose_spec.choose_spec.choose_spec`. Set `S : Finset (I0 × List ℕ → D.what₂.LL)` to `((A3.fam3.RI A3.fam3.F.μ0).ixFin3 A3.fam3.F.X).image Prod.snd`. Establish `hg : ∀ j, ∃ g : (I0 × List ℕ → D.what₂.LL) → I0 × List ℕ → D.what₂.LL, (∀ a, Cons j a → g a = f j a) ∧ ∀ _q : A3.okI A3.A.μ0, ∀ a ∈ S, ∀ a' ∈ S, a ≠ a' → ¬ (Cons j a ∧ Cons j a') → ∃ k : A3.okI A3.A.μ0 × List ℕ, g a (k.1.1, k.2) ≠ g a' (k.1.1, k.2)`. Introduce `j`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hne : Nonempty (A3.okI A3.A.μ0)`. Take `⟨q⟩` from `hne`. Take `⟨g, hg1, hg2⟩` from `sep_extend S (Cons j) (f j) (q.1, ([] : List ℕ))`. Conclude with `⟨g, hg1, fun _ a ha a' ha' hne hC => ⟨(q, []), hg2 a ha a' ha' hne hC⟩⟩`. Conclude with `⟨f j, fun _ _ => rfl, fun q => (hne ⟨q⟩).elim⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose g hg1 hg2 using hg`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Introduce `j p c hc s hx k`. Establish `hC : Cons j p.1.2` using `⟨p, c, s, ⟨hc, hx⟩, rfl⟩`. Rewrite using `[hg1 j _ hC]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `s (Sum.inr k) = f j p.1.2 (k.1.1, k.2)`. Rewrite using `[hf j _ hC k.1 k.2]`. Take `⟨hw, ha⟩` from `hspec j _ hC`. Conclude with `(((key j _ _ _ p c s hw ⟨hc, hx⟩ k.1).1 (fun y => by rw [ha])) k.2).symm`. Introduce `j p hp p' hp' hk`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨k0, hk0⟩` from `hk`. Distinguish the cases in `hC : Cons j p.2 ∧ Cons j p'.2`. Assume the negation of the conclusion as `hcon push_neg at hcon`. Take `⟨hw, ha⟩` from `hspec j _ hC.1`. Take `⟨hw', ha'⟩` from `hspec j _ hC.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(key j _ _ _ _ _ _ hw hw' k0.1).2 (fun y => by` as an intermediate fact. Establish `h1` using `hcon (k0.1, y)`. Rewrite `h1` using `[hg1 j _ hC.1, hg1 j _ hC.2, hf j _ hC.1, hf j _ hC.2]`. Conclude with `h1) k0.2`. Rewrite `this` using `[ha, ha']`.
-
-Conclude with `hk0 this`. Establish `hne : p.2 ≠ p'.2` using `fun h => hk0 (by rw [h])`. Conclude with `hg2 j k0.1 p.2 (Finset.mem_image_of_mem _ hp) p'.2 (Finset.mem_image_of_mem _ hp') hne hC`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_inert_passage : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Chain.LiftInteg D → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → InertJunk A3 → (∀ χ ∈ A3.A.X, IsAbsIrrChar χ) → R.PThmB → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → ∃ tr, R.TrISem F tr ∧ TrISepWith A3 tr := by
   intro hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hLI hCW hEx hSch hJ hAbs hPB hPP

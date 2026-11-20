@@ -4,21 +4,17 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Selm
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `N _ V _ _ _`. Establish `sep : ∀ {W : Type} [AddCommGroup W] [Module (ZMod N) W] (w : W), (∀ f : Module.Dual (ZMod N) W, f w = 0) → w = 0`. Introduce `W _ _ w hw`. Assume the negation of the conclusion as `hne`. Take `⟨f, -, hf⟩` from `KStar.Selmer.exists_form_ne_zero (⊥ : Submodule (ZMod N) W) (z := w) (by simpa using hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hf (hw f)`. Establish `fin : ∀ {W : Type} [AddCommGroup W] [Module (ZMod N) W] [Finite W], Finite (Module.Dual (ZMod N) W)`. Introduce `W _ _ _`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[KStar.Selmer.card_dual]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.card_pos.ne'`. Use `⟨KStar.Selmer.card_dual, fun v hv => sep v hv, ?_⟩` and prove the remaining obligations. Introduce `V' _ _ _ b hl hr`. Use `haveI := fin (W := V)`. Use `haveI := fin (W := V')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `inj : Function.Injective fun y : V' => ((b.flip y).toZModLinearMap N : Module.Dual (ZMod N) V)`. Introduce `y y' h`. Establish `h' : ∀ x, b x (y - y') = 0`. Introduce `x`. Use `LinearMap.congr_fun h x` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [AddMonoidHom.coe_toZModLinearMap, AddMonoidHom.flip_apply] at this`. Rewrite using `[map_sub, this, sub_self]`. Conclude with `sub_eq_zero.mp (hr _ h')`. Establish `inj' : Function.Injective fun x : V => ((b x).toZModLinearMap N : Module.Dual (ZMod N) V')`. Introduce `x x' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ∀ y, b (x - x') y = 0`. Introduce `y`. Use `LinearMap.congr_fun h y` as an intermediate fact. Simplify using `only [AddMonoidHom.coe_toZModLinearMap] at this`. Rewrite using `[map_sub, AddMonoidHom.sub_apply, this, sub_self]`.
-
-Conclude with `sub_eq_zero.mp (hl _ h')`. Establish `c2` using `Nat.card_le_card_of_injective _ inj'`. Rewrite `c2` using `[KStar.Selmer.card_dual]`. Use `inj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[KStar.Selmer.card_dual]`.
-
-Conclude with `c2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.dualZ :
     ∀ (N : ℕ) [NeZero N] (V : Type) [AddCommGroup V] [Module (ZMod N) V] [Finite V], Nat.card (Module.Dual (ZMod N) V) = Nat.card V ∧ (∀ v : V, (∀ f : Module.Dual (ZMod N) V, f v = 0) → v = 0) ∧ ∀ (V' : Type) [AddCommGroup V'] [Module (ZMod N) V'] [Finite V'] (b : V →+ V' →+ ZMod N), (∀ x, (∀ y, b x y = 0) → x = 0) → (∀ y, (∀ x, b x y = 0) → y = 0) → Function.Bijective fun y : V' => ((b.flip y).toZModLinearMap N : Module.Dual (ZMod N) V) := by

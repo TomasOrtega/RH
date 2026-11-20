@@ -37,7 +37,7 @@ theorem base_val {O : Type} [CommRing O] (F : B.Fn O) {k₁ k₂ : Type} [CommRi
     ((B.basePt F τ h).app B₀ y).1.2 = y.1.2 := rfl
 
 /- English proof (translation)
-Establish `h : (l : B₀) = 0` using `Mid.l_zero y.1.1`. Rewrite using `[ptIn_val F hT (n + 1) B₀ _ h, base_val, base_val, ptIn_val F hT n B₀ _ h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptIn_base (F : B.Fn (OK l K)) (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (n : ℕ) (B₀ : CommRingCat.{0})
     (y : (F.ptK (B.κb (okToOC l K) true n)).obj B₀) :
@@ -47,7 +47,7 @@ theorem ptIn_base (F : B.Fn (OK l K)) (r : CrystallineSemistableComparison.Res l
   rw [ptIn_val F hT (n + 1) B₀ _ h, base_val, base_val, ptIn_val F hT n B₀ _ h]
 
 /- English proof (translation)
-The claim follows from `ptIn_base (B.schFn M.p) r hT n B₀ y`.
+A detailed English derivation is pending.
 -/
 theorem pt_sq (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (M : Model l K) (n : ℕ) (B₀ : CommRingCat.{0})
     (y : (B.Lc (B.schFn M.p) (okToOC l K) true n).Pt.obj B₀) :
@@ -56,7 +56,7 @@ theorem pt_sq (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.
   ptIn_base (B.schFn M.p) r hT n B₀ y
 
 /- English proof (translation)
-The claim follows from `cr_square (F₁ := B.schFn M.p) (F₂ := B.schFn M.p) (F₃ := B.schFn M.p) (F₄ := B.schFn M.p) (b₁ := B.bs l true (n + 1)) (b₂ := B.bs l true (n + 1)) (b₃ := B.bs l true n) (b₄ := B.bs l true n) (h₁ := rfl) (h₂ := rfl) (h₃ := rfl) (h₄ := rfl) (κ₁ := Mid.κm r (n + 1)) (κ₂ := B.κb (okTo …`.
+A detailed English derivation is pending.
 -/
 theorem mid_square (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (M : Model l K) (n j : ℕ) (t : Mid.HM r M (n + 1) j) :
     (B.omMor (c := (base l).cris (n + 1)) (c' := (base l).cris n) (trueRed M n) (RingHom.id _) (B.red_cris _ (Nat.le_succ n))).pull j
@@ -74,7 +74,7 @@ theorem mid_square (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT :
     (pt_sq r hT M n) j t
 
 /- English proof (translation)
-The claim follows from `mid_square r hT M n j t`.
+A detailed English derivation is pending.
 -/
 theorem mu_redHc (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (M : Model l K) (n j : ℕ) (t : Mid.HM r M (n + 1) j) :
     B.redHc (B.schFn M.p) (okToOC l K) true (Nat.le_succ n) j (Mid.mu r M (n + 1) j hT t) = Mid.mu r M n j hT ((redT r M (Nat.le_succ n)).pull j t) :=

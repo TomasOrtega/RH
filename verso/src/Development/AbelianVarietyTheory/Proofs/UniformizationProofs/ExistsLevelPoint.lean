@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.UU.Transl
 
 /- English proof (translation)
-Establish `key : cB * vw * Wxy ^ N = Wy ^ N * (cG * vf)`. Apply `mul_right_cancel (b := W1 ^ N)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hα : ∀ α, (f α * (cB * vw * g α * (θ α)⁻¹).val) * (ty α).val = (cB * vw).val * (f α * (txy α).val)`. Introduce `α`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht : txy α = g α * ty α * (θ α)⁻¹` using `eq_mul_inv_of_mul_eq (h₃ α)`. Establish `hu : cB * vw * g α * (θ α)⁻¹ * ty α = cB * vw * txy α` using `by rw [ht]; ac_rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_congr rfl (fun α _ => hα α), ← Finset.mul_sum, ← h₄]`. Establish `hv` using `congrArg Units.val key`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at hv`. Simplify using `only [Units.val_mul]`. Take the linear combination `(-σ) * hv`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exp_alg {A X : Type} [CommRing A] {N : ℕ} {Wy Wxy Wx W1 cG cB vf vw : Aˣ} {σ : A} (s : Finset X) {f : X → A}
     {ty txy g θ : X → Aˣ} (h₁ : cB * Wxy ^ N * W1 ^ N = Wy ^ N * Wx ^ N * cG) (h₂ : vw * Wx ^ N = W1 ^ N * vf)
@@ -83,11 +83,11 @@ def FrameRel (x : T ⟶ G) (b : T ⟶ D.P.A) (N : ℕ)
 variable {U}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GlobalTheory.FormalPoint.exists_lift_fstG (τ ≫ x)`. Establish `hup : upHom I e G Z a = τ ≫ x` using `ha`. Establish `hleft : a.left ≫ (fstG I e G).left = τ.left ≫ x.left`. Use `congrArg CommaMorphism.left ha` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨a, hup, ?_, ?_⟩` and prove the remaining obligations. Use `show (Over.map (thick R I e)).map a ≫ (U.gt e).pG = τ ≫ g.b ext1`. Simplify using `using (hr e _ τ.left a.left hleft).1`. Apply `GlobalTheory.FormalPoint.eq_of_map_fstG` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `upHom I e G Z (a ^ N) = upHom I e G Z 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_one, hup, ← CategoryTheory.MonObj.comp_pow, hx, CategoryTheory.MonObj.comp_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_level_point {x : T ⟶ G} {g : GtPt D T} (hr : U.Red x g) {N : ℕ} (hx : x ^ N = 1) {e : ℕ}
     {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (τ : (Over.map (thick R I e)).obj Z ⟶ T) :
@@ -106,17 +106,15 @@ theorem exists_level_point {x : T ⟶ G} {g : GtPt D T} (hr : U.Red x g) {N : �
     rw [map_pow, map_one, hup, ← CategoryTheory.MonObj.comp_pow, hx, CategoryTheory.MonObj.comp_one]
 
 /- English proof (translation)
-Establish `h1 : (fst T G).left ≫ T.hom = (snd T G).left ≫ G.hom`. Rewrite using `[Over.w (fst T G), Over.w (snd T G)]`. Establish `h2 : (fstG I e G).left ≫ G.hom = (thickObj R I e G).hom ≫ thick R I e` using `Over.w (fstG I e G)`. Establish `hw : (rG ≫ (fst T G).left) ≫ T.hom = (y₀ ≫ (thickObj R I e G).hom) ≫ thick R I e`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, reassoc_of% e₁, h2]`. Establish `hG : rG ≫ (T ⊗ G).hom = (y₀ ≫ (thickObj R I e G).hom) ≫ thick R I e`. Rewrite using `[← Over.w (fst T G), ← Category.assoc]`. Conclude with `hw`. Establish `hB : rB ≫ (T ⊗ D.P.A).hom = (y₀ ≫ (thickObj R I e G).hom) ≫ thick R I e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.w (fst T D.P.A), ← Category.assoc, e₃]`. Conclude with `hw`. Use `⟨Over.homMk (rG ≫ (fst T G).left) hw, ?_, ?_⟩` and prove the remaining obligations. Establish `key : (Over.homMk rG hG : (Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom)) ⟶ T ⊗ G) = lift (Over.homMk (rG ≫ (fst T G).left) hw) (upHom I e G (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U` using `Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)) := by`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lift_fst]`. Use `ext1`. Simplify using the standard rewrite rules. Rewrite using `[lift_snd] show Over.homMk rG hG ≫ snd T G = (Over.map (thick R I e)).map (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl) ≫ fstG I e G ext1`. Simplify using `using e₁`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg CommaMorphism.left key`. Establish `key : (Over.homMk rB hB : (Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom)) ⟶ T ⊗ D.P.A) = lift (Over.homMk (rG ≫ (fst T G).left) hw) (imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U` using `Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)) := by`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[lift_fst]`. Use `ext1`.
-
-Simplify using `using e₃`. Rewrite using `[lift_snd] show Over.homMk rB hB ≫ snd T D.P.A = (Over.map (thick R I e)).map (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl) ≫ (U.gt e).pG ext1`. Simplify using `using e₂`. Conclude with `congrArg CommaMorphism.left key`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_over_point {e : ℕ} {Z : Scheme.{0}} (y₀ : Z ⟶ (thickObj R I e G).left) (rG : Z ⟶ (T ⊗ G).left)
     (rB : Z ⟶ (T ⊗ D.P.A).left) (e₁ : rG ≫ (snd T G).left = y₀ ≫ (fstG I e G).left)
@@ -152,19 +150,19 @@ theorem exists_over_point {e : ℕ} {Z : Scheme.{0}} (y₀ : Z ⟶ (thickObj R I
     exact congrArg CommaMorphism.left key
 
 /- English proof (translation)
-Introduce `e`. Take `⟨s, hs⟩` from `h e`. Use `⟨s, ?_⟩` and prove the remaining obligations. Introduce `Z y₀ rG rB e₁ e₂ e₃ z JG J hJG hJ`. Take `⟨τ, hτG, hτB⟩` from `exists_over_point (U := U) y₀ rG rB e₁ e₂ e₃`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Substitute `hτG hτB` using the available equality. Take `⟨a, ha₁, ha₂, ha₃⟩` from `exists_level_point hr hx τ`. Establish `hal : a.left ≫ (fstG I e G).left = τ.left ≫ x.left` using `congrArg CommaMorphism.left ha₁`. Establish `hu : (Over.map (thick R I e)).map (a * (Over.homMk (U` using `Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)) ≫ fstG I e G = (τ ≫ x) * upHom I e G (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl) := by`. Rewrite using `[show (Over.map (thick R I e)).map (a * (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)) ≫ fstG I e G = upHom I e G (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (a * (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e …`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hi : (Over.map (thick R I e)).map (a * (Over.homMk (U` using `Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)) ≫ (U.gt e).pG = (τ ≫ g.b) * imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl) := by`. Rewrite using `[show (Over.map (thick R I e)).map (a * (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)) ≫ (U.gt e).pG = imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (a * (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G …`. Establish `c₁` using `(congrArg CommaMorphism.left (lift_snd (toUnit ((Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom)))) ((τ ≫ x) * upHom I e G (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)))).trans …`. Establish `c₂` using `(congrArg CommaMorphism.left (lift_snd (toUnit ((Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom)))) ((τ ≫ g.b) * imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)))).trans …`. Establish `c₃` using `(congrArg CommaMorphism.left (lift_fst (toUnit ((Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom)))) ((τ ≫ g.b) * imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)))).trans …`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hz, hsum⟩` from `hs Z (a * (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)).left (lift (toUnit ((Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom)))) ((τ ≫ x) * upHom I e G (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U := Over.mk …`. Use `⟨fun α hα => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf' α _ τ _ z J hJ, hz α hα, zero_mul]`. Establish `hcube : ∀ p q u : (Over.mk (y₀ ≫ (thickObj R I e G).hom)) ⟶ thickObj R I e G, @id (Z.presheaf.stalk z)ˣ (cubV (T` using `((Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom)))) D.cub z J (imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) p) (imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) q) (imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) u)) * wv U e z JG J (p * q).left * wv U …`. Establish `H1` using `cubN_twist (imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom))) (upHom I e G (Over.mk (y₀ ≫ (thickObj R I e G).hom))) (fun q => wv U e z JG J q.left) (θ := cubV (T := ((Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom)))) D.cub z J) (θ' := cubV (T := ((Over.map (t …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `H1` using `[ha₁, ha₂]`. Establish `h1o : (1 : (Over.mk (y₀ ≫ (thickObj R I e G).hom)) ⟶ thickObj R I e G).left ≫ (fstG I e G).left = τ.left ≫ (1 : T ⟶ G).left`. Establish `h1 : upHom I e G (Over.mk (y₀ ≫ (thickObj R I e G).hom)) 1 = τ ≫ (1 : T ⟶ G)` using `by rw [map_one, MonObj.comp_one]`. Conclude with `congrArg CommaMorphism.left h1`. Establish `H2` using `hf e Z τ.left (1 : (Over.mk (y₀ ≫ (thickObj R I e G).hom)) ⟶ thickObj R I e G).left a.left h1o hal z JG J hJG hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha₂' : (Over.map (thick R I e)).map a ≫ (U.gt e).pG = τ ≫ g.b` using `ha₂`. Establish `H3 : ∀ α, @id (Z.presheaf.stalk z)ˣ (val ((U.gt e).t α) (a * (Over.homMk (U` using `Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl)).left z J) * @id (Z.presheaf.stalk z)ˣ (th D z J (cP D ((Over.map (thick R I e)).obj (Over.mk (y₀ ≫ (thickObj R I e G).hom))) α) (τ ≫ g.b) (imHom U e (Over.mk (y₀ ≫ (thickObj R I e G).hom)) (Over.homMk (U := O …`. Introduce `α`. Establish `ht` using `torus_coord_add hG R I D e G (U.gt e) (Over.mk (y₀ ≫ (thickObj R I e G).hom)) a (Over.homMk (U := Over.mk (y₀ ≫ (thickObj R I e G).hom)) (V := thickObj R I e G) y₀ rfl) α z J hJ`. Rewrite `ht` using `[ha₂']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hr e _ τ.left a.left hal).2 α z J hJ]`. Conclude with `ht`. Rewrite using `[hσ _ τ _ z JG hJG]`. Simplify using `only [hf' _ _ τ _ z J hJ]`. Conclude with `exp_alg s H1 H2 H3 hsum`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expT_transl (hG : GlobalFnsSt) {x : T ⟶ G} {g : GtPt D T} (hr : U.Red x g) {N : ℕ} (hx : x ^ N = 1)
     {f₀ w} (hf : FrameRel U x g.b N f₀ w) {σ : U.SecGT (𝟙_ _) N} {σ' : U.SecGT T N}

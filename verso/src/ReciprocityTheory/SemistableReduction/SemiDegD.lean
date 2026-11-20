@@ -9,7 +9,7 @@ open Matrix NumberField
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.posDef_diagonal_iff.mpr fun l => Complex.zero_lt_real.mpr (hd l)`. Consider the case `exact Matrix.posDef_diagonal_iff.mpr fun l => by exact_mod_cast hd l`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem posDef_diagonal_ofReal_of_pos {r : ℕ} (d : Fin r → ℝ) (hd : ∀ l, 0 < d l) :
     (diagonal fun l => (d l : ℂ)).PosDef := by
@@ -18,19 +18,17 @@ private theorem posDef_diagonal_ofReal_of_pos {r : ℕ} (d : Fin r → ℝ) (hd 
   | exact Matrix.posDef_diagonal_iff.mpr fun l => by exact_mod_cast hd l
 
 /- English proof (translation)
-Establish `hcutz : ∀ i (l : Fin r), e ≤ (l : ℕ) → b₀ i l = 0`. Introduce `i l hl`. Establish `h` using `hb₀cut i`. Simplify using `only [cutSub, UpperTheory.Reformulated.B.FirstCoordinatesSubmodule.cutSub] at h`. Conclude with `h l hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set D : Matrix (Fin r) (Fin r) ℂ := diagonal fun l => (d l : ℂ) with hDdef`. Establish `hDpd : D.PosDef` using `posDef_diagonal_ofReal_of_pos d hd`. Establish `hG0 : ((embM σ b₀)ᴴ * D * embM σ b₀).PosDef` using `hDpd.conjTranspose_mul_mul_same (sdd_embM_inj σ b₀ hb₀li)`. Establish `hG1 : ((embM σ b₁)ᴴ * D * embM σ b₁).PosDef` using `hDpd.conjTranspose_mul_mul_same (sdd_embM_inj σ b₁ hb₁li)`. Establish `hu : IsUnit ((embM σ b₀)ᴴ * D * embM σ b₀).det` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (Matrix.isUnit_iff_isUnit_det _).mp hG0.isUnit`. Consider the case `exact hG0.det_pos.ne'.isUnit`. Use `set E : Matrix (Fin r) (Fin k₁) ℂ := embM σ c - embM σ b₀ * (((embM σ b₀)ᴴ * D * embM σ b₀)⁻¹ * ((embM σ b₀)ᴴ * D * embM σ c)) with hE`. Establish `hq : quotGramC D σ b₀ c = Eᴴ * D * E`. Simplify using `only [quotGramC, sdd_gramC_eq, sdd_gramX_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `sdd_schur _ _ _ hDpd.1 hG0.1 hu`. Establish `hB1 : ∀ (l : Fin r) (j : Fin k₁), embM σ b₁ l j = if e ≤ (l : ℕ) then E l j else 0`. Introduce `l j`. Establish `hb1 : b₁ j l = if e ≤ (l : ℕ) then c j l else 0`. Rewrite using `[← hcb j]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Distinguish the cases in `hl : e ≤ (l : ℕ)`. Establish `hz : ∀ i, b₀ i l = 0` using `fun i => hcutz i l hl`. Rewrite using `[if_pos hl, hE]`. Simplify using `[embM, Matrix.mul_apply, hb1, hl, hz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg hl]`. Simplify using `[embM, hb1, hl]`. Establish `hquad : ∀ v : Fin k₁ → ℂ, (star v ⬝ᵥ (((embM σ b₁)ᴴ * D * embM σ b₁) *ᵥ v)).re ≤ (star v ⬝ᵥ ((Eᴴ * D * E) *ᵥ v)).re` using `sdd_cut_quad d (fun l => (hd l).le) e E (embM σ b₁) hB1`. Take `⟨hpos, hle⟩` from `sdd_det_mono _ _ hG1 (Matrix.isHermitian_conjTranspose_mul_mul E hDpd.1) hquad`. Rewrite using `[sdd_gramC_eq, hq]`.
-
-Conclude with `Real.log_le_log hpos hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sdd_gram_step {K : Type} [Field K] [NumberField K] {r e k₀ k₁ : ℕ} (σ : K →+* ℂ)
     (d : Fin r → ℝ) (hd : ∀ l, 0 < d l) (b₀ : Fin k₀ → Fin r → K) (c b₁ : Fin k₁ → Fin r → K)
@@ -80,17 +78,17 @@ theorem sdd_gram_step {K : Type} [Field K] [NumberField K] {r e k₀ k₁ : ℕ}
   exact Real.log_le_log hpos hle
 
 /- English proof (translation)
-Unfold `GradedExtStatement`. Unfold `LatDegBasisStatement at hB`. Unfold `DegAddStatement at hD`. Introduce `K _ _ r e k k₀ k₁ δ B b b₀ b₁ hδ hFG hb hb₀ hb₁`. Establish `hlift : ∀ j, ∃ y ∈ B, projGe K r e y = b₁ j` using `fun j => Submodule.mem_map.mp (hb₁.1 j)`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose c hcB hcb using hlift`. Establish `hb₀B : ∀ i, b₀ i ∈ B` using `fun i => (hb₀.1 i).1`. Establish `hb₀cut : ∀ i, b₀ i ∈ cutSub K r e` using `fun i => (hb₀.1 i).2`. Establish `hli : LinearIndependent K (Fin.append b₀ c)` using `sdd_append_li b₀ c b₁ hb₀cut hb₀.2.1 hcb hb₁.2.1`. Establish `hsp : ∀ x ∈ B, x ∈ Submodule.span K (Set.range (Fin.append b₀ c))` using `sdd_append_span B b₀ c b₁ hb₀ hcB hcb hb₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ i, Fin.append b₀ c i ∈ B`. Introduce `i`. Apply the tactic sequence `refine Fin.addCases ?_ ?_ i <;> intro j <;> simp [hb₀B, hcB]`. Establish `hk : k = k₀ + k₁` using `sdd_card_eq B b (Fin.append b₀ c) hb hmem hli hsp`. Substitute `hk` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hpd : ∀ σ, (diagMet δ σ).PosDef` using `fun σ => by`. Simplify using `only [diagMet]`. Conclude with `posDef_diagonal_ofReal_of_pos (δ σ) (hδ σ)`. Establish `h1 : latDeg (diagMet δ) B b = latDeg (diagMet δ) B (Fin.append b₀ c)` using `hB K r (k₀ + k₁) (diagMet δ) B b (Fin.append b₀ c) hpd hFG hb ⟨hmem, hli, hsp⟩`. Establish `h2` using `hD K r k₀ k₁ (diagMet δ) B b₀ c hpd hFG hb₀B hcB hli hsp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsat : satSub B b₀ = B ⊓ cutSub K r e` using `sdd_satSub_eq B b₀ hb₀`. Rewrite `h2` using `[hsat]`. Establish `h3 : quotDeg (diagMet δ) B b₀ c ≤ latDeg (diagMet δ) (B.map (projGe K r e)) b₁`. Unfold `quotDeg latDeg`. Rewrite using `[sdd_index B b₀ c b₁ hsat hcB hcb]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hs : ∑ σ : K →+* ℂ, Real.log (gramC (diagMet δ σ) σ b₁).det.re ≤ ∑ σ : K →+* ℂ, Real.log (quotGramC (diagMet δ σ) σ b₀ c).det.re` using `Finset.sum_le_sum fun σ _ => sdd_gram_step σ (δ σ) (hδ σ) b₀ c b₁ hb₀cut hb₀.2.1 hcb hb₁.2.1`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[h1, h2, h3]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gradedExt_holds (hB : LatDegBasisStatement) (hD : DegAddStatement) :
     GradedExtStatement := by
@@ -131,7 +129,7 @@ theorem gradedExt_holds (hB : LatDegBasisStatement) (hD : DegAddStatement) :
   linarith [h1, h2, h3]
 
 /- English proof (translation)
-Introduce `n A C hA hC h`. Conclude with `sdd_absDet A C hA hC h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem absDet_holds : AbsDetStatement := by
   intro n A C hA hC h

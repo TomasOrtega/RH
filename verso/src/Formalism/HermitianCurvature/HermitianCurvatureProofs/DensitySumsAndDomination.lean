@@ -7,9 +7,9 @@ open Classical
 namespace Formalism.FourierDecayAlt.P.DensitySumsAndDomination
 
 /- English proof (translation)
-Unfold `TB.PSDOn at *`. Establish `e : (Matrix.of fun x y : Y => k x y) = Matrix.of fun x y : Y => k' x y`. Use extensionality with `x y`. Simplify using `only [Matrix.of_apply]`. Conclude with `h x x.2 y y.2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← e]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem psd_congr {α : Type} {Y : Finset α} {k k' : α → α → ℂ}
     (h : ∀ x ∈ Y, ∀ y ∈ Y, k x y = k' x y) (hk : TB.PSDOn Y k) : TB.PSDOn Y k' := by
@@ -21,11 +21,9 @@ theorem psd_congr {α : Type} {Y : Finset α} {k k' : α → α → ℂ}
   rwa [← e]
 
 /- English proof (translation)
-Unfold `TB.PSDOn at *`. Use `first`. Consider the case `(have e : (Matrix.of fun x y : Y => (c : ℂ) * k x y) = c • Matrix.of fun x y : Y => k x y := by`. Use extensionality with `x y`. Simplify using `[Complex.real_smul]`.
+Replace the relevant objects with their definitions. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h.smul hc)`. Consider the case `(have e : (Matrix.of fun x y : Y => (c : ℂ) * k x y) = (c : ℂ) • Matrix.of fun x y : Y => k x y := by`. Use extensionality with `x y`. Simplify using the standard rewrite rules.
-
-Rewrite using `[e]`. Conclude with `h.smul (Complex.zero_le_real.mpr hc))`.
+Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_smul {α : Type} {Y : Finset α} {k : α → α → ℂ} (c : ℝ) (hc : 0 ≤ c) (h : TB.PSDOn Y k) :
     TB.PSDOn Y (fun x y => (c : ℂ) * k x y) := by
@@ -43,17 +41,17 @@ theorem psd_smul {α : Type} {Y : Finset α} {k : α → α → ℂ} (c : ℝ) (
        exact h.smul (Complex.zero_le_real.mpr hc))
 
 /- English proof (translation)
-Introduce `E W _ D T Th lam hlam he hD`. Establish `hKr : ∀ j x y, (scaleTop D lam).Kr j x y = if j = D.r + 1 then (lam : ℂ) * D.Kr j x y else D.Kr j x y` using `fun _ _ _ => rfl`. Establish `he' : ∀ j, (scaleTop D lam).e j = if j = D.r + 1 then lam - 1 else D.e j` using `fun _ => rfl`. Introduce `i s hs hsi hir`. Take `⟨h1, h2, h3⟩` from `hD i s hs hsi hir`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hir' : i ≤ D.r + 1` using `hir`. Establish `hne : i - s ≠ D.r + 1` using `by omega`. Distinguish the cases in `hi : i = D.r + 1`. Use `⟨fun t ht => ?_, fun t ht t' ht' hl x hx y hy => ?_, fun S hS hSd => ?_⟩` and prove the remaining obligations. Use `psd_congr (k := fun h h' => (lam : ℂ) * (Th i s t h h' - TB.blk (D.Kr i) s t t h h')) (fun x _ y _ => ?_) (psd_smul lam hlam (h1 t ht))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [TB.blk, hKr, if_pos hi]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_pos hi]`. Rewrite using `[h2 t ht t' ht' hl x hx y hy]`. Use `psd_congr (k := fun h h' => (lam : ℂ) * ((1 + (D.e i : ℂ)) * D.Kr (i - s) h h' - ∑ t ∈ S, Th i s t h h')) (fun x _ y _ => ?_) (psd_smul lam hlam (h3 S hS hSd))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he2 : D.e i = 0` using `by rw [hi]; exact he`. Simplify using `only [hKr, he', if_pos hi, if_neg hne]`. Rewrite using `[he2, ← Finset.mul_sum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨fun t ht => ?_, fun t ht t' ht' hl x hx y hy => ?_, fun S hS hSd => ?_⟩` and prove the remaining obligations. Use `psd_congr (fun x _ y _ => ?_) (h1 t ht)` and prove the remaining obligations. Simplify using `only [TB.blk, hKr, if_neg hi]`. Simplify using `only [if_neg hi]`. Conclude with `h2 t ht t' ht' hl x hx y hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `psd_congr (fun x _ y _ => ?_) (h3 S hS hSd)` and prove the remaining obligations. Simplify using `only [hKr, he', if_neg hi, if_neg hne]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem domScaleTop : DomScaleTop := by
   intro E W _ D T Th lam hlam he hD
@@ -89,23 +87,23 @@ theorem domScaleTop : DomScaleTop := by
       simp only [hKr, he', if_neg hi, if_neg hne]
 
 /- English proof (translation)
-Introduce `hDS hSB E W _ D C₁ C₄ Θ jn H _ _ Vt c c' sd hsd he h hc1 hc2 hc3`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18⟩` from `h`. Establish `hl1 : (1 : ℝ) ≤ max sd 1` using `le_max_right _ _`. Establish `hl0 : (0 : ℝ) ≤ max sd 1` using `by linarith`. Use `⟨⟨a1, a2, a3, a4, a5, ?_, a7, ?_, ?_, ?_, a11, a12, a13, a14, a15, a16, ?_, ?_⟩, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i Y`. Distinguish the cases in `hit : i = D.r + 1`. Use `psd_congr (fun x _ y _ => ?_) (psd_smul _ hl0 (a6 i Y))` and prove the remaining obligations. Simplify using `[scaleTop, hit]`. Use `psd_congr (fun x _ y _ => ?_) (a6 i Y)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[scaleTop, hit]`. Introduce `i s hs hsi hi x y t t' hx hy ht ht' htt hne`. Use `a8 i s hs hsi hi x y t t' hx hy ht ht' htt ?_` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (if i = D.r + 1 then ((max sd 1 : ℝ) : ℂ) * D.Kr i (TB.join x s t) (TB.join y s t') else D.Kr i (TB.join x s t) (TB.join y s t')) = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Introduce `i h1 hi`. Distinguish the cases in `hit : i = D.r + 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [scaleTop, hit, if_true]`. Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: max sd 1 ≤ 2` using `max_le hsd (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [scaleTop, hit, if_false]`. Conclude with `a9 i h1 hi`. Introduce `T`. Take `⟨Th, hTh⟩` from `a10 T`. Conclude with `⟨_, hDS E W D T Th _ hl0 he hTh⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Y hY filter_upwards [a17 Y hY] with ε hε p hp q hq hne`. Use `hε p hp q hq ?_` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[scaleTop, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc1, fun Y hY R => ?_, hc3⟩` and prove the remaining obligations. Use `psd_congr (fun x _ y _ => ?_) (hSB _ Y (D.Kr (D.r + 1)) (fun p q => ∑ ρ ∈ R, c' ρ p * conj (c' ρ q)) sd (a6 _ Y) (hc2 Y hY R))` and prove the remaining obligations. Simplify using `[scaleTop]`. Simplify using `[scaleTop]`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: i ≠ D.r + 1` using `by have := (Finset.mem_Icc.1 hi).2; omega`. Simplify using `[scaleTop, this]`.
+A detailed English derivation is pending.
 -/
 theorem recHypScaleTop : RecHypScaleTop := by
   intro hDS hSB E W _ D C₁ C₄ Θ jn H _ _ Vt c c' sd hsd he h hc1 hc2 hc3
@@ -154,15 +152,15 @@ theorem recHypScaleTop : RecHypScaleTop := by
     simp [scaleTop, this]
 
 /- English proof (translation)
-Introduce `hP hS hM E W _ D h`. Establish `key : ∀ T : TB.Tower E, ∃ Th, DomText D T Th`. Introduce `T`. Establish `h' : ∀ i s : ℕ, ∃ Th0 : E → TB.Pt E → TB.Pt E → ℂ, 1 ≤ s → s ≤ i → i ≤ D.r + 1 → (∀ t : E, TB.PSDOn (T.X (i - s)) (Th0 t)) ∧ (∀ t : E, t ≠ 0 → TB.PSDOn (T.X (i - s)) (fun h h' => Th0 t h h' - TB.blk (D.Kr i) s t t h h')) ∧ (∀ t t' : E, t - t' ∈ D.La (i - s + 1) s → ∀ h ∈ T.X (i - …`. Introduce `i s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hr : 1 ≤ s ∧ s ≤ i ∧ i ≤ D.r + 1`. Take `⟨P, _, S, a, hok, hN, hB, hL⟩` from `h T i s hr.1 hr.2.1 hr.2.2`. Take `⟨_, _, o3, o4, o5, o6⟩` from `hS _ _ a _ _ (hP _ _ _ S _ hok)`. Establish `hL' : D.La (i - s + 1) s = (J.scaleSys a (J.prodSys S)).L` using `hL`. Use `⟨(J.scaleSys a (J.prodSys S)).Th, fun _ _ _ => ⟨o4, fun t ht => ?_, fun t t' htt => ?_, fun R hR => ?_⟩⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `psd_congr (fun x hx y hy => ?_) (o5 t ht)` and prove the remaining obligations. Rewrite using `[← hN t ht x hx y hy]`. Both sides reduce to the same expression. Conclude with `o3 t t' (hL' ▸ htt)`. Use `psd_congr (fun x hx y hy => ?_) (o6 R (fun t ht t' ht' htt => hR t ht t' ht' (hL' ▸ htt)))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hB x hx y hy]`. Both sides reduce to the same expression. Conclude with `⟨fun _ _ _ => 0, fun a b c => absurd ⟨a, b, c⟩ hr⟩`. Use `choose Th0 hTh0 using h'`. Conclude with `⟨fun i s => Th0 i s, fun i s hs hsi hi => hTh0 i s hs hsi hi⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨key, fun T => ?_⟩` and prove the remaining obligations. Take `⟨Th, hTh⟩` from `key T`. Conclude with `⟨Th, hM E W D T Th hTh⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem domAfterOfLocal : DomAfterOfLocal := by
   intro hP hS hM E W _ D h
@@ -197,13 +195,13 @@ theorem domAfterOfLocal : DomAfterOfLocal := by
   exact ⟨Th, hM E W D T Th hTh⟩
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => norm_num [Finset.Icc_self]`. Consider the case `succ M ih`. Establish `hs : ∑ m ∈ Icc 2 (M + 1 + 2), (((m : ℕ) : ℝ) ^ 2)⁻¹ = ∑ m ∈ Icc 2 (M + 2), (((m : ℕ) : ℝ) ^ 2)⁻¹ + (((M : ℝ) + 3) ^ 2)⁻¹`. Rewrite using `[show M + 1 + 2 = (M + 2) + 1 by omega, Finset.sum_Icc_succ_top (by omega)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `(push_cast; ring)`. Consider the case `(congr 1; push_cast; ring)`. Establish `hc2 : ((M + 1 : ℕ) : ℝ) + 2 = (M : ℝ) + 3` using `by push_cast; ring`. Rewrite using `[hs, hc2]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) < (M : ℝ) + 2` using `by positivity`. Establish `h3 : (0 : ℝ) < (M : ℝ) + 3` using `by positivity`. Establish `h2'` using `h2.ne'`. Establish `h3'` using `h3.ne'`. Establish `e : ((M : ℝ) + 2)⁻¹ - ((M : ℝ) + 3)⁻¹ - (((M : ℝ) + 3) ^ 2)⁻¹ = (((M : ℝ) + 2) * ((M : ℝ) + 3) ^ 2)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 ≤ (((M : ℝ) + 2) * ((M : ℝ) + 3) ^ 2)⁻¹` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sq_sum (M : ℕ) : ∑ m ∈ Icc 2 (M + 2), (((m : ℕ) : ℝ) ^ 2)⁻¹ ≤ 3 / 4 - ((M : ℝ) + 2)⁻¹ := by
   induction M with
@@ -229,11 +227,11 @@ theorem sq_sum (M : ℕ) : ∑ m ∈ Icc 2 (M + 2), (((m : ℕ) : ℝ) ^ 2)⁻¹
     linarith
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Establish `hm' : (2 : ℝ) ≤ (m : ℝ)` using `by exact_mod_cast hm`. Establish `hpk : (2 : ℝ) ^ k ≤ (m : ℝ) ^ k` using `by gcongr`. Establish `hL : ((m : ℝ) ^ (2 + k))⁻¹ = ((m : ℝ) ^ 2)⁻¹ * ((m : ℝ) ^ k)⁻¹`. Rewrite using `[pow_add, mul_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : 4 * ((2 : ℝ) ^ (2 + k))⁻¹ * ((m : ℝ) ^ 2)⁻¹ = ((m : ℝ) ^ 2)⁻¹ * ((2 : ℝ) ^ k)⁻¹`. Rewrite using `[pow_add, mul_inv]`. Use `first`. Consider the case `ring`. Consider the case `(norm_num; ring)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, hR]`. Conclude with `mul_le_mul_of_nonneg_left (inv_anti₀ (by positivity) hpk) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem pow_bd (m n : ℕ) (hm : 2 ≤ m) (hn : 2 ≤ n) :
     (((m : ℕ) : ℝ) ^ n)⁻¹ ≤ 4 * ((2 : ℝ) ^ n)⁻¹ * (((m : ℕ) : ℝ) ^ 2)⁻¹ := by
@@ -251,21 +249,19 @@ theorem pow_bd (m n : ℕ) (hm : 2 ≤ m) (hn : 2 ≤ n) :
   exact mul_le_mul_of_nonneg_left (inv_anti₀ (by positivity) hpk) (by positivity)
 
 /- English proof (translation)
-Introduce `P S q l f n hn hS hf`. Establish `hA : ∀ p ∈ S, (q p ^ n)⁻¹ ≤ (((l p : ℕ) : ℝ) ^ n)⁻¹`. Introduce `p hp`. Take `⟨hpr, hle⟩` from `hS p hp`. Establish `h0 : (0 : ℝ) < (l p : ℝ)` using `by exact_mod_cast hpr.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `inv_anti₀ (by positivity) (by gcongr)`. Establish `hB : ∑ p ∈ S, (((l p : ℕ) : ℝ) ^ n)⁻¹ ≤ (f : ℝ) * ∑ m ∈ S.image l, (((m : ℕ) : ℝ) ^ n)⁻¹`. Rewrite using `[Finset.sum_comp (fun m : ℕ => (((m : ℕ) : ℝ) ^ n)⁻¹) l, Finset.mul_sum]`. Use `Finset.sum_le_sum fun m _ => ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Establish `h` using `hf m`. Use `first`. Consider the case `exact_mod_cast h`. Consider the case `(norm_cast; convert h)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `norm_cast`. Establish `hC : ∑ m ∈ S.image l, (((m : ℕ) : ℝ) ^ n)⁻¹ ≤ ∑ m ∈ Icc 2 (S.sup l + 2), (((m : ℕ) : ℝ) ^ n)⁻¹`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_image]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp, rfl⟩` from `hm`. Rewrite using `[Finset.mem_Icc]`. Establish `h1 : l p ≤ S.sup l` using `Finset.le_sup hp`. Conclude with `⟨(hS p hp).1.two_le, by omega⟩`. Introduce `m _ _`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hD : ∑ m ∈ Icc 2 (S.sup l + 2), (((m : ℕ) : ℝ) ^ n)⁻¹ ≤ 3 * ((2 : ℝ) ^ n)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun m hm => ?_` and prove the remaining obligations. Conclude with `pow_bd m n (Finset.mem_Icc.mp hm).1 hn`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = 4 * ((2 : ℝ) ^ n)⁻¹ * ∑ m ∈ Icc 2 (S.sup l + 2), (((m : ℕ) : ℝ) ^ 2)⁻¹ := by`. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ 4 * ((2 : ℝ) ^ n)⁻¹ * (3 / 4 - (((S.sup l : ℕ) : ℝ) + 2)⁻¹) := mul_le_mul_of_nonneg_left (sq_sum _) (by positivity)`. Use `_ ≤ 3 * ((2 : ℝ) ^ n)⁻¹ := by`. Establish `h1 : 0 ≤ (((S.sup l : ℕ) : ℝ) + 2)⁻¹` using `by positivity`.
-
-Establish `h2 : 0 ≤ ((2 : ℝ) ^ n)⁻¹` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hf0 : (0 : ℝ) ≤ f` using `Nat.cast_nonneg f`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem densSum : DensSum := by
   intro P S q l f n hn hS hf
@@ -316,11 +312,11 @@ theorem densSum : DensSum := by
     _ = 3 * (f : ℝ) * ((2 : ℝ) ^ n)⁻¹ := by ring
 
 /- English proof (translation)
-Introduce `hSum hLe hSize P q l k r f sd hk hl hfib hsd`. Establish `hn : 2 ≤ k - 2 * r - 2` using `by omega`. Establish `hB : ∀ S : Finset P, ∏ p ∈ S, Real.exp (4 * (q p ^ (k - 2 * r - 2))⁻¹) ≤ Real.exp (12 * (f : ℝ) * ((2 : ℝ) ^ (k - 2 * r - 2))⁻¹)`. Introduce `S`. Establish `h1` using `hSum P S q l f (k - 2 * r - 2) hn (fun p _ => hl p) (fun m => hfib m _ (fun p hp => (Finset.mem_filter.mp hp).2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_sum, Real.exp_le_exp, ← Finset.mul_sum]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmain : sd ≤ Real.exp (12 * (f : ℝ) * ((2 : ℝ) ^ (k - 2 * r - 2))⁻¹)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx1, hx2⟩` from `exists_between hc`. Take `⟨S, hS⟩` from `hsd x hx2`. Combine the linear relations using `[hB S]`. Conclude with `⟨hmain, hmain.trans (hLe f _ (hSize k r f hk))⟩`.
+Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem densChain : DensChain := by
   intro hSum hLe hSize P q l k r f sd hk hl hfib hsd
@@ -345,27 +341,27 @@ end Formalism.FourierDecayAlt.P.DensitySumsAndDomination
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `DensitySumsAndDomination.domScaleTop`.
+A detailed English derivation is pending.
 -/
 theorem domination_scale_top : Formalism.FourierDecayAlt.TC.DomScaleTop := DensitySumsAndDomination.domScaleTop
 
 /- English proof (translation)
-The claim follows from `DensitySumsAndDomination.recHypScaleTop`.
+A detailed English derivation is pending.
 -/
 theorem recursion_hypothesis_scale_top : Formalism.FourierDecayAlt.TC.RecHypScaleTop := DensitySumsAndDomination.recHypScaleTop
 
 /- English proof (translation)
-The claim follows from `DensitySumsAndDomination.domAfterOfLocal`.
+A detailed English derivation is pending.
 -/
 theorem domination_after_of_local : Formalism.FourierDecayAlt.TC.DomAfterOfLocal := DensitySumsAndDomination.domAfterOfLocal
 
 /- English proof (translation)
-The claim follows from `DensitySumsAndDomination.densSum`.
+A detailed English derivation is pending.
 -/
 theorem density_sum : Formalism.FourierDecayAlt.TC.DensSum := DensitySumsAndDomination.densSum
 
 /- English proof (translation)
-The claim follows from `DensitySumsAndDomination.densChain`.
+A detailed English derivation is pending.
 -/
 theorem density_chain : Formalism.FourierDecayAlt.TC.DensChain := DensitySumsAndDomination.densChain
 

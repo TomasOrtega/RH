@@ -21,16 +21,16 @@ open Formalism.L2.Pj Formalism.L2.Pj.QAt Formalism.MainNotions Formalism.BasicNo
 namespace GlobalTheory.ArcCM.RunNum
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `Finset.sum_congr rfl fun i _ => by simp [ext0]`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sum_extendByZero_fin_eq_sum_of_eq {p m : ℕ} (f : Fin p → ℕ) (h : m = p) : ∑ i : Fin m, ext0 f i = ∑ i, f i := by
   subst h
   exact Finset.sum_congr rfl fun i _ => by simp [ext0]
 
 /- English proof (translation)
-Introduce `h'`. Establish `h1 : starRingEnd ℂ H.rt0 = H.rt0`. Establish `h0 : starRingEnd ℂ (τ (H.rt : E)) = H.rt0` using `h'`. Rewrite `h0` using `[h]`. Then use the resulting hypothesis. Establish `h2 : H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h3` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Simplify using `[pow_two, h2] at h3`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem conj_rt_ne {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (τ : E →+* ℂ)
     (h : τ (H.rt : E) = H.rt0) : conjEmb τ (H.rt : E) ≠ H.rt0 := by
@@ -45,13 +45,13 @@ theorem conj_rt_ne {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.T
   nlinarith [mul_self_nonneg H.rt0.re]
 
 /- English proof (translation)
-Simplify using `only [absA, wtA]`. Rewrite using `[Finset.sum_congr rfl fun σ _ => Finset.sum_comm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_add_distrib]`. Establish `ht` using `hH.2.2.2 t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (DV.tauEmb D t)]`. Simplify using `only [if_true]`. Conclude with `sum_extendByZero_fin_eq_sum_of_eq _ (by rw [← hD.1]; simp [Datum.mult, ht])`. Introduce `b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single (conjEmb (DV.tauEmb D t))]`. Simplify using `only [if_true]`. Conclude with `sum_extendByZero_fin_eq_sum_of_eq _ (by rw [← hD.2.1]; simp [Datum.mult, conj_rt_ne _ _ ht])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absA_wtA {D : D7} (T : Core D) (j : ℕ) (hD : IsDatW D j (T.Q.Dw j)) (hH : T.Q.PinHost)
     (w : WeightFamilies.Wt D j) :
@@ -75,7 +75,7 @@ theorem absA_wtA {D : D7} (T : Core D) (j : ℕ) (hD : IsDatW D j (T.Q.Dw j)) (h
     · simp
 
 /- English proof (translation)
-Rewrite using `[absA_wtA T j (hp.2.2.2 j hj) hp.1 w]`. Unfold `WeightFamilies.Wt.size`. Use `push_cast`. Establish `h1 : (1 : ℝ) ≤ max ((D.R.sigW j).2 : ℝ) 1` using `le_max_right _ _`. Establish `h2 : (0 : ℝ) ≤ (D.R.f : ℝ) * D.R.r * w.n` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -89,7 +89,7 @@ theorem absA_add_le_size {D : D7} (T : Core D) (hp : T.Q.Pins) (j : ℕ) (hj : I
   nlinarith
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.supN`. Rewrite using `[← ENNReal.ofReal_le_iff_le_toReal (supE_ne_top _ _ hP)]`. Conclude with `le_iSup (fun p : FPt X => ENNReal.ofReal ((X p.1).pnorm (la p.1) (P p.1) p.2)) p`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_le_sup {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type} [Fintype Comp]
     (X : Comp → Data E r) (la) {P : FDSec X} (hP : P ∈ holSub X la) (p : FPt X) :
@@ -99,15 +99,15 @@ theorem pnorm_le_sup {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ
   exact le_iSup (fun p : FPt X => ENNReal.ofReal ((X p.1).pnorm (la p.1) (P p.1) p.2)) p
 
 /- English proof (translation)
-The claim follows from `le_max_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem one_le_LaAt (D : D7) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Tt cc : ℝ) : 1 ≤ LaAt D j ka CR Tt cc :=
   le_max_left _ _
 
 /- English proof (translation)
-Unfold `archP`. Establish `h1 : 0 ≤ Real.log (max 1 c₁)` using `Real.log_nonneg (le_max_left _ _)`. Establish `h2 : 0 ≤ Real.log La` using `Real.log_nonneg hLa`. Establish `h3 : 0 ≤ Real.log (rdE E)`. Use `Real.log_nonneg (Real.one_le_rpow ?_ (by positivity))` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `dE`. Conclude with `Int.one_le_abs (discr_ne_zero E)` after adjusting the coercions. Establish `h4 : 0 ≤ Real.log r` using `Real.log_nonneg (by exact_mod_cast hr)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem archimedeanTerm_nonneg (E : Type) [Field E] [NumberField E] {r : ℕ} (hr : 1 ≤ r) {La : ℝ} (hLa : 1 ≤ La) (c₁ : ℝ) :
     0 ≤ archP E r La c₁ := by
@@ -122,15 +122,15 @@ theorem archimedeanTerm_nonneg (E : Type) [Field E] [NumberField E] {r : ℕ} (h
   linarith
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hf, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Take `⟨-, hr, -⟩` from `hnum j hj`. Establish `hFc : F.1 ∈ cusp (T.Q.Xo j) T.Q.c (T.U j) (wtA ka) ka.n` using `cutR_le T.C j ka F.2`. Establish `hS : (recB h).supN j ka (em.comp (algebraMap T.Q.c.F K₁)) F = supC (T.Q.Xo j) T.Q.c (T.U j) (xiR D) (em.comp (algebraMap T.Q.c.F K₁)) (wtA ka) ka.n F.1`. Express the relevant statement in the definitionally equal form `cutN T.C T.Ns j ka _ F = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `cutN Core.Ns`. Rewrite using `[if_pos hj, goodOf, if_pos hem]`. Establish `h0` using `(recB h).supN_nonneg j ka (em.comp (algebraMap T.Q.c.F K₁)) F`. Establish `hb` using `GlobalTheory.T.norm_cmArcCoefficientFunctional_le hK _ _ _ _ (T.Q.Xo j) T.Q.c K₁ d _ _ _ s em D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j _)) (xiR D) ((recB h).supN j ka (em.comp (algebraMap T.Q.c.F K₁)) F) (wtA ka) ka.n hd (one_le_LaAt D j ka CR Tt cc) hem (h.unf j hj _ hem) (h.x …`. Introduce `k y hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hS]`. Conclude with `mul_le_mul_of_nonneg_left (pnorm_le_sup _ _ (((mem_cusp _ _ _ _ _ _).1 hFc).2 _ hem) ⟨k, ⟨y, hy⟩⟩) (lieFac_pos _ _ _).le)`. Use `hb.trans (mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) h0)` and prove the remaining obligations. Unfold `CarchAt`. Establish `h1` using `absA_add_le_size T h.pins j hj ka`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fdeg D.host.E : ℝ) = D.R.f`. Unfold `fdeg`. Rewrite using `[hf, Nat.mul_div_cancel_left _ two_pos]`. Establish `h3 : (D.R.f : ℝ) * ka.n ≤ (D.R.f : ℝ) * D.R.r * ka.n`. Establish `: (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) ≤ (D.R.f : ℝ) * ka.n` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[h2]`. Establish `h5` using `archimedeanTerm_nonneg D.host.E hr (one_le_LaAt D j ka CR Tt cc) (WeightFamilies.c1 D CR Tt cc j)`. Conclude with `add_le_add_right (mul_le_mul_of_nonneg_left (by linarith) h5) _`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem arch_good (hK : Known) {D : D7} {T : Core D} (h : LawsCore T) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Tt cc : ℝ)
     (hG : GlobalTheory.RunIn.GamAt T) (hj : InR D j) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra T.Q.c.F K₁]
@@ -173,9 +173,9 @@ theorem arch_good (hK : Known) {D : D7} {T : Core D} (h : LawsCore T) (j : ℕ) 
   exact add_le_add_right (mul_le_mul_of_nonneg_left (by linarith) h5) _
 
 /- English proof (translation)
-Distinguish the cases in `hem : GoodEmb T.Q.c (em.comp (algebraMap T.Q.c.F K₁))`. Conclude with `arch_good hK h j ka CR Tt cc hG hj K₁ d hd s em hem F`. Establish `hg` using `goodEmb_goodOf T.Q.c (em.comp (algebraMap T.Q.c.F K₁))`. Rewrite `hg` using `[goodOf, if_neg hem]`. Establish `h1` using `arch_good hK h j ka CR Tt cc hG hj K₁ d hd s ((starRingEnd ℂ).comp em) hg F`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[GlobalTheory.T.cmValueLine_length_conj_eq hK _ _ _ _ _ K₁ _ _ _ _ _ _ _ s d.μ ka.n em, RingHom.comp_assoc, recB_supN_conj]`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem arch_all (hK : Known) {D : D7} {T : Core D} (h : LawsCore T) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Tt cc : ℝ)
     (hG : GlobalTheory.RunIn.GamAt T) (hj : InR D j) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra T.Q.c.F K₁]
@@ -199,21 +199,19 @@ namespace GlobalTheory.ArcCM
 open RunNum
 
 /- English proof (translation)
-Introduce `hK D T h j ka CR Tt cc large₂ hG hj _ K₁ _ _ _ d ⟨hd, ⟨s⟩⟩`. Take `⟨hgood, -, -, -, -, hf, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Take `⟨hpq, hr, -⟩` from `hnum j hj`. Establish `hle : cutR T.C j ka ≤ sec (T.Q.Xo j) T.Q.c (wtA ka) ka.n` using `(cutR_le T.C j ka).trans (cusp_le_sec _ _ _ _ _)`. Take `⟨⟨ψ, hψ⟩, hdeg⟩` from `cfOf_linear_and_degree hK _ _ _ _ (T.Q.Xo j) T.Q.c K₁ d (wtA ka) ka.n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hLa` using `one_le_LaAt D j ka CR Tt cc`. Establish `hc : 0 ≤ pDeg large₂.logOm + (1 / 2) * Real.log (LaAt D j ka CR Tt cc)`. Use `Real.log_nonneg hLa` as an intermediate fact. Unfold `pDeg`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Establish `hφ : ∀ F : (recB h).Cusp j ka, (ψ.comp (Submodule.inclusion hle)) F = cfOf d.yF d.μ d.jj F.1` using `fun F => hψ _`. Use `⟨ψ.comp (Submodule.inclusion hle), hφ, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hμ : ∑ v, d.μ v = absA (T.Q.Dw j) (wtA ka)`. Take `⟨hN, hNd⟩` from `valLine_ndeg_le hK _ _ _ _ _ K₁ _ _ _ _ _ _ _ s large₂.logOm d.μ ka.n hLa (lamDegSt_logOm₂ hK D T large₂ h.pins)`. Use `⟨s.valLine d.μ ka.n, hN, hNd.trans ?_, GlobalTheory.T.cmValueLine_length_conj_eq hK _ _ _ _ _ K₁ _ _ _ _ _ _ _ s _ _, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `BdegAt`. Use `mul_le_mul_of_nonneg_left ?_ hc` and prove the remaining obligations. Rewrite using `[hμ, hf, hpq, Nat.mul_div_cancel_left _ two_pos]`. Use `push_cast`. Conclude with `absA_add_le_size T h.pins j hj ka`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `la w hw F hF hne`. Rewrite `hne`, the goal using `[hφ]`. Conclude with `GlobalTheory.T.cmArcDatum_functional_finite_integrality_bound hK _ _ _ _ (T.Q.Xo j) T.Q.c K₁ d _ _ _ s (modelsAt_of_good_level hK _ _ _ _ _ _ (hpq ▸ hr) hgood) hd hLa la w hw (wtA ka) ka.n F.1 ⟨hle F.2, fun v hv => hF la v hv⟩ hne`. Introduce `em F _ hne`. Establish `hpos : 0 < (recB h).supN j ka (em.comp (algebraMap T.Q.c.F K₁)) F`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_ne ((recB h).supN_nonneg j ka _ F) fun h0 => hne ?_` and prove the remaining obligations. Rewrite using `[((recB h).supN_eq_zero j ka _ F).1 h0.symm]`. Conclude with `map_zero _`. Establish `h1` using `arch_all hK h j ka CR Tt cc hG hj K₁ d hd s em F`. Rewrite `hne`, the goal using `[hφ]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : 0 < ‖em (cfOf d.yF d.μ d.jj F.1)‖` using `norm_pos_iff.2 ((map_ne_zero em).2 hne)`. Establish `h3` using `Real.log_le_log (mul_pos h2 (hN.2 em)) h1`. Rewrite `h3` using `[Real.log_mul h2.ne' (hN.2 em).ne', Real.log_mul hpos.ne' (Real.exp_pos _).ne', Real.log_exp]`. Then use the resulting hypothesis. Establish `hz : ∀ F : (recB h).Cusp j ka, ¬ (ψ.comp (Submodule.inclusion hle)) F ≠ 0` using `fun F hne => hμ (hdeg F.1 (hle F.2) (hφ F ▸ hne))`. Use `⟨MLine.one, ⟨one_ne_zero, fun _ => one_pos⟩, ?_, fun _ => rfl, fun _ _ _ F _ hne => (hz F hne).elim, fun _ F _ hne => (hz F hne).elim⟩` and prove the remaining obligations.
-
-Establish `: (MLine.one : MLine K₁).ndeg = 0` using `by simp [MLine.ndeg, MLine.deg, MLine.one]`. Rewrite using `[this]`. Conclude with `mul_nonneg hc (zero_le_one.trans ka.one_le_size)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem numGood_of_famQ : Known → ∀ (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Tt cc : ℝ) (large₂ : SizeData₂ D), GlobalTheory.RunIn.GamAt T → InR D j → j < D.R.m → ∀ (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra T.Q.c.F K₁] (d : GlobalTheory.ArcQ.ArcDatum (T.Q.Xo j) T.Q.c K₁), FamQ T j ka CR Tt cc K₁ d → ∃ φ : (recB h).Cusp j ka →ₗ[T.Q.c.F] K₁, (∀ F, φ F = cfOf d.yF d.μ d.jj F.1) ∧ @NumGood T.Q.c.F ((recB h).Cusp j ka) _ _ ((recB h).acgC j ka) ((recB h).modC j ka) {F | F ∈ (recB h).Mlat j ka} (fun σ F => (recB h).supN j ka σ F) (beOf D.host.E (nAt D j ka CR Tt cc) (absA (T.Q.Dw j) (wtA ka))) (CarchAt D j ka CR Tt cc) (BdegAt large₂ j ka CR Tt cc) K₁ _ _ _ φ := by
   intro hK D T h j ka CR Tt cc large₂ hG hj _ K₁ _ _ _ d ⟨hd, ⟨s⟩⟩

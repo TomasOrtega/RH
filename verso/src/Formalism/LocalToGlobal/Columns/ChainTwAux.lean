@@ -13,15 +13,13 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
 section TwAux
 
 /- English proof (translation)
-Establish `hL : lamYat (Pr` using `Pr) (R := R) j P = LocE.lamY P (qOf P) (R.N j) (cOf R j) 0 := by`. Unfold `lamYat`. Rewrite using `[if_neg hP]`. Establish `hJ : Jat (Pr` using `Pr) (R := R) sharp j P = LocE.JQ P (qOf P) (R.k + j) (R.N j) (cOf R j) := by`. Unfold `Jat`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hP]`. Establish `hb0 : PI.TwNormLat.Bdd P (R.N j) (cOf R j) j h`. Introduce `x hx`. Use `hb x (by rw [hL]; exact hx)` as an intermediate fact. Rewrite `this` using `[hL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨r, hr, κ, hκ, hb', hnf, hpr⟩` from `_root_.TwNormLat X.E P (R.N j) (cOf R j) (R.k + j) j hd.1 hd.2 h hb0`. Use `⟨r * h * κ, ⟨r, hr, κ, by rw [hJ]; exact hκ, rfl⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx`, the goal using `[hL]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hb' x hx`. Take `⟨n, z, hn, hz, hv⟩` from `hnf`. Use `⟨n, z, hn, hz, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `hv v`.
-
-Unfold `prCat`. Rewrite using `[hJ]`. Conclude with `hpr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twNormRep {X : Fields} {Pr : Primes X} {R : Ranks} (sharp : Bool) (j : ℕ)
     {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) (hd : TwDegOne X P) (h : AutY X R j) (hb : TwBdd (Pr := Pr) j P h) :
@@ -50,13 +48,11 @@ theorem twNormRep {X : Fields} {Pr : Primes X} {R : Ranks} (sharp : Bool) (j : �
     exact hpr
 
 /- English proof (translation)
-Establish `hJ : Jat (Pr` using `Pr) (R := R) cst.sharp j P.1 = LocE.JQ P.1 (qOf P.1) (R.k + j) (R.N j) (cOf R j) := by`. Unfold `Jat`. Rewrite using `[if_neg hP]`. Establish `hchi : ∀ r, chiInv Ch sel mu cst j P 1 r = PI.TwChrOne.ChiL P.1 (cst.psi P) (resChar (mu : Chr X.F X.E X.K) P.1) (R.k + j) (R.N j) (cOf R j) 1 r`. Introduce `r`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `chiInv lamRow`. Rewrite using `[if_neg hP]`. Both sides reduce to the same expression. Take `⟨h1, h2⟩` from `_root_.TwChrOne X.E X.K P.1 (cst.psi P) (resChar (mu : Chr X.F X.E X.K) P.1) (R.k + j) (R.N j) (cOf R j) hpsi`. Use `⟨fun r hr => ?_, fun r hr r' hr' r'' hr'' hx => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hchi]`. Rewrite `hr` using `[hJ]`. Conclude with `h1 r hr`. Rewrite using `[hchi, hchi, hchi]`. Rewrite `hr`, `hr'`, `hr''` using `[hJ]`.
-
-Conclude with `h2 r hr r' hr' r'' hr'' hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twChrOk_one {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
@@ -96,7 +92,7 @@ def TwChrNFQ (m2 : ℕ) : Prop :=
 variable {Ch sel mu cst}
 
 /- English proof (translation)
-Introduce `i hi P hP hdeg hal h hbal _ hb hne`. Take `⟨h', hs, hb', hnf, hpr⟩` from `twNormRep (Pr := Pr) cst.sharp (i + 1) hP hdeg h hb`. Conclude with `⟨h', hs, hb', hnf, hpr, HE i hi P hP hdeg hal h h' hbal hb hb' hs hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twNormDC_of {m2 : ℕ} (HE : UnfoldingNonvanishingDoubleCoset Ch sel mu cst m2) : TwNormDC Ch sel mu cst m2 := by
   intro i hi P hP hdeg hal h hbal _ hb hne
@@ -104,14 +100,14 @@ theorem twNormDC_of {m2 : ℕ} (HE : UnfoldingNonvanishingDoubleCoset Ch sel mu 
   exact ⟨h', hs, hb', hnf, hpr, HE i hi P hP hdeg hal h h' hbal hb hb' hs hne⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨HF, fun P hP _ => twChrOk_one Ch sel mu cst (m2 + 1) P hP (hpsi P hP)⟩`.
+Supply the required witnesses or components.
 -/
 theorem twChrQ_of {m2 : ℕ} (HF : TwChrNFQ Ch sel mu cst m2) (hpsi : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vGs → ∀ x, IntAt P.1 x → cst.psi P x = 1) :
     TwChrQ Ch sel mu cst m2 :=
   ⟨HF, fun P hP _ => twChrOk_one Ch sel mu cst (m2 + 1) P hP (hpsi P hP)⟩
 
 /- English proof (translation)
-The claim follows from `twIdx_ok_full hX hPr hCh h4 G hT hW hval hm hQG hd hz hs hxi (twNormDC_of HE) (twChrQ_of HF fun P hP x hx => (twCst_ok hPr hCh h4 (twCstQ_of hd hz hs hxi)).psi_int P x hx)`.
+A detailed English derivation is pending.
 -/
 theorem twistedIndex_firstUnfolding_ok (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)

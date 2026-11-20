@@ -19,9 +19,9 @@ namespace UpperTheory.Lit.Nos.C3
 open GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.AbLaw.cst, RingHom.comp_apply, GlobalTheory.AbLaw.rs_self]`. Establish `h1` using `congrArg (fun φ : Y ⟶ Sp R => φ.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)) h`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at h1`. Rewrite using `[h1]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom c))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem appTop_cst {X Y : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] (β : Y ⟶ X)
     (f : X ⟶ Sp R) (f' : Y ⟶ Sp R') (c : R →+* R') (h : β ≫ f = f' ≫ spMap c) (r : R) :
@@ -36,14 +36,14 @@ theorem appTop_cst {X Y : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] (
   exact h2.symm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LB.f_injective (funext fun i => by simp only [Cartier.secPull, GlobalTheory.LB.add_f, map_add])`.
+A detailed English derivation is pending.
 -/
 theorem secPull_add {X Y : Scheme.{0}} {L : LB X} (s t : L.Sec) (φ : Y ⟶ X) :
     Cartier.secPull (s + t) φ = Cartier.secPull s φ + Cartier.secPull t φ :=
   GlobalTheory.LB.f_injective (funext fun i => by simp only [Cartier.secPull, GlobalTheory.LB.add_f, map_add])
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LB.f_injective (funext fun i => by simp only [Cartier.secPull, GlobalTheory.LB.smul_f, map_mul, Cartier.app_resG, Cartier.resG_resG] rfl)`.
+A detailed English derivation is pending.
 -/
 theorem secPull_smul {X Y : Scheme.{0}} {L : LB X} (c : Γ(X, ⊤)) (s : L.Sec) (φ : Y ⟶ X) :
     Cartier.secPull (c • s) φ = φ.appTop c • Cartier.secPull s φ :=
@@ -52,7 +52,7 @@ theorem secPull_smul {X Y : Scheme.{0}} {L : LB X} (c : Γ(X, ⊤)) (s : L.Sec) 
     rfl)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `GlobalTheory.LB.f_injective (funext fun i => by simp [Cartier.secPull, GlobalTheory.LB.zero_f])`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, secPull_add, secPull_smul, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem secPull_sum_smul {X Y : Scheme.{0}} {L : LB X} {J : Type} (S : Finset J) (c : J → Γ(X, ⊤))
     (s : J → L.Sec) (φ : Y ⟶ X) :
@@ -65,9 +65,9 @@ theorem secPull_sum_smul {X Y : Scheme.{0}} {L : LB X} {J : Type} (S : Finset J)
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, secPull_add, secPull_smul, ih]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `p`. Simplify using `[GlobalTheory.LB.zero_f]`. Consider the case `insert x S hx ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `p`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx]`. Simplify using `only [GlobalTheory.LB.add_f, GlobalTheory.LB.smul_f, map_add, map_mul, ih p, h x p, Cartier.resG_resG]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem secMaps_sum_smul {X : Scheme.{0}} {A B : LB X} (w : LB.Iso A B) {J : Type} (S : Finset J)
     (c : J → Γ(X, ⊤)) (a : J → A.Sec) (b : J → B.Sec) (h : ∀ i, Cartier.SecMaps w (a i) (b i)) :
@@ -84,7 +84,7 @@ theorem secMaps_sum_smul {X : Scheme.{0}} {A B : LB X} (w : LB.Iso A B) {J : Typ
     ring
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, IsScalarTower.algebraMap_eq R S T]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_tower (R S T : Type) [CommRing R] [CommRing S] [CommRing T] [Algebra R S] [Algebra S T]
     [Algebra R T] [IsScalarTower R S T] :
@@ -93,29 +93,27 @@ theorem spMap_tower (R S T : Type) [CommRing R] [CommRing S] [CommRing T] [Algeb
   rfl
 
 /- English proof (translation)
-Introduce `R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hm D hD1 hD2 hres A _ _ hA G _ hG e he hφ`. Take `⟨N, H, s, M, t, w, g, hH, hM, hs, ht, hg, hw, hD⟩` from `UpperTheory.Lit.Nos.C2.exists_veryAmple_families_stable_matrix R K W K' hm D hD1 hD2 hres A hA G hG e he hφ`. Take `⟨h, k, hh, hk⟩` from `GlobalTheory.T.matrix_descent_unramified_dvr R K W K' hm D hD1 hD2 hres (N + 1) g hg hD`. Establish `hkdet : IsUnit k.det`. Establish `e1 : algebraMap K K' k.det = algebraMap W K' h.det * g.det`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det, RingHom.map_det, ← Matrix.det_mul]`. Conclude with `congrArg Matrix.det hk`. Establish `hu : IsUnit (algebraMap K K' k.det)`. Rewrite using `[e1]`. Conclude with `((hh.map (algebraMap W K')).mul hg)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `hu` using `[h0, map_zero]`. Conclude with `not_isUnit_zero hu`. Establish `hs'` using `GlobalTheory.T.isVeryAmpleBySections_of_invertible_linear_change K A.left A.hom H N s k hkdet hH hs`. Establish `ht'` using `GlobalTheory.T.isVeryAmpleBySections_of_invertible_linear_change W G.left G.hom M N t h hh hM ht`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hs0, hsci⟩` from `(GlobalTheory.ProjSpace.veryAmpleBy_iff _ _).1 hs'`. Take `⟨ht0, htci⟩` from `(GlobalTheory.ProjSpace.veryAmpleBy_iff _ _).1 ht'`. Establish `hqA : (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) ≫ A.hom = (pullback.snd G.hom (spMap (algebraMap W K'))) ≫ spMap (algebraMap K K')`. Establish `h1 : e.hom.left ≫ pullback.snd A.hom (spMap (algebraMap K K')) = (pullback.snd G.hom (spMap (algebraMap W K')))` using `Over.w e.hom`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqG : (pullback.fst G.hom (spMap (algebraMap W K'))) ≫ G.hom = (pullback.snd G.hom (spMap (algebraMap W K'))) ≫ spMap (algebraMap W K')` using `pullback.condition`. Establish `hbase : (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) ≫ A.hom ≫ spMap (algebraMap R K) = (pullback.fst G.hom (spMap (algebraMap W K'))) ≫ G.hom ≫ spMap (algebraMap R W)`. Rewrite using `[← Category.assoc, hqA, ← Category.assoc, hqG, Category.assoc, Category.assoc, spMap_tower R K K', spMap_tower R W K']`. Establish `hsec : ∀ j, Cartier.SecMaps w (Cartier.secPull (∑ l, GlobalTheory.AbLaw.cst G.hom ⊤ (h j l) • t l) (pullback.fst G.hom (spMap (algebraMap W K')))) (Cartier.secPull (∑ m, GlobalTheory.AbLaw.cst A.hom ⊤ (k j m) • s m) (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))))`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[UpperTheory.Lit.Nos.C3.secPull_sum_smul, UpperTheory.Lit.Nos.C3.secPull_sum_smul]`. Establish `e2 : ∑ m, (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))).appTop (GlobalTheory.AbLaw.cst A.hom ⊤ (k j m)) • Cartier.secPull (s m) (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) = ∑ l, (pullback.fst G.hom (spMap (algebraMap W K'))).appTop (GlobalTheory.AbL …`. Simplify using `only [UpperTheory.Lit.Nos.C3.appTop_cst (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) A.hom (pullback.snd G.hom (spMap (algebraMap W K'))) (algebraMap K K') hqA, UpperTheory.Lit.Nos.C3.appTop_cst (pullback.fst G.hom (spMap (algebraMap W K'))) G.hom (pullback.snd G.h …`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Establish `e3` using `congrFun (congrFun hk j) m`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply] at e3`. Rewrite using `[e3, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_mul]`. Rewrite using `[e2]`. Conclude with `UpperTheory.Lit.Nos.C3.secMaps_sum_smul w _ _ _ _ hw`. Use `⟨Over.mk (PSpace.str R N), by show QuasiSeparated (PSpace.str R N); unfold PSpace.str; infer_instance, GlobalTheory.ProjSpace.toProj A.hom _ hs0 ≫ GlobalTheory.ProjSpace.baseChange N (algebraMap R K), by simp only [Over.mk_hom, Category.assoc, GlobalTheory.ProjSpace.baseChange_st …` and prove the remaining obligations. Establish `hci : IsClosedImmersion (GlobalTheory.ProjSpace.toProj A.hom _ hs0 ≫ (GlobalTheory.ProjSpace.isPullback_baseChange N (algebraMap R K)).isoPullback.hom)` using `inferInstance`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsClosedImmersion (pullback.lift (f := PSpace.str R N) (g := spMap (algebraMap R K)) (GlobalTheory.ProjSpace.toProj A.hom _ hs0 ≫ GlobalTheory.ProjSpace.baseChange N (algebraMap R K)) A.hom _)`. Establish `key : pullback.lift (f` using `PSpace.str R N) (g := spMap (algebraMap R K)) (GlobalTheory.ProjSpace.toProj A.hom _ hs0 ≫ GlobalTheory.ProjSpace.baseChange N (algebraMap R K)) A.hom (by simp only [Category.assoc, GlobalTheory.ProjSpace.baseChange_str, GlobalTheory.ProjSpace.toProj_str_assoc]) = GlobalTheory.Pr …`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, IsPullback.isoPullback_hom_fst]`. Rewrite using `[pullback.lift_snd, Category.assoc, IsPullback.isoPullback_hom_snd, GlobalTheory.ProjSpace.toProj_str]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[key]`. Conclude with `hci`. Establish `hci : IsClosedImmersion (GlobalTheory.ProjSpace.toProj G.hom _ ht0 ≫ (GlobalTheory.ProjSpace.isPullback_baseChange N (algebraMap R W)).isoPullback.hom)` using `inferInstance`. Express the relevant statement in the definitionally equal form `IsClosedImmersion (pullback.lift (f := PSpace.str R N) (g := spMap (algebraMap R W)) (GlobalTheory.ProjSpace.toProj G.hom _ ht0 ≫ GlobalTheory.ProjSpace.baseChange N (algebraMap R W)) G.hom _)`. Establish `key : pullback.lift (f` using `PSpace.str R N) (g := spMap (algebraMap R W)) (GlobalTheory.ProjSpace.toProj G.hom _ ht0 ≫ GlobalTheory.ProjSpace.baseChange N (algebraMap R W)) G.hom (by simp only [Category.assoc, GlobalTheory.ProjSpace.baseChange_str, GlobalTheory.ProjSpace.toProj_str_assoc]) = GlobalTheory.Pr …`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, IsPullback.isoPullback_hom_fst]`. Rewrite using `[pullback.lift_snd, Category.assoc, IsPullback.isoPullback_hom_snd, GlobalTheory.ProjSpace.toProj_str]`. Rewrite using `[key]`. Conclude with `hci`.
-
-Rewrite using `[GlobalTheory.ProjSpace.toProj_baseChange, GlobalTheory.ProjSpace.toProj_baseChange, ← Category.assoc, ← GlobalTheory.ProjSpace.toProj_secPull hs0, ← GlobalTheory.ProjSpace.toProj_secPull ht0]`. Express the relevant statement in the definitionally equal form `GlobalTheory.ProjSpace.toProj ((e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) ≫ A.hom ≫ spMap (algebraMap R K)) _ _ = GlobalTheory.ProjSpace.toProj ((pullback.fst G.hom (spMap (algebraMap W K'))) ≫ G.hom ≫ spMap (algebraMap R W)) _ _`. Rewrite using `[hbase]`. Conclude with `GlobalTheory.ProjSpace.toProj_eq_of_secMaps _ _ hsec`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compatible_projective_embeddings : ∀ (R K W K' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra R W] [Algebra K K'] [Algebra R K'] [IsScalarTower R W K'] [IsScalarTower R K K'], (maximalIdeal R).map (algebraMap R W) = maximalIdeal W → ∀ D : Set (K' ≃ₐ[K] K'), (∀ σ ∈ D, ∀ x : W, ∃ y : W, σ (algebraMap W K' x) = algebraMap W K' y) → (∀ σ ∈ D, ∀ x : W, ∃ y : W, σ.symm (algebraMap W K' x) = algebraMap W K' y) → (∀ x : W, (∀ σ ∈ D, ∀ y : W, σ (algebraMap W K' x) = algebraMap W K' y → y - x ∈ maximalIdeal W) → ∃ r : R, x - algebraMap R W r ∈ maximalIdeal W) → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ e : (Over.pullback (spMap (algebraMap W K'))).obj G ≅ (Over.pullback (spMap (algebraMap K K'))).obj A, IsMonHom e.hom → (∀ σ ∈ D, ∃ (τ : W →+* W) (φ : G.left ⟶ G.left), (∀ x : W, σ (algebraMap W K' x) = algebraMap W K' (τ x)) ∧ φ ≫ G.hom = G.hom ≫ spMap τ ∧ pullback.fst G.hom (spMap (algebraMap W K')) ≫ φ = (e.hom.left ≫ pullback.map A.hom (spMap (algebraMap K K')) A.hom (spMap (algebraMap K K')) (𝟙 _) (spMap (σ : K' →+* K')) (𝟙 _) (by simp) (by rw [Category.comp_id, ← Spec.map_comp]; congr 1; ext x; exact (σ.commutes x).symm) ≫ e.inv.left) ≫ pullback.fst G.hom (spMap (algebraMap W K'))) → ∃ (P : Over (Sp R)) (_ : QuasiSeparated P.hom) (iA : A.left ⟶ P.left) (hA : iA ≫ P.hom = A.hom ≫ spMap (algebraMap R K)) (_ : IsClosedImmersion (pullback.lift iA A.hom hA)) (iG : G.left ⟶ P.left) (hG : iG ≫ P.hom = G.hom ≫ spMap (algebraMap R W)) (_ : IsClosedImmersion (pullback.lift iG G.hom hG)), e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K')) ≫ iA = pullback.fst G.hom (spMap (algebraMap W K')) ≫ iG := by
   intro R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hm D hD1 hD2 hres A _ _ hA G _ hG e he hφ

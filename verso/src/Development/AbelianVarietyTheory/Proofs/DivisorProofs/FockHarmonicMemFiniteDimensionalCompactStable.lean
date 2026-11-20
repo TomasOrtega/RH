@@ -19,9 +19,9 @@ instance [Finite σ] (N : ℕ) : FiniteDimensional ℂ (lowDeg σ N) := by
   infer_instance
 
 /- English proof (translation)
-Take `⟨N, hN⟩ : ∃ N, N = P.totalDegree` from `⟨_, rfl⟩`. Rewrite using `[← hN]`. Establish `hs` using `sum_homogeneousComponent P`. Rewrite `hs` using `[← hN]`. Rewrite using `[← hs]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun e he => ?_` and prove the remaining obligations. Establish `he' : e < N + 1` using `Finset.mem_range.1 he`. Conclude with `Submodule.mem_iSup_of_mem (⟨e, he'⟩ : Fin (N + 1)) (homogeneousComponent_mem e P)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_lowDeg_self (P : MvPolynomial σ ℂ) : P ∈ lowDeg σ P.totalDegree := by
   obtain ⟨N, hN⟩ : ∃ N, N = P.totalDegree := ⟨_, rfl⟩
@@ -35,7 +35,7 @@ theorem mem_lowDeg_self (P : MvPolynomial σ ℂ) : P ∈ lowDeg σ P.totalDegre
     (homogeneousComponent_mem e P)
 
 /- English proof (translation)
-Establish `hle : lowDeg σ N ≤ (lowDeg σ N).comap K` using `iSup_le fun d x hx => Submodule.mem_comap.2 (Submodule.mem_iSup_of_mem d (hK d x hx))`. Conclude with `hle hP`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem DegZero.map_lowDeg {K : Module.End ℂ (MvPolynomial σ ℂ)} (hK : DegZero K) (N : ℕ)
     {P : MvPolynomial σ ℂ} (hP : P ∈ lowDeg σ N) : K P ∈ lowDeg σ N := by
@@ -50,11 +50,11 @@ namespace GlobalTheory.FockAlg
 open FinHarm
 
 /- English proof (translation)
-Introduce `P Q R S h hh`. Establish `hh' : h ∈ sub2 P Q R S`. Rewrite using `[← SetLike.mem_coe, coe_fockHarmonicsSecondMemberSubmodule]`. Conclude with `hh`. Use `⟨sub2 P Q R S ⊓ lowDeg _ h.totalDegree, ?_, ⟨hh', mem_lowDeg_self h⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.finiteDimensional_of_le inf_le_right`. Introduce `v hv`. Rewrite using `[← coe_fockHarmonicsSecondMemberSubmodule]`. Conclude with `hv.1`. Introduce `Y hY w hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨fockHarmonicsSecondMember_kStable.1 Y hY w hw.1, DegZero.map_lowDeg (degZero_fockAct1 hY) _ hw.2⟩`. Introduce `Y hY w hw`. Conclude with `⟨fockHarmonicsSecondMember_kStable.2 Y hY w hw.1, DegZero.map_lowDeg (degZero_fockAct2 hY) _ hw.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem fin_harm : ∀ (P Q R S : ℕ) (h : Pol P Q R S), h ∈ harm2 P Q R S →
     ∃ H0 : Submodule ℂ (Pol P Q R S), FiniteDimensional ℂ H0 ∧ h ∈ H0 ∧

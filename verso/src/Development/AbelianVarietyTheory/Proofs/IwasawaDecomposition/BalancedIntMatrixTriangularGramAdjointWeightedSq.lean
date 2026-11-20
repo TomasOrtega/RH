@@ -6,23 +6,21 @@ open Matrix GlobalTheory.RedTh NumberField GlobalTheory.PolFan ReciprocityTheory
 namespace GlobalTheory.RedTh
 
 /- English proof (translation)
-Introduce `n A A' d u v hd hvu huv h`. Use `set a := A.map (Int.cast : ℤ → ℝ) with ha`. Use `set a' := A'.map (Int.cast : ℤ → ℝ) with ha'`. Establish `key : (u * a * v)ᵀ * diagonal d = diagonal d * (u * a' * v)`. Establish `h2` using `congrArg (fun M => vᵀ * M * v) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [gram] at h2`. Establish `e1 : vᵀ * (aᵀ * (uᵀ * diagonal d * u)) * v = (u * a * v)ᵀ * diagonal d * (u * v)`. Simplify using `only [transpose_mul, Matrix.mul_assoc]`. Establish `e2 : vᵀ * (uᵀ * diagonal d * u * a') * v = (u * v)ᵀ * diagonal d * (u * a' * v)`. Simplify using `only [transpose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h2` using `[e1, e2, huv]`. Simplify using `using h2`. Establish `c1 : ∀ p q, d p * (u * a * v) p q = d q * (u * a' * v) q p`. Introduce `p q`. Use `congrFun (congrFun key q) p` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [mul_diagonal, diagonal_mul, transpose_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htr : ∑ p, ∑ q, (u * a' * v) q p * (u * a * v) p q = (((A' * A).trace : ℤ) : ℝ)`. Establish `e : ∑ p, ∑ q, (u * a' * v) q p * (u * a * v) p q = ((u * a' * v) * (u * a * v)).trace`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.trace, Matrix.mul_apply]`. Rewrite using `[e]`. Establish `: (u * a' * v) * (u * a * v) = u * (a' * a) * v`. Rewrite using `[show (u * a' * v) * (u * a * v) = u * a' * (v * u) * a * v by simp only [Matrix.mul_assoc], hvu]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hvu, Matrix.one_mul]`. Rewrite using `[ha, ha']`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← htr]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hq` using `(hd q).ne'`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hq, sq, ← mul_assoc, c1 p q]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← htr, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hp` using `(hd p).ne'`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hp, sq, ← mul_assoc, ← c1 p q]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem adjoint_weighted_sq_trace : ∀ (n : ℕ) (A A' : Matrix (Fin n) (Fin n) ℤ) (d : Fin n → ℝ) (u v : Matrix (Fin n) (Fin n) ℝ), (∀ i, 0 < d i) → v * u = 1 → u * v = 1 → (A.map (Int.cast : ℤ → ℝ))ᵀ * gram d u = gram d u * A'.map (Int.cast : ℤ → ℝ) → (∀ p q, d p * (u * A.map (Int.cast : ℤ → ℝ) * v) p q = d q * (u * A'.map (Int.cast : ℤ → ℝ) * v) q p) ∧ (∑ p, ∑ q, d p / d q * (u * A.map (Int.cast : ℤ → ℝ) * v) p q ^ 2 = (((A' * A).trace : ℤ) : ℝ)) ∧ ∑ p, ∑ q, d p / d q * (u * A'.map (Int.cast : ℤ → ℝ) * v) p q ^ 2 = (((A' * A).trace : ℤ) : ℝ) := by
   intro n A A' d u v hd hvu huv h

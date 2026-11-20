@@ -8,7 +8,7 @@ namespace GlobalTheory.CovTop.LevelIndex
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.DIV
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index_comap, Subgroup.relIndex]`. Use `⟨Subgroup.index_ne_zero_of_finite, ?_⟩` and prove the remaining obligations. Conclude with `(Nat.le_of_dvd Nat.card_pos (Subgroup.index_dvd_card _)).trans (Nat.le_of_dvd Nat.card_pos (Subgroup.card_subgroup_dvd_card _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem index_comap_le {K G : Type*} [Group K] [Group G] [Finite G] (f : K →* G) (H : Subgroup G) :
     (H.comap f).index ≠ 0 ∧ (H.comap f).index ≤ Nat.card G := by
@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E]
 instance finite_kP (PP : Pl E) : Finite (kP PP) := Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot
 
 /- English proof (translation)
-Establish `h : Nat.card (GL (Fin r) R) ≤ Nat.card (Matrix (Fin r) (Fin r) R)` using `Nat.card_le_card_of_injective (fun x : GL (Fin r) R => (x : Matrix (Fin r) (Fin r) R)) Units.val_injective`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Nat.card (Fin r → Fin r → R) = _`. Simplify using `only [Nat.card_fun, Nat.card_eq_fintype_card, Fintype.card_fin]`. Rewrite using `[← pow_mul, sq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_GL_le (R : Type) [CommRing R] [Finite R] (r : ℕ) : Nat.card (GL (Fin r) R) ≤ Nat.card R ^ (r ^ 2) := by
   have h : Nat.card (GL (Fin r) R) ≤ Nat.card (Matrix (Fin r) (Fin r) R) :=
@@ -35,7 +35,7 @@ theorem card_GL_le (R : Type) [CommRing R] [Finite R] (r : ℕ) : Nat.card (GL (
   rw [← pow_mul, sq]
 
 /- English proof (translation)
-Rewrite using `[Nat.card_pi, ← Finset.prod_pow, ← Finset.prod_coe_sort Pg]`. Use `Finset.prod_le_prod' fun PP _ => ?_` and prove the remaining obligations. Conclude with `card_GL_le (kP PP.1) r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_levelQuotientGroup_le_prod_absNorm_pow_sq (Pg : Finset (Pl E)) (r : ℕ) :
     Nat.card (G0 Pg r) ≤ (∏ PP ∈ Pg, Ideal.absNorm PP.asIdeal) ^ (r ^ 2) := by
@@ -44,9 +44,7 @@ theorem card_levelQuotientGroup_le_prod_absNorm_pow_sq (Pg : Finset (Pl E)) (r :
   exact card_GL_le (kP PP.1) r
 
 /- English proof (translation)
-Establish `hd : ∏ PP ∈ Pg, PP.asIdeal ∣ Ideal.span {((N : ℕ) : 𝓞 E)}`. Use `Finset.prod_dvd_of_coprime (fun P _ Q _ hPQ => ?_) fun PP hP => Ideal.dvd_span_singleton.2 (h PP hP)` and prove the remaining obligations. Conclude with `Ideal.isCoprime_iff_sup_eq.2 (P.isMaximal.coprime_of_ne Q.isMaximal fun e => hPQ (HeightOneSpectrum.ext e))`. Establish `h2` using `map_dvd Ideal.absNorm hd`. Rewrite `h2` using `[map_prod, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`.
-
-Conclude with `Nat.le_of_dvd (pow_pos (Nat.pos_of_ne_zero hN) _) h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_absNorm_le (Pg : Finset (Pl E)) {N : ℕ} (hN : N ≠ 0) (h : ∀ PP ∈ Pg, ((N : ℕ) : 𝓞 E) ∈ PP.asIdeal) :
     ∏ PP ∈ Pg, Ideal.absNorm PP.asIdeal ≤ N ^ Module.finrank ℚ E := by
@@ -62,9 +60,9 @@ variable {F : Type} [Field F] [NumberField F] [StarRing E] [Algebra F E] {n : �
 open scoped TensorProduct in
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Establish `e : (lev hc J β L).subgroupOf (parLev hc J β L) = L.P.H.comap (rHom hc J β L)`. Use extensionality with `x`. Conclude with `⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩`. Rewrite using `[Subgroup.relIndex, e]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `index_comap_le _ _`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_lev_le (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L : LevDat E LL n)
     (B : Subgroup (GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) (hB : B = parLev hc J β L) :
@@ -78,7 +76,7 @@ theorem relIndex_lev_le (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (β : G
 
 open scoped TensorProduct in
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `⟨fun h => h.1, fun h => ⟨h, Subgroup.mem_top _⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem lev_full (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L : LevDat E LL n) :
     lev hc J β { L with P := LevelP.full L.Pg L.r LL } = parLev hc J β L := by
@@ -97,19 +95,19 @@ open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `_ D Tu C t0 hC i P`. Establish `hB : GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i (LevelP.full _ _ _) = parLev D.sp.cm (Wc D i).gram (C.βW i) (C.datWp i P)`. Establish `e : C.datWp i (LevelP.full _ _ _) = { C.datWp i P with P` using `LevelP.full (C.datWp i P).Pg (C.datWp i P).r ℂ } := by`. Simplify using `only [LevCh.datWp, datY, if_true]`. Rewrite using `[← GlobalTheory.CovTop.LevelIndex.lev_full, ← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h0, h1⟩` from `GlobalTheory.CovTop.LevelIndex.relIndex_lev_le D.sp.cm (Wc D i).gram (C.βW i) (C.datWp i P) _ hB`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hN : D.host.g 0 * D.host.g 1 ≠ 0` using `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Establish `hg : ∀ PP ∈ C.Pg, ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Introduce `PP hP`. Take `⟨k, hk⟩` from `(hC.Pg PP).1 hP`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `C.C.P.pb_over k`. Rewrite `h0` using `[← hk]`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal` using `h0`. Rewrite `h2` using `[map_natCast]`. Rewrite using `[Nat.cast_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ h2`. Conclude with `Ideal.mul_mem_left _ _ h2`. Establish `h2` using `GlobalTheory.CovTop.LevelIndex.prod_absNorm_le C.Pg hN hg`. Establish `h3` using `GlobalTheory.CovTop.LevelIndex.card_levelQuotientGroup_le_prod_absNorm_pow_sq C.Pg D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i P).relIndex (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i (LevelP.full _ _ _)) ≤ (D.host.g 0 * D.host.g 1) ^ (2 * D.R.f * D.R.r ^ 2)`. Rewrite using `[pow_mul, ← hfr]`. Conclude with `h1.trans (h3.trans (Nat.pow_le_pow_left h2 _))`. Establish `h5` using `Real.log_le_log (Nat.cast_pos.2 (Nat.pos_of_ne_zero h0)) (Nat.cast_le (α := ℝ).2 h4)`. Use `h5.trans (le_of_eq ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovTop.LevelIndex.indexBound : ∀ (hP : Hypotheses2) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ), GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.IndexBound C i P := by
   intro _ D Tu C t0 hC i P

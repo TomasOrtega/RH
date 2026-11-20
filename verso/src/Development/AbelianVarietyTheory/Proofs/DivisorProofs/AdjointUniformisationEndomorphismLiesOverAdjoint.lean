@@ -22,21 +22,21 @@ noncomputable section
 namespace GlobalTheory.Mum.AdjEnd
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.rosatiAdjoint_unique_degenerationData`.
+A detailed English derivation is pending.
 -/
 theorem rosati_unique : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (f g g' : D.toPre.P.A ⟶ D.toPre.P.A), IsMonHom f → IsMonHom g → IsMonHom g' → RosatiAdj D.toPre.P.A D.toPre.P.L f g → RosatiAdj D.toPre.P.A D.toPre.P.L f g' → g = g' := GlobalTheory.T.rosatiAdjoint_unique_degenerationData
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.uniformisationEndomorphism_carries_periodPoint_balanced`.
+A detailed English derivation is pending.
 -/
 theorem keepsIota : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ E : EndU U.toUnifPre, E.aB = a → E.h = h' → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (y : D.toPre.X) (g g' : GtPtF D.toPre F), GtPtF.IsIota y g → E.Act g g' → GtPtF.IsIota (h y) g' := GlobalTheory.T.uniformisationEndomorphism_carries_periodPoint_balanced
 
 /- English proof (translation)
-Use `E.homG` as an intermediate fact. Use `E.homB` as an intermediate fact. Establish `hu` using `fun e => gtCoord_end_torus_abelian GlobalTheory.firstFiveLaws R (maximalIdeal R) hR D.toPre e G (U.gt e) ((Over.pullback (thick R (maximalIdeal R) e)).map E.aG) inferInstance`. Establish `hm : ∀ e, (Over.pullback (thick R (maximalIdeal R) e)).map E.aB = (Over.pullback (thick R (maximalIdeal R) e)).map a` using `fun e => (hu e).2.unique ⟨inferInstance, (E.q_lin e)⟩ ⟨inferInstance, hE.2.2.1 e⟩`. Use `D.toPre.P.isAb.proper` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing R := hR.1`. Use `⟨GlobalTheory.hom_eq_of_thickenings_of_isProper R (maximalIdeal R) (IsLocalRing.maximalIdeal_le_jacobson _) D.toPre.P.A D.toPre.P.A _ _ fun e => ?_, ?_⟩` and prove the remaining obligations. Establish `k` using `congrArg (fun m => m.left ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) e)) (hm e)`. Simplify using `only [GlobalTheory.EndData.map_fst] at k`. Conclude with `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hi⟩` from `hE.2.2.2 0`. Take `⟨t', ht', hi'⟩` from `E.i_lin 0`. Conclude with `(hu 0).1.unique ⟨t', ht', hi'⟩ ⟨t, ht, hi⟩`.
+A detailed English derivation is pending.
 -/
 theorem aB_h_eq (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : AdmBase R (maximalIdeal R))
     (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
@@ -62,15 +62,15 @@ theorem aB_h_eq (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hR : AdmBa
     exact (hu 0).1.unique ⟨t', ht', hi'⟩ ⟨t, ht, hi⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D A G _ _ hG U a a' h h' hD g g' hg hg' hL`. Take `⟨hadm, hc⟩` from `hB`. Establish `hF` using `GlobalTheory.UT.functorial_of_unif R (maximalIdeal R) hadm D A G hG U`. Use `U.gen_hom` as an intermediate fact. Use `hg.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex : ∀ b : G ⟶ G, IsMonHom b → ∃ E : EndU U.toUnifPre, E.aG = b` using `fun b hb => by`. Take `⟨E, e1, -⟩` from `hF.1 b (U.gen.inv ≫ (Over.pullback (jK R)).map b ≫ U.gen.hom) hb inferInstance (by simp)`. Conclude with `⟨E, e1⟩`. Take `⟨E, rfl⟩` from `ex g hg.1`. Take `⟨E', rfl⟩` from `ex g' hg'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨-, hRB, -, -⟩, hFp⟩` from `hF.2 E E' hL`. Take `⟨haB, hh⟩` from `aB_h_eq R hadm D A G U.toUnifPre E a h' hD.1 hg.2`. Establish `ha' : E'.aB = a'` using `rosati_unique R ⟨hadm, hc⟩ D a E'.aB a' hD.1 E'.homB hD.2.1 (haB ▸ hRB) hD.2.2.1`. Establish `hh2 : E'.h = h`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `F` to `AlgebraicClosure (FractionRing R)`. Take `⟨g₀, hg₀⟩` from `GlobalTheory.TorusExt.exists_iota (F := F) D.tau_bimult y`. Take `⟨g₁, hg₁, -⟩` from `((hFp F).1 g₀)`. Conclude with `GlobalTheory.IotaInj.main GlobalTheory.firstFiveLaws R (maximalIdeal R) hadm D F _ _ g₁ ((hFp F).2.1 y g₀ g₁ hg₀ hg₁) (keepsIota R ⟨hadm, hc⟩ D A G hG U a a' h h' hD E haB hh F y g₀ g₁ hg₀ hg₁)`. Use `E'.homG` as an intermediate fact.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨inferInstance, fun e => inferInstance, fun e => GlobalTheory.Mum.EndModel.thickMap_map _ e, fun e => ha' ▸ E'.q_lin e, fun e => hh2 ▸ E'.i_lin e⟩`.
+A detailed English derivation is pending.
 -/
 theorem linEnd_of_adjoint : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ g g' : G ⟶ G, LinEnd U.toUnifPre a h' g → IsMonHom g' → LBIso (cubeLB G ![fst G G ≫ g, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ g'] U.LG.L) → LinEnd U.toUnifPre a' h g' := by
   intro R _ _ _ hB D A G _ _ hG U a a' h h' hD g g' hg hg' hL

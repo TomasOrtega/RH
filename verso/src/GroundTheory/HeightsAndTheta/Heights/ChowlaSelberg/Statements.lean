@@ -77,7 +77,7 @@ variable {K : Type} [Field K] [NumberField K]
 def classRep (C : ClassGroup (𝓞 K)) : (Ideal (𝓞 K))⁰ := (ClassGroup.mk0_surjective C).choose
 
 /- English proof (translation)
-The claim follows from `(ClassGroup.mk0_surjective C).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mk0_classGroupRep (C : ClassGroup (𝓞 K)) : ClassGroup.mk0 (classRep C) = C :=
   (ClassGroup.mk0_surjective C).choose_spec

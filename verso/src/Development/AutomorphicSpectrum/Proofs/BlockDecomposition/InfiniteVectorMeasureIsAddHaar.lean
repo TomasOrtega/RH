@@ -11,7 +11,7 @@ noncomputable def rowInfEquiv : (Fin k → InfiniteAdeleRing E) ≃+ (Fin k → 
   AddEquiv.piCongrRight fun _ => (infEq E).symm.toAddEquiv
 
 /- English proof (translation)
-Establish `hc : Continuous (rowInfEquiv E k)` using `continuous_pi fun i => (GASplit.continuous_infEq_symm E).comp (continuous_apply i)`. Establish `hc' : Continuous (rowInfEquiv E k).symm` using `continuous_pi fun i => (continuous_infEq E).comp (continuous_apply i)`. Establish `hp : (Measure.pi fun _ : Fin k => GroundTheory.Global.infiniteAdeleMeasure E).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Conclude with `AddEquiv.isAddHaarMeasure_map _ (rowInfEquiv E k) hc hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nuInf_isAddHaarMeasure : (nuInf E k).IsAddHaarMeasure := by
   have hc : Continuous (rowInfEquiv E k) :=

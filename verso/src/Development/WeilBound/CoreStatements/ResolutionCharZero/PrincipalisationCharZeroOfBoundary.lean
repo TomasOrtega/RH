@@ -12,13 +12,13 @@ namespace PositivityTheory.ResPlug.WeightsCompactStabilizer
 open GlobalTheory.CompanionTheory.Hypotheses₂ GlobalTheory.CompanionTheory.Hypotheses₂.SncBlowup
 
 /- English proof (translation)
-The claim follows from `principalisationCharZero_of_eff hB PositivityTheory.ResPlug.GEndGen.gEff`.
+A detailed English derivation is pending.
 -/
 theorem principalisationCharZero_of_boundary (hB : GBoundary) : PrincipalisationCharZero :=
   principalisationCharZero_of_eff hB PositivityTheory.ResPlug.GEndGen.gEff
 
 /- English proof (translation)
-The claim follows from `principalisationCharZero_bot_of_eff PositivityTheory.ResPlug.GEndGen.gEff`.
+A detailed English derivation is pending.
 -/
 theorem principalisationCharZero_bot_closed :
     ∀ (k : Type) [Field k] [CharZero k] (d : ℕ) (X : Scheme.{0}) (g : X ⟶ Sp k),

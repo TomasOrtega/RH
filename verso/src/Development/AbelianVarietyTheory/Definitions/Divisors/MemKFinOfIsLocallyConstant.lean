@@ -25,7 +25,7 @@ def colX : Matrix (Fin (n + n)) (Fin n) A :=
 variable {A n}
 
 /- English proof (translation)
-Rewrite using `[StdUnn.blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_mul_fromRows]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockMatrix_mul_blockColumn {k : Type} (a b c d : Matrix (Fin n) (Fin n) A) (x y : Matrix (Fin n) k A) :
     StdUnn.blk4 a b c d * (Matrix.fromRows x y).submatrix finSumFinEquiv.symm id =
@@ -33,7 +33,7 @@ theorem blockMatrix_mul_blockColumn {k : Type} (a b c d : Matrix (Fin n) (Fin n)
   rw [StdUnn.blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_mul_fromRows]
 
 /- English proof (translation)
-Rewrite using `[columnBlock, ← Matrix.submatrix_id_id t, ← Equiv.coe_refl, Matrix.submatrix_mul_equiv, Matrix.fromRows_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colY_mul {k : Type} (t : Matrix (Fin n) k A) :
     columnBlock A n * t = (Matrix.fromRows t (0 : Matrix (Fin n) k A)).submatrix finSumFinEquiv.symm id := by
@@ -41,7 +41,7 @@ theorem colY_mul {k : Type} (t : Matrix (Fin n) k A) :
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, blockMatrix_mul_blockColumn, Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, Matrix.transpose_fromRows, Matrix.fromCols_mul_fromRows]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem col_form {k k' : Type} (x y : Matrix (Fin n) k A) (x' y' : Matrix (Fin n) k' A) :
     ((Matrix.fromRows x y).submatrix finSumFinEquiv.symm id)ᵀ *
@@ -52,7 +52,7 @@ theorem col_form {k k' : Type} (x y : Matrix (Fin n) k A) (x' y' : Matrix (Fin n
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[columnBlock, ← Matrix.submatrix_map, Matrix.fromRows_map, Matrix.map_one _ (map_zero f) (map_one f), Matrix.map_zero _ (map_zero f), columnBlock]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem colY_map {B : Type} [CommRing B] {Φ : Type} [FunLike Φ A B] [RingHomClass Φ A B] (f : Φ) :
     (columnBlock A n).map f = columnBlock B n := by
@@ -60,7 +60,7 @@ theorem colY_map {B : Type} [CommRing B] {Φ : Type} [FunLike Φ A B] [RingHomCl
     Matrix.map_zero _ (map_zero f), columnBlock]
 
 /- English proof (translation)
-Rewrite using `[colX, ← Matrix.submatrix_map, Matrix.fromRows_map, Matrix.map_one _ (map_zero f) (map_one f), Matrix.map_zero _ (map_zero f), colX]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem colX_map {B : Type} [CommRing B] {Φ : Type} [FunLike Φ A B] [RingHomClass Φ A B] (f : Φ) :
     (colX A n).map f = colX B n := by
@@ -68,11 +68,11 @@ theorem colX_map {B : Type} [CommRing B] {Φ : Type} [FunLike Φ A B] [RingHomCl
     Matrix.map_zero _ (map_zero f), colX]
 
 /- English proof (translation)
-Establish `e : Matrix.fromCols (columnBlock A n) (colX A n) = (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) A).submatrix finSumFinEquiv.symm id`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `only [columnBlock, colX, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply, Matrix.zero_apply, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use `⟨?_, colX A n, (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) A).submatrix id finSumFinEquiv.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[colY_map, columnBlock, col_form]`. Simplify using the standard rewrite rules. Rewrite using `[colX_map, colX, col_form]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← Equiv.coe_refl, Matrix.submatrix_mul_equiv, Matrix.one_mul, Matrix.submatrix_one_equiv]`. Rewrite using `[e, Matrix.submatrix_mul_equiv, Matrix.one_mul, Matrix.submatrix_id_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLagr_colY_blk {R : Type} [CommRing R] [Algebra R A] (c : A →ₐ[R] A) :
     IsLagr c (StdUnn.blk4 0 1 (-1) 0) (columnBlock A n) := by
@@ -105,7 +105,7 @@ Both sides reduce to the same expression.
 @[simp] theorem conjR_tmul (r : R) (e : E) : conjR R σ (r ⊗ₜ[F] e) = r ⊗ₜ[F] σ e := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjR_eq_sigR (z : R ⊗[F] E) : conjR R σ z = sigR R σ z := by
   induction z using TensorProduct.induction_on with
@@ -114,15 +114,15 @@ theorem conjR_eq_sigR (z : R ⊗[F] E) : conjR R σ z = sigR R σ z := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => conjR_eq_sigR R σ _`.
+A detailed English derivation is pending.
 -/
 theorem map_conjR {α β : Type} (M : Matrix α β (R ⊗[F] E)) : M.map (conjR R σ) = M.map (sigR R σ) :=
   Matrix.ext fun _ _ => conjR_eq_sigR R σ _
 
 /- English proof (translation)
-Establish `hJ : (JR (F` using `F) R Q)ᵀ = -JR R Q := by`. Rewrite using `[JR_eq R hQ, StdUnn.blk4, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose]`. Express the relevant statement in the definitionally equal form `_ = (-Matrix.fromBlocks 0 1 (-1) 0).submatrix _ _`. Rewrite using `[Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `g`. Express the relevant statement in the definitionally equal form `(g.1)ᵀ * JR R Q * (g.1).map (conjR R σ) = JR R Q ↔ cT (sigR R σ) g.1 * JR R Q * g.1 = JR R Q`. Rewrite using `[map_conjR, cT]`. Apply the tactic sequence `constructor <;> intro h <;> have := congrArg Matrix.transpose h <;>`. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc, hJ]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UG_eq_HR (hQ : Q = StdUnn.blk4 0 1 (-1) 0) : UG (conjR R σ) (JR R Q) = HR R σ Q := by
   have hJ : (JR (F := F) R Q)ᵀ = -JR R Q := by
@@ -154,7 +154,7 @@ Both sides reduce to the same expression.
     matR R σ ((toUG R σ hQ).symm g) = ((g : GL (Fin (n + n)) (R ⊗[F] E)) : Matrix _ _ _) := rfl
 
 /- English proof (translation)
-The claim follows from `(isEmbedding_matHom R σ Q).continuous.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toUG [TopologicalSpace R] (hQ : Q = StdUnn.blk4 0 1 (-1) 0) : Continuous (toUG R σ hQ) :=
   (isEmbedding_matHom R σ Q).continuous.subtype_mk _
@@ -162,13 +162,13 @@ theorem continuous_toUG [TopologicalSpace R] (hQ : Q = StdUnn.blk4 0 1 (-1) 0) :
 variable (R σ) in
 
 /- English proof (translation)
-Rewrite using `[JR_eq R hQ]`. Conclude with `isLagr_colY_blk _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLagr_colY (hQ : Q = StdUnn.blk4 0 1 (-1) 0) : IsLagr (conjR R σ) (JR R Q) (columnBlock (R ⊗[F] E) n) := by
   rw [JR_eq R hQ]; exact isLagr_colY_blk _
 
 /- English proof (translation)
-Take `⟨a, b, c, d, e⟩` from `exists_blockMatrixTwoByTwoFin_eq (matR R σ p.1)`. Take `rfl : c = 0` from `Matrix.ext fun i j => by`. Use `lower_eq_zero p.2 i j` as an intermediate fact. Rewrite `this` using `[e, StdUnn.blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Then use the resulting hypothesis. Rewrite using `[colY_mul, coe_leviUp, e, upperLeft_blockMatrix, columnBlock, blockMatrix_mul_blockColumn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -188,7 +188,7 @@ section Finite
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) (om : G →* Module.End ℂ V) (K : Subgroup G)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨_, h, fun k hk => Submodule.subset_span ⟨k, hk, rfl⟩⟩, fun ⟨_, _, h⟩ => Submodule.finiteDimensional_of_le (Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact h k hk))⟩`.
+Supply the required witnesses or components.
 -/
 theorem kFin_iff (φ : V) : FiniteDimensional ℂ (Submodule.span ℂ {φ' | ∃ k ∈ K, φ' = om k φ}) ↔
     ∃ W : Submodule ℂ V, FiniteDimensional ℂ W ∧ ∀ k ∈ K, om k φ ∈ W :=
@@ -217,14 +217,14 @@ Both sides reduce to the same expression.
 @[simp] theorem coefMap_apply (l : V →ₗ[ℂ] ℂ) (φ : V) (g : G) : coefMap om l φ g = l (om g φ) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Rewrite using `[coefMap_apply, coefMap_apply, map_mul, Module.End.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefMap_om (l : V →ₗ[ℂ] ℂ) (φ : V) (h : G) : coefMap om l (om h φ) = fun g => coefMap om l φ (g * h) := by
   funext g
   rw [coefMap_apply, coefMap_apply, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `hf` using `(h.comp_continuous (continuous_subtype_val : Continuous fun k : K => (k : G))).range_finite`. Conclude with `⟨hφ, (kFin_iff om K _).2 ⟨_, FiniteDimensional.span_of_finite ℂ hf, fun k hk => Submodule.subset_span ⟨⟨k, hk⟩, rfl⟩⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_kFin_of_isLocallyConstant [TopologicalSpace G] (hK : IsCompact (K : Set G)) {φ : V} (hφ : φ ∈ S)
     (h : IsLocallyConstant fun g => om g φ) : φ ∈ kFin S om K := by
@@ -275,7 +275,7 @@ variable {σ} {hQ : Q = StdUnn.blk4 0 1 (-1) 0} {C : TestClass R} {ψ : AddChar 
 omit [Invertible (2 : R)] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨φ, h, e⟩ => ⟨φ, h.1, h.2, e.symm⟩, fun ⟨φ, h, h', e⟩ => ⟨φ, ⟨h, h'⟩, e.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_secOf : f ∈ secOf σ hQ C om l K ↔ ∃ φ ∈ C.sp κ,
     FiniteDimensional ℂ (Submodule.span ℂ {φ' | ∃ k ∈ K, φ' = om (toUG R σ hQ k) φ}) ∧
@@ -283,7 +283,7 @@ theorem mem_secOf : f ∈ secOf σ hQ C om l K ↔ ∃ φ ∈ C.sp κ,
   ⟨fun ⟨φ, h, e⟩ => ⟨φ, h.1, h.2, e.symm⟩, fun ⟨φ, h, h', e⟩ => ⟨φ, ⟨h, h'⟩, e.symm⟩⟩
 
 /- English proof (translation)
-Introduce `_ hf` and use `Submodule.subset_span ⟨κ, _, d, om, l, h, hl, hf⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secOf_le_secLoc (h : IsLocModel σ C ψ JA χ d om) (hl : IsYAdm σ C ψ d l) :
     secOf σ hQ C om l K ≤ secLoc σ hQ C ψ JA χ K := fun _ hf => Submodule.subset_span ⟨κ, _, d, om, l, h, hl, hf⟩
@@ -291,7 +291,7 @@ theorem secOf_le_secLoc (h : IsLocModel σ C ψ JA χ d om) (hl : IsYAdm σ C ψ
 omit [Invertible (2 : R)] in
 
 /- English proof (translation)
-Take `⟨φ, hφ, rfl⟩` from `h`. Take `⟨W, _, hW⟩` from `(kFin_iff _ K _).1 hφ.2`. Conclude with `isKFinite_iff.2 ⟨W.map (coefMap _ l), inferInstance, fun k hk => ⟨_, hW k hk, coefMap_om l φ k⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isKFinite_of_mem_secOf (h : f ∈ secOf σ hQ C om l K) : IsKFinite K f := by
   obtain ⟨φ, hφ, rfl⟩ := h
@@ -299,7 +299,7 @@ theorem isKFinite_of_mem_secOf (h : f ∈ secOf σ hQ C om l K) : IsKFinite K f 
   exact isKFinite_iff.2 ⟨W.map (coefMap _ l), inferInstance, fun k hk => ⟨_, hW k hk, coefMap_om l φ k⟩⟩
 
 /- English proof (translation)
-Rewrite using `[h.2 l hl.1 hl.2 (toUG R σ hQ p) (leviUp R σ Q p) (matR_mul_colY p) φ hφ, Complex.ofReal_cpow (NNReal.coe_nonneg _), Fintype.card_fin]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem IsLocModel.apply_upP (h : IsLocModel σ C ψ JA χ d om) (hl : IsYAdm σ C ψ d l) (p : upperParabolic R σ Q)
     {φ : (κ → R) → ℂ} (hφ : φ ∈ C.sp κ) : l (om (toUG R σ hQ p) φ) =
@@ -310,7 +310,7 @@ theorem IsLocModel.apply_upP (h : IsLocModel σ C ψ JA χ d om) (hl : IsYAdm σ
   rfl
 
 /- English proof (translation)
-Take `⟨φ, hφ, -, rfl⟩` from `mem_secOf.1 hf`. Simplify using `only [map_mul, Module.End.mul_apply]`. Conclude with `h.apply_upP hl p (h.1.pres _ _ hφ)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem law_of_mem_secOf (h : IsLocModel σ C ψ JA χ d om) (hl : IsYAdm σ C ψ d l) (hf : f ∈ secOf σ hQ C om l K)
     (p : upperParabolic R σ Q) (g : HA R σ Q) :
@@ -320,9 +320,9 @@ theorem law_of_mem_secOf (h : IsLocModel σ C ψ JA χ d om) (hl : IsYAdm σ C �
   exact h.apply_upP hl p (h.1.pres _ _ hφ)
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f h => obtain ⟨_, _, _, _, _, -, -, h⟩ := h`. Conclude with `isKFinite_of_mem_secOf h`. Consider the case `zero => exact .of_invariant fun _ _ _ => rfl`. Consider the case `add _ _ _ _ h h' => exact h.add h'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c f _ h`. Use `h.mul_invariant (f := fun _ => c) fun _ _ _ => rfl` as an intermediate fact. Simplify using `only [mul_comm _ c] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isKFinite_of_mem_secLoc (hf : f ∈ secLoc σ hQ C ψ JA χ K) : IsKFinite K f := by
   induction hf using Submodule.span_induction with
@@ -335,9 +335,9 @@ theorem isKFinite_of_mem_secLoc (hf : f ∈ secLoc σ hQ C ψ JA χ K) : IsKFini
     exact this
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f h => obtain ⟨_, _, _, _, _, h1, h2, h⟩ := h`. Conclude with `law_of_mem_secOf h1 h2 h p g`. Consider the case `zero => simp`. Consider the case `add _ _ _ _ h h' => simp only [Pi.add_apply, h, h', mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c f _ h => simp only [Pi.smul_apply, h, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem law_of_mem_secLoc (hf : f ∈ secLoc σ hQ C ψ JA χ K) (p : upperParabolic R σ Q) (g : HA R σ Q) :
     f (p * g) = χ (aUp R σ Q p) * npow (modNorm F E C (aUp R σ Q p)) ((m : ℂ) / 2) * f g := by
@@ -348,7 +348,7 @@ theorem law_of_mem_secLoc (hf : f ∈ secLoc σ hQ C ψ JA χ K) (p : upperParab
   | smul c f _ h => simp only [Pi.smul_apply, h, smul_eq_mul]; ring
 
 /- English proof (translation)
-Introduce `p g` and use `by rw [show ((m : ℂ) - n) / 2 + (n : ℂ) / 2 = (m : ℂ) / 2 by ring] exact law_of_mem_secLoc hf p g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem indLaw_of_mem_secLoc (hf : f ∈ secLoc σ hQ C ψ JA χ K) :
     IndLaw ((modNorm F E C).comp (aUp R σ Q)) (χ.comp (aUp R σ Q)) (((m : ℂ) - n) / 2 + (n : ℂ) / 2) f := fun p g => by
@@ -356,7 +356,7 @@ theorem indLaw_of_mem_secLoc (hf : f ∈ secLoc σ hQ C ψ JA χ K) :
   exact law_of_mem_secLoc hf p g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨indLaw_of_mem_secLoc hf, hc, isKFinite_of_mem_secLoc hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_psUp_of_continuous [TopologicalSpace R] (hf : f ∈ secLoc σ hQ C ψ JA χ K) (hc : Continuous f) :
     f ∈ psUp R σ Q (modNorm F E C) K χ (((m : ℂ) - n) / 2) :=
@@ -370,9 +370,9 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   {σ : E →ₐ[F] E} {n m : ℕ} {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (hQ : Q = StdUnn.blk4 0 1 (-1) 0)
 
 /- English proof (translation)
-Unfold `hTens`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hTens_eq_trace {R A α β : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) [Fintype α] [Fintype β]
     (JA : Matrix α α A) (JB : Matrix β β A) (x y : Matrix α β A) :
@@ -434,14 +434,14 @@ variable {σ} {hQ : Q = StdUnn.blk4 0 1 (-1) 0} {ψ : AddChar (AF F) ℂ} {χ : 
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim i (invTwo F _)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secFin_eq (v : HeightOneSpectrum (𝓞 F)) [i : Invertible (2 : Fv F v)] : secFin σ hQ ψ χ JA v =
     secLoc σ hQ (sbClass (Fv F v)) (LatVac.psiAt ψ v) (JR (Fv F v) JA) (charAt χ v) (KUpFin σ Q v) := by
   rw [Subsingleton.elim i (invTwo F _)]; rfl
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun x => by have := GlobalTheory.CompanionTheory.SW.ProdFormula.distribHaarChar_eq_nnnorm v _ (Units.map (Algebra.norm (Fv F v) : Fv F v ⊗[F] E →* Fv F v) x).ne_zero rw [Units.mk0_val] at this exact this`.
+A detailed English derivation is pending.
 -/
 theorem modNorm_sbClass (v : HeightOneSpectrum (𝓞 F)) : modNorm F E (sbClass (Fv F v)) = absEv F E v :=
   MonoidHom.ext fun x => by
@@ -451,14 +451,14 @@ theorem modNorm_sbClass (v : HeightOneSpectrum (𝓞 F)) : modNorm F E (sbClass 
     exact this
 
 /- English proof (translation)
-The claim follows from `NNReal.eq ((SiegelModel.real_modu _).trans ((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) a.1))`.
+A detailed English derivation is pending.
 -/
 theorem archClass_modu (w : InfinitePlace F) (hw : w.IsReal) (a : w.Completionˣ) : (archClass w hw).modu a = ‖a.1‖₊ :=
   NNReal.eq ((SiegelModel.real_modu _).trans
     ((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) a.1))
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun x => by rw [absEw_apply, InfinitePlace.mult, if_pos hw, pow_one] exact archClass_modu w hw _`.
+A detailed English derivation is pending.
 -/
 theorem modNorm_archClass (w : InfinitePlace F) (hw : w.IsReal) : modNorm F E (archClass w hw) = absEw F E w :=
   MonoidHom.ext fun x => by
@@ -466,7 +466,7 @@ theorem modNorm_archClass (w : InfinitePlace F) (hw : w.IsReal) : modNorm F E (a
     exact archClass_modu w hw _
 
 /- English proof (translation)
-The claim follows from `letI := invTwo F (Fv F v) modNorm_sbClass (E := E) v ▸ law_of_mem_secLoc hf p g`.
+A detailed English derivation is pending.
 -/
 theorem law_of_mem_secFin {v : HeightOneSpectrum (𝓞 F)} {f : GLoc σ Q v → ℂ} (hf : f ∈ secFin σ hQ ψ χ JA v)
     (p : upperParabolic (Fv F v) σ Q) (g : GLoc σ Q v) :
@@ -475,7 +475,7 @@ theorem law_of_mem_secFin {v : HeightOneSpectrum (𝓞 F)} {f : GLoc σ Q v → 
   modNorm_sbClass (E := E) v ▸ law_of_mem_secLoc hf p g
 
 /- English proof (translation)
-The claim follows from `letI := invTwo F w.Completion modNorm_archClass (E := E) w hw ▸ law_of_mem_secLoc hf p g`.
+A detailed English derivation is pending.
 -/
 theorem law_of_mem_secArch {w : InfinitePlace F} {hw : w.IsReal} {f : GArch σ Q w → ℂ} (hf : f ∈ secArch σ hQ ψ χ JA w hw)
     (p : upperParabolic w.Completion σ Q) (g : GArch σ Q w) :
@@ -484,7 +484,7 @@ theorem law_of_mem_secArch {w : InfinitePlace F} {hw : w.IsReal} {f : GArch σ Q
   modNorm_archClass (E := E) w hw ▸ law_of_mem_secLoc hf p g
 
 /- English proof (translation)
-The claim follows from `letI := invTwo F (Fv F v) modNorm_sbClass (E := E) v ▸ mem_psUp_of_continuous hf hc`.
+A detailed English derivation is pending.
 -/
 theorem mem_psUp_fin {v : HeightOneSpectrum (𝓞 F)} {f : GLoc σ Q v → ℂ} (hf : f ∈ secFin σ hQ ψ χ JA v)
     (hc : Continuous f) : f ∈ psUp _ σ Q (absEv F E v) (KUpFin σ Q v) (charAt χ v) (((m : ℂ) - n) / 2) :=
@@ -499,7 +499,7 @@ Evaluate the decidable proposition.
 example : (columnBlock ℤ 1 : Matrix (Fin 2) (Fin 1) ℤ) = !![1; 0] := by decide
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(BoundedContinuousFunction.evalCLM ℂ 0).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ), fun f => congrArg f (funext fun _ => map_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 example {F : Type} [Field F] [NumberField F] (w : InfinitePlace F) (hw : w.IsReal) (κ : Type) [Fintype κ] :
     (LinearMap.proj 0 : ((κ → w.Completion) → ℂ) →ₗ[ℂ] ℂ) ∈ (archClass w hw).adm κ :=

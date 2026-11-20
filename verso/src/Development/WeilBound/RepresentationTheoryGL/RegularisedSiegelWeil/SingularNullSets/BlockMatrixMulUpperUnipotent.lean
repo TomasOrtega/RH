@@ -19,7 +19,7 @@ open Matrix
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem blk4_mul_blk4 (A B C E A' B' C' E' : Matrix (Fin n) (Fin n) R) :
     blk4 A B C E * blk4 A' B' C' E' =
@@ -27,20 +27,20 @@ private theorem blk4_mul_blk4 (A B C E A' B' C' E' : Matrix (Fin n) (Fin n) R) :
   simp only [blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[Matrix.map_one _ (map_zero s) (map_one s), Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cj_one' (s : R →+* R) : cj s (1 : Matrix (Fin n) (Fin n) R) = 1 := by
   unfold cj
   rw [Matrix.map_one _ (map_zero s) (map_one s), Matrix.transpose_one]
 
 /- English proof (translation)
-Establish `hcu : cj s ui * cj s u = 1`. Rewrite using `[← cj_mul, hu1, cj_one']`. Establish `hcu' : cj s u * cj s ui = 1`. Rewrite using `[← cj_mul, hu2, cj_one']`. Establish `hβ : cj s β = cj s u * β * ui`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hc : cj s c = ui * c * cj s u`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cj_mul, hβ, ← mul_assoc, ← mul_assoc, hcu, one_mul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cj_mul, hc, mul_assoc, hcu', mul_one]`. Establish `e1 : β * ui * u = β` using `by rw [mul_assoc, hu2, mul_one]`. Establish `e2 : u * (ui * c) = c` using `by rw [← mul_assoc, hu1, one_mul]`. Rewrite using `[blk4_mul_blk4, blk4_mul_blk4]`. Simplify using `only [mul_zero, zero_mul, add_zero, zero_add, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, mul_assoc β ui c, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fact_alg (s : R →+* R) (a β c u ui : Matrix (Fin n) (Fin n) R) (hu1 : u * ui = 1) (hu2 : ui * u = 1)
     (R2 : c * cj s u = u * cj s c) (C3 : cj s β * u = cj s u * β) :
@@ -66,7 +66,7 @@ theorem fact_alg (s : R →+* R) (a β c u ui : Matrix (Fin n) (Fin n) R) (hu1 :
     rw [e1, e2, mul_assoc β ui c, sub_add_cancel]
 
 /- English proof (translation)
-Rewrite using `[blk4_mul_blk4]`. Simplify using `only [mul_one, mul_zero, add_zero, zero_add]`. Rewrite using `[add_comm (a * X) b, add_comm (c * X) d]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem block_matrix_mul_upper_unipotent (a b c d X : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 1 X 0 1 = blk4 a (a * X + b) c (d + c * X) := by
@@ -75,13 +75,13 @@ theorem block_matrix_mul_upper_unipotent (a b c d X : Matrix (Fin n) (Fin n) R) 
   rw [add_comm (a * X) b, add_comm (c * X) d]
 
 /- English proof (translation)
-Rewrite using `[submatrix_fromBlocks_mul]`. Simplify using `[block_matrix_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem upper_unipotent_block_inverse (X : Matrix (Fin n) (Fin n) R) : blk4 1 X 0 1 * blk4 1 (-X) 0 1 = 1 := by
   rw [submatrix_fromBlocks_mul]; simp [block_matrix_one]
 
 /- English proof (translation)
-Rewrite using `[submatrix_fromBlocks_mul]`. Simplify using `[block_matrix_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lower_unipotent_block_inverse (X : Matrix (Fin n) (Fin n) R) : blk4 1 0 X 1 * blk4 1 0 (-X) 1 = 1 := by
   rw [submatrix_fromBlocks_mul]; simp [block_matrix_one]

@@ -10,7 +10,7 @@ open scoped BigOperators
 open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formalism.L2.Pj GlobalTheory.RowLaw ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RowLawSquare.rlaw_rawSelf | exact GlobalTheory.RowLawSquare.rlaw_rawSelf | (intros; apply GlobalTheory.RowLawSquare.rlaw_rawSelf <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.isIntegralGaugedFormalGroupLaw_selfConjugateSquare : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I0 : Type) [Fintype I0] (p : SelfData Y d I0), RLaw (Y.rawSelf p) V := by
   first | exact @GlobalTheory.RowLawSquare.rlaw_rawSelf | exact GlobalTheory.RowLawSquare.rlaw_rawSelf | (intros; apply GlobalTheory.RowLawSquare.rlaw_rawSelf <;> assumption)

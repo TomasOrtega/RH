@@ -20,7 +20,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.IsogenyQuasiInverse
 
 /- English proof (translation)
-Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Conclude with `isIntegral_of_smooth_of_geometricallyConnected A.hom`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_left {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A) :
     IsIntegral A.left := by
@@ -29,13 +29,13 @@ theorem isIntegral_left {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (hA : 
   exact isIntegral_of_smooth_of_geometricallyConnected A.hom
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨η[A].left (IsLocalRing.closedPoint K)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_left {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] : Nonempty A.left :=
   ⟨η[A].left (IsLocalRing.closedPoint K)⟩
 
 /- English proof (translation)
-Use `nonempty_left A` as an intermediate fact. Rewrite using `[← PosBaseChange.dim_eq_krullDim]`. Conclude with `HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth A.hom g hAg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem krullDim_eq {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (g : ℕ)
     (hAg : SmoothOfRelativeDimension g A.hom) : Order.krullDim A.left = g := by
@@ -44,13 +44,11 @@ theorem krullDim_eq {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] (g : ℕ)
   exact HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth A.hom g hAg
 
 /- English proof (translation)
-Establish `hdA` using `krullDim_eq A g hAg`. Establish `hdB` using `krullDim_eq B g hBg`. Establish `hs` using `FiniteEndFlat.strictMono_of_locallyQuasiFinite f.left`. Establish `h1 : (g : WithBot ℕ∞) ≤ Order.height (genericPoint A.left)`. Rewrite using `[← hdA, Order.krullDim_eq_iSup_height]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `iSup_le fun a => WithBot.coe_le_coe.mpr (Order.height_mono (genericPoint_specializes a))`. Establish `h2` using `Order.height_le_height_apply_of_strictMono _ hs (genericPoint A.left)`. Establish `h3 : (Order.height (genericPoint B.left) : WithBot ℕ∞) ≤ g`. Rewrite using `[← hdB]`. Conclude with `Order.height_le_krullDim _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hle : f.left (genericPoint A.left) ≤ genericPoint B.left` using `genericPoint_specializes _`. Establish `hlt : f.left (genericPoint A.left) < genericPoint B.left` using `lt_of_le_not_ge hle fun h => hne (Specializes.antisymm (show f.left (genericPoint A.left) ⤳ genericPoint B.left from h) hle).eq`. Establish `hfin : Order.height (f.left (genericPoint A.left)) < ⊤`. Conclude with `lt_of_le_of_lt (Order.height_mono hlt.le) (lt_of_le_of_lt (WithBot.coe_le_coe.mp h3) (ENat.coe_lt_top g))`.
-
-Establish `h4` using `Order.height_strictMono hlt hfin`. Establish `: (g : WithBot ℕ∞) < g` using `calc (g : WithBot ℕ∞) ≤ Order.height (genericPoint A.left) := h1 _ ≤ Order.height (f.left (genericPoint A.left)) := WithBot.coe_le_coe.mpr h2 _ < Order.height (genericPoint B.left) := WithBot.coe_lt_coe.mpr h4 _ ≤ g := h3`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem apply_genericPoint {K : Type} [Field K] (A B : Over (Sp K)) [GrpObj A] [GrpObj B] (g : ℕ)
     [IsIntegral A.left] [IsIntegral B.left] (hAg : SmoothOfRelativeDimension g A.hom)
@@ -84,7 +82,7 @@ end GlobalTheory.IsogenyQuasiInverse
 namespace GlobalTheory.IsogenyQuasiInverse
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isAbelianScheme_pullback_obj s A hA, (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback A.hom s) hAg⟩`.
+Supply the required witnesses or components.
 -/
 theorem pullback_data {S T : Scheme.{0}} (s : T ⟶ S) (A : Over S) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hAg : SmoothOfRelativeDimension g A.hom) :
@@ -95,13 +93,13 @@ theorem pullback_data {S T : Scheme.{0}} (s : T ⟶ S) (A : Over S) [GrpObj A] (
       (IsPullback.of_hasPullback A.hom s) hAg⟩
 
 /- English proof (translation)
-Use `isIntegral_left A hA` as an intermediate fact. Use `isIntegral_left B hB` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hB.smooth` as an intermediate fact. Establish `: IsProper (f.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsProper f.left` using `IsProper.of_comp _ B.hom`. Establish `hξ` using `apply_genericPoint A B g hAg hBg f`. Establish `hd : DenseRange f.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[DenseRange, dense_iff_closure_eq, Set.eq_univ_iff_forall]`. Introduce `y`. Conclude with `((genericPoint_specializes y).mem_closed isClosed_closure (subset_closure ⟨_, hξ⟩))`. Establish `: IsDominant f.left` using `⟨hd⟩`. Use `⟨SS.flat_of_isDominant_grpHom K A B f, ⟨fun y => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : IsClosed (Set.range f.left)` using `f.left.isClosedMap.isClosed_range`. Conclude with `(genericPoint_specializes y).mem_closed hc ⟨_, hξ⟩`.
+A detailed English derivation is pending.
 -/
 theorem flat_surjective_of_field {K : Type} [Field K] [IsAlgClosed K] (A B : Over (Sp K))
     [GrpObj A] [GrpObj B] (g : ℕ) (hA : IsAbelianScheme A) (hB : IsAbelianScheme B)
@@ -130,7 +128,7 @@ end GlobalTheory.IsogenyQuasiInverse
 namespace GlobalTheory.IsogenyQuasiInverse
 
 /- English proof (translation)
-Take `⟨hA', hAg'⟩` from `pullback_data t A g hA hAg`. Take `⟨hB', hBg'⟩` from `pullback_data t B g hB hBg`. Establish `: LocallyQuasiFinite ((Over.pullback t).map f).left` using `MorphismProperty.of_isPullback (P := @LocallyQuasiFinite) (AbLaw.MulN.isPullback_baseChange t f) inferInstance`. Conclude with `flat_surjective_of_field _ _ g hA' hB' hAg' hBg' _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_surjective_geomFibre {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] (g : ℕ)
     (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hAg : SmoothOfRelativeDimension g A.hom)
@@ -145,7 +143,7 @@ theorem flat_surjective_geomFibre {S : Scheme.{0}} (A B : Over S) [GrpObj A] [Gr
   exact flat_surjective_of_field _ _ g hA' hB' hAg' hBg' _
 
 /- English proof (translation)
-Use `flat_of_flat_fieldBaseChange k (AlgebraicClosure k) (algebraMap _ _) _ _ _ ?_` and prove the remaining obligations. Take `⟨hA', hAg'⟩` from `pullback_data s A g hA hAg`. Take `⟨hB', hBg'⟩` from `pullback_data s B g hB hBg`. Establish `: LocallyQuasiFinite ((Over.pullback s).map f).left` using `MorphismProperty.of_isPullback (P := @LocallyQuasiFinite) (AbLaw.MulN.isPullback_baseChange s f) inferInstance`. Conclude with `(flat_surjective_geomFibre _ _ g hA' hB' hAg' hBg' _ _ _).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_fibre {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] (g : ℕ)
     (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hAg : SmoothOfRelativeDimension g A.hom)
@@ -164,15 +162,15 @@ end GlobalTheory.IsogenyQuasiInverse
 namespace GlobalTheory.IsogenyQuasiInverse
 
 /- English proof (translation)
-Introduce `R _ _ A B _ _ g hA hB hAg hBg f hf m hm hker`. Use `hA.smooth` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA.comm` as an intermediate fact. Establish `: LocallyOfFiniteType (f.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: LocallyOfFiniteType f.left` using `locallyOfFiniteType_of_comp _ B.hom`. Establish `: QuasiCompact (f.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: QuasiCompact f.left` using `QuasiCompact.of_comp _ B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSA` using `isSemiAbelian_of_isAbelianScheme A hA`. Establish `: LocallyQuasiFinite f.left` using `locallyQuasiFinite_of_finite_geometric_ker _ A B f hf inferInstance inferInstance fun Ω _ _ t => by`. Use `HomExt.finite_torsion_points hSA t hm` as an intermediate fact. Conclude with `Finite.of_injective (β := {x : Over.mk t ⟶ A // x ^ m = 1}) (fun x => ⟨x.1, hker _ x.1 x.2⟩) fun a b e => Subtype.ext (congrArg (fun z : {x : Over.mk t ⟶ A // x ^ m = 1} => z.1) e)`. Establish `hflat : Flat f.left` using `SemiAbMulFlat.flat_of_flatOver_fields f.left B.hom inferInstance (by rw [Over.w]; infer_instance) (by rw [Over.w]; infer_instance) inferInstance fun k _ s => FibreFlat.flatOver_of_pullback f s (flat_fibre A B g hA hB hAg hBg f k s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Surjective f.left` using `AbLaw.MulN.surjective_of_geomFibres f fun K _ _ t => (flat_surjective_geomFibre A B g hA hB hAg hBg f K t).2`. Establish `hmA : IsMonHom (𝟙 A ^ m)` using `AbLaw.MulN.isMonHom_mulA A m`. Take `⟨⟨h, hh, hfh⟩, hepi⟩` from `exists_monHom_factor_of_flat_surjective _ A B A f (𝟙 A ^ m) hf hmA hflat hsurj inferInstance fun T x hx => by`. Rewrite using `[MonObj.comp_pow, Category.comp_id, hker T x hx]`. Use `⟨h, hh, hfh, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi f, ← Category.assoc, hfh, MonObj.pow_comp, Category.id_comp, MonObj.comp_pow, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem exists_quasiInverse : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A B : Over (Sp R))
     [GrpObj A] [GrpObj B] (g : ℕ),

@@ -14,17 +14,15 @@ attribute [local instance 2000] Rep.hV2
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hN : NeZero (l ^ r)` using `⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`. Establish `hmem : ζ ∈ maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S`. Use `mem_maxUnramifiedOutside_of_pow_eq_one S hN.out (fun w hw hl => hw (hS w ?_)) hζ.pow_eq_one` and prove the remaining obligations. Rewrite `hl` using `[Nat.cast_pow]`. Conclude with `w.isPrime.mem_of_pow_mem r hl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `u : rootsOfUnity (l ^ r) (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)` to `rootsOfUnity.mkOfPowEq (⟨ζ, hmem⟩ : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S) (Subtype.ext (by simpa using hζ.pow_eq_one))`. Establish `hu : ((((u : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) : AlgebraicClosure ℚ) = ζ`. Simplify using `[u]`. Use `clear_value u`. Establish `hy0 : y ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hy` using `[zero_pow (pow_ne_zero r (Fact.out : l.Prime).ne_zero), eq_comm, map_eq_zero_iff _ (algebraMap Kf.1 (AlgebraicClosure ℚ)).injective]`. Establish `hz : (((0 : Kf.1)) : (v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) = 0` using `map_zero (algebraMap Kf.1 ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1))`. Establish `h00 : ord (0 : (v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) = 0` using `by simp [ord]`. Establish `h0 : ord (((0 : Kf.1) : (v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1)) = 0` using `(congrArg ord hz).trans h00`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hϖ` using `[hy, h0]`. Conclude with `zero_ne_one hϖ`. Establish `hχadd : ∀ σ τ, χ (ev (σ * τ)) = χ (ev σ) + χ (ev τ)` using `fun σ τ => by`. Rewrite using `[hχ, hχ, hχ]`. Conclude with `urChar_mulF _ σ τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hχlc : IsLocallyConstant fun σ => χ (ev σ)`. Establish `h : (fun σ => χ (ev σ)) = urChar ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1)) ⟨l ^ r, pow_pos (Fact.out : l.Prime).pos r⟩` using `funext hχ`. Rewrite using `[h]`. Conclude with `urChar_isLocallyConstant _`. Establish `key` using `@exists_root_of_unity_preimage Kf ‹_› ‹_› S ‹_› l r ‹_› ιs v A ev hev ζ hζ u hu y hy0 κ hκ χ hχadd hχlc`.
-
-Take `⟨x0, hx0⟩` from `key`. Establish `hx0'` using `fun s => @coe_rvF_of_eq Kf ‹_› ‹_› S ‹_› l r ‹_› ιs v ζ u hu _ _ (hx0 s)`. Conclude with `⟨x0, hx0', @TL.found_side_inv' Kf ‹_› ‹_› S ‹_› l r ‹_› hr hS ζ hζ ιs v A hA ev hev ϖ hϖ y hy κ hκ χ hχ x0 hx0'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem found_side' (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Set (HeightOneSpectrum (𝓞 Kf.1))) [Fintype S] {l r : ℕ} [Fact l.Prime] (hr : 0 < r)

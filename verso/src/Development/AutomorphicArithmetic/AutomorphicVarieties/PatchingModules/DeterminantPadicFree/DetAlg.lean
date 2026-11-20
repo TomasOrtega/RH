@@ -10,7 +10,7 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] {n : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ i j : Fin n, _) ↔ _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem dA_ev {a : ℕ} (N : Matrix (Fin n) (Fin n) F) :
     N ∈ Ev F F n a ↔ ∀ i j : Fin n, ¬ (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → N i j = 0 := by
@@ -18,7 +18,7 @@ private theorem dA_ev {a : ℕ} (N : Matrix (Fin n) (Fin n) F) :
   simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ i j : Fin n, _) ↔ _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem dA_od {a : ℕ} (N : Matrix (Fin n) (Fin n) F) :
     N ∈ Od F F n a ↔ ∀ i j : Fin n, (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → N i j = 0 := by
@@ -26,9 +26,9 @@ private theorem dA_od {a : ℕ} (N : Matrix (Fin n) (Fin n) F) :
   simp
 
 /- English proof (translation)
-Rewrite `h`, `h'` using `[dA_od]`. Rewrite using `[dA_ev]`. Introduce `i j e`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `c : ((i : ℕ) < a) ↔ ((k : ℕ) < a)`. Rewrite using `[h i k c, zero_mul]`. Rewrite using `[h' k j (by tauto), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dA_oo {a : ℕ} {N N' : Matrix (Fin n) (Fin n) F} (h : N ∈ Od F F n a)
     (h' : N' ∈ Od F F n a) : N * N' ∈ Ev F F n a := by
@@ -42,9 +42,9 @@ private theorem dA_oo {a : ℕ} {N N' : Matrix (Fin n) (Fin n) F} (h : N ∈ Od 
   · rw [h' k j (by tauto), mul_zero]
 
 /- English proof (translation)
-Rewrite `h'`, the goal using `[dA_od]`. Rewrite `h` using `[dA_ev]`. Introduce `i j e`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `c : ((i : ℕ) < a) ↔ ((k : ℕ) < a)`. Rewrite using `[h' k j (by tauto), mul_zero]`. Rewrite using `[h i k c, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dA_eo {a : ℕ} {N N' : Matrix (Fin n) (Fin n) F} (h : N ∈ Ev F F n a)
     (h' : N' ∈ Od F F n a) : N * N' ∈ Od F F n a := by
@@ -58,9 +58,9 @@ private theorem dA_eo {a : ℕ} {N N' : Matrix (Fin n) (Fin n) F} (h : N ∈ Ev 
   · rw [h i k c, zero_mul]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[dA_od]`. Rewrite `h'` using `[dA_ev]`. Introduce `i j e`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `c : ((i : ℕ) < a) ↔ ((k : ℕ) < a)`. Rewrite using `[h i k c, zero_mul]`. Rewrite using `[h' k j (by tauto), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dA_oe {a : ℕ} {N N' : Matrix (Fin n) (Fin n) F} (h : N ∈ Od F F n a)
     (h' : N' ∈ Ev F F n a) : N * N' ∈ Od F F n a := by
@@ -76,7 +76,7 @@ private theorem dA_oe {a : ℕ} {N N' : Matrix (Fin n) (Fin n) F} (h : N ∈ Od 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Substitute `hK hL hPQ hPQi` using the available equality. Establish `e : ∀ X : Matrix (Fin n) (Fin n) F, Pi * (P * X) = X` using `fun X => by`. Rewrite using `[← mul_assoc, hP, one_mul]`. Simplify using `only [mul_sub, sub_mul, add_mul, mul_add, smul_sub, mul_smul_comm, smul_mul_assoc, mul_assoc, e, smul_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem smul_commutator_conj_mul_eq_add_add {F : Type} [Field F] {n : ℕ}
     (P Pi Q Qi K1 K2 PoissonCutoffFormula Y L PQ PQi : Matrix (Fin n) (Fin n) F) (a b : F)
@@ -93,27 +93,27 @@ private theorem smul_commutator_conj_mul_eq_add_add {F : Type} [Field F] {n : �
   abel
 
 /- English proof (translation)
-Introduce `F G _ _ n D m κ la s ph hK hT`. Use `choose Y hYod hYs hYla using Det.oddPart D κ la s ph hK hT`. Establish `rinv : ∀ g, D.r g⁻¹ * D.r g = 1` using `fun g => by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `χmul : ∀ g h, D.χF (g * h) = D.χF g * D.χF h` using `fun g h => by simp [DetFr.χF]`. Set `c : G → Matrix (Fin n) (Fin n) F` to `fun g => ∑ k, (κ k g * (D.r g * Y k * D.r g⁻¹) - (D.r g * Y k * D.r g⁻¹) * κ k g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : G → Matrix (Fin n) (Fin n) F` to `fun g => ph g - D.χF g • c g`. Establish `hcoc : TwCoc D.χF D.r Set.univ ψ`. Introduce `g _ h _`. Establish `hcgh : (D.χF g * D.χF h) • c (g * h) = D.χF g • ∑ k, (κ k g * (D.r g * la k h * D.r g⁻¹) - D.r g * la k h * D.r g⁻¹ * κ k g) + D.χF g • c g + (D.χF g * D.χF h) • (D.r g * c h * D.r g⁻¹)`. Simplify using `only [c, Finset.smul_sum, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `smul_commutator_conj_mul_eq_add_add _ _ _ _ _ _ _ _ _ _ _ _ _ (rinv g) (by have := (hK.coc k) g trivial h trivial; simpa using this) (by rw [hYla k h]; rfl) (map_mul _ _ _) (by rw [_root_.mul_inv_rev, map_mul])`. Use `show ph (g * h) - D.χF (g * h) • c (g * h) = ph g - D.χF g • c g + D.χF g • (D.r g * (ph h - D.χF h • c h) * D.r g⁻¹)`. Rewrite using `[χmul, hcgh, hT.ph_mul g h]`. Simplify using `only [mul_sub, sub_mul, smul_sub, smul_add, mul_smul_comm, smul_mul_assoc, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `rinvEv : ∀ g, D.r g⁻¹ ∈ Ev F F n D.a` using `fun g => D.ev _`. Establish `hRod : ∀ k g, D.r g * Y k * D.r g⁻¹ ∈ Od F F n D.a` using `fun k g => dA_oe (dA_eo (D.ev g) (hYod k)) (rinvEv g)`. Establish `hcEv : ∀ g, c g ∈ Ev F F n D.a` using `fun g => Submodule.sum_mem _ fun k _ => Submodule.sub_mem _ (dA_oo (hK.od k g) (hRod k g)) (dA_oo (hRod k g) (hK.od k g))`. Establish `hψEv : ∀ g, ψ g ∈ Ev F F n D.a` using `fun g => Submodule.sub_mem _ (hT.ev g) (Submodule.smul_mem _ _ (hcEv g))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hYT : ∀ k, (Y k)ᵀ = s • Y k` using `fun k => by conv_rhs => rw [← hYs k]`. Rewrite using `[smul_smul, hT.sq, one_smul]`. Establish `hRσ : ∀ k g, D.r (D.σ g) * Y k * D.r (D.σ g)⁻¹ = s • (D.r g * Y k * D.r g⁻¹)ᵀ` using `fun k g => by`. Use `Det.dSigma D (fun _ => 1) (Y k) g (fun _ => rfl)` as an intermediate fact. Simplify using `only [dTw, one_smul] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hYT k]`. Rewrite `this` using `[sub_eq_iff_eq_add]`. Rewrite using `[this, Matrix.transpose_sub, Matrix.transpose_smul, hYs, sub_add_cancel, mul_smul_comm, smul_mul_assoc, Matrix.transpose_smul]`. Establish `hχσ : ∀ g, D.χF (D.σ g) = D.χF g` using `fun g => by simp [DetFr.χF, D.χσ]`. Establish `hpol : ∀ g, ψ (D.σ g) = s • (ψ g)ᵀ` using `fun g => by show ph (D.σ g) - D.χF (D.σ g) • c (D.σ g) = s • (ph g - D.χF g • c g)ᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hT.ph_pol, hχσ]`. Establish `hc : c (D.σ g) = s • (c g)ᵀ`. Simplify using `only [c, hRσ, hK.pol, Matrix.transpose_sum, Finset.smul_sum, Matrix.transpose_sub, Matrix.transpose_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [neg_mul, mul_neg, mul_smul_comm, smul_mul_assoc, smul_sub, sub_neg_eq_add, neg_smul, one_smul, smul_neg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hc, Matrix.transpose_sub, Matrix.transpose_smul, smul_sub, smul_comm s (D.χF g)]`. Establish `htr : ∀ g ∈ D.G', (ψ g * D.r g).trace = 0` using `fun g hg => by`. Establish `h1 : D.χF g = 1` using `by simp [DetFr.χF, D.χ_triv g hg]`. Establish `hell` using `hT.ell g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ((ph g - D.χF g • c g) * D.r g).trace = 0`. Rewrite using `[h1, one_smul, sub_mul, Matrix.trace_sub, ← hell, sub_eq_add_neg, add_right_inj]`. Simplify using `only [c, Finset.sum_mul, Matrix.trace_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hYla k g, dTw, h1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (κ k g * (D.r g * Y k)).trace = (Y k * (κ k g * D.r g)).trace`. Rewrite using `[Matrix.trace_mul_comm (Y k), mul_assoc]`. Simplify using `only [sub_mul, Matrix.trace_sub, mul_assoc, rinv, mul_one]`. Rewrite using `[hc]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Take `⟨Y₀, hY₀, hY₀s, hY₀ψ⟩` from `Det.evenPart D s ψ hT.sq hcoc hψEv hpol htr`. Use `⟨Y₀, Y, hY₀, hY₀s, fun k => ⟨hYod k, hYs k, hYla k⟩, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hY₀ψ g]`. Use `show ph g = ph g - D.χF g • c g + D.χF g • c g`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.detAlg :
     ∀ {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n) {m : ℕ} (κ la : Fin m → G → Matrix (Fin n) (Fin n) F) (s : F) (ph : G → Matrix (Fin n) (Fin n) F), D.IsKap κ → D.IsTw κ s ph la → ∃ (Y₀ : Matrix (Fin n) (Fin n) F) (Y : Fin m → Matrix (Fin n) (Fin n) F), Y₀ ∈ Ev F F n D.a ∧ s • Y₀ᵀ = Y₀ ∧ (∀ k, Y k ∈ Od F F n D.a ∧ s • (Y k)ᵀ = Y k ∧ ∀ g, la k g = dTw D.χF D.r (Y k) g) ∧ ∀ g, ph g = dTw D.χF D.r Y₀ g + D.χF g • ∑ k, (κ k g * (D.r g * Y k * D.r g⁻¹) - (D.r g * Y k * D.r g⁻¹) * κ k g) := by

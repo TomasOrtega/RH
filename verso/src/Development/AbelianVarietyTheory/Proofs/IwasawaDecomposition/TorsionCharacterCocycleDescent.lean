@@ -11,17 +11,17 @@ open scoped TensorProduct
 namespace GlobalTheory.LineNorm
 
 /- English proof (translation)
-Set `e` to `Module.Free.chooseBasis R B`. Establish `h1 : ∀ σ : B →ₐ[R] R, TensorProduct.lid R B (σ.toLinearMap.rTensor B s) = 0`. Introduce `σ`. Use `inj _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[← h σ τ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `clear h`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2 : ∀ f : B →ₗ[R] R, TensorProduct.rid R B (f.lTensor B s) = 0`. Introduce `f`. Use `inj _ fun σ => ?_` and prove the remaining obligations. Establish `: σ (TensorProduct.rid R B (f.lTensor B s)) = f (TensorProduct.lid R B (σ.toLinearMap.rTensor B s))` using `by clear h h1`. Proceed by induction on `s using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp [mul_comm]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite using `[this, h1, map_zero]`. Use `(Algebra.TensorProduct.basis B e).ext_elem fun i => ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (Algebra.TensorProduct.basis B e).repr s i = TensorProduct.rid R B ((e.coord i).lTensor B s)` using `by clear h h1 h2`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Algebra.smul_def, mul_comm]`. Consider the case `add a b ha hb => simp only [map_add, Finsupp.add_apply, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, h2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensor_eq_zero_of_sections {R B : Type} [CommRing R] [CommRing B] [Algebra R B] [Module.Free R B]
     (inj : ∀ b : B, (∀ σ : B →ₐ[R] R, σ b = 0) → b = 0) (s : B ⊗[R] B)
@@ -58,21 +58,21 @@ theorem tensor_eq_zero_of_sections {R B : Type} [CommRing R] [CommRing B] [Algeb
   simp
 
 /- English proof (translation)
-Set `C` to `FractionRing R`. Establish `hinj : Function.Injective (algebraMap R C)` using `IsFractionRing.injective R C`. Set `j : (B →ₐ[R] R) → (B →ₐ[R] C)` to `fun σ => (Algebra.ofId R C).comp σ`. Establish `hj : Function.Injective j` using `fun σ τ h => AlgHom.ext fun b => hinj (AlgHom.congr_fun h b)`. Take `⟨d, a, hd, ha⟩` from `GlobalTheory.exists_smul_fun_eq_eval_points R C B (Function.extend j (fun σ => algebraMap R C (κ σ)) 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha' : ∀ σ : B →ₐ[R] R, σ a = d * κ σ`. Introduce `σ`. Apply `hinj` to reduce the goal to its premises. Use `ha (j σ)` as an intermediate fact. Rewrite `this` using `[hj.extend_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, ← this]`. Both sides reduce to the same expression. Establish `hε : ε a = d` using `by rw [ha', hone, mul_one]`. Establish `hΔ : d • Δ a = a ⊗ₜ a`. Rewrite using `[← sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `tensor_eq_zero_of_sections inj _ fun σ τ => ?_` and prove the remaining obligations. Establish `h1` using `ha' ((Algebra.TensorProduct.lift σ τ (fun _ _ => Commute.all _ _)).comp Δ)`. Rewrite `h1` using `[hmul, AlgHom.comp_apply]`. Rewrite using `[map_sub, map_smul, h1, Algebra.TensorProduct.lift_tmul, ha', ha', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : ∀ f : B →ₗ[R] R, d ∣ f a`. Introduce `f`. Use `GlobalTheory.dvd_of_smul_apply_eq_smul R C B ((TensorProduct.rid R B).toLinearMap ∘ₗ f.lTensor B ∘ₗ Δ.toLinearMap) ε.toLinearMap d (f a) a hd (by simpa [hε] using hd) ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, AlgHom.toLinearMap_apply]`. Rewrite using `[← map_smul, ← map_smul, hΔ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `e` to `Module.Free.chooseBasis R B`. Use `choose g hg using fun i => key (e.coord i)`. Establish `hb : a = d • ∑ i, g i • e i` using `by conv_lhs => rw [← e.sum_repr a]`. Rewrite using `[Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_smul, ← hg i, Module.Basis.coord_apply]`. Establish `hv : ∀ σ : B →ₐ[R] R, σ (∑ i, g i • e i) = κ σ` using `fun σ => mul_left_cancel₀ hd (by rw [← ha', ← smul_eq_mul, ← map_smul, ← hb])`. Use `⟨∑ i, g i • e i, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tensor_eq_zero_of_sections inj _ fun σ τ => ?_` and prove the remaining obligations. Establish `h1` using `hv ((Algebra.TensorProduct.lift σ τ (fun _ _ => Commute.all _ _)).comp Δ)`. Rewrite `h1` using `[hmul, AlgHom.comp_apply]`. Rewrite using `[map_sub, h1, Algebra.TensorProduct.lift_tmul, hv, hv, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_groupLike_of_sections {R B : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [CommRing B]
     [Algebra R B] [Module.Finite R B] [Module.Free R B]
@@ -138,7 +138,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LineNorm
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -146,15 +146,15 @@ private theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f
   rfl
 
 /- English proof (translation)
-Set `p : ∀ _ : B →ₐ[R] B ⊗[R] B, (Over.mk (spMap (algebraMap R (B ⊗[R] B)) ≫ x) ⟶ Over.mk (spMap (algebraMap R B) ≫ x))` to `fun i => Over.homMk (spMap i.toRingHom) (by`. Simplify using `only [Over.mk_left, Over.mk_hom]`. Rewrite using `[← Category.assoc, sp_comp]`. Use `congr 2`. Conclude with `i.comp_algebraMap)`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Set `i₁ : B →ₐ[R] B ⊗[R] B` to `Algebra.TensorProduct.includeLeft (S := R)`. Set `i₂ : B →ₐ[R] B ⊗[R] B` to `Algebra.TensorProduct.includeRight`. Take `⟨δ, hδ, hδ'⟩` from `hu.mul _ _ (p i₁ ≫ u) (p i₂ ≫ u) ⟨i₁.toRingHom, i₁.comp_algebraMap, rfl⟩ ⟨i₂.toRingHom, i₂.comp_algebraMap, rfl⟩`. Use `⟨⟨δ, fun r => RingHom.congr_fun hδ r⟩, ?_⟩` and prove the remaining obligations. Introduce `S _ φ w w' ν hν h1 h2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `g : Over.mk (spMap φ ≫ x) ⟶ Over.mk (spMap (algebraMap R (B ⊗[R] B)) ≫ x)` to `Over.homMk (spMap ν) (by`. Simplify using `only [Over.mk_left, Over.mk_hom]`. Rewrite using `[← Category.assoc, sp_comp, hν])`. Establish `e1 : w = g ≫ p i₁ ≫ u` using `by ext1`. Rewrite using `[← h1, ← sp_comp, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : w' = g ≫ p i₂ ≫ u` using `by ext1`. Rewrite using `[← h2, ← sp_comp, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, ← MonObj.comp_mul, ← sp_comp, Category.assoc, Over.comp_left, ← hδ']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem IsFinPart.exists_comul {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}} {t : SAB H X} {R : Type} [CommRing R] {x : Sp R ⟶ X}
@@ -194,23 +194,23 @@ theorem IsFinPart.exists_comul {E : Type} [Field E] [NumberField E] [IsCMField E
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t R _ _ _ x q B _ _ u hu κ hκ`. Use `haveI := hu.finite`. Use `haveI := hu.free`. Take `⟨Δ, hΔ⟩` from `hu.exists_comul`. Take `⟨ε₀, hε, hε'⟩` from `hu.one R (RingHom.id R)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ε : B →ₐ[R] R` to `⟨ε₀, fun r => RingHom.congr_fun hε r⟩`. Establish `hone : κ ε = 1`. Use `hκ ε ε ε 1 1 hε' hε' (by rw [_root_.mul_one]; exact hε')` as an intermediate fact. Conclude with `left_eq_mul.mp this`. Set `p : ∀ _ : B →ₐ[R] R, (Over.mk (spMap (RingHom.id R) ≫ x) ⟶ Over.mk (spMap (algebraMap R B) ≫ x))` to `fun i => Over.homMk (spMap i.toRingHom) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Over.mk_left, Over.mk_hom]`. Rewrite using `[← Category.assoc, sp_comp]`. Use `congr 2`. Conclude with `i.comp_algebraMap)`. Establish `hmul : ∀ σ τ : B →ₐ[R] R, κ ((Algebra.TensorProduct.lift σ τ (fun _ _ => Commute.all _ _)).comp Δ) = κ σ * κ τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `σ τ`. Use `hκ σ τ _ (p σ ≫ u) (p τ ≫ u) rfl rfl ?_` and prove the remaining obligations. Use `hΔ R (RingHom.id R) _ _ (Algebra.TensorProduct.lift σ τ (fun _ _ => Commute.all _ _)).toRingHom (Algebra.TensorProduct.lift σ τ (fun _ _ => Commute.all _ _)).comp_algebraMap ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = spMap σ.toRingHom ≫ u.left`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `b`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ = spMap τ.toRingHom ≫ u.left`. Use `congr 2`. Use extensionality with `b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨b, hb, hb'⟩` from `exists_groupLike_of_sections hu.inj Δ ε (fun σ => (κ σ : R)) (fun σ τ => by simp only [hmul, Units.val_mul]) (by simp only [hone, Units.val_one])`. Take `⟨c, hc, -⟩` from `exists_groupLike_of_sections hu.inj Δ ε (fun σ => (((κ σ)⁻¹ : Rˣ) : R)) (fun σ τ => by simp only [hmul, mul_inv, Units.val_mul]) (by simp only [hone, inv_one, Units.val_one])`. Establish `hbc : b * c = 1`. Rewrite using `[← sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hu.inj _ fun σ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, hb, hc, map_one, Units.mul_inv, sub_self]`. Use `⟨⟨b, c, hbc, by rw [_root_.mul_comm, hbc]⟩, hb, ?_⟩` and prove the remaining obligations. Introduce `S _ φ w w' β β' β'' h h' h'' k k' k''`. Use `letI : Algebra R S := φ.toAlgebra`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : B →ₐ[R] S` to `⟨β, fun r => RingHom.congr_fun h r⟩`. Set `a' : B →ₐ[R] S` to `⟨β', fun r => RingHom.congr_fun h' r⟩`. Set `ν : B ⊗[R] B →ₐ[R] S` to `Algebra.TensorProduct.lift a a' (fun _ _ => Commute.all _ _)`. Establish `h3` using `hΔ S φ w w' ν.toRingHom ν.comp_algebraMap (by rw [← k]; congr 2; ext y; simp [ν, a]) (by rw [← k']; congr 2; ext y; simp [ν, a'])`. Establish `h4 : β'' = ν.toRingHom.comp Δ.toRingHom` using `hu.mono S _ _ (h''.trans (ν.comp Δ).comp_algebraMap.symm) (k''.trans h3.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h5 : β'' b = ν (Δ b)` using `by rw [h4]; rfl`. Express the relevant statement in the definitionally equal form `β'' b = β b * β' b`. Rewrite using `[h5, hb', Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_groupLike_unit_of_isFinPart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (x : Sp R ⟶ X) (q : ℕ) (B : Type) [CommRing B] [Algebra R B] (u : Over.mk (spMap (algebraMap R B) ≫ x) ⟶ t.G), IsFinPart t x q u → ∀ κ : (B →ₐ[R] R) → Rˣ, (∀ (σ σ' σ'' : B →ₐ[R] R) (w w' : Over.mk (spMap (RingHom.id R) ≫ x) ⟶ t.G), spMap σ.toRingHom ≫ u.left = w.left → spMap σ'.toRingHom ≫ u.left = w'.left → spMap σ''.toRingHom ≫ u.left = (w * w').left → κ σ'' = κ σ * κ σ') → ∃ b : Bˣ, (∀ σ : B →ₐ[R] R, σ (b : B) = (κ σ : R)) ∧ ∀ (S : Type) [CommRing S] (φ : R →+* S) (w w' : Over.mk (spMap φ ≫ x) ⟶ t.G) (β β' β'' : B →+* S), β.comp (algebraMap R B) = φ → β'.comp (algebraMap R B) = φ → β''.comp (algebraMap R B) = φ → spMap β ≫ u.left = w.left → spMap β' ≫ u.left = w'.left → spMap β'' ≫ u.left = (w * w').left → β'' (b : B) = β (b : B) * β' (b : B) := by
   intro E _ _ _ H X t R _ _ _ x q B _ _ u hu κ hκ

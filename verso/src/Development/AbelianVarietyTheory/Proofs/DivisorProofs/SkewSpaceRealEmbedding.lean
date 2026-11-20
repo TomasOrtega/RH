@@ -16,9 +16,9 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hv : vecMulVec (incV F x) (∑ j, realAd F (t j) • incV F (q j)) = ∑ j, realAd F (t j) • vecMulVec (incV F x) (incV F (q j))`. Use extensionality with `i l`. Simplify using `[vecMulVec_apply, Matrix.sum_apply, Finset.mul_sum, mul_smul_comm]`. Unfold `symp`. Rewrite using `[hv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Algebra.trace (AF F) (AE F E) (-1 * hTensR σ (incM F JX) (incM F JW) _ (∑ j, _)) = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Simplify using `only [hTensR, LinearMap.coe_mk, AddHom.coe_mk, hTens_rat, hyx, map_neg, Finset.sum_neg_distrib, neg_mul, mul_neg, one_mul, map_sum, map_smul, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem symp_freq_snd (σ : E →ₐ[F] E) {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (y x : Fin n → E) (hyx : form σ JX y x = 1) (w : Fin d → E) {N : ℕ} (q : Fin N → Fin d → E) (t : Fin N → ℝ) :
@@ -39,7 +39,7 @@ theorem symp_freq_snd (σ : E →ₐ[F] E) {n d : ℕ} (JX : Matrix (Fin n) (Fin
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Unfold `form`. Simplify using `only [dotProduct, mulVec, map_sum, map_mul, hσ, hherm, Finset.mul_sum]`. Conclude with `Finset.sum_comm.trans (Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_swap_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {d : ℕ} (J : Matrix (Fin d) (Fin d) E)
     (hherm : ∀ i j, σ (J j i) = J i j) (x y : Fin d → E) : form σ J y x = σ (form σ J x y) := by
@@ -48,17 +48,17 @@ theorem form_swap_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {d : �
   exact Finset.sum_comm.trans (Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring)
 
 /- English proof (translation)
-Introduce `ξ ξ' hξ`. Assume the negation of the conclusion as `hne`. Establish `hz : ∀ j, realTr F (form σ J (ξ - ξ') (b j)) = 0`. Introduce `j`. Use `congrFun hξ j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[form, sub_dotProduct, map_sub]`. Unfold `form at this`. Simplify using `only at this`. Rewrite using `[this, sub_self]`. Set `L : (Fin n → E) →+ ℝ` to `(realTr F).comp { toFun := form σ J (ξ - ξ') map_zero' := by`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Unfold `form`. Rewrite using `[show (fun i => σ ((0 : Fin n → E) i)) = 0 from funext fun i => map_zero σ, Matrix.mulVec_zero, dotProduct_zero]`. Use the proof step `map_add' := fun u v => by`. Unfold `form`. Rewrite using `[show (fun i => σ ((u + v) i)) = (fun i => σ (u i)) + (fun i => σ (v i)) from funext fun i => map_add σ _ _, Matrix.mulVec_add, dotProduct_add] }`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : L.toRatLinearMap = 0` using `b.ext fun j => hz j`. Establish `hw : (ξ - ξ') ᵥ* J ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `Matrix.vecMul_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit hdet)) (h0.trans (Matrix.zero_vecMul _).symm)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_eq_zero.1 this`. Take `⟨k, hk⟩` from `Function.ne_iff.1 hw`. Establish `h1 : form σ J (ξ - ξ') (Pi.single k (σ ((((ξ - ξ') ᵥ* J) k)⁻¹))) = 1`. Rewrite using `[form_single, hσ]`. Conclude with `mul_inv_cancel₀ hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `LinearMap.congr_fun hL (Pi.single k (σ ((((ξ - ξ') ᵥ* J) k)⁻¹)))`. Express the relevant statement in the definitionally equal form `realTr F (form σ J (ξ - ξ') _) = 0 at h3`. Rewrite `h3` using `[h1]`. Conclude with `realTr_one_ne h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem injective_realTr_form (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (h2 : Module.finrank F E = 2) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hdet : J.det ≠ 0) {ι : Type} (b : Module.Basis ι ℚ (Fin n → E)) :
@@ -101,15 +101,15 @@ theorem injective_realTr_form (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) 
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W r s r' s' hB hX hW x y hxy`. Establish `hcm` using `hB.cm`. Establish `hne : Nonempty (NumberField.InfinitePlace F)` using `inferInstance`. Take `⟨v⟩` from `hne`. Establish `hσ : ∀ z : E, σ (σ z) = z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z`. Apply `(B.emb v).1.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2, hcm.2.2.2, star_star]`. Establish `hyx : form σ X.J y x = 1`. Rewrite using `[form_swap_herm σ hσ X.J hX.herm, hxy, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : W.J.det ≠ 0`. Introduce `h0`. Apply `det_ne_zero_of_sig _ r' s' (hW.sig v)` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`. Set `b` to `Module.finBasis ℚ (Fin d → E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨Module.finrank ℚ (Fin d → E), fun t => ∑ j, realAd F (t j) • incV F (b j), fun w j => realTr F (form σ W.J w (b j)), injective_realTr_form σ hσ hcm.2.2.1 W.J hdet b, ?_⟩` and prove the remaining obligations. Introduce `w t`. Rewrite using `[symp_freq_snd σ X.J W.J y x hyx w b t, psi_freq B.ψ hB.std]`. Use `congr 1`. Simplify using `only [← realTr_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_neg]`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem injective_real_frequencies_snd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

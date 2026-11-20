@@ -12,19 +12,17 @@ set_option autoImplicit false
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `h hx hinj`. Use `letI := cL.toAlgebra`. Set `c0 : ℂ →+* R` to `cK.codRestrict R h.base.const_mem`. Set `φ : MvPolynomial (Fin n) ℂ →+* R` to `MvPolynomial.eval₂Hom c0 x`. Establish `hφinj : Function.Injective φ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxK : Function.Injective (MvPolynomial.eval₂Hom cK (fun i => (x i : K)))`. Use `letI := cK.toAlgebra`. Establish `h1` using `hx.1`. Rewrite `h1` using `[algebraicIndependent_iff_injective_aeval]`. Conclude with `h1`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : R.subtype.comp φ = MvPolynomial.eval₂Hom cK (fun i => (x i : K))`. Apply the tactic sequence `ext <;> simp [φ, c0]`. Introduce `a b e`. Apply `hxK` to reduce the goal to its premises. Rewrite using `[← hcomp, RingHom.comp_apply, RingHom.comp_apply, e]`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : (T.subtype.comp ((MvPolynomial.eval₂Hom ι τ).comp ((MvPolynomial.map φ).comp (MvPolynomial.sumAlgEquiv ℂ (Fin r) (Fin n)).toRingEquiv.toRingHom))) = (MvPolynomial.aeval (Sum.elim (fun i => (τ i : L)) (fun i => (ι (x i) : L)))).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Use `h.const a` as an intermediate fact. Simplify using `[φ, c0, MvPolynomial.sumAlgEquiv_C_inl]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `this`. Apply the tactic sequence `rintro (i | j) <;> simp [φ, MvPolynomial.sumAlgEquiv_X_inl, MvPolynomial.sumAlgEquiv_X_inr]`. Establish `hy : Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L)) ∘ finSumFinEquiv = Sum.elim (fun i => (τ i : L)) (fun i => (ι (x i) : L))`. Apply the tactic sequence `ext (i | j) <;> simp`. Rewrite using `[← algebraicIndependent_equiv finSumFinEquiv, hy, algebraicIndependent_iff_injective_aeval, injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `P hP`. Establish `hP' : T.subtype.comp ((MvPolynomial.eval₂Hom ι τ).comp ((MvPolynomial.map φ).comp (MvPolynomial.sumAlgEquiv ℂ (Fin r) (Fin n)).toRingEquiv.toRingHom)) P = 0`. Rewrite using `[key]`. Conclude with `hP`. Establish `h1 : MvPolynomial.eval₂Hom ι τ (MvPolynomial.map φ (MvPolynomial.sumAlgEquiv ℂ (Fin r) (Fin n) P)) = 0` using `Subtype.ext hP'`.
-
-Establish `h2` using `(injective_iff_map_eq_zero _).1 hinj _ h1`. Establish `h3` using `(injective_iff_map_eq_zero _).1 (MvPolynomial.map_injective φ hφinj) _ h2`. Conclude with `(MvPolynomial.sumAlgEquiv ℂ (Fin r) (Fin n)).map_eq_zero_iff.1 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etTower_coords_algebraicIndependent {K L : Type} [Field K] [Field L] (cK : ℂ →+* K)
     (cL : ℂ →+* L) (n r : ℕ) (R : Subring K) (T : Subring L)

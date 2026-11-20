@@ -16,9 +16,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {κ : Pl E → Type}
   {P : Finset (Pl E)} {B : Block E} (e : B.κ ≃ ∀ w : P, κ w)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x y g`. Establish `: L.ent P (e x) (e y) = L'.ent P (e x) (e y)`. Use function extensionality and compare the values at `w`. Unfold `LM.ent`. Use `split_ifs with hw`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.1 w hw]`. Conclude with `h.2.1 w hw`. Simplify using `only [fm, this, h.2.2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fm_congr {L L' : LM κ B.a B.b} (h : L.Eqv P L') : fm S P B e L = fm S P B e L' := by
   funext x y g
@@ -31,13 +31,13 @@ theorem fm_congr {L L' : LM κ B.a B.b} (h : L.Eqv P L') : fm S P B e L = fm S P
   simp only [fm, this, h.2.2]
 
 /- English proof (translation)
-Establish `A` using `BlockFiniteConvolution.fmAlg' E κ S P B e hS hP`. Proceed by induction on `w with`. Consider the case `nil => exact ⟨h₀, ((A I L₀ hI h₀).2.2.1).trans (fm_congr e hI₀), ht⟩`. Consider the case `cons p w ih`. Take `⟨o, i, q⟩` from `ih fun p hp => hw p (List.mem_cons_of_mem _ hp)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨p1, p2, p3, p4⟩` from `hw p List.mem_cons_self`. Establish `m` using `A p.2 _ p1 o`. Simplify using `only [List.map_cons, List.foldr_cons]`. Use `⟨m.2.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← m.2.2.1, ← (blkLevel E B _ _ _ (A I _ hI o).1 m.1 (A _ _ o o).1).2.2.1, (A I p.2 hI p1).2.2.1, fm_congr e p2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, L⟩` from `p`. Consider the cases of `g with`. Consider the case `inl c`. Take `rfl : L = I` from `p4 c rfl`. Rewrite using `[← m.2.2.1, i]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `q`. Consider the case `inr s => show mulF B.ν s.ψ (BGen.wd (w.map Prod.fst) t₀).ψ = _`. Rewrite using `[q, p3 s rfl, (BlockFiniteConvolution.rtAlg' E B u₁ u₂).1, m.2.2.1]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_psi (hS : IsSection S) (hP : (↑P : Set (Pl E)) ⊆ S) (u₁ : GL (Fin B.a) E) (u₂ : GL (Fin B.b) E)
     (I L₀ : LM κ B.a B.b) (t₀ : PT B) (hI : I.Ok P) (h₀ : L₀.Ok P) (hI₀ : (I.mul L₀).Eqv P L₀)
@@ -68,7 +68,7 @@ theorem word_psi (hS : IsSection S) (hP : (↑P : Set (Pl E)) ⊆ S) (u₁ : GL 
         rw [q, p3 s rfl, (BlockFiniteConvolution.rtAlg' E B u₁ u₂).1, m.2.2.1]
 
 /- English proof (translation)
-Take `⟨o, -, q⟩` from `word_psi e hS hP u₁ u₂ I L₀ t₀ hI h₀ hI₀ ht w hw`. Conclude with `⟨o, q, (BlockFiniteConvolution.adelRep' E κ S P B e hS hP hκ u₁ u₂ Ta Tb N (fun _ => I) [] _ _ (fun _ h => nomatch h) o q).2.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adelRep2 (hS : IsSection S) (hP : (↑P : Set (Pl E)) ⊆ S) (hκ : ∀ w ∈ P, Nonempty (κ w)) (u₁ : GL (Fin B.a) E)
     (u₂ : GL (Fin B.b) E) (Ta : Ops B.Ma) (Tb : Ops B.Mb) (N : ∀ w, κ w → κ w → ℂ)

@@ -60,7 +60,7 @@ variable {hj} {Gt : GatTies D} {c : LatCmp D} {T : ∀ u : D.what₂.Word, Forms
   {Fo : FormsIn M (j + 1) hj} {Lc : LocIn X0 u w h Lv j Fo.Ch}
 
 /- English proof (translation)
-The claim follows from `chiUnit_of hj (Fo.K β).lev (S.sameU β) (c.embW u w h) (S.psi β) S.bad_p (fun x => c.embW_int u w h x) κ`.
+A detailed English derivation is pending.
 -/
 theorem StepTies.chi (S : StepTies hj Fo Lc Gt c) (β : Fo.Ch) (κ : (Fo.K β).lev.U) :
     ∃ r ∈ intW D.what₂.places w, r⁻¹ ∈ intW D.what₂.places w ∧ D.what₂.embLL r = ((Fo.K β).lev.chi κ : ℂ) :=
@@ -69,7 +69,7 @@ theorem StepTies.chi (S : StepTies hj Fo Lc Gt c) (β : Fo.Ch) (κ : (Fo.K β).l
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `S.frRat β sameU := S.sameU β hypT := S.hypT β bad_p := S.bad_p std := S.std psi := S.psi β chiRat := fun κ => let ⟨r, _, _, hr⟩ := S.chi β κ; ⟨r, hr⟩ chRat := S.chRat β`.
+A detailed English derivation is pending.
 -/
 theorem StepTies.ties (S : StepTies hj Fo Lc Gt c) (β : Fo.Ch) : LocTiesR hj Fo Lc (c.embW u w h) β where
   frRat := S.frRat β
@@ -82,7 +82,7 @@ theorem StepTies.ties (S : StepTies hj Fo Lc Gt c) (β : Fo.Ch) : LocTiesR hj Fo
   chRat := S.chRat β
 
 /- English proof (translation)
-The claim follows from `S.siteGood_prime_torsion Lb_eq := S.Lb_eq β lat := fun cl => isLattice_chart (Fo.K β) cl chi := S.chi β`.
+A detailed English derivation is pending.
 -/
 theorem StepTies.lat (S : StepTies hj Fo Lc Gt c) (β : Fo.Ch) : LatTies hj w Fo β (Lc.Lb β) where
   siteGood_prime_torsion := S.siteGood_prime_torsion
@@ -91,14 +91,14 @@ theorem StepTies.lat (S : StepTies hj Fo Lc Gt c) (β : Fo.Ch) : LatTies hj w Fo
   chi := S.chi β
 
 /- English proof (translation)
-The claim follows from `core_of_R hj K ht hF (S.ties β)`.
+A detailed English derivation is pending.
 -/
 theorem StepTies.core (S : StepTies hj Fo Lc Gt c) (K : CmpTied D X0 T Gt c) (ht : Fl.t = D.R.t) (hF : FillTie Gt u w h Fl) (β : Fo.Ch) :
     (stepInOf hj Fo Lc (Gt.gat_pos u w h)).Core (c.embW u w h) β :=
   core_of_R hj K ht hF (S.ties β)
 
 /- English proof (translation)
-The claim follows from `valIntN_rec hj (c.embW u w h) (fun β => locTies_of hj K ht hF (S.ties β)) Formalism.L2.G.RelativeIndexFlags.blockRationality_holds ((D.gat u w h).P.setting (plc Gt u w h)).frac_O (fun x => c.embW_int u w h x) S.lat`.
+A detailed English derivation is pending.
 -/
 theorem StepTies.valIntN (S : StepTies hj Fo Lc Gt c) (K : CmpTied D X0 T Gt c) (ht : Fl.t = D.R.t) (hF : FillTie Gt u w h Fl) :
     (stepInOf hj Fo Lc (Gt.gat_pos u w h)).ValIntN (c.embW u w h) w :=
@@ -106,14 +106,14 @@ theorem StepTies.valIntN (S : StepTies hj Fo Lc Gt c) (K : CmpTied D X0 T Gt c) 
     ((D.gat u w h).P.setting (plc Gt u w h)).frac_O (fun x => c.embW_int u w h x) S.lat
 
 /- English proof (translation)
-The claim follows from `twUnit_of (stepInOf hj Fo Lc (Gt.gat_pos u w h)) (c.embW u w h) w β (S.core K ht hF β) (fun x => c.embW_int u w h x) (latIn_of hj (S.ties β).frRat (S.lat β))`.
+A detailed English derivation is pending.
 -/
 theorem StepTies.twUnit (S : StepTies hj Fo Lc Gt c) (K : CmpTied D X0 T Gt c) (ht : Fl.t = D.R.t) (hF : FillTie Gt u w h Fl) (β : Fo.Ch) :
     (stepInOf hj Fo Lc (Gt.gat_pos u w h)).TwUnit w β :=
   twUnit_of (stepInOf hj Fo Lc (Gt.gat_pos u w h)) (c.embW u w h) w β (S.core K ht hF β) (fun x => c.embW_int u w h x) (latIn_of hj (S.ties β).frRat (S.lat β))
 
 /- English proof (translation)
-The claim follows from `chX_stepInOf hj Fo Lc (Gt.gat_pos u w h) (fun β => (S.ties β).sameU) (fun β => (S.ties β).frRat) S.hypC`.
+A detailed English derivation is pending.
 -/
 theorem StepTies.chX (S : StepTies hj Fo Lc Gt c) : ChX (stepInOf hj Fo Lc (Gt.gat_pos u w h)) :=
   chX_stepInOf hj Fo Lc (Gt.gat_pos u w h) (fun β => (S.ties β).sameU) (fun β => (S.ties β).frRat) S.hypC
@@ -132,7 +132,7 @@ structure HypTiesI (X0 : Formalism.L2.Herm.Herm0 D) (I : CmpJIn Tw u μ w h Lv) 
 variable {Gt : GatTies D} {c : LatCmp D} {T : ∀ u : D.what₂.Word, Forms0 D u}
 
 /- English proof (translation)
-Take `⟨Fo, Lc, e, S⟩` from `A.step j hj`. Rewrite using `[e]`. Conclude with `S.chX`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HypTiesI.chX {I : CmpJIn Tw u μ w h Lv} (A : HypTiesI X0 I Gt c) (j : ℕ) (hj : j + 1 ≤ D.R.m) : ChX (I.at' j hj).st := by
   obtain ⟨Fo, Lc, e, S⟩ := A.step j hj
@@ -140,7 +140,7 @@ theorem HypTiesI.chX {I : CmpJIn Tw u μ w h Lv} (A : HypTiesI X0 I Gt c) (j : �
   exact S.chX
 
 /- English proof (translation)
-Take `⟨Fo, Lc, e, S⟩` from `A.step j hj`. Rewrite using `[e]`. Conclude with `S.core K A.fl_t A.fill`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HypTiesI.core {I : CmpJIn Tw u μ w h Lv} (A : HypTiesI X0 I Gt c) (K : CmpTied D X0 T Gt c) (j : ℕ) (hj : j + 1 ≤ D.R.m) :
     ∀ β, (I.at' j hj).st.Core (c.embW u w h) β := by
@@ -149,14 +149,14 @@ theorem HypTiesI.core {I : CmpJIn Tw u μ w h Lv} (A : HypTiesI X0 I Gt c) (K : 
   exact S.core K A.fl_t A.fill
 
 /- English proof (translation)
-The claim follows from `finClasses_of (S := (I.at' j hj).st) (A.core K j hj) (A.chX j hj)`.
+A detailed English derivation is pending.
 -/
 theorem HypTiesI.fin {I : CmpJIn Tw u μ w h Lv} (A : HypTiesI X0 I Gt c) (K : CmpTied D X0 T Gt c) (j : ℕ) (hj : j + 1 ≤ D.R.m) :
     (gatJ Lv (j + 1)).FinClasses :=
   finClasses_of (S := (I.at' j hj).st) (A.core K j hj) (A.chX j hj)
 
 /- English proof (translation)
-The claim follows from `cmpJHyp_of_two c Gt Formalism.L2.G.RelativeIndexFlags.blockRationality_holds (A.core K) (fun j hj => by obtain ⟨Fo, Lc, e, S⟩ := A.step j hj rw [e] exact S.ok) (fun j hj => by obtain ⟨Fo, Lc, e, S⟩ := A.step j hj rw [e] exact S.twUnit K A.fl_t A.fill) (fun j hj => by obtain ⟨Fo, …`.
+A detailed English derivation is pending.
 -/
 theorem HypTiesI.hyp {I : CmpJIn Tw u μ w h Lv} (A : HypTiesI X0 I Gt c) (K : CmpTied D X0 T Gt c) : CmpJHyp c I :=
   cmpJHyp_of_two c Gt Formalism.L2.G.RelativeIndexFlags.blockRationality_holds
@@ -187,7 +187,7 @@ structure HypTies (Z : AtIn X0 Tw u μ w h Lv) (Gt : GatTies D) (c : LatCmp D) :
   step : ∀ j hj, StepTies hj (Z.Fo j hj) (Z.Lc j hj) Gt c
 
 /- English proof (translation)
-The claim follows from `A.fl_t fill := A.fill step := fun j hj => ⟨Z.Fo j hj, Z.Lc j hj, rfl, A.step j hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem HypTies.toI {Z : AtIn X0 Tw u μ w h Lv} (A : HypTies Z Gt c) : HypTiesI X0 (Z.I Gt) Gt c where
   fl_t := A.fl_t
@@ -195,12 +195,12 @@ theorem HypTies.toI {Z : AtIn X0 Tw u μ w h Lv} (A : HypTies Z Gt c) : HypTiesI
   step := fun j hj => ⟨Z.Fo j hj, Z.Lc j hj, rfl, A.step j hj⟩
 
 /- English proof (translation)
-The claim follows from `A.toI.hyp K`.
+A detailed English derivation is pending.
 -/
 theorem HypTies.hyp {Z : AtIn X0 Tw u μ w h Lv} (A : HypTies Z Gt c) (K : CmpTied D X0 T Gt c) : CmpJHyp c (Z.I Gt) := A.toI.hyp K
 
 /- English proof (translation)
-The claim follows from `A.fl_t fill := A.fill ties := fun j hj => (A.step j hj).ties hypC := fun j hj => (A.step j hj).hypC ok := fun j hj => (A.step j hj).ok twUnit := fun j hj => (A.step j hj).twUnit K A.fl_t A.fill valIntN := fun j hj => (A.step j hj).valIntN K A.fl_t A.fill fin := A.toI.fin K card : …`.
+A detailed English derivation is pending.
 -/
 theorem HypTies.atHyp {Z : AtIn X0 Tw u μ w h Lv} (A : HypTies Z Gt c) (K : CmpTied D X0 T Gt c) : AtHyp Z Gt c where
   fl_t := A.fl_t
@@ -226,7 +226,7 @@ structure FamTies (E : Extra D L hT Gi Gl Kc Dx cX) (X0 : Formalism.L2.Herm.Herm
     ((I μ hU u w hg hq).at' j hj).st = stepInOf hj Fo Lc (hT.gat_pos u w hg) ∧ StepTies hj Fo Lc hT E.cmp
 
 /- English proof (translation)
-Introduce `μ hU u w hg hq` and use `haveI : Fact (D.what₂.places.resChar w).Prime := ⟨D.what₂.places.resChar_prime w⟩ HypTiesI.hyp (X0 := X0) ⟨(E.ker u w hg).fl_t, A.fill u w hg, A.step μ hU u w hg hq⟩ K`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FamTies.H {E : Extra D L hT Gi Gl Kc Dx cX} {X0 : Formalism.L2.Herm.Herm0 D} {Lv} {I} (A : FamTies E X0 Lv I)
     (K : CmpTied D X0 T hT E.cmp) : ∀ μ hU u w hg hq, CmpJHyp E.cmp (I μ hU u w hg hq) := fun μ hU u w hg hq =>
@@ -234,7 +234,7 @@ theorem FamTies.H {E : Extra D L hT Gi Gl Kc Dx cX} {X0 : Formalism.L2.Herm.Herm
   HypTiesI.hyp (X0 := X0) ⟨(E.ker u w hg).fl_t, A.fill u w hg, A.step μ hU u w hg hq⟩ K
 
 /- English proof (translation)
-Introduce `μ hU u w hg hq j hj` and use `by obtain ⟨Fo, Lc, e, S⟩ := A.step μ hU u w hg hq j hj rw [e] exact S.chX`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FamTies.chX {E : Extra D L hT Gi Gl Kc Dx cX} {X0 : Formalism.L2.Herm.Herm0 D} {Lv} {I} (A : FamTies E X0 Lv I) :
     ∀ μ hU u w hg hq j hj, ChX ((I μ hU u w hg hq).at' j hj).st := fun μ hU u w hg hq j hj => by

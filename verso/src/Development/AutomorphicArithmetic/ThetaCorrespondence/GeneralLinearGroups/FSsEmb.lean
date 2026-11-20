@@ -11,17 +11,17 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SocleOfMultipli
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas UpperTheory.Lit.Red
 
 /- English proof (translation)
-Take `⟨B, hh, hp, hi⟩` from `hun`. Use `⟨GlobalTheory.CompanionTheory.UnitSemisimple.orth ρ B hi W, fun v hv hv' => ?_, fun v => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv0`. Establish `h0 : B v v = 0` using `hv' v hv`. Simplify `hp v hv0` using `[h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨K, hKo, hKc, hKv⟩` from `hbasis {g | ρ g v = v} ((hs v).mem_nhds (by simp))`. Establish `hfd : FiniteDimensional ℂ (fixed W.toRepresentation K)` using `hW.2 K hKo hKc`. Establish `hmap : (fixed W.toRepresentation K).map W.toSubmodule.subtype = W.toSubmodule ⊓ fixed ρ K`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨u.2, (GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff ρ K _).2 fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff _ K u).1 hu g hg)`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨u, h1⟩, (GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff _ K _).2 fun g hg => ?_, rfl⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Subtype.ext ((GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff ρ K u).1 h2 g hg)`. Establish `hfg : (W.toSubmodule ⊓ fixed ρ K).FG`. Rewrite using `[← hmap]`. Conclude with `(Module.Finite.iff_fg.1 hfd).map _`. Take `⟨t, ht⟩` from `hfg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w, hw, hort⟩` from `GlobalTheory.CompanionTheory.UnitSemisimple.exists_proj_finset B hp t v`. Rewrite `hw`, `hort` using `[ht]`. Establish `hfix : ∀ k ∈ K, ρ k (v - w) = v - w`. Introduce `k hk`. Establish `h1 : ρ k v = v` using `hKv hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h2 : ρ k w = w` using `(GlobalTheory.CompanionTheory.UnitSemisimple.mem_fixed_iff ρ K w).1 hw.2 k hk`. Rewrite using `[map_sub, h1, h2]`. Conclude with `⟨w, hw.1, fun y hy => GlobalTheory.CompanionTheory.UnitSemisimple.orthogonal_of_fixed ρ B hi K hKc W (v - w) hfix hort y hy (hs y)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_compl_of_admissible {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
@@ -60,23 +60,21 @@ private theorem exists_compl_of_admissible {G V : Type} [Group G] [TopologicalSp
       GlobalTheory.CompanionTheory.UnitSemisimple.orthogonal_of_fixed ρ B hi K hKc W (v - w) hfix hort y hy (hs y)⟩
 
 /- English proof (translation)
-Take `⟨hGT, hLT⟩` from `(hasFiniteLength_iff_wellFounded _).1 hfl`. Use `haveI : IsAtomic (Subrepresentation π) := isAtomic_of_orderBot_wellFounded_lt wellFounded_lt`. Establish `hnt : (⊤ : Subrepresentation π) ≠ ⊥` using `fun hb => by`. Take `⟨u, hu⟩` from `exists_ne (0 : V)`. Establish `h1 : u ∈ (⊥ : Subrepresentation π)` using `hb ▸ trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hu h1`. Take `⟨S, hS, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Subrepresentation π)).resolve_left hnt`. Set `ι : S.toRepresentation.IntertwiningMap π` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Establish `hSs : IsSmooth S.toRepresentation` using `(IsSubquotient.of_injective ι Subtype.val_injective).isSmooth hs`. Establish `hSa : IsAdmissible S.toRepresentation` using `(hBZ k).1 _ _ _ hSs (GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom S hS)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hS1 : 1 ≤ jhMult ρ (jac e S.toRepresentation)`. Assume the negation of the conclusion as `hc`. Use `hS.1 (le_antisymm (fun v hv => ?_) bot_le)` and prove the remaining obligations. Assume the negation of the conclusion as `hv0`. Conclude with `hc (hone S v hv hv0)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T, hST, hsum⟩` from `exists_compl_of_admissible π (GlobalTheory.CompanionTheory.SmGL.exists_compact_open_subgroup_subset k N) hs hun S hSa`. Establish `hT : ∀ v ∈ T.toSubmodule, v = 0`. Introduce `v hv`. Assume the negation of the conclusion as `hv0`. Set `ιT : T.toRepresentation.IntertwiningMap π` to `⟨T.toSubmodule.subtype, fun _ => rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `p : π.IntertwiningMap (subQuot ⊤ S)` to `⟨Submodule.mkQ _ ∘ₗ LinearMap.codRestrict (⊤ : Subrepresentation π).toSubmodule LinearMap.id (fun _ => trivial), fun _ => rfl⟩`. Establish `hp0 : ∀ v, p v = 0 ↔ v ∈ S.toSubmodule` using `fun v => Submodule.Quotient.mk_eq_zero _`. Establish `hps : Function.Surjective p` using `fun y => by`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨v.1, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ : IsSmooth (subQuot ⊤ S)` using `(IsSubquotient.of_surjective p hps).isSmooth hs`. Establish `hinj : Function.Injective (p.comp ιT)`. Use `(injective_iff_map_eq_zero _).2 fun u hu => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (hST _ ((hp0 _).1 hu) u.2)`. Establish `h1 : 1 ≤ jhMult ρ (jac e T.toRepresentation)` using `hone T v hv hv0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : 1 ≤ jhMult ρ (jac e (subQuot ⊤ S))` using `h1.trans (GlobalTheory.CompanionTheory.SocleJm.jhMult_le_of_injective hρ (jacMap e (p.comp ιT)) (GlobalTheory.JacInj.jacMap_injective k _ _ _ e _ _ _ _ _ hQ hinj))`. Establish `hex : Function.Exact ι p` using `fun v => ⟨fun h0 => ⟨⟨v, (hp0 v).1 h0⟩, rfl⟩, fun ⟨u, hu⟩ => (hp0 v).2 (hu ▸ u.2)⟩`. Establish `h3 : (2 : ℕ∞) ≤ jhMult ρ (jac e π)`. Rewrite using `[GlobalTheory.CompanionTheory.SocleJm.jhMult_jac_exact e hρ ι p hs Subtype.val_injective hps hex]`. Conclude with `(by norm_num : (2 : ℕ∞) = 1 + 1).le.trans (add_le_add hS1 h2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (h3.trans hjm) (by norm_num)`. Establish `htop : S = ⊤`. Use `le_antisymm le_top fun v _ => ?_` and prove the remaining obligations. Take `⟨w, hw, h⟩` from `hsum v`. Rewrite using `[sub_eq_zero.1 (hT _ h)]`.
-
-Conclude with `hw`. Rewrite `hS` using `[htop]`. Conclude with `isSimpleOrder_iff_isAtom_top.2 hS`.
+A detailed English derivation is pending.
 -/
 private theorem isIrreducible_of_occurs (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {k : Type} [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s N : ℕ} {d : Fin s → ℕ}
@@ -141,9 +139,7 @@ private theorem isIrreducible_of_occurs (hBZ : GlobalTheory.Published.BernsteinZ
   exact isSimpleOrder_iff_isAtom_top.2 hS
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CompanionTheory.SocleJm.nontrivial_indSp e hρ hsρ`. Establish `hsw : IsSmooth (parInd e' σ)` using `isSmooth_parInd _ _`. Use `isIrreducible_of_occurs hBZ e' hσ (parInd e ρ) (isSmooth_parInd _ _) ((hBZ k).2.2.1 _ _ _ e _ ρ hsρ (hasFiniteLength_of_isIrreducible hρ)) hun (fun T v hv hv0 => ?_) ?_` and prove the remaining obligations. Set `ιT : T.toRepresentation.IntertwiningMap (parInd e ρ)` to `⟨T.toSubmodule.subtype, fun _ => rfl⟩`. Conclude with `GlobalTheory.CompanionTheory.SocleJm.one_le_jhMult_jac e' hσ (f.comp ιT) ⟨⟨v, hv⟩, fun h0 => hv0 (hf (h0.trans (map_zero f).symm))⟩`.
-
-Conclude with `(GlobalTheory.CompanionTheory.SocleJm.jhMult_le_of_injective hσ (jacMap e' f) (GlobalTheory.JacInj.jacMap_injective k _ _ _ e' _ _ _ _ _ hsw hf)).trans hjm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem isIrreducible_parInd_emb (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {k : Type} [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s s' N : ℕ} {d : Fin s → ℕ}
@@ -165,9 +161,9 @@ private theorem isIrreducible_parInd_emb (hBZ : GlobalTheory.Published.Bernstein
       (GlobalTheory.JacInj.jacMap_injective k _ _ _ e' _ _ _ _ _ hsw hf)).trans hjm
 
 /- English proof (translation)
-Introduce `hBZ k _ _ _ _ x y N h hd w hw hx hy hf hjm`. Take `⟨f, hf⟩` from `hf`. Establish `hρ : (piTensor fun a => (![x, y] a).rep).IsIrreducible` using `GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor (fun k _ _ _ _ n V _ _ π => (hBZ k).1 (Fin n) V π) ![x, y]`. Establish `hsρ : IsSmooth (piTensor fun a => (![x, y] a).rep)` using `isSmooth_piTensor fun a => (![x, y] a).2.rep.smooth`. Establish `hσ : (piTensor fun a => (w a).rep).IsIrreducible` using `GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor (fun k _ _ _ _ n V _ _ π => (hBZ k).1 (Fin n) V π) w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ a, IsUnitarisable (![x, y] a).rep` using `fun a => by fin_cases a`. Conclude with `hx`. Conclude with `hy`. Conclude with `isIrreducible_parInd_emb hBZ _ _ hρ hsρ hσ (GlobalTheory.SmGL.UnitInd.isUnitarisable_multiProd _ hu) f hf hjm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Full.ssEmb :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x y : IrrGL k) (N h : ℕ) (hd : ∑ a, (![x, y] a).1 = N) (w : Fin h → IrrGL k) (hw : ∑ a, (w a).1 = N), IsUnitarisable x.rep → IsUnitarisable y.rep → (∃ f : (prodIrr ![x, y] hd).IntertwiningMap (prodIrr w hw), Function.Injective f) → jm w hw (prodIrr w hw) ≤ 1 → (prodIrr ![x, y] hd).IsIrreducible := by

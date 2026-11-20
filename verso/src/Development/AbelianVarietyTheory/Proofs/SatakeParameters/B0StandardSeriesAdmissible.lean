@@ -14,9 +14,9 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 namespace GlobalTheory.KerStd
 
 /- English proof (translation)
-Establish `hS : ¬ IsSg D p`. Introduce `hs`. Unfold `IsResidueClassZero at hC`. Unfold `IsSg at hs`. Rewrite `hs` using `[hC]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hs (by decide)`. Unfold `nP`. Rewrite using `[if_neg hS, h0, addOrderOf_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nP_eq_one_of_hP_eq_zero (D : D7) (p : ℕ) (hC : IsResidueClassZero D p) (h0 : hP D p = 0) : nP D p = 1 := by
   have hS : ¬ IsSg D p := by
@@ -29,9 +29,9 @@ theorem nP_eq_one_of_hP_eq_zero (D : D7) (p : ℕ) (hC : IsResidueClassZero D p)
   rw [if_neg hS, h0, addOrderOf_zero]
 
 /- English proof (translation)
-Introduce `D cc δ B χ p _ lam hHost h5 hC hP0 N N' L L' P P' hAdm hS hS' G hG`. Take `⟨c, g2, g3, s2, ε, σ, F, hc, hcd, hfam⟩` from `hHost`. Take `⟨r, b, hLB, hON, hInt⟩` from `hfam N N' L L' hAdm`. Take `⟨γ, hγ1, hγ2, hγ3⟩` from `GlobalTheory.T.unitaryMatrix_of_orthonormal_localBasis_allPlaces D p lam σ hcd.2.2.2.2.2.1 h5 hC hP0 N N' L L' P P' hAdm hS hS' r b hLB hON`. Establish `hU` using `GlobalTheory.T.subst_unitary_logarithmic_coordinates p g2 g3 s2 ε σ F hcd (Fin r) (OrbitPlaces.Pl D × Fin N × Fin N') γ hγ1 (by convert hγ2) _ (hInt G hG)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hU` using `[← hγ3 c G]`. Conclude with `GlobalTheory.T.exponentShape_of_integralClass_oneLetter D p g2 g3 s2 ε σ F hcd (nP_eq_one_of_hP_eq_zero D p hC hP0) N N' c _ hc hU`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaExpansionRealPlaces_stdSer_of_adm : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : IdE D → ℂ) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), HostAt B χ p lam → 5 ≤ p → IsResidueClassZero D p → hP D p = 0 → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E) (P' : D.what₂.Tau → Matrix (Fin N') (Fin N') D.host.E), admitted D N N' L L' → StdBases D lam L P → StdBases D lam L' P' → ∀ G, IsComb D B.tor (B.eNat χ) lam L L' G → OrbitPlaces.ThetaExpansionRealPlaces D p (stdSer D lam (fun _ => 1) P P' G) := by
   intro D cc δ B χ p _ lam hHost h5 hC hP0 N N' L L' P P' hAdm hS hS' G hG

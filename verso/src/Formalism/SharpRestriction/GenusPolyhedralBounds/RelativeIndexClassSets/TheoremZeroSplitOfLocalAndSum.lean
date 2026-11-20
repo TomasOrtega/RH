@@ -17,7 +17,7 @@ section J
 variable {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, ⟨b1, b2, b3, -⟩, a5, a6, a7, a8⟩` from `h`. Conclude with `⟨a1, a2, a3, ⟨b1, b2, b3⟩, a5, a6, a7, a8⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hypC_of_hyp {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR Bx CT : ℝ} {S : Scal B} {T nP nW : ℕ} {h0 : ℝ}
     {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} (h : Hyp large₂ X H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus) :
@@ -26,7 +26,7 @@ theorem hypC_of_hyp {large₂ : SizeData₂ D} {H : KHyp} {C2 A2 CR Bx CT : ℝ}
   exact ⟨a1, a2, a3, ⟨b1, b2, b3⟩, a5, a6, a7, a8⟩
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14⟩` from `hT`. Conclude with `⟨⟨a1, a2, a3, a4, a5⟩, a6, ⟨a7, a8, a9⟩, ⟨a10, a11, a12, a13⟩, fun hj => ⟨(a14 hj).1, (a14 hj).2.1, (a14 hj).2.2.1, (a14 hj).2.2.2.2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem split_of_tied {G : GlobalFamilyData X ka wL wF} {large₂ : SizeData₂ D} {S : Scal B} {CRm : ℝ} {T : ℕ} {c Gc Prw Ch Ah Cf Af : ℝ}
     (hT : G.Tied large₂ S CRm T c Gc Prw Ch Ah Cf Af) :
@@ -36,33 +36,33 @@ theorem split_of_tied {G : GlobalFamilyData X ka wL wF} {large₂ : SizeData₂ 
     fun hj => ⟨(a14 hj).1, (a14 hj).2.1, (a14 hj).2.2.1, (a14 hj).2.2.2.2⟩⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem split_of_deepIn {large₂ : SizeData₂ D} {CG AG Pd : ℝ} (h : DeepIn X ka large₂ CG AG Pd) :
     DeepHerm X ka ∧ DeepSubMul X ∧ DeepLogD X ka Pd ∧ PageGd X ka large₂ CG AG Pd := h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem split_of_shares {del rz rq d T : ℕ} {CRm c : ℝ} (h : Shares D wL del rz rq d T CRm c) :
     ShareRd (D := D) (j := j) T del d ∧ ShareRho (D := D) (j := j) T rz d ∧ ShareRhoP (D := D) (j := j) T rq d := h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem split_of_inContain {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} {S : Scal B} {CRm : ℝ} {T : ℕ} {c : ℝ}
     (h : InContain G la S CRm T c) : InContainZ G la S T ∧ InContainM G la CRm T c := h
 
 /- English proof (translation)
-Introduce `la y`. Establish `hφ` using `Formalism.MainNotions.Gaps.T0.phiC_nonneg X la y`. Establish `hd` using `hH1.2.2.2 la y`. Use `⟨fun hj => ?_, fun hj => ?_⟩` and prove the remaining obligations. Take `⟨hi, h⟩` from `hEt hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hi' : (0 : ℝ) < 2 * (G.iet : ℝ)` using `by positivity`. Establish `h1` using `h la y`. Establish `h0 : (0 : ℝ) ≤ 2 * G.iet * X.phiC la y` using `mul_nonneg hi'.le hφ`. Use `⟨le_trans (by exact_mod_cast h0) h1, fun hfin => hd.trans ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[← EReal.coe_toReal hfin (X.vAt_ne_bot la y _), EReal.coe_le_coe_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[EReal.coe_le_coe_iff]`. Establish `h2 : X.phiC la y ≤ (X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ))`. Rewrite using `[le_div_iff₀ hi']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : cc D large₂ H.Cc H.Ac H.CRc wL * X.phiC la y ≤ c * X.phiC la y` using `mul_le_mul_of_nonneg_right hc hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : c * X.phiC la y ≤ c * ((X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ)))` using `mul_le_mul_of_nonneg_left h2 hc0`. Establish `h5 : c / (2 * (G.iet : ℝ)) * (X.vAt la y (X.inc _ G.et)).toReal = c * ((X.vAt la y (X.inc _ G.et)).toReal / (2 * (G.iet : ℝ)))` using `by ring`. Rewrite using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : X.phiC la y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Unfold `PJ.phiC`. Rewrite using `[if_neg (not_lt.2 hj)]`. Rewrite `hd` using `[h0, mul_zero, add_zero]`. Conclude with `hd`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem combined_bound_of_H1_admissible {large₂ : SizeData₂ D} {H : KHyp} {S : Scal B} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     (G : GlobalFamilyData X ka wL wF) (hH1 : H1 large₂ X H S wL nus) (c : ℝ) (hc0 : 0 ≤ c) (hc : cc D large₂ H.Cc H.Ac H.CRc wL ≤ c)
@@ -98,7 +98,7 @@ theorem combined_bound_of_H1_admissible {large₂ : SizeData₂ D} {H : KHyp} {S
 variable {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)}
 
 /- English proof (translation)
-Unfold `vEt`. Use `split_ifs with hj`. Conclude with `div_nonneg (EReal.toReal_nonneg ((hB la (Q.y ζ)).1 hj).1) (mul_nonneg (by norm_num) (Nat.cast_nonneg _))`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vEt_nonneg_comb {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} (hB : CombBound G S c nus)
     (Q : LocalPointData G la) (ζ : PtsG G la) : 0 ≤ vEt Q ζ := by
@@ -108,13 +108,13 @@ theorem vEt_nonneg_comb {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hv` using `vEt_nonneg_comb hB Q ζ`. Establish `hm : c * vEt Q ζ ≤ max 0 c * vEt Q ζ` using `mul_le_mul_of_nonneg_right (le_max_right _ _) hv`. Distinguish the cases in `hj : j < D.R.m`. Establish `h1` using `((hB la (Q.y ζ)).1 hj).2 ((hTie ζ).2.2.1 hj)`. Rewrite `h1` using `[← EReal.coe_toReal (hTie ζ).1 (hTie ζ).2.1, EReal.coe_le_coe_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : c / (2 * (G.iet : ℝ)) * (X.vAt la (Q.y ζ) (X.inc _ G.et)).toReal = c * vEt Q ζ`. Unfold `vEt`. Rewrite using `[if_pos hj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `LocalPointData.nu`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `(hB la (Q.y ζ)).2 (not_lt.1 hj)`. Rewrite `h1` using `[← EReal.coe_toReal (hTie ζ).1 (hTie ζ).2.1, EReal.coe_le_coe_iff]`. Establish `h2 : 0 ≤ max 0 c * vEt Q ζ` using `mul_nonneg (le_max_left _ _) hv`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `LocalPointData.nu`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nu_le_comb {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} (hB : CombBound G S c nus)
     (Q : LocalPointData G la) (hTie : Q.InTie S) (ζ : PtsG G la) : Q.nu S ζ ≤ nus la + max 0 c * vEt Q ζ := by
@@ -137,7 +137,7 @@ theorem nu_le_comb {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) �
     linarith
 
 /- English proof (translation)
-Unfold `LocalPointData.Net`. Conclude with `finsum_nonneg fun ζ => mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (EReal.toReal_nonneg ((hB la (Q.y ζ)).1 hj).1)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Net_nonneg_comb {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} (hB : CombBound G S c nus)
     (hj : j < D.R.m) (Q : LocalPointData G la) : 0 ≤ Q.Net := by
@@ -146,9 +146,7 @@ theorem Net_nonneg_comb {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.
     (EReal.toReal_nonneg ((hB la (Q.y ζ)).1 hj).1)
 
 /- English proof (translation)
-Unfold `rLa`. Establish `h1 : (0 : ℝ) ≤ (if j < D.R.m then (T : ℝ) * (max 0 c / (2 * (G.iet : ℝ))) * Q.Net else 0)` using `by split_ifs with hj`. Conclude with `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (div_nonneg (le_max_left _ _) (mul_nonneg (by norm_num) (Nat.cast_nonneg _)))) (Net_nonneg_comb hB hj Q)`. Conclude with `le_rfl`. Establish `h2 : (0 : ℝ) ≤ (Q.Ila.toNat : ℝ)` using `Nat.cast_nonneg _`.
-
-Conclude with `add_nonneg (add_nonneg (mul_nonneg (Nat.cast_nonneg _) (add_nonneg h2 h1)) (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rLa_nonneg_comb {S : Scal B} {c' : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} (hB : CombBound G S c' nus)
     (Q : LocalPointData G la) (CRm : ℝ) (T : ℕ) (c : ℝ) : 0 ≤ rLa Q CRm T c := by
@@ -163,7 +161,7 @@ theorem rLa_nonneg_comb {S : Scal B} {c' : ℝ} {nus : HeightOneSpectrum (𝓞 B
     (Nat.cast_nonneg _)
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.Gaps.T0.theta_le_msup_of_setC X S h.2.2.2.2.1 h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem theta_le_msup_of_hypC {large₂ : SizeData₂ D} (X : PJ D B P j) {H : KHyp} {C2 A2 CR Bx CT : ℝ} (S : Scal B)
     {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
@@ -171,7 +169,7 @@ theorem theta_le_msup_of_hypC {large₂ : SizeData₂ D} (X : PJ D B P j) {H : K
   Formalism.MainNotions.Gaps.T0.theta_le_msup_of_setC X S h.2.2.2.2.1 h.2.1
 
 /- English proof (translation)
-Take `⟨-, -, ⟨-, -, -, -, -, po, -, -, PLam, -, -, hF, h0', hK⟩, -⟩` from `hH`. Conclude with `⟨span_eq_top_of_shortG hF, span_eq_top_of_shortG h0', span_eq_top_of_shortG hK⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem span_Thc_of_hypC {large₂ : SizeData₂ D} {X : PJ D B P j} {H : KHyp} {C2 A2 CR Bx CT : ℝ} {S : Scal B}
     {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
@@ -235,7 +233,7 @@ def SumC (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) 
       (X j h1 h2).rk ka (B.Mlat j ka) * D.R.f * D.R.m * large₂.sc.b * large₂.de2
 
 /- English proof (translation)
-Introduce `large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA G Gc PH Prw Pet Pd Qf tW tTh tZ tQ tEt dH dS dL pG sRd sRho sRhoP hP iB iC iT iLf iZ iM hB hHt`. Take `⟨hrs, hrb⟩` from `hS large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA G Gc PH Prw Pet Pd tW tTh tZ tQ tEt dH dS dL pG sRd sRho sRhoP hP hB Qf hHt`. Conclude with `concl_of_nat (X j h1 h2) S ka wL wF T nus _ (fun la => rLa (Qf la) K.CRm T (cc D large₂ C2 A2 CR wL)) hH.2.2.2.1.1 (fun la => rLa_nonneg_comb hB (Qf la) _ _ _) hrs hrb (fun la e he V' hV => hL large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA G …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theorem_zero_split_of_local_and_sum (hL : LocalC D B P) (hS : SumC D B P) : Conclusion1OfComb (D := D) (B := B) (P := P) := by
   intro large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA qA G Gc PH Prw Pet Pd Qf
@@ -253,9 +251,9 @@ def LiftAll (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov 
     (Q : LocalPointData G la) (S : Scal B) (CRm : ℝ) (T : ℕ) (c : ℝ), Q.Ok S CRm T c → Q.InLift T
 
 /- English proof (translation)
-Introduce `large₂ X K H Ch Ah Cq Aq C2 A2 CR CT hA hBan hin j h1 h2 S ka wL wF T nP nW h0 nus hH`. Take `⟨G, Gc, PH, Prw, Pet, Pd, hT, hI, hSh, hP, Qf, hOk, hHt⟩` from `hin j h1 h2 S ka wL wF T nP nW h0 nus hH`. Take `⟨tW, tTh, tZ, tQ, tEt⟩` from `split_of_tied hT`. Take `⟨dH, dS, dL, pG⟩` from `split_of_deepIn hI`. Take `⟨sRd, sRho, sRhoP⟩` from `split_of_shares hSh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus (hypC_of_hyp hH) (hA.1 j h1 h2 ka) (fun F σ => hA.2.1.2 j h1 h2 ka F σ) (hA.2.2.2.2.1 j h1 h2 ka) (fun hj hCR hO hn hLP hsz hT hc hTc => hA.2.2.2.2.2.2 hCR hO j h1 hj ka hn hLP hsz _ _ hT hc hTc) G Gc PH Prw …`.
+A detailed English derivation is pending.
 -/
 theorem theorem_zero_bundled_of_split (hLf : LiftAll D B P) (h : Conclusion1OfComb (D := D) (B := B) (P := P)) :
     Conclusion1Of2 (D := D) (B := B) (P := P) := by

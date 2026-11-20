@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : ∀ c, Fintype.card {i // g' i = c} = Fintype.card {i // g i = c}`. Introduce `c`. Use `congrArg (Multiset.count c) h` as an intermediate fact. Rewrite `this` using `[Multiset.count_map, Multiset.count_map]`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.card, Finset.filter_val]`. Simplify `this.symm` using `only [eq_comm]`. Conclude with `⟨Equiv.ofFiberEquiv (fun c => Fintype.equivOfCardEq (hc c)), fun i => Equiv.ofFiberEquiv_map _ i⟩`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_perm_of_univ_map_eq {ι β : Type} [Fintype ι] (g g' : ι → β)
     (h : Finset.univ.val.map g = Finset.univ.val.map g') :
@@ -22,29 +22,29 @@ theorem exists_perm_of_univ_map_eq {ι β : Type} [Fintype ι] (g g' : ι → β
     fun i => Equiv.ofFiberEquiv_map _ i⟩
 
 /- English proof (translation)
-Introduce `m f hf α α' hα h`. Establish `hα' : ∀ i, α' i ≠ 0`. Introduce `i hi`. Establish `hmem : (0 : ℂ) ∈ Finset.univ.val.map α' + Finset.univ.val.map (fun i => (α' i)⁻¹)` using `Multiset.mem_add.2 (Or.inl (Multiset.mem_map.2 ⟨i, Finset.mem_univ_val i, hi⟩))`. Rewrite `hmem` using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Multiset.mem_add.1 hmem with h1 | h1` into its components or cases. Take `⟨j, -, hj⟩` from `Multiset.mem_map.1 h1`. Conclude with `hα j hj`. Take `⟨j, -, hj⟩` from `Multiset.mem_map.1 h1`. Conclude with `hα j (inv_eq_zero.1 hj)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (Multiset.map (fun x : ℂ => x + x⁻¹)) h`. Simplify using `only [Multiset.map_add, Multiset.map_map, Function.comp_def, inv_inv] at h2`. Establish `e1 : ∀ γ : Fin m → ℂ, (fun i => (γ i)⁻¹ + γ i) = fun i => γ i + (γ i)⁻¹` using `fun γ => funext fun i => add_comm _ _`. Rewrite `h2` using `[e1 α, e1 α']`. Establish `h3 : Finset.univ.val.map (fun i => α i + (α i)⁻¹) = Finset.univ.val.map (fun i => α' i + (α' i)⁻¹)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `c`. Use `congrArg (Multiset.count c) h2` as an intermediate fact. Simplify using `only [Multiset.count_add] at this`. Use linear arithmetic over natural numbers and integers. Take `⟨π, hπ⟩` from `exists_perm_of_univ_map_eq _ _ h3`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hor : ∀ i, α' i = α (π i) ∨ α' i = (α (π i))⁻¹`. Introduce `i`. Establish `h4` using `hπ i`. Establish `ha` using `hα (π i)`. Establish `hb` using `hα' i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `h5 : (α' i - α (π i)) * (α' i * α (π i) - 1) = 0`. Clear denominators, using `at h4` for the nonvanishing conditions. Take the linear combination `-h4`. Break down `mul_eq_zero.1 h5 with h6 | h6` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h6)`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Conclude with `Or.inr (eq_inv_of_mul_eq_one_left (sub_eq_zero.1 h6))`. Establish `hβ : ∀ i, (α ∘ π) i ≠ 0` using `fun i => hα _`. Establish `key : ∀ s : Finset (Fin m), f (fun i => if i ∈ s then α' i else (α ∘ π) i) = f (α ∘ π)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `empty => simp [Function.comp_def]`. Consider the case `insert j s hj ih`. Rewrite using `[← ih]`. Establish `hne : ∀ i, (fun i => if i ∈ s then α' i else (α ∘ π) i) i ≠ 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hi : i ∈ s`. Simplify `hα' i` using `[hi]`. Simplify `hα (π i)` using `[hi]`. Break down `hor j with h6 | h6` into its components or cases. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hj, h6]`. Simplify using `[hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← (hf _ hne).2 j]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hj, h6]`. Simplify using `[hij]`. Use `key Finset.univ` as an intermediate fact. Simplify using `only [Finset.mem_univ, if_true] at this`. Rewrite using `[← (hf α hα).1 π, ← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_perm_inv_invariant_of_multiset_eq :
     ∀ (m : ℕ) (f : (Fin m → ℂ) → ℂ), (∀ α : Fin m → ℂ, (∀ i, α i ≠ 0) → (∀ π : Equiv.Perm (Fin m), f (α ∘ π) = f α) ∧ ∀ i, f (Function.update α i (α i)⁻¹) = f α) → ∀ α α' : Fin m → ℂ, (∀ i, α i ≠ 0) → Finset.univ.val.map α + Finset.univ.val.map (fun i => (α i)⁻¹) = Finset.univ.val.map α' + Finset.univ.val.map (fun i => (α' i)⁻¹) → f α = f α' := by

@@ -75,7 +75,7 @@ def SplitLab {R : Ranks} (H : Host R) (x eps : ℝ) : Prop :=
     (H.QS : ℝ) ≤ 4 * R.n * x ^ (eps / 100)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨1, le_rfl, by rwa [div_one]⟩, ho, hQ⟩`.
+Supply the required witnesses or components.
 -/
 theorem SplitLab.of_one {R : Ranks} {H : Host R} {x eps : ℝ} (h : ⌊x ^ (eps / 5)⌋₊ ≤ H.splitBound)
     (ho : (R.o : ℝ) ≤ x ^ (eps / 100)) (hQ : (H.QS : ℝ) ≤ 4 * R.n * x ^ (eps / 100)) : SplitLab H x eps :=
@@ -100,7 +100,7 @@ structure DeadLabels {R : Ranks} (H : Host R) : Prop where
   j0 : ∃ j0 : ℕ, Real.logb 5 ((R.n : ℝ) * R.N R.m / R.m) ≤ j0 ∧ 10 * j0 + 20 ≤ H.Lw
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.secondLabelsNonempty, h.j0⟩, h.split, h.CG_pos, h.Gam⟩, fun h => ⟨h.1.secondLabelsNonempty, h.1.j0, h.2.split, h.2.CG_pos, h.2.Gam⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem labels_iff (x eps CG : ℝ) : Labels D x eps CG ↔ DeadLabels D.host ∧ LiveLabels D x eps CG :=
   ⟨fun h => ⟨⟨h.secondLabelsNonempty, h.j0⟩, h.split, h.CG_pos, h.Gam⟩, fun h => ⟨h.1.secondLabelsNonempty, h.1.j0, h.2.split, h.2.CG_pos, h.2.Gam⟩⟩
@@ -115,7 +115,7 @@ def relabel {R : Ranks} (H : Host R) (Lw : ℕ) (h : 2 ≤ Lw) : Host R :=
       absurd ((Finset.mem_singleton.1 h₁).trans (Finset.mem_singleton.1 h₂).symm) h12 }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨10 * ⌈Real.logb 5 ((R.n : ℝ) * R.N R.m / R.m)⌉₊ + 20, by omega, ⟨0, Finset.mem_singleton_self _⟩, _, Nat.le_ceil _, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_deadLabels {R : Ranks} (H : Host R) : ∃ (Lw : ℕ) (h : 2 ≤ Lw), DeadLabels (relabel H Lw h) :=
   ⟨10 * ⌈Real.logb 5 ((R.n : ℝ) * R.N R.m / R.m)⌉₊ + 20, by omega,
@@ -130,7 +130,7 @@ structure TopsCoset {R : Ranks} (H : Host R) (J : ℕ) : Prop where
   coset : ∃ c : R.A, ∀ t, t ∈ H.TT ↔ ∃ s : R.A, R.h t = R.h (c + 2 ^ J • s)
 
 /- English proof (translation)
-Establish `h1 : 2 ^ (J + 1) ≤ 2 ^ R.e`. Use `h.hi` as an intermediate fact. Rewrite using `[pow_succ]`. Use linear arithmetic over natural numbers and integers. Conclude with `(Nat.pow_le_pow_iff_right (by norm_num)).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem TopsCoset.succ_le {R : Ranks} {H : Host R} {J : ℕ} (h : TopsCoset H J) (hm : 2 * R.m ≤ 2 ^ R.e) : J + 1 ≤ R.e := by
   have h1 : 2 ^ (J + 1) ≤ 2 ^ R.e := by
@@ -139,15 +139,13 @@ theorem TopsCoset.succ_le {R : Ranks} {H : Host R} {J : ℕ} (h : TopsCoset H J)
   exact (Nat.pow_le_pow_iff_right (by norm_num)).1 h1
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.coset`. Use `haveI : IsCyclic (Formalism.FrobeniusOrbits.HGrp R.e) := (Formalism.FrobeniusOrbits.hostGroup R.e).2.2.2.2.2.1`. Establish `hcard : Nat.card (Additive (Formalism.FrobeniusOrbits.HGrp R.e)) = 2 ^ R.e` using `(Nat.card_congr Additive.toMul).trans (Formalism.FrobeniusOrbits.Group.card_H R.e)`. Use `haveI : Finite (Additive (Formalism.FrobeniusOrbits.HGrp R.e)) := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Use `set K : AddSubgroup R.A := (nsmulAddMonoidHom (α := Additive (Formalism.FrobeniusOrbits.HGrp R.e)) (2 ^ J)).range.comap R.h with hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : K.index = 2 ^ J`. Rewrite using `[hK, AddSubgroup.index_comap_of_surjective _ R.h_surj, IsAddCyclic.index_nsmulAddMonoidHom_range, hcard]`. Conclude with `Nat.gcd_eq_right (pow_dvd_pow 2 hJ)`. Establish `hm : ∀ t, t ∈ H.TT ↔ t - c ∈ K` using `fun t => by`. Rewrite using `[hc, hK, AddSubgroup.mem_comap, AddMonoidHom.mem_range]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs⟩`. Conclude with `⟨R.h s, by rw [map_sub, hs, map_add, map_nsmul, add_sub_cancel_left]; rfl⟩`. Introduce and unpack `⟨y, hy⟩`. Take `⟨s, rfl⟩` from `R.h_surj y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_nsmul, ← sub_eq_iff_eq_add', ← map_sub, ← hy]`. Both sides reduce to the same expression. Establish `e : Nat.card K = H.TT.card`. Rewrite using `[← Nat.card_eq_finsetCard]`.
-
-Conclude with `Nat.card_congr ((Equiv.addRight c).subtypeEquiv fun t => by simp [hm])`. Rewrite using `[← e, ← hi, AddSubgroup.card_mul_index, R.natCard_A]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem TopsCoset.card_mul {R : Ranks} {H : Host R} {J : ℕ} (h : TopsCoset H J) (hJ : J ≤ R.e) :
     H.TT.card * 2 ^ J = R.n := by
@@ -176,14 +174,14 @@ theorem TopsCoset.card_mul {R : Ranks} {H : Host R} {J : ℕ} (h : TopsCoset H J
   rw [← e, ← hi, AddSubgroup.card_mul_index, R.natCard_A]; rfl
 
 /- English proof (translation)
-Rewrite using `[← h.card_mul hJ, Nat.mul_div_cancel _ (by positivity)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TopsCoset.card_eq {R : Ranks} {H : Host R} {J : ℕ} (h : TopsCoset H J) (hJ : J ≤ R.e) :
     H.TT.card = R.n / 2 ^ J := by
   rw [← h.card_mul hJ, Nat.mul_div_cancel _ (by positivity)]
 
 /- English proof (translation)
-Establish `h1` using `h.succ_le hm`. Establish `h2 : 2 ^ (J + 1) ∣ H.TT.card * 2 ^ J`. Rewrite using `[h.card_mul (by omega)]; exact (pow_dvd_pow 2 h1).trans R.two_pow_dvd_ord`. Rewrite `h2` using `[pow_succ']`. Conclude with `even_iff_two_dvd.2 (Nat.dvd_of_mul_dvd_mul_right (by positivity) h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TopsCoset.card_even {R : Ranks} {H : Host R} {J : ℕ} (h : TopsCoset H J) (hm : 2 * R.m ≤ 2 ^ R.e) :
     Even H.TT.card := by
@@ -194,11 +192,11 @@ theorem TopsCoset.card_even {R : Ranks} {H : Host R} {J : ℕ} (h : TopsCoset H 
   exact even_iff_two_dvd.2 (Nat.dvd_of_mul_dvd_mul_right (by positivity) h2)
 
 /- English proof (translation)
-Establish `h1 : R.m ^ 4 ≤ 2 * R.ord` using `by exact_mod_cast h`. Establish `h2` using `R.ord_le_o_mul_two_pow`. Establish `h3 : R.o ^ 2 ≤ 2 ^ R.e` using `(Nat.pow_le_pow_right R.o_pos (by norm_num)).trans H.o_pow`. Establish `h4 : 2 ^ 2 ≤ 2 ^ R.e` using `Nat.pow_le_pow_right (by norm_num) H.two_le_e`. Generalize the expression as in `2 ^ R.e = P at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `R.o = o at *`. Assume the negation of the conclusion as `hc`. Establish `h5 : P ^ 4 < (2 * R.m) ^ 4` using `Nat.pow_lt_pow_left (by omega) (by norm_num)`. Establish `h6 : P ^ 3 * P < 32 * o * P` using `by nlinarith`. Establish `h7 : P ^ 3 < 32 * o` using `Nat.lt_of_mul_lt_mul_right h6`.
+Replace the chosen expression with an arbitrary variable. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : (P ^ 3) ^ 2 < (32 * o) ^ 2` using `Nat.pow_lt_pow_left h7 (by norm_num)`. Establish `h9 : (2 ^ 2) ^ 5 ≤ P ^ 5` using `Nat.pow_le_pow_left h4 5`. Establish `h10 : 1024 * P ≤ P ^ 5 * P` using `Nat.mul_le_mul_right _ (by simpa using h9)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem two_m_le_two_pow {R : Ranks} (H : Host R) (h : (R.m : ℝ) ^ 4 ≤ R.f) : 2 * R.m ≤ 2 ^ R.e := by
   have h1 : R.m ^ 4 ≤ 2 * R.ord := by exact_mod_cast h
@@ -222,7 +220,7 @@ def withTops {R : Ranks} (H : Host R) (J : ℕ) (c : R.A) : Host R :=
   { H with TT := Finset.univ.filter (fun t => ∃ s : R.A, R.h t = R.h (c + 2 ^ J • s)) }
 
 /- English proof (translation)
-Rewrite using `[← pow_succ']; exact Nat.lt_pow_succ_log_self (by norm_num) _ hi := Nat.pow_log_le_self 2 (by have := R.two_le_m; omega) coset := ⟨c, fun t => by simp only [withTops, Finset.mem_filter, Finset.mem_univ, true_and]⟩`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem topsCoset_withTops {R : Ranks} (H : Host R) (c : R.A) :
     TopsCoset (withTops H (Nat.log 2 R.m) c) (Nat.log 2 R.m) where
@@ -252,7 +250,7 @@ structure OneScaleDatum (x eps eta : ℝ) (J : ℕ) : Prop where
   del : DelInt D
 
 /- English proof (translation)
-Unfold `aC bx`. Rewrite using `[show (4 : ℝ) = 2 ^ (2 : ℝ) by norm_num, ← Real.rpow_mul (by norm_num), Real.rpow_zero]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : aC 4 0 = 2048 * Real.exp 1 := by
   unfold aC bx
@@ -260,7 +258,7 @@ example : aC 4 0 = 2048 * Real.exp 1 := by
   norm_num
 
 /- English proof (translation)
-Simplify using `[bpC, aC, bx]`.
+Simplify using the standard rewrite rules.
 -/
 example : bpC 1 1 = 1 := by simp [bpC, aC, bx]
 

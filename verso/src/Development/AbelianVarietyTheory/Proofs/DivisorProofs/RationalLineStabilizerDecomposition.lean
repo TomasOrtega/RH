@@ -21,23 +21,23 @@ namespace GlobalTheory.RatStabLevi
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d₁ W W₁ H' r s i₀ i₁ hcm hW hH p hp t hpt`. Take `⟨u, hu, m₁, hm₁, h₁, m₂, hm₂, hpe⟩` from `GlobalTheory.StabLineLevi.stab_line_eq_unip_mul_levi F E σ B W W₁ H' r s i₀ i₁ hcm hW hH p t hpt`. Take `⟨π, hπι, hdec, -⟩` from `GlobalTheory.PlaneFrame.frame_dual_gram F E σ B n W r s d₁ W₁ H' i₀ i₁ hcm hW hH`. Establish `hπx : π *ᵥ H'.x = 0` using `GlobalTheory.StabLineLevi.proj_x (c := σ.toRingHom) hdec hπι hH.xx hH.xy`. Establish `hπxa : incM F π *ᵥ incV F H'.x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.StabNormal.incM_mulVec, hπx]`. Use function extensionality and compare the values at `i`. Simplify using `[incV]`. Establish `hπιa : incM F π * incM F H'.ι = 1`. Rewrite using `[← GlobalTheory.LeviUnitary.incM_mul, hπι, GlobalTheory.StabLineLevi.incM_one]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : incM F π * mat u * incM F H'.ι = 1`. Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `(GlobalTheory.StabNormal.prop_of_mem_unip' H' hu).2 (Pi.single j 1)`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, ha, mulVec_add, mulVec_smul, hπxa, smul_zero, add_zero, mulVec_mulVec, hπιa]`. Establish `hm₁ι : mat m₁ * incM F H'.ι = incM F H'.ι` using `by rw [hm₁.2.2]; exact Matrix.mul_one _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh₁ : mat h₁ = incM F π * mat p * incM F H'.ι`. Establish `e : mat p * incM F H'.ι = mat u * incM F H'.ι * mat h₁`. Rewrite using `[hpe, GlobalTheory.StabLineLevi.mat_mul', GlobalTheory.StabLineLevi.mat_mul', Matrix.mul_assoc, hm₂.2.2, ← Matrix.mul_assoc (mat u * mat m₁), Matrix.mul_assoc (mat u), hm₁ι]`. Rewrite using `[Matrix.mul_assoc, e, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hu1, Matrix.one_mul]`. Rewrite `hp` using `[ratU, Subgroup.mem_subgroupOf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g, hg⟩` from `hp`. Establish `hpg : mat p = incM F (g : Matrix (Fin n) (Fin n) E)` using `by show ((p : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = _`. Rewrite using `[← hg]`. Both sides reduce to the same expression. Use `set A : Matrix (Fin d₁) (Fin d₁) E := π * (g : Matrix (Fin n) (Fin n) E) * H'.ι with hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hAm : incM F A = mat h₁`. Rewrite using `[hh₁, hpg, hA, GlobalTheory.LeviUnitary.incM_mul, GlobalTheory.LeviUnitary.incM_mul]`. Establish `hdet : A.det ≠ 0`. Introduce `h0`. Establish `hu' : IsUnit (mat h₁).det` using `(Matrix.isUnit_iff_isUnit_det _).mp ⟨h₁.1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (A.map (inclR (F` using `F) (AF F))).det = inclR (F := F) (AF F) A.det := (RingHom.map_det _ A).symm`. Rewrite `hu'` using `[← hAm, incM, e, h0, map_zero]`. Use `haveI : Nontrivial (AF F ⊗[F] E) := (Algebra.TensorProduct.includeRight_injective (R := F) (A := AF F) (B := E) (AdeleRing.algebraMap_injective (𝓞 F) F)).nontrivial`. Conclude with `not_isUnit_zero hu'`. Use `⟨u, hu, h₁, ?_, m₁ * m₂, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ratU, Subgroup.mem_subgroupOf]`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero A hdet, Units.ext ?_⟩` and prove the remaining obligations. Use `show _ = mat h₁`. Rewrite using `[← hAm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.StabLineLevi.mat_mul', ← mulVec_mulVec, hm₂.1, Units.val_one, one_smul, hm₁.1]`. Rewrite using `[GlobalTheory.StabLineLevi.mat_mul', ← mulVec_mulVec, hm₂.2.1, inv_one, Units.val_one, map_one, one_smul, hm₁.2.1]`. Rewrite using `[GlobalTheory.StabLineLevi.mat_mul', Matrix.mul_assoc, hm₂.2.2, ← Matrix.mul_assoc, hm₁ι]`. Rewrite using `[hpe, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem rat_levi_dec : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {n d₁ : ℕ} (W : Spc F E n) (W₁ : Spc F E d₁) (H' : Plane E n d₁) (r s i₀ i₁ : ℕ), IsCMExt F E σ →
     W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ p ∈ ratU σ W.J, ∀ t : (AE F E)ˣ, mat p *ᵥ incV F H'.x = t.1 • incV F H'.x →

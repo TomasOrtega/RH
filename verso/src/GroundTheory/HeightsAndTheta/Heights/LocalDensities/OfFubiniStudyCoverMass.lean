@@ -21,14 +21,14 @@ def retract (x₀ : Fin D → ℂ) (hx₀ : x₀ ∈ M) (y : Fin D → ℂ) : M 
   ⟨if y ∈ M then y else x₀, by split_ifs with h; exacts [h, hx₀]⟩
 
 /- English proof (translation)
-Simplify using `[retract, hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem retract_of_mem {x₀ : Fin D → ℂ} (hx₀ : x₀ ∈ M) {y : Fin D → ℂ} (hy : y ∈ M) :
     (retract x₀ hx₀ y : Fin D → ℂ) = y := by
   simp [retract, hy]
 
 /- English proof (translation)
-Unfold `retract`. Conclude with `(Measurable.ite hM.measurableSet measurable_id measurable_const).subtype_mk`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_retract (hM : IsOpen M) {x₀ : Fin D → ℂ} (hx₀ : x₀ ∈ M) :
     Measurable (retract x₀ hx₀) := by
@@ -55,7 +55,7 @@ def chart (hM : IsOpen M) (x₀ : Fin D → ℂ) (hx₀ : x₀ ∈ M) : OpenPart
     exact Subtype.ext (retract_of_mem hx₀ y.2)
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_of_mem (hM.mem_nhds hy) fun _ hy' => retract_of_mem hx₀ hy'`.
+A detailed English derivation is pending.
 -/
 theorem eventuallyEq_retract (hM : IsOpen M) {x₀ : Fin D → ℂ} (hx₀ : x₀ ∈ M) {y : Fin D → ℂ}
     (hy : y ∈ M) : (fun y' => (retract x₀ hx₀ y' : Fin D → ℂ)) =ᶠ[𝓝 y] id :=
@@ -78,11 +78,11 @@ def partition (hM : IsOpen M) (x₀ : Fin D → ℂ) (hx₀ : x₀ ∈ M) :
     simp
 
 /- English proof (translation)
-Establish `hne : Nonempty (ChartPartition (atlas hM x₀ hx₀))` using `⟨partition hM x₀ hx₀⟩`. Establish `: Subsingleton (Fin (atlas hM x₀ hx₀).n)` using `(inferInstance : Subsingleton (Fin 1))`. Establish `hχ : ∀ j x, hne.some.χ j x = 1`. Introduce `j x`. Establish `h` using `hne.some.sum_eq_one x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Fintype.sum_subsingleton _ j]`. Then use the resulting hypothesis. Set `j0 : Fin (atlas hM x₀ hx₀).n` to `⟨0, Nat.zero_lt_one⟩`. Establish `ht : ((atlas hM x₀ hx₀).chart j0).target = M` using `rfl`. Establish `hm : Measurable ((atlas hM x₀ hx₀).chart j0).symm` using `measurable_retract hM hx₀`. Rewrite using `[maMeasure, dif_pos hne, Fintype.sum_subsingleton _ j0, Measure.map_apply hm MeasurableSet.univ, Set.preimage_univ, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, ht]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[hχ, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem maMeasure_univ (hM : IsOpen M) (x₀ : Fin D → ℂ) (hx₀ : x₀ ∈ M) (u : M → ℝ) :
     maMeasure (atlas hM x₀ hx₀) (fun _ => LocPot.ofFun u) Set.univ =
@@ -108,9 +108,9 @@ end OpenSetChart
 open OpenSetChart
 
 /- English proof (translation)
-Establish `hH : ∀ i, hessC (φ i) y = hessC (ψ i) y`. Introduce `i`. Establish `h1 : fderiv ℝ (φ i) =ᶠ[𝓝 y] fderiv ℝ (ψ i)` using `(h i).fderiv`. Unfold `hessC`. Rewrite using `[h1.fderiv_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `maDens`. Simplify using `only [hH]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem maDens_congr_germ' {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) → ℝ} {y : Fin D → ℂ}
     (h : ∀ i, φ i =ᶠ[𝓝 y] ψ i) : maDens φ y = maDens ψ y := by
@@ -123,37 +123,35 @@ theorem maDens_congr_germ' {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) → ℝ}
   simp only [hH]
 
 /- English proof (translation)
-Introduce `D M Z z δ hB`. Take `⟨hM, hZ, hz, hmaps, hcov, hfib⟩` from `hB`. Break down `M.eq_empty_or_nonempty with rfl | ⟨x₀, hx₀⟩` into its components or cases. Establish `hZc : Zᶜ.Nonempty`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h` using `[Set.not_nonempty_iff_eq_empty, Set.compl_empty_iff]`. Rewrite `hZ` using `[h, Measure.measure_univ_eq_zero]`. Conclude with `NeZero.ne (volume : Measure (Fin D → ℂ)) hZ`. Take `⟨w, hw⟩` from `hZc`. Establish `h1` using `hfib w hw`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : {x | x ∈ (∅ : Set (Fin D → ℂ)) ∧ z x = w} = ∅` using `by simp`. Rewrite `h1` using `[h0, Set.encard_empty]`. Establish `hδ : δ = 0` using `by exact_mod_cast h1.symm`. Substitute `hδ` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hδ : δ ≠ 0`. Introduce `h0`. Establish `h1` using `hfib (z x₀) (hmaps hx₀)`. Establish `hmem : x₀ ∈ {x | x ∈ M ∧ z x = z x₀}` using `⟨hx₀, rfl⟩`. Rewrite `h1` using `[h0, Nat.cast_zero, Set.encard_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[h1]`. Conclude with `hmem`. Establish `hZcl : IsClosed Z`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, U, hwU, hU, -, H, hH⟩` from `hcov w hw`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxM, hxw⟩ : {x | x ∈ M ∧ z x = w}.Nonempty := by`. Rewrite using `[← Set.encard_pos, hfib w hw]`. Conclude with `Nat.pos_of_ne_zero hδ` after adjusting the coercions. Set `i : (fun x : M => z x) ⁻¹' {w}` to `⟨⟨x, hxM⟩, hxw⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨U, fun v hv => ?_, hU, hwU⟩` and prove the remaining obligations. Establish `h1 : v = z (H.symm (⟨v, hv⟩, i)).1`. Simplify using `using hH (H.symm (⟨v, hv⟩, i))`. Rewrite using `[h1]`. Conclude with `hmaps (H.symm (⟨v, hv⟩, i)).1.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `han : ∀ i, AnalyticOnNhd ℂ (fun y => z y i) M` using `fun i => ReciprocityTheory.AnForm.Osgood.osgood D M _ hM (differentiableOn_pi.1 hz i)`. Set `A` to `atlas hM x₀ hx₀`. Set `q : M → Fin D → ℂ` to `fun x => z x`. Set `u : M → ℝ` to `fun x => (1 / 2) * Real.log (1 + ∑ i, ‖q x i‖ ^ 2)`. Establish `hsm : ContDiffOn ℝ ∞ (fun y => (1 / 2) * Real.log (1 + ∑ i, ‖z y i‖ ^ 2)) M`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `contDiffOn_const.mul (ContDiffOn.log (contDiffOn_const.add (ContDiffOn.sum fun i _ => (contDiff_norm_sq ℝ).comp_contDiffOn (((han i).contDiffOn hM.uniqueDiffOn).restrict_scalars ℝ))) fun y _ => ?_)` and prove the remaining obligations. Check the signs of the components of the expression. Establish `hu : A.Smooth u`. Introduce `j`. Use `(hsm.mono Set.inter_subset_left).congr fun y hy => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show u (retract x₀ hx₀ y) = _`. Simplify using `only [u, q, retract_of_mem hx₀ hy.1]`. Establish `hHyp : FubiniStudyCoverMass.Hyp A (LocPot.ofFun u) q Set.univ Z δ`. Use `⟨isPotential_ofFun A u hu, isOpen_univ, ?_, ?_, ?_, hZcl, hZ, ⟨fun x _ => hmaps x.2, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Set.univ, isOpen_univ, Set.mem_univ _, 1, fun _ _ => 1, fun _ _ => analyticOnNhd_const, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `i j y hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((han i) y hy.1).congr (((eventuallyEq_retract hM hx₀ hy.1).fun_comp fun y' => z y' i).symm)`. Establish `hpre : (Set.univ : Set M) = (fun x : M => z x) ⁻¹' Zᶜ`. Use extensionality with `x`. Simplify using `using hmaps x.2`. Conclude with `hcov.isCoveringMap_restrictPreimage.comp_homeomorph (Homeomorph.setCongr hpre)`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Rewrite using `[← hfib w hw, ← Subtype.val_injective.encard_image]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[q, and_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y _`. Use `⟨Set.univ, isOpen_univ, Set.mem_univ _, 0, fun _ _ _ => analyticAt_const, ?_⟩` and prove the remaining obligations. Introduce `v _`. Simplify using `[LocPot.ofFun, u]`. Establish `key` using `(hA A (LocPot.ofFun u) q Set.univ Z δ hHyp).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `key` using `[maMeasure_univ]`. Rewrite using `[← key]`. Use `setLIntegral_congr_fun hM.measurableSet fun y hy => ?_` and prove the remaining obligations. Use `show ENNReal.ofReal (maDens _ y) = ENNReal.ofReal (maDens _ y)`. Use `congr 1`.
-
-Use `maDens_congr_germ' fun _ => ?_` and prove the remaining obligations. Use `filter_upwards [hM.mem_nhds hy] with y' hy'`. Simplify using `only [u, q, retract_of_mem hx₀ hy']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem CoverMass2.of_fubiniStudyCoverMass (hA : FubiniStudyCoverMass.Statement) :
     IndefiniteRowSideFullHecke.FourB.CoverMass2.Statement := by

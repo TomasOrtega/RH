@@ -15,23 +15,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 open NumberField Complex in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use `set v : ι → ℂ := fun i => I * (a i : ℂ) with hv`. Establish `hD : ∀ s ∈ U, ∀ t : ι → ℝ, fderiv ℂ F s (fun i => (t i : ℂ)) = 0`. Introduce `s hs t`. Establish `hd : HasFDerivAt F (fderiv ℂ F s) s` using `(hF.differentiableAt (hU.mem_nhds hs)).hasFDerivAt`. Establish `hline : HasDerivAt (fun u : ℝ => s + (u : ℂ) • fun i => (t i : ℂ)) (fun i => (t i : ℂ)) 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : HasDerivAt (fun u : ℝ => (u : ℂ) • fun i => (t i : ℂ)) ((1 : ℂ) • fun i => (t i : ℂ)) 0`. Use `(hasDerivAt_id (0 : ℝ)).ofReal_comp.smul_const (fun i => (t i : ℂ))` as an intermediate fact. Simplify using `using this`. Simplify using `using h0.const_add s`. Establish `hd0 : HasFDerivAt F (fderiv ℂ F s) (s + ((0 : ℝ) : ℂ) • fun i => (t i : ℂ))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hd`. Establish `h1` using `(hd0.restrictScalars ℝ).comp_hasDerivAt (0 : ℝ) hline`. Establish `h2 : (fun u : ℝ => F (s + (u : ℂ) • fun i => (t i : ℂ))) = fun _ => F s`. Use function extensionality and compare the values at `u`. Use `hreal s hs (fun i => u * t i)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (s + (u : ℂ) • fun i => (t i : ℂ)) = s + fun i => ((u * t i : ℝ) : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[he, this]`. Establish `h3 : HasDerivAt (fun u : ℝ => F (s + (u : ℂ) • fun i => (t i : ℂ))) (fderiv ℂ F s (fun i => (t i : ℂ))) 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[Function.comp_def]`. Rewrite `h3` using `[h2]`. Conclude with `h3.unique (hasDerivAt_const _ _)`. Establish `hDv : ∀ s ∈ U, fderiv ℂ F s v = 0`. Introduce `s hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: v = I • fun i => (a i : ℂ)` using `by funext i; simp [hv]`. Rewrite using `[this, map_smul, hD s hs a, smul_zero]`. Use `set g : ℝ → ℂ := fun u => F ((u : ℂ) • v) with hg`. Establish `hderiv : ∀ u : ℝ, 0 ≤ u → u ≤ 1 → HasDerivAt g 0 u`. Introduce `u hu0 hu1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `hseg u hu0 hu1`. Establish `hd : HasFDerivAt F (fderiv ℂ F ((u : ℂ) • v)) ((u : ℂ) • v)` using `(hF.differentiableAt (hU.mem_nhds hs)).hasFDerivAt`. Establish `hl : HasDerivAt (fun w : ℝ => (w : ℂ) • v) v u`. Use `(hasDerivAt_id u).ofReal_comp.smul_const v` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `(hd.restrictScalars ℝ).comp_hasDerivAt u hl`. Establish `h5 : ((fderiv ℂ F ((u : ℂ) • v)).restrictScalars ℝ) v = 0` using `hDv _ hs`. Rewrite `h4` using `[h5]`. Conclude with `h4`. Establish `hconst` using `constant_of_has_deriv_right_zero (f := g) (a := 0) (b := 1) (fun u hu => (hderiv u hu.1 hu.2).continuousAt.continuousWithinAt) (fun u hu => (hderiv u hu.1 hu.2.le).hasDerivWithinAt) 1 ⟨zero_le_one, le_rfl⟩`.
-
-Simplify `hconst` using `[hg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma eq_at_imag_of_real_translation_invariant {ι : Type} [Fintype ι] (F : (ι → ℂ) → ℂ)
     (U : Set (ι → ℂ)) (hU : IsOpen U) (hF : DifferentiableOn ℂ F U)
@@ -89,35 +87,31 @@ private lemma eq_at_imag_of_real_translation_invariant {ι : Type} [Fintype ι] 
 open NumberField Complex in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hV : X.IsIsoV (X.embV ξ)` using `_root_.PI.FdFjNearSup.W.isIsoV_embV X hξ`. Establish `hM` using `fun s => _root_.ReciprocityTheory.ChartRestriction.G.FD.flowDomainCriterion_holds r X (X.embV ξ) hV x hx s`. Use `set tt : X.Ψ → ℝ := fun τ => X.ttV (X.embV ξ) x τ with htt`. Establish `htt_pos : ∀ τ, 0 < tt τ`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.d4l4_c_pos X τ`. Establish `hm` using `X.maj_pos hx τ (hV τ).2`. Simplify using `only [htt, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.ttV]`. Check the signs of the components of the expression. Use `set a : X.Ψ → ℝ := fun τ => 1 - tt τ with ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set U : Set (X.Ψ → ℂ) := {s | X.flow ξ s x ∈ X.dom} with hUdef`. Establish `hUeq : U = {s | ∀ τ, 0 < 1 + (s τ).im / tt τ}`. Use extensionality with `s`. Conclude with `(hM s).1`. Establish `hU : IsOpen U`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hUeq]`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun τ => isOpen_lt continuous_const (by fun_prop)`. Use `set F : (X.Ψ → ℂ) → ℂ := fun s => X.fj la ξ ν P (X.flow ξ s x) * Complex.exp (-(4 * Real.pi * I * ∑ τ, (ν τ : ℂ) * s τ)) with hFdef`. Establish `hFd : DifferentiableOn ℂ F U`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `DifferentiableOn.mul ?_ ?_` and prove the remaining obligations. Conclude with `(_root_.ReciprocityTheory.ChartRestriction.G.FD.CuspCoefficientFlow.fj_diffOn X la P hP hξ ν).comp (_root_.ReciprocityTheory.ChartRestriction.G.FD.FlowMeanContinuity.flow_differentiable X ξ x).differentiableOn (fun s hs => hs)`. Conclude with `Differentiable.differentiableOn (by fun_prop)`. Establish `hreal : ∀ s ∈ U, ∀ t : X.Ψ → ℝ, F (s + fun i => (t i : ℂ)) = F s`. Introduce `s hs t`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hfl : X.flow ξ (s + fun i => (t i : ℂ)) x = X.flow ξ (fun i => (t i : ℂ)) (X.flow ξ s x)`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs.flow_flow X hξ.2.1, add_comm]`. Simplify using `only [hFdef, hfl, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.fj_flow_real X la ξ hξ ν P hP.1 hP.2 _ hs t]`. Rewrite using `[mul_comm (Complex.exp _) (X.fj la ξ ν P (X.flow ξ s x)), mul_assoc, ← Complex.exp_add]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hseg : ∀ u : ℝ, 0 ≤ u → u ≤ 1 → ((u : ℂ) • fun i => I * (a i : ℂ)) ∈ U`. Introduce `u hu0 hu1`. Rewrite using `[hUeq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `τ`. Establish `ht` using `htt_pos τ`. Establish `him : (((u : ℂ) • fun i => I * (a i : ℂ)) τ).im = u * a τ` using `by simp`. Rewrite using `[him]`. Establish `hq : 1 + u * a τ / tt τ = ((1 - u) * tt τ + u) / tt τ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [ha]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq]`. Apply `div_pos _ ht` to reduce the goal to its premises.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Break down `eq_or_lt_of_le hu0 with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `using ht`. Use the polynomial consequences of the given equalities and inequalities. Establish `hconst` using `eq_at_imag_of_real_translation_invariant F U hU hFd hreal a hseg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set v : X.Ψ → ℂ := fun i => I * (a i : ℂ) with hvdef`. Establish `hvU : v ∈ U` using `by simpa using hseg 1 zero_le_one le_rfl`. Use `⟨X.flow ξ v x, ⟨hvU, fun τ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `(hM v).2 hvU τ`. Establish `hv : (v τ).im = a τ` using `by simp [hvdef]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[hv]`. Establish `h3 : X.ttV (X.embV ξ) (X.flowV (X.embV ξ) v x) τ = 1`. Rewrite using `[h2]`. Simplify using `[ha, htt]`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.ttV, one_div, inv_eq_one] at h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h3`. Introduce `h0`. Establish `hF0 : F 0 = X.fj la ξ ν P x`. Use `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.fj_flow_real X la ξ hξ ν P hP.1 hP.2 x hx 0` as an intermediate fact. Simplify using `only [hFdef]`.
-
-Establish `h' : X.flow ξ 0 x = X.flow ξ (fun _ => 0) x` using `rfl`. Rewrite using `[h']`. Simplify using `using this`. Establish `hFv : F v = 0`. Simplify using `only [hFdef]`.
-
-Rewrite using `[h0, zero_mul]`. Rewrite `hFv` using `[hconst, hF0]`. Conclude with `hfx hFv`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_mem_D1set_fj_ne_zero {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r)
     (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (P : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P)
@@ -198,17 +192,15 @@ private lemma exists_mem_D1set_fj_ne_zero {r : ℕ} (X : _root_.ReciprocityTheor
 open NumberField Complex in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hP.2`. Establish `hB : ∀ y ∈ X.dom, X.pnorm la (X.fj la ξ ν P) y ≤ C` using `fun y hy => _root_.ReciprocityTheory.ChartRestriction.G.FD.FlowCoefficientBounds.fj_bound X la P C hC hξ ν hy`. Establish `hC0 : 0 ≤ C` using `(X.pointNorm_nonneg la _ x).trans (hB x hx)`. Establish `hle : ∀ y, X.hatN la (X.fj la ξ ν P) y ≤ C`. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.hatN`. Apply `Real.sSup_le _ hC0` to reduce the goal to its premises. Introduce and unpack `t ⟨x', hx', -, rfl⟩`. Conclude with `hB x' hx'`. Establish `hge : ∀ y ∈ X.dom, X.pnorm la (X.fj la ξ ν P) y ≤ X.hatN la (X.fj la ξ ν P) y`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.hatN`. Apply `le_csSup` to reduce the goal to its premises. Use `⟨C, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨x', hx', -, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hB x' hx'`. Conclude with `⟨y, hy, fun τ => rfl, rfl⟩`. Take `⟨y, hy, hfy⟩` from `exists_mem_D1set_fj_ne_zero X la P ⟨hP.1, C, hC⟩ hξ ν hx hfx`. Use `set S := {t | ∃ y ∈ X.FramesOverBasis ξ, t = X.hatN la (X.fj la ξ ν P) y} with hS`. Establish `hSb : BddAbove S` using `⟨C, by rintro t ⟨y, -, rfl⟩; exact hle y⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < X.hatN la (X.fj la ξ ν P) y`. Use `lt_of_lt_of_le ?_ (hge y hy.1)` and prove the remaining obligations. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.pnorm_eq]`. Conclude with `mul_pos (norm_pos_iff.2 hfy) (_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.nfac_pos X hy.1 la)`. Establish `hyS : X.hatN la (X.fj la ξ ν P) y ∈ S` using `⟨y, hy, rfl⟩`.
-
-Establish `hM : 0 < sSup S` using `lt_of_lt_of_le hpos (le_csSup hSb hyS)`. Take `⟨t, ⟨z0, hz0, rfl⟩, ht⟩` from `exists_lt_of_lt_csSup ⟨_, hyS⟩ (half_lt_self hM)`. Conclude with `⟨z0, hz0, by linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_mem_D1set_sSup_hatN_lt_two_mul {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r)
     (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (P : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P)
@@ -250,11 +242,9 @@ open NumberField Complex in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `hnot : ∃ ξ, X.IsIso ξ ∧ ∃ ν : X.Ψ → ℝ, ∑ τ, ν τ ≤ c1 ∧ ∃ x ∈ X.dom, X.fj la ξ ν P x ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hP' ⟨hP, fun ξ hξ ν hν x hx => h ξ hξ ν hν x hx⟩`. Take `⟨ξ, hξ, ν, hν, x, hx, hfx⟩` from `hnot`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbdd` using `hP.1`. Establish `hνpos : ∀ τ, 0 ≤ ν τ` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.sign_of_bdd _ _root_.ReciprocityTheory.ChartRestriction.G.FD.moderateCoefficientPositivity_holds hbdd hξ ν hx hfx`. Take `⟨z0, hz0, hsup⟩` from `exists_mem_D1set_sSup_hatN_lt_two_mul _ la P hbdd hξ ν hx hfx`. Establish `hD4 : _root_.ReciprocityTheory.ChartRestriction.G.FD.ShortVectorHypotheses X la P ξ ν c1 w z0` using `⟨hdom, hP, hξ, hc1, hν, ⟨x, hx, hfx⟩, hw, hspr, hχ, hz0, hsup⟩`. Use `⟨ξ, ν, hξ, hν, hνpos, ⟨z0, hD4⟩, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(_root_.fd_point_assembly _root_.ReciprocityTheory.ChartRestriction.G.FD.shortVectorBound _root_.ReciprocityTheory.ChartRestriction.G.FD.orthonormalFlagTranslate_holds _root_.ReciprocityTheory.ChartRestriction.G.FD.orthonormalChartNormControl_holds (_root_.fd_fj_near_sup _root_.R …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FJDetect.exists_fj_ne_zero_at_split_point' {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.DataX E r)
     (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (P : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ) (c1 w : ℝ)

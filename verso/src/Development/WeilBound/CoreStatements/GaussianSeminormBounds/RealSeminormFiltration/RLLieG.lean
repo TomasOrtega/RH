@@ -15,9 +15,9 @@ variable {R : Type} [CommRing R] {E : Type} [CommRing E] [Algebra R E] {c : E �
   {α β : Type} [Fintype α] [Fintype β]
 
 /- English proof (translation)
-Unfold `hTens`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, Matrix.transpose_apply, Matrix.map_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
     hTens c JA JB x y = ∑ i, ∑ k, JA i k * (x * JB * (y.map c)ᵀ) i k := by
@@ -31,9 +31,9 @@ theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β
   ring
 
 /- English proof (translation)
-Establish `hg : ((g : GL β E) : Matrix β β E)ᵀ * JB * ((g : GL β E) : Matrix β β E).map c = JB` using `g.2`. Rewrite using `[hTens_eq, hTens_eq]`. Establish `: actB c g x * JB * ((actB c g y).map c)ᵀ = x * JB * (y.map c)ᵀ`. Unfold `actB`. Rewrite using `[show (y * ((g : GL β E) : Matrix β β E)ᵀ).map c = y.map c * (((g : GL β E) : Matrix β β E)ᵀ).map c from Matrix.map_mul (f := c.toRingHom), Matrix.transpose_mul, Matrix.transpose_map, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hg]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hTens_actB [DecidableEq β] (JA : Matrix α α E) (JB : Matrix β β E) (g : UG c JB) (x y : Matrix α β E) :
     hTens c JA JB (actB c g x) (actB c g y) = hTens c JA JB x y := by
@@ -52,7 +52,7 @@ end Inv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `sub_eq_zero.1 (eq_zero_of_piInf h τ _ (fun u hu => congrFun (congrFun (hx u hu) i) j) fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun (hinf w) i) j`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_at (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {m n : Type} {X X' : Matrix m n (AE F E)}
     (hx : At (evI F) (X - X')) (hinf : ∀ w, X.map (piInf (τ w)) = X'.map (piInf (τ w))) : X = X' := by
@@ -62,15 +62,13 @@ theorem ext_at (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) 
   exact congrFun (congrFun (hinf w) i) j
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_sub, ha u hu, hb u hu, sub_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem At.sub' {M : Type} [AddCommGroup M] [Module (AF F) M] {a b : M} (ha : At (evI F) a) (hb : At (evI F) b) :
     At (evI F) (a - b) := fun u hu => by rw [smul_sub, ha u hu, hb u hu, sub_zero]
 
 /- English proof (translation)
-Take `⟨s, hs, hs'⟩` from `exists_section h τ`. Use `⟨fun z => Matrix.of fun i j => s fun w => z w i j, continuous_matrix fun i j => hs.comp (continuous_pi fun w => (continuous_apply w).matrix_elem i j), fun z a ha => ?_, fun z w => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(hs' _).1 a ha`. Use extensionality with `i j`.
-
-Conclude with `(hs' _).2 w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_lf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (m n : Type) :
     ∃ L : (InfinitePlace F → Matrix m n ℂ) → Matrix m n (AE F E), Continuous L ∧ (∀ z, At (evI F) (L z)) ∧
@@ -87,21 +85,19 @@ theorem exists_lf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E 
 variable {α β κ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ]
 
 /- English proof (translation)
-Take `⟨L, hc, hL, hL'⟩` from `exists_lf h τ β β`. Establish `: ContinuousAdd (AE F E)` using `IsModuleTopology.toContinuousAdd (AF F) _`. Establish `hG : ∀ (a : InfinitePlace F → Matrix β β ℂ) w, (1 + L (a - 1)).map (piInf (τ w)) = a w` using `fun a w => by`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), hL']`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `G : (InfinitePlace F → Matrix β β ℂ) →* Matrix β β (AE F E)` to `{ toFun := fun a => 1 + L (a - 1) map_one' := ext_at h τ (fun u hu => by rw [add_sub_cancel_left, hL _ u hu]) fun w => by`. Rewrite using `[hG, Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression. Use the proof step `map_mul' := fun a c => ext_at h τ (fun u hu => by`. Establish `e : (1 + L (a * c - 1)) - (1 + L (a - 1)) * (1 + L (c - 1)) = L (a * c - 1) - L (c - 1) - L (a - 1) * (1 + L (c - 1))` using `by noncomm_ring`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_sub, smul_sub, ← Matrix.smul_mul, hL _ u hu, hL _ u hu, hL _ u hu]`. Use the proof step `simp) fun w => by`. Rewrite using `[Matrix.map_mul, hG, hG, hG]`. Use `rfl }`. Establish `hGc : Continuous G` using `continuous_const.add (hc.comp (continuous_id.sub continuous_const))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGU : ∀ g : SG K, (G g.1.1)ᵀ * J * (G g.1.1).map (cA σ) = J` using `fun g => by`. Use `ext_at h τ (fun u hu => ?_) fun w => ?_` and prove the remaining obligations. Use `set N := L (g.1.1 - 1)`. Establish `hN : u • N = 0` using `hL _ u hu`. Establish `e0 : (G g.1.1).map (cA σ) = 1 + N.map (cA σ)` using `by show (1 + N).map _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e : (G g.1.1)ᵀ * J * (G g.1.1).map (cA σ) - J = Nᵀ * (J * (G g.1.1).map (cA σ)) + J * N.map (cA σ)`. Rewrite using `[e0]`. Use `show (1 + N)ᵀ * _ * _ - _ = _`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `noncomm_ring`. Establish `e1 : u • N.map (cA σ) = 0`. Use extensionality with `i j`. Use `congrArg (cA σ) (congrFun (congrFun hN i) j)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_add, ← Matrix.smul_mul, ← Matrix.mul_smul, e1, ← Matrix.transpose_smul, hN]`. Simplify using the standard rewrite rules. Rewrite using `[map_form h, show (G g.1.1).map (piInf (τ w)) = _ from hG _ w]`. Conclude with `hK w _ (congrFun (show star g.1.1 * K * g.1.1 = K from g.2) w)`. Use `⟨((Units.map G).comp (SG K).subtype).codRestrict _ hGU, ((Continuous.units_map G hGc).comp continuous_subtype_val).subtype_mk _, fun g u hu => ?_, fun g w => hG _ w⟩` and prove the remaining obligations.
-
-Use `show u • (1 + L (g.1.1 - 1) - 1) = 0`. Rewrite using `[add_sub_cancel_left, hL _ u hu]`.
+A detailed English derivation is pending.
 -/
 theorem exists_iota (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (J : Matrix β β (AE F E))
     (K : InfinitePlace F → Matrix β β ℂ)
@@ -164,26 +160,26 @@ def IsD {JA : Matrix α α (AE F E)} {JB : Matrix β β (AE F E)} (d : Darboux (
 variable {JA : Matrix α α (AE F E)} {JB : Matrix β β (AE F E)} {d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ}
 
 /- English proof (translation)
-Introduce `s hs` and use `by rw [← map_smul, hu s hs, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_e {u : Matrix α β (AE F E)} (hu : At (evI F) u) : At (evI F) (d.e u) := fun s hs => by
   rw [← map_smul, hu s hs, map_zero]
 
 /- English proof (translation)
-Introduce `s hs` and use `by rw [← map_smul, hp s hs, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_symm {p} (hp : At (evI F) p) : At (evI F) (d.e.symm p) := fun s hs => by
   rw [← map_smul, hp s hs, map_zero]
 
 /- English proof (translation)
-Rewrite using `[c.sympl_vec, sB, d.form]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sympl_e {l : Type} [Fintype l] (c : Co F κ l) (u v : Matrix α β (AE F E)) :
     sympl (c.vec (d.e u)) (c.vec (d.e v)) = sB σ JA JB u v := by
   rw [c.sympl_vec, sB, d.form]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[c.P_dRho, hD u hu]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsD.P {D} (hD : IsD d D) {l : Type} [Fintype l] (c : Co F κ l) {u : Matrix α β (AE F E)} (hu : At (evI F) u)
     (f : Sch l) : c.P (dRho (c.vec (d.e u)) f) = D u (c.P f) := by
@@ -191,7 +187,7 @@ theorem IsD.P {D} (hD : IsD d D) {l : Type} [Fintype l] (c : Co F κ l) {u : Mat
   rw [c.P_dRho, hD u hu]
 
 /- English proof (translation)
-Take `⟨n, ⟨c⟩⟩` from `exists_co F κ`. Use `congrArg (fun L => c.P (L (c.P' f))) (dRho_comm (c.vec (d.e u)) (c.vec (d.e v)))` as an intermediate fact. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, map_sub, map_smul, hD.P c hu, hD.P c hv, c.P_P', sympl_e] at this`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem IsD.comm {D} (hD : IsD d D) {u v : Matrix α β (AE F E)} (hu : At (evI F) u) (hv : At (evI F) v) (f : SInf F κ) :
     D u (D v f) = D v (D u f) + (2 * π * I * sB σ JA JB u v) • f := by
@@ -203,55 +199,51 @@ theorem IsD.comm {D} (hD : IsD d D) {u v : Matrix α β (AE F E)} (hu : At (evI 
   abel
 
 /- English proof (translation)
-Take `⟨n, ⟨c⟩⟩` from `exists_co F κ`. Take `⟨M⟩` from `exists_meta (l := Fin n) hP`. Take `⟨ι, hιc, hι, hι'⟩` from `exists_iota h τ JB K fun w g => (hKJ w g).1`. Take `⟨L, -, hL, hL'⟩` from `exists_lf h τ α β`. Establish `hLu : ∀ u, At (evI F) u → L (fun w => u.map (piInf (τ w))) = u` using `fun u hu => ext_at h τ (At.sub' (hL _) hu) (hL' _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `E0 : (InfinitePlace F → Matrix α β ℂ) →ₗ[ℝ] (Fin n ⊕ Fin n → ℝ)` to `{ toFun := fun z => c.vec (d.e (L z)) map_add' := fun z z' => by`. Rewrite using `[← c.vec_add, ← map_add]`. Use `congr 2`. Use `ext_at h τ (At.sub' (hL _) fun a ha => by rw [smul_add, hL _ a ha, hL _ a ha, add_zero]) fun w => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_add _ (map_add _), hL', hL', hL']`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use the proof step `map_smul' := fun t z => by`. Rewrite using `[RingHom.id_apply, ← c.vec_smul, ← map_smul]`. Use `congr 2`. Use `ext_at h τ (At.sub' (hL _) fun a ha => by rw [smul_comm, hL _ a ha, smul_zero]) fun w => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL']`. Use extensionality with `i j`. Use `Eq.trans ?_ (Fock.piInf_realAd h.1 (τ w) t _).symm` and prove the remaining obligations. Rewrite using `[show piInf (τ w) (L z i j) = z w i j from congrFun (congrFun (hL' z w) i) j]`. Use `rfl }`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hE0 : ∀ u, At (evI F) u → E0 (fun w => u.map (piInf (τ w))) = c.vec (d.e u)` using `fun u hu => congrArg (fun x => c.vec (d.e x)) (hLu u hu)`. Establish `hsurj : ∀ w, ∃ u, At (evI F) u ∧ c.vec (d.e u) = w` using `fun w => by`. Take `⟨p, hp, rfl⟩` from `c.exists_vec w`. Conclude with `⟨d.e.symm p, at_symm hp, by rw [LinearEquiv.apply_symm_apply]⟩`. Set `Ee` to `LinearEquiv.ofBijective E0 ⟨(injective_iff_map_eq_zero _).2 fun z hz => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : L z = 0` using `d.e.map_eq_zero_iff.1 (c.eq_zero_of_vec (at_e (hL z)) hz)`. Use function extensionality and compare the values at `w`. Rewrite using `[← hL' z, h1, Matrix.map_zero _ (map_zero _)]`. Use the proof step `rfl, fun w => by`. Take `⟨u, hu, rfl⟩` from `hsurj w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨_, hE0 u hu⟩⟩`. Set `Rm : (InfinitePlace F → Matrix β β ℂ) →ₐ[ℝ] Module.End ℝ (InfinitePlace F → Matrix α β ℂ)` to `AlgHom.ofLinearMap (LinearMap.mk₂ ℝ (fun a z w => z w * (a w)ᵀ) (fun _ _ _ => by funext w; simp [Matrix.mul_add]) (fun _ _ _ => by funext w; simp) (fun _ _ _ => by funext w; simp [Matrix.add_mul]) (fun _ _ _ => by funext w; simp)) (LinearMap.ext fun z => by funext w; simp) (fun a …`. Set `ρ : (InfinitePlace F → Matrix β β ℂ) →ₐ[ℝ] Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ` to `(LinearMap.toMatrixAlgEquiv' : _ ≃ₐ[ℝ] _).toAlgHom.comp ((Ee.conjAlgEquiv ℝ).toAlgHom.comp Rm)`. Establish `hρ : ∀ a z, ρ a *ᵥ E0 z = E0 fun w => z w * (a w)ᵀ` using `fun a z => by`. Establish `: ρ a *ᵥ Ee z = Ee (Rm a (Ee.symm (Ee z)))` using `LinearMap.toMatrix'_mulVec (Ee.conjAlgEquiv ℝ (Rm a)) (Ee z)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Ee.symm_apply_apply]`. Conclude with `this`. Establish `hat : ∀ (g : UG (cA σ) JB) (u : Matrix α β (AE F E)), At (evI F) u → At (evI F) (actB (cA σ) g u)` using `fun g u hu a ha => by`. Rewrite using `[actB, ← Matrix.smul_mul, hu a ha, Matrix.zero_mul]`. Establish `hact : ∀ (g : SG K) (u : Matrix α β (AE F E)), At (evI F) u → ρ g.1.1 *ᵥ c.vec (d.e u) = c.vec (d.e (actB (cA σ) (ι g) u))` using `fun g u hu => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hE0 u hu, ← hE0 _ (hat _ u hu), hρ]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[actB, Matrix.map_mul, Matrix.transpose_map, hι']`. Establish `hsp : ∀ g : SG K, ρ g.1.1 ∈ Matrix.symplecticGroup (Fin n) ℝ` using `fun g => mem_sp_of _ fun w w' => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, rfl⟩` from `hsurj w`. Take `⟨u', hu', rfl⟩` from `hsurj w'`. Rewrite using `[hact g u hu, hact g u' hu', sympl_e, sympl_e, sB, sB, symp, symp, hTens_actB]`. Establish `step : ∀ (g : SG K) g', (M.pr g' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) = ρ g.1.1 → ∃ z : ℂ, ∀ f, ∀ gf ∈ SB (κ → Af F), om (ι g) (pureA F (c.P f) gf) = pureA F (c.P ((z • M.om g') f)) gf` using `fun g g' hg => by`. Take `⟨z, hz⟩` from `c.schur2 hψ (om (ι g)) (hom.adm _) (M.om g'⁻¹) (fun w hw Φ hΦ => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hom.impl (ι g) (d.e.symm w) Φ hΦ` as an intermediate fact. Establish `e : actB (cA σ) (ι g) (d.e.symm w) = d.e.symm w`. Establish `e1 : pairA F 0 1 • d.e.symm w = d.e.symm w` using `by rw [← map_smul, hw]`. Establish `e2` using `hι g (pairA F 0 1) (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F))`. Rewrite using `[actB, ← sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← Matrix.mul_one (d.e.symm w), Matrix.mul_assoc, Matrix.one_mul, ← Matrix.mul_sub, ← e1, Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.transpose_one, ← Matrix.transpose_sub, ← Matrix.transpose_smul, e2]`. Simplify using the standard rewrite rules. Rewrite `this` using `[e, Darboux.rho, LinearEquiv.apply_symm_apply]`. Conclude with `this) fun w hw f gf hgf => by`. Establish `h1 : (M.pr g'⁻¹ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) = ρ (g⁻¹).1.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a : (M.pr g' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) * ρ (g⁻¹).1.1 = 1`. Rewrite using `[hg, ← map_mul]`. Conclude with `(congrArg ρ (Units.mul_inv g.1)).trans (map_one ρ)`. Establish `b : (M.pr g'⁻¹ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) ℝ) * M.pr g' = 1`. Rewrite using `[← Submonoid.coe_mul, ← map_mul, inv_mul_cancel, map_one, Submonoid.coe_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `left_inv_eq_right_inv b a`. Establish `hu` using `at_symm (d := d) hw`. Establish `h2` using `hact g⁻¹ _ hu`. Rewrite `h2` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[M.cov, h1, h2, ← c.schr_P hψ (at_e (hat _ _ hu))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hom.impl (ι g) (actB (cA σ) (ι g⁻¹) (d.e.symm w)) _ (pure_mem (c.P (M.om g'⁻¹ f)) hgf)` as an intermediate fact. Rewrite using `[show actB (cA σ) (ι g) (actB (cA σ) (ι g⁻¹) (d.e.symm w)) = d.e.symm w by`. Rewrite using `[actB, actB, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, ← Subgroup.coe_mul, ← map_mul, mul_inv_cancel, map_one]`. Use the proof step `simp] at this`. Use `conv_rhs at this => rw [Darboux.rho, LinearEquiv.apply_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Use `⟨z, fun f gf hgf => ?_⟩` and prove the remaining obligations. Use `hz (M.om g' f) gf hgf` as an intermediate fact. Rewrite `this` using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]`. Rewrite using `[this, ContinuousLinearMap.smul_apply, map_smul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_assoc]`. Establish `ex : ∀ g : SG K, ∃ A : Sch (Fin n) →L[ℂ] Sch (Fin n), ∀ f, ∀ gf ∈ SB (κ → Af F), om (ι g) (pureA F (c.P f) gf) = pureA F (c.P (A f)) gf` using `fun g => by`. Take `⟨g', hg'⟩` from `M.quot.surjective ⟨_, hsp g⟩`. Take `⟨z, hz⟩` from `step g g' (congrArg Subtype.val hg')`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨_, hz⟩`. Use `choose A0 hA0 using ex`. Establish `uniq : ∀ (g : SG K) (B : Sch (Fin n) →L[ℂ] Sch (Fin n)), (∀ f, ∀ gf ∈ SB (κ → Af F), om (ι g) (pureA F (c.P f) gf) = pureA F (c.P (B f)) gf) → A0 g = B` using `fun g B hB => by ext1 f`. Rewrite using `[← c.P'_P (A0 g f), ← c.P'_P (B f)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `SeminormBoundRestriction.eq_of_pureA fun gf hgf x => by rw [← hA0 g f gf hgf, hB f gf hgf]`. Set `A : SG K →* (Sch (Fin n) →L[ℂ] Sch (Fin n))` to `{ toFun := A0 map_one' := uniq _ _ fun f gf _ => by rw [map_one, map_one]; rfl map_mul' := fun a b => uniq _ _ fun f gf hgf => by`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, hA0 b f gf hgf, hA0 a _ gf hgf]`. Use `rfl }`. Take `⟨cc, hcc⟩` from `mid M K hK hu ρ hsp A (fun g g' hg => (step g g' hg).imp fun z hz => uniq _ _ hz) fun T f => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨l, hl, gf, hgf, hT⟩` from `exists_adm (T ∘L c.P')`. Use `((hom.cont l hl _ (pure_mem (c.P f) hgf)).comp hιc).congr fun g => ?_` and prove the remaining obligations. Use `show l _ = T (A0 g f)`. Rewrite using `[hA0 g f gf hgf, hT, ContinuousLinearMap.comp_apply, c.P'_P]`. Use `⟨cc, fun γ hγ Z hZ J _ u v hu hv huv f gf hgf l hl => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨T, hT⟩` from `hl gf hgf`. Set `mp : Matrix β β (AE F E) →* (InfinitePlace F → Matrix β β ℂ)` to `MonoidHom.pi fun w => (piInf (τ w)).mapMatrix.toMonoidHom`. Set `γ0 : ℝ → SG K` to `fun t => ⟨Units.map mp (γ (Multiplicative.ofAdd t)).1, funext fun w => (hKJ w _).2 (by`. Use `congrArg (fun X : Matrix β β (AE F E) => X.map (piInf (τ w))) (γ (Multiplicative.ofAdd t)).2` as an intermediate fact. Simplify using `only [map_form h] at this`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)⟩`. Establish `e0 : ∀ t, γ (Multiplicative.ofAdd t) = ι (γ0 t)` using `fun t => Subtype.ext (Units.ext (ext_at h τ (by`. Use `At.sub' (hγ.2 (Multiplicative.ofAdd t)) (hι (γ0 t))` as an intermediate fact. Rewrite using `[sub_sub_sub_cancel_right] at this) fun w => (hι' (γ0 t) w).symm))` and apply the resulting hypothesis. Establish `hq` using `quad_eq (ρ Z) (fun j => c.vec (d.e (u j))) (fun j => c.vec (d.e (v j))) fun w => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, rfl⟩` from `hsurj w`. Simplify using `only [sympl_e]`. Rewrite using `[← hE0 x hx, hρ]`. Simplify using `only [huv x hx, ← hE0 _ (hu _), ← map_smul, ← map_sum]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `w`. Simplify using `[Finset.sum_apply]`. Use `hcc Z γ0 hZ (T ∘L c.P) (c.P' f)` as an intermediate fact. Rewrite using `[hT]`. Use `(this.congr_deriv ?_).congr_of_eventuallyEq (.of_forall fun t => ?_)` and prove the remaining obligations.
-
-Rewrite using `[ContinuousLinearMap.comp_apply, hq]`. Use `congr 1`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.mul_apply, map_add, map_smul, map_sum, hD.P c (hu _), hD.P c (hv _), c.P_P']`. Use `show l _ = T (c.P (A0 (γ0 t) (c.P' f)))`. Rewrite using `[← hT, ← hA0 _ _ gf hgf, c.P_P', ← e0]`.
+A detailed English derivation is pending.
 -/
 theorem main (hP : GlobalTheory.Published.RealMetaplecticRepresentation) (h : IsCMExt F E σ) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (K : InfinitePlace F → Matrix β β ℂ) (hK : ∀ w, (K w)ᴴ = K w)

@@ -8,11 +8,11 @@ open scoped ENNReal NNReal InnerProductSpace
 namespace ReciprocityTheory.ChartRestriction.DS.Mult1.S0.A
 
 /- English proof (translation)
-Establish `hS : 0 ≤ ∑ i, Complex.normSq (x.1 i)` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`. Establish `hT : 0 ≤ ∑ i, Complex.normSq (x.1 i) + x.2 ^ 2` using `by positivity`. Establish `h1 : ‖x.1‖ ≤ Real.sqrt (∑ i, Complex.normSq (x.1 i) + x.2 ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 (fun i => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `hi : Complex.normSq (x.1 i) ≤ ∑ j, Complex.normSq (x.1 j)` using `Finset.single_le_sum (f := fun j => Complex.normSq (x.1 j)) (fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ i)`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Use polynomial arithmetic with `[sq_nonneg x.2]`. Establish `h2 : ‖x.2‖ ≤ Real.sqrt (∑ i, Complex.normSq (x.1 i) + x.2 ^ 2)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖x‖ ≤ Real.sqrt (∑ i, Complex.normSq (x.1 i) + x.2 ^ 2)`. Rewrite using `[Prod.norm_def]`. Conclude with `max_le h1 h2`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem heis_norm_sq_le (m : ℕ) (x : (Fin m → ℂ) × ℝ) :
     ‖x‖ ^ 2 ≤ ∑ i, Complex.normSq (x.1 i) + x.2 ^ 2 := by
@@ -39,13 +39,13 @@ theorem heis_norm_sq_le (m : ℕ) (x : (Fin m → ℂ) × ℝ) :
     _ = _ := Real.sq_sqrt hT
 
 /- English proof (translation)
-Establish `hn` using `heis_norm_sq_le m x`. Establish `hS : 0 ≤ ∑ i, Complex.normSq (x.1 i)` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`. Use `set Q := 1 + ∑ i, Complex.normSq (x.1 i) + x.2 ^ 2 with hQ`. Establish `hQ0 : 0 < Q` using `by nlinarith [sq_nonneg x.2]`. Establish `ha0 : 0 < 1 + ‖x‖` using `by have := norm_nonneg x; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : (1 + ‖x‖) ^ 2 ≤ 2 * Q` using `by nlinarith [sq_nonneg (‖x‖ - 1), norm_nonneg x]`. Establish `had : (1 + ‖x‖) ^ d ≤ (2 : ℝ) ^ (d / 2) * Q ^ (d / 2)`. Establish `h1 : (1 + ‖x‖) ^ d = ((1 + ‖x‖) ^ (2 : ℝ)) ^ (d / 2)`. Rewrite using `[← Real.rpow_mul ha0.le]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, ← Real.mul_rpow (by norm_num) hQ0.le]`. Apply `Real.rpow_le_rpow (by positivity) _ (by linarith)` to reduce the goal to its premises. Rewrite using `[Real.rpow_two]`. Conclude with `hsq`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQd : 0 < Q ^ (d / 2)` using `Real.rpow_pos_of_pos hQ0 _`. Establish `had0 : 0 < (1 + ‖x‖) ^ d` using `Real.rpow_pos_of_pos ha0 _`. Rewrite using `[Real.rpow_neg hQ0.le, Real.rpow_neg ha0.le, ← div_eq_mul_inv, le_div_iff₀ had0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm ((2 : ℝ) ^ (d / 2)), ← mul_assoc, inv_mul_cancel₀ hQd.ne', one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heis_pointwise (m : ℕ) {d : ℝ} (hd : 0 ≤ d) (x : (Fin m → ℂ) × ℝ) :
     (1 + ∑ i, Complex.normSq (x.1 i) + x.2 ^ 2) ^ (-(d / 2)) ≤
@@ -72,15 +72,13 @@ theorem heis_pointwise (m : ℕ) {d : ℝ} (hd : 0 ≤ d) (x : (Fin m → ℂ) �
         rw [mul_comm ((2 : ℝ) ^ (d / 2)), ← mul_assoc, inv_mul_cancel₀ hQd.ne', one_mul]
 
 /- English proof (translation)
-Establish `hd0 : 0 ≤ d` using `by have : (0 : ℝ) ≤ m := Nat.cast_nonneg m; linarith`. Establish `hfin : ∫⁻ x : (Fin m → ℂ) × ℝ, ENNReal.ofReal ((1 + ‖x‖) ^ (-d)) < ⊤` using `by haveI hC : (volume : Measure ℂ).IsAddHaarMeasure := by first`. Consider the case `infer_instance`. Consider the case `exact Complex.isAddHaarMeasure_volume`. Use `haveI hP : (volume : Measure (Fin m → ℂ)).IsAddHaarMeasure := by first`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `infer_instance`. Consider the case `exact MeasureTheory.Measure.pi.isAddHaarMeasure _`. Use `haveI hV : (volume : Measure ((Fin m → ℂ) × ℝ)).IsAddHaarMeasure := by first`. Consider the case `infer_instance`. Consider the case `exact MeasureTheory.Measure.prod.instIsAddHaarMeasure _ _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `(show ((volume : Measure (Fin m → ℂ)).prod (volume : Measure ℝ)).IsAddHaarMeasure infer_instance)`. Apply `finite_integral_one_add_norm` to reduce the goal to its premises. Simplify using `only [Module.finrank_prod, Module.finrank_pi_fintype, Complex.finrank_real_complex, Module.finrank_self, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `lt_of_le_of_lt (lintegral_mono (g := fun x : (Fin m → ℂ) × ℝ => ENNReal.ofReal ((2 : ℝ) ^ (d / 2)) * ENNReal.ofReal ((1 + ‖x‖) ^ (-d))) fun x => ?_) ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal (heis_pointwise m hd0 x)`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
-
-Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heis_lint_fin (m : ℕ) {d : ℝ} (hd : (2 * m + 1 : ℝ) < d) :
     ∫⁻ x : (Fin m → ℂ) × ℝ, ENNReal.ofReal ((1 + ∑ i, Complex.normSq (x.1 i) + x.2 ^ 2) ^ (-(d / 2))) < ∞ := by

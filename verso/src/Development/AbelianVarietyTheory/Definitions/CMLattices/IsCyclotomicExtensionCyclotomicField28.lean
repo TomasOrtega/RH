@@ -14,9 +14,9 @@ section General
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul r a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul s b => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem baseChange_neg_form (D : Datum H) (x y : ℝ ⊗[ℤ] D.La) :
     (-D.EF).baseChange ℝ x y = -D.EF.baseChange ℝ x y := by
@@ -67,9 +67,9 @@ Both sides reduce to the same expression.
 @[simp] theorem oppDatum_q (D : Datum H) : (oppDatum D).q = D.p := rfl
 
 /- English proof (translation)
-Set `n : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then D.p else D.q`. Set `e` to `(Fintype.equivFin (Σ τ, Fin (n τ))).symm`. Establish `key : ∀ τ, Nat.card {i // (e i).1 = τ} = n τ` using `fun τ => by`. Rewrite using `[Nat.card_congr ((e.subtypeEquiv (q := fun s => s.1 = τ) fun _ => Iff.rfl).trans (Equiv.sigmaSubtype τ))]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hty : IsTypeFn H D.p D.q fun i => (e i).1` using `fun τ => ⟨fun h => (key τ).trans (if_pos h), fun h => (key τ).trans (if_neg h)⟩`. Take `⟨Pe, hP⟩` from `PeriodNonempty.exists_isPeriod E H D _ _ hty`. Conclude with `⟨_, _, Pe, hty, hP⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_type_period (D : Datum H) : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Pe : D.La →+ (Fin g → ℂ)),
     IsTypeFn H D.p D.q ty ∧ IsPeriod D ty Pe := by
@@ -95,25 +95,25 @@ instance isCyclotomicExtension_cyclotomicField28 : IsCyclotomicExtension {28} �
 instance isCMField_cyclotomicField28 : IsCMField CyclotomicFieldTwentyEight := IsCyclotomicExtension.Rat.isCMField CyclotomicFieldTwentyEight (S := {28}) ⟨28, rfl, by norm_num⟩
 
 /- English proof (translation)
-The claim follows from `IsCyclotomicExtension.zeta_spec 28 ℚ CyclotomicFieldTwentyEight`.
+A detailed English derivation is pending.
 -/
 theorem zeta_prim : IsPrimitiveRoot (IsCyclotomicExtension.zeta 28 ℚ CyclotomicFieldTwentyEight) 28 := IsCyclotomicExtension.zeta_spec 28 ℚ CyclotomicFieldTwentyEight
 
 def z : 𝓞 CyclotomicFieldTwentyEight := zeta_prim.toInteger
 
 /- English proof (translation)
-The claim follows from `zeta_prim.toInteger_isPrimitiveRoot`.
+A detailed English derivation is pending.
 -/
 theorem z_prim : IsPrimitiveRoot z 28 := zeta_prim.toInteger_isPrimitiveRoot
 
 /- English proof (translation)
-The claim follows from `(z_prim.pow (by norm_num) (by norm_num : 28 = 14 * 2)).eq_neg_one_of_two_right`.
+A detailed English derivation is pending.
 -/
 theorem z_pow_14 : z ^ 14 = -1 :=
   (z_prim.pow (by norm_num) (by norm_num : 28 = 14 * 2)).eq_neg_one_of_two_right
 
 /- English proof (translation)
-Establish `h : IsPrimitiveRoot (z ^ 4) 7` using `z_prim.pow (by norm_num) (by norm_num)`. Establish `h2` using `h.geom_sum_eq_zero (by norm_num)`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero] at h2`. Take the linear combination `h2 - (z ^ 2 + z ^ 6 + z ^ 10) * z_pow_14`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem z_root : z ^ 12 - z ^ 10 + z ^ 8 - z ^ 6 + z ^ 4 - z ^ 2 + 1 = 0 := by
   have h : IsPrimitiveRoot (z ^ 4) 7 := z_prim.pow (by norm_num) (by norm_num)
@@ -124,21 +124,21 @@ theorem z_root : z ^ 12 - z ^ 10 + z ^ 8 - z ^ 6 + z ^ 4 - z ^ 2 + 1 = 0 := by
 def half : 𝓞 CyclotomicFieldTwentyEight := 1 - z ^ 2 + z ^ 4 + z ^ 8
 
 /- English proof (translation)
-Unfold `half`. Take the linear combination `2 * z_root + z ^ 2 * z_pow_14`.
+Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem half_sq : half ^ 2 - half + 2 = 0 := by
   unfold half
   linear_combination 2 * z_root + z ^ 2 * z_pow_14
 
 /- English proof (translation)
-Use `push_cast`. Take the linear combination `4 * half_sq`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rt_sq : (2 * half - 1) ^ 2 = -((7 : ℕ) : 𝓞 CyclotomicFieldTwentyEight) := by
   push_cast
   linear_combination 4 * half_sq
 
 /- English proof (translation)
-Apply `HostModel.unramified_of_isCoprime half (z ^ 7)` to reduce the goal to its premises. Establish `h1 : (z ^ 7) ^ 2 = -((1 : ℕ) : 𝓞 CyclotomicFieldTwentyEight)` using `by push_cast; linear_combination z_pow_14`. Establish `h2 : IsCMField.ringOfIntegersComplexConj CyclotomicFieldTwentyEight (z ^ 7) = -z ^ 7` using `RingOfIntegers.ext (HostModel.complexConj_eq_neg_of_sq_eq_neg (HostModel.coe_sq_eq_neg h1))`. Rewrite using `[HostModel.sub_complexConj_eq_of_two_mul rt_sq (by ring), h2]`. Conclude with `⟨-(2 * half - 1), 3 * z ^ 7, by linear_combination -4 * half_sq + 6 * z_pow_14⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unram : Algebra.Unramified (𝓞 (maximalRealSubfield CyclotomicFieldTwentyEight)) (𝓞 CyclotomicFieldTwentyEight) := by
   apply HostModel.unramified_of_isCoprime half (z ^ 7)
@@ -166,13 +166,13 @@ def host : Host CyclotomicFieldTwentyEight where
     ring
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Set `φ : CyclotomicFieldTwentyEight →+* ℂ` to `Classical.choice inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Establish `e : φ (z : CyclotomicFieldTwentyEight) ^ 14 = -1`. Use `congrArg (fun x : 𝓞 CyclotomicFieldTwentyEight => φ (x : CyclotomicFieldTwentyEight)) z_pow_14` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hn : ‖φ (z : CyclotomicFieldTwentyEight)‖ = 1`. Use `congrArg norm e` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_neg, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `Complex.mul_conj' (φ (z : CyclotomicFieldTwentyEight))`. Rewrite `hc` using `[hn]`. Express the relevant statement in the definitionally equal form `φ (IsCMField.complexConj CyclotomicFieldTwentyEight (z : CyclotomicFieldTwentyEight)) = _`. Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Simplify using `only [map_neg, map_pow, RingOfIntegers.coe_eq_algebraMap]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingOfIntegers.coe_eq_algebraMap] at e hc`. Move the coercions through the operations in `at hc`. Take the linear combination `-(algebraMap (𝓞 CyclotomicFieldTwentyEight) CyclotomicFieldTwentyEight z |> φ) ^ 13 * hc + (starRingEnd ℂ) (φ (algebraMap (𝓞 CyclotomicFieldTwentyEight) CyclotomicFieldTwentyEight z)) * e`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem conj_cyclotomicTwentyEight_eq_neg_pow_thirteen : IsCMField.ringOfIntegersComplexConj CyclotomicFieldTwentyEight z = -z ^ 13 := by
   apply RingOfIntegers.ext
@@ -197,11 +197,11 @@ theorem conj_cyclotomicTwentyEight_eq_neg_pow_thirteen : IsCMField.ringOfInteger
 def dd : 𝓞 CyclotomicFieldTwentyEight := 12 * z ^ 11 - 10 * z ^ 9 + 8 * z ^ 7 - 6 * z ^ 5 + 4 * z ^ 3 - 2 * z
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ (z : CyclotomicFieldTwentyEight)` using `Algebra.IsIntegral.isIntegral _`. Establish `hm : minpoly ℚ (z : CyclotomicFieldTwentyEight) = X ^ 12 - X ^ 10 + X ^ 8 - X ^ 6 + X ^ 4 - X ^ 2 + 1`. Use `symm`. Use `eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hi) (by monicity!) (minpoly.dvd _ _ ?_) ?_` and prove the remaining obligations. Use `congrArg (fun x : 𝓞 CyclotomicFieldTwentyEight => (x : CyclotomicFieldTwentyEight)) z_root` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `: minpoly ℚ (z : CyclotomicFieldTwentyEight) = cyclotomic 28 ℚ` using `(cyclotomic_eq_minpoly_rat zeta_prim (by norm_num)).symm`. Rewrite using `[this, natDegree_cyclotomic, show Nat.totient 28 = 12 by decide]`. Use `compute_degree`. Rewrite using `[hm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[dd, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_derivative : aeval (z : CyclotomicFieldTwentyEight) (derivative (minpoly ℚ (z : CyclotomicFieldTwentyEight))) = (dd : CyclotomicFieldTwentyEight) := by
   have hi : IsIntegral ℚ (z : CyclotomicFieldTwentyEight) := Algebra.IsIntegral.isIntegral _
@@ -218,15 +218,15 @@ theorem aeval_derivative : aeval (z : CyclotomicFieldTwentyEight) (derivative (m
   ring
 
 /- English proof (translation)
-Establish `hcl` using `IsCyclotomicExtension.Rat.isIntegralClosure_adjoin_singleton zeta_prim`. Establish `hmem : ∀ x : CyclotomicFieldTwentyEight, x ∈ Algebra.adjoin ℤ {(z : CyclotomicFieldTwentyEight)} ↔ ∃ a : 𝓞 CyclotomicFieldTwentyEight, (a : CyclotomicFieldTwentyEight) = x` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨⟨x, hcl.isIntegral_iff.2 ⟨⟨x, hx⟩, rfl⟩⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Take `⟨y, hy⟩` from `hcl.isIntegral_iff.1 a.isIntegral_coe`. Establish `h2 : (y : CyclotomicFieldTwentyEight) ∈ Algebra.adjoin ℤ {(z : CyclotomicFieldTwentyEight)}` using `y.2`. Establish `h3 : (y : CyclotomicFieldTwentyEight) = (a : CyclotomicFieldTwentyEight)` using `hy`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `traceForm_dualSubmodule_adjoin ℤ ℚ (x := (z : CyclotomicFieldTwentyEight)) (IsCyclotomicExtension.adjoin_primitive_root_eq_top zeta_prim) z.isIntegral_coe`. Rewrite `h` using `[aeval_derivative]`. Establish `h2` using `SetLike.ext_iff.1 h w`. Rewrite `h2` using `[LinearMap.BilinForm.mem_dualSubmodule, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `only [Subalgebra.mem_toSubmodule, hmem, Submodule.mem_one, Algebra.traceForm_apply] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨_, ⟨b, rfl⟩, hb⟩` from `h2.1 (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨n, hn⟩` from `hw a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by rw [mul_comm, hn]; simp⟩)`. Conclude with `⟨b, hb.symm⟩`. Introduce and unpack `⟨b, hb⟩ a`. Take `⟨n, hn⟩` from `h2.2 ⟨_, ⟨b, rfl⟩, hb.symm⟩ _ ⟨a, rfl⟩`. Conclude with `⟨n, by rw [mul_comm, ← hn]; simp⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem trace_dual (w : CyclotomicFieldTwentyEight) :
     (∀ a : 𝓞 CyclotomicFieldTwentyEight, ∃ n : ℤ, Algebra.trace ℚ CyclotomicFieldTwentyEight ((a : CyclotomicFieldTwentyEight) * w) = n) ↔ ∃ b : 𝓞 CyclotomicFieldTwentyEight, w = (dd : CyclotomicFieldTwentyEight)⁻¹ * b := by
@@ -260,7 +260,7 @@ theorem trace_dual (w : CyclotomicFieldTwentyEight) :
 def bt : 𝓞 CyclotomicFieldTwentyEight := (1 + z ^ 7) * (1 - z ^ 4)
 
 /- English proof (translation)
-Establish `h28 : z ^ 28 = 1` using `z_prim.pow_eq_one`. Establish `e1 : (-z ^ 13) ^ 7 = -z ^ 7` using `by linear_combination -(z ^ 63 + z ^ 35 + z ^ 7) * h28`. Establish `e2 : (-z ^ 13) ^ 4 = -z ^ 10` using `by linear_combination z ^ 24 * h28 + z ^ 10 * z_pow_14`. Rewrite using `[bt, map_mul, map_add, map_sub, map_one, map_pow, map_pow, conj_cyclotomicTwentyEight_eq_neg_pow_thirteen, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_bt : IsCMField.ringOfIntegersComplexConj CyclotomicFieldTwentyEight bt = (1 - z ^ 7) * (1 + z ^ 10) := by
   have h28 : z ^ 28 = 1 := z_prim.pow_eq_one
@@ -270,7 +270,7 @@ theorem conj_bt : IsCMField.ringOfIntegersComplexConj CyclotomicFieldTwentyEight
   ring
 
 /- English proof (translation)
-Rewrite using `[conj_bt]`. Express the relevant statement in the definitionally equal form `_ * (2 * half - 1) = _`. Unfold `bt half dd`. Take the linear combination `((1) * z ^ 0 + (-3) * z ^ 2 + (3) * z ^ 4 + (-1) * z ^ 6 + (6) * z ^ 8 + (-5) * z ^ 10 + (3) * z ^ 12 + (3) * z ^ 14 + (-3) * z ^ 16 + (-2) * z ^ 18 + (2) * z ^ 22 + (2) * z ^ 24) * z_root`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem norm_bt : bt * IsCMField.ringOfIntegersComplexConj CyclotomicFieldTwentyEight bt * host.rt = (-z + z ^ 3 - z ^ 9) * dd := by
   rw [conj_bt]
@@ -279,29 +279,27 @@ theorem norm_bt : bt * IsCMField.ringOfIntegersComplexConj CyclotomicFieldTwenty
   linear_combination ((1) * z ^ 0 + (-3) * z ^ 2 + (3) * z ^ 4 + (-1) * z ^ 6 + (6) * z ^ 8 + (-5) * z ^ 10 + (3) * z ^ 12 + (3) * z ^ 14 + (-3) * z ^ 16 + (-2) * z ^ 18 + (2) * z ^ 22 + (2) * z ^ 24) * z_root
 
 /- English proof (translation)
-Take the linear combination `((-1) * z ^ 0 + (-1) * z ^ 2 + (-1) * z ^ 4) * z_root`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem unit_eq : (-z + z ^ 3 - z ^ 9) * (z ^ 3 + z ^ 7) = 1 := by
   linear_combination ((-1) * z ^ 0 + (-1) * z ^ 2 + (-1) * z ^ 4) * z_root
 
 /- English proof (translation)
-Use `set c := IsCMField.complexConj CyclotomicFieldTwentyEight with hc`. Establish `hN : (bt : CyclotomicFieldTwentyEight) * c (bt : CyclotomicFieldTwentyEight) * (host.rt : CyclotomicFieldTwentyEight) = ((-z + z ^ 3 - z ^ 9 : 𝓞 CyclotomicFieldTwentyEight) : CyclotomicFieldTwentyEight) * (dd : CyclotomicFieldTwentyEight)`. Use `congrArg (algebraMap (𝓞 CyclotomicFieldTwentyEight) CyclotomicFieldTwentyEight) norm_bt` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_mul]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : ((-z + z ^ 3 - z ^ 9 : 𝓞 CyclotomicFieldTwentyEight) : CyclotomicFieldTwentyEight) * ((z ^ 3 + z ^ 7 : 𝓞 CyclotomicFieldTwentyEight) : CyclotomicFieldTwentyEight) = 1`. Use `congrArg (algebraMap (𝓞 CyclotomicFieldTwentyEight) CyclotomicFieldTwentyEight) unit_eq` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`. Then use the resulting hypothesis. Establish `hdd : (dd : CyclotomicFieldTwentyEight) ≠ 0`. Rewrite using `[← aeval_derivative]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Algebra.IsSeparable.isSeparable ℚ (z : CyclotomicFieldTwentyEight)).aeval_derivative_ne_zero (minpoly.aeval _ _)`. Establish `hne : (bt : CyclotomicFieldTwentyEight) * c (bt : CyclotomicFieldTwentyEight) * (host.rt : CyclotomicFieldTwentyEight) ≠ 0`. Rewrite using `[hN]`. Conclude with `mul_ne_zero (left_ne_zero_of_mul_eq_one hU) hdd`. Establish `hb : (bt : CyclotomicFieldTwentyEight) ≠ 0` using `left_ne_zero_of_mul (left_ne_zero_of_mul hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcb : c (bt : CyclotomicFieldTwentyEight) ≠ 0` using `right_ne_zero_of_mul (left_ne_zero_of_mul hne)`. Establish `hrt : (host.rt : CyclotomicFieldTwentyEight) ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hmem : ∀ y : CyclotomicFieldTwentyEight, y ∈ Submodule.span (𝓞 CyclotomicFieldTwentyEight) {(bt : CyclotomicFieldTwentyEight)⁻¹} ↔ ∃ a : 𝓞 CyclotomicFieldTwentyEight, (a : CyclotomicFieldTwentyEight) * (bt : CyclotomicFieldTwentyEight)⁻¹ = y` using `fun y => Submodule.mem_span_singleton`. Take `⟨D, -, hp, hq, -⟩` from `PrincipalDatum.exists_datum CyclotomicFieldTwentyEight host (Submodule.span (𝓞 CyclotomicFieldTwentyEight) {(bt : CyclotomicFieldTwentyEight)⁻¹}) (Submodule.fg_span_singleton _) (by simpa using hb) fun y => by`. Establish `key` using `trace_dual ((bt : CyclotomicFieldTwentyEight)⁻¹ * c y / (host.rt : CyclotomicFieldTwentyEight))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Take `⟨a, rfl⟩` from `(hmem y).1 hy`. Take `⟨b, rfl⟩` from `(hmem x).1 hx`. Use `key.2 ⟨host.bar a * (z ^ 3 + z ^ 7), by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `e : ((host.bar a * (z ^ 3 + z ^ 7) : 𝓞 CyclotomicFieldTwentyEight) : CyclotomicFieldTwentyEight) = c a * ((z ^ 3 + z ^ 7 : 𝓞 CyclotomicFieldTwentyEight) : CyclotomicFieldTwentyEight)`. Rewrite using `[← host.bar_eq]`. Conclude with `map_mul (algebraMap (𝓞 CyclotomicFieldTwentyEight) CyclotomicFieldTwentyEight) _ _`. Rewrite using `[e, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take the linear combination `-c a * ((z ^ 3 + z ^ 7 : 𝓞 CyclotomicFieldTwentyEight) : CyclotomicFieldTwentyEight) * hN - c a * (dd : CyclotomicFieldTwentyEight) * hU⟩ b`. Rewrite `this` using `[← mul_div_assoc, ← mul_assoc]`. Then use the resulting hypothesis. Introduce `hy`. Take `⟨b, hb'⟩` from `key.1 fun a => by`. Use `hy _ ((hmem _).2 ⟨a, rfl⟩)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← mul_div_assoc, ← mul_assoc]` and apply the resulting hypothesis. Use `(hmem y).2 ⟨host.bar (b * (-z + z ^ 3 - z ^ 9)), c.injective ?_⟩` and prove the remaining obligations. Establish `e : ((b * (-z + z ^ 3 - z ^ 9) : 𝓞 CyclotomicFieldTwentyEight) : CyclotomicFieldTwentyEight) = b * ((-z + z ^ 3 - z ^ 9 : 𝓞 CyclotomicFieldTwentyEight) : CyclotomicFieldTwentyEight)` using `map_mul (algebraMap (𝓞 CyclotomicFieldTwentyEight) CyclotomicFieldTwentyEight) _ _`. Rewrite using `[map_mul, map_inv₀, host.bar_eq, IsCMField.complexConj_apply_apply, e]`. Clear denominators, using `at hb' ⊢` for the nonvanishing conditions.
-
-Apply `mul_right_cancel₀ hdd` to reduce the goal to its premises. Take the linear combination `-(b : CyclotomicFieldTwentyEight) * hN - c (bt : CyclotomicFieldTwentyEight) * hb'`. Conclude with `⟨D, hp, hq⟩`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_datum : ∃ D : Datum host, D.p = 1 ∧ D.q = 0 := by
   set c := IsCMField.complexConj CyclotomicFieldTwentyEight with hc

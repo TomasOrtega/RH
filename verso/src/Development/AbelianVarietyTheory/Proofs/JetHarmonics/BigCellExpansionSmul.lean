@@ -10,15 +10,15 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨Par, inst, fam, lam, n₁, ninf, c0, q0, Gam, hf, hGam, h1, h2, h3, h4, hstep, hrange, hGb, hnorm, hmeas⟩` from `h`. Use `⟨Par, inst, fun μ g => t • fam μ g, lam, n₁, ninf, c0, q0, Gam, ?_, hGam, h1, h2, h3, h4, ?_, hrange, hGb, ?_, ?_⟩` and prove the remaining obligations. Substitute `hf` using the available equality. Both sides reduce to the same expression. Introduce `μ hμ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, hE, hS, hsupp⟩` from `hstep μ hμ`. Use `⟨a, ?_, hS, hsupp⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Establish `hc` using `congrFun hE c`. Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply] at hc ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.CutBP.V_csmul p (fam μ) t, smul_comm, hc, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P.CutBP.V_csmul p (fam (μ + ν)) t, smul_comm]`. Introduce `μ`. Rewrite using `[Formalism.FourierDecayAlt.P.CutBP.norm_sq_const_smul p (fam μ) t, Formalism.FourierDecayAlt.P.CutBP.norm_sq_const_smul p f t]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Conclude with `hnorm μ`. Introduce `μ`. Establish `e : (fun c : Fin (P.r + 1) → ℂ => ENNReal.ofReal (TBB.Ew p (fun _ => 1) (fun g => t • fam μ g) (P.r + 1) [] (TBB.bigPt P.r c))) = fun c => ENNReal.ofReal (‖t‖ ^ 2) * ENNReal.ofReal (TBB.Ew p (fun _ => 1) (fam μ) (P.r + 1) [] (TBB.bigPt P.r c))`. Use function extensionality and compare the values at `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.CutBP.Ew_csmul p (fam μ) t, ENNReal.ofReal_mul (sq_nonneg _)]`. Rewrite using `[e]`. Conclude with `(hmeas μ).const_mul _`.
+A detailed English derivation is pending.
 -/
 theorem familyDerivativeExpansion_smul (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

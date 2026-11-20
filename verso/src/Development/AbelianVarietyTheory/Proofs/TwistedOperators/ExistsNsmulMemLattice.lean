@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory.NatMultipleInLattice
 
 /- English proof (translation)
-Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := E) {a}`. Establish `h1` using `hy a (Finset.mem_singleton_self a)`. Use `⟨y.natAbs, Int.natAbs_ne_zero.2 hy0, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `e : ((y.natAbs : ℕ) : E) * a = y • a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[zsmul_eq_mul]`. Use `congr 1`. Use `conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `e : ((y.natAbs : ℕ) : E) * a = -(y • a)`. Rewrite using `[zsmul_eq_mul, ← neg_mul]`. Use `congr 1`. Use `conv_rhs => rw [h]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `h1.neg`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_integral {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ m : ℕ, m ≠ 0 ∧ IsIntegral ℤ ((m : E) * a) := by
@@ -33,17 +31,17 @@ theorem exists_nat_mul_integral {E : Type} [Field E] [NumberField E] (a : E) :
     exact h1.neg
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))`. Rewrite using `[hL.span_eq_top]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_ne_zero, by rw [one_smul]; exact L.zero_mem⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨D, hD, hy⟩` from `hy`. Take `⟨F, hF, hz⟩` from `hz`. Use `⟨D * F, mul_ne_zero hD hF, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.toAddSubmonoid.nsmul_mem hy F`. Rewrite using `[mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `L.toAddSubmonoid.nsmul_mem hz D`. Consider the case `smul a y _ hy`. Take `⟨D, hD, hy⟩` from `hy`. Take `⟨m, hm, hi⟩` from `exists_nat_mul_integral a`. Use `⟨m * D, mul_ne_zero hm hD, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `L.smul_mem (⟨(m : E) * a, hi⟩ : NumberField.RingOfIntegers E) hy`. Establish `: (m * D) • a • y = (⟨(m : E) * a, hi⟩ : NumberField.RingOfIntegers E) • D • y`. Establish `h3 : (⟨(m : E) * a, hi⟩ : NumberField.RingOfIntegers E) • D • y = ((m : E) * a) • D • y` using `rfl`. Rewrite using `[h3]`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply]`. Simplify using `only [nsmul_eq_mul, smul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem_lattice {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)) (hL : Submodule.IsLattice E L)

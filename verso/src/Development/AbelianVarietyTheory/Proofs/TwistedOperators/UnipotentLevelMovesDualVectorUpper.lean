@@ -21,21 +21,17 @@ namespace GlobalTheory.SeeConjBwd
 open Formalism.L2.SG.Pf.BunEx.Unip Formalism.L2.SG.Pf.unitaryCongruence in
 
 /- English proof (translation)
-Introduce `I g r k e0 f0 z0 bw bwd ew h x hx hcx j`. Establish `hm` using `h.mem`. Establish `hcx'` using `Formalism.L2.SG.Pf.unitaryCongruence.cong_inv I g e0 z0 bw hx hcx`. Establish `hw : (I.fmat x - 1) *ᵥ bwd j ∈ I.Lf` using `K_sub_mv I hx (hm.2.2 j).2`. Use `Formalism.L2.SG.Pf.BunEx.Unip.mem_Mo_of (Formalism.L2.SG.Pf.BunEx.Unip.exp h _ hw) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set w := (I.fmat x - 1) *ᵥ bwd j with hwdef`. Unfold `Formalism.L2.SG.Pf.BunEx.Unip.Rc`. Use `add_mem (add_mem (sub_mem (add_mem ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations. Conclude with `span_Mo (sumSpan I _ _ _ (fun a _ => hA_int I (hm.1 a).2 hw) (fun a _ => Or.inl ⟨a, rfl⟩))`. Use `Formalism.L2.SG.Pf.unitaryCongruence.mL_Mo I (sumZ I g _ _ _ (fun a _ => ?_) (fun a _ => (hm.1 a).2))` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hwdef, Formalism.L2.SG.Pf.BunEx.Unip.adj]`. Use `Zleft I g (hm.2.2 j).2 ?_ (hcx'.1 a)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, rfl⟩`. Conclude with `((h.W j).2.2 c).2.2.1`. Use `Formalism.L2.SG.Pf.unitaryCongruence.mL_Mo I (Zv I g ?_ hm.2.1)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hwdef, Formalism.L2.SG.Pf.BunEx.Unip.adj]`. Use `Zleft I g (hm.2.2 j).2 ?_ hcx'.2.1` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `((h.W j).2.2 c).2.2.1`. Use `Formalism.L2.SG.Pf.unitaryCongruence.mL_Mo I (sumZ I g _ _ _ (fun i _ => ?_) (fun i _ => (hm.2.2 i).1))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : hA I (bwd i) w = 0`. Rewrite using `[hwdef, Matrix.sub_mulVec, Matrix.one_mulVec, hA_sub_right, bdbd h, sub_zero, h.bwd_w i, h.bwd_w j, Matrix.mulVec_smul]`. Conclude with `hA_sew I h.orth _ _`. Rewrite using `[e]`. Conclude with `Z_zero I g`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hji : j < i`. Conclude with `span_Mo (smul_span I (hA_int I (hm.2.2 i).1 hw) (Or.inr ⟨i, hji, rfl⟩))`. Use `Formalism.L2.SG.Pf.unitaryCongruence.mL_Mo I (Zv I g ?_ (hm.2.2 i).2)` and prove the remaining obligations. Rewrite using `[hwdef, Formalism.L2.SG.Pf.BunEx.Unip.adj]`.
-
-Use `Zleft I g (hm.2.2 j).2 ?_ (hcx'.2.2 i)` and prove the remaining obligations. Introduce and unpack `_ (⟨c, rfl⟩ | ⟨l, hl, rfl⟩)`. Conclude with `((h.W j).2.2 c).2.2.1`. Establish `hl' : l.1 < i.1` using `hl`. Establish `hlj : j ≠ l` using `fun e => hji (by rw [e]; exact hl')`.
-
-Use `Zsym (h.dual j l)` as an intermediate fact. Rewrite `this` using `[if_neg hlj, map_zero, sub_zero]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwd_move : ∀ (I : AutInst) (g : ℕ) {r k : ℕ} (e0 f0 : Fin r → VA I) (z0 : VA I) (bw bwd : Fin k → VA I) (ew : I.E ⊗[I.F] Af I.F), Formalism.L2.SG.Pf.BunEx.Unip.FH I g e0 f0 z0 bw bwd ew → ∀ x : I.Gf, x ∈ I.Kset → K2cong I g e0 z0 bw x → ∀ j : Fin k, (I.fmat x - 1) *ᵥ bwd j ∈ Formalism.L2.SG.Pf.unitaryCongruence.Mo I g (Set.range e0 ∪ bwd '' {l | j < l}) := by
   intro I g r k e0 f0 z0 bw bwd ew h x hx hcx j

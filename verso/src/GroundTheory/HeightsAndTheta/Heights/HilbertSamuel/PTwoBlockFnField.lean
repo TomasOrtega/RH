@@ -10,20 +10,20 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `IntermediateField.subset_adjoin ℚ _ ⟨p, q, Subsingleton.elim _ _, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem TwoBlockFnField.ratio_mem {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] (x : Ix κ → Ω)
     (p q : Ix κ) : x p / x q ∈ blockFnField (ι := GlobalTheory κ) x :=
   IntermediateField.subset_adjoin ℚ _ ⟨p, q, Subsingleton.elim _ _, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `t ⟨p, q, -, rfl⟩`. Distinguish the cases in `h0 : ∀ j, x j = 0`. Establish `: matAct A x p = 0` using `by simp [matAct, h0]`. Rewrite using `[this, zero_div]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Take `⟨c, hc⟩` from `not_forall.mp h0`. Establish `key : ∀ i, matAct A x i / x c ∈ blockFnField (ι` using `GlobalTheory κ) x := by`. Introduce `i`. Establish `: matAct A x i / x c = ∑ j, (A i j : Ω) * (x j / x c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [matAct, Finset.sum_div, mul_div_assoc]`. Rewrite using `[this]`. Use `sum_mem fun j _ => mul_mem ?_ (TwoBlockFnField.ratio_mem x j c)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `: matAct A x p / matAct A x q = (matAct A x p / x c) / (matAct A x q / x c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_div_div_cancel_right₀ hc]`. Rewrite using `[this]`. Conclude with `div_mem (key p) (key q)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwoBlockFnField.matAct_le {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] (x : Ix κ → Ω)
     (A : Matrix (Ix κ) (Ix κ) ℚ) :
@@ -48,7 +48,7 @@ theorem TwoBlockFnField.matAct_le {Ω : Type} [Field Ω] [CharZero Ω] {κ : Typ
     exact div_mem (key p) (key q)
 
 /- English proof (translation)
-Take `⟨B', -, h⟩` from `isInvMat_mul hB`. Use `le_antisymm (TwoBlockFnField.matAct_le x B) ?_` and prove the remaining obligations. Use `TwoBlockFnField.matAct_le (matAct B x) B'` as an intermediate fact. Rewrite `this` using `[matAct_matAct h]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem TwoBlockFnField.matAct_eq {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] (x : Ix κ → Ω)
     (B : Matrix (Ix κ) (Ix κ) ℚ) (hB : IsInvMat B) :
@@ -60,15 +60,15 @@ theorem TwoBlockFnField.matAct_eq {Ω : Type} [Field Ω] [CharZero Ω] {κ : Typ
   rwa [matAct_matAct h] at this
 
 /- English proof (translation)
-Introduce `Ω _ _ κ _ x B hB`. Establish `hE` using `TwoBlockFnField.matAct_eq x B hB`. Use `⟨le_antisymm ?_ ?_, hE⟩` and prove the remaining obligations. Rewrite using `[blockFnField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `t ⟨p, q, hpq, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨b, i⟩` from `p`. Take `⟨b', j⟩` from `q`. Simplify using `only at hpq`. Substitute `hpq` using the available equality. Distinguish the cases in `hb : b = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Simplify `TwoBlockFnField.ratio_mem x ⟨(), i⟩ ⟨(), j⟩` using `[pair]`. Simplify using `only [pair, hb, if_false]`. Rewrite using `[← hE]`. Conclude with `TwoBlockFnField.ratio_mem (matAct B x) ⟨(), i⟩ ⟨(), j⟩`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨⟨u, i⟩, ⟨u', j⟩, -, rfl⟩`. Consider the cases of `u`. Consider the cases of `u'`. Use `IntermediateField.subset_adjoin ℚ _ ⟨⟨0, i⟩, ⟨0, j⟩, rfl, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[pair]`.
+A detailed English derivation is pending.
 -/
 theorem TwoBlockFnField.proof : TwoBlockFnField.Statement := by
   intro Ω _ _ κ _ x B hB

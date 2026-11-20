@@ -57,7 +57,7 @@ Both sides reduce to the same expression.
 @[simp] theorem TDual.smul_apply (c : R) (φ : TDual R M) (m : M) : (c • φ) m = c * φ m := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem TDual.ext {φ ψ : TDual R M} (h : ∀ m, φ m = ψ m) : φ = ψ := LinearMap.ext h
 
@@ -93,7 +93,7 @@ Both sides reduce to the same expression.
 @[simp] theorem evalPair_apply (m : M) (φ : TDual R M) : evalPair m φ = φ m := rfl
 
 /- English proof (translation)
-Establish `e : rho g⁻¹ (rho g m) = m` using `by first`. Consider the case `exact Representation.inv_self_apply rho g m`. Consider the case `rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Consider the case `rw [← LinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one, LinearMap.one_apply]`. Rewrite using `[evalPair_apply, twDual_apply, charRep_apply, evalPair_apply, e]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalPair_equiv (χ : Γ →* Rˣ) (rho : Representation R Γ M) (g : Γ) (m : M)
     (φ : TDual R M) : evalPair (rho g m) (twDual χ rho g φ) = charRep χ g (evalPair m φ) := by
@@ -113,7 +113,7 @@ variable {R : Type*} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
   [TopologicalSpace M] [DiscreteTopology M]
 
 /- English proof (translation)
-Conclude with `Continuous.comp (show Continuous (fun p : Γ × M => rho p.1 p.2) from h) ((hφ.comp continuous_fst).prodMk continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem ContAction.comp' [TopologicalSpace Γ] {D : Type*} [Group D] [TopologicalSpace D]
     {rho : Representation R Γ M} (h : ContAction rho) {φ : D →* Γ} (hφ : Continuous φ) :
@@ -144,7 +144,7 @@ def perpCond {I : Type*} {D : I → Type*} [∀ i, Group (D i)] [∀ i, Topologi
   fun i => ⨅ x ∈ L i, LinearMap.ker ((cupH1H1TwistedDual χ rho (phi i) (hrho i)).flip x)
 
 /- English proof (translation)
-Use `show y ∈ ⨅ x ∈ L i, LinearMap.ker ((cupH1H1TwistedDual χ rho (phi i) (hrho i)).flip x) ↔ _`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_perpCond {I : Type*} {D : I → Type*} [∀ i, Group (D i)] [∀ i, TopologicalSpace (D i)]
     (phi : ∀ i, D i →* Γ) (hrho : ∀ i, ContAction (rho.comp (phi i)))

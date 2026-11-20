@@ -21,59 +21,53 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.BK
 
 /- English proof (translation)
-Introduce `l _ K bk C c hc m`. Take `⟨M, q, hq1, hq2⟩` from `GlobalTheory.T.exists_approx_root_eisenstein_away_prime l K bk m`. Take `⟨N, r, hr⟩` from `GlobalTheory.T.exists_mul_sub_prime_pow_dvd_E_pow l K bk M m q hq1`. Take `⟨d, hd⟩` from `GlobalTheory.RingBasics.exists_pow_div_factorial l m`. Use `set w₀ : bk.S := ((l : bk.S) ^ M * X - q) * r with hw₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : bk.E ∣ w₀`. Establish `e1 : (l : bk.S) ^ M * X - q = -(q - (l : bk.S) ^ M * X)` using `by ring`. Rewrite using `[hw₀, e1]`. Conclude with `(dvd_neg.2 hq1).mul_right _`. Use `set s' : bk.S := ∑ j ∈ Finset.range m, (-1) ^ j * ((m.factorial / (j + 1) : ℕ) : bk.S) * w₀ ^ (j + 1) * (l : bk.S) ^ (N * (m - (j + 1))) with hs'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set s : bk.S := (bk.Ep.natDegree : bk.S) * PowerSeries.C (algebraMap ℤ_[l] (Wq l bk.a) d) * s' with hsdef`. Use `⟨m + N * m, s, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hsdef]`. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Apply `Finset.dvd_sum` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j _`. Conclude with `((hE.pow (Nat.succ_ne_zero j)).mul_left _).mul_right _`. Use `set R := Per.AinfP l ⧸ Per.kerP l ^ m`. Set `qm : Per.AinfP l →+* R` to `Ideal.Quotient.mk _`. Set `ι : Per.Ainf l →+* Per.AinfP l` to `algebraMap (Per.Ainf l) (Per.AinfP l)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ x, Per.ev l m (aDp l x) = qm (ι x)` using `fun x => LogFun.ev_alg m (ι x)`. Set `I : Ideal R` to `(Per.kerP l).map qm`. Establish `hI : I ^ m = ⊥`. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.map_quotient_self _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hnil : ∀ x ∈ I, x ^ m = 0` using `fun x hx => by`. Use `Ideal.pow_mem_pow hx m` as an intermediate fact. Rewrite `this` using `[hI, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `hR : ∀ n : ℕ, n ≠ 0 → IsUnit (n : R)` using `fun n hn => by`. Use `(GlobalTheory.RingBasics.isUnit_nat l n hn).map qm` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam⟩ : ∃ lam : R, (l : R) * lam = 1 := by`. Use `(GlobalTheory.RingBasics.isUnit_l l).map qm` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.exists_right_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : bk.S →+* R` to `qm.comp (ι.comp bk.ev)`. Set `fσ : bk.S →+* R` to `qm.comp (ι.comp ((Per.σA (g : GQ l)).comp bk.ev))`. Establish `hEm : ι (bk.ev bk.E) ∈ Per.kerP l`. Establish `h0 : Per.θ l (bk.ev bk.E) = 0`. Establish `: bk.ev bk.E ∈ RingHom.ker (Per.θ l)` using `bk.span_ev ▸ Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Apply the tactic sequence `first | exact GlobalTheory.RingIface.alg_mem_kerP _ h0 | exact GlobalTheory.RingIface.alg_mem_kerP h0`. Establish `hfE : f bk.E ∈ I` using `Ideal.mem_map_of_mem _ hEm`. Establish `hfσE : fσ bk.E ∈ I`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.RingBasics.ker_σ (g : GQ l) hEm` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, GlobalTheory.RingBasics.awayMap_algebraMap₂]`. Then use the resulting hypothesis. Establish `hdvd : ∀ (φ : bk.S →+* R), φ bk.E ∈ I → ∀ x : bk.S, bk.E ^ m ∣ x → φ x = 0`. Introduce `φ hφ x ⟨y, hy⟩`. Rewrite using `[hy, map_mul, map_pow, hnil _ hφ, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfr : f q * f r = (l : R) ^ N`. Use `hdvd f hfE _ hr` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_pow, map_natCast]`. Conclude with `sub_eq_zero.1 this`. Establish `hfσr : fσ q * fσ r = (l : R) ^ N`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `hdvd fσ hfσE _ hr` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_pow, map_natCast]`. Conclude with `sub_eq_zero.1 this`. Establish `hσq : fσ q = f q`. Establish `h` using `GlobalTheory.T.eisensteinApproxRoot_galois_sub_mem_bdRFil l K bk m M q hq1 hq2 g`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h` using `[GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow, hev, map_sub, map_sub]`. Conclude with `sub_eq_zero.1 h`. Establish `hlamN : (l : R) ^ N * lam ^ N = 1` using `by rw [← mul_pow, hlam, one_pow]`. Establish `hσr : fσ r = f r`. Establish `hu : IsUnit (f q)` using `isUnit_iff_exists_inv.2 ⟨f r * lam ^ N, by rw [← mul_assoc, hfr, hlamN]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← hσq, hfσr, hσq, hfr]`. Take `⟨e, hxe, he1, hlog⟩` from `GlobalTheory.T.galois_factor_tilt_log_bdRPlus l C bk.flat (g : GQ l) (c g) (hc g)`. Use `set τ : R := qm (ι (Per.tm e)) with hτ`. Establish `hσX : fσ X = f X * τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `qm (ι (Per.σA (g : GQ l) (bk.ev X))) = qm (ι (bk.ev X)) * qm (ι (Per.tm e))`. Rewrite using `[bk.ev_X, ← map_mul, ← map_mul]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `Per.σA (g : GQ l) (WittVector.teichmuller l _) = _`. Rewrite using `[GlobalTheory.RingIface.sigA_teich, hxe, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hσC : ∀ w, fσ (PowerSeries.C w) = f (PowerSeries.C w)` using `fun w => by`. Express the relevant statement in the definitionally equal form `qm (ι (Per.σA (g : GQ l) (bk.ev (PowerSeries.C w)))) = qm (ι (bk.ev (PowerSeries.C w)))`. Rewrite using `[bk.ev_C, bk.gal_w]`. Set `T : R → R` to `fun a => ∑ j ∈ Finset.range m, (-1) ^ j * ((m.factorial / (j + 1) : ℕ) : R) * a ^ (j + 1)`. Establish `hT : ∀ (φ : bk.S →+* R) (a : R), φ w₀ = a * (l : R) ^ N → φ s' = (l : R) ^ (N * m) * T a`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `φ a ha`. Simplify using `only [hs', map_sum, map_mul, map_pow, map_neg, map_one, map_natCast, ha, T, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjm : N * m = N * (j + 1) + N * (m - (j + 1))`. Rewrite using `[← mul_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.mem_range.1 hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hjm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set A : R := f w₀ * lam ^ N with hAdef`. Use `set B : R := fσ w₀ * lam ^ N with hBdef`. Establish `hA : f w₀ = A * (l : R) ^ N` using `by rw [hAdef]; linear_combination (-(f w₀)) * hlamN`. Establish `hB' : fσ w₀ = B * (l : R) ^ N` using `by rw [hBdef]; linear_combination (-(fσ w₀)) * hlamN`. Establish `hAI : A ∈ I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Take `⟨u, hu⟩` from `hE`. Rewrite using `[hAdef, hu, map_mul]`. Conclude with `I.mul_mem_right _ (I.mul_mem_right _ hfE)`. Establish `hbI : τ - 1 ∈ I`. Use `Ideal.mem_map_of_mem qm (LogFun.mu_mem he1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[GlobalTheory.MemLoc.mu, hτ]`. Establish `hB : B = A + (τ - 1) + A * (τ - 1)`. Rewrite using `[hBdef, hAdef]`. Simplify using `only [hw₀, map_mul, map_sub, map_pow, map_natCast, hσX, hσq, hσr]`. Take the linear combination `(τ - 1) * lam ^ N * hfr + (τ - 1) * hlamN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `htr : T B = T A + T (τ - 1)`. Rewrite using `[hB]`. Conclude with `LogAdd.trunc_add hR m I hI A (τ - 1) hAI hbI`. Establish `hl` using `GlobalTheory.CrisIncl.factorial_mul_ev l e _ he1 hlog m`. Establish `hl2 : (m.factorial : R) * Per.ev l m (aDp l (Per.zA l (c g)) * C.j C.t) = T (τ - 1)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl]`. Simplify using `only [T, map_sum, map_mul, map_pow, map_sub, map_one, map_natCast, map_neg, hτ]`. Both sides reduce to the same expression. Establish `hfC : (m.factorial : R) * f (PowerSeries.C (algebraMap ℤ_[l] (Wq l bk.a) d)) = (l : R) ^ m`. Use `congrArg (f.comp (PowerSeries.C.comp (algebraMap ℤ_[l] (Wq l bk.a)))) hd` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `only [map_mul, map_natCast, map_pow, RingHom.comp_apply]`. Establish `hfs'` using `hT f A hA`. Establish `hfσs'` using `hT fσ B hB'`. Rewrite using `[GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow]`. Establish `e1 : Per.ev l m (aDp l (Per.σA (g : GQ l) (bk.ev s) - bk.ev s)) = fσ s - f s`.
-
-Rewrite using `[hev, map_sub, map_sub]`. Both sides reduce to the same expression. Establish `e2 : Per.ev l m ((l : Per.BdRp l) ^ (m + N * m) * (aDp l (Per.zA l ((bk.Ep.natDegree : ℤ_[l]) * c g)) * C.j C.t)) = (l : R) ^ (m + N * m) * ((bk.Ep.natDegree : R) * Per.ev l m (aDp l (Per.zA l (c g)) * C.j C.t))`. Simplify using `only [map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[map_sub, e1, e2]`. Establish `e3 : fσ s = (bk.Ep.natDegree : R) * f (PowerSeries.C (algebraMap ℤ_[l] (Wq l bk.a) d)) * fσ s'`. Rewrite using `[hsdef, map_mul, map_mul, map_natCast, hσC]`. Establish `e4 : f s = (bk.Ep.natDegree : R) * f (PowerSeries.C (algebraMap ℤ_[l] (Wq l bk.a) d)) * f s'`. Rewrite using `[hsdef, map_mul, map_mul, map_natCast]`.
-
-Rewrite using `[e3, e4, hfs', hfσs']`. Apply `(hR _ m.factorial_ne_zero).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[mul_zero]`. Take the linear combination `((bk.Ep.natDegree : R) * (l : R) ^ (N * m) * (T B - T A)) * hfC - ((l : R) ^ (m + N * m) * (bk.Ep.natDegree : R)) * hl2 + ((bk.Ep.natDegree : R) * (l : R) ^ (N * m) * (l : R) ^ m) * htr`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_truncLog_gal_mod_fil : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (c : ↥(GK K) → ℤ_[l]),
     (∀ (g : ↥(GK K)) (m : ℕ), rootT (Per.σF (g : GQ l) bk.flat) m =

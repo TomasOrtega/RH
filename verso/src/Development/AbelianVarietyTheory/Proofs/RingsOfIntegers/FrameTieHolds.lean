@@ -19,11 +19,9 @@ open GermD
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hpt : (fun i => x m ≫ (![𝟙 t.G, t.act.act H.w0] : Fin 2 → (t.G ⟶ t.G)) i) = fun i => Formalism.L2.Pj.homAt x0 (sL m a) ≫ (![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] : Fin 2 → (jOG x0 d m 2 ⟶ t.G)) i`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Use `show x m ≫ 𝟙 t.G = Formalism.L2.Pj.homAt x0 (sL m a) ≫ Formalism.L2.Pj.homAt x0 (jetCopy d m (0 : Fin 2)) ≫ x m`. Rewrite using `[Category.comp_id, ← Category.assoc, homAt_comp, sL_copy0, homAt_id, Category.id_comp]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show x m ≫ t.act.act H.w0 = Formalism.L2.Pj.homAt x0 (sL m a) ≫ Formalism.L2.Pj.homAt x0 (jetCopy d m (1 : Fin 2)) ≫ x m`. Rewrite using `[← Category.assoc, homAt_comp, sL_copy1, ha]`. Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg (fun f => Over.Hom.left f) ?_` and prove the remaining obligations. Use `(psum_hom (preHom (x m)) _ I.down).trans (Eq.trans ?_ (psum_hom (preHom (Formalism.L2.Pj.homAt x0 (sL m a))) _ I.down).symm)` and prove the remaining obligations.
-
-Conclude with `congrArg (fun f => psum t.G f I.down) hpt`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cube_points {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ)
     (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (a : Fin d → MvPowerSeries (Fin 1 × Fin d) S) (m : ℕ)
@@ -50,7 +48,7 @@ theorem cube_points {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0
   exact congrArg (fun f => psum t.G f I.down) hpt
 
 /- English proof (translation)
-Simplify using `only [Fintype.prod_sum_type, primφ, primε, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_one, Category.comp_id, cube_points t x0 d x a m ha]`. Rewrite using `[_root_.mul_assoc, ← Finset.prod_mul_distrib]`. Simplify using `only [← zpow_add, neg_add_cancel, zpow_zero, Finset.prod_const_one, _root_.mul_one, zpow_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_points {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ)
     (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (a : Fin d → MvPowerSeries (Fin 1 × Fin d) S) (m : ℕ)
@@ -66,9 +64,9 @@ theorem prod_points {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0
   simp only [← zpow_add, neg_add_cancel, zpow_zero, Finset.prod_const_one, _root_.mul_one, zpow_one]
 
 /- English proof (translation)
-Establish `p₁` using `(congrArg (fun q => val wP q z J) hx).trans ((val_pull hJ wP φ _).symm.trans ((val_corr hJ hP₁ _).symm.trans (GlobalTheory.RigOriginPull.val_tie w _ _ wP' cP hP₂ _ z hJ hJ')))`. Establish `p₂` using `he.trans (GlobalTheory.RigOriginPull.val_tie w _ _ (e' m) c hc _ z hJ hJ')`. Establish `q` using `prod_points t' x1 d x' (act' H.w0) m ha (fun f => Geo.Tor.gw w (r ≫ f) z (J ((r ≫ f) ≫ φ)) (J' (r ≫ f)))`. Use `(val_mul hJ _ _ _).trans ((congrArg₂ (· * ·) ((val_pull hJ _ _ _).trans p₁) ((val_pull hJ _ _ _).trans p₂)).trans ((_root_.mul_mul_mul_comm _ _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)))` and prove the remaining obligations. Use `Eq.trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => ?_) (Finset.prod_congr rfl fun k _ => ?_)) q` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun f => Geo.Tor.gw w f z (J (f ≫ φ)) (J' f) ^ primε k) (Category.assoc _ _ _)`. Conclude with `congrArg (fun f => Geo.Tor.gw w f z (J (f ≫ φ)) (J' f) ^ cε 2 k) (Category.assoc _ _ _)`. Conclude with `((val_mul hJ' _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ' _ _ _) (val_pull hJ' _ _ _))).symm`.
+A detailed English derivation is pending.
 -/
 theorem val_eLG_tie {X0 X1 : Scheme.{0}} (t : SAB H X0) (t' : SAB H X1) {S S' : Type} [CommRing S] [CommRing S']
     (x0 : Sp S ⟶ X0) (x1 : Sp S' ⟶ X1) (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG x1 d m 1 ⟶ t'.G)
@@ -106,7 +104,7 @@ theorem val_eLG_tie {X0 X1 : Scheme.{0}} (t : SAB H X0) (t' : SAB H X1) {S S' : 
   · exact ((val_mul hJ' _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ' _ _ _) (val_pull hJ' _ _ _))).symm
 
 /- English proof (translation)
-Use `exists_gen t.PP.isLB ?_ _ (ReciprocityTheory.ChartRestriction.G.DVR.mulGen_isGen t.PP.L _ _ _ _ _ _ (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen t.PP.L _ _ _ hP _) (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen t.PP.L _ _ _ he _))` and prove the remaining obligations. Introduce `U _ hU`. Rewrite using `[Fintype.prod_sum_type, Fin.prod_univ_one, zpow_one]`. Conclude with `prod_points t x0 d x (act H.w0) m ha hU`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ)
     (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S)
@@ -123,9 +121,9 @@ theorem exists_frame {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x
   exact prod_points t x0 d x (act H.w0) m ha hU
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `mp.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm)` and prove the remaining obligations. Establish `h' : x.left ≫ (t.act.act a).left = (Formalism.L2.Pj.homAt x0 σ).left ≫ x.left` using `congrArg (fun q => q.left) h`. Establish `hx' : x'.left ≫ mp.cm.F = x.left` using `hx`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, mp.act a, ← Category.assoc, hx']`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 theorem act_of_map {X0 : Scheme.{0}} (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (t' : SAB H (Sp S))
     (mp : SABMap t' t x0) {A : Type} [CommRing A] [Algebra S A] (x : overAt x0 A ⟶ t.G)
@@ -145,15 +143,13 @@ open GlobalTheory.PlaceInt.FrameTie GermD in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ _ Tc io yI C`. Use `letI := io.toAlgebra`. Take `⟨⟨-, hact, -⟩, x', hx2, hx1, ⟨e', he'⟩, wP', hPg, ⟨cP₂, hP₂, hP₂'⟩, cP₁, hP₁, hP₁'⟩` from `C.gen`. Establish `ha : ∀ m, x' m ≫ C.I.t'.act.act H.w0 = Formalism.L2.Pj.homAt (𝟙 (Sp Tc.Fr)) (jetSubstP m fun p : Fin 1 × Fin C.ch.d => psTrunc m (C.ch.B.A.act H.w0 p.2)) ≫ x' m` using `fun m => act_of_map Xo.univ.t yI.1.x C.I.t' C.I.m1 (C.ch.x m) (x' m) (hx1 m) H.w0 _ (C.ch.chart.act m H.w0)`. Use `choose τ _ hτ using fun m => exists_frame C.I.t' (𝟙 (Sp Tc.Fr)) C.ch.d x' C.ch.B.A.act e' wP' m (he' m).1 hPg (ha m)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x', hx1, hx2, τ, fun m Z r z J J' J'' hJ hJ' hJ'' => ?_⟩` and prove the remaining obligations. Take `⟨-, ⟨c₂, hc₂, hc₂'⟩, c₁, hc₁, hc₁'⟩` from `he' m`. Rewrite using `[Category.comp_id, hτ m Z r z J' hJ']`. Prove the components needed by the constructor for the conclusion. Use `val_eLG_tie Xo.univ.t C.I.t' yI.1.x (𝟙 (Sp Tc.Fr)) C.ch.d C.ch.x x' C.ch.B.A.act C.ch.B.A.act C.ch.e e' C.ch.wP wP' C.I.m1.φ C.I.w1 m (ha m) c₁ hc₁' cP₁ hP₁ hP₁' r r z hJ hJ' ?_ (val_corr hJ hc₁ _).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (r ≫ ·) (hx1 m).symm).trans (Category.assoc _ _ _).symm`. Use `val_eLG_tie C.I.G C.I.t' (𝟙 (Sp Tc.V)) (𝟙 (Sp Tc.Fr)) C.ch.d C.xT x' C.actT C.ch.B.A.act C.eT e' C.wPT wP' C.I.m2.φ C.I.w2 m (ha m) c₂ hc₂' cP₂ hP₂ hP₂' r _ z hJ'' hJ' ?_ ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (hx2 m).symm).trans (Category.assoc _ _ _).symm)`. Use `Eq.symm ((val_corr hJ'' hc₂ _).trans ((val_pull hJ'' _ _ _).trans ?_))` and prove the remaining obligations. Use `congrArg (fun q => val (C.eT m) q z J'') ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(Category.assoc _ _ _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Use `congrArg (r ≫ ·) (GlobalTheory.ChartRigBC.subst_jetCoef (algebraMap Tc.V Tc.Fr) (𝟙 _) (spMap (algebraMap Tc.V Tc.Fr)) C.ch.d m 2 1 _ _ ?_)` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`. Conclude with `(MvPolynomial.map_X _ _).symm`.
-
-Conclude with `(congrArg (psIn C.ch.d m ![0]) (hact H.w0 j)).trans (GlobalTheory.RawChartGermBC.map_psIn _ C.ch.d m _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PlaceInt.frameTie_holds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ReciprocityTheory.ChartRestriction.G.PullbackSections.FrameTieSt Xo c := by
   intro E _ _ _ H Dw l Xo c _ _ Tc io yI C

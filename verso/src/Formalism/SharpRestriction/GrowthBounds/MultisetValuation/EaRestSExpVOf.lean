@@ -16,11 +16,11 @@ section Reduce
 variable (p : ℕ) [hp : Fact p.Prime]
 
 /- English proof (translation)
-Establish `hμ : PowerSeries.HasSubst μ` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `hl0 : PowerSeries.coeff 0 (lgF K' p) = 0`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `lgF_const p K'`. Establish `hr : PowerSeries.rescale vp (lgF K' p) = PowerSeries.C vp * lamF p vp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Rewrite using `[PowerSeries.coeff_rescale, hl0, PowerSeries.coeff_C_mul]`. Simplify using `[lamF, hl0]`. Simplify using `[lamF, PowerSeries.coeff_rescale, pow_succ]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hs : (PowerSeries.subst μ (vp • PowerSeries.X : PowerSeries K') : PowerSeries K') = PowerSeries.C vp * μ`. Rewrite using `[PowerSeries.subst_smul hμ, PowerSeries.subst_X hμ, PowerSeries.smul_eq_C_mul]`. Rewrite using `[← hs, ← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.smul_X' vp) hμ, ← PowerSeries.rescale_eq_subst, hr, PowerSeries.subst_mul hμ, h1, PowerSeries.subst_C]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem subst_C_mul_lgF_eq_C_mul_X_of_inverse (K' : Type) [Field K'] [Algebra (K0 p) K'] (vp : K') (μ : PowerSeries K')
     (h0 : PowerSeries.constantCoeff μ = 0)
@@ -45,15 +45,15 @@ private theorem subst_C_mul_lgF_eq_C_mul_X_of_inverse (K' : Type) [Field K'] [Al
   rfl
 
 /- English proof (translation)
-Establish `hlog : PowerSeries.constantCoeff (logF p) = 0`. Establish `h2` using `lgF_const p K'`. Rewrite `h2` using `[← map_logF p K', ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map]`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `(algebraMap (K0 p) K').injective (by simpa using h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : MvPowerSeries.HasSubst (fun i : σ => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ (K0 p)) (logF p))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => PowerSeries.constantCoeff_subst_eq_zero (by simp) _ hlog`. Establish `hb : MvPowerSeries.HasSubst (fun i : σ => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ K') (lgF K' p))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => PowerSeries.constantCoeff_subst_eq_zero (by simp) _ (lgF_const p K')`. Establish `hT0 : ∀ i, MvPowerSeries.constantCoeff (tOf vp μ L i) = 0` using `fun i => PowerSeries.constantCoeff_subst_eq_zero (hL0 i) _ (by simp [h0])`. Establish `hT : MvPowerSeries.HasSubst (tOf vp μ L)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hT0`. Establish `hmap : (fun i : σ => MvPowerSeries.map (algebraMap (K0 p) K') (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ (K0 p)) (logF p))) = fun i => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ K') (lgF K' p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.X i), MvPowerSeries.map_X, map_logF]`. Unfold `inParam`. Rewrite using `[MvPowerSeries.map_subst ha, hmap, MvPowerSeries.subst_comp_subst_apply hb hT]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `hXi : MvPowerSeries.HasSubst (fun _ : Unit => (MvPowerSeries.X i : MvPowerSeries σ K'))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => by simp`. Establish `hCμ : PowerSeries.HasSubst (PowerSeries.C vp * μ)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [h0])`. Establish `hLi : PowerSeries.HasSubst (L i)` using `PowerSeries.HasSubst.of_constantCoeff_zero (hL0 i)`. Express the relevant statement in the definitionally equal form `_ = MvPowerSeries.subst (tOf vp μ L) (MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X i : MvPowerSeries σ K')) (lgF K' p))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply hXi hT]`. Simplify using `only [MvPowerSeries.subst_X hT]`. Express the relevant statement in the definitionally equal form `_ = PowerSeries.subst (PowerSeries.subst (L i) (PowerSeries.C vp * μ)) (lgF K' p)`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hCμ hLi, hLL, PowerSeries.subst_mul hLi, PowerSeries.subst_C, PowerSeries.subst_X hLi]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem subst_C_mul_map_eq_subst_tOf_map_inParam {σ τ : Type} [Finite σ] (K' : Type) [Field K'] [Algebra (K0 p) K'] (vp : K')
     (μ : PowerSeries K') (h0 : PowerSeries.constantCoeff μ = 0)
@@ -102,9 +102,9 @@ private theorem subst_C_mul_map_eq_subst_tOf_map_inParam {σ τ : Type} [Finite 
     PowerSeries.subst_C, PowerSeries.subst_X hLi]
 
 /- English proof (translation)
-Use `haveI := charZero_K' p (K0 p)`. Use `⟨MvPowerSeries.invOfUnit (1 + h) 1, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 + h) * MvPowerSeries.invOfUnit (1 + h) 1 = 1` using `MvPowerSeries.mul_invOfUnit _ _ (by simp [hh])`. Establish `h2 : expK (-z) * expK z = 1`. Rewrite using `[← expK_add (by simp [hz0]) hz0, neg_add_cancel, th_expK_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem exists_expK_neg_eq_map_of_expK_eq_one_add {ι : Type} (z : MvPowerSeries ι (K0 p)) (hz0 : MvPowerSeries.constantCoeff z = 0)
     (h : MvPowerSeries ι (WW p)) (hh : MvPowerSeries.constantCoeff h = 0)
@@ -123,41 +123,37 @@ private theorem exists_expK_neg_eq_map_of_expK_eq_one_add {ι : Type} (z : MvPow
     _ = _ := by rw [h2, one_mul]
 
 /- English proof (translation)
-Use `haveI := charZero_K' p (K0 p)`. Establish `hlog : PowerSeries.constantCoeff (logF p) = 0`. Establish `h2` using `lgF_const p K'`. Rewrite `h2` using `[← map_logF p K', ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map]`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(algebraMap (K0 p) K').injective (by simpa using h2)`. Establish `hT0 : ∀ i, MvPowerSeries.constantCoeff (tOf vp μ L i) = 0` using `fun i => PowerSeries.constantCoeff_subst_eq_zero (hL0 i) _ (by simp [h0])`. Establish `hT : MvPowerSeries.HasSubst (tOf vp μ L)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hT0`. Establish `hTint : ∀ i, IntR (Rp p K' vp) (tOf vp μ L i)` using `fun i => IntR_psubst (hL0 i) (hL i) (fun n => by`. Rewrite using `[PowerSeries.coeff_C_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subring.mul_mem _ (Subring.subset_closure (Or.inr rfl)) (hμ n))`. Establish `hren : ∀ (φ : Fin 2 → σ), MvPowerSeries.HasSubst (fun k : Fin 2 => (MvPowerSeries.X (φ k) : MvPowerSeries σ (K0 p)))` using `fun φ => MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`. Establish `hren0 : ∀ (φ : Fin 2 → σ) (f : MvPowerSeries (Fin 2) (K0 p)), MvPowerSeries.constantCoeff f = 0 → MvPowerSeries.constantCoeff (ren φ f) = 0` using `fun φ f hf => MvPowerSeries.constantCoeff_subst_eq_zero (hren φ) (fun k => by simp) hf`. Establish `hsubren : ∀ x, sub2 p be (MvPowerSeries.X (a x) : MvPowerSeries σ (K0 p)) (MvPowerSeries.X (b x)) = ren ![a x, b x] be`. Apply the tactic sequence `intro x; unfold sub2 ren; congr 1; funext k; fin_cases k <;> rfl`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS0 : MvPowerSeries.constantCoeff (∑ x : A, sub2 p be (MvPowerSeries.X (a x) : MvPowerSeries σ (K0 p)) (MvPowerSeries.X (b x))) = 0`. Rewrite using `[map_sum]; exact Finset.sum_eq_zero fun x _ => by rw [hsubren]; exact hren0 _ _ hbe0`. Establish `hPh0 : MvPowerSeries.constantCoeff Ph = 0`. Establish `h3` using `hPh.1`. Rewrite `h3` using `[map_sub, hS0, sub_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hy0 : MvPowerSeries.constantCoeff (inParam p be - Gser p c c') = 0`. Rewrite using `[map_sub, th_inParam_const p hbe0, hG0, sub_zero]`. Establish `hInS : inParam p (∑ x : A, sub2 p be (MvPowerSeries.X (a x) : MvPowerSeries σ (K0 p)) (MvPowerSeries.X (b x))) = ∑ x : A, ren ![a x, b x] (inParam p be)`. Rewrite using `[th_inParam_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hsubren, th_inParam_ren]`. Establish `hY : ∑ x : A, ren ![a x, b x] (inParam p be - Gser p c c') = ∑ x : A, ren ![a x, b x] (inParam p be) - ∑ x : A, ren ![a x, b x] (Gser p c c')`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `ren`. Rewrite using `[MvPowerSeries.subst_sub (hren _)]`. Establish `hdecomp : inParam p (-Ph) = -(∑ x : A, ren ![a x, b x] (Gser p c c')) + -((inParam p Ph - inParam p (∑ x : A, sub2 p be (MvPowerSeries.X (a x) : MvPowerSeries σ (K0 p)) (MvPowerSeries.X (b x)))) + ∑ x : A, ren ![a x, b x] (inParam p be - Gser p c c'))`. Rewrite using `[th_inParam_neg, hY, hInS]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGs0 : MvPowerSeries.constantCoeff (∑ x : A, ren ![a x, b x] (Gser p c c')) = 0`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun x _ => hren0 _ _ hG0`. Establish `hE0 : MvPowerSeries.constantCoeff (inParam p Ph - inParam p (∑ x : A, sub2 p be (MvPowerSeries.X (a x) : MvPowerSeries σ (K0 p)) (MvPowerSeries.X (b x)))) = 0`. Rewrite using `[map_sub, th_inParam_const p hPh0, th_inParam_const p hS0, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hY0 : MvPowerSeries.constantCoeff (∑ x : A, ren ![a x, b x] (inParam p be - Gser p c c')) = 0`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun x _ => hren0 _ _ hy0`. Establish `hinExp : ∀ f : MvPowerSeries σ (K0 p), MvPowerSeries.constantCoeff f = 0 → inParam p (expK f) = expK (inParam p f)` using `fun f hf => by`. Unfold `inParam`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `th_subst_expK _ (fun i => PowerSeries.constantCoeff_subst_eq_zero (by simp) _ hlog) hf`. Establish `hneg0 : ∀ {ι : Type} (f : MvPowerSeries ι (K0 p)), MvPowerSeries.constantCoeff f = 0 → MvPowerSeries.constantCoeff (-f) = 0` using `fun f hf => by simp [hf]`. Use `set E := inParam p Ph - inParam p (∑ x : A, sub2 p be (MvPowerSeries.X (a x) : MvPowerSeries σ (K0 p)) (MvPowerSeries.X (b x))) with hEdef`. Use `set Y := ∑ x : A, ren ![a x, b x] (inParam p be - Gser p c c') with hYdef`. Use `set Gs := ∑ x : A, ren ![a x, b x] (Gser p c c') with hGsdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hWE : ∃ w : MvPowerSeries σ (WW p), expK (-E) = MvPowerSeries.map (algebraMap (WW p) (K0 p)) w`. Take `⟨h, hh0, hh⟩` from `hPh.2`. Use `exists_expK_neg_eq_map_of_expK_eq_one_add p E hE0 h hh0 ?_` and prove the remaining obligations. Rewrite using `[hEdef, ← th_inParam_sub]`. Conclude with `hh`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWY : ∃ w : MvPowerSeries σ (WW p), expK (-Y) = MvPowerSeries.map (algebraMap (WW p) (K0 p)) w`. Establish `hprod : ∀ s : Finset A, expK (-(∑ x ∈ s, ren ![a x, b x] (inParam p be - Gser p c c'))) = ∏ x ∈ s, expK (-(ren ![a x, b x] (inParam p be - Gser p c c')))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [th_expK_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `insert x s hx ih`. Rewrite using `[Finset.sum_insert hx, Finset.prod_insert hx, neg_add, expK_add (hneg0 _ (hren0 _ _ hy0)) (hneg0 _ (by rw [map_sum]; exact Finset.sum_eq_zero fun _ _ => hren0 _ _ hy0)), ih]`. Rewrite using `[hYdef, hprod]`. Use `Finset.prod_induction _ (fun F => ∃ w : MvPowerSeries σ (WW p), F = MvPowerSeries.map (algebraMap (WW p) (K0 p)) w) ?_ ⟨1, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `F1 F2 ⟨w1, rfl⟩ ⟨w2, rfl⟩; exact ⟨w1 * w2, by rw [map_mul]⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce `x _`. Take `⟨hyc, h, hh0, hh⟩` from `hβ x`. Take `⟨w, hw⟩` from `exists_expK_neg_eq_map_of_expK_eq_one_add p _ hyc h hh0 hh`. Establish `hrenW : MvPowerSeries.HasSubst (fun k : Fin 2 => (MvPowerSeries.X (![a x, b x] k) : MvPowerSeries σ (WW p)))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`. Use `⟨ren ![a x, b x] w, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : -(ren ![a x, b x] (inParam p be - Gser p c c')) = ren ![a x, b x] (-(inParam p be - Gser p c c'))`. Establish `h4` using `map_neg (MvPowerSeries.substAlgHom (hren ![a x, b x])) (inParam p be - Gser p c c')`. Simplify using `only [MvPowerSeries.substAlgHom_apply] at h4`. Unfold `ren`. Conclude with `h4.symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hn]`. Unfold `ren`. Rewrite using `[← th_subst_expK _ (fun k => by simp) (hneg0 _ hy0), hw, MvPowerSeries.map_subst hrenW]`. Simplify using `only [MvPowerSeries.map_X]`. Take `⟨wE, hwE⟩` from `hWE`.
-
-Take `⟨wY, hwY⟩` from `hWY`. Use `⟨MvPowerSeries.subst (tOf vp μ L) (MvPowerSeries.map (algebraMap (K0 p) K') (MvPowerSeries.map (algebraMap (WW p) (K0 p)) (wE * wY))), ?_, ?_⟩` and prove the remaining obligations. Use `IntR_subst _ hT0 hTint ?_` and prove the remaining obligations. Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_map]`.
-
-Conclude with `Subring.subset_closure (Or.inl ⟨_, rfl⟩)`. Rewrite using `[subst_C_mul_map_eq_subst_tOf_map_inParam p K' vp μ h0 (subst_C_mul_lgF_eq_C_mul_X_of_inverse p K' vp μ h0 h1) L hL0]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (tOf vp μ L) (MvPowerSeries.map (algebraMap (K0 p) K') (inParam p (expK (-Ph)))) = _`. Rewrite using `[hinExp _ (hneg0 _ hPh0), hdecomp, expK_add (hneg0 _ hGs0) (hneg0 _ (by rw [map_add, hE0, hY0, add_zero])), neg_add, expK_add (hneg0 _ hE0) (hneg0 _ hY0), hwE, hwY, ← map_mul, map_mul, MvPowerSeries.subst_mul hT, th_map_expK, map_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ea_reduce {σ τ A : Type} [Finite σ] [Fintype A] (a b : A → σ) (be : MvPowerSeries (Fin 2) (K0 p))
     (hbe0 : MvPowerSeries.constantCoeff be = 0) (c c' : K0 p)
@@ -285,11 +281,11 @@ theorem ea_reduce {σ τ A : Type} [Finite σ] [Fintype A] (a b : A → σ) (be 
       map_mul, MvPowerSeries.subst_mul hT, th_map_expK, map_neg]
 
 /- English proof (translation)
-Use `⟨by simp, 0, by simp, ?_⟩` and prove the remaining obligations. Establish `h0 : inParam p (f - f) = 0`. Rewrite using `[th_inParam_sub]`. Conclude with `sub_self _`. Rewrite using `[h0, map_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `n`. Express the relevant statement in the definitionally equal form `(∑ k ∈ Finset.range (Finsupp.degree n + 1), ((k.factorial : K0 p))⁻¹ * MvPowerSeries.coeff n ((0 : MvPowerSeries σ (K0 p)) ^ k)) = _`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[zero_pow hk]`. Introduce `h`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ea_Simeq_refl {σ : Type} [Finite σ] (f : MvPowerSeries σ (K0 p)) : Simeq p f f := by
   refine ⟨by simp, 0, by simp, ?_⟩
@@ -325,9 +321,9 @@ def ea_RestGcV (X : Sys p) : Prop :=
           expK (-(MvPowerSeries.C (vp ^ (p + 1) / (p : K')) * X.hhA K' j v u)) * V
 
 /- English proof (translation)
-Introduce `hD be hbe j v K1 _ _ K' _ _ _ _ vp hvp`. Take `⟨c, hc, hβ⟩` from `hB (X.std v).five_le hD be hbe`. Take `⟨μ, h0, hμ, h1⟩` from `exists_mu p K' vp hvp`. Take `⟨u, hu, V, hV, hEq⟩` from `hG c hc j v K' vp hvp μ h0 h1`. Take `⟨V', hV', hR⟩` from `ea_reduce p (fun e : Eidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1)) => (Sum.inl ⟨v, e⟩ : X.EA j ⊕ X.EA j)) (fun e => Sum.inr ⟨v, e⟩) be (th_be_const hbe) _ _ (th_Gser_const _ _) (fun _ => hβ) _ (ea_Simeq_refl p _) K' vp μ h0 hμ h1 (X.coordZA K' j) (coordZA_const X …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u, hu, V * V', IntR_mul hV hV', ?_⟩` and prove the remaining obligations. Rewrite using `[atPi_map_ThZA, map_map_tower, hR]`. Unfold `ea_GtV at hEq`. Rewrite using `[hEq, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ea_restSExpV_of (X : Sys p) (hB : RestBeta p) (hG : ea_RestGcV X) : ea_RestSExpV X := by
   intro hD be hbe j v K1 _ _ K' _ _ _ _ vp hvp

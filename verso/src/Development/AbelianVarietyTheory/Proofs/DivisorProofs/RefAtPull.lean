@@ -14,13 +14,13 @@ namespace GlobalTheory.MumFam
 open GlobalTheory.HalfBC in
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ ρ hρ I D D' hD`. Use `letI := D'.P.isAb.comm`. Establish `gp` using `pull_grp hD`. Use `⟨sqOf gp, lamIso gp hD.w, gp, isSquare_sqOf gp, isGen_lamIso gp hD.w hD.w_gen, fun a => hD.c_pr a, fun κ hκ a b z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : κ = GlobalTheory.ArcPull.genMap hρ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: Mono (jK R)` using `Wit.mono_jK`. Use `(cancel_mono (jK R)).1 (hκ.trans ?_)` and prove the remaining obligations. Rewrite using `[← GlobalTheory.ArcPull.fracMap_sq hρ, Category.id_comp]`. Rewrite using `[← GlobalTheory.FactorPull.tau_lam hD hρ a b hJ hJ']`. Use `congrArg₂ (· * ·) ?_ ((Wit.exists_tau D.toPre (hD.xe a) (hD.xe b)).choose_spec.2 _ _ z J hJ).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Use `show gw (lamIso gp hD.w) _ z (fun I => J (_ ≫ sqOf gp ≫ GlobalTheory.PrimCocycle.lamφ D.toPre.P.A I)) (fun I => J' (_ ≫ GlobalTheory.PrimCocycle.lamφ D'.P.A I)) = _`. Use `(gw_lamIso gp hD.w _ z _ _ (fun I => by` and prove the remaining obligations. Use `hJ ((lift (toUnit (TK R') ≫ D'.c a) (toUnit (TK R') ≫ D'.c b)).left ≫ sqOf gp ≫ GlobalTheory.PrimCocycle.lamφ D.toPre.P.A I)` as an intermediate fact. Use `erw [← pt_sqOf gp I]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Conclude with `this) (fun I => hJ' _)).trans ?_`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Use `show _ = gw hD.w _ z _ _ ^ _`. Use `erw [Category.assoc, ← sqOf_lamφ gp I]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem refAt_pull : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (ρ : R →+* R'), Function.Injective ρ → ∀ (I : Ideal R) (D : DegData R I) (D' : DegPre R') (hD : IsPullDeg ρ D.toPre D'), RefAt (pol D) ρ D' hD.xe (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf ρ)) := by
   intro R R' _ _ _ _ ρ hρ I D D' hD

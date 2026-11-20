@@ -11,27 +11,25 @@ universe u v
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `B _ _ P _ y Q₀ _ M _ _ _ hnil hy hQ htf`. Establish `hPQ : P ≤ Q₀` using `hQ ▸ le_sup_left`. Establish `hdisj : Disjoint (Q₀.primeCompl : Set B) P` using `Set.disjoint_left.mpr fun _ hx hxP => hx (hPQ hxP)`. Establish `hP' : (P.map (algebraMap B (Localization.AtPrime Q₀))).IsPrime` using `LengthLocalizedLocalized.map_isPrime B P Q₀ hPQ`. Establish `: IsNoetherianRing (Localization.AtPrime Q₀)` using `IsLocalization.isNoetherianRing Q₀.primeCompl _ inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunder : (P.map (algebraMap B (Localization.AtPrime Q₀))).comap (algebraMap B (Localization.AtPrime Q₀)) = P` using `IsLocalization.under_map_of_isPrime_disjoint Q₀.primeCompl _ ‹P.IsPrime› hdisj`. Establish `hy' : algebraMap B (Localization.AtPrime Q₀) y ∉ P.map (algebraMap B (Localization.AtPrime Q₀))`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Rewrite using `[← hunder]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hsup : P.map (algebraMap B (Localization.AtPrime Q₀)) ⊔ Ideal.span {algebraMap B (Localization.AtPrime Q₀) y} = maximalIdeal (Localization.AtPrime Q₀)`. Establish `hmap : Ideal.map (algebraMap B (Localization.AtPrime Q₀)) Q₀ = Ideal.map (algebraMap B (Localization.AtPrime Q₀)) (P ⊔ Ideal.span {y})` using `congrArg _ hQ`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, hmap, Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Establish `hmax : (P.map (algebraMap B (Localization.AtPrime Q₀)) ⊔ Ideal.span {algebraMap B (Localization.AtPrime Q₀) y}).IsMaximal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsup]`. Conclude with `maximalIdeal.isMaximal _`. Establish `hnil' : IsNilpotent (P.map (algebraMap B (Localization.AtPrime Q₀)))`. Take `⟨n, hn⟩` from `hnil`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Ideal.map_pow, hn]`. Simplify using the standard rewrite rules. Establish `hpir : IsPrincipalIdealRing (Localization.AtPrime Q₀ ⧸ P.map (algebraMap B (Localization.AtPrime Q₀)))` using `by set I := P.map (algebraMap B (Localization.AtPrime Q₀)) with hI`. Establish `: IsLocalRing (Localization.AtPrime Q₀ ⧸ I)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Establish `hm : maximalIdeal (Localization.AtPrime Q₀ ⧸ I) = Ideal.span {Ideal.Quotient.mk I (algebraMap B (Localization.AtPrime Q₀) y)}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (maximalIdeal (Localization.AtPrime Q₀ ⧸ I)).comap (Ideal.Quotient.mk I) = maximalIdeal (Localization.AtPrime Q₀)` using `eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective)`. Rewrite using `[← Ideal.map_comap_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective (maximalIdeal _), hc, ← hsup, Ideal.map_sup, Ideal.map_quotient_self, bot_sup_eq, Ideal.map_span, Set.image_singleton]`. Establish `hprin : (maximalIdeal (Localization.AtPrime Q₀ ⧸ I)).IsPrincipal` using `⟨⟨_, hm⟩⟩`. Conclude with `((tfae_of_isNoetherianRing_of_isLocalRing_of_isDomain (Localization.AtPrime Q₀ ⧸ I)).out 0 4).mpr hprin`. Establish `htf' : ∀ s ∉ P.map (algebraMap B (Localization.AtPrime Q₀)), ∀ m : LocalizedModule Q₀.primeCompl M, s • m = 0 → m = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `s hs m hsm`. Proceed by induction on `s using Localization.induction_on with`. Consider the case `H x`. Take `⟨a, t⟩` from `x`. Simplify using `only at hs hsm`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `ha : a ∉ P`. Introduce `ha`. Apply `hs` to reduce the goal to its premises. Rewrite using `[Localization.mk_eq_mk', IsLocalization.mk'_eq_mul_mk'_one]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ha)`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `m using LocalizedModule.induction_on with`. Consider the case `h m u`. Rewrite `hsm` using `[LocalizedModule.mk_smul_mk, ← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq]`. Take `⟨v, hv⟩` from `hsm`. Simplify using `only [smul_zero, one_smul, Submonoid.smul_def, smul_smul] at hv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hva : (v : B) * a ∉ P` using `fun h => (‹P.IsPrime›.mem_or_mem h).elim (fun h1 => v.2 (hPQ h1)) ha`. Rewrite using `[htf _ hva m hv, LocalizedModule.zero_mk]`. Establish `hloc : (Ideal.span {y} • ⊤ : Submodule B M).localized' (Localization.AtPrime Q₀) Q₀.primeCompl (LocalizedModule.mkLinearMap Q₀.primeCompl M) = (Ideal.span {algebraMap B (Localization.AtPrime Q₀) y} • ⊤ : Submodule (Localization.AtPrime Q₀) (LocalizedModule Q₀.primeCompl M))`. Rewrite using `[Submodule.localized'_smul, Submodule.localized'_top, Ideal.localized'_eq_map, Ideal.map_span, Set.image_singleton]`. Set `e` to `(IsLocalizedModule.linearEquiv Q₀.primeCompl ((Ideal.span {y} • ⊤ : Submodule B M).toLocalizedQuotient' (Localization.AtPrime Q₀) Q₀.primeCompl (LocalizedModule.mkLinearMap Q₀.primeCompl M)) (LocalizedModule.mkLinearMap Q₀.primeCompl (M ⧸ (Ideal.span {y} • ⊤ : Submodule B M)))).e …`.
-
-Rewrite using `[← e.length_eq, (Submodule.quotEquivOfEq _ _ hloc).length_eq, hG (Localization.AtPrime Q₀) (P.map (algebraMap B (Localization.AtPrime Q₀))) (algebraMap B (Localization.AtPrime Q₀) y) (LocalizedModule Q₀.primeCompl M) hnil' hpir hy' hmax htf', hL B P Q₀ M hPQ]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LengthCutLocalizedModule.proof (hG : LengthCutGlobal.Statement.{u, max u v})
     (hL : LengthLocalizedLocalized.Statement.{u, v}) : LengthCutLocalizedModule.Statement.{u, v} := by

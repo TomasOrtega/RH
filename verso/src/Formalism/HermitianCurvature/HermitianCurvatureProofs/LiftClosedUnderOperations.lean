@@ -20,7 +20,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hcd, heq⟩` from `h g₀ hg₀`. Conclude with `⟨U, fun x => c • f' x, hU, hgU, hcd.const_smul c, fun g hg hgv => by show c • f g = c • f' g`. Rewrite using `[heq g hg hgv]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ckOn_csmul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ∞} {UU : Set (B.Mat k r)}
     {f : B.Mat k r → E} (c : ℂ) (h : B.CkOn m UU f) : B.CkOn m UU (fun x => c • f x) := by
@@ -31,7 +31,7 @@ theorem ckOn_csmul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : �
     rw [heq g hg hgv]⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨h1, h2, fun T hT => ?_⟩` and prove the remaining obligations. Take `⟨P, a, b, c, es, ⟨q, hq, hPq⟩, hab, hlen, hlie, hcoef⟩` from `h3 T hT`. Conclude with `⟨P, a, b, c, es, ⟨q, hq.trans hκ, hPq⟩, hab, hlen.trans ho, hlie, hcoef⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ddp_mono (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} {fib : Fin nf → B.Mat k r → C6.EndH Wp Wq}
     {L : Finset (Fin (r + 2))} {o κ o' κ' : ℕ} {Θ : B.DiffOp k r Wp Wq} (h : C6.InDDPlus D fib L o κ Θ)
@@ -42,11 +42,11 @@ theorem ddp_mono (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} {fib : Fin nf → B.
   exact ⟨P, a, b, c, es, ⟨q, hq.trans hκ, hPq⟩, hab, hlen.trans ho, hlie, hcoef⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨h1, h2, fun T hT => ?_⟩` and prove the remaining obligations. Take `⟨P, a, b, c, es, hP, hab, hlen, hlie, hcoef⟩` from `h3 T hT`. Use `⟨P, a, b, c, es.map (fun e => (Fin.castAdd nf' e.1, e.2)), hP, hab, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `hlen` using `[List.map_map, Function.comp_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `e he X hX`. Rewrite `he` using `[List.mem_map]`. Take `⟨e0, he0, rfl⟩` from `he`. Conclude with `hlie e0 he0 X hX`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoef g hg]`. Simplify using `only [C6.Epart, List.map_map, Function.comp_def, Fin.append_left]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ddp_left (D : B.RealPlaceData k r Wp Wq) {nf nf' : ℕ} {fib : Fin nf → B.Mat k r → C6.EndH Wp Wq}
     (fib' : Fin nf' → B.Mat k r → C6.EndH Wp Wq) {L : Finset (Fin (r + 2))} {o κ : ℕ} {Θ : B.DiffOp k r Wp Wq}
@@ -65,11 +65,11 @@ theorem ddp_left (D : B.RealPlaceData k r Wp Wq) {nf nf' : ℕ} {fib : Fin nf �
     simp only [C6.Epart, List.map_map, Function.comp_def, Fin.append_left]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨h1, h2, fun T hT => ?_⟩` and prove the remaining obligations. Take `⟨P, a, b, c, es, hP, hab, hlen, hlie, hcoef⟩` from `h3 T hT`. Use `⟨P, a, b, c, es.map (fun e => (Fin.natAdd nf e.1, e.2)), hP, hab, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `hlen` using `[List.map_map, Function.comp_def]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `e he X hX`. Rewrite `he` using `[List.mem_map]`. Take `⟨e0, he0, rfl⟩` from `he`. Conclude with `hlie e0 he0 X hX`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoef g hg]`. Simplify using `only [C6.Epart, List.map_map, Function.comp_def, Fin.append_right]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ddp_right (D : B.RealPlaceData k r Wp Wq) {nf nf' : ℕ} (fib : Fin nf → B.Mat k r → C6.EndH Wp Wq)
     {fib' : Fin nf' → B.Mat k r → C6.EndH Wp Wq} {L : Finset (Fin (r + 2))} {o κ : ℕ} {Θ : B.DiffOp k r Wp Wq}
@@ -88,7 +88,7 @@ theorem ddp_right (D : B.RealPlaceData k r Wp Wq) {nf nf' : ℕ} (fib : Fin nf �
     simp only [C6.Epart, List.map_map, Function.comp_def, Fin.append_right]
 
 /- English proof (translation)
-Unfold `B.opApply`. Rewrite using `[List.map_append, List.sum_append]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opApply_append (Θ₁ Θ₂ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) :
     B.opApply (Θ₁ ++ Θ₂) F g = B.opApply Θ₁ F g + B.opApply Θ₂ F g := by
@@ -96,9 +96,9 @@ theorem opApply_append (Θ₁ Θ₂ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq
   rw [List.map_append, List.sum_append]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a t ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(max_assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem foldr_max_eq_max_foldr_max_zero (l : List ℕ) (b : ℕ) : l.foldr max b = max (l.foldr max 0) b := by
   induction l with
@@ -109,7 +109,7 @@ private theorem foldr_max_eq_max_foldr_max_zero (l : List ℕ) (b : ℕ) : l.fol
     exact (max_assoc _ _ _).symm
 
 /- English proof (translation)
-Unfold `B.opOrder`. Rewrite using `[List.map_append, List.foldr_append, foldr_max_eq_max_foldr_max_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opOrder_append (Θ₁ Θ₂ : B.DiffOp k r Wp Wq) :
     B.opOrder (Θ₁ ++ Θ₂) = max (B.opOrder Θ₁) (B.opOrder Θ₂) := by
@@ -117,27 +117,25 @@ theorem opOrder_append (Θ₁ Θ₂ : B.DiffOp k r Wp Wq) :
   rw [List.map_append, List.foldr_append, foldr_max_eq_max_foldr_max_zero]
 
 /- English proof (translation)
-Simplify using `only [B.rho, ContinuousLinearMap.comp_add, ContinuousLinearMap.add_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rho_add (D : B.RealPlaceData k r Wp Wq) (p : B.SS k r) (F₁ F₂ : B.Mat k r → (Wq →L[ℂ] Wp))
     (g : B.Mat k r) : B.rho D p (fun x => F₁ x + F₂ x) g = B.rho D p F₁ g + B.rho D p F₂ g := by
   simp only [B.rho, ContinuousLinearMap.comp_add, ContinuousLinearMap.add_comp]
 
 /- English proof (translation)
-Simplify using `only [B.rho, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rho_smul (D : B.RealPlaceData k r Wp Wq) (p : B.SS k r) (c : ℂ) (F : B.Mat k r → (Wq →L[ℂ] Wp))
     (g : B.Mat k r) : B.rho D p (fun x => c • F x) g = c • B.rho D p F g := by
   simp only [B.rho, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]
 
 /- English proof (translation)
-Take `⟨s1, c1, t1⟩` from `h₁`. Take `⟨s2, c2, t2⟩` from `h₂`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hT`. Break down `List.mem_append.mp hT with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `s1 T h`. Conclude with `s2 T h`. Introduce `p hp f hf g hg`. Establish `hf1 : B.CkOn (B.opOrder Θ₁ : ℕ∞) (B.GV k r) f` using `B5.ckOn_mono (by rw [opOrder_append]; exact_mod_cast le_max_left _ _) hf`. Establish `hf2 : B.CkOn (B.opOrder Θ₂ : ℕ∞) (B.GV k r) f` using `B5.ckOn_mono (by rw [opOrder_append]; exact_mod_cast le_max_right _ _) hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsum : B.opApply (Θ₁ ++ Θ₂) f = fun x => B.opApply Θ₁ f x + B.opApply Θ₂ f x`. Use function extensionality and compare the values at `(opApply_append Θ₁ Θ₂ f)`. Rewrite using `[opApply_append, c1 p hp f hf1 g hg, c2 p hp f hf2 g hg, hsum, rho_add]`. Introduce `T hT`. Break down `List.mem_append.mp hT with h | h` into its components or cases.
-
-Conclude with `t1 T h`. Conclude with `t2 T h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ddp_append (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} {fib : Fin nf → B.Mat k r → C6.EndH Wp Wq}
     {L : Finset (Fin (r + 2))} {o κ : ℕ} {Θ₁ Θ₂ : B.DiffOp k r Wp Wq}
@@ -173,7 +171,7 @@ def smulT (c : ℂ) (T : B.DTerm k r Wp Wq) : B.DTerm k r Wp Wq where
     rw [P5.HerA.hsInner_smul_left', P5.HerA.hsInner_smul_right', T.adj_id, Complex.conj_conj]
 
 /- English proof (translation)
-Unfold `B.opApply`. Rewrite using `[List.smul_sum, List.map_map, List.map_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem opApply_smulT (c : ℂ) (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) :
     B.opApply (Θ.map (smulT c)) F g = c • B.opApply Θ F g := by
@@ -182,7 +180,7 @@ theorem opApply_smulT (c : ℂ) (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq
   rfl
 
 /- English proof (translation)
-Unfold `B.opOrder`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem opOrder_smulT (c : ℂ) (Θ : B.DiffOp k r Wp Wq) : B.opOrder (Θ.map (smulT c)) = B.opOrder Θ := by
   unfold B.opOrder
@@ -190,15 +188,15 @@ theorem opOrder_smulT (c : ℂ) (Θ : B.DiffOp k r Wp Wq) : B.opOrder (Θ.map (s
   rfl
 
 /- English proof (translation)
-Take `⟨s, cm, t⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hT`. Rewrite `hT` using `[List.mem_map]`. Take `⟨T0, hT0, rfl⟩` from `hT`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ckOn_csmul c (s T0 hT0).1, ckOn_csmul (conj c) (s T0 hT0).2⟩`. Introduce `p hp f hf g hg`. Rewrite `hf` using `[opOrder_smulT]`. Establish `hmap : B.opApply (Θ.map (smulT c)) f = fun x => c • B.opApply Θ f x`. Use function extensionality and compare the values at `(opApply_smulT c Θ f)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[opApply_smulT, cm p hp f hf g hg, hmap, rho_smul]`. Introduce `T hT`. Rewrite `hT` using `[List.mem_map]`. Take `⟨T0, hT0, rfl⟩` from `hT`. Take `⟨P, a, b, e, es, ⟨q, hq, hPq⟩, hab, hlen, hlie, hcoef⟩` from `t T0 hT0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun g => c * P g, a, b, e, es, ⟨MvPolynomial.C c * q, ?_, ?_⟩, hab, hlen, hlie, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `g`. Simplify using `only [map_mul, MvPolynomial.eval_C]`. Rewrite using `[hPq g]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg show c • T0.coef g = _`. Rewrite using `[hcoef g hg, smul_smul, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem ddp_smul (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} {fib : Fin nf → B.Mat k r → C6.EndH Wp Wq}
     {L : Finset (Fin (r + 2))} {o κ : ℕ} {Θ : B.DiffOp k r Wp Wq} (c : ℂ)
@@ -230,9 +228,7 @@ theorem ddp_smul (D : B.RealPlaceData k r Wp Wq) {nf : ℕ} {fib : Fin nf → B.
       rw [hcoef g hg, smul_smul, mul_assoc]
 
 /- English proof (translation)
-Introduce `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `h i`. Rewrite using `[Fin.append_right]`.
-
-Conclude with `h' i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_append {D : B.RealPlaceData k r Wp Wq} {nf nf' : ℕ} {fib : Fin nf → B.Mat k r → C6.EndH Wp Wq}
     {fib' : Fin nf' → B.Mat k r → C6.EndH Wp Wq} (h : ∀ j, C6.FibBound D (fib j)) (h' : ∀ j, C6.FibBound D (fib' j)) :
@@ -243,7 +239,7 @@ theorem fib_append {D : B.RealPlaceData k r Wp Wq} {nf nf' : ℕ} {fib : Fin nf 
   · rw [Fin.append_right]; exact h' i
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Conclude with `⟨h1, h2, fun g hg hne => hε.trans (h3 g hg hne)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nice_mono {Bs : B.RealPlaceData k r Wp Wq} {ε ε' : ℝ} {F : B.Mat k r → (Wq →L[ℂ] Wp)} (h : JC.NiceCoef Bs ε F)
     (hε : ε' ≤ ε) : JC.NiceCoef Bs ε' F := by
@@ -258,7 +254,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use `⟨?_, P5.Rad.wCell_mem_omPlus Bs.z_mem Bs.z'_mem hx.1 hx.2.1 hx.2.2⟩` and prove the remaining obligations. Establish `h1 : Q.wCell Pa.k Pa.r (Fin.last Pa.r) x.1 ∈ Q.Glev Pa.k Pa.r 0`. Unfold `Q.wCell`. Conclude with `Qx3.wlist_glev hx.1 _`. Conclude with `(Qx5.Glev_mul h1 (Qx4.glev0 hx.2.1.1)).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wCell_om {Pa : M.Par} (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) {x : (Fin Pa.r → ℂ) × Q.Mx Pa.k Pa.r}
     (hx : x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z') :
@@ -270,21 +266,21 @@ theorem wCell_om {Pa : M.Par} (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) {x : (Fin P
   exact (Qx5.Glev_mul h1 (Qx4.glev0 hx.2.1.1)).1
 
 /- English proof (translation)
-The claim follows from `(wCell_om Bs hx).1`.
+A detailed English derivation is pending.
 -/
 theorem wCell_gv {Pa : M.Par} (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) {x : (Fin Pa.r → ℂ) × Q.Mx Pa.k Pa.r}
     (hx : x ∈ Q.DomR Pa.k Pa.r Bs.z Bs.z') :
     Q.wCell Pa.k Pa.r (Fin.last Pa.r) x.1 * x.2 ∈ B.GV Pa.k Pa.r := (wCell_om Bs hx).1
 
 /- English proof (translation)
-The claim follows from `((Formalism.FourierDecayAlt.P.compact_support_facts k r Wp Wq Bs F hF).2 Θ hΘ).1`.
+A detailed English derivation is pending.
 -/
 theorem cpt_op {k r : ℕ} {Bs : B.RealPlaceData k r Wp Wq} {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : KB.CptCoef Bs F)
     {Θ : B.DiffOp k r Wp Wq} (hΘ : B.SmoothCoef (C6.domL Bs ∅) Θ) : KB.CptCoef Bs (B.opApply Θ F) :=
   ((Formalism.FourierDecayAlt.P.compact_support_facts k r Wp Wq Bs F hF).2 Θ hΘ).1
 
 /- English proof (translation)
-The claim follows from `((Formalism.FourierDecayAlt.P.compact_support_facts k r Wp Wq Bs F hF).2 Θ hΘ).2`.
+A detailed English derivation is pending.
 -/
 theorem op_zero_off {k r : ℕ} {Bs : B.RealPlaceData k r Wp Wq} {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : KB.CptCoef Bs F)
     {Θ : B.DiffOp k r Wp Wq} (hΘ : B.SmoothCoef (C6.domL Bs ∅) Θ) :
@@ -292,16 +288,16 @@ theorem op_zero_off {k r : ℕ} {Bs : B.RealPlaceData k r Wp Wq} {F : B.Mat k r 
   ((Formalism.FourierDecayAlt.P.compact_support_facts k r Wp Wq Bs F hF).2 Θ hΘ).2
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.compact_support_facts k r Wp Wq Bs F hF).1`.
+A detailed English derivation is pending.
 -/
 theorem nice_of_cpt {k r : ℕ} {Bs : B.RealPlaceData k r Wp Wq} {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : KB.CptCoef Bs F) :
     ∃ ε, 0 < ε ∧ JC.NiceCoef Bs ε F :=
   (Formalism.FourierDecayAlt.P.compact_support_facts k r Wp Wq Bs F hF).1
 
 /- English proof (translation)
-Introduce `F hF Φ hΦ x hx`. Establish `h0 : B.opApply ([] : B.DiffOp Pa.k Pa.r Wp Wq) F = fun _ => 0`. Use function extensionality and compare the values at `g`. Simplify using `[B.opApply]`. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Q.resG, JCx2.bc_JF_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem radIs_zero (Pa : M.Par) (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) :
     TL.RadIs Pa Bs [] (0 : Module.End ℂ (Q.RadSp Pa.k Pa.r Bs.z Bs.z' Bs.π Bs.π')) := by
@@ -313,9 +309,9 @@ theorem radIs_zero (Pa : M.Par) (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) :
   simp [Q.resG, JCx2.bc_JF_zero]
 
 /- English proof (translation)
-Introduce `F hF Φ hΦ x hx`. Take `⟨ε₁, -, hn₁⟩` from `nice_of_cpt (cpt_op hF hs₁)`. Take `⟨ε₂, -, hn₂⟩` from `nice_of_cpt (cpt_op hF hs₂)`. Establish `e1` using `h₁ F hF Φ hΦ x hx`. Establish `e2` using `h₂ F hF Φ hΦ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : B.opApply (Θ₁ ++ Θ₂) F = fun g => B.opApply Θ₁ F g + B.opApply Θ₂ F g`. Use function extensionality and compare the values at `(opApply_append Θ₁ Θ₂ F)`. Rewrite using `[LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, Pi.add_apply, e1, e2, hsum]`. Simplify using `only [Q.resG]`. Rewrite using `[JCx2.bc_JF_add (nice_mono hn₁ (min_le_left ε₁ ε₂)) (nice_mono hn₂ (min_le_right ε₁ ε₂)) (wCell_om Bs hx), smul_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem radIs_add (Pa : M.Par) (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) {Θ₁ Θ₂ : B.DiffOp Pa.k Pa.r Wp Wq}
     {T₁ T₂ : Module.End ℂ (Q.RadSp Pa.k Pa.r Bs.z Bs.z' Bs.π Bs.π')}
@@ -334,9 +330,9 @@ theorem radIs_add (Pa : M.Par) (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) {Θ₁ Θ�
     (wCell_om Bs hx), smul_add]
 
 /- English proof (translation)
-Introduce `F hF Φ hΦ x hx`. Establish `e` using `h F hF Φ hΦ x hx`. Establish `hmap : B.opApply (Θ.map (smulT c)) F = fun g => c • B.opApply Θ F g`. Use function extensionality and compare the values at `(opApply_smulT c Θ F)`. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, e, hmap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Q.resG]`. Rewrite using `[JCx2.bc_JF_smul, smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem radIs_smul (Pa : M.Par) (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) {Θ : B.DiffOp Pa.k Pa.r Wp Wq}
     {T : Module.End ℂ (Q.RadSp Pa.k Pa.r Bs.z Bs.z' Bs.π Bs.π')} (c : ℂ)
@@ -350,11 +346,11 @@ theorem radIs_smul (Pa : M.Par) (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) {Θ : B.D
   rw [JCx2.bc_JF_smul, smul_comm]
 
 /- English proof (translation)
-Introduce `F hF Φ hΦ x hx`. Establish `hc2` using `cpt_op hF hs₂`. Establish `e` using `h₁ _ hc2 _ (h₂ F hF Φ hΦ) x hx`. Establish `hEq : ∀ g ∈ B.GV Pa.k Pa.r, B.opApply Θ₁ (B.opApply Θ₂ F) g = B.opApply Θ F g`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hd : g ∈ C6.domL Bs ∅`. Conclude with `(hΘ F (B5.ckOn_mono le_top hF.1) g hd).symm`. Rewrite using `[op_zero_off hc2 hs₁ g hg hd, op_zero_off hF hs g hg hd]`. Rewrite using `[Module.End.mul_apply, e]`. Simplify using `only [Q.resG]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[JCx2.sq_jf_congr Bs hEq (wCell_gv Bs hx)]`.
+A detailed English derivation is pending.
 -/
 theorem radIs_comp (Pa : M.Par) (Bs : B.RealPlaceData Pa.k Pa.r Wp Wq) {Θ Θ₁ Θ₂ : B.DiffOp Pa.k Pa.r Wp Wq} {o : ℕ}
     {T₁ T₂ : Module.End ℂ (Q.RadSp Pa.k Pa.r Bs.z Bs.z' Bs.π Bs.π')}
@@ -386,13 +382,13 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.TL Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.P.TLB
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `o o' κ κ' a ho hκ ⟨nf, fib, Dop, hfib, hdd, hrad⟩`. Conclude with `⟨nf, fib, Dop, hfib, ddp_mono Bs hdd ho hκ, hrad⟩`. Introduce `o κ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨0, Fin.elim0, [], fun j => j.elim0, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `T hT`. Simplify using `at hT`. Introduce `p hp f hf g hg`. Simplify using `[B.opApply, B.rho]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `T hT`. Simplify using `at hT`. Conclude with `radIs_zero P Bs`. Introduce and unpack `o κ a b ⟨nf, fib, Θ₁, hf₁, hd₁, hr₁⟩ ⟨nf', fib', Θ₂, hf₂, hd₂, hr₂⟩`. Conclude with `⟨nf + nf', Fin.append fib fib', Θ₁ ++ Θ₂, fib_append hf₁ hf₂, ddp_append Bs (ddp_left Bs fib' hd₁) (ddp_right Bs fib hd₂), radIs_add P Bs hd₁.1 hd₂.1 hr₁ hr₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `o κ a z ⟨nf, fib, Θ, hf, hd, hr⟩`. Conclude with `⟨nf, fib, Θ.map (smulT z), hf, ddp_smul Bs z hd, radIs_smul P Bs z hr⟩`. Introduce and unpack `o₁ κ₁ o₂ κ₂ a b ⟨nf, fib, Θ₁, hf₁, hd₁, hr₁⟩ ⟨nf', fib', Θ₂, hf₂, hd₂, hr₂⟩`. Take `⟨Θ, hd, hΘ⟩` from `compose_differential_operators P.k P.r Wp Wq Bs (nf + nf') (Fin.append fib fib') ∅ o₁ κ₁ o₂ κ₂ Θ₁ Θ₂ (fib_append hf₁ hf₂) (ddp_left Bs fib' hd₁) (ddp_right Bs fib hd₂)`. Conclude with `⟨nf + nf', Fin.append fib fib', Θ, fib_append hf₁ hf₂, hd, radIs_comp P Bs hd.1 hd₁.1 hd₂.1 hΘ hr₁ hr₂⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lift_closed_under_operations : TL.LiftClosed := by
   intro Wp Wq _ _ _ _ _ _ P Bs

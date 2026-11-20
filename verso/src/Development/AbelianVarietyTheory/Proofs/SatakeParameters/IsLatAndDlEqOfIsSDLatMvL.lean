@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.OrthSelfDual
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxy⟩`. Establish `hxy' : x = y` using `(toLE co).injective hxy`. Rewrite `hx` using `[hxy']`. Conclude with `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Conclude with `Submodule.mem_map.mpr ⟨y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem toLE_mem_mvL {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ} (co : GL (Fin N) E)
     (M : Submodule (𝓞 E) (Fin N → E)) (y : Fin N → E) :
@@ -31,19 +31,17 @@ theorem toLE_mem_mvL {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
     exact Submodule.mem_map.mpr ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Introduce `R F E _ _ _ _ _ _ sp N J co M hco hsd`. Take `⟨hfg, hspan, hdual⟩` from `hsd`. Establish `hkey : ∀ x z : Fin N → E, Formalism.BasicNotions.stdH E N (toLE co x) (toLE co z) = ∑ a, ∑ b, (sp.cm.sig : E →+* E) (x a) * J a b * z b` using `fun x z => hco x z`. Establish `hinj : Function.Injective (((toLE co : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)).restrictScalars (𝓞 E))` using `(toLE co).injective`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : Module.Finite (𝓞 E) (M.map ((((toLE co : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E))).restrictScalars (𝓞 E)))` using `Module.Finite.iff_fg.mpr hfg`. Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ hinj M).symm`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : toLE co v ∈ Submodule.span E ((mvL co M : Submodule (𝓞 E) (Fin N → E)) : Set (Fin N → E))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Establish `hset : ((mvL co M : Submodule (𝓞 E) (Fin N → E)) : Set (Fin N → E)) = ((toLE co : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)) '' (M : Set (Fin N → E))`. Unfold `mvL`. Rewrite using `[Submodule.map_coe]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hv` using `[hset, Submodule.span_image]`. Take `⟨w, hw, hwv⟩` from `Submodule.mem_map.mp hv`. Establish `hwv' : w = v` using `(toLE co).injective hwv`. Rewrite `hw` using `[hwv']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw`. Use extensionality with `y`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.Comp.mem_dl, ← toLE_mem_mvL co M y, hdual (toLE co y)]`. Prove the components needed by the constructor for the conclusion. Introduce `h x' hx'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hxx'⟩` from `Submodule.mem_map.mp hx'`. Establish `hx'' : x' = toLE co x` using `hxx'.symm`. Rewrite using `[hx'', hkey]`. Conclude with `h x hx`. Introduce `h x hx`.
-
-Establish `h1` using `h (toLE co x) ((toLE_mem_mvL co M x).mpr hx)`. Rewrite `h1` using `[hkey]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_and_dl_eq_of_isSDLat_mvL : ∀ {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E) (M : Submodule (𝓞 E) (Fin N → E)), IsOrthCo (sp.cm.sig : E →+* E) J (toLE co) → IsSDLat E N (mvL co M) → Formalism.L2.GlobalTheoryTheory.Comp.IsLat M ∧ Formalism.L2.GlobalTheoryTheory.Comp.dl sp.cm.sig J M = M := by
   intro R F E _ _ _ _ _ _ sp N J co M hco hsd

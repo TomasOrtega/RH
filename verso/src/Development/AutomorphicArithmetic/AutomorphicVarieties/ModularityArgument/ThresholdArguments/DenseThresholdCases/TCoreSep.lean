@@ -12,9 +12,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Set `s : Y →ₛₗ[φ] N` to `{ toFun := fun f => sp f map_add' := fun f f' => hadd _ f.2 _ f'.2 map_smul' := fun r f => hsmul _ f.2 r }`. Establish `h1 : s g = ∑ j ∈ (b.repr g).support, φ (b.repr g j) • sp (b j)` using `by conv_lhs => rw [← b.linearCombination_repr g, Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => s.map_smulₛₗ _ _`. Distinguish the cases in `hi : i ∈ (b.repr g).support`. Conclude with `linearIndependent_iff'.1 hind _ (fun j => φ (b.repr g j)) (h1.symm.trans hg) i hi`.
-
-Rewrite using `[Finsupp.notMem_support_iff.1 hi, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coreSep_coord {A M N κ : Type} [CommRing A] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module ℂ N]
     (Y : Submodule A M) (φ : A →+* ℂ) (sp : M → N) (hadd : ∀ f ∈ Y, ∀ f' ∈ Y, sp (f + f') = sp f + sp f')
@@ -32,7 +30,7 @@ private theorem coreSep_coord {A M N κ : Type} [CommRing A] [AddCommGroup M] [M
   · exact linearIndependent_iff'.1 hind _ (fun j => φ (b.repr g j)) (h1.symm.trans hg) i hi
   · rw [Finsupp.notMem_support_iff.1 hi, map_zero]
 /- English proof (translation)
-Establish `hle : E ≤ (LinearMap.ker T).map E.subtype` using `by conv_lhs => rw [hE]`. Conclude with `iSup_le fun j G hG => ⟨⟨G, hG.2⟩, h j ⟨G, hG.2⟩ hG.1, rfl⟩`. Take `⟨G, hG, hGF⟩` from `hle F.2`. Establish `: G = F` using `Subtype.ext hGF`. Conclude with `this ▸ hG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem coreSep_kill {N J : Type*} [AddCommGroup N] [Module ℂ N] (E : Submodule ℂ N) (Y : J → Submodule ℂ N)
     (hE : E = ⨆ j, Y j ⊓ E) (T : Module.End ℂ E) (h : ∀ j, ∀ F : E, (F : N) ∈ Y j → T F = 0) (F : E) : T F = 0 := by
@@ -43,15 +41,15 @@ private theorem coreSep_kill {N J : Type*} [AddCommGroup N] [Module ℂ N] (E : 
   have : G = F := Subtype.ext hGF
   exact this ▸ hG
 /- English proof (translation)
-Introduce `hLit L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ hθ ι P hP a K _ lam hlam hD t ht`. Take `⟨-, -, hfree, -⟩` from `hiComm L Ω l n c H hAx A θ hθ K`. Set `b` to `Module.Free.chooseBasis A (H.X.Ord (H.τA A) θ (H.lev K))`. Use `Subtype.ext (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Set `g : H.X.Ord (H.τA A) θ (H.lev K)` to `⟨((t : Module.End A (H.MK θ a K)) f : H.MK θ a K), ((t : Module.End A (H.MK θ a K)) f).2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hg : g = 0`. Use `b.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `hD _ fun x hx => ?_` and prove the remaining obligations. Take `⟨d, ξ, c0, sp, hsp⟩` from `spec L Ω l n c H hAx A θ hθ ι x lam hx.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, act, h2, -, -, -, h3⟩` from `_root_.UpperTheory.V.Hi.partAct0_alt hLit L Ω l n c H hAx A θ hθ ι P hP x lam d ξ c0 sp hsp hlam a K _ rfl`. Establish `hE` using `h1.resolve_right (not_not.2 hx)`. Establish `h0` using `coreSep_kill _ _ hE (act t) (fun Y F hF => by`. Distinguish the cases in `hb : Y.1.Y ⊓ Submodule.span ℂ (sp '' H.MK θ a K) = ⊥`. Establish `: F = 0` using `Subtype.ext ((Submodule.eq_bot_iff _).1 hb _ ⟨hF, F.2⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[this, map_zero]`. Take `⟨y, hy, hact⟩` from `h3 hx Y.1 hb`. Rewrite using `[hact t F hF, ht y (hy ▸ hx), map_zero, zero_smul])`. Use the proof step `⟨sp f, Submodule.subset_span ⟨f, f.2, rfl⟩⟩`. Establish `h4` using `h2 t f ⟨sp f, Submodule.subset_span ⟨f, f.2, rfl⟩⟩ rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h0]`. Establish `h5` using `coreSep_coord _ (ι.toRingHom.comp x.toRingHom) sp (hsp.add K) (hsp.smul K) b (hsp.indep K _ b) g h4.symm i`. Conclude with `ι.injective (h5.trans (map_zero ι).symm)`. Conclude with `Subtype.ext (congrArg (fun z : H.X.Ord (H.τA A) θ (H.lev K) => (z : H.X.Fn A H.m)) hg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.eq_zero_of_vanish_at_good_points_dense_weight :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →

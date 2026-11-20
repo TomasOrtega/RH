@@ -4,15 +4,15 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.JacUnit
 
 /- English proof (translation)
-Use `letI : Algebra R (O' ⊗[O] R) := (Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R).toRingHom.toAlgebra`. Establish `hint : Algebra.IsIntegral R (O' ⊗[O] R)`. Set `e : (R ⊗[O] O') ≃ₐ[O] (O' ⊗[O] R)` to `Algebra.TensorProduct.comm O R O'`. Establish `hfin : (algebraMap R (R ⊗[O] O')).Finite`. Rewrite using `[RingHom.finite_algebraMap]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `hcomp : (algebraMap R (O' ⊗[O] R)) = (e : (R ⊗[O] O') →+* (O' ⊗[O] R)).comp (algebraMap R (R ⊗[O] O'))`. Use extensionality with `r`. Simplify using `[e, RingHom.algebraMap_toAlgebra]`. Establish `hf2 : (algebraMap R (O' ⊗[O] R)).Finite`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp]`. Conclude with `RingHom.Finite.comp (RingHom.Finite.of_surjective _ e.surjective) hfin`. Conclude with `⟨fun y => (hf2.to_isIntegral) y⟩`. Establish `hle : Ideal.map (algebraMap R (O' ⊗[O] R)) (⊥ : Ideal R).jacobson ≤ (⊥ : Ideal (O' ⊗[O] R)).jacobson`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr`. Rewrite using `[Ideal.mem_comap, Ideal.jacobson, Submodule.mem_sInf]`. Introduce and unpack `m ⟨-, hm⟩`. Establish `hc : (Ideal.comap (algebraMap R (O' ⊗[O] R)) m).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal m`. Rewrite using `[← Ideal.mem_comap]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(sInf_le (show _ ∈ {J : Ideal R | (⊥ : Ideal R) ≤ J ∧ J.IsMaximal} from ⟨bot_le, hc⟩) : (⊥ : Ideal R).jacobson ≤ _) hr`. Establish `hx' : x ∈ (⊥ : Ideal (O' ⊗[O] R)).jacobson` using `hle hx`. Use `Ideal.mem_jacobson_bot.1 hx' 1` as an intermediate fact. Simplify `this` using `[mul_one, add_comm]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main (O O' R : Type) [CommRing O] [CommRing O'] [Algebra O O'] [Module.Finite O O'] [CommRing R] [Algebra O R] (x : O' ⊗[O] R) (hx : x ∈ Ideal.map (Algebra.TensorProduct.includeRight : R →ₐ[O] O' ⊗[O] R) (⊥ : Ideal R).jacobson) : IsUnit (1 + x) := by
   classical

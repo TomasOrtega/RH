@@ -16,7 +16,7 @@ open GlobalTheory
 namespace GlobalTheory.HSCore
 
 /- English proof (translation)
-Introduce `j hj q hq`. Establish `hS` using `Twist.shortExact_map (Twist.isLB_lbZPow hL j) (shortExact_cutComplex F hL t)`. Establish `e` using `Twist.twistZAddIso F hL (show (-1 : ℤ) + j = j - 1 by ring)`. Establish `h₁` using `h (j - 1) (by omega) (q + 1) q.succ_pos`. Conclude with `cohOn.subsingleton₃ hS ⊤ q (h j (by omega) q hq) (cohOn.mapIso ℤ ⊤ (q + 1) e).injective.subsingleton`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanishFrom_cut {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (F : Y.Modules) (t : L.Sec)
     [Mono (GlobalTheory.cutHom F hL t)] {j₀ : ℤ} (h : VanishFrom L F j₀) :
@@ -29,11 +29,11 @@ theorem vanishFrom_cut {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (F : Y.Modules)
     (cohOn.mapIso ℤ ⊤ (q + 1) e).injective.subsingleton
 
 /- English proof (translation)
-Introduce `k _ Y _ hY L hL F _ t _ j₀ h`. Establish `hc` using `vanishFrom_cut hL F t h`. Use `⟨hc, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hF` using `finiteCohTwists_of_isProjOver (algebraMap_eq_strHom k Y) F hY`. Establish `hj'` using `Twist.isLB_lbZPow hL j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `Twist.twistZAddIso F hL (show (-1 : ℤ) + j = j - 1 by ring)`. Establish `key : chi k (GlobalTheory.twistZ F L j) = chi k (GlobalTheory.twistZ (GlobalTheory.twistZ F L (-1)) L j) + chi k (GlobalTheory.twistZ (GlobalTheory.cut F hL t) L j)`. Use `chi_twist_shortExact (shortExact_cutComplex F hL t) hj' (hF.twist (Twist.isLB_lbZPow hL (-1)) _ hj') (hF.cut hL t _ hj')` as an intermediate fact. Use `this`. Establish `e₁` using `(chi_congr k e).trans (chi_eq_hdim_zero k (h (j - 1) (by omega)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `chi_eq_hdim_zero k (h j (by omega))`. Establish `e₃` using `chi_eq_hdim_zero k (hc j hj)`. Conclude with `Int.natCast_inj.1 (e₂.symm.trans (key.trans ((congrArg₂ (· + ·) e₁ e₃).trans (Nat.cast_add _ _).symm)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanishFrom_cut_and_hdim : ∀ (k : Type) [Field k] (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (GlobalTheory.strHom k Y) → ∀ (L : LB Y) (hL : L.IsLB) (F : Y.Modules) [IsFiniteQC F] (t : L.Sec) [Mono (GlobalTheory.cutHom F hL t)] (j₀ : ℤ), VanishFrom L F j₀ → VanishFrom L (GlobalTheory.cut F hL t) (j₀ + 1) ∧ ∀ j : ℤ, j₀ + 1 ≤ j → GlobalTheory.hdim k (GlobalTheory.twistZ F L j) 0 = GlobalTheory.hdim k (GlobalTheory.twistZ F L (j - 1)) 0 + GlobalTheory.hdim k (GlobalTheory.twistZ (GlobalTheory.cut F hL t) L j) 0 := by
   intro k _ Y _ hY L hL F _ t _ j₀ h

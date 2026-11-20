@@ -15,16 +15,16 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 namespace GlobalTheory.SiegTwo
 
 /- English proof (translation)
-Simplify using `[smF, eisF, const0, coefPos, apply_ite ε, map_ofNat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_smF {K K' : Type} [Field K] [CharZero K] [Field K'] [CharZero K'] (ε : K →+* K') (c : ℤ) (j M : ℕ) (ζ : K)
     (a b : ℤ) (n : ℕ) : ε (smF c j M ζ a b n) = smF c j M (ε ζ) a b n := by
   simp [smF, eisF, const0, coefPos, apply_ite ε, map_ofNat]
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_support_subset (s := θ.support), map_sum]`. Simplify using `[Finsupp.sum, zpow_mul]`. Introduce `k hk`. Assume the negation of the conclusion as `h`. Establish `: θ k = 0` using `by simpa using h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hk (by simp [this, hw])`.
+A detailed English derivation is pending.
 -/
 theorem map_finsum_zpow {Ω : Type} [Field Ω] (ε : Ω →+* ℂ) (θ : ℤ →₀ ℤ) (w : ℤ → ℤ → ℤ) (hw : ∀ k, w k 0 = 0) (ζ : Ω)
     (g : ℤ) : ε (∑ᶠ k : ℤ, ((w k (θ k) : ℤ) : Ω) * ζ ^ (g * k)) = θ.sum fun k n => ((w k n : ℤ) : ℂ) * (ε ζ ^ g) ^ k := by
@@ -36,9 +36,9 @@ theorem map_finsum_zpow {Ω : Type} [Field Ω] (ε : Ω →+* ℂ) (θ : ℤ →
     exact hk (by simp [this, hw])
 
 /- English proof (translation)
-Establish `hd : (0 : ℤ) < (!![(N : ℤ), 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det` using `by simpa [Matrix.det_fin_two] using hN`. Establish `he : ∀ i k, ent (toGQ !![(N : ℤ), 0; 0, 1]) i k = ((!![(N : ℤ), 0; 0, 1] i k : ℤ) : ℚ)` using `fun i k => by`. Simplify using `only [ent, toGQ, dif_pos hd]`. Both sides reduce to the same expression. Establish `h` using `X.exp_upper (toGQ !![(N : ℤ), 0; 0, 1]) (by rw [he]; simp) (siegel X c ![(a.1 : ℚ) / M, (a.2 : ℚ) / M]) r`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h` using `[he, he, he]`. Establish `h0 : eOm ε 0 = 1` using `ε.injective (by rw [GalUnits.eps_eOm]; simp [ee])`. Simplify `h` using `[h0, sgN]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_sgN {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : GlobalTheory.KZ.Tower Ω ε) (c : ℕ) {N : ℕ}
     (hN : 0 < N) (M : ℕ) (a : ℤ × ℤ) (r : ℚ) :
@@ -52,61 +52,55 @@ theorem coeff_sgN {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] 
   simpa [h0, sgN] using h
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X _ p hp _ L N c A₁ a₂ g _ hg hNa hN hNp hc hcop hA`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨g', rfl⟩` from `hNa`. Use `set M := N * p ^ L with hMd`. Establish `hp0 : 0 < p` using `hp.out.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : 0 < M` using `by positivity`. Establish `hMq : (M : ℚ) = N * p ^ L` using `by rw [hMd]; push_cast; rfl`. Establish `hMc : (M : ℂ) = N * p ^ L` using `by rw [hMd]; push_cast; rfl`. Establish `hNc : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hpc : (p : ℂ) ≠ 0` using `by exact_mod_cast hp0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNq : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hpq : (p : ℚ) ≠ 0` using `by exact_mod_cast hp0.ne'`. Establish `hc6 : Nat.Coprime c 6` using `(Nat.Coprime.coprime_mul_right_right hcop).coprime_mul_right_right`. Establish `hcM : Nat.Coprime c M` using `Nat.Coprime.mul_right (Nat.Coprime.coprime_mul_right_right hcop).coprime_mul_left_right (hcop.coprime_mul_left_right.pow_right L)`. Establish `hA2 : ¬ (M : ℤ) ∣ A₁ * c` using `fun h => hA ((Nat.isCoprime_iff_coprime.2 hcM.symm).dvd_of_dvd_mul_right h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hadm : admitted c ![(A₁ : ℚ) / M, ((N * g' : ℤ) : ℚ) / M]`. Use `⟨hc, hc6, fun ⟨⟨m, hm⟩, _⟩ => hA2 ⟨m, ?_⟩⟩` and prove the remaining obligations. Establish `hM' : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `: (A₁ : ℚ) * c = M * m`. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Matrix.cons_val_zero]`. Clear the denominators using the available nonvanishing facts. Conclude with `this` after adjusting the coercions. Establish `ez : ε (zt ε p L) = ee (1 / (p : ℂ) ^ L)` using `by rw [zt, GalUnits.eps_eOm]; push_cast; rfl`. Establish `eM : ε (eOm ε (1 / (M : ℚ))) = ee (1 / (M : ℂ))` using `by rw [GalUnits.eps_eOm]; push_cast; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hz1 : ee (1 / (p : ℂ) ^ L) ^ ((p : ℤ) ^ L) = 1`. Rewrite using `[← ee_int_mul]`. Use `push_cast`. Rewrite using `[mul_one_div_cancel (pow_ne_zero _ hpc)]`. Simplify using `[ee]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hv : ee (((N * g' : ℤ) : ℂ) / M) = ε (zt ε p L) ^ g`. Establish `hco : IsCoprime ((p : ℤ) ^ L) (N : ℤ)` using `(Nat.isCoprime_iff_coprime.2 hNp.symm).pow_left`. Take `⟨u, hu⟩` from `hco.dvd_of_dvd_mul_left (by simpa only [← mul_sub] using hg.dvd : (p : ℤ) ^ L ∣ N * (g - g'))`. Rewrite using `[ez, show g = g' + (p : ℤ) ^ L * u by linarith, zpow_add₀ (ee_ne_zero _), zpow_mul, hz1, one_zpow, mul_one, ← ee_int_mul, hMc]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take `⟨k, a, b, qa, qb, hj, i, hi⟩` from `sg_jets hM hadm hA hA2`. Rewrite `hj`, `hi` using `[hv]`. Take `⟨r1, r2⟩` from `exp_of_hasQ X _ _ hM k a (SiegelMem.an_siegel_eq Ω ε X c _ hadm) qa`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `set y := X.exp (sgN X c N M (A₁, N * g')) with hy`. Establish `hco : ∀ r : ℤ, y.coeff ((r : ℚ) / (p : ℚ) ^ L) = (X.exp (siegel X c ![(A₁ : ℚ) / M, ((N * g' : ℤ) : ℚ) / M])).coeff ((r : ℚ) / M)` using `fun r => by`. Rewrite using `[← coeff_sgN X c hN M (A₁, N * g')]`. Use `congr 1`. Rewrite using `[hMq]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Establish `c1 : ∀ n : ℕ, ε (y.coeff (((k + n : ℤ) : ℚ) / (p : ℚ) ^ L)) = a n` using `fun n => by`. Rewrite using `[hco, ← r1]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c0 : ∀ r : ℤ, r < k → y.coeff ((r : ℚ) / (p : ℚ) ^ L) = 0` using `fun r hr => by`. Rewrite using `[hco]`. Use `r2 _ fun n h => ?_` and prove the remaining obligations. Rewrite `h` using `[div_left_inj' (by exact_mod_cast hM.ne')]`. Establish `: r = k + n` using `by exact_mod_cast h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hb` using `HasQ.coeff_unique hM qb (by`. Simplify `((GlobalTheory.T.hasQExpansion_smoothedEisensteinFx_weightOne c M A₁ (N * g') hM).mul_conv qa).const_mul (-1))` using `only [neg_mul, one_mul]`. Use `choose θ t1 t2 t3 using fun n => exists_finsupp (hj n)`. Establish `cases : ∀ r : ℤ, r < k ∨ ∃ n : ℕ, r = k + n` using `fun r => by`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `lt_or_ge r k with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨(r - k).toNat, by omega⟩`. Use `set Θ : ℤ → ℤ → ℤ := fun l r => if r < k then 0 else θ (r - k).toNat l with hΘ`. Establish `T0 : ∀ l r, r < k → Θ l r = 0` using `fun l r h => if_pos h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `T1 : ∀ l (n : ℕ), Θ l (k + n) = θ n l` using `fun l n => by`. Simplify using `only [hΘ]`. Rewrite using `[if_neg (by omega), add_sub_cancel_left, Int.toNat_natCast]`. Use `⟨Θ, fun r => ?_, ⟨k, T0⟩, fun l r h => ?_, fun r => ?_, fun r => ?_, ?_, k, g * i, ?_⟩` and prove the remaining obligations. Break down `cases r with h | ⟨n, rfl⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨0, fun l _ => T0 l r h⟩`. Use `⟨(θ n).support.sup Int.natAbs, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[T1]`. Assume the negation of the conclusion as `h`. Use `Finset.le_sup (f := Int.natAbs) (Finsupp.mem_support_iff.2 h)` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hl` using `[Int.abs_eq_natAbs]`. Use linear arithmetic over natural numbers and integers. Break down `cases r with h' | ⟨n, rfl⟩` into its components or cases. Conclude with `absurd (T0 l r h') h`. Rewrite `h` using `[T1]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Dvd.dvd.trans ⟨N, ?_⟩ (t1 n l h)` and prove the remaining obligations. Rewrite using `[hMd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Break down `cases r with h' | ⟨n, rfl⟩` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[c0 r h', T0 _ r h']`. Simplify using `only [T1]`. Apply `ε.injective` to reduce the goal to its premises. Rewrite using `[c1, map_finsum_zpow ε (θ n) (fun _ m => m) (fun _ => rfl)]`. Conclude with `t2 n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `cases r with h' | ⟨n, rfl⟩` into its components or cases. Simplify using `only [T0 _ r h', mul_zero, Int.cast_zero, zero_mul, finsum_zero]`. Rewrite using `[finsum_eq_zero_of_forall_eq_zero, neg_zero]`. Introduce `l`. Use `split_ifs with h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c0 _ (by omega), mul_zero]`. Rewrite using `[zero_mul]`. Simplify using `only [T1]`. Apply `ε.injective` to reduce the goal to its premises. Rewrite using `[map_finsum_zpow ε (θ n) (fun l m => l * m) (fun _ => mul_zero _), ← t3 n, finsum_eq_sum_of_support_subset (s := (Finset.range (n + 1)).image (Nat.cast : ℕ → ℤ)), Finset.sum_image (fun _ _ _ _ h => by exact_mod_cast h), hb, map_neg, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conv, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, neg_inj]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hl` as an intermediate fact. Rewrite using `[map_mul, if_pos (by omega), Int.toNat_natCast, map_smF, eM, ← c1, show k + n - l = k + ((n - l : ℕ) : ℤ) by omega]`. Introduce `l hl`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Apply `hl` to reduce the goal to its premises. Simplify using `only`. Use `split_ifs with h1`. Rewrite using `[c0, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h2`. Conclude with `h (Finset.mem_coe.2 (Finset.mem_image.2 ⟨l.toNat, Finset.mem_range.2 (by omega), by omega⟩))`. Rewrite using `[zero_mul]`. Establish `hz : eOm ε (1 / (M : ℚ)) ^ (N * g') = zt ε p L ^ g` using `ε.injective (by`. Rewrite using `[map_zpow₀, map_zpow₀, ← hv, eM, ← ee_int_mul, mul_one_div])`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `m0 : zt ε p L ∈ Subring.closure {zt ε p L}` using `Subring.subset_closure rfl`. Establish `m1 : (zt ε p L)⁻¹ ∈ Subring.closure {zt ε p L}`. Establish `h1 : zt ε p L ^ (p ^ L) = 1` using `ε.injective (by`. Rewrite using `[map_pow, ez, map_one, ← zpow_natCast]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hz1)`. Establish `: (zt ε p L)⁻¹ = zt ε p L ^ (p ^ L - 1)`. Apply `inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel (pow_pos hp0 L), h1]`. Rewrite using `[this]`.
-
-Conclude with `pow_mem m0 _`. Establish `m2 : ∀ m : ℤ, zt ε p L ^ m ∈ Subring.closure {zt ε p L}` using `fun m => by`. Break down `Int.eq_nat_or_neg m with ⟨m, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `pow_mem m0 _`.
-
-Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `pow_mem m1 _`. Use `GlobalTheory.T.smoothedEisensteinFxCoefficientSeq_one_mem_subring Ω _ c M _ A₁ _ hM hcM hA (by rw [hz]; exact m2 _) ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, hz, ← zpow_neg]`. Conclude with `m2 _`.
-
-Use `c1 0` as an intermediate fact. Rewrite `this` using `[Nat.cast_zero, add_zero]`. Use `hi.imp (fun h => ε.injective ?_) (fun h => ε.injective ?_)` and prove the remaining obligations. Rewrite using `[this, h, map_zpow₀, zpow_mul]`. Rewrite using `[this, h, map_neg, map_zpow₀, zpow_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgN_two_variable : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →
   ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (L N c : ℕ) (A₁ a₂ g : ℤ), 1 ≤ L → a₂ ≡ N * g [ZMOD (p : ℤ) ^ L] → (N : ℤ) ∣ a₂ → 0 < N → Nat.Coprime N p → 1 < c → Nat.Coprime c (6 * N * p) → ¬ (((N * p ^ L : ℕ) : ℤ) ∣ A₁) →

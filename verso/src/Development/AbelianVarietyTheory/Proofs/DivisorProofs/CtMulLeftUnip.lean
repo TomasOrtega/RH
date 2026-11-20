@@ -12,19 +12,15 @@ namespace GlobalTheory.CTInv
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d d₁ W H' f c hc ⟨μ, 𝓕, hμ, h𝓕, h1⟩ n hn h`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (UA σ W.J) := inferInstance`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set n' : unip σ W H' := ⟨n, hn⟩ with hn'`. Set `e : unip σ W H' ≃ᵐ unip σ W H'` to `MeasurableEquiv.mulRight n'`. Set `μ' : Measure (unip σ W H')` to `μ.map e`. Use `haveI : μ'.IsHaarMeasure := Measure.isHaarMeasure_map_mul_right μ n'`. Set `𝓕' : Set (unip σ W H')` to `e.symm ⁻¹' 𝓕`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpres : MeasurePreserving e.symm μ' μ`. Use `⟨e.symm.measurable, ?_⟩` and prove the remaining obligations. Simplify using `only [μ', Measure.map_map e.symm.measurable e.measurable, MeasurableEquiv.symm_comp_self, Measure.map_id]`. Establish `h𝓕' : IsFundamentalDomain ((ratU σ W.J).subgroupOf (unip σ W H')) 𝓕' μ'`. Use `h𝓕.preimage_of_equiv hpres.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g x`. Simplify using `[e, MeasurableEquiv.mulRight, Subgroup.smul_def, mul_assoc]`. Establish `h1' : μ' 𝓕' = 1`. Simplify using `only [μ', 𝓕', e.map_apply]`. Rewrite using `[← Set.preimage_comp, e.symm_comp_self, Set.preimage_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `A` using `hc μ' 𝓕' inferInstance h𝓕' h1' h`. Establish `B` using `hc μ 𝓕 hμ h𝓕 h1 (n * h)`. Rewrite using `[A, B, e.measurableEmbedding.setIntegral_map]`. Establish `: e ⁻¹' 𝓕' = 𝓕`.
-
-Simplify using `only [𝓕']`. Rewrite using `[← Set.preimage_comp, e.symm_comp_self, Set.preimage_id]`. Rewrite using `[this]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
-
-Use `show f (u.1 * (n * h)) = f ((u * n' : unip σ W H').1 * h)`. Rewrite using `[Subgroup.coe_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ct_mul_left_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ : ℕ) (W : Spc F E d)
     (H' : Plane E d d₁) (f c : UA σ W.J → ℂ), IsCT H' f c →

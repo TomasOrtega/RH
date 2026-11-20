@@ -15,9 +15,9 @@ namespace GlobalTheory.WeilPairing
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ V W χV χW om μ 𝓕 hom hc p a b ha hb`. Establish `h` using `GlobalTheory.WeilInner.om_inner D ψ V W χV χW om hom μ 𝓕 hc p b a hb ha`. Establish `e : ∀ (f g : WO V W → ℂ), thetaIP μ 𝓕 f g = ∫ w in 𝓕, g w * (starRingEnd ℂ) (f w) ∂μ` using `fun f g => by`. Unfold `thetaIP`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `w`. Conclude with `mul_comm _ _`. Rewrite using `[e, e]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaInner_weilRep : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)), IsWeilDatumO ψ V W χV χW om → IsCovolOne (ratL W V) μ 𝓕 → ∀ (p : GA D V × GA D W) (a b : WO V W → ℂ), IsThetaFunO ψ V W a → IsThetaFunO ψ V W b → thetaIP μ 𝓕 (om p a) (om p b) = thetaIP μ 𝓕 a b := by
   intro D ψ V W χV χW om μ 𝓕 hom hc p a b ha hb

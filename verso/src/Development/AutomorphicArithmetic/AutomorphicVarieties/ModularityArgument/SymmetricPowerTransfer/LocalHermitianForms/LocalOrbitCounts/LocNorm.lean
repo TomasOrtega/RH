@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce and unpack `O K _ _ _ _ _ Δ τ L ⟨τ₀, e₀⟩`. Distinguish the cases in `h1 : IsUnit (2 + τ₀)`. Take `⟨lam, -, hl⟩` from `normEx O K Δ L h1.unit`. Establish `ep : algebraMap O K (2 + τ₀) = 2 + τ` using `by simp [map_ofNat, e₀]`. Rewrite `hl` using `[IsUnit.unit_spec, ep]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : 2 + τ ≠ 0` using `ep ▸ (h1.map _).ne_zero`. Establish `hll : lam * star lam = algebraMap K _ (2 + τ)` using `by rw [← hl, QuadraticAlgebra.algebraMap_norm_eq_mul_star]`. Use `⟨lam • ofE Δ ((2 + τ)⁻¹ • (1 + ω : Etau K τ)), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have s1 : ∀ x : Etau K τ, sigL (lam • ofE Δ x) = star lam • ofE Δ x := fun x => by ext <;> simp [sigL, ofE]`. Rewrite using `[s1, smul_mul_smul_comm, hll]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`. Take `⟨x, y, -, hu, hn⟩` from `rootEx O K Δ τ L τ₀ (-1) e₀ (by simpa [add_comm] using h1)`. Take `⟨ν, -, hν⟩` from `normEx O K Δ L (-1)`. Conclude with `⟨_, (datFormM O K Δ τ L 1 _ (by simpa using hu) hn ν (by simpa using hν) 1 one_ne_zero).1⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.locNorm : UpperTheory.V.Z.Sym.Loc.LocNorm := by
   rintro O K _ _ _ _ _ Δ τ L ⟨τ₀, e₀⟩

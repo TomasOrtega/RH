@@ -9,26 +9,22 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk69.res_algClosed A`.
+A detailed English derivation is pending.
 -/
 private theorem res_algClosed {Ω : Type} [Field Ω] [IsAlgClosed Ω] (A : ValuationSubring Ω) :
     IsAlgClosed (IsLocalRing.ResidueField A) :=
   _root_.UpperTheory.Reformulated.B.Qk69.res_algClosed A
 
 /- English proof (translation)
-Use `letI := e.toAlgebra`. Use `haveI : Algebra.IsIntegral κ (IsLocalRing.ResidueField A) := ⟨fun z => by`. Take `⟨z', rfl⟩` from `IsLocalRing.residue_surjective z`. Take `⟨P₀, h0, hP₀⟩` from `hΩ (z' : Ω)`. Establish `hP : aeval (z' : Ω) P₀.primPart = 0`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (aeval (z' : Ω)) P₀.eq_C_content_mul_primPart`. Rewrite `h1` using `[hP₀, map_mul, aeval_C]`. Establish `h2 : algebraMap ℤ Ω P₀.content ≠ 0`. Simplify `h0` using `[Polynomial.content_eq_zero_iff]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : aeval z' P₀.primPart = 0`. Establish `h1` using `aeval_algebraMap_apply Ω z' P₀.primPart`. Express the relevant statement in the definitionally equal form `aeval (z' : Ω) _ = _ at h1`. Rewrite `h1` using `[hP]`. Conclude with `Subtype.val_injective h1.symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR : aeval (IsLocalRing.residue A z') P₀.primPart = 0`. Establish `h1` using `aeval_algebraMap_apply (IsLocalRing.ResidueField A) z' P₀.primPart`. Rewrite `h1` using `[hA, map_zero]`. Conclude with `h1`. Establish `hQ : P₀.primPart.map (algebraMap ℤ κ) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h`. Establish `hdvd : C (p : ℤ) ∣ P₀.primPart` using `(C_dvd_iff_dvd_coeff _ _).2 fun n => by`. Establish `h1` using `congrArg (fun q => q.coeff n) h`. Simplify using `only [coeff_map, coeff_zero] at h1`. Establish `h2` using `congrArg e h1`.
-
-Simplify using `only [eq_intCast, map_intCast, map_zero] at h2`. Conclude with `(CharP.intCast_eq_zero_iff _ p _).1 h2`. Conclude with `(Nat.prime_iff_prime_int.1 Fact.out).not_unit (P₀.isPrimitive_primPart _ hdvd)`. Use `IsAlgebraic.isIntegral ⟨_, hQ, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_map, Subsingleton.elim ((algebraMap κ (IsLocalRing.ResidueField A)).comp (algebraMap ℤ κ)) (algebraMap ℤ (IsLocalRing.ResidueField A))]`.
-
-Conclude with `hR⟩`. Conclude with `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := κ) (K := IsLocalRing.ResidueField A)).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem res_surj {Ω : Type} [Field Ω] [CharZero Ω] (hΩ : ∀ x : Ω, IsAlgebraic ℤ x) (A : ValuationSubring Ω) {κ : Type} [Field κ]
     [IsAlgClosed κ] (p : ℕ) [Fact p.Prime] [CharP (IsLocalRing.ResidueField A) p]
@@ -68,19 +64,15 @@ private theorem res_surj {Ω : Type} [Field Ω] [CharZero Ω] (hΩ : ∀ x : Ω,
   exact (IsAlgClosed.algebraMap_bijective_of_isIntegral (k := κ) (K := IsLocalRing.ResidueField A)).2
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A v hv`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Use `haveI := res_algClosed A`. Choose the witnesses or unpack the hypotheses as in `⟨e₀, he₀⟩ : ∃ e₀ : 𝓀[v.adicCompletion E] →+* IsLocalRing.ResidueField A, ∀ x, e₀ (DiscreteGroups.sglob.DzType.kappaP v x) = DiscreteGroups.sglob.DzType.kappaQ A x := by`. Use `⟨RingHom.liftOfSurjective _ (DiscreteGroups.sglob.DzType.kappa_surj_O v) ⟨DiscreteGroups.sglob.DzType.kappaQ A, fun x hx => ?_⟩, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[DiscreteGroups.sglob.DzType.kappa_ker_O, ← DiscreteGroups.sglob.DzType.kappa_ker_A A v hv]`. Conclude with `hx`. Conclude with `RingHom.liftOfRightInverse_comp_apply _ _ _ _ _`. Take `⟨p, hp⟩` from `CharP.exists 𝓀[v.adicCompletion E]`. Use `haveI : Fact p.Prime := ⟨CharP.char_is_prime 𝓀[v.adicCompletion E] p⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : CharP (IsLocalRing.ResidueField A) p := charP_of_injective_ringHom e₀.injective p`. Use `letI := e₀.toAlgebra`. Set `e : AlgebraicClosure 𝓀[v.adicCompletion E] →ₐ[𝓀[v.adicCompletion E]] IsLocalRing.ResidueField A` to `IsAlgClosed.lift`. Establish `hres : ResEmb A v (e : AlgebraicClosure 𝓀[v.adicCompletion E] →+* IsLocalRing.ResidueField A)`. Introduce `x y z hy hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : IsLocalRing.residue 𝒪[v.adicCompletion E] y = DiscreteGroups.sglob.DzType.kappaP v x`. Rewrite using `[DiscreteGroups.sglob.DzType.kappaP, RingHom.comp_apply]`. Conclude with `congrArg _ (Subtype.ext hy)`. Establish `h2 : IsLocalRing.residue A z = DiscreteGroups.sglob.DzType.kappaQ A x`. Rewrite using `[DiscreteGroups.sglob.DzType.kappaQ, RingHom.comp_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg _ (Subtype.ext hz)`. Rewrite using `[h1, h2, ← he₀]`. Conclude with `e.commutes _`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `hΩ : ∀ x : Ω, IsAlgebraic ℤ x` using `by haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ E Ω`.
-
-Conclude with `fun x => (IsFractionRing.isAlgebraic_iff ℤ ℚ Ω).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Establish `hs` using `res_surj hΩ A p (e : AlgebraicClosure 𝓀[v.adicCompletion E] →+* IsLocalRing.ResidueField A)`. Set `e'` to `RingEquiv.ofBijective (e : AlgebraicClosure 𝓀[v.adicCompletion E] →+* IsLocalRing.ResidueField A) ⟨RingHom.injective _, hs⟩`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_teichmuller_map_algebraicClosure_finiteField 𝓀[v.adicCompletion E]`. Use `⟨⟨_, hres⟩, θ.comp (e'.symm : IsLocalRing.ResidueField A →* _), fun x y hx hy h => ?_⟩` and prove the remaining obligations.
-
-Conclude with `e'.symm.injective (hθ _ _ (by simpa using hx) (by simpa using hy) h)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.resEmbEx :
     ResEmbEx := by

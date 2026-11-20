@@ -9,19 +9,17 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `ha : e + 2 ≤ N.factorization 2` using `(Nat.Prime.pow_dvd_iff_le_factorization Nat.prime_two hN).1 h2`. Establish `hM : Nat.Coprime 2 (ordCompl[2] N)` using `Nat.coprime_ordCompl Nat.prime_two hN`. Establish `hdvd : 2 ^ (e + 2) * ordCompl[2] N ∣ N`. Establish `h` using `mul_dvd_mul_right (pow_dvd_pow 2 ha) (ordCompl[2] N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Nat.ordProj_mul_ordCompl_eq_self]`. Then use the resulting hypothesis. Establish `ht : ∑ j ∈ Finset.range (e + 2), (((2 ^ j).totient : ℕ) : ℝ) = 2 ^ (e + 1)`. Establish `h` using `Formalism.HC.Der.Rd.sum_totient_pow Nat.prime_two (e + 1)`. Rewrite `h` using `[show e + 1 + 1 = e + 2 by ring]`. Conclude with `h` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ n : ℕ, ∑ j ∈ Finset.range (n + 2), (if j < 2 then (1:ℝ) else 0) = 2`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Consider the case `succ k ih`. Rewrite using `[show k + 1 + 2 = (k + 2) + 1 by ring, Finset.sum_range_succ, ih]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_sub_distrib, ← Finset.sum_div, Finset.sum_add_distrib, ht, hc e]`. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ ≤ ∑ j ∈ Finset.range (e + 2), Formalism.HC.Der.Rd.rho U (ordCompl[2] N * 2 ^ j) := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j hj`. Establish `hj' : j ≤ e + 2` using `(Finset.mem_range.1 hj).le`. Rewrite using `[mul_comm]`.
-
-Conclude with `Formalism.HC.Der.Rd.rho_two U hM hdvd hj' hU`. Use `_ ≤ ∑ j ∈ Finset.range (N.factorization 2), Formalism.HC.Der.Rd.rho U (ordCompl[2] N * 2 ^ j) := Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono ha) (fun _ _ _ => Formalism.HC.Der.Rd.rho_nonneg _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rho_sum {N : ℕ} [NeZero N] (U : Subgroup (ZMod N)ˣ) {e : ℕ} (h2 : 2 ^ (e + 2) ∣ N)
     (hU : ∀ u ∈ U, ZMod.unitsMap h2 u = 1 ∨ ZMod.unitsMap h2 u = -1) :
@@ -66,17 +64,17 @@ private theorem rho_sum {N : ℕ} [NeZero N] (U : Subgroup (ZMod N)ˣ) {e : ℕ}
           (fun _ _ _ => Formalism.HC.Der.Rd.rho_nonneg _ _)
 
 /- English proof (translation)
-Introduce `φ H`. Use `haveI : NeZero H.condN := ⟨by`. Establish `h` using `H.QS_pos`. Establish `hq` using `(HostRaw.q_prime H.toHostRaw).pos`. Establish `hd` using `(HostRaw.d_prime H.toHostRaw).pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show H.QS * H.q * H.d ≠ 0`. Use the proof step `positivity⟩`. Establish `hU : ∀ u ∈ H.art.ker, ZMod.unitsMap (Formalism.HC.Der.Rd.two_dvd H.toHostRaw) u = 1 ∨ ZMod.unitsMap (Formalism.HC.Der.Rd.two_dvd H.toHostRaw) u = -1`. Introduce `u hu`. Apply `Formalism.HC.Der.Rd.hcl_eq_one` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Formalism.HC.Der.Rd.hH_art, MonoidHom.mem_ker.1 hu]`. Conclude with `map_one _`. Establish `hs` using `rho_sum H.art.ker (Formalism.HC.Der.Rd.two_dvd H.toHostRaw) hU`. Establish `hv : H.vdH 2 = ∑ j ∈ Finset.range (H.condN.factorization 2), Formalism.HC.Der.Rd.rho H.art.ker (ordCompl[2] H.condN * 2 ^ j)`. Rewrite using `[vd_formula H Nat.prime_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j hj`. Rewrite using `[rho_art H.toHostRaw]`. Apply `Nat.dvd_trans (Nat.mul_dvd_mul_left _ (pow_dvd_pow 2 (Finset.mem_range.1 hj).le))` to reduce the goal to its premises. Rewrite using `[mul_comm, Nat.ordProj_mul_ordCompl_eq_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : 2 ≤ φ.e` using `H.two_le_e`. Establish `hrp : (2 : ℝ) ^ (-(φ.e : ℝ)) = 1 / 2 ^ φ.e`. Rewrite using `[Real.rpow_neg (by norm_num), Real.rpow_natCast, one_div]`. Establish `h4 : (4 : ℝ) ≤ 2 ^ φ.e`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : 1 / (2 : ℝ) ^ φ.e ≤ 1 / 4` using `one_div_le_one_div_of_le (by norm_num) h4`. Establish `hecast : (2 : ℝ) ≤ φ.e` using `by exact_mod_cast he`. Establish `hmain : (φ.e : ℝ) + 1 - 1 / 2 ^ φ.e ≤ H.vdH 2` using `by rw [hv]; exact hs`. Rewrite using `[hrp]`. Apply the tactic sequence `refine ⟨hmain, ?_, ?_⟩ <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.vd_two :
     ∀ {φ : Frame} (H : HostAx φ), (φ.e : ℝ) + 1 - (2 : ℝ) ^ (-(φ.e : ℝ)) ≤ H.vdH 2 ∧ 11 / 4 ≤ H.vdH 2 ∧ 4 + 2 * H.vdH 2 ≤ 2 + 3 * H.vdH 2 := by

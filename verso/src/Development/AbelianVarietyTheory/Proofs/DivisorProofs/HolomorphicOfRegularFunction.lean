@@ -25,13 +25,13 @@ def ptC (p : X ⟶ Sp k) (σ : k →+* ℂ) (y : CxPts p σ) :
   ⟨pt p σ y, (pullback.lift_snd _ _ _).trans (Spec.map_id _).symm⟩
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pt_comp_fst (p : X ⟶ Sp k) (σ : k →+* ℂ) (y : CxPts p σ) :
     pt p σ y ≫ pullback.fst p (spMap σ) = y.1 := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (x ≫ g) ⁻¹ᵁ U` using `fun a ha => e (h ha)`. Rewrite using `[valR, valR, dif_pos h, dif_pos h']`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_appLE_hol {A : Type} [CommRing A] {Y Z : Scheme.{0}} (x : Sp A ⟶ Y) (g : Y ⟶ Z)
     (U : Z.Opens) (W : Y.Opens) (e : W ≤ g ⁻¹ᵁ U) (h : ⊤ ≤ x ⁻¹ᵁ W) (f : Γ(Z, U)) :
@@ -42,7 +42,7 @@ theorem valR_appLE_hol {A : Type} [CommRing A] {Y Z : Scheme.{0}} (x : Sp A ⟶ 
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `⊤ ≤ pt p σ y ⁻¹ᵁ (pullback.fst p (spMap σ) ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, pt_comp_fst]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptC_mem {p : X ⟶ Sp k} {σ : k →+* ℂ} {U : X.Opens} {y : CxPts p σ} (h : y ∈ ptsIn p σ U) :
     ptC p σ y ∈ ptsIn (pullback.snd p (spMap σ)) (RingHom.id ℂ) (pullback.fst p (spMap σ) ⁻¹ᵁ U) := by
@@ -51,13 +51,13 @@ theorem ptC_mem {p : X ⟶ Sp k} {σ : k →+* ℂ} {U : X.Opens} {y : CxPts p �
   exact h
 
 /- English proof (translation)
-Establish `H` using `IsPullback.of_hasPullback p (spMap σ)`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := U) le_top le_top (UY := pullback.fst p (spMap σ) ⁻¹ᵁ U) (by simp)).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `hf : f ∈ Subring.closure _` using `(CommRingCat.closure_range_union_range_eq_top_of_isPushout po).ge (Subring.mem_top f)`. Establish `hc : ∀ c : ℂ, R.HoloOn (ptsIn p σ U) fun _ => c` using `fun c _ => differentiableOn_const c`. Proceed by induction on `hf using Subring.closure_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem x hx`. Break down `hx with ⟨a, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Use `(R.holoOn_ev U a).congr fun y hy => ?_` and prove the remaining obligations. Conclude with `(valR_appLE_hol _ _ _ _ _ (ptC_mem hy) a).trans (congrArg (fun z => valR z U a) (pt_comp_fst p σ y))`. Use `(hc (valR (spMap (RingHom.id ℂ)) ⊤ a)).congr fun y hy => ?_` and prove the remaining obligations.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `(valR_appLE_hol _ _ _ _ _ (ptC_mem hy) a).trans (congrArg (fun z => valR z ⊤ a) (ptC p σ y).2)`. Consider the case `zero => exact (hc 0).congr fun y hy => by rw [ev_eq (ptC_mem hy), map_zero]`. Consider the case `one => exact (hc 1).congr fun y hy => by rw [ev_eq (ptC_mem hy), map_one]`. Consider the case `add x y _ _ hx hy`. Establish `: R.HoloOn (ptsIn p σ U) fun z => ev _ (RingHom.id ℂ) _ x (ptC p σ z) + ev _ (RingHom.id ℂ) _ y (ptC p σ z)` using `fun i => (hx i).add (hy i)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `this.congr fun z _ => ev_add _ _ _`. Consider the case `neg x _ hx`. Establish `: R.HoloOn (ptsIn p σ U) fun z => - ev _ (RingHom.id ℂ) _ x (ptC p σ z)` using `fun i => (hx i).neg`. Conclude with `this.congr fun z hz => by rw [ev_eq (ptC_mem hz), ev_eq (ptC_mem hz), map_neg]`. Consider the case `mul x y _ _ hx hy => exact (hx.mul hy).congr fun z _ => ev_mul _ _ _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem holoOn_preimage_affine {p : X ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ} (R : AnRead p σ d)
     {U : X.Opens} (hU : IsAffineOpen U)
@@ -92,7 +92,7 @@ theorem holoOn_preimage_affine {p : X ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ} (R 
   | mul x y _ _ hx hy => exact (hx.mul hy).congr fun z _ => ev_mul _ _ _
 
 /- English proof (translation)
-Use `AnRead.holoOn_of_cover (ι := X.affineOpens) (T := fun U => ptsIn p σ U.1) (fun U => isOpen_ptsIn _) (fun y _ => exists_mem_ptsIn (iSup_affineOpens_eq_top X) y) fun U i => ?_` and prove the remaining obligations. Establish `: IsAffineHom (pullback.fst p (spMap σ))` using `isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip inferInstance`. Establish `hU' : IsAffineOpen (pullback.fst p (spMap σ) ⁻¹ᵁ U.1)` using `U.2.preimage _`. Establish `key` using `(holo_of_affine (p := pullback.snd p (spMap σ)) (σ := RingHom.id ℂ) hU' (s := fun v => ptC p σ ((R.chart i).e.symm v)) ((R.chart i).e.isOpen_inter_preimage_symm (isOpen_ptsIn U.1)) (fun v hv => ptC_mem hv.2) (fun a => holoOn_preimage_affine R U.2 a i)).2 W h`. Conclude with `key.mono fun v hv => ⟨⟨hv.1, hv.2.2⟩, mem_ptsIn.2 hv.2.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem holoOn_valR_pt (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ)
     (R : AnRead p σ d) (W : (Limits.pullback p (spMap σ) : Scheme.{0}).Opens)

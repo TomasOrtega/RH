@@ -11,9 +11,9 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Establish `ha : ∀ ω ∈ L.lattice, (a : ℂ) * ω ∈ L.lattice` using `fun ω hω => by`. Use `L.lattice.smul_mem a hω` as an intermediate fact. Rewrite `this` using `[zsmul_eq_mul]`. Then use the resulting hypothesis. Use `⟨fun ω hω => ?_, fun ω hω => ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (ha ω hω) (h ω hω)`. Rewrite using `[sub_mul]`. Conclude with `sub_mem (ha ω hω) (h ω hω)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulStable_intCast_add_sub (L : PeriodPair) (s : ℂ) (a : ℤ) (h : MulStable L s) :
     MulStable L (a + s) ∧ MulStable L (a - s) := by
@@ -25,7 +25,7 @@ theorem mulStable_intCast_add_sub (L : PeriodPair) (s : ℂ) (a : ℤ) (h : MulS
   · rw [sub_mul]; exact sub_mem (ha ω hω) (h ω hω)
 
 /- English proof (translation)
-Establish `h : √(p : ℝ) * √(p : ℝ) = p` using `Real.mul_self_sqrt (Nat.cast_nonneg p)`. Apply the tactic sequence `constructor <;> simp [sqrtNegNat, Complex.normSq_apply, h, sq]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem normSq_natCast_add_sub_sqrtNegNat (p a : ℕ) :
     Complex.normSq (((a : ℤ) : ℂ) + sqrtNegNat p) = ((a ^ 2 + p : ℕ) : ℝ) ∧
@@ -34,19 +34,19 @@ theorem normSq_natCast_add_sub_sqrtNegNat (p a : ℕ) :
   constructor <;> simp [sqrtNegNat, Complex.normSq_apply, h, sq]
 
 /- English proof (translation)
-Introduce `p F L t hp _ h3 hD V`. Take `⟨a, N, hN, hodd, hmod, hv⟩` from `GlobalTheory.T.exists_sq_add_prime_odd_mod_three_valuation_one p V hp h3`. Take `⟨hs, hs'⟩` from `mulStable_intCast_add_sub L (sqrtNegNat p) (a : ℤ) hD.mul`. Take `⟨hn, hn'⟩` from `normSq_natCast_add_sub_sqrtNegNat p a`. Rewrite `hn`, `hn'` using `[← hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN0 : (N : ℝ) ≠ 0`. Establish `: N ≠ 0` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `h0 : ((a : ℤ) : ℂ) + sqrtNegNat p ≠ 0` using `fun h => hN0 (by rw [← hn, h, map_zero])`. Establish `h0' : ((a : ℤ) : ℂ) - sqrtNegNat p ≠ 0` using `fun h => hN0 (by rw [← hn', h, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `kerRepsExist L _ h0 hs`. Take `⟨S', hS'⟩` from `kerRepsExist L _ h0' hs'`. Establish `hc` using `kerRepsCard L _ S h0 hs hS`. Establish `hc'` using `kerRepsCard L _ S' h0' hs' hS'`. Rewrite `hc` using `[hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc'` using `[hn']`. Establish `hc1 : S.card + 1 = N` using `by exact_mod_cast hc`. Establish `hc1' : S'.card + 1 = N` using `by exact_mod_cast hc'`. Establish `hfac : (N : ℂ) = (((a : ℤ) : ℂ) - sqrtNegNat p) * (((a : ℤ) : ℂ) + sqrtNegNat p)`. Use `sqrtNegNat_sq p` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN]`. Use `push_cast`. Take the linear combination `this`. Use `⟨N, S ⊕ S', inferInstance, Sum.elim (fun t : S => (t : ℂ)) (fun t : S' => (t : ℂ)), hodd, hmod, hv, ?_, GlobalTheory.T.stable_sum_elim_of_isKerReps_add_sub_sqrtNegNat p F L a S S' hD.g₂_mem hD.g₃_mem hD.mul hS hS', ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_sum, Fintype.card_coe, Fintype.card_coe]`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `(⟨x, hx⟩ | ⟨x, hx⟩)`. Use `⟨(hS.1 x hx).2, ?_⟩ show (N : ℂ) * x ∈ _` and prove the remaining obligations. Rewrite using `[hfac, mul_assoc]`. Conclude with `hs' _ (hS.1 x hx).1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(hS'.1 x hx).2, ?_⟩ show (N : ℂ) * x ∈ _` and prove the remaining obligations. Rewrite using `[hfac, mul_comm (_ - _), mul_assoc]`. Conclude with `hs _ (hS'.1 x hx).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_stable_family_ker : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : ℂ), p.Prime → p % 4 = 3 → 3 < p → Datum p F L t → ∀ V : ValuationSubring ℂ, ∃ (N : ℕ) (ι : Type) (_ : Fintype ι) (T : ι → ℂ), Odd N ∧ N % 3 = 2 ∧ V.valuation (N : ℂ) = 1 ∧ Fintype.card ι = 2 * (N - 1) ∧ Stable L F T ∧ ∀ i, T i ∉ L.lattice ∧ (N : ℂ) * T i ∈ L.lattice := by
   intro p F L t hp _ h3 hD V

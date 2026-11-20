@@ -18,7 +18,7 @@ theorem kap_eq (P : Par) (f : Ty P → ℂ) :
     kap P f = Matrix.diagonal fun π => algebraMap ℂ (Pr P.r) (f π) := rfl
 
 /- English proof (translation)
-Use `show kap P f * Matrix.diagonal d = Matrix.diagonal d * kap P f`. Rewrite using `[kap_eq, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `π`. Conclude with `Algebra.commutes _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem kap_comm_diagonal (P : Par) (f : Ty P → ℂ) (d : Ty P → Pr P.r) :
     Commute (kap P f) (Matrix.diagonal d) := by
@@ -29,31 +29,31 @@ theorem kap_comm_diagonal (P : Par) (f : Ty P → ℂ) (d : Ty P → Pr P.r) :
   exact Algebra.commutes _ _
 
 /- English proof (translation)
-Establish `: sc P w = Matrix.diagonal fun _ => w` using `by simp [sc, Matrix.scalar_apply]`. Rewrite using `[this]`. Conclude with `kap_comm_diagonal P f _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_comm_sc (P : Par) (f : Ty P → ℂ) (w : Pr P.r) : Commute (kap P f) (sc P w) := by
   have : sc P w = Matrix.diagonal fun _ => w := by simp [sc, Matrix.scalar_apply]
   rw [this]; exact kap_comm_diagonal P f _
 
 /- English proof (translation)
-The claim follows from `kap_comm_diagonal P f _`.
+A detailed English derivation is pending.
 -/
 theorem kap_comm_nab (P : Par) (f : Ty P → ℂ) : Commute (kap P f) (nabA P) := kap_comm_diagonal P f _
 
 /- English proof (translation)
-The claim follows from `kap_comm_diagonal P f _`.
+A detailed English derivation is pending.
 -/
 theorem kap_comm_nabs (P : Par) (f : Ty P → ℂ) : Commute (kap P f) (nabsA P) := kap_comm_diagonal P f _
 
 /- English proof (translation)
-Use `show kap P f * kap P g = kap P g * kap P f`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_comm_kap (P : Par) (f g : Ty P → ℂ) : Commute (kap P f) (kap P g) := by
   show kap P f * kap P g = kap P g * kap P f
   rw [← map_mul, ← map_mul, mul_comm]
 
 /- English proof (translation)
-Unfold `xC xEx`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem xC_eq (P : Par) (π : Ty P) (Y : ℂ) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) :
     xC P π Y = xEx P {l} π Y * (Y + (rho P π l : ℂ)) := by
@@ -64,9 +64,9 @@ theorem xC_eq (P : Par) (π : Ty P) (Y : ℂ) (l : ℕ) (hl : l ∈ Icc 1 (P.k -
     _ = _ := by rw [Finset.prod_singleton]
 
 /- English proof (translation)
-Unfold `xEx`. Establish `hset : Icc 1 (P.k - 1) \ {l, j} = (Icc 1 (P.k - 1) \ {l}) \ {j}`. Use extensionality with `i`. Simplify using `only [Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Establish `hsub : ({j} : Finset ℕ) ⊆ Icc 1 (P.k - 1) \ {l}` using `Finset.singleton_subset_iff.2 (Finset.mem_sdiff.2 ⟨hj, by simpa using hjl⟩)`. Rewrite using `[hset]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem xEx_pair (P : Par) (π : Ty P) (Y : ℂ) (l j : ℕ) (hj : j ∈ Icc 1 (P.k - 1)) (hjl : j ≠ l) :
     xEx P {l} π Y = xEx P {l, j} π Y * (Y + (rho P π j : ℂ)) := by
@@ -82,16 +82,16 @@ theorem xEx_pair (P : Par) (π : Ty P) (Y : ℂ) (l j : ℕ) (hj : j ∈ Icc 1 (
     _ = _ := by rw [Finset.prod_singleton]
 
 /- English proof (translation)
-Rewrite using `[Finset.pair_comm l j]`. Conclude with `xEx_pair P π Y j l hl (Ne.symm hjl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xEx_pair' (P : Par) (π : Ty P) (Y : ℂ) (l j : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) (hjl : j ≠ l) :
     xEx P {j} π Y = xEx P {l, j} π Y * (Y + (rho P π l : ℂ)) := by
   rw [Finset.pair_comm l j]; exact xEx_pair P π Y j l hl (Ne.symm hjl)
 
 /- English proof (translation)
-Unfold `xEx`. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce `i hi`. Establish `hi'` using `Finset.mem_sdiff.1 hi`. Establish `hne : i ≠ l` using `fun h => hi'.2 (h ▸ hl)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hR P l π π' hU i hi'.1, if_neg hne, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xEx_up (hR : RhoUp) (P : Par) (l : ℕ) (π π' : Ty P) (hU : Up P l π π') (ex : Finset ℕ) (hl : l ∈ ex)
     (Y : ℂ) : xEx P ex π' Y = xEx P ex π Y := by
@@ -103,21 +103,21 @@ theorem xEx_up (hR : RhoUp) (P : Par) (l : ℕ) (π π' : Ty P) (hU : Up P l π 
   rw [hR P l π π' hU i hi'.1, if_neg hne, add_zero]
 
 /- English proof (translation)
-Rewrite using `[hR P l π π' hU l hl, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_up (hR : RhoUp) (P : Par) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) (π π' : Ty P) (hU : Up P l π π') :
     rho P π' l = rho P π l + 1 := by
   rw [hR P l π π' hU l hl, if_pos rfl]
 
 /- English proof (translation)
-The claim follows from `hSh P l _ _ (fun π π' hU => xEx_up hR P l π π' hU ex hl Y)`.
+A detailed English derivation is pending.
 -/
 theorem sh_same (hSh : SSShift) (hR : RhoUp) (P : Par) (l : ℕ) (ex : Finset ℕ) (hl : l ∈ ex) (Y : ℂ) :
     (kap P fun π => xEx P ex π Y) * SS P l = SS P l * kap P fun π => xEx P ex π Y :=
   hSh P l _ _ (fun π π' hU => xEx_up hR P l π π' hU ex hl Y)
 
 /- English proof (translation)
-The claim follows from `hSh P l _ _ (fun π π' hU => by show xC P π' Y = _ rw [xC_eq P π' Y l hl, xEx_up hR P l π π' hU {l} (Finset.mem_singleton_self l), rho_up hR P l hl π π' hU] push_cast; ring)`.
+A detailed English derivation is pending.
 -/
 theorem shift_x_identity (hSh : SSShift) (hR : RhoUp) (P : Par) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) (Y : ℂ) :
     xA P Y * SS P l = SS P l * kap P fun π => xEx P {l} π Y * (Y + 1 + (rho P π l : ℂ)) :=
@@ -127,7 +127,7 @@ theorem shift_x_identity (hSh : SSShift) (hR : RhoUp) (P : Par) (l : ℕ) (hl : 
     push_cast; ring)
 
 /- English proof (translation)
-The claim follows from `hSh P j _ _ (fun π π' hU => by show xEx P {l} π' Y = _ rw [xEx_pair P π' Y l j hj hjl, xEx_up hR P j π π' hU {l, j} (by simp), rho_up hR P j hj π π' hU] push_cast; ring)`.
+A detailed English derivation is pending.
 -/
 theorem sh_pair (hSh : SSShift) (hR : RhoUp) (P : Par) (l j : ℕ) (hj : j ∈ Icc 1 (P.k - 1)) (hjl : j ≠ l) (Y : ℂ) :
     (kap P fun π => xEx P {l} π Y) * SS P j = SS P j * kap P fun π => xEx P {l, j} π Y * (Y + 1 + (rho P π j : ℂ)) :=
@@ -137,7 +137,7 @@ theorem sh_pair (hSh : SSShift) (hR : RhoUp) (P : Par) (l j : ℕ) (hj : j ∈ I
     push_cast; ring)
 
 /- English proof (translation)
-Rewrite using `[l0A, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lowering_constant_eq_shift (P : Par) (Y : ℂ) : l0A P Y = -nabA P - (Y + 1 / 2) • (zbA P * ggiA P) := by
   rw [l0A, Algebra.smul_def]
@@ -147,9 +147,9 @@ section abs
 variable {R : Type*} [Ring R] [Algebra ℂ R]
 
 /- English proof (translation)
-Establish `h1 : G * (-N - cu • b) - zb = -(G * N) - (cu + 1) • zb`. Rewrite using `[mul_sub, mul_neg, mul_smul_comm, hGb]`. Use `module`. Establish `h2 : G * N * b = zb * N - zb * b`. Rewrite using `[mul_assoc, hNb, mul_sub, ← mul_assoc, ← mul_assoc, hGb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using `only [sub_mul, mul_sub, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, h2]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absW (G b zb N : R) (hGb : G * b = zb) (hNb : N * b = b * N - b * b) (cu cv : ℂ) :
     (G * (-N - cu • b) - zb) * (-N - cv • b) =
@@ -163,14 +163,14 @@ theorem absW (G b zb N : R) (hGb : G * b = zb) (hNb : N * b = b * N - b * b) (cu
   module
 
 /- English proof (translation)
-Rewrite using `[sub_mul, neg_mul, smul_mul_assoc, hNG, hbG, mul_sub, mul_neg, mul_smul_comm]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem absLG (G b zb N : R) (hNG : N * G = G * N + zb) (hbG : b * G = G * b) (c : ℂ) :
     (-N - c • b) * G = G * (-N - c • b) - zb := by
   rw [sub_mul, neg_mul, smul_mul_assoc, hNG, hbG, mul_sub, mul_neg, mul_smul_comm]; abel
 
 /- English proof (translation)
-Establish `hc : (G * (-N - cu • b) - zb) * X' = X' * (G * (-N - cu • b) - zb)` using `((hG.mul_right ((hN.neg_right).sub_right (hb.smul_right cu))).sub_right hzb).eq.symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[absLG G b zb N hNG hbG]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [hc]; simp only [mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absA (G b zb N X X' : R) (hNG : N * G = G * N + zb) (hbG : b * G = G * b)
     (hG : Commute X' G) (hb : Commute X' b) (hN : Commute X' N) (hzb : Commute X' zb) (cu cv : ℂ) :
@@ -185,7 +185,7 @@ theorem absA (G b zb N X X' : R) (hNG : N * G = G * N + zb) (hbG : b * G = G * b
     _ = _ := by rw [hc]; simp only [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, hNzb, mul_assoc, hNGi, mul_sub, ← mul_assoc zb Gi N, mul_assoc zb Gi (zb * Gi), ← mul_assoc Gi zb Gi, hc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem absNb (zb Gi N : R) (hNzb : N * zb = zb * N) (hNGi : N * Gi = Gi * N - zb * Gi * Gi)
     (hc : Gi * zb = zb * Gi) : N * (zb * Gi) = (zb * Gi) * N - (zb * Gi) * (zb * Gi) := by
@@ -193,14 +193,14 @@ theorem absNb (zb Gi N : R) (hNzb : N * zb = zb * N) (hNGi : N * Gi = Gi * N - z
     ← mul_assoc Gi zb Gi, hc]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, neg_mul, smul_mul_assoc, hNS, hbS, mul_add, mul_sub, mul_neg, mul_smul_comm]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem absLS (b N S : R) (hNS : N * S = S * N - b * S) (hbS : b * S = S * b) (c : ℂ) :
     (-N - c • b) * S = S * ((-N - c • b) + b) := by
   rw [sub_mul, neg_mul, smul_mul_assoc, hNS, hbS, mul_add, mul_sub, mul_neg, mul_smul_comm]; abel
 
 /- English proof (translation)
-Establish `hE : ((-N - c • b) + b) * E = E * ((-N - c • b) + b)` using `(((hEN.neg_right).sub_right (hEb.smul_right c)).add_right hEb).eq.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem weighted_sum_difference_identity (G b N S X Xp E : R) (hNS : N * S = S * N - b * S) (hbS : b * S = S * b)
     (hXS : X * S = S * Xp) (hSG : S * G = G * S) (hEN : Commute E N) (hEb : Commute E b) (c : ℂ) :
@@ -214,7 +214,7 @@ theorem weighted_sum_difference_identity (G b N S X Xp E : R) (hNS : N * S = S *
     _ = _ := by rw [← hSG]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_assoc_commute_middle (G S X E L : R) (hEG : E * G = G * E) :
     (S * E) * (G * X * L) = S * G * (E * X * L) := by
@@ -223,7 +223,7 @@ theorem mul_assoc_commute_middle (G S X E L : R) (hEG : E * G = G * E) :
     _ = _ := by simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `e1` using `congrArg (fun f => κ f * N) h1`. Establish `e2` using `congrArg (fun f => κ f * b) h2`. Simplify using `only [map_add, map_sub, map_smul, add_mul, sub_mul, smul_mul_assoc] at e1 e2`. Simplify using `only [mul_add, mul_sub, mul_neg, mul_smul_comm]`. Take the linear combination `(norm := module) -e1 + e2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem absCombo {C : Type*} [CommRing C] [Algebra ℂ C] (κ : C →ₐ[ℂ] R) (N b : R) (φ1 φ2 ψ1 ψ2 : C) (cu cv : ℂ)
     (h1 : φ1 + φ2 = ψ1 + ψ2) (h2 : (1 - cu) • φ1 - cv • φ2 = (1 - cv) • ψ1 - cu • ψ2) :
@@ -235,7 +235,7 @@ theorem absCombo {C : Type*} [CommRing C] [Algebra ℂ C] (κ : C →ₐ[ℂ] R)
   linear_combination (norm := module) -e1 + e2
 
 /- English proof (translation)
-Establish `hc : ∑ l ∈ s, ∑ j ∈ s, D l j = ∑ l ∈ s, ∑ j ∈ s, D j l` using `Finset.sum_comm`. Establish `h2 : ∑ l ∈ s, ∑ j ∈ s, D l j + ∑ l ∈ s, ∑ j ∈ s, D l j = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (2 : ℂ) • ∑ l ∈ s, ∑ j ∈ s, D l j = 0` using `by rw [two_smul]; exact h2`. Conclude with `(smul_eq_zero.1 h3).resolve_left two_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_anti {M : Type*} [AddCommGroup M] [Module ℂ M] (s : Finset ℕ) (D : ℕ → ℕ → M)
     (h : ∀ l ∈ s, ∀ j ∈ s, D l j + D j l = 0) : ∑ l ∈ s, ∑ j ∈ s, D l j = 0 := by
@@ -251,7 +251,7 @@ theorem sum_anti {M : Type*} [AddCommGroup M] [Module ℂ M] (s : Finset ℕ) (D
 end abs
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [h]; simp only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TT_eq (P : Par) (l j : ℕ) (f g f' : Ty P → ℂ) (h : kap P f * SS P j = SS P j * kap P f') :
     (SS P l * kap P f) * (SS P j * kap P g) = SS P l * SS P j * kap P (f' * g) := by
@@ -261,11 +261,11 @@ theorem TT_eq (P : Par) (l j : ℕ) (f g f' : Ty P → ℂ) (h : kap P f * SS P 
     _ = _ := by rw [h]; simp only [mul_assoc]
 
 /- English proof (translation)
-Take `⟨_, _, hNzb, _, hNG, hNGi, _⟩` from `hLN P`. Take `⟨hcomm, _, _, _, _, _, hGGi, hGiG, _⟩` from `hLF P`. Establish `mzb : zbA P ∈ fnsA P` using `by unfold fnsA; simp`. Establish `mG : ggA P ∈ fnsA P` using `by unfold fnsA; simp`. Establish `mGi : ggiA P ∈ fnsA P` using `by unfold fnsA; simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGb : ggA P * (zbA P * ggiA P) = zbA P`. Rewrite using `[← mul_assoc, hcomm _ mG _ mzb, mul_assoc, hGGi, mul_one]`. Establish `hbG : (zbA P * ggiA P) * ggA P = ggA P * (zbA P * ggiA P)`. Rewrite using `[hGb, mul_assoc, hGiG, mul_one]`. Establish `hNb : nabA P * (zbA P * ggiA P) = (zbA P * ggiA P) * nabA P - (zbA P * ggiA P) * (zbA P * ggiA P)` using `absNb _ _ _ hNzb hNGi (hcomm _ mGi _ mzb)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `cX : ∀ w : ℂ, Commute (xA P w) (ggA P) ∧ Commute (xA P w) (zbA P * ggiA P) ∧ Commute (xA P w) (nabA P) ∧ Commute (xA P w) (zbA P)` using `fun w => ⟨kap_comm_sc P _ _, (kap_comm_sc P _ _).mul_right (kap_comm_sc P _ _), kap_comm_nab P _, kap_comm_sc P _ _⟩`. Establish `hXX : xA P u * xA P v = xA P v * xA P u` using `(kap_comm_kap P _ _).eq`. Rewrite using `[lowering_constant_eq_shift, lowering_constant_eq_shift, absA _ _ _ _ _ _ hNG hbG (cX v).1 (cX v).2.1 (cX v).2.2.1 (cX v).2.2.2, absA _ _ _ _ _ _ hNG hbG (cX u).1 (cX u).2.1 (cX u).2.2.1 (cX u).2.2.2, absW _ _ _ _ hGb hNb, absW _ _ _ _ hGb hNb, hXX, add_comm (u + 1 / 2) (v + 1 / …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem compA (hLN : LevNab) (hLF : LevFns) (P : Par) (u v : ℂ) :
     (ggA P * xA P u * l0A P u) * (ggA P * xA P v * l0A P v) =
@@ -292,13 +292,13 @@ theorem compA (hLN : LevNab) (hLF : LevFns) (P : Par) (u v : ℂ) :
     add_comm (u + 1 / 2) (v + 1 / 2), mul_comm (u + 1 / 2) (v + 1 / 2)]
 
 /- English proof (translation)
-Establish `hNS` using `(hN P l hl).1`. Establish `hbS : (zbA P * ggiA P) * SS P l = SS P l * (zbA P * ggiA P)` using `((hSc P l zbP).mul_right (hSc P l (ggiP P.TT))).eq.symm`. Establish `hSG : SS P l * ggA P = ggA P * SS P l` using `(hSc P l (ggP P.TT)).eq`. Establish `cE : ∀ w : ℂ, Commute (kap P fun π => xEx P {l} π w) (nabA P) ∧ Commute (kap P fun π => xEx P {l} π w) (zbA P * ggiA P) ∧ (kap P fun π => xEx P {l} π w) * ggA P = ggA P * kap P fun π => xEx P {l} π w` using `fun w => ⟨kap_comm_nab P _, (kap_comm_sc P _ _).mul_right (kap_comm_sc P _ _), (kap_comm_sc P _ _).eq⟩`. Rewrite using `[lowering_constant_eq_shift, lowering_constant_eq_shift, weighted_sum_difference_identity _ _ _ _ _ _ _ hNS hbS (shift_x_identity hSh hR P l hl u) hSG (cE v).1 (cE v).2.1, weighted_sum_difference_identity _ _ _ _ _ _ _ hNS hbS (shift_x_identity hSh hR P l hl v) hSG (cE u).1 (cE u …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun t => SS P l * ggA P * t) ?_` and prove the remaining obligations. Unfold `xA`. Rewrite using `[← map_mul, ← map_mul, ← map_mul, ← map_mul]`. Apply `absCombo` to reduce the goal to its premises. Use function extensionality and compare the values at `π`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, Pi.mul_apply]`. Rewrite using `[xC_eq P π u l hl, xC_eq P π v l hl]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `π`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[xC_eq P π u l hl, xC_eq P π v l hl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem compB (hSc : SSScalar) (hSh : SSShift) (hN : NabSS) (hR : RhoUp) (P : Par) (u v : ℂ) (l : ℕ)
     (hl : l ∈ Icc 1 (P.k - 1)) :
@@ -330,7 +330,7 @@ theorem compB (hSc : SSScalar) (hSh : SSShift) (hN : NabSS) (hR : RhoUp) (P : Pa
     rw [xC_eq P π u l hl, xC_eq P π v l hl]; ring
 
 /- English proof (translation)
-Rewrite using `[TT_eq P l l _ _ _ (sh_same hSh hR P l {l} (Finset.mem_singleton_self l) u), TT_eq P l l _ _ _ (sh_same hSh hR P l {l} (Finset.mem_singleton_self l) v), mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compC_diag (hSh : SSShift) (hR : RhoUp) (P : Par) (u v : ℂ) (l : ℕ) :
     (SS P l * kap P fun π => xEx P {l} π u) * (SS P l * kap P fun π => xEx P {l} π v) =
@@ -339,11 +339,11 @@ theorem compC_diag (hSh : SSShift) (hR : RhoUp) (P : Par) (u v : ℂ) (l : ℕ) 
     TT_eq P l l _ _ _ (sh_same hSh hR P l {l} (Finset.mem_singleton_self l) v), mul_comm]
 
 /- English proof (translation)
-Rewrite using `[TT_eq P l j _ _ _ (sh_pair hSh hR P l j hj hjl u), TT_eq P l j _ _ _ (sh_pair hSh hR P l j hj hjl v), TT_eq P j l _ _ _ (sh_pair hSh hR P j l hl (Ne.symm hjl) u), TT_eq P j l _ _ _ (sh_pair hSh hR P j l hl (Ne.symm hjl) v), ← mul_sub, ← mul_sub, ← map_sub, ← map_sub]`. Establish `h12 : ((fun π => xEx P {l, j} π u * (u + 1 + (rho P π j : ℂ))) * fun π => xEx P {j} π v) - ((fun π => xEx P {l, j} π v * (v + 1 + (rho P π j : ℂ))) * fun π => xEx P {j} π u) = -((fun π => ((rho P π j - rho P π l + 1 : ℝ) : ℂ)) * fun π => (u - v) * (xEx P {l, j} π u * xEx P {l, j} …`. Use function extensionality and compare the values at `π`. Simplify using `only [Pi.sub_apply, Pi.mul_apply, Pi.neg_apply]`. Rewrite using `[xEx_pair' P π v l j hl hjl, xEx_pair' P π u l j hl hjl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h34 : ((fun π => xEx P {j, l} π u * (u + 1 + (rho P π l : ℂ))) * fun π => xEx P {l} π v) - ((fun π => xEx P {j, l} π v * (v + 1 + (rho P π l : ℂ))) * fun π => xEx P {l} π u) = (fun π => ((rho P π j - rho P π l - 1 : ℝ) : ℂ)) * fun π => (u - v) * (xEx P {l, j} π u * xEx P {l, j} π …`. Use function extensionality and compare the values at `π`. Simplify using `only [Pi.sub_apply, Pi.mul_apply]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[xEx_pair P π v l j hj hjl, xEx_pair P π u l j hj hjl, Finset.pair_comm j l]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h12, h34, map_neg, map_mul, map_mul, ← mul_assoc (SS P j * SS P l), hC P hP l hl j hj hjl, mul_neg, mul_assoc (SS P l * SS P j), neg_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem compC_off (hSh : SSShift) (hC : SSComm) (hR : RhoUp) (P : Par) (hP : P.OK) (u v : ℂ) (l j : ℕ)
     (hl : l ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1)) (hjl : j ≠ l) :
@@ -374,9 +374,9 @@ theorem compC_off (hSh : SSShift) (hC : SSComm) (hR : RhoUp) (P : Par) (hP : P.O
     mul_assoc (SS P l * SS P j), neg_add_cancel]
 
 /- English proof (translation)
-Unfold `weightedSumBis`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_mul_sum, ← sub_eq_zero, ← Finset.sum_sub_distrib]`. Simplify using `only [← Finset.sum_sub_distrib]`. Apply `sum_anti` to reduce the goal to its premises. Introduce `l hl j hj`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hjl : j = l`. Substitute `hjl` using the available equality. Rewrite using `[compC_diag hSh hR P u v j, sub_self, add_zero]`. Conclude with `compC_off hSh hC hR P hP u v l j hl hj hjl`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compC (hSh : SSShift) (hC : SSComm) (hR : RhoUp) (P : Par) (hP : P.OK) (u v : ℂ) :
     weightedSumBis P u * weightedSumBis P v = weightedSumBis P v * weightedSumBis P u := by
@@ -391,11 +391,9 @@ theorem compC (hSh : SSShift) (hC : SSComm) (hR : RhoUp) (P : Par) (hP : P.OK) (
   · exact compC_off hSh hC hR P hP u v l j hl hj hjl
 
 /- English proof (translation)
-Introduce `P hP u v`. Use `show t21 P u * t21 P v = t21 P v * t21 P u`. Establish `hA` using `compA hLN hLF P u v`. Establish `hB : (ggA P * xA P u * l0A P u) * weightedSumBis P v + weightedSumBis P u * (ggA P * xA P v * l0A P v) = (ggA P * xA P v * l0A P v) * weightedSumBis P u + weightedSumBis P v * (ggA P * xA P u * l0A P u)`. Unfold `weightedSumBis`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun l hl => compB hSc hSh hN hR P u v l hl)`. Establish `hCC` using `compC hSh hC hR P hP u v`. Unfold `t21`. Rewrite using `[add_mul, mul_add, mul_add, add_mul, mul_add, mul_add, hA, hCC]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lower_left_commute_of_laws (hSc : SSScalar) (hSh : SSShift) (hC : SSComm) (hN : NabSS) (hLN : LevNab) (hLF : LevFns)
     (hR : RhoUp) : T21Commute := by
@@ -425,11 +423,11 @@ open Formalism.FourierDecayAlt.M Formalism.FourierDecayAlt Finset Polynomial
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[natDegree_le_iff_coeff_eq_zero]`. Introduce `m hm`. Rewrite using `[coeff_sub]`. Break down `Nat.lt_or_ge (N + 2) m with h | h` into its components or cases. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega), sub_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `: m = N + 1 ∨ m = N + 2` using `by omega`. Break down `this with rfl | rfl` into its components or cases. Rewrite `hn` using `[nextCoeff_of_natDegree_pos (by omega), nextCoeff_of_natDegree_pos (by omega), d1, d2]`. Establish `e : N + 2 - 1 = N + 1` using `by omega`. Rewrite `hn` using `[e]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hn, sub_self]`. Establish `a1 : p1.coeff (N + 2) = 1` using `by rw [← d1]; exact h1.coeff_natDegree`. Establish `a2 : p2.coeff (N + 2) = 1` using `by rw [← d2]; exact h2.coeff_natDegree`. Rewrite using `[a1, a2, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_sub_le_of_next (p1 p2 : ℂ[X]) (N : ℕ) (h1 : p1.Monic) (h2 : p2.Monic)
     (d1 : p1.natDegree = N + 2) (d2 : p2.natDegree = N + 2) (hn : p1.nextCoeff = p2.nextCoeff) :
@@ -452,13 +450,13 @@ theorem natDegree_sub_le_of_next (p1 p2 : ℂ[X]) (N : ℕ) (h1 : p1.Monic) (h2 
 def pa (s : Finset ℕ) (ρ : ℕ → ℂ) : ℂ[X] := ∏ i ∈ s, (X + C (ρ i))
 
 /- English proof (translation)
-The claim follows from `monic_prod_of_monic _ _ (fun _ _ => monic_X_add_C _)`.
+A detailed English derivation is pending.
 -/
 theorem pa_monic (s : Finset ℕ) (ρ : ℕ → ℂ) : (pa s ρ).Monic :=
   monic_prod_of_monic _ _ (fun _ _ => monic_X_add_C _)
 
 /- English proof (translation)
-Unfold `pa`. Rewrite using `[natDegree_prod_of_monic _ _ (fun i _ => monic_X_add_C _)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pa_natDegree (s : Finset ℕ) (ρ : ℕ → ℂ) : (pa s ρ).natDegree = s.card := by
   unfold pa
@@ -466,7 +464,7 @@ theorem pa_natDegree (s : Finset ℕ) (ρ : ℕ → ℂ) : (pa s ρ).natDegree =
   simp
 
 /- English proof (translation)
-Unfold `pa`. Rewrite using `[Monic.nextCoeff_prod _ _ (fun i _ => monic_X_add_C _)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pa_nextCoeff (s : Finset ℕ) (ρ : ℕ → ℂ) : (pa s ρ).nextCoeff = ∑ i ∈ s, ρ i := by
   unfold pa
@@ -474,29 +472,29 @@ theorem pa_nextCoeff (s : Finset ℕ) (ρ : ℕ → ℂ) : (pa s ρ).nextCoeff =
   simp
 
 /- English proof (translation)
-Simplify using `[pa, eval_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pa_eval (s : Finset ℕ) (ρ : ℕ → ℂ) (Y : ℂ) : (pa s ρ).eval Y = ∏ i ∈ s, (Y + ρ i) := by
   simp [pa, eval_prod]
 
 /- English proof (translation)
-The claim follows from `(Finset.mul_prod_erase s _ hl).symm`.
+A detailed English derivation is pending.
 -/
 theorem pa_erase (s : Finset ℕ) (ρ : ℕ → ℂ) (l : ℕ) (hl : l ∈ s) :
     pa s ρ = (X + C (ρ l)) * pa (s.erase l) ρ := (Finset.mul_prod_erase s _ hl).symm
 
 /- English proof (translation)
-The claim follows from `Finset.dvd_prod_of_mem _ hl`.
+A detailed English derivation is pending.
 -/
 theorem fac_dvd (s : Finset ℕ) (ρ : ℕ → ℂ) (l : ℕ) (hl : l ∈ s) : X + C (ρ l) ∣ pa s ρ :=
   Finset.dvd_prod_of_mem _ hl
 
 /- English proof (translation)
-Unfold `pa`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `i hi j hj hij show IsCoprime (X + C (ρ i)) (X + C (ρ j))`. Establish `e : ∀ a : ℂ, (X + C a : ℂ[X]) = X - C (-a)` using `by intro a; simp`. Rewrite using `[e, e]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `isCoprime_X_sub_C_of_isUnit_sub` to reduce the goal to its premises. Apply `IsUnit.mk0` to reduce the goal to its premises. Introduce `h0`. Conclude with `hij (hinj i hi j hj (by linear_combination -h0))`. Introduce `l hl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (X + C (ρ l) : ℂ[X]) = X - C (-ρ l)` using `by simp`. Rewrite using `[e, dvd_iff_isRoot]`. Conclude with `h l hl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pa_dvd (s : Finset ℕ) (ρ : ℕ → ℂ) (hinj : ∀ i ∈ s, ∀ j ∈ s, ρ i = ρ j → i = j) (F : ℂ[X])
     (h : ∀ l ∈ s, F.eval (-ρ l) = 0) : pa s ρ ∣ F := by
@@ -520,7 +518,7 @@ def DD (s : Finset ℕ) (ρ : ℕ → ℂ) (c : ℂ) (q1 : ℂ[X]) (N M : ℕ �
     (∑ l ∈ s, C (N l) * (pa s ρ * pa (s.erase l) (fun i => ρ i + 1)))
 
 /- English proof (translation)
-Simplify using `only [DD, eval_sub, eval_add, eval_mul, eval_C, eval_finsetSum, pa_eval]`.
+Simplify using the standard rewrite rules.
 -/
 theorem DD_eval (s : Finset ℕ) (ρ : ℕ → ℂ) (c : ℂ) (q1 : ℂ[X]) (N M : ℕ → ℂ) (Y : ℂ) :
     (DD s ρ c q1 N M).eval Y =
@@ -529,9 +527,9 @@ theorem DD_eval (s : Finset ℕ) (ρ : ℕ → ℂ) (c : ℂ) (q1 : ℂ[X]) (N M
   simp only [DD, eval_sub, eval_add, eval_mul, eval_C, eval_finsetSum, pa_eval]
 
 /- English proof (translation)
-Rewrite using `[DD_eval]`. Establish `z : ∏ j ∈ s, (-ρ l + ρ j) = 0` using `Finset.prod_eq_zero hl (by ring)`. Establish `z2 : (∑ m ∈ s, N m * ((∏ j ∈ s, (-ρ l + ρ j)) * ∏ j ∈ s.erase m, (-ρ l + (ρ j + 1)))) = 0` using `Finset.sum_eq_zero (fun j _ => by rw [z]; ring)`. Establish `z3 : (∑ m ∈ s, M m * ((∏ j ∈ s.erase m, (-ρ l + ρ j)) * ∏ j ∈ s, (-ρ l + (ρ j + 1)))) = M l * ((∏ j ∈ s.erase l, (-ρ l + ρ j)) * ∏ j ∈ s, (-ρ l + (ρ j + 1)))`. Apply `Finset.sum_eq_single l` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _ hj`. Rewrite using `[Finset.prod_eq_zero (i := l) (Finset.mem_erase.2 ⟨fun h => hj h.symm, hl⟩) (by ring)]; ring`. Introduce `h`. Conclude with `absurd hl h`. Rewrite using `[z2, z3, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DD_eval_a (s : Finset ℕ) (ρ : ℕ → ℂ) (c : ℂ) (q1 : ℂ[X]) (N M : ℕ → ℂ) (l : ℕ) (hl : l ∈ s) :
     (DD s ρ c q1 N M).eval (-ρ l) =
@@ -549,9 +547,9 @@ theorem DD_eval_a (s : Finset ℕ) (ρ : ℕ → ℂ) (c : ℂ) (q1 : ℂ[X]) (N
   rw [z2, z3, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[DD_eval]`. Establish `z : ∏ j ∈ s, (-(ρ l + 1) + (ρ j + 1)) = 0` using `Finset.prod_eq_zero hl (by ring)`. Establish `z2 : (∑ m ∈ s, M m * ((∏ j ∈ s.erase m, (-(ρ l + 1) + ρ j)) * ∏ j ∈ s, (-(ρ l + 1) + (ρ j + 1)))) = 0` using `Finset.sum_eq_zero (fun j _ => by rw [z]; ring)`. Establish `z3 : (∑ m ∈ s, N m * ((∏ j ∈ s, (-(ρ l + 1) + ρ j)) * ∏ j ∈ s.erase m, (-(ρ l + 1) + (ρ j + 1)))) = N l * ((∏ j ∈ s, (-(ρ l + 1) + ρ j)) * ∏ j ∈ s.erase l, (-(ρ l + 1) + (ρ j + 1)))`. Apply `Finset.sum_eq_single l` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _ hj`. Rewrite using `[Finset.prod_eq_zero (s := s.erase j) (i := l) (Finset.mem_erase.2 ⟨fun h => hj h.symm, hl⟩) (by ring)]; ring`. Introduce `h`. Conclude with `absurd hl h`. Rewrite using `[z2, z3, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DD_eval_b (s : Finset ℕ) (ρ : ℕ → ℂ) (c : ℂ) (q1 : ℂ[X]) (N M : ℕ → ℂ) (l : ℕ) (hl : l ∈ s) :
     (DD s ρ c q1 N M).eval (-(ρ l + 1)) =
@@ -570,27 +568,23 @@ theorem DD_eval_b (s : Finset ℕ) (ρ : ℕ → ℂ) (c : ℂ) (q1 : ℂ[X]) (N
   rw [z2, z3, add_zero]
 
 /- English proof (translation)
-Take `⟨D1, hD1⟩` from `pa_dvd s ρ hinj (DD s ρ c q1 N M) (fun l hl => by rw [DD_eval_a _ _ _ _ _ _ l hl]; exact H1 l hl)`. Establish `key : pa s (fun i => ρ i + 1) ∣ D1`. Apply `pa_dvd s (fun i => ρ i + 1) (fun i hi j hj h => hinj i hi j hj (add_right_cancel h))` to reduce the goal to its premises. Introduce `l hl`. Use `show D1.eval (-(ρ l + 1)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD0 : (DD s ρ c q1 N M).eval (-(ρ l + 1)) = 0`. Rewrite using `[DD_eval_b _ _ _ _ _ _ l hl]`. Conclude with `H2 l hl`. Distinguish the cases in `hdeg : ∃ m ∈ s, ρ m = ρ l + 1`. Take `⟨m, hm, hml⟩` from `hdeg`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hN, hM, hq⟩` from `H3 l hl m hm hml`. Establish `ht0 : (X + C (ρ l + 1) : ℂ[X]) ≠ 0` using `(monic_X_add_C _).ne_zero`. Establish `hta : ∀ s' : Finset ℕ, m ∈ s' → (X + C (ρ l + 1) : ℂ[X]) ∣ pa s' ρ`. Introduce `s' h`. Use `fac_dvd s' ρ m h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hml]`. Then use the resulting hypothesis. Establish `htb : ∀ s' : Finset ℕ, l ∈ s' → (X + C (ρ l + 1) : ℂ[X]) ∣ pa s' (fun i => ρ i + 1)` using `fun s' h => fac_dvd s' (fun i => ρ i + 1) l h`. Establish `htt : (X + C (ρ l + 1) : ℂ[X]) * (X + C (ρ l + 1)) ∣ DD s ρ c q1 N M`. Unfold `DD`. Use `dvd_sub (dvd_add (Dvd.dvd.mul_left hq _) (Finset.dvd_sum ?_)) (Finset.dvd_sum ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j hj`. Distinguish the cases in `hjm : j = m`. Rewrite using `[hjm, hM]`. Simplify using the standard rewrite rules. Conclude with `Dvd.dvd.mul_left (mul_dvd_mul (hta _ (Finset.mem_erase.2 ⟨fun h => hjm h.symm, hm⟩)) (htb _ hl)) _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Distinguish the cases in `hjl : j = l`. Rewrite using `[hjl, hN]`. Simplify using the standard rewrite rules. Conclude with `Dvd.dvd.mul_left (mul_dvd_mul (hta _ hm) (htb _ (Finset.mem_erase.2 ⟨fun h => hjl h.symm, hl⟩))) _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpa : pa s ρ = (X + C (ρ l + 1)) * pa (s.erase m) ρ` using `by rw [pa_erase s ρ m hm, hml]`. Rewrite `htt` using `[hD1, hpa, mul_assoc]`. Establish `h3 : (X + C (ρ l + 1) : ℂ[X]) ∣ pa (s.erase m) ρ * D1` using `(mul_dvd_mul_iff_left ht0).1 htt`. Establish `e : (X + C (ρ l + 1) : ℂ[X]) = X - C (-(ρ l + 1))` using `by rw [C_neg, sub_neg_eq_add]`. Rewrite `h3` using `[e, dvd_iff_isRoot, IsRoot.def, eval_mul, pa_eval]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. It suffices to derive a contradiction. Rewrite `h4` using `[Finset.prod_eq_zero_iff]`. Take `⟨j, hj, hj0⟩` from `h4`. Establish `: ρ j = ρ m` using `by rw [hml]; linear_combination hj0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Conclude with `(Finset.mem_erase.1 hj).1 (hinj j (Finset.mem_erase.1 hj).2 m hm this)`. Conclude with `h4`. Establish `hdeg : ∀ j ∈ s, ρ j ≠ ρ l + 1` using `fun j hj h => hdeg ⟨j, hj, h⟩`. Rewrite `hD0` using `[hD1, eval_mul, pa_eval]`. Break down `mul_eq_zero.1 hD0 with h4 | h4` into its components or cases.
-
-It suffices to derive a contradiction. Rewrite `h4` using `[Finset.prod_eq_zero_iff]`. Take `⟨j, hj, hj0⟩` from `h4`. Conclude with `hdeg j hj (by linear_combination hj0)`. Conclude with `h4`.
-
-Rewrite using `[hD1]`. Conclude with `mul_dvd_mul_left _ key`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DD_dvd (s : Finset ℕ) (ρ : ℕ → ℂ) (hinj : ∀ i ∈ s, ∀ j ∈ s, ρ i = ρ j → i = j)
     (c : ℂ) (q1 : ℂ[X]) (N M : ℕ → ℂ)
@@ -652,25 +646,25 @@ theorem DD_dvd (s : Finset ℕ) (ρ : ℕ → ℂ) (hinj : ∀ i ∈ s, ∀ j �
   exact mul_dvd_mul_left _ key
 
 /- English proof (translation)
-Establish `hdv` using `DD_dvd s ρ hinj c q1 N M H1 H2 H3`. Generalize the expression as in `hX12 : pa s ρ * pa s (fun i => ρ i + 1) = coord_mul_inv_coord_eq_one at hdv ⊢`. Establish `hXm : coord_mul_inv_coord_eq_one.Monic` using `by rw [← hX12]; exact (pa_monic _ _).mul (pa_monic _ _)`. Establish `hXd : coord_mul_inv_coord_eq_one.natDegree = 2 * s.card`. Rewrite using `[← hX12, Monic.natDegree_mul (pa_monic _ _) (pa_monic _ _), pa_natDegree, pa_natDegree]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hXn : coord_mul_inv_coord_eq_one.nextCoeff = ∑ i ∈ s, ρ i + ∑ i ∈ s, (ρ i + 1)`. Rewrite using `[← hX12, Monic.nextCoeff_mul (pa_monic _ _) (pa_monic _ _), pa_nextCoeff, pa_nextCoeff]`. Generalize the expression as in `hg : ((X + C 0) * (X + C e) : ℂ[X]) = g`. Establish `hgm : g.Monic` using `by rw [← hg]; exact (monic_X_add_C _).mul (monic_X_add_C _)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hgd : g.natDegree = 2`. Rewrite using `[← hg, Monic.natDegree_mul (monic_X_add_C _) (monic_X_add_C _), natDegree_X_add_C, natDegree_X_add_C]`. Establish `hgn : g.nextCoeff = e`. Rewrite using `[← hg, Monic.nextCoeff_mul (monic_X_add_C _) (monic_X_add_C _), nextCoeff_X_add_C, nextCoeff_X_add_C]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : (q1 - coord_mul_inv_coord_eq_one * g).natDegree ≤ 2 * s.card`. Apply `natDegree_sub_le_of_next _ _ _ hq1 (hXm.mul hgm) hdeg` to reduce the goal to its premises. Rewrite using `[Monic.natDegree_mul hXm hgm, hXd, hgd]`. Rewrite using `[Monic.nextCoeff_mul hXm hgm, hXn, hgn, he]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hR : (DD s ρ c q1 N M - C c * (coord_mul_inv_coord_eq_one * g)).natDegree ≤ 2 * s.card`. Establish `: DD s ρ c q1 N M - C c * (coord_mul_inv_coord_eq_one * g) = C c * (q1 - coord_mul_inv_coord_eq_one * g) + ((∑ l ∈ s, C (M l) * (pa (s.erase l) ρ * pa s (fun i => ρ i + 1))) - (∑ l ∈ s, C (N l) * (pa s ρ * pa (s.erase l) (fun i => ρ i + 1))))`. Unfold `DD`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `natDegree_add_le_of_degree_le ((natDegree_C_mul_le _ _).trans h1) ((natDegree_sub_le_of_le ?_ ?_).trans (le_of_eq (max_self _)))` and prove the remaining obligations. Apply `natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `l hl`. Use `(natDegree_C_mul_le _ _).trans (natDegree_mul_le.trans ?_)` and prove the remaining obligations. Rewrite using `[pa_natDegree, pa_natDegree, Finset.card_erase_of_mem hl]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Apply `natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `l hl`. Use `(natDegree_C_mul_le _ _).trans (natDegree_mul_le.trans ?_)` and prove the remaining obligations. Rewrite using `[pa_natDegree, pa_natDegree, Finset.card_erase_of_mem hl]`.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨S, hS⟩ : coord_mul_inv_coord_eq_one ∣ DD s ρ c q1 N M - C c * (coord_mul_inv_coord_eq_one * g)` from `dvd_sub hdv (Dvd.dvd.mul_left (dvd_mul_right _ _) _)`. Establish `hS0 : S.natDegree = 0`. Distinguish the cases in `h0 : S = 0`. Rewrite using `[h0]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `hR` using `[hS, Monic.natDegree_mul' hXm h0, hXd]`. Use linear arithmetic over natural numbers and integers. Use `⟨S.coeff 0, ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_C_of_natDegree_eq_zero hS0]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hS`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem DD_quot (s : Finset ℕ) (ρ : ℕ → ℂ) (hinj : ∀ i ∈ s, ∀ j ∈ s, ρ i = ρ j → i = j)
     (c : ℂ) (q1 : ℂ[X]) (N M : ℕ → ℂ)
@@ -727,17 +721,17 @@ theorem DD_quot (s : Finset ℕ) (ρ : ℕ → ℂ) (hinj : ∀ i ∈ s, ∀ j �
   linear_combination hS
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `DD_quot s ρ hinj c q1 N M H1 H2 H3 hq1 hdeg e he`. Use `⟨r, fun Y ha hb => ?_⟩` and prove the remaining obligations. Establish `hE` using `congrArg (eval Y) hr`. Rewrite `hE` using `[DD_eval]`. Simplify using `only [eval_mul, eval_add, eval_C, eval_X, pa_eval, add_zero] at hE`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hA0 : (∏ i ∈ s, (Y + ρ i)) ≠ 0` using `Finset.prod_ne_zero_iff.2 ha`. Establish `hB0 : (∏ i ∈ s, (Y + (ρ i + 1))) ≠ 0` using `Finset.prod_ne_zero_iff.2 hb`. Establish `e1 : (∑ l ∈ s, M l * ((∏ j ∈ s.erase l, (Y + ρ j)) * ∏ j ∈ s, (Y + (ρ j + 1)))) = (∏ i ∈ s, (Y + ρ i)) * (∏ i ∈ s, (Y + (ρ i + 1))) * ∑ l ∈ s, M l * (Y + ρ l)⁻¹`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun l hl => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.mul_prod_erase s (fun i => Y + ρ i) hl]`. Establish `hinv` using `mul_inv_cancel₀ (ha l hl)`. Take the linear combination `(-(M l * ((∏ j ∈ s.erase l, (Y + ρ j)) * ∏ j ∈ s, (Y + (ρ j + 1))))) * hinv`. Establish `e2 : (∑ l ∈ s, N l * ((∏ j ∈ s, (Y + ρ j)) * ∏ j ∈ s.erase l, (Y + (ρ j + 1)))) = (∏ i ∈ s, (Y + ρ i)) * (∏ i ∈ s, (Y + (ρ i + 1))) * ∑ l ∈ s, N l * (Y + (ρ l + 1))⁻¹`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun l hl => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase s (fun i => Y + (ρ i + 1)) hl]`. Establish `hinv` using `mul_inv_cancel₀ (hb l hl)`. Take the linear combination `(-(N l * ((∏ j ∈ s, (Y + ρ j)) * ∏ j ∈ s.erase l, (Y + (ρ j + 1))))) * hinv`. Rewrite `hE` using `[e1, e2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `(∏ i ∈ s, (Y + ρ i)) = A at hE hA0 ⊢`. Generalize the expression as in `(∏ i ∈ s, (Y + (ρ i + 1))) = B at hE hB0 ⊢`. Establish `hAB : A * B * (A⁻¹ * B⁻¹) = 1`. Rewrite using `[mul_mul_mul_comm, mul_inv_cancel₀ hA0, mul_inv_cancel₀ hB0, mul_one]`. Establish `h5 : c * eval Y q1 = (c * (Y * (Y + e)) + r - (∑ l ∈ s, M l * (Y + ρ l)⁻¹) + (∑ l ∈ s, N l * (Y + (ρ l + 1))⁻¹)) * (A * B)` using `by linear_combination hE`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h5, mul_assoc, hAB, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pf_abs (s : Finset ℕ) (ρ : ℕ → ℂ) (hinj : ∀ i ∈ s, ∀ j ∈ s, ρ i = ρ j → i = j)
     (c : ℂ) (q1 : ℂ[X]) (N M : ℕ → ℂ)
@@ -786,15 +780,15 @@ def q1P (P : Par) : ℂ[X] :=
   ∏ i ∈ Icc 1 P.k, ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ))))
 
 /- English proof (translation)
-The claim follows from `monic_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))`.
+A detailed English derivation is pending.
 -/
 theorem q_polynomial_monic (P : Par) : (q1P P).Monic :=
   monic_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))
 
 /- English proof (translation)
-Unfold `q1P`. Rewrite using `[natDegree_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))]`. Establish `: ∀ i ∈ Icc 1 P.k, ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ)))).natDegree = 2`. Introduce `i _`. Rewrite using `[Monic.natDegree_mul (monic_X_add_C _) (monic_X_add_C _), natDegree_X_add_C, natDegree_X_add_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl this]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem natDegree_q1_polynomial (P : Par) : (q1P P).natDegree = 2 * P.k := by
   unfold q1P
@@ -806,7 +800,7 @@ theorem natDegree_q1_polynomial (P : Par) : (q1P P).natDegree = 2 * P.k := by
   simp [mul_comm]
 
 /- English proof (translation)
-Unfold `q1P`. Rewrite using `[Monic.nextCoeff_prod _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Monic.nextCoeff_mul (monic_X_add_C _) (monic_X_add_C _), nextCoeff_X_add_C, nextCoeff_X_add_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem q_polynomial_next_coeff (P : Par) :
     (q1P P).nextCoeff = ∑ i ∈ Icc 1 P.k, ((1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ))) := by
@@ -816,7 +810,7 @@ theorem q_polynomial_next_coeff (P : Par) :
   rw [Monic.nextCoeff_mul (monic_X_add_C _) (monic_X_add_C _), nextCoeff_X_add_C, nextCoeff_X_add_C]
 
 /- English proof (translation)
-Unfold `qC q1P`. Simplify using `only [eval_prod, eval_mul, eval_add, eval_X, eval_C]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl (fun i _ => by ring)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem qC_eq (P : Par) (Y : ℂ) : qC P Y = -((P.T : ℂ) * P.T') * (q1P P).eval Y := by
   unfold qC q1P
@@ -825,15 +819,15 @@ theorem qC_eq (P : Par) (Y : ℂ) : qC P Y = -((P.T : ℂ) * P.T') * (q1P P).eva
   exact Finset.prod_congr rfl (fun i _ => by ring)
 
 /- English proof (translation)
-Establish `hl'` using `Finset.mem_Icc.1 hl`. Distinguish the cases in `h : ∃ π', Up P l π' π`. Take `⟨π', hU⟩` from `h`. Establish `hp` using `(Mx3.nrmFacts P hP l hl π').1 π hU`. Establish `hpos : 0 < NrmDown P l π` using `by rw [hp.2]; exact hp.1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ((∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l + 1)) * ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l)) ≠ 0`. Introduce `h0`. Unfold `NrmDown at hpos`. Rewrite `hpos` using `[h0, div_zero]`. Conclude with `lt_irrefl _ hpos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `NrmDown`. Conclude with `div_mul_cancel₀ _ hD`. Rewrite using `[(Mx3.nrmFacts P hP l hl π).2.2 h]`. Establish `ht` using `Mx3.bot P l hl π h`. Establish `h0 : I.qpoly P.k P.T P.T' P.u P.u' (-rho P π l) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `I.qpoly`. Establish `: ∏ i ∈ Icc 1 P.k, ((-rho P π l + 1 / 2 + P.u i) * (-rho P π l + 1 / 2 + P.u' i)) = 0`. Apply `Finset.prod_eq_zero (i := l + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)` to reduce the goal to its premises. Rewrite using `[ht]`. Unfold `Par.lo`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases max_choice (P.u (l + 1)) (P.u' (l + 1)) with h | h <;> rw [h] <;> ring`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nrmDown_key (P : Par) (hP : P.OK) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) (π : Ty P) :
     NrmDown P l π * ((∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l + 1)) *
@@ -864,9 +858,7 @@ theorem nrmDown_key (P : Par) (hP : P.OK) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1))
     rw [h0]; simp
 
 /- English proof (translation)
-Introduce `i hi j hj h`. Establish `h2 : rho P π i = rho P π j` using `by exact_mod_cast h`. Break down `lt_trichotomy i j with h1 | h1 | h1` into its components or cases. Conclude with `absurd h2 (ne_of_gt (Mx3.rho_inj P hP π i j hi hj h1))`. Conclude with `h1`.
-
-Conclude with `absurd h2 (ne_of_lt (Mx3.rho_inj P hP π j i hj hi h1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem rhoC_inj (P : Par) (hP : P.OK) (π : Ty P) : ∀ i ∈ Icc 1 (P.k - 1), ∀ j ∈ Icc 1 (P.k - 1),
     (rho P π i : ℂ) = (rho P π j : ℂ) → i = j := by
@@ -878,9 +870,9 @@ theorem rhoC_inj (P : Par) (hP : P.OK) (π : Ty P) : ∀ i ∈ Icc 1 (P.k - 1), 
   · exact absurd h2 (ne_of_lt (Mx3.rho_inj P hP π j i hj hi h1))
 
 /- English proof (translation)
-Introduce `l hl`. Establish `hk` using `congrArg (fun x : ℝ => (x : ℂ)) (nrmDown_key P hP l hl π)`. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_prod, Complex.ofReal_sub, Complex.ofReal_add, Complex.ofReal_neg, Complex.ofReal_one] at hk`. Establish `hq` using `(Mx3.realPoints P π (-rho P π l)).2`. Rewrite `hq` using `[Complex.ofReal_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← qC_eq, hq, ← Finset.mul_prod_erase _ _ hl]`. Establish `e1 : ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (-(rho P π l : ℂ) + (rho P π j : ℂ)) = ∏ j ∈ (Icc 1 (P.k - 1)).erase l, ((rho P π j : ℂ) - rho P π l)` using `Finset.prod_congr rfl (fun j _ => by ring)`. Establish `e2 : ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (-(rho P π l : ℂ) + ((rho P π j : ℂ) + 1)) = ∏ j ∈ (Icc 1 (P.k - 1)).erase l, ((rho P π j : ℂ) - rho P π l + 1)` using `Finset.prod_congr rfl (fun j _ => by ring)`. Rewrite using `[e1, e2]`. Take the linear combination `hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem moduleH1Alt (P : Par) (hP : P.OK) (π : Ty P) : ∀ l ∈ Icc 1 (P.k - 1),
     -((P.T : ℂ) * P.T') * (q1P P).eval (-(rho P π l : ℂ)) + (NrmDown P l π : ℂ) *
@@ -903,11 +895,11 @@ theorem moduleH1Alt (P : Par) (hP : P.OK) (π : Ty P) : ∀ l ∈ Icc 1 (P.k - 1
   linear_combination hk
 
 /- English proof (translation)
-Introduce `l hl`. Establish `hk` using `congrArg (fun x : ℝ => (x : ℂ)) (Mx3.nrm_key P hP l hl π)`. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_prod, Complex.ofReal_sub, Complex.ofReal_neg, Complex.ofReal_one] at hk`. Establish `hq` using `(Mx3.realPoints P π (-rho P π l - 1)).2`. Establish `e0 : ((-rho P π l - 1 : ℝ) : ℂ) = -((rho P π l : ℂ) + 1)` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hq` using `[e0]`. Rewrite using `[← qC_eq, hq, ← Finset.mul_prod_erase _ _ hl]`. Establish `e1 : ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (-((rho P π l : ℂ) + 1) + (rho P π j : ℂ)) = ∏ j ∈ (Icc 1 (P.k - 1)).erase l, ((rho P π j : ℂ) - rho P π l - 1)` using `Finset.prod_congr rfl (fun j _ => by ring)`. Establish `e2 : ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (-((rho P π l : ℂ) + 1) + ((rho P π j : ℂ) + 1)) = ∏ j ∈ (Icc 1 (P.k - 1)).erase l, ((rho P π j : ℂ) - rho P π l)` using `Finset.prod_congr rfl (fun j _ => by ring)`. Rewrite using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hk`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem residue_quadratic_identity (P : Par) (hP : P.OK) (π : Ty P) : ∀ l ∈ Icc 1 (P.k - 1),
     -((P.T : ℂ) * P.T') * (q1P P).eval (-((rho P π l : ℂ) + 1)) - (Nrm P l π : ℂ) *
@@ -931,17 +923,17 @@ theorem residue_quadratic_identity (P : Par) (hP : P.OK) (π : Ty P) : ∀ l ∈
   linear_combination hk
 
 /- English proof (translation)
-Introduce `l hl m hm h`. Establish `hl'` using `Finset.mem_Icc.1 hl`. Establish `hr : rho P π m = rho P π l + 1` using `by exact_mod_cast h`. Establish `hml : m < l`. Break down `lt_trichotomy m l with h1 | h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1`. Rewrite `hr` using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Mx3.rho_inj P hP π l m hl hm h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l - 1) = 0` using `Finset.prod_eq_zero (i := m) (Finset.mem_erase.2 ⟨ne_of_lt hml, hm⟩) (by rw [hr]; ring)`. Unfold `Nrm`. Rewrite using `[this, mul_zero, div_zero, Complex.ofReal_zero]`. Establish `: ∏ j ∈ (Icc 1 (P.k - 1)).erase m, (rho P π j - rho P π m + 1) = 0` using `Finset.prod_eq_zero (i := l) (Finset.mem_erase.2 ⟨ne_of_gt hml, hl⟩) (by rw [hr]; ring)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `NrmDown`. Rewrite using `[this, zero_mul, div_zero, Complex.ofReal_zero]`. Establish `hI` using `Mx3.tyInterlaces P hP π`. Establish `o3` using `(Mx3.ord P.k P.u P.u' (rho P π) hI l hl).2.2.1 m hm hml`. Establish `b` using `hI l hl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : P.u l = rho P π l + 1 / 2` using `by linarith [o3.1, b.1]`. Establish `hu' : P.u' l = rho P π l + 1 / 2` using `by linarith [o3.2, b.2.1]`. Establish `hd : (X + C (1 / 2 + (P.u l : ℂ))) * (X + C (1 / 2 + (P.u' l : ℂ))) ∣ q1P P` using `Finset.dvd_prod_of_mem (fun i => (X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ)))) (Finset.mem_Icc.2 ⟨hl'.1, by omega⟩)`. Establish `e1 : (1 / 2 + (P.u l : ℂ)) = (rho P π l : ℂ) + 1` using `by rw [hu]; push_cast; ring`. Establish `e2 : (1 / 2 + (P.u' l : ℂ)) = (rho P π l : ℂ) + 1` using `by rw [hu']; push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hd` using `[e1, e2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem double_root_of_adjacent_rho (P : Par) (hP : P.OK) (π : Ty P) : ∀ l ∈ Icc 1 (P.k - 1), ∀ m ∈ Icc 1 (P.k - 1),
     (rho P π m : ℂ) = (rho P π l : ℂ) + 1 → (Nrm P l π : ℂ) = 0 ∧ (NrmDown P m π : ℂ) = 0 ∧
@@ -976,9 +968,9 @@ theorem double_root_of_adjacent_rho (P : Par) (hP : P.OK) (π : Ty P) : ∀ l �
     rwa [e1, e2] at hd
 
 /- English proof (translation)
-Rewrite using `[q_polynomial_next_coeff]`. Establish `s1 : ∑ i ∈ Icc 1 P.k, ((1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ))) = (P.k : ℂ) + ∑ i ∈ Icc 1 P.k, ((P.u i : ℂ) + (P.u' i : ℂ))`. Rewrite using `[Finset.sum_congr rfl (fun i _ => show ((1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ))) = 1 + ((P.u i : ℂ) + (P.u' i : ℂ)) by ring), Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Establish `s2 : ∑ i ∈ Icc 1 (P.k - 1), ((rho P π i : ℂ) + 1) = (∑ i ∈ Icc 1 (P.k - 1), (rho P π i : ℂ)) + ((P.k : ℂ) - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_add_distrib]`. Simplify using `[Nat.cast_sub hP.k_pos]`. Rewrite using `[s1, s2]`. Unfold `aC`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -1001,17 +993,17 @@ theorem modE (P : Par) (hP : P.OK) (π : Ty P) :
   ring
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `pf_abs (Icc 1 (P.k - 1)) (fun i => (rho P π i : ℂ)) (rhoC_inj P hP π) (-((P.T : ℂ) * P.T')) (q1P P) (fun l => (Nrm P l π : ℂ)) (fun l => (NrmDown P l π : ℂ)) (moduleH1Alt P hP π) (residue_quadratic_identity P hP π) (double_root_of_adjacent_rho P hP π) (q_polynomial_monic P) (by r …`. Establish `f0 : ∀ i ∈ Icc 1 (P.k - 1), u - 1 + (rho P π i : ℂ) ≠ 0` using `Finset.prod_ne_zero_iff.1 h0`. Establish `f1 : ∀ i ∈ Icc 1 (P.k - 1), u + (rho P π i : ℂ) ≠ 0` using `Finset.prod_ne_zero_iff.1 h1`. Establish `f2 : ∀ i ∈ Icc 1 (P.k - 1), u + 1 + (rho P π i : ℂ) ≠ 0` using `Finset.prod_ne_zero_iff.1 h2`. Establish `E0` using `hr (u - 1) f0 (fun i hi h => f1 i hi (by linear_combination h))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E1` using `hr u f1 (fun i hi h => f2 i hi (by linear_combination h))`. Establish `p0 : ∏ i ∈ Icc 1 (P.k - 1), (u - 1 + ((rho P π i : ℂ) + 1)) = xC P π u` using `Finset.prod_congr rfl (fun i _ => by ring)`. Establish `p1 : ∏ i ∈ Icc 1 (P.k - 1), (u + ((rho P π i : ℂ) + 1)) = xC P π (u + 1)` using `Finset.prod_congr rfl (fun i _ => by ring)`. Establish `x0 : ∏ i ∈ Icc 1 (P.k - 1), (u - 1 + (rho P π i : ℂ)) = xC P π (u - 1)` using `rfl`. Establish `x1 : ∏ i ∈ Icc 1 (P.k - 1), (u + (rho P π i : ℂ)) = xC P π u` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `E0` using `[p0, x0, ← qC_eq]`. Rewrite `E1` using `[p1, x1, ← qC_eq]`. Rewrite using `[E0, E1]`. Establish `T : ∀ l ∈ Icc 1 (P.k - 1), ((Nrm P l π : ℂ) * ((u + rho P π l)⁻¹ * (u + rho P π l + 1)⁻¹) - (NrmDown P l π : ℂ) * ((u + rho P π l)⁻¹ * (u + rho P π l - 1)⁻¹)) = -((NrmDown P l π : ℂ) * (u - 1 + (rho P π l : ℂ))⁻¹) + (Nrm P l π : ℂ) * (u - 1 + ((rho P π l : ℂ) + 1))⁻¹ + (NrmDown P …`. Introduce `l hl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show u - 1 + ((rho P π l : ℂ) + 1) = u + rho P π l by ring, show u + ((rho P π l : ℂ) + 1) = u + rho P π l + 1 by ring, show u - 1 + (rho P π l : ℂ) = u + rho P π l - 1 by ring]`. Establish `hx` using `mul_inv_cancel₀ (f1 l hl)`. Establish `hy : (u + rho P π l + 1) * (u + rho P π l + 1)⁻¹ = 1` using `mul_inv_cancel₀ (fun h => f2 l hl (by linear_combination h))`. Establish `hz : (u + rho P π l - 1) * (u + rho P π l - 1)⁻¹ = 1` using `mul_inv_cancel₀ (fun h => f0 l hl (by linear_combination h))`. Establish `hxy : (u + rho P π l)⁻¹ * (u + rho P π l + 1)⁻¹ = (u + rho P π l)⁻¹ - (u + rho P π l + 1)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(-(u + rho P π l + 1)⁻¹) * hx + (u + rho P π l)⁻¹ * hy`. Establish `hxz : (u + rho P π l)⁻¹ * (u + rho P π l - 1)⁻¹ = (u + rho P π l - 1)⁻¹ - (u + rho P π l)⁻¹`. Take the linear combination `(u + rho P π l - 1)⁻¹ * hx - (u + rho P π l)⁻¹ * hz`. Take the linear combination `(Nrm P l π : ℂ) * hxy - (NrmDown P l π : ℂ) * hxz`. Rewrite using `[Finset.sum_congr rfl T, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_neg_distrib]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hTT : (P.TT : ℂ) = (P.T : ℂ) * P.T'` using `by unfold Par.TT; push_cast; ring`. Rewrite using `[hTT]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pf (P : Par) (hP : P.OK) (π : Ty P) (u : ℂ) (h0 : xC P π (u - 1) ≠ 0) (h1 : xC P π u ≠ 0)
     (h2 : xC P π (u + 1) ≠ 0) :
@@ -1083,23 +1075,23 @@ Both sides reduce to the same expression.
 theorem ev_apply (Y : ℂ) (p : B[X]) : ev Y p = eval₂ (RingHom.id B) (algebraMap ℂ B Y) p := rfl
 
 /- English proof (translation)
-Rewrite using `[ev_apply, eval₂_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_C (Y : ℂ) (a : B) : ev Y (C a) = a := by rw [ev_apply, eval₂_C]; rfl
 
 /- English proof (translation)
-Rewrite using `[ev_apply, eval₂_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_X (Y : ℂ) : ev Y (X : B[X]) = algebraMap ℂ B Y := by rw [ev_apply, eval₂_X]
 
 /- English proof (translation)
-Rewrite using `[ev_apply, eval₂_monomial]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_monomial (Y : ℂ) (n : ℕ) (a : B) : ev Y (monomial n a) = a * algebraMap ℂ B Y ^ n := by
   rw [ev_apply, eval₂_monomial]; rfl
 
 /- English proof (translation)
-Rewrite using `[ev_apply, eval₂_eq_sum, Polynomial.sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, ← map_pow, ← Algebra.commutes, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_eq_sum (Y : ℂ) (p : B[X]) : ev Y p = ∑ i ∈ p.support, Y ^ i • p.coeff i := by
   rw [ev_apply, eval₂_eq_sum, Polynomial.sum]
@@ -1107,7 +1099,7 @@ theorem ev_eq_sum (Y : ℂ) (p : B[X]) : ev Y p = ∑ i ∈ p.support, Y ^ i •
   rw [RingHom.id_apply, ← map_pow, ← Algebra.commutes, Algebra.smul_def]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [add_comp, map_add, map_add, hp, hq]`. Consider the case `monomial n a => rw [monomial_comp, map_mul, map_pow, map_add, ev_C, ev_X, ev_C, ev_monomial, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ev_comp (Y c : ℂ) (p : B[X]) : ev Y (p.comp (X + C (algebraMap ℂ B c))) = ev (Y + c) p := by
   induction p using Polynomial.induction_on' with
@@ -1117,47 +1109,47 @@ theorem ev_comp (Y c : ℂ) (p : B[X]) : ev Y (p.comp (X + C (algebraMap ℂ B c
 def IsPoly (F : ℂ → B) : Prop := ∃ p : B[X], ∀ Y, F Y = ev Y p
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hF`. Conclude with `⟨p, fun Y => by rw [h, hp]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPoly.congr {F G : ℂ → B} (hF : IsPoly F) (h : ∀ Y, G Y = F Y) : IsPoly G := by
   obtain ⟨p, hp⟩ := hF
   exact ⟨p, fun Y => by rw [h, hp]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C a, fun Y => (ev_C Y a).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsPoly.const (a : B) : IsPoly (fun _ => a) := ⟨C a, fun Y => (ev_C Y a).symm⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hF`. Take `⟨q, hq⟩` from `hG`. Conclude with `⟨p + q, fun Y => by show F Y + G Y = _; rw [map_add, hp, hq]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPoly.add {F G : ℂ → B} (hF : IsPoly F) (hG : IsPoly G) : IsPoly (fun Y => F Y + G Y) := by
   obtain ⟨p, hp⟩ := hF; obtain ⟨q, hq⟩ := hG
   exact ⟨p + q, fun Y => by show F Y + G Y = _; rw [map_add, hp, hq]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hF`. Take `⟨q, hq⟩` from `hG`. Conclude with `⟨p - q, fun Y => by show F Y - G Y = _; rw [map_sub, hp, hq]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPoly.sub {F G : ℂ → B} (hF : IsPoly F) (hG : IsPoly G) : IsPoly (fun Y => F Y - G Y) := by
   obtain ⟨p, hp⟩ := hF; obtain ⟨q, hq⟩ := hG
   exact ⟨p - q, fun Y => by show F Y - G Y = _; rw [map_sub, hp, hq]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hF`. Conclude with `⟨-p, fun Y => by show -F Y = _; rw [map_neg, hp]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPoly.neg {F : ℂ → B} (hF : IsPoly F) : IsPoly (fun Y => -F Y) := by
   obtain ⟨p, hp⟩ := hF
   exact ⟨-p, fun Y => by show -F Y = _; rw [map_neg, hp]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hF`. Take `⟨q, hq⟩` from `hG`. Conclude with `⟨p * q, fun Y => by show F Y * G Y = _; rw [map_mul, hp, hq]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPoly.mul {F G : ℂ → B} (hF : IsPoly F) (hG : IsPoly G) : IsPoly (fun Y => F Y * G Y) := by
   obtain ⟨p, hp⟩ := hF; obtain ⟨q, hq⟩ := hG
   exact ⟨p * q, fun Y => by show F Y * G Y = _; rw [map_mul, hp, hq]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using IsPoly.const (0 : B)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsPoly.sum {ι : Type} (s : Finset ι) (F : ι → ℂ → B) (h : ∀ i ∈ s, IsPoly (F i)) :
     IsPoly (fun Y => ∑ i ∈ s, F i Y) := by
@@ -1169,24 +1161,24 @@ theorem IsPoly.sum {ι : Type} (s : Finset ι) (F : ι → ℂ → B) (h : ∀ i
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨p.map (algebraMap ℂ B), fun Y => by rw [ev_apply, eval₂_map, RingHom.id_comp, eval₂_at_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsPoly.scalar (p : ℂ[X]) : IsPoly (fun Y => algebraMap ℂ B (p.eval Y)) :=
   ⟨p.map (algebraMap ℂ B), fun Y => by rw [ev_apply, eval₂_map, RingHom.id_comp, eval₂_at_apply]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hF`. Conclude with `⟨p.comp (X + C (algebraMap ℂ B c)), fun Y => by show F (Y + c) = _; rw [ev_comp, hp]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPoly.shift {F : ℂ → B} (hF : IsPoly F) (c : ℂ) : IsPoly (fun Y => F (Y + c)) := by
   obtain ⟨p, hp⟩ := hF
   exact ⟨p.comp (X + C (algebraMap ℂ B c)), fun Y => by show F (Y + c) = _; rw [ev_comp, hp]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hF`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Establish `hev : ∀ Z, φ (F Z) = (∑ i ∈ p.support, monomial i (φ (p.coeff i)) : ℂ[X]).eval Z`. Introduce `Z`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hp, ev_eq_sum, map_sum, eval_finsetSum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, eval_monomial, smul_eq_mul, mul_comm]`. Establish `h0 : (∑ i ∈ p.support, monomial i (φ (p.coeff i)) : ℂ[X]) = 0`. Apply `eq_zero_of_infinite_isRoot` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hS.infinite_compl.mono ?_` and prove the remaining obligations. Introduce `Z hZ`. Use `show eval Z _ = 0`. Rewrite using `[← hev, h Z hZ, map_zero]`. Rewrite using `[hev, h0, eval_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPoly.eq_zero {F : ℂ → B} (hF : IsPoly F) {S : Set ℂ} (hS : S.Finite) (h : ∀ Y, Y ∉ S → F Y = 0)
     (Y : ℂ) : F Y = 0 := by
@@ -1207,7 +1199,7 @@ theorem IsPoly.eq_zero {F : ℂ → B} (hF : IsPoly F) {S : Set ℂ} (hS : S.Fin
   rw [hev, h0, eval_zero]
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 ((hF.sub hG).eq_zero hS (fun Z hZ => sub_eq_zero.2 (h Z hZ)) Y)`.
+A detailed English derivation is pending.
 -/
 theorem IsPoly.ext {F G : ℂ → B} (hF : IsPoly F) (hG : IsPoly G) {S : Set ℂ} (hS : S.Finite)
     (h : ∀ Y, Y ∉ S → F Y = G Y) (Y : ℂ) : F Y = G Y :=
@@ -1220,23 +1212,23 @@ section AbsDet
 variable {B : Type} [Ring B] [Algebra ℂ B]
 
 /- English proof (translation)
-Establish `T5 : τ1 * (i0 * i1) = i0` using `by rw [hi, ← mul_assoc, h11, one_mul]`. Establish `FreeQuotientRank : τ1 * (i1 * i2) = i2` using `by rw [← mul_assoc, h11, one_mul]`. Establish `K : τ1 * (m1 * l1 - l1 * m1) = q0 • i0 - q1 • i2`. Rewrite using `[Y3, mul_sub, mul_smul_comm, mul_smul_comm, T5, FreeQuotientRank]`. Establish `e2 : (q1 • i2 + τ1 * m1 * l1) * τ0 - τ1 * l1 * (τ0 * m0) = algebraMap ℂ B q0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `s : (q1 • i2 + τ1 * m1 * l1) * τ0 - τ1 * l1 * (τ0 * m0) = q1 • (i2 * τ0) + τ1 * (m1 * l1 - l1 * m1) * τ0`. Rewrite using `[← Y1']`. Simplify using `only [add_mul, smul_mul_assoc, mul_sub, sub_mul, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[s, K, sub_mul, smul_mul_assoc, smul_mul_assoc, h00', Algebra.algebraMap_eq_smul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `F1 : τ1 * l1 * i1 = l0` using `by rw [← Y1, mul_assoc, h11, mul_one]`. Establish `F2 : τ0 * m0 * i0 = m1` using `by rw [← Y1', mul_assoc, h00, mul_one]`. Use `⟨?_, e2, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `s : (q1 • i2 + τ1 * m1 * l1) * (τ0 * l0) - τ1 * l1 * (q0 • i1 + τ0 * m0 * l0) = ((q1 • i2 + τ1 * m1 * l1) * τ0 - τ1 * l1 * (τ0 * m0)) * l0 - q0 • (τ1 * l1 * i1)`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [mul_add, add_mul, sub_mul, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[s, e2, F1, ← Algebra.smul_def, sub_self]`. Establish `s : τ1 * m1 * (τ0 * l0) = τ1 * (τ0 * m0 * l0)`. Rewrite using `[mul_assoc τ1, ← mul_assoc m1, Y1']`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[s, mul_add, mul_smul_comm, h11, Algebra.algebraMap_eq_smul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[mul_assoc, Y1', sub_self]`. Establish `s : (q0 • i1 + τ0 * m0 * l0) * (τ1 * m1) - τ0 * m0 * (q1 • i2 + τ1 * m1 * l1) = q0 • (i1 * τ1 * m1) - τ0 * m0 * (τ1 * (m1 * l1 - l1 * m1)) - q1 • (τ0 * m0 * i2)`. Establish `s2 : τ0 * m0 * l0 * (τ1 * m1) = τ0 * m0 * (τ1 * (l1 * m1))`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc (τ0 * m0), ← mul_assoc l0, Y1, mul_assoc τ1]`. Rewrite using `[add_mul, s2]`. Simplify using `only [mul_add, mul_sub, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[s, K, h11', one_mul, mul_sub, mul_smul_comm, mul_smul_comm, F2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[add_mul, smul_mul_assoc, h11', mul_assoc (τ0 * m0) l0 τ1, Y1, Algebra.algebraMap_eq_smul_one]`. Normalize the expressions using the abelian group laws. Establish `s : τ0 * l0 * (τ1 * m1) - τ0 * (q1 • i2 + τ1 * m1 * l1) = -(τ0 * (τ1 * (m1 * l1 - l1 * m1))) - q1 • (τ0 * i2)`. Establish `s2 : τ0 * l0 * (τ1 * m1) = τ0 * (τ1 * (l1 * m1))`.
+Normalize the expressions using the abelian group laws. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc τ0, ← mul_assoc l0, Y1, mul_assoc]`. Rewrite using `[s2]`. Simplify using `only [mul_add, mul_sub, mul_smul_comm, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[s, K, mul_sub, mul_smul_comm, mul_smul_comm, h00, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[mul_assoc, Y1, sub_self]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_abs (τ0 τ1 i0 i1 i2 l0 l1 m0 m1 : B) (q0 q1 : ℂ)
     (h00 : τ0 * i0 = 1) (h00' : i0 * τ0 = 1) (h11 : τ1 * i1 = 1) (h11' : i1 * τ1 = 1)
@@ -1300,11 +1292,11 @@ theorem det_abs (τ0 τ1 i0 i1 i2 l0 l1 m0 m1 : B) (q0 q1 : ℂ)
 
 open Matrix in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `(norm := noncomm_ring) e1`. Take the linear combination `(norm := noncomm_ring) e2`. Take the linear combination `(norm := noncomm_ring) e3`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := noncomm_ring) e4`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `(norm := noncomm_ring) e5`. Take the linear combination `(norm := noncomm_ring) e6`. Take the linear combination `(norm := noncomm_ring) e7`.
+Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := noncomm_ring) e8`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isSymplectic_of_eight_relations (a b c d a' b' c' d' q : B)
     (e1 : a' * c - c' * a = 0) (e2 : a' * d - c' * b = q) (e3 : b' * c - d' * a = -q) (e4 : b' * d - d' * b = 0)
@@ -1338,7 +1330,7 @@ section abs2
 variable {R : Type*} [Ring R] [Algebra ℂ R]
 
 /- English proof (translation)
-Establish `a : L0 * (G * X) = G * X * L1` using `by rw [← mul_assoc, hLG, mul_assoc, mul_assoc, hXL.eq]`. Establish `b : Gi * U * (G * X) = G * X * (Gi * U')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, mul_add, a, b]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowering_intertwine_gamma (G Gi X L0 L1 U U' : R) (hLG : L0 * G = G * L1) (hXL : Commute X L1) (hUX : U * X = X * U')
     (hGU : Commute G U) (hGiX : Commute Gi X) (hGGi : Commute G Gi) :
@@ -1355,7 +1347,7 @@ theorem lowering_intertwine_gamma (G Gi X L0 L1 U U' : R) (hLG : L0 * G = G * L1
   rw [add_mul, mul_add, a, b]
 
 /- English proof (translation)
-Use `show Ns * (Gi * S) = Gi * S * Ns`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nabla_star_commute_gamma_inv (Gi z Ns S : R) (nsGi : Ns * Gi = Gi * Ns + z * Gi * Gi) (hS : Ns * S = S * Ns - z * Gi * S)
     (c : Gi * z = z * Gi) : Commute Ns (Gi * S) := by
@@ -1366,11 +1358,11 @@ theorem nabla_star_commute_gamma_inv (Gi z Ns S : R) (nsGi : Ns * Gi = Gi * Ns +
     _ = _ := by rw [c]; abel
 
 /- English proof (translation)
-Establish `hzz : z * zb = G + t • 1` using `by rw [hGdef, Algebra.algebraMap_eq_smul_one]; abel`. Establish `w1 : z * zb * Gi * Gi = Gi + t • (Gi * Gi)`. Rewrite using `[hzz, add_mul, add_mul, hGGi, one_mul, smul_mul_assoc, one_mul, smul_mul_assoc]`. Establish `k1 : Ns * (zb * Gi) = (zb * Gi) * Ns + t • (Gi * Gi)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `k2 : N * (z * Gi) = (z * Gi) * N - t • (Gi * Gi)`. Combine the equalities or inequalities in the displayed calculation. Establish `k3 : (z * Gi) * (zb * Gi) = (zb * Gi) * (z * Gi)`. Combine the equalities or inequalities in the displayed calculation. Establish `ex : (-Ns - cu • (z * Gi)) * (-N - cv • (zb * Gi)) - (-N - cv • (zb * Gi)) * (-Ns - cu • (z * Gi)) = (Ns * N - N * Ns) + cv • (Ns * (zb * Gi) - (zb * Gi) * Ns) - cu • (N * (z * Gi) - (z * Gi) * N) + (cu * cv) • ((z * Gi) * (zb * Gi) - (zb * Gi) * (z * Gi))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [sub_mul, mul_sub, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm]`. Use `module`. Rewrite using `[ex, hcurv, k1, k2, k3]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absC (G Gi z zb N Ns K : R) (t : ℂ) (hGGi : G * Gi = 1) (hGdef : G = z * zb - algebraMap ℂ R t)
     (czzb : z * zb = zb * z) (cGiz : Gi * z = z * Gi) (cGizb : Gi * zb = zb * Gi)
@@ -1407,9 +1399,9 @@ theorem absC (G Gi z zb N Ns K : R) (t : ℂ) (hGGi : G * Gi = 1) (hGdef : G = z
   module
 
 /- English proof (translation)
-Establish `a : Gi * Sm * (Gi * Sl) = Gi * Gi * (Sm * Sl)`. Combine the equalities or inequalities in the displayed calculation. Establish `b : Gi * Sl * (Gi * Sm) = Gi * Gi * (Sl * Sm)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [add_mul, mul_add]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[a, b, hA.eq, hB.eq, mul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem commutator_perturbed_product (M0 L0 Gi Sl Sm : R) (hA : Commute M0 (Gi * Sl)) (hB : Commute L0 (Gi * Sm))
     (hGm : Commute Gi Sm) (hGl : Commute Gi Sl) :
@@ -1428,7 +1420,7 @@ theorem commutator_perturbed_product (M0 L0 Gi Sl Sm : R) (hA : Commute M0 (Gi *
   abel
 
 /- English proof (translation)
-Establish `e1 : a * Ss * (b * S) = a * b * (Ss * S)`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : b * S * (a * Ss) = b * a * (S * Ss)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2, hab, hm, sub_self]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem commutator_four_commuting (a b S Ss : R) (h1 : Ss * b = b * Ss) (h2 : S * a = a * S) (hab : a * b = b * a)
     (hm : Ss * S = S * Ss) : a * Ss * (b * S) - b * S * (a * Ss) = 0 := by
@@ -1441,7 +1433,7 @@ theorem commutator_four_commuting (a b S Ss : R) (h1 : Ss * b = b * Ss) (h2 : S 
   rw [e1, e2, hab, hm, sub_self]
 
 /- English proof (translation)
-Establish `e1 : a * Ss * (a * S) = a * ap * (Ss * S)`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : a * S * (a * Ss) = a * am * (S * Ss)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2, hn, hd]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem commutator_expansion_identity (a ap am S Ss Nn Nd : R) (h1 : Ss * a = ap * Ss) (h2 : S * a = am * S) (hn : Ss * S = Nn)
     (hd : S * Ss = Nd) : a * Ss * (a * S) - a * S * (a * Ss) = a * ap * Nn - a * am * Nd := by
@@ -1454,7 +1446,7 @@ theorem commutator_expansion_identity (a ap am S Ss Nn Nd : R) (h1 : Ss * a = ap
   rw [e1, e2, hn, hd]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem absUX (a g S X a' e : R) (s1 : g * S = S * X) (s2 : a * g = e) (s3 : X * a' = e) :
     a * S * X = X * (a' * S) := by
@@ -1465,7 +1457,7 @@ theorem absUX (a g S X a' e : R) (s1 : g * S = S * X) (s2 : a * g = e) (s3 : X *
     _ = _ := mul_assoc _ _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem absInv (G Gi X Xi : R) (hG : G * Gi = 1) (hG' : Gi * G = 1) (hX : X * Xi = 1) (hX' : Xi * X = 1)
     (c : Commute X Gi) (c' : Commute Xi G) : (G * X) * (Gi * Xi) = 1 ∧ (Gi * Xi) * (G * X) = 1 := by
@@ -1478,14 +1470,14 @@ theorem absInv (G Gi X Xi : R) (hG : G * Gi = 1) (hG' : Gi * G = 1) (hX : X * Xi
       _ = 1 := by rw [hG', hX', one_mul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem absTi (Gi a b : R) (c : Commute a Gi) : (Gi * a) * (Gi * b) = Gi * Gi * (a * b) := by
   calc (Gi * a) * (Gi * b) = Gi * (a * Gi) * b := by simp only [mul_assoc]
     _ = _ := by rw [c.eq]; simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `: Gi * (k * S) = k * (Gi * S)` using `by rw [← mul_assoc, c.eq, mul_assoc]`. Rewrite using `[this]`. Conclude with `h1.mul_right h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absTerm (X k Gi S : R) (h1 : Commute X k) (h2 : Commute X (Gi * S)) (c : Commute Gi k) :
     Commute X (Gi * (k * S)) := by
@@ -1493,14 +1485,14 @@ theorem absTerm (X k Gi S : R) (h1 : Commute X k) (h2 : Commute X (Gi * S)) (c :
   rw [this]; exact h1.mul_right h2
 
 /- English proof (translation)
-Rewrite using `[absLG G b zb N hNG hbG, hc, add_smul, one_smul, ← sub_sub, mul_sub G _ b, hGb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absLG2 (G b zb N : R) (hNG : N * G = G * N + zb) (hbG : b * G = G * b) (hGb : G * b = zb) (c c' : ℂ)
     (hc : c' = c + 1) : (-N - c • b) * G = G * (-N - c' • b) := by
   rw [absLG G b zb N hNG hbG, hc, add_smul, one_smul, ← sub_sub, mul_sub G _ b, hGb]
 
 /- English proof (translation)
-Establish `hNG' : N * G = G * N + -z` using `by rw [hNG, sub_eq_add_neg]`. Rewrite using `[absLG G b (-z) N hNG' hbG, hc, add_smul, one_smul, ← sub_sub, mul_sub G _ b, hGb]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem absLG3 (G b z N : R) (hNG : N * G = G * N - z) (hbG : b * G = G * b) (hGb : G * b = z) (c c' : ℂ)
     (hc : c = c' + 1) : (-N - c • b) * G = G * (-N - c' • b) := by
@@ -1509,7 +1501,7 @@ theorem absLG3 (G b z N : R) (hNG : N * G = G * N - z) (hbG : b * G = G * b) (hG
   abel
 
 /- English proof (translation)
-Establish `: K * Gi * Gi = Gi * Gi * K` using `by rw [h.eq, mul_assoc, h.eq, mul_assoc]`. Rewrite using `[this, mul_add, mul_add, mul_smul_comm, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem absFin (Gi K S : R) (c : ℂ) (h : Commute K Gi) :
     K * Gi * Gi + c • (Gi * Gi) + Gi * Gi * S = Gi * Gi * (K + c • 1 + S) := by
@@ -1519,13 +1511,13 @@ theorem absFin (Gi K S : R) (c : ℂ) (h : Commute K Gi) :
 end abs2
 
 /- English proof (translation)
-Rewrite using `[← map_mul]`. Conclude with `congrArg (kap P) (funext e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_mul (P : Par) (f g h : Ty P → ℂ) (e : ∀ π, f π * g π = h π) : kap P f * kap P g = kap P h := by
   rw [← map_mul]; exact congrArg (kap P) (funext e)
 
 /- English proof (translation)
-Rewrite using `[kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use `congrArg Matrix.diagonal (funext fun π => ?_)` and prove the remaining obligations. Conclude with `(algebraMap_star_comm (f π)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem star_kap (P : Par) (f : Ty P → ℂ) : star (kap P f) = kap P (fun π => star (f π)) := by
   rw [kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
@@ -1533,7 +1525,7 @@ theorem star_kap (P : Par) (f : Ty P → ℂ) : star (kap P f) = kap P (fun π =
   exact (algebraMap_star_comm (f π)).symm
 
 /- English proof (translation)
-Use `show sc P _ * sc P _ = sc P _ * sc P _`. Establish `h : ∀ a b : Pr P.r, sc P a * sc P b = sc P (a * b)` using `fun a b => (map_mul (Matrix.scalar (Ty P)) a b).symm`. Rewrite using `[h, h, Mx2.multiplierPair_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fn_comm (P : Par) (f fb g gb : Fn P.r) : Commute (sc P (fnP f fb)) (sc P (fnP g gb)) := by
   show sc P _ * sc P _ = sc P _ * sc P _
@@ -1541,7 +1533,7 @@ theorem fn_comm (P : Par) (f fb g gb : Fn P.r) : Commute (sc P (fnP f fb)) (sc P
   rw [h, h, Mx2.multiplierPair_comm]
 
 /- English proof (translation)
-Establish `h` using `(hSc P l (star w)).star_star`. Rewrite `h` using `[Mx1.star_sc, star_star]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_SSs (hSc : SSScalar) (P : Par) (l : ℕ) (w : Pr P.r) : Commute (sc P w) (star (SS P l)) := by
   have h := (hSc P l (star w)).star_star
@@ -1549,7 +1541,7 @@ theorem sc_SSs (hSc : SSScalar) (P : Par) (l : ℕ) (w : Pr P.r) : Commute (sc P
   exact h.symm
 
 /- English proof (translation)
-Establish `h1` using `hSh P l (fun π => star (f π)) (fun π => star (g π)) (fun π π' hu => by simp only [h π π' hu])`. Establish `h2` using `congrArg star h1`. Rewrite `h2` using `[star_mul, star_mul, star_kap, star_kap]`. Simplify `h2` using `only [star_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem shS (hSh : SSShift) (P : Par) (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' → g π' = f π) :
     star (SS P l) * kap P g = kap P f * star (SS P l) := by
@@ -1559,7 +1551,7 @@ theorem shS (hSh : SSShift) (P : Par) (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π
   simpa only [star_star] using h2
 
 /- English proof (translation)
-Rewrite `h` using `[xC_eq P π Y j hj]`. Conclude with `right_ne_zero_of_mul h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fac_ne (P : Par) (π : Ty P) (Y : ℂ) (j : ℕ) (hj : j ∈ Icc 1 (P.k - 1)) (h : xC P π Y ≠ 0) :
     Y + (rho P π j : ℂ) ≠ 0 := by
@@ -1583,31 +1575,31 @@ Both sides reduce to the same expression.
 theorem mA_eq (P : Par) (Y : ℂ) : mA P Y = m0A P Y + ggiA P * Um P Y := rfl
 
 /- English proof (translation)
-Rewrite using `[m0A, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem raising_constant_eq_shift (P : Par) (Y : ℂ) : m0A P Y = -nabsA P - (Y - 1 / 2) • (zA P * ggiA P) := by
   rw [m0A, Algebra.smul_def]
 
 /- English proof (translation)
-Unfold `Ul`. Conclude with `Commute.sum_right _ _ _ (fun j _ => ((kap_comm_sc P _ w).symm).mul_right (hSc P j w).symm)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sc_Ul (hSc : SSScalar) (P : Par) (w : Pr P.r) (Y : ℂ) : Commute (sc P w) (Ul P Y) := by
   unfold Ul
   exact Commute.sum_right _ _ _ (fun j _ => ((kap_comm_sc P _ w).symm).mul_right (hSc P j w).symm)
 
 /- English proof (translation)
-Unfold `Um`. Conclude with `Commute.sum_right _ _ _ (fun j _ => ((kap_comm_sc P _ w).symm).mul_right (sc_SSs hSc P j w))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sc_Um (hSc : SSScalar) (P : Par) (w : Pr P.r) (Y : ℂ) : Commute (sc P w) (Um P Y) := by
   unfold Um
   exact Commute.sum_right _ _ _ (fun j _ => ((kap_comm_sc P _ w).symm).mul_right (sc_SSs hSc P j w))
 
 /- English proof (translation)
-Unfold `Ul`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `s1 : (kap P fun π => xEx P {j} π (Y + 1) * (Y + (rho P π j : ℂ))) * SS P j = SS P j * xA P (Y + 1)` using `hSh P j _ _ (fun π π' hU => by show xEx P {j} π' (Y + 1) * (Y + (rho P π' j : ℂ)) = xC P π (Y + 1)`. Rewrite using `[xC_eq P π (Y + 1) j hj, xEx_up hR P j π π' hU {j} (Finset.mem_singleton_self j), rho_up hR P j hj π π' hU]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use the proof step `ring)`. Establish `s2 : (kap P fun π => (Y + (rho P π j : ℂ))⁻¹) * (kap P fun π => xEx P {j} π (Y + 1) * (Y + (rho P π j : ℂ))) = kap P fun π => xEx P {j} π (Y + 1)` using `kap_mul P _ _ _ (fun π => by show (Y + (rho P π j : ℂ))⁻¹ * (xEx P {j} π (Y + 1) * (Y + (rho P π j : ℂ))) = xEx P {j} π (Y + 1)`. Use `fac_ne P π Y j hj (h0 π)` as an intermediate fact. Use the proof step `field_simp)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s3 : xA P (Y + 1) * (kap P fun π => (Y + 1 + (rho P π j : ℂ))⁻¹) = kap P fun π => xEx P {j} π (Y + 1)` using `kap_mul P _ _ _ (fun π => by show xC P π (Y + 1) * (Y + 1 + (rho P π j : ℂ))⁻¹ = xEx P {j} π (Y + 1)`. Use `fac_ne P π (Y + 1) j hj (h1 π)` as an intermediate fact. Rewrite using `[xC_eq P π (Y + 1) j hj]`. Use the proof step `field_simp)`. Conclude with `absUX _ _ _ _ _ _ s1 s2 s3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_shift_commute_coordinate (hSh : SSShift) (hR : RhoUp) (P : Par) (Y : ℂ) (h0 : ∀ π, xC P π Y ≠ 0)
     (h1 : ∀ π, xC P π (Y + 1) ≠ 0) : Ul P Y * xA P (Y + 1) = xA P (Y + 1) * Ul P (Y + 1) := by
@@ -1633,11 +1625,11 @@ theorem lower_shift_commute_coordinate (hSh : SSShift) (hR : RhoUp) (P : Par) (Y
   exact absUX _ _ _ _ _ _ s1 s2 s3
 
 /- English proof (translation)
-Unfold `Um`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `s1 : (kap P fun π => xEx P {j} π Y * (Y + 1 + (rho P π j : ℂ))) * star (SS P j) = star (SS P j) * xA P Y` using `(shS hSh P j _ _ (fun π π' hU => by show xC P π' Y = xEx P {j} π Y * (Y + 1 + (rho P π j : ℂ))`. Rewrite using `[xC_eq P π' Y j hj, xEx_up hR P j π π' hU {j} (Finset.mem_singleton_self j), rho_up hR P j hj π π' hU]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use the proof step `ring)).symm`. Establish `s2 : (kap P fun π => (Y + 1 + (rho P π j : ℂ))⁻¹) * (kap P fun π => xEx P {j} π Y * (Y + 1 + (rho P π j : ℂ))) = kap P fun π => xEx P {j} π Y` using `kap_mul P _ _ _ (fun π => by show (Y + 1 + (rho P π j : ℂ))⁻¹ * (xEx P {j} π Y * (Y + 1 + (rho P π j : ℂ))) = xEx P {j} π Y`. Use `fac_ne P π (Y + 1) j hj (h1 π)` as an intermediate fact. Use the proof step `field_simp)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s3 : xA P Y * (kap P fun π => (Y + (rho P π j : ℂ))⁻¹) = kap P fun π => xEx P {j} π Y` using `kap_mul P _ _ _ (fun π => by show xC P π Y * (Y + (rho P π j : ℂ))⁻¹ = xEx P {j} π Y`. Use `fac_ne P π Y j hj (h0 π)` as an intermediate fact. Rewrite using `[xC_eq P π Y j hj]`. Use the proof step `field_simp)`. Conclude with `absUX _ _ _ _ _ _ s1 s2 s3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upper_shift_commute_coordinate (hSh : SSShift) (hR : RhoUp) (P : Par) (Y : ℂ) (h0 : ∀ π, xC P π Y ≠ 0)
     (h1 : ∀ π, xC P π (Y + 1) ≠ 0) : Um P (Y + 1) * xA P Y = xA P Y * Um P Y := by
@@ -1663,7 +1655,7 @@ theorem upper_shift_commute_coordinate (hSh : SSShift) (hR : RhoUp) (P : Par) (Y
   exact absUX _ _ _ _ _ _ s1 s2 s3
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, hGGi, hGiG, _⟩` from `hLF P`. Establish `hX : xA P Y * (kap P fun π => (xC P π Y)⁻¹) = 1` using `(kap_mul P _ _ (fun _ => 1) (fun π => mul_inv_cancel₀ (h π))).trans (map_one (kap P))`. Establish `hX' : (kap P fun π => (xC P π Y)⁻¹) * xA P Y = 1` using `(kap_mul P _ _ (fun _ => 1) (fun π => inv_mul_cancel₀ (h π))).trans (map_one (kap P))`. Conclude with `absInv _ _ _ _ hGGi hGiG hX hX' (kap_comm_sc P _ _) (kap_comm_sc P _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem monodromy_diagonal_inverse (hLF : LevFns) (P : Par) (Y : ℂ) (h : ∀ π, xC P π Y ≠ 0) :
     t22 P Y * ti P Y = 1 ∧ ti P Y * t22 P Y = 1 := by
@@ -1675,7 +1667,7 @@ theorem monodromy_diagonal_inverse (hLF : LevFns) (P : Par) (Y : ℂ) (h : ∀ �
   exact absInv _ _ _ _ hGGi hGiG hX hX' (kap_comm_sc P _ _) (kap_comm_sc P _ _)
 
 /- English proof (translation)
-Unfold `ti`. Establish `c : Commute (kap P fun π => (xC P π a)⁻¹) (ggiA P)` using `kap_comm_sc P _ _`. Rewrite using `[absTi _ _ _ c, kap_mul P _ _ _ (fun π => rfl)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ti_mul (P : Par) (a b : ℂ) :
     ti P a * ti P b = ggiA P * ggiA P * kap P fun π => (xC P π a)⁻¹ * (xC P π b)⁻¹ := by
@@ -1684,14 +1676,14 @@ theorem ti_mul (P : Par) (a b : ℂ) :
   rw [absTi _ _ _ c, kap_mul P _ _ _ (fun π => rfl)]
 
 /- English proof (translation)
-Rewrite using `[ti_mul, ti_mul]`. Conclude with `congrArg (fun t => ggiA P * ggiA P * kap P t) (funext fun π => mul_comm _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ti_comm (P : Par) (a b : ℂ) : ti P a * ti P b = ti P b * ti P a := by
   rw [ti_mul, ti_mul]
   exact congrArg (fun t => ggiA P * ggiA P * kap P t) (funext fun π => mul_comm _ _)
 
 /- English proof (translation)
-Rewrite using `[lowering_constant_eq_shift]`. Conclude with `((kap_comm_nab P f).neg_right).sub_right (((kap_comm_sc P f _).mul_right (kap_comm_sc P f _)).smul_right _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_commute_l0 (P : Par) (f : Ty P → ℂ) (Y : ℂ) : Commute (kap P f) (l0A P Y) := by
   rw [lowering_constant_eq_shift]
@@ -1699,7 +1691,7 @@ theorem kappa_commute_l0 (P : Par) (f : Ty P → ℂ) (Y : ℂ) : Commute (kap P
     (((kap_comm_sc P f _).mul_right (kap_comm_sc P f _)).smul_right _)
 
 /- English proof (translation)
-Rewrite using `[raising_constant_eq_shift]`. Conclude with `((kap_comm_nabs P f).neg_right).sub_right (((kap_comm_sc P f _).mul_right (kap_comm_sc P f _)).smul_right _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_commute_raising_constant (P : Par) (f : Ty P → ℂ) (Y : ℂ) : Commute (kap P f) (m0A P Y) := by
   rw [raising_constant_eq_shift]
@@ -1707,11 +1699,9 @@ theorem kappa_commute_raising_constant (P : Par) (f : Ty P → ℂ) (Y : ℂ) : 
     (((kap_comm_sc P f _).mul_right (kap_comm_sc P f _)).smul_right _)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, hGGi, hGiG, _⟩` from `hLF P`. Take `⟨_, _, _, _, nG, _, _⟩` from `hLN P`. Establish `cGzb : Commute (ggA P) (zbA P)` using `fn_comm P _ _ _ _`. Establish `cGGi : Commute (ggA P) (ggiA P)` using `fn_comm P _ _ _ _`. Establish `hGb : ggA P * (zbA P * ggiA P) = zbA P` using `by rw [← mul_assoc, cGzb.eq, mul_assoc, hGGi, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbG : (zbA P * ggiA P) * ggA P = ggA P * (zbA P * ggiA P)` using `(cGzb.mul_right cGGi).eq.symm`. Establish `hLG : l0A P Y * ggA P = ggA P * l0A P (Y + 1)`. Rewrite using `[lowering_constant_eq_shift, lowering_constant_eq_shift]`. Conclude with `absLG2 _ _ _ _ nG hbG hGb _ _ (by ring)`. Rewrite using `[lA_eq, lA_eq, t22]`.
-
-Conclude with `lowering_intertwine_gamma _ _ _ _ _ _ _ hLG (kappa_commute_l0 P _ _) (lower_shift_commute_coordinate hSh hR P Y h0 h1) (sc_Ul hSc P _ _) (kap_comm_sc P _ _).symm cGGi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mul_t22_shift (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : LevFns) (hLN : LevNab) (P : Par) (Y : ℂ)
     (h0 : ∀ π, xC P π Y ≠ 0) (h1 : ∀ π, xC P π (Y + 1) ≠ 0) :
@@ -1730,11 +1720,9 @@ theorem l_mul_t22_shift (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : Lev
     (kap_comm_sc P _ _).symm cGGi
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, hGGi, hGiG, _⟩` from `hLF P`. Take `⟨_, _, _, _, nG, _, _⟩` from `hLNs P`. Establish `cGz : Commute (ggA P) (zA P)` using `fn_comm P _ _ _ _`. Establish `cGGi : Commute (ggA P) (ggiA P)` using `fn_comm P _ _ _ _`. Establish `hGb : ggA P * (zA P * ggiA P) = zA P` using `by rw [← mul_assoc, cGz.eq, mul_assoc, hGGi, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbG : (zA P * ggiA P) * ggA P = ggA P * (zA P * ggiA P)` using `(cGz.mul_right cGGi).eq.symm`. Establish `hLG : m0A P (Y + 1) * ggA P = ggA P * m0A P Y`. Rewrite using `[raising_constant_eq_shift, raising_constant_eq_shift]`. Conclude with `absLG3 _ _ _ _ nG hbG hGb _ _ (by ring)`. Rewrite using `[mA_eq, mA_eq, t22]`.
-
-Conclude with `lowering_intertwine_gamma _ _ _ _ _ _ _ hLG (kappa_commute_raising_constant P _ _) (upper_shift_commute_coordinate hSh hR P Y h0 h1) (sc_Um hSc P _ _) (kap_comm_sc P _ _).symm cGGi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modY1' (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : LevFns) (hLNs : LevNabs) (P : Par) (Y : ℂ)
     (h0 : ∀ π, xC P π Y ≠ 0) (h1 : ∀ π, xC P π (Y + 1) ≠ 0) :
@@ -1759,11 +1747,11 @@ section PartC
 open Formalism.FourierDecayAlt.M Formalism.FourierDecayAlt Finset
 
 /- English proof (translation)
-Take `⟨_, hz, _, _, hGi, hnab⟩` from `hSG P`. Establish `h` using `congrArg star (hN P l hl).2`. Establish `hns : star (nabsA P) = nabA P` using `by rw [← hnab, star_star]`. Simplify using `only [star_mul, star_sub] at h`. Rewrite `h` using `[hns, hz, hGi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `cg : Commute (ggiA P) (star (SS P l))` using `sc_SSs hSc P l _`. Establish `cz : Commute (zbA P) (star (SS P l))` using `sc_SSs hSc P l _`. Establish `cc : Commute (ggiA P) (zbA P)` using `fn_comm P _ _ _ _`. Establish `c1 : star (SS P l) * (ggiA P * zbA P) = zbA P * ggiA P * star (SS P l)`. Rewrite using `[(cg.mul_left cz).eq.symm, cc.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[c1]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem nab_SSs (hSc : SSScalar) (hN : NabSS) (hSG : StarGens) (P : Par) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) :
     nabA P * star (SS P l) = star (SS P l) * nabA P + zbA P * ggiA P * star (SS P l) := by
@@ -1781,9 +1769,9 @@ theorem nab_SSs (hSc : SSScalar) (hN : NabSS) (hSG : StarGens) (P : Par) (l : �
   rw [h]; abel
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, nsGi, _⟩` from `hLNs P`. Establish `cGiz : Commute (ggiA P) (zA P)` using `fn_comm P _ _ _ _`. Establish `h1 : Commute (nabsA P) (ggiA P * Ul P u)`. Unfold `Ul`. Rewrite using `[Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Commute.sum_right _ _ _ (fun j hj => absTerm _ _ _ _ (kap_comm_nabs P _).symm (nabla_star_commute_gamma_inv _ _ _ _ nsGi (hN P j hj).2 cGiz.eq) (kap_comm_sc P _ _).symm)`. Establish `h2 : Commute (zA P * ggiA P) (ggiA P * Ul P u)` using `(cGiz.symm.mul_right (sc_Ul hSc P _ _)).mul_left ((Commute.refl _).mul_right (sc_Ul hSc P _ _))`. Rewrite using `[raising_constant_eq_shift]`. Conclude with `(h1.neg_left).sub_left (h2.smul_left _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_m0_Ul (hSc : SSScalar) (hN : NabSS) (hLNs : LevNabs) (P : Par) (u : ℂ) :
     Commute (m0A P u) (ggiA P * Ul P u) := by
@@ -1798,11 +1786,9 @@ theorem commute_m0_Ul (hSc : SSScalar) (hN : NabSS) (hLNs : LevNabs) (P : Par) (
   rw [raising_constant_eq_shift]; exact (h1.neg_left).sub_left (h2.smul_left _)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, nGi, _⟩` from `hLN P`. Establish `cGiz : Commute (ggiA P) (zbA P)` using `fn_comm P _ _ _ _`. Establish `nGi' : nabA P * ggiA P = ggiA P * nabA P + -zbA P * ggiA P * ggiA P`. Rewrite using `[nGi, neg_mul, neg_mul, sub_eq_add_neg]`. Establish `h1 : Commute (nabA P) (ggiA P * Um P u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Um`. Rewrite using `[Finset.mul_sum]`. Conclude with `Commute.sum_right _ _ _ (fun j hj => absTerm _ _ _ _ (kap_comm_nab P _).symm (nabla_star_commute_gamma_inv _ _ _ _ nGi' (by rw [nab_SSs hSc hN hSG P j hj, neg_mul, neg_mul, sub_neg_eq_add]) (by rw [mul_neg, neg_mul, cGiz.eq])) (kap_comm_sc P _ _).symm)`. Establish `h2 : Commute (zbA P * ggiA P) (ggiA P * Um P u)` using `(cGiz.symm.mul_right (sc_Um hSc P _ _)).mul_left ((Commute.refl _).mul_right (sc_Um hSc P _ _))`. Rewrite using `[lowering_constant_eq_shift]`.
-
-Conclude with `(h1.neg_left).sub_left (h2.smul_left _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_l0_Um (hSc : SSScalar) (hN : NabSS) (hSG : StarGens) (hLN : LevNab) (P : Par) (u : ℂ) :
     Commute (l0A P u) (ggiA P * Um P u) := by
@@ -1822,15 +1808,13 @@ theorem commute_l0_Um (hSc : SSScalar) (hN : NabSS) (hSG : StarGens) (hLN : LevN
 noncomputable def bb (P : Par) (u : ℂ) (j : ℕ) : Ty P → ℂ := fun π => (u + (rho P π j : ℂ))⁻¹
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_sub_distrib, Finset.sum_eq_single l]`. Establish `h1 : star (SS P l) * kap P (bb P u l) = (kap P fun π => (u + rho P π l + 1)⁻¹) * star (SS P l)` using `shS hSh P l _ _ (fun π π' hU => by show (u + (rho P π' l : ℂ))⁻¹ = (u + rho P π l + 1)⁻¹`. Rewrite using `[rho_up hR P l hl π π' hU]`. Use `push_cast`. Rewrite using `[add_assoc])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : SS P l * kap P (bb P u l) = (kap P fun π => (u + rho P π l - 1)⁻¹) * SS P l` using `(hSh P l _ _ (fun π π' hU => by show (u + (rho P π' l : ℂ) - 1)⁻¹ = (u + (rho P π l : ℂ))⁻¹`. Rewrite using `[rho_up hR P l hl π π' hU]`. Use `push_cast`. Use `congr 1`. Use the proof step `ring)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[commutator_expansion_identity _ _ _ _ _ _ _ h1 h2 (hNorm P hP l hl).1 (hNorm P hP l hl).2, ← map_mul, ← map_mul, ← map_mul, ← map_mul, ← map_sub]`. Use `congrArg (kap P) (funext fun π => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.mul_apply, bb]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j hj hjl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : star (SS P l) * kap P (bb P u j) = kap P (bb P u j) * star (SS P l)` using `shS hSh P l _ _ (fun π π' hU => by show (u + (rho P π' j : ℂ))⁻¹ = (u + (rho P π j : ℂ))⁻¹`. Rewrite using `[hR P l π π' hU j hj, if_neg hjl, add_zero])`. Establish `h2 : SS P j * kap P (bb P u l) = kap P (bb P u l) * SS P j` using `(hSh P j _ _ (fun π π' hU => by show (u + (rho P π' l : ℂ))⁻¹ = (u + (rho P π l : ℂ))⁻¹`. Rewrite using `[hR P j π π' hU l hl, if_neg (Ne.symm hjl), add_zero])).symm`. Conclude with `commutator_four_commuting _ _ _ _ h1 h2 (kap_comm_kap P _ _).eq (hMix P hP l hl j hj hjl)`.
-
-Introduce `h`. Conclude with `absurd hl h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem per_l (hSh : SSShift) (hR : RhoUp) (hNorm : SSNorm) (hMix : SSMixed) (P : Par) (hP : P.OK) (u : ℂ)
     (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) :
@@ -1865,7 +1849,7 @@ theorem per_l (hSh : SSShift) (hR : RhoUp) (hNorm : SSNorm) (hMix : SSMixed) (P 
   · intro h; exact absurd hl h
 
 /- English proof (translation)
-Establish `e1 : Um P u * Ul P u = ∑ l ∈ Icc 1 (P.k - 1), ∑ j ∈ Icc 1 (P.k - 1), kap P (bb P u l) * star (SS P l) * (kap P (bb P u j) * SS P j)` using `Finset.sum_mul_sum _ _ _ _`. Establish `e2 : Ul P u * Um P u = ∑ l ∈ Icc 1 (P.k - 1), ∑ j ∈ Icc 1 (P.k - 1), kap P (bb P u j) * SS P j * (kap P (bb P u l) * star (SS P l))` using `(Finset.sum_mul_sum _ _ _ _).trans Finset.sum_comm`. Rewrite using `[e1, e2, ← Finset.sum_sub_distrib, Finset.sum_congr rfl (per_l hSh hR hNorm hMix P hP u), ← map_sum]`. Conclude with `congrArg (kap P) (funext fun π => Finset.sum_apply _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UmUl (hSh : SSShift) (hR : RhoUp) (hNorm : SSNorm) (hMix : SSMixed) (P : Par) (hP : P.OK) (u : ℂ) :
     Um P u * Ul P u - Ul P u * Um P u =
@@ -1880,13 +1864,13 @@ theorem UmUl (hSh : SSShift) (hR : RhoUp) (hNorm : SSNorm) (hMix : SSMixed) (P :
   exact congrArg (kap P) (funext fun π => Finset.sum_apply _ _ _)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, hGGi, _, hGdef⟩` from `hLF P`. Take `⟨nz, _, _, _, _, nGi, _⟩` from `hLN P`. Take `⟨nszb, _, _, _, _, nsGi, _⟩` from `hLNs P`. Establish `czzb : Commute (zA P) (zbA P)` using `fn_comm P _ _ _ _`. Establish `cGiz : Commute (ggiA P) (zA P)` using `fn_comm P _ _ _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cGizb : Commute (ggiA P) (zbA P)` using `fn_comm P _ _ _ _`. Establish `cK : Commute (kap P fun π => ((2 * aC P π * P.TT : ℝ) : ℂ)) (ggiA P)` using `kap_comm_sc P _ _`. Establish `cm : Commute (ggiA P) (Um P u)` using `sc_Um hSc P _ _`. Establish `cl : Commute (ggiA P) (Ul P u)` using `sc_Ul hSc P _ _`. Rewrite using `[mA_eq, lA_eq, commutator_perturbed_product _ _ _ _ _ (commute_m0_Ul hSc hN hLNs P u) (commute_l0_Um hSc hN hSG hLN P u) cm cl, UmUl hSh hR hNorm hMix P hP u, raising_constant_eq_shift, lowering_constant_eq_shift, absC _ _ _ _ _ _ _ _ hGGi hGdef czzb.eq cGiz.eq cGizb.eq nz nGi ns …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun t => ggiA P * ggiA P * t) ?_` and prove the remaining obligations. Rewrite using `[← map_smul, ← map_smul, ← map_sub, ← map_one (kap P), ← map_smul, ← map_add, ← map_add]`. Use `congrArg (kap P) (funext fun π => ?_)` and prove the remaining obligations. Use `pf P hP π u (h0 π) (h1 π) (h2 π)` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Pi.one_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem raising_lowering_commutator_alt (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : LevFns) (hLN : LevNab) (hLNs : LevNabs)
     (hSG : StarGens) (hN : NabSS) (hNorm : SSNorm) (hMix : SSMixed) (hCurv : Curvature)
@@ -1925,9 +1909,9 @@ def Det8 (P : Par) (Y : ℂ) : Prop :=
   t21 P Y * t22 P (Y + 1) - t22 P Y * t21 P (Y + 1) = 0
 
 /- English proof (translation)
-Take `⟨a21, a12, a11, _⟩` from `hQN P hP Y h0`. Take `⟨b21, b12, b11, _⟩` from `hQN P hP (Y + 1) h1`. Establish `a11' : t11 P Y = qC P Y • ti P (Y + 1) + t22 P Y * mA P Y * lA P Y` using `a11 h1`. Establish `b11' : t11 P (Y + 1) = qC P (Y + 1) • ti P (Y + 1 + 1) + t22 P (Y + 1) * mA P (Y + 1) * lA P (Y + 1)` using `b11 h2`. Establish `y3` using `raising_lowering_commutator_alt hSc hSh hR hLF hLN hLNs hSG hN hNorm hMix hCurv P hP (Y + 1) (by rw [add_sub_cancel_right]; exact h0) h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `y3` using `[add_sub_cancel_right]`. Unfold `Det8`. Rewrite using `[a21, a12, a11', b21, b12, b11']`. Conclude with `det_abs _ _ _ _ _ _ _ _ _ _ _ (monodromy_diagonal_inverse hLF P Y h0).1 (monodromy_diagonal_inverse hLF P Y h0).2 (monodromy_diagonal_inverse hLF P (Y + 1) h1).1 (monodromy_diagonal_inverse hLF P (Y + 1) h1).2 (ti_comm P _ _) (l_mul_t22_shift hSc hSh hR hLF hLN P Y h0 h1) (modY1' …`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eight_at_good_point (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : LevFns) (hLN : LevNab) (hLNs : LevNabs)
     (hSG : StarGens) (hN : NabSS) (hNorm : SSNorm) (hMix : SSMixed) (hCurv : Curvature) (hQN : QQNormal)
@@ -1953,9 +1937,9 @@ section PartD
 open Formalism.FourierDecayAlt.M Formalism.FourierDecayAlt Finset Polynomial
 
 /- English proof (translation)
-Establish `h : ∀ Y, (kap P fun π => (p π).eval Y) = ∑ π : Ty P, algebraMap ℂ (A P) ((p π).eval Y) * kap P (fun j => if π = j then 1 else 0)`. Introduce `Y`. Use `conv_lhs => rw [pi_eq_sum_univ (fun π => (p π).eval Y)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Algebra.smul_def]`. Conclude with `(IsPoly.sum _ _ fun π _ => (IsPoly.scalar (p π)).mul (IsPoly.const _)).congr h`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_kap (P : Par) (p : Ty P → ℂ[X]) : IsPoly (fun Y => kap P fun π => (p π).eval Y) := by
   have h : ∀ Y, (kap P fun π => (p π).eval Y) =
@@ -1968,21 +1952,21 @@ theorem isPoly_kap (P : Par) (p : Ty P → ℂ[X]) : IsPoly (fun Y => kap P fun 
   exact (IsPoly.sum _ _ fun π _ => (IsPoly.scalar (p π)).mul (IsPoly.const _)).congr h
 
 /- English proof (translation)
-Simplify using `[xEx, eval_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xEx_poly (P : Par) (ex : Finset ℕ) (π : Ty P) (Y : ℂ) :
     xEx P ex π Y = (∏ i ∈ Icc 1 (P.k - 1) \ ex, (X + C (rho P π i : ℂ))).eval Y := by
   simp [xEx, eval_prod]
 
 /- English proof (translation)
-Simplify using `[xC, eval_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xC_poly (P : Par) (π : Ty P) (Y : ℂ) :
     xC P π Y = (∏ i ∈ Icc 1 (P.k - 1), (X + C (rho P π i : ℂ))).eval Y := by
   simp [xC, eval_prod]
 
 /- English proof (translation)
-Simplify using `only [qC, qP, eval_mul, eval_C, eval_prod, eval_add, eval_X]`. Use `congrArg (fun t => -((P.T : ℂ) * P.T') * t) (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qC_poly (P : Par) (Y : ℂ) : qC P Y = (qP P).eval Y := by
   simp only [qC, qP, eval_mul, eval_C, eval_prod, eval_add, eval_X]
@@ -1990,80 +1974,80 @@ theorem qC_poly (P : Par) (Y : ℂ) : qC P Y = (qP P).eval Y := by
   ring
 
 /- English proof (translation)
-The claim follows from `(isPoly_kap P _).congr (fun Y => congrArg (kap P) (funext fun π => xEx_poly P ex π Y))`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_xEx (P : Par) (ex : Finset ℕ) : IsPoly (fun Y => kap P fun π => xEx P ex π Y) :=
   (isPoly_kap P _).congr (fun Y => congrArg (kap P) (funext fun π => xEx_poly P ex π Y))
 
 /- English proof (translation)
-The claim follows from `(isPoly_kap P _).congr (fun Y => congrArg (kap P) (funext fun π => xC_poly P π Y))`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_xA (P : Par) : IsPoly (xA P) :=
   (isPoly_kap P _).congr (fun Y => congrArg (kap P) (funext fun π => xC_poly P π Y))
 
 /- English proof (translation)
-The claim follows from `isPoly_kap P _`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_w (P : Par) : IsPoly (fun Y => kap P fun π => wC P π Y) := isPoly_kap P _
 
 /- English proof (translation)
-The claim follows from `(IsPoly.scalar (qP P)).congr (fun Y => by rw [qC_poly])`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_q (P : Par) : IsPoly (fun Y => algebraMap ℂ (A P) (qC P Y)) :=
   (IsPoly.scalar (qP P)).congr (fun Y => by rw [qC_poly])
 
 /- English proof (translation)
-The claim follows from `((IsPoly.const (-nabA P)).sub (((IsPoly.scalar (X + C (1 / 2))).mul (IsPoly.const (zbA P * ggiA P))))).congr (fun Y => by simp [l0A])`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_lowering_constant (P : Par) : IsPoly (l0A P) :=
   ((IsPoly.const (-nabA P)).sub (((IsPoly.scalar (X + C (1 / 2))).mul (IsPoly.const (zbA P * ggiA P))))).congr
     (fun Y => by simp [l0A])
 
 /- English proof (translation)
-The claim follows from `((IsPoly.const (-nabsA P)).sub (((IsPoly.scalar (X - C (1 / 2))).mul (IsPoly.const (zA P * ggiA P))))).congr (fun Y => by simp [m0A])`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_raising_constant (P : Par) : IsPoly (m0A P) :=
   ((IsPoly.const (-nabsA P)).sub (((IsPoly.scalar (X - C (1 / 2))).mul (IsPoly.const (zA P * ggiA P))))).congr
     (fun Y => by simp [m0A])
 
 /- English proof (translation)
-The claim follows from `IsPoly.sum _ _ fun l _ => (IsPoly.const (SS P l)).mul (isPoly_xEx P {l})`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_S21 (P : Par) : IsPoly (weightedSumBis P) :=
   IsPoly.sum _ _ fun l _ => (IsPoly.const (SS P l)).mul (isPoly_xEx P {l})
 
 /- English proof (translation)
-The claim follows from `IsPoly.sum _ _ fun l _ => (isPoly_xEx P {l}).mul (IsPoly.const (star (SS P l)))`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_S12 (P : Par) : IsPoly (S12 P) :=
   IsPoly.sum _ _ fun l _ => (isPoly_xEx P {l}).mul (IsPoly.const (star (SS P l)))
 
 /- English proof (translation)
-The claim follows from `IsPoly.sum _ _ fun l _ => IsPoly.sum _ _ fun j _ => (IsPoly.const (star (SS P l) * SS P j)).mul (isPoly_xEx P {l, j})`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_quartic_sum (P : Par) : IsPoly (S4 P) :=
   IsPoly.sum _ _ fun l _ => IsPoly.sum _ _ fun j _ =>
     (IsPoly.const (star (SS P l) * SS P j)).mul (isPoly_xEx P {l, j})
 
 /- English proof (translation)
-The claim follows from `(IsPoly.const (ggA P)).mul (isPoly_xA P)`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_diagonal_entry (P : Par) : IsPoly (t22 P) := (IsPoly.const (ggA P)).mul (isPoly_xA P)
 
 /- English proof (translation)
-The claim follows from `(((IsPoly.const (ggA P)).mul (isPoly_xA P)).mul (isPoly_lowering_constant P)).add (isPoly_S21 P)`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_t21 (P : Par) : IsPoly (t21 P) :=
   (((IsPoly.const (ggA P)).mul (isPoly_xA P)).mul (isPoly_lowering_constant P)).add (isPoly_S21 P)
 
 /- English proof (translation)
-The claim follows from `(((IsPoly.const (ggA P)).mul (isPoly_xA P)).mul (isPoly_raising_constant P)).add (isPoly_S12 P)`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_upper_right_entry (P : Par) : IsPoly (t12 P) :=
   (((IsPoly.const (ggA P)).mul (isPoly_xA P)).mul (isPoly_raising_constant P)).add (isPoly_S12 P)
 
 /- English proof (translation)
-The claim follows from `(((((IsPoly.const (ggiA P)).mul (isPoly_w P)).add ((((IsPoly.const (ggA P)).mul (isPoly_xA P)).mul (isPoly_raising_constant P)).mul (isPoly_lowering_constant P))).add ((((IsPoly.const (ggA P)).mul (isPoly_raising_constant P)).mul (IsPoly.const (ggiA P))).mul (isPoly_S21 P))).add …`.
+A detailed English derivation is pending.
 -/
 theorem isPoly_upper_left_entry (P : Par) : IsPoly (t11 P) :=
   (((((IsPoly.const (ggiA P)).mul (isPoly_w P)).add
@@ -2076,11 +2060,11 @@ noncomputable def badSet (P : Par) : Finset ℂ :=
     {-(rho P π i : ℂ), -(rho P π i : ℂ) - 1, -(rho P π i : ℂ) - 2}
 
 /- English proof (translation)
-Unfold `xC`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi h0`. Apply `hY` to reduce the goal to its premises. Simplify using `only [badSet, Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `⟨π, i, hi, ?_⟩` and prove the remaining obligations. Break down `hc with rfl | rfl | rfl` into its components or cases. Use `left`. Take the linear combination `h0`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `left`. Take the linear combination `h0`. Use `right`. Use `right`. Take the linear combination `h0`.
+A detailed English derivation is pending.
 -/
 theorem good_of (P : Par) (Y : ℂ) (hY : Y ∉ badSet P) (c : ℂ) (hc : c = 0 ∨ c = 1 ∨ c = 2) (π : Ty P) :
     xC P π (Y + c) ≠ 0 := by
@@ -2096,15 +2080,15 @@ theorem good_of (P : Par) (Y : ℂ) (hY : Y ∉ badSet P) (c : ℂ) (hc : c = 0 
   · right; right; linear_combination h0
 
 /- English proof (translation)
-Establish `hg : ∀ Z, Z ∉ (↑(badSet P) : Set ℂ) → Det8 P Z`. Introduce `Z hZ`. Establish `hZ' : Z ∉ badSet P` using `by simpa using hZ`. Use `det_eight_at_good_point hSc hSh hR hLF hLN hLNs hSG hN hNorm hMix hCurv hQN P hP Z ?_ ?_ ?_` and prove the remaining obligations. Introduce `π`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `good_of P Z hZ' 0 (Or.inl rfl) π` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Conclude with `good_of P Z hZ' 1 (Or.inr (Or.inl rfl))`. Introduce `π`. Use `good_of P Z hZ' 2 (Or.inr (Or.inr rfl)) π` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show Z + 2 = Z + 1 + 1 by ring]`. Then use the resulting hypothesis. Establish `hfin : (↑(badSet P) : Set ℂ).Finite` using `Finset.finite_toSet _`. Apply the tactic sequence `have p11 := isPoly_upper_left_entry P`. Apply the tactic sequence `have p12 := isPoly_upper_right_entry P`. Establish `p21` using `isPoly_t21 P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have p22 := isPoly_diagonal_entry P`. Establish `s11` using `p11.shift 1`. Establish `s12` using `p12.shift 1`. Establish `s21` using `p21.shift 1`. Establish `s22` using `p22.shift 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pq` using `isPoly_q P`. Establish `p0 : IsPoly (fun _ : ℂ => (0 : A P))` using `IsPoly.const 0`. Conclude with `⟨((s11.mul p21).sub (s21.mul p11)).ext p0 hfin (fun Z hZ => (hg Z hZ).1) Y, ((s11.mul p22).sub (s21.mul p12)).ext pq hfin (fun Z hZ => (hg Z hZ).2.1) Y, ((s12.mul p21).sub (s22.mul p11)).ext pq.neg hfin (fun Z hZ => (hg Z hZ).2.2.1) Y, ((s12.mul p22).sub (s22.mul p12)).ext p0 hfi …`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det8 (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : LevFns) (hLN : LevNab) (hLNs : LevNabs)
     (hSG : StarGens) (hN : NabSS) (hNorm : SSNorm) (hMix : SSMixed) (hCurv : Curvature) (hQN : QQNormal)
@@ -2138,7 +2122,7 @@ theorem det8 (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : LevFns) (hLN :
     ((p21.mul s22).sub (p22.mul s21)).ext p0 hfin (fun Z hZ => (hg Z hZ).2.2.2.2.2.2.2) Y⟩
 
 /- English proof (translation)
-Introduce `P hP Y`. Take `⟨e1, e2, e3, e4, e5, e6, e7, e8⟩` from `det8 hSc hSh hR hLF hLN hLNs hSG hN hNorm hMix hCurv hQN P hP Y`. Conclude with `isSymplectic_of_eight_relations _ _ _ _ _ _ _ _ _ e1 e2 e3 e4 e5 e6 e7 e8`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem qQDet_of (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : LevFns) (hLN : LevNab) (hLNs : LevNabs)
     (hSG : StarGens) (hN : NabSS) (hNorm : SSNorm) (hMix : SSMixed) (hCurv : Curvature) (hQN : QQNormal) :
@@ -2154,14 +2138,14 @@ end Formalism.FourierDecayAlt.P.Mx7
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `Mx7.qQDet_of shift_scalar_relation shift_shift_relation rho_raise level_function_relations level_nabla_relations level_nabla_star_relations star_generators nabla_shift_relation shift_norm_relation shift_mixed_relation m_curvature_proof transfer_normal_alt`.
+A detailed English derivation is pending.
 -/
 theorem transfer_determinant : Formalism.FourierDecayAlt.M.QQDet :=
   Mx7.qQDet_of shift_scalar_relation shift_shift_relation rho_raise level_function_relations level_nabla_relations level_nabla_star_relations
     star_generators nabla_shift_relation shift_norm_relation shift_mixed_relation m_curvature_proof transfer_normal_alt
 
 /- English proof (translation)
-The claim follows from `Mx7.lower_left_commute_of_laws shift_scalar_relation shift_shift_relation shift_commute_relation nabla_shift_relation level_nabla_relations level_function_relations rho_raise`.
+A detailed English derivation is pending.
 -/
 theorem lower_left_commute_model : Formalism.FourierDecayAlt.M.T21Commute :=
   Mx7.lower_left_commute_of_laws shift_scalar_relation shift_shift_relation shift_commute_relation nabla_shift_relation level_nabla_relations level_function_relations

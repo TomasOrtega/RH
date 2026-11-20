@@ -12,7 +12,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.BKGal.FrobEis
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | k + 1 => by rw [pow_succ, add_mul, one_mul] exact (Nat.mul_dvd_mul_right (factorial_pow_dvd r k) _).trans (Nat.factorial_mul_factorial_dvd_factorial_add _ _)`.
+A detailed English derivation is pending.
 -/
 theorem factorial_pow_dvd (r : ℕ) : ∀ k : ℕ, r.factorial ^ k ∣ (k * r).factorial
   | 0 => by simp
@@ -22,9 +22,9 @@ theorem factorial_pow_dvd (r : ℕ) : ∀ k : ℕ, r.factorial ^ k ∣ (k * r).f
       (Nat.factorial_mul_factorial_dvd_factorial_add _ _)
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, l = k + 1` from `⟨l - 1, by omega⟩`. Establish `h1 : (k + 1) * (k + 1) = (k * (k + 1) + k) + 1` using `by ring`. Establish `h3` using `(Nat.mul_dvd_mul_right (factorial_pow_dvd (k + 1) k) k.factorial).trans (Nat.factorial_mul_factorial_dvd_factorial_add (k * (k + 1)) k)`. Establish `h4 : (k + 1).factorial ^ (k + 1) * (k + 1) = (k + 1).factorial ^ k * k.factorial * (k * (k + 1) + k + 1)`. Rewrite using `[Nat.factorial_succ k, pow_succ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Nat.factorial_succ (k * (k + 1) + k), h4, mul_comm (k * (k + 1) + k + 1)]`. Conclude with `Nat.mul_dvd_mul_right h3 _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factorial_pow_mul_dvd {l : ℕ} (hl : 1 ≤ l) : l.factorial ^ l * l ∣ (l * l).factorial := by
   obtain ⟨k, rfl⟩ : ∃ k, l = k + 1 := ⟨l - 1, by omega⟩
@@ -40,9 +40,9 @@ theorem factorial_pow_mul_dvd {l : ℕ} (hl : 1 ≤ l) : l.factorial ^ l * l ∣
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Use `(GlobalTheory.MemLoc.acris_torsionFree_complete l).2` as an intermediate fact. Establish `hJ : -(-y) ^ n ∈ Ideal.jacobson (⊥ : Ideal (Per.Acris l))`. Use `IsAdicComplete.le_jacobson_bot (Ideal.span {((l : ℕ) : Per.Acris l)}) (Ideal.mem_span_singleton.2 ⟨-((-1) ^ n * z), ?_⟩)` and prove the remaining obligations. Rewrite using `[neg_pow, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `Ideal.mem_jacobson_bot.1 hJ 1`. Rewrite `h1` using `[mul_one, neg_add_eq_sub]`. Establish `h2` using `mul_neg_geom_sum (-y) n`. Rewrite `h2` using `[sub_neg_eq_add]`. Conclude with `isUnit_of_mul_isUnit_left (h2 ▸ h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_one_add {y z : Per.Acris l} {n : ℕ} (h : y ^ n = (l : Per.Acris l) * z) : IsUnit (1 + y) := by
   have := (GlobalTheory.MemLoc.acris_torsionFree_complete l).2
@@ -56,15 +56,15 @@ theorem isUnit_one_add {y z : Per.Acris l} {n : ℕ} (h : y ^ n = (l : Per.Acris
   exact isUnit_of_mul_isUnit_left (h2 ▸ h1)
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `ϖ.exists_dpow_teich l`. Take `⟨d₂, hd₂⟩` from `ϖ.exists_dpow_teich (l * l)`. Take `⟨m, hm⟩` from `factorial_pow_mul_dvd hl.out.one_lt.le`. Establish `hm' : ((l * l).factorial : Per.Acris l) = (l.factorial : Per.Acris l) ^ l * l * m`. Rewrite using `[hm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ((l.factorial : Per.Acris l) * d) ^ l = ainfToAcris l ϖ.teich ^ (e * (l * l))`. Rewrite using `[hd, ← pow_mul, mul_assoc]`. Establish `hdl : d ^ l = l * (m * d₂)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `sub_eq_zero.1 (acris_nat_cancel (pow_ne_zero l l.factorial_ne_zero) ?_)` and prove the remaining obligations. Use `push_cast`. Take the linear combination `h3 - hd₂ + d₂ * hm'`. Establish `hp : ((l.factorial : ℕ) : Per.Acris l) = l * ((l - 1).factorial : ℕ)`. Rewrite using `[← Nat.mul_factorial_pred hl.out.ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ainfToAcris l (ϖ.teich ^ (e * l) + l) = l * (1 + ((l - 1).factorial : Per.Acris l) * d)`. Rewrite using `[map_add, map_pow, map_natCast, ← hd, hp]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hy : (((l - 1).factorial : Per.Acris l) * d) ^ l = l * (((l - 1).factorial : Per.Acris l) ^ l * (m * d₂))`. Rewrite using `[mul_pow, hdl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, map_mul, map_natCast]`. Conclude with `(GlobalTheory.MemLoc.isUnit_l_Bcris l).mul ((isUnit_one_add hy).map _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_teich_pow_add {e : ℕ} (ϖ : PiSys l e) :
     IsUnit (acrisToBcris l (ainfToAcris l (ϖ.teich ^ (e * l) + l))) := by
@@ -90,9 +90,9 @@ theorem isUnit_teich_pow_add {e : ℕ} (ϖ : PiSys l e) :
   exact (GlobalTheory.MemLoc.isUnit_l_Bcris l).mul ((isUnit_one_add hy).map _)
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O _ _ _ _ ϖ`. Establish `hE : WittVector.frobenius (ϖ.ev a (eis l a e)) = ϖ.teich ^ (e * l) + l`. Rewrite using `[← ϖ.ev_frobS a, eis, map_add, map_pow, frobS_X, map_natCast, map_add, map_pow, map_pow, PiSys.ev_X, map_natCast, ← pow_mul, mul_comm l e]`. Establish `h : toB l O (frobOA l O (1 ⊗ₜ ϖ.ev a (eis l a e))) = (Algebra.TensorProduct.includeRight : Per.Bcris l →ₐ[ℤ_[l]] OB l O) (acrisToBcris l (ainfToAcris l (ϖ.teich ^ (e * l) + l)))`. Rewrite using `[frobOA_tmul, hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `(isUnit_teich_pow_add ϖ).map _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_toB_frob_eis : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O : Type) [CommRing O]
     [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] (ϖ : PiSys l e),

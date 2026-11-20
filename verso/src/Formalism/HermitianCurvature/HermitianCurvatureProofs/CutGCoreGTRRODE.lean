@@ -5,27 +5,27 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 /- English proof (translation)
-Introduce `ι _ _ Mf Bm h0 hadd hper hd hoff`. Establish `hderiv : ∀ (φ : ℝ) (i j : ι), HasDerivAt (fun x => Mf x i j) (Bm i i * Mf φ i j) φ`. Introduce `φ i j`. Establish `hg0` using `HasDerivAt.sum (u := Finset.univ) (fun k _ => (hd i k).mul_const (Mf φ k j))`. Establish `ef : (∑ k : ι, fun (y : ℝ) => Mf y i k * Mf φ k j) = fun h : ℝ => ∑ k, Mf h i k * Mf φ k j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Rewrite using `[Finset.sum_apply]`. Rewrite `hg0` using `[ef]`. Establish `hsum : ∑ k, Bm i k * Mf φ k j = Bm i i * Mf φ i j`. Rewrite using `[Finset.sum_eq_single i]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ hk`. Rewrite using `[hoff i k (Ne.symm hk), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Rewrite `hg0` using `[hsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `HasDerivAt.comp_sub_const φ φ (by rw [sub_self]; exact hg0)`. Establish `e : (fun x => Mf x i j) = fun x : ℝ => ∑ k, Mf (x - φ) i k * Mf φ k j`. Use function extensionality and compare the values at `x`. Rewrite using `[← Matrix.mul_apply, ← hadd, sub_add_cancel]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hsol : ∀ (i j : ι) (x : ℝ), Mf x i j = Complex.exp (Bm i i * x) * (if i = j then 1 else 0)`. Introduce `i j x`. Establish `hf : ∀ y : ℝ, HasDerivAt (fun y : ℝ => Complex.exp (-Bm i i * y) * Mf y i j) 0 y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : HasDerivAt (fun y : ℝ => Complex.exp (-Bm i i * y)) (Complex.exp (-Bm i i * y) * (-Bm i i * 1)) y` using `(((hasDerivAt_id y).ofReal_comp).const_mul (-Bm i i)).cexp`. Establish `hm` using `he.mul (hderiv y i j)`. Establish `h3 : Complex.exp (-Bm i i * ↑y) * (-Bm i i * 1) * Mf y i j + Complex.exp (-Bm i i * ↑y) * (Bm i i * Mf y i j) = 0`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[h3]`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hm`. Establish `hc` using `is_const_of_deriv_eq_zero (fun y => (hf y).differentiableAt) (fun y => (hf y).deriv) x 0`. Simplify using `only [Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul, h0, Matrix.one_apply] at hc`. Rewrite using `[← hc, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : ∀ i, ∃ n : ℤ, Bm i i = n * Complex.I`. Introduce `i`. Establish `h1` using `hsol i i (2 * Real.pi)`. Rewrite `h1` using `[hper]`. Simplify using `only [Matrix.one_apply_eq, if_true, mul_one] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h1.symm`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hpi : (2 * (Real.pi : ℂ)) ≠ 0`. Simplify using `[Real.pi_ne_zero]`. Apply `mul_right_cancel₀ hpi` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `at hn`. Take the linear combination `hn`. Use `choose n hn using hn`. Use `⟨n, fun φ i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hsol]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[hn]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem rotation_ode_holds : GTRRODE := by
   intro ι _ _ Mf Bm h0 hadd hper hd hoff

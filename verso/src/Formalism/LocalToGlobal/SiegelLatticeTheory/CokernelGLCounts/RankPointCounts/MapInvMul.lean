@@ -23,7 +23,7 @@ def cQ' (cv' : Fin (r + 1) → K) (U₁ : Matrix (Fin (r + 1)) (Fin (r + 1)) E) 
   Matrix.diagonal cv' * U₁⁻¹.map ψ
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Conclude with `congrArg Matrix.diagonal (funext h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_one {cv cv' : Fin (r + 1) → K} (h : ∀ a, cv a * cv' a = 1) :
     Matrix.diagonal cv * Matrix.diagonal cv' = 1 := by
@@ -31,24 +31,24 @@ theorem diag_one {cv cv' : Fin (r + 1) → K} (h : ∀ a, cv a * cv' a = 1) :
   exact congrArg Matrix.diagonal (funext h)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ ψ.map_zero ψ.map_one`.
+A detailed English derivation is pending.
 -/
 theorem map_one' : (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E).map ψ = 1 := Matrix.map_one _ ψ.map_zero ψ.map_one
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (by rw [h]; exact isUnit_one), map_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_mul {L : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (h : L.det = 1) : L⁻¹.map ψ * L.map ψ = 1 := by
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (by rw [h]; exact isUnit_one), map_one']
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (by rw [h]; exact isUnit_one), map_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_inv {L : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (h : L.det = 1) : L.map ψ * L⁻¹.map ψ = 1 := by
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (by rw [h]; exact isUnit_one), map_one']
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, mono, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mono_map (σ : Fin (r + 1) → Fin (r + 1)) (ν : Fin (r + 1) → E) :
     (mono σ ν).map ψ = mono σ (fun a => ψ (ν a)) := by
@@ -57,7 +57,7 @@ theorem mono_map (σ : Fin (r + 1) → Fin (r + 1)) (ν : Fin (r + 1) → E) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1 : ψ x * ψ x⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hx, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_eq_map {x : E} (hx : x ≠ 0) : Ring.inverse (ψ x) = ψ x⁻¹ := by
   have h1 : ψ x * ψ x⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel₀ hx, map_one]
@@ -65,7 +65,7 @@ theorem inv_eq_map {x : E} (hx : x ≠ 0) : Ring.inverse (ψ x) = ψ x⁻¹ := b
     _ = ψ x⁻¹ := by rw [← mul_assoc, Ring.inverse_mul_cancel _ ⟨⟨ψ x, ψ x⁻¹, h1, by rw [mul_comm]; exact h1⟩, rfl⟩, one_mul]
 
 /- English proof (translation)
-Introduce `a` and use `by rw [mul_comm]; exact hcv a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hcv'_of {cv cv' : Fin (r + 1) → K} (hcv : ∀ a, cv a * cv' a = 1) : ∀ a, cv' a * cv a = 1 :=
   fun a => by rw [mul_comm]; exact hcv a
@@ -75,7 +75,7 @@ variable {cv cv' : Fin (r + 1) → K} (hcv : ∀ a, cv a * cv' a = 1) {L₁ U₁
 include hcv hL₁ hU₁
 
 /- English proof (translation)
-Unfold `cP cP'`. Rewrite using `[show Matrix.diagonal cv * L₁.map ψ * (L₁⁻¹.map ψ * Matrix.diagonal cv') = Matrix.diagonal cv * (L₁.map ψ * L₁⁻¹.map ψ) * Matrix.diagonal cv' by simp only [Matrix.mul_assoc], map_mul_inv ψ (det_lo hL₁), Matrix.mul_one, diag_one hcv]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem conjPrime_conjPrime₂ : cP ψ cv L₁ * cP' ψ cv' L₁ = 1 := by
   unfold cP cP'
@@ -84,7 +84,7 @@ theorem conjPrime_conjPrime₂ : cP ψ cv L₁ * cP' ψ cv' L₁ = 1 := by
     map_mul_inv ψ (det_lo hL₁), Matrix.mul_one, diag_one hcv]
 
 /- English proof (translation)
-Unfold `cP cP'`. Rewrite using `[show L₁⁻¹.map ψ * Matrix.diagonal cv' * (Matrix.diagonal cv * L₁.map ψ) = L₁⁻¹.map ψ * (Matrix.diagonal cv' * Matrix.diagonal cv) * L₁.map ψ by simp only [Matrix.mul_assoc], diag_one (hcv'_of hcv), Matrix.mul_one, map_inv_mul ψ (det_lo hL₁)]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cP'_cP : cP' ψ cv' L₁ * cP ψ cv L₁ = 1 := by
   unfold cP cP'
@@ -93,7 +93,7 @@ theorem cP'_cP : cP' ψ cv' L₁ * cP ψ cv L₁ = 1 := by
     diag_one (hcv'_of hcv), Matrix.mul_one, map_inv_mul ψ (det_lo hL₁)]
 
 /- English proof (translation)
-Unfold `cQ cQ'`. Rewrite using `[show U₁.map ψ * Matrix.diagonal cv * (Matrix.diagonal cv' * U₁⁻¹.map ψ) = U₁.map ψ * (Matrix.diagonal cv * Matrix.diagonal cv') * U₁⁻¹.map ψ by simp only [Matrix.mul_assoc], diag_one hcv, Matrix.mul_one, map_mul_inv ψ (det_up hU₁)]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cQ_cQ' : cQ ψ cv U₁ * cQ' ψ cv' U₁ = 1 := by
   unfold cQ cQ'
@@ -102,7 +102,7 @@ theorem cQ_cQ' : cQ ψ cv U₁ * cQ' ψ cv' U₁ = 1 := by
     diag_one hcv, Matrix.mul_one, map_mul_inv ψ (det_up hU₁)]
 
 /- English proof (translation)
-Unfold `cQ cQ'`. Rewrite using `[show Matrix.diagonal cv' * U₁⁻¹.map ψ * (U₁.map ψ * Matrix.diagonal cv) = Matrix.diagonal cv' * (U₁⁻¹.map ψ * U₁.map ψ) * Matrix.diagonal cv by simp only [Matrix.mul_assoc], map_inv_mul ψ (det_up hU₁), Matrix.mul_one, diag_one (hcv'_of hcv)]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cQ'_cQ : cQ' ψ cv' U₁ * cQ ψ cv U₁ = 1 := by
   unfold cQ cQ'
@@ -111,7 +111,7 @@ theorem cQ'_cQ : cQ' ψ cv' U₁ * cQ ψ cv U₁ = 1 := by
     map_inv_mul ψ (det_up hU₁), Matrix.mul_one, diag_one (hcv'_of hcv)]
 
 /- English proof (translation)
-Unfold `cP cP'`. Rewrite using `[show L₁⁻¹.map ψ * Matrix.diagonal cv' * k * (Matrix.diagonal cv * L₁.map ψ) = L₁⁻¹.map ψ * (Matrix.diagonal cv' * k * Matrix.diagonal cv) * L₁.map ψ by simp only [Matrix.mul_assoc]]`. Conclude with `isLo_mul (isLo_mul (isLo_map ψ (isLo_inv hL₁)) (isLo_conj hk cv' cv (hcv'_of hcv))) (isLo_map ψ hL₁)`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cP_lo {k : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hk : IsLo k) : IsLo (cP' ψ cv' L₁ * k * cP ψ cv L₁) := by
   unfold cP cP'
@@ -120,7 +120,7 @@ theorem cP_lo {k : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hk : IsLo k) : IsLo (c
   exact isLo_mul (isLo_mul (isLo_map ψ (isLo_inv hL₁)) (isLo_conj hk cv' cv (hcv'_of hcv))) (isLo_map ψ hL₁)
 
 /- English proof (translation)
-Unfold `cQ cQ'`. Rewrite using `[show U₁.map ψ * Matrix.diagonal cv * k * (Matrix.diagonal cv' * U₁⁻¹.map ψ) = U₁.map ψ * (Matrix.diagonal cv * k * Matrix.diagonal cv') * U₁⁻¹.map ψ by simp only [Matrix.mul_assoc]]`. Conclude with `isUp_mul (isUp_mul (isUp_map ψ hU₁) (isUp_conj hk cv cv' hcv)) (isUp_map ψ (isUp_inv hU₁))`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cQ_up {k : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hk : IsUp k) : IsUp (cQ ψ cv U₁ * k * cQ' ψ cv' U₁) := by
   unfold cQ cQ'
@@ -129,7 +129,7 @@ theorem cQ_up {k : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hk : IsUp k) : IsUp (c
   exact isUp_mul (isUp_mul (isUp_map ψ hU₁) (isUp_conj hk cv cv' hcv)) (isUp_map ψ (isUp_inv hU₁))
 
 /- English proof (translation)
-Unfold `cP cQ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, mono_map]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cW_eq (σ : Fin (r + 1) → Fin (r + 1)) (ν : Fin (r + 1) → E) (s e : K) :
     s • (Matrix.diagonal cv * (L₁ * mono σ ν * U₁).map ψ * Matrix.diagonal cv) - e • Ecorner r =
@@ -139,7 +139,7 @@ theorem cW_eq (σ : Fin (r + 1) → Fin (r + 1)) (ν : Fin (r + 1) → E) (s e :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e : ∀ M : Matrix (Fin (r + 1)) (Fin (r + 1)) K, Matrix.diagonal cv' * (Matrix.diagonal cv * M) = M` using `fun M => by rw [← Matrix.mul_assoc, diag_one (hcv'_of hcv), Matrix.one_mul]`. Establish `f : ∀ M : Matrix (Fin (r + 1)) (Fin (r + 1)) K, L₁⁻¹.map ψ * (L₁.map ψ * M) = M` using `fun M => by rw [← Matrix.mul_assoc, map_inv_mul ψ (det_lo hL₁), Matrix.one_mul]`. Unfold `cP cP'`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc, e, f, map_inv_mul ψ (det_lo hL₁), Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cG_eq (X' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     cP' ψ cv' L₁ * (Matrix.diagonal cv * (L₁ * X' * L₁⁻¹).map ψ * Matrix.diagonal cv') * cP ψ cv L₁ = X'.map ψ := by
@@ -152,7 +152,7 @@ theorem cG_eq (X' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
   simp only [Matrix.mul_assoc, e, f, map_inv_mul ψ (det_lo hL₁), Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[show P' * A * P * (P' * B * P) = P' * A * (P * P') * B * P by simp only [Matrix.mul_assoc], hPP, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_mul {P P' A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hPP : P * P' = 1) :
     P' * (A * B) * P = (P' * A * P) * (P' * B * P) := by
@@ -161,9 +161,9 @@ theorem conj_mul {P P' A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hPP : P * P'
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hν' : ∀ x, IsUnit (ψ (ν x))` using `fun x => by`. Establish `hu : ψ (ν x) * ψ (ν x)⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ (hν x), map_one]`. Conclude with `⟨⟨ψ (ν x), ψ (ν x)⁻¹, hu, by rw [mul_comm, hu]⟩, rfl⟩`. Rewrite `hk` using `[cW_eq ψ hcv hL₁ hU₁]`. Establish `hfix` using `stab_core hs (cP'_cP ψ hcv hL₁ hU₁) (cQ_cQ' ψ hcv hL₁ hU₁) hkL hkR hk`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `fix_inv hσ hν' (cP_lo ψ hcv hL₁ hU₁ hkL) (cQ_up ψ hcv hL₁ hU₁ hkR) hfix`.
+A detailed English derivation is pending.
 -/
 theorem comp_target {σ : Fin (r + 1) → Fin (r + 1)} (hσ : ∀ a, σ (σ a) = a) {ν : Fin (r + 1) → E}
     (hν : ∀ a, ν a ≠ 0) {s e : K} (hs : IsUnit s) {kL kR : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hkL : IsLo kL)
@@ -180,11 +180,11 @@ theorem comp_target {σ : Fin (r + 1) → Fin (r + 1)} (hσ : ∀ a, σ (σ a) =
   exact fix_inv hσ hν' (cP_lo ψ hcv hL₁ hU₁ hkL) (cQ_up ψ hcv hL₁ hU₁ hkR) hfix
 
 /- English proof (translation)
-Establish `hν' : ∀ x, IsUnit (ψ (ν x))` using `fun x => by`. Establish `hu : ψ (ν x) * ψ (ν x)⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ (hν x), map_one]`. Conclude with `⟨⟨ψ (ν x), ψ (ν x)⁻¹, hu, by rw [mul_comm, hu]⟩, rfl⟩`. Establish `hinv : ∀ x, t * Ring.inverse (ψ (ν x)) ∈ I` using `fun x => by`. Rewrite using `[inv_eq_map ψ (hν x)]`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbν' x`. Establish `hT` using `(comp_target ψ hcv hL₁ hU₁ hσ hν hs hkL hkR hk).2.2`. Establish `hA : cP' ψ cv' L₁ * a * cP ψ cv L₁ = (cP' ψ cv' L₁ * kL * cP ψ cv L₁) * X'.map ψ`. Rewrite using `[haX, conj_mul hcv hL₁ hU₁ (conjPrime_conjPrime₂ ψ hcv hL₁ hU₁), cG_eq ψ hcv hL₁ hU₁]`. Establish `hE` using `close_of_target hT bx hG`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hE` using `[← hA]`. Rewrite `hab` using `[cW_eq ψ hcv hL₁ hU₁]`. Conclude with `close_pair hσ hν' ht hc hbν hinv (conjPrime_conjPrime₂ ψ hcv hL₁ hU₁) (cP'_cP ψ hcv hL₁ hU₁) (cQ_cQ' ψ hcv hL₁ hU₁) (cQ'_cQ ψ hcv hL₁ hU₁) bP bP' bQ bQ' hs ha hb hab (cP_lo ψ hcv hL₁ hU₁ ha) (cQ_up ψ hcv hL₁ hU₁ hb) hE`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_main {σ : Fin (r + 1) → Fin (r + 1)} (hσ : ∀ a, σ (σ a) = a) {ν : Fin (r + 1) → E}
     (hν : ∀ a, ν a ≠ 0) {s e : K} (hs : IsUnit s) {I : Subring K} {kL kR a b : Matrix (Fin (r + 1)) (Fin (r + 1)) K}

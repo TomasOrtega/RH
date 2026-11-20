@@ -38,18 +38,18 @@ theorem qB_apply (S S' : Finset (Fin m)) (c : ℝ) (Z Z' : Matrix (Fin n) (Fin n
     qB S S' c Z Z' u v = qF S S' c Z Z' u v := rfl
 
 /- English proof (translation)
-Simplify using `[Complex.mul_re, Complex.mul_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem re_I_mul (c : ℝ) (z : ℂ) : (Complex.I * c * z).re = -(c * z.im) := by
   simp [Complex.mul_re, Complex.mul_im]
 
 /- English proof (translation)
-The claim follows from `(Complex.nonneg_iff.mp (hP.posSemidef.dotProduct_mulVec_nonneg y)).1`.
+A detailed English derivation is pending.
 -/
 theorem quad_nonneg {P : Matrix (Fin n) (Fin n) ℂ} (hP : P.PosDef) (y : Fin n → ℂ) : 0 ≤ (star y ⬝ᵥ (P *ᵥ y)).re := (Complex.nonneg_iff.mp (hP.posSemidef.dotProduct_mulVec_nonneg y)).1
 
 /- English proof (translation)
-The claim follows from `(Complex.pos_iff.mp (hP.dotProduct_mulVec_pos hy)).1`.
+A detailed English derivation is pending.
 -/
 theorem quad_pos {P : Matrix (Fin n) (Fin n) ℂ} (hP : P.PosDef) {y : Fin n → ℂ} (hy : y ≠ 0) :
     0 < (star y ⬝ᵥ (P *ᵥ y)).re := (Complex.pos_iff.mp (hP.dotProduct_mulVec_pos hy)).1

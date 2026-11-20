@@ -6,11 +6,11 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Introduce `F _ _ V _ _ _ Φ hΦ P hP`. Set `e : V ≃ₗ[F] (Fin P.natDegree → F)` to `LinearEquiv.ofFinrankEq _ _ (by simp [hP])`. Unfold `mass`. Use `finsum_mem_eq_of_bijOn (fun g => e.conj g) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hg`. Introduce `g _ h _ hgh`. Simplify using `using congrArg e.symm.conj hgh`. Introduce `h hh`. Use `⟨e.symm.conj h, ?_, by simp⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hh`. Introduce `g _`. Conclude with `(hΦ V _ e g).symm`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mass_eq_mass_pi_of_invariant : ∀ (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] (Φ : ∀ (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V], Module.End F V → ℂ), (∀ (V V' : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V] [AddCommGroup V'] [Module F V'] [FiniteDimensional F V'] (e : V ≃ₗ[F] V') (g : Module.End F V), Φ V' (e.conj g) = Φ V g) → ∀ P : F[X], P.natDegree = Module.finrank F V → mass (Φ V) P = mass (Φ (Fin P.natDegree → F)) P := by
   intro F _ _ V _ _ _ Φ hΦ P hP

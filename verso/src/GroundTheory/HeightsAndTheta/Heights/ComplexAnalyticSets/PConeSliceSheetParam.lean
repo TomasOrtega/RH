@@ -17,7 +17,7 @@ noncomputable section
 namespace ConeSliceSheetParam
 
 /- English proof (translation)
-Introduce `q hq`. Establish `hle : J ⊔ Ideal.span {f} ≤ RingHom.ker (eval x)` using `sup_le (fun q hq => RingHom.mem_ker.2 (hJ q hq)) (Ideal.span_le.2 (Set.singleton_subset_iff.2 (RingHom.mem_ker.2 hf)))`. Conclude with `RingHom.mem_ker.1 (hle hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eval_sup_span {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {f : MvPolynomial (Fin n) ℂ}
     {x : Fin n → ℂ} (hJ : ∀ q ∈ J, eval x q = 0) (hf : eval x f = 0) :
@@ -29,7 +29,7 @@ theorem eval_sup_span {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {f : MvPo
   exact RingHom.mem_ker.1 (hle hq)
 
 /- English proof (translation)
-Introduce `q hq`. Rewrite using `[← sum_homogeneousComponent q, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eval_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous i q), hx _ (hJ q hq i), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_smul_of_isHomogIdeal {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (hJ : IsHomogIdeal J)
     {x : Fin n → ℂ} (hx : ∀ q ∈ J, eval x q = 0) (t : ℂ) : ∀ q ∈ J, eval (t • x) q = 0 := by
@@ -39,20 +39,18 @@ theorem eval_smul_of_isHomogIdeal {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ
   rw [eval_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous i q), hx _ (hJ q hq i), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[eval_smul_of_isHomogeneous (SliceIdeal.isHomogeneous_linForm ℓ), pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_linForm_smul {n : ℕ} (ℓ : Fin n → ℂ) (t : ℂ) (x : Fin n → ℂ) :
     eval (t • x) (linForm ℓ) = t * eval x (linForm ℓ) := by
   rw [eval_smul_of_isHomogeneous (SliceIdeal.isHomogeneous_linForm ℓ), pow_one]
 
 /- English proof (translation)
-Establish `hP` using `hJ.isPrime`. Establish `hdeh : ∀ (G : MvPolynomial (Fin n) ℂ) (d : ℕ), G.IsHomogeneous d → G ∈ J ⊔ Ideal.span {linForm ℓ - 1} → G ∈ J` using `fun G d hG hm => ChartDehomog.proof ℂ n J ℓ G d hP hJ.isHomog hℓ hG hm`. Establish `hspan : Ideal.span {linForm ℓ - 1} ≤ J ⊔ Ideal.span {linForm ℓ - 1}` using `le_sup_right`. Use `Ideal.isPrime_iff.mpr ⟨fun htop => ?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one J).mpr (hdeh 1 0 (isHomogeneous_one _ _) (htop ▸ Submodule.mem_top)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨da, A, hA', hAa⟩` from `SliceIdeal.exists_homogeneous_sub_mem ℓ a`. Take `⟨db, B, hB', hBb⟩` from `SliceIdeal.exists_homogeneous_sub_mem ℓ b`. Establish `hAB : A * B ∈ J ⊔ Ideal.span {linForm ℓ - 1}`. Establish `h : A * B = (A - a) * B + a * (B - b) + a * b` using `by ring`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Ideal.add_mem _ (Ideal.add_mem _ (hspan (Ideal.mul_mem_right _ _ hAa)) (hspan (Ideal.mul_mem_left _ _ hBb))) hab`. Break down `hP.mem_or_mem (hdeh _ _ (hA'.mul hB') hAB) with h | h` into its components or cases. Use `left`. Establish `e : a = A - (A - a)` using `by ring`. Rewrite using `[e]`.
-
-Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left h) (hspan hAa)`. Use `right`. Establish `e : b = B - (B - b)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left h) (hspan hBb)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_isPrime {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ : Fin n → ℂ} (hJ : IsProjPrime J)
     (hℓ : linForm ℓ ∉ J) : (J ⊔ Ideal.span {linForm ℓ - 1}).IsPrime := by
@@ -86,45 +84,41 @@ end ConeSliceSheetParam
 open ConeSliceSheetParam in
 
 /- English proof (translation)
-Introduce `n e h J ℓ A hJ hdim hℓ hA`. Establish `hP` using `hJ.isPrime`. Take `⟨P, U, D, N, s, hP0, hUD, hdisj, hbad, hnull, hfib⟩` from `hCov n e _ A (slice_isPrime hJ hℓ) (SliceDim.proof n e J ℓ hJ hdim hℓ) hA`. Use `set J' := J ⊔ Ideal.span {linForm ℓ - 1} with hJ'`. Use `set M := (h.matᵀ)⁻¹ with hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (h.matᵀ).det` using `by rw [det_transpose]; exact h.isUnit_det`. Establish `hslice : ∀ x ∈ zeroSet J', (∀ q ∈ J, eval x q = 0) ∧ eval x (linForm ℓ) = 1`. Introduce `x hx`. Use `⟨fun q hq => hx q (Ideal.mem_sup_left hq), ?_⟩` and prove the remaining obligations. Establish `h1` using `hx _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hval : ∀ k j y, y ∈ U k → s k j y ∈ zeroSet J' ∧ A *ᵥ s k j y = y`. Introduce `k j y hy`. Establish `hm : s k j y ∈ fibre J' A y` using `by rw [(hfib k y hy).1]; exact ⟨j, rfl⟩`. Conclude with `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hpt : ∀ (t : ℂ) (v : Fin n → ℂ), h.pointOf (t • WithLp.toLp 2 (M *ᵥ v)) = t • v`. Introduce `t v`. Simplify using `only [HermNorm.pointOf]`. Express the relevant statement in the definitionally equal form `h.matᵀ *ᵥ (t • (M *ᵥ v)) = t • v`. Rewrite using `[mulVec_smul, mulVec_mulVec, hM, mul_nonsing_inv _ hdet, one_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `⟨U, D, N, s, hUD, hdisj, hnull, hfib, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨k, j⟩, y, t⟩ ⟨hy, ht⟩ ⟨⟨k', j'⟩, y', t'⟩ ⟨hy', ht'⟩ heq`. Simplify using `only at hy ht hy' ht' heq`. Establish `hv` using `congrArg h.pointOf heq`. Rewrite `hv` using `[hpt, hpt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hZ, hA1⟩` from `hval k j y ((hUD k).2.2.1 hy)`. Take `⟨hZ', hA1'⟩` from `hval k' j' y' ((hUD k').2.2.1 hy')`. Establish `hl` using `congrArg (fun x => eval x (linForm ℓ)) hv`. Simplify using `only [eval_linForm_smul, (hslice _ hZ).2, (hslice _ hZ').2, mul_one] at hl`. Substitute `hl` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hss : s k j y = s k' j' y'` using `smul_right_injective _ ht hv`. Establish `hyy : y = y'` using `by rw [← hA1, ← hA1', hss]`. Substitute `hyy` using the available equality. Establish `hkk : k = k'`. Assume the negation of the conclusion as `hk`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Set.disjoint_left.1 (hdisj hk) hy hy'`. Substitute `hkk` using the available equality. Establish `hjj : j = j'` using `(hfib k y ((hUD k).2.2.1 hy)).2.1 hss`. Substitute `hjj` using the available equality. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `z ⟨⟨⟨k, j⟩, y, t⟩, ⟨hy, ht⟩, rfl⟩`. Simplify using `only at hy ht`. Introduce `q hq`. Rewrite using `[hpt]`. Conclude with `eval_smul_of_isHomogIdeal hJ.isHomog (hslice _ (hval k j y ((hUD k).2.2.1 hy)).1).1 t q hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨δ, G, hG, hGf⟩` from `SliceIdeal.exists_homogeneous_sub_mem ℓ (pullback A P)`. Establish `hGJ : G ∉ J`. Introduce `hGm`. Apply `hP0` to reduce the goal to its premises. Establish `hm : pullback A P ∈ J'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e1 : pullback A P = G - (G - pullback A P)` using `by ring`. Rewrite using `[e1]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left hGm) (Ideal.mem_sup_right hGf)`. Apply `hA.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Ideal.Quotient.mkₐ ℂ J') (pullback A P) = 0`. Rewrite using `[Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hm`. Establish `hZ1` using `NullSmaller.proof n (e + 1) (J ⊔ Ideal.span {linForm ℓ}) (MassFinite.dim_sup_lt J hP hdim _ hℓ)`. Establish `hZ2` using `NullSmaller.proof n (e + 1) (J ⊔ Ideal.span {G}) (MassFinite.dim_sup_lt J hP hdim _ hGJ)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set F := fun q : (Σ k, Fin (N k)) × (Fin e → ℂ) × ℂ => q.2.2 • WithLp.toLp 2 (M *ᵥ s q.1.1 q.1.2 q.2.1) with hF`. Set `L` to `LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin M)`. Establish `hsub : {z : EuclideanSpace ℂ (Fin n) | ∀ q ∈ J, eval (h.pointOf z) q = 0} \ F '' {q | q.2.1 ∈ D q.1.1 ∧ q.2.2 ≠ 0} ⊆ L '' (zeroSetEuc (J ⊔ Ideal.span {linForm ℓ}) ∪ zeroSetEuc (J ⊔ Ideal.span {G}))`. Introduce and unpack `z ⟨hzC, hzF⟩`. Use `set p := h.pointOf z with hp`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzp : L (WithLp.toLp 2 p) = z`. Express the relevant statement in the definitionally equal form `WithLp.toLp 2 (M *ᵥ (h.matᵀ *ᵥ WithLp.ofLp z)) = z`. Rewrite using `[mulVec_mulVec, hM, nonsing_inv_mul _ hdet, one_mulVec]`. Establish `hpJ : ∀ q ∈ J, eval p q = 0` using `hzC`. Use `⟨WithLp.toLp 2 p, ?_, hzp⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `h0 : eval p (linForm ℓ) = 0`. Conclude with `Or.inl (eval_sup_span hpJ h0)`. Use `set c := eval p (linForm ℓ) with hc`. Establish `hpx : p = c • (c⁻¹ • p)` using `by rw [smul_smul, mul_inv_cancel₀ h0, one_smul]`. Establish `hx : c⁻¹ • p ∈ zeroSet J'` using `eval_sup_span (eval_smul_of_isHomogIdeal hJ.isHomog hpJ c⁻¹) (by rw [map_sub, map_one, eval_linForm_smul, ← hc, inv_mul_cancel₀ h0, sub_self])`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hyD : A *ᵥ (c⁻¹ • p) ∈ ⋃ k, D k`. It suffices to derive a contradiction. Take `⟨k, hk⟩` from `mem_iUnion.1 hyD`. Establish `hxf : c⁻¹ • p ∈ fibre J' A (A *ᵥ (c⁻¹ • p))` using `⟨hx, rfl⟩`. Rewrite `hxf` using `[(hfib k _ ((hUD k).2.2.1 hk)).1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `hxf`. Apply `hzF` to reduce the goal to its premises. Use `⟨⟨⟨k, j⟩, A *ᵥ (c⁻¹ • p), c⟩, ⟨hk, h0⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzp]`. Simplify using `only [hF, hj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `c • WithLp.toLp 2 (M *ᵥ (c⁻¹ • p)) = WithLp.toLp 2 (M *ᵥ p)`. Rewrite using `[mulVec_smul, WithLp.toLp_smul, smul_smul, mul_inv_cancel₀ h0, one_smul]`. Establish `hPy : eval (A *ᵥ (c⁻¹ • p)) P = 0` using `hbad hyD`. Use `Or.inr (eval_sup_span hpJ ?_)` and prove the remaining obligations. Establish `hGx : eval (c⁻¹ • p) G = eval (c⁻¹ • p) (pullback A P)`.
-
-Establish `h2` using `hx _ (Ideal.mem_sup_right hGf)`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hpx, eval_smul_of_isHomogeneous hG, hGx, MassFinite.eval_pullback, hPy, mul_zero]`. Use `measure_mono_null hsub ?_` and prove the remaining obligations. Use `le_antisymm ?_ zero_le` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ConeSliceSheetParam.proof (hCov : DiscriminantSheetCover.Statement) :
     ConeSliceSheetParam.Statement := by

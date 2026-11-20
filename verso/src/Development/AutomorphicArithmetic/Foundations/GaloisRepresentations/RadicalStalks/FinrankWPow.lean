@@ -18,9 +18,9 @@ private abbrev W (ν : C → k) : Submodule k (k ⊗[ℤ] C) :=
     (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C).toRingHom) c).maxGenEigenspace (ν c)
 
 /- English proof (translation)
-Simplify using `only [W, Submodule.mem_iInf, Module.End.mem_maxGenEigenspace]`. Use `forall_congr' fun c => exists_congr fun n => ?_` and prove the remaining obligations. Establish `h : (((Algebra.lmul k (k ⊗[ℤ] C)).toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[ℤ] k ⊗[ℤ] C).toRingHom) c - ν c • (1 : Module.End k (k ⊗[ℤ] C))) = Algebra.lmul k (k ⊗[ℤ] C) ((1 : k) ⊗ₜ[ℤ] c - ν c ⊗ₜ[ℤ] (1 : C))`. Establish `: ν c ⊗ₜ[ℤ] (1 : C) = ν c • (1 : k ⊗[ℤ] C)`. Rewrite using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_sub, map_smul, map_one]`. Both sides reduce to the same expression. Rewrite using `[h, ← map_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mem_W (ν : C → k) (x : k ⊗[ℤ] C) :
     x ∈ W ν ↔ ∀ c : C, ∃ n : ℕ, (((1 : k) ⊗ₜ[ℤ] c - ν c ⊗ₜ[ℤ] (1 : C)) ^ n) * x = 0 := by
@@ -43,13 +43,13 @@ private def frobZ : k ≃ₐ[ℤ] k := AlgEquiv.ofRingEquiv (f := frobeniusEquiv
 private def E : (k ⊗[ℤ] C) ≃ₐ[ℤ] (k ⊗[ℤ] C) := Algebra.TensorProduct.congr (frobZ (k := k) p) AlgEquiv.refl
 
 /- English proof (translation)
-Simplify using `[E, frobZ, frobenius_def]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem E_tmul (l : k) (c : C) : E p (l ⊗ₜ[ℤ] c) = (l ^ p) ⊗ₜ[ℤ] c := by
   simp [E, frobZ, frobenius_def]
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul a c => simp [TensorProduct.smul_tmul', E_tmul, mul_pow]`. Consider the case `add x y hx hy => simp [smul_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem E_smul (l : k) (x : k ⊗[ℤ] C) : E p (l • x) = l ^ p • E p x := by
   induction x with
@@ -58,9 +58,9 @@ private theorem E_smul (l : k) (x : k ⊗[ℤ] C) : E p (l • x) = l ^ p • E 
   | add x y hx hy => simp [smul_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[mem_W, mem_W]`. Use `forall_congr' fun c => exists_congr fun n => ?_` and prove the remaining obligations. Establish `h : E p (((1 : k) ⊗ₜ[ℤ] c - ν c ⊗ₜ[ℤ] (1 : C)) ^ n * x) = ((1 : k) ⊗ₜ[ℤ] c - (ν c ^ p) ⊗ₜ[ℤ] (1 : C)) ^ n * E p x`. Rewrite using `[map_mul, map_pow, map_sub, E_tmul, E_tmul, one_pow]`. Rewrite using `[← h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_eq_zero_iff _ (E p).injective`.
+A detailed English derivation is pending.
 -/
 private theorem E_mem (ν : C → k) (x : k ⊗[ℤ] C) : E p x ∈ W (fun c => ν c ^ p) ↔ x ∈ W ν := by
   rw [mem_W, mem_W]
@@ -72,7 +72,7 @@ private theorem E_mem (ν : C → k) (x : k ⊗[ℤ] C) : E p x ∈ W (fun c => 
   exact map_eq_zero_iff _ (E p).injective
 
 /- English proof (translation)
-Set `j : ↥(W ν) ≃+ ↥(W (fun c => ν c ^ p))` to `{ toFun := fun x => ⟨E p x.1, (E_mem p ν x.1).2 x.2⟩ invFun := fun y => ⟨(E p).symm y.1, (E_mem p ν _).1 (by simpa using y.2)⟩ left_inv := fun x => Subtype.ext (by simp) right_inv := fun y => Subtype.ext (by simp) map_add' := fun x y => Subtype.ext (by simp) }`. Establish `hr` using `rank_eq_of_equiv_equiv (R := k) (R' := k) (M := ↥(W ν)) (M₁ := ↥(W (fun c => ν c ^ p))) (⟨fun l => l ^ p, by simp [(Fact.out : p.Prime).ne_zero]⟩ : ZeroHom k k) j (frobeniusEquiv k p).bijective (fun r m => Subtype.ext (E_smul p r m.1))`. Conclude with `(congrArg Cardinal.toNat hr).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem finrank_W_pow (ν : C → k) :
     Module.finrank k ↥(W (fun c => ν c ^ p)) = Module.finrank k ↥(W ν) := by
@@ -114,21 +114,17 @@ end UpperTheory.Gal.Ord.DimsCoh
 
 open UpperTheory.Gal.Ord.DimsAlg UpperTheory.Gal.Ord.DimsCoh in
 /- English proof (translation)
-Introduce `p _ D R _ b N hN hNp _ k _ _ hk β o i w f _ _ _ π j`. Establish `H` using `GlobalTheory.abelianDeRham`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k o.A o.ab`. Take `⟨hfd, -, -⟩` from `GlobalTheory.finrank_HdR_Fil_of_field H.1 H.2.1 k o.A g o.ab hg`. Use `haveI := hfd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Finite k (primDR o.A) := (Module.finite_dual_iff k).1 hfd`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Use `haveI : CharP k p := (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).2 hk`. Take `⟨l, hlp, hl⟩` from `Nat.exists_infinite_primes (p + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : l.Coprime p` using `(Nat.coprime_primes hl (Fact.out : p.Prime)).2 (by omega)`. Establish `hcopj : ∀ j : ℕ, (l ^ j).Coprime p` using `fun j => Nat.Coprime.pow_left j hcop`. Establish `hposj : ∀ j : ℕ, 0 < l ^ j` using `fun j => pow_pos hl.pos j`. Establish `hlk : (l : k) ≠ 0`. Establish `hu` using `(b.unit l hcop).map β`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hu` using `[map_natCast]`. Conclude with `hu.ne_zero`. Take `⟨I, -⟩` from `o.geom k (𝟙 _) β (by rw [Category.id_comp])`. Establish `hc : ∀ c : 𝓞 D.F, LinearMap.charpoly (cohHom o c) = ((LinearMap.charpoly (LinearMap.mulLeft ℤ c)) ^ (D.m * D.n)).map (Int.castRingHom k)`. Introduce `c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O c)`. Establish `e` using `GlobalTheory.T.charpoly_deRhamHomology_endomorphism_eq_map_ladic k o.A o.ab (o.act.act (algebraMap (𝓞 D.F) D.O c)) D.La (DistribMulAction.toLinearMap ℤ D.La (algebraMap (𝓞 D.F) D.O c)) l hl hlk (fun j => I.ev (l ^ j)) (fun j x y => I.add (l ^ j) x y) (fun j x => I.lin (l ^ j) _ x …`. Rewrite `e` using `[GlobalTheory.T.charpoly_la_eq_pow p D c]`. Rewrite using `[← e]`. Conclude with `(GlobalTheory.DeRhamCharpolyP.charpoly_dualMap _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `key` using `fun χ : 𝓞 D.F →+* k => GlobalTheory.T.finrank_jointWeightSpace_eq_of_charpoly k (𝓞 D.F) ↥(primDR o.A) (cohHom o) (D.m * D.n) hc χ`. Establish `e1` using `key ((iterateFrobenius k p j).comp (β.comp (b.t i)))`. Establish `e2` using `key (β.comp (b.t i))`. Establish `hW : ∀ (j : ℕ) , Module.finrank k ↥(W (C` using `𝓞 D.F) (fun c => β (b.t i c) ^ p ^ j)) = Module.finrank k ↥(W (C := 𝓞 D.F) (fun c => β (b.t i c))) := by`. Introduce `j`.
-
-Proceed by induction on `j with`. Consider the case `zero => exact congrArg (fun ν : 𝓞 D.F → k => Module.finrank k ↥(W ν)) (funext fun c => by simp)`. Consider the case `succ j ih`. Rewrite using `[← ih, ← finrank_W_pow p (fun c => β (b.t i c) ^ p ^ j)]`. Conclude with `congrArg (fun ν : 𝓞 D.F → k => Module.finrank k ↥(W ν)) (funext fun c => by rw [_root_.pow_succ, _root_.pow_mul])`.
-
-Simplify using `only [RingHom.comp_apply, iterateFrobenius_def] at e1 e2`. Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Conclude with `congrArg (D.m * D.n * ·) (hW j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.dims :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → D.m = 1 →

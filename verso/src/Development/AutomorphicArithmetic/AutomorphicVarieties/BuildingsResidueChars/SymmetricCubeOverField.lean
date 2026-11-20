@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
 
 /- English proof (translation)
-Establish `h0` using `congrFun (congrFun h 0) 0`. Establish `h1` using `congrFun (congrFun h 1) 0`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, hg.1, hg.2, hs.1, hs.2, ht.1, ht.2] at h0 h1 hx hy ⊢`. Establish `e : t 0 0 = s 0 0` using `mul_left_cancel₀ hg0 (by linear_combination h0)`. Rewrite `h1`, `hx` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_left_cancel₀ (sub_ne_zero.2 hne) ?_` and prove the remaining obligations. Take the linear combination `h1 - hx + g 0 0 * hy`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem key {R : Type} [Field R] {g s t : M2 R} {x y : R} (h : g * t = s * g) (hg0 : g 0 0 ≠ 0)
     (hg : g 1 1 = 1 ∧ g 0 1 = 0) (hs : s 1 1 = 1 ∧ s 0 1 = 0) (ht : t 1 1 = 1 ∧ t 0 1 = 0) (hne : s 0 0 ≠ 1)

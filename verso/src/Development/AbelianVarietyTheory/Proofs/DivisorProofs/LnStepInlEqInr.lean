@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UnramLine
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unramified_embeddings_separating_combination`.
+A detailed English derivation is pending.
 -/
 theorem exists_idem : ∀ (E : Type) [Field E] [NumberField E] (C : Type) [NontriviallyNormedField C]
     [IsUltrametricDist C] (p : ℕ), p.Prime → ‖(p : C)‖ < 1 → ¬ p ∣ (NumberField.discr E).natAbs →
@@ -25,7 +25,7 @@ theorem exists_idem : ∀ (E : Type) [Field E] [NumberField E] (C : Type) [Nontr
   GlobalTheory.T.unramified_embeddings_separating_combination
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.de_rham_lattice_tangent_combination`.
+A detailed English derivation is pending.
 -/
 theorem latDR_comb_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (X : Scheme.{0}) (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (x : Sp C ⟶ X)
@@ -35,7 +35,7 @@ theorem latDR_comb_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   GlobalTheory.T.de_rham_lattice_tangent_combination
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hodge_tate_lattice_tangent_combination`.
+A detailed English derivation is pending.
 -/
 theorem latHT_comb_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (X : Scheme.{0}) (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (p : ℕ)
@@ -46,7 +46,7 @@ theorem latHT_comb_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   GlobalTheory.T.hodge_tate_lattice_tangent_combination
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `latDR_comb_mem E H X t C x w hwt hw n a c hc W hW`. Conclude with `latHT_comb_mem E H X t C p x w hwt hw n a c hc W hW`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem lat_comb_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (p : ℕ) (b : Bool)
@@ -63,9 +63,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (x : Sp C ⟶ X)
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sigma, Finset.prod_eq_single σ]`. Both sides reduce to the same expression. Introduce `τ _ hτ`. Conclude with `Finset.prod_eq_one fun i _ => by rw [hg ⟨τ, i⟩ hτ]; exact hU _`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ σ) h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prod_block (U : Letter Dw → (overAt x (DualNumber C) ⟶ t.G)) (hU : ∀ y, smT x 0 (U y) = 1)
     (σ : E →+* ℂ) (g : Letter Dw → C) (hg : ∀ y : Letter Dw, y.1 ≠ σ → g y = 0) :
@@ -85,55 +83,47 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (x : Sp C ⟶ X)
 
 /- English proof (translation)
-Take `⟨hkl, hz⟩` from `List.getElem?_eq_some_iff.1 hk`. Establish `hnd : (letters Dw).Nodup` using `GlobalTheory.Proof.LetterConjugation.nodup_letters Dw`. Establish `hmem : ∀ y, y ∈ letters Dw` using `GlobalTheory.Proof.LetterConjugation.mem_letters Dw`. Set `e : Fin (letters Dw).length ≃ Letter Dw` to `List.Nodup.getEquivOfForallMemList (letters Dw) hnd hmem`. Establish `he : ∀ l, e l = (letters Dw).get l` using `fun l => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hek : e ⟨k, hkl⟩ = z` using `by rw [he]; exact hz`. Establish `hes : e.symm z = ⟨k, hkl⟩` using `by rw [Equiv.symm_apply_eq, hek]`. Establish `hpw` using `List.pairwise_iff_get.1 (GlobalTheory.Proof.exists_descending_letter_chain.pairwise_letters Dw)`. Establish `O1 : ∀ j : Fin (Dw.mult z.1), z.2 < j → k < (e.symm ⟨z.1, j⟩ : ℕ)`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj' : (z.2 : ℕ) < j` using `hj`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Break down `lt_or_eq_of_le hle with hlt | heq` into its components or cases. Establish `h1` using `hpw (e.symm ⟨z.1, j⟩) ⟨k, hkl⟩ hlt`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← he, ← he, Equiv.apply_symm_apply, hek]`. Establish `h2 : (j : ℕ) ≤ z.2` using `h1 rfl`. Use linear arithmetic over natural numbers and integers. Establish `h1 : e.symm ⟨z.1, j⟩ = ⟨k, hkl⟩` using `Fin.ext heq`. Rewrite `h1` using `[Equiv.symm_apply_eq, hek]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun y : Letter Dw => (y.2 : ℕ)) h1`. Simplify using `only at h2`. Use linear arithmetic over natural numbers and integers. Establish `O2 : ∀ l : Fin (letters Dw).length, k < (l : ℕ) → ∀ h1 : (e l).1 = z.1, (z.2 : ℕ) < ((e l).2 : ℕ)`. Introduce `l hl h1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hpw ⟨k, hkl⟩ l hl`. Rewrite `h2` using `[← he, ← he, hek]`. Establish `h3 : (z.2 : ℕ) ≤ (e l).2` using `h2 h1.symm`. Break down `lt_or_eq_of_le h3 with h4 | h4` into its components or cases. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `h5 : e l = z` using `Sigma.ext h1 ((Fin.heq_ext_iff (congrArg Dw.mult h1)).2 h4.symm)`. Rewrite `h5` using `[← hek]`. Establish `h6` using `congrArg Fin.val (e.injective h5)`. Simplify using `only at h6`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Use linear arithmetic over natural numbers and integers. Set `U : Letter Dw → (overAt x (DualNumber C) ⟶ t.G)` to `fun y => ovT (htan y.1 y.2)`. Establish `hU0 : ∀ y, smT x 0 (U y) = 1` using `fun y => smT_zero_ovT (htan y.1 y.2)`. Establish `hUe : ∀ y (a : 𝓞 E), U y ≫ t.act.act a = smT x (emb y.1 (a : E)) (U y)` using `fun y a => Over.OverMorphism.ext (heig y.1 y.2 a)`. Establish `hcomb : ∀ cf : Fin (letters Dw).length → C, combT x (fun i => U (e i)) cf = ∏ y, smT x (cf (e.symm y)) (U y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `cf`. Rewrite using `[← e.prod_comp]`. Simplify using `only [Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `hvd : vDiff E p = 0`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[vDiff, padicValNat.eq_zero_of_not_dvd hpd]`. Establish `key : grNorm t x (lat t p x b) (u z.1) z.2 = grNorm t x (lat t p x b) (fun i => u ((letters Dw).get i).1 ((letters Dw).get i).2) ⟨k, hkl⟩`. Unfold `grNorm`. Use `congr 1`. Use extensionality with `r`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨cf, hcf0, hcfz, ⟨w, hwΛ, hw⟩, rfl⟩`. Set `g : Letter Dw → C` to `fun y => if h : y.1 = z.1 then cf ⟨y.2, h ▸ y.2.isLt⟩ else 0`. Establish `hgz : g z = cf z.2` using `by simp [g]`. Use `⟨fun l => g (e l), ?_, ?_, ⟨w, hwΛ, ?_⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show g (e ⟨k, hkl⟩) ≠ 0`. Rewrite using `[hek, hgz]`. Conclude with `hcf0`. Introduce `l hl show g (e l) = 0`. Simplify using `only [g]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h1`. Conclude with `hcfz _ (Fin.lt_def.2 (O2 l hl h1))`. Both sides reduce to the same expression. Use `(isCombAtG_iff t x (fun i => U (e i)) _ w).2 ?_` and prove the remaining obligations. Rewrite using `[hcomb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.apply_symm_apply]`. Rewrite using `[prod_block t x U hU0 z.1 g (fun y hy => dif_neg hy)]`. Rewrite using `[← (isCombAtG_iff t x (fun i => U ⟨z.1, i⟩) cf w).1 hw]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[g]`. Use `show ‖cf z.2‖⁻¹ = ‖g (e ⟨k, hkl⟩)‖⁻¹`. Rewrite using `[hek, hgz]`. Introduce and unpack `⟨cf, hcf0, hcfz, ⟨w, hwΛ, hw⟩, rfl⟩`. Take `⟨n, a, c, hc, hδ1, hδ0⟩` from `exists_idem E C p hp hpC hpd (emb z.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw' : (∏ y, smT x (cf (e.symm y)) (U y)).left = w`. Rewrite using `[← hcomb]`. Conclude with `(isCombAtG_iff t x (fun i => U (e i)) cf w).1 hw`. Use `set Wt := ∏ y, smT x (cf (e.symm y)) (U y) with hWt`. Establish `hcomb' : IsCombAtG t x (fun j => w ≫ (t.act.act (a j)).left) c (combT x (fun j => Wt ≫ t.act.act (a j)) c).left`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw']`. Conclude with `(isCombAtG_iff t x (fun j => Wt ≫ t.act.act (a j)) c _).2 rfl`. Establish `hwt : IsTanAtG t x w`. Rewrite using `[← (isCombAtG_iff t x (fun i => U (e i)) cf w).1 hw]`. Conclude with `isTanAtG_of _ (combT_tan x _ (fun i => hU0 _) cf)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmemΛ` using `lat_comb_mem t p b x w hwt hwΛ a c hc _ hcomb'`. Establish `hcalc : combT x (fun j => Wt ≫ t.act.act (a j)) c = combT x (fun i => U ⟨z.1, i⟩) (fun i => cf (e.symm ⟨z.1, i⟩))`. Establish `h1 : ∀ j, smT x (c j) (Wt ≫ t.act.act (a j)) = ∏ y, smT x (c j * (cf (e.symm y) * emb y.1 (a j : E))) (U y)`. Introduce `j`. Use `haveI := t.act.hom (a j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Wt ≫ t.act.act (a j) = ∏ y, (smT x (cf (e.symm y)) (U y) ≫ t.act.act (a j))` using `map_prod (postHom x (t.act.act (a j))) _ _`. Rewrite using `[h2, smT_prod]`. Use `Finset.prod_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← smT_post, hUe, smT_smT, smT_smT, _root_.mul_assoc]`. Simplify using `only [combT]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl fun j _ => h1 j, Finset.prod_comm]`. Establish `h3 : ∀ y : Letter Dw, ∏ j, smT x (c j * (cf (e.symm y) * emb y.1 (a j : E))) (U y) = smT x (if y.1 = z.1 then cf (e.symm y) else 0) (U y)`. Introduce `y`. Rewrite using `[← smT_sum x _ _ _ (hU0 y)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ∑ j, c j * (cf (e.symm y) * emb y.1 (a j : E)) = cf (e.symm y) * ∑ j, c j * emb y.1 (a j : E)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[h4]`. Distinguish the cases in `hy : y.1 = z.1`. Rewrite using `[if_pos hy, hy, hδ1, _root_.mul_one]`.
-
-Rewrite using `[if_neg hy, hδ0 _ (hemb.ne hy), MulZeroClass.mul_zero]`. Rewrite using `[Finset.prod_congr rfl fun y _ => h3 y]`. Rewrite using `[prod_block t x U hU0 z.1 _ (fun y hy => if_neg hy)]`. Simplify using `only [if_true]`. Both sides reduce to the same expression.
-
-Use `⟨fun i => cf (e.symm ⟨z.1, i⟩), ?_, ?_, ⟨_, hmemΛ, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show cf (e.symm ⟨z.1, z.2⟩) ≠ 0`. Rewrite using `[Sigma.eta, hes]`. Conclude with `hcf0`. Introduce `i hi`.
-
-Conclude with `hcfz _ (Fin.lt_def.2 (O1 i hi))`. Rewrite using `[hcalc]`. Conclude with `(isCombAtG_iff t x (fun i => U ⟨z.1, i⟩) _ _).2 rfl`. Use `show ‖cf ⟨k, hkl⟩‖⁻¹ = ‖cf (e.symm ⟨z.1, z.2⟩)‖⁻¹`. Rewrite using `[Sigma.eta, hes]`.
-
-Simplify using `only [lnStep, dif_pos z.2.isLt, dif_pos hkl, hvd, zero_mul, ite_self, sub_zero, Fin.eta]`. Conclude with `congrArg Real.log key`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lnStep_inl_eq_inr (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber C) ⟶ t.G.left)) (p : ℕ)
     (hp : p.Prime) (hpC : ‖(p : C)‖ < 1) (hpd : ¬ p ∣ (NumberField.discr E).natAbs)

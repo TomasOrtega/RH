@@ -11,7 +11,7 @@ variable {F G V W V₁ V₂ : Type} [Field F] [Group G] [AddCommGroup V] [Module
   [AddCommGroup W] [Module F W] [AddCommGroup V₁] [Module F V₁] [AddCommGroup V₂] [Module F V₂]
 
 /- English proof (translation)
-Use `ENat.biSup_add_biSup_le' ⟨0, occurs_zero _ _⟩ ⟨0, occurs_zero _ _⟩ fun a ha b hb => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_add]`. Conclude with `le_iSup₂_of_le _ (occurs_add ι p hι hp h0 ha hb) le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jhMult_add_le {σ : Representation F G W} {ρ : Representation F G V} {ρ₁ : Representation F G V₁}
     {ρ₂ : Representation F G V₂} (ι : ρ₁.IntertwiningMap ρ) (p : ρ.IntertwiningMap ρ₂)
@@ -22,17 +22,15 @@ theorem jhMult_add_le {σ : Representation F G W} {ρ : Representation F G V} {�
   exact le_iSup₂_of_le _ (occurs_add ι p hι hp h0 ha hb) le_rfl
 
 /- English proof (translation)
-Establish `key : ∀ r, OccursTimes σ ρ r → (r : ℕ∞) * m ≤ A ⊤`. Introduce and unpack `r ⟨S, T, h1, h2, h3⟩`. Establish `hi : ∀ (i : ℕ) (hi : i < r), ((i + 1 : ℕ) : ℕ∞) * m ≤ A (S ⟨i, hi⟩)`. Introduce `i`. Proceed by induction on `i with`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `hi`. Use `hstep _ _ (h1 ⟨0, hi⟩) (h3 ⟨0, hi⟩)` as an intermediate fact. Simplify using `using le_trans le_add_self this`. Consider the case `succ i ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `hi`. Establish `h4` using `ih (by omega)`. Establish `h5` using `hmono _ _ (h2 ⟨i, by omega⟩ ⟨i + 1, hi⟩ (by simp [Fin.lt_def]))`. Establish `h6` using `hstep _ _ (h1 ⟨i + 1, hi⟩) (h3 ⟨i + 1, hi⟩)`. Use `le_trans ?_ h6` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (((i + 1 + 1 : ℕ)) : ℕ∞) * m = ((i + 1 : ℕ) : ℕ∞) * m + m` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `add_le_add (h4.trans h5) le_rfl`. Break down `r with _ | r` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `(hi r (by omega)).trans (hmono _ _ le_top)`. Unfold `jhMult`. Rewrite using `[ENat.iSup_mul]`. Use `iSup_le fun r => ?_` and prove the remaining obligations. Rewrite using `[ENat.iSup_mul]`.
-
-Conclude with `iSup_le fun hr => key r hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jhMult_mul_le_of_steps (σ : Representation F G W) (ρ : Representation F G V)
     (A : Subrepresentation ρ → ℕ∞) (m : ℕ∞) (hmono : ∀ S T : Subrepresentation ρ, T ≤ S → A T ≤ A S)

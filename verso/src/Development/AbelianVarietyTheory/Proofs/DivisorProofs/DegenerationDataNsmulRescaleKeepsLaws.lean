@@ -21,7 +21,7 @@ def tau3 (D : DegPre R) (s a b : D.X) :=
     (LB.invGen D.P.L _ _ D.rigK)
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Conclude with `h a`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem corr_even_degenerationData_negPoint (D : DegPre R) (h : D.PsiEven) (a m : D.X) (hm : m = -a) :
     LB.Gen.Corr D.P.L _ _ _ _
@@ -30,7 +30,7 @@ theorem corr_even_degenerationData_negPoint (D : DegPre R) (h : D.PsiEven) (a m 
   exact h a
 
 /- English proof (translation)
-Substitute `hs ht hu hv` using the available equality. Conclude with `h a a' b`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem corr_bimultiplicative_degenerationData_sums (D : DegPre R) (h : D.TauBimult) (a a' b s t u v : D.X) (hs : s = a + a') (ht : t = a + a' + b)
     (hu : u = a + b) (hv : v = a' + b) :
@@ -42,7 +42,7 @@ theorem corr_bimultiplicative_degenerationData_sums (D : DegPre R) (h : D.TauBim
   exact h a a' b
 
 /- English proof (translation)
-Substitute `ha ha' hs ht` using the available equality. Conclude with `h u hu h1 y y'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem corr_balanced_degenerationData_rosati (D : DegPre R) (f g : D.P.A ⟶ D.P.A) (p q : D.X → D.X) (h : D.TauBal f g p q)
     (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A f g) rosatiε)) (hu : u.IsGen)
@@ -69,7 +69,7 @@ def mulAct (D : DegPre R) [Module O D.X] (oa : D.OAct O) (n : ℕ) : (mulDeg D n
       (by rw [nsmul_add, smul_comm n a y]) (by rw [nsmul_add, smul_comm n (star a) y'])
 
 /- English proof (translation)
-Substitute `hb hs` using the available equality. Conclude with `h y`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem corr_polarisationElement_degenerationData (D : DegPre R) [Module O D.X] (oa : D.OAct O) (w0 : O)
     (u : LB.Gen (LB.LinComb D.P.L (K := Fin 4)
@@ -83,7 +83,7 @@ theorem corr_polarisationElement_degenerationData (D : DegPre R) [Module O D.X] 
   exact h y
 
 /- English proof (translation)
-Introduce `R _ _ D O _ _ _ oa w0 n he hb hw hg`. Use `⟨fun (a : D.X) => corr_even_degenerationData_negPoint D he (n • a) (n • (-a)) (neg_nsmul a n), fun (a a' b : D.X) => corr_bimultiplicative_degenerationData_sums D hb (n • a) (n • a') (n • b) (n • (a + a')) (n • (a + a' + b)) (n • (a + b)) (n • (a' + b)) (nsmul_add _ _ _) (by rw [ …` and prove the remaining obligations. Take `⟨u, hu, h1, h⟩` from `hw`. Conclude with `⟨u, hu, h1, fun (y : D.X) => corr_polarisationElement_degenerationData D oa w0 u h (n • y) (n • (y + w0 • y)) (n • (w0 • y)) (smul_comm n w0 y) (by rw [nsmul_add, smul_comm n w0 y])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mulDeg_laws : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O D.X] (oa : D.OAct O) (w0 : O) (n : ℕ), D.PsiEven → D.TauBimult → TraceFormTwistIso D oa w0 → (∀ y, PsiUnitOn D y Set.univ) → letI : Module O (mulDeg D n).X := ‹Module O D.X›; (mulDeg D n).PsiEven ∧ (mulDeg D n).TauBimult ∧ (∀ y, PsiUnitOn (mulDeg D n) y Set.univ) ∧ ∃ oa' : (mulDeg D n).OAct O, oa'.onB = oa.onB ∧ TraceFormTwistIso (mulDeg D n) oa' w0 := by
   intro R _ _ D O _ _ _ oa w0 n he hb hw hg

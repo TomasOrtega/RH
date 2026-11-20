@@ -33,11 +33,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Dc : ComponentData II (CMType H) K J Ω W} {Hd : HodgeData Dc} {S₀ : Finset ℕ}
 
 /- English proof (translation)
-Take `⟨U, hU, b, hs, hf⟩` from `𝔐.vb t p trivial`. Establish `e : 𝔐.V t p = Submodule.span (regAt 𝔐.ξ p) (Set.range b)` using `(hf p trivial hU).2`. Establish `hx' : x ∈ Submodule.span (regAt 𝔐.ξ p) (Set.range b)` using `e ▸ hx`. Use `clear hx`. Use `show x ∈ 𝔐.Vgen t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : Submodule.span Ω (Set.range b) = 𝔐.Vgen t` using `hs`. Rewrite using `[← hs']`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem x h => exact Submodule.subset_span h`. Consider the case `zero => exact zero_mem _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add _ _ _ _ h h' => exact add_mem h h'`. Consider the case `smul a x _ h => exact Submodule.smul_mem _ (a : Ω) h`.
+A detailed English derivation is pending.
 -/
 theorem mem_Vgen (𝔐 : HodgeCpt Y S₀ Dc.y) (t : CMType H ⊕ CMType H) (p : Cpt 𝔐.ξ) {x : 𝔐.Li}
     (hx : x ∈ 𝔐.V t p) : x ∈ 𝔐.Vgen t := by
@@ -55,7 +55,7 @@ theorem mem_Vgen (𝔐 : HodgeCpt Y S₀ Dc.y) (t : CMType H ⊕ CMType H) (p : 
   | smul a x _ h => exact Submodule.smul_mem _ (a : Ω) h
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hind, -⟩` from `GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S₀ Ω K J Dc.y Or.𝔐 (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `hind.pairwiseDisjoint (Or.bg_ne_sm τ τ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem disjoint_blocks (Or : CptOrigin Y S₀ Dc Hd) (τ : CMType H) :
     Disjoint (Or.𝔐.Vgen (Or.bg τ)) (Or.𝔐.Vgen (Or.sm τ)) := by
@@ -64,9 +64,9 @@ theorem disjoint_blocks (Or : CptOrigin Y S₀ Dc Hd) (τ : CMType H) :
   exact hind.pairwiseDisjoint (Or.bg_ne_sm τ τ)
 
 /- English proof (translation)
-Establish `h : ∀ τ k, ∃ x, x ∈ Or.𝔐.Vgen (Or.sm τ) ∧ Or.i τ (d.b τ (tailIdx Dc.j_le_N k)) - x ∈ Or.𝔐.Vgen (Or.bg τ)` using `fun τ k => by`. Establish `hm : Or.i τ (d.b τ (tailIdx Dc.j_le_N k)) ∈ Or.𝔐.Vgen (Or.bg τ) ⊔ Or.𝔐.Vgen (Or.sm τ)`. Rewrite using `[← Or.i_range τ]`. Conclude with `⟨_, rfl⟩`. Take `⟨a, ha, e, he, hae⟩` from `Submodule.mem_sup.1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, he, by rw [← hae]; simpa using ha⟩`. Use `choose s hs using h`. Conclude with `⟨s, hs⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smallPart (Or : CptOrigin Y S₀ Dc Hd) {w : (Σ k, J k) → ℂ} (d : MuFrameAt Hd w) :
     ∃ s, Or.IsSmallPart d s := by
@@ -81,7 +81,7 @@ theorem exists_smallPart (Or : CptOrigin Y S₀ Dc Hd) {w : (Σ k, J k) → ℂ}
   exact ⟨s, hs⟩
 
 /- English proof (translation)
-Establish `hfr` using `GlobalTheory.T.component_data_hodge_second E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z w τ d.c d.f (d.b τ) h hw (d.adapted τ).1 d.inDom`. Establish `hb` using `GlobalTheory.T.is_frame_at_tail_of_is_frame_at_comap_sup_lattice Or.𝔐.X Ω Or.𝔐.ξ Or.𝔐.Li (W τ) (Or.i τ) (Or.𝔐.V (Or.bg τ)) (Or.𝔐.V (Or.sm τ)) (Or.𝔐.Vgen (Or.bg τ)) (Or.𝔐.Vgen (Or.sm τ)) Dc.N Dc.j Dc.j_le_N (d.b τ) (s τ) ⟨centre z, h⟩ (Or.i_inj τ) (Or.i_range τ) (disjoint_blocks O …`. Conclude with `⟨hfr, hb.1, hb.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem frames (Or : CptOrigin Y S₀ Dc Hd) {z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X} {w : (Σ k, J k) → ℂ}
     (hw : CoordsAt Or.𝔐.ξ Dc.y z w) (d : MuFrameAt Hd w) {s : CMType H → Fin (Dc.N - Dc.j) → Or.𝔐.Li}
@@ -97,9 +97,9 @@ theorem frames (Or : CptOrigin Y S₀ Dc Hd) {z : Spec (CommRingCat.of ℂ) ⟶ 
   exact ⟨hfr, hb.1, hb.2.1⟩
 
 /- English proof (translation)
-Establish `h : genPt Or.𝔐.ξ ⤳ centre z` using `Or.𝔐.all _`. Establish `key : ∀ τ, ∃ Γ : Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) ℂ, Or.𝔐.M.GramAt Or.𝔐.t.PP.L z (s τ) Γ ∧ Γ.PosDef ∧ quotNormSq Dc.j_le_N (gramAt (Dc.h τ) (d.b τ) w) = Γ.det.re` using `fun τ => by`. Take `⟨h1, h2, h3⟩` from `frames Or hw d hs τ h`. Take `⟨G, hG, hGp⟩` from `GlobalTheory.T.component_data_hodge_third E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z τ (d.b τ) h hi h1`. Rewrite using `[GlobalTheory.T.intersection_system_hodge_data E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z w τ (d.b τ) h G hw hi h1 hG]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.intersection_system_hodge_bound E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z τ (d.b τ) (s τ) h G hi h1 ((d.adapted τ).2.2) (fun k => (hs τ k).1) h3 h2 hG hGp`. Use `choose Γ h1 h2 h3 using key`. Use `⟨Γ, h1, h2, ?_⟩` and prove the remaining obligations. Unfold `MuFrameAt.norm`. Repeatedly rewrite using `[h3]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq (Or : CptOrigin Y S₀ Dc Hd) {z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X} {w : (Σ k, J k) → ℂ}
     (hw : CoordsAt Or.𝔐.ξ Dc.y z w) (hi : Or.𝔐.Interior z) (d : MuFrameAt Hd w)
@@ -122,35 +122,33 @@ theorem norm_eq (Or : CptOrigin Y S₀ Dc Hd) {z : Spec (CommRingCat.of ℂ) ⟶
   simp_rw [h3]
 
 /- English proof (translation)
-The claim follows from `(Complex.pos_iff.1 h.det_pos).1`.
+A detailed English derivation is pending.
 -/
 theorem det_re_pos {n : ℕ} {Γ : Matrix (Fin n) (Fin n) ℂ} (h : Γ.PosDef) : 0 < Γ.det.re :=
   (Complex.pos_iff.1 h.det_pos).1
 
 /- English proof (translation)
-Establish `h : genPt Or.𝔐.ξ ⤳ centre z` using `Or.𝔐.all _`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `htie : CoordTie ℤ Or.𝔐.ξ (fun c' : (k : K) → J k => ∏ k, Dc.y ⟨k, c' k⟩)` using `Or.𝔐.tie`. Establish `hpol` using `GlobalTheory.T.interior_point_polarised E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z hi`. Take `⟨cv, hcv, hwc⟩` from `exists_eq_smul_orbitRep w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₀, hw₀def⟩ : ∃ w₀, w₀ = orbitRep w` from `⟨_, rfl⟩`. Rewrite `hwc` using `[← hw₀def]`. Establish `hwk : ∀ p, w p = cv p.1 * w₀ p` using `fun p => congrFun hwc p`. Establish `hw₀ : CoordsAt Or.𝔐.ξ Dc.y z w₀`. Use `RootHt.ArchB.coordsAt_smul (fun k => (cv k)⁻¹) (fun k => inv_ne_zero (hcv k)) hw` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Rewrite using `[hwc]`. Simplify using `[torusSmul, inv_mul_cancel_left₀ (hcv p.1)]`. Establish `hval : ∀ (a : Ω) (v : ℂ), IsValueAt Dc.y a w v ↔ IsValueAt Dc.y a w₀ v` using `fun a v => ((GlobalTheory.T.valAt_iff_value_at Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie z w h hw a v).symm).trans (GlobalTheory.T.valAt_iff_value_at Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie z w₀ h hw₀ a v)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne₀ : ∀ k, w₀ ⟨k, d.c k⟩ ≠ 0` using `fun k h0 => d.inDom.1 k (by rw [hwk ⟨k, d.c k⟩]; simp [h0])`. Set `d₁ : MuFrameAt Hd w₀` to `{ c := d.c, f := d.f inDom := ⟨hne₀, d.inDom.2.imp fun v hv => ⟨(hval _ _).1 hv.1, hv.2⟩⟩ b := d.b, adapted := d.adapted, u := d.u, unit := d.unit, eq := d.eq }`. Establish `hs₁ : Or.IsSmallPart d₁ s` using `hs`. Establish `hu` using `GlobalTheory.T.unit_value_frame_domain Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y z w d.c d.f d.u htie h hw d.inDom d.unit`. Establish `hmc₀ : w₀ ∈ mcPts (mCoordIdeal Dc.y)` using `(GlobalTheory.T.complex_points_iff_centres Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie w₀).2 ⟨z, h, hw₀⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu₀ : valAt Dc.y d.u w₀ = valAt Dc.y d.u w` using `valAt_eq hmc₀ ((hval _ _).1 ((GlobalTheory.T.valAt_iff_value_at Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y htie z w h hw _ _).1 hu.2))`. Establish `hne` using `GlobalTheory.T.component_data_hodge_first E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z w₀ hw₀`. Take `⟨s₀, hs₀⟩` from `exists_smallPart Or hne.some`. Take `⟨Γ₀, g₀, p₀, n₀⟩` from `norm_eq Or hw₀ hi hne.some hs₀`. Take `⟨Γ₁, g₁, p₁, -⟩` from `norm_eq Or hw₀ hi d₁ hs₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₁ : Γ₁ = Γ` using `funext fun τ => GlobalTheory.T.gram_matrix_change_frame E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 z _ (s τ) _ _ hpol (g₁ τ) (hΓ τ)`. Substitute `e₁` using the available equality. Establish `hind` using `GlobalTheory.T.intersection_system_hodge_degree E H D l Xo c Y II K J Ω W Dc Hd S₀ Or z w₀ hne.some d₁ s₀ s Γ₀ Γ₁ hw₀ hi hs₀ hs₁ g₀ g₁ p₀`. Establish `hF : muMetric Hd w₀ = ‖valAt Dc.y d.u w‖ * (∏ k, ‖w₀ ⟨k, d.c k⟩‖ ^ Hd.aMu k) * ∏ τ, Real.sqrt (Γ₁ τ).det.re`. Unfold `muMetric`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hne, n₀, hind]`. Use `show ‖valAt Dc.y d.u w₀‖ * _ * _ = _`. Rewrite using `[hu₀]`. Establish `hA : 0 < ‖valAt Dc.y d.u w‖` using `norm_pos_iff.2 hu.1`. Establish `hsq : 0 < ∏ τ, Real.sqrt (Γ₁ τ).det.re` using `Finset.prod_pos fun τ _ => Real.sqrt_pos.2 (det_re_pos (p₁ τ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod₀ : 0 < ∏ k, ‖w₀ ⟨k, d.c k⟩‖ ^ Hd.aMu k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hne₀ k)) _`. Establish `hprod : 0 < ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (d.inDom.1 k)) _`. Establish `hpos : 0 < muMetric Hd w₀`. Rewrite using `[hF]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnz : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0` using `fun k => ⟨d.c k, d.inDom.1 k⟩`. Establish `hh : (muLine Hd).h w = (∏ k, ‖cv k‖ ^ Hd.aMu k) * muMetric Hd w₀`. Substitute `hw₀def` using the available equality. Conclude with `TopNPoly.hermOfFun_h_smul hcv hwc hnz hpos`. Establish `hcw : (∏ k, ‖cv k‖ ^ Hd.aMu k) * ∏ k, ‖w₀ ⟨k, d.c k⟩‖ ^ Hd.aMu k = ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, ← norm_mul]`. Rewrite using `[hwk ⟨k, d.c k⟩]`. Establish `hfin : (muLine Hd).h w = (‖valAt Dc.y d.u w‖ * ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k) * ∏ τ, Real.sqrt (Γ₁ τ).det.re`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh, hF, ← hcw]`. Expand and normalize the polynomial expressions, which then agree. Use `show Real.log ((muLine Hd).h w) = _`. Rewrite using `[hfin, Real.log_mul (by positivity) hsq.ne', Real.log_prod (fun τ _ => (Real.sqrt_pos.2 (det_re_pos (p₁ τ))).ne')]`. Use `congr 1`.
-
-Rewrite using `[Finset.sum_div]`. Conclude with `Finset.sum_congr rfl fun τ _ => Real.log_sqrt (det_re_pos (p₁ τ)).le`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phMu_eq (Or : CptOrigin Y S₀ Dc Hd) {z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X} {w : (Σ k, J k) → ℂ}
     (hw : CoordsAt Or.𝔐.ξ Dc.y z w) (hi : Or.𝔐.Interior z) (d : MuFrameAt Hd w)
@@ -232,7 +230,7 @@ theorem phMu_eq (Or : CptOrigin Y S₀ Dc Hd) {z : Spec (CommRingCat.of ℂ) ⟶
   exact Finset.sum_congr rfl fun τ _ => Real.log_sqrt (det_re_pos (p₁ τ)).le
 
 /- English proof (translation)
-Introduce `_ E _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z w hw`. Establish `htie : CoordTie ℤ Or.𝔐.ξ (segreCoord Dc.y)` using `Or.𝔐.tie`. Use `⟨GlobalTheory.T.component_data_hodge_first E H D l (Xo l) c Y II K J Ω W Dc Hd S₀ Or z w hw, fun d => ⟨exists_smallPart Or d, fun s hs => ⟨ fun τ h => (frames Or hw d hs τ h).2.1, ?_, fun hi Γ hΓ => phMu_eq Or hw hi d hs hΓ⟩⟩⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.unit_value_frame_domain Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y z w d.c d.f d.u htie (Or.𝔐.all _) hw d.inDom d.unit).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phMu_small : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (z : Sp ℂ ⟶ Or.𝔐.X) (w : (Σ k, J k) → ℂ), CoordsAt Or.𝔐.ξ Dc.y z w → Nonempty (MuFrameAt Hd w) ∧ ∀ d : MuFrameAt Hd w, (∃ s, Or.IsSmallPart d s) ∧ ∀ s, Or.IsSmallPart d s → (∀ τ (h : genPt Or.𝔐.ξ ⤳ centre z), (Or.𝔐.V (Or.sm τ)).IsFrameAt (s τ) ⟨centre z, h⟩) ∧ valAt Dc.y d.u w ≠ 0 ∧ (Or.𝔐.Interior z → ∀ Γ : CMType H → Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) ℂ, (∀ τ, Or.𝔐.M.GramAt Or.𝔐.t.PP.L z (s τ) (Γ τ)) → phMu Hd w = Real.log (‖valAt Dc.y d.u w‖ * ∏ k, ‖w ⟨k, d.c k⟩‖ ^ Hd.aMu k) + (∑ τ, Real.log (Γ τ).det.re) / 2) := by
   intro _ E _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or z w hw

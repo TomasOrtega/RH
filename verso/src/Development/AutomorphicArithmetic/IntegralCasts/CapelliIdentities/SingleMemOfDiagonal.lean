@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `κ _ m d hd W hW v hv i hi`. Establish `key : ∀ s : Finset (Fin m), (fun k => (∏ j ∈ s, (d k - d j)) * v k) ∈ W`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Establish `h` using `W.sub_mem (hW _ ih) (W.smul_mem (d a) ih)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `only [Finset.prod_insert ha, Pi.sub_apply, Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]`.
+Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc : (∏ j ∈ Finset.univ.erase i, (d i - d j)) * v i ≠ 0`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun j hj => ?_) hi` and prove the remaining obligations. Conclude with `sub_ne_zero.mpr fun h => (Finset.ne_of_mem_erase hj) (hd h).symm`. Establish `h` using `W.smul_mem ((∏ j ∈ Finset.univ.erase i, (d i - d j)) * v i)⁻¹ (key (Finset.univ.erase i))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `only [Pi.single_eq_same, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(inv_mul_cancel₀ hc).symm`. Establish `h0 : (∏ j ∈ Finset.univ.erase i, (d k - d j)) = 0` using `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hk, Finset.mem_univ k⟩) (sub_self _)`. Simplify using `only [Pi.single_eq_of_ne hk, Pi.smul_apply, smul_eq_mul, h0, zero_mul, mul_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SingleMemOfDiagonal.single_mem_of_diag :
     ∀ {κ : Type} [inst : Field κ] {m : ℕ} (d : Fin m → κ),

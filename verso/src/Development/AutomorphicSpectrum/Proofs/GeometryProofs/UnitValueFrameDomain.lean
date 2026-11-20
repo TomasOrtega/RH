@@ -15,7 +15,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.UnitValue
 
 /- English proof (translation)
-Establish `hu : u = f⁻¹ ^ n * (f ^ n * u)`. Rewrite using `[← _root_.mul_assoc, ← _root_.mul_pow, inv_mul_cancel₀ hf, _root_.one_pow, _root_.one_mul]`. Rewrite using `[hu]`. Conclude with `mul_mem (pow_mem hf' n) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_regAt_of_pow_mul {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {p : Cpt ξ}
     {f u : Ω} (hf : f ≠ 0) (hf' : f⁻¹ ∈ regAt ξ p) {n : ℕ} (h : f ^ n * u ∈ regAt ξ p) : u ∈ regAt ξ p := by
@@ -25,7 +25,7 @@ theorem mem_regAt_of_pow_mul {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec 
   exact mul_mem (pow_mem hf' n) h
 
 /- English proof (translation)
-Take `⟨h, s, hs, rfl⟩` from `h1`. Take `⟨h', s', hs', rfl⟩` from `h2`. Establish `hss : s = s'` using `hg.inj ⟨GlobalTheory.CompanionTheory.Ar.centre z, h⟩ (hs.trans hs'.symm)`. Rewrite using `[hss]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt_unique_lemma {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hg : GlobalTheory.CompanionTheory.Ar.IsCptGen ξ) {z : Spec (CommRingCat.of ℂ) ⟶ X} {a : Ω} {r r' : ℂ}
@@ -36,11 +36,11 @@ private theorem valAt_unique_lemma {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ :
   rw [hss]
 
 /- English proof (translation)
-Take `⟨h', s, hs, hsv⟩` from `h`. Establish `hsu : IsUnit s`. Establish `hi : IsUnit ((Scheme.stalkClosedPointTo z).hom s)`. Rewrite using `[hsv]`. Conclude with `hv.isUnit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hloc : IsLocalHom (Scheme.stalkClosedPointTo z).hom` using `by infer_instance`. Conclude with `hloc.map_nonunit s hi`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `(hsu.map (GlobalTheory.CompanionTheory.Ar.genMap ξ ⟨GlobalTheory.CompanionTheory.Ar.centre z, h'⟩)).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hva : ∃ r : ℂ, GlobalTheory.CompanionTheory.Ar.ValAt ξ z a⁻¹ r`. Use `⟨_, h', ↑hsu.unit⁻¹, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, IsUnit.unit_spec, hs]`. Take `⟨r, hr⟩` from `hva`. Conclude with `GlobalTheory.CompanionTheory.Ar.ChgUnit.mem_regAt_of_valAt hr _ rfl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem ne_zero_and_inv_mem_regAt_of_valAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ GlobalTheory.CompanionTheory.Ar.centre z) {a : Ω} {v : ℂ}
@@ -62,13 +62,13 @@ private theorem ne_zero_and_inv_mem_regAt_of_valAt {X : Scheme.{0}} {Ω : Type} 
     exact GlobalTheory.CompanionTheory.Ar.ChgUnit.mem_regAt_of_valAt hr _ rfl
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y z w cc f u hT hz hC hF hU`. Establish `hequiv` using `GlobalTheory.T.valAt_iff_value_at X Ω ξ K J y hT z w hz hC`. Establish `hch` using `GlobalTheory.CompanionTheory.Ar.ChgUnit.inChart_of_coordsAt hC cc (fun k => (hF.1 k).isUnit) ⟨GlobalTheory.CompanionTheory.Ar.centre z, hz⟩ rfl`. Establish `hreg : ∀ a, a ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing ℤ (GroundTheory.Heights₂.Heights.LowerBoundFree.segreCoord y) cc → a ∈ GlobalTheory.CompanionTheory.Ar.regAt ξ ⟨GlobalTheory.CompanionTheory.Ar.centre z, hz⟩` using `fun a ha => (hT.ring cc hch.1 a).1 ha _ hch`. Take `⟨v, hv, hv0⟩` from `hF.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hf0, hfi⟩` from `ne_zero_and_inv_mem_regAt_of_valAt hz hv0 ((hequiv f v).2 hv)`. Take `⟨hu0, ⟨n, hn⟩, ⟨m, hm⟩⟩` from `hU`. Establish `hu` using `mem_regAt_of_pow_mul hf0 hfi (hreg _ hn)`. Establish `hui` using `mem_regAt_of_pow_mul hf0 hfi (hreg _ hm)`. Take `⟨r, hr0, hr⟩` from `GlobalTheory.CompanionTheory.Ar.ChgUnit.exists_value_of_unit hT.gen z hz hu0 hu hui`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∃ v, GroundTheory.Heights₂.Heights.LowerBoundFree.IsValueAt y u w v` using `⟨r, (hequiv u r).1 hr⟩`. Establish `hval : GroundTheory.Heights₂.Heights.LowerBoundFree.valAt y u w = hex.choose`. Rewrite using `[GroundTheory.Heights₂.Heights.LowerBoundFree.valAt, dif_pos hex]`. Establish `hc : GlobalTheory.CompanionTheory.Ar.ValAt ξ z u hex.choose` using `(hequiv u _).2 hex.choose_spec`. Establish `heq : hex.choose = r` using `valAt_unique_lemma hT.gen hc hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hval, heq]`. Conclude with `⟨hr0, hr⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem valAt_ne_zero_of_isUnitOn : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : (Σ k, J k) → ℂ) (cc : (k : K) → J k) (f u : Ω), CoordTie ℤ ξ (segreCoord y) → genPt ξ ⤳ centre z → CoordsAt ξ y z w → InFrameDomain y cc f w → IsUnitOn y cc f u → valAt y u w ≠ 0 ∧ ValAt ξ z u (valAt y u w) := by
   intro X Ω _ ξ K _ J _ y z w cc f u hT hz hC hF hU

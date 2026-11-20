@@ -23,7 +23,7 @@ open PositivityTheory.Rg.Tf.Loc (twConj)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `congrArg (GeneralLinearGroup.map (pFin E)) (adeleqof_twist translAd_holds hu d x)`. Simplify using `only [map_mul, map_inv, adeleqof_pFin_thetaGL, adeleqof_pFin_ratGL] at h`. Rewrite using `[map_mul (ratF E n), map_inv]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transl_eq {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) (x : GA E n) :
     gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹ =
@@ -34,9 +34,7 @@ private theorem transl_eq {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E
   exact h
 
 /- English proof (translation)
-Rewrite using `[transl_eq hu]`. Use `set c := GeneralLinearGroup.map (pFin E) x`. Use `set r := ratF E n (d * u⁻¹) with hr0`. Use `set s := ratF E n (thE E n (d * u⁻¹)) with hs0`. Establish `hr : thF E n r = s`.
-
-Rewrite using `[hr0, hs0, GlobalTheory.EulerTw.Comm.thF_ratF]`. Rewrite using `[← poleq_norm E n u hu d, map_mul (ratF E n), ← hr0, ← hs0, map_mul, map_mul, map_inv, GlobalTheory.EulerTw.Comm.thF_thF, hr]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transl_norm {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) (x : GA E n) :
     (gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹) *
@@ -53,7 +51,7 @@ private theorem transl_norm {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n)
   group
 
 /- English proof (translation)
-Rewrite using `[transl_norm hu, map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem transl_charpoly (w : Pl E) {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) (x : GA E n) :
     (GeneralLinearGroup.map (pLoc E w) ((gFin (twConj (thetaA E n) x (ratGL E n d)) * (ratF E n u)⁻¹) *
@@ -65,9 +63,9 @@ private theorem transl_charpoly (w : Pl E) {u : GL (Fin n) E} (hu : IsTransl u) 
   rfl
 
 /- English proof (translation)
-Establish `hf` using `GlobalTheory.CompanionTheory.SuppFinTw.factors_ne h₁ h₂ y hne w hwS`. Establish `hs` using `hreg (atW w y) (atW w (thP E a b y)) hf.1 (hf.2 hsp)`. Establish `e₁ : (atW w y * atW w (thP E a b y)).1 = GeneralLinearGroup.map (pLoc E w) (y.1 * thF E a y.1)` using `(map_mul _ _ _).symm`. Establish `e₂ : (atW w y * atW w (thP E a b y)).2 = GeneralLinearGroup.map (pLoc E w) (y.2 * thF E b y.2)` using `(map_mul _ _ _).symm`. Rewrite `hs` using `[e₁, e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Polynomial.Separable.of_mul_left hs, Polynomial.Separable.of_mul_right hs⟩`.
+Supply the required witnesses or components.
 -/
 private theorem sep_of {a b : ℕ} {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E, LF a b w} (h₁ : IsTestP φ₁) (h₂ : IsTestP φ₂)
     {w : Pl E} (hwS : w ∈ S) (hsp : IsSplitAt w)
@@ -85,11 +83,9 @@ private theorem sep_of {a b : ℕ} {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E,
   exact ⟨Polynomial.Separable.of_mul_left hs, Polynomial.Separable.of_mul_right hs⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a b S u₁ u₂ hu₁ hu₂ φ₁ φ₂ h₁ h₂ hw`. Take `⟨w, hwS, hsp, hreg⟩` from `hw`. Use `⟨fun d x h₂' hne => ?_, fun d x h₁' hne => ?_⟩` and prove the remaining obligations. Establish `hs` using `(sep_of h₁ h₂ hwS hsp hreg _ hne).1`. Simplify using `only [Prod.fst_mul, Prod.fst_inv] at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hs` using `[transl_charpoly w hu₁]`. Conclude with `(Polynomial.separable_map _).1 hs`. Establish `hs` using `(sep_of h₁ h₂ hwS hsp hreg _ hne).2`. Simplify using `only [Prod.snd_mul, Prod.snd_inv] at hs`. Rewrite `hs` using `[transl_charpoly w hu₂]`.
-
-Conclude with `(Polynomial.separable_map _).1 hs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.Zero.ConvolutionTheory.EB.regS : RegS := by
   intro E _ _ _ a b S u₁ u₂ hu₁ hu₂ φ₁ φ₂ h₁ h₂ hw

@@ -25,22 +25,22 @@ def toC (X : Type) : (X → R) →ₗ[R] (X → C) := (Algebra.linearMap R C).co
 variable {R}
 
 /- English proof (translation)
-Simplify using `only [pInt, Submodule.mem_span_singleton, Algebra.smul_def]`. Conclude with `⟨fun ⟨r, h⟩ => ⟨r, h.symm⟩, fun ⟨r, h⟩ => ⟨r, h.symm⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_pInt {p : ℕ} {z : C} : z ∈ pInt (C := C) R p ↔ ∃ r : R, z = algebraMap R C r * p := by
   simp only [pInt, Submodule.mem_span_singleton, Algebra.smul_def]
   exact ⟨fun ⟨r, h⟩ => ⟨r, h.symm⟩, fun ⟨r, h⟩ => ⟨r, h.symm⟩⟩
 
 /- English proof (translation)
-Use extensionality with `l`. Rewrite using `[Submodule.mem_comap, Submodule.mem_sup]`. Express the relevant statement in the definitionally equal form `(∃ g ∈ M, ∀ x, g x - algebraMap R C (∑ i, l i * ((x i).val : R)) ∈ pInt R p) ↔ _`. Establish `hf : (toC C R _ ∘ₗ formR R p ι) l = fun x => algebraMap R C (∑ i, l i * ((x i).val : R))` using `rfl`. Rewrite using `[hf]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, h⟩`. Use `⟨g, hg, fun x => algebraMap R C (∑ i, l i * ((x i).val : R)) - g x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pFun, Submodule.mem_pi]`. Introduce `x _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `neg_mem (h x)` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Introduce and unpack `⟨g, hg, z, hz, he⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨g, hg, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : z x ∈ pInt R p` using `(Submodule.mem_pi.mp hz) x (Set.mem_univ x)`. Establish `e : g x - algebraMap R C (∑ i, l i * ((x i).val : R)) = - z x`. Rewrite using `[← congrFun he x]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem afLat_eq (p : ℕ) {ι : Type} [Fintype ι] (M : Submodule R ((ι → ZMod p) → C)) :
     afLat p M = (M ⊔ pFun R p _).comap (toC C R _ ∘ₗ formR R p ι) := by
@@ -68,11 +68,11 @@ theorem afLat_eq (p : ℕ) {ι : Type} [Fintype ι] (M : Submodule R ((ι → ZM
     exact neg_mem hx
 
 /- English proof (translation)
-Rewrite using `[linFun, Submodule.mem_inf]`. Establish `hf : (toC C R _ ∘ₗ formR R p ι) l = fun x => algebraMap R C (∑ i, l i * ((x i).val : R))` using `rfl`. Rewrite using `[hf]`. Use `⟨fun x => ⟨∑ i, l i * ((x i).val : R), rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_pInt]`. Use `⟨-∑ i, l i * ((((x i).val + (y i).val) / p : ℕ) : R), ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, (((x i + y i).val : ℕ) : R) = ((x i).val : R) + (y i).val - p * ((((x i).val + (y i).val) / p : ℕ) : R)`. Introduce `i`. Rewrite using `[ZMod.val_add, eq_sub_iff_add_eq, ← Nat.cast_mul, ← Nat.cast_add, Nat.mod_add_div, Nat.cast_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, key]`. Simplify using `only [← map_sub, ← map_neg, ← map_natCast (algebraMap R C), ← map_mul]`. Use `congr 1`. Rewrite using `[neg_mul, Finset.sum_mul, ← Finset.sum_neg_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_mem_lin (p : ℕ) [NeZero p] {ι : Type} [Fintype ι] (l : ι → R) :
     (toC C R _ ∘ₗ formR R p ι) l ∈ linFun (C := C) R p (ι → ZMod p) := by
@@ -93,15 +93,15 @@ theorem form_mem_lin (p : ℕ) [NeZero p] {ι : Type} [Fintype ι] (l : ι → R
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `h0 : h 0 ∈ pInt (C` using `C) R p := by`. Use `neg_mem (hh 0 0)` as an intermediate fact. Simplify using `using this`. Set `S : AddSubmonoid (ι → ZMod p)` to `{ carrier := {x | h x ∈ pInt (C := C) R p} add_mem' := by`. Introduce `a b ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : h (a + b) = (h (a + b) - h a - h b) + h a + h b` using `by ring`. Use `show h (a + b) ∈ pInt (C := C) R p`. Rewrite using `[e]`. Conclude with `add_mem (add_mem (hh a b) ha) hb`. Use the proof step `zero_mem' := h0 }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hall : ∀ x, x ∈ S`. Introduce `x`. Rewrite using `[← Finset.univ_sum_single x]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `e : Pi.single i (x i) = (x i).val • (Pi.single i (1 : ZMod p) : ι → ZMod p)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `nsmul_mem (show (Pi.single i (1 : ZMod p) : ι → ZMod p) ∈ S from h1 i) _`. Rewrite using `[pFun, Submodule.mem_pi]`. Introduce `x _`. Conclude with `hall x`.
+A detailed English derivation is pending.
 -/
 theorem add_mem_pFun {p : ℕ} [Fact p.Prime] {ι : Type} [Fintype ι] [DecidableEq ι]
     {h : (ι → ZMod p) → C} (hh : h ∈ addFun R p (ι → ZMod p))
@@ -137,25 +137,21 @@ theorem add_mem_pFun {p : ℕ} [Fact p.Prime] {ι : Type} [Fintype ι] [Decidabl
 end
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp ι _ _ AA`. Use `haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hv.hom_inj`. Use `haveI : ValuationRing R := { cond' := fun a b => by`. Break down `le_total (v (algebraMap R C a)) (v (algebraMap R C b)) with h | h` into its components or cases. Take `⟨c, hc⟩` from `hv.dvd_of_le h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, Or.inr hc.symm⟩`. Take `⟨c, hc⟩` from `hv.dvd_of_le h`. Conclude with `⟨c, Or.inl hc.symm⟩ }`. Rewrite using `[afLat_eq, Submodule.comap_comp]`. Apply `comap_fg_of_valuationRing` to reduce the goal to its premises.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective (toC C R (ι → ZMod p))`. Introduce `f g h`. Use function extensionality and compare the values at `x`. Conclude with `hv.hom_inj (congrFun h x)`. Apply `Submodule.fg_of_fg_map_injective (toC C R (ι → ZMod p)) hinj` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : AA.carrier ⊔ pFun R p (ι → ZMod p) ≤ LinearMap.range (toC C R (ι → ZMod p))`. Apply `sup_le` to reduce the goal to its premises. Introduce `f hf`. Establish `hi` using `AA.le_int hf`. Use `choose r hr using hi`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨r, funext fun x => hr x⟩`. Introduce `f hf`. Rewrite `hf` using `[pFun, Submodule.mem_pi]`. Use `choose r hr using fun x => mem_pInt.mp (hf x (Set.mem_univ x))`. Use `⟨fun x => r x * p, funext fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hr x]`. Simplify using `[toC]`. Rewrite using `[Submodule.map_comap_eq, inf_eq_right.mpr hle]`. Apply `Submodule.FG.sup` to reduce the goal to its premises. Take `⟨B, _, hB⟩` from `AA.lat`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Establish `hP : pFun R p (ι → ZMod p) = Submodule.map ((p : R) • toC C R (ι → ZMod p)) ⊤`. Use extensionality with `f`. Simplify using `only [Submodule.mem_map, Submodule.mem_top, true_and]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pFun, Submodule.mem_pi]`. Prove the components needed by the constructor for the conclusion. Introduce `hf choose r hr using fun x => mem_pInt.mp (hf x (Set.mem_univ x))`. Use `⟨r, funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hr x]`.
-
-Simplify using `[toC, Algebra.smul_def, mul_comm]`. Introduce and unpack `⟨r, rfl⟩ x _`. Rewrite using `[mem_pInt]`. Conclude with `⟨r x, by simp [toC, Algebra.smul_def, mul_comm]⟩`. Rewrite using `[hP]`.
-
-Conclude with `Submodule.FG.map _ Module.Finite.fg_top`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aflat_fg : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (AA : HopfOrder (C := C) R (ι → ZMod p)), (afLat p AA.carrier).FG := by
   intro p _ C _ _ _ v R _ _ hv hp ι _ _ AA
@@ -208,23 +204,21 @@ theorem aflat_fg : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClose
     exact Submodule.FG.map _ Module.Finite.fg_top
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv hp ι _ _ AA`. Use `haveI : NeZero p := ⟨(Fact.out : p.Prime).ne_zero⟩`. Set `φ` to `toC C R (ι → ZMod p) ∘ₗ formR R p ι`. Set `K` to `Submodule.comap (linFun (C := C) R p (ι → ZMod p)).subtype (afFun p AA.carrier ⊔ pFun (C := C) R p (ι → ZMod p))`. Set `ψ : (ι → R) →ₗ[R] linFun (C` to `C) R p (ι → ZMod p) := LinearMap.codRestrict _ φ (fun l => form_mem_lin p l)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f` to `K.mkQ ∘ₗ ψ`. Establish `hpf : pFun (C` using `C) R p (ι → ZMod p) ≤ addFun (C := C) R p (ι → ZMod p) := by`. Introduce `z hz x y`. Rewrite `hz` using `[pFun, Submodule.mem_pi]`. Conclude with `sub_mem (sub_mem (hz _ (Set.mem_univ _)) (hz _ (Set.mem_univ _))) (hz _ (Set.mem_univ _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hker : afLat p AA.carrier = LinearMap.ker f`. Use extensionality with `l`. Rewrite using `[LinearMap.mem_ker, afLat_eq, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `_ ↔ Submodule.Quotient.mk (ψ l) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Express the relevant statement in the definitionally equal form `φ l ∈ AA.carrier ⊔ pFun (C := C) R p _ ↔ φ l ∈ afFun p AA.carrier ⊔ pFun (C := C) R p _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨g, hg, z, hz, he⟩` from `Submodule.mem_sup.mp h`. Establish `hadd : φ l ∈ addFun (C` using `C) R p (ι → ZMod p) := (Submodule.mem_inf.mp (form_mem_lin p l)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : g ∈ addFun (C` using `C) R p (ι → ZMod p) := by`. Establish `: g = φ l - z` using `by rw [← he]; abel`. Rewrite using `[this]`. Conclude with `sub_mem hadd (hpf hz)`. Conclude with `Submodule.mem_sup.mpr ⟨g, Submodule.mem_inf.mpr ⟨hg, hg'⟩, z, hz, he⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Conclude with `(sup_le_sup_right inf_le_left _ : afFun p AA.carrier ⊔ pFun (C := C) R p _ ≤ AA.carrier ⊔ pFun (C := C) R p _) h`. Establish `hsurj : Function.Surjective f`. Introduce `q`. Take `⟨⟨h, hh⟩, rfl⟩` from `Submodule.mkQ_surjective K q`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hh'` using `Submodule.mem_inf.mp hh`. Use `choose l hl using fun i => hh'.1 (Pi.single i (1 : ZMod p))`. Use `⟨l, ?_⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk (ψ l) = Submodule.Quotient.mk ⟨h, hh⟩`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ l - h ∈ pFun (C := C) R p (ι → ZMod p)`. Apply `add_mem_pFun` to reduce the goal to its premises. Conclude with `sub_mem (Submodule.mem_inf.mp (form_mem_lin p l)).2 hh'.2`. Introduce `i`.
-
-Establish `e : φ l (Pi.single i 1) = algebraMap R C (l i)` using `by show algebraMap R C (∑ j, l j * (((Pi.single i (1 : ZMod p) : ι → ZMod p) j).val : R)) = _`. Simplify using `[Pi.single_apply, apply_ite, ZMod.val_one]`. Rewrite using `[Pi.sub_apply, e, hl i, sub_self]`. Conclude with `zero_mem _`. Conclude with `⟨((Submodule.quotEquivOfEq _ _ hker).trans (LinearMap.quotKerEquivOfSurjective f hsurj)).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem afquot : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (AA : HopfOrder (C := C) R (ι → ZMod p)), Nonempty (AFQuot p AA.carrier ≃ₗ[R] ((ι → R) ⧸ afLat p AA.carrier)) := by
   intro p _ C _ _ _ v R _ _ hv hp ι _ _ AA

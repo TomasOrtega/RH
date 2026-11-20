@@ -5,11 +5,11 @@ open Formalism.ConjugateSelfDual Formalism.MainNotions.N Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ_[l]) (M := O)`. Use `⟨s.image (fun x => iq (algebraMap O (FractionRing O) x)), ?_⟩` and prove the remaining obligations. Introduce `R hR hT x`. Establish `hx : x ∈ Submodule.span ℤ_[l] (s : Set O)` using `by rw [hs]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem y hy`. Conclude with `hT (by simpa using Finset.mem_image_of_mem (fun x => iq (algebraMap O (FractionRing O) x)) hy)`. Consider the case `zero => simpa using R.zero_mem`. Consider the case `add a b _ _ ha hb => simpa using R.add_mem ha hb`. Consider the case `smul c a _ ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, map_mul, map_mul, hiq]`. Conclude with `R.mul_mem (hR c) ha`.
+A detailed English derivation is pending.
 -/
 theorem image_finite_mem_subring (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (iq : FractionRing O →+* Qbar l)
     (hiq : ∀ z : ℤ_[l], iq (algebraMap O (FractionRing O) (algebraMap ℤ_[l] O z)) = algebraMap ℚ_[l] (Qbar l) (z : ℚ_[l])) :

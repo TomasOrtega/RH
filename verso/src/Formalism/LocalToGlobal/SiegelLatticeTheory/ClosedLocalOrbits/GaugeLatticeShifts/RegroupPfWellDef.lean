@@ -6,7 +6,7 @@ namespace Formalism.L2.SG.Pf.RegroupPf
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `_ X _ u _` and use `Formalism.L2.SG.Pf.phWellDef_holds X u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phase_well_defined_all_words : PhWellDefC := fun _ X _ u _ => Formalism.L2.SG.Pf.phWellDef_holds X u
 

@@ -23,21 +23,19 @@ open Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps C8 h0 _ h1 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hC _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c1, hN⟩` from `szRow_numAt eps h0 h1 C hC`. Use `⟨max c1 0, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, hN⟩` from `hN cD ((le_max_left _ _).trans hcD)`. Use `⟨max c2 402, fun ch hch => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x1, hN⟩` from `hN ch ((le_max_left _ _).trans hch)`. Take `⟨x0, hx0⟩` from `GlobalTheory.EX.exists_sizeData_explicit eps C cD ch h0 h1 hC ((le_max_right _ _).trans hcD) ((le_max_right _ _).trans hch)`. Use `⟨max x0 x1, ?_⟩` and prove the remaining obligations. Introduce and unpack `K rfl rfl rfl hs hx X hO heta hA`. Establish `hP` using `K.ok`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨sp, hT, hY, hA', hV, hz, hB, -⟩` from `hO`. Take `⟨B, Cc, W, V, S, N, Gj⟩` from `X`. Consider the cases of `B`. Simplify using `only at hB`. Substitute `hB` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality.
 
-Use `set D := Stages.toD7 _ with hD`. Establish `hlev : ∀ p ∈ K.Lv.host.levelPrimes, K.Lv.host.cls p = .splitK` using `(Pre.ofCh K.P K.Lv sp hT hY hA' hV hz).level_split`. Establish `hdel : D.s.Del = (Delv K.s K.cD : ℚ)`. Establish `τ : Tau K.P.R` using `tauPl D (false, 0)`. Establish `hk` using `K.P.R.m_add_three_le_k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `K.P.R.two_le_m`. Establish `hl : 0 + 1 < K.P.R.k - 1` using `by omega`. Establish `a1` using `D.s.cloud_gap K.P.u₀ τ 0 hl`. Establish `a2` using `congrArg₂ (· - ·) ((hP.hc K.P.u₀).1 τ ⟨0, by omega⟩) ((hP.hc K.P.u₀).1 τ ⟨0 + 1, hl⟩)`. Establish `a3` using `a1.symm.trans a2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : K.P.R.k - 2 - 0 = K.P.R.k - 2 - (0 + 1) + 1` using `by omega`. Simplify using `only at a3`. Rewrite `a3` using `[e]`. Move the coercions through the operations in `at a3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨L, e1, -, -, e4⟩` from `hx0 K.s D (fun t => K.a t.1) (fun t => K.b t.1) hs ((le_max_left _ _).trans hx) hP.rank hP.val (hP.hc K.P.u₀) hP.dlog hdel hP.ct2 hP.card heta (fun u => by`. Establish `e : (D.mem u).A.GamP = K.Lv.GamP` using `Cc.A_GamP u`. Rewrite using `[e, K.Gam_eq, GamS, Real.log_exp]`. Use the proof step `rfl)`. Use the proof step `(fun t => hP.win t.1 t.2) (fun τ t h ht => hP.top K.P.u₀ τ t h ht) hA`.
-
-Take `⟨⟨M⟩, -, -⟩` from `hN D L (by rw [e1]; exact hs) (by rw [e1]; exact (le_max_right _ _).trans hx) e4 ⟨hP.arith.1, hP.arith.2.1, hP.arith.2.2.1, hlev⟩`. Conclude with `⟨L, e1, ⟨M.params⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ev_exists_sizeData_untwisted : Ev fun K => ∀ X : Stages, K.Over X.B.toPre → X.V.div.etaF = 6 * K.s.x ^ (-K.C.P.CF) →
     (∀ w, X.toD7.what₂.muAt w = X.toD7.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ X.toD7.R.m → X.toD7.what₂.Aj j w = 0) →
@@ -84,9 +82,9 @@ theorem ev_exists_sizeData_untwisted : Ev fun K => ∀ X : Stages, K.Over X.B.to
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
 
 /- English proof (translation)
-Introduce `v hv j h1 h2`. Establish `hn : v ∉ Wt` using `fun h => (V4.Model.mem_iff t.mu v).1 h hv`. Establish `hc : (w.D Z).what₂.places.conj v ∉ Wt` using `fun h => (V4.Model.mem_iff t.mu _).1 h (((w.st Z).W.muAt_conj v).trans hv)`. Establish `a` using `t.untw v hn j h1 h2`. Establish `b` using `t.untw _ hc j h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Rows.Data.Aj`. Rewrite using `[hv, a.1, a.2, b.1]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aj_untw {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) :
     ∀ v, (w.D Z).what₂.muAt v = (w.D Z).what₂.mu0 → ∀ j, 1 ≤ j → j ≤ (w.D Z).R.m → (w.D Z).what₂.Aj j v = 0 := by
@@ -101,7 +99,7 @@ theorem aj_untw {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLev
   rfl
 
 /- English proof (translation)
-The claim follows from `V4.Model.ev_imp ev_exists_sizeData_untwisted fun _ H _ _ _ w Z _ _ t hO => H (w.st Z) hO t.etaF (aj_untw t)`.
+A detailed English derivation is pending.
 -/
 theorem ev_exists_sizeData_of_rows : GlobalTheory.Mem.Top.Ev fun K => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (p0 : BaseLevelRowSide (w.D Z)), RowsT K w Z Wt p0 → K.Over B.toPre → ∃ L : SizeData₂ (w.D Z), L.sc = K.s ∧ Nonempty (ParameterChoice' (w.D Z) L) :=
   V4.Model.ev_imp ev_exists_sizeData_untwisted fun _ H _ _ _ w Z _ _ t hO => H (w.st Z) hO t.etaF (aj_untw t)

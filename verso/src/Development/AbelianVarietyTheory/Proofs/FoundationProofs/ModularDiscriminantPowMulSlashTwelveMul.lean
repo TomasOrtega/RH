@@ -13,9 +13,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `w f γ`. Use function extensionality and compare the values at `τ`. Rewrite using `[ModularForm.SL_slash_apply]`. Establish `hd : (UpperHalfPlane.denom γ τ) ≠ 0` using `UpperHalfPlane.denom_ne_zero _ τ`. Rewrite using `[ReciprocityTheory.ChartRestriction.L1.DD_smul, mul_pow, ← pow_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem disc_pow_mul_slash : ∀ (w : ℕ) (f : ℍ → ℂ) (γ : SL(2, ℤ)), ((fun τ => DD τ ^ w * f τ) ∣[((12 * w : ℕ) : ℤ)] γ) = fun τ => DD τ ^ w * f (γ • τ) := by
   intro w f γ

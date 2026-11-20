@@ -24,17 +24,15 @@ namespace GlobalTheory.CompanionTheory.HCRep
 open AutomorphicForm GlobalTheory.CompanionTheory.ArchSmooth
 
 /- English proof (translation)
-Set `V : Submodule ℂ M` to `⨆ m : Fin (q.natDegree + 1), W.map (Ω ^ (m : ℕ))`. Establish `hVfd : FiniteDimensional ℂ V` using `Submodule.finiteDimensional_iSup _`. Establish `hmem : ∀ (i : ℕ), i < q.natDegree + 1 → ∀ w ∈ W, (Ω ^ i) w ∈ V` using `fun i hi w hw => Submodule.mem_iSup_of_mem (⟨i, hi⟩ : Fin (q.natDegree + 1)) ⟨w, hw, rfl⟩`. Establish `hpow : ∀ (m : ℕ), ∀ w ∈ W, (Ω ^ m) w ∈ V`. Introduce `m w hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (Ω ^ m) w = Polynomial.aeval Ω (Polynomial.X ^ m %ₘ q) w`. Establish `h1` using `Polynomial.modByMonic_add_div (Polynomial.X ^ m : Polynomial ℂ) q`. Establish `h2 : Polynomial.aeval Ω (q * (Polynomial.X ^ m /ₘ q)) w = 0`. Rewrite using `[mul_comm, map_mul, Module.End.mul_apply, hqW w hw, map_zero]`. Establish `h3` using `congrArg (fun p => Polynomial.aeval Ω p w) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_add, LinearMap.add_apply, h2, add_zero, map_pow, Polynomial.aeval_X] at h3`. Conclude with `h3.symm`. Rewrite using `[e, Polynomial.aeval_eq_sum_range' (n := q.natDegree + 1) (Nat.lt_succ_of_le (Polynomial.natDegree_modByMonic_le _ hq)), LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun i hi => by`. Rewrite using `[LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `V.smul_mem _ (hmem i (Finset.mem_range.1 hi) w hw)`. Establish `hst : ∀ x ∈ V, (Ω + T) x ∈ V`. Introduce `x hx`. Establish `hle : V ≤ V.comap (Ω + T)`. Use `iSup_le fun m => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `e : (Ω + T) ((Ω ^ (m : ℕ)) w) = (Ω ^ ((m : ℕ) + 1)) w + (Ω ^ (m : ℕ)) (T w)`. Rewrite using `[LinearMap.add_apply, pow_succ', Module.End.mul_apply, ← Module.End.mul_apply T, ((hc.pow_left (m : ℕ)).eq).symm, Module.End.mul_apply]`. Express the relevant statement in the definitionally equal form `(Ω + T) ((Ω ^ (m : ℕ)) w) ∈ V`. Rewrite using `[e]`.
-
-Conclude with `V.add_mem (hpow _ w hw) (hpow _ _ (hT w hw))`. Conclude with `hle hx`. Establish `hv' : v ∈ V` using `by simpa using hpow 0 v hv`. Conclude with `AutomorphicForm.exists_monic_aeval_apply_eq_zero (Ω + T) V hst hv'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_monic_aeval_add {M : Type*} [AddCommGroup M] [Module ℂ M] (Ω T : Module.End ℂ M)
     (hc : Commute Ω T) (W : Submodule ℂ M) [FiniteDimensional ℂ W] (hT : ∀ w ∈ W, T w ∈ W)
@@ -77,35 +75,29 @@ theorem exists_monic_aeval_add {M : Type*} [AddCommGroup M] [Module ℂ M] (Ω T
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `set Ω := omegaOp (E := E) (a := a) (⇑b) ε with hΩ`. Use `set W := Submodule.span ℂ (Set.range fun k => cptRep E a k φ) with hWdef`. Use `haveI : FiniteDimensional ℂ W := hA.kfin`. Establish `hZ : Ω ∈ Zalg E a`. Rewrite using `[hΩ, GlobalTheory.T.omega_operator_eq_casimir_sum E a d b ε hε horth]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subalgebra.smul_mem _ (Subalgebra.sum_mem _ fun w _ => Subalgebra.add_mem _ ?_ ?_) _` and prove the remaining obligations. Conclude with `GlobalTheory.T.casimir_mem_center_enveloping E a _`. Conclude with `GlobalTheory.T.casimir_mem_center_enveloping E a _`. Use `set Vz := Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a) with hVz`. Use `haveI : FiniteDimensional ℂ Vz := hA.zfin`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hVs : ∀ w ∈ Vz, Ω w ∈ Vz`. Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => Ω w ∈ Vz) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `Submodule.subset_span ⟨Ω * z, Subalgebra.mul_mem _ hZ hz, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `hφV : φ ∈ Vz` using `Submodule.subset_span ⟨1, Subalgebra.one_mem _, rfl⟩`. Take `⟨q, hqm, -, hq⟩` from `AutomorphicForm.exists_monic_aeval_apply_eq_zero Ω Vz hVs hφV`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hqW : ∀ w ∈ W, Polynomial.aeval Ω q w = 0`. Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => Polynomial.aeval Ω q w = 0) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hcomm : ∀ m, cptRep E a k (Ω m) = Ω (cptRep E a k m)` using `fun m => (congrArg (fun T : Module.End ℂ (Sm E a) => T m) (GlobalTheory.T.omega_operator_commutes_infinite_gl E a d b ε hε horth (Unitary.toUnits k))).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `AutomorphicForm.map_aeval_apply_of_intertwine (cptRep E a k) hcomm q φ` as an intermediate fact. Rewrite `this` using `[hq, map_zero]`. Conclude with `this.symm`. Rewrite using `[map_zero]`. Introduce `x y _ _ hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_add, hx, hy, add_zero]`. Introduce `c x _ hx`. Rewrite using `[map_smul, hx, smul_zero]`. Establish `hlap : Commute Ω (lapOp (⇑b))`. Simplify using `only [lapOp, Commute, SemiconjBy]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : Ω * liB (b i) = liB (b i) * Ω` using `omegaOp_comm_liB b ε hε horth (b i)`. Rewrite using `[← mul_assoc, h1, mul_assoc, h1, mul_assoc]`. Establish `hTW : ∀ w ∈ W, (lapOp (⇑b) - Ω) w ∈ W`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `e : (lapOp (E` using `E) (a := a) (⇑b) - Ω) w = ∑ i, ((1 : ℂ) - (ε i : ℂ)) • liB (b i) (liB (b i) w) := by`. Simplify using `only [hΩ, lapOp, omegaOp, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `module`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Break down `hε i with h | h` into its components or cases. Simplify using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `W.smul_mem _ ?_` and prove the remaining obligations. Establish `hs` using `mem_archSkew.1 (hskew i h)`. Establish `hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E a k φ))` using `hA.kfin`. Conclude with `GlobalTheory.T.compact_span_finite_dim_stable E a φ (b i) hs hfd _ (GlobalTheory.T.compact_span_finite_dim_stable E a φ (b i) hs hfd _ hw)`. Establish `hφW : φ ∈ W`.
-
-Use `Submodule.subset_span ⟨1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cptRep E a 1 φ = φ`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `hc : Commute Ω (lapOp (⇑b) - Ω)`.
-
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h2` using `LinearMap.congr_fun hlap.eq x`. Simplify using `only [Module.End.mul_apply] at h2 ⊢`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, map_sub, h2]`. Establish `hsum : Ω + (lapOp (⇑b) - Ω) = lapOp (⇑b)` using `LinearMap.ext fun x => by simp`.
-
-Take `⟨P, hP1, hP2, hP3⟩` from `exists_monic_aeval_add Ω (lapOp (⇑b) - Ω) hc W hTW q hqm hqW hφW`. Use `⟨P, hP1, hP2, ?_⟩` and prove the remaining obligations. Rewrite `hP3` using `[hsum]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_aeval_lapOp_eq_zero (φ : Sm E a) (hA : IsAutForm φ) {d : ℕ}
     (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra E a).lieSubalgebra) (ε : Fin d → ℝ)
@@ -186,7 +178,7 @@ theorem exists_aeval_lapOp_eq_zero (φ : Sm E a) (hA : IsAutForm φ) {d : ℕ}
   rwa [hsum] at hP3
 
 /- English proof (translation)
-Use `AutomorphicForm.map_aeval_apply_of_intertwine ((sliceL g).comp (smL E a)) (fun m => ?_) P ψ` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, smL_lapOp, map_sum, sliceL_uAction, IsExpLieAlgebra.laplacian, LinearMap.sum_apply, Module.End.mul_apply, IsExpLieAlgebra.rightUAction_ι]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sliceL_aeval_lapOp {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlgebra E a).lieSubalgebra)
     (P : Polynomial ℂ) (ψ : Sm E a) (g : AdelicGLn.AdelicGL E a) :
@@ -198,7 +190,7 @@ theorem sliceL_aeval_lapOp {d : ℕ} (b : Module.Basis (Fin d) ℝ (isExpLieAlge
     IsExpLieAlgebra.rightUAction_ι]
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hs hA _ _ μ _ k J`. Take `⟨d, b, ε, hε, horth, hskew⟩` from `exists_archCartanBasis (K := E) (n := a)`. Take `⟨P, hm, hd, hP⟩` from `exists_aeval_lapOp_eq_zero φ hA b ε hε horth hskew`. Conclude with `GlobalTheory.T.laplacian_monic_annihilator_measure E a (smL E a φ) d b P hm hd (fun g => by rw [← sliceL_aeval_lapOp, hP, map_zero, map_zero]) μ k J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem uJ_eq_conv : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a) (hs : φ.1 ∈ AutomorphicForm.archSmooth E a), IsAutForm φ → (∀ [MeasurableSpace (AutomorphicForm.archGroup E a)] [BorelSpace (AutomorphicForm.archGroup E a)]
     (μ : MeasureTheory.Measure (AutomorphicForm.archGroup E a)) [μ.IsHaarMeasure]

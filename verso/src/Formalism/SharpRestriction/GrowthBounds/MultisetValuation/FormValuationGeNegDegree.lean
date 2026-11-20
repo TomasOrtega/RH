@@ -12,7 +12,7 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c L`. Use `show (X.Pj J).Tminus (X.vJ J v) i (F c + F' c) L = (X.Pj J).Tminus (X.vJ J v) i (F c) L + (X.Pj J).Tminus (X.vJ J v) i (F' c) L`. Rewrite using `[tm_eq, tm_eq, tm_eq, ← Finset.sum_add_distrib]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Tm_add (X : Sys p) (v : X.Pl) (i J : ℕ) (F F' : X.Fm J) :
     X.Tm v i J (F + F') = X.Tm v i J F + X.Tm v i J F' := by
@@ -23,7 +23,7 @@ theorem Tm_add (X : Sys p) (v : X.Pl) (i J : ℕ) (F F' : X.Fm J) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c L`. Use `show (X.Pj J).Tminus (X.vJ J v) i (a • F c) L = a • (X.Pj J).Tminus (X.vJ J v) i (F c) L`. Rewrite using `[tm_eq, tm_eq, Finset.smul_sum]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Tm_smul (X : Sys p) (v : X.Pl) (i J : ℕ) (a : X.G.Kf) (F : X.Fm J) :
     X.Tm v i J (a • F) = a • X.Tm v i J F := by
@@ -33,7 +33,7 @@ theorem Tm_smul (X : Sys p) (v : X.Pl) (i J : ℕ) (a : X.G.Kf) (F : X.Fm J) :
   rfl
 
 /- English proof (translation)
-Unfold `Sys.Tt`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[Tm_add, smul_add]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tt_add (X : Sys p) (v : X.Pl) (i J : ℕ) (F F' : X.Fm J) :
     X.Tt v i J (F + F') = X.Tt v i J F + X.Tt v i J F' := by
@@ -43,7 +43,7 @@ theorem Tt_add (X : Sys p) (v : X.Pl) (i J : ℕ) (F F' : X.Fm J) :
   · rw [Tm_add, smul_add]
 
 /- English proof (translation)
-Unfold `Sys.Tt`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[Tm_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tt_smul (X : Sys p) (v : X.Pl) (i J : ℕ) (a : X.G.Kf) (F : X.Fm J) :
     X.Tt v i J (a • F) = a • X.Tt v i J F := by

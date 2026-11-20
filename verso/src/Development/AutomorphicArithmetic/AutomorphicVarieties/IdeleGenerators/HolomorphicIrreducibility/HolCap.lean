@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Qminor
 open NumberField Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.TR Matrix
 
 /- English proof (translation)
-Establish `h : ∀ x, pInf F (sInf F x) = x` using `fun x => (infEq F).symm_apply_apply x`. Establish `h1 : pInf F (infId F u : Ideles F) = u`. Express the relevant statement in the definitionally equal form `pInf F (1 - sInf F 1 + sInf F _) = _`. Simplify using `[h]`. Establish `h2 : pFin F (infId F u : Ideles F) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(1 : Af F) - 0 + 0 = 1`. Simplify using the standard rewrite rules. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[TR.pInf_infGL]`. Use extensionality with `i j`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]`. Rewrite using `[TR.pFin_infGL]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem infGL_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (u : (Rinf F)ˣ) :
     infGL F 2 (GeneralLinearGroup.scalar (Fin 2) u) = GeneralLinearGroup.scalar (Fin 2) (infId F u) := by
@@ -28,9 +28,9 @@ private theorem infGL_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal
     by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]
 
 /- English proof (translation)
-Take `⟨n, hn, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Establish `e1 : expU z = expU ((n : ℝ)⁻¹ • z) ^ n`. Use `Units.ext (funext fun i => ?_)` and prove the remaining obligations. Establish `: (n : ℝ) ≠ 0` using `by positivity`. Simplify using `only [Units.val_pow_eq_pow_val, Pi.pow_apply, expU_val, ← Real.exp_nat_mul, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, map_pow, map_pow]`. Establish `e2 : ω.1 ^ n = 1` using `congrArg Subtype.val e`. Conclude with `DFunLike.congr_fun e2 _`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fin_expU {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ω : HChar F} (h : IsOfFinOrder ω)
     (z : Rinf F) : ω.1 (infId F (expU z)) = 1 := by
@@ -46,11 +46,11 @@ private theorem fin_expU {F : Type} [Field F] [NumberField F] [IsTotallyReal F] 
   exact DFunLike.congr_fun e2 _
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h1` using `hasDerivAt_curve φ g (fun t => GeneralLinearGroup.scalar (Fin 2) (expU (t • z))) (toL (Matrix.scalar (Fin 2) z)) (by simp [TR.expU_zero]) (by`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `((hasDerivAt_id (0 : ℝ)).mul_const (z v)).exp` as an intermediate fact. Simplify using `using this`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℝ))` using `[Matrix.diagonal_apply, e]`. Establish `h2 : (fun t : ℝ => φ.1 (g * infGL F 2 (GeneralLinearGroup.scalar (Fin 2) (expU (t • z))))) = fun _ => φ.1 g`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[infGL_scalar, ← GeneralLinearGroup.scalar_commute, hφ.cent, fin_expU h]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Conclude with `h1.unique (hasDerivAt_const _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lie_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {k c} {ω : HChar F} (h : IsOfFinOrder ω)
     {φ : Sm F 2} (hφ : Sd.IsHol k c ω φ) (z : Rinf F) : lie F 2 (toL (Matrix.scalar (Fin 2) z)) φ = 0 := by
@@ -71,7 +71,7 @@ private theorem lie_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal F
   exact h1.unique (hasDerivAt_const _ _)
 
 /- English proof (translation)
-Establish `h : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1}` using `by decide`. Rewrite using `[Formalism.REAL.qdet, Formalism.REAL.qminor, h, Finset.sum_pair (by decide)]`. Simplify using `[Formalism.REAL.Tm, List.ofFn_succ, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem qdet2 {A : Type} [Ring A] [Algebra ℂ A] (E : Fin 2 → Fin 2 → A) (u : ℂ) :
     Formalism.REAL.qdet E u = (algebraMap ℂ A u + E 0 0) * (algebraMap ℂ A (u - 1) + E 1 1) - E 1 0 * E 0 1 := by
@@ -80,7 +80,7 @@ private theorem qdet2 {A : Type} [Ring A] [Algebra ℂ A] (E : Fin 2 → Fin 2 �
   simp [Formalism.REAL.Tm, List.ofFn_succ, sub_eq_add_neg]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf10.casimir E hE k φ h0 h1 h2 u`.
+A detailed English derivation is pending.
 -/
 private theorem casimir {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 → Fin 2 → Module.End ℂ V)
     (hE : Formalism.REAL.GlRel E) (k : ℂ) (φ : V) (h0 : E 0 0 φ + E 1 1 φ = 0)
@@ -89,9 +89,9 @@ private theorem casimir {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 �
   _root_.UpperTheory.Reformulated.B.Qf10.casimir E hE k φ h0 h1 h2 u
 
 /- English proof (translation)
-Introduce `F _ _ _ k c ω hω φ hφ`. Use `⟨by simpa using lie_scalar hω hφ 1, fun v u => ?_⟩` and prove the remaining obligations. Establish `h0 : Eop v 0 0 φ + Eop v 1 1 φ = 0` using `by classical`. Rewrite using `[← lie_scalar hω hφ (Pi.single v 1), TR.Eop, TR.Eop, ← LinearMap.add_apply, ← map_add]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Use `casimir _ (TR.glRel_Eop v) k φ h0 (hφ.wt v) (hφ.low v) u` as an intermediate fact. Rewrite using `[← this, TR.cap]`. Evaluate the numerical expressions.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem UpperTheory.V.Sd.holCap :
     UpperTheory.V.Sd.HolCap := by

@@ -16,7 +16,7 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.UU.TorsionCount.card_torsion_points _root_.GlobalTheory.globalFns_holds _root_.GlobalTheory.rigidity_holds`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.abMulN_holds : _root_.GlobalTheory.Published.AbMulNSt :=
   _root_.GlobalTheory.UU.TorsionCount.card_torsion_points _root_.GlobalTheory.globalFns_holds

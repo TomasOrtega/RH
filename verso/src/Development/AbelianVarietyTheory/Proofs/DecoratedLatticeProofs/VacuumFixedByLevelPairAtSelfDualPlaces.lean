@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.VacFixP
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Ideal.mem_bot]`. Use `GlobalTheory.FinPlLoc.eq_zero_of_comp x hx.1 fun w => ?_` and prove the remaining obligations. Conclude with `(Submodule.mem_iInf _).1 hx.2 ⟨w, hP w⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem idAt_eq_bot {D : D7} {P : Pl D → Prop} (hP : ∀ v, ¬ P v) : idAt D P = ⊥ := by
   rw [eq_bot_iff]
@@ -25,11 +25,11 @@ theorem idAt_eq_bot {D : D7} {P : Pl D → Prop} (hP : ∀ v, ¬ P v) : idAt D P
   exact (Submodule.mem_iInf _).1 hx.2 ⟨w, hP w⟩
 
 /- English proof (translation)
-Unfold `grpAt congGrp at h`. Rewrite `h` using `[idAt_eq_bot hP, MonoidHom.mem_ker, MonoidHom.comp_apply]`. Establish `h2 : matHom S κ = 1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `congrArg (fun g : GL (Fin S.rank) (AE D ⧸ (⊥ : Ideal (AE D))) => g.val i j) h` as an intermediate fact. Simplify using `only [Matrix.GeneralLinearGroup.map_apply, Units.val_one] at this`. Rewrite using `[Units.val_one]`. Rewrite `this`, the goal using `[Matrix.one_apply]`. Apply the tactic sequence `have h1 : ((if i = j then 1 else 0 : AE D ⧸ (⊥ : Ideal (AE D)))) = Ideal.Quotient.mk ⊥ (if i = j then 1 else 0) := by split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `this` using `[h1, Ideal.Quotient.eq, Ideal.mem_bot, sub_eq_zero]`. Conclude with `this`. Unfold `matHom at h2`. Conclude with `Subgroup.subtype_injective _ (h2.trans (map_one _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eq_one_of_grpAt {D : D7} {S : HSp D} {P : Pl D → Prop} (hP : ∀ v, ¬ P v) {κ : GA D S}
     (h : κ ∈ grpAt S P) : κ = 1 := by
@@ -50,9 +50,9 @@ theorem eq_one_of_grpAt {D : D7} {S : HSp D} {P : Pl D → Prop} (hP : ∀ v, ¬
   exact Subgroup.subtype_injective _ (h2.trans (map_one _).symm)
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hW LS LT P hP f hf κ κ' hκ hκ'`. Distinguish the cases in `hex : ∃ v, P v`. Take `⟨v, hv⟩` from `hex`. Take `⟨hS, hT, -⟩` from `hP v hv`. Conclude with `GlobalTheory.T.selfDualLatticeStabilizers_fix_weilVacuum_on_placeSet D ψ S T χS χT om hW LS LT hS hT P (fun w hw => (hP w hw).2.2) f hf κ κ' hκ hκ'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hex`. Rewrite using `[eq_one_of_grpAt hex hκ.1, eq_one_of_grpAt hex hκ'.1, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vac_fix_on : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (LS : Lat S) (LT : Lat T) (P : Pl D → Prop), (∀ v, P v → IsSelfDualC S LS ∧ IsSelfDualC T LT ∧ Tame D v ∧ CharUnramAt D χS v ∧ CharUnramAt D χT v) → ∀ f, Vac ψ S T LS LT P f → ∀ κ κ', InK S LS P κ → InK T LT P κ' → om (κ, κ') f = f := by
   intro D ψ S T χS χT om hW LS LT P hP f hf κ κ' hκ hκ'

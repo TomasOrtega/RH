@@ -24,13 +24,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (F : Type) [Field F] [Algebra O F] [Algebra ℤ_[PD.p] O]
 
 /- English proof (translation)
-Establish `hl : 2 ≤ PD.p` using `hpF.out.two_le`. Establish `h0` using `(W.γ₀_X g).1`. Establish `h1 : PowerSeries.coeff 1 (W.γ₀ g PowerSeries.X) = algebraMap ℤ_[PD.p] O (z g : ℤ_[PD.p])`. Rewrite using `[(W.γ₀_X g).2, hz g]`. Establish `hbs` using `Formalism.MainNotions.UnusedSlot80.LG.aut_eq_bs W.φ₀ (W.γ₀ g) PD.p hl (Formalism.MainNotions.UnusedSlot80.LG.φ₀_X_eq W) (fun a => W.γ₀_comm g a) h0 (z g : ℤ_[PD.p]) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set A := (PadicInt.toZModPow (s + 1) (z g : ℤ_[PD.p])).val with hA`. Establish `hyA : Polynomial.aeval ((ζ : F) ^ A - 1) (Zp (O` using `O) PD.p (s + 1)) = 0 := root_Zp PD.p (s + 1) (by rw [add_sub_cancel, ← pow_mul, mul_comm, pow_mul, rs_pow_N F PD.p s ζ, one_pow])`. Rewrite using `[evAt_apply, evAt_apply]`. Establish `e1 : (W.γA g x) a = W.γ₀ g (x a)` using `rfl`. Establish `huy : evR PD.p (s + 1) hlm (rs_root F s ζ) (W.γ₀ g PowerSeries.X) = (ζ : F) ^ A - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : W.γ₀ g PowerSeries.X = PowerSeries.binomialSeries O (z g : ℤ_[PD.p]) - 1`. Rewrite using `[← hbs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_sub, evR_bs PD.p hlm s (rs_root F s ζ) (ζ : F) rfl, map_one]`. Rewrite using `[e1, Formalism.MainNotions.UnusedSlot80.LG.algHom_eq_subst (W.γ₀ g) h0, evR_subst PD.p (s + 1) hlm (rs_root F s ζ) hyA _ h0 huy]`.
-
-Conclude with `evR_congr PD.p (s + 1) hlm hyA _ rfl _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evAt_γ (z : W.Gam → ℤ_[PD.p]ˣ)
     (hz : ∀ g, algebraMap ℤ_[PD.p] O (z g : ℤ_[PD.p]) = (W.χΓ g : O)) (a : ZMod n) (s : ℕ)
@@ -59,35 +57,31 @@ theorem evAt_γ (z : W.Gam → ℤ_[PD.p]ˣ)
 omit [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [IsDomain O] [CharZero O] in
 
 /- English proof (translation)
-Take `⟨z0, hz0, hv⟩` from `hγz`. Establish `hzg : z W.gam = z0` using `Units.ext (hZinj (by rw [hz, hz0]))`. Establish `hne : (z0 : ℤ_[PD.p]) - 1 ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, PadicInt.valuation_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hv`. Establish `hu1 : (z0 : ℤ_[PD.p]) - 1 ∈ Ideal.span {((PD.p : ℕ) : ℤ_[PD.p])}`. Use `(PadicInt.mem_span_pow_iff_le_valuation _ hne 1).2 (by rw [hv])` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Establish `hu2 : (z0 : ℤ_[PD.p]) - 1 ∉ Ideal.span {((PD.p : ℕ) : ℤ_[PD.p]) ^ 2}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `(PadicInt.mem_span_pow_iff_le_valuation _ hne 2).1 h` as an intermediate fact. Rewrite `this` using `[hv]`. Use linear arithmetic over natural numbers and integers. Establish `htop` using `hGen PD.p hp2 s z0 hu1 hu2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2` using `hpF.out.two_le`. Take `⟨H, hH⟩ : ∃ H : Subgroup W.Gam, (H : Set W.Gam) = ↑W.DelF` from `⟨ { carrier := ↑W.DelF mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Finset.mem_coe, W.DelF_def] at ha hb ⊢`. Take `⟨k, hk, hak⟩` from `ha`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k', hk', hbk⟩` from `hb`. Conclude with `⟨k * k', Nat.mul_pos hk hk', by`. Rewrite using `[mul_pow, pow_mul, hak, one_pow, one_mul, mul_comm, pow_mul, hbk, one_pow]⟩`. Use the proof step `one_mem' := by`. Simplify using `only [Finset.mem_coe, W.DelF_def]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨1, one_pos, one_pow _⟩`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Finset.mem_coe, W.DelF_def] at ha ⊢`. Take `⟨k, hk, hak⟩` from `ha`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨k, hk, by rw [inv_pow, hak, inv_one]⟩ }, rfl⟩`. Establish `memH : ∀ x, x ∈ H ↔ x ∈ W.DelF` using `fun x => by`. Rewrite using `[← SetLike.mem_coe, hH, Finset.mem_coe]`. Establish `hHcard : Nat.card H = PD.p - 1`. Rewrite using `[← hcard, ← Nat.card_eq_finsetCard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Nat.card_congr (Equiv.subtypeEquivRight memH)`. Establish `hexp : ∀ δ ∈ W.DelF, δ ^ (PD.p - 1) = 1`. Introduce `δ hδ`. Establish `h : (⟨δ, (memH δ).mpr hδ⟩ : H) ^ (PD.p - 1) = 1`. Rewrite using `[← hHcard]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_card_eq_one'`. Establish `h2` using `congrArg (fun y : H => (y : W.Gam)) h`. Simplify `h2` using `only [Subgroup.coe_pow, Subgroup.coe_one]`. Establish `hzΔ : ∀ δ : ↥W.DelF, (z δ) ^ (PD.p - 1) = 1`. Introduce `δ`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `hZinj` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, hz, ← Units.val_pow_eq_pow_val, ← map_pow, hexp δ δ.2, map_one]`. Simplify using the standard rewrite rules. Set `zΔ : ↥W.DelF → DeltaT PD.p` to `fun δ => ⟨z δ, hzΔ δ⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective zΔ`. Introduce `δ δ' h`. Establish `h1 : z δ = z δ'` using `congrArg Subtype.val h`. Establish `h2 : W.χΓ δ = W.χΓ δ'` using `Units.ext (by rw [← hz, ← hz, h1])`. Conclude with `Subtype.ext (W.χΓ_inj h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : NeZero (PD.p - 1) := ⟨by omega⟩`. Set `e : DeltaT PD.p ≃ ↥(rootsOfUnity (PD.p - 1) ℤ_[PD.p])` to `Equiv.subtypeEquivRight fun x => (mem_rootsOfUnity (PD.p - 1) x).symm`. Use `haveI : Finite (DeltaT PD.p) := Finite.of_equiv _ e.symm`. Establish `hle : Nat.card (DeltaT PD.p) ≤ Nat.card ↥W.DelF`. Rewrite using `[Nat.card_congr e, Nat.card_eq_finsetCard, hcard]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `card_rootsOfUnity ℤ_[PD.p] (PD.p - 1)`. Establish `hsurj` using `(hinj.bijective_of_nat_card_le hle).2`. Rewrite using `[eq_top_iff, ← htop]`. Apply `Subgroup.closure_mono` to reduce the goal to its premises. Introduce `u hu`.
-
-Break down `Set.mem_insert_iff.1 hu with rfl | ⟨d, rfl⟩` into its components or cases. Conclude with `Set.mem_insert_iff.2 (Or.inl (by rw [hzg]))`. Take `⟨δ, hδ⟩` from `hsurj d`. Use `Set.mem_insert_of_mem _ ⟨δ, δ.2, ?_⟩` and prove the remaining obligations. Use `show redU PD.p s (z δ) = redU PD.p s d.1`.
-
-Rewrite using `[← hδ]`.
+A detailed English derivation is pending.
 -/
 theorem gen_of (z : W.Gam → ℤ_[PD.p]ˣ)
     (hz : ∀ g, algebraMap ℤ_[PD.p] O (z g : ℤ_[PD.p]) = (W.χΓ g : O))
@@ -174,7 +168,7 @@ theorem gen_of (z : W.Gam → ℤ_[PD.p]ˣ)
 
 omit [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [IsDomain O] [CharZero O] in
 /- English proof (translation)
-The claim follows from `gen_of W z hz hZinj hγz hcard hp2 hGen s`.
+A detailed English derivation is pending.
 -/
 theorem gen_of' (z : W.Gam → ℤ_[PD.p]ˣ)
     (hz : ∀ g, algebraMap ℤ_[PD.p] O (z g : ℤ_[PD.p]) = (W.χΓ g : O))

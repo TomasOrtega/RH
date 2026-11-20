@@ -25,9 +25,9 @@ def intSubring (v : AddValuation C (WithTop ℝ)) : Subring C where
     rw [v.map_neg]; exact hx
 
 /- English proof (translation)
-Set `M' : Matrix (Fin n) (Fin n) (intSubring v)` to `Matrix.of fun a b => ⟨M a b, hM a b⟩`. Establish `hMM : (intSubring v).subtype.mapMatrix M' = M`. Use extensionality with `a b`. Both sides reduce to the same expression. Use `RingHom.map_adjugate (intSubring v).subtype M'` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `this` using `[hMM]`. Rewrite using `[← this]`. Conclude with `(M'.adjugate a b).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjugate_int (v : AddValuation C (WithTop ℝ)) {n : ℕ} (M : Matrix (Fin n) (Fin n) C)
     (hM : ∀ a b, IsIntV v (M a b)) (a b : Fin n) : IsIntV v (M.adjugate a b) := by
@@ -40,21 +40,17 @@ theorem adjugate_int (v : AddValuation C (WithTop ℝ)) {n : ℕ} (M : Matrix (F
   exact (M'.adjugate a b).2
 
 /- English proof (translation)
-Take `⟨hint, r, hr⟩` from `hu`. Use `set M : Matrix (Fin i) (Fin i) C := Matrix.of fun a b => u a (r b) with hMdef`. Establish `hdet0 : M.det ≠ 0`. Introduce `h`. Rewrite `hr` using `[h, v.map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `WithTop.top_ne_coe hr`. Establish `hdetU : IsUnit M.det` using `isUnit_iff_ne_zero.mpr hdet0`. Establish `hinvdet : IsIntV v (M.det)⁻¹` using `by show 0 ≤ v (M.det)⁻¹`. Rewrite using `[v.map_inv, hr, neg_zero]`. Establish `hNint : ∀ a b, IsIntV v (M⁻¹ a b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Conclude with `(intSubring v).mul_mem hinvdet (adjugate_int v M (fun a b => hint _ _) a b)`. Use `⟨fun a e => ∑ b, if r b = e then M⁻¹ b a else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `a e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(intSubring v).sum_mem fun b _ => by split_ifs`. Conclude with `hNint b a`. Conclude with `(intSubring v).zero_mem`. Introduce `a a'`. Establish `hMN` using `Matrix.mul_nonsing_inv M hdetU`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrFun (congrFun hMN a') a`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[h, mul_comm]`. Rewrite using `[zero_mul]`. Use `_ = ∑ b, ∑ e, if r b = e then u a' (r b) * M⁻¹ b a else 0 := Finset.sum_comm`.
-
-Use `_ = ∑ b, M a' b * M⁻¹ b a := by`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[hMdef]`. Use `_ = if a = a' then 1 else 0 := by`.
-
-Rewrite using `[h1]`. Conclude with `if_congr eq_comm rfl rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameDual (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (i d : ℕ)
     (u : Fin i → Fin d → C) (hu : IsSatFrame v u) :

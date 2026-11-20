@@ -11,13 +11,13 @@ variable {n : ℕ}
 def oppCount (ε : Fin n → Bool) (a : Fin n) : ℕ := (univ.filter fun b => ε b ≠ ε a).card
 
 /- English proof (translation)
-Simplify using `[dot, root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply, mul_boole]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_root_right (u : Fin n → ℝ) (a b : Fin n) : dot u (root a b) = u a - u b := by
   simp [dot, root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply, mul_boole]
 
 /- English proof (translation)
-Establish `h` using `fun x : Fin n × Fin n => dot_root_right u x.1 x.2`. Simplify using `only [dot] at h ⊢`. Simplify using `only [Finset.sum_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun x _ => h x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dot_sum_root_right (u : Fin n → ℝ) (Ph : Finset (Fin n × Fin n)) :
     dot u (∑ x ∈ Ph, root x.1 x.2) = ∑ x ∈ Ph, (u x.1 - u x.2) := by
@@ -28,9 +28,9 @@ theorem dot_sum_root_right (u : Fin n → ℝ) (Ph : Finset (Fin n × Fin n)) :
   exact Finset.sum_congr rfl fun x _ => h x
 
 /- English proof (translation)
-Establish `key : oppCount ε a + oppCount ε b = n`. Unfold `oppCount`. Rewrite using `[Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib]`. Establish `hc : ∀ c : Fin n, ((if ε c ≠ ε a then 1 else 0) + (if ε c ≠ ε b then 1 else 0) : ℕ) = 1`. Introduce `c`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `revert hab`. Apply the tactic sequence `cases ε a <;> cases ε b <;> cases ε c <;> simp`. Simplify using `only [hc, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`. Conclude with `key` after adjusting the coercions.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem oppCount_add (ε : Fin n → Bool) {a b : Fin n} (hab : ε a ≠ ε b) :
     (oppCount ε a : ℝ) + oppCount ε b = n := by
@@ -45,11 +45,11 @@ theorem oppCount_add (ε : Fin n → Bool) {a b : Fin n} (hab : ε a ≠ ε b) :
   exact_mod_cast key
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [root, Pi.sub_apply, Finset.sum_sub_distrib, Finset.card_filter, Nat.cast_sum, Nat.cast_ite, Nat.cast_one, Nat.cast_zero]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : x.1 = c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `h' : ¬ c = x.1` using `fun e => h e.symm`. Simplify using `[Pi.single_apply, h, h']`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : x.2 = c`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `h' : ¬ c = x.2` using `fun e => h e.symm`. Simplify using `[Pi.single_apply, h, h']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sum_root_apply (Ph : Finset (Fin n × Fin n)) (c : Fin n) :
     (∑ x ∈ Ph, root x.1 x.2) c =
@@ -70,9 +70,9 @@ theorem sum_root_apply (Ph : Finset (Fin n × Fin n)) (c : Fin n) :
       simp [Pi.single_apply, h, h']
 
 /- English proof (translation)
-Unfold `oppCount`. Apply `Finset.card_le_card_of_injOn Prod.snd` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Establish `h1` using `hnc x hx.1`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[hx.2]`. Conclude with `Ne.symm h1`. Introduce `x hx y hy hxy`. Simplify using `only [Finset.mem_coe, Finset.mem_filter] at hx hy`. Conclude with `Prod.ext (hx.2.trans hy.2.symm) hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_fst_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
     (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2) (c : Fin n) :
@@ -89,9 +89,9 @@ theorem card_fst_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
     exact Prod.ext (hx.2.trans hy.2.symm) hxy
 
 /- English proof (translation)
-Unfold `oppCount`. Apply `Finset.card_le_card_of_injOn Prod.fst` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Establish `h1` using `hnc x hx.1`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[hx.2]`. Conclude with `h1`. Introduce `x hx y hy hxy`. Simplify using `only [Finset.mem_coe, Finset.mem_filter] at hx hy`. Conclude with `Prod.ext hxy (hx.2.trans hy.2.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_snd_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
     (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2) (c : Fin n) :
@@ -108,17 +108,15 @@ theorem card_snd_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
     exact Prod.ext hxy (hx.2.trans hy.2.symm)
 
 /- English proof (translation)
-Establish `hpt : ∀ c, (∑ x ∈ Ph, root x.1 x.2) c * (∑ x ∈ Ph, root x.1 x.2) c ≤ (((Ph.filter fun x => x.1 = c).card : ℝ) + ((Ph.filter fun x => x.2 = c).card : ℝ)) * (oppCount ε c : ℝ)`. Introduce `c`. Rewrite using `[sum_root_apply]`. Establish `h1 : ((Ph.filter fun x => x.1 = c).card : ℝ) ≤ oppCount ε c`. Conclude with `card_fst_le ε Ph hnc c` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((Ph.filter fun x => x.2 = c).card : ℝ) ≤ oppCount ε c`. Conclude with `card_snd_le ε Ph hnc c` after adjusting the coercions. Establish `h3 : (0 : ℝ) ≤ ((Ph.filter fun x => x.1 = c).card : ℝ)` using `Nat.cast_nonneg _`. Establish `h4 : (0 : ℝ) ≤ ((Ph.filter fun x => x.2 = c).card : ℝ)` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_nonneg h3 h4, mul_le_mul_of_nonneg_left h1 h3, mul_le_mul_of_nonneg_left h2 h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfib : ∀ g : Fin n × Fin n → Fin n, ∑ c, ((Ph.filter fun x => g x = c).card : ℝ) * (oppCount ε c : ℝ) = ∑ x ∈ Ph, (oppCount ε (g x) : ℝ)`. Introduce `g`. Simplify using `only [Finset.card_filter, Nat.cast_sum, Nat.cast_ite, Nat.cast_one, Nat.cast_zero, Finset.sum_mul, ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ x ∈ Ph, (oppCount ε x.1 : ℝ) + ∑ x ∈ Ph, (oppCount ε x.2 : ℝ) := by`. Rewrite using `[hfib Prod.fst, hfib Prod.snd]`. Use `_ = ∑ x ∈ Ph, (n : ℝ) := by`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun x hx => oppCount_add ε (hnc x hx)`.
-
-Use `_ = n * Ph.card := by rw [Finset.sum_const, nsmul_eq_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem nsq_sum_root_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
     (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2) :
@@ -161,11 +159,11 @@ theorem nsq_sum_root_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
     _ = n * Ph.card := by rw [Finset.sum_const, nsmul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `hexp : nsq (μ - ∑ x ∈ Ph, root x.1 x.2) = nsq μ - 2 * dot μ (∑ x ∈ Ph, root x.1 x.2) + nsq (∑ x ∈ Ph, root x.1 x.2)`. Simplify using `only [nsq, dot, Pi.sub_apply, Finset.mul_sum]`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hd : h * Ph.card ≤ dot μ (∑ x ∈ Ph, root x.1 x.2)`. Rewrite using `[dot_sum_root_right]`. Establish `h2 : ∑ _x ∈ Ph, h ≤ ∑ x ∈ Ph, (μ x.1 - μ x.2)` using `Finset.sum_le_sum fun x hx => hpos x hx`. Rewrite `h2` using `[Finset.sum_const, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hn` using `nsq_sum_root_le ε Ph hnc`. Rewrite using `[hexp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kernel_lemma (ε : Fin n → Bool) (μ : Fin n → ℝ) {h : ℝ} (_hh : 0 < h) (Ph : Finset (Fin n × Fin n))
     (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2) (hpos : ∀ x ∈ Ph, h ≤ μ x.1 - μ x.2) :

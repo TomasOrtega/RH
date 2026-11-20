@@ -6,27 +6,25 @@ open scoped LaurentSeries PowerSeries TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `I E F R _ _ _ _ e hid hort hsum p r hsurj hker`. Use `choose s hs using hsurj`. Establish `key : ∀ i x y, p i x = p i y → r (e i) * r x = r (e i) * r y`. Introduce `i x y h`. Use `hker i (x - y) (by rw [map_sub, h, sub_self])` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_sub, mul_sub]`. Conclude with `sub_eq_zero.mp this`. Establish `hext : ∀ a b : R, (∀ i, r (e i) * a = r (e i) * b) → a = b`. Introduce `a b h`. Establish `h1 : ∑ i, r (e i) = 1` using `by rw [← map_sum, hsum, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => h i`. Use `_ = b := by rw [h1, one_mul]`. Establish `hidR : ∀ i, r (e i) * r (e i) = r (e i)` using `fun i => by rw [← map_mul, hid]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `k : F → R` to `fun c => ∑ i, r (e i) * r (s i c)`. Establish `hk0 : ∀ i c, r (e i) * k c = r (e i) * r (s i c)`. Introduce `i c`. Use `show r (e i) * ∑ j, r (e j) * r (s j c) = _`. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single i]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, hidR]`. Introduce `j _ hj`. Rewrite using `[← mul_assoc, ← map_mul, hort i j (Ne.symm hj), map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : ∀ i x, r (e i) * k (p i x) = r (e i) * r x`. Introduce `i x`. Rewrite using `[hk0]`. Conclude with `key i _ _ (hs i _)`. Use `⟨{ toFun := k, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hk⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hext` to reduce the goal to its premises. Introduce `i`. Use `hk i 1` as an intermediate fact. Rewrite `this` using `[map_one, map_one]`. Then use the resulting hypothesis. Introduce `a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hext` to reduce the goal to its premises. Introduce `i`. Establish `h` using `hk i (s i a * s i b)`. Rewrite `h` using `[map_mul, hs, hs, map_mul]`. Establish `ha` using `hk0 i a`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb` using `hk0 i b`. Establish `hi` using `hidR i`. Rewrite using `[h]`. Take the linear combination `(-(k b)) * ha - (r (s i a)) * hb`. Apply `hext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Use `hk i 0` as an intermediate fact. Rewrite `this` using `[map_zero, map_zero]`. Then use the resulting hypothesis. Introduce `a b`. Apply `hext` to reduce the goal to its premises.
-
-Introduce `i`. Establish `h` using `hk i (s i a + s i b)`. Rewrite `h` using `[map_add, hs, hs, map_add]`. Rewrite using `[h, mul_add, mul_add, hk0, hk0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_diagonal_ringHom_of_letterwise_reductions :
     ∀ (I E F R : Type) [Fintype I] [CommRing E] [CommRing F] [CommRing R] (e : I → E), (∀ i, e i * e i = e i) → (∀ i j, i ≠ j → e i * e j = 0) → ∑ i, e i = 1 → ∀ (p : I → (E →+* F)) (r : E →+* R), (∀ i, Function.Surjective (p i)) → (∀ i x, p i x = 0 → r (e i) * r x = 0) → ∃ κ : F →+* R, ∀ i x, r (e i) * κ (p i x) = r (e i) * r x := by

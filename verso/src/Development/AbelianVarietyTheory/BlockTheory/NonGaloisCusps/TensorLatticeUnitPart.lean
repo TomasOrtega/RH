@@ -18,7 +18,7 @@ def extBil (b : M →ₗ[O] M' →ₗ[O] M'') (u : R ⊗[O] M) (w : R ⊗[O] M')
     (TensorProduct.tensorTensorTensorComm O R M R M' (u ⊗ₜ[O] w))
 
 /- English proof (translation)
-Simplify using `[extBil]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extBil_tmul (b : M →ₗ[O] M' →ₗ[O] M'') (r r' : R) (x : M) (y : M') :
     extBil R b (r ⊗ₜ[O] x) (r' ⊗ₜ[O] y) = (r * r') ⊗ₜ[O] b x y := by
@@ -28,7 +28,7 @@ def extForm (b : M →ₗ[O] M' →ₗ[O] O) (u : R ⊗[O] M) (w : R ⊗[O] M') 
   TensorProduct.rid O R (extBil R b u w)
 
 /- English proof (translation)
-Simplify using `[extForm, extBil_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extForm_tmul (b : M →ₗ[O] M' →ₗ[O] O) (r r' : R) (x : M) (y : M') :
     extForm R b (r ⊗ₜ[O] x) (r' ⊗ₜ[O] y) = b x y • (r * r') := by
@@ -65,7 +65,7 @@ def UnitAt (E : EtTie W RA RW inclR φR gR πA) : Prop :=
       W.N W.one = Submodule.span (LetA O n) {e}
 
 /- English proof (translation)
-Take `⟨_, e₀, h, _⟩` from `E.one_e`. Conclude with `⟨e₀, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (E : EtTie W RA RW inclR φR gR πA) : ∃ e₀ : ↥W.one.L.T, Submodule.span O {e₀} = ⊤ := by
   obtain ⟨_, e₀, h, _⟩ := E.one_e

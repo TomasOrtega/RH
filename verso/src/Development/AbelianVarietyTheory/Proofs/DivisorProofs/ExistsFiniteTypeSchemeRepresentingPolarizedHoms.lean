@@ -13,7 +13,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.HomFixAff
 
 /- English proof (translation)
-Introduce `Rg _ _ A B _ _ _ _ L M hA hB hL hM rL rM aL aM`. Establish `h` using `fun p => GlobalTheory.T.exists_local_representing_scheme_homFixedPullback Rg A B L M hA hB hL hM rL rM aL aM p`. Use `choose U hpU hdat using h`. Conclude with `GlobalTheory.T.homFixedPullbackRepresentable_glue_openCover (Sp Rg) A B L M hA hB hL hM rL rM (Sp Rg) U (fun p => ⟨p, hpU p⟩) hdat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_homFixRep_finiteType : ∀ (Rg : Type) [CommRing Rg] [IsNoetherianRing Rg] (A B : Over (Sp Rg)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left), IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → Out.Rigidified A L → Out.Rigidified B M → Out.RelAmple A L → Out.RelAmple B M → ∃ R : HomFixRep A B L M, QuasiCompact R.π ∧ IsSeparated R.π ∧ LocallyOfFiniteType R.π := by
   intro Rg _ _ A B _ _ _ _ L M hA hB hL hM rL rM aL aM

@@ -6,7 +6,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `n d h s y v hs hsy`. Conclude with `LogNormGradDensNonneg.proof n d h s y v hs hsy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LogNormEnergyDensNonneg.proof : LogNormEnergyDensNonneg.Statement := by
   intro n d h s y v hs hsy

@@ -13,19 +13,19 @@ noncomputable def shuffle : List A → List A → Multiset (List A)
       (shuffle u (b :: v)).map (List.cons a) + (shuffle (a :: u) v).map (List.cons b)
 
 /- English proof (translation)
-Rewrite using `[shuffle]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem shuffle_nil_left (v : List A) : shuffle [] v = {v} := by
   rw [shuffle]
 
 /- English proof (translation)
-Apply the tactic sequence `cases u <;> rw [shuffle]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem shuffle_nil_right (u : List A) : shuffle u [] = {u} := by
   cases u <;> rw [shuffle]
 
 /- English proof (translation)
-Rewrite using `[shuffle]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shuffle_cons_cons (a b : A) (u v : List A) :
     shuffle (a :: u) (b :: v) =
@@ -33,7 +33,7 @@ theorem shuffle_cons_cons (a b : A) (u v : List A) :
   rw [shuffle]
 
 /- English proof (translation)
-The claim follows from `| [], v => by simp | a :: u, [] => by simp | a :: u, b :: v => by rw [shuffle_cons_cons, shuffle_cons_cons, shuffle_comm u (b :: v), shuffle_comm (a :: u) v, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem shuffle_comm : ∀ u v : List A, shuffle u v = shuffle v u
   | [], v => by simp
@@ -43,7 +43,7 @@ theorem shuffle_comm : ∀ u v : List A, shuffle u v = shuffle v u
         add_comm]
 
 /- English proof (translation)
-The claim follows from `| [], v, w, h => by simp at h; simp [h] | a :: u, [], w, h => by simp at h; simp [h] | a :: u, b :: v, w, h => by rw [shuffle_cons_cons, Multiset.mem_add, Multiset.mem_map, Multiset.mem_map] at h rcases h with ⟨x, hx, rfl⟩ | ⟨x, hx, rfl⟩ · exact (perm_of_mem_shuffle u (b :: v) x …`.
+A detailed English derivation is pending.
 -/
 theorem perm_of_mem_shuffle : ∀ (u v w : List A), w ∈ shuffle u v → w.Perm (u ++ v)
   | [], v, w, h => by simp at h; simp [h]
@@ -55,7 +55,7 @@ theorem perm_of_mem_shuffle : ∀ (u v w : List A), w ∈ shuffle u v → w.Perm
       · exact ((perm_of_mem_shuffle (a :: u) v x hx).cons b).trans List.perm_middle.symm
 
 /- English proof (translation)
-The claim follows from `| [], v => by simp | a :: u, [] => by simp | a :: u, b :: v => by rw [shuffle_cons_cons, Multiset.mem_add] exact Or.inl (Multiset.mem_map.2 ⟨_, append_mem_shuffle u (b :: v), rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem append_mem_shuffle : ∀ (u v : List A), u ++ v ∈ shuffle u v
   | [], v => by simp
@@ -65,13 +65,13 @@ theorem append_mem_shuffle : ∀ (u v : List A), u ++ v ∈ shuffle u v
       exact Or.inl (Multiset.mem_map.2 ⟨_, append_mem_shuffle u (b :: v), rfl⟩)
 
 /- English proof (translation)
-Simplify using `using Multiset.bind_singleton s id`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bind_singleton_self (s : Multiset (List A)) : s.bind (fun x => {x}) = s := by
   simpa using Multiset.bind_singleton s id
 
 /- English proof (translation)
-The claim follows from `| [], v, w => by simp [bind_singleton_self] | a :: u, [], w => by simp | a :: u, b :: v, [] => by simp [bind_singleton_self] | a :: u, b :: v, c :: w => by have h1 := shuffle_assoc u (b :: v) (c :: w) have h2 := shuffle_assoc (a :: u) v (c :: w) have h3 := shuffle_assoc (a :: u) …`.
+A detailed English derivation is pending.
 -/
 theorem shuffle_assoc : ∀ u v w : List A,
     (shuffle u v).bind (fun x => shuffle x w) = (shuffle v w).bind (fun x => shuffle u x)
@@ -130,14 +130,14 @@ noncomputable def mulLin : ShuffleAlgebra K A →ₗ[K] ShuffleAlgebra K A →�
     ((shuffle u v).map (word K)).sum
 
 /- English proof (translation)
-Simplify using `only [mulLin, ← wordBasis_apply, Module.Basis.constr_basis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulLin_word (u v : List A) :
     mulLin K (word K u) (word K v) = ((shuffle u v).map (word K)).sum := by
   simp only [mulLin, ← wordBasis_apply, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Establish `: mulLin K (A` using `A) = (mulLin K).flip := by`. Use `(wordBasis K A).ext fun u => (wordBasis K A).ext fun v => ?_` and prove the remaining obligations. Simplify using `only [wordBasis_apply, LinearMap.flip_apply, mulLin_word, shuffle_comm u v]`. Use `conv_lhs => rw [this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mulLin_comm (x y : ShuffleAlgebra K A) : mulLin K x y = mulLin K y x := by
   have : mulLin K (A := A) = (mulLin K).flip := by
@@ -147,7 +147,7 @@ theorem mulLin_comm (x y : ShuffleAlgebra K A) : mulLin K x y = mulLin K y x := 
   rfl
 
 /- English proof (translation)
-Establish `: mulLin K (word K ([] : List A)) = LinearMap.id`. Use `(wordBasis K A).ext fun v => ?_` and prove the remaining obligations. Simplify using `[wordBasis_apply, mulLin_word]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulLin_one (x : ShuffleAlgebra K A) : mulLin K (word K []) x = x := by
   have : mulLin K (word K ([] : List A)) = LinearMap.id := by
@@ -156,11 +156,9 @@ theorem mulLin_one (x : ShuffleAlgebra K A) : mulLin K (word K []) x = x := by
   rw [this]; rfl
 
 /- English proof (translation)
-Establish `key : ∀ u v w : List A, mulLin K (mulLin K (word K u) (word K v)) (word K w) = mulLin K (word K u) (mulLin K (word K v) (word K w))`. Introduce `u v w`. Establish `h` using `congrArg (fun s => (Multiset.map (word K) s).sum) (shuffle_assoc u v w)`. Simplify using `only [Multiset.map_bind, Multiset.sum_bind] at h`. Rewrite using `[mulLin_comm, mulLin_word, mulLin_word, map_multiset_sum, map_multiset_sum, Multiset.map_map, Multiset.map_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_def, mulLin_word, shuffle_comm w]`. Conclude with `h`. Establish `h3 : ∀ u v : List A, mulLin K (mulLin K (word K u) (word K v)) = mulLin K (word K u) ∘ₗ mulLin K (word K v)` using `fun u v => (wordBasis K A).ext fun w => key u v w`. Establish `h2 : ∀ u : List A, ((mulLin K).flip z) ∘ₗ mulLin K (word K u) = mulLin K (word K u) ∘ₗ (mulLin K).flip z` using `fun u => (wordBasis K A).ext fun v => LinearMap.congr_fun (h3 u v) z`. Establish `h1 : ((mulLin K).flip z) ∘ₗ (mulLin K).flip y = (mulLin K).flip (mulLin K y z)` using `(wordBasis K A).ext fun u => LinearMap.congr_fun (h2 u) y`.
-
-Conclude with `LinearMap.congr_fun h1 x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mulLin_assoc (x y z : ShuffleAlgebra K A) :
     mulLin K (mulLin K x y) z = mulLin K x (mulLin K y z) := by
@@ -211,7 +209,7 @@ Both sides reduce to the same expression.
 theorem word_nil : word K ([] : List A) = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `mulLin_word K u v`.
+A detailed English derivation is pending.
 -/
 theorem word_mul_word (u v : List A) :
     word K u * word K v = ((shuffle u v).map (word K)).sum := mulLin_word K u v
@@ -225,7 +223,7 @@ def IsLyndon {A : Type} [LinearOrder A] (w : List A) : Prop :=
   w ≠ [] ∧ ∀ u v : List A, u ≠ [] → v ≠ [] → w = u ++ v → List.Lex (· < ·) w v
 
 /- English proof (translation)
-Use `⟨hw, fun u v hu hv e => ?_⟩` and prove the remaining obligations. Substitute `e` using the available equality. Take `⟨a, u, rfl⟩` from `List.exists_cons_of_ne_nil hu`. Take `⟨b, v, rfl⟩` from `List.exists_cons_of_ne_nil hv`. Conclude with `List.Lex.rel ((List.pairwise_cons.1 h).1 b (by simp))`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLyndon_of_pairwise_lt {A : Type} [LinearOrder A] {w : List A} (hw : w ≠ [])
     (h : w.Pairwise (· < ·)) : IsLyndon w := by
@@ -240,15 +238,15 @@ namespace Lyndon
 variable {A : Type} [LinearOrder A]
 
 /- English proof (translation)
-The claim follows from `h.2 u v hu hv e`.
+A detailed English derivation is pending.
 -/
 theorem lt_of_isLyndon {w : List A} (h : IsLyndon w) {u v : List A} (hu : u ≠ []) (hv : v ≠ [])
     (e : w = u ++ v) : w < v := h.2 u v hu hv e
 
 /- English proof (translation)
-Establish `h' : List.Lex (· < ·) u v` using `h`. Use `clear h`. Proceed by induction on `h' with`. Consider the case `nil => exact Or.inr ⟨_, by simp, rfl⟩`. Consider the case `rel h => exact Or.inl fun x y => List.Lex.rel h`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `cons _ ih`. Break down `ih with ih | ⟨t, ht, rfl⟩` into its components or cases. Conclude with `Or.inl fun x y => List.Lex.cons (ih x y)`. Conclude with `Or.inr ⟨t, ht, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem lt_cases {u v : List A} (h : u < v) :
     (∀ x y, u ++ x < v ++ y) ∨ ∃ t, t ≠ [] ∧ v = u ++ t := by
@@ -263,7 +261,7 @@ theorem lt_cases {u v : List A} (h : u < v) :
     · exact Or.inr ⟨t, ht, rfl⟩
 
 /- English proof (translation)
-Break down `lt_cases h with h | ⟨t, ht, rfl⟩` into its components or cases. Conclude with `h x y`. Conclude with `absurd (by simpa using hl) ht`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem append_lt_of_lt_of_length {u v : List A} (h : u < v) (hl : v.length ≤ u.length)
     (x y : List A) : u ++ x < v ++ y := by
@@ -272,7 +270,7 @@ theorem append_lt_of_lt_of_length {u v : List A} (h : u < v) (hl : v.length ≤ 
   · exact absurd (by simpa using hl) ht
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `nil => exact h`. Consider the case `cons a p ih => exact List.Lex.cons ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem append_lt_append_left (p : List A) {u v : List A} (h : u < v) : p ++ u < p ++ v := by
   induction p with
@@ -280,7 +278,7 @@ theorem append_lt_append_left (p : List A) {u v : List A} (h : u < v) : p ++ u <
   | cons a p ih => exact List.Lex.cons ih
 
 /- English proof (translation)
-Consider the cases of `u with`. Consider the case `nil => exact le_rfl`. Consider the case `cons a u => exact le_of_lt (List.Lex.nil)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem nil_le (u : List A) : [] ≤ u := by
   cases u with
@@ -288,7 +286,7 @@ theorem nil_le (u : List A) : [] ≤ u := by
   | cons a u => exact le_of_lt (List.Lex.nil)
 
 /- English proof (translation)
-Break down `(nil_le u).lt_or_eq with h | h` into its components or cases. Simplify using `using (append_lt_append_left p h).le`. Simplify using `[← h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem le_append (p u : List A) : p ≤ p ++ u := by
   rcases (nil_le u).lt_or_eq with h | h
@@ -296,21 +294,19 @@ theorem le_append (p u : List A) : p ≤ p ++ u := by
   · simp [← h]
 
 /- English proof (translation)
-The claim follows from `isLyndon_of_pairwise_lt (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem isLyndon_singleton (a : A) : IsLyndon [a] :=
   isLyndon_of_pairwise_lt (by simp) (by simp)
 
 /- English proof (translation)
-Establish `h0 : l ++ m < m`. Break down `lt_cases h with h | ⟨t, ht, e⟩` into its components or cases. Simplify using `using h m []`. Use `append_lt_append_left l (lt_of_isLyndon hm hl.1 ht e)` as an intermediate fact. Rewrite `this` using `[← e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨by simp [hl.1], fun u v hu hv e => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `l ++ m < v`. Break down `List.append_eq_append_iff.1 e with ⟨s, e1, e2⟩ | ⟨s, e1, e2⟩` into its components or cases. Distinguish the cases in `hs : s = []`. Substitute `hs` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `at e2`. Rewrite using `[← e2]`. Conclude with `h0`. Conclude with `h0.trans (lt_of_isLyndon hm hs hv e2)`. Distinguish the cases in `hs : s = []`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hs` using the available equality. Simplify using `at e2`. Rewrite using `[e2]`. Conclude with `h0`. Rewrite using `[e2]`.
-
-Conclude with `append_lt_of_lt_of_length (lt_of_isLyndon hl hu hs e1) (by simp [e1]) _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLyndon_append {l m : List A} (hl : IsLyndon l) (hm : IsLyndon m) (h : l < m) :
     IsLyndon (l ++ m) := by
@@ -333,19 +329,17 @@ theorem isLyndon_append {l m : List A} (hl : IsLyndon l) (hm : IsLyndon m) (h : 
 def IsFactors (L : List (List A)) : Prop := (∀ l ∈ L, IsLyndon l) ∧ L.Pairwise (· ≥ ·)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx => h.1 x (List.mem_cons_of_mem _ hx), (List.pairwise_cons.1 h.2).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsFactors.tail {l : List A} {L : List (List A)} (h : IsFactors (l :: L)) : IsFactors L :=
   ⟨fun x hx => h.1 x (List.mem_cons_of_mem _ hx), (List.pairwise_cons.1 h.2).2⟩
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact fun l hl => ⟨[l], ⟨by simpa using hl, by simp⟩, by simp⟩`. Consider the case `cons m L ih`. Introduce `l hl`. Break down `le_or_gt m l with h | h` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨l :: m :: L, ⟨?_, List.pairwise_cons.2 ⟨?_, hL.2⟩⟩, by simp⟩` and prove the remaining obligations. Introduce `x hx`. Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `hl`. Conclude with `hL.1 x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `x hx`. Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `h`. Conclude with `le_trans ((List.pairwise_cons.1 hL.2).1 x hx) h`. Take `⟨L', h1, h2⟩` from `ih hL.tail (l ++ m) (isLyndon_append hl (hL.1 m (by simp)) h)`.
-
-Conclude with `⟨L', h1, by simp [h2]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_factors_cons (L : List (List A)) (hL : IsFactors L) :
     ∀ l, IsLyndon l → ∃ L', IsFactors L' ∧ L'.flatten = l ++ L.flatten := by
@@ -367,9 +361,9 @@ theorem exists_factors_cons (L : List (List A)) (hL : IsFactors L) :
       exact ⟨L', h1, by simp [h2]⟩
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨[], ⟨by simp, by simp⟩, rfl⟩`. Consider the case `cons a w ih`. Take `⟨L, h1, h2⟩` from `ih`. Take `⟨L', h3, h4⟩` from `exists_factors_cons L h1 [a] (isLyndon_singleton a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨L', h3, by simp [h4, h2]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_factors (w : List A) : ∃ L, IsFactors L ∧ L.flatten = w := by
   induction w with
@@ -380,11 +374,11 @@ theorem exists_factors (w : List A) : ∃ L, IsFactors L ∧ L.flatten = w := by
     exact ⟨L', h3, by simp [h4, h2]⟩
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => intro t r ht e`. Simplify using `[ht] at e`. Consider the case `cons m L ih`. Introduce `t r ht e`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[List.flatten_cons]`. Establish `hm` using `hL m (by simp)`. Break down `List.append_eq_append_iff.1 e with ⟨s, e1, e2⟩ | ⟨s, e1, e2⟩` into its components or cases. Conclude with `⟨[], t, ht, rfl, le_trans (e1 ▸ le_append t s) hm⟩`. Distinguish the cases in `hs : s = []`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Substitute `hs` using the available equality. Simplify using `at e1`. Conclude with `⟨[], t, ht, rfl, e1 ▸ hm⟩`. Take `⟨s', q, h1, h2, h3⟩` from `ih (fun x hx => hL x (List.mem_cons_of_mem _ hx)) s r hs e2.symm`. Conclude with `⟨m ++ s', q, h1, by simp [e1, h2], h3⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_suffix_le (l : List A) (L : List (List A)) (hL : ∀ m ∈ L, m ≤ l) :
     ∀ t r : List A, t ≠ [] → t ++ r = L.flatten → ∃ s q, q ≠ [] ∧ t = s ++ q ∧ q ≤ l := by
@@ -403,7 +397,7 @@ theorem exists_suffix_le (l : List A) (L : List (List A)) (hL : ∀ m ∈ L, m �
         exact ⟨m ++ s', q, h1, by simp [e1, h2], h3⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ht`. Take `⟨s, q, h1, h2, h3⟩` from `exists_suffix_le l L (List.pairwise_cons.1 hL.2).1 t r ht e.symm`. Establish `h4 : l ++ t < q` using `lt_of_isLyndon hp (u := l ++ s) (by simp [(hL.1 l (by simp)).1]) h1 (by simp [h2])`. Conclude with `absurd (h4.trans_le (h3.trans (le_append l t))) (lt_irrefl _)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_nil_of_head_append {l t r : List A} {L : List (List A)} (hL : IsFactors (l :: L))
     (hp : IsLyndon (l ++ t)) (e : L.flatten = t ++ r) : t = [] := by
@@ -415,13 +409,13 @@ theorem eq_nil_of_head_append {l t r : List A} {L : List (List A)} (hL : IsFacto
   exact absurd (h4.trans_le (h3.trans (le_append l t))) (lt_irrefl _)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Introduce `L' h e`. Consider the cases of `L' with`. Consider the case `nil => rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cons m L' => simp [(h.1 m (by simp)).1] at e`. Consider the case `cons l L ih`. Introduce `L' h e`. Consider the cases of `L' with`. Consider the case `nil => simp [(hL.1 l (by simp)).1] at e`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cons m L'`. Simplify using `only [List.flatten_cons] at e`. Establish `: l = m`. Break down `List.append_eq_append_iff.1 e with ⟨s, e1, e2⟩ | ⟨s, e1, e2⟩` into its components or cases. Use `eq_nil_of_head_append hL (e1 ▸ h.1 m (by simp)) e2` as an intermediate fact.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `[e1, this]`. Use `eq_nil_of_head_append h (e1 ▸ hL.1 l (by simp)) e2` as an intermediate fact. Simplify using `[e1, this]`. Substitute `this` using the available equality. Rewrite using `[ih hL.tail L' h.tail (List.append_cancel_left e)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem factors_unique (L : List (List A)) (hL : IsFactors L) :
     ∀ L', IsFactors L' → L.flatten = L'.flatten → L = L' := by
@@ -452,13 +446,13 @@ noncomputable def Interleaves : List A → Multiset (List A) → Prop
 
 omit [LinearOrder A] in
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro S`. Simplify using `[Interleaves]`. Consider the case `cons a w ih`. Introduce `S`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, T, e, h⟩`. Break down `Multiset.cons_eq_cons.1 e with ⟨e1, _⟩ | ⟨_, R, e1, e2⟩` into its components or cases. Simplify using `at e1`. Substitute `e1 e2` using the available equality.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Rewrite `h` using `[Multiset.cons_swap, ih]`. Conclude with `⟨u, R, rfl, h⟩`. Introduce and unpack `⟨u, T, rfl, h⟩`. Use `⟨u, [] ::ₘ T, Multiset.cons_swap _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.cons_swap, ih]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem interleaves_nil_cons (w : List A) :
     ∀ S : Multiset (List A), Interleaves w ([] ::ₘ S) ↔ Interleaves w S := by
@@ -479,7 +473,7 @@ theorem interleaves_nil_cons (w : List A) :
 
 omit [LinearOrder A] in
 /- English proof (translation)
-The claim follows from `| [], x, w, S, h, hS => by simp at h; subst h; exact (interleaves_nil_cons _ _).2 hS | a :: u, [], w, S, h, hS => by simp at h; subst h exact ⟨u, S, rfl, interleaves_of_mem_shuffle u [] u S (by simp) hS⟩ | a :: u, b :: v, w, S, h, hS => by rw [shuffle_cons_cons, Multiset.mem_add, …`.
+A detailed English derivation is pending.
 -/
 theorem interleaves_of_mem_shuffle : ∀ (u x w : List A) (S : Multiset (List A)),
     w ∈ shuffle u x → Interleaves x S → Interleaves w (u ::ₘ S)
@@ -500,15 +494,15 @@ termination_by u x => u.length + x.length
 
 omit [LinearOrder A] in
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro x y S h`. Simplify using `[Interleaves] at h ⊢`. The claim follows by propositional logic. Consider the case `cons a w ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. The claim follows by propositional logic. Treat this case separately.
 
-Introduce and unpack `x y S ⟨u, T, e, h⟩`. Break down `Multiset.cons_eq_cons.1 e with ⟨e1, e2⟩ | ⟨_, R, e1, e2⟩` into its components or cases. Substitute `e2` using the available equality. Consider the cases of `x with`. Consider the case `nil`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `at e1`. Substitute `e1` using the available equality. Rewrite using `[interleaves_nil_cons]`. Conclude with `⟨u, S, rfl, h⟩`. Consider the case `cons b x`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Simplify using `at e1`. Take `⟨rfl, rfl⟩` from `e1`. Conclude with `⟨x, _, rfl, ih _ _ _ h⟩`. Substitute `e1 e2` using the available equality. Rewrite `h` using `[Multiset.cons_swap]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨u, x ::ₘ y ::ₘ R, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.cons_swap y, Multiset.cons_swap x]`. Rewrite using `[Multiset.cons_swap u, Multiset.cons_swap u]`. Conclude with `ih _ _ _ h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interleaves_split (w : List A) : ∀ (x y : List A) (S : Multiset (List A)),
     Interleaves w ((x ++ y) ::ₘ S) → Interleaves w (x ::ₘ y ::ₘ S) := by
@@ -534,9 +528,9 @@ theorem interleaves_split (w : List A) : ∀ (x y : List A) (S : Multiset (List 
 
 omit [LinearOrder A] in
 /- English proof (translation)
-Proceed by induction on `F with`. Consider the case `nil => intro S h`. Simplify `h` using `[interleaves_nil_cons]`. Consider the case `cons f F ih`. Introduce `S h`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `interleaves_split w _ _ _ h`. Rewrite `h1` using `[Multiset.cons_swap]`. Establish `h2` using `ih _ h1`. Rewrite `h2` using `[Multiset.add_cons, ← Multiset.cons_add, Multiset.cons_coe]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem interleaves_flatten (w : List A) (F : List (List A)) : ∀ S : Multiset (List A),
     Interleaves w (F.flatten ::ₘ S) → Interleaves w (↑F + S) := by
@@ -550,9 +544,9 @@ theorem interleaves_flatten (w : List A) (F : List (List A)) : ∀ S : Multiset 
     rwa [Multiset.add_cons, ← Multiset.cons_add, Multiset.cons_coe] at h2
 
 /- English proof (translation)
-Break down `List.eq_nil_or_concat F with rfl | ⟨F', g, rfl⟩` into its components or cases. Simplify using `at hf`. Rewrite `hF`, `hf`, the goal using `[List.concat_eq_append]`. Use `⟨F'.flatten, g, (hF.1 g (by simp)).1, by simp, ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hf with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(List.pairwise_append.1 hF.2).2.2 f h g (by simp)`. Simplify using `at h`. Conclude with `h.ge`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_suffix_le_of_mem {F : List (List A)} (hF : IsFactors F) {f : List A} (hf : f ∈ F) :
     ∃ s g, g ≠ [] ∧ F.flatten = s ++ g ∧ g ≤ f := by
@@ -565,11 +559,11 @@ theorem exists_suffix_le_of_mem {F : List (List A)} (hF : IsFactors F) {f : List
     · simp at h; exact h.ge
 
 /- English proof (translation)
-Proceed by induction on `F with`. Consider the case `nil => exact ⟨[], [], rfl, by simp, by simp⟩`. Consider the case `cons f F ih`. Break down `le_total m f with h | h` into its components or cases. Take `⟨P, R, e, h1, h2⟩` from `ih (List.pairwise_cons.1 hF).2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨f :: P, R, by simp [e], ?_, h2⟩` and prove the remaining obligations. Introduce `x hx`. Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `h`. Conclude with `h1 x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨[], f :: F, rfl, by simp, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `h`. Conclude with `le_trans ((List.pairwise_cons.1 hF).1 x hx) h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_cut (m : List A) (F : List (List A)) (hF : F.Pairwise (· ≥ ·)) :
     ∃ P R, F = P ++ R ∧ (∀ f ∈ P, m ≤ f) ∧ ∀ f ∈ R, f ≤ m := by
@@ -590,34 +584,30 @@ theorem exists_cut (m : List A) (F : List (List A)) (hF : F.Pairwise (· ≥ ·)
       · exact le_trans ((List.pairwise_cons.1 hF).1 x hx) h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S.sort (· ≥ ·), Multiset.sort_eq _ _, Multiset.pairwise_sort _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sorted (S : Multiset (List A)) :
     ∃ Q : List (List A), (Q : Multiset (List A)) = S ∧ Q.Pairwise (· ≥ ·) :=
   ⟨S.sort (· ≥ ·), Multiset.sort_eq _ _, Multiset.pairwise_sort _ _⟩
 
 /- English proof (translation)
-Consider the cases of `L with`. Consider the case `nil => exact absurd e.symm (Multiset.cons_ne_zero)`. Consider the case `cons m L`. Establish `hm` using `hL.1 m (by simp)`. Establish `hmax` using `(List.pairwise_cons.1 hL.2).1`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[← Multiset.cons_coe]`. Break down `Multiset.cons_eq_cons.1 e with ⟨e1, e2⟩ | ⟨hne, R, e1, e2⟩` into its components or cases. Substitute `e1 e2` using the available equality. Use `⟨F ++ L, ⟨?_, List.pairwise_append.2 ⟨hF.2, hL.tail.2, ?_⟩⟩, by simp, by simp [hu]⟩` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `List.mem_append.1 hx with hx | hx` into its components or cases. Conclude with `hF.1 x hx`. Conclude with `hL.tail.1 x hx`. Introduce `f hf x hx`. Take `⟨s, g, h1, h2, h3⟩` from `exists_suffix_le_of_mem hF hf`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `: a :: u < g` using `lt_of_isLyndon hm (u := a :: s) (by simp) h1 (by simp [← hu, h2])`. Conclude with `le_trans (hmax x hx) (this.le.trans h3)`. Substitute `e2` using the available equality. Establish `hmem : ∀ x, x ∈ (a :: u) ::ₘ R → x ∈ L` using `fun x hx => by`. Rewrite `hx` using `[← e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Multiset.mem_coe.1 hx`. Establish `hlt : a :: u < m` using `lt_of_le_of_ne (hmax _ (hmem _ (Multiset.mem_cons_self _ _))) (Ne.symm hne)`. Take `⟨P, P', eF, h1, h2⟩` from `exists_cut m F hF.2`. Take `⟨Q, hQ, hQs⟩` from `exists_sorted ((P' : Multiset (List A)) + R)`. Establish `hQm : ∀ x ∈ Q, x ∈ P' ∨ x ∈ L` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Establish `: x ∈ (↑P' + R : Multiset (List A))` using `by rw [← hQ]; exact Multiset.mem_coe.2 hx`. Break down `Multiset.mem_add.1 this with h | h` into its components or cases. Conclude with `Or.inl (Multiset.mem_coe.1 h)`. Conclude with `Or.inr (hmem x (Multiset.mem_cons_of_mem h))`. Establish `hQle : ∀ x ∈ Q, x ≤ m` using `fun x hx => (hQm x hx).elim (h2 x) (hmax x)`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `eF` using the available equality. Use `⟨P ++ m :: Q, ⟨?_, List.pairwise_append.2 ⟨(List.pairwise_append.1 hF.2).1, List.pairwise_cons.2 ⟨hQle, hQs⟩, ?_⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Break down `List.mem_append.1 hx with hx | hx` into its components or cases. Conclude with `hF.1 x (List.mem_append_left _ hx)`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases. Conclude with `hm`. Conclude with `(hQm x hx).elim (fun h => hF.1 x (List.mem_append_right _ h)) (hL.tail.1 x)`. Introduce `f hf x hx`. Break down `List.mem_cons.1 hx with rfl | hx` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1 f hf`. Conclude with `le_trans (hQle x hx) (h1 f hf)`. Rewrite using `[← Multiset.coe_add, ← Multiset.coe_add, ← Multiset.cons_coe, hQ, Multiset.add_cons, Multiset.add_cons, add_assoc]`. Establish `hp : a :: P.flatten < m`. Use `lt_of_le_of_lt ?_ hlt` and prove the remaining obligations.
-
-Use `le_append (a :: P.flatten) P'.flatten` as an intermediate fact. Simplify `this` using `[← hu]`. Establish `goal : (a :: P.flatten) ++ (m ++ Q.flatten) < m ++ L.flatten`. Break down `lt_cases hp with h | ⟨q, hq, em⟩` into its components or cases. Conclude with `h _ _`.
-
-Establish `h3` using `append_lt_of_lt_of_length (lt_of_isLyndon hm (by simp) hq em) (by rw [em]; simp; omega) Q.flatten L.flatten`. Establish `h4` using `append_lt_append_left (a :: P.flatten) h3`. Rewrite `h4` using `[← List.append_assoc _ q, ← em]`. Then use the resulting hypothesis. Simplify using `using goal.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_factors_step {L F : List (List A)} {a : A} {u : List A} {T : Multiset (List A)}
     (hL : IsFactors L) (hF : IsFactors F) (hu : F.flatten = u)
@@ -682,11 +672,11 @@ theorem exists_factors_step {L F : List (List A)} {a : A} {u : List A} {T : Mult
         simpa using goal.le
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact fun L _ _ => nil_le _`. Consider the case `cons a w ih`. Introduce and unpack `L hL ⟨u, T, e, h⟩`. Take `⟨F, hF, hu⟩` from `exists_factors u`.
+Proceed by induction. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨L', h1, h2, h3⟩` from `exists_factors_step hL hF hu e`. Establish `h4` using `interleaves_flatten w F T (hu ▸ h)`. Rewrite `h4` using `[← h2]`. Use `le_trans ?_ h3` and prove the remaining obligations. Break down `(ih L' h1 h4).lt_or_eq with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(append_lt_append_left [a] h).le`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_flatten_of_interleaves (w : List A) : ∀ L : List (List A), IsFactors L →
     Interleaves w ↑L → w ≤ L.flatten := by
@@ -709,7 +699,7 @@ noncomputable def shuffleList {A : Type} : List (List A) → Multiset (List A)
 
 omit [LinearOrder A] in
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [shuffleList]`. Consider the case `cons u L ih => exact Multiset.mem_bind.2 ⟨_, ih, append_mem_shuffle _ _⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem flatten_mem_shuffleList (L : List (List A)) : L.flatten ∈ shuffleList L := by
   induction L with
@@ -718,9 +708,9 @@ theorem flatten_mem_shuffleList (L : List (List A)) : L.flatten ∈ shuffleList 
 
 omit [LinearOrder A] in
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => intro w hw`. Simplify using `[shuffleList] at hw`. Substitute `hw` using the available equality. Simplify using `[Interleaves]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Consider the case `cons u L ih`. Introduce `w hw`. Take `⟨x, hx, hw⟩` from `Multiset.mem_bind.1 hw`. Conclude with `⟨(perm_of_mem_shuffle _ _ _ hw).trans ((ih x hx).1.append_left u), interleaves_of_mem_shuffle u x w _ hw (ih x hx).2⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem of_mem_shuffleList (L : List (List A)) :
     ∀ w ∈ shuffleList L, w.Perm L.flatten ∧ Interleaves w ↑L := by
@@ -738,7 +728,7 @@ variable (K : Type) [Field K]
 
 omit [LinearOrder A] in
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [shuffleList, word_nil]`. Consider the case `cons u L ih`. Rewrite using `[List.map_cons, List.prod_cons, ih, ← Multiset.sum_map_mul_left, shuffleList, Multiset.map_bind, Multiset.sum_bind]`. Simplify using `only [word_mul_word]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_word (L : List (List A)) :
     (L.map (word K)).prod = ((shuffleList L).map (word K)).sum := by
@@ -750,9 +740,9 @@ theorem prod_word (L : List (List A)) :
     simp only [word_mul_word]
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons x s ih`. Rewrite using `[Multiset.map_cons, Multiset.sum_cons, map_add, Finsupp.add_apply, ih, ← wordBasis_apply, Module.Basis.repr_self, Multiset.count_cons, Finsupp.single_apply]`. Distinguish the cases in `h : x = w`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h, add_comm]`. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem repr_sum_word (s : Multiset (List A)) (w : List A) :
     (wordBasis K A).repr (s.map (word K)).sum w = (s.count w : K) := by
@@ -766,7 +756,7 @@ theorem repr_sum_word (s : Multiset (List A)) (w : List A) :
     · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[prod_word, repr_sum_word, Nat.cast_ne_zero]`. Conclude with `Multiset.count_ne_zero.2 (flatten_mem_shuffleList L)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_prod_self [CharZero K] (L : List (List A)) :
     (wordBasis K A).repr (L.map (word K)).prod L.flatten ≠ 0 := by
@@ -774,7 +764,7 @@ theorem repr_prod_self [CharZero K] (L : List (List A)) :
   exact Multiset.count_ne_zero.2 (flatten_mem_shuffleList L)
 
 /- English proof (translation)
-Rewrite `h` using `[prod_word, repr_sum_word]`. Establish `hw : w ∈ shuffleList L`. Assume the negation of the conclusion as `hw`. Conclude with `h (by rw [Multiset.count_eq_zero.2 hw, Nat.cast_zero])`. Conclude with `⟨(of_mem_shuffleList L w hw).1, le_flatten_of_interleaves w L hL (of_mem_shuffleList L w hw).2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem le_of_repr_prod_ne_zero {L : List (List A)} (hL : IsFactors L) {w : List A}
     (h : (wordBasis K A).repr (L.map (word K)).prod w ≠ 0) :
@@ -787,19 +777,17 @@ theorem le_of_repr_prod_ne_zero {L : List (List A)} (hL : IsFactors L) {w : List
     le_flatten_of_interleaves w L hL (of_mem_shuffleList L w hw).2⟩
 
 /- English proof (translation)
-Proceed by induction on `hn : (w.permutations.toFinset.filter (· < w)).card using Nat.strong_induction_on generalizing w with`. Consider the case `_ n ih`. Take `⟨L, hL, rfl⟩` from `exists_factors w`. Use `set x := (L.map (word K)).prod with hx`. Establish `hxB : x ∈ B` using `B.list_prod_mem fun y hy => by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, rfl⟩` from `List.mem_map.1 hy`. Conclude with `hB l (hL.1 l hl)`. Establish `hc` using `repr_prod_self K L`. Rewrite `hc` using `[← hx]`. Establish `hsum : x = ∑ v ∈ ((wordBasis K A).repr x).support, (wordBasis K A).repr x v • word K v` using `by conv_lhs => rw [← (wordBasis K A).linearCombination_repr x]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ (Finsupp.mem_support_iff.2 hc)]`. Establish `hrest : ∑ v ∈ ((wordBasis K A).repr x).support.erase L.flatten, (wordBasis K A).repr x v • word K v ∈ B`. Use `B.sum_mem fun v hv => B.smul_mem ?_ _` and prove the remaining obligations. Take `⟨hne, hv⟩` from `Finset.mem_erase.1 hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hp, hle⟩` from `le_of_repr_prod_ne_zero K hL (Finsupp.mem_support_iff.1 hv)`. Establish `hlt` using `lt_of_le_of_ne hle hne`. Use `ih _ ?_ v rfl` and prove the remaining obligations. Rewrite using `[← hn]`. Use `Finset.card_lt_card ⟨fun y hy => ?_, fun hsub => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Finset.mem_filter, List.mem_toFinset, List.mem_permutations] at hy ⊢`. Conclude with `⟨hy.1.trans hp, hy.2.trans hlt⟩`. Use `@hsub v (by` as an intermediate fact. Simplify using `only [Finset.mem_filter, List.mem_toFinset, List.mem_permutations]`. Conclude with `⟨hp, hlt⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at this`. Establish `h1 : (wordBasis K A).repr x L.flatten • word K L.flatten ∈ B`. Rewrite using `[eq_sub_iff_add_eq.2 hsum.symm]`. Conclude with `B.sub_mem hxB hrest`. Establish `h2` using `B.smul_mem h1 ((wordBasis K A).repr x L.flatten)⁻¹`.
-
-Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem word_mem_of_lyndon_mem [CharZero K] (B : Subalgebra K (ShuffleAlgebra K A))
     (hB : ∀ l, IsLyndon l → word K l ∈ B) (w : List A) : word K w ∈ B := by
@@ -841,9 +829,9 @@ theorem word_mem_of_lyndon_mem [CharZero K] (B : Subalgebra K (ShuffleAlgebra K 
     rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at h2
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[map_add, Multiset.map_add, Multiset.prod_add, ← hf, ← hg, MvPolynomial.monomial_mul, one_mul]`. Consider the case `single a n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Finsupp.toMultiset_single, ← MvPolynomial.X_pow_eq_monomial]`. Simplify using `[Multiset.map_nsmul, Multiset.prod_nsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem monomial_eq_prod {σ : Type} (d : σ →₀ ℕ) :
     (MvPolynomial.monomial d (1 : K)) = ((Finsupp.toMultiset d).map MvPolynomial.X).prod := by
@@ -857,17 +845,15 @@ theorem monomial_eq_prod {σ : Type} (d : σ →₀ ℕ) :
     simp [Multiset.map_nsmul, Multiset.prod_nsmul]
 
 /- English proof (translation)
-Use `choose Λ hΛ hΛs using fun d : {w : List A // IsLyndon w} →₀ ℕ => exists_sorted ((Finsupp.toMultiset d).map Subtype.val)`. Establish `hfac : ∀ d, IsFactors (Λ d)` using `fun d => ⟨fun l hl => by`. Establish `: l ∈ (Finsupp.toMultiset d).map Subtype.val`. Rewrite using `[← hΛ]`. Conclude with `Multiset.mem_coe.2 hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, _, rfl⟩` from `Multiset.mem_map.1 this`. Conclude with `y.2, hΛs d⟩`. Establish `hinj : ∀ d d', (Λ d).flatten = (Λ d').flatten → d = d'` using `fun d d' h => by`. Establish `h1` using `factors_unique _ (hfac d) _ (hfac d') h`. Establish `h2 : (Finsupp.toMultiset d).map Subtype.val = (Finsupp.toMultiset d').map Subtype.val` using `by rw [← hΛ, ← hΛ, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Multiset.toFinsupp.symm.injective (Multiset.map_injective Subtype.val_injective h2)`. Establish `hmon : ∀ d, MvPolynomial.aeval (fun l : {w : List A // IsLyndon w} => word K l.1) (MvPolynomial.monomial d (1 : K)) = ((Λ d).map (word K)).prod` using `fun d => by`. Rewrite using `[monomial_eq_prod, map_multiset_prod, ← Multiset.prod_coe, ← Multiset.map_coe, hΛ, Multiset.map_map, Multiset.map_map]`. Simplify using the standard rewrite rules. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hne`. Take `⟨d₀, hd₀, hmax⟩` from `p.support.exists_max_image (fun d => (Λ d).flatten) (MvPolynomial.support_nonempty.2 hne)`. Establish `hsum : p = ∑ d ∈ p.support, p.coeff d • MvPolynomial.monomial d (1 : K)` using `by conv_lhs => rw [p.as_sum]`. Simplify using `[MvPolynomial.smul_monomial]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[hsum, map_sum]`. Establish `h1` using `congrArg (fun x => (wordBasis K A).repr x (Λ d₀).flatten) hp`. Simplify using `only [map_smul, hmon, map_sum, Finsupp.finsetSum_apply, Finsupp.smul_apply, map_zero, Finsupp.zero_apply, smul_eq_mul] at h1`. Rewrite `h1` using `[Finset.sum_eq_single d₀]`. Conclude with `mul_ne_zero (MvPolynomial.mem_support_iff.1 hd₀) (repr_prod_self K _) h1`.
-
-Introduce `d hd hdne`. Assume the negation of the conclusion as `h`. Establish `h2` using `(le_of_repr_prod_ne_zero K (hfac d) (right_ne_zero_of_mul h)).2`. Conclude with `hdne (hinj _ _ (le_antisymm (hmax d hd) h2))`. Conclude with `fun h => absurd hd₀ h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem aeval_injective [CharZero K] : Function.Injective
     (MvPolynomial.aeval (fun l : {w : List A // IsLyndon w} => word K l.1) :
@@ -912,7 +898,7 @@ theorem aeval_injective [CharZero K] : Function.Injective
   · exact fun h => absurd hd₀ h
 
 /- English proof (translation)
-Introduce `x`. Express the relevant statement in the definitionally equal form `x ∈ AlgHom.range _`. Rewrite using `[← (wordBasis K A).linearCombination_repr x, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Subalgebra.sum_mem _ fun v _ => Subalgebra.smul_mem _ ?_ _` and prove the remaining obligations. Conclude with `word_mem_of_lyndon_mem K _ (fun l hl => (AlgHom.mem_range _).2 ⟨MvPolynomial.X ⟨l, hl⟩, MvPolynomial.aeval_X _ _⟩) v`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem aeval_surjective [CharZero K] : Function.Surjective
     (MvPolynomial.aeval (fun l : {w : List A // IsLyndon w} => word K l.1) :
@@ -935,7 +921,7 @@ def RadfordShufflePolynomial : Prop :=
         MvPolynomial {w : List A // IsLyndon w} K →ₐ[K] ShuffleAlgebra K A)
 
 /- English proof (translation)
-The claim follows from `(h K A).1`.
+A detailed English derivation is pending.
 -/
 theorem RadfordShufflePolynomial.algebraicIndependent (h : RadfordShufflePolynomial)
     (K : Type) [Field K] [CharZero K] (A : Type) [LinearOrder A] :
@@ -944,7 +930,7 @@ theorem RadfordShufflePolynomial.algebraicIndependent (h : RadfordShufflePolynom
   (h K A).1
 
 /- English proof (translation)
-Introduce `K _ _ _ _` and use `⟨Lyndon.aeval_injective K, Lyndon.aeval_surjective K⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem radfordShufflePolynomial_holds : RadfordShufflePolynomial :=
   fun K _ _ _ _ => ⟨Lyndon.aeval_injective K, Lyndon.aeval_surjective K⟩

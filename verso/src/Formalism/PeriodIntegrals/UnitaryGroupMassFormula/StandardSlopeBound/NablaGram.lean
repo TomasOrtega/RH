@@ -9,9 +9,9 @@ namespace PI.SlopeSteps
 open MvPolynomial Formalism.GradedWeylDivisibility Formalism.L2.DIV Matrix
 
 /- English proof (translation)
-Simplify using `only [det_apply, mul_apply, Fintype.prod_sum, Finset.smul_sum, submatrix_apply, id]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.smul_def, zsmul_eq_mul, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_mul_rect' {R : Type*} [CommRing R] {k : ℕ} {n : Type*} [Fintype n]
     (A : Matrix (Fin k) n R) (B : Matrix n (Fin k) R) :
@@ -25,20 +25,20 @@ theorem det_mul_rect' {R : Type*} [CommRing R] {k : ℕ} {n : Type*} [Fintype n]
   ring
 
 /- English proof (translation)
-The claim follows from `Equiv.sum_comp (Equiv.arrowCongr τ.symm (Equiv.refl n)) F`.
+A detailed English derivation is pending.
 -/
 theorem sum_comp_perm' {M : Type*} [AddCommMonoid M] {k : ℕ} {n : Type*} [Fintype n] [DecidableEq n]
     (F : (Fin k → n) → M) (τ : Equiv.Perm (Fin k)) : ∑ f : Fin k → n, F (fun i => f (τ i)) = ∑ f, F f :=
   Equiv.sum_comp (Equiv.arrowCongr τ.symm (Equiv.refl n)) F
 
 /- English proof (translation)
-Establish `hexp : (Vᵀ * diagonal q * V).det = ∑ f : Fin k → n, (∏ i, q (f i)) * ((∏ i, V (f i) i) * (Vᵀ.submatrix id f).det)`. Rewrite using `[Matrix.mul_assoc, det_mul_rect']`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Simplify using `only [diagonal_mul, Finset.prod_mul_distrib, mul_assoc]`. Establish `hk : (k.factorial : R) = ∑ _τ : Equiv.Perm (Fin k), (1 : R)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Fintype.card_perm]`. Establish `step : ∀ τ : Equiv.Perm (Fin k), (1 : R) * ∑ f : Fin k → n, (∏ i, q (f i)) * ((∏ i, V (f i) i) * (Vᵀ.submatrix id f).det) = ∑ f : Fin k → n, (∏ i, q (f i)) * ((∏ i, V (f (τ i)) i) * ((Vᵀ.submatrix id f).submatrix id τ).det)`. Introduce `τ`. Rewrite using `[one_mul, ← sum_comp_perm' _ τ]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Equiv.prod_comp τ (fun i => q (f i))]`. Both sides reduce to the same expression. Rewrite using `[hexp, hk, Finset.sum_mul, Finset.sum_congr rfl fun τ _ => step τ, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[det_apply (V.submatrix f id), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[det_permute']`. Simplify using `only [submatrix_apply, id, Units.smul_def, zsmul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -73,7 +73,7 @@ theorem factorial_mul_det_gram_cauchy_binet {R : Type*} [CommRing R] (k : ℕ) {
   ring
 
 /- English proof (translation)
-Rewrite using `[factorial_mul_det_gram_cauchy_binet]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[← transpose_submatrix, det_transpose]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem factorial_mul_det_sq {R : Type*} [CommRing R] (k : ℕ) {n : Type*} [Fintype n] [DecidableEq n]
     (q : n → R) (V : Matrix n (Fin k) R) :
@@ -84,7 +84,7 @@ theorem factorial_mul_det_sq {R : Type*} [CommRing R] (k : ℕ) {n : Type*} [Fin
   rw [← transpose_submatrix, det_transpose]
 
 /- English proof (translation)
-Unfold `fockQ`. Use `Finset.sum_subset hS fun m _ hm => ?_` and prove the remaining obligations. Rewrite `hm` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[hm]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockQ_eq_sum {σ : Type} (P Q : MvPolynomial σ ℚ) (S : Finset (σ →₀ ℕ)) (hS : P.support ⊆ S) :
     fockQ P Q = ∑ m ∈ S, P.coeff m * Q.coeff m * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℚ) := by
@@ -95,41 +95,35 @@ theorem fockQ_eq_sum {σ : Type} (P Q : MvPolynomial σ ℚ) (S : Finset (σ →
   ring
 
 /- English proof (translation)
-Introduce `N ν r e hν`. Establish `hpos` using `hwNormPos ν`. Use `set h := fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) with hh`. Establish `hNpow` using `natPowPos N (∑ s, ν s) (sumNuZero ν)`. Use `set A : ℚ := ((∏ s, (ν s).factorial : ℕ) : ℚ) / ((N : ℚ) ^ (∑ s, ν s) * h) with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : 0 ≤ A` using `div_nonneg (Nat.cast_nonneg _) (mul_pos hNpow hpos).le`. Use `set S : Finset (Fin N × Fin N →₀ ℕ) := Finset.univ.biUnion fun i => (e i : MvPolynomial (Fin N × Fin N) ℤ).support with hS`. Use `set Vz : Matrix S (Fin r) ℤ := Matrix.of fun m i => (e i : MvPolynomial (Fin N × Fin N) ℤ).coeff m.1 with hVz`. Use `set V : Matrix S (Fin r) ℚ := Vz.map (Int.castRingHom ℚ) with hV`. Use `set q : S → ℚ := fun m => ((∏ k ∈ m.1.support, (m.1 k).factorial : ℕ) : ℚ) / h with hq`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : gramOf ν (fun i => (e i : MvPolynomial (Fin N × Fin N) ℤ)) = Vᵀ * diagonal q * V`. Use extensionality with `i j`. Establish `hsub : (map (Int.castRingHom ℚ) (e i : MvPolynomial (Fin N × Fin N) ℤ)).support ⊆ S` using `(MvPolynomial.support_map_subset _ _).trans (by`. Rewrite using `[hS]`. Conclude with `Finset.subset_biUnion_of_mem (fun i => (e i : MvPolynomial (Fin N × Fin N) ℤ).support) (Finset.mem_univ i))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [gramOf, Matrix.of_apply]`. Rewrite using `[fockQ_eq_sum _ _ S hsub, Finset.sum_div, ← Finset.sum_coe_sort S]`. Rewrite using `[mul_apply]`. Simplify using `only [mul_diagonal, transpose_apply, hV, hVz, map_apply, of_apply, hq, coeff_map, eq_intCast]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hh]`. Expand and normalize the polynomial expressions, which then agree. Establish `hqA : ∀ m : S, A ≤ q m`. Introduce `m`. Take `⟨i, -, hm⟩` from `Finset.mem_biUnion.mp m.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hcol` using `colSums ℤ N N ν _ (e i).2 m.1 hm`. Establish `hT1` using `monomial_factorization_lower N ν m.1 hcol`. Establish `hT1q : ((∏ s, (ν s).factorial : ℕ) : ℚ) ≤ (N : ℚ) ^ (∑ s, ν s) * ((∏ k ∈ m.1.support, (m.1 k).factorial : ℕ) : ℚ)`. Conclude with `hT1` after adjusting the coercions. Rewrite using `[hA, hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_div_iff₀ (mul_pos hNpow hpos) hpos]`. Combine the equalities or inequalities in the displayed calculation. Establish `hid1` using `factorial_mul_det_sq r (fun _ => (1 : ℚ)) V`. Rewrite `hid1` using `[diagonal_one, Matrix.mul_one]`. Simplify using `only [Finset.prod_const_one, one_mul] at hid1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfac : (0 : ℚ) < r.factorial` using `by exact_mod_cast Nat.factorial_pos r`. Establish `hVVnn : 0 ≤ (Vᵀ * V).det`. Establish `h0 : 0 ≤ (r.factorial : ℚ) * (Vᵀ * V).det`. Rewrite using `[hid1]`. Conclude with `Finset.sum_nonneg fun f _ => mul_self_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `nonneg_of_mul_nonneg_right (by linarith) hfac`. Establish `hind` using `linIndep_Q e`. Establish `hVVne : (Vᵀ * V).det ≠ 0`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `exists_mulVec_eq_zero_iff.mpr h0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : dotProduct (V *ᵥ v) (V *ᵥ v) = 0`. Establish `h1'` using `congrArg (fun x => dotProduct v x) hv`. Simplify using `only [dotProduct_zero] at h1'`. Rewrite `h1'` using `[← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]`. Then use the resulting hypothesis. Establish `h2 : V *ᵥ v = 0`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `m`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun m _ => mul_self_nonneg ((V *ᵥ v) m))).mp h1 m (Finset.mem_univ _)`. Conclude with `mul_self_eq_zero.mp h3`. Establish `h3 : ∑ i, v i • intQ N N (e i : MvPolynomial (Fin N × Fin N) ℤ) = 0`. Use extensionality with `m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_zero]`. Simplify using `only [MvPolynomial.coeff_smul, smul_eq_mul, we_intQ_apply, MvPolynomial.coeff_map, eq_intCast]`. Distinguish the cases in `hm : m ∈ S`. Establish `h4` using `congrFun h2 ⟨m, hm⟩`. Simplify using `only [mulVec, dotProduct, hV, hVz, map_apply, of_apply, Pi.zero_apply, eq_intCast] at h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← h4]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `h5 : (e i : MvPolynomial (Fin N × Fin N) ℤ).coeff m = 0`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hm (Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, MvPolynomial.mem_support_iff.mpr hc⟩)`. Rewrite using `[h5, Int.cast_zero, mul_zero]`. Conclude with `hv0 (funext (Fintype.linearIndependent_iff.mp hind v h3))`. Establish `hVVint : (Vᵀ * V).det = (((Vzᵀ * Vz).det : ℤ) : ℚ)`. Establish `h6` using `RingHom.map_det (Int.castRingHom ℚ) (Vzᵀ * Vz)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h6` using `[eq_intCast]`. Rewrite using `[h6, RingHom.mapMatrix_apply, Matrix.map_mul, transpose_map]`. Establish `hVV1 : 1 ≤ (Vᵀ * V).det`. Rewrite `hVVnn`, `hVVne`, the goal using `[hVVint]`. Establish `hz : 0 < (Vzᵀ * Vz).det`.
-
-Use `lt_of_le_of_ne hVVnn (Ne.symm hVVne)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `hz` after adjusting the coercions. Establish `hid` using `factorial_mul_det_sq r q V`. Establish `hprod : ∀ f : Fin r → S, A ^ r ≤ ∏ i, q (f i)`.
-
-Introduce `f`. Combine the equalities or inequalities in the displayed calculation. Establish `hmain : A ^ r * ((r.factorial : ℚ) * (Vᵀ * V).det) ≤ (r.factorial : ℚ) * (Vᵀ * diagonal q * V).det`. Rewrite using `[hid1, hid, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun f _ => mul_le_mul_of_nonneg_right (hprod f) (mul_self_nonneg _)`.
-
-Rewrite using `[hG]`. Establish `hAr : 0 ≤ A ^ r` using `pow_nonneg hA0 r`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hVV1 (mul_nonneg hAr hfac.le)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem nabla_gram_lower_bound : NablaGramLow := by
   intro N ν r e hν

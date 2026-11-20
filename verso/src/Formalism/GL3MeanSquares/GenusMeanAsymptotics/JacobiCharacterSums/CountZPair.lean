@@ -13,11 +13,11 @@ def mulLevel (p p' : PC) : DirichletCharacter ℂ ((p.1 + 1) * (p'.1 + 1)) :=
     (DirichletCharacter.changeLevel (dvd_mul_left (p'.1 + 1) (p.1 + 1)) p'.2)⁻¹
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `mul_inv_eq_one.mp h`. Establish `hc` using `congrArg DirichletCharacter.conductor h1`. Rewrite `hc` using `[DirichletCharacter.conductor_changeLevel, DirichletCharacter.conductor_changeLevel, hp, hp']`. Take `⟨N, χ⟩` from `p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨N', χ'⟩` from `p'`. Simplify using `only [add_left_inj] at hc`. Substitute `hc` using the available equality. Apply `hne` to reduce the goal to its premises. Use `DirichletCharacter.changeLevel_injective (dvd_mul_right (N + 1) (N + 1)) h1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `congrArg (Sigma.mk N) this`.
+A detailed English derivation is pending.
 -/
 theorem mulLevel_ne_one (p p' : PC) (hp : p.2.IsPrimitive) (hp' : p'.2.IsPrimitive) (hne : p ≠ p') :
     mulLevel p p' ≠ 1 := by
@@ -35,15 +35,15 @@ theorem mulLevel_ne_one (p p' : PC) (hp : p.2.IsPrimitive) (hp' : p'.2.IsPrimiti
   exact congrArg (Sigma.mk N) this
 
 /- English proof (translation)
-Distinguish the cases in `hu : IsUnit (n : ZMod ((p.1 + 1) * (p'.1 + 1)))`. Take `⟨u, hu⟩` from `hu`. Establish `e1 : DirichletCharacter.changeLevel (dvd_mul_right (p.1 + 1) (p'.1 + 1)) p.2 (n : ZMod ((p.1 + 1) * (p'.1 + 1))) = cv p n`. Rewrite using `[← hu, DirichletCharacter.changeLevel_eq_cast_of_dvd, hu, ZMod.cast_natCast (dvd_mul_right _ _)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : DirichletCharacter.changeLevel (dvd_mul_left (p'.1 + 1) (p.1 + 1)) p'.2 (n : ZMod ((p.1 + 1) * (p'.1 + 1))) = cv p' n`. Rewrite using `[← hu, DirichletCharacter.changeLevel_eq_cast_of_dvd, hu, ZMod.cast_natCast (dvd_mul_left _ _)]`. Both sides reduce to the same expression. Establish `hn : ‖DirichletCharacter.changeLevel (dvd_mul_left (p'.1 + 1) (p.1 + 1)) p'.2 (n : ZMod ((p.1 + 1) * (p'.1 + 1)))‖ = 1`. Rewrite using `[← hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DirichletCharacter.unit_norm_eq_one _ u`. Unfold `mulLevel`. Rewrite using `[MulChar.mul_apply, MulChar.inv_apply_eq_inv', e1, Complex.inv_eq_conj hn, e2]`. Rewrite using `[MulChar.map_nonunit _ hu]`. Rewrite `hu` using `[ZMod.isUnit_iff_coprime]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : n.Coprime (p.1 + 1)`. Establish `h2 : ¬ n.Coprime (p'.1 + 1)` using `fun h2 => hu (Nat.Coprime.mul_right h1 h2)`. Establish `h3 : cv p' n = 0` using `MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime])`. Rewrite using `[h3, map_zero, mul_zero]`. Establish `h3 : cv p n = 0` using `MulChar.map_nonunit _ (by rwa [ZMod.isUnit_iff_coprime])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem mulLevel_apply (p p' : PC) (n : ℕ) :
     mulLevel p p' (n : ZMod ((p.1 + 1) * (p'.1 + 1))) = cv p n * (starRingEnd ℂ) (cv p' n) := by
@@ -75,9 +75,9 @@ theorem mulLevel_apply (p p' : PC) (n : ℕ) :
       rw [h3, zero_mul]
 
 /- English proof (translation)
-Use `Finset.sum_nbij (fun n : ℕ => (n : ZMod Q)) (fun _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `a ha b hb hab`. Establish `ha' : a < Q` using `Finset.mem_range.mp ha`. Establish `hb' : b < Q` using `Finset.mem_range.mp hb`. Establish `h` using `congrArg ZMod.val hab`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at h`. Rewrite `h` using `[ZMod.val_natCast_of_lt ha', ZMod.val_natCast_of_lt hb']`. Then use the resulting hypothesis. Introduce `x _`. Conclude with `⟨x.val, Finset.mem_range.mpr (ZMod.val_lt x), ZMod.natCast_zmod_val x⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private lemma sum_range_natCast_zmod_eq_sum_univ {Q : ℕ} [NeZero Q] (f : ZMod Q → ℂ) :
     ∑ n ∈ Finset.range Q, f (n : ZMod Q) = ∑ x : ZMod Q, f x := by
@@ -93,7 +93,7 @@ private lemma sum_range_natCast_zmod_eq_sum_univ {Q : ℕ} [NeZero Q] (f : ZMod 
     exact ⟨x.val, Finset.mem_range.mpr (ZMod.val_lt x), ZMod.natCast_zmod_val x⟩
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `[Nat.cast_add]`. Use `_ = ∑ x : ZMod Q, ψ ((M : ZMod Q) + x) := sum_range_natCast_zmod_eq_sum_univ (fun x => ψ ((M : ZMod Q) + x))`. Use `_ = ∑ x : ZMod Q, ψ x := Equiv.sum_comp (Equiv.addLeft (M : ZMod Q)) ψ`. Use `_ = 0 := MulChar.sum_eq_zero_of_ne_one hψ`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sum_range_modulus_shift_eq_zero_of_ne_one {Q : ℕ} [NeZero Q] (ψ : DirichletCharacter ℂ Q) (hψ : ψ ≠ 1) (M : ℕ) :
     ∑ n ∈ Finset.range Q, ψ ((M + n : ℕ) : ZMod Q) = 0 := by
@@ -105,9 +105,9 @@ private lemma sum_range_modulus_shift_eq_zero_of_ne_one {Q : ℕ} [NeZero Q] (ψ
     _ = 0 := MulChar.sum_eq_zero_of_ne_one hψ
 
 /- English proof (translation)
-Establish `hQ : 0 < Q` using `NeZero.pos Q`. Use `Nat.strong_induction_on M ?_` and prove the remaining obligations. Introduce `M ih`. Distinguish the cases in `hM : M < Q`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation.
 
-Take `⟨K, hK⟩ : ∃ K, M = K + Q` from `⟨M - Q, by omega⟩`. Substitute `hK` using the available equality. Rewrite using `[Finset.sum_range_add, sum_range_modulus_shift_eq_zero_of_ne_one ψ hψ K, add_zero]`. Conclude with `ih K (by omega)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_charSum_range_le_modulus_of_ne_one {Q : ℕ} [NeZero Q] (ψ : DirichletCharacter ℂ Q) (hψ : ψ ≠ 1) (M : ℕ) :
     ‖∑ n ∈ Finset.range M, ψ (n : ZMod Q)‖ ≤ (Q : ℝ) := by
@@ -127,7 +127,7 @@ private lemma norm_charSum_range_le_modulus_of_ne_one {Q : ℕ} [NeZero Q] (ψ :
     exact ih K (by omega)
 
 /- English proof (translation)
-Introduce `p p' hp hp' hne M`. Establish `h` using `norm_charSum_range_le_modulus_of_ne_one (mulLevel p p') (mulLevel_ne_one p p' hp hp' hne) M`. Simplify `h` using `only [mulLevel_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pair_sum_bound : PairSum := by
   intro p p' hp hp' hne M

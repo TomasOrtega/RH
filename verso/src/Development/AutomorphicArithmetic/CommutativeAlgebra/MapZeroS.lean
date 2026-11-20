@@ -42,7 +42,7 @@ namespace UpperTheory.Kun
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(F.obj.map (𝟙 (op X))).hom b = b`. Rewrite using `[F.obj.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_id {F : Shv R} {X : Scheme.{0}} (b : Sec F X) : Sec.res (𝟙 X) b = b := by
   change (F.obj.map (𝟙 (op X))).hom b = b
@@ -50,7 +50,7 @@ theorem res_id {F : Shv R} {X : Scheme.{0}} (b : Sec F X) : Sec.res (𝟙 X) b =
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = (F.obj.map (f.op ≫ g.op)).hom b`. Rewrite using `[F.obj.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {F : Shv R} {X Y Z : Scheme.{0}} (f : Y ⟶ X) (g : Z ⟶ Y) (b : Sec F X) :
     Sec.res g (Sec.res f b) = Sec.res (g ≫ f) b := by
@@ -80,16 +80,16 @@ Both sides reduce to the same expression.
 theorem map_addS {F G : Shv R} (φ ψ : F ⟶ G) {U : Scheme.{0}} (x : Sec F U) : Sec.map (φ + ψ) x = Sec.map φ x + Sec.map ψ x := rfl
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.congr_hom (φ.hom.naturality g.op) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) :=
   (ConcreteCategory.congr_hom (φ.hom.naturality g.op) x).symm
 
 /- English proof (translation)
-Establish `h1 : ((biprod.inl : I ⟶ LL I Q).f s) ≫ ((biprod.fst : LL I Q ⟶ I).f s) = 𝟙 _`. Rewrite using `[← HomologicalComplex.comp_f, biprod.inl_fst, HomologicalComplex.id_f]`. Establish `h2 : ((biprod.inr : sh Q ⟶ LL I Q).f s) ≫ ((biprod.fst : LL I Q ⟶ I).f s) = 0`. Rewrite using `[← HomologicalComplex.comp_f, biprod.inr_fst, HomologicalComplex.zero_f]`. Unfold `cc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_add]`. Express the relevant statement in the definitionally equal form `Sec.map _ (Sec.map _ a) + Sec.map _ (Sec.map _ _) = a`. Rewrite using `[map_map, map_map, h1, h2, map_idS, map_zeroS, add_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem c₁_cc {I Q : Cx R} {T : Scheme.{0}} {s : ℤ} (a : Sec (I.X s) T) (b : Sec (Q.X (s + -1)) T) : c₁ (cc (I := I) (Q := Q) a b) = a := by
   have h1 : ((biprod.inl : I ⟶ LL I Q).f s) ≫ ((biprod.fst : LL I Q ⟶ I).f s) = 𝟙 _ := by
@@ -102,9 +102,9 @@ theorem c₁_cc {I Q : Cx R} {T : Scheme.{0}} {s : ℤ} (a : Sec (I.X s) T) (b :
   rw [map_map, map_map, h1, h2, map_idS, map_zeroS, add_zero]
 
 /- English proof (translation)
-Establish `h1 : ((biprod.inl : I ⟶ LL I Q).f s) ≫ ((biprod.snd : LL I Q ⟶ sh Q).f s) = 0`. Rewrite using `[← HomologicalComplex.comp_f, biprod.inl_snd, HomologicalComplex.zero_f]`. Establish `h2 : ((biprod.inr : sh Q ⟶ LL I Q).f s) ≫ ((biprod.snd : LL I Q ⟶ sh Q).f s) = 𝟙 _`. Rewrite using `[← HomologicalComplex.comp_f, biprod.inr_snd, HomologicalComplex.id_f]`. Unfold `cc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_add]`. Express the relevant statement in the definitionally equal form `(Sec.map (((biprod.inl : I ⟶ LL I Q).f s) ≫ ((biprod.snd : LL I Q ⟶ sh Q).f s)) a + Sec.map (((biprod.inr : sh Q ⟶ LL I Q).f s) ≫ ((biprod.snd : LL I Q ⟶ sh Q).f s)) (show Sec ((sh Q).X s) T from b) : Sec ((sh Q).X s) T) = b`. Rewrite using `[h1, h2, map_zeroS, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem c₂_cc {I Q : Cx R} {T : Scheme.{0}} {s : ℤ} (a : Sec (I.X s) T) (b : Sec (Q.X (s + -1)) T) : c₂ (cc (I := I) (Q := Q) a b) = b := by
   have h1 : ((biprod.inl : I ⟶ LL I Q).f s) ≫ ((biprod.snd : LL I Q ⟶ sh Q).f s) = 0 := by
@@ -119,7 +119,7 @@ theorem c₂_cc {I Q : Cx R} {T : Scheme.{0}} {s : ℤ} (a : Sec (I.X s) T) (b :
   rfl
 
 /- English proof (translation)
-Establish `h : ((biprod.fst : LL I Q ⟶ I).f s) ≫ ((biprod.inl : I ⟶ LL I Q).f s) + ((biprod.snd : LL I Q ⟶ sh Q).f s) ≫ ((biprod.inr : sh Q ⟶ LL I Q).f s) = 𝟙 _`. Rewrite using `[← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, ← HomologicalComplex.add_f_apply, biprod.total, HomologicalComplex.id_f]`. Express the relevant statement in the definitionally equal form `Sec.map _ (Sec.map _ x) + Sec.map _ (Sec.map _ x) = x`. Rewrite using `[map_map, map_map, ← map_addS, h, map_idS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_c {I Q : Cx R} {T : Scheme.{0}} {s : ℤ} (x : Sec ((LL I Q).X s) T) : cc (c₁ x) (c₂ x) = x := by
   have h : ((biprod.fst : LL I Q ⟶ I).f s) ≫ ((biprod.inl : I ⟶ LL I Q).f s) +
@@ -129,32 +129,32 @@ theorem cc_c {I Q : Cx R} {T : Scheme.{0}} {s : ℤ} (x : Sec ((LL I Q).X s) T) 
   rw [map_map, map_map, ← map_addS, h, map_idS]
 
 /- English proof (translation)
-Rewrite using `[← cc_c x, ← cc_c y, h₁, h₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LLsec_ext {I Q : Cx R} {T : Scheme.{0}} {s : ℤ} (x y : Sec ((LL I Q).X s) T) (h₁ : c₁ x = c₁ y) (h₂ : c₂ x = c₂ y) : x = y := by
   rw [← cc_c x, ← cc_c y, h₁, h₂]
 
 /- English proof (translation)
-The claim follows from `(res_map _ g x).symm`.
+A detailed English derivation is pending.
 -/
 theorem c₁_res {I Q : Cx R} {V T : Scheme.{0}} {s : ℤ} (g : V ⟶ T) (x : Sec ((LL I Q).X s) T) : c₁ (Sec.res g x) = Sec.res g (c₁ x) :=
   (res_map _ g x).symm
 
 /- English proof (translation)
-The claim follows from `(res_map ((biprod.snd : LL I Q ⟶ sh Q).f s) g x).symm`.
+A detailed English derivation is pending.
 -/
 theorem c₂_res {I Q : Cx R} {V T : Scheme.{0}} {s : ℤ} (g : V ⟶ T) (x : Sec ((LL I Q).X s) T) : c₂ (Sec.res g x) = Sec.res g (c₂ x) :=
   (res_map ((biprod.snd : LL I Q ⟶ sh Q).f s) g x).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Sec.map _ (Sec.map _ x) = Sec.map _ (Sec.map _ x)`. Rewrite using `[map_map, map_map, (biprod.fst : LL I Q ⟶ I).comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem c₁_d {I Q : Cx R} {T : Scheme.{0}} (s t : ℤ) (x : Sec ((LL I Q).X s) T) : c₁ (Sec.map ((LL I Q).d s t) x) = Sec.map (I.d s t) (c₁ x) := by
   change Sec.map _ (Sec.map _ x) = Sec.map _ (Sec.map _ x)
   rw [map_map, map_map, (biprod.fst : LL I Q ⟶ I).comm]
 
 /- English proof (translation)
-Establish `: (sh Q).d s t = (-1 : ℤ).negOnePow • Q.d (s + -1) (t + -1)` using `CochainComplex.shiftFunctor_obj_d' _ _ _ _`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sh_d (Q : Cx R) (s t : ℤ) : (sh Q).d s t = - Q.d (s + -1) (t + -1) := by
   have : (sh Q).d s t = (-1 : ℤ).negOnePow • Q.d (s + -1) (t + -1) := CochainComplex.shiftFunctor_obj_d' _ _ _ _
@@ -162,9 +162,9 @@ theorem sh_d (Q : Cx R) (s t : ℤ) : (sh Q).d s t = - Q.d (s + -1) (t + -1) := 
   simp
 
 /- English proof (translation)
-Establish `h` using `(biprod.snd : LL I Q ⟶ sh Q).comm s t`. Establish `e : ((biprod.snd : LL I Q ⟶ sh Q).f s) ≫ (sh Q).d s t = -(((biprod.snd : LL I Q ⟶ sh Q).f s) ≫ (show (sh Q).X s ⟶ (sh Q).X t from Q.d (s + -1) (t + -1)))`. Rewrite using `[sh_d]`. Conclude with `Preadditive.comp_neg _ _`. Express the relevant statement in the definitionally equal form `Sec.map _ (Sec.map _ x) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_map, ← h, e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem c₂_d {I Q : Cx R} {T : Scheme.{0}} (s t : ℤ) (x : Sec ((LL I Q).X s) T) :
     c₂ (Sec.map ((LL I Q).d s t) x) = - Sec.map (Q.d (s + -1) (t + -1)) (c₂ x) := by
@@ -178,7 +178,7 @@ theorem c₂_d {I Q : Cx R} {T : Scheme.{0}} (s t : ℤ) (x : Sec ((LL I Q).X s)
   rfl
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)).2.2.2.1 (sch.map f) α.1 0 n (by simp) Y (𝟙 Y)`. Establish `h2` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)).2.1 α.1 0 n (by simp) Y X f (𝟙 X)`. Use `h1.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem sg_pull {X Y : Scheme.{0}} {I : Cx R} {n : ℤ} (f : Y ⟶ X) (α : Cocycle ((chains R).obj (sch.obj X)) I n) :
     sg (zcomp (Cocycle.ofHom ((chains R).map (sch.map f))) α (zero_add n)) = Sec.res f (sg α) := by
@@ -188,25 +188,25 @@ theorem sg_pull {X Y : Scheme.{0}} {I : Cx R} {n : ℤ} (f : Y ⟶ X) (α : Cocy
   congr 1
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)).1 α.1 β.1 0 n (by simp) X (𝟙 X)).2.1`.
+A detailed English derivation is pending.
 -/
 theorem sg_sub {X : Scheme.{0}} {I : Cx R} {n : ℤ} (α β : Cocycle ((chains R).obj (sch.obj X)) I n) : sg (α - β) = sg α - sg β :=
   ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)).1 α.1 β.1 0 n (by simp) X (𝟙 X)).2.1
 
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem res_add {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) : Sec.res g (x + y) = Sec.res g x + Sec.res g y :=
   map_add _ _ _
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem res_units {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (ε : ℤˣ) (x : Sec F U) : Sec.res g (ε • x) = ε • Sec.res g x := by
   rcases Int.units_eq_one_or ε with rfl | rfl <;> simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Sec.res (prod.map (𝟙 W) g) (Sec.res (prod.snd : W ⨯ T ⟶ T) (c₁ a) + s.negOnePow • μ.mul (W ⨯ T) (s + -1) 1 s (by omega) (Sec.res (prod.snd : W ⨯ T ⟶ T) (c₂ a)) (Sec.res (prod.fst : W ⨯ T ⟶ W) z)) = Sec.res (prod.snd : W ⨯ T' ⟶ T') (c₁ (Sec.res g a)) + s.negOnePow • μ.mul (W ⨯ T') …`. Rewrite using `[res_add, res_units, μ.nat, c₁_res, c₂_res, res_res, res_res, res_res, res_res, res_res]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_nat (W : Scheme.{0}) {I Q P : Cx R} (μ : Pair Q P I) (z : Sec (P.X 1) W) {T' T : Scheme.{0}} (g : T' ⟶ T) (s : ℤ)
     (a : Sec ((LL I Q).X s) T) : Sec.res (prod.map (𝟙 W) g) (psi W μ z T s a) = psi W μ z T' s (Sec.res g a) := by
@@ -218,9 +218,9 @@ theorem psi_nat (W : Scheme.{0}) {I Q P : Cx R} (μ : Pair Q P I) (z : Sec (P.X 
   simp
 
 /- English proof (translation)
-Establish `hQ' : Injective ((sh Q).X s)` using `hQ (s + -1)`. Establish `h : ((biprod.fst : LL I Q ⟶ I).f s) ≫ ((biprod.inl : I ⟶ LL I Q).f s) + ((biprod.snd : LL I Q ⟶ sh Q).f s) ≫ ((biprod.inr : sh Q ⟶ LL I Q).f s) = 𝟙 _`. Rewrite using `[← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, ← HomologicalComplex.add_f_apply, biprod.total, HomologicalComplex.id_f]`. Use `⟨fun {X Y} g f _ => ?_⟩` and prove the remaining obligations. Use `haveI := hI s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, e₁⟩` from `Injective.factors (g ≫ (biprod.fst : LL I Q ⟶ I).f s) f`. Take `⟨h₂, e₂⟩` from `Injective.factors (g ≫ (biprod.snd : LL I Q ⟶ sh Q).f s) f`. Use `⟨h₁ ≫ (biprod.inl : I ⟶ LL I Q).f s + h₂ ≫ (biprod.inr : sh Q ⟶ LL I Q).f s, ?_⟩` and prove the remaining obligations. Rewrite using `[Preadditive.comp_add, ← Category.assoc, ← Category.assoc, e₁, e₂, Category.assoc, Category.assoc, ← Preadditive.comp_add, h, Category.comp_id]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LL_inj {I Q : Cx R} (hI : ∀ s, Injective (I.X s)) (hQ : ∀ s, Injective (Q.X s)) (s : ℤ) : Injective ((LL I Q).X s) := by
   have hQ' : Injective ((sh Q).X s) := hQ (s + -1)
@@ -235,9 +235,9 @@ theorem LL_inj {I Q : Cx R} (hI : ∀ s, Injective (I.X s)) (hQ : ∀ s, Injecti
   rw [Preadditive.comp_add, ← Category.assoc, ← Category.assoc, e₁, e₂, Category.assoc, Category.assoc, ← Preadditive.comp_add, h, Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[CochainComplex.isStrictlyGE_iff]`. Introduce `i hi`. Establish `hI` using `I.isZero_of_isStrictlyGE 0 i hi`. Establish `hQ : IsZero ((sh Q).X i)` using `Q.isZero_of_isStrictlyGE 0 (i + -1) (by omega)`. Establish `h : ((biprod.fst : LL I Q ⟶ I).f i) ≫ ((biprod.inl : I ⟶ LL I Q).f i) + ((biprod.snd : LL I Q ⟶ sh Q).f i) ≫ ((biprod.inr : sh Q ⟶ LL I Q).f i) = 𝟙 _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, ← HomologicalComplex.add_f_apply, biprod.total, HomologicalComplex.id_f]`. Rewrite using `[IsZero.iff_id_eq_zero, ← h, hI.eq_of_tgt ((biprod.fst : LL I Q ⟶ I).f i) 0, hQ.eq_of_tgt ((biprod.snd : LL I Q ⟶ sh Q).f i) 0]`. Simplify using the standard rewrite rules. Conclude with `zero_comp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LL_ge (I Q : Cx R) [I.IsStrictlyGE 0] [Q.IsStrictlyGE 0] : (LL I Q).IsStrictlyGE 0 := by
   rw [CochainComplex.isStrictlyGE_iff]

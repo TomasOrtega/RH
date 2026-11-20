@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.SRe
 
 /- English proof (translation)
-Introduce `hSW hBM hRF D F hG hL`. Take `⟨X, hb, ψ, Y, hF, tr, hinst, hpin, hmt, hch, hstd, hmc, hlc, hint, hu⟩` from `GlobalTheory.T.exists_global_setting hSW hBM hRF D F hG hL`. Take `⟨G⟩` from `GlobalTheory.rowDict_goodOp_nonempty D X`. Conclude with `⟨⟨X, hb, Y, hF, ψ, hmt, hch, hstd, hmc, hlc, tr, fun u => (hu u).2.1, fun u => (hu u).2.2.1, fun u => (hu u).1, fun u => (hu u).2.2.2, hinst, G, hpin⟩, hint⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sPack_integrable :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → PI.BesselMapUniq.BesselMapUniq → Formalism.L2.SG.RowsDef.RowsFinDim →

@@ -14,19 +14,19 @@ namespace Formalism.DworkPowerSeriesWeights
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Introduce `K _ _ _ l hl hpi τ _ _ p g hg0 hg U hU ι _ M hM1 sig hsig`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.two_le`. Establish `h0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`. Establish `h1 : ‖(l : K)‖ ≤ 1` using `hpi.le`. Establish `hrho : 0 ≤ rho l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `rho`. Apply `div_nonneg zero_le_one` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hr : ∀ i, (fun _ : ι => rho l) i ≤ (fun i => rho l + sig i) i` using `fun i => by`. Simplify using `only`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear relations using `[hsig i]`. Establish `hlin0 : ∀ x, MvPowerSeries.constantCoeff (∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i : MvPowerSeries ι K) = 0`. Introduce `x`. Simplify using the standard rewrite rules. Establish `hU0 : WtGe ‖(l : K)‖ (fun _ : τ => rho l) 0 U`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `n`. Rewrite using `[monoWtGe_iff]`. Use `le_trans (hU n) (Real.one_le_rpow_of_pos_of_le_one_of_nonpos h0 h1 ?_)` and prove the remaining obligations. Combine the linear relations using `[asmR_dot_nonneg n (r := fun _ : τ => rho l) fun _ => hrho]`. Establish `hgw` using `generalized_log_weight K l hl hpi τ p g hg0 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hgU : WtGe ‖(l : K)‖ (fun _ : τ => rho l) 0 (MvPowerSeries.subst g U)` using `substitution_weight_bound K ‖(l : K)‖ h0 hpi τ τ g (fun _ => rho l) (fun _ => rho l) 0 U hg0 hgw hU0`. Establish `hlinw : ∀ x, WtGe ‖(l : K)‖ (fun _ : ι => rho l) (rho l) (∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i : MvPowerSeries ι K)`. Introduce `x n`. Rewrite using `[monoWtGe_iff]`. Simplify using `only [map_sum, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg h0.le _) fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one, asmR_dot_single]`. Simplify using `using hM1 x i`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Real.rpow_nonneg h0.le _`. Establish `hY : WtGe ‖(l : K)‖ (fun _ : ι => rho l) 0 (MvPowerSeries.subst (fun x => (∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i : MvPowerSeries ι K)) (MvPowerSeries.subst g U))` using `substitution_weight_bound K ‖(l : K)‖ h0 hpi τ ι _ (fun _ => rho l) (fun _ => rho l) 0 _ hlin0 hlinw hgU`. Conclude with `(radical_weight_monotone K ‖(l : K)‖ h0 hpi ι (fun _ => rho l) (fun i => rho l + sig i) 0 hr).1 _ hY`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unipotent_weight_bound : UWt.{u, v, w} := by
   classical
@@ -73,15 +73,15 @@ theorem unipotent_weight_bound : UWt.{u, v, w} := by
   exact (radical_weight_monotone K ‖(l : K)‖ h0 hpi ι (fun _ => rho l) (fun i => rho l + sig i) 0 hr).1 _ hY
 
 /- English proof (translation)
-Introduce `K _ _ _ l hl hpi ι _ sig κ a ha hκa B U hB0 hB hU`. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.two_le`. Establish `h0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`. Establish `hrg : gam l = 1 / ((l : ℝ) - 1) - rho l`. Establish `ha : (l : ℝ) - 1 ≠ 0` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (l : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Unfold `gam rho`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hExp` using `exponential_weight_le K l hl hpi ι (fun i => rho l + sig i) κ B hB0 hB`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hk` using `multiplicative_weight_le K ‖(l : K)‖ h0 ι (fun i => rho l + sig i) 0 0 κ U (mvExp B) hU hExp κ le_rfl`. Rewrite `hk` using `[monoWtGe_iff]`. Establish `hf` using `factValA (K := K) hl hpi κ ha hκa`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.rpow_add h0]`. Use `congr 1`. Rewrite using `[coreL_dot_fintype, hrg]`. Establish `key : ∑ i, (κ i : ℝ) * (1 / ((l : ℝ) - 1) - rho l - sig i) = (∑ i, (κ i : ℝ) / ((l : ℝ) - 1)) - ∑ i, (κ i : ℝ) * (rho l + sig i)`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lemma_R_core_log_loss : RCoreA.{u, v} := by
   intro K _ _ _ l hl hpi ι _ sig κ a ha hκa B U hB0 hB hU

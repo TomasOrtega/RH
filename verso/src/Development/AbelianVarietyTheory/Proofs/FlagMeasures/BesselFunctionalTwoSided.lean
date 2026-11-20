@@ -20,7 +20,7 @@ variable {Wq : Type*} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 omit [CompleteSpace H] in
 
 /- English proof (translation)
-Use `(hF.norm.mul_prod hG.norm).mono' (hF.1.comp_fst.inner hG.1.comp_snd) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun p => norm_inner_le_norm _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_inner_prod {μ : Measure α} {ν : Measure β} [SFinite μ] [SFinite ν]
     {F : α → H} {G : β → H} (hF : Integrable F μ) (hG : Integrable G ν) :
@@ -29,7 +29,7 @@ theorem integrable_inner_prod {μ : Measure α} {ν : Measure β} [SFinite μ] [
   exact Filter.Eventually.of_forall fun p => norm_inner_le_norm _ _
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ (integrable_inner_prod hF hG)]`. Repeatedly rewrite using `[integral_inner hG]`. Rewrite using `[← inner_conj_symm, ← integral_inner hF, ← integral_conj]`. Repeatedly rewrite using `[inner_conj_symm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem inner_integral_integral {μ : Measure α} {ν : Measure β} [SFinite μ] [SFinite ν]
     {F : α → H} {G : β → H} (hF : Integrable F μ) (hG : Integrable G ν) :
@@ -42,7 +42,7 @@ theorem inner_integral_integral {μ : Measure α} {ν : Measure β} [SFinite μ]
 omit [CompleteSpace H] in
 
 /- English proof (translation)
-Use `Integrable.of_bound ((ha.inner aestronglyMeasurable_const).smul hu) (D * ‖η‖ * C) ?_` and prove the remaining obligations. Use `filter_upwards [huC, haD] with s h1 h2`. Rewrite using `[norm_smul]`. Establish `h3 : ‖⟪a s, η⟫_ℂ‖ ≤ D * ‖η‖` using `(norm_inner_le_norm _ _).trans (by gcongr)`. Conclude with `mul_le_mul h3 h1 (norm_nonneg _) ((norm_nonneg _).trans h3)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_coord_smul {μ : Measure α} [IsFiniteMeasure μ] {u : α → H} {a : α → Wp} {C D : ℝ}
     (hu : AEStronglyMeasurable u μ) (ha : AEStronglyMeasurable a μ)
@@ -55,9 +55,9 @@ theorem integrable_coord_smul {μ : Measure α} [IsFiniteMeasure μ] {u : α →
   exact mul_le_mul h3 h1 (norm_nonneg _) ((norm_nonneg _).trans h3)
 
 /- English proof (translation)
-Establish `: (fun p : Wp × Wq => rk1 p.1 p.2) = fun p => ContinuousLinearMap.smulRightL ℂ Wq Wp (innerSL ℂ p.2) p.1`. Use function extensionality and compare the values at `p`. Use extensionality with `η`. Simplify using `[rk1]`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rankOneOperator : Continuous fun p : Wp × Wq => rk1 p.1 p.2 := by
   have : (fun p : Wp × Wq => rk1 p.1 p.2) =
@@ -67,13 +67,13 @@ theorem continuous_rankOneOperator : Continuous fun p : Wp × Wq => rk1 p.1 p.2 
   fun_prop
 
 /- English proof (translation)
-Establish `hF` using `integrable_coord_smul hu ha huC haD η`. Establish `hG` using `integrable_coord_smul hv hb hvC hbD η'`. Establish `hI : Integrable (fun p : α × β => ⟪u p.1, T (v p.2)⟫_ℂ • rk1 (a p.1) (b p.2)) (μ.prod ν)`. Use `Integrable.of_bound ?_ (C * (‖T‖ * C') * (D * D')) ?_` and prove the remaining obligations. Use `(hu.comp_fst.inner (𝕜 := ℂ) (T.continuous.comp_aestronglyMeasurable hv.comp_snd)).smul ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_rankOneOperator.comp_aestronglyMeasurable (ha.comp_fst.prodMk hb.comp_snd)`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae huC, Measure.quasiMeasurePreserving_fst.ae haD, Measure.quasiMeasurePreserving_snd.ae hvC, Measure.quasiMeasurePreserving_snd.ae hbD] with p h1 h2 h3 h4`. Rewrite using `[norm_smul, norm_rankOneInnerOperator]`. Establish `hC : 0 ≤ C` using `(norm_nonneg _).trans h1`. Establish `hD : 0 ≤ D` using `(norm_nonneg _).trans h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC' : 0 ≤ C'` using `(norm_nonneg _).trans h3`. Establish `h5 : ‖⟪u p.1, T (v p.2)⟫_ℂ‖ ≤ C * (‖T‖ * C')`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Use `T.le_opNorm_of_le h3` as an intermediate fact. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `gcongr`. Rewrite using `[← T.integral_comp_comm hG, inner_integral_integral hF (T.integrable_comp hG), ContinuousLinearMap.integral_apply hI, ← integral_inner (hI.apply_continuousLinearMap η')]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, rankOneInnerOperator_apply, map_smul, inner_smul_left, inner_smul_right, inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem entry_eq [CompleteSpace Wp] {μ : Measure α} {ν : Measure β} [IsFiniteMeasure μ] [IsFiniteMeasure ν]
     {u : α → H} {a : α → Wp} {v : β → H} {b : β → Wq} {C D C' D' : ℝ}
@@ -109,9 +109,9 @@ theorem entry_eq [CompleteSpace Wp] {μ : Measure α} {ν : Measure β} [IsFinit
   ring
 
 /- English proof (translation)
-Establish `hF` using `fun i => integrable_coord_smul hu ha huC haD (e i)`. Repeatedly rewrite using `[fun i => inner_integral_integral (hF i) (hF i)]`. Rewrite using `[← integral_finset_sum _ fun i _ => integrable_inner_prod (hF i) (hF i)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [inner_smul_left, inner_smul_right, inner_conj_symm]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e.sum_inner_mul_inner (a p.2) (a p.1), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_inner_self {ι : Type*} [Fintype ι] (e : OrthonormalBasis ι ℂ Wp)
     {μ : Measure α} [IsFiniteMeasure μ] {u : α → H} {a : α → Wp} {C D : ℝ}
@@ -128,9 +128,7 @@ theorem sum_inner_self {ι : Type*} [Fintype ι] (e : OrthonormalBasis ι ℂ Wp
   refine Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Use extensionality with `η`. Use `conv_lhs => rw [← f.sum_repr' η, map_sum]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, rankOneInnerOperator_apply, map_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← e.sum_repr' (A (f j)), Finset.smul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_sum_entries {ι κ : Type*} [Fintype ι] [Fintype κ] (e : OrthonormalBasis ι ℂ Wp)
     (f : OrthonormalBasis κ ℂ Wq) (A : Wq →L[ℂ] Wp) :
@@ -143,11 +141,11 @@ theorem eq_sum_entries {ι κ : Type*} [Fintype ι] [Fintype κ] (e : Orthonorma
   exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Establish `h : hsInner A A = ((hsInner A A).re : ℂ)`. Unfold `hsInner`. Rewrite using `[Complex.re_sum, Complex.ofReal_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (inner_self_ofReal_re (𝕜 := ℂ) _).symm`. Unfold `hsNormSq`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Unfold `hsInner`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← e.sum_inner_mul_inner]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, RCLike.star_def, inner_conj_symm]`.
+A detailed English derivation is pending.
 -/
 theorem hsNormSq_eq [FiniteDimensional ℂ Wq] {ι : Type*} [Fintype ι] (e : OrthonormalBasis ι ℂ Wp)
     (A : Wq →L[ℂ] Wp) :
@@ -173,29 +171,27 @@ variable {k r : ℕ}
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-The claim follows from `((uHGroup _ (Hpk k r) (Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1)).2.2 g hg).1`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_mem {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det :=
   ((uHGroup _ (Hpk k r) (Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1)).2.2 g hg).1
 
 /- English proof (translation)
-The claim follows from `hμ.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ae_mem {S : Set (Mat k r)} {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ) :
     ∀ᵐ s ∂μ, (Matrix.of s : Mat k r) ∈ S := hμ.2.2.1
 
 /- English proof (translation)
-Use `haveI := hμ.1`. Use `haveI : IsFiniteMeasure (μ.restrict Om) := isFiniteMeasure_restrict.2 hfin.ne`. Establish `hc : Continuous fun q : Mt k r × Mt k r => lmulM (Matrix.of q.1) q.2` using `Continuous.matrix_mul (X := Mt k r × Mt k r) continuous_fst continuous_snd`. Establish `hE : MeasurableSet {q : Mt k r × Mt k r | lmulM (Matrix.of q.1) q.2 ∈ Om}` using `hc.measurable hO`. Establish `hK : Integrable (fun q : Mt k r × Mt k r => {q : Mt k r × Mt k r | lmulM (Matrix.of q.1) q.2 ∈ Om}.indicator (fun q => f q.1) q) (μ.prod (μ.restrict Om))` using `(hf.comp_fst _).indicator hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ᵐ t ∂(μ.restrict Om), ∫ s in Om, f (rmulM (Matrix.of t : Mat k r)⁻¹ s) ∂μ = ∫ p, {q : Mt k r × Mt k r | lmulM (Matrix.of q.1) q.2 ∈ Om}.indicator (fun q => f q.1) (p, t) ∂μ` using `by filter_upwards [ae_restrict_of_ae (ae_mem hμ)] with t ht`. Establish `hm : ∀ a ∈ S, MeasurePreserving (rmulM a) μ μ` using `fun a ha => ⟨(continuous_rmulM a).measurable, hU.1 a ha⟩`. Establish `hg : Integrable (Om.indicator fun s => f (rmulM (Matrix.of t : Mat k r)⁻¹ s)) μ` using `((hm _ (hS.2.2.2.2 _ ht)).integrable_comp_of_integrable hf).indicator hO`. Rewrite using `[← integral_indicator hO]`. Use `conv_lhs => rw [← hU.1 _ ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[integral_map (hm _ ht).aemeasurable (by rw [hU.1 _ ht]; exact hg.1)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Establish `h2 : rmulM (Matrix.of t : Mat k r)⁻¹ (rmulM (Matrix.of t : Mat k r) p) = p` using `Matrix.mul_nonsing_inv_cancel_right (Matrix.of t : Mat k r) (Matrix.of p : Mat k r) (isUnit_det_of_mem (hS.1 ht))`. Establish `h3 : rmulM (Matrix.of t : Mat k r) p = lmulM (Matrix.of p) t` using `rfl`. Simplify using `only [Set.indicator, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Both sides reduce to the same expression. Rewrite using `[integral_congr_ae h1, ← integral_integral_swap hK]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Establish `hE' : MeasurableSet {t : Mt k r | lmulM (Matrix.of p) t ∈ Om}` using `measurable_prodMk_left hE`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Establish `h4 : (fun t => {q : Mt k r × Mt k r | lmulM (Matrix.of q.1) q.2 ∈ Om}.indicator (fun q => f q.1) (p, t)) = {t : Mt k r | lmulM (Matrix.of p) t ∈ Om}.indicator fun _ => f p`. Use function extensionality and compare the values at `t`. Both sides reduce to the same expression. Simplify using `only`. Rewrite using `[h4, integral_indicator_const _ hE', Measure.real, Measure.restrict_apply hE', Complex.real_smul, Set.inter_comm]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_sub_var {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)}
     (hμ : IsHaarOn S μ) (hU : IsUnimod S μ) {Om : Set (Mt k r)} (hO : MeasurableSet Om) (hfin : μ Om < ⊤)
@@ -240,9 +236,9 @@ theorem integral_sub_var {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Meas
   rfl
 
 /- English proof (translation)
-Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ s : H →ₗ[ℂ] H), hσ.2.1 s hs⟩`. Establish `h1 : σ s (σ s⁻¹ u) = u`. Use `hσ.1.2 s hs _ (hS.2.2.2.2 s hs)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_nonsing_inv _ (isUnit_det_of_mem (hS.1 hs)), hσ.1.1]`. Conclude with `(congrArg (fun T : H →L[ℂ] H => T u) this).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `L.inner_map_map (σ s⁻¹ u) v`. Express the relevant statement in the definitionally equal form `⟪σ s (σ s⁻¹ u), σ s v⟫_ℂ = _ at h2`. Rewrite using `[← h2, h1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_inv_left {S : Set (Mat k r)} (hS : IsClosedSub k r S) {σ : Mat k r → (H →L[ℂ] H)}
     (hσ : IsURepOn S σ) {s : Mat k r} (hs : s ∈ S) (u v : H) :
@@ -257,14 +253,14 @@ theorem inner_inv_left {S : Set (Mat k r)} (hS : IsClosedSub k r S) {σ : Mat k 
   rw [← h2, h1]
 
 /- English proof (translation)
-Rewrite using `[hσ.1.2 s hs t ht]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_mul_apply {S : Set (Mat k r)} {σ : Mat k r → (H →L[ℂ] H)}
     (hσ : IsURepOn S σ) {s t : Mat k r} (hs : s ∈ S) (ht : t ∈ S) (u : H) :
     σ (s * t) u = σ s (σ t u) := by rw [hσ.1.2 s hs t ht]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨hσ.1.1, fun a ha b hb => hσ.1.2 a (h ha) b (h hb)⟩, fun g hg => hσ.2.1 g (h hg), fun v => (hσ.2.2 v).mono h⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsURepOn_mono {S G : Set (Mat k r)} (h : S ⊆ G) {σ : Mat k r → (H →L[ℂ] H)}
     (hσ : IsURepOn G σ) : IsURepOn S σ :=
@@ -272,7 +268,7 @@ theorem IsURepOn_mono {S G : Set (Mat k r)} (h : S ⊆ G) {σ : Mat k r → (H �
     fun v => (hσ.2.2 v).mono h⟩
 
 /- English proof (translation)
-Establish `hcl : IsClosed (X` using `Mt k r) S := hS.2.1`. Establish `hF' : ContinuousOn (X` using `Mt k r) (fun s : Mt k r => F (Matrix.of s)) S := hF`. Use `hF'.aestronglyMeasurable (μ := μ) hcl.measurableSet` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem (ae_mem hμ)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem aesm_of_continuousOn {X : Type*} [NormedAddCommGroup X] {S : Set (Mat k r)}
     (hS : IsClosedSub k r S) {μ : Measure (Mt k r)} (hμ : IsHaarOn S μ) {F : Mat k r → X}
@@ -283,7 +279,7 @@ theorem aesm_of_continuousOn {X : Type*} [NormedAddCommGroup X] {S : Set (Mat k 
   rwa [Measure.restrict_eq_self_of_ae_mem (ae_mem hμ)] at this
 
 /- English proof (translation)
-Use `(hσ.2.2 u).comp (f := fun s : Mat k r => s⁻¹) (fun s hs => ?_) hS.2.2.2.2` and prove the remaining obligations. Take `⟨d, hd⟩` from `isUnit_det_of_mem (hS.1 hs)`. Conclude with `(continuousAt_matrix_inv s (hd ▸ NormedRing.inverse_continuousAt d)).continuousWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuousOn_rep_inv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {σ : Mat k r → (H →L[ℂ] H)}
     (hσ : IsURepOn S σ) (u : H) : ContinuousOn (fun s : Mat k r => σ s⁻¹ u) S := by
@@ -292,7 +288,7 @@ theorem continuousOn_rep_inv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {σ : 
   exact (continuousAt_matrix_inv s (hd ▸ NormedRing.inverse_continuousAt d)).continuousWithinAt
 
 /- English proof (translation)
-The claim follows from `(aesm_of_continuousOn hS hμ (continuousOn_rep_inv hS hσ u)).restrict`.
+A detailed English derivation is pending.
 -/
 theorem aesm_rep_inv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)}
     (hμ : IsHaarOn S μ) {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn S σ) (u : H) (Om : Set (Mt k r)) :
@@ -300,7 +296,7 @@ theorem aesm_rep_inv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure 
   (aesm_of_continuousOn hS hμ (continuousOn_rep_inv hS hσ u)).restrict
 
 /- English proof (translation)
-Use `filter_upwards [ae_restrict_of_ae (ae_mem hμ)] with s hs`. Conclude with `(hσ.2.1 _ (hS.2.2.2.2 _ hs) u).le`.
+A detailed English derivation is pending.
 -/
 theorem ae_norm_rep_inv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)}
     (hμ : IsHaarOn S μ) {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn S σ) (u : H) (Om : Set (Mt k r)) :
@@ -311,15 +307,13 @@ theorem ae_norm_rep_inv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measu
 variable {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
 
 /- English proof (translation)
-Use `haveI := hμ.1`. Use `haveI : IsFiniteMeasure (μ.restrict Om) := isFiniteMeasure_restrict.2 hfin.ne`. Establish `hu` using `aesm_rep_inv hS hμ hσ y Om`. Establish `ha` using `aesm_rep_inv hS hμ hP ξ Om`. Establish `huC` using `ae_norm_rep_inv hS hμ hσ y Om`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haD` using `ae_norm_rep_inv hS hμ hP ξ Om`. Establish `hf : Integrable (fun p : Mt k r => coef σ y y (Matrix.of p) * ⟪ξ, P (Matrix.of p)⁻¹ ξ⟫_ℂ) μ`. Use `hy.mul_bdd (c := ‖ξ‖ * ‖ξ‖) (aestronglyMeasurable_const.inner (aesm_of_continuousOn hS hμ (continuousOn_rep_inv hS hP ξ))) ?_` and prove the remaining obligations. Use `filter_upwards [ae_mem hμ] with s hs`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hP.2.1 _ (hS.2.2.2.2 _ hs)]`. Rewrite using `[sum_inner_self e hu ha huC haD, ← integral_sub_var hS hμ hU hO hfin hf, integral_prod_symm]`. Use `integral_congr_ae ?_ filter_upwards [ae_restrict_of_ae (ae_mem hμ)] with t ht` and prove the remaining obligations. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_of_ae (ae_mem hμ)] with s hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hti` using `hS.2.2.2.2 _ ht`. Establish `hsi` using `hS.2.2.2.2 _ hs`. Rewrite using `[of_rmulM, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (isUnit_det_of_mem (hS.1 ht)), coef, rep_mul_apply hσ hs hti, rep_mul_apply hP ht hsi, inner_inv_left hS hσ hs, inner_inv_left hS hP ht]`. Use `Integrable.of_bound ((hu.comp_fst.inner (𝕜 := ℂ) hu.comp_snd).mul (ha.comp_snd.inner (𝕜 := ℂ) ha.comp_fst)) (‖y‖ * ‖y‖ * (‖ξ‖ * ‖ξ‖)) ?_ filter_upwards [Measure.quasiMeasurePreserving_fst.ae huC, Measure.quasiMeasurePreserving_fst.ae haD, Measure.quasiMeasurePreserving_snd.ae huC …` and prove the remaining obligations. Rewrite using `[norm_mul]`.
-
-Use `gcongr`. Conclude with `(norm_inner_le_norm _ _).trans (by gcongr)`. Conclude with `(norm_inner_le_norm _ _).trans (by gcongr)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_side [CompleteSpace H] {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)}
     (hμ : IsHaarOn S μ) (hU : IsUnimod S μ) {Om : Set (Mt k r)} (hO : MeasurableSet Om) (hfin : μ Om < ⊤)
@@ -365,25 +359,21 @@ theorem sum_norm_side [CompleteSpace H] {S : Set (Mat k r)} (hS : IsClosedSub k 
 end Group
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hstd hs hs' x y ξ ξ' Om Om' hO hO' hfin hfin' hy hx`. Take `⟨-, hσ, -, -, hμG, ⟨-, hSch⟩, -⟩` from `hstd`. Take `⟨hz, hT, hπ, hμ, -⟩` from `hs`. Take `⟨hz', hT', hπ', hμ', -⟩` from `hs'`. Establish `hS` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS'` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z' hz' hT').2.2.2.1`. Establish `hG` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).1`. Establish `hP` using `(GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ).2.1`. Establish `hP'` using `(GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z' c' π' hz' hT' hπ').2.1`. Establish `hU` using `(GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU'` using `(GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z' hz' hT' μS').1 hμ'`. Establish `hσS` using `IsURepOn_mono hS.1 hσ`. Establish `hσS'` using `IsURepOn_mono hS'.1 hσ`. Use `haveI : IsFiniteMeasure (μS.restrict Om) := isFiniteMeasure_restrict.2 hfin.ne`. Use `haveI : IsFiniteMeasure (μS'.restrict Om') := isFiniteMeasure_restrict.2 hfin'.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I := Iint (psiGen k r z c) (psiGen k r z' c') π π' (μS.restrict Om) (μS'.restrict Om') σ x y ξ ξ' with hI`. Use `set e := stdOrthonormalBasis ℂ Wp`. Use `set f := stdOrthonormalBasis ℂ Wq`. Establish `hY` using `sum_norm_side hS hμ hU hO hfin hσS hP y ξ hy e`. Establish `hX` using `sum_norm_side hS' hμ' hU' hO' hfin' hσS' hP' x ξ' hx f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set Y := fun i => ∫ s in Om, ⟪PiS (psiGen k r z c) π (Matrix.of s)⁻¹ ξ, e i⟫_ℂ • σ (Matrix.of s)⁻¹ y ∂μS with hYdef`. Use `set X := fun j => ∫ s in Om', ⟪PiS (psiGen k r z' c') π' (Matrix.of s)⁻¹ ξ', f j⟫_ℂ • σ (Matrix.of s)⁻¹ x ∂μS' with hXdef`. Establish `hent : ∀ g ∈ GG k r, ∀ i j, ⟪e i, I g (f j)⟫_ℂ = coef σ (X j) (Y i) g`. Introduce `g hg i j`. Rewrite using `[coef, hXdef, hYdef]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[← entry_eq (aesm_rep_inv hS hμ hσS y Om) (aesm_rep_inv hS hμ hP ξ Om) (ae_norm_rep_inv hS hμ hσS y Om) (ae_norm_rep_inv hS hμ hP ξ Om) (aesm_rep_inv hS' hμ' hσS' x Om') (aesm_rep_inv hS' hμ' hP' ξ' Om') (ae_norm_rep_inv hS' hμ' hσS' x Om') (ae_norm_rep_inv hS' hμ' hP' ξ' Om') (σ …`. Use `congr 2`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae (ae_restrict_of_ae (s := Om) (ae_mem hμ)), Measure.quasiMeasurePreserving_snd.ae (ae_restrict_of_ae (s := Om') (ae_mem hμ'))] with p h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `hS'.1 (hS'.2.2.2.2 _ h2)`. Rewrite using `[matrix_of_besselTwoSidedAction, of_invM, coef, rep_mul_apply hσ (hG.2.2.2.1 _ (hS.1 h1) _ hg) h3, rep_mul_apply hσ (hS.1 h1) hg, inner_inv_left hS hσS h1]`. Establish `hhs : ∀ᵐ g ∂μG, ((hsNormSq (I (Matrix.of g)) : ℝ) : ℂ) = ∑ j, ∑ i, coef σ (X j) (Y i) (Matrix.of g) * star (coef σ (X j) (Y i) (Matrix.of g))` using `by filter_upwards [ae_mem hμG] with g hg`. Rewrite using `[hsNormSq_eq e]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by rw [hent _ hg i j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : ∀ j, Integrable (fun g : Mt k r => ∑ i, coef σ (X j) (Y i) (Matrix.of g) * star (coef σ (X j) (Y i) (Matrix.of g))) μG` using `fun j => integrable_finset_sum _ fun i _ => (hSch _ _ _ _).1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : ContinuousOn (fun g => ∑ j, ∑ i, coef σ (X j) (Y i) g • rk1 (e i) (f j)) (GG k r)` using `continuousOn_finset_sum _ fun j _ => continuousOn_finset_sum _ fun i _ => (ContinuousOn.inner (𝕜 := ℂ) continuousOn_const (hσ.2.2 (X j))).smul continuousOn_const`. Use `hc.congr fun g hg => ?_` and prove the remaining obligations. Rewrite using `[eq_sum_entries e f (I g)]`.
-
-Simplify using `only [hent g hg]`. Establish `h1 : Integrable (fun g : Mt k r => ((hsNormSq (I (Matrix.of g)) : ℝ) : ℂ)) μG` using `(integrable_finset_sum _ fun j _ => hint j).congr (Filter.EventuallyEq.symm hhs)`. Conclude with `h1.re`. Rewrite using `[← integral_complex_ofReal, integral_congr_ae hhs, integral_finset_sum _ fun j _ => hint j, ← hX, ← hY, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[integral_finset_sum _ fun i _ => (hSch _ _ _ _).1, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hSch _ _ _ _).2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem truncated_norm_sq : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) (z' : Fin (2 * r + k + 1) → ℂ) (c' : Fin r → ℂ) (π' : Mat k r → (Wq →L[ℂ] Wq)) (μS' : Measure (Mt k r)) , Std σ w a μG d → Side z π μS → Side z' π' μS' → ∀ (x y : H) (ξ : Wp) (ξ' : Wq) (Om Om' : Set (Mt k r)), MeasurableSet Om → MeasurableSet Om' → μS Om < ⊤ → μS' Om' < ⊤ → Integrable (fun p : Mt k r => coef σ y y (Matrix.of p)) μS → Integrable (fun p : Mt k r => coef σ x x (Matrix.of p)) μS' → ContinuousOn (Iint (psiGen k r z c) (psiGen k r z' c') π π' (μS.restrict Om) (μS'.restrict Om') σ x y ξ ξ') (GG k r) ∧ Integrable (fun g : Mt k r => hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' (μS.restrict Om) (μS'.restrict Om') σ x y ξ ξ' (Matrix.of g))) μG ∧ ((∫ g, hsNormSq (Iint (psiGen k r z c) (psiGen k r z' c') π π' (μS.restrict Om) (μS'.restrict Om') σ x y ξ ξ' (Matrix.of g)) ∂μG : ℝ) : ℂ) = (d : ℂ)⁻¹ * (∫ p, ((μS {s | s ∈ Om ∧ lmulM (Matrix.of p) s ∈ Om}).toReal : ℂ) * (coef σ y y (Matrix.of p) * ⟪ξ, PiS (psiGen k r z c) π (Matrix.of p)⁻¹ ξ⟫_ℂ) ∂μS) * (∫ p, ((μS' {s | s ∈ Om' ∧ lmulM (Matrix.of p) s ∈ Om'}).toReal : ℂ) * (coef σ x x (Matrix.of p) * ⟪ξ', PiS (psiGen k r z' c') π' (Matrix.of p)⁻¹ ξ'⟫_ℂ) ∂μS') := by
   intro k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _ σ w a μG d z c π μS z' c' π' μS' hstd hs hs' x y ξ ξ' Om Om'

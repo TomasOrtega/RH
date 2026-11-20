@@ -23,11 +23,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Use `choose P hP hG using X.signature`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `h : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Establish `hm : mat (Ψ` using `X.Ψ) (fun τ => P τ) τ = P τ := rfl`. Unfold `dmin lminor`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, hG τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Rewrite using `[Complex.ofReal_prod, ← Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ))]`. Both sides reduce to the same expression. Rewrite using `[h, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_self_pos.2 ?_` and prove the remaining obligations. Unfold `psgn`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem frames_nonempty (X : Data E r) : X.dom.Nonempty := by
   classical
@@ -48,11 +48,11 @@ theorem frames_nonempty (X : Data E r) : X.dom.Nonempty := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨hL, -, -, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `h3 : wchar (ex Dw u n) t ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (t i).ne_zero`. Use `⟨toC (wchar (ex Dw u n) t), h3, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : evR Xo c f y' = φ (evC h Z f)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨q, χ, y₀, hy₀⟩` from `hL.test (Om Z) (genFr h Z)`. Unfold `evC`. Rewrite using `[GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q χ y₀ _ hy₀, GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q (φ.comp χ) y₀ y' (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans χ φ hy₀ hm)]`. Both sides reduce to the same expression. Establish `h2 : evR Xo c f y' = wchar (ex Dw u n) t * evR Xo c f (U.un k x)` using `hL.wt u n f hf (CAt σ) t _ _ (hL.test _ _) (hL.test _ _) hb`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h4 : rdU U f k x = toC (evR Xo c f (U.un k x))`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_pos x.2]`. Rewrite using `[h4, ← h1, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rdU_eq_of_reads (U : Unf Xo c σ r) (h : GenFrEx Xo c) (k : U.Comp)
     (Z : Comp Xo c) (x : (U.X k).dom) (φ : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ)
@@ -78,13 +78,13 @@ theorem rdU_eq_of_reads (U : Unf Xo c σ r) (h : GenFrEx Xo c) (k : U.Comp)
   rfl
 
 /- English proof (translation)
-Establish `hread` using `GlobalTheory.GenericReading.embedding_read_at_frame E H Dw l Xo c σ r U hσ hU h`. Establish `hconn` using `GlobalTheory.GeomConn.comp_eq_of_fnAlgClosed E H Dw l Xo c σ r U hσ hU hF h`. Establish `hex : ∀ Z : Comp Xo c, ∃ (k : U.Comp) (x : (U.X k).dom), ∃ (φ : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap φ (genFr h Z) y' ∧ FrBor t (U.un k x) y'`. Introduce `Z`. Take `⟨⟨φ⟩, hφ⟩` from `hread Z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, x, y', t, hh⟩` from `hφ φ`. Conclude with `⟨k, x, φ, y', t, hh⟩`. Use `choose κ x₀ hκ using hex`. Establish `htie` using `fun Z => GlobalTheory.evC_eq_zero_iff_rdU_eq_zero E H Dw l Xo c σ r U hσ hU h (κ Z) Z (x₀ Z) (hκ Z)`. Use `⟨κ, ⟨fun Z Z' e => ?_, fun k => ?_⟩, htie, fun Z φ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.Reg.comp_unique_of_reading E H Dw l Xo c σ r U hσ hU h (κ Z) Z Z' (frames_nonempty _) (htie Z) ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `htie Z'`. Take `⟨Z, S, hS, hg⟩` from `GlobalTheory.GenericFrames.exists_comp_generic_off_meagre E H Dw l Xo c σ r U hσ hU h k`. Establish `hd : Dense (⋂ n, (S n)ᶜ)` using `dense_iInter_of_isOpen (fun n => (hS n).1.isOpen_compl) fun n => interior_eq_empty_iff_dense_compl.1 (hS n).2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy, hy'⟩` from `hd.inter_open_nonempty _ (FourierCoefficientDomain.isOpen_dom (U.X k)) (frames_nonempty _)`. Conclude with `⟨Z, hconn Z _ _ (x₀ Z) ⟨y, hy⟩ (hκ Z) (hg ⟨y, hy⟩ (Set.mem_iInter.1 hy'))⟩`. Take `⟨k, x, y', t, hm, hb⟩` from `(hread Z).2 φ`. Take `rfl : k = κ Z` from `hconn Z _ _ x (x₀ Z) ⟨φ, y', t, hm, hb⟩ (hκ Z)`. Conclude with `⟨x.1, x.2, fun u n => rdU_eq_of_reads U h _ Z x φ y' t hm hb u n⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bijection (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (hF : FnAlgClosed Xo c)
     (h : GenFrEx Xo c) :

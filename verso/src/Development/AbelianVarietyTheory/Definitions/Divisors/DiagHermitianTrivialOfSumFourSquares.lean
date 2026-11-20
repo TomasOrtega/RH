@@ -120,7 +120,7 @@ open scoped TensorProduct Classical in
 variable {p : ℕ} [Fact p.Prime] in
 variable {G : _root_.GlobalTheory.LKTrip.HTGroup p} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.LKMid.sh, map_mul, MulOpposite.unop_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem lkMid_sh_mul_eq_sh_mul_sh_rev (a b : G.C) :
     _root_.GlobalTheory.LKMid.sh G (a * b) =
@@ -132,7 +132,7 @@ open scoped TensorProduct Classical in
 variable {p : ℕ} [Fact p.Prime] in
 variable {G : _root_.GlobalTheory.LKTrip.HTGroup p} in
 /- English proof (translation)
-Rewrite using `[← lkMid_sh_mul_eq_sh_mul_sh_rev, Units.inv_mul, _root_.GlobalTheory.LKMid.sh_one_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lkMid_sh_mul_sh_units_inv_eq_one (y : (G.C)ˣ) :
     _root_.GlobalTheory.LKMid.sh G y *
@@ -145,13 +145,13 @@ variable {p : ℕ} [Fact p.Prime] in
 variable {G : _root_.GlobalTheory.LKTrip.HTGroup p} in
 
 /- English proof (translation)
-Use `⟨fun P => ?_, fun {P₁ P₂} h => ?_, fun {P₁ P₂ P₃} h h' => ?_⟩` and prove the remaining obligations. Use `⟨1, 1, one_pos, ?_, by simp⟩` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.LKMid.sh_one_eq]`. Take `⟨y, s, hs, hβ, hγ⟩` from `h`. Use `⟨y⁻¹, s⁻¹, inv_pos.mpr hs, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hβ]`. Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul, inv_mul_cancel₀ hs.ne', one_smul]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, lkMid_sh_mul_sh_units_inv_eq_one, mul_one]`. Rewrite using `[mul_inv_cancel₀ hs.ne', one_smul]`. Rewrite using `[hγ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Take `⟨y, s, hs, hβ, hγ⟩` from `h`. Take `⟨y', s', hs', hβ', hγ'⟩` from `h'`. Use `⟨y' * y, s' * s, mul_pos hs' hs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ', hβ, Units.val_mul, lkMid_sh_mul_eq_sh_mul_sh_rev]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul, mul_assoc]`. Rewrite using `[mul_comm s s']`. Rewrite using `[hγ', hγ]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LKDef.DPair.rel_equivalence (G : _root_.GlobalTheory.LKTrip.HTGroup p) :
     Equivalence (_root_.GlobalTheory.LKDef.DPair.Rel (G := G)) := by
@@ -175,7 +175,7 @@ theorem _root_.GlobalTheory.LKDef.DPair.rel_equivalence (G : _root_.GlobalTheory
     · rw [hγ', hγ]; group
 
 /- English proof (translation)
-Take `⟨y, s, _, _, hγ⟩` from `h`. Establish `h` using `minpoly.algEquiv_eq (Pair.innerAlgEquiv G.F y) (P.γ : G.C)`. Simplify using `only [pol, hγ, Units.val_mul]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pol_eq_of_rel {P Q : DPair G} (h : P.Rel Q) : Q.pol = P.pol := by
   obtain ⟨y, s, _, _, hγ⟩ := h
@@ -189,7 +189,7 @@ variable {p : ℕ} [Fact p.Prime] in
 variable {G : _root_.GlobalTheory.LKTrip.HTGroup p} in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (_root_.GlobalTheory.LKDef.DPair.rel_equivalence G).eqvGen_iff.mp (Quot.eqvGen_exact h), Quot.sound⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.LKDef.DPair.mk_eq_iff (P Q : _root_.GlobalTheory.LKDef.DPair G) :
     Quot.mk (_root_.GlobalTheory.LKDef.DPair.Rel (G := G)) P = Quot.mk _ Q ↔
@@ -203,7 +203,7 @@ variable {p : ℕ} [Fact p.Prime] in
 variable {G : _root_.GlobalTheory.LKTrip.HTGroup p} in
 
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.LKDef.DPair.mk_eq_iff P _).mp (Quot.out_eq _).symm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LKDef.DPair.rel_out (P : _root_.GlobalTheory.LKDef.DPair G) :
     P.Rel
@@ -211,9 +211,9 @@ theorem _root_.GlobalTheory.LKDef.DPair.rel_out (P : _root_.GlobalTheory.LKDef.D
   (_root_.GlobalTheory.LKDef.DPair.mk_eq_iff P _).mp (Quot.out_eq _).symm
 
 /- English proof (translation)
-Introduce `h`. Take `⟨Z, hZ⟩` from `Pair.gram_psi_inv_congr p G Q v`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy`. Establish `e : (Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ (((Z⁻¹ : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ y) = y`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ((Z⁻¹ : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ y ≠ 0` using `fun h0 => hy0 (by`. Rewrite using `[← e, h0, Matrix.mulVec_zero])`. Establish `h1` using `(P.posR v _ hx).1 hv`. Rewrite `h1` using `[h, hZ, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e, Matrix.dotProduct_mulVec (star _) (_ᴴ), ← Matrix.star_mulVec, e]`. Conclude with `lt_asymm h1 hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_ne_pair (P : DPair G) (Q : Pair G) (v : InfinitePlace G.F) (hv : sigPosH (G.gram_herm v) = 1)
     (y : Fin G.n → ℂ) (hy : (star y ⬝ᵥ (G.gram v *ᵥ y)).re < 0) : P.β ≠ Q.β := by
@@ -244,7 +244,7 @@ def MoveDef : Prop :=
       markedSumIrr G wt sel Kf f r K φ = dSumIrr G wt Kf f r K φ
 
 /- English proof (translation)
-The claim follows from `H p G ha hn wt sel hsel _ f r K φ hr hf.2.2.1 hφ.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem MoveDef.of_isTest (H : MoveDef) (G : HTGroup p) (ha : G.a = 1) (hn : Odd G.n) (wt sel : Polynomial G.F → ℂ)
     (hsel : IsSel G sel) (L : G.Level) (f : G.GAf → ℂ)
@@ -286,7 +286,7 @@ def exD : DPair (ex 1 one_ne_zero) where
     simpa [dotProduct] using h2
 
 /- English proof (translation)
-Establish `: exD.pol = Polynomial.X - Polynomial.C (2 + gi)` using `Pair.ofScalar_pol (ex 1 one_ne_zero) rfl a21 _ norm_gaussian_element_eq_five`. Rewrite using `[this]`. Conclude with `Polynomial.irreducible_X_sub_C _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exD_irreducible : Irreducible exD.pol := by
   have : exD.pol = Polynomial.X - Polynomial.C (2 + gi) :=
@@ -294,11 +294,11 @@ theorem exD_irreducible : Irreducible exD.pol := by
   rw [this]; exact Polynomial.irreducible_X_sub_C _
 
 /- English proof (translation)
-Set `f : ℤ_[l] × ℤ_[l] × ℤ_[l] × ℤ_[l] → ℤ_[l]` to `fun t => t.1 * t.1 + t.2.1 * t.2.1 + t.2.2.1 * t.2.2.1 + t.2.2.2 * t.2.2.2`. Establish `hf : Continuous f` using `by fun_prop`. Establish `hc : IsClosed (Set.range f)` using `(isCompact_range hf).isClosed`. Establish `hs : Set.range (Nat.cast : ℕ → ℤ_[l]) ⊆ Set.range f`. Introduce and unpack `_ ⟨n, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨a, b, c, d, h⟩` from `Nat.sum_four_squares n`. Use `⟨(a, b, c, d), ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Simplify using `only [f]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hz : z ∈ Set.range f` using `(hc.closure_subset_iff.2 hs) ((PadicInt.denseRange_natCast (p := l)) z)`. Take `⟨⟨a, b, c, d⟩, h⟩` from `hz`. Conclude with `⟨a, b, c, d, h⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem padicInt_four_squares (l : ℕ) [Fact l.Prime] (z : ℤ_[l]) :
     ∃ a b c d : ℤ_[l], a * a + b * b + c * c + d * d = z := by
@@ -317,13 +317,11 @@ theorem padicInt_four_squares (l : ℕ) [Fact l.Prime] (z : ℤ_[l]) :
   exact ⟨a, b, c, d, h⟩
 
 /- English proof (translation)
-Establish `key : ∀ v : AwayP p, ∃ a b c d : v.1.adicCompletionIntegers ℚ, a * a + b * b + c * c + d * d = -1`. Introduce `v`. Use `haveI : Fact (Nat.Prime (Rat.HeightOneSpectrum.primesEquiv v.1 : ℕ)) := ⟨(Rat.HeightOneSpectrum.primesEquiv v.1).2⟩`. Use `letI : Algebra ℤ (v.1.adicCompletionIntegers ℚ) := Ring.toIntAlgebra _`. Set `e : v.1.adicCompletionIntegers ℚ ≃+* ℤ_[Rat.HeightOneSpectrum.primesEquiv v.1]` to `(Rat.HeightOneSpectrum.adicCompletionIntegers.padicIntEquiv v.1).toAlgEquiv.toRingEquiv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, c, d, h⟩` from `padicInt_four_squares _ (e (-1))`. Use `⟨e.symm a, e.symm b, e.symm c, e.symm d, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Simplify using `using h`. Use `choose a b c d h using key`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `mk : (∀ v : AwayP p, v.1.adicCompletionIntegers ℚ) → AfP p` to `fun a => (⟨fun v => (a v : v.1.adicCompletion ℚ), Filter.Eventually.of_forall fun v => (a v).2⟩ : RestrictedProduct (fun v : AwayP p => v.1.adicCompletion ℚ) (fun v => (v.1.adicCompletionIntegers ℚ : Set (v.1.adicCompletion ℚ))) Filter.cofinite)`. Use `⟨mk a, mk b, mk c, mk d, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `congrArg (fun z : v.1.adicCompletionIntegers ℚ => (z : v.1.adicCompletion ℚ)) (h v)` as an intermediate fact.
-
-Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteAdeleRingAway_sum_four_squares_eq_neg_one (p : ℕ) : ∃ a b c d : AfP p, a * a + b * b + c * c + d * d = -1 := by
   have key : ∀ v : AwayP p, ∃ a b c d : v.1.adicCompletionIntegers ℚ, a * a + b * b + c * c + d * d = -1 := by
@@ -350,46 +348,42 @@ theorem finiteAdeleRingAway_sum_four_squares_eq_neg_one (p : ℕ) : ∃ a b c d 
 def H3 : Matrix (Fin 3) (Fin 3) QI := Matrix.diagonal ![1, -1, -1]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [H3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_diagHermitian : H3.map (IsCMField.complexConj QI : QI →+* QI) = H3 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [H3]
 
 /- English proof (translation)
-Rewrite using `[conj_diagHermitian, H3, Matrix.diagonal_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isHermitian_diagHermitian : (H3.map (IsCMField.complexConj QI : QI →+* QI))ᵀ = H3 := by
   rw [conj_diagHermitian, H3, Matrix.diagonal_transpose]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [H3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagHermitian_mul_self : H3 * H3 = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [H3]
 
 /- English proof (translation)
-Simplify using `[H3, Fin.prod_univ_three]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_diagHermitian_ne_zero : H3.det ≠ 0 := by simp [H3, Fin.prod_univ_three]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [gramAt, H3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramMatrix_diagHermitian (τ : QI →+* ℂ) : gramAt H3 τ = Matrix.diagonal ![1, -1, -1] := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [gramAt, H3]
 
 /- English proof (translation)
-Establish `hA` using `isHermitian_gramAt isHermitian_diagHermitian τ`. Establish `hsq : ∀ i, hA.eigenvalues i = 1 ∨ hA.eigenvalues i = -1`. Introduce `i`. Establish `h` using `hA.eigenvalues_mem_spectrum_real i`. Rewrite `h` using `[← spectrum.algebraMap_mem_iff ℂ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsp : spectrum ℂ (gramAt H3 τ) = Set.range ![(1 : ℂ), -1, -1]`. Rewrite using `[gramMatrix_diagHermitian, spectrum_diagonal]`. Rewrite `h` using `[hsp]`. Take `⟨j, hj⟩` from `h`. Use `fin_cases j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `left; have : ((1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj`. Conclude with `this.symm` after adjusting the coercions. Use the proof step `right; have : ((-1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj`. Conclude with `this.symm` after adjusting the coercions. Use the proof step `right; have : ((-1 : ℝ) : ℂ) = (hA.eigenvalues i : ℂ) := by simpa using hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm` after adjusting the coercions. Establish `ht` using `hA.trace_eq_sum_eigenvalues`. Establish `htr : (gramAt H3 τ).trace = -1` using `by rw [gramMatrix_diagHermitian]; simp [Matrix.trace_fin_three, Fin.sum_univ_three]`. Rewrite `ht` using `[htr, Fin.sum_univ_three]`. Establish `ht' : hA.eigenvalues 0 + hA.eigenvalues 1 + hA.eigenvalues 2 = -1`.
-
-Establish `: (((-1 : ℝ)) : ℂ) = ((hA.eigenvalues 0 + hA.eigenvalues 1 + hA.eigenvalues 2 : ℝ) : ℂ)` using `by push_cast; exact ht`. Conclude with `this.symm` after adjusting the coercions. Use `show Fintype.card {i : Fin 3 // 0 < hA.eigenvalues i} = 1 ∧ Fintype.card {i : Fin 3 // hA.eigenvalues i < 0} = 2`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype, Finset.card_filter, Finset.card_filter, Fin.sum_univ_three, Fin.sum_univ_three]`. Apply the tactic sequence `rcases hsq 0 with h0 | h0 <;> rcases hsq 1 with h1 | h1 <;> rcases hsq 2 with h2 | h2 <;>`.
-
-Apply the tactic sequence `rw [h0, h1, h2] at ht' ⊢ <;> first | (exfalso; linarith) | norm_num`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem signature_diagHermitian (τ : QI →+* ℂ) : sigPos isHermitian_diagHermitian τ = 1 ∧ sigNeg isHermitian_diagHermitian τ = 2 := by
   have hA := isHermitian_gramAt isHermitian_diagHermitian τ
@@ -422,15 +416,15 @@ theorem signature_diagHermitian (τ : QI →+* ℂ) : sigPos isHermitian_diagHer
     rw [h0, h1, h2] at ht' ⊢ <;> first | (exfalso; linarith) | norm_num
 
 /- English proof (translation)
-Introduce `h`. Use `set s : ℚ_[5] := gaussianToQFive gi with hs`. Establish `hs2 : s ^ 2 = -1` using `by rw [hs, ← map_pow, zeta_sq, map_neg, map_one]`. Establish `hn : ‖s‖ = 1`. Establish `: ‖s‖ ^ 2 = 1` using `by rw [← norm_pow, hs2, norm_neg, norm_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 this`. Establish `h2 : ‖(2 : ℚ_[5])‖ ≤ 1` using `by simpa using Padic.norm_int_le_one (p := 5) 2`. Establish `hp : ‖2 + s‖ ≤ 1` using `(Padic.nonarchimedean _ _).trans (max_le h2 hn.le)`. Establish `hm : ‖2 + -s‖ ≤ 1` using `(Padic.nonarchimedean _ _).trans (max_le h2 (by rw [norm_neg, hn]))`. Establish `hpm : (2 + s) * (2 + -s) = 5` using `by linear_combination (-1 : ℚ_[5]) * hs2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (5 : ℚ_[5]) ≠ 0` using `by norm_num`. Establish `hp0 : 2 + s ≠ 0` using `left_ne_zero_of_mul (hpm ▸ h5)`. Establish `hm0 : 2 + -s ≠ 0` using `right_ne_zero_of_mul (hpm ▸ h5)`. Establish `v5 : (5 : ℚ_[5]).valuation = 1` using `by simpa using Padic.valuation_p (p := 5)`. Establish `e1` using `congrArg Padic.valuation hpm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[Padic.valuation_mul hp0 hm0, v5]`. Establish `e2` using `congrArg (fun z => (gaussianToQFive z).valuation) h`. Simplify using `only [map_pow, map_mul, map_add, map_ofNat] at e2`. Rewrite `e2` using `[Padic.valuation_pow, ← hs, Padic.valuation_mul h5 hp0, v5]`. Rewrite `hp`, `hm` using `[Padic.norm_le_one_iff_val_nonneg]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Move the coercions through the operations in `at e2`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem not_cube (b : QI) : b ^ 3 ≠ 5 * (2 + gi) := by
   intro h
@@ -457,9 +451,9 @@ theorem not_cube (b : QI) : b ^ 3 ≠ 5 * (2 + gi) := by
   omega
 
 /- English proof (translation)
-Establish `: (1 + (a - 1) • u + b • i + c • j + d • k) * (1 + (a' - 1) • u + b • i + c • j + d • k) = 1 - (a * a + b * b + c * c + d * d + 1) • u`. Substitute `ha` using the available equality. Simplify using `only [mul_add, add_mul, smul_mul_smul_comm, one_mul, mul_one, uu, ui, uj, uk, iu, ii, ij, ik, ju, ji, jj, jk, ku, ki, kj, kk]`. Use `module`. Rewrite using `[this, h]`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem quat_mul {R S : Type} [CommRing R] [Ring S] [Algebra R S] (u i j k : S) (a a' b c d : R) (ha : a' = -a)
     (h : a * a + b * b + c * c + d * d = -1)
@@ -477,27 +471,27 @@ theorem quat_mul {R S : Type} [CommRing R] [Ring S] [Algebra R S] (u i j k : S) 
   rw [this, h]; simp
 
 /- English proof (translation)
-Rewrite using `[hermStar_apply, conj_diagHermitian, Matrix.inv_eq_left_inv diagHermitian_mul_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjointInvolution_diagHermitian (x : Matrix (Fin 3) (Fin 3) QI) :
     (hermStar H3 det_diagHermitian_ne_zero x).unop = H3 * (x.map (IsCMField.complexConj QI : QI →+* QI))ᵀ * H3 := by
   rw [hermStar_apply, conj_diagHermitian, Matrix.inv_eq_left_inv diagHermitian_mul_self]
 
 /- English proof (translation)
-Rewrite using `[← sq]`. Conclude with `zeta_sq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gi_mul_gi : gi * gi = -1 := by rw [← sq]; exact zeta_sq
 
 /- English proof (translation)
-Set `u : Matrix (Fin 3) (Fin 3) QI` to `!![0, 0, 0; 0, 1, 0; 0, 0, 1]`. Set `i : Matrix (Fin 3) (Fin 3) QI` to `!![0, 0, 0; 0, gi, 0; 0, 0, -gi]`. Set `j : Matrix (Fin 3) (Fin 3) QI` to `!![0, 0, 0; 0, 0, 1; 0, -1, 0]`. Set `k : Matrix (Fin 3) (Fin 3) QI` to `!![0, 0, 0; 0, 0, gi; 0, gi, 0]`. Set `φ : Matrix (Fin 3) (Fin 3) QI →+* R ⊗[ℚ] Matrix (Fin 3) (Fin 3) QI` to `(Algebra.TensorProduct.includeRight : Matrix (Fin 3) (Fin 3) QI →ₐ[ℚ] R ⊗[ℚ] Matrix (Fin 3) (Fin 3) QI)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `t : (u * u = u ∧ u * i = i ∧ u * j = j ∧ u * k = k) ∧ (i * u = i ∧ i * i = -u ∧ i * j = k ∧ i * k = -j) ∧ (j * u = j ∧ j * i = -k ∧ j * j = -u ∧ j * k = i) ∧ (k * u = k ∧ k * i = j ∧ k * j = -i ∧ k * k = -u)`. Simplify using `[u, i, j, k, gi_mul_gi]`. Apply the tactic sequence `ext s; fin_cases s <;> rfl`. Take `⟨⟨uu, ui, uj, uk⟩, ⟨iu, ii, ij, ik⟩, ⟨ju, ji, jj, jk⟩, ⟨ku, ki, kj, kk⟩⟩` from `t`. Establish `key : ∀ a a' : R, a' = -a → a * a + b * b + c * c + d * d = -1 → (1 + (a - 1) • φ u + b • φ i + c • φ j + d • φ k) * (1 + (a' - 1) • φ u + b • φ i + c • φ j + d • φ k) = 1` using `fun a a' ha h => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `apply quat_mul _ _ _ _ _ _ _ _ _ ha h <;> rw [← map_mul] <;> simp only [*, map_neg]`. Use `⟨⟨_, _, key a (-a) rfl h, key (-a) a (neg_neg a).symm (by rw [neg_mul_neg]; exact h)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `key a (-a) rfl h using 2` and compare the differences between its conclusion and the goal. Establish `e : ∀ (r : R) (m : Matrix (Fin 3) (Fin 3) QI), r • φ m = r ⊗ₜ m` using `fun r m => by show r • ((1 : R) ⊗ₜ[ℚ] m) = _`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `s : H3 * (hermStar H3 det_diagHermitian_ne_zero u).unop = -u ∧ H3 * (hermStar H3 det_diagHermitian_ne_zero i).unop = i ∧ H3 * (hermStar H3 det_diagHermitian_ne_zero j).unop = j ∧ H3 * (hermStar H3 det_diagHermitian_ne_zero k).unop = k ∧ H3 = 1 - u - u`. Simplify using `only [adjointInvolution_diagHermitian, ← Matrix.mul_assoc, diagHermitian_mul_self, Matrix.one_mul]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> ext s t <;> fin_cases s <;> fin_cases t <;>`. Apply the tactic sequence `simp [u, i, j, k, H3, conj_gi] <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨su, si, sj, sk, sH⟩` from `s`. Simplify using `only [e, map_add, map_one, MulOpposite.unop_add, MulOpposite.unop_one, starT_tmul, mul_add, mul_one, Algebra.TensorProduct.tmul_mul_tmul, one_mul, su, si, sj, sk]`. Use `congr 3`. Rewrite using `[sH, TensorProduct.tmul_sub, TensorProduct.tmul_sub, TensorProduct.tmul_neg, ← Algebra.TensorProduct.one_def, ← e, ← e, ← e]`. Use `module`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagHermitian_trivial_of_sumFourSquares (R : Type) [CommRing R] [Algebra ℚ R] (a b c d : R) (h : a * a + b * b + c * c + d * d = -1) :
     ∃ x : (R ⊗[ℚ] Matrix (Fin 3) (Fin 3) QI)ˣ,
@@ -539,14 +533,14 @@ theorem diagHermitian_trivial_of_sumFourSquares (R : Type) [CommRing R] [Algebra
 def g3 : Matrix (Fin 3) (Fin 3) QI := !![0, 0, 2 - gi; 2 + gi, 0, 0; 0, 2 + gi, 0]
 
 /- English proof (translation)
-Apply the tactic sequence `ext s t; fin_cases s <;> fin_cases t <;>`. Apply the tactic sequence `simp [g3, Matrix.mul_apply, Fin.sum_univ_three, conj_gi, map_ofNat] <;> linear_combination (-1 : QI) * gi_mul_gi`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cubeRootMatrix_mul_conjTranspose : g3 * (g3.map (IsCMField.complexConj QI : QI →+* QI))ᵀ = (5 : QI) • 1 := by
   ext s t; fin_cases s <;> fin_cases t <;>
     simp [g3, Matrix.mul_apply, Fin.sum_univ_three, conj_gi, map_ofNat] <;> linear_combination (-1 : QI) * gi_mul_gi
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, pow_three]`. Apply the tactic sequence `ext s t; fin_cases s <;> fin_cases t <;>`. Apply the tactic sequence `simp [g3, Matrix.mul_apply, Fin.sum_univ_three] <;> linear_combination (-(2 + gi)) * gi_mul_gi`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cubeRootMatrix_pow_three : g3 ^ 3 = algebraMap QI _ (5 * (2 + gi)) := by
   rw [Algebra.algebraMap_eq_smul_one, pow_three]
@@ -554,7 +548,7 @@ theorem cubeRootMatrix_pow_three : g3 ^ 3 = algebraMap QI _ (5 * (2 + gi)) := by
     simp [g3, Matrix.mul_apply, Fin.sum_univ_three] <;> linear_combination (-(2 + gi)) * gi_mul_gi
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Matrix.det cubeRootMatrix_mul_conjTranspose` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h]`. Simplify using `at this`. Evaluate the numerical expressions using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem det_cubeRootMatrix_ne_zero : g3.det ≠ 0 := by
   intro h
@@ -564,13 +558,13 @@ theorem det_cubeRootMatrix_ne_zero : g3.det ≠ 0 := by
   norm_num at this
 
 /- English proof (translation)
-The claim follows from `X_pow_sub_C_irreducible_of_prime Nat.prime_three not_cube`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_cubic : Irreducible (Polynomial.X ^ 3 - Polynomial.C (5 * (2 + gi)) : Polynomial QI) :=
   X_pow_sub_C_irreducible_of_prime Nat.prime_three not_cube
 
 /- English proof (translation)
-Use `(minpoly.eq_of_irreducible_of_monic irreducible_cubic ?_ (Polynomial.monic_X_pow_sub_C _ three_ne_zero)).symm` and prove the remaining obligations. Rewrite using `[map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, cubeRootMatrix_pow_three, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem minpoly_cubeRootMatrix : minpoly QI g3 = Polynomial.X ^ 3 - Polynomial.C (5 * (2 + gi)) := by
   refine (minpoly.eq_of_irreducible_of_monic irreducible_cubic ?_ (Polynomial.monic_X_pow_sub_C _ three_ne_zero)).symm
@@ -592,12 +586,12 @@ Both sides reduce to the same expression.
 theorem unitaryOneTwo_rank_eq_three : unitaryOneTwoGaussian.n = 3 := rfl
 
 /- English proof (translation)
-The claim follows from `(signature_diagHermitian v.embedding).1`.
+A detailed English derivation is pending.
 -/
 theorem signature_unitaryOneTwo (v : InfinitePlace unitaryOneTwoGaussian.F) : sigPosH (unitaryOneTwoGaussian.gram_herm v) = 1 := (signature_diagHermitian v.embedding).1
 
 /- English proof (translation)
-Use `show Fintype.card {v : InfinitePlace QI // sigPos isHermitian_diagHermitian v.embedding = 1} = 1`. Simplify using `only [fun v : InfinitePlace QI => (signature_diagHermitian v.embedding).1]`. Rewrite using `[Fintype.card_subtype_true, card_infinitePlace_QI]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitaryOneTwo_numSignaturePlaces : unitaryOneTwoGaussian.a = 1 := by
   show Fintype.card {v : InfinitePlace QI // sigPos isHermitian_diagHermitian v.embedding = 1} = 1
@@ -607,7 +601,7 @@ theorem unitaryOneTwo_numSignaturePlaces : unitaryOneTwoGaussian.a = 1 := by
 def b3 : (Matrix (Fin 3) (Fin 3) QI)ˣ := ⟨H3, H3, diagHermitian_mul_self, diagHermitian_mul_self⟩
 
 /- English proof (translation)
-Rewrite using `[gramAt, ← Matrix.transpose_map, show H3ᵀ = H3 from Matrix.diagonal_transpose _, ← Matrix.map_mul, diagHermitian_mul_self, Matrix.map_one _ (map_zero τ) (map_one τ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gramMatrix_mul_diagHermitian (τ : QI →+* ℂ) : gramAt H3 τ * H3.map τ = 1 := by
   rw [gramAt, ← Matrix.transpose_map, show H3ᵀ = H3 from Matrix.diagonal_transpose _, ← Matrix.map_mul, diagHermitian_mul_self,
@@ -643,20 +637,20 @@ def definitePairUnitaryOneTwo : DPair unitaryOneTwoGaussian where
     exact (Complex.pos_iff.1 (dotProduct_star_self_pos_iff.2 hx)).1
 
 /- English proof (translation)
-The claim follows from `minpoly_cubeRootMatrix`.
+A detailed English derivation is pending.
 -/
 theorem definitePair_minpoly : definitePairUnitaryOneTwo.pol = Polynomial.X ^ 3 - Polynomial.C (5 * (2 + gi)) := minpoly_cubeRootMatrix
 
 /- English proof (translation)
-Rewrite using `[definitePair_minpoly]`. Conclude with `irreducible_cubic`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem definitePair_minpoly_irreducible : Irreducible definitePairUnitaryOneTwo.pol := by
   rw [definitePair_minpoly]; exact irreducible_cubic
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace unitaryOneTwoGaussian.F)` from `inferInstance`. Use `definitePairUnitaryOneTwo.beta_ne_pair Q v (signature_unitaryOneTwo v) (![0, 1, 0] : Fin 3 → ℂ) ?_` and prove the remaining obligations. It suffices to establish `h : ∀ τ : QI →+* ℂ, (star (![0, 1, 0] : Fin 3 → ℂ) ⬝ᵥ (gramAt H3 τ *ᵥ ![0, 1, 0])).re < 0 from h v.embedding`. Introduce `τ`. Rewrite using `[gramMatrix_diagHermitian]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dotProduct, Fin.sum_univ_three, Matrix.mulVec_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem definitePair_unit_ne_pairUnit (Q : Pair unitaryOneTwoGaussian) : definitePairUnitaryOneTwo.β ≠ Q.β := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace unitaryOneTwoGaussian.F) := inferInstance
@@ -668,7 +662,7 @@ theorem definitePair_unit_ne_pairUnit (Q : Pair unitaryOneTwoGaussian) : definit
   simp [dotProduct, Fin.sum_univ_three, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨unitaryOneTwoGaussian, rfl, unitaryOneTwo_numSignaturePlaces, ⟨1, rfl⟩, exists_isSel _ unitaryOneTwo_numSignaturePlaces.le, GlobalTheory.LKTrip.LevelExists.level_exists 5 unitaryOneTwoGaussian, Quot.mk _ definitePairUnitaryOneTwo, by rw [DPair.pol_eq_of_rel definitePairUnitaryOn …`.
+Supply the required witnesses or components.
 -/
 theorem exists_rank_three : ∃ G : HTGroup 5, G.n = 3 ∧ G.a = 1 ∧ Odd G.n ∧ (∃ sel, IsSel G sel) ∧
     Nonempty G.Level ∧ ∃ q : DCls G, Irreducible (Quot.out q).pol :=
@@ -676,7 +670,7 @@ theorem exists_rank_three : ∃ G : HTGroup 5, G.n = 3 ∧ G.a = 1 ∧ Odd G.n �
     Quot.mk _ definitePairUnitaryOneTwo, by rw [DPair.pol_eq_of_rel definitePairUnitaryOneTwo.rel_out]; exact definitePair_minpoly_irreducible⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a_ex_one, ⟨0, rfl⟩, exists_rootSelection_unitaryRankOne, Quot.mk _ exD, by rw [DPair.pol_eq_of_rel exD.rel_out]; exact exD_irreducible⟩`.
+Supply the required witnesses or components.
 -/
 example : (ex 1 one_ne_zero).a = 1 ∧ Odd (ex 1 one_ne_zero).n ∧ (∃ sel, IsSel (ex 1 one_ne_zero) sel) ∧
     ∃ q : DCls (ex 1 one_ne_zero), Irreducible (Quot.out q).pol :=
@@ -689,7 +683,7 @@ Both sides reduce to the same expression.
 example : ((definitePairUnitaryOneTwo.c : ℚˣ) : ℚ) = 5 := rfl
 
 /- English proof (translation)
-The claim follows from `(isTest_indicator (MonoidHom.id _) L.K.toSubgroup (by simp)).2.2.1`.
+A detailed English derivation is pending.
 -/
 example (G : HTGroup p) (L : G.Level) : ∀ k ∈ L.K.toSubgroup, ∀ g,
     Set.indicator (L.K.toSubgroup : Set G.GAf) (1 : G.GAf → ℂ) (k⁻¹ * g * k) =

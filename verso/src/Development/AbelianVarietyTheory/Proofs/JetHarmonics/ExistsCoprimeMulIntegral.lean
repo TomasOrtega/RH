@@ -9,11 +9,11 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 namespace GlobalTheory.IntegralAtBothPrimes
 
 /- English proof (translation)
-Establish `h1 : ‖(q : ℚ_[p])‖ ≤ 1`. Use `norm_algebraMap' ℂ_[p] (q : ℚ_[p])` as an intermediate fact. Rewrite `this` using `[map_ratCast]`. Rewrite using `[← this]` and apply the resulting hypothesis. Rewrite using `[Nat.coprime_comm, hp.out.coprime_iff_not_dvd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Introduce `hd`. Establish `h2 : ‖((q.den : ℤ) : ℚ_[p])‖ < 1` using `Padic.norm_intCast_lt_one_iff.2 (Int.natCast_dvd_natCast.2 hd)`. Establish `h3 : ((q.num : ℤ) : ℚ_[p]) = (q : ℚ_[p]) * ((q.den : ℤ) : ℚ_[p])`. Rewrite using `[Int.cast_natCast]`. Conclude with `(congrArg (fun x : ℚ => (x : ℚ_[p])) (Rat.mul_den_eq_num q)).symm` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ‖((q.num : ℤ) : ℚ_[p])‖ < 1`. Rewrite using `[h3, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right h1 (norm_nonneg _) h2`. Establish `h5 : p ∣ q.num.natAbs` using `Int.natCast_dvd.1 (Padic.norm_intCast_lt_one_iff.1 h4)`. Conclude with `hp.out.one_lt.ne' (Nat.eq_one_of_dvd_coprimes q.reduced h5 hd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem den_coprime_of_norm_le_one {p : ℕ} [hp : Fact p.Prime] (q : ℚ) (h : ‖(q : ℂ_[p])‖ ≤ 1) :
     Nat.Coprime q.den p := by
@@ -34,7 +34,7 @@ theorem den_coprime_of_norm_le_one {p : ℕ} [hp : Fact p.Prime] (q : ℚ) (h : 
   exact hp.out.one_lt.ne' (Nat.eq_one_of_dvd_coprimes q.reduced h5 hd)
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ 2 - Polynomial.C a * Polynomial.X + Polynomial.C b, by monicity!, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, Polynomial.eval₂_X]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_quadratic {K : Type*} [CommRing K] (x : K) (a b : ℤ)
     (h : x ^ 2 - (a : K) * x + (b : K) = 0) : IsIntegral ℤ x := by
@@ -44,15 +44,15 @@ theorem isIntegral_of_quadratic {K : Type*} [CommRing K] (x : K) (a b : ℤ)
   exact h
 
 /- English proof (translation)
-Rewrite `h1` using `[atP₂]`. Rewrite `h2` using `[atPbar_eq, ← homP_conjK]`. Take `⟨t, n, ht, hn⟩` from `exists_trace_norm D c`. Establish `ht1 : ‖(t : ℂ_[p])‖ ≤ 1`. Use `congrArg (homP D lam) ht` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_add, map_ratCast]`. Rewrite using `[← this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)`. Establish `hn1 : ‖(n : ℂ_[p])‖ ≤ 1`. Use `congrArg (homP D lam) hn` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, map_ratCast]`. Rewrite using `[← this, norm_mul]`. Conclude with `mul_le_one₀ h1 (norm_nonneg _) h2`. Use `⟨t.den * n.den, Nat.Coprime.mul_left (den_coprime_of_norm_le_one t ht1) (den_coprime_of_norm_le_one n hn1), ?_⟩` and prove the remaining obligations. Establish `et : (t : D.host.K) * (t.den : D.host.K) = (t.num : D.host.K)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun x : ℚ => (x : D.host.K)) (Rat.mul_den_eq_num t)` after adjusting the coercions. Establish `en : (n : D.host.K) * (n.den : D.host.K) = (n.num : D.host.K)`. Conclude with `congrArg (fun x : ℚ => (x : D.host.K)) (Rat.mul_den_eq_num n)` after adjusting the coercions. Establish `hi : IsIntegral ℤ (((t.den * n.den : ℕ) : D.host.K) * c)`. Use `isIntegral_of_quadratic _ (t.num * n.den) (t.den ^ 2 * n.den * n.num) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Use `push_cast`. Rewrite using `[← et, ← en, ← ht, ← hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨⟨_, hi⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_coprime_mul_integral (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (c : D.host.K)
     (h1 : ‖atP D lam c‖ ≤ 1) (h2 : ‖atPbar D lam c‖ ≤ 1) :

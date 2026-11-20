@@ -24,11 +24,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GeometricValues
 
 /- English proof (translation)
-Apply `IsNilpotent.eq_zero` to reduce the goal to its premises. Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `J hJ`. Set `φ : R →ₐ[K] AlgebraicClosure (FractionRing (R ⧸ J))` to `(IsScalarTower.toAlgHom K (FractionRing (R ⧸ J)) (AlgebraicClosure (FractionRing (R ⧸ J)))).comp ((IsScalarTower.toAlgHom K (R ⧸ J) (FractionRing (R ⧸ J))).comp (Ideal.Quotient.mkₐ K J))`. Establish `h0` using `h _ φ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (R ⧸ J) (FractionRing (R ⧸ J)) (Ideal.Quotient.mk J x) = 0`. Apply `(algebraMap (FractionRing (R ⧸ J)) (AlgebraicClosure (FractionRing (R ⧸ J)))).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h0`. Establish `h2 : Ideal.Quotient.mk J x = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsFractionRing.injective (R ⧸ J) (FractionRing (R ⧸ J))` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h1`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_algClosed {K R : Type} [Field K] [CommRing R] [Algebra K R] [IsReduced R] (x : R)
     (h : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (φ : R →ₐ[K] Ω), φ x = 0) : x = 0 := by
@@ -50,11 +50,11 @@ theorem eq_zero_of_forall_algClosed {K R : Type} [Field K] [CommRing R] [Algebra
   exact Ideal.Quotient.eq_zero_iff_mem.mp h2
 
 /- English proof (translation)
-Introduce `g hg h`. Use function extensionality and compare the values at `p y`. Establish `: IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced p.I).mp p.rad`. Use `eq_zero_of_forall_algClosed (K := K) (g p y) ?_` and prove the remaining obligations. Introduce `Ω _ _ _ φ`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz⟩` from `hB p.R Ω φ y`. Establish `hT : FromTest pts mapR z` using `⟨p, φ, y, hz⟩`. Establish `h0` using `h Ω z`. Unfold `evalAt at h0`. Rewrite `h0` using `[dif_pos hT]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h0]`. Conclude with `hW g hg.1 Ω p _ φ _ y _ z hz hT.choose_spec.choose_spec.choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptsDetect_of {K : Type} [Field K] {ι : Type} [Fintype ι]
     (pts : ∀ (S : Type) [CommRing S] [Algebra K S], Type)
@@ -81,7 +81,7 @@ theorem ptsDetect_of {K : Type} [Field K] {ι : Type} [Fintype ι]
 end GeometricValues
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c a n`. Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Conclude with `GeometricValues.ptsDetect_of (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y') (GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS E H Dw l Xo c).2.2.1 (fun S _ _ T _ _ φ y => GlobalTheory.Frames.FramedBaseChange.exis …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ptsDetect_framed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), PtsDetect (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y') (ex Dw a n) := by
   intro E _ _ _ H Dw l Xo c a n

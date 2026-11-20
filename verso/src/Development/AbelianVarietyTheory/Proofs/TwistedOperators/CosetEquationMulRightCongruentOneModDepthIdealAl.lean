@@ -31,7 +31,7 @@ namespace GlobalTheory.CosDualStep
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `actO`. Simplify using `[Formalism.L2.Theta.mt]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem actO_one_left (S T : HSp D) (h : GA D T) (Z : WO S T) :
     actO S T 1 h Z = HMul.hMul (Formalism.L2.Theta.mt T h) (Z : Matrix (Fin T.rank) (Fin S.rank) (AE D)) := by
@@ -39,9 +39,9 @@ theorem actO_one_left (S T : HSp D) (h : GA D T) (Z : WO S T) :
   simp [Formalism.L2.Theta.mt]
 
 /- English proof (translation)
-Take `⟨⟨es, hes, hsum⟩, -⟩` from `he`. Substitute `hsum` using the available equality. Proceed by induction on `P using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, RingHom.map_zero]`. Consider the case `insert a s ha ih`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert ha, RingHom.map_add, GlobalTheory.SplitScalar.infPart_splitIdem (hes a (Finset.mem_insert_self a s)).1, ih fun PP hPP => hes PP (Finset.mem_insert_of_mem hPP), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_idemSum {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) : infPart D e = 0 := by
   classical
@@ -57,7 +57,7 @@ def finLift {m n : ℕ} (c : Matrix (Fin m) (Fin n) D.host.E) : Mx D m n :=
   Matrix.of fun a b => pairA D.host.F 0 1 ⊗ₜ[D.host.F] c a b
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [finLift, Matrix.smul_apply, Matrix.map_apply, Matrix.of_apply, smul_eq_mul]`. Use `GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, infPart_idemSum he, zero_mul, zero_mul]`. Rewrite using `[map_mul, map_mul, GlobalTheory.LatVac.finPart_pair, GlobalTheory.LatVac.finPart_incA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_map_incA {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) {m n : ℕ}
     (c : Matrix (Fin m) (Fin n) D.host.E) :
@@ -69,7 +69,7 @@ theorem smul_map_incA {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P)
   · rw [map_mul, map_mul, GlobalTheory.LatVac.finPart_pair, GlobalTheory.LatVac.finPart_incA]
 
 /- English proof (translation)
-Use `show ∀ v ∈ Λ, (x * y) *ᵥ v ∈ Λ''`. Introduce `v hv`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hx _ (hy v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homLat_mul {a b c : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin a → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)} {Λ'' : Submodule (𝓞 D.host.E) (Fin c → D.host.E)}
@@ -81,7 +81,7 @@ theorem homLat_mul {a b c : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin a → D.ho
   exact hx _ (hy v hv)
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hx (fun r hr n hn => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul]`. Conclude with `Submodule.smul_mem_smul hr (homLat_mul hn hy)`. Rewrite using `[Matrix.add_mul]`. Conclude with `Submodule.add_mem _ hp hq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_homLat_mul {a b c : ℕ} {𝔪 : Ideal (𝓞 D.host.E)} {Λ : Submodule (𝓞 D.host.E) (Fin a → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)} {Λ'' : Submodule (𝓞 D.host.E) (Fin c → D.host.E)}
@@ -94,13 +94,11 @@ theorem smul_homLat_mul {a b c : ℕ} {𝔪 : Ideal (𝓞 D.host.E)} {Λ : Submo
     exact Submodule.add_mem _ hp hq
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, x, hx, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, x * y, hMN x hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply]`. Rewrite using `[TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show _ * (Algebra.TensorProduct.includeRight (y k j)) = _`. Rewrite using `[Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add p q _ _ hp hq => rw [Matrix.add_mul]`. Conclude with `add_mem hp hq`. Consider the case `neg p _ hp => rw [Matrix.neg_mul]`.
-
-Conclude with `neg_mem hp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hatMx_mul {a b c : ℕ} {M : Submodule (𝓞 D.host.E) (Matrix (Fin c) (Fin b) D.host.E)}
     {N : Submodule (𝓞 D.host.E) (Matrix (Fin c) (Fin a) D.host.E)} (y : Matrix (Fin b) (Fin a) D.host.E)
@@ -120,7 +118,7 @@ theorem hatMx_mul {a b c : ℕ} {M : Submodule (𝓞 D.host.E) (Matrix (Fin c) (
   | neg p _ hp => rw [Matrix.neg_mul]; exact neg_mem hp
 
 /- English proof (translation)
-Rewrite using `[smul_sub, smul_sub, smul_sub, smul_add, h]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem smul_one_sub {n : ℕ} (e : AE D) (A A' C : Matrix (Fin n) (Fin n) (AE D)) (h : e • A = e • C) :
     e • (1 - (A' - C)) = e • (1 + A - A') := by
@@ -128,11 +126,9 @@ theorem smul_one_sub {n : ℕ} (e : AE D) (A A' C : Matrix (Fin n) (Fin n) (AE D
   abel
 
 /- English proof (translation)
-Establish `hxy : x₀ * y₀ = 1 + (x₀ * y₀ - 1)` using `by abel`. Establish `hXY : HMul.hMul (x₀.map (incA D)) (y₀.map (incA D)) = (1 : Matrix (Fin n) (Fin n) (AE D)) + (x₀ * y₀ - 1).map (incA D)`. Rewrite using `[← Matrix.map_mul]`. Use `conv_lhs => rw [hxy]`. Rewrite using `[Matrix.map_add (incA D) (fun a b => RingHom.map_add _ a b), Matrix.map_one (incA D) (RingHom.map_zero _) (RingHom.map_one _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hce` using `smul_map_incA he (x₀ * y₀ - 1)`. Establish `key : ∀ v : Matrix (Fin n) (Fin n') (AE D), e • ((1 : Matrix (Fin n) (Fin n) (AE D)) - (HMul.hMul v (y₀.map (incA D)) - finLift (x₀ * y₀ - 1))) = HMul.hMul (e • (x₀.map (incA D) - v)) (y₀.map (incA D))`. Introduce `v`. Rewrite using `[Matrix.smul_mul, Matrix.sub_mul, hXY]`. Conclude with `smul_one_sub e _ _ _ hce`.
-
-Rewrite using `[key u, key u', heq, Matrix.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_step {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) {n n' : ℕ}
     (x₀ : Matrix (Fin n) (Fin n') D.host.E) (y₀ : Matrix (Fin n') (Fin n) D.host.E)
@@ -159,9 +155,9 @@ theorem core_step {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P) {n 
   rw [key u, key u', heq, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `D _ T L μ0 _ sc G W M _ i _ x₀ hx₀ e he g u hu u' hu' heq`. Take `⟨-, y₀, hy₀, hc⟩` from `hx₀`. Establish `h1 : (1 : Af D.host.F) ∈ intAf D.host.F` using `fun v => by simp`. Establish `hcf : finLift (x₀ * y₀ - 1) ∈ hatMx (G.modul • homLat (G.Λ (.core i)) (G.Λ (.core i)))` using `AddSubgroup.subset_closure ⟨1, h1, x₀ * y₀ - 1, hc, rfl⟩`. Establish `hmul : ∀ x ∈ G.modul • homLat (G.latS (.core i)) (G.latT (.core i)), x * y₀ ∈ G.modul • homLat (G.Λ (.core i)) (G.Λ (.core i))` using `fun x hx => smul_homLat_mul hx hy₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, sub_mem (hatMx_mul y₀ hmul hu) hcf, _, sub_mem (hatMx_mul y₀ hmul hu') hcf, ?_⟩` and prove the remaining obligations. Rewrite `heq`, the goal using `[actO_one_left]`. Conclude with `core_step he x₀ y₀ _ u u' heq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coset_equation_mul_right_congruent_one_mod_depthIdeal : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ x₀, IsOntoMod G i x₀ → ∀ e : AE D, IsIdemSum e G.pl.W0 →
     ∀ g : GA D (G.V (.core i)), ∀ u ∈ GlobalTheory.ChiGrid.hatMx (G.modul • GlobalTheory.ChiGrid.homLat (G.latS (.core i)) (G.latT (.core i))), ∀ u' ∈ GlobalTheory.ChiGrid.hatMx (G.modul • GlobalTheory.ChiGrid.homLat (G.latS (.core i)) (G.latT (.core i))),

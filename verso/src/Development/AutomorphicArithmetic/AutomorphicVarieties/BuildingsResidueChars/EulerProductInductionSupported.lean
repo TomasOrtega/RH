@@ -27,7 +27,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `x hx` and use `by have h := hab x hx rwa [MonoidHom.mul_apply, ha x hx, one_mul] at h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem unr_cancel {a b : kˣ →* ℂˣ} (ha : IsUnram a) (hab : IsUnram (a * b)) : IsUnram b := fun x hx => by
   have h := hab x hx
@@ -35,27 +35,27 @@ private theorem unr_cancel {a b : kˣ →* ℂˣ} (ha : IsUnram a) (hab : IsUnra
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `x hx` and use `by rw [MonoidHom.inv_apply, ha x hx, inv_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem unr_inv {a : kˣ →* ℂˣ} (ha : IsUnram a) : IsUnram a⁻¹ := fun x hx => by
   rw [MonoidHom.inv_apply, ha x hx, inv_one]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => hc (unr_cancel hν h), hc, fun h => hc (unr_cancel (unr_inv hν) h)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem ram3 {ν c : kˣ →* ℂˣ} (hν : IsUnram ν) (hc : ¬ IsUnram c) : Ram3 ν c :=
   ⟨fun h => hc (unr_cancel hν h), hc, fun h => hc (unr_cancel (unr_inv hν) h)⟩
 
 /- English proof (translation)
-Unfold `lin`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lin_zero (a : kˣ →* ℂˣ) : (lin a).eval 0 = 1 := by
   unfold lin
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [lin3, eval_mul, lin_zero, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem local_linear_factor_eval_zero (a b : kˣ →* ℂˣ) : (lin3 a b).eval 0 = 1 := by
   simp only [lin3, eval_mul, lin_zero, mul_one]
@@ -63,7 +63,7 @@ private theorem local_linear_factor_eval_zero (a b : kˣ →* ℂˣ) : (lin3 a b
 end Loc
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Use `forall_congr' fun x => imp_congr_left ?_` and prove the remaining obligations. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion F)) Valued.v).eq_one_iff_eq_one.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem unrAt_iff {F : Type} [Field F] [NumberField F] (χ : HChar F) (w : HeightOneSpectrum (𝓞 F)) :
     χ.UnrAt w ↔ IsUnram (χ.loc w) := by
@@ -73,9 +73,9 @@ private theorem unrAt_iff {F : Type} [Field F] [NumberField F] (χ : HChar F) (w
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion F)) Valued.v).eq_one_iff_eq_one.symm
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (u.adicCompletion ℚ) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Rewrite using `[isUnramifiedChar_iff]`. Use `forall_congr' fun x => imp_congr_left ?_` and prove the remaining obligations. Rewrite using `[Ad3P.DihedralUnramifiedPlaces.ord_eq u x.ne_zero, neg_eq_zero, (ValuativeRel.isEquiv (ValuativeRel.valuation (u.adicCompletion ℚ)) Valued.v).eq_one_iff_eq_one]`. Establish `h0 : Valued.v (x : u.adicCompletion ℚ) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← WithZero.exp_log h0, h, WithZero.exp_zero]`. Introduce `h`. Rewrite using `[h, WithZero.log_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unr_iff (u : Ad3.Pl) (a : (u.adicCompletion ℚ)ˣ →* ℂˣ) : IsUnramifiedChar a ↔ IsUnram a := by
   haveI : (Valued.v : Valuation (u.adicCompletion ℚ) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -92,7 +92,7 @@ private theorem unr_iff (u : Ad3.Pl) (a : (u.adicCompletion ℚ)ˣ →* ℂˣ) :
     rw [h, WithZero.log_one]
 
 /- English proof (translation)
-Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem localChar_mul' (c η : HeckeCharacter ℚ) (u : Ad3.Pl) :
     localChar (c * η) u = localChar c u * localChar η u := by
@@ -100,15 +100,15 @@ private theorem localChar_mul' (c η : HeckeCharacter ℚ) (u : Ad3.Pl) :
   rfl
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext w.2.over.symm`.
+A detailed English derivation is pending.
 -/
 private theorem under_eq {K : Type} [Field K] [NumberField K] {p : Ad3.Pl} (w : PlacesOver K p) : w.1.under (𝓞 ℚ) = p :=
   HeightOneSpectrum.ext w.2.over.symm
 
 /- English proof (translation)
-Use `⟨S.biUnion fun p => (Finset.univ : Finset (PlacesOver K p)).map (Function.Embedding.subtype _), fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_biUnion, Finset.mem_map, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, w', rfl⟩`. Express the relevant statement in the definitionally equal form `w'.1.under (𝓞 ℚ) ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[under_eq]` and apply the resulting hypothesis. Conclude with `fun h => ⟨_, h, ⟨w, ⟨rfl⟩⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem exists_above (K : Type) [Field K] [NumberField K] (S : Finset Ad3.Pl) :
     ∃ T : Finset (HeightOneSpectrum (𝓞 K)), ∀ w, w ∈ T ↔ w.under (𝓞 ℚ) ∈ S := by
@@ -121,11 +121,11 @@ private theorem exists_above (K : Type) [Field K] [NumberField K] (S : Finset Ad
   · exact fun h => ⟨_, h, ⟨w, ⟨rfl⟩⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hc` using `(((hη.loc u w).2.2 _ (GlobalTheory.HeckeComp.smooth_loc c u)).2.2 h)`. Establish `hpos : 0 < ∑ w' : PlacesOver K u, fdeg w'` using `lt_of_lt_of_le (normVal ℚ K u w 1).2.2.1 (Finset.single_le_sum (f := fun w' : PlacesOver K u => fdeg w') (fun _ _ => Nat.zero_le _) (Finset.mem_univ w))`. Rewrite `hpos` using `[← hc]`. Take `⟨j, hj⟩` from `Finset.card_pos.1 hpos`. Establish `hj'` using `(Finset.mem_filter.1 hj).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : ∀ j : ℕ, IsUnram ((toH η ^ j).loc u)` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => intro x hx`. Both sides reduce to the same expression. Consider the case `succ j ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `x hx`. Rewrite using `[pow_succ]`. Express the relevant statement in the definitionally equal form `(toH η ^ j).loc u x * (toH η).loc u x = 1`. Rewrite using `[ih x hx, (unrAt_iff _ _).1 hu x hx, one_mul]`. Conclude with `unr_cancel (hp j) (mul_comm (c.loc u) _ ▸ hj')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unr_of_norm {K : Type} [Field K] [NumberField K] {η : HeckeCharacter ℚ} (hη : EtaOK K η) (c : HChar ℚ)
     {u : Ad3.Pl} (hu : (toH η).UnrAt u) (w : PlacesOver K u) (h : IsUnram ((c.loc u).comp (nm w))) : IsUnram (c.loc u) := by
@@ -147,32 +147,30 @@ private theorem unr_of_norm {K : Type} [Field K] [NumberField K] {η : HeckeChar
   exact unr_cancel (hp j) (mul_comm (c.loc u) _ ▸ hj')
 
 /- English proof (translation)
-Simplify using `[tri, mul_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem tri_pow (a x : ℂˣ) (f : ℕ) :
     ((({a ^ f, 1, (a ^ f)⁻¹} : Multiset ℂˣ).map (· * x ^ f)).map fun b : ℂˣ => (b : ℂ)) = (tri a x).map (· ^ f) := by
   simp [tri, mul_pow]
 
 /- English proof (translation)
-Introduce `K _ _ _ hK D hD P η c hη hc S₀ v s hs hbad hv hout hin`. Take `⟨ξ, hξ⟩` from `normLoc ℚ K (toH c)`. Take `⟨S, hS⟩ : ∃ S : Finset Ad3.Pl, ∀ u, u ∈ S ↔ u ∈ S₀ ∨ ¬ (toH c).UnrAt u` from `⟨S₀ ∪ (GlobalTheory.Mem.UnrAe.finite_ramified (toH c)).toFinset, fun u => by simp⟩`. Take `⟨MainNotions, hSK⟩` from `exists_above K S`. Establish `out0 : ∀ u ∉ S, u ∉ S₀` using `fun u hu h => hu ((hS u).2 (Or.inl h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `outc : ∀ u ∉ S, (toH c).UnrAt u` using `fun u hu => not_not.1 fun h => hu ((hS u).2 (Or.inr h))`. Establish `hex : ∀ w : HeightOneSpectrum (𝓞 K), ∃ B : Multiset ℂˣ, (w ∉ MainNotions → (CG.mk (P.twist ξ)).HasSat w B) ∧ ∀ p ∉ S, ∀ w' : PlacesOver K p, w'.1 = w → (B.map fun b : ℂˣ => (b : ℂ)) = (par D (toH c) p).map (· ^ fdeg w')`. Introduce `w`. Distinguish the cases in `hw : w.under (𝓞 ℚ) ∈ S`. Use `⟨0, fun h => absurd ((hSK w).2 hw) h, fun p hp w' e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `e` using the available equality. Rewrite `hw` using `[under_eq]`. Conclude with `absurd hw hp`. Take `⟨u1, v1⟩` from `(hξ _ ⟨w, ⟨rfl⟩⟩).2.1 (outc _ hw)`. Establish `h` using `(((hout _ (out0 _ hw)).2 ⟨w, ⟨rfl⟩⟩).2.2.2).twist u1`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[CG.twist_mk, v1]`. Use `⟨_, fun _ => h, fun p hp w' e => ?_⟩` and prove the remaining obligations. Take `⟨w', hw'⟩` from `w'`. Take `rfl : w' = w` from `e`. Take `rfl : p = w'.under (𝓞 ℚ)` from `HeightOneSpectrum.ext hw'.over`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `tri_pow _ _ _`. Use `choose B hB1 hB2 using hex`. Take `⟨β, hβ, pL⟩` from `UpperTheory.euler_product_induction_unramified K hK D hD η c hη hc S v (fun u hu => (hS u).2 (Or.inl (hbad hu))) ((hS v).2 (Or.inl hv)) (fun u hu => (unr_iff u _).2 ((unrAt_iff _ u).1 (outc u hu))) (fun u hu => ⟨(hout u (out0 u hu)).1, fun w => ⟨((hout u (out0 u hu)).2 w).1, ((ho …`. Distinguish the cases in `h0 : u ∈ S₀`. Conclude with `⟨(hin u h0 hne).1, (hin u h0 hne).2.1⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hν : IsUnram (D.ν u)` using `(unr_iff u _).1 (D.unr u fun h => h0 (hbad h))`. Establish `hr : ¬ IsUnram (localChar c u)` using `fun h => ((hS u).1 hu).resolve_left h0 ((unrAt_iff _ u).2 h)`. Use `⟨ram3 hν hr, ram3 hν fun h => hr ?_⟩` and prove the remaining obligations. Rewrite `h` using `[localChar_mul', mul_comm]`. Conclude with `unr_cancel ((unrAt_iff _ u).1 (hout u h0).1) h)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(MainNotions : Set _) (cx B) (fun w => by simpa using hSK w) (fun p hp w => hB2 w.1 p hp w rfl)`. Take `⟨β', hβ', pR⟩` from `UpperTheory.satake_parameters_twisted_automorphic K P ξ MainNotions B v s (fun w hw => (hSK w).2 (not_not.1 fun h => ((hout _ (out0 _ h)).2 ⟨w, ⟨rfl⟩⟩).2.2.1 hw)) hB1 hs (fun w => (hSK w.1).2 (by rw [under_eq]; exact (hS v).2 (Or.inl hv))) (fun w hw hne ζ hζ => by`. Rewrite using `[(hξ (w.under (𝓞 ℚ)) ⟨w, ⟨rfl⟩⟩).1]`. Distinguish the cases in `h0 : w.under (𝓞 ℚ) ∈ S₀`. Conclude with `(hin _ h0 hne).2.2 ⟨w, ⟨rfl⟩⟩ ζ hζ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h`. Take `⟨hζ', hm⟩` from `hζ`. Take `⟨μ, hμ, e⟩` from `(suppFacts K 3 (by omega) P w).2.2.2.1 _ _ (hs w) ((hout _ h0).2 ⟨w, ⟨rfl⟩⟩).2.2.2 _ hm`. Rewrite `h` using `[(polFacts _).2.2.1 _ _ _ _ e]`. Conclude with `((hS _).1 ((hSK w).1 hw)).resolve_left h0 ((unrAt_iff _ _).2 (unr_of_norm hη (toH c) (hout _ h0).1 ⟨w, ⟨rfl⟩⟩ (unr_cancel hμ h))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ w : PlacesOver K v, ξ.loc w.1 = (localChar c v).comp (nm w)` using `fun w => (hξ v w).1`. Simplify using `only [e] at pR`. Establish `hq : 1 < Ideal.absNorm v.asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Use `crossGOf expAlg expIndep secDiff _ _ _ _ _ _ _ (by exact_mod_cast hq) hβ hβ' ?_ ?_ pL pR` and prove the remaining obligations. Rewrite using `[eval_mul, local_linear_factor_eval_zero, local_linear_factor_eval_zero, mul_one]`.
-
-Rewrite using `[eval_prod]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[eval_comp, eval_pow, eval_X, zero_pow (normVal ℚ K v w 1).2.2.1.ne']`. Conclude with `((polFacts _).2.2.2 _ _).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.euler_product_induction_supported :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∀ D : Ad3.Dat, Ad3.An D →

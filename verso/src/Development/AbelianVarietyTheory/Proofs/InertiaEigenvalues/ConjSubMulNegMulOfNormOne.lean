@@ -5,9 +5,9 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx0 : x ≠ 0` using `by intro h; simp [h] at hx`. Establish `hy0 : y ≠ 0` using `by intro h; simp [h] at hy`. Establish `cx : (starRingEnd ℂ) x = x⁻¹`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `cy : (starRingEnd ℂ) y = y⁻¹`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hy]`. Simplify using the standard rewrite rules. Rewrite using `[map_sub, cx, cy]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -24,19 +24,17 @@ theorem conj_sub_mul_neg_mul_of_norm_one {x y : ℂ} (hx : ‖x‖ = 1) (hy : �
   ring
 
 /- English proof (translation)
-Introduce `a b α β hα hβ hne k R`. Use `set D : ℂ := (-1 : ℂ) ^ (a * b) * (∏ i, α i) ^ b * (∏ j, β j) ^ a with hD`. Establish `hR : R ≠ 0`. Simplify using `only [R]`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _`. Conclude with `sub_ne_zero.mpr (hne i j)`. Establish `hDprod : D = ∏ i, ∏ j, (-(α i * β j))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hD, Finset.prod_neg, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hconj : (starRingEnd ℂ) R * D = R`. Rewrite using `[hDprod]`. Simplify using `only [R, map_prod, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `conj_sub_mul_neg_mul_of_norm_one (hα i) (hβ j)`. Establish `hcR : (starRingEnd ℂ) R ≠ 0` using `by simpa using hR`. Establish `hr : ((‖R‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr hR`. Establish `hsq : ((‖R‖ : ℝ) : ℂ) ^ 2 = R * (starRingEnd ℂ) R`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set u : ℂ := R / ((‖R‖ : ℝ) : ℂ) with hu`. Establish `hu0 : u ≠ 0` using `div_ne_zero hR hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu2 : u ^ 2 = D`. Rewrite using `[hu, div_pow, hsq, pow_two, mul_div_mul_left _ _ hR, eq_comm]`. Conclude with `eq_div_of_mul_eq hcR (by rw [mul_comm]; exact hconj)`. Establish `: u ^ (2 * k - 1) = D ^ k * u⁻¹`. Rewrite using `[zpow_sub₀ hu0, zpow_mul, zpow_one, zpow_two, ← pow_two, hu2, div_eq_mul_inv]`.
-
-Rewrite using `[this, hu]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(D ^ k) * hsq`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem resultant_phase_unit_circle :
     ∀ (a b : ℕ) (α : Fin a → ℂ) (β : Fin b → ℂ), (∀ i, ‖α i‖ = 1) → (∀ j, ‖β j‖ = 1) →

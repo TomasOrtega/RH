@@ -16,27 +16,25 @@ open GlobalTheory.Mum
 open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' k p' q' s' ps qs ss hp hq hs hadd`. Establish `gt : GlobalTheory.Ex.BrGtSt` using `GlobalTheory.Ex.GtValues.points_correspond`. Take `⟨-, -, gAdd, -, gQ⟩` from `gt R D.toPre D.psi_even D.tau_bimult F N ν`. Take `⟨-, -, gAdd', -, gQ'⟩` from `gt R D'.toPre D'.psi_even D'.tau_bimult F N' ν'`. Establish `hF` using `GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, he, hebij, -, -, -, -⟩` from `hF`. Take `⟨P', Ps, hP', hPs, hPy, hPg⟩` from `hp`. Take `⟨Q', Qs, hQ', hQs, hQy, hQg⟩` from `hq`. Take `⟨S', Ss, hS', hSs, hSy, hSg⟩` from `hs`. Establish `hz : ∀ i, N.QEq (Ps i * Qs i) (Ss i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨x, hxy, hxg, hxe⟩` from `hadd i`. Take `⟨X, hX⟩` from `((gQ k).1 x).exists`. Establish `hXeq : X = Ps i * Qs i`. Use `Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Apply `ν.eX.injective` to reduce the goal to its premises. Rewrite using `[hX.1, hxy, ← (hPs i).1, ← (hQs i).1, ← map_add]`. Both sides reduce to the same expression. Conclude with `(gAdd _ _ _ _ _ _ (hPs i).2 (hQs i).2 hX.2).1 hxg`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hXeq]`. Conclude with `((gQ k).2.2 x (ss i) X (Ss i) hX (hSs i)).1 hxe`. Use `choose z hz1 hz2 using hz`. Take `⟨z', hz'⟩` from `hebij.2 z`. Establish `he0 : ∀ i, chi T ν ν' 0 i = 0` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `he 0 0 i` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(add_eq_left.1 this.symm)`. Establish `hensmul : ∀ (n : ℕ) χ i, chi T ν ν' (n • χ) i = n • chi T ν ν' χ i`. Introduce `n χ i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, zero_smul, he0]`. Consider the case `succ n ih => rw [succ_nsmul, he, ih, succ_nsmul]`. Take `⟨x', hx'⟩` from `(gQ' k).2.1 (P' * Q')`. Use `⟨x', ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hx'.1, ← hP'.1, ← hQ'.1, ← map_add]`. Both sides reduce to the same expression. Conclude with `(gAdd' _ _ _ _ _ _ hP'.2 hQ'.2 hx'.2).2 rfl`. Use `((gQ' k).2.2 x' s' (P' * Q') S' hx' hS').2 ⟨z', ?_, ?_⟩` and prove the remaining obligations. Apply `hebij.1` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `e1 : (P' * Q').1.1.toAdd = P'.1.1.toAdd + Q'.1.1.toAdd` using `rfl`. Establish `e2 : (Ps i * Qs i).1.1.toAdd = (Ps i).1.1.toAdd + (Qs i).1.1.toAdd` using `rfl`. Rewrite using `[hSy i, hz1 i, he, hensmul, hz', e1, he, hPy i, hQy i, e2]`. Establish `m1` using `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W (cmp T ν ν') (chi T ν ν') (wv T ν ν') (GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν') P'.1.2 Q'.1.2 _ _ hPg hQg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `m2` using `GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W (cmp T ν ν') (chi T ν ν') (wv T ν ν') (GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν') z'`. Establish `m3` using `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W (cmp T ν ν') (chi T ν ν') (wv T ν ν') (GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν') _ _ _ _ m1 m2`. Establish `e3 : ((fun j => (Ps j).1.2) * (fun j => (Qs j).1.2)) * (fun j => N.io (chi T ν ν' z' j)) = fun j => (Ss j).1.2`. Use function extensionality and compare the values at `j`. Rewrite using `[hz2 j, hz']`.
-
-Both sides reduce to the same expression. Rewrite `m3` using `[e3]`. Conclude with `GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W (cmp T ν ν') (chi T ν ν') (wv T ν ν') (GlobalTheory.T.tensorData_values_facts R hR D D' W T F N N' ν ν') _ _ _ hSg m3`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.TensTor.qkAdd_of_components : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N) (ν' : NumOf D'.toPre F N') (k : ℕ) (p' q' s' : QkPt D'.toPre F k) (ps qs ss : Fin r → QkPt D.toPre F k), PtRel T ν ν' p' ps → PtRel T ν ν' q' qs → PtRel T ν ν' s' ss → (∀ i, QkAdd (ps i) (qs i) (ss i)) → QkAdd p' q' s' := by
   intro R _ _ _ hR D D' r W T F _ _ _ N N' ν ν' k p' q' s' ps qs ss hp hq hs hadd

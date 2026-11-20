@@ -21,11 +21,11 @@ def levM (x y a b : n → R) (t s : R) : Matrix n n R :=
 variable {x y a b : n → R}
 
 /- English proof (translation)
-Establish `hPP : vecMulVec x a * vecMulVec x a = vecMulVec x a` using `by rw [vecMulVec_mul_vecMulVec, hax, one_smul]`. Establish `hPQ : vecMulVec x a * vecMulVec y b = 0`. Rewrite using `[vecMulVec_mul_vecMulVec, hay, zero_smul]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hQP : vecMulVec y b * vecMulVec x a = 0`. Rewrite using `[vecMulVec_mul_vecMulVec, hbx, zero_smul]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply]`. Establish `hQQ : vecMulVec y b * vecMulVec y b = vecMulVec y b` using `by rw [vecMulVec_mul_vecMulVec, hby, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [levM, add_mul, mul_add, Matrix.one_mul, Matrix.mul_one, smul_mul_assoc, mul_smul_comm, hPP, hPQ, hQP, hQQ, smul_zero, add_zero, zero_add, smul_smul]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levM_mul (hax : a ⬝ᵥ x = 1) (hay : a ⬝ᵥ y = 0) (hbx : b ⬝ᵥ x = 0) (hby : b ⬝ᵥ y = 1) (t s t' s' : R) :
     levM x y a b t s * levM x y a b t' s' = levM x y a b (t * t') (s * s') := by
@@ -40,12 +40,12 @@ theorem levM_mul (hax : a ⬝ᵥ x = 1) (hay : a ⬝ᵥ y = 0) (hbx : b ⬝ᵥ x
   module
 
 /- English proof (translation)
-Simplify using `[levM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levM_one : levM x y a b 1 1 = 1 := by simp [levM]
 
 /- English proof (translation)
-Simplify using `only [levM, add_mulVec, one_mulVec, Matrix.smul_mulVec, vecMulVec_mulVec, hax, hbx, op_smul_eq_smul]`. Simplify using `only [one_smul, zero_smul, smul_zero, add_zero]`. Use `module`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_matrix_mulVec_first_vector (hax : a ⬝ᵥ x = 1) (hbx : b ⬝ᵥ x = 0) (t s : R) : levM x y a b t s *ᵥ x = t • x := by
   simp only [levM, add_mulVec, one_mulVec, Matrix.smul_mulVec, vecMulVec_mulVec, hax, hbx, op_smul_eq_smul]
@@ -53,7 +53,7 @@ theorem levi_matrix_mulVec_first_vector (hax : a ⬝ᵥ x = 1) (hbx : b ⬝ᵥ x
   module
 
 /- English proof (translation)
-Simplify using `only [levM, add_mulVec, one_mulVec, Matrix.smul_mulVec, vecMulVec_mulVec, hay, hby, op_smul_eq_smul]`. Simplify using `only [one_smul, zero_smul, smul_zero, add_zero]`. Use `module`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levM_mulVec_y (hay : a ⬝ᵥ y = 0) (hby : b ⬝ᵥ y = 1) (t s : R) : levM x y a b t s *ᵥ y = s • y := by
   simp only [levM, add_mulVec, one_mulVec, Matrix.smul_mulVec, vecMulVec_mulVec, hay, hby, op_smul_eq_smul]
@@ -61,7 +61,7 @@ theorem levM_mulVec_y (hay : a ⬝ᵥ y = 0) (hby : b ⬝ᵥ y = 1) (t s : R) : 
   module
 
 /- English proof (translation)
-Simplify using `only [levM, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, vecMulVec_mul, haι, hbι]`. Establish `: vecMulVec x (0 : m → R) = 0` using `by ext i j; simp [vecMulVec_apply]`. Establish `h2 : vecMulVec y (0 : m → R) = 0` using `by ext i j; simp [vecMulVec_apply]`. Rewrite using `[this, h2, smul_zero, smul_zero, add_zero, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem levM_mul_fix {ι : Matrix n m R} (haι : a ᵥ* ι = 0) (hbι : b ᵥ* ι = 0) (t s : R) : levM x y a b t s * ι = ι := by
   simp only [levM, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, vecMulVec_mul, haι, hbι]
@@ -70,7 +70,7 @@ theorem levM_mul_fix {ι : Matrix n m R} (haι : a ᵥ* ι = 0) (hbι : b ᵥ* �
   rw [this, h2, smul_zero, smul_zero, add_zero, add_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[levM, Matrix.one_apply, vecMulVec_apply, map_add, map_mul, map_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem levM_map {S : Type*} [CommRing S] (f : R →+* S) (t s : R) :
     (levM x y a b t s).map f = levM (f ∘ x) (f ∘ y) (f ∘ a) (f ∘ b) (f t) (f s) := by
@@ -78,11 +78,11 @@ theorem levM_map {S : Type*} [CommRing S] (f : R →+* S) (t s : R) :
   simp [levM, Matrix.one_apply, vecMulVec_apply, map_add, map_mul, map_sub]
 
 /- English proof (translation)
-Establish `hcc : c ∘ (c ∘ x) = x` using `funext fun i => hc _`. Establish `hcc' : c ∘ (c ∘ y) = y` using `funext fun i => hc _`. Establish `d1 : (c ∘ b) ⬝ᵥ (c ∘ x) = 0` using `by rw [← RingHom.map_dotProduct, hbx, map_zero]`. Establish `d2 : (c ∘ b) ⬝ᵥ (c ∘ y) = 1` using `by rw [← RingHom.map_dotProduct, hby, map_one]`. Establish `d3 : (c ∘ a) ⬝ᵥ (c ∘ x) = 1` using `by rw [← RingHom.map_dotProduct, hax, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d4 : (c ∘ a) ⬝ᵥ (c ∘ y) = 0` using `by rw [← RingHom.map_dotProduct, hay, map_zero]`. Rewrite using `[levM_map, levM]`. Simplify using `only [levM, transpose_add, transpose_one, transpose_smul, transpose_vecMulVec, add_mul, mul_add, Matrix.one_mul, Matrix.mul_one, smul_mul_assoc, mul_smul_comm, vecMulVec_mul, mul_vecMulVec, hxJ, hyJ, ha, hb, vecMulVec_mul_vecMulVec, neg_dotProduct, d1, d2, d3, d4, smul_smul]`. Simplify using `only [vecMulVec_mulVec, op_smul_eq_smul, d1, d2, d3, d4, dotProduct_neg, neg_dotProduct, Matrix.vecMulVec_neg, Matrix.neg_vecMulVec, Matrix.smul_vecMulVec, zero_smul, one_smul, neg_zero, smul_zero, add_zero, neg_neg]`. Simplify using `only [Matrix.neg_mulVec, vecMulVec_mulVec, op_smul_eq_smul, d1, d2, d3, d4, Matrix.zero_vecMulVec, Matrix.neg_vecMulVec, Matrix.smul_vecMulVec, zero_smul, one_smul, neg_zero, smul_zero, add_zero, neg_neg, smul_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := module) h1 • vecMulVec a (c ∘ b) - h2 • vecMulVec b (c ∘ a)`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem levM_unitary (c : R →+* R) (hc : ∀ r, c (c r) = r) {J : Matrix n n R}
     (ha : J *ᵥ (c ∘ y) = a) (hb : J *ᵥ (c ∘ x) = -b) (hxJ : x ᵥ* J = c ∘ b) (hyJ : y ᵥ* J = -(c ∘ a))
@@ -112,7 +112,7 @@ section Adelic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom
@@ -120,13 +120,13 @@ theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (e : E) : σ (σ e
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
 /- English proof (translation)
-Simplify using `[cA, inclR, Algebra.TensorProduct.includeRight_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR, Algebra.TensorProduct.includeRight_apply]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [cA, hσ]`. Consider the case `add u v hu hv => rw [map_add, map_add, hu, hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -150,37 +150,35 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open Matrix
 
 /- English proof (translation)
-The claim follows from `funext fun i => (RingHom.map_mulVec f M v i).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_comp_mulVec {R S : Type*} [CommRing R] [CommRing S] {n m : Type*} [Fintype m] (f : R →+* S)
     (M : Matrix n m R) (v : m → R) : M.map f *ᵥ (f ∘ v) = f ∘ (M *ᵥ v) := funext fun i => (RingHom.map_mulVec f M v i).symm
 
 /- English proof (translation)
-The claim follows from `funext fun i => (RingHom.map_vecMul f M v i).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_comp_vecMul {R S : Type*} [CommRing R] [CommRing S] {n m : Type*} [Fintype n] (f : R →+* S)
     (M : Matrix n m R) (v : n → R) : (f ∘ v) ᵥ* M.map f = f ∘ (v ᵥ* M) := funext fun i => (RingHom.map_vecMul f M v i).symm
 
 /- English proof (translation)
-Introduce `aE bE`. Establish `hconj : ∀ v : Fin N → E, ⇑σ ∘ (J *ᵥ (⇑σ ∘ v)) = -(v ᵥ* J)`. Introduce `v`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, mulVec, dotProduct, vecMul, map_sum, map_mul, hσ, Pi.neg_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show J i j = -σ (J j i) by rw [hsk, neg_neg], map_neg, hσ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hform : ∀ u v : Fin N → E, form σ J u v = (J *ᵥ (⇑σ ∘ v)) ⬝ᵥ u` using `fun u v => dotProduct_comm _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hyx : form σ J y x = -1`. Establish `h` using `congrArg σ hxy`. Rewrite `h` using `[map_one]`. Establish `: σ (form σ J x y) = -form σ J y x`. Unfold `form`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Express the relevant statement in the definitionally equal form `σ.toRingHom (x ⬝ᵥ J *ᵥ (⇑σ ∘ y)) = -(y ⬝ᵥ J *ᵥ (⇑σ ∘ x))`. Rewrite using `[RingHom.map_dotProduct]`. Express the relevant statement in the definitionally equal form `(⇑σ ∘ x) ⬝ᵥ (⇑σ ∘ (J *ᵥ (⇑σ ∘ y))) = _`. Rewrite using `[hconj, dotProduct_neg, dotProduct_comm, ← dotProduct_mulVec]`. Rewrite `h` using `[this]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `-h`. Establish `hvanish : ∀ w : Fin N → E, (∀ u, (ι *ᵥ u) ⬝ᵥ w = 0) → w ᵥ* ι = 0`. Introduce `w hw`. Use function extensionality and compare the values at `j`. Use `hw (Pi.single j 1)` as an intermediate fact.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[dotProduct_comm, dotProduct_mulVec, dotProduct_single, mul_one]`. Conclude with `this`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hform]`. Conclude with `hxy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hform]`. Conclude with `hyy`. Simplify using `only [bE, neg_dotProduct]`. Rewrite using `[← hform, hxx, neg_zero]`. Simplify using `only [bE, neg_dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hform, hyx, neg_neg]`. Simplify using `only [bE]`. Use function extensionality and compare the values at `i`. Use `congrFun (hconj x) i` as an intermediate fact. Simplify using `only [Function.comp_apply, Pi.neg_apply, map_neg] at this ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, neg_neg]`. Simplify using `only [aE]`. Rewrite using `[hconj, neg_neg]`. Conclude with `hvanish _ fun u => (dotProduct_comm _ _).trans ((hform _ _).symm.trans (horth u).2)`. Use `hvanish _ fun u => ?_` and prove the remaining obligations.
-
-Simplify using `only [bE, dotProduct_neg]`. Rewrite using `[dotProduct_comm]`. Conclude with `neg_eq_zero.2 ((hform _ _).symm.trans (horth u).1)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_facts {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {N N₁ : ℕ} {J : Matrix (Fin N) (Fin N) E}
     (hsk : ∀ i j, σ (J j i) = -J i j) {x y : Fin N → E} {ι : Matrix (Fin N) (Fin N₁) E}
@@ -237,51 +235,47 @@ section Thm
 open Matrix
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA`. Establish `hσ : ∀ e, σ (σ e) = e` using `sigma_sigma hT.base.cm`. Take `⟨hax, hay, hbx, hby, hxJ, hyJ, haι, hbι⟩` from `dual_facts hσ hT.geo.hW.skew hA.xx hA.yy hA.xy hA.orth`. Use `set aE := G.W.J *ᵥ (⇑σ ∘ H'.y) with haE`. Use `set bE := -(G.W.J *ᵥ (⇑σ ∘ H'.x)) with hbE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : E →+* AE F E := inclR (F := F) (AF F) with hf`. Establish `hcf : ∀ {k : ℕ} (v : Fin k → E), ⇑(cA σ) ∘ (f ∘ v) = f ∘ (⇑σ ∘ v)` using `fun v => funext fun i => cA_inclR σ (v i)`. Establish `hdot : ∀ v w : Fin (a + a') → E, (f ∘ v) ⬝ᵥ (f ∘ w) = f (v ⬝ᵥ w)` using `fun v w => (RingHom.map_dotProduct f v w).symm`. Establish `hneg : ∀ v : Fin (a + a') → E, f ∘ (-v) = -(f ∘ v)` using `fun v => funext fun i => map_neg f (v i)`. Establish `hax' : (f ∘ aE) ⬝ᵥ (f ∘ H'.x) = 1` using `by rw [hdot, hax, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hay' : (f ∘ aE) ⬝ᵥ (f ∘ H'.y) = 0` using `by rw [hdot, hay, map_zero]`. Establish `hbx' : (f ∘ bE) ⬝ᵥ (f ∘ H'.x) = 0` using `by rw [hdot, hbx, map_zero]`. Establish `hby' : (f ∘ bE) ⬝ᵥ (f ∘ H'.y) = 1` using `by rw [hdot, hby, map_one]`. Establish `haι' : (f ∘ aE) ᵥ* incM F H'.ι = 0`. Express the relevant statement in the definitionally equal form `(f ∘ aE) ᵥ* H'.ι.map f = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_comp_vecMul, haι]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hbι' : (f ∘ bE) ᵥ* incM F H'.ι = 0`. Express the relevant statement in the definitionally equal form `(f ∘ bE) ᵥ* H'.ι.map f = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_comp_vecMul, hbι]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Set `M : (AE F E)ˣ → Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)` to `fun t => levM (f ∘ H'.x) (f ∘ H'.y) (f ∘ aE) (f ∘ bE) t.1 (cA σ (t⁻¹).1)`. Establish `hone : M 1 = 1` using `by simp only [M, inv_one, Units.val_one, map_one]; exact levM_one`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hmul : ∀ t t', M (t * t') = M t * M t'`. Introduce `t t'`. Simplify using `only [M]`. Rewrite using `[levM_mul hax' hay' hbx' hby', _root_.mul_inv_rev, Units.val_mul, Units.val_mul, map_mul, mul_comm (cA σ _)]`. Establish `hunit : ∀ t, (M t)ᵀ * incM F G.W.J * (M t).map (cA σ) = incM F G.W.J`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `t`. Establish `ha' : G.W.J.map f *ᵥ ((cA σ).toRingHom ∘ (f ∘ H'.y)) = f ∘ aE`. Express the relevant statement in the definitionally equal form `_ *ᵥ (⇑(cA σ) ∘ (f ∘ H'.y)) = _`. Rewrite using `[hcf, map_comp_mulVec]`. Establish `hb' : G.W.J.map f *ᵥ ((cA σ).toRingHom ∘ (f ∘ H'.x)) = -(f ∘ bE)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ *ᵥ (⇑(cA σ) ∘ (f ∘ H'.x)) = _`. Rewrite using `[hcf, map_comp_mulVec, hbE, hneg, neg_neg]`. Establish `hxJ' : (f ∘ H'.x) ᵥ* G.W.J.map f = (cA σ).toRingHom ∘ (f ∘ bE)`. Express the relevant statement in the definitionally equal form `_ = ⇑(cA σ) ∘ (f ∘ bE)`. Rewrite using `[map_comp_vecMul, hxJ, hcf]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hyJ' : (f ∘ H'.y) ᵥ* G.W.J.map f = -((cA σ).toRingHom ∘ (f ∘ aE))`. Express the relevant statement in the definitionally equal form `_ = -(⇑(cA σ) ∘ (f ∘ aE))`. Rewrite using `[map_comp_vecMul, hyJ, hcf, hneg]`. Establish `h1 : t.1 * (cA σ).toRingHom (cA σ (t⁻¹).1) = 1`. Express the relevant statement in the definitionally equal form `t.1 * cA σ (cA σ (t⁻¹).1) = 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cA_cA hσ, Units.mul_inv]`. Establish `h2 : cA σ (t⁻¹).1 * (cA σ).toRingHom t.1 = 1`. Express the relevant statement in the definitionally equal form `cA σ (t⁻¹).1 * cA σ t.1 = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Conclude with `levM_unitary (cA σ).toRingHom (cA_cA hσ) ha' hb' hxJ' hyJ' hax' hay' hbx' hby' h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfix : ∀ (t : (AE F E)ˣ) (z : Fin d₁ → AE F E), M t *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ z`. Introduce `t z`. Rewrite using `[mulVec_mulVec]`. Conclude with `congrArg (· *ᵥ z) (levM_mul_fix haι' hbι' _ _)`. Use `⟨homOf σ G.W.J M hone hmul hunit, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `g haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hcA : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hM : ∀ p q : (AE F E)ˣ → AE F E, Continuous p → Continuous q → Continuous fun t => levM (f ∘ H'.x) (f ∘ H'.y) (f ∘ aE) (f ∘ bE) (p t) (q t)`. Introduce `p q hp hq`. Unfold `levM`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(continuous_const.add ((hp.sub continuous_const).smul continuous_const)).add ((hq.sub continuous_const).smul continuous_const)`. Establish `hc : Continuous (homOf σ G.W.J M hone hmul hunit)`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Apply `Units.continuous_iff.2` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Continuous fun t => M t`. Conclude with `hM _ _ Units.continuous_val (hcA.comp Units.continuous_coe_inv)`. Express the relevant statement in the definitionally equal form `Continuous fun t : (AE F E)ˣ => M t⁻¹`. Simplify using `only [M, inv_inv]`. Conclude with `hM _ _ Units.continuous_coe_inv (hcA.comp Units.continuous_val)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_mul_right g).comp hc`. Introduce `t`. Use `⟨levi_matrix_mulVec_first_vector hax' hbx' _ _, levM_mulVec_y hay' hby' _ _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M t * incM F H'.ι = incM F H'.ι * 1`. Rewrite using `[Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `levM_mul_fix haι' hbι' _ _`. Introduce `x`. Rewrite using `[ratU, Subgroup.mem_subgroupOf]`. Establish `hE1` using `levM_mul (x := H'.x) (y := H'.y) hax hay hbx hby`. Use `⟨⟨levM H'.x H'.y aE bE x.1 (σ (x⁻¹).1), levM H'.x H'.y aE bE (x⁻¹).1 (σ x.1), ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hE1, Units.mul_inv, ← map_mul, Units.inv_mul, map_one, levM_one]`. Rewrite using `[hE1, Units.inv_mul, ← map_mul, Units.mul_inv, map_one, levM_one]`. Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `f (levM H'.x H'.y aE bE x.1 (σ (x⁻¹).1) i j) = M _ i j`. Rewrite using `[← Matrix.map_apply (f := f), levM_map]`. Use `show _ = levM (f ∘ H'.x) (f ∘ H'.y) (f ∘ aE) (f ∘ bE) (f x.1) (cA σ (f (x⁻¹).1)) i j`. Rewrite using `[show cA σ (f (x⁻¹).1) = f (σ (x⁻¹).1) from cA_inclR σ _]`. Introduce `t u hu`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hsub : unip σ G.W H' ≤ (unip σ G.W H').comap (MulAut.conj (homOf σ G.W.J M hone hmul hunit t)).toMonoidHom`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hvx, hvι⟩`. Rewrite using `[SetLike.mem_coe, Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Apply `Subgroup.subset_closure` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(M t * mat v * M t⁻¹) *ᵥ incV F H'.x = incV F H'.x`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `M t *ᵥ (mat v *ᵥ (M t⁻¹ *ᵥ (f ∘ H'.x))) = f ∘ H'.x`. Rewrite using `[levi_matrix_mulVec_first_vector hax' hbx', mulVec_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `M t *ᵥ ((t⁻¹).1 • (mat v *ᵥ incV F H'.x)) = f ∘ H'.x`. Rewrite using `[hvx, mulVec_smul]`. Express the relevant statement in the definitionally equal form `(t⁻¹).1 • (M t *ᵥ (f ∘ H'.x)) = f ∘ H'.x`. Rewrite using `[levi_matrix_mulVec_first_vector hax' hbx', smul_smul, Units.inv_mul, one_smul]`. Take `⟨c, hc⟩` from `hvι z`.
-
-Use `⟨c * t.1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(M t * mat v * M t⁻¹) *ᵥ (incM F H'.ι *ᵥ z) = incM F H'.ι *ᵥ z + (c * t.1) • incV F H'.x`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hfix, hc, mulVec_add, hfix, mulVec_smul, ← smul_smul]`. Express the relevant statement in the definitionally equal form `incM F H'.ι *ᵥ z + c • (M t *ᵥ (f ∘ H'.x)) = incM F H'.ι *ᵥ z + c • (t.1 • (f ∘ H'.x))`. Rewrite using `[levi_matrix_mulVec_first_vector hax' hbx']`.
-
-Use `hsub hu` as an intermediate fact. Rewrite `this` using `[Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem levi_hom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∃ mt : (AE F E)ˣ →* UA σ G.W.J, (∀ g, Continuous fun t => mt t * g) ∧ (∀ t, IsLevi (W₁ := W₁) H' t 1 (mt t)) ∧ (∀ x : Eˣ, mt (Units.map (inclR (F := F) (AF F)).toMonoidHom x) ∈ ratU σ G.W.J) ∧ ∀ t, ∀ u ∈ unip σ G.W H', mt t * u * (mt t)⁻¹ ∈ unip σ G.W H' := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA

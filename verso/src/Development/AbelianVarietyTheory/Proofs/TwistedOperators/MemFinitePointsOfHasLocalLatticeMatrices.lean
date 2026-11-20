@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.RowCover
 
 /- English proof (translation)
-Introduce `D T L sc G t B j hj x g hx`. Take `⟨e, ⟨⟨es, hes, rfl⟩, -⟩, hg, -⟩` from `hx`. Establish `h0 : infPart D ((∑ PP ∈ locPl G t, es PP) + cA D (∑ PP ∈ locPl G t, es PP)) = 0`. Rewrite using `[map_sum (cA D), ← Finset.sum_add_distrib, map_sum]`. Use `Finset.sum_eq_zero fun PP hPP => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, -, v, ε, ⟨α, rfl, -⟩, h⟩` from `(hes PP hPP).1`. Rewrite using `[h]`. Conclude with `TensorProduct.zero_tmul _ _`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `congrArg (infPart D) (hg i j)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, h0, zero_mul, Matrix.sub_apply, map_sub, eq_comm, sub_eq_zero]`. Use `Eq.trans this ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_GfC_of_hasLoc : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (t : T) (B : Frames G) {j : ℕ}
     (hj : j ≤ D.R.m) (x : GA D (G.V (.grid D.R.m j)))

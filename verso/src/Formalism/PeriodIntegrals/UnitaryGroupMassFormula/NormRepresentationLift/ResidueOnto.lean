@@ -21,31 +21,27 @@ variable (Λ : Submodule (𝓞 E) S.V) (hU : Formalism.HermitianLatticesTheory.I
 
 include hU hint hind he hloc in
 /- English proof (translation)
-Use `haveI := P.isMaximal`. Use `letI : Field (𝓞 E ⧸ P.asIdeal) := Ideal.Quotient.field P.asIdeal`. Set `mk` to `Ideal.Quotient.mk P.asIdeal`. Set `U : Submodule (𝓞 E ⧸ P.asIdeal) (Fin r → 𝓞 E ⧸ P.asIdeal)` to `{ carrier := {φ | ∃ y ∈ Λ, ∃ o : Fin r → 𝓞 E, (∀ i, S.hT y (e i) = (o i : E)) ∧ ∀ i, φ i = mk (o i)} zero_mem' := ⟨0, Λ.zero_mem, 0, fun i => by simp, fun i => by simp⟩ add_mem' := by`. Introduce and unpack `φ ψ ⟨y, hy, o, ho, hφ⟩ ⟨y', hy', o', ho', hψ⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y + y', Λ.add_mem hy hy', o + o', fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[map_add, ho, ho']`. Simplify using `[hφ, hψ]`. Use the proof step `smul_mem' := by`. Introduce and unpack `κ φ ⟨y, hy, o, ho, hφ⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ', rfl⟩` from `Ideal.Quotient.mk_surjective κ`. Use `⟨cj κ' • y, Λ.smul_mem _ hy, fun i => κ' * o i, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hT_cj_left, ho]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hφ, mk] }`. Establish `hUtop : U = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hfU⟩` from `Submodule.exists_le_ker_of_lt_top U (lt_top_iff_ne_top.mpr hne)`. Set `α : Fin r → 𝓞 E ⧸ P.asIdeal` to `fun i => f (fun j => if i = j then 1 else 0)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfα : ∀ φ, f φ = ∑ i, φ i * α i`. Introduce `φ`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f φ]`. Simplify using `[α, smul_eq_mul]`. Establish `hα0 : ∃ i, α i ≠ 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Rewrite using `[hfα, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun i _ => by rw [h i, mul_zero]`. Use `choose α' hα' using fun i => Ideal.Quotient.mk_surjective (α i)`. Establish `hmem` using `coeff_mem_P Λ hU e hind P hloc α' (by`. Introduce `y hy`. Use `choose o ho using fun i => hint y hy (e i) (he i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hφ : (fun i => mk (o i)) ∈ U` using `⟨y, hy, o, ho, fun i => rfl⟩`. Establish `hz : f (fun i => mk (o i)) = 0` using `hfU hφ`. Rewrite `hz` using `[hfα]`. Use `⟨∑ i, o i * α' i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify `hz` using `[map_sum, map_mul, hα', mk]`. Rewrite using `[map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hT_osmul_right, ho]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `ring)`. Take `⟨i, hi⟩` from `hα0`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← hα' i]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (hmem i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hc : (fun i => if i = c then (1 : 𝓞 E ⧸ P.asIdeal) else 0) ∈ U` using `by rw [hUtop]; trivial`. Take `⟨y, hy, o, ho, hφ⟩` from `hc`. Use `⟨y, hy, o, ho, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq]`. Use `hφ i` as an intermediate fact.
-
-Simplify using `only at this`. Distinguish the cases in `hic : i = c`. Simplify using `only [hic, if_true] at this ⊢`. Rewrite using `[map_one]`. Conclude with `this.symm`.
-
-Simplify using `only [hic, if_false] at this ⊢`. Rewrite using `[map_zero]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_onto (c : Fin r) :
     ∃ y ∈ Λ, ∃ o : Fin r → 𝓞 E, (∀ i, S.hT y (e i) = (o i : E)) ∧
@@ -112,17 +108,17 @@ theorem residue_onto (c : Fin r) :
 
 include hU hint hind he hloc in
 /- English proof (translation)
-Use `choose y hy o ho hP using fun j => residue_onto Λ hU hint e hind he P hloc j`. Set `G : Matrix (Fin r) (Fin r) (𝓞 E)` to `fun j i => o j i`. Establish `hdet : G.det ∉ P.asIdeal`. Introduce `hmem`. Establish `h1 : (Ideal.Quotient.mk P.asIdeal).mapMatrix G = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j i`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.one_apply]`. Use `Ideal.Quotient.eq.mpr (hP j i)` as an intermediate fact. Rewrite using `[this]`. Distinguish the cases in `hij : i = j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`. Use `RingHom.map_det (Ideal.Quotient.mk P.asIdeal) G` as an intermediate fact. Rewrite `this` using `[h1, Matrix.det_one, Ideal.Quotient.eq_zero_iff_mem.mpr hmem]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `key : ∀ i, S.hT (∑ j, cj (G.adjugate c j) • y j) (e i) = ((G.adjugate * G) c i : E)`. Introduce `i`. Rewrite using `[map_sum, LinearMap.sum_apply, Matrix.mul_apply]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hT_cj_left, ho]`. Rewrite `key` using `[Matrix.adjugate_mul]`. Use `⟨∑ j, cj (G.adjugate c j) • y j, Λ.sum_mem fun j _ => Λ.smul_mem _ (hy j), fun i hi => ?_, G.det, ?_, hdet⟩` and prove the remaining obligations. Rewrite using `[key, Matrix.smul_apply, Matrix.one_apply_ne (Ne.symm hi)]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[key, Matrix.smul_apply, Matrix.one_apply_eq]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exact_dual (c : Fin r) :
     ∃ y ∈ Λ, (∀ i, i ≠ c → S.hT y (e i) = 0) ∧ ∃ o : 𝓞 E, S.hT y (e c) = (o : E) ∧ o ∉ P.asIdeal := by

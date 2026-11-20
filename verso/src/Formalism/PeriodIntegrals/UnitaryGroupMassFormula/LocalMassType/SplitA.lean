@@ -15,23 +15,23 @@ section Gen
 variable {K A : Type} [Field K] [CommRing A] [Algebra K A] {e : A}
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, he, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_compl (he : e * e = e) : e * (1 - e) = 0 := by
   rw [mul_sub, mul_one, he, sub_self]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, idem_mul_compl he, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compl_idem (he : e * e = e) : (1 - e) * (1 - e) = 1 - e := by
   rw [sub_mul, one_mul, idem_mul_compl he, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1' : (1 - e) ≠ 0` using `sub_ne_zero.2 (Ne.symm h1)`. Establish `hs : s • e = 0`. Use `congrArg (· * e) hst` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_mul, smul_mul_assoc, he, mul_comm (1 - e) e, idem_mul_compl he, smul_zero, add_zero, zero_mul] at this`. Conclude with `this`. Establish `ht : t • (1 - e) = 0`. Use `congrArg (· * (1 - e)) hst` as an intermediate fact. Simplify using `only [add_mul, smul_mul_assoc, idem_mul_compl he, compl_idem he, smul_zero, zero_add, zero_mul] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `this`. Conclude with `⟨(smul_eq_zero.1 hs).resolve_right h0, (smul_eq_zero.1 ht).resolve_right h1'⟩`.
+A detailed English derivation is pending.
 -/
 theorem linInd (he : e * e = e) (h0 : e ≠ 0) (h1 : e ≠ 1) : LinearIndependent K ![e, 1 - e] := by
   rw [LinearIndependent.pair_iff]
@@ -56,7 +56,7 @@ def B : Module.Basis (Fin 2) K A :=
   basisOfLinearIndependentOfCardEqFinrank (linInd he h0 h1) (by simp [h2])
 
 /- English proof (translation)
-Simplify using `[B, coe_basisOfLinearIndependentOfCardEqFinrank]`.
+Simplify using the standard rewrite rules.
 -/
 theorem B_apply (i : Fin 2) : B h2 he h0 h1 i = ![e, 1 - e] i := by
   simp [B, coe_basisOfLinearIndependentOfCardEqFinrank]
@@ -66,7 +66,7 @@ def c1 (x : A) : K := (B h2 he h0 h1).repr x 0
 def c2 (x : A) : K := (B h2 he h0 h1).repr x 1
 
 /- English proof (translation)
-Use `(B h2 he h0 h1).sum_repr x` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two, B_apply, B_apply]`. Simplify `this.symm` using `[c1, c2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem decomp (x : A) : x = c1 h2 he h0 h1 x • e + c2 h2 he h0 h1 x • (1 - e) := by
   have := (B h2 he h0 h1).sum_repr x
@@ -74,7 +74,7 @@ theorem decomp (x : A) : x = c1 h2 he h0 h1 x • e + c2 h2 he h0 h1 x • (1 - 
   simpa [c1, c2] using this.symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [decomp h2 he h0 h1 x]`. Rewrite using `[add_mul, smul_mul_assoc, smul_mul_assoc, he, mul_comm (1 - e) e, idem_mul_compl he, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_e (x : A) : x * e = c1 h2 he h0 h1 x • e := by
   conv_lhs => rw [decomp h2 he h0 h1 x]
@@ -82,7 +82,7 @@ theorem mul_e (x : A) : x * e = c1 h2 he h0 h1 x • e := by
     smul_zero, add_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [decomp h2 he h0 h1 x]`. Rewrite using `[add_mul, smul_mul_assoc, smul_mul_assoc, idem_mul_compl he, compl_idem he, smul_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_ce (x : A) : x * (1 - e) = c2 h2 he h0 h1 x • (1 - e) := by
   conv_lhs => rw [decomp h2 he h0 h1 x]
@@ -91,13 +91,13 @@ theorem mul_ce (x : A) : x * (1 - e) = c2 h2 he h0 h1 x • (1 - e) := by
 
 include h0 in
 /- English proof (translation)
-The claim follows from `smul_left_injective K h0 h`.
+A detailed English derivation is pending.
 -/
 theorem uniq1 {c d : K} (h : c • e = d • e) : c = d := smul_left_injective K h0 h
 
 include h1 in
 /- English proof (translation)
-The claim follows from `smul_left_injective K (sub_ne_zero.2 (Ne.symm h1)) h`.
+A detailed English derivation is pending.
 -/
 theorem uniq2 {c d : K} (h : c • (1 - e) = d • (1 - e)) : c = d :=
   smul_left_injective K (sub_ne_zero.2 (Ne.symm h1)) h
@@ -133,7 +133,7 @@ Both sides reduce to the same expression.
 theorem adele_ext_components (x : A) : p2 h2 he h0 h1 x = c2 h2 he h0 h1 x := rfl
 
 /- English proof (translation)
-Establish `: a * (a - 1) = 0` using `by rw [mul_sub, mul_one, h, sub_self]`. Break down `mul_eq_zero.1 this with h' | h'` into its components or cases. Conclude with `Or.inl h'`. Conclude with `Or.inr (sub_eq_zero.1 h')`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem idem_cases {a : K} (h : a * a = a) : a = 0 ∨ a = 1 := by
   have : a * (a - 1) = 0 := by rw [mul_sub, mul_one, h, sub_self]
@@ -151,7 +151,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 attribute [local instance] LocMassOrdSF.finDim_FE
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_eq_card_basis (Algebra.TensorProduct.basis (Fv F v) (Module.finBasis F E))]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_tens (h : Module.finrank F E = 2) :
     Module.finrank (Fv F v) (Fv F v ⊗[F] E) = 2 := by
@@ -159,32 +159,32 @@ theorem finrank_tens (h : Module.finrank F E = 2) :
   simp [h]
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_basis (Algebra.TensorProduct.basis (Fv F v) (Module.finBasis F E))`.
+A detailed English derivation is pending.
 -/
 theorem finDim_tens : FiniteDimensional (Fv F v) (Fv F v ⊗[F] E) :=
   Module.Finite.of_basis (Algebra.TensorProduct.basis (Fv F v) (Module.finBasis F E))
 
 /- English proof (translation)
-Simplify using `[sigR, sc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_sc (c : Fv F v) : sigR (Fv F v) σ (sc (E := E) v c) = sc (E := E) v c := by
   simp [sigR, sc]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (y : E) : sigR (Fv F v) σ (inclR (F := F) (Fv F v) y) = inclR (F := F) (Fv F v) (σ y) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Rewrite using `[← PI.LocMassTypU.sc_mul_eq_smul, map_mul, sigR_sc, PI.LocMassTypU.sc_mul_eq_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_smul (c : Fv F v) (x : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (c • x) = c • sigR (Fv F v) σ x := by
   rw [← PI.LocMassTypU.sc_mul_eq_smul, map_mul, sigR_sc, PI.LocMassTypU.sc_mul_eq_smul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c y => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (hσ : ∀ y, σ (σ y) = y) (x : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (sigR (Fv F v) σ x) = x := by
@@ -194,13 +194,13 @@ theorem sigR_sigR (hσ : ∀ y, σ (σ y) = y) (x : Fv F v ⊗[F] E) :
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (algebraMap F (Fv F v)).injective`.
+A detailed English derivation is pending.
 -/
 theorem inclR_injective : Function.Injective (inclR (F := F) (Fv F v) : E → Fv F v ⊗[F] E) :=
   Algebra.TensorProduct.includeRight_injective (algebraMap F (Fv F v)).injective
 
 /- English proof (translation)
-Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2 τ (σ y), hCM.2.2.2 τ y, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol (hCM : IsCMExt F E σ) (y : E) : σ (σ y) = y := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
@@ -208,11 +208,9 @@ theorem sigma_invol (hCM : IsCMExt F E σ) (y : E) : σ (σ y) = y := by
   rw [hCM.2.2.2 τ (σ y), hCM.2.2.2 τ y, star_star]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Establish `hR : ComplexEmbedding.IsReal τ`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Use `hCM.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hcon x]`. Conclude with `this.symm`.
-
-Establish `hc` using `hCM.2.1.isComplex (InfinitePlace.mk τ)`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 hc) ⟨τ, hR, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigma_ne_id (hCM : IsCMExt F E σ) : ∃ y, σ y ≠ y := by
   by_contra hcon
@@ -229,22 +227,20 @@ theorem sigma_ne_id (hCM : IsCMExt F E σ) : ∃ y, σ y ≠ y := by
   exact (InfinitePlace.not_isReal_iff_isComplex.2 hc) ⟨τ, hR, rfl⟩
 
 /- English proof (translation)
-Use `PI.LocMassTypU.inclR_mem (E := E) v 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem oev_one : (1 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
   have := PI.LocMassTypU.inclR_mem (E := E) v 1
   simpa using this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `a ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ) at ha`. Express the relevant statement in the definitionally equal form `b ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ) at hb`. Express the relevant statement in the definitionally equal form `a * b ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ)`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a' ha'`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨α, -, rfl⟩` from `ha'`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b' hb'`. Take `⟨β, -, rfl⟩` from `hb'`. Conclude with `Submodule.subset_span ⟨α * β, trivial, by simp [map_mul]⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ c hx`. Consider the case `zero => rw [zero_mul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 theorem oev_mul {a b : Fv F v ⊗[F] E} (ha : a ∈ OEv (E := E) v) (hb : b ∈ OEv (E := E) v) :
     a * b ∈ OEv (E := E) v := by
@@ -279,23 +275,21 @@ def OEvR : Subring (Fv F v ⊗[F] E) where
 def cm : E ⊗[F] Fv F v ≃ₐ[F] Fv F v ⊗[F] E := Algebra.TensorProduct.comm F E (Fv F v)
 
 /- English proof (translation)
-Use `set T := PI.SplitIntLoc.tensInt (F := F) (Fv F v) (PI.SplitIntLoc.intOE E) (v.adicCompletionIntegers F).toSubring with hT`. Establish `hsc : ∀ c ∈ v.adicCompletionIntegers F, (cm v).symm (sc (E` using `E) v c) ∈ T := by`. Introduce `c hc`. Establish `e : (cm v).symm (sc (E` using `E) v c) = (1 : E) ⊗ₜ[F] c := by`. Simplify using `[cm, sc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨c, hc⟩, rfl⟩)`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ) at hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, -, rfl⟩` from `hy`. Establish `e : (cm v).symm (inclR (F` using `F) (Fv F v) (a : E)) = (a : E) ⊗ₜ[F] (1 : Fv F v) := by`. Simplify using `[cm, inclR]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨(a : E), ⟨a, rfl⟩⟩, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `T.add_mem hy hz`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `smul c y _ hy`. Establish `e : c • y = sc (E` using `E) v (c : Fv F v) * y := by`. Rewrite using `[PI.LocMassTypU.sc_mul_eq_smul]`. Both sides reduce to the same expression. Rewrite using `[e, map_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `T.mul_mem (hsc _ c.2) hy`. Introduce `hx`. Establish `hle : T ≤ (OEvR v).comap (cm v).toAlgHom.toRingHom`. Rewrite using `[hT]`. Unfold `PI.SplitIntLoc.tensInt`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subring.closure_le]`. Introduce and unpack `_ (⟨⟨a, ⟨b, rfl⟩⟩, rfl⟩ | ⟨⟨c, hc⟩, rfl⟩)`. Use `show (cm v) ((algebraMap (𝓞 E) E b) ⊗ₜ[F] (1 : Fv F v)) ∈ OEv (E := E) v`. Establish `e : (cm v) ((algebraMap (𝓞 E) E b) ⊗ₜ[F] (1 : Fv F v)) = inclR (F` using `F) (Fv F v) (b : E) := by`. Simplify using `[cm, inclR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `PI.LocMassTypU.inclR_mem v b`. Use `show (cm v) ((1 : E) ⊗ₜ[F] c) ∈ OEv (E := E) v`. Establish `e : (cm v) ((1 : E) ⊗ₜ[F] c) = c • (1 : Fv F v ⊗[F] E)`. Rewrite using `[← PI.LocMassTypU.sc_mul_eq_smul, mul_one]`.
-
-Simplify using `[cm, sc]`. Rewrite using `[e]`. Conclude with `PI.LocMassTypU.oev_smul v hc (oev_one v)`. Establish `h : x ∈ OEvR v` using `by simpa using hle hx`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem oev_iff_tensInt (x : Fv F v ⊗[F] E) :
     x ∈ OEv (E := E) v ↔ (cm v).symm x ∈

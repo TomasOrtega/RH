@@ -4,17 +4,15 @@ open NumberField IsDedekindDomain TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hunder : w''.under (𝓞 E) = w` using `HeightOneSpectrum.ext hw`. Establish `hc : ∀ c : E, w.valuation E c ≤ 1 → w''.valuation E' (algebraMap E E' c) ≤ 1`. Introduce `c hc`. Substitute `hunder` using the available equality. Establish `: w''.asIdeal.LiesOver (w''.under (𝓞 E)).asIdeal` using `⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[← HeightOneSpectrum.valuation_liesOver E' (w''.under (𝓞 E)) w'' c]`. Conclude with `pow_le_one' hc _`. Establish `hb : ∀ i, w''.valuation E' (b i) ≤ 1`. Introduce `i`. Establish `: b i = algebraMap (𝓞 E') E' (⟨b i, (mem_integralClosure_iff ℤ E').2 (hbi i)⟩ : 𝓞 E')` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `w''.valuation_le_one _`. Establish `hu : w''.valuation E' (ε * ε - ε) ≤ 1`. Rewrite using `[← b.sum_repr (ε * ε - ε)]`. Use `(Valuation.map_sum_le _ fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `mul_le_one' (hc _ (hε i)) (hb i)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h2 : w''.valuation E' (ε * ε) ≤ w''.valuation E' ε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ε * ε = ε + (ε * ε - ε)` using `by ring`. Rewrite using `[this]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le le_rfl (hu.trans h.le))`. Rewrite `h2` using `[map_mul]`. Establish `h0 : (0 : _) < w''.valuation E' ε` using `lt_trans zero_lt_one h`.
-
-Use `mul_lt_mul_of_pos_left h h0` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `absurd h2 (not_le.2 this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_sq_sub_integral (E E' : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Algebra E E']
     {ι : Type} [Fintype ι] (b : Module.Basis ι E E') (hbi : ∀ i, IsIntegral ℤ (b i))

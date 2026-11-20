@@ -9,19 +9,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨f₀, hp, hf₀⟩` from `GlobalTheory.T.finite_spreads_out_from_localization_at_prime R q B hfin`. Establish `hq : q ∈ Module.freeLocus R B` using `(Module.mem_freeLocus_iff_tensor q (Localization.AtPrime q.asIdeal)).mpr hfree`. Use `clear hfin hfree`. Use `set A := Localization.Away f₀`. Use `Module.FinitePresentation.of_finite_of_finitePresentation A (A ⊗[R] B)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨p, rfl⟩ : q ∈ Set.range (PrimeSpectrum.comap (algebraMap R A)) := by`. Rewrite using `[PrimeSpectrum.localization_away_comap_range A f₀]`. Conclude with `hp`. Establish `: Module.Free (Localization.AtPrime p.asIdeal) (LocalizedModule p.asIdeal.primeCompl (A ⊗[R] B))` using `Module.mem_freeLocus.mp (Module.comap_freeLocus_le (A := A) hq)`. Take `⟨r, hr, hf, -⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.asIdeal.primeCompl (LocalizedModule.mkLinearMap p.asIdeal.primeCompl (A ⊗[R] B)) (Localization.AtPrime p.asIdeal)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨r', u⟩, hu⟩` from `IsLocalization.surj (Submonoid.powers f₀) r`. Establish `hu' : IsUnit (algebraMap R A u)` using `IsLocalization.map_units A u`. Establish `hass : Associated r (algebraMap R A r')` using `⟨hu'.unit, hu⟩`. Establish `hr' : r' ∉ (PrimeSpectrum.comap (algebraMap R A) p).asIdeal` using `fun h => by`. Establish `h' : algebraMap R A r' ∈ p.asIdeal` using `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h'` using `[← show r * algebraMap R A u = algebraMap R A r' from hu]`. Conclude with `(p.isPrime.mem_or_mem h').elim hr fun h'' => p.isPrime.ne_top (p.asIdeal.eq_top_of_isUnit_mem h'' hu')`. Set `T` to `Localization.Away r`. Establish `: IsLocalization.Away (algebraMap R A r') T` using `IsLocalization.Away.of_associated hass`. Establish `: IsLocalization.Away (f₀ * r') T` using `IsLocalization.Away.mul' A T f₀ r'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Set `e : T ≃ₐ[R] Localization.Away (f₀ * r')` to `IsLocalization.algEquiv (Submonoid.powers (f₀ * r')) _ _`. Use `letI : Algebra T (Localization.Away (f₀ * r')) := e.toRingHom.toAlgebra`. Use `letI : Algebra A (Localization.Away (f₀ * r')) := (e.toRingHom.comp (algebraMap A T)).toAlgebra`. Establish `: IsScalarTower A T (Localization.Away (f₀ * r'))` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsScalarTower R A (Localization.Away (f₀ * r'))` using `IsScalarTower.of_algebraMap_eq fun x => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = e (algebraMap A T (algebraMap R A x))`. Rewrite using `[← IsScalarTower.algebraMap_apply, e.commutes]`. Establish `: Module.Free T (T ⊗[A] (A ⊗[R] B))` using `Module.Free.of_equiv (LocalizedModule.equivTensorProduct (Submonoid.powers r) (A ⊗[R] B))`. Establish `: Module.Free (Localization.Away (f₀ * r')) (Localization.Away (f₀ * r') ⊗[A] (A ⊗[R] B))` using `Module.Free.of_equiv (TensorProduct.AlgebraTensorModule.cancelBaseChange A T (Localization.Away (f₀ * r')) (Localization.Away (f₀ * r')) (A ⊗[R] B))`. Set `c` to `TensorProduct.AlgebraTensorModule.cancelBaseChange R A (Localization.Away (f₀ * r')) (Localization.Away (f₀ * r')) B`.
-
-Conclude with `⟨f₀ * r', fun h => ((PrimeSpectrum.comap (algebraMap R A) p).isPrime.mem_or_mem h).elim hp hr', Module.Finite.equiv c, Module.Free.of_equiv c⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_free_away_of_atPrime (R : Type) [CommRing R] (q : PrimeSpectrum R) (B : Type) [CommRing B]
     [Algebra R B] [Algebra.FinitePresentation R B]

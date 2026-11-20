@@ -8,11 +8,11 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `e : cc (herm X.Gm x y) = herm X.Gm y x`. Simplify using `only [herm, cc, map_sum, map_mul, NumberField.IsCMField.complexConj_apply_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `first`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `(have hg := X.Gm_herm b a`. Simplify using `only [cc] at hg`. Rewrite using `[hg]`. Use the proof step `ring)`. Consider the case `(have hg := X.Gm_herm a b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cc] at hg`. Rewrite using `[hg]`. Use the proof step `ring)`. Rewrite using `[← e, h]`. Simplify using `[cc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma herm_swap_eq_zero_of_eq_zero (X : Data E r) (x y : Fin r → E) (h : herm X.Gm x y = 0) :
     herm X.Gm y x = 0 := by
@@ -33,7 +33,7 @@ private lemma herm_swap_eq_zero_of_eq_zero (X : Data E r) (x y : Fin r → E) (h
   simp [cc]
 
 /- English proof (translation)
-Simplify using `only [herm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma herm_smul_left_fundamental_domains (G : Matrix (Fin r) (Fin r) E) (c : E) (x z : Fin r → E) :
     herm G (c • x) z = c * herm G x z := by
@@ -43,7 +43,7 @@ private lemma herm_smul_left_fundamental_domains (G : Matrix (Fin r) (Fin r) E) 
   ring
 
 /- English proof (translation)
-Simplify using `only [herm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, cc, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma herm_smul_right_eq_cc_mul (G : Matrix (Fin r) (Fin r) E) (c : E) (x z : Fin r → E) :
     herm G x (c • z) = cc c * herm G x z := by
@@ -53,13 +53,13 @@ private lemma herm_smul_right_eq_cc_mul (G : Matrix (Fin r) (Fin r) E) (c : E) (
   ring
 
 /- English proof (translation)
-Take `⟨-, hξξ, hξ0⟩` from `hξ`. Establish `hξx : herm X.Gm ξ x = 0` using `herm_swap_eq_zero_of_eq_zero X.toData x ξ hxξ`. Unfold `IsIsoPair`. Use `⟨?_, LinearIndependent.pair_iff.mpr fun s t hst => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i k fin_cases i <;> fin_cases k <;>`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[herm_smul_left_fundamental_domains, herm_smul_right_eq_cc_mul, hξξ, hxξ, hxx, hξx]`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero] at hst`. Conclude with `⟨(smul_eq_zero.mp hst).resolve_right hξ0, rfl⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-It suffices to derive a contradiction. Establish `hNC : (X.NC : E) ≠ 0` using `Nat.cast_ne_zero.mpr X.NC_pos.ne'`. Establish `htn : t * (X.NC : E) ≠ 0` using `mul_ne_zero ht hNC`. Establish `h1 : (t * (X.NC : E)) • x = -(s • ξ)`. Rewrite using `[mul_smul]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_right hst`. Apply `hne (-(s / (t * X.NC)))` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isIsoPair_of (X : DataX E r) {ξ x : Fin r → E} (hξ : X.IsIso ξ) (hxξ : herm X.Gm x ξ = 0)
     (hxx : herm X.Gm x x = 0) (hne : ∀ e : E, x ≠ e • ξ) :
@@ -86,7 +86,7 @@ theorem isIsoPair_of (X : DataX E r) {ξ x : Fin r → E} (hξ : X.IsIso ξ) (hx
         _ = -(s / (t * X.NC)) • ξ := by rw [h1, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]
 
 /- English proof (translation)
-Take `⟨hξΛ, -, -⟩` from `hξ`. Introduce `i`. Use `fin_cases i`. Conclude with `hξΛ`. Conclude with `X.NC_sub x hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_pair (X : DataX E r) {ξ x : Fin r → E} (hξ : X.IsIso ξ) (hx : x ∈ X.L') :
     ∀ i, (![ξ, (X.NC : E) • x] : Fin 2 → Fin r → E) i ∈ X.Λ := by
@@ -97,13 +97,13 @@ theorem mem_pair (X : DataX E r) {ξ x : Fin r → E} (hξ : X.IsIso ξ) (hx : x
   · exact X.NC_sub x hx
 
 /- English proof (translation)
-Use `set α := X.Hf z0 τ (Data.emb τ.1 x) (Data.emb τ.1 ξ) / X.Hf z0 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) with hα`. Establish `hxp : X.ucomp z0 ξ (X.embV x) τ = Data.emb τ.1 x - α • Data.emb τ.1 ξ` using `rfl`. Establish `h1 : hermC τ.1 X.Gm (Data.emb τ.1 x) (Data.emb τ.1 ξ) = 0`. Rewrite using `[hermC_emb, hxξ, map_zero]`. Establish `h2 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermC_emb, hξξ, map_zero]`. Establish `h3 : hermC τ.1 X.Gm (Data.emb τ.1 x) (Data.emb τ.1 x) = 0`. Rewrite using `[hermC_emb, hxx, map_zero]`. Establish `h4 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 x) = 0`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm, h1, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : X.Hf z0 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) ≠ 0`. Rewrite using `[X.Hf_self hz0 τ]`. Conclude with `(X.maj_pos hz0 τ (emb_ne_zero τ.1 hξ0)).ne'` after adjusting the coercions. Rewrite using `[hxp]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hermC_sub_left, hermC_smul_left, h1, h2, mul_zero, sub_zero]`. Simplify using `only [hermC_sub_left, hermC_sub_right, hermC_smul_left, hermC_smul_right, h1, h2, h3, h4]`. Simplify using the standard rewrite rules. Rewrite using `[Hf_sub_left, Hf_smul_left, hα, div_mul_cancel₀ _ hne, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xp_facts (X : Data E r) {ξ x : Fin r → E} (hξξ : herm X.Gm ξ ξ = 0) (hξ0 : ξ ≠ 0)
     (hxξ : herm X.Gm x ξ = 0) (hxx : herm X.Gm x x = 0) {z0 : Frame X.Ψ r} (hz0 : z0 ∈ X.dom)
@@ -133,13 +133,13 @@ theorem xp_facts (X : Data E r) {ξ x : Fin r → E} (hξξ : herm X.Gm ξ ξ = 
   · rw [Hf_sub_left, Hf_smul_left, hα, div_mul_cancel₀ _ hne, sub_self]
 
 /- English proof (translation)
-Establish `key : ∀ τ, ∃ k : ℝ, 0 < k ∧ e τ = (k : ℂ) • X.ucomp z0 ξ (X.embV x) τ ∧ k ^ 2 * (X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)) = 1`. Introduce `τ`. Establish `hm : 0 < X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)` using `mul_pos (MajorantFamilyNorms.c_pos X τ) (X.maj_pos hz0 τ (hxp0 τ))`. Use `⟨(Real.sqrt (X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)))⁻¹, inv_pos.mpr (Real.sqrt_pos.mpr hm), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [he τ, Complex.ofReal_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[inv_pow, Real.sq_sqrt hm.le, inv_mul_cancel₀ hm.ne']`. Use `⟨fun τ => ?_, fun τ => ?_, fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hek, -⟩` from `key τ`. Establish `hf` using `xp_facts X hξξ hξ0 hxξ hxx hz0 τ`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hek, hermC_smul_left, hermC_smul_right, hf.2.1, mul_zero, mul_zero]`. Rewrite using `[hek]`. Conclude with `smul_ne_zero (Complex.ofReal_ne_zero.mpr hk.ne') (hxp0 τ)`. Take `⟨k, -, hek, -⟩` from `key τ`. Rewrite using `[hek, hermC_smul_left, (xp_facts X hξξ hξ0 hxξ hxx hz0 τ).1, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, -, hek, -⟩` from `key τ`. Rewrite using `[hek, Hf_smul_left, (xp_facts X hξξ hξ0 hxξ hxx hz0 τ).2.2, mul_zero]`. Take `⟨k, -, hek, hk2⟩` from `key τ`. Rewrite using `[hek, maj_smul X hz0, ← hk2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem e_facts (X : Data E r) {ξ x : Fin r → E} (hξξ : herm X.Gm ξ ξ = 0) (hξ0 : ξ ≠ 0)
     (hxξ : herm X.Gm x ξ = 0) (hxx : herm X.Gm x x = 0) {z0 : Frame X.Ψ r} (hz0 : z0 ∈ X.dom)
@@ -173,11 +173,11 @@ theorem e_facts (X : Data E r) {ξ x : Fin r → E} (hξξ : herm X.Gm ξ ξ = 0
     ring
 
 /- English proof (translation)
-Establish `httv : ∀ τ, X.ttV e z τ = 1`. Introduce `τ`. Rewrite using `[Data.ttV, maj_flag X hz0.1 hz hf, hce τ, div_one]`. Establish `hTz : X.flowV e (fun _ => -(I / 2)) z ∈ X.dom`. Use `(flowDomainCriterion_holds r X e hiso z hz (fun _ => -(I / 2))).1.mpr fun τ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[httv τ]`. Evaluate the numerical expressions. Use `⟨httv, hTz, fun τ => ?_⟩` and prove the remaining obligations. Establish `hve : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (e τ) = 0`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm, heξ τ, map_zero]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpe : hermC τ.1 X.Gm (X.ppos z τ (Data.emb τ.1 ξ)) (e τ) = 0` using `hpe_of X hz τ (Data.emb τ.1 ξ) (e τ) (by rw [Hf_flag X hz0.1 hz hf]; exact hHe τ) (heξ τ)`. Rewrite using `[maj_flowV X e _ hz hTz τ _ hve hpe, maj_flag X hz0.1 hz hf, hz0.2 τ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem flow_facts (X : Data E r) {ξ : Fin r → E} {z0 : Frame X.Ψ r} (hz0 : z0 ∈ X.FramesOverBasis ξ)
     (e : X.Ψ → Fin r → ℂ) (hiso : X.IsIsoV e)

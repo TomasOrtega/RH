@@ -12,7 +12,7 @@ def GenLE (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (n : ℕ) : Pr
   ∃ π : (Fin n → R) →ₗ[R] M, Function.Surjective π
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `h`. Conclude with `Module.Finite.of_surjective π hπ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GenLE.finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {n : ℕ} (h : GenLE R M n) :
     Module.Finite R M := by
@@ -20,7 +20,7 @@ theorem GenLE.finite {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {n 
   exact Module.Finite.of_surjective π hπ
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `h`. Conclude with `⟨f ∘ₗ π, hf.comp hπ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GenLE.of_surjective {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
     {n : ℕ} (h : GenLE R M n) (f : M →ₗ[R] M') (hf : Function.Surjective f) : GenLE R M' n := by
@@ -79,7 +79,7 @@ theorem xTw_apply (e : ℤ) (g : G k Ω) :
     xTw l N U e g = ((cycZ k Ω l g ^ e : ℤ_[l]ˣ) : ℤ_[l]) • xRep l N U g := rfl
 
 /- English proof (translation)
-Rewrite using `[xTw_apply, dTw_apply, LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, xRep_apply, map_inv (cycZ k Ω l), inv_zpow', neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xTw_apply_apply (e : ℤ) (g : G k Ω) (x : Xinf l N U) (φ : Dinf l N U) :
     xTw l N U e g x φ = x (dTw l N U e g⁻¹ φ) := by
@@ -144,7 +144,7 @@ structure IsTower (R : ℕ) : Prop where
 end Layers
 
 /- English proof (translation)
-The claim follows from `HasEnoughRootsOfUnity.exists_primitiveRoot _ 3`.
+A detailed English derivation is pending.
 -/
 example : HasMuQ 3 (AlgebraicClosure ℚ) := HasEnoughRootsOfUnity.exists_primitiveRoot _ 3
 

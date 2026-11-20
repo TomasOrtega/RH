@@ -4,7 +4,7 @@ import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Tjcosets
 open NumberField IsDedekindDomain IsLocalRing UpperTheory.V UpperTheory.V.Sd Formalism.ConjugateSelfDual
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sq_two {O : Type} [CommRing O] (M : Matrix (Fin 2) (Fin 2) O) :
     M * M = (M 0 0 + M 1 1) • M - (M 0 0 * M 1 1 - M 0 1 * M 1 0) • (1 : Matrix (Fin 2) (Fin 2) O) := by
@@ -12,11 +12,11 @@ private theorem sq_two {O : Type} [CommRing O] (M : Matrix (Fin 2) (Fin 2) O) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, 1, by simp, by simp, by simp⟩`. Consider the case `succ n ih`. Take `⟨U, V, h, hU, hV⟩` from `ih`. Use `⟨U * (M 0 0 + M 1 1) + V, -(U * (M 0 0 * M 1 1 - M 0 1 * M 1 0)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, h, add_mul, smul_mul_assoc, smul_mul_assoc, one_mul, sq_two M] module`. Rewrite using `[map_add, map_mul, ht, hU, hV]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_neg, map_mul, hd, hU]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem pow_two_dim {O k : Type} [CommRing O] [CommRing k] (r : O →+* k) (M : Matrix (Fin 2) (Fin 2) O)
     (ht : r (M 0 0 + M 1 1) = 2) (hd : r (M 0 0 * M 1 1 - M 0 1 * M 1 0) = 1) (n : ℕ) :
@@ -32,9 +32,9 @@ private theorem pow_two_dim {O k : Type} [CommRing O] [CommRing k] (r : O →+* 
     · rw [map_neg, map_mul, hd, hU]; push_cast; ring
 
 /- English proof (translation)
-Establish `h1 : ∀ x : k, x ≠ 0 → x = 1`. Take `⟨y, -, hy⟩` from `(Nat.card_eq_two_iff' (0 : k)).1 hk`. Introduce `x hx`. Rewrite using `[hy x hx, hy 1 one_ne_zero]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Use `h1 2 h` as an intermediate fact. Establish `h2 : (1 : k) = 0` using `by linear_combination this`. Conclude with `one_ne_zero h2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem field_two {k : Type} [Field k] (hk : Nat.card k = 2) :
     (∀ x : k, x ≠ 0 → x = 1) ∧ (2 : k) = 0 := by
@@ -49,19 +49,17 @@ private theorem field_two {k : Type} [Field k] (hk : Nat.card k = 2) :
   exact one_ne_zero h2
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `field_two hk`. Establish `hu` using `(Matrix.GeneralLinearGroup.det h).isUnit`. Rewrite `hu` using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Establish `hdet : residue O (h 0 0 * h 1 1 - h 0 1 * h 1 0) = 1` using `h1 _ (hu.map (residue O)).ne_zero`. Establish `ha : residue O (h 0 0) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdet` using `[map_sub, map_mul, map_mul, hc, hd]`. Simplify using `using hdet`. Take `⟨U, V, hp, hU, -⟩` from `pow_two_dim (residue O) (h : Matrix (Fin 2) (Fin 2) O) (by rw [map_add, ha, hd]; norm_num) hdet n`. Establish `hUu : IsUnit U`. Assume the negation of the conclusion as `hU'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : residue O U = 0` using `(residue_eq_zero_iff U).2 hU'`. Take `⟨m, rfl⟩` from `hn`. Rewrite `hU` using `[h0]`. Move the coercions through the operations in `at hU`. Rewrite `hU` using `[h2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hU`. Establish `hU0 : φ U ≠ 0` using `(hUu.map φ).ne_zero`. Use `set k := Matrix.GeneralLinearGroup.map φ h with hkdef`. Establish `hkp : ((k ^ n : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) = φ U • (k : Matrix (Fin 2) (Fin 2) K) + φ V • (1 : Matrix (Fin 2) (Fin 2) K)`. Rewrite using `[hkdef, ← map_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((h ^ n : GL (Fin 2) O) : Matrix (Fin 2) (Fin 2) O).map φ = φ U • (h : Matrix (Fin 2) (Fin 2) O).map φ + φ V • (1 : Matrix (Fin 2) (Fin 2) K)`. Rewrite using `[Units.val_pow_eq_pow_val, hp]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, apply_ite φ]`. Rewrite `hz`, the goal using `[Subgroup.mem_center_iff]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `hg` using `congrArg Units.val (hz g)`. Rewrite `hg` using `[Units.val_mul, Units.val_mul, hkp, mul_add, add_mul, mul_smul_comm, mul_smul_comm, smul_mul_assoc, smul_mul_assoc, mul_one, one_mul, add_left_inj]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul]`.
-
-Conclude with `smul_right_injective _ hU0 hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen {O K : Type} [CommRing O] [IsLocalRing O] [Field K] (φ : O →+* K)
     (hk : Nat.card (ResidueField O) = 2) (h : GL (Fin 2) O)
@@ -105,13 +103,13 @@ private theorem gen {O K : Type} [CommRing O] [IsLocalRing O] [Field K] (φ : O 
   exact smul_right_injective _ hU0 hg
 
 /- English proof (translation)
-Introduce `F _ _ u c hc hN k hk n hn hz`. Take `⟨h, hh, rfl⟩` from `hk`. Establish `hle : maximalIdeal (u.adicCompletionIntegers F) ^ c ≤ maximalIdeal _` using `Ideal.pow_le_self hc`. Use `gen _ ?_ h ?_ ?_ n hn hz` and prove the remaining obligations. Rewrite using `[Formalism.UG.P.tjcosets_card_residue, ← hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[normV, Formalism.UG.qV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `h0` using `congrFun hh 0`. Rewrite using `[residue_eq_zero_iff]`. Apply `hle` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify `h0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `h0` using `congrFun hh 1`. Rewrite using `[← map_one (residue (u.adicCompletionIntegers F)), ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Apply `hle` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.eq, map_one]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify `h0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Sd.Wc.locTwo :
     UpperTheory.V.Sd.Wc.LocTwo := by

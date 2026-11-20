@@ -6,9 +6,9 @@ open scoped Matrix
 namespace GlobalTheory.KZ
 
 /- English proof (translation)
-Establish `hmm : 0 < (m * m').det` using `by rw [Matrix.det_mul]; exact mul_pos h h'`. Unfold `toGQ`. Rewrite using `[dif_pos hmm, dif_pos h, dif_pos h']`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Matrix.GeneralLinearGroup.mkOfDetNeZero, Units.val_mul] at *`. Conclude with `Matrix.map_mul (f := Int.castRingHom ℚ)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toGQ_mul_of_pos (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' : 0 < m'.det) :
     toGQ (m * m') = toGQ m * toGQ m' := by
@@ -21,7 +21,7 @@ theorem toGQ_mul_of_pos (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' 
   exact Matrix.map_mul (f := Int.castRingHom ℚ)
 
 /- English proof (translation)
-Unfold `mZl`. Rewrite using `[Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mZl_mul (l : ℕ) [Fact l.Prime] (m m' : Matrix (Fin 2) (Fin 2) ℤ) :
     mZl l (m * m') = mZl l m * mZl l m' := by
@@ -30,7 +30,7 @@ theorem mZl_mul (l : ℕ) [Fact l.Prime] (m m' : Matrix (Fin 2) (Fin 2) ℤ) :
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Unfold `Tower.kmap`. Simplify using `only [LinearMap.restrictScalars_apply]`. Rewrite using `[AdicCompletion.map_comp_apply, ← LinearMap.baseChange_comp]`. Use `congr 3`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem Tower.kmap_kmap (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (φ ψ : X.K ≃+* X.K) (x : X.Khat l) :
     X.kmap l ψ (X.kmap l φ x) = X.kmap l (φ.trans ψ) x := by
@@ -40,14 +40,14 @@ theorem Tower.kmap_kmap (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (φ ψ : X.K 
   congr 3
 
 /- English proof (translation)
-Use extensionality with `f`. Conclude with `X.sl_mul g h f`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem Tower.sl_mul_toRingEquiv (X : Tower Ω ε) (g h : GQ) :
     (X.sl (g * h)).toRingEquiv = (X.sl g).toRingEquiv.trans (X.sl h).toRingEquiv := by
   ext f; exact X.sl_mul g h f
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [Tower.act, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[Tower.kmap_kmap, toGQ_mul_of_pos m m' hm hm', Tower.sl_mul_toRingEquiv, mZl_mul, Matrix.mulVec_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tower.act_act (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
     (m m' : Matrix (Fin 2) (Fin 2) ℤ) (hm : 0 < m.det) (hm' : 0 < m'.det) (b : X.Fn l) :

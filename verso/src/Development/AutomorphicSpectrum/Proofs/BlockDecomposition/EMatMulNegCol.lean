@@ -61,7 +61,7 @@ section Help
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `only [rmul, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun e _ => mul_assoc _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmul_mul {M n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) (g h : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     rmul R (rmul R X g) h = rmul R X (g * h) := by
@@ -71,7 +71,7 @@ theorem rmul_mul {M n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) (g h : Matrix 
   exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun e _ => mul_assoc _ _ _
 
 /- English proof (translation)
-Simplify using `only [hR, hform, Finset.mul_sum, Finset.sum_mul]`. Use `(Finset.sum_congr rfl fun i _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hR_sum_right (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (x : Fin M → R ⊗[F] E)
     (y : Fin n → Fin M → R ⊗[F] E) (w : Fin n → R ⊗[F] E) :
@@ -82,7 +82,7 @@ theorem hR_sum_right (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M
   exact Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hR, hform, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `(Finset.sum_congr rfl fun i _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hR_sum_left (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (x : Fin n → Fin M → R ⊗[F] E)
     (y : Fin M → R ⊗[F] E) (w : Fin n → R ⊗[F] E) :
@@ -93,7 +93,7 @@ theorem hR_sum_left (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M)
   exact Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use extensionality with `a c`. Express the relevant statement in the definitionally equal form `hR R σ J (fun i => ∑ e, X e i * g e a) (fun i => ∑ e, X e i * g e c) = _`. Rewrite using `[hR_sum_right]`. Simplify using `only [hR_sum_left]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gramR_rmul (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (X : Fin n → Fin M → R ⊗[F] E)
     (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
@@ -105,23 +105,23 @@ theorem gramR_rmul (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) 
   rfl
 
 /- English proof (translation)
-Simplify using `only [cjM, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cjM_mul (σ : E →ₐ[F] E) {n : ℕ} (g h y : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     cjM R σ (g * h) y = cjM R σ h (cjM R σ g y) := by
   simp only [cjM, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `[cjM, Matrix.map_one, map_zero, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cjM_one (σ : E →ₐ[F] E) {n : ℕ} (y : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     cjM R σ 1 y = y := by
   simp [cjM, Matrix.map_one, map_zero, map_one]
 
 /- English proof (translation)
-Introduce `a c`. Establish `hy' : ∀ a c, sigR R σ (y c a) = y a c` using `hy`. Simplify using `only [cjM, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, map_sum, map_mul, hσ, hy']`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem cjM_mem (σ : E →ₐ[F] E) (hσ : ∀ x, sigR R σ (sigR R σ x) = x) {n : ℕ}
     (g y : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (hy : y ∈ HermR R σ n) : cjM R σ g y ∈ HermR R σ n := by
@@ -136,17 +136,17 @@ def negCol {n : ℕ} (l : Fin n) (a : Fin n → R ⊗[F] E) : Fin n → R ⊗[F]
   fun i => if i = l then 1 else - a i
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, eMat, Matrix.updateCol_apply, Matrix.one_apply]`. Distinguish the cases in `hk : k = l`. Substitute `hk` using the available equality. Simplify using `only [if_true, negCol]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: ∀ c, (if c = k then a i else if i = c then (1 : R ⊗[F] E) else 0) * (if c = k then 1 else - a c) = (if c = k then a i else 0) + (if c = i then (if i = k then 0 else - a i) else 0)`. Introduce `c`. Distinguish the cases in `h1 : c = k`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : c = i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h2]`. Distinguish the cases in `h2 : c = i`. Substitute `h2` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[h1]`. Simplify using `[h1, h2, Ne.symm h2]`. Simplify using `only [this, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hl]`. Simplify using `[h]`. Simplify using `only [hk, if_false]`. Establish `: ∀ c, (if c = l then a i else if i = c then (1 : R ⊗[F] E) else 0) * (if c = k then 1 else 0) = if c = k then (if i = k then 1 else 0) else 0`. Introduce `c`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h1 : c = k`. Substitute `h1` using the available equality. Simplify using `[hk]`. Simplify using `[h1]`. Simplify using `only [this, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eMat_mul_negCol {n : ℕ} (l : Fin n) (a : Fin n → R ⊗[F] E) (hl : a l = 1) :
     eMat R l a * eMat R l (negCol R l a) = 1 := by
@@ -180,9 +180,9 @@ theorem eMat_mul_negCol {n : ℕ} (l : Fin n) (a : Fin n → R ⊗[F] E) (hl : a
     simp only [this, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[dMat, dMat, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using h`. Simplify using `[Function.update_of_ne hi]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem dMat_mul {n : ℕ} (l : Fin n) (s t : R ⊗[F] E) (h : s * t = 1) : dMat R l s * dMat R l t = 1 := by
   rw [dMat, dMat, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -193,7 +193,7 @@ theorem dMat_mul {n : ℕ} (l : Fin n) (s t : R ⊗[F] E) (h : s * t = 1) : dMat
   · simp [Function.update_of_ne hi]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, h]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (σ : E →ₐ[F] E) (h : ∀ e, σ (σ e) = e) (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -202,7 +202,7 @@ theorem sigR_sigR (σ : E →ₐ[F] E) (h : ∀ e, σ (σ e) = e) (x : R ⊗[F] 
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Establish `: tupIn (M` using `M) (n := n) R L = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => L := by`. Use extensionality with `X`. Simplify using `[tupIn]`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hL`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_tupIn [TopologicalSpace (R ⊗[F] E)] {M n : ℕ} {L : Set (R ⊗[F] E)} (hL : IsCompact L) :
     IsCompact (tupIn (M := M) (n := n) R L) := by

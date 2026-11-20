@@ -8,15 +8,15 @@ namespace GlobalTheory
 open MvPolynomial
 
 /- English proof (translation)
-Establish `hb : AlgebraicIndependent k b`. Rewrite using `[algebraicIndependent_iff_injective_aeval]`. Conclude with `Function.Injective.of_comp (f := χ) hχ`. Establish `hT` using `hb.isTranscendenceBasis_of_trdeg_le_of_finite hA`. Use `hT.isAlgebraic` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `hne`. Establish `hmem : a ∈ RingHom.ker χ` using `ha`. Use `Ideal.comap_ne_bot_of_algebraic_mem hne hmem (Algebra.IsAlgebraic.isAlgebraic (R := Algebra.adjoin k (Set.range b)) a) (eq_bot_iff.2 fun y hy => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[Ideal.mem_bot]`. Take `⟨y, hy'⟩` from `y`. Establish `hr` using `hy'`. Rewrite `hr` using `[Algebra.adjoin_range_eq_range_aeval]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `hr`. Establish `h0 : χ (aeval b q) = 0` using `hy`. Establish `hq : q = 0` using `hχ (show χ (aeval b q) = χ (aeval b 0) by rw [map_zero, map_zero]; exact h0)`. Substitute `hq` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem injective_of_injective_comp_aeval_of_trdeg_le {k A κ ι : Type} [Field k] [CommRing A]
     [IsDomain A] [Algebra k A] [CommRing κ] [Finite ι] (b : ι → A)

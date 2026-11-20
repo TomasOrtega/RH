@@ -26,7 +26,7 @@ def postEquiv (X : Type) : (X → M) ≃ₛₗ[σ] (X → M') where
   right_inv c := by funext x; simp
 
 /- English proof (translation)
-Rewrite using `[← IsLocallyConstant.iff_continuous]`. Conclude with `⟨fun h => h.comp e, fun h => by`. Simplify `h.comp e.symm⟩` using `[postEquiv, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem locallyConstant_iff {X : Type} [TopologicalSpace X] (c : X → M) :
     IsLocallyConstant c ↔ Continuous (postEquiv e X c) := by
@@ -38,9 +38,9 @@ variable (he : ∀ g x, e (π g x) = ρ g (e x))
 include he
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.Gal.mem_cocycles2, ← locallyConstant_iff]`. Establish `key : ∀ g h k, ρ g (postEquiv e (G × G) c (h, k)) - postEquiv e (G × G) c (g * h, k) + postEquiv e (G × G) c (g, h * k) - postEquiv e (G × G) c (g, h) = e (ReciprocityTheory.Def.d2 π c (g, h, k))`. Introduce `g h k`. Simplify using `[postEquiv, ReciprocityTheory.Def.d2, he]`. Simplify using `only [key, e.map_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, -⟩, h2⟩`. Conclude with `⟨h1, fun g h k => congrFun (LinearMap.mem_ker.1 h2) (g, h, k)⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1, fun _ => trivial⟩, LinearMap.mem_ker.2 (funext fun x => h2 x.1 x.2.1 x.2.2)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_Z2_iff (c : G × G → M) :
     c ∈ ReciprocityTheory.Def.Z2 π ⊤ ↔ postEquiv e (G × G) c ∈ ReciprocityTheory.Gal.Z2 ρ := by
@@ -60,7 +60,7 @@ theorem mem_Z2_iff (c : G × G → M) :
 omit [TopologicalSpace G] [TopologicalSpace M'] [DiscreteTopology M'] [IsTopologicalAddGroup M']
   [ContinuousConstSMul O' M'] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[postEquiv, ReciprocityTheory.Def.d1, ReciprocityTheory.Gal.d1, he]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem post_equiv_coboundary_one (c : G → M) :
     postEquiv e (G × G) (ReciprocityTheory.Def.d1 π c) = ReciprocityTheory.Gal.d1 ρ (postEquiv e G c) := by
@@ -68,9 +68,9 @@ theorem post_equiv_coboundary_one (c : G → M) :
   simp [postEquiv, ReciprocityTheory.Def.d1, ReciprocityTheory.Gal.d1, he]
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.Gal.separated_dvr_second_cohomology_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, ⟨hf, -⟩, rfl⟩`. Conclude with `⟨postEquiv e G f, (locallyConstant_iff e f).1 hf, (post_equiv_coboundary_one π ρ e he f).symm⟩`. Introduce and unpack `⟨f, hf, h⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨f, rfl⟩` from `(postEquiv e G).surjective f`. Use `⟨f, ⟨(locallyConstant_iff e f).2 hf, fun _ => trivial⟩, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← post_equiv_coboundary_one π ρ e he]`. Conclude with `(postEquiv e (G × G)).injective h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_B2_iff (c : G × G → M) :
     c ∈ ReciprocityTheory.Def.B2 π ⊤ ↔ postEquiv e (G × G) c ∈ ReciprocityTheory.Gal.B2 ρ := by
@@ -93,11 +93,11 @@ def h2CohomologyMap : ReciprocityTheory.Def.H2 π ⊤ →ₛₗ[σ] ReciprocityT
   Submodule.mapQ _ _ (twoCocycleMap π ρ e he) fun c hc => (mem_B2_iff π ρ e he c.1).1 hc
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Submodule.Quotient.mk (twoCocycleMap π ρ e he c) : ReciprocityTheory.Gal.H2 ρ) = 0` using `hx`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `(mem_B2_iff π ρ e he c.1).2 h1`. Introduce `y`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `(postEquiv e (G × G)).surjective c`. Conclude with `⟨Submodule.Quotient.mk ⟨c, (mem_Z2_iff π ρ e he c).2 hc⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem h2CohomologyMap_bijective : Function.Bijective (h2CohomologyMap π ρ e he) := by
   constructor
@@ -117,9 +117,9 @@ def h2EquivOfOrderTwo : ReciprocityTheory.Def.H2 π ⊤ ≃ₛₗ[σ] Reciprocit
   LinearEquiv.ofBijective (h2CohomologyMap π ρ e he) (h2CohomologyMap_bijective π ρ e he)
 
 /- English proof (translation)
-Use `haveI : RingHomCompTriple σ' σ (RingHom.id O') := ⟨RingHomInvPair.comp_eq₂⟩`. Use `haveI : RingHomCompTriple σ σ' (RingHom.id O) := ⟨RingHomInvPair.comp_eq⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f⟩`. Conclude with `⟨((h2EquivOfOrderTwo π ρ e he).symm.trans f).trans e⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨f⟩`. Conclude with `⟨((h2EquivOfOrderTwo π ρ e he).trans f).trans e.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_iff :
     Nonempty (ReciprocityTheory.Def.H2 π ⊤ ≃ₗ[O] M) ↔ H2IsoCoefficients ρ := by
@@ -139,23 +139,21 @@ variable {l : ℕ} [Fact l.Prime] {LL O : Type} [Field LL] [Algebra ℚ_[l] LL] 
   [CommRing O] [Algebra O LL]
 
 /- English proof (translation)
-Take `⟨⟨hO, hdvr, hfr⟩, hfd, hmt, htr, hop⟩` from `h`. Take `⟨-, -, hmt', -, -⟩` from `(GlobalTheory.LocalIntegers.good_integers l L').1`. Establish `hcont : Continuous φ.symm` using `IsModuleTopology.continuous_of_linearMap φ.symm.toLinearEquiv.toLinearMap`. Establish `hU : IsOpen (φ.symm ⁻¹' Set.range (algebraMap O LL))` using `hop.preimage hcont`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hU 0 ⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc0, hc⟩` from `NormedField.exists_norm_lt ℚ_[l] hε`. Establish `hc0' : c ≠ 0` using `norm_pos_iff.1 hc0`. Establish `hk : ∀ k : ℕ, ∃ b : O, algebraMap O LL b = algebraMap ℚ_[l] LL c * x ^ k`. Introduce `k`. Establish `: φ (algebraMap ℚ_[l] LL c * x ^ k) ∈ Metric.ball (0 : ↥L'.1) ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_ball_zero_iff]`. Express the relevant statement in the definitionally equal form `‖((φ (algebraMap ℚ_[l] LL c * x ^ k) : ↥L'.1) : Om l)‖ < ε`. Rewrite using `[map_mul, map_pow, AlgEquiv.commutes]`. Use `push_cast`. Rewrite using `[norm_mul, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖((algebraMap ℚ_[l] ↥L'.1 c : ↥L'.1) : Om l)‖ = ‖c‖` using `PadicAlgCl.norm_extends l c`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.le`. Conclude with `pow_le_one₀ (norm_nonneg _) hx`. Use `_ < ε := by simpa using hc`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using hball this`. Break down `ValuationRing.isInteger_or_isInteger O x with h | ⟨y, hy⟩` into its components or cases. Conclude with `h`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Conclude with `⟨0, by simp⟩`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hu : IsUnit y`. Take `⟨z, hz⟩` from `hu.exists_right_inv`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap O LL) hz` as an intermediate fact. Rewrite `this` using `[map_mul, hy, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Clear denominators, using `at this` for the nonvanishing conditions. Conclude with `this`. It suffices to derive a contradiction. Take `⟨a, ha⟩` from `hk 0`. Establish `ha0 : a ≠ 0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hc0' (by simpa using ha.symm)`. Take `⟨n, hn⟩` from `FiniteMultiplicity.of_not_isUnit hu ha0`. Take `⟨b, hb⟩` from `hk (n + 1)`. Use `hn ⟨b, IsFractionRing.injective O LL ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_pow, hy, hb, ha, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mem_range_of_norm_le (h : GoodO (Qp := ℚ_[l]) LL O) (L' : FinExt l)
     (φ : LL ≃ₐ[ℚ_[l]] ↥L'.1) (x : LL) (hx : ‖((φ x : ↥L'.1) : Om l)‖ ≤ 1) :
@@ -206,15 +204,15 @@ theorem mem_range_of_norm_le (h : GoodO (Qp := ℚ_[l]) LL O) (L' : FinExt l)
     field_simp
 
 /- English proof (translation)
-Establish `hO : φ x ∈ OL L' ↔ ‖((φ x : ↥L'.1) : Om l)‖ ≤ 1` using `mem_integralClosure_padicInt_iff L'.1 _`. Rewrite using `[hO]`. Use `⟨?_, mem_range_of_norm_le h L' φ x⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hlt` using `[not_le]`. Establish `hsurj : Function.Surjective (algebraMap O LL)`. Introduce `w`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt ‖((φ w : ↥L'.1) : Om l)‖ hlt`. Establish `hpos : 0 < ‖((φ (algebraMap O LL a) : ↥L'.1) : Om l)‖ ^ k` using `by positivity`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha : algebraMap O LL a ≠ 0`. Introduce `h0`. Rewrite `hlt` using `[h0]`. Evaluate the numerical expressions using `at hlt`. Take `⟨b, hb⟩` from `mem_range_of_norm_le h L' φ (w / algebraMap O LL a ^ k) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_div₀, map_pow]`. Use `push_cast`. Rewrite using `[norm_div, norm_pow, div_le_one hpos]`. Conclude with `hk.le)`. Conclude with `⟨b * a ^ k, by rw [map_mul, map_pow, hb]; field_simp⟩`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hO, hdvr, hfr⟩, -⟩` from `h`. Conclude with `IsDiscreteValuationRing.not_isField O ((RingEquiv.ofBijective (algebraMap O LL) ⟨IsFractionRing.injective O LL, hsurj⟩).toMulEquiv.isField (Field.toIsField LL))`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_iff (h : GoodO (Qp := ℚ_[l]) LL O) (L' : FinExt l)
     (φ : LL ≃ₐ[ℚ_[l]] ↥L'.1) (x : LL) :
@@ -245,7 +243,7 @@ theorem mem_range_iff (h : GoodO (Qp := ℚ_[l]) LL O) (L' : FinExt l)
       ⟨IsFractionRing.injective O LL, hsurj⟩).toMulEquiv.isField (Field.toIsField LL))
 
 /- English proof (translation)
-Set `ψ : LL →ₐ[ℚ_[l]] Om l` to `IsAlgClosed.lift`. Conclude with `⟨⟨ψ.fieldRange, (AlgEquiv.ofInjectiveField ψ).toLinearEquiv.finiteDimensional⟩, ⟨AlgEquiv.ofInjectiveField ψ⟩⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_finExt (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL] :
     ∃ L' : FinExt l, Nonempty (LL ≃ₐ[ℚ_[l]] ↥L'.1) := by
@@ -263,19 +261,17 @@ variable {G LL O LL' O' M' : Type} [Group G] [TopologicalSpace G] [Field LL] [Co
   [ContinuousConstSMul O' M']
 
 /- English proof (translation)
-Set `e₁` to `RingEquiv.ofBijective (algebraMap O LL).rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), (algebraMap O LL).rangeRestrict_surjective⟩`. Set `e₂` to `RingEquiv.ofBijective (algebraMap O' LL').rangeRestrict ⟨fun a b h => hinj' (congrArg Subtype.val h), (algebraMap O' LL').rangeRestrict_surjective⟩`. Set `e₃ : ↥(algebraMap O LL).range ≃+* ↥(algebraMap O' LL').range` to `φ.restrict _ _ fun x => hφ x`. Set `σ : O ≃+* O'` to `(e₁.trans e₃).trans e₂.symm`. Establish `hσ : ∀ a, algebraMap O' LL' (σ a) = φ (algebraMap O LL a)` using `fun a => congrArg Subtype.val (e₂.apply_symm_apply (e₃ (e₁ a)))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `clear_value σ`. Use `haveI := RingHomInvPair.of_ringEquiv σ`. Use `haveI := RingHomInvPair.of_ringEquiv_symm σ`. Set `f : LL →ₛₗ[(σ : O →+* O')] M'` to `{ toFun := fun x => m (φ x) map_add' := fun a b => by rw [map_add, map_add] map_smul' := fun a x => by`. Rewrite using `[Algebra.smul_def, map_mul, ← hσ, hsmul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `rfl }`. Establish `hmem : ∀ x, x ∈ T ↔ f x = 0` using `fun x => by`. Rewrite using `[hT]`. Conclude with `(hφ x).trans (hker _).symm`. Set `q : (LL ⧸ T) →ₛₗ[(σ : O →+* O')] M'` to `T.liftQ f fun x hx => (hmem x).1 hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ∀ x, q (Submodule.Quotient.mk x) = m (φ x)` using `fun _ => rfl`. Establish `hqb : Function.Bijective q`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[Submodule.Quotient.mk_eq_zero, hmem]`. Conclude with `hx`. Introduce `y`. Take `⟨y, rfl⟩` from `hm y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `φ.surjective y`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`. Use `nonempty_iff π ρ (LinearEquiv.ofBijective q hqb) ?_` and prove the remaining obligations. Introduce `g x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
-
-Express the relevant statement in the definitionally equal form `q (π g (Submodule.Quotient.mk x)) = ρ g (q (Submodule.Quotient.mk x))`. Rewrite using `[hπ, hq, hq, hρ, map_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_iff_of_ringEquiv (hinj : Function.Injective (algebraMap O LL))
     (hinj' : Function.Injective (algebraMap O' LL')) (φ : LL ≃+* LL')
@@ -356,7 +352,7 @@ section Compare
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l)
 
 /- English proof (translation)
-Use `nonempty_iff_of_ringEquiv (O' := ↥(OL L')) hinj Subtype.val_injective φ.toRingEquiv (fun x => (hφ x).trans ⟨fun h => ⟨⟨_, h⟩, rfl⟩, by rintro ⟨y, hy⟩; exact hy ▸ y.2⟩) L1.T hL (FracModInt.mk L').toAddMonoidHom (Submodule.Quotient.mk_surjective (intSub L')) (fun y => Submodule.Quo …` and prove the remaining obligations. Use `(fracModIntTwist_mk P K L' g y).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun t => FracModInt.mk L' (t * y)) (φ.commutes _).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem clause_iff {LL O : Type} [Field LL] [Algebra ℚ_[l] LL] [CommRing O] [Algebra O LL]
     (hinj : Function.Injective (algebraMap O LL)) (L' : FinExt l) (φ : LL ≃ₐ[ℚ_[l]] ↥L'.1)
@@ -379,7 +375,7 @@ def Clause (LL O : Type) [Field LL] [Algebra ℚ_[l] LL] [CommRing O] [Algebra O
       Nonempty (ReciprocityTheory.Def.H2 (repD L1) ⊤ ≃ₗ[O] (LL ⧸ L1.T))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem tate_h2_iff_clause : LocalTateTopDegree (P.PD K) ↔
     ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
@@ -392,7 +388,7 @@ def intLattice (LL : FinExt l) :=
     fun g => ⟨algebraMap ℤ_[l] ↥(OL LL) (chiInt P K g), rfl⟩
 
 /- English proof (translation)
-Establish `h` using `clause_iff P K (O := ↥(OL LL)) Subtype.val_injective LL AlgEquiv.refl fun x => ⟨by rintro ⟨y, rfl⟩; exact y.2, fun hx => ⟨⟨x, hx⟩, rfl⟩⟩`. Conclude with `⟨fun H => (h _ rfl).1 (H (intLattice P K LL) rfl), fun H L1 hL => (h L1 hL).2 H⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem coreClause_iff (LL : FinExt l) : CoreClause P K LL ↔ TateLocalDualityDegreeTwoAt P K LL := by
   have h := clause_iff P K (O := ↥(OL LL)) Subtype.val_injective LL AlgEquiv.refl
@@ -400,9 +396,9 @@ theorem coreClause_iff (LL : FinExt l) : CoreClause P K LL ↔ TateLocalDualityD
   exact ⟨fun H => (h _ rfl).1 (H (intLattice P K LL) rfl), fun H L1 hL => (h L1 hL).2 H⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h LL`. Conclude with `(coreClause_iff P K LL).1 (h ↥LL.1 ↥(OL LL) (GlobalTheory.LocalIntegers.good_integers l LL).1)`. Introduce `h LL _ _ _ O _ _ hO L1 hL haveI := hO.2.1`. Take `⟨L', ⟨φ⟩⟩` from `exists_finExt (l := l) LL`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, -, hfr⟩` from `hO.1`. Conclude with `(clause_iff P K (IsFractionRing.injective O LL) L' φ (mem_range_iff hO L' φ) L1 hL).2 (h L')`.
+A detailed English derivation is pending.
 -/
 theorem tate_h2_iff_finite_extensions : LocalTateTopDegree (P.PD K) ↔ ∀ LL : FinExt l, TateLocalDualityDegreeTwoAt P K LL := by
   constructor
@@ -419,13 +415,13 @@ theorem tate_h2_iff_finite_extensions : LocalTateTopDegree (P.PD K) ↔ ∀ LL :
 end Compare
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun l => forall_congr' fun _ => forall_congr' fun K => tate_h2_iff_finite_extensions (D.loc l) K`.
+A detailed English derivation is pending.
 -/
 theorem tate_h2_iff_all_finite_extensions (D : D7) : Formalism.MainNotions.LocalSituation.adm3 D ↔ TateLocalDualityDegreeTwoAll D :=
   forall_congr' fun l => forall_congr' fun _ => forall_congr' fun K => tate_h2_iff_finite_extensions (D.loc l) K
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun l => forall_congr' fun _ => forall_congr' fun K => forall_congr' fun _ => forall_congr' fun LL => forall_congr' fun _ => (coreClause_iff (D.loc l) K LL).symm`.
+A detailed English derivation is pending.
 -/
 theorem tateLocalDualityGood_iff_forall_coreClause (D : D7) : TateLocalDualityDegreeTwoGood D ↔
     ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL →
@@ -434,13 +430,13 @@ theorem tateLocalDualityGood_iff_forall_coreClause (D : D7) : TateLocalDualityDe
     forall_congr' fun LL => forall_congr' fun _ => (coreClause_iff (D.loc l) K LL).symm
 
 /- English proof (translation)
-The claim follows from `((tate_h2_iff_all_finite_extensions D).1 h).tateDualityTop_of_all`.
+A detailed English derivation is pending.
 -/
 theorem tateLocalDualityGood_of_adm3 {D : D7} (h : Formalism.MainNotions.LocalSituation.adm3 D) : TateLocalDualityDegreeTwoGood D :=
   ((tate_h2_iff_all_finite_extensions D).1 h).tateDualityTop_of_all
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨tate_h2_iff_all_finite_extensions D, fun l _ K LL => coreClause_iff (D.loc l) K LL, tateLocalDualityGood_iff_forall_coreClause D, tateLocalDualityGood_of_adm3⟩`.
+Supply the required witnesses or components.
 -/
 theorem compare (D : D7) :
     (Formalism.MainNotions.LocalSituation.adm3 D ↔ TateLocalDualityDegreeTwoAll D) ∧

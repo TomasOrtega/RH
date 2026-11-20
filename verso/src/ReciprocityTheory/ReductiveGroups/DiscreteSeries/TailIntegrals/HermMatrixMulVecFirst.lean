@@ -15,20 +15,20 @@ def sg (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if r ≤ i.val ∧ i.val ≤ r + k then i else ⟨2 * r + k - i.val, by omega⟩
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sg; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     (sg k r i).val = if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val := by
   unfold sg; split_ifs <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `apply Fin.ext; rw [sg_val, sg_val]; split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sg (k r : ℕ) (i : Fin (2 * r + k + 1)) : sg k r (sg k r i) = i := by
   apply Fin.ext; rw [sg_val, sg_val]; split_ifs <;> omega
 
 /- English proof (translation)
-Establish `key : j = sg k r i ↔ j.val = (if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val)`. Rewrite using `[← sg_val, Fin.ext_iff]`. Unfold `Hpk`. Simplify using `only [key, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = sg k r i then (if i.val = r + k then -1 else 1) else 0 := by
@@ -39,14 +39,14 @@ theorem hpk_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `[mulVec, dotProduct, hpk_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hpk_mulVec (k r : ℕ) (w : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ w) i = (if i.val = r + k then -1 else 1) * w (sg k r i) := by
   simp [mulVec, dotProduct, hpk_apply]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply, hpk_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use `_ = ∑ i, star (u i) * w i := Fintype.sum_equiv (Function.Involutive.toPerm _ (sg_sg k r)) _ _ (fun i => rfl)`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem star_hpk_dot (k r : ℕ) (u w : Fin (2 * r + k + 1) → ℂ) :
     star (Hpk k r *ᵥ u) ⬝ᵥ (Hpk k r *ᵥ w) = star u ⬝ᵥ w := by
@@ -61,9 +61,9 @@ theorem star_hpk_dot (k r : ℕ) (u w : Fin (2 * r + k + 1) → ℂ) :
 abbrev cc : ℂ := ((Real.sqrt 2)⁻¹ : ℂ)
 
 /- English proof (translation)
-Establish `h : ((Real.sqrt 2 : ℝ) : ℂ) ^ 2 = 2`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (by norm_num)]; norm_num`. Establish `h0 : ((Real.sqrt 2 : ℝ) : ℂ) ≠ 0`. Introduce `h'`. Rewrite `h` using `[h', zero_pow two_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h`. Simplify using `only [cc]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h]`.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_sq : cc * cc = 1 / 2 := by
   have h : ((Real.sqrt 2 : ℝ) : ℂ) ^ 2 = 2 := by
@@ -79,20 +79,20 @@ def aF' (k r : ℕ) (y : Fin (2 * r + k + 1) → ℂ) (t : Fin (r + 1)) : ℂ :=
   if h : t.val < r then y (esI k r ⟨t.val, h⟩) else cc * (y (wI k r 0) + y (wI k r (Fin.last k)))
 
 /- English proof (translation)
-Introduce `i j h; simp only [levPos, Fin.ext_iff] at h; exact Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem levPos_inj (k r' : ℕ) : Function.Injective (levPos k 1 r') := by
   intro i j h; simp only [levPos, Fin.ext_iff] at h; exact Fin.ext (by omega)
 
 /- English proof (translation)
-Unfold `liftVec; rw [dif_pos (by simp only [levPos]; omega)]; congr 1`.
+Replace the relevant objects with their definitions.
 -/
 theorem lift_levPos (k r' : ℕ) (v : Fin (2 * r' + k + 1) → ℂ) (i : Fin (2 * r' + k + 1)) :
     liftVec k 1 r' v (levPos k 1 r' i) = v i := by
   unfold liftVec; rw [dif_pos (by simp only [levPos]; omega)]; congr 1
 
 /- English proof (translation)
-Simplify using `only [liftVec]`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hp ⟨⟨p.val - 1, by omega⟩, Fin.ext (by simp [levPos]; omega)⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lift_zero (k r' : ℕ) (v : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (1 + r') + k + 1))
     (hp : p ∉ Set.range (levPos k 1 r')) : liftVec k 1 r' v p = 0 := by
@@ -100,7 +100,7 @@ theorem lift_zero (k r' : ℕ) (v : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * 
   exact hp ⟨⟨p.val - 1, by omega⟩, Fin.ext (by simp [levPos]; omega)⟩
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply]`. Use `symm`. Use `Fintype.sum_of_injective _ (levPos_inj k r') _ _ (fun p hp => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[lift_zero _ _ v _ hp, mul_zero]`. Rewrite using `[lift_levPos, lift_levPos]`.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_dot (k r' : ℕ) (u v : Fin (2 * r' + k + 1) → ℂ) :
     star (liftVec k 1 r' u) ⬝ᵥ liftVec k 1 r' v = star u ⬝ᵥ v := by
@@ -111,11 +111,11 @@ theorem lift_dot (k r' : ℕ) (u v : Fin (2 * r' + k + 1) → ℂ) :
   · rw [lift_levPos, lift_levPos]
 
 /- English proof (translation)
-Set `al : Fin (m + 1) → ℂ` to `Fin.cases 1 (fun _ => 0)`. Set `xh : Fin (m + 1) → ℂ` to `Fin.cases 0 (fun j => x j)`. Set `ah : Fin (m + 1) → ℂ` to `Fin.cases 0 (fun j => a j)`. Set `U : Matrix (Fin (m + 1)) (Fin 3) ℂ` to `Matrix.of fun i q => ![al i, xh i, ah i] q`. Set `V : Matrix (Fin 3) (Fin (m + 1)) ℂ` to `Matrix.of fun q j => ![c * al j + star (xh j), al j, star (ah j)] q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hM : Mx = 1 + U * V`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `[h00, U, V, al, xh, ah, Matrix.mul_apply, Fin.sum_univ_three]`. Simplify using `[h0j, U, V, al, xh, ah, Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply, (Fin.succ_ne_zero j).symm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hj0, U, V, al, xh, ah, Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply]`. Simplify using `[hij, U, V, al, xh, ah, Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply, Fin.succ_inj]`. Rewrite using `[hM, det_one_add_mul_comm, det_fin_three]`. Simplify using `only [← Fin.sum_univ_eq_sum_range]`. Simplify using `[U, V, al, xh, ah, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

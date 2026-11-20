@@ -24,7 +24,7 @@ open Classical
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Use `Module.Finite.of_surjective (Algebra.linearMap _ Ω) fun x => ?_` and prove the remaining obligations. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := o) x`. Conclude with `⟨⟨_, div_mem (Subfield.subset_closure (Or.inl ⟨a, rfl⟩)) (Subfield.subset_closure (Or.inl ⟨b, rfl⟩))⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_over_closure_of_isFractionRing (o Ω : Type) [CommRing o] [IsDomain o] [Field Ω] [Algebra o Ω]
     [IsFractionRing o Ω] (s : Set Ω) : Module.Finite (Subfield.closure (Set.range (algebraMap o Ω) ∪ s)) Ω := by
@@ -33,17 +33,17 @@ theorem finite_over_closure_of_isFractionRing (o Ω : Type) [CommRing o] [IsDoma
   exact ⟨⟨_, div_mem (Subfield.subset_closure (Or.inl ⟨a, rfl⟩)) (Subfield.subset_closure (Or.inl ⟨b, rfl⟩))⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `hN`. Establish `hLL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Take `⟨hU, hTo⟩` from `GlobalTheory.T.uniformisationExistence_and_torsion_statements`. Take `⟨o, Ω, _, _, _, hb, S, ρ, hg, hB, hfr⟩` from `GlobalTheory.RealInhabitant.exists_real_dim_one_isFractionRing hLL.1 hLL.2.1`. Use `hb.ft` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hb.char` as an intermediate fact. Use `hb.ded` as an intermediate fact. Take `⟨hT, hU'⟩` from `GlobalTheory.T.thetaSystem_hasTests_of_real_point hN hU hLL.1 hLL.2.1 hTo o Ω S ρ`. Establish `hasU : ρ.HasU` using `fun p _ y₀ hy Fs => hU' p y₀ Fs hy`. Establish `hGeo : ρ.HasGeo` using `GlobalTheory.T.hasGeometricTest_of_hasUniformisedTest hLL hTo o Ω S ρ hB hasU`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, U₀, hA, -, -⟩` from `GlobalTheory.ZH.exists_admissible_affine_model_dividing_tuple o Ω S Unit (fun _ => 1) ⟨(), one_ne_zero⟩ (finite_over_closure_of_isFractionRing o Ω _)`. Establish `hO : S.Over₀ M U₀` using `hA.1`. Establish `hll` using `@GlobalTheory.ZH.classical_points_and_local_regularity o Ω _ _ _ _ _ M U₀ hO.normal`. Establish `hte` using `@GlobalTheory.ZH.exists_at_test_of_cen o Ω _ _ _ _ S M U₀ hT hO`. Establish `hwt` using `@GlobalTheory.ZH.test_weights o Ω _ _ _ _ S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0a` using `@GlobalTheory.ZH.ThetaSys.mem_supI_iff_and_HH_eq_ker o Ω _ _ _ _ S M U₀ hO`. Establish `h0b` using `@GlobalTheory.ZH.isoFree_TT_and_supI_specializes o Ω _ _ _ _ S M U₀ hO hll hte h0a`. Establish `h11` using `@GlobalTheory.thetaSys_norm_FF_le_exp o Ω _ _ _ _ S hwt`. Establish `h12` using `@GlobalTheory.norm_val_FF_eq_of_div o Ω _ _ _ _ S M U₀ hO h0a h11 hte`. Establish `hne` using `@GlobalTheory.ZH.FF_TT_ne_zero o Ω _ _ _ _ S M U₀ hO hll hte h0a h0b hwt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨EE, hE, hE₁⟩` from `GlobalTheory.ZH.exists_isEE_of_adm o Ω S M U₀ hT hA`. Establish `hsec` using `@GlobalTheory.ZH.DualSection.ff_div_th_mul_dotProduct_mem o Ω _ _ _ _ S M U₀ EE hA hll hte h0a h0b hwt h11 h12 hne hE₁`. Take `⟨n, a, GG, hGG⟩` from `@GlobalTheory.ZH.GlobalGen.exists_global_generators o Ω _ _ _ _ S M U₀ EE hA hll.2 h0b hne hE₁ hsec`. Establish `hgen : ∃ (n a : ℕ) (GG : Fin n → S.J → Ω), ∀ z : M.Z, ∀ x₀ ∈ S.supI M z, ∀ w : S.J → Ω, w ∈ Submodule.span (M.O z) (Set.range fun k j => GG k j / S.th x₀ ^ a) ↔ ∀ v ∈ EE.E z, w ⬝ᵥ v ∈ M.O z` using `⟨n, a, fun k j => GG k j, hGG⟩`. Take `⟨ξ, -⟩` from `hO.ne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, -, hx, -⟩` from `h0b.2.2.2 ξ ⊤ trivial`. Take `⟨p, hp, y, hy⟩` from `(hll.1 U₀ le_rfl hO.ne x hx).1`. Take `⟨y₀, -, hy₀, -⟩` from `hte x p y hy`. Conclude with `⟨o, Ω, _, _, _, hb, S, ρ, M, U₀, EE, hg, hB, hT, hasU, hGeo, hA, hE, hgen, GlobalTheory.T.zarhinGeometric_of_semistableReduction hN o Ω S ρ hB M U₀ EE hO hE hgen, p, hp, y₀, hy₀⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_zhOut_dim_one : GlobalTheory.Published.SemistableReductionSt → ∃ (o Ω : Type) (_ : CommRing o) (_ : Field Ω) (_ : Algebra o Ω) (_ : ArithBase o Ω) (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.g = 1 ∧ S.Big ∧ S.HasTests ∧ ρ.HasU ∧ ρ.HasGeo ∧ S.admitted M U₀ ∧ S.IsEE M U₀ EE ∧ (∃ (n a : ℕ) (GG : Fin n → S.J → Ω), ∀ z : M.Z, ∀ x₀ ∈ S.supI M z, ∀ w : S.J → Ω, w ∈ Submodule.span (M.O z) (Set.range fun k j => GG k j / S.th x₀ ^ a) ↔ ∀ v ∈ EE.E z, w ⬝ᵥ v ∈ M.O z) ∧ Nonempty (ZHOut ρ M U₀ EE) ∧ ∃ (p : ℕ) (_ : Fact p.Prime) (y₀ : S.R →+* PadicAlgCl p), ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1 := by
   intro hN

@@ -6,7 +6,7 @@ open ReciprocityTheory.DiscreteGroups.LocalClassField Matrix GlobalTheory.LKLoc
 namespace GlobalTheory.LKLoc
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(x : PadicAlgCl p) ∈ Obar p ↔ _`. Conclude with `mem_Obar_iff`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mem_intR_iff_norm_le_one (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ)
     (x : Kn p K r) : x ∈ intR p K r ↔ ‖x‖ ≤ 1 := by
@@ -14,19 +14,17 @@ theorem mem_intR_iff_norm_le_one (p : ℕ) [Fact p.Prime] (K : IntermediateField
   exact mem_Obar_iff
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, rfl⟩`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((A : Matrix (Fin n) (Fin n) (intR p K r)) i j : Kn p K r) ∈ intR p K r`. Conclude with `SetLike.coe_mem _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv]`. Express the relevant statement in the definitionally equal form `(((A⁻¹ : GL (Fin n) (intR p K r)) : Matrix (Fin n) (Fin n) (intR p K r)) i j : Kn p K r) ∈ intR p K r`. Conclude with `SetLike.coe_mem _`. Introduce and unpack `⟨h1, h2⟩`. Set `B : Matrix (Fin n) (Fin n) (intR p K r)` to `Matrix.of fun i j => ⟨_, h1 i j⟩`.
+Express the relevant assertion in an equivalent form by its definition. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `C : Matrix (Fin n) (Fin n) (intR p K r)` to `Matrix.of fun i j => ⟨_, h2 i j⟩`. Establish `hB : B.map (intR p K r).subtype = (g : Matrix (Fin n) (Fin n) (Kn p K r))`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hC : C.map (intR p K r).subtype = ((g⁻¹ : GL (Fin n) (Kn p K r)) : Matrix (Fin n) (Fin n) (Kn p K r))`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `inj : Function.Injective (fun M : Matrix (Fin n) (Fin n) (intR p K r) => M.map (intR p K r).subtype)`. Introduce `M N h`. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext (congrFun (congrFun h i) j)`. Establish `hBC : B * C = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hB, hC, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hCB : C * B = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hB, hC, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.inv_mul)`. Use `⟨⟨B, C, hBC, hCB⟩, ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_Kint_iff_integral_entries (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (n r : ℕ)
     (g : GL (Fin n) (Kn p K r)) :
@@ -64,21 +62,17 @@ theorem mem_Kint_iff_integral_entries (p : ℕ) [Fact p.Prime] (K : Intermediate
     rfl
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[p] (Kn p K r) := finiteDimensional_Kn p K hK hr`. Use `haveI : ProperSpace (Kn p K r) := FiniteDimensional.proper ℚ_[p] (Kn p K r)`. Use `set L := Kn p K r`. Set `Mset : Set (Matrix (Fin n) (Fin n) L)` to `{A | ∀ i j, A i j ∈ intR p K r}`. Establish `hMset : Mset = Set.univ.pi (fun _ : Fin n => Set.univ.pi fun _ : Fin n => Metric.closedBall (0 : L) 1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `A`. Use `show (∀ i j, A i j ∈ intR p K r) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h i _ j _ show A i j ∈ Metric.closedBall (0 : L) 1`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mem_intR_iff_norm_le_one p K r _).1 (h i j)`. Introduce `h i j`. Establish `h' : A i j ∈ Metric.closedBall (0 : L) 1` using `h i trivial j trivial`. Rewrite `h'` using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(mem_intR_iff_norm_le_one p K r _).2 h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hM : IsCompact Mset`. Rewrite using `[hMset]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `hM' : IsCompact (MulOpposite.unop ⁻¹' Mset)`. Establish `: MulOpposite.unop ⁻¹' Mset = MulOpposite.op '' Mset` using `Set.ext fun x => ⟨fun h => ⟨x.unop, h, rfl⟩, by rintro ⟨y, hy, rfl⟩; exact hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[this]`. Conclude with `hM.image MulOpposite.continuous_op`. Set `S : Set (Matrix (Fin n) (Fin n) L × (Matrix (Fin n) (Fin n) L)ᵐᵒᵖ)` to `(Mset ×ˢ (MulOpposite.unop ⁻¹' Mset)) ∩ {x | x.1 * x.2.unop = 1} ∩ {x | x.2.unop * x.1 = 1}`. Establish `hS : IsCompact S`. Establish `hc1 : Continuous fun x : Matrix (Fin n) (Fin n) L × (Matrix (Fin n) (Fin n) L)ᵐᵒᵖ => x.1 * x.2.unop` using `continuous_fst.matrix_mul (MulOpposite.continuous_unop.comp continuous_snd)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hc2 : Continuous fun x : Matrix (Fin n) (Fin n) L × (Matrix (Fin n) (Fin n) L)ᵐᵒᵖ => x.2.unop * x.1` using `(MulOpposite.continuous_unop.comp continuous_snd).matrix_mul continuous_fst`. Conclude with `((hM.prod hM').inter_right (isClosed_eq hc1 continuous_const)).inter_right (isClosed_eq hc2 continuous_const)`. Rewrite using `[Units.isEmbedding_embedProduct.isCompact_iff]`. Use `hS using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Take `⟨h1, h2⟩` from `(mem_Kint_iff_integral_entries p K n r u).1 hu`. Conclude with `⟨⟨⟨h1, h2⟩, u.mul_inv⟩, u.inv_mul⟩`. Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`.
-
-Use `⟨⟨x.1, x.2.unop, h3, h4⟩, (mem_Kint_iff_integral_entries p K n r _).2 ⟨h1, h2⟩, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCompact_Kint (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K)
     (n r : ℕ) (hr : 0 < r) : IsCompact (Kint p K n r : Set (GL (Fin n) (Kn p K r))) := by

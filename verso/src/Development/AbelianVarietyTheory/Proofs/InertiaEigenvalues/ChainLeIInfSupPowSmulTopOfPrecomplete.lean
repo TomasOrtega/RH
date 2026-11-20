@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Submodule.smul_induction_on h ?_ ?_` and prove the remaining obligations. Introduce `r hr m _ i`. Conclude with `J.mul_mem_right _ hr`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x z hx hz i`. Conclude with `J.add_mem (hx i) (hz i)`. Introduce `h`. Rewrite using `[pi_eq_sum_univ y]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ideal_smul_top_pi_fin_iff {Λ : Type} [CommRing Λ] (J : Ideal Λ) {a : ℕ}
     (y : Fin a → Λ) : y ∈ J • (⊤ : Submodule Λ (Fin a → Λ)) ↔ ∀ i, y i ∈ J := by
@@ -21,23 +21,23 @@ theorem mem_ideal_smul_top_pi_fin_iff {Λ : Type} [CommRing Λ] (J : Ideal Λ) {
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) Submodule.mem_top
 
 /- English proof (translation)
-Introduce `Λ _ I hI a N hanti hpow hstep n x hx`. Establish `hA : Antitone N` using `antitone_nat_of_succ_le hanti`. Establish `step : ∀ m (y : N m), ∃ z : N (m + 1), (y : Fin a → Λ) - z ∈ I ^ (m + 1) • (⊤ : Submodule Λ (Fin a → Λ))`. Introduce `m y`. Take `⟨z, hz, w, hw, h⟩` from `Submodule.mem_sup.1 (hstep m y.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Establish `: (y : Fin a → Λ) - z = w` using `by rw [← h]; abel`. Simplify `hw` using `[this]`. Use `choose f hf using step`. Set `u : ∀ j : ℕ, N (n + j)` to `fun j => Nat.rec (motive := fun j => N (n + j)) ⟨x, hx⟩ (fun j y => f (n + j) y) j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu0 : (u 0 : Fin a → Λ) = x` using `rfl`. Establish `hus : ∀ j, (u j : Fin a → Λ) - u (j + 1) ∈ I ^ (n + j + 1) • (⊤ : Submodule Λ (Fin a → Λ))` using `fun j => hf (n + j) (u j)`. Establish `htel : ∀ j j', j ≤ j' → ∀ i, (u j : Fin a → Λ) i - (u j' : Fin a → Λ) i ∈ I ^ (n + j + 1)`. Introduce `j j' hjj i`. Proceed by induction on `j', hjj using Nat.le_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `base => simp`. Consider the case `succ k hk ih`. Establish `h1` using `(mem_ideal_smul_top_pi_fin_iff _ _).1 (hus k) i`. Establish `h2 : I ^ (n + k + 1) ≤ I ^ (n + j + 1)` using `Ideal.pow_le_pow_right (by omega)`. Establish `h3` using `Ideal.add_mem _ ih (h2 h1)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3`. Establish `hlim : ∀ i, ∃ L : Λ, ∀ j, (u j : Fin a → Λ) i - L ∈ I ^ j`. Introduce `i`. Take `⟨L, hL⟩` from `IsPrecomplete.prec hI (f := fun j => (u j : Fin a → Λ) i) (by`. Introduce `m k hmk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (by omega) (htel m k hmk i))`. Use `⟨L, fun j => ?_⟩` and prove the remaining obligations. Use `hL j` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose L hL using hlim`. Establish `hdiff : ∀ j, (u j : Fin a → Λ) - L ∈ I ^ (n + j + 1) • (⊤ : Submodule Λ (Fin a → Λ))`. Introduce `j`. Rewrite using `[mem_ideal_smul_top_pi_fin_iff]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3` using `Ideal.add_mem _ (htel j (n + j + 1) (by omega) i) (hL i (n + j + 1))`. Simplify using `using h3`. Establish `hLmem : L ∈ ⨅ k, N k`. Rewrite using `[Submodule.mem_iInf]`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (u k : Fin a → Λ) - (u k - L) ∈ N (n + k)` using `Submodule.sub_mem _ (u k).2 (hpow _ (hdiff k))`. Rewrite `h1` using `[sub_sub_cancel]`. Conclude with `hA (by omega) h1`. Use `Submodule.mem_sup.2 ⟨L, hLmem, x - L, hdiff 0, by abel⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem chain_le_iInf_sup_pow_smul_top :
     ∀ (Λ : Type) [CommRing Λ] (I : Ideal Λ) [IsPrecomplete I Λ] (a : ℕ)

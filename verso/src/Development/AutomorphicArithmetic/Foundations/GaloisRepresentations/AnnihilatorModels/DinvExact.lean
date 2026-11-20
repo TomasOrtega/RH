@@ -15,7 +15,7 @@ def Dinv (ρ : Representation L G V) : Submodule L (V ⊗[F] B) :=
   ⨅ g, LinearMap.ker (AlgebraTensorModule.map (ρ g) (σ g) - LinearMap.id)
 
 /- English proof (translation)
-Simplify using `[Dinv, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Dinv {ρ : Representation L G V} {x : V ⊗[F] B} :
     x ∈ Dinv σ ρ ↔ ∀ g, AlgebraTensorModule.map (ρ g) (σ g) x = x := by
@@ -51,7 +51,7 @@ def Subq {L G V W : Type} [Field L] [Group G] [AddCommGroup V] [Module L V] [Add
     Inter ρU ρ i ∧ Function.Injective i ∧ Inter ρU ρ' p ∧ Function.Surjective p
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨V, inferInstance, inferInstance, ρ, LinearMap.id, LinearMap.id, fun _ _ => rfl, Function.injective_id, fun _ _ => rfl, Function.surjective_id⟩`.
+Supply the required witnesses or components.
 -/
 theorem Subq.refl {L G V : Type} [Field L] [Group G] [AddCommGroup V] [Module L V] (ρ : Representation L G V) : Subq ρ ρ :=
   ⟨V, inferInstance, inferInstance, ρ, LinearMap.id, LinearMap.id, fun _ _ => rfl, Function.injective_id, fun _ _ => rfl,

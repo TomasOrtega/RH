@@ -5,7 +5,7 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `hGen hAbs k L O _ _ _ _ H θ C g D s t hst m d hL hd R _ T hT tr trg htr htrg x`. Take `⟨κ, h, hκt, hfet⟩` from `hGen C g s t hst m hL`. Conclude with `hAbs T hT _ _ _ _ (piK C) (piK_snd C) (H.s g) (H.t g) (H.comm g) _ _ (bcMap_snd _ _ _) κ h d m rfl (bcMap_snd _ _ _) hκt hd hfet tr trg htr htrg x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pLiesOp :
     LiesGen → LiesAbs.{u} → LiesOp.{u} := by

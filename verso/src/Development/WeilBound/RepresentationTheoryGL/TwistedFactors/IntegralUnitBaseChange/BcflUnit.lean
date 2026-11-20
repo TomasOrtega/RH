@@ -28,7 +28,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetTraceFou
 namespace PositivityTheory.Rg.Tf.Loc
 
 /- English proof (translation)
-The claim follows from `bcflUnit_of_leaves GlobalTheory.T.unramified_extension_integral_basis GlobalTheory.T.integralBasisUnramified_of_d0a GlobalTheory.T.unramified_dual_family_holds GlobalTheory.T.norm_map_torus_surjective GlobalTheory.T.separable_norm_commuting GlobalTheory.T.norm_commutes_separable_ …`.
+A detailed English derivation is pending.
 -/
 theorem bcflUnit : BCFLUnit :=
   bcflUnit_of_leaves GlobalTheory.T.unramified_extension_integral_basis GlobalTheory.T.integralBasisUnramified_of_d0a GlobalTheory.T.unramified_dual_family_holds GlobalTheory.T.norm_map_torus_surjective GlobalTheory.T.separable_norm_commuting GlobalTheory.T.norm_commutes_separable_holds GlobalTheory.T.norm_centralizer_identification GlobalTheory.T.norm_map_first_property GlobalTheory.T.norm_map_second_property GlobalTheory.T.norm_map_third_property GlobalTheory.T.norm_map_integral_property GlobalTheory.T.lattice_first_property GlobalTheory.T.lattice_second_property GlobalTheory.T.lattice_third_property GlobalTheory.T.lattice_fourth_property GlobalTheory.T.unipotent_hecke_support GlobalTheory.T.hecke_third_property GlobalTheory.T.unipotent_hecke_fourth_property GlobalTheory.T.unit_fundamental_lemma_first_holds GlobalTheory.T.unit_fundamental_lemma_second_holds

@@ -34,7 +34,7 @@ open Out
 namespace PositivityTheory.HtPt.Ppic
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 private theorem isMonHom_comp_comp {C : Type*} [Category C] [CartesianMonoidalCategory C]
     {A B D F : C} [MonObj A] [MonObj B] [MonObj D] [MonObj F]
@@ -45,17 +45,15 @@ private theorem isMonHom_comp_comp {C : Type*} [Category C] [CartesianMonoidalCa
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ r tV hC hr hker hpol P`. Take `⟨Pu, -⟩` from `hU E H V hC tV hpol (PositivityTheory.HtPt.Pquo.split E H V r tV hr hker P)`. Take `⟨Q, X, _, _, _, T, β, hβ, hL⟩` from `PositivityTheory.HtPt.Pquo.fibre E H V r tV hr hker Pu P`. Take `⟨e', he', hq⟩` from `PositivityTheory.HtPt.Ppic.quot P.tK.G P.τ X T`. Use `letI := P.τ.grpB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Set `g : Q.A ≅ P.tB.G` to `Iso.trans β.symm (Iso.trans e'.symm P.e)`. Use `haveI : IsMonHom g.hom := isMonHom_comp_comp β.symm e'.symm P.e (by show IsMonHom β.inv; infer_instance) (by show IsMonHom e'.inv; infer_instance) P.e_hom`. Establish `hLB` using `P.tB.PP.isLB`. Establish `hQL` using `Q.isLB`. Establish `hKL` using `P.tK.PP.isLB`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMLB : (P.tB.PP.L.pull g.hom.left).IsLB` using `LB.isLB_pull hLB _`. Establish `hrefl : LBIso (P.tB.PP.L.pull g.hom.left) (P.tB.PP.L.pull g.hom.left)` using `(cls_eq_iff hMLB hMLB).1 rfl`. Establish `hcomp : (T.q ≫ β.hom).left ≫ g.hom.left = (P.τ.q ≫ P.e.hom).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, Iso.trans_hom, Iso.symm_hom, Category.assoc, Iso.hom_inv_id_assoc]`. Rewrite using `[← hq, Category.assoc, Iso.hom_inv_id_assoc]`. Establish `h1 : LBIso ((P.tB.PP.L.pull g.hom.left).pull (T.q ≫ β.hom).left) (P.tB.PP.L.pull (P.τ.q ≫ P.e.hom).left)` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso hrefl _ hcomp.symm`. Establish `h2 : LBIso ((P.tB.PP.L.pull g.hom.left).pull (T.q ≫ β.hom).left) (Q.L.pull (T.q ≫ β.hom).left)` using `LBIso.trans (LB.isLB_pull hMLB _) (LB.isLB_pull hLB _) (LB.isLB_pull hQL _) h1 (LBIso.trans (LB.isLB_pull hLB _) hKL (LB.isLB_pull hQL _) P.pp.symm hL)`. Take `⟨u, hu⟩` from `PositivityTheory.HtPt.Ppic.lamdiff PositivityTheory.HtPt.Ppic.weight Q X P.tK.G T β hβ _ hMLB h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `PositivityTheory.HtPt.Ppic.pic Q _ hMLB ⟨u, hu⟩`. Take `⟨hA, hK⟩` from `PositivityTheory.HtPt.Ppic.transl Q _ hMLB x hx`. Use `haveI := P.tB.semi.smooth`. Use `haveI := P.tB.semi.separated`. Use `haveI := P.tB.semi.quasiCompact`.
-
-Use `haveI : IsProper Q.A.hom := Q.isAb.proper`. Establish `hpb : IsGrpPullback Q.A P.tB.G (specOf (RingHom.id ℂ)) g.hom.left` using `(isGrpPullback_of_iso g).congr (specOf_id ℂ).symm rfl`. Conclude with `GlobalTheory.AmpleDescent.proper_relAmple_kTriv_of_fieldExtension ℂ ℂ (RingHom.id ℂ) P.tB.G Q.A g.hom.left hpb P.tB.PP.L _ hLB hMLB hrefl inferInstance hA hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPrincipal_tB_of (hU : GlobalTheory.LN.UDvrSt) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (r : V →+* ℂ) (tV : SAB H (Sp V)), GlobalTheory.LN.CDvr V → Function.Surjective r → RingHom.ker r = IsLocalRing.maximalIdeal V → GlobalTheory.LN.PolAt tV (Out.jK V) → ∀ P : AbPart tV (spMap r), IsPrincipal P.tB := by
   intro E _ _ _ H V _ _ _ r tV hC hr hker hpol P
@@ -98,7 +96,7 @@ theorem isPrincipal_tB_of (hU : GlobalTheory.LN.UDvrSt) : ∀ (E : Type) [Field 
     g.hom.left hpb P.tB.PP.L _ hLB hMLB hrefl inferInstance hA hK
 
 /- English proof (translation)
-The claim follows from `isPrincipal_tB_of GlobalTheory.LN.uDvrSt_holds`.
+A detailed English derivation is pending.
 -/
 theorem dvr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (r : V →+* ℂ) (tV : SAB H (Sp V)), GlobalTheory.LN.CDvr V → Function.Surjective r → RingHom.ker r = IsLocalRing.maximalIdeal V → GlobalTheory.LN.PolAt tV (Out.jK V) → ∀ P : AbPart tV (spMap r), IsPrincipal P.tB :=
   isPrincipal_tB_of GlobalTheory.LN.uDvrSt_holds

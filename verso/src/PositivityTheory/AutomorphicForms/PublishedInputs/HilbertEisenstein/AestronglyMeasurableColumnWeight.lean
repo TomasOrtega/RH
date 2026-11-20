@@ -15,9 +15,9 @@ set_option linter.unusedSectionVars false
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hx' : γ < Valued.v x` using `lt_of_not_ge hx`. Use `filter_upwards [Valued.locally_const (lt_of_le_of_lt zero_le hx').ne'] with y hy`. Introduce `hy'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : Valued.v y = Valued.v x` using `hy`. Conclude with `absurd (e ▸ hy') (not_le.mpr hx')`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_valuation_le (w : HeightOneSpectrum (𝓞 F)) (γ : WithZero (Multiplicative ℤ)) :
     IsClosed {x : w.adicCompletion F | Valued.v x ≤ γ} := by
@@ -30,18 +30,18 @@ theorem isClosed_valuation_le (w : HeightOneSpectrum (𝓞 F)) (γ : WithZero (M
   exact absurd (e ▸ hy') (not_le.mpr hx')
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.continuous_eval w`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pLoc (w : HeightOneSpectrum (𝓞 F)) : Continuous (pLoc F w) :=
   RestrictedProduct.continuous_eval w
 
 /- English proof (translation)
-The claim follows from `continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pFin : Continuous (pFin F) := continuous_snd
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pInf : Continuous (UpperTheory.V.TR.pInf F) :=
   continuous_pi fun w =>
@@ -49,7 +49,7 @@ theorem continuous_pInf : Continuous (UpperTheory.V.TR.pInf F) :=
       ((continuous_apply w).comp continuous_fst)
 
 /- English proof (translation)
-Simplify using `only [Set.ofPred_forall, Set.ofPred_and]`. Use `isClosed_iInter fun w => IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `(isClosed_valuation_le w _).preimage ((continuous_pLoc w).comp (continuous_pFin.comp (continuous_apply 0)))`. Conclude with `(isClosed_valuation_le w _).preimage (((continuous_pLoc w).comp (continuous_pFin.comp (continuous_apply 1))).sub continuous_const)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_row (c : HeightOneSpectrum (𝓞 F) → ℕ) :
     IsClosed {y : Fin 2 → Ad F | ∀ w, Valued.v (pLoc F w (pFin F (y 0))) ≤ WithZero.exp (-(c w : ℤ)) ∧
@@ -62,7 +62,7 @@ theorem isClosed_row (c : HeightOneSpectrum (𝓞 F) → ℕ) :
       (((continuous_pLoc w).comp (continuous_pFin.comp (continuous_apply 1))).sub continuous_const)
 
 /- English proof (translation)
-Simplify using `only [Set.ofPred_forall, Set.ofPred_and]`. Use `isClosed_iInter fun w => IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `(isClosed_valuation_le w _).preimage ((continuous_pLoc w).comp (continuous_pFin.comp (continuous_apply 0)))`. Conclude with `(isClosed_valuation_le w _).preimage ((continuous_pLoc w).comp (continuous_pFin.comp (continuous_apply 1)))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_col (c : HeightOneSpectrum (𝓞 F) → ℕ) :
     IsClosed {y : Fin 2 → Ad F | ∀ w, Valued.v (pLoc F w (pFin F (y 0))) ≤ WithZero.exp ((c w : ℤ) + dd w) ∧
@@ -82,14 +82,14 @@ theorem coe_scalar (a : Ideles F) :
       Matrix.diagonal fun _ => (a : Ad F) := rfl
 
 /- English proof (translation)
-The claim follows from `((continuous_moduleSection (w0 F)).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_av : Continuous (av (F := F)) :=
   ((continuous_moduleSection (w0 F)).comp continuous_fst).mul
     (continuous_subtype_val.comp continuous_snd)
 
 /- English proof (translation)
-Unfold `rowv Mrow`. Simplify using `only [Units.val_mul, coe_scalar]`. Conclude with `continuous_const.matrix_vecMul ((continuous_pi fun _ => Units.continuous_val).matrix_diagonal.matrix_mul continuous_const)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_rowv (g : GA F 2) (ξ : Fin 2 → F) : Continuous fun a : Ideles F => rowv g a ξ := by
   unfold rowv Mrow
@@ -98,7 +98,7 @@ theorem continuous_rowv (g : GA F 2) (ξ : Fin 2 → F) : Continuous fun a : Ide
     ((continuous_pi fun _ => Units.continuous_val).matrix_diagonal.matrix_mul continuous_const)
 
 /- English proof (translation)
-Unfold `colv Mcol`. Simplify using `only [Units.val_mul, coe_scalar]`. Conclude with `(continuous_const.matrix_mul (continuous_pi fun _ => Units.continuous_coe_inv).matrix_diagonal).matrix_mulVec continuous_const`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_colv (g : GA F 2) (ξ : Fin 2 → F) : Continuous fun a : Ideles F => colv g a ξ := by
   unfold colv Mcol
@@ -107,13 +107,13 @@ theorem continuous_colv (g : GA F 2) (ξ : Fin 2 → F) : Continuous fun a : Ide
     (continuous_pi fun _ => Units.continuous_coe_inv).matrix_diagonal).matrix_mulVec continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pInf.comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_vInf : Continuous (vInf (F := F)) :=
   continuous_pi fun i => continuous_pInf.comp (continuous_apply i)
 
 /- English proof (translation)
-Unfold `finRow`. Conclude with `Measurable.ite ((isClosed_row c).preimage hf).measurableSet measurable_const measurable_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_finRow (c : HeightOneSpectrum (𝓞 F) → ℕ) {f : Pp F → Fin 2 → Ad F} (hf : Continuous f) :
     Measurable fun p => finRow c (f p) := by
@@ -121,7 +121,7 @@ theorem measurable_finRow (c : HeightOneSpectrum (𝓞 F) → ℕ) {f : Pp F →
   exact Measurable.ite ((isClosed_row c).preimage hf).measurableSet measurable_const measurable_const
 
 /- English proof (translation)
-Unfold `finCol`. Use `Measurable.ite ((isClosed_col c).preimage hf).measurableSet ?_ measurable_const` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp (continuous_finiteAdelicChar.comp (continuous_pFin.comp ((continuous_apply 1).comp hf)))).measurable`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_finCol (c : HeightOneSpectrum (𝓞 F) → ℕ) {f : Pp F → Fin 2 → Ad F} (hf : Continuous f) :
     Measurable fun p => finCol c (f p) := by
@@ -131,13 +131,13 @@ theorem measurable_finCol (c : HeightOneSpectrum (𝓞 F) → ℕ) {f : Pp F →
     (continuous_pFin.comp ((continuous_apply 1).comp hf)))).measurable
 
 /- English proof (translation)
-The claim follows from `((Units.continuous_val.comp (χ.2.1.comp continuous_av)).measurable).inv`.
+A detailed English derivation is pending.
 -/
 theorem measurable_chi (χ : HChar F) : Measurable fun p : Pp F => ((χ.1 (av p) : ℂˣ) : ℂ)⁻¹ :=
   ((Units.continuous_val.comp (χ.2.1.comp continuous_av)).measurable).inv
 
 /- English proof (translation)
-Use `measurable_from_prod_countable_left fun ξ => ?_` and prove the remaining obligations. Conclude with `((measurable_finRow c ((continuous_rowv g ξ.1).comp continuous_av)).mul (measurable_chi χ)).mul (Complex.continuous_ofReal.comp (continuous_subtype_val.comp continuous_fst)).measurable`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_first_kernel (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) :
     Measurable (kap1 χ c g) := by
@@ -146,7 +146,7 @@ theorem measurable_first_kernel (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) �
     (Complex.continuous_ofReal.comp (continuous_subtype_val.comp continuous_fst)).measurable
 
 /- English proof (translation)
-Use `measurable_from_prod_countable_left fun ξ => ?_` and prove the remaining obligations. Conclude with `((measurable_finCol c ((continuous_colv g ξ.1).comp continuous_av)).mul (measurable_chi χ)).mul (Complex.continuous_ofReal.comp (continuous_subtype_val.comp continuous_fst)).measurable.inv`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_second_kernel (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) :
     Measurable (kap2 χ c g) := by
@@ -155,39 +155,39 @@ theorem measurable_second_kernel (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) 
     (Complex.continuous_ofReal.comp (continuous_subtype_val.comp continuous_fst)).measurable.inv
 
 /- English proof (translation)
-The claim follows from `measurable_from_prod_countable_left fun ξ => (continuous_vInf.comp ((continuous_rowv g ξ.1).comp continuous_av)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_row_weight (g : GA F 2) : Measurable (w1 (F := F) g) :=
   measurable_from_prod_countable_left fun ξ =>
     (continuous_vInf.comp ((continuous_rowv g ξ.1).comp continuous_av)).measurable
 
 /- English proof (translation)
-The claim follows from `measurable_from_prod_countable_left fun ξ => (continuous_vInf.comp ((continuous_colv g ξ.1).comp continuous_av)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_column_weight (g : GA F 2) : Measurable (w2 (F := F) g) :=
   measurable_from_prod_countable_left fun ξ =>
     (continuous_vInf.comp ((continuous_colv g ξ.1).comp continuous_av)).measurable
 
 /- English proof (translation)
-The claim follows from `(measurable_first_kernel χ c g).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_first_kernel (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (S : Set {r : ℝ // 0 < r}) :
     AEStronglyMeasurable (kap1 χ c g) (μS F S) := (measurable_first_kernel χ c g).aestronglyMeasurable
 
 /- English proof (translation)
-The claim follows from `(measurable_second_kernel χ c g).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_second_kernel (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (S : Set {r : ℝ // 0 < r}) :
     AEStronglyMeasurable (kap2 χ c g) (μS F S) := (measurable_second_kernel χ c g).aestronglyMeasurable
 
 /- English proof (translation)
-The claim follows from `(measurable_row_weight g).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_row_weight (g : GA F 2) (S : Set {r : ℝ // 0 < r}) : AEStronglyMeasurable (w1 g) (μS F S) :=
   (measurable_row_weight g).aestronglyMeasurable
 
 /- English proof (translation)
-The claim follows from `(measurable_column_weight g).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_column_weight (g : GA F 2) (S : Set {r : ℝ // 0 < r}) : AEStronglyMeasurable (w2 g) (μS F S) :=
   (measurable_column_weight g).aestronglyMeasurable

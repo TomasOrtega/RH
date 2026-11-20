@@ -29,7 +29,7 @@ open GlobalTheory.Published.Metaplectic
 open scoped Classical
 
 /- English proof (translation)
-Rewrite `hU` using `[hf.nhds_eq_comap, map_zero, Filter.mem_comap]`. Take `⟨t, ht, hsub⟩` from `hU`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean t ht`. Conclude with `⟨V.comap f hf.continuous, fun x hx => hsub (hV hx)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonarch_of_isInducing {G S : Type} [AddGroup G] [TopologicalSpace G] [NonarchimedeanAddGroup G]
     [AddGroup S] [TopologicalSpace S] [IsTopologicalAddGroup S] (f : S →+ G) (hf : Topology.IsInducing f) :
@@ -41,7 +41,7 @@ theorem nonarch_of_isInducing {G S : Type} [AddGroup G] [TopologicalSpace G] [No
     exact ⟨V.comap f hf.continuous, fun x hx => hsub (hV hx)⟩
 
 /- English proof (translation)
-Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hs⟩` from `hU`. Use `choose K hK using fun i => NonarchimedeanAddGroup.is_nonarchimedean (G := G i) (t i) (ht i)`. Conclude with `⟨⟨AddSubgroup.pi I fun i => (K i : AddSubgroup (G i)), isOpen_set_pi hI fun i _ => (K i).isOpen⟩, fun x hx => hs fun i hi => hK i (hx i hi)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonarch_pi {ι : Type} {G : ι → Type} [∀ i, AddGroup (G i)] [∀ i, TopologicalSpace (G i)]
     [∀ i, NonarchimedeanAddGroup (G i)] : NonarchimedeanAddGroup (∀ i, G i) where
@@ -55,7 +55,7 @@ theorem nonarch_pi {ι : Type} {G : ι → Type} [∀ i, AddGroup (G i)] [∀ i,
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), NonarchimedeanAddGroup (v.adicCompletionIntegers F) := fun v => nonarch_of_isInducing (v.adicCompletionIntegers F).subtype.toAddMonoidHom Topology.IsInducing.subtypeVal`. Use `haveI := nonarch_pi (G := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletionIntegers F)`. Set `f : (∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletionIntegers F) →+ FiniteAdeleRing (𝓞 F) F` to `{ toFun := RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite map_zero' := rfl map_add' := fun _ _ => rfl }`. Conclude with `NonarchimedeanAddGroup.nonarchimedean_of_emb f (RestrictedProduct.isOpenEmbedding_structureMap (fun v => Valued.isOpen_integer _))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem nonarch_finiteAdeleRing : NonarchimedeanAddGroup (FiniteAdeleRing (𝓞 F) F) := by
   haveI : ∀ v : HeightOneSpectrum (𝓞 F), NonarchimedeanAddGroup (v.adicCompletionIntegers F) := fun v =>
@@ -73,7 +73,7 @@ def finChar (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) : AddChar (FiniteAdeleRing
   ψ.compAddMonoidHom (AddMonoidHom.inr (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))
 
 /- English proof (translation)
-Use `haveI := nonarch_finiteAdeleRing (F := F)`. Conclude with `GlobalTheory.WeilM.isLocallyConstant_addChar _ (hψ.comp (continuous_const.prodMk continuous_id))`.
+A detailed English derivation is pending.
 -/
 theorem finChar_isLocallyConstant (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : Continuous ψ) :
     IsLocallyConstant (finChar ψ) := by
@@ -93,7 +93,7 @@ theorem finChar_apply (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (z : FiniteAdele
     finChar ψ z = ψ (mk 0 z) := rfl
 
 /- English proof (translation)
-Rewrite using `[finChar_apply, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `Prod.ext (add_zero _).symm (zero_add _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_eq_mul (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (b : AdeleRing (𝓞 F) F) :
     ψ b = ψ (mk (p1 b) 0) * finChar ψ (p2 b) := by
@@ -102,7 +102,7 @@ theorem map_eq_mul (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (b : AdeleRing (�
   exact Prod.ext (add_zero _).symm (zero_add _).symm
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hu1 : p1 u = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Rewrite using `[smul_eq_mul]`. Conclude with `Prod.ext (show p1 u * b = 0 by rw [hu1, zero_mul]) (show p2 u * 0 = 0 from mul_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_mk (b : InfiniteAdeleRing F) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (mk b 0) := by
   intro u hu
@@ -129,7 +129,7 @@ def archS (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (c t : κ �
   SchwartzMap.smulLeftCLM ℂ (fun y => eChar ((-trL c) y + -k)) (SchwartzMap.compSubConstCLM ℂ (-t) f)
 
 /- English proof (translation)
-Establish `htg : Function.HasTemperateGrowth (fun y => eChar ((-trL c) y + -k))` using `hasTemperateGrowth_eChar.comp ((-trL c).hasTemperateGrowth.add (Function.HasTemperateGrowth.const _))`. Rewrite using `[archS, SchwartzMap.smulLeftCLM_apply_apply htg, SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem archS_apply (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (c t : κ → mixedEmbedding.mixedSpace F)
     (k : ℝ) (y : κ → mixedEmbedding.mixedSpace F) :
@@ -143,7 +143,7 @@ def finS (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (g : (κ → FiniteAdeleRing 
   fun z => finChar ψ (z ⬝ᵥ d + d₀) * g (z + s)
 
 /- English proof (translation)
-Establish `hlin : Continuous fun z : κ → FiniteAdeleRing (𝓞 F) F => z ⬝ᵥ d + d₀` using `(continuous_id.dotProduct continuous_const).add continuous_const`. Use `⟨((finChar_isLocallyConstant ψ hψ).comp_continuous hlin).mul (hg.1.comp_continuous (continuous_add_right s)), ?_⟩` and prove the remaining obligations. Conclude with `(hg.2.comp_homeomorph (Homeomorph.addRight s)).mul_left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finS_mem (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : Continuous ψ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) (d s : κ → FiniteAdeleRing (𝓞 F) F)
@@ -155,17 +155,17 @@ theorem finS_mem (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : Continuous ψ)
   exact (hg.2.comp_homeomorph (Homeomorph.addRight s)).mul_left
 
 /- English proof (translation)
-Set `e` to `InfiniteAdeleRing.ringEquiv_mixedSpace F`. Set `q : AdeleRing (𝓞 F) F →+* mixedEmbedding.mixedSpace F` to `e.toRingHom.comp p1`. Set `h : AdeleRing (𝓞 F) F` to `⅟(2 : AdeleRing (𝓞 F) F) * (w.1 ⬝ᵥ w.2)`. Set `c : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.2 i)`. Set `t : κ → mixedEmbedding.mixedSpace F` to `fun i => q (w.1 i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k : ℝ` to `Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (q h)`. Set `d : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.2 i)`. Set `s : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (w.1 i)`. Use `Submodule.subset_span ⟨archS f c t k, finS ψ g d s (p2 h), finS_mem ψ hψ.1 hg d s (p2 h), funext fun x => ?_⟩` and prove the remaining obligations. Set `y : κ → mixedEmbedding.mixedSpace F` to `fun i => q (x i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `z : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => p2 (x i)`. Establish `h1 : (fun i => q ((x + w.1) i)) = y + t` using `funext fun i => map_add q (x i) (w.1 i)`. Establish `h2 : (fun i => p2 ((x + w.1) i)) = z + s` using `funext fun i => map_add p2 (x i) (w.1 i)`. Establish `h3 : ψ (x ⬝ᵥ w.2 + h) = eChar ((-trL c) y + -k) * finChar ψ (z ⬝ᵥ d + p2 h)`. Rewrite using `[map_eq_mul ψ, hψ.2.2 _ (at_mk _)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (mk (p1 (x ⬝ᵥ w.2 + h)) 0) = y ⬝ᵥ c + q h`. Express the relevant statement in the definitionally equal form `q (x ⬝ᵥ w.2 + h) = _`. Rewrite using `[map_add, RingHom.map_dotProduct]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, map_add, eChar_apply, ContinuousLinearMap.neg_apply, trL_apply]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, RingHom.map_dotProduct]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ψ (x ⬝ᵥ w.2 + h) * (f (fun i => q ((x + w.1) i)) * g (fun i => p2 ((x + w.1) i))) = archS f c t k y * (finChar ψ (z ⬝ᵥ d + p2 h) * g (z + s))`. Rewrite using `[h1, h2, h3, archS_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_pureA_mem [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ)
     (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F))
@@ -204,9 +204,9 @@ theorem schr_pureA_mem [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (Ad
   ring
 
 /- English proof (translation)
-Set `T : ((κ → AdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((κ → AdeleRing (𝓞 F) F) → ℂ)` to `{ toFun := GlobalTheory.WeilM.schr ψ w map_add' := fun φ φ' => funext fun x => by simp only [GlobalTheory.WeilM.schr, Pi.add_apply]; ring map_smul' := fun a φ => funext fun x => by`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Establish `hle : GlobalTheory.WeilM.schA F κ ≤ (GlobalTheory.WeilM.schA F κ).comap T`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Conclude with `schr_pureA_mem ψ hψ w f hg`. Conclude with `fun Φ hΦ => hle hΦ`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem schr_mem_schA [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ)
     (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (w : (κ → AdeleRing (𝓞 F) F) × (κ → AdeleRing (𝓞 F) F)) :
@@ -225,7 +225,7 @@ theorem schr_mem_schA [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (Ade
 end GlobalTheory.HeisSchA
 
 /- English proof (translation)
-Introduce `M ψ hψ γ Φ hΦ` and use `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ (M.co.e γ) Φ hΦ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeisSchA.rho_mem_schA : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X Y)

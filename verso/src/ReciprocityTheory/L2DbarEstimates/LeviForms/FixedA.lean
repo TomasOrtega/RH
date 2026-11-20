@@ -9,7 +9,7 @@ open scoped ENNReal ContDiff
 noncomputable section
 
 /- English proof (translation)
-Unfold `wd`. Rewrite using `[hy.fderiv_restrictScalars ℝ]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', map_smul, smul_eq_mul]`. Take the linear combination `(-(fderiv ℂ h y (bas n j)) / 2) * Complex.I_sq`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fx_wd_eq_fderiv {n : ℕ} (j : Fin n) (h : V n → ℂ) (y : V n)
     (hy : DifferentiableAt ℂ h y) : wd n j h y = fderiv ℂ h y (bas n j) := by
@@ -19,7 +19,7 @@ theorem fx_wd_eq_fderiv {n : ℕ} (j : Fin n) (h : V n → ℂ) (y : V n)
   linear_combination (-(fderiv ℂ h y (bas n j)) / 2) * Complex.I_sq
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℂ => x + t • w) w 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const w).const_add x`. Conclude with `(hd.hasFDerivAt.comp_hasDerivAt_of_eq 0 h1 (by simp)).deriv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma deriv_comp_line_zero_eq_fderiv {n : ℕ} (h : V n → ℂ) (x w : V n) (hd : DifferentiableAt ℂ h x) :
     deriv (fun t : ℂ => h (x + t • w)) 0 = fderiv ℂ h x w := by
@@ -28,21 +28,19 @@ private lemma deriv_comp_line_zero_eq_fderiv {n : ℕ} (h : V n → ℂ) (x w : 
   exact (hd.hasFDerivAt.comp_hasDerivAt_of_eq 0 h1 (by simp)).deriv
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `le_trans (norm_nonneg _) (hM y (mem_closedBall_self (by positivity)))`. Establish `hmaps : ∀ x ∈ closedBall y (5 * R), ∀ w : V n, ‖w‖ ≤ 1 → ∀ t ∈ closedBall (0 : ℂ) R, x + t • w ∈ closedBall y (6 * R)`. Introduce `x hx w hw t ht`. Rewrite `hx`, `ht`, the goal using `[mem_closedBall]`. Rewrite `ht` using `[dist_zero_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ‖t • w‖ ≤ R`. Rewrite using `[norm_smul]`. Use polynomial arithmetic with `[norm_nonneg t, norm_nonneg w]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dist_eq_norm, dist_eq_norm, add_sub_right_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_add_le _ _`. Use `_ ≤ 6 * R := by linarith`. Establish `hest1 : ∀ x ∈ closedBall y (5 * R), ∀ w : V n, ‖w‖ ≤ 1 → ‖fderiv ℂ h x w‖ ≤ M / R`. Introduce `x hx w hw`. Establish `hxU : x ∈ U` using `hsub (closedBall_subset_closedBall (by linarith) hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← deriv_comp_line_zero_eq_fderiv h x w (hh.differentiableAt (hU.mem_nhds hxU))]`. Establish `hfd : DifferentiableOn ℂ (fun t : ℂ => h (x + t • w)) (closedBall 0 R)`. Introduce `t ht`. Establish `hd : DifferentiableAt ℂ h (x + t • w)` using `hh.differentiableAt (hU.mem_nhds (hsub (hmaps x hx w hw t ht)))`. Conclude with `(hd.comp t ((differentiableAt_const x).add (differentiableAt_id.smul_const w))).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hR (hfd.diffContOnCl_ball subset_rfl)` to reduce the goal to its premises. Introduce `t ht`. Conclude with `hM _ (hmaps x hx w hw t (sphere_subset_closedBall ht))`. Introduce `x hx w`. Distinguish the cases in `hw : w = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw, map_zero, norm_zero, norm_zero, mul_zero]`. Establish `hwpos : 0 < ‖w‖` using `norm_pos_iff.mpr hw`. Establish `hwne : ((‖w‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hwpos.ne'`. Use `set u : V n := ((‖w‖ : ℝ) : ℂ)⁻¹ • w with hu`. Establish `hun : ‖u‖ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hwpos, inv_mul_cancel₀ hwpos.ne']`. Establish `hwu : fderiv ℂ h x w = ((‖w‖ : ℝ) : ℂ) * fderiv ℂ h x u`. Rewrite using `[hu, map_smul, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hwne, one_mul]`. Establish `h1` using `hest1 x hx u hun.le`. Rewrite using `[hwu, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hwpos]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma norm_fderiv_apply_le_of_bound_on_closedBall {n : ℕ} (h : V n → ℂ) (U : Set (V n)) (hU : IsOpen U)
     (hh : DifferentiableOn ℂ h U) (y : V n) (R M : ℝ) (hR : 0 < R)
@@ -90,15 +88,15 @@ private lemma norm_fderiv_apply_le_of_bound_on_closedBall {n : ℕ} (h : V n →
   nlinarith
 
 /- English proof (translation)
-Introduce `a ha b hb`. Establish `hpt : ∀ s ∈ closedBall (0 : ℂ) 1, b + s • (a - b) + pv ∈ closedBall y (5 * R)`. Introduce `s hs`. Rewrite `hs` using `[mem_closedBall, dist_zero_right]`. Rewrite `ha`, `hb` using `[mem_ball]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_closedBall]`. Establish `hab : ‖a - b‖ ≤ 2 * R`. Combine the equalities or inequalities in the displayed calculation. Establish `hs2 : ‖s • (a - b)‖ ≤ 2 * R`. Rewrite using `[norm_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[norm_nonneg s, norm_nonneg (a - b)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dist_eq_norm]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `_ ≤ ‖b - y‖ + ‖s • (a - b)‖ + ‖pv‖ := norm_add₃_le`. Use `_ ≤ 5 * R := by rw [← dist_eq_norm]; linarith`. Establish `hdv : ∀ s ∈ closedBall (0 : ℂ) 1, HasDerivAt (fun s : ℂ => h (b + s • (a - b) + pv)) (fderiv ℂ h (b + s • (a - b) + pv) (a - b)) s`. Introduce `s hs`. Establish `hd` using `(hh.differentiableAt (hU.mem_nhds (hsub (hpt s hs)))).hasFDerivAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : HasDerivAt (fun s : ℂ => b + s • (a - b) + pv) (a - b) s`. Simplify using `using (((hasDerivAt_id s).smul_const (a - b)).const_add b).add_const pv`. Conclude with `hd.comp_hasDerivAt s h1`. Establish `hmvt` using `(convex_closedBall (0 : ℂ) 1).norm_image_sub_le_of_norm_deriv_le (f := fun s : ℂ => h (b + s • (a - b) + pv)) (C := M / R * ‖a - b‖) (x := 0) (y := 1) (fun s hs => (hdv s hs).differentiableAt) (fun s hs => by rw [(hdv s hs).deriv]; exact hest _ (hpt s hs) _) (mem_closedBall_self …`. Simplify using `using hmvt`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma norm_sub_translate_le_of_fderiv_bound {n : ℕ} (h : V n → ℂ) (U : Set (V n)) (hU : IsOpen U)
     (hh : DifferentiableOn ℂ h U) (y : V n) (R M : ℝ) (hR : 0 < R)
@@ -140,45 +138,37 @@ private lemma norm_sub_translate_le_of_fderiv_bound {n : ℕ} (h : V n → ℂ) 
   simpa using hmvt
 
 /- English proof (translation)
-Use `set v : V n := bas n j with hvdef`. Establish `hvn : ‖v‖ = 1`. Rewrite using `[hvdef]`. Unfold `bas`. Rewrite using `[EuclideanSpace.norm_single, norm_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwd_eq : ∀ y ∈ U, wd n j h y = fderiv ℂ h y v` using `fun y hy => fx_wd_eq_fderiv j h y (hh.differentiableAt (hU.mem_nhds hy))`. It suffices to establish `H : ∀ y ∈ U, DifferentiableAt ℂ (fun y' => fderiv ℂ h y' v) y by`. Introduce `y hy`. Use `((H y hy).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hy] with y' hy'`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hwd_eq y' hy'`. Introduce `y hy`. Take `⟨R0, hR0, hball⟩` from `Metric.isOpen_iff.mp hU y hy`. Take `⟨R, hR, hRdef⟩ : ∃ R : ℝ, 0 < R ∧ R = R0 / 8` from `⟨R0 / 8, by positivity, rfl⟩`. Establish `hR0' : 0 ≤ R` using `hR.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsub : closedBall y (6 * R) ⊆ U` using `(closedBall_subset_ball (by linarith)).trans hball`. Establish `hsub5 : closedBall y (5 * R) ⊆ U` using `(closedBall_subset_closedBall (by linarith)).trans hsub`. Take `⟨M, hM⟩` from `(isCompact_closedBall y (6 * R)).exists_bound_of_continuousOn (hh.continuousOn.mono hsub)`. Establish `hM0 : 0 ≤ M` using `le_trans (norm_nonneg _) (hM y (mem_closedBall_self (by positivity)))`. Establish `hest` using `norm_fderiv_apply_le_of_bound_on_closedBall h U hU hh y R M hR hsub hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hin : ∀ y' ∈ ball y R, ∀ θ : ℝ, y' + circleMap 0 R θ • v ∈ closedBall y (5 * R)`. Introduce `y' hy' θ`. Rewrite `hy'` using `[mem_ball]`. Rewrite using `[mem_closedBall]`. Establish `h1 : ‖circleMap 0 R θ • v‖ = R`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, norm_circleMap_zero, hvn, mul_one, abs_of_pos hR]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dist_eq_norm, dist_eq_norm, add_sub_right_comm]`. Conclude with `norm_add_le _ _`. Use `_ ≤ 5 * R := by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpvn : ∀ θ : ℝ, ‖circleMap 0 R θ • v‖ ≤ R` using `fun θ => by`. Rewrite using `[norm_smul, norm_circleMap_zero, hvn, mul_one, abs_of_pos hR]`. Establish `hne : ∀ θ : ℝ, circleMap 0 R θ - 0 ≠ 0`. Introduce `θ h0`. Use `norm_circleMap_zero R θ` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[sub_zero]`. Rewrite `this` using `[h0, norm_zero, abs_of_pos hR]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc1 : ∀ θ : ℝ, ‖circleMap 0 R θ * Complex.I‖ = R` using `fun θ => by`. Rewrite using `[norm_mul, Complex.norm_I, mul_one, norm_circleMap_zero, abs_of_pos hR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc2 : ∀ θ : ℝ, ‖1 / (circleMap 0 R θ - 0) ^ 2‖ = 1 / R ^ 2` using `fun θ => by`. Rewrite using `[norm_div, norm_one, norm_pow, sub_zero, norm_circleMap_zero, abs_of_pos hR]`. Establish `hformula : ∀ y' ∈ ball y R, fderiv ℂ h y' v = (2 * ↑Real.pi * Complex.I)⁻¹ • ∫ θ in (0 : ℝ)..2 * Real.pi, (circleMap 0 R θ * Complex.I) • ((1 / (circleMap 0 R θ - 0) ^ 2) • h (y' + circleMap 0 R θ • v))`. Introduce `y' hy'`. Establish `hy'5 : y' ∈ closedBall y (5 * R)` using `closedBall_subset_closedBall (by linarith) (ball_subset_closedBall hy')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfd : DifferentiableOn ℂ (fun t : ℂ => h (y' + t • v)) (closedBall 0 R)`. Introduce `t ht`. Establish `hpt : y' + t • v ∈ closedBall y (5 * R)`. Rewrite `ht`, the goal using `[mem_closedBall]`. Rewrite `ht` using `[dist_zero_right]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy'` using `[mem_ball]`. Establish `h1 : ‖t • v‖ ≤ R` using `by rw [norm_smul, hvn, mul_one]; exact ht`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dist_eq_norm, dist_eq_norm, add_sub_right_comm]`. Conclude with `norm_add_le _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ ≤ 5 * R := by linarith`. Establish `hd : DifferentiableAt ℂ h (y' + t • v)` using `hh.differentiableAt (hU.mem_nhds (hsub5 hpt))`. Conclude with `(hd.comp t ((differentiableAt_const y').add (differentiableAt_id.smul_const v))).differentiableWithinAt`. Establish `hc` using `DifferentiableOn.deriv_eq_smul_circleIntegral hR hfd`. Establish `hci : (∮ z in C(0, R), (1 / (z - 0) ^ 2) • h (y' + z • v)) = ∫ θ in (0 : ℝ)..2 * Real.pi, (circleMap 0 R θ * Complex.I) • ((1 / (circleMap 0 R θ - 0) ^ 2) • h (y' + circleMap 0 R θ • v))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [circleIntegral, deriv_circleMap]`. Rewrite using `[← deriv_comp_line_zero_eq_fderiv h y' v (hh.differentiableAt (hU.mem_nhds (hsub5 hy'5))), ← hci, hc, inv_smul_smul₀]`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `hcoef : Continuous (fun θ : ℝ => circleMap 0 R θ * Complex.I)` using `(continuous_circleMap 0 R).mul continuous_const`. Establish `hcoef2 : Continuous (fun θ : ℝ => 1 / (circleMap 0 R θ - 0) ^ 2)` using `continuous_const.div (((continuous_circleMap 0 R).sub continuous_const).pow 2) fun θ => pow_ne_zero 2 (hne θ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hFc : ∀ y' ∈ ball y R, Continuous (fun θ : ℝ => (circleMap 0 R θ * Complex.I) • ((1 / (circleMap 0 R θ - 0) ^ 2) • h (y' + circleMap 0 R θ • v)))`. Introduce `y' hy'`. Conclude with `hcoef.smul (hcoef2.smul (hh.continuousOn.comp_continuous (continuous_const.add ((continuous_circleMap 0 R).smul continuous_const)) fun θ => hsub5 (hin y' hy' θ)))`. Establish `hbd0 : 0 ≤ R * (1 / R ^ 2) * (M / R)` using `mul_nonneg (mul_nonneg hR0' (by positivity)) (div_nonneg hM0 hR0')`. Establish `hlip : ∀ θ : ℝ, LipschitzOnWith (Real.nnabs (R * (1 / R ^ 2) * (M / R))) (fun y' => (circleMap 0 R θ * Complex.I) • ((1 / (circleMap 0 R θ - 0) ^ 2) • h (y' + circleMap 0 R θ • v))) (ball y R)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `θ`. Apply `LipschitzOnWith.of_dist_le_mul` to reduce the goal to its premises. Introduce `a ha b hb`. Rewrite using `[Real.coe_nnabs, abs_of_nonneg hbd0, dist_eq_norm, dist_eq_norm]`. Simplify using `only [smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_sub, ← mul_sub, norm_mul (circleMap 0 R θ * Complex.I), norm_mul (1 / (circleMap 0 R θ - 0) ^ 2), hc1, hc2]`. Establish `hl` using `norm_sub_translate_le_of_fderiv_bound h U hU hh y R M hR hsub5 hest _ (hpvn θ) a ha b hb`. Combine the equalities or inequalities in the displayed calculation. Establish `hderivs : ∀ θ : ℝ, HasFDerivAt (fun y' => (circleMap 0 R θ * Complex.I) • ((1 / (circleMap 0 R θ - 0) ^ 2) • h (y' + circleMap 0 R θ • v))) ((circleMap 0 R θ * Complex.I) • ((1 / (circleMap 0 R θ - 0) ^ 2) • fderiv ℂ h (y + circleMap 0 R θ • v))) y`. Introduce `θ`.
-
-Establish `hpt : y + circleMap 0 R θ • v ∈ U` using `hsub5 (hin y (mem_ball_self hR) θ)`. Establish `hd : HasFDerivAt h (fderiv ℂ h (y + circleMap 0 R θ • v)) (y + circleMap 0 R θ • v)` using `(hh.differentiableAt (hU.mem_nhds hpt)).hasFDerivAt`. Establish `h3 : HasFDerivAt (fun y'' => h (y'' + circleMap 0 R θ • v)) (fderiv ℂ h (y + circleMap 0 R θ • v)) y`. Use `hd.comp y ((hasFDerivAt_id y).add_const (circleMap 0 R θ • v))` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.comp_id]`.
-
-Conclude with `this`. Conclude with `(h3.const_smul (1 / (circleMap 0 R θ - 0) ^ 2)).const_smul (circleMap 0 R θ * Complex.I)`. Establish `hm : Measurable (fun θ : ℝ => fderiv ℂ h (y + circleMap 0 R θ • v))` using `(measurable_fderiv ℂ h).comp (continuous_const.add ((continuous_circleMap 0 R).smul continuous_const)).measurable`. Establish `key` using `intervalIntegral.hasFDerivAt_integral_of_dominated_loc_of_lip (μ := MeasureTheory.volume) (a := 0) (b := 2 * Real.pi) (bound := fun _ => R * (1 / R ^ 2) * (M / R)) (ball_mem_nhds y hR) (by filter_upwards [ball_mem_nhds y hR] with y' hy'`. Conclude with `(hFc y' hy').aestronglyMeasurable)`.
-
-Use the proof step `((hFc y (mem_ball_self hR)).intervalIntegrable _ _)`. Use the proof step `((hcoef.aestronglyMeasurable).smul ((hcoef2.aestronglyMeasurable).smul hm.aestronglyMeasurable))`. Use the proof step `(Filter.Eventually.of_forall fun θ _ => hlip θ)`. Use `intervalIntegrable_const`. Use the proof step `(Filter.Eventually.of_forall fun θ _ => hderivs θ)`.
-
-Use `(key.2.differentiableAt.const_smul ((2 * ↑Real.pi * Complex.I)⁻¹)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds y hR] with y' hy'`. Conclude with `hformula y' hy'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fx_differentiableOn_wd {n : ℕ} (j : Fin n) (h : V n → ℂ) (U : Set (V n)) (hU : IsOpen U)
     (hh : DifferentiableOn ℂ h U) : DifferentiableOn ℂ (wd n j h) U := by
@@ -318,27 +308,25 @@ theorem fx_differentiableOn_wd {n : ℕ} (j : Fin n) (h : V n → ℂ) (U : Set 
   exact hformula y' hy'
 
 /- English proof (translation)
-Establish `key : ∀ (f : M → ℂ) (k : Fin n) (y : V n), y ∈ e.target → d n z k f (e.symm y) = wd n k (f ∘ e.symm) y`. Introduce `f k y hy`. Establish `hx : e.symm y ∈ e.source` using `e.map_target hy`. Establish `hzx : z (e.symm y) = y` using `by rw [he hx, e.right_inv hy]`. Establish `hex : ∃ e' : OpenPartialHomeomorph M (V n), IsChart n z e' ∧ e.symm y ∈ e'.source` using `⟨e, he, hx⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `d`. Rewrite using `[dif_pos hex, hzx]`. Take `⟨he', hx'⟩` from `Classical.choose_spec hex`. Establish `hev : (f ∘ (Classical.choose hex).symm) =ᶠ[𝓝 y] (f ∘ e.symm)`. Establish `h1 : ∀ᶠ w in 𝓝 y, w ∈ e.target` using `e.open_target.mem_nhds hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ w in 𝓝 y, e.symm w ∈ (Classical.choose hex).source` using `(e.continuousAt_symm hy).preimage_mem_nhds ((Classical.choose hex).open_source.mem_nhds hx')`. Use `filter_upwards [h1, h2] with w hw1 hw2`. Simplify using `only [Function.comp]`. Use `congr 1`. Establish `hw : (Classical.choose hex) (e.symm w) = w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he' hw2, he (e.map_target hw1), e.right_inv hw1]`. Combine the equalities or inequalities in the displayed calculation. Unfold `wd`. Rewrite using `[hev.fderiv_eq]`. Establish `hwd : ∀ i k, DifferentiableOn ℂ (wd n k (g i ∘ e.symm)) e.target` using `fun i k => fx_differentiableOn_wd k _ e.target e.open_target (hg i e he)`.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform : (fun y => (Matrix.of fun i k => wd n k (g i ∘ e.symm) y).det) = fun y => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, wd n i (g (σ i) ∘ e.symm) y`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hdet : DifferentiableOn ℂ (fun y => (Matrix.of fun i k => wd n k (g i ∘ e.symm) y).det) e.target`. Rewrite using `[hform]`. Establish `hp : ∀ σ : Equiv.Perm (Fin n), DifferentiableOn ℂ (fun y => ∏ i, wd n i (g (σ i) ∘ e.symm) y) e.target`. Introduce `σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : ∀ s : Finset (Fin n), DifferentiableOn ℂ (fun y => ∏ i ∈ s, wd n i (g (σ i) ∘ e.symm) y) e.target`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [differentiableOn_const]`. Consider the case `insert a s ha ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.prod_insert ha]`. Use `first`. Consider the case `exact (hwd (σ a) a).mul ih`. Consider the case `exact (hwd (σ a) a).fun_mul ih`. Conclude with `hs Finset.univ`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Establish `hq : ∀ σ : Equiv.Perm (Fin n), DifferentiableOn ℂ (fun y => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, wd n i (g (σ i) ∘ e.symm) y) e.target`. Introduce `σ`. Use `first`. Consider the case `exact (hp σ).const_mul _`. Consider the case `exact (differentiableOn_const _).fun_mul (hp σ)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `exact (differentiableOn_const _).mul (hp σ)`. Use `first`. Consider the case `exact DifferentiableOn.sum fun σ _ => hq σ`. Consider the case `exact DifferentiableOn.fun_sum fun σ _ => hq σ`. Use `hdet.congr fun y hy => ?_` and prove the remaining obligations.
-
-Unfold `jac`. Use `congr 1`. Use extensionality with `i k`. Simplify using `only [Matrix.of_apply]`. Conclude with `key _ _ y hy`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fx_differentiableOn_jac_chart {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (hg : ∀ i, Holo n z (g i)) (e : OpenPartialHomeomorph M (V n))
@@ -412,9 +400,9 @@ theorem fx_differentiableOn_jac_chart {M : Type*} [TopologicalSpace M] (n : ℕ)
   exact key _ _ y hy
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, hxe, hze⟩` from `hz x`. Establish `he : IsChart n z e` using `fun x' _ => by rw [hze]`. Establish `h1 : ContinuousAt (fun y => jac n z g (e.symm y)) (e x)` using `((fx_differentiableOn_jac_chart n z g hg e he).continuousOn).continuousAt (e.open_target.mem_nhds (e.map_source hxe))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousAt (fun x' => jac n z g (e.symm (e x'))) x` using `h1.comp (e.continuousAt hxe)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hxe] with x' hx'`. Rewrite using `[e.left_inv hx']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fx_continuous_jac {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (g : Fin n → M → ℂ) (hg : ∀ i, Holo n z (g i)) :
@@ -432,15 +420,13 @@ theorem fx_continuous_jac {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → 
   rw [e.left_inv hx']
 
 /- English proof (translation)
-Establish `hcont : ∀ f : M → ℂ, (∀ e : OpenPartialHomeomorph M (V n), IsChart n z e → ContinuousOn (f ∘ e.symm) e.target) → Continuous f`. Introduce `f hf`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, hxe, hze⟩` from `hz x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `he : IsChart n z e` using `fun x' _ => by rw [hze]`. Establish `h1 : ContinuousAt (f ∘ e.symm) (e x)` using `(hf e he).continuousAt (e.open_target.mem_nhds (e.map_source hxe))`. Establish `h2 : ContinuousAt (fun x' => f (e.symm (e x'))) x` using `h1.comp (e.continuousAt hxe)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hxe] with x' hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e.left_inv hx']`. Establish `hgc : ∀ i, Continuous (g i)` using `fun i => hcont _ fun e he => (hg i e he).continuousOn`. Establish `hphc : Continuous (fun x => (ph x : ℂ))` using `hcont _ fun e he => (hph e he).continuousOn`. Establish `hph' : Continuous ph`. Establish `e : ph = Complex.re ∘ fun x => (ph x : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Complex.continuous_re.comp hphc`. Unfold `ev`.
-
-Conclude with `((continuous_finset_sum _ fun i _ => (hgc i).norm.pow 2).mul (Real.continuous_exp.comp hph'.neg)).div_const _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fx_continuous_ev {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (g : Fin n → M → ℂ) (hg : ∀ i, Holo n z (g i)) (ph : M → ℝ)
@@ -471,7 +457,7 @@ theorem fx_continuous_ev {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V
     (Real.continuous_exp.comp hph'.neg)).div_const _
 
 /- English proof (translation)
-Unfold `gt`. Conclude with `finsum_mem_eq_finite_toFinset_sum _ hS`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fx_gt_eq_toFinset {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (c : M → ℂ) (W : M → Set M) (hS : (zeroSet n g).Finite) (x : M) :
@@ -480,9 +466,9 @@ theorem fx_gt_eq_toFinset {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → 
   exact finsum_mem_eq_finite_toFinset_sum _ hS
 
 /- English proof (translation)
-Rewrite using `[fx_gt_eq_toFinset n z g c W hS x, Finset.sum_eq_single p]`. Rewrite using `[Set.indicator_of_mem hx]`. Introduce `q hq hqp`. Establish `hq' : q ∈ zeroSet n g` using `(Set.Finite.mem_toFinset hS).mp hq`. Establish `hd` using `(hL.2 p hp).2.2.2.2 q hq' hqp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hxq`. Conclude with `Set.disjoint_left.mp hd (subset_closure hx) (subset_closure hxq)`. Introduce `hp'`. Conclude with `absurd ((Set.Finite.mem_toFinset hS).mpr hp) hp'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fx_gt_eq_of_mem {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (ph : M → ℝ) (r : ℝ) (c : M → ℂ) (W : M → Set M) (m : ℝ)
@@ -500,9 +486,9 @@ theorem fx_gt_eq_of_mem {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V 
     exact absurd ((Set.Finite.mem_toFinset hS).mpr hp) hp'
 
 /- English proof (translation)
-Rewrite using `[fx_gt_eq_toFinset n z g c W hS x]`. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Establish `hq' : q ∈ zeroSet n g` using `(Set.Finite.mem_toFinset hS).mp hq`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hxq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx (Set.mem_iUnion₂.mpr ⟨q, hq', subset_closure hxq⟩)`.
+A detailed English derivation is pending.
 -/
 theorem fx_gt_eq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (c : M → ℂ) (W : M → Set M) (hS : (zeroSet n g).Finite) (x : M)
@@ -515,7 +501,7 @@ theorem fx_gt_eq_zero {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   exact hx (Set.mem_iUnion₂.mpr ⟨q, hq', subset_closure hxq⟩)
 
 /- English proof (translation)
-Rewrite using `[fx_gt_eq_toFinset n z g c W hS x]`. Use `le_trans (norm_sum_le _ _) (Finset.sum_le_sum fun q _ => ?_)` and prove the remaining obligations. Use `le_trans (norm_indicator_le_norm_self _ _) ?_` and prove the remaining obligations. Conclude with `(norm_mul _ _).le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fx_norm_gt_le {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (c : M → ℂ) (W : M → Set M) (hS : (zeroSet n g).Finite) (x : M) :
@@ -526,9 +512,9 @@ theorem fx_norm_gt_le {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   exact (norm_mul _ _).le
 
 /- English proof (translation)
-Establish `hjac` using `(fx_continuous_jac n z hz g hg).measurable`. Establish `e : gt n z g c W = fun x => ∑ q ∈ hS.toFinset, (W q).indicator (fun y => c q * jac n z g y) x`. Use function extensionality and compare the values at `(fx_gt_eq_toFinset n z g c W hS)`. Rewrite using `[e]`. Use `Finset.measurable_sum _ fun q hq => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq' : q ∈ zeroSet n g` using `(Set.Finite.mem_toFinset hS).mp hq`. Conclude with `(measurable_const.mul hjac).indicator ((hL.2 q hq').1.measurableSet)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fx_measurable_gt {M : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M]
     (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z)
@@ -544,7 +530,7 @@ theorem fx_measurable_gt {M : Type*} [TopologicalSpace M] [MeasurableSpace M] [B
   exact (measurable_const.mul hjac).indicator ((hL.2 q hq').1.measurableSet)
 
 /- English proof (translation)
-Establish `hev` using `fx_continuous_ev n z hz g hg ph hph r`. Establish `hχc : Continuous χ` using `hχ.1.continuous`. Establish `h1 : Measurable fun x => (χ (ev n g ph r x / ε ^ 2) : ℂ)` using `(Complex.continuous_ofReal.comp (hχc.comp (hev.div_const _))).measurable`. Unfold `cutExt`. Conclude with `h1.mul (fx_measurable_gt n z hz g hg ph r c W m hS hL)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fx_measurable_cutExt {M : Type*} [TopologicalSpace M] [MeasurableSpace M] [BorelSpace M]
     (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z)
@@ -560,7 +546,7 @@ theorem fx_measurable_cutExt {M : Type*} [TopologicalSpace M] [MeasurableSpace M
   exact h1.mul (fx_measurable_gt n z hz g hg ph r c W m hS hL)
 
 /- English proof (translation)
-Unfold `cutExt`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `h` using `hχ.2.2.2.1 (ev n g ph r x / ε ^ 2)`. Establish `habs : |χ (ev n g ph r x / ε ^ 2)| ≤ 1` using `abs_le.mpr ⟨by linarith [h.1], h.2⟩`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem fx_norm_cutExt_le {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (ph : M → ℝ) (r : ℝ) (c : M → ℂ) (W : M → Set M) (χ : ℝ → ℝ)
@@ -575,7 +561,7 @@ theorem fx_norm_cutExt_le {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → 
     _ = ‖gt n z g c W x‖ := one_mul _
 
 /- English proof (translation)
-Unfold `cutExt`. Establish `h12 : ev n g ph r x / ε ^ 2 ≤ 1 / 2`. Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hχ.2.1 _ h12, Complex.ofReal_one, one_mul, fx_gt_eq_of_mem n z g ph r c W m hS hL p hp x hx]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem fx_cutExt_eq_of_mem {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (g : Fin n → M → ℂ) (ph : M → ℝ) (r : ℝ) (c : M → ℂ) (W : M → Set M) (m : ℝ) (χ : ℝ → ℝ)
@@ -590,7 +576,7 @@ theorem fx_cutExt_eq_of_mem {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M �
   rw [hχ.2.1 _ h12, Complex.ofReal_one, one_mul, fx_gt_eq_of_mem n z g ph r c W m hS hL p hp x hx]
 
 /- English proof (translation)
-Establish `hp' : ∀ i, g i p = 0` using `hp`. Simplify using `[ev, hp']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fx_ev_eq_zero {M : Type*} (n : ℕ) (g : Fin n → M → ℂ) (ph : M → ℝ) (r : ℝ) (p : M)
     (hp : p ∈ zeroSet n g) : ev n g ph r p = 0 := by
@@ -598,7 +584,7 @@ theorem fx_ev_eq_zero {M : Type*} (n : ℕ) (g : Fin n → M → ℂ) (ph : M �
   simp [ev, hp']
 
 /- English proof (translation)
-Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hint : IntegrableOn h K μ` using `hh.continuousOn.integrableOn_compact hK`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact hint.lintegral_lt_top`. Consider the case `exact Integrable.lintegral_lt_top hint`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 -/
 theorem fx_lintegral_lt_top_of_le_indicator {M : Type*} [TopologicalSpace M] [MeasurableSpace M]
     [OpensMeasurableSpace M] [T2Space M] (μ : Measure M) [IsFiniteMeasureOnCompacts μ]
@@ -614,9 +600,9 @@ theorem fx_lintegral_lt_top_of_le_indicator {M : Type*} [TopologicalSpace M] [Me
           | exact Integrable.lintegral_lt_top hint
 
 /- English proof (translation)
-Unfold `wint`. Establish `hmeas : Measurable (fun x => ENNReal.ofReal (Real.exp (-ps x)))` using `ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp hps.neg)`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul_non_measurable _ hmeas (Filter.Eventually.of_forall fun x => ENNReal.ofReal_lt_top)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Function.comp]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (Real.exp_pos _).le, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fx_wint_eq_withDensity {M : Type*} [MeasurableSpace M] (n : ℕ) (z : M → V n)
     (ps : M → ℝ) (hps : Measurable ps) (F : M → ℂ) :
@@ -633,7 +619,7 @@ theorem fx_wint_eq_withDensity {M : Type*} [MeasurableSpace M] (n : ℕ) (z : M 
     ← ENNReal.ofReal_mul (Real.exp_pos _).le, mul_comm]
 
 /- English proof (translation)
-Unfold `otNorm wint`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[show -ph2 x - ((n : ℝ) + j) * ph x = -(ph2 x + ((n : ℝ) + j) * ph x) by ring]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem fx_otNorm_eq_wint {M : Type*} [MeasurableSpace M] (n : ℕ) (z : M → V n) (ph ph2 : M → ℝ)
     (j : ℕ) (F : M → ℂ) :
@@ -643,7 +629,7 @@ theorem fx_otNorm_eq_wint {M : Type*} [MeasurableSpace M] (n : ℕ) (z : M → V
   rw [show -ph2 x - ((n : ℝ) + j) * ph x = -(ph2 x + ((n : ℝ) + j) * ph x) by ring]
 
 /- English proof (translation)
-Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem fx_lintegral_enorm_sq_eq {α : Type*} [MeasurableSpace α] (μ : Measure α) (F : α → ℂ) :
     ∫⁻ x, ‖F x‖ₑ ^ 2 ∂μ = eLpNorm F 2 μ ^ (2 : ℝ) := by

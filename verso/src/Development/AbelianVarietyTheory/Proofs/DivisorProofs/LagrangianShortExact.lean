@@ -20,19 +20,19 @@ open GlobalTheory.QCoh (appLinear appLinear_apply appLinear_comp)
 namespace GlobalTheory.VB.Lagr
 
 /- English proof (translation)
-Set `e₀ : P ≃ₗ[R] LinearMap.range j` to `LinearEquiv.ofInjective j hj`. Set `p : M →ₗ[R] P` to `e₀.symm.toLinearMap ∘ₗ Submodule.projectionOnto _ N hN`. Establish `hpj (s : P) : p (j s) = s`. Establish `: j s = ((e₀ s : LinearMap.range j) : M)` using `rfl`. Use `show e₀.symm (Submodule.projectionOnto _ N hN (j s)) = s`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Submodule.projectionOnto_apply_left, LinearEquiv.symm_apply_apply]`. Establish `hpN (n : M) (hn : n ∈ N) : p n = 0` using `by show e₀.symm (Submodule.projectionOnto _ N hN n) = 0`. Rewrite using `[(Submodule.projectionOnto_apply_eq_zero_iff hN).2 hn, map_zero]`. Establish `hφj (s : P) : φ (j s) = 0` using `LinearMap.ext fun s' => (hφ _ _).trans (hiso s s')`. Establish `hsurj : Function.Surjective φ` using `fun l => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hB.2 (l ∘ₗ p)`. Conclude with `⟨t, LinearMap.ext fun s => by rw [hφ, ht, LinearMap.comp_apply, hpj]⟩`. Establish `hsurjN (l : Module.Dual R P) : ∃ n ∈ N, φ n = l`. Take `⟨t, rfl⟩` from `hsurj l`. Take `⟨k, hk, n, hn, rfl⟩` from `Submodule.mem_sup.1 (hN.codisjoint.eq_top ▸ Submodule.mem_top : t ∈ LinearMap.range j ⊔ N)`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `hk`. Conclude with `⟨n, hn, by rw [map_add, hφj, zero_add]⟩`. Set `Θ : M →ₗ[R] P × Module.Dual R P` to `LinearMap.prod p φ`. Establish `hΘ : Function.Surjective Θ`. Introduce and unpack `⟨s, l⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, rfl⟩` from `hsurjN l`. Use `⟨j s + n, ?_⟩` and prove the remaining obligations. Use `show (p (j s + n), φ (j s + n)) = (s, φ n)`. Rewrite using `[map_add, map_add, hpj, hpN n hn, hφj, add_zero, zero_add]`. Set `bQ` to `bP.prod bP.dualBasis`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : (P × Module.Dual R P) ≃ₗ[R] M` to `bQ.equiv bM (finSumFinEquiv.trans (finCongr (two_mul g).symm))`. Use `haveI : Module.Finite R M := Module.Finite.of_basis bM`. Establish `hinj : Function.Injective Θ`. Use `OrzechProperty.injective_of_surjective_endomorphism (e.toLinearMap ∘ₗ Θ) (e.surjective.comp hΘ)` as an intermediate fact. Conclude with `fun a b hab => this (by simp [hab])`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hsurj, fun t ht => ⟨p t, ?_⟩⟩` and prove the remaining obligations. Establish `: Θ (t - j (p t)) = 0` using `by show (p (t - j (p t)), φ (t - j (p t))) = (0, 0)`. Rewrite using `[map_sub, map_sub, hpj, sub_self, ht, hφj, sub_self]`. Conclude with `(sub_eq_zero.1 (hinj (this.trans (map_zero Θ).symm))).symm`.
+A detailed English derivation is pending.
 -/
 theorem alg {R M P : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup P]
     [Module R P] {g : ℕ} (bM : Module.Basis (Fin (2 * g)) R M) (bP : Module.Basis (Fin g) R P)
@@ -102,7 +102,7 @@ Both sides reduce to the same expression.
     evU F U l s = dualApp l le_rfl s := rfl
 
 /- English proof (translation)
-Use `⟨fun l l' hll' => he.dual_ext le_rfl fun i => ?_, fun lf => ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun hll' _`. Use `⟨(he.dual.basis le_rfl).equivFun.symm fun i => lf (resM F le_rfl (e i)), ?_⟩` and prove the remaining obligations. Use `(he.basis le_rfl).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[IsFrame.basis_apply, evU_apply, ← he.dual_basis_repr le_rfl, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evU_bijective {F : X.Modules} {U : X.Opens} {r : ℕ} {e : Fin r → Γ(F, U)} (he : IsFrame e) :
     Function.Bijective (evU F U) := by
@@ -120,19 +120,19 @@ namespace GlobalTheory.VB
 open Lagr
 
 /- English proof (translation)
-Introduce `T g F H hF hH i β hβ hloc w`. Establish `key (V : T.Opens) (x : T) (hx : x ∈ V) : ∃ U : T.Opens, U ≤ V ∧ x ∈ U ∧ Function.Surjective ((β ≫ dualMap i).app U) ∧ ∀ t : Γ(H, U), (β ≫ dualMap i).app U t = 0 → ∃ u, i.app U u = t`. Take `⟨U₁, eH, -, hx₁, hle₁, heH⟩` from `hH.exists_affine hx`. Take `⟨U, eF, hU, hxU, hle, heF⟩` from `hF.exists_affine hx₁`. Establish `heH'` using `heH.res hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hinj, N, hN⟩` from `hloc U hU`. Establish `hβU : Function.Bijective (β.app U)` using `ConcreteCategory.bijective_of_isIso (β.app U)`. Set `B` to `evU H U ∘ₗ appLinear β U`. Establish `hB : Function.Bijective B` using `(evU_bijective heH').comp hβU`. Establish `hiso (s s' : Γ(F, U)) : B (appLinear i U s) (appLinear i U s') = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw` using `congrArg (fun f => appLinear f U s) w`. Simplify using `only [appLinear_comp, LinearMap.comp_apply, GlobalTheory.QCoh.appLinear_zero, LinearMap.zero_apply] at hw`. Use `congrArg (fun l => dualApp l le_rfl s') hw` as an intermediate fact. Simplify using `only [appLinear_apply, dualApp_dualMap, dualApp_zero, LinearMap.zero_apply] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `φ` to `evU F U ∘ₗ appLinear (β ≫ dualMap i) U`. Establish `hφ (t : Γ(H, U)) (s : Γ(F, U)) : φ t s = B t (appLinear i U s)` using `rfl`. Take `⟨hsurj, hker⟩` from `alg (heH'.basis le_rfl) (heF.basis le_rfl) (appLinear i U) hinj N hN B hB hiso φ hφ`. Establish `hevF` using `evU_bijective heF`. Use `⟨U, hle.trans hle₁, hxU, fun l => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hsurj (evU F U l)`. Conclude with `⟨t, hevF.1 ht⟩`. Take `⟨u, hu⟩` from `hker t (by show evU F U ((β ≫ dualMap i).app U t) = 0`. Rewrite using `[ht, map_zero])`. Conclude with `⟨u, hu⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `ShortComplex.ShortExact.mk' (DualExact.exact_of_locally _ fun V x hx => ?_) (QCoh.mono_of_locally_app_injective i fun V x hx => ?_) (QCoh.epi_of_locally_app_surjective _ fun V x hx => ?_)` and prove the remaining obligations. Take `⟨U, hU, hxU, -, hex⟩` from `key V x hx`. Conclude with `⟨U, hU, hxU, hex⟩`. Take `⟨U, hU, hxU, hle⟩` from `QCoh.exists_affine_mem_le x hx`. Conclude with `⟨U, hxU, hle, (hloc U hU).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hxU, hs, -⟩` from `key V x hx`. Conclude with `⟨U, hxU, hU, hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lagrangian_shortExact : ∀ (T : Scheme.{0}) (g : ℕ) (F H : T.Modules), GlobalTheory.VB.IsVB F g →
     GlobalTheory.VB.IsVB H (2 * g) →

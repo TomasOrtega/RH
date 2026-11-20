@@ -20,19 +20,17 @@ open GlobalTheory.KFourier MeasureTheory
 namespace GlobalTheory.HsLe
 
 /- English proof (translation)
-Establish `hu : toMK k ∈ unitary (Matrix (Fin n) (Fin n) ℂ)` using `k.2.1`. Establish `hcol : ∀ j : Fin n, ∑ i, ‖toMK k i j‖ ^ 2 = 1`. Introduce `j`. Establish `hm : star (toMK k) * toMK k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hu`. Establish `h1 : (star (toMK k) * toMK k) j j = (1 : Matrix (Fin n) (Fin n) ℂ) j j` using `by rw [hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Establish `h2 : ((∑ i, ‖toMK k i j‖ ^ 2 : ℝ) : ℂ) = 1`. Rewrite using `[← h1]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.star_apply, ← Complex.conj_mul']`. Both sides reduce to the same expression. Conclude with `h2` after adjusting the coercions. Establish `hsum : ∑ i, ∑ j, ‖toMK k i j‖ ^ 2 = (n : ℝ)`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hcol]`. Establish `hone : ∑ i : Fin n, ∑ j : Fin n, ‖(1 : Matrix (Fin n) (Fin n) ℂ) i j‖ ^ 2 = (n : ℝ)`. Establish `: ∀ i j : Fin n, ‖(1 : Matrix (Fin n) (Fin n) ℂ) i j‖ ^ 2 = if i = j then 1 else 0`. Introduce `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one]`. Establish `key : ∀ a b : ℂ, ‖a - b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖b‖ ^ 2`. Introduce `a b`. Establish `h` using `norm_sub_le a b`. Use polynomial arithmetic with `[norm_nonneg (a - b), norm_nonneg a, norm_nonneg b, sq_nonneg (‖a‖ - ‖b‖)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.REAL.hs`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply]`. Conclude with `key _ _`.
-
-Use `_ = 2 * ∑ i, ∑ j, ‖toMK k i j‖ ^ 2 + 2 * ∑ i : Fin n, ∑ j : Fin n, ‖(1 : Matrix (Fin n) (Fin n) ℂ) i j‖ ^ 2 := by`. Simplify using `only [Finset.sum_add_distrib, Finset.mul_sum]`. Use `_ = 4 * (n : ℝ) := by rw [hsum, hone]; ring`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_toMK_sub_one_le {n : ℕ} (ε : Fin n → Bool) (k : KG ε) :
     Formalism.REAL.hs (toMK k - 1) ≤ 4 * (n : ℝ) := by

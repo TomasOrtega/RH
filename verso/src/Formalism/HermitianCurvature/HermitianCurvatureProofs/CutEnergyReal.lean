@@ -6,7 +6,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutERCapAdjS
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `ER.energyReal_of_capAdjInt (ER.capAdjInt_of_scalar ER.capacity_adjoint_scalar)`.
+A detailed English derivation is pending.
 -/
 theorem energy_reality_holds : EnergyReal :=
   ER.energyReal_of_capAdjInt (ER.capAdjInt_of_scalar ER.capacity_adjoint_scalar)

@@ -20,9 +20,9 @@ def IsGrHom.dsMap {G H : GMod B R k} {φ : G.M →ₗ[R] H.M} (hφ : IsGrHom G H
   DirectSum.map fun i => ((φ.restrictScalars B).restrict (hφ i)).toAddMonoidHom
 
 /- English proof (translation)
-Proceed by induction on `a using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i x`. Rewrite using `[IsGrHom.dsMap, DirectSum.map_of, DirectSum.coeAddMonoidHom_of, DirectSum.coeAddMonoidHom_of]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem IsGrHom.coe_dsMap {G H : GMod B R k} {φ : G.M →ₗ[R] H.M} (hφ : IsGrHom G H φ)
     (a : DirectSum (Deg k) fun i => G.gr i) :
@@ -35,9 +35,9 @@ theorem IsGrHom.coe_dsMap {G H : GMod B R k} {φ : G.M →ₗ[R] H.M} (hφ : IsG
   | add x y hx hy => rw [map_add, map_add, map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hG.2 x`. Establish `h : hφ.dsMap a = DirectSum.of (fun i => H.gr i) m ⟨_, hx⟩`. Apply `hH.1` to reduce the goal to its premises. Rewrite using `[hφ.coe_dsMap, DirectSum.coeAddMonoidHom_of]`. Establish `h2` using `congrArg (fun b => ((b m : H.gr m) : H.M)) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [DirectSum.of_eq_same] at h2`. Use `⟨a m, (a m).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, IsGrHom.dsMap, DirectSum.map_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsGrHom.strict {G H : GMod B R k} {φ : G.M →ₗ[R] H.M} (hφ : IsGrHom G H φ)
     (hG : DirectSum.IsInternal G.gr) (hH : DirectSum.IsInternal H.gr) {m : Deg k} {x : G.M}
@@ -53,11 +53,11 @@ theorem IsGrHom.strict {G H : GMod B R k} {φ : G.M →ₗ[R] H.M} (hφ : IsGrHo
   rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨a, rfl⟩` from `hG.2 x`. Proceed by induction on `a using DirectSum.induction_on with`. Consider the case `zero => simp`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `of i x`. Rewrite using `[DirectSum.coeAddMonoidHom_of]`. Conclude with `Submodule.subset_span ⟨⟨_, rfl⟩, i, hφ i _ x.2⟩`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ hx hy`. Rewrite using `[Submodule.span_le]`. Conclude with `fun x hx => hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem IsGrHom.range_hom {G H : GMod B R k} {φ : G.M →ₗ[R] H.M} (hφ : IsGrHom G H φ)
     (hG : DirectSum.IsInternal G.gr) : H.IsHomSub (LinearMap.range φ) := by
@@ -112,7 +112,7 @@ def sesOfKer {G H : GMod B R k} (N : Submodule R G.M) (φ : G.M →ₗ[R] H.M)
     (fun _ => rfl) hφ hG hH
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `*` using `[GMod.Ann, Module.mem_annihilator]`. Introduce `x`. Conclude with `Subtype.ext (ha x.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ann_le_sub (F : GMod B R k) (N : Submodule R F.M) : F.Ann ≤ (F.sub N).Ann := by
   intro a ha
@@ -121,7 +121,7 @@ theorem ann_le_sub (F : GMod B R k) (N : Submodule R F.M) : F.Ann ≤ (F.sub N).
   exact Subtype.ext (ha x.1)
 
 /- English proof (translation)
-Introduce `a ha`. Rewrite `*` using `[GMod.Ann, Module.mem_annihilator]`. Introduce `y`. Take `⟨x, rfl⟩` from `N.mkQ_surjective y`. Conclude with `(map_smul N.mkQ a x).symm.trans ((congrArg N.mkQ (ha x)).trans (map_zero _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ann_le_quo (F : GMod B R k) (N : Submodule R F.M) : F.Ann ≤ (F.quo N).Ann := by
   intro a ha
@@ -131,9 +131,9 @@ theorem ann_le_quo (F : GMod B R k) (N : Submodule R F.M) : F.Ann ≤ (F.quo N).
   exact (map_smul N.mkQ a x).symm.trans ((congrArg N.mkQ (ha x)).trans (map_zero _))
 
 /- English proof (translation)
-Rewrite using `[secs, Ideal.span_le]`. Introduce and unpack `x ⟨d, hd⟩`. Break down `List.mem_cons.1 hd with h | h` into its components or cases. Establish `: x = σ` using `congrArg Prod.snd h`. Substitute `this` using the available equality.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Ideal.mem_sup_left (Ideal.subset_span rfl)`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span ⟨d, h⟩)`.
+A detailed English derivation is pending.
 -/
 theorem secs_cons_le_sup (δ : Deg k) (σ : R) (ts : List (Deg k × R)) :
     secs ((δ, σ) :: ts) ≤ Ideal.span {σ} ⊔ secs ts := by
@@ -146,7 +146,7 @@ theorem secs_cons_le_sup (δ : Deg k) (σ : R) (ts : List (Deg k × R)) :
   · exact Ideal.mem_sup_right (Ideal.subset_span ⟨d, h⟩)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Use `⟨N, hN.trans (sup_le (le_sup_of_le_left hJ) ((secs_cons_le_sup δ σ ts).trans (sup_le (le_sup_of_le_left ?_) le_sup_right)))⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem admissible_tail_of_cons_mem_ideal [IsLocalRing B] (𝒜 : Deg k → Submodule B R) {δ : Deg k} {σ : R}
     {ts : List (Deg k × R)} {J J' : Ideal R} (h : admitted 𝒜 ((δ, σ) :: ts) J) (hJ : J ≤ J')
@@ -202,7 +202,7 @@ variable {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
 variable (𝒜 : Deg k → Submodule B R) (F : GMod B R k) (s s' : R) (d d' : Deg k)
 
 /- English proof (translation)
-Introduce `x y h` and use `by have h' : x.1 = y.1 := congrArg (fun z : LinearMap.ker (LinearMap.lsmul R F.M (s * s')) => z.1) h exact Subtype.ext h'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kernel_inclusion_product_injective : Function.Injective (phi1 F s s' d d') :=
   fun x y h => by
@@ -211,7 +211,7 @@ theorem kernel_inclusion_product_injective : Function.Injective (phi1 F s s' d d
     exact Subtype.ext h'
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show x.1 ∈ F.gr (m - d' - d) ↔ x.1 ∈ F.gr (m - (d + d'))`. Rewrite using `[show m - d' - d = m - (d + d') by abel]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_inclusion_grading_comap (m : Deg k) : ((F.shift d).ann s' d').gr m =
     ((F.ann (s * s') (d + d')).gr m).comap ((phi1 F s s' d d').restrictScalars B) := by
@@ -220,9 +220,9 @@ theorem kernel_inclusion_grading_comap (m : Deg k) : ((F.shift d).ann s' d').gr 
   rw [show m - d' - d = m - (d + d') by abel]
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : s' • y.1 = 0` using `congrArg Subtype.val h`. Conclude with `⟨⟨y.1, h'⟩, Subtype.ext rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `Subtype.ext x.2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem kernel_inclusion_product_exact : Function.Exact (phi1 F s s' d d') (phi2 F s s' d d') := by
   intro y
@@ -234,7 +234,7 @@ theorem kernel_inclusion_product_exact : Function.Exact (phi1 F s s' d d') (phi2
     exact Subtype.ext x.2
 
 /- English proof (translation)
-Introduce `m x hx`. Establish `hx' : x.1 ∈ F.gr (m - (d + d'))` using `hx`. Use `show s' • x.1 ∈ F.gr (m - d)`. Establish `h` using `hF.smul_mem hs' hx'`. Rewrite `h` using `[show d' + (m - (d + d')) = m - d by abel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem product_kernel_to_kernel_isGraded (hF : F.IsGr 𝒜) (hs' : s' ∈ 𝒜 d') :
     IsGrHom (F.ann (s * s') (d + d')) (F.ann s d) (phi2 F s s' d d') := by
@@ -245,11 +245,9 @@ theorem product_kernel_to_kernel_isGraded (hF : F.IsGr 𝒜) (hs' : s' ∈ 𝒜 
   rwa [show d' + (m - (d + d')) = m - d by abel] at h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : y.1 ∈ LinearMap.range (LinearMap.lsmul R F.M s')` using `(Submodule.Quotient.mk_eq_zero _).1 h`. Take `⟨x, hx⟩` from `h'`. Establish `hx' : s' • x = y.1` using `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : s • y.1 = 0` using `y.2`. Use `⟨⟨x, ?_⟩, Subtype.ext hx'⟩` and prove the remaining obligations. Use `show (s * s') • x = 0`. Rewrite using `[mul_smul, hx', hy]`. Introduce and unpack `⟨x, rfl⟩`.
-
-Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨x.1, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ker3 (y : (F.ann s d).M) :
     phi3 F s s' d y = 0 ↔ y ∈ LinearMap.range (phi2 F s s' d d') := by
@@ -267,19 +265,17 @@ theorem ker3 (y : (F.ann s d).M) :
     exact (Submodule.Quotient.mk_eq_zero _).2 ⟨x.1, rfl⟩
 
 /- English proof (translation)
-Introduce `_ x hx` and use `⟨x.1, hx, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kernel_to_shift_quotient_isGraded : IsGrHom (F.ann s d) ((F.shift d).quot s') (phi3 F s s' d) :=
   fun _ x hx => ⟨x.1, hx, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x, rfl⟩` from `(LinearMap.range (LinearMap.lsmul R F.M s')).mkQ_surjective y`. Establish `h' : s • x ∈ LinearMap.range (LinearMap.lsmul R F.M (s * s'))` using `(Submodule.Quotient.mk_eq_zero _).1 h`. Take `⟨z, hz⟩` from `h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz' : (s * s') • z = s • x` using `hz`. Use `⟨⟨x - s' • z, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show s • (x - s' • z) = 0`. Rewrite using `[smul_sub, ← mul_smul, hz', sub_self]`. Use `show (LinearMap.range (LinearMap.lsmul R F.M s')).mkQ (x - s' • z) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_sub, sub_eq_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨z, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`. Establish `hw : s • w.1 = 0` using `w.2`. Use `show (LinearMap.range (LinearMap.lsmul R F.M (s * s'))).mkQ (s • w.1) = 0`.
-
-Rewrite using `[hw, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker4 (y : ((F.shift d).quot s').M) :
     phi4 F s s' d y = 0 ↔ y ∈ LinearMap.range (phi3 F s s' d) := by
@@ -302,7 +298,7 @@ theorem ker4 (y : ((F.shift d).quot s').M) :
     rw [hw, map_zero]
 
 /- English proof (translation)
-Introduce and unpack `m _ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ F.gr (m - d)` using `hx`. Establish `h` using `hF.smul_mem hs hx'`. Rewrite `h` using `[show d + (m - d) = m by abel]`. Conclude with `⟨s • x, h, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem quotient_to_product_quotient_isGraded (hF : F.IsGr 𝒜) (hs : s ∈ 𝒜 d) :
     IsGrHom ((F.shift d).quot s') (F.quot (s * s')) (phi4 F s s' d) := by
@@ -313,11 +309,11 @@ theorem quotient_to_product_quotient_isGraded (hF : F.IsGr 𝒜) (hs : s ∈ �
   exact ⟨s • x, h, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x, rfl⟩` from `(LinearMap.range (LinearMap.lsmul R F.M (s * s'))).mkQ_surjective y`. Establish `h' : x ∈ LinearMap.range (LinearMap.lsmul R F.M s)` using `(Submodule.Quotient.mk_eq_zero _).1 h`. Take `⟨z, hz⟩` from `h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz' : s • z = x` using `hz`. Use `⟨(LinearMap.range (LinearMap.lsmul R F.M s')).mkQ z, ?_⟩` and prove the remaining obligations. Use `show (LinearMap.range (LinearMap.lsmul R F.M (s * s'))).mkQ (s • z) = _`. Rewrite using `[hz']`. Introduce and unpack `⟨w, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `(LinearMap.range (LinearMap.lsmul R F.M s')).mkQ_surjective w`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨z, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ker5 (y : (F.quot (s * s')).M) :
     phi5 F s s' y = 0 ↔ y ∈ LinearMap.range (phi4 F s s' d) := by
@@ -356,13 +352,13 @@ def ses5 : SES ((F.quot (s * s')).sub (LinearMap.range (phi4 F s s' d))) (F.quot
       exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Module.mem_annihilator.2 fun x => Subtype.ext x.2`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_annihilator_product_kernel : s * s' ∈ (F.ann (s * s') (d + d')).Ann :=
   Module.mem_annihilator.2 fun x => Subtype.ext x.2
 
 /- English proof (translation)
-The claim follows from `Module.mem_annihilator.2 fun x => Subtype.ext (by have hx : s • x.1 = 0 := x.2 show (s * s') • x.1 = 0 rw [mul_comm, mul_smul, hx, smul_zero])`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_annihilator_kernel : s * s' ∈ (F.ann s d).Ann :=
   Module.mem_annihilator.2 fun x => Subtype.ext (by
@@ -371,7 +367,7 @@ theorem mul_mem_annihilator_kernel : s * s' ∈ (F.ann s d).Ann :=
     rw [mul_comm, mul_smul, hx, smul_zero])
 
 /- English proof (translation)
-The claim follows from `Module.mem_annihilator.2 fun y => by obtain ⟨x, rfl⟩ := (LinearMap.range (LinearMap.lsmul R F.M s')).mkQ_surjective y refine (Submodule.Quotient.mk_eq_zero _).2 ⟨s • x, ?_⟩ show s' • s • x = (s * s') • x rw [← mul_smul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_annihilator_shift_quotient : s * s' ∈ ((F.shift d).quot s').Ann :=
   Module.mem_annihilator.2 fun y => by
@@ -381,7 +377,7 @@ theorem mul_mem_annihilator_shift_quotient : s * s' ∈ ((F.shift d).quot s').An
     rw [← mul_smul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `Module.mem_annihilator.2 fun y => by obtain ⟨x, rfl⟩ := (LinearMap.range (LinearMap.lsmul R F.M (s * s'))).mkQ_surjective y exact (Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_annihilator_product_quotient : s * s' ∈ (F.quot (s * s')).Ann :=
   Module.mem_annihilator.2 fun y => by

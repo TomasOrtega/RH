@@ -8,7 +8,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BadPrimes
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `r`. Take `⟨x, rfl⟩` from `(RingOfIntegers.mapRingEquiv s.iE).surjective r`. Establish `hc : cO D.host.E (RingOfIntegers.mapRingEquiv s.iE x) = RingOfIntegers.mapRingEquiv s.iE (cO X.E x)` using `RingOfIntegers.ext ((bridge_star_holds D.R D.host (s.iE x)).trans (hs.2 (x : X.E)).symm)`. Rewrite using `[mem_conjP, hc, mem_seamP, mem_seamP, mem_conjP]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapPrime_conjugate {D : D7} {X : Fields} (s : Seam D X) (hs : s.Ok) (P : HeightOneSpectrum (𝓞 X.E)) :
     seamP s (conjPrime₂ P) = conjPrime₂ (seamP s P) := by
@@ -20,11 +20,9 @@ theorem mapPrime_conjugate {D : D7} {X : Fields} (s : Seam D X) (hs : s.Ok) (P :
   rw [mem_conjP, hc, mem_seamP, mem_seamP, mem_conjP]
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hTie`. Take `⟨hSS, hlev, -⟩` from `(isChainTop_iff _ _ _ _ _ _ _ _ _).1 hTie.isChainTop`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlev]`. Establish `hprod : 0 < ∏ P : rowSG t.Pr t.sel (t.tup μ), Formalism.L2.Col.qOf P.1` using `Finset.prod_pos fun P _ => Nat.pos_of_ne_zero fun h => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.mul_pos (pow_pos hprod _) (Nat.mul_pos (t.pr_ok.T_prime _).pos (pow_pos hprod _))`. Introduce `Q hQ hQ'`. Take `⟨P, rfl⟩ : ∃ P, seamP t.seam P = Q` from `(HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv t.seam.iE)).surjective Q`. Rewrite `hQ'` using `[← mapPrime_conjugate t.seam t.seam_ok, mem_ssRec, hSS]`. Rewrite `hQ` using `[mem_ssRec, hSS]`.
-
-Conclude with `sall_noConj t.sel (t.tup μ) hP.fields t.pr_ok hP.sel (t.word u) hP.avoid.2 hP.avoid.1 P hQ hQ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_pos_and_noConj :
     UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => 0 < (t.rd u μ).lev ∧ ∀ Q ∈ ssRec t u μ, conjPrime₂ Q ∉ ssRec t u μ) := by

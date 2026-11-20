@@ -14,14 +14,14 @@ namespace GlobalTheory.CompanionTheory.PeriodicInt
 variable {E : Type} [Field E] [NumberField E] {v : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`.
+A detailed English derivation is pending.
 -/
 theorem valued_algebraMap (x : E) :
     Valued.v (algebraMap E (v.adicCompletion E) x) = v.valuation E x :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
 
 /- English proof (translation)
-Rewrite using `[valued_algebraMap]`. Conclude with `v.valuation_le_one a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_int_le_one (a : 𝓞 E) :
     Valued.v (algebraMap E (v.adicCompletion E) (a : E)) ≤ 1 := by
@@ -29,7 +29,7 @@ theorem valued_int_le_one (a : 𝓞 E) :
   exact v.valuation_le_one a
 
 /- English proof (translation)
-Use `(mem_valBall_iff_valued.1 h).trans ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem valued_le_one_of_mem_valBall {m : ℕ} {x : v.adicCompletion E}
     (h : x ∈ valBall (v.adicCompletion E) (m : ℤ)) : Valued.v x ≤ 1 := by
@@ -38,13 +38,13 @@ theorem valued_le_one_of_mem_valBall {m : ℕ} {x : v.adicCompletion E}
   omega
 
 /- English proof (translation)
-Establish `hopen : IsOpen {z : v.adicCompletion E | y - z ∈ valBall (v.adicCompletion E) (m : ℤ)}` using `(isOpen_valBall (m : ℤ)).preimage (continuous_const.sub continuous_id)`. Take `⟨x, hx⟩` from `(v.denseRange_algebraMap E).exists_mem_open hopen ⟨y, by simp [zero_mem]⟩`. Establish `hx' : y - algebraMap E (v.adicCompletion E) x ∈ valBall (v.adicCompletion E) (m : ℤ)` using `hx`. Establish `h1 : Valued.v (algebraMap E (v.adicCompletion E) x) ≤ 1`. Establish `e : algebraMap E (v.adicCompletion E) x = y - (y - algebraMap E (v.adicCompletion E) x)` using `by ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le hy (valued_le_one_of_mem_valBall hx'))`. Rewrite `h1` using `[valued_algebraMap]`. Take `⟨a, ha⟩` from `v.exists_valuation_sub_lt_of_integer h1 (Units.mk0 _ (WithZero.exp_ne_zero (a := -(m : ℤ))))`. Rewrite `ha` using `[Units.val_mk0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e : y - algebraMap E (v.adicCompletion E) (a : E) = (y - algebraMap E (v.adicCompletion E) x) + algebraMap E (v.adicCompletion E) (x - (a : E))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem hx' (mem_valBall_iff_valued.2 ?_)` and prove the remaining obligations. Rewrite using `[valued_algebraMap, Valuation.map_sub_swap]`. Conclude with `ha.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_close (m : ℕ) {y : v.adicCompletion E} (hy : Valued.v y ≤ 1) :
     ∃ a : 𝓞 E, y - algebraMap E (v.adicCompletion E) (a : E) ∈
@@ -74,7 +74,7 @@ theorem exists_int_close (m : ℕ) {y : v.adicCompletion E} (hy : Valued.v y ≤
   exact ha.le
 
 /- English proof (translation)
-Establish `h1` using `mem_valBall_iff_valued.1 h`. Rewrite `h1` using `[← map_sub, valued_algebraMap]`. Rewrite using `[← v.intValuation_le_pow_iff_mem, ← v.valuation_of_algebraMap (K := E)]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_mem_pow_of_close {m : ℕ} {a b : 𝓞 E}
     (h : algebraMap E (v.adicCompletion E) (a : E) - algebraMap E (v.adicCompletion E) (b : E) ∈
@@ -85,7 +85,7 @@ theorem sub_mem_pow_of_close {m : ℕ} {a b : 𝓞 E}
   simpa using h1
 
 /- English proof (translation)
-Rewrite using `[mem_valBall_iff_valued, ← map_sub, valued_algebraMap]`. Conclude with `valuation_sub_le h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem close_of_sub_mem_pow {m : ℕ} {a b : 𝓞 E} (h : a - b ∈ v.asIdeal ^ m) :
     algebraMap E (v.adicCompletion E) (a : E) - algebraMap E (v.adicCompletion E) (b : E) ∈
@@ -94,27 +94,25 @@ theorem close_of_sub_mem_pow {m : ℕ} {a b : 𝓞 E} (h : a - b ∈ v.asIdeal ^
   exact valuation_sub_le h
 
 /- English proof (translation)
-Introduce `E _ _ v m g h0 hp`. Establish `: Finite (𝓞 E ⧸ v.asIdeal ^ m)` using `Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero _ v.ne_bot)`. Use `Fintype.ofFinite (𝓞 E ⧸ v.asIdeal ^ m)` as an intermediate fact. Set `a : (𝓞 E ⧸ v.asIdeal ^ m) → v.adicCompletion E` to `fun r => algebraMap E (v.adicCompletion E) ((Quotient.out r : 𝓞 E) : E)`. Set `S : (𝓞 E ⧸ v.asIdeal ^ m) → Set (v.adicCompletion E)` to `fun r => (fun y => y + (-a r)) ⁻¹' (valBall (v.adicCompletion E) (m : ℤ) : Set (v.adicCompletion E))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `memS : ∀ r y, y ∈ S r ↔ y - a r ∈ valBall (v.adicCompletion E) (m : ℤ)` using `fun r y => by`. Simplify using `only [S, Set.mem_preimage, SetLike.mem_coe, sub_eq_add_neg]`. Establish `hSm : ∀ r, MeasurableSet (S r)` using `fun r => ((isOpen_valBall (m : ℤ)).preimage (continuous_id.add continuous_const)).measurableSet`. Establish `hB : (haarIntegers (v.adicCompletion E)).real (valBall (v.adicCompletion E) (m : ℤ) : Set (v.adicCompletion E)) = (((Ideal.absNorm v.asIdeal ^ m : ℕ) : ℝ))⁻¹`. Rewrite using `[measureReal_def, haarIntegers_valBall, residueCard_adicCompletion, ENNReal.coe_toReal, NNReal.coe_zpow, NNReal.coe_natCast, zpow_neg, zpow_natCast]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hSμ : ∀ r, (haarIntegers (v.adicCompletion E)).real (S r) = (((Ideal.absNorm v.asIdeal ^ m : ℕ) : ℝ))⁻¹` using `fun r => by`. Rewrite using `[← hB, measureReal_def, measureReal_def]`. Conclude with `congrArg ENNReal.toReal (measure_preimage_add_right _ _ _)`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : ∀ r, haarIntegers (v.adicCompletion E) (S r) ≠ ⊤` using `fun r => by`. Establish `: haarIntegers (v.adicCompletion E) (S r) = haarIntegers (v.adicCompletion E) (valBall (v.adicCompletion E) (m : ℤ) : Set (v.adicCompletion E))` using `measure_preimage_add_right _ _ _`. Rewrite using `[this, haarIntegers_valBall]`. Conclude with `ENNReal.coe_ne_top`. Establish `hdecomp : ∀ y, g y = ∑ r, (S r).indicator (fun _ => g (a r)) y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `y`. Distinguish the cases in `hy : Valued.v y ≤ 1`. Take `⟨b, hb⟩` from `exists_int_close (v := v) m hy set r : 𝓞 E ⧸ v.asIdeal ^ m := Ideal.Quotient.mk _ b with hr`. Establish `hclose : a r - algebraMap E (v.adicCompletion E) (b : E) ∈ valBall (v.adicCompletion E) (m : ℤ)` using `close_of_sub_mem_pow (Ideal.Quotient.eq.1 (by rw [Ideal.Quotient.mk_out]))`. Establish `hyr : y ∈ S r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[memS]`. Establish `e : y - a r = (y - algebraMap E (v.adicCompletion E) (b : E)) - (a r - algebraMap E (v.adicCompletion E) (b : E))` using `by ring`. Rewrite using `[e]`. Conclude with `sub_mem hb hclose`. Rewrite using `[Finset.sum_eq_single r, Set.indicator_of_mem hyr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hp (a r) (y - a r) (mem_valBall_iff_valued.1 ((memS r y).1 hyr))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Introduce `r' _ hne`. Use `Set.indicator_of_notMem (fun hyr' => hne ?_) _` and prove the remaining obligations. Establish `h1` using `sub_mem ((memS r y).1 hyr) ((memS r' y).1 hyr')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : y - a r - (y - a r') = a r' - a r` using `by ring`. Rewrite `h1` using `[e]`. Establish `h2` using `sub_mem_pow_of_close h1`. Establish `h3` using `Ideal.Quotient.eq.2 h2`. Simplify `h3` using `[Ideal.Quotient.mk_out]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[h0 y (not_le.1 hy)]`. Use `(Finset.sum_eq_zero fun r _ => Set.indicator_of_notMem (fun hyr => hy ?_) _).symm` and prove the remaining obligations. Establish `e : y = (y - a r) + a r` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Valuation.map_add _ _ _).trans (max_le (valued_le_one_of_mem_valBall ((memS r y).1 hyr)) (valued_int_le_one _))`. Establish `hint : ∀ r, Integrable ((S r).indicator (fun _ => g (a r))) (haarIntegers (v.adicCompletion E))` using `fun r => (integrable_indicator_iff (hSm r)).2 (integrableOn_const (hfin r))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[integral_indicator_const _ (hSm r), hSμ r, Complex.real_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_eq_finsum : ∀ (E : Type) [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) (m : ℕ) (g : v.adicCompletion E → ℂ), (∀ y, 1 < Valued.v y → g y = 0) → (∀ y h : v.adicCompletion E, Valued.v h ≤ WithZero.exp (-(m : ℤ)) → g (y + h) = g y) → ∫ y, g y ∂haarIntegers (v.adicCompletion E) = (((Ideal.absNorm v.asIdeal ^ m : ℕ) : ℂ))⁻¹ * ∑ᶠ r : 𝓞 E ⧸ v.asIdeal ^ m, g (algebraMap E (v.adicCompletion E) ((Quotient.out r : 𝓞 E) : E)) := by
   intro E _ _ v m g h0 hp

@@ -16,7 +16,7 @@ theorem coordIncl_apply {O K : Type} [CommRing O] [Field K] [Algebra O K] {r : �
     coordIncl O K r x = fun i => algebraMap O K (x i) := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Use function extensionality and compare the values at `i`. Conclude with `IsFractionRing.injective O K (congrFun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coordIncl_injective {O K : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K]
     [IsFractionRing O K] {r : ℕ} : Function.Injective (coordIncl O K r) := by
@@ -25,9 +25,9 @@ theorem coordIncl_injective {O K : Type} [CommRing O] [IsDomain O] [Field K] [Al
   exact IsFractionRing.injective O K (congrFun h i)
 
 /- English proof (translation)
-Rewrite using `[← (Pi.basisFun O (Fin r)).span_eq, Submodule.map_span, ← Set.range_comp]`. Use `show Submodule.span O (Set.range (Pi.basisFun K (Fin r))) = _`. Use `congr 2`. Use function extensionality and compare the values at `i`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[coordIncl_apply, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem std_eq_map_top (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] (r : ℕ) :
@@ -40,9 +40,9 @@ theorem std_eq_map_top (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuati
   simp [coordIncl_apply, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[glMap, std_eq_map_top, ← Submodule.map_comp, LinearMap.range_eq_map, ← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, Matrix.toLin'_apply, Matrix.mulVecLin_apply, coordIncl_apply, hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (algebraMap O K) A x i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem glMap_std_eq {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] {r : ℕ} (A : Matrix (Fin r) (Fin r) O) (g : GL (Fin r) K)
@@ -63,9 +63,9 @@ end GlobalTheory.LatHecke
 open GlobalTheory.LatHecke in
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ r A g hg`. Rewrite using `[glMap_std_eq A g hg, std_eq_map_top]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `AddSubgroup.relIndex_map_map_of_injective (f := (coordIncl O K r).toAddMonoidHom) (LinearMap.range A.mulVecLin).toAddSubgroup (⊤ : Submodule O (Fin r → O)).toAddSubgroup coordIncl_injective`. Use `h.trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.top_toAddSubgroup, AddSubgroup.relIndex_top_right]`. Both sides reduce to the same expression. Introduce `h`. Rewrite `h` using `[← Submodule.map_smul'']`. Conclude with `(Submodule.map_le_map_iff_of_injective coordIncl_injective _ _).1 h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LatHecke.relIndex_glMap_std_of_integral : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] (r : ℕ) (A : Matrix (Fin r) (Fin r) O) (g : GL (Fin r) K), (g : Matrix (Fin r) (Fin r) K) = A.map (algebraMap O K) → (glMap g (std O K r).1).toAddSubgroup.relIndex (std O K r).1.toAddSubgroup = Nat.card ((Fin r → O) ⧸ LinearMap.range A.mulVecLin) ∧ (IsLocalRing.maximalIdeal O • (std O K r).1 ≤ glMap g (std O K r).1 → IsLocalRing.maximalIdeal O • (⊤ : Submodule O (Fin r → O)) ≤ LinearMap.range A.mulVecLin) := by
   intro O K _ _ _ _ _ _ r A g hg

@@ -25,11 +25,11 @@ def Lm (M : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i k => if h : (k : ℕ) < i then -wv M i ⟨k, h⟩ else if k = i then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Establish `h1 : ∑ k : Fin n, N i k * M k j = ∑ k ∈ Finset.univ.filter (fun k => k ≤ i), N i k * M k j`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with hk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hup k (lt_of_not_ge hk), zero_mul]`. Establish `h2 : Finset.univ.filter (fun k : Fin n => k ≤ i) = insert i (Finset.univ.filter (fun k => k < i))`. Use extensionality with `k`. Simplify using `[le_iff_lt_or_eq, or_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : ∑ k ∈ Finset.univ.filter (fun k : Fin n => k < i), N i k * M k j = ∑ k : Fin i, N i (Fin.castLE i.isLt.le k) * M (Fin.castLE i.isLt.le k) j`. Use `Finset.sum_bij' (fun k hk => (⟨k, (Finset.mem_filter.mp hk).2⟩ : Fin i)) (fun k _ => Fin.castLE i.isLt.le k) (fun _ _ => Finset.mem_univ _) (fun k _ => ?_) (fun _ _ => rfl) (fun _ _ => rfl) (fun _ _ => rfl)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `k.isLt`. Rewrite using `[h1, h2, Finset.sum_insert (by simp), h3, hd, one_mul, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_expand (N M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n)
     (hup : ∀ k : Fin n, i < k → N i k = 0) (hd : N i i = 1) :
@@ -55,7 +55,7 @@ theorem row_expand (N M : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n)
   rw [h1, h2, Finset.sum_insert (by simp), h3, hd, one_mul, add_comm]
 
 /- English proof (translation)
-Simplify using `only [Lm, Matrix.of_apply]`. Establish `h' : ¬ ((k : ℕ) < i)` using `by rw [Fin.lt_iff_val_lt_val] at h; omega`. Rewrite using `[dif_neg h', if_neg (ne_of_gt h)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lm_up (M : Matrix (Fin n) (Fin n) ℂ) (i k : Fin n) (h : i < k) : Lm M i k = 0 := by
   simp only [Lm, Matrix.of_apply]
@@ -63,20 +63,20 @@ theorem Lm_up (M : Matrix (Fin n) (Fin n) ℂ) (i k : Fin n) (h : i < k) : Lm M 
   rw [dif_neg h', if_neg (ne_of_gt h)]
 
 /- English proof (translation)
-Simplify using `[Lm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Lm_diag (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) : Lm M i i = 1 := by
   simp [Lm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular _ (fun i k h => Lm_up M i k (OrderDual.toDual_lt_toDual.mp h))]`. Simplify using `[Lm_diag]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Lm_det (M : Matrix (Fin n) (Fin n) ℂ) : (Lm M).det = 1 := by
   rw [Matrix.det_of_lowerTriangular _ (fun i k h => Lm_up M i k (OrderDual.toDual_lt_toDual.mp h))]
   simp [Lm_diag]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j'`. Establish `hrow` using `row_expand N M i (Fin.castLE i.isLt.le j') hup hd`. Rewrite `hrow` using `[hz _ (by simp [Fin.lt_iff_val_lt_val])]`. Simplify using `only [vecMul, dotProduct, lb, submatrix_apply, Pi.neg_apply]`. Take the linear combination `(-1 : ℂ) * hrow`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem row_sys (N M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n)
     (hup : ∀ k : Fin n, i < k → N i k = 0) (hd : N i i = 1)
@@ -90,11 +90,11 @@ theorem row_sys (N M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n)
   linear_combination (-1 : ℂ) * hrow
 
 /- English proof (translation)
-Establish `hdet : IsUnit (lb M i).det` using `by rw [det_lb]; exact isUnit_iff_ne_zero.mpr (hM _)`. Rewrite using `[row_expand (Lm M) M i j (fun k hk => Lm_up M i k hk) (Lm_diag M i)]`. Establish `hL : ∀ k : Fin i, Lm M i (Fin.castLE i.isLt.le k) = -wv M i k`. Introduce `k`. Simplify using `only [Lm, Matrix.of_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos (by simp)]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hL]`. Establish `key : vecMul (wv M i) (lb M i) = fun j : Fin i => M i (Fin.castLE i.isLt.le j)`. Rewrite using `[wv, vecMul_vecMul, Matrix.nonsing_inv_mul _ hdet, vecMul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `congrFun key ⟨j, h⟩`. Simplify using `only [vecMul, dotProduct, lb, submatrix_apply] at hk`. Establish `hk' : ∑ k : Fin i, wv M i k * M (Fin.castLE i.isLt.le k) j = M i j` using `hk`. Simplify using `only [neg_mul, Finset.sum_neg_distrib, hk', neg_add_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Lm_mul_up (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ k : Fin (n + 1), lminor M k ≠ 0)
     (i j : Fin n) (h : j < i) : (Lm M * M) i j = 0 := by
@@ -114,11 +114,11 @@ theorem Lm_mul_up (M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ k : Fin (n + 1), lm
   simp only [neg_mul, Finset.sum_neg_distrib, hk', neg_add_cancel]
 
 /- English proof (translation)
-Use extensionality with `i k`. Establish `hdet : IsUnit (lb M i).det` using `by rw [det_lb]; exact isUnit_iff_ne_zero.mpr (hM _)`. Establish `h1` using `row_sys N M i (hup i) (hd i) (hz i)`. Establish `h2` using `row_sys (Lm M) M i (fun k hk => Lm_up M i k hk) (Lm_diag M i) (fun j hj => Lm_mul_up M hM i j hj)`. Establish `heq : (fun k : Fin i => N i (Fin.castLE i.isLt.le k)) = fun k => Lm M i (Fin.castLE i.isLt.le k)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun v => vecMul v (lb M i)⁻¹) (h1.trans h2.symm)`. Simplify `h3` using `only [vecMul_vecMul, Matrix.mul_nonsing_inv _ hdet, vecMul_one]`. Break down `lt_trichotomy k i with hk | rfl | hk` into its components or cases. Conclude with `congrFun heq ⟨k, hk⟩`. Rewrite using `[hd, Lm_diag]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hup i k hk, Lm_up M i k hk]`.
+A detailed English derivation is pending.
 -/
 theorem Lm_unique (N M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ k : Fin (n + 1), lminor M k ≠ 0)
     (hup : ∀ i k : Fin n, i < k → N i k = 0) (hd : ∀ i, N i i = 1)
@@ -137,13 +137,13 @@ theorem Lm_unique (N M : Matrix (Fin n) (Fin n) ℂ) (hM : ∀ k : Fin (n + 1), 
   · rw [hup i k hk, Lm_up M i k hk]
 
 /- English proof (translation)
-Use `set e : Fin k → Fin n := Fin.castLE (Nat.le_of_lt_succ k.isLt) with he`. Establish `hmono : ∀ a b : Fin k, a < b → e a < e b` using `fun a b h => h`. Establish `hsub : (N * B).submatrix e e = N.submatrix e e * B.submatrix e e`. Use extensionality with `a b`. Simplify using `only [submatrix_apply, mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Use `symm`. Use `Fintype.sum_of_injective e (Fin.castLE_injective _) _ _ (fun c hc => ?_) (fun _ => rfl)` and prove the remaining obligations. Establish `hc' : (k : ℕ) ≤ c`. Assume the negation of the conclusion as `hlt`. Conclude with `hc ⟨⟨c, by omega⟩, Fin.ext rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hac : e a < c`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use `show (a : ℕ) < c`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hup _ _ hac, zero_mul]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNt : (N.submatrix e e).BlockTriangular OrderDual.toDual` using `fun a b h => hup _ _ (hmono _ _ (OrderDual.toDual_lt_toDual.mp h))`. Establish `hBt : (B.submatrix e e).BlockTriangular id` using `fun a b h => hB (hmono _ _ h)`. Rewrite using `[lminor, ← he, hsub, det_mul, Matrix.det_of_lowerTriangular _ hNt, Matrix.det_of_upperTriangular hBt]`. Simplify using `[hd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lminor_nb (N B : Matrix (Fin n) (Fin n) ℂ) (hup : ∀ i k : Fin n, i < k → N i k = 0)
     (hd : ∀ i, N i i = 1) (hB : B.BlockTriangular id) (k : Fin (n + 1)) :

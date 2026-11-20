@@ -6,13 +6,13 @@ open scoped ContDiff nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨c, hc⟩ : ∃ c : NNReal, μ = c • ν` from `⟨_, Measure.isAddLeftInvariant_eq_smul μ ν⟩`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `: μ = 0` using `by simpa using hc`. Conclude with `(NeZero.ne μ) this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b` to `Module.Free.chooseBasis ℤ L`. Establish `h1` using `ZLattice.covolume_eq_measure_fundamentalDomain L μ (ZLattice.isAddFundamentalDomain b μ)`. Establish `h2` using `ZLattice.covolume_eq_measure_fundamentalDomain L ν (ZLattice.isAddFundamentalDomain b ν)`. Establish `h3 : ZLattice.covolume L μ = (c : ℝ) * ZLattice.covolume L ν`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [hc]`. Simplify using `[Measure.real]`. Establish `h4 : ∫ x, f x ∂μ = (c : ℂ) * ∫ x, f x ∂ν` using `by conv_lhs => rw [hc]`. Rewrite using `[integral_smul_nnreal_measure]`. Simplify using `[NNReal.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc1 : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc0`. Rewrite using `[h3, h4]`. Use `push_cast`. Rewrite using `[mul_assoc, mul_div_mul_left _ _ hc1]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_div_covolume_eq_of_haar {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ ν : Measure V)
@@ -44,13 +44,13 @@ theorem integral_div_covolume_eq_of_haar {V : Type} [NormedAddCommGroup V] [Norm
   rw [mul_assoc, mul_div_mul_left _ _ hc1]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ μ _ L _ _ f hf hs A`. Set `e : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) ≃L[ℝ] V` to `toEuclidean.symm`. Set `ν : Measure V` to `(volume : Measure (EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))).map e`. Establish `: ν.IsAddHaarMeasure` using `ContinuousLinearEquiv.isAddHaarMeasure_map e _`. Establish `hmp : MeasurePreserving e volume ν` using `⟨e.continuous.measurable, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `GlobalTheory.T.zlattice_tsum_dilate_sub_integral_le_rapid _ (ZLattice.comap ℝ L e.toLinearMap) (f ∘ e) (hf.comp e.contDiff) (hs.comp_homeomorph e.toHomeomorph) A`. Use `⟨C, fun x₀ t ht ht1 => ?_⟩` and prove the remaining obligations. Establish `h` using `hC (e.symm x₀) t ht ht1`. Rewrite `h` using `[ZLattice.covolume_comap L ν volume hmp, finrank_euclideanSpace_fin]`. Establish `hi : ∫ x, (f ∘ e) x = ∫ x, f x ∂ν` using `(hmp.integral_comp e.toHomeomorph.measurableEmbedding f)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑' l : ZLattice.comap ℝ L e.toLinearMap, (f ∘ e) (t • ((l : EuclideanSpace ℝ (Fin (Module.finrank ℝ V))) + e.symm x₀)) = ∑' l : L, f (t • ((l : V) + x₀))`. Set `q : ZLattice.comap ℝ L e.toLinearMap ≃ L` to `e.toEquiv.subtypeEquiv (fun _ => Iff.rfl)`. Rewrite using `[← q.tsum_eq]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Establish `: ((q l : L) : V) = e l` using `rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[this]`. Rewrite `h` using `[hi, hsum]`. Rewrite using `[integral_div_covolume_eq_of_haar μ ν L f]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_sum_dilate_haar :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (L : Submodule ℤ V) [DiscreteTopology L] [IsZLattice ℝ L] (f : V → ℂ), ContDiff ℝ ∞ f → HasCompactSupport f → ∀ A : ℕ, ∃ C : ℝ, ∀ (x₀ : V) (t : ℝ), 0 < t → t ≤ 1 → ‖∑' l : L, f (t • ((l : V) + x₀)) - (∫ x, f x ∂μ) / ((ZLattice.covolume L μ * t ^ Module.finrank ℝ V : ℝ) : ℂ)‖ ≤ C * t ^ A := by

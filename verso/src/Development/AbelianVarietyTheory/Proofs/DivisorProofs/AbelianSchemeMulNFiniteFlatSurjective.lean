@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.MulFlatSurj
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem mulN_eq_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) : mulN G n = (𝟙 G) ^ n := by
   induction n with
@@ -26,11 +26,11 @@ theorem mulN_eq_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) : mulN G 
   | succ n ih => rw [pow_succ, ← ih]; rfl
 
 /- English proof (translation)
-Introduce `R _ A _ hA n hn`. Establish `hc` using `hA.comm`. Take `⟨h1, h2⟩` from `GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_mulA (Sp R) A hA n hn`. Establish `e : mulN A n = ReciprocityTheory.ChartRestriction.G.Out.mulA A n` using `mulN_eq_pow A n`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, h2, GlobalTheory.AbLaw.MulN.surjective_of_geomFibres _ fun K _ _ t => ?_⟩` and prove the remaining obligations. Establish `hf : IsFinite ((Over.pullback t).map (ReciprocityTheory.ChartRestriction.G.Out.mulA A n)).left` using `MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange t _) h1`. Rewrite `hf`, the goal using `[GlobalTheory.MulFiniteFlat.pullback_map_mulA]`. Establish `hB` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t A hA`. Establish `hBc` using `hB.comm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.flat_and_surjective_of_isFinite_abelianEnd GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K _ hB _ (GlobalTheory.AbLaw.MulN.isMonHom_mulA _ n) hf).2`.
+A detailed English derivation is pending.
 -/
 theorem finite_flat_surjective_mulN : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A],
     IsAbelianScheme A → ∀ n : ℕ, 0 < n →

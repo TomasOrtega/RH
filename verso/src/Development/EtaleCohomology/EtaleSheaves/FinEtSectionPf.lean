@@ -27,7 +27,7 @@ def Glue : Prop := ∀ (S C : Type) [CommRing S] [CommRing C] [Algebra S C] (n :
   Nonempty (C →ₐ[S] S)
 
 /- English proof (translation)
-Introduce `S C _ _ _ _ _ hQA hsurj`. Take `⟨n, e, he, hoi⟩` from `hP hL hA S C hQA`. Use `choose ε hε hr hh using fun j => hF S C (e j) (he.idem j) (hoi j)`. Conclude with `hG S C n e he hsurj ε hε hr hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem FinEtSection_of (hL : LateralTheory.E.t_E1Cut.EtLift) (hA : LateralTheory.E.t_E1Cut.EtAIC) (hP : Pieces) (hF : FinOpen) (hG : Glue) : LateralTheory.E.t_E1Cut.FinEtSection := by
   intro S C _ _ _ _ _ hQA hsurj

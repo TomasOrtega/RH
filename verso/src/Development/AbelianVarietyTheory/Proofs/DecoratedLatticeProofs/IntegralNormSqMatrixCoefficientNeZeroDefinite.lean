@@ -18,11 +18,11 @@ open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D V hS hp c hc w hw mR hR`. Establish `: CompactSpace (GinfC V)` using `isCompact_iff_compactSpace.1 (Formalism.IndefR.Eqv.isCompact_GinfC hS fun τ => Or.inl (hp τ))`. Use `set f : GinfC V → ℝ := fun b => ‖⟪w, c.ρ (b : GA D V) w⟫_ℂ‖ ^ 2 with hfdef`. Establish `hcont : Continuous f`. Establish `h1 : Continuous fun b : GinfC V => c.ρ (b : GA D V) w` using `(hc.2.2.1 w).comp continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((continuous_const.inner h1).norm).pow 2`. Establish `hnn : 0 ≤ f` using `fun b => by positivity`. Establish `hint : Integrable f mR` using `hcont.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`. Establish `h1 : f 1 ≠ 0`. Simplify using `only [hfdef, OneMemClass.coe_one, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 (inner_self_ne_zero.2 hw))`. Establish `hpos : 0 < ∫ b, f b ∂mR`. Rewrite using `[integral_pos_iff_support_of_nonneg hnn hint]`. Conclude with `hcont.isOpen_support.measure_pos mR ⟨1, h1⟩`. Conclude with `hpos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem integral_normSq_coef_ne_zero : ∀ (D : D7) (V : HSp D), V.SigOK → V.IsPosDef → ∀ (c : CoefA V), c.Is → ∀ w : c.W, w ≠ 0 → ∀ mR : Measure (GinfC V), mR.IsHaarMeasure → ∫ b : GinfC V, ‖⟪w, c.ρ (b : GA D V) w⟫_ℂ‖ ^ 2 ∂mR ≠ 0 := by
   intro D V hS hp c hc w hw mR hR

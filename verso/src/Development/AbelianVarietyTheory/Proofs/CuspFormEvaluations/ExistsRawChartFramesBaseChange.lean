@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.RawFrameBC
 
 /- English proof (translation)
-Establish `hW : W2 ≤ (a ≫ g) ⁻¹ᵁ U` using `fun z hz => hV (hW1 (h12 hz))`. Establish `hW' : W2 ≤ (r ≫ b) ⁻¹ᵁ U` using `fun z hz => hV' (hW1' (h12' hz))`. Establish `e1 : g.app U ≫ Y'.presheaf.map (homOfLE hV).op ≫ a.app V ≫ Z'.presheaf.map (homOfLE hW1).op ≫ Z'.presheaf.map (homOfLE h12).op = (a ≫ g).appLE U W2 hW`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.comp_app, Scheme.Hom.naturality_assoc, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `e2 : b.app U ≫ Z.presheaf.map (homOfLE hV').op ≫ r.app V' ≫ Z'.presheaf.map (homOfLE hW1').op ≫ Z'.presheaf.map (homOfLE h12').op = (r ≫ b).appLE U W2 hW'`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.comp_app, Scheme.Hom.naturality_assoc, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `e3 : ∀ (f f' : Z' ⟶ Y) (hf : f = f') (h : W2 ≤ f ⁻¹ᵁ U) (h' : W2 ≤ f' ⁻¹ᵁ U), f.appLE U W2 h = f'.appLE U W2 h'`. Introduce `f f' hf h h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hf` using the available equality. Both sides reduce to the same expression. Establish `key` using `congrArg (fun F => F.hom (u : Γ(Y, U))) (e1.trans ((e3 _ _ hab hW hW').trans e2.symm))`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using key`.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pull2_lemma_9 {Z' Y' Z Y : Scheme.{0}} (a : Z' ⟶ Y') (g : Y' ⟶ Y) (r : Z' ⟶ Z) (b : Z ⟶ Y)
     (hab : a ≫ g = r ≫ b) (U : Y.Opens) (V : Y'.Opens) (hV : V ≤ g ⁻¹ᵁ U) (W1 : Z'.Opens) (hW1 : W1 ≤ a ⁻¹ᵁ V)
@@ -50,9 +50,9 @@ private theorem pull2_lemma_9 {Z' Y' Z Y : Scheme.{0}} (a : Z' ⟶ Y') (g : Y' �
   simpa using key
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨LB.pullGen L φ ε c g, DVR.pullGen_isGen L φ ε c hc g, corr_of_val hL fun y J => congrFun rfl, ?_⟩` and prove the remaining obligations. Introduce `Z Z' a b r hab j j' hj hj' hjj`. Establish `hjj' : j = j'` using `funext fun k => hjj k k (by show a ≫ g ≫ φ k = r ≫ b ≫ φ k`. Rewrite using `[← Category.assoc, hab, Category.assoc])`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `hjj'` using the available equality. Simplify using `only [LB.pullGen]`. Unfold `pullU res`. Conclude with `pull2_lemma_9 a g r b hab _ _ _ _ _ _ _ _ _ _ _ _ (c.s j)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exists_reindexed_pull {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : LB.Gen (LB.LinComb L φ ε)) (hc : c.IsGen) (g : Y' ⟶ Y)
@@ -72,7 +72,7 @@ theorem exists_reindexed_pull {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K 
   exact pull2_lemma_9 a g r b hab _ _ _ _ _ _ _ _ _ _ _ _ (c.s j)
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -86,7 +86,7 @@ variable {Xo : Moduli Dw l}
 variable {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ Xo.X) (d : ℕ)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Formalism.L2.Pj.homAt, rjBC, Over.homMk_left]`. Rewrite using `[spMap_comp_eq, spMap_comp_eq]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem sq_of_ring {m n n' : ℕ} (f : Jet S (Fin n × Fin d) m →ₐ[S] Jet S (Fin n' × Fin d) m)
     (f' : Jet S' (Fin n × Fin d) m →ₐ[S'] Jet S' (Fin n' × Fin d) m)
@@ -98,7 +98,7 @@ theorem sq_of_ring {m n n' : ℕ} (f : Jet S (Fin n × Fin d) m →ₐ[S] Jet S 
   congr 1
 
 /- English proof (translation)
-Unfold `jetCopy jetSubstP`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem jetCopy_eq_lemma {R : Type} [CommRing R] {d n : ℕ} (m : ℕ) (i : Fin n) :
     (jetCopy d m i : Jet R (Fin 1 × Fin d) m →ₐ[R] Jet R (Fin n × Fin d) m) =
@@ -109,7 +109,7 @@ private theorem jetCopy_eq_lemma {R : Type} [CommRing R] {d n : ℕ} (m : ℕ) (
   simp
 
 /- English proof (translation)
-Rewrite using `[jetCopy_eq_lemma, jetCopy_eq_lemma]`. Use `sq_of_ring ψ x0 d _ _ (ReciprocityTheory.ChartRestriction.G.PullbackSections.jetSubstP_comp_jetBC ψ m (fun p : Fin 1 × Fin d => (MvPolynomial.X (i, p.2) : MvPolynomial (Fin n × Fin d) S)))` as an intermediate fact. Simplify `this` using `only [MvPolynomial.map_X]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sq_copy {n : ℕ} (m : ℕ) (i : Fin n) :
     homAt (spMap ψ ≫ x0) (jetCopy d m i) ≫ rjBC ψ x0 d m 1 = rjBC ψ x0 d m n ≫ homAt x0 (jetCopy d m i) := by
@@ -120,14 +120,14 @@ theorem sq_copy {n : ℕ} (m : ℕ) (i : Fin n) :
   simpa only [MvPolynomial.map_X] using this
 
 /- English proof (translation)
-The claim follows from `sq_of_ring ψ x0 d _ _ (ReciprocityTheory.ChartRestriction.G.PullbackSections.jetSubstP_comp_jetBC ψ m φ)`.
+A detailed English derivation is pending.
 -/
 theorem sq_subst {n n' : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S) :
     homAt (spMap ψ ≫ x0) (jetSubstP m fun p => MvPolynomial.map ψ (φ p)) ≫ rjBC ψ x0 d m n =
       rjBC ψ x0 d m n' ≫ homAt x0 (jetSubstP m φ) := sq_of_ring ψ x0 d _ _ (ReciprocityTheory.ChartRestriction.G.PullbackSections.jetSubstP_comp_jetBC ψ m φ)
 
 /- English proof (translation)
-Unfold `rjpt`. Rewrite using `[hx, ← Category.assoc, sq_copy, Category.assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rjpt_bc (x : ∀ m, rjO x0 d m 1 ⟶ Xo.univ.t.G) (x' : ∀ m, rjO (spMap ψ ≫ x0) d m 1 ⟶ Xo.univ.t.G)
     (hx : ∀ m, x' m = rjBC ψ x0 d m 1 ≫ x m) {n : ℕ} (m : ℕ) (i : Fin n) :
@@ -136,7 +136,7 @@ theorem rjpt_bc (x : ∀ m, rjO x0 d m 1 ⟶ Xo.univ.t.G) (x' : ∀ m, rjO (spMa
   rw [hx, ← Category.assoc, sq_copy, Category.assoc]
 
 /- English proof (translation)
-Unfold `padd`. Rewrite using `[← Category.assoc, comp_lift]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem padd_lemma_2 {T T' : Over Xo.X} (ρ : T' ⟶ T) (a b : T ⟶ Xo.univ.t.G) :
     ρ ≫ padd Xo.univ.t.G a b = padd Xo.univ.t.G (ρ ≫ a) (ρ ≫ b) := by
@@ -144,7 +144,7 @@ private theorem padd_lemma_2 {T T' : Over Xo.X} (ρ : T' ⟶ T) (a b : T ⟶ Xo.
   rw [← Category.assoc, comp_lift]
 
 /- English proof (translation)
-Unfold `pzero`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem pzero_lemma_3 {T T' : Over Xo.X} (ρ : T' ⟶ T) :
     ρ ≫ pzero Xo.univ.t.G T = pzero Xo.univ.t.G T' := by
@@ -154,7 +154,7 @@ private theorem pzero_lemma_3 {T T' : Over Xo.X} (ρ : T' ⟶ T) :
   exact toUnit_unique _ _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact pzero_lemma_3 ρ`. Consider the case `cons k l ih => simp only [List.foldr_cons]`. Rewrite using `[padd_lemma_2, ih, hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem foldr_lemma_4 {T T' : Over Xo.X} (ρ : T' ⟶ T) {n : ℕ} (v : Fin n → (T ⟶ Xo.univ.t.G))
     (v' : Fin n → (T' ⟶ Xo.univ.t.G)) (hv : ∀ k, v' k = ρ ≫ v k) (l : List (Fin n)) :
@@ -165,7 +165,7 @@ private theorem foldr_lemma_4 {T T' : Over Xo.X} (ρ : T' ⟶ T) {n : ℕ} (v : 
   | cons k l ih => simp only [List.foldr_cons]; rw [padd_lemma_2, ih, hv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Unfold `cφ psum`. Apply the tactic sequence `exact (congrArg Over.Hom.left (foldr_lemma_4 ρ ![a, b] ![ρ ≫ a, ρ ≫ b] (fun k => by fin_cases k <;> rfl) _)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cφ_comp {T T' : Over Xo.X} (ρ : T' ⟶ T) (a b : T ⟶ Xo.univ.t.G) :
     cφ ![ρ ≫ a, ρ ≫ b] = fun I => ρ.left ≫ cφ ![a, b] I := by
@@ -176,9 +176,9 @@ theorem cφ_comp {T T' : Over Xo.X} (ρ : T' ⟶ T) (a b : T ⟶ Xo.univ.t.G) :
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S S' _ _ ψ x0 d F act x x' hx e he`. Establish `hφ : ∀ m, cφ ![rjpt (spMap ψ ≫ x0) d x' m (0 : Fin 2), rjpt (spMap ψ ≫ x0) d x' m (1 : Fin 2)] = fun k => (rjBC ψ x0 d m 2).left ≫ cφ ![rjpt x0 d x m (0 : Fin 2), rjpt x0 d x m (1 : Fin 2)] k`. Introduce `m`. Rewrite using `[rjpt_bc ψ x0 d x x' hx m 0, rjpt_bc ψ x0 d x x' hx m 1, cφ_comp]`. Use `choose e' he' hcorr hnat using fun m => exists_reindexed_pull Xo.univ.t.PP.isLB (cφ ![rjpt x0 d x m (0 : Fin 2), rjpt x0 d x m (1 : Fin 2)]) (cε 2) (e m) (he m) (rjBC ψ x0 d m 2).left _ (hφ m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e', he', fun m => hcorr m, fun m n' φ => ?_⟩` and prove the remaining obligations. Establish `hab` using `congrArg Over.Hom.left (sq_subst ψ x0 d m (fun p : Fin 2 × Fin d => φ p.1 p.2))`. Simplify using `only [Over.comp_left] at hab`. Unfold `rpe`. Conclude with `hnat m _ _ _ _ _ hab`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exists_frames : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ Xo.X) (d : ℕ) (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (x : ∀ m, rjO x0 d m 1 ⟶ Xo.univ.t.G) (x' : ∀ m, rjO (spMap ψ ≫ x0) d m 1 ⟶ Xo.univ.t.G), (∀ m, x' m = rjBC ψ x0 d m 1 ≫ x m) → ∀ (e : ∀ m, RFrTy x0 d x m), (∀ m, (e m).IsGen) → ∃ e' : ∀ m, RFrTy (spMap ψ ≫ x0) d x' m, (∀ m, (e' m).IsGen) ∧ (∀ m, LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (e' m) (LB.pullGen Xo.univ.t.PP.L (cφ ![rjpt x0 d x m (0 : Fin 2), rjpt x0 d x m (1 : Fin 2)]) (cε 2) (e m) (rjBC ψ x0 d m 2).left)) ∧ ∀ (m n' : ℕ) (φ : Fin 2 → Fin d → MvPolynomial (Fin n' × Fin d) S), LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (rpe (spMap ψ ≫ x0) d x' e' m (fun i j => MvPolynomial.map ψ (φ i j))) (LB.pullGen Xo.univ.t.PP.L _ _ (rpe x0 d x e m φ) (rjBC ψ x0 d m n').left) := by
   intro E _ _ _ H Dw l Xo S S' _ _ ψ x0 d F act x x' hx e he

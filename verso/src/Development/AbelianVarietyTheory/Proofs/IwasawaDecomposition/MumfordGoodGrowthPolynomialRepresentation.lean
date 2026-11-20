@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.RepBound
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨‖(a : ℂ)‖, 0, norm_nonneg _, fun B _ x _ => by simp⟩`. Consider the case `add p q hp hq`. Take `⟨C1, d1, h1, hp⟩` from `hp`. Take `⟨C2, d2, h2, hq⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C1 + C2, d1 + d2, by positivity, fun B hB x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Establish `e1 : B ^ d1 ≤ B ^ (d1 + d2)` using `pow_le_pow_right₀ hB (by omega)`. Establish `e2 : B ^ d2 ≤ B ^ (d1 + d2)` using `pow_le_pow_right₀ hB (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Consider the case `mul_X p s hp`. Take `⟨C1, d1, h1, hp⟩` from `hp`. Use `⟨C1, d1 + 1, h1, fun B hB x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, aeval_X, norm_mul, pow_succ, ← mul_assoc]`. Conclude with `mul_le_mul (hp B hB x hx) (hx s) (norm_nonneg _) (mul_nonneg h1 (pow_nonneg (by linarith) _))`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poly_bound {σ : Type} (P : MvPolynomial σ ℤ) : ∃ (C : ℝ) (d : ℕ), 0 ≤ C ∧
     ∀ (B : ℝ), 1 ≤ B → ∀ x : σ → ℂ, (∀ s, ‖x s‖ ≤ B) → ‖aeval x P‖ ≤ C * B ^ d := by
@@ -45,7 +45,7 @@ theorem poly_bound {σ : Type} (P : MvPolynomial σ ℤ) : ∃ (C : ℝ) (d : �
       (mul_nonneg h1 (pow_nonneg (by linarith) _))
 
 /- English proof (translation)
-Use `choose C d hC h using fun k => poly_bound (P k)`. Use `⟨∑ k, C k, ∑ k, d k, Finset.sum_nonneg fun k _ => hC k, fun B hB x hx k => ?_⟩` and prove the remaining obligations. Conclude with `(h k B hB x hx).trans (mul_le_mul (Finset.single_le_sum (fun k _ => hC k) (Finset.mem_univ k)) (pow_le_pow_right₀ hB (Finset.single_le_sum (fun k _ => Nat.zero_le (d k)) (Finset.mem_univ k))) (pow_nonneg (by linarith) _) (Finset.sum_nonneg fun k _ => hC k))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem poly_bound_fam {κ σ : Type} [Fintype κ] (P : κ → MvPolynomial σ ℤ) : ∃ (C : ℝ) (d : ℕ), 0 ≤ C ∧
     ∀ (B : ℝ), 1 ≤ B → ∀ x : σ → ℂ, (∀ s, ‖x s‖ ≤ B) → ∀ k, ‖aeval x (P k)‖ ≤ C * B ^ d := by
@@ -62,7 +62,7 @@ def adjPoly (m : ι → ℕ) (w : EntIx m) : MvPolynomial (EntIx m) ℤ :=
   Matrix.adjugate (Matrix.of fun p q : Fin (m w.1) => (X ⟨w.1, (p, q)⟩ : MvPolynomial (EntIx m) ℤ)) w.2.1 w.2.2
 
 /- English proof (translation)
-Establish `e : (Matrix.of fun p q : Fin (m w.1) => (X ⟨w.1, (p, q)⟩ : MvPolynomial (EntIx m) ℤ)).map (aeval fun u : EntIx m => A u.1 u.2.1 u.2.2) = A w.1`. Use extensionality with `p q`. Simplify using the standard rewrite rules. Rewrite using `[← e]`. Conclude with `congrFun (congrFun (RingHom.map_adjugate (aeval (R := ℤ) fun u : EntIx m => A u.1 u.2.1 u.2.2).toRingHom _) w.2.1) w.2.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_adjPoly (A : Mat m ℂ) (w : EntIx m) :
     aeval (fun u : EntIx m => A u.1 u.2.1 u.2.2) (adjPoly m w) = (A w.1).adjugate w.2.1 w.2.2 := by
@@ -86,16 +86,16 @@ theorem lie_apply (ρ : PolyRep m) (A : Mat m ℂ) (i j : Fin ρ.M) :
 def lieNorm (ρ : PolyRep m) : ℝ := ∑ i, ∑ j, ∑ w, ‖lieCoeff ρ i j w‖
 
 /- English proof (translation)
-Unfold `lieNorm`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem lieNorm_nonneg (ρ : PolyRep m) : 0 ≤ lieNorm ρ := by unfold lieNorm; positivity
 
 /- English proof (translation)
-Establish `h1 : ‖ρ.lie A i j‖ * t ≤ ∑ w, ‖lieCoeff ρ i j w‖ * |c|`. Rewrite using `[lie_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := Finset.sum_le_sum fun w _ => mul_le_mul_of_nonneg_left ((h w).trans (le_abs_self c)) (norm_nonneg _)`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_right ?_ (abs_nonneg c)` and prove the remaining obligations. Unfold `lieNorm`. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, ∑ w, ‖lieCoeff ρ i j w‖) (fun i _ => by positivity) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ∑ w, ‖lieCoeff ρ i j w‖) (fun j _ => by positivity) (Finset.mem_univ j)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_lie_mul_le (ρ : PolyRep m) (A : Mat m ℂ) {t c : ℝ} (ht : 0 ≤ t)
     (h : ∀ w : EntIx m, ‖A w.1 w.2.1 w.2.2‖ * t ≤ c) (i j : Fin ρ.M) :
@@ -119,19 +119,19 @@ theorem norm_lie_mul_le (ρ : PolyRep m) (A : Mat m ℂ) {t c : ℝ} (ht : 0 ≤
     (Finset.mem_univ j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[lie_apply, Finset.sum_neg_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lie_neg (ρ : PolyRep m) (A : Mat m ℂ) : ρ.lie (fun τ => -A τ) = -ρ.lie A := by
   ext i j; simp [lie_apply, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[lie_apply, mul_sub, Finset.sum_sub_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lie_sub (ρ : PolyRep m) (A B : Mat m ℂ) : ρ.lie (fun τ => A τ - B τ) = ρ.lie A - ρ.lie B := by
   ext i j; simp [lie_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mdel_apply, lie_apply]`. Rewrite using `[del_sum (fun w _ => (differentiableAt_const _).mul ((h w.1).diff w.2.1 w.2.2)), ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[del_mul (differentiableAt_const _) ((h w.1).diff w.2.1 w.2.2)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -147,7 +147,7 @@ theorem mdel_lie (ρ : PolyRep m) {n : ℕ} {A : V n → Mat m ℂ} {v : V n}
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mdbar_apply, lie_apply]`. Rewrite using `[dbar_sum (fun w _ => (differentiableAt_const _).mul ((h w.1).diff w.2.1 w.2.2)), ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[dbar_mul (differentiableAt_const _) ((h w.1).diff w.2.1 w.2.2)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -163,7 +163,7 @@ theorem mdbar_lie (ρ : PolyRep m) {n : ℕ} {A : V n → Mat m ℂ} {v : V n}
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold poinWt; split_ifs <;> positivity`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem poinWt_nonneg {n : ℕ} (S : Finset (Fin n)) (v : V n) (a : Fin n) : 0 ≤ poinWt S v a := by
   unfold poinWt; split_ifs <;> positivity
@@ -173,40 +173,38 @@ end GlobalTheory.RepBound
 namespace GlobalTheory.RepBound
 
 /- English proof (translation)
-The claim follows from `hx.trans (mul_le_mul hK (pow_le_pow_right₀ hL he) (pow_nonneg (by linarith) _) (hK0.trans hK))`.
+A detailed English derivation is pending.
 -/
 theorem le_mul_pow_of_le {x K c' L : ℝ} {e N' : ℕ} (hx : x ≤ K * L ^ e) (hK : K ≤ c') (hK0 : 0 ≤ K)
     (hL : 1 ≤ L) (he : e ≤ N') : x ≤ c' * L ^ N' :=
   hx.trans (mul_le_mul hK (pow_le_pow_right₀ hL he) (pow_nonneg (by linarith) _) (hK0.trans hK))
 
 /- English proof (translation)
-Introduce `ι _ m ρ c N`. Take `⟨C1, d1, hC1, h1⟩` from `poly_bound_fam (fun p : Fin ρ.M × Fin ρ.M => ρ.ent p.1 p.2)`. Take `⟨C2, d2, hC2, h2⟩` from `poly_bound ρ.ent.det`. Take `⟨C3, d3, hC3, h3⟩` from `poly_bound_fam (adjPoly m)`. Establish `hc₁ : 1 ≤ max c 1` using `le_max_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc₀ : 0 ≤ max c 1` using `by linarith`. Establish `hK1 : 0 ≤ C1 * max c 1 ^ d1` using `mul_nonneg hC1 (pow_nonneg hc₀ _)`. Establish `hK2 : 0 ≤ C2 * (C3 + 1) ^ d2 * max c 1 ^ ((d3 + 1) * d2)` using `mul_nonneg (mul_nonneg hC2 (pow_nonneg (by linarith) _)) (pow_nonneg hc₀ _)`. Establish `hK3 : 0 ≤ lieNorm ρ * |c|` using `mul_nonneg (lieNorm_nonneg ρ) (abs_nonneg c)`. Use `⟨C1 * max c 1 ^ d1 + C2 * (C3 + 1) ^ d2 * max c 1 ^ ((d3 + 1) * d2) + lieNorm ρ * |c|, N * d1 + N * ((d3 + 1) * d2), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n S G v hG hdet hL hB`. Use `set L := ∑ a ∈ S, |Real.log ‖v a‖| with hLdef`. Establish `hL0 : 0 ≤ L` using `by linarith`. Use `set B := max c 1 * L ^ N with hBdef`. Establish `hB1 : 1 ≤ B` using `one_le_mul_of_one_le_of_one_le hc₁ (one_le_pow₀ hL)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hx : ∀ w : EntIx m, ‖G v w.1 w.2.1 w.2.2‖ ≤ B := fun w => ((hB w.1).entry w.2.1 w.2.2).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hL0 _))`. Establish `hu : ∀ τ, IsUnit (G v τ).det` using `fun τ => isUnit_iff_ne_zero.2 (hdet τ)`. Establish `hcv` using `(GlobalTheory.T.chernConnection_curvature_polyRep_eval ι m ρ n G v hG hdet).1`. Establish `hcvE : ∀ ξ, (fun u => conn (fun w => ρ.ev (G w)) u ξ) =ᶠ[𝓝 v] (fun u => ρ.lie (fun τ => conn (fun w => G w τ) u ξ))` using `fun ξ => hcv.mono fun u hu => hu ξ`. Establish `hc1 : ∀ τ ξ, MContDiffAt 1 (fun u => conn (fun w => G w τ) u ξ) v` using `fun τ ξ => (hG τ).conn (hu τ) (by norm_num) ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Express the relevant statement in the definitionally equal form `‖ρ.ev (G v) i j‖ ≤ _`. Use `h1 B hB1 (fun w : EntIx m => G v w.1 w.2.1 w.2.2) hx (i, j)` as an intermediate fact. Use `le_mul_pow_of_le (K := C1 * max c 1 ^ d1) (e := N * d1) ?_ (by linarith) hK1 hL (by omega)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `this.trans_eq ?_` and prove the remaining obligations. Rewrite using `[hBdef, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `‖(ρ.ev (G v)).det‖⁻¹ ≤ _ set Gi : Mat m ℂ := fun τ => (G v τ)⁻¹ with hGi`. Establish `hmul : ρ.ev (G v) * ρ.ev Gi = 1`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : G v * Gi = 1` using `funext fun τ => Matrix.mul_nonsing_inv _ (hu τ)`. Rewrite using `[PolyRep.ev, PolyRep.ev, ← ρ.mul ℂ, e]`. Conclude with `ρ.one ℂ`. Establish `hdm : (ρ.ev (G v)).det * (ρ.ev Gi).det = 1` using `by rw [← Matrix.det_mul, hmul, Matrix.det_one]`. Establish `hinv : ‖(ρ.ev (G v)).det‖⁻¹ = ‖(ρ.ev Gi).det‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← norm_inv, inv_eq_of_mul_eq_one_right hdm]`. Establish `hpoly : (ρ.ev Gi).det = aeval (fun w : EntIx m => Gi w.1 w.2.1 w.2.2) ρ.ent.det` using `(AlgHom.map_det _ _).symm`. Establish `hy : ∀ w : EntIx m, ‖Gi w.1 w.2.1 w.2.2‖ ≤ (C3 + 1) * B ^ (d3 + 1)`. Introduce `w`. Establish `ha` using `h3 B hB1 (fun w : EntIx m => G v w.1 w.2.1 w.2.2) hx w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha` using `[aeval_adjPoly (G v) w]`. Establish `hd : ‖(G v w.1).det‖⁻¹ ≤ B` using `((hB w.1).det).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hL0 _))`. Establish `e : Gi w.1 w.2.1 w.2.2 = ((G v w.1).det)⁻¹ * (G v w.1).adjugate w.2.1 w.2.2`. Simplify using `[hGi, Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[e, norm_mul, norm_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hBd : 0 ≤ B ^ d3` using `pow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ]; nlinarith [mul_nonneg hBd (by linarith : (0:ℝ) ≤ B)]`. Establish `hB2 : 1 ≤ (C3 + 1) * B ^ (d3 + 1)` using `one_le_mul_of_one_le_of_one_le (by linarith) (one_le_pow₀ hB1)`. Establish `hd2` using `h2 _ hB2 _ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hinv, hpoly]`. Use `le_mul_pow_of_le (K := C2 * (C3 + 1) ^ d2 * max c 1 ^ ((d3 + 1) * d2)) (e := N * ((d3 + 1) * d2)) ?_ (by linarith) hK2 hL (by omega)` and prove the remaining obligations. Use `hd2.trans_eq ?_` and prove the remaining obligations. Rewrite using `[hBdef, mul_pow, mul_pow, mul_pow, ← pow_mul, ← pow_mul, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Introduce `a i j`. Express the relevant statement in the definitionally equal form `‖conn (fun u => ρ.ev (G u)) v (coordVec a) i j‖ * poinWt S v a ≤ _`. Establish `e` using `(hcvE (coordVec a)).self_of_nhds`. Simplify using `only at e`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_lie_mul_le ρ _ (poinWt_nonneg S v a) (fun w => (hB w.1).form a w.2.1 w.2.2) i j).trans (by linarith)`. Introduce `a b i j`. Establish `e : curv (fun u => ρ.ev (G u)) v (coordVec a) (coordVec b) = ρ.lie (fun τ => curv (fun w => G w τ) v (coordVec a) (coordVec b))`. Rewrite using `[curv, mdbar_congr (hcvE (coordVec a)), mdbar_lie ρ (fun τ => hc1 τ (coordVec a)), ← lie_neg]`. Both sides reduce to the same expression.
-
-Rewrite using `[e]`. Conclude with `(norm_lie_mul_le ρ _ (mul_nonneg (poinWt_nonneg S v a) (poinWt_nonneg S v b)) (fun w => (hB w.1).dbar a b w.2.1 w.2.2) i j).trans (by linarith)`. Introduce `a b i j`. Rewrite using `[mdel_congr (hcvE (coordVec b)), mdel_congr (hcvE (coordVec a)), mdel_lie ρ (fun τ => hc1 τ (coordVec b)), mdel_lie ρ (fun τ => hc1 τ (coordVec a)), ← lie_sub]`. Conclude with `(norm_lie_mul_le ρ _ (mul_nonneg (poinWt_nonneg S v a) (poinWt_nonneg S v b)) (fun w => (hB w.1).del a b w.2.1 w.2.2) i j).trans (by linarith)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodBound_ev : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (ρ : PolyRep m) (c : ℝ) (N : ℕ), ∃ (c' : ℝ) (N' : ℕ),
     ∀ (n : ℕ) (S : Finset (Fin n)) (G : V n → Mat m ℂ) (v : V n), (∀ τ, MContDiffAt 2 (fun u => G u τ) v) →

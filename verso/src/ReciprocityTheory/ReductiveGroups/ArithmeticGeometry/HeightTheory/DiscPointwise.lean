@@ -22,35 +22,33 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Take `⟨hb0, habE, m, hm0, hma, hmb⟩` from `hab`. Establish `hDe` using `d.de_ne_zero hd h`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `habE` using `[map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero hDe ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr hb0) habE.symm`. Establish `heW : ∀ c, hd.a4.choose c ∈ 𝒜 c d.wF ∧ hd.a4.choose c ≠ 0` using `hd.a4.choose_spec.1`. Establish `hST` using `MeasureTheory.ae_all_iff.mpr fun c => d.norm_at_sg hd h c sg`. Use `filter_upwards [hST, d.de_fibre hd h a b ⟨hb0, habE, m, hm0, hma, hmb⟩ sg, d.ae_evT_ne_zero sg a ha0 m hm0 hma, d.ae_evT_ne_zero sg b hb0 m hm0 hmb] with z hz hfib haz hbz`. Use `set e := hd.a4.choose with he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set t := d.tOf z with ht`. Use `set s : Fin d.del → ℝ := fun k => d.supN sg d.wF (d.thp (hd.sel k)) with hsdef`. Establish `hfin : ∀ c, (d.ST c sg t).Finite` using `fun c => (hz c).1`. Establish `hcard : ∀ c, (d.ST c sg t).ncard = d.delc c` using `fun c => (hz c).2.1`. Set `_ : ∀ c, Fintype (d.ST c sg t)` to `fun c => (hfin c).fintype`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Set `M : (Σ c, d.ST c sg t) → Fin d.del → ℂ` to `fun r k => (r.2 : Ω r.1 →+* ℂ) (ratio (Ω := Ω r.1) (d.thp (hd.sel k) r.1) (e r.1))`. Set `ν : (Σ c, d.ST c sg t) → ℝ` to `fun r => d.nrm r.1 d.wF (e r.1) r.2`. Establish `hR : Fintype.card (Σ c, d.ST c sg t) = d.del`. Rewrite using `[Fintype.card_sigma]`. Unfold `Data.del`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← hcard c, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]`. Establish `hν : ∀ r, 0 < ν r` using `fun r => hd.nrm_pos r.1 r.2 (heW r.1).1 (heW r.1).2`. Establish `hM : ∀ r k, ‖M r k‖ * ν r ≤ s k`. Introduce and unpack `⟨c, P, hP⟩ k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hth : d.thp (hd.sel k) c ∈ 𝒜 c d.wF` using `hd.thp_mem _ c`. Establish `hline` using `eq_ratio_smul_on_line d (hd := hd) hth (heW c).1 (heW c).2`. Establish `h1 : ‖P (ratio (Ω` using `Ω c) (d.thp (hd.sel k) c) (e c))‖ * d.nrm c d.wF (e c) P ≤ d.nrm c d.wF (d.thp (hd.sel k) c) P := by`. Distinguish the cases in `hr : ratio (Ω := Ω c) (d.thp (hd.sel k) c) (e c) = 0`. Rewrite using `[hr, map_zero, norm_zero, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hline` using `[hr, zero_smul]`. Rewrite using `[hline, hd.nrm_zero]`. Establish `h2` using `hd.nrm_smul c P _ (heW c).1 (heW c).2 hr`. Rewrite `h2` using `[← hline]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmem : d.thp (hd.sel k) ∈ d.Thp`. Rewrite using `[hd.Thp_span]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Establish `h3 : d.nrm c d.wF (d.thp (hd.sel k) c) P ≤ s k` using `le_ciSup (f := fun p : (Σ c, PT (Ω := Ω c) sg) => d.nrm p.1 d.wF (d.thp (hd.sel k) p.1) p.2) (hd.bdd sg d.wF (d.thp (hd.sel k)) (Or.inr (Or.inl ⟨hmem, rfl⟩))) ⟨c, ⟨P, hP.1⟩⟩`. Conclude with `h1.trans h3`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : (Matrix.of fun k l : Fin d.del => ∑ c, ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg t), P (ratio (Ω` using `Ω c) (d.thp (hd.sel k) c) (e c)) * P (ratio (Ω := Ω c) (d.thp (hd.sel l) c) (e c))) = Matrix.of fun k l => ∑ r, M r k * M r l := by`. Use extensionality with `k l`. Simplify using `only [Matrix.of_apply, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← finsum_set_coe_eq_finsum_mem, finsum_eq_sum_of_fintype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : d.evT sg 0 t a / d.evT sg 0 t b = (Matrix.of fun k l : Fin d.del => ∑ r, M r k * M r l).det`. Rewrite using `[hfib hbz, hG]`. Use `set D0 := (Matrix.of fun k l : Fin d.del => ∑ r, M r k * M r l).det with hD0`. Establish `hD0ne : D0 ≠ 0`. Rewrite using `[← hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `div_ne_zero haz hbz`. Establish `hlhs : Real.log ‖d.evT sg 0 t a‖ - Real.log ‖d.evT sg 0 t b‖ = Real.log ‖D0‖`. Rewrite using `[← hq, norm_div, Real.log_div (norm_ne_zero_iff.mpr haz) (norm_ne_zero_iff.mpr hbz)]`. Establish `hH` using `hadamard_gram hR M ν s hν hM`. Establish `hpos : 0 < ‖D0‖ * ∏ r, ν r ^ 2` using `mul_pos (norm_pos_iff.mpr hD0ne) (Finset.prod_pos fun r _ => pow_pos (hν r) 2)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRpos : 0 < (d.del : ℝ) ^ d.del * ∏ k, s k ^ 2` using `lt_of_lt_of_le hpos hH`. Establish `hlog` using `Real.log_le_log hpos hH`. Establish `hs : ∀ k, s k ^ 2 ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul hRpos.ne')) k (Finset.mem_univ _)`. Establish `hdel : (d.del : ℝ) ^ d.del ≠ 0` using `left_ne_zero_of_mul hRpos.ne'`. Rewrite `hlog` using `[Real.log_mul (norm_ne_zero_iff.mpr hD0ne) (Finset.prod_ne_zero_iff.mpr fun r _ => pow_ne_zero 2 (hν r).ne'), Real.log_prod (fun r _ => pow_ne_zero 2 (hν r).ne'), Real.log_mul hdel (Finset.prod_ne_zero_iff.mpr fun k _ => hs k), Real.log_prod (fun k _ => hs k)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Real.log_pow, Nat.cast_ofNat] at hlog`. Establish `hsumν : ∑ r, Real.log (ν r) = ∑ c, ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg t), Real.log (d.nrm c d.wF (e c) P)`. Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← finsum_set_coe_eq_finsum_mem, finsum_eq_sum_of_fintype]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hsumneg : ∑ c, ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg t), -Real.log (d.nrm c d.wF (e c) P) = -∑ c, ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg t), Real.log (d.nrm c d.wF (e c) P)`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← finsum_set_coe_eq_finsum_mem, ← finsum_set_coe_eq_finsum_mem, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.sum_neg_distrib]`. Rewrite using `[hlhs, hsumneg, ← hsumν]`.
-
-Establish `e1 : ∑ r, (2 : ℝ) * Real.log (ν r) = 2 * ∑ r, Real.log (ν r)` using `by rw [Finset.mul_sum]`. Establish `e2 : ∑ k, (2 : ℝ) * Real.log (s k) = 2 * ∑ k, Real.log (s k)` using `by rw [Finset.mul_sum]`. Rewrite `hlog` using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem disc_pointwise (hd : d.AxH 𝒜) (h : d.S1) (a b : KTp K d.D d.N) (hab : d.IsPres hd h a b)
     (sg : K →+* ℂ) :

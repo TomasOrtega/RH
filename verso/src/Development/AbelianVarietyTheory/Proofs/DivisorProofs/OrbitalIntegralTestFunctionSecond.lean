@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointsNonemptyUnita
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical
 /- English proof (citation)
-Apply `GlobalTheory.FinPtsSep.finite_pts_conj_fixL_sep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteCosetsAndFixedPoints.lean&line=160#L160)
 -/

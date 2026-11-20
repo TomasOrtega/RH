@@ -21,7 +21,7 @@ open GlobalTheory.UT.CoefBasic
 namespace GlobalTheory.GSep.TorsUniq
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act V _ _ _ ev Y _ t δ 𝔪 w₀ x fr g g₂ w w₂ hw₀ hfr hg hw ho hg₂ hw₂ ho₂`. Establish `hn : 1 ≤ X₁.S.r * X₁.S.N` using `Nat.mul_pos X₁.S.r_pos (lt_of_lt_of_le two_pos X₁.S.N_ge)`. Take `⟨e, -⟩` from `GlobalTheory.Poinc.Sep.LiesUniq.eq_of_liesOver V 𝔪.cn 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ _ hn g g₂ w w₂ x fr hg hg₂ hw hw₂ hfr ho ho₂`. Substitute `e` using the available equality. Conclude with `⟨rfl, fun _ _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem same_point : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) (w₀ : W0 𝔪.U.toUnifPre) (x : TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A) (fr : FrAt x)
   (g g₂ : GtPtF 𝔪.D.toPre (FractionRing V)) (w : Frm 𝔪.D.toPre (FractionRing V) 1 g.b) (w₂ : Frm 𝔪.D.toPre (FractionRing V) 1 g₂.b),

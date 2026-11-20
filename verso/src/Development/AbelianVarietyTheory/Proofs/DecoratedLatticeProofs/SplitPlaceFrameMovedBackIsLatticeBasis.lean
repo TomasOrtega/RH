@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl.FrameBack
 
 /- English proof (translation)
-Simplify using `only [idAt, Submodule.mem_inf, Submodule.mem_iInf] at h ⊢`. Conclude with `⟨h.1, fun w => h.2 ⟨w.1, fun hw => w.2 (hw ▸ hv)⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem idAt_of_place {D : D7} (P : Pl D → Prop) (v : Pl D) (hv : P v) {a : AE D} (h : a ∈ idAt D (· = v)) :
     a ∈ idAt D P := by
@@ -19,17 +19,15 @@ theorem idAt_of_place {D : D7} (P : Pl D → Prop) (v : Pl D) (hv : P v) {a : AE
   exact ⟨h.1, fun w => h.2 ⟨w.1, fun hw => w.2 (hw ▸ hv)⟩⟩
 
 /- English proof (translation)
-Establish `hT` using `((GlobalTheory.FinPl.localComponents D P).2 S).2.2.2 L y hL`. Establish `hV` using `((GlobalTheory.FinPl.localComponents D (· = v)).2 S).2.2.2 L y hL`. Rewrite using `[hT, hV]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hy, fun w hw e he => h w (hw ▸ hv) e he⟩`. Introduce and unpack `⟨_, h⟩`. Use `⟨fun i => idAt_of_place P v hv (hy i), fun w _ e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Conclude with `h w hwv e he`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, -, -, -, hAt, hOff⟩` from `(GlobalTheory.FinPl.localComponents D (· = w)).1`. Establish `hzero : e • y = 0`. Use function extensionality and compare the values at `i`. Establish `hyi : y i ∈ idOff D (· = w)`. Establish `h'` using `hy i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [idAt, Submodule.mem_inf, Submodule.mem_iInf] at h'`. Simplify using `only [idOff, Submodule.mem_iInf]`. Introduce `u`. Use `h'.2 ⟨u.1, by rw [u.2]; exact hwv⟩` as an intermediate fact. Conclude with `this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ε * e = e` using `(hAt e).1 he.1`. Establish `h2 : ε * y i = 0` using `(hOff (y i)).1 hyi`. Use `show e * y i = 0`. Rewrite using `[← h1, mul_comm ε e, mul_assoc, h2, mul_zero]`. Rewrite using `[hzero]`.
-
-Conclude with `(latV S L (· = w)).zero_mem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latV_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsLattice D.host.E L) (P : Pl D → Prop)
     (v : Pl D) (hv : P v) (y : Fin S.rank → AE D) (hy : ∀ i, y i ∈ idAt D (· = v)) :
@@ -62,7 +60,7 @@ theorem mem_latV_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsLattice 
       exact (latV S L (· = w)).zero_mem
 
 /- English proof (translation)
-Establish `h : q.e * q.sec x = q.sec x` using `by rw [← q.sec_pr, q.pr_sec]`. Establish `h2` using `q.sec_pr (a * q.sec x)`. Rewrite `h2` using `[map_mul, q.pr_sec, mul_left_comm, h]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_sec {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : SplitPt D k) (a : AE D) (x : k) : a * q.sec x = q.sec (q.pr a * x) := by
@@ -72,9 +70,9 @@ theorem mul_sec {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   exact h2.symm
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q V g L N P hP hL hN hM Y _ β β' hβ hb y`. Establish `hmv : Formalism.L2.Theta.mt V g *ᵥ (fun i => q.sec ((β' *ᵥ y) i)) = fun i => q.sec ((β *ᵥ y) i)`. Use function extensionality and compare the values at `i`. Rewrite using `[hβ, ← Matrix.mulVec_mulVec]`. Generalize the expression as in `β' *ᵥ y = z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, mul_sec]`. Establish `hu : ∀ i, (fun i => q.sec ((β' *ᵥ y) i)) i ∈ idAt D (· = q.v)` using `fun i => q.sec_mem_idAt _`. Establish `hu' : ∀ i, (fun i => q.sec ((β *ᵥ y) i)) i ∈ idAt D (· = q.v)` using `fun i => q.sec_mem_idAt _`. Rewrite using `[hb y, ← mem_latV_iff V N hN.1 P q.v hP _ hu', ← mem_latV_iff V L hL.1 P q.v hP _ hu, hM _ (fun i => idAt_of_place P q.v hP (hu i)), hmv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_back : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (V : HSp D) (g : GA D V) (L N : GlobalTheory.FinPl.Lat V) (P : GlobalTheory.FinPl.Pl D → Prop), P q.v → IsSelfDualC V L → IsSelfDualC V N → GlobalTheory.FinPl.Moves V g L N P → ∀ (Y : Type) [Fintype Y] (β β' : Matrix (Fin V.rank) Y k), β = (Formalism.L2.Theta.mt V g).map q.pr * β' → (∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV V N (· = q.v)) → ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((β' *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV V L (· = q.v) := by
   intro D k _ _ _ _ q V g L N P hP hL hN hM Y _ β β' hβ hb y

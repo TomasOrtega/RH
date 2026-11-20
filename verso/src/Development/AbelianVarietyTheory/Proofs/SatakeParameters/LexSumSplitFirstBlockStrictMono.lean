@@ -7,15 +7,13 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `s t a b hab`. Proceed by induction on `a using Lex.rec with | _ a => ?_`. Proceed by induction on `b using Lex.rec with | _ b => ?_`. Apply the tactic sequence `rcases a with j | x <;> rcases b with j' | x'`. Establish `h : j < j'` using `Sum.Lex.inl_lt_inl_iff.mp hab`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [ofLex_toLex, Sum.elim_inl]`. Conclude with `Sigma.Lex.right _ _ h`. Simplify using `only [ofLex_toLex, Sum.elim_inl, Sum.elim_inr]`. Conclude with `Sigma.Lex.left _ _ (Fin.succ_pos _)`. Conclude with `absurd hab (not_lt_of_gt (Sum.Lex.inl_lt_inr _ _))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction.
 
-Establish `h : x < x'` using `Sum.Lex.inr_lt_inr_iff.mp hab`. Simplify using `only [ofLex_toLex, Sum.elim_inr]`. Proceed by induction on `x using Lex.rec with | _ x => ?_`. Proceed by induction on `x' using Lex.rec with | _ x' => ?_`. Break down `x with ⟨i, j⟩` into its components or cases.
+Proceed by induction. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Break down `x' with ⟨i', j'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `Sigma.Lex (· < ·) (fun _ => (· < ·)) (⟨i, j⟩ : Σ a : Fin s, Fin (t a.succ)) ⟨i', j'⟩ at h`. Express the relevant statement in the definitionally equal form `Sigma.Lex (· < ·) (fun _ => (· < ·)) (⟨i.succ, j⟩ : Σ a, Fin (t a)) ⟨i'.succ, j'⟩`. Break down `h with ⟨_, _, hi⟩ | ⟨_, _, hj⟩` into its components or cases. Conclude with `Sigma.Lex.left _ _ (Fin.succ_lt_succ_iff.mpr hi)`.
-
-Conclude with `Sigma.Lex.right _ _ hj`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem lexSumSplit_strictMono : ∀ (s : ℕ) (t : Fin (s + 1) → ℕ), StrictMono fun c : Fin (t 0) ⊕ₗ (Σₗ i : Fin s, Fin (t i.succ)) => (Sum.elim (fun j => toLex (⟨0, j⟩ : Σ a, Fin (t a))) (fun x => toLex (⟨(ofLex x).1.succ, (ofLex x).2⟩ : Σ a, Fin (t a))) (ofLex c) : Σₗ a, Fin (t a)) := by
   intro s t a b hab

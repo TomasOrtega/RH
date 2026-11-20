@@ -12,33 +12,27 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `hW p _ D O _ _ _ _ f b N r w _ hS M V _ _ _ _ hp x W`. Take `⟨ρ, -, -, hρ3, -⟩` from `hW p D O b N M w V x`. Establish `hpO : (p : O) ∈ IsLocalRing.maximalIdeal O` using `hS.pmem`. Establish `hK : CharZero (FractionRing V)`. Set `φ : O →+* V` to `(Spec.preimage (x ≫ M.s)).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : CharP (FractionRing V) (ringChar (FractionRing V)) := ringChar.charP _`. Break down `CharP.char_is_prime_or_zero (FractionRing V) (ringChar (FractionRing V)) with hq | hq` into its components or cases. It suffices to derive a contradiction. Establish `hqK : ((ringChar (FractionRing V) : ℕ) : FractionRing V) = 0` using `ringChar.Nat.cast_ringChar`. Establish `hqV : ((ringChar (FractionRing V) : ℕ) : V) = 0`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsFractionRing.injective V (FractionRing V)` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero]`. Conclude with `hqK`. Distinguish the cases in `hpq : ringChar (FractionRing V) = p`. Conclude with `hp (hpq ▸ hqV)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hcop : Nat.Coprime p (ringChar (FractionRing V))` using `(Nat.coprime_primes Fact.out hq).2 (Ne.symm hpq)`. Establish `hu : IsUnit ((ringChar (FractionRing V) : ℕ) : O)`. Assume the negation of the conclusion as `hnu`. Establish `hm : ((ringChar (FractionRing V) : ℕ) : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hnu`. Take `⟨a, c, hac⟩` from `(Nat.isCoprime_iff_coprime.2 hcop).intCast (R := O)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Int.cast_natCast] at hac`. Establish `h1 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[← hac]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hpO) (Ideal.mul_mem_left _ _ hm)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hu.map φ).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this hqV`. Use `haveI := ringChar.of_eq hq`. Conclude with `CharP.charP_to_charZero (FractionRing V)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpf : p ^ f ≠ 0` using `pow_ne_zero f (Fact.out : Nat.Prime p).ne_zero`. Establish `hw : w ≠ ⊥`. Introduce `h`. Use `hS.norm` as an intermediate fact. Rewrite `this` using `[h, Ideal.absNorm_bot]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `hpf this.symm`. Establish `hcard` using `CharZeroCount.card_killedBy_charZero p D O b N M.X M.s M.univ w hw (FractionRing V) (spMap (algebraMap V (FractionRing V)) ≫ x)`. Set `Φ : {g : Over.mk x ⟶ M.univ.A // KilledBy M.univ w g} → {h : Over.mk (spMap (algebraMap V (FractionRing V)) ≫ x) ⟶ M.univ.A // KilledBy M.univ w h}` to `fun g => ⟨ρ g.1, (hρ3 g.1).1 g.2⟩`. Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨g₁, hg₁⟩ ⟨g₂, hg₂⟩ he`. Conclude with `Subtype.ext (ρ.injective (congrArg Subtype.val he))`. Introduce and unpack `⟨h, hh⟩`. Use `⟨⟨ρ.symm h, (hρ3 _).2 (by simpa using hh)⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (by simp [Φ])`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Ψ : W.H → {g : Over.mk x ⟶ M.univ.A // KilledBy M.univ w g}` to `fun h => ⟨W.pt h, (W.range _).1 ⟨h, rfl⟩⟩`. Establish `hΨ : Function.Bijective Ψ`. Prove the components needed by the constructor for the conclusion. Introduce `a c hac`. Conclude with `W.inj (congrArg Subtype.val hac)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Introduce and unpack `⟨g, hg⟩`. Take `⟨h, rfl⟩` from `(W.range g).2 hg`. Conclude with `⟨h, rfl⟩`. Establish `hH : Nat.card W.H = Ideal.absNorm w ^ D.n`. Rewrite using `[Nat.card_eq_of_bijective _ (hΦ.comp hΨ), hcard, hS.m1, _root_.one_mul]`.
-
-Establish `hnz : Ideal.absNorm w ≠ 0` using `by rw [hS.norm]; exact hpf`. Use `haveI : Finite W.H := Nat.finite_of_card_ne_zero (by rw [hH]; exact pow_ne_zero _ hnz)`. Establish `hk : Nat.card (𝓞 D.F ⧸ w) = Ideal.absNorm w`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 D.F ⧸ w) := Nat.finite_of_card_ne_zero (by rw [hk]; exact hnz)`.
-
-Establish `h2 : 2 ≤ Ideal.absNorm w`. Rewrite using `[← hk]`. Conclude with `Finite.one_lt_card`. Use `⟨Module.Finite.of_finite, ?_⟩` and prove the remaining obligations. Use `letI := Fintype.ofFinite W.H`.
-
-Use `letI := Fintype.ofFinite (𝓞 D.F ⧸ w)`. Use `Module.card_eq_pow_finrank (K := 𝓞 D.F ⧸ w) (V := W.H)` as an intermediate fact. Rewrite `this` using `[← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, hH, hk]`. Conclude with `(Nat.pow_right_injective h2 this).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.rankN_of :
     WVal → RankN := by

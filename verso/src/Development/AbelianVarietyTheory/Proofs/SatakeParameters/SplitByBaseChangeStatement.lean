@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CoveringOfForall
 open CategoryTheory Limits AlgebraicGeometry
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.EtC.Tr.splitBy_baseChange) | (exact GlobalTheory.EtC.Tr.splitBy_baseChange) | (intros; apply GlobalTheory.EtC.Tr.splitBy_baseChange <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.splitBy_baseChange' : ∀ {Z X V T : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X} {m : ℕ} {s : Fin m → (V ⟶ Z)}, GlobalTheory.EtC.Tr.SplitBy f y s → ∀ (w : T ⟶ V), GlobalTheory.EtC.Tr.SplitBy f (w ≫ y) (fun j => w ≫ s j) := by
   first | (exact @GlobalTheory.EtC.Tr.splitBy_baseChange) | (exact GlobalTheory.EtC.Tr.splitBy_baseChange) | (intros; apply GlobalTheory.EtC.Tr.splitBy_baseChange  <;> assumption)

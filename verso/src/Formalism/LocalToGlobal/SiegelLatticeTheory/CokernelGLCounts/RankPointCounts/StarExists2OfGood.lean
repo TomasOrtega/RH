@@ -18,7 +18,7 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) (u u' : D.what₂.Word)
   (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
 
 /- English proof (translation)
-The claim follows from `starExists2_of_parts Zd u u' F0 what₂ hP (cohGen_of Zd (cohInt_holds Zd) (cohDG_holds Zd) hGood) (cohIota_holds Zd) hGood`.
+A detailed English derivation is pending.
 -/
 theorem starExists2_of_good (hP : CtxP u u' F0 what₂) (hGood : CohGood Zd u u' F0 what₂) :
     StarExists2 Zd u u' F0 what₂ :=
@@ -26,7 +26,7 @@ theorem starExists2_of_good (hP : CtxP u u' F0 what₂) (hGood : CohGood Zd u u'
     (cohIota_holds Zd) hGood
 
 /- English proof (translation)
-The claim follows from `starExists2_of_good Zd u u' F0 what₂ hP (cohGood_of Zd globGramNe_holds)`.
+A detailed English derivation is pending.
 -/
 theorem starExists2_holds (hP : CtxP u u' F0 what₂) : StarExists2 Zd u u' F0 what₂ :=
   starExists2_of_good Zd u u' F0 what₂ hP (cohGood_of Zd globGramNe_holds)

@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Plug.CuspHodge
 
 /- English proof (translation)
-Use `⟨h.1, fun f hf => ?_⟩` and prove the remaining obligations. Use `h.2 f hf` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval_map]`. Rewrite using `[MvPolynomial.aeval_def]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ptsOver_mcPts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)}
     {z : (Σ k, ι k) → ℂ} (h : z ∈ mcPts P) : z ∈ Small.ptsOver ℂ P := by
@@ -32,13 +32,11 @@ theorem mem_ptsOver_mcPts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Finty
   exact this
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_ringHom cst.injective`. Set `b` to `Module.finBasis ℚ F`. Take `⟨v, hv, H⟩` from `GlobalTheory.CompanionTheory.Ar.Rec.FinRd.ValSub.exists_subring_val K ι Ω y hb (Finset.univ.image fun i => cst (b i))`. Use `⟨v, hv, fun z hz hzv => ?_⟩` and prove the remaining obligations. Take `⟨A, ev, hB, hinv, hval⟩` from `H ℂ z (mem_ptsOver_mcPts hz) hzv`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : ∀ q : ℚ, cst (algebraMap ℚ F q) ∈ A` using `fun q => by`. Establish `e : cst (algebraMap ℚ F q) = (q.num : Ω) * ((q.den : ℕ) : Ω)⁻¹`. Establish `e1 : cst (algebraMap ℚ F q) = (q : Ω)` using `eq_ratCast (cst.comp (algebraMap ℚ F)) q`. Rewrite using `[e1, Rat.cast_def, div_eq_mul_inv]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `A.mul_mem (intCast_mem A _) (hinv _ q.den_nz)`. Establish `hA : ∀ t : F, cst t ∈ A` using `fun t => by`. Rewrite using `[← b.sum_repr t, map_sum]`. Use `A.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul]`.
-
-Conclude with `A.mul_mem (hq _) (hB (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_univ i))))`. Conclude with `⟨ev.comp (cst.codRestrict A hA), fun t => hval ⟨cst t, hA t⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_form_const {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (y : (Σ k, ι k) → Ω) (hb : Birational y) {F : Type} [Field F] [NumberField F] (cst : F →+* Ω) :
@@ -65,27 +63,25 @@ theorem exists_form_const {K : Type} [Fintype K] {ι : K → Type} [∀ k, Finty
   exact ⟨ev.comp (cst.codRestrict A hA), fun t => hval ⟨cst t, hA t⟩⟩
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H Dw l Xo c r U h e hL x hx O _ β Y SS RM Sys Fx Or Fr Z Rd u f hf`. Take `⟨a, ha⟩ : ∃ a, a = (GlobalTheory.AllWt.wtOf Dw u 0).1` from `⟨_, rfl⟩`. Take `⟨hw1, hw2, -, hw4, -⟩` from `GlobalTheory.CompanionTheory.Ar.Plug.integer_weights_vocab E H Dw l Xo c RM u`. Rewrite `hw1`, `hw2` using `[← ha]`. Take `⟨-, -, hco, -, -⟩` from `GlobalTheory.T.all_weight_sections_compat E H Dw l Xo c r U h e hL a Z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hf` using `[hw2, ← hco]`. Establish `hcz : f ∈ GlobalTheory.CompanionTheory.Ar.Rec.cuspZ Xo c U a` using `hf.1`. Establish `hsec : f ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c a` using `hcz.1`. Establish `hhol : ∀ σ, GoodEmb c σ → rdU (U σ) f ∈ holSub (U σ).X (laZ (U σ) a)` using `fun σ hσ => by`. Establish `h2 : f ∈ ⨅ (σ : c.F →+* ℂ) (_ : GoodEmb c σ), (holSub (U σ).X (laZ (U σ) a)).comap (rdU (U σ))` using `hcz.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 h2 σ) hσ`. Establish `hM : ∀ σ : c.F →+* ℂ, ∃ M : ℝ, 0 ≤ M ∧ (GoodEmb c σ → ∀ k, ∀ y ∈ ((U σ).X k).dom, ((U σ).X k).pnorm (laZ (U σ) a k) (rdU (U σ) f k) y ≤ M)` using `fun σ => by`. Distinguish the cases in `hσ : GoodEmb c σ`. Take `⟨M, hM⟩` from `GlobalTheory.BignessCompare.bdd_of_mem_holSub (U σ).X (laZ (U σ) a) (hhol σ hσ)`. Conclude with `⟨|M|, abs_nonneg M, fun _ k y hy => (hM ⟨k, ⟨y, hy⟩⟩).trans (le_abs_self M)⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, le_rfl, fun h' => absurd h' hσ⟩`. Use `choose M hM0 hMb using hM`. Take `⟨u₀, hu₀, hread⟩` from `GlobalTheory.T.component_norm_constant_models hG E H Dw l Xo c r U h e hL x hx O β Y SS RM Sys Fx Or Fr Z Rd`. Take `⟨v, hv, hcst⟩` from `exists_form_const RM.y RM.birational Or.𝔐.cst`. Establish `hform : Small.IsFormOff (mCoordIdeal RM.y) (u₀ * v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d₁, h₁⟩` from `hu₀.1`. Take `⟨d₂, h₂⟩` from `hv.1`. Use `⟨⟨_, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul h₁ h₂⟩, fun h' => ?_⟩` and prove the remaining obligations. Establish `hp : (mCoordIdeal RM.y).IsPrime` using `RingHom.ker_isPrime _`. Break down `hp.mem_or_mem h' with h' | h'` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu₀.2 h'`. Conclude with `hv.2 h'`. Establish `hgauge : gauge Rd u * Rd.φ (evC h Z f) = Fr.rd f * ∏ r', Or.e r' ^ (-nOf u (some r'))`. Rewrite using `[Rd.rd_eq a f hsec, gauge, ← ha]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn' : ∀ j, (nOf u j : ℝ) = RM.coef (towerWt Dw a) 0 j` using `fun j => by`. Rewrite using `[hw1]`. Conclude with `hw4 j`. Use `⟨lieFacZ Dw x a * ∑ σ, M σ, u₀ * v, hform, fun z hz hne w hw => ?_⟩` and prove the remaining obligations. Rewrite `hne` using `[map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `hcst z hz (right_ne_zero_of_mul hne)`. Take `⟨k, -, y, hy, hr⟩` from `hread σ z hz hσ (left_ne_zero_of_mul hne)`. Take `⟨θ, hθ, hval⟩` from `hr a (nOf u) hn'`. Take `⟨hg, hb⟩` from `hval f hsec`. Establish `hzp` using `mem_ptsOver_mcPts hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : Small.HasVal RM.y (Top.combLine (RM.line 1) (nOf u)).a (Fr.rd f * ∏ r', Or.e r' ^ (-nOf u (some r'))) z w`. Rewrite using `[← hgauge]`. Conclude with `hw`. Establish `hnorm : ‖w‖ = ‖θ‖ * ‖rdU (U (goodOf c σ)) f k y‖`. Distinguish the cases in `hgd : GoodEmb c σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.CompanionTheory.Ar.Small.ReadFinTest.hasVal_unique hzp hw' (hg hgd), norm_mul]`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Small.ReadFinTest.hasVal_unique hzp hw' (hb hgd), norm_mul, RCLike.norm_conj]`. Establish `hP : 0 < ∏ r', (Or.sing r').h z ^ nOf u (some r')` using `Finset.prod_pos fun r' _ => zpow_pos ((Or.sing r').pos z hz.1) _`. Establish `hL0 : 0 < lieFacZ Dw x a` using `Real.exp_pos _`. Establish `hmain : ((U (goodOf c σ)).X k).pnorm (laZ (U (goodOf c σ)) a k) (fun _ => 1) y * ‖rdU (U (goodOf c σ)) f k y‖ = ((U (goodOf c σ)).X k).pnorm (laZ (U (goodOf c σ)) a k) (rdU (U (goodOf c σ)) f k) y`.
-
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm, norm_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbd : ((U (goodOf c σ)).X k).pnorm (laZ (U (goodOf c σ)) a k) (rdU (U (goodOf c σ)) f k) y ≤ ∑ σ, M σ` using `(hMb _ (goodEmb_goodOf c σ) k y hy).trans (Finset.single_le_sum (f := M) (fun i _ => hM0 i) (Finset.mem_univ _))`. Rewrite using `[hnorm, hθ, mul_assoc, mul_assoc, hmain]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cusp_hodgeLe : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ x : ℝ, (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (Z : Comp Xo c) (Rd : Reading Fr h Z) (u : GlobalTheory.AllWt.Weight Dw), ∀ f ∈ GlobalTheory.AllWt.cuspOn U Z (GlobalTheory.AllWt.wtOf Dw u 0), ∃ R : ℝ, HodgeLe Or u (gauge Rd u * Rd.φ (evC h Z f)) R := by
   intro hG E _ _ _ H Dw l Xo c r U h e hL x hx O _ β Y SS RM Sys Fx Or Fr Z Rd u f hf

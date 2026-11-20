@@ -20,7 +20,7 @@ variable {D : D7} {n m : ℕ}
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Establish `hp : Matrix.of (piF θ τ fr y) = fr⁻¹ * compAt θ τ y` using `rfl`. Rewrite using `[Matrix.map_sub (psiT D τ) (fun a b => map_sub (psiT D τ) a b), ← PlaceFactsH.compAt_eq_psiT hθ, ← PlaceFactsH.compAt_eq_psiT hθ, show sIns (D := D) τ fr (piF θ τ fr y) = insT τ (fr * Matrix.of (piF θ τ fr y)) from rfl, compAt_insT hθ, if_pos rfl, hp, ← Matrix.mul_assoc, Matrix.m …`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem compAt_sub_sIns {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ}
     (hdet : IsUnit fr.det) (y : Mx D m n) :
@@ -33,13 +33,13 @@ theorem compAt_sub_sIns {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau}
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Apply `mat_ext D` to reduce the goal to its premises. Introduce `τ''`. Rewrite using `[map_inner, map_inner]`. Distinguish the cases in `h : τ'' = τ`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hz, Matrix.mul_zero, Matrix.mul_zero, Matrix.mul_zero]`. Use `hx τ'' h` as an intermediate fact. Rewrite `this` using `[eq_thetaC D hθ]`. Express the relevant statement in the definitionally equal form `x.map (psiT D τ'') = x'.map (psiT D τ'') at this`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : (adj x).map (finPart D) = (adj x').map (finPart D)`. Use extensionality with `i j`. Simplify using `only [adj, Matrix.map_apply, Matrix.transpose_apply, cA]`. Rewrite using `[finPart_sigR, finPart_sigR]`. Use `congr 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `congrFun (congrFun hf j) i`. Use `show (adj x * (gA V * z)).map (finPart D) = (adj x' * (gA V * z)).map (finPart D)`. Rewrite using `[Matrix.map_mul, ha, ← Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_away {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} (x x' z : Mx D V.rank n)
     (hx : ∀ τ', τ' ≠ τ → compAt θ τ' x = compAt θ τ' x') (hf : x.map (finPart D) = x'.map (finPart D))

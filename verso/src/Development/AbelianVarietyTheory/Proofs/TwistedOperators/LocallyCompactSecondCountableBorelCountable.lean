@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwistAdelicTop
 
 /- English proof (translation)
-Introduce `D V`. Take `⟨hlc, hsc, -⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V`. Conclude with `⟨hlc, hsc, ⟨rfl⟩, (GlobalTheory.RationalCountable.discrete_countable_GQ D V).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locallyCompact_secondCountable_borel_countable :
     ∀ {D : D7} (V : HSp D), LocallyCompactSpace (GA D V) ∧ SecondCountableTopology (GA D V) ∧

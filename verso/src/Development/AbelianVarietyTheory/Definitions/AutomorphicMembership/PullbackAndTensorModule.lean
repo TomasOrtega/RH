@@ -36,16 +36,16 @@ variable (Λ : Unim E)
 def gramE : Matrix (Fin Λ.n) (Fin Λ.n) E := fun i j => Λ.form (Pi.single i 1) (Pi.single j 1)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `Λ.form.star_apply _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gramE_isHermitian : Λ.gramE.IsHermitian := by
   ext i j
   exact Λ.form.star_apply _ _
 
 /- English proof (translation)
-Use `conv_lhs => rw [pi_eq_sum_univ' x, pi_eq_sum_univ' y, Λ.form.sum_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Λ.form.sum_right]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Λ.form.smul_left, Λ.form.smul_right, gramE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem form_eq_sum (x y : Fin Λ.n → E) : Λ.form x y = ∑ i, ∑ j, x i * Λ.gramE i j * star (y j) := by
   conv_lhs => rw [pi_eq_sum_univ' x, pi_eq_sum_univ' y, Λ.form.sum_left]
@@ -56,7 +56,7 @@ theorem form_eq_sum (x y : Fin Λ.n → E) : Λ.form x y = ∑ i, ∑ j, x i * �
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Λ.unimod]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_iff (x : Fin Λ.n → E) : x ∈ Λ.L ↔ ∀ y ∈ Λ.L, ∃ c : 𝓞 E, (c : E) = Λ.form x y := by
   conv_lhs => rw [← Λ.unimod]
@@ -65,7 +65,7 @@ theorem mem_iff (x : Fin Λ.n → E) : x ∈ Λ.L ↔ ∀ y ∈ Λ.L, ∃ c : �
   rfl
 
 /- English proof (translation)
-The claim follows from `Λ.form.nondegenerate_iff_left.2 fun x hx => by by_contra h obtain ⟨σ⟩ : Nonempty (E →+* ℂ) := inferInstance simpa [hx x] using Λ.pos σ x h`.
+A detailed English derivation is pending.
 -/
 theorem nondegenerate : Λ.form.Nondegenerate :=
   Λ.form.nondegenerate_iff_left.2 fun x hx => by
@@ -80,9 +80,9 @@ instance : Module.Projective (𝓞 E) Λ.L :=
   Module.Flat.projective_of_finitePresentation
 
 /- English proof (translation)
-Establish `: IsLocalizedModule (nonZeroDivisors (𝓞 E)) Λ.L.subtype`. Use `⟨fun s => ?_, fun y => ?_, fun {a b} hab => ⟨1, by simpa using hab⟩⟩` and prove the remaining obligations. Use `isLocalizedModule_id (nonZeroDivisors (𝓞 E)) (Fin Λ.n → E) E` as an intermediate fact. Conclude with `IsLocalizedModule.map_units (S := nonZeroDivisors (𝓞 E)) (LinearMap.id : (Fin Λ.n → E) →ₗ[𝓞 E] (Fin Λ.n → E)) s`. Establish `hy : y ∈ Submodule.span E (Λ.L : Set (Fin Λ.n → E))` using `Λ.isLattice.span_eq_top ▸ Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 E)) E _ y hy`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`. Conclude with `(IsLocalizedModule.finrank_eq (nonZeroDivisors (𝓞 E)) Λ.L.subtype le_rfl).symm.trans ((IsFractionRing.finrank_right_eq (𝓞 E) E (Fin Λ.n → E)).symm.trans (Module.finrank_fin_fun E))`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_L : Module.finrank (𝓞 E) Λ.L = Λ.n := by
   have : IsLocalizedModule (nonZeroDivisors (𝓞 E)) Λ.L.subtype := by
@@ -98,7 +98,7 @@ theorem finrank_L : Module.finrank (𝓞 E) Λ.L = Λ.n := by
     ((IsFractionRing.finrank_right_eq (𝓞 E) E (Fin Λ.n → E)).symm.trans (Module.finrank_fin_fun E))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Λ.mem_iff x).1 x.2 y y.2`. Conclude with `hc ▸ c.isIntegral_coe`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIntegral_form (x y : Λ.L) : IsIntegral ℤ (Λ.form x y) := by
   obtain ⟨c, hc⟩ := (Λ.mem_iff x).1 x.2 y y.2
@@ -116,11 +116,11 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_hInt (x y : Λ.L) : algebraMap (𝓞 E) E (Λ.hInt x y) = Λ.form x y := rfl
 
 /- English proof (translation)
-Use `Λ.hInt.unimodular_iff.2 ⟨Λ.hInt.nondegenerate_iff_left.2 fun x hx => ?_, fun l => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `Λ.pos σ x (fun e => h (Subtype.ext e))` as an intermediate fact. Rewrite `this` using `[← coe_hInt, hx x]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Take `⟨ψ, hψ⟩` from `GlobalTheory.LatVacDual.exists_extension Λ.L Λ.isLattice.span_eq_top l`. Take `⟨y, hy⟩` from `Λ.nondegenerate.unimodular.exists_eq ψ`. Use `⟨⟨y, (Λ.mem_iff y).2 fun x hx => ⟨star (l ⟨x, hx⟩), ?_⟩⟩, fun x => RingOfIntegers.ext ((hy x).trans (hψ x))⟩` and prove the remaining obligations. Rewrite using `[← Λ.form.star_apply, hy]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg star (hψ ⟨x, hx⟩).symm`.
+A detailed English derivation is pending.
 -/
 theorem hInt_unimodular : Λ.hInt.Unimodular := by
   refine Λ.hInt.unimodular_iff.2 ⟨Λ.hInt.nondegenerate_iff_left.2 fun x hx => ?_, fun l => ?_⟩
@@ -165,9 +165,9 @@ Both sides reduce to the same expression.
 theorem stdForm_apply {n : ℕ} (x y : Fin n → E) : stdForm E n x y = ∑ i, x i * star (y i) := rfl
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Establish `e : ∀ j, (σ (x j * star (x j))).re = Complex.normSq (σ (x j))` using `fun j => by`. Rewrite using `[map_mul, complexEmbedding_star]`. Conclude with `congrArg Complex.re (Complex.mul_conj _)`. Rewrite using `[stdForm_apply, map_sum, Complex.re_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Conclude with `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.2 ((map_ne_zero σ).2 hi)⟩`.
+A detailed English derivation is pending.
 -/
 theorem stdForm_pos {n : ℕ} (σ : E →+* ℂ) (x : Fin n → E) (hx : x ≠ 0) : 0 < (σ (stdForm E n x x)).re := by
   obtain ⟨i, hi⟩ := Function.ne_iff.1 hx
@@ -200,7 +200,7 @@ def ofGenLat {n : ℕ} (Γ : Formalism.L2.Pj.GenLat E n) (hL : Submodule.IsLatti
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Pj.stdLat, Submodule.mem_pi, Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat {n : ℕ} (x : Fin n → E) : x ∈ Formalism.L2.Pj.stdLat E n ↔ ∀ i, ∃ c : 𝓞 E, algebraMap (𝓞 E) E c = x i := by
   simp [Formalism.L2.Pj.stdLat, Submodule.mem_pi, Submodule.mem_one]
@@ -208,7 +208,7 @@ theorem mem_stdLat {n : ℕ} (x : Fin n → E) : x ∈ Formalism.L2.Pj.stdLat E 
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-The claim follows from `(mem_stdLat _).2 fun j => ⟨Pi.single (M := fun _ => 𝓞 E) i 1 j, by by_cases h : j = i <;> simp [h]⟩`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_stdLat {n : ℕ} (i : Fin n) : (Pi.single i 1 : Fin n → E) ∈ Formalism.L2.Pj.stdLat E n :=
   (mem_stdLat _).2 fun j => ⟨Pi.single (M := fun _ => 𝓞 E) i 1 j, by
@@ -227,7 +227,7 @@ def stdEquiv (n : ℕ) : Formalism.L2.Pj.stdLat E n ≃ₗ[𝓞 E] (Fin n → �
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.1 (Module.Finite.equiv (stdEquiv E n).symm) span_eq_top := eq_top_iff.2 fun x _ => by rw [pi_eq_sum_univ' x] exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_stdLat i))`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_stdLat (n : ℕ) : Submodule.IsLattice E (Formalism.L2.Pj.stdLat E n) where
   fg := Module.Finite.iff_fg.1 (Module.Finite.equiv (stdEquiv E n).symm)
@@ -236,7 +236,7 @@ theorem isLattice_stdLat (n : ℕ) : Submodule.IsLattice E (Formalism.L2.Pj.stdL
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_stdLat i))
 
 /- English proof (translation)
-Introduce `v` and use `by refine ⟨fun hv w hw => ?_, fun h => (mem_stdLat _).2 fun i => ?_⟩ · choose c hc using (mem_stdLat _).1 hv choose d hd using (mem_stdLat _).1 hw refine ⟨∑ j, star (c j) * d j, ?_⟩ rw [map_sum] exact Finset.sum_congr rfl fun j _ => by rw [map_mul, ← hc, ← hd]; rfl · obtain ⟨c, h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unimod_stdLat (n : ℕ) : (⟨Formalism.L2.Pj.stdLat E n⟩ : Formalism.L2.Pj.GenLat E n).Unimod := fun v => by
   refine ⟨fun hv w hw => ?_, fun h => (mem_stdLat _).2 fun i => ?_⟩
@@ -256,13 +256,13 @@ def std (n : ℕ) : Unim E := ofGenLat ⟨Formalism.L2.Pj.stdLat E n⟩ (isLatti
 def stdCoord (n : ℕ) (i : Fin n) : (std E n).L →ₗ[𝓞 E] 𝓞 E := LinearMap.proj i ∘ₗ (stdEquiv E n).toLinearMap
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (Eq.symm (map_sum (algebraMap (𝓞 E) E) _ _))`.
+A detailed English derivation is pending.
 -/
 theorem hInt_std (n : ℕ) (x y : (std E n).L) : (std E n).hInt x y = ∑ i, stdCoord n i x * star (stdCoord n i y) :=
   RingOfIntegers.ext (Eq.symm (map_sum (algebraMap (𝓞 E) E) _ _))
 
 /- English proof (translation)
-Establish `: ∀ i j : Fin n, ∑ k : Fin n, (Pi.single i 1 : Fin n → E) k * star ((Pi.single j 1 : Fin n → E) k) = (1 : Matrix (Fin n) (Fin n) E) i j` using `fun i j => by`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [hk]) (by simp)]`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`. Conclude with `Matrix.ext this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gramE_std (n : ℕ) : (std E n).gramE = (1 : Matrix (Fin n) (Fin n) E) := by
   have : ∀ i j : Fin n, ∑ k : Fin n, (Pi.single i 1 : Fin n → E) k * star ((Pi.single j 1 : Fin n → E) k) =
@@ -275,25 +275,25 @@ def SumOfNorms (Λ : Unim E) : Prop :=
   ∃ (N k : ℕ) (l : Fin k → (Λ.L →ₗ[𝓞 E] 𝓞 E)), 0 < N ∧ ∀ x y, (N : 𝓞 E) * Λ.hInt x y = ∑ i, l i x * star (l i y)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, n, stdCoord n, one_pos, fun x y => by rw [Nat.cast_one, _root_.one_mul, hInt_std]⟩`.
+Supply the required witnesses or components.
 -/
 theorem sumOfNorms_std (n : ℕ) : (std E n).SumOfNorms :=
   ⟨1, n, stdCoord n, one_pos, fun x y => by rw [Nat.cast_one, _root_.one_mul, hInt_std]⟩
 
 /- English proof (translation)
-The claim follows from `(std E n).finrank_L`.
+A detailed English derivation is pending.
 -/
 example (n : ℕ) : Module.finrank (𝓞 E) (std E n).L = n := (std E n).finrank_L
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Λ.hInt.smul_left c x y, Λ.hInt.smul_right c x y⟩`.
+Supply the required witnesses or components.
 -/
 example (Λ : Unim E) (c : 𝓞 E) (x y : Λ.L) :
     Λ.hInt (c • x) y = c * Λ.hInt x y ∧ Λ.hInt x (c • y) = star c * Λ.hInt x y :=
   ⟨Λ.hInt.smul_left c x y, Λ.hInt.smul_right c x y⟩
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨c, hc⟩ := (mem_stdLat _).1 h 0 have h2 : (2 : 𝓞 E) * c = 1 := RingOfIntegers.ext (by change algebraMap (𝓞 E) E (2 * c) = algebraMap (𝓞 E) E 1 rw [map_mul, hc, map_ofNat, map_one, mul_inv_cancel₀ two_ne_zero]) have h3 := congrArg (Algebra.norm ℤ) h2 rw [map_mul, map_one …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : (fun _ => 2⁻¹ : Fin 1 → E) ∉ (std E 1).L := fun h => by
   obtain ⟨c, hc⟩ := (mem_stdLat _).1 h 0
@@ -311,18 +311,18 @@ end Unim
 variable {H : Host E} {X X' : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (H.bar_eq c)`.
+A detailed English derivation is pending.
 -/
 theorem bar_eq_star (H : Host E) (c : 𝓞 E) : H.bar c = star c := RingOfIntegers.ext (H.bar_eq c)
 
 /- English proof (translation)
-Rewrite using `[← bar_eq_star H]`. Conclude with `PullbackSections.CVA.cmHostUnit_add_conj_eq_one H`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfUnit_add_star (H : Host E) : H.w0 + star H.w0 = 1 := by
   rw [← bar_eq_star H]; exact PullbackSections.CVA.cmHostUnit_add_conj_eq_one H
 
 /- English proof (translation)
-Introduce `c` and use `bar_eq_star H c ▸ t.adj c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdj_sab (t : SAB H X) : IsAdj t.act t.PP.L := fun c => bar_eq_star H c ▸ t.adj c
 
@@ -359,7 +359,7 @@ def lamPt {T : Over X} (z : T ⟶ (tens t Λ).G) : Pic ((tens t Λ).G ⊗ T).lef
   HermTensor.lamPt (isTensor t Λ) Λ.pres Λ.hInt (cls t.PP.L t.PP.isLB) z
 
 /- English proof (translation)
-Use `Eq.trans ?_ (congrArg (pull _) (cls_poi (isTensor t Λ) Λ.pres Λ.hInt t.PP)).symm` and prove the remaining obligations. Rewrite using `[pull_bi, whiskerLeft_fst, whiskerLeft_snd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamPt_eq {T : Over X} (z : T ⟶ (tens t Λ).G) :
     lamPt t Λ z = pull ((tens t Λ).G ◁ z).left (cls _ (poi t Λ).isLB) := by
@@ -368,26 +368,26 @@ theorem lamPt_eq {T : Over X} (z : T ⟶ (tens t Λ).G) :
   rfl
 
 /- English proof (translation)
-The claim follows from `HermTensor.lamPt_mul (isTensor t Λ) Λ.pres Λ.hInt t.cub z z'`.
+A detailed English derivation is pending.
 -/
 theorem lamPt_mul {T : Over X} (z z' : T ⟶ (tens t Λ).G) : lamPt t Λ (z * z') = lamPt t Λ z + lamPt t Λ z' :=
   HermTensor.lamPt_mul (isTensor t Λ) Λ.pres Λ.hInt t.cub z z'
 
 /- English proof (translation)
-The claim follows from `theta_iso_pull (isTensor t Λ) Λ.pres Λ.hInt H.w0 t.PP`.
+A detailed English derivation is pending.
 -/
 theorem pp_iso_pull :
     LBIso (tens t Λ).PP.L ((poi t Λ).L.pull (lift (𝟙 (tens t Λ).G) ((tens t Λ).act.act H.w0)).left) :=
   theta_iso_pull (isTensor t Λ) Λ.pres Λ.hInt H.w0 t.PP
 
 /- English proof (translation)
-The claim follows from `lam_theta_iso (isTensor t Λ) Λ.pres Λ.hInt t.cub (isAdj_sab t) (halfUnit_add_star H)`.
+A detailed English derivation is pending.
 -/
 theorem lam_pp_iso : LBIso (abelian₂ (tens t Λ).G (tens t Λ).PP.L) (poi t Λ).L :=
   lam_theta_iso (isTensor t Λ) Λ.pres Λ.hInt t.cub (isAdj_sab t) (halfUnit_add_star H)
 
 /- English proof (translation)
-The claim follows from `theta_tmul (isTensor t Λ) Λ.pres Λ.hInt t.cub (isAdj_sab t) (halfUnit_add_star H) m n`.
+A detailed English derivation is pending.
 -/
 theorem lam_pp_tmul (m n : Λ.L) :
     LBIso (cubeLB (tens t Λ).G ![fst t.G t.G ≫ (isTensor t Λ).tmul m, snd t.G t.G ≫ (isTensor t Λ).tmul n]
@@ -395,17 +395,17 @@ theorem lam_pp_tmul (m n : Λ.L) :
   theta_tmul (isTensor t Λ) Λ.pres Λ.hInt t.cub (isAdj_sab t) (halfUnit_add_star H) m n
 
 /- English proof (translation)
-The claim follows from `(isTensor t Λ).isProper`.
+A detailed English derivation is pending.
 -/
 theorem isProper [IsProper t.G.hom] : IsProper (tens t Λ).G.hom := (isTensor t Λ).isProper
 
 /- English proof (translation)
-The claim follows from `(isTensor t Λ).abLocus_subset`.
+A detailed English derivation is pending.
 -/
 theorem abLocus_subset : abLocus t.G ⊆ abLocus (tens t Λ).G := (isTensor t Λ).abLocus_subset
 
 /- English proof (translation)
-The claim follows from `Λ.finrank_L ▸ GlobalTheory.SerreDim.smoothOfRelativeDimension_tensor X (𝓞 E) Λ.L t.G (tens t Λ).G t.act (tens t Λ).act g ⟨isTensor t Λ⟩ hg`.
+A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension {g : ℕ} (hg : SmoothOfRelativeDimension g t.G.hom) :
     SmoothOfRelativeDimension (Λ.n * g) (tens t Λ).G.hom :=
@@ -413,13 +413,13 @@ theorem smoothOfRelativeDimension {g : ℕ} (hg : SmoothOfRelativeDimension g t.
     ⟨isTensor t Λ⟩ hg
 
 /- English proof (translation)
-The claim follows from `theta_kTriv (isTensor t Λ) Λ.pres Λ.hInt t.cub (isAdj_sab t) (halfUnit_add_star H) Λ.hInt_unimodular hK`.
+A detailed English derivation is pending.
 -/
 theorem kTriv (hK : Out.KTriv t.G t.PP.L) : Out.KTriv (tens t Λ).G (tens t Λ).PP.L :=
   theta_kTriv (isTensor t Λ) Λ.pres Λ.hInt t.cub (isAdj_sab t) (halfUnit_add_star H) Λ.hInt_unimodular hK
 
 /- English proof (translation)
-Set `P : Out.PolAV X` to `{ A := t.G, isAb := AbelianSchemeGerms.isAbelianScheme_of_proper t.G t.semi, g := g, smoothDim := hg, L := t.PP.L, isLB := t.PP.isLB, rigid := ⟨t.PP.rig, t.PP.rigGen⟩, sym := sym_of_isSymmetric t.PP t.sym, ample := hA, ktriv := hK }`. Conclude with `@GlobalTheory.TensorAmple.relAmple_tensor laws X _ P t.comm (𝓞 E) _ (starRingEnd _) Λ.L _ _ (fun x y => Λ.hInt x y) _ _ (tens t Λ).G _ _ t.act (tens t Λ).act (isTensor t Λ) H.w0 _ _ (tens t Λ).PP.isLB (tens t Λ).PP.isLB ⟨_, (tens t Λ).cub.isGen⟩ (lam_pp_tmul t Λ) (isAdj_sab t) ⟨s …`. Take `⟨y, hy⟩` from `Λ.hInt_unimodular.exists_eq l`. Conclude with `⟨y, fun x => (hy x).symm, fun y' hy' => Λ.hInt_unimodular.nondegenerate.ext_right fun x => (hy' x).symm.trans (hy x).symm⟩)`. Use `hΛ (halfUnit_add_star H) (tens t Λ).prim`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relAmple (laws : Out.Laws) [IsLocallyNoetherian X] [IsProper t.G.hom] {g : ℕ}
     (hg : SmoothOfRelativeDimension g t.G.hom) (hA : Out.RelAmple t.G t.PP.L) (hK : Out.KTriv t.G t.PP.L)
@@ -439,7 +439,7 @@ theorem relAmple (laws : Out.Laws) [IsLocallyNoetherian X] [IsProper t.G.hom] {g
     hΛ (halfUnit_add_star H) (tens t Λ).prim
 
 /- English proof (translation)
-The claim follows from `theta_iso_mapLeft (isTensor t Λ) Λ.pres Λ.hInt t.cub (isAdj_sab t) (isTensor t Λ') Λ'.pres Λ'.hInt f hf`.
+A detailed English derivation is pending.
 -/
 theorem pp_iso_mapLeft (Λ' : Unim E) (f : Λ'.L →ₗ[𝓞 E] Λ.L) (hf : Λ'.hInt.IsIsometry Λ.hInt f) :
     LBIso (tens t Λ').PP.L ((tens t Λ).PP.L.pull ((isTensor t Λ').mapLeft (isTensor t Λ) f).left) :=
@@ -452,13 +452,13 @@ def stdPr (n : ℕ) (i : Fin n) : (tens t (Unim.std E n)).G ⟶ t.G :=
   (isTensor t (Unim.std E n)).mapLeft (IsTensor.self t.act) (Unim.stdCoord n i)
 
 /- English proof (translation)
-The claim follows from `IsTensor.isLinearHom_mapLeft _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_stdPr (n : ℕ) (i : Fin n) : IsLinearHom (tens t (Unim.std E n)).act t.act (stdPr t n i) :=
   IsTensor.isLinearHom_mapLeft _ _ _
 
 /- English proof (translation)
-Use `(isLinearHom_stdPr t n i).1` as an intermediate fact. Establish `: IsMonHom (stdIso t n).hom` using `IsTensor.isMonHom_mapLeft _ _ _`. Use `(isTensor t (Unim.std E n)).hom_ext fun m => ?_` and prove the remaining obligations. Use `((isTensor t (Unim.std E n)).tmul_mapLeft_assoc (IsTensor.pow (Out.powIsPowGrp t.G n) t.act) (Unim.stdEquiv E n).toLinearMap m _).trans ((IsTensor.pow_tmul_pr (Out.powIsPowGrp t.G n) t.act _ i).trans ?_)` and prove the remaining obligations. Conclude with `(((isTensor t (Unim.std E n)).tmul_mapLeft (IsTensor.self t.act) (Unim.stdCoord n i) m).trans (IsTensor.self_tmul _ _)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stdIso_pr (n : ℕ) (i : Fin n) : (stdIso t n).hom ≫ Out.powPr t.G i = stdPr t n i := by
   have := (isLinearHom_stdPr t n i).1
@@ -477,7 +477,7 @@ def stdPow (n : ℕ) : Out.IsPowGrp (tens t (Unim.std E n)).G t.G n where
       fun i => (stdIso_pr t n i).symm).symm
 
 /- English proof (translation)
-The claim follows from `theta_iso_box (isTensor t (Unim.std E n)) _ _ t.cub (isAdj_sab t) (Unim.stdCoord n) (Unim.hInt_std n) t.prim`.
+A detailed English derivation is pending.
 -/
 theorem pp_std_iso (n : ℕ) : LBIso (tens t (Unim.std E n)).PP.L (Out.boxLB t.PP.L (stdPow t n).pr) :=
   theta_iso_box (isTensor t (Unim.std E n)) _ _ t.cub (isAdj_sab t) (Unim.stdCoord n) (Unim.hInt_std n) t.prim
@@ -485,7 +485,7 @@ theorem pp_std_iso (n : ℕ) : LBIso (tens t (Unim.std E n)).PP.L (Out.boxLB t.P
 variable {t} {t' : SAB H X'} {f : X' ⟶ X} (m : SABMap t' t f)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m.cart, m.act⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinearPullback_sabMap : IsLinearPullback t'.act t.act f m.φ := ⟨m.cart, m.act⟩
 
@@ -499,7 +499,7 @@ def map : SABMap (tens t' Λ) (tens t Λ) f :=
       m.cm rfl m.base m.lin }
 
 /- English proof (translation)
-The claim follows from `((isTensor t Λ).exists_isLinearPullback (isTensor t' Λ) (isLinearPullback_sabMap m)).choose_spec.2 v`.
+A detailed English derivation is pending.
 -/
 theorem tmul_map (v : Λ.L) : ((isTensor t' Λ).tmul v).left ≫ (map Λ m).φ = m.φ ≫ ((isTensor t Λ).tmul v).left :=
   ((isTensor t Λ).exists_isLinearPullback (isTensor t' Λ) (isLinearPullback_sabMap m)).choose_spec.2 v
@@ -517,7 +517,7 @@ def uniTrue (ct : At S κ p) : UniSt ct where
   latStd := Unim.std D.host.E
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (by have h := congrArg (algebraMap (𝓞 D.host.E) D.host.E) A.H.two_weight_eq_one_add_root rw [map_mul, map_add, map_one, map_ofNat] at h change algebraMap (𝓞 D.host.E) D.host.E A.H.w0 = (1 + D.host.sqrtMinusD) / 2 rw [← A.rt_eq, eq_div_iff two_ne_zero, mul_comm] …`.
+A detailed English derivation is pending.
 -/
 theorem amb_w0_eq_boundaryLocalData_w0 (A : Amb D) : A.H.w0 = BoundaryLocalData.w0 D := RingOfIntegers.ext (by
   have h := congrArg (algebraMap (𝓞 D.host.E) D.host.E) A.H.two_weight_eq_one_add_root
@@ -529,7 +529,7 @@ theorem amb_w0_eq_boundaryLocalData_w0 (A : Amb D) : A.H.w0 = BoundaryLocalData.
 def tensMdl {ct : At S κ p} (Z : ct.Mdl) (Λ : (uniTrue ct).Unim) : SAB A.H Z.X := tens Z.t Λ
 
 /- English proof (translation)
-The claim follows from `Unim.gramE_std n`.
+A detailed English derivation is pending.
 -/
 example (ct : At S κ p) (n : ℕ) :
     Unim.gramE ((uniTrue ct).latStd n) = (1 : Matrix (Fin n) (Fin n) D.host.E) := Unim.gramE_std n

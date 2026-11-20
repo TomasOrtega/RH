@@ -20,7 +20,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R}
   {D : DegData R I} {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Use `show spMap _ ≫ spMap _ = Spec.map _ ≫ spMap _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem redE_dualMap (e : ℕ) :
     redE (R ⧸ I ^ (e + 1)) ≫ spMap (dualMap (Ideal.Quotient.mk (I ^ (e + 1)))) = thick R I e ≫ redE R := by
@@ -30,7 +30,7 @@ theorem redE_dualMap (e : ℕ) :
   ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (fstG I e G).left, Category.assoc, h1, ← Category.assoc, redE_dualMap, Category.assoc]`. Establish `hy' : redE R ≫ y.left = η[G].left` using `hy`. Rewrite using `[hy']`. Conclude with `(UnitValue.eSec_fGl (G := G) e).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_lift_eq_eSec (y : epsR R ⟶ G) (hy : IsTangent y) (e : ℕ)
     (ye : Sp (DualNumber (R ⧸ I ^ (e + 1))) ⟶ (thickObj R I e G).left)
@@ -42,9 +42,9 @@ theorem red_lift_eq_eSec (y : epsR R ⟶ G) (hy : IsTangent y) (e : ℕ)
   exact (UnitValue.eSec_fGl (G := G) e).symm
 
 /- English proof (translation)
-Take `⟨ye, h1, h2, h3⟩` from `h e`. Establish `hr` using `red_lift_eq_eSec y hy e ye h1`. Use `⟨?_, fun χ z C hC => ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, Category.assoc, h2, ← Category.assoc, redE_dualMap]`. Rewrite using `[← hr, ← redE_dualMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(val_pull hC _ _ _).symm.trans ((val_corr hC (h3 χ) _).trans (val_pull hC _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem levels_of_tanRel (U : UnifPre I D A G) (y : epsR R ⟶ G) (hy : IsTangent y) (gm : GtPt D.toPre (epsR R))
     (h : TanRel U y gm) (e : ℕ) :
@@ -59,11 +59,11 @@ theorem levels_of_tanRel (U : UnifPre I D A G) (y : epsR R ⟶ G) (hy : IsTangen
     exact (val_pull hC _ _ _).symm.trans ((val_corr hC (h3 χ) _).trans (val_pull hC _ _ _))
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Establish `hz` using `levels_of_tanRel U y hy gm h`. Establish `hb : redE R ≫ gm.b.left = η[D.toPre.P.A].left` using `hom_ext_of_isHausdorff I fun e => (Category.assoc _ _ _).symm.trans ((hz e).1.symm.trans (UnitValue.eSec_pGl U e))`. Take `⟨o, ho⟩` from `FormalValue.exists_isZero D.toPre (baseOver (Sp R))`. Establish `hob : o.b.left = redE R ≫ gm.b.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hb, ho.1]`. Conclude with `(congrArg (· ≫ η[D.toPre.P.A].left) ((Category.comp_id _).symm.trans (Over.w (toUnit (baseOver (Sp R)))))).trans (Category.id_comp _)`. Establish `e₁` using `TorusCoord.comp_eq_of_left gm.b o.b (redE R) (𝟙 _) (hob.symm.trans (Category.id_comp _).symm)`. Use `⟨o, ho, hob, fun χ => RedTotal.corr_of_levels I hL (fun W _ f => ?_) (o.isGen χ) (DVR.pullGen_isGen _ _ _ _ (gm.isGen χ) _) fun e z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun k _ => congrArg (fun q => f q ^ DegPre.gtε k) ((e₁.1 χ k).trans ((Category.id_comp _).trans (congrFun (TorusCoord.gtφT_eq o.b χ) k).symm)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((val_corr hJ (ho.2 χ) _).trans (val_one _)).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ ((hz e).2 χ z J hJ)` and prove the remaining obligations. Use `(val_corr hJ ((U.gt e).t_unit χ) (𝟙 _)).trans (val_one _)` as an intermediate fact. Rewrite `this` using `[val_pull hJ, Category.id_comp]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtTan_of_tanRel [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete I R] (U : UnifPre I D A G)
     (y : epsR R ⟶ G) (gm : GtPt D.toPre (epsR R)) (hy : IsTangent y) (h : TanRel U y gm) : GtTan gm := by
@@ -88,7 +88,7 @@ theorem gtTan_of_tanRel [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete I R
     exact this.symm
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ U y gm₀ hy h` and use `gtTan_of_tanRel U.toUnifPre y gm₀ hy h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : AllV fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ (y : epsR V ⟶ G) (gm₀ : GtPt D.toPre (epsR V)),
     IsTangent y → TanRel U.toUnifPre y gm₀ → GtTan gm₀ :=

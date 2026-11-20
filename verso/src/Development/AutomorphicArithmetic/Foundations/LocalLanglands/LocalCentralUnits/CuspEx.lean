@@ -28,27 +28,27 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_algebraMap (algebraMap E _).injective`.
+A detailed English derivation is pending.
 -/
 private theorem charZero_compl (w : HeightOneSpectrum (𝓞 E)) : CharZero (w.adicCompletion E) :=
   charZero_of_injective_algebraMap (algebraMap E _).injective
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem twist_congr (V : WD h) {ξ ξ' : Weil h →* ℂˣ} (hξ : GlobalTheory.WeilDeligne.IsSmooth ξ)
     (hξ' : GlobalTheory.WeilDeligne.IsSmooth ξ') (e : ξ = ξ') : V.lpTwist ξ hξ = V.lpTwist ξ' hξ' := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem tw_congr (y : IrrGL (w.adicCompletion E)) {χ χ' : (w.adicCompletion E)ˣ →* ℂˣ} (hχ : IsSmoothChar χ)
     (hχ' : IsSmoothChar χ') (e : χ = χ') : y.tw χ hχ = y.tw χ' hχ' := by
   subst e; rfl
 
 /- English proof (translation)
-Use `haveI := charZero_compl (E := E) w`. Break down `hg with h1 | ⟨hq, y, χ, hχ, hd, rfl⟩` into its components or cases. Conclude with `Or.inl h1`. Conclude with `Or.inr ⟨hq, y, χ, hχ, ((clBasic _ y).2.1 χ hχ).2.1.1 hc, hd, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem good_cases {x : IrrGL (w.adicCompletion E)} (hc : x.IsCusp) (hg : GoodCusp x) :
     x.1 = 1 ∨ ((∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i) ∧
@@ -60,7 +60,7 @@ private theorem good_cases {x : IrrGL (w.adicCompletion E)} (hc : x.IsCusp) (hg 
   · exact Or.inr ⟨hq, y, χ, hχ, ((clBasic _ y).2.1 χ hχ).2.1.1 hc, hd, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨hq, y, 1, isSmoothChar_one, hd, (IrrGL.tw_one y _).symm⟩`.
+Prove the second alternative.
 -/
 private theorem goodCusp_self {y : IrrGL (w.adicCompletion E)}
     (hq : ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i) (hd : DZ y) : GoodCusp y :=
@@ -69,14 +69,14 @@ private theorem goodCusp_self {y : IrrGL (w.adicCompletion E)}
 variable {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
 
 /- English proof (translation)
-The claim follows from `twist_congr V _ _ (ha.absPow_comp s).symm`.
+A detailed English derivation is pending.
 -/
 private theorem lpTw_eq (ha : IsLocalArtin h a) (V : WD h) (s : ℝ) :
     V.lpTw s = V.lpTwist ((absPow (w.adicCompletion E) s).comp a) (ha.smooth (isSmoothChar_absPow _)) :=
   twist_congr V _ _ (ha.absPow_comp s).symm
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, c9⟩` from `wDBasic E Ω A w h V`. Establish `e : (χ * χ').comp a = χ.comp a * χ'.comp a` using `MonoidHom.ext fun _ => rfl`. Establish `hs : GlobalTheory.WeilDeligne.IsSmooth (χ.comp a * χ'.comp a)` using `e ▸ ha.smooth hm`. Rewrite using `[(c9 _ (ha.smooth hχ)).2.2.2.1 _ (ha.smooth hχ') hs]`. Conclude with `twist_congr V _ _ e.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem twist_twist (ha : IsLocalArtin h a) (V : WD h) {χ χ' : (w.adicCompletion E)ˣ →* ℂˣ} (hχ : IsSmoothChar χ)
     (hχ' : IsSmoothChar χ') (hm : IsSmoothChar (χ * χ')) :
@@ -89,7 +89,7 @@ private theorem twist_twist (ha : IsLocalArtin h a) (V : WD h) {χ χ' : (w.adic
   exact twist_congr V _ _ e.symm
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, c9⟩` from `wDBasic E Ω A w h V`. Conclude with `(c9 _ (ha.smooth h1)).2.2.2.2.1 (MonoidHom.one_comp a)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem twist_one (ha : IsLocalArtin h a) (V : WD h) (h1 : IsSmoothChar (1 : (w.adicCompletion E)ˣ →* ℂˣ)) :
     V.lpTwist ((1 : (w.adicCompletion E)ˣ →* ℂˣ).comp a) (ha.smooth h1) = V := by
@@ -106,13 +106,13 @@ private structure Gm (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin
 variable {r : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-Use `haveI := charZero_compl (E := E) w`. Break down `good_cases hc hg with h1 | ⟨hq, y, χ, hχ, hy, hd, rfl⟩` into its components or cases. Take `⟨χ, hχ, rfl⟩` from `((clBasic _ x).2.2.2.2.1 h1).2`. Take `⟨p1, p2, p3, p4, -⟩` from `parOne E Ω A w h a ha χ hχ`. Rewrite using `[H.one]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p1, p2, fun ω hω σ => ?_⟩` and prove the remaining obligations. Take `⟨ω₀, -, -, hu⟩` from `(clBasic _ (IrrGL.ofChar χ hχ)).1`. Rewrite using `[hu ω hω, ← hu χ p3]`. Conclude with `p4 σ`. Establish `P` using `H.par hq y hy hd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, c4, -, -, -, -, c9⟩` from `wDBasic E Ω A w h (r y)`. Take `⟨t1, t2, t3, -⟩` from `c9 _ (ha.smooth hχ)`. Rewrite using `[H.tw y hy (goodCusp_self hq hd)]`. Use `⟨t2 P.irr, t1.trans (P.dim.trans ((clBasic _ y).2.1 χ hχ).1.symm), fun ω hω σ => ?_⟩` and prove the remaining obligations. Take `⟨ω₀, -, h₀, -⟩` from `(clBasic _ y).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ω₁, -, -, hu⟩` from `(clBasic _ (y.tw χ hχ)).1`. Establish `h₁` using `((clBasic _ y).2.1 χ hχ).2.2.2.2 ω₀ h₀`. Rewrite using `[hu ω hω, ← hu _ h₁, t3 σ, P.central ω₀ h₀ σ, P.dim]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem Gm.basic (H : Gm a ha r) {x : IrrGL (w.adicCompletion E)} (hc : x.IsCusp) (hg : GoodCusp x) :
     IsIrrWD (r x) ∧ (r x).lpDim = x.1 ∧
@@ -138,17 +138,15 @@ private theorem Gm.basic (H : Gm a ha r) {x : IrrGL (w.adicCompletion E)} (hc : 
     simp
 
 /- English proof (translation)
-Use `haveI := charZero_compl (E := E) w`. Break down `good_cases hc hg with h1 | ⟨hq, u, χ, hχ, hu, hdz, rfl⟩` into its components or cases. Take `⟨χ, hχ, rfl⟩` from `((clBasic _ x).2.2.2.2.1 h1).2`. Establish `hi` using `hχ.inv`. Take `⟨-, -, -, -, -, -, -, p8, -⟩` from `parOne E Ω A w h a ha χ hχ`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d1, d2⟩` from `p8 hi`. Use `((clBasic _ (IrrGL.ofChar χ hχ)).2.2.2.2.2.2 _ d1).2.2.2.2.1 y hd` as an intermediate fact. Rewrite using `[this, H.one, H.one, d2]`. Take `⟨u', hu'⟩` from `(clBasic _ u).2.2.2.2.2.1`. Take `⟨-, f2, f3, -, -, f6, -⟩` from `(clBasic _ u).2.2.2.2.2.2 u' hu'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi` using `hχ.inv`. Establish `ey` using `((clBasic _ (u.tw χ hχ)).2.2.2.2.2.2 _ (f6 χ hχ hi)).2.2.2.2.1 y hd`. Establish `hu'c : u'.IsCusp` using `f2.2 hu`. Establish `hu'd : DZ u'` using `f3.2 hdz`. Establish `P` using `H.par hq u hu hdz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P'` using `H.par hq u' hu'c hu'd`. Take `⟨g, hgp, i, hi'⟩` from `hq`. Establish `D` using `parDual E Ω A w h a ha g i hi' u u' hu hdz hu' (r u) P`. Establish `U` using `(parUniq E Ω A w h a ha g i hi' u' hu'c hu'd (r u') P').1 _ D`. Establish `hq' : ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i` using `⟨g, hgp, i, hi'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ey, H.tw u' hu'c (goodCusp_self hq' hu'd), H.tw u hu (goodCusp_self hq' hdz), ← U]`. Take `⟨-, -, -, -, -, -, -, -, c9⟩` from `wDBasic E Ω A w h (r u)`. Establish `hcomp : χ⁻¹.comp a = (χ.comp a)⁻¹` using `MonoidHom.ext fun _ => rfl`. Establish `hs : GlobalTheory.WeilDeligne.IsSmooth (χ.comp a)⁻¹` using `hcomp ▸ ha.smooth hi`. Rewrite using `[(c9 _ (ha.smooth hχ)).2.2.2.2.2.1 hs]`.
-
-Conclude with `twist_congr _ _ _ hcomp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Gm.dual (H : Gm a ha r) {x y : IrrGL (w.adicCompletion E)} (hc : x.IsCusp) (hg : GoodCusp x)
     (hd : DualCl x y) : r y = (r x).lpDual := by
@@ -180,15 +178,15 @@ private theorem Gm.dual (H : Gm a ha r) {x y : IrrGL (w.adicCompletion E)} (hc :
     exact twist_congr _ _ _ hcomp
 
 /- English proof (translation)
-Use `haveI := charZero_compl (E := E) w`. Establish `Pu` using `H.par hq u hu hud`. Establish `Pv` using `H.par hq v hv hvd`. Rewrite `e` using `[H.tw u hu (goodCusp_self hq hud), H.tw v hv (goodCusp_self hq hvd)]`. Establish `hi` using `hχ.inv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : IsSmoothChar (χ' * χ⁻¹)` using `hχ'.mul hi`. Establish `e2` using `congrArg (fun V => V.lpTwist (χ⁻¹.comp a) (ha.smooth hi)) e`. Rewrite `e2` using `[twist_twist ha _ hχ hi (hχ.mul hi), twist_twist ha _ hχ' hi hψ]`. Establish `e3 : r u = (r v).lpTwist ((χ' * χ⁻¹).comp a) (ha.smooth hψ)`. Rewrite using `[← e2, twist_congr (r u) (ha.smooth (hχ.mul hi)) (ha.smooth (isSmoothChar_one)) (by rw [mul_inv_cancel]), twist_one ha _ isSmoothChar_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < (r v).lpDim` using `by rw [Pv.dim]; exact hv.1`. Take `⟨-, -, -, -, -, -, -, -, c9⟩` from `wDBasic E Ω A w h (r v)`. Establish `wild` using `(c9 _ (ha.smooth hψ)).2.2.2.2.2.2.2 hpos Pv.tame (e3 ▸ Pu.tame)`. Establish `tc : TameChar (χ' * χ⁻¹)` using `(tameArt E Ω A w h a ha _ hψ).2 wild`. Take `⟨g, hgp, i, hi'⟩` from `hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `T` using `parTw E Ω A w h a ha g i hi' v hv hvd (r v) Pv _ hψ tc`. Rewrite `T` using `[← e3]`. Establish `hc' : (v.tw _ hψ).IsCusp` using `((clBasic _ v).2.1 _ hψ).2.1.2 hv`. Establish `hd' : DZ (v.tw _ hψ)` using `(twTame _ v _ hψ hv.1 hvd).2 tc`. Establish `U` using `(parUniq E Ω A w h a ha g i hi' u hu hud (r u) Pu).2 _ hc' hd' T`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `U` using the available equality. Rewrite using `[((clBasic _ v).2.1 _ hψ).2.2.2.1 χ hχ (hψ.mul hχ)]`. Conclude with `tw_congr v _ _ (by rw [inv_mul_cancel_right])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Gm.tw_inj (H : Gm a ha r) {u v : IrrGL (w.adicCompletion E)}
     (hq : ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i)
@@ -223,43 +221,37 @@ private theorem Gm.tw_inj (H : Gm a ha r) {u v : IrrGL (w.adicCompletion E)}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha`. Use `haveI := charZero_compl (E := E) w`. Take `⟨r₀, H1, H2, H3⟩` from `goodMap E Ω A w h a ha`. Establish `H : Gm a ha r₀` using `⟨H1, H2, H3⟩`. Take `⟨e, he⟩` from `expo E Ω A w h a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Nonempty (WD h) := ⟨WD.lpZero h⟩`. Use `choose! J hJ using junkEx E Ω A w h`. Set `r : IrrGL (w.adicCompletion E) → WD h` to `fun x => if GoodCusp x then r₀ x else (J x.1).lpTw (e x)`. Establish `rg : ∀ x, GoodCusp x → r x = r₀ x` using `fun x hx => if_pos hx`. Establish `rb : ∀ x, ¬ GoodCusp x → r x = (J x.1).lpTw (e x)` using `fun x hx => if_neg hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `two : ∀ x : IrrGL (w.adicCompletion E), x.IsCusp → ¬ GoodCusp x → 2 ≤ x.1`. Introduce `x hx hb`. Establish `h0` using `hx.1`. Establish `h1 : x.1 ≠ 1` using `fun h1 => hb (Or.inl h1)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hirr : ∀ x, x.IsCusp → IsIrrWD (r x) ∧ (r x).lpDim = x.1`. Introduce `x hx`. Distinguish the cases in `hg : GoodCusp x`. Rewrite using `[rg x hg]`. Conclude with `⟨(H.basic hx hg).1, (H.basic hx hg).2.1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[rb x hg]`. Take `⟨j1, j2, -, -⟩` from `hJ _ (two x hx hg)`. Take `⟨-, -, -, -, -, -, -, -, c9⟩` from `wDBasic E Ω A w h (J x.1)`. Conclude with `⟨(c9 _ _).2.1 j1, ((c9 _ _).1).trans j2⟩`. Establish `hcen : ∀ x : IrrGL (w.adicCompletion E), x.IsCusp → GoodCusp x → ∀ ω, HasCentralChar x.rep ω → ∀ σ, ((r x).eig σ).prod = (ω (a σ) : ℂ)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx hg`. Rewrite using `[rg x hg]`. Conclude with `(H.basic hx hg).2.2`. Use `⟨r, ⟨fun x hx => (hirr x hx).1, fun x hx => (hirr x hx).2, fun χ hχ => ?_, fun x hx s => ?_, fun x hx ω hω σ => ?_, fun x hx hg χ hχ => ?_, hcen, fun x y hx _ hg hd => ?_, fun x y hx hy hgy eq => ?_, fun x hx hg hd => ?_, fun x hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[rg _ (Or.inl rfl)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H1 χ hχ`. Establish `hiff` using `((clBasic _ x).2.1 _ (isSmoothChar_absPow (s : ℂ))).2.2.1`. Distinguish the cases in `hg : GoodCusp x`. Establish `hg' : GoodCusp (x.nu s)` using `hiff.2 hg`. Rewrite using `[rg _ hg', rg x hg, lpTw_eq ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H2 x hx hg _ _`. Establish `hg' : ¬ GoodCusp (x.nu s)` using `fun q => hg (hiff.1 q)`. Establish `d : (x.nu s).1 = x.1` using `((clBasic _ x).2.1 _ (isSmoothChar_absPow (s : ℂ))).1`. Rewrite using `[rb _ hg', rb x hg, d, (he x hx.1).1 s, WD.lpTw_add]`. Distinguish the cases in `hg : GoodCusp x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcen x hx hg ω hω σ]`. Rewrite using `[rb x hg]`. Conclude with `(he x hx.1).2 ω hω _ (hJ _ (two x hx hg)).2.1 (hJ _ (two x hx hg)).2.2.1 σ`. Establish `hg' : GoodCusp (x.tw χ hχ)` using `((clBasic _ x).2.1 χ hχ).2.2.1.2 hg`. Rewrite using `[rg _ hg', rg x hg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `H2 x hx hg χ hχ`. Establish `hg' : GoodCusp y` using `((clBasic _ x).2.2.2.2.2.2 y hd).2.2.2.1.2 hg`. Rewrite using `[rg y hg', rg x hg]`. Conclude with `H.dual hx hg hd`. Establish `hd : x.1 = y.1` using `by rw [← (hirr x hx).2, ← (hirr y hy).2, eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `eq` using `[rg y hgy]`. Distinguish the cases in `hgx : GoodCusp x`. Rewrite `eq` using `[rg x hgx]`. Distinguish the cases in `h1 : y.1 = 1`. Take `⟨χ', hχ', rfl⟩` from `((clBasic _ y).2.2.2.2.1 h1).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨χ, hχ, rfl⟩` from `((clBasic _ x).2.2.2.2.1 (hd.trans h1)).2`. Rewrite `eq` using `[H1, H1]`. Establish `p` using `(parOne E Ω A w h a ha χ hχ).2.2.2.1`. Establish `q` using `(parOne E Ω A w h a ha χ' hχ').2.2.2.1`. Establish `key : χ = χ'`.
+Substitute using the available equality. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Use `MonoidHom.ext fun u => ?_` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `ha.surj u`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[← p σ, ← q σ, eq]`. Substitute `key` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Break down `good_cases hy hgy with h1' | ⟨hq, v, χ', hχ', hv, hvd, rfl⟩` into its components or cases. Conclude with `absurd h1' h1`. Break down `good_cases hx hgx with h1' | ⟨-, u, χ, hχ, hu, hud, rfl⟩` into its components or cases. Conclude with `absurd (hd.symm.trans h1') h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `H.tw_inj hq hu hud hv hvd hχ hχ' eq`. It suffices to derive a contradiction. Establish `hx2` using `two x hx hgx`. Rewrite `eq` using `[rb x hgx]`. Break down `good_cases hy hgy with h1' | ⟨hq, v, χ, hχ, hv, hvd, rfl⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `eq` using `[H2 v hv (goodCusp_self hq hvd) χ hχ]`. Establish `e2` using `congrArg (fun V => V.lpTw (-(e x))) eq`. Rewrite `e2` using `[WD.lpTw_add, add_neg_cancel, WD.lpTw_zero, lpTw_eq ha, twist_twist ha _ hχ (isSmoothChar_absPow _) (hχ.mul (isSmoothChar_absPow _))]`. Conclude with `(hJ _ hx2).2.2.2 hq (r₀ v) _ _ (H3 hq v hv hvd).tame e2`.
-
-Break down `good_cases hx hg with h1 | ⟨hq, -, -, -, -, -, -⟩` into its components or cases. Take `⟨χ, hχ, rfl⟩` from `((clBasic _ x).2.2.2.2.1 h1).2`. Take `⟨-, -, -, -, p5, p6, -⟩` from `parOne E Ω A w h a ha χ hχ`. Rewrite using `[rg _ hg, H1]`. Conclude with `(p6 (p5.1 hd)).tame`.
-
-Rewrite using `[rg x hg]`. Conclude with `(H3 hq x hx hd).tame`. Introduce `g _ i hi n hn D R hR θ hθ τ hτ hN σ hσ hInf`. Substitute `hσ` using the available equality. Establish `hd : DZ (cls σ)` using `DiscreteGroups.sglob.DzType.lDepth E w g i hi n τ σ hInf`.
-
-Establish `hq : ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i` using `⟨g, inferInstance, i, hi⟩`. Rewrite using `[rg _ (goodCusp_self hq hd)]`. Conclude with `(H3 hq _ hx hd).type g i hi n hn D R hR θ hθ τ hτ hN σ rfl hInf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspEx : CuspEx := by
   intro E Ω _ _ _ _ _ A w h a ha

@@ -27,7 +27,7 @@ variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {R : _root_.Pos
 variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} {w₁ : d.G}
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 /- English proof (translation)
-Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply]`. Simplify using `only [hy]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_one, hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_mul_k {x y : d.G}
     (hx : ∀ k, inFrame d.b x k (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀))
@@ -38,7 +38,7 @@ theorem fix_mul_k {x y : d.G}
   simp only [hy]
   rw [← Matrix.mul_apply, Matrix.mul_one, hx]
 /- English proof (translation)
-Establish `e2 : ((γ + β : nA σ d.Y d.b) : Matrix (Fin d.n) (Fin d.n) (AE F E)) = γ.1 + β.1` using `rfl`. Rewrite using `[kunf.nb_add h.nb, mul_assoc, hΨ _ (kunf.nb_rat h.nb hγ) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.fix_nb_k h γ)]`. Use `congr 1`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.th_k`. Rewrite using `[e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, kunf.psi_rat d.ok.good.std T ⟨γ, hγ⟩, inv_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem perF_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) (Ψ : d.G → ℂ) (hΨ : ∀ r ∈ rat2 σ d.Y, (∀ k, inFrame d.b r k (Sum.inl L.i₀) =
       (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀)) → ∀ g, Ψ (r * g) = Ψ g)
@@ -51,7 +51,7 @@ theorem perF_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb 
   rw [e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv,
     kunf.psi_rat d.ok.good.std T ⟨γ, hγ⟩, inv_one, one_mul]
 /- English proof (translation)
-Establish `e2 : ((γ + β : nA σ d.Y d.b) : Matrix (Fin d.n) (Fin d.n) (AE F E)) = γ.1 + β.1` using `rfl`. Rewrite using `[kunf.nb_add h.nb, mul_assoc, hΨ _ (kunf.nb_rat h.nb hγ) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.fix_nb_k h γ)]`. Use `congr 2`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.th_k`. Rewrite using `[e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, kunf.psi_rat d.ok.good.std T ⟨γ, hγ⟩, inv_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem perFE_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) (Ψ : d.G → ℝ≥0∞) (hΨ : ∀ r ∈ rat2 σ d.Y, (∀ k, inFrame d.b r k (Sum.inl L.i₀) =
       (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀)) → ∀ g, Ψ (r * g) = Ψ g)
@@ -64,7 +64,7 @@ theorem perFE_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb
   rw [e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv,
     kunf.psi_rat d.ok.good.std T ⟨γ, hγ⟩, inv_one, one_mul]
 /- English proof (translation)
-Establish `e1 : cM (u, s + a) = cM (0, s) * cM (u, a)`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.cM_split_k h, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.centre_additive h, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.cM_split_k h u a, ← mul_assoc, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.cM_comm_k h, mul_as …`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_add_k, e1]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L b) (cM (0, s)), _root_.PositivityTheory.SiegelWeilFormula.Act.C5.unipotent_commutes_centre h, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_eq_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) (r b u : Fin L.n → AE F E) (s a : AF F) :
     _root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L (r + b) * cM (u, s + a) = (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L r * cM (0, s)) * (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L b * cM (u, a)) := by
@@ -74,20 +74,20 @@ theorem shift_eq_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L
   simp only [mul_assoc]
   rw [← mul_assoc (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L b) (cM (0, s)), _root_.PositivityTheory.SiegelWeilFormula.Act.C5.unipotent_commutes_centre h, mul_assoc]
 /- English proof (translation)
-The claim follows from `mul_mem (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_rat_k hr) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.cM_rat_k h (c := (0, s)) (zero_mem _) hs)`.
+A detailed English derivation is pending.
 -/
 theorem rr_rat_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) {r : Fin L.n → AE F E} (hr : r ∈ L.ratV) {s : AF F}
     (hs : s ∈ (algebraMap F (AF F)).range) : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L r * cM (0, s) ∈ rat2 σ d.Y :=
   mul_mem (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_rat_k hr) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.cM_rat_k h (c := (0, s)) (zero_mem _) hs)
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.fix_mul_k (L := L) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.fix_sM_k r) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.fix_cM_k h (0, s)) k`.
+A detailed English derivation is pending.
 -/
 theorem rr_fix_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) (r : Fin L.n → AE F E) (s : AF F) (k) :
     inFrame d.b (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L r * cM (0, s)) k (Sum.inl L.i₀) =
       (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀) :=
   _root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.fix_mul_k (L := L) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.fix_sM_k r) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.fix_cM_k h (0, s)) k
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.nb_split_k (R := R) h β]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (cM (0, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.pa_k L δ β)) (uM u), ← _root_.PositivityTheory.SiegelWeilFormula.Act.C5.cM_comm_k h, ← _root_.PositivityTheory.SiegelWeilFormula.Act.C5.cM_split_k h]`. Use `_ = _ := by rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.move_k h]; simp only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_eq_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) (x : d.G) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
     nb β * (uM u * x) = _root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.pb_k L β + (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.tau_k L uM nb' δ (u, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β)).1) *
@@ -105,15 +105,13 @@ instance countable_ratV_k (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d)
     exact ⟨v, rfl⟩
   exact h.to_subtype
 /- English proof (translation)
-Use `haveI : Fact (IsFrame2 σ d.Y d.b) := ⟨d.ok.frame⟩`. Use `haveI : Fact (IsFrame2 σ L.Y L.b) := ⟨L.ok.frame⟩`. Use `haveI := hc.2.1`. Use `haveI := hc'.2.1`. Use `haveI := hU.2.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hiff⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.pEquiv_k h`. Set `PM : (nA σ d.Y d.b) ≃ᵐ (((Fin L.n → AE F E) × AF F) × nA σ L.Y L.b)` to `P.toHomeomorph.toMeasurableEquiv`. Establish `hPM : ∀ β, PM β = ((_root_.PositivityTheory.SiegelWeilFormula.Act.C5.pb_k L β, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.pa_k L δ β), _root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β)` using `hP`. Establish `hPc' : lam.map PM = c • ((ν.prod (lamA F)).prod lam')` using `hPc`. Establish `hZ : IsAddFundamentalDomain (L.ratV.prod (fA F)) (𝓤 ×ˢ 𝓐) (ν.prod (lamA F))` using `fd_prod' hU.2.2.1 h𝓐`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key` using `chainC (νu := ν.restrict 𝓤) (ΓN := nF σ d.Y d.b) (ΓZ := L.ratV.prod (fA F)) (ΓN' := nF σ L.Y L.b) hPc' (fun a b => map_add P a b) (fun β => by rw [hPM, hiff, AddSubgroup.mem_prod]) hc.2.2.1 hZ hc'.2.2.1 (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.continuous_tau_k h). …`. Take `⟨hg1, hg2⟩` from `AddSubgroup.mem_prod.1 hg`. Take `⟨β'', u, b, a⟩` from `w`. Use `show Ψ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L (g.1 + b) * (cM (u, g.2 + a) * _)) * _ = Ψ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L b * (cM (u, a) * _)) * _`. Rewrite using `[← mul_assoc, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.shift_eq_k h, mul_assoc (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L g.1 * cM (0, g.2)), hΨ _ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.rr_rat_k h hg1 hg2) (_root_.PositivityTheory. …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc])`. Use the proof step `(fun u β => by`. Rewrite using `[hPM]`. Use `show Ψ (nb β * (uM u * x)) * _root_.PositivityTheory.SiegelWeilFormula.Act.C5.th_k T β = Ψ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.pb_k L β + (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.tau_k L uM n …`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.pt_eq_k (R := R) h x u β]`.
-
-Use `congr 1`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.th_k _root_.PositivityTheory.SiegelWeilFormula.Act.C5.th'_k`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.tr_sub_k L hT β])`. Rewrite using `[key, ← Measure.prod_restrict]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordsC_ck_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}
@@ -159,15 +157,13 @@ theorem coordsC_ck_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k
       rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.tr_sub_k L hT β])
   rw [key, ← Measure.prod_restrict]
 /- English proof (translation)
-Use `haveI : Fact (IsFrame2 σ d.Y d.b) := ⟨d.ok.frame⟩`. Use `haveI : Fact (IsFrame2 σ L.Y L.b) := ⟨L.ok.frame⟩`. Use `haveI := hc.2.1`. Use `haveI := hc'.2.1`. Use `haveI := hU.2.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hiff⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.pEquiv_k h`. Set `PM : (nA σ d.Y d.b) ≃ᵐ (((Fin L.n → AE F E) × AF F) × nA σ L.Y L.b)` to `P.toHomeomorph.toMeasurableEquiv`. Establish `hPM : ∀ β, PM β = ((_root_.PositivityTheory.SiegelWeilFormula.Act.C5.pb_k L β, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.pa_k L δ β), _root_.PositivityTheory.SiegelWeilFormula.Act.C4.prj_k L β)` using `hP`. Establish `hPc' : lam.map PM = c • ((ν.prod (lamA F)).prod lam')` using `hPc`. Establish `hZ : IsAddFundamentalDomain (L.ratV.prod (fA F)) (𝓤 ×ˢ 𝓐) (ν.prod (lamA F))` using `fd_prod' hU.2.2.1 h𝓐`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key` using `chainE (νu := ν.restrict 𝓤) (ΓN := nF σ d.Y d.b) (ΓZ := L.ratV.prod (fA F)) (ΓN' := nF σ L.Y L.b) hPc' (fun a b => map_add P a b) (fun β => by rw [hPM, hiff, AddSubgroup.mem_prod]) hc.2.2.1 hZ hc'.2.2.1 (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.continuous_tau_k h). …`. Take `⟨hg1, hg2⟩` from `AddSubgroup.mem_prod.1 hg`. Take `⟨β'', u, b, a⟩` from `w`. Use `show Ψ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L (g.1 + b) * (cM (u, g.2 + a) * _)) * _ = Ψ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L b * (cM (u, a) * _)) * _`. Rewrite using `[← mul_assoc, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.shift_eq_k h, mul_assoc (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L g.1 * cM (0, g.2)), hΨ _ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.rr_rat_k h hg1 hg2) (_root_.PositivityTheory. …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc])`. Use the proof step `(fun u β => by`. Rewrite using `[hPM]`. Use `show Ψ (nb β * (uM u * x)) * ‖_root_.PositivityTheory.SiegelWeilFormula.Act.C5.th_k T β‖ₑ = Ψ (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.sM_k R L (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.pb_k L β + (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.tau_k L u …`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.CoordK.pt_eq_k (R := R) h x u β]`.
-
-Use `congr 2`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.Act.C5.th_k _root_.PositivityTheory.SiegelWeilFormula.Act.C5.th'_k`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C4.tr_sub_k L hT β])`. Rewrite using `[key, ← Measure.prod_restrict]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordsE_ck_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.Hyp_k L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}

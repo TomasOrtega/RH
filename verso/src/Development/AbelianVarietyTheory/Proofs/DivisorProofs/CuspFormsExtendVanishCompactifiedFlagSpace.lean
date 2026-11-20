@@ -23,9 +23,9 @@ open GlobalTheory.CechPic GlobalTheory.Vanishing
 open GlobalTheory.FlagMod (FlagCover)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z la σ hv m hm`. Take `⟨s, hs, hz⟩` from `GlobalTheory.T.exists_section_extension_of_dense_local (str₀ TF.X Z) (L₀ TF.X Z la) (isLB_L₀ TF.X Z la) (U₀ TF.X Z) (dense_U₀ TF.X Z) m fun y _ => by`. Take `⟨W, hW, i, p, hyW, hi, hd, hsm, hp, hb⟩` from `GlobalTheory.T.exists_smooth_affine_chart_boundary_zero_set E H Dw l Xo c TF Z la hv y`. Take `⟨b, h1, h2⟩` from `GlobalTheory.T.exists_extension_of_arc_vanishing_smooth_chart E H Dw l Xo c TF.Y TF.X Z la σ m hm W hW i p hi hd hsm hp hb`. Conclude with `⟨W, i, hi, b, hyW, h1, fun y' h h' => h2 y' h h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, fun y hy i hi => hz y hy i hi, hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem ext_of_arcZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (la : GlobalTheory.AllWt.Weight Dw) (σ : c.F →+* ℂ),
@@ -56,15 +56,15 @@ open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col d
 open GlobalTheory.ShFam GlobalTheory.ShFam.BdArc GlobalTheory.Toroidal GlobalTheory.KoecherArc
 
 /- English proof (translation)
-Introduce `D T j Y e o hY Z TF la σ hσ f`. Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Establish `hU` using `hY.unf σ hσ`. Take `⟨hfW, -⟩` from `Submodule.mem_inf.1 f.2`. Take `⟨-, hhol⟩` from `AllWt.mem_cuspW.1 hfW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS` using `GlobalTheory.CuspSecFin.mem_SS_of_mem_holSub _ _ (hhol σ hσ)`. Establish `hχ` using `AllWt.Model.chi_modelWt (Y.U σ) (hY.chiTriv σ hσ) (AllWt.wtOf _ la 0) (AllWt.even_wtOf la 0)`. Establish `he : AllWt.exOf (T.Q.Dw j) la 0 none = 0` using `by show (AllWt.wtOf (T.Q.Dw j) la 0).2 = 0`. Rewrite using `[AllWt.wtOf_snd, mul_zero]`. Introduce `W hW i hWi ψ r hψ hs hin hout ε hε`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, x, fr, y, hb, hm, hval⟩` from `GlobalTheory.T.exists_eigenFrame_along_arc_flagSpaceChart TF Z la σ hσ W hW i hWi ψ r hψ hs hin hout`. Take `⟨ρ, p, q, hρ, hρr, hpq⟩` from `GlobalTheory.T.exists_holomorphic_quotient_along_arc (cuspSec TF.X Z Y.U la f) W hW i hWi ψ r hψ hout`. Establish `hi : ∀ u, ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec)) ⁻¹ᵁ (L₀ TF.X Z la).U i` using `fun u s _ => hWi (hW.range_fromSpec.le ⟨_, rfl⟩)`. Set `g : AllWt.secZ Y.d.Xo₂ Y.d.c₂ (AllWt.exOf (T.Q.Dw j) la 0)` to `⟨f.1, cusp_le_secZ Z Y.U la f.2⟩`. Establish `hv : ∀ u ∈ Metric.ball (0 : ℂ) ρ, u ≠ 0 → ψ u q ≠ 0 ∧ toC (evR _ _ g.1 (y u)) * ψ u q = ψ u p` using `fun u hu h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hur : u ∈ Metric.ball (0 : ℂ) r` using `Metric.ball_subset_ball hρr hu`. Use `⟨(hpq u hu h).1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hval g u hur h (hout u hur h) (hi u)]`. Conclude with `(hpq u hu h).2 _ _`. Establish `ht` using `tendsto_val TF.Y hσ hU _ hχ he g.2 hS fr (isBdArc_mono hb hρ hρr) (fun u hu h => hm u (Metric.ball_subset_ball hρr hu) h) p q hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Tendsto (fun u => ‖toC (evR _ _ g.1 (y u))‖) (𝓝[≠] 0) (𝓝 0)` using `by simpa using ht.norm`. Use `filter_upwards [h2.eventually (gt_mem_nhds hε), self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (Metric.ball_mem_nhds (0 : ℂ) hρ)] with u h1 h3 h4 hO hi'`. Rewrite using `[show cuspSec TF.X Z Y.U la f = sec₀ TF.X Z _ g from rfl, hval g u (Metric.ball_subset_ball hρr h4) h3 hO hi']`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem arcZero_cusp : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (T.Q.Dw j)), ∀ σ : Y.d.c₂.F →+* ℂ, GoodEmb Y.d.c₂ σ → ∀ f : Cusp Z Y.U la, ArcZero TF.X Z la σ (cuspSec TF.X Z Y.U la f) := by
   intro D T j Y e o hY Z TF la σ hσ f
@@ -110,7 +110,7 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 
 /- English proof (translation)
-Introduce `D T j Y e o hG hE Z TF la`. Establish `hσ : GoodEmb Y.d.c₂ Y.d.c₂.F.val.toRingHom` using `rfl`. Introduce `f`. Conclude with `ext_of_arcZero _ _ _ _ _ _ TF Z la _ (GlobalTheory.T.flagSpace_component_smooth_projective_connected _ _ _ _ _ _ TF Z hG.geo) _ (arcZero_cusp D T j Y e o hG Z TF la _ hσ f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompHS.cusp_extends_comp : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (T.Q.Dw j)), Extends TF.X Z Y.U la := by
   intro D T j Y e o hG hE Z TF la

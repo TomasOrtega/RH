@@ -9,19 +9,19 @@ def bN {R : Ranks} (h : HCParam R) (j : ℕ) : ℚ := if hj : j < R.m then h.b �
 def eN {R : Ranks} (h : HCParam R) (j : ℕ) : ℚ := if hj : j < R.m then h.e ⟨j, hj⟩ else 0
 
 /- English proof (translation)
-Simplify using `[uN, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uN_eq {R : Ranks} (h : HCParam R) (j : ℕ) (hj : j < R.k) : h.u ⟨j, hj⟩ = uN h j := by simp [uN, hj]
 /- English proof (translation)
-Simplify using `[vN, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vN_eq {R : Ranks} (h : HCParam R) (j : ℕ) (hj : j < R.k - 1) : h.v ⟨j, hj⟩ = vN h j := by simp [vN, hj]
 /- English proof (translation)
-Simplify using `[bN, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bN_eq {R : Ranks} (h : HCParam R) (j : ℕ) (hj : j < R.m) : h.b ⟨j, hj⟩ = bN h j := by simp [bN, hj]
 /- English proof (translation)
-Simplify using `[eN, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eN_eq {R : Ranks} (h : HCParam R) (j : ℕ) (hj : j < R.m) : h.e ⟨j, hj⟩ = eN h j := by simp [eN, hj]
 
@@ -37,9 +37,9 @@ def sgQ (R : Ranks) (h : HCParam R) (n : ℕ) : ℚ :=
   - (((R.k : ℚ) + (R.m : ℚ) * ((R.t : ℚ) + 1) - 2) / 2 - n)
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `ha`. Take `⟨z', rfl⟩` from `hb`. Establish `: z' ≤ z`. Assume the negation of the conclusion as `hc`. Establish `h1 : z + 1 ≤ z'` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : ((z : ℚ) + 1) ≤ z'` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (z' : ℚ) ≤ z` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem half_gap (a b : ℚ) (ha : ∃ z : ℤ, a = z + 1 / 2) (hb : ∃ z : ℤ, b = z) (hab : b < a) : b + 1 / 2 ≤ a := by
   obtain ⟨z, rfl⟩ := ha
@@ -53,9 +53,9 @@ theorem half_gap (a b : ℚ) (ha : ∃ z : ℤ, a = z + 1 / 2) (hb : ∃ z : ℤ
   linarith
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `ha`. Take `⟨z', rfl⟩` from `hb`. Establish `: z + 1 ≤ z'`. Assume the negation of the conclusion as `hc`. Establish `h1 : z' ≤ z` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : (z' : ℚ) ≤ z` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ((z : ℚ) + 1) ≤ z'` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem half_gap' (a b : ℚ) (ha : ∃ z : ℤ, a = z + 1 / 2) (hb : ∃ z : ℤ, b = z) (hab : a < b) : a + 1 / 2 ≤ b := by
   obtain ⟨z, rfl⟩ := ha
@@ -69,39 +69,39 @@ theorem half_gap' (a b : ℚ) (ha : ∃ z : ℤ, a = z + 1 / 2) (hb : ∃ z : �
   linarith
 
 /- English proof (translation)
-Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Unfold `Ranks.N at hn`. Distinguish the cases in `h1 : n < R.k - 1`. Establish `hnk : n < R.k` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hnk1 : n + 1 < R.k` using `by omega`. Establish `g1` using `half_gap _ _ (h.u_half ⟨n, hnk⟩) (h.v_int ⟨n, h1⟩) (h.u_gt_v ⟨n, h1⟩)`. Establish `g2` using `half_gap' _ _ (h.u_half ⟨n + 1, hnk1⟩) (h.v_int ⟨n, h1⟩) (h.v_gt_u ⟨n, h1⟩)`. Rewrite `g1`, `g2` using `[uN_eq, vN_eq]`. Simplify using `only [sgQ, lamQ, if_pos h1, if_pos hnk, if_pos hnk1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨a, ha⟩ : ∃ a, n = R.k - 1 + a` from `⟨n - (R.k - 1), by omega⟩`. Establish `ha' : n - (R.k - 1) = a` using `by omega`. Establish `hq : a / (R.t + 1) < R.m`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises. Rewrite using `[Nat.mul_comm]`. Use linear arithmetic over natural numbers and integers. Establish `hdm` using `Nat.div_add_mod a (R.t + 1)`. Establish `hr` using `Nat.mod_lt a (Nat.succ_pos R.t)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q := a / (R.t + 1) with hqd`. Use `set ρ := a % (R.t + 1) with hρd`. Establish `hnQ : (n : ℚ) = (R.k : ℚ) - 1 + ((R.t : ℚ) + 1) * q + ρ`. Establish `: n + 1 = R.k + ((R.t + 1) * q + ρ)` using `by omega`. Establish `h2 : ((n + 1 : ℕ) : ℚ) = ((R.k + ((R.t + 1) * q + ρ) : ℕ) : ℚ)` using `by rw [this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn1 : ¬ (n + 1 < R.k)` using `by omega`. Establish `hi1 : (n + 1 - R.k) / (R.t + 1) = q`. Establish `: n + 1 - R.k = a` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `gbe` using `h.gap_be ⟨q, hq⟩`. Rewrite `gbe` using `[eN_eq, bN_eq]`. Simplify using `only [sgQ, lamQ, if_neg h1, if_neg hn1, ha', hi1, wG, ← hqd, ← hρd]`. Distinguish the cases in `hρ : ρ = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [if_pos hρ]`. Rewrite `hnQ` using `[hρ]`. Distinguish the cases in `hq0 : q = 0`. Establish `hnk : n < R.k`. Establish `: a = 0` using `by rw [← hdm, hρ, hq0]; simp`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hnk' : n = R.k - 1` using `by omega`. Establish `g0` using `h.u_last_gt (by omega) (by omega)`. Establish `g1` using `half_gap _ _ (h.u_half ⟨R.k - 1, by omega⟩) (by`. Take `⟨z, hz⟩` from `h.b_int ⟨0, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨-z, by rw [hz]; push_cast; ring⟩) g0`. Rewrite `g1` using `[uN_eq, bN_eq]`. Simplify using `only [if_pos hnk]`. Rewrite `hnQ`, `gbe`, the goal using `[hq0]`. Rewrite using `[hnk']`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hnQ` using `[hnk']`. Move the coercions through the operations in `at hnQ ⊢`. Apply the tactic sequence `constructor <;> linarith`. Establish `hnk : ¬ n < R.k`. Establish `: 0 < q` using `Nat.pos_of_ne_zero hq0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: R.t + 1 ≤ (R.t + 1) * q` using `Nat.le_mul_of_pos_right _ this`. Use linear arithmetic over natural numbers and integers. Take `⟨q', hq'⟩ : ∃ q', q = q' + 1` from `Nat.exists_eq_succ_of_ne_zero hq0`. Establish `hi0 : (n - R.k) / (R.t + 1) = q'`. Establish `: n - R.k = (R.t + 1) * q' + R.t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : a = (R.t + 1) * (q' + 1)` using `by rw [← hdm, hρ, hq']; simp`. Rewrite `h3` using `[Nat.mul_add]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Nat.mul_add_div (Nat.succ_pos _)]`. Rewrite using `[Nat.div_eq_of_lt (Nat.lt_succ_self _)]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `geb` using `h.gap_eb ⟨q', by omega⟩ (by show q' + 1 < R.m; omega)`. Rewrite `geb` using `[eN_eq]`. Establish `geb' : ((R.t : ℚ) + 3) / 2 ≤ bN h (q' + 1) - eN h q'`. Rewrite using `[← bN_eq h (q' + 1) (by omega)]; exact geb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [if_neg hnk, hi0]`. Rewrite `hnQ`, `gbe`, the goal using `[hq']`. Move the coercions through the operations in `at hnQ ⊢`. Apply the tactic sequence `constructor <;> nlinarith`. Simplify using `only [if_neg hρ]`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnk : ¬ n < R.k` using `by omega`. Establish `hi0 : (n - R.k) / (R.t + 1) = q`. Take `⟨ρ', hρ'⟩ : ∃ ρ', ρ = ρ' + 1` from `Nat.exists_eq_succ_of_ne_zero hρ`. Establish `: n - R.k = (R.t + 1) * q + ρ'` using `by omega`. Rewrite using `[this, Nat.mul_add_div (Nat.succ_pos _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.div_eq_of_lt (by omega)]; simp`. Simplify using `only [if_neg hnk, hi0]`. Use `push_cast`. Apply the tactic sequence `constructor <;> nlinarith`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem interlaceQ (R : Ranks) (h : HCParam R) (n : ℕ) (hn : n < R.N R.m - 1) :
     sgQ R h n ≤ lamQ R h n ∧ lamQ R h (n + 1) ≤ sgQ R h n := by
@@ -188,21 +188,21 @@ theorem interlaceQ (R : Ranks) (h : HCParam R) (n : ℕ) (hn : n < R.N R.m - 1) 
       constructor <;> nlinarith
 
 /- English proof (translation)
-Introduce `τ i`. Establish `hi` using `i.2`. Establish `key` using `interlaceQ D.R (D.hcW u τ) i.1 hi`. Establish `hN : (((D.R.N D.R.m - 1 : ℕ)) : ℚ) = (D.R.k : ℚ) + (D.R.m : ℚ) * ((D.R.t : ℚ) + 1) - 1`. Rewrite using `[Nat.cast_sub (D.R.N_pos D.R.m)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Ranks.N`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : (((D.fm u).sg τ).w i : ℚ) = sgQ D.R (D.hcW u τ) i.1`. Rewrite using `[W.sg τ i]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `sgHC sgQ rhoVec`. Rewrite using `[hN]`. Distinguish the cases in `h1 : i.1 < D.R.k - 1`. Simplify using `only [dif_pos h1, if_pos h1, vN_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : (i.1 - (D.R.k - 1)) / (D.R.t + 1) < D.R.m`. Apply `Nat.div_lt_of_lt_mul` to reduce the goal to its premises. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.N at hi`. Rewrite using `[Nat.mul_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [dif_neg h1, dif_pos h2, if_neg h1, bN_eq, eN_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : ∀ n (hn : n < D.R.N D.R.m), (((D.fm u).lam D.R.m τ).w ⟨n, hn⟩ : ℚ) = lamQ D.R (D.hcW u τ) n`. Introduce `n hn`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(D.fm u).lam_eq D.R.m le_rfl τ ⟨n, hn⟩]`. Unfold `lamQ`. Distinguish the cases in `h : n < D.R.k`. Simplify using `only [dif_pos h, if_pos h, hcToWeightQ, rhoVec, uN_eq]`. Simplify using `only [dif_neg h, if_neg h, eN_eq]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Use `key.1` as an intermediate fact. Rewrite `this` using `[← hs, ← hl i.1 (by omega)]`. Conclude with `this` after adjusting the coercions. Use `key.2` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hs, ← hl (i.1 + 1) (by omega)]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem sg_interlace {D : D7} {u : D.what₂.Word} {K : ClsPTied u} (W : ValPTied u K) :
     (D.fm u).SgInterlace := by

@@ -25,7 +25,7 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.SemiPullAll
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `R` using `L.refines_pull_pull f hf g hg hc`. Conclude with `HermLB.isometric_of_chart _ R.le (fun x => R.g Z (𝟙 Z) x) fun σ c y hy => ((R.φ σ c y hy).trans (add_zero _)).symm`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isometric_pull_pull {k : Type} [CommRing k] {X Y Z : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
     {s : Z ⟶ Sp k} (L : HermLB p) (f : Y ⟶ X) (hf : f ≫ p = q) (g : Z ⟶ Y) (hg : g ≫ q = s) (c : Z ⟶ X)
@@ -36,13 +36,13 @@ theorem isometric_pull_pull {k : Type} [CommRing k] {X Y Z : Scheme.{0}} {p : X 
     ((R.φ σ c y hy).trans (add_zero _)).symm
 
 /- English proof (translation)
-Introduce `hP k _ X Y p q D E hp hq π hπ L hL`. Use `hp.isIntegral` as an intermediate fact. Use `hq.isIntegral` as an intermediate fact. Take `⟨X', _, ρ, hρ, hsm, hgen, hdeg⟩` from `GlobalTheory.GenRes.exists_birational_genSmooth hP k X p D hp`. Take `⟨V, hV, het⟩` from `GlobalTheory.T.exists_opens_etale_generically_finite_dominant k X X' p (ρ ≫ p) D hp hρ ρ rfl hgen (by rw [hdeg]; exact one_ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₁ : (L.pull ρ rfl).SemiPos D` using `GlobalTheory.T.semiPositive_pullback_generically_etale k X X' p (ρ ≫ p) D hp hρ ρ rfl V hV het L hL`. Establish `hπp : IsArithVar (π ≫ p) E` using `by rw [hπ]; exact hq`. Take `⟨Y', _, g, π', hcomm, hY', hggen, hgdeg⟩` from `GlobalTheory.T.exists_arithmeticCover_over_modification k X X' Y p D E ρ π hp hρ hπp hgen`. Establish `hY'q : IsArithVar (g ≫ q) E` using `by rw [← hπ]; exact hY'`. Establish `e₁ : π' ≫ ρ ≫ p = g ≫ q` using `by rw [← Category.assoc, hcomm, Category.assoc, hπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : (g ≫ π) ≫ p = g ≫ q` using `by rw [Category.assoc, hπ]`. Establish `h₂ : ((L.pull ρ rfl).pull π' e₁).SemiPos E` using `GlobalTheory.T.semiPos_pull_of_genericallySmooth k X' Y' (ρ ≫ p) (g ≫ q) D E hsm π' e₁ (L.pull ρ rfl) h₁`. Establish `iso : ((L.pull ρ rfl).pull π' e₁).Isometric ((L.pull π hπ).pull g rfl)` using `(isometric_pull_pull L ρ rfl π' e₁ (g ≫ π) e₂ hcomm).trans (isometric_pull_pull L π hπ g rfl (g ≫ π) e₂ rfl).symm`. Establish `h₃ : ((L.pull π hπ).pull g rfl).SemiPos E` using `(GlobalTheory.T.hermitianLineBundle_positivity_preserved_isometric (GlobalTheory.MixHt.arCalc_of_principalisation hP) k Y' (g ≫ q) E hY'q _ _ iso).1 h₂`. Take `⟨W, hW, hWet⟩` from `GlobalTheory.T.exists_opens_etale_generically_finite_dominant k Y Y' q (g ≫ q) E hq hY'q g rfl hggen hgdeg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.semiPos_of_pullback_generically_etale k Y Y' q (g ≫ q) E hq hY'q g rfl W hW hWet (L.pull π hπ) h₃`.
+A detailed English derivation is pending.
 -/
 theorem semiPull_of_principalisation : GlobalTheory.Published.Principalisation → SemiPull := by
   intro hP k _ X Y p q D E hp hq π hπ L hL

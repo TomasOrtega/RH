@@ -242,7 +242,7 @@ theorem lines_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
     (X : Spc F E n) : Lines σ X = RLines σ (incM F X.J) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp [Matrix.map_one], 1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example : IsFrame (P := 1) (Q := 1) (Jm 1 1) 1 := ⟨by simp [Matrix.map_one], 1, by simp⟩
 

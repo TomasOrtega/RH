@@ -39,20 +39,20 @@ def prj0 (y : VA X.B.I) : VA X.B.I :=
   ∑ a, hA X.B.I (X.f0 a) y • X.e0 a + ∑ a, hA X.B.I (X.e0 a) y • X.f0 a - hA X.B.I X.z0 y • X.z0
 
 /- English proof (translation)
-Rewrite using `[prjM, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prjM_mulVec (y : VA X.B.I) : prjM X u *ᵥ y = prj X u y := by
   rw [prjM, LinearMap.toMatrix'_mulVec]; rfl
 
 /- English proof (translation)
-Rewrite using `[hMat, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, one_mulVec, prjM_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hMat_mulVec (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (y : VA X.B.I) :
     hMat X u c *ᵥ y = c • y + (1 - c) • prj X u y := by
   rw [hMat, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, one_mulVec, prjM_mulVec]
 
 /- English proof (translation)
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem scalW_ident {R V : Type*} [CommRing R] [AddCommGroup V] [Module R V] (mb mc m6 tt dd : R) (S1 S2 S3 S4 z' w0 : V) :
     (mb * mc * m6 * tt) • (S1 + S2 - dd • z' - (S3 + S4 - w0)) = (mc * m6 * tt) • (mb • (S1 - S3)) + (mc * m6 * tt) • (mb • (S2 - S4))

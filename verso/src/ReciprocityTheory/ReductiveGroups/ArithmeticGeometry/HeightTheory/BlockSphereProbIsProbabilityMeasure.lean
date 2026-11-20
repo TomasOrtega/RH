@@ -5,11 +5,9 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open NumberField
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.blockSphereProb`. Use `haveI : MeasureTheory.IsProbabilityMeasure (ReciprocityTheory.MultiplicativeHeights.sphereProb n) := by`. Unfold `ReciprocityTheory.MultiplicativeHeights.sphereProb`. Establish `hne : ∃ x : EuclideanSpace ℂ (Fin n), x ≠ 0` using `⟨EuclideanSpace.single ⟨0, hn⟩ 1, by simp⟩`. Establish `hdim : 0 < Module.finrank ℝ (EuclideanSpace ℂ (Fin n))` using `Module.finrank_pos_iff_exists_ne_zero.mpr hne`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ProbabilityTheory.cond_isProbabilityMeasure_of_finite` to reduce the goal to its premises. Rewrite using `[MeasureTheory.Measure.toSphere_apply_univ]`. Use `mul_ne_zero ?_ (Metric.measure_ball_pos _ _ one_pos).ne'` and prove the remaining obligations. Conclude with `hdim.ne'` after adjusting the coercions. Rewrite using `[MeasureTheory.Measure.toSphere_apply_univ]`.
-
-Conclude with `ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) (MeasureTheory.measure_ball_lt_top).ne`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockSphereProb_isProbabilityMeasure {B n : ℕ} (hn : 0 < n) :
     MeasureTheory.IsProbabilityMeasure (ReciprocityTheory.MultiplicativeHeights.blockSphereProb B n) := by
@@ -29,19 +27,19 @@ theorem blockSphereProb_isProbabilityMeasure {B n : ℕ} (hn : 0 < n) :
   infer_instance
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.MultiplicativeHeights.h0`. Use `haveI := blockSphereProb_isProbabilityMeasure (B := B) hn`. Establish `hmean : ∀ σ : K →+* ℂ, ReciprocityTheory.MultiplicativeHeights.blockSphereMean B n (MvPolynomial.map σ (MvPolynomial.C a)) = Real.log ‖σ a‖`. Introduce `σ`. Unfold `ReciprocityTheory.MultiplicativeHeights.blockSphereMean`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[MvPolynomial.map_C, MvPolynomial.eval_C]`. Establish `hgauss : ∀ w : FinitePlace K, ReciprocityTheory.MultiplicativeHeights.gaussAbs w (MvPolynomial.C a : MvPolynomial (Fin B × Fin n) K) = w a`. Introduce `w`. Unfold `ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Distinguish the cases in `ha : a = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[ha]`. Rewrite using `[MvPolynomial.support_C, if_neg ha, Finset.sup_singleton, MvPolynomial.coeff_C, if_pos rfl, Real.coe_toNNReal (w a) (by exact w.1.nonneg a)]`. Repeatedly rewrite using `[hgauss, hmean]`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_zero_iff]`. Use `left`. Establish `hfin : (Function.mulSupport fun w : FinitePlace K => w a).Finite` using `NumberField.FinitePlace.mulSupport_finite ha`. Establish `hsub : (Function.support fun w : FinitePlace K => Real.log (w a)) ⊆ hfin.toFinset`. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.Finite.coe_toFinset, Function.mem_mulSupport]`. Introduce `h1`. Apply `hw` to reduce the goal to its premises. Use `show Real.log (w a) = 0`. Rewrite using `[h1, Real.log_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_support_subset _ hsub, ← Real.log_prod (fun w _ => w.1.ne_zero ha), ← finprod_eq_prod_of_mulSupport_subset _ (by rw [Set.Finite.coe_toFinset]), NumberField.FinitePlace.prod_eq_inv_abs_norm ha, ← Real.log_prod (fun σ _ => by simpa using ha), ← norm_prod]`. Establish `hN : ∏ σ : K →+* ℂ, σ a = ((Algebra.norm ℚ a : ℚ) : ℂ)`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun σ => σ a) (fun σ => σ a) (fun σ => rfl), ← Algebra.norm_eq_prod_embeddings ℚ ℂ a]`. Simplify using the standard rewrite rules. Rewrite using `[hN]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[Real.log_inv]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem height_const_eq_zero {K : Type} [Field K] [NumberField K] {B n : ℕ} (hn : 0 < n) (a : K) :
     ReciprocityTheory.MultiplicativeHeights.h0 (MvPolynomial.C a : MvPolynomial (Fin B × Fin n) K) = 0 := by
@@ -89,13 +87,13 @@ theorem height_const_eq_zero {K : Type} [Field K] [NumberField K] {B n : ℕ} (h
   simp
 
 /- English proof (translation)
-Introduce `hinj`. Establish `hai : AlgebraicIndependent K (φ ∘ fun i : σ => (MvPolynomial.X i : MvPolynomial σ K))` using `(MvPolynomial.algebraicIndependent_X σ K).map' hinj`. Establish `hle` using `hai.cardinalMk_le_trdeg`. Establish `h1 : Algebra.trdeg Ω (MvPolynomial τ Ω) = Cardinal.mk τ` using `by first`. Consider the case `simpa using (MvPolynomial.trdeg_of_isDomain (R := Ω) (σ := τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `simpa using (MvPolynomial.trdeg_of_isDomain Ω τ)`. Consider the case `simpa using (MvPolynomial.trdeg (R := Ω) (σ := τ))`. Consider the case `simpa using (Algebra.trdeg_mvPolynomial (R := Ω) (σ := τ))`. Consider the case `simpa using ((MvPolynomial.isTranscendenceBasis_X τ Ω).lift_cardinalMk_eq_trdeg).symm`. Consider the case `simpa using ((MvPolynomial.isTranscendenceBasis_X τ Ω).cardinalMk_eq_trdeg).symm`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using ((MvPolynomial.algebraicIndependent_X τ Ω).isTranscendenceBasis_iff_isAlgebraic.mpr inferInstance).lift_cardinalMk_eq_trdeg.symm`. Establish `h2 : Algebra.trdeg K Ω + Algebra.trdeg Ω (MvPolynomial τ Ω) = Algebra.trdeg K (MvPolynomial τ Ω)` using `by first`. Consider the case `exact trdeg_add_eq K Ω`. Consider the case `exact Algebra.trdeg_add_eq K Ω`. Rewrite `hle` using `[← h2, hn, h1, Cardinal.mk_fintype, Cardinal.mk_fintype]`.
+Treat this case separately. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : Fintype.card σ ≤ n + Fintype.card τ` using `by exact_mod_cast hle`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_injective_of_trdeg_lt {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {σ τ : Type}
     [Fintype σ] [Fintype τ] (φ : MvPolynomial σ K →ₐ[K] MvPolynomial τ Ω) (n : ℕ)
@@ -136,9 +134,9 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Use `haveI := hp.1`. Establish `hpr : p.IsPrincipal`. Take `⟨g, _, hg⟩` from `ValUFD.heightOne_principal p hp.2`. Conclude with `⟨⟨g, hg⟩⟩`. Unfold `Data.gen`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hpr]`. Conclude with `(Ideal.span_singleton_generator p).symm`.
+A detailed English derivation is pending.
 -/
 theorem height_one_prime_eq_span_gen (p : Ideal (KTp K d.D d.N)) (hp : p ∈ d.HtOne) :
     p = Ideal.span {d.gen p} := by
@@ -151,43 +149,39 @@ theorem height_one_prime_eq_span_gen (p : Ideal (KTp K d.D d.N)) (hp : p ∈ d.H
   exact (Ideal.span_singleton_generator p).symm
 
 /- English proof (translation)
-Establish `hy : d.rationalBaseRow c ≠ 0` using `d.lineRatio_ne_zero hd c`. Take `⟨hOfin, hrest⟩` from `d.norm_by_places hd h c`. Take `⟨hP0fin, κ, hκ, hnorm⟩` from `hrest (d.rationalBaseRow c) hy`. Take `⟨E, hE⟩ : ∃ E : Ideal (KTp K d.D d.N) → ℤ, ∀ p, E p = ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.OverP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationalBaseRow c))` from `⟨_, fun _ => rfl⟩`. Take `⟨Nn, hNn⟩ : ∃ Nn : Ideal (KTp K d.D d.N) → ℤ, ∀ p, Nn p = ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.OverP c p \ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationalBaseRow c))` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [← hE] at hnorm`. Establish `htriv : ∀ p w, w ∈ d.OverP c p \ d.GoodP c p → ∀ a : Ω c, a ≠ 0 → d.Wres c w a = 0`. Introduce and unpack `p w ⟨hO, hG⟩ a ha`. Assume the negation of the conclusion as `hne`. Conclude with `hG ⟨hO, a, ha, hne⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hwy : ∀ p w, w ∈ d.OverP c p \ d.GoodP c p → 0 ≤ w (d.rationalBaseRow c)` using `fun p w hw => d.lineRatio_val_nonneg c p w hw.1 (htriv p w hw)`. Establish `hNn0 : ∀ p, 0 ≤ Nn p`. Introduce `p`. Rewrite using `[hNn]`. Conclude with `finsum_nonneg fun w => finsum_nonneg fun hw => mul_nonneg (Nat.cast_nonneg _) (untopD_nonneg (hwy p w hw))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsplit : ∀ p ∈ d.HtOne, E p + d.nPMM h c (d.w (d.jc c) c) p = Nn p`. Introduce `p hp`. Establish `hGsub : d.GoodP c p ⊆ d.OverP c p` using `fun w hw => hw.1`. Establish `hGfin : (d.GoodP c p).Finite` using `(hOfin p hp).subset hGsub`. Establish `hgood : d.nPMM h c (d.w (d.jc c) c) p = ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), -((d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationalBaseRow c)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Data.nPMM`. Use `finsum_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `h1` using `d.good_valuation_balance hd h c p hp w hw`. Rewrite using `[show d.ordMM c (d.Wres c w) (d.w (d.jc c) c) = -WithTop.untopD 0 (w (d.rationalBaseRow c)) by linarith]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : (∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationalBaseRow c))) + ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), -((d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationa …`. Rewrite using `[← finsum_mem_add_distrib' (hGfin.inter_of_left _) (hGfin.inter_of_left _)]`. Simplify using the standard rewrite rules. Establish `hO` using `finsum_mem_union (f := fun w => (d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationalBaseRow c))) (Set.disjoint_sdiff_right : Disjoint (d.GoodP c p) (d.OverP c p \ d.GoodP c p)) hGfin ((hOfin p hp).subset Set.diff_subset)`. Rewrite `hO` using `[Set.union_diff_cancel hGsub]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `beta_reduce at hO`. Rewrite using `[hE, hNn, hgood, hO]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hout : ∀ p ∈ d.HtOne, p ∉ {p | p ∈ d.HtOne ∧ ∃ w ∈ d.OverP c p, w (d.rationalBaseRow c) ≠ 0} → E p = 0 ∧ Nn p = 0`. Introduce `p hp hpP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hz : ∀ w ∈ d.OverP c p, w (d.rationalBaseRow c) = 0`. Introduce `w hw`. Assume the negation of the conclusion as `hne`. Conclude with `hpP ⟨hp, w, hw, hne⟩`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hE]`. Use `(finsum_mem_congr rfl fun w hw => ?_).trans (finsum_mem_zero _)` and prove the remaining obligations. Rewrite using `[hz w hw]`. Simplify using the standard rewrite rules. Rewrite using `[hNn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(finsum_mem_congr rfl fun w hw => ?_).trans (finsum_mem_zero _)` and prove the remaining obligations. Rewrite using `[hz w hw.1]`. Simplify using the standard rewrite rules. Establish `hTS : (↑hP0fin.toFinset : Set (Ideal (KTp K d.D d.N))) ⊆ d.HtOne`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hp` using `[Set.Finite.coe_toFinset]`. Conclude with `hp.1`. Establish `hnotT : ∀ p ∈ d.HtOne, p ∉ hP0fin.toFinset → p ∉ {p | p ∈ d.HtOne ∧ ∃ w ∈ d.OverP c p, w (d.rationalBaseRow c) ≠ 0}`. Introduce `p _ hpT hpP`. Conclude with `hpT ((Set.Finite.mem_toFinset hP0fin).mpr hpP)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgen0 : ∀ p ∈ d.HtOne, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ≠ 0` using `fun p hp => (map_ne_zero_iff _ (IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N))).mpr (d.generator_ne_zero_of_height p hp)`. Establish `hprodE : (∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ E p) = ∏ p ∈ hP0fin.toFinset, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ E p`. Use `finprod_mem_eq_prod_of_subset _ ?_ hTS` and prove the remaining obligations. Introduce and unpack `p ⟨hpS, hpm⟩`. Assume the negation of the conclusion as `hpT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hpm` to reduce the goal to its premises. Use `show algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ E p = 1`. Rewrite using `[(hout p hpS (hnotT p hpS hpT)).1, zpow_zero]`. Establish `hprodM : (∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ d.nPMM h c (d.w (d.jc c) c) p) = ∏ p ∈ hP0fin.toFinset, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ d.nPMM h c (d.w (d.jc c) c) p`. Use `finprod_mem_eq_prod_of_subset _ ?_ hTS` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `p ⟨hpS, hpm⟩`. Assume the negation of the conclusion as `hpT`. Apply `hpm` to reduce the goal to its premises. Use `show algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ d.nPMM h c (d.w (d.jc c) c) p = 1`. Establish `h1` using `hout p hpS (hnotT p hpS hpT)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `hsplit p hpS`. Rewrite using `[show d.nPMM h c (d.w (d.jc c) c) p = 0 by linarith [h1.1, h1.2], zpow_zero]`. Establish `hF' : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (MvPolynomial.C κ * ∏ p ∈ hP0fin.toFinset, d.gen p ^ (Nn p).toNat)`. Rewrite using `[hF]`. Simplify using `only [Data.fZ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hnorm, hprodE, hprodM, mul_assoc, ← Finset.prod_mul_distrib, map_mul, map_prod]`. Rewrite using `[IsScalarTower.algebraMap_apply K (KTp K d.D d.N) (KTf K d.D d.N) κ, MvPolynomial.algebraMap_eq]`. Use `congr 1`. Use `Finset.prod_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hpS` using `hTS (Finset.mem_coe.mpr hp)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← zpow_add₀ (hgen0 p hpS), hsplit p hpS, map_pow, ← zpow_natCast, Int.toNat_of_nonneg (hNn0 p)]`. Use `⟨κ, hP0fin.toFinset, fun p => (Nn p).toNat, hκ, hTS, IsFractionRing.injective _ _ hF', ?_⟩` and prove the remaining obligations. Introduce `p hpT hpos`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
-
-Establish `hz : Nn p = 0`. Rewrite using `[hNn]`. Use `(finsum_mem_congr rfl fun w hw => ?_).trans (finsum_mem_zero _)` and prove the remaining obligations. Establish `h0 : w (d.rationalBaseRow c) = 0` using `le_antisymm (hne w hw.1 (htriv p w hw)) (hwy p w hw)`. Rewrite using `[h0]`.
-
-Simplify using the standard rewrite rules. Simplify using `[hz] at hpos`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fZ_factor_positive_places (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (F : KTp K d.D d.N)
     (hF : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = d.fZ h c) :

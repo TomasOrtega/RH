@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.BrPairBound
 
 /- English proof (translation)
-Distinguish the cases in `h : x = 0`. Simplify using `[h]`. Conclude with `(Complex.lt_def.1 (GlobalTheory.CoefModel.pairK_pos w (G := fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) (fun _ => Matrix.PosDef.one) x h)).1.le`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairK_one_re_nonneg {ι : Type} [Fintype ι] {m : ℕ} (w : ι → DomWeight m) (x : VV ℂ w) :
     0 ≤ (pairK w (fun _ => (1 : Matrix (Fin m) (Fin m) ℂ)) x x).re := by
@@ -34,11 +34,9 @@ theorem pairK_one_re_nonneg {ι : Type} [Fintype ι] {m : ℕ} (w : ι → DomWe
       (fun _ => Matrix.PosDef.one) x h)).1.le
 
 /- English proof (translation)
-Introduce `K ι _ _ _ φ n N hN Λ σ hI hS u v`. Use `⟨pairK_one_re_nonneg _ _, pairK_one_re_nonneg _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.branchingPairing_map_extendScalars_embedding φ hN Λ σ u v, GlobalTheory.BrPairF.brPairF_apply]`. Use `set u' := GlobalTheory.CoefModel.mapVV φ Λ u`. Use `set v' := GlobalTheory.CoefModel.mapVV φ _ v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.T.bilinearFockPairing_sq_le_hermitianNorms σ (Formalism.L2.Col.Br.brStd hN Λ σ u') ((GlobalTheory.FunObj.funEquiv σ).symm v')`. Establish `h2` using `GlobalTheory.T.branchingMap_hermitianNorm_le_prod_bounds hN Λ σ hI hS u'`. Establish `h3` using `GlobalTheory.T.hermitianFockNorm_adjugateSubst_symm_le σ v'`. Establish `p2` using `pairK_one_re_nonneg σ ((GlobalTheory.FunObj.funEquiv σ).symm v')`. Establish `p3` using `pairK_one_re_nonneg Λ u'`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inf_bound : ∀ {K ι : Type} [Field K] [CharZero K] [Fintype ι] (φ : K →+* ℂ) {n N : ℕ} (hN : N = n + 1) (Λ : ι → DomWeight N)
     (σ : ι → DomWeight n), (∀ τ, Formalism.L2.Col.Br.Interlace hN (Λ τ) (σ τ)) → (∀ τ, Formalism.L2.Col.Br.SameShift (Λ τ) (σ τ)) →

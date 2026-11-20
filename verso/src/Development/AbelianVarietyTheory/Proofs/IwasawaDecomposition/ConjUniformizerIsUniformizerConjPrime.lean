@@ -10,15 +10,13 @@ open GlobalTheory.Mem.R3.LiftBrg
 namespace GlobalTheory.Mem.UnifConj
 
 /- English proof (translation)
-Introduce `E _ _ _ Pb Ut`. Use `⟨(Formalism.L2.Col.mem_conjP Pb _).2 (by rw [Formalism.L2.Col.cO_cO]; exact Ut.hπ), ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h2 : Ut.π ∈ Pb.asIdeal ^ 2`. Establish `h1 : Formalism.L2.Col.cO E Ut.π ∈ (Pb.asIdeal ^ 2).comap (Formalism.L2.Col.cO E)` using `Ideal.le_comap_pow (Formalism.L2.Col.cO E) 2 h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Ideal.mem_comap, Formalism.L2.Col.cO_cO]`. Conclude with `h1`. Establish `hle : Pb.asIdeal ≤ Pb.asIdeal ^ 2`. Introduce `p hp`. Take `⟨t, ht⟩` from `Ut.hcπ p hp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcp : Ut.c * p ∈ Pb.asIdeal ^ 2`. Rewrite using `[ht]`. Conclude with `Ideal.mul_mem_right t _ h2`. Take `⟨a, e, he, hae⟩` from `Pb.isMaximal.exists_inv Ut.hc`. Establish `hee : e * e ∈ Pb.asIdeal ^ 2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul he he`. Establish `hp' : p = a * (a * Ut.c + 2 * e) * (Ut.c * p) + (e * e) * p`. Take the linear combination `(-(p) * (a * Ut.c + e + 1)) * hae`. Rewrite using `[hp']`.
-
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hcp) (Ideal.mul_mem_right _ _ hee)`. Establish `hlt : Pb.asIdeal ^ 2 < Pb.asIdeal ^ 1` using `Ideal.pow_right_strictAnti Pb.asIdeal Pb.ne_bot Pb.isPrime.ne_top (by norm_num)`. Rewrite `hlt` using `[pow_one]`. Conclude with `hlt.not_ge hle`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_unif_isUnif : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (Pb : Formalism.L2.DIV.Pl E) (Ut : Formalism.L2.Col.MhlUnif Pb), Formalism.L2.Col.cO E Ut.π ∈ (Formalism.L2.Col.conjPrime₂ Pb).asIdeal ∧ Formalism.L2.Col.cO E Ut.π ∉ (Formalism.L2.Col.conjPrime₂ Pb).asIdeal ^ 2 := by
   intro E _ _ _ Pb Ut

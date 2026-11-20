@@ -11,11 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ _ A`. Establish `hex : ∃ π : End A, IsFrob π`. Take `⟨π, hπ, -⟩` from `GlobalTheory.T.exists_frobenius_endomorphism K A`. Conclude with `⟨π, hπ⟩`. Establish `hf : IsFrob (frob A)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Unfold `frob`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Use `⟨hf, fun π hπ => ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.AV.AbVar.ext_of_pt_eq` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hπ x, hf x]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_isFrob_unique : ∀ (K : Type) [Field K] [Fintype K] (A : AbVar K),
     IsFrob (frob A) ∧ ∀ π : End A, IsFrob π → π = frob A := by

@@ -9,16 +9,16 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.DS.dS dRep`. Simplify using `only [Complex.coe_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dS_eq_dRep (X : Matrix (Fin n) (Fin n) ℂ) (w : H) : ReciprocityTheory.ChartRestriction.DS.dS σ X w = dRep σ X w := by
   unfold ReciprocityTheory.ChartRestriction.DS.dS dRep
   simp only [Complex.coe_smul]
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.ChartRestriction.DS.smE_apply hσ]`. Use `set Z : Matrix (Fin n) (Fin n) ℂ := Matrix.single a b 1`. Establish `h1` using `ReciprocityTheory.ChartRestriction.DS.SmDerA.inG_cpart1 ε Z`. Establish `h2` using `ReciprocityTheory.ChartRestriction.DS.SmDerA.inG_cpart2 ε Z`. Establish `hd : E a b = ReciprocityTheory.ChartRestriction.DS.actM E (ReciprocityTheory.ChartRestriction.DS.S7.cpart1 ε Z) + Complex.I • ReciprocityTheory.ChartRestriction.DS.actM E (ReciprocityTheory.ChartRestriction.DS.S7.cpart2 ε Z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ReciprocityTheory.ChartRestriction.DS.SmDerA.actM_smul, ← ReciprocityTheory.ChartRestriction.DS.SmDerA.actM_add, ← ReciprocityTheory.ChartRestriction.DS.SmDerA.cpart_decomp, ReciprocityTheory.ChartRestriction.DS.SmDerA.actM_single]`. Rewrite using `[hd, LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, hE _ h1 v, hE _ h2 v, dS_eq_dRep, dS_eq_dRep]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bridge (hσ : IsURepOn (UJset ε) σ) {E : Fin n → Fin n → Module.End ℂ (kfin ε σ)} (hE : PositivityTheory.CW.KDer ε σ E)
     (v : kfin ε σ) (hv : (v : H) ∈ ReciprocityTheory.ChartRestriction.DS.smD ε σ) (a b : Fin n) :
@@ -40,11 +40,11 @@ namespace PositivityTheory.CW
 
 open DerivativeRepresentation in
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hσ hirr E hE v`. Establish `hsm` using `(CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H σ hσ hirr).1`. Take `⟨S0, hS0f, hvS0, hS0K⟩` from `v.2`. Establish `hS0k : ∀ x ∈ S0, IsKFin ε σ x` using `fun x hx => ⟨S0, hS0f, hx, hS0K⟩`. Set `S : Submodule ℂ (kfin ε σ)` to `S0.comap (kfin ε σ).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : S →ₗ[ℂ] S0` to `{ toFun := fun x => ⟨((x : kfin ε σ) : H), x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hf : Function.Injective f` using `fun x y h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Subtype.val h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `h'`. Use `⟨S, Module.Finite.of_injective f hf, hvS0, fun a b hab w hw => ?_⟩` and prove the remaining obligations. Use `show ((E a b w : kfin ε σ) : H) ∈ S0`. Rewrite using `[bridge hσ hE w (hsm _ w.2)]`. Conclude with `CompanionTheory.D.gk.HC.smE_mem_of_compact_A hσ hS0K hab _ hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c2a : CardSubmodulesOfIndexLePow := by
   intro n ε H _ _ _ σ hσ hirr E hE v

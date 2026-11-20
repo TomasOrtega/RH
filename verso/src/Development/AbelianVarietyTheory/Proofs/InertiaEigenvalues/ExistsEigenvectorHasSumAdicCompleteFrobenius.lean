@@ -4,29 +4,27 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ A _ _ φ h w hw`. Establish `key : ∀ (n : ℕ) (x : A), x ∈ (Ideal.span {(l : A)} ^ n • ⊤ : Submodule A A) ↔ (l : A) ^ n ∣ x`. Introduce `n x`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Set `S : ℕ → A` to `fun N => ∑ k ∈ Finset.range N, (l : A) ^ k * w k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hS : ∀ m n, m ≤ n → (l : A) ^ m ∣ S n - S m`. Introduce `m n hmn`. Simplify using `only [S]`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ hmn, add_sub_cancel_left]`. Apply `Finset.dvd_sum` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k hk`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow _ (Finset.mem_Ico.1 hk).1) _`. Take `⟨W, hW⟩` from `IsPrecomplete.prec (I := Ideal.span {(l : A)}) (M := A) inferInstance (f := S) (fun {m n} hmn => by rw [SModEq.sub_mem, key]; exact dvd_sub_comm.1 (hS m n hmn))`. Establish `hWN : ∀ N, ∃ c : A, W = S N + (l : A) ^ N * c`. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `SModEq.sub_mem.1 (hW N)`. Rewrite `h1` using `[key]`. Take `⟨c, hc⟩` from `dvd_sub_comm.1 h1`. Conclude with `⟨c, by rw [← hc]; ring⟩`. Simplify using `only [← RingHom.coe_pow] at hw ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hSψ : ∀ N, (φ ^ h) (S N) = (l : A) * S N`. Introduce `N`. Simplify using `only [S, map_sum, map_mul, map_pow, map_natCast, hw, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨W, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `IsHausdorff.haus (I := Ideal.span {(l : A)}) inferInstance` to reduce the goal to its premises. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.sub_mem, sub_zero, key]`. Take `⟨c, hc⟩` from `hWN n`. Rewrite using `[hc, map_add, map_mul, map_pow, map_natCast, hSψ]`. Conclude with `⟨(φ ^ h) c - (l : A) * c, by ring⟩`. Introduce `Θ hΘ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹`. Rewrite using `[show (l : ℂ_[l]) = (((l : ℚ_[l])) : ℂ_[l]) by simp, PadicComplex.norm_extends', Padic.norm_p]`. Establish `hlt : ‖(l : ℂ_[l])‖ < 1`. Rewrite using `[hl]`. Apply `inv_lt_one_of_one_lt₀` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(Fact.out : l.Prime).one_lt` after adjusting the coercions. Establish `hbound : ∀ k, ‖(l : ℂ_[l]) ^ k * Θ (w k)‖ ≤ ‖(l : ℂ_[l])‖ ^ k`. Introduce `k`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (hΘ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : Summable (fun k => (l : ℂ_[l]) ^ k * Θ (w k))` using `Summable.of_norm_bounded (summable_geometric_of_lt_one (norm_nonneg _) hlt) hbound`. Rewrite using `[hsum.hasSum_iff_tendsto_nat]`. Establish `hpart : ∀ N, ∑ i ∈ Finset.range N, (l : ℂ_[l]) ^ i * Θ (w i) = Θ (S N)`. Introduce `N`. Simplify using `[S, map_sum, map_mul, map_pow, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hpart]`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun N => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hlt)` and prove the remaining obligations. Take `⟨c, hc⟩` from `hWN N`. Rewrite using `[hc, map_add, sub_add_cancel_left, norm_neg, map_mul, map_pow, map_natCast, norm_mul, norm_pow]`.
-
-Conclude with `mul_le_of_le_one_right (by positivity) (hΘ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abssum_eigen_lim : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] [IsAdicComplete (Ideal.span {(l : A)}) A] (φ : A →+* A) (h : ℕ) (w : ℕ → A), (∀ k, φ^[h] (w k) = (l : A) * w k) → ∃ W : A, φ^[h] W = (l : A) * W ∧ ∀ Θ : A →+* ℂ_[l], (∀ a, ‖Θ a‖ ≤ 1) → HasSum (fun k : ℕ => (l : ℂ_[l]) ^ k * Θ (w k)) (Θ W) := by
   intro l _ A _ _ φ h w hw

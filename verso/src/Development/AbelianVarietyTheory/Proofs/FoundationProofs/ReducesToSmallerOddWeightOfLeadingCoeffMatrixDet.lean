@@ -13,7 +13,7 @@ open scoped MatrixGroups ModularForm Manifold Topology
 namespace GlobalTheory.OddFrame
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, SlashAction.add_slash, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem slash_finset_sum {ι : Type*} (t : Finset ι) (k : ℤ) (f : ι → ℍ → ℂ) (x : SL(2, ℤ)) :
     (∑ i ∈ t, f i) ∣[k] x = ∑ i ∈ t, (f i) ∣[k] x := by
@@ -23,7 +23,7 @@ private theorem slash_finset_sum {ι : Type*} (t : Finset ι) (k : ℤ) (f : ι 
   | insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, SlashAction.add_slash, ih]
 
 /- English proof (translation)
-Apply `Real.tendsto_exp_atBot.comp` to reduce the goal to its premises. Establish `h : Tendsto (fun τ : ℍ => τ.im) atImInfty atTop` using `tendsto_comap`. Conclude with `h.const_mul_atTop_of_neg (by linarith [Real.pi_pos])`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem tendsto_exp_neg_im :
     Tendsto (fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)) atImInfty (𝓝 0) := by
@@ -32,37 +32,35 @@ private theorem tendsto_exp_neg_im :
   exact h.const_mul_atTop_of_neg (by linarith [Real.pi_pos])
 
 /- English proof (translation)
-Introduce `M Γ r s w F hM hΓ hs hF hdet`. Take `⟨c, hc, hcv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hT` using `fun j => GlobalTheory.T.slashQExpansionCoeffWidth_transform M Γ (w j) (F j) hM hΓ (hF j).2`. Establish `hb : ∀ (x : SL(2, ℤ)) (n : ℕ), n < M → ∑ j, c j * co M (w j) (F j) x n = 0`. Use `GlobalTheory.T.coeff_eq_zero_of_sum_plusMinusReps_eq_zero M Γ r s (fun x n => ∑ j, c j * co M (w j) (F j) x n) hM hs ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x n`. Simplify using `only [fun j => (hT j).1 x n, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Introduce `γ hγ x n`. Simplify using `only [fun j => (hT j).2.1 γ hγ x n]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x n`. Simplify using `only [fun j => (hT j).2.2 (hF j).1 x n, mul_neg, Finset.sum_neg_distrib]`. Introduce `i`. Use `congrFun hcv i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, leadM, Matrix.of_apply, Pi.zero_apply, Finset.sum_mul] at this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm, ← this]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun n _ => mul_comm _ _`. Establish `hO : ∀ x : SL(2, ℤ), (fun τ : ℍ => ∑ j, c j * (F j ∣[w j] x) τ) =O[atImInfty] fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)`. Introduce `x`. Establish `h1` using `IsBigO.sum (s := Finset.univ) fun j _ => (GlobalTheory.T.slash_sub_qExpansion_partialSum_isBigO M Γ (w j) (F j) hM hΓ (hF j).2 x).const_mul_left (c j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `h1.congr_left fun τ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, sub_eq_self]`. Use `Finset.sum_eq_zero fun n hn => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_mul, hb x n (Finset.mem_range.mp hn), zero_mul]`. Establish `hne : (Finset.univ.filter fun j => c j ≠ 0).Nonempty`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hc`. Conclude with `⟨j, by simpa using hj⟩`. Take `⟨j₀, hj₀, hmax⟩` from `Finset.exists_max_image _ w hne`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₀ : c j₀ ≠ 0` using `by simpa using hj₀`. Establish `he : ∀ j, ∃ e : ℍ → ℂ, IsMF ⊤ (w j₀ - w j + 4) e ∧ (fun τ : ℍ => e τ - c j) =O[atImInfty] fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)`. Introduce `j`. Distinguish the cases in `hj : c j = 0`. Conclude with `⟨0, IsMF.zero _ _, by simp [hj, isBigO_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : w j ≤ w j₀` using `hmax j (by simpa using hj)`. Take `⟨e, h1, h2⟩` from `GlobalTheory.T.exists_levelOne_form_one_add_expDecay (w j₀ - w j + 4) (by omega) (((hF j₀).1.sub_odd (hF j).1).add (by decide))`. Use `⟨c j • e, h1.smul _, (h2.const_mul_left (c j)).congr_left fun τ => ?_⟩` and prove the remaining obligations. Simplify using `[mul_sub]`. Use `choose e heMF heO using he`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH : IsMF Γ (w j₀ + 4) (∑ j, e j * F j)` using `IsMF.sum _ fun j _ => ((heMF j).mono le_top).mul (hF j).2 (by ring)`. Establish `hHx : ∀ x : SL(2, ℤ), (∑ j, e j * F j) ∣[w j₀ + 4] x = ∑ j, e j * (F j ∣[w j] x)`. Introduce `x`. Rewrite using `[slash_finset_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: w j₀ + 4 = (w j₀ - w j + 4) + w j` using `by ring`. Rewrite using `[this, ModularForm.mul_slash_SL2, (heMF j).slash_top]`. Establish `hHO : ∀ x : SL(2, ℤ), ((∑ j, e j * F j) ∣[w j₀ + 4] x) =O[atImInfty] fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)`. Introduce `x`. Establish `h1 : (fun τ : ℍ => ∑ j, (e j τ - c j) * (F j ∣[w j] x) τ) =O[atImInfty] fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ∀ j, (fun τ : ℍ => (e j τ - c j) * (F j ∣[w j] x) τ) =O[atImInfty] fun τ : ℍ => Real.exp (-2 * Real.pi * τ.im)`. Introduce `j`. Establish `hb' : (F j ∣[w j] x) =O[atImInfty] (fun _ => (1 : ℝ))` using `(hF j).2.2.2 x`. Simplify `(heO j).mul hb'` using `only [mul_one]`. Conclude with `(IsBigO.sum (s := Finset.univ) fun j _ => h2 j).congr_left fun τ => Finset.sum_apply _ _ _`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hHx]`. Use `(h1.add (hO x)).congr_left fun τ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp; ring`. Take `⟨G, hG, hHG⟩` from `GlobalTheory.T.exists_eq_discriminant_mul_of_expDecay_cusps Γ _ _ hH hHO`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΔ : IsMF ⊤ 12 ModularForm.discriminant` using `(isCF_coe_top CuspForm.discriminant).isMF`. Use `⟨j₀, w j₀ + 4 - 12, G, ModularForm.discriminant, e, by omega, ?_, hG, fun j => (heMF j).2.1, ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(hF j₀).1`. Conclude with `⟨m - 4, by omega⟩`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(heO j₀).trans_tendsto tendsto_exp_neg_im`. Rewrite `h1` using `[h0]`. Simplify using `only [Pi.zero_apply, zero_sub] at h1`. Use `tendsto_nhds_unique h1 tendsto_const_nhds` as an intermediate fact. Conclude with `hc₀ (neg_eq_zero.mp this.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x τ`. Establish `h1` using `hHx x`. Establish `h2 : w j₀ + 4 = 12 + (w j₀ + 4 - 12)` using `by ring`. Rewrite `h1` using `[hHG, h2, ModularForm.mul_slash_SL2, hΔ.slash_top]`. Establish `h3` using `congrFun h1 τ`.
-
-Simplify `h3` using `[Finset.sum_apply]`.
+A detailed English derivation is pending.
 -/
 theorem reduces_of_det_leadM_eq_zero : ∀ (M : ℕ) (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ))
     (w : Fin r → ℤ) (F : Fin r → ℍ → ℂ), 0 < M → CongruenceSubgroup.Gamma M ≤ Γ → IsReps Γ s →

@@ -7,7 +7,7 @@ open scoped ContDiff ComplexConjugate Topology
 namespace GlobalTheory.PullSmooth
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bas m).sum_repr a, ← (bas m).sum_repr b]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_mul {m : ℕ} (a b : Alt m) (S : Finset (Fin (m + m))) :
     (bas m).repr (a * b) S = ∑ S₁, ∑ S₂, (bas m).repr a S₁ * (bas m).repr b S₂ *
@@ -18,7 +18,7 @@ theorem repr_mul {m : ℕ} (a b : Alt m) (S : Finset (Fin (m + m))) :
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `h₁ : ContDiffOn ℂ ∞ (fun x => fderiv ℂ τ x) U` using `ContDiffOn.fderiv_of_isOpen (n := ω) (m := ∞) (((GlobalTheory.SCV.analyticOnNhd_iff_differentiableOn hU).2 hτ).contDiffOn hU.uniqueDiffOn) hU le_top`. Establish `h₂ : ContDiffOn ℂ ∞ (fun x => fderiv ℂ τ x v a) U` using `(EuclideanSpace.proj a : V n →L[ℂ] ℂ).contDiff.comp_contDiffOn (h₁.clm_apply contDiffOn_const)`. Establish `h₃ : ContDiffOn ℝ ∞ (fun x => fderiv ℂ τ x v a) U` using `h₂.restrict_scalars ℝ`. Conclude with `⟨h₃, Complex.conjCLE.contDiff.comp_contDiffOn h₃⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem entries_smooth {m n : ℕ} {τ : V m → V n} {U : Set (V m)} (hU : IsOpen U) (hτ : DifferentiableOn ℂ τ U)
     (v : V m) (a : Fin n) :
@@ -32,19 +32,17 @@ theorem entries_smooth {m n : ℕ} {τ : V m → V n} {U : Set (V m)} (hU : IsOp
   exact ⟨h₃, Complex.conjCLE.contDiff.comp_contDiffOn h₃⟩
 
 /- English proof (translation)
-Introduce `m n τ U γ hU hτ`. Proceed by induction on `γ using ExteriorAlgebra.induction with`. Consider the case `algebraMap r`. Introduce `S`. Simplify using `only [AlgHom.commutes]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffOn_const`. Consider the case `ι u`. Introduce `S`. Establish `hcoef : ∀ x, (bas m).repr (pull (fderiv ℂ τ x) (ExteriorAlgebra.ι ℂ u)) S = ((bas m).coord S ∘ₗ ExteriorAlgebra.ι ℂ) (Matrix.toLin' (Matrix.fromBlocks (Matrix.of fun b a => fderiv ℂ τ x (coordVec b) a) 0 0 (Matrix.of fun b a => conj (fderiv ℂ τ x (coordVec b) a))) u)`. Introduce `x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[pull, ExteriorAlgebra.map_apply_ι]`. Repeatedly rewrite using `[hcoef]`. Use `(LinearMap.toContinuousLinearMap ((bas m).coord S ∘ₗ ExteriorAlgebra.ι ℂ)).contDiff.restrict_scalars ℝ |>.comp_contDiffOn ?_` and prove the remaining obligations. Use `contDiffOn_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiffOn.sum fun j _ => ContDiffOn.mul ?_ contDiffOn_const` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.of_apply]`. Conclude with `(entries_smooth hU hτ _ _).1`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffOn_const`. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`. Conclude with `contDiffOn_const`. Simplify using `only [Matrix.fromBlocks_apply₂₂, Matrix.of_apply]`. Conclude with `(entries_smooth hU hτ _ _).2`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul a b ha hb`. Introduce `S`. Establish `e : (fun x => (bas m).repr (pull (fderiv ℂ τ x) (a * b)) S) = fun x => ∑ S₁, ∑ S₂, (bas m).repr (pull (fderiv ℂ τ x) a) S₁ * (bas m).repr (pull (fderiv ℂ τ x) b) S₂ * (bas m).repr (bas m S₁ * bas m S₂) S` using `funext fun x => by rw [map_mul, repr_mul]`. Rewrite using `[e]`. Conclude with `ContDiffOn.sum fun S₁ _ => ContDiffOn.sum fun S₂ _ => ((ha S₁).mul (hb S₂)).mul contDiffOn_const`.
-
-Consider the case `add a b ha hb`. Introduce `S`. Simplify using `only [map_add, Finsupp.add_apply]`. Conclude with `(ha S).add (hb S)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_repr_pull_fderiv : ∀ (m n : ℕ) (τ : V m → V n) (U : Set (V m)) (γ : Alt n), IsOpen U →
     DifferentiableOn ℂ τ U → ∀ S, ContDiffOn ℝ ∞ (fun x => (bas m).repr (pull (fderiv ℂ τ x) γ) S) U := by

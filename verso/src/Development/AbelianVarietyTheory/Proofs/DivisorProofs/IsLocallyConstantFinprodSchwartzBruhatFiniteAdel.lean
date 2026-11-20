@@ -19,19 +19,17 @@ namespace GlobalTheory.WeilM
 open Filter Topology
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y`. Establish `hy : ∀ᶠ v in Filter.cofinite, ∀ i, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => (y i).2.mono fun v hv => hv`. Use `set T : Set (IsDedekindDomain.HeightOneSpectrum (𝓞 F)) := {v | ¬ (φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ ∀ i, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i) ∈ v.adicCompletionIntegers F)} with hT`. Establish `hTfin : T.Finite` using `hcof.and hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : IsOpen {z : FiniteAdeleRing (𝓞 F) F | ∀ v, z v ∈ v.adicCompletionIntegers F}` using `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`. Establish `hU : ∀ᶠ y' in 𝓝 y, ∀ i, ∀ v, (y' i - y i) v ∈ v.adicCompletionIntegers F`. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations. Establish `hc : Continuous fun y' : κ → FiniteAdeleRing (𝓞 F) F => y' i - y i` using `(continuous_apply i).sub continuous_const`. Establish `hmem : (fun y' : κ → FiniteAdeleRing (𝓞 F) F => y' i - y i) y ∈ {z : FiniteAdeleRing (𝓞 F) F | ∀ v, z v ∈ v.adicCompletionIntegers F}`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Simplify using `only [sub_self]`. Conclude with `zero_mem _`. Conclude with `hc.continuousAt.preimage_mem_nhds (hO.mem_nhds hmem)`. Establish `hS : ∀ᶠ y' in 𝓝 y, ∀ v ∈ T, (φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y' i)) = φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Filter.eventually_all_finite hTfin).2 fun v _ => ?_` and prove the remaining obligations. Establish `hg : Continuous fun y' : κ → FiniteAdeleRing (𝓞 F) F => fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y' i)` using `continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)`. Conclude with `((IsLocallyConstant.iff_eventually_eq _).1 ((hφ v).1.comp_continuous hg)) y`. Use `filter_upwards [hU, hS] with y' hU' hS'`. Use `finprod_congr fun v => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hv : v ∈ T`. Conclude with `hS' v hv`. Establish `hv' : φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ ∀ i, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i) ∈ v.adicCompletionIntegers F`. Simplify `hv` using `[hT]`. Take `⟨h1, h2⟩` from `hv'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∀ i, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y' i) ∈ v.adicCompletionIntegers F`. Introduce `i`. Establish `h4` using `add_mem (hU' i v) (h2 i)`. Establish `h5 : (y' i - y i) v + Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y' i)` using `by show (y' i) v - (y i) v + (y i) v = (y' i) v`. Conclude with `sub_add_cancel _ _`.
-
-Rewrite `h4` using `[h5]`. Then use the resulting hypothesis. Rewrite using `[h1, Set.indicator_of_mem (show (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y' i)) ∈ {x | ∀ i, x i ∈ v.adicCompletionIntegers F} from h3), Set.indicator_of_mem (show (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v ( …`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_finprod_evalV {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (φ : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ) (hφ : ∀ v, φ v ∈ GlobalTheory.WeilM.SB _)

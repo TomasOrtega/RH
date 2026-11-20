@@ -22,13 +22,13 @@ def lpScale (c : ℚˣ) : LaurentPolynomial ℚ →ₐ[ℚ] LaurentPolynomial �
   AddMonoidAlgebra.lift ℚ (LaurentPolynomial ℚ) ℤ (lpScaleF c)
 
 /- English proof (translation)
-Proceed by induction on `f using LaurentPolynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, AddMonoidAlgebra.coeff_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, Finsupp.add_apply, hp, hq, mul_add]`. Consider the case `C_mul_T n a`. Establish `h1 : lpScale c (T n) = ((c ^ n : ℚˣ) : ℚ) • T n`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Unfold `lpScale T`. Rewrite using `[AddMonoidAlgebra.lift_single, one_smul, lpScaleF_apply]`. Both sides reduce to the same expression. Establish `h2 : (C a * T n : LaurentPolynomial ℚ) = a • T n`. Rewrite using `[C_eq_algebraMap, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, map_smul, h1, smul_smul, AddMonoidAlgebra.coeff_smul_apply, AddMonoidAlgebra.coeff_smul_apply, T_apply, smul_eq_mul, smul_eq_mul]`. Distinguish the cases in `h : n = m`. Substitute `h` using the available equality. Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lpScale_coeff (c : ℚˣ) (f : LaurentPolynomial ℚ) (m : ℤ) :
     (lpScale c f).coeff m = ((c ^ m : ℚˣ) : ℚ) * f.coeff m := by
@@ -61,7 +61,7 @@ def lpScaleE (c : ℚˣ) : LaurentPolynomial ℚ ≃ₐ[ℚ] LaurentPolynomial �
       rw [inv_mul_cancel₀ (zpow_ne_zero _ c.ne_zero), one_mul])
 
 /- English proof (translation)
-Use `show (lpScale c f).coeff m = _`. Rewrite using `[lpScale_coeff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lpScaleE_coeff (c : ℚˣ) (f : LaurentPolynomial ℚ) (m : ℤ) :
     (lpScaleE c f).coeff m = ((c ^ m : ℚˣ) : ℚ) * f.coeff m := by
@@ -87,17 +87,17 @@ Both sides reduce to the same expression.
 @[simp] lemma lpTwo_val : (lpTwo : ℚ) = 2 := rfl
 
 /- English proof (translation)
-Rewrite using `[Units.val_zpow_eq_zpow_val, lpTwo_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] lemma lpTwo_zpow (m : ℤ) : ((lpTwo ^ m : ℚˣ) : ℚ) = (2 : ℚ) ^ m := by
   rw [Units.val_zpow_eq_zpow_val, lpTwo_val]
 
 /- English proof (translation)
-Use `LaurentPolynomial.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[← C_eq_algebraMap, C_apply]`. Distinguish the cases in `ha : a = 0`. Rewrite using `[if_pos ha, ha]`. Rewrite using `[if_neg ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h'` using `congrArg (fun g : LaurentPolynomial ℚ => g.coeff a) h`. Simplify using `only [lpScaleE_coeff, lpTwo_zpow] at h'`. Establish `h2 : (2 : ℚ) ^ a ≠ 1` using `fun h1 => ha ((zpow_eq_one_iff_right₀ (by norm_num) (by norm_num)).mp h1)`. Establish `h3 : ((2 : ℚ) ^ a - 1) * f.coeff a = 0` using `by rw [sub_mul, h', one_mul, sub_self]`. Break down `mul_eq_zero.mp h3 with h4 | h4` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (sub_eq_zero.mp h4) h2`. Conclude with `h4.symm`.
+A detailed English derivation is pending.
 -/
 lemma lpTwo_fix (f : LaurentPolynomial ℚ) (h : lpScaleE lpTwo f = f) :
     algebraMap ℚ (LaurentPolynomial ℚ) (f.coeff 0) = f := by
@@ -121,9 +121,9 @@ def lpFil (a : ℤ) : Submodule ℚ (LaurentPolynomial ℚ) where
   smul_mem' c x hx m hm := by simp [hx m hm]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[AddMonoidAlgebra.coeff_mul]`. Simplify using `only [Finsupp.sum]`. Use `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hij`. Establish `hi' : ¬ i < a` using `fun h => (Finsupp.mem_support_iff.mp hi) (hx i h)`. Establish `hj' : ¬ j < b` using `fun h => (Finsupp.mem_support_iff.mp hj) (hy j h)`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma lpFil_mul (a b : ℤ) (x y : LaurentPolynomial ℚ) (hx : x ∈ lpFil a) (hy : y ∈ lpFil b) :
     x * y ∈ lpFil (a + b) := by
@@ -139,29 +139,21 @@ lemma lpFil_mul (a b : ℤ) (x y : LaurentPolynomial ℚ) (hx : x ∈ lpFil a) (
   omega
 
 /- English proof (translation)
-Set `χ : Multiplicative ℤ →* ℚˣ` to `zpowersHom ℚˣ lpTwo`. Set `act : Multiplicative ℤ →* (LaurentPolynomial ℚ ≃ₐ[ℚ] LaurentPolynomial ℚ)` to `lpScaleHom.comp χ`. Establish `hact : ∀ g (f : LaurentPolynomial ℚ) m, (act g f).coeff m = ((χ g ^ m : ℚˣ) : ℚ) * f.coeff m`. Introduce `g f m`. Conclude with `lpScaleE_coeff (χ g) f m`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hone : act (Multiplicative.ofAdd 1) = lpScaleE lpTwo` using `by show lpScaleE (χ (Multiplicative.ofAdd 1)) = lpScaleE lpTwo`. Simplify using `[χ]`. Establish `hfix : ∀ f : LaurentPolynomial ℚ, (∀ g, act g f = f) → ∃ c : ℚ, algebraMap ℚ _ c = f`. Introduce `f hf`. Use `⟨f.coeff 0, lpTwo_fix f ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hf (Multiplicative.ofAdd 1)` as an intermediate fact. Rewrite `this` using `[hone]`. Then use the resulting hypothesis. Conclude with `⟨{ p := 2 hp := Nat.prime_two finK₀ := inferInstance finK := inferInstance σ := AlgHom.id ℚ ℚ σ_bij := ⟨fun _ _ h => h, fun b => ⟨b, rfl⟩⟩ actB := act invB := hfix φ := (lpScaleE lpTwo).toAlgHom φ_inj := (lpScaleE lpTwo).injective φ_K₀ := fun c => (lpScaleE lpTwo).toAlgHom.commut …`. Express the relevant statement in the definitionally equal form `(lpScaleE lpTwo (act g b)).coeff m = (act g (lpScaleE lpTwo b)).coeff m`. Rewrite using `[lpScaleE_coeff, hact, hact, lpScaleE_coeff]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `actdR := act`. Use `invdR := hfix`. Use `ι := AlgHom.id ℚ _`. Use `ι_inj := fun _ _ h => h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ι_comm := fun _ _ => rfl`. Use `Fil := lpFil`. Use `Fil_anti := fun a f hf m hm => hf m (by omega)`. Use `one_mem := fun m hm => by rw [← T_zero, T_apply, if_neg (by omega)]`. Use `Fil_mul := lpFil_mul`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `Fil_exh := fun x => by`. Use `⟨-(∑ i ∈ x.coeff.support, |i|), fun m hm => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hm' : m ∈ x.coeff.support` using `Finsupp.mem_support_iff.mpr hne`. Establish `h1` using `Finset.single_le_sum (f := fun i : ℤ => |i|) (fun i _ => abs_nonneg i) hm'`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `neg_abs_le m`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Fil_sep := fun x hx => LaurentPolynomial.ext fun m => by`. Rewrite using `[hx (m + 1) m (by omega)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Evaluate the numerical expressions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Fil_G := fun g a x hx m hm => by rw [hact, hx m hm, mul_zero]`. Use `χ := χ`. Use `t := T 1`. Use `t_unit := isUnit_T 1`. Use `t_act := fun g => LaurentPolynomial.ext fun m => by`.
-
-Rewrite using `[hact, AddMonoidAlgebra.coeff_smul_apply, T_apply, smul_eq_mul]`. Distinguish the cases in `h : (1 : ℤ) = m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
-
-Use `t_φ := LaurentPolynomial.ext fun m => by`. Express the relevant statement in the definitionally equal form `(lpScaleE lpTwo (T 1)).coeff m = _`. Rewrite using `[lpScaleE_coeff, AddMonoidAlgebra.coeff_smul_apply, T_apply, smul_eq_mul, lpTwo_zpow]`. Distinguish the cases in `h : (1 : ℤ) = m`. Substitute `h` using the available equality.
-
-Evaluate the numerical expressions. Simplify using `[h]`. Use `mem_filtration_one := fun m hm => by rw [AlgHom.id_apply, T_apply, if_neg (by omega)]`. Use `not_mem_filtration_two := fun h => by`. Establish `h1` using `h 1 (by norm_num)`.
-
-Rewrite `h1` using `[AlgHom.id_apply, T_apply, if_pos rfl]`. Conclude with `one_ne_zero h1`. Use `fund := fun b hb _ => ⟨b.coeff 0, lpTwo_fix b hb⟩ }⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsPeriodRingData_holds : ExPD := by
   let χ : Multiplicative ℤ →* ℚˣ := zpowersHom ℚˣ lpTwo

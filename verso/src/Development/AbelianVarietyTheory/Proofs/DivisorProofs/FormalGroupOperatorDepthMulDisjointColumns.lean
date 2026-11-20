@@ -22,17 +22,15 @@ def SuppIn (T : Set σ) (g : MvPowerSeries σ C) : Prop :=
   ∀ α : σ →₀ ℕ, coeff α g ≠ 0 → ∀ y ∈ α.support, y ∈ T
 
 /- English proof (translation)
-Introduce `α hα y hy` and use `h (hg α hα y hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppIn_mono {T T' : Set σ} (h : T ⊆ T') {g : MvPowerSeries σ C} (hg : SuppIn T g) :
     SuppIn T' g := fun α hα y hy => h (hg α hα y hy)
 
 /- English proof (translation)
-Introduce `α hα y hy`. Rewrite `hα` using `[coeff_mul]`. Take `⟨p, hp, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hα`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h1 : coeff p.1 f ≠ 0` using `left_ne_zero_of_mul hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : coeff p.2 g ≠ 0` using `right_ne_zero_of_mul hne`. Rewrite `hy` using `[← hp, Finsupp.mem_support_iff, Finsupp.add_apply]`. Distinguish the cases in `h : p.1 y = 0`. Rewrite `hy` using `[h, zero_add]`. Conclude with `hg _ h2 y (Finsupp.mem_support_iff.2 hy)`.
-
-Conclude with `hf _ h1 y (Finsupp.mem_support_iff.2 h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppIn_mul {T : Set σ} {f g : MvPowerSeries σ C} (hf : SuppIn T f) (hg : SuppIn T g) :
     SuppIn T (f * g) := by
@@ -50,9 +48,7 @@ theorem suppIn_mul {T : Set σ} {f g : MvPowerSeries σ C} (hf : SuppIn T f) (hg
   · exact hf _ h1 y (Finsupp.mem_support_iff.2 h)
 
 /- English proof (translation)
-Introduce `α hα y hy`. Rewrite `hα` using `[coeff_one]`. Use `split_ifs at hα with h`. Substitute `h` using the available equality. Simplify using `at hy`.
-
-Conclude with `absurd rfl hα`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem suppIn_one (T : Set σ) : SuppIn T (1 : MvPowerSeries σ C) := by
   classical
@@ -63,7 +59,7 @@ theorem suppIn_one (T : Set σ) : SuppIn T (1 : MvPowerSeries σ C) := by
   · exact absurd rfl hα
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using suppIn_one (C := C) T`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `suppIn_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem suppIn_pow {T : Set σ} {f : MvPowerSeries σ C} (hf : SuppIn T f) (n : ℕ) :
     SuppIn T (f ^ n) := by
@@ -72,7 +68,7 @@ theorem suppIn_pow {T : Set σ} {f : MvPowerSeries σ C} (hf : SuppIn T f) (n : 
   | succ n ih => rw [pow_succ]; exact suppIn_mul ih hf
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction _ (SuppIn T) (fun _ _ => suppIn_mul) (suppIn_one T) (fun i hi => suppIn_pow (h i hi) _)`.
+A detailed English derivation is pending.
 -/
 theorem suppIn_finsuppProd {T : Set σ} {τ : Type} (β : τ →₀ ℕ) (a : τ → MvPowerSeries σ C)
     (h : ∀ i ∈ β.support, SuppIn T (a i)) : SuppIn T (β.prod fun i n => a i ^ n) :=
@@ -80,9 +76,7 @@ theorem suppIn_finsuppProd {T : Set σ} {τ : Type} (β : τ →₀ ℕ) (a : τ
     (fun i hi => suppIn_pow (h i hi) _)
 
 /- English proof (translation)
-Introduce `α hα`. Rewrite `hα` using `[map_add]`. Distinguish the cases in `h : coeff α f = 0`. Rewrite `hα` using `[h, zero_add]`. Conclude with `hg α hα`.
-
-Conclude with `hf α h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppIn_add {T : Set σ} {f g : MvPowerSeries σ C} (hf : SuppIn T f) (hg : SuppIn T g) :
     SuppIn T (f + g) := by
@@ -93,13 +87,13 @@ theorem suppIn_add {T : Set σ} {f g : MvPowerSeries σ C} (hf : SuppIn T f) (hg
   · exact hf α h
 
 /- English proof (translation)
-Introduce `α hα`. Simplify using `at hα`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem suppIn_zero (T : Set σ) : SuppIn T (0 : MvPowerSeries σ C) := by
   intro α hα; simp at hα
 
 /- English proof (translation)
-Introduce `α hα`. Rewrite `hα` using `[map_smul, smul_eq_mul]`. Conclude with `hf α (right_ne_zero_of_mul hα)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppIn_smul {T : Set σ} {f : MvPowerSeries σ C} (c : C) (hf : SuppIn T f) :
     SuppIn T (c • f) := by
@@ -108,9 +102,7 @@ theorem suppIn_smul {T : Set σ} {f : MvPowerSeries σ C} (c : C) (hf : SuppIn T
   exact hf α (right_ne_zero_of_mul hα)
 
 /- English proof (translation)
-Introduce `α hα z hz`. Rewrite `hα` using `[coeff_X]`. Use `split_ifs at hα with h`. Substitute `h` using the available equality. Rewrite `hz` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`.
-
-Conclude with `hz ▸ hy`. Conclude with `absurd rfl hα`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppIn_X {T : Set σ} {y : σ} (hy : y ∈ T) : SuppIn T (X y : MvPowerSeries σ C) := by
   classical
@@ -123,16 +115,16 @@ theorem suppIn_X {T : Set σ} {y : σ} (hy : y ∈ T) : SuppIn T (X y : MvPowerS
   · exact absurd rfl hα
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ (SuppIn T) (fun _ _ => suppIn_add) (suppIn_zero T) h`.
+A detailed English derivation is pending.
 -/
 theorem suppIn_sum {T : Set σ} {τ : Type} (s : Finset τ) (f : τ → MvPowerSeries σ C)
     (h : ∀ i ∈ s, SuppIn T (f i)) : SuppIn T (∑ i ∈ s, f i) :=
   Finset.sum_induction _ (SuppIn T) (fun _ _ => suppIn_add) (suppIn_zero T) h
 
 /- English proof (translation)
-Introduce `α hα`. Rewrite `hα` using `[coeff_subst ha]`. Assume the negation of the conclusion as `hc`. Apply `hα` to reduce the goal to its premises. Use `finsum_eq_zero_of_forall_eq_zero fun e => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: coeff α (e.prod fun s n => a s ^ n) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hc (suppIn_finsuppProd e a (fun i _ => h i) α hne)`. Rewrite using `[this, smul_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppIn_subst {T : Set σ} {τ : Type} {a : τ → MvPowerSeries σ C} (ha : HasSubst a)
     (h : ∀ i, SuppIn T (a i)) (f : MvPowerSeries τ C) : SuppIn T (subst a f) := by
@@ -153,7 +145,7 @@ section Factor
 variable {C : Type} [Field C] {σ : Type}
 
 /- English proof (translation)
-Unfold `mfact`. Conclude with `Finsupp.prod_add_index_of_disjoint h _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mfact_add_of_disjoint {α₁ α₂ : σ →₀ ℕ} (h : Disjoint α₁.support α₂.support) :
     (mfact (α₁ + α₂) : C) = mfact α₁ * mfact α₂ := by
@@ -161,13 +153,13 @@ theorem mfact_add_of_disjoint {α₁ α₂ : σ →₀ ℕ} (h : Disjoint α₁.
   exact Finsupp.prod_add_index_of_disjoint h _
 
 /- English proof (translation)
-Unfold `mfact`. Conclude with `Finsupp.prod_zero_index`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mfact_zero' : (mfact (0 : σ →₀ ℕ) : C) = 1 := by
   unfold mfact; exact Finsupp.prod_zero_index
 
 /- English proof (translation)
-Rewrite using `[derivAt0_eq_sum_of_subset _ g (MvPolynomial.support_monomial_subset), Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem derivAt0_monomial (γ : σ →₀ ℕ) (c : C) (g : MvPowerSeries σ C) :
     derivAt0 (MvPolynomial.monomial γ c) g = c * mfact γ * coeff γ g := by
@@ -190,14 +182,14 @@ def derivAt0Hom (g : MvPowerSeries σ C) : MvPolynomial σ C →+ C where
     ring
 
 /- English proof (translation)
-The claim follows from `map_sum (derivAt0Hom g) f s`.
+A detailed English derivation is pending.
 -/
 theorem derivAt0_sum {τ : Type} (s : Finset τ) (f : τ → MvPolynomial σ C) (g : MvPowerSeries σ C) :
     derivAt0 (∑ i ∈ s, f i) g = ∑ i ∈ s, derivAt0 (f i) g :=
   map_sum (derivAt0Hom g) f s
 
 /- English proof (translation)
-Rewrite using `[← MvPolynomial.C_1, MvPolynomial.C_apply, derivAt0_monomial, mfact_zero', coeff_zero_eq_constantCoeff_apply, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem derivAt0_one (g : MvPowerSeries σ C) :
     derivAt0 (1 : MvPolynomial σ C) g = constantCoeff g := by
@@ -205,17 +197,15 @@ theorem derivAt0_one (g : MvPowerSeries σ C) :
     mfact_zero', coeff_zero_eq_constantCoeff_apply, one_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[coeff_mul]`. Use `Finset.sum_eq_single (α₁, α₂) (fun p hp hne => ?_) (fun h => (h (by rw [Finset.HasAntidiagonal.mem_antidiagonal])).elim)` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Assume the negation of the conclusion as `hc`. Establish `hp1 : coeff p.1 A ≠ 0` using `left_ne_zero_of_mul hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hp2 : coeff p.2 B ≠ 0` using `right_ne_zero_of_mul hc`. Apply `hne` to reduce the goal to its premises. Establish `key : p.1 = α₁`. Use extensionality with `y`. Establish `e` using `congrArg (fun f => f y) hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Finsupp.add_apply] at e`. Distinguish the cases in `hy : y ∈ T`. Establish `a2 : α₂ y = 0`. Assume the negation of the conclusion as `hz`. Conclude with `h₂ y (Finsupp.mem_support_iff.2 hz) hy`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `b2 : p.2 y = 0`. Assume the negation of the conclusion as `hz`. Conclude with `hB _ hp2 y (Finsupp.mem_support_iff.2 hz) hy`. Use linear arithmetic over natural numbers and integers. Establish `a1 : α₁ y = 0`.
+Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hz`. Conclude with `hy (h₁ y (Finsupp.mem_support_iff.2 hz))`. Establish `b1 : p.1 y = 0`. Assume the negation of the conclusion as `hz`. Conclude with `hy (hA _ hp1 y (Finsupp.mem_support_iff.2 hz))`.
-
-Use linear arithmetic over natural numbers and integers. Use `Prod.ext key ?_` and prove the remaining obligations. Rewrite `hp` using `[key]`. Conclude with `add_left_cancel hp`.
+Assume the negation of the conclusion and derive a contradiction. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mul_split {T : Set σ} {A B : MvPowerSeries σ C} (hA : SuppIn T A)
     (hB : SuppIn Tᶜ B) {α₁ α₂ : σ →₀ ℕ} (h₁ : ∀ y ∈ α₁.support, y ∈ T)
@@ -250,9 +240,9 @@ theorem coeff_mul_split {T : Set σ} {A B : MvPowerSeries σ C} (hA : SuppIn T A
   exact add_left_cancel hp
 
 /- English proof (translation)
-Establish `hPQ : P * Q = ∑ α₁ ∈ P.support, ∑ α₂ ∈ Q.support, MvPolynomial.monomial (α₁ + α₂) (P.coeff α₁ * Q.coeff α₂)` using `by conv_lhs => rw [P.as_sum, Q.as_sum]`. Rewrite using `[Finset.sum_mul_sum]`. Repeatedly rewrite using `[MvPolynomial.monomial_mul]`. Rewrite using `[hPQ, derivAt0_sum]`. Repeatedly rewrite using `[derivAt0_sum, derivAt0_monomial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Unfold `derivAt0`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun α₁ h₁ => Finset.sum_congr rfl fun α₂ h₂ => ?_` and prove the remaining obligations. Establish `hd : Disjoint α₁.support α₂.support` using `Finset.disjoint_left.2 fun y y₁ y₂ => hQ α₂ h₂ y y₂ (hP α₁ h₁ y y₁)`. Rewrite using `[mfact_add_of_disjoint hd, coeff_mul_split hA hB (hP α₁ h₁) (hQ α₂ h₂)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -287,7 +277,7 @@ variable {C : Type} [Field C] [CharZero C] {v : AddValuation C (WithTop ℝ)}
 
 omit [CharZero C] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => by rw [h i]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasSubst_of_constantCoeff_eq_zero {τ σ : Type} [Finite τ] {a : τ → MvPowerSeries σ C}
     (h : ∀ i, constantCoeff (a i) = 0) : HasSubst a :=
@@ -302,7 +292,7 @@ theorem colLin_const (c : κ) (e : Fin (d c)) :
   simp
 
 /- English proof (translation)
-Unfold `expAlong`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_eq_zero (colLin_const u x.1)) (colLin_const u x.1) ((expOf_twoSided_unique C v (d x.1) (G x.1)).1.1 x.2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem expAlong_const (x : Σ b, Fin (d b)) : constantCoeff (expAlong G u x) = 0 := by
   unfold expAlong
@@ -312,7 +302,7 @@ theorem expAlong_const (x : Σ b, Fin (d b)) : constantCoeff (expAlong G u x) = 
 omit [CharZero C] [Fintype κ] in
 
 /- English proof (translation)
-Unfold `expAlong`. Conclude with `suppIn_subst (hasSubst_of_constantCoeff_eq_zero (colLin_const u x.1)) (fun e => suppIn_sum _ _ fun a _ => suppIn_smul _ (suppIn_X rfl)) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem expAlong_suppIn (x : Σ b, Fin (d b)) :
     SuppIn {y : Σ b, ι b | y.1 = x.1} (expAlong G u x) := by
@@ -321,7 +311,7 @@ theorem expAlong_suppIn (x : Σ b, Fin (d b)) :
     (fun e => suppIn_sum _ _ fun a _ => suppIn_smul _ (suppIn_X rfl)) _
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_eq_zero (expAlong_const G u)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_expAlong : HasSubst (expAlong G u) :=
   hasSubst_of_constantCoeff_eq_zero (expAlong_const G u)
@@ -330,7 +320,7 @@ def monAlong (γ : (Σ b, Fin (d b)) →₀ ℕ) : MvPowerSeries (Σ b, ι b) C 
   subst (expAlong G u) (monomial γ (1 : C))
 
 /- English proof (translation)
-Unfold `monAlong`. Rewrite using `[← subst_mul (hasSubst_expAlong G u), monomial_mul_monomial, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem monAlong_add (γ₁ γ₂ : (Σ b, Fin (d b)) →₀ ℕ) :
     monAlong G u (γ₁ + γ₂) = monAlong G u γ₁ * monAlong G u γ₂ := by
@@ -338,9 +328,9 @@ theorem monAlong_add (γ₁ γ₂ : (Σ b, Fin (d b)) →₀ ℕ) :
   rw [← subst_mul (hasSubst_expAlong G u), monomial_mul_monomial, one_mul]
 
 /- English proof (translation)
-Unfold `monAlong`. Rewrite using `[subst_monomial (hasSubst_expAlong G u), map_one, one_mul]`. Use `suppIn_finsuppProd γ _ fun x hx => suppIn_mono ?_ (expAlong_suppIn G u x)` and prove the remaining obligations. Introduce `y hy`. Use `show y.1 ∈ S`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show y.1 = x.1 from hy]`. Conclude with `h x hx`.
+A detailed English derivation is pending.
 -/
 theorem monAlong_suppIn (γ : (Σ b, Fin (d b)) →₀ ℕ) (S : Set κ) (h : ∀ x ∈ γ.support, x.1 ∈ S) :
     SuppIn {y : Σ b, ι b | y.1 ∈ S} (monAlong G u γ) := by
@@ -353,9 +343,9 @@ theorem monAlong_suppIn (γ : (Σ b, Fin (d b)) →₀ ℕ) (S : Set κ) (h : �
   exact h x hx
 
 /- English proof (translation)
-Distinguish the cases in `hγ : γ = 0`. Use `left`. Unfold `monAlong`. Rewrite using `[subst_monomial (hasSubst_expAlong G u), hγ]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `right`. Unfold `monAlong`. Use `constantCoeff_subst_eq_zero (hasSubst_expAlong G u) (expAlong_const G u) ?_` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_monomial, if_neg (fun h => hγ h.symm)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monAlong_const (γ : (Σ b, Fin (d b)) →₀ ℕ) :
     constantCoeff (monAlong G u γ) = 1 ∨ constantCoeff (monAlong G u γ) = 0 := by
@@ -372,7 +362,7 @@ theorem monAlong_const (γ : (Σ b, Fin (d b)) →₀ ℕ) :
 
 omit [CharZero C] [Fintype κ] in
 /- English proof (translation)
-Introduce `α`. Unfold `IsIntV`. Rewrite using `[coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem monAlong_int (γ : (Σ b, Fin (d b)) →₀ ℕ) : MvIsInt v (monomial γ (1 : C)) := by
   classical
@@ -394,7 +384,7 @@ Both sides reduce to the same expression.
 theorem toE_top : toE (⊤ : WithTop ℝ) = ⊤ := rfl
 
 /- English proof (translation)
-Introduce `α hα y hy`. Rewrite `hα` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hα` using the available equality. Simplify using `at hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem one_support_vac {C : Type} [Field C] {σ : Type} :
     ∀ α ∈ (1 : MvPolynomial σ C).support, ∀ y ∈ α.support, False := by
@@ -404,7 +394,7 @@ theorem one_support_vac {C : Type} [Field C] {σ : Type} :
   simp at hy
 
 /- English proof (translation)
-Establish `hfin : {β : (Σ b, Fin (d b)) →₀ ℕ | β.degree ≤ R.totalDegree}.Finite` using `Finsupp.finite_of_degree_le _`. Take `⟨γ, hγ, hmin⟩` from `Set.exists_min_image _ (fun γ => toE (v (derivAt0 R (monAlong G u γ)))) hfin ⟨0, by simp⟩`. Use `⟨γ, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.formalGroupDifferentialOperatorDepth_eq_iInf_monomial C v κ d G ι u R]`. Conclude with `le_antisymm (iInf₂_le γ hγ) (le_iInf₂ fun β hβ => hmin β hβ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monomial_depth_eq (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ))
     (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ) (G : ∀ b, LogFGL v (d b)) (ι : κ → Type)
@@ -426,25 +416,25 @@ end DepthAdd
 open DepthAdd in
 
 /- English proof (translation)
-Introduce `C _ _ v κ _ _ d G ι _ _ u S P Q hP hQ`. Establish `hP' : ∀ α ∈ P.support, ∀ y ∈ α.support, y ∈ {y : Σ b, ι b | y.1 ∈ S}` using `fun α hα y hy => hP y ((MvPolynomial.mem_vars y).2 ⟨α, hα, hy⟩)`. Establish `hQ' : ∀ α ∈ Q.support, ∀ y ∈ α.support, y ∉ {y : Σ b, ι b | y.1 ∈ S}` using `fun α hα y hy => hQ y ((MvPolynomial.mem_vars y).2 ⟨α, hα, hy⟩)`. Set `l : ((Σ b, Fin (d b)) →₀ ℕ) → ((Σ b, Fin (d b)) →₀ ℕ)` to `fun γ => γ.filter fun x => x.1 ∈ S`. Set `r : ((Σ b, Fin (d b)) →₀ ℕ) → ((Σ b, Fin (d b)) →₀ ℕ)` to `fun γ => γ.filter fun x => x.1 ∉ S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsplit : ∀ γ, monAlong G u γ = monAlong G u (l γ) * monAlong G u (r γ)` using `fun γ => by`. Rewrite using `[← monAlong_add]`. Use `congr 1`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x.1 ∈ S <;> simp [l, r, Finsupp.filter_apply, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hA : ∀ γ, SuppIn {y : Σ b, ι b | y.1 ∈ S} (monAlong G u (l γ))` using `fun γ => monAlong_suppIn G u _ S fun x hx => by`. Assume the negation of the conclusion as `h`. Simplify using `[l, h] at hx`. Establish `hB : ∀ γ, SuppIn {y : Σ b, ι b | y.1 ∈ S}ᶜ (monAlong G u (r γ))` using `fun γ => monAlong_suppIn G u _ Sᶜ fun x hx h => by`. Simplify using `[r, h] at hx`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∀ γ, toE (v (derivAt0 (P * Q) (monAlong G u γ))) = toE (v (derivAt0 P (monAlong G u (l γ)))) + toE (v (derivAt0 Q (monAlong G u (r γ))))` using `fun γ => by`. Rewrite using `[hsplit γ, derivAt0_mul_split P Q _ _ hP' hQ' (hA γ) (hB γ), v.map_mul, toE_add]`. Establish `h2 : ∀ γ, toE (v (derivAt0 P (monAlong G u (l γ)))) ≤ toE (v (derivAt0 P (monAlong G u γ)))` using `fun γ => by`. Establish `e` using `derivAt0_mul_split P 1 _ _ hP' (fun α hα y hy => (one_support_vac α hα y hy).elim) (hA γ) (hB γ)`. Rewrite `e` using `[mul_one, derivAt0_one, ← hsplit γ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Break down `monAlong_const G u (r γ) with h | h` into its components or cases. Rewrite using `[h, mul_one]`. Rewrite using `[h, mul_zero, v.map_zero, toE_top]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ γ, toE (v (derivAt0 Q (monAlong G u (r γ)))) ≤ toE (v (derivAt0 Q (monAlong G u γ)))` using `fun γ => by`. Establish `e` using `derivAt0_mul_split 1 Q _ _ (fun α hα y hy => (one_support_vac α hα y hy).elim) hQ' (hA γ) (hB γ)`. Rewrite `e` using `[one_mul, derivAt0_one, ← hsplit γ]`. Rewrite using `[e]`. Break down `monAlong_const G u (l γ) with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, one_mul]`. Rewrite using `[h, zero_mul, v.map_zero, toE_top]`. Conclude with `le_top`. Establish `h5 : ∀ R γ, depth G u R ≤ toE (v (derivAt0 R (monAlong G u γ)))` using `fun R γ => iInf_le_of_le ⟨monomial γ 1, monAlong_int γ⟩ le_rfl`. Take `⟨γ₀, e₀⟩` from `exists_monomial_depth_eq C v κ d G ι u (P * Q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₁, e₁⟩` from `exists_monomial_depth_eq C v κ d G ι u P`. Take `⟨γ₂, e₂⟩` from `exists_monomial_depth_eq C v κ d G ι u Q`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hl : l (l γ₁ + r γ₂) = l γ₁`. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hx : x.1 ∈ S <;> simp [l, r, Finsupp.filter_apply, hx]`. Establish `hr : r (l γ₁ + r γ₂) = r γ₂`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x.1 ∈ S <;> simp [l, r, Finsupp.filter_apply, hx]`. Use `(h5 _ (l γ₁ + r γ₂)).trans ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hl, hr, e₁, e₂]`. Conclude with `add_le_add (h2 γ₁) (h3 γ₂)`. Rewrite using `[e₀, h1]`. Conclude with `add_le_add (h5 P _) (h5 Q _)`.
+A detailed English derivation is pending.
 -/
 theorem depth_mul_of_disjoint_columns : ∀ (C : Type) [Field C] [CharZero C]
     (v : AddValuation C (WithTop ℝ)) (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ)

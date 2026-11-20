@@ -36,7 +36,7 @@ def affA (hr : r ≤ a) (y : Lie E (a - r)) : Lie E a :=
   lowL hr y + toL (Matrix.reindex (GlobalTheory.LeviGA.blkEquiv hr) (GlobalTheory.LeviGA.blkEquiv hr) (Matrix.fromBlocks 1 0 0 0))
 
 /- English proof (translation)
-Rewrite using `[affA, lowL_apply, GlobalTheory.LeviGA.blkGL_val]`. Use function extensionality and compare the values at `i j`. Take `⟨i, rfl⟩` from `(GlobalTheory.LeviGA.blkEquiv hr).surjective i`. Take `⟨j, rfl⟩` from `(GlobalTheory.LeviGA.blkEquiv hr).surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [toL, Matrix.reindex_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem affA_val (hr : r ≤ a) (u : GL (Fin (a - r)) (Cinf E)) :
     affA hr (toL u.val) = toL (GlobalTheory.LeviGA.blkGL hr (1, u)).val := by
@@ -54,9 +54,9 @@ theorem infGL_apply {n : ℕ} (g : GL (Fin n) (Cinf E)) (i j : Fin n) :
       sInf E ((1 : Matrix (Fin n) (Fin n) (Cinf E)) i j) + sInf E ((g : Matrix (Fin n) (Fin n) (Cinf E)) i j) := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(GlobalTheory.LeviGA.blkEquiv hr).surjective i`. Take `⟨j, rfl⟩` from `(GlobalTheory.LeviGA.blkEquiv hr).surjective j`. Rewrite using `[GlobalTheory.LeviGA.blkGL_apply, infGL_apply, GlobalTheory.LeviGA.blkGL_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Matrix.one_apply, (GlobalTheory.LeviGA.blkEquiv hr).injective.eq_iff, infGL_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blkGL_infGL (hr : r ≤ a) (u : GL (Fin (a - r)) (Cinf E)) :
     GlobalTheory.LeviGA.blkGL hr ((1 : GA E r), infGL E (a - r) u) = infGL E a (GlobalTheory.LeviGA.blkGL hr (1, u)) := by
@@ -69,7 +69,7 @@ theorem blkGL_infGL (hr : r ≤ a) (u : GL (Fin (a - r)) (Cinf E)) :
     simp [Matrix.one_apply, (GlobalTheory.LeviGA.blkEquiv hr).injective.eq_iff, infGL_apply]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hy`. Establish `e : y = toL u.val` using `hu.symm`. Substitute `e` using the available equality. Rewrite using `[chart_val, affA_val, chart_val, ← blkGL_infGL, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_slice (hr : r ≤ a) (m₁ : GA E r) (φ : GA E a → ℂ) (m₂ : GA E (a - r)) {y : Lie E (a - r)}
     (hy : y ∈ invSet E (a - r)) :
@@ -81,7 +81,7 @@ theorem chart_slice (hr : r ≤ a) (m₁ : GA E r) (φ : GA E a → ℂ) (m₂ :
   rw [chart_val, affA_val, chart_val, ← blkGL_infGL, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Establish `h` using `affA_val (E := E) hr 1`. Rewrite `h` using `[show ((1 : GL (Fin r) (Cinf E)), (1 : GL (Fin (a - r)) (Cinf E))) = 1 from rfl, map_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affA_one (hr : r ≤ a) : affA hr (oneL E (a - r)) = oneL E a := by
   have h := affA_val (E := E) hr 1
@@ -89,15 +89,15 @@ theorem affA_one (hr : r ≤ a) : affA hr (oneL E (a - r)) = oneL E a := by
   exact h
 
 /- English proof (translation)
-The claim follows from `(lowL hr).hasFDerivAt.add_const _`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_affA (hr : r ≤ a) (y : Lie E (a - r)) : HasFDerivAt (affA hr) (lowL (E := E) hr) y :=
   (lowL hr).hasFDerivAt.add_const _
 
 /- English proof (translation)
-Rewrite using `[lowL_apply]`. Use function extensionality and compare the values at `i j`. Take `⟨i, rfl⟩` from `(GlobalTheory.LeviGA.blkEquiv hr).surjective i`. Take `⟨j, rfl⟩` from `(GlobalTheory.LeviGA.blkEquiv hr).surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [toL, Matrix.reindex_apply, Matrix.single_apply, (GlobalTheory.LeviGA.blkEquiv hr).injective.eq_iff] <;>`. Apply the tactic sequence `by_cases hi : i = p <;> by_cases hj : j = p' <;> simp [hi, hj, Pi.single_apply] <;> intros <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lowL_single (hr : r ≤ a) (p p' : Fin (a - r)) (x : Cinf E) :
     lowL hr (toL (Matrix.single p p' x)) =
@@ -111,7 +111,7 @@ theorem lowL_single (hr : r ≤ a) (p p' : Fin (a - r)) (x : Cinf E) :
     by_cases hi : i = p <;> by_cases hj : j = p' <;> simp [hi, hj, Pi.single_apply] <;> intros <;> simp_all
 
 /- English proof (translation)
-Introduce `m₂` and use `((f.2 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂))).comp ((lowL (E := E) hr).contDiff.add contDiff_const).contDiffOn (fun y hy => by obtain ⟨u, hu⟩ := hy have e : y = toL u.val := hu.symm subst e show affA hr _ ∈ _ rw [affA_val] exact val_mem_invSet _)).congr fun y hy => chart_slice h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem slice_mem_Sm (hr : r ≤ a) (m₁ : GA E r) (f : Sm E a) :
     (fun m₂ : GA E (a - r) => f.1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂))) ∈ Sm E (a - r) := fun m₂ =>
@@ -125,9 +125,9 @@ theorem slice_mem_Sm (hr : r ≤ a) (m₁ : GA E r) (f : Sm E a) :
       exact val_mem_invSet _)).congr fun y hy => chart_slice hr m₁ f.1 m₂ hy
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CuspRep.lieS_apply, GlobalTheory.CuspRep.lieS_apply, GlobalTheory.CuspRep.lie_apply, GlobalTheory.CuspRep.lie_apply, lieD, lieD, hψ]`. Establish `ev : chart (fun m : GA E (a - r) => f.1 (GlobalTheory.LeviGA.blkGL hr (m₁, m))) m₂ =ᶠ[𝓝 (oneL E (a - r))] chart f.1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂)) ∘ affA hr` using `Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun y hy => chart_slice hr m₁ f.1 m₂ hy`. Establish `hd : HasFDerivAt (chart f.1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂))) (fderiv ℝ (chart f.1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂))) (oneL E a)) (affA hr (oneL E (a - r)))`. Rewrite using `[affA_one]`. Conclude with `(differentiableAt_chart f.2 _).hasFDerivAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev.fderiv_eq, (hd.comp (oneL E (a - r)) (hasFDerivAt_affA hr _)).fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, lowL_single]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lieS_slice (hr : r ≤ a) (m₁ : GA E r) (f : Sm E a) (p p' : Fin (a - r)) (ψ : Sm E (a - r))
     (hψ : ψ.1 = fun m₂ : GA E (a - r) => f.1 (GlobalTheory.LeviGA.blkGL hr (m₁, m₂))) (x : Cinf E) (m₂ : GA E (a - r)) :
@@ -145,7 +145,7 @@ theorem lieS_slice (hr : r ≤ a) (m₁ : GA E r) (f : Sm E a) (p p' : Fin (a - 
   simp only [ContinuousLinearMap.comp_apply, lowL_single]
 
 /- English proof (translation)
-Introduce `E _ _ _ a r hr m₁ f`. Use `⟨slice_mem_Sm hr m₁ f, fun τ p p' ψ hψ => funext fun m₂ => ?_⟩` and prove the remaining obligations. Simplify using `only [Eop, LinearMap.smul_apply, LinearMap.sub_apply, Submodule.coe_smul, Submodule.coe_sub, Pi.smul_apply, Pi.sub_apply, lieS_slice hr m₁ f p p' ψ hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem slice_smooth_Eop : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ) (hr : r ≤ a)
     (m₁ : GA E r) (f : Sm E a),

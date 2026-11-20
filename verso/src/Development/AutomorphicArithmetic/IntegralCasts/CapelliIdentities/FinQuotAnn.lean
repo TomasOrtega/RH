@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Λ R M _ _ _ _ _ _ _ _ _`. Set `f : R →ₐ[Λ] Module.End Λ M` to `Algebra.lsmul Λ Λ M`. Establish `hf : ∀ r : R, r ∈ Module.annihilator R M ↔ f r = 0`. Introduce `r`. Rewrite using `[Module.mem_annihilator, LinearMap.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `g : (R ⧸ Module.annihilator R M) →ₐ[Λ] Module.End Λ M` to `Ideal.Quotient.liftₐ _ f (fun r hr => (hf r).1 hr)`. Establish `hg : Function.Injective g`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ((hf r).2 hx)`. Use `haveI : IsNoetherian Λ (Module.End Λ M) := inferInstance`. Conclude with `Module.Finite.of_injective g.toLinearMap hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi2b.fin_quot_ann :
     ∀ {Λ R M : Type} [inst : CommRing Λ] [IsNoetherianRing Λ]

@@ -4,31 +4,29 @@ open scoped InnerProductSpace BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Γ _ K ι c hK hfin hidem horth`. Establish `hmk : ∀ v (g h : Γ), ((QuotientGroup.mk g : Γ ⧸ K.comap (c v)) = QuotientGroup.mk h) ↔ c v (g⁻¹ * h) ∈ K`. Introduce `v g h`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_comap]`. Establish `hle : ∀ v, K ≤ K.comap (c v)` using `fun v g hg => (hK g).1 hg v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `F : Γ ⧸ K → ∀ v, Γ ⧸ K.comap (c v)` to `fun q v => Quotient.liftOn' q (fun g => (QuotientGroup.mk g : Γ ⧸ K.comap (c v))) (by`. Introduce `a b hab`. Rewrite `hab` using `[QuotientGroup.leftRel_apply]`. Conclude with `(QuotientGroup.eq).2 (hle v hab))`. Establish `hF : ∀ g v, F (QuotientGroup.mk g) v = QuotientGroup.mk g` using `fun g v => rfl`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp : ∀ g, {w | F (QuotientGroup.mk g) w ≠ (QuotientGroup.mk 1 : Γ ⧸ K.comap (c w))} = {v | c v g ∉ K}`. Introduce `g`. Use extensionality with `w`. Simplify using `only [Set.mem_setOf_eq, hF, ne_eq, hmk, mul_one, map_inv, inv_mem_iff]`. Set `G : Γ ⧸ K → {f : ∀ v, Γ ⧸ K.comap (c v) // {w | f w ≠ (QuotientGroup.mk 1 : Γ ⧸ K.comap (c w))}.Finite}` to `fun q => ⟨F q, by`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `QuotientGroup.induction_on q ?_` and prove the remaining obligations. Introduce `g`. Rewrite using `[hsupp]`. Conclude with `hfin g⟩`. Establish `hinj : Function.Injective G`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q₁ q₂ h12`. Use `QuotientGroup.induction_on q₁ (fun g => ?_) h12` and prove the remaining obligations. Use `QuotientGroup.induction_on q₂ (fun k => ?_)` and prove the remaining obligations. Introduce `h12`. Establish `h' : ∀ v, F (QuotientGroup.mk g) v = F (QuotientGroup.mk k) v` using `fun v => congrFun (congrArg Subtype.val h12) v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[QuotientGroup.eq, hK]`. Introduce `v`. Use `h' v` as an intermediate fact. Rewrite `this` using `[hF, hF, hmk]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcw : ∀ w (g : Γ), (QuotientGroup.mk (c w g) : Γ ⧸ K.comap (c w)) = QuotientGroup.mk g`. Introduce `w g`. Rewrite using `[hmk, map_mul, map_inv, hidem, inv_mul_cancel]`. Conclude with `K.one_mem`. Establish `hlist : ∀ (x : ι → Γ) (l : List ι), l.Nodup → ∀ w, c w ((l.map (fun v => c v (x v))).prod) = if w ∈ l then c w (x w) else 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Introduce `x l`. Proceed by induction on `l with`. Consider the case `nil => intro _ w`. Simplify using the standard rewrite rules. Consider the case `cons a t ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `hl w`. Rewrite `hl` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, ih hl.2]`. Distinguish the cases in `hw : w = a`. Substitute `hw` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hidem, hl.1]`. Rewrite using `[horth a w _ (Ne.symm hw), one_mul]`. Simplify using `[hw]`. Establish `hsurj : Function.Surjective G`. Introduce and unpack `⟨f, hf⟩`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `x : ι → Γ` to `fun v => (f v).out`. Use `⟨QuotientGroup.mk ((hf.toFinset.toList.map (fun v => c v (x v))).prod), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Use `show F (QuotientGroup.mk _) w = f w`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hF, ← hcw w, hlist x hf.toFinset.toList (Finset.nodup_toList _) w]`. Distinguish the cases in `hw : w ∈ hf.toFinset.toList`. Rewrite using `[if_pos hw, hcw]`. Conclude with `Quotient.out_eq (f w)`. Rewrite using `[if_neg hw]`.
-
-Rewrite `hw` using `[Finset.mem_toList, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Conclude with `hw.symm`. Conclude with `⟨Equiv.ofBijective G ⟨hinj, hsurj⟩, fun g v => rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem quotient_equiv_restrictedFamilies : ∀ (Γ : Type) [Group Γ] (K : Subgroup Γ) (ι : Type) (c : ι → Γ →* Γ), (∀ g, g ∈ K ↔ ∀ v, c v g ∈ K) → (∀ g, {v | c v g ∉ K}.Finite) → (∀ v g, c v (c v g) = c v g) → (∀ v w g, v ≠ w → c w (c v g) = 1) → ∃ e : Γ ⧸ K ≃ {f : ∀ v, Γ ⧸ K.comap (c v) // {w | f w ≠ (QuotientGroup.mk 1 : Γ ⧸ K.comap (c w))}.Finite}, ∀ (g : Γ) v, (e (QuotientGroup.mk g)).1 v = (QuotientGroup.mk g : Γ ⧸ K.comap (c v)) := by
   intro Γ _ K ι c hK hfin hidem horth

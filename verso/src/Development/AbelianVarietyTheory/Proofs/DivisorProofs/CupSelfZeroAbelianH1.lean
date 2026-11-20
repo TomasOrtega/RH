@@ -15,7 +15,7 @@ set_option autoImplicit false
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).1 _ _ _ _ _ _ _ _ (ovw f) _ _ _ _ _ (ovw i) _ _ (ovw (i ≫ f)) (Over.comp_left _ _ _ _ _) (fun _ ↦ rfl)).1 x`.
+A detailed English derivation is pending.
 -/
 theorem pO1_comp {R : Type} [CommRing R] {Z Y A : Over (Sp R)} (i : Z ⟶ Y) (f : Y ⟶ A) (x : HO1 A.hom) :
     pO1 i (pO1 f x) = pO1 (i ≫ f) x :=
@@ -23,13 +23,13 @@ theorem pO1_comp {R : Type} [CommRing R] {Z Y A : Over (Sp R)} (i : Z ⟶ Y) (f 
     (fun _ ↦ rfl)).1 x
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).2.2 R A).1 x`.
+A detailed English derivation is pending.
 -/
 theorem pO1_id {R : Type} [CommRing R] {A : Over (Sp R)} (x : HO1 A.hom) : pO1 (𝟙 A) x = x :=
   ((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).2.2 R A).1 x
 
 /- English proof (translation)
-Establish `: IsAffine (𝟙_ (Over (Sp R))).left`. Express the relevant statement in the definitionally equal form `IsAffine (Sp R)`. Use `infer_instance`. Conclude with `(GlobalTheory.Obs.sq_abelian_and_affine_H1 R).2 _ _ x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem pO1_unit_eq_zero {R : Type} [CommRing R] (x : HO1 (𝟙_ (Over (Sp R))).hom) : x = 0 := by
   have : IsAffine (𝟙_ (Over (Sp R))).left := by
@@ -37,16 +37,16 @@ theorem pO1_unit_eq_zero {R : Type} [CommRing R] (x : HO1 (𝟙_ (Over (Sp R))).
   exact (GlobalTheory.Obs.sq_abelian_and_affine_H1 R).2 _ _ x
 
 /- English proof (translation)
-Rewrite using `[← pO1_comp, pO1_unit_eq_zero (pO1 f x), map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pO1_toUnit_comp {R : Type} [CommRing R] {Y A : Over (Sp R)} (f : 𝟙_ (Over (Sp R)) ⟶ A) (x : HO1 A.hom) :
     pO1 (toUnit Y ≫ f) x = 0 := by
   rw [← pO1_comp, pO1_unit_eq_zero (pO1 f x), map_zero]
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[← sub_eq_zero, sub_add_eq_sub_sub]`. Apply `h` to reduce the goal to its premises. Rewrite using `[map_sub, map_sub, pO1_comp, pO1_comp, pO1_comp, lift_comp_one_right, lift_fst, lift_snd, pO1_toUnit_comp, pO1_id]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, map_sub, pO1_comp, pO1_comp, pO1_comp, lift_comp_one_left, lift_fst, lift_snd, pO1_toUnit_comp, pO1_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem primO1_of_axesO1 {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (h : AxesVanishingStructureSheafDegOne A) : StructureSheafH1Primitive A := by
   intro x
@@ -60,9 +60,9 @@ theorem primO1_of_axesO1 {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (h
     simp
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `GlobalTheory.CatCoh.H1.mk_surjective F a`. Take `⟨b, rfl⟩` from `GlobalTheory.CatCoh.H1.mk_surjective F b`. Rewrite using `[GlobalTheory.CatCoh.cup_mk, GlobalTheory.CatCoh.cup_mk, ← map_add]`. Use `GlobalTheory.CatCoh.H2.mk_eq_zero.2 ⟨fun T T' φ ↦ -(a.1 T T' φ * b.1 T T' φ), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GlobalTheory.CatCoh.d1_apply, Submodule.coe_add, Pi.add_apply, GlobalTheory.CatCoh.cupZ_apply, GlobalTheory.CatCoh.Z1.comp a, GlobalTheory.CatCoh.Z1.comp b, map_mul, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cup_add_cup_swap {R : Type} [CommRing R] {C : Type*} [Category C] (F : C ⥤ CommAlgCat.{0} R)
     (a b : CatCoh.H1 F) : cup F a b + cup F b a = 0 := by
@@ -76,9 +76,9 @@ theorem cup_add_cup_swap {R : Type} [CommRing R] {C : Type*} [Category C] (F : C
   ring
 
 /- English proof (translation)
-Establish `key : ∀ f : A ⊗ A ⟶ A, structureSheafH2Pullback f (cup _ x x) = cup _ (pO1 f x) (pO1 f x)` using `fun f ↦ ((GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id).2.1 _ _ _ _ _ _ _ _ (ovw f)).1 x x`. Apply `hN` to reduce the goal to its premises. Rewrite using `[key, key, key, hP x]`. Simplify using `only [map_add, LinearMap.add_apply]`. Use `cup_add_cup_swap (OAff (A ⊗ A).hom) (pO1 (fst A A) x) (pO1 (snd A A) x)` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `(norm := module) this`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cup_self_eq_zero_of_prim {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (hP : StructureSheafH1Primitive A)
     (hN : NoPrimitiveStructureSheafH2 A) (x : HO1 A.hom) : cup _ x x = 0 := by
@@ -91,7 +91,7 @@ theorem cup_self_eq_zero_of_prim {R : Type} [CommRing R] (A : Over (Sp R)) [GrpO
   linear_combination (norm := module) this
 
 /- English proof (translation)
-Introduce `R _ _ A _ g hA hg x`. Conclude with `cup_self_eq_zero_of_prim A (primO1_of_axesO1 A (GlobalTheory.T.axes_vanishing_noetherian_abelian R A g hA hg)) (GlobalTheory.T.abelian_scheme_no_primitive_O2 R A g hA hg) x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cup_self_eq_zero_of_isAbelianScheme : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R))
     [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ x : HO1 A.hom, cup _ x x = 0 := by

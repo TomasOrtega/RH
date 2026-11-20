@@ -20,7 +20,7 @@ structure MarkedSchemeWithCenter (k : Type u) [Field k] where
   center : ambient.IdealSheafData
 
 /- English proof (translation)
-Rewrite using `[← Scheme.IdealSheafData.comap_comp, e.inv_hom_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem comap_inv_comap_hom {X Y : Scheme.{u}} (e : X ≅ Y) (I : Y.IdealSheafData) :
     (I.comap e.hom).comap e.inv = I := by
@@ -40,28 +40,28 @@ def transport (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambie
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transport_ambient (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).ambient = A := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transport_ideal (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).ideal = D.ideal.comap e.hom := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transport_boundary (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).boundary = D.boundary.map (fun J => J.comap e.hom) := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem transport_projectionToBase (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A ≅ D.ambient) :
     (D.transport e).structMap = e.hom ≫ D.structMap := rfl
@@ -74,7 +74,7 @@ theorem transport_center (D : MarkedSchemeWithCenter k) {A : Scheme.{u}} (e : A 
     (D.transport e).center = D.center.comap e.hom := rfl
 
 /- English proof (translation)
-Substitute `h1 h2 h3 h4` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem mk_congr {K : Type u} [Field K] (A : Scheme.{u})
     (I I' : A.IdealSheafData) (B B' : List A.IdealSheafData)
@@ -85,9 +85,9 @@ private theorem mk_congr {K : Type u} [Field K] (A : Scheme.{u})
   rfl
 
 /- English proof (translation)
-Take `⟨A, I, B, f, C⟩` from `D`. Establish `h1 : I.comap (𝟙 A) = I` using `by simp`. Establish `h2 : B.map (fun J => J.comap (𝟙 A)) = B` using `by simp`. Establish `h3 : 𝟙 A ≫ f = f` using `Category.id_comp f`. Establish `h4 : C.comap (𝟙 A) = C` using `by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4`.
+A detailed English derivation is pending.
 -/
 theorem transport_refl (D : MarkedSchemeWithCenter k) : D.transport (Iso.refl D.ambient) = D := by
   obtain ⟨A, I, B, f, C⟩ := D
@@ -116,28 +116,28 @@ def dataAt (s : MarkedBlowupSequenceData p I m E) (i : ℕ) : MarkedSchemeWithCe
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem dataAt_ambient (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).ambient = s.toBlowupSequenceData.obj i := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem dataAt_ideal (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).ideal = s.ideal i := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem dataAt_boundary (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).boundary = s.boundary i := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem dataAt_structMap (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).structMap = s.proj i ≫ p := rfl
@@ -150,7 +150,7 @@ theorem dataAt_center (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     (s.dataAt i).center = s.toBlowupSequenceData.center i := rfl
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem transport_dataAt_congr {K : Type u} [Field K] {Y : Scheme.{u}}
     {q : Y ⟶ Spec (CommRingCat.of K)} {J : Y.IdealSheafData} {n : ℕ}
@@ -165,9 +165,9 @@ variable (s : MarkedBlowupSequenceData p I m E)
     (s.boundary s.toBlowupSequenceData.length))
 
 /- English proof (translation)
-Establish `hle : i ≤ s.toBlowupSequenceData.length` using `le_of_lt h`. Establish `h1 : s.appendIdeal t i = (s.ideal i).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t hle))` using `appendIdeal_of_le_length s t hle`. Establish `h2 : s.appendBoundary t i = (s.boundary i).map (fun J => J.comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t hle)))` using `appendBoundary_of_le_length s t hle`. Establish `h3 : s.appendProjectionToBase t i ≫ p = eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t hle) ≫ (s.proj i ≫ p)`. Rewrite using `[appendProjectionToBase_of_le_length s t hle, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (s.appendToBlowupSequenceData t).center i = (s.toBlowupSequenceData.center i).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t hle))` using `appendToBlowupSequenceData_center_of_lt_length s t h`. Conclude with `MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem append_dataAt_of_lt_length (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h : i < s.toBlowupSequenceData.length) :
     (s.append t hinv).dataAt i =
@@ -188,9 +188,9 @@ theorem append_dataAt_of_lt_length (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h 
   exact MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4
 
 /- English proof (translation)
-Establish `h1 : s.appendIdeal t s.toBlowupSequenceData.length = ((t.ideal 0).comap t.toBlowupSequenceData.isoZero.inv).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t (le_refl s.toBlowupSequenceData.length)))`. Rewrite using `[appendIdeal_of_le_length s t (le_refl s.toBlowupSequenceData.length), t.ideal_zero, comap_inv_comap_hom]`. Establish `h2 : s.appendBoundary t s.toBlowupSequenceData.length = ((t.boundary 0).map (fun J => J.comap t.toBlowupSequenceData.isoZero.inv)).map (fun J => J.comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t (le_refl s.toBlowupSequenceData.length))))`. Rewrite using `[appendBoundary_of_le_length s t (le_refl s.toBlowupSequenceData.length), t.boundary_zero]`. Simplify using `only [List.map_map, Function.comp_def, comap_inv_comap_hom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : s.appendProjectionToBase t s.toBlowupSequenceData.length ≫ p = eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t (le_refl s.toBlowupSequenceData.length)) ≫ (t.toBlowupSequenceData.isoZero.inv ≫ (t.proj 0 ≫ (s.proj s.toBlowupSequenceData.length ≫ p)))`. Rewrite using `[appendProjectionToBase_of_le_length s t (le_refl s.toBlowupSequenceData.length), t.proj_zero]`. Simplify using the standard rewrite rules. Establish `h4 : (s.appendToBlowupSequenceData t).center s.toBlowupSequenceData.length = ((t.toBlowupSequenceData.center 0).comap t.toBlowupSequenceData.isoZero.inv).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_le_length s t (le_refl s.toBlowupSequenceData.length)))` using `appendToBlowupSequenceData_center_length s t`. Conclude with `MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem append_dataAt_length (hinv : ComapIsoInvariance.{u}) :
     (s.append t hinv).dataAt s.toBlowupSequenceData.length =
@@ -218,9 +218,9 @@ theorem append_dataAt_length (hinv : ComapIsoInvariance.{u}) :
   exact MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4
 
 /- English proof (translation)
-Establish `h1 : s.appendIdeal t i = (t.ideal (i - s.toBlowupSequenceData.length)).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t h))` using `appendIdeal_of_length_lt s t h`. Establish `h2 : s.appendBoundary t i = (t.boundary (i - s.toBlowupSequenceData.length)).map (fun J => J.comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t h)))` using `appendBoundary_of_length_lt s t h`. Establish `h3 : s.appendProjectionToBase t i ≫ p = eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t h) ≫ (t.proj (i - s.toBlowupSequenceData.length) ≫ (s.proj s.toBlowupSequenceData.length ≫ p))`. Rewrite using `[appendProjectionToBase_of_length_lt s t h]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4 : (s.appendToBlowupSequenceData t).center i = (t.toBlowupSequenceData.center (i - s.toBlowupSequenceData.length)).comap (eqToHom (appendToBlowupSequenceData_schemeAt_of_length_lt s t h))` using `appendToBlowupSequenceData_center_of_length_lt s t h`. Conclude with `MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem append_dataAt_of_length_lt (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h : s.toBlowupSequenceData.length < i) :
     (s.append t hinv).dataAt i =
@@ -245,7 +245,7 @@ theorem append_dataAt_of_length_lt (hinv : ComapIsoInvariance.{u}) {i : ℕ} (h 
   exact MarkedSchemeWithCenter.mk_congr _ _ _ _ _ _ _ _ _ h1 h2 h3 h4
 
 /- English proof (translation)
-Establish `hgt : s.toBlowupSequenceData.length < s.toBlowupSequenceData.length + t.toBlowupSequenceData.length` using `by omega`. Establish `key : (s.append t hinv).dataAt (s.toBlowupSequenceData.length + t.toBlowupSequenceData.length) = (t.dataAt t.toBlowupSequenceData.length).transport (eqToIso (appendToBlowupSequenceData_schemeAt_length_add_length s t h))`. Rewrite using `[append_dataAt_of_length_lt s t hinv hgt]`. Conclude with `transport_dataAt_congr t (by omega) _ _`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem append_dataAt_last (hinv : ComapIsoInvariance.{u}) (h : 0 < t.toBlowupSequenceData.length) :
     (s.append t hinv).dataAt ((s.append t hinv).toBlowupSequenceData.length) =
@@ -260,9 +260,9 @@ theorem append_dataAt_last (hinv : ComapIsoInvariance.{u}) (h : 0 < t.toBlowupSe
   exact key
 
 /- English proof (translation)
-Establish `hN : i < s.toBlowupSequenceData.length + t.toBlowupSequenceData.length` using `hi`. Break down `lt_trichotomy i s.toBlowupSequenceData.length with hlt | heq | hgt` into its components or cases. Rewrite using `[append_dataAt_of_lt_length s t hinv hlt]`. Conclude with `hP (s.dataAt i) _ _ (hs i hlt)`. Substitute `heq` using the available equality.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[append_dataAt_length s t hinv]`. Conclude with `hP _ _ _ (hP (t.dataAt 0) _ _ (ht 0 (by omega)))`. Rewrite using `[append_dataAt_of_length_lt s t hinv hgt]`. Conclude with `hP (t.dataAt (i - s.toBlowupSequenceData.length)) _ _ (ht (i - s.toBlowupSequenceData.length) (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem append_dataAt_of_forall (hinv : ComapIsoInvariance.{u}) (P : MarkedSchemeWithCenter.{u} k → Prop)
     (hP : IsInvariantUnderIso P)

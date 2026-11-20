@@ -12,7 +12,7 @@ namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.SG.HidaSetting.hJ, Matrix.mulVec_sum, Matrix.mulVec_smul, star_sum, star_smul, dotProduct_sum, sum_dotProduct, smul_dotProduct, dotProduct_smul, smul_eq_mul, starRingEnd_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -27,13 +27,13 @@ theorem hJ_sum_sum' {n : ℕ} (ε : Fin n → Bool) {ι : Type} [Fintype ι] (a 
   ring
 
 /- English proof (translation)
-Establish `hU : (uMat s)ᴴ * Formalism.REAL.Jm ε * uMat s = Formalism.REAL.Jm ε` using `s.2`. Establish `hinv : uMat s * uMat s⁻¹ = 1`. Simplify using `[Formalism.MainNotions.S.uMat]`. Establish `hJc : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h1 : (uMat s)ᴴ * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * uMat s⁻¹`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, Matrix.mul_one]`. Use `_ = Formalism.REAL.Jm ε * uMat s⁻¹ := by rw [← Matrix.mul_assoc, hU]`. Establish `key : (uMat s⁻¹)ᴴ * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * uMat s`. Establish `h2` using `congrArg Matrix.conjTranspose h1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJc]`. Conclude with `h2.symm`. Simplify using `only [Formalism.L2.SG.HidaSetting.hJ, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, key]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hJ_adj {n : ℕ} {ε : Fin n → Bool} (s : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     hJ ε x (uMat s *ᵥ y) = hJ ε (uMat s⁻¹ *ᵥ x) y := by
@@ -57,11 +57,11 @@ theorem hJ_adj {n : ℕ} {ε : Fin n → Bool} (s : Formalism.REAL.UJ ε) (x y :
   simp only [Formalism.L2.SG.HidaSetting.hJ, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, key]
 
 /- English proof (translation)
-Introduce `n r ε f f' s s' g P P' hP hP'`. Use extensionality with `a b`. Establish `hu : uMat (s * g * s'⁻¹) = uMat s * uMat g * uMat s'⁻¹`. Simplify using `[Formalism.MainNotions.S.uMat]`. Establish `hw : uMat g *ᵥ (uMat s'⁻¹ *ᵥ f' b) = ∑ d, P' d b • (uMat g *ᵥ f' d)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hP' b, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`. Rewrite using `[Formalism.L2.SG.RealObj.Zhat, hu, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hJ_adj, hP a, hw, hJ_sum_sum']`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Formalism.L2.SG.RealObj.Zhat, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zAct : ZAct := by
   intro n r ε f f' s s' g P P' hP hP'
@@ -80,7 +80,7 @@ theorem zAct : ZAct := by
   ring
 
 /- English proof (translation)
-Establish `h1 : a ≠ b` using `ne_of_gt h`. Establish `h2 : ¬ a < b` using `not_lt.mpr h.le`. Simplify using `[upMat, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem upMat_lower {r : ℕ} (y : UC r) (a b : Fin (r + 1)) (h : b < a) : upMat y a b = 0 := by
   have h1 : a ≠ b := ne_of_gt h
@@ -88,7 +88,7 @@ theorem upMat_lower {r : ℕ} (y : UC r) (a b : Fin (r + 1)) (h : b < a) : upMat
   simp [upMat, h1, h2]
 
 /- English proof (translation)
-Simplify using `[upMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem upMat_diag {r : ℕ} (y : UC r) (a : Fin (r + 1)) : upMat y a a = 1 := by
   simp [upMat]

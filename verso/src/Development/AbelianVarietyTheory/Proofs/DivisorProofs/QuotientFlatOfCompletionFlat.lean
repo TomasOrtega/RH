@@ -2,9 +2,9 @@ import Mathlib
 open TensorProduct
 
 /- English proof (translation)
-Introduce `A _ f M _ _ hflat`. Use `set I : Ideal A := Ideal.span {f}`. Set `φ : AdicCompletion I A →ₐ[A] A ⧸ I` to `(Ideal.quotientEquivAlgOfEq A (pow_one I)).toAlgHom.comp (AdicCompletion.evalₐ I 1)`. Use `letI : Algebra (AdicCompletion I A) (A ⧸ I) := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower A (AdicCompletion I A) (A ⧸ I) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `IsScalarTower.of_algebraMap_eq (fun a => ?_)` and prove the remaining obligations. Conclude with `(φ.commutes a).symm`. Set `e` to `TensorProduct.AlgebraTensorModule.cancelBaseChange A (AdicCompletion I A) (A ⧸ I) (A ⧸ I) M`. Use `haveI : Module.Flat (A ⧸ I) ((A ⧸ I) ⊗[AdicCompletion I A] (AdicCompletion I A ⊗[A] M)) := inferInstance`. Conclude with `Module.Flat.of_linearEquiv e.symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.flat_quot_of_flat_adicCompletion : ∀ (A : Type) [CommRing A] (f : A) (M : Type) [AddCommGroup M] [Module A M],
   Module.Flat (AdicCompletion (Ideal.span {f}) A) (TensorProduct A (AdicCompletion (Ideal.span {f}) A) M) →

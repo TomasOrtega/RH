@@ -54,7 +54,7 @@ theorem phi_snd (n : ℕ) (B₀ : CommRingCat.{0}) (y : (F.ptK (κb κ true n)).
     ((phiPt F κ n).app B₀ y).1.2 = F.Pt.map (CommRingCat.ofHom (frb h)) y.1.2 := rfl
 
 /- English proof (translation)
-Rewrite using `[phi_snd F κ (n + 1) B₀ _ (l_zero y.1.1), base_snd, base_snd, phi_snd F κ n B₀ _ (l_zero y.1.1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_base (n : ℕ) (B₀ : CommRingCat.{0}) (y : (F.ptK (κb κ true n)).obj B₀) :
     ((phiPt F κ (n + 1)).app B₀ ((basePt F _ (red_κb κ true n.le_succ)).app B₀ y)).1.2 =
@@ -62,7 +62,7 @@ theorem phi_base (n : ℕ) (B₀ : CommRingCat.{0}) (y : (F.ptK (κb κ true n))
   rw [phi_snd F κ (n + 1) B₀ _ (l_zero y.1.1), base_snd, base_snd, phi_snd F κ n B₀ _ (l_zero y.1.1)]
 
 /- English proof (translation)
-The claim follows from `((pdOk_twId σ _).red_acr n.le_succ _).trans (congrArg (twAcr σ _ n) ((pdOk_hom (baseTw σ)).red_acr n.le_succ r))`.
+A detailed English derivation is pending.
 -/
 theorem red_galBase (σ : Gal(PadicAlgCl l/K)) (n : ℕ) (r : (base l).Acr (n + 1)) :
     (base l).red n.le_succ (galBase σ (n + 1) r) = galBase σ n ((base l).red n.le_succ r) :=
@@ -81,7 +81,7 @@ def phiM (n : ℕ) : Mor (Lc F κ true n) (Lc F κ true n) ((base l).phi n) :=
     ((base l).dpP_phi n) (phiPt F κ n) fun _ y r => ((congrArg y.1.1 (phi_mk (base l) n r)).trans (map_pow y.1.1 _ l)).symm
 
 /- English proof (translation)
-Unfold `redHc galHc redMor galMorC`. Conclude with `cr_square (galM F κ σ hσ k (n + 1)) (redM F κ k n) (redM F κ k n) (galM F κ σ hσ k n) (galBase_cris σ (n + 1)) (red_cris _ n.le_succ) (red_cris _ n.le_succ) (galBase_cris σ n) (red_galBase σ n) (base_base F (gal_κb κ σ hσ k (n + 1)) (red_κb κ k n.le_succ) (red_κb κ k n.le_succ) ( …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem red_gal (σ : Gal(PadicAlgCl l/K)) (hσ : ∀ x, galOC σ (κ x) = κ x) (k : Bool) (n j : ℕ) (x : Hc F κ k (n + 1) j) :
     redHc F κ k n.le_succ j (galHc F κ σ hσ k (n + 1) j x) = galHc F κ σ hσ k n j (redHc F κ k n.le_succ j x) := by
@@ -91,7 +91,7 @@ theorem red_gal (σ : Gal(PadicAlgCl l/K)) (hσ : ∀ x, galOC σ (κ x) = κ x)
     (base_base F (gal_κb κ σ hσ k (n + 1)) (red_κb κ k n.le_succ) (red_κb κ k n.le_succ) (gal_κb κ σ hσ k n)) j x
 
 /- English proof (translation)
-Unfold `redHc phiHc redMor phiMorC`. Conclude with `cr_square (phiM F κ (n + 1)) (redM F κ true n) (redM F κ true n) (phiM F κ n) ((base l).phi_cris (n + 1)) (red_cris _ n.le_succ) (red_cris _ n.le_succ) ((base l).phi_cris n) ((pdOk_frob _).red_acr n.le_succ) (phi_base F κ n) j x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem red_phi (n j : ℕ) (x : Hc F κ true (n + 1) j) :
     redHc F κ true n.le_succ j (phiHc F κ (n + 1) j x) = phiHc F κ n j (redHc F κ true n.le_succ j x) := by
@@ -106,7 +106,7 @@ def pullM (u : Fn.Map F F') (k : Bool) (n : ℕ) : Mor (Lc F' κ k n) (Lc F κ k
     (DPMorphism.id _).isDPMorphism (u.ptK _) fun _ _ _ => rfl
 
 /- English proof (translation)
-Unfold `redHc pullHc redMor pullMorC`. Conclude with `cr_square (pullM κ u k (n + 1)) (redM F κ k n) (redM F' κ k n) (pullM κ u k n) (idc _) (red_cris _ n.le_succ) (red_cris _ n.le_succ) (idc _) (fun r => (idc ((base l).red n.le_succ) r).symm) (base_map u (red_κb κ k n.le_succ)) j x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem red_pull (u : Fn.Map F F') (k : Bool) (n j : ℕ) (x : Hc F' κ k (n + 1) j) :
     redHc F κ k n.le_succ j (pullHc κ u k (n + 1) j x) = pullHc κ u k n j (redHc F' κ k n.le_succ j x) := by

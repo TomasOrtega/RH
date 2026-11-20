@@ -8,11 +8,11 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 noncomputable section
 
 /- English proof (translation)
-Introduce `TT α hTT hα hcurv hper`. Establish `hhol : ∃ n : ℤ, (circleIntegral α 0 (TT + 1)).im = Real.pi * n` using `hper (TT + 1) (by linarith) (by nlinarith [sq_nonneg (TT + 1 / 2)])`. Establish `hcurv' : ∀ ζ : ℂ, TT < Complex.normSq ζ → (Ann.wZb α ζ).re = 0` using `hcurv`. Use `⟨Ann.uu TT α, Ann.contDiffOn_uu hTT hα hcurv' hhol, fun ζ hζ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Ann.wZ_uu hTT hα hcurv' hhol (ζ := ζ) hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hn : ‖Ann.uu TT α ζ‖ = 1` using `Ann.norm_uu ζ`. Establish `hs : star (Ann.uu TT α ζ) * Ann.uu TT α ζ = 1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hn, ?_, ?_⟩` and prove the remaining obligations. Use `show star (Ann.uu TT α ζ) * Ann.wZ (Ann.uu TT α) ζ = α ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← mul_assoc, hs, one_mul]`. Use `show star (Ann.uu TT α ζ) * Ann.wZb (Ann.uu TT α) ζ = -star (α ζ)`. Apply the tactic sequence `rw [h2, mul_neg, ← mul_assoc, hs, one_mul] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem annulus_condition_holds : GTCAnnulus := by
   intro TT α hTT hα hcurv hper

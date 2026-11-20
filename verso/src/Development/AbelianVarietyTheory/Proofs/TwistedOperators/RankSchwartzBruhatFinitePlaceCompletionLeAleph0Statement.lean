@@ -17,7 +17,7 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.WeilM
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SBCount.rank_sb_localField_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FRankSchwartzBruhatFinitePlaceCompletionLeAleph0.lean&line=93#L93)
 -/

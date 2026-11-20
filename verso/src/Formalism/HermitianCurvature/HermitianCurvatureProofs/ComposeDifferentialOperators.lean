@@ -15,9 +15,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Introduce `w`. Take `⟨s, t, rfl⟩` from `List.append_of_mem he`. Rewrite using `[steps_append, List.mem_append]`. Use `right`. Rewrite using `[show e :: t = [e] ++ t from rfl, steps_append, List.mem_append]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the first alternative.
 
-Conclude with `Or.inl (mem_steps_full D e w)`.
+A detailed English derivation is pending.
 -/
 lemma mem_steps_of_mem (D : RealPlaceData k r Wp Wq) {nf : ℕ} {e : CT k r nf × List (Mat k r)} {Lf : FS k r nf}
     (he : e ∈ Lf) : ∀ w : List (Mat k r), (e.1, w ++ e.2) ∈ steps D w Lf := by
@@ -29,11 +29,11 @@ lemma mem_steps_of_mem (D : RealPlaceData k r Wp Wq) {nf : ℕ} {e : CT k r nf �
   exact Or.inl (mem_steps_full D e w)
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ g hg hgO`. Conclude with `h g hg hgO`. Consider the case `cons X w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hw g hg hgO`. Establish `hX : inLie k r X` using `hw X (by simp)`. Establish `ih'` using `ih (fun Y hY => hw Y (by simp [hY]))`. Use `show RdV X (Rw w H) g = RdV X (Rw w H') g`. Use `show deriv (fun t : ℝ => Rw w H (g * NormedSpace.exp ((t : ℂ) • X))) 0 = deriv (fun t : ℝ => Rw w H' (g * NormedSpace.exp ((t : ℂ) • X))) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Use `filter_upwards [crv_ev (x := (false, X)) hO hgO] with t ht`. Establish `hm` using `crv_mem (x := (false, X)) hX hg t`. Simplify using `only [crv, Bool.false_eq_true, if_false] at ht hm`. Conclude with `ih' _ hm ht`.
+A detailed English derivation is pending.
 -/
 private lemma rw_congr_on_domL {O : Set (Mat k r)} (hO : IsOpen O) {H H' : Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ g ∈ GV k r, g ∈ O → H g = H' g) :
@@ -55,7 +55,7 @@ private lemma rw_congr_on_domL {O : Set (Mat k r)} (hO : IsOpen O) {H H' : Mat k
     exact ih' _ hm ht
 
 /- English proof (translation)
-Unfold `opApply`. Use `congr 1`. Use `List.map_congr_left (fun T _ => ?_)` and prove the remaining obligations. Rewrite using `[rw_congr_on_domL hO h T.word T.word_lie g hg hgO]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma opApply_congr (Θ : DiffOp k r Wp Wq) {O : Set (Mat k r)} (hO : IsOpen O) {H H' : Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ g ∈ GV k r, g ∈ O → H g = H' g) {g : Mat k r} (hg : g ∈ GV k r) (hgO : g ∈ O) :
@@ -66,7 +66,7 @@ lemma opApply_congr (Θ : DiffOp k r Wp Wq) {O : Set (Mat k r)} (hO : IsOpen O) 
   rw [rw_congr_on_domL hO h T.word T.word_lie g hg hgO]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hΦ g₀ hg₀`. Use `⟨U, fun x => b x • f' x, hU, hgU, ?_, fun g hg hgv => by simp only [hfe g hg hgv]⟩` and prove the remaining obligations. Conclude with `((hb.of_le (WithTop.coe_le_coe.mpr le_top)).contDiffOn).smul hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma ckOn_rsmul {m : ℕ∞} {b : Mat k r → ℝ} (hb : ContDiff ℝ ∞ b) {Φ : Mat k r → (Wq →L[ℂ] Wp)}
     (hΦ : CkOn m (GV k r) Φ) : CkOn m (GV k r) (fun x => b x • Φ x) := by
@@ -76,9 +76,9 @@ lemma ckOn_rsmul {m : ℕ∞} {b : Mat k r → ℝ} (hb : ContDiff ℝ ∞ b) {�
   exact ((hb.of_le (WithTop.coe_le_coe.mpr le_top)).contDiffOn).smul hf'
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hf g₀ hg₀`. Take `⟨V, g', hV, hgV, hg', hge⟩` from `hg g₀ hg₀`. Use `⟨U ∩ V, fun x => f' x + g' x, hU.inter hV, ⟨hgU, hgV⟩, (hf'.mono Set.inter_subset_left).add (hg'.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations. Introduce `x hx hxG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hfe x hx.1 hxG, hge x hx.2 hxG]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma ckOn_GV_add {m : ℕ∞} {f f₂ : Mat k r → (Wq →L[ℂ] Wp)} (hf : CkOn m (GV k r) f)
     (hg : CkOn m (GV k r) f₂) : CkOn m (GV k r) (fun x => f x + f₂ x) := by
@@ -91,9 +91,9 @@ private lemma ckOn_GV_add {m : ℕ∞} {f f₂ : Mat k r → (Wq →L[ℂ] Wp)} 
   simp only [hfe x hx.1 hxG, hge x hx.2 hxG]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => by simp⟩`. Consider the case `cons a t ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Use `ckOn_GV_add (h a (by simp)) (ih fun b hb => h b (by simp [hb]))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma ckOn_list_sum {m : ℕ∞} {α : Type*} (L : List α) (f : α → Mat k r → (Wq →L[ℂ] Wp))
     (h : ∀ a ∈ L, CkOn m (GV k r) (f a)) : CkOn m (GV k r) (fun g => (L.map fun a => f a g).sum) := by
@@ -106,9 +106,9 @@ lemma ckOn_list_sum {m : ℕ∞} {α : Type*} (L : List α) (f : α → Mat k r 
     simpa using this
 
 /- English proof (translation)
-Unfold `opOrder`. Proceed by induction on `Θ with`. Consider the case `nil => simp`. Consider the case `cons T t ih`. Simplify using `only [List.map_cons, List.foldr_cons]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `max_le (h T (by simp)) (ih fun T' hT' => h T' (by simp [hT']))`.
+A detailed English derivation is pending.
 -/
 lemma opOrder_le_of (Θ : DiffOp k r Wp Wq) {n : ℕ} (h : ∀ T ∈ Θ, T.word.length ≤ n) : opOrder Θ ≤ n := by
   unfold opOrder
@@ -119,7 +119,7 @@ lemma opOrder_le_of (Θ : DiffOp k r Wp Wq) {n : ℕ} (h : ∀ T ∈ Θ, T.word.
     exact max_le (h T (by simp)) (ih fun T' hT' => h T' (by simp [hT']))
 
 /- English proof (translation)
-Simplify using `only [UWset, Set.mem_setOf_eq, Matrix.one_mulVec, and_self, implies_true, and_true]`. Simplify using `[UH]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma one_uw (z : Fin (2 * r + k + 1) → ℂ) : (1 : Mat k r) ∈ UWset k r z := by
   simp only [UWset, Set.mem_setOf_eq, Matrix.one_mulVec, and_self, implies_true, and_true]
@@ -134,69 +134,59 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D nf fib L o₁ κ₁ o₂ κ₂ Θ₁ Θ₂ hfib h₁ h₂`. Establish `hfibC : ∀ j, CkOn ⊤ (GPos D) (fib j)` using `fun j => (hfib j).1`. Take `⟨L₁, hB₁, hW₁, hE₁⟩` from `toFS D fib L Θ₁ h₁.2.2`. Take `⟨L₂, hB₂, hW₂, hE₂⟩` from `toFS D fib L Θ₂ h₂.2.2`. Use `set Lf := compFS D L₁ L₂ with hLf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hBf` using `compFS_bound D hB₁ hB₂`. Establish `hlieF : ∀ e ∈ Lf, ∀ X ∈ e.2, inLie k r X` using `fun e he => (hBf e he).1.2.2`. Use `set Θ := Lf.map (mkTerm D fib) with hΘ`. Establish `hopΘ : ∀ F g, opApply Θ F g = shape D fib F Lf g` using `fun F g => opApply_mk D fib Lf hlieF F g`. Establish `ident : ∀ (m : ℕ), (∀ e₁ ∈ L₁, ∀ e ∈ L₂, e.2.length + e₁.2.length ≤ m) → ∀ F : Mat k r → (Wq →L[ℂ] Wp), CkOn (m : ℕ∞) (GV k r) F → ∀ g ∈ C6.domL D L, opApply Θ F g = opApply Θ₁ (opApply Θ₂ F) g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm F hF g hg`. Rewrite using `[hopΘ, hE₁ _ g hg]`. Conclude with `(comp_identity D fib hfibC L (fun e he => (hB₁ e he).1) (fun e he => (hB₂ e he).1) hm hF (fun g' hg' => hE₂ F g' hg') hg).symm`. Establish `hN : ∀ e₁ ∈ L₁, ∀ e ∈ L₂, e.2.length + e₁.2.length ≤ opOrder Θ`. Introduce `e₁ he₁ e he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hmem : (mulCT e₁.1 e.1, e₁.2 ++ e.2) ∈ Lf`. Simplify using `only [hLf, compFS, List.mem_flatMap, List.mem_map]`. Conclude with `⟨e₁, he₁, (e.1, e₁.2 ++ e.2), mem_steps_of_mem D he e₁.2, rfl⟩`. Establish `h1` using `word_le_order Θ (T := mkTerm D fib (mulCT e₁.1 e.1, e₁.2 ++ e.2)) (List.mem_map_of_mem hmem)`. Rewrite `h1` using `[mkTerm_word D fib (hlieF _ hmem)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [List.length_append] at h1`. Use linear arithmetic over natural numbers and integers. Use `⟨Θ, ⟨?_, ?_, ?_⟩, ident (o₁ + o₂) (fun e₁ he₁ e he => by` and prove the remaining obligations. Use `(hB₁ e₁ he₁).2.2` as an intermediate fact. Use `(hB₂ e he).2.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `omega)⟩`. Introduce `T hT`. Take `⟨e, he, rfl⟩` from `List.mem_map.1 hT`. Establish `hc` using `ckOn_cv D fib hfibC (hBf e he).1`. Use `⟨hc, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hff⟩` from `hc g₀ hg₀`. Conclude with `⟨U, fun x => Formalism.FourierDecayAlt.P.HilbertSchmidtVectorization.adjR (f' x), hU, hgU, (Formalism.FourierDecayAlt.P.HilbertSchmidtVectorization.adjR (Wp := Wp) (Wq := Wq)).contDiff.comp_contDiffOn hf', fun g hg hG => by show Formalism.FourierDecayAlt.P.HilbertSchmidtVectoriza …`. Rewrite using `[hff g hg hG]`. Use the proof step `rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `p hp f hf g hg`. Distinguish the cases in `hLe : Lf = []`. Establish `: Θ = []` using `by rw [hΘ, hLe]; rfl`. Rewrite using `[this]`. Simplify using `[opApply, rho]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨e₀, he₀⟩` from `List.exists_mem_of_ne_nil _ hLe`. Simplify using `only [hLf, compFS, List.mem_flatMap, List.mem_map] at he₀`. Take `⟨e₁₀, he₁₀, e₂₀, he₂₀, -⟩` from `he₀`. Establish `hL₂ne : ∃ e ∈ L₂, True`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use `push Not at hc`. Establish `: L₂ = []` using `List.eq_nil_iff_forall_not_mem.2 fun e he => hc e he`. Rewrite `he₂₀` using `[this]`. Establish `hnil : ∀ w : List (Mat k r), steps D w ([] : FS k r nf) = []`. Introduce `w`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => show step D X (steps D w []) = []`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `he₂₀` using `[hnil]`. Simplify using `at he₂₀`. Take `⟨e₂₁, he₂₁, -⟩` from `hL₂ne`. Use `set N := opOrder Θ with hNdef`. Establish `hord₂ : ∀ T ∈ Θ₂, T.word.length + e₁₀.2.length ≤ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `T hT`. Take `⟨e, he, hw⟩` from `hW₂ T hT`. Rewrite using `[← hw]`. Conclude with `hN e₁₀ he₁₀ e he`. Establish `hord₁ : ∀ T ∈ Θ₁, ∀ T' ∈ Θ₂, T'.word.length + T.word.length ≤ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T hT T' hT'`. Take `⟨e, he, hw⟩` from `hW₁ T hT`. Take `⟨e', he', hw'⟩` from `hW₂ T' hT'`. Rewrite using `[← hw, ← hw']`. Conclude with `hN e he e' he'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hO2 : opOrder Θ₂ ≤ N` using `opOrder_le_of Θ₂ fun T hT => by have := hord₂ T hT; omega`. Establish `hfo2 : CkOn (opOrder Θ₂ : ℕ∞) (GV k r) f` using `sCkOn_mono (by exact_mod_cast hO2) hf`. Use `set s : Mat k r := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ with hsdef`. Use `set s' : Mat k r := Matrix.of p.2.2 * Matrix.of p.2.1 with hs'def`. Establish `hs : s ∈ Sset k r D.z` using `⟨_, Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hp.1, _, (Formalism.QuantumDeterminants.nSubgroup k r).2.2 _ hp.2.1, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : s' ∈ Sset k r D.z'` using `(Formalism.QuantumDeterminants.sGroup k r D.z' D.z'_mem).2.1 _ ⟨1, one_uw D.z', _, hp.2.2.2, by simp⟩ _ ⟨_, hp.2.2.1, 1, (Formalism.QuantumDeterminants.nSubgroup k r).1, by simp⟩`. Establish `hsG` using `Sset_sub hs`. Establish `hs'G` using `Sset_sub hs'`. Establish `hsgs : ∀ y : Mat k r, sgs p y = s * y * s'`. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[sgs, hsdef, hs'def, Matrix.mul_assoc]`. Use `set x₀ := sgs p g with hx₀`. Establish `hx₀D : x₀ ∈ C6.domL D L`. Rewrite using `[hx₀, hsgs]`. Use `⟨gv_mul (gv_mul hsG hg.1) hs'G, ?_, fun l hl => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.QuantumDeterminants.gInv k r D.z D.z' D.z_mem D.z'_mem s hs s' hs' g]`. Conclude with `hg.2.1`. Rewrite using `[Formalism.QuantumDeterminants.dInv k r D.z D.z' D.z_mem D.z'_mem s hs s' hs' g l]`. Conclude with `hg.2.2 l hl`. Establish `hρf : CkOn (N : ℕ∞) (GV k r) (rho D p f)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[rho_eq_trn]`. Conclude with `CkOn_trn _ hsG hs'G hf`. Take `⟨ρ, hρ, hball⟩` from `Metric.isOpen_iff.1 (isOpen_big_cell_set D L) x₀ ((mem_domL D L x₀).1 hx₀D).2`. Set `bb : ContDiffBump x₀` to `⟨ρ / 4, ρ / 2, by positivity, by linarith⟩`. Use `set φ := opApply Θ₂ f with hφ`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set φt : Mat k r → (Wq →L[ℂ] Wp) := fun x => (bb x : ℝ) • φ x with hφt`. Establish `hbb1 : ∀ y ∈ Metric.ball x₀ (ρ / 4), φt y = φ y`. Introduce `y hy`. Simplify using `[hφt, bb.one_of_mem_closedBall (Metric.ball_subset_closedBall hy)]`. Use `set m₁ := opOrder Θ₁`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφt : CkOn (m₁ : ℕ∞) (GV k r) φt` using `by set O := (Metric.closedBall x₀ (ρ / 2))ᶜ with hOdef`. Establish `hO : IsOpen O` using `Metric.isClosed_closedBall.isOpen_compl`. Establish `hcov : ∀ y ∈ GV k r, y ∈ O ∨ y ∈ C6.domL D L`. Introduce `y hy`. Distinguish the cases in `hyc : y ∈ Metric.closedBall x₀ (ρ / 2)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `right`. Conclude with `(mem_domL D L y).2 ⟨hy, hball (Metric.closedBall_subset_ball (by linarith) hyc)⟩`. Conclude with `Or.inl hyc`. Establish `e1 : φt = fun x => (Θ₂.map fun T => ap T.coef (fun y => (bb y : ℝ) • Rw T.word f y) x).sum`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hφt, hφ, opApply, ap, List.smul_sum, List.map_map, Function.comp_def]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `T _`. Conclude with `((T.coef x).map_smul_of_tower (bb x : ℝ) _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Apply `ckOn_list_sum` to reduce the goal to its premises. Introduce `T hT`. Establish `hm : m₁ + T.word.length ≤ N`. Use `opOrder_le_of Θ₁ (n := N - T.word.length) fun T₁ hT₁ => by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hord₁ T₁ hT₁ T hT` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hord₂ T hT` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hPr : Pr O (C6.domL D L) (m₁ : ℕ∞) T.coef (fun y => (bb y : ℝ) • Rw T.word f y)` using `⟨sCkOn_mono le_top (h₂.1 T hT).1, ckOn_rsmul bb.contDiff (PI.UnitaryGroupMassFormula.UsCompose.ck_Rw hf T.word_lie m₁ hm), fun y _ hyO => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: bb y = 0`. Rewrite using `[← Function.notMem_support, bb.support_eq]`. Conclude with `fun h => hyO (Metric.ball_subset_closedBall h)`. Simplify using `[this]⟩`. Conclude with `hPr.ck hO hcov`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgV` using `((mem_domL D L g).1 hg).2`. Rewrite using `[ident N hN (rho D p f) hρf g hg]`. Establish `e3 : opApply Θ₁ (opApply Θ₂ (rho D p f)) g = opApply Θ₁ (rho D p φ) g` using `opApply_congr Θ₁ (isOpen_big_cell_set D L) (fun g' hg' hV => h₂.2.1 p hp f hfo2 g' ((mem_domL D L g').2 ⟨hg', hV⟩)) hg.1 hgV`. Establish `hO' : IsOpen ((fun y : Mat k r => s * y * s') ⁻¹' Metric.ball x₀ (ρ / 4))` using `Metric.isOpen_ball.preimage ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)`. Establish `e8 : opApply Θ₁ (rho D p φ) g = opApply Θ₁ (rho D p φt) g`.
-
-Use `opApply_congr Θ₁ hO' (fun y _ hy => ?_) hg.1 ?_` and prove the remaining obligations. Simplify using `only [rho]`. Rewrite using `[hsgs, ← hbb1 _ hy]`. Use `show s * g * s' ∈ Metric.ball x₀ (ρ / 4)`. Rewrite using `[← hsgs]; exact Metric.mem_ball_self (by positivity)`.
-
-Establish `e9` using `h₁.2.1 p hp φt hφt g hg`. Establish `e10 : opApply Θ₁ φt x₀ = opApply Θ₁ φ x₀` using `opApply_congr Θ₁ Metric.isOpen_ball (fun y _ hy => hbb1 y hy) hx₀D.1 (Metric.mem_ball_self (by positivity))`. Establish `e11 : opApply Θ₁ φ x₀ = opApply Θ f x₀` using `(ident N hN f hf x₀ hx₀D).symm`. Rewrite using `[e3, e8, e9]`. Simplify using `only [rho]`.
-
-Rewrite using `[← hx₀, e10, e11]`. Introduce `T hT`. Take `⟨e, he, rfl⟩` from `List.mem_map.1 hT`. Take `⟨hg, hd, ho⟩` from `hBf e he`. Use `⟨fun g => eval (PI.UnitaryGroupMassFormula.UsCompose.vars g) e.1.q, e.1.a, e.1.b, e.1.c, e.1.es, ⟨e.1.q, hd, fun g => rfl⟩, ?_, ?_, hg.2.1, ?_⟩` and prove the remaining obligations.
-
-Introduce `l hl hl'`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_and_or]`. Break down `hg.1 l hc with h | h` into its components or cases. Conclude with `hl h`.
-
-Conclude with `hl' h`. Rewrite using `[mkTerm_word D fib (hlieF e he)]`. Conclude with `ho`. Introduce `g _`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compose_differential_operators : C6.ComposeDDPlus := by
   intro k r Wp Wq _ _ _ _ _ _ D nf fib L o₁ κ₁ o₂ κ₂ Θ₁ Θ₂ hfib h₁ h₂

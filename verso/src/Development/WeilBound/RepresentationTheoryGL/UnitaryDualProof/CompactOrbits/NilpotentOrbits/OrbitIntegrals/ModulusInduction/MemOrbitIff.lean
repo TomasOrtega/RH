@@ -19,13 +19,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 attribute [local instance] t2Sp lcSp tdSp contSMul lcH tdH scH contSMulH
 
 /- English proof (translation)
-Rewrite using `[← act_mul, inv_mul_cancel, act_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_inv_act (h : GL (Fin n) k) (q : Sp k n) : act h⁻¹ (act h q) = q := by
   rw [← act_mul, inv_mul_cancel, act_one]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← act_inv_act h q]`. Use `show ((h⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ (act h q).2 = 0`. Rewrite using `[h0, mulVec_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_snd_ne (h : GL (Fin n) k) {q : Sp k n} (hq : q.2 ≠ 0) : (act h q).2 ≠ 0 := by
   intro h0
@@ -43,11 +43,9 @@ theorem smulH_eq (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (h : GzS Z) (q : 
     h • q = (act (h : GL (Fin n) k) q : Sp k n) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Use `⟨g, g.2, ?_⟩` and prove the remaining obligations. Simplify using `only at hg`. Rewrite `hg` using `[smulH_eq]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg`. Introduce and unpack `⟨g, hg, hgq⟩`. Establish `hg' : g ∈ GzS Z` using `hg`. Use `⟨⟨g, hg'⟩, ?_⟩` and prove the remaining obligations. Use `show (⟨g, hg'⟩ : GzS Z) • toT p = toT q`.
-
-Rewrite using `[smulH_eq]`. Conclude with `hgq`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_orbit_iff' (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {p q : Sp k n} :
     toT q ∈ orbit (GzS Z) (toT p) ↔ q ∈ orb Z p := by
@@ -65,11 +63,9 @@ theorem mem_orbit_iff' (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {p q : Sp k
     exact hgq
 
 /- English proof (translation)
-Introduce `x hx`. Distinguish the cases in `hxU : x ∈ U₁`. Conclude with `hFO x (by rw [← hO]; exact ⟨hxU, hx⟩)`. Establish `hF0 : F x = 0`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hxU ((mem_supportedIn.1 hF).2 hne)`. Establish `hxP : toT x ∉ P`. Introduce `hP'`. Establish `hxO` using `hP x hP'`. Rewrite `hxO` using `[← hO]`.
-
-Conclude with `hxU hxO.1`. Rewrite using `[hF0, Set.indicator_of_notMem hxP]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_on_C' {U₁ C O : Set (Sp k n)} (hO : U₁ ∩ C = O) {P : Set (SpT k n)} (hP : ∀ x, toT x ∈ P → x ∈ O)
     {F : Sp k n → ℂ} (hF : F ∈ supportedIn U₁) (hFO : ∀ x ∈ O, F x = P.indicator 1 (toT x)) :
@@ -88,7 +84,7 @@ theorem lift_on_C' {U₁ C O : Set (Sp k n)} (hO : U₁ ∩ C = O) {P : Set (SpT
     rw [hF0, Set.indicator_of_notMem hxP]
 
 /- English proof (translation)
-Use `hξC (a - b) (Submodule.sub_mem _ ha hb) (fun q hq => by simp [h q hq])` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem xi_eq {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} {C : Set (Sp k n)} (hξC : SuppU ξ C) {a b : Sp k n → ℂ}
     (ha : a ∈ supportedIn UU) (hb : b ∈ supportedIn UU) (h : ∀ q ∈ C, a q = b q) : ξ a = ξ b := by
@@ -104,9 +100,9 @@ def sigH [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) 
   continuous_invFun := continuous_sig Z hZ t⁻¹
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[mem_supportedIn, GroundTheory.Automorphic.mem_locallyConstantCompactSupport]`. Take `⟨⟨hlc, hcs⟩, hsu⟩` from `hf`. Use `⟨⟨hlc.comp_continuous (continuous_sig Z hZ t), hcs.comp_homeomorph (sigH Z hZ t)⟩, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Establish `h1 : (sig Z t q).2 ≠ 0` using `hsu (show sig Z t q ∈ Function.support f from hq)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem comp_sig_mem [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ)
     {f : Sp k n → ℂ} (hf : f ∈ supportedIn UU) : (fun q => f (sig Z t q)) ∈ supportedIn UU := by
@@ -118,9 +114,9 @@ theorem comp_sig_mem [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) 
   exact h1
 
 /- English proof (translation)
-Establish `hc : ∀ g : GL (Fin n) k, Continuous (fun q : Sp k n => act g q)`. Introduce `g`. Unfold `act`. Use `fun_prop`. Set `e : Sp k n ≃ₜ Sp k n` to `{ toFun := fun q => act h q invFun := fun q => act h⁻¹ q left_inv := fun q => act_inv_act h q right_inv := fun q => by simpa using act_inv_act h⁻¹ q continuous_toFun := hc h continuous_invFun := hc h⁻¹ }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hf`, the goal using `[mem_supportedIn, GroundTheory.Automorphic.mem_locallyConstantCompactSupport]`. Take `⟨⟨hlc, hcs⟩, hsu⟩` from `hf`. Use `⟨⟨hlc.comp_continuous (hc h), hcs.comp_homeomorph e⟩, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Conclude with `⟨act h q, hsu hq, act_inv_act h q⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comp_act_mem (h : GL (Fin n) k) {f : Sp k n → ℂ} {V : Set (Sp k n)} (hf : f ∈ supportedIn V) :
     (fun q => f (act h q)) ∈ supportedIn ((fun q => act h⁻¹ q) '' V) := by
@@ -142,7 +138,7 @@ theorem comp_act_mem (h : GL (Fin n) k) {f : Sp k n → ℂ} {V : Set (Sp k n)} 
   exact ⟨act h q, hsu hq, act_inv_act h q⟩
 
 /- English proof (translation)
-Use `supportedIn_mono ?_ (comp_act_mem h hf)` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Conclude with `act_snd_ne h⁻¹ hq`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem comp_act_memUU (h : GL (Fin n) k) {f : Sp k n → ℂ} (hf : f ∈ supportedIn UU) :
     (fun q => f (act h q)) ∈ supportedIn UU := by

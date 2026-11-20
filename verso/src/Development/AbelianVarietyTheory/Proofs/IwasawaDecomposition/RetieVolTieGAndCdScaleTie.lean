@@ -8,7 +8,7 @@ open Formalism.BasicNotions GlobalTheory.Mem GlobalTheory.Mem.Vol GlobalTheory.M
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Introduce `D`. Use `⟨GlobalTheory.T.volumesAgreeAdelic_of_trueVolume (retie D) (fun _ => rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[cdScaleTie_iff]`. Conclude with `GlobalTheory.Mem.Vol.ScaleExists.trueScale_isScale D.cd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem retie_volTieG_and_cdScaleTie :
     ∀ D : D7, Formalism.L2.Theta.VolTieG (retie D) ∧ cdScaleTie (retie D) := by

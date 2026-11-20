@@ -15,9 +15,9 @@ variable {K L Ω : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Al
   [Field Ω] [Algebra K Ω] [Algebra L Ω]
 
 /- English proof (translation)
-Rewrite using `[mem_Dec]`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← hσ]`. Use `show (σ * σ⁻¹) x ∈ A ↔ x ∈ A`. Rewrite using `[mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_Dec_of_iff {F : Type} [Field F] [NumberField F] [Algebra F Ω] {A : ValuationSubring Ω} {σ : G F Ω}
     (hσ : ∀ x, σ x ∈ A ↔ x ∈ A) : σ ∈ Dec (F := F) A := by
@@ -44,11 +44,11 @@ Both sides reduce to the same expression.
 variable {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Take `⟨a, b, hD, hab⟩` from `hτ`. Establish `hgi : g⁻¹ ∈ Dec (F` using `K) A := (Dec (F := K) A).inv_mem hgA`. Use `⟨a, b, mem_Dec_of_iff fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[conjL_apply, apply_mem_iff_of_mem_Dec hgi, apply_mem_iff_of_mem_Dec hD, apply_mem_iff_of_mem_Dec hgA]`. Establish `hy : A.valuation (g x) ≤ 1` using `val_apply_le_one hgA hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hab (g x) hy`. Rewrite `h1` using `[← valuation_apply_lt_one_iff hgi]`. Establish `e : (g⁻¹ : G K Ω) ((τ (g x)) ^ (normV u ^ b) - (g x) ^ (normV u ^ a)) = (conjL s g hgs τ x) ^ (normV u ^ b) - x ^ (normV u ^ a)`. Rewrite using `[map_sub, map_pow, map_pow, conjL_apply]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show (g⁻¹ * g) x = x`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem conjL_mem_Weil (hgA : g ∈ Dec (F := K) A) {u : HeightOneSpectrum (𝓞 L)} (h' : IsPlaceOver A u)
     {τ : G L Ω} (hτ : τ ∈ Weil h') : conjL s g hgs τ ∈ Weil h' := by

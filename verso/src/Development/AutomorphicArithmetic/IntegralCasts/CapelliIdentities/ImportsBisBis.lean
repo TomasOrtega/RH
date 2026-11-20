@@ -6,11 +6,11 @@ noncomputable def UpperTheory.Reformulated.B.DYhc9.IsLat :
       Λ.FG ∧ Submodule.span E (↑Λ : Set (Fin N → E)) = ⊤
 
 /- English proof (translation)
-Establish `halg : IsAlgebraic ℤ a`. Establish `: Algebra.IsAlgebraic ℤ E` using `(IsFractionRing.comap_isAlgebraic_iff (A := ℤ) (K := ℚ)).mpr inferInstance`. Conclude with `Algebra.IsAlgebraic.isAlgebraic a`. Take `⟨r, hr, hint⟩` from `halg.exists_integral_multiple`. Establish `hint' : IsIntegral ℤ ((r : E) * a)` using `by simpa [zsmul_eq_mul] using hint`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r.natAbs, Int.natAbs_ne_zero.mpr hr, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq r with h | h` into its components or cases. Establish `: ((r.natAbs : E)) = (r : E)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this]` and apply the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: ((r.natAbs : E)) = -(r : E)` using `by conv_rhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[this, neg_mul]`. Conclude with `hint'.neg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.DYhc9.exists_denom {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ d : ℕ, d ≠ 0 ∧ IsIntegral ℤ ((d : E) * a) := by
@@ -33,17 +33,17 @@ private theorem UpperTheory.Reformulated.B.DYhc9.exists_denom {E : Type} [Field 
     exact hint'.neg
 
 /- English proof (translation)
-Introduce `E _ _ N Λ h x`. Establish `hx : x ∈ Submodule.span E (Λ : Set (Fin N → E))`. Rewrite using `[h.2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨m, hm, hmy⟩` from `hy`. Take `⟨n, hn, hnz⟩` from `hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m * n, mul_ne_zero hm hn, ?_⟩` and prove the remaining obligations. Establish `key : ((m * n : ℕ) : E) • (y + z) = n • ((m : E) • y) + m • ((n : E) • z)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key]`. Conclude with `Λ.add_mem (nsmul_mem hmy n) (nsmul_mem hnz m)`. Consider the case `smul a y _ hy`. Take `⟨m, hm, hmy⟩` from `hy`. Take `⟨d, hd, hint⟩` from `UpperTheory.Reformulated.B.DYhc9.exists_denom a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d * m, mul_ne_zero hd hm, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩ : ∃ b : NumberField.RingOfIntegers E, algebraMap (NumberField.RingOfIntegers E) E b = (d : E) * a` from `⟨_, IsIntegralClosure.algebraMap_mk' _ _ hint⟩`. Establish `key : ((d * m : ℕ) : E) • (a • y) = b • ((m : E) • y)`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, hb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Λ.smul_mem _ hmy`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYhc9.main :
     ∀ {E : Type} [inst : Field E] [NumberField E] {N : ℕ} {Λ : Submodule (NumberField.RingOfIntegers E) (Fin N → E)},

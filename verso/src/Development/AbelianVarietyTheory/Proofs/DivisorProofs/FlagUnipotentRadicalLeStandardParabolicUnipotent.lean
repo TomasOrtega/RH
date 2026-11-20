@@ -21,9 +21,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_eq_sum]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a l = 0`. Simplify using `[h]`. Rewrite using `[op_smul_eq_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ha l h, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_initCols_mem {n r : ℕ} (X : Matrix (Fin n) (Fin r) E) (m : Fin r) (A : Set (Fin r))
     (a : Fin (m.val + 1) → AF F ⊗[F] E) (ha : ∀ l, a l ≠ 0 → Fin.castLE m.2 l ∈ A) :
@@ -36,7 +36,7 @@ theorem mulVec_initCols_mem {n r : ℕ} (X : Matrix (Fin n) (Fin r) E) (m : Fin 
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ha l h, rfl⟩)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `absurd h (not_lt.2 (Finset.card_le_card fun k hk => ?_))` and prove the remaining obligations. Simplify using `only [Finset.mem_filter] at hk ⊢`. Conclude with `⟨hk.1, not_le.1 fun h' => absurd hk.2 (not_lt.2 (hc k hk.1 h'))⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_card_lt {r : ℕ} (S : Finset (Fin r)) {a b : ℕ}
     (h : (S.filter fun k => k.val < a).card < (S.filter fun k => k.val < b).card) :
@@ -50,37 +50,35 @@ theorem exists_of_card_lt {r : ℕ} (S : Finset (Fin r)) {a b : ℕ}
 open GlobalTheory.StdPar in
 
 /- English proof (translation)
-Use `set C := initCols X m with hCdef`. Use `set d : Fin (m.val + 1) → ℕ := fun i => (S.filter fun k => k.val < i.val).card with hd`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma h`. Establish `hC : IsIsoCols σ J C` using `isIsoCols_of_isWittFrame hW hσ hJ m.2`. Establish `memS : ∀ g ∈ unipFlag σ J C d, g ∈ unipSet σ J C d` using `fun g hg => (mem_unipFlag hJ hσ hC d).1 hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `stab : ∀ g ∈ unipSet σ J C d, ∀ A : Set (Fin r), (∀ i ∈ A, i.val ≤ m.val) → (∀ l l' : Fin (m.val + 1), Fin.castLE m.2 l ∈ A → d l' < d l → Fin.castLE m.2 l' ∈ A) → ∀ y ∈ colSpan F X A, (matHom _ σ J g).1 *ᵥ y ∈ colSpan F X A`. Introduce `g hg A hA1 hA2 y hy`. Establish `hle : colSpan F X A ≤ (colSpan F X A).comap (matHom _ σ J g).1.mulVecLin`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha0, ha⟩` from `hg.1 ⟨i.val, Nat.lt_succ_of_le (hA1 i hi)⟩`. Establish `ha' : ((matHom _ σ J g).1 - 1) *ᵥ (adMat F X)ᵀ i = adMat F C *ᵥ a` using `ha`. Establish `e : (matHom _ σ J g).1 *ᵥ (adMat F X)ᵀ i = (adMat F X)ᵀ i + ((matHom _ σ J g).1 - 1) *ᵥ (adMat F X)ᵀ i`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, add_sub_cancel]`. Use `show (matHom _ σ J g).1 *ᵥ (adMat F X)ᵀ i ∈ colSpan F X A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, ha']`. Use `add_mem (Submodule.subset_span ⟨i, hi, rfl⟩) (GlobalTheory.FlagRad.mulVec_initCols_mem X m A a fun l' hl' => ?_)` and prove the remaining obligations. Conclude with `hA2 ⟨i.val, Nat.lt_succ_of_le (hA1 i hi)⟩ l' hi (not_le.1 fun h' => hl' (ha0 l' h'))`. Conclude with `hle hy`. Establish `inv_app : ∀ (g : GAd σ J) y, (matHom _ σ J g⁻¹).1 *ᵥ (matHom _ σ J g).1 *ᵥ y = y` using `fun g y => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec]`. Introduce `g hg`. Establish `hg1` using `memS g hg`. Establish `hg2` using `memS g⁻¹ (inv_mem hg)`. Establish `iffPart : ∀ A : Set (Fin r), (∀ i ∈ A, i.val ≤ m.val) → (∀ l l' : Fin (m.val + 1), Fin.castLE m.2 l ∈ A → d l' < d l → Fin.castLE m.2 l' ∈ A) → ∀ y, y ∈ colSpan F X A ↔ (matHom _ σ J g).1 *ᵥ y ∈ colSpan F X A` using `fun A hA1 hA2 y => ⟨stab g hg1 A hA1 hA2 y, fun hy => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `stab g⁻¹ hg2 A hA1 hA2 _ hy` as an intermediate fact. Rewrite using `[inv_app] at this⟩` and apply the resulting hypothesis. Establish `e1 : {i | ∃ k ∈ S, i ≤ k} = {i | i ≤ m}` using `Set.ext fun i => ⟨fun ⟨k, hk, hik⟩ => hik.trans (hm k hk), fun hi => ⟨m, hmS, hi⟩⟩`. Establish `hB1 : ∀ i ∈ {i : Fin r | i ≤ m}, i.val ≤ m.val` using `fun i hi => hi`. Establish `hB2 : ∀ l l' : Fin (m.val + 1), Fin.castLE m.2 l ∈ {i : Fin r | i ≤ m} → d l' < d l → Fin.castLE m.2 l' ∈ {i : Fin r | i ≤ m}` using `fun l l' _ _ => Nat.le_of_lt_succ l'.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Establish `sub_app : ∀ y, (matHom _ σ J g).1 *ᵥ y - y = ((matHom _ σ J g).1 - 1) *ᵥ y` using `fun y => by`. Simplify using `[Matrix.sub_mulVec]`. Use `⟨Subgroup.mem_iInf.2 fun j => ⟨iffPart _ ?_ ?_, fun y hy => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `i ⟨k, hk, hik, -⟩`. Conclude with `hik.trans (hm k hk)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `l l' ⟨k, hk, hlk, hkj⟩ hdl`. Take `⟨k', hk', h1, h2⟩` from `GlobalTheory.FlagRad.exists_of_card_lt S hdl`. Use `⟨k', hk', h1, ?_⟩` and prove the remaining obligations. Rewrite `hlk` using `[Fin.le_def]`. Rewrite `hkj`, the goal using `[Fin.lt_def]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [Fin.coe_castLE] at hlk`. Use linear arithmetic over natural numbers and integers. Establish `hle : colSpan F X {j} ≤ (colSpan F X {i | ∃ k ∈ S, i ≤ k ∧ k < j}).comap ((matHom _ σ J g).1 - 1).mulVecLin`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi', rfl⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hij : i = j` using `hi'`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`. Distinguish the cases in `hi : i.val ≤ m.val`. Take `⟨a, ha0, ha⟩` from `hg1.1 ⟨i.val, Nat.lt_succ_of_le hi⟩`. Establish `e : ((matHom _ σ J g).1 - 1) *ᵥ (adMat F X)ᵀ i = adMat F C *ᵥ a` using `ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `GlobalTheory.FlagRad.mulVec_initCols_mem X m _ a fun l' hl' => ?_` and prove the remaining obligations. Take `⟨k, hk, h1, h2⟩` from `GlobalTheory.FlagRad.exists_of_card_lt S (not_le.1 fun h' => hl' (ha0 l' h'))`. Use `⟨k, hk, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.lt_def, ← hij]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2`. Establish `hx : (cT (σ : E →+* E) C * J) *ᵥ (fun k => X k i) = 0`. Use function extensionality and compare the values at `fun l => congrFun (congrFun hW.xx (l.castLE m.2)) i`. Take `⟨a, ha⟩` from `hg1.2 _ hx`. Establish `e : ((matHom _ σ J g).1 - 1) *ᵥ (adMat F X)ᵀ i = adMat F C *ᵥ a` using `ha`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `GlobalTheory.FlagRad.mulVec_initCols_mem X m _ a fun l' _ => ⟨m, hmS, Nat.le_of_lt_succ l'.2, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.lt_def, ← hij]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[sub_app]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle hy`. Rewrite using `[e1]`. Use `⟨iffPart _ hB1 hB2, fun y hy => ?_⟩` and prove the remaining obligations. Use `set T := cT (σ : E →+* E) (initCols X m) * J`. Establish `hT : T * initCols Y m = 1` using `Matrix.ext fun i j => (congrFun (congrFun hW.xy (i.castLE m.2)) (j.castLE m.2)).trans (by simp [Matrix.one_apply])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hQ : T * (1 - initCols Y m * T) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, hT, Matrix.one_mul, Matrix.mul_one, sub_self]`. Establish `hy' : y = adMat F (1 - initCols Y m * T) *ᵥ y`. Rewrite using `[adMat, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, sub_mulVec, one_mulVec, ← mulVec_mulVec, mem_colPerp_iff.1 hy, mulVec_zero, sub_zero]`. Establish `: (matHom _ σ J g).1 *ᵥ y - y = ((matHom _ σ J g).1 - 1).mulVecLin y` using `by simp [sub_mulVec]`.
-
-Rewrite using `[this, hy', mulVec_eq_sum, map_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[op_smul_eq_smul, map_smul]`. Take `⟨a, ha⟩` from `hg1.2 (fun i => (1 - initCols Y m * T : Matrix (Fin n) (Fin n) E) i j) (funext fun i => congrFun (congrFun hQ i) j)`. Conclude with `Submodule.smul_mem _ _ (mem_colSpan_iff.2 ⟨a, ha.symm⟩)`.
+A detailed English derivation is pending.
 -/
 theorem unipFlag_le_unip (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)

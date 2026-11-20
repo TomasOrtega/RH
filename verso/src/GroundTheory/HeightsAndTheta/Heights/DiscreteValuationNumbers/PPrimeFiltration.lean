@@ -13,7 +13,7 @@ universe u
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-The claim follows from `weightedDecomposition.decompose'_apply R (blockWeight ι) r b`.
+A detailed English derivation is pending.
 -/
 theorem decompose_blockWeight {R : Type*} [CommRing R] {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*}
     (r : MRing ι R) (b : K → ℕ) :
@@ -22,9 +22,9 @@ theorem decompose_blockWeight {R : Type*} [CommRing R] {K : Type*} [Fintype K] [
   weightedDecomposition.decompose'_apply R (blockWeight ι) r b
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h b r hr`. Rewrite using `[decompose_blockWeight]`. Conclude with `h r hr b`. Introduce `h r hr b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← decompose_blockWeight]`. Conclude with `h b hr`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_iff_isHomogeneous {R : Type*} [CommRing R] {K : Type*} [Fintype K] [DecidableEq K]
     {ι : K → Type*} (I : Ideal (MRing ι R)) :
@@ -38,7 +38,7 @@ theorem isMultiHomogIdeal_iff_isHomogeneous {R : Type*} [CommRing R] {K : Type*}
     exact h b hr
 
 /- English proof (translation)
-Rewrite `hJ`, the goal using `[isMultiHomogIdeal_iff_isHomogeneous]`. Use `hJ.sup (Ideal.homogeneous_span _ _ ?_)` and prove the remaining obligations. Introduce and unpack `x rfl`. Conclude with `⟨s, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr hf⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isMultiHomogIdeal_sup_span {R : Type*} [CommRing R] {K : Type*} [Fintype K] [DecidableEq K]
     {ι : K → Type*} {J : Ideal (MRing ι R)} {f : MRing ι R} {s : K → ℕ}
@@ -50,7 +50,7 @@ theorem isMultiHomogIdeal_sup_span {R : Type*} [CommRing R] {K : Type*} [Fintype
   exact ⟨s, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr hf⟩
 
 /- English proof (translation)
-Unfold `multAt`. Establish `: Subsingleton (MRing ι R ⧸ (⊤ : Ideal (MRing ι R)))` using `Ideal.Quotient.subsingleton_iff.mpr rfl`. Conclude with `Module.length_eq_zero`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem multAt_top {R : Type*} [CommRing R] {K : Type*} {ι : K → Type*}
     (W : Ideal (MRing ι R)) [W.IsPrime] : multAt (⊤ : Ideal (MRing ι R)) W = 0 := by
@@ -60,15 +60,15 @@ theorem multAt_top {R : Type*} [CommRing R] {K : Type*} {ι : K → Type*}
   exact Module.length_eq_zero
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ J`. Establish `: WellFoundedGT (Ideal (MRing ι F))` using `inferInstance`. Proceed by induction on `J using WellFoundedGT.induction`. Name the introduced variables `J ih`. Introduce `hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hT : J = ⊤`. Substitute `hT` using the available equality. Use `⟨[], by simp, fun m => by simp [hilbFn_top], fun W _ => by simp [multAt_top]⟩` and prove the remaining obligations. Take `⟨f, s, hf, hfJ, hQ⟩` from `h1 F K ι J hJ hT`. Establish `hQh : IsMultiHomogIdeal (J.colon {f})` using `h4 F K ι J f s hJ hf`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJQ : J ≤ J.colon {f}` using `fun x hx => Submodule.mem_colon_singleton.mpr (J.mul_mem_right f hx)`. Establish `hlt : J < J ⊔ Ideal.span {f}` using `SetLike.lt_iff_le_and_exists.mpr ⟨le_sup_left, f, Ideal.mem_sup_right (Ideal.mem_span_singleton_self f), hfJ⟩`. Take `⟨l', hl'1, hl'2, hl'3⟩` from `ih _ hlt (isMultiHomogIdeal_sup_span hJ hf)`. Use `⟨(J.colon {f}, s) :: l', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `List.mem_cons.mp hp with rfl | hp` into its components or cases. Conclude with `⟨hQ, hQh, hJQ⟩`. Take `⟨a, b, c⟩` from `hl'1 p hp`. Conclude with `⟨a, b, le_sup_left.trans c⟩`. Introduce `m`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 F K ι J f s hJ hf m, hl'2 m, List.map_cons, List.sum_cons, add_comm]`. Introduce `W _`. Rewrite using `[h3 F K ι J W f, hl'3 W, List.map_cons, List.sum_cons, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem PrimeFiltration.proof (h1 : AssociatedMultiHomogPrime.Statement.{u})
     (h2 : FiltrationStepHilb.Statement.{u}) (h3 : FiltrationStepLength.Statement.{u})

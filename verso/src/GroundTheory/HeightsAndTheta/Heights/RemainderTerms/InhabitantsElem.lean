@@ -13,7 +13,7 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Use `⟨by norm_num, by norm_num, fun n => ?_⟩` and prove the remaining obligations. Simplify using `[abs_pow]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem RestInnerTsumBound.hypotheses_inhabited_signs :
     (2 : ℝ) ≤ 3 ∧ 1 ≤ 2 ∧ ∀ n : ℕ, |(fun n : ℕ => ((-1 : ℝ) ^ n)) n| ≤ 1 := by
@@ -24,7 +24,7 @@ def inhQ : ℕ → Fin 1 → RootRing 1 (1 + 1) :=
   fun k _ => if k = 1 then C (2⁻¹) * (flagTwoSecondRoot - flagTwoFirstRoot) else if k = 2 then C (2⁻¹) else 0
 
 /- English proof (translation)
-Establish `h` using `inh_J_eq`. Establish `hH : smallBlockMu 1 1 1 .last ^ (1 * (1 * 1)) * fibreClass 1 1 1 .last = flagTwoSecondRoot`. Simplify using `[inh_mu_eq, inh_fib_eq]`. Rewrite `h` using `[fibreDegree, hH]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem flagIntegral_second_root : flagIntegral 1 (1 + 1) flagTwoSecondRoot = -1 := by
   have h := inh_J_eq
@@ -33,21 +33,21 @@ theorem flagIntegral_second_root : flagIntegral 1 (1 + 1) flagTwoSecondRoot = -1
   rwa [fibreDegree, hH] at h
 
 /- English proof (translation)
-Simplify using `only [flagIntegral, coeff_C_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flagIntegral_C_mul (f N : ℕ) (b : ℚ) (Φ : RootRing f N) :
     flagIntegral f N (C b * Φ) = b * flagIntegral f N Φ := by
   simp only [flagIntegral, coeff_C_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use `fin_cases τ`. Simplify using `[smallPowerSum, yRoot, yIndex, SmallBlock.sign]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inh_smallPowerSum_one (τ : Fin 1) : smallPowerSum 1 1 1 .last 1 τ = flagTwoSecondRoot := by
   fin_cases τ
   simp [smallPowerSum, yRoot, yIndex, SmallBlock.sign]
 
 /- English proof (translation)
-Establish `hQ : inhQ 2 τ = C (2⁻¹)` using `by simp [inhQ]`. Rewrite using `[show (2 : ℕ) - 1 = 1 from rfl, inh_smallPowerSum_one, restTerm, hQ, mul_comm flagTwoSecondRoot, flagIntegral_C_mul, flagIntegral_second_root]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem inh_restTerm (τ τ' : Fin 1) :
     restTerm 1 (1 + 1) inhQ 2 τ (smallPowerSum 1 1 1 .last (2 - 1) τ') = -1 := by
@@ -57,7 +57,7 @@ theorem inh_restTerm (τ τ' : Fin 1) :
   norm_num
 
 /- English proof (translation)
-The claim follows from `|restTerm 1 (1 + 1) inhQ k τ (smallPowerSum 1 1 1 .last (k - 1) τ')| ≤ ((1 * (1 * 1) + 1 : ℕ) : ℚ) * |fibreDegree 1 1 1 .last| * restX 1 1 ^ (k - 1) / (k.factorial : ℚ) := by refine ⟨inh_decomp, by rw [inh_restTerm]; norm_num, ?_⟩ intro k hk2 hk τ τ' obtain rfl : k = 2 := by omeg …`.
+A detailed English derivation is pending.
 -/
 theorem RestPrimeBoundOfFactor.hypotheses_inhabited_by_decomposition :
     IsPowerSumDecomposition 1 (1 + 1) (restPolynomial 1 1 1 .last) inhQ ∧
@@ -73,7 +73,7 @@ theorem RestPrimeBoundOfFactor.hypotheses_inhabited_by_decomposition :
   norm_num [restX, Nat.factorial_two]
 
 /- English proof (translation)
-The claim follows from `|restPrimeModel 1 1 1 .last inhQ s e p| ≤ 1.5 * ((1 : ℕ) : ℝ) * (restX 1 1 : ℝ) * (Real.log p / (p : ℝ) ^ 2) * ((1 * (1 * 1) + 1 : ℕ) : ℝ) * |(fibreDegree 1 1 1 .last : ℝ)| := by refine ⟨by norm_num, ?_⟩ intro p hp _ have hp2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le have hI : …`.
+A detailed English derivation is pending.
 -/
 theorem RestBoundOfPrimeBound.hypotheses_inhabited_by_decomposition
     (s : ℕ → ℕ → Fin 1 → Fin 1) (e : ℕ → ℕ → Fin 1 → ℕ → ℚ)

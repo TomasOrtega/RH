@@ -10,7 +10,7 @@ namespace GlobalTheory.FockAlg
 open MvPolynomial in
 
 /- English proof (translation)
-Introduce `p q r s` and use `⟨_root_.GlobalTheory.FockLie.omAct_lie p q r s, _root_.GlobalTheory.FockPair.pair_lie_commute p q r s⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.FockAlg.fock_lie_and_commute : ∀ (p q r s : ℕ),
     (∀ Y Z, _root_.Formalism.BasicNotions.TH.omAct p q r s (Y * Z - Z * Y) =

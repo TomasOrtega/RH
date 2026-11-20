@@ -6,15 +6,13 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Introduce `hMul hNrm hR E _ _ _ a τ C hC n hn W ν Q _ f P X`. Establish `hp` using `fun q => hNrm E a τ C hC n hn (pev (P q)) ((hR a).2 (P q))`. Establish `hd` using `fun q => hNrm E a τ C hC n hn (fun m => delta ν (X q * m)) ((hR a).1 ν (X q))`. Establish `key : ∀ y₁ y₂ v, famOf n ν f P X y₁ y₂ v = ∑ q, ((fun g => pev (P q) (n g * y₂)) * (fun g => delta ν (X q * (n g * y₁)))) * (f q).1 v`. Introduce `y₁ y₂ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[famOf_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Use `⟨fun y₁ y₂ v => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_autU.1 (Submodule.sum_mem _ fun q _ => mem_autU.2 (hMul E a _ _ (hMul E a _ _ ((hp q).1 y₂) ((hd q).1 y₁)) ((f q).2.1 v)))`. Use `choose S₁ hS₁f hS₁ using fun q => (hp q).2 choose S₂ hS₂f hS₂ using fun q => (hd q).2`. Establish `hfin : ∀ q, FiniteDimensional ℂ ↥(S₁ q * S₂ q * LinearMap.range (f q).1)` using `fun q => by`. Establish `h₁ : (S₁ q).FG` using `Submodule.fg_iff_finiteDimensional _ |>.2 (hS₁f q)`. Establish `h₂ : (S₂ q).FG` using `Submodule.fg_iff_finiteDimensional _ |>.2 (hS₂f q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₃ : (LinearMap.range (f q).1).FG` using `Submodule.fg_iff_finiteDimensional _ |>.2 inferInstance`. Conclude with `Submodule.fg_iff_finiteDimensional _ |>.1 ((h₁.mul h₂).mul h₃)`. Use `⟨⨆ q, S₁ q * S₂ q * LinearMap.range (f q).1, Submodule.finiteDimensional_iSup _, ?_⟩` and prove the remaining obligations. Introduce `y₁ y₂ v`. Rewrite using `[key]`.
-
-Conclude with `Submodule.sum_mem _ fun q _ => Submodule.mem_iSup_of_mem q (Submodule.mul_mem_mul (Submodule.mul_mem_mul (hS₁ q y₂) (hS₂ q y₁)) (LinearMap.mem_range_self _ v))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.famOfA_of :
     UpperTheory.Gal.Wt.AutMul → UpperTheory.Gal.Wt.NrmAut → UpperTheory.Gal.Wt.RFinEx → UpperTheory.Gal.Wt.FamOfA := by

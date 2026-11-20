@@ -16,7 +16,7 @@ noncomputable section
 namespace HookSum
 
 /- English proof (translation)
-Establish `h : (Finset.univ.filter fun j : Fin r => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ m) = (Finset.Icc 1 m).attachFin (fun x hx => by rw [Finset.mem_Icc] at hx; omega)`. Use extensionality with `j`. Simplify using `[Finset.mem_attachFin]`. Rewrite using `[h, Finset.card_attachFin, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_filter_one_le_le (r m : ℕ) (hm : m < r) :
     (Finset.univ.filter fun j : Fin r => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ m).card = m := by
@@ -28,11 +28,11 @@ theorem card_filter_one_le_le (r m : ℕ) (hm : m < r) :
   omega
 
 /- English proof (translation)
-Establish `h : (Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ hookShape r k l i = 1) = (Finset.univ.filter fun j : Fin r => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ l)`. Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `i _`. Simplify using `only [hookShape]`. Distinguish the cases in `h0 : (i : ℕ) = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h0]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h1 : (i : ℕ) ≤ l`. Rewrite using `[if_neg h0, if_pos h1]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[if_neg h0, if_neg h1]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, card_filter_one_le_le r l hl]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_hookShape (r k l : ℕ) (hl : l < r) :
     (Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ hookShape r k l i = 1).card = l := by
@@ -49,13 +49,13 @@ theorem card_hookShape (r k l : ℕ) (hl : l < r) :
   rw [h, card_filter_one_le_le r l hl]
 
 /- English proof (translation)
-Take `⟨r', rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by omega⟩`. Rewrite using `[Fin.sum_univ_succ]`. Establish `h0 : hookShape (r' + 1) k l 0 = k - l` using `by simp [hookShape]`. Establish `hs : ∀ i : Fin r', hookShape (r' + 1) k l i.succ = if (i : ℕ) < l then 1 else 0`. Introduce `i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hookShape, Fin.val_succ]`. Distinguish the cases in `h : (i : ℕ) < l`. Rewrite using `[if_neg (by omega), if_pos (by omega), if_pos h]`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg h]`. Rewrite using `[h0]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hs]`. Use `congr 1`. Rewrite using `[Finset.sum_boole]`. Establish `h : (Finset.univ.filter fun i : Fin r' => (i : ℕ) < l) = (Finset.range l).attachFin (fun x hx => by rw [Finset.mem_range] at hx; omega)`. Use extensionality with `j`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Finset.mem_attachFin]`. Rewrite using `[h, Finset.card_attachFin, Finset.card_range, Nat.cast_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_hookShape (r k l : ℕ) (hl : l < r) : ∑ i, hookShape r k l i = (k - l) + l := by
   obtain ⟨r', rfl⟩ : ∃ r', r = r' + 1 := ⟨r - 1, by omega⟩
@@ -78,9 +78,9 @@ theorem sum_hookShape (r k l : ℕ) (hl : l < r) : ∑ i, hookShape r k l i = (k
   rw [h, Finset.card_attachFin, Finset.card_range, Nat.cast_id]
 
 /- English proof (translation)
-Rewrite using `[partitionsOf, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]`. Use `⟨by rw [sum_hookShape r k l hlr]; omega, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Use `Fin.le_iff_val_le_val.mp hij` as an intermediate fact. Simplify using `only [hookShape]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hookShape_mem (r k l : ℕ) (hlr : l < r) (hlk : l < k) :
     hookShape r k l ∈ partitionsOf r k := by
@@ -92,7 +92,7 @@ theorem hookShape_mem (r k l : ℕ) (hlr : l < r) (hlk : l < k) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [hookShape]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hookShape_isHook (r k l : ℕ) : ∀ i : Fin r, (i : ℕ) ≠ 0 → hookShape r k l i ≤ 1 := by
   intro i hi
@@ -100,37 +100,37 @@ theorem hookShape_isHook (r k l : ℕ) : ∀ i : Fin r, (i : ℕ) ≠ 0 → hook
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite `hnu` using `[partitionsOf, Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]`. Take `⟨hsum, hA⟩` from `hnu`. Choose the witnesses or unpack the hypotheses as in `⟨r', rfl⟩ : ∃ r', r = r' + 1 := by`. Break down `r with _ | r'` into its components or cases. Simplify using `at hsum`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨r', rfl⟩`. Use `set S := (Finset.univ.filter fun i : Fin (r' + 1) => (i : ℕ) ≠ 0 ∧ nu i = 1) with hSdef`. Establish `down : ∀ i j : Fin (r' + 1), ((i : ℕ) ≠ 0 ∧ nu i = 1) → 1 ≤ (j : ℕ) → (j : ℕ) ≤ i → ((j : ℕ) ≠ 0 ∧ nu j = 1)`. Introduce `i j hi hj1 hji`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hA j i (Fin.le_iff_val_le_val.mpr hji)`. Establish `h2` using `hh j (by omega)`. Conclude with `⟨by omega, by omega⟩`. Establish `hiff : ∀ i : Fin (r' + 1), ((i : ℕ) ≠ 0 ∧ nu i = 1) ↔ (1 ≤ (i : ℕ) ∧ (i : ℕ) ≤ l)`. Introduce `i`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hP`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Establish `hsub : (Finset.univ.filter fun j : Fin (r' + 1) => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ i) ⊆ S`. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and] at hj ⊢`. Conclude with `down i j hP hj.1 hj.2`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[card_filter_one_le_le (r' + 1) i i.isLt]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce and unpack `⟨h1, h2⟩`. Assume the negation of the conclusion as `hP`. Establish `hsub : S ⊆ (Finset.univ.filter fun j : Fin (r' + 1) => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ (i : ℕ) - 1)`. Introduce `j hj`. Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and] at hj ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨by omega, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hji`. Conclude with `hP (down j i hj (by omega) (by omega))`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[card_filter_one_le_le (r' + 1) ((i : ℕ) - 1) (by omega)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hlr : l < r' + 1`. Establish `hsub : S ⊆ (Finset.univ.filter fun j : Fin (r' + 1) => 1 ≤ (j : ℕ) ∧ (j : ℕ) ≤ r')`. Introduce `j hj`. Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and] at hj ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[card_filter_one_le_le (r' + 1) r' (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hval : ∀ i : Fin (r' + 1), (i : ℕ) ≠ 0 → nu i = if (i : ℕ) ≤ l then 1 else 0`. Introduce `i hi0`. Establish `h` using `hiff i`. Establish `h1` using `hh i hi0`. Use `split_ifs with hil`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(h.mpr ⟨by omega, hil⟩).2`. Establish `: ¬ nu i = 1` using `fun h' => by have := (h.mp ⟨hi0, h'⟩).2; omega`. Use linear arithmetic over natural numbers and integers. Establish `hsucc : ∀ i : Fin r', nu i.succ = hookShape (r' + 1) k l i.succ`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hval i.succ (by simp)]`. Simplify using `[hookShape]`. Establish `hsumH` using `sum_hookShape (r' + 1) k l hlr`. Rewrite `hsum`, `hsumH` using `[Fin.sum_univ_succ]`. Establish `h0 : hookShape (r' + 1) k l 0 = k - l` using `by simp [hookShape]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [hsucc] at hsum`. Rewrite `hsumH` using `[h0]`. Establish `hnu0 : nu 0 + l = k` using `by omega`. Establish `hlk : l < k`. Assume the negation of the conclusion as `hlk`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnu00 : nu 0 = 0` using `by omega`. Establish `hl1 : 1 ≤ l` using `by omega`. Take `⟨i1, hi1⟩ : ∃ i1 : Fin (r' + 1), (i1 : ℕ) = 1` from `⟨⟨1, by omega⟩, rfl⟩`. Establish `hP` using `(hiff i1).mpr ⟨by omega, by omega⟩`. Use `hA 0 i1 (Fin.zero_le _)` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨hlr, hlk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : (i : ℕ) = 0`. Establish `: i = 0` using `Fin.ext hi`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `this` using the available equality. Rewrite using `[h0]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hval i hi]`. Simplify using `[hookShape, hi]`.
+A detailed English derivation is pending.
 -/
 theorem hook_classification {r k : ℕ} (hk : 1 ≤ k) {nu : Fin r → ℕ}
     (hnu : nu ∈ partitionsOf r k) (hh : ∀ i : Fin r, (i : ℕ) ≠ 0 → nu i ≤ 1) {l : ℕ}
@@ -219,15 +219,15 @@ theorem hook_classification {r k : ℕ} (hk : 1 ≤ k) {nu : Fin r → ℕ}
     simp [hookShape, hi]
 
 /- English proof (translation)
-Simplify using `only [mul_ite, mul_zero]`. Rewrite using `[← Finset.sum_filter]`. Use `symm`. Apply `Finset.sum_nbij' (fun l => hookShape r k l) (fun nu => (Finset.univ.filter fun i : Fin r => (i : ℕ) ≠ 0 ∧ nu i = 1).card)` to reduce the goal to its premises. Introduce `l hl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hl` using `[Finset.mem_range, lt_min_iff]`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨hookShape_mem r k l hl.1 hl.2, hookShape_isHook r k l⟩`. Introduce `nu hnu`. Rewrite `hnu` using `[Finset.mem_filter]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2, -⟩` from `hook_classification hk hnu.1 hnu.2 rfl`. Rewrite using `[Finset.mem_range, lt_min_iff]`. Conclude with `⟨h1, h2⟩`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range, lt_min_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `card_hookShape r k l hl.1`. Introduce `nu hnu`. Rewrite `hnu` using `[Finset.mem_filter]`. Conclude with `(hook_classification hk hnu.1 hnu.2 rfl).2.2`. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hl` using `[Finset.mem_range, lt_min_iff]`. Rewrite using `[card_hookShape r k l hl.1, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem sum_hooks (r k : ℕ) (hk : 1 ≤ k) (g : (Fin r → ℕ) → ℚ) :
     ∑ nu ∈ partitionsOf r k, g nu *
@@ -262,23 +262,21 @@ theorem sum_hooks (r k : ℕ) (hk : 1 ≤ k) (g : (Fin r → ℕ) → ℚ) :
 end HookSum
 
 /- English proof (translation)
-Introduce `r a hr ha`. Take `⟨Q, hQ⟩` from `hD 1 r a .last`. Take `⟨C₀, hC₀, hJ, hT⟩` from `hF 1 r a .last le_rfl hr ha`. Establish `hfR : (numStandardTable (rectangle r a) : ℚ) ≠ 0` using `by exact_mod_cast (hR r a).ne'`. Establish `hJ' : fibreDegree 1 r a .last = C₀ * numStandardTable (rectangle r a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hJ]`. Establish `: ((r * a).factorial : ℚ) ≠ 0` using `by positivity`. Rewrite using `[one_mul, pow_one, pow_one]`. Clear the denominators using the available nonvanishing facts. Establish `hterm : ∀ k ∈ Finset.Icc 2 (r + a), restTerm 1 (r + a) Q k 0 (smallPowerSum 1 r a .last (k - 1) 0) = C₀ * ∑ l ∈ Finset.range (min r k), (-1 : ℚ) ^ l * symmetricGroupCharacter (fun i => a + hookShape r k l i) ((k - 1) :: List.replicate (r * a + 1) 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Introduce `k hk`. Take `⟨hk2, hkN⟩` from `Finset.mem_Icc.mp hk`. Take `⟨S, hS1, hS2⟩` from `hT Q hQ k hk2 hkN 0`. Establish `hex` using `fun nu (hnu : nu ∈ partitionsOf r k) => hS (r + a) r k (by omega) hkN nu 1 (Or.inl rfl) (Top.antitone_of_mem_partitionsOf hnu) (Top.sum_of_mem_partitionsOf hnu)`. Use `choose! Sν hSν1 hSν2 using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSeq : S = ∑ nu ∈ partitionsOf r k, C (symmetricGroupCharacter (fun i => a + nu i) ((k - 1) :: List.replicate (r * a + 1) 1)) * Sν nu`. Apply `Flag.powerSumHom_injective` to reduce the goal to its premises. Rewrite using `[hS1, map_sum]`. Use `Finset.sum_congr rfl fun nu hnu => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hSν1 nu hnu]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[powerSumHom, SmallBlock.sign]`. Establish `hk0 : (k : ℚ) ≠ 0` using `by exact_mod_cast (show k ≠ 0 by omega)`. Establish `hcoeff : (k : ℚ) * coeff (Finsupp.single (⟨k - 1, by omega⟩ : Fin (r + a)) 1) S = ∑ nu ∈ partitionsOf r k, symmetricGroupCharacter (fun i => a + nu i) ((k - 1) :: List.replicate (r * a + 1) 1) * (if ∀ i : Fin r, (i : ℕ) ≠ 0 → nu i ≤ 1 then (-1 : ℚ) ^ ((Finset.univ.filter fun i : …`. Rewrite using `[hSeq, coeff_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun nu hnu => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_C_mul, hSν2 nu hnu, one_pow, one_mul]`. Use `split_ifs`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hh` using `HookSum.sum_hooks r k (by omega) (fun nu => symmetricGroupCharacter (fun i => a + nu i) ((k - 1) :: List.replicate (r * a + 1) 1))`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `beta_reduce at hh`. Rewrite using `[hS2, ← hh, ← hcoeff]`. Establish `: ((r * a + 1).factorial : ℚ) ≠ 0` using `by positivity`. Simplify using `only [one_mul, Nat.sub_self, pow_zero, mul_one]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsh` using `hSh r a hr ha Q hQ`. Establish `hlin` using `hL r a hr ha Q hQ`. Rewrite `hsh` using `[Finset.sum_congr rfl hterm, ← Finset.mul_sum]`. Rewrite `hlin` using `[hJ']`. Apply `mul_left_cancel₀ (mul_ne_zero hC₀ hfR)` to reduce the goal to its premises.
-
-Take the linear combination `(-(a : ℚ)) * hlin + (numStandardTable (rectangle r a) : ℚ) * hsh`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem HookCharacterSumIdentity.proof (hSh : ShiftSumRule.Statement)
     (hL : LinearTermValue.Statement) (hF : SameFactorFormula.Statement)

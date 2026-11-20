@@ -9,20 +9,20 @@ open scoped Matrix NNReal
 namespace UpperTheory.Esk.MatrixEntryBounds
 
 /- English proof (translation)
-Use polynomial arithmetic with `[sq_abs t, sq_nonneg (|t| - 1), abs_nonneg t]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem abs_le_one_add_sq (t : ℝ) : |t| ≤ 1 + t ^ 2 := by
   nlinarith [sq_abs t, sq_nonneg (|t| - 1), abs_nonneg t]
 
 /- English proof (translation)
-Use `sq_le_sq.1 h` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem abs_le_of_sq (t s : ℝ) (hs : 0 ≤ s) (h : t ^ 2 ≤ s ^ 2) : |t| ≤ s := by
   have := sq_le_sq.1 h
   rwa [abs_of_nonneg hs] at this
 
 /- English proof (translation)
-The claim follows from `|c| ≤ 1 + L ∧ |d| ≤ 1 + M + (1 + L) * C ∧ |a| ≤ 1 + K * M ∧ |b| ≤ (1 + K * M) * (1 + R) * |y| := by have hC : 0 ≤ C := (abs_nonneg x).trans hx have hy0 : 0 < |y| := hc0.trans_le hy have hy'0 : y' ≠ 0 := right_ne_zero_of_mul hyy.ne' have hay' : 0 < |y'| := abs_pos.2 hy'0 have hyy' …`.
+A detailed English derivation is pending.
 -/
 theorem core (δ C c0 x y x' y' a b c d M L R K : ℝ) (hδ : 0 < δ) (hc0 : 0 < c0) (hx : |x| ≤ C)
     (hy : c0 ≤ |y|) (hdet : |a * d - b * c| ≤ C) (hM : M * δ = 4 * C) (hL : L * c0 ^ 2 = M)
@@ -129,7 +129,7 @@ end UpperTheory.Esk.MatrixEntryBounds
 namespace UpperTheory.Esk.MatrixEntryBounds
 
 /- English proof (translation)
-The claim follows from `|g.val.det| ≤ C → δ ≤ kap z (g • z) → |g 1 0| ≤ B ∧ |g 0 0| ≤ B ∧ |g 1 1| ≤ B ∧ |g 0 1| ≤ B * |z.1.im| := by intro δ C c0 hδ hc0 have hM : (4 * C / δ) * δ = 4 * C := div_mul_cancel₀ _ hδ.ne' have hL : (4 * C / δ / c0 ^ 2) * c0 ^ 2 = 4 * C / δ := div_mul_cancel₀ _ (by positivity) …`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ δ C c : ℝ, 0 < δ → 0 < c → ∃ B : ℝ, ∀ (g : GL (Fin 2) ℝ) (z : P), |z.1.re| ≤ C → c ≤ |z.1.im| →
     |g.val.det| ≤ C → δ ≤ kap z (g • z) → |g 1 0| ≤ B ∧ |g 0 0| ≤ B ∧ |g 1 1| ≤ B ∧ |g 0 1| ≤ B * |z.1.im| := by
@@ -172,6 +172,6 @@ theorem main : ∀ δ C c : ℝ, 0 < δ → 0 < c → ∃ B : ℝ, ∀ (g : GL (
 end UpperTheory.Esk.MatrixEntryBounds
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Esk.MatrixEntryBounds.main`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.dEntry : UpperTheory.Esk.DEntry := UpperTheory.Esk.MatrixEntryBounds.main

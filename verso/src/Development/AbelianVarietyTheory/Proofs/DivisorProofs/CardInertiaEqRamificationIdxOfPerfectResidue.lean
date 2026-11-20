@@ -5,9 +5,9 @@ open IsDedekindDomain
 namespace GlobalTheory.InertiaDVR
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Establish `hb` using `Ideal.bijective_algebraMap_quotient_residueField (IsLocalRing.maximalIdeal R)`. Set `e : IsLocalRing.ResidueField R ≃+* (IsLocalRing.maximalIdeal R).ResidueField` to `RingEquiv.ofBijective _ hb`. Use `letI : Algebra (IsLocalRing.ResidueField R) (IsLocalRing.maximalIdeal R).ResidueField := e.toRingHom.toAlgebra`. Establish `: Algebra.IsIntegral (IsLocalRing.ResidueField R) (IsLocalRing.maximalIdeal R).ResidueField` using `⟨fun x => by obtain ⟨y, rfl⟩ := e.surjective x; exact isIntegral_algebraMap⟩`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField R)`.
+A detailed English derivation is pending.
 -/
 theorem perfectField_residueField_maximalIdeal (R : Type) [CommRing R] [IsLocalRing R]
     [PerfectField (IsLocalRing.ResidueField R)] (p : Ideal R) [p.IsPrime] (hp : p = IsLocalRing.maximalIdeal R) :
@@ -23,11 +23,11 @@ theorem perfectField_residueField_maximalIdeal (R : Type) [CommRing R] [IsLocalR
   exact Algebra.IsAlgebraic.perfectField (IsLocalRing.ResidueField R)
 
 /- English proof (translation)
-Introduce `R K L _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ P`. Establish `: IsGaloisGroup (L ≃ₐ[K] L) R (integralClosure R L)` using `IsGaloisGroup.of_isFractionRing _ _ _ K L`. Establish `: Module.Finite R (integralClosure R L)` using `IsIntegralClosure.finite R K L _`. Establish `hinj : Function.Injective (algebraMap R L)`. Rewrite using `[IsScalarTower.algebraMap_eq R K L]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(algebraMap K L).injective.comp (IsFractionRing.injective R K)`. Establish `: FaithfulSMul R (integralClosure R L)` using `(faithfulSMul_iff_algebraMap_injective R _).2 (fun a b h => hinj (congrArg Subtype.val h))`. Establish `: Module.Flat R (integralClosure R L)` using `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance)`. Use `P.isPrime` as an intermediate fact. Establish `hp0 : P.asIdeal.under R ≠ ⊥` using `Ideal.under_ne_bot R P.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpm : P.asIdeal.under R = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal ((Ideal.IsPrime.under R P.asIdeal).isMaximal hp0)`. Establish `: PerfectField (P.asIdeal.under R).ResidueField` using `perfectField_residueField_maximalIdeal R _ hpm`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) (P.asIdeal.under R) P.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx (P.asIdeal.under R) P.asIdeal (L ≃ₐ[K] L)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_inertia_eq_ramificationIdx : ∀ (R K L : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [PerfectField (IsLocalRing.ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field L]

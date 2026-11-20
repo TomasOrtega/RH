@@ -9,7 +9,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ E I n m hm α U`. Conclude with `⟨fun x => CupSpec.ev_δ_zero hm α U n m (by simp) (by simp) x, fun p s t hs ht x => CupSpec.ev_δ_succ hm α U p s t hs ht x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ev_delta_values : ∀ (R : Type) [CommRing R] {E : Spc} {I : Cx R} {n m : ℤ} (hm : n + 1 = m)
     (α : Cochain ((chains R).obj E) I n) (U : Scheme.{0}),

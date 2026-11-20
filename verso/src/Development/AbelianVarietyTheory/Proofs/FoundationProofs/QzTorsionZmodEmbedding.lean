@@ -16,24 +16,24 @@ private theorem qzTor_smul_mk (x : ℤ_[l]) (q : ℚ_[l]) :
     x • QZ.mk l q = QZ.mk l ((x : ℚ_[l]) * q) := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero (ZlSub l)`.
+A detailed English derivation is pending.
 -/
 private theorem qzTor_mk_eq_zero (q : ℚ_[l]) :
     QZ.mk l q = 0 ↔ ∃ z : ℤ_[l], (z : ℚ_[l]) = q :=
   Submodule.Quotient.mk_eq_zero (ZlSub l)
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_surjective (ZlSub l) a`.
+A detailed English derivation is pending.
 -/
 private theorem qzTor_mk_surj (a : QZ l) : ∃ q, QZ.mk l q = a :=
   Submodule.Quotient.mk_surjective (ZlSub l) a
 
 /- English proof (translation)
-Establish `hl : ((l : ℚ_[l]) ^ r) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Rewrite using `[qzTor_smul_mk, qzTor_mk_eq_zero, ← RingHom.mem_ker, PadicInt.ker_toZModPow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((z * (l : ℤ_[l]) ^ r : ℤ_[l]) : ℚ_[l]) = (z : ℚ_[l]) * (l : ℚ_[l]) ^ r` using `by push_cast; rfl`. Rewrite using `[this, hz]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨z, rfl⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem qzTor_key (r : ℕ) (x : ℤ_[l]) :
     x • QZ.mk l (((l : ℚ_[l]) ^ r)⁻¹) = 0 ↔ PadicInt.toZModPow r x = 0 := by
@@ -56,25 +56,23 @@ private theorem qzTor_key (r : ℕ) (x : ℤ_[l]) :
 end
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Use `⟨fun a => ?_, fun r => ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `qzTor_mk_surj l a`. Establish `hlt : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Establish `hpos : (0 : ℝ) < (‖q‖ + 1)⁻¹` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `exists_pow_lt_of_lt_one hpos hlt`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[qzTor_smul_mk, qzTor_mk_eq_zero]`. Establish `hle : ‖(l : ℚ_[l]) ^ r * q‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨_, hle⟩, ?_⟩` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression. Establish `hl : ((l : ℚ_[l]) ^ r) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hp.ne_zero) set e : QZ l := QZ.mk l (((l : ℚ_[l]) ^ r)⁻¹) with he`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective (PadicInt.toZModPow (p` using `l) r) := by haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Conclude with `ZMod.ringHom_surjective _`. Establish `hwd : ∀ x x' : ℤ_[l], PadicInt.toZModPow r x = PadicInt.toZModPow r x' → x • e = x' • e`. Introduce `x x' h`. Rewrite using `[← sub_eq_zero, ← sub_smul, he, qzTor_key, map_sub, h, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv` using `Function.surjInv_eq hs`. Set `ι : ZMod (l ^ r) →+ QZ l` to `AddMonoidHom.mk' (fun y => Function.surjInv hs y • e) (by`. Introduce `y y'`. Rewrite using `[← add_smul]`. Apply `hwd` to reduce the goal to its premises.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hinv, hinv, hinv])`. Establish `hι : ∀ x : ℤ_[l], ι (PadicInt.toZModPow r x) = x • e` using `fun x => hwd _ _ (hinv _)`. Use `⟨ι, ?_, fun a => ⟨fun ha => ?_, ?_⟩, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `hs y`. Rewrite `hy` using `[hι, he, qzTor_key]`. Conclude with `hy`. Take `⟨q, rfl⟩` from `qzTor_mk_surj l a`. Rewrite `ha` using `[qzTor_smul_mk, qzTor_mk_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `ha`. Use `⟨PadicInt.toZModPow r z, ?_⟩` and prove the remaining obligations. Rewrite using `[hι, he, qzTor_smul_mk, hz]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components.
 
-Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨y, rfl⟩`. Take `⟨x, rfl⟩` from `hs y`. Rewrite using `[hι, smul_smul, he, qzTor_key, ← RingHom.mem_ker, PadicInt.ker_toZModPow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
-
-Take `⟨x', rfl⟩` from `hs y`. Rewrite using `[← map_mul, hι, hι, mul_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qz_torsion_zmod_embedding (l : ℕ) [Fact l.Prime] :
     (∀ a : QZ l, ∃ r : ℕ, (l : ℤ_[l]) ^ r • a = 0) ∧

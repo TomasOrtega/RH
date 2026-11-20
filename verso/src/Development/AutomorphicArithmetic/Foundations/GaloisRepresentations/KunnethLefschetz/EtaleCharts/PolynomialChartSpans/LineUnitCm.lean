@@ -19,7 +19,7 @@ private def vtx (f : B ⟶ D) {U : Scheme.{0}} (x : Sx (cech f) 0 U) : U ⟶ B :
   (WidePullback.π (fun _ : Fin 1 => yoneda.map f) 0).app (op U) x
 
 /- English proof (translation)
-Unfold `vtx`. Conclude with `NatTrans.naturality_apply (WidePullback.π (fun _ : Fin 1 => yoneda.map g) 0) k.op x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem vtx_res (g : B ⟶ D) {U U' : Scheme.{0}} (k : U' ⟶ U) (x : Sx (cech g) 0 U) :
     vtx g (((cech g).obj (op (SimplexCategory.mk 0))).map k.op x) = k ≫ vtx g x := by
@@ -27,7 +27,7 @@ private theorem vtx_res (g : B ⟶ D) {U U' : Scheme.{0}} (k : U' ⟶ U) (x : Sx
   exact NatTrans.naturality_apply (WidePullback.π (fun _ : Fin 1 => yoneda.map g) 0) k.op x
 
 /- English proof (translation)
-Establish `h` using `ConcreteCategory.congr_hom (congr_app (WidePullback.lift_π (fun _ : Fin 1 => yoneda.map g) (WidePullback.base (fun _ : Fin 2 => yoneda.map g)) (fun k : Fin 1 => WidePullback.π (fun _ : Fin 2 => yoneda.map g) ((SimplexCategory.δ (n := 0) i).toOrderHom k)) (fun _ => WidePullback.π_ …`. Unfold `vtx vx`. Use `(Eq.trans ?_ h).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Apply the tactic sequence `fin_cases i <;> rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem vtx_face (g : B ⟶ D) {U : Scheme.{0}} (x : Sx (cech g) 1 U) (i : Fin 2) :
     vtx g (((cech g).map (SimplexCategory.δ (n := 0) i).op).app (op U) x) = vx g (1 - i) x := by
@@ -48,14 +48,14 @@ private def cm (τ : A ⟶ B) (j : C ⟶ D) (w : τ ≫ f = e ≫ j) : cech e �
   Arrow.mapCechNerve (sq τ j w)
 
 /- English proof (translation)
-The claim follows from `(Arrow.mapAugmentedCechNerve (sq τ j w)).w`.
+A detailed English derivation is pending.
 -/
 private theorem cm_aug (τ : A ⟶ B) (j : C ⟶ D) (w : τ ≫ f = e ≫ j) :
     cm τ j w ≫ cechAug f = cechAug e ≫ sch.map j :=
   (Arrow.mapAugmentedCechNerve (sq τ j w)).w
 
 /- English proof (translation)
-Establish `h` using `ConcreteCategory.congr_hom (congr_app (WidePullback.lift_π (fun _ : Fin 2 => yoneda.map f) (WidePullback.base (fun _ : Fin 2 => yoneda.map e) ≫ yoneda.map j) (fun k : Fin 2 => WidePullback.π (fun _ : Fin 2 => yoneda.map e) k ≫ yoneda.map τ) (fun k => by rw [Category.assoc, ← Func …`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem vx_cm (τ : A ⟶ B) (j : C ⟶ D) (w : τ ≫ f = e ≫ j) {V : Scheme.{0}} (x : Sx (cech e) 1 V) (i : Fin 2) :
     vx f i (((cm τ j w).app (op (SimplexCategory.mk 1))).app (op V) x) = vx e i x ≫ τ := by
@@ -67,7 +67,7 @@ private theorem vx_cm (τ : A ⟶ B) (j : C ⟶ D) (w : τ ≫ f = e ≫ j) {V :
   exact h
 
 /- English proof (translation)
-Establish `h'` using `ConcreteCategory.congr_hom (congr_app (WidePullback.lift_π (fun _ : Fin 2 => yoneda.map f) (yoneda.map b) (fun k => yoneda.map (a k)) (fun k => by rw [← yoneda.map_comp, h k]) i) (op V)) (𝟙 V)`. Conclude with `h'.trans (Category.id_comp (a i) : 𝟙 V ≫ a i = a i)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem vx_pt {V : Scheme.{0}} (b : V ⟶ D) (a : Fin 2 → (V ⟶ B)) (h : ∀ i, a i ≫ f = b) (i : Fin 2) :
     vx f i (cechPt f 1 b a h) = a i := by
@@ -76,13 +76,13 @@ private theorem vx_pt {V : Scheme.{0}} (b : V ⟶ D) (a : Fin 2 → (V ⟶ B)) (
   exact h'.trans (Category.id_comp (a i) : 𝟙 V ≫ a i = a i)
 
 /- English proof (translation)
-Set `b : V ⟶ D` to `(WidePullback.base (fun _ : Fin 2 => yoneda.map f)).app (op V) x`. Establish `hb : ∀ i, vx f i x ≫ f = b` using `fun i => ConcreteCategory.congr_hom (congr_app (WidePullback.π_arrow (fun _ : Fin 2 => yoneda.map f) i) (op V)) x`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Set `x' : (widePullback (yoneda.obj D) (fun _ : Fin 2 => yoneda.obj B) (fun _ => yoneda.map f)).obj (op V)` to `x`. Establish `key : WidePullback.lift (arrows` using `fun _ : Fin 2 => yoneda.map f) (yoneda.map b) (fun i => yoneda.map (vx f i x)) (fun i => by rw [← yoneda.map_comp, hb i]) = yonedaEquiv.symm x' := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[WidePullback.lift_π]`. Apply `yonedaEquiv.injective` to reduce the goal to its premises. Rewrite using `[yonedaEquiv_comp, Equiv.apply_symm_apply, yonedaEquiv_yoneda_map]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[WidePullback.lift_base]`. Apply `yonedaEquiv.injective` to reduce the goal to its premises. Rewrite using `[yonedaEquiv_comp, Equiv.apply_symm_apply, yonedaEquiv_yoneda_map]`. Unfold `cechPt`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[key]`. Conclude with `(yonedaEquiv.apply_symm_apply x').symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eta {V : Scheme.{0}} (x : Sx (cech f) 1 V) :
     ∃ (b : V ⟶ D) (h : ∀ i, vx f i x ≫ f = b), x = cechPt f 1 b (fun i => vx f i x) h := by
@@ -107,16 +107,16 @@ private theorem eta {V : Scheme.{0}} (x : Sx (cech f) 1 V) :
   exact (yonedaEquiv.apply_symm_apply x').symm
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem u_congr {X : Scheme.{0}} (L : E.LineData X) {V : Scheme.{0}} {a a' b b' : V ⟶ L.Y}
     (ha : a = a') (hb : b = b') (h : a ≫ L.f = b ≫ L.f) (h' : a' ≫ L.f = b' ≫ L.f) : L.u a b h = L.u a' b' h' := by
   subst ha hb; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `lineUnit L (((cm τ j w).app (op (SimplexCategory.mk 1))).app (op V) x) = _`. Take `⟨b, hb, hy⟩` from `eta (((cm τ j w).app (op (SimplexCategory.mk 1))).app (op V) x)`. Establish `h1` using `hL V b _ hb`. Rewrite `h1` using `[← hy]`. Rewrite using `[h1]`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `u_congr Dl (vx_cm τ j w x 0) (vx_cm τ j w x 1) _ _`.
+A detailed English derivation is pending.
 -/
 private theorem lineUnit_cm {X : Scheme.{0}} (Dl : E.LineData X) {L : cech Dl.f ⟶ ofCat (glCat 1)} (hL : Dl.IsMap L)
     (τ : A ⟶ Dl.Y) (j : C ⟶ X) (w : τ ≫ Dl.f = e ≫ j) {V : Scheme.{0}} (x : Sx (cech e) 1 V)
@@ -130,7 +130,7 @@ private theorem lineUnit_cm {X : Scheme.{0}} (Dl : E.LineData X) {L : cech Dl.f 
   exact u_congr Dl (vx_cm τ j w x 0) (vx_cm τ j w x 1) _ _
 
 /- English proof (translation)
-Introduce `U ⟨x⟩`. Establish `h` using `hq.map (((vtx g x ≫ g ≫ p).appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem inv_cech {K : Type} [CommRing K] {q : ℕ} (hq : IsUnit (q : K)) (g : B ⟶ D)
     (p : D ⟶ Spec (CommRingCat.of K)) : GlobalTheory.EtC.Inv q (cech g) := by
@@ -142,35 +142,33 @@ end UpperTheory.Gal.KunnethLefschetz.G.PBEPf
 
 open UpperTheory.Gal.KunnethLefschetz.G.PBEPf in
 /- English proof (translation)
-Introduce `hI q _ K _ hq W Z Y T p i π D d hB j r hpb L hL x hx`. Establish `hinvD : GlobalTheory.EtC.Inv q (cech D.f)` using `inv_cech hq D.f (π ≫ p)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨P, τ, hτ, hw⟩` from `UpperTheory.Gal.KunnethLefschetz.G.pBEx K p i π D d hB j r hpb`. Establish `hqW : IsUnit (q : Γ(W, ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hq.map (((i ≫ p).appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)`. Simplify using `using h`. Establish `hx' : pull _ (cechAug P.e) _ 2 (pull _ (sch.map j) _ 2 x) = c1 q (cm τ j hτ ≫ L)`. Rewrite using `[← pull_comp, ← cm_aug τ j hτ, pull_comp, hx]`. Conclude with `(hI.a6nat q).2.2.1 _ L hinvD`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `UpperTheory.Gal.KunnethLefschetz.G.pBOf hI q r d P hqW (cm τ j hτ ≫ L) (-1) ?_ _ hx'` and prove the remaining obligations. Introduce `V t a h`. Establish `e0 : vx P.e 0 (cechPt P.e 1 t a h) = a 0` using `vx_pt t a h 0`. Establish `e1 : vx P.e 1 (cechPt P.e 1 t a h) = a 1` using `vx_pt t a h 1`. Establish `h' : (a 0 ≫ τ) ≫ D.f = (a 1 ≫ τ) ≫ D.f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, hτ]`. Rewrite using `[← Category.assoc, ← Category.assoc, h 0, h 1]`. Establish `h'' : (vx P.e 0 (cechPt P.e 1 t a h) ≫ τ) ≫ D.f = (vx P.e 1 (cechPt P.e 1 t a h) ≫ τ) ≫ D.f`. Rewrite using `[e0, e1]`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lineUnit_cm D hL τ j hτ _ h'', u_congr D (by rw [e0]) (by rw [e1]) h'' h', hw (a 0) (a 1) ((h 0).trans (h 1).symm) h']`. Simplify using the standard rewrite rules. Introduce `U hU`. Take `⟨Bl⟩` from `hB`. Use `haveI := D.sm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := D.surj`. Establish `hun : ∀ {V : Scheme.{0}} (a : V ⟶ pullback D.f U.ι), IsUnit (Bl.f (a ≫ pullback.fst D.f U.ι))`. Introduce `V a`. Use `Bl.unit _ ?_` and prove the remaining obligations. Introduce `v _`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((a ≫ pullback.fst D.f U.ι) ≫ D.f ≫ π) v ∈ Bl.U`. Establish `e1 : (a ≫ pullback.fst D.f U.ι) ≫ D.f ≫ π = ((a ≫ pullback.snd D.f U.ι) ≫ U.ι) ≫ π`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition_assoc]`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ((a ≫ pullback.snd D.f U.ι) ≫ U.ι) v ∈ (U : Set Y)`. Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `⟨(a ≫ pullback.snd D.f U.ι) v, by simp⟩`. Rewrite using `[← SetLike.mem_coe, Bl.U_eq]`. Introduce and unpack `⟨w', hw'⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `hy'` using `hy`. Rewrite `hy'` using `[hU]`. Apply `hy'` to reduce the goal to its premises. Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := i) (((a ≫ pullback.snd D.f U.ι) ≫ U.ι) v) w' (by rw [hw']; simp)`. Use `⟨hpb.isoPullback.inv z, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hz1, ← Scheme.Hom.comp_apply, hpb.isoPullback_inv_fst]`. Set `f'` to `pullback.snd D.f U.ι`. Set `s : ∀ V : Scheme.{0}, Sx (cech f') 0 V → (Γ(V, ⊤))ˣ` to `fun V t => (hun (vtx f' t)).unit`. Establish `c : ∀ (V : Scheme.{0}) (t : Sx (cech f') 0 V), ((s V t : (Γ(V, ⊤))ˣ) : Γ(V, ⊤)) = Bl.f (vtx f' t ≫ pullback.fst D.f U.ι)` using `fun V t => IsUnit.unit_spec _`. Establish `w : pullback.fst D.f U.ι ≫ D.f = f' ≫ U.ι` using `pullback.condition`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hs : ∀ (V V' : Scheme.{0}) (g : V ⟶ V') (t : Sx (cech f') 0 V'), s V (Sx.res g t) = ClsSpec.umap g (s V' t)`. Introduce `V V' g t`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : vtx f' (Sx.res g t) = g ≫ vtx f' t` using `vtx_res f' g t`. Express the relevant statement in the definitionally equal form `_ = g.appTop.hom ((s V' t : (Γ(V', ⊤))ˣ) : Γ(V', ⊤))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[c, c, h1, Category.assoc, Bl.f_nat]`. Establish `hLs : ∀ (V : Scheme.{0}) (t : Sx (cech f') 1 V), s V (t.face 1) = lineUnit (cm (pullback.fst D.f U.ι) U.ι w ≫ L) t * s V (t.face 0)`. Introduce `V t`. Apply `Units.ext` to reduce the goal to its premises. Establish `a0 : vtx f' (t.face 1) = vx f' 0 t` using `vtx_face f' t 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `a1 : vtx f' (t.face 0) = vx f' 1 t` using `vtx_face f' t 0`. Establish `hh : (vx f' 0 t ≫ pullback.fst D.f U.ι) ≫ D.f = (vx f' 1 t ≫ pullback.fst D.f U.ι) ≫ D.f`. Take `⟨b, hb, -⟩` from `eta t`. Simplify using `only [Category.assoc, w]`. Rewrite using `[← Category.assoc, ← Category.assoc, hb, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, c, c, a0, a1, lineUnit_cm D hL (pullback.fst D.f U.ι) U.ι w t hh]`. Conclude with `Bl.f_u _ _ hh`. Establish `hz : c1 q (cm (pullback.fst D.f U.ι) U.ι w ≫ L) = 0` using `ChartChern.firstChernClass_eq_zero_of_unit_trivialization q _ (inv_cech hq f' (U.ι ≫ π ≫ p)) s hs hLs`. Establish `hz2 : pull _ (cechAug f') _ 2 (pull _ (sch.map U.ι) _ 2 x) = 0`. Rewrite using `[← pull_comp, ← cm_aug (pullback.fst D.f U.ι) U.ι w, pull_comp, hx]`.
-
-Conclude with `((hI.a6nat q).2.2.1 _ L hinvD).trans hz`. Conclude with `(hI.a2 (ZMod q) f' (tw q 1) 2).1 (hz2.trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.pBE :
     UpperTheory.Gal.KunnethLefschetz.G.PBE := by

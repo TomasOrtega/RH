@@ -17,11 +17,11 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.ExactIrr
 
 /- English proof (translation)
-Introduce `H _ V _ _ ρ P hl hinj hnt hsplit hP`. Take `⟨hGT, hLT⟩` from `(hasFiniteLength_iff_wellFounded ρ).1 hl`. Set `j : ρ.IntertwiningMap (⊤ : Subrepresentation ρ).toRepresentation` to `⟨LinearMap.codRestrict _ LinearMap.id (fun _ => trivial), fun _ => rfl⟩`. Establish `hjinj : Function.Injective j` using `fun a b h => congrArg Subtype.val h`. Establish `hTop : P _ (⊤ : Subrepresentation ρ).toRepresentation` using `hinj _ _ _ _ _ hjinj hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A, hA, hAmin⟩` from `hLT.wf.has_min {A : Subrepresentation ρ | P _ A.toRepresentation} ⟨⊤, hTop⟩`. Establish `hAbot : A ≠ ⊥`. Introduce and unpack `rfl`. Establish `hnt'` using `hnt _ _ hA`. Establish `: Subsingleton (⊥ : Subrepresentation ρ).toSubmodule` using `inferInstanceAs (Subsingleton (⊥ : Submodule ℂ V))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `not_subsingleton _ this`. Take `⟨B, hBA, hB⟩` from `exists_le_covBy_of_lt (bot_lt_iff_ne_bot.2 hAbot)`. Break down `hsplit A B hB.le hA with h | h` into its components or cases. Conclude with `absurd hB.lt (hAmin B h)`. Conclude with `⟨_, _, _, subQuot A B, isIrreducible_subQuot hB, ⟨A, ⟨Submodule.mkQ _, fun _ => rfl⟩, Submodule.Quotient.mk_surjective _⟩, h⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (H : Type) [Group H] (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ H V) (P : ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y], Representation ℂ H Y → Prop), HasFiniteLength ρ → (∀ (Y Y' : Type) [AddCommGroup Y] [Module ℂ Y] [AddCommGroup Y'] [Module ℂ Y'] (σ : Representation ℂ H Y) (σ' : Representation ℂ H Y') (f : σ.IntertwiningMap σ'), Function.Injective f → P Y σ → P Y' σ') → (∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y] (σ : Representation ℂ H Y), P Y σ → Nontrivial Y) → (∀ A B : Subrepresentation ρ, B ≤ A → P _ A.toRepresentation → P _ B.toRepresentation ∨ P _ (subQuot A B)) → P V ρ → ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y) (σ : Representation ℂ H Y), σ.IsIrreducible ∧ IsSubquotient σ ρ ∧ P Y σ := by
   intro H _ V _ _ ρ P hl hinj hnt hsplit hP

@@ -13,16 +13,16 @@ variable {R : Type} [Ring R] [Algebra ℂ R]
 def PLT (N : ℕ) (f : ℂ → R) : Prop := ∃ a : ℕ → R, ∀ s, f s = ∑ k ∈ Finset.range N, s ^ k • a k
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Conclude with `⟨a, fun s => by rw [e, ha]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PLT.congr {N : ℕ} {f g : ℂ → R} (h : PLT N f) (e : ∀ s, g s = f s) : PLT N g := by
   obtain ⟨a, ha⟩ := h
   exact ⟨a, fun s => by rw [e, ha]⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h`. Use `⟨fun k => if k < N then a k else 0, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Use `symm`. Rewrite using `[← Finset.sum_subset (Finset.range_mono hN)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k hk => by dsimp only; rw [if_pos (Finset.mem_range.1 hk)]`. Introduce `k _ hk dsimp only`. Rewrite using `[if_neg (fun h => hk (Finset.mem_range.2 h)), smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PLT.mono {N N' : ℕ} {f : ℂ → R} (h : PLT N f) (hN : N ≤ N') : PLT N' f := by
   obtain ⟨a, ha⟩ := h
@@ -36,12 +36,12 @@ theorem PLT.mono {N N' : ℕ} {f : ℂ → R} (h : PLT N f) (hN : N ≤ N') : PL
     rw [if_neg (fun h => hk (Finset.mem_range.2 h)), smul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 0, fun s => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem plt_zero (N : ℕ) : PLT N (fun _ => (0 : R)) := ⟨fun _ => 0, fun s => by simp⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hf`. Take `⟨b, hb⟩` from `hg`. Conclude with `⟨fun k => a k + b k, fun s => by dsimp only; rw [ha, hb, ← Finset.sum_add_distrib]; simp only [smul_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PLT.add {N : ℕ} {f g : ℂ → R} (hf : PLT N f) (hg : PLT N g) : PLT N (fun s => f s + g s) := by
   obtain ⟨a, ha⟩ := hf
@@ -49,30 +49,30 @@ theorem PLT.add {N : ℕ} {f g : ℂ → R} (hf : PLT N f) (hg : PLT N g) : PLT 
   exact ⟨fun k => a k + b k, fun s => by dsimp only; rw [ha, hb, ← Finset.sum_add_distrib]; simp only [smul_add]⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hf`. Conclude with `⟨fun k => x * a k, fun s => by dsimp only; rw [ha, Finset.mul_sum]; simp only [mul_smul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PLT.const_mul {N : ℕ} {f : ℂ → R} (x : R) (hf : PLT N f) : PLT N (fun s => x * f s) := by
   obtain ⟨a, ha⟩ := hf
   exact ⟨fun k => x * a k, fun s => by dsimp only; rw [ha, Finset.mul_sum]; simp only [mul_smul_comm]⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hf`. Conclude with `⟨fun k => a k * x, fun s => by dsimp only; rw [ha, Finset.sum_mul]; simp only [smul_mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PLT.mul_const {N : ℕ} {f : ℂ → R} (hf : PLT N f) (x : R) : PLT N (fun s => f s * x) := by
   obtain ⟨a, ha⟩ := hf
   exact ⟨fun k => a k * x, fun s => by dsimp only; rw [ha, Finset.sum_mul]; simp only [smul_mul_assoc]⟩
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.MAx3.PG.polyIn_mul (f := f) (g := g) hf hg`.
+A detailed English derivation is pending.
 -/
 theorem PLT.mul {a b : ℕ} {f g : ℂ → R} (hf : PLT (a + 1) f) (hg : PLT (b + 1) g) :
     PLT (a + b + 1) (fun s => f s * g s) :=
   Formalism.FourierDecayAlt.P.MAx3.PG.polyIn_mul (f := f) (g := g) hf hg
 
 /- English proof (translation)
-Use `⟨fun k => if k = n then x else 0, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single n]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (Nat.lt_succ_self n)) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem plt_monomial (n : ℕ) (x : R) : PLT (n + 1) (fun s => s ^ n • x) := by
   refine ⟨fun k => if k = n then x else 0, fun s => ?_⟩
@@ -82,14 +82,14 @@ theorem plt_monomial (n : ℕ) (x : R) : PLT (n + 1) (fun s => s ^ n • x) := b
   · intro h; exact absurd (Finset.mem_range.2 (Nat.lt_succ_self n)) h
 
 /- English proof (translation)
-The claim follows from `(plt_monomial 0 x).congr fun s => by simp`.
+A detailed English derivation is pending.
 -/
 theorem plt_const (x : R) : PLT 1 (fun _ => x) := (plt_monomial 0 x).congr fun s => by simp
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact (plt_zero N).congr fun s => by simp`. Consider the case `insert j t hj ih`. Use `((h j (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))).congr ?_` and prove the remaining obligations. Introduce `s`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem plt_sum {ι : Type} {N : ℕ} (t : Finset ι) {f : ι → ℂ → R} (h : ∀ i ∈ t, PLT N (f i)) :
     PLT N (fun s => ∑ i ∈ t, f i s) := by
@@ -102,22 +102,22 @@ theorem plt_sum {ι : Type} {N : ℕ} (t : Finset ι) {f : ι → ℂ → R} (h 
     rw [Finset.sum_insert hj]
 
 /- English proof (translation)
-The claim follows from `((plt_monomial 1 x).add ((plt_const y).mono (by norm_num))).congr fun s => by simp`.
+A detailed English derivation is pending.
 -/
 theorem plt_affine (x y : R) : PLT 2 (fun s => s • x + y) :=
   ((plt_monomial 1 x).add ((plt_const y).mono (by norm_num))).congr fun s => by simp
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem polyIn_of_plt {f : ℂ → R} {d : ℕ} (h : PLT (d + 1) f) : MAx3.G.PolyIn f d := h
 
 end PLT
 
 /- English proof (translation)
-Use `choose c hc using h`. Use `⟨fun i => κ (fun ρ => c ρ i), fun u => ?_⟩` and prove the remaining obligations. Establish `e : (fun ρ => g ρ u) = ∑ i ∈ Finset.range N, u ^ i • (fun ρ => c ρ i)`. Use function extensionality and compare the values at `ρ`. Rewrite using `[hc ρ u, Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only`. Rewrite using `[e, map_sum]`. Simplify using `only [map_smul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem plt_kap {P : M.Par} {A : Type} [Ring A] [Algebra ℂ A] (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) {N : ℕ}
     (g : M.Ty P → ℂ → ℂ) (h : ∀ ρ, PLT N (g ρ)) : PLT N (fun u => κ (fun ρ => g ρ u)) := by
@@ -132,15 +132,15 @@ theorem plt_kap {P : M.Par} {A : Type} [Ring A] [Algebra ℂ A] (κ : (M.Ty P �
   simp only [map_smul]
 
 /- English proof (translation)
-Establish `key : ∀ u, GGi * w u + GG * x u * ml u - u ^ (m + 3) • (1 : A) - u ^ (m + 2) • Θ - (u ^ (m + 1) • (GG * γ + GG * K * β) + u ^ m • (GG * K * γ) + (GG * X' u * ml u + GGi * W' u)) = u ^ (m + 3) • (GG * α + GGi * Wt1 - 1) + u ^ (m + 2) • (GG * β + GG * K * α + GGi * Wt2 - Θ)`. Introduce `u`. Rewrite using `[hx, hw, hml u]`. Simplify using `only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm, smul_add, mul_one, smul_smul, mul_assoc, smul_sub, mul_sub, sub_mul]`. Use `module`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlow : PLT (m + 2) (fun u => u ^ (m + 1) • (GG * γ + GG * K * β) + u ^ m • (GG * K * γ) + (GG * X' u * ml u + GGi * W' u))`. Use `((plt_monomial (m + 1) _).add ((plt_monomial m _).mono (by omega))).add ?_` and prove the remaining obligations. Use `PLT.add ?_ (hW'.const_mul GGi)` and prove the remaining obligations. Establish `hml' : PLT 3 ml`. Use `(((plt_monomial 2 α).add ((plt_monomial 1 β).mono (by omega))).add ((plt_const γ).mono (by omega))).congr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[hml s]`. Simplify using the standard rewrite rules. Consider the cases of `m with`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hX'`. Conclude with `(plt_zero 2).congr fun s => by simp [ha s]`. Consider the case `succ n`. Use `(hX'.const_mul GG).mul (b := 2) hml'` as an intermediate fact. Conclude with `(this.mono (by omega)).congr fun s => by simp only [mul_assoc]`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hlow.congr fun u => ?_` and prove the remaining obligations. Establish `e` using `key u`. Rewrite `e` using `[C1, C2, sub_self, sub_self, smul_zero, smul_zero, add_zero, sub_eq_zero]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem expand {A : Type} [Ring A] [Algebra ℂ A] (m : ℕ) (GG GGi K α β γ Wt1 Wt2 Θ : A)
     (x w ml X' W' : ℂ → A)
@@ -181,20 +181,20 @@ section NF
 variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (d : Q.NFData P A)
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, h, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lc {a b : A} (h : a * b = b * a) (c : A) : a * (b * c) = b * (a * c) := by
   rw [← mul_assoc, h, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `d.L.fns_comm x (Or.inr hx) y (Or.inr hy)`.
+A detailed English derivation is pending.
 -/
 theorem fc {x y : A} (hx : x ∈ ({d.L.ζ, d.L.ζi, d.L.ζb, d.L.ζbi, d.L.GG, d.L.GGi} : Set A))
     (hy : y ∈ ({d.L.ζ, d.L.ζi, d.L.ζb, d.L.ζbi, d.L.GG, d.L.GGi} : Set A)) : x * y = y * x :=
   d.L.fns_comm x (Or.inr hx) y (Or.inr hy)
 
 /- English proof (translation)
-Unfold `R.LevelData.m0 R.LevelData.l0`. Simplify using `only [← Algebra.smul_def]`. Simplify using `only [neg_mul, mul_neg, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, smul_smul, neg_neg, mul_assoc, smul_sub, smul_neg, neg_sub]`. Use `module`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ml_expand (u : ℂ) : d.L.m0 u * d.L.l0 u =
     u ^ 2 • (d.L.ζ * d.L.GGi * (d.L.ζb * d.L.GGi)) +
@@ -208,9 +208,9 @@ theorem ml_expand (u : ℂ) : d.L.m0 u * d.L.l0 u =
   module
 
 /- English proof (translation)
-Establish `hz : d.L.ζ * d.L.ζb = d.L.GG + algebraMap ℂ A d.L.TT` using `by rw [d.L.GG_def]; abel`. Establish `h1 : d.L.GG * d.L.ζ = d.L.ζ * d.L.GG` using `fc d (by simp) (by simp)`. Establish `h2 : d.L.GGi * d.L.ζb = d.L.ζb * d.L.GGi` using `fc d (by simp) (by simp)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[lc h1]`. Use `_ = d.L.ζ * d.L.ζb * d.L.GGi := by rw [d.L.GG_GGi, one_mul, mul_assoc]`. Use `_ = 1 + algebraMap ℂ A d.L.TT * d.L.GGi := by rw [hz, add_mul, d.L.GG_GGi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GG_alpha : d.L.GG * (d.L.ζ * d.L.GGi * (d.L.ζb * d.L.GGi)) =
     1 + algebraMap ℂ A d.L.TT * d.L.GGi := by
@@ -224,18 +224,18 @@ theorem GG_alpha : d.L.GG * (d.L.ζ * d.L.GGi * (d.L.ζb * d.L.GGi)) =
     _ = 1 + algebraMap ℂ A d.L.TT * d.L.GGi := by rw [hz, add_mul, d.L.GG_GGi]
 
 /- English proof (translation)
-Rewrite using `[GG_alpha, ← Algebra.commutes, map_neg, neg_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem C1 : d.L.GG * (d.L.ζ * d.L.GGi * (d.L.ζb * d.L.GGi)) + d.L.GGi * algebraMap ℂ A (-d.L.TT) = 1 := by
   rw [GG_alpha, ← Algebra.commutes, map_neg, neg_mul]
   abel
 
 /- English proof (translation)
-Establish `hz : d.L.ζb * d.L.ζ = d.L.GG + algebraMap ℂ A d.L.TT`. Rewrite using `[← fc d (x := d.L.ζ) (by simp) (by simp), d.L.GG_def]; abel`. Establish `h1 : d.L.GG * d.L.ζb = d.L.ζb * d.L.GG` using `fc d (by simp) (by simp)`. Establish `e : d.L.nabs * (d.L.ζb * d.L.GGi) = d.L.ζb * (d.L.GGi * d.L.nabs) + d.L.ζb * (d.L.ζ * d.L.GGi * d.L.GGi) - d.L.GGi`. Rewrite using `[← mul_assoc, d.L.nabs_ζb, sub_mul, one_mul, mul_assoc, d.L.nabs_GGi, mul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_sub, mul_add, lc h1, lc h1, ← mul_assoc d.L.GG d.L.GGi, d.L.GG_GGi, one_mul]`. Establish `e2 : d.L.GG * (d.L.ζ * d.L.GGi * d.L.GGi) = d.L.ζ * d.L.GGi`. Establish `h3 : d.L.GG * d.L.ζ = d.L.ζ * d.L.GG` using `fc d (by simp) (by simp)`. Simplify using `only [mul_assoc]`. Rewrite using `[lc h3, ← mul_assoc d.L.GG, d.L.GG_GGi, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, ← mul_assoc, hz, add_mul, d.L.GG_GGi]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem GG_nabs : d.L.GG * (d.L.nabs * (d.L.ζb * d.L.GGi)) =
     d.L.ζb * d.L.nabs + algebraMap ℂ A d.L.TT * d.L.GGi := by
@@ -269,7 +269,7 @@ section NormalFormTwo
 variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (d : Q.NFData P A)
 
 /- English proof (translation)
-Establish `h1 : d.L.GG * d.L.ζ = d.L.ζ * d.L.GG` using `fc d (by simp) (by simp)`. Simplify using `only [mul_assoc]`. Rewrite using `[lc h1, ← mul_assoc d.L.GG d.L.GGi, d.L.GG_GGi, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem GG_zGinab : d.L.GG * (d.L.ζ * d.L.GGi * d.L.nab) = d.L.ζ * d.L.nab := by
   have h1 : d.L.GG * d.L.ζ = d.L.ζ * d.L.GG := fc d (by simp) (by simp)
@@ -277,7 +277,7 @@ theorem GG_zGinab : d.L.GG * (d.L.ζ * d.L.GGi * d.L.nab) = d.L.ζ * d.L.nab := 
   rw [lc h1, ← mul_assoc d.L.GG d.L.GGi, d.L.GG_GGi, one_mul]
 
 /- English proof (translation)
-Rewrite using `[show (fun ρ => (P.TT : ℂ) * (((absTy P ρ : ℝ) : ℂ) - 1 - sumU P)) = (P.TT : ℂ) • ((fun ρ => ((absTy P ρ : ℝ) : ℂ)) - 1 - algebraMap ℂ (M.Ty P → ℂ) (sumU P)) from funext fun ρ => by simp]`. Rewrite using `[map_smul, map_sub, map_sub, map_one, AlgHom.commutes]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem kappa_of_weight_function : d.κ (fun ρ => (P.TT : ℂ) * (((absTy P ρ : ℝ) : ℂ) - 1 - sumU P)) =
     (P.TT : ℂ) • (d.κ (fun ρ => ((absTy P ρ : ℝ) : ℂ)) - 1 - algebraMap ℂ A (sumU P)) := by
@@ -286,7 +286,7 @@ theorem kappa_of_weight_function : d.κ (fun ρ => (P.TT : ℂ) * (((absTy P ρ 
   rw [map_smul, map_sub, map_sub, map_one, AlgHom.commutes]
 
 /- English proof (translation)
-Rewrite using `[show (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)) = (2 : ℂ) • (fun ρ => ((absTy P ρ : ℝ) : ℂ)) - algebraMap ℂ (M.Ty P → ℂ) (sumU P) from funext fun ρ => by`. Simplify using `only [M.aC, absTy, sumU, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `push_cast`. Use the proof step `ring]`. Rewrite using `[map_sub, map_smul, AlgHom.commutes]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_aC : d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)) =
     (2 : ℂ) • d.κ (fun ρ => ((absTy P ρ : ℝ) : ℂ)) - algebraMap ℂ A (sumU P) := by
@@ -299,9 +299,9 @@ theorem kap_aC : d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)) =
   rw [map_sub, map_smul, AlgHom.commutes]
 
 /- English proof (translation)
-Establish `hKG : d.L.GG * d.κ (fun ρ => ((absTy P ρ : ℝ) : ℂ)) = d.κ (fun ρ => ((absTy P ρ : ℝ) : ℂ)) * d.L.GG` using `(hRel.2.1 _ d.L.GG (Or.inl (by simp [R.LevelData.fns]))).eq.symm`. Establish `hKGi : d.κ (fun ρ => ((absTy P ρ : ℝ) : ℂ)) * d.L.GGi = d.L.GGi * d.κ (fun ρ => ((absTy P ρ : ℝ) : ℂ))` using `(hRel.2.1 _ d.L.GGi (Or.inl (by simp [R.LevelData.fns]))).eq`. Unfold `ThetaC`. Rewrite using `[kappa_of_weight_function, kap_aC, mul_add, GG_nabs, GG_zGinab, hKG, mul_assoc (d.κ _) d.L.GG, GG_alpha, hTT]`. Simplify using `only [Algebra.algebraMap_eq_smul_one, mul_add, add_mul, mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_sub, smul_add, smul_smul, hKGi, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem C2 (hRel : d.Rel) (hTT : d.L.TT = (P.TT : ℂ)) :
     d.L.GG * (d.L.nabs * (d.L.ζb * d.L.GGi) + d.L.ζ * d.L.GGi * d.L.nab) +
@@ -320,35 +320,29 @@ theorem C2 (hRel : d.Rel) (hTT : d.L.TT = (P.TT : ℂ)) :
 end NormalFormTwo
 
 /- English proof (translation)
-Introduce `hS P A _ _ _ d hRel hk hTT`. Take `⟨m, hm⟩ : ∃ m, P.k = m + 2` from `⟨P.k - 2, by omega⟩`. Establish `hsc` using `hS P hk`. Use `choose cw hcw using fun ρ => (hsc ρ).1`. Use `choose cx hcx using fun ρ => (hsc ρ).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex` using `fun ρ => (hsc ρ).2.2`. Establish `scalPLT : ∀ {N : ℕ} {g : ℂ → ℂ} (c : ℕ → ℂ), (∀ u, g u = ∑ i ∈ Finset.range N, u ^ i * c i) → PLT N g` using `fun c h => ⟨c, fun u => by rw [h u]; simp only [smul_eq_mul]⟩`. Establish `hxEx : ∀ ex : Finset ℕ, (∃ l ∈ ex, l ∈ Finset.Icc 1 (P.k - 1)) → PLT (m + 1) (fun u => d.κ (fun ρ => M.xEx P ex ρ u))`. Introduce `ex hex'`. Use `plt_kap d.κ (fun ρ u => M.xEx P ex ρ u) fun ρ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hex ρ ex hex'`. Conclude with `scalPLT c (fun u => by rw [hc u, show P.k - 1 = m + 1 by omega])`. Establish `hS21 : PLT (m + 1) (fun u => d.weightedSumBis u)`. Unfold `Q.NFData.weightedSumBis`. Conclude with `plt_sum _ fun l hl => (hxEx {l} ⟨l, Finset.mem_singleton_self l, hl⟩).const_mul (d.SS l)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hS12 : PLT (m + 1) (fun u => d.S12 u)`. Unfold `Q.NFData.S12`. Conclude with `plt_sum _ fun l hl => (hxEx {l} ⟨l, Finset.mem_singleton_self l, hl⟩).mul_const (star (d.SS l))`. Establish `hS4 : PLT (m + 1) (fun u => d.S4 u)`. Unfold `Q.NFData.S4`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `plt_sum _ fun l hl => plt_sum _ fun j _ => (hxEx {l, j} ⟨l, Finset.mem_insert_self l _, hl⟩).const_mul (star (d.SS l) * d.SS j)`. Establish `hm0 : PLT 2 (fun u => d.L.m0 u)` using `(plt_affine (-(d.L.ζ * d.L.GGi)) (-d.L.nabs + (1 / 2 : ℂ) • (d.L.ζ * d.L.GGi))).congr fun u => by`. Unfold `R.LevelData.m0`. Simplify using `only [← Algebra.smul_def]`. Use `module`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hl0 : PLT 2 (fun u => d.L.l0 u)` using `(plt_affine (-(d.L.ζb * d.L.GGi)) (-d.L.nab - (1 / 2 : ℂ) • (d.L.ζb * d.L.GGi))).congr fun u => by`. Unfold `R.LevelData.l0`. Simplify using `only [← Algebra.smul_def]`. Use `module`. Use `set K := d.κ (fun ρ => ((absTy P ρ : ℝ) : ℂ)) with hK`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X' : ℂ → A := fun u => d.κ (fun ρ => ∑ i ∈ Finset.range m, u ^ i * cx ρ i) with hX'def`. Establish `hx : ∀ u, d.x u = u ^ (m + 1) • (1 : A) + u ^ m • K + X' u`. Introduce `u`. Unfold `Q.NFData.x`. Rewrite using `[show (fun ρ => M.xC P ρ u) = u ^ (m + 1) • (1 : M.Ty P → ℂ) + u ^ m • (fun ρ => ((absTy P ρ : ℝ) : ℂ)) + (fun ρ => ∑ i ∈ Finset.range m, u ^ i * cx ρ i) from funext fun ρ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcx ρ u, show P.k - 1 = m + 1 by omega, show P.k - 2 = m by omega]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.one_apply, smul_eq_mul, mul_one]`. Use the proof step `ring]`. Rewrite using `[map_add, map_add, map_smul, map_smul, map_one]`. Establish `hX' : PLT m X'` using `plt_kap d.κ _ (fun ρ => scalPLT (cx ρ) (fun u => rfl))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hxP : PLT (m + 2) (fun u => d.x u)` using `(((plt_monomial (m + 1) (1 : A)).add ((plt_monomial m K).mono (by omega))).add (hX'.mono (by omega))).congr fun u => hx u`. Use `set W' : ℂ → A := fun u => d.κ (fun ρ => ∑ i ∈ Finset.range P.k, u ^ i * cw ρ i) with hW'def`. Establish `hw : ∀ u, d.κ (fun ρ => M.wC P ρ u) = u ^ (m + 3) • algebraMap ℂ A (-(P.TT : ℂ)) + u ^ (m + 2) • d.κ (fun ρ => (P.TT : ℂ) * (((absTy P ρ : ℝ) : ℂ) - 1 - sumU P)) + W' u`. Introduce `u`. Rewrite using `[show (fun ρ => M.wC P ρ u) = u ^ (m + 3) • algebraMap ℂ (M.Ty P → ℂ) (-(P.TT : ℂ)) + u ^ (m + 2) • (fun ρ => (P.TT : ℂ) * (((absTy P ρ : ℝ) : ℂ) - 1 - sumU P)) + (fun ρ => ∑ i ∈ Finset.range P.k, u ^ i * cw ρ i) from funext fun ρ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcw ρ u, hm]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]]`. Rewrite using `[map_add, map_add, map_smul, map_smul, AlgHom.commutes]`. Establish `hW' : PLT (m + 2) W'` using `plt_kap d.κ _ (fun ρ => scalPLT (cw ρ) (fun u => by rw [hm]))`. Establish `hC1 : d.L.GG * (d.L.ζ * d.L.GGi * (d.L.ζb * d.L.GGi)) + d.L.GGi * algebraMap ℂ A (-(P.TT : ℂ)) = 1`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `C1 d` as an intermediate fact. Rewrite `this` using `[hTT]`. Then use the resulting hypothesis. Establish `hmain` using `expand m d.L.GG d.L.GGi K _ _ _ _ _ (ThetaC d) (fun u => d.x u) (fun u => d.κ (fun ρ => M.wC P ρ u)) (fun u => d.L.m0 u * d.L.l0 u) X' W' hx hX' hw hW' (ml_expand d) hC1 (C2 d hRel hTT)`. Establish `hlow : PLT (m + 2) (fun u => d.L.GG * d.L.m0 u * d.L.GGi * d.weightedSumBis u + d.S12 u * d.L.l0 u + d.L.GGi * d.S4 u)`. Establish `t1` using `((hm0.const_mul d.L.GG).mul (a := 1) (b := m) (hS21.const_mul d.L.GGi)).mono (show 1 + m + 1 ≤ m + 2 by omega)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `t2` using `(hS12.mul (a := m) (b := 1) hl0)`. Establish `t3` using `(hS4.const_mul d.L.GGi).mono (show m + 1 ≤ m + 2 by omega)`. Conclude with `((t1.add t2).add t3).congr fun u => by simp only [mul_assoc]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[show P.k - 1 = m + 1 by omega]`.
-
-Apply `polyIn_of_plt` to reduce the goal to its premises. Use `(hmain.add hlow).congr fun u => ?_` and prove the remaining obligations. Establish `hQ : d.QQ u 0 0 = d.L.GGi * (d.κ fun ρ => M.wC P ρ u) + d.L.GG * d.x u * d.L.m0 u * d.L.l0 u + d.L.GG * d.L.m0 u * d.L.GGi * d.weightedSumBis u + d.S12 u * d.L.l0 u + d.L.GGi * d.S4 u`. Simplify using `[Q.NFData.QQ]`. Rewrite using `[hQ, hm]`.
-
-Simplify using `only [mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[hm]`. Apply `polyIn_of_plt` to reduce the goal to its premises. Establish `t` using `((hxP.const_mul d.L.GG).mul (a := m + 1) (b := 1) hl0).add (hS21.mono (show m + 1 ≤ m + 1 + 1 + 1 by omega))`.
-
-Use `t.congr fun u => ?_` and prove the remaining obligations. Simplify using `[Q.NFData.QQ]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem curvature_polynomial_of_scalar : GTCCurvPolyOfScal := by
   intro hS P A _ _ _ d hRel hk hTT
@@ -446,7 +440,7 @@ end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.CurvPoly
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 /- English proof (translation)
-The claim follows from `CurvPoly.curvature_polynomial_of_scalar`.
+A detailed English derivation is pending.
 -/
 theorem curvature_polynomial_of_scalar : GTCCurvPolyOfScal := CurvPoly.curvature_polynomial_of_scalar
 

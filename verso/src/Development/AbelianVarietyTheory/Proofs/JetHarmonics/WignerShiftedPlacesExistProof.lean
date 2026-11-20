@@ -9,7 +9,7 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDe
 namespace GlobalTheory.wignerShiftedPlacesExist_proof
 
 /- English proof (translation)
-Establish `hg` using `h.gap i hi`. Unfold `M.Par.lo M.Par.hi at hg`. Establish `h1` using `le_max_right (P.u (i + 1)) (P.u' (i + 1))`. Establish `h2` using `min_le_right (P.u i) (P.u' i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gap_one {P : M.Par} (h : P.OK) (i : ℕ) (hi : i ∈ Finset.Icc 1 (P.k - 1)) :
     P.u' (i + 1) + 1 ≤ P.u' i := by
@@ -20,9 +20,9 @@ theorem gap_one {P : M.Par} (h : P.OK) (i : ℕ) (hi : i ∈ Finset.Icc 1 (P.k -
   linarith
 
 /- English proof (translation)
-Establish `h1` using `gap_one h i hi`. Rewrite `hi` using `[Finset.mem_Icc]`. Take `⟨a, ha⟩` from `h.int_u' i (Finset.mem_Icc.2 ⟨hi.1, by omega⟩)`. Take `⟨c, hc⟩` from `h.int_u' (i + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)`. Establish `h2 : ((0 : ℤ) : ℝ) ≤ ((a - c - 1 : ℤ) : ℝ)` using `by push_cast; linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : (0 : ℤ) ≤ a - c - 1` using `by exact_mod_cast h2`. Use `⟨(a - c - 1).toNat, ?_⟩` and prove the remaining obligations. Establish `h4 : (((a - c - 1).toNat : ℤ) : ℝ) = ((a - c - 1 : ℤ) : ℝ)` using `by rw [Int.toNat_of_nonneg h3]`. Move the coercions through the operations in `at h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gap_nat {P : M.Par} (h : P.OK) (i : ℕ) (hi : i ∈ Finset.Icc 1 (P.k - 1)) :
     ∃ N : ℕ, P.u' i - P.u' (i + 1) = (N : ℝ) + 1 := by
@@ -38,17 +38,17 @@ theorem gap_nat {P : M.Par} (h : P.OK) (i : ℕ) (hi : i ∈ Finset.Icc 1 (P.k -
   linarith
 
 /- English proof (translation)
-Establish `hn : (0 : ℝ) ≤ n₀` using `Nat.cast_nonneg _`. Use `⟨h.k_pos, h.T_pos, h.T'_pos, h.int_u, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Take `⟨a, ha⟩` from `h.int_u' i hi`. Express the relevant statement in the definitionally equal form `∃ n : ℤ, Function.update P.u' (l + 1) (P.u' (l + 1) + (n₀ : ℝ)) i - P.u 1 = n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hil : i = l + 1`. Substitute `hil` using the available equality. Use `⟨a + n₀, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.update_self]`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨a, by rw [Function.update_of_ne hil]; exact ha⟩`. Introduce `i hi`. Establish `h1` using `gap_one h i hi`. Express the relevant statement in the definitionally equal form `i ∈ Finset.Icc 1 (P.k - 1) at hi`.
+Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hi` using `[Finset.mem_Icc]`. Establish `e1` using `he i (Finset.mem_Icc.2 ⟨hi.1, by omega⟩)`. Establish `e2` using `he (i + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)`. Express the relevant statement in the definitionally equal form `max (P.u (i + 1)) (Function.update P.u' (l + 1) (P.u' (l + 1) + (n₀ : ℝ)) (i + 1)) + 1 / 2 ≤ min (P.u i) (Function.update P.u' (l + 1) (P.u' (l + 1) + (n₀ : ℝ)) i) - 1 / 2`. Rewrite using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : i = l`. Substitute `ha` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne (by omega), min_self, max_eq_right (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_of_ne (show i + 1 ≠ l + 1 by omega), max_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : i = l + 1`. Substitute `hb` using the available equality. Rewrite using `[Function.update_self, min_eq_left (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_of_ne hb, min_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -87,17 +87,17 @@ theorem ok_plus {P : M.Par} (h : P.OK) (l n₀ : ℕ) (he : ∀ i ∈ Finset.Icc
         linarith
 
 /- English proof (translation)
-Establish `hn : (0 : ℝ) ≤ n₀` using `Nat.cast_nonneg _`. Use `⟨h.k_pos, h.T_pos, h.T'_pos, h.int_u, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Take `⟨a, ha⟩` from `h.int_u' i hi`. Express the relevant statement in the definitionally equal form `∃ n : ℤ, Function.update P.u' l (P.u' l - (n₀ : ℝ)) i - P.u 1 = n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hil : i = l`. Substitute `hil` using the available equality. Use `⟨a - n₀, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.update_self]`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨a, by rw [Function.update_of_ne hil]; exact ha⟩`. Introduce `i hi`. Establish `h1` using `gap_one h i hi`. Express the relevant statement in the definitionally equal form `i ∈ Finset.Icc 1 (P.k - 1) at hi`.
+Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hi` using `[Finset.mem_Icc]`. Establish `e1` using `he i (Finset.mem_Icc.2 ⟨hi.1, by omega⟩)`. Establish `e2` using `he (i + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)`. Express the relevant statement in the definitionally equal form `max (P.u (i + 1)) (Function.update P.u' l (P.u' l - (n₀ : ℝ)) (i + 1)) + 1 / 2 ≤ min (P.u i) (Function.update P.u' l (P.u' l - (n₀ : ℝ)) i) - 1 / 2`. Rewrite using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : i = l`. Substitute `ha` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne (by omega), max_self, min_eq_right (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_of_ne ha, min_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : i + 1 = l`. Substitute `hb` using the available equality. Rewrite using `[Function.update_self, max_eq_left (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Function.update_of_ne hb, max_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -136,13 +136,13 @@ theorem ok_minus {P : M.Par} (h : P.OK) (l n₀ : ℕ) (he : ∀ i ∈ Finset.Ic
         linarith
 
 /- English proof (translation)
-Take `⟨c₃, hc⟩` from `hA`. Take `⟨Cb, hCb, hS⟩` from `GlobalTheory.WithRightAction.exists_place_other_right_type`. Use `⟨c₃, Cb, hCb, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p l n₀ lp lm b he hl1 hl2 hg hb hn hb1 hp1 hp2 hm1 hm2`. Take `⟨hOK, hz, hz', hT, hT', hπ, hπ'⟩` from `p.hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Wqp, i1, i2, i3, Wqm, j1, j2, j3, πp, πm, -, -, htp, htm, -⟩` from `GlobalTheory.WigSh.exists_shifted_types_lower_bound Wq P.k P.r p.T.base.z' p.T.base.π' P.u' l n₀ b hz' (by rw [hT']; exact hOK.T'_pos) hπ' (gap_nat hOK) hl1 hl2 hg hb hn hb1`. Take `⟨pp, a1, a2, a3, a4, -, a6, a7, a8⟩` from `hS P Wp Wq Wqp p P.u (Function.update P.u' (l + 1) (P.u' (l + 1) + (n₀ : ℝ))) πp lp ⟨ok_plus hOK l n₀ he hg, hz, hz', hT, hT', hπ, htp⟩ hp1 hp2`. Take `⟨pm, b1, b2, b3, b4, -, b6, b7, b8⟩` from `hS P Wp Wq Wqm p P.u (Function.update P.u' l (P.u' l - (n₀ : ℝ))) πm lm ⟨ok_minus hOK l n₀ he hg, hz, hz', hT, hT', hπ, htm⟩ hm1 hm2`. Take `⟨Ap, Am, ApPt, AmPt, c1, c2, c3, c4⟩` from `hc P Wp Wq Wqp Wqm P.u (Function.update P.u' (l + 1) (P.u' (l + 1) + (n₀ : ℝ))) P.u (Function.update P.u' l (P.u' l - (n₀ : ℝ))) p pp pm l n₀ b a2 a3 b2 b3 (fun h _ => congrFun a4 h) (fun h _ => congrFun b4 h) a6 a7 b6 b7 hl1 hl2 hg hb hn hb1 (fun i _ => by`. Distinguish the cases in `h : i = l + 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, if_neg h])`. Use the proof step `(fun i _ => by`. Distinguish the cases in `h : i = l`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, if_neg h])`. Conclude with `⟨Wqp, i1, i2, i3, Wqm, j1, j2, j3, pp, pm, Ap, Am, ApPt, AmPt, a1, b1, a2, a3, a4, b2, b3, b4, a8, b8, c1, c2, c3, c4⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shiftExists_of (hA : GlobalTheory.WigSh.AmapsShExists) : GlobalTheory.WigSh.ShiftExists := by
   obtain ⟨c₃, hc⟩ := hA
@@ -174,7 +174,7 @@ theorem shiftExists_of (hA : GlobalTheory.WigSh.AmapsShExists) : GlobalTheory.Wi
     c1, c2, c3, c4⟩
 
 /- English proof (translation)
-The claim follows from `shiftExists_of GlobalTheory.T.wignerMapsThreePlaces_exists`.
+A detailed English derivation is pending.
 -/
 theorem shiftExists : GlobalTheory.WigSh.ShiftExists := shiftExists_of GlobalTheory.T.wignerMapsThreePlaces_exists
 

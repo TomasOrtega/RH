@@ -18,9 +18,9 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+
 variable {C : Type} [Category.{0} C] {F : C ⥤ CommAlgCat.{0} R₀}
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b`. Take `⟨b, rfl⟩` from `L.surj T b`. Rewrite using `[hσ, Algebra.smul_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (α.mem x))`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sig_mem (L : Pre I π F) (α : Aug I π R₁) (T : C) {σ : R₁ ⊗[R₀] F.obj T →+ L.B T} (hσ : α.IsSig (L.p T) σ)
     (y : R₁ ⊗[R₀] F.obj T) : σ y ∈ I.map (algebraMap R (L.B T)) := by
@@ -33,9 +33,9 @@ theorem sig_mem (L : Pre I π F) (α : Aug I π R₁) (T : C) {σ : R₁ ⊗[R�
   | add x y hx hy => rw [map_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b`. Take `⟨b, rfl⟩` from `L.surj T b`. Rewrite using `[Algebra.TensorProduct.map_tmul, ← L.nat, hσ, hσ, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem sig_nat (L : Pre I π F) (α : Aug I π R₁) {σ : ∀ T, R₁ ⊗[R₀] F.obj T →+ L.B T} (hσ : ∀ T, α.IsSig (L.p T) (σ T))
     {T T' : C} (a : T ⟶ T') (y : R₁ ⊗[R₀] F.obj T) : σ T' (extHom R₁ (mp F a) y) = L.ρ a (σ T y) := by
@@ -47,9 +47,9 @@ theorem sig_nat (L : Pre I π F) (α : Aug I π R₁) {σ : ∀ T, R₁ ⊗[R₀
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Establish `: ∀ y : R₁ ⊗[R₀] F.obj T, Algebra.TensorProduct.map α.q (AlgHom.id R₀ (F.obj T')) (extHom R₁ (mp F a) y) = extHom R₀ (mp F a) (Algebra.TensorProduct.map α.q (AlgHom.id R₀ (F.obj T)) y)` using `fun y ↦ by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(this y).trans (by rw [show Algebra.TensorProduct.map α.q (AlgHom.id R₀ (F.obj T)) y = 0 from hy, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem kerQ_nat (α : Aug I π R₁) {T T' : C} (a : T ⟶ T') {y : R₁ ⊗[R₀] F.obj T} (hy : α.KerQ y) :
     α.KerQ (extHom R₁ (mp F a) y) := by
@@ -62,11 +62,11 @@ theorem kerQ_nat (α : Aug I π R₁) {T T' : C} (a : T ⟶ T') {y : R₁ ⊗[R�
   exact (this y).trans (by rw [show Algebra.TensorProduct.map α.q (AlgHom.id R₀ (F.obj T)) y = 0 from hy, map_zero])
 
 /- English proof (translation)
-Establish `key : ∀ b : L.B T, ∃ y, α.KerQ y ∧ σ y = b * x`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨i, hi, rfl⟩` from `h`. Take `⟨y, h1, rfl⟩` from `α.surj i hi`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `fun b ↦ ⟨y ⊗ₜ L.p T b, by simp [Aug.KerQ, h1], by rw [hσ, Algebra.smul_def, mul_comm]⟩` and prove the remaining obligations. Consider the case `zero => exact fun b ↦ ⟨0, map_zero _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Introduce `b`. Take `⟨s, h1, h2⟩` from `hx b`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, h3, h4⟩` from `hy b`. Conclude with `⟨s + t, (map_add _ _ _).trans (by rw [h1, h3, add_zero]), by rw [map_add, h2, h4, mul_add]⟩`. Consider the case `smul a x _ hx => exact fun b ↦ by simpa [mul_assoc] using hx (b * a)`. Simplify using `using key 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sig_surj (L : Pre I π F) (α : Aug I π R₁) (T : C) {σ : R₁ ⊗[R₀] F.obj T →+ L.B T} (hσ : α.IsSig (L.p T) σ)
     {x : L.B T} (hx : x ∈ I.map (algebraMap R (L.B T))) : ∃ y, α.KerQ y ∧ σ y = x := by
@@ -90,15 +90,15 @@ variable (hI : I ^ 2 = 0)
 include hI in
 
 /- English proof (translation)
-Take `⟨v, σ, z, hv, hσ, hc, hz⟩` from `h`. Take `⟨f, hf⟩` from `H2.mk_eq_zero.1 hc.symm`. Use `⟨fun T T' a ↦ v T T' a * (1 - σ T' (f T T' a)), fun T T' a ↦ ?_, fun T T' T'' a b ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, (L.ker T' _).2 (sig_mem L α T' (hσ T') _), map_one, sub_zero, mul_one, hv]`. Establish `e` using `(hz T T' T'' a b).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[← hf, d1_apply]`. Use `erw [map_add, map_sub, sig_nat L α hσ] at e`. Establish `m` using `fun x y ↦ mul_eq_zero_of_mem (map_sq hI (L.B T'')) (sig_mem L α T'' (hσ T'') x) (sig_mem L α T'' (hσ T'') y)`. Establish `m1` using `m (extHom R₁ (mp F b) (f T T' a))`. Simplify using `only [sig_nat L α hσ] at m1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `m11` using `m1 (extHom R₁ (mp F b) (f T T' a))`. Rewrite `m11` using `[sig_nat L α hσ]`. Establish `m12` using `m1 (f T T'' (a ≫ b))`. Establish `m13` using `m1 (f T' T'' b)`. Establish `m23` using `m (f T T'' (a ≫ b)) (f T' T'' b)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m33` using `m (f T' T'' b) (f T' T'' b)`. Simplify using `only [map_mul, map_sub, map_one]`. Generalize the expression as in `L.ρ b (σ T' (f T T' a)) = x at *`. Generalize the expression as in `σ T'' (f T T'' (a ≫ b)) = y at *`. Generalize the expression as in `σ T'' (f T' T'' b) = w at *`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(v T T'' (a ≫ b) : L.B T'') = V at *`. Take the linear combination `(1 - x) * (1 - w) * e + V * (-m11 + m12 - m13 + m23 - m33 + w * m11 - w * m12 + w * m13)`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lift_of_isObU_zero (L : Pre I π F) (α : Aug I π R₁) {u : ∀ (T T' : C) (_ : T ⟶ T'), (F.obj T')ˣ}
     (h : IsObU L α u 0) : ∃ v : ∀ (T T' : C) (_ : T ⟶ T'), L.B T', (∀ T T' a, L.p T' (v T T' a) = (u T T' a : F.obj T')) ∧
@@ -129,19 +129,19 @@ theorem lift_of_isObU_zero (L : Pre I π F) (α : Aug I π R₁) {u : ∀ (T T' 
 include hI in
 
 /- English proof (translation)
-Take `⟨v, σ, z, hv, hσ, rfl, hz⟩` from `h`. Take `⟨v', σ', z', hv', hσ', rfl, hz'⟩` from `h'`. Take `rfl : σ = σ'` from `funext fun T ↦ AddMonoidHom.ext fun y ↦ sig_unique α _ (L.surj T) (hσ T) (hσ' T) y`. Establish `: ∀ T T' (a : T ⟶ T'), ∃ y, α.KerQ y ∧ σ T' y = (v T T' a * (v' T T' a)⁻¹ : (L.B T')ˣ) - 1` using `fun T T' a ↦ sig_surj L α T' (hσ T') ((L.ker T' _).1 (by`. Establish `: L.p T' (v' T T' a) * L.p T' ((v' T T' a)⁻¹ : (L.B T')ˣ) = 1` using `by rw [← map_mul]; simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, Units.val_mul, map_mul, hv, ← hv', this, map_one, sub_self]))`. Use `choose f hq hf using this`. Establish `hf' : ∀ T T' (a : T ⟶ T'), (v T T' a : L.B T') = (1 + σ T' (f T T' a)) * v' T T' a` using `fun T T' a ↦ by`. Rewrite using `[hf]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `H2.mk_eq_mk.2 ⟨f, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' a b`. Use `haveI := L.smooth T''`. Use `sub_eq_zero.1 (sig_inj α (L.p T'') (L.semi _) (L.surj _) (hσ T'') ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map α.q (AlgHom.id R₀ _) (extHom R₁ (mp F b) (f T T' a) - f T T'' (a ≫ b) + f T' T'' b - (z.1 T T' T'' a b - z'.1 T T' T'' a b)) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, map_sub, map_add, map_sub, kerQ_nat α b (hq T T' a), hq, hq, (hz T T' T'' a b).1, (hz' T T' T'' a b).1]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `σ T'' (extHom R₁ (mp F b) (f T T' a) - f T T'' (a ≫ b) + f T' T'' b - (z.1 T T' T'' a b - z'.1 T T' T'' a b)) = 0`. Establish `e` using `(hz T T' T'' a b).2`. Establish `e'` using `(hz' T T' T'' a b).2`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hf', hf', hf', map_mul, map_add, map_one, ← sig_nat L α hσ]`. Establish `m` using `fun x y ↦ mul_eq_zero_of_mem (map_sq hI (L.B T'')) (sig_mem L α T'' (hσ T'') x) (sig_mem L α T'' (hσ T'') y)`. Use `(v' T T'' (a ≫ b)).mul_left_inj.1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, map_add, map_sub]`. Establish `m1` using `m (extHom R₁ (mp F b) (f T T' a)) (f T' T'' b)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2` using `m (extHom R₁ (mp F b) (f T T' a)) (z'.1 T T' T'' a b)`. Establish `m3` using `m (f T' T'' b) (z'.1 T T' T'' a b)`. Establish `m4` using `m (f T T'' (a ≫ b)) (z.1 T T' T'' a b)`. Generalize the expression as in `σ T'' (extHom R₁ (mp F b) (f T T' a)) = x at *`. Generalize the expression as in `σ T'' (f T T'' (a ≫ b)) = y at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `σ T'' (f T' T'' b) = w at *`. Generalize the expression as in `σ T'' (z.1 T T' T'' a b) = s at *`. Generalize the expression as in `σ T'' (z'.1 T T' T'' a b) = s' at *`. Generalize the expression as in `(v' T T'' (a ≫ b) : L.B T'') = V at *`. Take the linear combination `e - (1 + x) * (1 + w) * e' + V * (-m1 - m2 - m3 + m4 - s' * m1)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isObU_unique (L : Pre I π F) (α : Aug I π R₁) {u : ∀ (T T' : C) (_ : T ⟶ T'), (F.obj T')ˣ}
     {c c' : CatCoh.H2 (ext R₁ F)} (h : IsObU L α u c) (h' : IsObU L α u c') : c = c' := by
@@ -186,21 +186,19 @@ theorem isObU_unique (L : Pre I π F) (α : Aug I π R₁) {u : ∀ (T T' : C) (
 include hI in
 
 /- English proof (translation)
-Use `choose σ hσ using fun T ↦ exists_isSig hI hs α (L.p T) (L.semi T) (L.surj T) (L.ker T)`. Establish `m` using `fun T {x y} ↦ mul_eq_zero_of_mem (map_sq hI (L.B T)) (a := x) (b := y)`. Establish `: ∀ T T' (a : T ⟶ T'), ∃ v : (L.B T')ˣ, L.p T' v = u T T' a` using `fun T T' a ↦ by`. Take `⟨x, hx⟩` from `L.surj T' (u T T' a)`. Take `⟨y, hy⟩` from `L.surj T' ((u T T' a)⁻¹ : (F.obj T')ˣ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k : x * y - 1 ∈ I.map (algebraMap R (L.B T'))` using `(L.ker T' _).1 (by simp [hx, hy])`. Use `m T' k k` as an intermediate fact. Conclude with `⟨Units.mkOfMulEqOne x (y * (2 - x * y)) (by linear_combination -this), hx⟩`. Use `choose v hv using this`. Establish `: ∀ T T' T'' (a : T ⟶ T') (b : T' ⟶ T''), ∃ y, α.KerQ y ∧ σ T'' y = L.ρ b (v T T' a) * v T' T'' b * ((v T T'' (a ≫ b))⁻¹ : (L.B T'')ˣ) - 1` using `fun T T' T'' a b ↦ sig_surj L α T'' (hσ T'') ((L.ker T'' _).1 (by`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: L.p T'' (v T T'' (a ≫ b)) * L.p T'' ((v T T'' (a ≫ b))⁻¹ : (L.B T'')ˣ) = 1` using `by rw [← map_mul]; simp`. Rewrite using `[map_sub, map_mul, map_mul, L.nat, hv, hv, ← hu a b, ← hv, this, map_one, sub_self]))`. Use `choose z hq hz using this`. Establish `hz' : ∀ T T' T'' (a : T ⟶ T') (b : T' ⟶ T''), L.ρ b (v T T' a) * v T' T'' b = (1 + σ T'' (z T T' T'' a b)) * v T T'' (a ≫ b)` using `fun T T' T'' a b ↦ by rw [hz]; simp`. Use `⟨_, v, σ, ⟨z, fun T T' T'' T''' a b c ↦ ?_⟩, hv, hσ, rfl, fun T T' T'' a b ↦ ⟨hq _ _ _ a b, hz' _ _ _ a b⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := L.smooth T'''`. Use `sub_eq_zero.1 (sig_inj α (L.p T''') (L.semi _) (L.surj _) (hσ T''') ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map α.q (AlgHom.id R₀ _) (extHom R₁ (mp F c) (z T T' T'' a b) + z T T'' T''' (a ≫ b) c - (z T T' T''' a (b ≫ c) + z T' T'' T''' b c)) = 0`. Rewrite using `[map_sub, map_add, map_add, kerQ_nat α c (hq _ _ _ a b), hq, hq, hq]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `σ T''' (extHom R₁ (mp F c) (z T T' T'' a b) + z T T'' T''' (a ≫ b) c - (z T T' T''' a (b ≫ c) + z T' T'' T''' b c)) = 0`. Establish `e1` using `congrArg (L.ρ c) (hz' _ _ _ a b)`. Rewrite `e1` using `[map_mul, map_mul, map_add, map_one, ← sig_nat L α hσ, ← hL]`. Establish `e2` using `hz' _ _ _ (a ≫ b) c`. Establish `e3` using `hz' _ _ _ a (b ≫ c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `hz' _ _ _ b c`. Rewrite `e2` using `[Category.assoc]`. Establish `n` using `fun x y ↦ m T''' (sig_mem L α T''' (hσ T''') x) (sig_mem L α T''' (hσ T''') y)`. Establish `m1` using `n (extHom R₁ (mp F c) (z T T' T'' a b)) (z T T'' T''' (a ≫ b) c)`. Establish `m2` using `n (z T T' T''' a (b ≫ c)) (z T' T'' T''' b c)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Use `(v T T''' (a ≫ b ≫ c)).mul_left_inj.1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_add, map_add]`. Generalize the expression as in `σ T''' (extHom R₁ (mp F c) (z T T' T'' a b)) = x1 at *`. Generalize the expression as in `σ T''' (z T T'' T''' (a ≫ b) c) = x2 at *`. Generalize the expression as in `σ T''' (z T T' T''' a (b ≫ c)) = x3 at *`.
-
-Generalize the expression as in `σ T''' (z T' T'' T''' b c) = x4 at *`. Generalize the expression as in `(v T T''' (a ≫ b ≫ c) : L.B T''') = V at *`. Take the linear combination `-(v T'' T''' c : L.B T''') * e1 - (1 + x1) * e2 + (1 + x4) * e3 + L.ρ (b ≫ c) (v T T' a : L.B T') * e4 + V * (m2 - m1)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isObU (hs : Function.Surjective π) (L : Pre I π F) (hL : L.IsFun) (α : Aug I π R₁)
     {u : ∀ (T T' : C) (_ : T ⟶ T'), (F.obj T')ˣ} (hu : UCoc F u) : ∃ c, IsObU L α u c := by
@@ -275,7 +273,7 @@ section Example
 abbrev red : ZMod 16 →+* ZMod 8 := ZMod.castHom (show 8 ∣ 16 by norm_num) (ZMod 8)
 
 /- English proof (translation)
-Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Simplify using `only [RingHom.mem_ker, Ideal.mem_bot]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the decidable proposition.
 -/
 theorem red_sq : RingHom.ker red ^ 2 = 0 := by
   rw [pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]
@@ -283,11 +281,9 @@ theorem red_sq : RingHom.ker red ^ 2 = 0 := by
   decide
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_isObU red_sq (ZMod.ringHom_surjective red) (cstPre (ZMod.ringHom_surjective red) (SingleObj (ZMod 8)ˣ)) (fun _ _ _ _ _ _ ↦ rfl) α (u := fun _ _ a ↦ a) (fun _ _ _ a b ↦ mul_comm (G := ZMod 8) _ _)`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨v, h1, h2⟩` from `lift_of_isObU_zero red_sq _ α hc`. Set `o` to `SingleObj.star (ZMod 8)ˣ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `five : (ZMod 8)ˣ` to `⟨5, 5, by decide, by decide⟩`. Establish `k : ∀ x y : ZMod 16, red x = 5 → red y = 1 → x * x = y → y * y = y → False` using `by decide`. Establish `e : five * five = 1` using `by decide`. Use `k (v o o five) (v o o (1 : (ZMod 8)ˣ)) (h1 o o five) (h1 o o (1 : (ZMod 8)ˣ)) ?_ ?_` and prove the remaining obligations. Conclude with `(h2 o o o five five).trans (congrArg (v o o) e)`.
-
-Conclude with `(h2 o o o (1 : (ZMod 8)ˣ) (1 : (ZMod 8)ˣ)).trans (congrArg (v o o) (mul_one (1 : (ZMod 8)ˣ)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isObU_ne_zero {R₁ : Type} [CommRing R₁] [Algebra (ZMod 8) R₁] (α : Aug (RingHom.ker red) red R₁) :
     ∃ c, c ≠ 0 ∧ IsObU (cstPre (ZMod.ringHom_surjective red) (SingleObj (ZMod 8)ˣ)) α (fun _ _ a ↦ a) c := by
@@ -312,9 +308,9 @@ section Geo
 variable {X : Scheme.{0}} {C : Type} [Category.{0} C]
 
 /- English proof (translation)
-Take `⟨τ, -, h⟩` from `h`. Introduce `T T' T'' a b`. Establish `k : ∀ m, res (inf_le_left : V T'' ⊓ L.U m ≤ V T'') (u T T'' (a ≫ b)) = res inf_le_left (res (hV b) (u T T' a) * u T' T'' b)` using `fun m ↦ by`. Establish `e1` using `congrArg (res (inf_le_inf_right (L.U m) (hV b))) (h T T' a m)`. Rewrite `e1` using `[map_mul, h T' T'' b m, LB.res_res, LB.res_res, h T T'' (a ≫ b) m, ← mul_assoc]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, LB.res_res]`. Conclude with `mul_right_cancel e1`. Use `Units.ext (X.sheaf.eq_of_locally_eq' (fun m ↦ V T'' ⊓ L.U m) _ (fun m ↦ homOfLE inf_le_left) ?_ _ _ fun m ↦ congrArg Units.val (k m))` and prove the remaining obligations. Rewrite using `[← inf_iSup_eq, hL.cover, inf_top_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCoc_of_isFrame {L : LB X} (hL : L.IsLB) {V : C → X.Opens} {hV : ∀ ⦃T T' : C⦄, (T ⟶ T') → V T' ≤ V T}
     {u : ∀ (T T' : C) (_ : T ⟶ T'), Γ(X, V T')ˣ} (h : IsFrame L V hV u) : IsCoc V hV u := by
@@ -339,9 +335,9 @@ def chG (L : LB X) : Ch L ⥤ AffOp X where
   map a := (homOfLE (leOfHom a)).op
 
 /- English proof (translation)
-Establish `k : ∀ (x : X) (U : X.Opens), x ∈ U → ∃ t : Ch L, x ∈ opOf (chG L) t ∧ opOf (chG L) t ≤ U` using `fun x U hx ↦ by`. Take `⟨m, hm⟩` from `LB.mem_of_cover hL x`. Take `⟨_, ⟨W, hW, rfl⟩, h1, h2⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ((U ⊓ L.U m : X.Opens) : Set X) from ⟨hx, hm⟩) (U ⊓ L.U m).isOpen`. Conclude with `⟨⟨(⟨W, hW⟩, m), fun y hy ↦ (h2 hy).2⟩, h1, fun y hy ↦ (h2 hy).1⟩`. Use `⟨k, fun t₁ t₂ x U hx h₁ h₂ ↦ ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, h1, h2⟩` from `k x (opOf (chG L) t₁ ⊓ opOf (chG L) t₂ ⊓ U) ⟨⟨h₁, h₂⟩, hx⟩`. Conclude with `⟨t, ⟨homOfLE (h2.trans (inf_le_left.trans inf_le_left))⟩, ⟨homOfLE (h2.trans (inf_le_left.trans inf_le_right))⟩, h1, h2.trans inf_le_right⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isBas_ch {L : LB X} (hL : L.IsLB) : IsBas (opOf (chG L)) := by
   have k : ∀ (x : X) (U : X.Opens), x ∈ U → ∃ t : Ch L, x ∈ opOf (chG L) t ∧ opOf (chG L) t ≤ U := fun x U hx ↦ by
@@ -356,7 +352,7 @@ theorem isBas_ch {L : LB X} (hL : L.IsLB) : IsBas (opOf (chG L)) := by
     h1, h2.trans inf_le_right⟩
 
 /- English proof (translation)
-Use `⟨fun T m ↦ res (le_inf inf_le_right (inf_le_left.trans T.2)) (L.g m T.1.2), fun T m m' ↦ ?_, fun T T' a m ↦ ?_⟩` and prove the remaining obligations. Conclude with `((LB.res_res _ _ _).trans (LB.res_cocycle hL _ _ _ _ _ _).symm).trans (congrArg (_ * ·) (LB.res_res _ _ _).symm)`. Conclude with `(((LB.res_res _ _ _).trans (LB.res_cocycle hL _ _ _ _ _ _).symm).trans (congrArg (_ * ·) (LB.res_res _ _ _).symm)).trans (mul_comm _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFrame_ch {L : LB X} (hL : L.IsLB) : IsFrame L (opOf (chG L)) (opOf_le (chG L))
     fun T T' a ↦ res (le_inf T'.2 ((opOf_le (chG L) a).trans T.2)) (L.g T'.1.2 T.1.2) := by
@@ -371,7 +367,7 @@ variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+
 variable {s₀ : X ⟶ Sp R₀}
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_isObU hI hs ((ofSys S).restrict (chG L)) ((ofSys_isFun S).restrict _) α (u := fun T T' a ↦ res (le_inf T'.2 ((opOf_le (chG L) a).trans T.2)) (L.g T'.1.2 T.1.2)) fun T T' T'' a b ↦ congrArg Units.val (isCoc_of_isFrame hL (isFrame_ch hL) a b)`. Conclude with `⟨d, _, isFrame_ch hL, hd⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_obAt (hI : I ^ 2 = 0) (hs : Function.Surjective π) (S : Sys I π s₀) (α : Aug I π R₁) {L : LB X}
     (hL : L.IsLB) : ∃ d, ObAt S α L (chG L) d := by
@@ -381,7 +377,7 @@ theorem exists_obAt (hI : I ^ 2 = 0) (hs : Function.Surjective π) (S : Sys I π
   exact ⟨d, _, isFrame_ch hL, hd⟩
 
 /- English proof (translation)
-Use `choose σ hσ using fun T ↦ exists_isSig hI hs α (((ofSys S).restrict (chG (LB.triv X))).p T) (Pre.semi _ T) (Pre.surj _ T) (Pre.ker _ T)`. Use `⟨Ch (LB.triv X), inferInstance, inferInstance, chG _, isBas_ch (LB.isLB_triv X), fun _ _ _ ↦ 1, ⟨fun _ _ ↦ 1, fun _ _ _ ↦ by simp, fun _ _ _ _ ↦ by simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `isObU_one _ α σ hσ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isObL_triv (hI : I ^ 2 = 0) (hs : Function.Surjective π) (S : Sys I π s₀) (α : Aug I π R₁) :
     IsObL S α (LB.triv X) 0 := by
@@ -393,7 +389,7 @@ theorem isObL_triv (hI : I ^ 2 = 0) (hs : Function.Surjective π) (S : Sys I π 
   exact isObU_one _ α σ hσ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(h.1 (Classical.arbitrary X) ⊤ trivial).choose⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_of_isBas [Nonempty X] {V : C → X.Opens} (h : IsBas V) : Nonempty C :=
   ⟨(h.1 (Classical.arbitrary X) ⊤ trivial).choose⟩

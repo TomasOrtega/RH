@@ -86,7 +86,7 @@ section Lemmas
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h'.1.comp h.1, fun a => by rw [← Category.assoc, h'.2, Category.assoc, h.2, Category.assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsActPull.comp {S S' S'' : Scheme.{0}} {G'' : Over S''} [GrpObj G''] {G' : Over S'} [GrpObj G'] {G : Over S}
     [GrpObj G] {i'' : OAct O G''} {i' : OAct O G'} {i : OAct O G} {g : S'' ⟶ S'} {f : S' ⟶ S} {φ' : G''.left ⟶ G'.left}
@@ -94,9 +94,9 @@ theorem IsActPull.comp {S S' S'' : Scheme.{0}} {G'' : Over S''} [GrpObj G''] {G'
   ⟨h'.1.comp h.1, fun a => by rw [← Category.assoc, h'.2, Category.assoc, h.2, Category.assoc]⟩
 
 /- English proof (translation)
-Use `⟨fun σ => by rw [h'.1, h.1]; push_cast; ring, fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨d', hd', e⟩` from `h.2 d hd`. Take `⟨d'', hd'', e'⟩` from `h'.2 d' hd'`. Use `⟨d'', hd'', le_trans ?_ e'⟩` and prove the remaining obligations. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left e (Nat.cast_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DegRel.trans {k : Type} [Field k] {C C' C'' : Scheme.{0}} [Algebra k Γ(C, ⊤)] [Algebra k Γ(C', ⊤)]
     [Algebra k Γ(C'', ⊤)] [IsIntegral C] [IsIntegral C'] [IsIntegral C''] {G : Over C} [GrpObj G] [QuasiSeparated G.hom]
@@ -112,14 +112,14 @@ theorem DegRel.trans {k : Type} [Field k] {C C' C'' : Scheme.{0}} [Algebra k Γ(
   exact mul_le_mul_of_nonneg_left e (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => by simp, fun d hd => ⟨d, hd, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem DegRel.refl {k : Type} [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsIntegral C] {G : Over C} [GrpObj G]
     [QuasiSeparated G.hom] (i : OAct O G) : DegRel k i i 1 :=
   ⟨fun _ => by simp, fun d hd => ⟨d, hd, by simp⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ => Int.castRingHom k, isSplitBy_of_injective (fun _ _ _ => rfl) (by simp)⟩`.
+Supply the required witnesses or components.
 -/
 example (k : Type) [Field k] : Splits ℤ k :=
   ⟨Unit, inferInstance, fun _ => Int.castRingHom k, isSplitBy_of_injective (fun _ _ _ => rfl) (by simp)⟩

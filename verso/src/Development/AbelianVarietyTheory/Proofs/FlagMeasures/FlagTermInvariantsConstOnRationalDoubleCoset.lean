@@ -25,13 +25,13 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[orth, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_orth_iff' {U : Submodule E S.V} {v : S.V} : v ∈ orth S U ↔ ∀ x ∈ U, S.hT x v = 0 := by
   simp [orth, Submodule.mem_iInf]
 
 /- English proof (translation)
-Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp [frame, FlagG.fvec, mapFlag]`. Consider the case `cast i => simp [frame, FlagG.fvec, mapFlag]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem frame_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T)
     (a : Fin (r + 1)) : frame (mapLF γ F) a = γ (frame F a) := by
@@ -41,14 +41,14 @@ theorem frame_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.Her
   | cast i => simp [frame, FlagG.fvec, mapFlag]
 
 /- English proof (translation)
-Unfold `mapLF`. Rewrite using `[dif_pos hγ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zt_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T) :
     (mapLF γ F).zt = γ F.zt := by
   unfold mapLF; rw [dif_pos hγ]
 
 /- English proof (translation)
-Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Use `show Submodule.span E ((fun a => γ (F.fl.e a)) '' {i | i.1 < j}) = (Submodule.span E (F.fl.e '' {i | i.1 < j})).map (γ : S.V →ₗ[E] S.V)`. Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Xflag_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T) (j : ℕ) :
     Xflag (mapLF γ F) j = (Xflag F j).map (γ : S.V →ₗ[E] S.V) := by
@@ -59,7 +59,7 @@ theorem Xflag_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.Her
   rfl
 
 /- English proof (translation)
-Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Use `show Submodule.span E (Set.range fun a => γ (F.fl.e a)) = (Submodule.span E (Set.range F.fl.e)).map (γ : S.V →ₗ[E] S.V)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Xsp_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T) :
     Xsp (mapLF γ F) = (Xsp F).map (γ : S.V →ₗ[E] S.V) := by
@@ -70,7 +70,7 @@ theorem Xsp_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.Hermi
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_top, LinearMap.range_eq_top]`. Introduce `y`. Conclude with `⟨γ.symm y, by simp⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem gmap_top (γ : S.V ≃ₗ[E] S.V) : Formalism.HermitianLatticesTheory.gmap γ (⊤ : Submodule (𝓞 E) S.V) = ⊤ := by
   unfold Formalism.HermitianLatticesTheory.gmap
@@ -85,24 +85,22 @@ section D
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨hn.1, gmap_top n⟩, hn.2.1, hn.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem nlam_top_of_nrat {T : D.host.E} {F : LFlag (VS D) D.R.rS T} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NRat F) : n ∈ NLam (⊤ : Submodule (𝓞 D.host.E) (VS D).V) F :=
   ⟨⟨hn.1, gmap_top n⟩, hn.2.1, hn.2.2⟩
 
 /- English proof (translation)
-Take `⟨hi, hf, hp⟩` from `hm`. Establish `happ : ∀ y, (γ * m * γ⁻¹) (γ y) = γ (m y)` using `fun y => by show γ (m (γ.symm (γ y))) = γ (m y)`. Rewrite using `[γ.symm_apply_apply]`. Use `⟨⟨(Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).mul_mem hγ hi) ((Formalism.HermitianLatticesTheory.isom _).inv_mem hγ), gmap_top _⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `j x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, the goal using `[Xflag_mapLF hγ]`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx`. Establish `e : (γ * m * γ⁻¹) ((γ : (VS D).V →ₗ[D.host.E] (VS D).V) y) - (γ : (VS D).V →ₗ[D.host.E] (VS D).V) y = (γ : (VS D).V →ₗ[D.host.E] (VS D).V) (m y - y)`. Rewrite using `[map_sub]`. Conclude with `congrArg (· - _) (happ y)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.mem_map_of_mem (hf j y hy)`. Introduce `x hx`. Establish `hXs` using `Xsp_mapLF hγ G`. Establish `hy : γ.symm x ∈ orth (VS D) (Xsp G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, the goal using `[mem_orth_iff']`. Introduce `w hw`. Establish `h1` using `hx (γ w) (by rw [hXs]; exact Submodule.mem_map_of_mem hw)`. Establish `h2` using `hγ w (γ.symm x)`. Rewrite `h2` using `[γ.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Conclude with `h1`. Establish `h3` using `hp _ hy`. Establish `e : (γ * m * γ⁻¹) x - x = (γ : (VS D).V →ₗ[D.host.E] (VS D).V) (m (γ.symm x) - γ.symm x)` using `by show γ (m (γ.symm x)) - x = γ (m (γ.symm x) - γ.symm x)`. Rewrite using `[map_sub, γ.apply_symm_apply]`.
-
-Rewrite using `[e, hXs]`. Conclude with `Submodule.mem_map_of_mem h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_nlam_top {T : D.host.E} {G : LFlag (VS D) D.R.rS T} {γ m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (hm : m ∈ NRat G) :
@@ -150,11 +148,9 @@ section Terms
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Establish `h0 : t₀.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t₀.rep.2.2.1`. Establish `h1 : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hn' : n⁻¹ ∈ NRat (lf D (X.Fu u))` using `Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_inv _ hn`. Use `⟨n⁻¹, nlam_top_of_nrat hn', t₀.lin * m * t₀.lin⁻¹, conj_nlam_top h0 hm, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show frame (mapLF t.lin (lf D (X.Fu u'))) a = n⁻¹ ((t₀.lin * m * t₀.lin⁻¹) (frame (mapLF t₀.lin (lf D (X.Fu u'))) a))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frame_mapLF h1, frame_mapLF h0, h]`. Use `show n.symm (t₀.lin (m _)) = n.symm (t₀.lin (m (t₀.lin.symm (t₀.lin _))))`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Use `show (mapLF t.lin (lf D (X.Fu u'))).zt = n⁻¹ ((t₀.lin * m * t₀.lin⁻¹) (mapLF t₀.lin (lf D (X.Fu u'))).zt)`. Rewrite using `[zt_mapLF h1, zt_mapLF h0, h]`.
-
-Use `show n.symm (t₀.lin (m _)) = n.symm (t₀.lin (m (t₀.lin.symm (t₀.lin _))))`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dcrel_of_coset (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NRat (lf D (X.Fu u))) (hm : m ∈ NRat (lf D (X.Fu u'))) (h : t.lin = n⁻¹ * t₀.lin * m) :
@@ -175,7 +171,7 @@ theorem dcrel_of_coset (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (
     rw [LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.TermDef.isRel_mk D.host.F (PI.TermAttrConst.UnitaryGroupMassFormula.relFun_all D.host.F s.lam (lf D (X.Fu u)) (Formalism.L2.SG.TermDef.PD D s.lam (lf D (X.Fu u)) u')) ⟨s.frame, s.rep.2.2.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem relevant_iff (s : TauC Y u u') :
     s.relevant ↔ Relevant D.host.F (lf D (X.Fu u)).fl s.frame.fl :=
@@ -184,7 +180,7 @@ theorem relevant_iff (s : TauC Y u u') :
       (Formalism.L2.SG.TermDef.PD D s.lam (lf D (X.Fu u)) u')) ⟨s.frame, s.rep.2.2.2.2⟩
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.TermDef.atPt_mk (PI.TermAttrConst.UnitaryGroupMassFormula.gFun_all _ _ _) (PI.TermAttrConst.UnitaryGroupMassFormula.cellFun_all _ _ _) ⟨s.frame, s.rep.2.2.2.2⟩ w`.
+A detailed English derivation is pending.
 -/
 theorem atPt_iff (s : TauC Y u u') (w : Point D.host.E (D.R.rS + 1)) :
     s.toTerm.atPt w ↔ Gval (lf D (X.Fu u)) s.frame ≠ 0 ∧
@@ -201,11 +197,11 @@ namespace GlobalTheory.HL.CosetConst
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Establish `hni : n⁻¹ ∈ NRat (lf D (X.Fu u))` using `Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_inv _ hn`. Establish `hmi : m⁻¹ ∈ NRat (lf D (X.Fu u'))` using `Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_inv _ hm`. Use extensionality with `δ`. Simplify using `only [nmlOf, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨a * n⁻¹, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul _ ha hni, m * b, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul _ hm hb, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨a * n, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul _ ha hn, m⁻¹ * b, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul _ hmi hb, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nml_eq (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NRat (lf D (X.Fu u))) (hm : m ∈ NRat (lf D (X.Fu u'))) (h : t.lin = n⁻¹ * t₀.lin * m) :
@@ -225,7 +221,7 @@ theorem nml_eq (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     rw [h]; simp only [mul_assoc, mul_inv_cancel_left]
 
 /- English proof (translation)
-The claim follows from `PI.TermAttrConst.UnitaryGroupMassFormula.gFun_all (⊤ : Submodule (𝓞 D.host.E) (VS D).V) (lf D (X.Fu u)) (fun _ => True) ⟨t₀.frame, trivial⟩ ⟨t.frame, trivial⟩ (dcrel_of_coset t₀ t hn hm h)`.
+A detailed English derivation is pending.
 -/
 theorem G_eq_frames (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NRat (lf D (X.Fu u))) (hm : m ∈ NRat (lf D (X.Fu u'))) (h : t.lin = n⁻¹ * t₀.lin * m) :
@@ -234,7 +230,7 @@ theorem G_eq_frames (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (VS 
     (fun _ => True) ⟨t₀.frame, trivial⟩ ⟨t.frame, trivial⟩ (dcrel_of_coset t₀ t hn hm h)
 
 /- English proof (translation)
-The claim follows from `PI.TermAttrConst.UnitaryGroupMassFormula.cellFun_all (⊤ : Submodule (𝓞 D.host.E) (VS D).V) (lf D (X.Fu u)) (fun _ => True) ⟨t₀.frame, trivial⟩ ⟨t.frame, trivial⟩ (dcrel_of_coset t₀ t hn hm h) w`.
+A detailed English derivation is pending.
 -/
 theorem cell_iff_frames (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NRat (lf D (X.Fu u))) (hm : m ∈ NRat (lf D (X.Fu u'))) (h : t.lin = n⁻¹ * t₀.lin * m)
@@ -244,7 +240,7 @@ theorem cell_iff_frames (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] 
     (fun _ => True) ⟨t₀.frame, trivial⟩ ⟨t.frame, trivial⟩ (dcrel_of_coset t₀ t hn hm h) w
 
 /- English proof (translation)
-The claim follows from `PI.TermAttrConst.UnitaryGroupMassFormula.relFun_all D.host.F (⊤ : Submodule (𝓞 D.host.E) (VS D).V) (lf D (X.Fu u)) (fun _ => True) ⟨t₀.frame, trivial⟩ ⟨t.frame, trivial⟩ (dcrel_of_coset t₀ t hn hm h)`.
+A detailed English derivation is pending.
 -/
 theorem rel_iff_frames (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NRat (lf D (X.Fu u))) (hm : m ∈ NRat (lf D (X.Fu u'))) (h : t.lin = n⁻¹ * t₀.lin * m) :
@@ -253,11 +249,9 @@ theorem rel_iff_frames (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (
     (fun _ => True) ⟨t₀.frame, trivial⟩ ⟨t.frame, trivial⟩ (dcrel_of_coset t₀ t hn hm h)
 
 /- English proof (translation)
-Establish `hCP` using `Formalism.L2.SG.Pf.cell_point_unique_of_term_fun (Formalism.L2.SG.Closed.TermFun_holds D u u') (Y.rowsOK u)`. Distinguish the cases in `hx : ∃ w, t₀.toTerm.atPt w ∧ t₀.toTerm.relevant`. Establish `hx' : ∃ w, t.toTerm.atPt w ∧ t.toTerm.relevant`. Take `⟨w, hw, hr⟩` from `hx`. Conclude with `⟨w, (hat w).2 hw, hrl.2 hr⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hCP t₀.toTerm _ _ ((hat _).1 (Formalism.L2.SG.PairVal.ptOf_spec t.toTerm hx')) (Formalism.L2.SG.PairVal.ptOf_spec t₀.toTerm hx)`. Establish `hx' : ¬ ∃ w, t.toTerm.atPt w ∧ t.toTerm.relevant`. Introduce and unpack `⟨w, hw, hr⟩`. Conclude with `hx ⟨w, (hat w).1 hw, hrl.1 hr⟩`. Unfold `Formalism.L2.SG.PairVal.ptOf`.
-
-Rewrite using `[dif_neg hx, dif_neg hx']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_eq (t₀ t : TauC Y u u') (hrl : t.relevant ↔ t₀.relevant) (hat : ∀ w, t.toTerm.atPt w ↔ t₀.toTerm.atPt w) :
     Formalism.L2.SG.PairVal.ptOf t.toTerm = Formalism.L2.SG.PairVal.ptOf t₀.toTerm := by
@@ -277,11 +271,11 @@ theorem pt_eq (t₀ t : TauC Y u u') (hrl : t.relevant ↔ t₀.relevant) (hat :
 end GlobalTheory.HL.CosetConst
 
 /- English proof (translation)
-Introduce `D X Y u u' _ t₀ t n m hrel hG hnm`. Take `⟨hn, hm, h⟩` from `hnm`. Establish `eG` using `GlobalTheory.HL.CosetConst.G_eq_frames t₀ t hn hm h`. Establish `hrl : t.relevant ↔ t₀.relevant`. Rewrite using `[GlobalTheory.HL.CosetConst.relevant_iff, GlobalTheory.HL.CosetConst.relevant_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.HL.CosetConst.rel_iff_frames t₀ t hn hm h).symm`. Establish `hat : ∀ w, t.toTerm.atPt w ↔ t₀.toTerm.atPt w` using `fun w => by`. Rewrite using `[GlobalTheory.HL.CosetConst.atPt_iff, GlobalTheory.HL.CosetConst.atPt_iff, eG, GlobalTheory.HL.CosetConst.cell_iff_frames t₀ t hn hm h w]`. Establish `hnml` using `GlobalTheory.HL.CosetConst.nml_eq t₀ t hn hm h`. Use `⟨hrl.2 hrel, ?_, GlobalTheory.HL.CosetConst.pt_eq t₀ t hrl hat, hnml, fun hr => GlobalTheory.T.same_row_same_coset_scalar_corank_one D X Y u u' t₀ t hG hr.symm hnml.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.Pf.SatGram.gterm_G (X := X) (Y := Y) (t := t), Formalism.L2.SG.Pf.SatGram.gterm_G (X := X) (Y := Y) (t := t₀), eG]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HL.CosetConst.coset_const : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
     Formalism.MainNotions.S.Cnt.Stand D u u' →

@@ -28,7 +28,7 @@ variable [FiniteDimensional ℂ V] {ε : Fin n → Bool} (τ : KG ε →* unitar
 
 include hcont hder in
 /- English proof (translation)
-Conclude with `pre_op_eq_exp' τ dτ hder k`.
+A detailed English derivation is pending.
 -/
 theorem pre_op_eq_exp (k : KG ε) :
     ∃ Y : Matrix (Fin n) (Fin n) ℂ, inK ε Y ∧
@@ -37,13 +37,13 @@ theorem pre_op_eq_exp (k : KG ε) :
 
 include hcont hder in
 /- English proof (translation)
-Introduce `a b c d hab hcd`. Establish `hbr` using `pre_dτ_bracket_single τ dτ hder hab hcd`. Establish `hm : Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 = (if b = c then Matrix.single a d 1 else 0) - (if d = a then Matrix.single c b 1 else 0)`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a`. Substitute `h1 h2` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Simplify using `[Matrix.single_mul_single_same]`. Substitute `h1` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, h2]`. Substitute `h2` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, h1]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_mul_single_of_ne, Matrix.single_mul_single_of_ne, h1, h2]`. Rewrite `hbr` using `[hm]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `hx` using `congrArg (fun F : V →L[ℂ] V => F x) hbr`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ∀ A B : V →L[ℂ] V, (A * B) x = A (B x)` using `fun _ _ => rfl`. Simplify using `only [_root_.sub_apply, e, map_sub] at hx`. Simplify using `only [preUnits, LinearMap.sub_apply, Module.End.mul_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[hx]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pre_kRel : Formalism.REAL.KRel ε (preUnits dτ) := by
   intro a b c d hab hcd
@@ -67,7 +67,7 @@ theorem pre_kRel : Formalism.REAL.KRel ε (preUnits dτ) := by
 
 include hcont hder in
 /- English proof (translation)
-Introduce `a b hab x y`. Use `show ⟪dτ (Matrix.single a b 1) x, y⟫_ℂ = ⟪x, dτ (Matrix.single b a 1) y⟫_ℂ`. Rewrite using `[← pre_star_dτ_single τ dτ hder hab, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_kUnit : Formalism.REAL.KUnit ε (preUnits dτ) := by
   intro a b hab x y
@@ -76,13 +76,13 @@ theorem pre_kUnit : Formalism.REAL.KUnit ε (preUnits dτ) := by
     ContinuousLinearMap.adjoint_inner_right]
 
 /- English proof (translation)
-Introduce `Y hY v hv`. Rewrite using `[Matrix.matrix_eq_sum_single Y, map_sum, _root_.sum_apply]`. Use `W.sum_mem fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, _root_.sum_apply]`. Use `W.sum_mem fun b _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hab : ε a = ε b`. Establish `e : Matrix.single a b (Y a b) = Y a b • Matrix.single a b 1`. Use extensionality with `i j`. Simplify using `[Matrix.single_apply]`. Rewrite using `[e, map_smul, _root_.smul_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.smul_mem _ (hW a b hab v hv)`. Establish `e : Matrix.single a b (Y a b) = 0`. Rewrite using `[inK_entry_eq_zero hY hab]`. Use extensionality with `i j`. Simplify using `[Matrix.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_zero, _root_.zero_apply]`. Conclude with `W.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem pre_dτ_stable_of_kStable (W : Submodule ℂ V) (hW : Formalism.REAL.KStable ε (preUnits dτ) W) :
     ∀ Y, inK ε Y → ∀ v ∈ W, dτ Y v ∈ W := by
@@ -104,19 +104,17 @@ theorem pre_dτ_stable_of_kStable (W : Submodule ℂ V) (hW : Formalism.REAL.KSt
 include hcont hder in
 
 /- English proof (translation)
-Establish `hK : ∀ X, inK ε X → ∀ v ∈ W, dτ X v ∈ W`. Introduce `X hX v hv`. Take `⟨γ, hγ⟩` from `exists_curve ε hX`. Establish `hd` using `hder X hX γ hγ`. Establish `hdv : HasDerivAt (fun t : ℝ => preOp τ (γ t) v) (dτ X v) 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((ContinuousLinearMap.apply ℂ V v).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Rewrite `hdv` using `[hasDerivAt_iff_tendsto_slope]`. Establish `hcl : IsClosed (W : Set V)` using `W.closed_of_finiteDimensional`. Use `hcl.mem_of_tendsto hdv (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[slope_def_module, SetLike.mem_coe]`. Conclude with `Submodule.smul_of_tower_mem W _ (W.sub_mem (hW _ v hv) (hW _ v hv))`. Introduce `a b hab v hv`. Use `show dτ (Matrix.single a b 1) v ∈ W`. Use `set A : Matrix (Fin n) (Fin n) ℂ := Matrix.single a b 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B : Matrix (Fin n) (Fin n) ℂ := Matrix.single b a 1`. Establish `hA : A * Jm ε = Jm ε * A` using `single_mul_Jm_comm hab 1`. Establish `hB : B * Jm ε = Jm ε * B` using `single_mul_Jm_comm hab.symm 1`. Establish `hAB : Aᴴ = B`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [A, B, Matrix.conjTranspose_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = j <;> by_cases h2 : b = i <;> simp [h1, h2]`. Establish `hBA : Bᴴ = A` using `by rw [← hAB, Matrix.conjTranspose_conjTranspose]`. Establish `h1 : inK ε (A - B)` using `inK_of_skew_comm (by rw [Matrix.conjTranspose_sub, hAB, hBA, neg_sub]) (by rw [sub_mul, mul_sub, hA, hB])`. Establish `h2 : inK ε (Complex.I • (A + B))` using `inK_of_skew_comm (by rw [Matrix.conjTranspose_smul, Matrix.conjTranspose_add, hAB, hBA, Complex.star_def, Complex.conj_I, add_comm, neg_smul]) (by rw [Matrix.smul_mul, Matrix.mul_smul, add_mul, mul_add, hA, hB])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : A = (1 / 2 : ℂ) • (A - B) - (Complex.I / 2) • (Complex.I • (A + B))`. Rewrite using `[smul_smul, show Complex.I / 2 * Complex.I = -(1 / 2 : ℂ) by`. Rewrite using `[div_mul_eq_mul_div, Complex.I_mul_I]`. Use the proof step `ring]`. Use `module`.
-
-Rewrite using `[e, map_sub, map_smul, map_smul, _root_.sub_apply, _root_.smul_apply, _root_.smul_apply]`. Conclude with `W.sub_mem (W.smul_mem _ (hK _ h1 v hv)) (W.smul_mem _ (hK _ h2 v hv))`.
+A detailed English derivation is pending.
 -/
 theorem pre_kStable_of_stable (W : Submodule ℂ V)
     (hW : ∀ k : KG ε, ∀ v ∈ W, ((τ k : unitary (V →L[ℂ] V)) : V →L[ℂ] V) v ∈ W) :
@@ -161,9 +159,9 @@ theorem pre_kStable_of_stable (W : Submodule ℂ V)
 include hcont hder in
 
 /- English proof (translation)
-Establish `hS : Formalism.REAL.KStable ε (preUnits dτ) (Formalism.REAL.kSpan ε (preUnits dτ) x)`. Introduce `a b hab y hy`. Unfold `Formalism.REAL.kSpan at hy ⊢`. Rewrite `hy`, the goal using `[Submodule.mem_sInf]`. Introduce `S hS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS.2 a b hab y (hy S hS)`. Take `⟨Y, hY, he⟩` from `pre_op_eq_exp' τ dτ hder k`. Rewrite using `[show ((τ k : unitary (V →L[ℂ] V)) : V →L[ℂ] V) = NormedSpace.exp (dτ Y) from he]`. Conclude with `exp_mem_of_stable _ _ (pre_dτ_stable_of_kStable dτ _ hS Y hY)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_kSpan_stable (x : V) (k : KG ε) :
     ∀ v ∈ Formalism.REAL.kSpan ε (preUnits dτ) x,
@@ -181,9 +179,9 @@ theorem pre_kSpan_stable (x : V) (k : KG ε) :
 include hcont hder in
 
 /- English proof (translation)
-Introduce `W hW`. Establish `hx : w ∈ Formalism.REAL.kSpan ε (preUnits dτ) w`. Unfold `Formalism.REAL.kSpan`. Rewrite using `[Submodule.mem_sInf]`. Introduce `S hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS.1`. Establish `htop : Formalism.REAL.kSpan ε (preUnits dτ) w = ⊤` using `hgen _ (pre_kSpan_stable τ hcont dτ hder w) hx`. Establish `hhi : Formalism.REAL.KHighest ε (preUnits dτ) Λ w` using `⟨fun a => hwt a, fun a b hab he => hhw a b hab he⟩`. Use `Formalism.REAL.kIrr V n ε (preUnits dτ) Λ w inferInstance (pre_kRel τ hcont dτ hder) (pre_kUnit τ hcont dτ hder) hhi W (htop ▸ le_top) (pre_kStable_of_stable τ hcont dτ hder W hW)` as an intermediate fact. Rewrite `this` using `[htop]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem irred_of_gen {Λ : Fin n → ℝ} (w : V)
     (hwt : ∀ a, dτ (Matrix.single a a 1) w = ((Λ a : ℝ) : ℂ) • w)
@@ -229,7 +227,7 @@ def kTypeOfGen {ε : Fin n → Bool} {Λ : Fin n → ℝ} (V : Type) [NormedAddC
   w_hw := hhw
 
 /- English proof (translation)
-The claim follows from `kTypeOfGen ℂ 1 continuous_const 0 (fun _ _ _ _ => by simpa using hasDerivAt_const (0 : ℝ) (1 : ℂ →L[ℂ] ℂ)) 1 (by simp) (fun a => by simp) (fun _ _ _ _ => by simp) (fun W _ h => eq_top_iff.2 fun x _ => by simpa using W.smul_mem x h)`.
+A detailed English derivation is pending.
 -/
 example (ε : Fin n → Bool) : KType ε 0 :=
   kTypeOfGen ℂ 1 continuous_const 0

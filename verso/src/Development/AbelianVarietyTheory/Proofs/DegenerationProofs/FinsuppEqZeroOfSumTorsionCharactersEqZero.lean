@@ -5,15 +5,15 @@ open Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hu : IsUnit ζ` using `hζ.isUnit hN.ne'`. Take `⟨u, rfl⟩` from `hu`. Establish `hu' : IsPrimitiveRoot u N` using `IsPrimitiveRoot.coe_units_iff.mp hζ`. Set `b` to `Module.Free.chooseBasis ℤ X`. Establish `key : ∀ i, (N : ℤ) ∣ b.repr (α - β) i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Set `t : Multiplicative X →* kˣ` to `{ toFun := fun x => u ^ (b.repr (Multiplicative.toAdd x) i) map_one' := by simp map_mul' := by`. Introduce `x y`. Simplify using `[zpow_add] }`. Establish `ht : t ^ N = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `: (u ^ (b.repr (Multiplicative.toAdd x) i)) ^ N = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hu'.pow_eq_one, one_zpow]`. Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : u ^ (b.repr α i) = u ^ (b.repr β i)` using `h t ht`. Rewrite using `[← hu'.zpow_eq_one_iff_dvd, map_sub, Finsupp.sub_apply, zpow_sub, h1, mul_inv_cancel]`. Use `choose d hd using key`. Use `⟨∑ i, d i • b i, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add', ← b.sum_repr (α - β), Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hd i, mul_smul, natCast_zsmul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_add_nsmul_of_torsion_characters_eq (k X : Type) [Field k] [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (N : ℕ) (ζ : k) (hN : 0 < N)
@@ -50,15 +50,15 @@ theorem exists_eq_add_nsmul_of_torsion_characters_eq (k X : Type) [Field k] [Add
   rw [hd i, mul_smul, natCast_zsmul]
 
 /- English proof (translation)
-Introduce `k X _ _ _ _ N ζ hN hζ M _ _ c hc hsum`. Set `G : Subgroup (Multiplicative X →* kˣ)` to `(powMonoidHom N).ker`. Set `ev : c.support → (G →* k)` to `fun α => { toFun := fun t => ((t : Multiplicative X →* kˣ) (Multiplicative.ofAdd (α : X)) : k) map_one' := by simp map_mul' := by`. Introduce `s t`. Simplify using `}`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hinj : Function.Injective ev`. Introduce `α β hαβ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hc _ α.2 _ β.2 (exists_eq_add_nsmul_of_torsion_characters_eq k X N ζ hN hζ _ _ fun t ht => ?_)` and prove the remaining obligations. Conclude with `Units.ext (DFunLike.congr_fun hαβ (⟨t, ht⟩ : G))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent k (fun α : c.support => (ev α : G → k))` using `(linearIndependent_monoidHom G k).comp ev hinj`. Use extensionality with `α`. Assume the negation of the conclusion as `hα`. Establish `hmem : α ∈ c.support` using `Finsupp.mem_support_iff.mpr hα`. Apply `hα` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.zero_apply, ← Module.forall_dual_apply_eq_zero_iff k]`. Introduce `φ`. Use `Fintype.linearIndependent_iff.mp hli (fun β => φ (c β)) ?_ ⟨α, hmem⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Establish `h0` using `congrArg φ (hsum t t.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Finsupp.sum, map_sum, map_zero, ← Finset.sum_coe_sort]`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← h0]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finsupp_eq_zero_of_sum_torsion_characters_eq_zero :
     ∀ (k X : Type) [Field k] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (N : ℕ) (ζ : k), 0 < N → IsPrimitiveRoot ζ N → ∀ (M : Type) [AddCommGroup M] [Module k M] (c : X →₀ M), (∀ α ∈ c.support, ∀ β ∈ c.support, (∃ w, α = β + N • w) → α = β) → (∀ t : Multiplicative X →* kˣ, t ^ N = 1 → c.sum (fun α m => (t (Multiplicative.ofAdd α) : k) • m) = 0) → c = 0 := by

@@ -20,9 +20,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
 /- English proof (translation)
-Establish `hfin : ∀ v : P F, {w : P E | Below v w}.Finite` using `fun v => by haveI := v.isMaximal`. Use `Set.Finite.of_finite_image (f := HeightOneSpectrum.asIdeal) ((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).subset ?_) (fun _ _ _ _ h => HeightOneSpectrum.ext h)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨w.isPrime, ⟨hw⟩⟩`. Establish `hS : {v | ¬ p v}.Finite` using `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: (⋃ v ∈ {v | ¬ p v}, {w : P E | Below v w}).Finite` using `hS.biUnion fun v _ => hfin v`. Use `filter_upwards [this.eventually_cofinite_notMem] with w hw v hv`. Assume the negation of the conclusion as `hc`. Conclude with `hw (Set.mem_biUnion hc hv)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem below_ev {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {p : P F → Prop} (h : ∀ᶠ v in cofinite, p v) : ∀ᶠ w : P E in cofinite, ∀ v, Below v w → p v := by
@@ -46,26 +46,26 @@ private def LRel {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
       ∀ h, Φ (Matrix.GeneralLinearGroup.scalar (Fin 2) z * h) = ((α : ℂ) * β) ^ 2 * Φ h
 
 /- English proof (translation)
-Simplify using `[WE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem we_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E)
     (h : GL (Fin 2) (A E)) : WE D (0 : GL (Fin 2) (A E) → ℂ) h = 0 := by
   simp [WE]
 
 /- English proof (translation)
-Establish `hc : ∀ Ψ ∈ span W M π, Continuous Ψ.1` using `fun Ψ h => (spanCont F E D W M π Ψ h).1`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, e⟩` from `hx`. Rewrite using `[e]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `liftRel F E D W M π f hf φ hφ h₀`. Consider the case `zero`. Use `Filter.Eventually.of_forall fun v _ _ α β _ ϖ z _ _ _ => ⟨?_, fun h => ?_⟩` and prove the remaining obligations. Use `show WE D (0 : GL (Fin 2) (A E) → ℂ) _ = _ * WE D (0 : GL (Fin 2) (A E) → ℂ) _`. Simplify using `[we_zero]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `show (0 : GL (Fin 2) (A E) → ℂ) _ = _ * (0 : GL (Fin 2) (A E) → ℂ) _`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy ihx ihy => filter_upwards [ihx, ihy] with v h1 h2 hu hv α β hB ϖ z hϖ hz hn`. Take `⟨a1, a2⟩` from `h1 hu hv α β hB ϖ z hϖ hz hn`. Take `⟨b1, b2⟩` from `h2 hu hv α β hB ϖ z hϖ hz hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : ∀ h, WE D (x + y).1 h = WE D x.1 h + WE D y.1 h` using `fun h => by`. Use `(weEig F E D x.1 (hc x hx)).2.2 y.1 1 (hc y hy) h` as an intermediate fact. Simplify using `using this`. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[e, e, a1, b1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show x.1 _ + y.1 _ = _ * (x.1 _ + y.1 _)`. Rewrite using `[a2, b2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c x hx ihx => filter_upwards [ihx] with v h1 hu hv α β hB ϖ z hϖ hz hn`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a1, a2⟩` from `h1 hu hv α β hB ϖ z hϖ hz hn`. Establish `e : ∀ h, WE D (c • x).1 h = c * WE D x.1 h` using `fun h => by`. Use `(weEig F E D 0 continuous_const).2.2 x.1 c (hc x hx) h` as an intermediate fact. Simplify `this` using `[we_zero]`. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, e, a1]`. Expand and normalize the polynomial expressions, which then agree. Use `show c * x.1 _ = _ * (c * x.1 _)`. Rewrite using `[a2]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem span_rel {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E]
     (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2) (h₀ : GL (Fin 2) (A E)) (Φ : Sm E 2) (hΦ : Φ ∈ span W M π) :
@@ -105,9 +105,9 @@ private theorem span_rel {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
       rw [a2]; ring
 
 /- English proof (translation)
-Establish `h : (c - a) * (c - b) = 0` using `by linear_combination c * hs - hp`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Establish `e : c = a` using `sub_eq_zero.1 h`. Conclude with `Or.inl ⟨e, by rw [e] at hs; exact add_left_cancel hs⟩`. Establish `e : c = b` using `sub_eq_zero.1 h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Prove the first alternative. Establish an intermediate fact.
 
-Conclude with `Or.inr ⟨e, by rw [e, add_comm a] at hs; exact add_left_cancel hs⟩`.
+Prove the second alternative.
 -/
 private theorem pairs {a b c d : ℂ} (hs : c + d = a + b) (hp : c * d = a * b) : (c = a ∧ d = b) ∨ (c = b ∧ d = a) := by
   have h : (c - a) * (c - b) = 0 := by linear_combination c * hs - hp
@@ -118,41 +118,37 @@ private theorem pairs {a b c d : ℂ} (hs : c + d = a + b) (hp : c * d = a * b) 
     exact Or.inr ⟨e, by rw [e, add_comm a] at hs; exact add_left_cancel hs⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π hN Q hQ`. Take `⟨y, hy, h0⟩` from `(Submodule.ne_bot_iff _).1 Q.ne_bot`. Establish `hsp` using `hQ hy`. Take `⟨hcont, hleft⟩` from `spanCont F E D W M π y hsp`. Take `⟨-, hwh⟩` from `UpperTheory.ConvolutionTheory.R2.cusp F E D W M π hN y hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨h₀, hh₀⟩ : ∃ h₀, WE D y.1 h₀ ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h0 (hwh hc)`. Choose the witnesses or unpack the hypotheses as in `⟨h₁, hh₁⟩ : ∃ h₁, y.1 h₁ ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h0 (Subtype.ext (funext hc))`. Establish `hδ : D.δ ≠ 0` using `fun e => by`. Establish `h1 : D.θ = 0` using `pow_eq_zero_iff two_ne_zero |>.1 (by rw [D.sq, e, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `D.b.ne_zero 1 (D.b1.trans h1)`. Establish `hne : (⟨y, hy⟩ : Q.V) ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Use `filter_upwards [below_ev (span_rel D W M π h₀ y hsp), W.quad, GlobalTheory.CuspRep.AeFix.eventually_mem_fixed E 2 Q ⟨y, hy⟩, (aeK E).1 h₀, GlobalTheory.CompanionTheory.SatAe.eventually_exists_hasSat Q, below_ev (gdAe F D.δ hδ)] with w hrel hq hfix hk ⟨B', hB'⟩ hgd v hv hin B hB`. Take `⟨hu, hval⟩` from `hq v hv`. Establish `hnv : 1 < normV v`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `GlobalTheory.LFun.one_lt_absNorm v` as an intermediate fact. Simplify `this` using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hn : normV w ≠ normV v` using `fun e => by`. Establish `h3` using `hin.norm`. Rewrite `h3` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite `hval` using `[if_neg hn]`. Take `⟨α, β, rfl⟩` from `Multiset.card_eq_two.1 (GlobalTheory.LFun.HasSatGL.card hB)`. Take `⟨α', β', rfl⟩` from `Multiset.card_eq_two.1 (GlobalTheory.LFun.HasSatGL.card hB')`. Take `⟨p, hp⟩ : ∃ p, Formalism.UG.IsUnifV F v p` from `v.valuedAdicCompletion_surjective F _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : p ≠ 0` using `fun h0 => by simp [Formalism.UG.IsUnifV, h0] at hp`. Take `⟨ϖ', hϖ', hz, hnz⟩` from `hin.unif (Units.mk0 p hp0) hp`. Take `⟨r1, r2⟩` from `hrel v hv hu hval α β hB (Units.mk0 p hp0) (idl w ϖ') hp hz hnz`. Establish `hfix' : ∀ g, ∀ k ∈ GlobalTheory.LFun.KGL w 2, y.1 (g * finGL E 2 (locGL E 2 w k)) = y.1 g` using `fun g k hk => congrFun (congrArg (fun x : Q.V => x.1.1) (GlobalTheory.LGrp.mem_fixed.1 hfix k hk)) g`. Establish `hEig : EigAt w {α', β'} y.1` using `UpperTheory.V.Af.StrongMultiplicityOne.eigOfSat E 2 Q w _ hB' y hy hfix'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEw` using `(weEig F E D y.1 hcont).2.1 w _ hEig`. Establish `hE1 : Eig w {α', β'} fun x => WE D y.1 (lc w x * h₀)`. Use `(fixTr E w _ h₀ hk).2 _ hEw 1` as an intermediate fact. Simplify `this` using `[lc]`. Take `⟨χ, hχ, hχe⟩` from `weLoc F E D v w (hgd v hv) hin`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnl : ∀ b x, WE D y.1 (lc w (nL b * x) * h₀) = χ b * WE D y.1 (lc w x * h₀)` using `fun b x => by`. Take `⟨u, t, e1, e2⟩` from `hχe b`. Rewrite using `[map_mul, (lcLaws E w).1, e1, mul_assoc, ((weEig F E D y.1 hcont).1 hleft) u t, e2]`. Take `⟨t1, -⟩` from `whTorus E w ϖ' hϖ' χ hχ α' β' _ hE1 hnl`. Take `⟨R, -, -, hR⟩` from `heckeExpl E w ϖ' hϖ'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(hR α' β' _ (hEig h₁) 1).2`. Establish `hc' : y.1 (h₁ * Matrix.GeneralLinearGroup.scalar (Fin 2) (idl w ϖ')) = (α' : ℂ) * β' * y.1 h₁`. Simplify using `only [one_mul, map_one, mul_one] at hc`. Rewrite using `[← (lcLaws E w).2.2.2.2.1]`. Conclude with `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hp' : (α' : ℂ) * β' = (α : ℂ) ^ 2 * (β : ℂ) ^ 2`. Establish `h2` using `r2 h₁`. Rewrite `h2` using `[GlobalTheory.CuspRep.scalar_comm, hc']`. Establish `h3` using `mul_right_cancel₀ hh₁ h2`. Rewrite using `[h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e1 : WE D y.1 (lc w (dL ϖ' 1) * h₀) = WE D y.1 (aE (idl w ϖ') * h₀)` using `by rw [(lcLaws E w).2.2.2.1]`. Establish `e2 : WE D y.1 (lc w 1 * h₀) = WE D y.1 h₀` using `by simp`. Use `beta_reduce at t1`. Rewrite `t1` using `[e1, e2, r1]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : ∀ {K : Type} [Field K] [NumberField K] (u : P K), q u = (normV u : ℂ)` using `fun u => by`. Simplify using `[q, normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hqw : q w = q v ^ 2`. Rewrite using `[hcard, hcard, hin.norm]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hqv : q v ≠ 0`. Rewrite using `[hcard]`. Conclude with `Nat.cast_ne_zero.2 (by omega)`. Establish `hsq : q w ^ (1 / 2 : ℂ) = q v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hqw, hcard]`. Establish `e : ((normV v : ℂ) ^ 2) = ((((normV v : ℝ) ^ 2 : ℝ)) : ℂ)` using `by push_cast; rfl`. Rewrite using `[e, show (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) by push_cast; rfl, ← Complex.ofReal_cpow (by positivity), ← Real.sqrt_eq_rpow, Real.sqrt_sq (by positivity)]`. Simplify using the standard rewrite rules. Establish `hs : (α' : ℂ) + β' = (α : ℂ) ^ 2 + (β : ℂ) ^ 2`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `t1` using `[hsq, hqw]`. Establish `h3 : q v ^ 2 * ((q v)⁻¹ * ((α : ℂ) ^ 2 + (β : ℂ) ^ 2) * WE D y.1 h₀) = q v * ((α : ℂ) ^ 2 + (β : ℂ) ^ 2) * WE D y.1 h₀`. Clear the denominators using the available nonvanishing facts. Rewrite `t1` using `[h3]`. Conclude with `(mul_left_cancel₀ hqv (mul_right_cancel₀ hh₀ t1)).symm`.
-
-Break down `pairs hs hp' with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Establish `a' : α' = α ^ 2` using `Units.ext (by simpa using a)`. Establish `b' : β' = β ^ 2` using `Units.ext (by simpa using b)`. Rewrite `hB'` using `[a', b']`. Simplify using `using hB'`.
-
-Establish `a' : α' = β ^ 2` using `Units.ext (by simpa using a)`. Establish `b' : β' = α ^ 2` using `Units.ext (by simpa using b)`. Rewrite `hB'` using `[a', b', Multiset.pair_comm]`. Simplify using `using hB'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.H.unrInert :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ThetaLiftTrivialOrbitTermsVanish W M π → ∀ Q : CuspSub E 2, Q.V ≤ span W M π →

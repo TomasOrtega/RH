@@ -3,9 +3,9 @@ import Mathlib
 open scoped IntermediateField TensorProduct Matrix Pointwise NumberField Topology ContDiff NNReal ENNReal Polynomial DirectSum BigOperators InnerProductSpace Manifold
 
 /- English proof (translation)
-Introduce `E _ _ φ ψ a b ha hb`. Proceed by induction on `hb using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Rewrite using `[Set.mem_singleton_iff.mp hx]`. Conclude with `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap q => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `inv x _ hx => rw [map_inv₀, map_inv₀, hx]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, map_mul, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk58.agree_of_adjoin :
     ∀ {E : Type} [inst : Field E]

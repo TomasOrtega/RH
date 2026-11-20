@@ -15,7 +15,7 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Bas
   {M : Model b N} {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ}
 
 /- English proof (translation)
-Unfold `TjD.img`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Apply the tactic sequence `apply T.ms.cart.1.hom_ext <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem img_comp (T : TjD M r w j c) {X X' : Scheme.{0}} (u : X' ⟶ X) (z : X ⟶ T.Y)
     (a : X ⟶ M.univ.A.left) (h : a ≫ M.univ.A.hom = z ≫ T.s)
@@ -27,7 +27,7 @@ private theorem img_comp (T : TjD M r w j c) {X X' : Scheme.{0}} (u : X' ⟶ X) 
   apply T.ms.cart.1.hom_ext <;> simp
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Substitute `ha` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem img_congr (T : TjD M r w j c) {X : Scheme.{0}} {z z' : X ⟶ T.Y}
     {a a' : X ⟶ M.univ.A.left} (h : a ≫ M.univ.A.hom = z ≫ T.s)
@@ -38,7 +38,7 @@ private theorem img_congr (T : TjD M r w j c) {X : Scheme.{0}} {z z' : X ⟶ T.Y
 end
 
 /- English proof (translation)
-Establish `: q = IsLocalRing.closedPoint (IsLocalRing.ResidueField V)` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `IsLocalRing.comap_closedPoint (IsLocalRing.residue V)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem resPt_apply (V : Type) [CommRing V] [IsLocalRing V]
     (q : Spec (CommRingCat.of (IsLocalRing.ResidueField V))) :
@@ -50,27 +50,25 @@ private theorem resPt_apply (V : Type) [CommRing V] [IsLocalRing V]
 end UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `hOG hGD hRC hOR hEW`. Introduce `p _ D O _ _ _ _ f b N r w _ hS M ϖ hϖ T Y h hflat I a ha hsep C g hpb hr himg`. Introduce `V _ _ _ _ hpV y hgen φ hφ`. Use `haveI := hRC V`. Take `⟨hcl, hmax⟩` from `hGD O ϖ hϖ M.X Y M.s h hflat _ hgen`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi : 0 < D.a` using `by rw [hS.a1]; exact Nat.one_pos`. Establish `hcom : (IsLocalRing.maximalIdeal O).comap (b.t ⟨0, hi⟩) = w`. Use `symm`. Use `Ideal.IsMaximal.eq_of_le inferInstance ?_ fun x hx => hS.tw _ x hx` and prove the remaining obligations. Conclude with `Ideal.comap_ne_top _ (IsLocalRing.maximalIdeal.isMaximal O).ne_top`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hord : IsWOrd M.univ w (resPt V ≫ y ≫ h)`. Use `hOG p D O b N hS.three hS.cop hS.pmem hS.m1 ⟨0, hi⟩ w hcom M _ hcl hmax _ _ fun q => ?_` and prove the remaining obligations. Simplify using `only [Scheme.Hom.comp_apply, resPt_apply]`. Both sides reduce to the same expression. Take `⟨H, _, _, _, C₀, e, hfr, hfr1, hA, hB⟩` from `hEW p D O f b N r w hS M T V hpV (y ≫ h) hcl hord φ hφ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Nat.card (𝓞 D.F ⧸ w) = p ^ f`. Rewrite using `[← hS.norm, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 D.F ⧸ w) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`. Set `s : ∀ j, (C j).Sec y ≃ {z : Sp V ⟶ (T j).Y // z ≫ (T j).s = y ≫ h}` to `fun j => { toFun := fun z => ⟨z.1 ≫ g j, by rw [Category.assoc, ← (hpb j).w, ← Category.assoc, z.2]⟩ invFun := fun z => ⟨(hpb j).lift y z.1 z.2.symm, (hpb j).lift_fst _ _ _⟩ left_inv := fun z => Subtype.ext ((hpb j).hom_ext (by simpa using z.2.symm) (by simp)) right_inv := fun z …`. Establish `key : ∀ (j : Fin (D.n + 1)) (z : (C j).Sec y) (i : I) (e), resPt V ≫ z.1 ≫ (C j).r ≫ a i = (T j).img (resPt V ≫ z.1 ≫ g j) (resPt V ≫ y ≫ a i) e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j z i e`. Establish `e0 : ((C j).p ≫ a i) ≫ M.univ.A.hom = g j ≫ (T j).s`. Rewrite using `[Category.assoc, ha, (hpb j).w]`. Rewrite using `[himg j i e0]`. Use `(Category.assoc _ _ _).symm.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(img_comp (T j) (resPt V ≫ z.1) (g j) _ e0 (by simp only [Category.assoc]; rw [ha, (hpb j).w])).trans ?_` and prove the remaining obligations. Use `img_congr _ _ _ (by simp) ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc z.1, z.2]`. Establish `hae : ∀ (j : Fin (D.n + 1)) (z : (C j).Sec y) (i : I), (resPt V ≫ y ≫ a i) ≫ M.univ.A.hom = (resPt V ≫ z.1 ≫ g j) ≫ (T j).s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `j z i`. Simplify using `only [Category.assoc]`. Rewrite using `[ha, ← (hpb j).w, ← Category.assoc z.1, z.2]`. Use `hOR (p ^ f) D.n _ (twist φ Y) _ _ (𝓞 D.F ⧸ w) H C₀ (fun j => (s j).trans (e j)) hcard hfr hfr1 ?_ ?_` and prove the remaining obligations. Introduce `j z z' h1 h2 h3`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨t1, t2⟩` from `hA j (s j z) (s j z') h1 h2 h3`. Use `hsep _ _ _ ?_ fun i => ?_` and prove the remaining obligations. Establish `t1' : resPt V ≫ (z.1 ≫ g j) ≫ (T j).t = resPt V ≫ (z'.1 ≫ g j) ≫ (T j).t` using `t1`. Simplify using `only [Category.assoc, hr]`. Simplify `t1'` using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[key j z i (hae j z i), key j z' i (hae j z' i)]`. Conclude with `t2 _ _ _`. Introduce `j j' z z' hj h1 h2 h3`. Take `⟨t1, t2⟩` from `hB j j' (s j z) (s j' z') hj h1 h2 h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hsep _ _ _ ?_ fun i => ?_` and prove the remaining obligations. Establish `t1' : resPt V ≫ (z.1 ≫ g j) ≫ (T j).t = spMap φ ≫ resPt V ≫ (z'.1 ≫ g j') ≫ (T j').t` using `t1`. Simplify using `only [twist, Category.assoc, hr]`. Simplify `t1'` using `only [Category.assoc]`. Simplify using `only [twist, Category.assoc]`.
-
-Rewrite using `[key j z i (hae j z i), key j' z' i (hae j' z' i)]`. Conclude with `t2 _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.ordEmb_of :
     OrdGen → GenDown → ResClosed → OrdReadOf → EW → OrdEmb := by

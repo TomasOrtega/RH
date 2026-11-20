@@ -18,7 +18,7 @@ def lTrL {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n
   (Lp.compMeasurePreservingₗᵢ ℂ (fun y : G n => x * y) (measurePreserving_mul_left μ x)).toContinuousLinearMap
 
 /- English proof (translation)
-The claim follows from `hf.comp_measurePreserving (measurePreserving_mul_left μ x)`.
+A detailed English derivation is pending.
 -/
 theorem memLp_lTr {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] {V : Type}
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] (x : G n) {f : Mat n → V}
@@ -26,7 +26,7 @@ theorem memLp_lTr {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Mea
   hf.comp_measurePreserving (measurePreserving_mul_left μ x)
 
 /- English proof (translation)
-Unfold `cls`. Rewrite using `[dif_pos hf, dif_pos (memLp_lTr μ x hf)]`. Conclude with `Lp.toLp_compMeasurePreserving hf (measurePreserving_mul_left μ x)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lTrL_cls {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] {V : Type}
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] (x : G n) {f : Mat n → V}
@@ -36,15 +36,15 @@ theorem lTrL_cls {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Meas
   exact Lp.toLp_compMeasurePreserving hf (measurePreserving_mul_left μ x)
 
 /- English proof (translation)
-Introduce `hL n _ _ μ _ E _ Ω T F c hS h x f f' hf hf' hff'`. Take `⟨hLg, hU, hR, -, -, -, -, hCS, -, -, hM, -, -, -, hO, -⟩` from `hS`. Take `⟨-, -, -, -, hCl, hOps, -⟩` from `hCS`. Establish `hcomm : lTrL μ E.V x * F.Φ h = F.Φ h * lTrL μ E.V x`. Use `F.comm _ (fun m => ?_) h` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f₀, hf₀, hc⟩` from `hM m.1 m.2`. Establish `hL₀` using `hL n μ E.V hLg hU hR x f₀ hf₀`. Establish `hmem : cls μ (lTr x f₀) ∈ Msob μ E.V` using `Submodule.subset_span ⟨_, hL₀.1, rfl⟩`. Establish `hm₀ : cls μ f₀ ∈ Msob μ E.V` using `hc ▸ m.2`. Establish `hm : m = ⟨cls μ f₀, hm₀⟩` using `Subtype.ext hc.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO₀ : Sob μ (Om f₀)` using `(hOps n μ E.V hLg hU hR f₀ hf₀).1`. Establish `hf₀m : MemLp (fun y : G n => f₀ y.val) 2 μ` using `hf₀.2 []`. Establish `hO₀m : MemLp (fun y : G n => Om f₀ y.val) 2 μ` using `hO₀.2 []`. Use `⟨⟨_, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cls μ (lTr x f₀) = lTrL μ E.V x m.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hc, lTrL_cls μ x hf₀m]`. Rewrite using `[hO _ hmem hL₀.1, hm, hO _ hm₀ hf₀, lTrL_cls μ x hO₀m]`. Conclude with `(hCl n μ E.V hU).2.2.1 _ _ hL₀.2`. Establish `hfm : MemLp (fun y : G n => f y.val) 2 μ` using `hf.2 []`. Establish `hfm' : MemLp (fun y : G n => f' y.val) 2 μ` using `hf'.2 []`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lTrL_cls μ x hfm', hff', ← lTrL_cls μ x hfm]`. Conclude with `DFunLike.congr_fun hcomm (cls μ f)`.
+A detailed English derivation is pending.
 -/
 theorem ltComm_of_ltSob : LtSob → LtComm := by
   intro hL n _ _ μ _ E _ Ω T F c hS h x f f' hf hf' hff'

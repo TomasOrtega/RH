@@ -38,7 +38,7 @@ theorem tensL_apply {F : Type} [Field F] [NumberField F] {κ : Type} (v : Pl F) 
     (φ : (κ → Fv F v) → ℂ) : tensL v r φ = tens (evFin F v) φ r := rfl
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `sub_mem hφ₁ hφ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem augAt_le_SB {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (v : Pl F) : augAt om v ≤ SB _ := by
@@ -47,9 +47,9 @@ theorem augAt_le_SB {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   exact sub_mem hφ₁ hφ
 
 /- English proof (translation)
-Unfold `GlobalTheory.CtTyp.ctf Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `u`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ctf_om {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (H' : Plane E d d₁) (μ : Measure (unip σ W H'))
@@ -60,43 +60,37 @@ theorem ctf_om {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, mul_assoc]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH Φ' hΦ' μ 𝓕 hμ h𝓕 h1 v hv w hw g`. Establish `hP` using `hKP.base`. Establish `hAE` using `GlobalTheory.T.theta_action_exists hP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q) (GlobalTheory.ThK.Inhab.pairV' hT)`. Establish `hone : ∀ u : Pl F, (1 : UA σ G.V'.J) ∈ UAt σ G.V' (evFin F u)` using `fun u c _ => by simp [mat]`. Establish `hΦ'' : om' (1, g) Φ' ∈ G.M'.So B.ψ B.τ₁` using `GlobalTheory.T.weil_representation_preserves_space hP F E σ B a a' G X om om' hT (1, g) Φ' (Submodule.mem_inf.1 hΦ').2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `I0 : G.M'.I om' 0 = 0`. Use function extensionality and compare the values at `h`. Simplify using `[Model.I, theta, thetaSum]`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ⟩ : ∃ ℓ : ((Fin a' × Fin (a + a') → AF F) → ℂ) →ₗ[ℂ] ℂ, ∀ Φ ∈ G.M'.So B.ψ B.τ₁, ℓ Φ = GlobalTheory.CtTyp.ctf H' μ 𝓕 (G.M'.I om' Φ) 1 := by`. Set `ℓ₀ : G.M'.So B.ψ B.τ₁ →ₗ[ℂ] ℂ` to `{ toFun := fun Φ => GlobalTheory.CtTyp.ctf H' μ 𝓕 (G.M'.I om' Φ.1) 1 map_add' := fun Φ₁ Φ₂ => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `e` using `GlobalTheory.T.theta_integral_linear hKP F E σ B a a' G X om om' hT Φ₁.1 Φ₁.2 Φ₂.1 Φ₂.2 1`. Rewrite `e` using `[one_smul, one_smul]`. Simplify using `only [Submodule.coe_add, e, GlobalTheory.CtTyp.ctf, Pi.add_apply]`. Conclude with `integral_add (GlobalTheory.T.triple_unipotent_period_integral hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH Φ₁.1 Φ₁.2 μ 𝓕 hμ h𝓕 h1 1) (GlobalTheory.T.triple_unipotent_period_integral hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH Φ₂.1 Φ₂.2 μ 𝓕 hμ h𝓕 h1 1)`. Use the proof step `map_smul' := fun c Φ => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `GlobalTheory.T.theta_integral_linear hKP F E σ B a a' G X om om' hT Φ.1 Φ.2 0 (zero_mem _) c`. Rewrite `e` using `[add_zero, I0, add_zero]`. Simplify using `only [Submodule.coe_smul, e, GlobalTheory.CtTyp.ctf, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Conclude with `integral_const_mul c _ }`. Take `⟨ℓ, hℓ⟩` from `LinearMap.exists_extend ℓ₀`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨ℓ, fun Φ hΦ => LinearMap.congr_fun hℓ ⟨Φ, hΦ⟩⟩`. Establish `hpair` using `GlobalTheory.ThK.Inhab.pairV' hT`. Distinguish the cases in `hv1 : v = B.v₁`. Substitute `hv1` using the available equality. Establish `hgood` using `GlobalTheory.T.character_at_uniformizer_not_root_of_unity F E σ B a a' G X om om' hT B.v₁ hv`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, ψ, r, hψ, hrest, hso, hsum⟩` from `GlobalTheory.T.schwartz_factorization_base_place F E σ B a a' G X om om' hT _ hΦ''`. Establish `hSoSB : ∀ φ ∈ G.M'.SoLoc B.ψ B.τ₁, φ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁)` using `fun φ hφ => hφ.1`. Establish `hl : ∀ j, ∃ Λ : ((Fin a' × Fin (a + a') → Fv F B.v₁) → ℂ) →ₗ[ℂ] ℂ, augAt om' B.v₁ ≤ LinearMap.ker Λ ∧ ∀ φ ∈ G.M'.SoLoc B.ψ B.τ₁, Λ φ = (ℓ ∘ₗ tensL B.v₁ (r j)) φ`. Introduce `j`. Use `GlobalTheory.T.invariant_local_functional_unique hP F E σ B a a' G X om om' hT B.v₁ hv B.τ₁ (ℓ ∘ₗ tensL B.v₁ (r j)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g' hg' φ hφ φ₁ hφ₁ hA`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, tensL_apply, tensL_apply, hℓ _ (hso j φ₁ hφ₁), hℓ _ (hso j φ hφ), ← hA (r j) (hrest j φ (hSoSB φ hφ)), GlobalTheory.ThetaIntegralInv.integral_translate hP hpair g' _ (hrest j φ (hSoSB φ hφ)).2]`. Use `choose Λ hΛa hΛs using hl`. Use `⟨N, Λ, ψ, fun j => hSoSB _ (hψ j), fun j z hz => LinearMap.mem_ker.1 (hΛa j hz), ?_, ?_⟩` and prove the remaining obligations. Introduce `j n hn hnv φ hφ φ₁ hφ₁ hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ₀, hφ₀, hd⟩` from `GlobalTheory.T.schwartz_bruhat_local_approximation hP F E σ B a a' G X om om' hT B.v₁ hv hgood B.τ₁ φ hφ`. Take `⟨S, hS, hSlin, -, -⟩` from `GlobalTheory.WeilTransferW.local_weil_operator_second_space hP F E σ B a a' G X om om' hT B.v₁ n hnv`. Establish `haSB : φ - φ₀ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁)` using `augAt_le_SB om' B.v₁ hd`. Establish `h0SB` using `hSoSB _ hφ₀`. Establish `e1 : φ₁ = S φ₀ + S (φ - φ₀)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[((hAE B.v₁).1 1 (hone B.v₁) n hnv φ hφ).unique ⟨hφ₁, hA⟩ (hS φ hφ)]`. Establish `e` using `hSlin φ₀ h0SB (φ - φ₀) haSB 1`. Rewrite `e` using `[one_smul, one_smul, add_sub_cancel]`. Conclude with `e`. Establish `hS0 : S φ₀ ∈ G.M'.SoLoc B.ψ B.τ₁` using `GlobalTheory.T.local_schwartz_stable_under_W hP F E σ B a a' G X om om' hT B.v₁ hv B.τ₁ n hnv φ₀ hφ₀ (S φ₀) (hS φ₀ h0SB).1 (hS φ₀ h0SB).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Establish `hSa : S (φ - φ₀) ∈ augAt om' B.v₁` using `GlobalTheory.T.augAt_stable_W_unitary hP F E σ B a a' G X om om' hT B.v₁ n hnv _ hd _ (hS _ haSB).1 (hS _ haSB).2`. Establish `e2 : Λ j φ = Λ j φ₀`. Establish `e` using `LinearMap.mem_ker.1 (hΛa j hd)`. Rewrite `e` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[e1, map_add, LinearMap.mem_ker.1 (hΛa j hSa), add_zero, hΛs j _ hS0, e2, hΛs j _ hφ₀, LinearMap.comp_apply, LinearMap.comp_apply, tensL_apply, tensL_apply, hℓ _ (hso j _ hS0), hℓ _ (hso j _ hφ₀), ← (hS φ₀ h0SB).2 (r j) (hrest j _ h0SB), ctf_om, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.T.triple_unipotent_period_integral_two hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH _ (hso j _ hφ₀) μ 𝓕 hμ h𝓕 h1 n hn 1`. Rewrite `e` using `[mul_one]`. Then use the resulting hypothesis. Introduce `x m hm`. Establish `hmv` using `GlobalTheory.T.local_theta_good_place_lattice F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH B.v₁ w hw x m hm`. Use `choose ψ₁ hψ₁ using fun j => ((hAE B.v₁).1 1 (hone B.v₁) m hmv (ψ j) (hSoSB _ (hψ j))).exists`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hψ₁S : ∀ j, ψ₁ j ∈ G.M'.SoLoc B.ψ B.τ₁` using `fun j => GlobalTheory.T.local_schwartz_stable_under_W hP F E σ B a a' G X om om' hT B.v₁ hv B.τ₁ m hmv (ψ j) (hψ j) (ψ₁ j) (hψ₁ j).1 (hψ₁ j).2`. Use `⟨ψ₁, hψ₁, ?_⟩` and prove the remaining obligations. Establish `hm1 : om' (1, m) (om' (1, g) Φ') = ∑ j, tens (evFin F B.v₁) (ψ₁ j) (r j)`. Rewrite using `[hsum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (hψ₁ j).2 (r j) (hrest j (ψ j) (hSoSB _ (hψ j)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∑ j, tens (evFin F B.v₁) (ψ₁ j) (r j) ∈ G.M'.So B.ψ B.τ₁` using `Submodule.sum_mem _ fun j _ => hso j _ (hψ₁S j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ctf_om, ctf_om, one_mul]`. Use `_ = ℓ (∑ j, tens (evFin F B.v₁) (ψ₁ j) (r j)) := by rw [hm1, hℓ _ hmem]`. Use `_ = ∑ j, Λ j (ψ₁ j) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (hΛs j _ (hψ₁S j)).symm`. Take `⟨N, ψ, r, hψ, hr, hsum⟩` from `GlobalTheory.T.schwartz_factorization_away_base F E σ B a a' G X om om' hT _ hΦ'' v hv1`. Use `⟨N, fun j => ℓ ∘ₗ tensL v (r j), ψ, hψ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : augAt om' v ≤ LinearMap.ker (ℓ ∘ₗ tensL v (r j))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g', hg', φ, hφ, φ₁, hφ₁, hA, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, sub_eq_zero, LinearMap.comp_apply, LinearMap.comp_apply, tensL_apply, tensL_apply, hℓ _ (hr j φ₁ hφ₁).2, hℓ _ (hr j φ hφ).2, ← hA (r j) (hr j φ hφ).1, GlobalTheory.ThetaIntegralInv.integral_translate hP hpair g' _ (hr j φ hφ).1.2]`. Conclude with `LinearMap.mem_ker.1 (hle hz)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `j n hn hnv φ hφ φ₁ hφ₁ hA`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, tensL_apply, tensL_apply, hℓ _ (hr j φ₁ hφ₁).2, hℓ _ (hr j φ hφ).2, ← hA (r j) (hr j φ hφ).1, ctf_om, one_mul]`. Establish `e` using `GlobalTheory.T.triple_unipotent_period_integral_two hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH _ (hr j φ hφ).2 μ 𝓕 hμ h𝓕 h1 n hn 1`. Rewrite `e` using `[mul_one]`. Then use the resulting hypothesis. Introduce `x m hm`.
-
-Establish `hmv` using `GlobalTheory.T.local_theta_good_place_lattice F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH v w hw x m hm`. Use `choose ψ₁ hψ₁ using fun j => ((hAE v).1 1 (hone v) m hmv (ψ j) (hψ j)).exists`. Use `⟨ψ₁, hψ₁, ?_⟩` and prove the remaining obligations. Establish `hm1 : om' (1, m) (om' (1, g) Φ') = ∑ j, tens (evFin F v) (ψ₁ j) (r j)`. Rewrite using `[hsum, map_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => (hψ₁ j).2 (r j) (hr j (ψ j) (hψ j)).1`. Establish `hmem : ∑ j, tens (evFin F v) (ψ₁ j) (r j) ∈ G.M'.So B.ψ B.τ₁` using `Submodule.sum_mem _ fun j _ => (hr j (ψ₁ j) (hψ₁ j).1).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ctf_om, ctf_om, one_mul]`. Use `_ = ℓ (∑ j, tens (evFin F v) (ψ₁ j) (r j)) := by rw [hm1, hℓ _ hmem]`.
-
-Use `_ = ∑ j, (ℓ ∘ₗ tensL v (r j)) (ψ₁ j) := by rw [map_sum]; rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fac : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ v, X.Good v → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → ∀ g : UA σ G.W.J, ∃ (N : ℕ) (Λ : Fin N → (((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] ℂ)) (ψ : Fin N → ((Fin a' × Fin (a + a') → Fv F v) → ℂ)), (∀ j, ψ j ∈ SB (Fin a' × Fin (a + a') → Fv F v)) ∧ (∀ j, ∀ z ∈ augAt om' v, Λ j z = 0) ∧ (∀ j, ∀ n ∈ unip σ G.W H', n ∈ UAt σ G.W (evFin F v) → ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (1, n)) φ φ₁ → Λ j φ₁ = Λ j φ) ∧ ∀ (x : (w.adicCompletion E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := W₁) H' (locIdele F w x) 1 m → ∃ ψ₁ : Fin N → ((Fin a' × Fin (a + a') → Fv F v) → ℂ), (∀ j, ψ₁ j ∈ SB (Fin a' × Fin (a + a') → Fv F v) ∧ Acts (evFin F v) (om' (1, m)) (ψ j) (ψ₁ j)) ∧ GlobalTheory.CtTyp.ctf H' μ 𝓕 (G.M'.I om' Φ') (m * g) = ∑ j, Λ j (ψ₁ j) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH Φ' hΦ' μ 𝓕 hμ h𝓕 h1 v hv w hw g

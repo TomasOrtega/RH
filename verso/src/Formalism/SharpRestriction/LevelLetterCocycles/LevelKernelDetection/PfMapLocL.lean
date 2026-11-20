@@ -13,20 +13,20 @@ variable {LL Ks D D₂ : Type} [Field LL] [CommRing Ks] [Algebra LL Ks] [AddComm
   [AddCommGroup D₂] [Module LL D₂]
 
 /- English proof (translation)
-Simplify using `[cstD, TensorProduct.tmul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mapLocL_cstD_add (d d' : D) :
     cstD (LL := LL) Ks (d + d') = cstD Ks d + cstD Ks d' := by
   simp [cstD, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Simplify using `[cstD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mapLocL_cstD_zero : cstD (LL := LL) (D := D) Ks 0 = 0 := by
   simp [cstD]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [mapLocL_cstD_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, mapLocL_cstD_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mapLocL_cstD_sum {ι : Type} (s : Finset ι) (f : ι → D) :
     cstD (LL := LL) Ks (∑ i ∈ s, f i) = ∑ i ∈ s, cstD Ks (f i) := by
@@ -36,9 +36,9 @@ theorem mapLocL_cstD_sum {ι : Type} (s : Finset ι) (f : ι → D) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, mapLocL_cstD_add, ih]
 
 /- English proof (translation)
-Apply `HahnModule.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[HahnSeries.C_apply, HahnModule.coeff_single_zero_smul]`. Simplify using `only [cstD, Equiv.symm_apply_apply, HahnSeries.coeff_single]`. Use `split_ifs`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.tmul_smul, algebraMap_smul]`. Rewrite using `[smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapLocL_C_smul_cstD (x : LL) (d : D) :
     (HahnSeries.C (algebraMap LL Ks x) : HahnSeries ℤ Ks) • cstD (LL := LL) Ks d = cstD Ks (x • d) := by
@@ -51,9 +51,9 @@ theorem mapLocL_C_smul_cstD (x : LL) (d : D) :
   · rw [smul_zero]
 
 /- English proof (translation)
-Apply `HahnModule.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `only [ambMap, cstD, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Equiv.symm_apply_apply]`. Rewrite using `[HahnSeries.map_coeff]`. Simplify using `only [HahnSeries.coeff_single]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mapLocL_ambMap_cstD (g : Ks ⊗[LL] D →ₗ[Ks] Ks ⊗[LL] D₂) (d : D) :
     ambMap g (cstD (LL := LL) Ks d) = HahnModule.of Ks (HahnSeries.single 0 (g ((1 : Ks) ⊗ₜ[LL] d))) := by
@@ -79,7 +79,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 section Helpers
 
 /- English proof (translation)
-Unfold `ambF`. Rewrite using `[mapLocL_ambMap_cstD, LinearMap.baseChange_tmul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mapLocL_ambF_cstD {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L} {c : ZMod n}
     (h : MemD W F c) (s : ℕ) (d : Dc W T₁ c) :
@@ -89,11 +89,11 @@ theorem mapLocL_ambF_cstD {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂
   rfl
 
 /- English proof (translation)
-Use `set a' : PowerSeries O := PowerSeries.mk fun p => PowerSeries.coeff (p + 1) a`. Use `set π' : PowerSeries O := PowerSeries.mk fun p => PowerSeries.coeff (p + 1) W.π₀₁`. Establish `ha : a = PowerSeries.X * a' + PowerSeries.C (PowerSeries.constantCoeff a)` using `PowerSeries.eq_X_mul_shift_add_const a`. Establish `hπ : W.π₀₁ = PowerSeries.X * π'`. Use `PowerSeries.eq_X_mul_shift_add_const W.π₀₁` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[π₀₁_const hR, map_zero, add_zero]`. Then use the resulting hypothesis. Establish `hd : (baseIdOf hR).d a = (letπ : LetA O n) * ((fun _ => π') * (baseIdOf hR).d a') + algebraMap O (LetA O n) (PowerSeries.constantCoeff a)`. Use function extensionality and compare the values at `i`. Establish `hC0 : (PowerSeries.C (PowerSeries.constantCoeff a) : PowerSeries O) = algebraMap O (PowerSeries O) (PowerSeries.constantCoeff a)`. Rewrite using `[PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[BaseId.d_apply]`. Use `conv_lhs => rw [ha, hC0, map_add, map_mul, AlgHom.commutes, (baseIdOf hR).ι_X, hπ]`. Simplify using `only [Pi.add_apply, Pi.mul_apply, BaseId.d_apply, letπ, Pi.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd, add_smul, map_add, mul_smul, W.cmp_π, zero_add, algebraMap_smul, W.cmp_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapLocL_cmp_d (hR : Ring9 W) (T : LocLat G Qp LL O) (a : PowerSeries O) (x : ↥(W.N T)) :
     W.cmp T ((baseIdOf hR).d a • x) = algebraMap O LL (PowerSeries.constantCoeff a) • W.cmp T x := by
@@ -117,7 +117,7 @@ theorem mapLocL_cmp_d (hR : Ring9 W) (T : LocLat G Qp LL O) (a : PowerSeries O) 
   rw [hd, add_smul, map_add, mul_smul, W.cmp_π, zero_add, algebraMap_smul, W.cmp_smul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [C.t_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, C.t_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mapLocL_t_sum {T : LocLat G Qp LL O} (C : Coord W (baseIdOf hR) T) (i : ZMod n) {ι : Type}
     (s : Finset ι) (f : ι → C.V) : C.t i (∑ l ∈ s, f l) = ∑ l ∈ s, C.t i (f l) := by
@@ -127,7 +127,7 @@ theorem mapLocL_t_sum {T : LocLat G Qp LL O} (C : Coord W (baseIdOf hR) T) (i : 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, C.t_add, ih]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [φVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mapLocL_map_φVB {T₁ T₂ : LocLat G Qp LL O} (f : T₁.V →ₗ[LL] T₂.V) (z : T₁.V ⊗[Qp] B) :
     AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B) (φVB PD (LL := LL) (V := T₁.V) z) =
@@ -138,7 +138,7 @@ theorem mapLocL_map_φVB {T₁ T₂ : LocLat G Qp LL O} (f : T₁.V →ₗ[LL] T
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[pow_succ', Module.End.mul_apply, mapLocL_map_φVB, ih, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapLocL_map_φVB_pow {T₁ T₂ : LocLat G Qp LL O} (f : T₁.V →ₗ[LL] T₂.V) (e : ℕ)
     (z : T₁.V ⊗[Qp] B) :
@@ -150,11 +150,11 @@ theorem mapLocL_map_φVB_pow {T₁ T₂ : LocLat G Qp LL O} (f : T₁.V →ₗ[L
     rw [pow_succ', Module.End.mul_apply, mapLocL_map_φVB, ih, pow_succ', Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `hy : W.map F ((⟨C₁.t i x, hx⟩ : ↥(W.N T₁)) : W.DD T₁) ∈ W.N T₂` using `by show W.map F (C₁.t i x) ∈ W.N T₂`. Rewrite using `[← hC.coord_hom_map_trace]`. Conclude with `(latHomOf hC).map_N i x hx`. Rewrite using `[← W.cmp_map F hC.crys hC.crys' ⟨C₁.t i x, hx⟩ hy]`. Establish `heq : (⟨W.map F ((⟨C₁.t i x, hx⟩ : ↥(W.N T₁)) : W.DD T₁), hy⟩ : ↥(W.N T₂)) = ∑ l, (baseIdOf hR).d (a l) • (⟨C₂.t i (e₂ l), he₂ l⟩ : ↥(W.N T₂))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Use `show W.map F (C₁.t i x) = ∑ l, (baseIdOf hR).d (a l) • C₂.t i (e₂ l)`. Rewrite using `[← hC.coord_hom_map_trace, ha, mapLocL_t_sum]`. Simplify using `only [Coord.t_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[heq, map_sum]`. Simplify using `only [mapLocL_cmp_d]`.
+A detailed English derivation is pending.
 -/
 theorem mapLocL_cmp_map {T₁ T₂ : LocLat G Qp LL O} {C₁ : Coord W (baseIdOf hR) T₁}
     {C₂ : Coord W (baseIdOf hR) T₂} {F : LatHom T₁.L T₂.L} (hC : CoordHom C₁ C₂ F) (i : ZMod n)
@@ -178,9 +178,9 @@ theorem mapLocL_cmp_map {T₁ T₂ : LocLat G Qp LL O} {C₁ : Coord W (baseIdOf
   simp only [mapLocL_cmp_d]
 
 /- English proof (translation)
-Establish `h1 : W.cmp T ⟨C.t (c - (ell : ZMod n)) (e k), hk⟩ ∈ DcrisL PD T.ρ (W.emb (c - (ell : ZMod n)))`. Establish `h0` using `W.cmp_letter T (c - (ell : ZMod n)) ⟨_, hk⟩`. Establish `hx : ((letE (c - (ell : ZMod n)) : LetA O n) • (⟨C.t (c - (ell : ZMod n)) (e k), hk⟩ : ↥(W.N T))) = ⟨C.t (c - (ell : ZMod n)) (e k), hk⟩` using `Subtype.ext (C.t_letter _ _)`. Rewrite `h0` using `[hx]`. Then use the resulting hypothesis. Establish `h' : ((φVB PD (LL` using `LL) (V := T.V)) ^ ell) (W.cmp T ⟨C.t (c - (ell : ZMod n)) (e k), hk⟩) ∈ DcrisL PD T.ρ (W.emb c) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2` using `Formalism.MainNotions.UnusedSlot80.ArcF.φVB_pow_letter W T (c - (ell : ZMod n)) h1 ell`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis. Unfold `lamOf`. Rewrite using `[dif_pos hk, dif_pos h']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapLocL_lamOf_coe {T : LocLat G Qp LL O} (C : Coord W (baseIdOf hR) T) (c : ZMod n) (ell : ℕ)
     {r : ℕ} (e : Fin r → C.V) (k : Fin r) (hk : C.t (c - (ell : ZMod n)) (e k) ∈ W.N T) :
@@ -207,9 +207,9 @@ variable {T₁ T₂ : LocLat G Qp LL O} {C₁ : Coord W (baseIdOf hR) T₁} {C�
   {lam₁ : Fin r₁ → Dc W T₁ c} {lam₂ : Fin r₂ → Dc W T₂ c}
 
 /- English proof (translation)
-Take `⟨a, ha, hPa⟩` from `hP k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Use `show AlgebraTensorModule.map F.f (LinearMap.id : B →ₗ[Qp] B) ((lamOf C₁ c ell e₁ k : Dc W T₁ c) : T₁.V ⊗[Qp] B) = _`. Rewrite using `[mapLocL_lamOf_coe C₁ c ell e₁ k (he₁ k), mapLocL_map_φVB_pow, mapLocL_cmp_map hC _ (e₁ k) (he₁ k) e₂ he₂ a ha, map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Submodule.coe_smul, mapLocL_lamOf_coe C₂ c ell e₂ l (he₂ l), hPa l]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapLocL_dmap_lam (hC : CoordHom C₁ C₂ F) (Mh : MapHyp hR uZ ιZ F c)
     (e₁ : Fin r₁ → C₁.V) (e₂ : Fin r₂ → C₂.V) (P : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O))
@@ -229,13 +229,13 @@ theorem mapLocL_dmap_lam (hC : CoordHom C₁ C₂ F) (Mh : MapHyp hR uZ ιZ F c)
   rw [map_smul, Submodule.coe_smul, mapLocL_lamOf_coe C₂ c ell e₂ l (he₂ l), hPa l]
 
 /- English proof (translation)
-Substitute `hlam₁ hlam₂` using the available equality. Introduce `s _ y`. Apply `prL_inj` to reduce the goal to its premises. Introduce `s' hs'`. Use `erw [prL_of_lt s' hs', prL_of_lt s' hs']`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ambF Mh.memD s' (locLF (hR := hR) (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) (lamOf C₁ c ell e₁) s' y) = locLF (hR := hR) (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) (lamOf C₂ c ell e₂) s' (E.extL P y)`. Establish `hk : ∀ k, ambF Mh.memD s' (cstD (KsW W s') (lamOf C₁ c ell e₁ k)) = ∑ l, HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' (PowerSeries.C (LinearMap.toMatrix' P l k))) • cstD (KsW W s') (lamOf C₂ c ell e₂ l)`. Introduce `k`. Rewrite using `[mapLocL_ambF_cstD, mapLocL_dmap_lam hC Mh e₁ e₂ P he₁ he₂ hP k, mapLocL_cstD_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hy₂.rhoC, HahnSeries.ofPowerSeries_C, mapLocL_C_smul_cstD]`. Establish `hext : ∀ l, E.extL P y l = ∑ k, PowerSeries.C (LinearMap.toMatrix' P l k) * y k`. Introduce `l`. Simplify using `[E.extL, Matrix.toLin'_apply, Matrix.mulVec, dotProduct]`. Simplify using `only [locLF]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Mh.smul, map_sum]`. Use `congr 1`. Simplify using `only [Mh.smul, hk, hext, map_sum, map_mul, Finset.sum_smul, mul_smul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => smul_comm _ _ _` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem loclComm_holds (hC : CoordHom C₁ C₂ F)
     (Hy₁ : LvHyp Lb hR uZ ιZ C₁ c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ₁ lam₁)
@@ -276,9 +276,9 @@ theorem loclComm_holds (hC : CoordHom C₁ C₂ F)
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => smul_comm _ _ _
 
 /- English proof (translation)
-Introduce `k`. Take `⟨a, ha, hPa⟩` from `hP k`. Use `Submodule.mem_map.2 ⟨∑ l, (PowerSeries.mk fun p => PowerSeries.coeff (p + 1) (a l)) • e₂ l, Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (he₂ l), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.lsmul_apply, Finset.smul_sum, ha, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, hPa l, ← sub_smul]`. Use `congr 1`. Rewrite using `[eq_sub_iff_add_eq]`. Conclude with `(PowerSeries.eq_X_mul_shift_add_const (a l)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prLIs_holds (hC : CoordHom C₁ C₂ F) {r₁ r₂ : ℕ}
     (e₁ : Fin r₁ → C₁.V) (e₂ : Fin r₂ → C₂.V) (P : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O))

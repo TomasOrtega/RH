@@ -13,7 +13,7 @@ section basic
 variable {L : Type} [CommRing L] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[actI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem partialAct_X (isVec : ℕ → Bool) (i : ℕ) (g gi : Matrix (Fin n) (Fin n) L) (x : ℕ × Fin n) :
     actI isVec i g gi (X x) = if x.1 < i then
@@ -21,9 +21,9 @@ theorem partialAct_X (isVec : ℕ → Bool) (i : ℕ) (g gi : Matrix (Fin n) (Fi
   simp [actI]
 
 /- English proof (translation)
-Use `MvPolynomial.hom_congr_vars (f₁ := (actI isVec i g gi).toRingHom) (f₂ := (actAll isVec g gi).toRingHom) ?_ ?_ rfl` and prove the remaining obligations. Use extensionality with `r`. Simplify using the standard rewrite rules. Introduce `x hx _`. Establish `hxi` using `hv x hx`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, actI, actAll, MvPolynomial.aeval_X, if_pos hxi]`. Use `split_ifs`. Simplify using `[Matrix.vecMul, dotProduct]`. Simplify using `[Matrix.vecMul, dotProduct]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem partialAct_eq_fullAct_of_vars_lt (isVec : ℕ → Bool) (i : ℕ) (g gi : Matrix (Fin n) (Fin n) L)
     {P : MvPolynomial (ℕ × Fin n) L} (hv : ∀ x ∈ P.vars, x.1 < i) :
@@ -40,9 +40,9 @@ theorem partialAct_eq_fullAct_of_vars_lt (isVec : ℕ → Bool) (i : ℕ) (g gi 
     · simp [Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← AlgHom.id_apply (R := L) Q]`. Use `MvPolynomial.hom_congr_vars (f₁ := (actI isVec i g gi).toRingHom) (f₂ := (AlgHom.id L (MvPolynomial (ℕ × Fin n) L)).toRingHom) ?_ ?_ rfl` and prove the remaining obligations. Use extensionality with `r`. Simplify using the standard rewrite rules. Introduce `x hx _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxi : ¬ x.1 < i` using `not_lt.mpr (hv x hx)`. Simplify using `[actI, hxi]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem partialAct_fix_of_vars_ge (isVec : ℕ → Bool) (i : ℕ) (g gi : Matrix (Fin n) (Fin n) L)
     {Q : MvPolynomial (ℕ × Fin n) L} (hv : ∀ x ∈ Q.vars, i ≤ x.1) :
@@ -57,7 +57,7 @@ theorem partialAct_fix_of_vars_ge (isVec : ℕ → Bool) (i : ℕ) (g gi : Matri
     simp [actI, hxi]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply]`. Use `Finsupp.sum_congr (fun x hx => ?_)` and prove the remaining obligations. Simplify using `[wtI, h x hx]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem partialWeight_eq_torusWeight_of_lt (isVec : ℕ → Bool) (i : ℕ) {e : ℕ × Fin n →₀ ℕ} (h : ∀ x ∈ e.support, x.1 < i) :
     Finsupp.weight (wtI isVec i) e = Finsupp.weight (torusW isVec) e := by
@@ -66,7 +66,7 @@ theorem partialWeight_eq_torusWeight_of_lt (isVec : ℕ → Bool) (i : ℕ) {e :
   simp [wtI, h x hx]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.weight_apply]`. Use `(Finsupp.sum_congr (g2 := fun _ _ => (0 : Fin n → ℤ)) (fun x hx => ?_)).trans (by simp)` and prove the remaining obligations. Establish `hx' : ¬ x.1 < i` using `not_lt.mpr (h x hx)`. Simplify using `[wtI, hx']`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem partialWeight_eq_zero_of_ge (isVec : ℕ → Bool) (i : ℕ) {e : ℕ × Fin n →₀ ℕ} (h : ∀ x ∈ e.support, i ≤ x.1) :
     Finsupp.weight (wtI (n := n) isVec i) e = 0 := by
@@ -76,9 +76,9 @@ theorem partialWeight_eq_zero_of_ge (isVec : ℕ → Bool) (i : ℕ) {e : ℕ ×
   simp [wtI, hx']
 
 /- English proof (translation)
-Introduce `e he`. Use `(Top.factEV L n i isVec B μ I' g hp hI).1 _ ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `congrArg (coeff e) h0`. Rewrite `h1` using `[coeff_weightedHomogeneousComponent, if_pos rfl, coeff_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mem_support_iff.1 he) h1`.
+A detailed English derivation is pending.
 -/
 theorem fullAct_pathWord_support_dominated (isVec : ℕ → Bool) (B : ℕ → ℕ) (μ : ℕ → Fin n → ℤ) (i : ℕ) (I' : ℤ → Finset (Fin n))
     (g : (Matrix (Fin n) (Fin n) L)ˣ) (hp : IsPath n isVec B μ i) (hI : IsIndex (μ i) I') :
@@ -94,29 +94,27 @@ theorem fullAct_pathWord_support_dominated (isVec : ℕ → Bool) (B : ℕ → �
 end basic
 
 /- English proof (translation)
-Introduce `L _ n N i isVec B μ I g gi hg hp hI hi e he`. Break down `subsingleton_or_nontrivial L with hs | hnt` into its components or cases. It suffices to derive a contradiction. Establish `h0 : actI isVec i g gi (psiPath L isVec μ N I) = 0` using `Subsingleton.elim _ _`. Rewrite `he` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at he`. Establish `hpi : IsPath n isVec B μ i` using `⟨hp.1, fun j hj => hp.2.1 j (hj.trans hi), fun j hj => hp.2.2 j (lt_of_lt_of_le hj hi)⟩`. Set `gu : (Matrix (Fin n) (Fin n) L)ˣ` to `⟨g, gi, hg, mul_eq_one_comm.1 hg⟩`. Take `⟨F1, hF1⟩` from `A3ev.exists_cols hp`. Take `⟨F2, hF2⟩` from `A3ev.exists_cols hpi`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩ : ∃ F, F = F1 ∪ F2` from `⟨_, rfl⟩`. Establish `hFN : A3ev.Cols isVec μ N F` using `fun c hc => hF1 c (fun h => hc (hF ▸ Finset.mem_union_left _ h))`. Establish `hFi : A3ev.Cols isVec μ i F` using `fun c hc => hF2 c (fun h => hc (hF ▸ Finset.mem_union_right _ h))`. Use `choose Q hQ1 hQ2 using fun c : ℤ => A0.trunc L n i isVec μ c N hi (I c)`. Establish `hexp : psiPath L isVec μ N I = ∑ p ∈ F.pi (fun _ => (univ : Finset (Finset (Fin n)))), (∏ c ∈ F, pathWord isVec μ c (fun j a => (X (j, a) : MvPolynomial (ℕ × Fin n) L)) i (A3ev.extF F p c)) * (∏ c ∈ F, Q c (A3ev.extF F p c))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[A3ev.psi_eq_prod L hFN hI, Finset.prod_congr rfl (fun c _ => hQ2 c), Finset.prod_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_attach F]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[A3ev.extF, x.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[hexp, map_sum]`. Take `⟨p, -, hpe⟩` from `Finset.mem_biUnion.1 (MvPolynomial.support_sum he)`. Take `⟨I', hI'⟩ : ∃ I', I' = A3ev.extF F p` from `⟨_, rfl⟩`. Rewrite `hpe` using `[← hI']`. Distinguish the cases in `hidx : IsIndex (μ i) I'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1 : ∏ c ∈ F, pathWord isVec μ c (fun j a => (X (j, a) : MvPolynomial (ℕ × Fin n) L)) i (I' c) = psiPath L isVec μ i I'` using `(A3ev.psi_eq_prod L hFi hidx).symm`. Rewrite `hpe` using `[h1, map_mul]`. Establish `hv1 : ∀ x ∈ (psiPath L isVec μ i I').vars, x.1 < i`. Use `DominanceOrderLemmas.vars_of_polB (N := i) (B := B) ?_` and prove the remaining obligations. Rewrite using `[polB, Submodule.mem_iInf]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Conclude with `(pathProductDegrees L n i isVec B μ I' hpi hidx).2 j`. Establish `hv2 : ∀ x ∈ (∏ c ∈ F, Q c (I' c)).vars, i ≤ x.1`. Introduce `x hx`. Take `⟨c, -, hc⟩` from `Finset.mem_biUnion.1 (vars_prod _ hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(mem_supported.1 (hQ1 c (I' c))) (Finset.mem_coe.2 hc)`. Rewrite `hpe` using `[partialAct_eq_fullAct_of_vars_lt _ _ _ _ hv1, partialAct_fix_of_vars_ge _ _ _ _ hv2]`. Take `⟨e1, he1, e2, he2, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul _ _ hpe)`. Establish `hw2 : Finsupp.weight (wtI (n` using `n) isVec i) e2 = 0 := partialWeight_eq_zero_of_ge isVec i fun x hx => hv2 x ((mem_vars_iff_mem_support x).2 ⟨e2, he2, hx⟩)`. Establish `hw1 : Finsupp.weight (wtI isVec i) e1 = Finsupp.weight (torusW isVec) e1` using `partialWeight_eq_torusWeight_of_lt isVec i fun x hx => DominanceOrderLemmas.vars_act isVec g gi hv1 x ((mem_vars_iff_mem_support x).2 ⟨e1, he1, hx⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[map_add, hw2, add_zero, hw1]`. Conclude with `fullAct_pathWord_support_dominated isVec B μ i I' gu hpi hidx e1 he1`. It suffices to derive a contradiction. Establish `hz : ∏ c ∈ F, pathWord isVec μ c (fun j a => (X (j, a) : MvPolynomial (ℕ × Fin n) L)) i (I' c) = 0`. Take `⟨c, hc⟩` from `not_forall.1 (show ¬ ∀ c : ℤ, (I' c).card = if 1 ≤ c then colHeight (μ i) c else n - colHeight (μ i) c from hidx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hcF : c ∈ F`. Assume the negation of the conclusion as `hn`. Apply `hc` to reduce the goal to its premises. Establish `h1 : I' c = ∅` using `by rw [hI']; exact dif_neg hn`. Establish `h2` using `A1hw.isIndex_can (μ i) c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h2` using `[(hFi c hn).2 _ (A1hw.isIndex_can (μ i))]`. Rewrite using `[h1]`. Conclude with `h2`. Use `Finset.prod_eq_zero hcF ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hc (A0.pathWord_card hpi c _ i le_rfl _ hne)`. Rewrite `hpe` using `[hz, zero_mul, map_zero]`. Simplify using `at hpe`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem restWord : RestWord := by
   classical
@@ -189,17 +187,15 @@ theorem restWord : RestWord := by
 
 open A3ev DominanceOrderLemmas in
 /- English proof (translation)
-Establish `hEV : FactEV` using `Top.factEV`. Establish `hT : (c.support.filter fun x => DomLe (x₁.1.1 N) (x.1.1 N)).Nonempty` using `⟨x₁, Finset.mem_filter.2 ⟨hx₁, domLe_refl _⟩⟩`. Take `⟨x₀, hx₀, hmax⟩` from `Finset.exists_max_image _ (fun x : PathIdx n N isVec B => height (x.1.1 N)) hT`. Rewrite `hx₀` using `[Finset.mem_filter]`. Take `⟨μ₀, hμ₀⟩ : ∃ μ₀, x₀.1.1 N = μ₀` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hanti : Antitone μ₀` using `hμ₀ ▸ x₀.2.1.2.1 N le_rfl`. Establish `hd₀ : DomLe (x₁.1.1 N) μ₀` using `hμ₀ ▸ hx₀.2`. Use `⟨μ₀, hanti, hd₀, fun h1 => ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[Finsupp.sum, map_sum]`. Rewrite `h1` using `[map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Establish `h2 : ∑ x ∈ c.support.filter (fun x => x.1.1 N = μ₀), c x • fam k x = 0`. Establish `h3` using `Finset.sum_filter_of_ne (s := c.support) (p := fun x : PathIdx n N isVec B => x.1.1 N = μ₀) (f := fun x => c x • evC k n isVec μ₀ (psiPath k isVec x.1.1 N x.1.2)) ?_`. Rewrite using `[← h1, ← h3]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.mem_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[evC_psi k μ₀ x.2.1 x.2.2.2.1, ← hx.2, (ev_gen hEV k x.2.1 x.2.2.2.1).2]`. Unfold `fam`. Rewrite using `[smul_eq_C_mul]`. Introduce `x hx hne`. Establish `he : evC k n isVec μ₀ (psiPath k isVec x.1.1 N x.1.2) ≠ 0` using `fun h => hne (by rw [h, smul_zero])`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `he` using `[evC_psi k μ₀ x.2.1 x.2.2.2.1]`. Establish `hd : DomLe μ₀ (x.1.1 N)` using `(ev_gen hEV k x.2.1 x.2.2.2.1).1 μ₀ he`. Use `domLe_eq hd ?_` and prove the remaining obligations. Rewrite using `[← hμ₀]`. Conclude with `hmax x (Finset.mem_filter.2 ⟨hx, domLe_trans hd₀ hd⟩)`.
-
-Conclude with `(Finsupp.mem_support_iff.1 hx₀.1) (linearIndepOn_iff'.1 (fam_li fact_break k n N isVec B μ₀ hanti) _ c (fun x hx => (Finset.mem_filter.1 (Finset.mem_coe.1 hx)).2) h2 x₀ (Finset.mem_filter.2 ⟨hx₀.1, hμ₀⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dominant_top_weight_nonzero (k : Type) [Field k] (n N : ℕ) (isVec : ℕ → Bool) (B : ℕ → ℕ)
     (c : PathIdx n N isVec B →₀ k) (x₁ : PathIdx n N isVec B) (hx₁ : x₁ ∈ c.support) :
@@ -241,17 +237,15 @@ theorem exists_dominant_top_weight_nonzero (k : Type) [Field k] (n N : ℕ) (isV
     (Finset.mem_filter.2 ⟨hx₀.1, hμ₀⟩))
 
 /- English proof (translation)
-Introduce `k _ n N isVec B pi G hpi hG hgood`. Establish `hG' : G ∈ Submodule.span k (Set.range fun x : PathIdx n N isVec B => psiPath k isVec x.1.1 N x.1.2)`. Rewrite using `[(Top.psiPath_basis n N isVec B k).2]`. Conclude with `hG`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ x ∈ c.support, x.1.1 N ∈ pi`. Introduce `x hx`. Take `⟨μ₀, ha, hd, hne⟩` from `exists_dominant_top_weight_nonzero k n N isVec B c x hx`. Rewrite `hne` using `[hc]`. Establish `hne' : weightedHomogeneousComponent (torusW isVec) μ₀ (actAll isVec (Formalism.InvariantFactorPaths.GelfandTsetlinBases.genMat k n) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.genMat k n)⁻¹ (map (algebraMap k (GenField k n)) G)) ≠ 0` using `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `MvPolynomial.ne_zero_iff.1 hne'`. Rewrite `he` using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs at he with hw`. Establish `hvG : ∀ y ∈ (map (algebraMap k (GenField k n)) G).vars, y.1 < N` using `fun y hy => DominanceOrderLemmas.vars_of_polB hG y (vars_map G (algebraMap k (GenField k n)) hy)`. Establish `hmem : e ∈ (actI isVec N (Formalism.InvariantFactorPaths.GelfandTsetlinBases.genMat k n) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.genMat k n)⁻¹ (map (algebraMap k (GenField k n)) G)).support`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[partialAct_eq_fullAct_of_vars_lt _ _ _ _ hvG]`. Conclude with `mem_support_iff.2 he`. Establish `hwt : Finsupp.weight (wtI isVec N) e = μ₀`. Rewrite using `[partialWeight_eq_torusWeight_of_lt]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Conclude with `DominanceOrderLemmas.vars_act isVec _ _ hvG y ((mem_vars_iff_mem_support y).2 ⟨e, mem_support_iff.2 he, hy⟩)`. Establish `h3` using `hgood e hmem (by rw [hwt]; exact ha)`. Rewrite `h3` using `[hwt]`. Conclude with `hpi μ₀ h3 _ (x.2.1.2.1 N le_rfl) hd`.
-
-Conclude with `absurd rfl he`. Rewrite using `[← hc]`. Conclude with `Submodule.sum_mem _ fun x hx => Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, key x hx, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem restTop : RestTop := by
   classical

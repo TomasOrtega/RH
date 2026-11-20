@@ -7,13 +7,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.DetLine.RankZero
 
 /- English proof (translation)
-Establish `hn : ∀ n : ℕ, ((2⁻¹ : ℝ) ^ n) • z ∈ Λ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hz`. Consider the case `succ n ih => rw [pow_succ', mul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `h _ ih`. Establish `ht : Filter.Tendsto (fun n : ℕ => ((2⁻¹ : ℝ) ^ n) • z) Filter.atTop (nhds 0)`. Use `(tendsto_pow_atTop_nhds_zero_of_lt_one (r := (2⁻¹ : ℝ)) (by norm_num) (by norm_num)).smul_const z` as an intermediate fact. Simplify using `using this`. Establish `ht' : Filter.Tendsto (fun n : ℕ => (⟨_, hn n⟩ : Λ)) Filter.atTop (nhds 0)` using `tendsto_subtype_rng.2 ht`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht'` using `[nhds_discrete, Filter.tendsto_pure]`. Take `⟨n, hn'⟩` from `ht'.exists`. Establish `h0 : ((2⁻¹ : ℝ) ^ n) • z = 0` using `congrArg Subtype.val hn'`. Break down `smul_eq_zero.1 h0 with h1 | h1` into its components or cases. Conclude with `absurd h1 (by positivity)`.
-
-Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_half_mem {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) [hd : DiscreteTopology Λ]
     (h : ∀ z ∈ Λ, (2⁻¹ : ℝ) • z ∈ Λ) (z : Fin g → ℂ) (hz : z ∈ Λ) : z = 0 := by
@@ -37,9 +35,7 @@ theorem eq_zero_of_half_mem {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) [hd :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Use `haveI := D.fin`. Use `haveI := D.proj`. Assume the negation of the conclusion as `hne`. Establish `hnt : Nontrivial D.La` using `not_subsingleton_iff_nontrivial.1 hne`. Use `(Module.finrank_pos_iff (R := 𝓞 E) (M := D.La)).2 hnt` as an intermediate fact.
-
-Rewrite `this` using `[D.rank, hD]`. Conclude with `lt_irrefl _ this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_lattice (D : Datum H) (hD : D.p + D.q = 0) : Subsingleton D.La := by
   haveI := D.fin
@@ -51,13 +47,11 @@ theorem subsingleton_lattice (D : Datum H) (hD : D.p + D.q = 0) : Subsingleton D
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Use `haveI := subsingleton_lattice D hD`. Take `⟨-, I, -⟩` from `o.geom ℂ (𝟙 _) (Spec.preimage s).hom (by simp [spMap])`. Establish `h1 : I.ev 2 0 = 1` using `(I.ker 2 two_pos 0).2 ⟨0, Subsingleton.elim _ _⟩`. Establish `htor : ∀ x : 𝟙_ (Over (Sp ℂ)) ⟶ o.t.G, x * x = 1 → x = 1`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(I.onto 2 two_pos x).1 (by rw [pow_two]; exact hx)`. Rewrite `ha` using `[Subsingleton.elim a 0, h1]`. Conclude with `ha.symm`. Use `haveI := u.discrete`. Establish `hΛ : ∀ z ∈ u.Λ, z = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `eq_zero_of_half_mem u.Λ (fun z hz => (u.ker _).1 (htor _ ?_))` and prove the remaining obligations. Rewrite using `[← u.ex_add, ← add_smul, u.ker]`. Evaluate the numerical expressions. Conclude with `hz`. Use `subsingleton_of_forall_eq 0 (fun z => ?_)` and prove the remaining obligations.
-
-Establish `hz : z ∈ Submodule.span ℝ (u.Λ : Set (Fin g → ℂ))` using `by rw [u.full]; trivial`. Establish `: Submodule.span ℝ (u.Λ : Set (Fin g → ℂ)) = ⊥` using `Submodule.span_eq_bot.2 hΛ`. Rewrite `hz` using `[this, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem subsingleton_unif {D : Datum H} {l : Level H} {B : Type} [CommRing B] {b : Base l B} {s : Sp ℂ ⟶ Sp B}
     (hD : D.p + D.q = 0) (o : Obj D l b s) {g : ℕ} (u : HolUnif o.t.G o.t.PP.L g) :
@@ -82,9 +76,9 @@ theorem subsingleton_unif {D : Datum H} {l : Level H} {B : Type} [CommRing B] {b
   rwa [this, Submodule.mem_bot] at hz
 
 /- English proof (translation)
-Introduce `y y' _ _ _ _ o o' _ _ g g' u u' Hm Hm' κ κ' _ _`. Use `haveI := subsingleton_unif hD o u`. Use `haveI := subsingleton_unif hD o' u'`. Use `haveI : Subsingleton (𝟙_ (Over (Sp ℂ)) ⟶ o'.t.G) := u'.ex_onto.subsingleton`. Use `⟨LinearEquiv.ofSubsingleton _ _, fun z => ?_, fun _ _ _ _ => Subsingleton.elim _ _, fun z w => ?_, fun _ _ _ => Subsingleton.elim _ _, fun _ _ _ => Subsingleton.elim _ _⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim z 0, map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[Subsingleton.elim z 0, map_zero]`. Simplify using `[HermitianCompactForm.herm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasTransport_of_rank_zero (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l)

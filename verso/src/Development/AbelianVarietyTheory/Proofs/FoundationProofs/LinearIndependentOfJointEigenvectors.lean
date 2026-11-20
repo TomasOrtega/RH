@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory.JointEigenvectorsIndependent
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro g _ i hi`. Simplify using `at hi`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `insert j s hj ih`. Introduce `g hg`. Rewrite `hg` using `[Finset.sum_insert hj]`. Establish `hs : ∀ i ∈ s, g i = 0`. Introduce `i hi`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hij : i ≠ j` using `fun h => hj (h ▸ hi)`. Take `⟨a, ha⟩ : ∃ a, χ i a ≠ χ j a` from `Function.ne_iff.mp (fun h => hij (hχ h))`. Establish `h1 : (g j * χ j a) • f j + ∑ k ∈ s, (g k * χ k a) • f k = 0`. Establish `h` using `congrArg (op a) hg`. Rewrite `h` using `[map_add, map_sum, map_zero, map_smul, hop, smul_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `only [map_smul, hop, smul_smul]`. Establish `h2 : (g j * χ j a) • f j + ∑ k ∈ s, (g k * χ j a) • f k = 0`. Establish `h` using `congrArg (fun x => χ j a • x) hg`. Simplify `h` using `only [smul_add, Finset.smul_sum, smul_zero, smul_smul, mul_comm (χ j a)]`. Establish `h3 : ∑ k ∈ s, (g k * (χ k a - χ j a)) • f k = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h4 : ∑ k ∈ s, (g k * χ k a) • f k = ∑ k ∈ s, (g k * χ j a) • f k` using `add_left_cancel (h1.trans h2.symm)`. Simplify using `only [mul_sub, sub_smul, Finset.sum_sub_distrib, h4, sub_self]`. Establish `h5` using `ih (fun k => g k * (χ k a - χ j a)) h3 i hi`. Conclude with `(mul_eq_zero.mp h5).resolve_right (sub_ne_zero.mpr ha)`. Establish `hsum : ∑ k ∈ s, g k • f k = 0` using `Finset.sum_eq_zero fun k hk => by rw [hs k hk, zero_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[hsum, add_zero]`. Introduce `i hi`. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Conclude with `(smul_eq_zero.mp hg).resolve_right (hf _)`. Conclude with `hs i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_joint_eigenvectors {ι α M : Type} [AddCommGroup M] [Module ℂ M]
     (f : ι → M) (χ : ι → α → ℂ) (op : α → M →ₗ[ℂ] M) (hχ : Function.Injective χ)

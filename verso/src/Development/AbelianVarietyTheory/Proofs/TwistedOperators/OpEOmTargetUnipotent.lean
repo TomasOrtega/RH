@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.RootEx.TargetUnip
 
 /- English proof (translation)
-Establish `hb : M.BlockTriangular f`. Introduce `r s h`. Rewrite using `[hM r s h.le, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb.det]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `: M.toSquareBlock f a = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.toSquareBlock_def, Matrix.of_apply, hM _ _ (by rw [i.2, j.2])]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[this, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eq_one_of_level {k ι : Type*} [Field k] [Fintype ι] [DecidableEq ι] (f : ι → ℕ)
     (M : Matrix ι ι k) (hM : ∀ r s, f s ≤ f r → M r s = (1 : Matrix ι ι k) r s) : M.det = 1 := by
@@ -34,9 +34,9 @@ variable {k : Type*} [Field k] {n : Type*} [Fintype n] [DecidableEq n] {c : ℕ}
 variable {n' : Type*} [Fintype n'] [DecidableEq n']
 
 /- English proof (translation)
-Establish `h1 : x r s = ∑ r', (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r r' * x r' s`. Rewrite using `[← Matrix.mul_apply, Matrix.one_mul]`. Rewrite using `[Matrix.mul_apply, h1, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations. Use `split_ifs with hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne, zero_mul, zero_add]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hl`. Rewrite using `[hh r r' (not_lt.1 hl), add_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_apply_of_inN {p : ℕ} {h : GL (n ⊕ Fin c) k} (hh : InN p h) {m : Type*}
     (x : Matrix (n ⊕ Fin c) m k) (r : n ⊕ Fin c) (s : m) :
@@ -53,7 +53,7 @@ theorem mul_apply_of_inN {p : ℕ} {h : GL (n ⊕ Fin c) k} (hh : InN p h) {m : 
 
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
 /- English proof (translation)
-Simplify using `[affPt, hrs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem affPt_of_not_free (p : ℕ) (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) {r s} (hrs : ¬ Free p (r, s)) :
@@ -62,7 +62,7 @@ theorem affPt_of_not_free (p : ℕ) (x₀ : Matrix n n' k)
 
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
 /- English proof (translation)
-Apply the tactic sequence `rcases r with r | r <;> rcases r' with r' | r' <;> rcases s with s | s <;>`. Apply the tactic sequence `simp only [lev, Free, Sum.elim_inl, Sum.elim_inr, lt_irrefl] at hrs hl <;>`. Apply the tactic sequence `rw [affPt_of_not_free _ _ _ (by simp only [Free]; omega)] <;>`. Apply the tactic sequence `simp [basePt] <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem affPt_eq_zero (p : ℕ) (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) {r r' : n ⊕ Fin c} {s : n' ⊕ Fin (c + 1)}
@@ -82,7 +82,7 @@ def linPart (p : ℕ) (h : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) :
 
 open Classical in
 /- English proof (translation)
-Use `det_eq_one_of_level (fun a => lev p a.1.1) _ fun a b hab => ?_` and prove the remaining obligations. Simplify using `only [linPart, Matrix.of_apply]`. Rewrite using `[hh _ _ hab]`. Simplify using `only [Matrix.one_apply, Subtype.ext_iff, Prod.ext_iff]`. Apply the tactic sequence `by_cases h1 : a.1.1 = b.1.1 <;> by_cases h2 : a.1.2 = b.1.2 <;> simp [h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_linPart {p : ℕ} {h : GL (n ⊕ Fin c) k} (hh : InN p h) :
     (linPart (n' := n') p h.val).det = 1 := by
@@ -94,13 +94,13 @@ theorem det_linPart {p : ℕ} {h : GL (n ⊕ Fin c) k} (hh : InN p h) :
 
 open Classical in
 /- English proof (translation)
-Set `F : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) → k` to `fun b => (if a.1.2 = b.2 then h a.1.1 b.1 else 0) * (if hf : Free p b then e ⟨b, hf⟩ else 0)`. Establish `h1 : (linPart p h).mulVec e a = ∑ b : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs}, F b.1`. Simplify using `only [Matrix.mulVec, dotProduct, linPart, Matrix.of_apply, F]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos b.2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∑ b : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs}, F b.1 = ∑ b, F b`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun b => Free p b) (by simp) F]`. Use `Finset.sum_filter_of_ne fun b _ hb => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hf`. Conclude with `hb (by simp [F, hf])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a.1.2]`. Simplify using `[F]`. Introduce `s _ hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[F, hs.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linPart_mulVec (p : ℕ) (h : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k)
@@ -128,11 +128,11 @@ theorem linPart_mulVec (p : ℕ) (h : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
 
 open Classical in
 /- English proof (translation)
-Use extensionality with `r s`. Distinguish the cases in `hf : Free p (r, s)`. Establish `: affPt p x₀ ((linPart p h.val).mulVec e + fun a => (h.val * basePt c x₀ - basePt c x₀) a.1.1 a.1.2) r s = basePt c x₀ r s + ((linPart p h.val).mulVec e ⟨(r, s), hf⟩ + (h.val * basePt c x₀ - basePt c x₀) r s)`. Simplify using `[affPt, hf]`. Rewrite using `[this, linPart_mulVec, affPt, Matrix.mul_add, Matrix.add_apply, Matrix.sub_apply]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[affPt_of_not_free _ _ _ hf, mul_apply_of_inN hh, affPt_of_not_free _ _ _ hf, Finset.sum_eq_zero, add_zero]`. Introduce `r' _`. Use `split_ifs with hl`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[affPt_eq_zero p x₀ e hf hl, mul_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mul_affPt {p : ℕ} {h : GL (n ⊕ Fin c) k} (hh : InN p h) (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) :
@@ -157,13 +157,13 @@ theorem mul_affPt {p : ℕ} {h : GL (n ⊕ Fin c) k} (hh : InN p h) (x₀ : Matr
 
 omit [Fintype n'] [DecidableEq n'] in
 /- English proof (translation)
-Rewrite using `[ch, ch, simpleSum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_apply_of_inN hh, Fintype.sum_sum_type, Finset.sum_eq_zero, zero_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hl : lev (n := n) p (Sum.inr i) < lev (n := n) p (Sum.inr j)`. Rewrite using `[if_pos hl]`. Simplify using `only [lev, Sum.elim_inr] at hl`. Rewrite using `[affPt_of_not_free _ _ _ (by simp only [Free, Fin.val_succ]; omega)]`. Simplify using `[basePt]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hl]`. Simplify using `only [lev, Sum.elim_inr] at hl`. Rewrite using `[if_neg (by omega)]`. Introduce `r _ split_ifs with hl`. Simplify using `only [lev, Sum.elim_inr, Sum.elim_inl] at hl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[affPt_of_not_free _ _ _ (by simp only [Free, Fin.val_succ]; omega)]`. Simplify using `[basePt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ch_mul_affPt {p : ℕ} {h : GL (n ⊕ Fin c) k} (hh : InN p h) (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) :
@@ -193,21 +193,21 @@ end GlobalTheory.RootEx.TargetUnip
 open GlobalTheory.RootEx.TargetUnip in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c p _ _ ψ ν _ μ Φ g hg`. Take `⟨hN, hadd, hdet, -⟩` from `GlobalTheory.RootEx.Radical.unipotent_radical_basic k n c p`. Establish `hg' : g⁻¹ ∈ N k n c p` using `inv_mem hg`. Establish `hh : InN p g⁻¹` using `(hN _).1 hg'`. Establish `hs1 : simpleSum (1 : GL (n ⊕ Fin c) k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hadd 1 (one_mem _) 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_add.1 this`. Establish `hs : simpleSum g⁻¹ = -simpleSum g`. Use `hadd g hg g⁻¹ hg'` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[mul_inv_cancel, hs1]`. Take the linear combination `-this`. Establish `hn1 : nabs k 1 = 1` using `by simp [nabs]`. Establish `hom : ∀ x, om μ 1 g Φ x = Φ ((g⁻¹).val * x)`. Introduce `x`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[om, hdet g hg, hn1]`. Use `haveI := secondCountable k`. Use function extensionality and compare the values at `x₀`. Set `F : ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) → ℂ` to `fun e => Φ (affPt p x₀ e) * (ψ (-ch (affPt p x₀ e)) : ℂ)`. Set `t : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k` to `fun a => ((g⁻¹).val * basePt c x₀ - basePt c x₀) a.1.1 a.1.2`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `L` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (linPart (n' := n') p (g⁻¹).val) (by rw [det_linPart hh]; exact one_ne_zero)`. Establish `hL : Matrix.GeneralLinearGroup.det L = 1`. Use `ext`. Conclude with `det_linPart hh`. Establish `key : ∀ e, om μ 1 g Φ (affPt p x₀ e) * (ψ (-ch (affPt p x₀ e)) : ℂ) = (ψ (-simpleSum g) : ℂ) * F (L.val.mulVec e + t)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Establish `h1` using `mul_affPt hh x₀ e`. Establish `h2` using `ch_mul_affPt hh x₀ e`. Establish `h3 : F (L.val.mulVec e + t) = Φ ((g⁻¹).val * affPt p x₀ e) * (ψ (-ch ((g⁻¹).val * affPt p x₀ e)) : ℂ)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Rewrite using `[h3, h2, hs, hom, mul_left_comm, ← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Establish `hcov` using `integral_comp_mulVec_eq_smul ν L (fun e => F (e + t))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hcov` using `[hL, hn1, inv_one, one_smul, integral_add_right_eq_self]`. Simplify using `only [opE, Pi.smul_apply, smul_eq_mul, key]`. Rewrite using `[integral_const_mul, hcov]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RootEx.opE_om_target_unipotent : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (μ : kˣ →* ℂˣ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ), ∀ g ∈ N k n c p, opE ψ ν p (om μ 1 g Φ) = (ψ (-simpleSum g) : ℂ) • opE ψ ν p Φ := by
   classical

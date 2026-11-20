@@ -5,7 +5,7 @@ open Filter Topology MeasureTheory GlobalTheory.HSAmp
 open scoped ComplexOrder Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GramJensen.gram_det_jensen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGramDeterminantJensenChangeOfWeight.lean&line=209#L209)
 -/

@@ -13,7 +13,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.We
 namespace UpperTheory.V.Cj.R
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Set `b : Matrix (Fin d) (Fin d) ℂ →ₐ[ℂ] Matrix (Fin d × Fin k) (Fin d × Fin k) ℂ` to `AlgHom.mk' ((Matrix.blockDiagonalRingHom (Fin d) (Fin k) ℂ).comp (Pi.constRingHom (Fin k) _)) fun c A => Matrix.blockDiagonal_smul c fun _ : Fin k => A`. Conclude with `⟨(Matrix.reindexAlgEquiv ℂ ℂ finProdFinEquiv).toAlgHom.comp b⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 private theorem ex_pad {d D : ℕ} (h : d ∣ D) :
     Nonempty (Matrix (Fin d) (Fin d) ℂ →ₐ[ℂ] Matrix (Fin D) (Fin D) ℂ) := by
@@ -24,13 +24,13 @@ private theorem ex_pad {d D : ℕ} (h : d ∣ D) :
   exact ⟨(Matrix.reindexAlgEquiv ℂ ℂ finProdFinEquiv).toAlgHom.comp b⟩
 
 /- English proof (translation)
-Set `D` to `∏ τ, (P τ).d`. Establish `hD : 0 < D` using `Finset.prod_pos fun τ _ => hP τ`. Set `φ` to `fun τ => (ex_pad (Finset.dvd_prod_of_mem (fun τ => (P τ).d) (Finset.mem_univ τ))).some`. Set `F : (E →+* ℂ) → GL (Fin a) (Cinf E) →* Matrix (Fin D) (Fin D) ℂ` to `fun τ => (φ τ).toMonoidHom.comp (fac (P τ) N τ)`. Establish `hF` using `fun τ => UpperTheory.window_linear_entry_estimate E a _ D (φ τ).toLinearMap _ (isReg_fac (P τ) N τ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hreg : ∀ τ, IsReg (F τ)` using `fun τ => (hF τ).1`. Establish `hder : ∀ t τ i j, eOf (F t) τ i j = φ t (eOf (fac (P t) N t) τ i j)` using `fun t => (hF t).2`. Set `r` to `Matrix.reindexAlgEquiv ℂ ℂ (Fintype.equivFinOfCardEq (by simp) : ((E →+* ℂ) → Fin D) ≃ Fin (D ^ Fintype.card (E →+* ℂ)))`. Use `UpperTheory.exists_algRep_qdet_eq_smul_one_of_isReg E a _ (pow_pos hD _) ((r.toAlgHom.toMonoidHom.comp piK).comp (MonoidHom.pi F)) (fun i j => isReg_piK hreg _ _) _ fun τ u => ?_` and prove the remaining obligations. Establish `h1 : eOf ((r.toAlgHom.toMonoidHom.comp piK).comp (MonoidHom.pi F)) τ = fun i j => ((r.toAlgHom.comp (intersection_update_fsHerm_neg_one τ)).comp (φ τ)) ((P τ).E i j + (if i = j then algebraMap ℂ _ (-(N : ℂ)) else 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `r (eOf (fun y => piK fun t => F t y) τ i j) = _`. Rewrite using `[eOf_piK hreg (fun t => map_one _), Finset.sum_eq_single τ (fun t _ ht => by`. Rewrite using `[hder, eOf_fac, if_neg ht, map_zero, map_zero]) (by simp), hder, eOf_fac, if_pos rfl]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1, ← map_qdet, qdet_shift, hν, map_smul, map_one]`. Simplify using `only [sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ex_tens {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (P : (E →+* ℂ) → Weyl.Pre a)
     (hP : ∀ τ, 0 < (P τ).d) (ν : (E →+* ℂ) → Fin a → ℂ) (hν : ∀ τ, (P τ).HasWt (ν τ)) (N : ℕ) :
@@ -58,9 +58,7 @@ private theorem ex_tens {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   simp only [sub_eq_add_neg]
 
 /- English proof (translation)
-Introduce `E _ _ _ a m hm`. Use `choose N₀ hN using fun τ => UpperTheory.window_integer_gap_bound a (m τ) (hm τ)`. Use `choose ν h1 h2 using fun τ => hN τ (∑ t, N₀ t) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ τ))`. Use `choose P h3 h4 h5 using fun τ => Weyl.existsScalar a (ν τ) (h1 τ) (∑ k, ν τ k) fun k => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Take `⟨Ξ, h⟩` from `ex_tens P h3 _ h5 (∑ t, N₀ t)`.
-
-Use `⟨Ξ, fun τ => (algInfChar_iff _ _ _).2 ⟨by rw [Multiset.card_map, (hm τ).1], fun u => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exAlgRep : ExAlgRep := by
   intro E _ _ _ a m hm
@@ -73,7 +71,7 @@ theorem exAlgRep : ExAlgRep := by
   rw [h, h2]
 
 /- English proof (translation)
-Introduce `E _ _ _ a π hπ`. Establish `h` using `fun τ => ParLaws.hasInfChar_infChar (CG.mk π) τ`. Take `⟨Ξ, hΞ⟩` from `exAlgRep E a (CG.mk π).infChar fun τ => ⟨(h τ).1, hπ τ⟩`. Conclude with `⟨Ξ, fun τ => ⟨_, h τ, hΞ τ⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exAlgRepCusp : ExAlgRepCusp := by
   intro E _ _ _ a π hπ

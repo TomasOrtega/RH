@@ -15,7 +15,7 @@ namespace SplitTorusPoints
 open Rosenlicht
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_appTop, ← Category.assoc, ← Category.assoc, Scheme.ΓSpecIso_inv_naturality]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ΓSpecIso_inv_comp_specMap {W : Scheme.{0}} {A B : CommRingCat.{0}} (g : W ⟶ Spec B)
     (f : A ⟶ B) :
@@ -26,20 +26,18 @@ theorem ΓSpecIso_inv_comp_specMap {W : Scheme.{0}} {A B : CommRingCat.{0}} (g :
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Z : Over S}
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem map_left_fst {T : Scheme.{0}} (f : S ⟶ T) {A B : Over T} (g : A ⟶ B) :
     ((Over.pullback f).map g).left ≫ pullback.fst B.hom f = pullback.fst A.hom f ≫ g.left :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Set `F` to `Over.pullback (toZ S)`. Set `G` to `splitTorusAff ZU X`. Set `m : Z ⟶ F.obj (G ⊗ G)` to `lift (a : Z ⟶ F.obj G) (b : Z ⟶ F.obj G) ≫ Functor.LaxMonoidal.μ F G G`. Establish `key : ∀ g : G ⊗ G ⟶ G, (m.left ≫ pullback.fst (G ⊗ G).hom (toZ S)) ≫ g.left = (m ≫ F.map g).left ≫ torusFst S X`. Introduce `g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, ← map_left_fst, Over.comp_left]`. Conclude with `(Category.assoc _ _ _).symm`. Use `⟨m.left ≫ pullback.fst (G ⊗ G).hom (toZ S), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Functor.Monoidal.μ_fst F G G)).trans (lift_fst _ _))`. Rewrite using `[key]`. Use `congr 2`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (Functor.Monoidal.μ_snd F G G)).trans (lift_snd _ _))`. Rewrite using `[key]`.
-
-Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_mul_factor (a b : Z ⟶ splitTorus S X) :
     ∃ q : Z.left ⟶ (splitTorusAff ZU X ⊗ splitTorusAff ZU X).left,
@@ -67,15 +65,13 @@ theorem exists_mul_factor (a b : Z ⟶ splitTorus S X) :
     congr 2
 
 /- English proof (translation)
-Take `⟨q, h1, h2, h3⟩` from `exists_mul_factor a b`. Set `A` to `torusRing ZU X`. Set `p : Z.left ⟶ Spec (.of (A ⊗[ZU.{0}] A))` to `q ≫ (pullbackSpecIso ZU.{0} A A).hom`. Set `φ` to `(Scheme.ΓSpecIso (.of (A ⊗[ZU.{0}] A))).inv ≫ p.appTop`. Establish `e1 : coord a = CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom ≫ φ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← ΓSpecIso_inv_comp_specMap, coord, ← h1]`. Use `congr 2`. Conclude with `(congrArg (q ≫ ·) (pullbackSpecIso_hom_fst ZU.{0} A A).symm).trans (Category.assoc _ _ _).symm`. Establish `e2 : coord b = CommRingCat.ofHom (Algebra.TensorProduct.includeRight : A →ₐ[ZU.{0}] A ⊗[ZU.{0}] A).toRingHom ≫ φ`. Rewrite using `[← ΓSpecIso_inv_comp_specMap, coord, ← h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `(congrArg (q ≫ ·) (pullbackSpecIso_hom_snd ZU.{0} A A).symm).trans (Category.assoc _ _ _).symm`. Establish `e3 : coord (a * b) = CommRingCat.ofHom (Bialgebra.comulAlgHom ZU.{0} A) ≫ φ`. Rewrite using `[← ΓSpecIso_inv_comp_specMap, coord, ← h3]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, e3]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`. Rewrite using `[← map_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Coalgebra.comul (R := ULift.{0} ℤ) (AddMonoidAlgebra.single x (1 : ULift.{0} ℤ)) = (AddMonoidAlgebra.single x (1 : ULift.{0} ℤ) ⊗ₜ[ULift.{0} ℤ] (1 : AddMonoidAlgebra (ULift.{0} ℤ) X)) * ((1 : AddMonoidAlgebra (ULift.{0} ℤ) X) ⊗ₜ[ULift.{0} ℤ] AddMonoidAlgebra.single x (1 : ULift.{ …`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_mul_single (a b : Z ⟶ splitTorus S X) (x : X) :
     (coord (a * b)).hom (AddMonoidAlgebra.single x 1) =
@@ -108,7 +104,7 @@ theorem coord_mul_single (a b : Z ⟶ splitTorus S X) (x : X) :
   simp
 
 /- English proof (translation)
-Rewrite using `[TorusInj.charUnit_val, coord, Scheme.Hom.comp_appTop]`. Establish `: (TorusInj.tFst (S` using `S) X).appLE ⊤ ⊤ (TorusInj.tle _) = (torusFst S X).appTop := by`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -130,7 +126,7 @@ theorem toHom_val (t : Z ⟶ splitTorus S X) (x : X) :
     (toHom t (Multiplicative.ofAdd x)).val = (coord t).hom (AddMonoidAlgebra.single x 1) := rfl
 
 /- English proof (translation)
-Use `⟨Over.homMk (pullback.lift (Z.left.toSpecΓ ≫ Spec.map φ) Z.hom (specULiftZIsTerminal.hom_ext _ _)) (pullback.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Establish `: (pullback.lift (Z.left.toSpecΓ ≫ Spec.map φ) Z.hom (specULiftZIsTerminal.hom_ext _ _) : Z.left ⟶ (splitTorus S X).left) ≫ torusFst S X = Z.left.toSpecΓ ≫ Spec.map φ` using `pullback.lift_fst _ _ _`. Use `(congrArg (fun g => (Scheme.ΓSpecIso (torusRing ZU X)).inv ≫ Scheme.Hom.appTop g) this).trans ?_` and prove the remaining obligations. Rewrite using `[ΓSpecIso_inv_comp_specMap, Scheme.toSpecΓ_appTop, Iso.inv_hom_id, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_coord_eq (φ : torusRing ZU X ⟶ Γ(Z.left, ⊤)) :
     ∃ t : Z ⟶ splitTorus S X, coord t = φ := by
@@ -145,11 +141,11 @@ theorem exists_coord_eq (φ : torusRing ZU X ⟶ Γ(Z.left, ⊤)) :
     Iso.inv_hom_id, Category.comp_id]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Apply `coord_injective` to reduce the goal to its premises. Use `ext1`. Use `ringHom_ext_ZU fun y => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← toHom_val, ← toHom_val, h]`. Introduce `u`. Use `letI : Algebra (ULift.{0} ℤ) Γ(Z.left, ⊤) := ULift.algebra' ℤ _`. Take `⟨t, ht⟩` from `exists_coord_eq (Z := Z) (X := X) (CommRingCat.ofHom (AddMonoidAlgebra.lift (ULift.{0} ℤ) Γ(Z.left, ⊤) X ((Units.coeHom _).comp u)).toRingHom)`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(toHom t (Multiplicative.ofAdd x)).val = _`. Rewrite using `[toHom_val, ht]`. Express the relevant statement in the definitionally equal form `AddMonoidAlgebra.lift (ULift.{0} ℤ) Γ(Z.left, ⊤) X ((Units.coeHom _).comp u) (AddMonoidAlgebra.single _ 1) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toHom_bijective : Function.Bijective (toHom : (Z ⟶ splitTorus S X) → _) := by
   constructor
@@ -171,7 +167,7 @@ theorem toHom_bijective : Function.Bijective (toHom : (Z ⟶ splitTorus S X) →
     simp
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `coord_mul_single a b x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem toHom_mul (a b : Z ⟶ splitTorus S X) : toHom (a * b) = toHom a * toHom b := by
   ext x
@@ -185,7 +181,7 @@ noncomputable def splitTorusPointsEquiv (S : Scheme.{0}) (X : Type) [AddCommGrou
     map_mul' := SplitTorusPoints.toHom_mul }
 
 /- English proof (translation)
-The claim follows from `SplitTorusPoints.coord_single t χ`.
+A detailed English derivation is pending.
 -/
 theorem splitTorusPointsEquiv_val (S : Scheme.{0}) (X : Type) [AddCommGroup X] (Z : Over S)
     (t : Z ⟶ splitTorus S X) (χ : X) :
@@ -194,7 +190,7 @@ theorem splitTorusPointsEquiv_val (S : Scheme.{0}) (X : Type) [AddCommGroup X] (
   SplitTorusPoints.coord_single t χ
 
 /- English proof (translation)
-Introduce `S X _ Z` and use `⟨splitTorusPointsEquiv S X Z, splitTorusPointsEquiv_val S X Z⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_splitTorus_points_mulEquiv :
     ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] (Z : Over S),

@@ -9,7 +9,7 @@ open NumberField MeasureTheory
 namespace PositivityTheory.KB.TwSMInt2
 
 /- English proof (translation)
-Introduce `L _ _ _ N hN μ _ M T B hB C hC f hf`. Conclude with `main_of_pack (ι := InfinitePlace L) hN μ (MomentRationality.Cz.Pk.cpt_Om M) T B (pack μ (MomentRationality.Cz.Pk.cpt_Om M) M T fun p hp w => ⟨hp.1 w, hp.2.1 w⟩) hB C hC f hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sIntB : PositivityTheory.KB.SIntB := by
   intro L _ _ _ N hN μ _ M T B hB C hC f hf

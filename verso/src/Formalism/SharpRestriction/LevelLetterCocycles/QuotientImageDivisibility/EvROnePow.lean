@@ -16,13 +16,13 @@ variable {O : Type} [CommRing O] [IsLocalRing O] [IsAdicComplete (IsLocalRing.ma
 
 omit [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] in
 /- English proof (translation)
-Simplify using `only [Zp, map_sub, map_pow, map_add, map_one, Polynomial.aeval_X, hy, sub_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem root_Zp {y : F} (hy : (1 + y) ^ (p ^ m) = 1) : Polynomial.aeval y (Zp (O := O) p m) = 0 := by
   simp only [Zp, map_sub, map_pow, map_add, map_one, Polynomial.aeval_X, hy, sub_self]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem evR_congr {x x' : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0)
     (hx' : Polynomial.aeval x' (Zp (O := O) p m) = 0) (h : x = x') (f : PowerSeries O) :
@@ -31,9 +31,9 @@ theorem evR_congr {x x' : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0)
   rfl
 
 /- English proof (translation)
-Substitute `hx0` using the available equality. Take `⟨q, hq⟩ : ∃ q, f = Zs p m * q + ((f %ʷ Zs p m : Polynomial O) : PowerSeries O)` from `⟨_, (f.isWeierstrassDivision_weierstrassDiv_weierstrassMod (Zs_res_ne p m hlm)).eq_mul_add⟩`. Use `show evP p m 0 f = _`. Rewrite using `[evalWeierstrassMod_eq_aeval_of_eq p m hlm hx f q _ hq]`. Use `conv_rhs => rw [hq]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Polynomial.coeff_zero_eq_aeval_zero']`. Simplify using `[Zs]`.
+A detailed English derivation is pending.
 -/
 theorem evR_eq_cc {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) (hx0 : x = 0)
     (f : PowerSeries O) : evR p m hlm hx f = algebraMap O F (PowerSeries.constantCoeff f) := by
@@ -47,7 +47,7 @@ theorem evR_eq_cc {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) (hx0 :
   simp [Zs]
 
 /- English proof (translation)
-Establish `hX : evR p m hlm hx PowerSeries.X = x` using `by show evP p m x PowerSeries.X = x`. Rewrite using `[evalWeierstrassMod_eq_aeval_of_eq p m hlm hx PowerSeries.X 0 Polynomial.X (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[map_pow, map_add, map_one, hX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evR_onePow {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) (k : ℕ) :
     evR p m hlm hx ((1 + PowerSeries.X) ^ k) = (1 + x) ^ k := by
@@ -60,7 +60,7 @@ theorem evR_onePow {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) (k : 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Use `haveI : NeZero (N : F) := ⟨Nat.cast_ne_zero.mpr hN.ne'⟩`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic N F) (by`. Rewrite using `[Polynomial.degree_cyclotomic]`. Conclude with `(Nat.totient_pos.2 hN).ne')` after adjusting the coercions. Conclude with `⟨ζ, Polynomial.isRoot_cyclotomic_iff.mp hζ⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_prim {F : Type} [Field F] [IsAlgClosed F] [CharZero F] (N : ℕ) (hN : 0 < N) :
     ∃ ζ : F, IsPrimitiveRoot ζ N := by

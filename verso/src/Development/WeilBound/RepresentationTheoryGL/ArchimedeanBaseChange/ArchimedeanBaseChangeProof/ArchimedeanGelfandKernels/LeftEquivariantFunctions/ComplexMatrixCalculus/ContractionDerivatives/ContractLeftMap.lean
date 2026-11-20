@@ -11,7 +11,7 @@ open PositivityTheory.RgBcC
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_comp' {M N P : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] [AddCommGroup P]
     [Module ℂ P] (f : N →ₗ[ℂ] P) (g : M →ₗ[ℂ] N) :
@@ -36,21 +36,21 @@ Both sides reduce to the same expression.
 theorem gamM_eq (g : Matrix (Md n) (Md n) ℂ) : gamM g = matL n (ExteriorAlgebra.map (Matrix.toLin' g)).toLinearMap := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.toMatrix_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem matL_mul (f h : abelian₂ n →ₗ[ℂ] abelian₂ n) : matL n (f * h) = matL n f * matL n h := LinearMap.toMatrix_mul _ _ _
 
 /- English proof (translation)
-The claim follows from `LinearMap.toMatrix_one _`.
+A detailed English derivation is pending.
 -/
 theorem matL_one : matL n (1 : abelian₂ n →ₗ[ℂ] abelian₂ n) = 1 := LinearMap.toMatrix_one _
 
 /- English proof (translation)
-Proceed by induction on `y using CliffordAlgebra.left_induction with`. Consider the case `algebraMap r`. Rewrite using `[AlgHom.commutes, CliffordAlgebra.contractLeft_algebraMap, CliffordAlgebra.contractLeft_algebraMap, map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `ι_mul x m hx`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `e : ExteriorAlgebra.map f (CliffordAlgebra.ι (0 : QuadraticForm ℂ (Md n → ℂ)) m * x) = CliffordAlgebra.ι (0 : QuadraticForm ℂ (Md n → ℂ)) (f m) * ExteriorAlgebra.map f x`. Rewrite using `[map_mul]`. Conclude with `congrArg (· * _) (ExteriorAlgebra.map_apply_ι f m)`. Rewrite using `[e, CliffordAlgebra.contractLeft_ι_mul, hx, CliffordAlgebra.contractLeft_ι_mul, map_sub, map_smul, map_mul]`. Rewrite using `[show ExteriorAlgebra.map f (CliffordAlgebra.ι (0 : QuadraticForm ℂ (Md n → ℂ)) m) = CliffordAlgebra.ι (0 : QuadraticForm ℂ (Md n → ℂ)) (f m) from ExteriorAlgebra.map_apply_ι f m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem contractLeft_map (f : (Md n → ℂ) →ₗ[ℂ] (Md n → ℂ)) (d : Module.Dual ℂ (Md n → ℂ)) (y : abelian₂ n) :
     CliffordAlgebra.contractLeft (Q := (0 : QuadraticForm ℂ (Md n → ℂ))) d (ExteriorAlgebra.map f y) =
@@ -76,9 +76,9 @@ namespace PositivityTheory.RgBcC
 open PositivityTheory.RgBcC.Cxb
 
 /- English proof (translation)
-Introduce `n`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[gamM_eq, Matrix.toLin'_one, ExteriorAlgebra.map_id]`. Conclude with `LinearMap.toMatrix_id _`. Rewrite using `[gamM_eq, gamM_eq, gamM_eq, Matrix.toLin'_mul, map_comp', AlgHom.comp_toLinearMap, ← matL_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem gamMul : GamMul := by
   intro n
@@ -89,9 +89,9 @@ theorem gamMul : GamMul := by
     rfl
 
 /- English proof (translation)
-Introduce `n v w`. Rewrite using `[annL_eq, creL_eq, ← matL_mul, ← matL_mul, ← map_add, ← matL_one, ← map_smul]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.add_apply, Module.End.mul_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply, LinearMap.mul_apply', LinearMap.mul_apply', CliffordAlgebra.contractLeft_ι_mul]`. Use `show (w ⬝ᵥ v) • y - _ + _ = _`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem car : Car := by
   intro n v w
@@ -105,11 +105,11 @@ theorem car : Car := by
   abel
 
 /- English proof (translation)
-Introduce `n g v w`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gamM_eq, creL_eq, creL_eq, ← matL_mul, ← matL_mul]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Module.End.mul_apply, AlgHom.toLinearMap_apply, LinearMap.mul_apply', map_mul, ExteriorAlgebra.map_apply_ι, Matrix.toLin'_apply]`. Rewrite using `[gamM_eq, annL_eq, annL_eq, ← matL_mul, ← matL_mul]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, AlgHom.toLinearMap_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hd : dualOf w ∘ₗ Matrix.toLin' g = dualOf (gᵀ *ᵥ w)`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, dualOf, LinearMap.coe_mk, AddHom.coe_mk, Matrix.toLin'_apply]`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.mulVec_transpose]`. Rewrite using `[contractLeft_map, hd]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamCre : GamCre := by
   intro n g v w

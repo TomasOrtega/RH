@@ -11,18 +11,18 @@ open CategoryTheory GroundTheory.ProfCoh ReciprocityTheory.Gal ValuativeRel Form
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
 /- English proof (translation)
-The claim follows from `_root_.Bl.FirstLemmaD.goal1 v`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_mem_asIdeal {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) : ∃ p : ℕ, p.Prime ∧ ((p : ℕ) : 𝓞 F) ∈ v.asIdeal :=
   _root_.Bl.FirstLemmaD.goal1 v
 
 /- English proof (translation)
-Take `⟨hsep, _, _, hloc, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcField p K hK`. Establish `: CharZero K` using `algebraRat.charZero K`. Take `⟨A, _, e, he⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcRep (GK p K) R M rho hrho`. Establish `: Finite A` using `Finite.of_equiv _ e.toEquiv`. Establish `hn : ((Nat.card A : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e0, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc0 (GK p K) R M rho A e he`. Take `⟨e1, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 (GK p K) R M rho A e he`. Take `⟨e2, -⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 (GK p K) R M rho A e he`. Use `finite_cohomology_localField A hn 0` as an intermediate fact. Use `finite_cohomology_localField A hn 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `finite_cohomology_localField A hn 2` as an intermediate fact. Use `⟨Finite.of_equiv _ e0.symm.toEquiv, Finite.of_equiv _ e1.symm.toEquiv, Finite.of_equiv _ e2.symm.toEquiv, fun n h => ?_⟩` and prove the remaining obligations. Take `⟨en⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gcn (GK p K) R M rho A e he n`. Use `subsingleton_cohomology_localField A hn n h` as an intermediate fact. Conclude with `en.toEquiv.subsingleton`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finCd2_GK (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     (hK : FiniteDimensional ℚ_[p] K) (R : Type) [CommRing R] (M : Type) [AddCommGroup M]
@@ -48,9 +48,9 @@ theorem finCd2_GK (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (Padic
   exact en.toEquiv.subsingleton
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r M _ _ _ _ _ A rho v _ hA hc`. Take `⟨p, hp, hpv⟩` from `exists_prime_mem_asIdeal v`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨K, hK, e, he, he', -⟩` from `GlobalTheory.DecLocal.exists_mulEquiv_cyc F Ω p v A hpv hA`. Set `E : GK p K ≃ₜ* Dec (F` to `F) A := { e.symm with continuous_toFun := he', continuous_invFun := he }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h : ReciprocityTheory.Neutral.Bridge.FinCd2 (rho.comp (E : GK p K →* Dec (F` using `F) A)) := finCd2_GK p K hK _ M _ (ReciprocityTheory.Neutral.Bridge.contAction_comp E hc)`. Conclude with `ReciprocityTheory.Neutral.Bridge.FinCd2.of_comp E h`.
+A detailed English derivation is pending.
 -/
 theorem localFiniteness : ReciprocityTheory.Gal.LocalFiniteness := by
   intro F Ω _ _ _ _ _ l _ r M _ _ _ _ _ A rho v _ hA hc

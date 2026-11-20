@@ -43,7 +43,7 @@ attribute [instance] Block.ft
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem hsComplete {a b : ℕ} {ι : Type} [Fintype ι] (D : Dom E a b) : CompleteSpace (Hs (ι := ι) D) := inferInstance
 

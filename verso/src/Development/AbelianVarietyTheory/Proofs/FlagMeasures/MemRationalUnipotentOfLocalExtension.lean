@@ -17,15 +17,15 @@ namespace GlobalTheory.LocReflect
 variable {D : D7}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hyW`. Take `⟨φ, hφy, hφW⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hyW inferInstance`. Set `ψ : Vp D p →ₗ[(D.s.atP p).Ep] (D.s.atP p).Ep` to `{ toFun := fun v => ∑ i, (D.s.atP p).ιE (φ ((VS D).frame i)) * v i map_add' := fun v w => by simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib] map_smul' := fun c v => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `ring }`. Establish `hψ : ∀ x, ψ (baseChange₂ D p x) = (D.s.atP p).ιE (φ x)`. Introduce `x`. Use `show ∑ i, (D.s.atP p).ιE (φ ((VS D).frame i)) * (D.s.atP p).ιE ((VS D).frame.repr x i) = _`. Use `conv_rhs => rw [← (VS D).frame.sum_repr x]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, map_smul, smul_eq_mul, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hle : Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (W : Set (VS D).V)) ≤ LinearMap.ker ψ`. Rewrite using `[Submodule.span_le]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `show ψ (baseChange₂ D p w) = 0`. Rewrite using `[hψ]`. Establish `: φ w ∈ W.map φ` using `Submodule.mem_map_of_mem hw`. Rewrite `this` using `[hφW, Submodule.mem_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Establish `h0 : ψ (baseChange₂ D p y) = 0` using `hle hy`. Rewrite `h0` using `[hψ]`. Conclude with `hφy ((map_eq_zero_iff _ (RingHom.injective (D.s.atP p).ιE)).1 h0)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_baseChange_mem_span (p : PlF D) (W : Submodule D.host.E (VS D).V) {y : (VS D).V}
     (hy : baseChange₂ D p y ∈ Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (W : Set (VS D).V))) : y ∈ W := by
@@ -58,7 +58,7 @@ theorem mem_of_baseChange_mem_span (p : PlF D) (W : Submodule D.host.E (VS D).V)
   exact hφy ((map_eq_zero_iff _ (RingHom.injective (D.s.atP p).ιE)).1 h0)
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Use `show frFac Z.δ p b.castSucc • baseChange₂ D p (frame F b.castSucc) ∈ _`. Rewrite using `[GlobalTheory.LocExt.frame_castSucc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, Submodule.subset_span ⟨b, hb, rfl⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_scaled_le (Z : LocDat D) (p : PlF D) {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (S : Set (Fin D.R.rS)) :
     Submodule.span (D.s.atP p).Ep ((fun b : Fin D.R.rS => scaled Z p (frame F) b.castSucc) '' S) ≤
@@ -71,29 +71,25 @@ theorem span_scaled_le (Z : LocDat D) (p : PlF D) {T : D.host.E} (F : LFlag (VS 
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, Submodule.subset_span ⟨b, hb, rfl⟩, rfl⟩)
 
 /- English proof (translation)
-Introduce `D Z p T F γ g hE hN`. Take `⟨hU, hfl, hperp⟩` from `hN`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Apply `RingHom.injective (D.s.atP p).ιE` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (D.s.atP p).ιE (brS (VS D) (γ y) (γ x)) = (D.s.atP p).ιE (brS (VS D) y x)`. Rewrite using `[← baseChangeAt_form Z.M p (Z.hcj p), ← baseChangeAt_form Z.M p (Z.hcj p), ← hE, ← hE]`. Conclude with `hU (baseChange₂ D p y) (baseChange₂ D p x)`. Introduce `j x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Establish `ha' : a.1 < j + 1` using `ha`. Establish `h1` using `hfl a`. Establish `e : g (scaled Z p (frame F) a.castSucc) - scaled Z p (frame F) a.castSucc = frFac Z.δ p a.castSucc • baseChange₂ D p (γ (F.fl.e a) - F.fl.e a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [scaled, GlobalTheory.LocExt.frame_castSucc, map_smul, hE (F.fl.e a), map_sub, smul_sub]`. Rewrite `h1` using `[e]`. Take `⟨u, hu⟩` from `Formalism.L2.SG.Pf.BBTie.bt_frFac_unit Z p a.castSucc`. Establish `h2` using `Submodule.smul_mem _ ((u⁻¹ : (D.s.atP p).Epˣ) : (D.s.atP p).Ep) (span_scaled_le Z p F {b | b < a} h1)`. Rewrite `h2` using `[← hu, smul_smul, Units.inv_mul, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Establish `h3` using `mem_of_baseChange_mem_span p _ h2`. Conclude with `GlobalTheory.FlagChange.Xa_mono F.fl (Nat.lt_succ_iff.1 ha') h3`. Consider the case `zero => simp`. Consider the case `add x y _ _ ihx ihy`. Establish `e : γ (x + y) - (x + y) = (γ x - x) + (γ y - y)` using `by rw [map_add]; abel`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.add_mem _ ihx ihy`. Consider the case `smul c x _ ih`. Rewrite using `[map_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x hx`. Establish `hb : baseChange₂ D p x ∈ (locH Z p).perp ((locH Z p).X (scaled Z p (frame F)))`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `hu`. Use `show (locH Z p).h (baseChange₂ D p x) (frFac Z.δ p a.castSucc • baseChange₂ D p (frame F a.castSucc)) = 0`. Rewrite using `[(locH Z p).h_herm, (locH Z p).h_smul_left, map_mul, ← (locH Z p).h_herm]`. Establish `h0 : (locH Z p).h (baseChange₂ D p x) (baseChange₂ D p (frame F a.castSucc)) = 0` using `by show LocFacts₂ Z.M p (baseChange₂ D p x) (baseChange₂ D p (frame F a.castSucc)) = 0`. Rewrite using `[baseChangeAt_form Z.M p (Z.hcj p), GlobalTheory.LocExt.frame_castSucc]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `show (D.s.atP p).ιE ((VS D).hT (F.fl.e a) x) = 0`. Rewrite using `[GlobalTheory.FlagChange.mem_orth_X.1 hx (F.fl.e a) (GlobalTheory.FlagChange.e_mem_X F.fl a), map_zero]`. Rewrite using `[h0, mul_zero]`. Consider the case `zero`. Rewrite using `[(locH Z p).h_herm, (locH Z p).h_zero_left, map_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `add u v _ _ ihu ihv`. Rewrite using `[(locH Z p).h_herm, (locH Z p).h_add_left, map_add, ← (locH Z p).h_herm, ← (locH Z p).h_herm, ihu, ihv, add_zero]`. Consider the case `smul c u _ ih`. Rewrite using `[(locH Z p).h_herm, (locH Z p).h_smul_left, map_mul, ← (locH Z p).h_herm, ih, mul_zero]`. Establish `h2` using `hperp _ hb`.
-
-Rewrite `h2` using `[hE, ← map_sub]`. Establish `h3 : baseChange₂ D p (γ x - x) ∈ Submodule.span (D.s.atP p).Ep ((fun b : Fin D.R.rS => scaled Z p (frame F) b.castSucc) '' Set.univ)`. Rewrite using `[Set.image_univ]`. Conclude with `h2`. Establish `h4` using `mem_of_baseChange_mem_span p _ (span_scaled_le Z p F Set.univ h3)`.
-
-Rewrite `h4` using `[Set.image_univ]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nrat_of_ext : ∀ (D : D7) (Z : LocDat D) (p : PlF D) {T : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p),

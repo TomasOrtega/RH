@@ -30,14 +30,14 @@ def patMat (X : PatIdx T → F) : Matrix (Fin n) (Fin n) F :=
   fun i j => if h : T i j then X ⟨(i, j), h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[patMat, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem patMat_apply_of_not {X : PatIdx T → F} {i j : Fin n} (h : ¬ T i j) :
     patMat F T X i j = 0 := by
   simp [patMat, h]
 
 /- English proof (translation)
-Simplify using `[patMat, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem patMat_apply_of_mem {X : PatIdx T → F} {i j : Fin n} (h : T i j) :
     patMat F T X i j = X ⟨(i, j), h⟩ := by
@@ -48,14 +48,14 @@ variable (hT : ∀ i j, T i j → γ i < γ j)
 include hT
 
 /- English proof (translation)
-Introduce `e` and use `by subst e exact lt_irrefl _ (hT i i h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ne_of_pat {i j : Fin n} (h : T i j) : i ≠ j := fun e => by
   subst e
   exact lt_irrefl _ (hT i i h)
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hij' : ¬ T i j` using `fun h => lt_asymm hij (hT i j h)`. Rewrite using `[Matrix.add_apply, patMat_apply_of_not T hij', add_zero, one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem blockTriangular_one_add_patMat (X : PatIdx T → F) :
     (1 + patMat F T X).BlockTriangular γ := by
@@ -66,11 +66,11 @@ theorem blockTriangular_one_add_patMat (X : PatIdx T → F) :
   exact lt_irrefl _ hij
 
 /- English proof (translation)
-Rewrite using `[(blockTriangular_one_add_patMat hT X).det]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `: (1 + patMat F T X).toSquareBlock γ a = 1`. Use extensionality with `i j`. Simplify using `only [Matrix.toSquareBlock_def, Matrix.of_apply, Matrix.add_apply, one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hij : ¬ T i j` using `fun h => by`. Use `hT _ _ h` as an intermediate fact. Rewrite `this` using `[i.2, j.2]`. Conclude with `lt_irrefl _ this`. Rewrite using `[patMat_apply_of_not T hij, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Subtype.ext_iff]`. Rewrite using `[this, det_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_one_add_patMat (X : PatIdx T → F) : (1 + patMat F T X).det = 1 := by
   classical
@@ -105,7 +105,7 @@ variable (T) in
 def patCoord (g : GL (Fin n) F) : PatIdx T → F := fun p => (g : Matrix (Fin n) (Fin n) F) p.1.1 p.1.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use `show (1 + patMat F T X) p.1.1 p.1.2 = X p`. Rewrite using `[Matrix.add_apply, one_apply_ne (ne_of_pat hT p.2), patMat_apply_of_mem T p.2, zero_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patCoord_patUnip (X : PatIdx T → F) : patCoord T (patUnip F hT X) = X := by
   funext p
@@ -119,7 +119,7 @@ variable {U : Subgroup (GL (Fin n) F)} (hU : IsPatternGroup (F := F) (T := T) U)
 include hU
 
 /- English proof (translation)
-Rewrite using `[hU]`. Introduce `i j h`. Rewrite using `[coe_patUnip, Matrix.add_apply, patMat_apply_of_not T h, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem patUnip_mem (X : PatIdx T → F) : patUnip F hT X ∈ U := by
   rw [hU]
@@ -127,9 +127,9 @@ theorem patUnip_mem (X : PatIdx T → F) : patUnip F hT X ∈ U := by
   rw [coe_patUnip, Matrix.add_apply, patMat_apply_of_not T h, add_zero]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[coe_patUnip, Matrix.add_apply]`. Distinguish the cases in `h : T i j`. Rewrite using `[patMat_apply_of_mem T h, one_apply_ne (ne_of_pat hT h), zero_add]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[patMat_apply_of_not T h, add_zero, (hU g).1 hg i j h]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem patUnip_patCoord {g : GL (Fin n) F} (hg : g ∈ U) : patUnip F hT (patCoord T g) = g := by
   apply Units.ext
@@ -141,22 +141,22 @@ theorem patUnip_patCoord {g : GL (Fin n) F} (hg : g ∈ U) : patUnip F hT (patCo
   · rw [patMat_apply_of_not T h, add_zero, (hU g).1 hg i j h]
 
 /- English proof (translation)
-Rewrite using `[← patUnip_patCoord hT hU hg, ← patUnip_patCoord hT hU hg', h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem patCoord_injOn {g g' : GL (Fin n) F} (hg : g ∈ U) (hg' : g' ∈ U)
     (h : patCoord T g = patCoord T g') : g = g' := by
   rw [← patUnip_patCoord hT hU hg, ← patUnip_patCoord hT hU hg', h]
 
 /- English proof (translation)
-Rewrite using `[← patUnip_patCoord hT hU hg, coe_patUnip, det_one_add_patMat hT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_of_mem {g : GL (Fin n) F} (hg : g ∈ U) : (g : Matrix (Fin n) (Fin n) F).det = 1 := by
   rw [← patUnip_patCoord hT hU hg, coe_patUnip, det_one_add_patMat hT]
 
 /- English proof (translation)
-Establish `hdet` using `det_of_mem hT hU hg`. Establish `hinv : ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = (g : Matrix (Fin n) (Fin n) F).adjugate`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, hdet, Ring.inverse_one, one_smul]`. Set `M' : Matrix (Fin n) (Fin n) 𝒪[F]` to `fun i j => ⟨(g : Matrix (Fin n) (Fin n) F) i j, hint i j⟩`. Establish `hM : (𝒪[F]).subtype.mapMatrix M' = (g : Matrix (Fin n) (Fin n) F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[hinv, ← hM, ← RingHom.map_adjugate]`. Conclude with `(M'.adjugate i j).2`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_apply_mem_integer {g : GL (Fin n) F} (hg : g ∈ U)
     (hint : ∀ i j, (g : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]) (i j : Fin n) :
@@ -173,11 +173,9 @@ theorem inv_apply_mem_integer {g : GL (Fin n) F} (hg : g ∈ U)
   exact (M'.adjugate i j).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h p`. Conclude with `((mem_integralGL_iff F n).1 h).1 p.1.1 p.1.2`. Introduce `h`. Establish `hint : ∀ i j, (g : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Distinguish the cases in `hij : T i j`. Conclude with `h ⟨(i, j), hij⟩`. Rewrite using `[(hU g).1 hg i j hij, one_apply] split_ifs`. Conclude with `one_mem _`.
-
-Conclude with `zero_mem _`. Conclude with `(mem_integralGL_iff F n).2 ⟨hint, inv_apply_mem_integer hT hU hg hint⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_integralGL_iff_patCoord {g : GL (Fin n) F} (hg : g ∈ U) :
     g ∈ integralGL F n ↔ ∀ p : PatIdx T, patCoord T g p ∈ 𝒪[F] := by
@@ -197,7 +195,7 @@ theorem mem_integralGL_iff_patCoord {g : GL (Fin n) F} (hg : g ∈ U) :
 
 omit hT hU in
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : T i j`. Simplify using `[patMat_apply_of_mem T h]`. Simplify using `[patMat_apply_of_not T h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem patMat_add (X Y : PatIdx T → F) : patMat F T (X + Y) = patMat F T X + patMat F T Y := by
   ext i j
@@ -207,7 +205,7 @@ theorem patMat_add (X Y : PatIdx T → F) : patMat F T (X + Y) = patMat F T X + 
 
 omit hT hU in
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : T i j`. Simplify using `[patMat_apply_of_mem T h]`. Simplify using `[patMat_apply_of_not T h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem patMat_smul (c : F) (X : PatIdx T → F) : patMat F T (c • X) = c • patMat F T X := by
   ext i j
@@ -236,11 +234,11 @@ variable (hTt : ∀ i j k, T i j → T j k → T i k)
 include hTt
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : T i j`. Rewrite using `[patMat_apply_of_mem T h]`. Both sides reduce to the same expression. Rewrite using `[patMat_apply_of_not T h, mul_apply]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_eq_zero fun l _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `hlj : T l j`. Establish `hil : ¬ T i l` using `fun hil => h (hTt i l j hil hlj)`. Rewrite using `[(hU k).1 hk i l hil, one_apply_ne, zero_mul]`. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h hlj`. Rewrite using `[patMat_apply_of_not T hlj, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patMat_patLeft {k : GL (Fin n) F} (hk : k ∈ U) (X : PatIdx T → F) :
     patMat F T (patLeft T k X) = (k : Matrix (Fin n) (Fin n) F) * patMat F T X := by
@@ -258,7 +256,7 @@ theorem patMat_patLeft {k : GL (Fin n) F} (hk : k ∈ U) (X : PatIdx T → F) :
     · rw [patMat_apply_of_not T hlj, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use `show ((k * k' : GL (Fin n) F) * patMat F T X : Matrix (Fin n) (Fin n) F) p.1.1 p.1.2 = ((k : Matrix (Fin n) (Fin n) F) * patMat F T (patLeft T k' X)) p.1.1 p.1.2`. Rewrite using `[patMat_patLeft hT hU hTt hk', Units.val_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patLeft_mul {k k' : GL (Fin n) F} (hk' : k' ∈ U) (X : PatIdx T → F) :
     patLeft T (k * k') X = patLeft T k (patLeft T k' X) := by
@@ -269,7 +267,7 @@ theorem patLeft_mul {k k' : GL (Fin n) F} (hk' : k' ∈ U) (X : PatIdx T → F) 
 
 omit hTt in
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use `show ((1 : GL (Fin n) F) * patMat F T X : Matrix (Fin n) (Fin n) F) p.1.1 p.1.2 = X p`. Rewrite using `[Units.val_one, Matrix.one_mul, patMat_apply_of_mem T p.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patLeft_one (X : PatIdx T → F) : patLeft T (1 : GL (Fin n) F) X = X := by
   funext p
@@ -295,7 +293,7 @@ theorem coe_patLeftEquiv {k : GL (Fin n) F} (hk : k ∈ U) (X : PatIdx T → F) 
     patLeftEquiv T hT hU hTt hk X = patLeft T k X := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `hu'` using `patUnip_patCoord hT hU hu`. Use `show ((k * u : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) p.1.1 p.1.2 = (k : Matrix (Fin n) (Fin n) F) p.1.1 p.1.2 + ((k : Matrix (Fin n) (Fin n) F) * patMat F T (patCoord T u)) p.1.1 p.1.2`. Use `conv_lhs => rw [← hu', Units.val_mul, coe_patUnip, Matrix.mul_add, Matrix.mul_one]`. Rewrite using `[Matrix.add_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem patCoord_mul {k u : GL (Fin n) F} (hu : u ∈ U) :
     patCoord T (k * u) = patCoord T k + patLeft T k (patCoord T u) := by
@@ -308,11 +306,9 @@ theorem patCoord_mul {k u : GL (Fin n) F} (hu : u ∈ U) :
   rw [Matrix.add_apply]
 
 /- English proof (translation)
-Establish `hbox : ∀ {k' : GL (Fin n) F}, k' ∈ integralGL F n → ∀ X ∈ Measures.box F (PatIdx T), patLeft T k' X ∈ Measures.box F (PatIdx T)`. Introduce `k' hk' X hX`. Rewrite `hX`, the goal using `[Measures.mem_box]`. Introduce `p`. Use `show ((k' : Matrix (Fin n) (Fin n) F) * patMat F T X) p.1.1 p.1.2 ∈ 𝒪[F]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_apply]`. Use `sum_mem fun l _ => mul_mem (((mem_integralGL_iff F n).1 hk').1 _ _) ?_` and prove the remaining obligations. Distinguish the cases in `hl : T l p.1.2`. Rewrite using `[patMat_apply_of_mem T hl]`. Conclude with `hX _`.
-
-Rewrite using `[patMat_apply_of_not T hl]`. Conclude with `zero_mem _`. Conclude with `Measures.distribHaarChar_eq_one_of_mapsTo_box (fun X hX => hbox hk.2 X hX) (fun X hX => hbox ((integralGL F n).inv_mem hk.2) X hX)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_patLeftEquiv {k : GL (Fin n) F} (hk : k ∈ U ⊓ integralGL F n) :
     distribHaarChar (PatIdx T → F) (patLeftEquiv T hT hU hTt hk.1) = 1 := by
@@ -334,33 +330,31 @@ theorem distribHaarChar_patLeftEquiv {k : GL (Fin n) F} (hk : k ∈ U ⊓ integr
 
 omit hT hU hTt in
 /- English proof (translation)
-The claim follows from `continuous_pi fun p => continuous_entry F n p.1.1 p.1.2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_patCoord : Continuous (patCoord (F := F) T) :=
   continuous_pi fun p => continuous_entry F n p.1.1 p.1.2
 
 /- English proof (translation)
-Use `set U₀ := U ⊓ integralGL F n`. Use `set S : Subgroup U₀ := L.subgroupOf U₀`. Establish `hSi : S.index = L.relIndex U₀` using `rfl`. Establish `: S.FiniteIndex` using `⟨by rw [hSi]; exact hfin⟩`. Set `_` to `Fintype.ofFinite (U₀ ⧸ S)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set piece : U₀ ⧸ S → Set (PatIdx T → F) := fun q => patCoord T '' ((fun l => ((Quotient.out q : U₀) : GL (Fin n) F) * l) '' (L : Set (GL (Fin n) F)))`. Establish `hbox : Measures.box F (PatIdx T) = ⋃ q, piece q`. Use extensionality with `X`. Simplify using `only [mem_iUnion]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hX`. Establish `hgU : patUnip F hT X ∈ U` using `patUnip_mem hT hU X`. Establish `hcoord : patCoord T (patUnip F hT X) = X` using `patCoord_patUnip hT X`. Establish `hg0 : patUnip F hT X ∈ U₀` using `Subgroup.mem_inf.2 ⟨hgU, (mem_integralGL_iff_patCoord hT hU hgU).2 (by rw [hcoord]; exact Measures.mem_box.1 hX)⟩`. Take `⟨q, hq⟩ : ∃ q : U₀ ⧸ S, q = QuotientGroup.mk ⟨_, hg0⟩` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq' : (Quotient.out q : U₀)⁻¹ * ⟨_, hg0⟩ ∈ S` using `QuotientGroup.eq.1 ((QuotientGroup.out_eq' q).trans hq)`. Use `⟨q, patUnip F hT X, ⟨_, Subgroup.mem_subgroupOf.1 hq', ?_⟩, hcoord⟩` and prove the remaining obligations. Use `show ((Quotient.out q : U₀) : GL (Fin n) F) * (((Quotient.out q : U₀)⁻¹ * ⟨_, hg0⟩ : U₀) : GL (Fin n) F) = patUnip F hT X`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_cancel_left]`. Introduce and unpack `⟨q, _, ⟨l, hl, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ((Quotient.out q : U₀) : GL (Fin n) F) * l ∈ U₀` using `U₀.mul_mem (Quotient.out q).2 (hL hl)`. Conclude with `Measures.mem_box.2 ((mem_integralGL_iff_patCoord hT hU hmem.1).1 hmem.2)`. Establish `hpiece : ∀ q, μ (piece q) = μ (patCoord T '' (L : Set (GL (Fin n) F)))`. Introduce `q`. Use `set k : GL (Fin n) F := ((Quotient.out q : U₀) : GL (Fin n) F)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hk : k ∈ U₀` using `(Quotient.out q).2`. Establish `hk1 : k ∈ U` using `(Subgroup.mem_inf.1 hk).1`. Establish `heq : piece q = (fun X => patCoord T k + X) '' (patLeftEquiv T hT hU hTt hk1 '' (patCoord T '' (L : Set (GL (Fin n) F))))`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨_, ⟨l, hl, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨patCoord T l, ⟨l, hl, rfl⟩, rfl⟩, (patCoord_mul hT hU hTt ((hL hl).1)).symm⟩`. Introduce and unpack `⟨_, ⟨_, ⟨l, hl, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨k * l, ⟨l, hl, rfl⟩, patCoord_mul hT hU hTt ((hL hl).1)⟩`. Rewrite using `[heq, Set.image_add_left, measure_preimage_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : (⇑(patLeftEquiv T hT hU hTt hk1) '' (patCoord T '' (L : Set (GL (Fin n) F)))) = patLeftEquiv T hT hU hTt hk1 • (patCoord T '' (L : Set (GL (Fin n) F)))` using `rfl`. Rewrite using `[hsm, ← distribHaarChar_mul μ (patLeftEquiv T hT hU hTt hk1), distribHaarChar_patLeftEquiv hT hU hTt hk, ENNReal.coe_one, one_mul]`. Establish `hmeas : ∀ q, MeasurableSet (piece q)` using `fun q => (((hLc.image (continuous_const_mul _)).image (continuous_patCoord (T := T)))).isClosed.measurableSet`. Establish `hdisj : Pairwise (Function.onFun Disjoint piece)`. Introduce `q q' hqq'`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `_ ⟨_, ⟨l, hl, rfl⟩, rfl⟩ ⟨_, ⟨l', hl', rfl⟩, he⟩`. Apply `hqq'` to reduce the goal to its premises. Establish `h1` using `patCoord_injOn hT hU (U₀.mul_mem (Quotient.out q').2 (hL hl')).1 (U₀.mul_mem (Quotient.out q).2 (hL hl)).1 he`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Subgroup.mem_subgroupOf.2` to reduce the goal to its premises. Establish `: (((Quotient.out q : U₀)⁻¹ * Quotient.out q' : U₀) : GL (Fin n) F) = l * l'⁻¹`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, eq_mul_inv_iff_mul_eq, mul_assoc, h1, inv_mul_cancel_left]`. Rewrite using `[this]`. Conclude with `L.mul_mem hl (L.inv_mem hl')`.
-
-Rewrite using `[hbox, measure_iUnion hdisj hmeas, tsum_fintype]`. Simplify using `only [hpiece, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← hSi, Subgroup.index_eq_card, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_box_eq_relIndex_mul [MeasurableSpace F] [BorelSpace F]
     (μ : Measure (PatIdx T → F)) [μ.IsAddHaarMeasure] [μ.Regular] {L : Subgroup (GL (Fin n) F)}
@@ -440,15 +434,15 @@ end Pattern
 section Conj
 
 /- English proof (translation)
-Establish `hϖ : (GLnLocal.uniformizer F : F) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Rewrite using `[Set.mem_smul_set]`. Break down `le_or_gt 0 d with hd | hd` into its components or cases. Establish `hdn : ((d.toNat : ℕ) : ℤ) = d` using `Int.toNat_of_nonneg hd`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨-, h⟩`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← mul_assoc, ← zpow_natCast, hdn, ← zpow_add₀ hϖ, add_neg_cancel, zpow_zero, one_mul]`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨mul_mem (pow_mem (GLnLocal.uniformizer F).2 _) hy, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_eq_mul, ← mul_assoc, ← zpow_natCast, hdn, ← zpow_add₀ hϖ, neg_add_cancel, zpow_zero, one_mul]`. Conclude with `hy`. Establish `hdn : d.toNat = 0` using `Int.toNat_of_nonpos hd.le`. Rewrite using `[hdn, pow_zero]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, -⟩`. Conclude with `⟨x, h, one_smul _ _⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[one_smul]`. Use `⟨hy, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (GLnLocal.uniformizer F : F) ^ (-d) = (GLnLocal.uniformizer F : F) ^ (-d).toNat`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (by omega)]`. Rewrite using `[this]`. Conclude with `mul_mem (pow_mem (GLnLocal.uniformizer F).2 _) hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_integer_iff (d : ℤ) (x : F) :
     (x ∈ 𝒪[F] ∧ (GLnLocal.uniformizer F : F) ^ (-d) * x ∈ 𝒪[F]) ↔
@@ -483,7 +477,7 @@ theorem mem_smul_integer_iff (d : ℤ) (x : F) :
 variable {γ T : _} {U : Subgroup (GL (Fin n) F)}
 
 /- English proof (translation)
-Establish `h` using `diagPow_conj_apply (-ν) g i j`. Rewrite `h` using `[diagPow_neg, inv_inv]`. Rewrite using `[h]`. Use `congr 2`. Simplify using `only [Pi.neg_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -507,9 +501,9 @@ variable {γ : Fin n → ℕ} {T : Fin n → Fin n → Prop} [DecidableRel T]
 include hT hU
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[hU]`. Introduce `i j h`. Rewrite using `[conj_diagPow_apply, hg i j h]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[one_apply_ne hij, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_diagPow_mem (ν : Fin n → ℤ) {g : GL (Fin n) F} (hg : g ∈ U) :
     (diagPow F n ν)⁻¹ * g * diagPow F n ν ∈ U := by
@@ -522,7 +516,7 @@ theorem conj_diagPow_mem (ν : Fin n → ℤ) {g : GL (Fin n) F} (hg : g ∈ U) 
   · rw [one_apply_ne hij, mul_zero]
 
 /- English proof (translation)
-The claim follows from `conj_diagPow_apply ν g p.1.1 p.1.2`.
+A detailed English derivation is pending.
 -/
 theorem patCoord_conj_diagPow (ν : Fin n → ℤ) (g : GL (Fin n) F) (p : PatIdx T) :
     patCoord T ((diagPow F n ν)⁻¹ * g * diagPow F n ν) p =
@@ -530,11 +524,11 @@ theorem patCoord_conj_diagPow (ν : Fin n → ℤ) (g : GL (Fin n) F) (p : PatId
   conj_diagPow_apply ν g p.1.1 p.1.2
 
 /- English proof (translation)
-Establish `hx` using `conj_diagPow_mem hT hU ν hg`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyg⟩`. Establish `hyx : y = (diagPow F n ν)⁻¹ * g * diagPow F n ν`. Rewrite using `[← hyg]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `y = (diagPow F n ν)⁻¹ * (diagPow F n ν * y * (diagPow F n ν)⁻¹) * diagPow F n ν`. Use `group`. Introduce `p`. Rewrite using `[← patCoord_conj_diagPow hT hU, ← hyx]`. Conclude with `(mem_integralGL_iff_patCoord hT hU (Subgroup.mem_inf.1 hy).1).1 (Subgroup.mem_inf.1 hy).2 p`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `⟨(diagPow F n ν)⁻¹ * g * diagPow F n ν, Subgroup.mem_inf.2 ⟨hx, (mem_integralGL_iff_patCoord hT hU hx).2 fun p => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[patCoord_conj_diagPow hT hU]`. Conclude with `h p`. Express the relevant statement in the definitionally equal form `diagPow F n ν * ((diagPow F n ν)⁻¹ * g * diagPow F n ν) * (diagPow F n ν)⁻¹ = g group`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem mem_map_conj_diagPow_iff (ν : Fin n → ℤ) {g : GL (Fin n) F} (hg : g ∈ U) :
     g ∈ (U ⊓ integralGL F n).map (MulAut.conj (diagPow F n ν)).toMonoidHom ↔
@@ -559,11 +553,11 @@ theorem mem_map_conj_diagPow_iff (ν : Fin n → ℤ) {g : GL (Fin n) F} (hg : g
       group
 
 /- English proof (translation)
-Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Take `⟨hg0, hgm⟩` from `Subgroup.mem_inf.1 hg`. Establish `hgU` using `(Subgroup.mem_inf.1 hg0).1`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p _`. Conclude with `(mem_smul_integer_iff _ _).1 ⟨(mem_integralGL_iff_patCoord hT hU hgU).1 (Subgroup.mem_inf.1 hg0).2 p, (mem_map_conj_diagPow_iff hT hU ν hgU).1 hgm p⟩`. Introduce `hX`. Establish `hgU` using `patUnip_mem hT hU X`. Establish `hc` using `patCoord_patUnip (F := F) hT X`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ p : PatIdx T, X p ∈ 𝒪[F] ∧ (GLnLocal.uniformizer F : F) ^ (-(ν p.1.1 - ν p.1.2)) * X p ∈ 𝒪[F]` using `fun p => (mem_smul_integer_iff _ _).2 (hX p (Set.mem_univ _))`. Use `⟨patUnip F hT X, Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨hgU, (mem_integralGL_iff_patCoord hT hU hgU).2 fun p => by rw [hc]; exact (hp p).1⟩, (mem_map_conj_diagPow_iff hT hU ν hgU).2 fun p => by rw [hc]; exact (hp p).2⟩, hc⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem patCoord_image_inf_map_conj (ν : Fin n → ℤ) :
     patCoord T '' (((U ⊓ integralGL F n) ⊓
@@ -592,7 +586,7 @@ theorem patCoord_image_inf_map_conj (ν : Fin n → ℤ) :
 end PatternConj
 
 /- English proof (translation)
-Use `borelize F`. Rewrite using `[show x = ((Units.mk0 x hx : Fˣ) : F) from rfl, Measures.modulus_units, GroundTheory.LocalField.distribHaarChar_eq_modulus]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localField_modulus_eq {x : F} (hx : x ≠ 0) :
     GroundTheory.LocalField.modulus x = Measures.modulus x := by
@@ -609,7 +603,7 @@ variable {γ : Fin n → ℕ} {T : Fin n → Fin n → Prop} [DecidableRel T]
 include hT hTt hU hUc
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `(isCompact_integralGL F n).inter_left hUc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_inf_integralGL : IsCompact ((U ⊓ integralGL F n : Subgroup (GL (Fin n) F)) :
     Set (GL (Fin n) F)) := by
@@ -617,7 +611,7 @@ theorem isCompact_inf_integralGL : IsCompact ((U ⊓ integralGL F n : Subgroup (
   exact (isCompact_integralGL F n).inter_left hUc
 
 /- English proof (translation)
-Rewrite using `[Subgroup.relIndex, Subgroup.relIndex]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem relIndex_inf_left_eq (M K : Subgroup (GL (Fin n) F)) :
     (K ⊓ M).relIndex K = M.relIndex K := by
@@ -628,17 +622,15 @@ theorem relIndex_inf_left_eq (M K : Subgroup (GL (Fin n) F)) :
   exact ⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩
 
 /- English proof (translation)
-Use `set U₀ := U ⊓ integralGL F n`. Use `set M := U₀.map (MulAut.conj (diagPow F n ν)).toMonoidHom`. Use `set H := (integralGL F n).map (MulAut.conj (diagPow F n ν)).toMonoidHom`. Establish `hHo : IsOpen (H : Set (GL (Fin n) F))`. Rewrite using `[Subgroup.coe_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(conjHomeomorph (diagPow F n ν)).isOpenMap _ (isOpen_integralGL F n)`. Establish `h1` using `relIndex_ne_zero_of_isCompact_of_isOpen (isCompact_inf_integralGL hT hTt hU hUc) hHo`. Establish `hle : H ⊓ U ≤ M`. Introduce and unpack `g ⟨⟨k, hk, hkg⟩, hgU⟩`. Use `⟨(diagPow F n ν)⁻¹ * g * diagPow F n ν, Subgroup.mem_inf.2 ⟨conj_diagPow_mem hT hU ν hgU, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: (diagPow F n ν)⁻¹ * g * diagPow F n ν = k`. Rewrite using `[← hkg]`. Express the relevant statement in the definitionally equal form `(diagPow F n ν)⁻¹ * (diagPow F n ν * k * (diagPow F n ν)⁻¹) * diagPow F n ν = k`. Use `group`. Rewrite using `[this]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `hk`. Express the relevant statement in the definitionally equal form `diagPow F n ν * ((diagPow F n ν)⁻¹ * g * diagPow F n ν) * (diagPow F n ν)⁻¹ = g group`. Establish `h2 : (H ⊓ U).relIndex U₀ = H.relIndex U₀`. Rewrite using `[Subgroup.relIndex, Subgroup.relIndex]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, (Subgroup.mem_inf.1 x.2).1⟩⟩`. Introduce `h0`. Apply `h1` to reduce the goal to its premises.
-
-Rewrite using `[← h2]`. Conclude with `Nat.eq_zero_of_zero_dvd (h0 ▸ Subgroup.relIndex_dvd_of_le_left U₀ hle)`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_map_conj_diagPow_ne_zero (ν : Fin n → ℤ) :
     ((U ⊓ integralGL F n).map (MulAut.conj (diagPow F n ν)).toMonoidHom).relIndex
@@ -673,21 +665,17 @@ theorem relIndex_map_conj_diagPow_ne_zero (ν : Fin n → ℤ) :
   exact Nat.eq_zero_of_zero_dvd (h0 ▸ Subgroup.relIndex_dvd_of_le_left U₀ hle)
 
 /- English proof (translation)
-Use `borelize F`. Use `set U₀ := U ⊓ integralGL F n`. Use `set M := U₀.map (MulAut.conj (diagPow F n ν)).toMonoidHom`. Set `μ : Measure (PatIdx T → F)` to `Measure.pi fun _ => GroundTheory.LocalField.haarIntegers F`. Use `Measures.metrizableSpace F` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Measures.sigmaCompactSpace F` as an intermediate fact. Establish `: μ.Regular` using `inferInstance`. Establish `hMc : IsCompact (M : Set (GL (Fin n) F))`. Rewrite using `[Subgroup.coe_map]`. Conclude with `(isCompact_inf_integralGL hT hTt hU hUc).image (conjHomeomorph _).continuous`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hVc : IsCompact ((U₀ ⊓ M : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F))`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hMc.inter_left (isCompact_inf_integralGL hT hTt hU hUc).isClosed`. Establish `hfin : (U₀ ⊓ M).relIndex U₀ ≠ 0`. Rewrite using `[relIndex_inf_left_eq hT hTt hU hUc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `relIndex_map_conj_diagPow_ne_zero hT hTt hU hUc ν`. Establish `key` using `measure_box_eq_relIndex_mul hT hU hTt μ (L := U₀ ⊓ M) inf_le_left hVc hfin`. Rewrite `key` using `[patCoord_image_inf_map_conj hT hU ν]`. Establish `hbox : μ (Measures.box F (PatIdx T)) = 1`. Rewrite using `[Measures.box, Measure.pi_pi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GroundTheory.LocalField.haarIntegers_integers]`. Establish `hchart : μ (Set.univ.pi fun p : PatIdx T => ((GLnLocal.uniformizer F : F) ^ (ν p.1.1 - ν p.1.2).toNat) • (𝒪[F] : Set F)) = ∏ p : PatIdx T, ((Measures.modulus (GLnLocal.uniformizer F : F) ^ (ν p.1.1 - ν p.1.2).toNat : ℝ≥0) : ℝ≥0∞)`. Rewrite using `[Measure.pi_pi]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `hne : (GLnLocal.uniformizer F : F) ^ (ν p.1.1 - ν p.1.2).toNat ≠ 0` using `pow_ne_zero _ (Cartan.uniformizer_ne_zero F)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[GroundTheory.LocalField.addHaar_smul _ hne, GroundTheory.LocalField.haarIntegers_integers, mul_one, localField_modulus_eq hne, map_pow]`. Rewrite `key` using `[hbox, hchart, relIndex_inf_left_eq hT hTt hU hUc]`. Establish `key'` using `congrArg ENNReal.toReal key`. Rewrite `key'` using `[ENNReal.toReal_mul, ENNReal.toReal_prod, ENNReal.toReal_one, ENNReal.toReal_natCast]`. Simplify using `only [ENNReal.coe_toReal, NNReal.coe_pow] at key'`.
-
-Establish `hpos : (∏ p : PatIdx T, (Measures.modulus (GLnLocal.uniformizer F : F) : ℝ) ^ (ν p.1.1 - ν p.1.2).toNat) ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun p _ => pow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `Measures.modulus_ne_zero (Cartan.uniformizer_ne_zero F)` after adjusting the coercions. Rewrite using `[Finset.prod_congr rfl fun p _ => inv_pow _ _, Finset.prod_inv_distrib]`. Clear the denominators using the available nonvanishing facts.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem relIndex_inf_map_conj_diagPow (ν : Fin n → ℤ) :
     (((U ⊓ integralGL F n).map (MulAut.conj (diagPow F n ν)).toMonoidHom).relIndex
@@ -740,7 +728,7 @@ theorem relIndex_inf_map_conj_diagPow (ν : Fin n → ℤ) :
 
 omit hT hTt hU hUc in
 /- English proof (translation)
-Break down `le_or_gt 0 a with ha | ha` into its components or cases. Rewrite using `[Int.toNat_of_nonpos (by omega : -a ≤ 0), pow_zero, div_one, ← zpow_natCast, Int.toNat_of_nonneg ha]`. Rewrite using `[Int.toNat_of_nonpos ha.le, pow_zero, one_div, ← zpow_natCast, Int.toNat_of_nonneg (by omega : 0 ≤ -a), _root_.zpow_neg, inv_inv]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_toNat_div_pow_toNat (x : ℝ) (a : ℤ) :
     x ^ a.toNat / x ^ (-a).toNat = x ^ a := by
@@ -751,13 +739,13 @@ theorem pow_toNat_div_pow_toNat (x : ℝ) (a : ℤ) :
       Int.toNat_of_nonneg (by omega : 0 ≤ -a), _root_.zpow_neg, inv_inv]
 
 /- English proof (translation)
-Use `set U₀ := U ⊓ integralGL F n`. Establish `hinj : Function.Injective (MulAut.conj (diagPow F n ν)).toMonoidHom` using `(MulAut.conj (diagPow F n ν)).injective`. Establish `hback : (U₀.map (MulAut.conj (diagPow F n ν)⁻¹).toMonoidHom).map (MulAut.conj (diagPow F n ν)).toMonoidHom = U₀`. Rewrite using `[Subgroup.map_map]`. Establish `: (MulAut.conj (diagPow F n ν)).toMonoidHom.comp (MulAut.conj (diagPow F n ν)⁻¹).toMonoidHom = MonoidHom.id (GL (Fin n) F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Use `show diagPow F n ν * ((diagPow F n ν)⁻¹ * x * (diagPow F n ν)⁻¹⁻¹) * (diagPow F n ν)⁻¹ = x`. Use `group`. Rewrite using `[this, Subgroup.map_id]`. Establish `h1 : U₀.relIndex (U₀.map (MulAut.conj (diagPow F n ν)⁻¹).toMonoidHom) = (U₀.map (MulAut.conj (diagPow F n ν)).toMonoidHom).relIndex U₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Subgroup.relIndex_map_map_of_injective _ _ hinj, hback]`. Establish `h2 : U₀.map (MulAut.conj (diagPow F n ν)⁻¹).toMonoidHom = U₀.map (MulAut.conj (diagPow F n (-ν))).toMonoidHom`. Rewrite using `[diagPow_neg]`. Unfold `relVol`. Rewrite using `[h1, h2, relIndex_inf_map_conj_diagPow hT hTt hU hUc ν, relIndex_inf_map_conj_diagPow hT hTt hU hUc (-ν), ← Finset.prod_div_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.neg_apply]`. Rewrite using `[show -ν p.1.1 - -ν p.1.2 = -(ν p.1.1 - ν p.1.2) by ring, pow_toNat_div_pow_toNat, _root_.inv_zpow', neg_sub]`.
+A detailed English derivation is pending.
 -/
 theorem relVol_map_conj_diagPow (ν : Fin n → ℤ) :
     relVol (U ⊓ integralGL F n)
@@ -796,13 +784,11 @@ section Cell
 variable {β γ : Fin n → ℕ} {w : Equiv.Perm (Fin n)}
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[mem_unipotentRadical]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, h1⟩ i j hij`. Break down `lt_trichotomy (γ i) (γ j) with h | h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h hij`. Conclude with `h1 i j h`. Rewrite using `[hP h, one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨fun i j hij => ?_, fun i j hij => h i j (by omega)⟩` and prove the remaining obligations. Use `show (g : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[h i j (by omega), one_apply_ne]`. Introduce and unpack `rfl`.
-
-Conclude with `lt_irrefl _ hij`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isPatternGroup_unipotentRadical :
     IsPatternGroup (F := F) (T := fun i j => γ i < γ j) (unipotentRadical F n γ) := by
@@ -824,13 +810,11 @@ theorem isPatternGroup_unipotentRadical :
     exact lt_irrefl _ hij
 
 /- English proof (translation)
-Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, hP⟩ i j hij`. Distinguish the cases in `h : γ i < γ j`. Establish `hβ : β (w j) < β (w i)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hβ`. Conclude with `hij ⟨h, hβ⟩`. Rewrite using `[hP hβ, one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hβ`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isPatternGroup_unipotentRadical g).1 hN i j h`. Introduce `h`. Use `⟨(isPatternGroup_unipotentRadical g).2 fun i j hij => h i j fun hT => hij hT.1, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show (g : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[h i j fun hT => hT.2 hij, one_apply_ne]`.
-
-Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isPatternGroup_cellUnipotent :
     IsPatternGroup (F := F) (T := fun i j => γ i < γ j ∧ ¬ β (w j) < β (w i))
@@ -855,9 +839,9 @@ theorem isPatternGroup_cellUnipotent :
     exact lt_irrefl _ hij
 
 /- English proof (translation)
-Rewrite using `[unipotentCompactG_eq]`. Establish `h1 : rankTorus F n γ 0 = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[rankTorus, coe_torusPow, Units.val_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unipotentCompactG_zero :
     unipotentCompactG (F := F) γ 0 = unipotentRadical F n γ ⊓ integralGL F n := by
@@ -870,7 +854,7 @@ theorem unipotentCompactG_zero :
   rfl
 
 /- English proof (translation)
-Rewrite using `[unipotentCompactG_zero]`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf]`. Conclude with `⟨fun h => ⟨h.2, h.1.2⟩, fun h => ⟨⟨cellUnipotent_le_unipotentRadical h.1, h.2⟩, h.1⟩⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem unipotentCompactG_zero_inf_cellUnipotent :
     unipotentCompactG (F := F) γ 0 ⊓ cellUnipotent F β γ w = cellUnipotent F β γ w ⊓ integralGL F n := by
@@ -880,7 +864,7 @@ theorem unipotentCompactG_zero_inf_cellUnipotent :
   exact ⟨fun h => ⟨h.2, h.1.2⟩, fun h => ⟨⟨cellUnipotent_le_unipotentRadical h.1, h.2⟩, h.1⟩⟩
 
 /- English proof (translation)
-Use `⟨diagPow_mem_levi ν, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show (diagPow F n ν : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[coe_diagPow, diagonal_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem diagPow_mem_cellLeviParabolic (ν : Fin n → ℤ) :
     diagPow F n ν ∈ cellLeviParabolic F β γ w := by
@@ -893,9 +877,9 @@ theorem diagPow_mem_cellLeviParabolic (ν : Fin n → ℤ) :
 variable (β γ w) in
 
 /- English proof (translation)
-Establish `hkM` using `cellLeviParabolic_le_levi hk`. Establish `hmap : (unipotentCompactG (F` using `F) γ 0).map (MulAut.conj k⁻¹).toMonoidHom = unipotentCompactG γ 0 := by`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `conj_mem_unipotentCompactG ((levi F n γ).inv_mem hkM) ((integralGL F n).inv_mem hk') hu`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Use `⟨k * u * k⁻¹, conj_mem_unipotentCompactG hkM hk' hu, ?_⟩` and prove the remaining obligations. Use `show k⁻¹ * (k * u * k⁻¹) * k⁻¹⁻¹ = u`. Use `group`. Rewrite using `[cellChar, hmap, div_self (cellNorm_pos (isCellCompact_unipotentCompactG 0)).ne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellChar_eq_one_of_mem_integralGL {k : GL (Fin n) F}
     (hk : k ∈ cellLeviParabolic F β γ w) (hk' : k ∈ integralGL F n) :
@@ -913,7 +897,7 @@ theorem cellChar_eq_one_of_mem_integralGL {k : GL (Fin n) F}
   rw [cellChar, hmap, div_self (cellNorm_pos (isCellCompact_unipotentCompactG 0)).ne']
 
 /- English proof (translation)
-The claim follows from `(Finset.prod_subtype (Finset.univ.filter fun p : Fin n × Fin n => P p.1 p.2) (fun p => by simp) f).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_patIdx {P : Fin n → Fin n → Prop} [DecidableRel P] (f : Fin n × Fin n → ℝ) :
     ∏ p : PatIdx P, f p.1 = ∏ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => P p.1 p.2), f p :=
@@ -923,15 +907,15 @@ theorem prod_patIdx {P : Fin n → Fin n → Prop} [DecidableRel P] (f : Fin n �
 variable (β γ w) in
 
 /- English proof (translation)
-Use `set m : ℝ := (Measures.modulus (GLnLocal.uniformizer F : F) : ℝ)`. Establish `hm : m ≠ 0` using `NNReal.coe_ne_zero.2 (Measures.modulus_ne_zero (Cartan.uniformizer_ne_zero F))`. Establish `ht` using `diagPow_mem_cellLeviParabolic (F := F) (β := β) (γ := γ) (w := w) ν`. Establish `htinv` using `(cellLeviParabolic F β γ w).inv_mem ht`. Establish `hinj : Function.Injective (MulAut.conj (diagPow F n ν)⁻¹).toMonoidHom` using `(MulAut.conj _).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `relVol_map_conj_diagPow (F := F) (T := fun i j => γ i < γ j) (γ := γ) (fun i j h => h) (fun i j k h h' => h.trans h') isPatternGroup_unipotentRadical isClosed_unipotentRadical ν`. Establish `hA` using `relVol_map_conj_diagPow (F := F) (T := fun i j => γ i < γ j ∧ ¬ β (w j) < β (w i)) (γ := γ) (fun i j h => h.1) (fun i j k h h' => ⟨h.1.trans h'.1, fun hc => by`. Use `not_lt.1 h.2` as an intermediate fact. Use `not_lt.1 h'.2` as an intermediate fact. Use the proof step `omega⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `isPatternGroup_cellUnipotent isClosed_cellUnipotent ν`. Rewrite `hN` using `[← unipotentCompactG_zero]`. Rewrite `hA` using `[← unipotentCompactG_zero_inf_cellUnipotent (β := β) (w := w)]`. Establish `hmapA : ((unipotentCompactG (F` using `F) γ 0).map (MulAut.conj (diagPow F n ν)⁻¹).toMonoidHom) ⊓ cellUnipotent F β γ w = (unipotentCompactG (F := F) γ 0 ⊓ cellUnipotent F β γ w).map (MulAut.conj (diagPow F n ν)⁻¹).toMonoidHom := by`. Rewrite using `[Subgroup.map_inf_eq _ _ _ hinj, map_conj_cellUnipotent htinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : cellNorm F β γ w (unipotentCompactG γ 0) = 1`. Rewrite using `[cellNorm, relVol_self, relVol_self, div_one]`. Rewrite using `[cellChar, h0, cellNorm, hmapA, hN, hA]`. Rewrite using `[prod_patIdx (P := fun i j => γ i < γ j) (fun p => m ^ (ν p.2 - ν p.1)), prod_patIdx (P := fun i j => γ i < γ j ∧ ¬ β (w j) < β (w i)) (fun p => m ^ (ν p.2 - ν p.1))]`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not (Finset.univ.filter fun p : Fin n × Fin n => γ p.1 < γ p.2) (fun p => ¬ β (w p.2) < β (w p.1)), Finset.filter_filter, Finset.filter_filter]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [not_not]`. Establish `hpos : ∀ s : Finset (Fin n × Fin n), ∏ p ∈ s, m ^ (ν p.2 - ν p.1) ≠ 0` using `fun s => Finset.prod_ne_zero_iff.2 fun p _ => zpow_ne_zero _ hm`. Rewrite using `[mul_div_cancel_left₀ _ (hpos _), one_div, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← _root_.zpow_neg, neg_sub]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellChar_diagPow_eq_prod_zpow (ν : Fin n → ℤ) :
     cellChar F β γ w (diagPow F n ν) =
@@ -979,7 +963,7 @@ theorem cellChar_diagPow_eq_prod_zpow (ν : Fin n → ℤ) :
 variable (β γ w) in
 
 /- English proof (translation)
-Rewrite using `[cellChar_diagPow_eq_prod_zpow]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[coe_diagPow, diagonal_apply_eq, diagonal_apply_eq, map_zpow₀, map_zpow₀, NNReal.coe_div, NNReal.coe_zpow, NNReal.coe_zpow, zpow_sub₀]`. Conclude with `Measures.modulus_ne_zero (Cartan.uniformizer_ne_zero F)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellChar_diagPow (ν : Fin n → ℤ) :
     cellChar F β γ w (diagPow F n ν) =

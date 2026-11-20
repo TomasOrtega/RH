@@ -23,9 +23,9 @@ def Good (k r n : ℕ) (w : List (Bool × B.Mat k r)) : Prop :=
     u.length + v.length ≤ n ∧ w = wL u ++ wR v
 
 /- English proof (translation)
-Take `⟨u, v, hu, hv, hl, rfl⟩` from `h`. Take `⟨r₁, r₂, rfl, h1, h2⟩` from `List.sublist_append_iff.1 hs`. Take `⟨u', hu', rfl⟩` from `List.sublist_map_iff.1 (show r₁.Sublist (u.map (Prod.mk true)) from h1)`. Take `⟨v', hv', rfl⟩` from `List.sublist_map_iff.1 (show r₂.Sublist (v.map (Prod.mk false)) from h2)`. Use `⟨u', v', fun X hX => hu X (hu'.subset hX), fun X hX => hv X (hv'.subset hX), ?_, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu'.length_le` as an intermediate fact. Use `hv'.length_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 lemma Good.sub {n : ℕ} {w w' : List (Bool × B.Mat k r)} (h : Good k r n w) (hs : w'.Sublist w) :
     Good k r n w' := by
@@ -41,7 +41,7 @@ lemma Good.sub {n : ℕ} {w w' : List (Bool × B.Mat k r)} (h : Good k r n w) (h
 def cw (cost : B.Mat k r → ℕ) (w : List (Bool × B.Mat k r)) : ℕ := (w.map (fun x => cost x.2)).sum
 
 /- English proof (translation)
-Unfold `cw`. Rewrite using `[← List.sum_append, ← List.map_append]`. Conclude with `(hp.map _).sum_eq`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma cw_perm (cost : B.Mat k r → ℕ) {w₁ w₂ w : List (Bool × B.Mat k r)} (hp : (w₁ ++ w₂).Perm w) :
     cw cost w₁ + cw cost w₂ = cw cost w := by
@@ -50,21 +50,21 @@ lemma cw_perm (cost : B.Mat k r → ℕ) {w₁ w₂ w : List (Bool × B.Mat k r)
   exact (hp.map _).sum_eq
 
 /- English proof (translation)
-Simplify using `[cw, List.map_append, List.sum_append]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cw_snoc (cost : B.Mat k r → ℕ) (w : List (Bool × B.Mat k r)) (x : Bool × B.Mat k r) :
     cw cost (w ++ [x]) = cw cost w + cost x.2 := by
   simp [cw, List.map_append, List.sum_append]
 
 /- English proof (translation)
-Simplify using `[cw, wL, wR, List.map_append, List.map_map, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cw_LR (cost : B.Mat k r → ℕ) (u v : List (B.Mat k r)) :
     cw cost (wL u ++ wR v) = ((u ++ v).map cost).sum := by
   simp [cw, wL, wR, List.map_append, List.map_map, Function.comp_def]
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold gN; positivity)`. Consider the case `(simp only [gN]; positivity)`. Consider the case `(unfold B.gN; positivity)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma gN_nn (g : B.Mat k r) : 0 ≤ gN g := by
   first
@@ -73,25 +73,25 @@ lemma gN_nn (g : B.Mat k r) : 0 ≤ gN g := by
   | (unfold B.gN; positivity)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `χ hχ hχc`. Take `⟨c, hc⟩` from `hχ.continuous.bounded_above_of_compact_support hχc`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨max c 0, le_max_right _ _, fun w _ hw g _ _ => ?_⟩` and prove the remaining obligations. Establish `: w = []` using `List.eq_nil_of_length_eq_zero (Nat.le_zero.1 hw)`. Substitute `this` using the available equality. Simplify using `only [Dw, List.foldr_nil, cw, List.map_nil, List.sum_nil, pow_zero, mul_one]`. Conclude with `(hc _).trans (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m ih`. Introduce `χ hχ hχc`. Take `⟨K₀, hK₀, h₀⟩` from `ih χ hχ hχc`. Take `⟨K₁, hK₁, h₁⟩` from `ih _ (sm_fd hχ 1) (hχc.fderiv_apply (𝕜 := ℝ) 1)`. Take `⟨K₂, hK₂, h₂⟩` from `ih _ (sm_fd hχ Complex.I) (hχc.fderiv_apply (𝕜 := ℝ) Complex.I)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max K₀ (2 ^ m * ((K₁ + K₂) * C₀)), le_max_of_le_left hK₀, fun w hw hlen g hg hgK => ?_⟩` and prove the remaining obligations. Establish `hgN` using `gN_nn g`. Break down `Nat.lt_or_ge w.length (m + 1) with hlt | hge` into its components or cases. Conclude with `(h₀ w hw (by omega) g hg hgK).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg hgN _))`. Choose the witnesses or unpack the hypotheses as in `⟨w', x, rfl⟩ : ∃ w' x, w = w' ++ [x] := by`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Break down `List.eq_nil_or_concat w with h0 | ⟨w', x, hx⟩` into its components or cases. Substitute `h0` using the available equality. Simplify using `at hge`. Conclude with `⟨w', x, by rw [hx, List.concat_eq_append]⟩`. Establish `hlen' : w'.length = m` using `by simp at hlen hge; omega`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Dw_snoc, Dx_comp x hχ hψ]`. Establish `hA : ContDiff ℝ ∞ (fun g => fderiv ℝ χ (ψ g) 1)` using `(sm_fd hχ 1).comp hψ`. Establish `hB : ContDiff ℝ ∞ (fun g => fderiv ℝ χ (ψ g) Complex.I)` using `(sm_fd hχ Complex.I).comp hψ`. Establish `hR : ContDiff ℝ ∞ (fun g => reC (Dx x ψ g))` using `reC.contDiff.comp (sm_Dx x hψ)`. Establish `hI : ContDiff ℝ ∞ (fun g => imC (Dx x ψ g))` using `imC.contDiff.comp (sm_Dx x hψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Dw_add' w' (hA.mul hR) (hB.mul hI)]`. Establish `key : ∀ (L : ℂ →L[ℝ] ℂ), (∀ z, ‖L z‖ ≤ ‖z‖) → ∀ (v : ℂ) (Kv : ℝ), 0 ≤ Kv → (∀ w₁, Good k r n w₁ → w₁.length ≤ m → ‖Dw w₁ (fun g => fderiv ℝ χ (ψ g) v) g‖ ≤ Kv * gN g ^ cw cost w₁) → ‖Dw w' (fun g => fderiv ℝ χ (ψ g) v * L (Dx x ψ g)) g‖ ≤ 2 ^ m * (Kv * C₀) * gN g ^ cw cost (w' ++ …`. Introduce `L hL v Kv hKv hv`. Establish `hM` using `leibC g w' (fun g => fderiv ℝ χ (ψ g) v) (fun g => L (Dx x ψ g)) ((sm_fd hχ v).comp hψ) (L.contDiff.comp (sm_Dx x hψ)) (Kv * C₀ * gN g ^ cw cost (w' ++ [x])) (by`. Introduce `w₁ w₂ s1 s2 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG1 : Good k r n w₁` using `hw.sub (s1.trans (List.sublist_append_left _ _))`. Establish `hG2 : Good k r n (w₂ ++ [x])` using `hw.sub (s2.append (List.Sublist.refl _))`. Establish `hl1 : w₁.length ≤ m` using `by have := s1.length_le; omega`. Establish `e1` using `hv w₁ hG1 hl1`. Establish `e2` using `H (w₂ ++ [x]) hG2 (by simp) g hg hgK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[Dw_snoc]`. Rewrite using `[Dw_clm w₂ L (sm_Dx x hψ)]`. Establish `hcs : cw cost w₁ + cw cost (w₂ ++ [x]) = cw cost (w' ++ [x])` using `cw_perm cost (by rw [← List.append_assoc]; exact hp.append_right [x])`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1` using `key reC norm_reC 1 K₁ hK₁ (fun w₁ hG hl => h₁ w₁ hG hl g hg hgK)`. Establish `t2` using `key imC norm_imC Complex.I K₂ hK₂ (fun w₁ hG hl => h₂ w₁ hG hl g hg hgK)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem faa (n : ℕ) (cost : B.Mat k r → ℕ) (ψ : B.Mat k r → ℂ) (hψ : ContDiff ℝ ∞ ψ) (K : Set ℂ)
     (C₀ : ℝ) (hC₀ : 0 ≤ C₀)
@@ -164,21 +164,19 @@ theorem faa (n : ℕ) (cost : B.Mat k r → ℕ) (ψ : B.Mat k r → ℂ) (hψ :
 end LatticeLocalGlobalTheory
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `χ hχ w hw g hg`. Establish `: w = []` using `List.eq_nil_of_length_eq_zero (Nat.le_zero.1 hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Use `show χ (ψ g) = 0`. Use `first`. Consider the case `exact image_eq_zero_of_notMem_tsupport hg`. Consider the case `exact image_eq_zero_of_nmem_tsupport hg`.
+Substitute using the available equality. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ m ih`. Introduce `χ hχ w hw g hg`. Break down `Nat.lt_or_ge w.length (m + 1) with hlt | hge` into its components or cases. Conclude with `ih χ hχ w (by omega) g hg`. Choose the witnesses or unpack the hypotheses as in `⟨w', x, rfl⟩ : ∃ w' x, w = w' ++ [x] := by`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Break down `List.eq_nil_or_concat w with h0 | ⟨w', x, hx⟩` into its components or cases. Substitute `h0` using the available equality. Simplify using `at hge`. Conclude with `⟨w', x, by rw [hx, List.concat_eq_append]⟩`. Establish `hlen' : w'.length ≤ m` using `by simp at hw; omega`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[CCA.Dw_snoc, CCA.Dx_comp x hχ hψ]`. Establish `hA : ContDiff ℝ ∞ (fun g => fderiv ℝ χ (ψ g) 1)` using `(CCA.sm_fd hχ 1).comp hψ`. Establish `hB : ContDiff ℝ ∞ (fun g => fderiv ℝ χ (ψ g) Complex.I)` using `(CCA.sm_fd hχ Complex.I).comp hψ`. Establish `hR : ContDiff ℝ ∞ (fun g => CCA.reC (P.BetaSesquilinearity.Dx x ψ g))` using `CCA.reC.contDiff.comp (CCA.sm_Dx x hψ)`. Establish `hI : ContDiff ℝ ∞ (fun g => CCA.imC (P.BetaSesquilinearity.Dx x ψ g))` using `CCA.imC.contDiff.comp (CCA.sm_Dx x hψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[CCA.Dw_add' w' (hA.mul hR) (hB.mul hI)]`. Establish `key : ∀ (L : ℂ →L[ℝ] ℂ) (v : ℂ), P.BetaSesquilinearity.Dw w' (fun g => fderiv ℝ χ (ψ g) v * L (P.BetaSesquilinearity.Dx x ψ g)) g = 0`. Introduce `L v`. Establish `hM` using `CCA.leibC g w' (fun g => fderiv ℝ χ (ψ g) v) (fun g => L (P.BetaSesquilinearity.Dx x ψ g)) ((CCA.sm_fd hχ v).comp hψ) (L.contDiff.comp (CCA.sm_Dx x hψ)) 0 (by`. Introduce `w₁ w₂ s1 _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg' : ψ g ∉ tsupport (fun z => fderiv ℝ χ z v)` using `fun h => hg (tsupport_fderiv_apply_subset (𝕜 := ℝ) v h)`. Rewrite using `[ih _ (CCA.sm_fd hχ v) w₁ (by have := s1.length_le; omega) g hg']`. Use the proof step `simp)`. Simplify using `using hM`. Use `beta_reduce`.
-
-Rewrite using `[key CCA.reC 1, key CCA.imC Complex.I, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Dw_comp_eq_zero_of_not_mem_tsupport {k r : ℕ} (ψ : B.Mat k r → ℂ) (hψ : ContDiff ℝ ∞ ψ) :
     ∀ m : ℕ, ∀ χ : ℂ → ℂ, ContDiff ℝ ∞ χ → ∀ w : List (Bool × B.Mat k r), w.length ≤ m →
@@ -223,13 +221,11 @@ private theorem Dw_comp_eq_zero_of_not_mem_tsupport {k r : ℕ} (ψ : B.Mat k r 
       rw [key CCA.reC 1, key CCA.imC Complex.I, add_zero]
 
 /- English proof (translation)
-Introduce `k r ψ χ cost n C₀ hψ hχ hχc H`. Take `⟨C, hC0, hC⟩` from `LatticeLocalGlobalTheory.faa n cost ψ hψ (tsupport χ) (max C₀ 0) (le_max_right _ _) (by`. Introduce and unpack `w ⟨u, v, hu, hv, hl, rfl⟩ hne g hg hgK`. Establish `hne' : u ++ v ≠ []`. Introduce and unpack `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `h0` using `[List.append_eq_nil_iff]`. Take `⟨rfl, rfl⟩` from `h0`. Conclude with `hne (by simp [P.BetaSesquilinearity.wL, P.BetaSesquilinearity.wR])`. Establish `key` using `H u v hu hv hl hne' g hg hgK`. Rewrite `key` using `[P.BetaSesquilinearity.dLR_eq, Real.rpow_natCast, ← LatticeLocalGlobalTheory.cw_LR]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg (LatticeLocalGlobalTheory.gN_nn g) _)))`. Use `n χ hχ hχc`. Use `⟨C, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[P.BetaSesquilinearity.dLR_eq, zero_add, Real.rpow_natCast, ← LatticeLocalGlobalTheory.cw_LR]`. Establish `hlen : (P.BetaSesquilinearity.wL u ++ P.BetaSesquilinearity.wR v).length ≤ n` using `by simpa [P.BetaSesquilinearity.wL, P.BetaSesquilinearity.wR] using hl`.
-
-Distinguish the cases in `hgK : ψ g ∈ tsupport χ`. Conclude with `hC _ ⟨u, v, hu, hv, hl, rfl⟩ hlen g hg hgK`. Rewrite using `[Dw_comp_eq_zero_of_not_mem_tsupport ψ hψ n χ hχ _ hlen g hgK, norm_zero]`. Conclude with `mul_nonneg hC0 (pow_nonneg (LatticeLocalGlobalTheory.gN_nn g) _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compact_curve_estimate : CompC := by
   intro k r ψ χ cost n C₀ hψ hχ hχc H

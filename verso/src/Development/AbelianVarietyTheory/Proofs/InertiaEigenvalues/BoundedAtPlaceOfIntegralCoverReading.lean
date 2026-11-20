@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.CoverLocInt
 
 /- English proof (translation)
-Unfold `Cover.rd`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_smul, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rd_sum {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (C : Cover T j σ)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) {m : ℕ} (s : Fin m → C.d.c₂.F) (g : Fin m → Rul C.d.Xo₂ C.d.c₂) :
@@ -33,7 +33,7 @@ theorem rd_sum {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (C : Co
   rw [map_smulₛₗ, map_smul, smul_comm]
 
 /- English proof (translation)
-Unfold `Cover.rd`. Rewrite using `[map_sub, map_sub, smul_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rd_sub {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (C : Cover T j σ)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (g h : Rul C.d.Xo₂ C.d.c₂) : C.rd a (g - h) = C.rd a g - C.rd a h := by
@@ -44,25 +44,23 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T hL j hj σ hσ C hU a n hdom hPin la la' hval m x f hf hmem`. Take `⟨g₂, ⟨hcs, hint⟩, hrd⟩` from `hmem`. Use `choose f₂ hf₂ using fun b => GlobalTheory.T.exists_pullback_section_to_levelCover D T hL j hj σ hσ C hU.1 a n (f b) (hf b)`. Establish `hpin : ∀ b, C.rd a (f₂ b) = T.phiJ j σ a (f b)` using `fun b => hPin.2 (f b) (hf b) (f₂ b) (hf₂ b).1 (hf₂ b).2`. Establish `hG : g₂ = ∑ b, C.d.eF (x b) • f₂ b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `h0 : g₂ - ∑ b, C.d.eF (x b) • f₂ b ≠ 0` using `sub_ne_zero.2 hne`. Establish `hsec : g₂ - ∑ b, C.d.eF (x b) • f₂ b ∈ sec C.d.Xo₂ C.d.c₂ a n` using `sub_mem hcs.1 (sum_mem fun b _ => Submodule.smul_mem _ _ (hf₂ b).1)`. Establish `hli : LinearIndependent C.d.c₂.F ![g₂ - ∑ b, C.d.eF (x b) • f₂ b]` using `linearIndependent_unique_iff.2 h0`. Establish `hli2` using `GlobalTheory.T.coverSections_linearIndependent_adelicReadings D T hL j hj σ hσ C hU hPin.1 a n hdom 1 ![g₂ - ∑ b, C.d.eF (x b) • f₂ b] (fun i => by fin_cases i; exact hsec) hli`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : C.rd a (g₂ - ∑ b, C.d.eF (x b) • f₂ b) = 0`. Rewrite using `[rd_sub, rd_sum, hrd]`. Simplify using `only [hpin, sub_self]`. Conclude with `hli2.ne_zero 0 (by simpa using hz)`. Introduce `Tv io e ho y hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T', iT, e', y', io₂, y₂, hext, hfin', hio₂, hover⟩` from `GlobalTheory.CoverPoint.exists_ext_lift_to_cover _ _ _ _ (T.Q.Xo j) C.c' 0 C.d hU.1 Tv io y hy`. Establish `ho₂ : OverLa la T'.V io₂ (e' * e)`. Use `⟨Nat.mul_pos hext.1 ho.1, fun z => ?_⟩` and prove the remaining obligations. Establish `h1` using `hio₂ (C.d.eF.symm z)`. Rewrite `h1` using `[C.d.eF.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : vLa la z = vLa la' (C.d.eF.symm z)`. Simplify using `only [vLa, hval, C.d.eF.apply_symm_apply]`. Rewrite using `[h1, hext.2.1, ho.2, h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB` using `(GlobalTheory.T.integral_values_algebraic_points_iff_value_nonneg _ _ _ _ C.d.Xo₂ C.d.c₂ la g₂).2 (hint la (Set.mem_singleton la)) T' io₂ (e' * e) ho₂ y₂ hfin'`. Rewrite `hB` using `[map_one, one_mul]`. Establish `laws` using `GlobalTheory.firstFiveLaws.1`. Use `letI a1 : Algebra C.c'.F T'.Fr := (iT.comp io).toAlgebra`. Use `letI a2 : Algebra C.d.c₂.F T'.Fr := io₂.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI a0 : Algebra T.Q.c.F T'.Fr := ((iT.comp io).comp (incF T.Q.c C.c' C.hle)).toAlgebra`. Establish `hAO : AlgOver T.Q.c C.c' C.hle T'.Fr` using `fun _ => rfl`. Establish `hcomp : ∀ z : C.c'.F, algebraMap C.d.c₂.F T'.Fr (C.d.eF z) = algebraMap C.c'.F T'.Fr z` using `hio₂`. Establish `e1 : ∀ b, evI y₂ (f₂ b) = evR (T.Q.Xo j) T.Q.c (f b) (y'.1.res C.hle hAO)` using `fun b => (hf₂ b).2 T'.Fr hAO hcomp y₂.1 y'.1 hover`. Establish `e2 : ∀ b, evI y' (GlobalTheory.FieldBC.rulBC C.hle (f b)) = evR (T.Q.Xo j) T.Q.c (f b) (y'.1.res C.hle hAO)` using `fun b => GlobalTheory.FieldBCModel.evR_rulBC C.hle (hf b).1 hAO y'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : evI y₂ g₂ = evI y' (∑ b, x b • GlobalTheory.FieldBC.rulBC C.hle (f b))`. Rewrite using `[hG, GlobalTheory.GalSup.evI_sum, GlobalTheory.GalSup.evI_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[e1, e2, hio₂]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgs : (∑ b, x b • GlobalTheory.FieldBC.rulBC C.hle (f b)) ∈ sec (T.Q.Xo j) C.c' a n` using `sum_mem fun b _ => Submodule.smul_mem _ _ (GlobalTheory.FieldBCModel.rulBC_mem_sec C.hle (hf b))`. Take `⟨φ, hφ, hm⟩` from `hext.2.2`. Use `letI a3 : Algebra C.c'.F Tv.Fr := io.toAlgebra`. Establish `e4 : evI y' (∑ b, x b • GlobalTheory.FieldBC.rulBC C.hle (f b)) = iT (evI y (∑ b, x b • GlobalTheory.FieldBC.rulBC C.hle (f b)))`. Use `GlobalTheory.PlaceInt.evR_of_frMap_fromTest (GlobalTheory.Frames.algebraic_laws laws.secBaseChange _ _ _ _ (T.Q.Xo j) C.c').2.2.1 _ hgs.1 φ y.1 y.2.1 y'.1 hm` as an intermediate fact.
-
-Conclude with `this.trans (congrArg (fun r : Tv.Fr →+* T'.Fr => r (evR (T.Q.Xo j) C.c' (∑ b, x b • GlobalTheory.FieldBC.rulBC C.hle (f b)) y.1)) hφ)`. Rewrite using `[map_one, one_mul, ← GlobalTheory.CoverBound.inV_map_iff iT hext.1 hext.2.1, ← e4, ← e3]`. Conclude with `hB`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bddAll_of_mem_intForms : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → C.IsPinned a n → ∀ (la : HeightOneSpectrum (𝓞 C.d.c₂.F)) (la' : HeightOneSpectrum (𝓞 C.c'.F)), (∀ y : C.c'.F, la'.valuation C.c'.F y = la.valuation C.d.c₂.F (C.d.eF y)) → ∀ (m : ℕ) (x : Fin m → C.c'.F) (f : Fin m → T.R j), (∀ b, f b ∈ sec (T.Q.Xo j) T.Q.c a n) → (∑ b, C.σ₂ (C.d.eF (x b)) • T.phiJ j σ a (f b)) ∈ C.intForms a n {la} → GlobalTheory.GoodPts.BddAll (T.Q.Xo j) C.c' la' 1 (∑ b, x b • GlobalTheory.FieldBC.rulBC C.hle (f b)) := by
   intro D T hL j hj σ hσ C hU a n hdom hPin la la' hval m x f hf hmem

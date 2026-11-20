@@ -13,7 +13,7 @@ section
 variable {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Module Ω V] {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `k' k`. Conclude with `(Fintype.linearIndependent_iffₛ.1 h₀) (fun a => T a k) (fun a => T' a k) (h k) k'`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mat_unique {b₀ : Fin r → V} (h₀ : LinearIndependent Ω b₀) {T T' : Matrix (Fin r) (Fin r) Ω}
     (h : ∀ k, ∑ k', T k' k • b₀ k' = ∑ k', T' k' k • b₀ k') : T = T' := by
@@ -21,7 +21,7 @@ theorem mat_unique {b₀ : Fin r → V} (h₀ : LinearIndependent Ω b₀) {T T'
   exact (Fintype.linearIndependent_iffₛ.1 h₀) (fun a => T a k) (fun a => T' a k) (h k) k'
 
 /- English proof (translation)
-Rewrite using `[h' k]`. Simplify using `only [h, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_comp {b₀ b b' : Fin r → V} {T A : Matrix (Fin r) (Fin r) Ω}
     (h : ∀ k, b k = ∑ k', T k' k • b₀ k') (h' : ∀ k, b' k = ∑ k', A k' k • b k') (k : Fin r) :
@@ -32,9 +32,7 @@ theorem mat_comp {b₀ b b' : Fin r → V} {T A : Matrix (Fin r) (Fin r) Ω}
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]
 
 /- English proof (translation)
-Use `choose c hc using fun k => (Submodule.mem_span_range_iff_exists_fun R).1 (h k)`. Use `⟨R.subtype.mapMatrix (Matrix.of fun k' k => c k k'), fun k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc k]`. Both sides reduce to the same expression. Rewrite using `[← RingHom.map_det]`.
-
-Conclude with `SetLike.coe_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mat (R : Subring Ω) {b b' : Fin r → V} (h : ∀ k, b' k ∈ Submodule.span R (Set.range b)) :
     ∃ A : Matrix (Fin r) (Fin r) Ω, (∀ k, b' k = ∑ k', A k' k • b k') ∧ A.det ∈ R := by
@@ -44,9 +42,9 @@ theorem exists_mat (R : Subring Ω) {b b' : Fin r → V} (h : ∀ k, b' k ∈ Su
   · rw [← RingHom.map_det]; exact SetLike.coe_mem _
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨v, hv, hT⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Use `hv (funext (Fintype.linearIndependent_iff.1 hb v ?_))` and prove the remaining obligations. Simplify using `only [h, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congrFun hT k'` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`. Rewrite using `[show ∑ i, v i * T k' i = 0 from by rw [← this]; exact Finset.sum_congr rfl fun _ _ => mul_comm _ _, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem det_ne_zero {b₀ b : Fin r → V} {T : Matrix (Fin r) (Fin r) Ω} (hb : LinearIndependent Ω b)
     (h : ∀ k, b k = ∑ k', T k' k • b₀ k') : T.det ≠ 0 := by
@@ -68,11 +66,9 @@ end N1
 open N1
 
 /- English proof (translation)
-Introduce `X Ω _ ξ V _ _ L r b₀ b T p h₀ hb hT`. Use `⟨det_ne_zero hb.1 hT, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b', T', hb', hT', rfl⟩`. Take `⟨A, hA, hd⟩` from `exists_mat (regAt ξ p) (b := b) (b' := b') fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hb.2, hb'.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `e : T' = T * A` using `mat_unique h₀ fun k => by rw [← hT' k, ← mat_comp hT hA k]`. Rewrite using `[e, Matrix.det_mul, mul_comm]`. Conclude with `Submodule.mem_span_singleton.2 ⟨⟨A.det, hd⟩, rfl⟩`.
-
-Conclude with `Submodule.span_le.2 (Set.singleton_subset_iff.2 (SncPiece.det_mem_detLat hb hT))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem determinant_lattice_generator : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (V : Type) [AddCommGroup V] [Module Ω V] (L : Lat ξ V) (r : ℕ) (b₀ b : Fin r → V) (T : Matrix (Fin r) (Fin r) Ω) (p : Cpt ξ), LinearIndependent Ω b₀ → L.IsFrameAt b p → (∀ k, b k = ∑ k', T k' k • b₀ k') → (detLat L b₀).IsGenAt p T.det := by
   intro X Ω _ ξ V _ _ L r b₀ b T p h₀ hb hT

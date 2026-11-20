@@ -11,15 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.EtUniq
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[← hm]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, -, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `congrArg (fun f => f a) hO` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[this, sub_self]`. Conclude with `zero_mem _`. Consider the case `zero => simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `add_mem hx hy`. Consider the case `smul a x hx' hx`. Establish `hx'' : x ∈ maximalIdeal W` using `by rw [← hm]; exact hx'`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : θ₂ x ∈ maximalIdeal V` using `(mem_maximalIdeal _).2 fun h => (mem_maximalIdeal _).1 hx'' (isUnit_of_map_unit θ₂ x h)`. Simplify using `only [smul_eq_mul, map_mul]`. Establish `e : θ₁ a * θ₁ x - θ₂ a * θ₂ x = θ₁ a * (θ₁ x - θ₂ x) + (θ₁ a - θ₂ a) * θ₂ x` using `by ring`. Rewrite using `[e]`. Use `add_mem (Ideal.mul_mem_left _ _ hx) ?_` and prove the remaining obligations.
-
-Rewrite using `[show k + 2 = (k + 1) + 1 from rfl, pow_succ]`. Conclude with `Ideal.mul_mem_mul (hk a) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_pow_of_mem_maximalIdeal {O W V : Type} [CommRing O] [IsLocalRing O] [CommRing W]
     [IsLocalRing W] [CommRing V] [IsLocalRing V] (φ : O →+* W)
@@ -60,7 +58,7 @@ noncomputable abbrev grModule {W V : Type} [CommRing W] [IsLocalRing W] [CommRin
   Module.compHom _ (ResidueField.map θ)
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_top_iff, Ideal.smul_eq_mul, ← pow_succ']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gr_mk_eq_zero_iff (V : Type) [CommRing V] [IsLocalRing V] (k : ℕ)
     (v : ↥(maximalIdeal V ^ (k + 1))) :
@@ -68,7 +66,7 @@ theorem gr_mk_eq_zero_iff (V : Type) [CommRing V] [IsLocalRing V] (k : ℕ)
   rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_top_iff, Ideal.smul_eq_mul, ← pow_succ']
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← Submodule.Quotient.mk_sub, gr_mk_eq_zero_iff]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gr_mk_eq_mk (V : Type) [CommRing V] [IsLocalRing V] (k : ℕ)
     (u v : ↥(maximalIdeal V ^ (k + 1))) (h : (u : V) - v ∈ maximalIdeal V ^ (k + 2)) :
@@ -76,35 +74,31 @@ theorem gr_mk_eq_mk (V : Type) [CommRing V] [IsLocalRing V] (k : ℕ)
   rw [← sub_eq_zero, ← Submodule.Quotient.mk_sub, gr_mk_eq_zero_iff]; simpa using h
 
 /- English proof (translation)
-Establish `hW` using `sub_mem_pow_of_mem_maximalIdeal φ hm θ₁ θ₂ hO k hk`. Use `letI : Algebra O (ResidueField W) := ((residue W).comp φ).toAlgebra`. Use `haveI : Algebra.FormallyUnramified O (ResidueField W) := hu`. Use `letI : Module (ResidueField W) (Gr V k) := grModule θ₁ k`. Use `letI : Module O (Gr V k) := Module.compHom _ (algebraMap O (ResidueField W))`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower O (ResidueField W) (Gr V k) := ⟨fun a b x => by show ResidueField.map θ₁ (a • b) • x = ResidueField.map θ₁ (algebraMap O _ a) • (ResidueField.map θ₁ b • x)`. Rewrite using `[Algebra.smul_def, map_mul, mul_smul]⟩`. Set `δ₀ : W → Gr V k` to `fun w => Submodule.Quotient.mk ⟨θ₁ w - θ₂ w, hk w⟩`. Establish `hsm : ∀ (c : W) (v : ↥(maximalIdeal V ^ (k + 1))), residue W c • (Submodule.Quotient.mk v : Gr V k) = Submodule.Quotient.mk (θ₁ c • v)`. Introduce `c v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show ResidueField.map θ₁ (residue W c) • (Submodule.Quotient.mk v : Gr V k) = _`. Rewrite using `[ResidueField.map_residue]`. Both sides reduce to the same expression. Set `s` to `Function.surjInv (residue_surjective (R := W))`. Establish `hs : ∀ w, δ₀ (s (residue W w)) = δ₀ w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `w`. Use `gr_mk_eq_mk V k _ _ ?_` and prove the remaining obligations. Establish `hmem : s (residue W w) - w ∈ maximalIdeal W`. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `Function.surjInv_eq _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Use `hW _ hmem` as an intermediate fact. Simplify using `only [map_sub] at this ⊢`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Set `D : Derivation O (ResidueField W) (Gr V k)` to `{ toFun := fun x => δ₀ (s x) map_add' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y`. Take `⟨a, rfl⟩` from `residue_surjective x`. Take `⟨b, rfl⟩` from `residue_surjective y`. Rewrite using `[← map_add, hs, hs, hs, ← Submodule.Quotient.mk_add]`. Use `gr_mk_eq_mk V k _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.coe_add, map_add]`. Use `zero_mem (maximalIdeal V ^ (k + 2)) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := by`. Introduce `c x`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `residue_surjective x`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[Algebra.smul_def, show algebraMap O (ResidueField W) c = residue W (φ c) from rfl, ← map_mul, hs, hs]`. Use `show _ = residue W (φ c) • δ₀ a`. Rewrite using `[hsm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `gr_mk_eq_mk V k _ _ ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, smul_eq_mul, map_mul]`. Use `congrArg (fun f => f c) hO` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `zero_mem (maximalIdeal V ^ (k + 2)) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_one_eq_zero' := by show δ₀ (s 1) = 0`. Rewrite using `[← map_one (residue W), hs]`. Use `show (Submodule.Quotient.mk _ : Gr V k) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[gr_mk_eq_zero_iff]`. Simplify using the standard rewrite rules. Use the proof step `leibniz' := by`. Introduce `x y`. Take `⟨a, rfl⟩` from `residue_surjective x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `residue_surjective y`. Use `show δ₀ (s _) = residue W a • δ₀ (s _) + residue W b • δ₀ (s _)`. Rewrite using `[← map_mul, hs, hs, hs, hsm, hsm, ← Submodule.Quotient.mk_add]`. Use `gr_mk_eq_mk V k _ _ ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, smul_eq_mul, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : θ₁ a * θ₁ b - θ₂ a * θ₂ b - (θ₁ a * (θ₁ b - θ₂ b) + θ₁ b * (θ₁ a - θ₂ a)) = (θ₁ a - θ₂ a) * (θ₂ b - θ₁ b)` using `by ring`. Rewrite using `[e, show k + 2 = (k + 1) + 1 from rfl, pow_succ]`. Use `Ideal.mul_mem_mul (hk a) ?_` and prove the remaining obligations. Use `Ideal.pow_le_self (n := k + 1) (I := maximalIdeal V) (by omega) (hk b)` as an intermediate fact. Rewrite using `[← neg_sub]`.
-
-Conclude with `neg_mem this }`. Establish `hD : ∀ x, D x = 0`. Introduce `x`. Rewrite using `[← Derivation.liftKaehlerDifferential_comp_D D x, Subsingleton.elim (KaehlerDifferential.D O (ResidueField W) x) 0, map_zero]`. Introduce `w`.
-
-Establish `h1 : δ₀ w = 0`. Rewrite using `[← hs]`. Conclude with `hD (residue W w)`. Conclude with `(gr_mk_eq_zero_iff V k _).1 h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_pow_succ {O W V : Type} [CommRing O] [IsLocalRing O] [CommRing W]
     [IsLocalRing W] [CommRing V] [IsLocalRing V] (φ : O →+* W)
@@ -192,11 +186,11 @@ theorem sub_mem_pow_succ {O W V : Type} [CommRing O] [IsLocalRing O] [CommRing W
   exact (gr_mk_eq_zero_iff V k _).1 h1
 
 /- English proof (translation)
-Introduce `O W V _ _ _ _ _ _ _ _ φ _ hφ hu θ₁ θ₂ h₁ h₂ hO hres`. Establish `hk : ∀ k w, θ₁ w - θ₂ w ∈ maximalIdeal V ^ (k + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hres`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => exact sub_mem_pow_succ φ hφ.2.1 hu θ₁ θ₂ hO k ih`. Use extensionality with `w`. Rewrite using `[← sub_eq_zero, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal V).ne_top, Ideal.mem_iInf]`. Introduce `i`. Consider the cases of `i with`.
+Treat this case separately. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp`. Consider the case `succ i => exact hk i w`.
+Treat this case separately. Treat this case separately.
 -/
 theorem localHom_ext : ∀ (O W V : Type) [CommRing O] [IsLocalRing O] [CommRing W] [IsLocalRing W] [IsNoetherianRing W] [CommRing V] [IsLocalRing V] [IsNoetherianRing V] (φ : O →+* W), IsAdicComplete (maximalIdeal W) W → IsEtaleCompletion φ → ((residue W).comp φ).FormallyUnramified → ∀ θ₁ θ₂ : W →+* V, IsLocalHom θ₁ → IsLocalHom θ₂ → θ₁.comp φ = θ₂.comp φ → (∀ w, θ₁ w - θ₂ w ∈ maximalIdeal V) → θ₁ = θ₂ := by
   intro O W V _ _ _ _ _ _ _ _ φ _ hφ hu θ₁ θ₂ h₁ h₂ hO hres

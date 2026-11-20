@@ -22,7 +22,7 @@ def LeafKumMuSurj : Prop := ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B], Is
       ∀ s : Sec Gm U, Sec.map (LateralTheory.E.H2CurveOrder.LeafKumSeqPf.powGm q) s = 0 → ∃ t, Sec.map κ t = s
 
 /- English proof (translation)
-Introduce `q _ B _ hq`. Take `⟨κ, h0, hg⟩` from `hM q B hq`. Conclude with `⟨κ, h0, fun U hU => ⟨hI q B hq κ hg U hU, hS q B hq κ hg U hU⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafKumMuUnits_of (hM : LeafKumMuMap) (hI : LeafKumMuInj) (hS : LeafKumMuSurj) :
     LateralTheory.E.H2CurveOrder.LeafKumMuPf.LeafKumMuUnits := by

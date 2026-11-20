@@ -12,7 +12,7 @@ namespace UpperTheory.TP.BA.LamTop
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ} {v : Pl F}
 
 /- English proof (translation)
-Use `h (1 - sg v 1) (by rw [map_sub, map_one, PositivityTheory.ThKH.Iwas.ev_sg, sub_self])` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sg_one_smul {M : Type} [AddCommGroup M] [Module (AF F) M] {z : M} (h : At (evFin F v) z) : sg v 1 • z = z := by
   have := h (1 - sg v 1) (by rw [map_sub, map_one, PositivityTheory.ThKH.Iwas.ev_sg, sub_self])
@@ -20,7 +20,7 @@ private theorem sg_one_smul {M : Type} [AddCommGroup M] [Module (AF F) M] {z : M
   exact this.symm
 
 /- English proof (translation)
-Use `sg_one_smul h` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_comm, PositivityTheory.ThKH.Iwas.mul_sg, mul_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_sg {a : AF F} (h : At (evFin F v) a) : a = sg v (evFin F v a) := by
   have := sg_one_smul h
@@ -28,21 +28,21 @@ private theorem eq_sg {a : AF F} (h : At (evFin F v) a) : a = sg v (evFin F v a)
   exact this.symm
 
 /- English proof (translation)
-The claim follows from `(continuous_const.prodMk (continuous_singleFin v) : Continuous fun a => ((0 : Ainf F), singleFin v a))`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_sg (v : Pl F) : Continuous (sg v : Fv F v → AF F) :=
   (continuous_const.prodMk (continuous_singleFin v) : Continuous fun a => ((0 : Ainf F), singleFin v a))
 
 /- English proof (translation)
-Set `bs` to `RingOfIntegers.basis E`. Use `⟨_, inferInstance, fun i => bs i, fun z hz => ?_⟩` and prove the remaining obligations. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hO, o, rfl⟩` from `hz`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => (bs.repr o i : ℤ) • evFin F v a, fun i => zsmul_mem hO _, ?_⟩` and prove the remaining obligations. Establish `e : (o : E) = ∑ i, (bs.repr o i : ℤ) • ((bs i : 𝓞 E) : E)` using `by conv_lhs => rw [← bs.sum_repr o]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [e]`. Rewrite using `[map_sum, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Establish `e2 : sg v ((bs.repr o i : ℤ) • evFin F v a) = (bs.repr o i : ℤ) • sg v (evFin F v a)` using `map_zsmul (PositivityTheory.ThKH.Iwas.sg v) _ _`. Rewrite using `[map_zsmul, e2, smul_assoc, smul_comm a, ← eq_sg ha]`. Consider the case `zero => exact ⟨0, fun i => zero_mem _, by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨t, ht, rfl⟩` from `hx`. Take `⟨t', ht', rfl⟩` from `hy`. Use `⟨t + t', fun i => add_mem (ht i) (ht' i), ?_⟩` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `neg x _ hx`. Take `⟨t, ht, rfl⟩` from `hx`. Use `⟨-t, fun i => neg_mem (ht i), ?_⟩` and prove the remaining obligations. Simplify using `[neg_smul, Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem oh_sub (v : Pl F) : ∃ (ι : Type) (_ : Fintype ι) (o : ι → 𝓞 E), ∀ z ∈ Oh E v, ∃ t : ι → Fv F v,
     (∀ i, t i ∈ v.adicCompletionIntegers F) ∧ z = ∑ i, sg v (t i) • inclR (F := F) (AF F) (o i : E) := by
@@ -75,13 +75,13 @@ private theorem oh_sub (v : Pl F) : ∃ (ι : Type) (_ : Fintype ι) (o : ι →
     simp [neg_smul, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: ContinuousSMul (AF F) (AE F E)` using `IsModuleTopology.toContinuousSMul _ _`. Use `GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v` as an intermediate fact. Take `⟨ι, _, o, ho⟩` from `oh_sub (E := E) v`. Set `J : Fv F v × (ι → v.adicCompletionIntegers F) → AE F E` to `fun p => ∑ i, sg v (p.1 * p.2 i) • inclR (F := F) (AF F) (o i : E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `cJ : Continuous J` using `continuous_finset_sum _ fun i _ => by`. Establish `c1 : Continuous fun p : Fv F v × (ι → v.adicCompletionIntegers F) => sg v (p.1 * (p.2 i : Fv F v))` using `(continuous_sg v).comp (continuous_fst.mul (continuous_subtype_val.comp ((continuous_apply i).comp continuous_snd)))`. Conclude with `c1.smul (continuous_const (y := inclR (F := F) (AF F) (o i : E)))`. Establish `h : ∀ᶠ a : Fv F v in 𝓝 0, ∀ y ∈ (Set.univ : Set (ι → v.adicCompletionIntegers F)), J (a, y) ∈ V` using `isCompact_univ.eventually_forall_of_forall_eventually fun y _ => (cJ.tendsto' (0, y) 0 (by simp [J])).eventually hV`. Take `⟨N, hN⟩` from `eventually_atTop.1 ((Valued.tendsto_zero_pow_of_v_lt_one h1).eventually h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, fun k hk z hz => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, rfl⟩` from `ho z hz`. Establish `e : sg v (ϖ ^ k) • ∑ i, sg v (t i) • inclR (F` using `F) (AF F) (o i : E) = J (ϖ ^ k, fun i => ⟨t i, ht i⟩) := by`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, PositivityTheory.ThKH.Iwas.mul_sg, PositivityTheory.ThKH.Iwas.ev_sg]`. Rewrite using `[e]`. Conclude with `hN k hk _ trivial`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem small_oh (v : Pl F) {ϖ : Fv F v} (h1 : Valued.v ϖ < 1) {V : Set (AE F E)} (hV : V ∈ 𝓝 0) :
     ∃ k₀ : ℕ, ∀ k, k₀ ≤ k → ∀ z ∈ Oh E v, sg v (ϖ ^ k) • z ∈ V := by
@@ -110,9 +110,9 @@ private theorem small_oh (v : Pl F) {ϖ : Fv F v} (h1 : Valued.v ϖ < 1) {V : Se
 
 variable (F E) in
 /- English proof (translation)
-Establish `h : ∀ i, ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ (y • Module.finBasis F E i)` using `fun i => ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic _)).exists_integral_multiple`. Use `choose y y0 hy using h`. Set `w : _ → Fˣ` to `fun i => Units.mk0 (y i : F) (by exact_mod_cast y0 i)`. Use `⟨_, inferInstance, (Module.finBasis F E).unitsSMul w, fun i => ⟨_, hy i⟩, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.unitsSMul_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((y i : ℤ) : F) • Module.finBasis F E i = y i • Module.finBasis F E i`. Conclude with `Int.cast_smul_eq_zsmul F _ _`.
+A detailed English derivation is pending.
 -/
 private theorem exists_basis : ∃ (ι : Type) (_ : Fintype ι) (e : Module.Basis ι F E) (o : ι → 𝓞 E), ∀ i, e i = o i := by
   have h : ∀ i, ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ (y • Module.finBasis F E i) := fun i =>
@@ -125,11 +125,11 @@ private theorem exists_basis : ∃ (ι : Type) (_ : Fintype ι) (e : Module.Basi
   exact Int.cast_smul_eq_zsmul F _ _
 
 /- English proof (translation)
-Take `⟨ι, _, e, o, he⟩` from `exists_basis F E`. Set `bb` to `Algebra.TensorProduct.basis (AF F) e`. Set `cc : AE F E → ι → Fv F v` to `fun z i => evFin F v (bb.repr z i)`. Establish `hc : Continuous cc` using `continuous_pi fun i => (PositivityTheory.ThKH.Locrep.continuous_evFin' v).comp (IsModuleTopology.continuous_of_linearMap (bb.coord i))`. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨cc ⁻¹' Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v)), (hc.isOpen_preimage _ (isOpen_set_pi Set.finite_univ fun _ _ => hO)).mem_nhds ?_, fun z hz ha => ?_⟩` and prove the remaining obligations. Introduce `i _`. Simplify `zero_mem (v.adicCompletionIntegers F)` using `[cc]`. Rewrite using `[← bb.sum_repr z]`. Use `sum_mem fun i _ => AddSubgroup.subset_closure ⟨bb.repr z i, fun u hu => ?_, hz i (Set.mem_univ i), o i, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun t => bb.repr t i) (ha u hu)` as an intermediate fact. Simplify using `using this`. Rewrite using `[← he]`. Simplify using `[bb, inclR]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem open_oh (v : Pl F) : ∃ V ∈ 𝓝 (0 : AE F E), ∀ z ∈ V, At (evFin F v) z → z ∈ Oh E v := by
   classical
@@ -151,7 +151,7 @@ private theorem open_oh (v : Pl F) : ∃ V ∈ 𝓝 (0 : AE F E), ∀ z ∈ V, A
     simp [bb, inclR]
 
 /- English proof (translation)
-Rewrite `h` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hs⟩` from `h`. Conclude with `⟨⋂ i, t i, Filter.iInter_mem.2 ht, fun q hq => hs fun i _ => Set.mem_iInter.1 (hq i) i⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem ent {ι R : Type} [Finite ι] [TopologicalSpace R] [Zero R] {S : Set (ι → R)} (h : S ∈ 𝓝 0) :
     ∃ V ∈ 𝓝 (0 : R), ∀ q : ι → R, (∀ i, q i ∈ V) → q ∈ S := by
@@ -160,7 +160,7 @@ private theorem ent {ι R : Type} [Finite ι] [TopologicalSpace R] [Zero R] {S :
   exact ⟨⋂ i, t i, Filter.iInter_mem.2 ht, fun q hq => hs fun i _ => Set.mem_iInter.1 (hq i) i⟩
 
 /- English proof (translation)
-Establish `e : b * (c * a * b) * c = (b * c) * a * (b * c)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, e, h.bc]`. Simplify using `only [eM, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, sg_one_smul ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem frame {X : Spc F E n} {b c : Matrix (Fin n) (Fin n) (AE F E)} (h : IsFr X v b c)
     {a : Matrix (Fin n) (Fin n) (AE F E)} (ha : At (evFin F v) a) (t : AF F) : b * (t • (c * a * b)) * c = t • a := by
@@ -169,9 +169,9 @@ private theorem frame {X : Spc F E n} {b c : Matrix (Fin n) (Fin n) (AE F E)} (h
   simp only [eM, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, sg_one_smul ha]
 
 /- English proof (translation)
-Establish `ha : At (evFin F v) (sg v s⁻¹ • D)` using `fun u hu => by rw [smul_comm, hD u hu, smul_zero]`. Use `⟨sg v s⁻¹ • D, ⟨ha, fun i j => hV _ ?_ fun u hu => ?_⟩, ?_⟩` and prove the remaining obligations. Use `h i j` as an intermediate fact. Rewrite `this` using `[← Matrix.smul_mul, ← Matrix.mul_smul]`. Then use the resulting hypothesis. Establish `e : u • (c * (sg v s⁻¹ • D) * b) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ha u hu, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `congrFun (congrFun e i) j`. Rewrite using `[smul_smul, PositivityTheory.ThKH.Iwas.mul_sg, PositivityTheory.ThKH.Iwas.ev_sg, mul_inv_cancel₀ s0, sg_one_smul hD]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mk_lam {b c : Matrix (Fin n) (Fin n) (AE F E)} {V : Set (AE F E)}
     (hV : ∀ z ∈ V, At (evFin F v) z → z ∈ Oh E v) {s : Fv F v} (s0 : s ≠ 0) {D : Matrix (Fin n) (Fin n) (AE F E)}
@@ -187,14 +187,14 @@ private theorem mk_lam {b c : Matrix (Fin n) (Fin n) (AE F E)} {V : Set (AE F E)
   · rw [smul_smul, PositivityTheory.ThKH.Iwas.mul_sg, PositivityTheory.ThKH.Iwas.ev_sg, mul_inv_cancel₀ s0, sg_one_smul hD]
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun i j => continuous_apply (i, j)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_of (n : ℕ) : Continuous fun f : Fin n × Fin n → AE F E =>
     (Matrix.of (fun i j => f (i, j)) : Matrix (Fin n) (Fin n) (AE F E)) :=
   continuous_matrix fun i j => continuous_apply (i, j)
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `c1` using `(continuous_const (y := b)).matrix_mul (cont_of (F := F) (E := E) n)`. Establish `c2` using `c1.matrix_mul (continuous_const (y := c))`. Conclude with `continuous_const.add c2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_frame (b c : Matrix (Fin n) (Fin n) (AE F E)) : Continuous fun f : Fin n × Fin n → AE F E =>
     (1 + b * Matrix.of (fun i j => f (i, j)) * c : Matrix (Fin n) (Fin n) (AE F E)) := by
@@ -204,7 +204,7 @@ private theorem cont_frame (b c : Matrix (Fin n) (Fin n) (AE F E)) : Continuous 
   exact continuous_const.add c2
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun x => continuous_apply (β, x)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_sel (n : ℕ) (β : Bool) : Continuous fun f : Bool × Fin n × Fin n → AE F E => fun x : Fin n × Fin n => f (β, x) :=
   continuous_pi fun x => continuous_apply (β, x)
@@ -217,12 +217,12 @@ private def Pp (b c : Matrix (Fin n) (Fin n) (AE F E)) (f : Bool × Fin n × Fin
   (Ps b c fun x => f (true, x), Ps b c fun x => f (false, x))
 
 /- English proof (translation)
-The claim follows from `cont_frame b c`.
+A detailed English derivation is pending.
 -/
 private theorem cont_Ps (b c : Matrix (Fin n) (Fin n) (AE F E)) : Continuous (Ps b c) := cont_frame b c
 
 /- English proof (translation)
-Establish `h1 : Continuous fun q : Bool × Fin n × Fin n → AE F E => Ps b c fun x => q (true, x)` using `(cont_Ps b c).comp (cont_sel n true)`. Establish `h2 : Continuous fun q : Bool × Fin n × Fin n → AE F E => Ps b c fun x => q (false, x)` using `(cont_Ps b c).comp (cont_sel n false)`. Conclude with `h1.prodMk h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_Pp (b c : Matrix (Fin n) (Fin n) (AE F E)) : Continuous (Pp b c) := by
   have h1 : Continuous fun q : Bool × Fin n × Fin n → AE F E => Ps b c fun x => q (true, x) :=
@@ -232,7 +232,7 @@ private theorem cont_Pp (b c : Matrix (Fin n) (Fin n) (AE F E)) : Continuous (Pp
   exact h1.prodMk h2
 
 /- English proof (translation)
-Establish `: Matrix.of (fun i j => (0 : Fin n × Fin n → AE F E) (i, j)) = 0` using `rfl`. Unfold `Ps`. Rewrite using `[this, Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Ps_zero (b c : Matrix (Fin n) (Fin n) (AE F E)) : Ps b c 0 = 1 := by
   have : Matrix.of (fun i j => (0 : Fin n × Fin n → AE F E) (i, j)) = 0 := rfl
@@ -240,7 +240,7 @@ private theorem Ps_zero (b c : Matrix (Fin n) (Fin n) (AE F E)) : Ps b c 0 = 1 :
   rw [this, Matrix.mul_zero, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-The claim follows from `ent ((c.tendsto' 0 (1, 1) h0).eventually (GlobalTheory.ThK.Dbl.Bmp.near_units hU))`.
+A detailed English derivation is pending.
 -/
 private theorem near_gen {ι R A : Type} [Finite ι] [TopologicalSpace R] [Zero R] [Monoid A] [TopologicalSpace A] {U : Set Aˣ}
     (hU : U ∈ 𝓝 (1 : Aˣ)) {Ψ : (ι → R) → A × A} (c : Continuous Ψ) (h0 : Ψ 0 = (1, 1)) :
@@ -248,13 +248,11 @@ private theorem near_gen {ι R A : Type} [Finite ι] [TopologicalSpace R] [Zero 
   ent ((c.tendsto' 0 (1, 1) h0).eventually (GlobalTheory.ThK.Dbl.Bmp.near_units hU))
 
 /- English proof (translation)
-Take `⟨U', h1, h2⟩` from `(mem_nhds_subtype _ _ _).1 hU`. Take `⟨V, hV, hq⟩` from `near_gen h1 (cont_Pp b c) (Prod.ext (Ps_zero b c) (Ps_zero b c))`. Take `⟨k₀, hk⟩` from `small_oh (E := E) v ϖ1 hV`. Use `⟨k₀, fun k hkk g ⟨a, ha, ea⟩ ⟨a', ha', ea'⟩ => h2 ?_⟩` and prove the remaining obligations. Set `f : Bool × Fin n × Fin n → AE F E` to `fun x => sg v (ϖ ^ k) • (if x.1 then c * a * b else c * a' * b) x.2.1 x.2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hf` using `hq f (fun ⟨β, i, j⟩ => by`. Consider the cases of `β`. Conclude with `hk k hkk _ (ha'.2 i j)`. Conclude with `hk k hkk _ (ha.2 i j))`. Use `hf g.1 ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : Matrix.of (fun i j => f (true, i, j)) = sg v (ϖ ^ k) • (c * a * b)` using `rfl`. Express the relevant statement in the definitionally equal form `mat g = 1 + b * Matrix.of (fun i j => f (true, i, j)) * c`. Rewrite using `[e, frame hF ha.1, ← ea, add_sub_cancel]`. Establish `e : Matrix.of (fun i j => f (false, i, j)) = sg v (ϖ ^ k) • (c * a' * b)` using `rfl`. Express the relevant statement in the definitionally equal form `mat g⁻¹ = 1 + b * Matrix.of (fun i j => f (false, i, j)) * c`.
-
-Rewrite using `[e, frame hF ha'.1, ← ea', add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem part1 {σ : E →ₐ[F] E} {X : Spc F E n} {b c : Matrix (Fin n) (Fin n) (AE F E)} (hF : IsFr X v b c) {ϖ : Fv F v}
     (ϖ1 : Valued.v ϖ < 1) {U : Set (UA σ X.J)} (hU : U ∈ 𝓝 (1 : UA σ X.J)) :
@@ -279,17 +277,17 @@ private theorem part1 {σ : E →ₐ[F] E} {X : Spc F E n} {b c : Matrix (Fin n)
     rw [e, frame hF ha'.1, ← ea', add_sub_cancel]
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: ContinuousSMul (AF F) (AE F E)` using `IsModuleTopology.toContinuousSMul _ _`. Establish `mm : ∀ g h : UA σ X.J, mat (g * h) = mat g * mat h` using `fun _ _ => rfl`. Establish `m1 : mat (1 : UA σ X.J) = 1` using `rfl`. Take `⟨V, hV, hO⟩` from `open_oh (E := E) v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `s0 : ϖ ^ k ≠ 0` using `pow_ne_zero _ ϖ0`. Set `ψ : Matrix (Fin n) (Fin n) (AE F E) → Matrix (Fin n) (Fin n) (AE F E)` to `fun M => sg v (ϖ ^ k)⁻¹ • (c * (M - 1) * b)`. Establish `c1 : Continuous fun M : Matrix (Fin n) (Fin n) (AE F E) => c * (M - 1) * b` using `((continuous_const (y := c)).matrix_mul (continuous_id.sub continuous_const)).matrix_mul (continuous_const (y := b))`. Establish `cψ : Continuous ψ` using `c1.const_smul (sg v (ϖ ^ k)⁻¹)`. Establish `cm : Continuous fun g : UA σ X.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ci : Continuous fun g : UA σ X.J => mat g⁻¹` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Establish `ψ1 : ψ 1 = 0` using `by simp [ψ]`. Use `⟨⋂ i, ⋂ j, ((fun g => ψ (mat g) i j) ⁻¹' interior V ∩ (fun g => ψ (mat g⁻¹) i j) ⁻¹' interior V), isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (isOpen_interior.preimage ((cψ.comp cm).matrix_elem i j)).inter (isOpen_interior.preimage ((cψ.comp ci).matrix_elem …` and prove the remaining obligations. Establish `h0 : (0 : AE F E) ∈ interior V` using `mem_interior_iff_mem_nhds.2 hV`. Use `Set.mem_iInter.2 fun i => Set.mem_iInter.2 fun j => ⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `ψ (mat (1 : UA σ X.J)) i j ∈ interior V`. Rewrite using `[m1, ψ1]`. Conclude with `h0`. Express the relevant statement in the definitionally equal form `ψ (mat (1 : UA σ X.J)⁻¹) i j ∈ interior V`. Rewrite using `[inv_one, m1, ψ1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `hg' : At (evFin F v) (mat g⁻¹ - 1)` using `fun u hu => by`. Establish `e : mat g⁻¹ - 1 = -(mat g⁻¹ * (mat g - 1))`. Rewrite using `[mul_sub, ← mm, inv_mul_cancel, m1, mul_one, neg_sub]`. Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hg u hu, Matrix.mul_zero, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hi` using `fun i j => Set.mem_iInter.1 (Set.mem_iInter.1 hgO i) j`. Conclude with `⟨mk_lam hO s0 hg fun i j => interior_subset (hi i j).1, mk_lam hO s0 hg' fun i j => interior_subset (hi i j).2⟩`.
+A detailed English derivation is pending.
 -/
 private theorem part2 {σ : E →ₐ[F] E} {X : Spc F E n} (b c : Matrix (Fin n) (Fin n) (AE F E)) {ϖ : Fv F v} (ϖ0 : ϖ ≠ 0) (k : ℕ) :
     ∃ O : Set (UA σ X.J), IsOpen O ∧ 1 ∈ O ∧ ∀ g ∈ UAt σ X (evFin F v), g ∈ O →
@@ -328,7 +326,7 @@ private theorem part2 {σ : E →ₐ[F] E} {X : Spc F E n} (b c : Matrix (Fin n)
 end UpperTheory.TP.BA.LamTop
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n X v b c hF ϖ ϖ0 ϖ1`. Use `⟨fun U hU => ?_, fun k => LamTop.part2 b c ϖ0 k⟩` and prove the remaining obligations. Take `⟨k₀, hk⟩` from `LamTop.part1 hF ϖ1 hU`. Conclude with `⟨k₀, fun k hkk g _ => hk k hkk g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.mem_nhds_one_of_congruence_latticeOrder :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (X : Spc F E n) (v : Pl F) (b c : Matrix (Fin n) (Fin n) (AE F E)), IsFr X v b c → ∀ ϖ : Fv F v, ϖ ≠ 0 → Valued.v ϖ < 1 →

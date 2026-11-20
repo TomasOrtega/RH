@@ -30,27 +30,23 @@ open Formalism.MainNotions.KudlaSiegelWeil (Restr)
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hmul : ∀ (a b : G) (y : X), ρ (a * b) y = ρ a (ρ b y)` using `fun a b y => by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Establish `hinv : ∀ (a : G) (y : X), ρ a⁻¹ (ρ a y) = y` using `fun a y => by`. Rewrite using `[← hmul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hinv' : ∀ (a : G) (y : X), ρ a (ρ a⁻¹ y) = y` using `fun a y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hmul, mul_inv_cancel, map_one, Module.End.one_apply]`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun i : K => (fun g => (i : G)⁻¹ * g) ⁻¹' {g | ρ g x = x}) (fun i => hx.preimage (continuous_const.mul continuous_id)) (fun k hk => Set.mem_iUnion.2 ⟨⟨k, hk⟩, show ρ (k⁻¹ * k) x = x by`. Rewrite using `[inv_mul_cancel, map_one, Module.End.one_apply]⟩)`. Set `F : Finset X` to `t.image (fun i : K => ρ (i : G) x)`. Establish `hFmem : ∀ y, y ∈ F ↔ ∃ k ∈ K, ρ k x = y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `⟨i, i.2, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨k, hk, rfl⟩`. Take `⟨i, hi, hki⟩` from `Set.mem_iUnion₂.1 (ht hk)`. Use `Finset.mem_image.2 ⟨i, hi, ?_⟩` and prove the remaining obligations. Establish `h1 : ρ ((i : G)⁻¹ * k) x = x` using `hki`. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Set `f : X → G` to `fun y => if h : ∃ k ∈ K, ρ k x = y then h.choose else 1`. Establish `hf : ∀ y ∈ F, f y ∈ K ∧ ρ (f y) x = y`. Introduce `y hy`. Establish `h` using `(hFmem y).1 hy`. Simplify using `only [f, dif_pos h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h.choose_spec`. Use `⟨F.image f, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `(hf y hy).1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.Nonempty.image ⟨x, (hFmem x).2 ⟨1, K.one_mem, by`. Rewrite using `[map_one, Module.End.one_apply]⟩⟩ f`. Establish `hsum : ∑ g ∈ F.image f, ρ g x = ∑ y ∈ F, y`. Rewrite using `[Finset.sum_image]`. Conclude with `Finset.sum_congr rfl (fun y hy => (hf y hy).2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy y' hy' h`. Rewrite using `[← (hf y hy).2, ← (hf y' hy').2]`. Conclude with `congrArg (fun g => ρ g x) h`. Introduce `k hk`. Rewrite using `[hsum, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_nbij' (fun y => ρ k y) (fun y => ρ k⁻¹ y) ?_ ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `y hy`. Take `⟨k', hk', rfl⟩` from `(hFmem y).1 hy`. Conclude with `(hFmem _).2 ⟨k * k', K.mul_mem hk hk', hmul _ _ _⟩`. Introduce `y hy`.
-
-Take `⟨k', hk', rfl⟩` from `(hFmem y).1 hy`. Conclude with `(hFmem _).2 ⟨k⁻¹ * k', K.mul_mem (K.inv_mem hk) hk', hmul _ _ _⟩`. Introduce `y _`. Conclude with `hinv k y`. Introduce `y _`.
-
-Conclude with `hinv' k y`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_finset_sum_translate_fixed {G X : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ G X)

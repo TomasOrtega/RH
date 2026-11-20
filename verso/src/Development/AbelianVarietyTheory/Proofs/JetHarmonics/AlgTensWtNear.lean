@@ -7,9 +7,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : ∀ a, |(ω a + if a = c then e else 0) - Λ a| ≤ |ω a - Λ a| + if a = c then 1 else 0`. Introduce `a`. Use `split_ifs`. Establish `: ω a + e - Λ a = (ω a - Λ a) + e` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(abs_add_le _ _).trans (by linarith)`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem l1_shift_single_le {n : ℕ} (ω Λ : Fin n → ℝ) (t e : ℝ) (he : |e| ≤ 1) (c : Fin n)
     (h : ∑ a, |ω a - Λ a| ≤ t) :
@@ -26,23 +26,23 @@ theorem l1_shift_single_le {n : ℕ} (ω Λ : Fin n → ℝ) (t e : ℝ) (he : |
     _ ≤ t + 1 := by linarith
 
 /- English proof (translation)
-Introduce `M _ _ n ε E N _ _ F io pr Λ t hT`. Use `⟨fun w hw s c => ?_, fun s y hy d => ?_⟩` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨ω, hω, hx⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨fun a => ω a + if a = c then -1 else 0, l1_shift_single_le ω Λ t (-1) (by simp) c hω, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hT.pr_comm, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [dualTens, Pi.smul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : i = c`. Substitute `hi` using the available equality. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using `[hx a, add_smul, sub_eq_add_neg]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: ¬ i = a` using `fun h => ha h.symm`. Simplify using `[hx a, ha, this]`. Distinguish the cases in `ha : i = a`. Substitute `ha` using the available equality. Simplify using `[hi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hi, ha]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Pi.single_add, map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [Pi.single_smul, map_smul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨ω, hω, hx⟩` from `hx`. Use `Submodule.subset_span ⟨fun a => ω a + if a = d then 1 else 0, l1_shift_single_le ω Λ t 1 (by simp) d hω, fun a => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrFun (hT.io_comm s a a x) d`. Rewrite `h` using `[hx a, map_smul]`. Simplify using `only [dualTens, Pi.smul_apply] at h`. Rewrite `h` using `[eq_sub_iff_add_eq]`. Rewrite using `[← h]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `ha : a = d`. Substitute `ha` using the available equality. Simplify using `[add_smul]`. Establish `: ¬ d = a` using `fun h => ha h.symm`. Simplify using `[ha, this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, Pi.add_apply]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [map_smul, Pi.smul_apply]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem algTens_wtNear : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (N : Fin n → Type) [∀ s, NormedAddCommGroup (N s)] [∀ s, InnerProductSpace ℂ (N s)] (F : ∀ s, Fin n → Fin n → Module.End ℂ (N s)) (io : ∀ s, N s →ₗ[ℂ] (Fin n → M)) (pr : ∀ s, (Fin n → M) →ₗ[ℂ] N s) (Λ : Fin n → ℝ) (t : ℝ), AlgTens ε E N F io pr → (∀ w, w ∈ WtNear E Λ t → ∀ s c, pr s (Pi.single c w) ∈ WtNear (F s) Λ (t + 1)) ∧ ∀ s (y : N s), y ∈ WtNear (F s) Λ t → ∀ d, io s y d ∈ WtNear E Λ (t + 1) := by
   intro M _ _ n ε E N _ _ F io pr Λ t hT

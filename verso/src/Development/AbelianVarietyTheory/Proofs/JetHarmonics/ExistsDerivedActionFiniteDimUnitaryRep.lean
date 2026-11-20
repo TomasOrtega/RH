@@ -19,7 +19,7 @@ section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h` using `(hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)).differentiableAt`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun x => x i j map_add' := fun x y => rfl map_smul' := fun c x => rfl }`. Conclude with `(LinearMap.toContinuousLinearMap L).differentiableAt.comp 0 h`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem differentiableAt_exp_line {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     DifferentiableAt ℝ (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) i j) 0 := by
@@ -35,7 +35,7 @@ end
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiff.sum fun l _ => (contDiff_pi.1 (contDiff_pi.1 hf i) l).mul (contDiff_pi.1 (contDiff_pi.1 hg l) j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_matMul {n : ℕ} {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P]
     {f g : P → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) :
@@ -45,7 +45,7 @@ theorem contDiff_matMul {n : ℕ} {P : Type} [NormedAddCommGroup P] [NormedSpace
   exact ContDiff.sum fun l _ => (contDiff_pi.1 (contDiff_pi.1 hf i) l).mul (contDiff_pi.1 (contDiff_pi.1 hg l) j)
 
 /- English proof (translation)
-Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun x => xᴴ map_add' := fun x y => conjTranspose_add x y map_smul' := fun c x => by simp [conjTranspose_smul] }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem contDiff_adj {n : ℕ} : ContDiff ℝ ∞ fun x : Matrix (Fin n) (Fin n) ℂ => xᴴ := by
   let L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ :=
@@ -55,33 +55,31 @@ theorem contDiff_adj {n : ℕ} : ContDiff ℝ ∞ fun x : Matrix (Fin n) (Fin n)
   exact (LinearMap.toContinuousLinearMap L).contDiff
 
 /- English proof (translation)
-Take `⟨hemb, hrange⟩` from `isClosedEmbeddingMatrix n ε`. Use `set μ := muG ε`. Establish `hmem : ∀ g : UJ ε, inUJ ε (toM g)` using `fun g => g.2`. Establish `hu : Continuous fun g : UJ ε => toM g` using `hemb.continuous`. Establish `hb : Continuous fun g : UJ ε => σ (toM g)` using `hcont.comp_continuous hu hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `hmem 1`. Establish `hnb : {g | ‖σ g - 1‖ < 1 / 2} ∈ 𝓝[{g | inUJ ε g}] (1 : Matrix (Fin n) (Fin n) ℂ)`. Establish `h` using `(hcont 1 hone) (Metric.ball_mem_nhds _ (half_pos one_pos))`. Simplify `h` using `[h1, Set.preimage, dist_eq_norm]`. Take `⟨U, hU, hUs⟩` from `mem_nhdsWithin_iff_exists_mem_nhds_inter.1 hnb`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφU, hφc, hφ, hφr, hφ1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) hU`. Establish `hφ0 : ∀ y, 0 ≤ φ y` using `fun y => (hφr ⟨y, rfl⟩).1`. Establish `hψ : Continuous fun g : UJ ε => φ (toM g)` using `hφ.continuous.comp hu`. Establish `hψc : HasCompactSupport fun g : UJ ε => φ (toM g)` using `hφc.comp_isClosedEmbedding hemb`. Establish `hint : Integrable (fun g : UJ ε => φ (toM g) • σ (toM g)) μ` using `(hψ.smul hb).integrable_of_hasCompactSupport hψc.smul_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψi : Integrable (fun g : UJ ε => φ (toM g)) μ` using `hψ.integrable_of_hasCompactSupport hψc`. Establish `hpos : 0 < ∫ g : UJ ε, φ (toM g) ∂μ` using `hψ.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) hψc (fun g => hφ0 _) (by show φ 1 ≠ 0; rw [hφ1]; exact one_ne_zero)`. Use `set c := ∫ g : UJ ε, φ (toM g) ∂μ with hc`. Use `set A := ∫ g : UJ ε, φ (toM g) • σ (toM g) ∂μ with hA`. Establish `hAu : ∃ A' : B, A * A' = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∫ g : UJ ε, (φ (toM g) • σ (toM g) - φ (toM g) • (1 : B)) ∂μ = A - c • (1 : B)`. Rewrite using `[integral_sub hint (hψi.smul_const _), integral_smul_const]`. Establish `e2 : ‖∫ g : UJ ε, (φ (toM g) • σ (toM g) - φ (toM g) • (1 : B)) ∂μ‖ ≤ ∫ g : UJ ε, φ (toM g) * (1 / 2) ∂μ`. Use `norm_integral_le_of_norm_le (hψi.mul_const _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[← smul_sub, norm_smul, Real.norm_of_nonneg (hφ0 _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hg : φ (toM g) = 0`. Simplify using `[hg]`. Conclude with `mul_le_mul_of_nonneg_left (le_of_lt (hUs ⟨hφU (subset_tsupport _ hg), hmem g⟩)) (hφ0 _)`. Rewrite `e2` using `[e1, integral_mul_const, ← hc]`. Establish `e3 : ‖(1 : B) - c⁻¹ • A‖ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (1 : B) - c⁻¹ • A = -(c⁻¹ • (A - c • (1 : B)))`. Rewrite using `[smul_sub, smul_smul, inv_mul_cancel₀ hpos.ne', one_smul, neg_sub]`. Rewrite using `[this, norm_neg, norm_smul, Real.norm_of_nonneg (inv_pos.2 hpos).le, inv_mul_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨u, hu⟩` from `isUnit_one_sub_of_norm_lt_one e3`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hu` using `[sub_sub_cancel]`. Use `⟨c⁻¹ • (↑u⁻¹ : B), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul_comm, ← smul_mul_assoc, ← hu, Units.mul_inv]`. Take `⟨A', hA'⟩` from `hAu`. Set `y : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun x => Jm ε * xᴴ * Jm ε`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hy : ContDiff ℝ ∞ y` using `contDiff_matMul (contDiff_matMul contDiff_const contDiff_adj) contDiff_const`. Establish `hyx : ∀ x, inUJ ε x → y x * x = 1` using `fun x hx => by`. Establish `h : xᴴ * Jm ε * x = Jm ε` using `hx`. Combine the equalities or inequalities in the displayed calculation. Establish `hform : ∀ x, inUJ ε x → σ x * A = ∫ g : UJ ε, φ (y x * toM g) • σ (toM g) ∂μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : x ∈ Set.range (fun g : UJ ε => toM g) := by`. Rewrite using `[show Set.range (fun g : UJ ε => toM g) = _ from hrange]`. Conclude with `hx`. Establish `hz' : toM z = x` using `hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(ContinuousLinearMap.mul ℂ B (σ x)).integral_comp_comm hint` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.mul_apply']`. Rewrite using `[hA, ← this, ← integral_mul_left_eq_self (fun g : UJ ε => φ (y x * toM g) • σ (toM g)) z]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : toM (z * g) = x * toM g` using `by rw [← hz']; rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e]`. Rewrite using `[← Matrix.mul_assoc, hyx x hx, Matrix.one_mul, hmul _ hx _ (hmem g), ContinuousLinearMap.mul_apply', mul_smul_comm]`. Introduce `x₀ _`. Establish `hC : IsCompact (Set.image2 (· * ·) (Metric.closedBall x₀ 1) (tsupport φ))`. Rewrite using `[← Set.image_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((isCompact_closedBall x₀ 1).prod hφc).image (contDiff_matMul contDiff_fst contDiff_snd).continuous`. Establish `hK` using `hemb.isCompact_preimage hC`. Establish `hs : ContDiff ℝ ∞ fun x => ∫ g in (fun g : UJ ε => toM g) ⁻¹' (Set.image2 (· * ·) (Metric.closedBall x₀ 1) (tsupport φ)), φ (y x * toM g) • σ (toM g) ∂μ` using `contDiff_infty.2 fun m => GlobalTheory.GardingVec.contDiff_setIntegral_nat μ hK (hu.prodMk hb) m (fun z : Matrix (Fin n) (Fin n) ℂ × (Matrix (Fin n) (Fin n) ℂ × B) => φ (y z.1 * z.2.1) • z.2.2) ((hφ.comp (contDiff_matMul (hy.comp contDiff_fst) (contDiff_fst.comp contDiff_snd))).s …`. Use `⟨Metric.ball x₀ 1, _, Metric.isOpen_ball, Metric.mem_ball_self one_pos, (hs.mul (contDiff_const (c := A'))).contDiffOn, fun x hx hxG => ?_⟩` and prove the remaining obligations. Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero, ← hform x hxG, mul_assoc, hA', mul_one]`.
-
-Introduce `g hg`. Assume the negation of the conclusion as `hne`. Use `hg ⟨x, Metric.ball_subset_closedBall hx, y x * toM g, subset_tsupport _ fun h => hne (by rw [h, zero_smul]), ?_⟩` and prove the remaining obligations. Use `show x * (y x * toM g) = toM g`. Rewrite using `[← Matrix.mul_assoc, mul_eq_one_comm.1 (hyx x hxG), Matrix.one_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_of_continuous {n : ℕ} {ε : Fin n → Bool} {B : Type} [NormedRing B] [NormedAlgebra ℂ B]
     [CompleteSpace B] {σ : Matrix (Fin n) (Fin n) ℂ → B} (h1 : σ 1 = 1)
@@ -176,11 +174,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {B : Type} [NormedRing B] [NormedAlgebr
   {σ : Matrix (Fin n) (Fin n) ℂ → B}
 
 /- English proof (translation)
-Establish `hone : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simpa using exp_indefinite_unitary_holds n ε X hX 0`. Take `⟨U, F, hU, h1, hF, hfF⟩` from `hf 1 hone`. Establish `hd : DifferentiableAt ℝ (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) 0` using `differentiableAt_pi.2 fun i => differentiableAt_pi.2 fun j => differentiableAt_exp_line X i j`. Establish `h0 : NormedSpace.exp (((0 : ℝ) : ℂ) • X) = 1` using `by simp`. Establish `hFd : DifferentiableAt ℝ F (NormedSpace.exp (((0 : ℝ) : ℂ) • X))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Conclude with `(hF.contDiffAt (hU.mem_nhds h1)).differentiableAt (by simp)`. Establish `hev : (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] F ∘ fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)` using `by filter_upwards [hd.continuousAt.preimage_mem_nhds (by rw [h0]; exact hU.mem_nhds h1)] with t ht`. Conclude with `hfF _ ht (exp_indefinite_unitary_holds n ε X hX t)`. Use `((hFd.comp 0 hd).congr_of_eventuallyEq hev).hasDerivAt` as an intermediate fact.
-
-Simplify `this` using `only [RdV, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_rdV {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : Matrix (Fin n) (Fin n) ℂ → E}
     (hf : SmoothOnGV ε f) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
@@ -201,7 +197,7 @@ theorem hasDerivAt_rdV {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f 
   simpa only [RdV, Matrix.one_mul] using this
 
 /- English proof (translation)
-Rewrite using `[← ((hasDerivAt_rdV hs hX).const_mul (σ g)).deriv, RdV]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `hmul _ hg _ (exp_indefinite_unitary_holds n ε X hX t)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rdV_mul (hs : SmoothOnGV ε σ) (hmul : ∀ a, inUJ ε a → ∀ b, inUJ ε b → σ (a * b) = σ a * σ b)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
@@ -212,7 +208,7 @@ theorem rdV_mul (hs : SmoothOnGV ε σ) (hmul : ∀ a, inUJ ε a → ∀ b, inUJ
   exact hmul _ hg _ (exp_indefinite_unitary_holds n ε X hX t)
 
 /- English proof (translation)
-Rewrite using `[← ((hasDerivAt_rdV hs hX).mul_const b).deriv, RdV]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[Matrix.one_mul]`. Conclude with `hf _ (exp_indefinite_unitary_holds n ε X hX t)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdV_one_of_eq (hs : SmoothOnGV ε σ) {f : Matrix (Fin n) (Fin n) ℂ → B} {b : B}
     (hf : ∀ g, inUJ ε g → f g = σ g * b) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
@@ -224,7 +220,7 @@ theorem rdV_one_of_eq (hs : SmoothOnGV ε σ) {f : Matrix (Fin n) (Fin n) ℂ �
   exact hf _ (exp_indefinite_unitary_holds n ε X hX t)
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `cpartMem n ε (Matrix.single a b 1)`. Simplify using `only [EabV, EcV]`. Rewrite using `[rdV_mul hs hmul h1 hg, rdV_mul hs hmul h2 hg, mul_add, mul_smul_comm]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eabV_mul (hs : SmoothOnGV ε σ) (hmul : ∀ a, inUJ ε a → ∀ b, inUJ ε b → σ (a * b) = σ a * σ b)
     (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
@@ -234,7 +230,7 @@ theorem eabV_mul (hs : SmoothOnGV ε σ) (hmul : ∀ a, inUJ ε a → ∀ b, inU
   rw [rdV_mul hs hmul h1 hg, rdV_mul hs hmul h2 hg, mul_add, mul_smul_comm]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `cpartMem n ε (Matrix.single a b 1)`. Establish `h` using `fun g hg => eabV_mul hs hmul c d (g := g) hg`. Use `show RdV _ _ 1 + Complex.I • RdV _ _ 1 = (RdV _ σ 1 + Complex.I • RdV _ σ 1) * _`. Rewrite using `[rdV_one_of_eq hs h h1, rdV_one_of_eq hs h h2, add_mul, smul_mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eabV_eabV (hs : SmoothOnGV ε σ) (hmul : ∀ a, inUJ ε a → ∀ b, inUJ ε b → σ (a * b) = σ a * σ b)
     (a b c d : Fin n) :
@@ -245,7 +241,7 @@ theorem eabV_eabV (hs : SmoothOnGV ε σ) (hmul : ∀ a, inUJ ε a → ∀ b, in
   rw [rdV_one_of_eq hs h h1, rdV_one_of_eq hs h h2, add_mul, smul_mul_assoc]
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `hone : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [inUJ]`. Use `eabGlV n ε B σ a b c d 1 hs hone` as an intermediate fact. Rewrite `this` using `[eabV_eabV hs hmul, eabV_eabV hs hmul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem glRel_eabV (hs : SmoothOnGV ε σ) (hmul : ∀ a, inUJ ε a → ∀ b, inUJ ε b → σ (a * b) = σ a * σ b) :
     GlRel fun a b => EabV ε a b σ 1 := by
@@ -255,7 +251,7 @@ theorem glRel_eabV (hs : SmoothOnGV ε σ) (hmul : ∀ a, inUJ ε a → ∀ b, i
   rwa [eabV_eabV hs hmul, eabV_eabV hs hmul] at this
 
 /- English proof (translation)
-Establish `hone : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [inUJ]`. Take `⟨h1, h2⟩` from `(cpartMem n ε Z).2.2.2 hZ`. Rewrite using `[← ecSumV n ε B σ Z 1 hs hone, EcV, h1, h2]`. Simplify using `[RdV]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rdV_eq_sum (hs : SmoothOnGV ε σ) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG ε Z) :
     RdV Z σ 1 = ∑ a, ∑ b, Z a b • EabV ε a b σ 1 := by
@@ -272,16 +268,16 @@ variable {n : ℕ} {ε : Fin n → Bool} {W : Type} [NormedAddCommGroup W] [Inne
   {π : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)}
 
 /- English proof (translation)
-The claim follows from `((ContinuousLinearMap.apply ℂ W v).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (hasDerivAt_rdV hs hX)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_apply (hs : SmoothOnGV ε π) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (v : W) :
     HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) v) (RdV X π 1 v) 0 :=
   ((ContinuousLinearMap.apply ℂ W v).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (hasDerivAt_rdV hs hX)
 
 /- English proof (translation)
-Establish `h` using `(hasDerivAt_apply hs hX x).inner ℂ (hasDerivAt_apply hs hX y)`. Establish `hc : (fun t : ℝ => ⟪π (NormedSpace.exp ((t : ℂ) • X)) x, π (NormedSpace.exp ((t : ℂ) • X)) y⟫_ℂ) = fun _ => ⟪x, y⟫_ℂ`. Use function extensionality and compare the values at `t`. Conclude with `LinearIsometry.inner_map_map ⟨(π (NormedSpace.exp ((t : ℂ) • X))).toLinearMap, hiso _ (exp_indefinite_unitary_holds n ε X hX t)⟩ x y`. Rewrite `h` using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `h.unique (hasDerivAt_const (0 : ℝ) _)`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, h1, ContinuousLinearMap.one_apply] at h0`. Take the linear combination `h0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rdV_skew (hs : SmoothOnGV ε π) (h1 : π 1 = 1) (hiso : ∀ g, inUJ ε g → ∀ v, ‖π g v‖ = ‖v‖)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (x y : W) :
@@ -300,23 +296,23 @@ theorem rdV_skew (hs : SmoothOnGV ε π) (h1 : π 1 = 1) (hiso : ∀ g, inUJ ε 
 end Unit
 
 /- English proof (translation)
-Simplify using `[Jm, PI.UpqRep.allPos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_allPos (k : ℕ) : Jm (PI.UpqRep.allPos k) = 1 := by
   simp [Jm, PI.UpqRep.allPos]
 
 /- English proof (translation)
-Introduce `k W _ _ _ π ⟨⟨h1, hmul⟩, hiso, hcont⟩`. Establish `: CompleteSpace W` using `FiniteDimensional.complete ℂ W`. Establish `hmul' : ∀ a, inUJ (PI.UpqRep.allPos k) a → ∀ b, inUJ (PI.UpqRep.allPos k) b → π (a * b) = π a * π b` using `hmul`. Establish `hs : SmoothOnGV (PI.UpqRep.allPos k) π` using `smooth_of_continuous h1 hmul' (continuousOn_clm_apply.2 hcont)`. Establish `hone : inUJ (PI.UpqRep.allPos k) (1 : Matrix (Fin k) (Fin k) ℂ)` using `by simp [inUJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun a b => (EabV (PI.UpqRep.allPos k) a b π 1).toLinearMap, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d`. Use `congrArg ContinuousLinearMap.toLinearMap (glRel_eabV hs hmul' a b c d)` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> exact this`. Introduce `a b x y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1', h2', -⟩` from `cpartMem k (PI.UpqRep.allPos k) (Matrix.single a b 1)`. Establish `e1 : cpart1 (PI.UpqRep.allPos k) (Matrix.single b a 1) = ((-1 : ℝ) : ℂ) • cpart1 (PI.UpqRep.allPos k) (Matrix.single a b (1 : ℂ))`. Simplify using `only [cpart1, Jm_allPos, Matrix.one_mul, Matrix.mul_one, conjTranspose_single, star_one]`. Rewrite using `[← neg_sub, smul_neg]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[neg_one_smul]`. Establish `e2 : cpart2 (PI.UpqRep.allPos k) (Matrix.single b a 1) = cpart2 (PI.UpqRep.allPos k) (Matrix.single a b (1 : ℂ))`. Simplify using `only [cpart2, Jm_allPos, Matrix.one_mul, Matrix.mul_one, conjTranspose_single, star_one, add_comm]`. Establish `e3` using `(rdLinV k _ _ π π _ _ (-1) 0 1 hs hs h1' h1' hone).2.1`. Simplify using `only [EabV, EcV, e1, e2, e3, sgn, PI.UpqRep.allPos, if_true, ContinuousLinearMap.coe_coe, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `s1` using `rdV_skew hs h1 hiso h1' x y`. Establish `s2` using `rdV_skew hs h1 hiso h2' x y`. Rewrite using `[s1, s2]`. Simplify using the standard rewrite rules. Introduce `Z hZ v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG : inG (PI.UpqRep.allPos k) Z` using `by simp [inG, Jm_allPos, hZ]`. Use `hasDerivAt_apply hs hG v` as an intermediate fact. Rewrite `this` using `[rdV_eq_sum hs hG]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_derived_action : ∀ (k : ℕ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     [FiniteDimensional ℂ W] (π : Matrix (Fin k) (Fin k) ℂ → (W →L[ℂ] W)),

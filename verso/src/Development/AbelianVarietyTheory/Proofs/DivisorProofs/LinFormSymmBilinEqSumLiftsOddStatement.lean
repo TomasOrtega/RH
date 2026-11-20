@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMul
 open GlobalTheory.PolFan GlobalTheory.LocM
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Poinc.linForm_eq_sum_lifts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLinFormSymmBilinEqSumLiftsOdd.lean&line=70#L70)
 -/

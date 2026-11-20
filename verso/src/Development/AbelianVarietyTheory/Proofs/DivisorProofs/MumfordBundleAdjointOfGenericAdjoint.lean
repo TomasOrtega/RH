@@ -18,27 +18,23 @@ namespace GlobalTheory.PoincAdj
 open GlobalTheory.CechPic GlobalTheory.ZH.EndoExtend GlobalTheory.UT GlobalTheory.Mum.Two
 
 /- English proof (translation)
-Introduce `R _ _ _ hB G _ _ hS D A U E E' hA`. Establish `hR : AdmBase R (maximalIdeal R)` using `hB.1`. Use `haveI : IsNoetherianRing R := hR.1`. Use `haveI : IsIntegrallyClosed R := hR.2.2.1`. Use `haveI := hS.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := hS.geomConnected`. Use `haveI := GlobalTheory.smooth_tensorObj_hom G G`. Use `haveI := GlobalTheory.geometricallyIntegral_tensorObj_hom G G`. Set `U₁` to `U.toUnifPre`. Set `δ` to `CartesianMonoidalCategory.prodComparison (Over.pullback (jK R)) G G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `u` to `lift (fst ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G) ≫ U₁.gen.hom) (snd ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G) ≫ U₁.gen.hom)`. Establish `hL` using `U₁.LG.isLB`. Establish `hAL` using `A.isLB`. Establish `hgen` using `U₁.gen_hom`. Establish `hc' : CechPic.pull (pullback.fst G.hom (jK R)) (cls U₁.LG.L hL) = CechPic.pull U₁.gen.hom.left (cls A.L hAL)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `U₁.ext`. Rewrite using `[← cls_pull hL _ (pull_isLB hL _), ← cls_pull hAL _ (pull_isLB hAL _)]`. Conclude with `((cls_eq_iff _ _).2 ⟨w, hw⟩).symm`. Establish `Aw : ∀ {Y Z : Over (Sp R)} (q : Y ⟶ Z), ((Over.pullback (jK R)).map q).left ≫ pullback.fst Z.hom (jK R) = pullback.fst Y.hom (jK R) ≫ q.left` using `fun q => pullback.lift_fst _ _ _`. Establish `hu : u.left ≫ (A.A ⊗ A.A).hom = ((Over.pullback (jK R)).obj G ⊗ (Over.pullback (jK R)).obj G).hom ≫ 𝟙 _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id]`. Conclude with `Over.w u`. Establish `key : ∀ (x y : G ⟶ G) (cx cy : A.A ⟶ A.A), Gen₀ U₁ U₁ x cx → Gen₀ U₁ U₁ y cy → CechPic.pull (pullback.fst (G ⊗ G).hom (jK R)) (cubeCls G ![fst G G ≫ x, snd G G ≫ y] (cls U₁.LG.L hL)) = CechPic.pull δ.left (CechPic.pull u.left (cubeCls A.A ![fst A.A A.A ≫ cx, snd A.A A.A ≫ cy] (cl …`. Introduce `x y cx cy hx hy`. Establish `e'` using `push_cubeCls (isGrpPullback_pullback G (jK R)) (T' := (Over.pullback (jK R)).obj (G ⊗ G)) (T := G ⊗ G) (fun i => (Over.pullback (jK R)).map (![fst G G ≫ x, snd G G ≫ y] i)) ![fst G G ≫ x, snd G G ≫ y] (pullback.fst (G ⊗ G).hom (jK R)) pullback.condition (fun i => Aw _) (cls U₁.LG …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `e'.trans ((pull_cubeCls _ ![fst _ _ ≫ (Over.pullback (jK R)).map x, snd _ _ ≫ (Over.pullback (jK R)).map y] _ δ (fun i => ?_) _).symm.trans ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [δ]`. Rewrite using `[hc']`. Use `congrArg (CechPic.pull δ.left) (push_cubeCls (isGrpPullback_of_iso U₁.gen) _ _ u.left hu (fun i => ?_) _).symm` and prove the remaining obligations. Use `fin_cases i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show ((fst _ _ ≫ (Over.pullback (jK R)).map x) ≫ U₁.gen.hom).left = (u ≫ fst A.A A.A ≫ cx).left`. Use `congr 1`. Simplify using `only [u, Category.assoc, lift_fst_assoc]`. Rewrite using `[hx]`. Use `show ((snd _ _ ≫ (Over.pullback (jK R)).map y) ≫ U₁.gen.hom).left = (u ≫ snd A.A A.A ≫ cy).left`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `only [u, Category.assoc, lift_snd_assoc]`. Rewrite using `[hy]`. Establish `g₁ : Gen₀ U₁ U₁ (𝟙 G) (𝟙 A.A)`. Unfold `Gen₀`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`. Establish `k₁` using `key E.aG (𝟙 G) E.aA (𝟙 A.A) E.ext g₁`. Establish `k₂` using `key (𝟙 G) E'.aG (𝟙 A.A) E'.aA g₁ E'.ext`. Simplify using `only [Category.comp_id] at k₁ k₂`. Establish `eA : cubeCls A.A ![fst A.A A.A ≫ E.aA, snd A.A A.A] (cls _ hAL) = cubeCls A.A ![fst A.A A.A, snd A.A A.A ≫ E'.aA] (cls _ hAL)` using `(cls_cubeLB A.A _ hAL).symm.trans (((cls_eq_iff _ _).2 hA).trans (cls_cubeLB A.A _ hAL))`.
-
-Use `GlobalTheory.Mum.lbIso_of_generic_local R (G ⊗ G) (η[G ⊗ G]).left (Over.w _) _ _ (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _) ?_` and prove the remaining obligations. Use `(cls_eq_iff (pull_isLB (LB.isLB_linComb hL _ _) _) (pull_isLB (LB.isLB_linComb hL _ _) _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull (LB.isLB_linComb hL _ _) _ (pull_isLB (LB.isLB_linComb hL _ _) _), cls_pull (LB.isLB_linComb hL _ _) _ (pull_isLB (LB.isLB_linComb hL _ _) _),`. Use the proof step `]`. Use `(congrArg (CechPic.pull _) (cls_cubeLB G ![fst G G ≫ E.aG, snd G G] hL)).trans ?_` and prove the remaining obligations.
-
-Use `Eq.trans ?_ (congrArg (CechPic.pull _) (cls_cubeLB G ![fst G G, snd G G ≫ E'.aG] hL)).symm` and prove the remaining obligations. Rewrite using `[k₁, k₂, eA]`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_adj_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (E E' : GlobalTheory.UT.EndU U.toUnifPre), LBIso (cubeLB A.A ![fst A.A A.A ≫ E.aA, snd A.A A.A] A.L) (cubeLB A.A ![fst A.A A.A, snd A.A A.A ≫ E'.aA] A.L) → LBIso (cubeLB G ![fst G G ≫ E.aG, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ E'.aG] U.LG.L) := by
   intro R _ _ _ hB G _ _ hS D A U E E' hA

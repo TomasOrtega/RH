@@ -21,7 +21,7 @@ private def Inj {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCom
   ∃ f : ρ.IntertwiningMap σ, Function.Injective f
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h₁`. Take `⟨g, hg⟩` from `h₂`. Conclude with `⟨g.comp f, hg.comp hf⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem Inj.trans {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup U] [Module ℂ U] {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {τ : Representation ℂ G U}
@@ -31,25 +31,25 @@ private theorem Inj.trans {G V W U : Type} [Group G] [AddCommGroup V] [Module �
   exact ⟨g.comp f, hg.comp hf⟩
 
 /- English proof (translation)
-The claim follows from `h.elim fun φ => ⟨φ.toIntertwiningMap, φ.toLinearEquiv.injective⟩`.
+A detailed English derivation is pending.
 -/
 private theorem Inj.of_eqv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Nonempty (ρ.Equiv σ)) : Inj ρ σ :=
   h.elim fun φ => ⟨φ.toIntertwiningMap, φ.toLinearEquiv.injective⟩
 
 /- English proof (translation)
-The claim follows from `h.elim fun f hf => IsSubquotient.of_injective f hf`.
+A detailed English derivation is pending.
 -/
 private theorem Inj.isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Inj ρ σ) : IsSubquotient ρ σ :=
   h.elim fun f hf => IsSubquotient.of_injective f hf
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Use `haveI := hσ`. Break down `Representation.IsIrreducible.injective_or_eq_zero (p.comp f) with h1 | h1` into its components or cases. Conclude with `Or.inr ⟨_, h1⟩`. Use `left`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ w, p (f w) = 0` using `fun w => by`. Establish `: (p.comp f) w = 0` using `by rw [h1]; rfl`. Conclude with `this`. Use `choose g hg using fun w => hex _ (h0 w)`. Set `L : W →ₗ[ℂ] V₁` to `{ toFun := g map_add' := fun a b => hι (by rw [map_add, hg, hg, hg, map_add]) map_smul' := fun c a => hι (by rw [map_smul, hg, hg, map_smul]; rfl) }`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨L, fun x => LinearMap.ext fun w => hι ?_⟩, fun a b hab => hf ?_⟩` and prove the remaining obligations. Use `show ι (g (σ x w)) = ι (ρ₁ x (g w))`. Rewrite using `[hg, Representation.IntertwiningMap.isIntertwining, Representation.IntertwiningMap.isIntertwining, hg]`. Establish `: g a = g b` using `hab`. Rewrite using `[← hg, ← hg, this]`.
+A detailed English derivation is pending.
 -/
 private theorem inj_dichotomy {G V W V₁ V₂ : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]
@@ -79,7 +79,7 @@ private theorem inj_dichotomy {G V W V₁ V₂ : Type} [Group G] [AddCommGroup V
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `h`. Establish `hι' : Function.Injective (compMap ι (leviTwo k a b).symm.toMonoidHom)` using `hι`. Conclude with `⟨_, parIndMap_injective (two e) _ hι'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem ind₂_inj {n : Type} [Fintype n] [DecidableEq n] {a b : Type} [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] (e : a ⊕ b ≃ n) {V₁ V : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V]
@@ -90,7 +90,7 @@ private theorem ind₂_inj {n : Type} [Fintype n] [DecidableEq n] {a b : Type} [
   exact ⟨_, parIndMap_injective (two e) _ hι'⟩
 
 /- English proof (translation)
-Establish `hι' : Function.Injective (compMap ι (leviTwo k a b).symm.toMonoidHom)` using `hι`. Establish `hex' : ∀ v, compMap p (leviTwo k a b).symm.toMonoidHom v = 0 → ∃ u, compMap ι (leviTwo k a b).symm.toMonoidHom u = v` using `hex`. Establish `h1` using `parIndMap_injective (two e) _ hι'`. Establish `h2` using `parIndMap_exact (two e) _ _ hι' hex'`. Conclude with `inj_dichotomy (parIndMap (two e) (compMap ι (leviTwo k a b).symm.toMonoidHom)) (parIndMap (two e) (compMap p (leviTwo k a b).symm.toMonoidHom)) hπ h1 h2 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ind₂_inj_dichotomy {n : Type} [Fintype n] [DecidableEq n] {a b : Type} [Fintype a] [DecidableEq a]
     [Fintype b] [DecidableEq b] (e : a ⊕ b ≃ n) {V₁ V V₂ U : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V]
@@ -109,7 +109,7 @@ private theorem ind₂_inj_dichotomy {n : Type} [Fintype n] [DecidableEq n] {a b
     (parIndMap (two e) (compMap p (leviTwo k a b).symm.toMonoidHom)) hπ h1 h2 h
 
 /- English proof (translation)
-The claim follows from `h.elim fun ι hι => ind₂_inj _ (extTensor_injective_left (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) B ι hι)`.
+A detailed English derivation is pending.
 -/
 private theorem inj_left {r t N : ℕ} (hN : r + t = N) {V V' W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W] [Module ℂ W] {A : Representation ℂ (GL (Fin r) k) V}
@@ -118,7 +118,7 @@ private theorem inj_left {r t N : ℕ} (hN : r + t = N) {V V' W : Type} [AddComm
   h.elim fun ι hι => ind₂_inj _ (extTensor_injective_left (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) B ι hι)
 
 /- English proof (translation)
-The claim follows from `h.elim fun ι hι => ind₂_inj _ (extTensor_injective_right (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) A ι hι)`.
+A detailed English derivation is pending.
 -/
 private theorem inj_right {r t N : ℕ} (hN : r + t = N) {V W W' : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (A : Representation ℂ (GL (Fin r) k) V)
@@ -127,7 +127,7 @@ private theorem inj_right {r t N : ℕ} (hN : r + t = N) {V W W' : Type} [AddCom
   h.elim fun ι hι => ind₂_inj _ (extTensor_injective_right (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) A ι hι)
 
 /- English proof (translation)
-Take `⟨ι, p, hι, hp, hpι, hex⟩` from `subQuot_exact (ρ := A) hTM hMS`. Take `⟨ι', p', hι', hex'⟩` from `extTensor_exact_left (F := ℂ) (G := GL (Fin r) k) (H := GL (Fin t) k) B ι p hι hp hpι hex`. Conclude with `ind₂_inj_dichotomy _ ι' p' hι' hex' hπ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem step_inj {r t N : ℕ} (hN : r + t = N) {U V W : Type} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup V] [Module ℂ V]
@@ -142,9 +142,7 @@ private theorem step_inj {r t N : ℕ} (hN : r + t = N) {U V W : Type} [AddCommG
   exact ind₂_inj_dichotomy _ ι' p' hι' hex' hπ h
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(hasFiniteLength_iff_wellFounded A).1 hA`. Use `exists_covBy_of_split (fun (S T : Subrepresentation A) => Inj π (ind₂ (stdSum hN) (extTensor (subQuot S T) B))) ?_ ?_ ⊤ ⊥ bot_le ?_` and prove the remaining obligations. Introduce `S hS haveI := subsingleton_subQuot_self S haveI := tensor_subsingleton_left (F := ℂ) (V := ↥S.toSubmodule ⧸ Submodule.comap S.toSubmodule.subtype S.toSubmodule) (W := W)`. Conclude with `not_isSubquotient_ind₂ _ _ hπ hS.isSubquotient`. Introduce `S M T hTM hMS hQ`.
-
-Conclude with `step_inj hN π A B hπ hTM hMS hQ`. Conclude with `Inj.trans h (inj_left hN B (subQuot_top_bot A))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_covBy_inj {r t N : ℕ} (hN : r + t = N) {U V W : Type} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup V] [Module ℂ V]
@@ -165,7 +163,7 @@ private theorem exists_covBy_inj {r t N : ℕ} (hN : r + t = N) {U V W : Type} [
   · exact Inj.trans h (inj_left hN B (subQuot_top_bot A))
 
 /- English proof (translation)
-Take `⟨a⟩` from `ind₂_congr (k := k) h₂ φ (eqv_refl π₃)`. Take `⟨b⟩` from `ind₂_assoc' (k := k) (rfl : r + s = r + s) h₂ h₃ h₄ π₁ π₂ π₃ s₁ s₂ s₃`. Take `⟨c⟩` from `ind₂_congr (k := k) h₄ (eqv_refl π₁) (eqv_symm ψ)`. Conclude with `⟨(a.trans b).trans c⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem assoc_eqv {r s t M N : ℕ} (h₂ : r + s + t = N) (h₃ : s + t = M) (h₄ : r + M = N)
     {V₁ V₂ V₃ U U' : Type} [AddCommGroup V₁] [Module ℂ V₁]
@@ -183,9 +181,9 @@ private theorem assoc_eqv {r s t M N : ℕ} (h₂ : r + s + t = N) (h₃ : s + t
   exact ⟨(a.trans b).trans c⟩
 
 /- English proof (translation)
-Establish `e3` using `e1.trans (inj_right h₄ π₁ e2)`. Establish `e4` using `e3.trans (Inj.of_eqv (eqv_symm (assoc_eqv h₂ h₃ h₄ π₁ π₂ π₃ P R φ ψ s₁ s₂ s₃)))`. Take `⟨S, T, hST, e5⟩` from `exists_covBy_inj h₂ π P π₃ hπ fP e4`. Establish `hs : IsSmooth (subQuot S T)` using `(isSubquotient_subQuot S T).isSmooth sP`. Establish `hi` using `isIrreducible_subQuot hST`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `χ : Nonempty ((subQuot S T).Equiv (IrrGL.of (subQuot S T) hs hi).rep)` using `⟨IrrGL.equivOf _ hs hi⟩`. Conclude with `⟨(IrrGL.of (subQuot S T) hs hi).2, (Inj.of_eqv (eqv_symm χ)).isSubquotient.trans (isSubquotient_subQuot S T), e5.trans (inj_left h₂ π₃ (Inj.of_eqv χ))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem main_gen {r s t M N : ℕ} (h₂ : r + s + t = N) (h₃ : s + t = M) (h₄ : r + M = N)
     {V₁ V₂ V₃ U U' X Z : Type} [AddCommGroup V₁] [Module ℂ V₁]
@@ -209,7 +207,7 @@ private theorem main_gen {r s t M N : ℕ} (h₂ : r + s + t = N) (h₃ : s + t 
     e5.trans (inj_left h₂ π₃ (Inj.of_eqv χ))⟩
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Conclude with `nonempty_prod₂_equiv_prodIrr_pair y z hd`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem pair_eqv (y z : IrrGL k) {N : ℕ} (hN : y.1 + z.1 = N) (hd : ∑ a, (![y, z] a).1 = N) :
     Nonempty ((ind₂ (stdSum hN) (extTensor y.rep z.rep)).Equiv (prodIrr ![y, z] hd)) := by
@@ -217,7 +215,7 @@ private theorem pair_eqv (y z : IrrGL k) {N : ℕ} (hN : y.1 + z.1 = N) (hd : �
   exact nonempty_prod₂_equiv_prodIrr_pair y z hd
 
 /- English proof (translation)
-Simplify using `[Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_pair (y z : IrrGL k) : ∑ a, (![y, z] a).1 = y.1 + z.1 := by
   simp [Fin.sum_univ_two]
@@ -226,11 +224,11 @@ end SlopeTestRemainingChoices
 
 open GlobalTheory.ParIndExact GlobalTheory.ProdReorder in
 /- English proof (translation)
-Introduce and unpack `- hBZ k _ _ _ _ x y z u w ⟨hd, hf⟩ ⟨hd', hg⟩`. Establish `h4 : y.1 + z.1 = x.1` using `(sum_pair y z).symm.trans hd`. Establish `h3 : u.1 + w.1 = z.1` using `(sum_pair u w).symm.trans hd'`. Establish `h2 : (y.1 + u.1) + w.1 = x.1` using `by omega`. Establish `e1 : Inj x.rep (ind₂ (stdSum h4) (extTensor y.rep z.rep))` using `Inj.trans hf (Inj.of_eqv (eqv_symm (pair_eqv y z h4 hd)))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `φ` using `nonempty_prod₂_equiv_prodIrr_pair y u (sum_pair y u)`. Establish `hA : HasFiniteLength (prod₂ y.rep u.rep)` using `GlobalTheory.ProdLength.prod₂_hasFiniteLength hBZ k _ _ _ _ y.rep u.rep (hasFiniteLength_of_isIrreducible y.2.rep.irr) (hasFiniteLength_of_isIrreducible u.2.rep.irr) y.2.rep.smooth u.2.rep.smooth`. Take `⟨c, hc, e2⟩` from `main_gen h2 h3 h4 y.rep u.rep w.rep (prod₂ y.rep u.rep) (prodIrr ![u, w] hd') (eqv_refl _) (eqv_symm (pair_eqv u w h3 hd')) y.2.rep.smooth u.2.rep.smooth w.2.rep.smooth (isSmooth_prod₂ _ _) hA x.rep x.2.rep.irr z.rep e1 hg`. Set `v : IrrGL k` to `⟨y.1 + u.1, c⟩`. Use `⟨v, ⟨sum_pair y u, jhMult_ne_zero_iff.2 ?_⟩, (sum_pair v w).trans h2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc.trans (Inj.of_eqv φ).isSubquotient`. Conclude with `e2.trans (Inj.of_eqv (pair_eqv v w h2 _))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Full.assocL :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x y z u w : IrrGL k), Emb x y z → Emb z u w → ∃ v, Occ v y u ∧ Emb x v w := by

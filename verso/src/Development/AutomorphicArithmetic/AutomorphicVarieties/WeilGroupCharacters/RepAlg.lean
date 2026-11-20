@@ -52,7 +52,7 @@ namespace GDet
 variable {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
 
 /- English proof (translation)
-Consider the cases of `D`. Consider the cases of `D'`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `B _ _`. Conclude with `MonoidHom.ext (h B)`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[ext] theorem ext {D D' : GDet n A G} (h : ∀ (B : Type) [CommRing B] [Algebra A B] (x), D.D B x = D'.D B x) : D = D' := by
   cases D; cases D'; congr; funext B _ _; exact MonoidHom.ext (h B)
@@ -127,7 +127,7 @@ def closureIdeal {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] (I : I
     (S ∪ {z | ∃ a ∈ I ^ N, z = MonoidAlgebra.single 1 a} ∪ {z | ∃ h ∈ H, z = MonoidAlgebra.single h 1 - 1})
 
 /- English proof (translation)
-The claim follows from `GDet.ofRep 1`.
+A detailed English derivation is pending.
 -/
 example (A G : Type) [CommRing A] [Group G] (n : ℕ) : GDet n A G := GDet.ofRep 1
 

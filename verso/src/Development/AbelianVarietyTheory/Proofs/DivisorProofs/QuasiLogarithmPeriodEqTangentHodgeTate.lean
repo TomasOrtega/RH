@@ -20,7 +20,7 @@ variable {p : ℕ} {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] {σ : Ty
 open MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[coeff_pderiv, coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem pderiv_map_algebraMap {B Q σ : Type} [CommRing B] [CommRing Q] [Algebra B Q]
     (k : σ) (g : MvPowerSeries σ B) :
@@ -31,11 +31,11 @@ private theorem pderiv_map_algebraMap {B Q σ : Type} [CommRing B] [CommRing Q] 
 open MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[coeff_subst (hasSubst_of_constantCoeff_zero (fun _ => by simp))]`. Rewrite using `[finsum_eq_single _ 0]`. Apply the tactic sequence `by_cases he : e = 0 <;> simp [coeff_C, coeff_one, he]`. Introduce `k hk`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `Finsupp.ne_iff.mp hk`. Establish `: (k.prod fun s n => (0 : MvPowerSeries τ Q) ^ n) = 0`. Apply `Finset.prod_eq_zero (i := s)` to reduce the goal to its premises. Simplify using `using hs`. Simplify `hs)]` using `[zero_pow (by simpa`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem subst_zero_eq_C_constantCoeff_divisor {σ τ Q : Type} [CommRing Q] [Finite σ] (h : MvPowerSeries σ Q) :
     subst (fun _ : σ => (0 : MvPowerSeries τ Q)) h = C (constantCoeff h) := by
@@ -55,53 +55,53 @@ private theorem subst_zero_eq_C_constantCoeff_divisor {σ τ Q : Type} [CommRing
 open MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Take `⟨hf0, hlin, hcob⟩` from `hf`. Take `⟨hμ0, hunit, hswap, -⟩` from `hμ`. Set `μQ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) Q` to `fun j => map (algebraMap B Q) (μ j)`. Establish `hμQ : _root_.GlobalTheory.QLog.up Q μ = μQ` using `rfl`. Establish `hμQ0 : ∀ j, constantCoeff (μQ j) = 0` using `fun j => by simp [μQ, constantCoeff_map, hμ0 j]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsμ : HasSubst μQ` using `hasSubst_of_constantCoeff_zero hμQ0`. Set `e : Fin d ⊕ Fin d → MvPowerSeries (Fin d) Q` to `Sum.elim (fun i => X i) (fun _ => 0)`. Apply the tactic sequence `have he : HasSubst e := hasSubst_of_constantCoeff_zero (by rintro (i | i) <;> simp [e])`. Set `eB : Fin d ⊕ Fin d → MvPowerSeries (Fin d) B` to `Sum.elim (fun i => X i) (fun _ => 0)`. Apply the tactic sequence `have heB : HasSubst eB := hasSubst_of_constantCoeff_zero (by rintro (i | i) <;> simp [eB])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hmape : (fun s => map (algebraMap B Q) (eB s)) = e`. Apply the tactic sequence `funext s; rcases s with i | i <;> simp [e, eB]`. Establish `hunitB : ∀ j, subst eB (μ j) = X j`. Introduce `j`. Use `congrFun hunit j` as an intermediate fact.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[_root_.GlobalTheory.Katz.op, _root_.GlobalTheory.Katz.at2, eB]`. Establish `hunitQ : ∀ j, subst e (μQ j) = X j`. Introduce `j`. Use `congrArg (map (algebraMap B Q)) (hunitB j)` as an intermediate fact. Rewrite `this` using `[map_subst heB, hmape, map_X]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hρμ : ∀ h : MvPowerSeries (Fin d) Q, subst e (subst μQ h) = h`. Introduce `h`. Rewrite using `[subst_comp_subst_apply hsμ he]`. Simplify using `only [hunitQ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrFun subst_self h`. Establish `hlinμ : ∀ i j, coeff (Finsupp.single (Sum.inr i) 1) (μ j) = if i = j then 1 else 0`. Introduce `i j`. Apply the tactic sequence `have hs1 : HasSubst (Sum.elim (fun _ : Fin d => (0 : MvPowerSeries (Fin d) B)) fun k : Fin d => X k) := hasSubst_of_constantCoeff_zero (by rintro (k | k) <;> simp)`. Apply the tactic sequence `have hs2 : HasSubst (Sum.elim (fun k => (X (Sum.inr k) : MvPowerSeries (Fin d ⊕ Fin d) B)) fun k => X (Sum.inl k)) := hasSubst_of_constantCoeff_zero (by rintro (k | k) <;> simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsw` using `congrArg (subst (Sum.elim (fun _ : Fin d => (0 : MvPowerSeries (Fin d) B)) fun k : Fin d => X k)) (hswap j)`. Unfold `_root_.GlobalTheory.Katz.swap _root_.GlobalTheory.Katz.at2 at hsw`. Rewrite `hsw` using `[subst_comp_subst_apply hs2 hs1]`. Establish `hfun : (fun s => subst (Sum.elim (fun _ : Fin d => (0 : MvPowerSeries (Fin d) B)) fun k : Fin d => X k) (Sum.elim (fun k => (X (Sum.inr k) : MvPowerSeries (Fin d ⊕ Fin d) B)) (fun k => X (Sum.inl k)) s)) = eB`. Use function extensionality and compare the values at `s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases s with k | k <;> simp [eB, subst_X hs1]`. Rewrite `hsw` using `[hfun, hunitB]`. Establish `hc` using `(_root_.GlobalTheory.coeff_subst_restrict_sum (μ j)).2 (Finsupp.single i 1)`. Rewrite `hc` using `[← hsw, Finsupp.mapDomain_single, coeff_X]`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Finsupp.single_left_inj]`. Set `M : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin d) B)` to `fun j i => subst eB (pderiv B (Sum.inr i) (μ j))`. Establish `hM : ∀ i j, constantCoeff (M i j) = if i = j then 1 else 0`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Use `(_root_.GlobalTheory.coeff_subst_restrict_sum (pderiv B (Sum.inr j) (μ i))).1 0` as an intermediate fact. Simplify using `only [M, eB]`. Rewrite using `[this, Finsupp.mapDomain_zero, coeff_pderiv, zero_add, hlinμ j i]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`. Establish `hmapsub : ∀ g : MvPowerSeries (Fin d ⊕ Fin d) B,`. Substitute `e (map (algebraMap B Q) g) = map (algebraMap B Q) (subst eB g) := by` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[map_subst heB, hmape]`. Establish `hchain : ∀ i, ∑ j, pderiv Q j f * map (algebraMap B Q) (M j i) =`. Substitute `e (pderiv Q (Sum.inr i) (subst μQ f)) := by` using the available equality. Introduce `i`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.GlobalTheory.PSChain.pderiv_subst_chain μQ hμQ0 f (Sum.inr i), ← coe_substAlgHom he, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, coe_substAlgHom, hρμ]`. Simplify using `only [M, μQ]`. Rewrite using `[pderiv_map_algebraMap, hmapsub]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ i, _root_.GlobalTheory.QLog.In (B` using `B) ⊤ (subst e (pderiv Q (Sum.inr i) (subst μQ f))) := by`. Introduce `i`. Take `⟨s₀, hs₀⟩` from `_root_.GlobalTheory.QLog.In.top_iff.1 hcob`. Establish `hdec : subst μQ f = map (algebraMap B Q) s₀ + _root_.GlobalTheory.Katz.inL f + _root_.GlobalTheory.Katz.inR f`. Rewrite using `[hs₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.GlobalTheory.Katz.cob1`. Rewrite using `[hμQ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hleft : pderiv Q (Sum.inr i) (_root_.GlobalTheory.Katz.inL f) = 0`. Unfold `_root_.GlobalTheory.Katz.inL`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[_root_.GlobalTheory.PSChain.pderiv_subst_chain _ (fun k => by simp) f (Sum.inr i)]`. Simplify using `[pderiv_X]`. Establish `hright : pderiv Q (Sum.inr i) (_root_.GlobalTheory.Katz.inR f) =`. Substitute `(fun k => (X (Sum.inr k) : MvPowerSeries (Fin d ⊕ Fin d) Q)) (pderiv Q i f) := by` using the available equality. Unfold `_root_.GlobalTheory.Katz.inR`.
+Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[_root_.GlobalTheory.PSChain.pderiv_subst_chain _ (fun k => by simp) f (Sum.inr i)]`. Simplify using `[pderiv_X, Pi.single_apply]`. Take `⟨b, -, hb⟩` from `hlin i`. Establish `hX : HasSubst (fun k => (X (Sum.inr k) : MvPowerSeries (Fin d ⊕ Fin d) Q))` using `hasSubst_of_constantCoeff_zero (fun k => by simp)`. Establish `hrr : subst e (subst (fun k => (X (Sum.inr k) : MvPowerSeries (Fin d ⊕ Fin d) Q)) (pderiv Q i f)) = map (algebraMap B Q) (C b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[subst_comp_subst_apply hX he]`. Establish `hz : (fun k : Fin d => subst e (X (Sum.inr k) : MvPowerSeries (Fin d ⊕ Fin d) Q)) = fun _ => 0`. Use function extensionality and compare the values at `k`. Rewrite using `[subst_X he]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hz, subst_zero_eq_C_constantCoeff_divisor, ← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`. Unfold `_root_.GlobalTheory.Katz.lin at hb`. Simplify using `[hb]`. Rewrite using `[_root_.GlobalTheory.QLog.In.top_iff]`. Use `⟨subst eB (pderiv B (Sum.inr i) s₀) + C b, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hdec]`. Simplify using `only [map_add]`. Rewrite using `[hleft, hright, add_zero, ← coe_substAlgHom he, map_add, coe_substAlgHom, hrr, pderiv_map_algebraMap, hmapsub]`. Establish `hsol` using `_root_.GlobalTheory.InvSolve.solve ⊤ M hM (fun j => pderiv Q j f) (fun i => subst e (pderiv Q (Sum.inr i) (subst μQ f))) hchain hg`. Introduce `α i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `hα : α i = 0`. Conclude with `⟨0, Submodule.mem_top, by simp [hα]⟩`. Take `⟨b, -, hb⟩` from `hsol i (α - Finsupp.single i 1)`. Use `⟨b, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Establish `hαe : α - Finsupp.single i 1 + Finsupp.single i 1 = α`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Finsupp.single_apply, Ne.symm hk]`. Establish `hαi : (((α - Finsupp.single i 1 : Fin d →₀ ℕ) i : ℕ) : Q) + 1 = (α i : Q)`. Establish `: (α - Finsupp.single i 1 : Fin d →₀ ℕ) i + 1 = α i` using `by simp; omega`. Rewrite using `[← this]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hb, coeff_pderiv, hαe, hαi, mul_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem dIn_univ_of_QL_of_isLaw {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B} (hμ : _root_.GlobalTheory.Katz.IsLaw μ)
@@ -239,11 +239,11 @@ private theorem dIn_univ_of_QL_of_isLaw {B Q : Type} [CommRing B] [CommRing Q] [
 open MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Proceed by induction on `k generalizing i with`. Consider the case `zero => simp [_root_.GlobalTheory.QLog.nmul]`. Consider the case `succ k ih`. Establish `hstep : _root_.GlobalTheory.QLog.nmul μ (k + 1) i = _root_.GlobalTheory.Katz.at2 (μ i) (_root_.GlobalTheory.QLog.nmul μ k) (fun j => X j)`. Unfold `_root_.GlobalTheory.QLog.nmul`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Function.iterate_succ_apply']`. Both sides reduce to the same expression. Rewrite using `[hstep]`. Unfold `_root_.GlobalTheory.Katz.at2`. Establish `ha : ∀ j : Fin d ⊕ Fin d, constantCoeff (Sum.elim (_root_.GlobalTheory.QLog.nmul μ k) (fun j => (X j : MvPowerSeries (Fin d) R)) j) = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce and unpack `(j | j)`. Conclude with `ih j`. Simplify using the standard rewrite rules. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero ha) ha (hμ i)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem constantCoeff_nmul_eq_zero {d : ℕ} {R : Type} [CommRing R]
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : ∀ i, constantCoeff (μ i) = 0) (k : ℕ) (i : Fin d) :
@@ -268,9 +268,9 @@ private theorem constantCoeff_nmul_eq_zero {d : ℕ} {R : Type} [CommRing R]
 open MvPowerSeries in
 set_option autoImplicit false in
 /- English proof (translation)
-Introduce `m`. Use `⟨0, fun N _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Establish `h0 : (fun i : Fin d => (algebraMap B Q) ((fun _ : Fin d => (0 : B)) i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `hf` using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[h0, MvPolynomial.eval_zero, MvPolynomial.constantCoeff_eq, MvPowerSeries.coeff_trunc']`. Simplify using `[hf]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hasVal_zero_of_constantCoeff_eq_zero {p : ℕ} {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] {d : ℕ}
     {f : MvPowerSeries (Fin d) Q} (hf : constantCoeff f = 0) :
@@ -287,25 +287,25 @@ open MvPowerSeries in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ hF f l hQL hLie t`. Establish `hF'` using `hF`. Take `⟨-, hinj, -, hpunit, -, -, -, -⟩` from `hF'`. Rewrite using `[c.hasPeriod_iff hF]`. Introduce `n z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, hsl⟩` from `(c.isLie_iff hinj f l).1 hLie n`. Take `⟨b₀, hb₀⟩` from `hsl (G.hodgeTate t) (WithConv.toConv (t.pt n).toLinearMap) (G.hodgeTate_val t n).symm`. Establish `hz' : ∀ i, z i = (t.pt n) (c.x n i)` using `hz`. Establish `hznil : ∀ i, ∃ N, (p : O) ∣ z i ^ N`. Introduce `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, a, ha⟩` from `c.5 n i`. Conclude with `⟨N, (t.pt n) a, by rw [hz', ← map_pow, ha, map_mul, map_natCast]⟩`. Set `Ez : MvPowerSeries (Fin d) O →ₐ[O] O` to `(t.pt n).comp (c.ev n)`. Establish `hEz : _root_.GlobalTheory.QLog.IsEval p z Ez`. Take `⟨hX, hc⟩` from `c.6 n`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => ?_, fun m => ?_⟩` and prove the remaining obligations. Simplify using `[Ez, hX, hz']`. Take `⟨N, hN⟩` from `hc m`. Use `⟨N, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hN g hg`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(t.pt n) a, by simp [Ez, ha, map_mul, map_pow, map_natCast]⟩`. Establish `hval_s` using `_root_.GlobalTheory.hasVal_map_of_isEval p O O E (RingHom.id O) hF (Fin d) z hznil Ez hEz s`. Rewrite `hval_s` using `[hs]`. Establish `hdiff : _root_.GlobalTheory.QLog.DIn (B` using `O) ⊤ f := dIn_univ_of_QL_of_isLaw c.12 hQL`. Establish `hu0 : ∀ j, constantCoeff (_root_.GlobalTheory.QLog.nmul c.μ (p ^ n) j) = 0` using `constantCoeff_nmul_eq_zero c.12.1 (p ^ n)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEu : (fun j => Ez (_root_.GlobalTheory.QLog.nmul c.μ (p ^ n) j)) = fun _ => (0 : O)`. Use function extensionality and compare the values at `j`. Simplify using `only [Ez, AlgHom.comp_apply]`. Rewrite using `[_root_.GlobalTheory.NMul.ev_nmul p C v O hv G d c n (p ^ n) j, G.mulBy_pow_self, c.9 n j, map_zero, map_zero]`. Establish `hval_sub` using `_root_.GlobalTheory.QLog.hasVal_subst p O O E (RingHom.id O) hF (Fin d) z hznil Ez hEz (Fin d) (_root_.GlobalTheory.QLog.nmul c.μ (p ^ n)) f 0 hu0 hdiff (by rw [hEu]; exact hasVal_zero_of_constantCoeff_eq_zero hQL.1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum` using `(_root_.GlobalTheory.QLog.ValLin.hasVal_add_smul_map p O O E (RingHom.id O) hF (Fin d) z _ _ _ _ hval_s).1 hval_sub`. Use `set u := (hpunit.pow n).unit with hu`. Establish `hsm` using `(_root_.GlobalTheory.QLog.ValLin.hasVal_add_smul_map p O O E (RingHom.id O) hF (Fin d) z _ 0 _ 0 hsum).2.1 (↑u⁻¹ : E)`. Establish `hpu : ((p : E)) ^ n = ↑u` using `(IsUnit.unit_spec _).symm`. Establish `hser : (↑u⁻¹ : E) • (_root_.GlobalTheory.QLog.defect c.μ (p ^ n) f +`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `(_root_.GlobalTheory.QLog.up E (_root_.GlobalTheory.QLog.nmul c.μ (p ^ n))) f) = f := by` using the available equality. Unfold `_root_.GlobalTheory.QLog.defect`. Rewrite using `[sub_add_cancel, smul_smul]`. Establish `hcast : (((p ^ n : ℕ)) : E) = ↑u` using `by rw [← hpu]; push_cast; rfl`. Rewrite using `[hcast, Units.inv_mul, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsm` using `[hser]`. Use `⟨_, hsm, -b₀, ?_⟩` and prove the remaining obligations. Establish `hE : Ez s = l (G.hodgeTate t) + (p : O) ^ n * -b₀`. Establish `h : Ez s = (WithConv.toConv (t.pt n).toLinearMap).ofConv ((c.ev n) s)` using `rfl`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-hb₀`. Rewrite using `[← hE, add_zero, ← mul_assoc, hpu, Units.mul_inv, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.QLogPeriod.hasPeriod_hodgeTate : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (G : _root_.GlobalTheory.PDivGroup p O) (d : ℕ) (c : _root_.GlobalTheory.QLog.Chart G d), ∀ (E : Type) [CommRing E] [Algebra O E], _root_.GlobalTheory.QLog.IsFrame p E (RingHom.id O) → ∀ (f : MvPowerSeries (Fin d) E) (l : G.dual.Lie), _root_.GlobalTheory.QLog.QL c.μ ⊤ f → c.IsLie f l → ∀ t : G.Tate, c.HasPeriod (RingHom.id O) t f (l (G.hodgeTate t)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv G d c E _ _ hF f l hQL hLie t

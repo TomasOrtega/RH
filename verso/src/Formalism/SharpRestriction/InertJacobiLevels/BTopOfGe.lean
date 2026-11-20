@@ -7,13 +7,13 @@ namespace Formalism.MainNotions.Inhab
 open Formalism.BasicNotions NumberField
 
 /- English proof (translation)
-Establish `hx : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `hb : 0 ≤ L.sc.b'`. Unfold `Scale.b' Scale.a Scale.b Scale.X'`. Check the signs of the components of the expression. Establish `hd : 0 ≤ L.sc.delta1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Unfold `Scale.delta1`. Check the signs of the components of the expression. Establish `e4 : L.sc.x ^ (2 * L.sc.eps) = L.sc.x ^ L.sc.eps * L.sc.x ^ L.sc.eps` using `by rw [two_mul, Real.rpow_add hx]`. Establish `hp : 0 ≤ L.sc.x ^ L.sc.eps` using `Real.rpow_nonneg hx.le _`. Unfold `bTopOf`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e4]`. Establish `h1 : L.sc.x ^ L.sc.eps * L.sc.x ^ L.sc.eps ≤ L.sc.x ^ L.sc.eps * L.LaG` using `mul_le_mul_of_nonneg_left h hp`. Establish `h2 : 2 * (D.R.n : ℝ) * L.sc.delta1 * (L.sc.x ^ L.sc.eps * L.sc.x ^ L.sc.eps) * L.sc.b' / (D.R.k : ℝ) ≤ 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / (D.R.k : ℝ)`. Apply `div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_right _ hb` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_assoc (2 * (D.R.n : ℝ) * L.sc.delta1) (L.sc.x ^ L.sc.eps) L.LaG]`. Conclude with `mul_le_mul_of_nonneg_left h1 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bTopOf_ge {D : D7} (L : SizeData₂ D) (h : L.sc.x ^ L.sc.eps ≤ L.LaG) :
     L.sc.b' + 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ (2 * L.sc.eps) * L.sc.b' / (D.R.k : ℝ) ≤ bTopOf L := by

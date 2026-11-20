@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.PolyTensor
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Finsupp.curry_apply, Finsupp.finset_sum_apply, Finset.sum_eq_single τ]`. Conclude with `Finsupp.mapDomain_apply (fun a b h => (Prod.mk.inj h).2) (v τ) x`. Introduce `σ _ hσ`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy⟩`. Conclude with `hσ (congrArg Prod.fst hy)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem curry_sum_mapDomain {ι β : Type} [Fintype ι] (v : ι → (β →₀ ℕ)) (τ : ι) :
     (∑ σ, Finsupp.mapDomain (fun x => (σ, x)) (v σ)).curry τ = v τ := by
@@ -37,11 +37,11 @@ def expEquiv (ι σ : Type) [Fintype ι] : (ι → (σ →₀ ℕ)) ≃ (ι × �
       simpa only [Finsupp.curry_apply] using this
 
 /- English proof (translation)
-Introduce `ι σ _`. Set `bT` to `Basis.piTensorProduct (fun _ : ι => MvPolynomial.basisMonomials σ ℂ)`. Set `e : (⨂[ℂ] _ : ι, MvPolynomial σ ℂ) ≃ₗ[ℂ] MvPolynomial (ι × σ) ℂ` to `bT.equiv (MvPolynomial.basisMonomials (ι × σ) ℂ) (expEquiv ι σ)`. Establish `key : e.toLinearMap.compMultilinearMap (PiTensorProduct.tprod ℂ) = (MultilinearMap.mkPiAlgebra ℂ ι (MvPolynomial (ι × σ) ℂ)).compLinearMap (fun τ => (rename (Prod.mk τ) : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial (ι × σ) ℂ).toLinearMap)`. Use `Module.Basis.ext_multilinear (fun _ => MvPolynomial.basisMonomials σ ℂ) fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.compMultilinearMap_apply, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, ← Basis.piTensorProduct_apply]`. Express the relevant statement in the definitionally equal form `bT.equiv (MvPolynomial.basisMonomials (ι × σ) ℂ) (expEquiv ι σ) (bT v) = _`. Rewrite using `[Module.Basis.equiv_apply]`. Simplify using `only [MvPolynomial.coe_basisMonomials, AlgHom.toLinearMap_apply, MvPolynomial.rename_monomial, expEquiv, Equiv.ofBijective_apply]`. Conclude with `MvPolynomial.monomial_sum_one _ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e, fun f => ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (fun F : MultilinearMap ℂ (fun _ : ι => MvPolynomial σ ℂ) _ => F f) key`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_piTensor_equiv : ∀ (ι σ : Type) [Fintype ι],
     ∃ e : (⨂[ℂ] _ : ι, MvPolynomial σ ℂ) ≃ₗ[ℂ] MvPolynomial (ι × σ) ℂ,

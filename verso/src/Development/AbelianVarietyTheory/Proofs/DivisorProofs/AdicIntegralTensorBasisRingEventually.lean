@@ -10,13 +10,11 @@ noncomputable section
 namespace GlobalTheory.AdicSpan
 
 /- English proof (translation)
-Introduce `A _ _ _ κ b`. Use `haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex b`. Establish `hc : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ t : κ × κ × κ, algebraMap ℚ (v.adicCompletion ℚ) (b.repr (b t.1 * b t.2.1) t.2.2) ∈ v.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun t => rat_mem_adicCompletionIntegers_eventually _`. Establish `h1 : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ k : κ, algebraMap ℚ (v.adicCompletion ℚ) (b.repr 1 k) ∈ v.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun k => rat_mem_adicCompletionIntegers_eventually _`. Establish `hfin` using `Filter.eventually_cofinite.1 (hc.and h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hfin.toFinset, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Take `⟨hcv, h1v⟩` from `hv`. Use `⟨fun k => ?_, fun y z hy hz k => ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.one_def, repr_tmul_apply, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1v k`. Rewrite using `[eq_sum_tmul b v y, eq_sum_tmul b v z, Finset.sum_mul_sum, map_sum, Finsupp.finset_sum_apply]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finsupp.finset_sum_apply]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, repr_tmul_apply]`. Conclude with `mul_mem (mul_mem (hy i) (hz j)) (hcv (i, j, k))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntB_one_mul_eventually : ∀ (A : Type) [Ring A] [Algebra ℚ A] [FiniteDimensional ℚ A] (κ : Type)
     (b : Module.Basis κ ℚ A),

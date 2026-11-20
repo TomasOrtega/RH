@@ -16,21 +16,21 @@ def atPlLin (w : ι) : Module.End ℂ (V w) →ₗ[ℂ] Module.End ℂ (⨂[ℂ]
   (PiTensorProduct.mapMultilinear ℂ V V).toLinearMap (fun _ => LinearMap.id) w
 
 /- English proof (translation)
-Simplify using `only [atPlLin, MultilinearMap.toLinearMap_apply, PiTensorProduct.mapMultilinear_apply, atPl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPlLin_apply (w : ι) (L : Module.End ℂ (V w)) : atPlLin w L = atPl w L := by
   simp only [atPlLin, MultilinearMap.toLinearMap_apply, PiTensorProduct.mapMultilinear_apply, atPl]
 
 /- English proof (translation)
-Rewrite using `[← atPlLin_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem atPl_zero (w : ι) : atPl w (0 : Module.End ℂ (V w)) = 0 := by
   rw [← atPlLin_apply, map_zero]
 
 /- English proof (translation)
-Unfold `atPl`. Rewrite using `[← PiTensorProduct.map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h, Function.update_of_ne h]`. Both sides reduce to the same expression.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem atPl_mul (w : ι) (L L' : Module.End ℂ (V w)) : atPl w (L * L') = atPl w L * atPl w L' := by
   unfold atPl
@@ -48,9 +48,9 @@ end Tensor
 variable {P Q R S : ℕ}
 
 /- English proof (translation)
-Unfold `heisOp`. Rewrite using `[smul_comm (r : ℂ) ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ)]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _`. Simplify using `only [Matrix.smul_apply, Complex.real_smul, star_mul', Complex.star_def, Complex.conj_ofReal, smul_sub, smul_smul]`. Apply the tactic sequence `congr 2 <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem heisOp_smul (r : ℝ) (c : Matrix (Ix P Q) (Ix R S) ℂ) : heisOp (r • c) = (r : ℂ) • heisOp c := by
   unfold heisOp
@@ -63,15 +63,15 @@ theorem heisOp_smul (r : ℝ) (c : Matrix (Ix P Q) (Ix R S) ℂ) : heisOp (r •
   congr 2 <;> ring
 
 /- English proof (translation)
-Simplify using `using heisOp_smul (P := P) (Q := Q) (R := R) (S := S) 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem heisOp_zero : heisOp (0 : Matrix (Ix P Q) (Ix R S) ℂ) = 0 := by
   simpa using heisOp_smul (P := P) (Q := Q) (R := R) (S := S) 0 0
 
 /- English proof (translation)
-Unfold `sumPl`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using the standard rewrite rules. Introduce `b _ hb dsimp only`. Rewrite using `[Pi.single_eq_of_ne hb, heisOp_zero, atPl_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sumPl_single {ι : Type} [Fintype ι] [DecidableEq ι] (w : ι) (M : Matrix (Ix P Q) (Ix R S) ℂ) :
     sumPl (V := fun _ : ι => Pol P Q R S) (fun w' => heisOp ((Pi.single w M : ι → Matrix (Ix P Q) (Ix R S) ℂ) w')) = atPl w (heisOp M) := by
@@ -92,13 +92,13 @@ variable {P Q R S : ℕ}
 def sgn (a : Ix P Q) (b : Ix R S) : ℝ := (lineSign a b).re
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [sgn, lineSign]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lineSign_eq_sgn (a : Ix P Q) (b : Ix R S) : lineSign a b = ((sgn a b : ℝ) : ℂ) := by
   rcases a with a | a <;> rcases b with b | b <;> simp [sgn, lineSign]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [sgn, lineSign]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self (a : Ix P Q) (b : Ix R S) : sgn a b * sgn a b = 1 := by
   rcases a with a | a <;> rcases b with b | b <;> simp [sgn, lineSign]
@@ -109,9 +109,9 @@ def eS (w : ι) (a : Ix P Q) (b : Ix R S) (x : ℂ) : ι → Matrix (Ix P Q) (Ix
   Pi.single w (Matrix.single a b x)
 
 /- English proof (translation)
-Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Simplify using `only [eS, Pi.single_eq_same, Matrix.single_apply, true_and]`. Distinguish the cases in `h : a' = a ∧ b' = b`. Rewrite using `[if_pos h, if_pos ⟨h.1.symm, h.2.symm⟩]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h'.1.symm, h'.2.symm⟩)]`. Simplify using `[eS, hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eS_apply (w : ι) (a : Ix P Q) (b : Ix R S) (x : ℂ) (w' : ι) (a' : Ix P Q) (b' : Ix R S) :
     eS w a b x w' a' b' = if w' = w ∧ a' = a ∧ b' = b then x else 0 := by
@@ -124,7 +124,7 @@ theorem eS_apply (w : ι) (a : Ix P Q) (b : Ix R S) (x : ℂ) (w' : ι) (a' : Ix
   · simp [eS, hw]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single w, Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using `[eS_apply]`. Apply the tactic sequence `all_goals first`. Consider the case `(intro y _ hy; simp [eS_apply, hy, Ne.symm hy]; done)`. Consider the case `simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sum_eS (w : ι) (a : Ix P Q) (b : Ix R S) (x : ℂ) (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) :
     (∑ w', ∑ a', ∑ b', lineSign a' b' * eS w a b x w' a' b' * star (c w' a' b')) =
@@ -136,9 +136,9 @@ theorem sum_eS (w : ι) (a : Ix P Q) (b : Ix R S) (x : ℂ) (c : ι → Matrix (
     | simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use extensionality with `a b`. Simplify using `only [Finset.sum_apply, Matrix.sum_apply, Pi.add_apply, Pi.smul_apply, Matrix.add_apply, Matrix.smul_apply]`. Rewrite using `[Finset.sum_eq_single w, Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using `only [eS_apply, and_self, if_true, Complex.real_smul, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Complex.re_add_im _).symm`. Apply the tactic sequence `all_goals first`. Consider the case `(intro y _ hy; simp [eS_apply, hy, Ne.symm hy]; done)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem decomp (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) :
     c = ∑ w, ∑ a, ∑ b, ((c w a b).re • eS w a b 1 + (c w a b).im • eS w a b Complex.I) := by
@@ -167,11 +167,11 @@ def cv (i : ι × Ix P Q × Ix R S × Bool) : ι → Matrix (Ix P Q) (Ix R S) �
   if i.2.2.2 then eS i.1 i.2.1 i.2.2.1 Complex.I else eS i.1 i.2.1 i.2.2.1 1
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `φ.surjective x`. Establish `e1 : ∀ i, sympl (φ (cv i)) (φ c) • φ (cu i) = φ (sympl (φ (cv i)) (φ c) • cu i)` using `fun i => (map_smul φ _ _).symm`. Simplify using `only [e1, ← map_sum]`. Use `congr 1`. Use `conv_rhs => rw [decomp c]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, cu, cv, if_true, Bool.false_eq_true, if_false, hφ, sum_eS]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, lineSign_eq_sgn]`. Establish `h2` using `sgn_mul_self a b`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.mul_im, Complex.mul_re]`. Take the linear combination `(c w a b).re * h2`. Simplify using `[Complex.mul_im, Complex.mul_re]`. Take the linear combination `(c w a b).im * h2`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dual {l : Type} [Fintype l] (φ : (ι → Matrix (Ix P Q) (Ix R S) ℂ) ≃ₗ[ℝ] (l ⊕ l → ℝ))
     (hφ : ∀ c c', sympl (φ c) (φ c') = 2 * (∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im)
@@ -193,7 +193,7 @@ theorem dual {l : Type} [Fintype l] (φ : (ι → Matrix (Ix P Q) (Ix R S) ℂ) 
     linear_combination (c w a b).im * h2
 
 /- English proof (translation)
-Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using `only [cu, eS, if_true, Bool.false_eq_true, if_false, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_mul]`. Simplify using `[cu, eS, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cu_true_mul (Y : ι → Mat R S) (w : ι) (a : Ix P Q) (b : Ix R S) (w' : ι) :
     cu (w, a, b, true) w' * (Y w')ᵀ =
@@ -204,7 +204,7 @@ theorem cu_true_mul (Y : ι → Mat R S) (w : ι) (a : Ix P Q) (b : Ix R S) (w' 
   · simp [cu, eS, h]
 
 /- English proof (translation)
-Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using `only [cu, eS, if_true, Bool.false_eq_true, if_false, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_mul]`. Simplify using `[cu, eS, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cu_false_mul (Y : ι → Mat R S) (w : ι) (a : Ix P Q) (b : Ix R S) (w' : ι) :
     cu (w, a, b, false) w' * (Y w')ᵀ =
@@ -215,21 +215,21 @@ theorem cu_false_mul (Y : ι → Mat R S) (w : ι) (a : Ix P Q) (b : Ix R S) (w'
   · simp [cu, eS, h]
 
 /- English proof (translation)
-Simplify using `[cv, eS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cv_true (w : ι) (a : Ix P Q) (b : Ix R S) :
     cv (w, a, b, true) = (Pi.single w (Matrix.single a b Complex.I) : ι → Matrix (Ix P Q) (Ix R S) ℂ) := by
   simp [cv, eS]
 
 /- English proof (translation)
-Simplify using `[cv, eS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cv_false (w : ι) (a : Ix P Q) (b : Ix R S) :
     cv (w, a, b, false) = (Pi.single w (Matrix.single a b (1 : ℂ)) : ι → Matrix (Ix P Q) (Ix R S) ℂ) := by
   simp [cv, eS]
 
 /- English proof (translation)
-Simplify using `only [atPlLin_apply, atPl_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPlLin_mul {V : ι → Type} [∀ i, AddCommGroup (V i)]
     [∀ i, Module ℂ (V i)] (w : ι) (L L' : Module.End ℂ (V w)) :
@@ -241,13 +241,13 @@ end GlobalTheory.RealLift.QuadFock
 namespace GlobalTheory.RealLift.QuadFock
 
 /- English proof (translation)
-Introduce `H1 H2 ι l _ _ _ _ P Q R S φ hφ Ψ hΨ Y hY Z hZ T`. Establish `hq` using `H1 l (ι × Ix P Q × Ix R S × Bool) Z (fun i => φ (cu i)) (fun i => φ (cv i)) (dual φ hφ)`. Establish `hop : sumPl (V` using `fun _ : ι => Pol P Q R S) (fun w => fockAct2 P Q R S (Y w)) = (4 * Real.pi * Complex.I : ℂ)⁻¹ • ∑ i, (1 / 2 : ℂ) • (sumPl (V := fun _ : ι => Pol P Q R S) (fun w => heisOp (cu i w * (Y w)ᵀ)) * sumPl (V := fun _ : ι => Pol P Q R S) (fun w => heisOp (cv i w)) + sumPl (V := fun _ : ι …`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, cu_true_mul, cu_false_mul, cv_true, cv_false, sumPl_single, heisOp_smul]`. Unfold `sumPl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[H2 P Q R S (Y w) (hY w)]`. Simplify using `only [← atPlLin_apply, map_smul, map_sum, map_sub, map_add, atPlLin_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[lineSign_eq_sgn]`. Simplify using `only [smul_mul_assoc, mul_smul_comm]`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `module`. Rewrite using `[hop, hq]`. Use `clear H1 H2 hq hop hφ hY`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.mul_apply, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.add_apply, Module.End.mul_apply, map_smul, map_sum, map_add, hΨ, hZ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quad_fock : (∀ (l κ : Type) [Fintype l] [DecidableEq l] [Fintype κ] (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (u v : κ → (l ⊕ l → ℝ)),
     (∀ w, ∑ i, sympl (v i) w • u i = w) →

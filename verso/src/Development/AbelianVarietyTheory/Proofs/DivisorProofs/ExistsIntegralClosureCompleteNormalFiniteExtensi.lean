@@ -20,21 +20,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `V₀ _ _ _ hV L _ _ _`. Take `⟨hN, hIC, hC, hCZ⟩` from `hV`. Use `haveI := hN`. Use `haveI := hIC`. Use `haveI := hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI := hCZ`. Set `K₀` to `FractionRing V₀`. Use `letI : Algebra V₀ L := ((algebraMap K₀ L).comp (algebraMap V₀ K₀)).toAlgebra`. Use `haveI : IsScalarTower V₀ K₀ L := .of_algebraMap_eq fun _ => rfl`. Use `haveI : CharZero K₀ := IsFractionRing.charZero_of_isFractionRing V₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap K₀ L).injective`. Use `haveI : Algebra.IsSeparable K₀ L := inferInstance`. Set `V₁` to `integralClosure V₀ L`. Use `haveI : Module.Finite V₀ V₁ := IsIntegralClosure.finite V₀ K₀ L V₁`. Use `haveI hN₁ : IsNoetherianRing V₁ := IsIntegralClosure.isNoetherianRing V₀ K₀ L V₁`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsFractionRing V₁ L := IsIntegralClosure.isFractionRing_of_finite_extension V₀ K₀ L V₁`. Use `haveI : IsIntegrallyClosed V₁ := integralClosure.isIntegrallyClosedOfFiniteExtension K₀`. Use `haveI : HenselianLocalRing V₀ := GlobalTheory.henselianLocalRing_of_isAdicComplete V₀`. Use `haveI : IsLocalRing V₁ := GlobalTheory.TameKummer.isLocalRing_of_finite V₀ V₁`. Establish `hinj : Function.Injective (algebraMap V₀ V₁)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b h`. Establish `h'` using `congrArg (algebraMap V₁ L) h`. Rewrite `h'` using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply V₀ K₀ L, IsScalarTower.algebraMap_apply V₀ K₀ L b]`. Conclude with `IsFractionRing.injective V₀ K₀ ((algebraMap K₀ L).injective h')`. Use `haveI : CharZero V₁ := charZero_of_injective_algebraMap hinj`.
-
-Use `haveI : IsLocalHom (algebraMap V₀ V₁) := by`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `hm : (maximalIdeal V₁).comap (algebraMap V₀ V₁) = maximalIdeal V₀` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _)`. Establish `hmem : a ∈ (maximalIdeal V₁).comap (algebraMap V₀ V₁)`.
-
-Rewrite using `[hm]`. Conclude with `hna`. Conclude with `hmem ha`. Establish `hcompl : IsAdicComplete (maximalIdeal V₁) V₁` using `GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local V₀ V₁`. Set `e : L ≃ₐ[V₁] FractionRing V₁` to `IsLocalization.algEquiv (nonZeroDivisors V₁) L (FractionRing V₁)`.
-
-Use `⟨V₁, inferInstance, inferInstance, inferInstance, algebraMap V₀ V₁, e.toRingEquiv.toRingHom, ⟨hN₁, inferInstance, hcompl, inferInstance⟩, hinj, RingHom.finite_algebraMap.mpr inferInstance, inferInstance, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : algebraMap K₀ L (algebraMap V₀ K₀ x) = algebraMap V₁ L (algebraMap V₀ V₁ x)`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgEquiv.coe_ringEquiv]`. Rewrite using `[hx, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integralClosure_isCN_finite_local : ∀ (V₀ : Type) [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀], IsCN V₀ → ∀ (L : Type) [Field L] [Algebra (FractionRing V₀) L] [FiniteDimensional (FractionRing V₀) L], ∃ (V₁ : Type) (_ : CommRing V₁) (_ : IsDomain V₁) (_ : IsLocalRing V₁) (ρ : V₀ →+* V₁) (σ : L →+* FractionRing V₁), IsCN V₁ ∧ Function.Injective ρ ∧ ρ.Finite ∧ IsLocalHom ρ ∧ ∀ x : V₀, σ (algebraMap (FractionRing V₀) L (algebraMap V₀ (FractionRing V₀) x)) = algebraMap V₁ (FractionRing V₁) (ρ x) := by
   intro V₀ _ _ _ hV L _ _ _

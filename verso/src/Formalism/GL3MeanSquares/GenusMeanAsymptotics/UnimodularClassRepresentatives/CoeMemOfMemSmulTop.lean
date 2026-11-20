@@ -7,13 +7,13 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.L3.D2
 
 /- English proof (translation)
-Use `show Nat.card (S ⧸ H.subgroupOf S) = _`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.ofBijective (fun q => Quotient.liftOn' q (fun a : S => (⟨f a, a, a.2, rfl⟩ : {c : α // ∃ a ∈ S, f a = c})) ?_) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show f a = f b`. Establish `hab' : a⁻¹ * b ∈ H.subgroupOf S` using `QuotientGroup.leftRel_apply.mp hab`. Rewrite `hab'` using `[Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `(hf a a.2 b b.2).mpr hab'`. Introduce `q₁ q₂ e`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `q₁ using QuotientGroup.induction_on with`. Consider the case `H a`. Proceed by induction on `q₂ using QuotientGroup.induction_on with`. Consider the case `H b`. Establish `e' : f a = f b` using `congrArg Subtype.val e`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `(hf a a.2 b b.2).mp e'`. Introduce and unpack `⟨c, a, ha, rfl⟩`. Conclude with `⟨QuotientGroup.mk ⟨a, ha⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_eq_card_image {G α : Type*} [Group G] (H S : Subgroup G) (f : G → α)
     (hf : ∀ a ∈ S, ∀ b ∈ S, f a = f b ↔ a⁻¹ * b ∈ H) :
@@ -45,9 +45,9 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Rewrite using `[mem_glSub]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[autSub_gmap_mul, ← e, ← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show b = a * (a⁻¹ * b) from (mul_inv_cancel_left a b).symm, autSub_gmap_mul a, e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem gmap_eq_iff (a b : V ≃ₗ[K] V) (B : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap a B = Formalism.HermitianLatticesTheory.gmap b B ↔ a⁻¹ * b ∈ glSub B := by
@@ -59,7 +59,7 @@ theorem gmap_eq_iff (a b : V ≃ₗ[K] V) (B : Submodule (𝓞 K) V) :
     rw [show b = a * (a⁻¹ * b) from (mul_inv_cancel_left a b).symm, autSub_gmap_mul a, e]
 
 /- English proof (translation)
-Introduce `X hX` and use `⟨hX.2, fun x _ y _ => by rw [hX.1 x y, sub_self] exact Submodule.zero_mem _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem autSub_le_sSub (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ) :
     autSub h A ≤ sSub h A 𝔭 k := fun X hX => ⟨hX.2, fun x _ y _ => by
@@ -67,7 +67,7 @@ theorem autSub_le_sSub (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K
   exact Submodule.zero_mem _⟩
 
 /- English proof (translation)
-Establish `h2` using `Submodule.mem_map_of_mem (f := A.subtype) hu`. Rewrite `h2` using `[Submodule.map_smul'', Submodule.map_subtype_top]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coe_mem_of_mem_smul_top (I : Ideal (𝓞 K)) (A : Submodule (𝓞 K) V) {u : ↥A}
     (hu : u ∈ (I • ⊤ : Submodule (𝓞 K) ↥A)) : (u : V) ∈ I • A := by
@@ -75,19 +75,17 @@ theorem coe_mem_of_mem_smul_top (I : Ideal (𝓞 K)) (A : Submodule (𝓞 K) V) 
   rwa [Submodule.map_smul'', Submodule.map_subtype_top] at h2
 
 /- English proof (translation)
-Take `⟨hXg, hXh⟩` from `hX`. Use `set A := locF 𝔭 A₀ with hA`. Set `f : ↥A →ₗ[𝓞 K] ↥A` to `(((X : V →ₗ[K] V).restrictScalars (𝓞 K)).domRestrict A).codRestrict A (fun x => apply_mem hXg x.2)`. Establish `hf : ∀ x : ↥A, ((f x : ↥A) : V) = X x` using `fun x => rfl`. Set `Xb : Module.End (𝓞 K) (↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A))` to `Submodule.mapQ _ _ f (Submodule.smul_top_le_comap_smul_top _ f)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ x x' : ↥A, Submodule.Quotient.mk x' = Xb (Submodule.Quotient.mk x) → (x' : V) - X x ∈ extP K 𝔭 ^ k • A`. Introduce `x x' hx`. Establish `h1 : x' - f x ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A)`. Rewrite using `[← Submodule.Quotient.eq]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `coe_mem_of_mem_smul_top _ _ h1`. Establish `h0 : ∀ {z : V}, z ∈ A → z ∈ extP K 𝔭 ^ 0 • A` using `fun hz => by rwa [pow_zero_smul]`. Take `⟨g, hg, hgX⟩` from `exists_isom_lift hK hF hs hd hA₀ hA₀i h𝔭 hk Xb (by`. Introduce `x y x' y' hx hy`. Rewrite using `[congrP_algebraMap_iff_sub_mem h𝔭]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `key x x' hx`. Establish `hv` using `key y y' hy`. Establish `e1 : h (x' : V) (y' : V) - h (x : V) (y : V) = (h (X x) (X y) - h (x : V) (y : V)) + h ((x' : V) - X x) (y' : V) + h (X x) ((y' : V) - X y)`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e1]`. Use `add_mem (add_mem (hXh x x.2 y y.2) ?_) ?_` and prove the remaining obligations. Simplify using `using form_mem_pK hF hA₀i h𝔭 hu (h0 y'.2)`. Simplify using `using form_mem_pK hF hA₀i h𝔭 (h0 (apply_mem hXg x.2)) hv)`. Use `⟨g, hg, mul_mem (inv_mem hg.2) hXg, fun x hx => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hgX ⟨x, hx⟩ (f ⟨x, hx⟩) rfl`. Establish `h2` using `apply_mem_smul (inv_mem (show g ∈ glSub A from hg.2)) _ ((Submodule.neg_mem _ h1))`. Establish `e : ∀ z : V, g⁻¹ (g z) = z` using `fun z => by`. Rewrite using `[← LinearEquiv.mul_apply, inv_mul_cancel]`. Both sides reduce to the same expression.
-
-Simplify `h2` using `[e, hf]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_autSub_mul_nSub (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
@@ -134,9 +132,9 @@ theorem exists_autSub_mul_nSub (hK : Formalism.HermitianLatticesTheory.IsCMUnram
   simpa [e, hf] using h2
 
 /- English proof (translation)
-Take `⟨k₁, hk₁⟩` from `nSub_le_glSub hA₀ hB₀ h𝔭`. Use `⟨eA h (locF 𝔭 A₀) 𝔭 + 1 + k₁, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.inf_relIndex_left, relIndex_eq_card_image _ _ (fun X => Formalism.HermitianLatticesTheory.gmap X (locF 𝔭 B₀)) (fun a _ b _ => gmap_eq_iff a b _)]`. Unfold `orbCount`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun C => ⟨?_, ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨X, hX, rfl⟩`. Take `⟨g, hg, hY⟩` from `exists_autSub_mul_nSub hK hF hs hd hA₀ hA₀i h𝔭 (by omega) hX`. Conclude with `⟨g, hg.1, hg.2, (gmap_eq_iff g X _).2 (hk₁ _ (by omega) hY)⟩`. Introduce and unpack `⟨g, hg, hgA, rfl⟩`. Conclude with `⟨g, autSub_le_sSub h _ 𝔭 k ⟨hg, hgA⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem relIndex_inf_glSub (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}

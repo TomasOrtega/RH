@@ -13,7 +13,7 @@ namespace GlobalTheory.CM.LieChar
 variable {R : Type} [CommRing R] {G G' : Over (Sp R)} [GrpObj G] [GrpObj G']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Simplify using `using hu 0`. Introduce `h`. Conclude with `⟨![w], fun i => by fin_cases i; exact h, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isLieComb_one_iff (c : R) (v w : epsR R ⟶ G) :
     IsLieComb ![c] ![v] w ↔ w.left = spMap (epsScaleR c) ≫ v.left := by
@@ -24,7 +24,7 @@ theorem isLieComb_one_iff (c : R) (v w : epsR R ⟶ G) :
     exact ⟨![w], fun i => by fin_cases i; exact h, by simp⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[isLieComb_one_iff]`. Simplify using `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isLieComb_comp {c : R} {v w : epsR R ⟶ G} (h : IsLieComb ![c] ![v] w) (f : G ⟶ G') :
     IsLieComb ![c] ![v ≫ f] (w ≫ f) := by
@@ -32,7 +32,7 @@ theorem isLieComb_comp {c : R} {v w : epsR R ⟶ G} (h : IsLieComb ![c] ![v] w) 
   simp [h]
 
 /- English proof (translation)
-Unfold `IsTangent at h ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, h, ← Over.comp_left, IsMonHom.one_hom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_comp {v : epsR R ⟶ G} (h : IsTangent v) (f : G ⟶ G') [IsMonHom f] :
     IsTangent (v ≫ f) := by
@@ -40,7 +40,7 @@ theorem isTangent_comp {v : epsR R ⟶ G} (h : IsTangent v) (f : G ⟶ G') [IsMo
   rw [Over.comp_left, ← Category.assoc, h, ← Over.comp_left, IsMonHom.one_hom]
 
 /- English proof (translation)
-Establish `: epsScaleR (1 : R) = RingHom.id _`. Apply the tactic sequence `ext x <;> simp [epsScaleR]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_epsScaleR_one : spMap (epsScaleR (1 : R)) = 𝟙 _ := by
   have : epsScaleR (1 : R) = RingHom.id _ := by
@@ -49,25 +49,21 @@ theorem spMap_epsScaleR_one : spMap (epsScaleR (1 : R)) = 𝟙 _ := by
   exact Spec.map_id _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨![x, y], fun i => by fin_cases i <;> simp [spMap_epsScaleR_one], by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLieComb_mul (x y : epsR R ⟶ G) : IsLieComb ![(1 : R), 1] ![x, y] (x * y) :=
   ⟨![x, y], fun i => by fin_cases i <;> simp [spMap_epsScaleR_one], by simp⟩
 
 /- English proof (translation)
-Establish `ht : ∀ c, IsTangent (v ≫ act.act c)` using `fun c => by haveI := act.hom c`. Conclude with `isTangent_comp (hv.1 0) _`. Establish `e1 : ∀ d : Fin 1 → R, d = ![d 0]` using `fun d => by`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `choose d hd hu using fun c => hv.2 _ (ht c)`. Establish `hτ : ∀ c, IsLieComb ![d c 0] ![v] (v ≫ act.act c)` using `fun c => by`. Rewrite using `[← e1]`. Conclude with `hd c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `huq : ∀ c r, IsLieComb ![r] ![v] (v ≫ act.act c) → d c 0 = r` using `fun c r h => by`. Rewrite using `[← hu c _ h]`. Both sides reduce to the same expression. Take `⟨-, -, hcomp, -, -⟩` from `GlobalTheory.LieComb.lieComb_algebra R G 1 ![v] hv.1`. Establish `hone : d 1 0 = 1` using `huq _ _ (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isLieComb_one_iff, act.one, spMap_epsScaleR_one]`. Use the proof step `simp)`. Establish `hmul : ∀ a b, d (a * b) 0 = d a 0 * d b 0` using `fun a b => huq _ _ (by`. Use `hcomp 1 ![![d b 0]] ![v ≫ act.act b] ![d a 0] _ (fun i => by fin_cases i; exact hτ b) (isLieComb_comp (hτ a) (act.act b))` as an intermediate fact. Rewrite using `[act.mul, ← Category.assoc]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Use the proof step `simp)`. Establish `hadd : ∀ a b, d (a + b) 0 = d a 0 + d b 0` using `fun a b => huq _ _ (by`.
-
-Use `hcomp 2 ![![d a 0], ![d b 0]] ![v ≫ act.act a, v ≫ act.act b] ![1, 1] _ (fun i => by fin_cases i` as an intermediate fact. Conclude with `hτ a`. Conclude with `hτ b) (isLieComb_mul _ _)`. Rewrite using `[act.add, MonObj.comp_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Use the proof step `simp)`. Conclude with `⟨RingHom.mk' ⟨⟨fun c => d c 0, hone⟩, hmul⟩ hadd, hτ, huq⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_char [IsCommMonObj G] {O : Type} [CommRing O] (act : OAct O G) {v : epsR R ⟶ G}
     (hv : IsLieBasis ![v]) :
@@ -104,7 +100,7 @@ theorem exists_char [IsCommMonObj G] {O : Type} [CommRing O] (act : OAct O G) {v
   exact ⟨RingHom.mk' ⟨⟨fun c => d c 0, hone⟩, hmul⟩ hadd, hτ, huq⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ ω C`. Take `⟨τ, h, hu⟩` from `exists_char C.act C.basis`. Conclude with `⟨τ, hu _ _ C.eig, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ell_char : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (ω : R)
     (C : Ell H R ω), ∃ τ₀ : OK H →+* R, τ₀ (wK H) = ω ∧ ∀ c, IsLieComb ![τ₀ c] ![C.v] (C.v ≫ C.act.act c) := by

@@ -31,7 +31,7 @@ omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Finty
   [DecidableEq b] [DecidableEq c] [DecidableEq d] in
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, ← e.sum_comp, Fintype.sum_sum_type]`. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.mul_apply_of_cols {n : Type} (e : c ⊕ d ≃ a) {x : Matrix b a k} (hx : ∀ i j, x i (e (.inr j)) = 0)
     (g : Matrix a n k) (i : b) (l : n) : (x * g) i l = ∑ m, x i (e (.inl m)) * g (e (.inl m)) l := by
@@ -48,7 +48,7 @@ variable {a b c d : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b
   [Fintype d] [DecidableEq d] in
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.RankStrataProof.rAct _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.act`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.rAct_val (s : Set ℕ) (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s) (g : GL a k) : (_root_.GlobalTheory.RankStrataProof.rAct s x g).1 = x.1 * g.val := by
   unfold _root_.GlobalTheory.RankStrataProof.rAct _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.act
@@ -61,7 +61,7 @@ variable {a b c d : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b
   [Fintype d] [DecidableEq d] in
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.RankStrataProof.rAct_val]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.rAct_one (s : Set ℕ) (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s) : _root_.GlobalTheory.RankStrataProof.rAct s x 1 = x := by
   apply Subtype.ext
@@ -75,7 +75,7 @@ variable {a b c d : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b
   [Fintype d] [DecidableEq d] in
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.RankStrataProof.rAct_val, _root_.GlobalTheory.RankStrataProof.rAct_val, _root_.GlobalTheory.RankStrataProof.rAct_val, Units.val_mul, Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.rAct_mul (s : Set ℕ) (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s) (g h : GL a k) :
     _root_.GlobalTheory.RankStrataProof.rAct s x (g * h) = _root_.GlobalTheory.RankStrataProof.rAct s (_root_.GlobalTheory.RankStrataProof.rAct s x g) h := by
@@ -83,7 +83,7 @@ theorem _root_.GlobalTheory.RankStrataProof.rAct_mul (s : Set ℕ) (x : _root_.G
   rw [_root_.GlobalTheory.RankStrataProof.rAct_val, _root_.GlobalTheory.RankStrataProof.rAct_val, _root_.GlobalTheory.RankStrataProof.rAct_val, Units.val_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (f := fun p : RankIn k a b s × GL a k => act p.1.1 (p.2, 1)) ?_ _` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (continuous_subtype_val.comp continuous_fst)).matrix_mul (Units.continuous_val.comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_rAct (s : Set ℕ) : Continuous fun p : RankIn k a b s × GL a k => rAct s p.1 p.2 := by
   refine Continuous.subtype_mk (f := fun p : RankIn k a b s × GL a k => act p.1.1 (p.2, 1)) ?_ _
@@ -105,9 +105,9 @@ def fstBlock (e : c ⊕ d ≃ a) : GL c k →* parabLower k (two e) :=
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Use extensionality with `i l`. Take `⟨l | l, rfl⟩` from `e.surjective l`. Use `show (rAct s y.1 _).1 _ _ = (rAct s y.1 _).1 _ _`. Rewrite using `[rAct_val, rAct_val, mul_apply_of_cols e y.2, mul_apply_of_cols e y.2]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => congrArg _ ?_` and prove the remaining obligations. Conclude with `leviEmb_apply_same k (two e) _ false m l`. Conclude with `((pAct e s y _).2 i l).trans ((pAct e s y _).2 i l).symm`.
+A detailed English derivation is pending.
 -/
 theorem pAct_eq (e : c ⊕ d ≃ a) (s : Set ℕ) (y : ColZero k b e s) (p : parabLower k (two e)) :
     pAct e s y (fstBlock e (leviProjLower k (two e) p false)) = pAct e s y p := by
@@ -136,9 +136,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {a b c d : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c]
   [Fintype d] [DecidableEq d] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.omChar`. Apply `_root_.GlobalTheory.SmGL.IsSmoothChar.mul` to reduce the goal to its premises. Use `_root_.GlobalTheory.SmGL.IsSmoothChar.comp ?_ _ continuous_fst` and prove the remaining obligations. Apply `_root_.GlobalTheory.SmGL.IsSmoothChar.detChar` to reduce the goal to its premises. Conclude with `_root_.GlobalTheory.SmGL.IsSmoothChar.mul (_root_.GlobalTheory.SmGL.IsSmoothChar.inv hμ) (_root_.GlobalTheory.SmGL.isSmoothChar_of_isUnram (_root_.GlobalTheory.SmGL.isUnram_absPow k _))`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `_root_.GlobalTheory.SmGL.IsSmoothChar.comp ?_ _ continuous_snd` and prove the remaining obligations. Apply `_root_.GlobalTheory.SmGL.IsSmoothChar.detChar` to reduce the goal to its premises. Conclude with `_root_.GlobalTheory.SmGL.IsSmoothChar.mul hμ (_root_.GlobalTheory.SmGL.isSmoothChar_of_isUnram (_root_.GlobalTheory.SmGL.isUnram_absPow k _))`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.isSmoothChar_omChar {μ : kˣ →* ℂˣ} (hμ : _root_.GlobalTheory.SmGL.IsSmoothChar μ) : _root_.GlobalTheory.SmGL.IsSmoothChar (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.omChar a b μ) := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.omChar
@@ -154,27 +154,21 @@ theorem _root_.GlobalTheory.RankStrataProof.isSmoothChar_omChar {μ : kˣ →* �
       (_root_.GlobalTheory.SmGL.isSmoothChar_of_isUnram (_root_.GlobalTheory.SmGL.isUnram_absPow k _))
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hcl : IsClosed {x : RankIn k a b {κ} | ∀ i j, x.1 i (e (.inr j)) = 0}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq (continuous_subtype_val.matrix_elem _ _) continuous_const`. Take `⟨E, hE⟩` from `GlobalTheory.T.schwartzBruhat_sweep_smoothly_induced (GL a k) (RankIn k a b {κ}) (ColZero k b e {κ}) (SB (ColZero k b e {κ}) ⊗[ℂ] ℂ) (rAct {κ}) (rAct_one _) (rAct_mul _) (continuous_rAct _) Subtype.val hcl.isClosedEmbedding_subtypeVal (parabLower k (two e)) (KO k a) SplitFlip.isC …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `GlobalTheory.T.exists_GL_mul_rightColumns_eq_zero_of_rank k b c d a e x.1 (x.2.trans hκ)`. Take `⟨p, hp, w, hw, h⟩` from `iwasawa_blockTriangular k a (fun i => (!blk (two e) i).toNat) g⁻¹`. Establish `hp' : p ∈ parabLower k (two e)` using `(mem_parabLower_two k).2 fun i j => hp (by`. Rewrite using `[← two_false e, ← two_true e]`. Simplify using `only [blk_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `simp)`. Use `⟨pAct e _ ⟨rAct _ x g, by rwa [rAct_val]⟩ ⟨p, hp'⟩, w, hw, ?_⟩` and prove the remaining obligations. Use `show x = rAct _ (rAct _ (rAct _ x g) p) w`. Rewrite using `[← rAct_mul, ← rAct_mul, ← h, mul_inv_cancel, rAct_one])`. Use the proof step `(pAct e _) (fun _ _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun y y' g h => (mem_parabLower_two k).2 fun i j => by`. Use `congrFun (GlobalTheory.T.leftColumns_mulVec_injective_of_rank_eq_card k b c d a e y.1.1 (y.1.2.trans hκ) y.2 (fun m => g.val (e (.inl m)) (e (.inr j))) (funext fun l => ?_)) i` and prove the remaining obligations. Use `y'.2 l j` as an intermediate fact. Rewrite `this` using `[← h, rAct_val, mul_apply_of_cols e y.2]`. Conclude with `this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `((omChar a b μ).comp (MonoidHom.inl _ _))`. Use the proof step `((isSmoothChar_omChar hμ).comp _ (continuous_id.prodMk continuous_const))`. Use the proof step `((twist (MonoidHom.comp (extTensor (colRep b e {κ} (μ⁻¹ * absPow k ((Fintype.card b : ℂ) / 2 + (Fintype.card d : ℂ) / 2))) (detRep d (μ⁻¹ * absPow k z))) (leviTwo k c d).symm.toMonoidHom) (deltaHalf k (Two c d))⁻¹).comp (leviProjLower k (two e)))`. Use the proof step `(TensorProduct.rid ℂ _)`. Use the proof step `(fun p w y => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ, rfl⟩` from `(TensorProduct.rid ℂ _).symm.surjective w`. Use `set m := leviProjLower k (two e) p with hm`. Establish `hd : GeneralLinearGroup.det (p : GL a k) = GeneralLinearGroup.det (m false) * GeneralLinearGroup.det (m true)`. Use `det_parab k (opp (two e)) p` as an intermediate fact. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Fintype.prod_bool _).trans (mul_comm _ _)`. Establish `hδ` using `deltaHalf_two (k := k) (m false, m true)`. Rewrite `hδ` using `[show leviTwo k c d (m false, m true) = m from (leviTwo k c d).right_inv m]`. Rewrite using `[LinearEquiv.apply_symm_apply, TensorProduct.rid_symm_apply]`. Use `show (TensorProduct.rid ℂ _ ((((deltaHalf k (Two c d) m)⁻¹ : ℂˣ) : ℂ) • extTensor _ _ (m false, m true) (φ ⊗ₜ 1))).1 y = _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[extTensor_tmul, map_smul, TensorProduct.rid_tmul]`. Use `show (((deltaHalf k (Two c d) m)⁻¹ : ℂˣ) : ℂ) * (detRep d _ (m true) 1 * ((detChar c _ (m false) : ℂ) * φ.1 (pAct e _ y (fstBlock e (m false))))) = _`. Rewrite using `[pAct_eq, ← mul_assoc, ← mul_assoc, detRep, ofChar_apply, mul_one, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[hδ]`.
-
-Simplify using `only [omChar, MonoidHom.comp_apply, MonoidHom.mul_apply, detChar_apply, MonoidHom.inl_apply, MonoidHom.coe_fst, MonoidHom.coe_snd, map_one, mul_one, hd, map_mul, neg_div, absPow_neg, MonoidHom.inv_apply]`. Establish `h1` using `DFunLike.congr_fun (absPow_add k z ((Fintype.card c : ℂ) / 2)) (GeneralLinearGroup.det (m true))`. Rewrite `h1` using `[hz]`. Rewrite using `[h1, absPow_add]`. Simplify using `only [MonoidHom.mul_apply, mul_inv, inv_inv]`.
-
-Use `ext`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Use the proof step `field_simp)`. Use `⟨.mk E fun g => LinearMap.ext fun Φ => Subtype.ext (Subtype.ext (funext fun x => ?_))⟩` and prove the remaining obligations. Use `(TensorProduct.rid ℂ _).injective (Subtype.ext (funext fun y => ?_))` and prove the remaining obligations.
-
-Use `(hE _ x y).trans (Eq.trans ?_ (hE Φ (x * g) y).symm)` and prove the remaining obligations. Rewrite using `[map_mul, rAct_mul, Units.val_mul, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lower (e : c ⊕ d ≃ a) {κ : ℕ} (hκ : κ = Fintype.card c) {μ : kˣ →* ℂˣ} (hμ : IsSmoothChar μ)
     (z : ℂ) (hz : z + (Fintype.card c : ℂ) / 2 = (Fintype.card b : ℂ) / 2) :
@@ -255,9 +249,9 @@ section Open
 variable {a b c : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c]
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `: IsOpen ((fun y => x⁻¹ * y) ⁻¹' (ψ.ker : Set G))` using `IsOpen.preimage (by fun_prop) h`. Use `filter_upwards [this.mem_nhds (show x ∈ _ by simp)] with y hy`. Establish `hy' : ψ (x⁻¹ * y) = 1` using `hy`. Rewrite `hy'` using `[map_mul, map_inv, inv_mul_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy']`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_char {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {ψ : G →* ℂˣ} (h : IsSmoothChar ψ) : IsLocallyConstant fun y => (ψ y : ℂ) := by
@@ -282,7 +276,7 @@ def topM (e : a ⊕ c ≃ b) (y : Matrix a a k) : Matrix b a k := (fromRows y 0)
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype c] [DecidableEq a]
   [DecidableEq b] [DecidableEq c] [Fintype a] [Fintype b] in
 /- English proof (translation)
-Simplify using `[topM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem topM_inl (e : a ⊕ c ≃ b) (y : Matrix a a k) (i l : a) : topM e y (e (.inl i)) l = y i l := by
   simp [topM]
@@ -290,7 +284,7 @@ Simplify using `[topM]`.
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype c] [DecidableEq a]
   [DecidableEq b] [DecidableEq c] [Fintype a] [Fintype b] in
 /- English proof (translation)
-Simplify using `[topM]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem topM_inr (e : a ⊕ c ≃ b) (y : Matrix a a k) (i : c) (l : a) :
     topM e y (e (.inr i)) l = 0 := by
@@ -299,7 +293,7 @@ Simplify using `[topM]`.
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [DecidableEq a]
   [DecidableEq b] [DecidableEq c] in
 /- English proof (translation)
-Rewrite using `[mul_apply, ← e.sum_comp, Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_topM (e : a ⊕ c ≃ b) (g : Matrix b b k) (y : Matrix a a k) (i : b) (l : a) :
     (g * topM e y) i l = ∑ m, g i (e (.inl m)) * y m l := by
@@ -309,7 +303,7 @@ theorem mul_topM (e : a ⊕ c ≃ b) (g : Matrix b b k) (y : Matrix a a k) (i : 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [DecidableEq a]
   [DecidableEq b] [DecidableEq c] [Fintype c] [Fintype b] in
 /- English proof (translation)
-Use extensionality with `i l`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := e.surjective i <;> simp [mul_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem topM_mul (e : a ⊕ c ≃ b) (y g : Matrix a a k) : topM e (y * g) = topM e y * g := by
   ext i l
@@ -317,9 +311,9 @@ theorem topM_mul (e : a ⊕ c ≃ b) (y g : Matrix a a k) : topM e (y * g) = top
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [DecidableEq b] [DecidableEq c] in
 /- English proof (translation)
-Use `le_antisymm (rank_le_card_width _) ?_` and prove the remaining obligations. Establish `h : (topM e y.val).submatrix (fun i => e (.inl i)) (Equiv.refl a) = y.val`. Use extensionality with `i l`. Simplify using the standard rewrite rules. Establish `h2` using `rank_submatrix_le (topM e y.val) (fun i => e (.inl i)) (Equiv.refl a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[h, rank_of_isUnit _ y.isUnit]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rank_topM (e : a ⊕ c ≃ b) (y : GL a k) : (topM e y.val).rank = Fintype.card a := by
   refine le_antisymm (rank_le_card_width _) ?_
@@ -340,7 +334,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {a b c : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c] in
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.RankStrataProof.lAct _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.act`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.lAct_val (s : Set ℕ) (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s) (g : GL b k) : (_root_.GlobalTheory.RankStrataProof.lAct s x g).1 = (g⁻¹).val * x.1 := by
   unfold _root_.GlobalTheory.RankStrataProof.lAct _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.act
@@ -352,7 +346,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {a b c : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c] in
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.RankStrataProof.lAct_val]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.lAct_one (s : Set ℕ) (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s) : _root_.GlobalTheory.RankStrataProof.lAct s x 1 = x := by
   apply Subtype.ext
@@ -365,7 +359,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {a b c : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c] in
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.RankStrataProof.lAct_val, _root_.GlobalTheory.RankStrataProof.lAct_val, _root_.GlobalTheory.RankStrataProof.lAct_val, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.lAct_mul (s : Set ℕ) (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s) (g h : GL b k) :
     _root_.GlobalTheory.RankStrataProof.lAct s x (g * h) = _root_.GlobalTheory.RankStrataProof.lAct s (_root_.GlobalTheory.RankStrataProof.lAct s x g) h := by
@@ -377,7 +371,7 @@ open scoped TensorProduct in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 variable {a b c : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c] in
 /- English proof (translation)
-Establish `h : Continuous fun p : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s × GL b k => ((p.2⁻¹ : GL b k) : Matrix b b k) * p.1.1` using `(Units.continuous_val.comp (continuous_inv.comp continuous_snd)).matrix_mul (continuous_subtype_val.comp continuous_fst)`. Use `Continuous.subtype_mk (h.congr fun p => (_root_.GlobalTheory.RankStrataProof.lAct_val s p.1 p.2).symm) _` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem _root_.GlobalTheory.RankStrataProof.continuous_lAct (s : Set ℕ) : Continuous fun p : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s × GL b k => _root_.GlobalTheory.RankStrataProof.lAct s p.1 p.2 := by
   have h : Continuous fun p : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences.RankIn k a b s × GL b k => ((p.2⁻¹ : GL b k) : Matrix b b k) * p.1.1 :=

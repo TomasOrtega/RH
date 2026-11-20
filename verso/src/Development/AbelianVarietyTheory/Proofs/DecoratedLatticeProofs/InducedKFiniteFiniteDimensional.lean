@@ -11,7 +11,7 @@ def transComb {G : Type} [Group G] (K : Subgroup G) (ψ : G → ℂ) : (K →₀
   Finsupp.lsum ℂ fun k : K => LinearMap.smulRight (LinearMap.id : ℂ →ₗ[ℂ] ℂ) (fun g => ψ (g * k))
 
 /- English proof (translation)
-Simplify using `[transComb, Finsupp.lsum_apply, Finsupp.sum, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem transComb_apply {G : Type} [Group G] (K : Subgroup G) (ψ : G → ℂ) (c : K →₀ ℂ) (g : G) :
     transComb K ψ c g = c.sum fun k z => z * ψ (g * k) := by
@@ -36,16 +36,16 @@ def domSub {G : Type} [Group G] {P : Subgroup G} (δ : P →* ℝ≥0) (K : Subg
       rw [this, h1, mul_zero]⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun _ h => h`.
+A detailed English derivation is pending.
 -/
 theorem span_domSet_le {G : Type} [Group G] {P : Subgroup G} (δ : P →* ℝ≥0) (K : Subgroup G) (χ : P →* Circle)
     (t : ℂ) (φ : G → ℂ) : Submodule.span ℂ (domSet δ K χ t φ) ≤ domSub δ K χ t φ :=
   Submodule.span_le.2 fun _ h => h
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨c, rfl⟩`. Establish `: transComb K φ c = c.sum fun k z => z • fun g => φ (g * k)`. Use extensionality with `g`. Rewrite using `[transComb_apply]`. Simplify using `[Finsupp.sum, Finset.sum_apply]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨(i : G), i.2, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_transComb_le {G : Type} [Group G] (K : Subgroup G) (φ : G → ℂ) :
     LinearMap.range (transComb K φ) ≤ kSpan K φ := by
@@ -73,9 +73,9 @@ def evalForm {G : Type} [Group G] {P : Subgroup G} (δ : P →* ℝ≥0) (K : Su
     congr 1; ext k z; ring
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `ψ hψ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `IndLaw.ext hPK ψ.2.1 (fun _ _ => by simp) fun k hk => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun hψ (Submodule.mkQ _ (Finsupp.single ⟨k, hk⟩ 1))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[evalForm, transComb_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem evalForm_injective {G : Type} [Group G] {P : Subgroup G} (δ : P →* ℝ≥0) (K : Subgroup G) (χ : P →* Circle)
     (t : ℂ) (φ : G → ℂ) (hPK : ∀ g : G, ∃ p : P, ∃ k ∈ K, g = p * k) : Function.Injective (evalForm δ K χ t φ) := by
@@ -87,9 +87,7 @@ theorem evalForm_injective {G : Type} [Group G] {P : Subgroup G} (δ : P →* �
   simpa [evalForm, transComb_apply] using this
 
 /- English proof (translation)
-Introduce `G _ P K δ χ t φ hPK hφ`. Use `haveI : FiniteDimensional ℂ (kSpan K φ) := hφ`. Establish `: FiniteDimensional ℂ (LinearMap.range (transComb K φ))` using `Submodule.finiteDimensional_of_le (range_transComb_le K φ)`. Establish `: FiniteDimensional ℂ ((K →₀ ℂ) ⧸ LinearMap.ker (transComb K φ))` using `LinearEquiv.finiteDimensional (transComb K φ).quotKerEquivRange.symm`. Establish `: FiniteDimensional ℂ (domSub δ K χ t φ)` using `Module.Finite.of_injective _ (evalForm_injective δ K χ t φ hPK)`.
-
-Conclude with `Submodule.finiteDimensional_of_le (span_domSet_le δ K χ t φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_domSet : ∀ (G : Type) [Group G] (P K : Subgroup G) (δ : P →* ℝ≥0) (χ : P →* Circle)
     (t : ℂ) (φ : G → ℂ), (∀ g : G, ∃ p : P, ∃ k ∈ K, g = p * k) → IsKFinite K φ →

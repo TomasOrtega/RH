@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain Polynomial UpperTheory.V UpperTheory.V.Z.Gam UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 /- English proof (translation)
-Introduce `hp l _ Ω _ _ _ ι k hk ρ hc hi hf K _ _ _ _ hd P ha w`. Take `⟨N, _, χ, g, hχ, _, hr⟩` from `hf`. Break down `UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.anEx hp k N hk χ hχ g with hD | ⟨D, rfl, hs, hA⟩` into its components or cases. Conclude with `absurd hD (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.notDih l Ω ι _ N χ g ρ hc hi hr)`. Establish `hsys` using `UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.adSysOf l Ω ι N χ D g ρ hr hs K P ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : w.asIdeal.LiesOver (w.under (𝓞 ℚ)).asIdeal` using `⟨rfl⟩`. Conclude with `(UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.adK K hd D hA P hsys (w.under (𝓞 ℚ)) ⟨w, hw⟩).1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.adWit :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.AdWit := by

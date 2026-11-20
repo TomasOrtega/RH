@@ -11,19 +11,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.RCellCont
 
 /- English proof (translation)
-Introduce `D t ρ ψ hψ V b₀ b`. Establish `hψc : Continuous ψ` using `hψ.1`. Establish `hψn : ∀ u, ‖ψ u‖ = 1` using `hψ.2.1`. Establish `htr : Continuous (trA (D` using `D)) := by unfold trA; fun_prop`. Establish `hhalf : Continuous (halfTr (D` using `D)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `halfTr`. Conclude with `continuous_const.mul htr`. Establish `hpch : ∀ {n : ℕ} (x : Mx D n n), Continuous (fun T : Mx D n n => pch ψ x T)`. Introduce `n x`. Unfold `pch mm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `hψc.comp (hhalf.comp ((continuous_const.matrix_mul continuous_id).matrix_trace))`. Establish `hip : ∀ {a c : ℕ} {X : Type} [TopologicalSpace X] (f : X → Mx D V.rank a) (g : X → Mx D V.rank c), Continuous f → Continuous g → Continuous (fun x => ip V (f x) (g x))`. Introduce `a c X _ f g hf hg`. Unfold `ip mm`. Conclude with `(GlobalTheory.MixModel.continuous_adj.comp hf).matrix_mul (continuous_const.matrix_mul hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hyv : Continuous (fun z : Mx D V.rank ρ × Mx D V.rank t => yv V b₀ z)`. Unfold `yv mm`. Conclude with `continuous_const.matrix_mul (hip _ _ continuous_fst continuous_snd)`. Establish `hpr : ∀ {p : ℕ} {X : Type} [TopologicalSpace X] (f g : X → Mx D ρ p), Continuous f → Continuous g → Continuous (fun x => pr b₀ (f x) (g x))`. Introduce `p X _ f g hf hg`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `pr`. Conclude with `(GlobalTheory.MixModel.continuous_adj.comp hf).matrix_mul (continuous_const.matrix_mul hg)`. Use `⟨?_, hyv, ?_, ?_, ?_, hψn⟩` and prove the remaining obligations. Conclude with `(hpch b.1).comp (hip _ _ continuous_snd continuous_snd)`. Conclude with `hψc.comp (htr.comp (hpr _ _ continuous_fst (hyv.comp continuous_snd)).matrix_trace)`.
-
-Establish `hq : Continuous (fun z : Mx D V.rank ρ × Mx D V.rank t => qv V b₀ z)`. Unfold `qv`. Conclude with `(hip _ _ continuous_snd continuous_snd).sub (hpr _ _ hyv hyv)`. Conclude with `(hpch b.1).comp hq`. Introduce `T`.
-
-Unfold `pch`. Conclude with `hψn _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuity_characters_projection : ∀ {D : D7} {t ρ : ℕ} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) (b₀ : HermE D ρ) (b : hermA D t), Continuous (fun z : Mx D V.rank ρ × Mx D V.rank t => pch ψ b.1 (ip V z.2 z.2)) ∧ Continuous (fun z : Mx D V.rank ρ × Mx D V.rank t => yv V b₀ z) ∧ Continuous (fun q : Mx D ρ t × (Mx D V.rank ρ × Mx D V.rank t) => ψ (trA (Matrix.trace (pr b₀ q.1 (yv V b₀ q.2))))) ∧ Continuous (fun z : Mx D V.rank ρ × Mx D V.rank t => pch ψ b.1 (qv V b₀ z)) ∧ (∀ T, ‖pch ψ b.1 T‖ = 1) ∧ ∀ u, ‖ψ u‖ = 1 := by
   intro D t ρ ψ hψ V b₀ b

@@ -9,13 +9,13 @@ noncomputable def words {ι : Type} [DecidableEq ι] (B : Finset ι) : ℕ → F
   | k + 1 => insert [] ((words B k ×ˢ B).image (fun p => p.1 ++ [p.2]))
 
 /- English proof (translation)
-Apply the tactic sequence `cases k <;> simp [words]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nil_mem {ι : Type} [DecidableEq ι] (B : Finset ι) (k : ℕ) : [] ∈ words B k := by
   cases k <;> simp [words]
 
 /- English proof (translation)
-Simplify using `only [words, mem_insert, mem_image, mem_product, Prod.exists]`. Conclude with `Or.inr ⟨l, i, ⟨hl, hi⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the second alternative.
 -/
 theorem append_mem {ι : Type} [DecidableEq ι] {B : Finset ι} {k : ℕ} {l : List ι} {i : ι}
     (hl : l ∈ words B k) (hi : i ∈ B) : l ++ [i] ∈ words B (k + 1) := by
@@ -23,13 +23,11 @@ theorem append_mem {ι : Type} [DecidableEq ι] {B : Finset ι} {k : ℕ} {l : L
   exact Or.inr ⟨l, i, ⟨hl, hi⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro l hl i hi`. Simplify using `[words] at hl`. Substitute `hl` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `at hi`. Consider the case `succ k ih`. Introduce `l hl i hi`. Simplify using `only [words, mem_insert, mem_image, mem_product, Prod.exists] at hl`. Break down `hl with rfl | ⟨l', j, ⟨hl', hj⟩, rfl⟩` into its components or cases.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `at hi`. Break down `List.mem_append.1 hi with h | h` into its components or cases. Conclude with `ih l' hl' i h`. Simplify using `at h`. Substitute `h` using the available equality.
-
-Conclude with `hj`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_letters {ι : Type} [DecidableEq ι] (B : Finset ι) :
     ∀ (k : ℕ), ∀ l ∈ words B k, ∀ i ∈ l, i ∈ B := by
@@ -46,47 +44,43 @@ theorem mem_letters {ι : Type} [DecidableEq ι] (B : Finset ι) :
       · simp at h; subst h; exact hj
 
 /- English proof (translation)
-The claim follows from `(pow_le_pow_iff_left₀ hx hy hm).1 h`.
+A detailed English derivation is pending.
 -/
 theorem root_le {x y : ℝ} {m : ℕ} (hm : m ≠ 0) (hx : 0 ≤ x) (hy : 0 ≤ y) (h : x ^ m ≤ y ^ m) :
     x ≤ y := (pow_le_pow_iff_left₀ hx hy hm).1 h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨1, zero_le_one, ?_⟩` and prove the remaining obligations. Introduce `ψ _ c _ hc g`. Establish `h` using `hc [] (nil_mem B 0) g`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [List.foldr_nil] at h`. Simplify using `[words]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ k ih`. Take `⟨Ck, hCk0, hCk⟩` from `ih`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hK0 : 0 ≤ K` using `by linarith`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `hQ0 : ∀ g, 0 ≤ Q g` using `fun g => by linarith [hQ1 g]`. Establish `hq0 : ∀ g, 0 ≤ q g` using `fun g => by linarith [hq g]`. Use `set M := K / δ₀ with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : 0 ≤ M` using `div_nonneg hK0 hδ₀.le`. Use `set X1 := M ^ (k + 1)`. Use `set X2 := C * K ^ (k + 1) * Ck * C ^ A * ((B.card : ℝ) * ((words B k).card : ℝ))`. Establish `hX1 : 0 ≤ X1` using `pow_nonneg hM0 _`. Establish `hX2 : 0 ≤ X2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨X1 + X2, add_nonneg hX1 hX2, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ c hc0 hc g`. Use `set T := ∑ l ∈ words B (k + 1), c l with hT`. Establish `hT0 : 0 ≤ T` using `sum_nonneg hc0`. Establish `hqA : 0 ≤ q g ^ A` using `pow_nonneg (hq0 g) _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨δ, hδ, _, hδq, hcase⟩` from `hgain g`. Establish `hδQ : δ * Q g ≤ K`. Apply `root_le hm (mul_nonneg hδ.le (hQ0 g)) hK0` to reduce the goal to its premises. Rewrite using `[mul_pow, hQm, hKm]`. Combine the linear relations using `[mul_comm (q g) (δ ^ m)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hQgw : ∀ w, q g ≤ C * q w → Q g ≤ K * Q w`. Introduce `w hw`. Apply `root_le hm (hQ0 g) (mul_nonneg hK0 (hQ0 w))` to reduce the goal to its premises. Rewrite using `[mul_pow, hQm, hKm, hQm]`. Conclude with `hw`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to establish `h : ‖ψ g‖ * Q g ^ (k + 1) ≤ X1 * q g ^ A * T ∨ ‖ψ g‖ * Q g ^ (k + 1) ≤ X2 * q g ^ A * T by`. Establish `e1 : 0 ≤ X1 * q g ^ A * T` using `by positivity`. Establish `e2 : 0 ≤ X2 * q g ^ A * T` using `mul_nonneg (mul_nonneg hX2 hqA) hT0`. Apply the tactic sequence `rcases h with h | h <;> nlinarith`. Break down `hcase with hδ0 | ⟨Ω, hΩ, hbound⟩` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `left`. Establish `hQM : Q g ≤ M`. Rewrite using `[hM, le_div_iff₀ hδ₀]`. Use polynomial arithmetic with `[hQ0 g]`. Establish `h0 : ‖ψ g‖ ≤ c [] * q g ^ A` using `by simpa using hc [] (nil_mem B _) g`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcT : c [] ≤ T` using `single_le_sum (f := c) (fun l hl => hc0 l hl) (nil_mem B _)`. Establish `hQk : Q g ^ (k + 1) ≤ X1` using `pow_le_pow_left₀ (hQ0 g) hQM _`. Combine the equalities or inequalities in the displayed calculation. Use `right set S : ι → ℝ := fun i => ∑ l ∈ words B k, c (l ++ [i]) with hS`. Establish `hS0 : ∀ i ∈ B, 0 ≤ S i` using `fun i hi => sum_nonneg (fun l hl => hc0 _ (append_mem hl hi))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hQgk : 0 < Q g ^ k` using `pow_pos (by linarith [hQ1 g]) _`. Use `set P := K ^ k * Ck * C ^ A * q g ^ A with hP`. Establish `hP0 : 0 ≤ P` using `by positivity`. Use `set ci : ι → ℝ := fun i => P * S i / Q g ^ k with hci`. Establish `hDr : ∀ i ∈ B, 0 ≤ ci i ∧ ∀ w ∈ Ω, ‖Dr i ψ w‖ ≤ ci i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i hi`. Use `⟨div_nonneg (mul_nonneg hP0 (hS0 i hi)) hQgk.le, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hb` using `hCk (Dr i ψ) (hcl ψ hψ i hi) (fun l => c (l ++ [i])) (fun l hl => hc0 _ (append_mem hl hi)) (fun l hl g' => by`. Use `hc (l ++ [i]) (append_mem hl hi) g'` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `this) w` using `[List.foldr_append]`. Establish `h1 : Q g ^ k ≤ K ^ k * Q w ^ k`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (hQ0 g) (hQgw w (hΩ w hw).2) k`. Establish `h2 : q w ^ A ≤ C ^ A * q g ^ A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (hq0 w) (hΩ w hw).1 A`. Rewrite using `[hci, le_div_iff₀ hQgk]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (pow_nonneg hK0 _)` to reduce the goal to its premises.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `mul_le_mul_of_nonneg_right _ (hS0 i hi)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left h2 hCk0`. Use `_ = P * S i := by rw [hP]; ring`. Establish `hmain` using `hbound ψ hψ ci hDr`. Establish `hsum : ∑ i ∈ B, ci i = P * (∑ i ∈ B, S i) / Q g ^ k`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hci]`. Simplify using `only`. Rewrite using `[← Finset.sum_div, ← Finset.mul_sum]`. Establish `hSsum : ∑ i ∈ B, S i ≤ (B.card : ℝ) * ((words B k).card : ℝ) * T`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `[sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hSum0 : 0 ≤ ∑ i ∈ B, S i` using `sum_nonneg hS0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsum]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C * K * (P * ((B.card : ℝ) * ((words B k).card : ℝ) * T)) := by`. Apply `mul_le_mul (mul_le_mul_of_nonneg_left hδQ hC0) (mul_le_mul_of_nonneg_left hSsum hP0) (mul_nonneg hP0 hSum0) (mul_nonneg hC0 hK0)` to reduce the goal to its premises. Use `_ = X2 * q g ^ A * T := by rw [hP]; ring`.
+A detailed English derivation is pending.
 -/
 theorem step {G ι : Type} [DecidableEq ι] (B : Finset ι) (q : G → ℝ) (𝓒 : Set (G → ℂ))
     (Dr : ι → (G → ℂ) → G → ℂ) (m : ℕ) (C δ₀ K : ℝ) (Q : G → ℝ) (A : ℕ)
@@ -206,23 +200,21 @@ namespace GlobalTheory
 open GlobalTheory.IterGain in
 
 /- English proof (translation)
-Introduce `G ι B q 𝓒 Dr b C δ₀ hδ₀ hq hcl hgain A N`. Use `set m := b + 1 with hmdef`. Establish `hm : m ≠ 0` using `Nat.succ_ne_zero b`. Use `set C1 := max C 1 with hC1`. Establish `hC1 : 1 ≤ C1` using `le_max_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCC1 : C ≤ C1` using `le_max_left _ _`. Establish `hq0 : ∀ g, 0 ≤ q g` using `fun g => by linarith [hq g]`. Establish `hgain' : ∀ g, ∃ δ : ℝ, 0 < δ ∧ δ ≤ 1 ∧ q g * δ ^ m ≤ C1 ∧ (δ₀ ≤ δ ∨ ∃ Ω : Set G, (∀ w ∈ Ω, q w ≤ C1 * q g ∧ q g ≤ C1 * q w) ∧ ∀ ψ ∈ 𝓒, ∀ c : ι → ℝ, (∀ i ∈ B, 0 ≤ c i ∧ ∀ w ∈ Ω, ‖Dr i ψ w‖ ≤ c i) → ‖ψ g‖ ≤ C1 * δ * ∑ i ∈ B, c i)`. Introduce `g`. Take `⟨δ, hδ, hδ1, hqδ, hcase⟩` from `hgain g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨δ, hδ, hδ1, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : q g * δ ^ m ≤ q g * δ ^ b`. Rewrite using `[hmdef, pow_succ, ← mul_assoc]`. Conclude with `mul_le_of_le_one_right (mul_nonneg (hq0 g) (pow_nonneg hδ.le _)) hδ1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hcase with h | ⟨Ω, hΩ, hbd⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨Ω, fun w hw => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hΩ w hw).1.trans (mul_le_mul_of_nonneg_right hCC1 (hq0 g))`. Conclude with `(hΩ w hw).2.trans (mul_le_mul_of_nonneg_right hCC1 (hq0 w))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ψ hψ c hc`. Establish `hs : 0 ≤ ∑ i ∈ B, c i` using `sum_nonneg (fun i hi => (hc i hi).1)`. Conclude with `(hbd ψ hψ c hc).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hCC1 hδ.le) hs)`. Use `set K : ℝ := C1 ^ ((m : ℝ)⁻¹) with hK`. Use `set Q : G → ℝ := fun g => q g ^ ((m : ℝ)⁻¹) with hQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hKm : K ^ m = C1` using `Real.rpow_inv_natCast_pow (by linarith) hm`. Establish `hK1 : 1 ≤ K` using `Real.one_le_rpow hC1 (by positivity)`. Establish `hQm : ∀ g, Q g ^ m = q g` using `fun g => Real.rpow_inv_natCast_pow (hq0 g) hm`. Establish `hQ1 : ∀ g, 1 ≤ Q g` using `fun g => Real.one_le_rpow (hq g) (by positivity)`. Take `⟨Ck, _, hCk⟩` from `step B q 𝓒 Dr m C1 δ₀ K Q A hm hδ₀ hC1 hK1 hKm hq hQ1 hQm hcl hgain' (m * (A + N))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨words B (m * (A + N)), Ck, mem_letters B _, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ c hc g`. Establish `hqA : 0 < q g ^ A` using `pow_pos (by linarith [hq g]) _`. Establish `hc0 : ∀ l ∈ words B (m * (A + N)), 0 ≤ c l`. Introduce `l hl`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1` using `hc l hl g`. Establish `h2 : c l * q g ^ A < 0` using `mul_neg_of_neg_of_pos h hqA`. Combine the linear relations using `[norm_nonneg (List.foldr Dr ψ l g)]`.
-
-Establish `h` using `hCk ψ hψ c hc0 hc g`. Rewrite `h` using `[pow_mul, hQm, pow_add]`. Establish `h' : q g ^ A * (‖ψ g‖ * q g ^ N) ≤ q g ^ A * (Ck * ∑ l ∈ words B (m * (A + N)), c l)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_mul_le_mul_left h' hqA`.
+A detailed English derivation is pending.
 -/
 theorem iterated_gain_rapid_decay : ∀ (G ι : Type) (B : Finset ι) (q : G → ℝ) (𝓒 : Set (G → ℂ))
     (Dr : ι → (G → ℂ) → G → ℂ) (b : ℕ) (C δ₀ : ℝ), 0 < δ₀ → (∀ g, 1 ≤ q g) →

@@ -37,13 +37,11 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Loca
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `⟨_, hpos, fun s hgen hG => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hrel : s.relevant`. Establish `hGt : (Y.tO u u').G s ≠ 0` using `by show Formalism.L2.SG.TermOp.Gt s ≠ 0`. Unfold `Formalism.L2.SG.TermOp.Gt`. Establish `e : (if s.G = 0 then (0 : ℝ) else 1) = 1` using `if_neg hG`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `one_ne_zero`. Set `s' : LiftT X Y u u' κ ((Y.tO u u').rowOf s) (κ s.toTerm)` to `⟨s, hGt, hgen, rfl, rfl⟩`. Take `⟨A, B, h⟩` from `hNF _ _ s' hrel`. Establish `hamp : Formalism.L2.SG.TermOp.ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') s = ((Formalism.L2.SG.TermOp.scl (Y.FN u) (Y.FN u') (X` using `X) (u := u) (u' := u') * X.volK2 : ℝ) : ℂ) • chiOO X Y u u' s := rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hamp, h]`. Unfold `frameVal`. Rewrite using `[map_smul, map_smul, norm_smul, norm_smul, Formalism.L2.SG.Pf.RowForm.ClassFrameOperators.norm_hsEmb_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpos]`. Establish `hc0` using `cTerm_irrel X Y u u' vR hAt s.toTerm hrel`. Rewrite using `[hc0, norm_zero, zero_mul, mul_zero]`.
-
-Conclude with `norm_nonneg _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampValLowerC_of {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
     (vR : Term D u u' (X.Fu u) (Y.what₂ u) → ℝ)
@@ -74,9 +72,9 @@ theorem ampValLowerC_of {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.F
     exact norm_nonneg _
 
 /- English proof (translation)
-Unfold `ngFac`. Apply `pow_pos` to reduce the goal to its premises. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Apply `abs_pos.mpr` to reduce the goal to its premises. Apply the tactic sequence `have hn : (Formalism.MainNotions.S.Lat.gS D : ℕ) ≠ 0 := by first | exact (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne' | exact_mod_cast (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne'`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h0 : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hn`. Conclude with `(Algebra.norm_ne_zero_iff.mpr (pow_ne_zero _ h0))` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ngFac_pos (D : D7) : 0 < ngFac D := by
   unfold ngFac
@@ -89,17 +87,15 @@ theorem ngFac_pos (D : D7) : 0 < ngFac D := by
   exact_mod_cast (Algebra.norm_ne_zero_iff.mpr (pow_ne_zero _ h0))
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.SplitsCompl at h`. Unfold `Formalism.L2.SG.LemmaN.Unram`. Introduce `Q hQ _`. Establish `hover : Ideal.span {(p : ℤ)} = Q.under ℤ` using `Ideal.LiesOver.over`. Establish `hpZ : (p : ℤ) ∈ Q.under ℤ` using `hover ▸ Ideal.mem_span_singleton_self _`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpQ : ((p : ℕ) : NumberField.RingOfIntegers E) ∈ Q`. Establish `h1 : algebraMap ℤ (NumberField.RingOfIntegers E) (p : ℤ) ∈ Q` using `hpZ`. Simplify using `using h1`. Establish `hne : Q ≠ ⊥`. Introduce `hb`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hpQ` using `[hb, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpQ)`. Establish `hmax : Q.IsMaximal` using `Ideal.IsPrime.isMaximal hQ hne`. Take `⟨-, hsq⟩` from `h Q hmax hpQ`. Rewrite using `[← Ideal.ramificationIdx_eq_ramificationIdx' (p := Ideal.span {(p : ℤ)})]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Ideal.ramificationIdx_spec` to reduce the goal to its premises. Rewrite using `[pow_one, Ideal.map_le_iff_le_comap]`. Conclude with `le_of_eq hover`. Introduce `hle`. Apply `hsq` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hm : algebraMap ℤ (NumberField.RingOfIntegers E) (p : ℤ) ∈ Ideal.map (algebraMap ℤ (NumberField.RingOfIntegers E)) (Ideal.span {(p : ℤ)})` using `Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self _)`. Simplify using `using hle hm`. Apply the tactic sequence `all_goals first`. Consider the case `exact (Ideal.span_singleton_eq_bot.not.mpr (by exact_mod_cast hp.ne_zero))`. Consider the case `exact (Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp)`.
-
-Consider the case `exact (0 : ℕ)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unram_of_splitsCompl (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.Prime)
     (h : Formalism.MainNotions.S.SplitsCompl E p) : Formalism.L2.SG.LemmaN.Unram E p := by
@@ -133,17 +129,17 @@ theorem unram_of_splitsCompl (E : Type) [Field E] [NumberField E] (p : ℕ) (hp 
     | exact (0 : ℕ)
 
 /- English proof (translation)
-Use `set vR := Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M with hvR`. Establish `hDict : Formalism.L2.SG.Pf.IotaDictC` using `Formalism.L2.SG.Pf.iotaDictC_holds`. Establish `hRC : Formalism.L2.SG.Pf.RelCharC` using `Formalism.L2.SG.Pf.RelChar.relCharC_holds`. Establish `hAtS` using `Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u'`. Establish `hTP : ∀ (t : Term D u u' (X.Fu u) (Y.what₂ u)) (w : Point D.host.E (D.R.rS + 1)), t.atPt w → Formalism.MainNotions.S.LocalSplitGroups.TotPos (Formalism.MainNotions.S.LocalSplitGroups.Gpt (D.mem u).A.T (D.mem u').A.T w)` using `fun t w h => Formalism.L2.SG.WConst.atPt_totPos t w h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCPU : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u)` using `fun t w w' h h' => Formalism.L2.SG.RowsAbsX.atPt_uniq _ _ _ t.cls w w' h h'`. Establish `hDF : DFrameAtS X u u' i0 i0' 1`. Establish `hi' : i0' = i0` using `funext fun v => (hi v).symm`. Substitute `hi'` using the available equality. Conclude with `Formalism.L2.SG.Pf.Carrier.dual_frame_at_places X u u' 1 i0'`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFT : FormTranspC X Y u u' vR νq κ` using `Formalism.L2.SG.Pf.formula_transport_of_condition X Y u u' νq κ hNuP hVP (fun i => (hg i).1) hPH hRC (RealDecompL.liftDecompC_of_atSome X Y u u' κ hAtS) (liftAtSomeC_holds X Y u u' κ) hNR hCPU`. Establish `hScal : ScalTC X Y u u' κ` using `Formalism.L2.SG.Pf.RowForm.ScalT.scalTC_of X Y u u' κ hκ (liftIotaC_of hDict X Y u u') hg`. Establish `hCF : ClassFrameC X hb Y u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq κ` using `classFrameC_all X hb Y u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq κ hAtS hTP hCPU hDF hPT hFT hVA hScal (Formalism.L2.SG.Pf.LiftCellVolume.LemmaVLiftC_holds X Y u u' κ) (atPtRelevantC_holds X Y u u') hV hc0.le`. Establish `hNF : NormalFormC X Y u u' vR i0 i0' νq κ` using `normalFormC_all X Y u u' vR i0 i0' νq κ hAtS hTP hCPU hDF hPT hFT`. Establish `hscl : 0 < Formalism.L2.SG.TermOp.scl (Y.FN u) (Y.FN u') (X` using `X) (u := u) (u' := u') * X.volK2 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[classFrame_scl X hb Y u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq hV]`. Conclude with `inv_pos.2 (Real.sqrt_pos.2 hc0)`. Establish `hAV` using `ampValLowerC_of X Y u u' vR i0 i0' νq κ hNF (atPtRelevantC_holds X Y u u') hscl`. Establish `hDictIff : IotaDictIff` using `fun D X Y u u' s₁ s₂ => hDict D X Y u u' s₁ s₂`. Establish `hMass` using `Formalism.L2.SG.Pf.FibreCounting.LiftMassC_holds X Y u u'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRR : RowRegroupC X Y u u' κ` using `rowRegroupC_of X Y u u' κ hAbs hScal`. Establish `hIF : LiftIotaFreeC X Y u u'` using `fun s₁ s₂ _ h hr => Formalism.L2.SG.Pf.Act.liftIotaFree (fun u'' => Formalism.L2.SG.Closed.NeatKu_holds X u'' Y.hK) Formalism.L2.SG.Pf.iotaRepC_holds u u' s₁ s₂ h hr`. Establish `hTor : TorsorC X Y u u' vR i0 i0' νq κ` using `torsorC_of X Y u u' vR i0 i0' νq κ hκ hIF hMass (liftRowCohC_of_dict X Y u u' hDictIff)`. Establish `hCA : ClassAbsC X Y u u' vR i0 i0' νq κ` using `Formalism.L2.SG.Pf.RowForm.ClassAbs.classAbsC_of X Y u u' vR i0 i0' νq κ hAbs hAV hMass`. Establish `hS : SigRowsC X hb Y u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq κ` using `sigRowsC_of X hb Y u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq κ hRR hCF hTor hCA hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : WeightConstC X Y u u' (nc * ∏' q, Formalism.L2.SG.DataInst.alpD u u' q)` using `Formalism.L2.SG.WConst.weightConstC_of X Y u u' _ hPR (Formalism.L2.SG.WConst.eligTotPos_holds X Y u u')`. Establish `hRV : RowVecC X Y u u' vR i0 i0' νq κ nc` using `rowVecC_of X Y u u' vR i0 i0' νq κ nc hW (Formalism.L2.SG.WConst.pointRegroupC_of X Y u u' vR i0 i0' νq κ hCA) (Formalism.L2.SG.RhoPf.massRows_pos X Y u) (Formalism.L2.SG.WConst.kapN_pos (D := D)) (mul_pos hnc hα) (ngFac_pos D)`. Establish `hR : RhoTieC X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q Y.M Y.δ i0 i0' νq` using `Formalism.L2.SG.MassDataConc.RhoTieC_holds X hb Y u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq (Formalism.L2.SG.Pf.latRowLat X u) (Formalism.L2.SG.Pf.latInj X u) (Formalism.L2.SG.Pf.latSurj X u)`. Establish `hA : AlTieC X hb Y u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq` using `Formalism.L2.SG.Pf.AlTieC_of_loc X hb Y u u' X0 ψ sd C Th _ Q Y.M Y.δ i0 i0' νq hLT hk`. Conclude with `rowFormC_of X hb Y u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq κ nc hS hRV hN hR hA hnc hα (Formalism.L2.SG.WConst.kapN_pos (D := D)) (Formalism.L2.SG.RhoPf.massRows_pos X Y u) (ngFac_pos D)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowFormC_of_leaves3 {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (Y : Formalism.L2.SG.Full.Full X)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
@@ -242,9 +238,7 @@ def GUnramAll : Prop :=
   ∀ (D : D7) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → ∀ i : Fin 2, Formalism.L2.SG.LemmaN.Unram D.host.E (D.host.g i)
 
 /- English proof (translation)
-Introduce `D u u' hS i`. Unfold `Formalism.MainNotions.S.Cnt.Stand at hS`. Take `⟨hg0, hg1, -, hsp, -⟩` from `hS.2.2.2.2.2.2.2`. Establish `hpr : Nat.Prime (D.host.g i)` using `by fin_cases i`. Conclude with `hg0`.
-
-Conclude with `hg1`. Conclude with `Formalism.L2.SG.Pf.unram_of_splitsCompl D.host.E (D.host.g i) hpr (hsp i)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gUnramAll : GUnramAll := by
   intro D u u' hS i

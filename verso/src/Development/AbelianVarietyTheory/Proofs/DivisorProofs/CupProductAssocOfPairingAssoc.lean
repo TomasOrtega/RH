@@ -9,11 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_sigma', Finset.sum_sigma']`. Use `Finset.sum_bij' (fun x _ => ⟨x.2, x.1 - x.2⟩) (fun y _ => ⟨y.1 + y.2, y.1⟩) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ h`. Apply the tactic sequence `simp at h ⊢ <;> omega`. Introduce and unpack `⟨a, b⟩ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `simp at h ⊢ <;> omega`. Introduce and unpack `⟨a, b⟩ h`. Apply the tactic sequence `simp at h ⊢ <;> omega`. Introduce and unpack `⟨a, b⟩ h`. Apply the tactic sequence `simp at h ⊢ <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce and unpack `⟨a, b⟩ h`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 theorem sum_range_triangle {A : Type*} [AddCommMonoid A] (G : ℕ → ℕ → A) (N : ℕ) :
     ∑ P ∈ Finset.range (N + 1), ∑ p ∈ Finset.range (P + 1), G p (P - p) =
@@ -32,7 +32,7 @@ theorem sum_range_triangle {A : Type*} [AddCommMonoid A] (G : ℕ → ℕ → A)
     rfl
 
 /- English proof (translation)
-Substitute `hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem Sx.sub_congr {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) {j j' l : ℕ} (hj : j = j') (h : j + l ≤ N)
     (h' : j' + l ≤ N) : x.sub j l h = x.sub j' l h' := by
@@ -40,7 +40,7 @@ theorem Sx.sub_congr {E : Spc} {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) {j j' l
   rfl
 
 /- English proof (translation)
-Substitute `ha hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem Pair.mul_ev_congr {R : Type} [CommRing R] {J K M : Cx R} (μ : Pair J K M) {E : Spc} {k : ℤ}
     (γ : Cochain ((chains R).obj E) K k) {U : Scheme.{0}} {N : ℕ} (x : Sx E N U) (t tu : ℤ) (b : Sec (J.X t) U)
@@ -54,25 +54,25 @@ theorem Pair.mul_ev_congr {R : Type} [CommRing R] {J K M : Cx R} (μ : Pair J K 
 end GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `R _ I J K M M' L μ ν μ' ν' hA E n m k nm mk w h1 h2 h3 h4 a b c`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective a`. Take `⟨β, rfl⟩` from `CohomologyClass.mk_surjective b`. Take `⟨γ, rfl⟩` from `CohomologyClass.mk_surjective c`. Take `⟨δ, hδ⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R μ h1).1 α β`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(GlobalTheory.T.cup_eq_class_of_isAW R μ h1).2 α β δ hδ]`. Take `⟨ε, hε⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R ν h2).1 δ γ`. Rewrite using `[(GlobalTheory.T.cup_eq_class_of_isAW R ν h2).2 δ γ ε hε]`. Take `⟨δ', hδ'⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R μ' h3).1 β γ`. Rewrite using `[(GlobalTheory.T.cup_eq_class_of_isAW R μ' h3).2 β γ δ' hδ']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ε', hε'⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R ν' h4).1 α δ'`. Rewrite using `[(GlobalTheory.T.cup_eq_class_of_isAW R ν' h4).2 α δ' ε' hε']`. It suffices to establish `hh : ε.1 = ε'.1 by rw [show ε = ε' from Subtype.ext hh]`. Apply `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := L) (n := w)).2.2.1` to reduce the goal to its premises. Introduce `N s hs U x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hε N s hs U x, hε' N s hs U x]`. Establish `ss` using `fun {N' : ℕ} (y : Sx E N' U) => (GlobalTheory.T.etaleSpaceSimplicesOver_sub_composite y).1`. Set `G : ℕ → ℕ → Sec (L.X s) U` to `fun p r => if hpr : p + r ≤ N then (((mk * (p : ℤ) + k * (r : ℤ)).negOnePow : ℤˣ) : ℤ) • ν'.mul U (-(p : ℤ) + n) (-((N - p : ℕ) : ℤ) + mk) s (by omega) (ev α.1 p _ rfl U (x.sub 0 p (by omega))) (μ'.mul U (-(r : ℤ) + m) (-((N - p - r : ℕ) : ℤ) + k) (-((N - p : ℕ) : ℤ) + mk) (by om …`. Use `trans ∑ P ∈ Finset.range (N + 1), ∑ p ∈ Finset.range (P + 1), G p (P - p)`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun P => ∑ p ∈ Finset.range (P + 1), G p (P - p)) (N + 1)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Establish `hP` using `P.isLt`. Rewrite using `[hδ (P : ℕ) _ _ U (x.sub 0 (P : ℕ) (by omega)), map_sum, LinearMap.sum_apply, Finset.smul_sum, ← Fin.sum_univ_eq_sum_range (fun p => G p ((P : ℕ) - p)) ((P : ℕ) + 1)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `hp` using `p.isLt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [G]`. Rewrite using `[dif_pos (by omega), Units.smul_def, Units.smul_def, map_zsmul, LinearMap.smul_apply, smul_smul, ← Units.val_mul, ← Int.negOnePow_add]`. Rewrite using `[hA (tu := -((N - (p : ℕ) : ℕ) : ℤ) + mk)]`. Use `rotate_left`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[ss, ss, GlobalTheory.EtC.Sx.sub_congr x (show 0 + 0 = 0 from rfl) _ (by omega), GlobalTheory.EtC.Sx.sub_congr x (show 0 + (p : ℕ) = p by omega) _ (by omega)]`. Rewrite using `[GlobalTheory.EtC.Pair.mul_ev_congr μ' γ.1 x _ _ _ (a' := N - (p : ℕ) - ((P : ℕ) - (p : ℕ))) (j' := (p : ℕ) + ((P : ℕ) - (p : ℕ))) (by omega) (by omega) _ (by omega) _ (by omega)]`. Establish `hsg : (k * ((P : ℕ) : ℤ) + m * ((p : ℕ) : ℤ)).negOnePow = (mk * ((p : ℕ) : ℤ) + k * (((P : ℕ) - (p : ℕ) : ℕ) : ℤ)).negOnePow`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Nat.cast_sub (by omega), ← h3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsg]`. Use `trans ∑ p ∈ Finset.range (N + 1), ∑ r ∈ Finset.range (N - p + 1), G p r`. Conclude with `GlobalTheory.EtC.sum_range_triangle G N`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range (fun p => ∑ r ∈ Finset.range (N - p + 1), G p r) (N + 1)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `hp` using `p.isLt`. Rewrite using `[hδ' (N - (p : ℕ)) _ _ U (x.sub (p : ℕ) (N - (p : ℕ)) (by omega)), map_sum, Finset.smul_sum, ← Fin.sum_univ_eq_sum_range (fun r => G p r) (N - (p : ℕ) + 1)]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hr` using `r.isLt`. Simplify using `only [G]`. Rewrite using `[dif_pos (by omega), Units.smul_def, Units.smul_def, map_zsmul, smul_smul, ← Units.val_mul, ← Int.negOnePow_add, ss, ss]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.Pair.cup_assoc_of_mul_assoc : ∀ (R : Type) [CommRing R] {I J K M M' L : Cx R} (μ : Pair I J M) (ν : Pair M K L) (μ' : Pair J K M') (ν' : Pair I M' L), (∀ (U : Scheme.{0}) (s t u st tu w : ℤ) (h1 : s + t = st) (h2 : st + u = w) (h3 : t + u = tu) (h4 : s + tu = w) a b c, ν.mul U st u w h2 (μ.mul U s t st h1 a b) c = ν'.mul U s tu w h4 a (μ'.mul U t u tu h3 b c)) → ∀ (E : Spc) {n m k nm mk w : ℤ} (h1 : n + m = nm) (h2 : nm + k = w) (h3 : m + k = mk) (h4 : n + mk = w) a b c, ν.cup E h2 (μ.cup E h1 a b) c = ν'.cup E h4 a (μ'.cup E h3 b c) := by
   intro R _ I J K M M' L μ ν μ' ν' hA E n m k nm mk w h1 h2 h3 h4 a b c

@@ -49,13 +49,13 @@ def ind (s : Orb × Fin 2) (w : WVO (IS I0)) : C := if (w.1, w.2.1) = s then 1 e
 variable (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o))
 
 /- English proof (translation)
-Simplify using `[zeK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_zeK (κ : WVO (IS I0) → C) (m : Fin dd) : MvPowerSeries.constantCoeff (zeK Y p κ m) = 0 := by
   simp [zeK]
 
 /- English proof (translation)
-Apply `VP.cc_exAt` to reduce the goal to its premises. Introduce `m`. Conclude with `cc_zeK Y p κ m`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cc_EK (κ : WVO (IS I0) → C) (i : Fin dd) : MvPowerSeries.constantCoeff (EK Y p κ i) = 0 := by
   apply VP.cc_exAt
@@ -63,14 +63,14 @@ theorem cc_EK (κ : WVO (IS I0) → C) (i : Fin dd) : MvPowerSeries.constantCoef
   exact cc_zeK Y p κ m
 
 /- English proof (translation)
-Take `⟨col, i⟩` from `s`. Conclude with `cc_EK Y p (kCol Y p col) i`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cc_AA (s : Fin 2 × Fin dd) : MvPowerSeries.constantCoeff (AA Y p s) = 0 := by
   obtain ⟨col, i⟩ := s
   exact cc_EK Y p (kCol Y p col) i
 
 /- English proof (translation)
-Apply the tactic sequence `apply VP.cc_hAt <;> intro i <;> exact cc_EK Y p _ i`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_HK (κ κ' : WVO (IS I0) → C) : MvPowerSeries.constantCoeff (HK Y p κ κ') = 0 := by
   apply VP.cc_hAt <;> intro i <;> exact cc_EK Y p _ i
@@ -81,20 +81,20 @@ Both sides reduce to the same expression.
 theorem AA_eq (col : Fin 2) (i : Fin dd) : AA Y p (col, i) = EK Y p (kCol Y p col) i := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => MvPowerSeries.X (col, i), ⟨fun _ => VP.cc_X _, fun _ => VP.IntS_X _⟩, fun i => by rw [VP.subst_X (cc_AA Y p)]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem GK_col (col : Fin 2) : GK Y p (kCol Y p col) :=
   ⟨fun i => MvPowerSeries.X (col, i), ⟨fun _ => VP.cc_X _, fun _ => VP.IntS_X _⟩, fun i => by
     rw [VP.subst_X (cc_AA Y p)]; rfl⟩
 
 /- English proof (translation)
-Simplify using `only [zeK, Pi.add_apply, add_mul, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zeK_add (κ κ' : WVO (IS I0) → C) (m : Fin dd) : zeK Y p (κ + κ') m = zeK Y p κ m + zeK Y p κ' m := by
   simp only [zeK, Pi.add_apply, add_mul, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `EK`. Rewrite using `[← VP.ex_add Y (cc_zeK Y p κ) (cc_zeK Y p κ')]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Conclude with `(zeK_add Y p κ κ' m).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem EK_add (κ κ' : WVO (IS I0) → C) : VP.addAt Y (EK Y p κ) (EK Y p κ') = EK Y p (κ + κ') := by
   unfold EK
@@ -104,7 +104,7 @@ theorem EK_add (κ κ' : WVO (IS I0) → C) : VP.addAt Y (EK Y p κ) (EK Y p κ'
   exact (zeK_add Y p κ κ' m).symm
 
 /- English proof (translation)
-Establish `hz : zeK Y p 0 = fun _ => 0`. Use function extensionality and compare the values at `m`. Simplify using `[zeK]`. Unfold `EK`. Rewrite using `[hz, VP.exAt_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem EK_zero : EK Y p 0 = fun _ => 0 := by
   have hz : zeK Y p 0 = fun _ => 0 := by
@@ -114,13 +114,11 @@ theorem EK_zero : EK Y p 0 = fun _ => 0 := by
   rw [hz, VP.exAt_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[show VP.mapAt φ (EK Y p κ) i = _ from endoLog_holds Y φ hφ.cc hφ.add (WVO (IS I0)) (zeK Y p κ) (cc_zeK Y p κ) i]`. Use `show VP.exAt Y _ i = VP.exAt Y _ i`. Use `congr 1`. Use function extensionality and compare the values at `m`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `zeK`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `h` using `congrFun (hl w) m`. Unfold `linAct at h`. Rewrite `h` using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Pi.mul_apply, mul_right_comm, ← h, Finset.sum_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EK_map {φ : Pt C 1 dd} (hφ : IsEndo Y φ) {lam : WVO (IS I0) → C}
     (hl : ∀ w, linAct φ (eW Y p w) = lam w • eW Y p w) (κ : WVO (IS I0) → C) :
@@ -144,7 +142,7 @@ theorem EK_map {φ : Pt C 1 dd} (hφ : IsEndo Y φ) {lam : WVO (IS I0) → C}
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-The claim follows from `Y.intAct x cc := Y.B.A.const x add := by simp only [VP.coordinateChange_comp1_intertwines_action, VP.addOf_eq'] exact VP.actAt_addAt Y x (VP.cc_pt 0) (VP.cc_pt 1)`.
+A detailed English derivation is pending.
 -/
 theorem isEndo_act (x : O) : IsEndo Y (Y.B.A.act x) where
   int := Y.intAct x
@@ -154,15 +152,15 @@ theorem isEndo_act (x : O) : IsEndo Y (Y.B.A.act x) where
     exact VP.actAt_addAt Y x (VP.cc_pt 0) (VP.cc_pt 1)
 
 /- English proof (translation)
-The claim follows from `EK_map Y p (isEndo_act Y x) (fun w => (p w.1).e_eig w.2.2 x) κ`.
+A detailed English derivation is pending.
 -/
 theorem EK_act (x : O) (κ : WVO (IS I0) → C) : VP.actAt Y x (EK Y p κ) = EK Y p (lamAct Y p x * κ) :=
   EK_map Y p (isEndo_act Y x) (fun w => (p w.1).e_eig w.2.2 x) κ
 
 /- English proof (translation)
-Establish `h2 : GImg V (AA Y p) (VP.addAt Y (EK Y p κ) (EK Y p κ'))` using `by first`. Consider the case `exact GImg.add (Y := Y) (cc_AA Y p) h h'`. Consider the case `exact GImg.add (Y := Y) h h'`. Consider the case `exact GImg.add (cc_AA Y p) h h'`. Rewrite `h2` using `[EK_add]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem GK.add {κ κ' : WVO (IS I0) → C} (h : GK Y p κ) (h' : GK Y p κ') : GK Y p (κ + κ') := by
   have h2 : GImg V (AA Y p) (VP.addAt Y (EK Y p κ) (EK Y p κ')) := by
@@ -174,9 +172,9 @@ theorem GK.add {κ κ' : WVO (IS I0) → C} (h : GK Y p κ) (h' : GK Y p κ') : 
   exact h2
 
 /- English proof (translation)
-Unfold `GK`. Rewrite using `[EK_zero]`. Use `first`. Consider the case `exact GImg.zero (V := V) (A := AA Y p)`. Consider the case `exact GImg.zero (V := V) (A := AA Y p) (cc_AA Y p)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact GImg.zero (V := V) (A := AA Y p) (Y := Y)`. Consider the case `exact GImg.zero (V := V) (A := AA Y p) (Y := Y) (cc_AA Y p)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GK.zero : GK Y p 0 := by
   unfold GK
@@ -188,16 +186,16 @@ theorem GK.zero : GK Y p 0 := by
     | exact GImg.zero (V := V) (A := AA Y p) (Y := Y) (cc_AA Y p)
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction κ (GK Y p) (fun a b ha hb => GK.add Y p ha hb) (GK.zero Y p) h`.
+A detailed English derivation is pending.
 -/
 theorem GK.sum {ι : Type} (s : Finset ι) {κ : ι → WVO (IS I0) → C} (h : ∀ i ∈ s, GK Y p (κ i)) :
     GK Y p (∑ i ∈ s, κ i) := by
   exact Finset.sum_induction κ (GK Y p) (fun a b ha hb => GK.add Y p ha hb) (GK.zero Y p) h
 
 /- English proof (translation)
-Establish `h2 : GImg V (AA Y p) (VP.mapAt φ (EK Y p κ))` using `by first`. Consider the case `exact GImg.map (cc_AA Y p) hφ h`. Consider the case `exact GImg.map hφ (cc_AA Y p) h`. Consider the case `exact GImg.map hφ h`. Rewrite `h2` using `[EK_map Y p hφ hl]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem GK.map {φ : Pt C 1 dd} (hφ : IsEndo Y φ) {lam : WVO (IS I0) → C}
     (hl : ∀ w, linAct φ (eW Y p w) = lam w • eW Y p w) {κ : WVO (IS I0) → C} (h : GK Y p κ) :
@@ -211,9 +209,9 @@ theorem GK.map {φ : Pt C 1 dd} (hφ : IsEndo Y φ) {lam : WVO (IS I0) → C}
   exact h2
 
 /- English proof (translation)
-Establish `h2 : GImg V (AA Y p) (VP.actAt Y x (EK Y p κ))` using `by first`. Consider the case `exact GImg.act (Y := Y) (cc_AA Y p) x h`. Consider the case `exact GImg.act (Y := Y) x (cc_AA Y p) h`. Consider the case `exact GImg.act (Y := Y) x h`. Rewrite `h2` using `[EK_act]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem GK.act (x : O) {κ : WVO (IS I0) → C} (h : GK Y p κ) : GK Y p (lamAct Y p x * κ) := by
   have h2 : GImg V (AA Y p) (VP.actAt Y x (EK Y p κ)) := by
@@ -225,23 +223,23 @@ theorem GK.act (x : O) {κ : WVO (IS I0) → C} (h : GK Y p κ) : GK Y p (lamAct
   exact h2
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `himg ((p o').e c')`. Establish `h1 : ∀ a, linAct (Y.B.A.act a) (linAct φ ((p o').e c')) = (p o').em ((p o').ty0 c') a • linAct φ ((p o').e c')`. Introduce `a`. Rewrite using `[← VP.linAct_comp1 _ _ hφ, ← hcomm a, VP.linAct_comp1 _ _ (Y.B.A.const a), (p o').e_eig, VP.linAct_smul]`. Establish `h2 : ∀ a, ∑ c, (b c * ((p o).em ((p o).ty0 c) a - (p o').em ((p o').ty0 c') a)) • (p o).e c = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Establish `h3` using `h1 a`. Rewrite `h3` using `[hb, VP.linAct_sum, Finset.smul_sum]`. Establish `h4 : ∀ c, linAct (Y.B.A.act a) (b c • (p o).e c) = (b c * (p o).em ((p o).ty0 c) a) • (p o).e c`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[VP.linAct_smul, (p o).e_eig, smul_smul]`. Rewrite `h3` using `[Finset.sum_congr rfl fun c _ => h4 c]`. Rewrite `h3` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite using `[← h3]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨W, -, hW⟩` from `(p o).e_sat`. Establish `hb0 : ∀ c, b c = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `c`. Take `⟨a, ha⟩` from `hs (o, (p o).ty0 c) (o', (p o').ty0 c') (fun h => ho (Prod.mk.inj h).1.symm)`. Establish `hne : (p o).em ((p o).ty0 c) a - (p o').em ((p o').ty0 c') a ≠ 0`. Introduce `h`. Establish `h6 : V.v ((p o).em ((p o).ty0 c) a - (p o').em ((p o').ty0 c') a) = 0` using `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h6` using `[h, V.v.map_zero]`. Conclude with `WithTop.top_ne_zero h6`. Establish `h7 : ∑ x, (∑ c'', (b c'' * ((p o).em ((p o).ty0 c'') a - (p o').em ((p o').ty0 c') a)) • (p o).e c'') x * W x c = 0`. Rewrite using `[h2 a]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul] at h7`. Rewrite `h7` using `[Finset.sum_comm]`. Establish `h8 : ∀ c'', ∑ x, b c'' * ((p o).em ((p o).ty0 c'') a - (p o').em ((p o').ty0 c') a) * (p o).e c'' x * W x c = if c'' = c then b c'' * ((p o).em ((p o).ty0 c'') a - (p o').em ((p o').ty0 c') a) else 0`. Introduce `c''`. Use `hW c'' c` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum, this]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h7` using `[Finset.sum_congr rfl fun c'' _ => h8 c'', Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_univ, if_true] at h7`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h7).resolve_right hne`. Rewrite using `[hb]`. Conclude with `Finset.sum_eq_zero fun c _ => by rw [hb0 c, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem kill_self (hs : SelfSep Y p) (o : Orb) (φ : Pt C 1 dd) (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0)
     (hcomm : ∀ a, comp1 φ (Y.B.A.act a) = comp1 (Y.B.A.act a) φ)
@@ -301,9 +299,9 @@ variable {Y p} {γ γ' : Orb → Fin 2 → Fin 2 → Pt C 1 dd} (hs : SelfSep Y 
 include hs hG
 
 /- English proof (translation)
-Take `⟨o', g, c⟩` from `w`. Distinguish the cases in `h : o' = o`. Substitute `h show _ = (if o' = o' then _ else _) • _` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `(hG o').lin r s c`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (if o' = o then _ else _) • _`. Rewrite using `[if_neg h, zero_smul]`. Conclude with `kill_self Y p hs o (γ o r s) ((hG o).endo r s).cc ((hG o).comm r s) ((hG o).img r s) o' c h`.
+A detailed English derivation is pending.
 -/
 theorem diagG (o : Orb) (r s : Fin 2) (w : WVO (IS I0)) :
     linAct (γ o r s) (eW Y p w) = lamG Y p o r s w • eW Y p w := by
@@ -318,9 +316,9 @@ theorem diagG (o : Orb) (r s : Fin 2) (w : WVO (IS I0)) :
     exact kill_self Y p hs o (γ o r s) ((hG o).endo r s).cc ((hG o).comm r s) ((hG o).img r s) o' c h
 
 /- English proof (translation)
-Take `⟨o', g, c⟩` from `w`. Distinguish the cases in `h : o' = o`. Substitute `h show _ = (if o' = o' then _ else _) • _` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `(hG o').lin' r s c`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (if o' = o then _ else _) • _`. Rewrite using `[if_neg h, zero_smul]`. Conclude with `kill_self Y p hs o (γ' o r s) ((hG o).endo' r s).cc ((hG o).comm' r s) ((hG o).img' r s) o' c h`.
+A detailed English derivation is pending.
 -/
 theorem diagG' (o : Orb) (r s : Fin 2) (w : WVO (IS I0)) :
     linAct (γ' o r s) (eW Y p w) = lamG' Y p o r s w • eW Y p w := by
@@ -335,13 +333,13 @@ theorem diagG' (o : Orb) (r s : Fin 2) (w : WVO (IS I0)) :
     exact kill_self Y p hs o (γ' o r s) ((hG o).endo' r s).cc ((hG o).comm' r s) ((hG o).img' r s) o' c h
 
 /- English proof (translation)
-The claim follows from `GK.map Y p ((hG o).endo r s) (diagG hs hG o r s) h`.
+A detailed English derivation is pending.
 -/
 theorem GK.mulG (o : Orb) (r s : Fin 2) {κ : WVO (IS I0) → C} (h : GK Y p κ) : GK Y p (lamG Y p o r s * κ) :=
   GK.map Y p ((hG o).endo r s) (diagG hs hG o r s) h
 
 /- English proof (translation)
-The claim follows from `GK.map Y p ((hG o).endo' r s) (diagG' hs hG o r s) h`.
+A detailed English derivation is pending.
 -/
 theorem GK.mulG' (o : Orb) (r s : Fin 2) {κ : WVO (IS I0) → C} (h : GK Y p κ) : GK Y p (lamG' Y p o r s * κ) :=
   GK.map Y p ((hG o).endo' r s) (diagG' hs hG o r s) h
@@ -355,9 +353,9 @@ theorem fin_two_ne_one_sub : ∀ g g' : Fin 2, g' = g ↔ ¬ (1 - g = g') := by
   decide
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [Finset.sum_apply, Pi.mul_apply, lamG, ind, kCol]`. Rewrite using `[Finset.sum_eq_single (w.1, w.2.1)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hb), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kCol_eq (col : Fin 2) : kCol Y p col = ∑ s : Orb × Fin 2, lamG Y p s.1 col s.2 * ind s := by
   funext w
@@ -370,11 +368,11 @@ theorem kCol_eq (col : Fin 2) : kCol Y p col = ∑ s : Orb × Fin 2, lamG Y p s.
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Take `⟨o, g⟩` from `s`. Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply]`. Use `show (if (w.1, w.2.1) = (o, g) then (1 : C) else 0) = ∑ r, (if w.1 = o then (p w.1).gm (tyW Y p w + (p w.1).hd) r (1 - g) else 0) * (p w.1).gm (tyW Y p w) r w.2.1`. Distinguish the cases in `h : w.1 = o`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos h]`. Rewrite using `[(p w.1).gm_hyp]`. Distinguish the cases in `hg : w.2.1 = g`. Rewrite using `[if_pos (Prod.ext h hg), if_neg ((fin_two_ne_one_sub g w.2.1).1 hg)]`. Rewrite using `[if_neg fun e => hg (Prod.mk.inj e).2, if_pos (not_not.1 fun e => hg ((fin_two_ne_one_sub g w.2.1).2 e))]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg h, zero_mul, Finset.sum_const_zero]`. Rewrite using `[if_neg fun e => h (Prod.mk.inj e).1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_eq (s : Orb × Fin 2) : (ind s : WVO (IS I0) → C) = ∑ r, lamG' Y p s.1 r (1 - s.2) * kCol Y p r := by
   obtain ⟨o, g⟩ := s
@@ -392,17 +390,17 @@ theorem ind_eq (s : Orb × Fin 2) : (ind s : WVO (IS I0) → C) = ∑ r, lamG' Y
     rw [if_neg fun e => h (Prod.mk.inj e).1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.mul_apply]`. Distinguish the cases in `hw : (w.1, w.2.1) = (o', g')`. Establish `h1 : w.1 = o'` using `(Prod.mk.inj hw).1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `ho : o' = o`. Establish `h2 : w.1 = o` using `h1.trans ho`. Establish `e : ∀ col, lamG' Y p o col g w * (lamG Y p o' col g' w * (μ w * ind (o', g') w)) = ((p w.1).gm (tyW Y p w + (p w.1).hd) col g * (p w.1).gm (tyW Y p w) col g') * (μ w * ind (o', g') w)`. Introduce `col`. Unfold `lamG' lamG`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos h2, if_pos h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun col _ => e col, ← Finset.sum_mul, (p w.1).gm_hyp]`. Distinguish the cases in `hg : g = g'`. Rewrite using `[if_pos hg, zero_mul, if_neg fun h => (fin_two_ne_one_sub g g').1 hg.symm (Prod.mk.inj h).2.symm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg hg, one_mul, if_pos (Prod.ext ho (not_not.1 fun e => hg ((fin_two_ne_one_sub g g').2 fun e' => e e'.symm).symm))]`. Both sides reduce to the same expression. Establish `e : ∀ col, lamG' Y p o col g w * (lamG Y p o' col g' w * (μ w * ind (o', g') w)) = 0`. Introduce `col`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `lamG'`. Rewrite using `[if_neg fun h => ho (h1.symm.trans h), zero_mul]`. Rewrite using `[Finset.sum_eq_zero fun col _ => e col, if_neg fun h => ho (Prod.mk.inj h).1]`. Both sides reduce to the same expression. Establish `e : (ind (o', g') : WVO (IS I0) → C) w = 0` using `if_neg hw`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [e, mul_zero, Finset.sum_const_zero]`. Use `split_ifs`. Rewrite using `[Pi.mul_apply, e, mul_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gram_eq (o o' : Orb) (g g' : Fin 2) (μ : WVO (IS I0) → C) :
     ∑ col, lamG' Y p o col g * (lamG Y p o' col g' * (μ * ind (o', g'))) =
@@ -445,7 +443,7 @@ variable {Y p} {γ γ' : Orb → Fin 2 → Fin 2 → Pt C 1 dd} (hs : SelfSep Y 
 include hs hG
 
 /- English proof (translation)
-Rewrite using `[ind_eq Y p s]`. Conclude with `GK.sum Y p Finset.univ fun r _ => GK.mulG' hs hG s.1 r (1 - s.2) (GK_col Y p r)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GK_ind (s : Orb × Fin 2) : GK Y p (ind s) := by
   rw [ind_eq Y p s]
@@ -454,19 +452,19 @@ theorem GK_ind (s : Orb × Fin 2) : GK Y p (ind s) := by
 end Pack2
 
 /- English proof (translation)
-Unfold `toAllS RawChart.expPt`. Establish `h0 : ∀ x : Fin 2 × Fin dd, MvPowerSeries.constantCoeff (∑ c : I0 o, (Y.rawSelf (p o)).u g c x • (MvPowerSeries.X (⟨g, c⟩ : WV (IS I0 o)) : MvPowerSeries (WV (IS I0 o)) C)) = 0`. Introduce `m`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_X, mul_zero]`. Use `show MvPowerSeries.subst _ (MvPowerSeries.subst _ (MvPowerSeries.subst (fun x : Fin dd => (MvPowerSeries.X (col, x) : MvPowerSeries (Fin 2 × Fin dd) C)) (VP.e Y i))) = _`. Rewrite using `[VP.subst_subst (fun _ => VP.cc_X _) h0, VP.subst_subst (fun m => by rw [VP.subst_X h0]; exact h0 _) (fun _ => VP.cc_X _)]`. Use `show _ = MvPowerSeries.subst _ (VP.e Y i)`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[VP.subst_X h0, VP.subst_sum (fun _ => VP.cc_X _)]`. Unfold `zeK`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single o]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single g]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[VP.subst_smul (fun _ => VP.cc_X _), VP.subst_X (fun _ => VP.cc_X _)]`. Use `congr 1`. Rewrite using `[Pi.mul_apply]`. Unfold `lamG ind`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_pos rfl, if_pos rfl, mul_one]`. Both sides reduce to the same expression. Introduce `g' _ hg'`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `: (ind (o, g) : WVO (IS I0) → C) ⟨o, ⟨g', c⟩⟩ = 0` using `if_neg fun h => hg' (Prod.mk.inj h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.mul_apply, this, mul_zero, zero_mul, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `o' _ ho'`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (ind (o, g) : WVO (IS I0) → C) ⟨o', x⟩ = 0` using `if_neg fun h => ho' (Prod.mk.inj h).1`. Rewrite using `[Pi.mul_apply, this, mul_zero, zero_mul, zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem toAllS_expPtS (o : Orb) (g col : Fin 2) (i : Fin dd) :
     toAllS (I := IS I0) o ((Y.rawSelf (p o)).expPt g (col, i)) = EK Y p (lamG Y p o col g * ind (o, g)) i := by
@@ -508,9 +506,9 @@ theorem toAllS_expPtS (o : Orb) (g col : Fin 2) (i : Fin dd) :
 end VS
 
 /- English proof (translation)
-Introduce `hs o g`. Use `choose γ γ' hG using hG`. Establish `h : ∀ col : Fin 2, VS.GK Y p (VS.lamG Y p o col g * VS.ind (o, g))` using `fun col => VS.GK.mulG hs hG o col g (VS.GK_ind hs hG (o, g))`. Use `choose P hP hPe using h`. Use `⟨fun x => P x.1 x.2, fun x => (hP x.1).2 x.2, fun x => (hP x.1).1 x.2, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨col, i⟩` from `x`. Rewrite using `[VS.toAllS_expPtS]`. Conclude with `hPe col i`.
+A detailed English derivation is pending.
 -/
 theorem projSelf_of {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
     [NeZero d] {Orb : Type} [Fintype Orb] {I0 : Orb → Type} [∀ o, Fintype (I0 o)]

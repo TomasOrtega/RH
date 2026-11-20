@@ -6,7 +6,7 @@ open scoped Formalism.Per
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CrysPrism.frobTot_mem_SdSet` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FFrobeniusMapsDividedPowerSeriesGeneratorSet.lean&line=11#L11)
 -/

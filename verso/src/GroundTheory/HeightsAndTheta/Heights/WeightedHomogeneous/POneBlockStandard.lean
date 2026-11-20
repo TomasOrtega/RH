@@ -11,13 +11,13 @@ noncomputable section
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Use `⟨if i = j then 1 else 0, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, ← ha, ← hb, Pi.add_apply]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c * a, by rw [map_mul, ← ha, Pi.smul_apply, Algebra.smul_def]⟩`.
+Supply the required witnesses or components.
 -/
 theorem standard_coord_integral {m : ℕ} {v : Fin m → K}
     (hv : v ∈ (HermLattice.standard K m).lattice) (i : Fin m) :
@@ -41,7 +41,7 @@ theorem standard_coord_integral {m : ℕ} {v : Fin m → K}
 omit [NumberField K] in
 
 /- English proof (translation)
-Simplify using `[oneBlockForms]`.
+Simplify using the standard rewrite rules.
 -/
 theorem oneBlockForms_symm_apply {e r : ℕ} (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K))
     (a : Fin (e + 1)) (j : Fin (r + 1)) :
@@ -51,11 +51,11 @@ theorem oneBlockForms_symm_apply {e r : ℕ} (om : Module.Basis (Fin (e + 1)) �
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[← linearIndependent_equiv (oneBlockIndex e r).symm]`. Establish `hψ : oneBlockForms (r` using `r) om ∘ (oneBlockIndex e r).symm = fun p : Fin (e + 1) × Fin (r + 1) ↦ (Pi.single p.2 ((om p.1 : 𝓞 K) : K) : Fin (r + 1) → K) := by`. Use function extensionality and compare the values at `p`. Conclude with `oneBlockForms_symm_apply om p.1 p.2`. Rewrite using `[hψ, Fintype.linearIndependent_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g hg ⟨a, j⟩`. Establish `hj` using `congrFun hg j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Pi.zero_apply, Fintype.sum_prod_type, Pi.single_apply, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at hj`. Establish `h2 : ∑ a', g (a', j) • om a' = 0`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Simplify using `using hj`. Conclude with `Fintype.linearIndependent_iff.mp om.linearIndependent _ h2 a`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem oneBlockForms_linearIndependent {e r : ℕ} (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) :
     LinearIndependent ℤ (oneBlockForms (r := r) om) := by
@@ -76,23 +76,23 @@ theorem oneBlockForms_linearIndependent {e r : ℕ} (om : Module.Basis (Fin (e +
   exact Fintype.linearIndependent_iff.mp om.linearIndependent _ h2 a
 
 /- English proof (translation)
-Introduce `K _ _ e r om`. Use `⟨⟨oneBlockForms_linearIndependent om, le_antisymm ?_ ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩ v hv`. Take `⟨b, hb⟩` from `standard_coord_integral hv (oneBlockIndex e r p).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨om (oneBlockIndex e r p).1 * b, ?_⟩` and prove the remaining obligations. Simplify using `only [oneBlockForms, single_dotProduct, map_mul, hb]`. Introduce `ψ hψ`. Establish `hj : ∀ j, ∃ b : 𝓞 K, ψ j = algebraMap (𝓞 K) K b`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩` from `hψ (Pi.single j 1) (Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `⟨b, by rw [hb, dotProduct_single, mul_one]⟩`. Use `choose b hb using hj`. Establish `hsum : ψ = ∑ j, ∑ a, om.repr (b j) a • oneBlockForms (r` using `r) om ((oneBlockIndex e r).symm (a, j)) := by`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [oneBlockForms_symm_apply, Finset.sum_apply, Pi.smul_apply, Pi.single_apply, smul_ite, smul_zero]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[hb i]`. Use `conv_lhs => rw [← om.sum_repr (b i)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ ↦ Submodule.sum_mem _ fun a _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Establish `hmap : latticeMap (oneBlockForms (r` using `r) om) = oneBlockMap om := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[latticeMap, oneBlockMap]`. Introduce `v`. Simplify using `only [latticeMap, oneBlockMap, coe_eval₂Hom, eval₂_X, oneBlockForms, latticeForm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single (oneBlockIndex e r v.2).2]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `latticeIdeal oneBlockIdeal`. Rewrite using `[hmap]`. Introduce `σ w`. Use function extensionality and compare the values at `_ p`. Simplify using `only [latticePoint, oneBlockPoint, oneBlockForms]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single (oneBlockIndex e r p).2]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem OneBlockStandard.proof : OneBlockStandard.Statement := by
   intro K _ _ e r om

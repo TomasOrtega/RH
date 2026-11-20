@@ -11,11 +11,11 @@ open scoped ComplexOrder
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
 /- English proof (translation)
-Take `⟨N, U, C, γ, hγ, hC, hcov⟩` from `exists_finite_param_cover hg₀`. Use `choose M hM0 hM using fun a => section_basis_local_uniform_bound hg₀ hg₁ (hγ a) (hC a).1 (hC a).2`. Use `⟨∑ a, M a, ?_⟩` and prove the remaining obligations. Introduce `n r b hn hb t ht z hz`. Establish `hgt` using `isGood_interp hg₀ hg₁ ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, y₀, hy₀, e, he, rfl⟩` from `hcov z hz`. Establish `hMa : M a ≤ ∑ a, M a` using `Finset.single_le_sum (fun a _ => hM0 a) (Finset.mem_univ a)`. Establish `hS0 : 0 ≤ ∑ a, M a` using `Finset.sum_nonneg fun a _ => hM0 a`. Use `berg_le_of_forall μ _ _ (fun z => cone_metric_weight_nonneg _ _ z) (fun i j => integrable_secFun hgt hb i j) (posDef_bGram_secFun hgt hb) _ _ (mul_nonneg hS0 (pow_nonneg (Nat.cast_nonneg _) _)) fun c => ?_` and prove the remaining obligations. Establish `hdeg` using `isDegreeZero_weightedCombination (interp m₀ m₁ t) hb.1 c e (γ a y₀) he`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at hdeg ⊢`. Rewrite using `[hdeg]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem berg_le_uniform {x : Ix κ → Ω} {m₀ m₁ : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     (hg₀ : IsGood D x m₀ μ) (hg₁ : IsGood D x m₁ μ) :
@@ -42,9 +42,9 @@ theorem berg_le_uniform {x : Ix κ → Ω} {m₀ m₁ : ConeMetric ℂ (Ix κ)} 
         (mul_le_mul_of_nonneg_right hMa (pow_nonneg (Nat.cast_nonneg _) _)) (sectionNormSq_nonneg _ _ _ _)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `berg_le_uniform hg hg`. Use `⟨C, fun n r b hn hb c z hz => ?_⟩` and prove the remaining obligations. Establish `hw : wgt (interp m m 0) n = wgt m n`. Use function extensionality and compare the values at `z`. Simplify using `[wgt, interp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h` using `hC n r b hn hb 0 ⟨le_rfl, zero_le_one⟩ z hz`. Rewrite `h` using `[hw]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sup_le_l2_norm_sections {x : Ix κ → Ω} {m : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     (hg : IsGood D x m μ) :

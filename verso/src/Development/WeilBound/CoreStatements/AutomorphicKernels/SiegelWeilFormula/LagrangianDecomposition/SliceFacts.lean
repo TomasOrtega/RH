@@ -11,13 +11,13 @@ namespace PositivityTheory.SiegelWeilFormula.Ald
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `Submodule.exists_isCompl (schA F κ)`. Use `set P : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ) := (schA F κ).subtype ∘ₗ (schA F κ).projectionOnto T hT with hPdef`. Establish `hPS : ∀ x, P x ∈ schA F κ` using `fun x => Submodule.coe_mem _`. Establish `hPid : ∀ x ∈ schA F κ, P x = x` using `fun x hx => by`. Rewrite using `[hPdef, LinearMap.comp_apply, Submodule.linearProjOfIsCompl_apply_left hT ⟨x, hx⟩]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hPP : ∀ x, P (x - P x) = 0` using `fun x => by`. Rewrite using `[map_sub, hPid _ (hPS x), sub_self]`. Use `⟨{ toFun := fun g => c g ∘ₗ P + (LinearMap.id - P), map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply, h1 _ (hPS x), Module.End.one_apply]`. Normalize the expressions using the abelian group laws. Introduce `g k`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply, Module.End.mul_apply, map_add, hPP, hPid _ (hp k _ (hPS x)), add_zero, hm g k _ (hPS x), map_zero]`.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Introduce `g φ hφ`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply, hPid φ hφ, sub_self, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projHom {κ : Type} [Fintype κ] {G : Type} [Group G]
     (c : G → ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (hp : ∀ g, ∀ φ ∈ schA F κ, c g φ ∈ schA F κ)

@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y Z h f h1 h2 h3 h4 h5 h6`. Establish `: LocallyOfFinitePresentation f` using `GlobalTheory.T.locally_finite_presentation_of_etale_cover X Y Z h f h1 h2 h3 h4 h5 h6`. Conclude with `⟨etale_of_comp_of_etale_of_surjective h f, isFinite_of_comp_surjective h f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem etale_isFinite_of_comp_etale_surjective :
     ∀ (X Y Z : Scheme.{0}) (h : X ⟶ Y) (f : Y ⟶ Z), Etale h → Surjective h → Etale (h ≫ f) →

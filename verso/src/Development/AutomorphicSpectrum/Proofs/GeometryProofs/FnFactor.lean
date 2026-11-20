@@ -32,24 +32,24 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 /- English proof (translation)
-Establish `e : ∀ p : PrimeSpectrum ℂ, p.asIdeal = ⊥` using `fun p => Ideal.eq_bot_of_prime p.asIdeal`. Conclude with `PrimeSpectrum.ext (R := ℂ) ((e y).trans (e y').symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_of_sp_complex_pts (y y' : ↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)) : y = y' := by
   have e : ∀ p : PrimeSpectrum ℂ, p.asIdeal = ⊥ := fun p => Ideal.eq_bot_of_prime p.asIdeal
   exact PrimeSpectrum.ext (R := ℂ) ((e y).trans (e y').symm)
 
 /- English proof (translation)
-Take `⟨-, -, -, hfr⟩` from `a.ah`. Take `⟨x0⟩ : Nonempty ↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)` from `⟨(IsLocalRing.closedPoint ℂ : PrimeSpectrum ℂ)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : P.L.ι, ⊤ ≤ (TopologicalSpace.Opens.map (a.pt w).base).obj (P.L.U i) := by`. Establish `hx : (a.pt w).base x0 ∈ (⨆ j, P.L.U j)`. Rewrite using `[P.isLB.cover]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `⟨j, fun y _ => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_of_sp_complex_pts y x0]`. Conclude with `hj`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ∀ v : Fin g → ℂ, ⊤ ≤ (TopologicalSpace.Opens.map (a.pt v).base).obj (P.L.U i) → ⊤ ≤ (TopologicalSpace.Opens.map (CategoryTheory.Over.Hom.left (a.u.ex v)).base).obj ((P.L.pull a.φ).U fun _ => i)`. Introduce `v hv y hy`. Conclude with `Set.mem_iInter.2 fun _ => hv hy`. Establish `hpt : a.pt (w + (l : Fin g → ℂ)) = a.pt w`. Establish `h1 : a.u.ex (l : Fin g → ℂ) = 1` using `(a.u.ker _).2 l.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `CategoryTheory.CategoryStruct.comp (CategoryTheory.Over.Hom.left (a.u.ex (w + (l : Fin g → ℂ)))) a.φ = CategoryTheory.CategoryStruct.comp (CategoryTheory.Over.Hom.left (a.u.ex w)) a.φ`. Rewrite using `[a.u.ex_add, h1, _root_.mul_one]`. Establish `hi' : ⊤ ≤ (TopologicalSpace.Opens.map (a.pt (w + (l : Fin g → ℂ))).base).obj (P.L.U i)`. Rewrite using `[hpt]`. Conclude with `hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA` using `hθ i w hi`. Establish `hB` using `hθ i (w + (l : Fin g → ℂ)) hi'`. Rewrite `hB` using `[hpt]`. Establish `hE` using `hB.symm.trans hA`. Establish `hF` using `a.u.fr_ne (fun _ => i) (w + (l : Fin g → ℂ)) (hz _ hi')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hw : a.u.fr (fun _ => i) w = (a.χ l * Complex.exp (Real.pi * a.herm w l + Real.pi / 2 * a.herm l l)) * a.u.fr (fun _ => i) (w + (l : Fin g → ℂ))` using `hfr l (fun _ => i) w (hz w hi)`. Rewrite `hE` using `[hw, mul_pow]`. Apply `mul_right_cancel₀ (pow_ne_zero n hF)` to reduce the goal to its premises. Rewrite using `[hE]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fn_factor (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : RigLB G) (z : Sp ℂ ⟶ S) (g : ℕ)
     (a : ArchFrame P z g) (n : ℕ) (s : Out.H0 P.L n) (θ : (Fin g → ℂ) → ℂ) (hθ : a.IsFn s θ)

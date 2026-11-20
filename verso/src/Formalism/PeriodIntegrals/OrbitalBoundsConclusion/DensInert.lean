@@ -8,7 +8,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertDensity.AnisoPeel
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertDensity.IsoPeel
 
 /- English proof (translation)
-The claim follows from `DensInertW.densExactInert_of DensInertW.hermitianDiagonalization DensInertW.repCountCongruenceInvariant DensInertW.anisotropic_valuation_peel DensInertW.isotropic_valuation_peel DensInertW.quadraticDifferenceArith`.
+A detailed English derivation is pending.
 -/
 theorem density_exact_inert : Formalism.L2.SG.DensExact.DensExactInert :=
   DensInertW.densExactInert_of DensInertW.hermitianDiagonalization DensInertW.repCountCongruenceInvariant

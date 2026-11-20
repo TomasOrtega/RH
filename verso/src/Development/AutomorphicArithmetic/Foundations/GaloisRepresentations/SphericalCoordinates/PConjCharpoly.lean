@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `V _ _ _ d hd τ G A hτ hG`. Set `e : V ≃ₗ[ℂ] (Fin d → ℂ)` to `τ.linearEquivOfInjective hτ (by simp [hd])`. Set `b : Module.Basis (Fin d) ℂ V` to `(Pi.basisFun ℂ (Fin d)).map e.symm`. Establish `hM : LinearMap.toMatrix b b G = A`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[LinearMap.toMatrix_apply]`. Establish `h1 : b j = e.symm (Pi.single j 1)` using `by simp [b]`. Establish `h2 : ∀ v, b.repr v i = e v i` using `fun v => by simp [b, Pi.basisFun_repr]`. Rewrite using `[h2, h1]`. Express the relevant statement in the definitionally equal form `τ (G (e.symm (Pi.single j 1))) i = A i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hG]`. Establish `h3 : τ (e.symm (Pi.single j 1)) = Pi.single j 1`. Rewrite using `[← LinearMap.linearEquivOfInjective_apply hτ (by simp [hd])]`. Conclude with `e.apply_symm_apply _`. Rewrite using `[h3, Matrix.mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← hM, LinearMap.charpoly_toMatrix]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjCharpoly_of : ConjCharpoly := by
   intro V _ _ _ d hd τ G A hτ hG

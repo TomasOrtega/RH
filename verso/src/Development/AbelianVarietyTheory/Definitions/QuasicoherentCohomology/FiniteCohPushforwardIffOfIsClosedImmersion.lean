@@ -39,45 +39,45 @@ Both sides reduce to the same expression.
 theorem chi_def (F : X.Modules) : chi k F = ∑ᶠ n, (-1 : ℤ) ^ n * hdim k F n := rfl
 
 /- English proof (translation)
-The claim follows from `finsum_neg_one_pow_hdim_eq_sum k F N hN`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq_sum_range (N : ℕ) (hN : ∀ n, N ≤ n → Subsingleton (coh F n)) :
     chi k F = ∑ n ∈ Finset.range N, (-1 : ℤ) ^ n * hdim k F n :=
   finsum_neg_one_pow_hdim_eq_sum k F N hN
 
 /- English proof (translation)
-Rewrite using `[chi_eq_sum_range k 1 h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chi_eq_hdim_zero (h : ∀ n, 0 < n → Subsingleton (coh F n)) : chi k F = hdim k F 0 := by
   rw [chi_eq_sum_range k 1 h]; simp
 
 /- English proof (translation)
-Rewrite using `[chi_eq_sum_range k 2 h]`. Simplify using `[Finset.sum_range_succ, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chi_eq_hdim_zero_sub_hdim_one (h : ∀ n, 2 ≤ n → Subsingleton (coh F n)) :
     chi k F = hdim k F 0 - hdim k F 1 := by
   rw [chi_eq_sum_range k 2 h]; simp [Finset.sum_range_succ, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[chi_eq_sum_range k 0 fun n _ ↦ h n]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chi_eq_zero_of_subsingleton (h : ∀ n, Subsingleton (coh F n)) : chi k F = 0 := by
   rw [chi_eq_sum_range k 0 fun n _ ↦ h n]; simp
 
 /- English proof (translation)
-The claim follows from `chi_eq_zero_of_subsingleton k fun n ↦ cohOn.subsingleton_of_isZero h ⊤ n`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq_zero_of_isZero (h : IsZero F) : chi k F = 0 :=
   chi_eq_zero_of_subsingleton k fun n ↦ cohOn.subsingleton_of_isZero h ⊤ n
 
 /- English proof (translation)
-The claim follows from `finsum_congr fun n ↦ by rw [hdim_congr k n e]`.
+A detailed English derivation is pending.
 -/
 theorem chi_congr (e : F ≅ G) : chi k F = chi k G :=
   finsum_congr fun n ↦ by rw [hdim_congr k n e]
 
 /- English proof (translation)
-The claim follows from `finsum_congr fun n ↦ by rw [hdim_def, hdim_def, (e n).finrank_eq]`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq_of_linearEquiv [Algebra k Γ(Y, ⊤)] {H : Y.Modules}
     (e : ∀ n, coh F n ≃ₗ[k] coh H n) : chi k F = chi k H :=
@@ -88,7 +88,7 @@ variable {k}
 namespace FiniteCoh
 
 /- English proof (translation)
-The claim follows from `have := h.finite n; Module.Finite.equiv (e n) eventually_zero := have ⟨N, hN⟩ := h.eventually_zero ⟨N, fun n hn ↦ have := hN n hn; (e n).symm.injective.subsingleton⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_linearEquiv [Algebra k Γ(Y, ⊤)] {H : Y.Modules} (h : FiniteCoh k F)
     (e : ∀ n, coh F n ≃ₗ[k] coh H n) : FiniteCoh k H where
@@ -98,25 +98,25 @@ theorem of_linearEquiv [Algebra k Γ(Y, ⊤)] {H : Y.Modules} (h : FiniteCoh k F
     ⟨N, fun n hn ↦ have := hN n hn; (e n).symm.injective.subsingleton⟩
 
 /- English proof (translation)
-The claim follows from `h.of_linearEquiv fun n ↦ cohOn.mapIso k ⊤ n e`.
+A detailed English derivation is pending.
 -/
 theorem of_iso (h : FiniteCoh k F) (e : F ≅ G) : FiniteCoh k G :=
   h.of_linearEquiv fun n ↦ cohOn.mapIso k ⊤ n e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n ↦ have := h n; inferInstance, 0, fun n _ ↦ h n⟩`.
+Supply the required witnesses or components.
 -/
 theorem of_subsingleton (h : ∀ n, Subsingleton (coh F n)) : FiniteCoh k F :=
   ⟨fun n ↦ have := h n; inferInstance, 0, fun n _ ↦ h n⟩
 
 /- English proof (translation)
-The claim follows from `of_subsingleton fun n ↦ cohOn.subsingleton_of_isZero h ⊤ n`.
+A detailed English derivation is pending.
 -/
 theorem of_isZero (h : IsZero F) : FiniteCoh k F :=
   of_subsingleton fun n ↦ cohOn.subsingleton_of_isZero h ⊤ n
 
 /- English proof (translation)
-The claim follows from `| 0 => h₀ | n + 1 => have := h (n + 1) n.succ_pos; inferInstance eventually_zero := ⟨1, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_acyclic (h₀ : Module.Finite k (coh F 0)) (h : ∀ n, 0 < n → Subsingleton (coh F n)) :
     FiniteCoh k F where
@@ -126,7 +126,7 @@ theorem of_acyclic (h₀ : Module.Finite k (coh F 0)) (h : ∀ n, 0 < n → Subs
   eventually_zero := ⟨1, h⟩
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h.eventually_zero`. Use `(Finset.range N).finite_toSet.subset fun n hn ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Use `hN n (by simpa using h')` as an intermediate fact. Conclude with `hn (by simp [hdim_eq_zero_of_subsingleton])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_support (h : FiniteCoh k F) :
     (Function.support fun n ↦ (-1 : ℤ) ^ n * hdim k F n).Finite := by
@@ -139,7 +139,7 @@ theorem finite_support (h : FiniteCoh k F) :
 variable {S : ShortComplex X.Modules}
 
 /- English proof (translation)
-The claim follows from `cohOn.forall_finite₂ k hS ⊤ h₁.finite h₃.finite eventually_zero := have ⟨N₁, h₁⟩ := h₁.eventually_zero have ⟨N₃, h₃⟩ := h₃.eventually_zero ⟨max N₁ N₃, fun n hn ↦ cohOn.subsingleton₂ hS ⊤ n (h₁ n (by omega)) (h₃ n (by omega))⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_shortExact₂ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₃ : FiniteCoh k S.X₃) :
     FiniteCoh k S.X₂ where
@@ -150,7 +150,7 @@ theorem of_shortExact₂ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₃ :
     ⟨max N₁ N₃, fun n hn ↦ cohOn.subsingleton₂ hS ⊤ n (h₁ n (by omega)) (h₃ n (by omega))⟩
 
 /- English proof (translation)
-The claim follows from `cohOn.forall_finite₃ k hS ⊤ h₁.finite h₂.finite eventually_zero := have ⟨N₁, h₁⟩ := h₁.eventually_zero have ⟨N₂, h₂⟩ := h₂.eventually_zero ⟨max N₁ N₂, fun n hn ↦ cohOn.subsingleton₃ hS ⊤ n (h₂ n (by omega)) (h₁ (n + 1) (by omega))⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₂ : FiniteCoh k S.X₂) :
     FiniteCoh k S.X₃ where
@@ -161,7 +161,7 @@ theorem of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₂ :
     ⟨max N₁ N₂, fun n hn ↦ cohOn.subsingleton₃ hS ⊤ n (h₂ n (by omega)) (h₁ (n + 1) (by omega))⟩
 
 /- English proof (translation)
-The claim follows from `cohOn.forall_finite₁ k hS ⊤ h₂.finite h₃.finite eventually_zero := by obtain ⟨N₂, h₂⟩ := h₂.eventually_zero obtain ⟨N₃, h₃⟩ := h₃.eventually_zero refine ⟨max N₂ N₃ + 1, fun n hn ↦ ?_⟩ obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩ exact cohOn.subsingleton₁ hS ⊤ m (h₃ m (by …`.
+A detailed English derivation is pending.
 -/
 theorem of_shortExact₁ (hS : S.ShortExact) (h₂ : FiniteCoh k S.X₂) (h₃ : FiniteCoh k S.X₃) :
     FiniteCoh k S.X₁ where
@@ -174,7 +174,7 @@ theorem of_shortExact₁ (hS : S.ShortExact) (h₂ : FiniteCoh k S.X₂) (h₃ :
     exact cohOn.subsingleton₁ hS ⊤ m (h₃ m (by omega)) (h₂ (m + 1) (by omega))
 
 /- English proof (translation)
-The claim follows from `of_shortExact₂ (ShortComplex.Splitting.ofHasBinaryBiproduct F G).shortExact hF hG`.
+A detailed English derivation is pending.
 -/
 theorem biprod (hF : FiniteCoh k F) (hG : FiniteCoh k G) : FiniteCoh k (F ⊞ G) :=
   of_shortExact₂ (ShortComplex.Splitting.ofHasBinaryBiproduct F G).shortExact hF hG
@@ -186,21 +186,21 @@ section ShortExact
 variable {S : ShortComplex X.Modules}
 
 /- English proof (translation)
-The claim follows from `finsum_neg_one_pow_hdim_eq_add k hS h₁.finite h₃.finite h₁.eventually_zero h₃.eventually_zero`.
+A detailed English derivation is pending.
 -/
 theorem chi_shortExact (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₃ : FiniteCoh k S.X₃) :
     chi k S.X₂ = chi k S.X₁ + chi k S.X₃ :=
   finsum_neg_one_pow_hdim_eq_add k hS h₁.finite h₃.finite h₁.eventually_zero h₃.eventually_zero
 
 /- English proof (translation)
-Rewrite using `[chi_shortExact hS h₁ (h₁.of_shortExact₃ hS h₂)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chi_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteCoh k S.X₁) (h₂ : FiniteCoh k S.X₂) :
     chi k S.X₃ = chi k S.X₂ - chi k S.X₁ := by
   rw [chi_shortExact hS h₁ (h₁.of_shortExact₃ hS h₂)]; ring
 
 /- English proof (translation)
-Rewrite using `[chi_shortExact hS (h₂.of_shortExact₁ hS h₃) h₃]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chi_shortExact₁ (hS : S.ShortExact) (h₂ : FiniteCoh k S.X₂) (h₃ : FiniteCoh k S.X₃) :
     chi k S.X₁ = chi k S.X₂ - chi k S.X₃ := by
@@ -209,7 +209,7 @@ theorem chi_shortExact₁ (hS : S.ShortExact) (h₂ : FiniteCoh k S.X₂) (h₃ 
 end ShortExact
 
 /- English proof (translation)
-The claim follows from `have := chi_shortExact (ShortComplex.Splitting.ofHasBinaryBiproduct F G).shortExact hF hG this`.
+A detailed English derivation is pending.
 -/
 theorem chi_biprod (hF : FiniteCoh k F) (hG : FiniteCoh k G) :
     chi k (F ⊞ G) = chi k F + chi k G :=
@@ -221,7 +221,7 @@ section Pi
 variable {ι : Type*} [Fintype ι] {E : ι → X.Modules}
 
 /- English proof (translation)
-Use `choose N hN using fun i ↦ (h i).eventually_zero`. Conclude with `⟨Finset.univ.sup N, fun i n hn ↦ hN i n ((Finset.le_sup (Finset.mem_univ i)).trans hn)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_forall_subsingleton_coh (h : ∀ i, FiniteCoh k (E i)) :
     ∃ N, ∀ i n, N ≤ n → Subsingleton (coh (E i) n) := by
@@ -229,7 +229,7 @@ theorem exists_forall_subsingleton_coh (h : ∀ i, FiniteCoh k (E i)) :
   exact ⟨Finset.univ.sup N, fun i n hn ↦ hN i n ((Finset.le_sup (Finset.mem_univ i)).trans hn)⟩
 
 /- English proof (translation)
-The claim follows from `have := fun i ↦ (h i).finite n; cohOn.finite_pi k E ⊤ n eventually_zero := have ⟨N, hN⟩ := exists_forall_subsingleton_coh h ⟨N, fun n hn ↦ have := fun i ↦ hN i n hn; (cohOn.piEquiv k ⊤ n E).injective.subsingleton⟩`.
+A detailed English derivation is pending.
 -/
 theorem FiniteCoh.pi (h : ∀ i, FiniteCoh k (E i)) : FiniteCoh k (∏ᶜ E) where
   finite n := have := fun i ↦ (h i).finite n; cohOn.finite_pi k E ⊤ n
@@ -238,9 +238,9 @@ theorem FiniteCoh.pi (h : ∀ i, FiniteCoh k (E i)) : FiniteCoh k (∏ᶜ E) whe
     ⟨N, fun n hn ↦ have := fun i ↦ hN i n hn; (cohOn.piEquiv k ⊤ n E).injective.subsingleton⟩
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_forall_subsingleton_coh h`. Rewrite using `[chi_eq_sum_range k N fun n hn ↦`. Use `fun i ↦ hN i n hn` as an intermediate fact. Use the proof step `(cohOn.piEquiv k ⊤ n E).injective.subsingleton,`. Use the proof step `Finset.sum_congr rfl fun i _ ↦ chi_eq_sum_range k N (hN i), Finset.sum_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun n _ ↦ ?_` and prove the remaining obligations. Use `fun i ↦ (h i).finite n` as an intermediate fact. Rewrite using `[hdim_pi, Nat.cast_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_pi (h : ∀ i, FiniteCoh k (E i)) : chi k (∏ᶜ E) = ∑ i, chi k (E i) := by
   obtain ⟨N, hN⟩ := exists_forall_subsingleton_coh h
@@ -256,7 +256,7 @@ end Pi
 variable (k F) in
 
 /- English proof (translation)
-The claim follows from `have : Module.Finite Γ(X, ⊤) (coh F 0) := Module.Finite.equiv (coh.zeroEquiv F).symm .of_acyclic (Module.Finite.trans Γ(X, ⊤) _) fun _ hn ↦ coh.subsingleton_of_isAffine F hn`.
+A detailed English derivation is pending.
 -/
 theorem finiteCoh_of_isAffine_of_finite [IsAffine X] [Module.Finite k Γ(X, ⊤)]
     [QCoh.IsFiniteQC F] : FiniteCoh k F :=
@@ -266,7 +266,7 @@ theorem finiteCoh_of_isAffine_of_finite [IsAffine X] [Module.Finite k Γ(X, ⊤)
 variable (k X) in
 
 /- English proof (translation)
-Rewrite using `[chi_eq_hdim_zero k fun _ hn ↦ coh.subsingleton_of_isAffine _ hn, hdim_def, ((coh.zeroUnitEquiv X).restrictScalars k).finrank_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_structureModule_of_isAffine [IsAffine X] :
     chi k (structureModule X) = Module.finrank k Γ(X, ⊤) := by
@@ -278,7 +278,7 @@ section Push
 variable (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] [Algebra R Γ(Y, ⊤)] (f : Y ⟶ X)
 
 /- English proof (translation)
-Use extensionality with `U x`. Express the relevant statement in the definitionally equal form `restrictGlobal Y (f ⁻¹ᵁ U) (f.appTop r) • (show Γ(H, f ⁻¹ᵁ U) from x) = f.app U (restrictGlobal X U r) • (show Γ(H, f ⁻¹ᵁ U) from x)`. Use `congr 1`. Conclude with `(ConcreteCategory.congr_hom (f.naturality (homOfLE le_top : U ⟶ ⊤).op) r).symm`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pushforward_map_smulHom (H : Y.Modules) (r : Γ(X, ⊤)) :
     (Scheme.Modules.pushforward f).map (smulHom H (f.appTop r)) =
@@ -295,7 +295,7 @@ def pushH' (H : Y.Modules) (U : X.Opens) (n : ℕ) :
   SheafPull.pushComparison.{u, u} f.base ((toAbSheaf Y).obj H) n U
 
 /- English proof (translation)
-The claim follows from `SheafPull.pushComparison_map.{u, u} f.base ((toAbSheaf Y).map φ) n U x`.
+A detailed English derivation is pending.
 -/
 theorem pushH'_map {H H' : Y.Modules} (φ : H ⟶ H') (U : X.Opens) (n : ℕ)
     (x : Sheaf.H'.{u} ((toAbSheaf X).obj ((Scheme.Modules.pushforward f).obj H)) n U) :
@@ -317,7 +317,7 @@ def cohPushMap (hf : ∀ r : R, f.appTop (algebraMap R Γ(X, ⊤) r) = algebraMa
 variable (hf : ∀ r : R, f.appTop (algebraMap R Γ(X, ⊤) r) = algebraMap R Γ(Y, ⊤) r)
 
 /- English proof (translation)
-The claim follows from `have h : Function.Bijective (pushH' f H U n) := SheafPull.pushComparison_bijective_of_isClosedEmbedding.{u, u} f.isClosedEmbedding _ n U (cohOn.toH' H _ n).symm.bijective.comp (h.comp (cohOn.toH' _ U n).bijective)`.
+A detailed English derivation is pending.
 -/
 theorem cohPushMap_bijective_of_isClosedImmersion [IsClosedImmersion f] (H : Y.Modules)
     (U : X.Opens) (n : ℕ) : Function.Bijective (cohPushMap R f hf H U n) :=
@@ -326,7 +326,7 @@ theorem cohPushMap_bijective_of_isClosedImmersion [IsClosedImmersion f] (H : Y.M
   (cohOn.toH' H _ n).symm.bijective.comp (h.comp (cohOn.toH' _ U n).bijective)
 
 /- English proof (translation)
-The claim follows from `have h : Function.Bijective (pushH' f H U n) := SheafPull.pushComparison_bijective.{u, u} (SheafPull.higherDirectImagesVanish_of_basis f.base ((toAbSheaf Y).obj H) fun _ x hx ↦ have ⟨W, hW, hxW, hWV⟩ := QCoh.exists_affine_mem_le x hx ⟨W, hWV, hxW, fun _ hn ↦ cohOn.subsingleton_of …`.
+A detailed English derivation is pending.
 -/
 theorem cohPushMap_bijective_of_isAffineHom [IsAffineHom f] (H : Y.Modules) [H.IsQuasicoherent]
     (U : X.Opens) (n : ℕ) : Function.Bijective (cohPushMap R f hf H U n) :=
@@ -345,7 +345,7 @@ variable [Algebra k Γ(Y, ⊤)] {f : Y ⟶ X}
   (hf : ∀ r : k, f.appTop (algebraMap k Γ(X, ⊤) r) = algebraMap k Γ(Y, ⊤) r) {H : Y.Modules}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h' ↦ h'.of_linearEquiv fun n ↦ .ofBijective _ (h n), fun h' ↦ h'.of_linearEquiv fun n ↦ (LinearEquiv.ofBijective _ (h n)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem finiteCoh_pushforward_iff_of_bijective
     (h : ∀ n, Function.Bijective (cohPushMap k f hf H ⊤ n)) :
@@ -354,7 +354,7 @@ theorem finiteCoh_pushforward_iff_of_bijective
     fun h' ↦ h'.of_linearEquiv fun n ↦ (LinearEquiv.ofBijective _ (h n)).symm⟩
 
 /- English proof (translation)
-The claim follows from `chi_eq_of_linearEquiv k fun n ↦ .ofBijective _ (h n)`.
+A detailed English derivation is pending.
 -/
 theorem chi_pushforward_of_bijective (h : ∀ n, Function.Bijective (cohPushMap k f hf H ⊤ n)) :
     chi k ((Scheme.Modules.pushforward f).obj H) = chi k H :=
@@ -365,28 +365,28 @@ include hf
 variable (H)
 
 /- English proof (translation)
-The claim follows from `finiteCoh_pushforward_iff_of_bijective hf (cohPushMap_bijective_of_isClosedImmersion k f hf H ⊤)`.
+A detailed English derivation is pending.
 -/
 theorem finiteCoh_pushforward_iff_of_isClosedImmersion [IsClosedImmersion f] :
     FiniteCoh k ((Scheme.Modules.pushforward f).obj H) ↔ FiniteCoh k H :=
   finiteCoh_pushforward_iff_of_bijective hf (cohPushMap_bijective_of_isClosedImmersion k f hf H ⊤)
 
 /- English proof (translation)
-The claim follows from `chi_pushforward_of_bijective hf (cohPushMap_bijective_of_isClosedImmersion k f hf H ⊤)`.
+A detailed English derivation is pending.
 -/
 theorem chi_pushforward_of_isClosedImmersion [IsClosedImmersion f] :
     chi k ((Scheme.Modules.pushforward f).obj H) = chi k H :=
   chi_pushforward_of_bijective hf (cohPushMap_bijective_of_isClosedImmersion k f hf H ⊤)
 
 /- English proof (translation)
-The claim follows from `finiteCoh_pushforward_iff_of_bijective hf (cohPushMap_bijective_of_isAffineHom k f hf H ⊤)`.
+A detailed English derivation is pending.
 -/
 theorem finiteCoh_pushforward_iff_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent] :
     FiniteCoh k ((Scheme.Modules.pushforward f).obj H) ↔ FiniteCoh k H :=
   finiteCoh_pushforward_iff_of_bijective hf (cohPushMap_bijective_of_isAffineHom k f hf H ⊤)
 
 /- English proof (translation)
-The claim follows from `chi_pushforward_of_bijective hf (cohPushMap_bijective_of_isAffineHom k f hf H ⊤)`.
+A detailed English derivation is pending.
 -/
 theorem chi_pushforward_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent] :
     chi k ((Scheme.Modules.pushforward f).obj H) = chi k H :=
@@ -410,7 +410,7 @@ def unitToPush (f : Y ⟶ X) :
   SheafOfModules.unitToPushforwardObjUnit f.toRingCatSheafHom
 
 /- English proof (translation)
-The claim follows from `Scheme.Modules.Hom.isIso_iff_isIso_app.2 fun U ↦ (ConcreteCategory.isIso_iff_bijective _).2 (h U)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_unitToPush (f : Y ⟶ X) (h : ∀ U, Function.Bijective (f.app U)) :
     IsIso (unitToPush f) :=
@@ -432,13 +432,13 @@ def prodChart (L : ι → LB X) (j : ∀ i, (L i).ι) : X.Opens :=
   Finset.univ.inf fun i ↦ (L i).U (j i)
 
 /- English proof (translation)
-The claim follows from `Finset.inf_le (f := fun i ↦ (L i).U (j i)) (Finset.mem_univ i)`.
+A detailed English derivation is pending.
 -/
 theorem prodChart_le (L : ι → LB X) (j : ∀ i, (L i).ι) (i : ι) : prodChart L j ≤ (L i).U (j i) :=
   Finset.inf_le (f := fun i ↦ (L i).U (j i)) (Finset.mem_univ i)
 
 /- English proof (translation)
-Rewrite using `[← SetLike.mem_coe, prodChart, Opens.coe_finset_inf]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_prodChart {L : ι → LB X} {j : ∀ i, (L i).ι} {x : X} :
     x ∈ prodChart L j ↔ ∀ i, x ∈ (L i).U (j i) := by
@@ -457,7 +457,7 @@ def lbInvProd (L : ι → LB X) (S : Finset ι) : LB X :=
   lbProd L fun i ↦ if i ∈ S then -1 else 0
 
 /- English proof (translation)
-The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ ↦ (map_zpow _ _ _).trans (congrArg (· ^ n i) (Semi.LB.res_res _ _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem res_lbProd_g (L : ι → LB X) (n : ι → ℤ) (j j' : ∀ i, (L i).ι) {W : X.Opens}
     (h : W ≤ prodChart L j ⊓ prodChart L j') :
@@ -468,7 +468,7 @@ theorem res_lbProd_g (L : ι → LB X) (n : ι → ℤ) (j j' : ∀ i, (L i).ι)
     (map_zpow _ _ _).trans (congrArg (· ^ n i) (Semi.LB.res_res _ _ _)))
 
 /- English proof (translation)
-The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ ↦ (map_zpow _ _ _).trans (congrArg (· ^ n i) (gm_res r y _ (show r y ∈ prodChart L j ⊓ prodChart L j' from ⟨hj, hj'⟩) _)))`.
+A detailed English derivation is pending.
 -/
 theorem gm_lbProd_g (L : ι → LB X) (n : ι → ℤ) (r : Y ⟶ X) (y : Y) (j j' : ∀ i, (L i).ι)
     (hj : r y ∈ prodChart L j) (hj' : r y ∈ prodChart L j') :
@@ -480,7 +480,7 @@ theorem gm_lbProd_g (L : ι → LB X) (n : ι → ℤ) (r : Y ⟶ X) (y : Y) (j 
 variable {L : ι → LB X}
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun x _ ↦ by choose j hj using fun i ↦ Semi.LB.mem_of_cover (hL i) x exact Opens.mem_iSup.2 ⟨j, mem_prodChart.2 hj⟩ g_self j := (res_lbProd_g L n j j _).trans (Finset.prod_eq_one fun i _ ↦ by rw [Semi.LB.res_g_self (hL i), one_zpow]) cocycle j j' j'' := by refine (co …`.
+A detailed English derivation is pending.
 -/
 theorem isLB_lbProd (hL : ∀ i, (L i).IsLB) (n : ι → ℤ) : (lbProd L n).IsLB where
   cover := top_le_iff.1 fun x _ ↦ by
@@ -495,13 +495,13 @@ theorem isLB_lbProd (hL : ∀ i, (L i).IsLB) (n : ι → ℤ) : (lbProd L n).IsL
     exact Finset.prod_congr rfl fun i _ ↦ by rw [← mul_zpow, Semi.LB.res_cocycle (hL i)]
 
 /- English proof (translation)
-The claim follows from `isLB_lbProd hL _`.
+A detailed English derivation is pending.
 -/
 theorem isLB_lbInvProd (hL : ∀ i, (L i).IsLB) (S : Finset ι) : (lbInvProd L S).IsLB :=
   isLB_lbProd hL _
 
 /- English proof (translation)
-Establish `h` using `isLB_tens (isLB_lbProd hL n) (isLB_lbProd hL m)`. Use `(cls_eq_iff _ h).2 (iso_of_chart h ⟨fun j ↦ (j, j), fun _ _ h ↦ ⟨h, h⟩, ?_⟩)` and prove the remaining obligations. Introduce `y p q hp hq`. Use `(gm_lbProd_g L (n + m) (𝟙 X) y p q hp hq).trans (Eq.symm ((gm_tens (lbProd L n) (lbProd L m) (𝟙 X) y (p, p) (q, q) ⟨hp, hp⟩ ⟨hq, hq⟩).trans ((congrArg₂ (· * ·) (gm_lbProd_g L n (𝟙 X) y p q hp hq) (gm_lbProd_g L m (𝟙 X) y p q hp hq)).trans ?_)))` and prove the remaining obligations. Simplify using `only [Pi.add_apply, zpow_add, Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cls_lbProd_add (hL : ∀ i, (L i).IsLB) (n m : ι → ℤ) :
     cls _ (isLB_lbProd hL (n + m)) = cls _ (isLB_lbProd hL n) + cls _ (isLB_lbProd hL m) := by
@@ -515,7 +515,7 @@ theorem cls_lbProd_add (hL : ∀ i, (L i).IsLB) (n m : ι → ℤ) :
   simp only [Pi.add_apply, zpow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `(cls_eq_iff _ (hL i)).2 (iso_of_chart (hL i) ⟨fun j ↦ j i, fun j ↦ prodChart_le L j i, ?_⟩)` and prove the remaining obligations. Introduce `y p q hp hq`. Use `(gm_lbProd_g L _ (𝟙 X) y p q hp hq).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single i (fun b _ hb ↦ by rw [Pi.single_eq_of_ne hb, zpow_zero]) (by simp), Pi.single_eq_same, zpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_lbProd_single [DecidableEq ι] (hL : ∀ i, (L i).IsLB) (i : ι) :
     cls _ (isLB_lbProd hL (Pi.single i 1)) = cls (L i) (hL i) := by
@@ -527,9 +527,9 @@ theorem cls_lbProd_single [DecidableEq ι] (hL : ∀ i, (L i).IsLB) (i : ι) :
     Pi.single_eq_same, zpow_one]
 
 /- English proof (translation)
-Set `c : (ι → ℤ) →+ Pic X` to `AddMonoidHom.mk' (fun n ↦ cls _ (isLB_lbProd hL n)) (cls_lbProd_add hL)`. Establish `e : n = ∑ i, n i • (Pi.single i 1 : ι → ℤ)`. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Express the relevant statement in the definitionally equal form `c n = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← e]`. Conclude with `congrArg _ (cls_lbProd_single hL i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_lbProd (hL : ∀ i, (L i).IsLB) (n : ι → ℤ) (h : (lbProd L n).IsLB) :
     cls _ h = ∑ i, n i • cls (L i) (hL i) := by
@@ -546,7 +546,7 @@ theorem cls_lbProd (hL : ∀ i, (L i).IsLB) (n : ι → ℤ) (h : (lbProd L n).I
   exact congrArg _ (cls_lbProd_single hL i)
 
 /- English proof (translation)
-Use `(cls_lbProd hL _ h).trans ?_` and prove the remaining obligations. Simplify using `[Finset.sum_ite_mem]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem cls_lbInvProd (hL : ∀ i, (L i).IsLB) (S : Finset ι) (h : (lbInvProd L S).IsLB) :
     cls _ h = -∑ i ∈ S, cls (L i) (hL i) := by
@@ -555,7 +555,7 @@ theorem cls_lbInvProd (hL : ∀ i, (L i).IsLB) (S : Finset ι) (h : (lbInvProd L
   simp [Finset.sum_ite_mem]
 
 /- English proof (translation)
-Rewrite using `[cls_linComb hM, Fintype.sum_unique, pull_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_lbZPow {M : LB X} (hM : M.IsLB) (n : ℤ) (h : (lbZPow M n).IsLB) :
     cls _ h = n • cls M hM := by
@@ -567,14 +567,14 @@ Both sides reduce to the same expression.
 theorem cls_triv (h : (LB.triv X).IsLB) : cls _ h = 0 := rfl
 
 /- English proof (translation)
-The claim follows from `Twist.nonempty_iso_of_lbIso hM hN ((cls_eq_iff hM hN).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_twist_iso_of_cls_eq (F : X.Modules) {M N : LB X} (hM : M.IsLB) (hN : N.IsLB)
     (h : cls M hM = cls N hN) : Nonempty (twist F M ≅ twist F N) :=
   Twist.nonempty_iso_of_lbIso hM hN ((cls_eq_iff hM hN).1 h)
 
 /- English proof (translation)
-The claim follows from `Twist.nonempty_twistTwistIso hM hN hP ((cls_eq_iff hN (Semi.LB.isLB_div hP hM)).1 (by rw [cls_div hP hM, h, add_sub_cancel_left]))`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_twist_twist_iso_of_cls_eq (F : X.Modules) {M N P : LB X} (hM : M.IsLB)
     (hN : N.IsLB) (hP : P.IsLB) (h : cls P hP = cls M hM + cls N hN) :
@@ -583,7 +583,7 @@ theorem nonempty_twist_twist_iso_of_cls_eq (F : X.Modules) {M N P : LB X} (hM : 
     (by rw [cls_div hP hM, h, add_sub_cancel_left]))
 
 /- English proof (translation)
-The claim follows from `have ⟨t, ht⟩ := (cls_eq_zero_iff hM).1 h ⟨(Twist.genIso F hM t ht).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_twist_iso_of_cls_eq_zero (F : X.Modules) {M : LB X} (hM : M.IsLB)
     (h : cls M hM = 0) : Nonempty (twist F M ≅ F) :=
@@ -616,12 +616,12 @@ Both sides reduce to the same expression.
 variable (F) in
 
 /- English proof (translation)
-The claim follows from `(chi_congr k (Twist.trivIso F)).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem chiPic_zero : chiPic k F 0 = chi k F := (chi_congr k (Twist.trivIso F)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Conclude with `chi_congr k ((twistFunctor M).mapIso e)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiPic_congr (e : F ≅ G) : chiPic k F = chiPic k G := by
   funext c
@@ -631,7 +631,7 @@ theorem chiPic_congr (e : F ≅ G) : chiPic k F = chiPic k G := by
 variable (F) in
 
 /- English proof (translation)
-Take `⟨N, hN, rfl⟩` from `cls_surj c`. Conclude with `(nonempty_twist_twist_iso_of_cls_eq F hM hN (isLB_tens hM hN) rfl).elim (chi_congr k)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiPic_twist (hM : M.IsLB) (c : Pic X) :
     chiPic k (twist F M) c = chiPic k F (cls M hM + c) := by
@@ -641,7 +641,7 @@ theorem chiPic_twist (hM : M.IsLB) (c : Pic X) :
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[← cls_lbZPow hM n (Twist.isLB_lbZPow hM n), chiPic_cls]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_twistZ (hM : M.IsLB) (n : ℤ) : chi k (twistZ F M n) = chiPic k F (n • cls M hM) := by
   rw [← cls_lbZPow hM n (Twist.isLB_lbZPow hM n), chiPic_cls]
@@ -651,26 +651,26 @@ variable {k}
 namespace FiniteCohTwists
 
 /- English proof (translation)
-The claim follows from `(h _ (LB.isLB_triv X)).of_iso (Twist.trivIso F).symm`.
+A detailed English derivation is pending.
 -/
 theorem finiteCoh (h : FiniteCohTwists k F) : FiniteCoh k F :=
   (h _ (LB.isLB_triv X)).of_iso (Twist.trivIso F).symm
 
 /- English proof (translation)
-The claim follows from `fun M hM ↦ (h M hM).of_iso ((twistFunctor M).mapIso e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem of_iso (h : FiniteCohTwists k F) (e : F ≅ G) : FiniteCohTwists k G :=
   fun M hM ↦ (h M hM).of_iso ((twistFunctor M).mapIso e)
 
 /- English proof (translation)
-The claim follows from `fun N hN ↦ (nonempty_twist_twist_iso_of_cls_eq F hM hN (isLB_tens hM hN) rfl).elim fun e ↦ (h _ (isLB_tens hM hN)).of_iso e.symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem twist (h : FiniteCohTwists k F) (hM : M.IsLB) : FiniteCohTwists k (twist F M) :=
   fun N hN ↦ (nonempty_twist_twist_iso_of_cls_eq F hM hN (isLB_tens hM hN) rfl).elim
     fun e ↦ (h _ (isLB_tens hM hN)).of_iso e.symm
 
 /- English proof (translation)
-The claim follows from `fun _ hM ↦ .of_isZero ((Twist.isZero_twist_iff hM).2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem of_isZero (h : IsZero F) : FiniteCohTwists k F :=
   fun _ hM ↦ .of_isZero ((Twist.isZero_twist_iff hM).2 h)
@@ -678,21 +678,21 @@ theorem of_isZero (h : IsZero F) : FiniteCohTwists k F :=
 variable {S : ShortComplex X.Modules}
 
 /- English proof (translation)
-The claim follows from `fun M hM ↦ FiniteCoh.of_shortExact₂ (Twist.shortExact_map hM hS) (h₁ M hM) (h₃ M hM)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem of_shortExact₂ (hS : S.ShortExact) (h₁ : FiniteCohTwists k S.X₁)
     (h₃ : FiniteCohTwists k S.X₃) : FiniteCohTwists k S.X₂ :=
   fun M hM ↦ FiniteCoh.of_shortExact₂ (Twist.shortExact_map hM hS) (h₁ M hM) (h₃ M hM)
 
 /- English proof (translation)
-The claim follows from `fun M hM ↦ FiniteCoh.of_shortExact₃ (Twist.shortExact_map hM hS) (h₁ M hM) (h₂ M hM)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem of_shortExact₃ (hS : S.ShortExact) (h₁ : FiniteCohTwists k S.X₁)
     (h₂ : FiniteCohTwists k S.X₂) : FiniteCohTwists k S.X₃ :=
   fun M hM ↦ FiniteCoh.of_shortExact₃ (Twist.shortExact_map hM hS) (h₁ M hM) (h₂ M hM)
 
 /- English proof (translation)
-The claim follows from `fun M hM ↦ FiniteCoh.of_shortExact₁ (Twist.shortExact_map hM hS) (h₂ M hM) (h₃ M hM)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem of_shortExact₁ (hS : S.ShortExact) (h₂ : FiniteCohTwists k S.X₂)
     (h₃ : FiniteCohTwists k S.X₃) : FiniteCohTwists k S.X₁ :=
@@ -703,7 +703,7 @@ end FiniteCohTwists
 variable (k F) in
 
 /- English proof (translation)
-The claim follows from `fun _ hM ↦ have := Twist.isFiniteQC_twist (F := F) hM finiteCoh_of_isAffine_of_finite k _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finiteCohTwists_of_isAffine_of_finite [IsAffine X] [Module.Finite k Γ(X, ⊤)]
     [QCoh.IsFiniteQC F] : FiniteCohTwists k F := fun _ hM ↦
@@ -711,7 +711,7 @@ theorem finiteCohTwists_of_isAffine_of_finite [IsAffine X] [Module.Finite k Γ(X
   finiteCoh_of_isAffine_of_finite k _
 
 /- English proof (translation)
-The claim follows from `have := chi_shortExact (Twist.shortExact_map hM hS) h₁ h₃ this`.
+A detailed English derivation is pending.
 -/
 theorem chi_twist_shortExact {S : ShortComplex X.Modules} (hS : S.ShortExact) (hM : M.IsLB)
     (h₁ : FiniteCoh k (twist S.X₁ M)) (h₃ : FiniteCoh k (twist S.X₃ M)) :
@@ -720,7 +720,7 @@ theorem chi_twist_shortExact {S : ShortComplex X.Modules} (hS : S.ShortExact) (h
   this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Conclude with `chi_twist_shortExact hS hM (h₁ M hM) (h₃ M hM)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiPic_shortExact {S : ShortComplex X.Modules} (hS : S.ShortExact)
     (h₁ : FiniteCohTwists k S.X₁) (h₃ : FiniteCohTwists k S.X₃) :
@@ -737,14 +737,14 @@ variable [Algebra k Γ(Y, ⊤)] {f : Y ⟶ X}
 include hf
 
 /- English proof (translation)
-The claim follows from `(chi_congr k (Twist.projIso M f H)).symm.trans (chi_pushforward_of_isClosedImmersion hf _)`.
+A detailed English derivation is pending.
 -/
 theorem chi_twist_pushforward_of_isClosedImmersion [IsClosedImmersion f] (M : LB X) :
     chi k (twist ((Scheme.Modules.pushforward f).obj H) M) = chi k (twist H (M.pull f)) :=
   (chi_congr k (Twist.projIso M f H)).symm.trans (chi_pushforward_of_isClosedImmersion hf _)
 
 /- English proof (translation)
-The claim follows from `have := Twist.isQuasicoherent_twist (F := H) (pull_isLB hM f) (chi_congr k (Twist.projIso M f H)).symm.trans (chi_pushforward_of_isAffineHom hf _)`.
+A detailed English derivation is pending.
 -/
 theorem chi_twist_pushforward_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent] (hM : M.IsLB) :
     chi k (twist ((Scheme.Modules.pushforward f).obj H) M) = chi k (twist H (M.pull f)) :=
@@ -752,7 +752,7 @@ theorem chi_twist_pushforward_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent]
   (chi_congr k (Twist.projIso M f H)).symm.trans (chi_pushforward_of_isAffineHom hf _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Conclude with `chi_twist_pushforward_of_isClosedImmersion hf H M`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiPic_pushforward_of_isClosedImmersion [IsClosedImmersion f] :
     chiPic k ((Scheme.Modules.pushforward f).obj H) = chiPic k H ∘ pull f := by
@@ -761,7 +761,7 @@ theorem chiPic_pushforward_of_isClosedImmersion [IsClosedImmersion f] :
   exact chi_twist_pushforward_of_isClosedImmersion hf H M
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Conclude with `chi_twist_pushforward_of_isAffineHom hf H hM`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiPic_pushforward_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent] :
     chiPic k ((Scheme.Modules.pushforward f).obj H) = chiPic k H ∘ pull f := by
@@ -772,7 +772,7 @@ theorem chiPic_pushforward_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent] :
 variable {H}
 
 /- English proof (translation)
-The claim follows from `fun M hM ↦ ((finiteCoh_pushforward_iff_of_isClosedImmersion hf _).2 (h _ (pull_isLB hM f))).of_iso (Twist.projIso M f H)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteCohTwists.pushforward_of_isClosedImmersion [IsClosedImmersion f]
     (h : FiniteCohTwists k H) : FiniteCohTwists k ((Scheme.Modules.pushforward f).obj H) :=
@@ -780,7 +780,7 @@ theorem FiniteCohTwists.pushforward_of_isClosedImmersion [IsClosedImmersion f]
     (h _ (pull_isLB hM f))).of_iso (Twist.projIso M f H)
 
 /- English proof (translation)
-The claim follows from `fun M hM ↦ have := Twist.isQuasicoherent_twist (F := H) (pull_isLB hM f) ((finiteCoh_pushforward_iff_of_isAffineHom hf _).2 (h _ (pull_isLB hM f))).of_iso (Twist.projIso M f H)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteCohTwists.pushforward_of_isAffineHom [IsAffineHom f] [H.IsQuasicoherent]
     (h : FiniteCohTwists k H) : FiniteCohTwists k ((Scheme.Modules.pushforward f).obj H) :=
@@ -848,7 +848,7 @@ theorem topSelf_def (M : LB X) (d : ℕ) :
 variable (F) in
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun S _ ↦ by rw [zero_sub, ← cls_lbInvProd hL S (isLB_lbInvProd hL S), chiPic_cls, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem interNum_eq_multiDiff (hL : ∀ i, (L i).IsLB) :
     interNum k F L = multiDiff (fun i ↦ cls (L i) (hL i)) (chiPic k F) 0 :=
@@ -858,7 +858,7 @@ theorem interNum_eq_multiDiff (hL : ∀ i, (L i).IsLB) :
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k _ hL, funext (chiPic_twist k F hM), multiDiff_translate, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_twist_eq_multiDiff (hL : ∀ i, (L i).IsLB) (hM : M.IsLB) :
     interNum k (twist F M) L = multiDiff (fun i ↦ cls (L i) (hL i)) (chiPic k F) (cls M hM) := by
@@ -867,7 +867,7 @@ theorem interNum_twist_eq_multiDiff (hL : ∀ i, (L i).IsLB) (hM : M.IsLB) :
 variable (F) in
 
 /- English proof (translation)
-Establish `e` using `congrFun (multiDiff_comap (zmultiplesHom _ (cls M hM)) a (chiPic k F)) 0`. Rewrite `e` using `[Function.comp_apply, map_zero]`. Rewrite using `[interNum_eq_multiDiff k F fun i ↦ Twist.isLB_lbZPow hM (a i), funext (chi_twistZ k F hM),`. Use function extensionality and compare the values at `fun i ↦ cls_lbZPow hM (a i) (Twist.isLB_lbZPow hM (a i))]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem interNum_lbZPow_eq_multiDiff (hM : M.IsLB) (a : ι → ℤ) :
     interNum k F (fun i ↦ lbZPow M (a i)) = multiDiff a (fun n ↦ chi k (twistZ F M n)) 0 := by
@@ -878,7 +878,7 @@ theorem interNum_lbZPow_eq_multiDiff (hM : M.IsLB) (a : ι → ℤ) :
   exact e.symm
 
 /- English proof (translation)
-The claim follows from `Finset.sum_congr rfl fun S _ ↦ congrArg (_ * ·) (chi_congr k ((twistFunctor (lbInvProd L S)).mapIso e))`.
+A detailed English derivation is pending.
 -/
 theorem interNum_congr (e : F ≅ G) (L : ι → LB X) : interNum k F L = interNum k G L :=
   Finset.sum_congr rfl fun S _ ↦
@@ -887,7 +887,7 @@ theorem interNum_congr (e : F ≅ G) (L : ι → LB X) : interNum k F L = interN
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F hL, interNum_eq_multiDiff k F hL', funext h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_congr_cls (hL : ∀ i, (L i).IsLB) (hL' : ∀ i, (L' i).IsLB)
     (h : ∀ i, cls (L i) (hL i) = cls (L' i) (hL' i)) : interNum k F L = interNum k F L' := by
@@ -896,7 +896,7 @@ theorem interNum_congr_cls (hL : ∀ i, (L i).IsLB) (hL' : ∀ i, (L' i).IsLB)
 variable (F) in
 
 /- English proof (translation)
-The claim follows from `interNum_congr_cls k F hL hL' fun i ↦ (cls_eq_iff _ _).2 (h i)`.
+A detailed English derivation is pending.
 -/
 theorem interNum_congr_lbIso (hL : ∀ i, (L i).IsLB) (hL' : ∀ i, (L' i).IsLB)
     (h : ∀ i, LBIso (L i) (L' i)) : interNum k F L = interNum k F L' :=
@@ -905,7 +905,7 @@ theorem interNum_congr_lbIso (hL : ∀ i, (L i).IsLB) (hL' : ∀ i, (L' i).IsLB)
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F hL, interNum_eq_multiDiff k F (L := L ∘ e) fun i ↦ hL (e i), ← multiDiff_comp_equiv e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem interNum_comp_equiv (hL : ∀ i, (L i).IsLB) (e : κ ≃ ι) :
     interNum k F (L ∘ e) = interNum k F L := by
@@ -916,7 +916,7 @@ theorem interNum_comp_equiv (hL : ∀ i, (L i).IsLB) (e : κ ≃ ι) :
 variable (F) in
 
 /- English proof (translation)
-The claim follows from `interNum_comp_equiv k F hL σ`.
+A detailed English derivation is pending.
 -/
 theorem interNum_comp_perm (hL : ∀ i, (L i).IsLB) (σ : Equiv.Perm ι) :
     interNum k F (L ∘ σ) = interNum k F L := interNum_comp_equiv k F hL σ
@@ -924,13 +924,13 @@ theorem interNum_comp_perm (hL : ∀ i, (L i).IsLB) (σ : Equiv.Perm ι) :
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F isEmptyElim, multiDiff_of_isEmpty, chiPic_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem interNum_of_isEmpty [IsEmpty ι] (L : ι → LB X) : interNum k F L = chi k F := by
   rw [interNum_eq_multiDiff k F isEmptyElim, multiDiff_of_isEmpty, chiPic_zero]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_eq_zero fun S _ ↦ by rw [chi_eq_zero_of_isZero k ((Twist.isZero_twist_iff (isLB_lbInvProd hL S)).2 h), mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem interNum_eq_zero_of_isZero (h : IsZero F) (hL : ∀ i, (L i).IsLB) : interNum k F L = 0 :=
   Finset.sum_eq_zero fun S _ ↦ by
@@ -941,14 +941,14 @@ section Cons
 variable {d : ℕ} {P : Fin d → LB X}
 
 /- English proof (translation)
-The claim follows from `Fin.cases hM hP`.
+A detailed English derivation is pending.
 -/
 theorem isLB_cons (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) :
     ∀ i, ((Fin.cons M P : Fin (d + 1) → LB X) i).IsLB :=
   Fin.cases hM hP
 
 /- English proof (translation)
-The claim follows from `funext (Fin.cases rfl fun _ ↦ rfl)`.
+A detailed English derivation is pending.
 -/
 theorem cls_cons (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) :
     (fun i ↦ cls _ (isLB_cons hM hP i)) =
@@ -958,7 +958,7 @@ theorem cls_cons (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) :
 variable (F)
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F (isLB_cons hM hP), cls_cons hM hP, multiDiff_cons, bwdDiff_apply, interNum_twist_eq_multiDiff k F hP hN, interNum_eq_multiDiff k F hP, h, zero_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_cons_of_cls_eq_neg (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) (hN : N.IsLB)
     (h : cls N hN = -cls M hM) :
@@ -968,7 +968,7 @@ theorem interNum_cons_of_cls_eq_neg (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) (hN :
     interNum_twist_eq_multiDiff k F hP hN, interNum_eq_multiDiff k F hP, h, zero_sub]
 
 /- English proof (translation)
-The claim follows from `interNum_cons_of_cls_eq_neg k F hM hP (Twist.isLB_lbZPow hM (-1)) (by rw [cls_lbZPow hM, neg_one_zsmul])`.
+A detailed English derivation is pending.
 -/
 theorem interNum_cons (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) :
     interNum k F (Fin.cons M P : Fin (d + 1) → LB X) =
@@ -977,7 +977,7 @@ theorem interNum_cons (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) :
     (by rw [cls_lbZPow hM, neg_one_zsmul])
 
 /- English proof (translation)
-Rewrite using `[interNum_cons k _ hM hP, interNum_congr k (Twist.twistTwistZNegOneIso F hM)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interNum_twist_cons (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) :
     interNum k (twist F M) (Fin.cons M P : Fin (d + 1) → LB X) =
@@ -985,7 +985,7 @@ theorem interNum_twist_cons (hM : M.IsLB) (hP : ∀ i, (P i).IsLB) :
   rw [interNum_cons k _ hM hP, interNum_congr k (Twist.twistTwistZNegOneIso F hM)]
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F (isLB_cons hM hP), interNum_eq_multiDiff k F (isLB_cons hA hP), interNum_eq_multiDiff k F (isLB_cons hB hP), interNum_eq_multiDiff k F (isLB_cons hA (isLB_cons hB hP)), cls_cons hA (isLB_cons hB hP), cls_cons hM hP, cls_cons hA hP, cls_cons hB hP]`. Simplify using `only [multiDiff_cons, bwdDiff_apply, h, sub_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem interNum_cons_of_cls_eq_add (hM : M.IsLB) (hA : A.IsLB) (hB : B.IsLB)
     (hP : ∀ i, (P i).IsLB) (h : cls M hM = cls A hA + cls B hB) :
@@ -1001,7 +1001,7 @@ theorem interNum_cons_of_cls_eq_add (hM : M.IsLB) (hA : A.IsLB) (hB : B.IsLB)
   ring
 
 /- English proof (translation)
-The claim follows from `(interNum_cons k F (P := ![]) hM isEmptyElim).trans (congrArg₂ (· - ·) (interNum_of_isEmpty k _ _) (interNum_of_isEmpty k _ _))`.
+A detailed English derivation is pending.
 -/
 theorem interNum_one (hM : M.IsLB) :
     interNum k F ![M] = chi k F - chi k (twistZ F M (-1)) :=
@@ -1013,7 +1013,7 @@ end Cons
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F hL, multiDiff_eq_shiftAct, Finset.prod_eq_zero (Finset.mem_univ i) (by rw [h, diffElt_zero]), map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem interNum_eq_zero_of_cls_eq_zero (hL : ∀ i, (L i).IsLB) (i : ι)
     (h : cls (L i) (hL i) = 0) : interNum k F L = 0 := by
@@ -1024,7 +1024,7 @@ theorem interNum_eq_zero_of_cls_eq_zero (hL : ∀ i, (L i).IsLB) (i : ι)
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[← interNum_lbZPow_eq_multiDiff k F hM]`. Conclude with `interNum_congr_cls k F (fun _ ↦ hM) (fun _ ↦ Twist.isLB_lbZPow hM 1) fun _ ↦ by rw [cls_lbZPow hM, one_zsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNum_const_eq_multiDiff (hM : M.IsLB) :
     interNum k F (fun _ : ι ↦ M) = multiDiff (fun _ : ι ↦ 1) (fun n ↦ chi k (twistZ F M n)) 0 := by
@@ -1035,9 +1035,9 @@ theorem interNum_const_eq_multiDiff (hM : M.IsLB) :
 variable (F) in
 
 /- English proof (translation)
-Establish `e` using `Finset.sum_powerset_apply_card (x := (Finset.univ : Finset (Fin d))) fun j ↦ (-1 : ℤ) ^ j * chi k (twistZ F M (-j))`. Rewrite `e` using `[Finset.powerset_univ, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[interNum_const_eq_multiDiff k F hM, multiDiff_apply]`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one, zero_sub, smul_eq_mul] at e ⊢`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ ↦ by ring`.
+A detailed English derivation is pending.
 -/
 theorem interNum_const_eq_sum (hM : M.IsLB) (d : ℕ) :
     interNum k F (fun _ : Fin d ↦ M) = ∑ j ∈ Finset.range (d + 1),
@@ -1053,9 +1053,9 @@ theorem interNum_const_eq_sum (hM : M.IsLB) (d : ℕ) :
 variable (F) in
 
 /- English proof (translation)
-Establish `e₁` using `congrFun (multiDiff_map (Int.castAddHom ℚ) a fun n ↦ chi k (twistZ F M n)) 0`. Establish `e₂` using `congrFun (multiDiff_comap (Int.castAddHom ℚ) a fun t : ℚ ↦ p.eval t) 0`. Establish `e₃ : (Int.castAddHom ℚ ∘ fun n ↦ chi k (twistZ F M n)) = (fun t : ℚ ↦ p.eval t) ∘ Int.castAddHom ℚ` using `funext h`. Rewrite using `[interNum_lbZPow_eq_multiDiff k F hM]`. Rewrite `e₁` using `[e₃, e₂, Function.comp_apply, multiDiff_polynomial_eval _ p hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e₁.symm`.
+A detailed English derivation is pending.
 -/
 theorem interNum_lbZPow_of_polynomial (hM : M.IsLB) {d : ℕ} (p : Polynomial ℚ)
     (hp : p.natDegree ≤ d) (h : ∀ n : ℤ, (chi k (twistZ F M n) : ℚ) = p.eval (n : ℚ))
@@ -1072,7 +1072,7 @@ theorem interNum_lbZPow_of_polynomial (hM : M.IsLB) {d : ℕ} (p : Polynomial �
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[interNum_congr_cls k F (fun _ ↦ hM) (fun _ ↦ Twist.isLB_lbZPow hM 1) fun _ ↦ by rw [cls_lbZPow hM, one_zsmul], interNum_lbZPow_of_polynomial k F hM p hp h fun _ ↦ 1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem interNum_const_of_polynomial (hM : M.IsLB) {d : ℕ} (p : Polynomial ℚ)
     (hp : p.natDegree ≤ d) (h : ∀ n : ℤ, (chi k (twistZ F M n) : ℚ) = p.eval (n : ℚ)) :
@@ -1083,27 +1083,27 @@ theorem interNum_const_of_polynomial (hM : M.IsLB) {d : ℕ} (p : Polynomial ℚ
   simp
 
 /- English proof (translation)
-The claim follows from `interNum_of_isEmpty k _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem topSelf_zero (M : LB X) : topSelfIntersection k M 0 = chi k (structureModule X) :=
   interNum_of_isEmpty k _ _
 
 /- English proof (translation)
-The claim follows from `interNum_congr_lbIso k _ (fun _ ↦ hM) (fun _ ↦ hN) fun _ ↦ h`.
+A detailed English derivation is pending.
 -/
 theorem topSelf_congr (hM : M.IsLB) (hN : N.IsLB) (h : LBIso M N) (d : ℕ) :
     topSelfIntersection k M d = topSelfIntersection k N d :=
   interNum_congr_lbIso k _ (fun _ ↦ hM) (fun _ ↦ hN) fun _ ↦ h
 
 /- English proof (translation)
-The claim follows from `interNum_congr k ((Scheme.Modules.pushforwardId X).app _) L`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem interNumOn_id (L : ι → LB X) :
     interNumOn k (𝟙 X) L = interNum k (structureModule X) L :=
   interNum_congr k ((Scheme.Modules.pushforwardId X).app _) L
 
 /- English proof (translation)
-The claim follows from `interNum_congr k (((Scheme.Modules.pushforwardComp g f).app _).symm ≪≫ (Scheme.Modules.pushforward f).mapIso (asIso (unitToPush g)).symm) L`.
+A detailed English derivation is pending.
 -/
 theorem interNumOn_comp_of_isIso (g : Y ⟶ Z) (f : Z ⟶ X) [IsIso (unitToPush g)] (L : ι → LB X) :
     interNumOn k (g ≫ f) L = interNumOn k f L :=
@@ -1111,7 +1111,7 @@ theorem interNumOn_comp_of_isIso (g : Y ⟶ Z) (f : Z ⟶ X) [IsIso (unitToPush 
     (Scheme.Modules.pushforward f).mapIso (asIso (unitToPush g)).symm) L
 
 /- English proof (translation)
-Establish `: IsIso f.toImage` using `inferInstance`. Rewrite using `[interNumSub_def, ← interNumOn_comp_of_isIso k f.toImage]`. Conclude with `congrArg (interNumOn k · L) f.toImage_imageι.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNumOn_eq_interNumSub (f : Z ⟶ X) [IsClosedImmersion f] (L : ι → LB X) :
     interNumOn k f L = interNumSub k f.ker L := by
@@ -1126,7 +1126,7 @@ section ShortExact
 variable {S : ShortComplex X.Modules}
 
 /- English proof (translation)
-Rewrite using `[interNum_def, interNum_def, interNum_def, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun T _ ↦ by`. Rewrite using `[chi_twist_shortExact hS (isLB_lbInvProd hL T) (h₁ T) (h₃ T), mul_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interNum_shortExact' (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
     (h₁ : ∀ T, FiniteCoh k (twist S.X₁ (lbInvProd L T)))
@@ -1137,7 +1137,7 @@ theorem interNum_shortExact' (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
     rw [chi_twist_shortExact hS (isLB_lbInvProd hL T) (h₁ T) (h₃ T), mul_add]
 
 /- English proof (translation)
-The claim follows from `interNum_shortExact' hS hL (fun T ↦ h₁ _ (isLB_lbInvProd hL T)) fun T ↦ h₃ _ (isLB_lbInvProd hL T)`.
+A detailed English derivation is pending.
 -/
 theorem interNum_shortExact (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
     (h₁ : FiniteCohTwists k S.X₁) (h₃ : FiniteCohTwists k S.X₃) :
@@ -1146,7 +1146,7 @@ theorem interNum_shortExact (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
     fun T ↦ h₃ _ (isLB_lbInvProd hL T)
 
 /- English proof (translation)
-Rewrite using `[interNum_shortExact hS hL h₁ (h₁.of_shortExact₃ hS h₂)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem interNum_shortExact₃ (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
     (h₁ : FiniteCohTwists k S.X₁) (h₂ : FiniteCohTwists k S.X₂) :
@@ -1154,7 +1154,7 @@ theorem interNum_shortExact₃ (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
   rw [interNum_shortExact hS hL h₁ (h₁.of_shortExact₃ hS h₂)]; ring
 
 /- English proof (translation)
-Rewrite using `[interNum_shortExact hS hL (h₂.of_shortExact₁ hS h₃) h₃]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem interNum_shortExact₁ (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
     (h₂ : FiniteCohTwists k S.X₂) (h₃ : FiniteCohTwists k S.X₃) :
@@ -1164,7 +1164,7 @@ theorem interNum_shortExact₁ (hS : S.ShortExact) (hL : ∀ i, (L i).IsLB)
 end ShortExact
 
 /- English proof (translation)
-The claim follows from `have hS : (ShortComplex.mk φ (cokernel.π φ) (cokernel.condition φ)).ShortExact := { exact := ShortComplex.exact_cokernel φ } have := interNum_shortExact₃ hS hL hF hG this`.
+A detailed English derivation is pending.
 -/
 theorem interNum_cokernel (φ : F ⟶ G) [Mono φ] (hL : ∀ i, (L i).IsLB) (hF : FiniteCohTwists k F)
     (hG : FiniteCohTwists k G) :
@@ -1180,7 +1180,7 @@ variable [Algebra k Γ(Z, ⊤)] {f : Z ⟶ X}
   (hf : ∀ r : k, f.appTop (algebraMap k Γ(X, ⊤) r) = algebraMap k Γ(Z, ⊤) r)
 
 /- English proof (translation)
-Rewrite using `[interNum_eq_multiDiff k F hL, h, multiDiff_comap, Function.comp_apply, map_zero, interNum_eq_multiDiff k H fun i ↦ pull_isLB (hL i) f]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem interNum_eq_of_chiPic_eq {H : Z.Modules} (h : chiPic k F = chiPic k H ∘ pull f)
     (hL : ∀ i, (L i).IsLB) : interNum k F L = interNum k H fun i ↦ (L i).pull f := by
@@ -1191,7 +1191,7 @@ theorem interNum_eq_of_chiPic_eq {H : Z.Modules} (h : chiPic k F = chiPic k H �
 include hf
 
 /- English proof (translation)
-The claim follows from `interNum_eq_of_chiPic_eq (chiPic_pushforward_of_isClosedImmersion hf H) hL`.
+A detailed English derivation is pending.
 -/
 theorem interNum_pushforward_of_isClosedImmersion [IsClosedImmersion f] (H : Z.Modules)
     (hL : ∀ i, (L i).IsLB) :
@@ -1199,7 +1199,7 @@ theorem interNum_pushforward_of_isClosedImmersion [IsClosedImmersion f] (H : Z.M
   interNum_eq_of_chiPic_eq (chiPic_pushforward_of_isClosedImmersion hf H) hL
 
 /- English proof (translation)
-The claim follows from `interNum_eq_of_chiPic_eq (chiPic_pushforward_of_isAffineHom hf H) hL`.
+A detailed English derivation is pending.
 -/
 theorem interNum_pushforward_of_isAffineHom [IsAffineHom f] (H : Z.Modules) [H.IsQuasicoherent]
     (hL : ∀ i, (L i).IsLB) :
@@ -1207,21 +1207,21 @@ theorem interNum_pushforward_of_isAffineHom [IsAffineHom f] (H : Z.Modules) [H.I
   interNum_eq_of_chiPic_eq (chiPic_pushforward_of_isAffineHom hf H) hL
 
 /- English proof (translation)
-The claim follows from `interNum_pushforward_of_isAffineHom hf _ hL`.
+A detailed English derivation is pending.
 -/
 theorem interNumOn_eq_interNum_pull [IsAffineHom f] (hL : ∀ i, (L i).IsLB) :
     interNumOn k f L = interNum k (structureModule Z) fun i ↦ (L i).pull f :=
   interNum_pushforward_of_isAffineHom hf _ hL
 
 /- English proof (translation)
-The claim follows from `interNumOn_eq_interNum_pull hf fun _ ↦ hM`.
+A detailed English derivation is pending.
 -/
 theorem interNumOn_const_eq_topSelf [IsAffineHom f] (hM : M.IsLB) (d : ℕ) :
     interNumOn k f (fun _ : Fin d ↦ M) = topSelfIntersection k (M.pull f) d :=
   interNumOn_eq_interNum_pull hf fun _ ↦ hM
 
 /- English proof (translation)
-The claim follows from `(interNum_congr k ((Scheme.Modules.pushforwardComp g f).app _).symm L).trans (interNum_pushforward_of_isAffineHom hf _ hL)`.
+A detailed English derivation is pending.
 -/
 theorem interNumOn_comp [IsAffineHom f] (g : Y ⟶ Z) [QuasiCompact g] [QuasiSeparated g]
     (hL : ∀ i, (L i).IsLB) :
@@ -1239,7 +1239,7 @@ variable (k : Type v) [Field k] (A : CommRingCat.{0}) [Algebra k A] [Algebra k �
   [IsScalarTower k A Γ(Spec A, ⊤)]
 
 /- English proof (translation)
-Rewrite using `[chi_eq_hdim_zero k fun _ hn ↦ coh.subsingleton_of_isAffine _ hn, hdim_def, ((coh.zeroUnitSpecEquiv A).restrictScalars k).finrank_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_structureModule_Spec : chi k (structureModule (Spec A)) = Module.finrank k A := by
   rw [chi_eq_hdim_zero k fun _ hn ↦ coh.subsingleton_of_isAffine _ hn, hdim_def,
@@ -1253,7 +1253,7 @@ abbrev algebraΓSpecOf : Algebra k Γ(Spec A, ⊤) :=
 omit [Algebra k Γ(Spec A, ⊤)] [IsScalarTower k A Γ(Spec A, ⊤)] in
 
 /- English proof (translation)
-The claim follows from `letI := algebraΓSpecOf k A .of_algebraMap_eq fun _ ↦ rfl`.
+A detailed English derivation is pending.
 -/
 theorem isScalarTower_algebraΓSpecOf :
     letI := algebraΓSpecOf k A
@@ -1266,9 +1266,9 @@ end FiniteAlgebra
 section Examples
 
 /- English proof (translation)
-Use `letI := algebraΓSpecOf ℝ (.of (Polynomial ℝ))`. Use `letI := algebraΓSpecOf ℝ (.of ℂ)`. Use `isScalarTower_algebraΓSpecOf ℝ (.of ℂ)` as an intermediate fact. Rewrite using `[interNumOn_eq_interNum_pull ?_ isEmptyElim, interNum_of_isEmpty, chi_structureModule_Spec]`. Conclude with `congrArg _ Complex.finrank_real_complex`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Use `ConcreteCategory.congr_hom (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (Polynomial.aeval (R := ℝ) Complex.I).toRingHom)) (algebraMap ℝ _ r)` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (Scheme.ΓSpecIso (.of ℂ)).inv ((Polynomial.aeval Complex.I).commutes r)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example : letI := algebraΓSpecOf ℝ (.of (Polynomial ℝ))
     interNumOn ℝ (Spec.map (CommRingCat.ofHom (Polynomial.aeval (R := ℝ) Complex.I).toRingHom))
@@ -1285,7 +1285,7 @@ example : letI := algebraΓSpecOf ℝ (.of (Polynomial ℝ))
     exact congrArg (Scheme.ΓSpecIso (.of ℂ)).inv ((Polynomial.aeval Complex.I).commutes r)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[interNum_one k F hM, chi_congr k (Twist.twistZZeroIso F hM), h, h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[interNum_lbZPow_eq_multiDiff k F hM, multiDiff_const]`. Simplify using `[bwdDiff_apply, h]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {X : Scheme.{0}} (k : Type) [Field k] [Algebra k Γ(X, ⊤)] (F : X.Modules) {M : LB X}
     (hM : M.IsLB) (a b : ℤ) (h : ∀ n : ℤ, chi k (twistZ F M n) = a * n + b) :

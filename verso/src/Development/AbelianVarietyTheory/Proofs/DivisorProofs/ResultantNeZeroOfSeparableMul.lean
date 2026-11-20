@@ -7,7 +7,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ P Q _ _ h`. Conclude with `Polynomial.resultant_ne_zero P Q h.isCoprime`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem resultant_ne_zero_of_separable_mul :
     ∀ (k : Type) [Field k] (P Q : k[X]), P.Monic → Q.Monic → (P * Q).Separable →

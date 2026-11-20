@@ -22,9 +22,7 @@ variable {R : Type} [CommRing R] (W : WeierstrassCurve R) {u : R} (hu : IsUnit u
 def scaledCoord (u : R) : Fin 3 → HomRing W := triple (algebraMap R _ u) (coord W)
 
 /- English proof (translation)
-Use `fin_cases i`. Express the relevant statement in the definitionally equal form `algebraMap R _ u ^ 2 * coord W 0 ∈ _`. Rewrite using `[← map_pow, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (coord_mem W 0)`. Express the relevant statement in the definitionally equal form `algebraMap R _ u ^ 3 * coord W 1 ∈ _`.
-
-Rewrite using `[← map_pow, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (coord_mem W 1)`. Conclude with `coord_mem W 2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaledCoord_mem (u : R) (i : Fin 3) : scaledCoord W u i ∈ grading W 1 := by
   fin_cases i
@@ -38,7 +36,7 @@ theorem scaledCoord_mem (u : R) (i : Fin 3) : scaledCoord W u i ∈ grading W 1 
 
 include hW in
 /- English proof (translation)
-Use `equation_triple (algebraMap R (HomRing W) u) (V := W.map (algebraMap R (HomRing W))) (equation_coord W)` as an intermediate fact. Rewrite `this` using `[curve_map_eq _ hW]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem equation_scaledCoord :
     (W.map (algebraMap R (HomRing W))).toProjective.Equation (scaledCoord W u) := by
@@ -63,9 +61,9 @@ def scaleGraded : grading W →+*ᵍ grading W where
 
 include hu in
 /- English proof (translation)
-Rewrite using `[← toIdeal_le_toIdeal_iff, irrelevant_eq_span_coord]`. Use `(span_le_span_triple (hu.map (algebraMap R (HomRing W))) (coord W)).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: triple (algebraMap R (HomRing W) u) (coord W) i = scaleGraded W hW (coord W i)` using `(evalHom_coord W (algebraMap R (HomRing W)) (scaledCoord W u) (equation_scaledCoord W hW) i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Ideal.mem_map_of_mem (scaleGraded W hW) (mem_irrelevant_of_mem _ one_pos (coord_mem W i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irrelevant_le_map_scaleGraded :
     irrelevant (grading W) ≤ (irrelevant (grading W)).map (scaleGraded W hW) := by
@@ -84,9 +82,9 @@ def scaleMap : scheme W ⟶ scheme W :=
 
 @[reassoc]
 /- English proof (translation)
-Use `(ProjPoint.ofHom_map (scaleGraded W hW) (irrelevant_le_map_scaleGraded W hu hW) _ (map_irrelevant_evalHom W hP)).trans ?_` and prove the remaining obligations. Establish `: (evalHom W ρ P hP.equation).comp (scaleGraded W hW).toRingHom = evalHom W ρ _ (isUnimodularSol_triple (hu.map ρ) (curve_map_eq ρ hW) hP).equation`. Use `homRing_hom_ext W (fun r => ?_) (fun i => ?_)` and prove the remaining obligations. Use `(congrArg (evalHom W ρ P hP.equation) (evalHom_algebraMap W _ (scaledCoord W u) (equation_scaledCoord W hW) r)).trans ?_` and prove the remaining obligations. Rewrite using `[evalHom_algebraMap, evalHom_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (evalHom W ρ P hP.equation) (evalHom_coord W _ (scaledCoord W u) (equation_scaledCoord W hW) i)).trans ?_` and prove the remaining obligations. Rewrite using `[evalHom_coord]`. Apply the tactic sequence `fin_cases i <;> simp [scaledCoord, triple]`. Simplify using `only [this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ptHom_scaleMap {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
     (hP : IsUnimodularSol (W.map ρ) P) :
@@ -108,7 +106,7 @@ theorem ptHom_scaleMap {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A
   rfl
 
 /- English proof (translation)
-Apply `scheme_hom_ext` to reduce the goal to its premises. Rewrite using `[chartY, pt_eq_ptHom, ptHom_scaleMap_assoc, ptHom_toSpec, ptHom_toSpec]`. Rewrite using `[chartZ, pt_eq_ptHom, ptHom_scaleMap_assoc, ptHom_toSpec, ptHom_toSpec]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem scaleMap_toSpec : scaleMap W hu hW ≫ toSpec W = toSpec W := by
   apply scheme_hom_ext
@@ -119,7 +117,7 @@ def scaleOver : schemeOver W ⟶ schemeOver W :=
   Over.homMk (scaleMap W hu hW) (scaleMap_toSpec W hu hW)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (ptHom_scaleMap W hu hW _ P hP)`.
+A detailed English derivation is pending.
 -/
 theorem ptOver_scaleOver {A : Type} [CommRing A] [Algebra R A] (P : Fin 3 → A)
     (hP : IsUnimodularSol (W.baseChange A) P) :
@@ -130,7 +128,7 @@ theorem ptOver_scaleOver {A : Type} [CommRing A] [Algebra R A] (P : Fin 3 → A)
 omit hu hW in
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext (hom_ext_of_localRing_points _ _ _ _ fun A _ _ t => ?_)` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `Spec.map_surjective (t ≫ T.hom)`. Set `: Algebra R A` to `ρ.hom.toAlgebra`. Conclude with `congrArg (·.left) (h A (Over.homMk t hρ.symm))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem over_hom_ext_of_isLocalRing {T Y : Over (Spec (.of R))} {f g : T ⟶ Y}
     (h : ∀ (A : Type) [CommRing A] [IsLocalRing A] [Algebra R A] (x : specOver R A ⟶ T),
@@ -143,7 +141,7 @@ theorem over_hom_ext_of_isLocalRing {T Y : Over (Spec (.of R))} {f g : T ⟶ Y}
 omit hu hW in
 
 /- English proof (translation)
-The claim follows from `over_hom_ext_of_isLocalRing fun A _ _ _ x => by obtain ⟨P, hP, rfl⟩ := exists_eq_ptOver W x exact h A P hP`.
+A detailed English derivation is pending.
 -/
 theorem over_hom_ext_ptOver {Y : Over (Spec (.of R))} {f g : schemeOver W ⟶ Y}
     (h : ∀ (A : Type) [CommRing A] [Algebra R A] (P : Fin 3 → A)
@@ -154,7 +152,7 @@ theorem over_hom_ext_ptOver {Y : Over (Spec (.of R))} {f g : schemeOver W ⟶ Y}
 
 omit hu hW in
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem ptOver_congr {A : Type} [CommRing A] [Algebra R A] {P Q : Fin 3 → A}
     {hP : IsUnimodularSol (W.baseChange A) P} {hQ : IsUnimodularSol (W.baseChange A) Q}
@@ -164,7 +162,7 @@ theorem ptOver_congr {A : Type} [CommRing A] [Algebra R A] {P Q : Fin 3 → A}
 omit hu hW in
 
 /- English proof (translation)
-Take `⟨S, hS, h, -⟩` from `exists_ptOver_mul_ptOver_eq W hP hQ`. Use `⟨S, hS, ?_⟩` and prove the remaining obligations. Break down `h with rfl | rfl` into its components or cases. Use `exacts [isSumTriple_addXYZ hP.equation hQ.equation, isSumTriple_diagXYZ hP.equation hQ.equation]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_isSumTriple [W.IsElliptic] {A : Type} [CommRing A] [IsLocalRing A] [Algebra R A]
     {P Q : Fin 3 → A} (hP : IsUnimodularSol (W.baseChange A) P)
@@ -176,11 +174,11 @@ theorem exists_isSumTriple [W.IsElliptic] {A : Type} [CommRing A] [IsLocalRing A
   exacts [isSumTriple_addXYZ hP.equation hQ.equation, isSumTriple_diagXYZ hP.equation hQ.equation]
 
 /- English proof (translation)
-Establish `key : μ[schemeOver W] ≫ scaleOver W hu hW = (scaleOver W hu hW ⊗ₘ scaleOver W hu hW) ≫ μ[schemeOver W]` using `over_hom_ext_of_isLocalRing fun A _ _ _ x => by`. Rewrite using `[← lift_comp_fst_snd x, lift_map_assoc, ← Category.assoc]`. Take `⟨P, hP, eP⟩` from `exists_eq_ptOver W (x ≫ fst _ _)`. Take `⟨Q, hQ, eQ⟩` from `exists_eq_ptOver W (x ≫ snd _ _)`. Take `⟨S, hS, h⟩` from `exists_isSumTriple W hP hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eP, eQ, ← Hom.mul_def, ← Hom.mul_def, ptOver_mul_ptOver W hP hQ hS h, ptOver_scaleOver, ptOver_scaleOver, ptOver_scaleOver]`. Conclude with `(ptOver_mul_ptOver W _ _ _ (isSumTriple_triple (curve_map_eq _ hW) h)).symm`. Use `⟨?_, key⟩` and prove the remaining obligations. Establish `e : (η[schemeOver W] * η[schemeOver W]) ≫ scaleOver W hu hW = (η[schemeOver W] ≫ scaleOver W hu hW) * (η[schemeOver W] ≫ scaleOver W hu hW)`. Rewrite using `[Hom.mul_def, Hom.mul_def, Category.assoc, key, lift_map_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : η[schemeOver W] = 1` using `by rw [Hom.one_def, toUnit_unit, Category.id_comp]`. Rewrite `e`, the goal using `[h1]`. Rewrite `e` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 e.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_scaleOver [W.IsElliptic] : IsMonHom (scaleOver W hu hW) := by
   have key : μ[schemeOver W] ≫ scaleOver W hu hW =
@@ -216,7 +214,7 @@ def AddsByLaws (m : schemeOver W ⊗ schemeOver W ⟶ schemeOver W) : Prop :=
 omit hu hW in
 
 /- English proof (translation)
-The claim follows from `over_hom_ext_of_isLocalRing fun A _ _ _ x => by rw [← lift_comp_fst_snd x] obtain ⟨P, hP, eP⟩ := exists_eq_ptOver W (x ≫ fst _ _) obtain ⟨Q, hQ, eQ⟩ := exists_eq_ptOver W (x ≫ snd _ _) obtain ⟨S, hS, h⟩ := exists_isSumTriple W hP hQ rw [eP, eQ] exact Over.OverMorphism.ext ((hm A …`.
+A detailed English derivation is pending.
 -/
 theorem AddsByLaws.unique [W.IsElliptic] {m m' : schemeOver W ⊗ schemeOver W ⟶ schemeOver W}
     (hm : AddsByLaws W m) (hm' : AddsByLaws W m') : m = m' :=

@@ -32,7 +32,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hB` using `Formalism.IndefR.Bridge.ClassPres.extBij_holds (R.B.L i t).pres`. Take `⟨hinj, hrange, -⟩` from `hM.HV i t`. Establish `hk` using `kForm_semi (R.jV i t) (R.HV i t).e (R.B.L i t).pres.extL (fun x => hM.jV i t x) hinj (hrange.trans hB.2.symm) (Formalism.L2.DIV.CSD.basis _) (Module.Basis.ofVectorSpace _ _) hB.1`. Conclude with `LinearMap.ext_on_range hk.2 (fun k => h _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem endV_ext (R : RealDat D A Ks) (hM : R.IsModels) (i : Fin D.R.m) (t : T) (f g : Module.End ℂ (R.HV i t).H)
     (h : ∀ x, f (R.jV i t x) = g (R.jV i t x)) : f = g := by
@@ -43,9 +43,9 @@ theorem endV_ext (R : RealDat D A Ks) (hM : R.IsModels) (i : Fin D.R.m) (t : T) 
   exact LinearMap.ext_on_range hk.2 (fun k => h _)
 
 /- English proof (translation)
-Establish `e : ∀ d, hkF V P (Finsupp.single d 1) F = fun h => ∑ γ ∈ rep V P d, F (h * (finHom V).rangeRestrict γ)`. Introduce `d`. Use function extensionality and compare the values at `h`. Simplify using `[hkF]`. Simplify using `only [e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hkF_eq_sum (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : Pl D.host.E) (c : List ℤ →₀ ℂ)
     (F : Bridge.Gf V → W) : hkF V P c F = c.sum fun d z => z • hkF V P (Finsupp.single d 1) F := by
@@ -59,7 +59,7 @@ theorem hkF_eq_sum (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : P
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[hkF, rep, hd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem hkF_nonlab (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : Pl D.host.E) (d : List ℤ)
     (hd : ¬ IsLab V P d) (F : Bridge.Gf V → W) : hkF V P (Finsupp.single d 1) F = 0 := by
@@ -69,9 +69,9 @@ theorem hkF_nonlab (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : P
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (R.HV i t).e` using `(hM.HV i t).1`. Apply `hinj` to reduce the goal to its premises. Use `(hh P hP c x).trans ((hkF_eq_sum _ _ _ _).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (map_finsuppSum (R.HV i t).e c _).symm` and prove the remaining obligations. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (c d • ·) (hh P hP _ x)).symm.trans (map_smul _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem opsV_sum (R : RealDat D A Ks) (hM : R.IsModels) (i : Fin D.R.m) (t : T)
     (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HV i t).H) (hh : IsOpsV R i t h) (P : Pl D.host.E) (hP : Good R t P)
@@ -86,7 +86,7 @@ theorem opsV_sum (R : RealDat D A Ks) (hM : R.IsModels) (i : Fin D.R.m) (t : T)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (R.HV i t).e` using `(hM.HV i t).1`. Use `LinearMap.ext fun x => hinj ?_` and prove the remaining obligations. Conclude with `(hh P hP _ x).trans ((hkF_nonlab _ _ _ hd _).trans (map_zero _).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem opsV_nonlab (R : RealDat D A Ks) (hM : R.IsModels) (i : Fin D.R.m) (t : T)
     (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HV i t).H) (hh : IsOpsV R i t h) (P : Pl D.host.E) (hP : Good R t P)
@@ -96,9 +96,9 @@ theorem opsV_nonlab (R : RealDat D A Ks) (hM : R.IsModels) (i : Fin D.R.m) (t : 
   exact (hh P hP _ x).trans ((hkF_nonlab _ _ _ hd _).trans (map_zero _).symm)
 
 /- English proof (translation)
-Take `⟨_, _, _, hT⟩` from `hF.tie`. Rewrite using `[hT.q P]`. Introduce `h0`. Apply `(R.pl P).ne_bot` to reduce the goal to its premises. Rewrite using `[← Ideal.absNorm_eq_zero_iff, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem q_ne_zero (R : RealDat D A Ks) (hF : R.IsFam) (P : Pl0) : A.q P ≠ 0 := by
   obtain ⟨_, _, _, hT⟩ := hF.tie
@@ -109,7 +109,7 @@ theorem q_ne_zero (R : RealDat D A Ks) (hF : R.IsFam) (P : Pl0) : A.q P ≠ 0 :=
   exact h0
 
 /- English proof (translation)
-Introduce `h`. Establish `h0` using `congrArg (fun p => Polynomial.coeff p 0) h`. Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_zero] at h0`. Rewrite `h0` using `[Polynomial.coeff_zero_eq_eval_zero]`. Simplify using `[BlockDat.blockProd, FamIn.fam, liftDat, Formalism.L2.Col.blockPoly, Polynomial.eval_prod] at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockProd_map_ne_zero (i : Fin D.R.m) (t : T) (P : A.ok t) :
     ((A.fam.L i t).blockProd P).map D.what₂.embLL ≠ 0 := by
@@ -120,16 +120,16 @@ theorem blockProd_map_ne_zero (i : Fin D.R.m) (t : T) (P : A.ok t) :
   simp [BlockDat.blockProd, FamIn.fam, liftDat, Formalism.L2.Col.blockPoly, Polynomial.eval_prod] at h0
 
 /- English proof (translation)
-Simplify using `[evC, hd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evC_single (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ) (d : List ℤ) (hd : IsLab V P d) :
     evC V P a (Finsupp.single d 1) = a d := by
   simp [evC, hd]
 
 /- English proof (translation)
-Use `(GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing V P _).2 ⟨?_, ?_, fun h => absurd h hP⟩` and prove the remaining obligations. Simplify using `[splitLab]`. Use linear arithmetic over natural numbers and integers. Unfold `splitLab`. Use `List.pairwise_append.2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `List.pairwise_replicate.2 (Or.inr le_rfl)`. Conclude with `List.pairwise_replicate.2 (Or.inr le_rfl)`. Introduce `a ha b hb`. Rewrite using `[List.eq_of_mem_replicate ha, List.eq_of_mem_replicate hb]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem isLab_splitLab (V : HSp D) (P : Pl D.host.E) (hP : conjPl P ≠ P) (k : ℕ) (hk : k ≤ V.rank) :
     IsLab V P (splitLab V.rank k) := by
@@ -145,7 +145,7 @@ theorem isLab_splitLab (V : HSp D) (P : Pl D.host.E) (hP : conjPl P ≠ P) (k : 
       norm_num
 
 /- English proof (translation)
-Unfold `evC splitC`. Apply the tactic sequence `rw [← Finsupp.sum_finsetSum_index (fun _ => by simp) (fun _ _ _ => by split_ifs <;> ring)]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by simp), if_pos (isLab_splitLab V P hP j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)))]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem evC_splitC (V : HSp D) (P : Pl D.host.E) (hP : conjPl P ≠ P) (a : List ℤ → ℂ) (z : ℕ → ℂ) :
     evC V P a (splitC V.rank z) = ∑ j ∈ Finset.range (V.rank + 1), z j * a (splitLab V.rank j) := by
@@ -155,13 +155,13 @@ theorem evC_splitC (V : HSp D) (P : Pl D.host.E) (hP : conjPl P ≠ P) (a : List
   rw [Finsupp.sum_single_index (by simp), if_pos (isLab_splitLab V P hP j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)))]
 
 /- English proof (translation)
-Introduce `j hj`. Establish `h1 : Formalism.L2.Col.heckePolyOf nV q (fun k => ∑ i ∈ Finset.range (nW + 1), z k i * a i) = Formalism.L2.Col.heckePolyOf nV q (fun k => ∑ i ∈ Finset.range (nW + 1), z k i * a' i)`. Unfold `Formalism.L2.Col.heckePolyOf`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[heq k (Nat.lt_succ_iff.1 (Finset.mem_range.1 hk))]`. Rewrite `h1` using `[hpoly, hpoly]`. Establish `h2` using `congrArg (fun p => Polynomial.coeff p j) (mul_right_cancel₀ hB h1)`. Simplify using `only [Polynomial.comp_C_mul_X_coeff] at h2`. Establish `h3` using `mul_right_cancel₀ (pow_ne_zero j hκ) h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ∀ b : ℕ → ℂ, (Formalism.L2.Col.heckePolyOf nW q b).coeff j = (-1) ^ j * (q : ℂ) ^ (j * (j - 1) / 2) * b j`. Introduce `b`. Unfold `Formalism.L2.Col.heckePolyOf`. Rewrite using `[Polynomial.finsetSum_coeff]`. Simplify using `only [Polynomial.coeff_C_mul_X_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[Nat.lt_succ_iff.2 hj]`. Rewrite `h3` using `[hc, hc]`. Establish `hne : (-1 : ℂ) ^ j * (q : ℂ) ^ (j * (j - 1) / 2) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ (Nat.cast_ne_zero.2 hq))`. Conclude with `mul_left_cancel₀ hne h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem heckePoly_cancel (nV nW q : ℕ) (κ : ℂ) (B : ℂ[X]) (z : ℕ → ℕ → ℂ) (a a' : ℕ → ℂ) (hq : q ≠ 0) (hκ : κ ≠ 0)
     (hB : B ≠ 0)
@@ -195,45 +195,41 @@ theorem heckePoly_cancel (nV nW q : ℕ) (κ : ℂ) (B : ℂ[X]) (z : ℕ → �
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hInt hCW hEx hSch _ hAbs j pl cV cW hLD c c' w hw w' hw' hy hy' hlab`. Take `⟨hCoreF, hSF, hOkI, hOnto, -, hWc, -⟩` from `GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hCW`. Establish `hCore` using `hCoreF hEx`. Establish `hw2 : w ∈ Wcc R.toRealDat R.SF j c` using `(hWc j c) ▸ hw`. Establish `hw2' : w' ∈ Wcc R.toRealDat R.SF j c'` using `(hWc j c') ▸ hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hWc, hWc]`. Take `⟨-, hOps⟩` from `GlobalTheory.T.realization_family_normal_operators R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models`. Take `⟨hV, hVops, -⟩` from `hOps j A3.A.μ0`. Establish `hM` using `hCore.models`. Take `⟨y, hydef⟩ : ∃ y, y = LinearMap.adjoint (R.thG j A3.A.μ0) w` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'def⟩ : ∃ y', y' = LinearMap.adjoint (R.thG j A3.A.μ0) w'` from `⟨_, rfl⟩`. Rewrite `hy` using `[← hydef]`. Rewrite `hy'` using `[← hy'def]`. Establish `hsys : ∀ P, Good R.toRealDat A3.A.μ0 P → ∀ cV0 cW0, MatchW R.toRealDat j A3.A.μ0 P cV0 cW0 → hV P cV0 y = evC (Wc D j) P (c P) cW0 • y ∧ hV P cV0 y' = evC (Wc D j) P (c' P) cW0 • y'`. Introduce `P hP cV0 cW0 hm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `(GlobalTheory.T.theta_intertwines_matched_operators R.toRealDat F.lv2 hCore hSch hAbs R.SF hSF j A3.A.μ0 P hP cV0 cW0 hm hV hVops).2`. Rewrite using `[hydef, hy'def]`. Conclude with `⟨h c w hw2, h c' w' hw2'⟩`. Establish `hfam : ∀ i, hV (pl i) (cV i) y = labW j pl cW c i • y ∧ hV (pl i) (cV i) y' = labW j pl cW c i • y'`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg` using `hLD.good i`. Establish `hm` using `hLD.mat i`. Establish `h12` using `hsys (pl i) hg (cV i) (cW i) hm`. Establish `hl : labW j pl cW c' i = labW j pl cW c i` using `(congrFun hlab i).symm`. Conclude with `⟨h12.1, h12.2.trans (congrArg (fun μ : ℂ => μ • y') hl)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hcancel : ∀ μ ν : ℂ, μ • y = ν • y → μ = ν` using `fun μ ν h => smul_left_injective ℂ hy h`. Establish `hcancel' : ∀ μ ν : ℂ, μ • y' = ν • y' → μ = ν` using `fun μ ν h => smul_left_injective ℂ hy' h`. Establish `hne : ∀ {u : (R.HW j (sg0 D A3.A)).H} {cc}, u ∈ Wcc R.toRealDat R.SF j cc → LinearMap.adjoint (R.thG j A3.A.μ0) u ≠ 0 → Wcc R.toRealDat R.SF j cc ≠ ⊥`. Introduce `u cc hu hu0 hbot`. Rewrite `hu` using `[hbot, Submodule.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu0 (by rw [hu, map_zero])`. Use `GlobalTheory.T.weight_cocharacter_eq_of_good_places R.toRealDat F.lv2 hCore R.SF hSF j c c' (hne hw2 (hydef ▸ hy)) (hne hw2' (hy'def ▸ hy')) ?_ ?_` and prove the remaining obligations. Introduce `P hP hconj k hk`. Take `⟨P0, hP0, rfl⟩` from `(hOnto P hP).2 hconj`. Take `⟨z, hz, hpoly⟩` from `GlobalTheory.T.thetaLift_transfer_heckePoly_splitPrime R.toRealDat F.lv2 hCore hSch j A3.A.μ0 ⟨P0, hP0⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsplit` using `(GlobalTheory.SplitHeckeLabel.split_ops R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models).2 j A3.A.μ0 hV hVops ⟨P0, hP0⟩`. Establish `heq : ∀ k', k' ≤ (Vc D j).rank → ∑ i ∈ Finset.range ((Wc D j).rank + 1), z k' i * c (R.pl P0) (splitLab (Wc D j).rank i) = ∑ i ∈ Finset.range ((Wc D j).rank + 1), z k' i * c' (R.pl P0) (splitLab (Wc D j).rank i)`. Introduce `k' hk'`. Establish `hm` using `hz k' hk'`. Establish `h12` using `hsys (R.pl P0) hP _ _ hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i0 : (A3.liftI j A3.A.μ0).OpIx` to `Sum.inl (⟨P0, hP0⟩, k')`. Establish `hop : hV (pl i0) (cV i0) = hV (R.pl P0) (Finsupp.single (splitLab (Vc D j).rank k') 1)`. Apply `endV_ext R.toRealDat hM j A3.A.μ0` to reduce the goal to its premises. Introduce `x`. Establish `e1` using `hLD.op hV hVops i0 x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hsplit k' hk' x`. Conclude with `e1.symm.trans e2`. Establish `hf` using `hfam i0`. Establish `a1` using `hcancel _ _ ((h12.1.symm.trans (LinearMap.congr_fun hop y).symm).trans hf.1)`. Establish `a2` using `hcancel' _ _ ((h12.2.symm.trans (LinearMap.congr_fun hop y').symm).trans hf.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `evC_splitC (Wc D j) (R.pl P0) hconj (c (R.pl P0)) (z k')`. Establish `b2` using `evC_splitC (Wc D j) (R.pl P0) hconj (c' (R.pl P0)) (z k')`. Conclude with `b1.symm.trans (a1.trans (a2.symm.trans b2))`. Establish `hq : A3.A.q P0 ≠ 0` using `q_ne_zero R.toRealDat hCore.fam P0`. Establish `hκ : D.what₂.embLL (A3.A.etaVal P0 : D.what₂.LL) * (A3.A.q P0 : ℂ) ^ ((D.R.t + 1) / 2) ≠ 0` using `mul_ne_zero ((_root_.map_ne_zero _).2 (Units.ne_zero _)) (pow_ne_zero _ (Nat.cast_ne_zero.2 hq))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `heckePoly_cancel (Vc D j).rank (Wc D j).rank (A3.A.q P0) _ _ z (fun i => c (R.pl P0) (splitLab (Wc D j).rank i)) (fun i => c' (R.pl P0) (splitLab (Wc D j).rank i)) hq hκ (blockProd_map_ne_zero j A3.A.μ0 ⟨P0, hP0⟩) hpoly heq k hk`. Introduce `P d hP hconj hd`. Take `⟨Q, hQ, rfl⟩` from `(hOnto P hP).1 hconj`. Establish `hFix` using `GlobalTheory.T.hyperspecialFixesAllChainVacua_at_inert_prime R F hCW A3.A.μ0 (R.plI Q) hP hconj`. Establish `hTwo` using `GlobalTheory.T.twoSidedHeckePartner_inertPrime hHowe R.toRealDat F.lv2 hInt hCore hSch A3.A.μ0 (R.plI Q) hP hconj hFix`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨cV', hm⟩` from `(hTwo.2 j).2 (Finsupp.single d 1)`. Establish `h12` using `hsys (R.plI Q) hP cV' _ hm`. Establish `htie` using `(hCW.inert.hL j A3.A.μ0).some`. Establish `hIL` using `GlobalTheory.T.inertHeckeOperators_lifts_rational_selfAdjoint_labels R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models j A3.A.μ0 (A3.okI A3.A.μ0 × List ℕ) (fun k => R.plI k.1) (fun k => GlobalTheory.Hk3.labIn (Vc D j).rank k.2) (A3.heckeLI j A3.A.μ0) (fun k => Formalism.L2.Col.I …`. Establish `hlabop : ∀ e, ∃ μ : ℂ, hV (R.plI Q) (Finsupp.single e 1) y = μ • y ∧ hV (R.plI Q) (Finsupp.single e 1) y' = μ • y'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `e`. Distinguish the cases in `he : GlobalTheory.Hk3.IsLab (Vc D j) (R.plI Q) e`. Take `⟨hlen, hpw, hdual⟩` from `(GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Vc D j) (R.plI Q) e).1 he`. Take `⟨s, hs2, hspw, hspos, rfl⟩` from `(GlobalTheory.T.selfDual_antitone_list_iff_inertPrimeHeckeExponents (Vc D j).rank e).1 ⟨hlen, hpw, hdual hconj⟩`. Establish `hok : Formalism.L2.Col.InertTypeOk (Vc D j).rank s` using `⟨hspw, hspos, hs2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hop1` using `(hIL (⟨Q, hQ⟩, s) hok).2.2.2 hV hVops`. Set `i0 : (A3.liftI j A3.A.μ0).OpIx` to `Sum.inr (⟨Q, hQ⟩, s)`. Establish `hop : hV (pl i0) (cV i0) = hV (R.plI Q) (Finsupp.single (GlobalTheory.Hk3.labIn (Vc D j).rank s) 1)`. Apply `endV_ext R.toRealDat hM j A3.A.μ0` to reduce the goal to its premises. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e1` using `hLD.op hV hVops i0 x`. Establish `e2` using `hop1 x`. Conclude with `e1.symm.trans e2`. Establish `hf` using `hfam i0`. Conclude with `⟨_, (LinearMap.congr_fun hop y).symm.trans hf.1, (LinearMap.congr_fun hop y').symm.trans hf.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[opsV_nonlab R.toRealDat hM j A3.A.μ0 hV hVops _ hP e he, zero_smul]`. Both sides reduce to the same expression. Rewrite using `[opsV_nonlab R.toRealDat hM j A3.A.μ0 hV hVops _ hP e he, zero_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose μ hμ using hlabop`. Establish `hs1 : hV (R.plI Q) cV' y = (cV'.sum fun e a => a * μ e) • y`. Rewrite using `[opsV_sum R.toRealDat hM j A3.A.μ0 hV hVops _ hP cV' y]`. Simplify using `only [Finsupp.sum, (hμ _).1, smul_smul, Finset.sum_smul]`. Establish `hs2 : hV (R.plI Q) cV' y' = (cV'.sum fun e a => a * μ e) • y'`.
-
-Rewrite using `[opsV_sum R.toRealDat hM j A3.A.μ0 hV hVops _ hP cV' y']`. Simplify using `only [Finsupp.sum, (hμ _).2, smul_smul, Finset.sum_smul]`. Establish `f1` using `hcancel _ _ (h12.1.symm.trans hs1)`. Establish `f2` using `hcancel' _ _ (h12.2.symm.trans hs2)`. Rewrite `f1`, `f2` using `[evC_single _ _ _ _ hd]`.
-
-Conclude with `f1.trans f2.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parts_eq_of_labW : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Chain.LiftInteg D → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → InertJunk A3 → (∀ χ ∈ A3.A.X, IsAbsIrrChar χ) → ∀ j pl cV cW, LiftDict R j A3.A.μ0 pl cV cW → ∀ c c', ∀ w ∈ R.Wc' j c, ∀ w' ∈ R.Wc' j c', LinearMap.adjoint (R.thG j A3.A.μ0) w ≠ 0 → LinearMap.adjoint (R.thG j A3.A.μ0) w' ≠ 0 → labW j pl cW c = labW j pl cW c' → R.Wc' j c = R.Wc' j c' := by
   intro hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hInt hCW hEx hSch _ hAbs j pl cV cW hLD c c' w hw w' hw' hy hy' hlab

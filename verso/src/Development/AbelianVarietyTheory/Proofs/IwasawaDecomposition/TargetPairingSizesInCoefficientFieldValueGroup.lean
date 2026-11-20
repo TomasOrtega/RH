@@ -16,7 +16,7 @@ namespace GlobalTheory.KerVal
 open MvPolynomial
 
 /- English proof (translation)
-Unfold `GL3Columns.DeX`. Simplify using `only [map_prod, RingHom.map_det]`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => congrArg Matrix.det ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[map_sum, map_mul, map_C, map_X]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem deX_map {Lt k k' : Type} [Fintype Lt] [CommRing k] [CommRing k'] (f : k →+* k') (N : ℕ) (nu : Lt → YoungDiagram)
     (y : Lt → Fin N → ℕ → k) : MvPolynomial.map f (GL3Columns.DeX N nu y) = GL3Columns.DeX N nu (fun s a j => f (y s a j)) := by
@@ -27,9 +27,9 @@ theorem deX_map {Lt k k' : Type} [Fintype Lt] [CommRing k] [CommRing k'] (f : k 
   simp [map_sum, map_mul, map_C, map_X]
 
 /- English proof (translation)
-Use `conv_rhs => rw [p.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, eval_C, map_monomial]`. Rewrite using `[show monomial m (MvPolynomial.eval x (coeff m p)) = (MvPolynomial.eval x (coeff m p)) • (monomial m 1 : MvPolynomial σ k) by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_monomial, smul_eq_mul, mul_one]]`. Rewrite using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_map_eval {σ V k : Type} [Field k] (χ : Module.Dual k (MvPolynomial σ k)) (p : MvPolynomial σ (MvPolynomial V k)) (x : V → k) :
     MvPolynomial.eval x (∑ m ∈ p.support, coeff m p * C (χ (monomial m 1))) = χ (MvPolynomial.map (MvPolynomial.eval x) p) := by
@@ -61,9 +61,9 @@ theorem canM_apply (χ : Module.Dual (Cw D w) (MvPolynomial ((Bool × HH D) × �
     canM D w N nu χ y = χ (GL3Columns.DeX N nu fun s => GL3Columns.colsOf (y (tauPl D s))) := rfl
 
 /- English proof (translation)
-Establish `e1 : (fun s a j => MvPolynomial.eval (fun v : GL3Theta.FrV D N => y v.1 v.2.1 v.2.2) (uFr w N s a j)) = fun s => GL3Columns.colsOf (y (tauPl D s))`. Use function extensionality and compare the values at `s a j`. Unfold `uFr GL3Columns.colsOf`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `canPol`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[dual_map_eval, deX_map, e1, canM_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem canM_eq_eval (χ : Module.Dual (Cw D w) (MvPolynomial ((Bool × HH D) × ℕ × Fin N) (Cw D w))) (y : FrP D w N) :
     canM D w N nu χ y = MvPolynomial.eval (fun v : GL3Theta.FrV D N => y v.1 v.2.1 v.2.2) (canPol w N nu χ) := by
@@ -76,9 +76,9 @@ theorem canM_eq_eval (χ : Module.Dual (Cw D w) (MvPolynomial ((Bool × HH D) ×
   rw [dual_map_eval, deX_map, e1, canM_apply]
 
 /- English proof (translation)
-Use `GL3Columns.wwInj_holds D (D.what₂.places.resChar w) N nu χ (fun y => ?_) J` and prove the remaining obligations. Set `e` to `Equiv.ofBijective (tauPl D) (Formalism.L2.DIV.tauPl_bijective D)`. Establish `h1 : χ (GL3Columns.DeX N nu fun s => GL3Columns.colsOf ((fun τ (a b : Fin N) => y (e.symm τ) a (b : ℕ)) (tauPl D s))) = 0` using `h0 (fun τ (a b : Fin N) => y (e.symm τ) a (b : ℕ))`. Use `Eq.trans (congrArg χ ?_) h1` and prove the remaining obligations. Unfold `GL3Columns.DeX`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => congrArg Matrix.det ?_` and prove the remaining obligations. Use extensionality with `i j`. Establish `hj : (j : ℕ) < N` using `lt_of_lt_of_le j.2 (hfit s c)`. Establish `hs : e.symm (tauPl D s) = s` using `e.symm_apply_apply s`. Simplify using `only [Matrix.of_apply, GL3Columns.colsOf, dif_pos hj, hs]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem canM_ker (hfit : ∀ s c, (nu s).colLen c ≤ N) (χ : Module.Dual (Cw D w) (MvPolynomial ((Bool × HH D) × ℕ × Fin N) (Cw D w)))
     (h0 : ∀ y, canM D w N nu χ y = 0) (J : KM.ColChoice N nu) :
@@ -103,7 +103,7 @@ open MvPolynomial Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.G
 variable {D : D7} (P : Examples₂.EntPl D) (w : D.what₂.places.Pl) (N : ℕ) (nu : Bool × HH D → YoungDiagram)
 
 /- English proof (translation)
-Unfold `GL3Columns.colsOf`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colsOf_map {k k' : Type} [CommRing k] [CommRing k'] (f : k →+* k') {M : ℕ} (Y : Matrix (Fin M) (Fin M) k) (a : Fin M) (j : ℕ) :
     f (GL3Columns.colsOf Y a j) = GL3Columns.colsOf (Y.map f) a j := by
@@ -111,29 +111,27 @@ theorem colsOf_map {k k' : Type} [CommRing k] [CommRing k'] (f : k →+* k') {M 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `set ψ := canInv D w N nu F with hψdef`. Establish `hψ : canM D w N nu ψ = F` using `canInv_spec D w N nu F hF`. Use `letI : Algebra D.what₂.LL (Cw D w) := (P.iL w).toAlgebra`. Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap D.what₂.LL (Cw D w)) (LinearMap.ker_eq_bot.2 (P.iL w).injective)`. Set `ρ : Cw D w → Cw D w` to `fun z => P.iL w (π z)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ρ_add : ∀ a b, ρ (a + b) = ρ a + ρ b` using `fun a b => by`. Simplify using `only [ρ, map_add]`. Establish `ρ_mul : ∀ x z, ρ (P.iL w x * z) = P.iL w x * ρ z` using `fun x z => by`. Establish `: P.iL w x * z = x • z` using `by rw [Algebra.smul_def]; rfl`. Simplify using `only [ρ, this, map_smul, smul_eq_mul, map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ρ_fix : ∀ x, ρ (P.iL w x) = P.iL w x` using `fun x => by`. Use `LinearMap.congr_fun hπ x` as an intermediate fact. Simplify using `only [ρ]`. Conclude with `congrArg (P.iL w) this`. Set `ψ' : Module.Dual (Cw D w) (MvPolynomial ((Bool × HH D) × ℕ × Fin N) (Cw D w))` to `(MvPolynomial.basisMonomials _ (Cw D w)).constr (Cw D w) fun m => ρ (ψ (monomial m 1))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ψ'_mon : ∀ m, ψ' (monomial m 1) = ρ (ψ (monomial m 1))` using `fun m => by`. Use `(MvPolynomial.basisMonomials ((Bool × HH D) × ℕ × Fin N) (Cw D w)).constr_basis (Cw D w) (fun m => ρ (ψ (monomial m 1))) m` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Conclude with `this`. Establish `key : ∀ q : MvPolynomial ((Bool × HH D) × ℕ × Fin N) D.what₂.LL, ψ' (MvPolynomial.map (P.iL w) q) = ρ (ψ (MvPolynomial.map (P.iL w) q))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on' with`. Consider the case `monomial m x`. Establish `e : MvPolynomial.map (P.iL w) (monomial m x) = P.iL w x • (monomial m 1 : MvPolynomial _ (Cw D w))`. Rewrite using `[map_monomial, smul_monomial, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_smul, map_smul, smul_eq_mul, smul_eq_mul, ρ_mul, ψ'_mon]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, map_add, hp, hq, ρ_add]`. Establish `hpt : ∀ y : D.what₂.Tau → Matrix (Fin N) (Fin N) D.what₂.LL, canM D w N nu ψ' (fun τ => (y τ).map (P.iL w)) = canM D w N nu ψ (fun τ => (y τ).map (P.iL w))`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : (GL3Columns.DeX N nu fun s => GL3Columns.colsOf ((fun τ => (y τ).map (P.iL w)) (tauPl D s))) = MvPolynomial.map (P.iL w) (GL3Columns.DeX N nu fun s => GL3Columns.colsOf (y (tauPl D s)))`. Rewrite using `[deX_map]`. Use `congr 1`. Use function extensionality and compare the values at `s a j`. Rewrite using `[colsOf_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Rewrite using `[canM_apply, canM_apply, e, key, ← e]`. Express the relevant statement in the definitionally equal form `ρ (canM D w N nu ψ (fun τ => (y τ).map (P.iL w))) = canM D w N nu ψ (fun τ => (y τ).map (P.iL w))`. Take `⟨x, hx⟩` from `hrat y`. Rewrite using `[hψ, hx, ρ_fix]`. Establish `hCZ : Set.Infinite (Set.range (Nat.cast : ℕ → Cw D w))` using `Set.infinite_range_of_injective Nat.cast_injective`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpol : canPol w N nu (ψ' - ψ) = 0`. Use `MvPolynomial.funext_set (fun _ => Set.range (Nat.cast : ℕ → Cw D w)) (fun _ => hCZ) fun x hx => ?_` and prove the remaining obligations. Use `choose n hn using fun v => hx v (Set.mem_univ v)`. Establish `e : (fun v : GL3Theta.FrV D N => x v) = fun v => ((fun τ => (Matrix.of fun a b => ((n (τ, a, b) : ℕ) : D.what₂.LL)).map (P.iL w)) : FrP D w N) v.1 v.2.1 v.2.2`. Use function extensionality and compare the values at `v`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hn]`. Establish `h1` using `canM_eq_eval w N nu (ψ' - ψ) (fun τ => (Matrix.of fun a b => ((n (τ, a, b) : ℕ) : D.what₂.LL)).map (P.iL w))`. Simplify using `only [map_sub, Pi.sub_apply, hpt, sub_self] at h1`. Rewrite using `[map_zero, show x = _ from e]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ y, canM D w N nu (ψ' - ψ) y = 0` using `fun y => by`. Rewrite using `[canM_eq_eval, hpol, map_zero]`. Establish `hJ` using `canM_ker w N nu hfit (ψ' - ψ) h0 J`. Establish `eJ : MvPolynomial.map (Int.castRingHom (Cw D w)) (KM.nablaX N nu J) = MvPolynomial.map (P.iL w) (MvPolynomial.map (Int.castRingHom D.what₂.LL) (KM.nablaX N nu J))`. Rewrite using `[MvPolynomial.map_map, RingHom.ext_int ((P.iL w).comp (Int.castRingHom _)) (Int.castRingHom _)]`.
-
-Rewrite `hJ` using `[LinearMap.sub_apply, sub_eq_zero, eJ, key]`. Conclude with `⟨π (ψ (MvPolynomial.map (Int.castRingHom (Cw D w)) (KM.nablaX N nu J))), by show ψ (MvPolynomial.map (Int.castRingHom (Cw D w)) (KM.nablaX N nu J)) = _`. Rewrite using `[eJ]`. Conclude with `hJ.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onMin_canInv_mem (hfit : ∀ s c, (nu s).colLen c ≤ N) (F : FrP D w N → Cw D w) (hF : F ∈ LinearMap.range (canM D w N nu))
     (hrat : ∀ y : D.what₂.Tau → Matrix (Fin N) (Fin N) D.what₂.LL, ∃ x, F (fun τ => (y τ).map (P.iL w)) = P.iL w x)
@@ -213,9 +211,9 @@ namespace GlobalTheory.KerVal
 open MvPolynomial Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.G
 
 /- English proof (translation)
-Introduce `s c`. Assume the negation of the conclusion as `hc`. Establish `hm : (N, c) ∈ nu s` using `(nu s).mem_iff_lt_colLen.2 (lt_of_not_ge hc)`. Establish `h1` using `(nu s).mem_iff_lt_rowLen.1 hm`. Rewrite `h1` using `[h.2 s N le_rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.not_lt_zero _ h1`.
+A detailed English derivation is pending.
 -/
 theorem colLen_le_of_fits {D : D7} {N : ℕ} {nu : Bool × HH D → YoungDiagram} {ν : D.what₂.Tau → Fin N → ℕ} (h : NuFits D nu ν) :
     ∀ s c, (nu s).colLen c ≤ N := by
@@ -227,13 +225,13 @@ theorem colLen_le_of_fits {D : D7} {N : ℕ} {nu : Bool × HH D → YoungDiagram
   exact Nat.not_lt_zero _ h1
 
 /- English proof (translation)
-Use `choose B' hB' using hE`. Establish `hB : Bs u μ w (i + 1) c' = fun τ => (Matrix.of (B' τ)).map (P.iL w)`. Use function extensionality and compare the values at `τ`. Use extensionality with `j k`. Conclude with `hB' τ j k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(∏ τ, (Matrix.of (B' τ)).det ^ (-(D.chTw u μ).sDiv i τ)) * MvPolynomial.eval (fun k : GL3Theta.FrV D (D.R.N (i + 1)) => (Matrix.of (B' k.1) * y k.1) k.2.1 k.2.2) (v : MvPolynomial (GL3Theta.FrV D (D.R.N (i + 1))) D.what₂.LL), ?_⟩` and prove the remaining obligations. Use `show (∏ τ, (Bs u μ w (i + 1) c' τ).det ^ (-(D.chTw u μ).sDiv i τ)) * MvPolynomial.eval (fun k : GL3Theta.FrV D (D.R.N (i + 1)) => (Bs u μ w (i + 1) c' k.1 * (y k.1).map (P.iL w)) k.2.1 k.2.2) (MvPolynomial.map (P.iL w) (v : MvPolynomial (GL3Theta.FrV D (D.R.N (i + 1))) D.what₂.LL …`. Rewrite using `[hB, map_mul, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_zpow₀, RingHom.map_det]`. Both sides reduce to the same expression. Establish `h2` using `MvPolynomial.eval₂_comp_left (P.iL w) (RingHom.id D.what₂.LL) (fun k : GL3Theta.FrV D (D.R.N (i + 1)) => (Matrix.of (B' k.1) * y k.1) k.2.1 k.2.2) (v : MvPolynomial (GL3Theta.FrV D (D.R.N (i + 1))) D.what₂.LL)`. Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_map, RingHom.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Function.comp_apply, ← Matrix.map_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tgtFun_rat {D : D7} (P : Examples₂.EntPl D) (Bs : PlaceMatrixFamily D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (i : ℕ)
     (c' : (D.chTw u μ).cls (i + 1)) (hE : ∀ τ j k, ∃ x : D.what₂.LL, Bs u μ w (i + 1) c' τ j k = P.iL w x) (v : polV D u (i + 1))
@@ -268,7 +266,7 @@ theorem tgtFun_rat {D : D7} (P : Examples₂.EntPl D) (Bs : PlaceMatrixFamily D)
 end GlobalTheory.KerVal
 
 /- English proof (translation)
-Introduce `B X I _ _ l Z _ Y O Pl Bs _ _ _ hEnt _ _ u μ w hw i hi c' v' J`. Take `⟨b, hb⟩` from `GlobalTheory.KerVal.onMin_canInv_mem Pl w _ _ (GlobalTheory.KerVal.colLen_le_of_fits (nuFits_tgt (I.rec7 l Z) u i hi)) (tgtFun Pl Bs u μ w i c' (secC O u μ (i + 1) v')) (canT_of Pl Bs (GlobalTheory.T.toy_entPl_canOnto _ Pl) u μ w i hi c' (secC O u μ (i + 1) v')) (GlobalTheory.Ker …`. Conclude with `⟨b, congrArg norm hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.KerVal.prTC_val : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (Y : DivX (I.rec7 l Z)) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (Pl : Examples₂.EntPl (I.rec7 l Z)) (Bs : PlaceMatrixFamily (I.rec7 l Z)), I.QpIs Y.Qp → I.StdO l Z Y.Qp O → BasOk Pl O Bs → (∀ u a w, LevFree Y u a w → ∀ i, i ≤ B.R.m → ∀ c τ j k, ∃ x : (I.rec7 l Z).what₂.LL, Bs u a w i c τ j k = Pl.iL w x) → (∀ u a i, i < B.R.m → UnfIsAll (O u a) i) → ColIn.JetsIn I → ∀ u μ w, LevFree Y u μ w → ∀ i, i < (I.rec7 l Z).R.m → ∀ (c' : ((I.rec7 l Z).chTw u μ).cls (i + 1)) (v' : ValQ O u μ (i + 1)) (J : KM.ColChoice ((I.rec7 l Z).R.N (i + 1)) (nuD (I.rec7 l Z) u i)), ∃ b : (I.rec7 l Z).what₂.LL, ‖prTC Pl O Bs u μ w i c' v' J‖ = ‖Pl.iL w b‖ := by
   intro B X I _ _ l Z _ Y O Pl Bs _ _ _ hEnt _ _ u μ w hw i hi c' v' J

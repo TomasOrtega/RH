@@ -23,9 +23,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec)
 namespace GlobalTheory.CompanionTheory.ThTot
 
 /- English proof (translation)
-Establish `cY : Continuous (d.extY T)` using `continuous_id.matrix_mul continuous_const`. Establish `cX : Continuous (d.extX T)` using `continuous_id.matrix_mul continuous_const`. Use `GlobalTheory.Core.Rk.IP.continuous_covolOne_integral hμ (fun (u : GA D S × Mx D T.rank ρ) a => heisO ψ S T (d.extY T a) (heisO ψ S T (d.extX T u.2) (heisO ψ S T (d.ext0 T w₀) (om (u.1, 1) f))) 0) ?_ (fun u => d.integrandS_periodic (hω.om_pres _ _ hf) u.2 w₀)` and prove the remaining obligations. Simplify using `only [HypDec.integrandS_eq]`. Establish `c1 : Continuous fun p : (GA D S × Mx D T.rank ρ) × Mx D T.rank ρ => d.extY T p.2` using `cY.comp continuous_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `c2 : Continuous fun p : (GA D S × Mx D T.rank ρ) × Mx D T.rank ρ => d.extX T p.1.2` using `cX.comp (continuous_snd.comp continuous_fst)`. Conclude with `(hω.std.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH c1 c2)).mul ((GlobalTheory.Unf.jointCont_all D ψ S T χS χT om hω f hf).comp (((continuous_fst.comp continuous_fst).prodMk continuous_const).prodMk ((c1.add c2).add continuous_const)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mixS_joint {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
     {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
@@ -49,11 +49,11 @@ theorem continuous_mixS_joint {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T S�
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω Φ`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, _, _, hκ, hW, hT⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`. Take `⟨f, hf, hfΦ⟩` from `(GlobalTheory.SchSchwartzAll.schSchwartz D ψ₀ hstd θ hθ A V μ 𝓕 hμ).2.1 Φ.1 Φ.2`. Establish `key : ∀ u : G D n × Mx D V.rank n, (ω u.1 Φ).1 u.2 = (dblDec A).mixS V ψ₀ μ 𝓕 (omh (κ.symm u.1, 1) f) u.2 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u`. Establish `h` using `hT (κ.symm u.1) f hf Φ hfΦ.symm`. Establish `e : κ (κ.symm u.1) = u.1` using `κ.apply_symm_apply u.1`. Rewrite `h` using `[e]`. Conclude with `congrFun h u.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `continuous_mixS_joint ψ₀ (dblDec A) hW hμ hf 0`. Establish `hk` using `(GlobalTheory.StdUnn.chart_continuous D A μ' hsk κ hκ).2`. Establish `hc' : Continuous fun u : G D n × Mx D V.rank n => (dblDec A).mixS V ψ₀ μ 𝓕 (omh (κ.symm u.1, 1) f) u.2 0` using `hc.comp (f := fun u : G D n × Mx D V.rank n => (κ.symm u.1, u.2)) ((hk.comp continuous_fst).prodMk continuous_snd)`. Conclude with `hc'.congr fun u => (key u).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weilCont : WeilCont := by
   intro D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω Φ

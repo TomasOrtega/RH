@@ -23,35 +23,33 @@ namespace GlobalTheory.ThKIsoEv
 open GlobalTheory.ThKMixXEx in
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d d₁ X W W₁ M H' i₀ i₁ hH' hM n₁ X₁ H j₀ j₁ M₁ hH hM₁ hB hXW`. Take `⟨r, s, r', s', hX, hW⟩` from `hXW`. Establish `hW₁` using `GlobalTheory.ThK.KernelZero.isSkew_complement F E σ B hB d d₁ W W₁ H' i₀ i₁ r' s' hW hH'`. Establish `hX₁ : X₁.IsHerm σ B (r - 1) (s - 1)` using `GlobalTheory.HermPlaneCompl.isHerm_compl hB hX hH`. Take `⟨j, co, hj, hrat, hι, hx, hy⟩` from `GlobalTheory.T.exists_adapted_basis_hermitian F E σ B n d₁ X W₁ r s (r' - 1) (s' - 1) hB hX hW₁ n₁ X₁ H j₀ j₁ M₁ (r - 1) (s - 1) hX₁ hH hM₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e₁, ei₁, ev₁, hsurj, hmaps, hheis, hSB, hvac, hstd, hpure⟩` from `GlobalTheory.T.darboux_coordinates_good_model F E σ B n d₁ X W₁ M r s (r' - 1) (s' - 1) hB hX hW₁ hM co hrat`. Establish `hres` using `fun v => GlobalTheory.T.adapted_basis_hermitian_unique F E σ B n d₁ X W₁ r s (r' - 1) (s' - 1) hB hX hW₁ n₁ X₁ H j₀ j₁ M₁ (r - 1) (s - 1) hX₁ hH hM₁ j co hj hι hx hy v _ (hvac v)`. Use `choose c hc0 hc using hres`. Establish `hc1 : ∀ᶠ v in cofinite, c v = 1` using `by filter_upwards [hstd, hM₁.std] with v h1 h2`. Establish `h'` using `hc v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[h1, h2, std_extend hj v]`. Establish `h` using `congrFun h' 0`. Establish `hm : (0 : Fin n₁ × Fin d₁ → Fv F v) ∈ {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}` using `fun i => zero_mem _`. Rewrite `h` using `[Pi.smul_apply, Set.indicator_of_mem hm, smul_eq_mul]`. Simplify using `using h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `GlobalTheory.T.exists_restriction_extend_by_zero F j hj`. Use `⟨(∏ᶠ v, c v)⁻¹ • (LinearMap.funLeft ℂ ℂ (fun y : Fin n₁ × Fin d₁ → AF F => Function.extend j y 0) ∘ₗ e₁), ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `Φ hΦ`. Conclude with `Submodule.smul_mem _ _ (GlobalTheory.T.extend_by_zero_mem_schA F j hj _ (hmaps Φ hΦ))`. Introduce `z Φ hΦ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : incM F H.ι * z * (incM F (1 : Matrix (Fin d₁) (Fin d₁) E))ᵀ = incM F H.ι * z`. Rewrite using `[show incM F (1 : Matrix (Fin d₁) (Fin d₁) E) = 1 from Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use function extensionality and compare the values at `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.funLeft_apply, Function.comp_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hheis _ Φ hΦ]`. Simplify using `only [Darboux.rho, schr, hι, extend_dot hj, ← extend_add hj, Pi.smul_apply, smul_eq_mul, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.funLeft_apply, Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu Φ hΦ`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨z, rfl⟩` from `hu`. Use function extensionality and compare the values at `y`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.funLeft_apply, Function.comp_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hheis _ Φ hΦ]`. Take `⟨h1, h2⟩` from `hx z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Darboux.rho, schr, h1, extend_dot_zero _ _ h2, zero_dotProduct, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb0⟩ : ∃ b : SInf F (Fin n × Fin d₁), b 0 ≠ 0 := by`. Set `bb : ContDiffBump (0 : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hs : HasCompactSupport (fun x => ((bb x : ℝ) : ℂ))` using `bb.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`. Establish `hcd : ContDiff ℝ (⊤ : ℕ∞) (fun x => ((bb x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp bb.contDiff`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hs.toSchwartzMap hcd, ?_⟩` and prove the remaining obligations. Establish `h2 : bb 0 = 1` using `bb.one_of_mem_closedBall (by simp [bb])`. Simplify using `[h2]`. Take `⟨f₀, hf₀⟩` from `hsurj b`. Use `⟨R.comp ei₁, fun v => (c v)⁻¹ • (LinearMap.funLeft ℂ ℂ (fun y : Fin n₁ × Fin d₁ → Fv F v => Function.extend j y 0) ∘ₗ ev₁ v), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg (fun T : SInf F (Fin n × Fin d₁) →L[ℂ] SInf F (Fin n₁ × Fin d₁) => T f₀ 0) h` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply, hR, hf₀, extend_zero' hj, ContinuousLinearMap.zero_apply, SchwartzMap.zero_apply] at this`. Conclude with `hb0 this`. Introduce `v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[show LinearMap.funLeft ℂ ℂ (fun y : Fin n₁ × Fin d₁ → Fv F v => Function.extend j y 0) (ev₁ v (M.vac v)) = c v • M₁.vac v from hc v, smul_smul, inv_mul_cancel₀ (hc0 v), one_smul]`. Rewrite using `[Submodule.map_smul _ _ _ (inv_ne_zero (hc0 v)), Submodule.map_comp, hSB v, GlobalTheory.T.extend_by_zero_schwartzBruhat_map F j hj v]`. Introduce `f φ hφ hφv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[LinearMap.smul_apply, LinearMap.comp_apply, hpure f φ hφ hφv]`. Simplify using `only [LinearMap.funLeft_apply, Function.comp_apply, Pi.smul_apply, smul_eq_mul, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, ContinuousLinearMap.comp_apply, hR, LinearMap.smul_apply, LinearMap.comp_apply]`. Establish `hI : (fun i => evI F (Function.extend j y 0 i)) = Function.extend j (fun i => evI F (y i)) 0` using `extend_map hj (evI F) (by unfold evI; exact map_zero _) y`. Establish `hF : ∀ v : Pl F, (fun i => evFin F v (Function.extend j y 0 i)) = Function.extend j (fun i => evFin F v (y i)) 0` using `fun v => extend_map hj _ (map_zero _) y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hI, hF]`. Establish `hfin1 : (Function.mulSupport fun v : Pl F => (c v)⁻¹).Finite`. Use `(Filter.eventually_cofinite.1 hc1).subset fun v hv h => hv ?_` and prove the remaining obligations. Simplify using `[h]`. Establish `hfin2 : (Function.mulSupport fun v : Pl F => ev₁ v (φ v) (Function.extend j (fun i => evFin F v (y i)) 0)).Finite`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.PureFactor.mulSupport_finite (κ := Fin n₁ × Fin d₁) (fun v x => ev₁ v (φ v) (Function.extend j x 0)) (by filter_upwards [hφv, hstd] with v h1 h2` as an intermediate fact. Rewrite using `[h1, h2]`. Conclude with `std_extend hj v) y`. Conclude with `this`. Rewrite using `[finprod_mul_distrib hfin1 hfin2, finprod_inv_distrib]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_isEv_iso : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

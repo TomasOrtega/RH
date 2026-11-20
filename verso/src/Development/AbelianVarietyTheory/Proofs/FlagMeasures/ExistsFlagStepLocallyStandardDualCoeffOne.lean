@@ -8,19 +8,17 @@ open Formalism.MainNotions.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M V _ _ H r Fr n hn L a`. Establish `hiso : ∀ b c : Fin r, H.h (Fr.e b) (Fr.e c) = 0` using `fun b c => Fr.h_iso b.castSucc c.castSucc (Or.inl (Fin.castSucc_lt_last b).ne)`. Establish `hes : ∀ b c : Fin r, H.h (Fr.e b) (Fr.es c) = if b = c then 1 else 0` using `fun b c => Fr.h_es b c`. Establish `hlam : Fr.e a ∈ Fr.LamStd L`. Use `Submodule.subset_span ⟨fun b => ?_, fun b => ?_, ⟨0, ?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hes] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[hiso]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Formalism.MainNotions.S.LocNG.FrameD.prF, hes, hiso, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const_zero, sub_self, ZeroMemClass.coe_zero]`. Rewrite using `[map_zero]`. Conclude with `L.zero_mem`. Establish `hperp : ∀ w ∈ Fr.Fj a.val, H.h w (Fr.es a) = 0`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Rewrite using `[hes, if_neg (Fin.ne_of_val_ne (Nat.ne_of_lt hb))]`. Consider the case `zero => exact H.h_zero_left _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`. Establish `hmem : Fr.e a ∈ Fr.Fj (a.val + 1)` using `Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩`. Establish `hle : a.val + 1 ≤ r` using `a.isLt`. Establish `hdiff : n (Fr.e a) - Fr.e a ∈ Fr.Fj a.val`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(T.unipotentRadical_isotropicFlag_moves_step_into_prev Fr n hn (a.val + 1) hle (Fr.e a) hmem).1` as an intermediate fact. Simplify using `using this`. Establish `hmono : Fr.Fj a.val ≤ Fr.Fj (a.val + 1)` using `Submodule.span_mono (Set.image_mono fun b (hb : b.val < a.val) => Nat.lt_succ_of_lt hb)`. Use `⟨n (Fr.e a), Submodule.mem_map.mpr ⟨Fr.e a, hlam, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `(Fr.Fj (a.val + 1)).add_mem (hmono hdiff) hmem` as an intermediate fact.
-
-Simplify using `using this`. Establish `hsplit : n (Fr.e a) = (n (Fr.e a) - Fr.e a) + Fr.e a` using `by abel`. Rewrite using `[hsplit, H.h_add_left, hperp _ hdiff, hes, if_pos rfl, zero_add]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locStd_exists_flag_coef_one : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : Formalism.MainNotions.S.Loc.HermSp M V} {r : ℕ} (Fr : Formalism.MainNotions.S.LocNG.FrameD H r) (n : V ≃ₗ[E] V), n ∈ Fr.N → ∀ (L : Submodule M.L.O (H.Wb Fr.f)) (a : Fin r), ∃ v ∈ Formalism.MainNotions.S.LocNG.img n (Fr.LamStd L), v ∈ Fr.Fj (a.val + 1) ∧ H.h v (Fr.es a) = 1 := by
   intro F _ _ _ E _ _ _ _ M V _ _ H r Fr n hn L a

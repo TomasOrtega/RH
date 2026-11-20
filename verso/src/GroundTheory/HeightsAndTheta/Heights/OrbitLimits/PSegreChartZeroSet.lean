@@ -18,11 +18,11 @@ section Lemmas
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset K, (fun p : Σ k, ι k => (if p.1 ∈ s then c p.1 else 1) * z p) ∈ mcPts P`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hz`. Consider the case `insert k s hk ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h` using `scaleBlock_mem_zeroLocus P hP k (hc k) ih`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `only [scaleBlock, Finset.mem_insert]`. Distinguish the cases in `hpk : p.1 = k`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hpk` using the available equality. Simplify using `[hk]`. Simplify using `[hpk]`. Simplify using `using key Finset.univ`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scaleAll_mem (P : Ideal (MRing ι)) (hP : IsMultiHomogIdeal P) (c : K → ℂ) (hc : ∀ k, c k ≠ 0)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) : (fun p => c p.1 * z p) ∈ mcPts P := by
@@ -49,7 +49,7 @@ def liftPoly {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[liftPoly, hom_eval₂, eval_map]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Use function extensionality and compare the values at `p`. Simplify using `[chartLift]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_liftPoly {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k) (x : Fin m → ℂ)
     (f : MRing ι) :
@@ -63,25 +63,23 @@ theorem eval_liftPoly {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K)
 end Lemmas
 
 /- English proof (translation)
-Introduce `K _ ι _ P m σ i hP`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hv : ∀ q : MvPolynomial (Fin m) ℂ, (∀ y ∈ segreChartSet P σ i, eval y q = 0) → eval x q = 0` using `fun q hq => hx q (by rw [segreChartIdeal, mem_vanishingIdeal_iff]; exact hq)`. Establish `ha : x (σ.symm i) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hv (X (σ.symm i) - 1) (by`. Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Simplify using `[hzi])`. Rewrite `h` using `[map_sub, eval_X, map_one]`. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ i' : (k : K) → ι k, x (σ.symm i') = ∏ k, x (σ.symm (Function.update i k (i' k)))`. Introduce `i'`. Establish `h` using `hv (X (σ.symm i') - ∏ k, X (σ.symm (Function.update i k (i' k)))) (by`. Introduce and unpack `_ ⟨z, -, hzi, rfl⟩`. Establish `hs : ∏ k, segre z (Function.update i k (i' k)) = segre z i'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrFun (segre_chartLift σ i z hzi) i'`. Simplify `h1` using `[segre, chartLift]`. Rewrite using `[map_sub, eval_X, map_prod]`. Simplify using `only [eval_X, Equiv.apply_symm_apply]`. Rewrite using `[hs, sub_self])`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_sub, eval_X, map_prod]`. Simplify using `only [eval_X] at h`. Conclude with `sub_eq_zero.1 h`. Establish `hc : ∀ f ∈ P, eval (chartLift σ i x) (map (Int.castRingHom ℂ) f) = 0`. Introduce `f hf`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← eval_liftPoly]`. Use `hv _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, hzi, rfl⟩`. Rewrite using `[eval_liftPoly]`. Establish `hne : ∀ k, z ⟨k, i k⟩ ≠ 0` using `fun k h0 => by`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : segre z i = 0` using `Finset.prod_eq_zero (Finset.mem_univ k) h0`. Rewrite `h1` using `[hzi]`. Conclude with `one_ne_zero h1`. Establish `hcl : chartLift σ i (fun a => segre z (σ a)) = fun p => (z ⟨p.1, i p.1⟩)⁻¹ * z p`. Use function extensionality and compare the values at `⟨k, j⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[chartLift_segre_apply σ i z hzi, mul_comm]`. Rewrite using `[hcl]`. Conclude with `(scaleAll_mem P hP (fun k => (z ⟨k, i k⟩)⁻¹) (fun k => inv_ne_zero (hne k)) hz).2 f hf`. Use `⟨chartLift σ i x, ⟨chartLift_blockNonzero σ i ha, hc⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show ∏ k, chartLift σ i x ⟨k, i k⟩ = 1`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[chartLift, ha]`. Use function extensionality and compare the values at `a show x a = ∏ k, chartLift σ i x ⟨k, σ a k⟩`. Simplify using `only [chartLift]`. Rewrite using `[← hb, Equiv.symm_apply_apply]`. Introduce `x hx q hq`.
-
-Rewrite `hq` using `[segreChartIdeal, mem_vanishingIdeal_iff]`. Conclude with `hq x hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : Statement := by
   intro K _ ι _ P m σ i hP

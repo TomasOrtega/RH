@@ -9,47 +9,39 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F _ _ l _ ζ hζ`. Take `⟨Ω, _, _, hΩ⟩ : ∃ (Ω : Type) (_ : Field Ω) (_ : Algebra F Ω), IsAlgClosure F Ω` from `⟨AlgebraicClosure F, inferInstance, inferInstance, inferInstance⟩`. Use `haveI : IsAlgClosed Ω := hΩ.isAlgClosed`. Use `haveI : Algebra.IsAlgebraic F Ω := hΩ.isAlgebraic`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `⟨{φ : G F Ω → ZMod l | IsLocallyConstant φ ∧ (∀ a b : G F Ω, φ (a * b) = φ a + φ b) ∧ ∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ g ∈ Ine A, φ g = 0}.ncard, fun n K _ _ _ _ τ hK hτ => ?_⟩` and prove the remaining obligations. Use `haveI hgal : IsGalois F K := IsCyclotomicExtension.isGalois (S := {l ^ n}) (K := F) (L := K)`. Set `e : K →ₐ[F] Ω` to `IsAlgClosed.lift`. Use `letI : Algebra K Ω := e.toRingHom.toAlgebra`. Use `haveI : IsScalarTower F K Ω := IsScalarTower.of_algebraMap_eq (fun x => (e.commutes x).symm)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic K Ω := Algebra.IsAlgebraic.tower_top (K := F) K`. Use `haveI : IsAlgClosure K Ω := ⟨inferInstance, inferInstance⟩`. Set `ρ : Representation (ZMod l) (G F Ω) (ZMod l)` to `scalRep (ZMod l) 1`. Establish `hcyc : IsCyclic Gal(K/F)` using `⟨⟨τ, hτ⟩⟩`. Establish `hpe` using `(pullEq F Ω K (galOf F K Ω) le_rfl 1 (ZMod l) (ZMod l) ρ one_ne_zero le_rfl (Or.inl hK)).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `(pullMem F Ω K (galOf F K Ω) le_rfl 1 (ZMod l) (ZMod l) one_ne_zero).2 le_rfl`. Use `haveI hCfin : Finite (ClEq K 1 ρ) := Subtype.finite`. Establish `hcardEq : Nat.card (EqHom 1 (galOf F K Ω) ρ) = Nat.card (ClEq K 1 ρ)`. Rewrite using `[← hpe]`. Conclude with `Nat.card_congr (Submodule.equivMapOfInjective _ hinj _).toEquiv.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEfin : Finite (EqHom 1 (galOf F K Ω) ρ)`. Rewrite using `[← hpe]`. Conclude with `Finite.of_equiv _ (Submodule.equivMapOfInjective _ hinj _).toEquiv`. Establish `hamb` using `ambHom F Ω K l ζ hζ hcyc (ineCyc F Ω K l n) hEfin`. Use `set H := powR (Cl K) l ⊔ difR (clMap τ.toRingEquiv) with hH`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfix : ∀ c : Cl K, (QuotientGroup.mk (clMap τ.toRingEquiv c) : Cl K ⧸ H) = QuotientGroup.mk c`. Introduce `c`. Rewrite using `[QuotientGroup.eq]`. Establish `h1 : c / clMap τ.toRingEquiv c ∈ H` using `le_sup_right (a := powR (Cl K) l) ⟨c, rfl⟩`. Establish `h2 : (clMap τ.toRingEquiv c)⁻¹ * c = c / clMap τ.toRingEquiv c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[div_eq_mul_inv, mul_comm]`. Rewrite using `[h2]`. Conclude with `h1`. Establish `hmulc : ∀ (a b : Gal(K/F)) (c : Cl K), clMap (a * b).toRingEquiv c = clMap a.toRingEquiv (clMap b.toRingEquiv c)` using `fun a b c => clMap_trans b.toRingEquiv a.toRingEquiv c`. Establish `hone1 : ∀ c : Cl K, clMap (1 : Gal(K/F)).toRingEquiv c = c` using `fun c => clMap_refl K c`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ d : Cl K, (QuotientGroup.mk (clMap τ⁻¹.toRingEquiv d) : Cl K ⧸ H) = QuotientGroup.mk d`. Introduce `d`. Establish `h3 : clMap τ.toRingEquiv (clMap τ⁻¹.toRingEquiv d) = d`. Rewrite using `[← hmulc, mul_inv_cancel, hone1]`. Use `conv_rhs => rw [← h3]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hfix]`. Establish `hall : ∀ α : Gal(K/F), ∀ c : Cl K, (QuotientGroup.mk (clMap α.toRingEquiv c) : Cl K ⧸ H) = QuotientGroup.mk c`. Introduce `α`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp (hτ α)`. Proceed by induction on `k using Int.induction_on with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Consider the case `zero`. Introduce `c`. Rewrite using `[zpow_zero, hone1]`. Consider the case `succ k ih`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[zpow_add_one, hmulc, ih, hfix]`. Consider the case `pred k ih`. Introduce `c`. Rewrite using `[zpow_sub_one, hmulc, ih, hinv]`. Establish `hlift : ∀ (g : G F Ω) (τ' : K ≃+* K), IsLift τ' g.toRingEquiv → ∀ c : Cl K, (QuotientGroup.mk (clMap τ' c) : Cl K ⧸ H) = QuotientGroup.mk c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g τ' hl c`. Unfold `IsLift at hl`. Establish `hF : ∀ x : F, τ' (algebraMap F K x) = algebraMap F K x`. Introduce `x`. Apply `(algebraMap K Ω).injective` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hl]`. Use `show g (algebraMap K Ω (algebraMap F K x)) = algebraMap K Ω (algebraMap F K x)`. Rewrite using `[← IsScalarTower.algebraMap_apply, AlgEquiv.commutes]`. Set `α : Gal(K/F)` to `AlgEquiv.ofRingEquiv (f := τ') hF`. Establish `hα : α.toRingEquiv = τ'` using `RingEquiv.ext fun x => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hα]`. Conclude with `hall α c`. Establish `hpowQ : powR (Cl K ⧸ H) l = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `powR at hy`. Take `⟨x, rfl⟩` from `hy`. Take `⟨c, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[Subgroup.mem_bot]`. Use `show (QuotientGroup.mk c : Cl K ⧸ H) ^ l = 1`.
+It suffices to derive a contradiction. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `le_sup_left (b := difR (clMap τ.toRingEquiv)) ⟨c, rfl⟩`. Establish `hcardQ : H.index = Nat.card (Cl K ⧸ H →* Multiplicative (ZMod l))`. Rewrite using `[(cardTors (Cl K ⧸ H)).2 l, hpowQ, Subgroup.index_bot]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Φ : (Cl K ⧸ H →* Multiplicative (ZMod l)) → ClEq K 1 ρ` to `fun ψ => ⟨fun c => Multiplicative.toAdd (ψ (QuotientGroup.mk c)), by`. Unfold `ClEq`. Rewrite using `[Submodule.mem_inf, Submodule.mem_iInf]`. Use `⟨?_, fun g => ?_⟩` and prove the remaining obligations. Unfold `ClDual`.
-
-Use `⟨fun a b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[QuotientGroup.mk_mul, map_mul, toAdd_mul]`. It suffices to derive a contradiction. Unfold `Above at hv`.
-
-Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr (by simpa using hv))`. Unfold `clCond`. Introduce `τ' hl c`. Use `beta_reduce`. Rewrite using `[hlift g τ' hl c]`.
-
-Simplify using `[ρ, scalRep]⟩`. Establish `hΦ : Function.Injective Φ`. Introduce `ψ1 ψ2 h`. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `x`.
-
-Take `⟨c, rfl⟩` from `QuotientGroup.mk_surjective x`. Establish `h4` using `congrFun (congrArg Subtype.val h) c`. Conclude with `Multiplicative.toAdd.injective h4`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.amb :
     ∀ (F : Type) [Field F] [NumberField F] (l : ℕ) [Fact l.Prime] (ζ : F), IsPrimitiveRoot ζ l → ∃ B : ℕ, ∀ (n : ℕ) (K : Type) [Field K] [NumberField K] [Algebra F K] [IsCyclotomicExtension {l ^ n} F K] (τ : Gal(K/F)), IsTotallyComplex K → (∀ σ : Gal(K/F), σ ∈ Subgroup.zpowers τ) → (powR (Cl K) l ⊔ difR (clMap τ.toRingEquiv)).index ≤ B := by

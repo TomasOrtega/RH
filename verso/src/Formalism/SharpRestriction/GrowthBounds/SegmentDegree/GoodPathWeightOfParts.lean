@@ -29,13 +29,13 @@ def LetterDictionaryBounds (C₀ : ℝ) : Prop :=
         1 / X.a ^ (X.Ns ^ 2)
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X hX hCLa hCk j b hb`. Take `⟨n0, od, hH, hPATH, hGood, hrk, hexp⟩` from `he p n' r K X hX hCLa hCk j b hb`. Take `⟨hfin, hcard⟩` from `hT (segN X.F j) n0 r K (segLL X.F j) _ od _ X.a X.La p hH`. Take `⟨hfinA, -⟩` from `ha (segN X.F j) n0 r K (segLL X.F j) _ od _ X.a X.La p hH`. Set `S : Set ((Fin (segN X.F j + 1) → Fin (r + K) → ℤ) × (ℤ → Finset (Fin K)))` to `{q | ∃ dd, X.IsPATH p K j (X.restr j b) q.1 dd ∧ X.IsGood p K j (X.restr j b) q.1 ∧ IsSt (tanPart q.1) q.2}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hSA : S ⊆ SAll (r` using `r) (K := K) (segLL X.F j) n0 (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) := by`. Introduce and unpack `q ⟨dd, hp, -, hs⟩`. Conclude with `⟨⟨dd, (hPATH q.1 dd).mp hp⟩, hs⟩`. Establish `hGS : SGood (r` using `r) (K := K) (segLL X.F j) n0 (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) od (fun i => X.a / (p : ℝ) ^ (X.F.dist j (segE X.F j i) + X.Rj p K j)) X.La p ⊆ S := by`. Introduce and unpack `q ⟨⟨dd, hp⟩, hg, hs⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨dd, (hPATH q.1 dd).mpr hp, hGood q.1 hg, hs⟩`. Establish `hSfin : S.Finite` using `hfinA.subset hSA`. Establish `hTS : Nat.card (X.Tset p K j (X.restr j b)) = S.ncard` using `Nat.card_coe_set_eq S`. Use `⟨hSfin.to_subtype, ?_⟩` and prove the remaining obligations. Rewrite using `[hTS]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((SGood (r` using `r) (K := K) (segLL X.F j) n0 (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) od (fun i => X.a / (p : ℝ) ^ (X.F.dist j (segE X.F j i) + X.Rj p K j)) X.La p).ncard : ℝ) ≤ S.ncard := by`. Conclude with `Set.ncard_le_ncard hGS hSfin` after adjusting the coercions. Rewrite using `[mul_assoc, ← hrk]`. Use `le_trans ?_ (le_trans hcard h1)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem good_path_weight_of_parts (C₀ : ℝ) (ha : PathWeightEqRank) (hT : LemT) (he : LetterDictionaryBounds C₀) : GoodPathWeight C₀ := by
   intro p n' r K _ _ _ X hX hCLa hCk j b hb

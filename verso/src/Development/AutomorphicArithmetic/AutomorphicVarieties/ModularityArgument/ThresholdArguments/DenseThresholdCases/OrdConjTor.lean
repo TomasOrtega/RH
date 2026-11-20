@@ -17,13 +17,11 @@ section Loc
 variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 /- English proof (translation)
-Establish `hsm` using `h.isSmooth`. Take `⟨c, x, rfl, hi, hc, e, hsub⟩` from `h`. Establish `hA` using `CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Establish `hci : ∀ a, (contra (x a).rep).IsIrreducible` using `fun a => GlobalTheory.CompanionTheory.ContraProd.contra_rep_isIrreducible hA (x a)`. Establish `hcu : ∀ a, IsCuspidal (contra (x a).rep)` using `fun a => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.CompanionTheory.DualCusp.dualCl_isCusp hA (x a) ⟨(hc a).1, (hc a).2.2⟩).1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CompanionTheory.ZcDual.dualCl_eq hA]`. Conclude with `(IrrGL.isCusp_of.1 this).2`. Take `⟨φ⟩` from `GlobalTheory.CompanionTheory.ContraProd.parInd_equiv_contra e (isSmooth_piTensor fun a => (x a).2.rep.smooth) (GlobalTheory.CompanionTheory.ContraProd.contra_piTensor_rep hA x)`. Establish `H : IsCuspSupport (contra π) (fun a => (x a).1) (fun a => contra (x a).rep)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.ContraRefl.contra_isIrreducible (GlobalTheory.SqIntUnit.compactOpen_basis k N) (hA k N V π hsm hi) hi, fun a => ⟨(hc a).1, hci a, hcu a⟩, e, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.CompanionTheory.ContraSub.main k N _ _ _ _ hsm (isSmooth_parInd e _) hsub).trans (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective)`. Establish `e2 : (Zc.dualCl ∘ x) = fun a => IrrGL.of (contra (x a).rep) (H.2.1 a).2.2.1 (H.2.1 a).2.1`. Use function extensionality and compare the values at `fun a => GlobalTheory.CompanionTheory.ZcDual.dualCl_eq hA (x a)`. Rewrite using `[Multiset.map_map, e2]`.
-
-Conclude with `hasSupport_of_isCuspSupport H`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasSupport_contra {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin N) k) V} {s : Multiset (IrrGL k)} (h : HasSupport π s) :
@@ -49,11 +47,11 @@ private theorem hasSupport_contra {N : ℕ} {V : Type} [AddCommGroup V] [Module 
   rw [Multiset.map_map, e2]
   exact hasSupport_of_isCuspSupport H
 /- English proof (translation)
-Establish `hA` using `CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Establish `hc'` using `GlobalTheory.LocalFieldIso.continuous_symm c hc`. Take `⟨E⟩` from `GlobalTheory.GelfandKazhdan.equiv_contra k N V σ (hA k N V σ h.isSmooth h.isIrreducible) h.isIrreducible`. Establish `h1` using `(hasSupport_contra h).of_equiv E.symm`. Establish `h2` using `GlobalTheory.SuppIne.hasSupport_comp c hc hc' h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2.of_equiv (GlobalTheory.LocGL.equivOfBijective ⟨T.toLinearMap, fun g => LinearMap.ext fun v => ?_⟩ T.bijective)` and prove the remaining obligations. Establish `hg : GlobalTheory.LFun.ConjPlace.invT c N (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion.invTranspose N k (Matrix.GeneralLinearGroup.map (n` using `Fin N) c.symm.toRingHom g)) = g := Units.ext (Matrix.ext fun i j => by`. Rewrite using `[GlobalTheory.LFun.ConjPlace.invT_val]`. Conclude with `c.apply_symm_apply _)`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `T (σ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion.invTranspose N k (Matrix.GeneralLinearGroup.map (n := Fin N) c.symm.toRingHom g)) v) = τ g (T v)`. Rewrite using `[← hT, hg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasSupport_of_invT (c : k ≃+* k') (hc : Continuous c) {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin N) k) V) (τ : Representation ℂ (GL (Fin N) k') W)
@@ -75,7 +73,7 @@ private theorem hasSupport_of_invT (c : k ≃+* k') (hc : Continuous c) {N : ℕ
   change T (σ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion.invTranspose N k (Matrix.GeneralLinearGroup.map (n := Fin N) c.symm.toRingHom g)) v) = τ g (T v)
   rw [← hT, hg]
 /- English proof (translation)
-Establish `hA` using `CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Take `⟨n, π, π', rfl, rfl, ⟨E⟩⟩` from `H`. Rewrite using `[GlobalTheory.CompanionTheory.ZcDual.dualCl_eq hA]`. Express the relevant statement in the definitionally equal form `IrrGL.of _ _ _ = IrrGL.of π'.ρ π'.smooth π'.irr`. Conclude with `IrrGL.of_eq_of.2 ⟨(GlobalTheory.ContraRefl.contraEquiv (equivRep π)).trans E.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem dualCl_eq_of {x y : IrrGL k} (H : GlobalTheory.LocLanglands.DualCl x y) : Zc.dualCl x = y := by
   have hA := CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top
@@ -84,11 +82,11 @@ private theorem dualCl_eq_of {x y : IrrGL k} (H : GlobalTheory.LocLanglands.Dual
   change IrrGL.of _ _ _ = IrrGL.of π'.ρ π'.smooth π'.irr
   exact IrrGL.of_eq_of.2 ⟨(GlobalTheory.ContraRefl.contraEquiv (equivRep π)).trans E.symm⟩
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `h` using `GlobalTheory.LocalFieldIso.valuation_map_le_one_iff i hi x⁻¹`. Establish `p1 : 0 < valuation k x`. Rewrite using `[zero_lt_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hx`. Establish `p2 : 0 < valuation k' (i x)`. Rewrite using `[zero_lt_iff]`. Simplify using `using hx`. Rewrite `h` using `[map_inv₀, map_inv₀, map_inv₀, inv_le_one₀ p1, inv_le_one₀ p2]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← not_le, ← not_le, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_lt_one_iff (i : k ≃+* k') (hi : Continuous i) (x : k) :
     valuation k' (i x) < 1 ↔ valuation k x < 1 := by
@@ -102,7 +100,7 @@ private theorem val_lt_one_iff (i : k ≃+* k') (hi : Continuous i) (x : k) :
   rw [map_inv₀, map_inv₀, map_inv₀, inv_le_one₀ p1, inv_le_one₀ p2] at h
   rw [← not_le, ← not_le, h]
 /- English proof (translation)
-Establish `a` using `GlobalTheory.LocalFieldIso.valuation_map_le_one_iff i hi x`. Establish `b` using `val_lt_one_iff i hi x`. Conclude with `⟨fun h => le_antisymm (a.1 h.le) (not_lt.1 fun l => (b.2 l).ne h), fun h => le_antisymm (a.2 h.le) (not_lt.1 fun l => (b.1 l).ne h)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem val_eq_one_iff (i : k ≃+* k') (hi : Continuous i) (x : k) :
     valuation k' (i x) = 1 ↔ valuation k x = 1 := by
@@ -111,19 +109,17 @@ private theorem val_eq_one_iff (i : k ≃+* k') (hi : Continuous i) (x : k) :
   exact ⟨fun h => le_antisymm (a.1 h.le) (not_lt.1 fun l => (b.2 l).ne h),
     fun h => le_antisymm (a.2 h.le) (not_lt.1 fun l => (b.1 l).ne h)⟩
 /- English proof (translation)
-Establish `hi'` using `GlobalTheory.LocalFieldIso.continuous_symm i hi`. Use `set a : kˣ := Units.map i.symm.toRingHom.toMonoidHom (ImaginaryQuadraticEtaCharacter.unif k') with ha`. Establish `hav : (a : k) = i.symm (ImaginaryQuadraticEtaCharacter.unif k' : k')` using `rfl`. Establish `S` using `(ImaginaryQuadraticEtaCharacter.polFacts k).1`. Establish `S'` using `(ImaginaryQuadraticEtaCharacter.polFacts k').1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha1 : valuation k (a : k) < 1`. Rewrite using `[hav]`. Conclude with `(val_lt_one_iff i.symm hi' _).2 S'.1`. Establish `hb1 : valuation k' (i (ImaginaryQuadraticEtaCharacter.unif k : k)) < 1` using `(val_lt_one_iff i hi _).2 S.1`. Establish `le1` using `S.2 _ ha1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `le2` using `S'.2 _ hb1`. Establish `pa : 0 < valuation k (a : k)`. Rewrite using `[zero_lt_iff]`. Simplify using the standard rewrite rules. Establish `pb : 0 < valuation k (ImaginaryQuadraticEtaCharacter.unif k : k)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[zero_lt_iff]`. Simplify using the standard rewrite rules. Establish `pu : 0 < valuation k' (ImaginaryQuadraticEtaCharacter.unif k' : k')`. Rewrite using `[zero_lt_iff]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `le3 : valuation k (ImaginaryQuadraticEtaCharacter.unif k : k) ≤ valuation k (a : k)`. Establish `h1 : valuation k' (i ((ImaginaryQuadraticEtaCharacter.unif k : k) * (a : k)⁻¹)) ≤ 1`. Establish `: i (a : k) = (ImaginaryQuadraticEtaCharacter.unif k' : k')` using `by rw [hav]; exact i.apply_symm_apply _`. Rewrite using `[map_mul, map_inv₀, this, map_mul, map_inv₀]`. Conclude with `mul_inv_le_one_of_le₀ le2 zero_le'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `(GlobalTheory.LocalFieldIso.valuation_map_le_one_iff i hi _).1 h1`. Rewrite `h2` using `[map_mul, map_inv₀]`. Simplify using `using (mul_inv_le_iff₀ pa).1 h2`. Establish `he : valuation k (a : k) = valuation k (ImaginaryQuadraticEtaCharacter.unif k : k)` using `le_antisymm le1 le3`. Establish `hu : μ (a * (ImaginaryQuadraticEtaCharacter.unif k)⁻¹) = 1` using `hμ _ (by`.
-
-Rewrite using `[Units.val_mul, map_mul, he, Units.val_inv_eq_inv_val, map_inv₀, mul_inv_cancel₀ pb.ne'])`. Rewrite `hu` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unram_unif (i : k ≃+* k') (hi : Continuous i) (μ : kˣ →* ℂˣ) (hμ : IsUnram μ) :
     μ (Units.map i.symm.toRingHom.toMonoidHom (ImaginaryQuadraticEtaCharacter.unif k')) = μ (ImaginaryQuadraticEtaCharacter.unif k) := by
@@ -157,17 +153,17 @@ private theorem unram_unif (i : k ≃+* k') (hi : Continuous i) (μ : kˣ →* �
   rw [map_mul, map_inv, mul_inv_eq_one] at hu
   exact hu
 /- English proof (translation)
-Introduce `x hx` and use `hμ _ ((val_eq_one_iff i.symm (GlobalTheory.LocalFieldIso.continuous_symm i hi) _).2 hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isUnram_comp (i : k ≃+* k') (hi : Continuous i) {μ : kˣ →* ℂˣ} (hμ : IsUnram μ) :
     IsUnram (μ.comp (Units.map i.symm.toRingHom.toMonoidHom)) := fun x hx =>
   hμ _ ((val_eq_one_iff i.symm (GlobalTheory.LocalFieldIso.continuous_symm i hi) _).2 hx)
 /- English proof (translation)
-Establish `hi'` using `GlobalTheory.LocalFieldIso.continuous_symm i hi`. Introduce `ξ hξ ξ' hξ' hun`. Take `⟨h1, m1⟩` from `hξ`. Take `⟨h2, m2⟩` from `hξ'`. Set `U : k'ˣ →* kˣ` to `Units.map i.symm.toRingHom.toMonoidHom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `sm : ∀ ζ : kˣ →* ℂˣ, IsSmoothChar ζ → IsSmoothChar ((ζ⁻¹).comp U)` using `fun ζ hζ => IsOpen.preimage (Continuous.units_map _ hi') hζ.inv`. Establish `mem : ∀ (ζ : kˣ →* ℂˣ) (hζ : IsSmoothChar ζ), IrrGL.ofChar ζ hζ ∈ s → IrrGL.ofChar ((ζ⁻¹).comp U) (sm ζ hζ) ∈ (s.map Zc.dualCl).map (GlobalTheory.SuppIne.trGL i hi')` using `fun ζ hζ hm => Multiset.mem_map.2 ⟨IrrGL.ofChar ζ⁻¹ hζ.inv, Multiset.mem_map.2 ⟨_, hm, dualCl_eq_of (GlobalTheory.LocLanglands.CuspModel.dualCl_ofChar _ _ hζ hζ.inv rfl)⟩, GlobalTheory.DegOneChar.trGL_ofChar i hi' _ _ _⟩`. Establish `e : ((ξ'⁻¹).comp U) * ((ξ⁻¹).comp U)⁻¹ = (ξ * ξ'⁻¹).comp U` using `MonoidHom.ext fun x => by simp [mul_comm]`. Use `h ((ξ'⁻¹).comp U) ⟨sm _ h2, mem _ _ m2⟩ ((ξ⁻¹).comp U) ⟨sm _ h1, mem _ _ m1⟩ (by rw [e]; exact isUnram_comp i hi hun)` as an intermediate fact. Rewrite `this` using `[e, MonoidHom.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[unram_unif i hi _ hun]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem unl_of_map (i : k ≃+* k') (hi : Continuous i) (q : ℕ) (s : Multiset (IrrGL k))
     (h : ImaginaryQuadraticEtaCharacter.Unl q ((s.map Zc.dualCl).map (GlobalTheory.SuppIne.trGL i (GlobalTheory.LocalFieldIso.continuous_symm i hi)))) :
@@ -192,19 +188,17 @@ private theorem unl_of_map (i : k ≃+* k') (hi : Continuous i) (q : ℕ) (s : M
   rwa [unram_unif i hi _ hun] at this
 end Loc
 /- English proof (translation)
-Introduce `_ E _ _ _ n hn π hd w w' hu hT`. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Conclude with `hT`. Take `rfl : w' = GlobalTheory.ThetaSatake.cw w` from `GlobalTheory.CompanionTheory.OneExDatum.eq_cw_of_conjPl ⟨hu, Or.inl e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA` using `CompanionTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Establish `hc : Continuous (GlobalTheory.ThetaSatake.cloc w)` using `(conjLoc_spec _ w).1`. Establish `hc'` using `GlobalTheory.LocalFieldIso.continuous_symm _ hc`. Take `⟨τ, hτ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL E n π w`. Establish `key : ∀ σ, π.IsLocComp (GlobalTheory.ThetaSatake.cw w) σ → ∃ T : σ.V ≃ₗ[ℂ] τ.V, ∀ g v, τ.ρ (GlobalTheory.LFun.ConjPlace.invT (GlobalTheory.ThetaSatake.cloc w) n g) (T v) = T (σ.ρ g v)` using `fun σ hσ => GlobalTheory.CompanionTheory.OneExDatum.exists_equiv_of_dualIsConj hd w σ τ hσ (hA _ _ _ _ σ.smooth σ.irred) hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun σ hσ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨T, hTT⟩` from `key σ hσ`. Take `⟨s, hs, h1⟩` from `hT.1 τ hτ`. Establish `hs' : HasSupport τ.ρ s` using `hs.of_equiv (IrrGL.equivOf τ.ρ τ.smooth τ.irred).symm`. Establish `h2` using `hasSupport_of_invT (GlobalTheory.ThetaSatake.cloc w).symm hc' τ.ρ σ.ρ T.symm (fun g v => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `T.surjective v`. Use `hTT (GlobalTheory.LFun.ConjPlace.invT (GlobalTheory.ThetaSatake.cloc w).symm n g) u` as an intermediate fact. Establish `e : GlobalTheory.LFun.ConjPlace.invT (GlobalTheory.ThetaSatake.cloc w) n (GlobalTheory.LFun.ConjPlace.invT (GlobalTheory.ThetaSatake.cloc w).symm n g) = g` using `(GlobalTheory.LFun.ConjPlace.invT (GlobalTheory.ThetaSatake.cloc w) n).apply_symm_apply g`. Rewrite `this` using `[e]`. Rewrite using `[this, T.symm_apply_apply, T.symm_apply_apply]) hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h2.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨y', hy', rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨y'', hy'', rfl⟩` from `Multiset.mem_map.1 hy'`. Use `(GlobalTheory.CompanionTheory.DualCusp.dualCl_isCusp hA y'' (hs'.isCusp hy'')).2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `this.trans (h1 _ hy'')`. Introduce and unpack `s ⟨σ, hσ, hs⟩`. Take `⟨T, hTT⟩` from `key σ hσ`. Establish `h2` using `hasSupport_of_invT (GlobalTheory.ThetaSatake.cloc w) hc σ.ρ τ.ρ T hTT hs`. Establish `h3` using `hT.2 _ ⟨τ, hτ, h2⟩`.
-
-Rewrite using `[GlobalTheory.ThetaSatake.absNorm_cw]`. Conclude with `unl_of_map (GlobalTheory.ThetaSatake.cloc w) hc _ _ h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_torsion_of_printed_results :
     _root_.UpperTheory.V.Af.Hypotheses' → ConjTor := by

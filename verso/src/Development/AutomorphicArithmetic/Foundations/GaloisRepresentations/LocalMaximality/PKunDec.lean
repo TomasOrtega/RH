@@ -16,21 +16,21 @@ private def kdUn : (Finset ι × Finset ι → G) →ₗ[ℂ] (Finset (ι ⊕ₗ
     LinearMap.proj (R := ℂ) (φ := fun _ : Finset ι × Finset ι => G) (lft s, rgt s)
 
 /- English proof (translation)
-Simplify using `[kdUn]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem kdUn_apply (z : Finset ι × Finset ι → G) (s : Finset (ι ⊕ₗ ι)) :
     kdUn z s = ((-1 : ℤ) ^ (rgt s).card) • z (lft s, rgt s) := by
   simp [kdUn]
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem kd_wd_one (c : Finset ι → G) (t : Finset ι) :
     wd (fun _ => (1 : Module.End ℂ G)) c t = ∑ i ∈ t, (GlobalTheory.cubeSign t i : ℤ) • c (t.erase i) := by
   simp [wd, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `[biD, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem kd_biD (z : Finset ι × Finset ι → G) (I J : Finset ι) :
     biD ℂ ι ι G z (I, J) = ∑ i ∈ I, GlobalTheory.cubeSign I i • z (I.erase i, J) +
@@ -38,13 +38,13 @@ private theorem kd_biD (z : Finset ι × Finset ι → G) (I J : Finset ι) :
   simp [biD, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem kd_neg_sq (n : ℕ) (x : G) : ((-1 : ℤ) ^ n) • ((-1 : ℤ) ^ n) • x = x := by
   rw [smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[kdUn_apply]`. Establish `h` using `(hU ι ι G (fun _ => 1) c ∅ ∅).2.2.2.2 s`. Simplify using `only [kdTw, h]`. Conclude with `kd_neg_sq _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem kdUn_tw (hU : WdUni) (c : Finset (ι ⊕ₗ ι) → G) : kdUn (kdTw c) = c := by
   funext s
@@ -54,9 +54,9 @@ private theorem kdUn_tw (hU : WdUni) (c : Finset (ι ⊕ₗ ι) → G) : kdUn (k
   exact kd_neg_sq _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨I, J⟩` from `x`. Establish `h` using `hU ι ι G (fun _ => 1) (fun _ => 0) I J`. Simplify using `only [kdTw]`. Rewrite using `[kdUn_apply, h.2.1, h.2.2.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `kd_neg_sq _ _`.
+A detailed English derivation is pending.
 -/
 private theorem kdTw_un (hU : WdUni) (z : Finset ι × Finset ι → G) : kdTw (kdUn z) = z := by
   funext x
@@ -67,11 +67,11 @@ private theorem kdTw_un (hU : WdUni) (z : Finset ι × Finset ι → G) : kdTw (
   exact kd_neg_sq _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨I, J⟩` from `x`. Establish `h` using `hU ι ι G (fun _ => 1) c I J`. Rewrite using `[kd_biD]`. Simplify using `only [kdTw, h.1, kd_wd_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_add, Finset.smul_sum, smul_smul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Finset.card_erase_of_mem hj]`. Take `⟨n, hn⟩ : ∃ n, J.card = n + 1` from `Nat.exists_eq_succ_of_ne_zero (Finset.card_ne_zero_of_mem hj)`. Rewrite using `[hn, Nat.add_sub_cancel]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -96,7 +96,7 @@ private theorem kd_biD_tw (hU : WdUni) (c : Finset (ι ⊕ₗ ι) → G) :
     ring
 
 /- English proof (translation)
-Establish `h` using `kd_biD_tw hU (kdUn y)`. Rewrite `h` using `[kdTw_un hU]`. Rewrite using `[h, kdUn_tw hU]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem kd_wd_un (hU : WdUni) (y : Finset ι × Finset ι → G) :
     wd (fun _ => (1 : Module.End ℂ G)) (kdUn y) = kdUn (biD ℂ ι ι G y) := by
@@ -111,7 +111,7 @@ variable {ι E E' G : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] [Ad
   [AddCommGroup G] [Module ℂ G]
 
 /- English proof (translation)
-Unfold `cech Cx.Z at ha`. Simplify using `[cechC] at ha`. Establish `h` using `ha.1 s`. Rewrite `h` using `[if_neg (fun h' => hs h'.2)]`. Simplify using `using h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem kd_cech_val {A : Finset ι → Submodule ℂ E} {a : Finset ι → E} {p : ℤ} (ha : a ∈ (cech A).Z p)
     {s : Finset ι} (hs : (s.card : ℤ) ≠ p + 1) : a s = 0 := by
@@ -122,9 +122,9 @@ private theorem kd_cech_val {A : Finset ι → Submodule ℂ E} {a : Finset ι �
   simpa using h
 
 /- English proof (translation)
-Unfold `cech Cx.Z at ha`. Simplify using `[cechC] at ha`. Use function extensionality and compare the values at `s`. Establish `h` using `ha.1 s`. Rewrite `h` using `[if_neg]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Introduce and unpack `⟨hne, hc⟩`. Use `hne.card_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem kd_cech_zero {A : Finset ι → Submodule ℂ E} {a : Finset ι → E} {p : ℤ} (ha : a ∈ (cech A).Z p)
     (hp : p < 0) : a = 0 := by
@@ -139,15 +139,15 @@ private theorem kd_cech_zero {A : Finset ι → Submodule ℂ E} {a : Finset ι 
     omega
 
 /- English proof (translation)
-Break down `lt_or_ge p 0 with hp | hp` into its components or cases. Use `⟨0, 0, 0, ⟨Nat.zero_le _, Submodule.zero_mem _, Submodule.zero_mem _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[kd_cech_zero ha hp]`. Use function extensionality and compare the values at `s`. Simplify using `[join, boxC, kdUn_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Break down `lt_or_ge (d : ℤ) p with hd | hd` into its components or cases. Use `⟨0, 0, 0, ⟨Nat.zero_le _, Submodule.zero_mem _, Submodule.zero_mem _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[kd_cech_zero hb (by omega)]`. Use function extensionality and compare the values at `s`. Simplify using `[join, boxC, kdUn_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨q, hq⟩ : ∃ q : ℕ, (q : ℤ) = d - p` from `⟨(d - p).toNat, Int.toNat_of_nonneg (by omega)⟩`. Use `⟨q, a, ((-1 : ℤ) ^ (q + 1)) • b, ⟨by omega, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : (d : ℤ) - q = p` using `by omega`. Rewrite using `[e]`. Conclude with `ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Conclude with `zsmul_mem hb _`. Use function extensionality and compare the values at `s`. Rewrite using `[kdUn_apply]`. Simplify using `only [join, boxC, Pi.smul_apply, map_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : (rgt s).card = q + 1`. Rewrite using `[hc]`. Establish `h0 : b (rgt s) = 0` using `kd_cech_val hb (by omega)`. Simplify using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem kd_single (μ : E →ₗ[ℂ] E' →ₗ[ℂ] G) (A : Finset ι → Submodule ℂ E) (B : Finset ι → Submodule ℂ E')
     (d : ℕ) (p : ℤ) (a : Finset ι → E) (b : Finset ι → E') (ha : a ∈ (cech A).Z p) (hb : b ∈ (cech B).Z ((d : ℤ) - p)) :
@@ -179,7 +179,7 @@ private theorem kd_single (μ : E →ₗ[ℂ] E' →ₗ[ℂ] G) (A : Finset ι �
       simp [h0]
 
 /- English proof (translation)
-Introduce `I J`. Conclude with `TensorProduct.map_injective_of_flat_flat (A I).subtype (B J).subtype (A I).injective_subtype (B J).injective_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem kd_disj (A : Finset ι → Submodule ℂ E) (B : Finset ι → Submodule ℂ E') :
     Disjoint₂ (TensorProduct.mk ℂ E E') A B := by
@@ -190,17 +190,17 @@ private theorem kd_disj (A : Finset ι → Submodule ℂ E) (B : Finset ι → S
 end
 
 /- English proof (translation)
-Unfold `acx Cx.Z at ht`. Simplify using `only at ht`. Simplify using `only [Submodule.mem_inf, LinearMap.mem_ker, Submodule.mem_pi, Set.mem_univ, true_implies] at ht`. Take `⟨ht1, ht2⟩` from `ht`. Unfold `bicech Cx.Z`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Simplify using `only [bicechC, Submodule.mem_inf, LinearMap.mem_ker, Submodule.mem_pi, Set.mem_univ, true_implies]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨I, J⟩ dsimp only`. Establish `h` using `hU ι ι (E ⊗[ℂ] E') (fun _ => 1) t I J`.
+Simplify by unfolding definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions.
 
-Establish `hm` using `ht1 (uni I J)`. Rewrite `hm` using `[h.2.2.2.1]`. Simplify using `only [mixF, h.2.1, h.2.2.1] at hm`. Simplify using `only [kdTw]`. Distinguish the cases in `hc : I.Nonempty ∧ J.Nonempty ∧ ((I.card + J.card : ℕ) : ℤ) = (d : ℤ) + 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos hc]`. Rewrite `hm` using `[if_pos hc.2.2, if_pos ⟨hc.1, hc.2.1⟩]`. Conclude with `zsmul_mem hm _`. Rewrite using `[if_neg hc]`. Establish `h0 : t (uni I J) = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h1 : ((I.card + J.card : ℕ) : ℤ) = (d : ℤ) + 2`. Rewrite `hm` using `[if_pos h1, if_neg (fun h2 => hc ⟨h2.1, h2.2, h1⟩)]`. Simplify using `using hm`. Rewrite `hm` using `[if_neg h1]`. Simplify using `using hm`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[h0, smul_zero]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[kd_biD_tw hU, ht2]`. Use function extensionality and compare the values at `x`. Simplify using `[kdTw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem kdTw_mem_bicech_Z_of_mem_acx_Z {ι E E' : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     [AddCommGroup E'] [Module ℂ E'] (hU : WdUni) (A : Finset ι → Submodule ℂ E)
@@ -243,17 +243,17 @@ private theorem kdTw_mem_bicech_Z_of_mem_acx_Z {ι E E' : Type} [LinearOrder ι]
     simp [kdTw]
 
 /- English proof (translation)
-Unfold `bicech Cx.B at hy`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hy`. Use `show kdUn (biD ℂ ι ι (E ⊗[ℂ] E') w) ∈ _`. Rewrite using `[← kd_wd_un hU]`. Unfold `acx Cx.B`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_map.2 ⟨kdUn w, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only at hw ⊢`. Simplify using `only [bicechC, Submodule.mem_pi, Set.mem_univ, true_implies] at hw`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies]`. Introduce `s`.
+Simplify by unfolding definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kdUn_apply]`. Establish `h` using `hU ι ι (E ⊗[ℂ] E') (fun _ => 1) (fun _ => 0) (lft s) (rgt s)`. Establish `hcs : s.card = (lft s).card + (rgt s).card`. Rewrite using `[← h.2.2.2.1, h.2.2.2.2 s]`. Establish `hw'` using `hw (lft s, rgt s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Simplify using `only at hw'`. Distinguish the cases in `hc : (lft s).Nonempty ∧ (rgt s).Nonempty ∧ (((lft s).card + (rgt s).card : ℕ) : ℤ) = (d : ℤ) - 1 + 2`. Rewrite `hw'` using `[if_pos hc]`. Establish `hcard : ((s.card : ℕ) : ℤ) = (d : ℤ) + 2 - 1`. Rewrite using `[hcs]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hc.2.2` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hcard]`. Simplify using `only [mixF, if_pos (And.intro hc.1 hc.2.1)]`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zsmul_mem hw' _`. Rewrite `hw'` using `[if_neg hc]`. Establish `h0 : w (lft s, rgt s) = 0` using `by simpa using hw'`. Rewrite using `[h0, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kdUn_mem_acx_B_of_mem_bicech_B {ι E E' : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     [AddCommGroup E'] [Module ℂ E'] (hU : WdUni) (A : Finset ι → Submodule ℂ E)
@@ -294,11 +294,11 @@ private theorem kdUn_mem_acx_B_of_mem_bicech_B {ι E E' : Type} [LinearOrder ι]
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `hU`. Unfold `KunDec`. Introduce `ι E E' _ _ _ _ _ _ A B d hA hB t ht`. Establish `hz` using `kdTw_mem_bicech_Z_of_mem_acx_Z hU A B d t ht`. Take `⟨m, p, a, b, hab, hB'⟩` from `UpperTheory.Cb.bicech_cohomology_kunneth_decomposition ℂ ι ι E E' (E ⊗[ℂ] E') (TensorProduct.mk ℂ E E') A B hA hB (kd_disj A B) (d : ℤ) (kdTw t) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs` using `fun l => kd_single (TensorProduct.mk ℂ E E') A B d (p l) (a l) (b l) (hab l).1 (hab l).2`. Use `choose q a' b' hq hj using hs`. Use `⟨m, q, a', b', fun l => hq l, ?_⟩` and prove the remaining obligations. Establish `key` using `kdUn_mem_acx_B_of_mem_bicech_B hU A B d _ hB'`. Rewrite `key` using `[map_sub, kdUn_tw hU, map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∑ l, kdUn (boxC (TensorProduct.mk ℂ E E') (a l) (b l)) = ∑ l, join (TensorProduct.mk ℂ E E') (a' l) (b' l)` using `Finset.sum_congr rfl fun l _ => (hj l).symm`. Rewrite `key` using `[e]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.kunDec_of :
     WdUni → KunDec := by

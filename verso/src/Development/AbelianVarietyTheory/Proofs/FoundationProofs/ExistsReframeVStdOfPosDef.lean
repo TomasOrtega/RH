@@ -21,7 +21,7 @@ def OrthFrame (V : HSpace E) : Prop :=
   (∀ a b, V.hT (V.frame a) (V.frame b) = if a = b then 1 else 0) ∧ ∀ a, V.frame a ∈ V.L0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b => (Examples₂.stdSpace_gram_apply hstar n (fun _ => false) p q a b).trans rfl, fun a => (Submodule.subset_span ⟨a, rfl⟩ : Pi.basisFun E (Fin n) a ∈ Examples₂.stdLat n)⟩`.
+Supply the required witnesses or components.
 -/
 theorem orthFrame_stdSpace (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (n p q : ℕ) :
     OrthFrame (Examples₂.stdSpace hstar n (fun _ => false) p q) :=
@@ -29,7 +29,7 @@ theorem orthFrame_stdSpace (hstar : ∀ x : E, IsIntegral ℤ x → IsIntegral �
     fun a => (Submodule.subset_span ⟨a, rfl⟩ : Pi.basisFun E (Fin n) a ∈ Examples₂.stdLat n)⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.one_apply]`. Conclude with `h.1 a b`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OrthFrame.gram_eq {V : HSpace E} (h : OrthFrame V) : V.gram = 1 := by
   ext a b
@@ -37,11 +37,11 @@ theorem OrthFrame.gram_eq {V : HSpace E} (h : OrthFrame V) : V.gram = 1 := by
   exact h.1 a b
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx a`. Establish `hd : ∑ a, x a • V.frame a ∈ Formalism.HermitianLatticesTheory.dual V.hT V.L0`. Rewrite using `[V.baseLattice_isUnimodular]`. Conclude with `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap] at hd`. Establish `h1 : V.hT (V.frame a) (∑ b, x b • V.frame b) ∈ (1 : Submodule (𝓞 E) E)` using `hd _ (h.2 a)`. Simplify `h1` using `[map_sum, map_smul, h.1]`. Introduce `hx`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨o, ho⟩` from `Submodule.mem_one.1 (hx a)`. Rewrite using `[← ho, algebraMap_smul]`. Conclude with `V.L0.smul_mem o (h.2 a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OrthFrame.mem_iff {V : HSpace E} (h : OrthFrame V) (x : Fin V.rank → E) :
     ∑ a, x a • V.frame a ∈ V.L0 ↔ ∀ a, x a ∈ (1 : Submodule (𝓞 E) E) := by
@@ -61,15 +61,13 @@ theorem OrthFrame.mem_iff {V : HSpace E} (h : OrthFrame V) (x : Fin V.rank → E
 def reframe (V : HSpace E) (b : Module.Basis (Fin V.rank) E V.V) : HSpace E := { V with frame := b }
 
 /- English proof (translation)
-Introduce `τ`. Take `⟨e, P, hP⟩` from `hV τ`. Establish `hfam` using `map_family (reframe V b) τ (hτ τ) V.frame`. Use `set M : Matrix (Fin V.rank) (Fin V.rank) ℂ := (b.toMatrix V.frame).map τ with hM`. Use `set N : Matrix (Fin V.rank) (Fin V.rank) ℂ := (V.frame.toMatrix b).map τ with hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMN : M * N = 1`. Rewrite using `[hM, hN, ← Matrix.map_mul, Module.Basis.toMatrix_mul_toMatrix_flip]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hNM : N * M = 1`. Rewrite using `[hM, hN, ← Matrix.map_mul, Module.Basis.toMatrix_mul_toMatrix_flip]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Set `G : Matrix (Fin V.rank) (Fin V.rank) ℂ` to `(reframe V b).gram.map τ`. Establish `hg : V.gram.map τ = Mᴴ * G * M` using `hfam`. Set `Q : GL (Fin (V.sig τ).1 ⊕ Fin (V.sig τ).2) ℂ` to `⟨M.submatrix e.symm e.symm, N.submatrix e.symm e.symm, by rw [Matrix.submatrix_mul_equiv, hMN, Matrix.submatrix_one_equiv], by rw [Matrix.submatrix_mul_equiv, hNM, Matrix.submatrix_one_equiv]⟩`. Use `show Formalism.UG.HasSignature G (V.sig τ).1 (V.sig τ).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨e, Q * P, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ hP` and prove the remaining obligations. Establish `hQ : Q.val = M.submatrix e.symm e.symm` using `rfl`. Rewrite using `[hg, Units.val_mul, hQ]`. Simplify using `only [Formalism.UG.P.cT_conj_eq, Matrix.conjTranspose_mul, Matrix.reindex_apply, Matrix.conjTranspose_submatrix]`.
-
-Rewrite using `[← Matrix.submatrix_mul_equiv _ _ _ e.symm, ← Matrix.submatrix_mul_equiv _ _ _ e.symm]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigOK_reframe (hτ : ∀ (τ : E →+* ℂ) a, τ (star a) = starRingEnd ℂ (τ a)) {V : HSpace E} (hV : V.SigOK)
     (b : Module.Basis (Fin V.rank) E V.V) : (reframe V b).SigOK := by
@@ -100,9 +98,9 @@ theorem sigOK_reframe (hτ : ∀ (τ : E →+* ℂ) a, τ (star a) = starRingEnd
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨e, h1, h2, h3, h4⟩` from `h`. Use `⟨Module.Basis.mk h1 h2.ge, fun (a b : Fin V.rank) => ?_, fun (a : Fin V.rank) => ?_⟩` and prove the remaining obligations. Use `show V.hT (Module.Basis.mk h1 h2.ge a) (Module.Basis.mk h1 h2.ge b) = _`. Rewrite using `[Module.Basis.mk_apply, Module.Basis.mk_apply, h4]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `show Module.Basis.mk h1 h2.ge a ∈ V.L0`. Rewrite using `[Module.Basis.mk_apply, h3]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orthFrame (V : HSpace E) {n : ℕ} (hn : V.rank = n) (h : Formalism.HermitianLatticesTheory.IsOrthoLattice V.hT V.L0 n) :
     ∃ b, OrthFrame (reframe V b) := by
@@ -117,9 +115,9 @@ theorem exists_orthFrame (V : HSpace E) {n : ℕ} (hn : V.rank = n) (h : Formali
     exact Submodule.subset_span ⟨a, rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : V.gram = 1`. Use `⟨V.frame.unitsSMul fun _ => Units.mk0 (2 : E) two_ne_zero, fun h' => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun h ⟨0, hr⟩) ⟨0, hr⟩`. Establish `h2 : V.hT ((V.frame.unitsSMul fun _ => Units.mk0 (2 : E) two_ne_zero) ⟨0, hr⟩) ((V.frame.unitsSMul fun _ => Units.mk0 (2 : E) two_ne_zero) ⟨0, hr⟩) = 1` using `(congrFun (congrFun h' ⟨0, hr⟩) ⟨0, hr⟩).trans (Matrix.one_apply_eq _)`. Rewrite `h1` using `[Matrix.one_apply_eq, HSpace.gram]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Module.Basis.unitsSMul_apply, Units.smul_def, Units.val_mk0, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, h1, map_ofNat] at h2`. Evaluate the numerical expressions using `at h2`. Conclude with `⟨V.frame, h⟩`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Supply the required witnesses or components.
 -/
 theorem exists_gram_ne_one (V : HSpace E) (hr : 0 < V.rank) : ∃ b, (reframe V b).gram ≠ 1 := by
   by_cases h : V.gram = 1
@@ -139,9 +137,9 @@ end Space
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨-, -, hfg, hsp, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `key` using `(GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank _ hfg hsp).1`. Unfold `Bridge.hLat`. Rewrite using `[← Submodule.span_eq (GlobalTheory.Member.latC V)]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, ← key x, GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq, show ((1 : Bridge.Gf V)⁻¹ : Bridge.Gf V) = 1 from Subtype.ext inv_one]`. Use `show (1 : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) *ᵥ _ ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (L0c D V) ↔ _`. Rewrite using `[Matrix.one_mulVec]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem hLat_one {D : D7} (V : HSp D) : Bridge.hLat V 1 = GlobalTheory.Member.latC V := by
   obtain ⟨-, -, hfg, hsp, -⟩ := GlobalTheory.Member.latHat_eq_hat_and_gram D V
@@ -158,7 +156,7 @@ theorem hLat_one {D : D7} (V : HSp D) : Bridge.hLat V 1 = GlobalTheory.Member.la
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[VStd, hLat_one, ← GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq, SetLike.coe_set_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vStd_iff_gram_and_lattice (D : D7) (i : Fin D.R.m) :
     VStd D i ↔ (Vc D i).gram = 1 ∧
@@ -169,7 +167,7 @@ theorem vStd_iff_gram_and_lattice (D : D7) (i : Fin D.R.m) :
 def FrameChoice (D : D7) (i : Fin D.R.m) : Prop := OrthFrame (D.sp.V ((i : ℕ) + 1))
 
 /- English proof (translation)
-Introduce `D i h`. Use `(vStd_iff_gram_and_lattice D i).2 ⟨h.gram_eq, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, Submodule.mem_pi]`. Conclude with `(h.mem_iff x).trans ⟨fun k a _ => k a, fun k a => k a trivial⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vStd_of_frameChoice : ∀ (D : D7) (i : Fin D.R.m), FrameChoice D i → VStd D i := by
   intro D i h
@@ -179,11 +177,11 @@ theorem vStd_of_frameChoice : ∀ (D : D7) (i : Fin D.R.m), FrameChoice D i → 
   exact (h.mem_iff x).trans ⟨fun k a _ => k a, fun k a => k a trivial⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, vStd_of_frameChoice D i⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(vStd_iff_gram_and_lattice D i).1 h`. Use `⟨fun a b => (congrFun (congrFun h1 a) b).trans Matrix.one_apply, fun a => ?_⟩` and prove the remaining obligations. Establish `h3 : (Pi.single a 1 : Fin (Vc D i).rank → D.host.E) ∈ L0c D (Vc D i)`. Rewrite using `[h2, SetLike.mem_coe, Submodule.mem_pi]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hb]`. Conclude with `zero_mem _`. Establish `h4 : ∑ b, (Pi.single a 1 : Fin (Vc D i).rank → D.host.E) b • (Vc D i).frame b ∈ (Vc D i).L0` using `h3`. Simplify `h4` using `[Pi.single_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem vStd_iff_frameChoice (D : D7) (i : Fin D.R.m) : VStd D i ↔ FrameChoice D i := by
   refine ⟨fun h => ?_, vStd_of_frameChoice D i⟩
@@ -202,7 +200,7 @@ theorem vStd_iff_frameChoice (D : D7) (i : Fin D.R.m) : VStd D i ↔ FrameChoice
   simpa [Pi.single_apply] using h4
 
 /- English proof (translation)
-Use `vStd_of_frameChoice D i ?_` and prove the remaining obligations. Rewrite using `[FrameChoice, h]`. Conclude with `orthFrame_stdSpace hstar n p q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vStd_of_eq_stdSpace (D : D7) (i : Fin D.R.m)
     (hstar : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (n p q : ℕ)
@@ -212,7 +210,7 @@ theorem vStd_of_eq_stdSpace (D : D7) (i : Fin D.R.m)
   exact orthFrame_stdSpace hstar n p q
 
 /- English proof (translation)
-Use `R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.nV`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem nV_pos (R : Ranks) : 0 < R.nV := by
   have := R.rank_add_five_le
@@ -220,11 +218,11 @@ theorem nV_pos (R : Ranks) : 0 < R.nV := by
   omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hneg`. Rewrite `hneg` using `[Bool.not_eq_false]`. Set `τ` to `D.host.φ₀`. Establish `hs` using `D.sp.V_sig ((i : ℕ) + 1) τ`. Rewrite `hs` using `[factVSig _ _ D.sp _ (by omega) (by omega) τ, if_pos hneg]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Formalism.UG.HasSignature ((Matrix.of fun a b => (Vc D i).hT ((Vc D i).frame a) ((Vc D i).frame b)).map τ) (Vc D i).rank 0`. Establish `h0 : (Matrix.of fun a b => (Vc D i).hT ((Vc D i).frame a) ((Vc D i).frame b)) = 1` using `h.1`. Rewrite using `[h0, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `using Formalism.UG.P.stdform_sig_one (n := Fin (Vc D i).rank)`. Establish `h2` using `(sig_family (Vc D i) τ (D.sp.cm.cmUnram.2.1 τ) _ h1 hs).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `nV_pos D.R` as an intermediate fact. Simplify using `only at h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem neg_eq_false_of_vStd (D : D7) (i : Fin D.R.m) (h : VStd D i) : D.sp.Vneg ((i : ℕ) + 1) = false := by
   by_contra hneg
@@ -249,11 +247,11 @@ def reframeV (D : D7) (b : ∀ j, Module.Basis (Fin (D.sp.V j).rank) D.host.E (D
       V_sig := fun j => sigOK_reframe D.sp.cm.cmUnram.2.1 (D.sp.V_sig j) (b j) } }
 
 /- English proof (translation)
-Establish `key : ∀ j, ∃ b, 1 ≤ j → j ≤ D.R.m → OrthFrame (reframe (D.sp.V j) b)`. Introduce `j`. Distinguish the cases in `hj : 1 ≤ j ∧ j ≤ D.R.m`. Establish `h` using `D.sp.V_std j hj.1 hj.2`. Establish `hn : D.sp.Vneg j = false`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hpos ⟨j - 1, by omega⟩` as an intermediate fact. Rewrite `this` using `[show j - 1 + 1 = j by omega]`. Then use the resulting hypothesis. Rewrite `h` using `[hn, if_neg Bool.false_ne_true]`. Take `⟨b, hb⟩` from `exists_orthFrame _ (D.sp.V_rank j hj.1 hj.2) h`. Conclude with `⟨b, fun _ _ => hb⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(D.sp.V j).frame, fun h1 h2 => absurd ⟨h1, h2⟩ hj⟩`. Use `choose b hb using key`. Conclude with `⟨b, fun i => vStd_of_frameChoice (reframeV D b) i (hb _ (by omega) i.2)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_reframe_vStd (D : D7) (hpos : ∀ i : Fin D.R.m, D.sp.Vneg ((i : ℕ) + 1) = false) :
     ∃ b, ∀ i : Fin D.R.m, VStd (reframeV D b) i := by
@@ -272,9 +270,9 @@ theorem exists_reframe_vStd (D : D7) (hpos : ∀ i : Fin D.R.m, D.sp.Vneg ((i : 
   exact ⟨b, fun i => vStd_of_frameChoice (reframeV D b) i (hb _ (by omega) i.2)⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hneg`. Rewrite `hneg` using `[Bool.not_eq_false]`. Establish `h1` using `factVSig _ _ D.sp ((i : ℕ) + 1) (by omega) (by omega) D.host.φ₀`. Rewrite `h1` using `[if_pos hneg]`. Establish `h2` using `congrArg Prod.snd ((h D.host.φ₀).symm.trans h1)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(nV_pos D.R).ne h2`.
+A detailed English derivation is pending.
 -/
 theorem neg_eq_false_of_posDef (D : D7) (i : Fin D.R.m) (h : (Vc D i).IsPosDef) :
     D.sp.Vneg ((i : ℕ) + 1) = false := by
@@ -286,16 +284,16 @@ theorem neg_eq_false_of_posDef (D : D7) (i : Fin D.R.m) (h : (Vc D i).IsPosDef) 
   exact (nV_pos D.R).ne h2
 
 /- English proof (translation)
-The claim follows from `exists_reframe_vStd D fun i => neg_eq_false_of_posDef D i (hpos i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_reframe_vStd_of_posDef (D : D7) (hpos : ∀ i : Fin D.R.m, (Vc D i).IsPosDef) :
     ∃ b, ∀ i : Fin D.R.m, VStd (reframeV D b) i :=
   exists_reframe_vStd D fun i => neg_eq_false_of_posDef D i (hpos i)
 
 /- English proof (translation)
-Establish `key : ∀ j, ∃ b, 1 ≤ j → j ≤ D.R.m → (reframe (D.sp.V j) b).gram ≠ 1`. Introduce `j`. Distinguish the cases in `hj : 1 ≤ j ∧ j ≤ D.R.m`. Take `⟨b, hb⟩` from `exists_gram_ne_one (D.sp.V j) (by rw [D.sp.V_rank j hj.1 hj.2]; exact nV_pos D.R)`. Conclude with `⟨b, fun _ _ => hb⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(D.sp.V j).frame, fun h1 h2 => absurd ⟨h1, h2⟩ hj⟩`. Use `choose b hb using key`. Conclude with `⟨b, fun i h => hb _ (by omega) i.2 h.1⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_reframe_not_vStd (D : D7) : ∃ b, ∀ i : Fin D.R.m, ¬ VStd (reframeV D b) i := by
   have key : ∀ j, ∃ b, 1 ≤ j → j ≤ D.R.m → (reframe (D.sp.V j) b).gram ≠ 1 := by

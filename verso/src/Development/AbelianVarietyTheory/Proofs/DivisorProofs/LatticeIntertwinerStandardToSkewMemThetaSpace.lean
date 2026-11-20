@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.SkewTheta
 
 /- English proof (translation)
-Introduce `x hx y hy`. Establish `hW` using `GlobalTheory.InertSign.Wd_Wd D T x y (fun _ => (1 : ℂ))`. Rewrite `hW` using `[h.2.1 x hx y hy, one_smul, h.1 _ (A.add_mem hx hy), h.1 y hy]`. Establish `hz` using `congrFun hW 0`. Rewrite `hz` using `[h.1 x hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at hz`. Rewrite `hz` using `[Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.U_smul, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.U_U]`. Establish `hU : U D T (x + y) (fun _ => (1 : ℂ)) 0 ≠ 0`. Simplify using `only [U, one_mul]`. Conclude with `Complex.exp_ne_zero _`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_right_cancel₀ hU ?_` and prove the remaining obligations. Rewrite using `[← hz]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem semiChar_of_nice {D : D7} {T : Tor D} {N N' : ℕ} {A : AddSubgroup (VC D N N')}
     (h : GlobalTheory.InertSign.Nice D T A) : Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.SemiChar T A := by
@@ -38,7 +38,7 @@ theorem semiChar_of_nice {D : D7} {T : Tor D} {N N' : ℕ} {A : AddSubgroup (VC 
   rw [← hz]; ring
 
 /- English proof (translation)
-Introduce `D δ hc a d e0 he0 𝔪 hsd`. Establish `hK : KLat D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))` using `Or.inr ⟨_, _, GlobalTheory.FinWeil.RatTransl.sd_std D a, hsd, rfl⟩`. Establish `hN` using `(GlobalTheory.ThetaTriple.klat_triples D ⊤ δ hc a d).1 _ hK`. Conclude with `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.Iop_mem_ThSp (tor0 D ⊤ δ) (semiChar_of_nice hN) he0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iop_mem_thSp : ∀ (D : D7) (δ : ℂ), Crv D ⊤ δ → ∀ {a d : ℕ} (e0 : VC D a d → ℂ), e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d) → ∀ (𝔪 : Ideal (𝓞 D.host.E)), SD D (skewLat D 𝔪 d) → Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) e0 ∈ ThSp D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) := by
   intro D δ hc a d e0 he0 𝔪 hsd

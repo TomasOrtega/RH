@@ -29,7 +29,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WMan
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c (some k.1), fun k => hc _, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOrbit_baseOf {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ]
     {y : (Σ k, ι k) → Φ} {Ψ : Type} {N j : ℕ} (M : FlagModel y Ψ N j) {k₀ : K}
@@ -39,7 +39,7 @@ theorem sameOrbit_baseOf {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintyp
   exact ⟨fun k => c (some k.1), fun k => hc _, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `⟨fun k => c (some k), fun k => hc _, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOrbit_fstPt {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {k₀ : K}
     {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : SameOrbit z z') :
@@ -48,9 +48,9 @@ theorem sameOrbit_fstPt {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype
   exact ⟨fun k => c (some k), fun k => hc _, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => if k = k₀ then c none else c (some k), fun k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs exacts [hc _, hc _]`. Use function extensionality and compare the values at `p`. Take `⟨k, m⟩` from `p`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `e : k = k₀`. Substitute `e` using the available equality. Simplify using `only [sndPt, Function.comp, v₁_self, if_true]`. Simplify using `only [sndPt, Function.comp, v₁_ne (show (⟨k, m⟩ : Σ k, ι k).1 ≠ k₀ from e), if_neg e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sameOrbit_sndPt {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {k₀ : K}
     {z z' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : SameOrbit z z') :
@@ -68,7 +68,7 @@ theorem sameOrbit_sndPt {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype
     · simp only [sndPt, Function.comp, v₁_ne (show (⟨k, m⟩ : Σ k, ι k).1 ≠ k₀ from e), if_neg e]
 
 /- English proof (translation)
-Introduce `h` and use `by have := h.2 1 trivial simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_mem_mcPts_top {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (z : (Σ k, ι k) → ℂ) :
     z ∉ mcPts (⊤ : Ideal (MRing ι)) := fun h => by
@@ -76,33 +76,31 @@ theorem not_mem_mcPts_top {K : Type} [Fintype K] {ι : K → Type} [∀ k, Finty
   simp at this
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb hb hab hk hca hcb hy hd`. Establish `hA` using `(GlobalTheory.T.flag_adjacent_swap_varieties_arithmetic K ι Φ y Ψ N j M d τ a b k₀ ca cb hb hab hk hca hcb hy).1`. Take `⟨ε⟩` from `GlobalTheory.T.flag_dimension_index_equiv Ψ N j n d M.j_le hd`. Establish `hcov` using `GlobalTheory.T.flag_adjacent_arithmetic_height K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb hb hab hk hca hcb hy`. Establish `mk : ∀ (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ), IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h → ∃ C : OrbitChart (wP M τ a …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `F kb V bl r h hc`. Establish `hV : IsOpen V` using `hc.2.2.2.2.2.2.2.1.1`. Establish `hh` using `GlobalTheory.T.flag_adjacent_chart_first K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc`. Establish `hm` using `GlobalTheory.T.wPhi_mem_mcPts_wP K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc`. Establish `hr` using `GlobalTheory.T.flag_adjacent_chart_fourth K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `GlobalTheory.T.flag_adjacent_chart_fifth K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc`. Establish `hO` using `GlobalTheory.T.flag_adjacent_chart_sixth K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h hc`. Establish `hb'` using `GlobalTheory.T.flag_adjacent_chart_seventh K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc`. Establish `ht` using `GlobalTheory.T.flag_adjacent_chart_eighth K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc`. Establish `hi` using `GlobalTheory.T.flag_adjacent_chart_ninth K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨{ D := wD ε V isOpen_D := hV.preimage (continuous_pi fun i => continuous_apply _) φ := wPhi M F bl h ε k₀ τ ca cb holo := hh mem := hm O := wO M Rb τ a k₀ ca cb F kb V r h O_open := hO O_orbit := fun z hz z' hz' e => (hb' z hz z' hz' e).1 ρ := wRho M Rb τ k₀ ca cb F kb r h ε ρ_c …`. Take `⟨R, hR⟩` from `GlobalTheory.T.log_resolution_from_orbit_charts (Option K) (fun o => ι (o.getD k₀)) (wP M τ a k₀ ca cb) (d + 2) hA.1 hA.2.1.2.1 (fun h => hA.2.1.1.ne_top (top_le_iff.mp h)) (fun z hz => by`. Take `⟨F, kb, V, bl, r, h, hc, hzO⟩` from `hcov z hz`. Take `⟨C, -, -, hO⟩` from `mk F kb V bl r h hc`. Conclude with `⟨C, hO ▸ hzO⟩)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `key : ∀ x : R.X, ∃ (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ψ : OpenPartialHomeomorph R.X (Fin (d + 2) → ℂ)), IsWCtx M …`. Introduce `x`. Take `⟨F, kb, V, bl, r, h, hc, hzO⟩` from `hcov _ (R.mem x x (R.mem_U x))`. Take `⟨C, hD, hφ, hO⟩` from `mk F kb V bl r h hc`. Take `⟨ψ, h1, h2, h3, h4⟩` from `hR C ⟨_, R.mem x x (R.mem_U x)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F, kb, V, bl, r, h, ψ, hc, h1, h2.trans hD, (h3 x).2 (hO ▸ hzO), fun x' hx' => hφ ▸ h4 x' hx'⟩`. Establish `hbase : ∀ x : R.X, ∃ x' : Rb.X, SameOrbit (Rb.lift x' x') (baseOf M k₀ (R.lift x x))`. Introduce `x`. Take `⟨F, kb, V, bl, r, h, ψ, hc, -, hT, hx, hs⟩` from `key x`. Establish `hB` using `hc.2.2.2.2.2.2.2.1`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw : ψ x ∈ wD ε V` using `hT ▸ ψ.map_source hx`. Establish `hE` using `(GlobalTheory.T.flag_adjacent_chart_second K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc).2 _ hw`. Use `⟨(Rb.A.chart kb).symm (wB ε (ψ x)), orbit_trans (hB.2.2.2.2 _ hw).2.2.2 ?_⟩` and prove the remaining obligations. Use `sameOrbit_baseOf M (hs x hx)` as an intermediate fact. Rewrite `this` using `[hE.2.1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `choose pr hpr using hbase`. Establish `hcoord : ∀ (x : R.X) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ψ : OpenPartialHomeomorph R.X (Fin (d + 2) → ℂ)), IsWCtx …`. Introduce `x F kb V bl r h ψ hc hT hx hs`. Establish `hB` using `hc.2.2.2.2.2.2.2.1`. Establish `hw : ψ x ∈ wD ε V` using `hT ▸ ψ.map_source hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `(GlobalTheory.T.flag_adjacent_chart_second K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc).2 _ hw`. Establish `h1 : SameOrbit (bl (wB ε (ψ x))) (baseOf M k₀ (R.lift x x))`. Use `sameOrbit_baseOf M hs` as an intermediate fact. Rewrite `this` using `[hE.2.1]`. Then use the resulting hypothesis. Establish `h2` using `orbit_trans (hB.2.2.2.2 _ hw).2.2.2 (orbit_trans h1 (orbit_symm (hpr x)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (Rb.A.chart kb).symm (wB ε (ψ x)) = pr x` using `Rb.inj _ _ (not_mem_mcPts_top _) h2`. Establish `hwt : wB ε (ψ x) ∈ (Rb.A.chart kb).target` using `hB.2.1 hw`. Rewrite using `[← h3]`. Conclude with `⟨(Rb.A.chart kb).map_target hwt, fun i => by`. Rewrite using `[(Rb.A.chart kb).right_inv hwt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `rfl⟩`. Use `⟨R, pr, ?_, hpr, fun x => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.holoMap_of_local_product_charts (d + 2) n R.X Rb.X R.A Rb.A pr fun x => ?_` and prove the remaining obligations. Take `⟨F, kb, V, bl, r, h, ψ, hc, hC, hT, hx, hs⟩` from `key x`. Conclude with `⟨ψ, kb, fun i => ε (Sum.inl i), hC, hx, fun x' hx' => hcoord x' F kb V bl r h ψ hc hT hx' (hs x' hx')⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F, kb, V, bl, r, h, ψ, hc, hC, hT, hx, hs⟩` from `key x`. Establish `hE` using `GlobalTheory.T.flag_adjacent_chart_second K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc`. Establish `hB` using `hc.2.2.2.2.2.2.2.1`. Use `⟨ψ, kb, ⟨fun i => ε (Sum.inl i), fun i i' e => Sum.inl_injective (ε.injective e)⟩, ε (Sum.inr (Sum.inr ())), F, fun τ' => wH h ε τ', hx, hC, hc.2.2.2.2.2.2.1, fun i e => Sum.inl_ne_inr (ε.injective e), fun x' hx' => hcoord x' F kb V bl r h ψ hc hT hx' (hs x' hx'), fun τ' r' s' => …` and prove the remaining obligations. Establish `hw : ψ x' ∈ wD ε V` using `hT ▸ ψ.map_source hx'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e1, e2, e3⟩` from `hE.2 _ hw`. Establish `h1` using `sameOrbit_baseOf M (hs x' hx')`. Rewrite `h1` using `[e2]`. Use `⟨e1, ?_, fstPt k₀ (wPhi M F bl h ε k₀ τ ca cb (ψ x')), sndPt k₀ (wPhi M F bl h ε k₀ τ ca cb (ψ x')), sameOrbit_fstPt (hs x' hx'), sameOrbit_sndPt (hs x' hx'), e3⟩` and prove the remaining obligations. Establish `h2 : mCoordIdeal (bl (wB ε (ψ x'))) = mCoordIdeal (basePart M.blk (fstPt k₀ (R.lift x' x')))` using `GlobalTheory.CompanionTheory.Ar.PB.CovMap.mCoordIdeal_eq_of_sameOrbit h1`.
-
-Conclude with `h2 ▸ (hB.2.2.2.2 _ hw).2.2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fibreSquare_atlas : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → IsArithVar (mCoordIdeal y) (d + 2) → d + 1 = n + Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) → ∃ (RW : AnLogRes (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ⊤ (d + 2)) (pr : RW.X → Rb.X), IsWAtlas M Rb τ a k₀ ca cb RW pr := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb τ a b k₀ ca cb hb hab hk hca hcb hy hd

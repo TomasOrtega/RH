@@ -17,16 +17,16 @@ variable {G : Type} [Group G] [TopologicalSpace G] {LL : Type} [Field LL] [Topol
   [IsTopologicalRing LL]
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap f`.
+A detailed English derivation is pending.
 -/
 theorem cont_form {V : Type} [AddCommGroup V] [Module LL V] [FiniteDimensional LL V]
     [TopologicalSpace V] [IsModuleTopology LL V] (f : V →ₗ[LL] LL) : Continuous f :=
   IsModuleTopology.continuous_of_linearMap f
 
 /- English proof (translation)
-Use `haveI : ContinuousSMul LL V := IsModuleTopology.toContinuousSMul LL V`. Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd LL V`. Set `b` to `Module.finBasis LL V`. Establish `h : (fun p : G × V => ρ p.1 p.2) = fun p => ∑ i, b.repr p.2 i • ρ p.1 (b i)`. Use function extensionality and compare the values at `p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← b.sum_repr p.2]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[h]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `((cont_form ((Finsupp.lapply i).comp b.repr.toLinearMap)).comp continuous_snd).smul ((hρ (b i)).comp continuous_fst)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_act {V : Type} [AddCommGroup V] [Module LL V] [FiniteDimensional LL V]
     [TopologicalSpace V] [IsModuleTopology LL V] (ρ : Representation LL G V)
@@ -44,9 +44,9 @@ theorem cont_act {V : Type} [AddCommGroup V] [Module LL V] [FiniteDimensional LL
     ((hρ (b i)).comp continuous_fst)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis LL V`. Establish `h : (fun q : V × V' => m q.1 q.2) = fun q => ∑ i, b.repr q.1 i * m (b i) q.2`. Use function extensionality and compare the values at `q`. Use `conv_lhs => rw [← b.sum_repr q.1]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `((cont_form ((Finsupp.lapply i).comp b.repr.toLinearMap)).comp continuous_fst).mul ((cont_form (m (b i))).comp continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_bil {V V' : Type} [AddCommGroup V] [Module LL V] [FiniteDimensional LL V]
     [TopologicalSpace V] [IsModuleTopology LL V] [AddCommGroup V'] [Module LL V']
@@ -66,23 +66,21 @@ theorem cont_bil {V V' : Type} [AddCommGroup V] [Module LL V] [FiniteDimensional
 end Cont
 
 /- English proof (translation)
-Introduce `hT l _ P K LL _ _ _ O _ _ hO A A' m hm`. Take `⟨Z, inv, hZ, hinv⟩` from `GlobalTheory.InvLine.exists_inv hT l P K LL O hO`. Use `haveI : IsTopologicalRing LL := hO.2.2.2.1`. Establish `hmem : ∀ (a : ↥(continuousCocycles A.ρ)) (b : ↥(continuousCocycles A'.ρ)), cupL A'.ρ m a.1 b.1 ∈ Z`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ha, ha'⟩ : Continuous a.1 ∧ ∀ g h, a.1 (g * h) = a.1 g + A.ρ g (a.1 h)` from `a.2`. Take `⟨hb, hb'⟩ : Continuous b.1 ∧ ∀ g h, b.1 (g * h) = b.1 g + A'.ρ g (b.1 h)` from `b.2`. Rewrite using `[hZ]`. Use `⟨?_, fun g h k => ?_⟩` and prove the remaining obligations. Establish `h1 : Continuous fun p : ↥(GK K) × ↥(GK K) => A'.ρ p.1 (b.1 p.2)` using `(cont_act A'.ρ A'.cont).comp (continuous_fst.prodMk (hb.comp continuous_snd))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(cont_bil m).comp ((ha.comp continuous_fst).prodMk h1)`. Simplify using `only [cupL]`. Rewrite using `[← hm.1 g (a.1 h) (A'.ρ h (b.1 k)), ha', hb', map_mul, Module.End.mul_apply]`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨LinearMap.mk₂ LL (fun a b => inv ⟨cupL A'.ρ m a.1 b.1, hmem a b⟩) ?_ ?_ ?_ ?_, fun a b => ?_⟩` and prove the remaining obligations. Introduce `a a' b`. Rewrite using `[← map_add]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Simplify using `[cupL]`. Introduce `c a b`. Rewrite using `[← map_smul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Simplify using `[cupL]`. Introduce `a b b'`. Rewrite using `[← map_add]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Simplify using `[cupL]`. Introduce `c a b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← map_smul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Simplify using `[cupL]`.
-
-Rewrite using `[LinearMap.mk₂_apply]`. Conclude with `hinv _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 (P.PD K) A.ρ A'.ρ m → ∃ β : ↥(continuousCocycles A.ρ) →ₗ[LL] ↥(continuousCocycles A'.ρ) →ₗ[LL] LL, ∀ a b, β a b = 0 ↔ CobL (P.PD K) (cupL A'.ρ m a.1 b.1) := by
   intro hT l _ P K LL _ _ _ O _ _ hO A A' m hm

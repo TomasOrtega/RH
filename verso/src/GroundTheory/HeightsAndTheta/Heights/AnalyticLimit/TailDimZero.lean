@@ -8,33 +8,29 @@ open MeasureTheory
 open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot ChartPartition mInt integralWith locDens)
 
 /- English proof (translation)
-Establish `hv : (volume : Measure (Fin 0 → ℂ)) Set.univ = 1`. Rewrite using `[volume_pi, Measure.pi_univ]`. Simplify using the standard rewrite rules. Establish `: IsFiniteMeasure (volume : Measure (Fin 0 → ℂ))` using `⟨by rw [hv]; exact ENNReal.one_lt_top⟩`. Establish `hd : ∀ j y, locDens A T j y = 1` using `fun j y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[locDens, ReciprocityTheory.AnForm.maDens, ReciprocityTheory.AnForm.mdisc_zero]`. Establish `hint : ∀ (f : (Fin 0 → ℂ) → ℝ) (K : Set (Fin 0 → ℂ)), ∫ y in K, f y = (volume K).toReal * f default`. Introduce `f K`. Establish `: f = fun _ => f default` using `funext fun y => congrArg f (Subsingleton.elim y default)`. Rewrite using `[this, integral_const, measureReal_def, Measure.restrict_apply_univ, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvol : ∀ K : Set (Fin 0 → ℂ), 0 ≤ (volume K).toReal ∧ (volume K).toReal ≤ 1` using `fun K => ⟨ENNReal.toReal_nonneg, by`. Use `ENNReal.toReal_mono (by rw [hv]; exact ENNReal.one_ne_top) (measure_mono (μ := volume) (Set.subset_univ K))` as an intermediate fact. Rewrite using `[hv, ENNReal.toReal_one] at this⟩` and apply the resulting hypothesis. Use `set p : Fin A.n → X := fun j => (A.chart j).symm default`. Use `set B := ∑ j, |Real.log (r (p j))|`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := ∑ j, |r (p j)| + Real.exp 1`. Establish `hB : 0 ≤ B` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hM : 0 < M` using `by positivity`. Use `⟨B * M, fun R₀ hR₀ => ⟨fun j K _ _ => Integrable.of_finite.integrableOn, ?_⟩⟩` and prove the remaining obligations. Use `set g := (tail Yo r R₀).indicator fun x => Real.log (r x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hR₀pos : 0 < R₀` using `lt_of_lt_of_le (Real.exp_pos 1) hR₀`. Establish `hlog : 1 ≤ Real.log R₀`. Use `Real.log_le_log (Real.exp_pos 1) hR₀` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Establish `hg : ∀ x, |g x| ≤ |Real.log (r x)|` using `fun x => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [g, Set.indicator]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hterm : ∀ (P : ChartPartition A) j, |∫ y in (A.chart j).target, P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A T j y| ≤ |Real.log (r (p j))| ∧ (M < R₀ → ∫ y in (A.chart j).target, P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * locDens A T j y = 0)`. Introduce `P j`. Rewrite using `[hint, hd, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hχ0` using `P.nonneg j (p j)`. Establish `hχ1 : P.χ j (p j) ≤ 1` using `P.sum_eq_one (p j) ▸ Finset.single_le_sum (fun i _ => P.nonneg i (p j)) (Finset.mem_univ j)`. Take `⟨hv0, hv1⟩` from `hvol (A.chart j).target`. Use `⟨?_, fun hMR => ?_⟩` and prove the remaining obligations. Rewrite using `[abs_mul, abs_mul, abs_of_nonneg hv0, abs_of_nonneg hχ0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `hg (p j)` as an intermediate fact. Establish `h2 : P.χ j (p j) * |g (p j)| ≤ |Real.log (r (p j))|` using `by nlinarith [abs_nonneg (g (p j))]`. Use polynomial arithmetic with `[abs_nonneg (g (p j))]`. Establish `hr : |r (p j)| ≤ ∑ i, |r (p i)|` using `Finset.single_le_sum (f := fun i => |r (p i)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)`. Establish `hn : p j ∉ tail Yo r R₀` using `fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `h.2` as an intermediate fact. Use `le_abs_self (r (p j))` as an intermediate fact. Use `Real.exp_pos 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `show (volume (A.chart j).target).toReal * (P.χ j (p j) * g (p j)) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Rewrite using `[show g (p j) = 0 from Set.indicator_of_notMem hn _]`. Simplify using the standard rewrite rules. Establish `hRHS : 0 ≤ B * M * Real.log R₀ ^ (0 + 1) / R₀`. Establish `: 0 ≤ Real.log R₀` using `by linarith`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `show mInt A T g ≤ B * M * Real.log R₀ ^ (0 + 1) / R₀`. Unfold `mInt`. Use `split_ifs with h`. Unfold `integralWith`. Distinguish the cases in `hMR : M < R₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[Finset.sum_eq_zero fun j _ => (hterm h.some j).2 hMR]`. Conclude with `hRHS`. Use `replace hMR := not_lt.mp hMR`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ hR₀pos, pow_one]`.
-
-Establish `h1 : B * R₀ ≤ B * M` using `mul_le_mul_of_nonneg_left hMR hB`. Establish `h2 : B * M ≤ B * M * Real.log R₀`. Use `mul_nonneg hB hM.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `hRHS`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tailLogBound_dim_zero {X : Type} [TopologicalSpace X] (A : FinHolAtlas 0 X) (Yo : Set X)
     (r : X → ℝ) (T : Fin 0 → LocPot X) : ∃ CE : ℝ, TailLogBound A Yo r T CE := by

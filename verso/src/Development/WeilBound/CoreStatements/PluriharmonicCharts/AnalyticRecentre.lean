@@ -11,7 +11,7 @@ namespace PositivityTheory.Xgp.c_bm_exists_local
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `h`. Use `h.2 1 trivial` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_top (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)) := by
   intro h
@@ -19,7 +19,7 @@ theorem not_top (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)
   simp at this
 
 /- English proof (translation)
-Establish `h1 : (fun z => G z q) = (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Q => ℂ) q) ∘ G := rfl`. Rewrite using `[h1, fderiv_comp y (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Q => ℂ) q).differentiableAt hG, ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem fderiv_pi_apply {E Q : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [Fintype Q]
     {G : E → Q → ℂ} {y : E} (hG : DifferentiableAt ℂ G y) (q : Q) (w : E) :
@@ -30,29 +30,25 @@ private theorem fderiv_pi_apply {E Q : Type} [NormedAddCommGroup E] [NormedSpace
   rfl
 
 /- English proof (translation)
-Establish `hx'src : (R.A.chart j).symm y ∈ (R.A.chart j).source` using `(R.A.chart j).map_target hyt`. Establish `hyx' : R.A.chart j ((R.A.chart j).symm y) = y` using `(R.A.chart j).right_inv hyt`. Establish `hmem` using `R.mem ((R.A.chart j).symm y) ((R.A.chart j).symm y) (R.mem_U _)`. Use `choose p hp using hmem.1`. Establish `himm` using `R.immersion ((R.A.chart j).symm y) (not_top _) p hp j hx'src`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `himm` using `[hyx']`. Establish `hdiffq : ∀ q, DifferentiableAt ℂ (fun z => R.lift x ((R.A.chart j).symm z) q) y` using `fun q => (R.holo x q j y ⟨hyt, hxU⟩).differentiableAt`. Establish `hdiff : DifferentiableAt ℂ (fun z => R.lift x ((R.A.chart j).symm z)) y` using `differentiableAt_pi.mpr hdiffq`. Take `⟨c0, hc0, hc0eq⟩` from `R.compat x ((R.A.chart j).symm y) ((R.A.chart j).symm y) ⟨hxU, R.mem_U _⟩`. Establish `hb : ∀ k, R.lift x ((R.A.chart j).symm y) ⟨k, p k⟩ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[hc0eq]`. Conclude with `mul_ne_zero (hc0 k) (hp k)`. Establish `hgq : ∀ q : Σ k, ι k, DifferentiableAt ℂ (fun z => R.lift x ((R.A.chart j).symm z) q / R.lift x ((R.A.chart j).symm z) ⟨q.1, p q.1⟩) y`. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [div_eq_mul_inv]`. Conclude with `(hdiffq q).mul ((hdiffq ⟨q.1, p q.1⟩).inv (hb q.1))`. Establish `hopen : IsOpen ((R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' (R.U x ∩ R.U ((R.A.chart j).symm y)))` using `(R.A.chart j).continuousOn_symm.isOpen_inter_preimage (R.A.chart j).open_target ((R.isOpen_U x).inter (R.isOpen_U _))`. Establish `hev : (fun z => affCoord p (R.lift x ((R.A.chart j).symm z))) =ᶠ[𝓝 y] (fun z => affCoord p (R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm z)))` using `by filter_upwards [hopen.mem_nhds ⟨hyt, hxU, R.mem_U _⟩] with z hz`. Take `⟨c1, hc1, hc1eq⟩` from `R.compat x ((R.A.chart j).symm y) _ hz.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc1eq]`. Use function extensionality and compare the values at `q`. Simplify using `only [affCoord]`. Conclude with `mul_div_mul_left _ _ (hc1 q.1)`. Establish `hker : fderiv ℂ (fun z => affCoord p (R.lift x ((R.A.chart j).symm z))) y = fderiv ℂ (fun z => affCoord p (R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm z))) y` using `hev.fderiv_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hcomp : ∀ r : Σ k, ι k, fderiv ℂ (fun z => R.lift x ((R.A.chart j).symm z) r) y w = c r.1 * R.lift x ((R.A.chart j).symm y) r`. Introduce `r`. Rewrite using `[← fderiv_pi_apply hdiff r w, hc]`. Both sides reduce to the same expression. Establish `hmain : ∀ q : Σ k, ι k, fderiv ℂ (fun z => R.lift x ((R.A.chart j).symm z) q / R.lift x ((R.A.chart j).symm z) ⟨q.1, p q.1⟩) y w = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q`. Establish `hbd` using `hdiffq ⟨q.1, p q.1⟩`. Establish `hbne` using `hb q.1`. Establish `hg` using `hgq q`. Establish `hcq` using `hcomp q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcr` using `hcomp ⟨q.1, p q.1⟩`. Establish `hbev` using `hbd.continuousAt.eventually_ne hbne`. Establish `hprod : ((fun z => R.lift x ((R.A.chart j).symm z) q / R.lift x ((R.A.chart j).symm z) ⟨q.1, p q.1⟩) * (fun z => R.lift x ((R.A.chart j).symm z) ⟨q.1, p q.1⟩)) =ᶠ[𝓝 y] fun z => R.lift x ((R.A.chart j).symm z) q` using `by filter_upwards [hbev] with z hz`. Conclude with `div_mul_cancel₀ _ hz`. Establish `e : fderiv ℂ ((fun z => R.lift x ((R.A.chart j).symm z) q / R.lift x ((R.A.chart j).symm z) ⟨q.1, p q.1⟩) * (fun z => R.lift x ((R.A.chart j).symm z) ⟨q.1, p q.1⟩)) y = fderiv ℂ (fun z => R.lift x ((R.A.chart j).symm z) q) y` using `hprod.fderiv_eq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `e` using `[fderiv_mul hg hbd]`. Establish `e2` using `congrArg (fun T => T w) e`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, hcq, hcr] at e2`. Establish `h3 : R.lift x ((R.A.chart j).symm y) q / R.lift x ((R.A.chart j).symm y) ⟨q.1, p q.1⟩ * (c q.1 * R.lift x ((R.A.chart j).symm y) ⟨q.1, p q.1⟩) = c q.1 * R.lift x ((R.A.chart j).symm y) q`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h4 : R.lift x ((R.A.chart j).symm y) ⟨q.1, p q.1⟩ * fderiv ℂ (fun z => R.lift x ((R.A.chart j).symm z) q / R.lift x ((R.A.chart j).symm z) ⟨q.1, p q.1⟩) y w = 0`. Take the linear combination `e2 - h3`. Conclude with `(mul_eq_zero.mp h4).resolve_left hbne`. Establish `hdiffA : DifferentiableAt ℂ (fun z => affCoord p (R.lift x ((R.A.chart j).symm z))) y` using `differentiableAt_pi.mpr fun q => hgq q`. Establish `hw : fderiv ℂ (fun z => affCoord p (R.lift x ((R.A.chart j).symm z))) y w = 0`.
-
-Use function extensionality and compare the values at `q`. Rewrite using `[fderiv_pi_apply hdiffA q w]`. Conclude with `hmain q`. Establish `hw' : fderiv ℂ (fun z => affCoord p (R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm z))) y w = 0`. Rewrite using `[← hker]`.
-
-Conclude with `hw`. Conclude with `LinearMap.ker_eq_bot'.mp himm w hw'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imm_chart {P : Ideal (MRing ι)} {D : ℕ} (R : AnLogRes P ⊤ D) (x : R.X) (j : Fin R.A.n) (y : Fin D → ℂ)
     (hyt : y ∈ (R.A.chart j).target) (hxU : (R.A.chart j).symm y ∈ R.U x) (w : Fin D → ℂ) (c : K → ℂ)
@@ -140,7 +136,7 @@ theorem imm_chart {P : Ideal (MRing ι)} {D : ℕ} (R : AnLogRes P ⊤ D) (x : R
   exact LinearMap.ker_eq_bot'.mp himm w hw'
 
 /- English proof (translation)
-Establish `h1` using `h.fderiv_eq (𝕜 := ℂ)`. Rewrite `h1` using `[fderiv_comp x hg hf, fderiv_id]`. Establish `h2` using `congrArg (fun A => A v) h1`. Simplify using `only [ContinuousLinearMap.comp_apply, hv, map_zero, ContinuousLinearMap.id_apply] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inj_of_leftInv {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
     {f : E → F} {g : F → E} {x : E} (hf : DifferentiableAt ℂ f x) (hg : DifferentiableAt ℂ g (f x))
@@ -152,9 +148,7 @@ theorem inj_of_leftInv {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [
   exact h2.symm
 
 /- English proof (translation)
-Unfold `recentre`. Rewrite using `[show (fun u : Fin n → ℂ => w₀ + (ρ : ℂ) • u ∘ π) = fun u i => w₀ i + (ρ : ℂ) * u (π i) from by`. Use function extensionality and compare the values at `u i`. Use the proof step `simp]`. Use `analyticAt_pi_iff.mpr fun i => ?_` and prove the remaining obligations.
-
-Conclude with `analyticAt_const.add (analyticAt_const.mul ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) (π i)).analyticAt t))`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analytic_recentre {n : ℕ} (w₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) :
     AnalyticAt ℂ (recentre w₀ ρ π) t := by
@@ -167,7 +161,7 @@ theorem analytic_recentre {n : ℕ} (w₀ : Fin n → ℂ) (ρ : ℝ) (π : Equi
     ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) (π i)).analyticAt t))
 
 /- English proof (translation)
-Unfold `uncentre`. Use `analyticAt_pi_iff.mpr fun i => ?_` and prove the remaining obligations. Conclude with `analyticAt_const.mul (((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) (π.symm i)).analyticAt t).sub analyticAt_const)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analytic_uncentre {n : ℕ} (w₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) :
     AnalyticAt ℂ (uncentre w₀ ρ π) t := by
@@ -177,7 +171,7 @@ theorem analytic_uncentre {n : ℕ} (w₀ : Fin n → ℂ) (ρ : ℝ) (π : Equi
     (((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) (π.symm i)).analyticAt t).sub analyticAt_const)
 
 /- English proof (translation)
-Establish `h : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Use function extensionality and compare the values at `i`. Simplify using `[recentre, uncentre, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem uncentre_recentre {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) :
     uncentre t₀ ρ π (recentre t₀ ρ π t) = t := by
@@ -186,7 +180,7 @@ theorem uncentre_recentre {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 <
   simp [recentre, uncentre, h]
 
 /- English proof (translation)
-Rewrite `ht` using `[mem_ball_zero_iff]`. Establish `hc : ‖t ∘ π‖ < 1` using `(pi_norm_lt_iff one_pos).mpr fun i => lt_of_le_of_lt (norm_le_pi_norm t (π i)) ht`. Establish `h1 : ρ * ‖t ∘ π‖ < ρ` using `by simpa using mul_lt_mul_of_pos_left hc hρ`. Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Simplify `h1` using `[recentre, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hρ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem recentre_mem_ball {n : ℕ} (w₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) {t : Fin n → ℂ}
     (ht : t ∈ Metric.ball (0 : Fin n → ℂ) 1) : recentre w₀ ρ π t ∈ Metric.ball w₀ ρ := by
@@ -198,13 +192,13 @@ theorem recentre_mem_ball {n : ℕ} (w₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 <
   simpa [recentre, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hρ] using h1
 
 /- English proof (translation)
-Establish `hc : S.card ≤ n` using `by simpa using S.card_le_univ`. Establish `h1 : Fintype.card {j : Fin n // j ∈ S} = Fintype.card {j : Fin n // (j : ℕ) < S.card}`. Rewrite using `[Fintype.card_coe, ← Fintype.card_congr (Fin.castLEquiv hc), Fintype.card_fin]`. Establish `h2 : Fintype.card {j : Fin n // ¬ j ∈ S} = Fintype.card {j : Fin n // ¬ (j : ℕ) < S.card}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e` to `Fintype.equivOfCardEq h1`. Set `e'` to `Fintype.equivOfCardEq h2`. Set `π : Equiv.Perm (Fin n)` to `((Equiv.sumCompl (fun j : Fin n => j ∈ S)).symm.trans (e.sumCongr e')).trans (Equiv.sumCompl (fun j : Fin n => (j : ℕ) < S.card))`. Use `⟨π, fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ S`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hπ : π j = (e ⟨j, hj⟩ : Fin n)`. Simplify using `only [π, Equiv.trans_apply, Equiv.sumCompl_symm_apply_of_pos hj, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]`. Rewrite using `[hπ]`. Conclude with `iff_of_true (e ⟨j, hj⟩).2 hj`. Establish `hπ : π j = (e' ⟨j, hj⟩ : Fin n)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [π, Equiv.trans_apply, Equiv.sumCompl_symm_apply_of_neg hj, Equiv.sumCongr_apply, Sum.map_inr, Equiv.sumCompl_apply_inr]`. Rewrite using `[hπ]`. Conclude with `iff_of_false (e' ⟨j, hj⟩).2 hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_perm {n : ℕ} (S : Finset (Fin n)) :
     ∃ π : Equiv.Perm (Fin n), ∀ j, ((π j : Fin n) : ℕ) < S.card ↔ j ∈ S := by
@@ -232,9 +226,9 @@ theorem exists_perm {n : ℕ} (S : Finset (Fin n)) :
     exact iff_of_false (e' ⟨j, hj⟩).2 hj
 
 /- English proof (translation)
-Use `analyticAt_pi_iff.mpr fun q => ?_` and prove the remaining obligations. Take `⟨j0, hj0⟩` from `R.A.cover ((B.chart k).symm v)`. Establish `hu : (R.A.chart j0) ((B.chart k).symm v) ∈ (R.A.chart j0).target ∩ (R.A.chart j0).symm ⁻¹' R.U x₀` using `⟨(R.A.chart j0).map_source hj0, by simp [Set.mem_preimage, (R.A.chart j0).left_inv hj0, hU]⟩`. Establish `h1 : AnalyticAt ℂ ((fun y => R.lift x₀ y q) ∘ (R.A.chart j0).symm) ((R.A.chart j0) ((B.chart k).symm v))` using `R.holo x₀ q j0 _ hu`. Establish `h2 : AnalyticAt ℂ ((R.A.chart j0) ∘ (B.chart k).symm) v` using `hAB.2 k j0 v ⟨hv, hj0⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : AnalyticAt ℂ (((fun y => R.lift x₀ y q) ∘ (R.A.chart j0).symm) ∘ ((R.A.chart j0) ∘ (B.chart k).symm)) v` using `AnalyticAt.comp (g := (fun y => R.lift x₀ y q) ∘ (R.A.chart j0).symm) (f := (R.A.chart j0) ∘ (B.chart k).symm) h1 h2`. Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [((B.chart k).continuousAt_symm hv).preimage_mem_nhds ((R.A.chart j0).open_source.mem_nhds hj0)] with v' hv'`. Simplify using `[(R.A.chart j0).left_inv hv']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem analyticAt_lift_chart_symm {P : Ideal (MRing ι)} {n : ℕ} (R : AnLogRes P ⊤ n) (B : FinHolAtlas n R.X)
     (hAB : R.A.Compatible B) (k : Fin B.n) (x₀ : R.X) {v : Fin n → ℂ} (hv : v ∈ (B.chart k).target)
@@ -256,45 +250,41 @@ private theorem analyticAt_lift_chart_symm {P : Ideal (MRing ι)} {n : ℕ} (R :
   simp [(R.A.chart j0).left_inv hv']
 
 /- English proof (translation)
-Use `set x₀ := (B.chart k).symm w₀ with hx₀`. Establish `hW : IsOpen ((B.chart k).target ∩ (B.chart k).symm ⁻¹' R.U x₀)` using `(B.chart k).continuousOn_symm.isOpen_inter_preimage (B.chart k).open_target (R.isOpen_U x₀)`. Establish `hw₀W : w₀ ∈ (B.chart k).target ∩ (B.chart k).symm ⁻¹' R.U x₀` using `⟨hw₀, R.mem_U x₀⟩`. Take `⟨ρ₀, hρ₀, hball₀⟩` from `Metric.isOpen_iff.mp hW w₀ hw₀W`. Establish `hev : ∀ᶠ ρ in 𝓝[>] (0:ℝ), ρ < ρ₀ ∧ ρ ≤ 1 / 2 ∧ ∀ i, w₀ i ≠ 0 → ρ < ‖w₀ i‖`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((eventually_lt_nhds hρ₀).and ((eventually_le_nhds (by norm_num : (0:ℝ) < 1 / 2)).and (Filter.eventually_all.mpr fun i => ?_))).filter_mono nhdsWithin_le_nhds` and prove the remaining obligations. Distinguish the cases in `hi : w₀ i = 0`. Conclude with `Filter.Eventually.of_forall fun _ h => absurd hi h`. Use `filter_upwards [eventually_lt_nhds (norm_pos_iff.mpr hi)] with ρ h _ using h`. Take `⟨ρ, ⟨hρρ₀, hρhalf, hρw⟩, hρpos⟩` from `(hev.and self_mem_nhdsWithin).exists`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hρ : 0 < ρ` using `hρpos`. Take `⟨π, hπ⟩` from `exists_perm (S.filter fun i => w₀ i = 0)`. Establish `hballW : ∀ w ∈ Metric.ball w₀ ρ, w ∈ (B.chart k).target ∧ (B.chart k).symm w ∈ R.U x₀` using `fun w hw => hball₀ (Metric.ball_subset_ball hρρ₀.le hw)`. Establish `hrec : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, recentre w₀ ρ π t ∈ Metric.ball w₀ ρ` using `fun t ht => recentre_mem_ball w₀ hρ π ht`. Set `γ : (Fin n → ℂ) → (Σ k, ι k) → ℂ` to `fun t => R.lift x₀ ((B.chart k).symm (recentre w₀ ρ π t))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hanalytic : AnalyticOnNhd ℂ γ (Metric.ball 0 1)`. Introduce `t ht`. Take `⟨hrt, hrU⟩` from `hballW _ (hrec t ht)`. Conclude with `(analyticAt_lift_chart_symm R B hAB k x₀ hrt hrU).comp (analytic_recentre w₀ ρ π t)`. Establish `hmemP : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, γ t ∈ mcPts P` using `fun t ht => R.mem x₀ _ (hballW _ (hrec t ht)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `himm : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ (v : Fin n → ℂ), (∃ (c : K → ℂ), (fderiv ℂ γ t) v = torusSmul c (γ t)) → v = 0`. Introduce and unpack `t ht v ⟨c, hcv⟩`. Take `⟨hrt, hrU⟩` from `hballW _ (hrec t ht)`. Take `⟨j0, hj0⟩` from `R.A.cover ((B.chart k).symm (recentre w₀ ρ π t))`. Establish `hopen : IsOpen ((B.chart k).target ∩ (B.chart k).symm ⁻¹' (R.A.chart j0).source)` using `(B.chart k).continuousOn_symm.isOpen_inter_preimage (B.chart k).open_target (R.A.chart j0).open_source`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : {t' | recentre w₀ ρ π t' ∈ (B.chart k).target ∩ (B.chart k).symm ⁻¹' (R.A.chart j0).source} ∈ 𝓝 t` using `(analytic_recentre w₀ ρ π t).continuousAt.preimage_mem_nhds (hopen.mem_nhds ⟨hrt, hj0⟩)`. Establish `hfan : AnalyticAt ℂ (fun t' => R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t'))) t` using `(hAB.2 k j0 _ ⟨hrt, hj0⟩).comp (analytic_recentre w₀ ρ π t)`. Establish `hyt : R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t)) ∈ (R.A.chart j0).target` using `(R.A.chart j0).map_source hj0`. Establish `hsymm : (R.A.chart j0).symm (R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t))) = (B.chart k).symm (recentre w₀ ρ π t)` using `(R.A.chart j0).left_inv hj0`. Establish `hxU : (R.A.chart j0).symm (R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t))) ∈ R.U x₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsymm]`. Conclude with `hrU`. Establish `hL1 : DifferentiableAt ℂ (fun y => R.lift x₀ ((R.A.chart j0).symm y)) (R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t)))` using `differentiableAt_pi.mpr fun q => (R.holo x₀ q j0 _ ⟨hyt, hxU⟩).differentiableAt`. Establish `hγeq : γ =ᶠ[𝓝 t] (fun y => R.lift x₀ ((R.A.chart j0).symm y)) ∘ (fun t' => R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t')))` using `by filter_upwards [hN] with t' ht'`. Simplify using `only [γ, Function.comp_apply, (R.A.chart j0).left_inv ht'.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : fderiv ℂ γ t v = fderiv ℂ (fun y => R.lift x₀ ((R.A.chart j0).symm y)) (R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t))) (fderiv ℂ (fun t' => R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t'))) t v)`. Rewrite using `[hγeq.fderiv_eq, fderiv_comp t hL1 hfan.differentiableAt]`. Both sides reduce to the same expression. Establish `hu` using `imm_chart R x₀ j0 _ hyt hxU (fderiv ℂ (fun t' => R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t'))) t v) c (by rw [← hd, hcv, hsymm])`. Establish `hmemB : R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t)) ∈ (R.A.chart j0).target ∩ (R.A.chart j0).symm ⁻¹' (B.chart k).source` using `⟨hyt, by rw [Set.mem_preimage, hsymm]; exact (B.chart k).map_target hrt⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgan : AnalyticAt ℂ (fun y => uncentre w₀ ρ π (B.chart k ((R.A.chart j0).symm y))) (R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t)))` using `(analytic_uncentre w₀ ρ π _).comp (hAB.1 j0 k _ hmemB)`. Establish `hleft : (fun y => uncentre w₀ ρ π (B.chart k ((R.A.chart j0).symm y))) ∘ (fun t' => R.A.chart j0 ((B.chart k).symm (recentre w₀ ρ π t'))) =ᶠ[𝓝 t] id` using `by filter_upwards [hN] with t' ht'`. Simplify using `only [Function.comp_apply, id, (R.A.chart j0).left_inv ht'.2, (B.chart k).right_inv ht'.1, uncentre_recentre w₀ hρ π]`. Conclude with `inj_of_leftInv hfan.differentiableAt hgan.differentiableAt hleft hu`. Establish `hinj : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ t' ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ (c : K → ℂ), (∀ (k : K), c k ≠ 0) → γ t = torusSmul c (γ t') → t = t'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t ht t' ht' c hc heq`. Take `⟨hrt, hrU⟩` from `hballW _ (hrec t ht)`. Take `⟨hrt', hrU'⟩` from `hballW _ (hrec t' ht')`. Take `⟨c1, hc1, hc1eq⟩` from `R.compat x₀ ((B.chart k).symm (recentre w₀ ρ π t)) ((B.chart k).symm (recentre w₀ ρ π t)) ⟨hrU, R.mem_U _⟩`. Take `⟨c2, hc2, hc2eq⟩` from `R.compat x₀ ((B.chart k).symm (recentre w₀ ρ π t')) ((B.chart k).symm (recentre w₀ ρ π t')) ⟨hrU', R.mem_U _⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `horb : SameOrbit (R.lift ((B.chart k).symm (recentre w₀ ρ π t)) ((B.chart k).symm (recentre w₀ ρ π t))) (R.lift ((B.chart k).symm (recentre w₀ ρ π t')) ((B.chart k).symm (recentre w₀ ρ π t')))`. Use `⟨fun k => (c1 k)⁻¹ * c k * c2 k, fun k => mul_ne_zero (mul_ne_zero (inv_ne_zero (hc1 k)) (hc k)) (hc2 k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Establish `h1p` using `congrFun hc1eq p`. Establish `h2p` using `congrFun hc2eq p`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hep : R.lift x₀ ((B.chart k).symm (recentre w₀ ρ π t)) p = c p.1 * R.lift x₀ ((B.chart k).symm (recentre w₀ ρ π t')) p` using `congrFun heq p`. Simplify using `only at h1p h2p ⊢`. Rewrite `hep` using `[h2p, h1p]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hep]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hzz` using `R.inj _ _ (not_top _) horb`. Establish `hrr : recentre w₀ ρ π t = recentre w₀ ρ π t'`. Establish `h` using `congrArg (B.chart k) hzz`. Rewrite `h` using `[(B.chart k).right_inv hrt, (B.chart k).right_inv hrt']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hbd : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, γ t ∈ Bd ↔ ∃ (i : Fin n), (i : ℕ) < (S.filter fun i => w₀ i = 0).card ∧ t i = 0`. Introduce `t ht`. Take `⟨hrt, hrU⟩` from `hballW _ (hrec t ht)`. Establish `hnorm : ∀ i, ‖t i‖ < 1` using `fun i => lt_of_le_of_lt (norm_le_pi_norm t i) (mem_ball_zero_iff.mp ht)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrec_i : ∀ i, recentre w₀ ρ π t i = w₀ i + (ρ : ℂ) * t (π i)` using `fun i => by simp [recentre]`. Rewrite using `[show γ t = R.lift x₀ ((B.chart k).symm (recentre w₀ ρ π t)) from rfl, hZ x₀ _ hrU, hS _ hrt]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hiS, hi0⟩`. Rewrite `hi0` using `[hrec_i]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw0 : w₀ i = 0`. Assume the negation of the conclusion as `hne`. Establish `h1 : ‖w₀ i‖ = ρ * ‖t (π i)‖`. Establish `e : w₀ i = -((ρ : ℂ) * t (π i))` using `eq_neg_of_add_eq_zero_left hi0`. Rewrite using `[e, norm_neg, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hρ]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `h2 : ρ * ‖t (π i)‖ < ρ` using `by simpa using mul_lt_mul_of_pos_left (hnorm (π i)) hρ`. Combine the linear relations using `[hρw i hne]`. Establish `ht0 : t (π i) = 0`. Rewrite `hi0` using `[hw0, zero_add]`. Conclude with `(mul_eq_zero.mp hi0).resolve_left (by exact_mod_cast hρ.ne')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨π i, (hπ i).mpr (Finset.mem_filter.mpr ⟨hiS, hw0⟩), ht0⟩`. Introduce and unpack `⟨i', hi', ht0⟩`. Establish `hmem : π.symm i' ∈ S.filter (fun i => w₀ i = 0)` using `(hπ (π.symm i')).mp (by simpa using hi')`. Take `⟨hS', hw0⟩` from `Finset.mem_filter.mp hmem`. Use `⟨π.symm i', hS', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hrec_i, hw0, Equiv.apply_symm_apply, ht0, mul_zero, zero_add]`. Establish `hale : (S.filter fun i => w₀ i = 0).card ≤ n`. Simplify using `using (S.filter fun i => w₀ i = 0).card_le_univ`. Use `⟨ρ, π, ⟨γ, (S.filter fun i => w₀ i = 0).card, hale, hanalytic, hmemP, himm, hinj, hbd⟩, hρ, hρhalf, hballW, fun t => rfl, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
-
-Establish `hmem` using `(hπ (π.symm i)).mp (by simpa using hi)`. Conclude with `Finset.mem_filter.mp hmem`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sncChart {P : Ideal (MRing ι)} {n : ℕ} (R : AnLogRes P ⊤ n) (B : FinHolAtlas n R.X)
     (hAB : R.A.Compatible B) (k : Fin B.n) (w₀ : Fin n → ℂ) (hw₀ : w₀ ∈ (B.chart k).target)

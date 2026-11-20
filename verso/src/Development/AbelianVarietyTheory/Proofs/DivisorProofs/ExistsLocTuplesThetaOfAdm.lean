@@ -18,73 +18,61 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 /- English proof (translation)
-Introduce `g n hg hn hodd F φ hφ W hW o' Ω _ _ _ _ S ρ u hBig hSharp hgen`. Establish `hNodd : Odd S.N` using `by rw [ρ.N_eq]; exact (ρ.n_odd.pow).pow`. Establish `hN2` using `S.N_ge`. Establish `hN3 : 3 ≤ S.N` using `by obtain ⟨j, hj⟩ := hNodd; omega`. Use `haveI hN0 : NeZero S.N := ⟨by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn2 : ρ.n ≠ 2`. Introduce `h2`. Use `ρ.n_odd` as an intermediate fact. Rewrite `this` using `[h2]`. Conclude with `(Nat.not_odd_iff_even.2 even_two) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hε : ∃ ε : Fin 8 → ℤ, Nat.Coprime S.N (2 * (∑ u, ∑ v, W u v * ε u * ε v).natAbs)`. Rewrite using `[ρ.N_eq]`. Conclude with `GlobalTheory.T.exists_e8Form_value_coprime_oddPrimePow W hW ρ.n ρ.k ρ.n_prime hn2`. Establish `hC` using `GlobalTheory.T.minimiser_cell_function_min_finitely_many_combinations g φ hφ W hW.1 S.N hN3 hε`. Use `choose ιf 𝓛f hιf using fun R : Fin (g + 1) => hC R.1 (Nat.lt_succ_iff.1 R.2)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : NeZero (S.r * S.N) := ⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by omega)⟩`. Use `haveI : NeZero ((S.r * S.N) ^ 2) := ⟨pow_ne_zero _ (NeZero.ne _)⟩`. Use `haveI : Finite (AddSubgroup S.Gam) := Finite.of_injective (fun H : AddSubgroup S.Gam => (H : Set S.Gam)) SetLike.coe_injective`. Use `haveI : ∀ T₀ : AddSubgroup S.Gam, Finite (T₀ →+ ZMod S.N) := fun T₀ => Finite.of_injective (fun f : T₀ →+ ZMod S.N => (f : T₀ → ZMod S.N)) DFunLike.coe_injective`. Set `Dt` to `Σ T₀ : AddSubgroup S.Gam, (T₀ →+ ZMod S.N) × (S.J × (T₀ → ZMod ((S.r * S.N) ^ 2))) × S.Gam`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Finite Dt := inferInstance`. Set `Es : Set Ω` to `{v | v ≠ 0} ∩ Set.range (fun d : Dt => S.FF d.1 d.2.1 d.2.2.1 / S.th d.2.2.2)`. Establish `hEs : Es.Finite` using `(Set.finite_range _).inter_of_right _`. Use `letI : Fintype Es := hEs.fintype`. Set `mult : Fin (g + 1) → ℕ` to `fun R => ∏ s ∈ Finset.univ.erase R, ιf s`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `K` to `Σ R : Fin (g + 1), Σ _ : {L // L ∈ 𝓛f R}, ((Fin 8 → Fin R.1 → ZMod S.N) → Es)`. Set `Jk : K → Type` to `fun k => {ν // ν ∈ k.2.1.1}`. Set `t : ∀ k, Jk k → Ω` to `fun k j => ∏ c, ((k.2.2 c : Es) : Ω) ^ ((mult k.1 : ℤ) * j.1 c)`. Use `⟨∏ R, ιf R, K, inferInstance, Jk, fun k => inferInstance, t, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero (Finset.prod_ne_zero_iff.2 fun R _ => by have := (hιf R).1; omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k j`. Conclude with `Finset.prod_ne_zero_iff.2 fun c _ => zpow_ne_zero _ (k.2.2 c).2.1`. Introduce `M U₀ EE FinalForm hAdm hEE x`. Take `⟨r, b₀, μ, e, hr, hsym, hpos, hμ, hmin, he, htr⟩` from `GlobalTheory.T.thetaModel_local_lattice_fourierParts_orders g n hg hn hodd F W hW o' Ω S ρ u hBig hSharp hgen hN0 M U₀ EE FinalForm hAdm hEE x`. Set `R : Fin (g + 1)` to `⟨r, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hιR, hL⟩` from `hιf R`. Take `⟨L, hLmem, hLprop⟩` from `hL b₀ hsym hpos μ hμ hmin`. Establish `heE : ∀ c, e c ∈ Es` using `fun c => by`. Take `⟨hne, T₀, c', κ, x₀, _, hc⟩` from `he c`. Conclude with `⟨hne, ⟨⟨T₀, c', κ, x₀⟩, hc.symm⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨R, ⟨L, hLmem⟩, fun c => ⟨e c, heE c⟩⟩, ?_⟩` and prove the remaining obligations. Introduce `T ξ hthr hspec`. Take `⟨π, hπs, hπmin, hq⟩` from `htr T ξ hthr hspec`. Use `set b' := T.β.compl₁₂ π.toIntLinearMap π.toIntLinearMap with hb'`. Establish `hb'sym : ∀ x y, b' x y = b' y x` using `fun x y => T.symm _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hb'psd : ∀ x, 0 ≤ b' x x` using `GlobalTheory.T.bilinForm_psd_of_minimal_tuple_modN (N := S.N) (by omega) W hW b' (μ 0) fun α hα => hπmin 0 α fun u i => by obtain ⟨m, hm⟩ := hα u i; simp [hm, hμ]`. Take `⟨hle, ν₀, hν₀, heq⟩` from `hLprop b' hb'sym hb'psd hπmin`. Establish `hφeq : φ.evalZ b' = φ.evalZ T.β`. Establish `hpull : pull π.toIntLinearMap T.β = b'` using `LinearMap.ext₂ fun _ _ => rfl`. Rewrite using `[← hpull]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `evalZ_pull φ (r := π.toIntLinearMap) hπs T.β`. Establish `hφ0 : 0 ≤ φ.evalZ b'` using `(hφ (Fin r → ℤ) (by rw [Module.finrank_fin_fun]; exact hr)).evalZ_nonneg (mem_balForms_int.2 hb'sym) hb'psd`. Use `set y : Sp (FractionRing T.V) ⟶ M.Z := jK T.V ≫ ξ with hy`. Use `set z₀ := y (IsLocalRing.closedPoint (FractionRing T.V)) with hz₀`. Establish `hsp : ∀ w, y w ⤳ z₀` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton y _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz₀U : z₀ ∈ U₀`. Take `⟨ξ₀, hξ₀, -⟩` from `hthr`. Rewrite using `[hz₀, hy, ← hξ₀]`. Establish `hm : (ξ₀ ≫ U₀.ι) (IsLocalRing.closedPoint (FractionRing T.V)) ∈ Set.range U₀.ι`. Conclude with `⟨ξ₀ (IsLocalRing.closedPoint (FractionRing T.V)), rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[U₀.range_ι]`. Conclude with `hm`. Establish `hO : M.ringOn U₀ ≤ M.O z₀` using `RatModel.ringOn_le_O (M := M) hz₀U`. Establish `hOv` using `hAdm.1`. Establish `hFFR : ∀ (T₀ : AddSubgroup S.Gam) c' κ, S.FF T₀ c' κ ∈ S.R`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `T₀ c' κ`. Use `haveI : Fintype T₀ := Fintype.ofFinite _`. Unfold `ThetaSys.FF`. Rewrite using `[finsum_eq_sum_of_fintype]`. Conclude with `Subalgebra.sum_mem _ fun t _ => Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (S.ev_mem _ _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hunit : ∀ c, e c ≠ 0 ∧ e c ∈ M.O z₀ ∧ (e c)⁻¹ ∈ M.O z₀`. Introduce `c`. Take `⟨hne, T₀, c', κ, x₀, hiso, hc⟩` from `he c`. Rewrite `hne`, the goal using `[hc]`. Establish `hF : S.FF T₀ c' κ ≠ 0` using `(div_ne_zero_iff.1 hne).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hth : S.th x₀ ≠ 0` using `(div_ne_zero_iff.1 hne).2`. Use `⟨hne, hO ?_, hO ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Conclude with `Subalgebra.mul_mem _ (hOv.le (hFFR T₀ c' κ)) (hOv.th_unit x₀ hth)`. Rewrite using `[inv_div, div_eq_mul_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subalgebra.mul_mem _ (hOv.le (S.th_mem x₀)) (hOv.FF_unit T₀ c' κ hiso hF)`. Establish `hvne : ∀ c, M.val y (e c) ≠ 0`. Introduce `c`. Establish `h1` using `RatModel.val_mul (M := M) hsp (hunit c).2.1 (hunit c).2.2`. Rewrite `h1` using `[mul_inv_cancel₀ (hunit c).1, RatModel.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `left_ne_zero_of_mul_eq_one h1.symm`. Establish `hpow : ∀ c, M.val y (e c ^ S.N) = M.val y (e c) ^ S.N`. Introduce `c`. Use `GlobalTheory.T.integralModel_value_prod_zpow_localUnits M y z₀ hsp (Finset.univ : Finset Unit) (fun _ => e c) (fun _ => (S.N : ℤ)) fun _ => hunit c` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose v w hvw using fun c => GlobalTheory.T.fractionRing_eq_uniformiser_zpow_mul_unit T.irr (M.val y (e c)) (hvne c)`. Establish `hϖ0 : algebraMap T.V (FractionRing T.V) T.ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T.V (FractionRing T.V))).2 T.irr.ne_zero`. Establish `hunitK : ∀ (a : T.Vˣ) (k : ℤ), algebraMap T.V (FractionRing T.V) ((a ^ k : T.Vˣ) : T.V) = (algebraMap T.V (FractionRing T.V) (a : T.V)) ^ k`. Introduce `a k`. Establish `h1 : algebraMap T.V (FractionRing T.V) ((a ^ k : T.Vˣ) : T.V) = ((Units.map (algebraMap T.V (FractionRing T.V)).toMonoidHom (a ^ k) : (FractionRing T.V)ˣ) : FractionRing T.V)` using `rfl`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[h1, map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Establish `hNv : ∀ c, (S.N : ℤ) * v c = qW W b' (μ c)`. Introduce `c`. Take `⟨hq0, w', hw'⟩` from `hq c`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw'` using `[hpow]`. Establish `h2 : algebraMap T.V (FractionRing T.V) T.ϖ ^ ((S.N : ℤ) * v c) * algebraMap T.V (FractionRing T.V) ((w c ^ (S.N : ℤ) : T.Vˣ) : T.V) = algebraMap T.V (FractionRing T.V) T.ϖ ^ (((qW W b' (μ c)).toNat : ℕ) : ℤ) * algebraMap T.V (FractionRing T.V) (w' : T.V)`. Rewrite using `[hunitK, mul_comm (S.N : ℤ) (v c), zpow_mul, zpow_natCast, zpow_natCast, ← mul_pow, ← hvw c, hw', map_mul, map_pow, zpow_natCast]`. Use `GlobalTheory.T.uniformiser_zpow_mul_unit_exponent_unique T.irr _ _ _ _ h2` as an intermediate fact. Rewrite using `[this, Int.toNat_of_nonneg hq0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmR : (∏ R', ιf R') = ιf R * mult R` using `(Finset.mul_prod_erase Finset.univ ιf (Finset.mem_univ R)).symm`. Set `E : ((Fin 8 → Fin r → ZMod S.N) → ℤ) → ℤ` to `fun ν => ∑ c, v c * ((mult R : ℤ) * ν c)`. Establish `hE : ∀ ν, (S.N : ℝ) * (E ν : ℝ) = (mult R : ℝ) * ∑ c, (ν c : ℝ) * (qW W b' (μ c) : ℝ)`. Introduce `ν`. Simplify using `only [E, Int.cast_sum, Int.cast_mul, Int.cast_natCast, Finset.mul_sum]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← hNv c]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hzs : ∀ (f : (Fin 8 → Fin r → ZMod S.N) → ℤ) (s : Finset (Fin 8 → Fin r → ZMod S.N)), ∏ c ∈ s, algebraMap T.V (FractionRing T.V) T.ϖ ^ f c = algebraMap T.V (FractionRing T.V) T.ϖ ^ ∑ c ∈ s, f c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `f s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hϖ0]`. Establish `hval : ∀ ν, M.val y (∏ c, e c ^ ((mult R : ℤ) * ν c)) = algebraMap T.V (FractionRing T.V) T.ϖ ^ E ν * algebraMap T.V (FractionRing T.V) ((∏ c, w c ^ ((mult R : ℤ) * ν c) : T.Vˣ) : T.V)`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `ν`. Rewrite using `[GlobalTheory.T.integralModel_value_prod_zpow_localUnits M y z₀ hsp _ _ _ fun c => hunit c]`. Simplify using `only [hvw, mul_zpow, Finset.prod_mul_distrib, ← zpow_mul, ← hunitK]`. Rewrite using `[hzs, Units.coe_prod, map_prod]`. Establish `hprodO : ∀ ν : (Fin 8 → Fin r → ZMod S.N) → ℤ, (∏ c, e c ^ ((mult R : ℤ) * ν c)) ∈ M.O z₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ν`. Use `Subalgebra.prod_mem _ fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.eq_nat_or_neg ((mult R : ℤ) * ν c) with ⟨k, hk | hk⟩ <;> rw [hk]`. Rewrite using `[zpow_natCast]`. Conclude with `Subalgebra.pow_mem _ (hunit c).2.1 k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `Subalgebra.pow_mem _ (hunit c).2.2 k`. Establish `hιeq : ((∏ R', ιf R' : ℕ) : ℝ) = (ιf R : ℝ) * mult R` using `by rw [hmR]; push_cast; ring`. Establish `hNpos : (0 : ℝ) < S.N` using `by exact_mod_cast (show 0 < S.N by omega)`. Establish `hge : ∀ ν ∈ L, ((∏ R', ιf R' : ℕ) : ℝ) * φ.evalZ T.β ≤ E ν`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `ν hν`. Establish `h1` using `mul_le_mul_of_nonneg_left (hle ν hν) (Nat.cast_nonneg (α := ℝ) (mult R))`. Rewrite `h1` using `[← hE ν]`. Rewrite using `[hιeq, ← hφeq]`. Use `le_of_mul_le_mul_left ?_ hNpos` and prove the remaining obligations.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish `hE0 : ((E ν₀ : ℤ) : ℝ) = ((∏ R', ιf R' : ℕ) : ℝ) * φ.evalZ T.β`. Establish `h1` using `congrArg (HMul.hMul (mult R : ℝ)) heq`. Rewrite `h1` using `[← hE ν₀]`. Rewrite using `[hιeq, ← hφeq]`.
-
-Use `mul_left_cancel₀ hNpos.ne' ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `hEnn : 0 ≤ E ν₀`. Establish `: (0 : ℝ) ≤ (E ν₀ : ℝ)`. Rewrite using `[hE0]`.
-
-Conclude with `mul_nonneg (Nat.cast_nonneg _) (hφeq ▸ hφ0)`. Conclude with `this` after adjusting the coercions. Use `⟨(E ν₀).toNat, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hE0]`. Conclude with `Int.toNat_of_nonneg hEnn` after adjusting the coercions.
-
-Introduce `j show GlobalTheory.Poinc.OrdGe M T ξ (∏ c, e c ^ ((mult R : ℤ) * j.1 c)) _`. Establish `hle' : E ν₀ ≤ E j.1`. Use `hge j.1 j.2` as an intermediate fact. Rewrite `this` using `[← hE0]`. Conclude with `this` after adjusting the coercions.
-
-Take `⟨d, hd⟩ : ∃ d : ℕ, E j.1 = ((E ν₀).toNat : ℤ) + d` from `⟨(E j.1 - E ν₀).toNat, by omega⟩`. Use `⟨hprodO j.1, T.ϖ ^ d * ((∏ c, w c ^ ((mult R : ℤ) * j.1 c) : T.Vˣ) : T.V), ?_⟩` and prove the remaining obligations. Rewrite using `[hval, hd, map_mul, map_mul, map_pow, map_pow, zpow_add₀ hϖ0, zpow_natCast, zpow_natCast, mul_assoc]`. Use `⟨⟨ν₀, hν₀⟩, ?_⟩ show GlobalTheory.Poinc.OrdEq M T ξ (∏ c, e c ^ ((mult R : ℤ) * ν₀ c)) _` and prove the remaining obligations. Use `⟨∏ c, w c ^ ((mult R : ℤ) * ν₀ c), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hval, map_mul, map_pow, ← zpow_natCast, Int.toNat_of_nonneg hEnn]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.exists_locTuples_theta_of_adm : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (φ : InvFun ℤ), IsPolFan id g φ → ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X), S.Big → SharpOver F W ρ.P u → (∀ w, (spMap S.R.val.toRingHom ≫ u) w ∈ genericPoints F.X) → ∃ (ι : ℕ) (K : Type) (_ : Fintype K) (Jk : K → Type) (_ : ∀ k, Fintype (Jk k)) (t : ∀ k, Jk k → Ω), 1 ≤ ι ∧ (∀ k j, t k j ≠ 0) ∧ ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.admitted M U₀ → S.IsEE M U₀ EE → ∀ x : M.Z, ∃ k, ∀ (T : Trait F) (ξ : Sp T.V ⟶ M.Z), ThroughU M U₀ FinalForm.u₀ u T ξ → ξ (IsLocalRing.closedPoint T.V) ⤳ x → ∃ a : ℕ, (a : ℝ) = ι * φ.evalZ T.β ∧ (∀ j, OrdGe M T ξ (t k j) a) ∧ ∃ j, OrdEq M T ξ (t k j) a := by
   intro g n hg hn hodd F φ hφ W hW o' Ω _ _ _ _ S ρ u hBig hSharp hgen

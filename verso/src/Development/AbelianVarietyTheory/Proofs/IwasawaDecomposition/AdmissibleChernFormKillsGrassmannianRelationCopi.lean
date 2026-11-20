@@ -6,24 +6,22 @@ open Classical
 namespace GlobalTheory.GrassTop
 
 /- English proof (translation)
-Simplify using `[ren, rel, GlobalTheory.PointChern.relPoly, map_sum, renVar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ren_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (τ : GlobalTheory.AllWt.Psi H) (k : ℕ) :
     ren τ (rel k) = GlobalTheory.PointChern.relPoly τ k := by
   simp [ren, rel, GlobalTheory.PointChern.relPoly, map_sum, renVar]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Θ hA τ j hj`. Take `⟨h1, h2, h3, -⟩` from `hA`. Unfold `J at hj`. Proceed by induction on `hj using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Introduce `r`. Break down `hx with ⟨k, hk, rfl⟩ | ⟨b, rfl⟩ | ⟨k, hk, rfl⟩ | ⟨k, hk, rfl⟩` into its components or cases. Rewrite using `[ren_rel, mul_comm]`. Conclude with `h1 τ k hk r`. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ren, map_sub, rename_X, map_one]`. Conclude with `h2 _ r`. Rewrite using `[mul_comm]`. Simplify using `only [ren, rename_X]`. Establish `hm : Dw.mult τ.1 = Dw.p` using `GlobalTheory.PointChern.mult_of_mem Dw τ.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h3 _ _ (by simp only [renVar, if_true]; omega) r`. Rewrite using `[mul_comm]`. Simplify using `only [ren, rename_X]`. Establish `hm : Dw.mult (conjEmb τ.1) = Dw.q` using `GlobalTheory.PointChern.mult_of_not_mem Dw (GlobalTheory.AllWt.conj_not_mem τ)`. Conclude with `h3 _ _ (by simp only [renVar]; simp only [Bool.false_eq_true, if_false]; omega) r`.
+Establish an intermediate fact. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => intro r`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro r`. Rewrite using `[map_add, mul_add, map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => intro r`.
-
-Rewrite using `[smul_eq_mul, map_mul (ren τ) a x, ← mul_assoc]`. Conclude with `hx _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem admissibleChernForm_kills_grassmannianRelationCopies : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (Θ : MvPolynomial ((E →+* ℂ) × ℕ) ℝ →ₗ[ℝ] ℝ), GlobalTheory.Schubert.admitted H Dw Θ →

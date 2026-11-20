@@ -31,76 +31,76 @@ namespace UpperTheory.Gal.LocalSmoothExtension.Tw
 open UpperTheory.Gal.G3
 
 /- English proof (translation)
-The claim follows from `pSplitsPts pIsoPts`.
+A detailed English derivation is pending.
 -/
 theorem splitsPts : SplitsPts := pSplitsPts pIsoPts
 /- English proof (translation)
-The claim follows from `pPtsOfSplits`.
+A detailed English derivation is pending.
 -/
 theorem ptsOfSplits : PtsOfSplits := pPtsOfSplits
 /- English proof (translation)
-Conclude with `pBcSplits (pSplitsBasic splitsPts ptsOfSplits)`.
+A detailed English derivation is pending.
 -/
 theorem bcSplits : BcSplits := by
   exact pBcSplits (pSplitsBasic splitsPts ptsOfSplits)
 /- English proof (translation)
-The claim follows from `pBcGood bcSplits (pBcGal bcSplits)`.
+A detailed English derivation is pending.
 -/
 theorem bcGood : BcGood.{0} := pBcGood bcSplits (pBcGal bcSplits)
 /- English proof (translation)
-The claim follows from `pOpBc bcSplits (pBcGal bcSplits)`.
+A detailed English derivation is pending.
 -/
 theorem opBc : OpBc.{0} := pOpBc bcSplits (pBcGal bcSplits)
 /- English proof (translation)
-The claim follows from `pOpTr`.
+A detailed English derivation is pending.
 -/
 theorem opTr : OpTr.{0} := pOpTr
 /- English proof (translation)
-The claim follows from `pTwSplit splitsPts`.
+A detailed English derivation is pending.
 -/
 theorem twSplit : TwSplit := pTwSplit splitsPts
 /- English proof (translation)
-The claim follows from `pTwGal twSplit`.
+A detailed English derivation is pending.
 -/
 theorem twGal : TwGal := pTwGal twSplit
 /- English proof (translation)
-The claim follows from `pPlInv pGalInv twGal`.
+A detailed English derivation is pending.
 -/
 theorem plInv : PlInv.{0} := pPlInv pGalInv twGal
 /- English proof (translation)
-The claim follows from `pHopDeep plInv`.
+A detailed English derivation is pending.
 -/
 theorem hopDeep : HopDeep.{0} := pHopDeep plInv
 /- English proof (translation)
-The claim follows from `pHopEx plInv hopDeep`.
+A detailed English derivation is pending.
 -/
 theorem hopEx : HopEx.{0} := pHopEx plInv hopDeep
 /- English proof (translation)
-The claim follows from `pFnRing`.
+A detailed English derivation is pending.
 -/
 theorem fnRing : FnRing := pFnRing
 /- English proof (translation)
-Conclude with `pHopLin fnRing hopDeep hopEx`.
+A detailed English derivation is pending.
 -/
 theorem hopLin : HopLin.{0} := by
   exact pHopLin fnRing hopDeep hopEx
 /- English proof (translation)
-Conclude with `pHopMul fnRing hopDeep hopEx`.
+A detailed English derivation is pending.
 -/
 theorem hopMul : HopMul.{0} := by
   exact pHopMul fnRing hopDeep hopEx
 /- English proof (translation)
-Conclude with `pHopOp fnRing hopEx twSplit twGal`.
+A detailed English derivation is pending.
 -/
 theorem hopOp : HopOp.{0} := by
   exact pHopOp fnRing hopEx twSplit twGal
 /- English proof (translation)
-Conclude with `pHodgeTr (pHodgeFun ptsOfSplits (pAlgSplit (pAlgIsoPts pIsoPts)) pAlgTr)`.
+A detailed English derivation is pending.
 -/
 theorem hodgeTr : HodgeTr := by
   exact pHodgeTr (pHodgeFun ptsOfSplits (pAlgSplit (pAlgIsoPts pIsoPts)) pAlgTr)
 /- English proof (translation)
-The claim follows from `pHodgeGood hodgeTr pHodgeInj`.
+A detailed English derivation is pending.
 -/
 theorem hodgeGood : HodgeGood := pHodgeGood hodgeTr pHodgeInj
 

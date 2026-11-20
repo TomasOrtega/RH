@@ -26,15 +26,13 @@ namespace GlobalTheory.BdEquation
 open GlobalTheory.Cartier GlobalTheory.ZH GlobalTheory.FlagBundle
 
 /- English proof (translation)
-Take `⟨A, hA, hzA, e⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens hz`. Establish `hA' : IsAffineOpen A` using `hA`. Set `f' : Γ(Y, A)` to `Y.presheaf.map (homOfLE e).op f`. Set `t' : Γ(Y, A)` to `Y.presheaf.map (homOfLE (e.trans hW)).op t`. Establish `hle : Y.basicOpen f' ≤ Y.basicOpen t'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hxA : x ∈ A` using `Y.basicOpen_le _ hx`. Rewrite `hx`, the goal using `[Y.mem_basicOpen _ x hxA]`. Rewrite `hx`, the goal using `[Y.presheaf.germ_res_apply]`. Use `(ht x _).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hO`. Conclude with `hf x (e hxA) hO hx`. Establish `h2 : PrimeSpectrum.basicOpen f' ≤ PrimeSpectrum.basicOpen t'`. Rewrite using `[← hA'.fromSpec_preimage_basicOpen, ← hA'.fromSpec_preimage_basicOpen]`. Conclude with `fun x hx => hle hx`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `(PrimeSpectrum.basicOpen_le_basicOpen_iff _ _).1 h2`. Establish `h3` using `map_dvd (Y.presheaf.germ A z hzA).hom (Ideal.mem_span_singleton.1 hn)`. Rewrite `h3` using `[map_pow]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← Y.presheaf.germ_res_apply (homOfLE (e.trans hW)) z hzA t, ← Y.presheaf.germ_res_apply (homOfLE e) z hzA f]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_pow_of_vanishing {Y : Scheme.{0}} (O V : Y.Opens) (t : Γ(Y, V))
     (ht : ∀ z (hz : z ∈ V), IsUnit (ger z hz t) ↔ z ∈ O) (W : Y.Opens) (hW : W ≤ V) (f : Γ(Y, W))
@@ -63,13 +61,13 @@ theorem dvd_pow_of_vanishing {Y : Scheme.{0}} (O V : Y.Opens) (t : Γ(Y, V))
   exact h3
 
 /- English proof (translation)
-Take `⟨U, hyU, g, hg⟩` from `D.exists_isEqn_nhds y`. Take `⟨a, ha⟩` from `(hg y hyU).regularAt_iff.1 (hD y)`. Rewrite `ha` using `[one_mul]`. Take `⟨W, hyW, s, rfl⟩` from `X.presheaf.germ_exist a`. Establish `inj` using `fun z : X => IsFractionRing.injective (X.presheaf.stalk z) X.functionField`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ z (hz : z ∈ W ⊓ U), algebraMap _ X.functionField (ger z hz (X.presheaf.map (homOfLE inf_le_left).op s)) = g` using `fun z hz => by`. Use `Eq.trans ?_ ((algebraMap_germ hz.1 s).trans ((algebraMap_germ hyW s).symm.trans ha))` and prove the remaining obligations. Conclude with `congrArg _ (X.presheaf.germ_res_apply (homOfLE inf_le_left) z hz s)`. Use `⟨W ⊓ U, ⟨hyW, hyU⟩, X.presheaf.map (homOfLE inf_le_left).op s, fun z hz => ?_, fun z hz b n hb => ?_⟩` and prove the remaining obligations. Rewrite using `[(hg z hz.2).mem_supp_iff, not_not]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => ⟨_, h, key z hz⟩, fun ⟨u, hu, e⟩ => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[inj z (e.trans (key z hz).symm)]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `hb`. Take `⟨d, hd⟩` from `hr z g (hg z hz.2) (algebraMap _ X.functionField b) n ⟨b, rfl⟩ ⟨c, by`. Rewrite using `[eq_div_iff g.ne_zero, ← map_pow, hc, map_mul, key z hz, mul_comm]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨d, inj z ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, key z hz, hd, mul_div_cancel₀ _ g.ne_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section {X : Scheme.{0}} [IsIntegral X] (D : CartierDiv X) (hD : D.Eff)
     (hr : ∀ (y : X) (g : X.functionFieldˣ), D.IsEqn y g → ∀ (f : X.functionField) (n : ℕ), RegAt y f →
@@ -96,17 +94,15 @@ theorem exists_section {X : Scheme.{0}} [IsIntegral X] (D : CartierDiv X) (hD : 
     rw [map_mul, key z hz, hd, mul_div_cancel₀ _ g.ne_zero]
 
 /- English proof (translation)
-Introduce `_ E _ _ _ H Dw l Xo c T Z hF _ y _`. Establish `hsm` using `GlobalTheory.VarFlag.smooth_gen T.smooth`. Take `⟨B, j, hB, hcov⟩` from `GlobalTheory.T.exists_varieties_components_smooth_genericFibre E H Dw l Xo c c.F (RingHom.id c.F) T.Y c.F (RingEquiv.refl _) hF hsm`. Use `(hB Z).1` as an intermediate fact. Take `⟨C, f, hπ, -, hl⟩` from `GlobalTheory.FlagBundle.exists_flagCpt T.Y (RingEquiv.refl _) (GlobalTheory.T.snc_toroidalGenericBoundary_of_snc_boundary T.snc) (B Z) (j Z) (hB Z).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hiso, hh, -, -⟩` from `GlobalTheory.CompProport.exists_iso T Z B j hB hcov C f hπ hl`. Establish `hmem : ∀ z : Y₀ T.X Z, h z ∉ CartierDiv.supp C.bd ↔ z ∈ U₀ T.X Z` using `fun z => by`. Establish `e : GlobalTheory.Toroidal.genι T.Y (C.π (h z)) = T.X.π (inc₀ T.X Z z)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← hh]`. Use `(not_congr (C.bd_supp (h z))).trans (not_not.trans ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `C.π (h z) ∈ Set.range T.Y.jQ ↔ T.X.π (inc₀ T.X Z z) ∈ Set.range T.Y.j`. Use `exists_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← e, Model.j, Scheme.Hom.comp_apply]`. Conclude with `(GlobalTheory.Toroidal.genι T.Y).isOpenEmbedding.injective.eq_iff.symm`. Take `⟨V, hyV, t, ht, hrad⟩` from `exists_section C.bd C.bd_eff C.bd_red (h y)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : ∀ z (hz : z ∈ h ⁻¹ᵁ V), ger z hz (h.app V t) = (h.stalkMap z).hom (ger (h z) hz t)` using `fun z hz => (Scheme.Hom.germ_stalkMap_apply h V z hz t).symm`. Establish `hu : ∀ z (hz : z ∈ h ⁻¹ᵁ V), IsUnit (ger z hz (h.app V t)) ↔ z ∈ U₀ T.X Z` using `fun z hz => by`. Rewrite using `[hg, isUnit_map_iff]`. Conclude with `(ht (h z) hz).trans (hmem z)`. Use `⟨h ⁻¹ᵁ V, hyV, h.app V t, hu, fun W hW s hs z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, c', hc⟩` from `dvd_pow_of_vanishing _ _ _ hu W hW s hs z hz`. Establish `hb` using `GlobalTheory.BoundaryDivisor.stalkMap_bijective h z`. Take `⟨b, hb'⟩` from `hb.2 (ger z hz s)`. Take `⟨c'', rfl⟩` from `hb.2 c'`. Rewrite `hc` using `[hg, ← hb', ← map_pow, ← map_mul]`.
-
-Rewrite using `[hg, ← hb']`. Conclude with `map_dvd _ (hrad _ _ b n ⟨c'', hb.1 hc⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reduced_equation : GlobalTheory.CovTop.Hypotheses₂ → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → IsVariety₀ TF.X Z → ∀ y : Y₀ TF.X Z, y ∉ U₀ TF.X Z → ∃ (V : (Y₀ TF.X Z).Opens) (_ : y ∈ V) (t : Γ(Y₀ TF.X Z, V)), (∀ z (hz : z ∈ V), IsUnit (ger z hz t) ↔ z ∈ U₀ TF.X Z) ∧ (∀ (W : (Y₀ TF.X Z).Opens) (hW : W ≤ V) (f : Γ(Y₀ TF.X Z, W)), (∀ z (hz : z ∈ W), z ∉ U₀ TF.X Z → ger z hz f ∈ IsLocalRing.maximalIdeal ((Y₀ TF.X Z).presheaf.stalk z)) → ∀ z (hz : z ∈ W), ger z (hW hz) t ∣ ger z hz f) := by
   intro _ E _ _ _ H Dw l Xo c T Z hF _ y _

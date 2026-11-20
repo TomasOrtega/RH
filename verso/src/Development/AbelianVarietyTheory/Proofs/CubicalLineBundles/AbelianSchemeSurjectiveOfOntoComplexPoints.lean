@@ -8,15 +8,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.OntoSurj
 
 /- English proof (translation)
-Establish `hd : Dense (Set.range (spMap σ))`. Establish `: DenseRange (PrimeSpectrum.comap σ)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot σ).mp hσ]`. Conclude with `bot_le`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : JacobsonSpace ↥(pullback a (spMap σ))` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd a (spMap σ))`. Establish `hZ : IsClosed ((pullback.fst a (spMap σ)) ⁻¹' Set.range ψ)` using `hψ.preimage (pullback.fst a (spMap σ)).continuous`. Establish `hsub : closedPoints ↥(pullback a (spMap σ)) ⊆ (pullback.fst a (spMap σ)) ⁻¹' Set.range ψ`. Introduce `z hz`. Use `replace hz : IsClosed {z} := hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp⟩` from `h (pointOfClosedPoint (pullback.snd a (spMap σ)) z hz ≫ pullback.fst _ _) (by rw [Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc])`. Take `⟨w⟩ : Nonempty ↥(Sp K)` from `inferInstance`. Use `⟨p w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← hp, Scheme.Hom.comp_apply, pointOfClosedPoint_apply]`. Establish `hall` using `closure_minimal hsub hZ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hall` using `[closure_closedPoints]`. Establish `hsub' : a ⁻¹' Set.range (spMap σ) ⊆ Set.range ψ`. Rewrite using `[← Scheme.Pullback.range_fst]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hall (Set.mem_univ z)`.
-
-Establish `hall'` using `closure_minimal hsub' hψ`. Rewrite `hall'` using `[(hd.preimage ha).closure_eq]`. Conclude with `⟨fun y ↦ hall' (Set.mem_univ y)⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surjective_of_points {R K : Type} [CommRing R] [Field K] [IsAlgClosed K] (σ : R →+* K)
     (hσ : Function.Injective σ) {P A : Scheme.{0}} (a : A ⟶ Sp R) [LocallyOfFiniteType a]
@@ -52,13 +50,11 @@ theorem surjective_of_points {R K : Type} [CommRing R] [Field K] [IsAlgClosed K]
   exact ⟨fun y ↦ hall' (Set.mem_univ y)⟩
 
 /- English proof (translation)
-Introduce `R _ _ σ hσ A B _ _ Φ hA hB h`. Use `hB.proper` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Establish `hpr : IsProper Φ.left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (Φ.left ≫ A.hom)` using `by rwa [Over.w]`. Conclude with `IsProper.of_comp Φ.left A.hom`. Establish `hs : Surjective Φ.left`. Use `surjective_of_points σ hσ A.hom A.hom.isOpenMap Φ.left Φ.left.isClosedMap.isClosed_range fun y hy ↦ ?_` and prove the remaining obligations. Take `⟨p, hp⟩` from `h (Over.homMk y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨p.left, congrArg (·.left) hp⟩`. Use `⟨hs, fun k _ _ t y ↦ ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `GlobalTheory.GeomSurj.exists_lift_of_surjective Φ.left y.left`. Use `⟨Over.homMk p ?_, Over.OverMorphism.ext hp⟩` and prove the remaining obligations. Rewrite using `[← Over.w Φ, ← Category.assoc, ← hp]`.
-
-Conclude with `Over.w y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_of_onto_complex_points :
     ∀ (R : Type) [CommRing R] [IsDomain R] (σ : R →+* ℂ), Function.Injective σ → ∀ (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (Φ : B ⟶ A), IsAbelianScheme A → IsAbelianScheme B → (∀ y : Over.mk (spMap σ) ⟶ A, ∃ x : Over.mk (spMap σ) ⟶ B, y = x ≫ Φ) → Surjective Φ.left ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (y : Over.mk t ⟶ A), ∃ x : Over.mk t ⟶ B, y = x ≫ Φ := by

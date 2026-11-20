@@ -23,19 +23,19 @@ def afIso : AfE F E ≃+* FiniteAdeleRing (𝓞 E) E :=
   (GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.1 x`.
+A detailed English derivation is pending.
 -/
 theorem afIso_tmul_one (x : E) : afIso F E (x ⊗ₜ[F] 1) = algebraMap E _ x :=
   (GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.1 x
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.2.1 y`.
+A detailed English derivation is pending.
 -/
 theorem mem_rInt_iff (y : AfE F E) : y ∈ RInt F E ↔ ∀ P : HeightOneSpectrum (𝓞 E), Valued.v (afIso F E y P) ≤ 1 :=
   (GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.2.1 y
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv F E).choose_spec.2.2.1 v y`.
+A detailed English derivation is pending.
 -/
 theorem mem_suppAt_iff (v : HeightOneSpectrum (𝓞 F)) (y : (AfE F E)ˣ) :
     y ∈ suppAt E v ↔ ∀ P : HeightOneSpectrum (𝓞 E), P.under (𝓞 F) ≠ v → afIso F E (y : AfE F E) P = 1 :=
@@ -46,13 +46,13 @@ def finAf : Ideles E →* (AfE F E)ˣ :=
     (MonoidHom.snd (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)))
 
 /- English proof (translation)
-The claim follows from `(afIso F E).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem afIso_finAf (a : Ideles E) : afIso F E (finAf F E a : AfE F E) = (a : AdeleRing (𝓞 E) E).2 :=
   (afIso F E).apply_symm_apply _
 
 /- English proof (translation)
-Introduce `y` and use `⟨Units.map ((MonoidHom.inr (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)).comp (afIso F E : AfE F E →* FiniteAdeleRing (𝓞 E) E)) y, Units.ext ((afIso F E).symm_apply_apply _)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem finAf_surjective : Function.Surjective (finAf F E) := fun y =>
   ⟨Units.map ((MonoidHom.inr (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)).comp
@@ -66,13 +66,13 @@ def Reads (μ : Chr F E K) (ξ : HChar E) : Prop :=
 variable {σ}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (MonoidHom.ext fun a => Units.ext ((h a).trans (h' a).symm))`.
+A detailed English derivation is pending.
 -/
 theorem Reads.unique {μ : Chr F E K} {ξ ξ' : HChar E} (h : Reads σ μ ξ) (h' : Reads σ μ ξ') : ξ = ξ' :=
   Subtype.ext (MonoidHom.ext fun a => Units.ext ((h a).trans (h' a).symm))
 
 /- English proof (translation)
-Use `MonoidHom.ext fun y => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `finAf_surjective F E y`. Conclude with `Units.ext (σ.injective ((h a).symm.trans (h' a)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Reads.inj {μ μ' : Chr F E K} {ξ : HChar E} (h : Reads σ μ ξ) (h' : Reads σ μ' ξ) : μ = μ' := by
   refine MonoidHom.ext fun y => ?_
@@ -82,14 +82,14 @@ theorem Reads.inj {μ μ' : Chr F E K} {ξ : HChar E} (h : Reads σ μ ξ) (h' :
 variable (σ) in
 
 /- English proof (translation)
-Introduce `a` and use `by show ((1 : ℂˣ) : ℂ) = σ ((1 : Kˣ) : K) simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem reads_one : Reads σ (1 : Chr F E K) (1 : HChar E) := fun a => by
   show ((1 : ℂˣ) : ℂ) = σ ((1 : Kˣ) : K)
   simp
 
 /- English proof (translation)
-Introduce `a` and use `by show ((ξ.1 a * ξ'.1 a : ℂˣ) : ℂ) = σ ((μ (finAf F E a) * μ' (finAf F E a) : Kˣ) : K) rw [Units.val_mul, Units.val_mul, map_mul, h a, h' a]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Reads.mul {μ μ' : Chr F E K} {ξ ξ' : HChar E} (h : Reads σ μ ξ) (h' : Reads σ μ' ξ') : Reads σ (μ * μ') (ξ * ξ') :=
   fun a => by
@@ -97,7 +97,7 @@ theorem Reads.mul {μ μ' : Chr F E K} {ξ ξ' : HChar E} (h : Reads σ μ ξ) (
     rw [Units.val_mul, Units.val_mul, map_mul, h a, h' a]
 
 /- English proof (translation)
-Establish `: y = finAf F E a` using `Units.ext ((afIso F E).injective (hy.trans (afIso_finAf F E a).symm))`. Rewrite using `[this]`. Conclude with `h a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Reads.apply {μ : Chr F E K} {ξ : HChar E} (h : Reads σ μ ξ) (a : Ideles E) (y : (AfE F E)ˣ)
     (hy : afIso F E (y : AfE F E) = (a : AdeleRing (𝓞 E) E).2) : ((ξ.1 a : ℂˣ) : ℂ) = σ ((μ y : Kˣ) : K) := by
@@ -106,7 +106,7 @@ theorem Reads.apply {μ : Chr F E K} {ξ : HChar E} (h : Reads σ μ ξ) (a : Id
   exact h a
 
 /- English proof (translation)
-Use `Subtype.ext (MonoidHom.ext fun a => Units.ext ?_)` and prove the remaining obligations. Establish `h1 : μ (finAf F E a) ^ n = 1` using `congrArg (fun f : Chr F E K => f (finAf F E a)) hn`. Use `show ((ξ.1 a ^ n : ℂˣ) : ℂ) = ((1 : ℂˣ) : ℂ)`. Rewrite using `[Units.val_pow_eq_pow_val, h a, ← map_pow, ← Units.val_pow_eq_pow_val, h1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Reads.orderDvd {μ : Chr F E K} {ξ : HChar E} (h : Reads σ μ ξ) {n : ℕ} (hn : μ ^ n = 1) : ξ.OrderDvd n := by
   refine Subtype.ext (MonoidHom.ext fun a => Units.ext ?_)
@@ -121,13 +121,13 @@ def chiId {L : Type} [Field L] [NumberField L] (χ : HChar L) (𝔞 : Submodule 
   ((∏ᶠ w : HeightOneSpectrum (𝓞 L), χ.val w ^ (ordSub w 𝔞).toNat : ℂˣ) : ℂ)
 
 /- English proof (translation)
-The claim follows from `Units.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem chiId_ne_zero {L : Type} [Field L] [NumberField L] (χ : HChar L) (𝔞 : Submodule (𝓞 L) L) : chiId χ 𝔞 ≠ 0 :=
   Units.ne_zero _
 
 /- English proof (translation)
-Simplify using `only [chiId, ordSub_span_singleton]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiId_span_singleton {L : Type} [Field L] [NumberField L] (χ : HChar L) (u : Lˣ) :
     chiId χ (Submodule.span (𝓞 L) {(u : L)}) =
@@ -135,7 +135,7 @@ theorem chiId_span_singleton {L : Type} [Field L] [NumberField L] (χ : HChar L)
   simp only [chiId, ordSub_span_singleton]
 
 /- English proof (translation)
-Establish `h` using `chiId_span_singleton χ 1`. Rewrite `h` using `[Units.val_one, ← Submodule.one_eq_span]`. Rewrite using `[h]`. Simplify using `[ordF]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chiId_one {L : Type} [Field L] [NumberField L] (χ : HChar L) : chiId χ 1 = 1 := by
   have h := chiId_span_singleton χ 1
@@ -144,13 +144,11 @@ theorem chiId_one {L : Type} [Field L] [NumberField L] (χ : HChar L) : chiId χ
   simp [ordF]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨A, hA, rfl⟩`. Establish `h : ∀ i j, ∃ b : 𝓞 H.E, algebraMap (𝓞 H.E) H.E b = A i j` using `fun i j => by`. Establish `h1 : (Pi.single j 1 : Fin N → H.E) ∈ Th.stdL H N` using `fun k _ => by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `e : k = j`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.one_le.1 le_rfl`. Rewrite using `[Pi.single_eq_of_ne e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Establish `h2` using `Submodule.mem_one.1 (hA _ h1 i trivial)`. Simplify using `using h2`. Use `choose b hb using h`. Establish `e : A = (algebraMap (𝓞 H.E) H.E).mapMatrix (Matrix.of b)` using `Matrix.ext fun i j => (hb i j).symm`.
-
-Rewrite using `[e, ← RingHom.map_det]`. Conclude with `Submodule.mem_one.2 ⟨_, rfl⟩`. Conclude with `Submodule.one_le.2 (Submodule.subset_span ⟨1, fun v hv => by simpa using hv, Matrix.det_one.symm⟩)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detId_std {R : Ranks} (H : Host R) (N : ℕ) : Th.detId H (Th.stdL H N) (Th.stdL H N) = 1 := by
   classical
@@ -198,9 +196,9 @@ def AmbIn.amb (B : Base) (J : AmbIn B.host) (χ : Submodule (𝓞 B.host.E) B.ho
   chiF a b N N' := Th.chiFac B.host χ a b N N'
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : J.V.L.ω₁ ∈ Th.lamOf H ⊤ J.δ`. Rewrite using `[← J.V.lat]`. Conclude with `J.V.L.ω₁_mem_lattice`. Establish `h2 : Th.lamOf H ⊤ J.δ ≤ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, rfl⟩`. Simplify using `[h]`. Conclude with `J.V.L.indep.ne_zero 0 (AddSubgroup.mem_bot.1 (h2 h1))`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AmbIn.δ_ne_zero {R : Ranks} {H : Host R} (J : AmbIn H) : J.δ ≠ 0 := by
   intro h
@@ -333,12 +331,12 @@ Both sides reduce to the same expression.
 theorem A_cD : I.A.cD = I.J.cD := rfl
 
 /- English proof (translation)
-The claim follows from `Th.perAA_top B.host`.
+A detailed English derivation is pending.
 -/
 theorem A_AA : I.A.AA = (B.host.AA0 : Submodule (𝓞 B.host.E) B.host.E) := Th.perAA_top B.host
 
 /- English proof (translation)
-Introduce `P hP`. Unfold `SQ`. Use `Finset.mem_biUnion.2 ⟨a, Finset.mem_univ a, hP⟩` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem Q_subset_SQ (a : I.ι) : I.Q a ⊆ I.SQ := by
   classical
@@ -347,16 +345,16 @@ theorem Q_subset_SQ (a : I.ι) : I.Q a ⊆ I.SQ := by
   convert Finset.mem_biUnion.2 ⟨a, Finset.mem_univ a, hP⟩
 
 /- English proof (translation)
-Unfold `SQ`. Simplify using `only [Finset.mem_biUnion, Finset.mem_univ, true_and]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_SQ {P : HeightOneSpectrum (𝓞 B.host.E)} : P ∈ I.SQ ↔ ∃ a, P ∈ I.Q a := by
   unfold SQ
   simp only [Finset.mem_biUnion, Finset.mem_univ, true_and]
 
 /- English proof (translation)
-Establish `h : Qprime (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅`. Rewrite using `[I.trueColumn_tuple_trivial_eq_one]`. Use extensionality with `v`. Simplify using `[Qprime]`. Unfold `Q QE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twistPrimes_reference_tuple_eq_empty : I.Q I.mu0 = ∅ := by
   have h : Qprime (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅ := by
@@ -367,9 +365,9 @@ theorem twistPrimes_reference_tuple_eq_empty : I.Q I.mu0 = ∅ := by
   simp [h]
 
 /- English proof (translation)
-Unfold `Q QE at hP`. Use `split_ifs at hP with h`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hP`. Rewrite `hv` using `[Set.Finite.mem_toFinset]`. Use `⟨v, hv, rfl, by_contra fun hg => hv ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(Subgroup.mem_inf.1 (I.tup a).2).2`. Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h2 v) hg`. Simplify using `at hP`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_Q {a : I.ι} {P : HeightOneSpectrum (𝓞 B.fields.E)} (hP : P ∈ I.Q a) :
     ∃ v ∈ Qprime (I.tup a : Chr B.fields.F B.fields.E B.fields.K), I.sel v = P ∧ GoodPl B.fields.E I.S v := by
@@ -386,7 +384,7 @@ theorem exists_of_mem_Q {a : I.ι} {P : HeightOneSpectrum (𝓞 B.fields.E)} (hP
 variable {I}
 
 /- English proof (translation)
-Establish `h1` using `h.xi_reads I.mu0`. Rewrite `h1` using `[I.trueColumn_tuple_trivial_eq_one]`. Conclude with `h1.unique (reads_one _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ok.trueColumnChoices_heckeChar_reference_eq_one (h : I.Ok) : I.xi I.mu0 = 1 := by
   have h1 := h.xi_reads I.mu0
@@ -394,49 +392,49 @@ theorem Ok.trueColumnChoices_heckeChar_reference_eq_one (h : I.Ok) : I.xi I.mu0 
   exact h1.unique (reads_one _)
 
 /- English proof (translation)
-Introduce `a b hab` and use `I.tup_inj (Subtype.ext ((h.xi_reads a).inj (hab ▸ h.xi_reads b)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ok.xi_inj (h : I.Ok) : Function.Injective I.xi := fun a b hab =>
   I.tup_inj (Subtype.ext ((h.xi_reads a).inj (hab ▸ h.xi_reads b)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨I.C.mu0, I.C.eta, h.ch_tied⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ok.fromHecke (h : I.Ok) : I.Ch.FromHecke B.wts B.embLL := ⟨I.C.mu0, I.C.eta, h.ch_tied⟩
 
 /- English proof (translation)
-The claim follows from `h.ram_mem p hp (hd.mul_right _)`.
+A detailed English derivation is pending.
 -/
 theorem Ok.mem_of_dvd_QSq (h : I.Ok) {p : ℕ} (hp : p.Prime) (hd : p ∣ B.host.QS * B.host.q) : p ∈ I.S :=
   h.ram_mem p hp (hd.mul_right _)
 
 /- English proof (translation)
-The claim follows from `h.mem_of_dvd_QSq hp (hd.mul_right _)`.
+A detailed English derivation is pending.
 -/
 theorem Ok.mem_of_dvd_QS (h : I.Ok) {p : ℕ} (hp : p.Prime) (hd : p ∣ B.host.QS) : p ∈ I.S :=
   h.mem_of_dvd_QSq hp (hd.mul_right _)
 
 /- English proof (translation)
-The claim follows from `h.mem_of_dvd_QS (Nat.prime_of_mem_primeFactors hp) (Nat.dvd_of_mem_primeFactors hp)`.
+A detailed English derivation is pending.
 -/
 theorem Ok.small_mem (h : I.Ok) {p : ℕ} (hp : p ∈ B.host.small) : p ∈ I.S :=
   h.mem_of_dvd_QS (Nat.prime_of_mem_primeFactors hp) (Nat.dvd_of_mem_primeFactors hp)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.mem_of_dvd_QS Nat.prime_two ((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans B.host.tower_dvd), h.mem_of_dvd_QSq B.host.hyp.1 (dvd_mul_left _ _), h.ram_mem _ B.host.hyp.2.1 (dvd_mul_left _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Ok.two_q_d_mem (h : I.Ok) : 2 ∈ I.S ∧ B.host.q ∈ I.S ∧ B.host.d ∈ I.S :=
   ⟨h.mem_of_dvd_QS Nat.prime_two ((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans B.host.tower_dvd),
     h.mem_of_dvd_QSq B.host.hyp.1 (dvd_mul_left _ _), h.ram_mem _ B.host.hyp.2.1 (dvd_mul_left _ _)⟩
 
 /- English proof (translation)
-Introduce `hd` and use `hS (h.ram_mem p hp hd)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ok.not_dvd_condN (h : I.Ok) {p : ℕ} (hp : p.Prime) (hS : p ∉ I.S) : ¬ p ∣ B.host.condN :=
   fun hd => hS (h.ram_mem p hp hd)
 
 /- English proof (translation)
-The claim follows from `(h.idx_ok I.mu0).hm`.
+A detailed English derivation is pending.
 -/
 theorem Ok.hm (h : I.Ok) : B.R.m = (B.R.m - 2) + 2 := (h.idx_ok I.mu0).hm
 
@@ -452,13 +450,13 @@ def seamOf : Seam (assemble B C W V S N G) B.fields where
   σ₀ := B.embLL
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun τ x => DFunLike.congr_fun (B.fields_embC τ) x, fun x => B.fields_star x⟩`.
+Supply the required witnesses or components.
 -/
 theorem seamOf_ok : (seamOf B C W V S N G).Ok :=
   ⟨fun τ x => DFunLike.congr_fun (B.fields_embC τ) x, fun x => B.fields_star x⟩
 
 /- English proof (translation)
-Establish `h : (seamOf B C W V S N G).lat M = Submodule.span (𝓞 B.host.E) (id '' (M : Set (Fin n → B.host.E)))` using `rfl`. Rewrite using `[h, Set.image_id, Submodule.span_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem seamOf_lat {n : ℕ} (M : Submodule (𝓞 B.host.E) (Fin n → B.host.E)) : (seamOf B C W V S N G).lat M = M := by
   have h : (seamOf B C W V S N G).lat M = Submodule.span (𝓞 B.host.E) (id '' (M : Set (Fin n → B.host.E))) := rfl
@@ -468,7 +466,7 @@ def AmbIn.toRec (J : AmbIn B.host) : Formalism.L2.Ker.Base (assemble B C W V S N
   Th.VacIn.toRec (D := assemble B C W V S N G) J.V
 
 /- English proof (translation)
-Unfold `ambOf`. Simplify using `only [seamOf_lat]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem AmbIn.amb_eq_ambOf (J : AmbIn B.host) (χ : Submodule (𝓞 B.host.E) B.host.E → ℂ) :
     J.amb B χ = ambOf (seamOf B C W V S N G) (J.toRec B C W V S N G) χ J.cD := by
@@ -477,7 +475,7 @@ theorem AmbIn.amb_eq_ambOf (J : AmbIn B.host) (χ : Submodule (𝓞 B.host.E) B.
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.delta, h.dgen⟩, fun h => ⟨h.1, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem AmbIn.ok_iff (J : AmbIn B.host) :
     J.Ok ↔ TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (assemble B C W V S N G) ⊤ J.δ ∧ IsDgen (assemble B C W V S N G) J.cD :=
@@ -491,7 +489,7 @@ theorem duStarOf_eq (u : B.Word) : duStarOf B.host (B.hcW u) = StandardLattice.d
 end Record
 
 /- English proof (translation)
-Introduce `e`. Establish `h1 : I.C.del = 1` using `by rw [← h.xi_star, e, h.trueColumnChoices_heckeChar_reference_eq_one]`. Establish `h2` using `(I.C.isDel.ine v hv 1).1 fun x _ => by rw [h1]; simp`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 example {B : Base} {X : PreX B.toPre} (I : ColIn B X) (h : I.Ok) (v : HeightOneSpectrum (𝓞 B.host.E))
     (hv : Formalism.L2.Host.OverP B.host B.host.pde v) : I.muStar ≠ I.mu0 := by
@@ -501,7 +499,7 @@ example {B : Base} {X : PreX B.toPre} (I : ColIn B X) (h : I.Ok) (v : HeightOneS
   omega
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h.apply a 1 (by rw [ha, Units.val_one, map_one])]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Field K] (σ : K →+* ℂ)
     (μ : Chr F E K) (ξ : HChar E) (h : Reads σ μ ξ) (a : Ideles E) (ha : (a : AdeleRing (𝓞 E) E).2 = 1) : ξ.1 a = 1 := by
@@ -510,7 +508,7 @@ example {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Alge
   simp
 
 /- English proof (translation)
-Simplify using `[Th.chiFac, detId_std, chiId_one]`.
+Simplify using the standard rewrite rules.
 -/
 example {R : Ranks} (H : Host R) (χ : HChar H.E) (N N' : ℕ) : Th.chiFac H (chiId χ) N N' (Th.stdL H N) (Th.stdL H N') = 1 := by
   simp [Th.chiFac, detId_std, chiId_one]

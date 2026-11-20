@@ -8,7 +8,7 @@ set_option autoImplicit false
 namespace UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_apply' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (w : ι → Module.End ℂ E) (c : Finset ι → E) (t : Finset ι) :
@@ -16,7 +16,7 @@ private theorem wd_apply' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Modul
   simp [wd, LinearMap.sum_apply]
 
 /- English proof (translation)
-Unfold `detC`. Use `split_ifs with h`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem map_detC' {S S' κ : Type} [CommRing S] [CommRing S'] [Algebra ℂ S] [Algebra ℂ S']
     [LinearOrder κ] {p : ℕ} (φ : S →ₐ[ℂ] S') (ρ : κ → Fin p → S) (s : Finset κ) :
@@ -33,9 +33,9 @@ private def rho0 {d : ℕ} {K : Type} [Field K] (y : Fin (d + 1) → K) :
     if m = (ofLex l).2 then y m * y (ofLex l).1 else 0) (ofLex t)
 
 /- English proof (translation)
-Rewrite using `[map_detC']`. Use `congr 1`. Use function extensionality and compare the values at `t b`. Break down `ht : ofLex t with i | l` into its components or cases. Apply the tactic sequence `simp only [Sys.rowMu, rho0, ht, Sum.elim_inl, Pi.single_apply] split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Sys.rowMu, rho0, ht, Sum.elim_inr, map_sub, apply_ite π, map_mul, hX, hY, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem map_rowMu {d : ℕ} {K S E : Type} [Field K] [Algebra ℂ K] [CommRing S] [Algebra ℂ S]
     [AddCommGroup E] [Module ℂ E] (T : Sys d S E) (π : S →ₐ[ℂ] K) (y : Fin (d + 1) → K)
@@ -50,7 +50,7 @@ private theorem map_rowMu {d : ℕ} {K S E : Type} [Field K] [Algebra ℂ K] [Co
   · simp only [Sys.rowMu, rho0, ht, Sum.elim_inr, map_sub, apply_ite π, map_mul, hX, hY, map_zero]
 
 /- English proof (translation)
-Simplify using `only [Sys.mu, map_sub, map_mul, hX, hY]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem map_mu {d : ℕ} {K S E : Type} [Field K] [Algebra ℂ K] [CommRing S] [Algebra ℂ S]
     [AddCommGroup E] [Module ℂ E] (T : Sys d S E) (π : S →ₐ[ℂ] K) (y : Fin (d + 1) → K)
@@ -59,25 +59,25 @@ private theorem map_mu {d : ℕ} {K S E : Type} [Field K] [Algebra ℂ K] [CommR
   ring
 
 /- English proof (translation)
-Distinguish the cases in `h : i = 0`. Rewrite using `[h]`. Establish `h0 : (0 : Fin (d + 1)) ≠ i` using `fun e => h e.symm`. Establish `h1` using `congrFun (hM d S E T).1 (uni {0, i} L)`. Rewrite `h1` using `[(hU _ _ _ _ _ {0, i} L).1]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl : wd (fun j : Fin (d + 1) => (Algebra.lmul ℂ S) (app (fun _ => 1) T.mu (inlE j : Fin (d + 1) ⊕ₗ Mi d))) (fun b' => detC T.rowMu (uni b' L)) {0, i} = detC T.rowMu (uni {i} L) - detC T.rowMu (uni {0} L)`. Establish `e0 : ({0, i} : Finset (Fin (d + 1))).erase 0 = {i}`. Use extensionality with `a`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨ha, hb | hb⟩`. Conclude with `absurd hb ha`. Conclude with `hb`. Introduce and unpack `rfl`. Conclude with `⟨h, Or.inr rfl⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `ei : ({0, i} : Finset (Fin (d + 1))).erase i = {0}`. Use extensionality with `a`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb | hb⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hb`. Conclude with `absurd hb ha`. Introduce and unpack `rfl`. Conclude with `⟨h0, Or.inl rfl⟩`. Establish `s0 : GlobalTheory.cubeSign ({0, i} : Finset (Fin (d + 1))) 0 = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[GlobalTheory.cubeSign, Finset.filter_eq_empty_iff]`. Establish `si : GlobalTheory.cubeSign ({0, i} : Finset (Fin (d + 1))) i = -1`. Establish `hp : (0 : Fin (d + 1)) < i` using `Fin.pos_iff_ne_zero.2 h`. Establish `: ({0, i} : Finset (Fin (d + 1))).filter (· < i) = {0}`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl | rfl, hb⟩`. Both sides reduce to the same expression. Conclude with `absurd hb (lt_irrefl _)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Conclude with `⟨Or.inl rfl, hp⟩`. Simplify using `[GlobalTheory.cubeSign, this]`. Rewrite using `[wd_apply', Finset.sum_pair h0, e0, ei, s0, si]`. Simplify using `[app, inlE, sub_eq_add_neg, add_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : π (wd (fun l : Mi d => (Algebra.lmul ℂ S) (app (fun _ => 1) T.mu (inrE l : Fin (d + 1) ⊕ₗ Mi d))) (fun L' => detC T.rowMu (uni {0, i} L')) L) = 0`. Rewrite using `[wd_apply', map_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Establish `: app (fun _ : Fin (d + 1) => (1 : S)) T.mu (inrE l : Fin (d + 1) ⊕ₗ Mi d) = T.mu l` using `by simp [app, inrE]`. Rewrite using `[map_zsmul]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[this, map_mu T π y hX hY l]`. Rewrite `h1` using `[hl]`. Establish `h2` using `congrArg π h1`. Rewrite `h2` using `[map_add, map_zsmul, hr, smul_zero, add_zero, map_sub]`. Simplify `h2` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem ind_of {d : ℕ} {K S E : Type} [Field K] [Algebra ℂ K] [CommRing S] [Algebra ℂ S]
     [AddCommGroup E] [Module ℂ E] (hM : ThMu) (hU : WdUni) (T : Sys d S E) (π : S →ₐ[ℂ] K)
@@ -135,9 +135,9 @@ private theorem ind_of {d : ℕ} {K S E : Type} [Field K] [Algebra ℂ K] [CommR
 end UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Introduce `hM hU F K _ _ _ _ _ _ d x _ S E _ _ _ _ T π hX hY i L _`. Establish `hZ : ∀ j, Algebra.TensorProduct.lmul' ℂ ((sysZ K x 0).X j : K ⊗[ℂ] K) = algebraMap F K (x j)`. Introduce `j`. Simplify using `[sysZ]`. Establish `hZ' : ∀ j, Algebra.TensorProduct.lmul' ℂ ((sysZ K x 0).Y j : K ⊗[ℂ] K) = algebraMap F K (x j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `[sysZ]`. Rewrite using `[ind_of hM hU T π _ hX hY i L, kap, map_rowMu T π (fun j => algebraMap F K (x j)) hX hY, map_rowMu (sysZ K x 0) (Algebra.TensorProduct.lmul' ℂ) (fun j => algebraMap F K (x j)) hZ hZ']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.productCup_of_system.kapInd_of :
     ThMu → WdUni → KapInd := by

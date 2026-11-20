@@ -12,23 +12,21 @@ open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)
 open scoped Topology InnerProductSpace
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ hσ v a hvv hav W hW ν hν x y`. Take `⟨hc, hn, hU, hI, hS⟩` from `hσ`. Take `⟨d, hd⟩` from `GlobalTheory.T.schur_orthogonality_indefiniteUnitaryGroup n ε H σ hU hI hS`. Establish `hd0 : 0 < d` using `hd.1`. Distinguish the cases in `hv : v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Establish `hv2 : (‖v‖ : ℝ) ^ 2 ≠ 0` using `by positivity`. Take `⟨hcvv, hconvvv⟩` from `conv_coef n ε H σ d hU hd v v`. Take `⟨hcav, hconvav⟩` from `conv_coef n ε H σ d hU hd v a`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hivv, -⟩` from `continuous_average n ε _ hcvv hvv`. Take `⟨hiav, hcontav⟩` from `continuous_average n ε _ hcav hav`. Take `⟨hν0, hνf, hνN, hνinv⟩` from `hν`. Use `haveI := hνf`. Take `⟨hflag, h1, hNeq, S, hS⟩` from `flagN_eq_NW n ε W hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, Hr, hr⟩` from `exists_isRay n ε _ _ hflag (fun i => by fin_cases i; simpa using h1)`. Rewrite `hr` using `[hNeq]`. Use `set k : ℂ := ((d / ‖v‖ ^ 2 : ℝ) : ℂ) with hk`. Establish `hkc : k * ((‖v‖ ^ 2 / d : ℝ) : ℂ) = 1`. Rewrite using `[hk, ← Complex.ofReal_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_mul_div_comm, mul_comm d, div_self (mul_ne_zero hv2 hd0.ne')]`. Simplify using the standard rewrite rules. Establish `key` using `average_eq_zero (UJ ε) (muG ε) (NW ε W) r Hr ν hνN hνinv hr (fun g => k * coefOn σ v v g) (coefOn σ a v) (continuous_const.mul hcvv) (hivv.const_mul k) hcav hiav (by`. Introduce `z`. Simplify using `only [conv] at hconvvv ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hconvvv z` as an intermediate fact. Simplify using `only [mul_assoc]`. Rewrite using `[show (fun g => k * (coefOn σ v v g * (k * coefOn σ v v (g⁻¹ * z)))) = fun g => (k * k) * (coefOn σ v v g * coefOn σ v v (g⁻¹ * z)) by`. Use function extensionality and compare the values at `g`. Use the proof step `ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MeasureTheory.integral_const_mul, this]`. Take the linear combination `(k * coefOn σ v v z) * hkc)`. Use the proof step `(by`. Introduce `z`. Simplify using `only [conv] at hconvav ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `hconvav z` as an intermediate fact. Simplify using `only [mul_assoc]`. Rewrite using `[MeasureTheory.integral_const_mul, this]`. Take the linear combination `(coefOn σ a v z) * hkc)`. Use `x (hcontav S ν (by rw [hS]; exact ⟨hν0, hνf, hνN, hνinv⟩) x) y`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.integral_coef_eq_zero :
     ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]

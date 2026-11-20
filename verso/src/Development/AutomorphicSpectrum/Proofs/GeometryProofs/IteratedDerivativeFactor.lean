@@ -14,11 +14,11 @@ open scoped Topology
 namespace GlobalTheory.CompanionTheory.Ar.JetLeib
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, iteratedDeriv n (fun t => u t * v t) 0 = ∑ m ∈ Finset.range (n + 1), (n.choose m : ℂ) * iteratedDeriv m u 0 * iteratedDeriv (n - m) v 0` using `fun n => iteratedDeriv_fun_mul hu.contDiffAt hv.contDiffAt`. Use `⟨fun k hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key k]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `hmk : m < i` using `lt_of_le_of_lt (Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)) hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h0 m hmk]`. Simplify using the standard rewrite rules. Rewrite using `[key i, Finset.sum_range_succ, Finset.sum_eq_zero, zero_add]`. Simplify using `[mul_comm]`. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h0 m (Finset.mem_range.mp hm)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jet_mul_first {u v : ℂ → ℂ} (hu : AnalyticAt ℂ u 0) (hv : AnalyticAt ℂ v 0) (i : ℕ)
     (h0 : ∀ k < i, iteratedDeriv k u 0 = 0) :
@@ -41,17 +41,15 @@ theorem jet_mul_first {u v : ℂ → ℂ} (hu : AnalyticAt ℂ u 0) (hv : Analyt
       simp
 
 /- English proof (translation)
-Introduce `r Ψ c h F hΨ hF hF0 hev i`. Establish `hP : AnalyticAt ℂ (fun τ => ∑ j, c j * Ψ j τ) 0` using `Finset.analyticAt_fun_sum _ fun j _ => analyticAt_const.mul (hΨ j)`. Establish `hDP : ∀ k : ℕ, iteratedDeriv k (fun τ => ∑ j, c j * Ψ j τ) 0 = ∑ j, c j * iteratedDeriv k (Ψ j) 0`. Introduce `k`. Establish `hc : ∀ j ∈ (Finset.univ : Finset (Fin r)), ContDiffAt ℂ k (fun τ => c j * Ψ j τ) 0` using `fun j _ => (analyticAt_const.mul (hΨ j)).contDiffAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[iteratedDeriv_fun_sum (f := fun j τ => c j * Ψ j τ) hc]`. Conclude with `Finset.sum_congr rfl fun j _ => iteratedDeriv_const_mul_field (c j) (Ψ j)`. Establish `hFi : AnalyticAt ℂ (fun t => (F t)⁻¹) 0` using `hF.inv hF0`. Establish `hne : ∀ᶠ τ in 𝓝 (0 : ℂ), F τ ≠ 0` using `hF.continuousAt.eventually_ne hF0`. Establish `hh : h =ᶠ[𝓝 (0 : ℂ)] fun t => (∑ j, c j * Ψ j t) * (F t)⁻¹` using `by filter_upwards [hev, hne] with τ h1 h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, _root_.mul_assoc, mul_inv_cancel₀ h2, _root_.mul_one]`. Establish `hha : AnalyticAt ℂ h 0` using `(hP.mul hFi).congr hh.symm`. Establish `hPe : (fun τ => ∑ j, c j * Ψ j τ) =ᶠ[𝓝 (0 : ℂ)] fun t => h t * F t` using `hev`. Establish `hDPh : ∀ k : ℕ, ∑ j, c j * iteratedDeriv k (Ψ j) 0 = iteratedDeriv k (fun t => h t * F t) 0` using `fun k => by`. Rewrite using `[← hDP k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hPe.iteratedDeriv_eq k`. Establish `hDh : ∀ k : ℕ, iteratedDeriv k h 0 = iteratedDeriv k (fun t => (∑ j, c j * Ψ j t) * (F t)⁻¹) 0` using `fun k => hh.iteratedDeriv_eq k`. Establish `back : (∀ k < i, ∑ j, c j * iteratedDeriv k (Ψ j) 0 = 0) → ∀ k < i, iteratedDeriv k h 0 = 0`. Introduce `hz k hk`. Rewrite using `[hDh k]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(jet_mul_first hP hFi i fun k hk => by rw [hDP k]; exact hz k hk).1 k hk`. Use `⟨⟨back, fun hz k hk => ?_⟩, fun hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hDPh k]`. Conclude with `(jet_mul_first hha hF i hz).1 k hk`. Rewrite using `[hDPh i]`.
-
-Conclude with `(jet_mul_first hha hF i (back hz)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_first_nonzero : ∀ (r : ℕ) (Ψ : Fin r → ℂ → ℂ) (c : Fin r → ℂ) (h F : ℂ → ℂ), (∀ j, AnalyticAt ℂ (Ψ j) 0) → AnalyticAt ℂ F 0 → F 0 ≠ 0 → (∀ᶠ τ in 𝓝 (0 : ℂ), ∑ j, c j * Ψ j τ = h τ * F τ) → ∀ i : ℕ, ((∀ k < i, ∑ j, c j * iteratedDeriv k (Ψ j) 0 = 0) ↔ ∀ k < i, iteratedDeriv k h 0 = 0) ∧ ((∀ k < i, ∑ j, c j * iteratedDeriv k (Ψ j) 0 = 0) → ∑ j, c j * iteratedDeriv i (Ψ j) 0 = F 0 * iteratedDeriv i h 0) := by
   intro r Ψ c h F hΨ hF hF0 hev i

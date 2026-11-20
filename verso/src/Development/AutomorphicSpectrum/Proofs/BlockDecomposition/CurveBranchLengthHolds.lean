@@ -7,7 +7,7 @@ set_option maxSynthPendingDepth 1
 namespace GlobalTheory.CompanionTheory.Heights.CurveBranch
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.CurveBranchLength.proof GroundTheory.Heights₂.Heights.AutoClose.CurveNormalisationLength hB`.
+A detailed English derivation is pending.
 -/
 theorem curveBranchLength_of_branchNormalisation
     (hB : GroundTheory.Heights₂.Heights.BranchNormalisation.Statement) :
@@ -15,7 +15,7 @@ theorem curveBranchLength_of_branchNormalisation
   GroundTheory.Heights₂.Heights.CurveBranchLength.proof GroundTheory.Heights₂.Heights.AutoClose.CurveNormalisationLength hB
 
 /- English proof (translation)
-The claim follows from `curveBranchLength_of_branchNormalisation GlobalTheory.T.branch_normalisation_holds`.
+A detailed English derivation is pending.
 -/
 theorem curveBranchLength : GroundTheory.Heights₂.Heights.CurveBranchLength.Statement :=
   curveBranchLength_of_branchNormalisation GlobalTheory.T.branch_normalisation_holds

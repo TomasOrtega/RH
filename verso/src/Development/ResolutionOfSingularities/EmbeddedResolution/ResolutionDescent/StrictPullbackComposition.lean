@@ -13,7 +13,7 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_support_comap {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSheafData)
     (x : ↥A) : x ∈ (I.comap f).support ↔ f.base x ∈ I.support := by
@@ -21,15 +21,15 @@ private theorem mem_support_comap {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealS
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨q, hq1, hq2⟩ : ∃ q : Limits.pullback (c ≫ u) g ⟶ Limits.pullback u g, q ≫ Limits.pullback.fst u g = Limits.pullback.fst (c ≫ u) g ≫ c ∧ q ≫ Limits.pullback.snd u g = Limits.pullback.snd (c ≫ u) g` from `⟨Limits.pullback.lift (Limits.pullback.fst (c ≫ u) g ≫ c) (Limits.pullback.snd (c ≫ u) g) (by rw [Category.assoc]; exact Limits.pullback.condition), Limits.pullback.lift_fst _ _ _, Limits.pullback.lift_snd _ _ _⟩`. Establish `hA : IsPullback (Limits.pullback.fst (c ≫ u) g) q c (Limits.pullback.fst u g)`. Use `IsPullback.of_bot ?_ hq1.symm (IsPullback.of_hasPullback u g)` and prove the remaining obligations. Rewrite using `[hq2]`. Conclude with `IsPullback.of_hasPullback (c ≫ u) g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqs : AlgebraicGeometry.Surjective q`. Rewrite using `[← hA.isoPullback_hom_snd]`. Use `infer_instance`. Establish `hbase : ∀ x : ↥(Limits.pullback (c ≫ u) g), (Limits.pullback.snd (c ≫ u) g).base x = (Limits.pullback.snd u g).base (q.base x)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hq2]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Rewrite `hx` using `[mem_support_comap]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨q.base x, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_support_comap, ← hbase x]`. Conclude with `hx`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[mem_support_comap]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `hqs.surj y`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_support_comap, hbase x, hx]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 private theorem support_comap_pullback_snd_nonempty_iff {W V Y T : Scheme.{u}} (u : V ⟶ Y) (c : W ⟶ V)
     [AlgebraicGeometry.Surjective c] (g : T ⟶ Y) (I : T.IdealSheafData) :
@@ -72,25 +72,23 @@ private theorem support_comap_pullback_snd_nonempty_iff {W V Y T : Scheme.{u}} (
 namespace IsPullbackBlowupSequence
 
 /- English proof (translation)
-Unfold `FunctorialResolution.EmbeddedResolution.IsPullbackBlowupSequence at h ⊢`. Unfold `FunctorialResolution.EmbeddedResolution.IsStrictPullbackBlowupSeq at hc`. Take `⟨r, e, hr1, hr2, hr3, hr4, hefst, hestep, hecenter⟩` from `h`. Take `⟨hlen, σ, hzero, hstep, hcenter⟩` from `hc`. Establish `hle : ∀ i : ℕ, i ≤ t.length → i ≤ s'.length`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i hi`. Use linear arithmetic over natural numbers and integers. Establish `hsq : ∀ (i : ℕ) (hi : i ≤ t.length), IsPullback (σ i hi) (t.projectionToBase i) (s'.projectionToBase i) c` using `isPullback_projectionToBase_of_isPullback_blowupMorphism c t s' t.length σ hzero hstep`. Establish `hpaste : ∀ (i : ℕ) (hi : i ≤ t.length), IsPullback (t.projectionToBase i) (σ i hi ≫ (e i (hle i hi)).hom ≫ Limits.pullback.snd u (s.projectionToBase (r i))) (c ≫ u) (s.projectionToBase (r i))`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomm : s'.projectionToBase i ≫ u = ((e i (hle i hi)).hom ≫ Limits.pullback.snd u (s.projectionToBase (r i))) ≫ s.projectionToBase (r i)`. Rewrite using `[← hefst i (hle i hi), Category.assoc, Category.assoc, Limits.pullback.condition]`. Conclude with `(hsq i hi).flip.paste_vert (IsPullback.of_iso_pullback ⟨hcomm⟩ (e i (hle i hi)) (hefst i (hle i hi)) rfl)`. Establish `hFfst : ∀ (i : ℕ) (hi : i ≤ t.length), ((hpaste i hi).isoPullback).hom ≫ Limits.pullback.fst (c ≫ u) (s.projectionToBase (r i)) = t.projectionToBase i` using `fun i hi => (hpaste i hi).isoPullback_hom_fst`. Establish `hFsnd : ∀ (i : ℕ) (hi : i ≤ t.length), ((hpaste i hi).isoPullback).hom ≫ Limits.pullback.snd (c ≫ u) (s.projectionToBase (r i)) = σ i hi ≫ (e i (hle i hi)).hom ≫ Limits.pullback.snd u (s.projectionToBase (r i))` using `fun i hi => (hpaste i hi).isoPullback_hom_snd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFsnd' : ∀ (i : ℕ) (hi : i ≤ t.length) {Z : Scheme.{u}} (k : s.schemeAt (r i) ⟶ Z), ((hpaste i hi).isoPullback).hom ≫ Limits.pullback.snd (c ≫ u) (s.projectionToBase (r i)) ≫ k = σ i hi ≫ (e i (hle i hi)).hom ≫ Limits.pullback.snd u (s.projectionToBase (r i)) ≫ k`. Introduce `i hi Z k`. Rewrite using `[← Category.assoc, hFsnd, Category.assoc, Category.assoc]`. Establish `hc1 : ∀ i < t.length, r i < s.length`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hr1 i (by omega)`. Establish `hc2 : ∀ (i j : ℕ), j ≤ t.length → i < j → r i < r j`. Introduce `i j hj hij`. Conclude with `hr2 i j (by omega) hij`. Establish `hc3 : r t.length = s.length`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hlen]`. Conclude with `hr3`. Establish `hc4 : ∀ i < s.length, (∃ x, x ∈ ((s.center i).comap (Limits.pullback.snd (c ≫ u) (s.projectionToBase i))).support) ↔ ∃ j < t.length, r j = i`. Introduce `i hi`. Use `(support_comap_pullback_snd_nonempty_iff u c (s.projectionToBase i) (s.center i)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `(hr4 i hi).trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, hji⟩`. Conclude with `⟨j, by omega, hji⟩`. Introduce and unpack `⟨j, hj, hji⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨j, by omega, hji⟩`. Establish `hc6 : ∀ (i : ℕ) (hi : i < t.length) (hrr : r i ≤ r (i + 1)), t.transitionMapSucc i ≫ ((hpaste i (Nat.le_of_lt hi)).isoPullback).hom = ((hpaste (i + 1) hi).isoPullback).hom ≫ s.pullbackTransitionMap (c ≫ u) hrr`. Introduce `i hi hrr`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, SequenceOfBlowups.pullbackTransitionMap_fst, hFfst]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[t.blowupMorphism_eq_transitionMap]`. Conclude with `t.transitionMap_comp_projectionToBase _`. Simplify using `only [Category.assoc, SequenceOfBlowups.pullbackTransitionMap_snd, hFsnd, hFsnd']`. Rewrite using `[← Category.assoc, ← (hstep i hi).w, Category.assoc, ← Category.assoc (s'.transitionMapSucc i), hestep i (by omega) hrr, Category.assoc, SequenceOfBlowups.pullbackTransitionMap_snd]`. Establish `hc7 : ∀ (i : ℕ) (hi : i < t.length), t.center i = (s.center (r i)).comap (((hpaste i (Nat.le_of_lt hi)).isoPullback).hom ≫ Limits.pullback.snd (c ≫ u) (s.projectionToBase (r i)))`.
-
-Introduce `i hi`. Rewrite using `[hcenter i hi, hecenter i (by omega), hFsnd, ← Scheme.IdealSheafData.comap_comp]`. Conclude with `⟨r, fun i hi => (hpaste i hi).isoPullback, hc1, hc2, hc3, hc4, hFfst, hc6, hc7⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem comp_isStrictPullbackSequenceOfBlowups {W V Y : Scheme.{u}} {u : V ⟶ Y} {c : W ⟶ V}
     [AlgebraicGeometry.Surjective c]

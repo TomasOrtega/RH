@@ -25,9 +25,9 @@ section FactorChange
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Function.comp_apply, Equiv.swap_apply_right, Fin.snoc_castSucc, Function.update_self, Fin.snoc_last]`. Distinguish the cases in `hi : i = m`. Substitute `hi` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Function.comp_apply, Equiv.swap_apply_left, Fin.snoc_last, Fin.snoc_castSucc, Function.update_self]`. Establish `h1 : i.castSucc ≠ m.castSucc` using `fun h => hi (Fin.castSucc_injective _ h)`. Establish `h2 : i.castSucc ≠ Fin.last D` using `(Fin.castSucc_lt_last i).ne`. Rewrite using `[Function.comp_apply, Equiv.swap_apply_of_ne_of_ne h1 h2, Fin.snoc_castSucc, Fin.snoc_castSucc, Function.update_of_ne hi, Function.update_of_ne hi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem snoc_update_comp_swap {D : ℕ} (W : Fin D → HermLine ι) (m : Fin D) (X B : HermLine ι) :
     (Fin.snoc (Function.update W m X) B : Fin (D + 1) → HermLine ι) ∘
@@ -45,7 +45,7 @@ theorem snoc_update_comp_swap {D : ℕ} (W : Fin D → HermLine ι) (m : Fin D) 
         Function.update_of_ne hi, Function.update_of_ne hi]
 
 /- English proof (translation)
-Distinguish the cases in `hj : j = m`. Substitute `hj` using the available equality. Simplify using `using hX`. Simplify `hW j` using `[Function.update_of_ne hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smooth_update {D : ℕ} {W : Fin D → HermLine ι} (hW : ∀ j, IsSmoothHerm (W j)) (m : Fin D)
     {X : HermLine ι} (hX : IsSmoothHerm X) (j : Fin D) : IsSmoothHerm (Function.update W m X j) := by
@@ -55,7 +55,7 @@ theorem smooth_update {D : ℕ} {W : Fin D → HermLine ι} (hW : ∀ j, IsSmoot
   · simpa [Function.update_of_ne hj] using hW j
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Conclude with `hX`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `hW i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_snoc {D : ℕ} {W : Fin D → HermLine ι} (hW : ∀ j, IsSmoothHerm (W j)) {X : HermLine ι}
     (hX : IsSmoothHerm X) (j : Fin (D + 1)) :
@@ -67,11 +67,9 @@ theorem smooth_snoc {D : ℕ} {W : Fin D → HermLine ι} (hW : ∀ j, IsSmoothH
     exact hW i
 
 /- English proof (translation)
-Establish `hM` using `smooth_update hW m hB`. Establish `hswap : ∀ X : HermLine ι, IsSmoothHerm X → I P (D + 1) (Fin.snoc (Function.update W m X) B) = I P (D + 1) (Fin.snoc (Function.update W m B) X)`. Introduce `X hX`. Rewrite using `[← snoc_update_comp_swap W m X B]`. Conclude with `(hI.1 P (D + 1) _ _ hP (smooth_snoc (smooth_update hW m hX) hB)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hswap A hA, hswap A' hA', GlobalTheory.CompanionTheory.Ar.Tele.step GroundTheory.Heights₂.Heights.ForSecondHalf.MetricLocal.full I hI P D _ A A' hP hM hA hA' hab, GlobalTheory.T.points_integral_zero_of_locally_constant K ι P D (pot (Function.update W m B)) _ m ?_, sub_zero]`. Introduce `z hz`. Take `⟨c, hc⟩` from `hloc z hz`. Use `⟨Real.log c, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hc] with x hx`.
-
-Simplify using `[pot, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem position_change (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ)
     (hI : IsIntersectionFamily I) (P : Ideal (MRing ι)) {D : ℕ} (hP : IsArithVar P (D + 1))
@@ -96,21 +94,21 @@ theorem position_change (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermL
   simp [pot, hx]
 
 /- English proof (translation)
-Set `Wd : ℕ → Fin D → HermLine ι` to `fun m j => if (j : ℕ) < m then L' j else L j`. Establish `hWd : ∀ m j, IsSmoothHerm (Wd m j)`. Introduce `m j`. Distinguish the cases in `h : (j : ℕ) < m`. Simplify `hL' j` using `[Wd, h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hL j` using `[Wd, h]`. Establish `key : ∀ m, m ≤ D → I P (D + 1) (Fin.snoc L B) = I P (D + 1) (Fin.snoc (Wd m) B)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Establish `: Wd 0 = L`. Use function extensionality and compare the values at `j`. Simplify using `[Wd]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ m ih`. Introduce `hm`. Set `i : Fin D` to `⟨m, hm⟩`. Establish `e0 : Function.update (Wd m) i (L i) = Wd m`. Use function extensionality and compare the values at `j`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[Wd, i]`. Simplify using `[Function.update_of_ne hj]`. Establish `e1 : Function.update (Wd m) i (L' i) = Wd (m + 1)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[Wd, i]`. Establish `hne : (j : ℕ) ≠ m` using `fun h => hj (Fin.ext h)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hiff : (j : ℕ) < m + 1 ↔ (j : ℕ) < m` using `by omega`. Simplify using `[Function.update_of_ne hj, Wd, hiff]`. Rewrite using `[ih (by omega), ← e1]`. Use `conv_lhs => rw [← e0]`. Conclude with `position_change I hI P hP (Wd m) (hWd m) i (L i) (L' i) B (hL i) (hL' i) hB (ha i).symm hloc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hD : Wd D = L'`. Use function extensionality and compare the values at `j`. Simplify using `[Wd]`. Rewrite using `[key D le_rfl, hD]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_change (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ)
     (hI : IsIntersectionFamily I) (P : Ideal (MRing ι)) {D : ℕ} (hP : IsArithVar P (D + 1))
@@ -161,15 +159,15 @@ theorem word_change (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine 
 end FactorChange
 
 /- English proof (translation)
-Introduce `hA hInt K _ ι _ Ω _ F _ _ _ y D L L' sg hP hL hL' ha hex`. Take `⟨II, hII, -⟩` from `hA`. Set `Λ : (F →+* ℂ) → ℝ` to `fun s => if s = sg then Real.exp 1 else 1`. Establish `hΛ : ∀ s, 0 < Λ s`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : s = sg`. Simplify using `[Λ, h, Real.exp_pos]`. Simplify using `[Λ, h]`. Take `⟨B, hB0, hBs, hBloc⟩` from `exists_smooth_weight_const_near_embeddings K ι Ω F y Λ hΛ hex`. Establish `mass : ∀ M : Fin D → HermLine ι, (∀ j, IsSmoothHerm (M j)) → II K ι (mCoordIdeal y) (D + 1) (Fin.snoc M B) = ptsIntegral (mCoordIdeal y) (pot M) ({z | LiesOver y sg z}.indicator fun _ => (1 : ℝ))`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `M hM`. Rewrite using `[intersection_locConst_trivial hInt K ι Ω F y D M B Λ II hII hP hM hB0 hBs hex hBloc, Finset.sum_eq_single sg]`. Simplify using `[Λ]`. Introduce `s _ hs`. Simplify using `[Λ, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ sg) h`. Rewrite using `[← mass L hL, ← mass L' hL']`. Use `word_change (II K ι) (hII K ι) _ hP L L' hL hL' ha B hBs ?_` and prove the remaining obligations. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `hex z hz`. Conclude with `⟨Λ s, hBloc z hz s hs⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mass_eq_of_degrees : ArithIntersectionSystemStatement → PtsIntegrableStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Algebra F Ω] (y : (Σ k, ι k) → Ω) (D : ℕ) (L L' : Fin D → HermLine ι) (sg : F →+* ℂ), IsArithVar (mCoordIdeal y) (D + 1) → (∀ j, IsSmoothHerm (L j)) → (∀ j, IsSmoothHerm (L' j)) → (∀ j, (L j).a = (L' j).a) → (∀ z ∈ mcPts (mCoordIdeal y), ∃! s : F →+* ℂ, LiesOver y s z) → ptsIntegral (mCoordIdeal y) (pot L) ({z | LiesOver y sg z}.indicator fun _ => (1 : ℝ)) = ptsIntegral (mCoordIdeal y) (pot L') ({z | LiesOver y sg z}.indicator fun _ => (1 : ℝ)) := by
   intro hA hInt K _ ι _ Ω _ F _ _ _ y D L L' sg hP hL hL' ha hex

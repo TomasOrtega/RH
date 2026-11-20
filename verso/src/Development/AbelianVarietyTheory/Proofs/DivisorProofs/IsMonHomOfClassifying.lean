@@ -9,9 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbDual
 
 /- English proof (translation)
-Establish `hM : (ev P' (fst A T) (snd A T ≫ y₁)).IsLB` using `pull_isLB h.isLB _`. Establish `ha : IsAdditive (ev P' (fst A T) (snd A T ≫ y₁))`. Use `(isAdditive_iff hM).2 fun Y a a' t ↦ ?_` and prove the remaining obligations. Rewrite using `[evc_ev h.isLB, evc_ev h.isLB, evc_ev h.isLB]`. Simplify using `only [lift_fst, lift_snd_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(isAdditive_iff h.isLB).1 h.additive Y a a' (t ≫ y₁)`. Conclude with `(h.univ T _ hM ha).unique ((cls_eq_iff hM hM).1 rfl) ((cls_eq_iff hM (pull_isLB h.isLB _)).1 e)`.
+A detailed English derivation is pending.
 -/
 theorem IsDual.eq_of_evc {S : Scheme.{0}} {A B' T : Over S} [GrpObj A] [GrpObj B'] {P' : LB (A ⊗ B').left}
     (h : IsDual A B' P') {y₁ y₂ : T ⟶ B'}
@@ -26,7 +26,7 @@ theorem IsDual.eq_of_evc {S : Scheme.{0}} {A B' T : Over S} [GrpObj A] [GrpObj B
     ((cls_eq_iff hM (pull_isLB h.isLB _)).1 e)
 
 /- English proof (translation)
-Use `show _ = lift _ _ ≫ μ`. Rewrite using `[lift_comp_fst_snd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mul_eq {S : Scheme.{0}} {G Y : Over S} [MonObj G] (f : Y ⟶ G ⊗ G) :
     f ≫ μ = (f ≫ fst G G) * (f ≫ snd G G) := by
@@ -34,19 +34,19 @@ theorem comp_mul_eq {S : Scheme.{0}} {G Y : Over S} [MonObj G] (f : Y ⟶ G ⊗ 
   rw [lift_comp_fst_snd]
 
 /- English proof (translation)
-Introduce `S A B B' _ _ _ P P' h' ha' hP ha x e`. Establish `hP'` using `h'.isLB`. Establish `hE : (ev P' (fst A B) (snd A B ≫ x)).IsLB` using `pull_isLB hP' _`. Establish `c : cls P hP = cls _ hE` using `(cls_eq_iff hP hE).2 e`. Establish `K : ∀ (Y : Over S) (a : Y ⟶ A) (b : Y ⟶ B), evc hP a b = evc hP' a (b ≫ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y a b`. Establish `k` using `evc_ev hP' (fst A B) (snd A B ≫ x) hE a b`. Rewrite `k` using `[lift_fst, lift_snd_assoc]`. Rewrite using `[← k, evc, evc, c]`. Establish `hs : (swap P).IsLB` using `pull_isLB hP _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs' : (swap P').IsLB` using `pull_isLB hP' _`. Establish `addR : ∀ (Y : Over S) (a : Y ⟶ A) (b b' : Y ⟶ B), evc hP a (b * b') = evc hP a b + evc hP a b'`. Introduce `Y a b b'`. Establish `k` using `(isAdditive_iff hs).1 ha Y b b' a`. Rewrite `k` using `[evc_swap hP hs, evc_swap hP hs, evc_swap hP hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `addR' : ∀ (Y : Over S) (a : Y ⟶ A) (b b' : Y ⟶ B'), evc hP' a (b * b') = evc hP' a b + evc hP' a b'`. Introduce `Y a b b'`. Establish `k` using `(isAdditive_iff hs').1 ha' Y b b' a`. Rewrite `k` using `[evc_swap hP' hs', evc_swap hP' hs', evc_swap hP' hs']`. Then use the resulting hypothesis. Establish `oneR : ∀ (Y : Over S) (a : Y ⟶ A), evc hP a (1 : Y ⟶ B) = 0` using `fun Y a ↦ by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← evc_swap hP hs]`. Conclude with `ha.evc_one hs a`. Establish `oneR' : ∀ (Y : Over S) (a : Y ⟶ A), evc hP' a (1 : Y ⟶ B') = 0` using `fun Y a ↦ by`. Rewrite using `[← evc_swap hP' hs']`. Conclude with `ha'.evc_one hs' a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `u : ∀ (G : Over S) [MonObj G], snd A (𝟙_ (Over S)) ≫ (η : 𝟙_ (Over S) ⟶ G) = 1` using `fun G _ ↦ by show _ = toUnit _ ≫ η`. Rewrite using `[toUnit_unique (snd A (𝟙_ (Over S))) (toUnit _)]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `h'.eq_of_evc` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ← K, u, u, oneR, oneR']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `h'.eq_of_evc` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ← Category.assoc, comp_mul_eq, comp_mul_eq, ← K, addR, K, K, ← addR']`. Simplify using `only [Category.assoc, tensorHom_fst, tensorHom_snd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_classifying : ∀ (S : Scheme.{0}) (A B B' : Over S) [GrpObj A] [GrpObj B] [GrpObj B']
     (P : LB (A ⊗ B).left) (P' : LB (A ⊗ B').left), IsDual A B' P' → IsAdditive (swap P') → P.IsLB →

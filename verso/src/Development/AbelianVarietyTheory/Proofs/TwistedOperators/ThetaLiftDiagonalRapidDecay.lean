@@ -28,7 +28,7 @@ open scoped ENNReal
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Apply the tactic sequence `cases hε : ε a <;> simp [Formalism.REAL.Jm, hε]`. Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_apply_ne _ h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem jm_not {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm (fun j => !(ε j)) = -Formalism.REAL.Jm ε := by
   ext a b
@@ -38,7 +38,7 @@ theorem jm_not {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm (fun j => !(�
   · simp [Formalism.REAL.Jm, Matrix.diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gramAt, neg_gram]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramAt_neg (V : HSp D) (τ : D.what₂.Tau) : gramAt D (neg V) τ = -gramAt D V τ := by
   ext i j
@@ -52,7 +52,7 @@ def negFr (N : Node D) : Fr (neg N.V) where
     rw [jm_not, Matrix.mul_neg, Matrix.neg_mul, N.M.fr_gram τ, gramAt_neg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (N.M.fr τ)⁻¹ * Formalism.REAL.Jm (fun j => !(N.M.ε τ j)) * N.M.fr τ = -((N.M.fr τ)⁻¹ * Formalism.REAL.Jm (N.M.ε τ) * N.M.fr τ)`. Rewrite using `[jm_not, Matrix.mul_neg, Matrix.neg_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negFr_cart (N : Node D) : (negFr N).cart = cartS true N := by
   funext τ
@@ -60,13 +60,13 @@ theorem negFr_cart (N : Node D) : (negFr N).cart = cartS true N := by
   rw [jm_not, Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Establish `hω' : IsWeilDatumO ψ (neg S) T χS χT (ω.toSgn true)` using `hω`. Take `⟨A, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D (neg S).rank T.rank`. Take `⟨C, hC0, hC⟩` from `(H (neg S) T rfl rfl).real ψ hθ hU`. Use `⟨d, A, C * 2 ^ A, by positivity, fun f hf g h => ?_⟩` and prove the remaining obligations. Establish `hb` using `(hC χS χT (ω.toSgn true) hω' μ 𝓓 hμ f hf).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinv : ∀ γ ∈ GQ S, ∀ g, thetaKO ω (γ * g) h f = thetaKO ω g h f` using `fun γ hγ g => by`. Establish `e1 : (((ofSgn true S).symm (γ * g), h) : GA D (neg S) × GA D T) = ((ofSgn true S).symm γ, 1) * ((ofSgn true S).symm g, h)` using `by simp`. Use `show (ω.toSgn true) ((ofSgn true S).symm (γ * g), h) f 0 = (ω.toSgn true) ((ofSgn true S).symm g, h) f 0`. Rewrite using `[e1, map_mul, Module.End.mul_apply]`. Conclude with `hω'.om_aut _ (GlobalTheory.SquareComm.ofSgn_symm_mem_GQ true hγ) 1 (one_mem _) _ (hω'.om_pres _ _ hf.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 ≤ (GlobalTheory.Size.sobO ψ θ μ 𝓓 d f).toReal` using `ENNReal.toReal_nonneg`. Establish `hgr : ∀ g, ‖thetaKO ω g h f‖ ≤ (C * (GlobalTheory.Size.sobO ψ θ μ 𝓓 d f).toReal * GlobalTheory.Grow.height T h ^ A) * GlobalTheory.Grow.height S g ^ A` using `fun g => by`. Use `hb ((ofSgn true S).symm g) h` as an intermediate fact. Use `this.trans_eq ?_` and prove the remaining obligations. Use `show C * (GlobalTheory.Size.sobO ψ θ μ 𝓓 d f).toReal * (GlobalTheory.Grow.height S g * GlobalTheory.Grow.height T h) ^ A = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `(GlobalTheory.Grow.norm_le_quotHeight_pow (f := fun g => thetaKO ω g h f) hinv hgr g).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem thetaKernel_le_sobolev_mul_height_source {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D}
     {χS χT : (AE D)ˣ →* Circle} {ω : WRep S T} (hω : IsWeil ψ true S T χS χT ω) (μ : Measure (WO (neg S) T))
@@ -96,9 +96,9 @@ theorem thetaKernel_le_sobolev_mul_height_source {ψ : AddChar (AF D.host.F) ℂ
   ring
 
 /- English proof (translation)
-Take `⟨n, c, u, hu⟩` from `Submodule.mem_span_set'.1 hg`. Establish `hm : ∀ l, ∃ f₀ P, IsVacF ψ θ A B f₀ ∧ f₀ ∈ GlobalTheory.Size.thetaLevel ψ V W U ∧ (u l : WO V W → ℂ) = ptF ψ θ A B f₀ P` using `fun l => (u l).2`. Use `choose f₀ P hv _ he using hm`. Use `⟨n, f₀, fun l => c l • P l, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[he l]`. Conclude with `(map_smul (pureTensorO ψ θ V W A.cart B.cart A.onb B.onb (f₀ l)) (c l) (P l)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_of_mem_fockSpan {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A : Fr V} {B : Fr W}
     {U : AddSubgroup (WO V W)} {g : WO V W → ℂ} (hg : g ∈ fockSpan ψ θ A B U) :
@@ -115,7 +115,7 @@ theorem exists_sum_of_mem_fockSpan {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ
   exact (map_smul (pureTensorO ψ θ V W A.cart B.cart A.onb B.onb (f₀ l)) (c l) (P l)).symm
 
 /- English proof (translation)
-Unfold `IsVacF IsFinVec`. Rewrite using `[negFr_cart]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isVacF_negFr {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (S T : Node D) (f : WO S.V T.V → ℂ) :
     IsVacF ψ θ (negFr S) (Fr.ofModel T.M) f ↔ IsFinVec ψ θ true S T f := by
@@ -124,7 +124,7 @@ theorem isVacF_negFr {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (S T : Nod
   rfl
 
 /- English proof (translation)
-Unfold `ptF fock`. Rewrite using `[negFr_cart]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptF_negFr {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (S T : Node D) (f : WO S.V T.V → ℂ) (P : Pol S T) :
     ptF ψ θ (negFr S) (Fr.ofModel T.M) f P = fock ψ θ true S T f P := by
@@ -135,29 +135,29 @@ theorem ptF_negFr {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (S T : Node D
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `_ hP D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG i hi Φ hΦ Fm hF v _ C hC ε hε`. Establish `hθ : IsInfFam R.θ` using `hRB.inf`. Establish `hW` using `(hG.arrows.dn i hi).weil`. Establish `hω : IsWeilDatumO R.ψ (neg (G.P (i + 1)).V) (G.P i).V (G.chi (D.R.m - i)) (G.chi (D.R.m - i)) ((G.dn i).ω.toSgn true)` using `hW`. Choose the witnesses or unpack the hypotheses as in `⟨hν, hfd⟩ : (G.mP (i + 1)).ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ (G.P (i + 1)).V) (G.mP (i + 1)).fd (G.mP (i + 1)).ν := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hG.meas.P (i + 1) hi`. Distinguish the cases in `hd : i + 1 = D.R.m`. Conclude with `⟨(h.1 hd).1.1, (h.1 hd).2⟩`. Conclude with `⟨(h.2 hd).1.1, (h.2 hd).2⟩`. Establish `hFv : GlobalTheory.Grow.RapidDec (G.P (i + 1)).V (Fm v)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.LowVanishObj.multT_apply_cusp R.θ (G.P (i + 1)).M ∅ 1 Fm hF v`. Conclude with `(GlobalTheory.Size.rapidDecSm_of_cuspForm hP.cuspRapidDecay hθ h.1 h.2).rapidDec`. Take `⟨μ, 𝓓, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (neg (G.P (i + 1)).V) (G.P i).V`. Take `⟨U, hU, hΦU, happ⟩` from `GlobalTheory.FockDensity.fockDense D _ _ (negFr (G.P (i + 1))) (Fr.ofModel (G.P i).M) R.θ R.ψ hω.std hθ μ 𝓓 hμ Φ hΦ`. Use `haveI : BorelSpace (GA D (G.P (i + 1)).V) := ⟨rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI hfin : IsFiniteMeasure ((G.mP (i + 1)).ν.restrict (G.mP (i + 1)).fd) := isFiniteMeasure_restrict.2 (GlobalTheory.Chain.LiftReg.vol_ne_top hν hfd)`. Take `⟨H, hH⟩` from `GlobalTheory.Grow.exists_height_le_of_isCompact (G.P i).V hC`. Establish `hbound : ∀ U' : AddSubgroup (WO (neg (G.P (i + 1)).V) (G.P i).V), IsOpen (U' : Set (WO (neg (G.P (i + 1)).V) (G.P i).V)) → ∃ (d : ℕ) (M : ℝ), 0 ≤ M ∧ ∀ f ∈ GlobalTheory.Size.thetaLevel R.ψ (neg (G.P (i + 1)).V) (G.P i).V U', ∀ h ∈ C, IntegrableOn (fun g => thetaKO (G.dn i).ω g h …`. Introduce `U' hU'`. Take `⟨d, Ae, K, hK0, hK⟩` from `thetaKernel_le_sobolev_mul_height_source hθ hW μ 𝓓 hμ U' hU'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨B, hB⟩` from `hFv.decay Ae`. Use `⟨d, K * max H 1 ^ Ae * max B 0 * ((G.mP (i + 1)).ν (G.mP (i + 1)).fd).toReal, by positivity, fun f hf h hh => ?_⟩` and prove the remaining obligations. Establish `hs : 0 ≤ (GlobalTheory.Size.sobO R.ψ R.θ μ 𝓓 d f).toReal` using `ENNReal.toReal_nonneg`. Establish `hcont : Continuous fun g => thetaKO (G.dn i).ω g h f * Fm v g` using `((hω.om_cont f hf.1 0).comp ((continuous_ofSgn_symm true _).prodMk continuous_const)).mul hFv.continuous`. Establish `hpt : ∀ g, ‖thetaKO (G.dn i).ω g h f * Fm v g‖ ≤ K * (GlobalTheory.Size.sobO R.ψ R.θ μ 𝓓 d f).toReal * max H 1 ^ Ae * max B 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[norm_mul]`. Establish `h1` using `hK f hf g h`. Establish `h2 : GlobalTheory.Grow.height (G.P i).V h ^ Ae ≤ max H 1 ^ Ae` using `pow_le_pow_left₀ (GlobalTheory.Grow.height_pos _ h).le ((hH h hh).trans (le_max_left _ _)) Ae`. Establish `h3 : ‖Fm v g‖ * GlobalTheory.Grow.quotHeight (G.P (i + 1)).V g ^ Ae ≤ max B 0` using `(hB g).trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h4 : 0 ≤ GlobalTheory.Grow.quotHeight (G.P (i + 1)).V g ^ Ae` using `pow_nonneg (GlobalTheory.Grow.quotHeight_pos _ g).le Ae`. Establish `h5 : 0 ≤ GlobalTheory.Grow.height (G.P i).V h ^ Ae` using `pow_nonneg (GlobalTheory.Grow.height_pos _ h).le Ae`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Integrable.of_bound hcont.aestronglyMeasurable _ (.of_forall hpt), ?_⟩` and prove the remaining obligations. Use `(norm_integral_le_of_norm_le_const (.of_forall hpt)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Measure.real, Measure.restrict_apply_univ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, M, hM0, hMb⟩` from `hbound U hU`. Establish `hδ : (0 : ℝ≥0∞) < ENNReal.ofReal (ε / (M + 1))` using `ENNReal.ofReal_pos.2 (by positivity)`. Take `⟨g, hgS, hgU, hlt⟩` from `happ d _ hδ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨n, f, p, hf, rfl⟩` from `exists_sum_of_mem_fockSpan hgS`. Use `⟨n, f, p, fun l => (isVacF_negFr _ _ (f l)).1 (hf l), fun h hh => ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ l, ptF R.ψ R.θ (negFr (G.P (i + 1))) (Fr.ofModel (G.P i).M) (f l) (p l) = fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f l) (p l)` using `fun l => ptF_negFr _ _ (f l) (p l)`. Establish `hint : ∀ l, IntegrableOn (fun g => thetaKO (G.dn i).ω g h (fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f l) (p l)) * Fm v g) (G.mP (i + 1)).fd (G.mP (i + 1)).ν`. Introduce `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ht : IsThetaFunO R.ψ (neg (G.P (i + 1)).V) (G.P i).V (ptF R.ψ R.θ (negFr (G.P (i + 1))) (Fr.ofModel (G.P i).M) (f l) (p l))` using `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hω.std hθ _ _ _ _ (hf l).1 (p l)`. Take `⟨U', hU', hl'⟩` from `GlobalTheory.Size.isTheta_iff_level.1 ht`. Take `⟨_, _, _, hb⟩` from `hbound U' hU'`. Rewrite using `[← hpt l]`. Conclude with `(hb _ hl' h hh).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e : (∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h Φ * Fm v g ∂(G.mP (i + 1)).ν) - ∑ l, ∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h (fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f l) (p l)) * Fm v g ∂(G.mP (i + 1)).ν = ∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h (Φ - ∑ l …`. Rewrite using `[← integral_finset_sum _ fun l _ => hint l, ← integral_sub (hMb Φ hΦU h hh).1 (integrable_finset_sum _ fun l _ => hint l)]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [thetaKO, map_sub, map_sum, Pi.sub_apply, Finset.sum_apply, sub_mul, Finset.sum_mul, hpt]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs` using `ENNReal.toReal_lt_of_lt_ofReal hlt`. Establish `hs0 : 0 ≤ (GlobalTheory.Size.sobO R.ψ R.θ μ 𝓓 d (Φ - ∑ l, ptF R.ψ R.θ (negFr (G.P (i + 1))) (Fr.ofModel (G.P i).M) (f l) (p l))).toReal` using `ENNReal.toReal_nonneg`. Use `((hMb _ (sub_mem hΦU hgU) h hh).2).trans_lt ?_` and prove the remaining obligations. Establish `hM1 : 0 < M + 1` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem approx : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i, i < D.R.m → ∀ Φ, IsThetaFunO R.ψ (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V Φ → ∀ F : (G.P (i + 1)).Maps, F ∈ (G.P (i + 1)).Cusp R.θ → ∀ v : SmT (G.P (i + 1)).M, (∀ h, IntegrableOn (fun g => thetaKO (G.dn i).ω g h Φ * F v g) (G.mP (i + 1)).fd (G.mP (i + 1)).ν) → ∀ C : Set (GA D (G.P i).V), IsCompact C → ∀ ε : ℝ, 0 < ε → ∃ (n : ℕ) (f : Fin n → (WO (G.P (i + 1)).V (G.P i).V → ℂ)) (p : Fin n → GlobalTheory.Grid.Pol (G.P (i + 1)) (G.P i)), (∀ l, GlobalTheory.Grid.IsFinVec R.ψ R.θ true (G.P (i + 1)) (G.P i) (f l)) ∧ ∀ h ∈ C, ‖(∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h Φ * F v g ∂(G.mP (i + 1)).ν) - ∑ l, ∫ g in (G.mP (i + 1)).fd, thetaKO (G.dn i).ω g h (GlobalTheory.Grid.fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f l) (p l)) * F v g ∂(G.mP (i + 1)).ν‖ < ε := by
   intro _ hP D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG i hi Φ hΦ Fm hF v _ C hC ε hε

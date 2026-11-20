@@ -7,7 +7,7 @@ open GlobalTheory.VertCmp
 open scoped Classical
 
 /- English proof (translation)
-Rewrite using `[SmallSec.fnMap_fnOf j hη h (e h')]`. Conclude with `fnOf_resG e h' _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fnMap_appLE {X Y : Scheme.{0}} [AlgebraicGeometry.IsIntegral X] [AlgebraicGeometry.IsIntegral Y] (j : Y ⟶ X)
     (hη : j (genericPoint Y) ⤳ genericPoint X) {U : X.Opens} {V : Y.Opens} (e : V ≤ j ⁻¹ᵁ U)
@@ -17,7 +17,7 @@ private theorem fnMap_appLE {X Y : Scheme.{0}} [AlgebraicGeometry.IsIntegral X] 
   exact fnOf_resG e h' _
 
 /- English proof (translation)
-Take `⟨U, hx, s, rfl⟩` from `h.exists_fnOf`. Establish `hy : y ∈ j ⁻¹ᵁ U` using `hx`. Rewrite using `[SmallSec.fnMap_fnOf j hη _ (gen_mem hy)]`. Conclude with `regAt_fnOf hy _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem regAt_fnMap' {X Y : Scheme.{0}} [AlgebraicGeometry.IsIntegral X] [AlgebraicGeometry.IsIntegral Y] (j : Y ⟶ X)
     (hη : j (genericPoint Y) ⤳ genericPoint X) {y : Y} {t : X.functionField} (h : RegAt (j y) t) :
@@ -28,7 +28,7 @@ private theorem regAt_fnMap' {X Y : Scheme.{0}} [AlgebraicGeometry.IsIntegral X]
   exact regAt_fnOf hy _ _
 
 /- English proof (translation)
-Establish `h0 : t ≠ 0` using `h.ne_zero`. Rewrite using `[unitAt_iff ((map_ne_zero _).2 h0), ← map_inv₀]`. Conclude with `⟨regAt_fnMap' g hη h.regAt, regAt_fnMap' g hη h.inv.regAt⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem unitAt_fnMap' {X Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral X] [AlgebraicGeometry.IsIntegral Z] (g : Z ⟶ X)
     (hη : g (genericPoint Z) ⤳ genericPoint X) {x : Z} {t : X.functionField} (h : UnitAt (g x) t) :
@@ -38,9 +38,9 @@ private theorem unitAt_fnMap' {X Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral X
   exact ⟨regAt_fnMap' g hη h.regAt, regAt_fnMap' g hη h.inv.regAt⟩
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `le : (L.pull g).U i ⊓ (L.pull g).U j ≤ g ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit))` using `fun x hx => ⟨LB.pull_U_le g i hx.1, LB.pull_U_le g j hx.2⟩`. Establish `h0 : genericPoint X ∈ L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit)` using `gen_mem (x := g (genericPoint Z)) (le hij)`. Express the relevant statement in the definitionally equal form `SmallSec.fnMap g hη (s (i PUnit.unit)) = _ * SmallSec.fnMap g hη (s (j PUnit.unit))`. Rewrite using `[hs _ _ h0, map_mul, ← fnMap_appLE g hη le h0 hij]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `(InducedPull.val_pull_g L g i j le).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem isRatSec_pull' {X Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral X] [AlgebraicGeometry.IsIntegral Z] (g : Z ⟶ X)
     (hη : g (genericPoint Z) ⤳ genericPoint X) {L : LB X} {s : L.ι → X.functionFieldˣ} (hs : IsRatSec L s) :
@@ -55,15 +55,15 @@ private theorem isRatSec_pull' {X Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral 
   exact (InducedPull.val_pull_g L g i j le).symm
 
 /- English proof (translation)
-Introduce `F _ _ Y O _ _ _ b B T μ μ' f hf f' h1 h2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `v L s l ⟨hs, W, hW, H⟩`. Use `⟨isRatSec_pull' f.f hf hs, W, hW, ?_⟩` and prove the remaining obligations. Introduce `e y z zt i hy hz hzt hi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (z ≫ f') ≫ μ.U.ι = (z ≫ μ'.U.ι) ≫ f.f` using `by simp only [Category.assoc, h1]`. Establish `H'` using `H e y (z ≫ f') (zt ≫ f.f) (i PUnit.unit) hy (by rw [Category.assoc, h2, hz]) (by rw [e1, ← hzt, Category.assoc]) (fun x hx => LB.pull_U_le f.f i (hi hx))`. Rewrite `H'` using `[e1]`. Establish `hU : UnitAt (f.f (below (z ≫ μ'.U.ι))) (s (i PUnit.unit) : B.X.functionField)` using `H'.1`. Use `⟨unitAt_fnMap' f.f hf hU, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← H'.2, ← SmallSec.valAt_fnMap f.f hf _ hU.regAt]`. Both sides reduce to the same expression. Introduce `P s hs i h`. Establish `e : T.gen ⊓ (P.M.pull f.f).U i ≤ f.f ⁻¹ᵁ (B.gen ⊓ P.M.U (i ⟨⟩))` using `inf_le_inf (Vert.Model.preimage_gen f.comp_str).ge (LB.pull_U_le f.f i)`. Establish `h0 : genericPoint B.X ∈ B.gen ⊓ P.M.U (i ⟨⟩)` using `gen_mem (x := f.f (genericPoint T.X)) (e h)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `SmallSec.fnMap f.f hf (s (i PUnit.unit)) = _`. Rewrite using `[hs _ h0, ← fnMap_appLE f.f hf e h0 h]`. Conclude with `congrArg _ (LB.resG_appLE f.f (LB.pull_inf_le f.f _ i) _ _).symm`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `SmallSec.fnMap f.f hf (fnOf ⊤ _ (B.const a)) = fnOf ⊤ _ (T.const a)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Vert.Model.appTop_const f.comp_str]`. Conclude with `SmallSec.fnMap_fnOf f.f hf _ (TopologicalSpace.Opens.mem_top _) _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.vertical_model_match_compat :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (b : 𝓞 F →+* O) (B T : Vert.Model O) (μ : Match Y b B) (μ' : Match Y b T) (f : Vert.Model.Hom T B) (hf : f.f (genericPoint T.X) ⤳ genericPoint B.X) (f' : μ'.U.toScheme ⟶ μ.U.toScheme), f' ≫ μ.U.ι = μ'.U.ι ≫ f.f → f' ≫ μ.h = μ'.h → (∀ (v : HeightOneSpectrum (𝓞 F)) (L : LB B.X) (s : L.ι → B.X.functionFieldˣ) (l : Ext v → AlgPt Y → ℝ), Reads μ v L s l → Reads μ' v (L.pull f.f) (fun i => Units.map (SmallSec.fnMap f.f hf).toMonoidHom (s (i PUnit.unit))) l) ∧ (∀ (P : VertDiv B) (s : P.M.ι → B.X.functionFieldˣ), IsSecOf P s → IsSecOf (P.pull f.comp_str) (fun i => Units.map (SmallSec.fnMap f.f hf).toMonoidHom (s (i PUnit.unit)))) ∧ (SmallSec.fnMap f.f hf).comp (cst B) = cst T := by

@@ -20,15 +20,13 @@ namespace GlobalTheory.Mum
 open GlobalTheory.TorusCoordPull in
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ ρ D I E hE A' G' _ _ U Y e φ h Z g`. Take `⟨ξ', hξ⟩` from `GlobalTheory.TorusCoord.exists_isPointOf (U.gt e) (T := Over.mk (g ≫ (thickObj R' I e G').hom ≫ thick R' I e)) g rfl`. Establish `hp` using `Y.rep.1 (Over.mk ((g ≫ φ) ≫ Y.H.hom)) Y.H (Over.homMk (g ≫ φ) rfl) (𝟙 Y.H)`. Rewrite `hp` using `[Category.comp_id]`. Use `set Yξ := Y.Φ (Over.mk ((g ≫ φ) ≫ Y.H.hom)) (Over.homMk (g ≫ φ) rfl) with hYξ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ξ'.b.left ≫ hE.e.hom.left ≫ pullback.fst D.P.A.hom (specOf ρ) = 𝟙 Z ≫ Yξ.b.left`. Rewrite using `[hξ.1, Category.assoc, h.1, hp.1, Category.id_comp]`. Both sides reduce to the same expression. Use `⟨ξ', hξ, hb, fun χ => ?_⟩` and prove the remaining obligations. Establish `hψ : ∀ κ : Fin 4, DegPre.gtφT E.toPre _ ξ'.b χ κ ≫ hE.e.hom.left ≫ pullback.fst D.P.A.hom (specOf ρ) = 𝟙 Z ≫ DegPre.gtφT D _ Yξ.b (hE.xe χ) κ` using `fun κ => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.TorusCoord.gtφT_eq, GlobalTheory.TorusCoord.gtφT_eq]`. Conclude with `Oφ_pull hE Yξ.b ξ'.b (𝟙 Z) hb χ κ`. Use `⟨hψ, maps_of_good ((isGen_iff hE.w).1 hE.w_gen) D.P.isLB E.toPre.P.isLB (ξ'.s χ) (ξ'.isGen χ) _ (Yξ.isGen _) hψ fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `o` using `(GlobalTheory.TorusCoord.comp_eq_of_left ξ'.b (U.gt e).pG (𝟙 Z) g (by rw [Category.id_comp]; exact hξ.1)).1 χ`. Establish `r1 : val (Yξ.s (hE.xe χ)) (𝟙 Z) z J = val ((Y.Φ Y.H (𝟙 Y.H)).s (hE.xe χ)) (g ≫ φ) z J` using `(val_corr hJ (hp.2 _) (𝟙 _)).trans ((val_pull hJ _ _ _).trans (congrArg (fun r => val ((Y.Φ Y.H (𝟙 Y.H)).s (hE.xe χ)) r z J) (Category.id_comp _)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `r3 : val (ξ'.s χ) (𝟙 Z) z J' = val ((U.gt e).t χ) g z J'` using `(val_corr hJ' (hξ.2 χ) (𝟙 _)).trans ((val_pull hJ' _ _ _).trans (congrArg (fun r => val ((U.gt e).t χ) r z J') (Category.id_comp _)))`. Use `r1.trans ((h.2 χ Z g z J J' hJ hJ').trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => ?_) r3.symm))` and prove the remaining obligations. Establish `ok` using `o k`. Rewrite `ok` using `[Category.id_comp]`. Rewrite using `[← ok]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isPullPt_of_carries : ∀ {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {ρ : R →+* R'} {D : DegPre R} {I : Ideal R'} {E : DegData R' I} (hE : IsPullDeg ρ D E.toPre) {A' : PolAV (Sp (FractionRing R'))} {G' : Over (Sp R')} [GrpObj G'] [IsCommMonObj G'] (U : UnifPre I E A' G') (Y : Ext D) {e : ℕ} {φ : (thickObj R' I e G').left ⟶ Y.H.left}, GlobalTheory.FormalModel.Carries hE (U.gt e) (Y.Φ Y.H (𝟙 Y.H)) φ → ∀ (Z : Scheme.{0}) (g : Z ⟶ (thickObj R' I e G').left), ∃ ξ' : GtPt E.toPre (Over.mk (g ≫ (thickObj R' I e G').hom ≫ thick R' I e)), GlobalTheory.TorusCoord.IsPointOf (U.gt e) g ξ' ∧ IsPullPt hE (𝟙 Z) (Y.Φ (Over.mk ((g ≫ φ) ≫ Y.H.hom)) (Over.homMk (g ≫ φ) rfl)) ξ' := by
   intro R R' _ _ _ _ ρ D I E hE A' G' _ _ U Y e φ h Z g

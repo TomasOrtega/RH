@@ -21,7 +21,7 @@ variable {G U : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loc
 
 include hK in
 /- English proof (translation)
-Establish `e : Measure.map (⇑(MeasurableEquiv.mulRight k)) μ = μ` using `GlobalTheory.CompactRight.map_mul_right_eq_of_mem_compact μ K hK k hk`. Use `conv_rhs => rw [← e]`. Rewrite using `[(MeasurableEquiv.mulRight k).measurableEmbedding.integral_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_mul_mem (k : G) (hk : k ∈ K) (F : G → ℂ) : ∫ y, F (y * k) ∂μ = ∫ y, F y ∂μ := by
   have e : Measure.map (⇑(MeasurableEquiv.mulRight k)) μ = μ :=
@@ -32,15 +32,15 @@ theorem integral_mul_mem (k : G) (hk : k ∈ K) (F : G → ℂ) : ∫ y, F (y * 
 
 include hK hι hιK in
 /- English proof (translation)
-Establish `hKK : IsCompact (Kc * (K : Set G))` using `hKc.mul hK`. Establish `i1 : Integrable (Function.uncurry fun y u => c y u * h (y * ι u)) (μ.prod ν)`. Apply `Continuous.integrable_of_hasCompactSupport` to reduce the goal to its premises. Conclude with `hc.mul (hh.comp (continuous_fst.mul (hι.comp continuous_snd)))`. Use `HasCompactSupport.intro (hKc.prod isCompact_univ) fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: p.1 ∉ Kc` using `fun h1 => hp ⟨h1, Set.mem_univ _⟩`. Simplify using `[Function.uncurry, hcK _ _ this]`. Establish `i2 : Integrable (Function.uncurry fun y u => c (y * (ι u)⁻¹) u * h y) (μ.prod ν)`. Apply `Continuous.integrable_of_hasCompactSupport` to reduce the goal to its premises. Conclude with `(hc.comp ((continuous_fst.mul (hι.comp continuous_snd).inv).prodMk continuous_snd)).mul (hh.comp continuous_fst)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `HasCompactSupport.intro (hKK.prod isCompact_univ) fun p hp => ?_` and prove the remaining obligations. Establish `: p.1 * (ι p.2)⁻¹ ∉ Kc` using `fun h1 => hp ⟨⟨p.1 * (ι p.2)⁻¹, h1, ι p.2, hιK p.2, by simp⟩, Set.mem_univ _⟩`. Simplify using `[Function.uncurry, hcK _ _ this]`. Rewrite using `[integral_integral_swap i1]`. Establish `e : ∀ u, ∫ y, c y u * h (y * ι u) ∂μ = ∫ y, c (y * (ι u)⁻¹) u * h y ∂μ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u`. Use `integral_mul_mem μ K hK (ι u) (hιK u) (fun y => c (y * (ι u)⁻¹) u * h y)` as an intermediate fact. Simplify using `using this`. Repeatedly rewrite using `[e]`. Rewrite using `[← integral_integral_swap i2]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[integral_mul_const]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap_right (c : G → U → ℂ) (hc : Continuous (Function.uncurry c)) (Kc : Set G) (hKc : IsCompact Kc)
     (hcK : ∀ y u, y ∉ Kc → c y u = 0) (h : G → ℂ) (hh : Continuous h) :
@@ -73,9 +73,9 @@ theorem swap_right (c : G → U → ℂ) (hc : Continuous (Function.uncurry c)) 
 
 include hK hι hιK in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `continuous_parametric_integral_of_continuous (μ := ν) (f := fun y u => c (y * (ι u)⁻¹) u) (hc.comp ((continuous_fst.mul (hι.comp continuous_snd).inv).prodMk continuous_snd)) isCompact_univ` as an intermediate fact. Simplify `this` using `[Measure.restrict_univ]`. Use `HasCompactSupport.intro (hKc.mul hK) fun y hy => ?_` and prove the remaining obligations. Establish `: ∀ u, c (y * (ι u)⁻¹) u = 0` using `fun u => hcK _ _ fun h1 => hy ⟨_, h1, ι u, hιK u, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem avg_cont_supp (c : G → U → ℂ) (hc : Continuous (Function.uncurry c)) (Kc : Set G) (hKc : IsCompact Kc)
     (hcK : ∀ y u, y ∉ Kc → c y u = 0) :
@@ -91,7 +91,7 @@ theorem avg_cont_supp (c : G → U → ℂ) (hc : Continuous (Function.uncurry c
 end Gen
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `continuous_subtype_val`. Conclude with `continuous_star.comp continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem continuous_toUnitsU (N : ℕ) :
     Continuous (fun u : Matrix.unitaryGroup (Fin N) ℂ => (Unitary.toUnits u : G N)) := by
@@ -103,11 +103,9 @@ theorem continuous_toUnitsU (N : ℕ) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
 
 /- English proof (translation)
-Set `Mt : (InfinitePlace E → G N) → GL (Fin N) (Cinf E)` to `fun y => Units.map (Matrix.piRingEquiv (n := Fin N) (β := fun _ : InfinitePlace E => ℂ)).symm.toMonoidHom (MulEquiv.piUnits.symm y)`. Establish `hM : Continuous Mt`. Use `Continuous.units_map _ ?_ |>.comp (ContinuousMulEquiv.piUnits (M := fun _ : InfinitePlace E => Matrix (Fin N) (Fin N) ℂ)).symm.continuous` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_pi fun v => (continuous_apply v).matrix_elem i j`. Establish `hL : Continuous fun x : Matrix (Fin N) (Fin N) (Cinf E) => (toL x : Lie E N)` using `continuous_id`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun t : G N => φ (g * infP N (Pi.mulSingle v t))) = fun t => chart φ g (toL (Mt (Pi.mulSingle v t)).val)`. Use function extensionality and compare the values at `t`. Rewrite using `[chart_val]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `(hs g).continuousOn.comp_continuous (hL.comp ((Units.continuous_val (M := Matrix (Fin N) (Fin N) (Cinf E))).comp (hM.comp (continuous_mulSingle (A := fun _ : InfinitePlace E => G N) v)))) fun t => val_mem_invSet _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_along_infP (v : InfinitePlace E) (g : GA E N) (φ : GA E N → ℂ) (hs : φ ∈ Sm E N) :
     Continuous fun t : G N => φ (g * infP N (Pi.mulSingle v t)) := by

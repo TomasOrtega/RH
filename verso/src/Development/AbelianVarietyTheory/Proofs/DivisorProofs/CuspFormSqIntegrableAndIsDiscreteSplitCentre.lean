@@ -20,9 +20,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ResW
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Establish `hB : CuspFormsBoundedGL` using `GlobalTheory.CuspBoundSiegel.cuspFormsBounded_of_rapidDecay (GlobalTheory.cuspRapidDecaySiegelGL_of_finite GlobalTheory.automorphicFormsFiniteGL)`. Establish `h1 : ∀ φ : Sm E a, IsCuspForm φ → (∀ t g, φ.1 (splitCentre E a t * g) = φ.1 g) → IsSqInt φ.1` using `fun φ hφ h' =>`. Establish `hC` using `hB.of_invariant hφ h'`. Use the proof step `GlobalTheory.DiscChar.isSqInt_of_bounded h' (C := hC.choose) hC.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨h1, fun x hx => ⟨fun φ hφ => (x.cusp φ hφ).1, fun φ hφ => h1 φ (x.cusp φ hφ) (hx φ hφ), x.stable, x.ne_bot, x.irred⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem cuspForm_isSqInt_and_isDiscrete :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),

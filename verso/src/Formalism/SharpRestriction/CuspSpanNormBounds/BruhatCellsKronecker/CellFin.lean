@@ -14,19 +14,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hfix : ∀ c : F, star (algebraMap F E c) = algebraMap F E c` using `fun c => (hc.fixed _).2 ⟨c, rfl⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hc.deg2]; norm_num)`. Set `s : E ≃ₐ[F] E` to `{ toFun := star invFun := star left_inv := star_star right_inv := star_star map_mul' := fun a b => by rw [star_mul, mul_comm] map_add' := star_add commutes' := hfix }`. Establish `hs1 : s ≠ 1`. Introduce `h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hbot : (⊥ : Subalgebra F E) = ⊤`. Use `eq_top_iff.2 fun a _ => ?_` and prove the remaining obligations. Establish `ha : star a = a` using `DFunLike.congr_fun h a`. Take `⟨c, hc'⟩` from `RingHom.mem_range.1 ((hc.fixed a).1 ha)`. Conclude with `Algebra.mem_bot.2 ⟨c, hc'⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Module.finrank F E = 1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 hbot`. Rewrite `h1` using `[hc.deg2]`. Conclude with `absurd h1 (by norm_num)`. Establish `hle : Fintype.card (E ≃ₐ[F] E) ≤ Module.finrank F E` using `by first`. Consider the case `exact AlgEquiv.card_le`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact (Fintype.card_congr (algEquivEquivAlgHom F E)).le.trans AlgHom.card_le`. Establish `hpair : ({1, s} : Finset (E ≃ₐ[F] E)).card = 2` using `Finset.card_pair (Ne.symm hs1)`. Establish `hcard : Fintype.card (E ≃ₐ[F] E) = 2`. Establish `hge : ({1, s} : Finset (E ≃ₐ[F] E)).card ≤ Fintype.card (E ≃ₐ[F] E)` using `Finset.card_le_univ _`. Rewrite `hle` using `[hc.deg2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : IsGalois F E := by first`. Consider the case `exact IsGalois.of_card_aut_eq_finrank F E (by rw [Nat.card_eq_fintype_card, hcard, hc.deg2])`. Consider the case `exact IsGalois.of_card_aut_eq_finrank F E (by rw [hcard, hc.deg2])`. Establish `huniv : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, s}`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `symm`. Apply `Finset.eq_of_subset_of_card_le (Finset.subset_univ _)` to reduce the goal to its premises. Rewrite using `[Finset.card_univ, hcard, hpair]`. Use `first`. Consider the case `rw [trace_eq_sum_automorphisms]`.
-
-Consider the case `rw [Algebra.trace_eq_sum_automorphisms]`. Rewrite using `[huniv, Finset.sum_pair (Ne.symm hs1)]`. Apply the tactic sequence `try rfl`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_trace {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) (x : E) : algebraMap F E (Algebra.trace F E x) = x + star x := by
@@ -78,13 +76,13 @@ theorem tie_trace {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   try rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `hmem : y ∈ orth (hS D) (Xplus F)`. Rewrite using `[p_mem_orth]`. Introduce `x hx`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Xplus F ≤ LinearMap.ker ((hS D).hT.flip y)`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `h1 a.castSucc` as an intermediate fact. Simplify `this` using `[FlagG.fvec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `_ rfl`. Use `h1 (Fin.last _)` as an intermediate fact. Simplify `this` using `[FlagG.fvec]`. Conclude with `hle hx`. Establish `hp` using `p_posX D T hT F τ y hmem hy`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `nrm at hp`. Rewrite `hp` using `[h2, map_zero]`. Simplify using `at hp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tie_aniso (D : D7) (T : ℕ) (hT : 0 < T) (F : LFlag (hS D) D.R.rS (T : D.host.E)) (y : (hS D).V)
     (h1 : ∀ a, (hS D).hT (F.fl.fvec a) y = 0) (h2 : (hS D).hT y y = 0) : y ∈ F.fl.X := by

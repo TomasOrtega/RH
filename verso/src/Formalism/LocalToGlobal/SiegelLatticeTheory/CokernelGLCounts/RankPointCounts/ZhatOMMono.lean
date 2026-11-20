@@ -14,9 +14,9 @@ section Gen
 variable {E K : Type*} [Field E] [CommRing K] {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [zLoc, mono, Matrix.of_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem zLoc_mono (ι : E →+* K) (cj : K →+* K) (Dd : Fin (r + 1) → K) (σ : Fin (r + 1) → Fin (r + 1))
     (ν : Fin (r + 1) → E) :
@@ -28,9 +28,9 @@ theorem zLoc_mono (ι : E →+* K) (cj : K →+* K) (Dd : Fin (r + 1) → K) (σ
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ZhatOM, mono, Matrix.of_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem zhatOM_mono (σ : Fin (r + 1) → Fin (r + 1)) (ν : Fin (r + 1) → E) :
     ZhatOM (mono σ ν) = mono σ (fun a => (-1) ^ (r - (σ a).val) * ν a) := by
@@ -41,9 +41,9 @@ theorem zhatOM_mono (σ : Fin (r + 1) → Fin (r + 1)) (ν : Fin (r + 1) → E) 
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [linG, mono, Matrix.of_apply]`. Distinguish the cases in `h : b = σ a`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos (hσ a).symm, if_pos rfl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ¬ a = σ b` using `fun h' => h (by rw [h', hσ])`. Rewrite using `[if_neg h, if_neg h', if_neg h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linG_mono {F : Type*} [Field F] [Algebra F K] (e : K ≃ₐ[F] F × F) (q : F) {σ : Fin (r + 1) → Fin (r + 1)}
     (hσ : ∀ a, σ (σ a) = a) (ν : Fin (r + 1) → K) :
@@ -58,15 +58,15 @@ theorem linG_mono {F : Type*} [Field F] [Algebra F K] (e : K ≃ₐ[F] F × F) (
     simp
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[mul_single_mul]`. Establish `h1 : l x (Fin.last r) = if x = Fin.last r then 1 else 0`. Distinguish the cases in `hx : x = Fin.last r`. Substitute `hx` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl]`. Conclude with `(hl _ _).2 rfl`. Rewrite using `[if_neg hx]`. Conclude with `(hl _ _).1 (lt_of_le_of_ne (Fin.le_last x) hx)`. Establish `h2 : ρ (Fin.last r) y = if y = Fin.last r then 1 else 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hy : y = Fin.last r`. Substitute `hy` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `(hρ _ _).2 rfl`. Rewrite using `[if_neg hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Conclude with `(hρ _ _).1 (lt_of_le_of_ne (Fin.le_last y) hy)`. Rewrite using `[h1, h2, Matrix.single_apply]`. Apply the tactic sequence `by_cases hx : x = Fin.last r <;> by_cases hy : y = Fin.last r`. Substitute `hx` using the available equality. Substitute `hy` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[hy, Ne.symm hy]`. Simplify using `[hx, Ne.symm hx]`. Simplify using `[hx, Ne.symm hx]`.
+A detailed English derivation is pending.
 -/
 theorem fix_single {K : Type*} [CommRing K] {l ρ : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hl : IsLoUni l)
     (hρ : IsUpUni ρ) (κ : K) :
@@ -89,7 +89,7 @@ theorem fix_single {K : Type*} [CommRing K] {l ρ : Matrix (Fin (r + 1)) (Fin (r
   · simp [hx, Ne.symm hx]
 
 /- English proof (translation)
-Rewrite `h` using `[Matrix.mul_sub, Matrix.sub_mul, fix_single hl hρ]`. Conclude with `sub_left_injective h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_of_fix {K : Type*} [CommRing K] {l ρ N : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hl : IsLoUni l)
     (hρ : IsUpUni ρ) (κ : K) (h : l * (N - Matrix.single (Fin.last r) (Fin.last r) κ) * ρ =
@@ -107,11 +107,11 @@ variable {D : D7} (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.M
   (u u' : D.what₂.Word)
 
 /- English proof (translation)
-Use `set cj : (D.s.atP p).Ep →+* (D.s.atP p).Ep := ((M p).L.cj : (D.s.atP p).Ep →+* (D.s.atP p).Ep)`. Establish `hu : ∀ a, IsUnit (frFac δ p (σ a) * cj (frFac δ p a) * (D.s.atP p).ιE (ν a))` using `fun a => ((frFac_unit δ M hA (σ a)).mul ((frFac_unit δ M hA a).map cj)).mul ((isUnit_iff_ne_zero.2 (hν a)).map _)`. Consider the cases of `h : (M p).split with`. Consider the case `none`. Use `⟨fun a => frFac δ p (σ a) * cj (frFac δ p a) * (D.s.atP p).ιE (ν a), hu, 0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zzp_none δ M u u' h, zLoc_mono, Matrix.single_zero, sub_zero]`. Consider the case `some g`. Use `⟨fun a => g.e.symm ((g.e (frFac δ p (σ a) * cj (frFac δ p a) * (D.s.atP p).ιE (ν a))).1 / (g.q : (D.s.atP p).Fp), -((g.e (frFac δ p (σ (σ a)) * cj (frFac δ p (σ a)) * (D.s.atP p).ιE (ν (σ a)))).2 / (g.q : (D.s.atP p).Fp))), fun a => ?_, g.e.symm (-(((D.mem u).A.T : ℕ) : (D.s.atP …` and prove the remaining obligations. Establish `hq` using `q_ne M g`. Establish `h1` using `(Prod.isUnit_iff.1 ((hu a).map g.e)).1`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(Prod.isUnit_iff.1 ((hu (σ a)).map g.e)).2`. Use `IsUnit.map g.e.symm (Prod.isUnit_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `isUnit_iff_ne_zero.2 (div_ne_zero h1.ne_zero hq)`. Conclude with `isUnit_iff_ne_zero.2 (neg_ne_zero.2 (div_ne_zero h2.ne_zero hq))`. Rewrite using `[zzp_some δ M u u' h, zLoc_mono, linG_mono _ _ hσ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zzp_mono {p : PlF D} (hA : Agree δ M p) {σ : Fin (D.R.rS + 1) → Fin (D.R.rS + 1)} (hσ : ∀ a, σ (σ a) = a)
     (ν : Fin (D.R.rS + 1) → D.host.E) (hν : ∀ a, ν a ≠ 0) :

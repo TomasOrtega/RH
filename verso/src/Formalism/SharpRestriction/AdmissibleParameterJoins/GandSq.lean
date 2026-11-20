@@ -11,16 +11,16 @@ section G1
 variable {p : ℕ} [Fact p.Prime] (g : G1 p) {σ τ : Type}
 
 /- English proof (translation)
-Unfold `G1.l`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.MainNotions.TaylorLogMetric.flog, PowerSeries.coeff_mk, if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_l : PowerSeries.constantCoeff g.l = 0 := by
   unfold G1.l
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.MainNotions.TaylorLogMetric.flog, PowerSeries.coeff_mk, if_pos rfl]
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_subst hs]`. Use `(finsum_congr fun d => ?_).trans finsum_zero` and prove the remaining obligations. Break down `d with _ | d` into its components or cases. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hf0, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, ha, zero_pow (Nat.succ_ne_zero d), smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem cc_subst_lemma {R : Type} [CommRing R] {υ : Type} {a : MvPowerSeries υ R}
     (ha : MvPowerSeries.constantCoeff a = 0) {f : PowerSeries R} (hf0 : PowerSeries.constantCoeff f = 0) :
@@ -33,7 +33,7 @@ private theorem cc_subst_lemma {R : Type} [CommRing R] {υ : Type} {a : MvPowerS
   · rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, ha, zero_pow (Nat.succ_ne_zero d), smul_zero]
 
 /- English proof (translation)
-Establish `ha' : HasSubst (fun _ : Unit => a)` using `hasSubst_of_constantCoeff_zero (fun _ => ha)`. Simplify using `only [PowerSeries.subst]`. Rewrite using `[subst_comp_subst_apply ha' hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_lemma_2 {υ ρ : Type} {R : Type} [CommRing R] {a : MvPowerSeries υ R}
     (ha : MvPowerSeries.constantCoeff a = 0) {c : υ → MvPowerSeries ρ R} (hc : HasSubst c)
@@ -43,41 +43,41 @@ private theorem comp_lemma_2 {υ ρ : Type} {R : Type} [CommRing R] {a : MvPower
   rw [subst_comp_subst_apply ha' hc]
 
 /- English proof (translation)
-The claim follows from `cc_subst_lemma ha (cc_l g)`.
+A detailed English derivation is pending.
 -/
 theorem cc_lg {a : MvPowerSeries σ ℂ_[p]} (ha : constantCoeff a = 0) : constantCoeff (g.lg a) = 0 :=
   cc_subst_lemma ha (cc_l g)
 
 /- English proof (translation)
-The claim follows from `cc_subst_lemma ha hex`.
+A detailed English derivation is pending.
 -/
 theorem cc_pt (hex : PowerSeries.constantCoeff g.ex = 0) {a : MvPowerSeries σ ℂ_[p]} (ha : constantCoeff a = 0) :
     constantCoeff (g.pt a) = 0 :=
   cc_subst_lemma ha hex
 
 /- English proof (translation)
-The claim follows from `comp_lemma_2 ha hc g.l`.
+A detailed English derivation is pending.
 -/
 theorem lg_subst {c : σ → MvPowerSeries τ ℂ_[p]} (hc : HasSubst c) {a : MvPowerSeries σ ℂ_[p]}
     (ha : constantCoeff a = 0) : subst c (g.lg a) = g.lg (subst c a) :=
   comp_lemma_2 ha hc g.l
 
 /- English proof (translation)
-The claim follows from `comp_lemma_2 ha hc g.ex`.
+A detailed English derivation is pending.
 -/
 theorem pt_subst {c : σ → MvPowerSeries τ ℂ_[p]} (hc : HasSubst c) {a : MvPowerSeries σ ℂ_[p]}
     (ha : constantCoeff a = 0) : subst c (g.pt a) = g.pt (subst c a) :=
   comp_lemma_2 ha hc g.ex
 
 /- English proof (translation)
-The claim follows from `comp_lemma_2 ha hc g.ph`.
+A detailed English derivation is pending.
 -/
 theorem phAt_subst {c : σ → MvPowerSeries τ ℂ_[p]} (hc : HasSubst c) {a : MvPowerSeries σ ℂ_[p]}
     (ha : constantCoeff a = 0) : subst c (g.phAt a) = g.phAt (subst c a) :=
   comp_lemma_2 ha hc g.ph
 
 /- English proof (translation)
-Establish `h0 : constantCoeff (g.lg a + g.lg b) = 0` using `by rw [map_add, cc_lg g ha, cc_lg g hb, add_zero]`. Use `show subst c (g.pt (g.lg a + g.lg b)) = g.pt (g.lg (subst c a) + g.lg (subst c b))`. Rewrite using `[pt_subst g hc h0, ← coe_substAlgHom hc, map_add, coe_substAlgHom, lg_subst g hc ha, lg_subst g hc hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_subst (hex : PowerSeries.constantCoeff g.ex = 0) {c : σ → MvPowerSeries τ ℂ_[p]} (hc : HasSubst c)
     {a b : MvPowerSeries σ ℂ_[p]} (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) :
@@ -87,14 +87,14 @@ theorem add_subst (hex : PowerSeries.constantCoeff g.ex = 0) {c : σ → MvPower
   rw [pt_subst g hc h0, ← coe_substAlgHom hc, map_add, coe_substAlgHom, lg_subst g hc ha, lg_subst g hc hb]
 
 /- English proof (translation)
-The claim follows from `cc_pt g hex (by rw [map_add, cc_lg g ha, cc_lg g hb, add_zero])`.
+A detailed English derivation is pending.
 -/
 theorem cc_add (hex : PowerSeries.constantCoeff g.ex = 0) {a b : MvPowerSeries σ ℂ_[p]} (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) : constantCoeff (g.add a b) = 0 :=
   cc_pt g hex (by rw [map_add, cc_lg g ha, cc_lg g hb, add_zero])
 
 /- English proof (translation)
-Establish `hab` using `cc_add g hex ha hb`. Use `show subst c (g.phAt (g.add a b) - g.phAt a - g.phAt b) = g.phAt (g.add (subst c a) (subst c b)) - g.phAt (subst c a) - g.phAt (subst c b)`. Rewrite using `[← coe_substAlgHom hc, map_sub, map_sub, coe_substAlgHom, phAt_subst g hc hab, phAt_subst g hc ha, phAt_subst g hc hb, add_subst g hex hc ha hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem be_subst (hex : PowerSeries.constantCoeff g.ex = 0) {c : σ → MvPowerSeries τ ℂ_[p]} (hc : HasSubst c)
     {a b : MvPowerSeries σ ℂ_[p]} (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) :
@@ -106,7 +106,7 @@ theorem be_subst (hex : PowerSeries.constantCoeff g.ex = 0) {c : σ → MvPowerS
     phAt_subst g hc hb, add_subst g hex hc ha hb]
 
 /- English proof (translation)
-Establish `hX : PowerSeries.HasSubst (X i : MvPowerSeries σ ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_X i)`. Unfold `diagS G1.lg`. Rewrite using `[← PowerSeries.smul_eq_C_mul, ← smul_eq_C_mul, ← PowerSeries.coe_substAlgHom hX, map_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_Cmul (ep : ℂ_[p]) (i : σ) :
     (diagS (PowerSeries.C ep * g.l) i : MvPowerSeries σ ℂ_[p]) = C ep * g.lg (X i) := by
@@ -116,7 +116,7 @@ theorem dg_Cmul (ep : ℂ_[p]) (i : σ) :
   rw [← PowerSeries.smul_eq_C_mul, ← smul_eq_C_mul, ← PowerSeries.coe_substAlgHom hX, map_smul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, cc_l g, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_Cl (ep : ℂ_[p]) : PowerSeries.constantCoeff (PowerSeries.C ep * g.l) = 0 := by
   rw [map_mul, cc_l g, mul_zero]
@@ -131,7 +131,7 @@ def IsLin [Fintype Z] (f : MvPowerSeries Z R) : Prop :=
   f = ∑ z, C (coeff (Finsupp.single z 1) f) * X z
 
 /- English proof (translation)
-Unfold `IsLin at *`. Repeatedly rewrite using `[map_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLin_sum [Fintype Z] {α : Type} (s : Finset α) (f : α → MvPowerSeries Z R) (h : ∀ a ∈ s, IsLin (f a)) :
     IsLin (∑ a ∈ s, f a) := by

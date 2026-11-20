@@ -45,7 +45,7 @@ def goodTypes {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb)
   tupleChar h '' {s | ∀ i : Fin 2, GoodAt (chiTame (H := D.host) om i) (fun w : PlOf pb i => s ⟨i, w⟩)}
 
 /- English proof (translation)
-The claim follows from `(Set.toFinite _).image _`.
+A detailed English derivation is pending.
 -/
 theorem goodTypes_finite {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb)
     (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ) (n : ℕ) : (goodTypes h om n).Finite :=
@@ -80,7 +80,7 @@ variable (D) in
 def badPl : Finset (HeightOneSpectrum (𝓞 D.host.F)) := primesOf ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F)
 
 /- English proof (translation)
-Rewrite using `[badPl, Formalism.L2.DIV.mem_primesOf]`. Use `⟨fun h => h.2, fun h => ⟨?_, h⟩⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_badPl (v : HeightOneSpectrum (𝓞 D.host.F)) :
     v ∈ badPl D ↔ ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal := by
@@ -123,12 +123,12 @@ def occurring : Set (EigSys D) :=
   IxFull θ M (levP0 pb ψ j β) (chiP0 pb ψ j β) (badPl D) (eW h om ψ j β)
 
 /- English proof (translation)
-The claim follows from `inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem heckePart_le (c : EigSys D) : heckePart θ h om ψ j β M c ≤ goodForms θ h om ψ j β M := inf_le_right
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `fun hT => ⟨hT.2, ((mem_partFull θ M _ _ _ c T).1 hT.1).2⟩`. Conclude with `fun hT => ⟨(mem_partFull θ M _ _ _ c T).2 ⟨hT.1.1, hT.2⟩, hT.1⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_heckePart (c : EigSys D) (T : MMap M) :
     T ∈ heckePart θ h om ψ j β M c ↔ T ∈ goodForms θ h om ψ j β M ∧
@@ -139,7 +139,7 @@ theorem mem_heckePart (c : EigSys D) (T : MMap M) :
   · exact fun hT => ⟨(mem_partFull θ M _ _ _ c T).2 ⟨hT.1.1, hT.2⟩, hT.1⟩
 
 /- English proof (translation)
-The claim follows from `hc.2`.
+A detailed English derivation is pending.
 -/
 theorem heckePart_ne_bot {c : EigSys D} (hc : c ∈ occurring θ h om ψ j β M) : heckePart θ h om ψ j β M c ≠ ⊥ := hc.2
 
@@ -167,7 +167,7 @@ def GoodFormsOrthSum (D : D7) : Prop :=
     IsOrthSum θ h om ψ j β M (occurring θ h om ψ D.R.m βm Mm)
 
 /- English proof (translation)
-Introduce `τ`. Establish `h2` using `D.R.two_le_m`. Rewrite using `[D.sp.W_sigval _ (by omega) le_rfl, D.sp.W_rank _ (by omega) le_rfl]`. Simplify using `[Ranks.sigW, Ranks.r]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example (D : D7) : (D.sp.W D.R.m).IsPosDef := by
   intro τ

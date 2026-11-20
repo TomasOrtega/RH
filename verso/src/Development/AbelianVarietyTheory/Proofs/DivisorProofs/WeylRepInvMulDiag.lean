@@ -10,7 +10,7 @@ variable {k : Type} [Field k] {n : ℕ}
 local notation "M" x:max => ((x : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)
 
 /- English proof (translation)
-Establish `h : (M (x⁻¹ * x)) p p = (M (1 : GL (Fin n) k)) p p` using `by rw [inv_mul_cancel]`. Rewrite `h` using `[Units.val_mul, Matrix.mul_apply, Units.val_one, Matrix.one_apply_eq]`. Rewrite `h` using `[Finset.sum_eq_single (w p) (fun b _ hb => by rw [hx b p hb, mul_zero]) (by simp)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem weylRep_inv_mul_diag {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : IsWeylRep w x) (p : Fin n) :
     (M x⁻¹) p (w p) * (M x) (w p) p = 1 := by
@@ -19,7 +19,7 @@ theorem weylRep_inv_mul_diag {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : I
   rwa [Finset.sum_eq_single (w p) (fun b _ hb => by rw [hx b p hb, mul_zero]) (by simp)] at h
 
 /- English proof (translation)
-Establish `h : (M (x * x⁻¹)) (w p) (w p) = (M (1 : GL (Fin n) k)) (w p) (w p)` using `by rw [mul_inv_cancel]`. Rewrite `h` using `[Units.val_mul, Matrix.mul_apply, Units.val_one, Matrix.one_apply_eq]`. Rewrite using `[Finset.sum_eq_single p (fun b _ hb => by` and apply the resulting hypothesis. Rewrite `h` using `[hx (w p) b (fun e => hb (w.injective e).symm), zero_mul]) (by simp)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem weylRep_mul_inv_diag {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : IsWeylRep w x) (p : Fin n) :
     (M x) (w p) p * (M x⁻¹) p (w p) = 1 := by
@@ -29,11 +29,11 @@ theorem weylRep_mul_inv_diag {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : I
       rw [hx (w p) b (fun e => hb (w.injective e).symm), zero_mul]) (by simp)] at h
 
 /- English proof (translation)
-Introduce `p a hpa`. Establish `hne : (M x) a (w⁻¹ a) ≠ 0`. Introduce `h0`. Use `weylRep_mul_inv_diag hx (w⁻¹ a)` as an intermediate fact. Rewrite `this` using `[show w (w⁻¹ a) = a by simp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`. Establish `h : (M (x⁻¹ * x)) p (w⁻¹ a) = (M (1 : GL (Fin n) k)) p (w⁻¹ a)` using `by rw [inv_mul_cancel]`. Rewrite `h` using `[Units.val_mul, Matrix.mul_apply, Units.val_one, Matrix.one_apply_ne hpa]`. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hx b (w⁻¹ a) (by simpa using hb), mul_zero]) (by simp)]`. Conclude with `(mul_eq_zero.1 h).resolve_right hne`.
+A detailed English derivation is pending.
 -/
 theorem weylRep_inv {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : IsWeylRep w x) : IsWeylRep w⁻¹ x⁻¹ := by
   intro p a hpa
@@ -50,7 +50,7 @@ theorem weylRep_inv {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : IsWeylRep 
   exact (mul_eq_zero.1 h).resolve_right hne
 
 /- English proof (translation)
-Establish `hi` using `weylRep_inv hx`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (w q) (fun b _ hb => by rw [hx b q hb, mul_zero]) (by simp), Matrix.mul_apply, Finset.sum_eq_single (w p) (fun b _ hb => by rw [hi p b (fun e => hb (by rw [e]; simp)), zero_mul]) (by simp)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem weylRep_conj_apply {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : IsWeylRep w x) (u : GL (Fin n) k)
     (p q : Fin n) : (M (x⁻¹ * u * x)) p q = (M x⁻¹) p (w p) * (M u) (w p) (w q) * (M x) (w q) q := by
@@ -60,15 +60,15 @@ theorem weylRep_conj_apply {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : IsW
     Finset.sum_eq_single (w p) (fun b _ hb => by rw [hi p b (fun e => hb (by rw [e]; simp)), zero_mul]) (by simp)]
 
 /- English proof (translation)
-Rewrite using `[mem_cell, mem_unipBLower]`. Use `and_congr_right fun hu => ?_` and prove the remaining obligations. Rewrite `hu` using `[mem_unipB]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, -⟩ a b hab hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h` using `hl _ _ hw`. Rewrite `h` using `[weylRep_conj_apply hx, show w (w⁻¹ a) = a by simp, show w (w⁻¹ b) = b by simp]`. Establish `h1` using `weylRep_inv_mul_diag hx (w⁻¹ a)`. Establish `h2` using `weylRep_mul_inv_diag hx (w⁻¹ b)`. Rewrite `h1` using `[show w (w⁻¹ a) = a by simp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[show w (w⁻¹ b) = b by simp]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Rewrite `h1` using `[h, zero_mul]`. Conclude with `absurd h1 zero_ne_one`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Rewrite `h2` using `[h, zero_mul]`. Conclude with `absurd h2 zero_ne_one`. Introduce `h`. Use `⟨fun p q hpq => ?_, fun p => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[weylRep_conj_apply hx]`. Break down `lt_or_gt_of_ne (fun e : w p = w q => hpq.ne (w.injective e)) with hl | hl` into its components or cases. Rewrite using `[h _ _ hl (by simpa using hpq), mul_zero, zero_mul]`. Rewrite using `[hu.1 _ _ hl, mul_zero, zero_mul]`. Rewrite using `[weylRep_conj_apply hx, hu.2, mul_one, weylRep_inv_mul_diag hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_cell_iff {w : Equiv.Perm (Fin n)} {x : GL (Fin n) k} (hx : IsWeylRep w x) (u : GL (Fin n) k) :
     u ∈ cell x ↔ u ∈ unipB k (Fin n) ∧ ∀ a b, a < b → w⁻¹ a < w⁻¹ b → (M u) a b = 0 := by

@@ -40,19 +40,17 @@ structure ColBrF.Tied {D : D7} (B : ColBrF D) : Prop where
     D.what₂.embLL (B.Dc.Pt (B.wU u) t x F) = D.what₂.perCol u (B.tup t) (D.jN u (B.eNu u x)) (B.eV t F)
 
 /- English proof (translation)
-Introduce `φ hφ F hF`. Establish `hV0` using `hB.v0 t F hF`. Take `⟨S, c, hS, hx0⟩` from `hcut _ (hB.gen t F hF) hV0`. Establish `key : ∀ φ ∈ Submodule.span (𝓞 D.what₂.LL) N, VGeq z s (B.Dc.Pt (B.wU u) t φ F)`. Introduce `φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `hex : ∀ y : D.what₂.Amb (B.tup t), ∃ a : D.what₂.LL, y ∈ S → (D.what₂.embLL a = D.what₂.perCol u (B.tup t) (D.jN u (B.eNu u x)) y ∧ (a = 0 ∨ s ≤ (vAdd z a : ℝ)))`. Introduce `y`. Distinguish the cases in `hy : y ∈ S`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, ha⟩` from `h x hx y (hS hy).1 (hS hy).2`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h' => absurd h' hy⟩`. Use `choose a ha using hex`. Take `⟨f, hf⟩` from `perCol_lin D u (B.tup t) (D.jN u (B.eNu u x))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `heq : B.Dc.Pt (B.wU u) t x F = ∑ y ∈ S, ((c y : 𝓞 D.what₂.LL) : D.what₂.LL) * a y`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[hB.dcPt u t x F, hf]`. Use `(congrArg f hx0).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum, map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul, (ha y hy).1, hf]`. Rewrite using `[heq]`. Conclude with `VGeq.sum S _ fun y hy => VGeq.int_mul (c y) (ha y hy).2`. Consider the case `zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_zero, LinearMap.zero_apply]`. Conclude with `VGeq.zero z s`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `hx.add hy`.
-
-Consider the case `smul a x _ hx`. Rewrite using `[← algebraMap_smul D.what₂.LL a x, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `VGeq.int_mul a hx`. Conclude with `(key φ hφ).vw`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perToVal2F (D : D7) (B : ColBrF D) (hB : B.Tied) (u : D.what₂.Word) (t : B.Bs.Tup) (hcut : CutUp D (B.tup t))
     (z : HeightOneSpectrum (𝓞 D.what₂.LL)) (s : ℝ) (N : Set (Fin (B.Dc.a (B.wU u)) → D.what₂.LL))
@@ -97,11 +95,11 @@ theorem perToVal2F (D : D7) (B : ColBrF D) (hB : B.Tied) (u : D.what₂.Word) (t
   exact (key φ hφ).vw
 
 /- English proof (translation)
-Introduce `φ hφ F hF`. Establish `hmu : D.what₂.muAt (D.plEq.symm z) = B.tup (B.tz z)`. Rewrite using `[hB.mu]`. Simplify using the standard rewrite rules. Establish `hc : CutUp D (B.tup (B.tz z))` using `hcut _ (Or.inr (Or.inr (Or.inr ⟨D.plEq.symm z, hmu.symm⟩)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key` using `perToVal2F D B hB u (B.tz z) hc z ((⌊ur D (D.plEq.symm z) (L.sg u (D.plEq.symm z))⌋ : ℤ) : ℝ) (Nu : Set _) (by`. Introduce `x hx G hG hG0`. Establish `h'` using `h u (D.plEq.symm z) (B.eNu u x) (hNu x hx)`. Rewrite `h'` using `[hmu]`. Simplify using `only [Equiv.apply_symm_apply] at h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h' G hG hG0)`. Conclude with `key φ (Submodule.subset_span hφ) F hF`.
+A detailed English derivation is pending.
 -/
 theorem val2AllAtRF (D : D7) (L : SizeData₂ D) (B : ColBrF D) (hB : B.Tied) (hcut : ∀ μ, DV.Used D μ → CutUp D μ)
     (h : Formalism.MainNotions.LocalQuadraticParts.adm2 D L) (u : D.what₂.Word) (Nu : Submodule (𝓞 D.what₂.LL) (Fin (B.Dc.a (B.wU u)) → D.what₂.LL))
@@ -134,7 +132,7 @@ def ColBr.toF {D : D7} (B : ColBr D) : ColBrF D where
   tz := B.S1.μ
 
 /- English proof (translation)
-The claim follows from `hB.mu v0 := fun t F _ => by obtain ⟨s0, hOk⟩ := hB.ok refine ⟨B.I.jA t ((rV0 D B.A B.Ps B.ψs t).mulVec F), ?_⟩ have h1 := (hB.sharp.forms t).op_eq ((rV0 D B.A B.Ps B.ψs t).mulVec F) rw [level_operator_fixes_image hOk B.Ps B.ψs B.Zs t F] at h1 exact h1 gen := fun t F hF => by obta …`.
+A detailed English derivation is pending.
 -/
 theorem ColBr.toF_tied {D : D7} {B : ColBr D} (hB : B.Tied) : (ColBr.toF B).Tied where
   mu := hB.mu

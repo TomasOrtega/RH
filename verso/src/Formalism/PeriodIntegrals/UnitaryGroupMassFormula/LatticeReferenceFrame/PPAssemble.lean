@@ -56,7 +56,7 @@ def PPAssemble : Prop :=
     Concl I (p ^ m) r k θ e f M
 
 /- English proof (translation)
-Introduce `I p m r k θ e f M hp hm hH`. Take `⟨_, _, _, hn, hee, hff, hef, hM, hL⟩` from `id hH`. Establish `hMp : Nat.Coprime M p` using `Nat.Coprime.coprime_dvd_right (dvd_pow_self p (by omega)) hM`. Take `⟨w, wd, hw, horth, hdual, hspan⟩` from `h1 I p r k e f M hp hn hee hff hef hMp hL`. Conclude with `h2 I p m r k θ e f M w wd hp hm hH hw horth hdual hspan`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gwpp_of (h1 : WFrame) (h2 : PPAssemble) : GWpp := by
   intro I p m r k θ e f M hp hm hH

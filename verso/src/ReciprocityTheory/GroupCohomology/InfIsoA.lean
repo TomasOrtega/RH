@@ -33,7 +33,7 @@ def stabN (A : TRep R G) (N : Subgroup G) (a : A.V) : Subgroup N where
       Module.End.one_apply]
 
 /- English proof (translation)
-Establish `hc : Continuous fun n : N => A.rho (n : G) a` using `A.cont.comp (f := fun n : N => ((n : G), a)) (continuous_subtype_val.prodMk continuous_const)`. Conclude with `(isOpen_discrete {a}).preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stabN_open (A : TRep R G) [DiscreteTopology A.V] (N : Subgroup G) (a : A.V) :
     IsOpen (stabN A N a : Set N) := by
@@ -42,7 +42,7 @@ theorem stabN_open (A : TRep R G) [DiscreteTopology A.V] (N : Subgroup G) (a : A
   exact (isOpen_discrete {a}).preimage hc
 
 /- English proof (translation)
-Use `QuotientGroup.discreteTopology hW` as an intermediate fact. Conclude with `finite_of_compact_of_discrete`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_quot_of_open {K : Type u} [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
     [CompactSpace K] (W : Subgroup K) (hW : IsOpen (W : Set K)) : Finite (K ⧸ W) := by
@@ -50,19 +50,17 @@ theorem finite_quot_of_open {K : Type u} [Group K] [TopologicalSpace K] [IsTopol
   exact finite_of_compact_of_discrete
 
 /- English proof (translation)
-Establish `: CompactSpace N` using `isCompact_iff_compactSpace.1 hN.isCompact`. Take `⟨a₀, rfl⟩` from `hs b`. Use `set W := stabN A N a₀`. Establish `hWo` using `stabN_open A N a₀`. Establish `: Finite (N ⧸ W)` using `finite_quot_of_open W hWo`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Fintype (N ⧸ W)` using `Fintype.ofFinite _`. Take `⟨v, hv⟩` from `hW W hWo`. Use `set s : A.V := ∑ c : N ⧸ W, A.rho ((c.out : N) : G) a₀ with hs_def`. Establish `key : ∀ (x : N), A.rho ((x : N) : G) a₀ = A.rho (((QuotientGroup.mk x : N ⧸ W).out : N) : G) a₀`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul W x`. Rewrite using `[hh, Subgroup.coe_mul, map_mul, Module.End.mul_apply, show A.rho ((h : N) : G) a₀ = a₀ from h.2]`. Establish `hinv : ∀ g ∈ N, A.rho g s = s`. Introduce `g hg`. Rewrite using `[hs_def, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ c : N ⧸ W, A.rho g (A.rho ((c.out : N) : G) a₀) = A.rho ((((⟨g, hg⟩ : N) • c).out : N) : G) a₀`. Introduce `c`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `key (⟨g, hg⟩ * c.out)` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[this]`. Use `congr 4`. Use `conv_rhs => rw [← QuotientGroup.out_eq' c]`. Both sides reduce to the same expression. Simplify using `only [e]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Fintype.sum_equiv (MulAction.toPerm (⟨g, hg⟩ : N)) _ _ (fun _ => rfl)`. Use `⟨((v⁻¹ : Rˣ) : R) • s, fun g hg => by rw [map_smul, hinv g hg], ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hs_def, map_sum]`. Simplify using `only [hp, fun c : N ⧸ W => hb _ c.out.2]`. Establish `hcard : (Finset.univ : Finset (N ⧸ W)).card = W.index`.
-
-Rewrite using `[Subgroup.index, Nat.card_eq_fintype_card, Finset.card_univ]`. Rewrite using `[Finset.sum_const, hcard, ← Nat.cast_smul_eq_nsmul R, ← hv, smul_smul, Units.inv_mul, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_lift [CompactSpace G] (N : Subgroup G) (hN : IsClosed (N : Set G))
     (hW : ∀ W : Subgroup N, IsOpen (W : Set N) → IsUnit (W.index : R))
@@ -104,7 +102,7 @@ theorem inv_lift [CompactSpace G] (N : Subgroup G) (hN : IsClosed (N : Set G))
   rw [Finset.sum_const, hcard, ← Nat.cast_smul_eq_nsmul R, ← hv, smul_smul, Units.inv_mul, one_smul]
 
 /- English proof (translation)
-Use `⟨⟨(DiscreteTopology.eq_bot).trans (eq_bot_of_singletons_open fun x => ?_).symm⟩, hf⟩` and prove the remaining obligations. Use `isOpen_induced_iff.2 ⟨{f x}, isOpen_discrete _, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `[hf.eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem emb_disc {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [DiscreteTopology X]
     [DiscreteTopology Y] (f : X → Y) (hf : Injective f) : IsEmbedding f := by
@@ -113,11 +111,11 @@ theorem emb_disc {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [Discre
   ext y; simp [hf.eq_iff]
 
 /- English proof (translation)
-Use `discreteTopology_iff_isOpen_singleton.2 fun f => ?_` and prove the remaining obligations. Establish `hfin : (Set.range f).Finite` using `(isCompact_range f.continuous).finite_of_discrete`. Establish `hset : ({f} : Set C(X, Y)) = ⋂ y ∈ Set.range f, {g : C(X, Y) | Set.MapsTo g (f ⁻¹' {y}) {y}}`. Use extensionality with `g`. Simplify using `only [Set.mem_singleton_iff, Set.mem_iInter, Set.mem_ofPred_eq, Set.mem_range]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl y _ x hx`. Conclude with `hx`. Introduce `h`. Use extensionality with `x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (f x) ⟨x, rfl⟩ (show x ∈ f ⁻¹' {f x} from rfl)`. Rewrite using `[hset]`. Conclude with `hfin.isOpen_biInter fun y _ => ContinuousMap.isOpen_setOfPred_mapsTo ((isClosed_discrete {y}).preimage f.continuous).isCompact (isOpen_discrete _)`.
+A detailed English derivation is pending.
 -/
 theorem cmap_disc (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y] [CompactSpace X]
     [DiscreteTopology Y] : DiscreteTopology C(X, Y) := by
@@ -161,7 +159,7 @@ Both sides reduce to the same expression.
 @[simp] theorem iCG_apply (M : TRep R G) (m : M.V) (x : G) : (iCG M m).1 x = M.rho x m := rfl
 
 /- English proof (translation)
-Use `Subtype.ext (ContinuousMap.ext fun x => ?_)` and prove the remaining obligations. Use `show M.rho x (M.rho g m) = M.rho (x * g) m`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iCG_equiv (M : TRep R G) (g : G) (m : M.V) : iCG M (M.rho g m) = (CG M).rho g (iCG M m) := by
   refine Subtype.ext (ContinuousMap.ext fun x => ?_)
@@ -169,7 +167,7 @@ theorem iCG_equiv (M : TRep R G) (g : G) (m : M.V) : iCG M (M.rho g m) = (CG M).
   rw [map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Introduce `a b h` and use `by have h1 : M.rho 1 a = M.rho 1 b := congrArg (fun f : (CG M).V => f.1 1) h simpa using h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iCG_inj (M : TRep R G) : Injective (iCG M) := fun a b h => by
   have h1 : M.rho 1 a = M.rho 1 b := congrArg (fun f : (CG M).V => f.1 1) h
@@ -197,7 +195,7 @@ instance QG_disc [CompactSpace G] (M : TRep R G) [DiscreteTopology M.V] : Discre
 def pLin (M : TRep R G) : (CG M).V →ₗ[R] (QG M).V := (LinearMap.range (iCG M)).mkQ
 
 /- English proof (translation)
-The claim follows from `(Submodule.isQuotientMap_mkQ _).continuous`.
+A detailed English derivation is pending.
 -/
 theorem pLin_cont (M : TRep R G) : Continuous (pLin M) := (Submodule.isQuotientMap_mkQ _).continuous
 
@@ -207,20 +205,20 @@ Both sides reduce to the same expression.
 theorem pLin_equiv (M : TRep R G) (g : G) (c : (CG M).V) : pLin M ((CG M).rho g c) = (QG M).rho g (pLin M c) := rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+A detailed English derivation is pending.
 -/
 theorem pLin_eq_zero (M : TRep R G) (c : (CG M).V) : pLin M c = 0 ↔ c ∈ LinearMap.range (iCG M) :=
   Submodule.Quotient.mk_eq_zero _
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem pLin_surj (M : TRep R G) : Surjective (pLin M) := Submodule.mkQ_surjective _
 
 def pP (M : TRep R G) : Pair (CG M) (QG M) := Pair.ofMap (pLin M) (pLin_cont M) (pLin_equiv M)
 
 /- English proof (translation)
-The claim follows from `rfl p_id := rfl emb := emb_disc _ (iCG_inj M) exact := LinearMap.exact_map_mkQ_range _ sec := ⟨surjInv (pLin_surj M), continuous_of_discreteTopology, surjInv_eq _⟩`.
+A detailed English derivation is pending.
 -/
 theorem admissible_compact_discrete [CompactSpace G] (M : TRep R G) [DiscreteTopology M.V] : admitted (iP M) (pP M) where
   i_id := rfl
@@ -231,9 +229,9 @@ theorem admissible_compact_discrete [CompactSpace G] (M : TRep R G) [DiscreteTop
     surjInv_eq _⟩
 
 /- English proof (translation)
-Establish `hq` using `shapiro_holds R G (⊥ : Subgroup G) (M.resSub ⊥) (CG M) (coindEv _ _) (coindEv_isCoind _ _) ⟨fun _ => 1, continuous_const, fun x g => by`. Establish `hx : x = 1` using `Subtype.ext (Subgroup.mem_bot.1 x.2)`. Rewrite using `[hx, one_mul]⟩`. Establish `: Subsingleton (⊥ : Subgroup G)` using `⟨fun a b => Subtype.ext ((Subgroup.mem_bot.1 a.2).trans (Subgroup.mem_bot.1 b.2).symm)⟩`. Use `(hq (m + 1)).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero]`. Conclude with `FiniteLevelCohomology.H_succ_trivial _ m _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CG_acyc (M : TRep R G) (m : ℕ) (z : (CG M).H (m + 1)) : z = 0 := by
   have hq := shapiro_holds R G (⊥ : Subgroup G) (M.resSub ⊥) (CG M) (coindEv _ _) (coindEv_isCoind _ _)

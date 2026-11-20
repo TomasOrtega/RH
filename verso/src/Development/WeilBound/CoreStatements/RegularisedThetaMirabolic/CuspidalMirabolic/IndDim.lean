@@ -11,7 +11,7 @@ namespace PositivityTheory.Mirab.Dim
 variable {k : Type} [Field k] [Fintype k] (n : ℕ)
 
 /- English proof (translation)
-The claim follows from `index_Uv (kf := fun _ : Unit => k) (mirab_levelGroups (fun _ : Unit => k) n) ()`.
+A detailed English derivation is pending.
 -/
 theorem index_uniSub : (uniSub k n).index = ∏ i ∈ Finset.Ico 1 (n + 1), (Fintype.card k ^ i - 1) :=
   index_Uv (kf := fun _ : Unit => k) (mirab_levelGroups (fun _ : Unit => k) n) ()
@@ -23,13 +23,13 @@ def cls (x : mirabSub k n) : Cos k n := Quotient.mk (QuotientGroup.rightRel (uni
 def rep (x : mirabSub k n) : mirabSub k n := (cls n x).out
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.rightRel_apply.1 (Quotient.mk_out (s := QuotientGroup.rightRel (uniSub k n)) x)`.
+A detailed English derivation is pending.
 -/
 theorem rep_mem (x : mirabSub k n) : x * (rep n x)⁻¹ ∈ uniSub k n :=
   QuotientGroup.rightRel_apply.1 (Quotient.mk_out (s := QuotientGroup.rightRel (uniSub k n)) x)
 
 /- English proof (translation)
-Unfold `cls`. Use `Quotient.sound (QuotientGroup.rightRel_apply.2 ?_)` and prove the remaining obligations. Rewrite using `[mul_inv_rev, mul_inv_cancel_left]`. Conclude with `inv_mem u.2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_mul (u : uniSub k n) (x : mirabSub k n) : cls n ((u : mirabSub k n) * x) = cls n x := by
   unfold cls
@@ -38,7 +38,7 @@ theorem cls_mul (u : uniSub k n) (x : mirabSub k n) : cls n ((u : mirabSub k n) 
   exact inv_mem u.2
 
 /- English proof (translation)
-The claim follows from `Quotient.out_eq c`.
+A detailed English derivation is pending.
 -/
 theorem cls_out (c : Cos k n) : cls n c.out = c := Quotient.out_eq c
 
@@ -48,14 +48,14 @@ def psiExt (y : mirabSub k n) : ℂ := by
   classical exact if h : y ∈ uniSub k n then genericChar n ψ₀ ⟨y, h⟩ else 0
 
 /- English proof (translation)
-Unfold `psiExt`. Rewrite using `[dif_pos u.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiExt_of_mem (u : uniSub k n) : psiExt n ψ₀ (u : mirabSub k n) = genericChar n ψ₀ u := by
   unfold psiExt
   rw [dif_pos u.2]
 
 /- English proof (translation)
-Establish `h` using `psiExt_of_mem n ψ₀ (u * ⟨y, hy⟩)`. Rewrite `h` using `[map_mul, ← psiExt_of_mem n ψ₀ ⟨y, hy⟩]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiExt_mul (u : uniSub k n) (y : mirabSub k n) (hy : y ∈ uniSub k n) :
     psiExt n ψ₀ ((u : mirabSub k n) * y) = genericChar n ψ₀ u * psiExt n ψ₀ y := by
@@ -64,7 +64,7 @@ theorem psiExt_mul (u : uniSub k n) (y : mirabSub k n) (hy : y ∈ uniSub k n) :
   exact h
 
 /- English proof (translation)
-Establish `h` using `psiExt_of_mem n ψ₀ 1`. Rewrite `h` using `[OneMemClass.coe_one, map_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiExt_one : psiExt n ψ₀ 1 = 1 := by
   have h := psiExt_of_mem n ψ₀ 1
@@ -79,7 +79,7 @@ def restr : MirabInducedSpace n ψ₀ →ₗ[ℂ] (Cos k n → ℂ) where
 def extFun (g : Cos k n → ℂ) (x : mirabSub k n) : ℂ := psiExt n ψ₀ (x * (rep n x)⁻¹) * g (cls n x)
 
 /- English proof (translation)
-Rewrite using `[mem_mirabInducedSpace]`. Introduce `u x`. Unfold `extFun`. Establish `hr : rep n ((u : mirabSub k n) * x) = rep n x` using `by unfold rep; rw [cls_mul]`. Rewrite using `[hr, cls_mul, mul_assoc, psiExt_mul n ψ₀ u _ (rep_mem n x), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem extFun_mem (g : Cos k n → ℂ) : extFun n ψ₀ g ∈ MirabInducedSpace n ψ₀ := by
   rw [mem_mirabInducedSpace]
@@ -89,7 +89,7 @@ theorem extFun_mem (g : Cos k n → ℂ) : extFun n ψ₀ g ∈ MirabInducedSpac
   rw [hr, cls_mul, mul_assoc, psiExt_mul n ψ₀ u _ (rep_mem n x), mul_assoc]
 
 /- English proof (translation)
-Establish `h` using `(mem_mirabInducedSpace n ψ₀ f).1 f.2 ⟨_, rep_mem n x⟩ (rep n x)`. Establish `e : ((⟨_, rep_mem n x⟩ : uniSub k n) : mirabSub k n) * rep n x = x` using `inv_mul_cancel_right x (rep n x)`. Rewrite using `[← h, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_at_rep (f : MirabInducedSpace n ψ₀) (x : mirabSub k n) :
     (f : mirabSub k n → ℂ) x =
@@ -99,9 +99,9 @@ theorem eq_at_rep (f : MirabInducedSpace n ψ₀) (x : mirabSub k n) :
   rw [← h, e]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `h0 : (f : mirabSub k n → ℂ) (rep n x) = 0` using `congrFun hf (cls n x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[eq_at_rep n ψ₀ f x, h0, mul_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restr_injective : Function.Injective (restr n ψ₀) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -113,9 +113,9 @@ theorem restr_injective : Function.Injective (restr n ψ₀) := by
   rfl
 
 /- English proof (translation)
-Introduce `g`. Use `⟨⟨extFun n ψ₀ g, extFun_mem n ψ₀ g⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Use `show extFun n ψ₀ g c.out = g c`. Unfold `extFun`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hr : rep n c.out = c.out` using `by unfold rep; rw [cls_out]`. Rewrite using `[hr, cls_out, mul_inv_cancel, psiExt_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restr_surjective : Function.Surjective (restr n ψ₀) := by
   intro g
@@ -127,7 +127,7 @@ theorem restr_surjective : Function.Surjective (restr n ψ₀) := by
   rw [hr, cls_out, mul_inv_cancel, psiExt_one, one_mul]
 
 /- English proof (translation)
-Establish `e` using `LinearEquiv.ofBijective (restr n ψ₀) ⟨restr_injective n ψ₀, restr_surjective n ψ₀⟩`. Rewrite using `[e.finrank_eq, Module.finrank_fintype_fun_eq_card, Subgroup.index_eq_card, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel (uniSub k n))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_mirabInducedSpace_eq_index (ψ₀ : AddChar k ℂ) :
     Module.finrank ℂ (MirabInducedSpace n ψ₀) = (uniSub k n).index := by
@@ -137,7 +137,7 @@ theorem finrank_mirabInducedSpace_eq_index (ψ₀ : AddChar k ℂ) :
   exact Nat.card_congr (QuotientGroup.quotientRightRelEquivQuotientLeftRel (uniSub k n))
 
 /- English proof (translation)
-Rewrite using `[finrank_mirabInducedSpace_eq_index, index_uniSub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_mirabInducedSpace (ψ₀ : AddChar k ℂ) :
     Module.finrank ℂ (MirabInducedSpace n ψ₀) = ∏ i ∈ Finset.Ico 1 (n + 1), (Fintype.card k ^ i - 1) := by

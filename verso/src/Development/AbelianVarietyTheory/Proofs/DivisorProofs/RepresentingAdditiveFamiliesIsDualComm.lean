@@ -28,7 +28,7 @@ def addCls (A : Over S) [GrpObj A] (T : Over S) : AddSubgroup (Pic (A ⊗ T).lef
 variable {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h ↦ (isAdditive_iff hN).1 h.add, fun h ↦ ⟨hN, (isAdditive_iff hN).2 h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem fam_iff_mem {T : Over S} {N : LB (A ⊗ T).left} (hN : N.IsLB) : Fam A N ↔ cls N hN ∈ addCls A T :=
   ⟨fun h ↦ (isAdditive_iff hN).1 h.add, fun h ↦ ⟨hN, (isAdditive_iff hN).2 h⟩⟩
@@ -77,11 +77,11 @@ def ptCls (T : Over S) (x : T ⟶ B) : addCls A T :=
       exact (isAdditive_iff h.fam.isLB).1 h.fam.add Y _ _ _⟩⟩
 
 /- English proof (translation)
-Establish `hP` using `h.fam.isLB`. Prove the components needed by the constructor for the conclusion. Introduce `x x' e`. Establish `hN : (ev P (fst A T) (snd A T ≫ x)).IsLB` using `pull_isLB hP _`. Establish `fN : Fam A (ev P (fst A T) (snd A T ≫ x))` using `(fam_iff_mem hN).2 (ptCls h T x).2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h.univ T (toUnit T) _ fN).unique ⟨toUnit_unique _ _, (cls_eq_iff hN hN).1 rfl⟩ ⟨toUnit_unique _ _, (cls_eq_iff hN (pull_isLB hP _)).1 (congrArg Subtype.val e)⟩` and prove the remaining obligations. Introduce `c`. Take `⟨N, hN, hc⟩` from `cls_surj (c : Pic (A ⊗ T).left)`. Establish `fN : Fam A N` using `(fam_iff_mem hN).2 (hc ▸ c.2)`. Take `⟨x, ⟨-, hx⟩, -⟩` from `h.univ T (toUnit T) N fN`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, Subtype.ext (((cls_eq_iff hN (pull_isLB hP _)).2 hx).symm.trans hc)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ptCls_bij (T : Over S) : Function.Bijective (ptCls h T) := by
   have hP := h.fam.isLB
@@ -98,7 +98,7 @@ theorem ptCls_bij (T : Over S) : Function.Bijective (ptCls h T) := by
     exact ⟨x, Subtype.ext (((cls_eq_iff hN (pull_isLB hP _)).2 hx).symm.trans hc)⟩
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evc h.fam.isLB (fst A T') (snd A T' ≫ g ≫ x) = CechPic.pull (lift (fst A T') (snd A T' ≫ g)).left (evc h.fam.isLB (fst A T) (snd A T ≫ x))`. Rewrite using `[pull_evc, lift_fst, lift_snd_assoc, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptCls_comp {T' T : Over S} (g : T' ⟶ T) (x : T ⟶ B) :
     ptCls h T' (g ≫ x) = resCls g (ptCls h T x) := by
@@ -120,7 +120,7 @@ namespace GlobalTheory.DualCon
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {B : Over S} {P : LB (A ⊗ B).left}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = CechPic.pull (lift a (𝟙 Y)).left (evc h.fam.isLB (fst A Y) (snd A Y ≫ x))`. Rewrite using `[pull_evc, lift_fst, lift_snd_assoc, Category.id_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_eq_pull_ptCls (h : Rep A (toUnit B) P) {Y : Over S} (a : Y ⟶ A) (x : Y ⟶ B) :
     evc h.fam.isLB a x = CechPic.pull (lift a (𝟙 Y)).left (ptCls h Y x : Pic (A ⊗ Y).left) := by
@@ -128,13 +128,13 @@ theorem evc_eq_pull_ptCls (h : Rep A (toUnit B) P) {Y : Over S} (a : Y ⟶ A) (x
   rw [pull_evc, lift_fst, lift_snd_assoc, Category.id_comp]
 
 /- English proof (translation)
-Introduce `S A B _ P h`. Establish `hP` using `h.fam.isLB`. Use `letI inst : CommGrpObj B := CommGrpObj.ofRepresentableBy B _ (famRep h)`. Establish `hmul : ∀ (Y : Over S) (x y : Y ⟶ B), ptCls h Y (x * y) = ptCls h Y x + ptCls h Y y`. Establish `hμ : ptCls h (B ⊗ B) μ[B] = ptCls h _ (fst B B) + ptCls h _ (snd B B)` using `Equiv.ofBijective_apply_symm_apply (ptCls h (B ⊗ B)) (ptCls_bij h _) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y x y`. Rewrite using `[Hom.mul_def, ptCls_comp, hμ, map_add, ← ptCls_comp, ← ptCls_comp, lift_fst, lift_snd]`. Establish `hone : ∀ (Y : Over S), ptCls h Y (1 : Y ⟶ B) = 0`. Establish `hη : ptCls h (𝟙_ (Over S)) η[B] = 0` using `Equiv.ofBijective_apply_symm_apply (ptCls h _) (ptCls_bij h _) 0`. Introduce `Y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Hom.one_def, ptCls_comp, hη, map_zero]`. Use `⟨inferInstance, inferInstance, ⟨hP, h.fam.add, ?_, fun T M hM hA ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[triv_ev_iff hP, evc_eq_pull_ptCls h, hone, ZeroMemClass.coe_zero, map_zero]`. Take `⟨x, ⟨-, hx⟩, hu⟩` from `h.univ T (toUnit T) M ⟨hM, hA⟩`. Conclude with `⟨x, hx, fun y hy ↦ hu y ⟨toUnit_unique _ _, hy⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hs : (swap P).IsLB` using `pull_isLB hP _`. Use `(isAdditive_iff hs).2 fun Y b b' a ↦ ?_` and prove the remaining obligations. Rewrite using `[evc_swap hP hs, evc_swap hP hs, evc_swap hP hs, evc_eq_pull_ptCls h, evc_eq_pull_ptCls h, evc_eq_pull_ptCls h, hmul, AddSubgroup.coe_add, map_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_isDual : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] (P : LB (A ⊗ B).left),
     Rep A (toUnit B) P → ∃ _ : GrpObj B, IsCommMonObj B ∧ IsDual A B P ∧ IsAdditive (swap P) := by

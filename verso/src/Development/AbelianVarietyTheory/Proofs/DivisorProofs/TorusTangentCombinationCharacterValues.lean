@@ -21,13 +21,13 @@ namespace GlobalTheory.MBLow.TorusVals
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [add_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_mul (a b : R) : ((1 : DualNumber R) + TrivSqZeroExt.inr a) * (1 + TrivSqZeroExt.inr b) = 1 + TrivSqZeroExt.inr (a + b) := by
   ext <;> simp [add_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [epsScaleR, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsScaleR_one_add (c a : R) : epsScaleR c (1 + TrivSqZeroExt.inr a) = 1 + TrivSqZeroExt.inr (c * a) := by
   ext <;> simp [epsScaleR, mul_comm]
@@ -37,13 +37,13 @@ section Gs
 variable {Z : Scheme.{0}} (q : Z ⟶ (epsR R).left) (z : Z)
 
 /- English proof (translation)
-Rewrite using `[gs_eq q z ⊤ trivial, TrivSqZeroExt.inr_zero, add_zero, map_one, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_one_add_zero : gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr 0)) = 1 := by
   rw [gs_eq q z ⊤ trivial, TrivSqZeroExt.inr_zero, add_zero, map_one, map_one, map_one]
 
 /- English proof (translation)
-Rewrite using `[← gs_mul q z ⊤ trivial, ← map_mul, dual_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_dual_mul (a b : R) :
     gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr a)) *
@@ -52,7 +52,7 @@ theorem gs_dual_mul (a b : R) :
   rw [← gs_mul q z ⊤ trivial, ← map_mul, dual_mul]
 
 /- English proof (translation)
-Rewrite using `[← gs_pull q (epsScale R c).left z ⊤ trivial, ← epsScaleR_one_add]`. Establish `e` using `congrArg (fun f => f.hom (1 + TrivSqZeroExt.inr a : DualNumber R)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (epsScaleR c)))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_scale (c a : R) :
     gs (q ≫ (epsScale R c).left) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr a)) =
@@ -74,7 +74,7 @@ def HasVals (Φ : ∀ T, (T ⟶ H) ≃ GtPt D T) (y : epsR R ⟶ H) (a : D.X →
     (val ((Φ _ y).s χ) q z J).val = gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr (a χ)))
 
 /- English proof (translation)
-Establish `hz : (Φ (epsR R) 1).IsZero` using `GtVec.isZero_of_isAdd (by simpa using hΦ.2 (epsR R) 1 1)`. Use `⟨hz.1, fun χ Z q z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_corr hJ (hz.2 χ) q, val_one, gs_one_add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hasVals_one (hΦ : TorusModel.Represents Φ) : HasVals Φ 1 (fun _ => 0) := by
   have hz : (Φ (epsR R) 1).IsZero := GtVec.isZero_of_isAdd (by simpa using hΦ.2 (epsR R) 1 1)
@@ -83,9 +83,9 @@ theorem hasVals_one (hΦ : TorusModel.Represents Φ) : HasVals Φ 1 (fun _ => 0)
   rfl
 
 /- English proof (translation)
-Establish `hp` using `hΦ.1 (epsR R) (epsR R) (epsScale R c) y`. Use `⟨?_, fun χ Z q z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[((TorusModel.isPull_iff _ _ _).1 hp).1, h.1]`. Simplify using `only [DegPre.zeroT, ← Category.assoc]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `toUnit_unique _ _`. Rewrite using `[val_corr hJ (hp.2 χ) q, val_pull hJ, h.2 χ Z _ z J hJ, gs_scale]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasVals_scale (hΦ : TorusModel.Represents Φ) {y : epsR R ⟶ H} {a : D.X → R} (h : HasVals Φ y a) (c : R) :
     HasVals Φ (epsScale R c ≫ y) (fun χ => c * a χ) := by
@@ -98,13 +98,13 @@ theorem hasVals_scale (hΦ : TorusModel.Represents Φ) {y : epsR R ⟶ H} {a : D
   · rw [val_corr hJ (hp.2 χ) q, val_pull hJ, h.2 χ Z _ z J hJ, gs_scale]
 
 /- English proof (translation)
-Establish `hs` using `hΦ.2 (epsR R) y y'`. Use `⟨?_, fun χ Z q z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[((TorusModel.isAdd_iff _ _ _).1 hs).1, h.1, h'.1]`. Conclude with `_root_.mul_one _`. Establish `e` using `(val_mul hJ _ _ q).symm.trans ((val_corr hJ (hs.2 χ) q).trans (val_mul hJ _ _ q))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T' : Over (Sp R)` to `Over.mk (q ≫ (epsR R).hom)`. Set `ρ : T' ⟶ epsR R` to `Over.homMk q rfl`. Establish `hc : val (DegPre.cubAtT D (epsR R) (DegPre.cT D (epsR R) χ) (Φ _ y).b (Φ _ y').b) q z J = 1`. Use `val_cub D.cub ρ hJ (DegPre.cT D (epsR R) χ) (Φ _ y).b (Φ _ y').b` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h'.1]`. Establish `e1 : ρ ≫ DegPre.zeroT D (epsR R) = (1 : T' ⟶ D.P.A)`. Simplify using `only [DegPre.zeroT, ← Category.assoc]`. Rewrite using `[Hom.one_def]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `(isCub_cubV D.cub hJ).face₃ _ _`. Rewrite `e` using `[hc, _root_.mul_one]`. Rewrite using `[e, Units.val_mul, h.2 χ Z q z J hJ, h'.2 χ Z q z J hJ, gs_dual_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasVals_mul (hΦ : TorusModel.Represents Φ) {y y' : epsR R ⟶ H} {a a' : D.X → R} (h : HasVals Φ y a)
     (h' : HasVals Φ y' a') : HasVals Φ (y * y') (fun χ => a χ + a' χ) := by
@@ -136,7 +136,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {H : Over (Sp R)} [
   {Φ : ∀ T, (T ⟶ H) ≃ GtPt D T}
 
 /- English proof (translation)
-The claim follows from `| 0, a, x, _, d => by have e : tanComb d x = 1 := by simp [tanComb] have ef : (fun χ => ∑ l : Fin 0, d l * a l χ) = fun _ => 0 := funext fun _ => by simp rw [e, ef] exact hasVals_one hΦ | r + 1, a, x, hx, d => by have e : tanComb d x = (epsScale R (d 0) ≫ x 0) * tanComb (fun i => …`.
+A detailed English derivation is pending.
 -/
 theorem hasVals_tanComb (hΦ : TorusModel.Represents Φ) : ∀ (r : ℕ) (a : Fin r → D.X → R) (x : Fin r → (epsR R ⟶ H)),
     (∀ l, HasVals Φ (x l) (a l)) → ∀ d : Fin r → R, HasVals Φ (tanComb d x) (fun χ => ∑ l, d l * a l χ)
@@ -156,7 +156,7 @@ theorem hasVals_tanComb (hΦ : TorusModel.Represents Φ) : ∀ (r : ℕ) (a : Fi
     exact key
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ hΦ r a x hx d` and use `hasVals_tanComb hΦ r a x hx d`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tanComb_vals : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (H : Over (Sp R)) [GrpObj H] [IsCommMonObj H] (Φ : ∀ T, (T ⟶ H) ≃ GtPt D T), GlobalTheory.TorusModel.Represents Φ → ∀ (r : ℕ) (a : Fin r → D.X → R) (x : Fin r → (epsR R ⟶ H)), (∀ l, (Φ _ (x l)).b = DegPre.zeroT D (epsR R) ∧ ∀ (χ : D.X) (Z : Scheme.{0}) (q : Z ⟶ (epsR R).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), ReciprocityTheory.ChartRestriction.G.Geo.Tor.Good D.P.L z J → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.val ((Φ _ (x l)).s χ) q z J).val = ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr (a l χ)))) → ∀ d : Fin r → R, (Φ _ (tanComb d x)).b = DegPre.zeroT D (epsR R) ∧ ∀ (χ : D.X) (Z : Scheme.{0}) (q : Z ⟶ (epsR R).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), ReciprocityTheory.ChartRestriction.G.Geo.Tor.Good D.P.L z J → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.val ((Φ _ (tanComb d x)).s χ) q z J).val = ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs q z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom (1 + TrivSqZeroExt.inr (∑ l, d l * a l χ))) :=
   fun _ _ _ _ _ _ _ _ hΦ r a x hx d => hasVals_tanComb hΦ r a x hx d

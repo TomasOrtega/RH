@@ -23,7 +23,7 @@ def Um (N : SIdx m → ZMod g) : Mt g (m + 1) :=
   Matrix.of fun i k => if i = k then 1 else if h : i < k then N ⟨(i, k), h⟩ else 0
 
 /- English proof (translation)
-Introduce `i k hik`. Establish `hik' : k < i` using `hik`. Simplify using `[Um, ne_of_gt hik', not_lt_of_gt hik']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem um_upper (N : SIdx m → ZMod g) : (Um N : Mt g (m + 1)).BlockTriangular id := by
   intro i k hik
@@ -31,7 +31,7 @@ theorem um_upper (N : SIdx m → ZMod g) : (Um N : Mt g (m + 1)).BlockTriangular
   simp [Um, ne_of_gt hik', not_lt_of_gt hik']
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (um_upper N)]`. Simplify using `[Um]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_um (N : SIdx m → ZMod g) : (Um N : Mt g (m + 1)).det = 1 := by
   rw [Matrix.det_of_upperTriangular (um_upper N)]
@@ -46,7 +46,7 @@ Both sides reduce to the same expression.
 theorem umGL_val (N : SIdx m → ZMod g) : ((umGL N : Gn g (m + 1)) : Mt g (m + 1)) = Um N := rfl
 
 /- English proof (translation)
-Rewrite using `[mem_unipB, umGL_val]`. Conclude with `⟨fun i k hki => um_upper N hki, fun i => by simp [Um]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem umGL_mem (N : SIdx m → ZMod g) : umGL N ∈ unipB (ZMod g) (Fin (m + 1)) := by
   rw [mem_unipB, umGL_val]
@@ -58,15 +58,15 @@ def bcol {j : ℕ} (b : JIdx m j → ZMod g) : Fin (m + 1) → ZMod g :=
 def j0 (m j : ℕ) : JIdx m j := ⟨0, by simp⟩
 
 /- English proof (translation)
-Simplify using `[bcol, j0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bcol_zero {j : ℕ} (b : JIdx m j → ZMod g) : bcol b 0 = b (j0 m j) := by
   simp [bcol, j0]
 
 /- English proof (translation)
-Use `⟨fun i k hk => ?_, fun i k hk hi => ?_⟩` and prove the remaining obligations. Establish `: k ≠ 0` using `fun h => hk (by simp [h])`. Simplify using `[hmGL_val, Hm, this, Matrix.one_apply]`. Establish `: k = 0` using `Fin.ext hk`. Substitute `this` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `[hmGL_val, Hm, bcol, not_le.2 hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isColFix_hm {j : ℕ} (b : JIdx m j → ZMod g) (hb : bcol b 0 ≠ 0) : IsColFix j (hmGL (bcol b) hb) := by
   refine ⟨fun i k hk => ?_, fun i k hk hi => ?_⟩
@@ -79,21 +79,21 @@ theorem isColFix_hm {j : ℕ} (b : JIdx m j → ZMod g) (hb : bcol b 0 ≠ 0) : 
 variable (ψ₀ : AddChar (ZMod g) Circle) (τ : FDRep ℂ (Gn g (m + 1)))
 
 /- English proof (translation)
-Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_neg_mul (s : ZMod g) : (ψ₀ (-s) : ℂ) * (ψ₀ s : ℂ) = 1 := by
   rw [← Circle.coe_mul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one]
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_add (a b : ZMod g) : (ψ₀ (a + b) : ℂ) = (ψ₀ a : ℂ) * (ψ₀ b : ℂ) := by
   rw [AddChar.map_add_eq_mul, Circle.coe_mul]
 
 /- English proof (translation)
-Use `split_ifs with hb`. Rewrite using `[← umGL_val, sv_singular ψ₀ τ hτ hm _ _ (by rw [bcol_zero]; exact hb), map_zero, mul_zero]`. Establish `hb' : bcol b 0 ≠ 0` using `by rwa [bcol_zero]`. Establish `hx : Um N * Hm (bcol b) = ((umGL N * hmGL (bcol b) hb' : Gn g (m + 1)) : Mt g (m + 1))`. Rewrite using `[Units.val_mul, umGL_val, hmGL_val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, sv_unit ψ₀ τ hγ, map_smul, map_mul, Module.End.mul_apply, hl _ (umGL_mem N), hA _ (isColFix_hm b hb'), smul_eq_mul]`. Establish `h1` using `psi_neg_mul ψ₀ (superDiag (umGL N))`. Take the linear combination `(γ * l v) * h1`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lhs_term {γ : ℂ}
     (hγ : ∀ v : τ, ∑ᶠ y : Gn g (m + 1), (ψ₀ (Matrix.trace (y : Mt g (m + 1))) : ℂ) • τ.ρ y⁻¹ v = γ • v)
@@ -112,11 +112,11 @@ theorem lhs_term {γ : ℂ}
     linear_combination (γ * l v) * h1
 
 /- English proof (translation)
-Establish `hH : (Hm c : Mt g (m + 1)) = 1 + Matrix.of (fun i l => if l = 0 then c i - (1 : Mt g (m + 1)) i 0 else 0)`. Use extensionality with `i l`. Distinguish the cases in `hl : l = 0`. Substitute `hl` using the available equality. Simplify using `[Hm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Hm, hl]`. Establish `h2 : trace ((Matrix.of (fun i l => if l = 0 then c i - (1 : Mt g (m + 1)) i 0 else 0)) * M) = ∑ i, c i * M 0 i - M 0 0`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => Finset.sum_eq_single (0 : Fin (m + 1)) (fun l _ hl => by simp [hl]) (by simp))]`. Simplify using `[sub_mul, Finset.sum_sub_distrib, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hH, Matrix.add_mul, Matrix.one_mul, Matrix.trace_add, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_hm_mul (c : Fin (m + 1) → ZMod g) (M : Mt g (m + 1)) :
     trace (Hm c * M) = ∑ i, c i * M 0 i + (trace M - M 0 0) := by
@@ -136,9 +136,9 @@ theorem trace_hm_mul (c : Fin (m + 1) → ZMod g) (M : Mt g (m + 1)) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify using `[Um]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with hlt | hgt` into its components or cases. Rewrite using `[h l hlt, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[um_upper N hgt, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem um_mul_apply_row (y : Mt g (m + 1)) (N : SIdx m → ZMod g) (i : Fin (m + 1))
     (h : ∀ l, l < i → y 0 l = 0) : (y * Um N) 0 i = y 0 i := by
@@ -151,13 +151,13 @@ theorem um_mul_apply_row (y : Mt g (m + 1)) (N : SIdx m → ZMod g) (i : Fin (m 
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. It suffices to establish `H : ∀ k : ℕ, ∀ i : Fin (m + 1), (i : ℕ) = k → (i : ℕ) ≤ j → y 0 i = 0 from fun i hi => H _ i rfl hi`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ k ih`. Introduce `i hik hij`. Establish `hl : ∀ l, l < i → y 0 l = 0` using `fun l hl => by`. Establish `hl' : (l : ℕ) < i` using `hl`. Conclude with `ih l.val (by omega) l rfl (by omega)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← um_mul_apply_row y N i hl]`. Conclude with `h ⟨i, hij⟩`. Introduce `h i`. Establish `hl : ∀ l, l < i.1 → y 0 l = 0` using `fun l hl => by`. Establish `hl' : (l : ℕ) < i.1` using `hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `i.2` as an intermediate fact. Conclude with `h l (by omega)`. Rewrite using `[um_mul_apply_row y N i.1 hl]`. Conclude with `h i.1 i.2`.
+A detailed English derivation is pending.
 -/
 theorem row_cond (y : Mt g (m + 1)) (N : SIdx m → ZMod g) (j : ℕ) :
     (∀ i : JIdx m j, (y * Um N) 0 i.1 = 0) ↔ ∀ i : Fin (m + 1), (i : ℕ) ≤ j → y 0 i = 0 := by
@@ -183,7 +183,7 @@ theorem row_cond (y : Mt g (m + 1)) (N : SIdx m → ZMod g) (j : ℕ) :
     exact h i.1 i.2
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_subtype_add_sum_subtype p (fun a => if h : p a then f a h else 0)]`. Establish `h1 : ∀ a : {a // p a}, (if h : p a.1 then f a.1 h else 0) = f a.1 a.2` using `fun a => dif_pos a.2`. Establish `h2 : ∀ a : {a // ¬ p a}, (if h : p a.1 then f a.1 h else 0) = 0` using `fun a => dif_neg a.2`. Simplify using `only [h1, h2, Finset.sum_const_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sum_dite_zero {α β : Type} [Fintype α] [AddCommMonoid β] (p : α → Prop) [DecidablePred p]
     (f : (a : α) → p a → β) : ∑ a, (if h : p a then f a h else 0) = ∑ a : {a // p a}, f a.1 a.2 := by
@@ -193,7 +193,7 @@ theorem sum_dite_zero {α β : Type} [Fintype α] [AddCommMonoid β] (p : α →
   simp only [h1, h2, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← Fintype.sum_prod_type' (fun i k => if h : i < k then F ⟨(i, k), h⟩ else 0)]`. Rewrite using `[sum_dite_zero (fun x : Fin (m + 1) × Fin (m + 1) => x.1 < x.2)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumS {β : Type} [AddCommMonoid β] (F : SIdx m → β) :
     ∑ i : Fin (m + 1), ∑ k : Fin (m + 1), (if h : i < k then F ⟨(i, k), h⟩ else 0) = ∑ p : SIdx m, F p := by
@@ -201,11 +201,11 @@ theorem sumS {β : Type} [AddCommMonoid β] (F : SIdx m → β) :
   rw [sum_dite_zero (fun x : Fin (m + 1) × Fin (m + 1) => x.1 < x.2)]
 
 /- English proof (translation)
-Establish `hU : (Um N : Mt g (m + 1)) = 1 + Matrix.of (fun l i => if h : l < i then N ⟨(l, i), h⟩ else 0)`. Use extensionality with `l i`. Distinguish the cases in `e : l = i`. Substitute `e` using the available equality. Simplify using `[Um]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Um, e, Matrix.one_apply_ne e]`. Rewrite using `[hU, Matrix.mul_add, Matrix.mul_one, Matrix.trace_add]`. Use `congr 1`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm, ← sumS]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun l _ => Finset.sum_congr rfl (fun i _ => ?_))` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem trace_um (y : Mt g (m + 1)) (N : SIdx m → ZMod g) :
     trace (y * Um N) = trace y + ∑ p : SIdx m, N p * y p.1.2 p.1.1 := by
@@ -222,11 +222,11 @@ theorem trace_um (y : Mt g (m + 1)) (N : SIdx m → ZMod g) :
   split_ifs <;> simp [mul_comm]
 
 /- English proof (translation)
-Simplify using `only [superDiag, umGL_val]`. Repeatedly rewrite using `[Finset.sum_filter]`. Rewrite using `[← sumS]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations. Distinguish the cases in `h : i < k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos h]`. Distinguish the cases in `e : (k : ℕ) = i + 1`. Simplify using `[e, Um, ne_of_lt h, h]`. Simplify using `[e]`. Rewrite using `[dif_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ¬ (k : ℕ) = i + 1` using `fun e => h (by rw [Fin.lt_iff_val_lt_val]; omega)`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sd_um (N : SIdx m → ZMod g) :
     superDiag (umGL N) = ∑ p : SIdx m, (if (p.1.2 : ℕ) = p.1.1 + 1 then N p else 0) := by
@@ -248,15 +248,15 @@ def IsY (j : ℕ) (y : Mt g (m + 1)) : Prop :=
     ∀ i k : Fin (m + 1), i < k → y k i = if (k : ℕ) = i + 1 then 1 else 0
 
 /- English proof (translation)
-Establish `step1 : ∀ b, trace (Um N * Hm (bcol b) * y) = (∑ i : JIdx m j, b i * (y * Um N) 0 i.1) + ((trace y - y 0 0) + ∑ p : SIdx m, N p * y p.1.2 p.1.1)`. Introduce `b`. Rewrite using `[Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc, trace_hm_mul, trace_um, um_mul_apply_row y N 0 (fun l hl => absurd hl (Fin.not_lt_zero l))]`. Establish `hsum : ∑ i, bcol b i * (y * Um N) 0 i = ∑ i : JIdx m j, b i * (y * Um N) 0 i.1`. Simplify using `only [bcol, dite_mul, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_dite_zero (fun i : Fin (m + 1) => (i : ℕ) ≤ j)]`. Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : ∀ b : JIdx m j → ZMod g, (ψ₀ (-superDiag (umGL N)) : ℂ) * (ψ₀ (trace (Um N * Hm (bcol b) * y)) : ℂ) = (ψ₀ (∑ i : JIdx m j, b i * (y * Um N) 0 i.1) : ℂ) * ((ψ₀ (trace y - y 0 0) : ℂ) * (ψ₀ (-superDiag (umGL N) + ∑ p : SIdx m, N p * y p.1.2 p.1.1) : ℂ))`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[step1]`. Simplify using `only [psi_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun b _ => hb b), ← Finset.sum_mul, sum_pi_psi ψ₀ hψ]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: ((fun i : JIdx m j => (y * Um N) 0 i.1) = 0) ↔ ∀ i : Fin (m + 1), (i : ℕ) ≤ j → y 0 i = 0`. Rewrite using `[← row_cond y N j, funext_iff]`. Both sides reduce to the same expression. Distinguish the cases in `h : ∀ i : Fin (m + 1), (i : ℕ) ≤ j → y 0 i = 0`. Rewrite using `[if_pos (this.2 h), if_pos h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun e => h (this.1 e)), if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kern_inner (hψ : ψ₀ ≠ 1) (j : ℕ) (y : Mt g (m + 1)) (N : SIdx m → ZMod g) :
     ∑ b : JIdx m j → ZMod g, (ψ₀ (-superDiag (umGL N)) : ℂ) * (ψ₀ (trace (Um N * Hm (bcol b) * y)) : ℂ) =
@@ -290,7 +290,7 @@ theorem kern_inner (hψ : ψ₀ ≠ 1) (j : ℕ) (y : Mt g (m + 1)) (N : SIdx m 
   · rw [if_neg (fun e => h (this.1 e)), if_neg h]
 
 /- English proof (translation)
-Rewrite using `[sd_um, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kern_exp (y : Mt g (m + 1)) (N : SIdx m → ZMod g) :
     -superDiag (umGL N) + ∑ p : SIdx m, N p * y p.1.2 p.1.1 =
@@ -300,9 +300,7 @@ theorem kern_exp (y : Mt g (m + 1)) (N : SIdx m → ZMod g) :
   split_ifs <;> ring
 
 /- English proof (translation)
-Rewrite using `[funext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i k hik`. Conclude with `sub_eq_zero.1 (h ⟨(i, k), hik⟩)`. Introduce `h p`.
-
-Conclude with `sub_eq_zero.2 (h p.1.1 p.1.2 p.2)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kern_hc (y : Mt g (m + 1)) :
     ((fun p : SIdx m => y p.1.2 p.1.1 - if (p.1.2 : ℕ) = p.1.1 + 1 then (1 : ZMod g) else 0) = 0) ↔
@@ -315,9 +313,9 @@ theorem kern_hc (y : Mt g (m + 1)) :
     exact sub_eq_zero.2 (h p.1.1 p.1.2 p.2)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_congr rfl (fun N _ => kern_inner ψ₀ hψ j y N), ← Finset.mul_sum]`. Rewrite using `[Finset.sum_congr rfl (fun N _ => by rw [kern_exp y N]), ← Finset.mul_sum, sum_pi_psi ψ₀ hψ]`. Distinguish the cases in `hR : ∀ i : Fin (m + 1), (i : ℕ) ≤ j → y 0 i = 0`. Distinguish the cases in `hc : (fun p : SIdx m => y p.1.2 p.1.1 - if (p.1.2 : ℕ) = p.1.1 + 1 then (1 : ZMod g) else 0) = 0`. Rewrite using `[if_pos hR, if_pos hc, if_pos (show IsY j y from ⟨hR, (kern_hc y).1 hc⟩)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hc, if_neg (show ¬ IsY j y from fun h => hc ((kern_hc y).2 h.2))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hR, if_neg (show ¬ IsY j y from fun h => hR h.1)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kern (hψ : ψ₀ ≠ 1) (j : ℕ) (y : Mt g (m + 1)) :
     ∑ N : SIdx m → ZMod g, ∑ b : JIdx m j → ZMod g,

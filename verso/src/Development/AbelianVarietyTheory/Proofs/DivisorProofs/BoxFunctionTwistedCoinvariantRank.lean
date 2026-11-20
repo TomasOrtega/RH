@@ -13,17 +13,15 @@ namespace GlobalTheory.RankCoinv.Recentre
 variable {k : Type} [Field k] [ValuativeRel k]
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin r) with hr | hr` into its components or cases. Introduce `l`. Conclude with `isEmptyElim l`. Take `⟨l₀, -, hl₀⟩` from `Finset.exists_max_image Finset.univ (fun l => valuation k (s l)) Finset.univ_nonempty`. Establish `key : s l₀ = w l₀ - ∑ l, s l * E l l₀`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun hs l₀` as an intermediate fact. Simplify using `only [Matrix.vecMul_add, Matrix.vecMul_one, Pi.add_apply] at this`. Rewrite using `[← this]`. Simplify using `[Matrix.vecMul, dotProduct]`. Establish `hsum : valuation k (∑ l, s l * E l l₀) ≤ valuation k (s l₀) * δ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hl₀ l (Finset.mem_univ _)) (hE l l₀)`. Establish `hμ : valuation k (s l₀) ≤ max b (valuation k (s l₀) * δ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hμb : valuation k (s l₀) ≤ b`. Break down `le_max_iff.1 hμ with h | h` into its components or cases. Conclude with `h`. Distinguish the cases in `h0 : valuation k (s l₀) = 0`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Conclude with `zero_le'`. It suffices to derive a contradiction. Establish `h2` using `mul_le_mul_left h (valuation k (s l₀))⁻¹`. Rewrite `h2` using `[mul_inv_cancel₀ h0, mul_comm (valuation k (s l₀)) δ, mul_assoc, mul_inv_cancel₀ h0, mul_one]`.
-
-Conclude with `absurd hδ (not_lt.2 h2)`. Conclude with `fun l => (hl₀ l (Finset.mem_univ _)).trans hμb`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem vecMul_bound {r : ℕ} (E : Matrix (Fin r) (Fin r) k) (δ b : ValueGroupWithZero k)
     (hδ : δ < 1) (hE : ∀ l l', valuation k (E l l') ≤ δ) (s w : Fin r → k)
@@ -58,49 +56,43 @@ theorem vecMul_bound {r : ℕ} (E : Matrix (Fin r) (Fin r) k) (δ b : ValueGroup
 end GlobalTheory.RankCoinv.Recentre
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ϖ hϖ ν β hν1 hνϖ i₀ r c m C H Q hHi₀ hH hcm hHC hQ hHCQ hCi₀`. Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `hv0 : valuation k (ϖ : k) ≠ 0` using `by simp`. Establish `vpow : ∀ n : ℕ, valuation k (((ϖ ^ n : kˣ)) : k) = valuation k (ϖ : k) ^ n` using `by intro n; simp`. Establish `vinv : valuation k ((((ϖ ^ c)⁻¹ : kˣ)) : k) = (valuation k (ϖ : k) ^ c)⁻¹` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hex : ∃ X₂ ∈ GlobalTheory.RankCoinv.box ϖ C (fun _ => m), X₂.rank ≤ r`. Use `swap`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Use `⟨GlobalTheory.RankCoinv.boxFn_mem_SB _ _ _, fun Y hY => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.RankCoinv.boxFn`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hYb`. Conclude with `hex ⟨Y, hYb, Nat.lt_succ_iff.1 hY⟩`. Take `⟨X₂, hX₂, hrk⟩` from `hex`. Use `set u := valuation k (ϖ : k) with hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ' : ∀ j l, valuation k (Q j l) ≤ 1` using `fun j l => (Valuation.mem_integer_iff _ _).1 (hQ j l)`. Establish `hD : ∀ i j, valuation k ((X₂ - C) i j) ≤ u ^ m` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, ← vpow]`. Conclude with `hX₂ i j`. Establish `hHb : ∀ l i, valuation k (H l i) ≤ (u ^ c)⁻¹` using `fun l i => (hH l i).trans_eq vinv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hHD : ∀ l j, valuation k ((H * (X₂ - C)) l j) ≤ (u ^ c)⁻¹ * u ^ m` using `fun l j => by`. Rewrite using `[Matrix.mul_apply]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul' (hHb l i) (hD i j)`. Establish `hE : ∀ l l', valuation k ((H * (X₂ - C) * Q) l l') ≤ (u ^ c)⁻¹ * u ^ m` using `fun l l' => by`. Rewrite using `[Matrix.mul_apply]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `j _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hm1 : u ^ m ≤ u ^ (c + 1)` using `pow_le_pow_right_of_le_one' hlt.le hcm`. Establish `hδ : (u ^ c)⁻¹ * u ^ m < 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : H * X₂ * Q = 1 + H * (X₂ - C) * Q`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, hHCQ]`. Normalize the expressions using the abelian group laws. Establish `hunit : IsUnit (H * X₂ * Q)`. Rewrite using `[← Matrix.vecMul_injective_iff_isUnit]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `a a' haa`. Establish `h0 : (a - a') ᵥ* (1 + H * (X₂ - C) * Q) = 0`. Rewrite using `[← hM, Matrix.sub_vecMul]`. Conclude with `sub_eq_zero.2 haa`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.RankCoinv.Recentre.vecMul_bound _ _ 0 hδ hE (a - a') 0 (fun _ => by simp) h0 l`. Establish `h2 : (a - a') l = 0` using `(Valuation.zero_iff _).1 (le_antisymm h1 zero_le')`. Conclude with `sub_eq_zero.1 h2`. Take `⟨s, hs⟩` from `GlobalTheory.T.rows_in_span_of_rank_normal_form k A D r X₂ H Q hrk hunit i₀`. Establish `hsw : s ᵥ* (1 + H * (X₂ - C) * Q) = X₂ i₀ ᵥ* Q`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hM, ← Matrix.vecMul_vecMul, ← hs]`. Establish `hX₂i₀ : ∀ j, valuation k (X₂ i₀ j) ≤ u ^ (c + 1)` using `fun j => by`. Establish `h1 : valuation k (X₂ i₀ j - C i₀ j) ≤ u ^ (c + 1)` using `((hX₂ i₀ j).trans_eq (vpow m)).trans hm1`. Establish `h2 : valuation k (C i₀ j) ≤ u ^ (c + 1)` using `(hCi₀ j).trans_eq (vpow _)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hw : ∀ l, valuation k ((X₂ i₀ ᵥ* Q) l) ≤ u ^ (c + 1)` using `fun l => by`. Simplify using `only [Matrix.vecMul, dotProduct]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsb` using `GlobalTheory.RankCoinv.Recentre.vecMul_bound _ _ _ hδ hE s _ hw hsw`. Establish `hsmall : ∀ j, valuation k ((s ᵥ* (H * (X₂ - C))) j) ≤ u ^ m` using `fun j => by`. Simplify using `only [Matrix.vecMul, dotProduct]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `l _`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ, mul_comm (u ^ c) u, mul_assoc, ← mul_assoc (u ^ c), mul_inv_cancel₀ (pow_ne_zero _ hv0), one_mul]`. Use `_ ≤ 1 * u ^ m := mul_le_mul_left hlt.le _`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `_ = u ^ m := one_mul _`. Use `set C' := Matrix.updateRow C i₀ 0 with hC'`. Establish `hHC' : H * C' = H * C`. Use extensionality with `l j`. Simplify using `only [Matrix.mul_apply, C', Matrix.updateRow_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[hHi₀]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcore` using `GlobalTheory.T.box_function_twisted_coinvariant k A D ϖ hϖ ν β hν1 hνϖ i₀ r c m C' H Q hHi₀ hH hcm (by rw [hHC']; exact hHC) hQ (by rw [hHC']; exact hHCQ) (fun j => by simp [C'])`. Establish `hstep` using `GlobalTheory.T.box_function_action_bounded_matrix k A D ϖ ν β i₀ r c m C' H s hHi₀ hH (fun l => (hsb l).trans (by rw [vpow]; exact pow_le_pow_right_of_le_one' hlt.le (Nat.le_succ c)))`. Establish `e1 : s ᵥ* (H * C) = X₂ i₀ - s ᵥ* (H * (X₂ - C))`. Rewrite using `[Matrix.mul_sub, Matrix.vecMul_sub, ← hs, sub_sub_cancel]`. Establish `hC'' : Matrix.updateRow C' i₀ (C' i₀ + s ᵥ* (H * C')) = Matrix.updateRow C i₀ (X₂ i₀ - s ᵥ* (H * (X₂ - C)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hHC', e1]`. Use extensionality with `i j`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Rewrite using `[Matrix.updateRow_self, Matrix.updateRow_self, hC', Matrix.updateRow_self, zero_add]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.updateRow_ne hi, Matrix.updateRow_ne hi, hC', Matrix.updateRow_ne hi]`. Establish `hmem : Matrix.updateRow C' i₀ (C' i₀ + s ᵥ* (H * C')) ∈ GlobalTheory.RankCoinv.box ϖ C (fun _ => m)`. Rewrite using `[hC'']`. Introduce `i j`. Distinguish the cases in `hi : i = i₀`.
-
-Substitute `hi` using the available equality. Rewrite using `[Matrix.updateRow_self]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Rewrite using `[Pi.sub_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ max (valuation k (X₂ i j - C i j)) (valuation k ((s ᵥ* (H * (X₂ - C))) j)) := Valuation.map_sub _ _ _`. Use `_ ≤ u ^ m := max_le ((hX₂ i j).trans_eq (vpow m)) (hsmall j)`. Use `_ = _ := (vpow m).symm`. Rewrite using `[Matrix.updateRow_ne hi]`.
-
-Simplify using the standard rewrite rules. Rewrite `hstep` using `[GlobalTheory.RankCoinv.boxFn_eq_of_mem hmem]`. Rewrite using `[← sub_add_cancel (GlobalTheory.RankCoinv.boxFn ϖ C (fun _ => m)) (GlobalTheory.RankCoinv.boxFn ϖ C' (fun _ => m))]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_right hstep) hcore`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RankCoinv.boxFn_mem_lowRank_sup_twistSpan_of_small_row : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (ν β : kˣ →* ℂˣ), (∀ x, ‖(ν x : ℂ)‖ = 1) → ν ϖ ≠ 1 → ∀ (i₀ : A) (r c m : ℕ) (C : Matrix A D k) (H : Matrix (Fin r) A k) (Q : Matrix D (Fin r) k), (∀ l, H l i₀ = 0) → (∀ l i, valuation k (H l i) ≤ valuation k (((ϖ ^ c)⁻¹ : kˣ) : k)) → c + 1 ≤ m → (∀ l j, (H * C) l j ∈ 𝒪[k]) → (∀ j l, Q j l ∈ 𝒪[k]) → H * C * Q = 1 → (∀ j, valuation k (C i₀ j) ≤ valuation k ((ϖ ^ (c + 1) : kˣ) : k)) → GlobalTheory.RankCoinv.boxFn ϖ C (fun _ => m) ∈ GlobalTheory.RankCoinv.lowRank (r + 1) ⊔ GlobalTheory.RankCoinv.twistSpan ν β := by
   intro k _ _ _ _ A D _ _ _ _ ϖ hϖ ν β hν1 hνϖ i₀ r c m C H Q hHi₀ hH hcm hHC hQ hHCQ hCi₀

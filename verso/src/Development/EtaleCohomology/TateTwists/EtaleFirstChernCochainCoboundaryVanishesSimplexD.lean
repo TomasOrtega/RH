@@ -24,13 +24,11 @@ def EtaleFirstChernCochainCoboundaryVanishesSimplexDegreeThree : Prop := ∀ (q 
   ∀ (U : Scheme.{0}) (x : Sx E 3 U), ev (δ 2 3 α) 3 0 (by simp) U x = 0
 
 /- English proof (translation)
-Introduce `q _ E L hi α hα`. Apply `hx` to reduce the goal to its premises. Introduce `p s h U x`. Use `match p, x with`. Consider the case `0, x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `rfl : s = 3` from `by omega`. Rewrite using `[(hd (ZMod q) (show (2:ℤ) + 1 = 3 by norm_num) α U).1 x, hα.1 U x]`. Conclude with `map_zero ((((res (ZMod q) (tw q 1)).d 2 3).hom.app (op U)).hom)`. Consider the case `1, x`. Take `rfl : s = 2` from `by omega`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `h1 q L hi α hα U x`. Consider the case `2, x`. Take `rfl : s = 1` from `by omega`. Conclude with `h2 q L hi α hα U x`. Consider the case `3, x`.
-
-Take `rfl : s = 0` from `by omega`. Conclude with `h3 q L hi α hα U x`. Consider the case `k + 4, x`. Conclude with `hr q s (by push_cast at h; omega) U _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem etale_first_chern_cochain_closed_of_degree_parts (hd : EvDelta) (hx : cx_ext) (hr : res_neg) (h1 : EtaleFirstChernCochainCoboundaryVanishesSimplexDegreeOne) (h2 : EtaleFirstChernCochainCoboundaryVanishesSimplexDegreeTwo) (h3 : EtaleFirstChernCochainCoboundaryVanishesSimplexDegreeThree) :
     EtaleKummerChernClassCochainIsCocycle := by
@@ -58,7 +56,7 @@ end LateralTheory.EtaleFoundations
 
 open LateralTheory.EtaleFoundations in
 /- English proof (translation)
-The claim follows from `etale_first_chern_cochain_closed_of_degree_parts hd hx hr h1 h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_first_chern_cochain_closed_of_components (hd : EvDelta) (hx : cx_ext) (hr : res_neg) (h1 : EtaleFirstChernCochainCoboundaryVanishesSimplexDegreeOne) (h2 : EtaleFirstChernCochainCoboundaryVanishesSimplexDegreeTwo) (h3 : EtaleFirstChernCochainCoboundaryVanishesSimplexDegreeThree) :
     LateralTheory.EtaleFoundations.EtaleKummerChernClassCochainIsCocycle := etale_first_chern_cochain_closed_of_degree_parts hd hx hr h1 h2 h3

@@ -78,7 +78,7 @@ def TopMk : Prop := CoreN → CutEX.MkTop
 section assembly
 
 /- English proof (translation)
-The claim follows from `hL k p ρ Wp Wq hρ Bj B0 hW hNj (HB b b' β Φ) (U.mMap k p ρ (Matrix.of Z) (Matrix.of y)) b (kapR Bj.z' b') (Φ Z y) hb hbc (fun h hh a => hR k p ρ Wp Wq hρ Bj B0 hz' hπ' hW' hW0' hNj hN0 b b' β Φ hb' hbc' Z hZ hβi hβ1 y hy hΦL hΦU h hh a)`.
+A detailed English derivation is pending.
 -/
 theorem coreRfl (hR : RightAvg) (hL : LeftAvg) (k p ρ : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -105,9 +105,9 @@ theorem coreRfl (hR : RightAvg) (hL : LeftAvg) (k p ρ : ℕ) (Wp Wq : Type) [No
       hΦL hΦU h hh a)
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨x, rfl⟩` from `(U.eB k p ρ).surjective i`. Take `⟨w, rfl⟩` from `(U.eB k p ρ).surjective j`. Simplify using `only [U.embG, U.blk3, ιLev, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases x with (a | a) | a <;> rcases w with (c | c) | c <;>`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [U.eB, Matrix.fromBlocks, Matrix.fromRows, Matrix.fromCols, Matrix.one_apply, Fin.ext_iff, Sum.elim] <;> split_ifs <;> (try simp_all [Fin.ext_iff]) <;> (try omega)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem embG_eq_ιLev (k p ρ : ℕ) (g : B.Mat k ρ) : U.embG k p ρ g = ιLev k p ρ g := by
   ext i j
@@ -119,9 +119,9 @@ private theorem embG_eq_ιLev (k p ρ : ℕ) (g : B.Mat k ρ) : U.embG k p ρ g 
       Sum.elim] <;> split_ifs <;> (try simp_all [Fin.ext_iff]) <;> (try omega)
 
 /- English proof (translation)
-Introduce `k p ρ n Wp Wq _ _ _ _ _ _ e hρ Bj B0 hz' hπ' hW hW' hW0' hNj hN0 b b' β Φ hb hbc hb' hbc' Z hZ hβi hβ1 y hy hΦL hΦU`. Substitute `e` using the available equality. Rewrite `hz'` using `[Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl]`. Establish `hπ'' : ∀ y : B.Mat k ρ, Bj.π' y = B0.π' (U.embG k p ρ y)` using `fun y => by`. Rewrite using `[hπ' y, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : D.castF (rfl : p + ρ = p + ρ).symm (HB b b' β Φ) = HB b b' β Φ` using `funext fun x => by`. Simplify using `only [D.castF, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`. Rewrite using `[hF, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`. Conclude with `coreRfl hR hL k p ρ Wp Wq hρ Bj B0 hz'.symm hπ'' hW hW' hW0' hNj hN0 b b' β Φ hb hbc hb' hbc' Z hZ hβi hβ1 y hy hΦL hΦU`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coreN_of (hR : RightAvg) (hL : LeftAvg) : CoreN := by
   intro k p ρ n Wp Wq _ _ _ _ _ _ e hρ Bj B0 hz' hπ' hW hW' hW0' hNj hN0 b b' β Φ hb hbc hb' hbc' Z hZ hβi hβ1 y hy
@@ -137,7 +137,7 @@ theorem coreN_of (hR : RightAvg) (hL : LeftAvg) : CoreN := by
     y hy hΦL hΦU
 
 /- English proof (translation)
-The claim follows from `hT (coreN_of hR hL)`.
+A detailed English derivation is pending.
 -/
 theorem mkTop_of_leaves (hR : RightAvg) (hL : LeftAvg) (hT : TopMk) : CutEX.MkTop := hT (coreN_of hR hL)
 

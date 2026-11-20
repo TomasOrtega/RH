@@ -9,7 +9,7 @@ open scoped Pointwise
 namespace GlobalTheory.EtaJacobi
 
 /- English proof (translation)
-Establish `hdo : Odd d` using `Nat.odd_iff.mpr (by omega)`. Rewrite using `[jacobiSym.neg _ hp]`. Break down `Nat.odd_mod_four_iff.mp (Nat.odd_iff.mp hp) with h | h` into its components or cases. Rewrite using `[ZMod.χ₄_nat_one_mod_four h, one_mul, jacobiSym.quadratic_reciprocity_one_mod_four h hdo]`. Rewrite using `[ZMod.χ₄_nat_three_mod_four h, jacobiSym.quadratic_reciprocity_three_mod_four h hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -23,11 +23,11 @@ theorem jacobi_flip {p d : ℕ} (hp : Odd p) (hd : d % 4 = 3) :
     ring
 
 /- English proof (translation)
-Establish `hodd : p % 2 = 1` using `Nat.odd_iff.mp ((Fact.out : p.Prime).odd_of_ne_two hp)`. Establish `h1 : x ^ p = ((legendreSym p m : ℤ) : k) * x`. Establish `h` using `congrArg (ZMod.castHom (dvd_refl p) k) (legendreSym.eq_pow p m)`. Rewrite `h` using `[map_intCast, map_pow, map_intCast]`. Rewrite using `[h, ← hx, ← pow_mul, ← pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ∀ z : ℤ, (z : k) ^ p = z` using `fun z => by`. Use `map_intCast (frobenius k p) z` as an intermediate fact. Rewrite `this` using `[frobenius_def]`. Then use the resulting hypothesis.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Proceed by induction on `f with`. Consider the case `zero => simp`. Consider the case `succ f ih`. Rewrite using `[pow_succ, pow_mul, ih, mul_pow, h2, h1]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,27 +58,23 @@ variable (K : Type) [Field K] [NumberField K] [IsCMField K]
 local notation3 "K⁺" => maximalRealSubfield K
 
 /- English proof (translation)
-Establish `h𝔭 : P.under (𝓞 K⁺) ≠ ⊥` using `Ideal.under_ne_bot (𝓞 K⁺) hP0`. Establish `hmax : P.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hP0`. Establish `hfin : Finite (𝓞 K ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot P hP0`. Take `⟨g, hg⟩` from `IsArithFrobAt.exists_of_isInvariant (𝓞 K⁺) (K ≃ₐ[K⁺] K) P`. Establish `hN : Ideal.absNorm (P.under (𝓞 K⁺)) = Nat.card (𝓞 K⁺ ⧸ P.under (𝓞 K⁺))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hg' : ∀ y : 𝓞 K, g • y - y ^ Ideal.absNorm (P.under (𝓞 K⁺)) ∈ P`. Introduce `y`. Rewrite using `[hN]`. Conclude with `hg y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Eta.cases K g with rfl | rfl` into its components or cases. Establish `hne : ¬ (Ideal.primesOver (P.under (𝓞 K⁺)) (𝓞 K)).ncard = 1`. Introduce `h1`. Break down `Eta.split_or_inert K hunr (P.under (𝓞 K⁺)) h𝔭 with h | ⟨-, h⟩` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Ideal.inertiaDegIn_eq_inertiaDeg (P.under (𝓞 K⁺)) P (K ≃ₐ[K⁺] K)]`. Establish `hc` using `Ideal.absNorm_pow_inertiaDeg (P.under (𝓞 K⁺)) P`. Rewrite `hc` using `[h, Ideal.absNorm_apply P, Submodule.cardQuot_apply]`. Use `set N := Ideal.absNorm (P.under (𝓞 K⁺)) with hNdef`. Establish `hN0 : N ≠ 0` using `by rw [hNdef, Ne, Ideal.absNorm_eq_zero_iff]; exact h𝔭`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN1 : N ≠ 1`. Rewrite using `[hNdef, Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `Ideal.IsPrime.ne_top inferInstance`. Use `letI := Ideal.Quotient.field P`. Use `letI := Fintype.ofFinite (𝓞 K ⧸ P)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hall : ∀ u : (𝓞 K ⧸ P)ˣ, u ^ (N - 1) = 1`. Introduce `u`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (u : 𝓞 K ⧸ P)`. Establish `h3` using `Ideal.Quotient.eq.mpr (hg' y)`. Rewrite `h3` using `[one_smul, map_pow, hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `h4 : u ^ (N - 1) * u = 1 * u`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (by omega), one_mul]`. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `h3.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel h4`. Establish `hd` using `(FiniteField.forall_pow_eq_one_iff (𝓞 K ⧸ P) (N - 1)).mp hall`. Rewrite `hd` using `[← Nat.card_eq_fintype_card, ← hc]`. Use `Nat.le_of_dvd (by omega) hd` as an intermediate fact. Establish `h5 : N * 2 ≤ N * N` using `Nat.mul_le_mul_left _ (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[sq]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne]`. Simplify using `using hg' x`. Establish `hst : IsCMField.complexConj K • P = P` using `hg.mem_stabilizer`.
-
-Establish `h1 : (Ideal.primesOver (P.under (𝓞 K⁺)) (𝓞 K)).ncard = 1`. Break down `Eta.split_or_inert K hunr (P.under (𝓞 K⁺)) h𝔭 with h | ⟨h, -⟩` into its components or cases. Conclude with `absurd hst ((Eta.ncard_eq_two_iff K hunr P hP0).mp h)`. Conclude with `h`. Rewrite using `[if_pos h1]`.
-
-Conclude with `hg' x`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_eq
     (hunr : ∀ P : Ideal (𝓞 K), P.IsPrime → P ≠ ⊥ →
@@ -139,9 +135,9 @@ theorem frob_eq
 end CM
 
 /- English proof (translation)
-Rewrite using `[← Set.ncard_coe_finset, ← Set.ncard_image_of_injective _ (f := HeightOneSpectrum.asIdeal) (fun _ _ h => HeightOneSpectrum.ext h)]`. Use `congr 1`. Use extensionality with `Q`. Simplify using `only [aboveF, Set.Finite.coe_toFinset, Set.mem_image, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨P, rfl, rfl⟩`. Conclude with `⟨P.isPrime, ⟨rfl⟩⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨Q, h1, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext h2.over.symm, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem card_aboveF {L : Type} [Field L] [NumberField L] (F : Type) [Field F] [NumberField F]
     [Algebra F L] (v : HeightOneSpectrum (𝓞 F)) :
@@ -161,49 +157,41 @@ theorem card_aboveF {L : Type} [Field L] [NumberField L] (F : Type) [Field F] [N
 open Classical in
 
 /- English proof (translation)
-Introduce `R H v hv`. Establish `hCM : IsCMField H.E` using `H.isCMField_hostE`. Establish `hcc : ∀ x : H.E, IsCMField.complexConj H.E x = H.conj x` using `fun x => by`. Apply `H.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, H.conjE_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm : ∀ x : 𝓞 H.E, IsCMField.complexConj H.E • x = H.conj • x` using `fun x => RingOfIntegers.ext (hcc x)`. Establish `hd16 : H.d % 16 = 7` using `H.hyp.2.2.2.1`. Rewrite using `[card_aboveF]`. Establish `hvp` using `v.isPrime`. Take `⟨⟨P, hPp, hPo⟩⟩` from `(inferInstance : Nonempty (Ideal.primesOver v.asIdeal (𝓞 H.E)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P`. Establish `hunder : P.under (𝓞 H.F) = v.asIdeal` using `hPo.over.symm`. Establish `hmax : P.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hP0`. Establish `hfin : Finite (𝓞 H.E ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot P hP0`. Use `letI := Ideal.Quotient.field P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Take `⟨p, hchar⟩` from `CharP.exists (𝓞 H.E ⧸ P)`. Establish `hp : p.Prime` using `CharP.char_is_prime (𝓞 H.E ⧸ P) p`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hpP : (p : 𝓞 H.E) ∈ P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `CharP.cast_eq_zero _ p`. Establish `hPZ : P.LiesOver (Ideal.span {(p : ℤ)})`. Establish `hm : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Use `⟨hm.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_natCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hpP`. Establish `hvZ : v.asIdeal.LiesOver (Ideal.span {(p : ℤ)})` using `Ideal.LiesOver.tower_bot P v.asIdeal _`. Establish `hN` using `Ideal.pow_inertiaDeg p v.asIdeal`. Use `set f := v.asIdeal.inertiaDeg ℤ`. Rewrite using `[← hN, Nat.cast_pow, jacobiSym.pow_left]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hp2 : p = 2`. Establish `h2N : p ∣ H.condN`. Rewrite using `[hp2]`. Conclude with `((dvd_pow_self 2 (Nat.succ_ne_zero _)).trans H.tower_dvd).trans (Dvd.dvd.mul_right (dvd_mul_right _ _) _)`. Establish `he` using `H.der.eta.2.2 p h2N P`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Unfold `Formalism.HC.HostRaw.etaF at he`. Express the relevant statement in the definitionally equal form `(if (Ideal.primesOver (P.under (𝓞 H.F)) (𝓞 H.E)).ncard = 2 then (1 : ℤ) else -1) = 1 at he`. Rewrite `he` using `[hunder]`. Establish `h2 : (Ideal.primesOver v.asIdeal (𝓞 H.E)).ncard = 2`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `he` using `[if_neg hc]`. Conclude with `absurd he (by decide)`. Establish `hj : jacobiSym (p : ℤ) H.d = 1`. Rewrite using `[hp2, Nat.cast_ofNat, jacobiSym.at_two (Nat.odd_iff.mpr (by omega)), ZMod.χ₈_nat_eq_if_mod_eight, if_neg (by omega), if_pos (by omega)]`. Rewrite using `[h2, hj, if_neg (by decide), one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hunr : ∀ P : Ideal (𝓞 H.E), P.IsPrime → P ≠ ⊥ → ¬ ∀ x : 𝓞 H.E, IsCMField.complexConj H.E • x - x ∈ P` using `fun P hP hP0 hx => H.der.unramEF P hP hP0 (fun x => hsm x ▸ hx x)`. Establish `hsq` using `H.sqd_sq`. Establish `hint : IsIntegral ℤ (H.sqd)`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[hsq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(isIntegral_natCast _).neg`. Set `β : 𝓞 H.E` to `⟨_, hint⟩`. Establish `hβsq : β ^ 2 = -(H.d : 𝓞 H.E)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 H.E) H.E (β ^ 2) = algebraMap (𝓞 H.E) H.E (-(H.d : 𝓞 H.E))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_neg, map_natCast]`. Conclude with `hsq`. Establish `hcβ : IsCMField.complexConj H.E • β = -β`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h1` using `H.galE_bE H.conj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[H.galE_conjE]`. Express the relevant statement in the definitionally equal form `IsCMField.complexConj H.E (H.sqd) = -(H.sqd)`. Rewrite using `[hcc, h1]`. Simplify using `[Formalism.HC.Frame.cc, c0]`. Establish `hfr` using `Ideal.Quotient.eq.mpr (frob_eq H.E hunr P hP0 β)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hfr` using `[hunder, ← hN, map_pow, hcβ]`. Establish `hx : (Ideal.Quotient.mk P β) ^ 2 = ((-(H.d : ℤ) : ℤ) : 𝓞 H.E ⧸ P)`. Rewrite using `[← map_pow, hβsq]`. Simplify using the standard rewrite rules. Establish `hdP : ((H.d : ℕ) : 𝓞 H.E ⧸ P) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h0`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← hunder, Ideal.mem_comap, map_natCast, ← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `h0`. Establish `hx0 : Ideal.Quotient.mk P β ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hx` using `[h0]`. Apply `hdP` to reduce the goal to its premises. Simplify using `using hx`. Rewrite `hfr` using `[pow_prime_pow p hp2 _ _ hx f]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[jacobi_flip (hp.odd_of_ne_two hp2) (by omega), ← jacobiSym.legendreSym.to_jacobiSym]`. Establish `hs : legendreSym p (-(H.d : ℤ)) ^ f = 1 ∨ legendreSym p (-(H.d : ℤ)) ^ f = -1`. Establish `hne : ((-(H.d : ℤ) : ℤ) : ZMod p) ≠ 0`. Introduce `h0`. Rewrite `h0` using `[ZMod.intCast_zmod_eq_zero_iff_dvd, dvd_neg, Int.natCast_dvd_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hdP ((CharP.cast_eq_zero_iff _ p _).mpr h0)`. Break down `legendreSym.eq_one_or_neg_one p hne with h1 | h1` into its components or cases. Use `left`. Rewrite using `[h1, one_pow]`. Rewrite using `[h1]`.
-
-Conclude with `neg_one_pow_eq_or ℤ f`. Establish `h2 : (2 : 𝓞 H.E ⧸ P) ≠ 0`. Introduce `h0`. Establish `: p ∣ 2` using `(CharP.cast_eq_zero_iff (𝓞 H.E ⧸ P) p 2).mp (by simpa using h0)`. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp this)`.
-
-Establish `hneg : Ideal.Quotient.mk P β ≠ -Ideal.Quotient.mk P β`. Introduce `h0`. Establish `: 2 * Ideal.Quotient.mk P β = 0` using `by linear_combination h0`. Conclude with `(mul_ne_zero h2 hx0) this`. Use `split_ifs at hfr ⊢ with hc`.
-
-Break down `hs with hs | hs` into its components or cases. Rewrite `hfr` using `[hs, map_neg]`. Conclude with `absurd (by simpa using hfr.symm) hneg`. Conclude with `hs.symm`. Break down `hs with hs | hs` into its components or cases.
-
-Conclude with `hs.symm`. Rewrite `hfr` using `[hs]`. Conclude with `absurd (by simpa using hfr) hneg`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_eq_jacobiSym : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (v : HeightOneSpectrum (𝓞 H.F)),
     ((H.d : ℕ) : 𝓞 H.F) ∉ v.asIdeal →

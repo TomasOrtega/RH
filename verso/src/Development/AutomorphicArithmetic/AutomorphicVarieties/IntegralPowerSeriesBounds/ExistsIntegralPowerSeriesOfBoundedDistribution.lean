@@ -4,21 +4,19 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSubOnePowThr
 open Formalism.ConjugateSelfDual UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ
 
 /- English proof (translation)
-Introduce `l _ c ν hcomp hO`. Set `μ : (r : ℕ) → ZMod (l ^ r) → Qbar l` to `fun r x => if r = 0 then ∑ x' : ZMod (l ^ 1), ν 1 (Pi.single x' 1) else ν r (Pi.single x 1)`. Establish `hsum : ∀ r, 1 ≤ r → ∀ x : ZMod (l ^ r), ν r (Pi.single x 1) = ∑ x' ∈ Finset.univ.filter (fun x' : ZMod (l ^ (r + 1)) => ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r)) x' = x), ν (r + 1) (Pi.single x' 1)`. Introduce `r hr x`. Rewrite using `[← map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `hcomp r hr` to reduce the goal to its premises. Introduce `y`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.single_apply, Finset.sum_ite_eq, Finset.mem_filter, Finset.mem_univ, true_and, map_natCast]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨L, hLO, hL⟩` from `GlobalTheory.AmiceDist.amice l c μ (fun r x => by`. Distinguish the cases in `hr : r = 0`. Simplify using `only [μ, if_pos hr]`. Conclude with `sum_mem (fun x' _ => hO 1 le_rfl x')`. Simplify using `only [μ, if_neg hr]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hO r (Nat.one_le_iff_ne_zero.2 hr) x)`. Use the proof step `(fun r x => by`. Establish `hr1 : r + 1 ≠ 0` using `by omega`. Simplify using `only [μ, if_neg hr1]`. Distinguish the cases in `hr : r = 0`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Substitute `hr` using the available equality. Simplify using `only [if_true]`. Establish `hf : Finset.univ.filter (fun x' : ZMod (l ^ (0 + 1)) => ZMod.castHom (pow_dvd_pow l (Nat.le_succ 0)) (ZMod (l ^ 0)) x' = x) = Finset.univ` using `Finset.filter_true_of_mem (fun x' _ => (show ∀ a b : ZMod 1, a = b from fun a b => Subsingleton.elim a b) _ _)`. Rewrite using `[hf]`. Simplify using `only [if_neg hr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hsum r (Nat.one_le_iff_ne_zero.2 hr) x)`. Use `⟨L, hLO, fun r hr z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `hL r hr z hz`. Establish `h2 : ∑ x, μ r x * z ^ x.val = ν r (fun x => z ^ x.val)`. Establish `hr0 : r ≠ 0` using `by omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [μ, if_neg hr0]`. Establish `h3 : (fun x : ZMod (l ^ r) => z ^ x.val) = ∑ x, z ^ x.val • Pi.single x (1 : Qbar l)`. Use function extensionality and compare the values at `y`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[h3, map_sum]`.
-
-Simplify using `[map_smul, mul_comm]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_integral_powerSeries_of_bounded_distribution :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (ν : ∀ M : ℕ, (ZMod (l ^ M) → Qbar l) →ₗ[Qbar l] Qbar l),

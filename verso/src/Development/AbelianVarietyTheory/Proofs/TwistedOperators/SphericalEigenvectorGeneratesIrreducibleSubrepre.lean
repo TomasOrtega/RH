@@ -13,9 +13,9 @@ namespace GlobalTheory.SphericalSpan
 variable {G V : Type} [Group G]
 
 /- English proof (translation)
-Establish `: (H.subgroupOf K).FiniteIndex` using `⟨hne⟩`. Use `(Set.finite_range (fun q : K ⧸ H.subgroupOf K => f (Quotient.out q))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (H.subgroupOf K) k`. Use `⟨(k : K ⧸ H.subgroupOf K), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show f (Quotient.out (k : K ⧸ H.subgroupOf K)) = f k`. Rewrite using `[hh]`. Conclude with `hf k h (Subgroup.mem_subgroupOf.1 h.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_range_of_relIndex {X : Type} (H K : Subgroup G) (hne : H.relIndex K ≠ 0) (f : K → X)
     (hf : ∀ k h : K, (h : G) ∈ H → f (k * h) = f k) : (Set.range f).Finite := by
@@ -29,15 +29,13 @@ theorem finite_range_of_relIndex {X : Type} (H K : Subgroup G) (hne : H.relIndex
   exact hf k h (Subgroup.mem_subgroupOf.1 h.2)
 
 /- English proof (translation)
-Establish `hfin` using `finite_range_of_relIndex (Subgroup.map (MulAut.conj g).toMonoidHom K) K (hc g) (fun k : K => ((k * g : G) : G ⧸ K)) (by`. Introduce and unpack `k h hh`. Take `⟨b, hb, e⟩` from `Subgroup.mem_map.1 hh`. Establish `e' : (h : G) = g * b * g⁻¹` using `by simpa using e.symm`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((k : G) * (h : G) * g)⁻¹ * ((k : G) * g) = b⁻¹`. Rewrite using `[e']`. Use `group`. Use `show (((k * h : K) : G) * g)⁻¹ * ((k : G) * g) ∈ K`. Rewrite using `[Subgroup.coe_mul, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `K.inv_mem hb)`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.1 hq`. Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((Quotient.out q : G) : G ⧸ K) = q` using `QuotientGroup.out_eq' q`. Rewrite using `[← h1, e]`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Establish `: (a * g)⁻¹ * (a * g * b) = b` using `by group`. Use `show (a * g)⁻¹ * (a * g * b) ∈ K`.
-
-Rewrite using `[this]`. Conclude with `hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem doset_finite (K : Subgroup G) (hc : IsCommensurated K) (g : G) :
     {q : G ⧸ K | Quotient.out q ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)}.Finite := by
@@ -65,15 +63,15 @@ theorem doset_finite (K : Subgroup G) (hc : IsCommensurated K) (g : G) :
   exact hb
 
 /- English proof (translation)
-Establish `hmem : ∀ (a b : K) (s : G), (a * s * b : G) ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G) ↔ s ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)`. Introduce `a b s`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨c, hc, d, hd, e⟩` from `DoubleCoset.mem_doubleCoset.1 h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `DoubleCoset.mem_doubleCoset.2 ⟨(a : G)⁻¹ * c, K.mul_mem (K.inv_mem a.2) hc, d * (b : G)⁻¹, K.mul_mem hd (K.inv_mem b.2), ?_⟩` and prove the remaining obligations. Establish `: s = (a : G)⁻¹ * ((a : G) * s * b) * (b : G)⁻¹` using `by group`. Rewrite using `[this, e]`. Use `group`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, d, hd, e⟩` from `DoubleCoset.mem_doubleCoset.1 h`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨a * c, K.mul_mem a.2 hc, d * b, K.mul_mem hd b.2, by`. Rewrite using `[e]`. Use the proof step `group⟩`. Use `⟨?_, {g}, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `a b s`. Distinguish the cases in `hs : s ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)`. Simplify using `[dosetInd, Set.indicator_of_mem hs, Set.indicator_of_mem ((hmem a b s).2 hs)]`. Simplify using `[dosetInd, Set.indicator_of_notMem hs, Set.indicator_of_notMem (fun h => hs ((hmem a b s).1 h))]`. Introduce `s hs`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `: s ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)`. Assume the negation of the conclusion as `h`. Conclude with `hs (by simp [dosetInd, Set.indicator_of_notMem h])`. Take `⟨c, hc, d, hd, e⟩` from `DoubleCoset.mem_doubleCoset.1 this`. Conclude with `⟨g, by simp, ⟨c, hc⟩, ⟨d, hd⟩, e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dosetInd_mem_hecke (K : Subgroup G) (g : G) : dosetInd ℂ K g ∈ Hecke ℂ K := by
   classical
@@ -107,9 +105,9 @@ theorem dosetInd_mem_hecke (K : Subgroup G) (g : G) : dosetInd ℂ K g ∈ Hecke
 variable [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Use `(show ∀ h : K, ρ h v = (((1 : K →* ℂˣ) h : ℂˣ) : ℂ) • v from h) ⟨k, hk⟩` as an intermediate fact. Simplify using `using this`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(show ∀ h : K, ρ h v = (((1 : K →* ℂˣ) h : ℂˣ) : ℂ) • v from fun k => by`. Simplify using `using h k k.2)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_fixed_iff {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
     v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v := by
@@ -122,19 +120,17 @@ theorem mem_fixed_iff {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
       simpa using h k k.2)
 
 /- English proof (translation)
-Take `⟨c, hc'⟩` from `hE _ (dosetInd_mem_hecke K g)`. Establish `hfin` using `doset_finite K hc g`. Establish `hS : ∀ q, q ∈ hfin.toFinset ↔ Quotient.out q ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)`. Introduce `q`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hsum : heckeVec ρ K (dosetInd ℂ K g) x = ∑ q ∈ hfin.toFinset, ρ (Quotient.out q) x`. Unfold `heckeVec`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hfin.toFinset)]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Establish `h1` using `(hS q).1 hq`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[dosetInd, Set.indicator_of_mem h1]`. Introduce `q hq`. Rewrite using `[Finset.mem_coe, hS]`. Assume the negation of the conclusion as `h`. Conclude with `hq (by simp [dosetInd, Set.indicator_of_notMem h])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hterm : ∀ q ∈ hfin.toFinset, B y (ρ (Quotient.out q) x) = B y (ρ g x)`. Introduce `q hq`. Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.1 ((hS q).1 hq)`. Establish `h1 : ρ (Quotient.out q) x = ρ a (ρ g x)`. Rewrite using `[e, map_mul, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hx b hb]`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : (g : G ⧸ K) ∈ hfin.toFinset`. Rewrite using `[hS]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K g`. Rewrite using `[hh]`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨1, K.one_mem, h, h.2, by simp⟩`. Establish `h0 : B y (c • x) = 0` using `by simp [hyx]`. Rewrite `h0` using `[← hc', hsum, map_sum, Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul]`.
-
-Establish `hcard : ((hfin.toFinset.card : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨_, hne⟩)`. Conclude with `(mul_eq_zero.1 h0).resolve_left hcard`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairing_translate_eq_zero (ρ : Representation ℂ G V) (K : Subgroup G)
     (hc : IsCommensurated K) (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
@@ -179,19 +175,19 @@ theorem pairing_translate_eq_zero (ρ : Representation ℂ G V) (K : Subgroup G)
   exact (mul_eq_zero.1 h0).resolve_left hcard
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨g, rfl⟩` from `h`. Use `⟨Subgroup.map (MulAut.conj g).toMonoidHom K, ?_, hc g, ?_⟩` and prove the remaining obligations. Establish `: ((Subgroup.map (MulAut.conj g).toMonoidHom K : Subgroup G) : Set G) = (fun h : G => g⁻¹ * h * g) ⁻¹' (K : Set G)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `h`. Simplify using `only [Subgroup.coe_map, Set.mem_image, SetLike.mem_coe, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `: g⁻¹ * (MulAut.conj g).toMonoidHom k * g = k` using `by simp [mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hk`. Introduce `hk`. Conclude with `⟨_, hk, by simp [mul_assoc]⟩`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hKo.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Introduce `h hh`. Take `⟨k, hk, rfl⟩` from `Subgroup.mem_map.1 hh`. Establish `e : (MulAut.conj g).toMonoidHom k = g * k * g⁻¹` using `by simp`. Establish `: ρ (g * k * g⁻¹) (ρ g x) = ρ g (ρ k x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e, this, hx k hk]`. Consider the case `zero => exact ⟨⊤, isOpen_univ, by simp, by simp⟩`. Consider the case `add a b _ _ ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨H₁, o₁, i₁, f₁⟩` from `ha`. Take `⟨H₂, o₂, i₂, f₂⟩` from `hb`. Use `⟨H₁ ⊓ H₂, o₁.inter o₂, Subgroup.relIndex_inf_ne_zero i₁ i₂, fun h hh => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, f₁ h hh.1, f₂ h hh.2]`. Consider the case `smul a b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨H, o, i, f⟩` from `hb`. Conclude with `⟨H, o, i, fun h hh => by rw [map_smul, f h hh]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_fix [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G V)
     (K : Subgroup G) (hKo : IsOpen (K : Set G)) (hc : IsCommensurated K) {x : V}
@@ -232,9 +228,9 @@ theorem exists_open_fix [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Repres
     exact ⟨H, o, i, fun h hh => by rw [map_smul, f h hh]⟩
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w h => obtain ⟨g, rfl⟩ := h`. Conclude with `hy g`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a b _ hb => simp [hb]`.
+A detailed English derivation is pending.
 -/
 theorem pairing_span_eq_zero (ρ : Representation ℂ G V) (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) {x y w : V}
     (hy : ∀ g, B y (ρ g x) = 0) (hw : w ∈ Submodule.span ℂ (Set.range fun g : G => ρ g x)) :
@@ -246,13 +242,13 @@ theorem pairing_span_eq_zero (ρ : Representation ℂ G V) (B : V →ₗ[ℂ] V 
   | smul a b _ hb => simp [hb]
 
 /- English proof (translation)
-Establish `hxx : B x x ≠ 0` using `fun h => by`. Use `hpos x hx0` as an intermediate fact. Simplify using `[h] at this`. Establish `hxU : x ∈ Submodule.span ℂ (Set.range fun g : G => ρ g x)` using `Submodule.subset_span ⟨1, by simp⟩`. Use `⟨B y x / B x x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c := B y x / B x x with hcdef`. Establish `hz : B (y - c • x) x = 0`. Simplify using `only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, hcdef]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hzf : ∀ k ∈ K, ρ k (y - c • x) = y - c • x`. Introduce `k hk`. Rewrite using `[map_sub, map_smul, hy k hk, hx k hk]`. Establish `hzU : y - c • x ∈ Submodule.span ℂ (Set.range fun g : G => ρ g x)` using `Submodule.sub_mem _ hyU (Submodule.smul_mem _ _ hxU)`. Establish `hzz : B (y - c • x) (y - c • x) = 0` using `pairing_span_eq_zero ρ B (pairing_translate_eq_zero ρ K hc B hB hx hzf hE hz) hzU`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `hpos (y - c • x) (sub_ne_zero.2 hne)` as an intermediate fact. Rewrite `this` using `[hzz]`. Simplify using `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fixed_eq_smul (ρ : Representation ℂ G V) (K : Subgroup G)
     (hc : IsCommensurated K) (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
@@ -285,31 +281,29 @@ theorem fixed_eq_smul (ρ : Representation ℂ G V) (K : Subgroup G)
   simp at this
 
 /- English proof (translation)
-Establish `hex : ∃ g, B y (ρ g x) ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Use `hpos y hy0` as an intermediate fact. Simplify using `[pairing_span_eq_zero ρ B hno (hWU hyW)] at this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `hex`. Establish `hgi : ρ g (ρ g⁻¹ y) = y`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `hy1W : ρ g⁻¹ y ∈ W` using `hW _ _ hyW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1x : B (ρ g⁻¹ y) x ≠ 0`. Rewrite using `[← hB g, hgi]`. Conclude with `hg`. Generalize the expression as in `ρ g⁻¹ y = y₁ at hy1W hy1x`. Take `⟨H, -, hi, hf⟩` from `exists_open_fix ρ K hKo hc hx (hWU hy1W)`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin` using `finite_range_of_relIndex H K hi (fun k : K => ρ k y₁) (by`. Introduce `k h hh`. Use `show ρ ((k * h : K) : G) y₁ = ρ k y₁`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hf h hh])`. Establish `hF : ∀ u, u ∈ hfin.toFinset ↔ ∃ k : K, ρ k y₁ = u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u`. Simplify using the standard rewrite rules. Establish `hzW : ∑ u ∈ hfin.toFinset, u ∈ W`. Use `Submodule.sum_mem _ fun u hu => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `(hF u).1 hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hW _ _ hy1W`. Establish `hzf : ∀ k ∈ K, ρ k (∑ u ∈ hfin.toFinset, u) = ∑ u ∈ hfin.toFinset, u`. Introduce `k hk`. Rewrite using `[map_sum]`. Use `Finset.sum_nbij' (ρ k) (ρ k⁻¹) ?_ ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `u hu`. Take `⟨l, rfl⟩` from `(hF u).1 hu`. Use `(hF _).2 ⟨⟨k, hk⟩ * l, ?_⟩` and prove the remaining obligations. Simplify using `[map_mul]`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l, rfl⟩` from `(hF u).1 hu`. Use `(hF _).2 ⟨⟨k⁻¹, K.inv_mem hk⟩ * l, ?_⟩` and prove the remaining obligations. Simplify using `[map_mul]`. Introduce `u _`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `u _`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Take `⟨c, hcz⟩` from `fixed_eq_smul ρ K hc B hpos hB hx0 hx hE (hWU hzW) hzf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Establish `hterm : ∀ u ∈ hfin.toFinset, B u x = B y₁ x`. Introduce `u hu`. Take `⟨k, rfl⟩` from `(hF u).1 hu`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : y₁ ∈ hfin.toFinset` using `(hF _).2 ⟨1, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hBz : B (∑ u ∈ hfin.toFinset, u) x ≠ 0`. Rewrite using `[map_sum, LinearMap.sum_apply, Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨_, hmem⟩)) hy1x`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hBz` to reduce the goal to its premises. Rewrite using `[hcz]`. Simplify using the standard rewrite rules. Establish `: x = c⁻¹ • ∑ u ∈ hfin.toFinset, u`. Rewrite using `[hcz, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
-
-Rewrite using `[this]`. Conclude with `W.smul_mem _ hzW`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_invariant [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G V)
     (K : Subgroup G) (hKo : IsOpen (K : Set G)) (hc : IsCommensurated K)
@@ -382,33 +376,27 @@ end GlobalTheory.SphericalSpan
 open GlobalTheory.SphericalSpan in
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ K hKo hc hun x hx0 hxf hE`. Take `⟨B, hsym, hpos, hB⟩` from `hun`. Establish `hxK : ∀ k ∈ K, ρ k x = x` using `mem_fixed_iff.1 hxf`. Establish `hUinv : ∀ g, ∀ y ∈ Submodule.span ℂ (Set.range fun g : G => ρ g x), ρ g y ∈ Submodule.span ℂ (Set.range fun g : G => ρ g x)`. Introduce `g y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨a, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨g * a, by simp [map_mul]⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a b _ hb => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hb`. Establish `hxU : x ∈ Submodule.span ℂ (Set.range fun g : G => ρ g x)` using `Submodule.subset_span ⟨1, by simp⟩`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨_, hUinv, hxU, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Take `⟨H, ho, -, hf⟩` from `exists_open_fix ρ K hKo hc hxK v.2`. Set `S : Subgroup G` to `{ carrier := {g | GlobalTheory.PRep.sub ρ _ hUinv g v = v} mul_mem' := by`. Introduce `a b ha hb`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_ofPred_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `hle : H ≤ S`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh`. Conclude with `Subtype.ext (hf h hh)`. Conclude with `Subgroup.isOpen_mono hle ho`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := ?_ }` and prove the remaining obligations. Establish `h1 : (⟨x, hxU⟩ : Submodule.span ℂ (Set.range fun g : G => ρ g x)) ∈ (⊤ : Subrepresentation (GlobalTheory.PRep.sub ρ _ hUinv)).toSubmodule` using `Submodule.mem_top`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[← h]`. Establish `h2 : (⟨x, hxU⟩ : Submodule.span ℂ (Set.range fun g : G => ρ g x)) = 0` using `(Submodule.mem_bot ℂ).1 h1`. Conclude with `hx0 (congrArg Subtype.val h2)`. Introduce `S`. Distinguish the cases in `hS : S.toSubmodule = ⊥`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `Or.inl (Subrepresentation.toSubmodule_injective hS)`. Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Take `⟨y, hyS, hy0⟩` from `(Submodule.ne_bot_iff _).1 hS`. Set `W : Submodule ℂ V` to `S.toSubmodule.map (Submodule.subtype _)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hWU : W ≤ Submodule.span ℂ (Set.range fun g : G => ρ g x)`. Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `u.2`. Establish `hWinv : ∀ g, ∀ v ∈ W, ρ g v ∈ W`. Introduce and unpack `g _ ⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, S.apply_mem_toSubmodule g hu, rfl⟩`. Establish `hxW : x ∈ W` using `mem_of_invariant ρ K hKo hc B hpos hB hx0 hxK hE W hWU hWinv (y := y) ⟨y, hyS, rfl⟩ (fun h => hy0 (Subtype.ext h))`. Establish `hall : Submodule.span ℂ (Set.range fun g : G => ρ g x) ≤ W` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hWinv g x hxW)`.
-
-Use `eq_top_iff.2 fun u _ => ?_` and prove the remaining obligations. Take `⟨u', hu', e⟩` from `hall u.2`. Establish `: u' = u` using `Subtype.ext e`. Conclude with `this ▸ hu'`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => B a b) (by intro a b c; simp) (by intro r a b; simp) (by intro a b c; simp) (by intro r a b; simp), ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `v w`. Conclude with `hsym v w`. Introduce `v hv`. Conclude with `hpos v (fun h => hv (Subtype.ext h))`. Introduce `g v w`.
-
-Conclude with `hB g v w`. Introduce `y hy`. Establish `hyK : ∀ k ∈ K, ρ k y = y` using `fun k hk => congrArg Subtype.val (mem_fixed_iff.1 hy k hk)`. Take `⟨c, hcy⟩` from `fixed_eq_smul ρ K hc B hpos hB hx0 hxK hE y.2 hyK`. Conclude with `⟨c, Subtype.ext hcy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.spherical_eigenvector_generates_irreducible :
     ∀ {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]

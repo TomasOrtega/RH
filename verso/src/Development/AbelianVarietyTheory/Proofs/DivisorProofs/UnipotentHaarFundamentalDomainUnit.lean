@@ -13,9 +13,9 @@ namespace GlobalTheory.UnipFD
 open Pointwise in
 
 /- English proof (translation)
-Establish `hsub : D ⊆ ⋃ γ : Γ, ((γ • K) ∩ D)`. Introduce `g hg`. Take `⟨γ, hγ, hk⟩` from `hcov g`. Use `Set.mem_iUnion.2 ⟨(⟨γ, hγ⟩ : Γ)⁻¹, ?_, hg⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv_smul_set_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem measure_fd_lt_top_of_cocompact {G : Type} [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
@@ -34,15 +34,11 @@ theorem measure_fd_lt_top_of_cocompact {G : Type} [Group G]
     _ < ⊤ := hK.measure_lt_top
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n n₁ Y H hcpt`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnipCT.topFacts (F := F) σ Y.J`. Use `haveI : BorelSpace (UA σ Y.J) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (unip σ Y H) := (GlobalTheory.UnipCT.isClosed_unip σ Y H).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI := GlobalTheory.UnipCT.countable_ratU (σ := σ) Y.J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set Γ := (ratU σ Y.J).subgroupOf (unip σ Y H) with hΓ`. Use `haveI hcount : Countable Γ := Function.Injective.countable (f := fun g : Γ => (⟨g.1.1, g.2⟩ : ratU σ Y.J)) fun g h hgh => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val hgh`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := (GlobalTheory.RatUDisc.countable_discrete_ratU F E σ n Y.J).2`. Use `haveI hdisc : DiscreteTopology Γ := DiscreteTopology.of_continuous_injective (f := fun g : Γ => (⟨g.1.1, g.2⟩ : ratU σ Y.J)) (by fun_prop) (fun g h hgh => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val hgh)`.
-
-Take `⟨K, hK, hcov⟩` from `hcpt`. Use `haveI : SMulInvariantMeasure Γ (unip σ Y H) (Measure.haar : Measure (unip σ Y H)) := ⟨fun c s _ => measure_preimage_mul _ (c : unip σ Y H) s⟩`. Take `⟨D, hD⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain Γ (Measure.haar : Measure (unip σ Y H))`. Establish `h0 : Measure.haar D ≠ 0` using `hD.measure_ne_zero (NeZero.ne _)`. Establish `h1 : Measure.haar D ≠ ⊤` using `(measure_fd_lt_top_of_cocompact Γ hK hcov _ hD).ne`.
-
-Use `⟨(Measure.haar D)⁻¹ • Measure.haar, D, Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 h1) (ENNReal.inv_ne_top.2 h0), hD.mono Measure.smul_absolutelyContinuous, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n n₁ : ℕ}
     (Y : Spc F E n) (H : Plane E n n₁),

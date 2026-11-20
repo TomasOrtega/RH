@@ -13,7 +13,7 @@ namespace GlobalTheory.VolBr.Pair
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Establish `h1` using `(unitAt_one (under y)).regAt`. Establish `e` using `ratVal_mul (y := y) h1 h1`. Rewrite `e` using `[mul_one]`. Establish `h0` using `ratVal_ne_zero (y := y) (unitAt_one (under y))`. Conclude with `(mul_eq_left₀ h0).1 e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratVal_one' {σ : k →+* ℂ} (y : CxPts p σ) : ratVal (1 : X.functionField) y = 1 := by
   have h1 := (unitAt_one (under y)).regAt
@@ -23,7 +23,7 @@ theorem ratVal_one' {σ : k →+* ℂ} (y : CxPts p σ) : ratVal (1 : X.function
   exact (mul_eq_left₀ h0).1 e.symm
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using unitAt_one x`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitAt_pow' {x : X} {f : X.functionField} (h : UnitAt x f) (n : ℕ) : UnitAt x (f ^ n) := by
   induction n with
@@ -31,7 +31,7 @@ theorem unitAt_pow' {x : X} {f : X.functionField} (h : UnitAt x f) (n : ℕ) : U
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using ratVal_one' y`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ratVal_mul (unitAt_pow' h n).regAt h.regAt, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVal_pow' {σ : k →+* ℂ} {y : CxPts p σ} {f : X.functionField} (h : UnitAt (under y) f)
     (n : ℕ) : ratVal (f ^ n) y = ratVal f y ^ n := by
@@ -41,7 +41,7 @@ theorem ratVal_pow' {σ : k →+* ℂ} {y : CxPts p σ} {f : X.functionField} (h
     rw [pow_succ, ratVal_mul (unitAt_pow' h n).regAt h.regAt, ih, pow_succ]
 
 /- English proof (translation)
-Simplify using `only [loc, one_mul, mul_pow, mul_comm (n : ℤ), zpow_mul, zpow_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem loc_mul (P : Pair p) (a b : ℤ) (n : ℕ) (i : P.L.B.ι) (j : P.A.B.ι) :
     P.loc ((n : ℤ) * a) ((n : ℤ) * b) 1 i j = P.loc a b 1 i j ^ n := by
@@ -50,15 +50,15 @@ theorem loc_mul (P : Pair p) (a b : ℤ) (n : ℕ) (i : P.L.B.ι) (j : P.A.B.ι)
 end GlobalTheory.VolBr.Pair
 
 /- English proof (translation)
-Introduce `k _ X _ p P a b M n ⟨ρ, hρ, hu, hn⟩`. Use `⟨fun c => ρ (c PUnit.unit) ^ n, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j j' h`. Establish `h' : genericPoint X ∈ M.B.U (j PUnit.unit) ⊓ M.B.U (j' PUnit.unit)` using `⟨Set.mem_iInter.1 h.1 PUnit.unit, Set.mem_iInter.1 h.2 PUnit.unit⟩`. Establish `e : (M.pow n).B.g j j' = res (X` using `X) (U := M.B.U (j PUnit.unit) ⊓ M.B.U (j' PUnit.unit)) (V := (M.pow n).B.U j ⊓ (M.pow n).B.U j') (fun _ hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩) (M.B.g (j PUnit.unit) (j' PUnit.unit)) ^ (n : ℤ) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`. Conclude with `Fintype.prod_unique _`. Rewrite using `[e, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hρ _ _ h', mul_pow]`. Use `congr 1`. Rewrite using `[show ((res (X := X) (U := M.B.U (j PUnit.unit) ⊓ M.B.U (j' PUnit.unit)) (V := (M.pow n).B.U j ⊓ (M.pow n).B.U j') (fun _ hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩) (M.B.g (j PUnit.unit) (j' PUnit.unit)) ^ (n : ℤ) : (Γ(X, (M.pow n).B.U j ⊓ (M.pow …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val], map_pow]`. Use `congr 1`. Conclude with `(fnOf_resG (fun _ hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩ : (M.pow n).B.U j ⊓ (M.pow n).B.U j' ≤ M.B.U (j PUnit.unit) ⊓ M.B.U (j' PUnit.unit)) h _).symm`. Introduce `x c i j hc hi hj`. Rewrite using `[Pair.loc_mul, Units.val_pow_eq_pow_val, ← div_pow]`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Pair.unitAt_pow' (hu x (c PUnit.unit) i j (Set.mem_iInter.1 hc PUnit.unit) hi hj) n`. Introduce `σ y c i j hc hi hj`. Establish `hc'` using `mem_pow_iff.1 hc`. Establish `hU` using `hu _ (c PUnit.unit) i j (mem_ptsIn.1 hc') (mem_ptsIn.1 hi) (mem_ptsIn.1 hj)`. Establish `e` using `hn σ y (c PUnit.unit) i j hc' hi hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Pair.loc_mul, Units.val_pow_eq_pow_val, ← div_pow, Pair.ratVal_pow' hU, norm_pow, Real.log_pow]`. Express the relevant statement in the definitionally equal form `_ - ((M.φ σ).zpow n).φ c y / 2 = _`. Rewrite using `[show ((M.φ σ).zpow n).φ c y = (n : ℤ) * (M.φ σ).φ (c PUnit.unit) y from Weight.zpow_φ _ _ _ _]`. Use `push_cast`. Take the linear combination `(n : ℝ) * e`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VolBr.Pair.rep_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ (a b : ℤ) (M : HermLB p) (n : ℕ), P.Rep a b M → P.Rep (n * a) (n * b) (M.pow n) := by
   intro k _ X _ p P a b M n ⟨ρ, hρ, hu, hn⟩

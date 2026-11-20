@@ -18,14 +18,14 @@ def polMap (ψ : E →+ E) (m : ℕ) (Q : E[X]) : E[X] :=
   ∑ i ∈ Finset.range (m + 1), monomial i (ψ (Q.coeff i))
 
 /- English proof (translation)
-Simplify using `[serMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_serMap (ψ : E →+ E) (S : PowerSeries E) (n : ℕ) :
     PowerSeries.coeff n (serMap ψ S) = ψ (PowerSeries.coeff n S) := by
   simp [serMap]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[coeff_serMap, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem serMap_sum (ψ : E →+ E) {ι : Type} (s : Finset ι) (f : ι → PowerSeries E) :
     serMap ψ (∑ i ∈ s, f i) = ∑ i ∈ s, serMap ψ (f i) := by
@@ -33,7 +33,7 @@ theorem serMap_sum (ψ : E →+ E) {ι : Type} (s : Finset ι) (f : ι → Power
   simp [coeff_serMap, map_sum]
 
 /- English proof (translation)
-Simplify using `only [polMap, finsetSum_coeff, coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq' (Finset.range (m + 1)) i]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_polMap (ψ : E →+ E) (m : ℕ) (Q : E[X]) (i : ℕ) :
     (polMap ψ m Q).coeff i = if i ≤ m then ψ (Q.coeff i) else 0 := by
@@ -42,7 +42,7 @@ theorem coeff_polMap (ψ : E →+ E) (m : ℕ) (Q : E[X]) (i : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[natDegree_le_iff_coeff_eq_zero]`. Introduce `i hi`. Rewrite using `[coeff_polMap, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem natDegree_polMap_le (ψ : E →+ E) (m : ℕ) (Q : E[X]) : (polMap ψ m Q).natDegree ≤ m := by
   rw [natDegree_le_iff_coeff_eq_zero]
@@ -52,7 +52,7 @@ theorem natDegree_polMap_le (ψ : E →+ E) (m : ℕ) (Q : E[X]) : (polMap ψ m 
 variable (k : Subfield E)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_mul]`. Conclude with `sum_mem fun p _ => mul_mem (hS _) (hT _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_mul {S T : PowerSeries E} (hS : ∀ n, PowerSeries.coeff n S ∈ k)
     (hT : ∀ n, PowerSeries.coeff n T ∈ k) : ∀ n, PowerSeries.coeff n (S * T) ∈ k := by
@@ -61,7 +61,7 @@ theorem coeff_mem_mul {S T : PowerSeries E} (hS : ∀ n, PowerSeries.coeff n S �
   exact sum_mem fun p _ => mul_mem (hS _) (hT _)
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_one]`. Use `split_ifs`. Conclude with `one_mem k`. Conclude with `zero_mem k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_one : ∀ n, PowerSeries.coeff n (1 : PowerSeries E) ∈ k := by
   intro n
@@ -71,7 +71,7 @@ theorem coeff_mem_one : ∀ n, PowerSeries.coeff n (1 : PowerSeries E) ∈ k := 
   · exact zero_mem k
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using coeff_mem_one k`. Consider the case `succ i ih => rw [pow_succ]`. Conclude with `coeff_mem_mul k ih hS`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coeff_mem_pow {S : PowerSeries E} (hS : ∀ n, PowerSeries.coeff n S ∈ k) (i : ℕ) :
     ∀ n, PowerSeries.coeff n (S ^ i) ∈ k := by
@@ -80,7 +80,7 @@ theorem coeff_mem_pow {S : PowerSeries E} (hS : ∀ n, PowerSeries.coeff n S ∈
   | succ i ih => rw [pow_succ]; exact coeff_mem_mul k ih hS
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[PowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `one_mem k`. Conclude with `zero_mem k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_X : ∀ n, PowerSeries.coeff n (PowerSeries.X : PowerSeries E) ∈ k := by
   intro n
@@ -92,7 +92,7 @@ theorem coeff_mem_X : ∀ n, PowerSeries.coeff n (PowerSeries.X : PowerSeries E)
 variable {k}
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_serMap, PowerSeries.coeff_mul, PowerSeries.coeff_mul, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hψ _ (hW _), coeff_serMap]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem serMap_mul (ψ : E →+ E) (hψ : ∀ c ∈ k, ∀ x, ψ (c * x) = c * ψ x) {W : PowerSeries E}
     (hW : ∀ n, PowerSeries.coeff n W ∈ k) (S : PowerSeries E) :
@@ -103,7 +103,7 @@ theorem serMap_mul (ψ : E →+ E) (hψ : ∀ c ∈ k, ∀ x, ψ (c * x) = c * �
   rw [hψ _ (hW _), coeff_serMap]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_serMap, PowerSeries.coeff_C, PowerSeries.coeff_C]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `map_zero ψ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem serMap_C (ψ : E →+ E) (q : E) : serMap ψ (PowerSeries.C q) = PowerSeries.C (ψ q) := by
   ext n
@@ -113,9 +113,9 @@ theorem serMap_C (ψ : E →+ E) (q : E) : serMap ψ (PowerSeries.C q) = PowerSe
   · exact map_zero ψ
 
 /- English proof (translation)
-Unfold `homS`. Rewrite using `[serMap_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `hW : ∀ n, PowerSeries.coeff n (U ^ i * PowerSeries.X ^ (2 * (m - i))) ∈ k` using `coeff_mem_mul k (coeff_mem_pow k hU i) (coeff_mem_pow k (coeff_mem_X k) _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[coeff_polMap, if_pos hi', mul_assoc, mul_assoc, mul_comm (PowerSeries.C (Q.coeff i)), serMap_mul ψ hψ hW, serMap_C, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem serMap_homS (ψ : E →+ E) (hψ : ∀ c ∈ k, ∀ x, ψ (c * x) = c * ψ x) {U : PowerSeries E}
     (hU : ∀ n, PowerSeries.coeff n U ∈ k) (m : ℕ) (Q : E[X]) :
@@ -130,11 +130,11 @@ theorem serMap_homS (ψ : E →+ E) (hψ : ∀ c ∈ k, ∀ x, ψ (c * x) = c * 
     serMap_mul ψ hψ hW, serMap_C, mul_comm]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap k E) (LinearMap.ker_eq_bot.mpr (algebraMap k E).injective)`. Use `⟨(k.subtype : k →+ E).comp g.toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc x`. Use `g.map_smul (⟨c, hc⟩ : k) x` as an intermediate fact. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, LinearMap.toAddMonoidHom_coe]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : (⟨c, hc⟩ : k) • x = c * x` using `rfl`. Rewrite using `[← h2, this]`. Both sides reduce to the same expression. Introduce `x`. Conclude with `(g x).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hg 1` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Algebra.linearMap_apply, map_one, LinearMap.id_apply] at this`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_proj (k : Subfield E) : ∃ ψ : E →+ E, (∀ c ∈ k, ∀ x, ψ (c * x) = c * ψ x) ∧
     (∀ x, ψ x ∈ k) ∧ ψ 1 = 1 := by
@@ -156,19 +156,15 @@ theorem exists_proj (k : Subfield E) : ∃ ψ : E →+ E, (∀ c ∈ k, ∀ x, �
 end Proj
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hψk, hψ1⟩` from `exists_proj k`. Use `set A' := polMap ψ (N + 1) A with hA'`. Use `set B' := polMap ψ N B with hB'`. Establish `hA'd : A'.natDegree ≤ N + 1` using `natDegree_polMap_le ψ _ A`. Establish `hB'd : B'.natDegree ≤ N` using `natDegree_polMap_le ψ _ B`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : V * homS U N B' = homS U (N + 1) A'`. Rewrite using `[hA', hB', ← serMap_homS ψ hψ hU, ← serMap_homS ψ hψ hU, ← serMap_mul ψ hψ hV, h]`. Establish `hBN : B'.coeff N = 1`. Rewrite using `[hB', coeff_polMap, if_pos le_rfl, ← hBd, hB.coeff_natDegree, hψ1]`. Establish `hB'deg : B'.natDegree = N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm hB'd (le_natDegree_of_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[hBN]`. Conclude with `one_ne_zero`. Establish `hB'm : B'.Monic`. Rewrite using `[Monic, leadingCoeff, hB'deg, hBN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcross : A * B' = A' * B`. Establish `h0 : homS U (N + 1 + N) (A * B' - A' * B) = 0`. Rewrite using `[homS_sub, homS_mul U _ _ _ _ hA hB'd, homS_mul U _ _ _ _ hA'd hBd.le, ← h, ← h']`. Expand and normalize the polynomial expressions, which then agree. Establish `hdeg : (A * B' - A' * B).natDegree ≤ N + 1 + N`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(natDegree_sub_le _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `natDegree_mul_le.trans (add_le_add hA hB'd)`. Conclude with `natDegree_mul_le.trans (add_le_add hA'd hBd.le)`. Conclude with `sub_eq_zero.mp (homS_eq_zero U hU0 _ _ hdeg h0)`. Establish `hdvd : B ∣ B'`.
-
-Use `hc.symm.dvd_of_dvd_mul_left ?_` and prove the remaining obligations. Rewrite using `[hcross]`. Conclude with `dvd_mul_left _ _`. Establish `heq : B = B'` using `(eq_of_monic_of_dvd_of_natDegree_le hB hB'm hdvd (by rw [hB'deg, hBd])).symm`. Introduce `i`.
-
-Rewrite using `[heq, hB', coeff_polMap]`. Use `split_ifs`. Conclude with `hψk _`. Conclude with `zero_mem k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_trick {E : Type} [Field E] (k : Subfield E) (U V : PowerSeries E)
     (hU : ∀ n, PowerSeries.coeff n U ∈ k) (hV : ∀ n, PowerSeries.coeff n V ∈ k)

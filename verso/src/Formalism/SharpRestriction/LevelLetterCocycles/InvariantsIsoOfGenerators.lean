@@ -31,21 +31,21 @@ Both sides reduce to the same expression.
 theorem oneT_apply (T : LocLat S.G S.Qp S.LL S.O) (t : ↥T.L.T) : oneT S T t = (1 : S.RW) ⊗ₜ[S.O] t := rfl
 
 /- English proof (translation)
-Simplify using `only [TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem TWact_one {R : Type} [CommRing R] [Algebra S.O R] (f : R →ₐ[S.O] R) (T : LocLat S.G S.Qp S.LL S.O)
     (g : S.G) (t : ↥T.L.T) : TWact f T g ((1 : R) ⊗ₜ[S.O] t) = (1 : R) ⊗ₜ[S.O] T.actT g t := by
   simp only [TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one]
 
 /- English proof (translation)
-Simplify using `only [TWmap, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one, LinearMap.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem TWmap_one {R : Type} [CommRing R] [Algebra S.O R] (f : R →ₐ[S.O] R) (T : LocLat S.G S.Qp S.LL S.O)
     (t : ↥T.L.T) : TWmap f T ((1 : R) ⊗ₜ[S.O] t) = (1 : R) ⊗ₜ[S.O] t := by
   simp only [TWmap, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one, LinearMap.id_apply]
 
 /- English proof (translation)
-Simplify using `only [invariantLattice, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`. Consider the case `(constructor <;> intro h g <;> exact h g)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_H0Lat {T : LocLat S.G S.Qp S.LL S.O} (t : ↥T.L.T) : t ∈ invariantLattice T ↔ ∀ g, T.actT g t = t := by
   simp only [invariantLattice, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
@@ -56,7 +56,7 @@ theorem mem_H0Lat {T : LocLat S.G S.Qp S.LL S.O} (t : ↥T.L.T) : t ∈ invarian
   | (constructor <;> intro h g <;> exact h g)
 
 /- English proof (translation)
-Simplify using `only [fixDD, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, and_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_fixDD {T : LocLat S.G S.Qp S.LL S.O} (x : S.W.DD T) : x ∈ fixDD S.W T ↔
     S.W.φD T x = x ∧ S.W.γD T S.W.gamK x = x ∧ ∀ δ ∈ S.W.DelF, S.W.γD T δ x = x := by
@@ -64,21 +64,21 @@ theorem mem_fixDD {T : LocLat S.G S.Qp S.LL S.O} (x : S.W.DD T) : x ∈ fixDD S.
     LinearMap.id_apply, sub_eq_zero, and_assoc]
 
 /- English proof (translation)
-Establish `key : (invariantLattice T).map (oneT S T) = (fixDD S.W T).map (E.jD T)`. Use extensionality with `b`. Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `ht` using `[mem_H0Lat]`. Take `⟨d, hd⟩` from `hin T t ht`. Use `⟨d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_fixDD]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `E.jD_inj T` to reduce the goal to its premises. Rewrite using `[E.jD_φ, hd, TWmap_one]`. Take `⟨g, hgg⟩` from `S.W.resΓ_onto S.W.gamK`. Apply `E.jD_inj T` to reduce the goal to its premises. Rewrite using `[← hgg, E.jD_act, hd, TWact_one, ht g]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `δ _`. Take `⟨g, hgg⟩` from `S.W.resΓ_onto δ`. Apply `E.jD_inj T` to reduce the goal to its premises. Rewrite using `[← hgg, E.jD_act, hd, TWact_one, ht g]`. Rewrite using `[oneT_apply, hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨d, hd, rfl⟩`. Rewrite `hd` using `[mem_fixDD]`. Take `⟨hφ, hγ, hδ⟩` from `hd`. Take `⟨t, ht⟩` from `hfix T (E.jD T d) (by rw [← E.jD_φ, hφ])`. Establish `hact : ∀ g : S.G, S.W.γD T (S.W.resΓ g) d = d → T.actT g t = t`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g hgd`. Apply `hi T` to reduce the goal to its premises. Rewrite using `[oneT_apply, oneT_apply, ← TWact_one (S.gR g), ← ht, ← E.jD_act, hgd]`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_H0Lat]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hg T t` to reduce the goal to its premises. Introduce `g hgK`. Conclude with `hact g (by rw [hgK, hγ])`. Introduce `g hgD`. Conclude with `hact g (hδ _ hgD)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g h1`. Conclude with `hact g (by rw [h1, S.W.γD_one])`. Rewrite using `[oneT_apply, ht]`. Conclude with `⟨(Submodule.equivMapOfInjective (oneT S T) (hi T) (invariantLattice T)).trans ((LinearEquiv.ofEq _ _ key).trans (Submodule.equivMapOfInjective (E.jD T) (E.jD_inj T) (fixDD S.W T)).symm)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem nonempty_invariantLattice_equiv_fixDD (E : S.Comparison₂)
     (hin : ∀ (T : LocLat S.G S.Qp S.LL S.O) (t : ↥T.L.T), (∀ g, T.actT g t = t) →
@@ -133,9 +133,9 @@ private theorem nonempty_invariantLattice_equiv_fixDD (E : S.Comparison₂)
 end Gen
 
 /- English proof (translation)
-Introduce `hF l hl K LL hA T`. Take `⟨hW, hD⟩` from `hF l K 1 LL hA.2.2`. Use `nonempty_invariantLattice_equiv_fixDD (S := sit D.loc HW l (D.locA l) K 1 LL hA.2.2) ((F l).E K 1 LL hA.2.2).tie (fun T t ht => ?_) (fun T b hb => (hW T).2.1 b hb) (hi l K LL hA) (hg l K LL hA) T` and prove the remaining obligations. Use `Set.mem_range.mpr (LinearMap.mem_range.mp ((hD T).2 _ ?_ ?_))` and prove the remaining obligations. Introduce `g _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[TWact_one, ht g]`. Rewrite using `[TWmap_one, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariants_iso_of_generators (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (hi : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL),

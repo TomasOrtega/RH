@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.CurveCl
 open MvPolynomial GlobalTheory.FlagPoly Formalism.DegreeFormula Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.WeightApprox.approx` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTendstoIntegralWeightsApproxReal.lean&line=44#L44)
 -/

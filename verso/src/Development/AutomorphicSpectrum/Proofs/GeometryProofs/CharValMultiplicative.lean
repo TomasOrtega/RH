@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.TorusPoints
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Diag.charVal_eq_torusFst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charVal_eq_diag {S : Scheme.{0}} {X : Type} [AddCommGroup X] {A : Type} [CommRing A] {a : Sp A ⟶ S}
     (t : Over.mk a ⟶ splitTorus S X) (χ : X) : charVal t χ = GlobalTheory.Diag.charVal t χ := by
@@ -21,13 +21,13 @@ theorem charVal_eq_diag {S : Scheme.{0}} {X : Type} [AddCommGroup X] {A : Type} 
   rfl
 
 /- English proof (translation)
-Introduce `S X _ A _ a`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t t' h`. Use `GlobalTheory.Diag.charVal_ext fun χ => ?_` and prove the remaining obligations. Rewrite using `[← charVal_eq_diag, ← charVal_eq_diag]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h χ`. Introduce `t t' χ`. Rewrite using `[charVal_eq_diag, charVal_eq_diag, charVal_eq_diag, GlobalTheory.Diag.charVal_mul]`. Introduce `χ`. Rewrite using `[charVal_eq_diag, GlobalTheory.Diag.charVal_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Use `⟨?_, fun χ χ' => ?_⟩` and prove the remaining obligations. Rewrite using `[charVal_eq_diag, GlobalTheory.Diag.charVal_zero]`. Rewrite using `[charVal_eq_diag, charVal_eq_diag, charVal_eq_diag, GlobalTheory.Diag.charVal_add]`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.Diag.ofVal a w, fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[charVal_eq_diag, GlobalTheory.Diag.charVal_ofVal]`. Introduce `A' _ g t t' ht χ`. Rewrite using `[charVal_eq_diag, charVal_eq_diag]`. Conclude with `(GlobalTheory.Diag.left_eq_iff g rfl t' t).1 ht χ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] (A : Type) [CommRing A] (a : Sp A ⟶ S), (∀ t t' : Over.mk a ⟶ splitTorus S X, (∀ χ, charVal t χ = charVal t' χ) → t = t') ∧ (∀ (t t' : Over.mk a ⟶ splitTorus S X) (χ : X), charVal (t * t') χ = charVal t χ * charVal t' χ) ∧ (∀ χ : X, charVal (1 : Over.mk a ⟶ splitTorus S X) χ = 1) ∧ (∀ (t : Over.mk a ⟶ splitTorus S X), charVal t 0 = 1 ∧ ∀ χ χ', charVal t (χ + χ') = charVal t χ * charVal t χ') ∧ (∀ w : Multiplicative X →* A, ∃ t : Over.mk a ⟶ splitTorus S X, ∀ χ, charVal t χ = w (Multiplicative.ofAdd χ)) ∧ ∀ (A' : Type) [CommRing A'] (g : A →+* A') (t : Over.mk a ⟶ splitTorus S X) (t' : Over.mk (spMap g ≫ a) ⟶ splitTorus S X), t'.left = spMap g ≫ t.left → ∀ χ, charVal t' χ = g (charVal t χ) := by
   intro S X _ A _ a

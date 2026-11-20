@@ -15,7 +15,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 namespace GlobalTheory.Core.Diag
 
 /- English proof (translation)
-Introduce `hWu D large₂ C' Cl Cg cb Cu cT CT S hC' hCl hFX hL hTF hH`. Establish `hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D` using `Formalism.L2.SG.ThmSOwn.gap_hypothesis_of_hypotheses hH (by linarith) hC'`. Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_properties S.X`. Conclude with `⟨Formalism.L2.SG.ThmSOwn.concKOf S ⟨hFX, hK, fun u => Formalism.L2.SG.Pf.RegroupPf.neatKu_K2Level D S.X S.Y u hK, (hWu D hG S.X).1, (hWu D hG S.X).2, hL, hTF⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem concK_of_finX : Formalism.L2.SG.Pf.WuDecayOfGap → ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT : ℝ) (S : Formalism.L2.SG.SpectralTiesReal.STies D), 29 ≤ C' → 29 ≤ Cl → FinX S.Y → Formalism.L2.SG.Pf.LocCP.LocTied D → TFrameAt D → StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT → Nonempty (Formalism.L2.SG.ThmSOwn.ConcK D) := by
   intro hWu D large₂ C' Cl Cg cb Cu cT CT S hC' hCl hFX hL hTF hH

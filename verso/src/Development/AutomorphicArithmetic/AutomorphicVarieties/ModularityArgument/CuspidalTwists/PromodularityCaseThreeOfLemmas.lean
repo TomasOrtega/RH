@@ -18,7 +18,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Cu
 
 /- English proof (translation)
-Take `⟨hg, hc⟩` from `h`. Proceed by induction on `hc with`. Consider the case `refl => exact ⟨hP, hg⟩`. Consider the case `tail _ hl _ => exact ⟨Asm.linked_isRes hl.2, hl.1⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem chain_rank_four_good {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] {Φ : Fr O Γ} {a : O →+* R} {P : PD Φ.ι Γ R}
     [TopologicalSpace Γ] {P' : PD Φ.ι Γ R} (hP : Φ.IsRes a P) (h : Chain4 Φ a P P') :
@@ -29,11 +29,11 @@ private theorem chain_rank_four_good {O Γ R : Type} [CommRing O] [Group Γ] [Co
   | tail _ hl _ => exact ⟨Asm.linked_isRes hl.2, hl.1⟩
 
 /- English proof (translation)
-Establish `key : ∀ s, Relation.ReflTransGen (fun x y => Good4 Φ ((residue Λ).comp a) y ∧ Φ.Linked ((residue Λ).comp a) x y) s (X.P.map (x₁ : X.A →+* ResidueField Λ)) → Φ.IsRes ((residue Λ).comp a) s → Good4 Φ ((residue Λ).comp a) s → ∀ x : X.A →ₐ[Λ] ResidueField Λ, X.P.map (x : X.A →+* Resi …`. Introduce `s h`. Proceed by induction on `h using Relation.ReflTransGen.head_induction_on with`. Consider the case `refl`. Introduce `k1 k2 x e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hch x (e ▸ k1) (e ▸ k2) ((conn Φ l a hΦ X J x x₁ ?_).2 (hch x₁ k1 k2 h₁))` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Asm.linked_self k1`. Consider the case `head hl _ ih`. Introduce and unpack `k1 k2 x rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x', rfl⟩` from `Asm.end_pt X hl.2`. Conclude with `hch x k1 k2 ((conn Φ l a hΦ X J x x' hl.2).2 (ih (Asm.linked_isRes hl.2) hl.1 x' rfl))`. Conclude with `key _ hc.2 hs hc.1 x₀ rfl`.
+A detailed English derivation is pending.
 -/
 private theorem allIn_of_chain4 {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     [TotallyDisconnectedSpace Γ] {Φ : Fr O Γ} {l : ℕ} [Fact l.Prime] {Λ : Type} [CommRing Λ] [IsDomain Λ]
@@ -61,7 +61,7 @@ private theorem allIn_of_chain4 {O Γ : Type} [CommRing O] [Group Γ] [Topologic
   exact key _ hc.2 hs hc.1 x₀ rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Take `⟨v, hv⟩` from `h'`. Conclude with `⟨v * u, fun g => by rw [hv, hu, mul_inv_rev, Units.val_mul, Units.val_mul]; simp only [mul_assoc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem conj_trans {H R : Type} [Group H] [CommRing R] {r r' r'' : H →* M4 R} (h : IsConj4 r r') (h' : IsConj4 r' r'') :
     IsConj4 r r'' := by
@@ -70,37 +70,31 @@ private theorem conj_trans {H R : Type} [Group H] [CommRing R] {r r' r'' : H →
   exact ⟨v * u, fun g => by rw [hv, hu, mul_inv_rev, Units.val_mul, Units.val_mul]; simp only [mul_assoc]⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => (res O O).commutes x`.
+A detailed English derivation is pending.
 -/
 private theorem res_self (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] :
     (res O O : O →+* ResidueField O) = residue O := RingHom.ext fun x => (res O O).commutes x
 
 /- English proof (translation)
-Take `⟨c₂, k₂⟩` from `hCD 𝔞 c (T.fr ∅) _ _ hr hch`. Take `⟨c₃, k₃⟩` from `smallCo 𝔞 P hs`. Take `⟨c₄, k₄⟩` from `hPM Ω l c D T hF hD ι`. Take `⟨d₁, a₁, a₂⟩` from `(coefSup l).1 c₁ c₂`. Take `⟨d₂, a₃, a₄⟩` from `(coefSup l).1 c₃ c₄`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c', b₁, b₂⟩` from `(coefSup l).1 d₁ d₂`. Establish `e₁ : c₁.O ≤ c'.O` using `a₁.trans b₁`. Establish `h : c.O ≤ c'.O` using `h₁.trans e₁`. Use `haveI : Finite (ResidueField c'.O) := by haveI : IsLocalHom (algebraMap ℤ_[l] c'.O) := (dvrFacts l c'.O).2.2.1 haveI : Finite (ResidueField ℤ_[l]) := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`. Conclude with `Module.finite_of_finite (ResidueField ℤ_[l])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS` using `(std hC D T hF ∅ c' h).1 (Finset.notMem_empty 0)`. Take `⟨X⟩` from `spaceEx (T.fr ∅) l (inc h) hS`. Take `⟨J, hJ⟩` from `k₄ c' h (a₄.trans b₂) X`. Take `⟨s, t, es, et, rs, cst⟩` from `k₂ c' h (a₂.trans b₁)`. Take `⟨R, _, _, _, f, QR, fi, fa, fr, qc, rfl⟩` from `k₃ c' (a₃.trans b₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj` using `(chainMap (T.fr ∅) ((residue c'.O).comp (inc h)) (𝔞.j c') s).2.2`. Establish `loc : ∀ {d : Coef l} (e : d.O ≤ c'.O), maximalIdeal d.O ≤ (maximalIdeal c'.O).comap (inc e)` using `fun {d} e x hx hu => by`. Establish `h2 : IsUnit (𝔞.a d x)` using `𝔞.compat d c' e x ▸ hu.map (𝔞.a c')`. Conclude with `hx (IsLocalHom.map_nonunit x h2)`. Establish `jc : (𝔞.j c').comp ((residue c'.O).comp (inc e₁)) = 𝔞.red c₁` using `RingHom.ext fun x => congrArg (residue 𝔞.V) (𝔞.compat c₁ c' e₁ x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `lQ : (T.fr ∅).Lifts (inc h) t (Q.map (inc e₁))`. Use `⟨hQ.pair.map (inc e₁), hQ.cont.map _ (loc e₁), inj ?_⟩` and prove the remaining obligations. Use `show ((Q.map _).map _).map _ = t.map _`. Rewrite using `[et, res_self, PD.map_map, PD.map_map, ← jc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f₁, hf₁⟩` from `X.univ c'.O t _ (chain_rank_four_good rs cst).1 lQ`. Establish `sd` using `hJ.seed ((Algebra.ofId c'.O (PadicAlgCl l)).comp f₁) (by`. Establish `e : X.P.map (((Algebra.ofId c'.O (PadicAlgCl l)).comp f₁ : X.A →ₐ[c'.O] PadicAlgCl l) : X.A →+* PadicAlgCl l) = Q.map (algebraMap c₁.O (PadicAlgCl l))` using `by show (X.P.map (f₁ : X.A →+* c'.O)).map (algebraMap c'.O (PadicAlgCl l)) = _`. Rewrite using `[hf₁]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hQ.seed)`. Establish `s₁ : X.SomeIn J (RingHom.ker ((res c'.O c'.O).comp f₁))` using `Asm.someIn_of_locZero X J _ sd fun z hz => by`. Establish `h0 : f₁ z = 0` using `Subtype.ext hz`. Use `show res c'.O c'.O (f₁ z) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, map_zero]`. Establish `e₁' : X.P.map (((res c'.O c'.O).comp f₁ : X.A →ₐ[c'.O] ResidueField c'.O) : X.A →+* ResidueField c'.O) = t` using `by show (X.P.map (f₁ : X.A →+* c'.O)).map (res c'.O c'.O : c'.O →+* ResidueField c'.O) = t`. Rewrite using `[hf₁]`. Conclude with `lQ.red`. Establish `lR : (T.fr ∅).Lifts (inc h) s QR`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨Asm.pair_of f fi ?_, qc, inj ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, fa]`. Establish `: (𝔞.a c').comp (inc h) = 𝔞.a c` using `RingHom.ext fun x => 𝔞.compat c c' h x`. Rewrite using `[this]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (QR.map _).map _ = s.map _`. Rewrite using `[es, PD.map_map, PD.map_map, fr]`. Take `⟨f₀, hf₀⟩` from `X.univ R s _ rs lR`. Establish `e₀ : X.P.map (((res c'.O R).comp f₀ : X.A →ₐ[c'.O] ResidueField c'.O) : X.A →+* ResidueField c'.O) = s` using `by show (X.P.map (f₀ : X.A →+* R)).map (res c'.O R : R →+* ResidueField c'.O) = s`. Rewrite using `[hf₀]`.
-
-Conclude with `lR.red`. Establish `all` using `allIn_of_chain4 hS X J (hCh hC D T hF hD ι c' h X J hJ C (hB _ _ fun x hx => (residue_eq_zero_iff _).2 (loc h hx)) hd) ((res c'.O R).comp f₀) ((res c'.O c'.O).comp f₁) (e₀ ▸ rs) (e₀ ▸ e₁' ▸ cst) s₁`. Use `⟨c', h, X, J, f.comp (f₀ : X.A →+* R), hJ, ?_, fun b hb => ?_, Asm.zero_of_allIn X J _ all fun z hz => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, AlgHom.comp_algebraMap, fa]`. Establish `h0 : res c'.O R ((f₀.comp (IsScalarTower.toAlgHom c'.O X.B X.A)) b) = 0`.
-
-Rewrite using `[res_map, res_eq_zero_iff]`. Conclude with `hb`. Use `(residue_eq_zero_iff _).1 ((RingHom.congr_fun fr (f₀ (algebraMap X.B X.A b))).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (𝔞.j c') h0).trans (map_zero _)`. Establish `h0 : f₀ z = 0` using `(map_eq_zero_iff f fi).1 hz show res c'.O R (f₀ z) = 0`.
-
-Rewrite using `[h0, map_zero]`. Conclude with `congrArg (fun Z => PD.map Z f) hf₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem last_step (hCh : Ch4) (hCD : ChainDesc4) (hC : CohomologyHyp) (hPM : PMEx) {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     {c : Coef l} {D : Raw Ω c} (T : Tower D) (hF : T.Fit) (hD : T.Deep) (ι : PadicAlgCl l ≃+* ℂ) (𝔞 : Amb l) (C : ℕ)

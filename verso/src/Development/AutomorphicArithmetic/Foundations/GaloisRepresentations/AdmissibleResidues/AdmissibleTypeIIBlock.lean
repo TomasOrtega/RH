@@ -33,25 +33,23 @@ namespace GlobalTheory.Ord2
 open UpperTheory.V.Base UpperTheory.V.U3 in
 
 /- English proof (translation)
-Introduce `hC Ω _ _ _ K _ _ _ l hl c N _ e ψ D U g₁ hM r h ι hII W hext hcont hdet hmod`. Establish `hdt : ∀ g, (dt W g : Qbar l) = ((D.η g : ℤˣ) : ℤ)` using `fun g => hdet g`. Take `⟨A, hA, -, hIA, -, -, -, -⟩` from `dat_loc D`. Take `⟨-, -, -, -, -, -, -, -, -, -, hl1⟩` from `dat_facts D`. Take `⟨hIk, -⟩` from `hl1 A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ψQ : G ℚ Ω →* (Qbar l)ˣ` to `(Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom).comp (Chr.dirG ℚ Ω ψ)`. Set `χ : G ℚ Ω →* (Qbar l)ˣ` to `(Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom).comp (Chr.dirG ℚ Ω (HV.comp l ψ))`. Establish `hΨ : ∀ g, D.ΨQ g = cycBar ℚ Ω l g ^ (e : ℤ) * ψQ g` using `fun g => by show Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (chiO ℚ Ω l c.O g ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g) = _`. Rewrite using `[map_mul, map_zpow]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hχ2 : ∀ g, χ g * χ g = 1` using `fun g => by`. Establish `h1 : Chr.dirG ℚ Ω (HV.comp l ψ) g * Chr.dirG ℚ Ω (HV.comp l ψ) g = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show (HV.comp l ψ) (Chr.cls ℚ Ω N g) * (HV.comp l ψ) (Chr.cls ℚ Ω N g) = 1`. Rewrite using `[← MulChar.mul_apply, ← sq, D.gd.ine, MulChar.one_apply (Units.isUnit _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Units.map _ _ * Units.map _ _ = 1`. Rewrite using `[← map_mul, h1, map_one]`. Establish `hψχ : ∀ s ∈ Ine (F` using `ℚ) A, ψQ s = χ s := fun s hs => by`. Rewrite `hs` using `[← hIA]`. Take `⟨g, hg, rfl⟩` from `hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show Units.map _ _ = Units.map _ _`. Rewrite using `[psi_ine D g hg]`. Take `⟨κ, hflag, hκ⟩` from `flag_block hC D hM h hII W hext hdet A hA`. Use `⟨hcont, ?_, fun s hs => Units.ext ?_, GlobalTheory.Ord2.irr_transfer D.η D.η_ker W hdet (typeII_irr_cyc hC D hM h hII W hext), levelAway_block hC D hM h hII W hext hdet, ?_, A, χ, κ, ?_, fun s hs => ?_, hflag, fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.one_apply, Units.val_one, MonoidHom.pow_apply, Units.val_pow_eq_pow_val, hdt]`. Apply the tactic sequence `rcases Int.units_eq_one_or (D.η g) with h1 | h1 <;> simp [h1]`. Rewrite using `[hdt, conj_eta D s hs]`. Simplify using the standard rewrite rules. Take `⟨f, hf⟩` from `mod0 hmod`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨f, 1, 1, le_rfl, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_one]`. Conclude with `hf`. Take `⟨h1, h2, h3, -⟩` from `places ℚ Ω l A`. Establish `hne : A ≠ ⊤` using `fun ht => (h2 ht).2 hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `h1 hne`. Conclude with `⟨v, hv, (h3 v hv).1 hA⟩`. Use `show Units.map _ _ = 1`. Rewrite using `[GlobalTheory.killsMu_comp_of_sq_eq_one ψ D.gd.l_odd D.gd.ine s hs, map_one]`. Rewrite using `[MonoidHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hdt, hIk hs]`. Simplify using the standard rewrite rules. Rewrite using `[(hκ s hs).1, (hκ s hs).2, hΨ, hψχ s hs, mul_inv, ← zpow_neg]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
-
-Use `congr 1`. Conclude with `inv_eq_of_mul_eq_one_right (hχ2 s)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem admissible_typeII_block : U3.CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : U3.Dat Ω K c e ψ) {U : D.ULoc} {g₁ : G ℚ Ω}, D.Marked g₁ → ∀ {r : G ℚ Ω →* U3.GG 3 (PadicAlgCl l)} (_ : D.IsPt U g₁ r) (ι : Qbar l ≃+* ℂ), U3.TypeII D.η r → ∀ W : R2 Ω l, D.IsExt r W → Continuous W → (∀ g, (mat W g).det = ((D.η g : ℤˣ) : ℤ)) → D.IsModular ι W → admitted ι e W := by
   intro hC Ω _ _ _ K _ _ _ l hl c N _ e ψ D U g₁ hM r h ι hII W hext hcont hdet hmod

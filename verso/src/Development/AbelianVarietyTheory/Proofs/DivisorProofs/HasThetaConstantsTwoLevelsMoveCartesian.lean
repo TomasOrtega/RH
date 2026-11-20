@@ -18,25 +18,23 @@ section Rig
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GlobalTheory.UU.BiTrivUniq.exists_unit_ratio (M := L) (φ := fun _ : PUnit => eSec A) (ε := fun _ => 1) hL hρ hρ'`. Use `⟨Units.map T.hom.appTop.hom.toMonoidHom a, ?_⟩` and prove the remaining obligations. Introduce and unpack `m th x c ⟨hx, t, α, s₁, θ, hα, hcorr, htw, hsym, hact, hval⟩`. Take `⟨α', d, hα', hcorr', hd⟩` from `exists_normalised_unit hL hρ' m ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) (((m ^ 2 : ℕ) : ℤ) - 1) (by push_cast; ring) α hα`. Take `⟨s₁', hs₁'⟩` from `GlobalTheory.ThetaPtExist.exists_isTwistPull hL (mulT A _ m) (snd _ A ^ m) (lift_snd _ _) ((m ^ 2 : ℕ) : ℤ) ((1 : ℕ) : ℤ) α' hα' th`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `GlobalTheory.ThetaNu.exists_isActOf hL θ s₁'`. Establish `e1 : ∀ {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) (J : (Z ⟶ A.left) → L.ι), Good L z J → sval (L` using `L) (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => ((m ^ 2 : ℕ) : ℤ)) s₁' r z J = (gm (r ≫ (fst T A).left) z ⊤ d).val * sval (L := L) (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => ((m ^ 2 : ℕ) : ℤ)) s₁ r z J := by`. Introduce `Z r z J hJ`. Rewrite using `[GlobalTheory.ThetaLin.sval_of_isTwistPull A hs₁' r z hJ, GlobalTheory.ThetaLin.sval_of_isTwistPull A htw r z hJ, hd Z r z J hJ, Units.val_mul, _root_.mul_assoc]`. Establish `htr : (translT A θ.pt).left ≫ (fst T A).left = (fst T A).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, GlobalTheory.MulSplit.translT_fst']`. Establish `e2 : ∀ {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) (J : (Z ⟶ A.left) → L.ι), Good L z J → GlobalTheory.TorsionFixedAut.secVal t' r z J = (gm (r ≫ (fst T A).left) z ⊤ d).val * GlobalTheory.TorsionFixedAut.secVal t r z J`. Introduce `Z r z J hJ`. Rewrite using `[GlobalTheory.TorsionFixedAut.sval_isActOf ht' r z hJ, GlobalTheory.TorsionFixedAut.sval_isActOf hact r z hJ]`. Simplify using `only [GlobalTheory.TorsionFixedAut.secVal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1 _ z J hJ, Category.assoc, htr]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hx, t', α', s₁', θ, hα', hcorr', hs₁', hsym, ht', ?_⟩` and prove the remaining obligations. Introduce `z J hJ`. Establish `c1` using `val_corr hJ hcorr (𝟙 T.left)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `c2` using `val_corr hJ hcorr' (𝟙 T.left)`. Rewrite `c1`, `c2` using `[val_pull hJ]`. Establish `c3` using `hd _ (𝟙 T.left ≫ (ptSecT A (1 : T ⟶ A)).left) z J hJ`. Rewrite `c3` using `[c2, c1, Category.assoc, GlobalTheory.ThetaReal.NormMul.ptSec_fst, GlobalTheory.OriginFrame.val_rigT ρ _ _ hJ, GlobalTheory.OriginFrame.val_rigT ρ' _ _ hJ, ha _ _ z J hJ]`. Establish `hsv : VVRank.sv A t' (ptSecT A (1 : T ⟶ A)).left z J = (gm ((ptSecT A (1 : T ⟶ A)).left ≫ (fst T A).left) z ⊤ d).val * VVRank.sv A t (ptSecT A (1 : T ⟶ A)).left z J` using `e2 _ z J hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : gs (𝟙 T.left) z ⊤ ((Units.map T.hom.appTop.hom.toMonoidHom a : Γ(T.left, ⊤)ˣ) : Γ(T.left, ⊤)) = (gm (𝟙 T.left ≫ T.hom) z ⊤ a).val`. Rewrite using `[← gs_unit _ z ⊤ trivial a, ← gs_pull (𝟙 T.left) T.hom z ⊤ trivial a.val]`. Both sides reduce to the same expression. Rewrite using `[hsv, hval z J hJ, GlobalTheory.ThetaReal.NormMul.ptSec_fst, GlobalTheory.OriginFrame.val_rigT ρ _ _ hJ, GlobalTheory.OriginFrame.val_rigT ρ' _ _ hJ, ha _ _ z J hJ, gs_mul (𝟙 T.left) z ⊤ trivial, hb]`. Use `set g := gm (𝟙 T.left ≫ T.hom) z ⊤ a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set U := val ρ' (𝟙 T.left ≫ T.hom) z J`. Use `set D := gm (𝟙 T.left) z ⊤ d`. Rewrite `c3` using `[Category.id_comp]`. Establish `key : D * g ^ (((m ^ 2 : ℕ) : ℤ) - 1) = 1`. Establish `c5 : U ^ (((m ^ 2 : ℕ) : ℤ) - 1) = D * (g * U) ^ (((m ^ 2 : ℕ) : ℤ) - 1)` using `c3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `c5` using `[mul_zpow]`. Establish `c6 : D * g ^ (((m ^ 2 : ℕ) : ℤ) - 1) * U ^ (((m ^ 2 : ℕ) : ℤ) - 1) = 1 * U ^ (((m ^ 2 : ℕ) : ℤ) - 1)`. Rewrite using `[_root_.one_mul, _root_.mul_assoc]`. Conclude with `c5.symm`. Conclude with `mul_right_cancel c6`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `key2 : D * (g * U) ^ ((m ^ 2 : ℕ) : ℤ) = g * U ^ ((m ^ 2 : ℕ) : ℤ)`. Rewrite using `[mul_zpow, ← _root_.mul_assoc]`. Use `congr 1`. Rewrite `key` using `[zpow_sub_one, ← _root_.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `key3` using `congrArg Units.val key2`. Simplify using `only [Units.val_mul] at key3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_unit_rig (hL : L.IsLB) {ρ ρ' : LB.Gen (L.pull (eSec A))} (hρ : ρ.IsGen) (hρ' : ρ'.IsGen) :
     ∃ b : Γ(T.left, ⊤)ˣ, ∀ (m : ℕ) (th : LB.Sec (LPow A L ((1 : ℕ) : ℤ) T)) (x : T ⟶ A) (c : Γ(T.left, ⊤)),
@@ -109,7 +107,7 @@ theorem exists_unit_rig (hL : L.IsLB) {ρ ρ' : LB.Gen (L.pull (eSec A))} (hρ :
     _ = g.val * gs (𝟙 T.left) z ⊤ c * (U ^ ((m ^ 2 : ℕ) : ℤ)).val := by ring
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_unit_rig hL hρ hρ' (T := T)`. Use `⟨SecM.toSec A (((b⁻¹ : Γ(T.left, ⊤)ˣ) : Γ(T.left, ⊤)) • SecM.ofSec A th), isGenSec_smul hg _, ?_⟩` and prove the remaining obligations. Introduce `m x c H`. Establish `h1` using `ThG.smul (ρ₁ := ρ') hL (th := th) (th' := SecM.toSec A (((b⁻¹ : Γ(T.left, ⊤)ˣ) : Γ(T.left, ⊤)) • SecM.ofSec A th)) (a := ((b⁻¹ : Γ(T.left, ⊤)ˣ) : Γ(T.left, ⊤))) rfl (hb m th x c H)`. Rewrite `h1` using `[Units.inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_sec_rig (hL : L.IsLB) {ρ ρ' : LB.Gen (L.pull (eSec A))} (hρ : ρ.IsGen) (hρ' : ρ'.IsGen)
     {th : LB.Sec (LPow A L ((1 : ℕ) : ℤ) T)} (hg : IsGenSec A L _ th) :
@@ -124,7 +122,7 @@ theorem exists_sec_rig (hL : L.IsLB) {ρ ρ' : LB.Gen (L.pull (eSec A))} (hρ : 
   rwa [Units.inv_mul_cancel_left] at h1
 
 /- English proof (translation)
-Take `⟨θ, pt, pt', hg, h1, h2⟩` from `H`. Take `⟨θ', hg', hθ'⟩` from `exists_sec_rig hL hρ hρ' hg`. Conclude with `⟨θ', pt, pt', hg', ⟨h1.1, fun a => hθ' _ _ _ (h1.2.1 a), h1.2.2⟩, ⟨h2.1, fun a => hθ' _ _ _ (h2.2.1 a), h2.2.2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasTh₂_rig (hL : L.IsLB) {ρ ρ' : LB.Gen (L.pull (eSec A))} (hρ : ρ.IsGen) (hρ' : ρ'.IsGen)
     {m m' N N' : ℕ} {K : Type} [Field K] {x : Sp K ⟶ S} {c : Fin N → K} {c' : Fin N' → K}
@@ -142,9 +140,9 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A]
 include hp hτ
 
 /- English proof (translation)
-Establish `hw : (inv τ ≫ x.left ≫ φ) ≫ G.hom = T₀.hom`. Rewrite using `[Category.assoc, Category.assoc, hp.1.w, ← Category.assoc x.left, Over.w x, ← hτ, IsIso.inv_hom_id_assoc]`. Establish `h1 : τ ≫ (Over.homMk (inv τ ≫ x.left ≫ φ) hw : T₀ ⟶ G).left = x.left ≫ φ` using `by simp`. Use `⟨Over.homMk (inv τ ≫ x.left ≫ φ) hw, h1, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(cancel_epi τ).1` to reduce the goal to its premises. Rewrite using `[over_pow hp τ hτ h1 n, hx, over_one hp τ hτ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem torsion_up [IsIso τ] {n : ℕ} (x : T ⟶ A) (hx : x ^ n = 1) :
     ∃ x₀ : T₀ ⟶ G, τ ≫ x₀.left = x.left ≫ φ ∧ x₀ ^ n = 1 := by
@@ -157,9 +155,9 @@ theorem torsion_up [IsIso τ] {n : ℕ} (x : T ⟶ A) (hx : x ^ n = 1) :
   rw [over_pow hp τ hτ h1 n, hx, over_one hp τ hτ]
 
 /- English proof (translation)
-Establish `hc : (τ ≫ x₀.left) ≫ G.hom = T.hom ≫ f` using `by rw [Category.assoc, Over.w x₀, hτ]`. Establish `h1 : τ ≫ x₀.left = (Over.homMk (hp.1.lift _ _ hc) (hp.1.lift_snd _ _ hc) : T ⟶ A).left ≫ φ` using `by simp`. Use `⟨Over.homMk (hp.1.lift _ _ hc) (hp.1.lift_snd _ _ hc), h1, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hp.1.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← over_pow hp τ hτ h1 n, hx, over_one hp τ hτ]`. Rewrite using `[Over.w, Over.w]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem torsion_down {n : ℕ} (x₀ : T₀ ⟶ G) (hx : x₀ ^ n = 1) :
     ∃ x : T ⟶ A, τ ≫ x₀.left = x.left ≫ φ ∧ x ^ n = 1 := by
@@ -172,11 +170,11 @@ theorem torsion_down {n : ℕ} (x₀ : T₀ ⟶ G) (hx : x₀ ^ n = 1) :
   · rw [Over.w, Over.w]
 
 /- English proof (translation)
-Establish `hi : CategoryTheory.inv τ ≫ (Over.mk (T.hom ≫ f)).hom = T₀.hom`. Simplify using `only [Over.mk_hom]`. Rewrite using `[← hτ, IsIso.inv_hom_id_assoc]`. Set `β : Over.mk (T.hom ≫ f) ⟶ T₀` to `Over.homMk τ hτ`. Set `β' : T₀ ⟶ Over.mk (T.hom ≫ f)` to `Over.homMk (CategoryTheory.inv τ) hi`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hβ : β.left = τ` using `rfl`. Establish `hβ' : β'.left = CategoryTheory.inv τ` using `rfl`. Establish `hβι : β ≫ β' = 𝟙 _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hβ, hβ', IsIso.hom_inv_id, Over.id_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isGenSec_move hp τ hτ hw hL₀ hL₁ (B := Over.mk (T.hom ≫ f)) (𝟙 T.left) β (Category.id_comp τ) h (GlobalTheory.ThetaCoord.isGenSec_pullS hL₀ β β' hβι hg)`.
+A detailed English derivation is pending.
 -/
 theorem isGenSec_down [IsIso τ] {L₀ : LB G.left} {L₁ : LB A.left} {w : LB.Iso L₁ (L₀.pull φ)} (hw : w.IsGen)
     (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {a : ℤ} {th : LB.Sec (LPow A L₁ a T)} {th₀ : LB.Sec (LPow G L₀ a T₀)}
@@ -207,7 +205,7 @@ abbrev idT (f : S' ⟶ S) {Z : Scheme.{0}} (x : Z ⟶ S') (x₀ : Z ⟶ S) : (Ov
 instance {Z : Scheme.{0}} (x : Z ⟶ S') (x₀ : Z ⟶ S) : IsIso (idT f x x₀) := inferInstanceAs (IsIso (𝟙 Z))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[idT]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem idT_w {Z : Scheme.{0}} {x : Z ⟶ S'} {x₀ : Z ⟶ S} (h : x₀ = x ≫ f) :
     idT f x x₀ ≫ (Over.mk x₀).hom = (Over.mk x).hom ≫ f := by
@@ -215,13 +213,13 @@ theorem idT_w {Z : Scheme.{0}} {x : Z ⟶ S'} {x₀ : Z ⟶ S} (h : x₀ = x ≫
   simp [idT]
 
 /- English proof (translation)
-Take `⟨hinj, hth, hall⟩` from `H`. Establish `hx : ∀ a, ∃ p₀ : Over.mk (x ≫ f) ⟶ G, idT f x (x ≫ f) ≫ p₀.left = (pt a).left ≫ φ ∧ p₀ ^ (m ^ 2) = 1` using `fun a => torsion_up hp (idT f x (x ≫ f)) (idT_w rfl) (pt a) (hth a).1`. Use `choose pt₀ hpt₀ hpow using hx`. Establish `e : ∀ a, (pt₀ a).left = (pt a).left ≫ φ` using `fun a => by simpa [idT] using hpt₀ a`. Use `⟨pt₀, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Apply `hinj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hp.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← e a, ← e b, hab]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w, Over.w]`. Introduce `a`. Use `ThG.up hp (idT f x (x ≫ f)) (idT_w rfl) hw hL₀ hL₁ hr (hpt₀ a) (hpow a) hθ (hth a)` as an intermediate fact. Simplify `this` using `[idT]`. Introduce `K' _ _ i p hp2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hqn⟩` from `torsion_down hp (idT f (spMap i ≫ x) (spMap i ≫ x ≫ f)) (idT_w (Category.assoc _ _ _).symm) p hp2`. Take `⟨a, ha⟩` from `hall K' i q hqn`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e1 : p.left = q.left ≫ φ` using `by simpa [idT] using hq`. Rewrite using `[e1, ha, e a, Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thList_up (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hr : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) {m N : ℕ}
     {θ : SecAt A L₁ x} {θ₀ : SecAt G L₀ (x ≫ f)} (hθ : SecRel hp (idT f x (x ≫ f)) (idT_w rfl) w θ θ₀)
@@ -251,13 +249,13 @@ theorem thList_up (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hr : I
     rw [e1, ha, e a, Category.assoc]
 
 /- English proof (translation)
-Take `⟨hinj, hth, hall⟩` from `H`. Establish `hx : ∀ a, ∃ p : Over.mk x ⟶ A, idT f x (x ≫ f) ≫ (pt₀ a).left = p.left ≫ φ ∧ p ^ (m ^ 2) = 1` using `fun a => torsion_down hp (idT f x (x ≫ f)) (idT_w rfl) (pt₀ a) (hth a).1`. Use `choose pt hpt hpow using hx`. Establish `e : ∀ a, (pt₀ a).left = (pt a).left ≫ φ` using `fun a => by simpa [idT] using hpt a`. Use `⟨pt, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Apply `hinj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[e a, e b, hab]`. Introduce `a`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ThG.move hp (idT f x (x ≫ f)) (idT_w rfl) hw hL₀ hL₁ hr (hpt a) (hpow a) hθ (hth a)` as an intermediate fact. Simplify `this` using `[idT]`. Introduce `K' _ _ i p hp2`. Take `⟨q, hq, hqn⟩` from `torsion_up hp (idT f (spMap i ≫ x) (spMap i ≫ x ≫ f)) (idT_w (Category.assoc _ _ _).symm) p hp2`. Take `⟨a, ha⟩` from `hall K' i q hqn`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e1 : q.left = p.left ≫ φ` using `by simpa [idT] using hq`. Apply `hp.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← e1, ha, e a, Category.assoc]`. Simplify using `[Over.w]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thList_down (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hr : IsRigidificationPullbackCompatibleIso w f ρ₁ ρ₀) {m N : ℕ}
     {θ : SecAt A L₁ x} {θ₀ : SecAt G L₀ (x ≫ f)} (hθ : SecRel hp (idT f x (x ≫ f)) (idT_w rfl) w θ θ₀)
@@ -289,13 +287,13 @@ theorem thList_down (hw : w.IsGen) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) (hr :
 end Lists
 
 /- English proof (translation)
-Introduce `S G _ _ L ρ hL hρ S' A _ _ L' ρ' f φ hL' hρ' hp hLi m m' N N' K _ x c c'`. Take `⟨w, hw⟩` from `hLi`. Take `⟨ρ₁, hρ₁, hr⟩` from `exists_rigidificationPullbackCompatibleIso hp hw hL hL' hρ`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨θ, pt, pt', hg, h1, h2⟩` from `hasTh₂_rig hL' hρ' hρ₁ H`. Take `⟨θ₀, hθ⟩` from `exists_secRel_up hp (idT f x (x ≫ f)) (idT_w rfl) hw hL hL' θ`. Take `⟨pt₀, l1⟩` from `thList_up hp x hw hL hL' hr hθ h1`. Take `⟨pt₀', l2⟩` from `thList_up hp x hw hL hL' hr hθ h2`. Conclude with `⟨θ₀, pt₀, pt₀', GlobalTheory.ThetaPtUp.isGenSec_up hp (idT f x (x ≫ f)) (idT_w rfl) hw hL hL' hθ hg, l1, l2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `H`. Take `⟨θ₀, pt₀, pt₀', hg₀, l1, l2⟩` from `H`. Take `⟨θ, hθ⟩` from `exists_secRel hp (idT f x (x ≫ f)) (idT_w rfl) hw hL hL' θ₀`. Take `⟨pt, k1⟩` from `thList_down hp x hw hL hL' hr hθ l1`. Take `⟨pt', k2⟩` from `thList_down hp x hw hL hL' hr hθ l2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hasTh₂_rig hL' hρ₁ hρ' ⟨θ, pt, pt', isGenSec_down hp _ (idT_w rfl) hw hL hL' hθ hg₀, k1, k2⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasTh₂_move : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (S' : Scheme.{0}) (A : Over S') [GrpObj A] [IsCommMonObj A] (L' : LB A.left) (ρ' : LB.Gen (L'.pull (eSec A))) (f : S' ⟶ S) (φ : A.left ⟶ G.left), L'.IsLB → ρ'.IsGen → IsGrpPullback A G f φ → LBIso L' (L.pull φ) → ∀ (m m' N N' : ℕ) (K : Type) [Field K] (x : Sp K ⟶ S') (c : Fin N → K) (c' : Fin N' → K), HasTh₂ A L' ρ' m m' x c c' ↔ HasTh₂ G L ρ m m' (x ≫ f) c c' := by
   intro S G _ _ L ρ hL hρ S' A _ _ L' ρ' f φ hL' hρ' hp hLi m m' N N' K _ x c c'

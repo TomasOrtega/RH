@@ -19,11 +19,9 @@ variable {L : Type} [Field L] [NumberField L] (F : Type) [Field F] [NumberField 
 open Classical in
 
 /- English proof (translation)
-Unfold `locF`. Rewrite using `[map_prod]`. Establish `hm : ∀ Q : HeightOneSpectrum (𝓞 L), Q ∈ aboveF (L` using `L) F v ↔ Q.under (𝓞 F) = v := fun Q => by`. Simplify using `[aboveF]`. Use `split_ifs with hw`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_eq_single_of_mem w ((hm w).2 hw) (fun Q _ hQ => valAt_localIdele_ne hQ.symm _), valAt_localIdele_self]`. Establish `h0 : w.valuation L ((upF F k : Lˣ) : L) ≠ 0` using `by simp`. Unfold `ordF`. Rewrite using `[neg_neg, WithZero.exp_log h0]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`.
-
-Conclude with `Finset.prod_eq_one fun Q hQ => valAt_localIdele_ne (fun e : w = Q => hw (by rw [e]; exact (hm Q).1 hQ)) _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_locF (w : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     valAt w (locF (L := L) F v k) =
@@ -48,7 +46,7 @@ def balanced : Subgroup (Ideles L) where
   inv_mem' := fun {a} ha w w' h => by rw [map_inv, map_inv, ha w w' h]
 
 /- English proof (translation)
-Introduce `a ha w w' _` and use `(ha w).trans (ha w').symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitIdl_le_balanced : unitIdl L ≤ balanced (L := L) F := fun a ha w w' _ =>
   (ha w).trans (ha w').symm
@@ -56,7 +54,7 @@ theorem unitIdl_le_balanced : unitIdl L ≤ balanced (L := L) F := fun a ha w w'
 variable {F}
 
 /- English proof (translation)
-Introduce `w w' h` and use `by rw [valAt_locF, valAt_locF, hu, hu, h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locF_mem_balanced
     (hu : ∀ (P : HeightOneSpectrum (𝓞 L)) (k : Fˣ), ordF P (upF F k) = ordF (P.under (𝓞 F)) k)
@@ -64,17 +62,15 @@ theorem locF_mem_balanced
   rw [valAt_locF, valAt_locF, hu, hu, h]
 
 /- English proof (translation)
-Set `T : Finset (HeightOneSpectrum (𝓞 F))` to `(finite_valAt_ne_one a).toFinset.image fun w => w.under (𝓞 F)`. Set `m : HeightOneSpectrum (𝓞 F) → ℤ` to `fun v => if h : ∃ w : HeightOneSpectrum (𝓞 L), w.under (𝓞 F) = v then -WithZero.log (valAt h.choose a) else 0`. Set `b : Ideles L` to `∏ v ∈ T, locF (L := L) F v (unif v) ^ m v`. Establish `hb : b ∈ G` using `prod_mem fun v _ => zpow_mem (hG _ _) _`. Establish `hval : ∀ w, valAt w b = valAt w a` using `fun w => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ v, v ≠ w.under (𝓞 F) → valAt w (locF (L` using `L) F v (unif v) ^ m v) = 1 := fun v hv => by`. Rewrite using `[map_zpow, valAt_locF, if_neg hv.symm, one_zpow]`. Simplify using `only [b]`. Rewrite using `[map_prod]`. Distinguish the cases in `hw : w.under (𝓞 F) ∈ T`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.prod_eq_single_of_mem _ hw (fun v _ hv => h1 v hv), map_zpow, valAt_locF, if_pos rfl, hu, ordF_unif_self, ← WithZero.exp_zsmul]`. Establish `hex : ∃ w' : HeightOneSpectrum (𝓞 L), w'.under (𝓞 F) = w.under (𝓞 F)` using `⟨w, rfl⟩`. Establish `hm : m (w.under (𝓞 F)) = -WithZero.log (valAt w a)`. Simplify using `only [m]`. Rewrite using `[dif_pos hex, ha w hex.choose hex.choose_spec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Simplify using `only [smul_eq_mul, mul_neg, neg_neg, mul_one]`. Conclude with `WithZero.exp_log (valAt_ne_zero w a)`. Rewrite using `[Finset.prod_eq_one (fun v hv => h1 v (fun e => hw (e ▸ hv)))]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hw (Finset.mem_image_of_mem _ (by simpa using fun e => hne e.symm))`. Establish `hu' : b⁻¹ * a ∈ unitIdl L` using `fun w => by`. Rewrite using `[← valAt_apply, map_mul, map_inv, hval]`. Conclude with `inv_mul_cancel₀ (valAt_ne_zero w a)`. Rewrite using `[← mul_inv_cancel_left b a]`.
-
-Conclude with `Subgroup.mul_mem_sup hb hu'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sup_of_balanced
     (hu : ∀ (P : HeightOneSpectrum (𝓞 L)) (k : Fˣ), ordF P (upF F k) = ordF (P.under (𝓞 F)) k)
@@ -116,13 +112,13 @@ open GlobalTheory.Mem.Chr.KDVal in
 open Classical in
 
 /- English proof (translation)
-Introduce `R H a`. Take `⟨c, hc, hcm, hu, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `hiff : ∀ w w' : HeightOneSpectrum (𝓞 H.E), w'.under (𝓞 H.F) = w.under (𝓞 H.F) ↔ (w' = w ∨ IsConjPl H w w')` using `fun w w' => by`. Rewrite using `[under_eq_iff_conjPl c hcm.rank hcm.ne, conjPl_main.2.1 R H w w']`. Establish `: c.toRingEquiv = H.conj.toRingEquiv` using `RingEquiv.ext hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Prove the components needed by the constructor for the conclusion. Introduce `ha w w' h`. Establish `hle : KD H ⊔ unitIdl H.E ≤ balanced (L` using `H.E) H.F := by`. Use `sup_le ((Subgroup.closure_le _).2 ?_) (unitIdl_le_balanced _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x (hx | ⟨v, k, rfl⟩)`. Conclude with `unitIdl_le_balanced _ hx.1`. Conclude with `locF_mem_balanced hu v k`. Conclude with `hle ha w w' ((hiff w w').2 (Or.inr h))`. Introduce `h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Use `mem_sup_of_balanced hu _ (locF_mem_KD H) a fun w w' hw => ?_` and prove the remaining obligations. Break down `(hiff w w').1 hw with rfl | h'` into its components or cases. Both sides reduce to the same expression. Conclude with `h w w' h'`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Chr.mem_KD_sup_unitIdl_iff : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (a : Ideles H.E), a ∈ KD H ⊔ unitIdl H.E ↔ ∀ w w', IsConjPl H w w' → Valued.v ((a : AdeleRing (𝓞 H.E) H.E).2 w) = Valued.v ((a : AdeleRing (𝓞 H.E) H.E).2 w') := by
   intro R H a

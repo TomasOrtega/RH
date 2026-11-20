@@ -18,13 +18,13 @@ open scoped ENNReal Classical ComplexOrder
 namespace GlobalTheory.OtherInterpLog
 
 /- English proof (translation)
-Establish `h0 : (0 : ℂ) ≤ (m : ℂ)` using `Complex.zero_le_real.2 hm`. Establish `h0' : (0 : ℂ) ≤ (m' : ℂ)` using `Complex.zero_le_real.2 hm'`. Prove the components needed by the constructor for the conclusion. Establish `e : (((m * m' : ℝ) : ℂ) • C) - A = (m : ℂ) • (((m' : ℂ) • C) - B) + (((m : ℂ) • B) - A)`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(h'.1.smul h0).add h.1`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((m * m' : ℝ) : ℂ) • A) - C = (m' : ℂ) • (((m : ℂ) • A) - B) + (((m' : ℂ) • B) - C)`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(h.2.smul h0').add h'.2`.
+A detailed English derivation is pending.
 -/
 theorem cmp_trans {n : ℕ} {m m' : ℝ} {A B C : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (h' : Cmp m' B C) (hm : 0 ≤ m)
     (hm' : 0 ≤ m') : Cmp (m * m') A C := by
@@ -49,7 +49,7 @@ theorem cmp_trans {n : ℕ} {m m' : ℝ} {A B C : Matrix (Fin n) (Fin n) ℂ} (h
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `FinalTheorems.exists_isHodgeFrame_iff.2 hy`. Rewrite using `[x.hodge_gram hf, x'.hodge_gram hf]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hodge_gram_eq (x x' : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ)
     (hy : ¬ LiesIn y (genBd s.T.Z)) (g : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z)) (τ : D.host.E →+* ℂ) :
@@ -58,7 +58,7 @@ theorem hodge_gram_eq (x x' : ToroidalCompactificationData s) (σ : κ.c.F →+*
   rw [x.hodge_gram hf, x'.hodge_gram hf]
 
 /- English proof (translation)
-Establish `hr : 0 ≤ x.r σ y ^ C` using `Real.rpow_nonneg ((Real.exp_pos 1).le.trans (x.exp_le_r σ y)) _`. Establish `hr' : 0 ≤ x'.r σ y ^ C'` using `Real.rpow_nonneg ((Real.exp_pos 1).le.trans (x'.exp_le_r σ y)) _`. Establish `h1` using `cmp_trans (cmp_interp x' hC' σ R y hy g τ) (cmp_hodge x' hC' σ y hy g τ) hr' hr'`. Rewrite `h1` using `[hodge_gram_eq x x' σ y hy]`. Conclude with `cmp_trans h1 (cmp_hodge x hC σ y hy g τ).symm (mul_nonneg hr' hr') hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_interp_other (x x' : ToroidalCompactificationData s) {C C' : ℝ} (hC : x.IsMuExp C) (hC' : x'.IsMuExp C') (σ : κ.c.F →+* ℂ) (R : ℝ)
     (y : CxPts (genStr s.T.Z) σ) (hy : ¬ LiesIn y (genBd s.T.Z)) (g : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z))
@@ -71,7 +71,7 @@ theorem cmp_interp_other (x x' : ToroidalCompactificationData s) {C C' : ℝ} (h
   exact cmp_trans h1 (cmp_hodge x hC σ y hy g τ).symm (mul_nonneg hr' hr') hr
 
 /- English proof (translation)
-The claim follows from `|psiOf h x' R u c σ z| ≤ C * ‖u‖ * Real.log ((T.M c).r σ z) := by intro _ _ D O hO _ A T H h x' c obtain ⟨x, P, hx⟩ := hO obtain ⟨C₀, hC₀⟩ := x.exists_isMuExp obtain ⟨C₁, hC₁⟩ := x'.exists_isMuExp obtain ⟨L, hL1, hLr⟩ := GlobalTheory.BdFnCompare.exists_log_r_le x x' refine ⟨∑ w : …`.
+A detailed English derivation is pending.
 -/
 theorem abs_psiOf_le : Hypotheses2 → HypothesesH → OnObj fun D O A T H h => ∀ x' : GlobalTheory.ShFam.ToroidalCompactificationData O.s, ∀ c : O.Y.Comp, ∃ C : ℝ,
     ∀ (u : Wt O.Y) (σ : Fin ((T.M c).n + 1)) (z : (T.M c).X σ), z ∉ (T.M c).Z σ → ∀ R : ℝ, 2 ≤ R →

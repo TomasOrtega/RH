@@ -20,7 +20,7 @@ open Formalism.G (unitBall)
 namespace ConjugatePartitionShape
 
 /- English proof (translation)
-Establish `hW : Formalism.L2.Th1.E.IntCurve (Formalism.L2.Th1.E.curveL l L ι)`. Unfold `Formalism.L2.Th1.E.curveL`. Rewrite using `[← h2, ← h3]`. Conclude with `Formalism.L2.Th1.E.ScaledModelNorms.intCurve_short l hl _ _ hg2 hg3 hD`. Conclude with `Formalism.L2.Th1.E.joint_integrality l L ι (by omega) hW g2 g3 s2 ε h2 h3 hs2 hε hθ ω₀ hω hω2 s N hN hlN hs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factors (l : ℕ) [Fact l.Prime] (hl : 5 ≤ l) (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l])
     (g2 g3 ε s2 : MaximalUnramifiedExtension l) (h2 : (g2 : ℂ_[l]) = ι L.g₂) (h3 : (g3 : ℂ_[l]) = ι L.g₃)
@@ -39,7 +39,7 @@ theorem factors (l : ℕ) [Fact l.Prime] (hl : 5 ≤ l) (L : PeriodPair) (ι : �
   exact Formalism.L2.Th1.E.joint_integrality l L ι (by omega) hW g2 g3 s2 ε h2 h3 hs2 hε hθ ω₀ hω hω2 s N hN hlN hs
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, FAux.cc_phFF hl, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_ph (l : ℕ) [Fact l.Prime] (hl : 2 ≤ l) (g2 g3 s2 ε : MaximalUnramifiedExtension l) :
     PowerSeries.constantCoeff (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) = 0 := by
@@ -51,9 +51,7 @@ end ConjugatePartitionShape
 open ConjugatePartitionShape
 
 /- English proof (translation)
-Introduce `l _ hl L ι g2 g3 ε s2 h2 h3 hs2 hg2 hg3 hD hε hθ n _ ω₀ hω hω2 κ _ r s N hr hN hlN hs`. Use `choose V hV hVe using fun k i => factors l hl L ι g2 g3 ε s2 h2 h3 hs2 hg2 hg3 hD hε hθ ω₀ hω hω2 N hN hlN (s k i) (hs k i)`. Take `⟨e, hI⟩` from `Formalism.L2.Th1.E.prodInt ℂ_[l] κ n (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) r V (cc_ph l (by omega) g2 g3 s2 ε) hr hV`. Use `⟨_, hI, ?_⟩` and prove the remaining obligations. Simplify using `only [hVe] at e`.
-
-Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orthogonal_shape_one_letter : OrthShapeOne := by
   intro l _ hl L ι g2 g3 ε s2 h2 h3 hs2 hg2 hg3 hD hε hθ n _ ω₀ hω hω2 κ _ r s N hr hN hlN hs
@@ -66,15 +64,15 @@ theorem orthogonal_shape_one_letter : OrthShapeOne := by
   exact e
 
 /- English proof (translation)
-Introduce `l _ hl L ι g2 g3 ε s2 h2 h3 hs2 hg2 hg3 hD hε hθ σ hU F hF hN N0 N1 ιr _ _ n _ f f' hff ω₀ hω hω2 κ _ r s N hr hN0 hlN hs`. Establish `hl2 : 2 ≤ l` using `by omega`. Use `choose V hV hVe using fun k i => factors l hl L ι g2 g3 ε s2 h2 h3 hs2 hg2 hg3 hD hε hθ ω₀ hω hω2 N hN0 hlN (s k i) (hs k i)`. Take `⟨hFr, hF1, hall, hbin⟩` from `hC l hl g2 g3 ε s2 hg2 hg3 hε hθ σ hU F hF hN`. Take `⟨hf, hf', hG1, hG2, hG3⟩` from `hff`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hσ : ∀ a : MaximalUnramifiedExtension l, ‖a‖ ≤ 1 → ‖σ a‖ ≤ 1` using `(frobSq (MaximalUnramifiedExtension l) l σ hU).2`. Set `_ : StarRing (BrC.Osub σ)` to `BrC.starO hσ`. Establish `gram : ∀ (a b : ιr × Fin N0 × Fin N1 → n → MaximalUnramifiedExtension l) (ha : ∀ e i, ‖a e i‖ ≤ 1 ∧ σ (σ (a e i)) = a e i) (hb : ∀ e i, ‖b e i‖ ≤ 1 ∧ σ (σ (b e i)) = b e i) (e e' : ιr × Fin N0 × Fin N1) (c : BrC.Osub σ), ∑ i, σ (a e i) * b e' i = c.1 → ∑ i, star (⟨a e i, BrC.mem_ …`. Introduce `a b ha hb e e' c h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, AddSubmonoidClass.coe_finsetSum]`. Both sides reduce to the same expression. Take `⟨U0, Φ, hU0, hΦ0, hΦ, hE⟩` from `Formalism.L2.Th1.E.intHyp ℂ_[l] (unitBall ℂ_[l]) (fun _ => Iff.rfl) (lgF ℂ_[l] l) (expF ℂ_[l] l) (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) hFr (BrC.Osub σ) ((MaximalUnramifiedExtension l).subtype.comp (BrC.Osub σ).subtype) (fun α => (hall α.1 α. …`. Rewrite using `[hG3 e e']`. Apply the tactic sequence `split_ifs <;> rfl))`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `κ r V hr hV`. Use `⟨U0, Φ, hU0, hΦ0, ?_, ?_⟩` and prove the remaining obligations. Establish `hF0 : MvPowerSeries.constantCoeff (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype F) = 0`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hF.1, map_zero]`. Establish `hcob : cob (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype F) (lgF ℂ_[l] l) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.L2.Th1.E.Joints.map_lgF' (MaximalUnramifiedExtension l).subtype l, ← Formalism.L2.Th1.E.mapCob _ _ _ _ _ hF.1, hF.2.2, map_zero]`. Rewrite using `[Formalism.L2.Th1.E.mapCob _ _ _ _ _ hF.1, Formalism.L2.Th1.E.sumEBridge ℂ_[l] (lgF ℂ_[l] l) (expF ℂ_[l] l) (BrC.logPair hl2) _ hF0 hcob]`. Conclude with `hΦ`. Simplify using `only [hVe] at hE`. Conclude with `hE`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem OrthShape_of (hC : CalcC) : OrthShape := by
   intro l _ hl L ι g2 g3 ε s2 h2 h3 hs2 hg2 hg3 hD hε hθ σ hU F hF hN N0 N1 ιr _ _ n _ f f' hff

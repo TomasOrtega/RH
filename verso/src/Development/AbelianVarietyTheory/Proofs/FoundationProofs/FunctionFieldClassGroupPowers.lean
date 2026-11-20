@@ -9,7 +9,7 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← map_pow, ← map_mul, ← map_mul]`. Establish `hm : P * D * C ^ N ∈ nonZeroDivisors (Ideal A)` using `mul_mem (mul_mem hP hD) (pow_mem hC N)`. Establish `e : (⟨P, hP⟩ * ⟨D, hD⟩ * ⟨C, hC⟩ ^ N : nonZeroDivisors (Ideal A)) = ⟨P * D * C ^ N, hm⟩` using `Subtype.ext (by simp)`. Rewrite using `[e, ClassGroup.mk0_eq_one_iff, ← h]`. Conclude with `⟨⟨f, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem classGroup_mk0_mul_mul_pow_eq_one_of_span_eq {A : Type} [CommRing A] [IsDedekindDomain A]
     (N : ℕ) (P D C : Ideal A) (f : A) (hP : P ∈ nonZeroDivisors (Ideal A))
@@ -25,9 +25,9 @@ theorem classGroup_mk0_mul_mul_pow_eq_one_of_span_eq {A : Type} [CommRing A] [Is
   exact ⟨⟨f, rfl⟩⟩
 
 /- English proof (translation)
-Use `prod_mem fun i _ => mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce `hi`. Establish `hb : (⊥ : Ideal A).IsMaximal`. Use `hQ i` as an intermediate fact. Rewrite `this` using `[hi]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `h₀ (hb.eq_of_le hP₀.ne_top bot_le).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_maximal_mem_nonZeroDivisors {A : Type} [CommRing A] [IsDedekindDomain A]
     {I : Type} [Fintype I] (Q : I → Ideal A) (hQ : ∀ i, (Q i).IsMaximal)
@@ -41,19 +41,17 @@ theorem prod_maximal_mem_nonZeroDivisors {A : Type} [CommRing A] [IsDedekindDoma
   exact h₀ (hb.eq_of_le hP₀.ne_top bot_le).symm
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ _ _ _ _ _ _ N hN P₀ hP₀ h₀`. Use `haveI : Algebra.FiniteType k A := Algebra.FiniteType.trans (S := k[X]) inferInstance inferInstance`. Take `⟨r, V, D, Q, f₀, hset, hdeg⟩` from `GlobalTheory.T.exists_linear_system_maximalDegree_factorization k A N P₀ (by omega) hP₀`. Establish `hform` using `GlobalTheory.T.exists_formal_deformation_powerSeries_solution k A N (Fin r) V D P₀ Q f₀ hN hP₀ hset`. Take `⟨a, ha, hall⟩` from `GlobalTheory.T.specialise_generic_solution_almost_all_points k A (PowerSeries k) N (Fin r) V D hN hform`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hVD, hQ, -, -, -, -, -, hf₀, hspan₀, -⟩` from `hset`. Use `⟨a, ha, fun P hP haP h => ?_⟩` and prove the remaining obligations. Take `⟨Q', f, hQ', hinj, hne, hDQ', hDP, hfV, hf, hfP, hfQ'⟩` from `hall P hP haP`. Establish `hspan` using `GlobalTheory.T.degree_count_maximalIdeal_generates_product k A N (Fin r) D P₀ P Q Q' f₀ f hP₀ hP hQ hQ' hinj hne hDQ' hDP hf₀ hf hspan₀ (hVD f hfV) hfP hfQ' (hdeg f hfV hf)`. Establish `hP₀ne : P₀ ≠ ⊥` using `nonZeroDivisors.ne_zero h₀`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : D ∈ nonZeroDivisors (Ideal A)`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce `hD0`. Apply `hDP` to reduce the goal to its premises. Rewrite using `[hD0]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `bot_le`. Establish `hC` using `prod_maximal_mem_nonZeroDivisors Q hQ P₀ hP₀ hP₀ne`. Establish `hC'` using `prod_maximal_mem_nonZeroDivisors Q' hQ' P₀ hP₀ hP₀ne`. Rewrite `hspan`, `hspan₀` using `[Finset.prod_pow]`. Establish `e` using `classGroup_mk0_mul_mul_pow_eq_one_of_span_eq N P D _ f h hD hC' hspan`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₀` using `classGroup_mk0_mul_mul_pow_eq_one_of_span_eq N P₀ D _ f₀ h₀ hD hC hspan₀`. Use `⟨ClassGroup.mk0 ⟨_, hC⟩ / ClassGroup.mk0 ⟨_, hC'⟩, ?_⟩` and prove the remaining obligations. Generalize the expression as in `ClassGroup.mk0 ⟨P, h⟩ = p at e ⊢`. Generalize the expression as in `ClassGroup.mk0 ⟨P₀, h₀⟩ = p₀ at e₀ ⊢`. Generalize the expression as in `ClassGroup.mk0 ⟨D, hD⟩ = d at e e₀`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `ClassGroup.mk0 ⟨_, hC⟩ = c at e₀ ⊢`. Generalize the expression as in `ClassGroup.mk0 ⟨_, hC'⟩ = c' at e ⊢`. Establish `e' : p * c' ^ N = p₀ * c ^ N`. Apply `mul_right_cancel (b := d)` to reduce the goal to its premises. Rewrite using `[mul_right_comm p, mul_right_comm p₀, e, e₀]`.
-
-Rewrite using `[div_pow, ← mul_div_assoc, ← e', mul_div_cancel_right]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_class_group_mk0_eq_mul_pow :
     ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZero k] [CommRing A] [IsDedekindDomain A]

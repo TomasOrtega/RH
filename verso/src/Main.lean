@@ -2,26 +2,26 @@ import Statements
 import Supplements.Kernels.MainTheoremsAll
 
 /- English proof (authored)
-Apply the reduction from right half-plane nonvanishing for Dirichlet L-functions to the Riemann Hypothesis. The nonvanishing input is `allChi` and the resulting proof is `rhOfAll`.
+Apply the reduction from right half-plane nonvanishing for Dirichlet L-functions to the Riemann Hypothesis. The nonvanishing theorem for every character supplies its hypothesis.
 -/
 theorem riemannHypothesis : RiemannHypothesis := rhOfAll
 
 /- English proof (authored)
-Let s be a zero of the zeta function distinct from 1 and from the negative even integers. These are the exclusions in `rhOfAll`, which gives real part 1/2.
+Let s be a zero of the zeta function distinct from 1 and from the negative even integers. The Riemann Hypothesis established above applies to precisely these zeros and gives real part 1/2.
 -/
 theorem riemannZeta_eq_zero_re : RiemannZetaZerosOnLine := rhOfAll
 
 /- English proof (authored)
-Fix a Dirichlet character and a point strictly to the right of the critical line. The assumption on the character or the point excludes the exceptional pair of the principal character and s = 1. Apply `allChi` to obtain nonvanishing.
+Fix a Dirichlet character and a point strictly to the right of the critical line. The assumption on the character or the point excludes the exceptional pair of the principal character and s = 1, so the right half-plane nonvanishing theorem applies.
 -/
 theorem LFunction_ne_zero_of_half_lt_re : DirichletLNonvanishingRightOfHalf := allChi
 
 /- English proof (authored)
-Apply the critical-strip component of `claimAll`. It applies to every Dirichlet character and forces the real part of a zero in the open strip to be 1/2.
+Fix a character and a zero in the open critical strip. The critical-strip conclusion of the combined nonvanishing theorem applies to all characters and forces real part 1/2.
 -/
 theorem LFunction_eq_zero_re : DirichletLZerosOnLine := claimAll.2.1
 
 /- English proof (authored)
-Apply `critAll` to the primitive character and the zero in the open critical strip. Its conclusion is that the real part of the zero is 1/2.
+Apply the critical-line theorem for primitive characters to the given zero in the open critical strip. It gives Re(s) = 1/2.
 -/
 theorem LFunction_eq_zero_re_of_isPrimitive : PrimitiveDirichletLZerosOnLine := critAll

@@ -7,9 +7,9 @@ open CategoryTheory Limits IsLocalRing
 namespace GlobalTheory.IndEtaleLocal
 
 /- English proof (translation)
-Take `⟨J, _, _, D, t, s, hs, hst⟩` from `h`. Take `⟨i, g', h1, h2⟩` from `RingHom.EssFiniteType.exists_eq_comp_ι_app_of_isColimit (CommRingCat.of A) D t (S := CommRingCat.of Z) (CommRingCat.ofHom (algebraMap A Z)) (Cocone.mk _ s) hs (RingHom.finitePresentation_algebraMap.mpr inferInstance) (CommRingCat.ofHom g.toRingHom) (fun i => by`. Rewrite using `[(hst i).2]`. Use extensionality with `a`. Use the proof step `simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Set `: Algebra A (D.obj i)` to `(t.app i).hom.toAlgebra`. Establish `het : Algebra.Etale A (D.obj i)` using `(hst i).1`. Use `⟨D.obj i, inferInstance, inferInstance, het, { toRingHom := g'.hom, commutes' := fun a => congr($(h1).hom a) }, { toRingHom := (s.app i).hom, commutes' := fun a => congr($((hst i).2).hom a) }, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Conclude with `(congr($(h2).hom z)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_etale_factor {A S Z : Type} [CommRing A] [CommRing S] [Algebra A S]
     [CommRing Z] [Algebra A Z] [Algebra.FinitePresentation A Z]
@@ -34,15 +34,15 @@ theorem exists_etale_factor {A S Z : Type} [CommRing A] [CommRing S] [Algebra A 
   exact (congr($(h2).hom z)).symm
 
 /- English proof (translation)
-Use `Module.Flat.of_forall_isTrivialRelation fun {l f x} hfx => ?_` and prove the remaining obligations. Set `p : MvPolynomial (Fin l) A` to `∑ i, f i • MvPolynomial.X i`. Set `I : Ideal (MvPolynomial (Fin l) A)` to `Ideal.span {p}`. Establish `: Algebra.FinitePresentation A (MvPolynomial (Fin l) A ⧸ I)` using `Algebra.FinitePresentation.quotient (Submodule.fg_span_singleton p)`. Set `g : (MvPolynomial (Fin l) A ⧸ I) →ₐ[A] S` to `Ideal.Quotient.liftₐ I (MvPolynomial.aeval x) (by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `a ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Establish `: MvPolynomial.aeval x p = 0`. Simplify using `only [p, map_sum, map_smul, MvPolynomial.aeval_X, hfx]`. Rewrite using `[map_mul, this, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨W, _, _, _, u, v, huv⟩` from `exists_etale_factor h g`. Set `w : Fin l → W` to `fun i => u (Ideal.Quotient.mkₐ A I (MvPolynomial.X i))`. Establish `hw : ∀ i, v (w i) = x i` using `fun i => by`. Use `DFunLike.congr_fun huv (Ideal.Quotient.mkₐ A I (MvPolynomial.X i))` as an intermediate fact. Conclude with `this.trans (MvPolynomial.aeval_X x i)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel : ∑ i, f i • w i = 0`. Establish `h0 : Ideal.Quotient.mkₐ A I p = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self p)`. Establish `: u (Ideal.Quotient.mkₐ A I p) = 0` using `by rw [h0, map_zero]`. Simplify `this` using `only [p, map_sum, map_smul]`. Take `⟨k, a, y, hy, ha⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := A) (M := W) hrel`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, a, fun j => v (y j), fun i => ?_, ha⟩` and prove the remaining obligations. Rewrite using `[← hw, hy, map_sum]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flat_of_isIndEtale {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
     (h : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap A S)) : Module.Flat A S := by
@@ -74,9 +74,9 @@ theorem flat_of_isIndEtale {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
   simp only [map_smul]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LocalIndEtaleUnramified.exists_local_unramified_of_isIndEtale`. Consider the case `exact _root_.GlobalTheory.LocalIndEtaleUnramified.exists_local_unramified_of_isIndEtale`. Consider the case `(apply _root_.GlobalTheory.LocalIndEtaleUnramified.exists_local_unramified_of_isIndEtale <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LocalIndEtaleUnramified.exists_local_unramified_of_isIndEtale <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LocalIndEtaleUnramified.exists_local_unramified_of_isIndEtale <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LocalIndEtaleUnramified.exists_local_unramified_of_isIndEtale ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_local_unramified {A S : Type} [CommRing A] [IsLocalRing A] [CommRing S]
     [IsLocalRing S] [Algebra A S] [IsLocalHom (algebraMap A S)]
@@ -93,11 +93,11 @@ theorem exists_local_unramified {A S : Type} [CommRing A] [IsLocalRing A] [CommR
   | (intros; exact _root_.GlobalTheory.LocalIndEtaleUnramified.exists_local_unramified_of_isIndEtale ..)
 
 /- English proof (translation)
-Use `⟨flat_of_isIndEtale h, le_antisymm ?_ fun s hs => ?_, ⟨fun r => ?_⟩⟩` and prove the remaining obligations. Conclude with `((local_hom_TFAE (algebraMap A S)).out 0 2 rfl rfl).mp inferInstance`. Take `⟨L, _, _, _, _, _, _, φ, hφ, x, rfl⟩` from `exists_local_unramified h s`. Establish `hx : x ∈ maximalIdeal L` using `fun hx => hs (hx.map φ)`. Rewrite `hx` using `[← Algebra.FormallyUnramified.map_maximalIdeal (R := A)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Ideal.mem_map_of_mem (φ : L →+* S) hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, AlgHom.comp_algebraMap]`. Then use the resulting hypothesis. Take `⟨s, rfl⟩` from `residue_surjective r`. Take `⟨L, _, _, _, _, _, _, φ, hφ, x, rfl⟩` from `exists_local_unramified h s`. Establish `: IsLocalHom (φ : L →+* S)` using `⟨hφ.1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : ResidueField L →ₐ[ResidueField A] ResidueField S` to `{ toRingHom := ResidueField.map (φ : L →+* S) commutes' := fun a => by`. Take `⟨a, rfl⟩` from `residue_surjective a`. Simplify using `[ResidueField.algebraMap_residue] }`. Use `(Algebra.IsSeparable.isSeparable (ResidueField A) (residue L x)).map ψ ψ.injective` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_map_maximalIdeal_isSeparable (A S : Type) [CommRing A] [IsLocalRing A] [CommRing S]
     [IsLocalRing S] [Algebra A S] [IsLocalHom (algebraMap A S)]

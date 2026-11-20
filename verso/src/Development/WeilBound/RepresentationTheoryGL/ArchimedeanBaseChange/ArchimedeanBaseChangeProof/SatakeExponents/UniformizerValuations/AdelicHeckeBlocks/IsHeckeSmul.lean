@@ -20,7 +20,7 @@ set_option linter.unusedSectionVars false
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `LocComm.isHecke_sum K ({()} : Finset Unit) (fun _ => c) (fun _ => f) (fun _ _ => h)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isHecke_smul {G : Type} [Group G] [TopologicalSpace G] (K : Subgroup G) (c : ℂ) {f : G → ℂ}
     (h : IsHecke K f) : IsHecke K (c • f) := by
@@ -30,7 +30,7 @@ theorem isHecke_smul {G : Type} [Group G] [TopologicalSpace G] (K : Subgroup G) 
   simp
 
 /- English proof (translation)
-Use `LocComm.isHecke_sum K s (fun _ => 1) g h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `[Finset.sum_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isHecke_fsum {G ι : Type} [Group G] [TopologicalSpace G] (K : Subgroup G) (s : Finset ι)
     (g : ι → G → ℂ) (h : ∀ i ∈ s, IsHecke K (g i)) : IsHecke K (∑ i ∈ s, g i) := by
@@ -40,7 +40,7 @@ theorem isHecke_fsum {G ι : Type} [Group G] [TopologicalSpace G] (K : Subgroup 
   simp [Finset.sum_apply]
 
 /- English proof (translation)
-Use `FinConv.cv_hecke ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) K K f g hf hg` as an intermediate fact. Rewrite `this` using `[inf_idem]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mconv_hecke {a b : ℕ} {w : Pl E} (K : Subgroup (GLw a w × GLw b w)) {f g : LF a b w}
     (hf : IsHecke K f) (hg : IsHecke K g) : IsHecke K (mconv f g) := by
@@ -51,7 +51,7 @@ theorem mconv_hecke {a b : ℕ} {w : Pl E} (K : Subgroup (GLw a w × GLw b w)) {
 variable {n : ℕ} (d : LocData E n)
 
 /- English proof (translation)
-Introduce and unpack `⟨-, hT, hS, hB, -⟩`. Simplify using `only [LocData.B, Finset.mem_union] at hw`. The claim follows by propositional logic.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem notGood {w : Pl E} (hw : w ∈ d.B) : ¬ d.Good w := by
   rintro ⟨-, hT, hS, hB, -⟩
@@ -59,7 +59,7 @@ theorem notGood {w : Pl E} (hw : w ∈ d.B) : ¬ d.Good w := by
   tauto
 
 /- English proof (translation)
-Take `⟨L₁, L₂, e, h1, h2⟩` from `hd.L a ha w hw`. Rewrite using `[e]`. Use `⟨?_, Subgroup.prod_mono h1.2.1 h2.2.1⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_prod]`. Conclude with `h1.1.prod h2.1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem L_ok (hd : d.Ok) {a : ℕ} (ha : a ≤ n) {w : Pl E} (hw : w ∈ d.S₀ ∪ d.Bad) :
     IsOpen (d.L a w : Set (GLw a w × GLw (n - a) w)) ∧ d.L a w ≤ K2 a (n - a) w := by
@@ -70,7 +70,7 @@ theorem L_ok (hd : d.Ok) {a : ℕ} (ha : a ≤ n) {w : Pl E} (hw : w ∈ d.S₀ 
   exact h1.1.prod h2.1
 
 /- English proof (translation)
-Unfold `LocData.lev₂`. Use `split_ifs with h`. Conclude with `L_ok d hd ha h`. Conclude with `⟨LocComm.isOpen_levelSubgroup' _ _ _, le_rfl⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lev₂_ok (hd : d.Ok) {a : ℕ} (ha : a ≤ n) (w : Pl E) :
     IsOpen (d.lev₂ a w : Set (GLw a w × GLw (n - a) w)) ∧ d.lev₂ a w ≤ K2 a (n - a) w := by
@@ -80,7 +80,7 @@ theorem lev₂_ok (hd : d.Ok) {a : ℕ} (ha : a ≤ n) (w : Pl E) :
   · exact ⟨LocComm.isOpen_levelSubgroup' _ _ _, le_rfl⟩
 
 /- English proof (translation)
-Introduce `hT`. Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `Finset.disjoint_left.1 hd.disj.1 hT h`. Conclude with `Finset.disjoint_left.1 hd.disj.2.1 hT h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem notT (hd : d.Ok) {w : Pl E} (hw : w ∈ d.S₀ ∪ d.Bad) : w ∉ d.T := by
   intro hT
@@ -89,23 +89,21 @@ theorem notT (hd : d.Ok) {w : Pl E} (hw : w ∈ d.S₀ ∪ d.Bad) : w ∉ d.T :=
   · exact Finset.disjoint_left.1 hd.disj.2.1 hT h
 
 /- English proof (translation)
-Simplify using `[LocData.lev, notT d hd hw, hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev_eq (hd : d.Ok) {a : ℕ} {w : Pl E} (hw : w ∈ d.S₀ ∪ d.Bad) : d.lev a w = d.L a w := by
   simp [LocData.lev, notT d hd hw, hw]
 
 /- English proof (translation)
-Simplify using `[LocData.lev₂, hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lev₂_eq {a : ℕ} {w : Pl E} (hw : w ∈ d.S₀ ∪ d.Bad) : d.lev₂ a w = d.L a w := by
   simp [LocData.lev₂, hw]
 
 /- English proof (translation)
-Establish `hG` using `notGood d hw`. Establish `gt : ∀ {L' : LM d.kap a (n - a)}, d.IsGen a ha L' → L'.t w = idem (d.lev₂ a w)`. Introduce `L' hL'`. Break down `LocComm.generator_second_levi_position d hL' w with h | ⟨h, -⟩` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h hG`. Break down `hL with hg | ⟨L', hg, rfl⟩ | rfl | rfl` into its components or cases. Conclude with `gt hg`. Use `show lfStar (L'.t w) = _`. Rewrite using `[gt hg, LocComm.lfStar_idem]`.
-
-Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isLetter_t_eq_idem_lev₂ {a : ℕ} {ha : a ≤ n} {L : LM d.kap a (n - a)} (hL : d.IsLetter a ha L) {w : Pl E}
     (hw : w ∈ d.B) : L.t w = idem (d.lev₂ a w) := by
@@ -123,9 +121,9 @@ theorem isLetter_t_eq_idem_lev₂ {a : ℕ} {ha : a ≤ n} {L : LM d.kap a (n - 
   · rfl
 
 /- English proof (translation)
-Proceed by induction on `ls with`. Consider the case `nil => rfl`. Consider the case `cons L ls ih`. Establish `ih'` using `ih fun L' h => hls L' (List.mem_cons_of_mem _ h)`. Use `show mconv (L.t w) ((ls.foldr LM.mul (d.eL a)).t w) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isLetter_t_eq_idem_lev₂ d (hls L (List.mem_cons_self ..)) hw, ih']`. Take `⟨ho, hle⟩` from `lev₂_ok d hd ha w`. Take `⟨hI, -, hf⟩` from `idemAlg E a (n - a) w _ ho hle`. Conclude with `(hf _ hI).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prod_t (hd : d.Ok) {a : ℕ} (ha : a ≤ n) (ls : List (LM d.kap a (n - a))) (hls : ∀ L ∈ ls, d.IsLetter a ha L)
     {w : Pl E} (hw : w ∈ d.B) : (ls.foldr LM.mul (d.eL a)).t w = idem (d.lev₂ a w) := by
@@ -143,7 +141,7 @@ def Inv {a : ℕ} (w : Pl E) (L : LM d.kap a (n - a)) : Prop :=
   (w ∈ d.S₀ → ∀ x y, IsHecke (d.L a w) (L.m w x y)) ∧ (w ∈ d.Bad → IsHecke (d.L a w) (L.s w))
 
 /- English proof (translation)
-Use `⟨fun hS x y => ?_, fun hB => ?_⟩` and prove the remaining obligations. Use `show IsHecke _ (∑ z, mconv (L.m w x z) (L'.m w z y))`. Conclude with `isHecke_fsum _ _ _ fun z _ => mconv_hecke _ (h.1 hS x z) (h'.1 hS z y)`. Conclude with `mconv_hecke _ (h.2 hB) (h'.2 hB)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem inv_mul {a : ℕ} {w : Pl E} {L L' : LM d.kap a (n - a)} (h : Inv d w L) (h' : Inv d w L') :
     Inv d w (L.mul L') := by
@@ -153,25 +151,19 @@ theorem inv_mul {a : ℕ} {w : Pl E} {L L' : LM d.kap a (n - a)} (h : Inv d w L)
   · exact mconv_hecke _ (h.2 hB) (h'.2 hB)
 
 /- English proof (translation)
-Establish `hwB : w ∈ d.B`. Simplify using `only [LocData.B, Finset.mem_union] at hw ⊢`. The claim follows by propositional logic. Establish `hG` using `notGood d hwB`. Establish `hlev` using `lev_eq d hd (a := a) hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ho, hle⟩` from `L_ok d hd ha hw`. Take `⟨hI, -, -⟩` from `idemAlg E a (n - a) w _ ho hle`. Establish `eM : ∀ x y, IsHecke (d.L a w) ((d.eL a).m w x y)`. Introduce `x y`. Use `show IsHecke _ (d.diag (fun _ => idem (d.lev a w)) x y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `LocData.diag`. Rewrite using `[hlev]`. Use `split_ifs`. Conclude with `hI`. Conclude with `LocComm.isHecke_zero _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `gs : ∀ {L' : LM d.kap a (n - a)}, d.IsGen a ha L' → L'.s w = idem (d.L a w)`. Introduce `L' hL'`. Break down `LocComm.generator_first_levi_position d hL' w with h | ⟨h, -⟩` into its components or cases. Rewrite using `[h, hlev]`. Conclude with `absurd h hG`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hL with hg | ⟨L', hg, rfl⟩ | rfl | rfl` into its components or cases. Use `⟨fun _ x y => ?_, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[LocComm.gen_m d hg]`. Conclude with `eM x y`. Rewrite using `[gs hg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hI`. Use `⟨fun _ x y => ?_, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[LocComm.adj_m d hg]`. Conclude with `eM x y`. Use `show IsHecke _ (lfStar (L'.s w))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs hg, LocComm.lfStar_idem]`. Conclude with `hI`. Use `⟨fun hS x y => ?_, fun _ => ?_⟩` and prove the remaining obligations. Use `LocComm.hecke_beta d h3 hd ha (Finset.mem_union_right _ hS) x y` as an intermediate fact. Rewrite `this` using `[hlev]`. Then use the resulting hypothesis.
-
-Use `show IsHecke _ (idem (d.lev a w))`. Rewrite using `[hlev]`. Conclude with `hI`. Use `⟨fun _ x y => ?_, fun hB => ?_⟩` and prove the remaining obligations. Use `show IsHecke _ (d.diag (fun _ => if w ∈ d.T then idem (d.lev a w) else d.sgn a w • idem (d.lev a w)) x y)`.
-
-Unfold `LocData.diag`. Rewrite using `[hlev]`. Use `split_ifs`. Conclude with `hI`. Conclude with `isHecke_smul _ _ hI`.
-
-Conclude with `LocComm.isHecke_zero _`. Use `show IsHecke _ (if w ∈ d.Bad then d.fix a w else idem (d.lev a w))`. Rewrite using `[if_pos hB]`. Conclude with `hd.fix a ha w hB`.
+A detailed English derivation is pending.
 -/
 theorem inv_letter (h3 : LocOpUniformizer E) (hd : d.Ok) {a : ℕ} {ha : a ≤ n} {L : LM d.kap a (n - a)}
     (hL : d.IsLetter a ha L) {w : Pl E} (hw : w ∈ d.S₀ ∪ d.Bad) : Inv d w L := by
@@ -226,9 +218,7 @@ theorem inv_letter (h3 : LocOpUniformizer E) (hd : d.Ok) {a : ℕ} {ha : a ≤ n
       exact hd.fix a ha w hB
 
 /- English proof (translation)
-Proceed by induction on `ls with`. Consider the case `nil`. Use `inv_letter d h3 hd (ha := ha) (L := d.eL a) (Or.inl (Or.inl rfl)) hw` as an intermediate fact. Conclude with `this`. Consider the case `cons L ls ih`.
-
-Conclude with `inv_mul d (inv_letter d h3 hd (hls L (List.mem_cons_self ..)) hw) (ih fun L' h => hls L' (List.mem_cons_of_mem _ h))`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inv_prod (h3 : LocOpUniformizer E) (hd : d.Ok) {a : ℕ} (ha : a ≤ n) (ls : List (LM d.kap a (n - a)))
     (hls : ∀ L ∈ ls, d.IsLetter a ha L) {w : Pl E} (hw : w ∈ d.S₀ ∪ d.Bad) :
@@ -245,19 +235,15 @@ end PSeen
 
 open PSeen in
 /- English proof (translation)
-Introduce `E _ _ _ n d hd a ha ls N hls w hwB`. Establish `ht` using `prod_t d hd ha ls hls hwB`. Use `⟨ht, fun hc => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hs : IsSplitAt w`. Establish `hT : w ∉ d.T` using `fun h => hc h hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hw : w ∈ d.S₀ ∪ d.Bad`. Simplify using `only [LocData.B, Finset.mem_union] at hwB`. Conclude with `Finset.mem_union.2 (by tauto)`. Establish `hinv` using `inv_prod d (h3 E) hd ha ls hls hw`. Take `⟨ho, hle⟩` from `L_ok d hd ha hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hf⟩` from `idemAlg E a (n - a) w _ ho hle`. Establish `hH : IsHecke (d.L a w) ((ls.foldr LM.mul (d.eL a)).tr d.P N w)`. Unfold `LM.tr`. Use `split_ifs with hP`. Establish `hS : w ∈ d.S₀`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Simplify using `only [LocData.P, Finset.mem_union] at hP`. The claim follows by propositional logic. Conclude with `isHecke_fsum _ _ _ fun x _ => isHecke_fsum _ _ _ fun y _ => isHecke_smul _ _ (hinv.1 hS x y)`. Establish `hB : w ∈ d.Bad`. Simplify using `only [LocData.P, Finset.mem_union] at hP`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `absurd (Or.inr h) hP`. Conclude with `h`. Conclude with `hinv.2 hB`. Establish `key` using `(hf _ hH).2.1`.
-
-Rewrite `key` using `[← lev₂_eq d hw]`. Use function extensionality and compare the values at `y`. Simplify using `only [seen, if_pos hs, ht]`. Conclude with `congrFun key y`. Use function extensionality and compare the values at `y`.
-
-Simplify using `only [seen, if_neg hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem seenTr (h3 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocOpUniformizer E) : SeenTr := by
   intro E _ _ _ n d hd a ha ls N hls w hwB

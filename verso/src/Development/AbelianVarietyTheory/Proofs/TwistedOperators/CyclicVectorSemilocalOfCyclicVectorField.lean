@@ -9,7 +9,7 @@ namespace GlobalTheory.RegSS.Semilocal
 open Matrix in
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [_root_.GlobalTheory.RegSS.krylov, Matrix.map_apply, Matrix.of_apply, RingHom.map_mulVec]`. Use `congr 2`. Conclude with `RingHom.map_pow f.mapMatrix M _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RegSS.Semilocal.krylov_map_ringHom {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {n : Type}
     [Fintype n] [DecidableEq n] (M : Matrix n n A) (v : n → A) :
@@ -22,15 +22,13 @@ theorem _root_.GlobalTheory.RegSS.Semilocal.krylov_map_ringHom {A B : Type} [Com
 open Matrix in
 
 /- English proof (translation)
-Introduce `hF A _ _ n _ _ M hM`. Establish `hw : ∀ p : MaximalSpectrum A, ∃ w : n → A ⧸ p.asIdeal, IsUnit (_root_.GlobalTheory.RegSS.krylov (M.map (Ideal.Quotient.mk p.asIdeal)) w).det`. Introduce `p`. Use `haveI := p.isMaximal`. Use `letI := Ideal.Quotient.field p.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `hF _ n _ (by rw [Matrix.charpoly_map]; exact hM.map)`. Use `choose w hw using hw`. Establish `hcop : Pairwise (Function.onFun IsCoprime fun p : MaximalSpectrum A => p.asIdeal)` using `fun p q hpq => Ideal.isCoprime_iff_sup_eq.mpr (p.isMaximal.coprime_of_ne q.isMaximal (mt MaximalSpectrum.ext hpq))`. Establish `hs : ∀ y : ∀ p : MaximalSpectrum A, A ⧸ p.asIdeal, ∃ a : A, ∀ p, Ideal.Quotient.mk p.asIdeal a = y p`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩` from `Ideal.quotientInfToPiQuotient_surj hcop y`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨a, fun p => by rw [← hx]; rfl⟩`. Use `choose v hv using fun j => hs fun p => w p j`. Use `⟨v, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Take `⟨I, hI, hmem⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.mpr h)`. Set `p : MaximalSpectrum A` to `⟨I, hI⟩`. Establish `hvp : (Ideal.Quotient.mk p.asIdeal) ∘ v = w p` using `funext fun j => hv j p`. Establish `hzero : Ideal.Quotient.mk p.asIdeal (_root_.GlobalTheory.RegSS.krylov M v).det = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hmem`.
-
-Rewrite `hzero` using `[RingHom.map_det, RingHom.mapMatrix_apply, _root_.GlobalTheory.RegSS.Semilocal.krylov_map_ringHom, hvp]`. Use `haveI := p.isMaximal`. Conclude with `(hw p).ne_zero hzero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RegSS.Semilocal.cyclicSemilocal_of_cyclicField :
     _root_.GlobalTheory.RegSS.CyclicField → _root_.GlobalTheory.RegSS.CyclicSemilocal := by

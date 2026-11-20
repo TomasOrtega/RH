@@ -42,9 +42,9 @@ def EmptyMeas : Prop :=
     (X : B.Mat P.k P.r → (Wq →L[ℂ] Wp)), KB.CptCoef p.T.base X → AEStronglyMeasurable (topD p X []) volume
 
 /- English proof (translation)
-Rewrite using `[ae_all_iff]`. Introduce `i`. Establish `h : volume ((fun c : Fin (r + 1) → ℂ => c i) ⁻¹' {0}) = 0`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi_eval_preimage_null _ (measure_singleton 0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : {a : Fin (r + 1) → ℂ | ¬a i ≠ 0} = (fun c : Fin (r + 1) → ℂ => c i) ⁻¹' {0}`. Use extensionality with `a`. Simplify using the standard rewrite rules. Conclude with `ae_iff.2 (by rw [e]; exact h)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ae_all_ne (r : ℕ) : ∀ᵐ c : Fin (r + 1) → ℂ, ∀ i, c i ≠ 0 := by
   rw [ae_all_iff]
@@ -57,23 +57,19 @@ theorem ae_all_ne (r : ℕ) : ∀ᵐ c : Fin (r + 1) → ℂ, ∀ i, c i ≠ 0 :
   exact ae_iff.2 (by rw [e]; exact h)
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p X w Cb hD hX hw`. Distinguish the cases in `hw0 : w = []`. Substitute `hw0` using the available equality. Conclude with `h5 Wp Wq P p X hX`. Use `choose Y hYe hYc using h3 Wp Wq P p X w Cb hD hX hw`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `set TT : ℝ := Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' with hTT`. Use `set A : ℝ := 9 * ((P.r : ℝ) + 1) * (((2 * P.r + P.k + 1 : ℕ) : ℝ) ^ 2 + 1) with hA`. Establish `hThr : JF.TransportedAlt P.k P.r A 0`. Unfold `JF.TransportedAlt`. Establish `hr : (0 : ℝ) < 9 * ((P.r : ℝ) + 1)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Nat.cast_zero, mul_zero, sub_zero, lt_div_iff₀ hr, hA]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hV : ∀ e a, p.V (p.Θ.Θ w e X) a = p.V (Y e) a` using `fun e a => h2 Wp Wq P p _ _ (fun g hg hG => (hYe e g hg hG).symm) a`. Take `⟨hn, hW⟩` from `h4 P.k P.r TT`. Use `set g : (Fin (P.r + 1) → ℂ) → ℝ := fun c => ((((Real.sqrt (TBB.nPt P.k P.r TT (TBB.bigPt P.r c)) * Real.sqrt (TBB.nPt P.k P.r TT (TBB.bigPt P.r c)) / TBB.normC (fun _ => 1) w : ℝ) : ℂ) * ∑ e : Wd.Ix (Fin w.length), ∑ ρ : M.Ty P, ((Top.dH P p.l0 TT w (TBB.bigPt P.r c) e ρ * Top.dH …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hgm : AEStronglyMeasurable g volume`. Establish `hdH : ∀ e ρ, Measurable (fun c : Fin (P.r + 1) → ℂ => Top.dH P p.l0 TT w (TBB.bigPt P.r c) e ρ)`. Introduce `e ρ`. Unfold `Top.dH`. Conclude with `((hW.pow_const _).mul_const _).sqrt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ e ρ, AEStronglyMeasurable (fun c : Fin (P.r + 1) → ℂ => ((Top.dH P p.l0 TT w (TBB.bigPt P.r c) e ρ * Top.dH P p.l0 TT w (TBB.bigPt P.r c) e ρ : ℝ) : ℂ) * (((‖B.hsVec ((p.TP.E ρ).comp (p.V (Y e) (TBB.bigPt P.r c)))‖ ^ 2 : ℝ)) : ℂ)) volume`. Introduce `e ρ`. Establish `h1' : AEStronglyMeasurable (fun c : Fin (P.r + 1) → ℂ => ‖B.hsVec ((p.TP.E ρ).comp (p.V (Y e) (TBB.bigPt P.r c)))‖ ^ 2) volume` using `(h1 Wp Wq P p (Y e) A hThr (hYc e A) ρ).pow 2`. Establish `h2' : AEStronglyMeasurable (fun c : Fin (P.r + 1) → ℂ => (((‖B.hsVec ((p.TP.E ρ).comp (p.V (Y e) (TBB.bigPt P.r c)))‖ ^ 2 : ℝ)) : ℂ)) volume` using `Complex.continuous_ofReal.comp_aestronglyMeasurable h1'`. Establish `h3' : AEStronglyMeasurable (fun c : Fin (P.r + 1) → ℂ => ((Top.dH P p.l0 TT w (TBB.bigPt P.r c) e ρ * Top.dH P p.l0 TT w (TBB.bigPt P.r c) e ρ : ℝ) : ℂ)) volume` using `(Complex.measurable_ofReal.comp ((hdH e ρ).mul (hdH e ρ))).aestronglyMeasurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3'.mul h2'`. Establish `hsum : AEStronglyMeasurable (fun c : Fin (P.r + 1) → ℂ => ∑ e : Wd.Ix (Fin w.length), ∑ ρ : M.Ty P, ((Top.dH P p.l0 TT w (TBB.bigPt P.r c) e ρ * Top.dH P p.l0 TT w (TBB.bigPt P.r c) e ρ : ℝ) : ℂ) * (((‖B.hsVec ((p.TP.E ρ).comp (p.V (Y e) (TBB.bigPt P.r c)))‖ ^ 2 : ℝ)) : ℂ)) volum …` using `Finset.aestronglyMeasurable_fun_sum _ fun e _ => Finset.aestronglyMeasurable_fun_sum _ fun ρ _ => hterm e ρ`. Establish `hpre : AEStronglyMeasurable (fun c : Fin (P.r + 1) → ℂ => (((Real.sqrt (TBB.nPt P.k P.r TT (TBB.bigPt P.r c)) * Real.sqrt (TBB.nPt P.k P.r TT (TBB.bigPt P.r c)) / TBB.normC (fun _ => 1) w : ℝ) : ℂ))) volume` using `(Complex.measurable_ofReal.comp (((hn.sqrt.mul hn.sqrt).div_const _))).aestronglyMeasurable`. Conclude with `Complex.continuous_re.comp_aestronglyMeasurable (hpre.mul hsum)`. Use `hgm.congr ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [ae_all_ne P.r] with c hc`. Establish `hl : D.IsLocPt (TBB.bigPt P.r c) (P.r + 1)` using `Formalism.FourierDecayAlt.P.PBJ.Dens.isLocPt_bigPt c hc`. Use `show g c = topD p X w c`. Unfold `topD TBB.Ew TBB.NP KB.Pl.RR D.RRplace`. Rewrite using `[dif_pos ⟨hl, hl⟩, dif_neg (by omega), if_pos rfl, if_neg hw0]`.
-
-Unfold `Top.topOf`. Simplify using `only [hg]`. Use `congr 3`. Use function extensionality and compare the values at `e`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Formalism.FourierDecayAlt.P.TBBx2.Tri.hsInner_self]`. Use `show _ = _ * (((‖B.hsVec ((p.TP.E ρ).comp (p.V (p.Θ.Θ w e X) (TBB.bigPt P.r c)))‖ ^ 2 : ℝ)) : ℂ)`. Rewrite using `[hV e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topDMeasCpt_of_parts (h1 : TypeNormMeas) (h2 : VecVGPos) (h3 : DopCC) (h4 : ScalarMeas) (h5 : EmptyMeas) :
     TopDMeasCpt := by

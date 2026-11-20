@@ -7,11 +7,11 @@ namespace Formalism.MainNotions.Pf14
 open Formalism.MainNotions.G Formalism.CountingSumsFrames
 
 /- English proof (translation)
-Rewrite using `[h35 Kf n' m lam0 hdom]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `e1 : (∏ i : Fin (m + 1), ∏ j : Fin (m + 1), if i < j then (((lamAt lam0 s i : ℤ) : ℚ) - ((lamAt lam0 s j : ℤ) : ℚ) + ((j : ℕ) : ℚ) - ((i : ℕ) : ℚ)) / (((j : ℕ) : ℚ) - ((i : ℕ) : ℚ)) else 1) = weylDim (m + 1) (lamAt lam0 s)`. Unfold `weylDim`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e1]`. Unfold `lamAt`. Use `split_ifs`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `weylDim_dual (m + 1) (lam0 s)`.
+A detailed English derivation is pending.
 -/
 theorem dimV_eq (D : Formalism.BasicNotions.D7) (h35 : tableLineDegreeFive.FewBadOrbits D) (Kf : Type) [Field Kf] {n' m : ℕ}
     (lam0 : Fin n' → Fin (m + 1) → ℤ) (hdom : IsDominant lam0) :
@@ -35,25 +35,25 @@ def remainingWeightVectorCount {n' m : ℕ} (TT : Finset (Fin n')) (lam0 : Fin n
   (∏ t ∈ TT, weylDim m (fun i : Fin m => lam0 t i.succ)) * ∏ s ∈ TTᶜ, weylDim (m + 1) (lam0 s)
 
 /- English proof (translation)
-Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Establish `hfd` using `flatDeg_bounds (by omega) ha.le hW t ht`. Take `⟨hb, hdom, hw⟩` from `hW`. Take `⟨e0, elast, hc⟩` from `(hb t).1 ht`. Take `⟨_, _, hb0, hbc⟩` from `hw t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hanti` using `hdom t`. Use `set mu : Fin (m' + 1) → ℤ := fun i => lam0 t i.succ + bT t with hmu`. Establish `hmuA : Antitone mu`. Introduce `i j hij`. Use `hanti (Fin.succ_le_succ_iff.2 hij)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hmu]`. Use linear arithmetic over natural numbers and integers. Establish `hmuB : ∀ i, 0 ≤ mu i ∧ mu i ≤ c0`. Introduce `i`. Prove the components needed by the constructor for the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Use `hanti (Fin.le_last i.succ)` as an intermediate fact. Simplify using `only [hmu]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [hmu]`. Distinguish the cases in `hi : i.succ.val < m' + 1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `hc i.succ (by simp) hi` as an intermediate fact. Establish `h2` using `abs_le.1 this`. Use linear arithmetic over natural numbers and integers. Establish `: i.succ = Fin.last (m' + 1)`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `i.succ.isLt` as an intermediate fact. Simplify using `only [Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, elast]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h01 : lam0 t 1 ≤ lam0 t 0` using `hanti (Fin.zero_le _)`. Establish `hs0 : (Fin.succ (0 : Fin (m' + 1))) = (1 : Fin (m' + 1 + 1))` using `rfl`. Establish `hcons : (fun i => lam0 t i + bT t) = (Fin.cons ((flatDeg lam0 t : ℤ) + mu 0) mu : Fin (m' + 2) → ℤ)`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i' => ?_) i` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_zero, hmu, hs0]`. Unfold `flatDeg`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.cons_succ, hmu]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `weylDim_cons_le_choose_mul m' mu (flatDeg lam0 t) c0 a ha hmuA hmuB hfd.1`. Rewrite `h1` using `[← hcons, weylDim_shift, weylDim_shift]`. Establish `e1 : ((m' + 1 + 1 : ℕ) : ℝ) = (m' : ℝ) + 2` using `by push_cast; ring`. Establish `e2 : flatDeg lam0 t + (m' + 1 + 1) - 1 = flatDeg lam0 t + m' + 1` using `by omega`. Establish `e3 : m' + 1 + 1 - 1 = m' + 1` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, e3]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem top_count {n' m : ℕ} (hm : 2 ≤ m) {TT : Finset (Fin n')} {aT bT : Fin n' → ℤ} {cpp c0 : ℕ} {a : ℝ} (ha : 0 < a)
     {lam0 : Fin n' → Fin (m + 1) → ℤ} (hW : tableLineDegreeFive.WeightHyp TT aT bT cpp c0 a lam0) (t : Fin n') (ht : t ∈ TT) :
@@ -109,17 +109,17 @@ theorem top_count {n' m : ℕ} (hm : 2 ≤ m) {TT : Finset (Fin n')} {aT bT : Fi
   exact h1
 
 /- English proof (translation)
-Establish `hB` using `hyps_basic (C := C) (by linarith) H`. Establish `hk` using `rank_mul_conductor_div_le_one hC H`. Establish `hW : tableLineDegreeFive.WeightHyp TT aT bT cpp c0 a lam0` using `H.2.2.2.2.1`. Establish `hdom : IsDominant lam0` using `hW.2.1`. Establish `ha : 0 < a` using `by linarith [hB.two_le_a]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (dimV Kf lam0 : ℝ) = (∏ t ∈ TT, (weylDim (m + 1) (lam0 t) : ℝ)) * ∏ s ∈ TTᶜ, (weylDim (m + 1) (lam0 s) : ℝ)`. Establish `h1` using `dimV_eq D h35 Kf lam0 hdom`. Establish `h2 : ((dimV Kf lam0 : ℕ) : ℝ) = (((dimV Kf lam0 : ℕ) : ℚ) : ℝ)` using `by push_cast; rfl`. Rewrite using `[h2, h1, ← Finset.prod_mul_prod_compl TT]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Establish `hn : (n2 : ℝ) = (∏ t ∈ TT, (weylDim m (fun i : Fin m => lam0 t i.succ) : ℝ)) * ∏ s ∈ TTᶜ, (weylDim (m + 1) (lam0 s) : ℝ)`. Establish `h2 : (n2 : ℝ) = ((n2 : ℚ) : ℝ)` using `by push_cast; rfl`. Rewrite using `[h2, hn2]`. Unfold `remainingWeightVectorCount`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hS : 0 ≤ ∏ s ∈ TTᶜ, (weylDim (m + 1) (lam0 s) : ℝ)`. Use `Finset.prod_nonneg fun s _ => ?_` and prove the remaining obligations. Conclude with `(gram_weylDim_pos (m + 1) (lam0 s) (hdom s)).le` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT : ∏ t ∈ TT, ((1 - ((m + 1 : ℕ) : ℝ) * c0 / a) * (weylDim (m + 1) (lam0 t) : ℝ)) ≤ ∏ t ∈ TT, (((Nat.choose (flatDeg lam0 t + (m + 1) - 1) (m + 1 - 1) : ℕ) : ℝ) * (weylDim m (fun i : Fin m => lam0 t i.succ) : ℝ))`. Use `Finset.prod_le_prod (fun t _ => ?_) fun t ht => top_count (by have := hB.m_ge; omega) ha hW t ht` and prove the remaining obligations. Use `mul_nonneg (by linarith) ?_` and prove the remaining obligations. Conclude with `(gram_weylDim_pos (m + 1) (lam0 t) (hdom t)).le` after adjusting the coercions. Rewrite `hT` using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd, hn]`. Use `mul_le_mul_of_nonneg_right hT hS` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem count_of_exact (D : Formalism.BasicNotions.D7) (h35 : tableLineDegreeFive.FewBadOrbits D) {C : ℝ} (hC : 2 ≤ C) {p n' m r : ℕ}
     {TT : Finset (Fin n')} {L₁ L₂ : ℕ} {de h x : ℝ} {lam0 : Fin n' → Fin (m + 1) → ℤ} {aT bT : Fin n' → ℤ} {a Y : ℝ}

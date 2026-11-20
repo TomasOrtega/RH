@@ -95,7 +95,7 @@ def ExistsChoiceClosed (𝒞 : FamClass) : Prop := Closed 𝒞 fun Fm _ => FamEx
 def Statement (𝒞 : FamClass) : Prop := ExistsChoiceClosed 𝒞 ∧ TwGoodClosed 𝒞
 
 /- English proof (translation)
-The claim follows from `Or.inr fun _ => Iff.rfl`.
+Prove the second alternative.
 -/
 theorem samePair_conj (w : D.what₂.places.Pl) : SamePair D w (D.what₂.places.conj w) :=
   Or.inr fun _ => Iff.rfl
@@ -104,7 +104,7 @@ open NumberField IsDedekindDomain in
 variable (D : _root_.Formalism.BasicNotions.D7) in
 variable {D} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted`. Rewrite using `[_root_.Formalism.BasicNotions.Rows.Data.muAt_conj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_conj (w : D.what₂.places.Pl) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted D (D.what₂.places.conj w) ↔ _root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.Twisted D w := by
@@ -112,7 +112,7 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.twisted_c
   rw [_root_.Formalism.BasicNotions.Rows.Data.muAt_conj]
 
 /- English proof (translation)
-Break down `(h.1 w hw).2 with h1 | h1` into its components or cases. Conclude with `⟨w, hw, h1⟩`. Conclude with `⟨_, (twisted_conj w).2 hw, h1⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem TwistedPlaceSettings.inW1 {twI : D.what₂.places.Pl → D.ntw.Tw} (h : TwistedPlaceSettings D twI) {w : D.what₂.places.Pl}
     (hw : Twisted D w) : D.ntw.NonzeroIndexPlace (twI w) := by
@@ -121,7 +121,7 @@ theorem TwistedPlaceSettings.inW1 {twI : D.what₂.places.Pl → D.ntw.Tw} (h : 
   · exact ⟨_, (twisted_conj w).2 hw, h1⟩
 
 /- English proof (translation)
-Take `⟨-, -, -, -, S, -, hS⟩` from `h.1.2.1 w hw`. Use `hS 1 isCoprime_one_left` as an intermediate fact. Rewrite `this` using `[zpow_one]`. Conclude with `⟨S, this⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem TwGoodAt.goodTw {c : NChoice D} {xd : ThData D} {N0 : D.ntw.Tw → ℕ} (h : TwGoodAt c xd N0)
     {w : D.what₂.places.Pl} (hw : Twisted D w) :

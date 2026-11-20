@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.Mem.Top.Bl
 
 /- English proof (translation)
-Establish `hfin : Finite (TupU w.I (usedOf w.I T Wt))`. Establish `hs : ({τ | τ = (mu0F (X` using `B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ∨ τ ∈ tuOf w.I (usedOf w.I T Wt)} : Set _).Finite := (Set.finite_singleton _).union (tuOf w.I (usedOf w.I T Wt)).finite_toSet`. Conclude with `hs.to_subtype`. Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x, pack, _⟩` from `a`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Simplify using `only at pack ⊢`. Consider the cases of `pack`. Conclude with `hfin`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem finite_T_of_twArgs {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {L : SizeData₂ (w.st Z).toD7} {hT : GatTies (w.st Z).toD7} {Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L}
@@ -40,15 +40,13 @@ theorem finite_T_of_twArgs {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hK : DV.KapDef (q.w.D q.Z)` using `b.R.T.what₂.ka`. Establish `hB : ∀ Zs, HEq ((rpkB b).Zsc Zs).F0 (F0K K.s (q.w.D q.Z))`. Introduce `Zs`. Apply `heq_of_eq` to reduce the goal to its premises. Use function extensionality and compare the values at `y j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hsc]`. Conclude with `(forcedContent_eq_closedContent_numericalDatum _ _ _ _ hK y j).symm`. Take `⟨x, a, ax, y, _⟩` from `w`. Consider the cases of `ax`. Establish `hX` using `y.eq ▸ hB`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI := a.x.grp`. Use `letI := a.x.fin`. Establish `hX' : ∀ Zs : DefSub a.x.A3.fam3.amb3, HEq (a.x.F.Zsc Zs).F0 (F0K K.s (q.w.D q.Z))` using `hX`. Simplify using `only`. Use `clear * - hX'`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Take `⟨Dc, Sp, Zsc, lam, err, lam_eq, x', pack, _⟩` from `a`. Simplify using `only at hX' ⊢`. Take `⟨G, grp, fin, Pl0, I0, T0, A3, core, alg, R, F, cG, _⟩` from `x'`. Simplify using `only at pack hX' ⊢`. Consider the cases of `pack`.
-
-Conclude with `hX' _`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem zscale_f0_of_witness {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx} (q : WPt p.s K) {c : ℝ}
     (b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c) (w : BWit q b) (hsc : q.O.L.sc = K.s) :
@@ -78,11 +76,11 @@ theorem zscale_f0_of_witness {hL : GlobalTheory.Published.LocalLanglandsGL} {p :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL p K q c b w hsc`. Establish `hZ` using `zscale_f0_of_witness q b w hsc`. Take `⟨x, a, ax, y, _⟩` from `w`. Consider the cases of `ax`. Use `letI := a.x.grp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Equip the data with the indicated structure.
 
-Use `letI := a.x.fin`. Use `letI : Algebra (↥a.x.core.Q.c.F) (q.w.D q.Z).what₂.LL := a.x.alg`. Establish `h3 : RealPins3 (realTOf y.y)` using `realPins3_realTOf K q.B q.f q.T q.w q.Z q.x.Wt _ _ _ _ _ _ _ q.O.ex q.x.what₂ a b.R b.S y.y hZ`. Establish `hP : (fun r : RPk b.R b.S => RealPins3 r.B.Q ∧ r.B.Q.Rl.toRealDat.ExAt ∧ Finite r.P.T) (rpkX y.y)` using `⟨h3, y.intersectionNumber_baseChange.aux.ex, finite_T_of_twArgs a⟩`. Rewrite `hP` using `[← y.eq]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hP.1.w1 0 0, hP.2.1, hP.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem weight_one_places_are_twist_places_of_witness : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL) (K : Ctx) (q : WPt p.s K) (c : ℝ)
     (b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c), BWit q b → q.O.L.sc = K.s →

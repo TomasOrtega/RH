@@ -11,19 +11,17 @@ open scoped LaurentSeries
 namespace GlobalTheory.TransvPrinc
 
 /- English proof (translation)
-Introduce `ξ hξ s hs hc`. Establish `hκ : cc (s * X.κ0) = -(s * X.κ0)`. Establish `h0` using `X.ξ0_im`. Simplify using `only [cc] at hs h0 ⊢`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> simp [h, hs, h0, map_ofNat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hn : ∀ (n : ℕ) u, u ∈ X.Λ → (n : E) • u ∈ X.Λ` using `fun n u hu => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hu n`. Establish `hmem : GlobalTheory.FlagData.transv X.Gm hξ.2.1 (s * X.κ0) ∈ X.Γ`. Use `hP _ ⟨fun x y => ?_, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩ (fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.FlagData.herm_transvMat X.Gm_herm hξ.2.1 hκ x y`. Take `⟨u, hu, e⟩` from `hc x hx`. Rewrite `e` using `[sub_eq_iff_eq_add]`. Express the relevant statement in the definitionally equal form `(transvMat _ _ _).mulVec x ∈ _`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem (hn _ u hu) hx`. Express the relevant statement in the definitionally equal form `(transvMat _ _ _).mulVec x ∈ _ at hx`. Take `⟨u, hu, e⟩` from `hc _ hx`. Establish `: x = (transvMat X.Gm ξ (s * X.κ0)).mulVec x - (N : E) • u`. Rewrite using `[← e, GlobalTheory.FlagData.transvMat_mulVec _ _ (Matrix.mulVec _ _), GlobalTheory.FlagData.transvMat_mulVec, GlobalTheory.FlagData.herm_add_smul_left, hξ.2.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `sub_mem hx (hn _ u hu)`. Take `⟨m, hm⟩` from `hMN`. Take `⟨u, hu, e⟩` from `hc x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨(m : E) • u, hn m u hu, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(transvMat _ _ _).mulVec x - x = _`. Rewrite using `[e, hm, smul_smul]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Conclude with `⟨_, hmem, rfl, hχ _ hmem⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transvIn_of_princ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {M N : ℕ}
     (hMN : M ∣ N) (la : Wt X.Ψ r)
@@ -60,7 +58,7 @@ theorem transvIn_of_princ {E : Type} [Field E] [NumberField E] [IsCMField E] {r 
   exact ⟨_, hmem, rfl, hχ _ hmem⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U a' n hP hχ k`. Conclude with `transvIn_of_princ (U.X k) (Nat.dvd_lcm_left _ _) _ (hP k) (hχ k)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem transvIn_of_hasPrinc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), GlobalTheory.FrameNorm.HasPrinc U l.M → (∀ k, ∀ gm ∈ (U.X k).Γ, (U.X k).χ (laU U a' n k) gm = 1) → ∀ k, TransvIn (U.X k) l.M' (laU U a' n k) := by
   intro E _ _ _ H Dw l Xo c σ r U a' n hP hχ k

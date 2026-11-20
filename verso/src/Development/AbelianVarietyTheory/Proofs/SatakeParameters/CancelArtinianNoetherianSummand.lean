@@ -5,17 +5,15 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CancelProdSumman
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `N using WellFoundedLT.induction with`. Consider the case `_ N ih`. Introduce `M M' _ _ _ _ e`. Distinguish the cases in `hind : ∀ A B : Submodule R N, IsCompl A B → A = ⊥ ∨ B = ⊥`. Conclude with `GlobalTheory.T.cancel_prod_summand_nilpotent_or_bijective R M M' N (GlobalTheory.T.endomorphism_indecomposable_nilpotent_or_bijective R N hind) e`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hind`. Take `⟨A, B, hAB, hA, hB⟩` from `hind`. Establish `hAlt : A.map N.subtype < N`. Establish `h1 : A < ⊤` using `lt_top_iff_ne_top.mpr (fun h => hB (by`. Use `hAB.inf_eq_bot` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[h, top_inf_eq]`. Conclude with `this))`. Use `Submodule.map_strictMono_of_injective N.injective_subtype h1` as an intermediate fact. Rewrite `this` using `[Submodule.map_subtype_top]`. Then use the resulting hypothesis. Establish `hBlt : B.map N.subtype < N`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : B < ⊤` using `lt_top_iff_ne_top.mpr (fun h => hA (by`. Use `hAB.inf_eq_bot` as an intermediate fact. Rewrite `this` using `[h, inf_top_eq]`. Conclude with `this))`. Use `Submodule.map_strictMono_of_injective N.injective_subtype h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `this` using `[Submodule.map_subtype_top]`. Then use the resulting hypothesis. Set `eA : A ≃ₗ[R] A.map N.subtype` to `Submodule.equivMapOfInjective _ N.injective_subtype A`. Set `eB : B ≃ₗ[R] B.map N.subtype` to `Submodule.equivMapOfInjective _ N.injective_subtype B`. Set `eN : N ≃ₗ[R] (A.map N.subtype × B.map N.subtype)` to `(Submodule.prodEquivOfIsCompl A B hAB).symm ≪≫ₗ LinearEquiv.prodCongr eA eB`. Take `⟨e⟩` from `e`.
-
-Set `f : ((M × A.map N.subtype) × B.map N.subtype) ≃ₗ[R] ((M' × A.map N.subtype) × B.map N.subtype)` to `(LinearEquiv.prodAssoc R M _ _) ≪≫ₗ (LinearEquiv.prodCongr (LinearEquiv.refl R M) eN).symm ≪≫ₗ e ≪≫ₗ (LinearEquiv.prodCongr (LinearEquiv.refl R M') eN) ≪≫ₗ (LinearEquiv.prodAssoc R M' _ _).symm`. Take `⟨g⟩` from `ih _ hBlt _ _ ⟨f⟩`. Conclude with `ih _ hAlt M M' ⟨g⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ks_cancel_submodule (R P : Type) [Ring R] [AddCommGroup P] [Module R P] [IsArtinian R P]
     [IsNoetherian R P] (N : Submodule R P) :
@@ -51,7 +49,7 @@ theorem ks_cancel_submodule (R P : Type) [Ring R] [AddCommGroup P] [Module R P] 
     exact ih _ hAlt M M' ⟨g⟩
 
 /- English proof (translation)
-Introduce `R M M' P _ _ _ _ _ _ _ _ _ ⟨e⟩`. Set `t : (⊤ : Submodule R P) ≃ₗ[R] P` to `Submodule.topEquiv`. Conclude with `ks_cancel_submodule R P ⊤ M M' ⟨(LinearEquiv.prodCongr (LinearEquiv.refl R M) t) ≪≫ₗ e ≪≫ₗ (LinearEquiv.prodCongr (LinearEquiv.refl R M') t).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem ks_cancel : ∀ (R M M' P : Type) [Ring R] [AddCommGroup M] [Module R M] [AddCommGroup M']
     [Module R M'] [AddCommGroup P] [Module R P] [IsArtinian R P] [IsNoetherian R P],

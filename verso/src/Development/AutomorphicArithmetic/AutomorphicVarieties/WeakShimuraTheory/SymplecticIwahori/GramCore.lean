@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Pp
 
 /- English proof (translation)
-Establish `h10` using `hQ 1 0 (by decide)`. Establish `h20` using `hQ 2 0 (by decide)`. Establish `h21` using `hQ 2 1 (by decide)`. Establish `h30` using `hQ 3 0 (by decide)`. Establish `h31` using `hQ 3 1 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h32` using `hQ 3 2 (by decide)`. Use `⟨!![a', -(a' * (Q 0 1 * d')), -(a' * Q 0 2), 0; 0, d', 0, 0; 0, 0, 1, 0; 0, 0, 0, 1], ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> simp at hij ⊢`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, h10, h20, h21, h30, h31, h32, h33, h22, h23, h13, h03, h12]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `all_goals first`. Consider the case `linear_combination ha`. Consider the case `linear_combination hd`. Consider the case `linear_combination (-(Q 0 1 * d')) * ha`. Consider the case `linear_combination (-Q 0 2) * ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `linear_combination (Q 0 2) * ha`.
+A detailed English derivation is pending.
 -/
 private theorem gram_core {R : Type} [CommRing R] (Q : M4 R) (hQ : IsUp Q) (a' d' : R)
     (ha : Q 0 0 * a' = 1) (hd : Q 1 1 * d' = 1)
@@ -37,11 +37,11 @@ private theorem gram_core {R : Type} [CommRing R] (Q : M4 R) (hQ : IsUp Q) (a' d
       | linear_combination (Q 0 2) * ha
 
 /- English proof (translation)
-Introduce `R _ k hQ`. Establish `hinv : adj (k : M4 R) * adj ((k⁻¹ : (M4 R)ˣ) : M4 R) = 1`. Rewrite using `[← (grp R).1, Units.inv_mul, (grp R).2.2.2.2.1]`. Establish `hdet : IsUnit (adj (k : M4 R) * (k : M4 R)).det`. Apply `Matrix.isUnit_det_of_right_inverse (B := ((k⁻¹ : (M4 R)ˣ) : M4 R) * adj ((k⁻¹ : (M4 R)ˣ) : M4 R))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (k : M4 R), Units.mul_inv, Matrix.one_mul, hinv]`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular (fun i j h => hQ i j h), Fin.prod_univ_four]`. Take `⟨a', ha⟩` from `(isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hdet))).exists_right_inv`. Take `⟨d', hd⟩` from `(isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hdet))).exists_right_inv`. Apply the tactic sequence `obtain ⟨t, ht, htQ⟩ := gram_core _ hQ a' d' ha hd (by simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn] <;> ring) (by simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn] <;> ring) (by simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn] <;> ring) (by simp [M …`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨⟨t, adj t * (adj (k : M4 R) * (k : M4 R)), mul_eq_one_comm.mp htQ, htQ⟩, ht, ?_⟩` and prove the remaining obligations. Use `show adj ((k : M4 R) * t) * ((k : M4 R) * t) = (1 : R) • 1`. Rewrite using `[(grp R).1, one_smul, ← htQ]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pp.gram :
     ∀ {R : Type} [CommRing R] (k : (M4 R)ˣ), IsUp (adj (k : M4 R) * (k : M4 R)) → ∃ t : (M4 R)ˣ, IsUp (t : M4 R) ∧ IsGSp (1 : R) ((k : M4 R) * (t : M4 R)) := by

@@ -12,11 +12,11 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.MumfordAway
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `Spec.map_surjective s`. Establish `hφ : φ.hom.FiniteType` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp inferInstance`. Use `letI : Algebra K R := φ.hom.toAlgebra`. Use `haveI : Algebra.FiniteType K R := hφ`. Rewrite using `[← Module.annihilator_eq_top_iff (R := R)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨χ, rfl⟩` from `GlobalTheory.PointSupport.exists_algHom_ker_eq K R M`. Take `⟨r, hr, hz⟩` from `h χ.toRingHom (by`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `k`. Conclude with `χ.commutes k)`. Conclude with `hr (hle (Module.mem_annihilator.mpr hz))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_points (K : Type) [Field K] [IsAlgClosed K] (R : Type) [CommRing R]
     (s : Spec (CommRingCat.of R) ⟶ Spec (CommRingCat.of K)) [LocallyOfFiniteType s]
@@ -39,11 +39,9 @@ theorem subsingleton_of_points (K : Type) [Field K] [IsAlgClosed K] (R : Type) [
   exact hr (hle (Module.mem_annihilator.mpr hz))
 
 /- English proof (translation)
-Introduce `K _ _ P R _ t Y π f hpb ht hne κ _ _ D hD hcov p`. Take `⟨-, -, -, h⟩` from `GlobalTheory.T.mumfordBundle_cech_finite_vanishes_off_origin K P R t Y π f hpb ht κ D hD hcov`. Use `haveI := P.smoothDim`. Use `haveI : Smooth P.A.hom := SmoothOfRelativeDimension.smooth P.g _`. Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `subsingleton_of_points K R (t ≫ P.A.hom) _ fun χ hχ => h χ (by simpa using hχ) ?_ p` and prove the remaining obligations. Introduce `e`. Set `q : Spec (CommRingCat.of K)` to `default`. Use `hne (Spec.map (CommRingCat.ofHom χ) q) q ?_` and prove the remaining obligations. Rewrite using `[← e]`.
-
-Both sides reduce to the same expression.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem acyclic_away : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ P.A.left) (Y : Scheme.{0}) (π : Y ⟶ (P.A ⊗ P.A).left) (f : Y ⟶ Spec (CommRingCat.of R)), IsPullback π f (fst P.A P.A).left t → IsOpenImmersion t → (∀ p q, t p ≠ η[P.A].left q) → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).Acyclic := by
   intro K _ _ P R _ t Y π f hpb ht hne κ _ _ D hD hcov p

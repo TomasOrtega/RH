@@ -24,7 +24,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, mul_toBlocks₁₁]`. Establish `: g.val.toBlocks₁₂ * h.val.toBlocks₂₁ = 0`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_mul (g h : GL (n ⊕ Fin 0) k) :
     (g * h).val.toBlocks₁₁ = g.val.toBlocks₁₁ * h.val.toBlocks₁₁ := by
@@ -34,13 +34,13 @@ theorem corner_mul (g h : GL (n ⊕ Fin 0) k) :
   rw [this, add_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem corner_one : (1 : GL (n ⊕ Fin 0) k).val.toBlocks₁₁ = 1 := by
   ext i j; simp [Matrix.toBlocks₁₁, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_of_le (hA i l) (hy l)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_box {A : Matrix n n k} (hA : IntM A) {c : kˣ} {y : n → k} (hy : y ∈ box n c) :
     A *ᵥ y ∈ box n c := by
@@ -51,11 +51,11 @@ theorem mulVec_mem_box {A : Matrix n n k} (hA : IntM A) {c : kˣ} {y : n → k} 
   exact mul_le_of_le_one_of_le (hA i l) (hy l)
 
 /- English proof (translation)
-Use `⟨fun yb => ?_, fun {yb yb'} H => ?_, fun {yb yb' yb''} H H' => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ yb`. Conclude with `⟨1, one_mem _, y, rfl, by rw [corner_one, one_mulVec]⟩`. Take `⟨g, hg, y, rfl, e⟩` from `H`. Use `⟨g⁻¹, inv_mem hg, g.val.toBlocks₁₁ *ᵥ y, e, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mulVec_mulVec, ← corner_mul, inv_mul_cancel, corner_one, one_mulVec]`. Take `⟨g, hg, y, rfl, e1⟩` from `H`. Take `⟨h, hh, y', e2, e3⟩` from `H'`. Use `⟨h * g, mul_mem hh hg, y, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← e3, corner_mul, ← mulVec_mulVec, Submodule.Quotient.eq, ← mulVec_sub]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : IntM h.val.toBlocks₁₁` using `fun i j => intM_of_mem_KO (hJ hh) (.inl i) (.inl j)`. Use `mulVec_mem_box hI ?_` and prove the remaining obligations. Rewrite `e2` using `[← e1]`. Conclude with `(Submodule.Quotient.eq _).1 e2.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameOrb_equivalence (J : Subgroup (GL (n ⊕ Fin 0) k)) (hJ : J ≤ KO k _) (c : kˣ) :
     Equivalence (SameOrb J (box n c)) := by
@@ -89,7 +89,7 @@ section Chars
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `h`. Simplify using `[mem_stabLat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem stabLat_one {Y : Type} [Fintype Y] [DecidableEq Y] : stabLat (1 : GL Y k) = KO k Y := by
   ext h; simp [mem_stabLat]
@@ -101,7 +101,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {s : ℕ} {κ t : Type} [Fintype κ] [DecidableEq κ] [Fintype t] [DecidableEq t]
 
 /- English proof (translation)
-Use `(TypeDatum.map_conj (parahoric (κ ⊕ Fin (s + 1)) (Fin j × t) δ hδ) (plainFrame (stdOrd κ t j c h))).2.2` as an intermediate fact. Rewrite `this` using `[show (plainFrame (stdOrd κ t j c h) : LatFrame k _ _).bas = 1 from rfl, stabLat_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem twist_lev_le (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → kˣ →* ℂˣ) (j c : ℕ) (h : j + c = s + 1) :
     ((twistChain s t κ δ hδ η).lev j c h).J ≤ KO k _ := by
@@ -109,11 +109,11 @@ theorem twist_lev_le (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → kˣ �
   rwa [show (plainFrame (stdOrd κ t j c h) : LatFrame k _ _).bas = 1 from rfl, stabLat_one] at this
 
 /- English proof (translation)
-Establish `e1 : ∀ x, (plainFrame (stdOrd κ t 0 c h) : LatFrame k _ _).conj.symm x = (reGL (stdOrd κ t 0 c h)).symm x`. Introduce `x`. Simplify using `[LatFrame.conj, plainFrame]`. Both sides reduce to the same expression. Use `⟨le_antisymm (twist_lev_le δ hδ η 0 c h) fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(plainFrame (stdOrd κ t 0 c h) : LatFrame k _ _).conj.symm x ∈ (parahoric (κ ⊕ Fin (s + 1)) (Fin 0 × t) δ hδ).J`. Rewrite using `[e1, mem_parahoric]`. Use `⟨mem_KO.2 ⟨fun i j => ?_, fun i j => ?_⟩, fun i _ => i.1.elim0⟩` and prove the remaining obligations. Rewrite using `[reGL_symm_val]`. Conclude with `(mem_KO.1 hx).1 _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_inv, reGL_symm_val]`. Conclude with `(mem_KO.1 hx).2 _ _`. Express the relevant statement in the definitionally equal form `(parahoric (κ ⊕ Fin (s + 1)) (Fin 0 × t) δ hδ).lam ⟨_, x.2⟩ = 1`. Rewrite using `[parahoric_lam _ 1 (by ext i; exact i.1.elim0), map_one, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_lev_zero (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → kˣ →* ℂˣ) (c : ℕ) (h : 0 + c = s + 1) :
     ((twistChain s t κ δ hδ η).lev 0 c h).J = KO k _ ∧ ∀ x, ((twistChain s t κ δ hδ η).lev 0 c h).lam x = 1 := by
@@ -138,9 +138,9 @@ def PiA (j : ℕ) : Type :=
   {g : ∀ d (_ : j + d = G.s), GL (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin (d + 1)) G.k // ∀ d h, g d h ∈ A j d h}
 
 /- English proof (translation)
-Distinguish the cases in `hj : j ≤ G.s`. Use `haveI := (hfin j (G.s - j) (by omega)).to_subtype`. Use `Finite.of_injective (fun x : PiA G A j => (⟨x.1 (G.s - j) (by omega), x.2 _ _⟩ : ↥(A j (G.s - j) (by omega)))) ?_` and prove the remaining obligations. Introduce `x y e`. Apply `Subtype.ext` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `d h`. Take `rfl : d = G.s - j` from `by omega`. Conclude with `congrArg Subtype.val e`. Conclude with `@Finite.of_subsingleton _ ⟨fun x y => Subtype.ext (funext fun d => funext fun h => absurd h (by omega))⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem piA_finite (hfin : ∀ j d h, (A j d h).Finite) (j : ℕ) : Finite (PiA G A j) := by
   by_cases hj : j ≤ G.s
@@ -157,7 +157,7 @@ def ChT (j : ℕ) : Type :=
     {o : Orb ((G.T δ hδ η).lev (G.s + 1) 0 rfl).J (twist_lev_le δ hδ η (G.s + 1) 0 rfl) (G.ϖ ^ M)⁻¹ (G.ϖ ^ M) // j = G.s + 1}
 
 /- English proof (translation)
-Use `haveI := piA_finite G A hfin j`. Unfold `ChT`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem chT_finite (hfin : ∀ j d h, (A j d h).Finite) (j : ℕ) : Finite (ChT G δ hδ η A M j) := by
   haveI := piA_finite G A hfin j; unfold ChT; infer_instance
@@ -177,7 +177,7 @@ def mT (j : ℕ) : Measure (GL (XIx (Fin D.R.k) (Fin D.R.t) j) G.k) :=
   haveI := G.unitVol.1; (Model.exists_haar G.ν (XIx (Fin D.R.k) (Fin D.R.t) j)).choose
 
 /- English proof (translation)
-Use `haveI := G.unitVol.1`. Conclude with `(Model.exists_haar G.ν _).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mT_spec (j : ℕ) : (mT G j).IsHaarMeasure ∧ mT G j (KO G.k (XIx (Fin D.R.k) (Fin D.R.t) j) : Set _) = 1 := by
   haveI := G.unitVol.1; exact (Model.exists_haar G.ν _).choose_spec
@@ -207,7 +207,7 @@ def combOf (hstd : IsStdChar D c.ψ (-1)) {S T : HSp D} {Y Y' : Type} [Fintype Y
   (CombAt.exists_isCombAt (ofSplit G.q) hstd FS FT Ξ).choose
 
 /- English proof (translation)
-The claim follows from `(CombAt.exists_isCombAt (ofSplit G.q) hstd FS FT Ξ).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem combOf_spec (hstd : IsStdChar D c.ψ (-1)) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y']
     [DecidableEq Y'] (FS : Frame G.k S.rank Y') (FT : Frame G.k T.rank Y) (Ξ : Matrix Y Y' G.k → ℂ) :
@@ -238,7 +238,7 @@ end Data
 section Main
 
 /- English proof (translation)
-Break down `α with x | o` into its components or cases. Conclude with `x.1.2 d h`. Conclude with `absurd o.2 (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem repT_mem {D : D7} {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl D.host.E} (G : QGeo v B PP)
     (δ : G.kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → G.kˣ →* ℂˣ) (A : RepFam G.k G.s (XIx (Fin D.R.k) (Fin D.R.t))) (M : ℕ)
@@ -250,47 +250,39 @@ theorem repT_mem {D : D7} {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D c v B PP G χ hc δ hδ η hη hcomp A hA M hM`. Use `haveI := G.unitVol.1`. Establish `hs` using `G.hs`. Establish `hreg : (G.T δ hδ η).Regular` using `Chain.ofTwist_regular _ _ _ _ _`. Establish `hlaws : (G.T δ hδ η).Laws` using `Chain.ofTwist_laws _ _ _ hη _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ j d h, (A j d h).Finite` using `(((GlobalTheory.UnfoldedEntries.chainFinite (ν := G.ν) G.cond) G.s _ _ (G.T δ hδ η) hreg hlaws).2 A hA).1`. Establish `hstd` using `hc.std`. Use `⟨{ δ := δ, tame := hδ, η := η, unr := hη, mu_comp := hcomp A := A, reps := hA Ch := ChT G δ hδ η A M fC := fun j => @Fintype.ofFinite _ (chT_finite G δ hδ η A M hfin j) rep := repT G δ hδ η A M rep_bij := ?_ M := M, adapt := hM cos := cosT G δ hδ η A M cos_inj := ?_, cos_all := ? …` and prove the remaining obligations. Introduce `j d h`. Use `⟨fun α _ => repT_mem G δ hδ η A M j d h α, fun α _ β _ e => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `α with x | o` into its components or cases. Break down `β with y | o'` into its components or cases. Conclude with `congrArg Sum.inl (Subtype.ext (Subtype.ext (funext fun d' => funext fun h' => by`. Take `rfl : d' = d` from `by omega`. Conclude with `e)))`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd o'.2 (by omega)`. Conclude with `absurd o.2 (by omega)`. Establish `hx : ∃ x : PiA G A j, x.1 d h = g`. Use `⟨⟨fun d' _ => (show d' = d by omega) ▸ g, fun d' h' => ?_⟩, rfl⟩` and prove the remaining obligations. Take `rfl : d' = d` from `by omega`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hg`. Take `⟨x, hx⟩` from `hx`. Conclude with `⟨.inl ⟨x, by omega⟩, trivial, hx⟩`. Introduce `y y' H`. Break down `y with x | o` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Equip the data with the indicated structure.
 
-Conclude with `absurd rfl x.2`. Break down `y' with x' | o'` into its components or cases. Conclude with `absurd rfl x'.2`. Establish `e : Quotient.mk (orbSetoid _ (twist_lev_le δ hδ η (G.s + 1) 0 rfl) (G.ϖ ^ M)) (Quotient.out o.1.1) = Quotient.mk _ (Quotient.out o'.1.1)` using `Quotient.sound H`. Rewrite `e` using `[Quotient.out_eq, Quotient.out_eq]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Conclude with `congrArg Sum.inr (Subtype.ext (Subtype.ext e))`. Introduce `z hz`. Conclude with `⟨.inr ⟨⟨Quotient.mk _ (Submodule.Quotient.mk z), ⟨_, ⟨z, hz, rfl⟩, rfl⟩⟩, rfl⟩, Quotient.mk_out (s := orbSetoid _ (twist_lev_le δ hδ η (G.s + 1) 0 rfl) (G.ϖ ^ M)) _⟩`. Use `haveI := chT_finite G δ hδ η A M hfin (G.s + 1 + 1)`. Use `letI := Fintype.ofFinite (ChT G δ hδ η A M (G.s + 1 + 1))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.card_eq_one_iff.2 ⟨.inl ⟨⟨fun d h => absurd h (by omega), fun d h => absurd h (by omega)⟩, by omega⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `(x | o)`. Conclude with `congrArg Sum.inl (Subtype.ext (Subtype.ext (funext fun d => funext fun h => absurd h (by omega))))`. Conclude with `absurd o.2 (by omega)`. Introduce `j d h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Take `rfl : d = G.s - j` from `by omega`. Unfold `eLT`. Rewrite using `[dif_pos (by omega)]`. Conclude with `combOf_spec _ _ _ _ _`. Introduce `j d H α γ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `rfl : d = G.s - (j + 1)` from `by omega`. Unfold `dLT`. Rewrite using `[dif_pos (by omega)]`. Conclude with `combOf_spec _ _ _ _ _`. Introduce `α y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Unfold `dLT`. Rewrite using `[dif_neg (by omega), dif_pos rfl]`. Conclude with `combOf_spec _ _ _ _ _`. Introduce `y u`. Unfold `dLT`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_pos rfl]`. Conclude with `combOf_spec _ _ _ _ _`. Introduce `j ρ hρ d h α`. Take `rfl : d = G.s - j` from `by omega`. Distinguish the cases in `hj0 : j = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Substitute `hj0` using the available equality. Use `⟨Finsupp.single 1 1, ?_, ?_⟩` and prove the remaining obligations. Establish `hr : repT G δ hδ η A M 0 (G.s - 0) h α = 1`. Use `repT_mem G δ hδ η A M 0 (G.s - 0) h α` as an intermediate fact. Rewrite `this` using `[hA.zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[hr]`. Take `⟨hJ, hl⟩` from `twist_lev_zero (s := G.s) (κ := Fin D.R.k) (t := Fin D.R.t) δ hδ η (G.s - 0 + 1) (by omega)`. Conclude with `(GlobalTheory.QPl.SphOne.isOneComb_sph_level G.k _ _ (ρ + 1) (by omega) (by omega) G.ψk G.cond.continuous G.cond G.ν G.unitVol _ hJ hl).1`. Unfold `epsT`. Rewrite using `[if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hP : (D.R.m - j) / 2 = ρ + 1` using `by omega`. Establish `H : ∃ e, IsOneComb G.ψk G.ν ((D.R.m - j) / 2) ((G.T δ hδ η).lev j (G.s - j + 1) (by omega)) (repT G δ hδ η A M j (G.s - j) (by omega) α) e`. Rewrite using `[hP]`. Conclude with `GlobalTheory.QPl.OneComb.exists_isOneComb G.k _ _ (ρ + 1) (by omega) (by omega) G.ψk G.cond.continuous G.cond.ne_one G.ν (isSelfDual_of_isUnitVol G.ν G.cond G.unitVol) _ ⟨(hreg.2.2 _ _ _).1, (hreg.2.2 _ _ _).2.1⟩ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `⟨H.choose, ?_, ?_⟩` and prove the remaining obligations. Establish `H2` using `H.choose_spec revert H2`. Generalize the expression as in `H.choose = e`. Rewrite using `[hP]`. Conclude with `id`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `epsT`. Rewrite using `[if_neg hj0, dif_pos (by omega), dif_pos H]`. Introduce `α`. Unfold `epsT`. Rewrite using `[if_pos rfl]`.
-
-Introduce `j d h`. Take `rfl : d = G.s + 1 - j` from `by omega`. Unfold `idxT`. Rewrite using `[dif_pos (by omega)]`. Unfold `idxT`.
-
-Rewrite using `[dif_neg (by omega)]`. Introduce `j d h α`. Take `rfl : d = G.s - j` from `by omega`. Unfold `wtT`. Rewrite using `[dif_pos (by omega)]`.
-
-Introduce `y`. Unfold `wtT`. Rewrite using `[dif_neg (by omega), dif_pos rfl]`. Introduce `u`. Unfold `wtT`.
-
-Rewrite using `[dif_neg (by omega), dif_neg (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_qExt : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalTheory.Fam.Base c) (PP : Formalism.L2.DIV.Pl D.host.E) (G : QGeo v B PP) (χ : ℕ → (AE D)ˣ →* Circle), c.Is → ∀ (δ : G.kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → G.kˣ →* ℂˣ), (∀ j, IsUnram (η j)) → (∀ j, j ≤ G.s + 1 → (ofSplit G.q).IsComp (χ j)⁻¹ (η (j + 1) * δ)) → ∀ A, (G.T δ hδ η).IsRepSystem A G.ψk G.ν → ∀ M : ℕ, (G.T δ hδ η).Adapted A (box _ (G.ϖ ^ M)⁻¹) (box _ (G.ϖ ^ M)) → ∃ E : QExt G χ, E.δ = δ ∧ E.η = η ∧ E.A = A ∧ E.M = M := by
   intro D c v B PP G χ hc δ hδ η hη hcomp A hA M hM

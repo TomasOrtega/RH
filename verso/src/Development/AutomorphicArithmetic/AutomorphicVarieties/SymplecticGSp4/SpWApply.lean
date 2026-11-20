@@ -6,13 +6,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Establish `hp : (∏ j ∈ Finset.univ.erase i, (Polynomial.X - Polynomial.C ((fun a => algebraMap O (DualNumber O) (c a)) j))) = (∏ j ∈ Finset.univ.erase i, (Polynomial.X - Polynomial.C (c j))).map (algebraMap O (DualNumber O))`. Simplify using `[Polynomial.map_prod]`. Establish `hF : ∀ P : M4 (DualNumber O), (P a b).fst = ((TrivSqZeroExt.fstHom O O O).mapMatrix P) a b` using `fun P => rfl`. Establish `hXm : (TrivSqZeroExt.fstHom O O O).mapMatrix X = Matrix.diagonalAlgHom O c`. Use extensionality with `a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hX a b`. Unfold `prj`. Rewrite using `[hp, Polynomial.aeval_map_algebraMap, hF, ← Polynomial.aeval_algHom_apply, hXm, Polynomial.aeval_algHom_apply, Matrix.diagonalAlgHom_apply, Matrix.diagonal_apply]`. Simplify using `only [map_prod, Finset.prod_apply, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Pi.sub_apply, Pi.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Distinguish the cases in `hab : a = b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hab` using the available equality. Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_pos rfl, if_neg (fun h => hai h.1)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hai, Finset.mem_univ _⟩) (sub_self _)`. Rewrite using `[if_neg hab, if_neg (fun h => hab (h.1.trans h.2.symm))]`.
+A detailed English derivation is pending.
 -/
 private theorem prj_fst {O : Type} [CommRing O] (c : Fin 4 → O) (X : M4 (DualNumber O))
     (hX : ∀ a b, (X a b).fst = Matrix.diagonal c a b) (i a b : Fin 4) :
@@ -42,7 +42,7 @@ private theorem prj_fst {O : Type} [CommRing O] (c : Fin 4 → O) (X : M4 (DualN
   · rw [if_neg hab, if_neg (fun h => hab (h.1.trans h.2.symm))]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Fin.sum_univ_four, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_add, hA, hB, hC, Matrix.diagonal_apply, smul_eq_mul, op_smul_eq_mul]`. Apply the tactic sequence `fin_cases p <;> fin_cases q <;> simp <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem triple {O : Type} [CommRing O] (A B C : M4 (DualNumber O)) (p q : Fin 4) (α γ : O) (β : Fin 4 → O)
     (hA : ∀ a b, (A a b).fst = if a = p ∧ b = p then α else 0)
@@ -54,7 +54,7 @@ private theorem triple {O : Type} [CommRing O] (A B C : M4 (DualNumber O)) (p q 
   fin_cases p <;> fin_cases q <;> simp <;> ring
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hX`. Use `⟨h1, fun i j hij => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, Matrix.entryLinearMap_apply] at h2`. Conclude with `h2 i j hij`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem spW_apply {O : Type} [CommRing O] {w : ℤ × ℤ} {X : M4 O} (hX : X ∈ spW O w) :
     adj X = -X ∧ ∀ i j, wt i j ≠ w → X i j = 0 := by
@@ -64,7 +64,7 @@ private theorem spW_apply {O : Type} [CommRing O] {w : ℤ × ℤ} {X : M4 O} (h
   exact h2 i j hij
 
 /- English proof (translation)
-Take `⟨hadj, hz⟩` from `spW_apply hX`. Establish `h31` using `congrFun (congrFun hadj 3) 1`. Simplify using `[adj_apply, sgn] at h31`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Xm, Matrix.single_apply] <;> first | exact h31 | exact h31.symm | exact hz _ _ (by simp [wt, lamW, muW, wPs])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem spW_neg {O : Type} [CommRing O] {X : M4 O} (hX : X ∈ spW O (-wPs)) : X = X 2 0 • Xm O := by
   obtain ⟨hadj, hz⟩ := spW_apply hX
@@ -77,31 +77,27 @@ private theorem spW_neg {O : Type} [CommRing O] {X : M4 O} (hX : X ∈ spW O (-w
 end UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hG`. Take `⟨-, -, -, -, -, hprod, hinj, -⟩` from `facts D hG`. Use `set cs : Fin 4 → c.O := fun k => ((D.ps k ↑D.s0 : c.Oˣ) : c.O) with hcs`. Establish `hα : ∀ i, (∏ j ∈ Finset.univ.erase i, (cs i - cs j)) ≠ 0`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j hj`. Rewrite using `[sub_ne_zero]`. Introduce `h`. Conclude with `(Finset.mem_erase.1 hj).1 (hinj h).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨hzw, -, ρ, ⟨-, hord⟩, hρ⟩` from `hz`. Establish `hX : ∀ a b, (ρ D.s0 a b).fst = Matrix.diagonal cs a b` using `fun a b => (hρ D.s0 a b).1`. Establish `E : ∀ g : D.Gp l, (0 : c.O) = (prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) 2 2 0).snd * ((D.th g : c.Oˣ) : c.O) * (∏ j ∈ Finset.univ.erase 0, (cs 0 - cs j)) + (∏ j ∈ Finset.univ.erase 2, (cs 2 - cs j)) * (z g 2 0 * ((D.th g : c.Oˣ) : c.O)) * (∏ j ∈ Finset.univ. …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g`. Establish `hs : prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) 2 * ρ g * prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) 0 = 0` using `hord.stable g 0 2 (by decide)`. Establish `ht` using `triple (prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) 2) (ρ g) (prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) 0) 2 0 _ _ (fun k => ((D.ps k g : c.Oˣ) : c.O)) (prj_fst cs (ρ D.s0) hX 2) (prj_fst cs (ρ D.s0) hX 0) (fun a b => (hρ g a b).1)`. Rewrite `ht` using `[hs, (hρ g 2 0).2, show D.r0 ↑g = Matrix.diagonal fun k => ((D.ps k g : c.Oˣ) : c.O) from rfl, Matrix.mul_diagonal, Matrix.zero_apply, TrivSqZeroExt.snd_zero]`. Conclude with `ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hx1 : z 1 2 0 = 0`. Establish `h` using `(hρ 1 2 0).2`. Simplify using `only [map_one, OneMemClass.coe_one, mul_one, Matrix.one_apply_ne (by decide : (2 : Fin 4) ≠ 0), TrivSqZeroExt.snd_zero] at h`. Conclude with `h.symm`. Establish `E1` using `E 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [map_one, OneMemClass.coe_one, Units.val_one, hx1] at E1`. Use `⟨(∏ j ∈ Finset.univ.erase 2, (cs 2 - cs j)) * (∏ j ∈ Finset.univ.erase 0, (cs 0 - cs j)), -((∏ j ∈ Finset.univ.erase 2, (cs 2 - cs j)) * (prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) 0 2 0).snd), mul_ne_zero (hα 2) (hα 0), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[spW_neg (hzw g), smul_smul]`. Use `congr 1`. Establish `huv : ((D.Psi g : c.Oˣ) : c.O) * ((D.Psi⁻¹ g : c.Oˣ) : c.O) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[MonoidHom.inv_apply, Units.mul_inv]`. Establish `hth : ((D.th g : c.Oˣ) : c.O) = ((D.Psi g : c.Oˣ) : c.O) * ((D.al g : c.Oˣ) : c.O)`. Establish `h` using `congrArg (fun f : G ℚ Ω →* c.Oˣ => ((f g : c.Oˣ) : c.O)) (hprod 1)`. Simplify using `only [show (1 : Fin 4).rev = 2 from rfl, MonoidHom.mul_apply, Units.val_mul] at h`. Conclude with `h.symm`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ (Units.ne_zero (D.th g))` to reduce the goal to its premises. Take the linear combination `(-1 : c.O) * E g + (((D.Psi⁻¹ g : c.Oˣ) : c.O) * (∏ j ∈ Finset.univ.erase 2, (cs 2 - cs j)) * (prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) 0 2 0).snd) * hth + (((D.al g : c.Oˣ) : c.O) * (∏ j ∈ Finset.univ.erase 2, (cs 2 - cs j)) * (prj (fun a => algebraMap c.O …`. Introduce `z hz g hg`. Take `⟨hzw, -, ρ, ⟨-, hord⟩, hρ⟩` from `hz`. Establish `hX : ∀ a b, (ρ D.s0 a b).fst = Matrix.diagonal cs a b` using `fun a b => (hρ D.s0 a b).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hr0 : D.r0 ↑g = Matrix.diagonal fun k => ((D.ps k g : c.Oˣ) : c.O)` using `rfl`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `hs` using `hord.inert g (Subgroup.mem_subgroupOf.2 hg) i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set x := algebraMap c.O (DualNumber c.O) ((D.ps i ↑g : c.Oˣ) : c.O) with hx`. Establish `hB : ∀ a b, ((ρ g - x • 1) a b).fst = Matrix.diagonal (fun k => ((D.ps k g : c.Oˣ) : c.O) - ((D.ps i g : c.Oˣ) : c.O)) a b`. Introduce `a b`. Rewrite using `[Matrix.sub_apply, TrivSqZeroExt.fst_sub, (hρ g a b).1, hr0, Matrix.smul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.diagonal_apply, hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using the standard rewrite rules. Establish `ht` using `triple _ _ _ i i _ _ _ (prj_fst cs (ρ D.s0) hX i) (prj_fst cs (ρ D.s0) hX i) hB`. Establish `hs' : prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) i * (ρ g - x • 1) * prj (fun a => algebraMap c.O (DualNumber c.O) (cs a)) (ρ D.s0) i = 0` using `hs`.
-
-Rewrite `ht` using `[hs', Matrix.sub_apply, TrivSqZeroExt.snd_sub, (hρ g i i).2, hr0, Matrix.mul_diagonal, Matrix.smul_apply, Matrix.one_apply_eq]`. Simplify using `[hx, TrivSqZeroExt.algebraMap_eq_inl] at ht`. Rewrite using `[Matrix.zero_apply]`. Break down `ht with (h | h) | h` into its components or cases. Conclude with `absurd h (hα i)`.
-
-Conclude with `h`. Conclude with `absurd h (hα i)`. Rewrite using `[Matrix.zero_apply]`. Conclude with `(spW_apply (hzw g)).2 i j (by rw [Ne, wt_eq_zero]; exact hij)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.tanLz :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → (∀ z ∈ D.tanSet l (fun _ _ _ ρ => D.eqL ρ) (-wPs), ∃ a m : c.O, a ≠ 0 ∧ ∀ g : D.Gp l, a • z g = (((D.Psi⁻¹ g : c.Oˣ) : c.O) * m - m) • Xm c.O) ∧ ∀ z ∈ D.tanSet l (fun _ _ _ ρ => D.eqL ρ) 0, ∀ g : D.Gp l, (g : G ℚ Ω) ∈ D.Ip l → z g = 0 := by

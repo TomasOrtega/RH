@@ -16,7 +16,7 @@ private noncomputable def hJ (F : Type) [Field F] [NumberField F] [IsTotallyReal
       (continuous_apply w)
 
 /- English proof (translation)
-Establish `hH : ((infiniteAdeleMeasure F).map (hJ F).symm).IsAddHaarMeasure` using `(TR.infEq F).symm.toAddEquiv.isAddHaarMeasure_map (infiniteAdeleMeasure F) (hJ F).symm.continuous (hJ F).continuous`. Conclude with `⟨_, Measure.isAddLeftInvariant_eq_smul ((infiniteAdeleMeasure F).map (hJ F).symm) (volume : Measure (InfinitePlace F → ℝ))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private lemma map_hJ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     ∃ c : NNReal, (infiniteAdeleMeasure F).map (hJ F).symm =
@@ -28,11 +28,11 @@ private lemma map_hJ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     (volume : Measure (InfinitePlace F → ℝ))⟩
 
 /- English proof (translation)
-Establish `emb` using `(hJ F).symm.measurableEmbedding`. Establish `hv : Integrable (fun y : InfinitePlace F → ℝ => ∏ w, f w (y w)) volume` using `Integrable.fintype_prod hf`. Establish `hv' : Integrable (fun y : InfinitePlace F → ℝ => ∏ w, f w (y w)) ((infiniteAdeleMeasure F).map (hJ F).symm)`. Rewrite using `[hc]`. Conclude with `hv.smul_measure ENNReal.coe_ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : Integrable (fun z : InfiniteAdeleRing F => ∏ w, f w ((hJ F).symm z w)) (infiniteAdeleMeasure F)` using `(emb.integrable_map_iff.1 hv')`. Establish `hint : ∫ z : InfiniteAdeleRing F, ∏ w, f w ((hJ F).symm z w) ∂(infiniteAdeleMeasure F) = (c : ℂ) * ∏ w, ∫ t, f w t`. Establish `h1` using `emb.integral_map (μ := infiniteAdeleMeasure F) (fun y : InfinitePlace F → ℝ => ∏ w, f w (y w))`. Rewrite using `[← h1, hc, integral_smul_nnreal_measure, volume_pi, integral_fintype_prod_eq_prod]`. Rewrite using `[NNReal.smul_def, Complex.real_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hG => hi.mul_prod hG, ?_⟩` and prove the remaining obligations. Establish `h2` using `integral_prod_mul (μ := infiniteAdeleMeasure F) (ν := finiteAdeleMeasure F) (fun z : InfiniteAdeleRing F => ∏ w, f w ((hJ F).symm z w)) G`. Rewrite `h2` using `[hint]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma split_int {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {c : NNReal}
     (hc : (infiniteAdeleMeasure F).map (hJ F).symm = c • (volume : Measure (InfinitePlace F → ℝ)))
@@ -64,7 +64,7 @@ private lemma split_int {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {
   exact h2
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma gauss_prod {ι : Type} [Fintype ι] (y : ι → ℝ) :
     Complex.exp (-(Real.pi : ℂ) * ((∑ w, y w ^ 2 : ℝ) : ℂ)) =
@@ -75,11 +75,11 @@ private lemma gauss_prod {ι : Type} [Fintype ι] (y : ι → ℝ) :
   rw [Finset.mul_sum]
 
 /- English proof (translation)
-Establish `h0 : (fun v : V4 F => ((TR.pInf F (v 1) w : ℝ) : ℂ)) ∈ polyFn (F` using `F) := Algebra.subset_adjoin ⟨1, w, rfl⟩`. Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Use `(polyFn (F := F)).add_mem hp hq` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `v`. Simplify using `[Polynomial.eval_add]`. Consider the case `monomial n a`. Use `(polyFn (F := F)).mul_mem ((polyFn (F := F)).algebraMap_mem a) ((polyFn (F := F)).pow_mem h0 n)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `v`. Simplify using `[Polynomial.eval_monomial]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma eval_mem {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (Q : Polynomial ℂ)
     (w : InfinitePlace F) :
@@ -100,27 +100,27 @@ private lemma eval_mem {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (Q
     simp [Polynomial.eval_monomial]
 
 /- English proof (translation)
-Introduce `F _ _ _ e`. Take `⟨c, hc⟩` from `map_hJ F`. Establish `hP` using `fun n => (hermite1 n).2`. Use `choose Q hQ using hP`. Establish `hH : ∀ y : InfinitePlace F → ℝ, (∏ w, ((y w : ℝ) : ℂ) ^ e w) * Complex.exp (-(Real.pi : ℂ) * ((∑ w, y w ^ 2 : ℝ) : ℂ)) = ∏ w, ((y w : ℂ) ^ e w * Complex.exp (-(Real.pi : ℂ) * (y w : ℂ) ^ 2))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[gauss_prod, Finset.prod_mul_distrib]`. Use `⟨fun x => (c : ℂ) * ∏ w, (Q (e w)).eval ((TR.pInf F x w : ℝ) : ℂ), ?_, fun g hg => ⟨?_, fun x => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (fun v : V4 F => (∏ w, (Q (e w)).eval ((TR.pInf F (v 1) w : ℝ) : ℂ))) ∈ polyFn (F` using `F) := by`. Use `(polyFn (F := F)).prod_mem (t := Finset.univ) (f := fun w => fun v : V4 F => (Q (e w)).eval ((TR.pInf F (v 1) w : ℝ) : ℂ)) (fun w _ => eval_mem _ w)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Simplify using `[Finset.prod_apply]`. Use `(polyFn (F := F)).mul_mem ((polyFn (F := F)).algebraMap_mem (c : ℂ)) h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using the standard rewrite rules. Establish `h` using `(split_int hc (fun w t => (t : ℂ) ^ e w * Complex.exp (-(Real.pi : ℂ) * (t : ℂ) ^ 2)) (fun w => (hermite1 (e w)).1) g).1 hg`. Use `h.congr (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [hH]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hS` using `(UpperTheory.ConvolutionTheory.R2.C.splitA F).2`. Establish `hint : ∀ w : InfinitePlace F, Integrable (fun t : ℝ => (t : ℂ) ^ e w * Complex.exp (-(Real.pi : ℂ) * (t : ℂ) ^ 2) * Complex.exp (2 * Real.pi * Complex.I * (t * (TR.pInf F x w : ℝ))))`. Introduce `w`. Use `(hermite1 (e w)).1.mono (Continuous.aestronglyMeasurable (by fun_prop)) (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ‖Complex.exp (2 * Real.pi * Complex.I * (s * (TR.pInf F x w : ℝ)))‖ = 1`. Establish `e1 : (2 * Real.pi * Complex.I * (s * (TR.pInf F x w : ℝ)) : ℂ) = ((2 * Real.pi * (s * TR.pInf F x w) : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[e1, Complex.norm_exp_ofReal_mul_I]`. Rewrite using `[this, mul_one]`. Establish `h` using `(split_int hc (fun w t => (t : ℂ) ^ e w * Complex.exp (-(Real.pi : ℂ) * (t : ℂ) ^ 2) * Complex.exp (2 * Real.pi * Complex.I * (t * (TR.pInf F x w : ℝ)))) hint (fun a => g a * ((finiteAdelicChar F (-(a * x.2)) : Circle) : ℂ))).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcongr : ∀ s : A F, (∏ w, ((TR.pInf F s w : ℝ) : ℂ) ^ e w) * Complex.exp (-(Real.pi : ℂ) * ((∑ w, TR.pInf F s w ^ 2 : ℝ) : ℂ)) * g s.2 * ψ (-(s * x)) = (∏ w, (((TR.pInf F s w : ℝ) : ℂ) ^ e w * Complex.exp (-(Real.pi : ℂ) * ((TR.pInf F s w : ℝ) : ℂ) ^ 2) * Complex.exp (2 * Real.pi …`. Introduce `s`. Establish `e1 : (-(s * x)).2 = -(s.2 * x.2)` using `rfl`. Establish `e2 : ∀ w, TR.pInf F (-(s * x)) w = -(TR.pInf F s w * TR.pInf F x w)`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, map_mul]`. Both sides reduce to the same expression. Rewrite using `[hS (-(s * x)), e1, hH, Finset.prod_mul_distrib (f := fun w => _ * _)]`. Establish `e3 : ∀ w, Complex.exp (-(2 * Real.pi * Complex.I) * ((TR.pInf F (-(s * x)) w : ℝ) : ℂ)) = Complex.exp (2 * Real.pi * Complex.I * (((TR.pInf F s w : ℝ) : ℂ) * (TR.pInf F x w : ℝ)))`. Introduce `w`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e3]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hcongr]`. Rewrite using `[h]`. Simplify using `only [hQ]`. Rewrite using `[Finset.prod_mul_distrib, gauss_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.hermAdel :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (e : InfinitePlace F → ℕ), ∃ P : A F → ℂ, (fun v : V4 F => P (v 1)) ∈ polyFn (F := F) ∧

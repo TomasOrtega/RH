@@ -13,11 +13,11 @@ namespace NormEntryBounds
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `B.gN`. Rewrite using `[show ((2 * r + k + 1 : ℕ) : ℝ) * E = Real.sqrt ((((2 * r + k + 1 : ℕ) : ℝ) * E) ^ 2) by`. Rewrite using `[Real.sqrt_sq (by positivity)]]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `hs : ∀ i j, Complex.normSq (g i j) ≤ E ^ 2`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (h i j) 2`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma gN_le (g : B.Mat k r) (E : ℝ) (hE : 0 ≤ E) (h : ∀ i j, ‖g i j‖ ≤ E) :
     B.gN g ≤ ((2 * r + k + 1 : ℕ) : ℝ) * E := by
@@ -33,9 +33,7 @@ lemma gN_le (g : B.Mat k r) (E : ℝ) (hE : 0 ≤ E) (h : ∀ i j, ‖g i j‖ �
         simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[gn_Hpk_mulVec]`. Use `split_ifs`. Conclude with `hy _`. Rewrite using `[norm_neg]`. Conclude with `hy _`.
-
-Conclude with `hy _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Hpk_mulVec_le (y : Fin (2 * r + k + 1) → ℂ) (X : ℝ) (hy : ∀ p, ‖y p‖ ≤ X) (j : Fin (2 * r + k + 1)) :
     ‖(Hpk k r *ᵥ y) j‖ ≤ X := by
@@ -46,9 +44,9 @@ lemma Hpk_mulVec_le (y : Fin (2 * r + k + 1) → ℂ) (X : ℝ) (hy : ∀ p, ‖
   · exact hy _
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `ht : ∀ p, ‖A i p * M p j‖ ≤ a * b`. Introduce `p`. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (ha i p) (hb p j) (norm_nonneg _) (le_trans (norm_nonneg _) (ha i p))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mul_entry_le (A M : B.Mat k r) (a b : ℝ) (ha : ∀ i j, ‖A i j‖ ≤ a) (hb : ∀ i j, ‖M i j‖ ≤ b)
     (hb0 : 0 ≤ b) (i j : Fin (2 * r + k + 1)) :
@@ -68,41 +66,37 @@ end NormEntryBounds
 open NormEntryBounds
 
 /- English proof (translation)
-Introduce `k r z hz`. Establish `hn0 : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by positivity`. Take `⟨Zm, hZm⟩ : ∃ Zm : ℝ, Zm = ∑ p, ‖z p‖` from `⟨_, rfl⟩`. Establish `hZm0 : 0 ≤ Zm` using `by rw [hZm]; exact Finset.sum_nonneg (fun p _ => norm_nonneg _)`. Establish `hzp : ∀ p, ‖z p‖ ≤ Zm` using `fun p => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hZm]`. Conclude with `Finset.single_le_sum (fun q _ => norm_nonneg (z q)) (Finset.mem_univ p)`. Take `⟨c, hc⟩ : ∃ c : ℂ, c = (1 : ℂ) / ((Tz k r z : ℝ) : ℂ)` from `⟨_, rfl⟩`. Take `⟨A, hA⟩ : ∃ A : ℝ, A = 1 + ‖c‖ * (2 * Zm + 1)` from `⟨_, rfl⟩`. Establish `hA1 : 1 ≤ A` using `by rw [hA]; nlinarith [norm_nonneg c]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Cm, hCm⟩ : ∃ Cm : ℝ, Cm = (Nat.factorial r : ℝ)` from `⟨_, rfl⟩`. Establish `hCm1 : 1 ≤ Cm` using `by rw [hCm]; exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero r)`. Use `⟨((2 * r + k + 1 : ℕ) : ℝ) * (((2 * r + k + 1 : ℕ) : ℝ) * (A * Cm)), fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨X, hX⟩ : ∃ X, X = C2.mx v` from `⟨_, rfl⟩`. Rewrite using `[← hX]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX0 : 0 ≤ X` using `by rw [hX]; exact norm_nonneg _`. Establish `hvX : ∀ a b, ‖v a b‖ ≤ X` using `fun a b => by rw [hX]; exact entry_le_mx v a b`. Establish `h1X : 1 ≤ 1 + X` using `by linarith`. Take `⟨ξ, hξ⟩ : ∃ ξ : Fin r → ℂ, ξ = fun a => v a.castSucc (Fin.last r)` from `⟨_, rfl⟩`. Take `⟨vX, hvXe⟩ : ∃ vX : Matrix (Fin r) (Fin r) ℂ, vX = v.submatrix Fin.castSucc Fin.castSucc` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvXU : vX ∈ C2.UTset r`. Rewrite using `[hvXe]`. Conclude with `⟨fun i j h => hv.1 _ _ (Fin.castSucc_lt_castSucc_iff.mpr h), fun i => hv.2 _⟩`. Establish `hτ : C2.tauM k r z v = C2.nEich k r z ξ * C2.mX k r vX` using `by rw [hξ, hvXe]; rfl`. Establish `hxi : ∀ p, ‖C2.xiV k r ξ p‖ ≤ X`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Simplify using `only [C2.xiV]`. Use `split_ifs`. Rewrite using `[hξ]`. Conclude with `hvX _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_zero]`. Conclude with `hX0`. Establish `hnE : ∀ i j, ‖C2.nEich k r z ξ i j‖ ≤ A * (1 + X) ^ 2`. Introduce `i j`. Simplify using `only [C2.nEich, Matrix.add_apply, Matrix.smul_apply, Matrix.neg_apply, vecMulVec_apply, Pi.star_apply, smul_eq_mul, ← hc]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have h1 : ‖(1 : B.Mat k r) i j‖ ≤ 1 := by rw [Matrix.one_apply]; split_ifs <;> simp`. Establish `hHz` using `Hpk_mulVec_le z Zm hzp j`. Establish `hHx` using `Hpk_mulVec_le (C2.xiV k r ξ) X hxi j`. Establish `hsum : ‖-(C2.xiV k r ξ i * star ((Hpk k r *ᵥ z) j)) + z i * star ((Hpk k r *ᵥ C2.xiV k r ξ) j) + 1 / 2 * (C2.xiV k r ξ i * star ((Hpk k r *ᵥ C2.xiV k r ξ) j))‖ ≤ (2 * Zm + 1) * (1 + X) ^ 2`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(add_le_add (norm_add_le _ _) le_rfl).trans ?_` and prove the remaining obligations. Simplify using `only [norm_neg, norm_mul, norm_star]`. Establish `e1 : ‖C2.xiV k r ξ i‖ * ‖(Hpk k r *ᵥ z) j‖ ≤ X * Zm` using `mul_le_mul (hxi i) hHz (norm_nonneg _) hX0`. Establish `e2 : ‖z i‖ * ‖(Hpk k r *ᵥ C2.xiV k r ξ) j‖ ≤ Zm * X` using `mul_le_mul (hzp i) hHx (norm_nonneg _) hZm0`. Establish `e3 : ‖(1 / 2 : ℂ)‖ * (‖C2.xiV k r ξ i‖ * ‖(Hpk k r *ᵥ C2.xiV k r ξ) j‖) ≤ 1 * (X * X)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Apply `mul_le_mul (by norm_num) (mul_le_mul (hxi i) hHx (norm_nonneg _) hX0) (by positivity) (by norm_num)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ 1 + ‖c‖ * ((2 * Zm + 1) * (1 + X) ^ 2) := add_le_add h1 (mul_le_mul_of_nonneg_left hsum (norm_nonneg _))`. Use `_ ≤ A * (1 + X) ^ 2 := by`. Rewrite using `[hA]; nlinarith [norm_nonneg c, pow_le_pow_left₀ (by linarith : (0:ℝ) ≤ 1) h1X 2, sq_nonneg (1 + X)]`. Establish `hvXb : ∀ a b, ‖vX a b‖ ≤ 1 + X` using `fun a b => by rw [hvXe]; simp only [Matrix.submatrix_apply]; linarith [hvX (Fin.castSucc a) (Fin.castSucc b)]`. Establish `hmE : ∀ i j, ‖C2.mX k r vX i j‖ ≤ Cm * (1 + X) ^ r`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow1 : 1 ≤ (1 + X) ^ r` using `one_le_pow₀ h1X`. Introduce `i j`. Simplify using `only [C2.mX]`. Use `split_ifs with h1 h2 h3 h4 h5`. Combine the equalities or inequalities in the displayed calculation.
+Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ Cm * (1 + X) ^ r := le_mul_of_one_le_left (by positivity) hCm1`. Rewrite using `[norm_zero]`. Check the signs of the components of the expression. Establish `hdet : vXᴴ.det = 1` using `by rw [Matrix.det_conjTranspose, ut_det hvXU, star_one]`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Use `(inv_entry_le vXᴴ hdet (1 + X) h1X (fun a b => by rw [Matrix.conjTranspose_apply, norm_star]; exact hvXb _ _) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← hCm]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ h1X (Nat.sub_le r 1)) (by positivity)`. Rewrite using `[norm_zero]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[norm_one]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[norm_zero]`. Check the signs of the components of the expression. Establish `hτE : ∀ i j, ‖C2.tauM k r z v i j‖ ≤ ((2 * r + k + 1 : ℕ) : ℝ) * (A * Cm) * (1 + X) ^ (2 * r + 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[hτ]`. Use `(mul_entry_le _ _ _ _ hnE hmE (by positivity) i j).trans ?_` and prove the remaining obligations. Establish `key : ((2 * r + k + 1 : ℕ) : ℝ) * (A * (1 + X) ^ 2 * (Cm * (1 + X) ^ r)) = ((2 * r + k + 1 : ℕ) : ℝ) * (A * Cm) * (1 + X) ^ (r + 2)` using `by ring`. Rewrite using `[key]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ h1X (by omega)) (by positivity)`. Establish `hgN : B.gN (C2.tauM k r z v) ≤ ((2 * r + k + 1 : ℕ) : ℝ) * (((2 * r + k + 1 : ℕ) : ℝ) * (A * Cm)) * (1 + X) ^ (2 * r + 2)`. Use `(gN_le _ _ (by positivity) hτE).trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hτG : C2.tauM k r z v ∈ B.GV k r` using `((c2_tau_mem k r z hz v hv).1).1`.
-
-Use `⟨hgN, ?_⟩` and prove the remaining obligations. Rewrite using `[(norm_of_inverse k r _ hτG).1]`. Conclude with `hgN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_norm_bound : C2.TauBound := by
   intro k r z hz

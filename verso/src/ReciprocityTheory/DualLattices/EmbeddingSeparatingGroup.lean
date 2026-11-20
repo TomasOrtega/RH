@@ -11,73 +11,63 @@ namespace ReciprocityTheory.PGsh.Up
 open ReciprocityTheory.PGsh.L2
 
 /- English proof (translation)
-Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hp2 hS H U`. Establish `hv : v.Integers R` using `hS.integers`. Establish `hpv : v (algebraMap R C (p : R)) < 1` using `hS.p_lt`. Establish `hp : p.Prime` using `Fact.out`. Establish `hvnat : ∀ n : ℕ, ¬ p ∣ n → v (algebraMap R C (n : R)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n hn`. Assume the negation of the conclusion as `hne`. Establish `hlt : v (algebraMap R C (n : R)) < 1` using `lt_of_le_of_ne (hv.map_le_one _) hne`. Establish `hcop : Nat.Coprime p n` using `(Nat.Prime.coprime_iff_not_dvd hp).2 hn`. Establish `h1 : ((p : ℤ) * Nat.gcdA p n + (n : ℤ) * Nat.gcdB p n) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.gcd_eq_gcd_ab, Nat.Coprime.gcd_eq_one hcop, Nat.cast_one]`. Establish `h2 : (p : R) * (Nat.gcdA p n : R) + (n : R) * (Nat.gcdB p n : R) = 1`. Use `congrArg (fun z : ℤ => (z : R)) h1` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `h3 : v (algebraMap R C ((p : R) * (Nat.gcdA p n : R) + (n : R) * (Nat.gcdB p n : R))) < 1`. Rewrite using `[map_add]`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_mul, Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right zero_le (hv.map_le_one _)) hpv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right zero_le (hv.map_le_one _)) hlt`. Rewrite `h3` using `[h2, map_one, Valuation.map_one]`. Conclude with `lt_irrefl _ h3`. Establish `hunit : ∀ n : ℕ, ¬ p ∣ n → IsUnit (n : R)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n hn`. Establish `hn0 : (n : C) ≠ 0`. Establish `: n ≠ 0` using `fun h => hn (h ▸ dvd_zero p)`. Conclude with `this` after adjusting the coercions. Conclude with `hv.isUnit_of_one (isUnit_iff_ne_zero.2 (by rw [map_natCast]; exact hn0)) (hvnat n hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hp2' : ¬ p ∣ 2` using `fun h => hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h)`. Establish `heig : ∀ a j, (H.ρ a).map (algebraMap ℤ_[p] R) * U.εT j = U.sg j a • U.εT j` using `U.εT_eig`. Establish `hres1 : FrobeniusGroupField.res hv 1 ≠ 0` using `(FrobeniusGroupField.res_ne_zero hv 1).2 (by simp)`. Establish `hex : ∀ t : Option (Fin U.m × Fin U.m × Bool), ∃ (b : O) (m : ℕ), 0 < m ∧ ¬ p ∣ m ∧ H.ρ b ^ m = 1 ∧ (match t with`. Consider the case `none => ∀ j, U.εT j ≠ 0 → v (algebraMap R C (U.sg j b - 1)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `some (i, k, e) => U.εT i ≠ 0 → U.εT k ≠ 0 → cond e (k ≠ U.φ i) (i ≠ k) → FrobeniusGroupField.res hv (U.sg k b) ≠ FrobeniusGroupField.res hv (U.sg i b) ^ p ^ e.toNat) := by`. Introduce `t`. Break down `t with _ | ⟨i, k, e⟩` into its components or cases. Take `⟨b, m, s, hm, hmp, hbm, hb⟩` from `FrobeniusGroupField.seed p hv hpv H.ρ U.εT U.sg heig 0 2`. Use `⟨b, m, hm, hmp, hbm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `j hj`. Establish `h2 : FrobeniusGroupField.res hv (U.sg j 0 + ((2 : ℤ) : R)) = FrobeniusGroupField.res hv 2` using `by simp`. Establish `hr2 : FrobeniusGroupField.res hv 2 ≠ 0` using `(FrobeniusGroupField.res_ne_zero hv 2).2 (by simpa using hvnat 2 hp2')`. Establish `hfer : ∀ s : ℕ, FrobeniusGroupField.res hv 2 ^ p ^ s = FrobeniusGroupField.res hv 2`. Introduce `s`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Establish `hf` using `FrobeniusGroupField.fermat p hv hpv (2 : ℤ_[p])`. Rewrite `hf` using `[map_ofNat]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, pow_mul, ih, hf]`. Establish `hbj` using `hb j hj (by rw [h2]; exact hr2)`. Rewrite `hbj` using `[h2, hfer]`. Apply `(FrobeniusGroupField.res_ne_zero hv _).1` to reduce the goal to its premises. Rewrite using `[map_sub, hbj, map_one]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `h21 : FrobeniusGroupField.res hv 2 - 1 = FrobeniusGroupField.res hv 1`. Rewrite using `[← map_one (FrobeniusGroupField.res hv), ← map_sub]`. Evaluate the numerical expressions. Rewrite using `[h21]`. Conclude with `hres1`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hall : U.εT i ≠ 0 ∧ U.εT k ≠ 0 ∧ cond e (k ≠ U.φ i) (i ≠ k)`. Take `⟨hi, hk, hik⟩` from `hall`. Establish `ha : ∃ a, FrobeniusGroupField.res hv (U.sg k a) ≠ FrobeniusGroupField.res hv (U.sg i a) ^ p ^ e.toNat`. Consider the cases of `e`. Simplify using `only [cond_false, Bool.toNat_false, pow_zero, pow_one] at hik ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `U.distinct i k hik`. Use `⟨a, fun heq => ?_⟩` and prove the remaining obligations. Establish `h0 : FrobeniusGroupField.res hv (U.sg i a - U.sg k a) = 0` using `by rw [map_sub, heq, sub_self]`. Conclude with `((FrobeniusGroupField.res_ne_zero hv _).2 ha) h0`. Simplify using `only [cond_true, Bool.toNat_true, pow_one] at hik ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `U.distinct k (U.φ i) hik`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hfr : FrobeniusGroupField.res hv (U.sg (U.φ i) a) = FrobeniusGroupField.res hv (U.sg i a) ^ p`. Establish `h0` using `(FrobeniusGroupField.res_eq_zero hv _).2 (U.frob i a)`. Rewrite `h0` using `[map_sub, map_pow, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `h0`. Rewrite using `[← hfr]`. Introduce `heq`. Establish `h0 : FrobeniusGroupField.res hv (U.sg k a - U.sg (U.φ i) a) = 0` using `by rw [map_sub, heq, sub_self]`. Conclude with `((FrobeniusGroupField.res_ne_zero hv _).2 ha) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `ha`. Take `⟨b, m, hm, hmp, hbm, hb⟩` from `FrobeniusGroupField.pair p hp2 hv hpv H.ρ U.εT U.sg heig a e.toNat i k hi hk ha`. Conclude with `⟨b, m, hm, hmp, hbm, fun _ _ _ => hb⟩`. Conclude with `⟨1, 1, one_pos, hp.not_dvd_one, by simp, fun hi hk hik => absurd ⟨hi, hk, hik⟩ hall⟩`. Use `choose b m0 hm0 hmp0 hbm0 hQ using hex`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m : Option (Fin U.m × Fin U.m × Bool) → ℕ` to `fun t => 2 * m0 t`. Establish `hm : ∀ t, 0 < m t` using `fun t => by`. Use `hm0 t` as an intermediate fact. Use `show 0 < 2 * m0 t`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmp : ∀ t, ¬ p ∣ m t` using `fun t h => ((Nat.Prime.dvd_mul hp).1 h).elim hp2' (hmp0 t)`. Establish `hbm : ∀ t, H.ρ (b t) ^ m t = 1` using `fun t => by show H.ρ (b t) ^ (2 * m0 t) = 1`. Rewrite using `[mul_comm, pow_mul, hbm0 t, one_pow]`. Use `haveI : ∀ t, NeZero (m t) := fun t => ⟨(hm t).ne'⟩`. Establish `hone : ∀ t, (1 : ZMod (m t)).val = 1` using `fun t => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.val_one_eq_one_mod]`. Conclude with `Nat.mod_eq_of_lt (by have := hm0 t; show 1 < 2 * m0 t; omega)`. Set `G` to `∀ t : Option (Fin U.m × Fin U.m × Bool), Multiplicative (ZMod (m t))`. Set `β : G → O` to `fun γ => ∏ t, b t ^ (Multiplicative.toAdd (γ t)).val`. Establish `key : ∀ (s : Finset (Option (Fin U.m × Fin U.m × Bool))) (n : Option (Fin U.m × Fin U.m × Bool) → ℕ), H.ρ (∏ t ∈ s, b t ^ n t) = H.ρ (∏ t ∈ s, b t ^ (n t % m t))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s n`. Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, map_mul, map_mul, ih, map_pow, map_pow, ← pow_eq_pow_mod _ (hbm a)]`. Establish `hmul : ∀ γ γ' : G, H.ρ (β (γ * γ')) = H.ρ (β γ) * H.ρ (β γ')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ γ'`. Establish `e1 : β (γ * γ') = ∏ t, b t ^ (((Multiplicative.toAdd (γ t)).val + (Multiplicative.toAdd (γ' t)).val) % m t)`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, toAdd_mul, ZMod.val_add]`. Establish `k2` using `key Finset.univ (fun t => (Multiplicative.toAdd (γ t)).val + (Multiplicative.toAdd (γ' t)).val)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `beta_reduce at k2`. Rewrite using `[e1, ← k2, ← map_mul]`. Use `congr 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun t _ => pow_add _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : H.ρ (β 1) = 1`. Establish `hb1 : β 1 = 1`. Use `(Finset.prod_congr rfl fun t _ => ?_).trans Finset.prod_const_one` and prove the remaining obligations. Use `show b t ^ (Multiplicative.toAdd ((1 : G) t)).val = 1`. Rewrite using `[Pi.one_apply, toAdd_one, ZMod.val_zero, pow_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hb1, map_one]`. Establish `hcard : IsUnit (Fintype.card G : R)`. Rewrite using `[Fintype.card_pi, Nat.cast_prod]`. Use `Finset.prod_induction _ IsUnit (fun x y hx hy => hx.mul hy) isUnit_one fun t _ => ?_` and prove the remaining obligations. Establish `hc : Fintype.card (Multiplicative (ZMod (m t))) = m t` using `by simp`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `hunit _ (hmp t)`. Set `gen : Option (Fin U.m × Fin U.m × Bool) → G` to `fun t => Pi.mulSingle (M := fun t => Multiplicative (ZMod (m t))) t (Multiplicative.ofAdd (1 : ZMod (m t)))`. Establish `hgen : ∀ t, β (gen t) = b t`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show ∏ u, b u ^ (Multiplicative.toAdd (Pi.mulSingle (M := fun t => Multiplicative (ZMod (m t))) t (Multiplicative.ofAdd (1 : ZMod (m t))) u)).val = b t`. Rewrite using `[Finset.prod_eq_single t]`. Rewrite using `[Pi.mulSingle_eq_same, toAdd_ofAdd, hone, pow_one]`. Introduce `u _ hu`. Rewrite using `[Pi.mulSingle_eq_of_ne hu, toAdd_one, ZMod.val_zero, pow_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ t) h`. Establish `hsep' : ∀ i k, U.εT i ≠ 0 → U.εT k ≠ 0 → i ≠ k → FrobeniusGroupField.res hv (U.sg k (b (some (i, k, false)))) ≠ FrobeniusGroupField.res hv (U.sg i (b (some (i, k, false))))`. Introduce `i k hi hk hik`. Establish `hq` using `hQ (some (i, k, false)) hi hk (by simpa using hik)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hq`. Establish `hsepψ : ∀ j k, U.εT j ≠ 0 → U.εT k ≠ 0 → j ≠ k → ∃ γ : G, U.sg j (β γ) ≠ U.sg k (β γ)`. Introduce `j k hj hk hjk`. Use `⟨gen (some (j, k, false)), ?_⟩` and prove the remaining obligations. Rewrite using `[hgen]`.
-
-Introduce `heq`. Conclude with `hsep' j k hj hk hjk (by rw [heq])`. Use `⟨G, inferInstance, inferInstance, β, hmul, h1, hcard, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i γ hi`. Take `⟨j, hj, hψ⟩` from `FrobeniusGroupField.proj p hv hpv hcard (fun γ => H.ρ (β γ)) hmul h1 U.εT U.εT_orth U.εT_sum (fun j γ => U.sg j (β γ)) (fun j γ => U.εT_eig (β γ) j) (fun j k hj hk hjk => hsepψ j k hj hk hjk) i hi`.
-
-Establish `hjφ : j = U.φ i`. Assume the negation of the conclusion as `hne`. Establish `hq` using `hQ (some (i, j, true)) hi hj (by simpa using hne)`. Simplify using `only [Bool.toNat_true, pow_one] at hq`. Establish `h2` using `hψ (gen (some (i, j, true)))`.
-
-Simplify using `only [hgen] at h2`. Conclude with `hq (by rw [h2, map_pow])`. Rewrite using `[← hjφ]`. Conclude with `hψ γ`. Introduce `i k hi hk hik`.
-
-Use `⟨gen (some (i, k, false)), ?_⟩` and prove the remaining obligations. Rewrite using `[hgen]`. Apply `(FrobeniusGroupField.res_ne_zero hv _).1` to reduce the goal to its premises. Rewrite using `[map_sub, sub_ne_zero]`. Conclude with `(hsep' i k hi hk hik).symm`.
-
-Introduce `i hi`. Conclude with `⟨gen none, by rw [hgen]; exact hQ none i hi⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem embeddingSeparatingGroup : EmbeddingSeparatingGroupStatement := by
   intro p _ g C _ _ _ v R _ _ _ O _ _ σ cp hp2 hS H U

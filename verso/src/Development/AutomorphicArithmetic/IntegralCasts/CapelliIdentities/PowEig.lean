@@ -5,7 +5,7 @@ import Mathlib
     fun (C : Type) (N : ℕ) ↦ Matrix (Fin N) (Fin N) C
 
 /- English proof (translation)
-Introduce `C _ N y l w h m`. Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, one_smul, Matrix.one_mulVec]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, pow_succ']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qp8.pow_eig :
     ∀ {C : Type} [inst : Field C] {N : ℕ} (y : UpperTheory.Reformulated.B.Qp8.Mat C N) (l : C) (w : Fin N → C),

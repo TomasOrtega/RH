@@ -16,7 +16,7 @@ variable {N r : ℕ} (ε : Fin N → Bool) (F G : Fin (r + 1) → Fin N → ℂ)
 def Wfg : Matrix (Fin N) (Fin (r + 1) ⊕ Fin (r + 1)) ℂ := Matrix.of fun p k => Sum.elim F G k p
 
 /- English proof (translation)
-Use extensionality with `k l`. Rewrite using `[Matrix.mul_assoc]`. Apply the tactic sequence `rcases k with a | a <;> rcases l with b | b <;>`. Simplify using `[hJ, Matrix.mul_apply, mulVec, dotProduct, Wfg, conjTranspose_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem gram_Wfg : (Wfg F G)ᴴ * Formalism.REAL.Jm ε * Wfg F G =
     Matrix.fromBlocks (Matrix.of fun a b => hJ ε (F a) (F b)) (Matrix.of fun a b => hJ ε (F a) (G b))
@@ -27,7 +27,7 @@ theorem gram_Wfg : (Wfg F G)ᴴ * Formalism.REAL.Jm ε * Wfg F G =
     simp [hJ, Matrix.mul_apply, mulVec, dotProduct, Wfg, conjTranspose_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[← mulVec_mulVec]`. Apply the tactic sequence `rcases k with a | b <;> simp [hJ, mulVec, dotProduct, Wfg, conjTranspose_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wjx (x : Fin N → ℂ) : ((Wfg F G)ᴴ * Formalism.REAL.Jm ε) *ᵥ x = Sum.elim (fun a => hJ ε (F a) x) (fun b => hJ ε (G b) x) := by
   funext k
@@ -35,7 +35,7 @@ theorem wjx (x : Fin N → ℂ) : ((Wfg F G)ᴴ * Formalism.REAL.Jm ε) *ᵥ x =
   rcases k with a | b <;> simp [hJ, mulVec, dotProduct, Wfg, conjTranspose_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, Wfg, Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Wfg_mulVec (v : Fin (r + 1) ⊕ Fin (r + 1) → ℂ) :
     Wfg F G *ᵥ v = ∑ a, v (Sum.inl a) • F a + ∑ b, v (Sum.inr b) • G b := by
@@ -65,7 +65,7 @@ variable (hFF : ∀ a b, hJ ε (F a) (F b) = lastDiag (-(T : ℂ)) a b)
     starRingEnd ℂ ((Zm ε F G)⁻¹ (Fin.last r) (Fin.last r))) ≠ 0)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a = true <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_herm : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
@@ -76,11 +76,11 @@ theorem Jm_herm : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
 
 include hFF hGG hπ hZ in
 /- English proof (translation)
-Rewrite using `[gram_Wfg]`. Use `fromBlocks_inj.2 ⟨?_, rfl, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[hFF]`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [of_apply, conjTranspose_apply, Zm]`. Unfold `hJ Formalism.REAL.Jm`. Simplify using `only [mulVec_diagonal, dotProduct, star_sum, star_mul', star_star, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `a b`. Simplify using `[hGG]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_eq : (Wfg F G)ᴴ * Formalism.REAL.Jm ε * Wfg F G =
     Matrix.fromBlocks (lastDiag (-(T : ℂ))) (Zm ε F G) (Zm ε F G)ᴴ (lastDiag (-(T' : ℂ))) := by
@@ -99,7 +99,7 @@ theorem gram_eq : (Wfg F G)ᴴ * Formalism.REAL.Jm ε * Wfg F G =
 
 include hFF hGG hπ hZ hgap in
 /- English proof (translation)
-Rewrite using `[gram_eq ε F G T T' π hFF hGG hπ hZ]`. Conclude with `gram_isUnit _ (isUnit_Z π hπ _ hZ) T T' hgap`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_unit : IsUnit ((Wfg F G)ᴴ * Formalism.REAL.Jm ε * Wfg F G).det := by
   rw [gram_eq ε F G T T' π hFF hGG hπ hZ]
@@ -107,15 +107,13 @@ theorem gram_unit : IsUnit ((Wfg F G)ᴴ * Formalism.REAL.Jm ε * Wfg F G).det :
 
 include hFF hGG hπ hblk hanti hZ hgap in
 /- English proof (translation)
-Establish `hA` using `isUB_A π hπ hblk hanti (Zm ε F G) hZ hC`. Establish `hAZC : (Am ε F G C)ᴴ * Zm ε F G * C = Zm ε F G` using `A_Z_C π hπ hblk hanti _ hZ hC`. Establish `hL : ∀ t : ℂ, ∀ i j : Fin (r + 1), i ≠ Fin.last r ∨ j ≠ Fin.last r → lastDiag t i j = 0`. Introduce `t i j h`. Simplify using `only [lastDiag, of_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg]`. The claim follows by propositional logic. Unfold `Yc`. Use `Ymat_unitary _ (Jm_herm ε) _ _ (gram_unit ε F G T T' π hFF hGG hπ hZ hgap) ?_` and prove the remaining obligations. Rewrite using `[gram_eq ε F G T T' π hFF hGG hπ hZ]`.
+Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) ℂ) + Mm ε F G C = fromBlocks (Am ε F G C) 0 0 C`. Rewrite using `[Mm, ← fromBlocks_one, fromBlocks_add]`. Simplify using the standard rewrite rules. Rewrite using `[h1, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [conjTranspose_zero, zero_mul, mul_zero, add_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `fromBlocks_inj.2 ⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `gram_last hA _ (hL _)`. Conclude with `hAZC`. Establish `h2` using `congrArg conjTranspose hAZC`. Simplify `h2` using `[conjTranspose_mul, Matrix.mul_assoc]`.
-
-Conclude with `gram_last hC _ (hL _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Yc_unitary {C : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hC : IsUB blk C) :
     (Yc ε F G C)ᴴ * Formalism.REAL.Jm ε * Yc ε F G C = Formalism.REAL.Jm ε := by

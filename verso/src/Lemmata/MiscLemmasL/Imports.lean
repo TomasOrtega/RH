@@ -7,13 +7,13 @@ namespace Bl.SecondBlockLemmaM
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨r, hr, hrs⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hss⟩` from `hz`. Use `⟨r * s, mul_ne_zero hr hs, ?_⟩` and prove the remaining obligations. Establish `h : (r * s) • (y + z) = s • (r • y) + r • (s • z)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm s r]`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.add_mem (S.smul_mem s hrs) (S.smul_mem r hss)`. Consider the case `smul c y _ hy`. Take `⟨r, hr, hrs⟩` from `hy`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors R) c`. Establish `hab' : c * algebraMap R C (b : R) = algebraMap R C a` using `hab`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(b : R) * r, mul_ne_zero (nonZeroDivisors.ne_zero b.2) hr, ?_⟩` and prove the remaining obligations. Establish `h : ((b : R) * r) • (c • y) = a • (r • y)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`. Conclude with `S.smul_mem a hrs`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 [IsDomain R] [IsFractionRing R C]
     {V : Type} [AddCommGroup V] [Module C V] [Module R V] [IsScalarTower R C V]

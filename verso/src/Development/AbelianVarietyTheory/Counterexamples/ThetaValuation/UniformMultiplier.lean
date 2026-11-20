@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.ModelLatExamples
 
 /- English proof (translation)
-Establish `h2` using `lat_eq_span Formalism.IndefR.Fin.factPrincipalDatum Λ`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `GlobalTheory.ModelLatticeCheck.le_of_span_le _ (GlobalTheory.ModelLatticeCheck.AA_ne_zero D) _ _ (by rw [← h, ← h2])`. Conclude with `GlobalTheory.ModelLatticeCheck.le_of_span_le _ (GlobalTheory.ModelLatticeCheck.AA_ne_zero D) _ _ (by rw [← h, ← h2])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem eq_latP {r : ℕ} (D : D7) (Λ L : Submodule (𝓞 D.host.E) (Fin r → D.host.E))
     (h : Λ = Submodule.span (𝓞 D.host.E) {v | ∃ a ∈ D.host.AA, ∃ u ∈ L, v = a • u}) : L = lattice₂ D Λ := by

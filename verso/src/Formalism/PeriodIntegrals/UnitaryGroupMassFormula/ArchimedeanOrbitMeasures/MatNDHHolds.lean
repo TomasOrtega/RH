@@ -10,23 +10,23 @@ open MeasureTheory NumberField Topology Set Formalism.BasicNotions Formalism.L2.
   Formalism.L2.SG.Sub Matrix
 
 /- English proof (translation)
-Use `haveI := hμ.1`. Take `⟨Φ, hc, hs, hI, z, hz⟩` from `hT`. Establish `htr : ∀ y, ∫ x, Φ (x - t) * χ x y ∂μ = ∫ x, Φ x * χ x y ∂μ`. Introduce `y`. Use `integral_sub_right_eq_self (μ := μ) (fun x => Φ x * χ (x + t) y) t` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_add_cancel] at this`. Rewrite using `[this]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hadd, ht, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : Continuous fun x => Φ (x - t)` using `hc.comp (continuous_id.sub continuous_const)`. Establish `hs' : HasCompactSupport fun x => Φ (x - t)` using `hs.comp_homeomorph (Homeomorph.subRight t)`. Establish `hper : ∀ w, Φ (w - t) = Φ w`. Introduce `w`. Establish `h1` using `hμ.2 (fun x => Φ (x - t)) hc' hs' (by simp only [htr]; exact hI) (-w)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hμ.2 Φ hc hs hI (-w)`. Simplify using `only [htr, neg_neg] at h1 h2`. Rewrite using `[← h1, h2]`. Establish `hpern : ∀ n : ℕ, ∀ w, Φ (w - n • t) = Φ w`. Introduce `n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro w`. Simplify using the standard rewrite rules. Consider the case `succ n ih => intro w`. Rewrite using `[succ_nsmul, ← sub_sub, hper, ih]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `hs.isCompact.isBounded.subset_closedBall 0`. Apply `hz` to reduce the goal to its premises. Establish `htpos : 0 < ‖t‖` using `norm_pos_iff.2 ht0`. Take `⟨n, hn⟩` from `exists_nat_gt ((R + ‖-z‖) / ‖t‖)`. Rewrite using `[← hpern n (-z)]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hmem`. Establish `hb` using `hR hmem`. Rewrite `hb` using `[Metric.mem_closedBall, dist_zero_right]`. Establish `h1 : ‖(n : ℝ) • t‖ ≤ ‖-z - n • t‖ + ‖-z‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_sub_le (-z) (-z - n • t)` as an intermediate fact. Simplify using `only [sub_sub_cancel] at this`. Rewrite `this`, the goal using `[← Nat.cast_smul_eq_nsmul ℝ]`. Combine the linear relations using `[norm_sub_rev (-z) (-z - (n : ℝ) • t)]`. Rewrite `h1` using `[norm_smul, Real.norm_natCast]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (R + ‖-z‖) < n * ‖t‖` using `by rwa [div_lt_iff₀ htpos] at hn`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem no_kernel {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
     [MeasurableSpace W] [BorelSpace W] (μ : Measure W) (χ : W → W → ℂ) (hμ : SelfDual μ χ)
@@ -80,19 +80,17 @@ def MatNDH : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ 
     (matI X).det ≠ 0
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP hdet0`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `hS` using `hP.2.2.1`. Establish `hpc` using `continuous_psiInfP ψ hS`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `t : EuclideanSpace ℝ (KapI X)` to `(EuclideanSpace.equiv (KapI X) ℝ).symm v`. Establish `ht0 : t ≠ 0`. Introduce `h`. Apply `hv0` to reduce the goal to its premises. Use `congrArg (EuclideanSpace.equiv (KapI X) ℝ) h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[t]`. Establish `hAt : Alin X t = 0`. Simplify using `[Alin, t, Matrix.toLin'_apply]`. Conclude with `hv`. Establish `hβ : ∀ y, betaI X t y = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[betaSym_holds, ← inner_Alin, hAt, inner_zero_right]`. Establish `hμ : SelfDual μinf (fun x y : TupI X => psiInf X.B.I.F ψ (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y))` using `hP.2.2.2.2.1`. Establish `hμ'` using `selfDual_transport μinf _ (tupCoord X) (tupCoord_add X) hμ`. Use `haveI := hμ'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hadd : ∀ x x' y : EuclideanSpace ℝ (KapI X), (fun x y : EuclideanSpace ℝ (KapI X) => psiInf X.B.I.F ψ (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ((tupCoord X).symm x) ((tupCoord X).symm y))) (x + x') y = (fun x y : EuclideanSpace ℝ (KapI X) => psiInf X.B.I.F ψ (BR (Ainf X.B.I.F) X.B …`. Introduce `x x' y`. Simplify using `only [tupCoord_symm_add, BR_add_leftP, psiInf_addP]`. Establish `hB : ST.IsBichar (fun x y : EuclideanSpace ℝ (KapI X) => psiInf X.B.I.F ψ (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ((tupCoord X).symm x) ((tupCoord X).symm y)))` using `{ addL := hadd addR := fun x y y' => by simp only [tupCoord_symm_add, BR_add_rightP, psiInf_addP] norm1 := fun x y => norm_psiInfP ψ hS _ contL := fun y => hpc.comp ((continuous_BR_leftP X _).comp (tupCoord X).symm.continuous) contR := fun x => hpc.comp ((continuous_BR_rightP X _ …`. Establish `hTest` using `ST.testEx_bichar (μinf.map (tupCoord X)) hB`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `no_kernel (μinf.map (tupCoord X)) _ hμ' hadd hTest t ht0 fun y => ?_` and prove the remaining obligations. Rewrite using `[psiInf_eq ψ hS]`. Use `beta_reduce`. Establish `: (∑ w : InfinitePlace X.B.I.F, (InfinitePlace.Completion.extensionEmbedding w (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ((tupCoord X).symm t) ((tupCoord X).symm y) w)).re) = 0` using `hβ y`. Simplify using `only [this]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matNDH_holds : MatNDH := by
   classical
@@ -137,17 +135,15 @@ theorem matNDH_holds : MatNDH := by
 
 open Classical in
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `hdet : IsUnit (LinearMap.det (Alin X))`. Rewrite using `[det_Alin]`. Conclude with `isUnit_iff_ne_zero.2 (matNDH_holds X u' ψ hT μinf νinf fibInf hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `A : EuclideanSpace ℝ (KapI X) ≃L[ℝ] EuclideanSpace ℝ (KapI X)` to `(LinearMap.equivOfIsUnitDet hdet).toContinuousLinearEquiv`. Establish `hAapp : ∀ y, A y = Alin X y` using `fun y => by simp [A, LinearMap.equivOfIsUnitDet_apply]`. Establish `hAl : (A : EuclideanSpace ℝ (KapI X) →ₗ[ℝ] EuclideanSpace ℝ (KapI X)) = Alin X` using `LinearMap.ext hAapp`. Establish `hAd : LinearMap.det (A : EuclideanSpace ℝ (KapI X) →ₗ[ℝ] EuclideanSpace ℝ (KapI X)) = (matI X).det`. Rewrite using `[hAl, det_Alin]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsym : ∀ x y, ⟪x, A y⟫ = ⟪A x, y⟫`. Introduce `x y`. Rewrite using `[hAapp, hAapp, inner_Alin, real_inner_comm, inner_Alin, betaSym_holds]`. Establish `hν` using `FSD.selfDual_lin A hsym`. Rewrite `hν` using `[hAd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ : SelfDual μinf (fun x y : TupI X => psiInf X.B.I.F ψ (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J x y))` using `hP.2.2.2.2.1`. Establish `hμ'` using `selfDual_transport μinf _ (tupCoord X) (tupCoord_add X) hμ`. Establish `hχ : (fun x y : EuclideanSpace ℝ (KapI X) => psiInf X.B.I.F ψ (BR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J ((tupCoord X).symm x) ((tupCoord X).symm y))) = fun x y => ((𝐞 ⟪x, A y⟫ : Circle) : ℂ)`. Use function extensionality and compare the values at `x y`. Rewrite using `[hAapp, inner_Alin, psiInf_eq ψ hP.2.2.1, Real.fourierChar_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [betaI]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite `hμ'` using `[hχ]`. Use `haveI := hν.1`.
-
-Establish `hB : ST.IsBichar (fun x y : EuclideanSpace ℝ (KapI X) => ((𝐞 ⟪x, A y⟫ : Circle) : ℂ))` using `{ addL := fun x x' y => by simp only [inner_add_left, AddChar.map_add_eq_mul, Circle.coe_mul] addR := fun x y y' => by simp only [map_add, inner_add_right, AddChar.map_add_eq_mul, Circle.coe_mul] norm1 := fun x y => Circle.norm_coe _ contL := fun y => (continuous_subtype_val.comp …`. Take `⟨Φ, hc, hs, hI, z, hz⟩` from `ST.testEx_bichar (ENNReal.ofReal (Real.sqrt |(matI X).det|) • (volume : Measure (EuclideanSpace ℝ (KapI X)))) hB`. Conclude with `SelfDual.eq_of_test hν hμ' Φ hc hs hI z hz`.
+Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem densMu_holds : DensMu := by
   intro D X u' ψ hT μinf νinf fibInf hP

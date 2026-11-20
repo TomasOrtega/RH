@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Establish `hp1 : HasFDerivAt W (fderiv ℝ W p) ((1 : ℝ) • p)`. Rewrite using `[one_smul]`. Conclude with `hd.hasFDerivAt`. Establish `hr : HasDerivAt (fun s : ℝ => s • p) ((1 : ℝ) • p) 1` using `(hasDerivAt_id (1 : ℝ)).smul_const p`. Establish `h1 : HasDerivAt (fun s : ℝ => W (s • p)) (fderiv ℝ W p ((1 : ℝ) • p)) 1` using `hp1.comp_hasDerivAt (1 : ℝ) hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun s : ℝ => W (s • p)) (W p) 1`. Establish `hl : HasDerivAt (fun s : ℝ => s • W p) ((1 : ℝ) • W p) 1` using `(hasDerivAt_id (1 : ℝ)).smul_const (W p)`. Rewrite `hl` using `[one_smul]`. Use `hl.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [lt_mem_nhds (zero_lt_one' ℝ)] with s hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hh s hs`. Establish `heul : fderiv ℝ W p p = W p`. Use `h1.unique h2` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `hf : HasFDerivAt (flow W t) (ContinuousLinearMap.id ℝ V + t • fderiv ℝ W p) p` using `(hasFDerivAt_id p).add (hd.hasFDerivAt.const_smul t)`.
-
-Rewrite using `[hf.fderiv]`. Simplify using `[flow, heul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Lit.Geo.euler_flow {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {W : V → V} {p : V}
     (hd : DifferentiableAt ℝ W p) (hh : ∀ t : ℝ, 0 < t → W (t • p) = t • W p) (t : ℝ) :
@@ -35,15 +33,15 @@ private theorem UpperTheory.V.Lit.Geo.euler_flow {V : Type} [NormedAddCommGroup 
   simp [flow, heul]
 
 /- English proof (translation)
-Introduce `V F _ _ _ _ _ _ Y hY W hW hh q`. Establish `hdiff : ∀ p ∈ Y, DifferentiableAt ℝ W p` using `fun p hp => (hW.1.contDiffAt (hY.mem_nhds hp)).differentiableAt (by simp)`. Establish `he : ∀ p ∈ Y, ∀ t : ℝ, fderiv ℝ (flow W t) p p = flow W t p` using `fun p hp t => euler_flow (hdiff p hp) (fun s hs => hh s hs p hp) t`. Use `⟨fun w hw => ?_, fun w _ hw => ?_⟩` and prove the remaining obligations. Introduce `p hp v i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pb_apply]`. Apply `hw (flow W 1 p) (hW.2 p hp 1 ⟨zero_le_one, le_rfl⟩) _ i` to reduce the goal to its premises. Simplify using `[hi, he p hp]`. Introduce `p hp v i hi`. Establish `hz : ∀ t ∈ Set.Icc (0 : ℝ) 1, hk W t w p v = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite using `[hk_apply]`. Apply `hw (flow W t p) (hW.2 p hp t ht) _ i.succ` to reduce the goal to its premises. Simplify using `[hi, he p hp]`. Use `show (∫ t in (0 : ℝ)..1, hk W t w p) v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hint : IntervalIntegrable (fun t => hk W t w p) MeasureTheory.volume 0 1`. Establish `hc` using `(ContinuousAlternatingMap.apply ℝ V F v).intervalIntegral_comp_comm hint`. Simplify using `only [ContinuousAlternatingMap.apply_apply] at hc`. Rewrite using `[← hc, intervalIntegral.integral_congr (g := fun _ => (0 : F))]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le zero_le_one]`. Conclude with `hz t ht`. Rewrite using `[intervalIntegral.integral_undef hint]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.pbBasic :
     PbBasic := by

@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.SepPer.MajDom
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : star v ⬝ᵥ ((frᴴ * Formalism.REAL.Jm ε * fr) *ᵥ v) = star (fr *ᵥ v) ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ (fr *ᵥ v))`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.star_mulVec]`. Establish `hd : ∀ w : Fin n → ℂ, Formalism.REAL.Jm ε *ᵥ w = fun i => (if ε i = true then (1 : ℂ) else -1) * w i`. Introduce `w`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Conclude with `Matrix.mulVec_diagonal _ _ _`. Rewrite using `[e, hd, dotProduct, Complex.re_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `hw : star (fr *ᵥ v) i * ((if ε i = true then (1 : ℂ) else -1) * (fr *ᵥ v) i) = (if ε i = true then (1 : ℂ) else -1) * ((‖(fr *ᵥ v) i‖ : ℂ) ^ 2)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.conj_mul', Pi.star_apply, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw]`. Use `split_ifs`. Simplify using `only [one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Use `norm_cast`. Establish `: (-((‖(fr *ᵥ v) i‖ : ℂ) ^ 2)).re = -(‖(fr *ᵥ v) i‖ ^ 2)` using `by norm_cast`. Rewrite using `[neg_one_mul, this]`. Use polynomial arithmetic with `[sq_nonneg ‖(fr *ᵥ v) i‖]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem re_form_le {n : ℕ} (G fr : Matrix (Fin n) (Fin n) ℂ) (ε : Fin n → Bool)
     (h : frᴴ * Formalism.REAL.Jm ε * fr = G) (v : Fin n → ℂ) :
@@ -45,7 +45,7 @@ theorem re_form_le {n : ℕ} (G fr : Matrix (Fin n) (Fin n) ℂ) (ε : Fin n →
     nlinarith [sq_nonneg ‖(fr *ᵥ v) i‖]
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hP]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_isom {n : ℕ} (G P : Matrix (Fin n) (Fin n) ℂ) (hP : Pᴴ * G * P = G) (u : Fin n → ℂ) :
     star (P *ᵥ u) ⬝ᵥ (G *ᵥ (P *ᵥ u)) = star u ⬝ᵥ (G *ᵥ u) := by
@@ -58,18 +58,18 @@ namespace GlobalTheory.SepPer.MajDom
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `D.sp.cm.cmUnram.2.1 _ a`.
+A detailed English derivation is pending.
 -/
 theorem tauE_sig (τ : D.what₂.Tau) (a : D.host.E) :
     tauE D τ (D.sp.cm.sig a) = starRingEnd ℂ (tauE D τ a) :=
   D.sp.cm.cmUnram.2.1 _ a
 
 /- English proof (translation)
-Set `φ : AE D →+* ℂ` to `(θ τ).comp (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `hφ : ∀ e : D.host.E, φ (incA D e) = tauE D τ e`. Introduce `e`. Use `show θ τ (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (1 ⊗ₜ e)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hθ τ).1 e`. Establish `hc : cmp θ τ γ = (mt V γ).map φ` using `rfl`. Establish `e1 : (⇑φ ∘ ratV z₀) = fun j => tauE D τ (z₀ j)` using `funext fun j => hφ (z₀ j)`. Use function extensionality and compare the values at `i`. Use `congrArg (fun w => φ (w i)) h` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [RingHom.map_mulVec] at this`. Rewrite `this` using `[e1]`. Rewrite using `[hc, this]`. Conclude with `hφ (z i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_mulVec (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (γ : GA D V) (z₀ z : Fin V.rank → D.host.E)
     (h : mt V γ *ᵥ ratV z₀ = ratV z) (τ : D.what₂.Tau) :
@@ -90,11 +90,11 @@ theorem cmp_mulVec (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (γ : GA D V)
   exact hφ (z i)
 
 /- English proof (translation)
-Establish `hg` using `congrArg (fun M => tauE D τ (M 0 0)) d.gram`. Simplify using `only [antiDiagonalSignGramMatrix, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, tauE_sig] at hg`. Simplify using `only [dotProduct, Matrix.mulVec, gramAt, Matrix.map_apply, Pi.star_apply, Complex.star_def, Finset.mul_sum, zv]`. Use `Eq.trans ?_ (hg.trans (by simp))` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(tauE_sig τ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem form_zv {Y V : HSp D} (d : HermitianOrthogonalExtensionData Y V 1 1) (τ : D.what₂.Tau) :
     star (fun i => tauE D τ (zv d i)) ⬝ᵥ (gramAt D V τ *ᵥ fun i => tauE D τ (zv d i)) = 1 := by
@@ -116,15 +116,13 @@ end GlobalTheory.SepPer.MajDom
 namespace GlobalTheory.SepPer.MajDom
 
 /- English proof (translation)
-Introduce `D θ hθ Y V d B x γ z _ hmt τ`. Use `set G := gramAt D V τ`. Use `set u₀ : Fin V.rank → ℂ := fun i => tauE D τ (zv d i) with hu₀`. Use `set P := cmp θ τ (stabilizerEmbedding d x)⁻¹ * cmp θ τ γ with hP`. Establish `hv : cmp θ τ (stabilizerEmbedding d x)⁻¹ *ᵥ (fun i => tauE D τ (z i)) = P *ᵥ u₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cmp_mulVec θ hθ γ (zv d) z hmt τ, Matrix.mulVec_mulVec]`. Establish `hPG : Pᴴ * G * P = G`. Apply the tactic sequence `have h1 := GlobalTheory.Doubling.infMat_isometry hθ τ (stabilizerEmbedding d x)⁻¹`. Apply the tactic sequence `have h2 := GlobalTheory.Doubling.infMat_isometry hθ τ γ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hP, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G := by rw [h1, h2]`. Establish `hform : star (P *ᵥ u₀) ⬝ᵥ (G *ᵥ (P *ᵥ u₀)) = 1`. Rewrite using `[form_isom G P hPG u₀]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `form_zv d τ`. Establish `key` using `re_form_le G (B.fr τ) (B.ε τ) (B.fr_gram τ) (P *ᵥ u₀)`. Rewrite `key` using `[hform, Complex.one_re]`. Unfold `nrm eu`. Rewrite using `[hv]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem one_le_nrm : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (B : Fr V) (x : GA D Y)
     (γ : GA D V) (z : Fin V.rank → D.host.E), γ ∈ GQ V → mt V γ *ᵥ ratV (zv d) = ratV z →

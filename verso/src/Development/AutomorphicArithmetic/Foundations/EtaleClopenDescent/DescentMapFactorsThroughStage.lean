@@ -29,13 +29,11 @@ end UpperTheory.Cb.DescentMapFactorization
 
 open UpperTheory.Cb.DescentMapFactorization in
 /- English proof (translation)
-Introduce `k _ Ω _ _ R hR C E Y c p w hp hs f hf a ha`. Take `⟨h1, h2, h3⟩` from `hp`. Use `haveI : Nonempty (LateralTheory.E.LeafDescendMapPf.J R) := ⟨⟨R, le_rfl, hR⟩⟩`. Use `haveI : ∀ S : (LateralTheory.E.LeafDescendMapPf.J R)ᵒᵖ, CompactSpace ((LateralTheory.E.LeafDescendMapPf.D R p).obj S) := by`. Introduce `S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LateralTheory.E.LeafDescendMapPf.D]`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p _)`. Use `haveI : ∀ S : (LateralTheory.E.LeafDescendMapPf.J R)ᵒᵖ, QuasiSeparatedSpace ((LateralTheory.E.LeafDescendMapPf.D R p).obj S) := by`. Introduce `S`. Simplify using `only [LateralTheory.E.LeafDescendMapPf.D]`.
+Simplify by unfolding definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `quasiSeparatedSpace_of_quasiSeparated (pullback.snd p _)`. Establish `hcomm : (LateralTheory.E.LeafDescendMapPf.cone R p c w hs).π ≫ tR R p = (Functor.const _).map (a ≫ f)`. Use extensionality with `S`. Simplify using `only [NatTrans.comp_app, Functor.const_map_app]`. Rewrite using `[tR_app]`.
-
-Simplify using `only [pullback.lift_snd_assoc, Category.assoc, LateralTheory.E.LeafDescendMapPf.toR_incl]`. Conclude with `ha.symm`. Take `⟨S, g, hg1, hg2⟩` from `Scheme.exists_π_app_comp_eq_of_locallyOfFinitePresentation (LateralTheory.E.LeafDescendMapPf.D R p) (tR R p) f (LateralTheory.E.LeafDescendMapPf.cone R p c w hs) (LateralTheory.E.LeafDescendMapPf.coneIsLimit R p c w hs hR) a hcomm`. Conclude with `⟨S.unop.1, S.unop.2.1, S.unop.2.2, g, hg2, hg1⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.descent_map_factors_through_stage :
     LateralTheory.E.LeafPairRelPf.LeafFactorStage := by

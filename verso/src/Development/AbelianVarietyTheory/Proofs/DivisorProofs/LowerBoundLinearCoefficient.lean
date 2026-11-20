@@ -12,13 +12,13 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Establish `hpr` using `(GlobalTheory.Mean4.setB_newP_facts D Y B₀ B₀ (by linarith)).2.1`. Establish `hfl : 48 ≤ ⌊B₀⌋₊` using `Nat.le_floor (by exact_mod_cast hB)`. Establish `hM` using `D.host.sum_log_div_le_of_bad ⌊B₀⌋₊ Y.lev (setB Y B₀) (by omega) (by unfold FewBad at hF; omega) hpr fun p h1 h2 => by`. Rewrite `h1` using `[setB, Finset.mem_union]`. Break down `h1 with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h` using `[Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `h0` using `D.host.log_rdE_nonneg'`. Establish `h48 : 4 * Real.log D.host.rdE / (⌊B₀⌋₊ : ℝ) ≤ 4 * Real.log D.host.rdE / 48` using `div_le_div_of_nonneg_left (by linarith) (by norm_num) (by exact_mod_cast hfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : Real.log (⌊B₀⌋₊ : ℝ) ≤ Real.log B₀` using `Real.log_le_log (by exact_mod_cast (by omega : 0 < ⌊B₀⌋₊)) (Nat.floor_le (by linarith))`. Establish `hle : ∑ p ∈ setB Y B₀, (p : ℝ) * Real.log p / ((p : ℝ) ^ 2 - 1) ≤ ∑ p ∈ setB Y B₀, Real.log p / ((p : ℝ) - 1)`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast (hpr p hp).two_le`. Establish `hl : 0 ≤ Real.log p` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_div_iff₀ (by nlinarith) (by linarith)]`. Establish `: 0 ≤ Real.log p * ((p : ℝ) - 1)` using `mul_nonneg hl (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_setB_le_log (D : D7) (Y : ShimX D.what₂.Tau) (B₀ : ℝ) (hB : 48 ≤ B₀) (hF : FewBad Y) :
     ∑ p ∈ setB Y B₀, (p : ℝ) * Real.log p / ((p : ℝ) ^ 2 - 1) ≤ 3 * Real.log B₀ + 1 + Real.log D.host.rdE / 12 := by
@@ -47,17 +47,17 @@ theorem sum_setB_le_log (D : D7) (Y : ShimX D.what₂.Tau) (B₀ : ℝ) (hB : 48
   linarith
 
 /- English proof (translation)
-Introduce `r`. Use `⟨|r| + 5, by positivity, ?_⟩` and prove the remaining obligations. Introduce `D Y Φ hh B₀ a b hB hV hP hF hT hE`. Take `⟨hc, hcomb, hI, hsh, htot, hrest⟩` from `GlobalTheory.T.test_class_self_intersection D Y hP`. Establish `hlim` using `hE _ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hlim` using `[hcomb, hsh, htot, hT B₀ (by linarith)]`. Establish `hneg : 2 * testI Y * Y.vol < 0` using `by nlinarith`. Establish `hle` using `le_of_tendsto' hlim (b := 0) (fun n => by`. Use `Finset.sum_nonpos fun p hp => ?_` and prove the remaining obligations. Establish `hp'` using `((GlobalTheory.Mean4.setB_newP_facts D Y B₀ n (by linarith)).2.2.1 p).1 hp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp'.1.two_le`. Rewrite using `[hrest p hp'.1.two_le]`. Conclude with `mul_nonpos_of_nonpos_of_nonneg hneg.le (div_nonneg (Real.log_nonneg (by linarith)) (by nlinarith)))`. Establish `hS` using `sum_setB_le_log D Y B₀ hB hF`. Use `set S := ∑ p ∈ setB Y B₀, (p : ℝ) * Real.log p / ((p : ℝ) ^ 2 - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `key : 0 ≤ a - (r - 1 / 2 - S)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_le]`. Use `mul_pos_of_neg_of_neg hneg h` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 1 ≤ Real.log B₀`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : -r ≤ |r|` using `neg_le_abs r`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : |r| ≤ |r| * Real.log B₀` using `le_mul_of_one_le_right (abs_nonneg r) h1`. Establish `h4` using `mul_nonneg (abs_nonneg r) D.host.log_rdE_nonneg'`. Establish `h5` using `D.host.log_rdE_nonneg'`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem neg_first_coeff_le_log : ∀ r : ℝ, ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (Φ : ℝ → Fn Y) (hh : Fn Y), ∀ B₀ a b : ℝ, 48 ≤ B₀ → 0 < Y.vol → Propor Y → FewBad Y → TestVal Φ hh r → ExactAt Φ hh B₀ a b → -a ≤ C * (Real.log B₀ + Real.log D.host.rdE) := by
   intro r

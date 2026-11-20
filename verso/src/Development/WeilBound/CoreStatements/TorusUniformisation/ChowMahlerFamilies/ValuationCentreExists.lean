@@ -3,21 +3,19 @@ import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsE
 open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `X Ω _ ξ O _ _ _ s _ hξ V hV`. Set `φ : O →+* V` to `(algebraMap O Ω).codRestrict V hV`. Establish `hcomp : CommRingCat.ofHom (algebraMap O Ω) = CommRingCat.ofHom φ ≫ CommRingCat.ofHom (algebraMap V Ω)`. Use extensionality with `x`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hsq : ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap V Ω)) ≫ Spec.map (CommRingCat.ofHom φ)`. Rewrite using `[hξ, hcomp, Spec.map_comp]`. Establish `hE : ValuativeCriterion.Existence s`. Establish `h : (ValuativeCriterion.Existence ⊓ @QuasiCompact) s`. Rewrite using `[← UniversallyClosed.eq_valuativeCriterion]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `h.1`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l : Spec (CommRingCat.of V) ⟶ X, Spec.map (CommRingCat.ofHom (algebraMap V Ω)) ≫ l = ξ := by`. Take `⟨⟨l, hl, -⟩⟩` from `(hE ⟨↥V, Ω, ξ, Spec.map (CommRingCat.ofHom φ), ⟨hsq⟩⟩).exists_lift`. Conclude with `⟨l, hl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hl` using the available equality. Establish `hspec : (Spec.map (CommRingCat.ofHom (algebraMap V Ω)) ≫ l) (IsLocalRing.closedPoint (CommRingCat.of Ω)) ⤳ l (IsLocalRing.closedPoint (CommRingCat.of V))` using `(IsLocalRing.specializes_closedPoint ((Spec.map (CommRingCat.ofHom (algebraMap V Ω))) (IsLocalRing.closedPoint (CommRingCat.of Ω)))).map l.continuous`. Establish `h : TopCat.Presheaf.stalkSpecializes X.presheaf hspec ≫ Scheme.stalkClosedPointTo (Spec.map (CommRingCat.ofHom (algebraMap V Ω)) ≫ l) = Scheme.stalkClosedPointTo l ≫ CommRingCat.ofHom (algebraMap V Ω)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (l (IsLocalRing.closedPoint (CommRingCat.of V))))]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Establish `key : ∀ g, GlobalTheory.CompanionTheory.Ar.genMap (Spec.map (CommRingCat.ofHom (algebraMap V Ω)) ≫ l) ⟨l (IsLocalRing.closedPoint (CommRingCat.of V)), hspec⟩ g = ((Scheme.stalkClosedPointTo l).hom g : Ω)`. Introduce `g`. Conclude with `congrArg (fun ψ => ψ.hom g) h`. Use `⟨⟨l (IsLocalRing.closedPoint (CommRingCat.of V)), hspec⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Take `⟨g, rfl⟩` from `RingHom.mem_range.mp ha`. Rewrite using `[key g]`. Conclude with `((Scheme.stalkClosedPointTo l).hom g).2`. Introduce `a ha ha0 hinv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨g, rfl⟩` from `RingHom.mem_range.mp ha`. Use `⟨g, ?_, rfl⟩` and prove the remaining obligations. Establish `hloc` using `Scheme.isLocalHom_stalkClosedPointTo' l`. Apply `(isUnit_map_iff (Scheme.stalkClosedPointTo l).hom g).mp` to reduce the goal to its premises. Rewrite `ha0`, `hinv` using `[key g]`.
-
-Use `IsUnit.of_mul_eq_one (⟨_, hinv⟩ : V) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `mul_inv_cancel₀ ha0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.valuation_centre_exists : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [IsDomain O] [Algebra O Ω] (s : X ⟶ Spec (CommRingCat.of O)) [IsProper s], ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) → ∀ V : ValuationSubring Ω, (∀ o : O, algebraMap O Ω o ∈ V) → ∃ p : Cpt ξ, regAt ξ p ≤ V.toSubring ∧ ∀ a ∈ regAt ξ p, a ≠ 0 → a⁻¹ ∈ V → ∃ g : X.presheaf.stalk p.1, IsUnit g ∧ genMap ξ p g = a := by
   intro X Ω _ ξ O _ _ _ s _ hξ V hV

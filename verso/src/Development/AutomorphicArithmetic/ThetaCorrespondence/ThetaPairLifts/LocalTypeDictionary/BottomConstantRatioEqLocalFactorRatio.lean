@@ -16,13 +16,13 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BotRatio
 /- English proof (translation)
-Introduce `hPr hK hM _ _ hL`. Use `GlobalTheory.BotRatio.gBig_of_two (_root_.GlobalTheory.T.bottom_triple_integral_eq_const_mul_local hPr hK hM hL) (_root_.GlobalTheory.T.witt_tower_bottom_constant_transfer hPr hK hM) fun {D T Lc sc} G μ₀ C x b ha hb => ?_` and prove the remaining obligations. Introduce `W S hψ hN i j t A A' WW X c0 hX hc`. Take `⟨B, B', WW₁, Y, hY, hS⟩` from `hN.bottom i j ⟨A, A', WW, X, hX⟩`. Establish `hr` using `hS.rationalSums (fun t => (hY.integrable t).1) fun t => (hY.integrable t).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hb W S hψ hN i j B B' WW₁ Y A A' WW X c0 hY hX hc`. Take `⟨lam, hl⟩` from `ha W hψ i j B B' WW₁ Y hY`. Establish `hR` using `GlobalTheory.ConstRatio.ratIn_of_definite hY.is (GlobalTheory.ConstRatio.posDef_of_std hY.std) (GlobalTheory.ConstRatio.posDef_of_std hY.std') (GlobalTheory.ConstRatio.posDef_of_std hY.stdW) hl hr μ₀`. Take `⟨κ, hκ, e⟩` from `hl.eq_mul hu`. Establish `h1 : GlobalTheory.ConstRatio.RatIn D.what₂.embLL μ₀ fun t => D.what₂.embLL (u t) * c0 t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show (fun t => D.what₂.embLL (u t) * c0 t) = fun t => κ * lam t from funext e]`. Conclude with `(GlobalTheory.ConstRatio.ratIn_const hκ).mul hR`. Establish `h2 : GlobalTheory.ConstRatio.RatIn D.what₂.embLL μ₀ c0` using `GlobalTheory.ConstRatio.RatIn.of_mul h1 (GlobalTheory.ConstRatio.ratIn_of_unit fun t => ⟨u t, rfl⟩) fun t => mul_comm _ _`. Take `⟨h3, y, hy⟩` from `h2 t`. Use `⟨h3, (h2 μ₀).1, y, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, div_mul_cancel₀ _ (h2 μ₀).1]`.
+A detailed English derivation is pending.
 -/
 theorem bottom_theta_constant_ratio_eq : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall → GlobalTheory.SqTop.LNe →
@@ -62,7 +62,7 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotRatio.bottom_theta_constant_ratio_eq | exact _root_.GlobalTheory.BotRatio.bottom_theta_constant_ratio_eq | (intros; apply _root_.GlobalTheory.BotRatio.bottom_theta_constant_ratio_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottom_constant_ratio_eq_local_factor_ratio : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall → GlobalTheory.SqTop.LNe →

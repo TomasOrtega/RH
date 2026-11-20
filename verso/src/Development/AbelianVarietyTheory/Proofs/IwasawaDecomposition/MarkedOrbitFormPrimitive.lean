@@ -12,25 +12,25 @@ namespace GlobalTheory.PolFan
 namespace OrbMark
 
 /- English proof (translation)
-Introduce `O _ bar w0 X₀ _ _ v hv hp X _ _ _ β hβ k β' hk`. Take `⟨τ, f, -, hf, -, H⟩` from `GlobalTheory.T.exists_semilinear_pullback_of_markedOrbitIndicator w0 v β hβ`. Establish `hval : ∀ (x₀ y₀ : X₀), ∃ x y, v x₀ y₀ = β x y`. Introduce `x₀ y₀`. Take `⟨x, hx⟩` from `hf (Submodule.Quotient.mk x₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hf (Submodule.Quotient.mk y₀)`. Conclude with `⟨x, y, (H x y x₀ y₀ hx.symm hy.symm).symm⟩`. Establish `hβ' : ∀ x y, (k : ℤ) * β' x y = β x y` using `fun x y => by rw [← hk]; simp`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hv0 : v = 0` using `LinearMap.ext₂ fun x₀ y₀ => by`. Take `⟨x, y, e⟩` from `hval x₀ y₀`. Rewrite using `[e, ← hβ']`. Simplify using the standard rewrite rules. Conclude with `zero_ne_one (hp 0 0 (Subtype.ext (by simp [hv0])))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hkz : (k : ℤ) ≠ 0` using `by exact_mod_cast hk0.ne'`. Establish `hcan : ∀ {a b : ℤ}, (k : ℤ) * a = k * b → a = b` using `fun h => mul_left_cancel₀ hkz h`. Establish `hl : ∀ x, f x = 0 → ∀ y, β' x y = 0`. Introduce `x hx y`. Take `⟨y₀, hy₀⟩` from `Submodule.Quotient.mk_surjective _ (f y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `H x y 0 y₀ (by rw [hx]; rfl) hy₀`. Apply `hcan` to reduce the goal to its premises. Rewrite using `[hβ', e]`. Simplify using the standard rewrite rules. Establish `hr : ∀ x, f x = 0 → ∀ y, β' y x = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y`. Take `⟨y₀, hy₀⟩` from `Submodule.Quotient.mk_surjective _ (f y)`. Establish `e` using `H y x y₀ 0 hy₀ (by rw [hx]; rfl)`. Apply `hcan` to reduce the goal to its premises. Rewrite using `[hβ', e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨ζ₁, hζ₁⟩` from `GlobalTheory.T.exists_intBilinForm_descend_along_surjective f hf β' hl hr`. Set `m : X₀ →ₗ[ℤ] X₀ ⧸ (CarDim.orad v : Submodule O X₀)` to `(CarDim.orad v : Submodule O X₀).mkQ.toAddMonoidHom.toIntLinearMap`. Set `ζ : LinearMap.BilinForm ℤ X₀` to `ζ₁.compl₁₂ m m`. Establish `hζ : ∀ x₀ y₀, (k : ℤ) * ζ x₀ y₀ = v x₀ y₀`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x₀ y₀`. Take `⟨x, hx⟩` from `hf (Submodule.Quotient.mk x₀)`. Take `⟨y, hy⟩` from `hf (Submodule.Quotient.mk y₀)`. Establish `e1 : ζ x₀ y₀ = β' x y` using `by show ζ₁ (Submodule.Quotient.mk x₀) (Submodule.Quotient.mk y₀) = _`. Rewrite using `[← hx, ← hy, hζ₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hβ', H x y x₀ y₀ hx.symm hy.symm]`. Establish `hmem : ζ ∈ balForms bar X₀`. Use `⟨fun y z => hcan ?_, fun a y z => hcan ?_⟩` and prove the remaining obligations. Rewrite using `[hζ, hζ, hv.1]`. Rewrite using `[hζ, hζ, hv.2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hp k ⟨ζ, hmem⟩ (Subtype.ext (LinearMap.ext₂ fun x₀ y₀ => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v x₀ y₀ = ((k • ζ : LinearMap.BilinForm ℤ X₀)) x₀ y₀`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, nsmul_eq_mul, hζ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_smul_eq_of_orbFun_evalZ_eq_one :
     ∀ {O : Type} [CommRing O] (bar : O → O) (w0 : O) {X₀ : Type} [AddCommGroup X₀] [Module O X₀]

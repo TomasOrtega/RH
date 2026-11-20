@@ -29,7 +29,7 @@ section Reindex
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (h3 : W ≤ U) (x : Γ(X, U)) :
     (X.presheaf.map (homOfLE h2).op).hom ((X.presheaf.map (homOfLE h1).op).hom x) =
@@ -38,21 +38,21 @@ theorem res_res {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (h3 : W ≤ U) (
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (res_res h1 h2 h3 (x : Γ(X, U)))`.
+A detailed English derivation is pending.
 -/
 theorem unitsRes_res {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (h3 : W ≤ U) (x : Γ(X, U)ˣ) :
     res h2 (res h1 x) = res h3 x :=
   Units.ext (res_res h1 h2 h3 (x : Γ(X, U)))
 
 /- English proof (translation)
-Introduce `_ hx` and use `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_le (L : LB X) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => 𝟙 X) j ≤ LB.wchart L (fun _ : PUnit => 𝟙 X) (fun _ => j 0) :=
   fun _ hx => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx 0
 
 /- English proof (translation)
-Introduce `_ hx` and use `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx PUnit.unit`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_ge (L : LB X) (k : PUnit → L.ι) :
     LB.wchart L (fun _ : PUnit => 𝟙 X) k ≤ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k PUnit.unit) :=
@@ -65,14 +65,14 @@ section Reindex2
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `Scheme.basicOpen_res X f (homOfLE h).op`.
+A detailed English derivation is pending.
 -/
 theorem basicOpen_res' {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U)) :
     X.basicOpen ((X.presheaf.map (homOfLE h).op).hom f) = V ⊓ X.basicOpen f :=
   Scheme.basicOpen_res X f (homOfLE h).op
 
 /- English proof (translation)
-Simplify using `only [lbPow, LB.LinComb, Fin.prod_univ_one, Finset.univ_unique, Finset.prod_singleton, map_zpow]`. Use `congr 1`. Conclude with `(unitsRes_res _ _ _ _).symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem g_finOne (L : LB X) (n : ℕ) (i j : Fin 1 → L.ι) :
     (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (n : ℤ))).g i j =
@@ -104,9 +104,7 @@ def secFinOne {L : LB X} {n : ℕ} (s : (lbPow L n).Sec) : Out.H0 L n where
     exact e1.trans (e2.symm.trans (hc.trans (e5.trans (congrArg₂ (· * ·) e6.symm (e4.trans e3.symm)))))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun (j : Fin 1 → L.ι) => ?_` and prove the remaining obligations. Conclude with `(basicOpen_res' (chart_le L j) _).le.trans (inf_le_right.trans (le_iSup (fun k => X.basicOpen (s.f k)) _))`. Use `iSup_le fun (k : PUnit → L.ι) => ?_` and prove the remaining obligations. Use `le_trans ?_ (le_iSup (fun j => X.basicOpen ((secFinOne s).f j)) (fun _ => k PUnit.unit))` and prove the remaining obligations.
-
-Conclude with `(le_inf ((X.basicOpen_le _).trans (chart_ge L k)) le_rfl).trans (basicOpen_res' (chart_le L _) _).ge`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_secFinOne {L : LB X} {n : ℕ} (s : (lbPow L n).Sec) :
     Out.nonzeroLocus (secFinOne s) = Out.nonzeroLocus s := by
@@ -124,7 +122,7 @@ section Theta
 variable {A : Over (Sp ℂ)} [GrpObj A] {M : LB A.left} {A' : Over (Sp ℂ)} [GrpObj A'] {M' : LB A'.left} {g : ℕ}
 
 /- English proof (translation)
-Simplify using `only [hermForm, dotProduct]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_hermForm_left (Hm : Matrix (Fin g) (Fin g) ℂ) (a : Fin g → ℂ) :
     Differentiable ℂ (fun z : Fin g → ℂ => hermForm Hm z a) := by
@@ -132,15 +130,15 @@ theorem differentiable_hermForm_left (Hm : Matrix (Fin g) (Fin g) ℂ) (a : Fin 
   fun_prop
 
 /- English proof (translation)
-Use `⟨(hθ.1.comp (differentiable_id.add_const a)).mul (((differentiable_hermForm_left Hm a).const_mul _).cexp), fun l z => ?_⟩` and prove the remaining obligations. Establish `hl : z + (l : Fin g → ℂ) + a = (z + a) + ((Submodule.inclusion h l : u'.Λ) : Fin g → ℂ)`. Simplify using `only [Submodule.coe_inclusion]`. Normalize the expressions using the abelian group laws. Establish `e1 : hermForm Hm (z + a) ((Submodule.inclusion h l : u'.Λ) : Fin g → ℂ) = hermForm Hm z l + hermForm Hm a l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `[hermForm, add_dotProduct]`. Establish `e2 : hermForm Hm (z + l) a = hermForm Hm z a + hermForm Hm l a`. Simplify using `[hermForm, add_dotProduct]`. Establish `e3 : hermForm Hm ((Submodule.inclusion h l : u'.Λ) : Fin g → ℂ) ((Submodule.inclusion h l : u'.Λ) : Fin g → ℂ) = hermForm Hm l l` using `rfl`. Establish `e4 : hermForm Hm l a = (starRingEnd ℂ) (hermForm Hm a l)` using `GlobalTheory.LatticeHom.hermForm_swap_of_isHermitian hH a l`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : (starRingEnd ℂ) (hermForm Hm a l) = hermForm Hm a l - 2 * Complex.I * ((hermForm Hm a l).im : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Use `show θ (z + (l : Fin g → ℂ) + a) * _ = _ * (θ (z + a) * _)`. Rewrite using `[hl, hθ.2, e1, e3, e2, e4, hw, hχ l]`. Establish `key : Complex.exp (Real.pi * (hermForm Hm z l + hermForm Hm a l) + Real.pi / 2 * hermForm Hm l l) ^ 4 * Complex.exp (-(4 * Real.pi) * (hermForm Hm z a + (hermForm Hm a l - 2 * Complex.I * ((hermForm Hm a l).im : ℂ)))) = Complex.exp (2 * Real.pi * Complex.I * (hermForm Hm a l).im) …`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_pow, mul_pow, mul_pow]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(χ' (Submodule.inclusion h l) ^ 4 * θ (z + a)) * key`.
+A detailed English derivation is pending.
 -/
 theorem isThetaFn_shift (u : HolUnif A M g) (u' : HolUnif A' M' g) {Hm : Matrix (Fin g) (Fin g) ℂ}
     (hH : Hm.IsHermitian) {χ : u.Λ → ℂ} {χ' : u'.Λ → ℂ} (h : u.Λ ≤ u'.Λ) (a : Fin g → ℂ)
@@ -181,29 +179,27 @@ end Theta
 open GlobalTheory.LatticeHom in
 
 /- English proof (translation)
-Introduce `g A _ hA M u Hm χ hM hAH hsec P u' χ' h a hg hAH' hχ`. Substitute `hg` using the available equality. Establish `hsm : Smooth A.hom` using `hA.smooth`. Establish `hred : IsReduced A.left` using `isReduced_of_smooth_complex _ A.hom hsm`. Take `⟨-, -, -, -, -, -, -, hsecfn, -⟩` from `AnyAppellHumbert.isAH_properties abelianSchemeLaws_all.1 abelianSchemeLaws_all.2 (fun S P M hM => AbLaw.CubeAssembly.cube_gen S P M hM) thetaUnifAV_all P u' Hm χ' hAH'`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, t, hcov, hD⟩` from `veryAmple_lbPow abelianSchemeLaws_all.1.ample ℂ P 4 le_rfl`. Use `choose θ hθ hθt using fun j => ((hsecfn 4).1 (t j)).exists`. Establish `hG : ∀ z, Complex.exp (-(4 * Real.pi) * hermForm Hm z a) ≠ 0` using `fun z => Complex.exp_ne_zero _`. Use `choose s hs using fun j => hsec _ (isThetaFn_shift u u' hAH'.1 h a hχ (hθ j))`. Set `Φ : (𝟙_ (Over (Sp ℂ)) ⟶ A) → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)` to `fun y => u'.ex (Function.surjInv u.ex_onto y + a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : ∀ z, Φ (u.ex z) = u'.ex (z + a)` using `fun z => by`. Establish `h1 : Function.surjInv u.ex_onto (u.ex z) - z ∈ u.Λ`. Rewrite using `[← u.ker]`. Use `u.ex_add (Function.surjInv u.ex_onto (u.ex z) - z) z` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, Function.surjInv_eq u.ex_onto]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_eq_right.1 this.symm`. Use `SectionTheta.ex_add_lattice u' (z + a) ⟨_, h h1⟩` as an intermediate fact. Rewrite using `[← this]`. Use `show u'.ex _ = u'.ex _`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only`. Normalize the expressions using the abelian group laws. Establish `hmem : ∀ j z, ⊤ ≤ (u'.ex z).left ⁻¹ᵁ Out.nonzeroLocus (t j) ↔ θ j z ≠ 0` using `fun j => le_preimage_nonzeroLocus_iff u' P.isLB (hθt j)`. Establish `hmemA : ∀ j z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ Out.nonzeroLocus (s j) ↔ θ j (z + a) * Complex.exp (-(4 * Real.pi) * hermForm Hm z a) ≠ 0` using `fun j => le_preimage_nonzeroLocus_iff u hM (hs j)`. Take `⟨f, hf, -⟩` from `existsUnique_hom_of_locally_regular existsUnique_point_of_ringHom (eq_of_valAt'_eq valAt'_rules existsUnique_point_of_ringHom) P.A A hred inferInstance Φ fun y => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z₀, rfl⟩` from `u.ex_onto y`. Take `⟨i, hi⟩` from `TorusEnd.exists_top_le_preimage_of_iSup_eq_top (u'.ex (z₀ + a)).left _ hcov`. Take `⟨haff, r, hrr, hgen⟩` from `hD i`. Take `⟨U, ρ, hU0, hU⟩` from `exists_regular_quotients u hM hs i (mul_ne_zero ((hmem i _).1 hi) (hG z₀))`. Use `⟨U, _, hU0, haff, fun y' hy' => ?_, fun φ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `u.ex_onto y'`. Rewrite using `[hΦ]`. Conclude with `(hmem i _).2 (left_ne_zero_of_mul (hU z hy').1)`. Take `⟨Q, rfl⟩` from `hgen φ`. Use `⟨MvPolynomial.eval₂ (RingHom.comp (A.hom.appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) ρ Q, fun y' hy' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨z, rfl⟩` from `u.ex_onto y'`. Establish `h1` using `left_ne_zero_of_mul (hU z hy').1`. Establish `h2` using `right_ne_zero_of_mul (hU z hy').1`. Rewrite using `[hΦ, TorusEnd.valAt'_eval₂ _ _ hy', TorusEnd.valAt'_eval₂ _ _ ((hmem i _).2 h1)]`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[(hU z hy').2 j, valAt'_eq_div_of_mul u' P.isLB (hθt i) (hθt j) (r j) (hrr j) h1, mul_div_mul_right _ _ h2]`. Establish `hfe : ∀ z, (u.ex z).left ≫ f.left = (u'.ex (z + a)).left` using `fun z => by`. Rewrite using `[← Over.comp_left, hf, hΦ]`. Establish `heq : ∀ j, Out.nonzeroLocus (s j) = f.left ⁻¹ᵁ Out.nonzeroLocus (t j)` using `fun j => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ x' : Sp ℂ ⟶ A.left, x' ≫ A.hom = 𝟙 _ → (⊤ ≤ x' ⁻¹ᵁ Out.nonzeroLocus (s j) ↔ ⊤ ≤ (x' ≫ f.left) ⁻¹ᵁ Out.nonzeroLocus (t j))`. Introduce `x' hx'`. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk x' hx')`. Establish `hz' : (u.ex z).left = x'` using `by rw [hz]; rfl`. Rewrite using `[← hz', hfe, hmemA, hmem]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨left_ne_zero_of_mul, fun h0 => mul_ne_zero h0 (hG z)⟩`. Conclude with `le_antisymm (ComplexPoints.opens_le_of_complexPoints A.hom _ _ fun x' hx' => (hpt x' hx').1) (ComplexPoints.opens_le_of_complexPoints A.hom _ _ fun x' hx' => (hpt x' hx').2)`. Use `⟨f.left, Over.w f, hfe, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ f.left ⁻¹ᵁ (⨆ j, Out.nonzeroLocus (t j))` using `by rw [hcov]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`.
-
-Use `⟨secFinOne (s j), Out.nonzeroLocus (t j), ?_, (hD j).1, ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_secFinOne, heq]`. Conclude with `hj`. Rewrite using `[nonzeroLocus_secFinOne, heq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_morphism_affine_cover : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),

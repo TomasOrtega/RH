@@ -4,21 +4,19 @@ open CategoryTheory Polynomial GlobalTheory.NormalDescent
 namespace GlobalTheory.CharpolyDvd
 
 /- English proof (translation)
-Distinguish the cases in `h0 : G = 0`. Substitute `h0` using the available equality. Break down `Nat.eq_zero_or_pos (Fintype.card ι) with h | h` into its components or cases. Establish `: M.charpoly = 1`. Apply `Polynomial.eq_one_of_monic_natDegree_zero M.charpoly_monic` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.charpoly_natDegree_eq_dim, h]`. Rewrite using `[this, h, pow_zero]`. Rewrite using `[zero_pow h.ne']`. Conclude with `dvd_zero _`. Set `Ω` to `AlgebraicClosure K`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f` to `algebraMap K Ω`. Rewrite using `[← Polynomial.map_dvd_map' f, Polynomial.map_pow, ← Matrix.charpoly_map]`. Use `set N := M.map f with hNdef`. Establish `hN : aeval N (G.map f) = 0`. Rewrite using `[aeval_map_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (AlgHom.mapMatrix (m := ι) (Algebra.ofId K Ω)) hG` as an intermediate fact. Rewrite `this` using `[← aeval_algHom_apply, map_zero]`. Conclude with `this`. Establish `hG0 : G.map f ≠ 0` using `Polynomial.map_ne_zero h0`. Establish `hq0 : G.map f ^ Fintype.card ι ≠ 0` using `pow_ne_zero _ hG0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(IsAlgClosed.splits _).dvd_of_roots_le_roots N.charpoly_monic.ne_zero ?_` and prove the remaining obligations. Rewrite using `[roots_pow, Multiset.le_iff_count]`. Introduce `μ`. Rewrite using `[Multiset.count_nsmul]`. Distinguish the cases in `hμ : μ ∈ N.charpoly.roots`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : μ ∈ spectrum Ω N`. Rewrite using `[Matrix.mem_spectrum_iff_isRoot_charpoly]`. Conclude with `isRoot_of_mem_roots hμ`. Establish `h2` using `spectrum.subset_polynomial_aeval N (G.map f) ⟨μ, h1, rfl⟩`. Rewrite `h2` using `[hN]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h3 : (G.map f).eval μ = 0`. Assume the negation of the conclusion as `hne`. Conclude with `(spectrum.mem_iff.1 h2) (by simpa using (IsUnit.mk0 _ hne).map (algebraMap Ω (Matrix ι ι Ω)))`. Establish `h4 : 1 ≤ (G.map f).roots.count μ` using `Multiset.one_le_count_iff_mem.2 ((mem_roots hG0).2 h3)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Multiset.count_eq_zero.2 hμ]`. Conclude with `Nat.zero_le _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_charpoly_dvd_pow {K : Type} [Field K] {ι : Type} [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι K) (G : K[X]) (hG : aeval M G = 0) :
@@ -68,11 +66,11 @@ theorem matrix_charpoly_dvd_pow {K : Type} [Field K] {ι : Type} [Fintype ι] [D
     exact Nat.zero_le _
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K V`. Establish `hM : aeval (LinearMap.toMatrix b b f) G = 0`. Use `aeval_algHom_apply (LinearMap.toMatrixAlgEquiv b).toAlgHom f G` as an intermediate fact. Rewrite `this` using `[hG, map_zero]`. Establish `e : LinearMap.toMatrixAlgEquiv b f = LinearMap.toMatrix b b f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[LinearMap.toMatrixAlgEquiv_apply, LinearMap.toMatrix_apply]`. Rewrite using `[← e]`. Conclude with `this`. Use `matrix_charpoly_dvd_pow _ G hM` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[LinearMap.charpoly_toMatrix, Fintype.card_fin]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem charpoly_dvd_pow_finrank {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (f : Module.End K V) (G : K[X]) (hG : aeval f G = 0) :
@@ -91,7 +89,7 @@ theorem charpoly_dvd_pow_finrank {K V : Type} [Field K] [AddCommGroup V] [Module
   rwa [LinearMap.charpoly_toMatrix, Fintype.card_fin] at this
 
 /- English proof (translation)
-Introduce `f G hG` and use `charpoly_dvd_pow_finrank f G hG`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K V : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (f : Module.End K V) (G : K[X]), aeval f G = 0 → f.charpoly ∣ G ^ Module.finrank K V :=

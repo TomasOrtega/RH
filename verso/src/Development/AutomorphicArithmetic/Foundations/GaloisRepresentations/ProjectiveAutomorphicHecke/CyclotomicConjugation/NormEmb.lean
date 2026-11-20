@@ -8,9 +8,9 @@ open UpperTheory.Gal.CertificateRingHomMap UpperTheory.Gal.CertificateRingHomMap
 namespace UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.NormEmbeddings
 
 /- English proof (translation)
-Proceed by induction on `hy using IntermediateField.adjoin_induction with`. Consider the case `mem z hz => rw [Set.mem_singleton_iff.1 hz]`. Conclude with `h`. Consider the case `algebraMap q => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `inv a _ ha => simp [ha]`. Consider the case `mul a b _ _ ha hb => simp [ha, hb]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem eq_on_adjoin {E : Type} [Field E] [NumberField E] (x : E) (f g : E →+* ℂ)
     (h : f x = g x) (y : E) (hy : y ∈ IntermediateField.adjoin ℚ {x}) : f y = g y := by
@@ -22,15 +22,13 @@ private theorem eq_on_adjoin {E : Type} [Field E] [NumberField E] (x : E) (f g :
   | mul a b _ _ ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Use `letI : Algebra (Kx x) ℂ := (φ.comp (algebraMap (Kx x) E)).toAlgebra`. Use `haveI : FiniteDimensional (Kx x) E := FiniteDimensional.right ℚ (Kx x) E`. Establish `hc : ∀ r : Kx x, algebraMap (Kx x) ℂ r = φ (algebraMap (Kx x) E r)` using `fun _ => rfl`. Establish `h` using `Algebra.norm_eq_prod_embeddings (Kx x) ℂ k`. Rewrite `h` using `[hc]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `Finset.prod_bij (fun σ _ => (σ : E →+* ℂ)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ _`. Establish `hxm : x ∈ IntermediateField.adjoin ℚ {x}` using `IntermediateField.mem_adjoin_simple_self ℚ x`. Use `σ.commutes (⟨x, hxm⟩ : Kx x)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite `this` using `[hc]`. Conclude with `this`. Introduce `σ _ τ _ hst`. Conclude with `AlgHom.coe_ringHom_injective hst`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `φ' hφ'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hφ'`. Use `⟨{ φ' with commutes' := fun r => ?_ }, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `eq_on_adjoin x φ' φ hφ' _ r.2`. Use extensionality with `y`.
-
-Both sides reduce to the same expression. Introduce `σ _`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem norm_Kx {E : Type} [Field E] [NumberField E] (x : E) (φ : E →+* ℂ) (k : E)
     [DecidablePred fun φ' : E →+* ℂ => φ' x = φ x] :
@@ -60,9 +58,9 @@ private theorem norm_Kx {E : Type} [Field E] [NumberField E] (x : E) (φ : E →
     rfl
 
 /- English proof (translation)
-Establish `h1 : (starRingEnd ℂ z) ^ 2 = z ^ 2`. Rewrite using `[← map_pow, hz]`. Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Take `⟨r, rfl⟩` from `Complex.conj_eq_iff_real.1 h`. Establish `h2 : (r ^ 2 : ℝ) = -(d : ℝ)` using `by exact_mod_cast hz`. Establish `h3 : (0 : ℝ) < d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg r]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem conj_of_sq {z : ℂ} {d : ℕ} (hd : 0 < d) (hz : z ^ 2 = -(d : ℂ)) :
     starRingEnd ℂ z = -z := by
@@ -77,7 +75,7 @@ private theorem conj_of_sq {z : ℂ} {d : ℕ} (hd : 0 < d) (hz : z ^ 2 = -(d : 
   · exact h
 
 /- English proof (translation)
-Establish `h : conjE E a = IsCMField.complexConj E a` using `rfl`. Rewrite using `[h]`. Conclude with `(IsCMField.complexEmbedding_complexConj E φ a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem emb_conj {E : Type} [Field E] [NumberField E] [IsCMField E] (φ : E →+* ℂ) (a : E) :
     φ (conjE E a) = starRingEnd ℂ (φ a) := by
@@ -89,25 +87,23 @@ end UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.NormEmbeddings
 
 open UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.NormEmbeddings in
 /- English proof (translation)
-Introduce `E _ _ _ d x hd hx k`. Establish `hsq : ∀ φ : E →+* ℂ, (φ x) ^ 2 = -(d : ℂ)` using `fun φ => by`. Rewrite using `[← map_pow, hx]`. Simplify using the standard rewrite rules. Establish `hne : ∀ φ : E →+* ℂ, φ x ≠ 0` using `fun φ h0 => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hsq φ`. Rewrite `h1` using `[h0]`. Establish `h2 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Apply `h2` to reduce the goal to its premises. Simplify using `using h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcj : ∀ φ : E →+* ℂ, φ (conjE E (algebraMap (Kx x) E (Algebra.norm (Kx x) (k : E)))) = ∏ φ' ∈ Finset.univ.filter (fun φ' : E →+* ℂ => φ' x = -φ x), φ' k`. Introduce `φ`. Establish `h` using `norm_Kx x ((starRingEnd ℂ).comp φ) (k : E)`. Simplify using `only [RingHom.comp_apply, conj_of_sq hd (hsq φ)] at h`. Rewrite using `[emb_conj, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : ((Algebra.norm ℚ (k : E) : ℚ) : ℂ) = ∏ φ' : E →+* ℂ, φ' k`. Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ (k : E)`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ).symm _ _ (fun _ => rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ₀ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Establish `hmul : φ₀ (algebraMap (Kx x) E (Algebra.norm (Kx x) (k : E))) * φ₀ (conjE E (algebraMap (Kx x) E (Algebra.norm (Kx x) (k : E)))) = ((Algebra.norm ℚ (k : E) : ℚ) : ℂ)`. Rewrite using `[norm_Kx x φ₀ (k : E), hcj φ₀, hQ, ← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun φ' : E →+* ℂ => φ' x = φ₀ x)]`. Use `congr 2`. Use extensionality with `φ'`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Establish `h2 : (φ' x) ^ 2 = (φ₀ x) ^ 2` using `by rw [hsq, hsq]`. Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Rewrite `h'` using `[h]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (2 : ℂ) * φ₀ x = 0` using `by linear_combination -h'`. Conclude with `hne φ₀ (by simpa using this)`. Introduce `h`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Use `⟨hcj, hQ, ?_, ?_⟩` and prove the remaining obligations. Establish `ht : φ₀ (algebraMap (Kx x) E (Algebra.norm (Kx x) (k : E))) ≠ 0` using `by haveI : FiniteDimensional (Kx x) E := FiniteDimensional.right ℚ (Kx x) E`. Rewrite using `[Ne, map_eq_zero, map_eq_zero, Algebra.norm_eq_zero_iff]`. Conclude with `k.ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hmul` using `[emb_conj, Complex.mul_conj]`. Establish `h1 : Complex.normSq (φ₀ (algebraMap (Kx x) E (Algebra.norm (Kx x) (k : E)))) = ((Algebra.norm ℚ (k : E) : ℚ) : ℝ)` using `by exact_mod_cast hmul`. Establish `h2` using `Complex.normSq_pos.2 ht`. Rewrite `h2` using `[h1]`. Conclude with `h2` after adjusting the coercions.
-
-Apply `φ₀.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.normEmb :
     UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.NormEmb := by

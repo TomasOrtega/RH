@@ -18,24 +18,22 @@ namespace DivisionNearS
 variable {D : ℕ}
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (A.cover x)`.
+A detailed English derivation is pending.
 -/
 theorem mem_source_chartIdx {U : Type} [TopologicalSpace U] (A : FinHolAtlas D U) (x : U) :
     x ∈ (A.chart (chartIdx A x)).source :=
   Classical.choose_spec (A.cover x)
 
 /- English proof (translation)
-Use `set G : (Fin D → ℂ) → ℝ≥0∞ := fun z => f c ((A.chart c).symm z)`. Use `set B := piece A j ∩ ((A.chart j).target ∩ (A.chart j).symm ⁻¹' W) with hBdef`. Set `φ : (Fin D → ℂ) → (Fin D → ℂ)` to `A.chart c ∘ (A.chart j).symm`. Establish `hBmeas : MeasurableSet B` using `(ExtensionProof.measurableSet_piece A j).inter ((A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target hW).measurableSet`. Establish `hBmem : ∀ y ∈ B, y ∈ (A.chart j).target ∧ (A.chart j).symm y ∈ W` using `fun y hy => ⟨hy.2.1, hy.2.2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hderiv : ∀ y ∈ B, HasFDerivWithinAt φ ((fderiv ℂ φ y).restrictScalars ℝ) B y`. Introduce `y hy`. Take `⟨hyt, hyW⟩` from `hBmem y hy`. Establish `han : AnalyticAt ℂ φ y` using `A.holo j c y ⟨hyt, hWc hyW⟩`. Conclude with `(han.differentiableAt.hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hinj : InjOn φ B`. Introduce `y₁ h₁ y₂ h₂ h`. Take `⟨h₁t, h₁W⟩` from `hBmem y₁ h₁`. Take `⟨h₂t, h₂W⟩` from `hBmem y₂ h₂`. Use `(A.chart c).injOn (hWc h₁W) (hWc h₂W) h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← (A.chart j).right_inv h₁t, ← (A.chart j).right_inv h₂t, this]`. Establish `hcv` using `lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hBmeas hderiv hinj G`. Establish `heq : ∫⁻ y in B, ENNReal.ofReal |((fderiv ℂ φ y).restrictScalars ℝ).det| * G (φ y) = ∫⁻ y in B, f j ((A.chart j).symm y)`. Use `setLIntegral_congr_fun hBmeas fun y hy => ?_` and prove the remaining obligations. Take `⟨hyt, hyW⟩` from `hBmem y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hys : (A.chart j).symm y ∈ (A.chart j).source` using `(A.chart j).map_target hyt`. Rewrite using `[hf j _ ⟨hys, hyW⟩, ExtNonInt.det_restrictScalars_complex, abs_of_nonneg (by positivity)]`. Simplify using `only [G, φ, Function.comp_apply, (A.chart c).left_inv (hWc hyW), jac, (A.chart j).right_inv hyt]`. Establish `hsub : φ '' B ⊆ A.chart c '' W`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Conclude with `⟨(A.chart j).symm y, (hBmem y hy).2, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem setLIntegral_piece_le_chart {U : Type} [TopologicalSpace U] (A : FinHolAtlas D U)
     (f : Fin A.n → U → ℝ≥0∞) (c : Fin A.n) (W : Set U) (hW : IsOpen W)
@@ -80,7 +78,7 @@ theorem setLIntegral_piece_le_chart {U : Type} [TopologicalSpace U] (A : FinHolA
 variable (X : EmbDatum D)
 
 /- English proof (translation)
-Use `(X.e_mem k).2.1 j c x hx` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem e_transform (k : Fin X.N) (j c : Fin X.A.n) (x : X.U)
     (hx : x ∈ (X.A.chart j).source ∩ (X.A.chart c).source) :
@@ -89,14 +87,14 @@ theorem e_transform (k : Fin X.N) (j c : Fin X.A.n) (x : X.U)
   simpa using this
 
 /- English proof (translation)
-Simplify using `[lin, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_apply (a : Fin X.N → ℂ) (j : Fin X.A.n) (x : X.U) :
     lin X.e a j x = ∑ k, a k * X.e k j x := by
   simp [lin, Finset.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [ZeroDatum.s, lin_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[e_transform X k j c x hx]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem s_transform (Z : ZeroDatum X) (i : Fin D) (j c : Fin X.A.n) (x : X.U)
     (hx : x ∈ (X.A.chart j).source ∩ (X.A.chart c).source) :
@@ -106,16 +104,16 @@ theorem s_transform (Z : ZeroDatum X) (i : Fin D) (j c : Fin X.A.n) (x : X.U)
   rw [e_transform X k j c x hx]; ring
 
 /- English proof (translation)
-Use `show lin X.e (Z.c i) ∈ X.L.sections 1`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (X.e_mem k)`.
+A detailed English derivation is pending.
 -/
 theorem s_mem (Z : ZeroDatum X) (i : Fin D) : Z.s i ∈ X.L.sections 1 := by
   show lin X.e (Z.c i) ∈ X.L.sections 1
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (X.e_mem k)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `X.gen x`. Establish `hc` using `mem_source_chartIdx X.A x`. Establish `hg` using `X.L.ne_zero j (chartIdx X.A x) x ⟨hx, hc⟩`. Establish `hne : X.e k j x ≠ 0`. Rewrite using `[e_transform X k j (chartIdx X.A x) x ⟨hx, hc⟩]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hg hk`. Conclude with `lt_of_lt_of_le (by positivity) (Finset.single_le_sum (f := fun k => ‖X.e k j x‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k))`.
+A detailed English derivation is pending.
 -/
 theorem esum_pos (j : Fin X.A.n) (x : X.U) (hx : x ∈ (X.A.chart j).source) :
     0 < ∑ k, ‖X.e k j x‖ ^ 2 := by
@@ -128,7 +126,7 @@ theorem esum_pos (j : Fin X.A.n) (x : X.U) (hx : x ∈ (X.A.chart j).source) :
     (fun _ _ => by positivity) (Finset.mem_univ k))
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[e_transform X k j c x hx, norm_mul, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem esum_transform (j c : Fin X.A.n) (x : X.U)
     (hx : x ∈ (X.A.chart j).source ∩ (X.A.chart c).source) :
@@ -138,7 +136,7 @@ theorem esum_transform (j c : Fin X.A.n) (x : X.U)
   rw [e_transform X k j c x hx, norm_mul, mul_pow]
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[s_transform X Z i j c x hx, norm_mul, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ssum_transform (Z : ZeroDatum X) (j c : Fin X.A.n) (x : X.U)
     (hx : x ∈ (X.A.chart j).source ∩ (X.A.chart c).source) :
@@ -148,9 +146,9 @@ theorem ssum_transform (Z : ZeroDatum X) (j c : Fin X.A.n) (x : X.U)
   rw [s_transform X Z i j c x hx, norm_mul, mul_pow]
 
 /- English proof (translation)
-Unfold `rSq`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ‖Z.s i j x‖ ≤ ∑ k, ‖Z.c i k‖ * ‖X.e k j x‖`. Simplify using `only [ZeroDatum.s, lin_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun k _ => norm_mul _ _))`. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun k => ‖Z.c i k‖) (fun k => ‖X.e k j x‖)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ssum_le (Z : ZeroDatum X) (j : Fin X.A.n) (x : X.U) :
     ∑ i, ‖Z.s i j x‖ ^ 2 ≤ rSq Z.c * ∑ k, ‖X.e k j x‖ ^ 2 := by

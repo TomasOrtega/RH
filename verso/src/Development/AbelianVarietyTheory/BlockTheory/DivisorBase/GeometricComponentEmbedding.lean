@@ -98,19 +98,19 @@ def FlatLineNormConstant : Prop :=
       y ≫ pullback.snd _ _ = spMap s → Set.range y ⊆ (U : Set (Xo.XF c)) → SqNormIs Y U τ sig s y κ
 
 /- English proof (translation)
-Simplify using `[gramSq]`.
+Simplify using the standard rewrite rules.
 -/
 example {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z : Fin 0 → (Fin g → ℂ)) : gramSq Hm z = 1 := by
   simp [gramSq]
 
 /- English proof (translation)
-Simplify using `[gramSq, dotProduct, Complex.mul_conj, Complex.normSq_eq_norm_sq, ← Complex.ofReal_pow]`.
+Simplify using the standard rewrite rules.
 -/
 example (a : ℂ) : gramSq (1 : Matrix (Fin 1) (Fin 1) ℂ) (fun _ : Fin 1 => fun _ => a) = Real.pi * ‖a‖ ^ 2 := by
   simp [gramSq, dotProduct, Complex.mul_conj, Complex.normSq_eq_norm_sq, ← Complex.ofReal_pow]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by intros; simp, by intros; simp⟩`.
+Supply the required witnesses or components.
 -/
 example (Y : Model Xo c (RingHom.id c.F)) (U : (Xo.XF c).Opens) (τ : E →+* ℂ) :
     IsDetSection Y U τ (fun _ _ _ _ _ => 0) :=

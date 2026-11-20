@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (thick R I e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_fst_thick {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (G : Over (Sp R)) :
     Mono (pullback.fst G.hom (thick R I e)) := by
@@ -22,9 +22,9 @@ theorem mono_fst_thick {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (G : Over
   infer_instance
 
 /- English proof (translation)
-Substitute `hF` using the available equality. Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Establish `hk : ∀ k, (𝟙 Y' ≫ h) ≫ φ k = 𝟙 Y' ≫ φ' k` using `fun k => by`. Rewrite using `[Category.assoc, ← hψ k, Category.comp_id]`. Establish `hmem : ∀ k, (𝟙 Y' ≫ φ' k) z ∈ L.U (J (𝟙 Y' ≫ φ' k))` using `fun k => hJ _`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `hm _ (𝟙 Y') z (fun k => J (𝟙 Y' ≫ φ' k)) (fun k => J (𝟙 Y' ≫ φ' k)) hmem hmem`. Rewrite using `[Finset.prod_eq_one (fun k _ => by`. Rewrite `key` using `[hw _ _ z _ _ (hmem k) (hmem k), gm_self hL _ z (hmem k), one_zpow]), _root_.one_mul]`. Rewrite using `[val_pull hJ, val_of t _ z J _ (fun k => congrArg J (hk k))]`. Conclude with `key.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corr_pullGen_of_pmaps {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {F : X ⟶ X} (hF : F = 𝟙 X)
     (w : LB.Iso L (L.pull F))
@@ -46,19 +46,17 @@ theorem corr_pullGen_of_pmaps {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {F 
   exact key.symm
 
 /- English proof (translation)
-Introduce `R _ _ I D A G G' _ _ _ _ ε hD hid bc U U' hF hgen H`. Take `⟨hx, hΦ, hw₀⟩` from `hid`. Take `⟨wL, hg, he, hr, H⟩` from `(isPullUnif_iff_stalks R R I I _ D D hD A A G G' bc U U').1 H`. Establish `hr'` using `(maps_iff wL _ (fun _ => eSec G) _ U'.LG.rig U.LG.rig (specOf (RingHom.id R)) _ (rigPull_le _ _ he U.LG.L) (fun _ => rfl)).1 hr`. Use `clear hr he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = F at wL hg hr' H hF`. Substitute `hF` using the available equality. Use `⟨hgen, wL, ⟨hg, ?_⟩, fun e => ?_⟩` and prove the remaining obligations. Establish `hs` using `specOf_id R`. Rewrite `hr'` using `[hs]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hr'`. Take `⟨h, hf, ⟨hp, ht⟩, hw⟩` from `H e`. Establish `hh : h = ((Over.pullback (thick R I e)).map ε.hom).left`. Use `mono_fst_thick I e G` as an intermediate fact. Rewrite using `[← cancel_mono (pullback.fst G.hom (thick R I e))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Use `hf.trans ?_` and prove the remaining obligations. Conclude with `(pullback.lift_fst _ _ _).symm`. Substitute `hh` using the available equality. Rewrite `hp` using `[hΦ, Category.comp_id]`. Establish `hpt : ∀ y, (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R))) y = y` using `fun y => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΦ]`. Both sides reduce to the same expression. Use `⟨?_, fun χ => ?_, ?_⟩` and prove the remaining obligations. Use `ext1`. Use `mono_fst_thick I e D.toPre.P.A` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← cancel_mono (pullback.fst D.toPre.P.A.hom (thick R I e))]`. Conclude with `hp`. Take `⟨hψ, hm⟩` from `ht χ`. Rewrite `hψ`, `hm` using `[hx χ]`. Conclude with `corr_pullGen_of_pmaps D.toPre.P.isLB hΦ hD.w hw₀ hψ hm`.
-
-Introduce `Z r z jM jL jL' h₁ h₂ h₃`. Establish `key` using `hw Z r z jM jM jL jL' (by rw [hpt]; exact h₁) h₁ h₂ h₃`. Rewrite `key` using `[hw₀ _ (r ≫ (U'.gt e).pG.left) z jM jM h₁ h₁, gm_self D.toPre.P.isLB (r ≫ (U'.gt e).pG.left) z h₁, _root_.one_mul]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameUnif_of_isPullUnif : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G G' : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G'] (ε : G' ≅ G) (hD : IsPullDeg (RingHom.id R) D.toPre D.toPre), IsIdPull hD → ∀ (bc : G' ≅ (Over.pullback (specOf (RingHom.id R))).obj G) (U : Unif I D A G) (U' : Unif I D A G'), bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = ε.hom.left → U'.gen.hom = (Over.pullback (jK R)).map ε.hom ≫ U.gen.hom → IsPullUnif (RingHom.id R) hD bc U U' → SameUnif ε U.toUnifPre U'.toUnifPre := by
   intro R _ _ I D A G G' _ _ _ _ ε hD hid bc U U' hF hgen H

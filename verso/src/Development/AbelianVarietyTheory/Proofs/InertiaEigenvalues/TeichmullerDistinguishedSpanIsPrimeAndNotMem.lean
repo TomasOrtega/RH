@@ -7,11 +7,11 @@ open scoped NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hc`. Use `set d := WittVector.teichmuller l (↑u⁻¹ : O) * c with hd`. Establish `h0 : (d - 1).coeff 0 = 0`. Establish `: (d - 1) + 1 = d` using `sub_add_cancel d 1`. Establish `h2` using `congrArg (fun t => t.coeff 0) this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [WittVector.add_coeff_zero, WittVector.one_coeff_zero, hd, WittVector.mul_coeff_zero, WittVector.teichmuller_coeff_zero, ← hu, Units.inv_mul] at h2`. Take the linear combination `h2`. Rewrite `h0` using `[← WittVector.mem_span_p_iff_coeff_zero_eq_zero]`. Establish `hj` using `IsAdicComplete.le_jacobson_bot (Ideal.span {((l : ℕ) : WittVector l O)}) h0`. Establish `hd1 : IsUnit d`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Ideal.mem_jacobson_bot.mp hj) 1` as an intermediate fact. Simplify using `using this`. Conclude with `isUnit_of_mul_isUnit_right hd1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem wittVector_isUnit_of_isUnit_coeff_zero (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O]
     [CharP O l] [PerfectRing O l] (c : WittVector l O) (hc : IsUnit (c.coeff 0)) : IsUnit c := by
@@ -31,7 +31,7 @@ theorem wittVector_isUnit_of_isUnit_coeff_zero (l : ℕ) [Fact l.Prime] (O : Typ
   exact isUnit_of_mul_isUnit_right hd1
 
 /- English proof (translation)
-Rewrite using `[← WittVector.mem_span_p_iff_coeff_zero_eq_zero]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittVector_natCast_mul_coeff_zero (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O]
     [CharP O l] [PerfectRing O l] (a : WittVector l O) :
@@ -40,9 +40,9 @@ theorem wittVector_natCast_mul_coeff_zero (l : ℕ) [Fact l.Prime] (O : Type) [C
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Establish `h0 : (a - WittVector.teichmuller l (a.coeff 0)).coeff 0 = 0`. Establish `: (a - WittVector.teichmuller l (a.coeff 0)) + WittVector.teichmuller l (a.coeff 0) = a` using `sub_add_cancel _ _`. Establish `h2` using `congrArg (fun t => t.coeff 0) this`. Simplify using `only [WittVector.add_coeff_zero, WittVector.teichmuller_coeff_zero] at h2`. Take the linear combination `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h0` using `[← WittVector.mem_span_p_iff_coeff_zero_eq_zero, Ideal.mem_span_singleton]`. Take `⟨a₁, ha₁⟩` from `h0`. Conclude with `⟨a₁, by rw [← ha₁]; ring⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wittVector_eq_teichmuller_add (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O]
     [CharP O l] [PerfectRing O l] (a : WittVector l O) :
@@ -63,13 +63,13 @@ variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [CharP O 
   (x : O) (e : ℕ) (w E' : WittVector l O)
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Establish `hT : WittVector.teichmuller l x ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[← WittVector.teichmuller_coeff_zero l x, h0]`. Simplify using the standard rewrite rules. Take `⟨d, rfl⟩` from `(GlobalTheory.T.teichmuller_distinguished_regular_sequence l O x e w E' hx he hw hE N c).1 ⟨1, by rw [← hc]; ring⟩`. Establish `h1 : E' * d = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ (pow_ne_zero N hT)` to reduce the goal to its premises. Take the linear combination `-hc`. Establish `hu : IsUnit E'` using `IsUnit.of_mul_eq_one d h1`. Establish `hc0 : IsUnit (E'.coeff 0)`. Use `hu.map (WittVector.constantCoeff (p := l) (R := O))` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[WittVector.constantCoeff]`. Rewrite `hc0` using `[hE, WittVector.add_coeff_zero, wittVector_natCast_mul_coeff_zero, add_zero, ← map_pow, WittVector.teichmuller_coeff_zero]`. Conclude with `hxu ((isUnit_pow_iff he.ne').mp hc0)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teichmuller_pow_not_mem_span (hx : x ≠ 0) (hxu : ¬ IsUnit x) (he : 0 < e) (hw : IsUnit w)
     (hE : E' = WittVector.teichmuller l x ^ e + ((l : ℕ) : WittVector l O) * w) (N : ℕ) :
@@ -99,21 +99,19 @@ variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [Valuatio
   [PerfectRing O l] (x : O) (e : ℕ) (w E' : WittVector l O)
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hw.exists_right_inv`. Take `⟨a₁, ha⟩` from `wittVector_eq_teichmuller_add l O a`. Use `set a₀ := a.coeff 0`. Establish `hL : ((l : ℕ) : WittVector l O) = E' * v - WittVector.teichmuller l x ^ e * v`. Rewrite using `[hE]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(((l : ℕ) : WittVector l O))) * hv`. Establish `hmem : E' * (v * a₁) ∈ Ideal.span {E'}` using `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Take `⟨c, hc | hc⟩` from `ValuationRing.cond a₀ (x ^ e)`. Distinguish the cases in `hcu : IsUnit c`. Use `left`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c', hc'⟩` from `hcu.exists_right_inv`. Establish `ha₀ : a₀ = x ^ e * c'` using `by rw [← hc, mul_assoc, hc', mul_one]`. Use `⟨WittVector.teichmuller l c' - v * a₁, ?_⟩` and prove the remaining obligations. Use `hmem using 1` and compare the differences between its conclusion and the goal. Rewrite using `[ha, ha₀, map_mul, map_pow, hL]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `right`. Use `⟨a₀, ⟨c, hc.symm⟩, 1 - WittVector.teichmuller l c * (v * a₁), ?_, ?_⟩` and prove the remaining obligations. Apply `wittVector_isUnit_of_isUnit_coeff_zero` to reduce the goal to its premises. Establish `h2 : (1 - WittVector.teichmuller l c * (v * a₁)).coeff 0 = 1 - c * (v * a₁).coeff 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (1 - WittVector.teichmuller l c * (v * a₁)) + WittVector.teichmuller l c * (v * a₁) = 1` using `sub_add_cancel _ _`. Establish `h3` using `congrArg (fun t => t.coeff 0) this`. Simplify using `only [WittVector.add_coeff_zero, WittVector.one_coeff_zero, WittVector.mul_coeff_zero, WittVector.teichmuller_coeff_zero] at h3`. Rewrite using `[WittVector.mul_coeff_zero]`. Take the linear combination `h3`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[h2]`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (c * (v * a₁).coeff 0) with h | h` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_left h) hcu`. Conclude with `h`. Use `hmem using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, hL, ← map_pow, ← hc, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `left`. Use `⟨WittVector.teichmuller l c - v * a₁, ?_⟩` and prove the remaining obligations. Use `hmem using 1` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[ha, ← hc, map_mul, map_pow, hL]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem teichmuller_distinguished_normal_form_step (hw : IsUnit w)
     (hE : E' = WittVector.teichmuller l x ^ e + ((l : ℕ) : WittVector l O) * w) (a : WittVector l O) :
@@ -161,15 +159,13 @@ theorem teichmuller_distinguished_normal_form_step (hw : IsUnit w)
     rw [ha, ← hc, map_mul, map_pow, hL]; ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro a; left; exact ⟨a, by simp⟩`. Consider the case `succ n ih`. Introduce `a`. Break down `ih a with ⟨a', ha'⟩ | ⟨y, hy, u, hu, hya⟩` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `teichmuller_distinguished_normal_form_step l O x e w E' hw hE a' with ⟨a'', ha''⟩ | ⟨y, hy, u, hu, hya⟩` into its components or cases. Use `left`. Use `⟨a'', ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ ha' (Ideal.mul_mem_left _ (WittVector.teichmuller l x ^ (e * n)) ha'')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.mul_succ, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `right`. Use `⟨x ^ (e * n) * y, ?_, u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.mul_succ, pow_add]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `mul_dvd_mul_left _ hy`. Use `Ideal.add_mem _ ha' (Ideal.mul_mem_left _ (WittVector.teichmuller l x ^ (e * n)) hya)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `right`. Conclude with `⟨y, hy.trans (pow_dvd_pow _ (Nat.mul_le_mul_left e n.le_succ)), u, hu, hya⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem teichmuller_distinguished_normal_form_iter (hw : IsUnit w)
     (hE : E' = WittVector.teichmuller l x ^ e + ((l : ℕ) : WittVector l O) * w) (n : ℕ) :
@@ -205,26 +201,24 @@ variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [CharP O 
   [PerfectRing O l] (x : O) (e : ℕ) (w E' : WittVector l O)
 
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_span_singleton_pow_smul_top_iff_dvd {R : Type} [CommRing R] (t a : R) (m : ℕ) :
     a ∈ (Ideal.span {t} ^ m • ⊤ : Submodule R R) ↔ t ^ m ∣ a := by
   rw [smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Use `set T := WittVector.teichmuller l x with hTdef`. Establish `hcT` using `(GlobalTheory.T.wittVector_teichmuller_isAdicComplete_of_perfect l O x hx hc).1`. Establish `hreg` using `GlobalTheory.T.teichmuller_distinguished_regular_sequence l O x e w E' hx he hw hE`. Use `choose c hc' using h`. Establish `hb : ∀ k, ∃ b : WittVector l O, a = E' * b + T ^ k * c k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton.mp (hc' k)`. Conclude with `⟨b, by rw [← hb]; ring⟩`. Use `choose b hb using hb`. Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → b m ≡ b n [SMOD (Ideal.span {T} ^ m • ⊤ : Submodule (WittVector l O) (WittVector l O))]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, mem_span_singleton_pow_smul_top_iff_dvd]`. Apply `(hreg m _).1` to reduce the goal to its premises. Use `⟨c n * T ^ (n - m) - c m, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hb m).symm.trans (hb n)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2 : T ^ n = T ^ m * T ^ (n - m)` using `by rw [← pow_add, Nat.add_sub_cancel' hmn]`. Rewrite `h1` using `[h2]`. Take the linear combination `h1`. Take `⟨L, hL⟩` from `hcT.toIsPrecomplete.prec hcauchy`. Establish `hzero : a - E' * L = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `hcT.toIsHausdorff.haus` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.sub_mem, sub_zero, mem_span_singleton_pow_smul_top_iff_dvd]`. Establish `hn` using `hL n`. Rewrite `hn` using `[SModEq.sub_mem, mem_span_singleton_pow_smul_top_iff_dvd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩` from `hn`. Use `⟨E' * d + c n, ?_⟩` and prove the remaining obligations. Rewrite using `[hb n]`. Take the linear combination `E' * hd`. Rewrite using `[Ideal.mem_span_singleton]`.
-
-Conclude with `⟨L, by linear_combination hzero⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem teichmuller_distinguished_span_closed (hx : x ≠ 0) (he : 0 < e) (hw : IsUnit w)
     (hE : E' = WittVector.teichmuller l x ^ e + ((l : ℕ) : WittVector l O) * w)
@@ -266,23 +260,21 @@ theorem teichmuller_distinguished_span_closed (hx : x ≠ 0) (he : 0 < e) (hw : 
 end Distinguished3
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ x hx hxu hc e w E' he hw hE`. Establish `hnot` using `teichmuller_pow_not_mem_span l O x e w E' hx hxu he hw hE`. Establish `hform : ∀ a : WittVector l O, a ∉ Ideal.span {E'} → ∃ (y : O) (N : ℕ), y ∣ x ^ N ∧ ∃ u : WittVector l O, IsUnit u ∧ a - WittVector.teichmuller l y * u ∈ Ideal.span {E'}`. Introduce `a ha`. Establish `: ¬ ∀ k : ℕ, ∃ c : WittVector l O, a - WittVector.teichmuller l x ^ k * c ∈ Ideal.span {E'}` using `fun h => ha (teichmuller_distinguished_span_closed l O x e w E' hx he hw hE hc a h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_neg at this`. Take `⟨k, hk⟩` from `this`. Break down `teichmuller_distinguished_normal_form_iter l O x e w E' hw hE k a with ⟨a', ha'⟩ | ⟨y, hy, u, hu, hya⟩` into its components or cases. It suffices to derive a contradiction. Apply `hk (WittVector.teichmuller l x ^ (e * k - k) * a')` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `ha' using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← mul_assoc, ← pow_add, Nat.add_sub_cancel' (Nat.le_mul_of_pos_left k he)]`. Conclude with `⟨y, e * k, hy, u, hu, hya⟩`. Establish `hI : Ideal.span {E'} ≠ ⊤`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hnot 0 (by rw [h]; exact Submodule.mem_top)`. Use `⟨(Ideal.isPrime_iff).mpr ⟨hI, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, N, hy, u, hu, hya⟩` from `hform a hne.1`. Take `⟨y', N', hy', u', hu', hyb⟩` from `hform b hne.2`. Take `⟨s, hs⟩` from `mul_dvd_mul hy hy'`. Establish `h1 : WittVector.teichmuller l (y * y') * (u * u') ∈ Ideal.span {E'}`. Use `Ideal.sub_mem _ hab (Ideal.add_mem _ (Ideal.mul_mem_right b _ hya) (Ideal.mul_mem_left _ (WittVector.teichmuller l y * u) hyb))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨v, hv⟩` from `(hu.mul hu').exists_right_inv`. Establish `h2 : WittVector.teichmuller l (y * y') ∈ Ideal.span {E'}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Ideal.mul_mem_right v _ h1` as an intermediate fact. Rewrite `this` using `[mul_assoc, hv, mul_one]`. Then use the resulting hypothesis. Apply `hnot (N + N')` to reduce the goal to its premises. Use `Ideal.mul_mem_right (WittVector.teichmuller l s) _ h2` as an intermediate fact. Rewrite `this` using `[← map_mul, ← hs, map_mul, map_pow, map_pow, ← pow_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `this`. Introduce `hl`. Apply `hnot e` to reduce the goal to its premises. Establish `: E' - ((l : ℕ) : WittVector l O) * w ∈ Ideal.span {E'}` using `Ideal.sub_mem _ (Ideal.mem_span_singleton_self _) (Ideal.mul_mem_right _ _ hl)`. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[hE]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem teichmuller_distinguished_span_isPrime : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [ValuationRing O] [CharP O l] [PerfectRing O l] (x : O), x ≠ 0 → ¬ IsUnit x → IsAdicComplete (Ideal.span {x}) O → ∀ (e : ℕ) (w E' : WittVector l O), 0 < e → IsUnit w → E' = WittVector.teichmuller l x ^ e + ((l : ℕ) : WittVector l O) * w → (Ideal.span {E'}).IsPrime ∧ ((l : ℕ) : WittVector l O) ∉ Ideal.span {E'} := by
   intro l _ O _ _ _ _ _ x hx hxu hc e w E' he hw hE

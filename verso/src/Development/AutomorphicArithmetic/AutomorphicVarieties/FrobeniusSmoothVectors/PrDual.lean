@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i using WellFoundedGT.induction with`. Consider the case `_ i ih`. Introduce `j`. Proceed by induction on `j using WellFoundedLT.induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ j ih'`. Use `key i j fun g => ?_` and prove the remaining obligations. Use `h g i j` as an intermediate fact. Rewrite `this` using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Conclude with `this`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q _ hq`. Break down `lt_or_gt_of_ne hq with h1 | h1` into its components or cases. Rewrite using `[ih' q h1, zero_mul]`. Rewrite using `[hM g q j h1, mul_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p _ hp`. Break down `lt_or_gt_of_ne hp with h1 | h1` into its components or cases. Rewrite using `[hM g i p h1, zero_mul]`. Rewrite using `[ih p h1 j, mul_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tri_zero {K G ι : Type} [Field K] [Fintype ι] [LinearOrder ι] (M : G → Matrix ι ι K) (ω : G → K)
     (Φ : Matrix ι ι K) (hM : ∀ g i j, j < i → M g i j = 0)
@@ -37,7 +37,7 @@ private theorem tri_zero {K G ι : Type} [Field K] [Fintype ι] [LinearOrder ι]
   · simp
 
 /- English proof (translation)
-Establish `: φ.comp (ZMod.castHom (dvd_refl l) k) = ZMod.castHom (dvd_refl l) K` using `Subsingleton.elim _ _`. Conclude with `RingHom.congr_fun this _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem om_map {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] (F : Frame l k) {K : Type} [Field K]
     [CharP K l] (φ : k →+* K) (g : F.Γ) : φ (F.om k g : k) = (F.om K g : K) := by
@@ -45,7 +45,7 @@ private theorem om_map {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l]
   exact RingHom.congr_fun this _
 
 /- English proof (translation)
-Break down `hn with rfl | rfl` into its components or cases. Use `revert i j`. Evaluate the decidable proposition. Use `revert i j`. Evaluate the decidable proposition.
+Separate the alternatives or extract the components of the hypothesis. Evaluate the decidable proposition. Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem w_cases {n : ℕ} (hn : n = 2 ∨ n = 3) (i j : Fin n) :
     w n j - w n i = 0 ∨ (w n j - w n i = 1 ∨ w n j - w n i = -1) ∨
@@ -55,13 +55,13 @@ private theorem w_cases {n : ℕ} (hn : n = 2 ∨ n = 3) (i j : Fin n) :
   · revert i j; decide
 
 /- English proof (translation)
-Unfold `thetaLie`. Use `congr 1`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single b.rev, Matrix.mul_apply, Finset.sum_eq_single a.rev]`. Simplify using `only [Jmat, Matrix.transpose_apply, Matrix.single_apply, Fin.rev_rev, if_true, one_mul, mul_one, Fin.rev_inj]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `propext ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`. Simplify using the standard rewrite rules. Introduce and unpack `⟨rfl, rfl⟩`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Introduce `p _ hp`. Simplify using `[Jmat, hp]`. Simplify using the standard rewrite rules. Introduce `p _ hp`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: b ≠ p.rev` using `fun h => hp (by simp [h])`. Simplify using `[Jmat, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem thetaLie_single {K : Type} [Field K] {n : ℕ} (i : Fin n) :
     thetaLie (Matrix.single i i.rev (1 : K)) = -Matrix.single i i.rev (1 : K) := by
@@ -84,37 +84,33 @@ private theorem thetaLie_single {K : Type} [Field K] {n : ℕ} (i : Fin n) :
   · simp
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n ok hn K _ _ φ ρ B hB hbar htri f hf`. Use `set Φ : Matrix (Fin n) (Fin n) K := fun i j => f (Matrix.single i j 1) with hΦ`. Establish `hsum : ∀ X : Matrix (Fin n) (Fin n) K, f X = ∑ i, ∑ j, X i j * Φ i j` using `fun X => by conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, ← smul_eq_mul, ← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `h0 : ∀ (g : F.G0) X, f (ρ.r g * X) = F.om K g * f (X * ρ.r g)` using `fun g X => by`. Rewrite using `[← hf]`. Use `congr 1`. Establish `hr : (B.r g).right = 1` using `(B.nu g).trans g.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (B.r g).adFun _`. Rewrite using `[GG.adFun, if_pos hr, ← hB.res g, GG.mat]`. Simplify using `[Matrix.mul_assoc]`. Establish `h1 : ∀ (g : F.G0) i j, ∑ p, ρ.r g p i * Φ p j = F.om K g * ∑ q, Φ i q * ρ.r g j q` using `fun g i j => by`. Use `h0 g (Matrix.single i j 1)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hsum, hsum]`. Rewrite `this` using `[Finset.sum_eq_single i (s := Finset.univ) (f := fun a => ∑ b, (Matrix.single i j (1 : K) * ρ.r g) a b * Φ a b)]`. Use `this using 2 with p` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hb, zero_mul]`. Simplify using the standard rewrite rules. Simplify using `[mul_comm]`. Introduce `a _ ha`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun b _ => by rw [Matrix.single_mul_apply_of_ne _ _ _ _ _ ha, zero_mul]`. Simplify using the standard rewrite rules. Establish `hc : ∀ i, -Φ i i.rev = F.om K F.c * Φ i i.rev` using `fun i => by`. Rewrite using `[hΦ]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← hf, ← map_neg, ← thetaLie_single]`. Use `congr 1`. Establish `hr : (B.r F.c).right ≠ 1` using `by rw [B.nu, ok.del_c]; decide`. Establish `hl : (B.r F.c).left = 1` using `Units.ext hB.atc`. Use `show _ = (B.r F.c).adFun _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GG.adFun, if_neg hr, GG.mat, hl]`. Simplify using the standard rewrite rules. Establish `key : ∀ i j, (∀ g : F.G0, ρ.r g i i * Φ i j = F.om K g * (Φ i j * ρ.r g j j)) → Φ i j = 0`. Introduce `i j h`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ g : F.G0, F.om k g * F.Ψ g ^ (w n j - w n i) = 1` using `fun g => by`. Establish `e` using `h g`. Rewrite `e` using `[hbar.1, hbar.1, ← om_map F φ, mul_comm (Φ i j), ← mul_assoc, ← map_mul]`. Establish `e2` using `φ.injective (mul_right_cancel₀ hne e)`. Rewrite `e2` using `[← Units.val_mul, Units.val_inj]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[_root_.zpow_sub, ← mul_assoc, ← e2, mul_inv_cancel]`. Break down `w_cases hn i j with h3 | h3 | ⟨h3, rfl⟩` into its components or cases. Take `⟨g, hg⟩` from `ok.f2a`. Conclude with `hg (by simpa [h3] using h2 g)`. Take `⟨g, hg⟩` from `ok.f2b _ h3`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hg (h2 g)`. Take `⟨g, hg⟩` from `ok.f2c _ h3`. Apply `hg` to reduce the goal to its premises. Break down `Int.units_eq_one_or (F.del g) with hd | hd` into its components or cases. Rewrite using `[h2 ⟨g, hd⟩, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Frame.delK, hd]`. Establish `hm : g * F.c ∈ F.del.ker` using `by rw [MonoidHom.mem_ker, map_mul, hd, ok.del_c]; rfl`. Establish `e` using `h2 ⟨_, hm⟩`. Establish `ec : F.om k F.c = -1`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[om_map]`. Use `hc i` as an intermediate fact. Rewrite `this` using `[← neg_one_mul]`. Rewrite using `[← mul_right_cancel₀ hne this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `ed : F.delK k g = -1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Frame.delK, hd]`. Simplify using `only [map_mul, ec, ok.Ψ_c, mul_one] at e`.
-
-Rewrite using `[ed, mul_right_comm, e]`. Establish `hz : ∀ i j, Φ i j = 0`. Break down `htri with ht | ht` into its components or cases. Conclude with `tri_zero (ι := (Fin n)ᵒᵈ) (fun g : F.G0 => (ρ.r g)ᵀ) (fun g => F.om K g) Φ (fun g i j hij => ht g j i hij) h1 key`. Conclude with `tri_zero (fun g : F.G0 => (ρ.r g)ᵀ) (fun g => F.om K g) Φ ht h1 key`.
-
-Use `ext1 X`. Simplify using `[hsum, hz]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.pr_dual :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ (K : Type) [Field K] [CharP K l] (φ : k →+* K) (ρ : NRep F n K) (B : Box F n K), B.Of ρ → ρ.IsBar φ → ((∀ g, UpT (ρ.r g)) ∨ ∀ g, UpT (ρ.r g)ᵀ) → ∀ f : Matrix (Fin n) (Fin n) K →ₗ[K] K, (∀ g X, f (B.ad g X) = F.om K g * f X) → f = 0 := by

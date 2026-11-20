@@ -16,9 +16,9 @@ section Expo
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Unfold `expo`. Rewrite using `[Finsupp.sum_finset_sum_index]`. Introduce `a`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `intro a b₁ b₂; split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_finset_sum {ι : Type} (s : Finset ι) (w : ι → Sym E →₀ ℤ) :
     expo Dw (∑ i ∈ s, w i) = ∑ i ∈ s, expo Dw (w i) := by
@@ -33,7 +33,7 @@ theorem expo_finset_sum {ι : Type} (s : Finset ι) (w : ι → Sym E →₀ ℤ
 end Expo
 
 /- English proof (translation)
-Establish `e₃ : Var.val z (1 : (O.Φ.C c).Y.FnC σ) = 1` using `by simpa using (Var.val_cx (y := z) 1).trans (Base.ratVal_one _)`. Simplify using `[FlagCpt.met, FlagCpt.genSq, prodPow, Var.tv, e₃]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem met_zero_h {D : D7} (O : Setup D) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ) (G : EigMet O.s.T.Z (embOf O.κ.e σ)) :
     ((O.Φ.C c).met G 0).h 1 z = 1 := by
@@ -41,7 +41,7 @@ theorem met_zero_h {D : D7} (O : Setup D) (c : O.s.Comp) (σ : D.what₂.LL →+
   simp [FlagCpt.met, FlagCpt.genSq, prodPow, Var.tv, e₃]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [divOf]`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, FlagCpt.divOf_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem divOf_sum {D : D7} (O : Setup D) (c : O.s.Comp) {ι : Type} (s : Finset ι) (n : ι → Letter O.S.Dw → ℤ) :
     divOf (O.Φ.C c) (∑ i ∈ s, n i) = ∑ i ∈ s, divOf (O.Φ.C c) (n i) := by
@@ -51,16 +51,16 @@ theorem divOf_sum {D : D7} (O : Setup D) (c : O.s.Comp) {ι : Type} (s : Finset 
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, FlagCpt.divOf_add, ih]
 
 /- English proof (translation)
-Simplify using `[divOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem divOf_neg {D : D7} (O : Setup D) (c : O.s.Comp) (n : Letter O.S.Dw → ℤ) :
     divOf (O.Φ.C c) (-n) = -divOf (O.Φ.C c) n := by
   simp [divOf]
 
 /- English proof (translation)
-Rewrite using `[divOf_sum]`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero x`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Base.isEqn_eqn _ _).add ih`.
+A detailed English derivation is pending.
 -/
 theorem prod_isEqn {D : D7} (O : Setup D) (c : O.s.Comp) (x : (O.var c).X) {ι : Type} (s : Finset ι)
     (n : ι → Letter O.S.Dw → ℤ) :
@@ -74,7 +74,7 @@ theorem prod_isEqn {D : D7} (O : Setup D) (c : O.s.Comp) (x : (O.var c).X) {ι :
     exact (Base.isEqn_eqn _ _).add ih
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using met_zero_h O c σ z G`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, Finset.prod_insert hj]`. Rewrite using `[FlagCpt.met_add_h (a := eqn (divOf (O.Φ.C c) (n j)) (under z)) G (n j) _ (Base.isEqn_eqn _ _) (prod_isEqn O c (under z) s n), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_h {D : D7} (O : Setup D) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ)
     (G : EigMet O.s.T.Z (embOf O.κ.e σ)) {ι : Type} (s : Finset ι) (n : ι → Letter O.S.Dw → ℤ) :
@@ -89,19 +89,17 @@ theorem prod_h {D : D7} (O : Setup D) (c : O.s.Comp) (σ : D.what₂.LL →+* �
       (prod_isEqn O c (under z) s n), ih]
 
 /- English proof (translation)
-Use `set A : (O.var c).Fnˣ := ∏ i, eqn (divOf (O.Φ.C c) (n i)) (under z) with hAdef`. Establish `hA : (divOf (O.Φ.C c) (∑ i, n i)).IsEqn (under z) A` using `prod_isEqn O c (under z) Finset.univ n`. Establish `k1 : (cxSt _).pn _ σ _ (O.met.h0 c σ (∑ i, n i)) ((cxSt _).cx _ σ ((A : (O.var c).Fn)⁻¹)) z = ∏ i, (cxSt _).pn _ σ _ (O.met.h0 c σ (n i)) ((cxSt _).cx _ σ (genAt (divOf (O.Φ.C c) (n i)) (under z))) z`. Take `⟨xa, P, hc⟩` from `h`. Rewrite using `[hc.h0_eq, ← Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Var.pn_frame hA).trans ((prod_h O c σ z (xa.eigMet (embOf O.κ.e σ)) Finset.univ n).trans (Finset.prod_congr rfl fun i _ => (Var.pn_frame (Base.isEqn_eqn _ _)).symm))`. Establish `hgen : (divOf (O.Φ.C c) (∑ i, n i)).GeneratesAt (under z) ((A : (O.var c).Fn)⁻¹)` using `CartierDiv.isEqn_iff_generatesAt_inv.1 hA`. Establish `hdual` using `h.referenceMetric_mul_dual_eq_one c σ (∑ i, n i) hgen`. Rewrite `hdual` using `[inv_inv]`. Establish `hAN : (divOf (O.Φ.C c) (-∑ i, n i)).GeneratesAt (under z) (A : (O.var c).Fn)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `CartierDiv.isEqn_iff_generatesAt_inv.1 hA.neg` as an intermediate fact. Rewrite using `[divOf_neg]`. Simplify `this` using `[Units.val_inv_eq_inv_val]`. Use `set g := genAt (divOf (O.Φ.C c) (-∑ i, n i)) (under z) with hgdef`. Establish `hu : UnitAt (under z) (g * (A : (O.var c).Fn)⁻¹)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Base.isEqn_eqn (divOf (O.Φ.C c) (-∑ i, n i)) (under z)).generatesAt_iff.1 hAN` as an intermediate fact. Establish `e : g * (A : (O.var c).Fn)⁻¹ = ((A : (O.var c).Fn) * (eqn (divOf (O.Φ.C c) (-∑ i, n i)) (under z) : (O.var c).Fn))⁻¹`. Rewrite using `[hgdef, genAt, Units.val_inv_eq_inv_val, mul_inv, mul_comm]`. Rewrite using `[e]`. Conclude with `this.inv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : (A : (O.var c).Fn) ≠ 0` using `Units.ne_zero _`. Establish `hg : g = (g * (A : (O.var c).Fn)⁻¹) * A` using `by field_simp`. Establish `k2 : (cxSt _).pn _ σ _ (O.met.h0 c σ (-∑ i, n i)) ((cxSt _).cx _ σ g) z = ‖ratVal (g * (A : (O.var c).Fn)⁻¹) z‖ ^ 2 * (cxSt _).pn _ σ _ (O.met.h0 c σ (-∑ i, n i)) ((cxSt _).cx _ σ (A : (O.var c).Fn)) z` using `by conv_lhs => rw [hg]`. Conclude with `(cxSt _).pn_mul _ σ _ _ _ _ z hu.regAt hAN.regularAt`. Establish `hq : g / ∏ i, genAt (divOf (O.Φ.C c) (n i)) (under z) ^ (-1 : ℤ) = g * (A : (O.var c).Fn)⁻¹`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[genAt, hAdef, Units.coe_prod, div_eq_mul_inv, Finset.prod_inv_distrib]`. Establish `hpos : ∀ i, 0 < (cxSt _).pn _ σ _ (O.met.h0 c σ (n i)) ((cxSt _).cx _ σ (genAt (divOf (O.Φ.C c) (n i)) (under z))) z` using `fun i => h.referenceMetric_posAt c σ (n i) z`. Establish `hr : ratVal (g * (A : (O.var c).Fn)⁻¹) z ≠ 0` using `ratVal_ne_zero hu`. Establish `hP : (cxSt _).pn _ σ _ (O.met.h0 c σ (-∑ i, n i)) ((cxSt _).cx _ σ (A : (O.var c).Fn)) z = ((cxSt _).pn _ σ _ (O.met.h0 c σ (∑ i, n i)) ((cxSt _).cx _ σ ((A : (O.var c).Fn)⁻¹)) z)⁻¹` using `eq_inv_of_mul_eq_one_right hdual`. Simplify using `only [lnN]`.
-
-Rewrite using `[hq, k2, hP, k1, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 hr)) (inv_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => (hpos i).ne')), Real.log_pow, Real.log_inv, Real.log_prod fun i _ => (hpos i).ne', ← Finset.sum_div]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lnN_neg_sum {D : D7} (O : Setup D) (h : O.Core) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ)
     {ι : Type} [Fintype ι] (n : ι → Letter O.S.Dw → ℤ) :
@@ -162,9 +160,9 @@ end GlobalTheory.OmCx
 namespace GlobalTheory.OmCx
 
 /- English proof (translation)
-Unfold `detOmSym`. Rewrite using `[expo_finset_sum, ← Finset.sum_neg_distrib]`. Use `Fintype.sum_equiv Fin.revPerm _ _ fun k => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [wholeSym, expo_single, Pi.neg_apply, Fin.revPerm_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_detOmSym {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (g : ℕ) :
@@ -178,9 +176,9 @@ theorem expo_detOmSym {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `D O h c σ z`. Establish `he` using `expo_detOmSym O.S.Dw (D.R.f * O.N)`. Establish `key` using `lnN_neg_sum O h c σ z fun k : Fin (D.R.f * O.N) => expo O.S.Dw (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)`. Simplify using `only [lnAdl, Setup.adl0, adlOf]`. Rewrite using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.zero_apply, mul_zero, sub_zero]`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_cx : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ), lnAdl (O.adl0 c (detOmSym D.host.E (D.R.f * O.N))) σ z = Real.log ‖GlobalTheory.Cartier.ratVal (genAt (O.adl0 c (detOmSym D.host.E (D.R.f * O.N))).D (GlobalTheory.Cartier.under z) / ∏ k : Fin (D.R.f * O.N), genAt (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).D (GlobalTheory.Cartier.under z) ^ (-1 : ℤ)) z‖ - ∑ k : Fin (D.R.f * O.N), lnAdl (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)) σ z := by
   intro D O h c σ z

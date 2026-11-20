@@ -16,9 +16,7 @@ variable {K S V W W' : Type} [Field K] [AddCommGroup S] [Module K S] [AddCommGro
   [NormedAddCommGroup W] [InnerProductSpace ℂ W] [NormedAddCommGroup W'] [InnerProductSpace ℂ W']
 
 /- English proof (translation)
-Use `haveI : Finite ι := Finite.of_equiv κ (b.indexEquiv f)`. Use `haveI := Fintype.ofFinite ι`. Use `haveI := Fintype.ofFinite κ`. Use `haveI : FiniteDimensional K0 (Submodule.span K0 (Set.range b)) := FiniteDimensional.span_of_finite K0 (Set.finite_range b)`. Use `Submodule.eq_of_le_of_finrank_eq ?_ ?_` and prove the remaining obligations.
-
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(b.mem_span_iff_repr_mem K0 (f i)).2 fun j => ⟨⟨_, h i j⟩, rfl⟩`. Rewrite using `[finrank_span_eq_card (f.linearIndependent.restrict_scalars' K0), finrank_span_eq_card (b.linearIndependent.restrict_scalars' K0)]`. Conclude with `Fintype.card_congr (f.indexEquiv b)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_span_eq {ι κ : Type} [Finite κ] (K0 : Subfield K) (f : Module.Basis ι K V) (b : Module.Basis κ K V)
     (h : ∀ i j, b.repr (f i) j ∈ K0) : Submodule.span K0 (Set.range f) = Submodule.span K0 (Set.range b) := by
@@ -35,11 +33,11 @@ theorem rescale_span_eq {ι κ : Type} [Finite κ] (K0 : Subfield K) (f : Module
     exact Fintype.card_congr (f.indexEquiv b)
 
 /- English proof (translation)
-Establish `h1` using `rescale_span_eq K0 (bS.map e) b h`. Establish `h2` using `rescale_span_eq K0 (bS.map e') b h'`. Establish `h3 : b a ∈ Submodule.span K0 (Set.range (bS.map e))` using `h1 ▸ Submodule.subset_span ⟨a, rfl⟩`. Rewrite using `[← h2]`. Generalize the expression as in `b a = x at h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `h3 using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨i, by simp⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[Subfield.smul_def, map_smul, map_smul]`. Conclude with `Submodule.smul_mem _ r hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_mem {ι κ : Type} [Finite κ] (K0 : Subfield K) (bS : Module.Basis ι K S) (b : Module.Basis κ K V)
     (e e' : S ≃ₗ[K] V) (h : ∀ i j, b.repr (e (bS i)) j ∈ K0) (h' : ∀ i j, b.repr (e' (bS i)) j ∈ K0) (a : κ) :
@@ -60,13 +58,13 @@ theorem rescale_mem {ι κ : Type} [Finite κ] (K0 : Subfield K) (bS : Module.Ba
     exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨a', rfl⟩` from `hy`. Conclude with `hp a a'`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, inner_add_right, hx, hy, map_add, map_add]`. Consider the case `smul r x _ hx`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subfield.smul_def, LinearMap.map_smulₛₗ, inner_smul_right, hx, map_smul, smul_eq_mul, map_mul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, inner_add_left, hx, hy, map_add, LinearMap.add_apply, map_add]`. Consider the case `smul r x _ hx`. Rewrite using `[Subfield.smul_def, LinearMap.map_smulₛₗ, inner_smul_left, hx, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, ← r.2 σ]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rescale_pair [StarRing K] {κ : Type} (b : κ → V) (σ : K →+* ℂ) (c₁ : V →ₛₗ[σ] W)
     (pair : V →ₗ⋆[K] V →ₗ[K] K) (hp : ∀ a a', inner ℂ (c₁ (b a)) (c₁ (b a')) = σ (pair (b a) (b a')))
@@ -91,9 +89,7 @@ theorem rescale_pair [StarRing K] {κ : Type} (b : κ → V) (σ : K →+* ℂ) 
     rfl
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite κ`. Use `(injective_iff_map_eq_zero c).2 fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[← b.sum_repr x, map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ] at hx`. Use `Fintype.linearIndependent_iff.1 h _ hx` as an intermediate fact.
-
-Conclude with `b.ext_elem fun a => by simpa using this a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rescale_inj {κ : Type} [Finite κ] (b : Module.Basis κ K V) (σ : K →+* ℂ) (c : V →ₛₗ[σ] W)
     (h : LinearIndependent ℂ fun a => c (b a)) : Function.Injective c := by
@@ -105,9 +101,9 @@ theorem rescale_inj {κ : Type} [Finite κ] (b : Module.Basis κ K V) (σ : K �
   exact b.ext_elem fun a => by simpa using this a
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite κ`. Use `top_le_iff.1 (h ▸ Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `: b a = ∑ k, b.repr (φ.symm (b a)) k • φ (b k)` using `by conv_lhs => rw [← φ.apply_symm_apply (b a), ← b.sum_repr (φ.symm (b a))]`. Simplify using `only [map_sum, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `c (b a) ∈ Submodule.span ℂ _`. Rewrite using `[this, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rescale_span_top {κ : Type} [Finite κ] (b : Module.Basis κ K V) (σ : K →+* ℂ) (c : V →ₛₗ[σ] W) (φ : V ≃ₗ[K] V)
     (h : Submodule.span ℂ (Set.range fun a => c (b a)) = ⊤) :
@@ -125,7 +121,7 @@ theorem rescale_span_top {κ : Type} [Finite κ] (b : Module.Basis κ K V) (σ :
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite κ`. Conclude with `linearIndependent_of_top_le_span_of_card_eq_finrank hv.ge (Module.finrank_eq_card_basis (Module.Basis.mk hi hu.ge)).symm`.
+A detailed English derivation is pending.
 -/
 theorem rescale_indep {κ : Type} [Finite κ] (u v : κ → W) (hi : LinearIndependent ℂ u)
     (hu : Submodule.span ℂ (Set.range u) = ⊤) (hv : Submodule.span ℂ (Set.range v) = ⊤) : LinearIndependent ℂ v := by
@@ -134,11 +130,11 @@ theorem rescale_indep {κ : Type} [Finite κ] (u v : κ → W) (hi : LinearIndep
     (Module.finrank_eq_card_basis (Module.Basis.mk hi hu.ge)).symm
 
 /- English proof (translation)
-Establish `hφ : ∀ v, c0' (e' (e.symm v)) = c0 v` using `fun v => by rw [← hc', hc, e.apply_symm_apply]`. Establish `hs'` using `rescale_span_top b σ c₁ (e.symm.trans e') hs`. Use `⟨c₁.comp (e.symm.trans e').toLinearMap, rescale_indep _ _ hi hs hs', hs', fun a a' => ?_, fun v' => ?_, fun r ρ ρ' h0 h0' h1 v => ?_⟩` and prove the remaining obligations. Use `(rescale_pair b σ c₁ pair hp (rescale_mem _ bS b e e' h h' a) (rescale_mem _ bS b e e' h h' a')).trans ?_` and prove the remaining obligations. Rewrite using `[hq', ← hq, e.apply_symm_apply, e.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e (e'.symm v'), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, e.symm_apply_apply, e'.apply_symm_apply]`. Simplify using the standard rewrite rules. Establish `: e' (e.symm (r v)) = r (e' (e.symm v))` using `rescale_inj b τ c0' hi' (by rw [hφ, h0, h0', hφ])`. Express the relevant statement in the definitionally equal form `c₁ (e' (e.symm (r v))) = ρ' (c₁ (e' (e.symm v)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rescale_abstract [StarRing K] {ι κ : Type} [Finite κ] (bS : Module.Basis ι K S) (b : Module.Basis κ K V)
     (τ σ : K →+* ℂ) (p : S → W) (c0 c0' : V →ₛₗ[τ] W) (pair : V →ₗ⋆[K] V →ₗ[K] K) (q : S → S → K)

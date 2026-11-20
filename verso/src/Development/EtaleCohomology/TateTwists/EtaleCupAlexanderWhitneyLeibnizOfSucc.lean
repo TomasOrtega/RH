@@ -7,13 +7,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations
 
 /- English proof (translation)
-Introduce `R _ E K k γ γ' H`. Apply `Cochain.ext` to reduce the goal to its premises. Introduce `p q hpq`. Distinguish the cases in `hp : ∃ N : ℕ, -(N : ℤ) = p`. Take `⟨N, rfl⟩` from `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← cancel_epi (chainsXIso R E N).inv]`. Apply `Sheaf.hom_ext` to reduce the goal to its premises. Apply `sheafify_hom_ext _ _ _ (Sheaf.cond _)` to reduce the goal to its premises. Use extensionality with `U : 2`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Conclude with `H N q hpq U.unop x.down`. Establish `hz : IsZero (((chains R).obj E).X p)` using `HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => hp ⟨i, by`. Establish `e : ComplexShape.embeddingDownNat.f i = -(i : ℤ)` using `rfl`. Use the proof step `omega⟩)`.
-
-Conclude with `hz.eq_of_src _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem awleib_ext_pf : EtaleSimplicialCochainEqOfEvaluationsAgree := by
   intro R _ E K k γ γ' H
@@ -35,7 +33,7 @@ theorem awleib_ext_pf : EtaleSimplicialCochainEqOfEvaluationsAgree := by
     exact hz.eq_of_src _ _
 
 /- English proof (translation)
-The claim follows from `etale_cup_alexanderWhitney_leibniz_of_ext_and_succ awleib_ext_pf hs`.
+A detailed English derivation is pending.
 -/
 theorem etale_cup_alexanderWhitney_leibniz_of_succ (hs : EtaleAlexanderWhitneyLeibnizPositiveSimplexDegree) : EtaleAlexanderWhitneyCupLeibnizRule :=
   etale_cup_alexanderWhitney_leibniz_of_ext_and_succ awleib_ext_pf hs

@@ -17,7 +17,7 @@ namespace OmNPoly
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hz`. Conclude with `lt_of_lt_of_le (pow_pos (norm_pos_iff.mpr hi) 2) (Finset.single_le_sum (fun i _ => sq_nonneg ‖z ⟨k, i⟩‖) (Finset.mem_univ i))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_sq_pos {z : (Σ k, ι k) → ℂ} {k : K} (hz : ∃ i, z ⟨k, i⟩ ≠ 0) :
     0 < ∑ i, ‖z ⟨k, i⟩‖ ^ 2 := by
@@ -26,7 +26,7 @@ theorem sum_sq_pos {z : (Σ k, ι k) → ℂ} {k : K} (hz : ∃ i, z ⟨k, i⟩ 
     (Finset.single_le_sum (fun i _ => sq_nonneg ‖z ⟨k, i⟩‖) (Finset.mem_univ i))
 
 /- English proof (translation)
-Unfold `refNorm`. Rewrite using `[Real.log_prod fun k _ => (Real.rpow_pos_of_pos (sum_sq_pos (hz k)) _).ne']`. Conclude with `Finset.sum_congr rfl fun k _ => Real.log_rpow (sum_sq_pos (hz k)) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_refNorm (a : K → ℤ) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     Real.log (refNorm a z) = ∑ k, (a k : ℝ) / 2 * Real.log (∑ i, ‖z ⟨k, i⟩‖ ^ 2) := by
@@ -35,7 +35,7 @@ theorem log_refNorm (a : K → ℤ) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ 
   exact Finset.sum_congr rfl fun k _ => Real.log_rpow (sum_sq_pos (hz k)) _
 
 /- English proof (translation)
-Rewrite using `[log_refNorm _ hz, log_refNorm _ hz, log_refNorm _ hz, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_refNorm_lin (m a : K → ℤ) (q p : ℕ) {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     Real.log (refNorm ((q : ℤ) • m + (p : ℤ) • a) z) =
@@ -48,7 +48,7 @@ theorem log_refNorm_lin (m a : K → ℤ) (q p : ℕ) {z : (Σ k, ι k) → ℂ}
   ring
 
 /- English proof (translation)
-Use `show Real.log (refNorm a z * Real.exp (Real.log (F (orbitRep z) / refNorm a (orbitRep z)))) = _`. Rewrite using `[Real.log_mul (refNorm_pos a hz).ne' (Real.exp_pos _).ne', Real.log_exp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_hermOfFun (a : K → ℤ) (F : ((Σ k, ι k) → ℂ) → ℝ) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -58,9 +58,9 @@ theorem log_hermOfFun (a : K → ℤ) (F : ((Σ k, ι k) → ℂ) → ℝ) {z : 
   rw [Real.log_mul (refNorm_pos a hz).ne' (Real.exp_pos _).ne', Real.log_exp]
 
 /- English proof (translation)
-Take `⟨c, _, hzc⟩` from `exists_eq_smul_orbitRep z`. Introduce `k`. Take `⟨i, hi⟩` from `hz k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Rewrite using `[hzc]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[torusSmul, h0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem orbitRep_ne {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     ∀ k, ∃ i, orbitRep z ⟨k, i⟩ ≠ 0 := by
@@ -72,14 +72,14 @@ theorem orbitRep_ne {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ 
   simp [torusSmul, h0]
 
 /- English proof (translation)
-Unfold `orbitRep`. Rewrite using `[Quotient.out_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbitRep_orbitRep (z : (Σ k, ι k) → ℂ) : orbitRep (orbitRep z) = orbitRep z := by
   unfold orbitRep
   rw [Quotient.out_eq]
 
 /- English proof (translation)
-Use `show refNorm a (orbitRep z) * Real.exp (Real.log (F (orbitRep (orbitRep z)) / refNorm a (orbitRep (orbitRep z)))) = _`. Rewrite using `[orbitRep_orbitRep, Real.exp_log (div_pos hF (refNorm_pos a hz))]`. Clear denominators, using `[(refNorm_pos a hz).ne']` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hermOfFun_h_orbitRep (a : K → ℤ) (F : ((Σ k, ι k) → ℂ) → ℝ) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, orbitRep z ⟨k, i⟩ ≠ 0) (hF : 0 < F (orbitRep z)) :
@@ -90,7 +90,7 @@ theorem hermOfFun_h_orbitRep (a : K → ℤ) (F : ((Σ k, ι k) → ℂ) → ℝ
   field_simp [(refNorm_pos a hz).ne']
 
 /- English proof (translation)
-Rewrite using `[pow_sub₀ _ hx hi, one_div, inv_pow, one_pow, one_pow, show (x ^ n)⁻¹ * (c * 1 * (x ^ n * (x ^ i)⁻¹) * s) = ((x ^ n)⁻¹ * x ^ n) * (c * (x ^ i)⁻¹ * s) by ring, inv_mul_cancel₀ (pow_ne_zero n hx)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rescale_inv_pow_mul (x c s : ℝ) (n i : ℕ) (hx : x ≠ 0) (hi : i ≤ n) :
     (x ^ n)⁻¹ * (c * 1 ^ i * x ^ (n - i) * s) = c * (1 / x) ^ i * 1 ^ (n - i) * s := by
@@ -100,7 +100,7 @@ theorem rescale_inv_pow_mul (x c s : ℝ) (n i : ℕ) (hx : x ≠ 0) (hi : i ≤
   ring
 
 /- English proof (translation)
-Rewrite using `[div_eq_inv_mul, rescale_inv_pow_mul x c s n i hx hi, one_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rescale_mul_div_pow (x c s : ℝ) (n i : ℕ) (hx : x ≠ 0) (hi : i ≤ n) :
     c * 1 ^ i * x ^ (n - i) * s / x ^ n = c * s * (1 / x) ^ i := by
@@ -113,7 +113,7 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {Ω
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Unfold `ComponentData.vertFactor`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `zero_le_one`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem vertFactor_nonneg (p : ℕ) (z : (Σ k, ι k) → ℂ) : 0 ≤ D.vertFactor p z := by
   unfold ComponentData.vertFactor
@@ -122,19 +122,19 @@ theorem vertFactor_nonneg (p : ℕ) (z : (Σ k, ι k) → ℂ) : 0 ≤ D.vertFac
   · exact zero_le_one
 
 /- English proof (translation)
-Establish `hz'` using `hz.1`. Establish `hw` using `orbitRep_ne hz'`. Establish `hE : 0 < X.S.ref.h (orbitRep z) * Real.exp (X.S.regWeight t (X.M.proj (orbitRep z)))` using `mul_pos (X.S.ref.pos _ hw) (Real.exp_pos _)`. Establish `hA : 0 < D.A'.h (orbitRep z)` using `D.A'.pos _ hw`. Establish `hV : 0 ≤ ∏ p' ∈ D.SB B, D.vertFactor p' (orbitRep z)` using `Finset.prod_nonneg fun p' _ => vertFactor_nonneg p' _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg : (X.S.regLine t).h (orbitRep z) = X.S.ref.h (orbitRep z) * Real.exp (X.S.regWeight t (X.M.proj (orbitRep z)))`. Unfold `LogLogRegularisationSetting.regLine`. Conclude with `hermOfFun_h_orbitRep _ _ hw hE`. Take `⟨Ew, hEw⟩ : ∃ x, x = X.S.ref.h (orbitRep z) * Real.exp (X.S.regWeight t (X.M.proj (orbitRep z)))` from `⟨_, rfl⟩`. Take `⟨Vw, hVw⟩ : ∃ x, x = ∏ p' ∈ D.SB B, D.vertFactor p' (orbitRep z)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN : ∀ q : ℕ, Real.log ((X.NbarQ B 1 q t).h z) = q * Real.log (refNorm (muTwDeg X.H B) z) + Real.log (refNorm D.a' z) + Real.log ((Ew * Vw) ^ q * D.A'.h (orbitRep z) / refNorm ((q : ℤ) • muTwDeg X.H B + ((1 : ℕ) : ℤ) • D.a') (orbitRep z))`. Introduce `q`. Unfold `ComponentSetting.NbarQ`. Rewrite using `[smoothRep_h _ hz, log_hermOfFun _ _ hz']`. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[log_refNorm_lin _ _ _ _ hz', ← hEw, ← hVw, mul_pow, pow_one, Nat.cast_one, one_mul]`. Establish `hM : Real.log ((muReg X.H X.S B t).h z) = Real.log (refNorm (muTwDeg X.H B) z) + Real.log (Ew * Vw / refNorm (muTwDeg X.H B) (orbitRep z))`. Unfold `muReg`. Rewrite using `[smoothRep_h _ hz, log_hermOfFun _ _ hz']`. Use `beta_reduce`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hreg, ← hEw, ← hVw]`. Establish `hLRw : ∀ q : ℕ, Real.log (refNorm ((q : ℤ) • muTwDeg X.H B + ((1 : ℕ) : ℤ) • D.a') (orbitRep z)) = q * Real.log (refNorm (muTwDeg X.H B) (orbitRep z)) + Real.log (refNorm D.a' (orbitRep z))` using `fun q => by`. Rewrite using `[log_refNorm_lin _ _ _ _ hw, Nat.cast_one, one_mul]`. Establish `hEV : 0 ≤ Ew * Vw`. Rewrite using `[hEw, hVw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg hE.le hV`. Break down `hEV.eq_or_lt with h0 | hpos` into its components or cases. Use `⟨Real.log (refNorm (muTwDeg X.H B) z), Real.log (refNorm D.a' z), fun q hq => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hN q, ← h0, zero_pow (by omega : q ≠ 0), zero_mul, zero_div, Real.log_zero, add_zero]`. Rewrite using `[hM, ← h0, zero_div, Real.log_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Real.log (refNorm (muTwDeg X.H B) z) + Real.log (Ew * Vw) - Real.log (refNorm (muTwDeg X.H B) (orbitRep z)), Real.log (refNorm D.a' z) + Real.log (D.A'.h (orbitRep z)) - Real.log (refNorm D.a' (orbitRep z)), fun q hq => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hN q, Real.log_div (mul_pos (pow_pos hpos q) hA).ne' (refNorm_pos _ hw).ne', Real.log_mul (pow_pos hpos q).ne' hA.ne', Real.log_pow, hLRw q]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM, Real.log_div hpos.ne' (refNorm_pos _ hw).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_NbarQ_affine (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal D.y)) :
@@ -190,7 +190,7 @@ theorem log_NbarQ_affine (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) {z : 
       ring
 
 /- English proof (translation)
-Take `⟨U, V, hUV, -⟩` from `log_NbarQ_affine X B t hz`. Rewrite using `[hUV q hq, hUV 1 le_rfl, hUV 2 (by norm_num)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_NbarQ_eq (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal D.y)) (q : ℕ) (hq : 1 ≤ q) :
@@ -203,7 +203,7 @@ theorem log_NbarQ_eq (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) {z : (Σ 
   ring
 
 /- English proof (translation)
-Take `⟨U, V, hUV, hU⟩` from `log_NbarQ_affine X B t hz`. Rewrite using `[hU, hUV 1 le_rfl, hUV 2 (by norm_num)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_muReg_eq (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal D.y)) :
@@ -217,39 +217,35 @@ theorem log_muReg_eq (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) {z : (Σ 
 end OmNPoly
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B _ _`. Establish `hQ : IsArithVar (mCoordIdeal D.y) (D.n + 1)` using `D.arith`. Set `α : ℝ → ((Σ k, ι k) → ℂ) → ℝ` to `fun t z => 1 * Real.log ((X.NbarQ B 1 2 t).h z) + (-1) * Real.log ((X.NbarQ B 1 1 t).h z)`. Set `β : ℝ → ((Σ k, ι k) → ℂ) → ℝ` to `fun t z => (-1) * Real.log ((X.NbarQ B 1 2 t).h z) + 2 * Real.log ((X.NbarQ B 1 1 t).h z)`. Establish `hsm : ∀ q : ℕ, 1 ≤ q → ∀ᶠ t in 𝓝[>] (0 : ℝ), IsSmoothHerm (X.NbarQ B 1 q t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `q hq`. Take `⟨t₁, ht₁, h⟩` from `h₁ II Ψ K ι Ω E D O Lt X B 1 q le_rfl hq`. Use `filter_upwards [Ioc_mem_nhdsGT ht₁] with t ht`. Conclude with `(show IsSmoothHerm _ ∧ _ from h t ht.1 ht.2).1`. Establish `hall : ∀ᶠ t in 𝓝[>] (0 : ℝ), IsSmoothHerm (X.NbarQ B 1 1 t) ∧ IsSmoothHerm (X.NbarQ B 1 2 t) ∧ ∀ j : Fin (D.n + 1), IsSmoothHerm (X.NbarQ B 1 ((j : ℕ) + 1) t) ∧ IsPtsIntegrable (mCoordIdeal D.y) (X.omN B 1 ((j : ℕ) + 1) t) (fun z => X.Cd.cuspWeight z / 2)` using `(hsm 1 le_rfl).and ((hsm 2 (by norm_num)).and (eventually_all.2 fun j => (hsm ((j : ℕ) + 1) (by omega)).and (h₂ II Ψ K ι Ω E D O Lt X B 1 ((j : ℕ) + 1) le_rfl (by omega))))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i t => if i = 0 then ptsIntegral (e := D.n) (mCoordIdeal D.y) (fun _ z => Real.log ((muReg X.H X.S B t).h z)) (fun z => X.Cd.cuspWeight z / 2) else (D.n.choose i : ℝ) * ptsIntegral (mCoordIdeal D.y) (mixW (e := D.n) (α t) (β t) i) (fun z => X.Cd.cuspWeight z / 2), fun i t => …` and prove the remaining obligations. Use `filter_upwards [hall] with t ht`. Take `⟨hs1, hs2, hnodes⟩` from `ht`. Establish `hα : ∀ Ψp, IsC2AlongSheets (e` using `D.n) (mCoordIdeal D.y) Ψp (α t) := fun Ψp => (isC2AlongSheets_log_metric _ Ψp hs2).lin (isC2AlongSheets_log_metric _ Ψp hs1) 1 (-1)`. Establish `hβ : ∀ Ψp, IsC2AlongSheets (e` using `D.n) (mCoordIdeal D.y) Ψp (β t) := fun Ψp => (isC2AlongSheets_log_metric _ Ψp hs2).lin (isC2AlongSheets_log_metric _ Ψp hs1) (-1) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hom : ∀ r : ℕ, 1 ≤ r → ∀ (j : Fin D.n), ∀ z ∈ mcPts (mCoordIdeal D.y), X.omN B 1 r t j z = 1 * α t z + (1 / (r : ℝ)) * β t z`. Introduce `r hr j z hz`. Establish `hr0 : (r : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Simplify using `only [ComponentSetting.omN, α, β]`. Rewrite using `[OmNPoly.log_NbarQ_eq X B t hz r hr]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hpot : ∀ r : ℕ, 1 ≤ r → ∀ (j : Fin D.n), ∀ z ∈ mcPts (mCoordIdeal D.y), Real.log ((X.NbarQ B 1 r t).h z) = (r : ℝ) * α t z + 1 * β t z`. Introduce `r hr j z hz`. Simplify using `only [α, β]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[OmNPoly.log_NbarQ_eq X B t hz r hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmu : ∀ (j : Fin D.n), ∀ z ∈ mcPts (mCoordIdeal D.y), Real.log ((muReg X.H X.S B t).h z) = α t z`. Introduce `j z hz`. Simplify using `only [α]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[OmNPoly.log_muReg_eq X B t hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmixInt : ∀ g : ((Σ k, ι k) → ℂ) → ℝ, (∀ j : Fin (D.n + 1), IsPtsIntegrable (mCoordIdeal D.y) (X.omN B 1 ((j : ℕ) + 1) t) g) → ∀ Ψp : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (D.n + 1) → ℂ), IsGoodProj (mCoordIdeal D.y) Ψp → ∀ i ∈ Finset.range (D.n + 1), Integrable (fun y => ∑ᶠ w ∈ fibre …`. Introduce `g hg Ψp hΨp i hi`. Establish `hM` using `integrable_of_nodes (N := D.n + 1) (μ := volume) (fun i y => (D.n.choose i : ℝ) * ∑ᶠ w ∈ fibre (mCoordIdeal D.y) Ψp y, sheetDensity (mCoordIdeal D.y) Ψp (mixW (α t) (β t) i) g y w) (fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `(hg j Ψp hΨp).congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[fibreSum_pencil hQ hΨp (hα Ψp) (hβ Ψp) 1 (1 / (((j : ℕ) + 1 : ℕ) : ℝ)) (hom _ (by omega)) g y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use the proof step `ring) i (Finset.mem_range.1 hi)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (D.n.choose i : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.choose_pos (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))).ne'`. Use `(hM.const_mul (D.n.choose i : ℝ)⁻¹).congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Establish `hone : ∀ j : Fin (D.n + 1), IsPtsIntegrable (mCoordIdeal D.y) (X.omN B 1 ((j : ℕ) + 1) t) (fun _ => 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j Ψp hΨp`. Establish `hr1 : 1 ≤ (j : ℕ) + 1` using `by omega`. Establish `hr0 : (((j : ℕ) + 1 : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h` using `h₃ K ι (mCoordIdeal D.y) D.n Ψp (fun _ => X.NbarQ B 1 ((j : ℕ) + 1) t) oneLine 1 hQ hΨp (fun _ => (hnodes j).1) isSmoothHerm_oneLine (isSectionOn_one hQ.2.1.1 rfl)`. Establish `hln : logNorm (oneLine (ι` using `ι)) 1 = fun _ => 1 := funext logNorm_oneLine`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[hln]`. Use `(h.const_mul ((((j : ℕ) + 1 : ℕ) : ℝ) ^ D.n)⁻¹).congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[fibreSum_pencil hQ hΨp (hα Ψp) (hβ Ψp) (((j : ℕ) + 1 : ℕ) : ℝ) 1 (φ := pot fun _ => X.NbarQ B 1 ((j : ℕ) + 1) t) (fun k z hz => hpot _ hr1 k z hz) _ y, fibreSum_pencil hQ hΨp (hα Ψp) (hβ Ψp) 1 (1 / (((j : ℕ) + 1 : ℕ) : ℝ)) (hom _ hr1) _ y, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `OmNPoly.rescale_inv_pow_mul _ _ _ _ _ hr0 (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`. Establish `hintU` using `hmixInt _ fun j => (hnodes j).2`. Establish `hint1` using `hmixInt _ hone`. Establish `hq0 : (q : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hmix0 : ∀ g : ((Σ k, ι k) → ℂ) → ℝ, ptsIntegral (mCoordIdeal D.y) (mixW (e` using `D.n) (α t) (β t) 0) g = ptsIntegral (e := D.n) (mCoordIdeal D.y) (fun _ z => Real.log ((muReg X.H X.S B t).h z)) g := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `g`. Rewrite using `[mixW_zero]`. Conclude with `ptsIntegral_congr _ (fun j z hz => (hmu j z hz).symm) g`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ptsIntegral (mCoordIdeal D.y) (X.omN B 1 q t) (fun z => X.Cd.cuspWeight z / 2) = _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptsIntegral_pencil hQ hα hβ _ hintU 1 (1 / (q : ℝ)) (hom q hq)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify using `[hmix0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi, ↓reduceIte]`. Expand and normalize the polynomial expressions, which then agree. Use `show geomDeg (mCoordIdeal D.y) (X.NbarQ B 1 q t) D.n / (q : ℝ) ^ D.n = _`. Unfold `geomDeg`. Rewrite using `[ptsIntegral_pencil hQ hα hβ _ hint1 (q : ℝ) 1 (hpot q hq), Finset.sum_div]`.
-
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[OmNPoly.rescale_mul_div_pow _ _ _ _ _ hq0 (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))]`. Distinguish the cases in `hi0 : i = 0`. Substitute `hi0` using the available equality. Simplify using `only [↓reduceIte, hmix0, Nat.choose_zero_right, Nat.cast_one, one_mul]`.
-
-Simplify using `only [hi0, ↓reduceIte]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem OmNPoly.proof (h₁ : NbarSemipos.Statement) (h₂ : OmNVbInt.Statement) (h₃ : PtsIntegrableStatement) :
     OmNPoly.Statement := by

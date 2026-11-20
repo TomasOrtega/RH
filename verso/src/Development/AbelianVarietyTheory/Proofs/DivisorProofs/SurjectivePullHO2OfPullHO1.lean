@@ -12,9 +12,9 @@ set_option autoImplicit false
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PullbackCupProduct.main`. Consider the case `exact _root_.GlobalTheory.PullbackCupProduct.main`. Consider the case `(apply _root_.GlobalTheory.PullbackCupProduct.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PullbackCupProduct.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PullbackCupProduct.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PullbackCupProduct.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pullHO2_surjective_of_wedge : ∀ (R R' : Type) [CommRing R] [CommRing R'] (X X' : Scheme.{0})
     (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (σ : R →+* R') (φ : X' ⟶ X) (h : φ ≫ s = s' ≫ spMap σ),

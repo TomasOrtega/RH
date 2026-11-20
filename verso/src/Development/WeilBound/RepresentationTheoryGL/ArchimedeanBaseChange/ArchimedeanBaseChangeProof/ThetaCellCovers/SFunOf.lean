@@ -48,9 +48,9 @@ def SFun : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b :
         ∫ x, chiT τ x.1 * chiT τ x.2 * kerTw2 (fun y => ∑ i, ∑ j, Φ i j y * M j i) x x ∂D.ν = ∫ x, lInt D k₁ k₂ τ U x ∂D.ν
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D ι _ Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2`. Take `⟨k₁, k₂, hk⟩` from `h1 E a b D ι Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2`. Take `⟨C₀, Ω, c1, c2, c3⟩` from `hk.norm`. Take `⟨C, N, h⟩` from `h2 E a b D ι k₁ k₂ C₀ Ω hk.cont c1 c2 c3`. Use `⟨k₁, k₂, hk, C, N, fun τ hτ U => ⟨(h τ hτ U).1, (norm_integral_le_integral_norm _).trans (h τ hτ U).2, fun Φ d1 d2 => ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [lInt, hk.diag U Φ d1 d2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sFun_of (h1 : VecsEx) (h2 : LBound) : SFun := by
   intro E _ _ _ a b D ι _ Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2
@@ -62,7 +62,7 @@ theorem sFun_of (h1 : VecsEx) (h2 : LBound) : SFun := by
   simp only [lInt, hk.diag U Φ d1 d2]
 
 /- English proof (translation)
-Introduce `E _ _ _ a b D ι _ Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2`. Take `⟨k₁, k₂, -, C, N, h⟩` from `h E a b D ι Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2`. Conclude with `⟨C, N, fun τ U Φ hτ d1 d2 => ((h τ hτ U).2.2 Φ d1 d2).symm ▸ (h τ hτ U).2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sb_of (h : SFun) : SB := by
   intro E _ _ _ a b D ι _ Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2

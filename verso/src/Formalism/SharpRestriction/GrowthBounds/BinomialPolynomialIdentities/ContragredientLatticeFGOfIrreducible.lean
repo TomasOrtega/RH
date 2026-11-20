@@ -9,15 +9,15 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory
 
 /- English proof (translation)
-Take `⟨b, hbS, hbspan, hbli⟩` from `exists_linearIndependent (KK O) S`. Establish `hfin : Finite b` using `hbli.finite`. Set `Φ : V →ₗ[KK O] (b → KK O)` to `LinearMap.pi fun φ => (φ : Module.Dual (KK O) V)`. Establish `hΦ : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff (KK O) x]`. Introduce `φ`. Establish `hφ : φ ∈ Submodule.span (KK O) b` using `by rw [hbspan, hS]; exact Submodule.mem_top`. Proceed by induction on `hφ using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem ψ hψ => exact congrFun hx ⟨ψ, hψ⟩`. Consider the case `zero => rfl`. Consider the case `add a c _ _ ha hc => rw [LinearMap.add_apply, ha, hc, add_zero]`. Consider the case `smul r a _ ha => rw [LinearMap.smul_apply, ha, smul_zero]`. Set `ΦO : V →ₗ[O] (b → KK O)` to `Φ.restrictScalars O`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Establish `hΦO : Function.Injective ΦO` using `hΦ`. Set `L : Submodule O (b → KK O)` to `LinearMap.range ((Algebra.linearMap O (KK O)).compLeft b)`. Establish `hL : L.FG` using `Submodule.fg_range _`. Establish `hLN : IsNoetherian O L` using `isNoetherian_of_fg_of_noetherian L hL`. Establish `hle : M.map ΦO ≤ L`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : ∀ φ : b, ∃ c : O, algebraMap O (KK O) c = (φ : Module.Dual (KK O) V) x` using `fun φ => hint φ (hbS φ.2) x hx`. Use `choose g hg using h1`. Conclude with `⟨g, funext fun φ => hg φ⟩`. Conclude with `Submodule.fg_of_fg_map_injective ΦO hΦO (isNoetherian_submodule.1 hLN _ hle)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fg_of_integral_on_spanning_duals {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {V : Type*} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
@@ -53,11 +53,11 @@ theorem fg_of_integral_on_spanning_duals {O : Type*} [CommRing O] [IsDomain O] [
   exact Submodule.fg_of_fg_map_injective ΦO hΦO (isNoetherian_submodule.1 hLN _ hle)
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ _ S n V _ _ _ _ E mu v v' hI hv' hnorm`. Establish `hcz : CharZero (KK O)` using `charZero_of_injective_algebraMap (IsFractionRing.injective O (KK O))`. Establish `hfd : FiniteDimensional (KK O) V` using `irreducible_highest_weight_findim hI`. Establish `hI'` using `hIrr p O S n V E mu v v' hI hv'`. Use `fg_of_integral_on_spanning_duals (Delta (O := O) E v) {φ | ∃ u ∈ Umon (dualOps E), φ = u v'} hI'.2.2.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨u, hu, rfl⟩ x hx`. Use `integral_dual_preserved_by_integralMonoid E hI.1.2.2 (Delta (O := O) E v) (delta_integral_enveloping_stable E v) (rationalMonoid_le_integralMonoid _ hu) v' ?_ x hx` and prove the remaining obligations. Introduce `y hy`. Establish `: v' y ∈ v' '' (Delta (O` using `O) E v : Set V) := ⟨y, hy, rfl⟩`. Rewrite `this` using `[hnorm]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem contragredientLatticeFG_of_irreducible (hIrr : ContragredientIrreducibleGeneratedByHighestWeight) : DeltaFinitelyGenerated := by
   intro p _ O _ _ _ _ S n V _ _ _ _ E mu v v' hI hv' hnorm

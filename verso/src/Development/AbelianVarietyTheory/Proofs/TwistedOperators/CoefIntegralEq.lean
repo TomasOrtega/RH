@@ -22,7 +22,7 @@ def meanX {D : D7} (V W : HSp D) {a b : ℕ} (P : Matrix (Fin W.rank) (Fin a) D.
   ∫ y in 𝓨, F (emb V W P Q y + x) ∂μ
 
 /- English proof (translation)
-Simplify using `only [emb, Matrix.mul_add, Matrix.add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_add {D : D7} (V W : HSp D) {a b : ℕ} (P : Matrix (Fin W.rank) (Fin a) D.host.E)
     (Q : Matrix (Fin b) (Fin V.rank) D.host.E) (y y' : Mx D a b) :
@@ -30,28 +30,24 @@ theorem emb_add {D : D7} (V W : HSp D) {a b : ℕ} (P : Matrix (Fin W.rank) (Fin
   simp only [emb, Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Simplify using `[emb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_zero {D : D7} (V W : HSp D) {a b : ℕ} (P : Matrix (Fin W.rank) (Fin a) D.host.E)
     (Q : Matrix (Fin b) (Fin V.rank) D.host.E) : emb V W P Q (0 : Mx D a b) = 0 := by
   simp [emb]
 
 /- English proof (translation)
-Introduce `D V W a b P Q hiso ψ hψ μ 𝓨 hμ F hF x hx y₀`. Take `⟨hHaar, h𝓨, -⟩` from `hμ`. Use `haveI : BorelSpace (Mx D a b) := ⟨rfl⟩`. Take `⟨l1, l2, l3, -, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D V W`. Establish `hH0 : ∀ x y, symplO V W x y = 0 → symplOH V W x y = 0` using `fun x y e => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `symplOH`. Rewrite using `[e, mul_zero]`. Establish `skew : ∀ x y, symplOH V W y x = -symplOH V W x y` using `fun x y => by`. Establish `e` using `l3 (x + y)`. Rewrite `e` using `[l1, l2, l2, l3 x, l3 y]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e`. Use `set f : Mx D a b → ℂ := fun y => F (emb V W P Q y + x) with hf`. Establish `per : ∀ γ ∈ ((incA D).toAddMonoidHom.mapMatrix (m` using `Fin a) (n := Fin b)).range, ∀ y, f (γ + y) = f y := by`. Introduce and unpack `_ ⟨γ, rfl⟩ y`. Establish `hr : emb V W P Q ((incA D).toAddMonoidHom.mapMatrix γ) = ratW W V (P * γ * Q)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[emb, ratW, Matrix.map_mul]`. Simplify using `only [hf]`. Rewrite using `[emb_add, add_assoc, hr, hF.quasi, ← hr, l2, hH0 _ _ (hiso _ _), skew, hH0 _ _ (hx _), neg_zero, add_zero, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Establish `e1 : meanX V W P Q μ 𝓨 F (emb V W P Q y₀ + x) = ∫ y in 𝓨, f (y₀ + y) ∂μ`. Unfold `meanX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [hf, emb_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Use `haveI : Countable D.host.E := by haveI : FiniteDimensional ℚ D.host.E := inferInstance`. Conclude with `(Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Establish `hmp : MeasurePreserving (fun y : Mx D a b => y₀ + y) μ μ` using `measurePreserving_add_left μ y₀`. Establish `hemb : MeasurableEmbedding (fun y : Mx D a b => y₀ + y)` using `(MeasurableEquiv.addLeft y₀).measurableEmbedding`.
-
-Use `haveI : Countable (Matrix (Fin a) (Fin b) D.host.E) := inferInstanceAs (Countable (Fin a → Fin b → D.host.E))`. Use `haveI : Countable (((incA D).toAddMonoidHom.mapMatrix (m := Fin a) (n := Fin b)).range) := (Set.countable_range _).to_subtype`. Rewrite using `[← hmp.setIntegral_image_emb hemb f 𝓨]`. Use `haveI : VAddInvariantMeasure (Mx D a b) (Mx D a b) μ := ⟨fun c s _ => measure_preimage_add μ c s⟩`. Establish `h2` using `h𝓨.vadd_of_comm y₀`.
-
-Rewrite `h2` using `[← Set.image_vadd]`. Conclude with `h2.setIntegral_eq h𝓨 fun g y => per g g.2 y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meanX_translate : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P : Matrix (Fin W.rank) (Fin a) D.host.E) (Q : Matrix (Fin b) (Fin V.rank) D.host.E), (∀ y y' : Mx D a b, symplO V W (GlobalTheory.IsoMean.emb V W P Q y) (GlobalTheory.IsoMean.emb V W P Q y') = 0) → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D a b)) (𝓨 : Set (Mx D a b)), IsCovolOne ((incA D).toAddMonoidHom.mapMatrix (m := Fin a) (n := Fin b)).range μ 𝓨 → ∀ F : WO V W → ℂ, IsThetaFunO ψ V W F → ∀ x : WO V W, (∀ y : Mx D a b, symplO V W x (GlobalTheory.IsoMean.emb V W P Q y) = 0) → ∀ y₀ : Mx D a b, GlobalTheory.IsoMean.meanX V W P Q μ 𝓨 F (GlobalTheory.IsoMean.emb V W P Q y₀ + x) = GlobalTheory.IsoMean.meanX V W P Q μ 𝓨 F x := by
   intro D V W a b P Q hiso ψ hψ μ 𝓨 hμ F hF x hx y₀
@@ -93,11 +89,11 @@ theorem meanX_translate : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P : Matrix (Fi
   exact h2.setIntegral_eq h𝓨 fun g y => per g g.2 y
 
 /- English proof (translation)
-Introduce `D V W a b P Q ψ χS χT ω hω κ hκ g h hfix hunip ν 𝓕 hν h𝓕 f f' hf hf' w hw`. Use `haveI : BorelSpace (Mx D a b) := ⟨rfl⟩`. Establish `hψ` using `hω.std`. Take `⟨y₀, hy₀⟩` from `hunip w hw`. Establish `key : ∀ y : Mx D a b, ∫ u in 𝓕, heisO ψ V W (w + emb V W P Q (y₀ + y)) (ω (g, h) f) u * star (ω (g, h) f' u) ∂ν = ∫ u in 𝓕, heisO ψ V W (w + emb V W P Q y) f u * star (f' u) ∂ν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `e : ω (g, h) (heisO ψ V W (w + emb V W P Q y) f) = heisO ψ V W (w + emb V W P Q (y₀ + y)) (ω (g, h) f)`. Establish `hadd : actO V W g h (w + emb V W P Q y) = actO V W g h w + actO V W g h (emb V W P Q y)`. Simplify using `only [actO, Matrix.mul_add, Matrix.add_mul]`. Rewrite using `[hω.om_heis g h _ f hf, hadd, hy₀, hfix, emb_add, add_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `GlobalTheory.Mem.LiftPolar.scalar_eq D ψ hψ V W ν 𝓕 hν h𝓕 (ω (g, h)) (fun f hf => hω.om_pres _ f hf) (fun f hf => hω.om_unit ν 𝓕 hν h𝓕 _ f hf) _ f' (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf _) hf'`. Rewrite using `[← integral_add_left_eq_self _ y₀]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall key)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_integral_eq : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P : Matrix (Fin W.rank) (Fin a) D.host.E) (Q : Matrix (Fin b) (Fin V.rank) D.host.E) (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → ∀ (κ : Measure (Mx D a b)), κ.IsAddHaarMeasure → ∀ (g : GA D V) (h : GA D W), (∀ y : Mx D a b, actO V W g h (GlobalTheory.IsoMean.emb V W P Q y) = GlobalTheory.IsoMean.emb V W P Q y) → (∀ x : WO V W, (∀ y : Mx D a b, symplO V W x (GlobalTheory.IsoMean.emb V W P Q y) = 0) → ∃ y : Mx D a b, actO V W g h x = x + GlobalTheory.IsoMean.emb V W P Q y) → ∀ (ν : Measure (WO V W)) (𝓕 : Set (WO V W)), ν.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V) 𝓕 ν → ∀ f f' : WO V W → ℂ, IsThetaFunO ψ V W f → IsThetaFunO ψ V W f' → ∀ w : WO V W, (∀ y : Mx D a b, symplO V W w (GlobalTheory.IsoMean.emb V W P Q y) = 0) → ∫ y, (∫ u in 𝓕, heisO ψ V W (w + GlobalTheory.IsoMean.emb V W P Q y) (ω (g, h) f) u * star (ω (g, h) f' u) ∂ν) ∂κ = ∫ y, (∫ u in 𝓕, heisO ψ V W (w + GlobalTheory.IsoMean.emb V W P Q y) f u * star (f' u) ∂ν) ∂κ := by
   intro D V W a b P Q ψ χS χT ω hω κ hκ g h hfix hunip ν 𝓕 hν h𝓕 f f' hf hf' w hw

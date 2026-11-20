@@ -11,14 +11,14 @@ section Rep
 variable {G : Type} [Group G] (Γ K : Subgroup G)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_AMFK_iff {k : Type} [CommRing k] {W : Type} [AddCommGroup W] [Module k W]
     (ρK : Representation k K W) (f : G → W) :
     f ∈ AMFK k Γ K ρK ↔ ∀ γ : Γ, ∀ g : G, ∀ κ : K, f ((γ : G) * g * κ) = ρK κ⁻¹ (f g) := Iff.rfl
 
 /- English proof (translation)
-Establish `h` using `(DoubleCoset.eq Γ K (s (DoubleCoset.mk Γ K g)) g).1 (hs _)`. Take `⟨a, ha, b, hb, hab⟩` from `h`. Conclude with `⟨(⟨a, ha⟩, ⟨b, hb⟩), hab⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rep (s : ClassSet Γ K → G) (hs : ∀ c, DoubleCoset.mk Γ K (s c) = c) (g : G) :
     ∃ p : Γ × K, g = (p.1 : G) * s (DoubleCoset.mk Γ K g) * (p.2 : G) := by
@@ -27,7 +27,7 @@ theorem exists_rep (s : ClassSet Γ K → G) (hs : ∀ c, DoubleCoset.mk Γ K (s
   exact ⟨(⟨a, ha⟩, ⟨b, hb⟩), hab⟩
 
 /- English proof (translation)
-Use `conv_rhs => rw [← hs c]`. Rewrite using `[DoubleCoset.eq]`. Use `⟨(γ : G)⁻¹, Γ.inv_mem γ.2, (κ : G)⁻¹, K.inv_mem κ.2, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_of_eq (s : ClassSet Γ K → G) (hs : ∀ c, DoubleCoset.mk Γ K (s c) = c)
     (c : ClassSet Γ K) (g : G) (γ : Γ) (κ : K) (e : g = (γ : G) * s c * κ) :
@@ -39,11 +39,9 @@ theorem mk_of_eq (s : ClassSet Γ K → G) (hs : ∀ c, DoubleCoset.mk Γ K (s c
   group
 
 /- English proof (translation)
-Establish `e' : (γ : G) = (γ' : G) * x * (κ' : G) * (κ : G)⁻¹ * x⁻¹`. Rewrite using `[← e]`. Use `group`. Establish `hmem : x⁻¹ * ((γ'⁻¹ * γ : Γ) : G) * x ∈ K`. Establish `h1 : x⁻¹ * ((γ'⁻¹ * γ : Γ) : G) * x = (κ' : G) * (κ : G)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, e']`. Use `group`. Rewrite using `[h1]`. Conclude with `K.mul_mem κ'.2 (K.inv_mem κ.2)`. Establish `h` using `hw (γ'⁻¹ * γ) hmem`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rho_eq_of_eq {k : Type} [CommRing k] {W : Type} [AddCommGroup W] [Module k W]
     (ρ : Representation k Γ W) (x : G) (w : W)
@@ -70,9 +68,9 @@ def extend (s : ClassSet Γ K → G) (hs : ∀ c, DoubleCoset.mk Γ K (s c) = c)
   ρ (Classical.choose (exists_rep Γ K s hs g)).1 (w (DoubleCoset.mk Γ K g))
 
 /- English proof (translation)
-Establish `hc : DoubleCoset.mk Γ K g = c` using `mk_of_eq Γ K s hs c g γ κ e`. Establish `hp` using `Classical.choose_spec (exists_rep Γ K s hs g)`. Unfold `extend`. Generalize the expression as in `Classical.choose (exists_rep Γ K s hs g) = p at hp ⊢`. Rewrite `hp`, the goal using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `rho_eq_of_eq Γ K ρ (s c) (w c) (hw c) p.1 γ p.2 κ (hp.symm.trans e)`.
+A detailed English derivation is pending.
 -/
 theorem extend_eq (s : ClassSet Γ K → G) (hs : ∀ c, DoubleCoset.mk Γ K (s c) = c)
     (ρ : Representation k Γ W) (w : ClassSet Γ K → W)
@@ -89,13 +87,13 @@ theorem extend_eq (s : ClassSet Γ K → G) (hs : ∀ c, DoubleCoset.mk Γ K (s 
 end Rep
 
 /- English proof (translation)
-Introduce `G _ Γ K k _ _ W _ _ _ ρK hfin`. Establish `hsurj : ∀ c : ClassSet Γ K, ∃ g : G, DoubleCoset.mk Γ K g = c`. Introduce `c`. Take `⟨g, hg⟩` from `Quotient.exists_rep c`. Conclude with `⟨g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `s : ClassSet Γ K → G` to `fun c => (hsurj c).choose`. Establish `hs : ∀ c, DoubleCoset.mk Γ K (s c) = c` using `fun c => (hsurj c).choose_spec`. Set `L : AMFK k Γ K ρK →ₗ[k] (ClassSet Γ K → W)` to `LinearMap.pi fun c => (LinearMap.proj (s c)).comp (AMFK k Γ K ρK).subtype`. Establish `hinj : Function.Injective L`. Introduce `f g hfg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Take `⟨p, hp⟩` from `exists_rep Γ K s hs x`. Establish `hf` using `(mem_AMFK_iff Γ K ρK (f : G → W)).1 f.2 p.1 (s (DoubleCoset.mk Γ K x)) p.2`. Establish `hg` using `(mem_AMFK_iff Γ K ρK (g : G → W)).1 g.2 p.1 (s (DoubleCoset.mk Γ K x)) p.2`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc` using `congrFun hfg (DoubleCoset.mk Γ K x)`. Express the relevant statement in the definitionally equal form `(f : G → W) (s (DoubleCoset.mk Γ K x)) = (g : G → W) (s (DoubleCoset.mk Γ K x)) at hfc`. Rewrite `hf`, `hg` using `[← hp]`. Rewrite using `[hf, hg, hfc]`. Conclude with `Module.Finite.of_injective L hinj`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem automorphic_forms_level_finite_holds : Formalism.UG.AMFKFinite := by
   intro G _ Γ K k _ _ W _ _ _ ρK hfin

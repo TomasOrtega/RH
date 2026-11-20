@@ -40,11 +40,11 @@ def psi (s : F[X] → ℂ) (V : Type) [AddCommGroup V] [Module F V] [FiniteDimen
   invariantSubspaceMobiusInverseRec s (Module.finrank F V + 1) V g
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro m V _ _ _ g h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `m V _ _ _ g h h'`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `m with`. Consider the case `zero => omega`. Consider the case `succ m`. Rewrite using `[invariantSubspaceMobiusInverseRec_succ, invariantSubspaceMobiusInverseRec_succ]`. Use `congr 1`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `finsum_congr fun W => ?_` and prove the remaining obligations. Use `Submodule.finrank_lt W.2.1` as an intermediate fact. Conclude with `ih m _ _ (by omega) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem invariantSubspaceMobiusInverseRec_eq_of_finrank_lt (s : F[X] → ℂ) (n : ℕ) : ∀ (m : ℕ) (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (g : Module.End F V), Module.finrank F V < n → Module.finrank F V < m →
@@ -63,7 +63,7 @@ theorem invariantSubspaceMobiusInverseRec_eq_of_finrank_lt (s : F[X] → ℂ) (n
       exact ih m _ _ (by omega) (by omega)
 
 /- English proof (translation)
-Rewrite using `[psi, invariantSubspaceMobiusInverseRec_succ]`. Use `congr 1`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Use `Submodule.finrank_lt W.2.1` as an intermediate fact. Conclude with `invariantSubspaceMobiusInverseRec_eq_of_finrank_lt s _ (Module.finrank F W.1 + 1) _ _ (by omega) (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_eq (s : F[X] → ℂ) (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V]
     (g : Module.End F V) :
@@ -100,7 +100,7 @@ def extZero {d : ℕ} (χ : GL (Fin d) F → ℂ) (g : Module.End F (Fin d → F
   ∑ᶠ x ∈ {x : GL (Fin d) F | Matrix.toLin' (x : Matrix (Fin d) (Fin d) F) = g}, χ x
 
 /- English proof (translation)
-Introduce `P Q hP hQ`. Simplify using `[hP.natDegree_mul hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isAdditive_natDegree : IsAdditive (fun P : F[X] => (P.natDegree : ℂ)) := by
   intro P Q hP hQ

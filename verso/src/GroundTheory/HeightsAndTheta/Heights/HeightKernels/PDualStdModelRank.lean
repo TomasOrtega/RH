@@ -12,27 +12,25 @@ noncomputable section
 open StandardModelDualRank in
 
 /- English proof (translation)
-Introduce `K _ _ i T _ _ b Φ₀ _ _ hΦ _ c`. Establish `hrange : Set.range (dualStdModelPt b ∘ inrV (ι` using `dualBlocks T) (ι₂ := PBlk i)) = Set.range (u K i) := by`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨⟩, j⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨j, rfl⟩`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨⟨(), j⟩, rfl⟩`. Rewrite `hΦ` using `[hrange]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `dualStdModelEmb K i (dualLatticeCoord b ⟨(), c⟩) * dualStdModelS K i ≠ 0`. Conclude with `mul_ne_zero (coord_ne_zero b c) S_ne_zero`. Establish `hr : (fun t : T => dualStdModelPt b (⟨Sum.inl (), t⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k) / dualStdModelPt b (⟨Sum.inl (), c⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k)) = fun t => w b t * (w b c)⁻¹`. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `dualStdModelEmb K i (dualLatticeCoord b ⟨(), t⟩) * dualStdModelS K i / (dualStdModelEmb K i (dualLatticeCoord b ⟨(), c⟩) * dualStdModelS K i) = _`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← div_eq_mul_inv, w, w, mul_div_mul_right (_ * dualStdModelS K i) _ (T_ne_zero (K := K) (i := i))]`. Rewrite using `[hr]`. Set `B` to `Module.finBasis ℚ K`. Set `M'` to `Algebra.adjoin Φ₀ (Set.range (embK K i))`. Establish `hM' : Subalgebra.toSubmodule M' = Submodule.span Φ₀ (Set.range fun k => embK K i (B k))` using `adjoin_embK_eq_span B Φ₀`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg : (Subalgebra.toSubmodule M').FG`. Rewrite using `[hM']`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Establish `hwM' : ∀ t, w b t ∈ M'` using `fun t => by`. Rewrite using `[w_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (Algebra.subset_adjoin ⟨_, rfl⟩) ?_` and prove the remaining obligations. Establish `hu : u K i j ∈ (algebraMap Φ₀ (dualStdModelField K i)).fieldRange`. Rewrite using `[hΦ]`. Conclude with `Subfield.subset_closure ⟨j, rfl⟩`. Take `⟨g, hg⟩` from `RingHom.mem_fieldRange.mp hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hg]`. Conclude with `Subalgebra.algebraMap_mem _ g`. Establish `hMM' : Algebra.adjoin Φ₀ (Set.range fun t => w b t * (w b c)⁻¹) ≤ M'`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.mul_mem _ (hwM' t) (Subalgebra.inv_mem_of_algebraic M' (x := ⟨w b c, hwM' c⟩) (IsIntegral.of_mem_of_fg M' hfg _ (hwM' c)).isAlgebraic)`. Establish `hβM : ∀ a, embK K i a ∈ Algebra.adjoin Φ₀ (Set.range fun t => w b t * (w b c)⁻¹)` using `fun a => by`. Take `⟨N, hN, n, hn⟩` from `exists_int_comb b c a`. Establish `hNΩ : (N : dualStdModelField K i) ≠ 0`. Rewrite using `[← map_intCast (embK K i)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero_iff _ (embK K i).injective).mpr (Int.cast_ne_zero.mpr hN)`. Establish `he : embK K i a = algebraMap Φ₀ _ ((N : Φ₀)⁻¹) * ∑ t, (n t : dualStdModelField K i) * (w b t * (w b c)⁻¹)`. Rewrite using `[map_inv₀, map_intCast]`. Simplify using `only [← mul_assoc, ← Finset.sum_mul, hn]`. Clear denominators, using `[w_ne_zero b c]` for the nonvanishing conditions.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (Subalgebra.sum_mem _ fun t _ => Subalgebra.mul_mem _ (intCast_mem _ _) (Algebra.subset_adjoin ⟨t, rfl⟩))`. Establish `hMeq : Subalgebra.toSubmodule (Algebra.adjoin Φ₀ (Set.range fun t => w b t * (w b c)⁻¹)) = Submodule.span Φ₀ (Set.range fun k => embK K i (B k))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hM']`.
-
-Conclude with `fun x hx => hMM' hx`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hβM (B k)`. Rewrite using `[← Subalgebra.finrank_toSubmodule, hMeq, finrank_span_eq_card (linIndep B Φ₀ hΦ), Fintype.card_fin]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualStdModelRank.proof : DualStdModelRank.Statement := by
   intro K _ _ i T _ _ b Φ₀ _ _ hΦ _ c

@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `Subsingleton.elim a b`. Use `haveI : CharP R p := (CharP.charP_iff_prime_eq_zero hp).mpr h haveI : Fact p.Prime := ⟨hp⟩`. Apply `frobenius_inj R p` to reduce the goal to its premises. Simplify `hab` using `[frobenius_def]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma rootGlue_uniq {R : Type*} [CommRing R] [IsReduced R] {p : ℕ} (hp : p.Prime)
     (h : (p : R) = 0) {a b : R} (hab : a ^ p = b ^ p) : a = b := by
@@ -18,15 +18,15 @@ private lemma rootGlue_uniq {R : Type*} [CommRing R] [IsReduced R] {p : ℕ} (hp
     simpa [frobenius_def] using hab
 
 /- English proof (translation)
-Introduce `p _ X _ hp U s hloc`. Establish `hpr : p.Prime` using `Fact.out`. Establish `hpV : ∀ V : X.Opens, (p : Γ(X, V)) = 0`. Introduce `V`. Establish `h0` using `congrArg (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op) hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Set `Idx` to `{V : X.Opens // V ≤ U ∧ IsAffineOpen V}`. Use `choose r hr using fun i : Idx => hloc i.1 i.2.1 i.2.2`. Establish `hcover : U ≤ ⨆ i : Idx, i.1`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hxV, hVU⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨V, hVU, hV⟩, hxV⟩`. Establish `hcomp : TopCat.Presheaf.IsCompatible X.sheaf.obj (fun i : Idx => i.1) r`. Introduce `i j`. Apply `rootGlue_uniq hpr (hpV _)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(X.presheaf.map _ (r i)) ^ p = (X.presheaf.map _ (r j)) ^ p`. Rewrite using `[← map_pow, ← map_pow, hr i, hr j, ← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, ← Functor.map_comp, ← Functor.map_comp]`. Both sides reduce to the same expression. Take `⟨t, ht, -⟩ : ∃! t : Γ(X, U), ∀ i : Idx, X.presheaf.map (homOfLE i.2.1).op t = r i` from `X.sheaf.existsUnique_gluing' (fun i : Idx => i.1) U (fun i => homOfLE i.2.1) hcover r hcomp`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ i : Idx, X.presheaf.map (homOfLE i.2.1).op (t ^ p) = X.presheaf.map (homOfLE i.2.1).op s`. Introduce `i`. Rewrite using `[map_pow, ht i, hr i]`. Conclude with `X.sheaf.eq_of_locally_eq' (fun i : Idx => i.1) U (fun i => homOfLE i.2.1) hcover _ _ key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.rootGlue :
     ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) [IsReduced X], (p : Γ(X, ⊤)) = 0 → ∀ (U : X.Opens) (s : Γ(X, U)),

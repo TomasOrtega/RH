@@ -15,7 +15,7 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
 namespace VP
 
 /- English proof (translation)
-Use `show (∑ k ∈ Finset.range ((0 : σ →₀ ℕ).degree + 1), MvPowerSeries.coeff 0 (h ^ k) / (k.factorial : C)) = 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cc_mvExp' {σ : Type} (h : MvPowerSeries σ C) : MvPowerSeries.constantCoeff (mvExp h) = 1 := by
   show (∑ k ∈ Finset.range ((0 : σ →₀ ℕ).degree + 1), MvPowerSeries.coeff 0 (h ^ k) / (k.factorial : C)) = 1
@@ -24,14 +24,14 @@ theorem cc_mvExp' {σ : Type} (h : MvPowerSeries σ C) : MvPowerSeries.constantC
 variable (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o))
 
 /- English proof (translation)
-Unfold `pull2`. Conclude with `linPull_mul _ _ F G`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pullback_two_var_mul (F G : PS C 2 dd) : pull2 Y p (F * G) = pull2 Y p F * pull2 Y p G := by
   unfold pull2
   exact linPull_mul _ _ F G
 
 /- English proof (translation)
-Unfold `pull2`. Conclude with `linPull_prod _ _ s F`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pullback_two_var_prod {ι : Type} (s : Finset ι) (F : ι → PS C 2 dd) :
     pull2 Y p (∏ i ∈ s, F i) = ∏ i ∈ s, pull2 Y p (F i) := by
@@ -39,18 +39,18 @@ theorem pullback_two_var_prod {ι : Type} (s : Finset ι) (F : ι → PS C 2 dd)
   exact linPull_prod _ _ s F
 
 /- English proof (translation)
-Establish `h` using `pullback_two_var_prod Y p (∅ : Finset Unit) (fun _ => (1 : PS C 2 dd))`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pullback_two_var_one : pull2 Y p (1 : PS C 2 dd) = 1 := by
   have h := pullback_two_var_prod Y p (∅ : Finset Unit) (fun _ => (1 : PS C 2 dd))
   simpa using h
 
 /- English proof (translation)
-Establish `hprod : pullS Y p pl (∏ b : Fin n, ev (n` using `n) ![pt C dd b] E) = ∏ b : Fin n, pullS Y p pl (ev (n := n) ![pt C dd b] E) := by`. Unfold `pullS`. Conclude with `linPull_prod _ _ _ _`. Rewrite using `[hprod]`. Establish `hoff : ∀ b ∈ (Finset.univ : Finset (Fin n)), b ∉ Finset.univ.map pl → pullS Y p pl (ev (n` using `n) ![pt C dd b] E) = 1 := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Establish `hb' : b ∉ Set.range pl` using `by simpa using hb`. Rewrite using `[pullS_off (b := b) (hb := hb'), hE, map_one]`. Rewrite using `[← Finset.prod_subset (Finset.subset_univ (Finset.univ.map pl)) hoff, Finset.prod_map, Fintype.prod_prod_type]`. Repeatedly rewrite using `[pullS_col]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[pullback_two_var_prod, rowOf_prod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullS_exp {N n : ℕ} (pl : Fin N × Fin 2 ↪ Fin n) (E : PS C 1 dd) (hE : MvPowerSeries.constantCoeff E = 1) :
     pullS Y p pl (∏ b : Fin n, ev (n := n) ![pt C dd b] E) =
@@ -74,19 +74,17 @@ theorem pullS_exp {N n : ℕ} (pl : Fin N × Fin 2 ↪ Fin n) (E : PS C 1 dd) (h
 end VP
 
 /- English proof (translation)
-Introduce `hs N pl P hP Po hQ kind hk S t ht gr hg`. Take `⟨U, hUi, hU0, hU⟩` from `h2 hs`. Take `⟨U', hU'i, hUU⟩` from `VP.intInv hUi hU0`. Use `choose G hGi hG using fun (o : Orb) (ρ : Fin N) => h3 hs o (S o) (t o) (ht o) (gr o ρ) (hg o ρ)`. Take `⟨co, hco, hQe⟩` from `hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ ρ, ev (n := n) ![pt C dd (pl (ρ, 0)), pt C dd (pl (ρ, 1))] (U' * ∏ o, G o ρ), ?_, ?_⟩` and prove the remaining obligations. Use `VP.IntS_prod _ fun ρ _ => ?_` and prove the remaining obligations. Unfold `ev`. Use `IntS.subst (VP.cc_ptPl pl ρ) (fun q => ?_) (hU'i.mul (VP.IntS_prod _ fun o _ => hGi o ρ))` and prove the remaining obligations. Take `⟨g, i⟩` from `q`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases g <;> exact VP.IntS_X _`. Establish `hk0 : MvPowerSeries.constantCoeff ((Y.k : C) • Y.B.hL C Y.h Y.w0) = 0` using `VP.cc_smul _ (VP.cc_hL Y)`. Establish `hE1 : MvPowerSeries.constantCoeff (FB.expS C ((Y.k : C) • Y.B.hL C Y.h Y.w0)) = 1`. Rewrite using `[VP.expS_eq _ hk0, VP.cc_mvExp']`. Establish `hrow : ∀ ρ : Fin N, rowOf ρ (pull2 Y p (U' * ∏ o, G o ρ)) * rowOf ρ (pull2 Y p (∏ col : Fin 2, ev (n` using `2) ![pt C dd col] (FB.expS C ((Y.k : C) • Y.B.hL C Y.h Y.w0)))) = ∏ o, MvPowerSeries.rename (VP.eAll (I := IS I0) N o) (rowCopy ρ (gr o ρ) * mvExp (rowCopy ρ (Y.rawSelf (p o)).hRow)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ`. Rewrite using `[← VP.rowOf_mul, hU, VP.pullback_two_var_mul, VP.pullback_two_var_prod]`. Establish `e2 : (pull2 Y p U' * ∏ o, pull2 Y p (G o ρ)) * (pull2 Y p U * ∏ o, toAllS (I` using `IS I0) o (mvExp (Y.rawSelf (p o)).hRow)) = ∏ o, toAllS (I := IS I0) o (gr o ρ * mvExp (Y.rawSelf (p o)).hRow) := by`. Establish `e3 : pull2 Y p U' * pull2 Y p U = 1` using `by rw [← VP.pullback_two_var_mul, hUU, VP.pullback_two_var_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, one_mul, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun o _ => by rw [hG o ρ, VP.toAllS_mul]`. Rewrite using `[e2, VP.rowOf_prod]`. Conclude with `Finset.prod_congr rfl fun o _ => by rw [VP.rowOf_toAllS, VP.rowCopy_mul_exp]`. Establish `hser : pullS Y p pl ((∏ ρ, ev (n` using `n) ![pt C dd (pl (ρ, 0)), pt C dd (pl (ρ, 1))] (U' * ∏ o, G o ρ)) * FB.expS C ((Y.k : C) • ∑ b : Fin n, ev (n := n) ![pt C dd b] (Y.B.hL C Y.h Y.w0))) = ∏ o, MvPowerSeries.rename (VP.eAll (I := IS I0) N o) (∏ ρ, (rowCopy ρ (gr o ρ) * mvExp (rowCopy ρ (Y.rawSelf (p o)).hRow))) := …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hpl : ∀ ρ : Fin N, VP.linPull Y (MS Y p pl) (ev (n` using `n) ![pt C dd (pl (ρ, 0)), pt C dd (pl (ρ, 1))] (U' * ∏ o, G o ρ)) = rowOf ρ (pull2 Y p (U' * ∏ o, G o ρ)) := fun ρ => VP.pullS_plane Y p pl ρ _`. Rewrite using `[VP.expS_copies, show pullS Y p pl (_ * _) = _ from VP.linPull_mul Y _ _ _, show VP.linPull Y (MS Y p pl) (∏ b : Fin n, _) = _ from VP.pullS_exp Y p pl _ hE1, VP.linPull_prod, Finset.prod_congr rfl fun ρ _ => hpl ρ, ← Finset.prod_mul_distrib, Finset.prod_congr rfl fun ρ _ => hrow …`. Conclude with `Finset.prod_congr rfl fun o _ => (map_prod _ _ _).symm`. Unfold `FBChart.nab nabValN`. Rewrite using `[VP.logCoordG Y (MS Y p pl) (Ls.cp n) (Ls.uv n) P co (fun ℓ hℓ b i => VP.hco_of_img Y p pl (Ls.cp n) (Ls.uv n) ℓ (co ℓ) (hco ℓ hℓ) b i), ← hQe]`.
-
-Rewrite using `[show VP.linPull Y (MS Y p pl) _ = _ from hser, VP.jet_orb]`. Conclude with `Finset.prod_congr rfl fun o _ => leaf_holds C V d (fun _ => I0 o) (Fin 2 × Fin dd) (Y.rawSelf (p o)) (H o) N (Po o) (kind o) (hk o) (gr o)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_eq_self_of_unit_germ (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o)) (H : ∀ o, (Y.rawSelf (p o)).Hyps V)
     (Ls : LetSys C dd) (n : ℕ) (h2 : UnitSelfSt Y p) (h3 : GermLiftSelfSt Y p H) : ValEqSelfSt Y p H Ls n := by

@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Rewrite using `[Subgroup.relIndex_comap]`. Introduce `h`. Conclude with `hAB (Subgroup.relIndex_eq_zero_of_le_right (Subgroup.map_le_iff_le_comap.mpr hT) h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem comap_relIndex_ne_zero {G H : Type} [Group G] [Group H] (p : G →* H) (A B : Subgroup H)
     (T : Subgroup G) (hAB : A.relIndex B ≠ 0) (hT : ∀ g ∈ T, p g ∈ B) : (A.comap p).relIndex T ≠ 0 := by
@@ -13,9 +13,9 @@ private theorem comap_relIndex_ne_zero {G H : Type} [Group G] [Group H] (p : G �
   exact hAB (Subgroup.relIndex_eq_zero_of_le_right (Subgroup.map_le_iff_le_comap.mpr hT) h)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, by simp, by simp⟩`. Consider the case `insert a S ha ih`. Take `⟨W, hW, hWS⟩` from `ih (fun v hv => h v (Finset.mem_insert_of_mem hv))`. Use `⟨H a ⊓ W, Subgroup.relIndex_inf_ne_zero (h a (Finset.mem_insert_self a S)) hW, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Break down `Finset.mem_insert.mp hv with rfl | hv` into its components or cases. Conclude with `inf_le_left`. Conclude with `inf_le_right.trans (hWS v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem finset_relIndex_ne_zero {G I : Type} [Group G] (H : I → Subgroup G) (T : Subgroup G) (S : Finset I)
     (h : ∀ v ∈ S, (H v).relIndex T ≠ 0) : ∃ W : Subgroup G, W.relIndex T ≠ 0 ∧ ∀ v ∈ S, W ≤ H v := by
@@ -31,23 +31,19 @@ private theorem finset_relIndex_ne_zero {G I : Type} [Group G] (H : I → Subgro
     · exact inf_le_right.trans (hWS v hv)
 
 /- English proof (translation)
-Unfold `Fib.LevFin`. Introduce `F _ _ Δ D hD`. Establish `hDet : Fib.DetOne` using `UpperTheory.orbitalFiber_det_eq_one`. Unfold `Fib.DetOne at hDet`. Use `set P := rpg (fun v => ↥(DX ((cv v) Δ))) (fun v => KD ((cv v) Δ) (Ov v)) with hP`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hle : ∀ v, D.J2v v ≤ KD ((cv v) Δ) (Ov v)`. Introduce `v`. Rewrite using `[Dat.J2v.eq_1]`. Use `split_ifs with hv`. Conclude with `SigOk.levelTwoLeIntegral (hD.sig v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `le_rfl`. Establish `hT : ∀ v, ∀ g ∈ D.UZ ⊓ SA Δ, P.p v g ∈ KD ((cv v) Δ) (Ov v)`. Introduce `v g hg`. Establish `h1 : g ∈ D.UZ` using `hg.1`. Establish `h2 : g ∈ SA Δ` using `hg.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Dat.UZ.eq_1, RPG.box.eq_1, Subgroup.mem_iInf]`. Rewrite `h2` using `[SA.eq_1, Subgroup.mem_iInf]`. Establish `a` using `h1 v`. Establish `b` using `h2 v`. Rewrite `a`, `b` using `[Subgroup.mem_comap]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hDet _ _ _ _ (sup_le_sup_left (hle v) _ a) b`. Establish `hfin : ∀ v ∈ D.Sg, ((D.J2v v).comap (P.p v)).relIndex (D.UZ ⊓ SA Δ) ≠ 0`. Introduce `v hv`. Apply `comap_relIndex_ne_zero (P.p v) (D.J2v v) (KD ((cv v) Δ) (Ov v))` to reduce the goal to its premises. Rewrite using `[Dat.J2v.eq_1, if_pos hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `SigOk.levelTwoFiniteIndex (hD.sig v hv)`. Conclude with `hT v`. Take `⟨W, hW, hWS⟩` from `finset_relIndex_ne_zero (fun v => (D.J2v v).comap (P.p v)) _ D.Sg hfin`. Establish `hsub : W ⊓ (D.UZ ⊓ SA Δ) ≤ D.U2`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Dat.U2.eq_1, RPG.box.eq_1, Subgroup.mem_iInf]`. Introduce `v`. Rewrite using `[Subgroup.mem_comap]`. Distinguish the cases in `hv : v ∈ D.Sg`. Conclude with `hWS v hv hg.1`.
-
-Establish `e` using `hT v g hg.2`. Rewrite using `[Dat.J2v.eq_1, if_neg hv]`. Conclude with `e`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Dat.U2.eq_1, Dat.UZ.eq_1, RPG.box.eq_1, RPG.box.eq_1]`.
-
-Conclude with `iInf_mono fun v => Subgroup.comap_mono le_sup_right`. Introduce `h`. Apply `hW` to reduce the goal to its premises. Rewrite using `[← Subgroup.inf_relIndex_right]`. Conclude with `Subgroup.relIndex_eq_zero_of_le_left hsub h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbitalFiber_level_finite :
     UpperTheory.V.Z.Sym.Glob.Fib.LevFin := by

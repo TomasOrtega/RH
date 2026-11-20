@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrb
 
 open UpperTheory.Gal.InertialTypesAlt.L in
 /- English proof (translation)
-The claim follows from `elemLoc_of suppE oneField reps normOpen normDiag align volRatio (fun E _ _ _ _ n r h0 h1 => UpperTheory.ConvolutionTheory.Loc.ballSub E n r h0 h1)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.elemLoc :
     UpperTheory.Gal.InertialTypesAlt.L.ElemLoc := elemLoc_of suppE oneField reps normOpen normDiag align volRatio

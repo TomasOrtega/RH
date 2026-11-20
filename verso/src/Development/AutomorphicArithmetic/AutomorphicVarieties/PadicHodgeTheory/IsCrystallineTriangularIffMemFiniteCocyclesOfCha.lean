@@ -10,13 +10,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.F
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module Topology UpperTheory.V.Loc UpperTheory.V.U3
 
 /- English proof (translation)
-Establish `e : ∀ (i j : Fin 3) g, (((κ i / κ j) g : Bˣ) : B) * κ j g = κ i g` using `fun i j g => by`. Rewrite using `[← Units.val_mul, MonoidHom.div_apply, div_mul_cancel]`. Establish `m : ∀ g g', triM (fun i => κ i (g * g')) (x (g * g')) (y (g * g')) (z (g * g')) = triM (fun i => κ i g) (x g) (y g) (z g) * triM (fun i => κ i g') (x g') (y g') (z g')` using `fun g g' => by`. Rewrite using `[← h, ← h, ← h, map_mul, Units.val_mul]`. Use `⟨fun g g' => ?_, fun g g' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrFun (congrFun (m g g') 0) 1`. Simplify using `only [triM, Matrix.mul_apply, Fin.sum_univ_three, map_mul, Units.val_mul] at h1`. Simplify using `at h1`. Apply `(κ 1 g * κ 1 g').isUnit.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[Units.val_mul, h1, ← e 0 1 g]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `congrFun (congrFun (m g g') 0) 2`. Simplify using `only [triM, Matrix.mul_apply, Fin.sum_univ_three, map_mul, Units.val_mul] at h1`. Simplify using `at h1`. Apply `(κ 2 g * κ 2 g').isUnit.mul_right_cancel` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.val_mul, h1, ← e 0 2 g, ← e 1 2 g]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem coc {G B : Type} [Group G] [CommRing B] {κ : Fin 3 → G →* Bˣ} {x y z : G → B}
     {ρ : G →* GL (Fin 3) B}
@@ -43,7 +43,7 @@ private theorem coc {G B : Type} [Group G] [CommRing B] {κ : Fin 3 → G →* B
     ring
 
 /- English proof (translation)
-The claim follows from `Submodule.smul_mem_smul (by simpa using ha) trivial`.
+A detailed English derivation is pending.
 -/
 private theorem mem_ker_smul {E B V : Type} [Field E] [CommRing B] [Algebra E B] [AddCommGroup V] [Module B V]
     (π : B →ₐ[E] E) {a : B} (ha : π a = 0) (v : V) :
@@ -51,43 +51,39 @@ private theorem mem_ker_smul {E B V : Type} [Field E] [CommRing B] [Algebra E B]
   Submodule.smul_mem_smul (by simpa using ha) trivial
 
 /- English proof (translation)
-Introduce `hP l _ G _ _ _ φ hφ E _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ e ψ κ hκ x y z ρ hxc hyc hzc hρ hx0 hcr z' ρ' hzc' hρ'`. Take `⟨hx, hz⟩` from `coc hρ`. Take `⟨-, hz'⟩` from `coc hρ'`. Establish `: Module.Finite E B` using `Module.Finite.of_restrictScalars_finite ℚ_[l] E B`. Use `contConstSMul_alg (B := B) E` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : z' - z ∈ Z1 (chRep (κ 0 / κ 2))`. Use `⟨hzc'.sub hzc, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, hz, hz', chRep_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hZ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `w0 : wt1 0 = 1` using `rfl`. Establish `w1 : wt1 1 = 0` using `rfl`. Establish `w2 : wt1 2 = -1` using `rfl`. Establish `cd : ∀ i j, Continuous fun g => (((κ i / κ j) g : Bˣ) : B)` using `fun i j => cont_char_div (hκ.cont i) (hκ.cont j)`. Establish `crk : ∀ i, IsCr φ (chRep (κ i))` using `fun i => crUnr φ hφ _ (contAction_chRep (hκ.cont i)) (e * wt1 i) fun g hg v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[chRep_apply, hκ.ine g hg, smul_eq_mul]`. Establish `crd : ∀ i j, IsCr φ (chRep (κ i / κ j))` using `fun i j => crUnr φ hφ _ (contAction_chRep (cd i j)) (e * wt1 i - e * wt1 j) fun g hg v => by`. Rewrite using `[chRep_apply, MonoidHom.div_apply, hκ.ine g hg, hκ.ine g hg, zpow_sub, div_eq_mul_inv, smul_eq_mul]`. Establish `red : ∀ i j g, π (((κ i / κ j) g : Bˣ) : B) = (((ψ ^ (wt1 i - wt1 j)) g : Eˣ) : E)` using `fun i j g => by`. Establish `e1 : (((κ i / κ j) g : Bˣ) : B) * κ j g = κ i g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, MonoidHom.div_apply, div_mul_cancel]`. Establish `e2` using `congrArg π e1`. Rewrite `e2` using `[map_mul, hκ.red, hκ.red]`. Apply `(ψ g ^ wt1 j).isUnit.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[e2, ← Units.val_mul, MonoidHom.zpow_apply, ← zpow_add, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∀ n : ℤ, 1 ≤ n → (ψ ^ n) ∈ {κ : G →* Eˣ | ∃ w : ℤ, 1 ≤ w ∧ HasWeight φ κ w}` using `fun n hn => by`. Use `hκ.e_pos` as an intermediate fact. Use `⟨e * n, by nlinarith, ⊤, by simp, fun g _ hg => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.zpow_apply, hκ.wt g hg, zpow_mul, zpow_natCast]`. Establish `cρ : ContAction (colRep ρ)` using `contAction_colRep (by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hρ]`. Conclude with `continuous_triM hκ.cont hxc hyc hzc)`. Establish `c2` using `contAction_charExtension_of_continuous_cocycle (hκ.cont 0) (hκ.cont 1) hx hxc`. Establish `cr2 : IsCr φ (ext2 (κ 0) (κ 1) x hx)`. Apply the tactic sequence `let f : B × B →ₗ[ℚ_[l]] (Fin 3 → B) := { toFun := fun v => ![v.1, v.2, 0] map_add' := fun v w => by ext i; fin_cases i <;> simp map_smul' := fun c v => by ext i; fin_cases i <;> simp }`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `((isCrys_isDR_sub_quot φ hφ _ _ c2 cρ f fun g v => ?_).1 fun v w h => ?_).1 hcr` and prove the remaining obligations. Apply the tactic sequence `ext i fin_cases i <;> simp [f, characterExtensionRep_apply, colRep_apply, hρ, triM, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`. Conclude with `Prod.ext (congrFun h 0) (congrFun h 1)`. Establish `hxf` using `(UpperTheory.isCrystalline_extension_iff_mem_finiteCocycles φ hφ _ _ (hκ.cont 0) (hκ.cont 1) x hx hxc (crk 0) (crk 1)).1 cr2`. Establish `ed : (κ 0 / κ 2) / (κ 1 / κ 2) = κ 0 / κ 1` using `div_div_div_cancel_right _ _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : ∀ g h, x (g * h) = x g + (((κ 0 / κ 2) / (κ 1 / κ 2)) g : Bˣ) * x h` using `by rw [ed]; exact hx`. Establish `eM : twist (κ 2)⁻¹ (ext2 (κ 0) (κ 1) x hx) = ext2 (κ 0 / κ 2) (κ 1 / κ 2) x hx'`. Use `MonoidHom.ext fun g => LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [twist_apply, characterExtensionRep_apply, div_eq_mul_inv, MonoidHom.mul_apply, Units.val_mul, Prod.smul_mk, smul_eq_mul]`. Apply the tactic sequence `ext <;> simp only [] <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k1` using `(UpperTheory.isCrystalline_upperTriangular_iff_mem_finiteCocycles φ hφ κ hκ.cont x y z ρ hxc hyc hzc hρ hx cr2 (crk 2)).1 hcr`. Establish `k2` using `UpperTheory.isCrystalline_upperTriangular_iff_mem_finiteCocycles φ hφ κ hκ.cont x y z' ρ' hxc hyc hzc' hρ' hx cr2 (crk 2)`. Rewrite `k1`, `k2` using `[eM]`. Use `set M := ext2 (κ 0 / κ 2) (κ 1 / κ 2) x hx' with hM`. Establish `cM : ContAction M` using `contAction_charExtension_of_continuous_cocycle (cd 0 2) (cd 1 2) hx' hxc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `crM : IsCr φ M` using `(UpperTheory.isCrystalline_extension_iff_mem_finiteCocycles φ hφ _ _ (cd 0 2) (cd 1 2) x hx' hxc (crd 0 2) (crd 1 2)).2 (by rw [ed]; exact hxf)`. Establish `cχ` using `contAction_chRep (cd 0 2)`. Establish `inl : ∀ g v, LinearMap.inl E B B (chRep (κ 0 / κ 2) g v) = M g (LinearMap.inl E B B v)` using `fun g v => by`. Simplify using `[hM, characterExtensionRep_apply, chRep_apply]`. Establish `pχ : Positive φ (resCoef E (chRep (κ 0 / κ 2)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨(isCrys_isDR_restrict_openSubgroup φ hφ _ cχ).1 (crd 0 2), UpperTheory.filtBy_restrictScalars_of_residual_characters π hπ _ _ (fun _ : Unit => (1 : B)) (fun _ => ψ ^ (wt1 0 - wt1 2)) (by simp) (fun _ => hw _ (by decide)) fun g _ => ?_⟩` and prove the remaining obligations. Use `mem_ker_smul π (a := ((κ 0 / κ 2) g : Bˣ) - algebraMap E B ((ψ ^ (wt1 0 - wt1 2)) g : Eˣ)) (by rw [map_sub, red, AlgHom.commutes]; simp) (1 : B)` as an intermediate fact. Rewrite `this` using `[sub_smul, algebraMap_smul]`. Then use the resulting hypothesis. Establish `pM : Positive φ (resCoef E M)`. Use `⟨(isCrys_isDR_restrict_openSubgroup φ hφ _ cM).1 crM, UpperTheory.filtBy_restrictScalars_of_residual_characters π hπ _ _ (![(1, 0), (0, 1)] : Fin 2 → B × B) ![ψ ^ (wt1 0 - wt1 2), ψ ^ (wt1 1 - wt1 2)] ?_ (fun j => ?_) fun g j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Establish `: v = v.1 • ((1, 0) : B × B) + v.2 • ((0, 1) : B × B)` using `by simp`. Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))`. Use `fin_cases j`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `hw _ (by decide)`. Conclude with `hw _ (by decide)`. Establish `t : ∀ i (v : B × B), _` using `fun i v => mem_ker_smul π (a := ((κ i / κ 2) g : Bˣ) - algebraMap E B ((ψ ^ (wt1 i - wt1 2)) g : Eˣ)) (by rw [map_sub, red, AlgHom.commutes]; simp) v fin_cases j`. Use `t 0 (1, 0) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[sub_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[hM, characterExtensionRep_apply]`. Use `add_mem (t 1 (0, 1)) (mem_ker_smul π (a := x g * ((κ 1 / κ 2) g : Bˣ)) (by rw [map_mul, hx0, zero_mul]) ((1, 0) : B × B)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[sub_smul, algebraMap_smul]`. Simplify using `[hM, characterExtensionRep_apply]`. Establish `dif : (fun g => (z' g, y g)) - (fun g => (z g, y g)) = fun g => LinearMap.inl E B B ((z' - z) g)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[k2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `sub_mem h k1`. Rewrite `h1` using `[dif]`. Establish `h2` using `(z1fMap φ M (resCoef E M)).2 LinearMap.id (fun _ _ => rfl) _ h1`. Establish `h3` using `(posExact hP φ hφ (resCoef E (chRep (κ 0 / κ 2))) (resCoef E M) cχ cM pχ (LinearMap.inl E B B) inl).2 LinearMap.inl_injective pM _ hZ h2`. Conclude with `(z1fMap φ (resCoef E (chRep (κ 0 / κ 2))) (chRep (κ 0 / κ 2))).2 LinearMap.id (fun _ _ => rfl) _ h3`.
-
-Introduce `h`. Establish `h1` using `(z1fMap φ _ M).2 ((LinearMap.inl E B B).restrictScalars ℚ_[l]) inl _ h`. Establish `h2` using `add_mem h1 k1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
-
-Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isCrystalline_triangular_iff_mem_finiteCocycles_of_charData :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) {e : ℕ} {ψ : G →* Eˣ} {κ : Fin 3 → G →* Bˣ}, Chars φ π e ψ κ → ∀ (x y z : G → B) (ρ : G →* GL (Fin 3) B), Continuous x → Continuous y → Continuous z → (∀ g, (ρ g : Matrix (Fin 3) (Fin 3) B) = triM (fun i => κ i g) (x g) (y g) (z g)) → (∀ g, π (x g) = 0) → IsCr φ (colRep ρ) → ∀ (z' : G → B) (ρ' : G →* GL (Fin 3) B), Continuous z' → (∀ g, (ρ' g : Matrix (Fin 3) (Fin 3) B) = triM (fun i => κ i g) (x g) (y g) (z' g)) → z' - z ∈ Z1 (chRep (κ 0 / κ 2)) ∧ (IsCr φ (colRep ρ') ↔ z' - z ∈ UpperTheory.V.Loc.finiteCocycles φ (chRep (κ 0 / κ 2))) := by

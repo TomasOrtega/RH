@@ -22,19 +22,17 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.RatioMoment
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `j _ w _`. Simplify using `using h0 w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ q ih`. Introduce `j hj w hw`. Establish `hN : j ≤ N` using `by omega`. Establish `hpos : ∀ x, 0 ≤ κ x ^ (2 * q)` using `fun x => (even_two_mul q).pow_nonneg _`. Establish `hm : ∀ v, AEMeasurable (fun x => ENNReal.ofReal (κ x ^ (2 * q) * f v x)) μ` using `fun v => ENNReal.measurable_ofReal.comp_aemeasurable ((hκ.pow_const _).mul (hf v))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hpt] with x hx`. Establish `h1 : κ x ^ (2 * (q + 1)) * f w x ≤ ∑ c, ∑ e, κ x ^ (2 * q) * f (T c e w) x`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun c _ => Finset.sum_nonneg (fun e _ => mul_nonneg (hpos x) (hf0 _ x)))]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Conclude with `ENNReal.ofReal_sum_of_nonneg (fun e _ => mul_nonneg (hpos x) (hf0 _ x))`. Use `_ = ∑ c, ∑ e, ∫⁻ x, ENNReal.ofReal (κ x ^ (2 * q) * f (T c e w) x) ∂μ := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[lintegral_finsetSum' _ (fun c _ => Finset.aemeasurable_fun_sum _ (fun e _ => hm _))]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Conclude with `lintegral_finsetSum' _ (fun e _ => hm _)`. Use `_ ≤ ∑ c, ∑ e, ENNReal.ofReal (B ^ (2 * q) * ‖T c e w‖ ^ 2) := by gcongr with c _ e _`. Conclude with `ih (j + 2) (by omega) _ (hL j w hw c e)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Use `_ = ENNReal.ofReal (B ^ (2 * q) * ∑ c, ∑ e, ‖T c e w‖ ^ 2) := by`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun c _ => Finset.sum_nonneg (fun e _ => mul_nonneg (pow_nonneg hB _) (sq_nonneg _)))]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun e _ => mul_nonneg (pow_nonneg hB _) (sq_nonneg _))]`.
-
-Use `_ ≤ ENNReal.ofReal (B ^ (2 * (q + 1)) * ‖w‖ ^ 2) := by`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem iterate_bound {X M ι : Type} [MeasurableSpace X] [NormedAddCommGroup M] [Fintype ι] (μ : Measure X)
     (κ : X → ℝ) (f : M → X → ℝ) (T : ι → ι → M → M) (L : ℕ → M → Prop) (N : ℕ) (B : ℝ) (hB : 0 ≤ B)
@@ -91,53 +89,49 @@ theorem iterate_bound {X M ι : Type} [MeasurableSpace X] [NormedAddCommGroup M]
             _ = B ^ (2 * (q + 1)) * ‖w‖ ^ 2 := by ring
 
 /- English proof (translation)
-Introduce `hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R l dg Q E hS hQ hE ν hn j q hjq a w hw`. Apply the tactic sequence `have h0all := (Gp91.GlobalTheory.T.bessel_functional_l2_bound_and_isometry hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hn).1`. Take `⟨hnum, hfam, hside, hsf⟩` from `hS`. Establish `hk : 1 ≤ k` using `hnum.1`. Establish `hDG` using `hfam ν hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hE1, hGl⟩` from `hE ν hn`. Establish `hMod` using `Gp91.GlobalTheory.T.cayley_endomorphisms_modular hH k r _ _ (R ν) hk hDG Q (E ν) hQ hE1`. Take `⟨hBeL, hdg, -⟩` from `hsf ν hn`. Establish `hKF : PI.KFinSmooth` using `hH.1.2.2.1`. Take `⟨hae, -, hlen, hmeas⟩` from `Gp91.GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hKF k r _ _ (R ν) Wp z π u μW μN μG νq hDG hside`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hν : ∀ i, |((ν i : ℤ) : ℝ)| ≤ q0`. Introduce `i`. Establish `h1 : (ν i).natAbs ≤ n1 ν` using `Finset.single_le_sum (f := fun i => (ν i).natAbs) (fun i _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h2 : ((ν i).natAbs : ℝ) ≤ q0` using `by exact_mod_cast h1.trans hn`. Rewrite `h2` using `[Nat.cast_natAbs, Int.cast_abs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨-, -, -, -, -, hlo, hhi, hbd, -, hga, hgap, -, hq0ga, hq0h, hbv⟩` from `hnum`. Establish `i0 : k - 1 < 2 * r + k + 1` using `by omega`. Establish `i1 : k < 2 * r + k + 1` using `by omega`. Establish `hbvq : 100 * ((q0 : ℝ) + 1) ≤ bv`. Establish `e1 : k - (k - 1) = 1` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ¬ k < k - 1` using `by omega`. Establish `hne : PI.BesselPeriodGGP.eps48 k r ⟨k - 1, i0⟩ ≠ PI.BesselPeriodGGP.eps48 k r ⟨k, i1⟩`. Simplify using `[PI.BesselPeriodGGP.eps48, e1, e2]`. Establish `g1` using `hgap _ _ hne`. Establish `a1` using `hhi ⟨k - 1, i0⟩ (show k ≤ k - 1 + 1 by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `hhi ⟨k, i1⟩ (show k ≤ k + 1 by omega)`. Establish `: |lam ⟨k - 1, i0⟩ - lam ⟨k, i1⟩| ≤ bv`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [a1.1, a1.2, a2.1, a2.2]`. Establish `hq0h' : 100 * ((q0 : ℝ) + 1) ≤ h` using `by exact_mod_cast hq0h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hbvb : bv ≤ b`. Establish `a1` using `hhi ⟨k - 1, i0⟩ (show k ≤ k - 1 + 1 by omega)`. Use `hbd ⟨k - 1, i0⟩` as an intermediate fact. Rewrite `this` using `[abs_le]`. Combine the linear relations using `[a1.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hShape : BranchingSupport.Shape (PI.BesselPeriodGGP.eps48 k r) k (fun i => lam i + ((ν i : ℤ) : ℝ)) bv`. Take `⟨h', hgap', hgok'⟩` from `hDG.gap`. Establish `hmuA` using `hDG.hc.1`. Establish `hh' : 2 ≤ h'`. Use `hgok'.2.1` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hq0 : ((q0 : ℝ)) ≤ bv / 100` using `by linarith`. Use `⟨hk, by omega, ?_, ?_, ?_, hbv⟩` and prove the remaining obligations. Introduce `x c hxc`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpos : ∀ y y' : Fin (2 * r + k + 1), y < y' → 0 < (lam y + ((ν y : ℤ) : ℝ)) - (lam y' + ((ν y' : ℤ) : ℝ))` using `fun y y' hyy => sub_pos.2 (hmuA hyy)`. Establish `hdiff : ∀ y y' : Fin (2 * r + k + 1), y < y' → PI.BesselPeriodGGP.eps48 k r y ≠ PI.BesselPeriodGGP.eps48 k r y' → 2 ≤ (lam y + ((ν y : ℤ) : ℝ)) - (lam y' + ((ν y' : ℤ) : ℝ))`. Introduce `y y' hyy hne`. Establish `g` using `hgap' y y' hne`. Rewrite `g` using `[abs_of_pos (hpos y y' hyy)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hε : PI.BesselPeriodGGP.eps48 k r x = PI.BesselPeriodGGP.eps48 k r c`. Establish `hxc' : (x : ℕ) < c` using `hxc`. Establish `nx` using `hν x`. Establish `nc` using `hν c`.
+Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `nx`, `nc` using `[abs_le]`. Distinguish the cases in `hc : (c : ℕ) + 1 < k`. Use `hga x c hxc hc` as an intermediate fact. Establish `hq0ga' : 100 * ((q0 : ℝ) + 1) ≤ ga` using `by exact_mod_cast hq0ga`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `hc' : (c : ℕ) = k - 1`. Establish `l1` using `hlo x (by omega)`. Establish `l2` using `hhi c (by omega)`. Combine the linear relations using `[l1.1, l2.2]`. Establish `hb' : (c : ℕ) - 1 < 2 * r + k + 1` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Set `y : Fin (2 * r + k + 1)` to `⟨c - 1, hb'⟩`. Establish `hyc : y < c` using `by show (c : ℕ) - 1 < c; omega`. Establish `hεy : PI.BesselPeriodGGP.eps48 k r y ≠ PI.BesselPeriodGGP.eps48 k r c`. Establish `n1' : ¬ ((c : ℕ) - 1 < k - 1)` using `by omega`. Establish `n2' : ¬ ((c : ℕ) < k - 1)` using `by omega`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [PI.BesselPeriodGGP.eps48, y, n1', n2', if_false]`. Break down `Nat.mod_two_eq_zero_or_one ((c : ℕ) - (k - 1)) with h0 | h1` into its components or cases. Establish `: ((c : ℕ) - 1 - (k - 1)) % 2 = 1` using `by omega`. Simplify using `[h0, this]`. Establish `: ((c : ℕ) - 1 - (k - 1)) % 2 = 0` using `by omega`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h1, this]`. Establish `hxy : x < y`. Establish `hle : (x : ℕ) ≤ (c : ℕ) - 1` using `by omega`. Break down `Nat.lt_or_ge (x : ℕ) ((c : ℕ) - 1) with hlt | hge` into its components or cases. Conclude with `hlt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `hxeq : x = y` using `Fin.ext (by show (x : ℕ) = (c : ℕ) - 1; omega)`. Conclude with `hεy (hxeq ▸ hε)`. Establish `d1` using `hpos x y hxy`. Establish `d2` using `hdiff y c hyc hεy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hdiff x c hxc hε`. Introduce `x hx`. Establish `hx' : (x : ℕ) < k - 1` using `by omega`. Apply the tactic sequence `refine ⟨by simp [PI.BesselPeriodGGP.eps48, hx'], ?_, ?_⟩ <;>`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `l1` using `hlo x hx`. Establish `nx` using `hν x`. Rewrite `nx` using `[abs_le]`. Combine the linear relations using `[l1.1, l1.2]`. Introduce `x hx`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `l1` using `hhi x hx`. Establish `nx` using `hν x`. Rewrite `nx` using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [l1.1, l1.2]`. Use `iterate_bound νq (fun x => lenA k r z (Matrix.of x) a.succ / lenA k r z (Matrix.of x) a.castSucc) (fun (w : ↥(R ν).smSub) x => dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2) (fun c e w => E ν c e w) (fun j w => Lev (PI.BesselPeriodGGP.eps48 k r) (E ν) (fun i => lam i + ((ν i : ℤ) : …` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hlen a.succ).div (hlen a.castSucc)`. Introduce `v`. Conclude with `(((hmeas (l ν) hBeL.1 v v.2).norm).aemeasurable.pow_const 2).const_mul (dg ν)`. Introduce `v x`. Conclude with `mul_nonneg hdg.le (sq_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [hae] with x hx`. Introduce `v`. Establish `h1` using `Gp91.GlobalTheory.T.bessel_cayley_side_bound hKF k r _ _ (R ν) Wp z π u μW μN μG νq (l ν) Q (E ν) hDG hside hBeL.1 hQ hE1 (Matrix.of x) hx a v`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 hdg.le`. Simplify using `only [Finset.mul_sum] at h2`.
-
-Use `beta_reduce`. Combine the equalities or inequalities in the displayed calculation. Introduce `j' v hv c e`. Conclude with `_root_.GlobalTheory.lev_E_add_two _ _ _ _ _ j' v hGl hMod.2.1 hv c e`. Introduce `j' v hj' hv`.
-
-Use `_root_.GlobalTheory.T.unitaryGlModule_level_sum_norm_sq_le _ _ _ _ _ k j' bv b v hMod hShape hbvb hj' hv` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Introduce `v`. Conclude with `h0all v v.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ratio_moment : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (l : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ) (Q : Mx k r) (E : ∀ ν, Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ (R ν).smSub), SetupG lam u b bv ga h q0 z π μW μN μG νq R l dg → PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) Q → (∀ ν, n1 ν ≤ q0 → (R ν).IsE Q (E ν) ∧ Formalism.REAL.GlRel (E ν)) → ∀ ν, n1 ν ≤ q0 → ∀ (j q : ℕ), j + 2 * q ≤ 4 * (2 * r + k + 1) ^ 2 → ∀ (a : Fin r) (w : (R ν).smSub), Lev (PI.BesselPeriodGGP.eps48 k r) (E ν) (fun a => lam a + ((ν : Fin (2 * r + k + 1) → ℤ) a : ℝ)) j w → ∫⁻ x, ENNReal.ofReal ((lenA k r z (Matrix.of x) a.succ / lenA k r z (Matrix.of x) a.castSucc) ^ (2 * q) * (dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ ENNReal.ofReal ((b ^ 2) ^ (2 * q) * ‖w‖ ^ 2) := by
   intro hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R l dg Q E hS hQ hE ν hn j q hjq a w hw

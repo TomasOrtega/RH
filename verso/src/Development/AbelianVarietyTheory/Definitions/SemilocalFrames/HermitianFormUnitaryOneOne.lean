@@ -92,7 +92,7 @@ def IsChainD {K V : Type} [Field K] [AddCommGroup V] [Module K V] (d : Submodule
     ∀ i < s, ∀ U : Submodule K V, W i < U → U ≤ W (i + 1) → slopeD d (W i) U ≤ slopeD d (W i) (W (i + 1))
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isOpIntG_iff_isOpOf {G H : Type} [Group G] [MeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (μ : Measure G) (π : G →* (H →L[ℂ] H)) (φ : G → ℂ) (P : H →L[ℂ] H) :
@@ -100,7 +100,7 @@ theorem isOpIntG_iff_isOpOf {G H : Type} [Group G] [MeasurableSpace G] [NormedAd
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[h.2, h'.2]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsOpOf.unique {G H : Type} [MeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {μ : Measure G} {π : G → (H →L[ℂ] H)} {φ : G → ℂ} {T T' : H →L[ℂ] H}
@@ -110,7 +110,7 @@ theorem IsOpOf.unique {G H : Type} [MeasurableSpace G] [NormedAddCommGroup H] [I
   rw [h.2, h'.2]
 
 /- English proof (translation)
-Establish `hc : Continuous fun g => ⟪x, π g y⟫_ℂ` using `continuous_const.inner (hπ.2.2.2 y)`. Use `Integrable.mono' (hφ.norm.mul_const (‖x‖ * ‖y‖)) (hφ.aestronglyMeasurable.mul hc.aestronglyMeasurable) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem IsURep.integrable_coef {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [OpensMeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] {π : G → (H →L[ℂ] H)} (hπ : IsURep π)
@@ -125,23 +125,19 @@ theorem IsURep.integrable_coef {G H : Type} [Group G] [TopologicalSpace G] [Meas
     _ = ‖x‖ * ‖y‖ := by rw [hπ.2.2.1]
 
 /- English proof (translation)
-Establish `hI : ∀ x y, Integrable (fun g => φ g * ⟪x, π g y⟫_ℂ) μ` using `hπ.integrable_coef hφ`. Establish `hC : 0 ≤ ∫ g, ‖φ g‖ ∂μ` using `integral_nonneg fun _ => norm_nonneg _`. Establish `hbound : ∀ x y, ‖∫ g, φ g * ⟪x, π g y⟫_ℂ ∂μ‖ ≤ (∫ g, ‖φ g‖ ∂μ) * ‖x‖ * ‖y‖`. Introduce `x y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Use `integral_mono (hI x y).norm (hφ.norm.mul_const _) fun g => ?_` and prove the remaining obligations. Simplify using `only [norm_mul]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (∫ g, ‖φ g‖ ∂μ) * ‖x‖ * ‖y‖ := by rw [integral_mul_const]; ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `B0 : H →ₗ⋆[ℂ] H →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => ∫ g, φ g * ⟪x, π g y⟫_ℂ ∂μ) (fun x x' y => by`. Simplify using `only [inner_add_left, mul_add]`. Conclude with `integral_add (hI x y) (hI x' y))`. Use the proof step `(fun c x y => by`. Simplify using `only [inner_smul_left, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Use the proof step `ring)`. Use the proof step `(fun x y y' => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Simplify using `only [map_add, inner_add_right, mul_add]`. Conclude with `integral_add (hI x y) (hI x y'))`. Use the proof step `(fun c x y => by`. Simplify using `only [map_smul, inner_smul_right, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← integral_const_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Use the proof step `ring)`. Set `B : H →L⋆[ℂ] H →L[ℂ] ℂ` to `B0.mkContinuous₂ (∫ g, ‖φ g‖ ∂μ) fun x y => hbound x y`. Set `T : H →L[ℂ] H` to `ContinuousLinearMap.adjoint (InnerProductSpace.continuousLinearMapOfBilin B)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ x y, ⟪x, T y⟫_ℂ = ∫ g, φ g * ⟪x, π g y⟫_ℂ ∂μ`. Introduce `x y`. Simplify using `only [T, ContinuousLinearMap.adjoint_inner_right, InnerProductSpace.continuousLinearMapOfBilin_apply]`. Both sides reduce to the same expression. Use `⟨T, ⟨hφ, hT⟩, ContinuousLinearMap.opNorm_le_bound _ hC fun y => ?_⟩` and prove the remaining obligations.
-
-Establish `key : ‖T y‖ * ‖T y‖ ≤ (∫ g, ‖φ g‖ ∂μ) * ‖T y‖ * ‖y‖`. Combine the equalities or inequalities in the displayed calculation. Break down `(norm_nonneg (T y)).eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0]`. Check the signs of the components of the expression.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem IsURep.exists_isOpOf {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [OpensMeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -196,9 +192,9 @@ theorem IsURep.exists_isOpOf {G H : Type} [Group G] [TopologicalSpace G] [Measur
   · nlinarith
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : H)`. Establish `e` using `(h.2 v v v v).2.symm.trans (h'.2 v v v v).2`. Establish `hvv : ⟪v, v⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hv`. Establish `hd : (d : ℂ) ≠ 0` using `by exact_mod_cast h.1.ne'`. Establish `hd' : (d' : ℂ) ≠ 0` using `by exact_mod_cast h'.1.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[div_eq_div_iff hd hd']`. Establish `e2 : (d' : ℂ) = d` using `mul_left_cancel₀ (mul_ne_zero hvv hvv) e`. Conclude with `e2.symm` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsFdegG.unique {G H : Type} [MeasurableSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Nontrivial H]
     {μ : Measure G} {σ : G → (H →L[ℂ] H)} {d d' : ℝ} (h : IsFdegG μ σ d) (h' : IsFdegG μ σ d') : d = d' := by
@@ -212,7 +208,7 @@ theorem IsFdegG.unique {G H : Type} [MeasurableSpace G] [NormedAddCommGroup H] [
   exact_mod_cast e2.symm
 
 /- English proof (translation)
-Use `⟨NeZero.ne μ, inferInstance, by simp, fun m _ => ?_⟩` and prove the remaining obligations. Conclude with `map_mul_left_eq_self μ m`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isHaarSub_univ {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] (μ : Measure G)
     [μ.IsHaarMeasure] : IsHaarSub (Set.univ : Set G) μ := by
@@ -220,11 +216,11 @@ theorem isHaarSub_univ {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpac
   exact map_mul_left_eq_self μ m
 
 /- English proof (translation)
-Establish `hval : Measurable (Subtype.val : N → G)` using `measurable_subtype_coe`. Use `⟨(Measure.map_ne_zero_iff hval.aemeasurable).mpr (NeZero.ne ν), ⟨fun K hK => ?_⟩, ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hval hK.measurableSet]`. Conclude with `(hN.isClosedEmbedding_subtypeVal.isCompact_preimage hK).measure_lt_top`. Rewrite using `[Measure.map_apply hval hN.measurableSet.compl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Subtype.val : N → G) ⁻¹' (N : Set G)ᶜ = ∅`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, measure_empty]`. Establish `hmul : Measurable fun x : N => (⟨m, hm⟩ : N) * x` using `((measurable_const_mul m).comp hval).subtype_mk`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_map (measurable_const_mul m) hval]`. Establish `e : (fun x => m * x) ∘ (Subtype.val : N → G) = Subtype.val ∘ fun x : N => (⟨m, hm⟩ : N) * x` using `rfl`. Rewrite using `[e, ← Measure.map_map hval hmul, map_mul_left_eq_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarSub_map {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (N : Subgroup G) (hN : IsClosed (N : Set G))
@@ -301,9 +297,9 @@ Both sides reduce to the same expression.
     ((nwSub ε W : Subgroup (UJ ε)) : Set (UJ ε)) = NW ε W := rfl
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : UJ ε => umat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hv : ∀ y, Continuous fun g : UJ ε => (umat g - 1) *ᵥ y` using `fun y => (hc.sub continuous_const).matrix_mulVec continuous_const`. Establish `hW : IsClosed (W : Set (Fin n → ℂ))` using `W.closed_of_finiteDimensional`. Establish `e : NW ε W = (⋂ x ∈ W, {g : UJ ε | (umat g - 1) *ᵥ x = 0}) ∩ (⋂ y ∈ {y | ∀ x ∈ W, herm (Jm ε) x y = 0}, (fun g : UJ ε => (umat g - 1) *ᵥ y) ⁻¹' (W : Set (Fin n → ℂ))) ∩ (⋂ y, ⋂ x ∈ W, {g : UJ ε | herm (Jm ε) x ((umat g - 1) *ᵥ y) = 0})`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[NW, and_assoc]`. Rewrite using `[e]`. Use `((isClosed_biInter fun x _ => isClosed_eq (hv x) continuous_const).inter (isClosed_biInter fun y _ => hW.preimage (hv y))).inter (isClosed_iInter fun y => isClosed_biInter fun x _ => isClosed_eq ?_ continuous_const)` and prove the remaining obligations. Simplify using `only [herm]`. Conclude with `((hv y).star).dotProduct continuous_const`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_NW {n : ℕ} (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)) : IsClosed (NW ε W) := by
   have hc : Continuous fun g : UJ ε => umat g := Units.continuous_val.comp continuous_subtype_val
@@ -323,9 +319,9 @@ theorem isClosed_NW {n : ℕ} (ε : Fin n → Bool) (W : Submodule ℂ (Fin n �
   exact ((hv y).star).dotProduct continuous_const
 
 /- English proof (translation)
-Establish `hN : IsClosed ((nwSub ε W : Subgroup (UJ ε)) : Set (UJ ε))`. Rewrite using `[coe_nwSub]`. Conclude with `isClosed_NW ε W`. Establish `: LocallyCompactSpace (nwSub ε W)` using `hN.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `h` using `isHaarSub_map (nwSub ε W) hN (Measure.haar)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[coe_nwSub]`. Conclude with `⟨_, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isHaarSub_NW {n : ℕ} (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)) :
     ∃ ν : Measure (UJ ε), IsHaarSub (NW ε W) ν := by
@@ -340,7 +336,7 @@ theorem exists_isHaarSub_NW {n : ℕ} (ε : Fin n → Bool) (W : Submodule ℂ (
 open Classical in
 
 /- English proof (translation)
-Establish `h : ∃ g' : UJ (I.ε v), uMat g' = uMat g` using `⟨g, rfl⟩`. Simplify using `only [slice]`. Rewrite using `[dif_pos h]`. Establish `e : h.choose = g` using `Subtype.ext (Units.ext h.choose_spec)`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem slice_apply (I : AutInst) (f : I.GA → ℂ) (x : I.GA) (v : InfinitePlace I.F) (g : UJ (I.ε v)) :
     slice I f x v (uMat g) = f (x * (Pi.mulSingle v g, 1)) := by
@@ -351,9 +347,9 @@ theorem slice_apply (I : AutInst) (f : I.GA → ℂ) (x : I.GA) (v : InfinitePla
   rw [e]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons p w ih`. Introduce `g hg`. Establish `hcurve : ∀ X, inG ε X → (fun t : ℝ => Eword ε w f (g * NormedSpace.exp ((t : ℂ) • X))) = fun t : ℝ => Eword ε w f' (g * NormedSpace.exp ((t : ℂ) • X))` using `fun X hX =>`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun t => ih _ (indefinite_unitary_mul_mem ε hg (exp_indefinite_unitary_holds n ε X hX t))`. Establish `hm` using `complex_parts_mem_lie_algebra_holds n ε (Matrix.single p.1 p.2 1)`. Simplify using `only [Eword, Eab, Ec, Rd]`. Rewrite using `[hcurve _ hm.1, hcurve _ hm.2.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Eword_congr {n : ℕ} (ε : Fin n → Bool) {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : ∀ g, inUJ ε g → f g = f' g) (w : List (Fin n × Fin n)) :
@@ -370,9 +366,9 @@ theorem Eword_congr {n : ℕ} (ε : Fin n → Bool) {f f' : Matrix (Fin n) (Fin 
     rw [hcurve _ hm.1, hcurve _ hm.2.1]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `h1 : (Jm ε * gᴴ * Jm ε) * g = 1`. Establish `e : Jm ε * (gᴴ * Jm ε * g) = 1` using `by rw [hg', Jm_mul_self]`. Simplify `e` using `[Matrix.mul_assoc]`. Establish `h2 : g * (Jm ε * gᴴ * Jm ε) = 1` using `mul_eq_one_comm.mp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `⟨⟨⟨g, Jm ε * gᴴ * Jm ε, h2, h1⟩, hg⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_uMat_eq_of_inUJ {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     ∃ u : UJ ε, uMat u = g := by
@@ -386,7 +382,7 @@ private theorem exists_uMat_eq_of_inUJ {n : ℕ} {ε : Fin n → Bool} {g : Matr
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [zOp, gelf]`. Use `Finset.sum_congr rfl fun a _ => Eword_congr (I.ε v) (fun g hg => ?_) _ 1 ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `exists_uMat_eq_of_inUJ hg`. Rewrite using `[slice_apply, hF]`. Simplify using `[inUJ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zOp_eq_gelf (I : AutInst) (v : InfinitePlace I.F) (m : ℕ) (f : I.GA → ℂ) (x : I.GA)
     (F : Matrix (Fin I.n) (Fin I.n) ℂ → ℂ) (hF : ∀ g : UJ (I.ε v), F (uMat g) = f (x * (Pi.mulSingle v g, 1))) :
@@ -402,9 +398,9 @@ namespace ProjEx
 def circRep (z : Circle) : ℂ →L[ℂ] ℂ := (z : ℂ) • ContinuousLinearMap.id ℂ ℂ
 
 /- English proof (translation)
-Use `⟨?_, fun a b => ?_, fun g v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[circRep]`. Use `ext`. Simplify using `[circRep, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[circRep, Circle.norm_coe]`. Unfold `circRep fun_prop`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 -/
 theorem isURep_circRep : IsURep circRep := by
   refine ⟨?_, fun a b => ?_, fun g v => ?_, fun v => ?_⟩
@@ -417,16 +413,16 @@ theorem isURep_circRep : IsURep circRep := by
     fun_prop
 
 /- English proof (translation)
-Introduce `S _ _`. Conclude with `Ideal.eq_bot_or_top S`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIrr_circRep : IsIrr circRep := by
   intro S _ _
   exact Ideal.eq_bot_or_top S
 
 /- English proof (translation)
-Use `⟨one_pos, fun v w v' w' => ?_⟩` and prove the remaining obligations. Establish `key : (fun z : Circle => ⟪w, circRep z v⟫_ℂ * star ⟪w', circRep z v'⟫_ℂ) = fun _ => ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ`. Use function extensionality and compare the values at `z`. Establish `hz : (z : ℂ) * (starRingEnd ℂ) (z : ℂ) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Simplify using `only [circRep, _root_.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul, RCLike.inner_apply, Complex.star_def, map_mul, Complex.conj_conj]`. Take the linear combination `((starRingEnd ℂ) w * v * w' * (starRingEnd ℂ) v') * hz`. Rewrite using `[key]`. Use `⟨integrable_const _, ?_⟩` and prove the remaining obligations.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules.
 -/
@@ -452,21 +448,21 @@ def circHom : Circle →* (ℂ →L[ℂ] ℂ) where
   map_mul' := isURep_circRep.2.1
 
 /- English proof (translation)
-Simplify using `[phG, circHom, circRep]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phG_circHom (z : Circle) : phG 1 circHom 1 z = star (z : ℂ) := by
   simp [phG, circHom, circRep]
 
 /- English proof (translation)
-Establish `hphi : ∀ z : Circle, phG 1 circHom 1 z = star (z : ℂ)` using `phG_circHom`. Establish `hcont : Continuous fun z : Circle => phG 1 circHom 1 z`. Simplify using `only [hphi]`. Use `fun_prop`. Establish `hint : Integrable (phG 1 circHom 1) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integrable.of_bound hcont.aestronglyMeasurable 1 (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Rewrite using `[hphi]`. Simplify using `[Circle.norm_coe]`. Establish `h2 : IsOpOf μ circRep (phG 1 circHom 1) 1`. Use `⟨hint, fun x y => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : (fun z : Circle => phG 1 circHom 1 z * ⟪x, circRep z y⟫_ℂ) = fun _ => ⟪x, y⟫_ℂ`. Use function extensionality and compare the values at `z`. Establish `hz : (starRingEnd ℂ) (z : ℂ) * (z : ℂ) = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]`. Evaluate the numerical expressions.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hphi]`. Simplify using `only [circRep, _root_.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul, Complex.star_def, RCLike.inner_apply]`. Take the linear combination `((starRingEnd ℂ) x * y) * hz`. Rewrite using `[key]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨(isOpIntG_iff_isOpOf μ circHom _ 1).mpr h2, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpIntG_circHom [MeasurableSpace Circle] [BorelSpace Circle] (μ : Measure Circle) [IsProbabilityMeasure μ] :
     IsOpIntG μ circHom (phG 1 circHom 1) 1 ∧ IsOpOf μ circRep (phG 1 circHom 1) 1 := by
@@ -494,7 +490,7 @@ theorem isOpIntG_circHom [MeasurableSpace Circle] [BorelSpace Circle] (μ : Meas
   exact ⟨(isOpIntG_iff_isOpOf μ circHom _ 1).mpr h2, h2⟩
 
 /- English proof (translation)
-Use `borelize Circle`. Use `haveI : IsProbabilityMeasure (Measure.haarMeasure (⊤ : TopologicalSpace.PositiveCompacts Circle)) := ⟨by simpa using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts Circle))⟩`. Conclude with `⟨_, inferInstance, Measure.haarMeasure ⊤, inferInstance, isURep_circRep, isIrr_circRep, isFdegG_circRep _, (isOpIntG_circHom _).1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example : ∃ (_ : MeasurableSpace Circle) (_ : BorelSpace Circle) (μ : Measure Circle), μ.IsHaarMeasure ∧
     IsURep circRep ∧ IsIrr circRep ∧ IsFdegG μ circRep 1 ∧ IsOpIntG μ circHom (phG 1 circHom 1) 1 := by
@@ -505,7 +501,7 @@ example : ∃ (_ : MeasurableSpace Circle) (_ : BorelSpace Circle) (μ : Measure
     (isOpIntG_circHom _).1⟩
 
 /- English proof (translation)
-Introduce `h`. Simplify `h.1` using `[integrable_const_iff, not_isFiniteMeasure_iff.2 Real.volume_univ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 example (T : ℂ →L[ℂ] ℂ) : ¬ IsOpOf (volume : Measure ℝ) (fun _ => (1 : ℂ →L[ℂ] ℂ)) (fun _ => 1) T := by
   intro h
@@ -533,7 +529,7 @@ open Classical in
 def dg (U : Submodule ℚ (ℚ × ℚ)) : ℝ := if U = ax then 1 else 0
 
 /- English proof (translation)
-Introduce `h` and use `by haveI := h.1 exact Module.Finite.not_linearIndependent_of_infinite _ (Finsupp.basisSingleOne (R := ℚ) (ι := ℕ)).linearIndependent`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (d : Submodule ℚ (ℕ →₀ ℚ) → ℝ) (s : ℕ) (W : ℕ → Submodule ℚ (ℕ →₀ ℚ)) : ¬ IsChainD d s W := fun h => by
   haveI := h.1

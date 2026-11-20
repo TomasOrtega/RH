@@ -7,17 +7,17 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `k Z h0 hk m' hm`. Establish `h1 : ∃ j, Bor.cmp j m' ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sum_cmp m']`. Simplify using `[h]`. Take `⟨j, hj⟩` from `h1`. Establish `h2 : (Bor.cmp j m').1 ≠ 0` using `fun h => hj (Subtype.ext h)`. Take `⟨g, hg⟩` from `Function.ne_iff.1 h2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `l : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun m => (Bor.cmp j m).1 g map_add' := fun x y => by rw [map_add]; rfl map_smul' := fun c x => by rw [map_smul]; rfl }`. Establish `hl : ∀ (φ : Sm E a) (v : Fin Ξ.d → ℂ), l (φ ⊗ₜ v) = φ.1 g * v j` using `fun φ v => by`. Express the relevant statement in the definitionally equal form `(Bor.cmp j (φ ⊗ₜ v)).1 g = _`. Rewrite using `[cmp_tmul, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hc0 : (fun t => Unitary.toUnits (k t)) 0 = 1` using `by simp only [h0, map_one]`. Use `⟨l, hg, fun m => ?_⟩` and prove the remaining obligations. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simpa only [map_zero] using hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Consider the case `add x y hx hy => simpa only [map_add] using hx.fun_add hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul φ v`. Establish `h3` using `GlobalTheory.CuspRep.hasDerivAt_curve φ g (fun t => Unitary.toUnits (k t)) (toL Z) hc0 hk`. Establish `h4` using `HasDerivAt.fun_sum (u := Finset.univ) fun i _ => (Ξ.hasDerivAt_curve (fun t => Unitary.toUnits (k t)) (toL Z) hc0 hk j i).mul_const (v i)`. Establish `h5` using `h3.fun_mul h4`. Simplify using `only [h0, map_one, mul_one] at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h7 : smLie Ξ (toL Z) (φ ⊗ₜ v) = lie E a (toL Z) φ ⊗ₜ v + φ ⊗ₜ (Ξ.dmat (toL Z) *ᵥ v)` using `rfl`. Simplify using `only [smK, h7, TensorProduct.map_tmul, map_add, hl, Matrix.toLin'_apply]`. Establish `h6 : ∑ i, (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ) j i * v i = v j` using `congrFun (Matrix.one_mulVec v) j`. Rewrite `h5` using `[h6]`. Conclude with `h5`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sm_sepDer (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ : AlgRep E a) :
     SepDer (smK Ξ) (smLie Ξ) := by
@@ -57,13 +57,13 @@ private theorem sm_sepDer (E : Type) [Field E] [NumberField E] [IsTotallyComplex
     exact h5
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ`. Use `⟨fun X Y => ?_, fun X Y => ?_, fun X Y => ?_, fun k X => ?_, fun k X => ?_, infAbs E a _ _ _ (sm_sepDer E a Ξ)⟩` and prove the remaining obligations. Simplify using `only [smA_apply]`. Rewrite using `[← LinearMap.rTensor_mul, ← LinearMap.rTensor_mul, ← LinearMap.rTensor_sub]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(lie_comm (toL X) (toL Y)).trans (map_sub (lie E a) (toL (X * Y)) (toL (Y * X))).symm`. Simplify using `only [smB_apply]`. Rewrite using `[← GlobalTheory.AlgInfChar.dmat_bracket, map_sub, LinearMap.lTensor_sub, Matrix.toLin'_mul, Matrix.toLin'_mul, LinearMap.lTensor_comp, LinearMap.lTensor_comp]`. Both sides reduce to the same expression. Rewrite using `[smA_apply, smB_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `TensorProduct.ext' fun _ _ => rfl`. Use `TensorProduct.ext' fun φ v => ?_` and prove the remaining obligations. Establish `h1 : act (.cpt k) (lie E a (toL X) φ) = lie E a (toL (k.1 * X * star k.1)) (act (.cpt k) φ)` using `LinearMap.congr_fun (GlobalTheory.CapAdInv.rt_lie (Unitary.toUnits k) X) φ`. Simplify using `only [Module.End.mul_apply, smK, smA_apply, LinearMap.rTensor_tmul, TensorProduct.map_tmul, h1]`. Use `TensorProduct.ext' fun φ v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : Ξ.mat (Unitary.toUnits k) * Ξ.dmat (toL X) = Ξ.dmat (toL (k.1 * X * star k.1)) * Ξ.mat (Unitary.toUnits k)` using `Ξ.mat_mul_dmat (Unitary.toUnits k) X`. Simplify using `only [Module.End.mul_apply, smK, smB_apply, LinearMap.lTensor_tmul, TensorProduct.map_tmul, Matrix.toLin'_apply, Matrix.mulVec_mulVec, h2]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.smAB :
     UpperTheory.V.Cj.H.SmAB := by

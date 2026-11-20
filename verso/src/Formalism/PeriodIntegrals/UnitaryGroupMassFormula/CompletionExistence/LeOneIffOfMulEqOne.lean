@@ -12,31 +12,29 @@ def StepA (L : Type) [Field L] [NumberField L] [IsCMField L] : Prop :=
     Valued.v (s.i k) = Valued.v (algebraMap L (s.w.adicCompletion L) k)
 
 /- English proof (translation)
-Establish `hunit : ∀ (μ' ν' : Valuation K (WithZero (Multiplicative ℤ))), (∀ x, μ' x ≤ 1 ↔ ν' x ≤ 1) → ∀ y, ν' y = 1 → μ' y = 1`. Introduce `μ' ν' h' y hy`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h1 : μ' y ≤ 1` using `(h' y).2 hy.le`. Establish `h2 : μ' y⁻¹ ≤ 1` using `(h' y⁻¹).2 (by rw [map_inv₀, hy, inv_one])`. Establish `hm : μ' y⁻¹ * μ' y = 1` using `by rw [← map_mul, inv_mul_cancel₀ hy0, map_one]`. Establish `hle : μ' y⁻¹ * μ' y ≤ 1 * μ' y` using `mul_le_mul' h2 le_rfl`. Rewrite `hle` using `[hm, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_antisymm h1 hle`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hϖ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `key : ∀ y, y ≠ 0 → μ y * μ ϖ ^ (WithZero.log (ν y)) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hνy : ν y ≠ 0` using `ν.ne_zero_iff.2 hy`. Establish `hνp : ν (ϖ ^ (WithZero.log (ν y))) ≠ 0` using `ν.ne_zero_iff.2 (zpow_ne_zero _ hϖ0)`. Establish `hne : ν (y * ϖ ^ (WithZero.log (ν y))) ≠ 0` using `ν.ne_zero_iff.2 (mul_ne_zero hy (zpow_ne_zero _ hϖ0))`. Establish `h1 : ν (y * ϖ ^ (WithZero.log (ν y))) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_log hne, map_mul, WithZero.log_mul hνy hνp, map_zpow₀, WithZero.log_zpow, hϖ, WithZero.log_exp, smul_eq_mul]`. Rewrite using `[show WithZero.log (ν y) + WithZero.log (ν y) * (-1) = 0 by ring, WithZero.exp_zero]`. Establish `h2` using `hunit μ ν h _ h1`. Rewrite `h2` using `[map_mul, map_zpow₀]`. Then use the resulting hypothesis. Establish `hμϖ0 : μ ϖ ≠ 0` using `μ.ne_zero_iff.2 hϖ0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hμϖ : μ ϖ = WithZero.exp (-1)`. Establish `k1` using `congrArg WithZero.log (key π hπ0)`. Rewrite `k1` using `[WithZero.log_mul (by rw [hπ]; exact WithZero.exp_ne_zero) (zpow_ne_zero _ hμϖ0), hπ, WithZero.log_exp, WithZero.log_zpow, WithZero.log_one, smul_eq_mul]`. Establish `hij : WithZero.log (ν π) * WithZero.log (μ ϖ) = 1` using `by linarith`. Establish `hlt : μ ϖ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne ((h ϖ).2 (by rw [hϖ]; exact WithZero.exp_le_exp.2 (by norm_num))) ?_` and prove the remaining obligations. Introduce `h1`. Use `hunit ν μ (fun x => (h x).symm) ϖ h1` as an intermediate fact. Rewrite `this` using `[hϖ]`. Use `congrArg WithZero.log this` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite `this` using `[WithZero.log_exp, WithZero.log_one]`. Evaluate the numerical expressions using `at this`. Establish `hneg : WithZero.log (μ ϖ) < 0`. Use `(WithZero.log_le_log hμϖ0 one_ne_zero).2 hlt.le` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Break down `lt_or_eq_of_le this with h' | h'` into its components or cases. Conclude with `h'`. It suffices to derive a contradiction. Use `WithZero.exp_log hμϖ0` as an intermediate fact. Rewrite `this` using `[h', WithZero.exp_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hlt.ne this.symm`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one (by rw [mul_comm]; exact hij) with h' | h'` into its components or cases. Use linear arithmetic over natural numbers and integers. Rewrite using `[← WithZero.exp_log hμϖ0, h']`. Distinguish the cases in `hx : x = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hx, map_zero, map_zero]`. Establish `hμx : μ x ≠ 0` using `μ.ne_zero_iff.2 hx`. Establish `hνx : ν x ≠ 0` using `ν.ne_zero_iff.2 hx`. Establish `k2` using `congrArg WithZero.log (key x hx)`. Rewrite `k2` using `[WithZero.log_mul hμx (zpow_ne_zero _ hμϖ0), hμϖ, WithZero.log_zpow, WithZero.log_exp, WithZero.log_one, smul_eq_mul]`.
-
-Rewrite using `[← WithZero.exp_log hμx, ← WithZero.exp_log hνx]`. Use `congr 1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem val_eq_of_le_one_iff {K : Type*} [Field K] (μ ν : Valuation K (WithZero (Multiplicative ℤ)))
     (h : ∀ x, μ x ≤ 1 ↔ ν x ≤ 1) {ϖ π : K} (hϖ : ν ϖ = WithZero.exp (-1))
@@ -123,7 +121,7 @@ Both sides reduce to the same expression.
 theorem muV_apply (s : SplitPlace L) (k : L) : muV s k = Valued.v (s.i k) := rfl
 
 /- English proof (translation)
-Rewrite using `[muV_apply]`. Use `s.split_le_one r` as an intermediate fact. Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem muV_int_le_one (s : SplitPlace L) (r : 𝓞 L) : muV s (algebraMap (𝓞 L) L r) ≤ 1 := by
   rw [muV_apply]
@@ -131,14 +129,14 @@ theorem muV_int_le_one (s : SplitPlace L) (r : 𝓞 L) : muV s (algebraMap (𝓞
   rwa [RingOfIntegers.coe_eq_algebraMap] at this
 
 /- English proof (translation)
-Rewrite using `[muV_apply, show s.w.asIdeal = s.ideal from rfl, s.split_mem_ideal, RingOfIntegers.coe_eq_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem muV_int_lt_one_iff (s : SplitPlace L) (r : 𝓞 L) :
     muV s (algebraMap (𝓞 L) L r) < 1 ↔ r ∈ s.w.asIdeal := by
   rw [muV_apply, show s.w.asIdeal = s.ideal from rfl, s.split_mem_ideal, RingOfIntegers.coe_eq_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[← muV_int_lt_one_iff, not_lt]`. Conclude with `⟨fun h => h.ge, fun h => le_antisymm (muV_int_le_one s r) h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem muV_int_eq_one_iff (s : SplitPlace L) (r : 𝓞 L) :
     muV s (algebraMap (𝓞 L) L r) = 1 ↔ r ∉ s.w.asIdeal := by
@@ -146,19 +144,17 @@ theorem muV_int_eq_one_iff (s : SplitPlace L) (r : 𝓞 L) :
   exact ⟨fun h => h.ge, fun h => le_antisymm (muV_int_le_one s r) h⟩
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 L) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbL : algebraMap (𝓞 L) L b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 L) L)).2 hb0`. Establish `hvb : s.w.intValuation b ≠ 0` using `s.w.intValuation_ne_zero b hb0`. Rewrite `hx` using `[map_div₀, s.w.valuation_of_algebraMap, s.w.valuation_of_algebraMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hab : s.w.intValuation a ≤ s.w.intValuation b` using `(div_le_one₀ (zero_lt_iff.2 hvb)).1 hx`. Establish `hk0 : WithZero.log (s.w.intValuation b) ≤ 0`. Use `(WithZero.log_le_log hvb one_ne_zero).2 (s.w.intValuation_le_one b)` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`. Then use the resulting hypothesis. Establish `hbe : s.w.intValuation b = WithZero.exp (-(((-WithZero.log (s.w.intValuation b)).toNat : ℕ) : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Int.toNat_of_nonneg (by omega), neg_neg, WithZero.exp_log hvb]`. Use `set e : ℕ := (-WithZero.log (s.w.intValuation b)).toNat with he`. Establish `ha_mem : a ∈ s.w.asIdeal ^ e` using `(s.w.intValuation_le_pow_iff_mem a e).1 (hab.trans hbe.le)`. Establish `hb_mem : b ∈ s.w.asIdeal ^ e` using `(s.w.intValuation_le_pow_iff_mem b e).1 hbe.le`. Establish `hb_not : b ∉ s.w.asIdeal ^ (e + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← s.w.intValuation_le_pow_iff_mem, hbe, WithZero.exp_le_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Take `⟨J, hJ⟩ : s.w.asIdeal ^ e ∣ Ideal.span {b}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hb_mem)`. Establish `hJw : ¬ J ≤ s.w.asIdeal`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hle`. Apply `hb_not` to reduce the goal to its premises. Establish `: Ideal.span {b} ≤ s.w.asIdeal ^ (e + 1)`. Rewrite using `[hJ, pow_succ]`. Conclude with `Ideal.mul_mono_right hle`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Take `⟨c, hcJ, hcw⟩` from `SetLike.not_le_iff_exists.1 hJw`. Establish `hca : a * c ∈ Ideal.span {b}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul ha_mem hcJ`.
-
-Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hca`. Use `⟨c, t, hcw, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_assoc', div_eq_iff hbL, ← map_mul, ← map_mul, ht, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ringOfIntegers_not_mem_mul_eq_of_valuation_le (s : SplitPlace L) (x : L) (hx : s.w.valuation L x ≤ 1) :
     ∃ c t : 𝓞 L, c ∉ s.w.asIdeal ∧ algebraMap (𝓞 L) L c * x = algebraMap (𝓞 L) L t := by
@@ -199,19 +195,17 @@ private theorem exists_ringOfIntegers_not_mem_mul_eq_of_valuation_le (s : SplitP
   rw [mul_div_assoc', div_eq_iff hbL, ← map_mul, ← map_mul, ht, mul_comm]
 
 /- English proof (translation)
-Establish `hμint : ∀ r : 𝓞 L, r ∉ s.w.asIdeal → muV s (algebraMap (𝓞 L) L r) = 1` using `fun r hr => (muV_int_eq_one_iff s r).2 hr`. Establish `hνint : ∀ r : 𝓞 L, r ∉ s.w.asIdeal → s.w.valuation L (algebraMap (𝓞 L) L r) = 1`. Introduce `r hr`. Rewrite using `[s.w.valuation_of_algebraMap]`. Conclude with `le_antisymm (s.w.intValuation_le_one r) (not_lt.1 fun h => hr ((s.w.intValuation_lt_one_iff_mem r).1 h))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hμ`. Assume the negation of the conclusion as `hν`. Use `push_neg at hν`. Establish `hx0 : x ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using `at hν`. Establish `hν' : s.w.valuation L x⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hν.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, t, hc, ht⟩` from `exists_ringOfIntegers_not_mem_mul_eq_of_valuation_le s x⁻¹ hν'`. Establish `hνt : s.w.valuation L (algebraMap (𝓞 L) L t) < 1`. Rewrite using `[← ht, map_mul, hνint c hc, one_mul, map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hν`. Establish `htw : t ∈ s.w.asIdeal`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hνt` using `[s.w.valuation_of_algebraMap]`. Conclude with `(s.w.intValuation_lt_one_iff_mem t).1 hνt`. Establish `hμt : muV s (algebraMap (𝓞 L) L t) < 1` using `(muV_int_lt_one_iff s t).2 htw`. Rewrite `hμt` using `[← ht, map_mul, hμint c hc, one_mul, map_inv₀]`. Establish `hμx0 : muV s x ≠ 0` using `(muV s).ne_zero_iff.2 hx0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(inv_lt_one₀ (zero_lt_iff.2 hμx0)).1 hμt`. Conclude with `absurd hμ (not_le.2 h1)`. Introduce `hν`. Take `⟨c, t, hc, ht⟩` from `exists_ringOfIntegers_not_mem_mul_eq_of_valuation_le s x hν`. Establish `h1` using `muV_int_le_one s t`.
-
-Rewrite `h1` using `[← ht, map_mul, hμint c hc, one_mul]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem muV_le_one_iff (s : SplitPlace L) (x : L) : muV s x ≤ 1 ↔ s.w.valuation L x ≤ 1 := by
   have hμint : ∀ r : 𝓞 L, r ∉ s.w.asIdeal → muV s (algebraMap (𝓞 L) L r) = 1 :=
@@ -250,7 +244,7 @@ theorem muV_le_one_iff (s : SplitPlace L) (x : L) : muV s x ≤ 1 ↔ s.w.valuat
     exact h1
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDedekindDomain.HeightOneSpectrum.valuation_exists_uniformizer L s.w`. Take `⟨a, ha⟩` from `IsDedekindDomain.HeightOneSpectrum.intValuation_exists_uniformizer s.v`. Use `val_eq_of_le_one_iff (muV s) (s.w.valuation L) (muV_le_one_iff s) hϖ (π := ((algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) a : 𝓞 L) : L)) ?_ x` and prove the remaining obligations. Rewrite using `[muV_apply, s.split_val_alg, RingOfIntegers.coe_eq_algebraMap, s.v.valuation_of_algebraMap, ha]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem muV_eq (s : SplitPlace L) (x : L) : muV s x = s.w.valuation L x := by
   obtain ⟨ϖ, hϖ⟩ := IsDedekindDomain.HeightOneSpectrum.valuation_exists_uniformizer L s.w
@@ -260,7 +254,7 @@ theorem muV_eq (s : SplitPlace L) (x : L) : muV s x = s.w.valuation L x := by
   rw [muV_apply, s.split_val_alg, RingOfIntegers.coe_eq_algebraMap, s.v.valuation_of_algebraMap, ha]
 
 /- English proof (translation)
-Introduce `s k`. Rewrite using `[← muV_apply, muV_eq]`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' s.w k).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepA : StepA L := by
   intro s k

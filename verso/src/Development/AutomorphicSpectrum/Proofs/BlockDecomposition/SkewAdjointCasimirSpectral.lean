@@ -12,24 +12,24 @@ variable {V H : Type} [AddCommGroup V] [Module ℂ V] [NormedAddCommGroup H] [In
 def word (Z : ι → Module.End ℂ V) (l : List ι) : Module.End ℂ V := (l.map Z).prod
 
 /- English proof (translation)
-Simplify using `[word]`.
+Simplify using the standard rewrite rules.
 -/
 lemma word_nil (Z : ι → Module.End ℂ V) : word Z [] = 1 := by simp [word]
 
 /- English proof (translation)
-Simplify using `[word]`.
+Simplify using the standard rewrite rules.
 -/
 lemma word_cons (Z : ι → Module.End ℂ V) (i : ι) (l : List ι) :
     word Z (i :: l) = Z i * word Z l := by simp [word]
 
 /- English proof (translation)
-Simplify using `[word, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 lemma word_append (Z : ι → Module.End ℂ V) (p q : List ι) :
     word Z (p ++ q) = word Z p * word Z q := by simp [word, List.prod_append]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rw [GlobalTheory.CompanionTheory.AnalyticWord.word_nil, mul_one, one_mul]`. Consider the case `cons i l ih => rw [GlobalTheory.CompanionTheory.AnalyticWord.word_cons, ← mul_assoc, hΩ, mul_assoc, ih, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma word_comm (Z : ι → Module.End ℂ V) (Ω : Module.End ℂ V) (hΩ : ∀ i, Ω * Z i = Z i * Ω)
     (l : List ι) : Ω * word Z l = word Z l * Ω := by
@@ -46,14 +46,14 @@ section Bnd
 variable [Finite ι] (j : V →ₗ[ℂ] H) (Z : ι → Module.End ℂ V) {m : ℕ} (y : Fin m → V)
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.AnalyticWord.bnd`. Conclude with `NNReal.coe_nonneg _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma bnd_nonneg (k : ℕ) : 0 ≤ bnd j Z y k := by
   unfold GlobalTheory.CompanionTheory.AnalyticWord.bnd
   exact NNReal.coe_nonneg _
 
 /- English proof (translation)
-Establish `hmem : (l, e) ∈ (List.finite_length_eq ι k).toFinset ×ˢ (univ : Finset (Fin m))`. Simplify using `[hl]`. Establish `h` using `Finset.le_sup (f := fun p : List ι × Fin m => ‖j (GlobalTheory.CompanionTheory.AnalyticWord.word Z p.1 (y p.2))‖₊) hmem`. Unfold `GlobalTheory.CompanionTheory.AnalyticWord.bnd`. Conclude with `(coe_nnnorm _).symm.trans_le (NNReal.coe_le_coe.2 h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma le_bnd {l : List ι} {k : ℕ} (hl : l.length = k) (e : Fin m) :
     ‖j (word Z l (y e))‖ ≤ bnd j Z y k := by
@@ -64,9 +64,9 @@ lemma le_bnd {l : List ι} {k : ℕ} (hl : l.length = k) (e : Fin m) :
   exact (coe_nnnorm _).symm.trans_le (NNReal.coe_le_coe.2 h)
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.AnalyticWord.bnd`. Establish `hs : ((List.finite_length_eq ι k).toFinset ×ˢ (univ : Finset (Fin m))).sup (fun p => ‖j (GlobalTheory.CompanionTheory.AnalyticWord.word Z p.1 (y p.2))‖₊) ≤ B.toNNReal`. Use `Finset.sup_le fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.mem_product, Set.Finite.mem_toFinset]`. Use `show ‖j (GlobalTheory.CompanionTheory.AnalyticWord.word Z p.1 (y p.2))‖₊ ≤ B.toNNReal`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, Real.coe_toNNReal _ hB]`. Conclude with `h p.1 p.2 hp.1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma bnd_le {k : ℕ} {B : ℝ} (hB : 0 ≤ B)
     (h : ∀ (l : List ι) (e : Fin m), l.length = k → ‖j (word Z l (y e))‖ ≤ B) :
@@ -83,7 +83,7 @@ lemma bnd_le {k : ℕ} {B : ℝ} (hB : 0 ≤ B)
     _ = B := Real.coe_toNNReal _ hB
 
 /- English proof (translation)
-Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun f _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (GlobalTheory.CompanionTheory.AnalyticWord.le_bnd j Z y hl f) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comb_le {l : List ι} {k : ℕ} (hl : l.length = k) (a : Fin m → ℂ) :
     ‖j (word Z l (∑ f, a f • y f))‖ ≤ (∑ f, ‖a f‖) * bnd j Z y k := by
@@ -95,9 +95,9 @@ lemma comb_le {l : List ι} {k : ℕ} (hl : l.length = k) (a : Fin m → ℂ) :
 end Bnd
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hs0` using `Real.sqrt_nonneg A`. Establish `hss : √A * √A * (y * y) = A * (y * y)` using `by rw [Real.mul_self_sqrt hA]`. Establish `hx1 : √A * y ≤ x` using `by nlinarith [mul_nonneg hB hy]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxpos : 0 < x` using `lt_of_le_of_lt (mul_nonneg (add_nonneg hs0 hB) hy) hlt`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left hlt hxpos, mul_nonneg (sub_nonneg.2 hx1) (mul_nonneg hs0 hy), hss]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma quad_step {x y A B : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (hA : 0 ≤ A) (hB : 0 ≤ B)
     (h : x ^ 2 ≤ y * (A * y + B * x)) : x ≤ (√A + B) * y := by
@@ -110,9 +110,9 @@ lemma quad_step {x y A B : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) (hA : 0 ≤ A) (hB
   nlinarith [mul_lt_mul_of_pos_left hlt hxpos, mul_nonneg (sub_nonneg.2 hx1) (mul_nonneg hs0 hy), hss]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Establish `e : Z κ * Z κ * Z i - Z i * (Z κ * Z κ) = Z κ * (Z κ * Z i - Z i * Z κ) + (Z κ * Z i - Z i * Z κ) * Z κ`. Simplify using `only [mul_sub, sub_mul, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e, hcomm, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, smul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma comm_S (Z : ι → Module.End ℂ V) [Fintype ι] (K : Finset ι) (c : ι → ι → ι → ℂ)
     (hcomm : ∀ κ i, Z κ * Z i - Z i * Z κ = ∑ l, c κ i l • Z l) (i : ι) :
@@ -129,11 +129,11 @@ lemma comm_S (Z : ι → Module.End ℂ V) [Fintype ι] (K : Finset ι) (c : ι 
   rw [mul_smul_comm, smul_mul_assoc, smul_add]
 
 /- English proof (translation)
-Establish `key : ∀ k, ‖j (Z k v)‖ ^ 2 = - RCLike.re (inner ℂ (j v) (j ((Z k * Z k) v)))`. Introduce `k`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), hskew, Module.End.mul_apply, map_neg]`. Establish `hsum : ∑ k, ‖j (Z k v)‖ ^ 2 = - RCLike.re (inner ℂ (j v) (j ((Ω + S + S) v)))`. Rewrite using `[← hT, LinearMap.sum_apply, map_sum, inner_sum, map_sum, ← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => key k`. Establish `hle : ‖j (Z i v)‖ ^ 2 ≤ ∑ k, ‖j (Z k v)‖ ^ 2` using `Finset.single_le_sum (f := fun k => ‖j (Z k v)‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ i)`. Rewrite `hle` using `[hsum]`. Establish `h2 : - RCLike.re (inner ℂ (j v) (j ((Ω + S + S) v))) ≤ ‖j v‖ * ‖j ((Ω + S + S) v)‖` using `(neg_le_abs _).trans ((RCLike.abs_re_le_norm _).trans (norm_inner_le_norm _ _))`. Establish `h3 : ‖j ((Ω + S + S) v)‖ ≤ ‖j (Ω v)‖ + 2 * ‖j (S v)‖`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, map_add, map_add]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hle.trans h2).trans (mul_le_mul_of_nonneg_left h3 (norm_nonneg _))`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma sum_sq_le [Fintype ι] (j : V →ₗ[ℂ] H) (Z : ι → Module.End ℂ V)
     (hskew : ∀ i v w, inner ℂ (j (Z i v)) (j w) = - inner ℂ (j v) (j (Z i w)))
@@ -165,7 +165,7 @@ variable [Fintype ι] (j : V →ₗ[ℂ] H) (Z : ι → Module.End ℂ V) {m : �
 def c0 : ℝ := 2 * ∑ i, ∑ κ ∈ K, ∑ n, ‖c κ i n‖
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.AnalyticWord.c0`. Conclude with `mul_nonneg zero_le_two (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma weightConst_nonneg : 0 ≤ c0 K c := by
   unfold GlobalTheory.CompanionTheory.AnalyticWord.c0
@@ -173,13 +173,11 @@ lemma weightConst_nonneg : 0 ≤ c0 K c := by
     (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _)
 
 /- English proof (translation)
-Establish `hw : ∀ a b : ι, ‖j (GlobalTheory.CompanionTheory.AnalyticWord.word Z p ((Z a * Z b) (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e))))‖ ≤ GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y (p.length + l.length + 2)`. Introduce `a b`. Establish `h` using `GlobalTheory.CompanionTheory.AnalyticWord.le_bnd j Z y (l := p ++ a :: b :: l) (k := p.length + l.length + 2) (by simp only [List.length_append, List.length_cons]; omega) e`. Simplify `h` using `only [GlobalTheory.CompanionTheory.AnalyticWord.word_append, GlobalTheory.CompanionTheory.AnalyticWord.word_cons, Module.End.mul_apply]`. Establish `hB0` using `GlobalTheory.CompanionTheory.AnalyticWord.bnd_nonneg j Z y (p.length + l.length + 2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hS i]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply, map_sum, map_smul, map_add]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun κ _ => (norm_sum_le _ _).trans (Finset.sum_le_sum fun n _ => ?_))` and prove the remaining obligations. Rewrite using `[norm_smul, two_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left ((norm_add_le _ _).trans (add_le_add (hw κ n) (hw n κ))) (norm_nonneg _)`. Use `_ = (∑ κ ∈ K, ∑ n, ‖c κ i n‖) * (2 * GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y (p.length + l.length + 2)) := by`. Simplify using `only [Finset.sum_mul]`. Use `_ ≤ (∑ i', ∑ κ ∈ K, ∑ n, ‖c κ i' n‖) * (2 * GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y (p.length + l.length + 2)) := mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := fun i' => ∑ κ ∈ K, ∑ n, ‖c κ i' n‖) (fun i' _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun …`. Use `_ = GlobalTheory.CompanionTheory.AnalyticWord.c0 K c * GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y (p.length + l.length + 2) := by`.
-
-Unfold `GlobalTheory.CompanionTheory.AnalyticWord.c0`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma comm_term
     (hS : ∀ i, S * Z i - Z i * S = ∑ κ ∈ K, ∑ n, c κ i n • (Z κ * Z n + Z n * Z κ))
@@ -216,15 +214,15 @@ lemma comm_term
         ring
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `p e`. Simplify using `[GlobalTheory.CompanionTheory.AnalyticWord.word_nil]`. Consider the case `cons i l ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `p e`. Establish `hsplit : S * GlobalTheory.CompanionTheory.AnalyticWord.word Z (i :: l) - GlobalTheory.CompanionTheory.AnalyticWord.word Z (i :: l) * S = (S * Z i - Z i * S) * GlobalTheory.CompanionTheory.AnalyticWord.word Z l + Z i * (S * GlobalTheory.CompanionTheory.AnalyticWord.word Z l - Glob …`. Rewrite using `[GlobalTheory.CompanionTheory.AnalyticWord.word_cons]`. Simplify using `only [mul_sub, sub_mul, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `h1` using `GlobalTheory.CompanionTheory.AnalyticWord.comm_term j Z y S K c hS p l i e`. Establish `h2` using `ih (p ++ [i]) e`. Establish `e2 : GlobalTheory.CompanionTheory.AnalyticWord.word Z (p ++ [i]) ((S * GlobalTheory.CompanionTheory.AnalyticWord.word Z l - GlobalTheory.CompanionTheory.AnalyticWord.word Z l * S) (y e)) = GlobalTheory.CompanionTheory.AnalyticWord.word Z p (Z i ((S * GlobalTheory.CompanionTheory. …`. Rewrite using `[GlobalTheory.CompanionTheory.AnalyticWord.word_append, GlobalTheory.CompanionTheory.AnalyticWord.word_cons, GlobalTheory.CompanionTheory.AnalyticWord.word_nil, mul_one, Module.End.mul_apply]`. Establish `hlen1 : p.length + l.length + 2 = p.length + (i :: l).length + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers. Establish `hlen2 : (p ++ [i]).length + l.length + 1 = p.length + (i :: l).length + 1`. Simplify using `only [List.length_append, List.length_cons, List.length_nil]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2` using `[e2, hlen2]`. Rewrite `h1` using `[hlen1]`. Rewrite using `[hsplit, LinearMap.add_apply, Module.End.mul_apply, Module.End.mul_apply, map_add, map_add]`. Use `(norm_add_le _ _).trans ((add_le_add h1 h2).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[List.length_cons, Nat.cast_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -264,14 +262,14 @@ lemma comm_word
 def tot (a : Fin m → Fin m → ℂ) : ℝ := ∑ e, ∑ f, ‖a e f‖
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.AnalyticWord.tot`. Conclude with `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma tot_nonneg (a : Fin m → Fin m → ℂ) : 0 ≤ tot a := by
   unfold GlobalTheory.CompanionTheory.AnalyticWord.tot
   exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.AnalyticWord.tot`. Conclude with `Finset.single_le_sum (f := fun e => ∑ f, ‖a e f‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ e)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma row_le_tot (a : Fin m → Fin m → ℂ) (e : Fin m) : ∑ f, ‖a e f‖ ≤ tot a := by
   unfold GlobalTheory.CompanionTheory.AnalyticWord.tot
@@ -279,15 +277,13 @@ lemma row_le_tot (a : Fin m → Fin m → ℂ) (e : Fin m) : ∑ f, ‖a e f‖ 
     (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ e)
 
 /- English proof (translation)
-Establish `hB0` using `GlobalTheory.CompanionTheory.AnalyticWord.bnd_nonneg j Z y l.length`. Establish `hv : ‖j (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e))‖ ≤ GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y l.length` using `GlobalTheory.CompanionTheory.AnalyticWord.le_bnd j Z y (l := l) rfl e`. Establish `hOmega : ‖j (Ω (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e)))‖ ≤ GlobalTheory.CompanionTheory.AnalyticWord.tot o * GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y l.length`. Establish `h : Ω (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e)) = GlobalTheory.CompanionTheory.AnalyticWord.word Z l (∑ f, o e f • y f)`. Rewrite using `[← hOy e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.congr_fun (GlobalTheory.CompanionTheory.AnalyticWord.word_comm Z Ω hΩ l) (y e)`. Rewrite using `[h]`. Conclude with `(GlobalTheory.CompanionTheory.AnalyticWord.comb_le j Z y (l := l) rfl (o e)).trans (mul_le_mul_of_nonneg_right (GlobalTheory.CompanionTheory.AnalyticWord.row_le_tot o e) hB0)`. Establish `hSv : ‖j (S (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e)))‖ ≤ GlobalTheory.CompanionTheory.AnalyticWord.tot d * GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y l.length + l.length * GlobalTheory.CompanionTheory.AnalyticWord.c0 K c * GlobalTheory.CompanionTheory.A …`. Establish `hdec : S (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e)) = GlobalTheory.CompanionTheory.AnalyticWord.word Z l (∑ f, d e f • y f) + GlobalTheory.CompanionTheory.AnalyticWord.word Z [] ((S * GlobalTheory.CompanionTheory.AnalyticWord.word Z l - GlobalTheory.CompanionTheor …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[GlobalTheory.CompanionTheory.AnalyticWord.word_nil, Module.End.one_apply, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, ← hSy e]`. Normalize the expressions using the abelian group laws. Establish `hc` using `GlobalTheory.CompanionTheory.AnalyticWord.comm_word j Z y S K c hS l [] e`. Rewrite `hc` using `[List.length_nil, zero_add]`. Rewrite using `[hdec, map_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(norm_add_le _ _).trans (add_le_add ((GlobalTheory.CompanionTheory.AnalyticWord.comb_le j Z y (l := l) rfl (d e)).trans (mul_le_mul_of_nonneg_right (GlobalTheory.CompanionTheory.AnalyticWord.row_le_tot d e) hB0)) hc)`. Establish `hmain` using `GlobalTheory.CompanionTheory.AnalyticWord.sum_sq_le j Z hskew S Ω hT (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e)) i`. Rewrite using `[GlobalTheory.CompanionTheory.AnalyticWord.word_cons, Module.End.mul_apply]`. Establish `hnn : 0 ≤ ‖j (Ω (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e)))‖ + 2 * ‖j (S (GlobalTheory.CompanionTheory.AnalyticWord.word Z l (y e)))‖`. Check the signs of the components of the expression.
-
-Use `hmain.trans ((mul_le_mul hv (add_le_add hOmega (mul_le_mul_of_nonneg_left hSv zero_le_two)) hnn hB0).trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma word_sq_le
     (hskew : ∀ i v w, inner ℂ (j (Z i v)) (j w) = - inner ℂ (j v) (j (Z i w)))
@@ -334,13 +330,11 @@ lemma word_sq_le
   ring
 
 /- English proof (translation)
-Establish `hA : 0 ≤ GlobalTheory.CompanionTheory.AnalyticWord.tot o + 2 * GlobalTheory.CompanionTheory.AnalyticWord.tot d` using `add_nonneg (GlobalTheory.CompanionTheory.AnalyticWord.tot_nonneg o) (mul_nonneg zero_le_two (GlobalTheory.CompanionTheory.AnalyticWord.tot_nonneg d))`. Establish `hC : 0 ≤ 2 * (n : ℝ) * GlobalTheory.CompanionTheory.AnalyticWord.c0 K c` using `mul_nonneg (mul_nonneg zero_le_two (Nat.cast_nonneg n)) (GlobalTheory.CompanionTheory.AnalyticWord.weightConst_nonneg K c)`. Establish `hBn` using `GlobalTheory.CompanionTheory.AnalyticWord.bnd_nonneg j Z y n`. Establish `hBn1` using `GlobalTheory.CompanionTheory.AnalyticWord.bnd_nonneg j Z y (n + 1)`. Establish `hR0 : 0 ≤ GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y n * ((GlobalTheory.CompanionTheory.AnalyticWord.tot o + 2 * GlobalTheory.CompanionTheory.AnalyticWord.tot d) * GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y n + 2 * n * GlobalTheory.CompanionTheory.AnalyticWord.c …` using `mul_nonneg hBn (add_nonneg (mul_nonneg hA hBn) (mul_nonneg hC hBn1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbound : GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y (n + 1) ≤ √(GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y n * ((GlobalTheory.CompanionTheory.AnalyticWord.tot o + 2 * GlobalTheory.CompanionTheory.AnalyticWord.tot d) * GlobalTheory.CompanionTheory.AnalyticWord.bn …`. Use `GlobalTheory.CompanionTheory.AnalyticWord.bnd_le j Z y (Real.sqrt_nonneg _) fun l e hl => ?_` and prove the remaining obligations. Consider the cases of `l with`. Consider the case `nil => simp at hl`. Consider the case `cons i l'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hl' : l'.length = n` using `by simpa using hl`. Establish `h` using `GlobalTheory.CompanionTheory.AnalyticWord.word_sq_le j Z y S Ω K c d o hskew hT hS hΩ hSy hOy l' i e`. Rewrite `h` using `[hl']`. Conclude with `(le_abs_self _).trans (Real.abs_le_sqrt h)`. Establish `hsq : GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y (n + 1) ^ 2 ≤ GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y n * ((GlobalTheory.CompanionTheory.AnalyticWord.tot o + 2 * GlobalTheory.CompanionTheory.AnalyticWord.tot d) * GlobalTheory.CompanionTheory.AnalyticWord.bnd …` using `(pow_le_pow_left₀ hBn1 hbound 2).trans_eq (Real.sq_sqrt hR0)`.
-
-Conclude with `GlobalTheory.CompanionTheory.AnalyticWord.quad_step hBn1 hBn hA hC hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma bnd_succ_le
     (hskew : ∀ i v w, inner ℂ (j (Z i v)) (j w) = - inner ℂ (j v) (j (Z i w)))
@@ -377,11 +371,11 @@ lemma bnd_succ_le
   exact GlobalTheory.CompanionTheory.AnalyticWord.quad_step hBn1 hBn hA hC hsq
 
 /- English proof (translation)
-Establish `step : ∀ a s b0 bk b1 P F r : ℝ, 0 ≤ a → 0 ≤ s → 0 ≤ b0 → 0 ≤ P → 0 ≤ F → 0 ≤ r → b1 ≤ (a + 2 * r * s) * bk → bk ≤ P * F * b0 → b1 ≤ P * (a + 2 * s + 1) * ((r + 1) * F) * b0`. Introduce `a s b0 bk b1 P F r ha hs hb0 hP hF hr h1 h2`. Establish `hX : 0 ≤ P * F * b0` using `mul_nonneg (mul_nonneg hP hF) hb0`. Establish `hc : 0 ≤ a + 2 * r * s` using `add_nonneg ha (mul_nonneg (mul_nonneg zero_le_two hr) hs)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hs` using `GlobalTheory.CompanionTheory.AnalyticWord.bnd_succ_le j Z y S Ω K c d o hskew hT hS hΩ hSy hOy k`. Rewrite using `[pow_succ, Nat.factorial_succ, Nat.cast_mul, Nat.cast_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `step _ _ _ _ _ _ _ _ (Real.sqrt_nonneg _) (GlobalTheory.CompanionTheory.AnalyticWord.weightConst_nonneg K c) (GlobalTheory.CompanionTheory.AnalyticWord.bnd_nonneg j Z y 0) (pow_nonneg (add_nonneg (add_nonneg (Real.sqrt_nonneg _) (mul_nonneg zero_le_two (GlobalTheory.CompanionTheo …`.
+A detailed English derivation is pending.
 -/
 lemma bnd_fact
     (hskew : ∀ i v w, inner ℂ (j (Z i v)) (j w) = - inner ℂ (j v) (j (Z i w)))
@@ -414,15 +408,15 @@ lemma bnd_fact
       (Nat.cast_nonneg _) (Nat.cast_nonneg k) hs ih
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `p e`. Simplify using `only [pow_zero, Module.End.one_apply, one_mul]`. Conclude with `GlobalTheory.CompanionTheory.AnalyticWord.le_bnd j Z y (l := p) rfl e`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `p e`. Establish `hexp : GlobalTheory.CompanionTheory.AnalyticWord.word Z p (((∑ i, x i • Z i) ^ (k + 1)) (y e)) = ∑ i, x i • GlobalTheory.CompanionTheory.AnalyticWord.word Z (p ++ [i]) (((∑ i, x i • Z i) ^ k) (y e))`. Rewrite using `[pow_succ', Module.End.mul_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, map_smul, GlobalTheory.CompanionTheory.AnalyticWord.word_append, GlobalTheory.CompanionTheory.AnalyticWord.word_cons, GlobalTheory.CompanionTheory.AnalyticWord.word_nil, mul_one, Module.End.mul_apply]`. Rewrite using `[hexp, map_sum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[pow_succ', mul_assoc, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, norm_smul]`. Establish `h` using `ih (p ++ [i]) e`. Establish `hlen : (p ++ [i]).length + k = p.length + (k + 1)`. Simplify using `only [List.length_append, List.length_cons, List.length_nil]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hlen]`. Conclude with `mul_le_mul_of_nonneg_left h (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 lemma pow_bound (x : ι → ℂ) (k : ℕ) : ∀ (p : List ι) (e : Fin m),
     ‖j (word Z p (((∑ i, x i • Z i) ^ k) (y e)))‖ ≤
@@ -454,15 +448,15 @@ lemma pow_bound (x : ι → ℂ) (k : ℕ) : ∀ (p : List ι) (e : Fin m),
 end Main
 
 /- English proof (translation)
-Introduce `V H _ _ _ _ j ι _ _ Z K m y d o c hskew hcomm hΩ hd ho x v hv`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hv`. Establish `hT : ∑ i, Z i * Z i = (∑ i ∈ Kᶜ, Z i * Z i - ∑ κ ∈ K, Z κ * Z κ) + ∑ κ ∈ K, Z κ * Z κ + ∑ κ ∈ K, Z κ * Z κ`. Rewrite using `[← Finset.sum_add_sum_compl K (fun i => Z i * Z i)]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hS : ∀ i, (∑ κ ∈ K, Z κ * Z κ) * Z i - Z i * (∑ κ ∈ K, Z κ * Z κ) = ∑ κ ∈ K, ∑ n, c κ i n • (Z κ * Z n + Z n * Z κ)` using `GlobalTheory.CompanionTheory.AnalyticWord.comm_S Z K c hcomm`. Establish `hB` using `fun k => GlobalTheory.CompanionTheory.AnalyticWord.bnd_fact j Z y (∑ κ ∈ K, Z κ * Z κ) (∑ i ∈ Kᶜ, Z i * Z i - ∑ κ ∈ K, Z κ * Z κ) K c d o hskew hT hS hΩ hd ho k`. Use `⟨(∑ f, ‖a f‖) * GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y 0, (∑ i, ‖x i‖) * (√(GlobalTheory.CompanionTheory.AnalyticWord.tot o + 2 * GlobalTheory.CompanionTheory.AnalyticWord.tot d) + 2 * GlobalTheory.CompanionTheory.AnalyticWord.c0 K c + 1), fun k => ?_⟩` and prove the remaining obligations. Establish `hf : ∀ f, ‖a f • j (((∑ i, x i • Z i) ^ k) (y f))‖ ≤ ‖a f‖ * ((∑ i, ‖x i‖) ^ k * GlobalTheory.CompanionTheory.AnalyticWord.bnd j Z y k)`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `GlobalTheory.CompanionTheory.AnalyticWord.pow_bound j Z y x k [] f`. Rewrite `h` using `[GlobalTheory.CompanionTheory.AnalyticWord.word_nil, Module.End.one_apply, List.length_nil, zero_add]`. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left h (norm_nonneg _)`. Simplify using `only [map_sum, map_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun f _ => hf f).trans ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, mul_pow]`. Establish `hsa : 0 ≤ ∑ f, ‖a f‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hsx : 0 ≤ (∑ i, ‖x i‖) ^ k` using `pow_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _) k`. Use `(mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (hB k) hsx) hsa).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem analytic_bound : ∀ (V H : Type) [AddCommGroup V] [Module ℂ V] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (j : V →ₗ[ℂ] H) (ι : Type) [Fintype ι] [DecidableEq ι]

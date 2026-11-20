@@ -18,15 +18,15 @@ namespace GlobalTheory.Grid
 open GlobalTheory.SignedHC
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `D.R.t_odd`. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hs : ∃ d : ℕ, sLen D = 2 * d + 1` using `⟨a + b + 2, by unfold sLen Formalism.BasicNotions.Ranks.r; omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `hs`. Break down `GridData.mem_parD.1 hx with ⟨h1, -⟩ | ⟨l, -, -, rfl⟩ | ⟨l, -, -, h3, -⟩ | ⟨l, -, -, h4, -⟩` into its components or cases. Take `⟨i', -, -, h⟩` from `GridData.mem_cloud.1 h1`. Conclude with `⟨_, h⟩`. Conclude with `⟨-(grid D τ).b l, by push_cast; rfl⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Simplify using `only [GridData.blockM, TPar.block, Finset.mem_image, Finset.mem_range] at h3`. Take `⟨a', -, h⟩` from `h3`. Use `⟨-((grid D τ).e l) + c - a', ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Establish `ht : ((grid D τ).t : ℚ) = 2 * c + 1` using `by exact_mod_cast hc`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GridData.blockC, TPar.block, Finset.mem_image, Finset.mem_range] at h4`. Take `⟨a', -, h⟩` from `h4`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨(grid D τ).cen l + d - a', ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Establish `ht : ((grid D τ).s : ℚ) = 2 * d + 1` using `by exact_mod_cast hd`. Rewrite using `[ht]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -56,11 +56,11 @@ theorem parD_entry_int (D : D7) (τ : D.what₂.Tau) (i j : ℕ) {x : ℚ × Boo
     rw [ht]; push_cast; ring
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `D.R.t_odd`. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨u, hu⟩ : ∃ u, a + b = u + 1` from `⟨a + b - 1, by omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr : D.R.r = 2 * u + 1` using `by unfold Formalism.BasicNotions.Ranks.r; omega`. Establish `e : rkV D i j = 2 * (u + j * c + i * (u + 3)) + (1 + j + i)`. Unfold `rkV sLen`. Rewrite using `[hr, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Nat.even_add, Nat.odd_add]`. Simplify using `only [even_two, Even.mul_right, true_iff, Nat.even_add, Nat.odd_add]`. Simplify using `only [Nat.odd_iff, Nat.even_iff]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem even_rkV_iff (D : D7) (i j : ℕ) : Even (rkV D i j) ↔ Odd (i + j) := by
   obtain ⟨c, hc⟩ := D.R.t_odd
@@ -76,15 +76,15 @@ theorem even_rkV_iff (D : D7) (i j : ℕ) : Even (rkV D i j) ↔ Odd (i + j) := 
   simp only [Nat.odd_iff, Nat.even_iff]; omega
 
 /- English proof (translation)
-Introduce `D _ i j _ _ _ τ n lam ε hn hE`. Use `⟨hE.1, fun a' => ?_⟩` and prove the remaining obligations. Take `⟨-, q, hq, hS⟩` from `hE`. Establish `hmem : (q a', ε a') ∈ parV D i j τ` using `by rw [hS]; exact Finset.mem_image_of_mem _ (Finset.mem_univ _)`. Simplify using `only [parV, dualPar, GlobalTheory.SignedHC.shift, Finset.mem_image, Prod.mk.injEq] at hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨y, ⟨x, hx, rfl⟩, hy1, -⟩` from `hmem`. Take `⟨z, hz⟩` from `parD_entry_int D τ i j hx`. Establish `hpar` using `even_rkV_iff D i j`. Rewrite using `[hq a', ← hy1]`. Distinguish the cases in `ho : Odd (i + j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨N, hN⟩` from `hpar.2 ho`. Rewrite `*` using `[if_pos ho]`. Use `⟨-z + 1 - N, ?_⟩` and prove the remaining obligations. Establish `: (n : ℝ) = N + N` using `by rw [hn, hN]; push_cast; ring`. Simplify using `only [hz, this]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ¬ Even (rkV D i j)` using `fun h => ho (hpar.1 h)`. Take `⟨N, hN⟩` from `Nat.not_even_iff_odd.1 hne`. Rewrite `*` using `[if_neg ho]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨-z - N, ?_⟩` and prove the remaining obligations. Establish `: (n : ℝ) = 2 * N + 1` using `by rw [hn, hN]; push_cast; ring`. Simplify using `only [hz, this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isHCParam_parV : ∀ (D : D7), HostHyp D → ∀ (i j : ℕ), 1 ≤ i → i ≤ D.R.m → j ≤ D.R.m → ∀ (τ : D.what₂.Tau) (n : ℕ) (lam : Fin n → ℝ) (ε : Fin n → Bool), n = GlobalTheory.Grid.rkV D i j → IsEnum (GlobalTheory.Grid.parV D i j τ) lam ε → Formalism.QuantumDeterminants.IsHCParam lam := by
   intro D _ i j _ _ _ τ n lam ε hn hE

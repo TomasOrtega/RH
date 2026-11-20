@@ -18,11 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SeeSaw.ChainIdeals
 
 /- English proof (translation)
-Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum D.R D.host`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> intro h`. Rewrite `hP` using `[h, zero_mul, zero_mul, zero_mul]`. Conclude with `zero_ne_one hP`. Rewrite `hP` using `[h, mul_zero, zero_mul, zero_mul]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hP`. Rewrite `hP` using `[h, mul_zero, zero_mul]`. Conclude with `zero_ne_one hP`. Rewrite `h` using `[dI]`. Rewrite `hP` using `[h, zero_mul]`.
-
-Conclude with `zero_ne_one hP`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem host_ne_zero (D : D7) :
     FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.host.xi0 ≠ 0 ∧ D.host.AA ≠ 0 ∧ D.host.AAbar ≠ 0 ∧ dI D ≠ 0 := by
@@ -34,9 +32,9 @@ theorem host_ne_zero (D : D7) :
   · rw [dI] at h; rw [h, zero_mul] at hP; exact zero_ne_one hP
 
 /- English proof (translation)
-Take `⟨-, hA, hB, -⟩` from `host_ne_zero D`. Establish `e1 : D.host.AA⁻¹ * (dI D * cI D j) = FractionalIdeal.spanSingleton _ D.host.xi0 * D.host.AAbar * cI D j`. Rewrite using `[dI]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, e1⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1]`. Establish `hs` using `cI_step D h`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem step (D : D7) {j : ℕ} (h : j + 1 + 1 ≤ D.R.m) :
     D.host.AA⁻¹ * (dI D * cI D j) = D.host.AA * cI D (j + 1 + 1) ∧

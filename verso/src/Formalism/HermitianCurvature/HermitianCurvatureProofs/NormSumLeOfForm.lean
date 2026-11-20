@@ -12,7 +12,7 @@ section hilbert
 variable {ι κ : Type*} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Rewrite using `[sum_inner]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_sum, mul_sum]`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -30,7 +30,7 @@ theorem inner_sum_smul (k : ι → ι → ℂ) (v : ι → H) (hv : ∀ p q, k p
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_sum₂]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, map_sum, smul_eq_mul, mul_sum]`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, smul_eq_mul, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -45,7 +45,7 @@ theorem form_sum_conj (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (J : Finset κ) (
   ring
 
 /- English proof (translation)
-Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), inner_sum_smul k v hv, form_sum_conj, RCLike.re_to_complex]`. Use `congr 1`. Use `sum_congr rfl fun j hj => sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[hy j hj l hl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_sum_eq_form (k : ι → ι → ℂ) (v : ι → H) (hv : ∀ p q, k p q = ⟪v p, v q⟫_ℂ)
     (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (J : Finset κ) (a : κ → ℂ) (P : κ → ι) (y : κ → V)
@@ -57,7 +57,7 @@ theorem norm_sq_sum_eq_form (k : ι → ι → ℂ) (v : ι → H) (hv : ∀ p q
   rw [hy j hj l hl]
 
 /- English proof (translation)
-Establish `h` using `norm_sq_sum_eq_form k v hv B J a P y hy`. Establish `h2` using `hB (∑ j ∈ J, conj (a j) • y j)`. Rewrite `h2` using `[← h]`. Conclude with `abs_le_of_sq_le_sq' h2 (by positivity) |>.2 |> fun h3 => by`. Simplify `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h2` using `[abs_of_nonneg (norm_nonneg _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_sum_le_of_form {W : Type*} [SeminormedAddCommGroup W] [Module ℂ W] (k : ι → ι → ℂ) (v : ι → H)
     (hv : ∀ p q, k p q = ⟪v p, v q⟫_ℂ) (B : W →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ) (Cp : ℝ) (hCp : 0 ≤ Cp)

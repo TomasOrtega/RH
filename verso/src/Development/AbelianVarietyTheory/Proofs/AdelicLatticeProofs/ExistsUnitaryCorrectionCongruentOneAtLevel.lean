@@ -14,9 +14,9 @@ namespace GlobalTheory.UnRep.Correct
 variable {E : Type} [Field E] {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NatMulMem.main`. Consider the case `exact _root_.GlobalTheory.NatMulMem.main`. Consider the case `(apply _root_.GlobalTheory.NatMulMem.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMulMem.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NatMulMem.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatMulMem.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem [NumberField E] (L : Submodule (𝓞 E) (Fin n → E))
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (x : Fin n → E) :
@@ -30,9 +30,9 @@ theorem exists_nat_smul_mem [NumberField E] (L : Submodule (𝓞 E) (Fin n → E
   | (intros; exact _root_.GlobalTheory.NatMulMem.main ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralMultipleOfVectors.exists_nsmul_mulVec_mem`. Consider the case `exact _root_.GlobalTheory.IntegralMultipleOfVectors.exists_nsmul_mulVec_mem`. Consider the case `(apply _root_.GlobalTheory.IntegralMultipleOfVectors.exists_nsmul_mulVec_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralMultipleOfVectors.exists_nsmul_mulVec_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralMultipleOfVectors.exists_nsmul_mulVec_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralMultipleOfVectors.exists_nsmul_mulVec_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_nat_mulVec_mem [NumberField E] (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (M : Matrix (Fin n) (Fin n) E) :
@@ -46,11 +46,11 @@ theorem exists_nat_mulVec_mem [NumberField E] (L : Submodule (𝓞 E) (Fin n →
   | (intros; exact _root_.GlobalTheory.IntegralMultipleOfVectors.exists_nsmul_mulVec_mem ..)
 
 /- English proof (translation)
-Take `⟨t₁, c₁, h₁⟩` from `hA`. Take `⟨t₂, c₂, h₂⟩` from `hB`. Use `⟨t₁ * t₂, Nat.Coprime.mul_left c₁ c₂, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨w₂, hw₂, e₂⟩` from `h₂ v hv`. Establish `hy : t₂ • (B *ᵥ v) ∈ L`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: t₂ • (B *ᵥ v) = t₂ • v + D • w₂` using `by rw [← e₂, smul_sub]; abel`. Rewrite using `[this]`. Conclude with `L.add_mem (nsmul_mem hv _) (nsmul_mem hw₂ _)`. Take `⟨w₁, hw₁, e₁⟩` from `h₁ _ hy`. Use `⟨w₁ + t₁ • w₂, L.add_mem hw₁ (nsmul_mem hw₂ _), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, smul_comm D t₁, ← e₁, ← e₂, Matrix.mulVec_smul, Matrix.mulVec_mulVec]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem congAt_mul {L : Submodule (𝓞 E) (Fin n → E)} {N D : ℕ} {A B : Matrix (Fin n) (Fin n) E}
     (hA : CongAt L N D A) (hB : CongAt L N D B) : CongAt L N D (A * B) := by
@@ -68,11 +68,11 @@ theorem congAt_mul {L : Submodule (𝓞 E) (Fin n → E)} {N D : ℕ} {A B : Mat
   module
 
 /- English proof (translation)
-Take `⟨t, ct, h⟩` from `hA`. Use `⟨t, ct, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, e₁⟩` from `h _ (hR' v hv)`. Use `⟨_, hR w hw, ?_⟩` and prove the remaining obligations. Establish `e₂` using `congrArg (fun z => R *ᵥ z) e₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec_smul, Matrix.mulVec_sub, Matrix.mulVec_mulVec, hRR, Matrix.one_mulVec] at e₂`. Establish `he' : (e : E) ≠ 0` using `Nat.cast_ne_zero.2 he.ne'`. Apply `smul_right_injective (Fin n → E) he'` to reduce the goal to its premises. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Rewrite using `[Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(exp := 1) e₂`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem congAt_conj [CharZero E] {L : Submodule (𝓞 E) (Fin n → E)} {N D d e : ℕ} (he : 0 < e)
     {A R R' : Matrix (Fin n) (Fin n) E} (hRR : R * R' = 1)
@@ -91,14 +91,14 @@ theorem congAt_conj [CharZero E] {L : Submodule (𝓞 E) (Fin n → E)} {N D d e
   linear_combination (exp := 1) e₂
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_ne_zero hs.1 ht.1, fun P hP h => (hP.mem_or_mem h).elim (hs.2 P hP) (ht.2 P hP)⟩`.
+Supply the required witnesses or components.
 -/
 theorem splitOr_mul {F : Type} [Field F] [Algebra F E] {c : E ≃ₐ[F] E} {N : ℕ} {s t : 𝓞 E}
     (hs : SplitOr c N s) (ht : SplitOr c N t) : SplitOr c N (s * t) :=
   ⟨mul_ne_zero hs.1 ht.1, fun P hP h => (hP.mem_or_mem h).elim (hs.2 P hP) (ht.2 P hP)⟩
 
 /- English proof (translation)
-Use `hA _ (hB v hv)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← mul_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smul_mul_mem {L : Submodule (𝓞 E) (Fin n → E)} {s t : 𝓞 E} {A B : Matrix (Fin n) (Fin n) E}
     (hA : ∀ v ∈ L, s • (A *ᵥ v) ∈ L) (hB : ∀ v ∈ L, t • (B *ᵥ v) ∈ L) (v : Fin n → E) (hv : v ∈ L) :
@@ -107,23 +107,21 @@ theorem smul_mul_mem {L : Submodule (𝓞 E) (Fin n → E)} {s t : 𝓞 E} {A B 
   rwa [Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← mul_smul] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c n G hG L hfg hL γ₀ N D hγ₀ hN hD`. Take `⟨l, hl, hprod⟩` from `GlobalTheory.T.unitaryMatrix_eq_prod_quasiReflections F E c n G hG _ hγ₀`. Use `clear hγ₀`. Proceed by induction on `l generalizing γ₀ D with`. Consider the case `nil`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : γ₀ = 1` using `Units.ext (by simpa using hprod)`. Substitute `h1` using the available equality. Use `⟨1, fun x y => by simp, ⟨1, by simp, fun v _ => ⟨0, L.zero_mem, by simp⟩⟩, 1, ⟨one_ne_zero, fun P hP h => absurd ((Ideal.eq_top_iff_one P).2 h) hP.ne_top⟩, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `using hv`. Consider the case `cons p l ih`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, u⟩` from `p`. Take `⟨hx, hu⟩` from `hl (x, u) List.mem_cons_self`. Simplify using `only at hx hu`. Take `⟨-, r1, rmul, run⟩` from `GlobalTheory.T.unitaryQuasiReflection_laws F E c n G hG x hx`. Establish `hu0 : u ≠ 0` using `left_ne_zero_of_mul_eq_one hu`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `R : (a : E) → a ≠ 0 → GL (Fin n) E` to `fun a ha => ⟨refl c G x a, refl c G x a⁻¹, by rw [rmul, mul_inv_cancel₀ ha, r1], by rw [rmul, inv_mul_cancel₀ ha, r1]⟩`. Take `⟨d, hd, hRd⟩` from `exists_nat_mulVec_mem L hfg hL (R u hu0).1`. Take `⟨e, he, hRe⟩` from `exists_nat_mulVec_mem L hfg hL ((R u hu0)⁻¹).1`. Take `⟨γ₁, hγ₁, hc₁, s₁, hs₁, hL₁⟩` from `ih ((R u hu0)⁻¹ * γ₀) (D * d * e) (Nat.mul_pos (Nat.mul_pos hD hd) he) (fun p hp => hl p (List.mem_cons_of_mem _ hp)) (by`. Rewrite using `[Units.val_mul, hprod, List.map_cons, List.prod_cons, ← mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = _`. Establish `: ((R u hu0)⁻¹).1 * refl c G x u = 1` using `(R u hu0).inv_mul`. Rewrite using `[this, one_mul])`. Take `⟨u', hu', hc', s', hs', hL'⟩` from `GlobalTheory.T.exists_norm_one_reflection_correction_at_level F E c n G hG L hfg hL x u N D hx hu hN hD`. Establish `hu'0 : u' ≠ 0` using `left_ne_zero_of_mul_eq_one hu'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨R u' hu'0 * γ₁, ?_, ?_, s' * s₁, splitOr_mul hs' hs₁, fun v hv => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `y z`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `(run u' hu' _ _).trans (hγ₁ y z)`. Establish `hconj` using `congAt_conj he (R u hu0).mul_inv hRd hRe hc₁`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congAt_mul hc' hconj`. Establish `e1 : refl c G x (u' / u) = (R u' hu'0 * (R u hu0)⁻¹).1`. Rewrite using `[div_eq_mul_inv, ← rmul]`. Both sides reduce to the same expression. Rewrite `h` using `[e1, ← Units.val_mul, ← Units.val_mul, ← Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `h using 2` and compare the differences between its conclusion and the goal. Use `group`. Rewrite using `[Units.val_mul]`. Conclude with `smul_mul_mem (fun v hv => (hL' v hv).1) (fun v hv => (hL₁ v hv).1) v hv`. Rewrite using `[mul_inv_rev, Units.val_mul, mul_comm s']`.
-
-Conclude with `smul_mul_mem (fun v hv => (hL₁ v hv).2) (fun v hv => (hL' v hv).2) v hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_correction : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E) (n : ℕ) (G : Matrix (Fin n) (Fin n) E), IsHermForm c G → ∀ L : Submodule (𝓞 E) (Fin n → E), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → ∀ (γ₀ : GL (Fin n) E) (N D : ℕ), IsUnE c G γ₀.1 → 0 < N → 0 < D → ∃ γ : GL (Fin n) E, IsUnE c G γ.1 ∧ CongAt L N D (γ * γ₀⁻¹).1 ∧ ∃ s : 𝓞 E, SplitOr c N s ∧ ∀ v ∈ L, s • (γ.1 *ᵥ v) ∈ L ∧ s • ((γ⁻¹).1 *ᵥ v) ∈ L := by
   intro F E _ _ _ _ _ c n G hG L hfg hL γ₀ N D hγ₀ hN hD

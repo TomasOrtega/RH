@@ -25,9 +25,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
 /- English proof (translation)
-Take `⟨p, hp, hp'⟩` from `h`. Take `⟨q, hq, hq'⟩` from `h'`. Establish `e : p = q`. Use function extensionality and compare the values at `i`. Conclude with `Over.OverMorphism.ext ((hp i).trans (hq i).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp', ← hq', e]`.
+A detailed English derivation is pending.
 -/
 theorem comb_eq {X : Scheme.{0}} {t : SAB H X} {K : Type} [CommRing K] {x : Sp K ⟶ X} {m : ℕ}
     {u : Fin m → (Sp (DualNumber K) ⟶ t.G.left)} {a : Fin m → K} {w w' : Sp (DualNumber K) ⟶ t.G.left}
@@ -40,11 +40,11 @@ theorem comb_eq {X : Scheme.{0}} {t : SAB H X} {K : Type} [CommRing K] {x : Sp K
   rw [← hp', ← hq', e]
 
 /- English proof (translation)
-Set `U : Fin m → TanM x Z.t.G` to `fun b => tanOf (hu.1 b).1`. Set `U' : Fin m → TanM x Z.t.G` to `fun b => tanOf (hu'.1 b).1`. Establish `e1 : ∀ j, U' j = ∑ b, S j b • U b` using `fun j => (isComb_iff U _ (U' j)).1 (hS j)`. Take `rfl : w = (tv (∑ j, a' j • U' j)).left` from `comb_eq h' ((isComb_iff U' a' _).2 rfl)`. Establish `hw : IsEigTan Z χ x τ (tv (∑ j, a' j • U' j)).left`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨isTan_tv _, fun o => ?_⟩` and prove the remaining obligations. Establish `e2 : ∀ j, actR Z.t.act o (U' j) = χ (embK c τ o) • U' j` using `fun j => tan_ext ((hu'.1 j).2 o)`. Establish `e3 : actR Z.t.act o (∑ j, a' j • U' j) = χ (embK c τ o) • ∑ j, a' j • U' j`. Simplify using `only [map_sum, map_smul, e2, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_comm _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun z => (tv z).left) e3`. Use `(hu.2 _ hw).unique h ((isComb_iff U _ _).2 ?_)` and prove the remaining obligations. Simplify using `only [e1, Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_change {K : Type} [CommRing K] {χ : c.F →+* K} {x : Sp K ⟶ Z.X} {τ : E →+* ℂ} {m : ℕ}
     {u u' : Fin m → (Sp (DualNumber K) ⟶ Z.t.G.left)} (hu : IsEigBasis Z χ x τ u) (hu' : IsEigBasis Z χ x τ u')
@@ -69,15 +69,13 @@ theorem coord_change {K : Type} [CommRing K] {χ : c.F →+* K} {x : Sp K ⟶ Z.
 end Free
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ e r τ dual Bs Bg Y M hM jB πB u π fl hL K _ y xb χ hy hχ v V f hf hx d hd hv hA V' f' hf' hx' d' hv'`. Establish `hχ' : (χ.comp e.toRingHom).comp e.symm.toRingHom = χ` using `RingHom.ext fun z => by simp`. Establish `hb : ∀ (U : Bs.Opens) (g : Fin r → Γ(M, U)) (hg : IsFrame g) (hU : ⊤ ≤ (xb ≫ jB) ⁻¹ᵁ U), IsEigBasis Z χ (xb ≫ πB ≫ genι Z) τ (u U g hg K xb hU)` using `fun U g hg hU => by`. Use `hL.1 U g hg K xb hU (χ.comp e.toRingHom) (by` as an intermediate fact. Establish `h1` using `congrArg (· ≫ spMap e.toRingHom) hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc] at h1`. Rewrite using `[h1]`. Conclude with `(Spec.map_comp _ _).symm)`. Rewrite `this` using `[hχ']`. Then use the resulting hypothesis. Establish `hxx : ⊤ ≤ (xb ≫ jB) ⁻¹ᵁ (V' ⊓ V)` using `fun p hp => ⟨hx' hp, hx hp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hS, hF⟩` from `GlobalTheory.T.flag_matrix_change_of_frame Bs Y M r hM π fl V' f' hf' V f hf K y (xb ≫ jB) hxx _ hy hA`. Establish `h2` using `hL.2.1 V' V f' f hf' hf K xb hx' hx hxx`. Use `set S : Matrix (Fin r) (Fin r) K := Matrix.of fun a b => TangentOrigin.evalPt (xb ≫ jB) (V' ⊓ V) hxx (trCo hf' f b a) with hSdef`. It suffices to establish `h : lieMat dual d' = lieMat dual d * S by rw [h]; exact hF`. Consider the cases of `dual`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext1 i j`. Conclude with `congrFun (coord_change (hb V' f' hf' hx') (hb V f hf hx) S h2 (hv' i) (hv i)) j`. Establish `h3 : d = d' * S.transpose` using `by ext1 i j`. Conclude with `congrFun (coord_change (hb V f hf hx) (hb V' f' hf' hx') S.transpose h2 (hv i) (hv' i)) j`. Establish `h4 : d'⁻¹ = S.transpose * d⁻¹` using `Matrix.inv_eq_right_inv (by rw [← Matrix.mul_assoc, ← h3, Matrix.mul_nonsing_inv _ hd])`.
-
-Simplify using `only [lieMat, cond_true]`. Rewrite using `[h4, Matrix.transpose_mul, Matrix.transpose_transpose]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem agreeAt_of_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (r : ℕ) (τ : E →+* ℂ) (dual : Bool) (Bs Bg Y : Scheme.{0}) (M : Bs.Modules) (hM : IsVB M r) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen Z) (u : FrAssign Z M r jB) (π : Y ⟶ Bs) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r), IsLieFrames Z e jB πB M r τ dual u → ∀ (K : Type) [CommRing K] (y : Sp K ⟶ Y) (xb : Sp K ⟶ Bg) (χ : c.F →+* K), y ≫ π = xb ≫ jB → xb ≫ πB ≫ genStr Z = spMap χ → ∀ (v : Fin r → (Sp (DualNumber K) ⟶ Z.t.G.left)) (V : Bs.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (hx : ⊤ ≤ (xb ≫ jB) ⁻¹ᵁ V) (d : Matrix (Fin r) (Fin r) K), IsUnit d.det → (∀ i, IsCombAtG Z.t (xb ≫ πB ≫ genι Z) (u V f hf K xb hx) (d i) (v i)) → FlagMat hM π fl hf y (lieMat dual d) → AgreeAt Z hM jB u π fl dual y xb (xb ≫ πB ≫ genι Z) v := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z F _ e r τ dual Bs Bg Y M hM jB πB u π fl hL K _ y xb χ hy hχ v V f hf hx d hd hv hA

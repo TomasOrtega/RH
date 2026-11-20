@@ -12,7 +12,7 @@ open MeasureTheory Matrix Filter Topology Formalism.BasicNotions Formalism.MainN
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GaugeQuot.BallProd.ballVol_succ_sq` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FBallVolSuccSq.lean&line=58#L58)
 -/

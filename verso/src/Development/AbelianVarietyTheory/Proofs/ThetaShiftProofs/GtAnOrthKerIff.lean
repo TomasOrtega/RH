@@ -11,13 +11,13 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 namespace GlobalTheory.ArcPts
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H _ D l c O _ β _ _ b a Λ v`. Take `⟨-, -, htor, hlam⟩` from `GlobalTheory.T.analyticDictionaryExp_kernel_iota_torusPoints E H D l c O β b a Λ`. Establish `hε : ∀ x : Λ.A.X, Λ.ε x = 0 ↔ x = 0` using `fun x => map_eq_zero_iff _ Λ.ε.injective`. Simplify using `only [hε]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨((Λ.A.orth_ker_iff v).1 h).1, fun s => ?_⟩` and prove the remaining obligations. Take `⟨h2, h1⟩` from `Λ.A.smul_periodMap_of_orthogonal_ker h s`. Establish `hz : s • Λ.A.P0 v = ((s • Λ.A.P0 v).1, 0)` using `Prod.ext rfl h2`. Use `⟨fun x => eTwoPi ((s • Λ.A.P0 v).1 (Λ.ε.symm x)), ?_, fun v' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `htor (s • Λ.A.P0 v).1` as an intermediate fact. Rewrite `this` using `[← hz]`. Then use the resulting hypothesis. Establish `h3 : Λ.ε.symm (Λ.ε v'.y) = v'.y` using `Λ.ε.symm_apply_apply _`. Simplify using `only [h3, h1]`. Introduce and unpack `⟨hv, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `(Λ.A.orth_ker_iff_forall_smul_mem v).2 ⟨hv, fun s => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, -⟩` from `h s`. Conclude with `hlam _ x hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gtAn_orth_ker_iff : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (Λ : GtAn a) (v : Λ.A.La), (∀ v' : Λ.A.La, Λ.ε v'.y = 0 → Λ.A.EF v v' = 0) ↔ (Λ.ε v.y = 0 ∧ ∀ s : ℂ, ∃ x, IsTorusPt (Λ.ex0 (s • Λ.A.P0 v)) x ∧ ∀ v' : Λ.A.La, x (Λ.ε v'.y) = eTwoPi (-(s * Λ.A.EF v v'))) := by
   intro _ _ E _ _ _ H _ D l c O _ β _ _ b a Λ v

@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext fun k => (h k).trans (h' k).symm`.
+A detailed English derivation is pending.
 -/
 theorem levelK_unique {V : HSp D} {N : ℕ} {Kf Kf' : Subgroup (GA D V)} (h : IsLevelK V N Kf)
     (h' : IsLevelK V N Kf') : Kf = Kf' :=
@@ -42,7 +42,7 @@ def L2Independence (D : D7) : Prop :=
       l2C U σ V dict mu (xiR D) a n hl f = l2C U' σ V dict' mu' (xiR D) a n hl' f
 
 /- English proof (translation)
-Substitute `hV1` using the available equality. Substitute `hV2` using the available equality. Take `rfl` from `levelK_unique hK1 hK2`. Conclude with `hL Q j U U' hU hU' σ hσ _ rfl Kf1 hK1 hF dict dict' mu mu' hd hd' hm hm' hc hc' a n hdom hl hl' f hf hf'`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem l2_independent_two_spaces (hL : L2Independence D) (Q : Par D) (j : ℕ) (U U' : ∀ σ : Q.c.F →+* ℂ, Unf (Q.Xo j) Q.c σ D.R.r)
     (hU : ∀ σ, GoodEmb Q.c σ → IsUnf (U σ)) (hU' : ∀ σ, GoodEmb Q.c σ → IsUnf (U' σ))
@@ -65,7 +65,7 @@ theorem l2_independent_two_spaces (hL : L2Independence D) (Q : Par D) (j : ℕ) 
   exact hL Q j U U' hU hU' σ hσ _ rfl Kf1 hK1 hF dict dict' mu mu' hd hd' hm hm' hc hc' a n hdom hl hl' f hf hf'
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[mem_cusp, mem_cusp]`. Use `and_congr_right fun hf => forall_congr' fun σ => forall_congr' fun hσ => ?_` and prove the remaining obligations. Conclude with `(hR Q j σ hσ (U σ) (U' σ) (hU σ hσ) (hU' σ hσ) a n hdom f hf).1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cusp_eq_of_rd (hR : RdUIndep D) (Q : Par D) (j : ℕ) (U U' : ∀ σ : Q.c.F →+* ℂ, Unf (Q.Xo j) Q.c σ D.R.r)
     (hU : ∀ σ, GoodEmb Q.c σ → IsUnf (U σ)) (hU' : ∀ σ, GoodEmb Q.c σ → IsUnf (U' σ))
@@ -77,13 +77,13 @@ theorem cusp_eq_of_rd (hR : RdUIndep D) (Q : Par D) (j : ℕ) (U U' : ∀ σ : Q
   exact (hR Q j σ hσ (U σ) (U' σ) (hU σ hσ) (hU' σ hσ) a n hdom f hf).1
 
 /- English proof (translation)
-Introduce `T U V dict mu Kf h h' j hj w`. Establish `hU : ∀ σ, GoodEmb T.Q.c σ → IsUnf (T.U j σ)` using `h.unf j hj`. Establish `hU' : ∀ σ, GoodEmb T.Q.c σ → IsUnf (U j σ)` using `h'.unf j hj`. Establish `hC : T.C j w = Core.C { T with U` using `U, V := V, dict := dict, mu := mu, Kf := Kf } j w := cusp_eq_of_rd hR T.Q j (T.U j) (U j) hU hU' (wtA w) w.n (dom_wtA w)`. Use `⟨hC, fun σ f hf => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ` using `goodEmb_goodOf T.Q.c σ`. Establish `hmem` using `((mem_cusp _ _ _ _ _ f).1 hf).2 _ hσ`. Establish `hsec` using `((mem_cusp _ _ _ _ _ f).1 hf).1`. Establish `e` using `(hR T.Q j _ hσ (T.U j _) (U j _) (hU _ hσ) (hU' _ hσ) (wtA w) w.n (dom_wtA w) f hsec).2 hmem`. Use `show supC (T.Q.Xo j) T.Q.c (T.U j) (xiR D) (goodOf T.Q.c σ) (wtA w) w.n f = supC (T.Q.Xo j) T.Q.c (U j) (xiR D) (goodOf T.Q.c σ) (wtA w) w.n f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `supC`. Rewrite using `[e]`. Establish `hσ` using `goodEmb_goodOf T.Q.c σ`. Establish `hf' : f ∈ Core.C { T with U` using `U, V := V, dict := dict, mu := mu, Kf := Kf } j w := hC ▸ hf`. Unfold `NlM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hj, dif_pos hj]`. Conclude with `l2_independent_two_spaces hL T.Q j (T.U j) (U j) hU hU' _ hσ _ _ (h.spaceW j hj _ hσ) (h'.spaceW j hj _ hσ) _ _ (h.levelK j hj _ hσ) (h'.levelK j hj _ hσ) (h.finVol j hj _ hσ) _ _ _ _ (h.dictU j hj _ hσ) (h'.dictU j hj _ hσ) (h.muUnit j hj _ hσ) (h'.muUnit j hj _ hσ) (h.muCont j …`.
+A detailed English derivation is pending.
 -/
 theorem cxIndep_of (hR : RdUIndep D) (hL : L2Independence D) : CxIndep D := by
   intro T U V dict mu Kf h h' j hj w

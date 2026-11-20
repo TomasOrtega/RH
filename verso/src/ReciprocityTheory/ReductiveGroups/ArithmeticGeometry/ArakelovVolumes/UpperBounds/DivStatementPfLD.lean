@@ -9,9 +9,9 @@ noncomputable section
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : (fun z : V n => L z) =O[𝓝 0] fun z => z` using `(L : V n →L[ℂ] V n).isBigO_id _`. Establish `h2 : (fun z : V n => (L z) k) =O[𝓝 0] fun z => L z`. Use `IsBigO.of_bound 1 (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact norm_le_pi_norm (L z) k`. Consider the case `exact PiLp.norm_apply_le (L z) k`. Consider the case `simpa using norm_le_pi_norm (L z) k`. Conclude with `(h2.trans h1).trans (isBigO_norm_right.mpr (isBigO_refl _ _))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comp_O (L : V n ≃L[ℂ] V n) (k : Fin n) :
     (fun z : V n => (L z) k) =O[𝓝 0] fun z => ‖z‖ := by
@@ -26,9 +26,9 @@ theorem comp_O (L : V n ≃L[ℂ] V n) (k : Fin n) :
   exact (h2.trans h1).trans (isBigO_norm_right.mpr (isBigO_refl _ _))
 
 /- English proof (translation)
-Establish `h` using `hg.differentiableAt.hasFDerivAt.isBigO_sub`. Simplify using `only [sub_zero] at h`. Establish `h2` using `h.neg_left`. Simplify using `only [neg_sub] at h2`. Simplify using `only [pow_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h2.trans (isBigO_norm_right.mpr (isBigO_refl _ _))`.
+A detailed English derivation is pending.
 -/
 theorem sub_val_O {g : V n → ℂ} (hg : AnalyticAt ℂ g 0) :
     (fun z => g 0 - g z) =O[𝓝 0] fun z => ‖z‖ ^ 1 := by
@@ -40,33 +40,29 @@ theorem sub_val_O {g : V n → ℂ} (hg : AnalyticAt ℂ g 0) :
   exact h2.trans (isBigO_norm_right.mpr (isBigO_refl _ _))
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `taylor_step hG hGO`. Take `⟨a, ha⟩` from `multilinear_expand q L`. Use `⟨a, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hWev : ∀ᶠ z in 𝓝 (0 : V n), W z ≠ 0` using `hW.continuousAt.eventually_ne hW0`. Establish `hφan : ∀ i, AnalyticAt ℂ (fun y => S i y / W y) 0` using `fun i => (hS i).div hW hW0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφℓ : ∀ i, (fun z => S i z / W z - (L z) i) =O[𝓝 0] fun z => ‖z‖ ^ 2`. Introduce `i`. Conclude with `(taylor2 (hφan i)).congr' (Filter.Eventually.of_forall fun z => by`. Simplify using `only [hS0 i, zero_div, sub_zero, ← hL i z]) Filter.EventuallyEq.rfl`. Establish `hℓO : ∀ i, (fun z => (L z) i) =O[𝓝 0] fun z => ‖z‖` using `fun i => comp_O L i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφO : ∀ i, (fun z => S i z / W z) =O[𝓝 0] fun z => ‖z‖`. Introduce `i`. Establish `h2 : (fun z => S i z / W z - (L z) i) =O[𝓝 0] fun z => ‖z‖` using `((hφℓ i).trans (isBigO_norm_pow_of_le (F := V n) (by norm_num : 1 ≤ 2))).congr' Filter.EventuallyEq.rfl (Filter.Eventually.of_forall fun z => pow_one _)`. Conclude with `(h2.add (hℓO i)).congr' (Filter.Eventually.of_forall fun z => sub_add_cancel _ _) Filter.EventuallyEq.rfl`. Establish `hprodO : ∀ u : Fin n → V n → ℂ, (∀ i, u i =O[𝓝 0] fun z => ‖z‖) → ∀ (e : Fin n → ℕ) (s : Finset (Fin n)), (fun z => ∏ i ∈ s, u i z ^ e i) =O[𝓝 0] fun z => ‖z‖ ^ (∑ i ∈ s, e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `u hu e s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Conclude with `(isBigO_const_const (1 : ℂ) (one_ne_zero : (1 : ℝ) ≠ 0) (𝓝 (0 : V n))).congr' (Filter.Eventually.of_forall fun z => by simp) (Filter.Eventually.of_forall fun z => by simp)`. Consider the case `insert a s ha ih`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `(((hu a).pow (e a)).mul ih).congr' (Filter.Eventually.of_forall fun z => ?_) (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Finset.prod_insert ha]`. Simplify using `only [Finset.sum_insert ha, pow_add]`. Establish `hsplit : (fun z => G z - ∑ α ∈ Finset.Nat.antidiagonalTuple n d, ∑ k, c α k * (∏ i, S i z ^ α i) * W z ^ (T - d) * Tt k z) = fun z => (G z - q (fun _ => z)) + ∑ α ∈ Finset.Nat.antidiagonalTuple n d, (a α * ∏ k, (L z) k ^ α k - ∑ k, c α k * (∏ i, S i z ^ α i) * W z ^ (T - d) * Tt …`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_sub_distrib, ← ha z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∀ α ∈ Finset.Nat.antidiagonalTuple n d, (fun z => a α * ∏ k, (L z) k ^ α k - ∑ k, c α k * (∏ i, S i z ^ α i) * W z ^ (T - d) * Tt k z) =O[𝓝 0] fun z => ‖z‖ ^ (d + 1)`. Introduce `α hα`. Establish `hsumα : ∑ i, α i = d` using `Finset.Nat.mem_antidiagonalTuple.mp hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsumAn : AnalyticAt ℂ (fun z => ∑ k, c α k * Tt k z) 0`. Establish `hfun : (fun z => ∑ k, c α k * Tt k z) = ∑ k, fun z => c α k * Tt k z`. Use function extensionality and compare the values at `z`. Simplify using `[Finset.sum_apply]`. Rewrite using `[hfun]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.analyticAt_sum Finset.univ fun k _ => analyticAt_const.mul (hT k)`. Establish `hH : AnalyticAt ℂ (fun z => W z ^ T * ∑ k, c α k * Tt k z) 0`. Conclude with `(hW.pow T).mul hsumAn`. Establish `hH0 : W 0 ^ T * ∑ k, c α k * Tt k 0 = a α`. Rewrite using `[← hc α hα, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hdiffH` using `sub_val_O hH`. Establish `hP` using `prod_pow_sub Finset.univ (fun i z => (L z) i) (fun i z => S i z / W z) α hℓO hφO (fun i => (hφℓ i).neg_left.congr' (Filter.Eventually.of_forall fun z => by first`. Consider the case `ring`. Consider the case `(simp only []; ring)) Filter.EventuallyEq.rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφα` using `hprodO (fun i z => S i z / W z) hφO α Finset.univ`. Establish `hmain : (fun z => a α * (∏ i, (L z) i ^ α i - ∏ i, (S i z / W z) ^ α i) + (∏ i, (S i z / W z) ^ α i) * (W 0 ^ T * ∑ k, c α k * Tt k 0 - W z ^ T * ∑ k, c α k * Tt k z)) =O[𝓝 0] fun z => ‖z‖ ^ (d + 1)`. Use `IsBigO.add ?_ ?_` and prove the remaining obligations. Conclude with `(hP.const_mul_left (a α)).congr' (Filter.Eventually.of_forall fun z => rfl) (Filter.Eventually.of_forall fun z => by simp only [hsumα])`. Conclude with `(hφα.mul hdiffH).congr' (Filter.Eventually.of_forall fun z => rfl) (Filter.Eventually.of_forall fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [pow_one]`. Rewrite using `[← pow_succ, hsumα])`. Use `hmain.congr' (hWev.mono fun z hz => ?_) Filter.EventuallyEq.rfl` and prove the remaining obligations. Establish `hSz : ∏ i, S i z ^ α i = (∏ i, (S i z / W z) ^ α i) * W z ^ d`. Rewrite using `[← hsumα, ← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, div_mul_cancel₀ _ hz]`. Establish `hWT : W z ^ T = W z ^ d * W z ^ (T - d)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hd]`. Establish `hsumk : ∑ k, c α k * ((∏ i, (S i z / W z) ^ α i) * W z ^ d) * W z ^ (T - d) * Tt k z = (∏ i, (S i z / W z) ^ α i) * (W z ^ T * ∑ k, c α k * Tt k z)`.
-
-Rewrite using `[hWT, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `beta_reduce`. Rewrite using `[hH0, hSz, hsumk]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hsplit]`. Conclude with `hq.add ((IsBigO.sum hsum).congr' (Filter.Eventually.of_forall fun z => by simp only [Finset.sum_apply]) Filter.EventuallyEq.rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_step {δ T d : ℕ} (hd : d ≤ T) (W : V n → ℂ) (S : Fin n → V n → ℂ)
     (Tt : Fin δ → V n → ℂ) (L : V n ≃L[ℂ] V n)

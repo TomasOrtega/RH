@@ -14,14 +14,14 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.DVR.res_res' h1 h2 x`.
+A detailed English derivation is pending.
 -/
 theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(X, U)ˣ) :
     res h2 (res h1 x) = res (h2.trans h1) x :=
   ReciprocityTheory.ChartRestriction.G.DVR.res_res' h1 h2 x
 
 /- English proof (translation)
-Rewrite using `[gs_res (𝟙 Y) y hV hy, gs_pull (𝟙 Y) h y U (hV hy), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gs_idRes_lemma {X Y : Scheme.{0}} (h : Y ⟶ X) {U : X.Opens} {W : Y.Opens}
     (hV : W ≤ h ⁻¹ᵁ U) (y : Y) (hy : y ∈ W) (x : Γ(X, U)) :
@@ -33,11 +33,11 @@ section Corr
 variable {X Y Z : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Introduce `j j' hj hj' hjj`. Establish `hc : LB.Coh L φ j` using `fun k1 k2 e => hj k1 k2 (congrArg (fun f => h ≫ f) e)`. Establish `hc' : LB.Coh L φ' j'` using `fun k1 k2 e => hj' k1 k2 (congrArg (fun f => h ≫ f) e)`. Establish `hx : ∀ k k', φ k = φ' k' → j k = j' k'` using `fun k k' e => hjj k k' (congrArg (fun f => h ≫ f) e)`. Establish `E` using `congrArg Units.val (H j j' hc hc' hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [LB.pullGen, res, pullU, Units.coe_map, MonoidHom.coe_coe] at E ⊢`. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hy1 : h y ∈ LB.wchart L φ j ⊓ LB.wchart L φ' j'` using `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 k⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `erw [gs_res (𝟙 Z) y _ hy, gs_idRes_lemma h _ y hy.1]`. Use `erw [gs_res (𝟙 Z) y _ hy, gs_idRes_lemma h _ y hy.2]`. Use `erw [← gs_res h y inf_le_left hy1, ← gs_res h y inf_le_right hy1]`. Conclude with `congrArg _ E`.
+A detailed English derivation is pending.
 -/
 theorem corr_pullGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')} (H : LB.Gen.Corr L φ ε φ' ε' t t')
@@ -59,7 +59,7 @@ theorem corr_pullGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y �
   exact congrArg _ E
 
 /- English proof (translation)
-Introduce `j j' _ _ hjj`. Take `rfl : j = j'` from `funext fun k => hjj k k rfl`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem corr_refl {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) : LB.Gen.Corr L φ ε φ ε t t := by
   intro j j' _ _ hjj
@@ -75,7 +75,7 @@ variable {Xo : Moduli Dw l}
 variable {Y Z : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Introduce `j j' hj hj' hjj`. Establish `e` using `Hc j j' hj hj' hjj`. Establish `key : ∀ {U V : Y.Opens} (hle : V ≤ U) (a b : Γ(Y, U)ˣ), res hle (a * b) = res hle a * res hle b` using `fun hle a b => map_mul _ a b`. Use `erw [key, key, res_res', res_res', e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem corr_scale {φ : K → (Y ⟶ Xo.univ.t.G.left)} {ε : K → ℤ} {φ' : K' → (Y ⟶ Xo.univ.t.G.left)} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)} {t' : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ' ε')}
@@ -88,7 +88,7 @@ theorem corr_scale {φ : K → (Y ⟶ Xo.univ.t.G.left)} {ε : K → ℤ} {φ' :
   erw [key, key, res_res', res_res', e]
 
 /- English proof (translation)
-Introduce `j j' hj hj' hjj`. Establish `key : ∀ {U V : Y.Opens} (hle : V ≤ U) (a : Γ(Y, U)ˣ), res hle (a ^ k) = res hle a ^ k` using `fun hle a => map_pow _ a k`. Use `show res _ (t.s j ^ k) = res _ (t'.s j' ^ k)`. Use `erw [key, key]`. Conclude with `congrArg (· ^ k) (Hc j j' hj hj' hjj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem corr_genPow {φ : K → (Y ⟶ Xo.univ.t.G.left)} {ε : K → ℤ} {φ' : K' → (Y ⟶ Xo.univ.t.G.left)} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)} {t' : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ' ε')}
@@ -102,9 +102,9 @@ theorem corr_genPow {φ : K → (Y ⟶ Xo.univ.t.G.left)} {ε : K → ℤ} {φ' 
   exact congrArg (· ^ k) (Hc j j' hj hj' hjj)
 
 /- English proof (translation)
-Simplify using `only [genPow, scaleGen, LB.pullGen, mul_pow, map_pow]`. Establish `hp : ∀ {U : Y.Opens} {W : Z.Opens} (hle : W ≤ h ⁻¹ᵁ U) (x : Γ(Y, U)ˣ), res hle (pullU h U (x ^ k)) = res hle (pullU h U x) ^ k` using `fun hle x => by rw [map_pow, map_pow]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(hp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem genPow_scale_pull {φ : K → (Y ⟶ Xo.univ.t.G.left)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε))
     (h : Z ⟶ Y) (w : Γ(Z, ⊤)ˣ) (k : ℕ) :
@@ -126,7 +126,7 @@ variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `j`. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hy2 : (h2 ▷ A).left y ∈ (LPow A L a T2).U j` using `chart_le_res A L (h2 ▷ A) (whiskerRight_snd _ _) a j hy`. Rewrite using `[GermD.pullSec_stalk (A := A) (L := L) a e2 (𝟙 _) y j hy, Category.id_comp, GermD.pullSec_stalk (A := A) (L := L) a e1 (h2 ▷ A).left y j hy2, gs_idRes_lemma _ _ y hy, comp_whiskerRight, Over.comp_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullSec_comp (a : ℤ) {T1 T2 T3 : Over S0} (h1 : T2 ⟶ T1) (h2 : T3 ⟶ T2)
     {s1 : LB.Sec (LPow A L a T1)} {s2 : LB.Sec (LPow A L a T2)} {s3 : LB.Sec (LPow A L a T3)}
@@ -143,7 +143,7 @@ theorem isPullSec_comp (a : ℤ) {T1 T2 T3 : Over S0} (h1 : T2 ⟶ T1) (h2 : T3 
     gs_idRes_lemma _ _ y hy, comp_whiskerRight, Over.comp_left]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hs`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isPullSec_congr (a : ℤ) {T T' : Over S0} {h h' : T' ⟶ T} (e : h = h')
     {s : LB.Sec (LPow A L a T)} {s' : LB.Sec (LPow A L a T')}
@@ -153,7 +153,7 @@ theorem isPullSec_congr (a : ℤ) {T T' : Over S0} {h h' : T' ⟶ T} (e : h = h'
   exact hs
 
 /- English proof (translation)
-Establish `e : ptSecT A (h ≫ z) ≫ (h ▷ A) = h ≫ ptSecT A z`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [ptSecT]`. Establish `e2` using `congrArg (fun f => f.left) e`. Simplify using `using e2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ptSecT_whisker {T T' : Over S0} (h : T' ⟶ T) (z : T ⟶ A) :
     (ptSecT A (h ≫ z)).left ≫ (h ▷ A).left = h.left ≫ (ptSecT A z).left := by
@@ -170,17 +170,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Introduce `j`. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hy2 : h.left y ∈ LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => z.left) j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Establish `hy3 : (ptSecT Xo.univ.t.G z).left (h.left y) ∈ (LPow Xo.univ.t.G Xo.univ.t.PP.L a T).U j` using `val_le Xo.univ.t.G Xo.univ.t.PP.L z j hy2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1 : (ptSecT Xo.univ.t.G (h ≫ z)).left y ∈ (LPow Xo.univ.t.G Xo.univ.t.PP.L a T').U j` using `val_le Xo.univ.t.G Xo.univ.t.PP.L (h ≫ z) j hy`. Establish `hv' : gs h.left y ⊤ v * gs h.left y _ (τ.s j).val = gs (h.left ≫ (ptSecT Xo.univ.t.G z).left) y _ (s.f j)`. Establish `e` using `congrArg (gs h.left y (LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => z.left) j)) (hv j)`. Rewrite `e` using `[gs_mul _ _ _ hy2, gs_res h.left y le_top hy2, gs_res h.left y (val_le Xo.univ.t.G Xo.univ.t.PP.L z j) hy2]`. Conclude with `e.symm.trans (gs_pull h.left (ptSecT Xo.univ.t.G z).left y ((LPow Xo.univ.t.G Xo.univ.t.PP.L a T).U j) hy3 (s.f j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : gs (𝟙 T'.left) y ⊤ ((h.left.appTop).hom v) = gs h.left y ⊤ v`. Use `gs_pull (𝟙 T'.left) h.left y ⊤ trivial v` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `this`. Establish `lhs : gs (𝟙 T'.left) y (LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (h ≫ z).left) j) ((T'.left.presheaf.map (homOfLE (val_le Xo.univ.t.G Xo.univ.t.PP.L (h ≫ z) j)).op).hom (((ptSecT Xo.univ.t.G (h ≫ z)).left.app _).hom (s'.f j))) = gs h.left y ⊤ v * gs h.left y (LB.wchart Xo.univ. …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gs_idRes_lemma _ _ y hy _).trans ?_` and prove the remaining obligations. Use `(GermD.pullSec_stalk (A := Xo.univ.t.G) (L := Xo.univ.t.PP.L) a hs _ y j hy1).trans ?_` and prove the remaining obligations. Rewrite using `[ptSecT_whisker Xo.univ.t.G h z]`. Conclude with `hv'.symm`. Establish `pgle : LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (h ≫ z).left) j ≤ h.left ⁻¹ᵁ LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => z.left) j` using `fun _ hx => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ex2 : (show Γ(T'.left, LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (h ≫ z).left) j) from ((scaleGen _ _ w (LB.pullGen Xo.univ.t.PP.L _ _ τ h.left)).s j).val) = (T'.left.presheaf.map (homOfLE (le_top : LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (h ≫ z).left) j ≤ ⊤)).op).hom w.val * …` using `rfl`. Establish `rhs : gs (𝟙 T'.left) y (LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (h ≫ z).left) j) ((T'.left.presheaf.map (homOfLE (le_top : LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (h ≫ z).left) j ≤ ⊤)).op).hom ((h.left.appTop).hom v * ((w⁻¹ : Γ(T'.left, ⊤)ˣ) : Γ(T'.left, ⊤))) * (show Γ(T'.l …`. Rewrite using `[ex2, map_mul, gs_mul (𝟙 _) y _ hy, gs_mul (𝟙 _) y _ hy, gs_mul (𝟙 _) y _ hy, gs_res (𝟙 _) y le_top hy, gs_res (𝟙 _) y le_top hy, gs_res (𝟙 _) y pgle hy]`. Use `erw [gs_pull (𝟙 _) h.left y (LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => z.left) j) (pgle hy)]`. Rewrite using `[Category.id_comp, e1]`.
-
-Use `erw [gs_res (𝟙 _) y (le_top : LB.wchart Xo.univ.t.PP.L (fun _ : Fin 1 => (h ≫ z).left) j ≤ ⊤) hy (w : Γ(T'.left, ⊤))]`. Rewrite using `[gs_unit (𝟙 _) y ⊤ trivial w⁻¹, gs_unit (𝟙 _) y ⊤ trivial w, map_inv, mul_assoc (gs h.left y ⊤ v), Units.inv_mul_cancel_left]`. Conclude with `lhs.trans rhs.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isValueAt_pullScale (hL : Xo.univ.t.PP.L.IsLB) (a : ℤ) {T T' : Over Xo.X} (h : T' ⟶ T)
     {s : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L a T)} {s' : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L a T')}

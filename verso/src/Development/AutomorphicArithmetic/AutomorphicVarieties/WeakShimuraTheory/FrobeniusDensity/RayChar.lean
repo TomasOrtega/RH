@@ -14,7 +14,7 @@ private noncomputable def rcExt (f : Ideal (𝓞 K) → C) (I : FractionalIdeal 
   ∏ᶠ v : HeightOneSpectrum (𝓞 K), f v.asIdeal ^ FractionalIdeal.count K v I
 
 /- English proof (translation)
-Establish `h` using `FractionalIdeal.finite_factors (K := K) I`. Rewrite `h` using `[Filter.eventually_cofinite]`. Use `h.subset fun v hv h0 => hv ?_` and prove the remaining obligations. Simplify using `only [h0, zpow_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem rcExt_fin (f : Ideal (𝓞 K) → C) (I : FractionalIdeal (𝓞 K)⁰ K) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) => f v.asIdeal ^ FractionalIdeal.count K v I).Finite := by
@@ -24,7 +24,7 @@ private theorem rcExt_fin (f : Ideal (𝓞 K) → C) (I : FractionalIdeal (𝓞 
   simp only [h0, zpow_zero]
 
 /- English proof (translation)
-Unfold `rcExt`. Rewrite using `[← finprod_mul_distrib (rcExt_fin f I) (rcExt_fin f J)]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.count_mul K v hI hJ, zpow_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rcExt_mul (f : Ideal (𝓞 K) → C) {I J : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0) :
     rcExt f (I * J) = rcExt f I * rcExt f J := by
@@ -34,14 +34,14 @@ private theorem rcExt_mul (f : Ideal (𝓞 K) → C) {I J : FractionalIdeal (�
   rw [FractionalIdeal.count_mul K v hI hJ, zpow_add]
 
 /- English proof (translation)
-Unfold `rcExt`. Simplify using `only [FractionalIdeal.count_one, zpow_zero, finprod_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem rcExt_one (f : Ideal (𝓞 K) → C) : rcExt f 1 = 1 := by
   unfold rcExt
   simp only [FractionalIdeal.count_one, zpow_zero, finprod_one]
 
 /- English proof (translation)
-Unfold `rcExt`. Rewrite using `[finprod_eq_single _ w]`. Rewrite using `[FractionalIdeal.count_self, zpow_one]`. Introduce `v hv`. Rewrite using `[FractionalIdeal.count_maximal_coprime K v hv.symm, zpow_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rcExt_prime (f : Ideal (𝓞 K) → C) (w : HeightOneSpectrum (𝓞 K)) :
     rcExt f (w.asIdeal : FractionalIdeal (𝓞 K)⁰ K) = f w.asIdeal := by
@@ -52,11 +52,11 @@ private theorem rcExt_prime (f : Ideal (𝓞 K) → C) (w : HeightOneSpectrum (�
     rw [FractionalIdeal.count_maximal_coprime K v hv.symm, zpow_zero]
 
 /- English proof (translation)
-Establish `h1 : f 1 = 1`. Use `hm 1 1 one_ne_zero one_ne_zero isCoprime_one_left isCoprime_one_left` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_mul.1 this`. Use `UniqueFactorizationMonoid.induction_on_prime J (fun h => absurd rfl h) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx _ _`. Rewrite using `[isUnit_iff_eq_one.1 hx, h1, Ideal.one_eq_top, FractionalIdeal.coeIdeal_top, rcExt_one]`. Introduce `a p ha hp ih _ hc`. Establish `hp0 : p ≠ ⊥` using `hp.ne_zero`. Rewrite using `[FractionalIdeal.coeIdeal_mul, rcExt_mul f (FractionalIdeal.coeIdeal_ne_zero.2 hp0) (FractionalIdeal.coeIdeal_ne_zero.2 ha), ih ha hc.of_mul_left_right, hm p a hp0 ha hc.of_mul_left_left hc.of_mul_left_right]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `rcExt_prime f ⟨p, Ideal.isPrime_of_prime hp, hp0⟩`.
+A detailed English derivation is pending.
 -/
 private theorem rcExt_coe (𝔪 : Ideal (𝓞 K)) (f : Ideal (𝓞 K) → C)
     (hm : ∀ I J, I ≠ ⊥ → J ≠ ⊥ → IsCoprime I 𝔪 → IsCoprime J 𝔪 → f (I * J) = f I * f J)
@@ -77,25 +77,21 @@ private theorem rcExt_coe (𝔪 : Ideal (𝓞 K)) (f : Ideal (𝓞 K) → C)
     exact rcExt_prime f ⟨p, Ideal.isPrime_of_prime hp, hp0⟩
 
 /- English proof (translation)
-Set `D : Ideal (𝓞 K)` to `{ carrier := {c | ∃ d : 𝓞 K, x * algebraMap (𝓞 K) K c = algebraMap (𝓞 K) K d} zero_mem' := ⟨0, by simp⟩ add_mem' := by`. Introduce and unpack `a b ⟨d, hd⟩ ⟨e, he⟩`. Conclude with `⟨d + e, by rw [map_add, mul_add, hd, he, map_add]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r a ⟨d, hd⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨r * d, by rw [smul_eq_mul, map_mul, map_mul, ← hd]; ring⟩ }`. Establish `hsup : D ⊔ 𝔪 = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hM0 : M ≠ ⊥` using `fun h => h𝔪 (le_bot_iff.1 (h ▸ le_sup_right.trans hle))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `v : HeightOneSpectrum (𝓞 K)` to `⟨M, hM.isPrime, hM0⟩`. Establish `hv : v.asIdeal ∣ 𝔪` using `Ideal.dvd_iff_le.2 (le_sup_right.trans hle)`. Establish `h1 : v.valuation K x ≤ 1` using `(hx v hv).trans (by`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use the proof step `omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, d, hd⟩` from `v.exists_primeCompl_mul_eq_of_integer x h1`. Conclude with `d.2 (hle (Ideal.mem_sup_left (show (d : 𝓞 K) ∈ D from ⟨n, hd⟩)))`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hc0, hc1⟩ : ∃ c ∈ D, c ≠ 0 ∧ c - 1 ∈ 𝔪 := by`. Take `⟨c, hc, m, hm, e⟩` from `Submodule.mem_sup.1 (hsup ▸ Submodule.mem_top : (1 : 𝓞 K) ∈ D ⊔ 𝔪)`. Establish `h1 : c - 1 ∈ 𝔪`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← e, sub_add_cancel_left]`. Conclude with `𝔪.neg_mem hm`. Distinguish the cases in `h0 : c = 0`. Take `⟨n, d, hd, e'⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨d, ⟨n, ?_⟩, hd0, ?_⟩` and prove the remaining obligations. Rewrite using `[← e', div_mul_cancel₀]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 hd0`. Establish `: 𝔪 = ⊤`. Rewrite `e` using `[h0, zero_add]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Ideal.eq_top_iff_one _).2 (e ▸ hm)`. Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `⟨c, hc, h0, h1⟩`. Take `⟨d, hd⟩` from `hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, d, hc0, hc1, ?_, hd⟩` and prove the remaining obligations. Rewrite using `[← Ideal.iInf_maxPowDividing_eq h𝔪, Submodule.mem_iInf]`. Introduce `v`. Rewrite using `[HeightOneSpectrum.maxPowDividing_eq_pow_multiplicity h𝔪]`. Distinguish the cases in `hv : v.asIdeal ∣ 𝔪`.
-
-Rewrite using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.valuation_of_algebraMap (K := K)]`. Express the relevant statement in the definitionally equal form `v.valuation K (algebraMap (𝓞 K) K d) ≤ _`. Rewrite using `[← hd, map_mul]`. Conclude with `(mul_le_of_le_one_right' (v.valuation_le_one c)).trans (hx v hv)`. Rewrite using `[multiplicity_eq_zero.2 hv, pow_zero, Ideal.one_eq_top]`.
-
-Discharge the goal by the elementary cases of `trivial`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 private theorem rc_frac (𝔪 : Ideal (𝓞 K)) (h𝔪 : 𝔪 ≠ ⊥) (x : K)
     (hx : ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔪 →
@@ -148,7 +144,7 @@ private theorem rc_frac (𝔪 : Ideal (𝓞 K)) (h𝔪 : 𝔪 ≠ ⊥) (x : K)
   · rw [multiplicity_eq_zero.2 hv, pow_zero, Ideal.one_eq_top]; trivial
 
 /- English proof (translation)
-Rewrite using `[Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one]`. Establish `: (1 : 𝓞 K) = a - (a - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a)) (Ideal.mem_sup_right h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rc_cop {𝔪 : Ideal (𝓞 K)} {a : 𝓞 K} (h : a - 1 ∈ 𝔪) : IsCoprime (Ideal.span {a}) 𝔪 := by
   rw [Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one]
@@ -157,15 +153,13 @@ private theorem rc_cop {𝔪 : Ideal (𝓞 K)} {a : 𝓞 K} (h : a - 1 ∈ 𝔪)
   exact Ideal.sub_mem _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a)) (Ideal.mem_sup_right h)
 
 /- English proof (translation)
-Set `F₀ : 𝔪.coprimeIdeals →* C` to `{ toFun := fun I => rcExt f ((I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) map_one' := rcExt_one f map_mul' := fun I J => rcExt_mul f (Units.ne_zero _) (Units.ne_zero _) }`. Establish `key : ∀ a : 𝓞 K, a ≠ 0 → a - 1 ∈ 𝔪.ideal → rcExt f (FractionalIdeal.spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K a)) = 1` using `fun a ha ha1 => by`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, rcExt_coe 𝔪.ideal f hm _ (by rwa [Ne, Ideal.span_singleton_eq_bot]) (rc_cop ha1), h1 a ha ha1]`. Use `⟨QuotientGroup.lift _ F₀ ?_, fun w hw => rcExt_prime f w⟩` and prove the remaining obligations. Introduce `I hI`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, e⟩` from `𝔪.mem_principalRay.1 hI`. Take `⟨c, d, hc0, hc1, hd, hcd⟩` from `rc_frac 𝔪.ideal 𝔪.ideal_ne_bot ((a : K) - 1) (𝔪.mem_rayUnits.1 ha).1`. Establish `hcK : algebraMap (𝓞 K) K c ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 hc0`. Establish `e2 : (a : K) * algebraMap (𝓞 K) K c = algebraMap (𝓞 K) K (c + d)`. Rewrite using `[map_add, ← hcd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hb0 : c + d ≠ 0` using `fun h => by`. Rewrite `e2` using `[h, map_zero]`. Conclude with `mul_ne_zero a.ne_zero hcK e2`. Establish `hb1 : c + d - 1 ∈ 𝔪.ideal`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_sub_right_comm]`. Conclude with `Ideal.add_mem _ hc1 hd`. Establish `h3` using `key _ hb0 hb1`. Rewrite `h3` using `[← e2, ← FractionalIdeal.spanSingleton_mul_spanSingleton, rcExt_mul f (FractionalIdeal.spanSingleton_ne_zero_iff.2 a.ne_zero) (FractionalIdeal.spanSingleton_ne_zero_iff.2 hcK), key c hc0 hc1, mul_one]`. Express the relevant statement in the definitionally equal form `rcExt f ((I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) = 1`.
-
-Rewrite using `[← e, coe_toPrincipalIdeal]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rc_hom (𝔪 : GroundTheory.Global.Modulus K) (f : Ideal (𝓞 K) → C)
     (hm : ∀ I J, I ≠ ⊥ → J ≠ ⊥ → IsCoprime I 𝔪.ideal → IsCoprime J 𝔪.ideal → f (I * J) = f I * f J)
@@ -203,17 +197,15 @@ private theorem rc_hom (𝔪 : GroundTheory.Global.Modulus K) (f : Ideal (𝓞 K
 end UpperTheory.V.Ws.Tw
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ _ 𝔪 h𝔪 C _ f hm h1`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Set `M : GroundTheory.Global.Modulus K` to `⟨𝔪, h𝔪, ∅⟩`. Take `⟨F, hF⟩` from `rc_hom M f hm h1`. Use `haveI : NumberField (M.rayClassField Ω) := NumberField.of_module_finite K _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.IsAlgebraic (M.rayClassField Ω) Ω := Algebra.IsAlgebraic.tower_top (K := K) _`. Use `haveI : IsAlgClosure (M.rayClassField Ω) Ω := ⟨inferInstance, inferInstance⟩`. Set `r : G K Ω →* (M.rayClassField Ω ≃ₐ[K] M.rayClassField Ω)` to `AlgEquiv.restrictNormalHom (M.rayClassField Ω)`. Set `κ : G K Ω →* C` to `(F.comp (M.rayClassArtinEquiv Ω).symm.toMonoidHom).comp r`. Establish `hker : r.ker ≤ κ.ker` using `fun σ hσ => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `F ((M.rayClassArtinEquiv Ω).symm (r σ)) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hσ, map_one, map_one]`. Use `⟨κ, ?_, fun w hw A hA => ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono hker ?_` and prove the remaining obligations. Establish `: r.ker = (M.rayClassField Ω).fixingSubgroup` using `IntermediateField.restrictNormalHom_ker _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `IntermediateField.fixingSubgroup_isOpen _`. Take `⟨u, hu, hl⟩` from `CompanionTheory.FamInh.exists_place_between (L := M.rayClassField Ω) hA`. Establish `hI : u.asIdeal.inertia (M.rayClassField Ω ≃ₐ[K] M.rayClassField Ω) = ⊥` using `(CompanionTheory.FamInh.inertia_eq_bot_iff w u).2 (M.ramificationIdx_rayClassField_eq_one Ω hw u)`. Use `⟨fun σ hσ => hker ?_, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `CompanionTheory.FamInh.res_mem_inertia hu hσ` as an intermediate fact. Rewrite `this` using `[hI]`. Conclude with `this`. Use `haveI : Finite (𝓞 (M.rayClassField Ω) ⧸ u.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ u.ne_bot`. Establish `e : r σ = M.rayClassArtinEquiv Ω (M.primeClass hw)`.
-
-Rewrite using `[M.rayClassArtinEquiv_primeClass Ω hw u]`. Conclude with `GroundTheory.Global.IsArithFrobAt.eq_of_inertia_eq_bot (R := 𝓞 K) hI (CompanionTheory.FamInh.res_isArithFrobAt hu hσ) (_root_.IsArithFrobAt.arithFrobAt _ _ _)`. Express the relevant statement in the definitionally equal form `F ((M.rayClassArtinEquiv Ω).symm (r σ)) = _`. Rewrite using `[e, MulEquiv.symm_apply_apply, hF]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Tw.rayChar :
     ∀ (K Ω : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (𝔪 : Ideal (𝓞 K)), 𝔪 ≠ ⊥ → ∀ (C : Type) [CommGroup C] (f : Ideal (𝓞 K) → C), (∀ I J, I ≠ ⊥ → J ≠ ⊥ → IsCoprime I 𝔪 → IsCoprime J 𝔪 → f (I * J) = f I * f J) → (∀ a : 𝓞 K, a ≠ 0 → a - 1 ∈ 𝔪 → f (Ideal.span {a}) = 1) → ∃ κ : G K Ω →* C, IsOpen (κ.ker : Set (G K Ω)) ∧ ∀ w : HeightOneSpectrum (𝓞 K), ¬ w.asIdeal ∣ 𝔪 → ∀ A : ValuationSubring Ω, IsPlaceOver A w → Ine (F := K) A ≤ κ.ker ∧ ∀ σ : G K Ω, IsFrob A (normV w) σ → κ σ = f w.asIdeal := by

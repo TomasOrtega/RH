@@ -7,27 +7,27 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.InterlaceSignTwo
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `actual_hypotheses_of_parts actual_start zeta_commutes leading_term_alt spectral_two_by_two level_coordinates_commute types_complete`.
+A detailed English derivation is pending.
 -/
 theorem actual_spectral_hypotheses : Formalism.FourierDecayAlt.NF.ActualSHyp :=
   actual_hypotheses_of_parts actual_start zeta_commutes leading_term_alt spectral_two_by_two
     level_coordinates_commute types_complete
 
 /- English proof (translation)
-The claim follows from `normal_form_from_module theorem_S_ring actual_pre_level actual_hypotheses_of_parts level_coordinates_commute types_complete`.
+A detailed English derivation is pending.
 -/
 theorem normalFormFromModule_statement : Formalism.FourierDecayAlt.Q.NormalFormFromModule :=
   normal_form_from_module theorem_S_ring actual_pre_level actual_hypotheses_of_parts
     level_coordinates_commute types_complete
 
 /- English proof (translation)
-The claim follows from `JacquetIntegral.normalFormActual_of_fromModule normalFormFromModule_statement`.
+A detailed English derivation is pending.
 -/
 theorem normal_form_actual : Formalism.FourierDecayAlt.Q.NormalFormActual :=
   JacquetIntegral.normalFormActual_of_fromModule normalFormFromModule_statement
 
 /- English proof (translation)
-The claim follows from `JacquetIntegral.levelStartActual_of_fromModule normalFormFromModule_statement`.
+A detailed English derivation is pending.
 -/
 theorem level_start_actual : Formalism.FourierDecayAlt.Q.LevelStartActual :=
   JacquetIntegral.levelStartActual_of_fromModule normalFormFromModule_statement

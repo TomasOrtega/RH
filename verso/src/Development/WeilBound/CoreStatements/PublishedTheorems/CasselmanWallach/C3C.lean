@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.IsKUni
 namespace PositivityTheory.CW
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hgl hun S hfd hS hne`. Take `⟨w, hw, hw0, μ, hμ⟩` from `ReciprocityTheory.ChartRestriction.DS.exists_khw hgl (ReciprocityTheory.ChartRestriction.DS.isKUnitary_of_isInfUnitary hun) hfd hS hne`. Conclude with `⟨w, μ, hw, hw0, hμ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem c3c : KStableHighestWeightVector := by
   intro n ε V _ _ E hgl hun S hfd hS hne

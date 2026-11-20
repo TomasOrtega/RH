@@ -17,29 +17,27 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.PDiv
 
 /- English proof (translation)
-Establish `hle : kerIdeal f ≤ augIdeal R A`. Use `Ideal.map_le_iff_le_comap.mpr fun c hc => ?_` and prove the remaining obligations. Establish `hc' : counit (R` using `R) c = 0 := by simpa using hc`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Simplify `hc'` using `[CoalgHomClass.counit_comp_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hle hx`. Use `map_mkQ_comul_eq_zero := by`. Introduce `x hx`. Set `Q` to `A ⧸ kerIdeal f`. Set `q` to `Ideal.Quotient.mkₐ R (kerIdeal f)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Φ : A →ₐ[R] Q ⊗[R] Q` to `(Algebra.TensorProduct.map q q).comp (Bialgebra.comulAlgHom R A)`. Establish `hqf : ∀ c : C, q (f c) = algebraMap R Q (counit (R` using `R) c) := by`. Introduce `c`. Establish `hmem : f (c - algebraMap R C (counit (R` using `R) c)) ∈ kerIdeal f := by`. Use `Ideal.mem_map_of_mem (f : C →ₐ[R] A) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker]`. Simplify using the standard rewrite rules. Establish `h0 : q (f (c - algebraMap R C (counit (R` using `R) c))) = 0 := Ideal.Quotient.eq_zero_iff_mem.mpr hmem`. Rewrite `h0` using `[map_sub, map_sub, AlgHomClass.commutes, AlgHomClass.commutes, sub_eq_zero]`. Conclude with `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : q.toLinearMap ∘ₗ (f : C →ₗ[R] A) = Algebra.linearMap R Q ∘ₗ counit` using `LinearMap.ext hqf`. Establish `hΦ : kerIdeal f ≤ RingHom.ker Φ`. Use `Ideal.map_le_iff_le_comap.mpr fun c hc => ?_` and prove the remaining obligations. Establish `hc' : counit (R` using `R) c = 0 := by simpa using hc`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `TensorProduct.map q.toLinearMap q.toLinearMap (comul (f c)) = 0`. Rewrite using `[← CoalgHomClass.map_comp_comul_apply, ← LinearMap.comp_apply, ← TensorProduct.map_comp, hg]`. Establish `hsplit : TensorProduct.map (Algebra.linearMap R Q ∘ₗ counit) (Algebra.linearMap R Q ∘ₗ counit) = TensorProduct.map (Algebra.linearMap R Q) (Algebra.linearMap R Q ∘ₗ counit) ∘ₗ LinearMap.rTensor C (counit (R` using `R) (A := C)) := by`. Rewrite using `[LinearMap.rTensor, ← TensorProduct.map_comp, LinearMap.comp_id]`. Rewrite using `[hsplit, LinearMap.comp_apply, Coalgebra.rTensor_counit_comul, TensorProduct.map_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hc']`. Conclude with `hΦ hx`. Use `antipode_mem := by`. Establish `h0 : ((1 : WithConv (A →ₐ[R] A)).ofConv).comp (f : C →ₐ[R] A) = (1 : WithConv (C →ₐ[R] A)).ofConv`. Use extensionality with `c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[CoalgHomClass.counit_comp_apply]`. Establish `h1 : WithConv.toConv ((HopfAlgebra.antipodeAlgHom R A).comp (f : C →ₐ[R] A)) * WithConv.toConv (f : C →ₐ[R] A) = 1`. Use `AlgHom.convMul_comp_bialgHom_distrib (WithConv.toConv (HopfAlgebra.antipodeAlgHom R A)) (WithConv.toConv (AlgHom.id R A)) f` as an intermediate fact. Rewrite `this` using `[AlgHom.antipode_id_cancel, h0]`. Apply `WithConv.ofConv_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `h2 : (HopfAlgebra.antipodeAlgHom R A).comp (f : C →ₐ[R] A) = (f : C →ₐ[R] A).comp (HopfAlgebra.antipodeAlgHom R C)` using `congrArg WithConv.ofConv (eq_inv_of_mul_eq_one_left h1)`. Establish `hS : ∀ c : C, HopfAlgebra.antipode R (f c) = f (HopfAlgebra.antipode R c)` using `fun c => by`. Simplify using `using DFunLike.congr_fun h2 c`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : kerIdeal f ≤ Ideal.comap (HopfAlgebra.antipodeAlgHom R A) (kerIdeal f)`. Use `Ideal.map_le_iff_le_comap.mpr fun c hc => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Establish `hc' : counit (R` using `R) c = 0 := by simpa using hc`. Express the relevant statement in the definitionally equal form `HopfAlgebra.antipode R (f c) ∈ kerIdeal f`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hS]`. Use `Ideal.mem_map_of_mem (f : C →ₐ[R] A) ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`. Simplify using `using hc'`. Introduce `x hx`.
-
-Conclude with `hle hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isHopfIdeal_kerIdeal {R A C : Type} [CommRing R] [CommRing A] [CommRing C]
     [HopfAlgebra R A] [HopfAlgebra R C] (f : C →ₐc[R] A) : (kerIdeal f).IsHopfIdeal R where
@@ -113,9 +111,9 @@ theorem isHopfIdeal_kerIdeal {R A C : Type} [CommRing R] [CommRing A] [CommRing 
     exact hle hx
 
 /- English proof (translation)
-Use `⟨LinearMap.ext fun b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hf b`. Establish `h1` using `CoalgHomClass.map_comp_comul_apply f a`. Establish `h2` using `TensorProduct.map_comm (f : A →ₗ[R] B) (f : A →ₗ[R] B) (comul (R := R) a)`. Establish `h3` using `Coalgebra.comm_comul R a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show TensorProduct.comm R B B (comul (f a)) = comul (f a)`. Rewrite using `[← h1, ← h2, h3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCocomm_of_surjective {R A B : Type} [CommRing R] [CommRing A] [CommRing B]
     [Bialgebra R A] [Bialgebra R B] [IsCocomm R A] (f : A →ₐc[R] B)
@@ -133,45 +131,41 @@ end GlobalTheory.PDiv
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Use `haveI : CharP K p := (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr h`. Use `set V := (verschiebung h G).app 1 with hV`. Use `set F := (relFrob h G).app 1 with hF`. Use `set J : Ideal ((frobTwist h G).A 1) := kerIdeal V with hJdef`. Use `haveI hJ : J.IsHopfIdeal K := GlobalTheory.PDiv.isHopfIdeal_kerIdeal V`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `π : (frobTwist h G).A 1 →ₐc[K] (frobTwist h G).A 1 ⧸ J` to `Bialgebra.Quotient.mkBialgHom J`. Establish `hπa : ∀ a, π a = Ideal.Quotient.mk J a` using `fun a => rfl`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Use `haveI : IsCocomm K ((frobTwist h G).A 1 ⧸ J) := GlobalTheory.PDiv.isCocomm_of_surjective π hπ`. Use `haveI : Module.Finite K ((frobTwist h G).A 1 ⧸ J) := Module.Finite.of_surjective (π : (frobTwist h G).A 1 →ₗ[K] _) hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hJaug : ∀ x ∈ J, counit (R` using `K) x = 0 := fun x hx => Submodule.IsCoideal.counit_eq_zero (I := J.restrictScalars K) hx`. Establish `hπV : ∀ a : G.A 1, π (V a) = algebraMap K _ (counit (R` using `K) a) := by`. Introduce `a`. Establish `hmem : V (a - algebraMap K (G.A 1) (counit (R` using `K) a)) ∈ J := by`. Use `Ideal.mem_map_of_mem (V : G.A 1 →ₐ[K] (frobTwist h G).A 1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.mem_ker]`. Simplify using the standard rewrite rules. Establish `h0 : π (V (a - algebraMap K (G.A 1) (counit (R` using `K) a))) = 0 := by`. Rewrite using `[hπa]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h0` using `[map_sub, map_sub, AlgHomClass.commutes, AlgHomClass.commutes, sub_eq_zero]`. Conclude with `h0`. Establish `hdual : ∀ φ ∈ augIdeal K (CartierDual K ((frobTwist h G).A 1 ⧸ J)), φ ^ p = 0`. Introduce `φ hφ`. Establish `hφ1 : φ 1 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: counit (R` using `K) φ = 0 := by simpa using hφ`. Simplify using `using this`. Establish `hχ : (CartierDual.map π φ) ^ p = 0`. Apply `GlobalTheory.T.pow_char_eq_zero_of_kills_verschiebung p K h G 1` to reduce the goal to its premises. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[CartierDual.map_apply, hπV, Algebra.algebraMap_eq_smul_one]`. Express the relevant statement in the definitionally equal form `φ.ofConv (counit (R := K) a • 1) = 0`. Rewrite using `[map_smul]`. Express the relevant statement in the definitionally equal form `counit (R := K) a • φ 1 = 0`. Rewrite using `[hφ1, smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hχ' : CartierDual.map π (φ ^ p) = 0` using `by rw [map_pow]; exact hχ`. Apply `CartierDual.ext_apply` to reduce the goal to its premises. Introduce `x`. Take `⟨a, rfl⟩` from `hπ x`. Use `congrArg (fun χ : CartierDual K ((frobTwist h G).A 1) => χ a) hχ'` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [CartierDual.map_apply] at this`. Simplify using `using this`. Take `⟨b, hb0, hbw⟩` from `GlobalTheory.T.exists_primitive_with_cotangent_of_dual_height_one p K ((frobTwist h G).A 1 ⧸ J) hdual (cotMap π w)`. Take `⟨β, rfl⟩` from `hπ b`. Establish `hker : RingHom.ker π ≤ RingHom.ker F`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `haJ : a ∈ J`. Rewrite `ha` using `[RingHom.mem_ker, hπa]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp ha`. Rewrite using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.app_one_eq_zero_of_kernel_ideal_of_comp_eq_prime_smul p K (frobTwist h G) G (verschiebung h G) (relFrob h G) (relFrob_comp_verschiebung h G) a haJ`. Establish `hFβ : F β = liftSurj π hπ F hker (π β)` using `(liftSurj_apply π hπ F hker β).symm`. Establish `hrange : ∀ x : Cot K ((frobTwist h G).A 1), cotMap π x = 0 → x ∈ LinearMap.range (cotMap V)`. Set `Rg` to `LinearMap.range (cotMap V)`. Set `D₀ : (frobTwist h G).A 1 →ₗ[K] Cot K ((frobTwist h G).A 1) ⧸ Rg` to `Rg.mkQ ∘ₗ AugCot.d (counitAlgHom K ((frobTwist h G).A 1))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hD₀ : ∀ a, D₀ a = Rg.mkQ (dUnit K a)` using `fun a => rfl`. Establish `hD₀mul : ∀ a b, D₀ (a * b) = counit (R` using `K) a • D₀ b + counit (R := K) b • D₀ a := by`. Introduce `a b`. Rewrite using `[hD₀, hD₀, hD₀]`. Express the relevant statement in the definitionally equal form `Rg.mkQ (AugCot.d _ (a * b)) = counit (R := K) a • Rg.mkQ (AugCot.d _ b) + counit (R := K) b • Rg.mkQ (AugCot.d _ a)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AugCot.d_mul]`. Simplify using the standard rewrite rules. Establish `hJD : ∀ x ∈ J, D₀ x = 0`. Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => D₀ x = 0) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨c, hc, rfl⟩`. Rewrite using `[hD₀, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨dUnit K c, cotMap_d V c⟩`. Conclude with `map_zero D₀`. Introduce `u v _ _ hu hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[map_add, hu, hv, add_zero]`. Introduce `a u hu hu0`. Rewrite using `[smul_eq_mul, hD₀mul, hu0, hJaug u hu, zero_smul, smul_zero, add_zero]`. Set `D : ((frobTwist h G).A 1 ⧸ J) →ₗ[K] Cot K ((frobTwist h G).A 1) ⧸ Rg` to `(J.restrictScalars K).liftQ D₀ (fun x hx => hJD x hx) ∘ₗ (Submodule.Quotient.restrictScalarsEquiv K J).symm.toLinearMap`. Establish `hD : ∀ a, D (Ideal.Quotient.mk J a) = D₀ a` using `fun a => rfl`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hDmul : ∀ u v, D (u * v) = counit (R` using `K) u • D v + counit (R := K) v • D u := by`. Introduce `u v`. Take `⟨a, rfl⟩` from `hπ u`. Take `⟨b, rfl⟩` from `hπ v`. Rewrite using `[← map_mul, hπa, hπa, hπa, hD, hD, hD, hD₀mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `L` to `AugCot.lift (counitAlgHom K ((frobTwist h G).A 1 ⧸ J)) D (fun u v => by simpa using hDmul u v)`. Establish `hL : L ∘ₗ cotMap π = Rg.mkQ`. Apply `AugCot.hom_ext` to reduce the goal to its premises. Introduce `a`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `L (cotMap π (dUnit K a)) = Rg.mkQ (dUnit K a)`. Rewrite using `[cotMap_d]`. Express the relevant statement in the definitionally equal form `L (AugCot.d _ (π a)) = _`. Rewrite using `[AugCot.lift_d, hπa, hD, hD₀]`.
-
-Introduce `x hx`. Use `congrArg (fun g => g x) hL` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, hx, map_zero] at this`. Conclude with `(Submodule.Quotient.mk_eq_zero Rg).mp this.symm`. Take `⟨w', hw'⟩` from `hrange (dUnit K β - w) (by rw [map_sub, cotMap_d, hbw, sub_self])`.
-
-Use `⟨β, w', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFβ, ← pullTwo_cobOne, hb0, map_zero]`. Rewrite using `[hw']`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_cobOne_relFrob_eq_zero_dUnit_eq (p : ℕ) [Fact p.Prime] (K : Type) [Field K]
     (h : (p : K) = 0) (G : PDivGroup p K) (w : Cot K ((frobTwist h G).A 1)) :

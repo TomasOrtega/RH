@@ -10,15 +10,15 @@ open Metric
 noncomputable section
 
 /- English proof (translation)
-Introduce `D U u z δ t C₁ hU hu hδ ht hC hCt`. Establish `hC0 : 0 < C₁` using `by linarith`. Establish `hb0 : 0 < C₁ * t` using `mul_pos hC0 ht`. Establish `hδ0 : 0 < δ` using `hb0.trans hCt`. Establish `hconv` using `(h0 D U u z δ hU hu hδ0 hδ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : 0 < t / (4 * C₁)` using `by positivity`. Establish `hab : t / (4 * C₁) < C₁ * t`. Rewrite using `[div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `key` using `hconv.slope_mono_adjacent (Set.mem_Iic.2 (Real.log_le_log ha0 (hab.trans hCt).le)) (Set.mem_Iic.2 le_rfl) (Real.log_lt_log ha0 hab) (Real.log_lt_log hb0 hCt)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Simplify using `only [Real.exp_log ha0, Real.exp_log hb0, Real.exp_log hδ0] at key`. Establish `h1 : Real.log (C₁ * t) - Real.log (t / (4 * C₁)) = Real.log (4 * C₁ ^ 2)`. Rewrite using `[← Real.log_div hb0.ne' ha0.ne']`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Establish `h2 : Real.log δ - Real.log (C₁ * t) = Real.log (δ / (C₁ * t))` using `(Real.log_div hδ0.ne' hb0.ne').symm`. Establish `hL1 : 0 < Real.log (4 * C₁ ^ 2)`. Rewrite using `[← h1]`. Conclude with `sub_pos.2 (Real.log_lt_log ha0 hab)`. Rewrite `key` using `[h1, h2, div_le_iff₀ hL1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_assoc, mul_comm (Real.log (4 * C₁ ^ 2))]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem PolyMaxOscillation.proof (h0 : ReciprocityTheory.AnForm.A.PolyMaxLogConvexStatement) :
     PolyMaxOscillation.Statement := by
@@ -49,7 +49,7 @@ theorem PolyMaxOscillation.proof (h0 : ReciprocityTheory.AnForm.A.PolyMaxLogConv
   exact key
 
 /- English proof (translation)
-The claim follows from `PolyMaxOscillation.proof ReciprocityTheory.AnForm.A.polyMaxLogConvex_thm`.
+A detailed English derivation is pending.
 -/
 theorem PolyMaxOscillation.proof_closed : PolyMaxOscillation.Statement :=
   PolyMaxOscillation.proof ReciprocityTheory.AnForm.A.polyMaxLogConvex_thm

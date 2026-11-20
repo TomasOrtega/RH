@@ -4,11 +4,9 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace GlobalTheory.CompanionTheory.FieldModel
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _`. Set `σ : F →ₐ[ℚ] AlgebraicClosure ℚ` to `IsAlgClosed.lift`. Set `e : F ≃ₐ[ℚ] σ.fieldRange` to `AlgEquiv.ofInjectiveField σ`. Use `haveI fd : FiniteDimensional ℚ σ.fieldRange := e.toLinearEquiv.finiteDimensional`. Use `haveI nf : NumberField σ.fieldRange := { to_charZero := inferInstance, to_finiteDimensional := fd }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `haveI alg : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := by`. Establish `h : @Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) _ _ (AlgebraicClosure.instAlgebra ℚ)` using `(AlgebraicClosure.isAlgebraic ℚ)`. Use `h` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`. Use `haveI ac : IsAlgClosure σ.fieldRange (AlgebraicClosure ℚ) := ⟨AlgebraicClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) σ.fieldRange⟩`.
-
-Use `⟨σ.fieldRange, nf, ac, e.toRingEquiv, IsAlgClosure.equivOfEquiv Ω (AlgebraicClosure ℚ) e.toRingEquiv, fun x => ?_⟩` and prove the remaining obligations. Conclude with `IsAlgClosure.equivOfEquiv_algebraMap Ω (AlgebraicClosure ℚ) e.toRingEquiv x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_subfield_model : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω], ∃ (K : IntermediateField ℚ (AlgebraicClosure ℚ)) (_ : NumberField K) (_ : IsAlgClosure K (AlgebraicClosure ℚ)) (e : F ≃+* K) (E : Ω ≃+* (AlgebraicClosure ℚ)), ∀ x : F, E (algebraMap F Ω x) = algebraMap K (AlgebraicClosure ℚ) (e x) := by
   intro F Ω _ _ _ _ _

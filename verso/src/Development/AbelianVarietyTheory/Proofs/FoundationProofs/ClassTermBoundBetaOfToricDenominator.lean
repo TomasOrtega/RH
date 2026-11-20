@@ -11,36 +11,32 @@ open NumberField IsDedekindDomain Formalism.BasicNotions GlobalTheory.CMVal Glob
 namespace GlobalTheory.ToricDenomBridge
 
 /- English proof (translation)
-Establish `h' : IsIntegral ℤ (algebraMap ℚ ℂ r)` using `h`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 ((isIntegral_algebraMap_iff (algebraMap ℚ ℂ).injective).1 h')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_int_of_isIntegral {r : ℚ} (h : IsIntegral ℤ (r : ℂ)) : ∃ n : ℤ, (n : ℚ) = r := by
   have h' : IsIntegral ℤ (algebraMap ℚ ℂ r) := h
   exact IsIntegrallyClosed.isIntegral_iff.1 ((isIntegral_algebraMap_iff (algebraMap ℚ ℂ).injective).1 h')
 
 /- English proof (translation)
-Use `set w : ℂ := Complex.I * (Real.sqrt d : ℝ) with hw`. Establish `hw2 : w ^ 2 = -(d : ℂ)`. Rewrite using `[hw, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules. Establish `hwc : starRingEnd ℂ w = -w` using `by simp [hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : ∀ n : ℤ, IsIntegral ℤ (n : ℂ)` using `fun n => isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := n)`. Take `⟨c, hc⟩ : ∃ c : ℕ, d + 1 = 4 * c` from `⟨(d + 1) / 4, by omega⟩`. Establish `hcC : (d : ℂ) + 1 = 4 * c` using `by exact_mod_cast hc`. Introduce `x`. Rewrite using `[PeriodPair.mem_lattice, h1, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Use `⟨((hZ m).mul isIntegral_one).add ((hZ n).mul ?_), m + n / 2, n / 2, by push_cast; ring⟩` and prove the remaining obligations. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (c : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, algebraMap_int_eq, eq_intCast, Int.cast_natCast]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(1 / 4 : ℂ) * hw2 - (1 / 4 : ℂ) * hcC`. Introduce and unpack `⟨hx, a, b, rfl⟩`. Establish `hx' : IsIntegral ℤ ((a : ℂ) - (b : ℂ) * w)`. Use `hx.map_of_comp_eq (RingHom.id ℤ) (starRingEnd ℂ) (RingHom.ext_int _ _)` as an intermediate fact. Simplify `this` using `[hwc, sub_eq_add_neg]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_int_of_isIntegral (r := 2 * a) (by`. Use `(congrArg (IsIntegral ℤ) ?_).mpr (hx.add hx')` and prove the remaining obligations. Use `push_cast`. Use the proof step `ring)`. Take `⟨n, hn⟩` from `exists_int_of_isIntegral (r := a ^ 2 + d * b ^ 2) (by`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `(congrArg (IsIntegral ℤ) ?_).mpr (hx.mul hx')` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(b : ℂ) ^ 2 * hw2)`. Establish `hm2 : ((d : ℚ) * (2 * b)) ^ 2 = ((d * (4 * n - t ^ 2) : ℤ) : ℚ)`. Use `push_cast`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hn, ht]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩` from `exists_int_of_isIntegral (r := d * (2 * b)) (IsIntegral.of_pow two_pos (by`. Rewrite using `[← Rat.cast_pow, hm2, Rat.cast_intCast]`. Conclude with `hZ _))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hm3 : m ^ 2 = d * (4 * n - t ^ 2)`. Rewrite `hm2` using `[← hm]`. Conclude with `hm2` after adjusting the coercions. Take `⟨u, rfl⟩ : (d : ℤ) ∣ m` from `(Nat.prime_iff_prime_int.1 hd).dvd_of_dvd_pow ⟨_, hm3⟩`. Establish `hd0 : (d : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hd.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : (u : ℚ) = 2 * b`. Move the coercions through the operations in `at hm`. Conclude with `mul_left_cancel₀ hd0 hm`. Establish `hn4 : 4 * n = t ^ 2 + d * u ^ 2`. Establish `: (4 : ℚ) * n = t ^ 2 + d * u ^ 2` using `by rw [hn, ht, hu]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this` after adjusting the coercions. Establish `hcZ : (d : ℤ) = 4 * c - 1` using `by omega`. Establish `hpar : Even (t - u)`. Establish `h5 : Even ((t - u) * (t - u))` using `⟨2 * n - 2 * c * u ^ 2 + u ^ 2 - t * u, by rw [hcZ] at hn4; linear_combination -hn4⟩`. Conclude with `(Int.even_mul.1 h5).elim id id`.
-
-Take `⟨k, hk⟩` from `hpar`. Use `⟨k, u, ?_⟩` and prove the remaining obligations. Establish `e1 : (t : ℂ) = 2 * a` using `by exact_mod_cast congrArg (Rat.cast : ℚ → ℂ) ht`. Establish `e2 : (u : ℂ) = 2 * b` using `by exact_mod_cast congrArg (Rat.cast : ℚ → ℂ) hu`. Establish `e3 : (t : ℂ) - u = k + k` using `by exact_mod_cast congrArg (Int.cast : ℤ → ℂ) hk`.
-
-Take the linear combination `(-1 / 2 : ℂ) * e3 + (1 / 2 : ℂ) * e1 + (w / 2) * e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isIntLattice_of {d : ℕ} (hd : d.Prime) (h4 : d % 4 = 3) {Λ : PeriodPair} (h1 : Λ.ω₁ = 1)
     (h2 : Λ.ω₂ = (1 + Complex.I * (Real.sqrt d : ℝ)) / 2) : IsIntLattice d Λ := by
@@ -104,7 +100,7 @@ theorem isIntLattice_of {d : ℕ} (hd : d.Prime) (h4 : d % 4 = 3) {Λ : PeriodPa
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Use `H.hostE_isGalois` as an intermediate fact. Establish `: IsMulCommutative Gal(H.E/ℚ)` using `⟨⟨fun σ τ => (H.gal).injective (by rw [map_mul, map_mul, mul_comm])⟩⟩`. Conclude with `{}`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem host_isAbelianGalois : IsAbelianGalois ℚ H.E := by
   have := H.hostE_isGalois
@@ -113,9 +109,9 @@ theorem host_isAbelianGalois : IsAbelianGalois ℚ H.E := by
   exact {}
 
 /- English proof (translation)
-Establish `: IsCMField H.E` using `H.isCMField_hostE`. Establish `h : discr H.E = discr (maximalRealSubfield H.E) ^ 2` using `H.der.discr_sq`. Establish `h2` using `NumberField.natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow (maximalRealSubfield H.E) (OF H.E) H.E (𝓞 H.E)`. Rewrite `h2` using `[Algebra.IsQuadraticExtension.finrank_eq_two, h, Int.natAbs_pow]`. Establish `h0 : (discr (maximalRealSubfield H.E)).natAbs ^ 2 ≠ 0` using `pow_ne_zero _ (Int.natAbs_ne_zero.2 (discr_ne_zero _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.absNorm_eq_one_iff.1 (mul_right_cancel₀ h0 (h2.symm.trans (one_mul _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem host_unramFin : UnramFin H.E := by
   have : IsCMField H.E := H.isCMField_hostE
@@ -127,12 +123,12 @@ theorem host_unramFin : UnramFin H.E := by
   exact Ideal.absNorm_eq_one_iff.1 (mul_right_cancel₀ h0 (h2.symm.trans (one_mul _).symm))
 
 /- English proof (translation)
-The claim follows from `H.der.discr_primes.2.1`.
+A detailed English derivation is pending.
 -/
 theorem two_dvd_discr_host : (2 : ℤ) ∣ discr H.E := H.der.discr_primes.2.1
 
 /- English proof (translation)
-Use `Fintype.card_le_of_surjective (Sum.elim φ fun i => ComplexEmbedding.conjugate (φ i)) fun σ => by` as an intermediate fact. Take `⟨i, hi | hi, -⟩` from `h σ`. Conclude with `⟨Sum.inl i, hi.symm⟩`. Conclude with `⟨Sum.inr i, hi.symm⟩`. Rewrite `this` using `[Embeddings.card, Fintype.card_sum, ← two_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finrank_le_of_isCMType {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ}
     (h : IsCMType φ) : Module.finrank ℚ E ≤ 2 * Fintype.card I := by
@@ -143,13 +139,13 @@ theorem finrank_le_of_isCMType {E : Type} [Field E] [NumberField E] {I : Type} [
   rwa [Embeddings.card, Fintype.card_sum, ← two_mul] at this
 
 /- English proof (translation)
-Establish `hcard : 2 ≤ Fintype.card I`. Establish `h1` using `finrank_le_of_isCMType h`. Establish `h2 : Module.finrank ℚ H.E = 4 * R.ord` using `H.finrank_cmField`. Establish `h3 : 0 < R.ord` using `R.ord_pos`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨H.hyp.2.1, by have := H.hyp.2.2.2.1; omega, host_unramFin H, fun x hx => ?_, two_dvd_discr_host H, hcard, h, ?_⟩` and prove the remaining obligations. Conclude with `UpperTheory.prod_CMType_embeddings_root_of_unity_eq_one R H I φ h h' x (isOfFinOrder_iff_pow_eq_one.1 hx)`. Take `⟨i⟩ : Nonempty I` from `Fintype.card_pos_iff.1 (by omega)`. Establish `hb : H.sqrtMinusD ^ 2 = -(H.d : H.E)` using `H.sqrtMinusD_sq`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : φ i H.sqrtMinusD ^ 2 = (Complex.I * (Real.sqrt H.d : ℝ)) ^ 2`. Rewrite using `[← map_pow, hb, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with e | e` into its components or cases. Conclude with `⟨_, hb, fun j => (h' j i).trans e⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨-H.sqrtMinusD, by rw [neg_sq, hb], fun j => by rw [map_neg, h' j i, e, neg_neg]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFieldData_host {I : Type} [Fintype I] {φ : I → H.E →+* ℂ} (h : IsCMType φ)
     (h' : ∀ τ τ', φ τ H.sqrtMinusD = φ τ' H.sqrtMinusD) : IsFieldData H.d φ := by
@@ -171,9 +167,9 @@ theorem isFieldData_host {I : Type} [Fintype I] {φ : I → H.E →+* ℂ} (h : 
     · exact ⟨-H.sqrtMinusD, by rw [neg_sq, hb], fun j => by rw [map_neg, h' j i, e, neg_neg]⟩
 
 /- English proof (translation)
-Introduce `R H I _ φ s κ 𝔣 χ hD Λ h1 h2 l hl`. Establish `: IsCMField H.E` using `H.isCMField_hostE`. Use `host_isAbelianGalois H` as an intermediate fact. Take `⟨z, -, hz⟩` from `h H.E I H.d φ s (isFieldData_host H hD.1 hD.2.1) hD.2.2.1`. Establish `hΛ` using `isIntLattice_of H.hyp.2.1 (by have := H.hyp.2.2.2.1; omega) h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⌈betaBound_vp H.d s κ 𝔣 z l⌉₊, fun Q hQ hQl y T hT => ?_⟩` and prove the remaining obligations. Use `(hz κ 𝔣 Λ χ hD.2.2.2.2.1 hΛ hD.2.2.2.2.2 l hl Q hQ hQl).1 y T hT (⌈betaBound_vp H.d s κ 𝔣 z l⌉₊ : ℕ) 1 one_pos (by simpa using Nat.le_ceil _)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem classTermBoundBeta_of_toricDenominator (h : ToricDenominator) : GlobalTheory.ToricDenom.ClassTermBoundBeta := by
   intro R H I _ φ s κ 𝔣 χ hD Λ h1 h2 l hl
@@ -187,7 +183,7 @@ theorem classTermBoundBeta_of_toricDenominator (h : ToricDenominator) : GlobalTh
   simpa using this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ToricDenom.classTermBound_of_beta (classTermBoundBeta_of_toricDenominator h)`.
+A detailed English derivation is pending.
 -/
 theorem classTermBound_of_toricDenominator (h : ToricDenominator) : GlobalTheory.ToricDenom.ClassTermBound :=
   GlobalTheory.ToricDenom.classTermBound_of_beta (classTermBoundBeta_of_toricDenominator h)

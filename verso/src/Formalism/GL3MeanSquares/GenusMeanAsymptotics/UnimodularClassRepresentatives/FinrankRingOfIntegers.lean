@@ -17,9 +17,9 @@ def maxEquiv (F : Type) [Field F] [NumberField F] :
   right_inv _ := rfl
 
 /- English proof (translation)
-Establish `hfin : FiniteMultiplicity v.asIdeal I` using `FiniteMultiplicity.of_not_isUnit v.prime.not_isUnit hI`. Establish `: {e : ℕ | I ≤ v.asIdeal ^ e} = Set.Iic (multiplicity v.asIdeal I)`. Use extensionality with `e`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_Iic]`. Rewrite using `[← Ideal.dvd_iff_le, hfin.pow_dvd_iff_le_multiplicity]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, csSup_Iic]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sSup_le_pow (v : HeightOneSpectrum (𝓞 F)) {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) :
     sSup {e : ℕ | I ≤ v.asIdeal ^ e} = multiplicity v.asIdeal I := by
@@ -32,11 +32,11 @@ theorem sSup_le_pow (v : HeightOneSpectrum (𝓞 F)) {I : Ideal (𝓞 F)} (hI : 
   rw [this, csSup_Iic]
 
 /- English proof (translation)
-Set `φ : Ideal (𝓞 F) →* ℝ` to `((Nat.castRingHom ℝ : ℕ →+* ℝ) : ℕ →* ℝ).comp (Ideal.absNorm : Ideal (𝓞 F) →*₀ ℕ).toMonoidHom`. Establish `hφ : ∀ J, φ J = (Ideal.absNorm J : ℝ)` using `fun _ => rfl`. Establish `h0 : HasFiniteMulSupport fun v : HeightOneSpectrum (𝓞 F) => v.maxPowDividing I` using `Ideal.hasFiniteMulSupport hI`. Establish `h1 : φ I = ∏ᶠ v : HeightOneSpectrum (𝓞 F), φ (v.maxPowDividing I)` using `by conv_lhs => rw [← Ideal.finprod_heightOneSpectrum_factorization hI]`. Conclude with `map_finprod φ h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasFiniteMulSupport fun v : HeightOneSpectrum (𝓞 F) => φ (v.maxPowDividing I)` using `h0.fun_comp (map_one φ)`. Establish `h3 : ∏' v : HeightOneSpectrum (𝓞 F), φ (v.maxPowDividing I) = ∏ᶠ v : HeightOneSpectrum (𝓞 F), φ (v.maxPowDividing I)` using `tprod_eq_finprod h2`. Rewrite using `[← hφ, h1, ← h3, ← (maxEquiv F).tprod_eq]`. Use `tprod_congr fun 𝔭 => ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.maxPowDividing_eq_pow_multiplicity hI, map_pow, hφ, ← sSup_le_pow _ hI]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem absNorm_eq_tprod {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) :
     (Ideal.absNorm I : ℝ) = ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal},
@@ -60,7 +60,7 @@ theorem absNorm_eq_tprod {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← MeanB.finrank_eq_two hK hF]`. Conclude with `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 K) K).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_ringOfIntegers (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) :
     finrank (𝓞 F) (𝓞 K) = 2 := by
@@ -68,14 +68,14 @@ theorem finrank_ringOfIntegers (hK : Formalism.HermitianLatticesTheory.IsCMUnram
   exact (IsFractionRing.finrank_eq (𝓞 F) F (𝓞 K) K).symm
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_algebraMap, finrank_ringOfIntegers hK hF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_map (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (I : Ideal (𝓞 F)) :
     Ideal.absNorm (I.map (algebraMap (𝓞 F) (𝓞 K))) = Ideal.absNorm I ^ 2 := by
   rw [Ideal.absNorm_algebraMap, finrank_ringOfIntegers hK hF]
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap, MeanB.comap_extP_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_le_extP_pow (I 𝔭 : Ideal (𝓞 F)) (e : ℕ) :
     I.map (algebraMap (𝓞 F) (𝓞 K)) ≤ extP K 𝔭 ^ e ↔ I ≤ 𝔭 ^ e := by
@@ -88,11 +88,11 @@ def discrF (F : Type) [Field F] [NumberField F] [Algebra F K] (h : V →ₗ⋆[K
   (discrIdeal h L).comap (algebraMap (𝓞 F) (𝓞 K))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `conv_lhs => unfold discrIdeal`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `z ⟨x, hx, hz⟩`. Establish `hzfix : conjO K z = z`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[conjO_coe]`. Express the relevant statement in the definitionally equal form `star (algebraMap (𝓞 K) K z) = algebraMap (𝓞 K) K z`. Rewrite using `[hz, LocF.star_gram_det h hs]`. Take `⟨t, ht⟩` from `(conjO_eq_iff_mem_range hF z).mp hzfix`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht]`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Rewrite using `[discrF, Ideal.mem_comap, ht]`. Conclude with `Ideal.subset_span ⟨x, hx, hz⟩`. Conclude with `Ideal.map_comap_le`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discrIdeal_eq_map (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     (L : Submodule (𝓞 K) V) :
@@ -114,7 +114,7 @@ theorem discrIdeal_eq_map (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (
   · exact Ideal.map_comap_le
 
 /- English proof (translation)
-Unfold `vd`. Use `congr 1`. Use extensionality with `e`. Simplify using `only [Set.mem_ofPred_eq]`. Rewrite using `[discrIdeal_eq_map hF hs, map_le_extP_pow]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vd_eq (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) :
@@ -126,7 +126,7 @@ theorem vd_eq (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSym
   rw [discrIdeal_eq_map hF hs, map_le_extP_pow]
 
 /- English proof (translation)
-Unfold `normD`. Rewrite using `[discrIdeal_eq_map hF hs, absNorm_map hK hF, Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem normD_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) (L : Submodule (𝓞 K) V) : normD h L = (Ideal.absNorm (discrF F h L) : ℝ) := by
@@ -134,15 +134,15 @@ theorem normD_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFi
   rw [discrIdeal_eq_map hF hs, absNorm_map hK hF, Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg _)]
 
 /- English proof (translation)
-Unfold `discrIdeal`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨fun i => g.symm (x i), fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.mp (hx i)`. Establish `: g y = x i` using `hyx`. Express the relevant statement in the definitionally equal form `g.symm (x i) ∈ A`. Rewrite using `[← this, LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Rewrite using `[e]`. Use `congr 1`. Use extensionality with `i j`. Use `hg (g.symm (x i)) (g.symm (x j))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `this`. Introduce and unpack `⟨x, hx, e⟩`. Use `⟨fun i => g (x i), fun i => Submodule.mem_map.mpr ⟨x i, hx i, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `i j`. Conclude with `(hg (x i) (x j)).symm`.
+A detailed English derivation is pending.
 -/
 theorem discrIdeal_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (A : Submodule (𝓞 K) V) : discrIdeal h (Formalism.HermitianLatticesTheory.gmap g A) = discrIdeal h A := by
@@ -171,11 +171,11 @@ theorem discrIdeal_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V} (
     exact (hg (x i) (x j)).symm
 
 /- English proof (translation)
-Take `⟨x', hx', ex⟩` from `Submodule.mem_map.mp hx`. Take `⟨y', hy', ey⟩` from `Submodule.mem_map.mp hy`. Establish `ex' : g x' = x` using `ex`. Establish `ey' : g y' = y` using `ey`. Take `⟨s, hs, hsx⟩` from `(LocF.mem_locF_iff hp L x').mp hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hty⟩` from `(LocF.mem_locF_iff hp L y').mp hy'`. Rewrite using `[← ex', ← ey', hg x' y', LocF.mem_locF_iff hp]`. Use `⟨s * t, fun hm => (hp.mem_or_mem hm).elim hs ht, ?_⟩` and prove the remaining obligations. Use `hLi _ hsx _ hty` as an intermediate fact. Rewrite `this` using `[localizedQuotients.form_smul hF]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Algebra.smul_def]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem form_mem_locF (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) {g : V ≃ₗ[K] V}

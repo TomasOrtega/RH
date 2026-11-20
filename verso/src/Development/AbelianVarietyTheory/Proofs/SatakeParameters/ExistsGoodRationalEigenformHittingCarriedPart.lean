@@ -34,17 +34,17 @@ section Lin
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
 
 /- English proof (translation)
-Use `set S : Module.End ℂ H := T - μ • 1 with hS`. Establish `hadj : LinearMap.adjoint S = LinearMap.adjoint T - (starRingEnd ℂ μ) • 1`. Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hS, inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, LinearMap.adjoint_inner_left]`. Establish `hSc : Commute S (LinearMap.adjoint S)`. Rewrite using `[hadj, hS]`. Use `Commute.sub_left (Commute.sub_right hT ((Commute.one_right T).smul_right _)) (Commute.sub_right ((Commute.one_left _).smul_left _) (((Commute.one_left _).smul_left _).smul_right _))` and prove the remaining obligations. Establish `key : ∀ w, S (S w) = 0 → S w = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `e : S (LinearMap.adjoint S (S w)) = LinearMap.adjoint S (S (S w))` using `LinearMap.congr_fun hSc.eq (S w)`. Establish `h1 : LinearMap.adjoint S (S w) = 0`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), LinearMap.adjoint_inner_left, e, hw, map_zero, inner_zero_right]`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), ← LinearMap.adjoint_inner_right, h1, inner_zero_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : ∀ (k : ℕ) (w : H), (S ^ k) w = 0 → S w = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro w hw`. Simplify using `at hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hw]`. Consider the case `succ k ih`. Introduce `w hw`. Rewrite `hw` using `[pow_succ, Module.End.mul_apply]`. Conclude with `key w (ih _ hw)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hv`. Use `hpow k v hk` as an intermediate fact. Simplify `this` using `[hS, sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eig_of_normal (T : Module.End ℂ H) (hT : Commute T (LinearMap.adjoint T)) (μ : ℂ) {v : H}
     (hv : v ∈ T.maxGenEigenspace μ) : T v = μ • v := by
@@ -77,9 +77,9 @@ theorem eig_of_normal (T : Module.End ℂ H) (hT : Commute T (LinearMap.adjoint 
   simpa [hS, sub_eq_zero] using this
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x' = 0`. Simplify using `[h0]`. Establish `h1 : ν = starRingEnd ℂ μ'`. Establish `e : ⟪x', LinearMap.adjoint T x'⟫_ℂ = ⟪T x', x'⟫_ℂ` using `LinearMap.adjoint_inner_right _ _ _`. Rewrite `e` using `[ha, hx', inner_smul_right, inner_smul_left]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ (inner_self_ne_zero.2 h0) e`. Establish `e : ⟪x, LinearMap.adjoint T x'⟫_ℂ = ⟪T x, x'⟫_ℂ` using `LinearMap.adjoint_inner_right _ _ _`. Rewrite `e` using `[ha, hx, inner_smul_right, inner_smul_left, h1]`. Assume the negation of the conclusion as `hi`. Conclude with `hne ((starRingEnd ℂ).injective (mul_right_cancel₀ hi e).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem inner_eq_zero_of_eig (T : Module.End ℂ H) {x x' : H} {μ μ' ν : ℂ} (hx : T x = μ • x) (hx' : T x' = μ' • x')
     (ha : LinearMap.adjoint T x' = ν • x') (hne : μ ≠ μ') : ⟪x, x'⟫_ℂ = 0 := by
@@ -95,13 +95,13 @@ theorem inner_eq_zero_of_eig (T : Module.End ℂ H) {x x' : H} {μ μ' ν : ℂ}
   exact hne ((starRingEnd ℂ).injective (mul_right_cancel₀ hi e).symm)
 
 /- English proof (translation)
-Set `S` to `{V : Submodule ℂ H // ∃ c, Wp c = V}`. Establish `hu' : u ∈ ⨆ V : S, (V : Submodule ℂ H)`. Use `(iSup_le fun c => ?_ : (⨆ c, Wp c) ≤ ⨆ V : S, (V : Submodule ℂ H)) hu` and prove the remaining obligations. Conclude with `le_iSup (fun V : S => (V : Submodule ℂ H)) ⟨Wp c, c, rfl⟩`. Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hu'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun V hV => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `V.2`. Establish `hv : f V ∈ Wp c` using `hc ▸ hf V`. Establish `hne : f V ≠ 0` using `Finsupp.mem_support_iff.1 hV`. Establish `hin : ⟪f V, f.sum fun _i xi => xi⟫_ℂ = ⟪f V, f V⟫_ℂ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.sum, inner_sum]`. Use `Finset.sum_eq_single V (fun V' _ hV' => ?_) (fun h => absurd hV h)` and prove the remaining obligations. Take `⟨c', hc'⟩` from `V'.2`. Use `horth c c' (fun h => hV' (Subtype.ext ?_)) _ hv _ (hc' ▸ hf V')` and prove the remaining obligations. Rewrite using `[← hc', ← hc, h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hk c _ hv (by rw [hin]; exact inner_self_ne_zero.2 hne)` as an intermediate fact. Rewrite using `[← this]`. Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_components {ι : Type} (Wp : ι → Submodule ℂ H)
     (horth : ∀ c c', Wp c ≠ Wp c' → ∀ x ∈ Wp c, ∀ x' ∈ Wp c', ⟪x, x'⟫_ℂ = 0) {u : H} (hu : u ∈ ⨆ c, Wp c) (c0 : ι)
@@ -136,31 +136,27 @@ variable {K V W I : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensi
   [FiniteDimensional ℂ W] {σ : K →+* ℂ}
 
 /- English proof (translation)
-Use `set Wg : Submodule ℂ W := Submodule.span ℂ (j '' (Gd : Set V)) with hWg`. Establish `hGC : ∀ i, ∀ w ∈ Wg, opC i w ∈ Wg`. Introduce `i w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `hz`. Rewrite using `[← hint]`. Conclude with `Submodule.subset_span ⟨_, hG i x hx, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`. Set `op' : I → Module.End K Gd` to `fun i => (op i).restrict (hG i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `opC' : I → Module.End ℂ Wg` to `fun i => (opC i).restrict (hGC i)`. Set `j' : Gd →ₛₗ[σ] Wg` to `{ toFun := fun x => ⟨j x, Submodule.subset_span ⟨x, x.2, rfl⟩⟩ map_add' := fun x x' => Subtype.ext (map_add j _ _) map_smul' := fun c x => Subtype.ext (map_smulₛₗ j _ _) }`. Set `b` to `Module.finBasis K Gd`. Establish `hb1 : LinearIndependent ℂ fun k => j' (b k)`. Use `LinearIndependent.of_comp Wg.subtype ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hli _ (fun k => (b k : V)) (b.linearIndependent.map' Gd.subtype (Submodule.ker_subtype _))`. Establish `hb2 : Submodule.span ℂ (Set.range fun k => j' (b k)) = ⊤`. Rewrite using `[span_semi j' b]`. Apply `Submodule.map_injective_of_injective Wg.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `Eq.trans ?_ (Submodule.range_subtype Wg).symm` and prove the remaining obligations. Use `Eq.trans (congrArg (Submodule.span ℂ) ?_) hWg.symm` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `⟨x, x.2, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, ⟨⟨x, hx⟩, rfl⟩, rfl⟩`. Establish `hcomm' : PairComm op'`. Introduce `i i'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Conclude with `LinearMap.congr_fun (hc i i').eq (x : V)`. Establish `hsplit' : SplitOver op'` using `fun i => Module.End.genEigenspace_restrict_eq_top (hG i) (hs i)`. Take `⟨h1, -, h3⟩` from `GlobalTheory.span_image_eigAt_of_basis σ j' b op' opC' hb1 hb2 (fun i x => Subtype.ext (hint i x))`. Establish `hy' : (⟨y, hy⟩ : Wg) ∈ eigAt opC' a`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.mem_iInf _ |>.2 fun i => ?_` and prove the remaining obligations. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hya i` using `[opC', sub_eq_zero]`. Take `⟨s, -, rfl⟩` from `h3 hcomm' hsplit' a (fun hbot => by`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (⟨y, hy⟩ : Wg) = 0`. Use `hy'` as an intermediate fact. Rewrite `this` using `[hbot]`. Conclude with `(Submodule.mem_bot _).1 this`. Conclude with `hy0 (congrArg Subtype.val this))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s, rfl, ?_⟩` and prove the remaining obligations. Rewrite `hy'` using `[← h1 s]`. Establish `hm` using `Submodule.mem_map_of_mem (f := Wg.subtype) hy'`. Rewrite `hm` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hm` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨x, ⟨x.2, ?_⟩, rfl⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).2 fun i => ?_` and prove the remaining obligations. Establish `h2` using `(Submodule.mem_iInf _).1 hx i`. Rewrite `h2` using `[Module.End.maxGenEigenspace, Module.End.genEigenspace_restrict]`.
-
-Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rational_eig (j : V →ₛₗ[σ] W)
     (hli : ∀ (n : ℕ) (v : Fin n → V), LinearIndependent K v → LinearIndependent ℂ fun i => j (v i))
@@ -236,11 +232,11 @@ section SlopeTestRemainingChoices
 variable {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W] {σ : K →+* ℂ}
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hx`. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨k, ?_⟩` and prove the remaining obligations. Establish `hS : ∀ z, j ((f - μ • 1) z) = (g - σ μ • 1) (j z)`. Introduce `z`. Simplify using `[h, map_sub, map_smulₛₗ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hp : ∀ (n : ℕ) (z : V), j (((f - μ • 1) ^ n) z) = ((g - σ μ • 1) ^ n) (j z)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro z`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `z`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hS]`. Rewrite using `[← hp, hk, map_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_maxGen (j : V →ₛₗ[σ] W) (f : Module.End K V) (g : Module.End ℂ W) (h : ∀ x, j (f x) = g (j x)) (μ : K) {x : V}
     (hx : x ∈ f.maxGenEigenspace μ) : j x ∈ g.maxGenEigenspace (σ μ) := by
@@ -259,9 +255,9 @@ theorem map_maxGen (j : V →ₛₗ[σ] W) (f : Module.End K V) (g : Module.End 
   rw [← hp, hk, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [Tw.out_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ ha`.
+A detailed English derivation is pending.
 -/
 theorem out_mem_span {s : Bool} {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {S : Set (Tw s E)} {x : Tw s E}
     (hx : x ∈ Submodule.span ℂ S) : Tw.out x ∈ Submodule.span ℂ (Tw.out '' S) := by
@@ -276,7 +272,7 @@ end SlopeTestRemainingChoices
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `evC`. Rewrite using `[Finsupp.sum_single_index (by simp), if_pos h, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evC_single_one (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ) {d : List ℤ} (h : IsLab V P d) :
     evC V P a (Finsupp.single d 1) = a d := by
@@ -284,7 +280,7 @@ theorem evC_single_one (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ) {d :
   rw [Finsupp.sum_single_index (by simp), if_pos h, one_mul]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[Formalism.IndefR.CxPass.LevelOperators.goodR_eq]`. Take `⟨z, rfl⟩` from `hx`. Use `⟨Dt.opAll i z, ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (Dt.commute_gaOp h hD (goodAt ℓ.X ℓ.P ℓ.ψ) i).eq z).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem opAll_mem_goodR {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty : Type} {K : Type} [Field K] [NumberField K] [StarRing K]
     {B : BlockDat K G Pl0} (Dt : InertDat3 B I0 Ty) {s : ℕ} (h : B.Ok s) (hD : Dt.Ok3) (ℓ : Lvl K G) (i : Dt.OpIx)
@@ -295,7 +291,7 @@ theorem opAll_mem_goodR {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty : Type} {K :
   exact (LinearMap.congr_fun (Dt.commute_gaOp h hD (goodAt ℓ.X ℓ.P ℓ.ψ) i).eq z).symm
 
 /- English proof (translation)
-Rewrite using `[RealDat3.adjoint_smul', Tw.adjoint_map, LinearMap.smul_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adj_phase {s : Bool} {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F] (c : ℂ) (f : E →ₗ[ℂ] F) (w : F) :
@@ -312,17 +308,17 @@ variable {K V Hv Hw I ι : Type} [Field K] [AddCommGroup V] [Module K V] [Finite
   [NormedAddCommGroup Hw] [InnerProductSpace ℂ Hw] [FiniteDimensional ℂ Hw] {σ : K →+* ℂ}
 
 /- English proof (translation)
-Establish `hy0 : LinearMap.adjoint θ w ≠ 0` using `fun h0 => hy (by rw [h0, map_zero])`. Take `⟨sy, hsy, hyE⟩` from `exists_rational_eig j hli op T hint hc hs Gd hG (lab c) hyS hy0 fun i => hTy c i w hw`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxS, hxθ⟩ : ∃ x ∈ (Gd ⊓ eigAt op sy : Submodule K V), θ (j x) ≠ 0 := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : Submodule.span ℂ (j '' ((Gd ⊓ eigAt op sy : Submodule K V) : Set V)) ≤ LinearMap.ker θ` using `Submodule.span_le.2 (by rintro _ ⟨x, hx, rfl⟩; exact hno x hx)`. Conclude with `hy (h1 hyE)`. Establish `hxe : ∀ i, op i x = sy i • x`. Introduce `i`. Establish `hg` using `(Submodule.mem_iInf _).1 hxS.2 i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `eig_of_normal (T i) (hTn i) _ (map_maxGen j (op i) (T i) (fun z => hint i z) (sy i) hg)`. Establish `hz : j (op i x - sy i • x) = 0`. Rewrite using `[map_sub, map_smulₛₗ, hint, he, sub_self]`. Assume the negation of the conclusion as `hne`. Establish `h2 : LinearIndependent K (fun _ : Fin 1 => op i x - sy i • x)` using `linearIndependent_unique_iff.2 (sub_ne_zero.2 hne)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hli 1 _ h2).ne_zero 0 hz`. Use `⟨sy, x, hxS.1, hxe, ?_, hxθ, hsy⟩` and prove the remaining obligations. Use `mem_of_components Wp horth (hsup _) c fun c' v hv hvu => ?_` and prove the remaining obligations. Establish `hv0 : LinearMap.adjoint θ v ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hvu` to reduce the goal to its premises. Rewrite using `[← LinearMap.adjoint_inner_left, h0, inner_zero_left]`. Use `(hsep c c' w hw v hv hy0 hv0 (funext fun i => ?_)).symm` and prove the remaining obligations. Establish `hTu : S i (θ (j x)) = lab c i • θ (j x)`. Rewrite using `[← hθS, ← hint, hxe i, map_smulₛₗ, map_smul, hsy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨ν, hν⟩` from `hSadj c' i v hv`. Establish `h0` using `inner_eq_zero_of_eig (S i) hTu (hSev c' i v hv) hν hne`. Apply `hvu` to reduce the goal to its premises. Rewrite using `[← inner_conj_symm, h0, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core_witness (j : V →ₛₗ[σ] Hv) (θ : Hv →ₗ[ℂ] Hw)
     (hli : ∀ (n : ℕ) (v : Fin n → V), LinearIndependent K v → LinearIndependent ℂ fun i => j (v i))
@@ -378,13 +374,13 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Introduce `c1 c2 hne x1 hx1 x2 hx2`. Distinguish the cases in `hall : ∀ P d, Good R A.μ0 P → IsLab (Wc D i) P d → c1 P d = c2 P d`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `z hz`. Use `hLast c2 z (heH c1 z hz) fun P d hP hd => ?_` and prove the remaining obligations. Rewrite using `[hEv c1 P hP _ z hz, evC_single_one _ _ _ hd, hall P d hP hd]`. Introduce `z hz`. Use `hLast c1 z (heH c2 z hz) fun P d hP hd => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hEv c2 P hP _ z hz, evC_single_one _ _ _ hd, hall P d hP hd]`. Use `push_neg at hall`. Take `⟨P, d, hP, hd, hcd⟩` from `hall`. Establish `hν : LinearMap.adjoint (h P (Finsupp.single d 1)) x2 = evC (Wc D i) P (c2 P) (dualC (Finsupp.mapRange star (star_zero ℂ) (Finsupp.single d 1))) • x2`. Rewrite using `[hNorm.2 P hP]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hEv c2 P hP _ x2 hx2`. Use `inner_eq_zero_of_eig (h P (Finsupp.single d 1)) (hEv c1 P hP _ x1 hx1) (hEv c2 P hP _ x2 hx2) hν ?_` and prove the remaining obligations. Rewrite using `[evC_single_one _ _ _ hd, evC_single_one _ _ _ hd]`. Conclude with `hcd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parts_orth (R : RealDat D A Ks) (SF : Finset (HeightOneSpectrum (𝓞 D.host.F))) (i : Fin D.R.m)
     (h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ (R.HW i (sg0 D A)).H) (hNorm : NormalFam (Good R A.μ0) h)
@@ -415,9 +411,9 @@ theorem parts_orth (R : RealDat D A Ks) (SF : Finset (HeightOneSpectrum (𝓞 D.
     exact hcd
 
 /- English proof (translation)
-Establish `hE' : ∀ u ∈ U, ∑ g, sg0 D A ((idemOf A.X).coeff g) • R.gW i (sg0 D A) g u = u`. Introduce `u hu`. Establish `h1` using `hE u hu`. Simplify `h1` using `[eH, LinearMap.sum_apply, RealDat.eC]`. Use `Exists.elim (GlobalTheory.Hk3.exists_level_vector (sg0 D A) A.X F.P0 F.ψ0⁻¹ (R.gW i (sg0 D A)) U hirr hG hst hne hE') fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨w, hw.1, hw.2.1, (GlobalTheory.Hk3.goodForms_baseLevel R F hCore hirr i w).2 ⟨hE w hw.1, hw.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem level_vector (R : RealDat D A Ks) (F : Face D A) (hCore : Core R F) (hirr : ∀ χ ∈ A.X, IsAbsIrrChar χ)
     (hG : GoodGeneric A.X F.P0 F.ψ0⁻¹) (i : Fin D.R.m) (U : Submodule ℂ (R.HW i (sg0 D A)).H)
@@ -441,21 +437,19 @@ set_option maxHeartbeats 2000000 in
 open Formalism.L2.Col in
 
 /- English proof (translation)
-Establish `hM` using `hCore.models`. Use `Exists.elim (GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R F hCore hSch hirr SF hSF j) fun h hh => ?_` and prove the remaining obligations. Establish `hOpsW` using `hh.1`. Establish `hNorm` using `hh.2.1`. Establish `hSup` using `hh.2.2.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hStab` using `hh.2.2.2.2.1`. Establish `hEv` using `hh.2.2.2.2.2.1`. Establish `hLast` using `hh.2.2.2.2.2.2`. Use `Exists.elim ((GlobalTheory.T.realization_family_normal_operators R F hCore.lev hCore.fam hCore.models).2 j A.μ0) fun hV hh' => ?_` and prove the remaining obligations. Establish `hOpsV` using `hh'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hNormV` using `hh'.2`. Establish `hsys` using `fun i => GlobalTheory.T.theta_intertwines_matched_operators R F hCore hSch hirr SF hSF j A.μ0 (pl i) (hgood i) (cV i) (cW i) (hmat i) hV hOpsV`. Establish `hlaws` using `GlobalTheory.Hk3.eH_laws R F hCore hirr j`. Establish `heH : ∀ c, ∀ x ∈ Wcc R SF j c, eH R j x = x`. Introduce `c x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : x ∈ LinearMap.range (eH R j)`. Rewrite using `[← hSup]`. Conclude with `(le_iSup (fun c => Wcc R SF j c) c) hx`. Use `Exists.elim h1 fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `LinearMap.congr_fun hlaws.1 z`. Use `Exists.elim (level_vector R F hCore hirr hG j (Wcc R SF j c) (hStab c) hne (heH c)) fun w hw => ?_` and prove the remaining obligations. Establish `hwU` using `hw.1`. Establish `hw0` using `hw.2.1`. Establish `hwL` using `hw.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Exists.elim hlam fun l hl' => ?_` and prove the remaining obligations. Establish `hl0` using `hl'.1`. Establish `hl` using `hl'.2`. Establish `hIF : GlobalTheory.QPosCompare.IsForm (R.jV j A.μ0)` using `GlobalTheory.QPosCompare.isForm_of_pres (R.B.L j A.μ0).pres (R.HV j A.μ0) (hM.HV j A.μ0) (R.jV j A.μ0) (hM.jV j A.μ0)`. Use `haveI : FiniteDimensional D.what₂.LL (A.fam.L j A.μ0).S.Forms := Module.Finite.of_basis (A.fam.L j A.μ0).S.basis`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `core_witness (R.jV j A.μ0) (R.thG j A.μ0) (fun n v hv => hIF.linInd hv) op (fun i => hV (pl i) (cV i)) (fun i => h (pl i) (cW i)) (hop hV hOpsV) hc hs Gd hGd (fun i => ?_) (fun i y => (hsys i).1 h hOpsW y) (Wcc R SF j) (fun c => labW j pl cW c) (fun c i v hv => hEv c (pl i) (hgoo …` and prove the remaining obligations. Rewrite using `[hNormV.2 _ (hgood i)]`. Conclude with `hNormV.1 (pl i) (pl i) (hgood i) (hgood i) (cV i) _`. Rewrite using `[hNorm.2 _ (hgood i)]`. Conclude with `hEv c (pl i) (hgood i) _ v hv`.
-
-Rewrite using `[hSup]`. Conclude with `⟨_, hlaws.2.2.2 A.μ0 y⟩`. Rewrite using `[hl w hwU]`. Conclude with `smul_ne_zero hl0 hw0`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem witness_real {I : Type} (R : RealDat D A Ks) (F : Face D A) (hCore : Core R F) (hSch : SchurAll R)
     (hirr : ∀ χ ∈ A.X, IsAbsIrrChar χ) (hG : GoodGeneric A.X F.P0 F.ψ0⁻¹)
@@ -528,13 +522,13 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what�
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Establish `hM` using `hC.base.models`. Establish `hrange` using `GlobalTheory.LevelRange.range_w0C_eq R F hOk hC hLU false j`. Establish `hmem : (show (R.toCx3 F).W j from Tw.mk (twAt D.what₂.embLL A3.A.v0) w) ∈ LinearMap.range ((R.toCx3 F).w0C false j)`. Rewrite using `[hrange]`. Conclude with `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hUp` using `Formalism.IndefR.CxPass.upper_level_lift_at_lower_type (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) hOk (RealDat3.kFormL_of hM) (RealDat3.jIsoL_of hM) hGU.2 hGE.2 hLW`. Establish `hph : starRingEnd ℂ (R.phs j) ≠ 0`. Introduce `h0`. Establish `h1` using `(hC.phase j).1`. Rewrite `h1` using `[(map_eq_zero _).1 h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Establish `h1` using `hUp j A3.A.μ0 (Submodule.mem_map_of_mem hmem)`. Establish `h1' : LinearMap.adjoint (R.phs j • Tw.map (twAt D.what₂.embLL A3.A.v0) (R.thG j A3.A.μ0)) (Tw.mk (twAt D.what₂.embLL A3.A.v0) w) ∈ Submodule.span ℂ ((Tw.semi (twAt D.what₂.embLL A3.A.v0) R.emb0 (R.jV j A3.A.μ0)) '' (BlockGood.goodR (A3.A.fam.L j A3.A.μ0) (A3.A.fam.lvlA F.P0 F.ψ0) …` using `h1`. Establish `hadj : LinearMap.adjoint (R.phs j • Tw.map (twAt D.what₂.embLL A3.A.v0) (R.thG j A3.A.μ0)) (Tw.mk (twAt D.what₂.embLL A3.A.v0) w) = starRingEnd ℂ (R.phs j) • Tw.mk (twAt D.what₂.embLL A3.A.v0) (LinearMap.adjoint (R.thG j A3.A.μ0) w)` using `adj_phase _ _ w`. Rewrite `h1'` using `[hadj, Submodule.smul_mem_iff _ hph]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `out_mem_span h1'`. Use `Submodule.span_mono ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adjoint_mem_span (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (hOk : A3.fam3.Ok3 s) (hC : R.WeakCharacterisation F)
     (hLU : R.toRealDat.LUnif) (hGU : R.PGUnit F) (hGE : R.PGEquiv F) (hLW : R.PLevW F) (j : Fin D.R.m)
@@ -574,15 +568,13 @@ section Main
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hLI hC hEx hSch hJunk s hOk hGG hLU hGU hGE hLW hThA hPos j pl cV cW hDict p c hCar hne`. Establish `hcore` using `GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hC`. Establish `hCore` using `hcore.1 hEx`. Establish `hSF` using `hcore.2.1`. Establish `hWeq` using `hcore.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hirr : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Establish `hB : (A3.A.fam.L j A3.A.μ0).Ok s` using `hOk.ok2.lifts j A3.A.μ0`. Establish `hLi : (A3.liftI j A3.A.μ0).Ok3` using `hOk.lifts j A3.A.μ0`. Establish `hsep : ∀ c c', ∀ w ∈ Wcc R.toRealDat R.SF j c, ∀ w' ∈ Wcc R.toRealDat R.SF j c', LinearMap.adjoint (R.thG j A3.A.μ0) w ≠ 0 → LinearMap.adjoint (R.thG j A3.A.μ0) w' ≠ 0 → labW j pl cW c = labW j pl cW c' → Wcc R.toRealDat R.SF j c = Wcc R.toRealDat R.SF j c'`. Introduce `c c' w hw w' hw' h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4` using `GlobalTheory.T.parts_eq_of_same_eigensystem_thetaAdjoint hHowe R F hLI hC hEx hSch hJunk hirr j pl cV cW hDict c c' w (by rw [hWeq]; exact hw) w' (by rw [hWeq]; exact hw') h1 h2 h3`. Rewrite `h4` using `[hWeq, hWeq]`. Conclude with `h4`. Establish `hne' : Wcc R.toRealDat R.SF j c ≠ ⊥` using `by rw [← hWeq]; exact hne`. Establish `hlam : ∃ l : ℂ, l ≠ 0 ∧ ∀ w ∈ Wcc R.toRealDat R.SF j c, R.thG j A3.A.μ0 (LinearMap.adjoint (R.thG j A3.A.μ0) w) = l • w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((R.lam3 j A3.A.μ0 p A3.A.v0 : ℝ) : ℂ), by exact_mod_cast (hPos.2 j A3.A.μ0 p).ne', fun w hw => ?_⟩` and prove the remaining obligations. Use `hThA j A3.A.μ0 p w ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem c (Submodule.mem_iSup_of_mem hCar (by rw [hWeq]; exact hw))`. Establish `key` using `witness_real R.toRealDat F.lv2 hCore hSch hirr hGG R.SF hSF j (A3.liftI j A3.A.μ0).opAll pl cV cW hDict.good hDict.mat hDict.op hLi.comm (InertDat3.splitOver_opAll _ hB hLi) (BlockGood.goodR (A3.A.fam.L j A3.A.μ0) (A3.A.fam.lvlA F.P0 F.ψ0)) (fun i x hx => opAll_mem_goodR _ hB hLi …`. Use `Exists.elim key fun sy hsy => Exists.elim hsy fun x hx => ⟨sy, x, hx.1, hx.2.1, ?_, hx.2.2.2.1, hx.2.2.2.2⟩` and prove the remaining obligations.
-
-Rewrite using `[hWeq]`. Conclude with `hx.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good_eigenform : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Chain.LiftInteg D → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → InertJunk A3 → ∀ s, A3.fam3.Ok3 s → GoodGeneric A3.A.X F.P0 F.ψ0⁻¹ → R.toRealDat.LUnif → R.PGUnit F → R.PGEquiv F → R.PLevW F → R.PThmA → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → ∀ j pl cV cW, LiftDict R j A3.A.μ0 pl cV cW → ∀ p c, R.Carries p c → R.Wc' j c ≠ ⊥ → ∃ (sy : (A3.liftI j A3.A.μ0).OpIx → D.what₂.LL) (x : (A3.A.fam.L j A3.A.μ0).S.Forms), x ∈ BlockGood.goodR (A3.A.fam.L j A3.A.μ0) (A3.A.fam.lvlA F.P0 F.ψ0) ∧ (∀ i, (A3.liftI j A3.A.μ0).opAll i x = sy i • x) ∧ R.thG j A3.A.μ0 (R.jV j A3.A.μ0 x) ∈ R.Wc' j c ∧ R.thG j A3.A.μ0 (R.jV j A3.A.μ0 x) ≠ 0 ∧ labW j pl cW c = fun i => D.what₂.embLL (sy i) := by
   intro hHowe D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hLI hC hEx hSch hJunk s hOk hGG hLU hGU hGE hLW hThA hPos j pl cV cW hDict p c hCar hne

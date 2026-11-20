@@ -20,7 +20,7 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 attribute [local instance] borelG borelF borelA borelH
 
 /- English proof (translation)
-Use `split_ifs`. Both sides reduce to the same expression. Simplify using `[zVal]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem zVal_ite' {m : ℕ} (c : Prop) [Decidable c] (L : List (Bool × ℕ)) (χ : Inf m) :
     zVal (if c then L else []) χ = if c then zVal L χ else 1 := by
@@ -29,26 +29,24 @@ private theorem zVal_ite' {m : ℕ} (c : Prop) [Decidable c] (L : List (Bool × 
   · simp [zVal]
 
 /- English proof (translation)
-Simplify using `[zVal]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem zVal_one' {m : ℕ} (r : Bool) (k : ℕ) (χ : Inf m) :
     zVal [(r, k)] χ = GlobalTheory.Dec.gelfVal (χ r) k := by
   simp [zVal]
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L T e₁ e₂ s sk χa χb hs hsk ha hb`. Take `⟨-, -, -, hone, hpt⟩` from `ptOk E a b l₁ l₂ D A`. Establish `h0 : s (.inl ()) = 1`. Rewrite using `[hs (.inl ()) trivial]`. Conclude with `hone _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv₁ : ∀ v r m, s (.inr (.inl (v, r, m, false))) = GlobalTheory.Dec.gelfVal (chi l₁ v r) m`. Introduce `v r m`. Rewrite using `[hs (.inr (.inl (v, r, m, false))) trivial]`. Use `show (A.pt _ _ (A.idm S L)).val _ _ = _`. Rewrite using `[hpt, hone]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [zVal_ite']`. Simplify using `[zVal_one']`. Establish `hv₂ : ∀ v r m, s (.inr (.inl (v, r, m, true))) = GlobalTheory.Dec.gelfVal (chi l₂ v r) m`. Introduce `v r m`. Rewrite using `[hs (.inr (.inl (v, r, m, true))) trivial]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (A.pt _ _ (A.idm S L)).val _ _ = _`. Rewrite using `[hpt, hone]`. Simplify using `only [zVal_ite']`. Simplify using `[zVal_one']`. Establish `hne : s (.inl ()) ≠ 0` using `by rw [h0]; exact one_ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc₁ : ∀ v r m, Tendsto (fun k => GlobalTheory.Dec.gelfVal (χa k v r) m) atTop (𝓝 (GlobalTheory.Dec.gelfVal (chi l₁ v r) m))`. Introduce `v r m`. Establish `h` using `(hsk (.inr (.inl (v, r, m, false)))).div (hsk (.inl ())) hne`. Rewrite `h` using `[h0, div_one, hv₁]`. Conclude with `h.congr fun k => (ha k v r m).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc₂ : ∀ v r m, Tendsto (fun k => GlobalTheory.Dec.gelfVal (χb k v r) m) atTop (𝓝 (GlobalTheory.Dec.gelfVal (chi l₂ v r) m))`. Introduce `v r m`. Establish `h` using `(hsk (.inr (.inl (v, r, m, true)))).div (hsk (.inl ())) hne`. Rewrite `h` using `[h0, div_one, hv₂]`. Conclude with `h.congr fun k => (hb k v r m).symm`.
-
-Use `⟨h0, fun τ ε hε => ?_, fun τ ε hε => ?_⟩` and prove the remaining obligations. Conclude with `infConv a (fun k => χa k (InfinitePlace.mk τ) _) (chi l₁ (InfinitePlace.mk τ) _) (hc₁ _ _) ε hε`. Conclude with `infConv b (fun k => χb k (InfinitePlace.mk τ) _) (chi l₂ (InfinitePlace.mk τ) _) (hc₂ _ _) ε hε`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem infLimit : InfLimit := by
   intro E _ _ _ a b l₁ l₂ D A S Z L T e₁ e₂ s sk χa χb hs hsk ha hb

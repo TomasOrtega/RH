@@ -6,25 +6,23 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 namespace GlobalTheory.Per
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `x _ hx k`. Rewrite using `[hx k (by simp), Pi.single_zero]`. Conclude with `Λ.zero_mem`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert a S' ha ih`. Introduce `x hxΛ hx`. Establish `hne : ∀ k, k ≠ a → u ^ k - u ^ a ≠ 0`. Introduce `k hk h`. Apply `hr (k - a) (sub_ne_zero.mpr hk)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub₀ hu, sub_eq_zero.mp h, div_self (zpow_ne_zero a hu)]`. Establish `hyΛ : (fun k => u ^ k • x k) - u ^ a • x ∈ Λ` using `Λ.sub_mem (hγ x hxΛ) (Λ.smul_mem _ hxΛ)`. Establish `hyv : ∀ k, ((fun k => u ^ k • x k) - u ^ a • x) k = (u ^ k - u ^ a) • x k`. Introduce `k`. Simplify using `[sub_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hy : ∀ k, k ∉ S' → ((fun k => u ^ k • x k) - u ^ a • x) k = 0`. Introduce `k hk`. Rewrite using `[hyv]`. Distinguish the cases in `hka : k = a`. Rewrite using `[hka, sub_self, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx k (by simp [hka, hk]), smul_zero]`. Establish `hoff : ∀ k, k ≠ a → Pi.single k (x k) ∈ Λ`. Introduce `k hk`. Establish `h1` using `ih _ hyΛ hy k`. Rewrite `h1` using `[hyv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Pi.single k (x k) = (u ^ k - u ^ a)⁻¹ • (Pi.single k ((u ^ k - u ^ a) • x k) : ℤ → D)`. Rewrite using `[Pi.single_smul, smul_smul, inv_mul_cancel₀ (hne k hk), one_smul]`. Rewrite using `[e]`. Conclude with `Λ.smul_mem _ h1`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hka : k = a`. Rewrite using `[hka]`. Establish `hsum : (∑ j ∈ S', Pi.single j (x j)) ∈ Λ` using `Λ.sum_mem (fun j hj => hoff j (by rintro rfl; exact ha hj))`. Establish `e : Pi.single a (x a) = x - ∑ j ∈ S', Pi.single j (x j)`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Pi.sub_apply, Finset.sum_apply, Finset.sum_pi_single]`. Distinguish the cases in `hjS : j ∈ S'`. Establish `hja : j ≠ a` using `by rintro rfl; exact ha hjS`. Simplify using `[hjS, hja]`. Distinguish the cases in `hja : j = a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hja]`. Simplify using `[ha]`. Simplify using `[hjS, hja, hx j (by simp [hja, hjS])]`. Rewrite using `[e]`. Conclude with `Λ.sub_mem hxΛ hsum`.
-
-Conclude with `hoff k hka`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem_of_support_subset {LL D : Type} [Field LL] [AddCommGroup D] [Module LL D]
     (u : LL) (Λ : Submodule LL (ℤ → D)) (hu : u ≠ 0) (hr : ∀ k : ℤ, k ≠ 0 → u ^ k ≠ 1)

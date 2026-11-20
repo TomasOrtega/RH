@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.HT.TestPts
 
 /- English proof (translation)
-Establish `hc : Limits.pullback.fst f (g ≫ h) ≫ f = (Limits.pullback.snd f (g ≫ h) ≫ g) ≫ h`. Rewrite using `[Limits.pullback.condition, Category.assoc]`. Establish `hp : IsPullback (Limits.pullback.lift _ _ hc) (Limits.pullback.snd f (g ≫ h)) (Limits.pullback.snd f h) g`. Use `IsPullback.of_right (h₁₂ := Limits.pullback.fst f h) (v₁₃ := f) (h₂₂ := h) ?_ (Limits.pullback.lift_snd _ _ hc) (IsPullback.of_hasPullback f h)` and prove the remaining obligations. Rewrite using `[Limits.pullback.lift_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPullback.of_hasPullback f (g ≫ h)`. Conclude with `MorphismProperty.of_isPullback (P := @IsProper) hp inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isProper_snd_comp {G S Y Z : Scheme.{0}} (f : G ⟶ S) (h : Y ⟶ S) (g : Z ⟶ Y)
     [IsProper (Limits.pullback.snd f h)] : IsProper (Limits.pullback.snd f (g ≫ h)) := by
@@ -39,9 +39,9 @@ theorem isProper_snd_comp {G S Y Z : Scheme.{0}} (f : G ⟶ S) (h : Y ⟶ S) (g 
   exact MorphismProperty.of_isPullback (P := @IsProper) hp inferInstance
 
 /- English proof (translation)
-Establish `h1 : IsIntegral O (u : FractionRing O)` using `IsIntegral.of_pow hm (by rw [← Units.val_pow_eq_pow_val, h]; exact isIntegral_one)`. Establish `h2 : IsIntegral O ((u⁻¹ : (FractionRing O)ˣ) : FractionRing O)` using `IsIntegral.of_pow hm (by rw [← Units.val_pow_eq_pow_val, inv_pow, h]; simpa using isIntegral_one)`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h1`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Establish `hab : a * b = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `IsFractionRing.injective O (FractionRing O)` to reduce the goal to its premises. Rewrite using `[map_mul, ha, hb, map_one]`. Simplify using the standard rewrite rules. Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_unit_of_pow {O : Type} [CommRing O] [IsDomain O] [IsIntegrallyClosed O]
     (u : (FractionRing O)ˣ) (m : ℕ) (hm : 0 < m) (h : u ^ m = 1) :
@@ -58,9 +58,9 @@ theorem exists_unit_of_pow {O : Type} [CommRing O] [IsDomain O] [IsIntegrallyClo
   exact ⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha⟩
 
 /- English proof (translation)
-Establish `: Finite (La ⧸ LinearMap.range ((p ^ n) • (LinearMap.id : La →ₗ[ℤ] La)))`. Use `Module.finite_of_fg_torsion _ ?_` and prove the remaining obligations. Introduce `x`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective (LinearMap.range ((p ^ n) • (LinearMap.id : La →ₗ[ℤ] La))) x`. Use `⟨⟨((p ^ n : ℕ) : ℤ), mem_nonZeroDivisors_of_ne_zero (by positivity)⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `((p ^ n : ℕ) : ℤ) • (Submodule.Quotient.mk a : La ⧸ LinearMap.range ((p ^ n) • (LinearMap.id : La →ₗ[ℤ] La))) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨a, by rw [LinearMap.smul_apply, LinearMap.id_apply, natCast_zsmul]⟩`. Conclude with `this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_levGrp (La : Type) [AddCommGroup La] [Module.Finite ℤ La] (p n : ℕ) (hp : 0 < p) :
     Finite (LevGrp La p n) := by
@@ -75,7 +75,7 @@ theorem finite_levGrp (La : Type) [AddCommGroup La] [Module.Finite ℤ La] (p n 
   exact this
 
 /- English proof (translation)
-Establish `hbc` using `TensorProduct.isBaseChange A Q (FractionRing A)`. Use `haveI := Module.finitePresentation_of_projective A Q`. Rewrite using `[LieRank.finrank_eq_of_isBaseChange_fractionRing _ hbc, LieRank.finrank_of_isBaseChange _ hbc (IsLocalRing.closedPoint (FractionRing A))]`. Conclude with `(Module.isLocallyConstant_rankAtStalk (R := A) (M := Q)).apply_eq_of_preconnectedSpace _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_rankAtStalk {A Q : Type} [CommRing A] [IsDomain A] [AddCommGroup Q] [Module A Q]
     [Module.Finite A Q] [Module.Projective A Q] (P : PrimeSpectrum A) :
@@ -87,9 +87,9 @@ theorem finrank_eq_rankAtStalk {A Q : Type} [CommRing A] [IsDomain A] [AddCommGr
   exact (Module.isLocallyConstant_rankAtStalk (R := A) (M := Q)).apply_eq_of_preconnectedSpace _ _
 
 /- English proof (translation)
-Take `⟨hf, hp⟩` from `GlobalTheory.T.lie_model_finite_projective S G R x L M`. Use `letI : Module R L' := Module.compHom L' (algebraMap R O)`. Use `haveI : IsScalarTower R O L' := ⟨fun a b c => by`. Rewrite using `[Algebra.smul_def, mul_smul]`. Use the proof step `rfl⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `LieRank.exists_lift G x M M'`. Establish `hbc` using `GlobalTheory.T.lie_model_isBaseChange S G R O x L L' M M' j hj`. Rewrite using `[← LinearEquiv.finrank_eq hbc.equiv, finrank_eq_rankAtStalk (IsLocalRing.closedPoint (FractionRing O) |> PrimeSpectrum.comap (algebraMap O (FractionRing O))), Module.rankAtStalk_baseChange]`. Conclude with `(finrank_eq_rankAtStalk _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_lie_eq (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom]
     (R O : Type) [CommRing R] [IsDomain R] [CommRing O] [IsDomain O] [Algebra R O]
@@ -109,27 +109,23 @@ theorem finrank_lie_eq (S : Scheme.{0}) (G : Over S) [GrpObj G] [Smooth G.hom]
   exact (finrank_eq_rankAtStalk _).symm
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Establish `hppos : ∀ m, 0 < p ^ m` using `fun m => pow_pos (Fact.out : p.Prime).pos m`. Use `haveI : CharZero O := charZero_of_injective_ringHom hinj`. Take `⟨X, hX, hXi⟩` from `GlobalTheory.T.tate_iso_torsion_tower E H D S t p O _ I`. Establish `hroot : ∀ m, ∃ w : Oˣ, algebraMap O (FractionRing O) w = (I.ζ (p ^ m) : (FractionRing O)ˣ)` using `fun m => exists_unit_of_pow _ (p ^ m) (hppos m) (I.ζ_prim _ (hppos m)).pow_eq_one`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose ζ hζ using hroot`. Establish `hkinj : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective O _`. Establish `hUinj : Function.Injective (Units.map (algebraMap O (FractionRing O) : O →* FractionRing O))` using `Units.map_injective hkinj`. Establish `hU : ∀ m, Units.map (algebraMap O (FractionRing O) : O →* FractionRing O) (ζ m) = I.ζ (p ^ m)` using `fun m => Units.ext (hζ m)`. Establish `hprim : ∀ m, IsPrimitiveRoot (ζ m) (p ^ m)` using `fun m => IsPrimitiveRoot.of_map_of_injective (f := Units.map (algebraMap O (FractionRing O) : O →* FractionRing O)) (by rw [hU]; exact I.ζ_prim _ (hppos m)) hUinj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcompat : ∀ m, ζ (m + 1) ^ p = ζ m` using `fun m => by`. Apply `hUinj` to reduce the goal to its premises. Rewrite using `[map_pow, hU, hU, pow_succ]`. Conclude with `I.ζ_pow _ _ (hppos m) (Fact.out : p.Prime).pos`. Establish `hsq : (BT.genPt O).hom ≫ spMap (algebraMap R O) = spMap f ≫ (BT.genPt R).hom`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Over.mk_hom, spMap]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun r => (hf r).symm`. Establish `hprop' : IsProper (Limits.pullback.snd t.G.hom ((BT.genPt O).hom ≫ spMap (algebraMap R O) ≫ x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Category.assoc, hsq, Category.assoc]`. Conclude with `isProper_snd_comp _ _ _`. Establish `hreg : X.PairingRegular D.EF ζ`. Use `GlobalTheory.T.torsion_tower_weil_pairing E H S t p O _ D.La X D.EF ζ hprop' ?_` and prove the remaining obligations. Introduce `m a b ga gb hga hgb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : ga = I.ev (p ^ m) a` using `Over.OverMorphism.ext (hga.trans (hX m a))`. Establish `e2 : gb = I.ev (p ^ m) b` using `Over.OverMorphism.ext (hgb.trans (hX m b))`. Rewrite using `[e1, e2, map_zpow, hU]`. Conclude with `I.isom (p ^ m) (hppos m) a b`. Use `haveI : Module.Finite ℤ D.La := hu.finite`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := finite_levGrp D.La p n (Fact.out : p.Prime).pos`. Establish `hSep : IsSeparated t.G.hom` using `t.semi.separated`. Take `⟨F, hF1, hF2⟩` from `GlobalTheory.T.torsion_embedding_base_change R (LevGrp D.La p n) Γ₀ S t.G x (p ^ n) i hi hSep O (algebraMap R O) (X.Γ n) (X.i n) (X.tors n) (FractionRing R) (algebraMap R _) (RingHom.id _) f (fun s => (Γ₀.pt s).left ≫ i) Function.injective_id (RingHom.id_comp _) (RingHom.ext hf) …`. Rewrite using `[Category.assoc, hi.isOver, ← Category.assoc, Over.w (Γ₀.pt s)]`. Use the proof step `rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun s => by simp)`. Use the proof step `(fun s => by`. Take `⟨q, rfl⟩` from `Multiplicative.ofAdd.surjective s`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective (LinearMap.range ((p ^ n) • (LinearMap.id : D.La →ₗ[ℤ] D.La))) q`. Express the relevant statement in the definitionally equal form `_ = ((X.Γ n).pt (lev p n a)).left ≫ X.i n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hX n a, hI2 a]`. Use the proof step `rfl)`. Take `⟨L', iA, iM, ⟨M'⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists S t.G O (spMap (algebraMap R O) ≫ x)`. Take `⟨ρ', hρ', -⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists_unique_act S t.G O (spMap (algebraMap R O) ≫ x) L' M' (𝓞 E) t.act.act t.act.hom t.act.one t.act.mul t.act.add`. Use `haveI hsm : Smooth t.G.hom := t.semi.smooth`.
-
-Establish `hrank' : 2 * Module.finrank O L' = Module.finrank ℤ D.La`. Rewrite using `[finrank_lie_eq S t.G R O x L L' M M']`. Conclude with `hrank`. Take `⟨hκ1, -⟩` from `GlobalTheory.T.hodge_tate_constant_divides_p_sq C v O hv p R (algebraMap R O) κ hp hκ`. Take `⟨P, hP⟩` from `hPt p C v O hv hp hO E (IsCMField.complexConj E).toRingEquiv (fun a => IsCMField.complexConj_apply_apply E a) S t.G t.semi _ D.La D.EF (D.p + D.q) u hu X L' M' t.act.act ρ' t.act.hom hρ' hXi hrank' ζ hprim hcompat hreg (algebraMap R O κ) hκ1`.
-
-Establish `hζ₀ : algebraMap R O (ζ₀ : R) = (ζ n : O)`. Apply `hkinj` to reduce the goal to its premises. Rewrite using `[← hf, ← hI1, hζ n]`. Take `⟨io, hio⟩` from `GlobalTheory.T.hodge_tate_chart_adic p C v O hv hp hO E (IsCMField.complexConj E).toRingEquiv R K n (D.p + D.q) Ω Dc D.La D.EF u hu S t.G hsm x Γ₀ i hi L M t.act.act ρ hρ j hj π ζ₀ X F L' M' ρ' hρ' ζ (algebraMap R O κ) P hc hπ he hF2 hF1 hζ₀ (hprim n).pow_eq_one hP`. Conclude with `⟨L', iA, iM, P, io, hio⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem reduces_at_point (hPt : PointHT) (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
@@ -235,13 +231,13 @@ namespace GlobalTheory.CompanionTheory.Ar.HT
 open GlobalTheory.CompanionTheory.Ar.HT.TestPts in
 
 /- English proof (translation)
-Introduce `hPt E _ _ _ H D p _ R K _ _ _ _ _ _ _ _ n Ω _ _ _ _ Dc u hu S _ t x Γ₀ i hi L _ _ M ρ hρ j hj π ζ₀ κ hc hπ he hrank hprop hTate hκ 𝔮 hq hh hpq`. Take `⟨C, O, iF, iAC, iCZ, iR, iD, iAl, v, φ, hv, hp, hO, hinj, hcent⟩` from `GlobalTheory.T.integral_point_complete_valued_field R p 𝔮 hq hh hpq`. Use `letI : Algebra R O := φ.toAlgebra`. Take `⟨-, -, hIC, -, hAC, -⟩` from `GlobalTheory.T.complete_integers_properties p C v O hv hp hO`. Use `haveI := hAC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hIC`. Establish `hgk : Function.Injective ((algebraMap O (FractionRing O)).comp φ)` using `(IsFractionRing.injective O _).comp hinj`. Set `f : FractionRing R →+* FractionRing O` to `IsFractionRing.lift hgk`. Establish `hf : ∀ r, f (algebraMap R _ r) = algebraMap O _ (algebraMap R O r)` using `fun r => IsFractionRing.lift_algebraMap hgk r`. Take `⟨I, hI1, hI2⟩` from `hTate (FractionRing O) f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : spMap f ≫ (BT.genPt R).hom ≫ x = (BT.genPt O).hom ≫ spMap (algebraMap R O) ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `congr 1`. Simplify using `only [Over.mk_hom, spMap]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Use `congr 2`. Conclude with `RingHom.ext hf`. Take `⟨L', iA', iM', P, io, hio⟩` from `reduces_at_point hPt E H D p R K n Ω Dc u hu S t x Γ₀ i hi L M ρ hρ j hj π ζ₀ κ hc hπ he hrank hprop hκ C O v hv hp hO hinj f hf _ hz I hI1 hI2`. Conclude with `⟨C, O, iF, iAC, iCZ, iR, iAl, v, φ, C ⊗[ℤ] D.La, C ⊗[O] Module.Dual O L', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, P, io, hv, hinj, hcent, hio⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasTestPoints_of_tate : PointHT → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] [Field K] [Algebra R K] [IsFractionRing R K] (n : ℕ) (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module R Ω] [IsScalarTower R K Ω] (Dc : HTChart R K (IsCMField.complexConj E).toRingEquiv p n (D.p + D.q) Ω) (u : Fin (D.p + D.q) → D.La) (hu : IsPolLattice (IsCMField.complexConj E).toRingEquiv p D.EF u) (S : Scheme.{0}) [IsLocallyNoetherian S] (t : SAB H S) (x : Sp R ⟶ S) (Γ₀ : QFGroup R (LevGrp D.La p n)) (i : Γ₀.G.left ⟶ t.G.left) (hi : Γ₀.IsTorsionAlong t.G x (p ^ n) i) (L : Type) [AddCommGroup L] [Module R L] (M : LieModel t.G x L) (ρ : 𝓞 E →+* Module.End R L) (hρ : M.IsActOf t.act.act ρ) (j : Module.Dual R L →ₗ[R] Ω) (hj : IsBaseChange K j) (π : Multiplicative (Fin (D.p + D.q) → 𝓞 E) →* LevGrp D.La p n) (ζ₀ : Rˣ) (κ : R), IsHTChartOf Dc Γ₀ i M ρ j π ζ₀ → (∀ z, π (Multiplicative.ofAdd z) = lev p n (∑ k, z k • u k)) → (∀ z z', Dc.e z z' = ((D.EF (∑ k, z k • u k) (∑ k, z' k • u k) : ℤ) : ZMod (p ^ n))) → 2 * Module.finrank R L = Module.finrank ℤ D.La → IsProper (Limits.pullback.snd t.G.hom ((BT.genPt R).hom ≫ x)) → (∀ (k : Type) [Field k] [IsAlgClosed k] (f : FractionRing R →+* k), ∃ I : TateIso D k (Over.mk (spMap f ≫ (BT.genPt R).hom ≫ x) ⟶ t.G) (fun a g => g ≫ t.act.act a) (fun n g g' c => Out.WeilIs t.G t.PP.L n g g' (unitOn c)), (I.ζ (p ^ n) : k) = f (algebraMap R _ (ζ₀ : R)) ∧ ∀ a, (I.ev (p ^ n) a).left = spMap f ≫ (Γ₀.pt (lev p n a)).left ≫ i) → (if p = 2 then κ = 4 else ∃ ζ : R, IsPrimitiveRoot ζ p ∧ κ = ζ - 1) → Dc.HasTestPoints κ := by
   intro hPt E _ _ _ H D p _ R K _ _ _ _ _ _ _ _ n Ω _ _ _ _ Dc u hu S _ t x Γ₀ i hi L _ _ M ρ hρ j hj π ζ₀ κ hc hπ he hrank hprop hTate hκ 𝔮 hq hh hpq

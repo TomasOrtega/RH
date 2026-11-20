@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Y L A φ ψ hLA hφ hψ`. Take `⟨w, hw⟩` from `hLA`. Take `⟨h1, h2⟩` from `GlobalTheory.T.chernMass_lineBundleWeightOfIso Y L A φ ψ.isLB w hw hφ`. Rewrite using `[← h2]`. Conclude with `GlobalTheory.T.chernIntegral_top_independent_of_smooth_weight Y A _ ψ h1 hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernInt_indep_of_iso : ∀ (Y : Var ℂ) (L A : LB Y.X) (φ : Weight Y.str (RingHom.id ℂ) L) (ψ : Weight Y.str (RingHom.id ℂ) A), LBIso L A → φ.IsCInf → ψ.IsCInf → Weight.chernInt φ Y.dim Set.univ (fun _ => 1) = Weight.chernInt ψ Y.dim Set.univ (fun _ => 1) := by
   intro Y L A φ ψ hLA hφ hψ

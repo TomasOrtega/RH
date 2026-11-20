@@ -2,7 +2,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GelfandTsetlinBranching
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HwIrred
 
 /- English proof (translation)
-The claim follows from `PI.WGB.gTBranch_of_steps highest_weight_irreducible (PI.WGB.extremalFacts_of_A highest_weight_irreducible) PI.WGB.fixed_line_exists PI.WGB.stable_complement_exists PI.WGB.highest_weight_vector_exists (PI.WGB.realize_of highest_weight_irreducible (PI.WGB.extremalFacts_of_A highest …`.
+A detailed English derivation is pending.
 -/
 theorem gelfand_tsetlin_branching : PI.GTBranch :=
   PI.WGB.gTBranch_of_steps highest_weight_irreducible (PI.WGB.extremalFacts_of_A highest_weight_irreducible) PI.WGB.fixed_line_exists

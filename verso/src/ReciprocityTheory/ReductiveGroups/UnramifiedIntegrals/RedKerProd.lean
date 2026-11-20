@@ -8,9 +8,7 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Break down `he with he | ⟨he, hd3⟩` into its components or cases. Conclude with `kerProd_prin d L hd4 hCM l hl h5 hld e (Or.inl he)`. Distinguish the cases in `h3 : 3 ∣ d`. Substitute `he` using the available equality. Conclude with `kerProd_ideal d L hsq hd4 hCM l hl h3 hd3`.
-
-Conclude with `kerProd_prin d L hd4 hCM l hl h5 hld e (Or.inr ⟨he, h3⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem kerProd (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hd4 : d % 4 = 3) (hCM : HasCMBy d L) (l : ℕ)
     (hl : l.Prime) (h5 : 5 ≤ l) (hld : ¬ l ∣ d) (e : ℕ) (he : e = 2 ∨ e = 3 ∧ d ≠ 3) :

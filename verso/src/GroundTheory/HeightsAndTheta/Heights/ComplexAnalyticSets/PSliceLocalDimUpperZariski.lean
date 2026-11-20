@@ -17,9 +17,9 @@ open MvPolynomial Matrix ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Set `_` to `f.toAlgebra`. Establish `: Module.Finite R S` using `hf`. Establish `: Algebra.IsIntegral R S` using `Algebra.IsIntegral.of_finite R S`. Use `Order.krullDim_le_of_strictMono (fun p : PrimeSpectrum S => PrimeSpectrum.comap (algebraMap R S) p) ?_` and prove the remaining obligations. Introduce `p p' h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : p.asIdeal < p'.asIdeal` using `h`. Conclude with `Ideal.IsIntegral.comap_lt_comap (R := R) h'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem SliceLocalDimUpperZariski.ringKrullDim_le_of_finite {R S : Type*} [CommRing R] [CommRing S]
     (f : R →+* S) (hf : f.Finite) : ringKrullDim S ≤ ringKrullDim R := by
@@ -33,17 +33,15 @@ theorem SliceLocalDimUpperZariski.ringKrullDim_le_of_finite {R S : Type*} [CommR
   exact Ideal.IsIntegral.comap_lt_comap (R := R) h'
 
 /- English proof (translation)
-Use `set M : Ideal (MvPolynomial (Fin n) ℂ) := RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)`. Establish `hIM : I ≤ M` using `fun f hf => RingHom.mem_ker.mpr (hq f hf)`. Set `m : Ideal (MvPolynomial (Fin n) ℂ ⧸ I)` to `M.map (Ideal.Quotient.mk I)`. Establish `hm : m.IsMaximal` using `Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hIM)`. Establish `hsub : Algebra.algebraMapSubmonoid (MvPolynomial (Fin n) ℂ ⧸ I) M.primeCompl = m.primeCompl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzy⟩`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I y ∉ m`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hzy]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I z ∉ M.map (Ideal.Quotient.mk I)`. Rewrite using `[Ideal.mem_quotient_iff_mem hIM]`. Conclude with `hz`. Introduce `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I y ∉ M.map (Ideal.Quotient.mk I) at h`. Rewrite `h` using `[Ideal.mem_quotient_iff_mem hIM]`. Conclude with `⟨y, h, rfl⟩`. Establish `: m.IsPrime` using `hm.isPrime`. Establish `: IsLocalization.AtPrime (localRingAt I q) m`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsLocalization.AtPrime`. Rewrite using `[← hsub]`. Unfold `localRingAt`. Use `infer_instance`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height m (localRingAt I q)]`.
-
-Conclude with `Ideal.height_le_ringKrullDim_of_isPrime`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SliceLocalDimUpperZariski.localDim_le {n : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ))
     (q : Fin n → ℂ) (hq : q ∈ zeroSet I) :
@@ -79,15 +77,15 @@ theorem SliceLocalDimUpperZariski.localDim_le {n : ℕ} (I : Ideal (MvPolynomial
   exact Ideal.height_le_ringKrullDim_of_isPrime
 
 /- English proof (translation)
-Use `set I := sliceIdeal J L q with hI`. Establish `hJI : J ≤ I` using `le_sup_left`. Set `g : MvPolynomial (Fin (d + 1)) ℂ →+* MvPolynomial (Fin n) ℂ ⧸ I` to `(Ideal.Quotient.factor hJI).comp (projHom J M).toRingHom`. Establish `hg : g.Finite` using `RingHom.Finite.comp (RingHom.Finite.of_surjective _ (Ideal.Quotient.factor_surjective hJI)) hfin`. Set `π : MvPolynomial (Fin (d + 1)) ℂ →+* Polynomial ℂ` to `(aeval (Fin.lastCases (motive := fun _ => Polynomial ℂ) Polynomial.X (fun k => Polynomial.C ((L *ᵥ q) k)))).toRingHom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : Polynomial ℂ →+* MvPolynomial (Fin n) ℂ ⧸ I` to `Polynomial.eval₂RingHom (algebraMap ℂ _) (Ideal.Quotient.mk I (linPoly M (Fin.last d)))`. Establish `hlin : ∀ k : Fin d, linPoly M k.castSucc = linPoly L k`. Introduce `k`. Simplify using `only [linPoly, hML]`. Establish `hCI : ∀ c : ℂ, algebraMap ℂ (MvPolynomial (Fin n) ℂ ⧸ I) c = Ideal.Quotient.mk I (C c)` using `fun c => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ψ.comp π = g`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[π, ψ, g, projHom, pullback, hCI]`. Introduce `i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.lastCases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `[π, ψ, g, projHom, pullback]`. Establish `hmem : linPoly L k - C ((L *ᵥ q) k) ∈ I` using `Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩)`. Establish `hq : Ideal.Quotient.mk I (linPoly L k) = Ideal.Quotient.mk I (C ((L *ᵥ q) k))` using `Ideal.Quotient.eq.mpr hmem`. Simplify using `[π, ψ, g, projHom, pullback, hlin, hq, hCI]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hψ : ψ.Finite` using `RingHom.Finite.of_comp_finite (f := π) (by rw [hcomp]; exact hg)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Polynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem SliceLocalDimUpperZariski.quotient_dim_le_one {n d : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (L : Matrix (Fin d) (Fin n) ℂ) (q : Fin n → ℂ) (M : Matrix (Fin (d + 1)) (Fin n) ℂ)
@@ -129,19 +127,19 @@ theorem SliceLocalDimUpperZariski.quotient_dim_le_one {n d : ℕ} (J : Ideal (Mv
         rfl
 
 /- English proof (translation)
-Introduce `n d J q hJ hdim hq`. Take `⟨W, ⟨S, hS⟩, ⟨A₀, hA₀⟩, hWfin⟩` from `ComplexSets.FiniteProjectionsContainOpen.proof ComplexSets.ConeAvoidsFinite.proof ComplexSets.FiniteProjHomInjective.proof ComplexSets.ConeAvoidsOpen.proof (ComplexSets.ConeAvoidsExists.proof ComplexSets.LeadIdealDim.proof ComplexSets.LinearFormCut.proof ComplexSets.HomogDimZeroP …`. Rewrite `hA₀` using `[hS]`. Take `⟨G, hGS, hG⟩` from `hA₀`. Set `ext : Matrix (Fin d) (Fin n) ℂ → Matrix (Fin (d + 1)) (Fin n) ℂ` to `fun L i j => if h : (i : ℕ) < d then L ⟨i, h⟩ j else A₀ i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `F : MvPolynomial (Fin d × Fin n) ℂ` to `bind₁ (fun ij : Fin (d + 1) × Fin n => if h : (ij.1 : ℕ) < d then X (⟨ij.1, h⟩, ij.2) else C (A₀ ij.1 ij.2)) G`. Establish `hevF : ∀ L : Matrix (Fin d) (Fin n) ℂ, eval (fun ij : Fin d × Fin n => L ij.1 ij.2) F = eval (fun ij : Fin (d + 1) × Fin n => ext L ij.1 ij.2) G`. Introduce `L`. Express the relevant statement in the definitionally equal form `eval₂Hom (RingHom.id ℂ) _ (bind₁ _ G) = _`. Rewrite using `[eval₂Hom_bind₁]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `eval _ G = _`. Use `congrArg (fun f => eval f G) (funext fun ij => ?_)` and prove the remaining obligations. Simplify using `only [ext]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hext0 : ext (fun i j => A₀ i.castSucc j) = A₀`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Simplify using `only [ext]`. Use `split_ifs with h`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨F, fun h0 => hG ?_, fun L hL => ?_⟩` and prove the remaining obligations. Establish `h1` using `hevF (fun i j => A₀ i.castSucc j)`. Rewrite `h1` using `[hext0, h0, map_zero]`. Conclude with `h1.symm`. Establish `hmem : ext L ∈ W`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hS]`. Conclude with `⟨G, hGS, (hevF L) ▸ hL⟩`. Establish `hfp : IsFiniteProjection J (ext L)` using `hWfin hmem`. Establish `hq' : q ∈ zeroSet (sliceIdeal J L q)`. Rewrite using `[zeroSet_sliceIdeal]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨hq, rfl⟩`. Use `(SliceLocalDimUpperZariski.localDim_le _ q hq').trans (SliceLocalDimUpperZariski.quotient_dim_le_one J L q (ext L) (fun i j => ?_) hfp.finite)` and prove the remaining obligations. Simplify using `[ext, i.isLt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SliceLocalDimUpperZariski.proof : SliceLocalDimUpperZariski.Statement := by
   intro n d J q hJ hdim hq

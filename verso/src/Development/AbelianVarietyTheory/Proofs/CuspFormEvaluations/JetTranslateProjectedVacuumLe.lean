@@ -25,9 +25,9 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict.VacJet
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on generalizing x with`. Consider the case `C a`. Establish `h (τ : Type) : (MvPolynomial.C a : MvPolynomial τ ℂ) = a • MvPolynomial.monomial 0 1`. Simplify using `[MvPolynomial.smul_eq_C_mul]`. Rewrite using `[MvPolynomial.rename_C, h, h]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[I2.polyDeriv_smul, I2.polyDeriv_monomial_one, I2.pdTerm_eq_itD, -MvPolynomial.smul_monomial, -MvPolynomial.monomial_zero']`. Consider the case `add P Q hP hQ => simp only [map_add, I2.polyDeriv_add, hP, hQ]`. Consider the case `mul_X P l hP`. Rewrite using `[map_mul, MvPolynomial.rename_X, polyDeriv_mul_X hF, polyDeriv_mul_X hF, funext hP]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_rename {σ κ W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] {F : W → ℂ}
     (hF : ContDiff ℂ (⊤ : ℕ∞) F) (ρ : σ → κ) (u : κ → W) (P : MvPolynomial σ ℂ) (x : W) :
@@ -44,7 +44,7 @@ theorem polyDeriv_rename {σ κ W : Type} [NormedAddCommGroup W] [NormedSpace �
     rw [map_mul, MvPolynomial.rename_X, polyDeriv_mul_X hF, polyDeriv_mul_X hF, funext hP]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.support_rename_of_injective hρ, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hρ h)]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [MvPolynomial.coeff_rename_mapDomain ρ hρ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_coeff_rename {σ κ : Type} {ρ : σ → κ} (hρ : Function.Injective ρ) (P : MvPolynomial σ ℂ) :
     ∑ m ∈ (MvPolynomial.rename ρ P).support, ‖(MvPolynomial.rename ρ P).coeff m‖ =
@@ -54,7 +54,7 @@ theorem sum_norm_coeff_rename {σ κ : Type} {ρ : σ → κ} (hρ : Function.In
   exact Finset.sum_congr rfl fun m _ => by rw [MvPolynomial.coeff_rename_mapDomain ρ hρ]
 
 /- English proof (translation)
-Use `polyDeriv_smul_letter P (fun _ => c) _ (fun m hm => ?_) u F x` and prove the remaining obligations. Use `hP (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Rewrite using `[Finsupp.prod, Finset.prod_pow_eq_pow_sum, ← this]`. Use `congr 1`. Simplify using `[Finsupp.weight_apply, Finsupp.sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem polyDeriv_smul_dir {σ W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] {P : MvPolynomial σ ℂ} {d : ℕ}
     (hP : P.IsHomogeneous d) (c : ℂ) (u : σ → W) (F : W → ℂ) (x : W) :
@@ -69,11 +69,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
 
 /- English proof (translation)
-Establish `h1 : heisG X bas y (a • ∑ i ∈ s, c i • f i) = a • ∑ i ∈ s, c i • heisG X bas y (f i)`. Use function extensionality and compare the values at `t`. Simplify using `[heisG, heisS, Finset.sum_mul, _root_.mul_assoc]`. Establish `hsb (i) : IsSB (c i • heisG X bas y (f i))` using `TensVac.sb_smul _ ((heisG_laws E r X g bas idx n hs hn).2.2.2 y _ (hf i)).1`. Rewrite using `[h1, UnAct.thA_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using congrFun (UnAct.thA_smul (X := X) (bas := bas) idx x 0 (0 : TF n g)) z`. Consider the case `insert b s hb ih`. Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, UnAct.thA_add idx hs hx (hsb b) (RecSum.isSB_sum s _ hsb), Pi.add_apply, UnAct.thA_smul, Pi.smul_apply, smul_eq_mul, ih]`.
+Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Simplify using `[heisG, heisS, Finset.sum_mul, _root_.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thA_heisG_sum (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) (y : Matrix (Fin n) (Fin r) E) {J : Type} (s : Finset J) (a : ℂ) (c : J → ℂ)
@@ -116,9 +116,9 @@ theorem rowPt_apply (y : Matrix (Fin n) (Fin r) E) (b : Fin n) :
 variable {ψ}
 
 /- English proof (translation)
-Establish `h (z : Fin g → ℂ) (j) : ψ z (e j) = c * z j` using `by conv_lhs => rw [← Finset.univ_sum_single z]`. Establish `h2 (i) : (Pi.single i (z i) : Fin g → ℂ) = z i • (Pi.single i 1 : Fin g → ℂ)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`. Simplify using `only [h2, map_sum, map_smul, (he _).2]`. Simplify using `[Pi.single_apply, _root_.mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Take `⟨j, rfl⟩` from `e.surjective i`. Simplify using `only [I2.actE, h, pv_smul, (he j).1]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_pv_smul (e : Fin g ≃ I2.Idx dim) (c : ℂ)
     (he : ∀ j, (e j).1 = rowType X (idx j) ∧ ψ (Pi.single j 1) = c • EuclideanSpace.single (e j) (1 : ℂ))
@@ -137,19 +137,17 @@ theorem map_pv_smul (e : Fin g ≃ I2.Idx dim) (c : ℂ)
 end Torus
 
 /- English proof (translation)
-Establish `hp (v : Fin n → E) (u : Fin r → E) : rowPt idx x ψ (vecMulVec v u) = TensorLat.tens (ψ (pv X idx x u)) v`. Use function extensionality and compare the values at `b`. Rewrite using `[rowPt_apply, TensorLat.tens_apply, ← hψ]`. Both sides reduce to the same expression. Establish `hsp` using `(TensorLat.tensorLat_span_integral_perfect T Λ hΛ.1 (fun a ha => (hΛ.2.1 a).1 ha) (fun a ha => (hΛ.2.1 a).2 ha)).2.2.1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hsp]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem a ha`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨p, hp', v, hv, rfl⟩` from `ha`. Take `⟨u, hu, rfl⟩` from `(hL p).1 hp'`. Conclude with `⟨_, AddSubgroup.subset_closure ⟨v, hv, u, hu, rfl⟩, (hp v u).symm⟩`. Consider the case `zero => exact ⟨0, zero_mem _, (map_zero _).symm⟩`. Consider the case `add a b _ _ ha hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨y, hy, rfl⟩` from `ha`. Take `⟨y', hy', rfl⟩` from `hb`. Conclude with `⟨y + y', add_mem hy hy', (map_add _ _ _).symm⟩`. Consider the case `smul m a _ ha`. Take `⟨y, hy, rfl⟩` from `ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m • y, AddSubgroup.zsmul_mem _ hy m, (map_zsmul _ _ _).symm⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem a ha`. Take `⟨v, hv, u, hu, rfl⟩` from `ha`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨_, (hL _).2 ⟨u, hu, rfl⟩, v, hv, hp v u⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_tensorLat_iff (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r) (T : I2.PT E)
     (ψ : (Fin g → ℂ) ≃ₗ[ℂ] I2.Vsp T.dim) {L : Lt E r} (hL : ∀ ga, ga ∈ T.L ↔ ∃ u ∈ L, ga = ψ (pv X idx x u))
@@ -189,53 +187,45 @@ theorem mem_tensorLat_iff (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r) (T 
     | neg a _ ha => rw [map_neg]; exact neg_mem ha
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n hs hn w hw L hL Λ hΛ v hv x hx hox t ht hc θ κ hθ hm hκ lam hlam hmin y P d hP`. Distinguish the cases in `hκ0 : κ = 0`. Rewrite using `[hκ0, zero_mul, norm_zero, zero_mul]`. Establish `: 0 ≤ rdE E` using `Real.rpow_nonneg (abs_nonneg _) _`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Take `⟨T, ψ, e, hT⟩` from `exists_torus_of_selfD E r X g bas idx hs w hw L hL x hx hox t ht hc`. Take `⟨hsec, hU, -⟩` from `ThetaPT.theta_on_torus E r X g bas idx w L x t T ψ e hs hx hw hT`. Take `⟨-, hH, hTL, hact, heps, he⟩` from `hT`. Take `⟨hs1, hl2⟩` from `hsec θ hθ`. Use `replace hl2 := hl2 hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR, hR', hcard, hpos, hproj⟩` from `VacMean.vac_proj_mean E r X g q0 hr bas idx n hs hn w hw L hL Λ hΛ v hv`. Take `⟨-, -, him, -, -, hinj, -⟩` from `hx_laws E r X g bas idx n hs hn x hx`. Establish `hψ` using `map_pv_smul idx x e _ he`. Establish `hlat` using `mem_tensorLat_iff idx x T ψ hTL hψ hΛ`. Use `set Φ : Matrix (Fin n) (Fin r) E →+ (Fin n → I2.Vsp T.dim) := rowPt idx x ψ with hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hΦinj : Function.Injective fun y => -Φ y` using `fun a b h => by`. Use function extensionality and compare the values at `k`. Conclude with `hinj (ψ.injective (congrFun (neg_injective h) k))`. Establish `hΦL (a : Matrix (Fin n) (Fin r) E) (k) : Φ a k ∈ T.L ↔ a k ∈ L`. Rewrite using `[hTL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun ⟨u, hu, h⟩ => hinj (ψ.injective h) ▸ hu, fun h => ⟨_, h, rfl⟩⟩`. Establish `hΦe (a : Matrix (Fin n) (Fin r) E) : TensorLat.tensorEps w (-Φ a) = epsW X (w : E) a`. Rewrite using `[TensorLat.tensorEps_neg, TensorLat.tensorEps, epsW, I2.HC, Complex.im_sum]`. Simplify using `only [hΦ, rowPt_apply, ← hact, hH, him]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Use `set s : (Fin 1 → I2.Vsp T.dim) → ℂ := fun v => θ (ψ.symm (v 0)) with hsdef`. Establish `hs0 : s ≠ 0` using `fun h => by`. Rewrite `hl2` using `[h]`. Simplify using `[I2.PT.l2, I2.PT.ptN2] at hl2`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Set `ρ : Harm.Var X.Ψ q0 X.p0 (Fin n) → I2.Letter n T.dim` to `fun l => (l.2.2, e (idx.symm (rowOf X hr (l.1, l.2.1))))`. Establish `hρ : Function.Injective ρ`. Introduce and unpack `⟨a, b, c⟩ ⟨a', b', c'⟩ h`. Take `⟨h1, h2⟩` from `Prod.ext_iff.1 h`. Take `⟨h3, h4⟩` from `Prod.ext_iff.1 ((rowOf X hr).injective (idx.symm.injective (e.injective h2)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Prod.ext h3 (Prod.ext h4 h1)`. Establish `hcR : (R.image fun y => -Φ y).card = R.card` using `Finset.card_image_of_injective _ hΦinj`. Take `⟨-, -, key⟩` from `normalised_theta_value_bound T w hw heps s hs1 hs0 Λ hΛ.1 (fun a ha => (hΛ.2.1 a).1 ha) (fun a ha => (hΛ.2.1 a).2 ha) (R.image fun y => -Φ y) (fun a ha => by`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `neg_mem ((hlat _).2 ⟨b, hR b hb, rfl⟩))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun a ha => by`. Take `⟨b, hb, rfl⟩` from `(hlat _).1 ha`. Establish `h1 (c) (k) : Φ b k - (-Φ c) k ∈ T.L ↔ (-b) k - c k ∈ L`. Rewrite using `[← neg_mem_iff, show (-b) k - c k = (-b - c) k from rfl, ← hΦL, map_sub, map_neg]`. Simplify using `only [Pi.sub_apply, Pi.neg_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congr! 1`. Normalize the expressions using the abelian group laws. Take `⟨c, ⟨hc1, hc2⟩, hc3⟩` from `hR' (-b) (neg_mem hb)`. Use `⟨-Φ c, ⟨Finset.mem_image_of_mem _ hc1, fun k => (h1 c k).2 (hc2 k)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨h2, h3⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨c', hc', rfl⟩` from `Finset.mem_image.1 h2`. Rewrite using `[hc3 c' ⟨hc', fun k => (h1 c' k).1 (h3 k)⟩])`. Use the proof step `((Real.sqrt R.card : ℝ) : ℂ)`. Use the proof step `(by rw [hcR, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (Nat.cast_nonneg _)])`. Use `lam hlam`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `(fun a ha h0 => by`. Take `⟨u, hu, rfl⟩` from `(hTL a).1 ha`. Establish `h1` using `hmin u hu (by`. Introduce and unpack `rfl`. Conclude with `h0 (by rw [show pv X idx x 0 = 0 from congrArg (· ∘ idx) (per_zero X x), map_zero]))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[← hH, I2.jof_Hf_self_re]`. Conclude with `le_of_sq_le_sq h1 (norm_nonneg _))`. Use the proof step `({()} : Finset Unit) (fun _ => 1) (by simp) (fun _ => -Φ y) (MvPolynomial.rename ρ P) d`. Use the proof step `hP.rename_isHomogeneous`. Rewrite `key` using `[Finset.sum_singleton, hl2, Real.sqrt_one, one_pow, div_one, _root_.one_mul, sum_norm_coeff_rename hρ, Finset.card_singleton, Nat.cast_one, _root_.one_mul, ← Fintype.card_congr e, Fintype.card_fin, Finset.sum_image fun a _ b _ h => hΦinj h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [hΦe] at key`. Use `set G := T.U 1 (-Φ y) (∑ a ∈ R, epsW X (w : E) a • T.U 1 (-Φ a) (I2.tens T fun _ => s)) with hG`. Set `A : (Fin n → Fin g → ℂ) ≃L[ℂ] (Fin n → I2.Vsp T.dim)` to `ContinuousLinearEquiv.piCongrRight fun _ => ψ.toContinuousLinearEquiv`. Take `⟨-, -, -, hdiff, hlast⟩` from `fock_laws E r X g bas idx n hs hn x hx 1 θ`. Establish `hGA (z : Fin n → Fin g → ℂ) : G (A z) = ∑ a ∈ R, epsW X (w : E) a * ∏ b, fock X bas idx x 1 (pv X idx x (y b)) (fock X bas idx x 1 (pv X idx x (a b)) θ) (z b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 (a : Matrix (Fin n) (Fin r) E) : T.U 1 (-Φ a) (I2.tens T fun _ => s) = fun v => ∏ b, fock X bas idx x 1 (pv X idx x (a b)) θ (ψ.symm (v b))`. Use function extensionality and compare the values at `v`. Rewrite using `[hU n 1 (fun _ => θ) (fun b => pv X idx x (a b)) (fun b => ψ.symm (v b))]`. Simplify using `only [LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 (a : Matrix (Fin n) (Fin r) E)` using `hU n 1 (fun b => fock X bas idx x 1 (pv X idx x (a b)) θ) (fun b => pv X idx x (y b)) z`. Simplify using `only [h2, ← h1]`. Simplify using `only [hG, I2.PT.U, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_left_comm _ _ _`. Establish `hGd : ContDiff ℂ (⊤ : ℕ∞) G`.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : G = (fun z => G (A z)) ∘ A.symm`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Rewrite using `[h1, funext hGA]`. Use `I2.contDiff_of_diff (Differentiable.comp ?_ A.symm.differentiable)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Differentiable.fun_sum fun a _ => Differentiable.const_mul ?_ _` and prove the remaining obligations. Use `(contDiff_prod fun b _ => (I2.contDiff_of_diff ((fock_laws E r X g bas idx n hs hn x hx 1 _).2.2.2.1 (hdiff hθ.1 _) _)).comp (contDiff_apply ℂ (Fin g → ℂ) b)).differentiable (by simp)` and prove the remaining obligations. Establish `hsb (a) : IsSB (heisG X bas a v)` using `((heisG_laws E r X g bas idx n hs hn).2.2.2 a v hv.1).1`. Establish `hth : thA X bas idx (heisG X bas y (projA X bas (w : E) (tens Λ L) v)) x = (κ⁻¹ * (R.card : ℂ)⁻¹) • fun z => G ((A : (Fin n → Fin g → ℂ) →L[ℂ] (Fin n → I2.Vsp T.dim)) z)`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hproj, thA_heisG_sum idx hs hn hx y R _ _ _ hsb, Pi.smul_apply, ContinuousLinearEquiv.coe_coe, hGA]`. Establish `h2 (a : Matrix (Fin n) (Fin r) E)` using `hlast (fun b => fock X bas idx x 1 (pv X idx x (a b)) θ) κ _ (hsb a) (hlast _ κ v hv.1 hκ a) y z`. Simplify using `only [h2, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hdir : (fun l => (A : (Fin n → Fin g → ℂ) →L[ℂ] (Fin n → I2.Vsp T.dim)) (letterDir X hr idx l)) = fun l => ((Real.sqrt t : ℝ) : ℂ) • I2.dir (ρ l)`. Use function extensionality and compare the values at `l b`. Express the relevant statement in the definitionally equal form `ψ (letterDir X hr idx l b) = _`. Distinguish the cases in `h : b = l.2.2`. Substitute `h` using the available equality.
-
-Simplify using `only [letterDir, I2.dir, ρ, Pi.smul_apply, Pi.single_eq_same, (he _).2]`. Simplify using `[letterDir, I2.dir, ρ, h]`. Rewrite using `[thP, hth, I2.polyDeriv_smul_fun _ _ (hGd.fun_comp (ContinuousLinearMap.contDiff _)), ColPoly.polyDeriv_comp_linear hGd, hdir, polyDeriv_smul_dir hP, ← polyDeriv_rename hGd, map_zero]`. Establish `hc0 : (0 : ℝ) < R.card` using `by exact_mod_cast hpos`. Establish `hsq : 0 < Real.sqrt R.card` using `Real.sqrt_pos.2 hc0`.
-
-Establish `hpw : (Real.pi * Real.exp 1 * t * d) ^ ((d : ℝ) / 2) = Real.sqrt t ^ d * (Real.pi * Real.exp 1 * d) ^ ((d : ℝ) / 2)`. Rewrite using `[mul_right_comm _ t, Real.mul_rpow (by positivity) ht.le, _root_.mul_comm, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul ht.le]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Nat.cast_pow, ← hcard, hpw]`.
-
-Establish `hk : ‖κ‖ ≠ 0` using `norm_ne_zero_iff.2 hκ0`. Use `le_of_eq_of_le ?_ ((mul_le_mul_of_nonneg_left key (pow_nonneg (Real.sqrt_nonneg t) d)).trans_eq (by ring))` and prove the remaining obligations. Simplify using `only [norm_mul, norm_inv, norm_pow, Complex.norm_real, Complex.norm_natCast, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]`. Establish `h3` using `Real.mul_self_sqrt hc0.le`. Use `set q := Real.sqrt R.card`.
-
-Rewrite using `[← h3]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem jet_projA_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : 𝓞 E, (w : E) + cc (w : E) = 1 → ∀ L : Lt E r, SelfD X L → ∀ Λ ∈ Vset E n 1, ∀ v : TF n g, IsVac X bas (w : E) (tens (stdL E n) L) v → ∀ x ∈ X.dom, X.IsOrtho x → ∀ t : ℝ, 0 < t → (∀ τ, X.c τ = t) → ∀ (θ : (Fin g → ℂ) → ℂ) (κ : ℂ), IsTheta1 X bas idx (w : E) x L θ → MeanOne X bas idx x L θ → (∀ z : Fin n → Fin g → ℂ, ∏ b, θ (z b) = κ * thA X bas idx v x z) → ∀ lam : ℝ, 0 < lam → (∀ u ∈ L, u ≠ 0 → lam ^ 2 ≤ (hx X bas idx x (pv X idx x u) (pv X idx x u)).re) → ∀ (y : Matrix (Fin n) (Fin r) E) (P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) (d : ℕ), P.IsHomogeneous d → ‖κ * thP X hr bas idx (heisG X bas y (projA X bas (w : E) (tens Λ L) v)) P x‖ * Real.sqrt ((((stdL E n).toAddSubgroup.relIndex Λ.toAddSubgroup) : ℝ) ^ r) ≤ (∑ m ∈ P.support, ‖P.coeff m‖) * (Real.pi * Real.exp 1 * t * d) ^ ((d : ℝ) / 2) * Real.sqrt 2 * (1 + 4 * Real.sqrt (2 * g * n) * (2 * (fdeg E : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rdE E) / (Real.sqrt Real.pi * lam)) ^ (g * n) := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn w hw L hL Λ hΛ v hv x hx hox t ht hc θ κ hθ hm hκ lam hlam hmin

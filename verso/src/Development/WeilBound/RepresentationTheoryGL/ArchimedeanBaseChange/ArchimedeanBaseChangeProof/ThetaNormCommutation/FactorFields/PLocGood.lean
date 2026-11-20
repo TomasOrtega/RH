@@ -14,9 +14,7 @@ open scoped Classical TensorProduct
 namespace PositivityTheory.Rg.BcB.G3.LocGoodP
 
 /- English proof (translation)
-Take `⟨-, -, hKθ, -⟩` from `GlobalTheory.BCT.ThBasic.twist_basic E hU n w`. Unfold `nrmL`. Use `split_ifs with hs`. Conclude with `hz`. Establish `: thetaGL n (cj w) z = thL n w z` using `by unfold thL; rw [if_neg hs]`.
-
-Rewrite using `[this]`. Conclude with `(GlobalTheory.LFun.KGL w n).mul_mem hz (hKθ _ hz)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrmL_mem {E : Type} [Field E] [NumberField E] [IsCMField E] (hU : Unr E) (n : ℕ) (w : Pl E)
     (z : GLw n w) (hz : z ∈ GlobalTheory.LFun.KGL w n) : nrmL n w z ∈ GlobalTheory.LFun.KGL w n := by
@@ -29,11 +27,11 @@ theorem nrmL_mem {E : Type} [Field E] [NumberField E] [IsCMField E] (hU : Unr E)
     exact (GlobalTheory.LFun.KGL w n).mul_mem hz (hKθ _ hz)
 
 /- English proof (translation)
-Take `⟨-, hinv, -⟩` from `GlobalTheory.BCT.ThBasic.twist_basic E hU n w`. Establish `ht' : t * z = z * thL n w t` using `ht`. Distinguish the cases in `hs : IsSplitAt w`. Establish `hθ1 : thL n w = MonoidHom.id _` using `by unfold thL; rw [if_pos hs]`. Establish `hn1 : nrmL n w z = z` using `by unfold nrmL; rw [if_pos hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hn1]`. Rewrite `ht'` using `[hθ1]`. Simplify using `using ht'`. Establish `hn1 : nrmL n w z = z * thL n w z`. Unfold `nrmL`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hs]`. Unfold `thL`. Rewrite using `[if_neg hs]`. Rewrite using `[hn1]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem commute_nrmL {E : Type} [Field E] [NumberField E] [IsCMField E] (hU : Unr E) (n : ℕ) (w : Pl E)
     (z t : GLw n w) (ht : t ∈ twCent (thL n w) z) : t * nrmL n w z = nrmL n w z * t := by
@@ -55,15 +53,11 @@ end PositivityTheory.Rg.BcB.G3.LocGoodP
 
 open PositivityTheory.Rg.BcB.G3.LocGoodP in
 /- English proof (translation)
-Introduce `E _ _ _ hU n P hP`. Use `filter_upwards [GlobalTheory.BCT.SepBezout.bezout_eventually E P hP.2.2.1, GlobalTheory.BCT.UnitStable.eventually_separable (E := E) P hP.2.2.1] with w hgood hsep`. Introduce `z hzK hz`. Establish `hgood₀ : ∃ u v : (w.adicCompletion E)[X], (∀ i, u.coeff i ∈ w.adicCompletionIntegers E) ∧ (∀ i, v.coeff i ∈ w.adicCompletionIntegers E) ∧ u * (nrmL n w z).val.charpoly + v * derivative (nrmL n w z).val.charpoly = 1`. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hgood`. Establish `hNK` using `nrmL_mem hU n w z hzK`. Use `⟨fun g hg => ?_, fun t ht hc => ?_, fun y hyK hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hs : IsSplitAt w`. Establish `hθ1 : thL n w = MonoidHom.id _` using `by unfold thL; rw [if_pos hs]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn1 : nrmL n w z = z` using `by unfold nrmL; rw [if_pos hs]`. Rewrite `hgood₀` using `[hn1]`. Rewrite `hg` using `[hθ1]`. Take `⟨t, ht, k, hk, rfl⟩` from `GlobalTheory.SplitUniq.splitUniq E n w z g hzK hgood₀ hg`. Use `⟨t, ?_, k, hk, rfl⟩` and prove the remaining obligations.
-
-Use `show t * z = z * thL n w t`. Rewrite using `[hθ1]`. Conclude with `ht`. Conclude with `GlobalTheory.InertUniq.eq_twCent_mul_KGL E hU n w hs z g hzK hgood₀ hg`. Conclude with `GlobalTheory.StabInt.mem_KGL_of_commute E n w (nrmL n w z) t hNK hgood₀ (commute_nrmL hU n w z t ht) hc`.
-
-Conclude with `GlobalTheory.BCT.UnitStable.twConj_of_mem hU n w (atPl w P) hsep z y hz hy hzK hyK`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.G3.locGood_pf : LocGood := by
   intro E _ _ _ hU n P hP

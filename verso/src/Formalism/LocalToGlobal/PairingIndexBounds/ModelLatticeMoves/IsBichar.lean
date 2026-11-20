@@ -36,7 +36,7 @@ def Sch (c : B → A → k) (A₀ : AddSubgroup A) : Submodule k (A → k) :=
   Submodule.span k (Set.range fun ab : A × B => gen c A₀ ab.1 ab.2)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨(a, b), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem (c : B → A → k) (A₀ : AddSubgroup A) (a : A) (b : B) : gen c A₀ a b ∈ Sch c A₀ :=
   Submodule.subset_span ⟨(a, b), rfl⟩

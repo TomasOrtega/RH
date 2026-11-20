@@ -30,9 +30,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Establish `: apow x ((n : ℂ) / 2) = apow x (1 / 2) ^ n`. Rewrite using `[apow, apow, ← Complex.cpow_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `F.pow_mem (habs x) n`.
+A detailed English derivation is pending.
 -/
 theorem apow_nat_half_mem (F : Subfield ℂ) (habs : ∀ u : kˣ, apow u (1 / 2) ∈ F) (x : kˣ) (n : ℕ) :
     apow x ((n : ℂ) / 2) ∈ F := by
@@ -43,11 +43,9 @@ theorem apow_nat_half_mem (F : Subfield ℂ) (habs : ∀ u : kˣ, apow u (1 / 2)
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Rewrite using `[fourierSum_apply]`. Use `split_ifs with h`. Use `F.mul_mem (F.inv_mem (F.pow_mem (natCast_mem F _) _)) (F.sum_mem fun T _ => F.mul_mem (hΦ _) (hψ _ ?_))` and prove the remaining obligations. Rewrite using `[← Valuation.mem_integer_iff]`. Express the relevant statement in the definitionally equal form `_ ∈ 𝒪[k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pairCols, Finset.mul_sum]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
-
-Conclude with `Subring.mul_mem _ (liftRes_mem T i j) (h i j j.2)`. Conclude with `F.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourierSum_mem {A D : Type} [Fintype A] [DecidableEq A] [DecidableEq D] (F : Subfield ℂ) (ψ : AddChar k Circle)
     (ϖ : kˣ) (e : ℕ) (P : Finset D) (hψ : ∀ x : k, valuation k (((ϖ ^ e : kˣ) : k) * x) ≤ 1 → (ψ x : ℂ) ∈ F)
@@ -69,11 +67,11 @@ theorem fourierSum_mem {A D : Type} [Fintype A] [DecidableEq A] [DecidableEq D] 
 omit [MeasurableSpace k] [BorelSpace k] in
 
 /- English proof (translation)
-Rewrite using `[invFourierSum_inv_apply]`. Use `split_ifs with h`. Use `F.sum_mem fun S _ => F.mul_mem (hΦ _) (hψ _ ?_)` and prove the remaining obligations. Rewrite using `[← Valuation.mem_integer_iff]`. Express the relevant statement in the definitionally equal form `_ ∈ 𝒪[k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e1 : ((ϖ ^ e : kˣ) : k) * pairCols P T ((ϖ ^ e)⁻¹ • liftRes S) = ∑ i, ∑ j : P, liftRes S i j * T i j`. Rewrite using `[pairCols, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, Units.smul_def, smul_eq_mul, ← mul_assoc, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`. Rewrite using `[e1]`. Conclude with `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => Subring.mul_mem _ (liftRes_mem S i j) (h i j j.2)`. Conclude with `F.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invFourierSum_inv_mem {A D : Type} [Fintype A] [DecidableEq A] [DecidableEq D] (F : Subfield ℂ) (ψ : AddChar k Circle)
     (ϖ : kˣ) (e : ℕ) (P : Finset D) (hψ : ∀ x : k, valuation k (((ϖ ^ e : kˣ) : k) * x) ≤ 1 → (ψ x : ℂ) ∈ F)
@@ -96,7 +94,7 @@ theorem invFourierSum_inv_mem {A D : Type} [Fintype A] [DecidableEq A] [Decidabl
   · exact F.zero_mem
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.glOrbitIntegral_depthDatum_mem_subfield F hJo hJK σ ν hϖ he hν hram hνF habs c hΨ hΨF h`.
+A detailed English derivation is pending.
 -/
 theorem smallF_mem {A A' D : Type} [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D]
     (F : Subfield ℂ) {J : Subgroup (GL A' k)} (hJo : IsOpen (J : Set (GL A' k))) (hJK : J ≤ KO k A')
@@ -107,9 +105,7 @@ theorem smallF_mem {A A' D : Type} [Fintype A] [DecidableEq A] [Fintype A'] [Dec
   GlobalTheory.T.glOrbitIntegral_depthDatum_mem_subfield F hJo hJK σ ν hϖ he hν hram hνF habs c hΨ hΨF h
 
 /- English proof (translation)
-Unfold `phiA`. Use `split_ifs`. Unfold `fFun split_ifs with hX`. Conclude with `F.mul_mem (F.mul_mem (hνF _) (apow_nat_half_mem F habs _ _)) (smallF_mem F hJo hJK σ ν hϖ he hν hram hνF habs c hΨ hΨF _)`. Conclude with `F.zero_mem`.
-
-Conclude with `F.zero_mem`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiA_mem {A A' D : Type} [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A'] [Fintype D] [DecidableEq D]
     (F : Subfield ℂ) {J : Subgroup (GL A' k)} (hJo : IsOpen (J : Set (GL A' k))) (hJK : J ≤ KO k A')
@@ -128,7 +124,7 @@ theorem phiA_mem {A A' D : Type} [Fintype A] [DecidableEq A] [Fintype A'] [Decid
   · exact F.zero_mem
 
 /- English proof (translation)
-Establish `hJ'` using `isOpen_map_invT hJ hK`. Unfold `Grid.flipTensor squareFlip`. Conclude with `invFourierSum_inv_mem F ψ ϖ e _ hψ (fun X => phiA_mem F hJ'.1 hJ'.2 _ _ hϖ he hν hram hνF habs (blockUnits ϖ e _) _ ((FourierDepth.fourier_exchange k _ _ ψ ϖ e _ hϖ hψc).1 _ (isNatDatum_sliceB hT h1 h2 x)) (fun Y => fourierSum_mem F ψ ϖ e _ hψ (fun Z => hTF _) Y) X) _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem flipTensor_mem {G : Grid k} (F : Subfield ℂ) {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ)
     (hψc : HasConductor ψ 1) (he : 1 ≤ e) (habs : ∀ u : kˣ, apow u (1 / 2) ∈ F)
@@ -144,13 +140,13 @@ theorem flipTensor_mem {G : Grid k} (F : Subfield ℂ) {ψ : AddChar k Circle} {
     (fun Y => fourierSum_mem F ψ ϖ e _ hψ (fun Z => hTF _) Y) X) _
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro S _ _ _ _ hF`. Conclude with `hF`. Consider the case `cons x l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hν hc hJ hT hF`. Take `_ | ⟨hp, hc'⟩` from `hc`. Establish `hsub` using `hp.subset`. Establish `hx` using `hν x List.mem_cons_self`. Use `ih (S.flip .one ψ ϖ e x) (fun y hy => hν y (List.mem_cons_of_mem _ hy)) hc' (fun X => ?_) (isTensor_flipTensor hϖ hψc he hx.1 (hJ _).1 (hJ _).2 (hsub (by simp)) (hsub (by simp)) hT) (flipTensor_mem F hϖ hψc he habs hψ hx.1 hx.2.1 hx.2.2 (hJ _).1 (hJ _).2 (hsub (by simp)) (hsub (b …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsOpen (G.flipLevel x.1 x.2 S.level X : Set (GL (Fin (G.rank X)) k)) ∧ G.flipLevel x.1 x.2 S.level X ≤ _`. Distinguish the cases in `hX : X = (x.1 + 1, x.2 + 1)`. Substitute `hX` using the available equality. Simplify using `only [Grid.flipLevel, Function.update_self]`. Conclude with `⟨isOpen_KO, le_rfl⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Grid.flipLevel, Function.update_of_ne hX]`. Conclude with `hJ X`.
+A detailed English derivation is pending.
 -/
 theorem flips_mem {G : Grid k} (F : Subfield ℂ) {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ)
     (hψc : HasConductor ψ 1) (he : 1 ≤ e) (habs : ∀ u : kˣ, apow u (1 / 2) ∈ F)
@@ -188,7 +184,7 @@ open ValuativeRel Formalism.L2.Host
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gridGivenPathTensor_mem_subfield F B t Φ w hmu hxi z`.
+A detailed English derivation is pending.
 -/
 theorem givenStage_mem (F : Subfield ℂ) (B : Frames G) (t : T) (Φ : G.Datum) (w : Pl D.host.E)
     (hmu : ∀ j x, ((L.C.mu0 j).loc w x : ℂ) ∈ F) (hxi : ∀ x, ((L.xiH t).loc w x : ℂ) ∈ F)
@@ -196,7 +192,7 @@ theorem givenStage_mem (F : Subfield ℂ) (B : Frames G) (t : T) (Φ : G.Datum) 
   GlobalTheory.T.gridGivenPathTensor_mem_subfield F B t Φ w hmu hxi z
 
 /- English proof (translation)
-Establish `e1 : (((locGrid G t w).nu i j u : ℂˣ) : ℂ) = ((L.C.mu0 ⟨j, hj⟩).loc w u : ℂ) * ((L.xiH t).loc w u : ℂ) * (((G.ch.chiH (D.R.m - i)).loc w u : ℂ))⁻¹`. Simplify using `only [Grid.nu, locGrid, muBase, dif_pos hj, MonoidHom.div_apply, Units.val_div_eq_div_val, div_eq_mul_inv]`. Simplify using `[HChar.loc]`. Rewrite using `[e1]`. Conclude with `F.mul_mem (F.mul_mem (hmu _ _) (hxi _)) (F.inv_mem (hchi _ (by omega) (by omega) _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nu_mem (F : Subfield ℂ) (t : T) (w : Pl D.host.E) (hmu : ∀ j x, ((L.C.mu0 j).loc w x : ℂ) ∈ F)
     (hxi : ∀ x, ((L.xiH t).loc w x : ℂ) ∈ F) (hchi : ∀ i, 1 ≤ i → i ≤ D.R.m → ∀ x, ((G.ch.chiH i).loc w x : ℂ) ∈ F)
@@ -209,7 +205,7 @@ theorem nu_mem (F : Subfield ℂ) (t : T) (w : Pl D.host.E) (hmu : ∀ j x, ((L.
   exact F.mul_mem (F.mul_mem (hmu _ _) (hxi _)) (F.inv_mem (hchi _ (by omega) (by omega) _))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.weilTraceAddCharAtPlace_mem_subfield_of_roots F hroots hcond x hx`.
+A detailed English derivation is pending.
 -/
 theorem psiAt_mem (F : Subfield ℂ) {W : G.Weil} {w : Pl D.host.E}
     (hroots : ∀ z : ℂ, z ^ (Ideal.absNorm w.asIdeal ^ depthAt G w) = 1 → z ∈ F) (hcond : HasConductor (psiAt W w) 1)
@@ -218,7 +214,7 @@ theorem psiAt_mem (F : Subfield ℂ) {W : G.Weil} {w : Pl D.host.E}
   GlobalTheory.T.weilTraceAddCharAtPlace_mem_subfield_of_roots F hroots hcond x hx
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.normalisedAbsComplexPow_half_mem_subfield_of_sqrt_norm F w hsq u`.
+A detailed English derivation is pending.
 -/
 theorem apow_half_mem (F : Subfield ℂ) (w : Pl D.host.E)
     (hsq : ((Real.sqrt (Ideal.absNorm w.asIdeal) : ℝ) : ℂ) ∈ F) (u : (Kw w)ˣ) : apow u (1 / 2) ∈ F :=
@@ -231,15 +227,15 @@ end GlobalTheory.TflipField
 namespace GlobalTheory.RowTest
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch large₂ F CF b hS hch _ hF t Φ _ w hw z`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `hde` using `GlobalTheory.FlipIntegrand.pde_ne_q_of_setting hS`. Establish `hc : ∀ P ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `hch.guard t`. Establish `hg` using `(Good.locGrid_isGood hL ch.G ch.W t hde hc).1 w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadm` using `GivenAdm.givenStage_isAdmissible hL ch.S.B t Φ hw`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `h00` using `hg.square 0 hm 0 hm`. Set `K : Subfield ℂ` to `D.what₂.embLL.fieldRange`. Establish `hK : ∀ y, y ∈ Set.range D.what₂.embLL → y ∈ K` using `fun y hy => RingHom.mem_fieldRange.2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmu : ∀ j x, ((R.toLevCh.C.mu0 j).loc w x : ℂ) ∈ K` using `fun j x => hK _ (hF.chars.mu0 j w x)`. Establish `hxi : ∀ x, ((R.toLevCh.xiH t).loc w x : ℂ) ∈ K` using `fun x => hK _ (hF.chars.xi t w x)`. Establish `hchi : ∀ i, 1 ≤ i → i ≤ D.R.m → ∀ x, ((ch.G.ch.chiH i).loc w x : ℂ) ∈ K` using `fun i a b x => hK _ (hF.chars.chi i a b w x)`. Establish `habs : ∀ u : (Kw w)ˣ, apow u (1 / 2) ∈ K` using `GlobalTheory.TflipField.apow_half_mem K w (hK _ (hF.sqrt w (.inr ⟨t, hw⟩)))`. Establish `hψ` using `GlobalTheory.TflipField.psiAt_mem (W := ch.W) K (fun z hz => hK _ (hF.roots t w hw z hz)) h00.cond`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : ∀ x ∈ flipOrder D.R.m, CondLE (unifAt w) (depthAt ch.G w) ((locGrid ch.G t w).nu x.1 x.2) ∧ ¬ IsUnram ((locGrid ch.G t w).nu x.1 x.2) ∧ ∀ u, ((locGrid ch.G t w).nu x.1 x.2 u : ℂ) ∈ K`. Introduce `x hx`. Simplify using `only [flipOrder, List.mem_flatMap, List.mem_map, List.mem_range] at hx`. Take `⟨i, hi, j, hj, rfl⟩` from `hx`. Establish `hs` using `hg.square i hi j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `(locGrid ch.G t w).alpha_div_beta i j`. Use `⟨by rw [← e]; exact hs.condν, by rw [← e]; exact hs.ram, GlobalTheory.TflipField.nu_mem K t w hmu hxi hchi hi hj⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.TflipField.flips_mem K h00.unif h00.cond h00.one_le habs hψ (flipOrder D.R.m) (givenStage t w ch.S.B Φ) hν (canFlip_flipOrder _).1 (fun X => GivenAdm.givenLevel_open hL hw X) hadm.tensor (GlobalTheory.TflipField.givenStage_mem K ch.S.B t Φ w hmu hxi) z`. Conclude with `RingHom.mem_fieldRange.1 key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Tflip_mem_range : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (large₂ : SizeData₂ D)

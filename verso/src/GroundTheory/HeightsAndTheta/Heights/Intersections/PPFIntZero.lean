@@ -26,17 +26,15 @@ def eulerDirs {n : ℕ} (F : (Fin n → ℂ) → (Σ k, ι k) → ℂ) (y : Fin 
     exact ⟨a • c, by rw [map_smul, hc]; funext p; simp [bsmul, mul_assoc]⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨U, hU⟩` from `Submodule.exists_isCompl (eulerDirs F y)`. Establish `hsum` using `Submodule.finrank_add_eq_of_isCompl hU`. Rewrite `hsum` using `[Module.finrank_fin_fun]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdm : d ≤ Module.finrank ℂ U` using `by omega`. Use `set bU := Module.finBasis ℂ U`. Set `Mlin : (Fin (Module.finrank ℂ U) → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `U.subtype ∘ₗ bU.equivFun.symm.toLinearMap`. Set `M : (Fin (Module.finrank ℂ U) → ℂ) →L[ℂ] (Fin n → ℂ)` to `LinearMap.toContinuousLinearMap Mlin`. Establish `hMU : ∀ x, M x ∈ U` using `fun x => Submodule.coe_mem (bU.equivFun.symm x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMinj : Function.Injective M` using `fun a b h => bU.equivFun.symm.injective (Subtype.ext h)`. Establish `hA : HasFDerivAt (fun y' => y + M y') M 0` using `(M.hasFDerivAt).const_add y`. Establish `hy : y + M 0 = y` using `by rw [map_zero, add_zero]`. Establish `hF' : AnalyticAt ℂ F (y + M 0)` using `by rw [hy]; exact hF`. Establish `hGa : AnalyticAt ℂ (fun y' => F (y + M y')) 0` using `hF'.comp (f := fun y' => y + M y') (analyticAt_const.add (M.analyticAt 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGQ : ∀ᶠ y' in 𝓝 (0 : Fin (Module.finrank ℂ U) → ℂ), F (y + M y') ∈ mcPts Q`. Establish `ht : Tendsto (fun y' => y + M y') (𝓝 0) (𝓝 y)`. Use `hA.continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[hy]`. Then use the resulting hypothesis. Conclude with `ht.eventually hFQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx, c, hxc⟩` from `hR K ι Q d _ (fun y' => F (y + M y')) 0 hQ hdm hGa hGQ`. Establish `hFd : HasFDerivAt F (fderiv ℂ F y) (y + M 0)` using `by rw [hy]; exact hF.differentiableAt.hasFDerivAt`. Establish `hGd : HasFDerivAt (fun y' => F (y + M y')) ((fderiv ℂ F y).comp M) 0` using `hFd.comp (f := fun y' => y + M y') 0 hA`. Rewrite `hxc` using `[hGd.fderiv, ContinuousLinearMap.comp_apply, hy]`. Establish `hmem : M x ∈ eulerDirs F y ⊓ U` using `⟨⟨c, hxc⟩, hMU x⟩`.
-
-Rewrite `hmem` using `[hU.inf_eq_bot, Submodule.mem_bot]`. Conclude with `hx (hMinj (by rw [hmem, map_zero]))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulerDirs_finrank (hR : pointFormRank_holds.Statement) {Q : Ideal (MRing ι)} {d n : ℕ} (hQ : IsArithVar Q d)
     {F : (Fin n → ℂ) → (Σ k, ι k) → ℂ} {y : Fin n → ℂ} (hF : AnalyticAt ℂ F y)
@@ -72,7 +70,7 @@ theorem eulerDirs_finrank (hR : pointFormRank_holds.Statement) {Q : Ideal (MRing
   exact hx (hMinj (by rw [hmem, map_zero]))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_star_mulVec {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) :
     M.map (starRingEnd ℂ) *ᵥ x = star (M *ᵥ star x) := by
@@ -80,15 +78,15 @@ theorem map_star_mulVec {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x : Fin n �
   simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use `set F : (Fin (d + r) → ℂ) → (Σ k, ι k) → ℂ := fun y' p => γ y' (v p) with hF`. Establish `hγa : AnalyticAt ℂ γ y` using `sheet_analyticAt osgood hγ`. Establish `hFa : AnalyticAt ℂ F y` using `analyticAt_pi_iff.mpr fun p => analyticAt_coord hγa (v p)`. Establish `hFy : ∀ k, ∃ i, F y ⟨k, i⟩ ≠ 0` using `blocks_ne_zero_restrict hv hγ.2.self_of_nhds.2.1.1`. Establish `hFQ : ∀ᶠ y' in 𝓝 y, F y' ∈ mcPts (imageZ v P')` using `by filter_upwards [hγ.2] with y' h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨blocks_ne_zero_restrict hv h.2.1.1, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h0` using `h.2.1.2 _ (Ideal.mem_comap.mp hf)`. Rewrite `h0` using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_rename, eval_rename]`. Conclude with `h0`. Use `set A : Fin (d + r) → Matrix (Fin (d + r)) (Fin (d + r)) ℂ := fun j => cxHessian (fun y' => Real.log ((Fin.append L' N j).h (γ y'))) y with hAdef`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hker : ∀ k ∈ Finset.univ.map (Fin.castAddEmb r), ∀ x ∈ eulerDirs F y, (A k).map (starRingEnd ℂ) *ᵥ x = 0`. Introduce `k hk x hx`. Take `⟨j, -, rfl⟩` from `Finset.mem_map.mp hk`. Take `⟨c, hc⟩` from `hx`. Establish `hpot : (fun y' => Real.log ((Fin.append L' N (Fin.castAddEmb r j)).h (γ y'))) = fun y' => Real.log ((L j).h (F y'))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y'`. Rewrite using `[Fin.coe_castAddEmb, Fin.append_left, (hLL j).2]`. Establish `h` using `pointFormEuler_holds.proof K ι (L j) (d + r) F y x c (hL j) hFa hFy hc`. Rewrite using `[map_star_mulVec, hAdef]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hpot, h, star_zero]`. Establish `hmix` using `mixedDisc_eq_zero_of_ker (fun k => (A k).map (starRingEnd ℂ)) (eulerDirs F y) _ (by rw [Finset.card_map, Finset.card_univ, Fintype.card_fin]; exact eulerDirs_finrank hR hQ hFa hFQ) hker`. Rewrite `hmix` using `[mixedDisc_map_star, map_eq_zero]`. Use `show _ * _ * (mixedDisc A).re = 0`. Rewrite using `[hmix, Complex.zero_re, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PFIntZero.maDensity_eq_zero (hR : pointFormRank_holds.Statement)
     {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
@@ -131,11 +129,9 @@ theorem PFIntZero.maDensity_eq_zero (hR : pointFormRank_holds.Statement)
   rw [hmix, Complex.zero_re, mul_zero]
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' d r L L' N A s hv _ hQ hL hLL`. Unfold `arInt ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Establish `h0 : ∀ y w, sheetDensity P' hΨ.choose (fun j z => Real.log ((Fin.append L' N j).h z)) (logNorm A s) y w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y w`. Unfold `sheetDensity`. Use `split_ifs with hγ`. Conclude with `mul_eq_zero_of_right _ (PFIntZero.maDensity_eq_zero hR N hv hQ hL hLL hγ.choose_spec)`. Both sides reduce to the same expression.
-
-Simplify using `[h0]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PFIntZero.proof (hR : pointFormRank_holds.Statement) : PFIntZero.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' d r L L' N A s hv _ hQ hL hLL

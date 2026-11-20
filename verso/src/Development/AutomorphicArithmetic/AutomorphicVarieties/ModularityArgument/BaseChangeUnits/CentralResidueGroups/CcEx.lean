@@ -10,11 +10,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Z.Bc
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Set `j : Ω →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Set `E : IntermediateField ℚ ℂ` to `j.fieldRange`. Set `e : Ω ≃ₐ[ℚ] E` to `AlgEquiv.ofInjectiveField j`. Use `haveI : Normal ℚ E := Normal.of_algEquiv e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : E →ₐ[ℚ] ℂ` to `((starRingEnd ℂ).toRatAlgHom).comp E.val`. Set `g : E ≃ₐ[ℚ] E` to `f.restrictNormal' E`. Establish `hg : ∀ y : E, ((g y : E) : ℂ) = starRingEnd ℂ (y : ℂ)` using `fun y => f.restrictNormal_commutes E y`. Establish `he : ∀ x : Ω, ((e x : E) : ℂ) = j x` using `fun x => rfl`. Use `⟨e.trans (g.trans e.symm), j.toRingHom, fun x => ?_⟩` and prove the remaining obligations.
-
-Use `show j (e.symm (g (e x))) = starRingEnd ℂ (j x)`. Rewrite using `[← he, AlgEquiv.apply_symm_apply, hg, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cc_ex (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] : ∃ c : G ℚ Ω, IsConjEl c := by
   haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic

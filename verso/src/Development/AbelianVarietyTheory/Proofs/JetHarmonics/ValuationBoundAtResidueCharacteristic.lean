@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CharDepth
 
 /- English proof (translation)
-Establish `h` using `Crude.crv_vLa_char la`. Rewrite `h` using `[Crude.crv_vLa_natCast_eq]`. Establish `h0 : ((resCharOf la : ℕ) : 𝓞 K) ≠ 0` using `by exact_mod_cast (Crude.resCharOf_prime la).ne_zero`. Establish `h1 : la.intValuation ((resCharOf la : ℕ) : 𝓞 K) < 1` using `(la.intValuation_lt_one_iff_mem _).2 (Crude.crv_char_mem la)`. Establish `h2 : WithZero.log (la.intValuation ((resCharOf la : ℕ) : 𝓞 K)) < 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(WithZero.log_lt_log (la.intValuation_ne_zero _ h0) one_ne_zero).2 h1` as an intermediate fact. Simplify using `using this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ramOverZ_pos_place {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     0 < ramOverZ la := by
@@ -32,9 +32,9 @@ theorem ramOverZ_pos_place {K : Type} [Field K] [NumberField K] (la : HeightOneS
   omega
 
 /- English proof (translation)
-Establish `h : valV T.V (algebraMap T.V T.Fr x) = 1`. Unfold `valV`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `hm`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[vV, h]`.
+A detailed English derivation is pending.
 -/
 theorem vV_eq_zero_of_isUnit (T : CDVR) {x : T.V} (hx : IsUnit x) : vV T.V (algebraMap T.V T.Fr x) = 0 := by
   have h : valV T.V (algebraMap T.V T.Fr x) = 1 := by
@@ -45,15 +45,15 @@ theorem vV_eq_zero_of_isUnit (T : CDVR) {x : T.V} (hx : IsUnit x) : vV T.V (alge
   simp [vV, h]
 
 /- English proof (translation)
-Introduce `p _ hA hH E _ _ _ H Dw l Xo c inst hst f vd hvd hsp hT la hla k n a ha hn Ap hAp hle`. Take `rfl : inst = H.starRing` from `GlobalTheory.PowGerm.starSt E H inst hst`. Use `letI := H.starRing`. Establish `hE : IntChartEx Xo c` using `(GlobalTheory.IntChartExists.intChart_exists E H Dw l Xo c).2.1 hst`. Use `max_le ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[EReal.coe_nonneg]`. Check the signs of the components of the expression. Use `iSup_le fun T => iSup_le fun io => iSup_le fun e => iSup_le fun ho => iSup_le fun y => iSup_le fun hy => ?_` and prove the remaining obligations. Take `⟨C⟩` from `hE T io y hy`. Establish `hv : vV T.V ((p : ℕ) : T.Fr) = (e : ℤ) * (ramOverZ la : ℤ)`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast io, ho.2, ← hla, Crude.crv_vLa_char]`. Establish `he : 0 < e` using `ho.1`. Establish `hnu : ¬ IsUnit ((p : ℕ) : T.V)`. Introduce `hu`. Establish `h0` using `vV_eq_zero_of_isUnit T hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_natCast, hv]`. Use `ramOverZ_pos_place la` as an intermediate fact. Establish `: (0 : ℤ) < (e : ℤ) * (ramOverZ la : ℤ)` using `by positivity`. Use linear arithmetic over natural numbers and integers. Use `(iInf_le _ C).trans ((GlobalTheory.T.integralChartDepth_le_residueChar_two p hA hH E H Dw l Xo c T io y C hy hnu hsp f vd hvd hT e k n a he ha hn Ap hAp hle).trans (le_of_eq ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Rewrite using `[hv, Int.cast_mul, Int.cast_natCast, Int.cast_natCast, mul_div_cancel_left₀ _ he']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nuW_le_two : ∀ (p : ℕ) [Fact p.Prime], AvFSt p → HTFSt p → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (f : ℕ) (vd : ℝ), 0 ≤ vd → UpperTheory.Depth.SplitAt H.d p → UpperTheory.Depth.SplitPlaces p H f vd → ∀ (la : HeightOneSpectrum (𝓞 c.F)), resCharOf la = p → ∀ (k n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ), DomW Dw a → Fintype.card (Lt1 Dw) ≤ n → ∀ Ap : ℝ, 0 ≤ Ap → (∀ τ, InPsi H τ → (a (τ, 0) : ℝ) ≤ Ap) → (open Classical in nuW Xo c la k a n ≤ (((ramOverZ la : ℝ) * ((f : ℝ) * Dw.q * (1 + vd / 2) * Ap + Dw.q * ∑ τ ∈ Finset.univ.filter (fun τ => ¬ InPsi H τ), (a (τ, 0) : ℝ)) : ℝ) : EReal)) := by
   intro p _ hA hH E _ _ _ H Dw l Xo c inst hst f vd hvd hsp hT la hla k n a ha hn Ap hAp hle

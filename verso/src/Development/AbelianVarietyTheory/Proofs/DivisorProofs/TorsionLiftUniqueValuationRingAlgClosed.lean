@@ -16,21 +16,17 @@ noncomputable section
 namespace GlobalTheory.TorsionLiftVal
 
 /- English proof (translation)
-Establish `inj : Function.Injective (fun s : {s : Sp U ⟶ X // s ≫ p = 𝟙 _} => (⟨spMap h ≫ s.1, by rw [Category.assoc, s.2, Category.comp_id]⟩ : {x : Sp k ⟶ X // x ≫ p = spMap h}))`. Introduce and unpack `⟨s₁, h₁⟩ ⟨s₂, h₂⟩ e`. Establish `e' : spMap h ≫ s₁ = spMap h ≫ s₂` using `congrArg Subtype.val e`. Use `haveI : LocallyOfFiniteType (Over.mk p).hom := inferInstanceAs (LocallyOfFiniteType p)`. Use `haveI : FormallyUnramified (Over.mk p).hom := inferInstanceAs (FormallyUnramified p)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsSeparated (Over.mk p).hom := inferInstanceAs (IsSeparated p)`. Set `f₁ : Over.mk (𝟙 (Sp U)) ⟶ Over.mk p` to `Over.homMk s₁ h₁`. Set `f₂ : Over.mk (𝟙 (Sp U)) ⟶ Over.mk p` to `Over.homMk s₂ h₂`. Establish `hr` using `(FinEt.comp_eq_comp_iff_range f₁ f₂ (spMap h)).1 e'`. Use `haveI : PreconnectedSpace (Over.mk (𝟙 (Sp U))).left := inferInstanceAs (PreconnectedSpace (Sp U))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsClopen (Set.range (FinEt.agreeι f₁ f₂))` using `⟨(FinEt.agreeι f₁ f₂).isClosedEmbedding.isClosed_range, (FinEt.agreeι f₁ f₂).isOpenEmbedding.isOpen_range⟩`. Take `⟨z⟩ : Nonempty (Sp k)` from `inferInstance`. Establish `hu : Set.range (FinEt.agreeι f₁ f₂) = Set.univ` using `hc.eq_univ ⟨_, hr ⟨z, rfl⟩⟩`. Use `(FinEt.comp_eq_comp_iff_range f₁ f₂ (𝟙 _)).2 (by rw [hu]; exact Set.subset_univ _)` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[f₁, f₂]`. Take `⟨z⟩ : Nonempty (Sp k)` from `inferInstance`. Take `⟨w⟩ : Nonempty (Sp Ω)` from `inferInstance`. Take `⟨hBfin, hB⟩` from `FinEt.card_points_eq_finrank p (spMap h) z`. Take `⟨-, hC⟩` from `FinEt.card_points_eq_finrank p (spMap (algebraMap U Ω)) w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI := hBfin`. Use `haveI : Finite {s : Sp U ⟶ X // s ≫ p = 𝟙 _} := Finite.of_injective _ inj`. Establish `hv : ValuativeCriterion p`. Establish `hp : IsProper p` using `inferInstance`. Rewrite `hp` using `[IsProper.eq_valuativeCriterion]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hp.1.1.1`. Set `r : {s : Sp U ⟶ X // s ≫ p = 𝟙 _} → {x : Sp Ω ⟶ X // x ≫ p = spMap (algebraMap U Ω)}` to `fun s => ⟨spMap (algebraMap U Ω) ≫ s.1, by rw [Category.assoc, s.2, Category.comp_id]⟩`. Establish `hrs : Function.Surjective r`. Introduce and unpack `⟨x, hx⟩`. Set `Q : ValuativeCommSq p` to `{ R := U, K := Ω, i₁ := x, i₂ := 𝟙 _, commSq := ⟨hx.trans (Category.comp_id _).symm⟩ }`.
-
-Take `⟨W⟩` from `hv Q`. Conclude with `⟨⟨W.default.l, W.default.fac_right⟩, Subtype.ext W.default.fac_left⟩`. Establish `hle` using `Nat.card_le_card_of_surjective r hrs`. Establish `hrank` using `(Scheme.Hom.isLocallyConstant_finrank p).apply_eq_of_preconnectedSpace (spMap h z) (spMap (algebraMap U Ω) w)`. Use `inj.bijective_of_nat_card_le ?_` and prove the remaining obligations.
-
-Rewrite using `[hB, hrank, ← hC]`. Conclude with `hle`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sections_restrict_bijective (U Ω k : Type) [CommRing U] [IsDomain U] [ValuationRing U] [Field Ω]
     [IsAlgClosed Ω] [Algebra U Ω] [IsFractionRing U Ω] [Field k] [IsAlgClosed k] (h : U →+* k)
@@ -81,23 +77,23 @@ theorem sections_restrict_bijective (U Ω k : Type) [CommRing U] [IsDomain U] [V
   exact hle
 
 /- English proof (translation)
-Introduce `U Ω k _ _ _ _ _ _ _ _ _ h S G _ hA u n hn y hy`. Use `letI : GrpObj ((Over.pullback u).obj G) := Functor.grpObjObj`. Establish `hgp : IsGrpPullback ((Over.pullback u).obj G) G u (pullback.fst G.hom u)` using `isGrpPullback_pullback G u`. Use `haveI : IsAbelianScheme ((Over.pullback u).obj G) := GlobalTheory.isAbelianScheme_pullback_obj u G hA`. Establish `hnU : IsUnit (n : Γ(Sp U, ⊤))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hn.map (Scheme.ΓSpecIso (CommRingCat.of U)).inv.hom`. Take `⟨-, hfin, het⟩` from `GrpTangent.finiteEtale_mulN_torsion ((Over.pullback u).obj G) hnU`. Establish `key : ∀ {X : Scheme.{0}} (t : X ⟶ Sp U) (b : X ⟶ S), b = t ≫ u → ∃ Φ : (Over.mk t ⟶ torsion ((Over.pullback u).obj G) n) → (Over.mk b ⟶ G), Function.Injective Φ ∧ (∀ a, Φ a ^ n = 1) ∧ (∀ w : Over.mk b ⟶ G, w ^ n = 1 → ∃ a, Φ a = w) ∧ ∀ a, (Φ a).left = a.left ≫ (torsion.ι ((Over.p …`. Introduce `X t b hb`. Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback hgp t b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a => e ((TorsionUnram.torsionEquiv _ n _) a).1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a₁ a₂ h12`. Conclude with `(TorsionUnram.torsionEquiv _ n _).injective (Subtype.ext (e.injective h12))`. Introduce `a`. Rewrite using `[← map_pow, ((TorsionUnram.torsionEquiv _ n _) a).2, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Use `⟨(TorsionUnram.torsionEquiv _ n _).symm ⟨e.symm w, by rw [← map_pow, hw, map_one]⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a`. Rewrite using `[he, ← Category.assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨Φk, injk, -, surjk, hk⟩` from `key (spMap h) (spMap h ≫ u) rfl`. Take `⟨ΦU, -, powU, surjU, hUl⟩` from `key (𝟙 (Sp U)) u (Category.id_comp u).symm`. Take `⟨τ, rfl⟩` from `surjk y hy`. Establish `hb` using `sections_restrict_bijective U Ω k h (torsion ((Over.pullback u).obj G) n).hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨s, hs⟩, hs'⟩` from `hb.2 ⟨τ.left, Over.w τ⟩`. Establish `hs'' : spMap h ≫ s = τ.left` using `congrArg Subtype.val hs'`. Set `σ : Over.mk (𝟙 (Sp U)) ⟶ torsion ((Over.pullback u).obj G) n` to `Over.homMk s hs`. Use `⟨ΦU σ, ⟨powU σ, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, hUl, ← hs'']`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[σ]`. Introduce and unpack `P ⟨hP, hPy⟩`. Take `⟨σ', rfl⟩` from `surjU P hP`. Establish `hσ' : σ'.left ≫ (torsion ((Over.pullback u).obj G) n).hom = 𝟙 _` using `Over.w σ'`. Set `τ' : Over.mk (spMap h) ⟶ torsion ((Over.pullback u).obj G) n` to `Over.homMk (spMap h ≫ σ'.left) (by rw [Category.assoc, hσ']; exact Category.comp_id _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e0 : Φk τ' = Φk τ`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hk, hPy, hUl]`. Simplify using `[τ']`. Establish `e1 : spMap h ≫ σ'.left = τ.left` using `congrArg (fun q => q.left) (injk e0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hb.1 (a₁ := ⟨σ'.left, hσ'⟩) (a₂ := ⟨s, hs⟩) (Subtype.ext (e1.trans hs''.symm))`. Establish `e3 : σ' = σ` using `Over.OverMorphism.ext (congrArg Subtype.val e2)`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_lift_unique : ∀ (U Ω k : Type) [CommRing U] [IsDomain U] [ValuationRing U] [Field Ω] [IsAlgClosed Ω] [Algebra U Ω] [IsFractionRing U Ω] [Field k] [IsAlgClosed k] (h : U →+* k) (S : Scheme.{0}) (G : Over S) [GrpObj G], IsAbelianScheme G → ∀ (u : Sp U ⟶ S) (n : ℕ), IsUnit (n : U) → ∀ y : Over.mk (spMap h ≫ u) ⟶ G, y ^ n = 1 → ∃! P : Over.mk u ⟶ G, P ^ n = 1 ∧ y.left = spMap h ≫ P.left := by
   intro U Ω k _ _ _ _ _ _ _ _ _ h S G _ hA u n hn y hy

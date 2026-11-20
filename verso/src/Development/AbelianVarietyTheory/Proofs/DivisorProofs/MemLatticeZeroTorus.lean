@@ -16,7 +16,7 @@ namespace GlobalTheory.EisRestrict
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by simp [mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_eq_dot (x z : Fin n → E) : hE σ J x z = (fun i => σ (x i)) ⬝ᵥ (J *ᵥ z) := by
   simp only [hE, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum]
@@ -33,7 +33,7 @@ def V0 : Submodule E (Fin n → E) :=
   LinearMap.ker (hRight σ J (GlobalTheory.EisMidHt.firstColumn X)) ⊓ LinearMap.ker (hRight σ J (GlobalTheory.EisMidHt.firstColumn Y))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_invariant_forms {z : Fin n → E} :
     z ∈ V0 σ J X Y ↔ hE σ J (GlobalTheory.EisMidHt.firstColumn X) z = 0 ∧ hE σ J (GlobalTheory.EisMidHt.firstColumn Y) z = 0 := Iff.rfl
@@ -59,7 +59,7 @@ def L0 (L : Submodule (𝓞 E) (Fin n → E)) : Submodule (𝓞 E) (Fin (dim σ 
   L.comap ((ι σ J X Y).restrictScalars (𝓞 E))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lattice_zeroTorus {L : Submodule (𝓞 E) (Fin n → E)} {u : Fin (dim σ J X Y) → E} :
     u ∈ L0 σ J X Y L ↔ P σ J X Y *ᵥ u ∈ L := Iff.rfl
@@ -70,7 +70,7 @@ Both sides reduce to the same expression.
 theorem ι_apply (u : Fin (dim σ J X Y) → E) : ι σ J X Y u = P σ J X Y *ᵥ u := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ι, P, Matrix.mulVec, dotProduct, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ι_eq_sum (u : Fin (dim σ J X Y) → E) :
     ι σ J X Y u = ((∑ j, u j • bas σ J X Y j : V0 σ J X Y) : Fin n → E) := by
@@ -78,15 +78,15 @@ theorem ι_eq_sum (u : Fin (dim σ J X Y) → E) :
   simp [ι, P, Matrix.mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[ι_eq_sum]`. Conclude with `Submodule.coe_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ι_mem (u : Fin (dim σ J X Y) → E) : ι σ J X Y u ∈ V0 σ J X Y := by
   rw [ι_eq_sum]; exact Submodule.coe_mem _
 
 /- English proof (translation)
-Introduce `u u' h`. Rewrite `h` using `[ι_eq_sum, ι_eq_sum]`. Establish `h2` using `congrArg (bas σ J X Y).repr (Subtype.ext h)`. Use function extensionality and compare the values at `j`. Use `congrArg (· j) h2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `this` using `[map_sum, Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ι_injective : Function.Injective (ι σ J X Y) := by
   intro u u' h
@@ -97,21 +97,21 @@ theorem ι_injective : Function.Injective (ι σ J X Y) := by
   simpa [map_sum, Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_apply] using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j => (bas σ J X Y).repr ⟨z, hz⟩ j, by rw [ι_eq_sum, (bas σ J X Y).sum_repr ⟨z, hz⟩]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_ι_eq {z : Fin n → E} (hz : z ∈ V0 σ J X Y) : ∃ u, ι σ J X Y u = z :=
   ⟨fun j => (bas σ J X Y).repr ⟨z, hz⟩ j, by
     rw [ι_eq_sum, (bas σ J X Y).sum_repr ⟨z, hz⟩]⟩
 
 /- English proof (translation)
-The claim follows from `Function.invFun_eq (exists_ι_eq σ J X Y hZ)`.
+A detailed English derivation is pending.
 -/
 theorem ι_coordTail (Z : Matrix (Fin n) (Fin (r + 1)) E) (j : Fin r) (hZ : (fun k => Z k j.succ) ∈ V0 σ J X Y) :
     ι σ J X Y (fun i => coordTail σ J X Y Z i j) = fun k => Z k j.succ :=
   Function.invFun_eq (exists_ι_eq σ J X Y hZ)
 
 /- English proof (translation)
-Simplify using `only [hE_eq_dot, J0, ι_apply, Formalism.UG.cT, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.vecMul, Matrix.mulVec, dotProduct, map_sum, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem hE_J0 (u u' : Fin (dim σ J X Y) → E) :
     hE σ (J0 σ J X Y) u u' = hE σ J (ι σ J X Y u) (ι σ J X Y u') := by

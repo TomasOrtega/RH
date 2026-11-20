@@ -28,14 +28,14 @@ def algPtPush (h : IsGrpPullback G' G x0 φ) (A : Type) [CommRing A] [Algebra S 
     overAt x0 A ⟶ Over.mk ((overAt (𝟙 (Sp S)) A).hom ≫ x0))).comp (pushHom h (overAt (𝟙 (Sp S)) A))
 
 /- English proof (translation)
-The claim follows from `Category.id_comp (a.left ≫ φ)`.
+A detailed English derivation is pending.
 -/
 theorem algPtPush_left (h : IsGrpPullback G' G x0 φ) (A : Type) [CommRing A] [Algebra S A]
     (a : overAt (𝟙 (Sp S)) A ⟶ G') : (algPtPush h A a).left = a.left ≫ φ :=
   Category.id_comp (a.left ≫ φ)
 
 /- English proof (translation)
-Introduce `a b e` and use `by refine Over.OverMorphism.ext (h.1.hom_ext ?_ ((Over.w a).trans (Over.w b).symm)) exact (algPtPush_left h A a).symm.trans ((congrArg (fun q => q.left) e).trans (algPtPush_left h A b))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem algPtPush_injective (h : IsGrpPullback G' G x0 φ) (A : Type) [CommRing A] [Algebra S A] :
     Function.Injective (algPtPush h A) := fun a b e => by
@@ -43,7 +43,7 @@ theorem algPtPush_injective (h : IsGrpPullback G' G x0 φ) (A : Type) [CommRing 
   exact (algPtPush_left h A a).symm.trans ((congrArg (fun q => q.left) e).trans (algPtPush_left h A b))
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((algPtPush_left h B _).trans ((Category.assoc (spMap (ψ : A →+* B)) a.left φ).trans (congrArg (fun q => spMap (ψ : A →+* B) ≫ q) (algPtPush_left h A a).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem algPtPush_homAt (h : IsGrpPullback G' G x0 φ) {A B : Type} [CommRing A] [Algebra S A] [CommRing B]
     [Algebra S B] (ψ : A →ₐ[S] B) (a : overAt (𝟙 (Sp S)) A ⟶ G') :
@@ -52,7 +52,7 @@ theorem algPtPush_homAt (h : IsGrpPullback G' G x0 φ) {A B : Type} [CommRing A]
     (congrArg (fun q => spMap (ψ : A →+* B) ≫ q) (algPtPush_left h A a).symm)))
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((algPtPush_left h A _).trans ((Category.assoc a.left u'.left φ).trans ((congrArg (fun q => a.left ≫ q) e).trans ((Category.assoc a.left φ u.left).symm.trans (congrArg (fun q => q ≫ u.left) (algPtPush_left h A a).symm)))))`.
+A detailed English derivation is pending.
 -/
 theorem algPtPush_comp (h : IsGrpPullback G' G x0 φ) {A : Type} [CommRing A] [Algebra S A]
     (u' : G' ⟶ G') (u : G ⟶ G) (e : u'.left ≫ φ = φ ≫ u.left) (a : overAt (𝟙 (Sp S)) A ⟶ G') :
@@ -64,9 +64,9 @@ theorem algPtPush_comp (h : IsGrpPullback G' G x0 φ) {A : Type} [CommRing A] [A
 end Push
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t S _ x0 t' mp w _ d x x' hx`. Choose the witnesses or unpack the hypotheses as in `rfl : x = fun m => algPtPush mp.cart _ (x' m) :=`. Use function extensionality and compare the values at `fun m => Over.OverMorphism.ext ((hx m).symm.trans (algPtPush_left mp.cart _ (x' m)).symm)`. Use `⟨forall_congr' fun m => ?_, fun F => forall_congr' fun m => ?_, fun act => forall_congr' fun m => forall_congr' fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← (algPtPush_injective mp.cart _).eq_iff, map_one, algPtPush_homAt]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (algPtPush_injective mp.cart _).eq_iff, map_mul, algPtPush_homAt]`. Simplify using `only [jptG, algPtPush_homAt]`. Rewrite using `[← (algPtPush_injective mp.cart _).eq_iff, algPtPush_homAt, algPtPush_comp mp.cart _ _ (mp.act b)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetPoints_laws_iff_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (t' : SAB H (Sp S)) (mp : SABMap t' t x0) (w : LB.Iso t'.PP.L (t.PP.L.pull mp.φ)), RigIso mp w → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG (𝟙 (Sp S)) d m 1 ⟶ t'.G), (∀ m, (x' m).left ≫ mp.φ = (x m).left) → ((∀ m, homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ x m = 1) ↔ (∀ m, homAt (𝟙 (Sp S)) (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ x' m = 1)) ∧ (∀ F : Fin d → PS S 2 d, (∀ m, homAt x0 (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (F p.2)) ≫ x m = jptG t x0 d x m (0 : Fin 2) * jptG t x0 d x m (1 : Fin 2)) ↔ (∀ m, homAt (𝟙 (Sp S)) (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (F p.2)) ≫ x' m = jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2) * jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2))) ∧ ∀ act : 𝓞 E → Fin d → PS S 1 d, (∀ m (b : 𝓞 E), x m ≫ t.act.act b = homAt x0 (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (act b p.2)) ≫ x m) ↔ (∀ m (b : 𝓞 E), x' m ≫ t'.act.act b = homAt (𝟙 (Sp S)) (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (act b p.2)) ≫ x' m) := by
   intro E _ _ _ H X0 t S _ x0 t' mp w _ d x x' hx

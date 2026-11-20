@@ -10,7 +10,7 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.HahnSub
 
 /- English proof (translation)
-Rewrite using `[HahnSeries.coeff_mul]`. Conclude with `A.sum_mem fun ij _ => A.mul_mem (hh ij.1) (hh' ij.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mul_mem {Ω : Type} [Field Ω] (A : Subring Ω) (h h' : HahnSeries ℚ Ω)
     (hh : ∀ r, h.coeff r ∈ A) (hh' : ∀ r, h'.coeff r ∈ A) (r : ℚ) : (h * h').coeff r ∈ A := by
@@ -18,23 +18,23 @@ theorem coeff_mul_mem {Ω : Type} [Field Ω] (A : Subring Ω) (h h' : HahnSeries
   exact A.sum_mem fun ij _ => A.mul_mem (hh ij.1) (hh' ij.2)
 
 /- English proof (translation)
-Distinguish the cases in `h0 : h = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Set `g : HahnSeries ℚ A` to `{ coeff := fun s => ⟨h.coeff s, hh s⟩ isPWO_support' := h.isPWO_support.mono fun s hs e => hs (Subtype.ext e) }`. Establish `hg : ∀ s, (g.coeff s : Ω) = h.coeff s` using `fun s => rfl`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg0 : g ≠ 0`. Introduce `e`. Apply `h0` to reduce the goal to its premises. Use extensionality with `s`. Rewrite using `[← hg, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hord : g.order = h.order`. Apply `le_antisymm` to reduce the goal to its premises. Apply `HahnSeries.order_le_of_coeff_ne_zero` to reduce the goal to its premises. Introduce `e`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `HahnSeries.leadingCoeff_ne_zero.2 h0` to reduce the goal to its premises. Rewrite using `[HahnSeries.leadingCoeff_eq, ← hg, e]`. Both sides reduce to the same expression. Apply `HahnSeries.order_le_of_coeff_ne_zero` to reduce the goal to its premises. Rewrite using `[← hg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Apply `HahnSeries.leadingCoeff_ne_zero.2 hg0` to reduce the goal to its premises. Rewrite using `[HahnSeries.leadingCoeff_eq]`. Conclude with `Subtype.ext e`. Establish `hlead : (g.leadingCoeff : Ω) = h.leadingCoeff`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.leadingCoeff_eq, HahnSeries.leadingCoeff_eq, hg, hord]`. Establish `hunit : IsUnit g.leadingCoeff`. Use `IsUnit.of_mul_eq_one (⟨h.leadingCoeff⁻¹, hl⟩ : A) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (g.leadingCoeff : Ω) * h.leadingCoeff⁻¹ = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hlead]`. Conclude with `mul_inv_cancel₀ (HahnSeries.leadingCoeff_ne_zero.2 h0)`. Take `⟨v, hv⟩` from `(HahnSeries.isUnit_iff.2 hunit).exists_right_inv`. Set `f : A →ₙ+* Ω` to `A.subtype.toNonUnitalRingHom`. Establish `hgf : g.map f = h`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `s`. Both sides reduce to the same expression. Establish `hone : (1 : HahnSeries ℚ A).map f = 1`. Use extensionality with `s`. Rewrite using `[HahnSeries.map_coeff, HahnSeries.coeff_one, HahnSeries.coeff_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Establish `key : h * v.map f = 1`. Rewrite using `[← hgf, ← HahnSeries.map_mul, hv, hone]`. Rewrite using `[inv_eq_of_mul_eq_one_right key, HahnSeries.map_coeff]`. Conclude with `(v.coeff r).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_inv_mem {Ω : Type} [Field Ω] (A : Subring Ω) (h : HahnSeries ℚ Ω)
     (hh : ∀ r, h.coeff r ∈ A) (hl : h.leadingCoeff⁻¹ ∈ A) (r : ℚ) : (h⁻¹).coeff r ∈ A := by
@@ -88,7 +88,7 @@ theorem coeff_inv_mem {Ω : Type} [Field Ω] (A : Subring Ω) (h : HahnSeries �
   exact (v.coeff r).2
 
 /- English proof (translation)
-Introduce `Ω _ A`. Conclude with `⟨fun h h' hh hh' r => coeff_mul_mem A h h' hh hh' r, fun h hh hl r => coeff_inv_mem A h hh hl r⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem coeff_mul_inv_mem : ∀ (Ω : Type) [Field Ω] (A : Subring Ω), (∀ h h' : HahnSeries ℚ Ω, (∀ r, h.coeff r ∈ A) → (∀ r, h'.coeff r ∈ A) → ∀ r, (h * h').coeff r ∈ A) ∧ ∀ h : HahnSeries ℚ Ω, (∀ r, h.coeff r ∈ A) → h.leadingCoeff⁻¹ ∈ A → ∀ r, (h⁻¹).coeff r ∈ A := by
   intro Ω _ A

@@ -13,7 +13,7 @@ universe u
 noncomputable section
 
 /- English proof (translation)
-Establish `: Mono ((Scheme.Modules.toPresheaf X).map φ)` using `inferInstance`. Establish `h` using `(NatTrans.mono_iff_mono_app _).1 this (op U)`. Conclude with `(AddCommGrpCat.mono_iff_injective _).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma injective_app_of_mono {X : Scheme.{u}} {M N : X.Modules} (φ : M ⟶ N) [Mono φ]
     (U : X.Opens) : Function.Injective (φ.app U) := by
@@ -42,7 +42,7 @@ def reesSheafι : reesSheaf I F ⟶ reesTarget I F := Abelian.factorThruCoimage 
 instance : Mono (reesSheafι I F) := (coimCokSC_shortExact (reesUnit I F)).mono_f
 
 /- English proof (translation)
-The claim follows from `Abelian.coimage.fac (reesUnit I F)`.
+A detailed English derivation is pending.
 -/
 lemma reesSheafπ_ι : reesSheafπ I F ≫ reesSheafι I F = reesUnit I F :=
   Abelian.coimage.fac (reesUnit I F)
@@ -50,21 +50,21 @@ lemma reesSheafπ_ι : reesSheafπ I F ≫ reesSheafι I F = reesUnit I F :=
 variable {I F}
 
 /- English proof (translation)
-The claim follows from `isCoherent_pullback _ hF`.
+A detailed English derivation is pending.
 -/
 lemma isCoherent_pullback_reesPr (hF : IsCoherent F) :
     IsCoherent ((Scheme.Modules.pullback (reesPr I X)).obj F) :=
   isCoherent_pullback _ hF
 
 /- English proof (translation)
-Use `(isCoherent_pullback (reesPolyMap I X) (isCoherent_pullback_reesPr hF)).1` as an intermediate fact. Conclude with `isQuasicoherent_pushforward_of_isAffineHom _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isQuasicoherent_reesTarget (hF : IsCoherent F) : (reesTarget I F).IsQuasicoherent := by
   have := (isCoherent_pullback (reesPolyMap I X) (isCoherent_pullback_reesPr hF)).1
   exact isQuasicoherent_pushforward_of_isAffineHom _ _
 
 /- English proof (translation)
-Use `(isCoherent_pullback_reesPr (I := I) hF).1` as an intermediate fact. Use `isQuasicoherent_reesTarget (I := I) hF` as an intermediate fact. Conclude with `isCoherent_cokernel (kernel.ι (reesUnit I F)) (isCoherent_pullback_reesPr hF)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCoherent_reesSheaf (hF : IsCoherent F) : IsCoherent (reesSheaf I F) := by
   have := (isCoherent_pullback_reesPr (I := I) hF).1
@@ -72,7 +72,7 @@ theorem isCoherent_reesSheaf (hF : IsCoherent F) : IsCoherent (reesSheaf I F) :=
   exact isCoherent_cokernel (kernel.ι (reesUnit I F)) (isCoherent_pullback_reesPr hF)
 
 /- English proof (translation)
-Use `(isCoherent_pullback_reesPr (I := I) hF).1` as an intermediate fact. Use `isQuasicoherent_reesTarget (I := I) hF` as an intermediate fact. Conclude with `surjective_cokernel_π_app (kernel.ι (reesUnit I F)) hW`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma surjective_reesSheafπ_app (hF : IsCoherent F) {W : (reesScheme I X).Opens}
     (hW : IsAffineOpen W) : Function.Surjective ((reesSheafπ I F).app W) := by
@@ -81,7 +81,7 @@ lemma surjective_reesSheafπ_app (hF : IsCoherent F) {W : (reesScheme I X).Opens
   exact surjective_cokernel_π_app (kernel.ι (reesUnit I F)) hW
 
 /- English proof (translation)
-The claim follows from `injective_app_of_mono _ W`.
+A detailed English derivation is pending.
 -/
 lemma injective_reesSheafι_app (W : (reesScheme I X).Opens) :
     Function.Injective ((reesSheafι I F).app W) :=

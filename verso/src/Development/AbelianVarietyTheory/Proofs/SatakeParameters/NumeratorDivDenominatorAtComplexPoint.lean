@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
 
 /- English proof (translation)
-Establish `h` using `Int.toNat_sub_toNat_neg e`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[zpow_sub₀ ha, zpow_natCast, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Use `_ = _ := by rw [h]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem pow_toNat_split {K : Type} [Field K] {a : K} (ha : a ≠ 0) (e : ℤ) :
     a ^ e.toNat = a ^ (-e).toNat * a ^ e := by
@@ -24,9 +24,9 @@ theorem pow_toNat_split {K : Type} [Field K] {a : K} (ha : a ≠ 0) (e : ℤ) :
     _ = _ := by rw [h]
 
 /- English proof (translation)
-Unfold `zT`. Use `split_ifs`. Establish `h1 : (((f τ)⁻¹).transpose.submatrix id Fin.rev).det = ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤˣ) : ℤ) * (((f τ)⁻¹).transpose).det`. Conclude with `Matrix.det_permute' (Fin.revPerm : Equiv.Perm (Fin n)) (((f τ)⁻¹).transpose)`. Rewrite using `[h1, Matrix.det_transpose, Matrix.det_nonsing_inv]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero (by simp) ?_` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero (hf τ)`. Conclude with `hf τ`.
+A detailed English derivation is pending.
 -/
 theorem zT_det_ne {n : ℕ} (f : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (hf : ∀ τ, (f τ).det ≠ 0) (τ : D.what₂.Tau) :
     (zT X D pos f τ).det ≠ 0 := by
@@ -42,7 +42,7 @@ theorem zT_det_ne {n : ℕ} (f : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (
   · exact hf τ
 
 /- English proof (translation)
-Establish `: (A.transpose.submatrix Fin.rev id).det = _` using `Matrix.det_permute (Fin.revPerm : Equiv.Perm (Fin n)) A.transpose`. Rewrite using `[this, Matrix.det_transpose, sgRev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_rev_transpose {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     (A.transpose.submatrix Fin.rev id).det = sgRev n * A.det := by
@@ -50,7 +50,7 @@ theorem det_rev_transpose {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
   rw [this, Matrix.det_transpose, sgRev]
 
 /- English proof (translation)
-The claim follows from `RingHom.map_det _ M`.
+A detailed English derivation is pending.
 -/
 theorem evD_det {Kc : Type} [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) {j : ℕ} (hN : RankTie X D j)
     (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ)
@@ -59,7 +59,7 @@ theorem evD_det {Kc : Type} [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) {
   RingHom.map_det _ M
 
 /- English proof (translation)
-Establish `: ((B.map ι).submatrix (Fin.cast h) (Fin.cast h)).det = (B.map ι).det` using `Matrix.det_submatrix_equiv_self (finCongr h) (B.map ι)`. Rewrite using `[this, RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_map_cast {Kc : Type} [Field Kc] (ι : ℂ →+* Kc) {a b : ℕ} (h : a = b) (B : Matrix (Fin b) (Fin b) ℂ) :
     ((B.map ι).submatrix (Fin.cast h) (Fin.cast h)).det = ι B.det := by
@@ -69,19 +69,19 @@ theorem det_map_cast {Kc : Type} [Field Kc] (ι : ℂ →+* Kc) {a b : ℕ} (h :
   rfl
 
 /- English proof (translation)
-Introduce `p _ X D pos Kc _ _ ι j hN d f' hf hd`. Establish `key` using `GlobalTheory.T.operatorMatrices_at_complexPoint X D pos Kc ι j hN d f' hf hd`. Establish `e : ∀ G : D.what₂.Tau → ℂ, ∏ τ, G τ = ∏ v, ∏ s, G (pos ⟨v, s⟩)` using `fun G => by`. Rewrite using `[← Equiv.prod_comp pos G, Fintype.prod_sigma]`. Rewrite using `[e, map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `numD denD`. Simplify using `only [map_prod]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [cT1, szT]`. Rewrite using `[Equiv.symm_apply_apply]`. Take `⟨k1, k2, k3⟩` from `key v s`. Distinguish the cases in `hs : IsOddPos s`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos hs]`. Establish `hY : evD X D pos ι hN d f' (YtMat X Kc j v s).det = ι ((zT X D pos f' (pos ⟨v, s⟩)).det ^ D.R.N j * sgRev (D.R.N j) * (dfr X D hN d f' (pos ⟨v, s⟩)).det)`. Rewrite using `[evD_det, k3 hs, Matrix.det_smul, det_map_cast, det_rev_transpose, Fintype.card_fin, show NN X.G.P.m X.t j = D.R.N j from hN.1.symm]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `ha : ι (zT X D pos f' (pos ⟨v, s⟩)).det ≠ 0` using `(map_ne_zero ι).2 (zT_det_ne X D pos f' hf _)`. Establish `hb : ι ((zT X D pos f' (pos ⟨v, s⟩)).det ^ D.R.N j * sgRev (D.R.N j) * (dfr X D hN d f' (pos ⟨v, s⟩)).det) ≠ 0`. Use `(map_ne_zero ι).2 (mul_ne_zero (mul_ne_zero (pow_ne_zero _ (zT_det_ne X D pos f' hf _)) ?_) (hd _))` and prove the remaining obligations. Simplify using `[sgRev]`. Rewrite using `[map_mul ι ((zT X D pos f' (pos ⟨v, s⟩)).det ^ _), map_zpow₀, map_zpow₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul (evD X D pos ι hN d f'), map_mul (evD X D pos ι hN d f'), map_pow (evD X D pos ι hN d f'), map_pow (evD X D pos ι hN d f'), map_pow (evD X D pos ι hN d f'), map_pow (evD X D pos ι hN d f'), k1, hY, pow_toNat_split ha (exY X j v s), pow_toNat_split hb (exT X j v s)]`. Establish `h1 : exY X j v s = cMu X j v s - szMu X j v s` using `rfl`. Establish `h2 : exT X j v s = cMu X j v s - (D.R.N j : ℤ) * cMu X j v s + szMu X j v s`. Rewrite using `[exT, show NN X.G.P.m X.t j = D.R.N j from hN.1.symm]`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg hs]`. Rewrite using `[map_one, one_mul, map_pow (evD X D pos ι hN d f'), evD_det, k2 hs, det_map_cast, map_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evD_numD_denD : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (j : ℕ) (hN : RankTie X D j) (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ) (f' : D.what₂.Tau → Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) ℂ), (∀ τ, (f' τ).det ≠ 0) → (∀ τ, (dfr X D hN d f' τ).det ≠ 0) → evD X D pos ι hN d f' (numD X Kc j) = evD X D pos ι hN d f' (denD X Kc j) * ι (∏ τ, if IsOddPos (pos.symm τ).2 then (zT X D pos f' τ).det ^ (cT1 X D pos j τ - szT X D pos j τ) * ((zT X D pos f' τ).det ^ (D.R.N j) * sgRev (D.R.N j) * (dfr X D hN d f' τ).det) ^ (cT1 X D pos j τ - (D.R.N j : ℤ) * cT1 X D pos j τ + szT X D pos j τ) else (dfr X D hN d f' τ).det ^ (X.nuv (pos.symm τ).1 (j + 1) (pos.symm τ).2 (NN X.G.P.m X.t j)).toNat) := by
   intro p _ X D pos Kc _ _ ι j hN d f' hf hd

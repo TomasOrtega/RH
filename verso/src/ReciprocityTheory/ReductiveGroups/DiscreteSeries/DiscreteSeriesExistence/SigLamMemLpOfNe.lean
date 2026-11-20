@@ -12,13 +12,13 @@ variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε 
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
 /- English proof (translation)
-Rewrite using `[← mir_UJset_eq]`. Conclude with `g.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem umat_mem_UJset (g : Formalism.REAL.UJ ε) : Formalism.MainNotions.S.umat g ∈ UJset ε := by
   rw [← mir_UJset_eq]; exact g.2
 
 /- English proof (translation)
-Establish `e : Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε) = 1` using `rfl`. Rewrite using `[e]`. Conclude with `(sigLam_isURepOn hgap hP hv₀).1.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigLam_umat_one (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε)) = 1 := by
@@ -27,7 +27,7 @@ theorem sigLam_umat_one (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
   exact (sigLam_isURepOn hgap hP hv₀).1.1
 
 /- English proof (translation)
-Establish `e : Formalism.MainNotions.S.umat (a * b) = Formalism.MainNotions.S.umat a * Formalism.MainNotions.S.umat b` using `rfl`. Rewrite using `[e]`. Conclude with `(sigLam_isURepOn hgap hP hv₀).1.2 _ (umat_mem_UJset a) _ (umat_mem_UJset b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigLam_umat_mul (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (a b : Formalism.REAL.UJ ε) :
     sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat (a * b)) = (sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat a)).comp (sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat b)) := by
@@ -36,14 +36,14 @@ theorem sigLam_umat_mul (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
   exact (sigLam_isURepOn hgap hP hv₀).1.2 _ (umat_mem_UJset a) _ (umat_mem_UJset b)
 
 /- English proof (translation)
-The claim follows from `(sigLam_isURepOn hgap hP hv₀).2.1 _ (umat_mem_UJset g) v`.
+A detailed English derivation is pending.
 -/
 theorem sigLam_umat_iso (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (g : Formalism.REAL.UJ ε)
     (v : Hlam ε Ψ v₀) : ‖sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) v‖ = ‖v‖ :=
   (sigLam_isURepOn hgap hP hv₀).2.1 _ (umat_mem_UJset g) v
 
 /- English proof (translation)
-The claim follows from `GraphTrick.memLp_of_ne (μ := Formalism.REAL.muG ε) (ρ := fun g : Formalism.REAL.UJ ε => sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g)) (measurePreserving_mul_right ε) (sigLam_umat_one hgap hP hv₀) (sigLam_umat_mul hgap hP hv₀) (sigLam_umat_iso hgap hP hv₀) (Formalism.MainNotions …`.
+A detailed English derivation is pending.
 -/
 theorem sigLam_memLp_of_ne (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (w₀ x₀ : Hlam ε Ψ v₀)
     (hx₀ : x₀ ≠ 0)
@@ -55,7 +55,7 @@ theorem sigLam_memLp_of_ne (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (h
     (sigLam_umat_iso hgap hP hv₀) (Formalism.MainNotions.BridgeCSchur.irr_of (sigLam_irred hgap hP hv₀)) w₀ x₀ hx₀ h0 x
 
 /- English proof (translation)
-Rewrite using `[Submodule.coe_inner, sigLam_coe hgap hP hv₀ (umat_mem_UJset g)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_sigLam_umat (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (y z : Hlam ε Ψ v₀)
     (g : Formalism.REAL.UJ ε) :
@@ -63,13 +63,13 @@ theorem inner_sigLam_umat (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv
   rw [Submodule.coe_inner, sigLam_coe hgap hP hv₀ (umat_mem_UJset g)]
 
 /- English proof (translation)
-Take `⟨w₀, hw₀⟩ : ∃ w₀ : Hlam ε Ψ v₀, (w₀ : L2 ε) = uniformisationL2 ε Ψ v₀ T.w` from `⟨⟨_, datumEmbedding_mem_Hlam hP T.w⟩, rfl⟩`. Establish `hne : w₀ ≠ 0`. Introduce `h`. Apply `datumEmbedding_highest_ne_zero hgap hP hv₀` to reduce the goal to its premises. Rewrite using `[← hw₀, h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e0 : (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) w₀⟫_ℂ) = fun g => ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * jfun Ψ T.w T.w (Formalism.MainNotions.S.umat g)`. Use function extensionality and compare the values at `g`. Rewrite using `[inner_sigLam_umat hgap hP hv₀, hw₀, formulaF hgap hP hv₀ (umat_mem_UJset g)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0 : MemLp (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) w₀⟫_ℂ) 2 (Formalism.REAL.muG ε)`. Rewrite using `[e0]`. Conclude with `((datumFunction_isSmoothL2 hP T.w T.w).2 []).const_mul _`. Establish `h1` using `sigLam_memLp_of_ne hgap hP hv₀ w₀ w₀ hne h0 x`. Establish `e1 : (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) x⟫_ℂ) = fun g => inner ℂ (uniformisationL2 ε Ψ v₀ T.w) (rreg ε (Formalism.MainNotions.S.umat g) (x : L2 ε))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[inner_sigLam_umat hgap hP hv₀, hw₀]`. Rewrite `h1` using `[e1]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_memLp_all (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (x : Hlam ε Ψ v₀) :
     MemLp (fun g : Formalism.REAL.UJ ε =>
@@ -97,17 +97,17 @@ theorem coef_memLp_all (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀
   exact h1
 
 /- English proof (translation)
-Introduce `v w`. Use `show MemLp (fun g : Formalism.REAL.UJ ε => ⟪w, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) v⟫_ℂ) 2 (Formalism.REAL.muG ε)`. Distinguish the cases in `hw : w = 0`. Establish `e : (fun g : Formalism.REAL.UJ ε => ⟪w, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) v⟫_ℂ) = 0`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, inner_zero_left]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(Lp.memLp (0 : Lp ℂ 2 (Formalism.REAL.muG ε))).ae_eq (Lp.coeFn_zero ℂ 2 _)`. Take `⟨w₀, hw₀⟩ : ∃ w₀ : Hlam ε Ψ v₀, (w₀ : L2 ε) = uniformisationL2 ε Ψ v₀ T.w` from `⟨⟨_, datumEmbedding_mem_Hlam hP T.w⟩, rfl⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : w₀ ≠ 0`. Introduce `h`. Apply `datumEmbedding_highest_ne_zero hgap hP hv₀` to reduce the goal to its premises. Rewrite using `[← hw₀, h]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : MemLp (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) w⟫_ℂ) 2 (Formalism.REAL.muG ε)`. Establish `e1 : (fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) w⟫_ℂ) = fun g => inner ℂ (uniformisationL2 ε Ψ v₀ T.w) (rreg ε (Formalism.MainNotions.S.umat g) (w : L2 ε))`. Use function extensionality and compare the values at `g`. Rewrite using `[inner_sigLam_umat hgap hP hv₀, hw₀]`. Rewrite using `[e1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `coef_memLp_all hgap hP hv₀ w`. Establish `hinv` using `(hF.comp_measurePreserving (Measure.measurePreserving_inv (Formalism.REAL.muG ε))).star`. Establish `e2 : star ((fun g : Formalism.REAL.UJ ε => ⟪w₀, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) w⟫_ℂ) ∘ Inv.inv) = fun g : Formalism.REAL.UJ ε => ⟪w, sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g) w₀⟫_ℂ`. Use function extensionality and compare the values at `g`. Establish `hs : star (sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g⁻¹)) = sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g⁻¹⁻¹)` using `GraphTrick.star_eq (ρ := fun g : Formalism.REAL.UJ ε => sigLam ε Ψ v₀ (Formalism.MainNotions.S.umat g)) (sigLam_umat_one hgap hP hv₀) (sigLam_umat_mul hgap hP hv₀) (sigLam_umat_iso hgap hP hv₀) g⁻¹`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.star_apply, Function.comp_apply, RCLike.star_def, inner_conj_symm]`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.star_eq_adjoint, hs, inv_inv]`. Rewrite `hinv` using `[e2]`. Conclude with `sigLam_memLp_of_ne hgap hP hv₀ w w₀ hne hinv v`.
+A detailed English derivation is pending.
 -/
 theorem sqInt_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : Formalism.MainNotions.S.IsSqIntOn ε (sigLam ε Ψ v₀) := by
   intro v w

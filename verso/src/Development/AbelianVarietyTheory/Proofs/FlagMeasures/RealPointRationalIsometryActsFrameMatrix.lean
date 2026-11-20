@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.ActQ
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`. Simplify using `only [Fin.snoc_castSucc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem snoc_map {α β : Type*} {r : ℕ} (f : α → β) (e : Fin r → α) (z : α) (j : Fin (r + 1)) :
     f (Fin.snoc (α := fun _ => α) e z j) = Fin.snoc (α := fun _ => β) (fun a => f (e a)) (f z) j := by
@@ -30,21 +30,21 @@ theorem snoc_map {α β : Type*} {r : ℕ} (f : α → β) (e : Fin r → α) (z
 end GlobalTheory.ActQ
 
 /- English proof (translation)
-Introduce `D X Y u u' s n x A hR hA v`. Take `⟨M, -, hM1, -, hM3⟩` from `hR`. Take `⟨M', -, hM1', -, hM3'⟩` from `s.rep.2.1`. Establish `hP' : ∀ v, uMat (s.pt.1 v) = (X.B.I.P v)⁻¹ * (↑M' : Matrix _ _ _).map ⇑(X.B.I.φ v) * X.B.I.P v` using `hM1'`. Establish `hL' : ∀ y, X.crd (s.lin y) = (↑M' : Matrix _ _ _) *ᵥ X.crd y` using `hM3'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso : s.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `s.rep.2.2.1`. Establish `hfr : ∀ j, frame s.frame j = s.lin (Fin.snoc (α` using `fun _ => (VS D).V) X.eX (X.zu u') j) := by`. Introduce `j`. Establish `e1 : s.frame = Formalism.L2.SG.TermOp.mapLF s.lin (lf D (X.Fu u'))` using `rfl`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.L2.SG.TermOp.mapLF`. Rewrite using `[dif_pos hiso]`. Rewrite using `[GlobalTheory.ActQ.snoc_map (f := (s.lin : (VS D).V → (VS D).V)), ← X.Fu_e u', ← X.flagZVector u']`. Both sides reduce to the same expression. Establish `hfrm : ∀ j, Formalism.L2.SG.RealObj.frm X u' 1 v j = rv X.B.I v (X.crd (Fin.snoc (α` using `fun _ => (VS D).V) X.eX (X.zu u') j)) := by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `j`. Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam`. Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul]`. Rewrite using `[GlobalTheory.ActQ.snoc_map (f := fun y => rv X.B.I v (X.crd y))]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hf : ∀ j, uMat (s.pt.1 v) *ᵥ Formalism.L2.SG.RealObj.frm X u' 1 v j = rv X.B.I v (X.crd (frame s.frame j))`. Introduce `j`. Rewrite using `[hfrm, hfr, hL', ← Formalism.L2.SG.Pf.Level.rv_mulVec X v, ← hP' v]`. Establish `hsum : ∀ (c : Fin (D.R.rS + 1) → D.host.E) (w : Fin (D.R.rS + 1) → (VS D).V), rv X.B.I v (X.crd (∑ i, c i • w i)) = ∑ i, embS D (X.pl v) (c i) • rv X.B.I v (X.crd (w i))`. Introduce `c w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : X.crd (∑ i, c i • w i) = ∑ i, X.ιE.symm (c i) • X.crd (w i)`. Use function extensionality and compare the values at `l`. Simplify using `[HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, map_sum, Finset.sum_apply, smul_eq_mul]`. Rewrite using `[hc]`. Unfold `rv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hv : (fun l => X.B.I.φ v ((∑ i, X.ιE.symm (c i) • X.crd (w i)) l)) = ∑ i, embS D (X.pl v) (c i) • fun l => X.B.I.φ v (X.crd (w i) l)`. Use function extensionality and compare the values at `l`. Simplify using `[Finset.sum_apply, map_sum, X.φ_eq]`. Rewrite using `[hv, Matrix.mulVec_sum]`. Repeatedly rewrite using `[Matrix.mulVec_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `b`. Simplify using `only`. Rewrite using `[hf b, hM1 v, Formalism.L2.SG.Pf.Level.rv_mulVec, ← hM3, hA b, hsum]`. Repeatedly rewrite using `[hf, Matrix.map_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem GlobalTheory.realPoint_ratIsom_isMatOn : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (s : TT Y u u') (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (x : X.B.I.GA) (A : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E), Formalism.L2.SG.TermOp.RatLink X x n → (∀ j, n (frame s.frame j) = ∑ i, A i j • frame s.frame i) → ∀ v : NumberField.InfinitePlace X.B.I.F, GlobalTheory.LoopAct.IsMatOn (uMat (x.1 v)) (fun j => uMat (s.pt.1 v) *ᵥ Formalism.L2.SG.RealObj.frm X u' 1 v j) (A.map (embS D (X.pl v))) := by
   intro D X Y u u' s n x A hR hA v

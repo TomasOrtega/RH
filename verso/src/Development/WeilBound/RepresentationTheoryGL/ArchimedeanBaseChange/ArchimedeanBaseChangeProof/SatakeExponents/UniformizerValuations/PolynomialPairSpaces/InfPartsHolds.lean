@@ -10,14 +10,14 @@ namespace PositivityTheory.Rg.BcB.F.LemDd.InfinitesimalSumDecomposition
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `⟨rfl, fun u φ _ => ?_⟩` and prove the remaining obligations. Simplify using `[cap, Formalism.REAL.qdet, Formalism.REAL.qminor]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem top_zero (τ : E →+* ℂ) : HasInfCharGL (⊤ : Submodule ℂ (Sm E 0)) τ 0 := by
   refine ⟨rfl, fun u φ _ => ?_⟩
   simp [cap, Formalism.REAL.qdet, Formalism.REAL.qminor]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => by simp | c + 1, f, g, h => by rw [List.ofFn_succ, List.ofFn_succ] exact .cons (h 0) (forall₂_ofFn _ _ fun i => h i.succ)`.
+A detailed English derivation is pending.
 -/
 theorem forall₂_ofFn {α β : Type*} {R : α → β → Prop} :
     ∀ {c : ℕ} (f : Fin c → α) (g : Fin c → β), (∀ i, R (f i) (g i)) → List.Forall₂ R (List.ofFn f) (List.ofFn g)
@@ -27,15 +27,15 @@ theorem forall₂_ofFn {α β : Type*} {R : α → β → Prop} :
     exact .cons (h 0) (forall₂_ofFn _ _ fun i => h i.succ)
 
 /- English proof (translation)
-Proceed by induction on `t generalizing ms with`. Consider the case `@leaf M V z`. Establish `hz : z = 0` using `hu z (by simp [Tr.twists])`. Substitute `hz` using the available equality. Break down `hg with ⟨rfl, rfl, -⟩ | ⟨hM, -, -⟩` into its components or cases.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h0 : ms = []` using `by simpa [Tr.leafList] using hms`. Substitute `h0` using the available equality. Conclude with `⟨0, top_zero τ, by simp⟩`. Establish `h1 : List.Forall₂ (fun (x : Σ M : ℕ, Submodule ℂ (Sm E M)) m => HasInfCharGL x.2 τ m) [⟨M, V⟩] ms`. Simplify `hms` using `[Tr.leafList, hM]`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `h1 with _ | ⟨hx, hnil⟩` into its components or cases. Name the introduced variables `m ms'`. Consider the cases of `hnil`. Conclude with `⟨m, hx, by simp⟩`. Consider the case `@node r s t₁ t₂ ih₁ ih₂`.
+Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact.
 
-Establish `hu₁ : t₁.Untw` using `fun z hz => hu z (by simp [Tr.twists, hz])`. Establish `hu₂ : t₂.Untw` using `fun z hz => hu z (by simp [Tr.twists, hz])`. Simplify using `only [Tr.leafList, List.filter_append] at hms`. Establish `hd` using `List.forall₂_drop (List.filter (fun x => decide (0 < x.1)) t₁.leafList).length hms`. Rewrite `hd` using `[List.drop_left]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ht` using `List.forall₂_take (List.filter (fun x => decide (0 < x.1)) t₁.leafList).length hms`. Rewrite `ht` using `[List.take_left]`. Use `⟨_, _, ih₁ hg.1 hu₁ _ ht, ih₂ hg.2 hu₂ _ hd, ?_⟩` and prove the remaining obligations. Rewrite using `[← List.sum_append, List.take_append_drop]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem infOf_sum (τ : E →+* ℂ) {N : ℕ} (t : Tr E N) (hg : t.Good) (hu : t.Untw) (ms : List (Multiset ℂ))
     (hms : List.Forall₂ (fun (x : Σ M : ℕ, Submodule ℂ (Sm E M)) m => HasInfCharGL x.2 τ m)
@@ -70,9 +70,9 @@ end PositivityTheory.Rg.BcB.F.LemDd.InfinitesimalSumDecomposition
 namespace PositivityTheory.Rg.BcB.F.LemDd.Tw
 
 /- English proof (translation)
-Introduce `E _ _ _ N t P τ hg hu hp`. Establish `h` using `InfinitesimalSumDecomposition.infOf_sum τ t hg hu (List.ofFn fun i => P.m i τ) (by`. Unfold `TreeParts at hp`. Rewrite using `[← hp]`. Conclude with `InfinitesimalSumDecomposition.forall₂_ofFn _ _ fun i => P.inf i τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[List.sum_ofFn]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem InfParts_holds : InfParts := by
   intro E _ _ _ N t P τ hg hu hp

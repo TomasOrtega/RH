@@ -51,17 +51,17 @@ variable (M : LieModel G ξ E) (L : LB G.left) (n : ℕ) {O : Type} [CommRing O]
   (σ : O →+* Ω)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun _ ⟨_, _, h⟩ => h.1`.
+A detailed English derivation is pending.
 -/
 theorem htOm_le (q : Cpt ξ) : M.htOm L n q ≤ M.omLat q :=
   Submodule.span_le.2 fun _ ⟨_, _, h⟩ => h.1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `he`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨(eigSp ρ σ).zero_mem, fun w _ => by simpa using (regAt ξ q).zero_mem⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Conclude with `⟨(eigSp ρ σ).add_mem hx.1 hy.1, fun w hw => by`. Simplify using `using (regAt ξ q).add_mem (hx.2 w hw) (hy.2 w hw)⟩`. Consider the case `smul c x _ hx`. Use `⟨(eigSp ρ σ).smul_mem (c : Ω) hx.1, fun w hw => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: w (c • x) = (c : Ω) * w x` using `by show w ((c : Ω) • x) = _`. Rewrite using `[map_smul, smul_eq_mul]`. Rewrite using `[this]`. Conclude with `(regAt ξ q).mul_mem c.2 (hx.2 w hw)`. Conclude with `fun h => Submodule.subset_span h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem mem_htDual_iff (q : Cpt ξ) (e : E) :
     e ∈ M.htDual L n ρ σ q ↔ e ∈ eigSp ρ σ ∧ ∀ w ∈ M.htOm L n q, w e ∈ regAt ξ q := by
@@ -83,15 +83,15 @@ theorem mem_htDual_iff (q : Cpt ξ) (e : E) :
   · exact fun h => Submodule.subset_span h
 
 /- English proof (translation)
-The claim follows from `((M.mem_htDual_iff L n ρ σ q e).1 he).1`.
+A detailed English derivation is pending.
 -/
 theorem mem_eigSp_of_mem_htDual {q : Cpt ξ} {e : E} (he : e ∈ M.htDual L n ρ σ q) : e ∈ eigSp ρ σ :=
   ((M.mem_htDual_iff L n ρ σ q e).1 he).1
 
 /- English proof (translation)
-Rewrite using `[mem_htDual_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ u hu`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hu`. Conclude with `h w hw`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨e.2, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `h _ (Submodule.mem_map.2 ⟨w, hw, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_htDual (q : Cpt ξ) (e : eigSp ρ σ) :
     (e : E) ∈ M.htDual L n ρ σ q ↔ ∀ u ∈ M.htOmEig L n ρ σ q, u e ∈ regAt ξ q := by
@@ -105,13 +105,13 @@ theorem mem_htDual (q : Cpt ξ) (e : eigSp ρ σ) :
     exact h _ (Submodule.mem_map.2 ⟨w, hw, rfl⟩)
 
 /- English proof (translation)
-Introduce `e he` and use `Submodule.subset_span ⟨he.2, fun w hw => (M.htOm_le L n q hw) e he.1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eigLat_le_htDual (q : Cpt ξ) : M.eigLat ρ σ q ≤ M.htDual L n ρ σ q :=
   fun e he => Submodule.subset_span ⟨he.2, fun w hw => (M.htOm_le L n q hw) e he.1⟩
 
 /- English proof (translation)
-Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.1`. Consider the case `zero => exact (eigSp ρ σ).zero_mem`. Consider the case `add x y _ _ hx hy => exact (eigSp ρ σ).add_mem hx hy`. Consider the case `smul c x _ hx => exact (eigSp ρ σ).smul_mem (c : Ω) hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mem_eigSp_of_mem_htW (𝔡 : Ideal O) {q : Cpt ξ} {e : E} (he : e ∈ M.htW L n ρ σ 𝔡 q) :
     e ∈ eigSp ρ σ := by
@@ -122,7 +122,7 @@ theorem mem_eigSp_of_mem_htW (𝔡 : Ideal O) {q : Cpt ξ} {e : E} (he : e ∈ M
   | smul c x _ hx => exact (eigSp ρ σ).smul_mem (c : Ω) hx
 
 /- English proof (translation)
-The claim follows from `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 example (q : Cpt ξ) : (0 : Module.Dual Ω (eigSp ρ σ)) ∈ M.htOmEig L n ρ σ q := Submodule.zero_mem _
 
@@ -134,20 +134,20 @@ def Lat.patch (S : Finset ℕ) (L₀ : Lat ξ E) (Lp : ℕ → Lat ξ E) : Lat �
   if ∃ p ∈ S, InFibre ξ p q then ⨅ p ∈ S, ⨅ _ : InFibre ξ p q, Lp p q else L₀ q
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `[Lat.patch]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Lat.patch_empty (L₀ : Lat ξ E) (Lp : ℕ → Lat ξ E) : Lat.patch ∅ L₀ Lp = L₀ := by
   funext q; simp [Lat.patch]
 
 /- English proof (translation)
-Simplify using `only [Lat.patch]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨p, hp, h⟩`. Conclude with `hq p hp h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Lat.patch_of_not (S : Finset ℕ) (L₀ : Lat ξ E) (Lp : ℕ → Lat ξ E) {q : Cpt ξ}
     (hq : ∀ p ∈ S, ¬ InFibre ξ p q) : Lat.patch S L₀ Lp q = L₀ q := by
   simp only [Lat.patch]; rw [if_neg]; rintro ⟨p, hp, h⟩; exact hq p hp h
 
 /- English proof (translation)
-Simplify using `only [Lat.patch]`. Rewrite using `[if_pos ⟨p, hp, hq⟩]`. Use `le_antisymm (iInf₂_le_of_le p hp (iInf_le _ hq)) (le_iInf₂ fun p' hp' => le_iInf fun h => ?_)` and prove the remaining obligations. Rewrite using `[hu p' hp' h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lat.patch_of_unique (S : Finset ℕ) (L₀ : Lat ξ E) (Lp : ℕ → Lat ξ E) {q : Cpt ξ} {p : ℕ} (hp : p ∈ S)
     (hq : InFibre ξ p q) (hu : ∀ p' ∈ S, InFibre ξ p' q → p' = p) : Lat.patch S L₀ Lp q = Lp p q := by

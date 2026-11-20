@@ -16,27 +16,27 @@ variable (v : HeightOneSpectrum ℤ) {L : Type} [Field L] [NumberField L] {κ : 
   (bL : Module.Basis κ ℚ L)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_add, Finsupp.add_apply]; exact add_mem (hx i) (hy i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntB_add {x y : v.adicCompletion ℚ ⊗[ℚ] L} (hx : IsIntB v bL x) (hy : IsIntB v bL y) :
     IsIntB v bL (x + y) := fun i => by
   rw [map_add, Finsupp.add_apply]; exact add_mem (hx i) (hy i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_neg, Finsupp.neg_apply]; exact neg_mem (hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntB_neg {x : v.adicCompletion ℚ ⊗[ℚ] L} (hx : IsIntB v bL x) : IsIntB v bL (-x) := fun i => by
   rw [map_neg, Finsupp.neg_apply]; exact neg_mem (hx i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_smul, Finsupp.smul_apply, smul_eq_mul]; exact mul_mem ha (hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntB_smul {a : v.adicCompletion ℚ} (ha : a ∈ v.adicCompletionIntegers ℚ)
     {x : v.adicCompletion ℚ ⊗[ℚ] L} (hx : IsIntB v bL x) : IsIntB v bL (a • x) := fun i => by
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul]; exact mul_mem ha (hx i)
 
 /- English proof (translation)
-Introduce `i` and use `by rw [map_neg, Finsupp.neg_apply, Valuation.map_neg]; exact hx i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmallB_neg {x : v.adicCompletion ℚ ⊗[ℚ] L} (hx : IsSmallB v bL x) : IsSmallB v bL (-x) := fun i => by
   rw [map_neg, Finsupp.neg_apply, Valuation.map_neg]; exact hx i
@@ -58,15 +58,13 @@ variable (π : v.adicCompletionIntegers ℚ) (hπ : Valued.v (π : v.adicComplet
 include hπ
 
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Establish `hc : ((unif v bL h1 hmul π ^ n : lam v bL h1 hmul) : v.adicCompletion ℚ ⊗[ℚ] L) = (π : v.adicCompletion ℚ) ^ n • (1 : v.adicCompletion ℚ ⊗[ℚ] L)`. Rewrite using `[SubmonoidClass.coe_pow]`. Use `show ((π : v.adicCompletion ℚ) • (1 : v.adicCompletion ℚ ⊗[ℚ] L)) ^ n = _`. Rewrite using `[smul_pow, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : Valued.v ((π : v.adicCompletion ℚ) ^ n) = exp (-(n : ℤ))`. Rewrite using `[map_pow, hπ, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, rfl⟩ i`. Rewrite using `[Subring.coe_mul, hc, mul_smul_comm, mul_one, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, hv]`. Conclude with `mul_le_of_le_one_right' ((mem_adicCompletionIntegers _ _ _).1 (y.2 i))`. Introduce `hx`. Establish `hπ0 : (π : v.adicCompletion ℚ) ^ n ≠ 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hv` using `[h, map_zero]`. Conclude with `exp_ne_zero hv.symm`. Use `⟨⟨((π : v.adicCompletion ℚ) ^ n)⁻¹ • (x : v.adicCompletion ℚ ⊗[ℚ] L), fun i => ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[mem_adicCompletionIntegers, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, map_inv₀, hv]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subring.coe_mul, hc, mul_smul_comm, mul_one, smul_smul, mul_inv_cancel₀ hπ0, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pow_iff (x : lam v bL h1 hmul) (n : ℕ) :
     x ∈ (Ideal.span {unif v bL h1 hmul π}) ^ n • (⊤ : Submodule (lam v bL h1 hmul) (lam v bL h1 hmul)) ↔
@@ -95,7 +93,7 @@ theorem mem_pow_iff (x : lam v bL h1 hmul) (n : ℕ) :
     · rw [Subring.coe_mul, hc, mul_smul_comm, mul_one, smul_smul, mul_inv_cancel₀ hπ0, one_smul]
 
 /- English proof (translation)
-Use `mem_pow_iff v bL h1 hmul π hπ x 1` as an intermediate fact. Rewrite `this` using `[pow_one, smul_eq_mul, Ideal.mul_top]`. Rewrite using `[this]`. Simplify using `only [Nat.cast_one]`. Conclude with `forall_congr' fun i => Formalism.BasicNotions.Examples₂.wz_lt_one_iff _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem small_iff (x : lam v bL h1 hmul) :
     IsSmallB v bL (x : v.adicCompletion ℚ ⊗[ℚ] L) ↔ x ∈ Ideal.span {unif v bL h1 hmul π} := by
@@ -106,19 +104,17 @@ theorem small_iff (x : lam v bL h1 hmul) :
   exact forall_congr' fun i => Formalism.BasicNotions.Examples₂.wz_lt_one_iff _
 
 /- English proof (translation)
-Use `haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex bL`. Establish `key` using `mem_pow_iff v bL h1 hmul π hπ`. Use `haveI hO := Formalism.BasicNotions.Examples₂.adicInt_isAdicComplete (K := ℚ) v`. Use `set e := Algebra.TensorProduct.basis (v.adicCompletion ℚ) bL with he`. Use `{ toIsHausdorff := ⟨fun x hx => ?_⟩, toIsPrecomplete := ⟨fun f hf => ?_⟩ }` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-It suffices to establish `h : (x : v.adicCompletion ℚ ⊗[ℚ] L) = 0 from Subtype.ext h`. Apply `e.repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `Formalism.BasicNotions.Examples₂.adicInt_eq_zero_of_forall (K := ℚ) v _ fun n => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(key x n).1 (by simpa using (SModEq.sub_mem.1 (hx n)))` as an intermediate fact. Conclude with `this i`. Establish `hcoord : ∀ i, ∃ Li : v.adicCompletionIntegers ℚ, ∀ n, Valued.v (e.repr (f n : v.adicCompletion ℚ ⊗[ℚ] L) i - Li) ≤ exp (-(n : ℤ))`. Introduce `i`. Take `⟨Li, hLi⟩` from `IsPrecomplete.prec' (I := IsLocalRing.maximalIdeal (v.adicCompletionIntegers ℚ)) (fun n => (⟨e.repr (f n : v.adicCompletion ℚ ⊗[ℚ] L) i, (f n).2 i⟩ : v.adicCompletionIntegers ℚ)) (fun {m n} hmn => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Formalism.BasicNotions.Examples₂.adicInt_mem_pow_iff]`. Use `(key (f m - f n) m).1 (SModEq.sub_mem.1 (hf hmn)) i` as an intermediate fact. Simplify `this)` using `[map_sub]`. Use `⟨Li, fun n => ?_⟩` and prove the remaining obligations. Use `SModEq.sub_mem.1 (hLi n)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[smul_eq_mul, Ideal.mul_top, Formalism.BasicNotions.Examples₂.adicInt_mem_pow_iff]`. Simplify using `using this`. Use `choose Lc hLc using hcoord`. Establish `hrep : ∀ (w : κ → v.adicCompletion ℚ) i, e.repr (e.equivFun.symm w) i = w i` using `fun w i => by`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLmem : IsIntB v bL (e.equivFun.symm fun i => (Lc i : v.adicCompletion ℚ))` using `fun i => by`. Rewrite using `[hrep]`. Conclude with `(Lc i).2`. Use `⟨⟨_, hLmem⟩, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, key]`.
-
-Introduce `i`. Establish `h` using `hLc i n`. Rewrite using `[AddSubgroupClass.coe_sub, map_sub, Finsupp.sub_apply]`. Rewrite using `[show (e.repr ((⟨_, hLmem⟩ : lam v bL h1 hmul) : v.adicCompletion ℚ ⊗[ℚ] L)) i = (Lc i : v.adicCompletion ℚ) from hrep _ i]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isAdicComplete :
     IsAdicComplete (Ideal.span {unif v bL h1 hmul π}) (lam v bL h1 hmul) := by
@@ -167,29 +163,25 @@ namespace GlobalTheory.AdicSpan.HenselSqrt
 open IsDedekindDomain.HeightOneSpectrum WithZero
 
 /- English proof (translation)
-Introduce `v L _ _ κ bL h2 h1 hmul _ u hu hsu`. Take `⟨π, hπ⟩` from `Formalism.BasicNotions.Examples₂.adicInt_exists_unif (K := ℚ) v`. Use `haveI := isAdicComplete v bL h1 hmul π hπ`. Use `haveI : HenselianRing (lam v bL h1 hmul) (Ideal.span {unif v bL h1 hmul π}) := IsAdicComplete.henselianRing _ _`. Establish `hI` using `small_iff v bL h1 hmul π hπ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hjac : ∀ x ∈ Ideal.span {unif v bL h1 hmul π}, IsUnit (x + 1)` using `fun x hx => by`. Simplify using `using Ideal.mem_jacobson_bot.1 (HenselianRing.jac hx) 1`. Establish `h20 : (2 : v.adicCompletion ℚ) ≠ 0` using `fun h => by rw [h, map_zero] at h2; exact zero_ne_one h2`. Establish `h2O : (2 : v.adicCompletion ℚ)⁻¹ ∈ v.adicCompletionIntegers ℚ`. Rewrite using `[mem_adicCompletionIntegers, map_inv₀, h2, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t : lam v bL h1 hmul` to `⟨(2 : v.adicCompletion ℚ)⁻¹ • 1, isIntB_smul v bL h2O h1⟩`. Establish `ht : (2 : lam v bL h1 hmul) * t = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (2 : v.adicCompletion ℚ ⊗[ℚ] L) * ((2 : v.adicCompletion ℚ)⁻¹ • 1) = 1`. Rewrite using `[mul_smul_comm, mul_one, show (2 : v.adicCompletion ℚ ⊗[ℚ] L) = (2 : v.adicCompletion ℚ) • (1 : v.adicCompletion ℚ ⊗[ℚ] L) by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[two_smul, one_add_one_eq_two],`. Use the proof step `smul_smul, inv_mul_cancel₀ h20, one_smul]`. Establish `h2u : IsUnit (2 : lam v bL h1 hmul)` using `⟨⟨2, t, ht, by rw [mul_comm]; exact ht⟩, rfl⟩`. Set `u' : lam v bL h1 hmul` to `⟨u, hu⟩`. Take `⟨a, ha, haI⟩` from `HenselianRing.is_henselian (I := Ideal.span {unif v bL h1 hmul π}) (Polynomial.X ^ 2 - Polynomial.C u') (Polynomial.monic_X_pow_sub_C _ two_ne_zero) 1 (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, one_pow, ← hI]`. Use `isSmallB_neg v bL hsu` as an intermediate fact. Rewrite using `[neg_sub] at this) (by` and apply the resulting hypothesis. Apply the tactic sequence `have : Polynomial.eval 1 (Polynomial.derivative (Polynomial.X ^ 2 - Polynomial.C u')) = 2 := by simp; try norm_num`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2u.map _)`. Establish `ha2 : a ^ 2 = u'`. Use `ha.eq_zero` as an intermediate fact. Rewrite `this` using `[Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C]`. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `haU : IsUnit a`. Use `hjac _ haI` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `⟨Units.map (lam v bL h1 hmul).subtype.toMonoidHom haU.unit, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.coe_map, IsUnit.unit_spec]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `a.2`. Rewrite using `[← map_inv]`. Simplify using `only [Units.coe_map]`. Conclude with `(haU.unit⁻¹ : (lam v bL h1 hmul)ˣ).1.2`. Simplify using `only [Units.coe_map, IsUnit.unit_spec]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val ha2`. Simplify using `only [Units.coe_map, IsUnit.unit_spec]`. Conclude with `(hI (a - 1)).2 haI`. Introduce `g hg hg2 hgs`. Simplify using `only [Units.coe_map, IsUnit.unit_spec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Set `g' : lam v bL h1 hmul` to `⟨g, hg⟩`. Establish `hgI : g' - 1 ∈ Ideal.span {unif v bL h1 hmul π}` using `(hI (g' - 1)).1 hgs`. Establish `hg'2 : g' ^ 2 = u'` using `Subtype.ext hg2`. Establish `h0 : (g' - a) * (g' + a) = 0`. Establish `: (g' - a) * (g' + a) = g' ^ 2 - a ^ 2` using `by ring`.
-
-Rewrite using `[this, hg'2, ha2, sub_self]`. Establish `hx` using `hjac _ (Ideal.mul_mem_right t _ (add_mem hgI haI))`. Establish `hsum : g' + a = 2 * (((g' - 1) + (a - 1)) * t + 1)`. Take the linear combination `(-(g' + a - 2)) * ht`. Establish `hU : IsUnit (g' + a)` using `by rw [hsum]; exact h2u.mul hx`.
-
-Use `(hU.mul_left_eq_zero).1 h0` as an intermediate fact. Conclude with `congrArg Subtype.val (sub_eq_zero.1 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sqrt : ∀ (v : HeightOneSpectrum ℤ) (L : Type) [Field L] [NumberField L] (κ : Type)
     (bL : Module.Basis κ ℚ L),

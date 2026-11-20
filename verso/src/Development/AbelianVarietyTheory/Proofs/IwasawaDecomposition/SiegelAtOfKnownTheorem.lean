@@ -23,7 +23,7 @@ def SiegAt (g : ℕ) (φ : InvFun ℤ) (n : ℕ) : Prop :=
     ∃ k₀ : ℕ, ∀ k, k₀ ≤ k → IsAmpleLB (CechPic.tens (lbPow (hodge G g) (N * k)) (CechPic.dual BD.lb))
 
 /- English proof (translation)
-The claim follows from `h g hg`.
+A detailed English derivation is pending.
 -/
 theorem siegAt_of_siegelToroidalIntegral (h : GlobalTheory.Published.SiegelToroidalIntegral) (g : ℕ) (hg : 1 ≤ g) :
     ∃ φ : InvFun ℤ, IsPolFan id g φ ∧ ∀ n : ℕ, 3 ≤ n → Odd n → SiegAt g φ n :=

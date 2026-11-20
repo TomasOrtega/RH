@@ -11,17 +11,15 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.BK
 
 /- English proof (translation)
-Introduce `l _ K bk M m q hq`. Take `⟨w, hw⟩` from `bk.coeff_zero`. Take `⟨t, ht⟩` from `hq`. Use `set P : bk.S := ((bk.Ep.divX : Polynomial (Wq l bk.a)) : (Wq l bk.a)⟦X⟧) with hP`. Establish `hE : bk.E = X * P + (l : bk.S) * C (w : Wq l bk.a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Polynomial.X_mul_divX_add bk.Ep`. Establish `h2` using `congrArg (fun p : Polynomial (Wq l bk.a) => (p : (Wq l bk.a)⟦X⟧)) h`. Simplify using `only [Polynomial.coe_add, Polynomial.coe_mul, Polynomial.coe_X, Polynomial.coe_C, hw, map_mul, map_natCast] at h2`. Express the relevant statement in the definitionally equal form `(bk.Ep : (Wq l bk.a)⟦X⟧) = _`. Rewrite using `[← h2, hP]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Rewrite using `[← map_natCast (Polynomial.C (R := Wq l bk.a)), Polynomial.coe_C, map_natCast]`. Establish `hu : C (w : Wq l bk.a) * C ((w⁻¹ : (Wq l bk.a)ˣ) : Wq l bk.a) = (1 : bk.S)`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `set c' : bk.S := C ((w⁻¹ : (Wq l bk.a)ˣ) : Wq l bk.a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set a : bk.S := (l : bk.S) ^ (M + 1)`. Use `set h₁ : bk.S := -((l : bk.S) ^ M + t * P) * c'`. Use `set b : bk.S := bk.E * h₁`. Establish `hqr : q * (-c' * P) = a + b`. Simplify using `only [a, b, h₁]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-c' * P) * ht + (c' * (l : bk.S) ^ M) * hE + (l : bk.S) ^ (M + 1) * hu`. Establish `key` using `geom_sum₂_mul a (-b) m`. Rewrite `key` using `[sub_neg_eq_add]`. Use `⟨(M + 1) * m, (-c' * P) * ∑ i ∈ Finset.range m, a ^ i * (-b) ^ (m - 1 - i), -((-h₁) ^ m), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, ← mul_assoc, hqr, mul_comm (a + b), key]`.
-
-Simplify using `only [b]`. Rewrite using `[neg_pow, mul_pow, neg_pow h₁]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_mul_sub_pow_dvd_of_dvd_sub : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (M m : ℕ) (q : bk.S),
     bk.E ∣ q - (l : bk.S) ^ M * X → ∃ (N : ℕ) (r : bk.S), bk.E ^ m ∣ q * r - (l : bk.S) ^ N := by

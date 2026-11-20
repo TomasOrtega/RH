@@ -23,19 +23,17 @@ def genGrp (M : Submodule (𝓞 E) (Matrix (Fin m) (Fin n) E)) :
   AddSubgroup.closure {w | ∃ α ∈ intAd F, ∃ x ∈ M, w = Matrix.of fun i j => x i j ⊗ₜ[F] α}
 
 /- English proof (translation)
-Establish `key : ∀ s : 𝒜, (∀ α ∈ intAd F, ∀ x ∈ M, s • (Matrix.of fun i j => x i j ⊗ₜ[F] α : Matrix (Fin m) (Fin n) 𝒜) ∈ genGrp F M) → ∀ w ∈ genGrp F M, s • w ∈ genGrp F M`. Introduce `s h w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw => obtain ⟨α, hα, x, hx, rfl⟩ := hw`. Conclude with `h α hα x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [smul_neg]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `neg_mem ha`. Proceed by induction on `hs using Subring.closure_induction with`. Consider the case `mem s hs`. Break down `hs with ⟨⟨_, b, rfl⟩, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Use `key _ fun α hα x hx => AddSubgroup.subset_closure ⟨α, hα, b • x, M.smul_mem b hx, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`. Use `key _ fun α hα x hx => AddSubgroup.subset_closure ⟨y * α, mul_mem y.2 hα, x, hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Consider the case `zero => intro w _`. Rewrite using `[zero_smul]`. Conclude with `zero_mem _`. Consider the case `one => intro w hw`. Rewrite using `[one_smul]` and apply the resulting hypothesis.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => intro w hw`. Rewrite using `[add_smul]`. Conclude with `add_mem (ha w hw) (hb w hw)`. Consider the case `neg a _ ha => intro w hw`. Rewrite using `[neg_smul]`.
-
-Conclude with `neg_mem (ha w hw)`. Consider the case `mul a b _ _ ha hb => intro w hw`. Rewrite using `[mul_smul]`. Conclude with `ha _ (hb w hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_genGrp (M : Submodule (𝓞 E) (Matrix (Fin m) (Fin n) E)) (s : 𝒜) (hs : s ∈ 𝒮) :
     ∀ w ∈ genGrp F M, s • w ∈ genGrp F M := by
@@ -64,11 +62,9 @@ theorem smul_mem_genGrp (M : Submodule (𝓞 E) (Matrix (Fin m) (Fin n) E)) (s :
   | mul a b _ _ ha hb => intro w hw; rw [mul_smul]; exact ha _ (hb w hw)
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Use `Submodule.subset_span ⟨x *ᵥ y, hx y hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `RingHom.map_mulVec _ _ _ _`. Consider the case `zero => rw [mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [mulVec_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `smul c a _ ha => rw [mulVec_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_mulVec_hat {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule (𝓞 E) (Fin m → E)}
     {x : Matrix (Fin m) (Fin n) E} (hx : ∀ y ∈ Λ, x *ᵥ y ∈ Λ') {u : Fin n → 𝒜}
@@ -84,7 +80,7 @@ theorem map_mulVec_hat {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule 
   | smul c a _ ha => rw [mulVec_smul]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Use `(hβ _).2 fun k => ?_` and prove the remaining obligations. Rewrite using `[mulVec_mulVec, Units.inv_mul, one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_mem_hat {Λ : Submodule (𝓞 E) (Fin n → E)} {β : GL (Fin n) 𝒜} (hβ : IsFrame β Λ) (j : Fin n) :
     (β : Matrix (Fin n) (Fin n) 𝒜) *ᵥ Pi.single j 1 ∈ Formalism.L2.Herm.hatL (F := F) Λ := by
@@ -95,7 +91,7 @@ theorem col_mem_hat {Λ : Submodule (𝓞 E) (Fin n → E)} {β : GL (Fin n) �
   · exact zero_mem _
 
 /- English proof (translation)
-Establish `h` using `(hβ' _).1 (map_mulVec_hat hx (col_mem_hat hβ j)) i`. Rewrite `h` using `[mulVec_mulVec, mulVec_mulVec, mulVec_single_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem frame_int {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule (𝓞 E) (Fin m → E)}
     {β : GL (Fin n) 𝒜} {β' : GL (Fin m) 𝒜} (hβ : IsFrame β Λ) (hβ' : IsFrame β' Λ')
@@ -118,7 +114,7 @@ def frGrp (β : GL (Fin n) 𝒜) (β' : GL (Fin m) 𝒜) (I : Ideal 𝒮) : AddS
     rw [Matrix.mul_neg, Matrix.neg_mul, Matrix.neg_apply, ← e]; rfl
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨s * ⟨_, hw i j⟩, Ideal.mul_mem_right _ _ hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, Subring.coe_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_frGrp (β : GL (Fin n) 𝒜) (β' : GL (Fin m) 𝒜) {I : Ideal 𝒮} {s : 𝒮} (hs : s ∈ I)
     {w : Matrix (Fin m) (Fin n) 𝒜} (hw : ∀ i j, HMul.hMul (HMul.hMul (β'⁻¹).val w) β.val i j ∈ 𝒮) :
@@ -128,7 +124,7 @@ theorem smul_mem_frGrp (β : GL (Fin n) 𝒜) (β' : GL (Fin m) 𝒜) {I : Ideal
   rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, Subring.coe_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show _ = ((algebraMap (𝓞 E) E a ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) * ((1 : E) ⊗ₜ[F] α)) * (x i j ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_one, one_mul, ← Algebra.smul_def]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gen_smul (a : 𝓞 E) (α : FiniteAdeleRing (𝓞 F) F) (x : Matrix (Fin m) (Fin n) E) :
     (Matrix.of fun i j => (a • x) i j ⊗ₜ[F] α : Matrix (Fin m) (Fin n) 𝒜) =
@@ -141,7 +137,7 @@ theorem gen_smul (a : 𝓞 E) (α : FiniteAdeleRing (𝓞 F) F) (x : Matrix (Fin
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `TensorProduct.add_tmul _ _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gen_add (α : FiniteAdeleRing (𝓞 F) F) (x y : Matrix (Fin m) (Fin n) E) :
     (Matrix.of fun i j => (x + y) i j ⊗ₜ[F] α : Matrix (Fin m) (Fin n) 𝒜) =
@@ -150,9 +146,9 @@ theorem gen_add (α : FiniteAdeleRing (𝓞 F) F) (x y : Matrix (Fin m) (Fin n) 
   exact TensorProduct.add_tmul _ _ _
 
 /- English proof (translation)
-Establish `hα' : (1 : E) ⊗ₜ[F] α ∈ 𝒮` using `Subring.subset_closure (Or.inr ⟨⟨α, hα⟩, rfl⟩)`. Establish `h1 : oToS F E a ∈ idS F 𝔪` using `Ideal.mem_map_of_mem _ ha`. Establish `h3 : oToS F E a * (⟨_, hα'⟩ : 𝒮) ∈ idS F 𝔪` using `Ideal.mul_mem_right _ _ h1`. Establish `h2` using `smul_mem_frGrp β β' h3 (w := x.map ι) (fun i j => frame_int hβ hβ' hx i j)`. Rewrite `h2` using `[Subring.coe_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[gen_smul]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mem_frGrp {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule (𝓞 E) (Fin m → E)}
     {β : GL (Fin n) 𝒜} {β' : GL (Fin m) 𝒜} (hβ : IsFrame β Λ) (hβ' : IsFrame β' Λ') {𝔪 : Ideal (𝓞 E)}
@@ -168,11 +164,11 @@ theorem gen_mem_frGrp {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule (
   exact h2
 
 /- English proof (translation)
-Establish `key : ∀ α ∈ intAd F, ∀ x ∈ 𝔪 • H, (Matrix.of fun i j => x i j ⊗ₜ[F] α : Matrix (Fin m) (Fin n) 𝒜) ∈ frGrp β β' (idS F 𝔪)`. Introduce `α hα x hx`. Proceed by induction on `hx using Submodule.smul_induction_on' with`. Consider the case `smul a ha x hx => exact gen_mem_frGrp hβ hβ' hα ha (hH x hx)`. Consider the case `add x _ y _ hx hy => rw [gen_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `AddSubgroup.add_mem _ hx hy`. Unfold `genGrp`. Rewrite using `[AddSubgroup.closure_le]`. Introduce `w hw`. Take `⟨α, hα, x, hx, e⟩` from `hw`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `key α hα x hx`.
+A detailed English derivation is pending.
 -/
 theorem genGrp_le_frGrp {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule (𝓞 E) (Fin m → E)}
     {β : GL (Fin n) 𝒜} {β' : GL (Fin m) 𝒜} (hβ : IsFrame β Λ) (hβ' : IsFrame β' Λ')
@@ -192,11 +188,11 @@ theorem genGrp_le_frGrp {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule
   exact key α hα x hx
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1` using `(hβ (fun j => ι (y j))).1 (Submodule.subset_span ⟨y, hy, rfl⟩)`. Establish `h2 : ι (l ⬝ᵥ y) ∈ 𝒮`. Establish `e : ι (l ⬝ᵥ y) = ((β : Matrix (Fin n) (Fin n) 𝒜)ᵀ *ᵥ fun j => ι (l j)) ⬝ᵥ (((β⁻¹ : GL (Fin n) 𝒜) : Matrix (Fin n) (Fin n) 𝒜) *ᵥ fun j => ι (y j))`. Rewrite using `[mulVec_transpose, ← dotProduct_mulVec, mulVec_mulVec, Units.mul_inv, one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dotProduct]`. Rewrite using `[e]`. Conclude with `sum_mem fun k _ => mul_mem (hl k) (h1 k)`. Take `⟨b, hb⟩` from `(incl_mem_iff _).1 h2`. Establish `e : vecMulVec l' l *ᵥ y = b • l'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, hb]`. Simplify using `[mulVec, vecMulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`. Rewrite using `[e]`. Conclude with `Λ'.smul_mem b hl'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecMulVec_mem_hom {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule (𝓞 E) (Fin m → E)}
     {β : GL (Fin n) 𝒜} (hβ : IsFrame β Λ) {l' : Fin m → E} (hl' : l' ∈ Λ') {l : Fin n → E}
@@ -220,33 +216,25 @@ theorem vecMulVec_mem_hom {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodu
   exact Λ'.smul_mem b hl'
 
 /- English proof (translation)
-Set `γ : GL (Fin n) 𝒜` to `⟨((β⁻¹ : GL (Fin n) 𝒜) : Matrix (Fin n) (Fin n) 𝒜)ᵀ, (β : Matrix (Fin n) (Fin n) 𝒜)ᵀ, by rw [← transpose_mul, Units.mul_inv, transpose_one], by rw [← transpose_mul, Units.inv_mul, transpose_one]⟩`. Establish `hγ : ((γ⁻¹ : GL (Fin n) 𝒜) : Matrix (Fin n) (Fin n) 𝒜) = (β : Matrix (Fin n) (Fin n) 𝒜)ᵀ` using `rfl`. Establish `st : ∀ (c : 𝒮) {w}, w ∈ genGrp F (𝔪 • H) → c • w ∈ genGrp F (𝔪 • H)` using `fun c w hw => smul_mem_genGrp _ c.1 c.2 w hw`. Establish `k1 : ∀ a ∈ 𝔪, ∀ l' ∈ Λ', ∀ l ∈ lat γ, oToS F E a • vecMulVec (fun i => ι (l' i)) (fun j => ι (l j)) ∈ genGrp F (𝔪 • H)`. Introduce `a ha l' hl' l hl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `AddSubgroup.subset_closure ⟨1, one_mem _, a • vecMulVec l' l, Submodule.smul_mem_smul ha (hH _ (vecMulVec_mem_hom hβ hl' ((mem_lat γ l).1 hl))), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `show ((oToS F E a : 𝒮) : 𝒜) * (ι (l' i) * ι (l j)) = _`. Simplify using `[oToS_coe, inclE, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def, vecMulVec]`. Establish `k2 : ∀ a ∈ 𝔪, ∀ l' ∈ Λ', ∀ v ∈ Submodule.span 𝒮 ((fun x : Fin n → E => fun i => ι (x i)) '' (lat γ : Set (Fin n → E))), oToS F E a • vecMulVec (fun i => ι (l' i)) v ∈ genGrp F (𝔪 • H)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha l' hl' v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => obtain ⟨l, hl, rfl⟩ := hv`. Conclude with `k1 a ha l' hl' l hl`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : vecMulVec (fun i => ι (l' i)) (0 : Fin n → 𝒜) = 0` using `by ext i j; exact mul_zero _`. Rewrite using `[e, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [vecMulVec_add, smul_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `smul c x _ hx => rw [vecMulVec_smul, smul_comm]`. Conclude with `st c hx`. Establish `k3 : ∀ a ∈ 𝔪, ∀ u ∈ Formalism.L2.Herm.hatL (F` using `F) Λ', ∀ v ∈ Submodule.span 𝒮 ((fun x : Fin n → E => fun i => ι (x i)) '' (lat γ : Set (Fin n → E))), oToS F E a • vecMulVec u v ∈ genGrp F (𝔪 • H) := by`. Introduce `a ha u hu v hv`. Proceed by induction on `hu using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mem u hu => obtain ⟨l, hl, rfl⟩ := hu`. Conclude with `k2 a ha l hl v hv`. Consider the case `zero`. Establish `e : vecMulVec (0 : Fin m → 𝒜) v = 0` using `by ext i j; exact zero_mul _`. Rewrite using `[e, smul_zero]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_vecMulVec, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_vecMulVec, smul_comm]`. Conclude with `st c hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `k4 : ∀ s ∈ idS F 𝔪, ∀ u ∈ Formalism.L2.Herm.hatL (F` using `F) Λ', ∀ v ∈ Submodule.span 𝒮 ((fun x : Fin n → E => fun i => ι (x i)) '' (lat γ : Set (Fin n → E))), s • vecMulVec u v ∈ genGrp F (𝔪 • H) := by`. Introduce `s hs u hu v hv`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem s hs => obtain ⟨a, ha, rfl⟩ := hs`. Conclude with `k3 a ha u hu v hv`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_smul]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_eq_mul, mul_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `st c hx`. Introduce `w hw`. Use `choose s hs he using hw`. Establish `e0 : w = HMul.hMul (HMul.hMul β'.val (Matrix.of fun i j => (s i j : 𝒜))) (β⁻¹).val`. Establish `: (Matrix.of fun i j => (s i j : 𝒜)) = HMul.hMul (HMul.hMul (β'⁻¹).val w) β.val`.
-
-Use extensionality with `i j`. Conclude with `he i j`. Rewrite using `[this, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `e : w = ∑ i, ∑ j, s i j • vecMulVec ((β' : Matrix (Fin m) (Fin m) 𝒜) *ᵥ Pi.single i 1) ((γ : Matrix (Fin n) (Fin n) 𝒜) *ᵥ Pi.single j 1)`. Rewrite using `[e0]`.
-
-Use extensionality with `a b`. Simplify using `only [mulVec_single_one, Matrix.sum_apply, Matrix.mul_apply, Finset.sum_mul, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show _ = (s i j : 𝒜) * (β'.val a i * (β⁻¹).val j b)`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `sum_mem fun i _ => sum_mem fun j _ => k4 _ (hs i j) _ (col_mem_hat hβ' i) _ ((lat_span γ _).2 fun k => ?_)` and prove the remaining obligations. Rewrite using `[mulVec_mulVec, Units.inv_mul, one_mulVec, Pi.single_apply]`. Use `split_ifs`.
-
-Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frGrp_le_genGrp {Λ : Submodule (𝓞 E) (Fin n → E)} {Λ' : Submodule (𝓞 E) (Fin m → E)}
     {β : GL (Fin n) 𝒜} {β' : GL (Fin m) 𝒜} (hβ : IsFrame β Λ) (hβ' : IsFrame β' Λ')
@@ -326,23 +314,21 @@ open scoped TensorProduct nonZeroDivisors Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h1 : ∀ z ∈ GlobalTheory.ChiGrid.hatMx M, (∀ i j, infPart D (z i j) = 0) ∧ z.map (toEAf D) ∈ genGrp D.host.F M`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, x, hx, rfl⟩` from `hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i j => ?_, AddSubgroup.subset_closure ⟨α, hα, x, hx, rfl⟩⟩` and prove the remaining obligations. Use `show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] x i j = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `zero`. Use `⟨fun i j => RingHom.map_zero _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Matrix.map_zero _ (RingHom.map_zero _)]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, RingHom.map_add, ha.1, hb.1, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_add _ (RingHom.map_add _)]`. Conclude with `add_mem ha.2 hb.2`. Consider the case `neg a _ ha`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply, RingHom.map_neg, ha.1, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[Matrix.map_neg _ (RingHom.map_neg _)]`. Conclude with `neg_mem ha.2`. Establish `h2 : ∀ w ∈ genGrp D.host.F M, ∃ z ∈ GlobalTheory.ChiGrid.hatMx M, z.map (toEAf D) = w`. Introduce `w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨α, hα, x, hx, rfl⟩` from `hw`. Conclude with `⟨_, AddSubgroup.subset_closure ⟨α, hα, x, hx, rfl⟩, rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, Matrix.map_zero _ (RingHom.map_zero _)⟩`. Consider the case `add a b _ _ ha hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha, rfl⟩` from `ha`. Take `⟨b', hb, rfl⟩` from `hb`. Conclude with `⟨a' + b', add_mem ha hb, Matrix.map_add _ (RingHom.map_add _) _ _⟩`. Consider the case `neg a _ ha`. Take `⟨a', ha, rfl⟩` from `ha`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨-a', neg_mem ha, Matrix.map_neg _ (RingHom.map_neg _) _⟩`. Use `⟨h1 z, fun h => ?_⟩` and prove the remaining obligations. Take `⟨z', hz', e⟩` from `h2 _ h.2`. Establish `: z' = z`. Use extensionality with `i j`.
-
-Use `GlobalTheory.FunObj.ae_ext (by rw [(h1 z' hz').1, h.1]) fun Q => ?_` and prove the remaining obligations. Rewrite using `[show toEAf D (z' i j) = toEAf D (z i j) from congrFun (congrFun e i) j]`. Conclude with `this ▸ hz'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hatMx_iff (D : D7) {m n : ℕ} (M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E)) (z : Mx D m n) :
     z ∈ GlobalTheory.ChiGrid.hatMx M ↔ (∀ i j, infPart D (z i j) = 0) ∧ z.map (toEAf D) ∈ genGrp D.host.F M := by
@@ -388,7 +374,7 @@ theorem mem_hatMx_iff (D : D7) {m n : ℕ} (M : Submodule (𝓞 D.host.E) (Matri
   exact this ▸ hz'
 
 /- English proof (translation)
-Introduce `D m n Λ Λ' β β' hβ hβ' 𝔪 z`. Rewrite using `[mem_hatMx_iff]`. Conclude with `and_congr_right fun _ => ⟨fun h => genGrp_le_frGrp hβ hβ' (H := GlobalTheory.ChiGrid.homLat Λ Λ') (fun _ hx => hx) 𝔪 h, fun h => frGrp_le_genGrp hβ hβ' (H := GlobalTheory.ChiGrid.homLat Λ Λ') (fun _ hx => hx) 𝔪 h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hatMx_homLat_iff : ∀ (D : D7) {m n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)) (β : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) (β' : GL (Fin m) (Formalism.IndefR.Lev.EAf D)), Formalism.L2.DIV.IsFrame β Λ → Formalism.L2.DIV.IsFrame β' Λ' → ∀ (𝔪 : Ideal (𝓞 D.host.E)) (z : Mx D m n), z ∈ GlobalTheory.ChiGrid.hatMx (𝔪 • GlobalTheory.ChiGrid.homLat Λ Λ') ↔ (∀ i j, infPart D (z i j) = 0) ∧ ∀ i j, ∃ s ∈ Formalism.L2.DIV.idS D.host.F 𝔪, (s : Formalism.IndefR.Lev.EAf D) = HMul.hMul (HMul.hMul (β'⁻¹).val (z.map (toEAf D))) β.val i j := by
   intro D m n Λ Λ' β β' hβ hβ' 𝔪 z

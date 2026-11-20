@@ -28,7 +28,7 @@ open Classical
 namespace GlobalTheory.KeyValsPf
 
 /- English proof (translation)
-Introduce `S G _ g R _ ξ h`. Use `haveI := smoothOfRelativeDimension_isStableUnderBaseChange g`. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) (isGrpPullback_pullback G ξ).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_bG : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (g : ℕ) (R : Type) [CommRing R] (ξ : Sp R ⟶ S),
     SmoothOfRelativeDimension g G.hom → SmoothOfRelativeDimension g (KeyVals.bG G ξ).hom := by
@@ -37,7 +37,7 @@ theorem smooth_bG : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (g : ℕ) (R : 
   exact MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) (isGrpPullback_pullback G ξ).1 h
 
 /- English proof (translation)
-Introduce `S G _ R _ ξ h`. Conclude with `IsSemiAbelian.pullback ξ G h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem semi_bG : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommRing R] (ξ : Sp R ⟶ S),
     IsSemiAbelian G → IsSemiAbelian (KeyVals.bG G ξ) := by
@@ -45,9 +45,9 @@ theorem semi_bG : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommR
   exact IsSemiAbelian.pullback ξ G h
 
 /- English proof (translation)
-Introduce `K _ _ t ⟨z, hz⟩`. Use `h K (t ≫ ξ) ⟨z, by rw [← hz]; rfl⟩` as an intermediate fact. Establish `P` using `(IsPullback.of_hasPullback (pullback.snd G.hom ξ) t).paste_horiz (IsPullback.of_hasPullback G.hom ξ)`. Establish `e` using `P.isoPullback_hom_snd`. Use `show IsProper (pullback.snd (pullback.snd G.hom ξ) t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem mem_abLocus_bG {S : Scheme.{0}} (G : Over S) {R : Type} [CommRing R] (ξ : Sp R ⟶ S) (q : Sp R)
     (h : ξ q ∈ abLocus G) : q ∈ abLocus (KeyVals.bG G ξ) := by
@@ -60,9 +60,9 @@ theorem mem_abLocus_bG {S : Scheme.{0}} (G : Over S) {R : Type} [CommRing R] (ξ
   infer_instance
 
 /- English proof (translation)
-Introduce `K _ _ t ⟨z, hz⟩`. Establish `hr : Set.range t ⊆ Set.range ξ`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Subsingleton.elim w z]`. Conclude with `⟨q, hz.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨u, rfl⟩ : ∃ u : Sp K ⟶ Sp R, u ≫ ξ = t` from `⟨IsOpenImmersion.lift ξ t hr, IsOpenImmersion.lift_fac _ _ _⟩`. Establish `: IsProper (pullback.snd (pullback.snd G.hom ξ) u)` using `h K u ⟨z, ξ.isOpenEmbedding.injective hz⟩`. Establish `P` using `(IsPullback.of_hasPullback (pullback.snd G.hom ξ) u).paste_horiz (IsPullback.of_hasPullback G.hom ξ)`. Rewrite using `[← P.isoPullback_inv_snd]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_abLocus_of_bG {S : Scheme.{0}} (G : Over S) {R : Type} [CommRing R] (ξ : Sp R ⟶ S) [IsOpenImmersion ξ] (q : Sp R)
     (h : q ∈ abLocus (KeyVals.bG G ξ)) : ξ q ∈ abLocus G := by
@@ -78,7 +78,7 @@ theorem mem_abLocus_of_bG {S : Scheme.{0}} (G : Over S) {R : Type} [CommRing R] 
   infer_instance
 
 /- English proof (translation)
-Introduce `S _ G _ h`. Use `Set.eq_univ_of_forall fun q => mem_abLocus_bG G _ q ?_` and prove the remaining obligations. Establish `hp : KeyVals.genPt S q ∈ Set.range (S.fromSpecStalk (genericPoint S))` using `⟨q, rfl⟩`. Rewrite `hp` using `[Scheme.range_fromSpecStalk]`. Rewrite using `[(hp.antisymm (genericPoint_specializes _)).eq]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem abLocus_generic : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpObj G], genericPoint S ∈ abLocus G →
     abLocus (KeyVals.bG G (KeyVals.genPt S)) = Set.univ := by
@@ -89,13 +89,11 @@ theorem abLocus_generic : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpO
   rwa [(hp.antisymm (genericPoint_specializes _)).eq]
 
 /- English proof (translation)
-Introduce `S _ G _ W hW hne hop h`. Use `haveI : Nonempty W := ⟨⟨hne.some, hne.some_mem⟩⟩`. Establish `e : abLocus (KeyVals.bG G hW.fromSpec) = hW.fromSpec ⁻¹' abLocus G` using `Set.ext fun q => ⟨mem_abLocus_of_bG (R := Γ(S, W)) G hW.fromSpec q, mem_abLocus_bG (R := Γ(S, W)) G hW.fromSpec q⟩`. Establish `ho : IsOpen (hW.fromSpec ⁻¹' abLocus G)` using `hop.preimage hW.fromSpec.continuous`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ho, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : genericPoint S ∈ Set.range hW.fromSpec := by`. Rewrite using `[hW.range_fromSpec]`. Conclude with `((genericPoint_spec S).mem_open_set_iff W.isOpen).2 ⟨hne.some, trivial, hne.some_mem⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Specializes.mem_open (y := q) ?_ ho (show hW.fromSpec q ∈ abLocus G from hq ▸ h)` and prove the remaining obligations. Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Introduce `a ha`. Establish `ha' : algebraMap Γ(S, W) (FractionRing Γ(S, W)) a ∈ (show PrimeSpectrum (FractionRing Γ(S, W)) from z).asIdeal` using `ha`. Establish `hz : (show PrimeSpectrum (FractionRing Γ(S, W)) from z).asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`.
-
-Rewrite `ha'` using `[hz, Ideal.mem_bot, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Conclude with `ha' ▸ Ideal.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abLocus_affine : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpObj G] (W : S.Opens) (hW : IsAffineOpen W), (W : Set S).Nonempty →
     IsOpen (abLocus G) → genericPoint S ∈ abLocus G → IsOpen (abLocus (KeyVals.bG G hW.fromSpec)) ∧
@@ -120,9 +118,9 @@ theorem abLocus_affine : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpOb
   exact ha' ▸ Ideal.zero_mem _
 
 /- English proof (translation)
-Introduce `κ S _ _ s G _ _ g L δ σ hg hN hs h0 hsa hsm hne hop hsym hδ hpol hunif hnz c i hgen`. Establish `hgab : genericPoint S ∈ abLocus G`. Take `⟨p, hp⟩` from `hne`. Conclude with `((genericPoint_spec S).mem_open_set_iff hop).2 ⟨p, trivial, hp⟩`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_localFormOfTensorSection_in_chart S G L δ σ i _ (KeyVals.genPt S) hδ (KeyVals.genPt_le _ hgen.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hyb⟩` from `GlobalTheory.T.exists_dualTangentBasis_pulledCotangentChartFrame S G g c _ (KeyVals.genPt S) hsa hsm (KeyVals.genPt_le _ hgen.1)`. Establish `hab` using `abLocus_generic S G hgab`. Take `⟨x, hxg, hx⟩` from `GlobalTheory.KeyDatumAb.exists_keyOn (KeyVals.FF S) (KeyVals.FF S) (RingHom.id _) (KeyVals.bG G (KeyVals.genPt S)) (KeyVals.bL L (KeyVals.genPt S)) t g y hg (semi_bG S G _ _ hsa) (smooth_bG S G g _ _ hsm) (by rw [hab]; exact isOpen_univ) (GlobalTheory.T.isSymmetric_rigidifiedBund …`. Conclude with `⟨_, t, y, x, hxg, ht, hy, hx, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_keyVal : ∀ κ : Rule, ∀ (S : Scheme.{0}) [IsIntegral S] [CharZero (KeyVals.FF S)] (s : S ⟶ Sp ℤ) (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ) (L : RigLB G) (δ : LB S)
     (σ : (CechPic.tens L.L (δ.pull G.hom)).Sec), 1 ≤ g → Geo.Tor.IsNormalScheme S → LocallyOfFiniteType s →
@@ -143,19 +141,19 @@ theorem exists_keyVal : ∀ κ : Rule, ∀ (S : Scheme.{0}) [IsIntegral S] [Char
   exact ⟨_, t, y, x, hxg, ht, hy, hx, rfl⟩
 
 /- English proof (translation)
-Introduce `κ hH hF hL S _ _ s G _ _ g L δ σ hg hN hs h0 hsa hsm hne hop hsym hδ hpol hunif hnz c i v hv p hp`. Take `⟨t', y', x, hxg, ht', hy', hx, rfl⟩` from `hv`. Establish `hgab : genericPoint S ∈ abLocus G`. Take `⟨p, hp⟩` from `hne`. Conclude with `((genericPoint_spec S).mem_open_set_iff hop).2 ⟨p, trivial, hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hpW, hle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 S.isBasis_affineOpens) hp`. Establish `hW : IsAffineOpen W` using `hW`. Use `haveI : Nonempty W := ⟨⟨p, hpW⟩⟩`. Take `⟨hic, hcz, hft⟩` from `GlobalTheory.T.affineOpen_ring_normal_charZero_finiteType_over_int S s W hW ⟨p, hpW⟩ hN hs h0`. Use `haveI : IsNoetherianRing Γ(S, W) := Algebra.FiniteType.isNoetherianRing ℤ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr : ∀ U : S.Opens, W ≤ U → ⊤ ≤ hW.fromSpec ⁻¹ᵁ U` using `fun U h q _ => h (show hW.fromSpec q ∈ (W : Set S) from hW.range_fromSpec ▸ ⟨q, rfl⟩)`. Establish `hri` using `hr _ (hle.trans inf_le_right)`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_localFormOfTensorSection_in_chart S G L δ σ i Γ(S, W) hW.fromSpec hδ hri`. Take `⟨y, hy, hyb⟩` from `GlobalTheory.T.exists_dualTangentBasis_pulledCotangentChartFrame S G g c Γ(S, W) hW.fromSpec hsa hsm (hr _ (hle.trans inf_le_left))`. Take `⟨hopW, habW⟩` from `abLocus_affine S G W hW ⟨p, hpW⟩ hop hgab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsaW` using `semi_bG S G Γ(S, W) hW.fromSpec hsa`. Establish `hsmW` using `smooth_bG S G g Γ(S, W) hW.fromSpec hsm`. Establish `hsyW` using `GlobalTheory.T.isSymmetric_rigidifiedBundleBaseChange S G L Γ(S, W) hW.fromSpec hsym`. Establish `hpoW` using `GlobalTheory.T.principalPolarisationOnAbLocus_restrict_affineOpen S G L W hW hop hpol`. Establish `hnzW` using `GlobalTheory.T.sectionNonzeroOnEveryFibre_localFormBaseChange S G L δ σ i Γ(S, W) hW.fromSpec t hri ht hnz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hzg, hz⟩` from `GlobalTheory.KeyDatumAb.exists_keyOn Γ(S, W) (FractionRing Γ(S, W)) (algebraMap _ _) (KeyVals.bG G hW.fromSpec) (KeyVals.bL L hW.fromSpec) t g y hg hsaW hsmW hopW hsyW hpoW hyb hnzW habW`. Substitute `hzg` using the available equality. Take `⟨u, hu⟩` from `hL Γ(S, W) (KeyVals.bG G hW.fromSpec) (KeyVals.bL L hW.fromSpec) t z y hsaW hsmW hopW hsyW hpoW (GlobalTheory.T.uniformisedAlongAllTraits_restrict_affineOpen S G L W hW hsa hunif) hyb hnzW hz`. Use `⟨W, hle, hpW, u, fun h => ?_⟩` and prove the remaining obligations. Set `r : Γ(S, W) →+* KeyVals.FF S` to `(S.presheaf.germ W (genericPoint S) h).hom`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective r` using `germ_injective_of_isIntegral S (genericPoint S) h`. Set `e : FractionRing Γ(S, W) →+* KeyVals.FF S` to `IsFractionRing.lift hinj`. Establish `he : (RingHom.id _).comp r = e.comp (algebraMap _ _)` using `RingHom.ext fun a => (IsFractionRing.lift_algebraMap hinj a).symm`. Establish `hξ` using `KeyVals.spMap_germ_fromSpec W hW h`. Establish `hx'` using `GlobalTheory.T.fibreDatum_baseChange_to_coarserPoint S G _ L δ σ i Γ(S, W) (KeyVals.FF S) (KeyVals.FF S) hW.fromSpec r (KeyVals.genPt S) (RingHom.id _) t y t' y' x hxg hξ hri ht ht' (GlobalTheory.T.dualTangentBasis_pulledFrame_compatible_pointChange S G _ c Γ(S, W) (KeyVals.FF S) …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx'` using `[he]`. Establish `hpb` using `GlobalTheory.KeyEven.keyPB_of_keyOn_comp Γ(S, W) (FractionRing Γ(S, W)) (KeyVals.FF S) (algebraMap _ _) e (KeyVals.bG G hW.fromSpec) (KeyVals.bL L hW.fromSpec) t _ y z x rfl hxg hz hx'`. Rewrite using `[hF _ _ e z x hpb, hu]`. Conclude with `(IsFractionRing.lift_algebraMap hinj _).symm`.
+A detailed English derivation is pending.
 -/
 theorem keyVal_unit : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ → KeyLoc κ → ∀ (S : Scheme.{0}) [IsIntegral S] [CharZero (KeyVals.FF S)] (s : S ⟶ Sp ℤ) (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ) (L : RigLB G) (δ : LB S)
     (σ : (CechPic.tens L.L (δ.pull G.hom)).Sec), 1 ≤ g → Geo.Tor.IsNormalScheme S → LocallyOfFiniteType s →
@@ -205,9 +203,9 @@ theorem keyVal_unit : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ → KeyL
   exact (IsFractionRing.lift_algebraMap hinj _).symm
 
 /- English proof (translation)
-Introduce `κ hH hF S _ _ G _ _ g L δ σ hsa hsm hδ c c' i i' v v' h1 h2 hv hv'`. Take `⟨t, y, x, hg, ht, hy, hk, rfl⟩` from `hv`. Take `⟨t', y', x', hg', ht', hy', hk', rfl⟩` from `hv'`. Take `⟨M, hM, hdet⟩` from `GlobalTheory.T.dualTangentVectors_genericFibre_det_eq_detOmegaTrans S G g hsa hsm c c' h1 y y' hy hy'`. Establish `hs` using `GlobalTheory.T.localFormsTensorSection_genericFibre_transitionGerm S G L δ σ hδ i i' h2 t t' ht ht'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.KeyEven.keyValue_homog_of_fibres κ hH hF (KeyVals.FF S) (KeyVals.bG G (KeyVals.genPt S)) (KeyVals.bL L (KeyVals.genPt S)) t' t g y' y x' x hg' hg _ M hk' hk hs hM` as an intermediate fact. Rewrite using `[← hdet, mul_comm]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keyVal_compat : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ → ∀ (S : Scheme.{0}) [IsIntegral S] [CharZero (KeyVals.FF S)]
     (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ) (L : RigLB G) (δ : LB S) (σ : (CechPic.tens L.L (δ.pull G.hom)).Sec),
@@ -230,11 +228,9 @@ theorem keyVal_compat : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ → �
   exact this
 
 /- English proof (translation)
-Introduce `κ hH hF hL S _ s G _ _ g L δ σ hg hN hs h0 hsa hsm hne hop hsym hδ hpol hunif hnz`. Use `haveI : CharZero (KeyVals.FF S) := charZero_of_injective_ringHom (f := (S.presheaf.germ ⊤ (genericPoint S) trivial).hom) (germ_injective_of_isIntegral S (U := ⊤) (genericPoint S) trivial)`. Set `f : (VB.det (LieVB.omega G) g).ι → δ.ι → S.presheaf.stalk (genericPoint S)` to `fun c i => if h : ∃ v, KeyVals.IsKeyVal κ g L σ c i v then h.choose else 1`. Establish `hf : ∀ c i, genericPoint S ∈ (VB.det (LieVB.omega G) g).U c ⊓ δ.U i → KeyVals.IsKeyVal κ g L σ c i (f c i)`. Introduce `c i h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ex` using `exists_keyVal κ S s G g L δ σ hg hN hs h0 hsa hsm hne hop hsym hδ hpol hunif hnz c i h`. Simplify using `only [f, dif_pos ex]`. Conclude with `ex.choose_spec`. Establish `hgen : ∀ U : S.Opens, (U : Set S).Nonempty → genericPoint S ∈ U` using `fun U ⟨p, hp⟩ => ((genericPoint_spec S).mem_open_set_iff U.isOpen).2 ⟨p, trivial, hp⟩`. Use `⟨f, fun c i p hp => ?_, fun c c' i i' h1 h2 => ?_⟩` and prove the remaining obligations.
-
-Conclude with `keyVal_unit κ hH hF hL S s G g L δ σ hg hN hs h0 hsa hsm hne hop hsym hδ hpol hunif hnz c i (f c i) (hf c i (hgen _ ⟨p, hp⟩)) p hp`. Conclude with `keyVal_compat κ hH hF S G g L δ σ hsa hsm hδ c c' i i' (f c i) (f c' i') h1 h2 (hf c i ⟨h1.1, h2.1⟩) (hf c' i' ⟨h1.2, h2.2⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem keyVals : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ → KeyLoc κ →
   ∀ (S : Scheme.{0}) [IsIntegral S] (s : S ⟶ Sp ℤ) (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ) (L : RigLB G) (δ : LB S)

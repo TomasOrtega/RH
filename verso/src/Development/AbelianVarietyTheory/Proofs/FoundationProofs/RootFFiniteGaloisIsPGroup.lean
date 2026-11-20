@@ -10,19 +10,17 @@ noncomputable section
 namespace GlobalTheory.KZ.ES.RootGal
 
 /- English proof (translation)
-Establish `hbound : ∀ y ∈ L, Module.finrank F F⟮y⟯ ≤ B`. Introduce `y hy`. Rewrite using `[adjoin.finrank (key y hy).1]`. Conclude with `(key y hy).2`. Set `D : Set ℕ` to `{d | ∃ y ∈ L, Module.finrank F F⟮y⟯ = d}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hDne : D.Nonempty` using `⟨_, 0, L.zero_mem, rfl⟩`. Establish `hDbdd : BddAbove D` using `⟨B, by rintro d ⟨y, hy, rfl⟩; exact hbound y hy⟩`. Take `⟨x, hxL, hxmax⟩` from `Nat.sSup_mem hDne hDbdd`. Establish `hle : ∀ y ∈ L, Module.finrank F F⟮y⟯ ≤ Module.finrank F F⟮x⟯`. Introduce `y hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxmax]`. Conclude with `le_csSup hDbdd ⟨y, hy, rfl⟩`. Use `⟨x, hxL, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hx` using `key x hxL`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hy'` using `key y hy`. Use `haveI : FiniteDimensional F F⟮x, y⟯ := finiteDimensional_adjoin (by`. Introduce and unpack `z (rfl | rfl)`. Conclude with `hx.1`. Conclude with `hy'.1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨α, hα⟩` from `Field.exists_primitive_element F F⟮x, y⟯`. Establish `hz : F⟮(α : E)⟯ = F⟮x, y⟯`. Simplify `congr_arg lift hα` using `only [lift_adjoin_simple, lift_top]`. Establish `hKL : F⟮x, y⟯ ≤ L`. Rewrite using `[adjoin_le_iff]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `z (rfl | rfl)`. Conclude with `hxL`. Conclude with `hy`. Establish `hxK : F⟮x⟯ ≤ F⟮x, y⟯` using `adjoin_simple_le_iff.2 (subset_adjoin F _ (by simp))`. Establish `heq : F⟮x⟯ = F⟮x, y⟯`.
-
-Apply `eq_of_le_of_finrank_le hxK` to reduce the goal to its premises. Rewrite using `[← hz]`. Conclude with `hle _ (hKL α.2)`. Rewrite using `[heq]`. Conclude with `subset_adjoin F _ (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adjoin_eq_of_natDegree_le {F E : Type} [Field F] [Field E] [CharZero F] [Algebra F E]
     (L : IntermediateField F E) (B : ℕ) (key : ∀ y ∈ L, IsIntegral F y ∧ (minpoly F y).natDegree ≤ B) :
@@ -64,11 +62,11 @@ theorem exists_adjoin_eq_of_natDegree_le {F E : Type} [Field F] [Field E] [CharZ
   exact subset_adjoin F _ (by simp)
 
 /- English proof (translation)
-Use extensionality with `⟨x, hx⟩`. Use `congr 1`. Express the relevant statement in the definitionally equal form `ρ ⟨x, hx⟩ = ⟨x, hx⟩`. Proceed by induction on `hx using adjoin_induction with`. Consider the case `mem x hx => exact h _ hx`.
+By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Consider the case `algebraMap c => exact ρ.commutes c`. Consider the case `add x y hx hy ihx ihy`. Express the relevant statement in the definitionally equal form `ρ (⟨x, hx⟩ + ⟨y, hy⟩) = ⟨x, hx⟩ + ⟨y, hy⟩`. Rewrite using `[map_add, ihx, ihy]`. Consider the case `inv x hx ihx`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `ρ (⟨x, hx⟩⁻¹) = ⟨x, hx⟩⁻¹`. Rewrite using `[map_inv₀, ihx]`. Consider the case `mul x y hx hy ihx ihy`. Express the relevant statement in the definitionally equal form `ρ (⟨x, hx⟩ * ⟨y, hy⟩) = ⟨x, hx⟩ * ⟨y, hy⟩`. Rewrite using `[map_mul, ihx, ihy]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem aut_eq_one_of_fix {F E : Type} [Field F] [Field E] [Algebra F E] (S : Set E)
     (ρ : adjoin F S ≃ₐ[F] adjoin F S) (h : ∀ x : adjoin F S, (x : E) ∈ S → ρ x = x) : ρ = 1 := by
@@ -89,11 +87,11 @@ theorem aut_eq_one_of_fix {F E : Type} [Field F] [Field E] [Algebra F E] (S : Se
     rw [map_mul, ihx, ihy]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : y = 0`. Rewrite using `[h0, map_zero]`. Establish `h1 : (ρ y / y) ^ m = 1`. Rewrite using `[div_pow, ← map_pow, hy, div_self (pow_ne_zero _ h0)]`. Take `⟨c, hc⟩` from `hμ _ h1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ρ y = algebraMap F E c * y` using `by rw [hc, div_mul_cancel₀ _ h0]`. Establish `h3 : ∀ j : ℕ, (ρ ^ j) y = algebraMap F E c ^ j * y`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, map_mul, map_pow, ρ.commutes, h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, hc, h1, one_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_apply_eq_of_fix_pow {F E : Type} [Field F] [Field E] [Algebra F E] (m : ℕ)
     (hμ : ∀ z : E, z ^ m = 1 → z ∈ (algebraMap F E).range) (ρ : E ≃ₐ[F] E) (y : E) (hy : ρ (y ^ m) = y ^ m) :
@@ -114,7 +112,7 @@ theorem pow_apply_eq_of_fix_pow {F E : Type} [Field F] [Field E] [Algebra F E] (
   rw [h3, hc, h1, one_mul]
 
 /- English proof (translation)
-The claim follows from `Polynomial.mem_rootSet_of_ne hp`.
+A detailed English derivation is pending.
 -/
 theorem mem_rootSet_field {F E : Type} [Field F] [Field E] [Algebra F E] {p : Polynomial F} (hp : p ≠ 0) (y : E) :
     y ∈ p.rootSet E ↔ Polynomial.aeval y p = 0 := Polynomial.mem_rootSet_of_ne hp
@@ -129,7 +127,7 @@ def levSub (X : Tower Ω ε) (M : ℕ) : IntermediateField Ω X.K where
   inv_mem' := fun x hx γ hγ => by rw [map_inv₀, hx γ hγ]
 
 /- English proof (translation)
-Establish `: levF X M = (levSub X M).map (IsScalarTower.toAlgHom Ω X.K (AlgebraicClosure X.K))`. Rewrite using `[← adjoin_self Ω ((levSub X M).map _)]`. Both sides reduce to the same expression. Rewrite using `[this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_levF (X : Tower Ω ε) (M : ℕ) (y : AlgebraicClosure X.K) :
     y ∈ levF X M ↔ ∃ f, Lev X M f ∧ algebraMap X.K (AlgebraicClosure X.K) f = y := by
@@ -138,7 +136,7 @@ theorem mem_levF (X : Tower Ω ε) (M : ℕ) (y : AlgebraicClosure X.K) :
   rw [this]; rfl
 
 /- English proof (translation)
-Introduce `δ hδ`. Establish `h : γ * δ = (γ * δ * γ⁻¹) * γ` using `by group`. Rewrite using `[← X.sl_mul, ← map_mul, h, map_mul, X.sl_mul, hf _ ((CongruenceSubgroup.Gamma_normal M).conj_mem δ hδ γ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_sl (X : Tower Ω ε) {M : ℕ} {f : X.K} (hf : Lev X M f) (γ : SL(2, ℤ)) :
     Lev X M (X.sl (ofSL γ) f) := by
@@ -147,14 +145,14 @@ theorem lev_sl (X : Tower Ω ε) {M : ℕ} {f : X.K} (hf : Lev X M f) (γ : SL(2
   rw [← X.sl_mul, ← map_mul, h, map_mul, X.sl_mul, hf _ ((CongruenceSubgroup.Gamma_normal M).conj_mem δ hδ γ)]
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Conclude with `charZero_of_injective_algebraMap (algebraMap Ω (levF X M)).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero_levF (X : Tower Ω ε) (M : ℕ) : CharZero (levF X M) := by
   haveI : CharZero Ω := algebraRat.charZero Ω
   exact charZero_of_injective_algebraMap (algebraMap Ω (levF X M)).injective
 
 /- English proof (translation)
-Establish `h1 : γ * δ⁻¹ ∈ CongruenceSubgroup.Gamma M` using `CongruenceSubgroup.Gamma_mem'.2 (by rw [map_mul, map_inv, h, mul_inv_cancel])`. Establish `h2 : γ = γ * δ⁻¹ * δ` using `by group`. Use `conv_lhs => rw [h2, map_mul, X.sl_mul, hf _ h1]`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sl_eq_of_map_eq (X : Tower Ω ε) {M : ℕ} {f : X.K} (hf : Lev X M f) {γ δ : SL(2, ℤ)}
     (h : SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ = SpecialLinearGroup.map (Int.castRingHom (ZMod M)) δ) :
@@ -165,25 +163,25 @@ theorem sl_eq_of_map_eq (X : Tower Ω ε) {M : ℕ} {f : X.K} (hf : Lev X M f) {
   conv_lhs => rw [h2, map_mul, X.sl_mul, hf _ h1]
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Set `π : SL(2, ℤ) →* SL(2, ZMod M)` to `SpecialLinearGroup.map (Int.castRingHom (ZMod M))`. Use `⟨Fintype.card SL(2, ZMod M), fun m hm f hf => ?_⟩` and prove the remaining obligations. Set `g : SL(2, ZMod M) → X.K` to `fun x => X.sl (ofSL (Function.invFun π x)) f`. Set `S : Finset X.K` to `(Finset.univ.image g).filter (fun c => ∃ γ ∈ CongruenceSubgroup.Gamma M₀, X.sl (ofSL γ) f = c)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : ∀ c, c ∈ S ↔ ∃ γ ∈ CongruenceSubgroup.Gamma M₀, X.sl (ofSL γ) f = c`. Introduce `c`. Simplify using `only [S, Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and]`. Use `⟨fun h => h.2, fun h => ⟨?_, h⟩⟩` and prove the remaining obligations. Take `⟨γ, -, rfl⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨π γ, sl_eq_of_map_eq X hf (Function.invFun_eq (f := π) ⟨γ, rfl⟩)⟩`. Establish `hcard : S.card ≤ Fintype.card SL(2, ZMod M)` using `(Finset.card_filter_le _ _).trans (Finset.card_image_le.trans (by simp))`. Set `p : Polynomial X.K` to `∏ c ∈ S, (Polynomial.X ^ m - Polynomial.C c)`. Establish `hpmon : p.Monic` using `Polynomial.monic_prod_of_monic _ _ fun c _ => Polynomial.monic_X_pow_sub_C c hm.ne'`. Establish `hpdeg : p.natDegree = S.card * m`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.natDegree_prod_of_monic _ _ fun c _ => Polynomial.monic_X_pow_sub_C c hm.ne']`. Simplify using `[Polynomial.natDegree_X_pow_sub_C]`. Establish `hpinv : ∀ δ ∈ CongruenceSubgroup.Gamma M₀, p.map (X.sl (ofSL δ) : X.K →+* X.K) = p`. Introduce `δ hδ`. Simplify using `only [p, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `himg : S.image (X.sl (ofSL δ)) = S`. Use extensionality with `y`. Simplify using `only [Finset.mem_image, hS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨γ, hγ, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨γ * δ, mul_mem hγ hδ, by rw [map_mul, X.sl_mul]⟩`. Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `⟨_, ⟨γ * δ⁻¹, mul_mem hγ (inv_mem hδ), rfl⟩, by`. Rewrite using `[← X.sl_mul, ← map_mul, inv_mul_cancel_right]⟩`. Use `conv_rhs => rw [← himg]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.prod_image (fun a _ b _ h => (X.sl (ofSL δ)).injective h)]`. Both sides reduce to the same expression. Establish `hlift : p.map (algebraMap X.K (AlgebraicClosure X.K)) ∈ Polynomial.lifts (algebraMap (levF X M₀) (AlgebraicClosure X.K))`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, (mem_levF X M₀ _).2 ⟨p.coeff i, fun δ hδ => ?_, rfl⟩⟩, by rw [Polynomial.coeff_map]; rfl⟩` and prove the remaining obligations. Use `conv_rhs => rw [← hpinv δ hδ]`. Rewrite using `[Polynomial.coeff_map]`. Both sides reduce to the same expression. Take `⟨q, hqmap, hqdeg, hqmon⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift (hpmon.map _)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨q, hqmon, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hqdeg, Polynomial.natDegree_map, hpdeg]`. Conclude with `Nat.mul_le_mul_right _ hcard`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, hqmap]`. Simplify using `only [p, Polynomial.map_prod, Polynomial.eval_prod, Finset.prod_eq_zero_iff, Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, sub_eq_zero, hS]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨γ, hγ, rfl⟩, h⟩`. Conclude with `⟨γ, hγ, h⟩`. Introduce and unpack `⟨γ, hγ, h⟩`. Conclude with `⟨_, ⟨γ, hγ, rfl⟩, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_orbit_poly (X : Tower Ω ε) (M₀ M : ℕ) (hM : 0 < M) :
     ∃ B : ℕ, ∀ m : ℕ, 0 < m → ∀ f : X.K, Lev X M f → ∃ Q : Polynomial (levF X M₀), Q.Monic ∧ Q.natDegree ≤ B * m ∧
@@ -247,11 +245,11 @@ theorem exists_orbit_poly (X : Tower Ω ε) (M₀ M : ℕ) (hM : 0 < M) :
       exact ⟨_, ⟨γ, hγ, rfl⟩, h⟩
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_orbit_poly X M₀ M hM`. Establish `hle : levF X M₀ ≤ levF X M`. Introduce `y hy`. Take `⟨f, hf, rfl⟩` from `(mem_levF X M₀ y).1 hy`. Conclude with `(mem_levF X M _).2 ⟨f, fun γ hγ => hf γ (CongruenceDescent.Gamma_le_of_dvd hd hγ), rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := charZero_levF X M₀`. Take `⟨θ, hθ, h⟩` from `exists_adjoin_eq_of_natDegree_le (extendScalars hle) (B * 1) (by`. Introduce `y hy`. Take `⟨f, hf, rfl⟩` from `(mem_levF X M y).1 hy`. Take `⟨Q, hQ, hdeg, hroot⟩` from `hB 1 one_pos f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h0` using `(hroot (algebraMap X.K (AlgebraicClosure X.K) f)).2 ⟨1, Subgroup.one_mem _, by rw [pow_one, map_one, X.sl_one]⟩`. Conclude with `⟨⟨Q, hQ, h0⟩, (Polynomial.natDegree_le_of_dvd (minpoly.dvd _ _ h0) hQ.ne_zero).trans hdeg⟩)`. Take `⟨f₀, hf₀, rfl⟩` from `(mem_levF X M θ).1 hθ`. Conclude with `⟨f₀, hf₀, fun f hf => h ((mem_levF X M _).2 ⟨f, hf, rfl⟩)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_primitive (X : Tower Ω ε) (M₀ M : ℕ) (hM : 0 < M) (hd : M₀ ∣ M) :
     ∃ f₀, Lev X M f₀ ∧ ∀ f, Lev X M f → algebraMap X.K (AlgebraicClosure X.K) f ∈
@@ -273,17 +271,15 @@ theorem exists_primitive (X : Tower Ω ε) (M₀ M : ℕ) (hM : 0 < M) (hd : M�
   exact ⟨f₀, hf₀, fun f hf => h ((mem_levF X M _).2 ⟨f, hf, rfl⟩)⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using adjoin_induction with`. Consider the case `mem x hx`. Take `rfl` from `hx`. Conclude with `⟨f₀, h₀, rfl, hτ⟩`. Consider the case `algebraMap c`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨f, hf, hc⟩` from `(mem_levF X M₀ c).1 c.2`. Use `⟨f, E.algebraMap_mem c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hf γ hγ, hc]`. Conclude with `congrArg Subtype.val (τ.commutes c)`. Consider the case `add x y _ _ ihx ihy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hx, rfl, h1⟩` from `ihx`. Take `⟨g, hy, rfl, h2⟩` from `ihy`. Use `⟨f + g, E.add_mem hx hy, map_add _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add (X.sl _), map_add (algebraMap X.K (AlgebraicClosure X.K)) (X.sl _ f), ← h1, ← h2]`. Conclude with `congrArg Subtype.val (map_add τ ⟨_, hx⟩ ⟨_, hy⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `inv x _ ihx`. Take `⟨f, hx, rfl, h1⟩` from `ihx`. Use `⟨f⁻¹, E.inv_mem hx, map_inv₀ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀ (X.sl _), map_inv₀ (algebraMap X.K (AlgebraicClosure X.K)) (X.sl _ f), ← h1]`. Conclude with `congrArg Subtype.val (map_inv₀ τ ⟨_, hx⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mul x y _ _ ihx ihy`. Take `⟨f, hx, rfl, h1⟩` from `ihx`. Take `⟨g, hy, rfl, h2⟩` from `ihy`. Use `⟨f * g, E.mul_mem hx hy, map_mul _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul (X.sl _), map_mul (algebraMap X.K (AlgebraicClosure X.K)) (X.sl _ f), ← h1, ← h2]`.
-
-Conclude with `congrArg Subtype.val (map_mul τ ⟨_, hx⟩ ⟨_, hy⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_sl (X : Tower Ω ε) (M₀ : ℕ) (E : IntermediateField (levF X M₀) (AlgebraicClosure X.K))
     (τ : E ≃ₐ[levF X M₀] E) (f₀ : X.K) (h₀ : algebraMap X.K (AlgebraicClosure X.K) f₀ ∈ E)
@@ -320,24 +316,22 @@ theorem apply_eq_sl (X : Tower Ω ε) (M₀ : ℕ) (E : IntermediateField (levF 
     exact congrArg Subtype.val (map_mul τ ⟨_, hx⟩ ⟨_, hy⟩)
 
 /- English proof (translation)
-The claim follows from `subset_adjoin _ _ (Or.inl ⟨f, hf, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_rootF (X : Tower Ω ε) (M₀ M m : ℕ) (U : X.K) {f : X.K} (hf : Lev X M f) :
     algebraMap X.K (AlgebraicClosure X.K) f ∈ rootF X M₀ M m U :=
   subset_adjoin _ _ (Or.inl ⟨f, hf, rfl⟩)
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_orbit_poly X M₀ M hM`. Take `⟨f₀, hf₀, hgen⟩` from `exists_primitive X M₀ M hM hd`. Take `⟨Q₁, hQ₁, -, hr₁⟩` from `hB 1 one_pos f₀ hf₀`. Take `⟨Q₂, hQ₂, -, hr₂⟩` from `hB m hm U hU`. Establish `hne : Q₁ * Q₂ ≠ 0` using `(hQ₁.mul hQ₂).ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE : rootF X M₀ M m U = adjoin (levF X M₀) ((Q₁ * Q₂).rootSet (AlgebraicClosure X.K))`. Apply `le_antisymm` to reduce the goal to its premises. Use `adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `y (⟨f, hf, rfl⟩ | hy)`. Use `(adjoin_simple_le_iff.2 (subset_adjoin _ _ ?_)) (hgen f hf)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_rootSet_field hne _).2 ?_` and prove the remaining obligations. Rewrite using `[map_mul, (hr₁ _).2 ⟨1, Subgroup.one_mem _, by rw [pow_one, map_one, X.sl_one]⟩, zero_mul]`. Use `subset_adjoin _ _ ((mem_rootSet_field hne _).2 ?_)` and prove the remaining obligations. Rewrite using `[map_mul, (hr₂ _).2 hy, mul_zero]`. Use `adjoin_le_iff.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Establish `h` using `(mem_rootSet_field hne _).1 hy`. Rewrite `h` using `[map_mul, mul_eq_zero]`. Break down `h with h | h` into its components or cases. Take `⟨γ, -, h⟩` from `(hr₁ y).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[pow_one]`. Rewrite using `[h]`. Conclude with `algebraMap_mem_rootF X M₀ M m U (lev_sl X hf₀ γ)`. Conclude with `subset_adjoin _ _ (Or.inr ((hr₂ y).1 h))`. Use `⟨Q₁ * Q₂, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hE]`. Conclude with `adjoin_rootSet_isSplittingField (IsAlgClosed.splits _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSplittingField (X : Tower Ω ε) (M₀ M m : ℕ) (hM : 0 < M) (hd : M₀ ∣ M) (hm : 0 < m) (U : X.K)
     (hU : Lev X M U) : ∃ Q : Polynomial (levF X M₀), Q.IsSplittingField (levF X M₀) (rootF X M₀ M m U) := by
@@ -370,17 +364,17 @@ theorem exists_isSplittingField (X : Tower Ω ε) (M₀ M m : ℕ) (hM : 0 < M) 
   exact adjoin_rootSet_isSplittingField (IsAlgClosed.splits _)
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_orbit_poly X M₀ M hM`. Take `⟨f₀, hf₀, hgen⟩` from `exists_primitive X M₀ M hM hd`. Take `⟨Q₁, hQ₁, -, hr₁⟩` from `hB 1 one_pos f₀ hf₀`. Establish `h₀` using `algebraMap_mem_rootF X M₀ M m U hf₀`. Establish `h1 : Polynomial.aeval (⟨_, h₀⟩ : rootF X M₀ M m U) Q₁ = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(algebraMap (rootF X M₀ M m U) (AlgebraicClosure X.K)).injective` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algebraMap_apply, map_zero]`. Conclude with `(hr₁ _).2 ⟨1, Subgroup.one_mem _, by rw [pow_one, map_one, X.sl_one]; rfl⟩`. Establish `h2 : Polynomial.aeval (τ ⟨_, h₀⟩ : AlgebraicClosure X.K) Q₁ = 0`. Establish `h3 : Polynomial.aeval (τ ⟨_, h₀⟩) Q₁ = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.aeval_algHom_apply, h1, map_zero]`. Establish `h4` using `congrArg (algebraMap (rootF X M₀ M m U) (AlgebraicClosure X.K)) h3`. Rewrite `h4` using `[← Polynomial.aeval_algebraMap_apply, map_zero]`. Then use the resulting hypothesis. Take `⟨γ, hγ, h⟩` from `(hr₁ _).1 h2`. Rewrite `h` using `[pow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hone : ∀ (f : X.K) (hf : Lev X M f), τ ⟨_, algebraMap_mem_rootF X M₀ M m U hf⟩ = ⟨_, algebraMap_mem_rootF X M₀ M m U (lev_sl X hf γ)⟩`. Introduce `f hf`. Take `⟨g, _, hg, h5⟩` from `apply_eq_sl X M₀ _ τ f₀ h₀ γ hγ h _ (hgen f hf)`. Take `rfl` from `(algebraMap X.K (AlgebraicClosure X.K)).injective hg`. Conclude with `Subtype.ext h5`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `⟨γ, hγ, fun j => ?_⟩` and prove the remaining obligations. Proceed by induction on `j with`. Consider the case `zero => intro f hf`. Rewrite using `[pow_zero, pow_zero, map_one, X.sl_one]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ j ih`. Introduce `f hf`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, hone f hf, ih _ (lev_sl X hf γ), pow_succ', map_mul, X.sl_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_apply_eq_sl (X : Tower Ω ε) (M₀ M m : ℕ) (hM : 0 < M) (hd : M₀ ∣ M) (U : X.K)
     (τ : rootF X M₀ M m U ≃ₐ[levF X M₀] rootF X M₀ M m U) :
@@ -416,17 +410,15 @@ theorem exists_apply_eq_sl (X : Tower Ω ε) (M₀ M m : ℕ) (hM : 0 < M) (hd :
     rw [pow_succ, AlgEquiv.mul_apply, hone f hf, ih _ (lev_sl X hf γ), pow_succ', map_mul, X.sl_mul]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l M₀ k n hl hM₀ hd U hU`. Establish `hM : 0 < M₀ * l ^ k` using `mul_pos hM₀ (pow_pos hl.pos k)`. Establish `hm : 0 < l ^ n` using `pow_pos hl.pos n`. Take `⟨Q, hQ⟩` from `exists_isSplittingField X M₀ _ _ hM (dvd_mul_right _ _) hm U hU`. Use `haveI := charZero_levF X M₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI hfin : FiniteDimensional (levF X M₀) (rootF X M₀ (M₀ * l ^ k) (l ^ n) U) := Polynomial.IsSplittingField.finiteDimensional _ Q`. Use `haveI : Normal (levF X M₀) (rootF X M₀ (M₀ * l ^ k) (l ^ n) U) := Normal.of_isSplittingField Q`. Use `⟨hfin, isGalois_iff.2 ⟨inferInstance, inferInstance⟩, fun τ => ⟨k + n, ?_⟩⟩` and prove the remaining obligations. Take `⟨γ, hγ, hτ⟩` from `exists_apply_eq_sl X M₀ _ _ hM (dvd_mul_right _ _) U τ`. Establish `hfix : ∀ (f : X.K) (hf : Lev X (M₀ * l ^ k) f), (τ ^ l ^ k) ⟨_, algebraMap_mem_rootF X M₀ _ (l ^ n) U hf⟩ = ⟨_, algebraMap_mem_rootF X M₀ _ (l ^ n) U hf⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hτ _ f hf, hf _ (CongruenceDescent.pow_pow_mem_Gamma_mul hd hγ k)]`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hμ : ∀ z : rootF X M₀ (M₀ * l ^ k) (l ^ n) U, z ^ l ^ n = 1 → z ∈ (algebraMap (levF X M₀) (rootF X M₀ (M₀ * l ^ k) (l ^ n) U)).range`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Establish `hz' : (z : AlgebraicClosure X.K) ^ l ^ n = 1` using `congrArg Subtype.val hz`. Establish `hint : IsIntegral Ω (z : AlgebraicClosure X.K)` using `IsIntegral.of_pow hm (by rw [hz']; exact isIntegral_one)`. Take `⟨c, hc⟩` from `minpoly.mem_range_of_degree_eq_one Ω _ (IsAlgClosed.degree_eq_one_of_irreducible Ω (minpoly.irreducible hint))`. Conclude with `⟨⟨_, (levF X M₀).algebraMap_mem c⟩, Subtype.ext hc⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_add, pow_mul]`. Use `aut_eq_one_of_fix _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩ (⟨f, hf, rfl⟩ | ⟨δ, -, hδ⟩)`. Use `pow_apply_eq_of_fix_pow _ hμ (τ ^ l ^ k) _ ?_` and prove the remaining obligations. Conclude with `(map_pow _ _ _).trans (congrArg (· ^ l ^ n) (hfix f hf))`.
-
-Use `pow_apply_eq_of_fix_pow _ hμ (τ ^ l ^ k) _ ?_` and prove the remaining obligations. Establish `h` using `hfix _ (lev_sl X hU δ)`. Establish `e : (⟨x, hx⟩ ^ l ^ n : rootF X M₀ (M₀ * l ^ k) (l ^ n) U) = ⟨_, algebraMap_mem_rootF X M₀ _ (l ^ n) U (lev_sl X hU δ)⟩` using `Subtype.ext hδ`. Conclude with `(congrArg _ e).trans (h.trans e.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rootF_finite_galois_isPGroup : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ)
     (X : Tower Ω ε), ∀ (l M₀ k n : ℕ), l.Prime → 0 < M₀ → l ∣ M₀ → ∀ U : X.K, Lev X (M₀ * l ^ k) U →

@@ -6,23 +6,23 @@ open MvPolynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K R _ _ _ ι _ _ δ δ0 I M a b w t ρ h0 hM hw hI hρ`. Use `set c : ι → R := fun i => ∑ j, M.adjugate j i * a j with hc`. Establish `hdet : δ0 M.det = ∑ i, δ i (c i)`. Apply the tactic sequence `rw [GlobalTheory.T.derivation_det_eq_double_sum_adjugate_entry δ0 M]`. Establish `hp` using `GlobalTheory.T.piola_identity_adjugate_divergence_free δ M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ i, δ i (c i) = ∑ j, M.adjugate j i * δ0 (M i j) + ∑ j, a j * δ i (M.adjugate j i)`. Introduce `i`. Simplify using `only [hc, map_sum, Derivation.leibniz, smul_eq_mul, h0, Finset.sum_add_distrib]`. Establish `h2 : ∑ i, ∑ j, a j * δ i (M.adjugate j i) = 0`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hp j, mul_zero]`. Simplify using `only [h1, Finset.sum_add_distrib, h2, add_zero]`. Establish `hadj : ∀ k, ∑ i, c i * M i k = M.det * a k`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3 : ∀ j, ∑ i, M.adjugate j i * M i k = if j = k then M.det else 0`. Introduce `j`. Use `congrFun (congrFun (Matrix.adjugate_mul M) j) k` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Rewrite using `[this, Matrix.smul_apply, Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hc, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `_ = M.det * a k := by`. Simplify using `only [h3, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrho : ∑ i, c i * (w * ∑ j, M i j * b j) = ρ * (w * M.det)`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations. Use `_ = ρ * (w * M.det) := by`. Rewrite using `[hρ, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => by rw [hadj]; ring` and prove the remaining obligations. Establish `key : δ0 (w * M.det) + ρ * (w * M.det) - ∑ i, (δ i (w * c i) + t * δ i ρ * (w * c i)) = - ∑ i, c i * (δ i w + t * δ i ρ * w - w * ∑ j, M i j * b j)`. Rewrite using `[Derivation.leibniz, hw, smul_zero, add_zero, smul_eq_mul, hdet, ← hrho, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `δ0 (w * M.det) + ρ * (w * M.det) - ∑ i, (δ i (w * c i) + t * δ i ρ * (w * c i)) ∈ I`. Rewrite using `[key]`. Conclude with `I.neg_mem (I.sum_mem fun i _ => I.mul_mem_left _ (hI i))`.
+A detailed English derivation is pending.
 -/
 theorem weighted_det_divergence_mem_ideal : ∀ {K R : Type} [CommRing K] [CommRing R] [Algebra K R] {ι : Type} [Fintype ι] [DecidableEq ι] (δ : ι → Derivation K R R) (δ0 : Derivation K R R) (I : Ideal R) (M : Matrix ι ι R) (a b : ι → R) (w t ρ : R), (∀ i j, δ0 (M i j) = δ i (a j)) → (∀ h i j, δ h (M i j) = δ i (M h j)) → δ0 w = 0 → (∀ i, δ i w + t * δ i ρ * w - w * ∑ j, M i j * b j ∈ I) → ρ = ∑ j, b j * a j → δ0 (w * M.det) + ρ * (w * M.det) - ∑ i, (δ i (w * ∑ j, M.adjugate j i * a j) + t * δ i ρ * (w * ∑ j, M.adjugate j i * a j)) ∈ I := by
   intro K R _ _ _ ι _ _ δ δ0 I M a b w t ρ h0 hM hw hI hρ

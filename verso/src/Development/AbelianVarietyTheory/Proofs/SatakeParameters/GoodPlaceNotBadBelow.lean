@@ -12,16 +12,16 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.GoodOffBad
 
 /- English proof (translation)
-The claim follows from `D.host.φ₀.injective (by rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`.
+A detailed English derivation is pending.
 -/
 theorem conj_eq_complexConj (D : D7) (x : D.host.E) : D.host.conj x = IsCMField.complexConj D.host.E x :=
   D.host.φ₀.injective (by
     rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])
 
 /- English proof (translation)
-Introduce `x y hxy`. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE]`. Establish `: IsCMField.ringOfIntegersComplexConj D.host.E x = y`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, hxy, conj_eq_complexConj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isConjPl_conjPlE_left {D : D7} (P : PlE D.host) : IsConjPl D.host (GlobalTheory.SplitConjPlace.conjPlE P) P := by
   intro x y hxy
@@ -32,7 +32,7 @@ theorem isConjPl_conjPlE_left {D : D7} (P : PlE D.host) : IsConjPl D.host (Globa
   rw [this]
 
 /- English proof (translation)
-Use `show ((p : ℕ) : 𝓞 D.host.E) ∈ (GlobalTheory.SplitConjPlace.conjPlE P).asIdeal ↔ ((p : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE, map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPlE_mem_placesOver {D : D7} (P : PlE D.host) (p : ℕ) :
     GlobalTheory.SplitConjPlace.conjPlE P ∈ placesOver D.host.E p ↔ P ∈ placesOver D.host.E p := by
@@ -40,31 +40,25 @@ theorem conjPlE_mem_placesOver {D : D7} (P : PlE D.host) (p : ℕ) :
   rw [GlobalTheory.SplitConjPlace.mem_conjPlE, map_natCast]
 
 /- English proof (translation)
-Introduce `hL D P X i _ w hG v hov`. Establish `hlev` using `X.recR.base.lev`. Establish `hmu : D.nd.mu i = D.what₂.muAt (D.nd.w i)`. Break down `D.what₂.muAt_or (D.nd.w i) with h | h` into its components or cases. Conclude with `absurd h (D.nd.w_tw i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, D.nd.mu_w i]`. Establish `hxi` using `X.recR.tupXi (D.nd.mu i) (Or.inr ⟨D.nd.w i, hmu⟩)`. Establish `hunr : (X.R.xiH (X.tupT (D.nd.mu i))).UnrAt w`. Assume the negation of the conclusion as `hn`. Break down `(hlev.Q_ram _ w).1 hn with h | ⟨PP, hPP, hc⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hG w (Or.inr h)).1 rfl`. Conclude with `(hG PP (Or.inr hPP)).2 hc`. Rewrite `hunr` using `[hxi, D.nd.mu_w i, X.Tp.xi_tw, D.nd.w_l i]`. Establish `hψ` using `X.Tp.psi_is (D.nd.w i) (D.nd.w_tw i)`. Rewrite `hψ` using `[D.nd.w_l i]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set δ := X.R.C.delAt (D.nd.l i) with hδdef`. Use `set ψ := X.Tp.psi (D.nd.w i) with hψdef`. Use `set p := if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde with hpdef`. Establish `hd : IsDelta (H` using `D.host) p δ := by`. Rewrite using `[hδdef, hpdef, CharFrame.delAt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Use `exacts [X.R.C.isDel', X.R.C.isDel]`. Establish `hmul : ∀ x, (δ * ψ).loc w x = δ.loc w x * ψ.loc w x` using `fun _ => rfl`. Establish `hnp : ¬ OverP D.host p w`. Introduce `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hψ.ord`. Establish `h15 : 15 ∣ D.nd.l i ^ a`. Use `(hd.ine w hw (D.nd.l i ^ a)).1 fun x hx => ?_` and prove the remaining obligations. Establish `h1 : δ.loc w x * ψ.loc w x = 1` using `(hmul x).symm.trans (hunr x hx)`. Establish `h2 : ψ.loc w x ^ (D.nd.l i ^ a) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `congrArg (fun ξ : HChar D.host.E => ξ.loc w x) ha` as an intermediate fact. Simplify `this` using `[HChar.loc]`. Establish `h3 : (δ.loc w x * ψ.loc w x) ^ (D.nd.l i ^ a) = 1` using `by rw [h1, one_pow]`. Rewrite `h3` using `[mul_pow, h2, mul_one]`. Then use the resulting hypothesis. Establish `hl : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h3 : 3 = D.nd.l i` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_three hl).1 (Nat.prime_three.dvd_of_dvd_pow (dvd_trans (by norm_num) h15))`. Establish `h5 : 5 = D.nd.l i` using `(Nat.prime_dvd_prime_iff_eq (by norm_num) hl).1 ((show (5 : ℕ).Prime by norm_num).dvd_of_dvd_pow (dvd_trans (by norm_num) h15))`. Use linear arithmetic over natural numbers and integers. Establish `hng : ∀ k : Fin 2, w ∉ placesOver D.host.E (D.host.g k)`. Introduce `k hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : GlobalTheory.Mem.Chr.SplitsC D.host.E (D.host.g k)` using `D.nd.g_split k`. Break down `(GlobalTheory.BigOn.Inhab.overP_iff (D.host.g_prime k) hs (X.R.C.P.pb_over k) w).1 hw with h | ⟨w', h, hc⟩` into its components or cases. Conclude with `(hG w (Or.inl ((hlev.Pg w).2 ⟨k, GlobalTheory.BigOn.Inhab.mem_aboveK.1 h⟩))).1 rfl`. Conclude with `(hG w' (Or.inl ((hlev.Pg w').2 ⟨k, GlobalTheory.BigOn.Inhab.mem_aboveK.1 h⟩))).2 hc`. Establish `hnQ : w ∉ D.nd.Q i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Introduce `hQ`. Rewrite `hQ` using `[P.Q_eq i]`. Use `(hψ.ram w).1 ?_ hQ` and prove the remaining obligations. Introduce `x hx`. Establish `h1 : δ.loc w x * ψ.loc w x = 1` using `(hmul x).symm.trans (hunr x hx)`.
-
-Rewrite `h1` using `[hd.unr w hnp x hx, one_mul]`. Conclude with `h1`. Establish `hnp' : w ∉ placesOver D.host.E p` using `hnp`. Introduce and unpack `⟨w', hover, hw'⟩`. Break down `GlobalTheory.SplitConjPlace.eq_or_eq_conjPlE w w' (hover.trans hov.symm) with e | e` into its components or cases.
-
-Substitute `e` using the available equality. Break down `hw' with hQ | ⟨k, hg⟩ | hpd` into its components or cases. Conclude with `hnQ hQ`. Conclude with `hng k hg`. Conclude with `hnp' hpd`.
-
-Substitute `e` using the available equality. Break down `hw' with hQ | ⟨k, hg⟩ | hpd` into its components or cases. Conclude with `hnQ (P.H.hecke.Q_conj i _ w (isConjPl_conjPlE_left w) hQ)`. Conclude with `hng k ((conjPlE_mem_placesOver w _).1 hg)`. Conclude with `hnp' ((conjPlE_mem_placesOver w _).1 hpd)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem good_not_mem_badPl : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (i : D.nd.Loc), Formalism.IndefR.RecTie.Used0 D (D.nd.mu i) → ∀ Pp, GlobalTheory.Hk3.Good X.R (X.tupT (D.nd.mu i)) Pp → ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)), Formalism.L2.NG.OverPl Pp v → v ∉ Formalism.L2.badPl D i := by
   intro hL D P X i _ w hG v hov

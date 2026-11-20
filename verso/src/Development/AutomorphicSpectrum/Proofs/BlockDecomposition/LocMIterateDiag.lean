@@ -12,13 +12,13 @@ open PositivityTheory.Rg.BcB.F (LF)
 namespace GlobalTheory.CompanionTheory.TailLocPow
 
 /- English proof (translation)
-Simplify using `[hint]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hint_fun_zero {H : Type} [Group H] (K : Subgroup H) : hint K (fun _ : H => (0 : ℂ)) = 0 := by
   simp [hint]
 
 /- English proof (translation)
-Use extensionality with `k`. Use `show (∀ x, c * u (x * k) = c * u x) ↔ (∀ x, u (x * k) = u x)`. Conclude with `forall_congr' fun x => mul_right_inj' hc`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem rStab_smul {H : Type} [Group H] (c : ℂ) (hc : c ≠ 0) (u : H → ℂ) :
     rStab (fun x => c * u x) = rStab u := by
@@ -27,9 +27,9 @@ theorem rStab_smul {H : Type} [Group H] (c : ℂ) (hc : c ≠ 0) (u : H → ℂ)
   exact forall_congr' fun x => mul_right_inj' hc
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `using hint_fun_zero K`. Establish `key : ∀ S : Subgroup H, S = rStab u → (((S ⊓ K).relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : H ⧸ (S ⊓ K), c * u q.out = c * ((((rStab u ⊓ K).relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : H ⧸ (rStab u ⊓ K), u q.out)`. Introduce and unpack `S rfl`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h : (∑ᶠ q : H ⧸ (rStab u ⊓ K), c * u q.out) = c * ∑ᶠ q : H ⧸ (rStab u ⊓ K), u q.out`. Simplify `(smul_finsum c (fun q : H ⧸ (rStab u ⊓ K) => u q.out)).symm` using `only [smul_eq_mul]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key _ (rStab_smul c hc u)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hint_smul {H : Type} [Group H] (K : Subgroup H) (c : ℂ) (u : H → ℂ) :
     hint K (fun x => c * u x) = c * hint K u := by

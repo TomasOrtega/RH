@@ -16,11 +16,11 @@ open PowerSeries
 variable {B : Type} [CommRing B]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, by simp, by simp [Q.e_zero]⟩`. Consider the case `succ n ih`. Take `⟨M, h1, h2⟩` from `ih`. Use `⟨M * (n * l + l).choose (n * l), ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.add_choose_mul_factorial_mul_factorial (n * l) l` as an intermediate fact. Rewrite `this` using `[← Nat.choose_symm_add]`. Rewrite using `[Nat.succ_mul, ← this, ← h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_succ, h2, mul_assoc, Q.e_mul, Nat.succ_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem e_pow (Q : PDPoly B) (l n : ℕ) :
     ∃ M : ℕ, M * l.factorial ^ n = (n * l).factorial ∧ Q.e l ^ n = (M : Q.P) * Q.e (n * l) := by
@@ -35,18 +35,18 @@ theorem e_pow (Q : PDPoly B) (l n : ℕ) :
     · rw [pow_succ, h2, mul_assoc, Q.e_mul, Nat.succ_mul]; push_cast; ring
 
 /- English proof (translation)
-Establish `h` using `Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right a b)`. Rewrite `h` using `[Nat.add_sub_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem choose_fac (a b : ℕ) : (a + b).choose a * a.factorial * b.factorial = (a + b).factorial := by
   have h := Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right a b)
   rwa [Nat.add_sub_cancel_left] at h
 
 /- English proof (translation)
-Establish `hm` using `Nat.uniformBell_mul_eq m hK`. Establish `hn` using `Nat.uniformBell_mul_eq n hK`. Establish `hmn` using `Nat.uniformBell_mul_eq (m + n) hK`. Establish `c1` using `choose_fac (m * K) (n * K)`. Establish `c2` using `choose_fac m n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < K.factorial ^ (m + n) * m.factorial * n.factorial` using `by positivity`. Establish `e1 : m.uniformBell K * n.uniformBell K * (m * K + n * K).choose (m * K) * (K.factorial ^ (m + n) * m.factorial * n.factorial) = (m * K + n * K).factorial`. Rewrite using `[← c1, ← hm, ← hn]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (m + n).choose m * (m + n).uniformBell K * (K.factorial ^ (m + n) * m.factorial * n.factorial) = (m * K + n * K).factorial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← add_mul, ← hmn, ← c2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Nat.eq_of_mul_eq_mul_right hpos (e1.trans e2.symm)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem num1 (m n : ℕ) {K : ℕ} (hK : K ≠ 0) :
     m.uniformBell K * n.uniformBell K * (m * K + n * K).choose (m * K) =
@@ -68,9 +68,9 @@ theorem num1 (m n : ℕ) {K : ℕ} (hK : K ≠ 0) :
   exact Nat.eq_of_mul_eq_mul_right hpos (e1.trans e2.symm)
 
 /- English proof (translation)
-Establish `h1` using `Nat.uniformBell_mul_eq n hK`. Establish `h3` using `Nat.uniformBell_mul_eq n (show l + K ≠ 0 by omega)`. Establish `h4` using `choose_fac (n * l) (n * K)`. Establish `h5` using `choose_fac l K`. Establish `hpos : 0 < l.factorial ^ n * K.factorial ^ n * n.factorial` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.eq_of_mul_eq_mul_right hpos ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h5, h3]`. Use `_ = _ := by ring`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem num2 (n l M : ℕ) {K : ℕ} (hK : K ≠ 0) (hM : M * l.factorial ^ n = (n * l).factorial) :
     M * n.uniformBell K * (n * l + n * K).choose (n * l) = (l + K).choose l ^ n * n.uniformBell (l + K) := by
@@ -90,14 +90,14 @@ theorem num2 (n l M : ℕ) {K : ℕ} (hK : K ≠ 0) (hM : M * l.factorial ^ n = 
 def gb (Q : PDPoly B) (K n : ℕ) : Q.P := (n.uniformBell K : Q.P) * Q.e (n * K)
 
 /- English proof (translation)
-Simplify using `[gb, Nat.uniformBell_zero_left, Q.e_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gb_zero (Q : PDPoly B) (K : ℕ) : gb Q K 0 = 1 := by simp [gb, Nat.uniformBell_zero_left, Q.e_zero]
 
 /- English proof (translation)
-Unfold `gb`. Establish `h` using `num1 m n hK`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_mul_mul_comm, Q.e_mul]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[h, ← add_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gb_mul (Q : PDPoly B) {K : ℕ} (hK : K ≠ 0) (m n : ℕ) :
     gb Q K m * gb Q K n = ((m + n).choose m : Q.P) * gb Q K (m + n) := by
@@ -115,43 +115,43 @@ theorem gb_mul (Q : PDPoly B) {K : ℕ} (hK : K ≠ 0) (m n : ℕ) :
         ring
 
 /- English proof (translation)
-Take `⟨F, hF⟩ : ∃ F : ℕ → B → PowerSeries Q.P, ∀ K b, F K b = PowerSeries.mk fun j => algebraMap B Q.P (b ^ j) * gb Q K j` from `⟨_, fun _ _ => rfl⟩`. Establish `F0 : ∀ K, F K 0 = 1`. Introduce `K`. Use extensionality with `j`. Rewrite using `[hF, PowerSeries.coeff_mk, PowerSeries.coeff_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Break down `j with _ | j` into its components or cases. Simplify using `[gb_zero]`. Simplify using the standard rewrite rules. Establish `Fadd : ∀ K, K ≠ 0 → ∀ a b, F K (a + b) = F K a * F K b`. Introduce `K hK a b`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_mul]`. Simplify using `only [hF, PowerSeries.coeff_mk]`. Establish `hterm : ∀ p ∈ Finset.HasAntidiagonal.antidiagonal n, algebraMap B Q.P (a ^ p.1) * gb Q K p.1 * (algebraMap B Q.P (b ^ p.2) * gb Q K p.2) = algebraMap B Q.P (a ^ p.1 * b ^ p.2 * (n.choose p.1 : B)) * gb Q K n`. Introduce `p hp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[mul_mul_mul_comm, gb_mul Q hK, hp]`. Simplify using `only [map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.sum_mul, ← map_sum, add_pow, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `Fsc : ∀ K c b, F K (c * b) = PowerSeries.rescale (algebraMap B Q.P c) (F K b)`. Introduce `K c b`. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_rescale]`. Simplify using `only [hF, PowerSeries.coeff_mk, mul_pow, map_mul, map_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `Fexp : ∀ K, K ≠ 0 → ∀ b, IsExp (F K b)`. Introduce `K hK b m n`. Simplify using `only [hF, PowerSeries.coeff_mk]`. Rewrite using `[mul_mul_mul_comm, gb_mul Q hK, pow_add, map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `exp1 : IsExp (1 : PowerSeries Q.P)`. Introduce `m n`. Simplify using `only [PowerSeries.coeff_one]`. Apply the tactic sequence `by_cases hm : m = 0 <;> by_cases hn : n = 0 <;> simp [hm, hn]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨E, hE⟩ : ∃ E : Finset ℕ → Q.P → PowerSeries Q.P, ∀ S x, E S x = ∏ k ∈ S, F (k + 1) (Q.e.repr x (k + 1))` from `⟨_, fun _ _ => rfl⟩`. Establish `cover : ∀ x : Q.P, ∀ k, Q.e.repr x (k + 1) ≠ 0 → k ∈ Finset.range ((Q.e.repr x).support.sup id)`. Introduce `x k hk`. Establish `hmem : k + 1 ∈ (Q.e.repr x).support` using `Finsupp.mem_support_iff.mpr hk`. Use `Finset.le_sup (f := id) hmem` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [id] at this`. Conclude with `Finset.mem_range.mpr (by omega)`. Establish `Eind : ∀ x S T, (∀ k, Q.e.repr x (k + 1) ≠ 0 → k ∈ S) → (∀ k, Q.e.repr x (k + 1) ≠ 0 → k ∈ T) → E S x = E T x`. Introduce `x S T hS hT`. Establish `mono : ∀ U V, U ⊆ V → (∀ k, Q.e.repr x (k + 1) ≠ 0 → k ∈ U) → E U x = E V x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U V hUV hU`. Rewrite using `[hE, hE]`. Apply `Finset.prod_subset hUV` to reduce the goal to its premises. Introduce `k _ hk`. Establish `: Q.e.repr x (k + 1) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hk (hU k h)`. Rewrite using `[this, F0]`. Rewrite using `[mono S (S ∪ T) Finset.subset_union_left hS, mono T (S ∪ T) Finset.subset_union_right hT]`. Establish `c0 : ∀ S x, PowerSeries.coeff 0 (E S x) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `S x`. Rewrite using `[hE]`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k S hk ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_insert hk, PowerSeries.coeff_mul]`. Simplify using `[ih, hF, gb_zero]`. Use `⟨fun n x => PowerSeries.coeff n (E (Finset.range ((Q.e.repr x).support.sup id)) x), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `c0 _ x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Introduce `n x y dsimp only`. Take `⟨S, hxS, hyS, hxyS⟩ : ∃ S : Finset ℕ, (∀ k, Q.e.repr x (k + 1) ≠ 0 → k ∈ S) ∧ (∀ k, Q.e.repr y (k + 1) ≠ 0 → k ∈ S) ∧ (∀ k, Q.e.repr (x + y) (k + 1) ≠ 0 → k ∈ S)` from `⟨Finset.range ((Q.e.repr x).support.sup id) ∪ Finset.range ((Q.e.repr y).support.sup id) ∪ Finset.range ((Q.e.repr (x + y)).support.sup id), fun k hk => Finset.mem_union_left _ (Finset.mem_union_left _ (cover x k hk)), fun k hk => Finset.mem_union_left _ (Finset.mem_union_right _ …`. Rewrite using `[Eind x _ S (cover x) hxS, Eind y _ S (cover y) hyS, Eind (x + y) _ S (cover _) hxyS]`. Establish `: E S (x + y) = E S x * E S y`. Rewrite using `[hE, hE, hE, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show Q.e.repr (x + y) = Q.e.repr x + Q.e.repr y from map_add _ _ _, Finsupp.add_apply, Fadd _ (Nat.succ_ne_zero k)]`. Rewrite using `[this, PowerSeries.coeff_mul]`. Introduce `m n x dsimp only`. Establish `: IsExp (E (Finset.range ((Q.e.repr x).support.sup id)) x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE]`. Conclude with `Finset.prod_induction _ IsExp (fun f g hf hg => hf.mul hg) exp1 (fun k _ => Fexp _ (Nat.succ_ne_zero k) _)`. Conclude with `this m n`. Introduce `n c x dsimp only`. Take `⟨S, hxS, hcS⟩ : ∃ S : Finset ℕ, (∀ k, Q.e.repr x (k + 1) ≠ 0 → k ∈ S) ∧ (∀ k, Q.e.repr (c • x) (k + 1) ≠ 0 → k ∈ S)` from `⟨Finset.range ((Q.e.repr x).support.sup id) ∪ Finset.range ((Q.e.repr (c • x)).support.sup id), fun k hk => Finset.mem_union_left _ (cover x k hk), fun k hk => Finset.mem_union_right _ (cover _ k hk)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Eind x _ S (cover x) hxS, Eind (c • x) _ S (cover _) hcS]`. Establish `: E S (c • x) = PowerSeries.rescale (algebraMap B Q.P c) (E S x)`. Rewrite using `[hE, hE, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show Q.e.repr (c • x) = c • Q.e.repr x from map_smul _ _ _, Finsupp.smul_apply, smul_eq_mul, Fsc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, PowerSeries.coeff_rescale]`. Introduce `n K hK dsimp only`. Establish `hS : ∀ k, Q.e.repr (Q.e K) (k + 1) ≠ 0 → k ∈ Finset.range ((Q.e.repr (Q.e K)).support.sup id) ∪ {K - 1}` using `fun k hk => Finset.mem_union_left _ (cover _ k hk)`. Rewrite using `[Eind (Q.e K) _ _ (cover _) hS, hE, Finset.prod_eq_single (K - 1)]`. Rewrite using `[Nat.sub_add_cancel (Nat.pos_of_ne_zero hK), Q.e.repr_self, Finsupp.single_eq_same, hF, PowerSeries.coeff_mk, one_pow, map_one, one_mul]`.
+Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Rewrite using `[Q.e.repr_self, Finsupp.single_apply, if_neg (by omega), F0]`. Introduce `h`. Conclude with `absurd (Finset.mem_union_right _ (Finset.mem_singleton_self _)) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem dividedPower_identities_D_and_e_eq_gb (Q : PDPoly B) : ∃ D : ℕ → Q.P → Q.P,
     (∀ x, D 0 x = 1) ∧
@@ -284,57 +284,51 @@ private theorem dividedPower_identities_D_and_e_eq_gb (Q : PDPoly B) : ∃ D : �
       exact absurd (Finset.mem_union_right _ (Finset.mem_singleton_self _)) h
 
 /- English proof (translation)
-Take `⟨D, h0, hadd, hexp, hsc, hgen⟩` from `dividedPower_identities_D_and_e_eq_gb Q`. Establish `hnat : ∀ (c : ℕ) (y : Q.P), (c : Q.P) * y = (c : B) • y`. Introduce `c y`. Rewrite using `[Algebra.smul_def, map_natCast]`. Establish `hzero : ∀ n, n ≠ 0 → D n 0 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n hn`. Use `hsc n 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, map_zero, zero_pow hn, zero_mul]`. Conclude with `this`. Establish `hmulgen : ∀ K, K ≠ 0 → ∀ (a : Q.P) n, D n (a * Q.e K) = a ^ n * D n (Q.e K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K hK a`. Establish `ha : a ∈ Submodule.span B (Set.range Q.e)`. Rewrite using `[Q.e.span_eq]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `ha using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Introduce `n`. Take `⟨M, hM, hpow⟩` from `e_pow Q j n`. Establish `key` using `num2 n j M hK hM`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (M : Q.P) * Q.e (n * j) * ((n.uniformBell K : Q.P) * Q.e (n * K)) = ((M * n.uniformBell K * (n * j + n * K).choose (n * j) : ℕ) : Q.P) * Q.e (n * j + n * K)`. Rewrite using `[mul_mul_mul_comm, Q.e_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Q.e_mul, hnat, hsc, hgen _ _ (by omega), hgen _ _ hK, hpow]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `gb`. Rewrite using `[hr, key, mul_add]`. Simplify using `only [map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero`. Introduce `n`. Rewrite using `[zero_mul]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, h0, pow_zero, one_mul]`. Rewrite using `[hzero n hn, zero_pow hn, zero_mul]`. Consider the case `add a a' _ _ iha iha'`. Introduce `n`. Rewrite using `[add_mul, hadd, add_pow, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hle : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Simplify using `only`. Rewrite using `[iha, iha', mul_mul_mul_comm, hexp, Nat.add_sub_cancel' hle]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `smul c a _ iha`. Introduce `n`. Rewrite using `[smul_mul_assoc, hsc, iha, smul_pow, Algebra.smul_def, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `haug : ∀ x ∈ Q.aug, (∀ (a : Q.P) n, D n (a * x) = a ^ n * D n x) ∧ D 1 x = x ∧ (∀ n, n ≠ 0 → D n x ∈ Q.aug)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hx' : x ∈ Submodule.span Q.P (Set.range fun n => Q.e (n + 1))` using `hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K, rfl⟩` from `hy`. Use `⟨fun a n => hmulgen _ (by omega) a n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hgen 1 _ (by omega)]`. Simplify using `[gb, Nat.uniformBell_one_left]`. Introduce `n hn`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hgen n _ (by omega)]`. Unfold `gb`. Apply `Ideal.mul_mem_left` to reduce the goal to its premises. Establish `hp : 0 < n * (K + 1)` using `Nat.mul_pos (Nat.pos_of_ne_zero hn) (Nat.succ_pos K)`. Take `⟨m, hm⟩ : ∃ m, n * (K + 1) = m + 1` from `⟨n * (K + 1) - 1, by omega⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hm]`. Conclude with `Q.e_succ_mem_aug m`. Consider the case `zero`. Use `⟨fun a n => ?_, ?_, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Rewrite using `[h0, pow_zero, one_mul]`. Rewrite using `[hzero n hn, mul_zero]`. Conclude with `hzero 1 one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hzero n hn]`. Conclude with `Q.aug.zero_mem`. Consider the case `add x y _ _ ihx ihy`. Take `⟨mx, ox, memx⟩` from `ihx`. Take `⟨my, oy, memy⟩` from `ihy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨fun a n => ?_, ?_, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, hadd, hadd, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[mx, my, ← Finset.HasAntidiagonal.mem_antidiagonal.mp hp, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hadd]`. Simplify using `[Finset.Nat.sum_antidiagonal_succ, h0, ox, oy, add_comm]`. Rewrite using `[hadd]`. Apply `Ideal.sum_mem` to reduce the goal to its premises. Introduce `p hp`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Distinguish the cases in `h1 : p.1 = 0`. Conclude with `Ideal.mul_mem_left _ _ (memy _ (by omega))`. Conclude with `Ideal.mul_mem_right _ _ (memx _ h1)`. Consider the case `smul r x _ ih`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨mx, ox, memx⟩` from `ih`. Use `⟨fun a n => ?_, ?_, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← mul_assoc, mx, mx, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_eq_mul, mx, ox, pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_eq_mul, mx]`. Conclude with `Ideal.mul_mem_left _ _ (memx n hn)`. Use `⟨fun n x => if x ∈ Q.aug then D n x else 0, ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `n x hx`. Simplify using `only [if_neg hx]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Simplify using `only [if_pos hx, h0]`. Introduce `x hx`. Simplify using `only [if_pos hx]`. Conclude with `(haug x hx).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn x hx`. Simplify using `only [if_pos hx]`. Conclude with `(haug x hx).2.2 n hn`. Introduce `n x hx y hy`. Simplify using `only [if_pos hx, if_pos hy, if_pos (Q.aug.add_mem hx hy)]`.
-
-Conclude with `hadd n x y`. Introduce `n a x hx`. Simplify using `only [if_pos hx, if_pos (Q.aug.mul_mem_left a hx)]`. Conclude with `(haug x hx).1 a n`. Introduce `m n x hx`.
-
-Simplify using `only [if_pos hx]`. Conclude with `hexp m n x`. Introduce `n k`. Establish `hm : Q.e (k + 1) ∈ Q.aug` using `Q.e_succ_mem_aug k`. Simplify using `only [if_pos hm]`.
-
-Rewrite using `[hgen n (k + 1) (by omega)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pre_aug (B : Type) [CommRing B] (Q : PDPoly B) : ∃ η : ℕ → Q.P → Q.P, IsPreDP Q.aug η ∧
     ∀ n k : ℕ, η n (Q.e (k + 1)) = (n.uniformBell (k + 1) : Q.P) * Q.e (n * (k + 1)) := by

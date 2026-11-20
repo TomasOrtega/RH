@@ -8,7 +8,7 @@ open Matrix NumberField ComplexConjugate
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by push_cast; rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isIntegralElt_add {K : Type} [Field K] [NumberField K] {x y : K} (hx : IsIntegralElt x)
     (hy : IsIntegralElt y) : IsIntegralElt (x + y) := by
@@ -17,7 +17,7 @@ theorem isIntegralElt_add {K : Type} [Field K] [NumberField K] {x y : K} (hx : I
   exact ⟨a + b, by push_cast; rfl⟩
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hx`. Conclude with `⟨RingOfIntegers.mapRingHom S.c z, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isIntegralElt_c {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r) {x : K}
     (hx : IsIntegralElt x) : IsIntegralElt (S.c x) := by
@@ -25,7 +25,7 @@ theorem isIntegralElt_c {K : Type} [Field K] [NumberField K] {r : ℕ} (S : Herm
   exact ⟨RingOfIntegers.mapRingHom S.c z, rfl⟩
 
 /- English proof (translation)
-Establish `hs : Function.Surjective S.c` using `fun x => ⟨S.c x, S.c_invol x⟩`. Set `e : K ≃+* K` to `RingEquiv.ofBijective S.c ⟨S.c.injective, hs⟩`. Set `e' : K ≃ₐ[ℚ] K` to `AlgEquiv.ofRingEquiv (f := e) (fun q => by simp [e])`. Conclude with `Algebra.norm_eq_of_algEquiv e' z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem norm_c {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r) (z : K) :
     Algebra.norm ℚ (S.c z) = Algebra.norm ℚ z := by
@@ -44,25 +44,19 @@ def projLt (K : Type) [Field K] [NumberField K] (r e : ℕ) : (Fin r → K) →�
     by_cases h : (i : ℕ) < e <;> simp [h]
 
 /- English proof (translation)
-Unfold `spanIdx`. Establish `hspan : Submodule.span (𝓞 K) (Set.range ![x0, y]) = Submodule.span (𝓞 K) {x0} ⊔ Submodule.span (𝓞 K) {y}`. Rewrite using `[Matrix.range_cons_cons_empty, Submodule.span_insert]`. Establish `h1 : Set.range ![x0] = {x0}` using `Matrix.range_cons_empty _ _`. Establish `h2 : Set.range ![y] = {y}` using `Matrix.range_cons_empty _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hspan, h1, h2, Submodule.sup_toAddSubgroup, Submodule.sup_toAddSubgroup]`. Use `set X0 := (Submodule.span (𝓞 K) {x0}).toAddSubgroup`. Use `set Y := (Submodule.span (𝓞 K) {y}).toAddSubgroup`. Establish `hX0 : X0 ≤ Gj.toAddSubgroup` using `by show Submodule.span (𝓞 K) {x0} ≤ Gj`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx0`. Establish `hY : Y ≤ Gp.toAddSubgroup` using `by show Submodule.span (𝓞 K) {y} ≤ Gp`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `hy`. Establish `key` using `AddSubgroup.relIndex_mul_relIndex _ _ _ (sup_le_sup_left hY X0) (sup_le_sup_right hX0 Gp.toAddSubgroup)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← key, mul_comm (X0.relIndex _)]`. Use `congr 1`. Use `relIndex_sup_proj (projGe K r p).toAddMonoidHom X0 Y Gp.toAddSubgroup hY ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `show projGe K r p (t • x0) = 0`. Rewrite using `[map_smul]`. Establish `: projGe K r p x0 = 0`. Use function extensionality and compare the values at `i`. Use `show (if (p : ℕ) ≤ i then x0 i else 0) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Conclude with `hj x0 hx0 i (fun hi => by rw [hi] at h; omega)`. Both sides reduce to the same expression. Rewrite using `[this, smul_zero]`. Introduce `x hx show projGe K r p x = x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Use `show (if (p : ℕ) ≤ i then x i else 0) = x i`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hp x hx i (fun hi => by rw [hi] at h; omega)).symm`.
-
-Rewrite using `[sup_comm X0, sup_comm Gj.toAddSubgroup]`. Use `relIndex_sup_proj (projLt K r p).toAddMonoidHom Gp.toAddSubgroup X0 Gj.toAddSubgroup hX0 ?_ ?_` and prove the remaining obligations. Introduce `x hx show projLt K r p x = 0`. Use function extensionality and compare the values at `i`. Use `show (if (i : ℕ) < p then x i else 0) = 0`.
-
-Use `split_ifs with h`. Conclude with `hp x hx i (fun hi => by rw [hi] at h; omega)`. Both sides reduce to the same expression. Introduce `x hx show projLt K r p x = x`. Use function extensionality and compare the values at `i`.
-
-Use `show (if (i : ℕ) < p then x i else 0) = x i`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hj x hx i (fun hi => by rw [hi] at h; omega)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spanIdx_pair {K : Type} [Field K] [NumberField K] {r : ℕ} (j p : Fin r)
     (hjp : (j : ℕ) < p) (Gj Gp : Submodule (𝓞 K) (Fin r → K)) (hj : ∀ x ∈ Gj, IsAt j x)

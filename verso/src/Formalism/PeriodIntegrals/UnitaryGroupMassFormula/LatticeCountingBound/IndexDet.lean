@@ -20,13 +20,13 @@ Both sides reduce to the same expression.
 lemma ιc_apply (t : Fin k → 𝓞 K) (i : Fin k) : ιc K k t i = algebraMap (𝓞 K) K (t i) := rfl
 
 /- English proof (translation)
-Introduce `x y h` and use `funext fun c => IsFractionRing.injective (𝓞 K) K (by have := congrFun h c; rwa [ιc_apply, ιc_apply] at this)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma ιc_inj : Function.Injective (ιc K k) := fun x y h => funext fun c =>
   IsFractionRing.injective (𝓞 K) K (by have := congrFun h c; rwa [ιc_apply, ιc_apply] at this)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[oLat, ιc, AddSubgroup.mem_map, LinearMap.mem_range]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma oLat_eq : (oLat K k).toAddSubgroup = (⊤ : AddSubgroup (Fin k → 𝓞 K)).map (ιc K k) := by
   ext x
@@ -43,15 +43,15 @@ Both sides reduce to the same expression.
 lemma vm_apply (M : Matrix (Fin k) (Fin k) K) (s : Fin k → K) : vm M s = s ᵥ* M := rfl
 
 /- English proof (translation)
-Establish `hGinj : Function.Injective γᵀ.mulVecLin`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `t ht`. Assume the negation of the conclusion as `hne`. Conclude with `hγ (Matrix.det_transpose γ ▸ Matrix.exists_mulVec_eq_zero_iff.1 ⟨t, hne, ht⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Set `Gz : (Fin k → 𝓞 K) →ₗ[ℤ] (Fin k → 𝓞 K)` to `γᵀ.mulVecLin.restrictScalars ℤ`. Establish `hGz : Function.Injective Gz` using `hGinj`. Set `e` to `LinearEquiv.ofInjective Gz hGz`. Establish `hcard` using `Submodule.natAbs_det_equiv (LinearMap.range Gz) e`. Establish `hcomp : (LinearMap.range Gz).subtype ∘ₗ (e : (Fin k → 𝓞 K) →+ LinearMap.range Gz).toIntLinearMap = Gz`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Both sides reduce to the same expression. Establish `hdetG : LinearMap.det γᵀ.mulVecLin = γ.det`. Rewrite using `[← Matrix.det_transpose γ]`. Conclude with `LinearMap.det_toLin' γᵀ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcard` using `[hcomp, LinearMap.det_restrictScalars, hdetG]`. Establish `hcomm : (vm (γ.map (algebraMap (𝓞 K) K))).comp (ιc K k) = (ιc K k).comp Gz.toAddMonoidHom`. Use `AddMonoidHom.ext fun t => funext fun j => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.comp_apply, vm_apply, ιc_apply, LinearMap.toAddMonoidHom_coe]`. Simplify using `[Gz, Matrix.vecMul, dotProduct, ιc_apply, map_sum, map_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hr : (⊤ : AddSubgroup (Fin k → 𝓞 K)).map Gz.toAddMonoidHom = (LinearMap.range Gz).toAddSubgroup`. Use extensionality with `x`. Simplify using `[LinearMap.mem_range]`. Rewrite using `[oLat_eq, AddSubgroup.map_map, hcomm, ← AddSubgroup.map_map, AddSubgroup.relIndex_map_map_of_injective _ _ ιc_inj, AddSubgroup.relIndex_top_right, hr, hcard, AddSubgroup.index_eq_card]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma idx_int (γ : Matrix (Fin k) (Fin k) (𝓞 K)) (hγ : γ.det ≠ 0) :
     ((oLat K k).toAddSubgroup.map (vm (γ.map (algebraMap (𝓞 K) K)))).relIndex (oLat K k).toAddSubgroup =
@@ -87,7 +87,7 @@ lemma idx_int (γ : Matrix (Fin k) (Fin k) (𝓞 K)) (hγ : γ.det ≠ 0) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : ((Algebra.norm ℤ x : ℤ) : ℚ) = Algebra.norm ℚ (algebraMap (𝓞 K) K x)` using `Algebra.coe_norm_int x`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs, ← h1, Rat.cast_intCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma natAbs_norm_real (x : 𝓞 K) :
     ((Algebra.norm ℤ x).natAbs : ℝ) = |((Algebra.norm ℚ (algebraMap (𝓞 K) K x) : ℚ) : ℝ)| := by
@@ -95,7 +95,7 @@ lemma natAbs_norm_real (x : 𝓞 K) :
   rw [Nat.cast_natAbs, Int.cast_abs, ← h1, Rat.cast_intCast]
 
 /- English proof (translation)
-Establish `hu : IsUnit N.det` using `isUnit_iff_ne_zero.mpr hN`. Use `congrArg (fun v => v ᵥ* N⁻¹) h` as an intermediate fact. Simplify `this` using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu, Matrix.vecMul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma vecMul_inj (N : Matrix (Fin k) (Fin k) K) (hN : N.det ≠ 0) {s s' : Fin k → K}
     (h : s ᵥ* N = s' ᵥ* N) : s = s' := by
@@ -107,43 +107,37 @@ end DetIdxW
 
 open DetIdxW in
 /- English proof (translation)
-Introduce `K _ _ k N Q D hOQ hOQ0 hDO hDO0 hDQ`. Distinguish the cases in `hN : N.det = 0`. Rewrite using `[hN, Algebra.norm_zero, Rat.cast_zero, abs_zero]`. Check the signs of the components of the expression. Use `set O := (oLat K k).toAddSubgroup with hOdef`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨d, hd⟩, hdT⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (Finset.univ.image fun p : Fin k × Fin k => N p.1 p.2)`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Use `set dK := algebraMap (𝓞 K) K d with hdKdef`. Establish `hdK : dK ≠ 0`. Rewrite using `[hdKdef, Ne, ← map_zero (algebraMap (𝓞 K) K)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun h => hd0 (IsFractionRing.injective (𝓞 K) K h)`. Establish `hG : ∀ i j, ∃ x : 𝓞 K, algebraMap (𝓞 K) K x = dK * N i j`. Introduce `i j`. Take `⟨x, hx⟩` from `hdT (N i j) (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩)`. Conclude with `⟨x, by rw [hx, Algebra.smul_def]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose G hGe using hG`. Set `Gm : Matrix (Fin k) (Fin k) (𝓞 K)` to `Matrix.of G`. Establish `hGmap : Gm.map (algebraMap (𝓞 K) K) = dK • N`. Use extensionality with `i j`. Simplify using `[Gm, hGe]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdetG : algebraMap (𝓞 K) K Gm.det = dK ^ k * N.det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hGmap, Matrix.det_smul, Fintype.card_fin]`. Establish `hGdet0 : Gm.det ≠ 0`. Introduce `h`. Establish `h2` using `hdetG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `h2` using `[h, map_zero]`. Conclude with `(mul_ne_zero (pow_ne_zero _ hdK) hN) h2.symm`. Set `Dm : Matrix (Fin k) (Fin k) (𝓞 K)` to `d • (1 : Matrix (Fin k) (Fin k) (𝓞 K))`. Establish `hDmap : Dm.map (algebraMap (𝓞 K) K) = dK • (1 : Matrix (Fin k) (Fin k) K)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [Dm, h, hdKdef]`. Establish `hDdet : Dm.det = d ^ k` using `by simp [Dm]`. Establish `hDdet0 : Dm.det ≠ 0` using `by rw [hDdet]; exact pow_ne_zero _ hd0`. Use `set T := vm (Gm.map (algebraMap (𝓞 K) K)) with hTdef`. Use `set S := vm (Dm.map (algebraMap (𝓞 K) K)) with hSdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ s, T s = dK • (s ᵥ* N)`. Introduce `s`. Rewrite using `[hTdef, vm_apply, hGmap, Matrix.vecMul_smul]`. Establish `hS : ∀ s, S s = dK • s`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hSdef, vm_apply, hDmap, Matrix.vecMul_smul, Matrix.vecMul_one]`. Establish `hTinj : Function.Injective T`. Introduce `s s' h`. Rewrite `h` using `[hT, hT]`. Conclude with `vecMul_inj N hN (smul_right_injective _ hdK h)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSinj : Function.Injective S`. Introduce `s s' h`. Rewrite `h` using `[hS, hS]`. Conclude with `smul_right_injective _ hdK h`. Use `set X := O.map T with hX`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Y := Q.map T with hY`. Use `set Z := D.map S with hZ`. Use `set dO := O.map S with hdO`. Establish `hXO : X.relIndex O = (Algebra.norm ℤ Gm.det).natAbs` using `idx_int Gm hGdet0`. Establish `hdOO : dO.relIndex O = (Algebra.norm ℤ Dm.det).natAbs` using `idx_int Dm hDdet0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hXY : X.relIndex Y = O.relIndex Q` using `AddSubgroup.relIndex_map_map_of_injective _ _ hTinj`. Establish `hZdO : Z.relIndex dO = D.relIndex O` using `AddSubgroup.relIndex_map_map_of_injective _ _ hSinj`. Establish `hZle_dO : Z ≤ dO` using `AddSubgroup.map_mono hDO`. Establish `hdO_le : dO ≤ O`. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hS]`. Use `(oLat K k).smul_mem d hs` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul K d s]`. Then use the resulting hypothesis. Establish `hZO_le : Z ≤ O` using `hZle_dO.trans hdO_le`. Establish `hZY : Z ≤ Y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨r, hr, rfl⟩`. Take `⟨s, hs, hsr⟩` from `hDQ r hr`. Conclude with `⟨s, hs, by rw [hT, hS, hsr]⟩`. Establish `hZO : Z.relIndex O = D.relIndex O * (Algebra.norm ℤ Dm.det).natAbs`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex (hHK := hZle_dO) (hKL := hdO_le), hZdO, hdOO]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hXY0 : X.relIndex Y ≠ 0` using `hXY ▸ hOQ0`. Establish `hXZ0 : X.relIndex Z ≠ 0` using `mt (AddSubgroup.relIndex_eq_zero_of_le_right (hKL := hZY)) hXY0`. Establish `hZO0 : Z.relIndex O ≠ 0`. Rewrite using `[hZO]`. Conclude with `mul_ne_zero hDO0 (Int.natAbs_ne_zero.mpr (Algebra.norm_ne_zero_iff.mpr hDdet0))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul : (X ⊓ Z).relIndex O = X.relIndex Z * Z.relIndex O`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex (hHK := (inf_le_right : X ⊓ Z ≤ Z)) (hKL := hZO_le), AddSubgroup.inf_relIndex_right]`. Establish `h1 : X.relIndex O ≤ (X ⊓ Z).relIndex O` using `AddSubgroup.relIndex_le_of_le_left (hHK := (inf_le_left : X ⊓ Z ≤ X)) (hHL := by rw [hmul]; exact mul_ne_zero hXZ0 hZO0)`. Establish `h2 : X.relIndex Z ≤ X.relIndex Y` using `AddSubgroup.relIndex_le_of_le_right (hKL := hZY) (hHL := hXY0)`. Establish `key : X.relIndex O ≤ X.relIndex Y * Z.relIndex O`.
-
-Rewrite `h1` using `[hmul]`. Conclude with `h1.trans (Nat.mul_le_mul_right _ h2)`. Rewrite `key` using `[hXO, hXY, hZO]`. Establish `keyR : ((Algebra.norm ℤ Gm.det).natAbs : ℝ) ≤ (O.relIndex Q : ℝ) * ((D.relIndex O : ℝ) * ((Algebra.norm ℤ Dm.det).natAbs : ℝ))`. Conclude with `key` after adjusting the coercions.
-
-Rewrite `keyR` using `[natAbs_norm_real, natAbs_norm_real, hdetG, hDdet, map_pow, map_mul, map_pow]`. Simplify using `only [Rat.cast_mul, Rat.cast_pow, abs_mul, abs_pow] at keyR`. Establish `ha : 0 < |((Algebra.norm ℚ dK : ℚ) : ℝ)| ^ k`. Apply `pow_pos` to reduce the goal to its premises. Rewrite using `[abs_pos, Rat.cast_ne_zero]`.
-
-Conclude with `Algebra.norm_ne_zero_iff.mpr hdK`. Establish `: |((Algebra.norm ℚ dK : ℚ) : ℝ)| ^ k * |((Algebra.norm ℚ N.det : ℚ) : ℝ)| ≤ |((Algebra.norm ℚ dK : ℚ) : ℝ)| ^ k * ((O.relIndex Q : ℝ) * (D.relIndex O : ℝ))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left this ha`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem determinant_index_formula : DetIdx := by
   intro K _ _ k N Q D hOQ hOQ0 hDO hDO0 hDQ

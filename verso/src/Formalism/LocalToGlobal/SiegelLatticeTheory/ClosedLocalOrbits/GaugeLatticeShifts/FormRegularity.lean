@@ -22,7 +22,7 @@ variable {r : ℕ}
 def sgn (r : ℕ) : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ := Matrix.diagonal fun b => (-1 : ℂ) ^ (r - b.1)
 
 /- English proof (translation)
-Rewrite using `[sgn, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sgn_sq : sgn r * sgn r = 1 := by
   rw [sgn, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -32,14 +32,14 @@ theorem sgn_sq : sgn r * sgn r = 1 := by
   simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[ZhatO, sgn, Matrix.mul_diagonal, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem zhatO_eq (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : ZhatO Z = Z * sgn r := by
   ext a b
   rw [ZhatO, sgn, Matrix.mul_diagonal, mul_comm]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, (h i j).1 hij, map_zero]`. Rewrite using `[Matrix.map_apply, (h i j).2 hij, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLoUni_map {K : Type*} [Field K] (ψ : K →+* ℂ) {L : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (h : IsLoUni L) : IsLoUni (L.map ψ) := by
@@ -49,7 +49,7 @@ theorem isLoUni_map {K : Type*} [Field K] (ψ : K →+* ℂ) {L : Matrix (Fin (r
   · rw [Matrix.map_apply, (h i j).2 hij, map_one]
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, (h i j).1 hij, star_zero]`. Rewrite using `[Matrix.map_apply, (h i j).2 hij, star_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLoUni_star {L : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : IsLoUni L) : IsLoUni (L.map star) := by
   intro i j
@@ -58,9 +58,9 @@ theorem isLoUni_star {L : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : IsLoUni L
   · rw [Matrix.map_apply, (h i j).2 hij, star_one]
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.transpose_apply, sgn, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[(h j i).1 hij]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `hij` using the available equality. Rewrite using `[(h i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isLoUni_sgnT {U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : IsUpUni U) :
     IsLoUni (sgn r * U * sgn r)ᵀ := by
@@ -73,21 +73,21 @@ theorem isLoUni_sgnT {U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (h : IsUpUni U
     simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular L (fun i j hij => (h i j).1 (OrderDual.toDual_lt_toDual.1 hij))]`. Conclude with `Finset.prod_eq_one fun i _ => (h i i).2 rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_lo {K : Type*} [Field K] {L : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : IsLoUni L) : L.det = 1 := by
   rw [Matrix.det_of_lowerTriangular L (fun i j hij => (h i j).1 (OrderDual.toDual_lt_toDual.1 hij))]
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => (h i j).1 hij)]`. Conclude with `Finset.prod_eq_one fun i _ => (h i i).2 rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_up {K : Type*} [Field K] {U : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : IsUpUni U) : U.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j hij => (h i j).1 hij)]
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, (h i j).1 hij, map_zero]`. Rewrite using `[Matrix.map_apply, (h i j).2 hij, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUpUni_map {K : Type*} [Field K] (ψ : K →+* ℂ) {U : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (h : IsUpUni U) : IsUpUni (U.map ψ) := by
@@ -97,7 +97,7 @@ theorem isUpUni_map {K : Type*} [Field K] (ψ : K →+* ℂ) {U : Matrix (Fin (r
   · rw [Matrix.map_apply, (h i j).2 hij, map_one]
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det L).2 (Ne.isUnit hL)).mul_left_cancel (((Matrix.isUnit_iff_isUnit_det U).2 (Ne.isUnit hU)).mul_right_cancel h)`.
+A detailed English derivation is pending.
 -/
 theorem cancel {L A B U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hL : L.det ≠ 0) (hU : U.det ≠ 0)
     (h : L * A * U = L * B * U) : A = B :=
@@ -105,7 +105,7 @@ theorem cancel {L A B U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hL : L.det �
     (((Matrix.isUnit_iff_isUnit_det U).2 (Ne.isUnit hU)).mul_right_cancel h)
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.PairVal.sgLo`. Rewrite using `[Fin.sum_univ_castSucc, dif_neg (by simp), add_zero]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (by simp)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sgLo_eq {K : Type} [Field K] (L : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     Formalism.L2.SG.PairVal.sgLo L = ∑ a : Fin r, L a.succ a.castSucc := by
@@ -116,7 +116,7 @@ theorem sgLo_eq {K : Type} [Field K] (L : Matrix (Fin (r + 1)) (Fin (r + 1)) K) 
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.PairVal.sgUp`. Rewrite using `[Fin.sum_univ_castSucc, dif_neg (by simp), add_zero]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (by simp)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sgUp_eq {K : Type} [Field K] (U : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     Formalism.L2.SG.PairVal.sgUp U = ∑ a : Fin r, U a.castSucc a.succ := by
@@ -127,7 +127,7 @@ theorem sgUp_eq {K : Type} [Field K] (U : Matrix (Fin (r + 1)) (Fin (r + 1)) K) 
   rfl
 
 /- English proof (translation)
-Establish `h : r - a.castSucc.1 = (r - a.succ.1) + 1`. Simplify using `only [Fin.coe_castSucc, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, ← pow_add]`. Conclude with `Odd.neg_one_pow ⟨r - a.succ.1, by ring⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgn_adj (a : Fin r) : (-1 : ℂ) ^ (r - a.castSucc.1) * (-1 : ℂ) ^ (r - a.succ.1) = -1 := by
   have h : r - a.castSucc.1 = (r - a.succ.1) + 1 := by
@@ -138,7 +138,7 @@ theorem sgn_adj (a : Fin r) : (-1 : ℂ) ^ (r - a.castSucc.1) * (-1 : ℂ) ^ (r 
 end Mat
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.PairVal.psiInf`. Rewrite using `[← Complex.exp_neg, map_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psiInf_neg {E : Type} [Field E] [NumberField E] (g : ℕ) (x : E) :
     Formalism.L2.SG.PairVal.psiInf g (-x) = (Formalism.L2.SG.PairVal.psiInf g x)⁻¹ := by
@@ -155,7 +155,7 @@ section Main
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Simplify using `only [ZX, frm, FlagExtensionRegularity.famSc_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zx_eq (u u' : D.what₂.Word) (δ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) :
     ZX X u u' 1 δ v = Zhat (X.B.I.ε v) (fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)))
@@ -163,14 +163,14 @@ theorem zx_eq (u u' : D.what₂.Word) (δ : X.B.I.Ginf) (v : InfinitePlace X.B.I
   simp only [ZX, frm, FlagExtensionRegularity.famSc_one]
 
 /- English proof (translation)
-Introduce `v x _`. Simplify using `[uMat]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_HsetU (u : D.what₂.Word) : (1 : X.B.I.Ginf) ∈ HsetU X u := by
   intro v x _
   simp [uMat]
 
 /- English proof (translation)
-Establish `hfr` using `fun v => HermitianSumRootCoordinateFrames.FrameAtV_holds D X u v`. Establish `hrc : ∀ v a, rootCoord (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) (uMat (s v)) a = P v a.succ a.castSucc` using `fun v a => HermitianSumRootCoordinateFrames.RootCoordFrame_holds _ _ _ _ _ _ (hfr v).2.2.2.1 (fun a => ((hfr v).2.2.2.2.1 a).2) _ _ (hP v) a`. Unfold `HidaSetting.psiInfU psiInf psiR`. Simplify using `only [hrc, hy]`. Rewrite using `[PlaceEmbeddingTraceSums.TraceSum_holds D X X.B.g (X.ιE.symm y), RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_of_frame (u : D.what₂.Word) (s : X.B.I.Ginf)
     (P : InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ)
@@ -188,33 +188,31 @@ theorem psi_of_frame (u : D.what₂.Word) (s : X.B.I.Ginf)
   rw [PlaceEmbeddingTraceSums.TraceSum_holds D X X.B.g (X.ιE.symm y), RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `hFT t w L U hreg hLo hUp hZ`. Establish `hOOt` using `FlagExtensionRegularity.OOtReg_holds X u u' F0 F0' what₂ rows' hFT t hreg`. Set `ψ : InfinitePlace X.B.I.F → D.host.E →+* ℂ` to `fun v => (X.B.I.φ v).comp X.ιE.symm.toRingHom`. Set `P : InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ` to `fun v => (L.map (ψ v)).map star`. Set `P' : InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ` to `fun v => (sgn D.R.rS * U.map (ψ v) * sgn D.R.rS)ᵀ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hzz : ∀ (w' : D.what₂.Word) v, hJ (X.B.I.ε v) (rv X.B.I v (X.zR w')) (rv X.B.I v (X.zR w')) ≠ 0`. Introduce `w' v`. Rewrite using `[(HermitianSumRootCoordinateFrames.FrameAtV_holds D X w' v).2.2.2.2.2.1]`. Conclude with `neg_ne_zero.2 (Complex.ofReal_ne_zero.2 (HermitianSumRootCoordinateFrames.FrameAtV_holds D X w' v).2.2.2.2.2.2)`. Establish `hs : ∀ v, ∃ s : Formalism.REAL.UJ (X.B.I.ε v), InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (uMat s) ∧ ∀ a, uMat s *ᵥ fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) a = ∑ c, P v a c • fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) c` using `fun v => hF1 X.B.I.n D.R.rS (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) (HermitianSumRootCoordinateFrames.FrameAtV_holds D X u v).1 (HermitianSumRootCoordinateFrames.FrameAtV_holds D X u v).2.1 (HermitianSumRootCoordinateFrames. …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : ∀ v, ∃ s : Formalism.REAL.UJ (X.B.I.ε v), InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u')) (uMat s) ∧ ∀ a, uMat s *ᵥ fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u')) a = ∑ c, P' v a c • fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u')) …` using `fun v => hF1 X.B.I.n D.R.rS (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u')) (HermitianSumRootCoordinateFrames.FrameAtV_holds D X u' v).1 (HermitianSumRootCoordinateFrames.FrameAtV_holds D X u' v).2.1 (HermitianSumRootCoordinateFram …`. Use `choose s hsN hsP using hs`. Use `choose s' hs'N hs'P using hs'`. Establish `hsN' : s ∈ X.NinfU u` using `fun v => hsN v`. Establish `hs'N' : s' ∈ X.NinfU u'` using `fun v => hs'N v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsS : s ∈ X.SinfU u` using `fun v => (hsN v).1`. Establish `hs'S : s' ∈ X.SinfU u'` using `fun v => (hs'N v).1`. Establish `hPt : IsPtRep X u u' w (s * t.pt.1 * s'⁻¹)`. Introduce `v`. Establish `hg : s⁻¹ * (s * t.pt.1 * s'⁻¹) * s' = t.pt.1` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h4` using `HermitianSumRootCoordinateFrames.ZhatNAct_holds _ _ (X.B.I.ε v) (fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u'))) (uMat (s v)) (uMat (s⁻¹ v)) (uMat (s' v)) (uMat ((s * t.pt.1 * s'⁻¹) v)) (P v) (P' v) (InfCut.uMa …`. Establish `hγv : uMat (s⁻¹ v) * uMat ((s * t.pt.1 * s'⁻¹) v) * uMat (s' v) = uMat (t.pt.1 v)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [uMat, Pi.mul_apply, Subgroup.coe_mul, Units.val_mul]`. Use `_ = uMat (t.pt.1 v) := by rw [hg]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[hγv, ← zx_eq, ← zx_eq]`. Establish `h5 : ZhatO (ZX X u u' 1 t.pt.1 v) = (L * ptMat w * U).map (ψ v)` using `hZ v`. Rewrite `h5` using `[Matrix.map_mul, Matrix.map_mul, zhatO_eq, h4]`. Establish `hPs : (P v).map star = L.map (ψ v)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [P, Matrix.map_apply, star_star]`. Establish `hPt' : (P' v)ᵀ = sgn D.R.rS * U.map (ψ v) * sgn D.R.rS` using `Matrix.transpose_transpose _`. Rewrite `h5` using `[hPs, hPt']`. Establish `h6 : L.map (ψ v) * ZhatO (ZX X u u' 1 (s * t.pt.1 * s'⁻¹) v) * U.map (ψ v) = L.map (ψ v) * ptC X v w * U.map (ψ v)`. Use `Eq.trans ?_ h5` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zhatO_eq]`. Simplify using `only [Matrix.mul_assoc, sgn_sq, Matrix.mul_one]`. Conclude with `cancel (by rw [det_lo (isLoUni_map _ hLo)]; exact one_ne_zero) (by rw [det_up (isUpUni_map _ hUp)]; exact one_ne_zero) h6`. Establish `hpi1 : ∀ w', X.piU w' 1 = 1` using `fun w' => (X.piU_rep w').1`. Establish `hpis : X.piU u s = 1` using `(X.piU_rep u).2.2.2.1 s hsN'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpis' : X.piU u' s'⁻¹ = 1`. Establish `hm` using `(X.piU_rep u').2.1 s'⁻¹ (InfCut.sinfU_inv X u' hs'S) s' hs'S`. Rewrite `hm` using `[inv_mul_cancel, hpi1, (X.piU_rep u').2.2.2.1 s' hs'N', mul_one]`. Conclude with `hm.symm`. Establish `hEq` using `InfCut.ooEquivar X u u' t.pt.1 s hsS s' hs'S`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hEq` using `[hpis, hpis']`. Establish `hψu : X.psiInfU u s = Formalism.L2.SG.PairVal.psiInf X.B.g (Formalism.L2.SG.PairVal.sgLo L)`. Use `psi_of_frame X u s P hsP _ fun v => ?_` and prove the remaining obligations. Simplify using `only [P, ψ, Matrix.map_apply, star_star, RingHom.coe_comp, Function.comp_apply, RingEquiv.coe_toRingHom, sgLo_eq, map_sum, star_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => add_comm _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hψu' : X.psiInfU u' s' = Formalism.L2.SG.PairVal.psiInf X.B.g (-Formalism.L2.SG.PairVal.sgUp U)`. Use `psi_of_frame X u' s' P' hs'P _ fun v => ?_` and prove the remaining obligations. Establish `h1 : ∀ a : Fin D.R.rS, P' v a.succ a.castSucc = -(ψ v (U a.castSucc a.succ))`. Introduce `a`. Simplify using `only [P', Matrix.transpose_apply, sgn, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(ψ v (U a.castSucc a.succ)) * sgn_adj a`. Simplify using `only [h1, ψ, RingHom.coe_comp, Function.comp_apply, RingEquiv.coe_toRingHom, sgUp_eq, map_neg, map_sum, star_neg, star_sum, Finset.sum_add_distrib, Finset.sum_neg_distrib]`. Both sides reduce to the same expression. Establish `hgS : X.B.g = gS D` using `X.g_eq`. Establish `hne : ∀ x : D.host.E, Formalism.L2.SG.PairVal.psiInf (gS D) x ≠ 0` using `fun x => Complex.exp_ne_zero _`.
+Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hprod : Formalism.L2.SG.PairVal.phasePair (gS D) L U * (X.psiInfU u s * conj (X.psiInfU u' s')) = 1`. Rewrite using `[hψu, hψu', psiInf_neg, Vanish.conj_inv_of_norm (Formalism.L2.SG.PairVal.norm_psiInf _ _), hgS]`. Unfold `Formalism.L2.SG.PairVal.phasePair`. Clear denominators, using `[hne]` for the nonvanishing conditions. Use `⟨s * t.pt.1 * s'⁻¹, hPt, 1, one_mem_HsetU X u, 1, one_mem_HsetU X u', s⁻¹, SpanPreservation.ninfU_inv X u hsN', s', hs'N', by group, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[inv_one, hpi1, hpi1, hOOt, hEq]`. Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply, smul_smul, hprod, one_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_regular_of_realization (hF1 : NRealize) (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)) :

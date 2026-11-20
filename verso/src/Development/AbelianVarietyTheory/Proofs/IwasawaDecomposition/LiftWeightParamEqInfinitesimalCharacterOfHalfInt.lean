@@ -6,11 +6,11 @@ open scoped TensorProduct
 namespace GlobalTheory.WtComb
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b hb`. Establish `: a = b` using `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `a b hb`. Establish `hk : (a : ℕ) + k < n` using `by have := b.2; omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `ih a ⟨(a : ℕ) + k, hk⟩ rfl`. Establish `h2 : e ⟨(a : ℕ) + k, hk⟩ < e b` using `e.lt_iff_lt.2 (by rw [Fin.lt_def]; simp; omega)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem orderEmb_add_le {n : ℕ} (e : Fin n ↪o ℤ) :
     ∀ (k : ℕ) (a b : Fin n), (b : ℕ) = (a : ℕ) + k → e a + (k : ℤ) ≤ e b := by
@@ -28,21 +28,19 @@ theorem orderEmb_add_le {n : ℕ} (e : Fin n ↪o ℤ) :
     push_cast; linarith
 
 /- English proof (translation)
-Use `set c : ℂ := ((n : ℂ) - 1) / 2 with hcdef`. Set `g : ℂ → ℤ` to `fun x => if h : ∃ z : ℤ, x = (z : ℂ) + c then h.choose else 0`. Establish `hg : ∀ x ∈ S, x = (g x : ℂ) + c` using `fun x hx => by`. Simplify using `only [g, dif_pos (hm x hx)]`. Conclude with `(hm x hx).choose_spec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M : Multiset ℤ` to `S.map (fun x => -g x)`. Establish `hMd : M.Nodup` using `hd.map_on (fun x hx y hy hxy => by`. Rewrite using `[hg x hx, hg y hy]`. Simplify using `only [neg_inj] at hxy`. Rewrite using `[hxy])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : Finset ℤ` to `⟨M, hMd⟩`. Establish `hT : T.card = n` using `by simp [T, M, hc]`. Set `e` to `T.orderEmbOfFin hT`. Use `⟨⟨fun a => -e a + (a : ℕ), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `orderEmb_add_le e ((b : ℕ) - (a : ℕ)) a b (by rw [Fin.le_def] at hab; omega)` as an intermediate fact. Use `show -e b + ((b : ℕ) : ℤ) ≤ -e a + ((a : ℕ) : ℤ)`. Rewrite `hab` using `[Fin.le_def]`. Move the coercions through the operations in `[Nat.cast_sub hab] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Unfold `NG.infOf`. Establish `h1 : (Finset.univ.map e.toEmbedding) = T` using `Finset.map_orderEmbOfFin_univ T hT`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Function.comp, hcdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ = T.val.map (fun y : ℤ => -(y : ℂ) + c) := by rw [← h1]; rfl`. Use `_ = S := by show M.map _ = S`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id S]`. Use `Multiset.map_congr rfl fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, id]`. Establish `h` using `hg x hx`.
-
-Use `push_cast`. Take the linear combination `-1 * h`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_domWeight_infOf (n : ℕ) (S : Multiset ℂ) (hc : Multiset.card S = n) (hd : S.Nodup)
     (hm : ∀ x ∈ S, ∃ z : ℤ, x = (z : ℂ) + ((n : ℂ) - 1) / 2) :
@@ -88,9 +86,9 @@ end GlobalTheory.WtComb
 namespace GlobalTheory.WtComb
 
 /- English proof (translation)
-Introduce `i i' h`. Proceed by induction on `i' with`. Consider the case `zero => omega`. Consider the case `succ i' ih`. Introduce `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.lt_succ_iff_lt_or_eq.1 h with h' | h'` into its components or cases. Conclude with `lt_trans (hs i' hN) (ih h' (by omega))`. Substitute `h'` using the available equality. Conclude with `hs i hN`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem chain_lt (f : ℕ → ℚ) (N : ℕ) (hs : ∀ i, i + 1 < N → f (i + 1) < f i) :
     ∀ i i', i < i' → i' < N → f i' < f i := by
@@ -104,7 +102,7 @@ theorem chain_lt (f : ℕ → ℚ) (N : ℕ) (hs : ∀ i, i + 1 < N → f (i + 1
     · subst h'; exact hs i hN
 
 /- English proof (translation)
-Introduce `i i' h hN`. Break down `Nat.lt_or_eq_of_le h with h' | h'` into its components or cases. Conclude with `(chain_lt f N hs i i' h' hN).le`. Rewrite using `[h']`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_le (f : ℕ → ℚ) (N : ℕ) (hs : ∀ i, i + 1 < N → f (i + 1) < f i) :
     ∀ i i', i ≤ i' → i' < N → f i' ≤ f i := by
@@ -118,9 +116,9 @@ def qv (R : Ranks) (h : HCParam R) (j : Fin R.m) : Multiset ℚ :=
   ((Multiset.range R.t).map fun c : ℕ => -h.e j + ((R.t : ℚ) - 1 - 2 * c) / 2)
 
 /- English proof (translation)
-Unfold `NG.paramV qv`. Simplify using `only [Multiset.map_add, Multiset.map_map]`. Use `congr 1`. Apply the tactic sequence `congr 1 all_goals refine Multiset.map_congr rfl fun i _ => ?_ all_goals simp only [Function.comp]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `try ring`. Use `Multiset.map_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Use `push_cast`. Apply the tactic sequence `try ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem paramV_eq (R : Ranks) (h : HCParam R) (j : Fin R.m) (sh : ℂ) :
     NG.paramV R h j sh = (qv R h j).map (fun q : ℚ => (q : ℂ) - sh) := by
@@ -134,7 +132,7 @@ theorem paramV_eq (R : Ranks) (h : HCParam R) (j : Fin R.m) (sh : ℂ) :
     simp only [Function.comp]; push_cast; try ring
 
 /- English proof (translation)
-Use `R.m_add_three_le_k` as an intermediate fact. Simplify using `[qv, Ranks.nV, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_qv (R : Ranks) (h : HCParam R) (j : Fin R.m) : Multiset.card (qv R h j) = R.nV := by
   have := R.m_add_three_le_k
@@ -146,41 +144,39 @@ end GlobalTheory.WtComb
 namespace GlobalTheory.WtComb
 
 /- English proof (translation)
-Establish `hk` using `R.m_add_three_le_k`. Establish `hm2` using `R.two_le_m`. Establish `ht0 : (0 : ℚ) ≤ R.t` using `by positivity`. Set `U : ℕ → ℚ` to `fun i => if hi : i < R.k then h.u ⟨i, hi⟩ else 0`. Set `V : ℕ → ℚ` to `fun i => if hi : i < R.k - 1 then h.v ⟨i, hi⟩ else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : ℕ → ℚ` to `fun i => if hi : i < R.m then -h.b ⟨i, hi⟩ else 0`. Establish `hU : ∀ i, i + 1 < R.k → U (i + 1) < U i`. Introduce `i hi`. Establish `h1` using `h.u_gt_v ⟨i, by omega⟩`. Establish `h2` using `h.v_gt_u ⟨i, by omega⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [U, dif_pos hi, dif_pos (show i < R.k by omega)]`. Conclude with `lt_trans h2 h1`. Establish `hV : ∀ i, i + 1 < R.k - 1 → V (i + 1) < V i`. Introduce `i hi`. Establish `h1` using `h.u_gt_v ⟨i + 1, hi⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h.v_gt_u ⟨i, by omega⟩`. Simplify using `only [V, dif_pos hi, dif_pos (show i < R.k - 1 by omega)]`. Conclude with `lt_trans h1 h2`. Establish `hB : ∀ i, i + 1 < R.m → B (i + 1) < B i`. Introduce `i hi`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h.gap_be ⟨i, by omega⟩`. Establish `h2` using `h.gap_eb ⟨i, by omega⟩ hi`. Simplify using `only [B, dif_pos hi, dif_pos (show i < R.m by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `bmono : ∀ i i' : Fin R.m, i.1 ≤ i'.1 → -h.b i' ≤ -h.b i`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i i' hii`. Use `chain_le B R.m hB i.1 i'.1 hii i'.2` as an intermediate fact. Simplify `this` using `only [B, dif_pos i.2, dif_pos i'.2]`. Establish `vgt : ∀ (i : Fin (R.k - 1)) (i' : Fin R.m), -h.b i' < h.v i`. Introduce `i i'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `h.v_gt_u i`. Establish `a2` using `chain_le U R.k hU (i.1 + 1) (R.k - 1) (by omega) (by omega)`. Establish `a3` using `h.u_last_gt (by omega) (by omega)`. Establish `a4` using `bmono ⟨0, by omega⟩ i' (Nat.zero_le _)`. Simplify using `only [U, dif_pos (show R.k - 1 < R.k by omega), dif_pos (show i.1 + 1 < R.k by omega)] at a2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `top : ∀ c : ℕ, -h.e j + ((R.t : ℚ) - 1 - 2 * c) / 2 < -h.b j`. Introduce `c`. Use `h.gap_be j` as an intermediate fact. Establish `hc : (0 : ℚ) ≤ c` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `bne : ∀ (i : Fin R.m) (c : ℕ), c < R.t → -h.b i ≠ -h.e j + ((R.t : ℚ) - 1 - 2 * c) / 2`. Introduce `i c hc`. Distinguish the cases in `hij : i.1 ≤ j.1`. Use `bmono i j hij` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `top c` as an intermediate fact. Introduce `heq`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hj1 : j.1 + 1 < R.m` using `by have := i.2; omega`. Establish `a1` using `h.gap_eb j hj1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `bmono ⟨j.1 + 1, hj1⟩ i (show j.1 + 1 ≤ i.1 by omega)`. Establish `hc' : (c : ℚ) + 1 ≤ R.t` using `by exact_mod_cast hc`. Introduce `heq`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `vne : ∀ (i : Fin (R.k - 1)) (c : ℕ), h.v i ≠ -h.e j + ((R.t : ℚ) - 1 - 2 * c) / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i c heq`. Use `vgt i j` as an intermediate fact. Use `top c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `vinj : Function.Injective h.v`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `StrictAnti.injective fun a b hab => ?_` and prove the remaining obligations. Use `chain_lt V (R.k - 1) hV a.1 b.1 hab b.2` as an intermediate fact. Simplify `this` using `only [V, dif_pos a.2, dif_pos b.2]`. Establish `binj : Function.Injective fun i : Fin R.m => -h.b i`. Use `StrictAnti.injective fun a b hab => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `chain_lt B R.m hB a.1 b.1 hab b.2` as an intermediate fact. Simplify `this` using `only [B, dif_pos a.2, dif_pos b.2]`. Establish `rinj : Function.Injective fun c : ℕ => -h.e j + ((R.t : ℚ) - 1 - 2 * c) / 2`. Introduce `c c' hcc`. Establish `: (c : ℚ) = c'` using `by simp only at hcc; linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this` after adjusting the coercions. Unfold `qv`. Use `Multiset.nodup_add.2 ⟨Multiset.nodup_add.2 ⟨Finset.univ.nodup.map vinj, Finset.univ.nodup.map binj, ?_⟩, (Multiset.nodup_range _).map rinj, ?_⟩` and prove the remaining obligations. Use `Multiset.disjoint_left.2 fun ha hb => ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨i', -, hi'⟩` from `Multiset.mem_map.1 hb`. Use `vgt i i'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `Multiset.disjoint_left.2 fun ha hb => ?_` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `Multiset.mem_map.1 hb`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[Multiset.mem_range]`. Break down `Multiset.mem_add.1 ha with ha | ha` into its components or cases. Take `⟨i, -, hi⟩` from `Multiset.mem_map.1 ha`. Conclude with `vne i c hi`. Take `⟨i, -, hi⟩` from `Multiset.mem_map.1 ha`.
-
-Conclude with `bne i c hc hi`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nodup_qv (R : Ranks) (h : HCParam R) (j : Fin R.m) : (qv R h j).Nodup := by
   classical
@@ -271,13 +267,13 @@ theorem nodup_qv (R : Ranks) (h : HCParam R) (j : Fin R.m) : (qv R h j).Nodup :=
       exact bne i c hc hi
 
 /- English proof (translation)
-Introduce `q hq`. Unfold `qv at hq`. Break down `Multiset.mem_add.1 hq with hq | hq` into its components or cases. Break down `Multiset.mem_add.1 hq with hq | hq` into its components or cases. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hq`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `h.v_int i`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hq`. Take `⟨z, hz⟩` from `h.b_int i`. Conclude with `⟨-z, by rw [hz]; push_cast; ring⟩`. Take `⟨c, -, rfl⟩` from `Multiset.mem_map.1 hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `h.e_int j`. Take `⟨s, hs⟩` from `R.t_odd`. Use `⟨-z + s - c, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hs]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem int_qv (R : Ranks) (h : HCParam R) (j : Fin R.m) : ∀ q ∈ qv R h j, ∃ z : ℤ, q = z := by
   intro q hq
@@ -296,13 +292,13 @@ theorem int_qv (R : Ranks) (h : HCParam R) (j : Fin R.m) : ∀ q ∈ qv R h j, �
     rw [hz, hs]; push_cast; ring
 
 /- English proof (translation)
-Introduce `R h j sh ⟨z', hz'⟩`. Rewrite using `[paramV_eq]`. Apply `exists_domWeight_infOf` to reduce the goal to its premises. Rewrite using `[Multiset.card_map, card_qv]`. Conclude with `(nodup_qv R h j).map (fun a b hab => by simpa using hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨q, hq, rfl⟩` from `Multiset.mem_map.1 hx`. Take `⟨w, rfl⟩` from `int_qv R h j q hq`. Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `R.t_odd`. Establish `hk` using `R.m_add_three_le_k`. Establish `hp : R.nV = 2 * (a + b + s)` using `by simp only [Ranks.nV, Ranks.r]; omega`. Use `⟨w - z' - (a + b + s), ?_⟩` and prove the remaining obligations. Rewrite using `[hz', hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem paramV_eq_infOf : ∀ (R : Ranks) (h : HCParam R) (j : Fin R.m) (sh : ℂ), (∃ z : ℤ, sh = (z : ℂ) + 1 / 2) →
     ∃ lam : DomWeight R.nV, NG.infOf lam.w = NG.paramV R h j sh := by

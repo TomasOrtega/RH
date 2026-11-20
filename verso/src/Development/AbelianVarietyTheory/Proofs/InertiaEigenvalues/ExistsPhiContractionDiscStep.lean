@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Proceed by induction on `h generalizing y with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, mul_assoc, ih, hE, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_pow_mul_eq_of_norm_mul_eq {R : Type*} [NormedRing R] (E : R) (q : ℝ)
     (hE : ∀ y, ‖E * y‖ = q * ‖y‖) (h : ℕ) (y : R) : ‖E ^ h * y‖ = q ^ h * ‖y‖ := by
@@ -23,37 +23,33 @@ theorem norm_pow_mul_eq_of_norm_mul_eq {R : Type*} [NormedRing R] (E : R) (q : �
   | succ n ih => rw [pow_succ, mul_assoc, ih, hE, pow_succ]; ring
 
 /- English proof (translation)
-Introduce `l _ K bk A _ s ι tb φ hφ Φ hΦ κ c hc h V hV ρ ρ' hρ₀ hρ1 hρ' R R' hR hR' U C hC hU hRU hUC`. Take `⟨-, -, ⟨hρ₀pos, hρ₀1, -⟩, -⟩` from `GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk`. Establish `hl1 : 1 ≤ l` using `(Fact.out : l.Prime).one_lt.le`. Establish `hρpos : 0 < ρ` using `hρ₀pos.trans_le hρ₀`. Establish `hρ'pos : 0 < ρ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `(show (0 : ℝ≥0) ≤ ρ' from zero_le).eq_or_lt with h0 | h0` into its components or cases. Rewrite `hρ'` using `[← h0, zero_pow (by omega)]`. Conclude with `absurd hρ' hρpos.ne`. Conclude with `h0`. Establish `hρ'1 : ρ' < 1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Establish `h2` using `one_le_pow₀ hh (n := l)`. Rewrite `h2` using `[hρ']`. Conclude with `absurd hρ1 (not_lt.2 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρρ' : ρ ≤ ρ'` using `by rw [← hρ']; exact pow_le_of_le_one zero_le hρ'1.le (by omega)`. Take `⟨Φ', hΦ'⟩` from `GlobalTheory.T.exists_closedDiscExtension_of_pow_dvd l A A φ (s X) (s X) ρ ρ' l hρ'pos (by rw [hφ]) hρ'.le`. Establish `hc1` using `(GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A (s X) ρ).2.2.2 A A (s X) (s X) ρ' bk.ρ₀ φ (RingHom.id A) Φ' R' hΦ' hR'`. Establish `hc2` using `(GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A (s X) ρ).2.2.2 A A (s X) (s X) bk.ρ₀ bk.ρ₀ (RingHom.id A) φ R Φ hR hΦ`. Rewrite `hc1` using `[RingHom.id_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc2` using `[RingHom.comp_id]`. Establish `hcomm : ∀ x, R' (Φ' x) = Φ (R x)` using `fun x => RingHom.congr_fun (hc1.unique hc2) x`. Use `haveI : IsUltrametricDist (Disc l (s X) ρ') := (GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A (s X) ρ').1`. Use `haveI : NonarchimedeanAddGroup (Disc l (s X) ρ') := IsUltrametricDist.nonarchimedeanAddGroup`. Establish `hUn : Filter.Tendsto (fun i => ‖U i‖) Filter.cofinite (nhds 0)` using `tendsto_zero_iff_norm_tendsto_zero.1 hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTle : ∀ i j, ‖Φ' (U i) * toDisc l (s X) ρ' (c i j)‖ ≤ ‖U i‖ * ‖toDisc l (s X) ρ' (c i j)‖` using `fun i j => (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (hΦ'.norm_le _) (norm_nonneg _))`. Establish `hTle' : ∀ i j, ‖Φ' (U i) * toDisc l (s X) ρ' (c i j)‖ ≤ ‖U i‖` using `fun i j => (hTle i j).trans (mul_le_of_le_one_right (norm_nonneg _) (norm_toDisc_le _))`. Establish `hsum : ∀ j, Summable fun i => Φ' (U i) * toDisc l (s X) ρ' (c i j)` using `fun j => NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (squeeze_zero_norm (fun i => hTle' i j) hUn)`. Use `set Z : κ → Disc l (s X) ρ' := fun j => ∑' i, Φ' (U i) * toDisc l (s X) ρ' (c i j) with hZdef`. Establish `hZC : ∀ j, ‖Z j‖ ≤ C` using `fun j => IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg hC fun i => (hTle' i j).trans (hUC i)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR'c : Continuous R'` using `AddMonoidHomClass.continuous_of_bound R' 1 fun y => (hR'.norm_le y).trans (one_mul _).ge`. Establish `hRZ : ∀ j, R' (Z j) = toDisc l (s X) bk.ρ₀ (s bk.E) ^ h * V j` using `fun j => by`. Establish `h1` using `(hsum j).hasSum.map R' hR'c`. Establish `h2 : (R' ∘ fun i => Φ' (U i) * toDisc l (s X) ρ' (c i j)) = fun i => Φ (V i) * toDisc l (s X) bk.ρ₀ (c i j)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Function.comp_apply, map_mul, hcomm, hRU, hR'.ext, RingHom.id_apply]`. Rewrite `h1` using `[h2]`. Conclude with `h1.unique (hV j)`. Establish `hsmall : ∀ r : ℝ, 0 < r → {j | r < ‖Z j‖}.Finite`. Introduce `r hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Establish `hF : {i | r < ‖U i‖}.Finite`. Use `Filter.eventually_cofinite.1 (hUn.eventually (ge_mem_nhds hr))` as an intermediate fact. Simplify `this` using `only [not_le]`. Take `⟨n, hn⟩` from `GlobalTheory.T.norm_baseRingToClosedDisc_J_pow_small l K bk A s ρ' hρ'pos hρ'1 (r / (C + 1)) (by positivity)`. Use `(hF.biUnion fun i _ => hc i n).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Assume the negation of the conclusion as `hj'`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, not_exists, not_not] at hj'`. Use `(not_le.2 (show r < ‖Z j‖ from hj)) ?_` and prove the remaining obligations. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg hr.le fun i => ?_` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : r < ‖U i‖`. Use `(hTle i j).trans ((mul_le_mul (hUC i) (hn _ (hj' i hi)) (norm_nonneg _) hC).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_div_assoc', div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(hTle' i j).trans (not_lt.1 hi)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : Filter.Tendsto Z Filter.cofinite (nhds 0)`. Use `Metric.tendsto_nhds.2 fun ε hε => Filter.eventually_cofinite.2 ((hsmall (ε / 2) (by linarith)).subset ?_)` and prove the remaining obligations. Introduce `j hj`. Simplify using `only [Set.mem_setOf_eq, dist_zero_right, not_lt] at hj ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hnorm', hdiv'⟩` from `GlobalTheory.T.eisenstein_div_closedDisc_of_topBasis l K bk A s ι tb ρ' (hρ₀.trans hρρ') hρ'1`. Take `⟨hnorm₀, -⟩` from `GlobalTheory.T.eisenstein_div_closedDisc_of_topBasis l K bk A s ι tb bk.ρ₀ le_rfl hρ₀1`. Use `choose U' hU' using fun j => hdiv' R' hR' h (Z j) ⟨V j, hRZ j⟩`. Establish `hq : (0 : ℝ) < (ρ' : ℝ) ^ (bk.Ep.natDegree * h)` using `by positivity`. Establish `hnZ : ∀ j, ‖Z j‖ = (ρ' : ℝ) ^ (bk.Ep.natDegree * h) * ‖U' j‖` using `fun j => by`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hU' j, norm_pow_mul_eq_of_norm_mul_eq _ _ hnorm' h, pow_mul]`. Use `⟨U', ?_, ?_, fun j => (hnZ j).symm.trans_le (hZC j)⟩` and prove the remaining obligations. Establish `he : ∀ j, ‖U' j‖ = ((ρ' : ℝ) ^ (bk.Ep.natDegree * h))⁻¹ * ‖Z j‖` using `fun j => by`. Rewrite using `[hnZ j, inv_mul_cancel_left₀ hq.ne']`. Use `squeeze_zero_norm (fun j => (he j).le) ?_` and prove the remaining obligations.
-
-Simplify using `using (tendsto_zero_iff_norm_tendsto_zero.1 hZ).const_mul ((ρ' : ℝ) ^ (bk.Ep.natDegree * h))⁻¹`. Introduce `j`. Establish `h1 : toDisc l (s X) bk.ρ₀ (s bk.E) ^ h * (R' (U' j) - V j) = 0`. Establish `h2` using `hRZ j`. Rewrite `h2` using `[hU' j, map_mul, map_pow, hR'.ext, RingHom.id_apply]`.
-
-Rewrite using `[mul_sub, h2, sub_self]`. Establish `h3` using `congrArg norm h1`. Rewrite `h3` using `[norm_pow_mul_eq_of_norm_mul_eq _ _ hnorm₀ h, norm_zero]`. Establish `h4 : (0 : ℝ) < ((bk.ρ₀ : ℝ) ^ bk.Ep.natDegree) ^ h` using `by positivity`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 ((mul_eq_zero.1 h3).resolve_left h4.ne'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_discStep : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A] (s : bk.S →+* A) (ι : Type), TopBasis s bk.J ι → ∀ (φ : A →+* A), φ (s X) = s X ^ l → ∀ (Φ : Disc l (s X) bk.ρ₀ →+* Disc l (s X) bk.ρ₀), IsDiscMap φ Φ → ∀ (κ : Type) (c : κ → κ → A), (∀ i (n : ℕ), {j | c i j ∉ (bk.J ^ n).map s}.Finite) → ∀ (h : ℕ) (V : κ → Disc l (s X) bk.ρ₀), (∀ j, HasSum (fun i => Φ (V i) * toDisc l (s X) bk.ρ₀ (c i j)) (toDisc l (s X) bk.ρ₀ (s bk.E) ^ h * V j)) → ∀ (ρ ρ' : ℝ≥0), bk.ρ₀ ≤ ρ → ρ < 1 → ρ' ^ l = ρ → ∀ (R : Disc l (s X) ρ →+* Disc l (s X) bk.ρ₀) (R' : Disc l (s X) ρ' →+* Disc l (s X) bk.ρ₀), IsDiscMap (RingHom.id A) R → IsDiscMap (RingHom.id A) R' → ∀ (U : κ → Disc l (s X) ρ) (C : ℝ), 0 ≤ C → Filter.Tendsto U Filter.cofinite (nhds 0) → (∀ j, R (U j) = V j) → (∀ j, ‖U j‖ ≤ C) → ∃ U' : κ → Disc l (s X) ρ', Filter.Tendsto U' Filter.cofinite (nhds 0) ∧ (∀ j, R' (U' j) = V j) ∧ ∀ j, (ρ' : ℝ) ^ (bk.Ep.natDegree * h) * ‖U' j‖ ≤ C := by
   intro l _ K bk A _ s ι tb φ hφ Φ hΦ κ c hc h V hV ρ ρ' hρ₀ hρ1 hρ' R R' hR hR' U C hC hU hRU hUC

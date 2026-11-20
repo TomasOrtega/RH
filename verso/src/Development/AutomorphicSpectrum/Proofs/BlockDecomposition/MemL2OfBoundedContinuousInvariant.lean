@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.CuspInvariant
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hfin` using `GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Use `⟨hl, MemLp.of_bound ?_ C (.of_forall fun q => hC _)⟩` and prove the remaining obligations. Use `aestronglyMeasurable_quotMeasure_iff_lift.2 ?_` and prove the remaining obligations. Rewrite using `[hl.lift_descend]`. Conclude with `hc.aestronglyMeasurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memL2_of_bounded_continuous_invariant (μ : Measure (GA E a)) [μ.IsHaarMeasure] {φ : GA E a → ℂ} (hc : Continuous φ)
     (hl : LeftInv (latticeGL E a) φ) {C : ℝ} (hC : ∀ g, ‖φ g‖ ≤ C) : MemL2Quotient (latticeGL E a) μ φ := by
@@ -28,9 +28,9 @@ theorem memL2_of_bounded_continuous_invariant (μ : Measure (GA E a)) [μ.IsHaar
   exact hc.aestronglyMeasurable
 
 /- English proof (translation)
-Establish `hi : Integrable f μ` using `hf.integrable_of_hasCompactSupport hs`. Establish `hT : IsRepOp (R (latticeGL E a) μ) μ f (Rop (latticeGL E a) μ f)` using `isRepOp_Rop hi`. Use `Subtype.ext (((isSubrep_L2cusp μ).coe_repOp_rep hT).2 _ |>.trans ?_)` and prove the remaining obligations. Use `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ?_` and prove the remaining obligations. Establish `e` using `h.lift_toL2_ae_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(GlobalTheory.AutomorphicL2Pointwise.lift_Rop_eq_convR _ _ μ f hi h.toL2).2.trans (Filter.EventuallyEq.trans (.of_forall fun x => ?_) e.symm)` and prove the remaining obligations. Rewrite using `[← hφ x]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [(measurePreserving_mul_left μ x).quasiMeasurePreserving.ae e] with y hy`. Rewrite using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repOp_toL2cusp (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {f φ : GA E a → ℂ}
     (hf : Continuous f) (hs : HasCompactSupport f) (h : MemL2Quotient (latticeGL E a) μ φ) (hm : φ ∈ cuspCont E a)
@@ -49,13 +49,11 @@ theorem repOp_toL2cusp (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRight
   rw [hy]
 
 /- English proof (translation)
-Establish `hA` using `GlobalTheory.CompanionTheory.CuspidalCompact.isCompactOperator_repOp_Rcusp E a μ f hf hs`. Establish `hK` using `GlobalTheory.CompanionTheory.CompactFix.finiteDimensional_ker_sub_id _ hA`. Use `set K := LinearMap.ker (((repOp (Rcusp μ) μ f : L2cusp μ →L[ℂ] L2cusp μ) : L2cusp μ →ₗ[ℂ] L2cusp μ) - LinearMap.id)`. Set `t` to `GlobalTheory.CompanionTheory.CuspTransfer.toL2cusp μ`. Establish `ht : Function.Injective t` using `(injective_iff_map_eq_zero _).2 fun φ e => Subtype.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Conclude with `toL2_ne_zero φ.2.2 φ.2.1.1 h0 (congrArg Subtype.val e))`. Set `Q` to `K.comap t`. Establish `hQ : FiniteDimensional ℂ Q` using `FiniteDimensional.of_injective (t.restrict (q := K) fun x hx => hx) fun x y e => Subtype.ext (ht (congrArg Subtype.val e))`. Establish `hle : Submodule.span ℂ S ≤ Q.map (GlobalTheory.CompanionTheory.CuspTransfer.cuspidalL2Functions μ).subtype` using `Submodule.span_le.2 fun φ hφ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, ⟨C, hC⟩, h3⟩` from `hS φ hφ`. Establish `hm` using `memL2_of_bounded_continuous_invariant μ h1.1 (leftInv_of_mem_cuspCont h1) hC`. Use `⟨⟨φ, h1, hm⟩, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ K`. Simplify using `only [K, LinearMap.mem_ker, LinearMap.sub_apply, ContinuousLinearMap.coe_coe, LinearMap.id_apply]`.
-
-Conclude with `sub_eq_zero.2 (repOp_toL2cusp μ hf hs hm h1 h3)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {f : GA E a → ℂ}
     (hf : Continuous f) (hs : HasCompactSupport f) (S : Set (GA E a → ℂ))
@@ -81,9 +79,9 @@ theorem finiteDimensional_span (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.Is
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : GA E a)`. Establish `hc` using `ContAut.continuous_map_pFin E a`. Establish `hW : (GeneralLinearGroup.map (pFin E) '' C : Set (GL (Fin a) (Af E))) ∈ 𝓝 (1 : GL (Fin a) (Af E))`. Establish `h1 : finGL E a ⁻¹' C ∈ 𝓝 (1 : GL (Fin a) (Af E))` using `(GlobalTheory.CompanionTheory.DenseKFin.continuous_finGL (E := E) (a := a)).continuousAt.preimage_mem_nhds (by simpa using hC1)`. Conclude with `Filter.mem_of_superset h1 fun k hk => ⟨_, hk, pFin_finGL k⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUW⟩` from `GlobalTheory.CompanionTheory.DenseKFin.exists_openSubgroup_GLAf (Filter.inter_mem hW (hL.mem_nhds (one_mem L)))`. Conclude with `⟨U, fun k hk => (hUW hk).2, hU, (hC.image hc).of_isClosed_subset (Subgroup.isClosed_of_isOpen U hU) fun k hk => (hUW hk).1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compact_open {L : Subgroup (GL (Fin a) (Af E))} (hL : IsOpen (L : Set (GL (Fin a) (Af E)))) :
     ∃ U : Subgroup (GL (Fin a) (Af E)), U ≤ L ∧ IsOpen (U : Set (GL (Fin a) (Af E))) ∧
@@ -103,7 +101,7 @@ abbrev pI (g : GA E a) : GL (Fin a) (Cinf E) := GeneralLinearGroup.map (pInf E) 
 def levelSet (U : Subgroup (GL (Fin a) (Af E))) : Set (GA E a) := {g | GeneralLinearGroup.map (pFin E) g ∈ U}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Subgroup.isClosed_of_isOpen U hU).preimage (ContAut.continuous_map_pFin E a), hU.preimage (ContAut.continuous_map_pFin E a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isClopen_levelSet {U : Subgroup (GL (Fin a) (Af E))} (hU : IsOpen (U : Set (GL (Fin a) (Af E)))) :
     IsClopen (levelSet U : Set (GA E a)) :=
@@ -111,7 +109,7 @@ theorem isClopen_levelSet {U : Subgroup (GL (Fin a) (Af E))} (hU : IsOpen (U : S
     hU.preimage (ContAut.continuous_map_pFin E a)⟩
 
 /- English proof (translation)
-Establish `e : (levelSet U : Set (GA E a)) ∩ pI ⁻¹' K = (GASplit.splitEquiv E a).toHomeomorph ⁻¹' (K ×ˢ (U : Set (GL (Fin a) (Af E))))`. Use extensionality with `g`. Conclude with `and_comm`. Rewrite using `[e]`. Conclude with `(Homeomorph.isCompact_preimage _).2 (hK.prod hU)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_levelSet_inter {U : Subgroup (GL (Fin a) (Af E))} (hU : IsCompact (U : Set (GL (Fin a) (Af E))))
     {K : Set (GL (Fin a) (Cinf E))} (hK : IsCompact K) : IsCompact ((levelSet U : Set (GA E a)) ∩ pI ⁻¹' K) := by
@@ -130,21 +128,21 @@ def levelMeasure (μ : Measure (GA E a)) (U : Subgroup (GL (Fin a) (Af E))) : Me
   (μ.restrict (levelSet U)).map pI
 
 /- English proof (translation)
-The claim follows from `(ContAut.continuous_map_pInf E a).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_pI : Measurable (pI : GA E a → GL (Fin a) (Cinf E)) :=
   (ContAut.continuous_map_pInf E a).measurable
 
 /- English proof (translation)
-Use `haveI : T2Space (GL (Fin a) (Cinf E)) := Units.isEmbedding_embedProduct.t2Space`. Establish `hH` using `(isClopen_levelSet hU).isOpen.measurableSet`. Establish `hp` using `measurable_pI (E := E) (a := a)`. Establish `hmeas : ∀ {K : Set (GL (Fin a) (Cinf E))}, MeasurableSet K → levelMeasure μ U K = μ (pI ⁻¹' K ∩ levelSet U)` using `fun hK => by`. Rewrite using `[levelMeasure, Measure.map_apply hp hK, Measure.restrict_apply (hp hK)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `{ lt_top_of_isCompact := ?_, map_mul_left_eq_self := ?_, open_pos := ?_ }` and prove the remaining obligations. Introduce `K hK`. Rewrite using `[hmeas hK.measurableSet, Set.inter_comm]`. Conclude with `(isCompact_levelSet_inter hUc hK).measure_lt_top`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hpre : (fun g : GA E a => infGL E a y * g) ⁻¹' levelSet U = levelSet U`. Use extensionality with `g`. Simplify using `[levelSet]`. Establish `hmp` using `(measurePreserving_mul_left μ (infGL E a y)).restrict_preimage hH`. Rewrite `hmp` using `[hpre]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[levelMeasure, Measure.map_map (measurable_const_mul y) hp]`. Establish `e : ((fun x => y * x) ∘ pI : GA E a → _) = pI ∘ fun g => infGL E a y * g`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[e, ← Measure.map_map hp (measurable_const_mul _), hmp.map_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `V hV hne`. Take `⟨y, hy⟩` from `hne`. Rewrite using `[hmeas hV.measurableSet]`. Use `((hV.preimage (ContAut.continuous_map_pInf E a)).inter (isClopen_levelSet hU).isOpen).measure_ne_zero μ ⟨infGL E a y, by simpa using hy, ?_⟩` and prove the remaining obligations. Simplify using `[levelSet, one_mem]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_levelMeasure (μ : Measure (GA E a)) [μ.IsHaarMeasure] {U : Subgroup (GL (Fin a) (Af E))}
     (hU : IsOpen (U : Set (GL (Fin a) (Af E)))) (hUc : IsCompact (U : Set (GL (Fin a) (Af E)))) :
@@ -178,11 +176,11 @@ theorem isHaarMeasure_levelMeasure (μ : Measure (GA E a)) [μ.IsHaarMeasure] {U
     simp [levelSet, one_mem]
 
 /- English proof (translation)
-Establish `hH` using `(isClopen_levelSet (E := E) hU).isOpen.measurableSet`. Establish `hc : Continuous fun y => φ (g * infGL E a y) * α y` using `(hφ.comp (continuous_const.mul GlobalTheory.CompanionTheory.DenseKFin.continuous_infGL)).mul hα`. Rewrite using `[levelMeasure, integral_map measurable_pI.aemeasurable hc.aestronglyMeasurable]`. Establish `e : (fun y => (levelSet U).indicator (α ∘ pI) y * φ (g * y)) = (levelSet U).indicator fun y => α (pI y) * φ (g * y)`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `by_cases h : y ∈ levelSet U <;> simp [h]`. Rewrite using `[convR, e, integral_indicator hH]`. Use `setIntegral_congr_fun hH fun y hy => ?_` and prove the remaining obligations. Establish `h` using `hfix _ hy (g * infGL E a (pI y))`. Rewrite `h` using `[mul_assoc, infGL_mul_finGL]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [h, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem integral_levelMeasure (μ : Measure (GA E a)) {U : Subgroup (GL (Fin a) (Af E))}
     (hU : IsOpen (U : Set (GL (Fin a) (Af E)))) {α : GL (Fin a) (Cinf E) → ℂ} (hα : Continuous α) {φ : GA E a → ℂ}
@@ -205,7 +203,7 @@ theorem integral_levelMeasure (μ : Measure (GA E a)) {U : Subgroup (GL (Fin a) 
 end Measure
 
 /- English proof (translation)
-The claim follows from `(hα.comp (ContAut.continuous_map_pInf E a)).indicator fun x hx => by rw [(isClopen_levelSet hU).frontier_eq] at hx exact absurd hx (Set.notMem_empty x)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_test {U : Subgroup (GL (Fin a) (Af E))} (hU : IsOpen (U : Set (GL (Fin a) (Af E))))
     {α : GL (Fin a) (Cinf E) → ℂ} (hα : Continuous α) :
@@ -215,9 +213,9 @@ theorem continuous_test {U : Subgroup (GL (Fin a) (Af E))} (hU : IsOpen (U : Set
     exact absurd hx (Set.notMem_empty x)
 
 /- English proof (translation)
-Use `HasCompactSupport.of_support_subset_isCompact (isCompact_levelSet_inter hU hα) fun g hg => ?_` and prove the remaining obligations. Rewrite `hg` using `[Function.mem_support]`. Establish `h1 : g ∈ levelSet U`. Assume the negation of the conclusion as `h`. Conclude with `hg (Set.indicator_of_notMem h _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, subset_tsupport _ ?_⟩` and prove the remaining obligations. Rewrite using `[Function.mem_support]`. Rewrite `hg` using `[Set.indicator_of_mem h1]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_test {U : Subgroup (GL (Fin a) (Af E))} (hU : IsCompact (U : Set (GL (Fin a) (Af E))))
     {α : GL (Fin a) (Cinf E) → ℂ} (hα : HasCompactSupport α) :
@@ -232,13 +230,11 @@ theorem hasCompactSupport_test {U : Subgroup (GL (Fin a) (Af E))} (hU : IsCompac
   rwa [Set.indicator_of_mem h1] at hg
 
 /- English proof (translation)
-Introduce `E _ _ _ a L hL W _ _ _ ρ hρ J hJ`. Take `⟨U, hUL, hUo, hUc⟩` from `exists_compact_open hL`. Use `letI : MeasurableSpace (GL (Fin a) (Cinf E)) := borel _`. Use `haveI : BorelSpace (GL (Fin a) (Cinf E)) := ⟨rfl⟩`. Set `μ : Measure (GA E a)` to `Measure.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI := GlobalTheory.CovolGL.isMulRightInvariant E a μ`. Take `⟨α, hαc, hαs, hα⟩` from `hu E a W ρ hρ J hJ (levelMeasure μ U) (isHaarMeasure_levelMeasure μ hUo hUc)`. Use `set S : Set (Sm E a) := {φ | φ ∈ genSpace L ρ J ∧ IsCuspidal φ.1 ∧ ∀ t g, φ.1 (GlobalTheory.UnitaryBC.splitCentre E a t * g) = φ.1 g} with hSdef`. Establish `key` using `finiteDimensional_span μ (continuous_test hUo hαc) (hasCompactSupport_test hUc hαs) ((Sm E a).subtype '' S) (by`. Introduce and unpack `_ ⟨φ, ⟨hφ, hcusp, hz⟩, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcf : IsCuspForm φ` using `⟨hφ.1, hcusp⟩`. Establish `hm` using `mem_cuspCont_of_isCuspForm hcf hz`. Use `⟨hm, hb.of_invariant hcf hz, fun x => ?_⟩` and prove the remaining obligations. Use `(integral_levelMeasure μ hUo hαc hm.1 (fun k hk y => ?_) x).symm.trans (hα L φ hφ x).symm` and prove the remaining obligations. Conclude with `congrFun (congrArg Subtype.val (hφ.2.1 k (hUL hk))) y)`.
-
-Rewrite `key` using `[← Submodule.map_span]`. Conclude with `(Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) _).symm.finiteDimensional`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspInvFin (hb : GlobalTheory.Published.CuspFormsBoundedGL)
     (hu : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), UnifAlpha E a) :

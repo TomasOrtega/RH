@@ -26,7 +26,7 @@ def rM {U V : ObjectProperty C} (h : V ≤ U) :
 variable {A}
 
 /- English proof (translation)
-The claim follows from `(rM A h).d_pullC k x`.
+A detailed English derivation is pending.
 -/
 theorem d_resB {U V : ObjectProperty C} (h : V ≤ U) {k : ℕ} (x : Ch A U k) :
     CH.d _ k (resB A h x) = resB A h (CH.d _ k x) := (rM A h).d_pullC k x
@@ -38,7 +38,7 @@ theorem resB_resB {U V T : ObjectProperty C} (h : V ≤ U) (h' : T ≤ V) (h'' :
     resB A h' (resB A h x) = resB A h'' x := rfl
 
 /- English proof (translation)
-The claim follows from `map_sub ((rM A h).pullC k) x y`.
+A detailed English derivation is pending.
 -/
 theorem resB_sub {U V : ObjectProperty C} (h : V ≤ U) {k : ℕ} (x y : Ch A U k) :
     resB A h (x - y) = resB A h x - resB A h y := map_sub ((rM A h).pullC k) x y
@@ -52,7 +52,7 @@ def Lm (a : IdF A) (U : ObjectProperty C) (q : ℕ) : Submodule R (Ch A U q) whe
     exact Submodule.smul_of_tower_mem (a.S _) r (hx σ)
 
 /- English proof (translation)
-Introduce `σ`. Express the relevant statement in the definitionally equal form `∑ i : Fin (q + 2), (-1 : ℤ) ^ (i : ℕ) • _ ∈ a.S _`. Use `(a.S _).sum_mem fun i _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_of_tower_mem (a.S _) _ (a.map_mem _ (hx _))`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Lm_d {a : IdF A} {U : ObjectProperty C} {q : ℕ} {x : Ch A U q} (hx : x ∈ Lm a U q) :
     CH.d _ q x ∈ Lm a U (q + 1) := by
@@ -62,19 +62,19 @@ theorem Lm_d {a : IdF A} {U : ObjectProperty C} {q : ℕ} {x : Ch A U q} (hx : x
   exact Submodule.smul_of_tower_mem (a.S _) _ (a.map_mem _ (hx _))
 
 /- English proof (translation)
-Introduce `σ` and use `hx (σ ⋙ ObjectProperty.ιOfLE h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lm_res {a : IdF A} {U V : ObjectProperty C} (h : V ≤ U) {q : ℕ} {x : Ch A U q} (hx : x ∈ Lm a U q) :
     resB A h x ∈ Lm a V q := fun σ => hx (σ ⋙ ObjectProperty.ιOfLE h)
 
 /- English proof (translation)
-Introduce `σ` and use `hab _ (hx σ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lm_le {a b : IdF A} (hab : ∀ T, a.S T ≤ b.S T) {U : ObjectProperty C} {q : ℕ} {x : Ch A U q}
     (hx : x ∈ Lm a U q) : x ∈ Lm b U q := fun σ => hab _ (hx σ)
 
 /- English proof (translation)
-Introduce `σ`. Conclude with `habc _ _ _ (a.map_mem _ (hx ((CH.front_mono e).functor ⋙ σ))) (b.map_mem _ (hy ((CH.back_mono e).functor ⋙ σ)))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Lm_cup {a b c : IdF A} (habc : ∀ (T : C) (x y : A.obj T), x ∈ a.S T → y ∈ b.S T → x * y ∈ c.S T)
     {U : ObjectProperty C} {p q n : ℕ} (e : p + q = n) {x : Ch A U p} {y : Ch A U q}
@@ -88,13 +88,13 @@ def fc {p : ℕ} (k : Fin (p + 2)) (i : Idx (p + 2) N) : Idx (p + 1) N :=
   ⟨i.1 ∘ k.succAbove, i.2.comp (Fin.strictMono_succAbove k)⟩
 
 /- English proof (translation)
-Introduce `_ h _` and use `h _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cap_le {p : ℕ} (k : Fin (p + 2)) (i : Idx (p + 2) N) : capT W i.1 ≤ capT W (fc k i).1 :=
   fun _ h _ => h _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem x_congr {ι : Type} {f : ι → ObjectProperty C} {V : ObjectProperty C} {q : ℕ} (x : ∀ i, Ch A (f i) q)
     {i i' : ι} (e : i = i') (h : V ≤ f i) (h' : V ≤ f i') : resB A h (x i) = resB A h' (x i') := by
@@ -125,7 +125,7 @@ Both sides reduce to the same expression.
 theorem dv_apply {p q : ℕ} (x : (KK A W).X p q) (i : Idx (p + 1) N) : (KK A W).dv p q x i = CH.d _ q (x i) := rfl
 
 /- English proof (translation)
-Use `(congrFun (Cos.d_apply ((cosK A W).cos q) p x) i).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dh_apply {p q : ℕ} (x : (KK A W).X p q) (i : Idx (p + 2) N) :
     (KK A W).dh p q x i = ∑ k : Fin (p + 2), (-1 : ℤ) ^ (k : ℕ) • resB A (cap_le W k i) (x (fc k i)) := by
@@ -165,14 +165,14 @@ theorem res_bm {U V T : ObjectProperty C} (h : V ≤ U) (h' : T ≤ V) (h'' : T 
     resB A h' (bm h l q x) = bm h'' (resB A h' l) q x := rfl
 
 /- English proof (translation)
-Simplify using `only [bm_apply, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bm_add {U V : ObjectProperty C} (h : V ≤ U) (l l' : Ch A V 1) {q : ℕ} (x : Ch A U q) :
     bm h (l + l') q x = bm h l q x + bm h l' q x := by
   simp only [bm_apply, map_add]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem bm_congr {ι : Type} {f : ι → ObjectProperty C} {V : ObjectProperty C} {q : ℕ} (x : ∀ i, Ch A (f i) q)
     {i i' : ι} (e : i = i') (h : V ≤ f i) (h' : V ≤ f i') (l : Ch A V 1) : bm h l q (x i) = bm h' l q (x i') := by
@@ -181,7 +181,7 @@ theorem bm_congr {ι : Type} {f : ι → ObjectProperty C} {V : ObjectProperty C
 variable {N : ℕ} {W : Fin N → ObjectProperty C} (b : ∀ α, Ch A (W α) 1)
 
 /- English proof (translation)
-Introduce `_ h` and use `h a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem capT_at {m : ℕ} (i : Idx m N) (a : Fin m) : capT W i.1 ≤ W (i.1 a) := fun _ h => h a
 
@@ -189,13 +189,13 @@ def LL {m : ℕ} (i : Idx m N) (a c : Fin m) : Ch A (capT W i.1) 1 :=
   resB A (capT_at i a) (b (i.1 a)) - resB A (capT_at i c) (b (i.1 c))
 
 /- English proof (translation)
-Simplify using `only [LL]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem LL_add {m : ℕ} (i : Idx m N) (a c e : Fin m) : LL b i a c = LL b i a e + LL b i e c := by
   simp only [LL]; abel
 
 /- English proof (translation)
-Rewrite using `[LL, LL, resB_sub, resB_resB _ _ (h.trans (capT_at i' a')), resB_resB _ _ (h.trans (capT_at i' c'))]`. Conclude with `congrArg₂ (· - ·) (x_congr b ha _ _) (x_congr b hc _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_LL {m m' : ℕ} (i : Idx m N) (i' : Idx m' N) (h : capT W i.1 ≤ capT W i'.1) (a' c' : Fin m') (a c : Fin m)
     (ha : i'.1 a' = i.1 a) (hc : i'.1 c' = i.1 c) : resB A h (LL b i' a' c') = LL b i a c := by
@@ -214,7 +214,7 @@ theorem BB_apply {p q : ℕ} (x : (KK A W).X p q) (i : Idx (p + 2) N) :
       (x (fc (Fin.last (p + 1)) i)) := rfl
 
 /- English proof (translation)
-Establish `e : (s * -1 * -1) • X = - ((s * -1) • X)` using `by rw [mul_neg_one, mul_neg_one, neg_neg, neg_smul, neg_neg]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem neg_one_smul_cancel {M : Type*} [AddCommGroup M] (s : ℤ) (X Y : M) :
     (s * -1) • X + (s * -1) • Y + (s * -1 * -1) • X = (s * -1) • Y := by
@@ -222,31 +222,31 @@ theorem neg_one_smul_cancel {M : Type*} [AddCommGroup M] (s : ℤ) (X Y : M) :
   rw [e]; abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[dh_apply, BB_apply, dh_apply, map_sum]`. Establish `hS : ∀ k : Fin (p + 2), bm (cap_le W (Fin.last (p + 2)) i) (LL b i (Fin.last (p + 1)).castSucc (Fin.last (p + 2))) q ((-1 : ℤ) ^ (k : ℕ) • resB A (cap_le W k (fc (Fin.last (p + 2)) i)) (x (fc k (fc (Fin.last (p + 2)) i)))) = (-1 : ℤ) ^ (k : ℕ) • bm (fun _ h _ => h _) (LL b i (Fin …` using `fun k => by rw [map_zsmul]; rfl`. Establish `h1 : ∀ j : Fin (p + 1), resB A (cap_le W j.castSucc.castSucc i) (BB b p q x (fc j.castSucc.castSucc i)) = bm (fun _ h _ => h _) (LL b i (Fin.last (p + 1)).castSucc (Fin.last (p + 2))) q (x (fc j.castSucc (fc (Fin.last (p + 2)) i)))`. Introduce `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : fc (Fin.last (p + 1)) (fc j.castSucc.castSucc i) = fc j.castSucc (fc (Fin.last (p + 2)) i)`. Use `Subtype.ext (funext fun t => congrArg i.1 ?_)` and prove the remaining obligations. Use `j.2` as an intermediate fact. Use `t.2` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `ha : (fc j.castSucc.castSucc i).1 (Fin.last p).castSucc = i.1 (Fin.last (p + 1)).castSucc`. Use `congrArg i.1 ?_` and prove the remaining obligations. Use `j.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hc : (fc j.castSucc.castSucc i).1 (Fin.last (p + 1)) = i.1 (Fin.last (p + 2))`. Use `congrArg i.1 ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `j.2` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[BB_apply, res_bm _ _ (fun _ h _ => h _), res_LL b i _ _ _ _ _ _ ha hc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bm_congr (f := fun i : Idx (p + 1) N => capT W i.1) x e _ _ _`. Establish `h2 : resB A (cap_le W (Fin.last (p + 1)).castSucc i) (BB b p q x (fc (Fin.last (p + 1)).castSucc i)) = bm (fun _ h _ => h _) (LL b i (Fin.last p).castSucc.castSucc (Fin.last (p + 2))) q (x (fc (Fin.last (p + 1)) (fc (Fin.last (p + 2)) i)))`. Establish `e : fc (Fin.last (p + 1)) (fc (Fin.last (p + 1)).castSucc i) = fc (Fin.last (p + 1)) (fc (Fin.last (p + 2)) i)`. Use `Subtype.ext (funext fun t => congrArg i.1 ?_)` and prove the remaining obligations. Use `t.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `ha : (fc (Fin.last (p + 1)).castSucc i).1 (Fin.last p).castSucc = i.1 (Fin.last p).castSucc.castSucc`. Use `congrArg i.1 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hc : (fc (Fin.last (p + 1)).castSucc i).1 (Fin.last (p + 1)) = i.1 (Fin.last (p + 2))`. Use `congrArg i.1 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[BB_apply, res_bm _ _ (fun _ h _ => h _), res_LL b i _ _ _ _ _ _ ha hc]`. Conclude with `bm_congr (f := fun i : Idx (p + 1) N => capT W i.1) x e _ _ _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : resB A (cap_le W (Fin.last (p + 2)) i) (BB b p q x (fc (Fin.last (p + 2)) i)) = bm (fun _ h _ => h _) (LL b i (Fin.last p).castSucc.castSucc (Fin.last (p + 1)).castSucc) q (x (fc (Fin.last (p + 1)) (fc (Fin.last (p + 2)) i)))`. Establish `ha : (fc (Fin.last (p + 2)) i).1 (Fin.last p).castSucc = i.1 (Fin.last p).castSucc.castSucc`. Use `congrArg i.1 ?_` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> omega`. Establish `hc : (fc (Fin.last (p + 2)) i).1 (Fin.last (p + 1)) = i.1 (Fin.last (p + 1)).castSucc`. Use `congrArg i.1 ?_` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [CrystallineSemistableComparison.Auxff.sa_val, Fin.val_castSucc, Fin.val_last]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[BB_apply, res_bm _ _ (fun _ h _ => h _), res_LL b i _ _ _ _ _ _ ha hc]`. Simplify using `only [hS]`. Rewrite using `[Fin.sum_univ_castSucc, Fin.sum_univ_castSucc, Fin.sum_univ_castSucc (n := p + 1)]`. Use `(add_assoc _ _ _).trans (congrArg₂ (· + ·) (Finset.sum_congr rfl fun j _ => ?_) ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Both sides reduce to the same expression. Rewrite using `[h2, h3, LL_add b i (Fin.last p).castSucc.castSucc (Fin.last (p + 2)) (Fin.last (p + 1)).castSucc, bm_add]`. Simplify using `only [Fin.val_castSucc, Fin.val_last, smul_add, pow_succ]`. Conclude with `neg_one_smul_cancel _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem BB_dh (p q : ℕ) (x : (KK A W).X p q) :
     (KK A W).dh (p + 1) (q + 1) (BB b p q x) = BB b (p + 1) q ((KK A W).dh p q x) := by
@@ -328,7 +328,7 @@ theorem BB_dh (p q : ℕ) (x : (KK A W).X p q) :
 variable {V : ObjectProperty C} (hWV : ∀ α, W α ≤ V) (z : Ch A V 2)
 
 /- English proof (translation)
-Rewrite using `[LL, map_sub, d_resB, d_resB, ← hb, ← hb]`. Conclude with `sub_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_LL (hb : ∀ α, resB A (hWV α) z = CH.d _ 1 (b α)) {m : ℕ} (i : Idx m N) (a c : Fin m) :
     CH.d _ 1 (LL b i a c) = 0 := by
@@ -336,7 +336,7 @@ theorem d_LL (hb : ∀ α, resB A (hWV α) z = CH.d _ 1 (b α)) {m : ℕ} (i : I
   exact sub_self _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[dv_apply, BB_apply, BB_apply, bm_apply, bm_apply, CrystallineSemistableComparison.P.leibniz, d_LL b hWV z hb, map_zero, smul_zero, add_zero, d_resB]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem BB_dv (hb : ∀ α, resB A (hWV α) z = CH.d _ 1 (b α)) (p q : ℕ) (x : (KK A W).X p q) :
     (KK A W).dv (p + 1) (q + 1) (BB b p q x) = BB b p (q + 1) ((KK A W).dv p q x) := by
@@ -346,7 +346,7 @@ theorem BB_dv (hb : ∀ α, resB A (hWV α) z = CH.d _ 1 (b α)) (p q : ℕ) (x 
   rfl
 
 /- English proof (translation)
-The claim follows from `(capT_at i 0).trans (hW _)`.
+A detailed English derivation is pending.
 -/
 theorem capV (hW : ∀ α, W α ≤ V) {p : ℕ} (i : Idx (p + 1) N) : capT W i.1 ≤ V := (capT_at i 0).trans (hW _)
 
@@ -359,9 +359,9 @@ def PP (k : ℕ) : (KK A W).X k k :=
   Nat.rec (motive := fun k => (KK A W).X k k) (aa hWV z 0) (fun k y => (-1 : ℤ) ^ k • BB b k k y) k
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (A'.map (GlobalTheory.CatH.toLast i s)).hom 1 = (0 : A'.obj _)`. Rewrite using `[Fin.sum_univ_two, map_one, map_one]`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Express the relevant statement in the definitionally equal form `CH.d _ _ ((CH.mulP A').cupC _ (cupPowC A' z k) z) = 0`. Rewrite using `[CrystallineSemistableComparison.P.leibniz, ih, hz]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cupPow_d (A' : (V.FullSubcategory) ⥤ CommAlgCat.{0} R) (z : CH.Cn (CH.modF A') 2) (hz : CH.d _ 2 z = 0) (k : ℕ) :
     CH.d _ (2 * k) (cupPowC A' z k) = 0 := by
@@ -377,9 +377,9 @@ theorem cupPow_d (A' : (V.FullSubcategory) ⥤ CommAlgCat.{0} R) (z : CH.Cn (CH.
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[dv_apply]`. Express the relevant statement in the definitionally equal form `CH.d _ _ ((CH.mulP _).cupC _ _ _) = _`. Rewrite using `[CrystallineSemistableComparison.P.leibniz, d_resB, cupPow_d _ z hz, d_resB, ← hb]`. Establish `e : ((-1 : ℤ) ^ (2 * k)) = 1` using `by rw [pow_mul]; simp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, one_smul]`. Establish `h0 : resB A (capV hWV i) (0 : Ch A V (2 * k + 1)) = 0` using `map_zero ((rM A (capV hWV i)).pullC _)`. Rewrite using `[h0, map_zero, LinearMap.zero_apply]`. Conclude with `zero_add _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gg_dv (hz : CH.d _ 2 z = 0) (hb : ∀ α, resB A (hWV α) z = CH.d _ 1 (b α)) (k : ℕ) :
     (KK A W).dv 0 (2 * k + 1) (gg b hWV z k) = aa hWV z (k + 1) := by
@@ -394,13 +394,11 @@ theorem gg_dv (hz : CH.d _ 2 z = 0) (hb : ∀ α, resB A (hWV α) z = CH.d _ 1 (
   exact zero_add _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[dh_apply, Fin.sum_univ_two]`. Establish `h0 : resB A (cap_le W 0 i) (gg b hWV z k (fc 0 i)) = (CH.mulP _).cupC rfl (resB A (capV hWV i) (cupPowC (V.ι ⋙ A) z k)) (resB A (capT_at i 1) (b (i.1 1)))`. Establish `e : (fc 0 i).1 0 = i.1 1` using `rfl`. Establish `e'` using `x_congr b e (V := capT W i.1) (fun _ h => h _) (capT_at i 1)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg ((CH.mulP _).cupC rfl (resB A (capV hWV i) (cupPowC (V.ι ⋙ A) z k))) e'`. Establish `h1 : resB A (cap_le W 1 i) (gg b hWV z k (fc 1 i)) = (CH.mulP _).cupC rfl (resB A (capV hWV i) (cupPowC (V.ι ⋙ A) z k)) (resB A (capT_at i 0) (b (i.1 0)))`. Establish `e : (fc 1 i).1 0 = i.1 0` using `rfl`. Establish `e'` using `x_congr b e (V := capT W i.1) (fun _ h => h _) (capT_at i 0)`. Conclude with `congrArg ((CH.mulP _).cupC rfl (resB A (capV hWV i) (cupPowC (V.ι ⋙ A) z k))) e'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : LL b i (Fin.last 0).castSucc (Fin.last 1) = resB A (capT_at i 0) (b (i.1 0)) - resB A (capT_at i 1) (b (i.1 1))` using `rfl`. Rewrite using `[h0, h1, Pi.neg_apply, BB_apply, hL, bm_apply]`. Establish `hy : resB A (cap_le W (Fin.last 1) i) (aa hWV z k (fc (Fin.last 1) i)) = resB A (capV hWV i) (cupPowC (V.ι ⋙ A) z k)` using `rfl`. Rewrite using `[hy, map_sub]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul]`.
-
-Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem gg_dh (k : ℕ) : (KK A W).dh 0 (2 * k + 1) (gg b hWV z k) = - BB b 0 (2 * k) (aa hWV z k) := by
   funext i

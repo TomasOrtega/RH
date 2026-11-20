@@ -10,7 +10,7 @@ variable {G : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
 def fib (H : AddSubgroup G) (c : G ⧸ H) : Set G := (QuotientAddGroup.mk : G → G ⧸ H) ⁻¹' {c}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [fib, mem_preimage, mem_singleton_iff]`. Conclude with `QuotientAddGroup.eq_iff_sub_mem`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fib_mk (H : AddSubgroup G) (g : G) :
     fib H (g : G ⧸ H) = {x | x - g ∈ H} := by
@@ -19,7 +19,7 @@ theorem fib_mk (H : AddSubgroup G) (g : G) :
   exact QuotientAddGroup.eq_iff_sub_mem
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Rewrite using `[fib_mk]`. Conclude with `hm g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fib_meas (H : AddSubgroup G) (hm : ∀ g : G, MeasurableSet {x | x - g ∈ H})
     (c : G ⧸ H) : MeasurableSet (fib H c) := by
@@ -28,9 +28,9 @@ theorem fib_meas (H : AddSubgroup G) (hm : ∀ g : G, MeasurableSet {x | x - g �
   exact hm g
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Establish `hpre : fib H (g : G ⧸ H) = (fun x => -g + x) ⁻¹' (H : Set G)`. Rewrite using `[fib_mk]`. Use extensionality with `x`. Simplify using `[neg_add_eq_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpre, measure_preimage_add, h1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fib_measure (ν : Measure G) [ν.IsAddLeftInvariant] (H : AddSubgroup G)
     (h1 : ν (H : Set G) = 1) (c : G ⧸ H) : ν (fib H c) = 1 := by
@@ -42,33 +42,33 @@ theorem fib_measure (ν : Measure G) [ν.IsAddLeftInvariant] (H : AddSubgroup G)
   rw [hpre, measure_preimage_add, h1]
 
 /- English proof (translation)
-Introduce `_ _ hcd` and use `(Set.disjoint_singleton.mpr hcd).preimage _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fib_disj (H : AddSubgroup G) : Pairwise (Function.onFun Disjoint (fib H)) :=
   fun _ _ hcd => (Set.disjoint_singleton.mpr hcd).preimage _
 
 /- English proof (translation)
-The claim follows from `eq_univ_of_forall fun x => mem_iUnion.mpr ⟨(x : G ⧸ H), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem fib_union (H : AddSubgroup G) : ⋃ c, fib H c = univ :=
   eq_univ_of_forall fun x => mem_iUnion.mpr ⟨(x : G ⧸ H), rfl⟩
 
 /- English proof (translation)
-Establish `hmeas : Measurable f`. Introduce `s _`. Establish `hs : f ⁻¹' s = ⋃ c ∈ fbar ⁻¹' s, fib H c`. Use extensionality with `x`. Simplify using `[fib, hf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs]`. Conclude with `MeasurableSet.biUnion (to_countable _) fun c _ => fib_meas H hm c`. Establish `hlin : ∫⁻ g, ‖f g‖ₑ ∂ν = ∑' c, ‖fbar c‖ₑ`. Rewrite using `[← setLIntegral_univ, ← fib_union H, lintegral_iUnion (fib_meas H hm) (fib_disj H)]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setLIntegral_congr_fun (fib_meas H hm c) (g := fun _ => ‖fbar c‖ₑ), setLIntegral_const, fib_measure ν H h1 c, mul_one]`. Introduce `x hx`. Simplify using `only [fib, mem_preimage, mem_singleton_iff] at hx`. Simplify using `[hf, hx]`. Establish `hiff : (Integrable f ν ↔ Summable fun c => ‖fbar c‖)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Integrable, hasFiniteIntegral_iff_enorm, hlin]`. Simplify using `only [hmeas.aestronglyMeasurable, true_and]`. Rewrite using `[lt_top_iff_ne_top]`. Simplify using `only [← ofReal_norm]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : (∑' c, ((‖fbar c‖₊ : ℝ≥0) : ℝ≥0∞)) ≠ ⊤`. Simplify `h` using `[ofReal_norm, enorm_eq_nnnorm]`. Use `ENNReal.tsum_coe_ne_top_iff_summable.mp h'` as an intermediate fact. Conclude with `NNReal.summable_coe.mpr this |>.congr fun c => by simp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : Summable fun c => ‖fbar c‖₊` using `NNReal.summable_coe.mp (by simpa using h)`. Simplify `ENNReal.tsum_coe_ne_top_iff_summable.mpr h'` using `[ofReal_norm, enorm_eq_nnnorm]`. Use `⟨hiff, fun hs => ?_⟩` and prove the remaining obligations. Establish `hint : Integrable f ν` using `hiff.mpr hs`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← setIntegral_univ, ← fib_union H, integral_iUnion (fib_meas H hm) (fib_disj H) hint.integrableOn]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[setIntegral_congr_fun (fib_meas H hm c) (g := fun _ => fbar c), setIntegral_const]`. Simplify using `[Measure.real, fib_measure ν H h1 c]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [fib, mem_preimage, mem_singleton_iff] at hx`. Simplify using `[hf, hx]`.
+A detailed English derivation is pending.
 -/
 theorem integrable_iff_and_integral_eq (G : Type) [AddCommGroup G] [MeasurableSpace G]
     [MeasurableAdd G] (ν : Measure G) [ν.IsAddLeftInvariant] (H : AddSubgroup G)

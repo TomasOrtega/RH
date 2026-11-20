@@ -7,23 +7,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocSplitGraph
 
 /- English proof (translation)
-Introduce `L _ _ _ n a S₁ S₂ s σ₁ σ₂ h₁ h₂ hE`. Take `⟨E⟩` from `hE`. Take `⟨i₁, T₁, hi₁, hiL₁, hT₁inj, hT₁S, hT₁eq⟩` from `h₁`. Take `⟨i₂, T₂, hi₂, hiL₂, hT₂inj, hT₂S, hT₂eq⟩` from `h₂`. Establish `hci : i₁ = i₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (K := maximalRealSubfield L) s.v`. Establish `hfun : (i₁ : s.v.adicCompletion (maximalRealSubfield L) → s.w.adicCompletion L) = i₂`. Use `hd.equalizer hi₁ hi₂ (funext fun y => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[← s.i.commutes y, hiL₁, hiL₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingEquiv.ext (congrFun hfun)`. Substitute `hci` using the available equality. Set `F : σ₁.V →ₗ[ℂ] (GAf L n → a.W) × (GAf L n → a.W)` to `T₁.prod (T₂ ∘ₗ E.toLinearEquiv.toLinearMap)`. Establish `hF : ∀ u, F u = (T₁ u, T₂ (E u))` using `fun u => rfl`. Establish `hEint : ∀ g u, E (σ₁.ρ g u) = σ₂.ρ g (E u)` using `fun g u => LinearMap.congr_fun (E.isIntertwining' g) u`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : Nontrivial σ₁.V` using `by haveI := σ₁.irr`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation σ₁.ρ) ≠ ⊤)` to reduce the goal to its premises. Establish `: ∀ W : Subrepresentation σ₁.ρ, W = ⊥`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W`. Use extensionality with `x`. Simplify using `[Subsingleton.elim x 0]`. Rewrite using `[this ⊤]`. Use `⟨LinearMap.range F, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `exists_ne (0 : σ₁.V)`. Introduce `h`. Establish `hm : F u ∈ LinearMap.range F` using `⟨u, rfl⟩`. Rewrite `hm` using `[h, Submodule.mem_bot, hF, Prod.mk_eq_zero]`. Conclude with `hu (hT₁inj (hm.1.trans (map_zero T₁).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `⟨hT₁S u, hT₂S (E u)⟩`. Introduce and unpack `x hx _ ⟨u, rfl⟩`. Use `⟨σ₁.ρ (Matrix.GeneralLinearGroup.map i₁.toRingHom (s.loc n x)) u, ?_⟩` and prove the remaining obligations. Rewrite using `[hF, hF, hT₁eq x hx u, hEint, hT₂eq x hx (E u)]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `u ⟨v, hv⟩`. Rewrite `hv` using `[hF, Prod.mk.injEq]`. Establish `hv0 : v = 0` using `hT₁inj (hv.1.trans (map_zero T₁).symm)`. Rewrite using `[← hv.2, hv0, map_zero, map_zero]`. Introduce and unpack `u ⟨v, hv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hv` using `[hF, Prod.mk.injEq]`. Establish `hv0 : E v = 0` using `hT₂inj (hv.2.trans (map_zero T₂).symm)`. Establish `: v = 0` using `by simpa using hv0`. Rewrite using `[← hv.1, this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S₁ S₂ : Submodule ℂ (GAf L n → a.W)) (s : SplitPlace L) (σ₁ σ₂ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))), IsLocS S₁ s σ₁ → IsLocS S₂ s σ₂ → Nonempty (σ₁.ρ.Equiv σ₂.ρ) → ∃ X : Submodule ℂ ((GAf L n → a.W) × (GAf L n → a.W)), X ≠ ⊥ ∧ (∀ z ∈ X, z.1 ∈ S₁ ∧ z.2 ∈ S₂) ∧ (∀ x : GAf L n, TrivOutside {s.v} x → ∀ z ∈ X, (NG.rt L n x z.1, NG.rt L n x z.2) ∈ X) ∧ (∀ u, ((0 : GAf L n → a.W), u) ∈ X → u = 0) ∧ (∀ u, (u, (0 : GAf L n → a.W)) ∈ X → u = 0) := by
   intro L _ _ _ n a S₁ S₂ s σ₁ σ₂ h₁ h₂ hE

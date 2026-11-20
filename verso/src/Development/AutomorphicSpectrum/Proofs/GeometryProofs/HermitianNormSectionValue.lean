@@ -11,11 +11,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.EvalPt
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Simplify using `only [MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `congr 1`. Establish `key : ∏ k, t k ^ d k = ∏ p : (Σ k, J k), t p.1 ^ m p`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg m hm k]`. Rewrite using `[key, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[div_pow, div_mul_cancel₀ _ (pow_ne_zero _ (ht p.1))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_div_mul_prod {F : Type} [Field F] (v : (Σ k, J k) → F) (t : K → F) (ht : ∀ k, t k ≠ 0)
     {g : MRing J} {d : K → ℕ} (hg : IsMultiHomog g d) :
@@ -34,7 +34,7 @@ theorem aeval_div_mul_prod {F : Type} [Field F] (v : (Σ k, J k) → F) (t : K �
   rw [div_pow, div_mul_cancel₀ _ (pow_ne_zero _ (ht p.1))]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_aeval_int {σ S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (s : σ → S) (f : MvPolynomial σ ℤ) :
     φ (aeval s f) = aeval (fun i => φ (s i)) f := by
@@ -44,35 +44,31 @@ theorem map_aeval_int {σ S T : Type} [CommRing S] [CommRing T] (φ : S →+* T)
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Take `⟨hcov, hco2⟩` from `hco`. Use `choose cc hcc using hcov`. Establish `hw0 : ∀ k, w ⟨k, cc k⟩ ≠ 0` using `fun k => (hcc k).ne_zero`. Establish `hy0 : ∀ k, y ⟨k, cc k⟩ ≠ 0` using `fun k => (hco2 k (cc k) (hcc k)).1`. Establish `hr : ∀ p : (Σ k, J k), ∃ s : X.presheaf.stalk (centre z), genMap ξ ⟨centre z, hz⟩ s = y p / y ⟨p.1, cc p.1⟩ ∧ w p = (Scheme.stalkClosedPointTo z).hom s * w ⟨p.1, cc p.1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, i⟩`. Take `⟨r, ⟨h', s, hs1, hs2⟩, hwr⟩` from `(hco2 k (cc k) (hcc k)).2 i`. Conclude with `⟨s, hs1, by rw [hwr, ← hs2]⟩`. Use `choose s hs1 hs2 using hr`. Establish `hφ1 : ∀ f : MRing J, genMap ξ ⟨centre z, hz⟩ (aeval s f) = aeval (fun p => y p / y ⟨p.1, cc p.1⟩) f`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `f`. Rewrite using `[map_aeval_int]`. Simplify using `only [hs1]`. Establish `hwr : ∀ p : (Σ k, J k), w p / w ⟨p.1, cc p.1⟩ = (Scheme.stalkClosedPointTo z).hom (s p)` using `fun p => by`. Rewrite using `[hs2 p, mul_div_cancel_right₀ _ (hw0 p.1)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ2 : ∀ f : MRing J, (Scheme.stalkClosedPointTo z).hom (aeval s f) = aeval (fun p => w p / w ⟨p.1, cc p.1⟩) f`. Introduce `f`. Use `(map_aeval_int (Scheme.stalkClosedPointTo z).hom s f).trans ?_` and prove the remaining obligations. Simplify using `only [← hwr]`. Apply the tactic sequence `try rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hev : ∀ f : MRing J, evC w f = aeval w f` using `fun f => by`. Simplify using `only [evC, MvPolynomial.eval_map, MvPolynomial.aeval_def, algebraMap_int_eq]`. Establish `hg1 : aeval (fun p => w p / w ⟨p.1, cc p.1⟩) g * ∏ k, w ⟨k, cc k⟩ ^ dg k = aeval w g` using `aeval_div_mul_prod w (fun k => w ⟨k, cc k⟩) hw0 hg`. Establish `hh1 : aeval (fun p => w p / w ⟨p.1, cc p.1⟩) h * ∏ k, w ⟨k, cc k⟩ ^ dh k = aeval w h` using `aeval_div_mul_prod w (fun k => w ⟨k, cc k⟩) hw0 hh`. Establish `hg2 : aeval (fun p => y p / y ⟨p.1, cc p.1⟩) g * ∏ k, y ⟨k, cc k⟩ ^ dg k = aeval y g` using `aeval_div_mul_prod y (fun k => y ⟨k, cc k⟩) hy0 hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh2 : aeval (fun p => y p / y ⟨p.1, cc p.1⟩) h * ∏ k, y ⟨k, cc k⟩ ^ dh k = aeval y h` using `aeval_div_mul_prod y (fun k => y ⟨k, cc k⟩) hy0 hh`. Rewrite `*` using `[hev, hev]`. Use `set Pg := aeval (fun p => w p / w ⟨p.1, cc p.1⟩) g with hPg`. Use `set Ph := aeval (fun p => w p / w ⟨p.1, cc p.1⟩) h with hPh`. Use `set Qg := aeval (fun p => y p / y ⟨p.1, cc p.1⟩) g with hQg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Qh := aeval (fun p => y p / y ⟨p.1, cc p.1⟩) h with hQh`. Establish `hTg : ∏ k, w ⟨k, cc k⟩ ^ dg k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hw0 k)`. Establish `hTh : ∏ k, w ⟨k, cc k⟩ ^ dh k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hw0 k)`. Establish `hYg : ∏ k, y ⟨k, cc k⟩ ^ dg k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy0 k)`. Establish `hYh : ∏ k, y ⟨k, cc k⟩ ^ dh k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy0 k)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPh0 : Ph ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← hh1, h0, zero_mul]`. Establish `hunit : IsUnit (aeval s h : X.presheaf.stalk (centre z))` using `isUnit_of_map_unit (Scheme.stalkClosedPointTo z).hom _ (by rw [hφ2]; exact hPh0.isUnit)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQh0 : Qh ≠ 0`. Use `(hunit.map (genMap ξ ⟨centre z, hz⟩)).ne_zero` as an intermediate fact. Rewrite `this` using `[hφ1]`. Then use the resulting hypothesis. Establish `hyh0 : aeval y h ≠ 0`. Rewrite using `[← hh2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hQh0 hYh`. Establish `hval : ValAt ξ z (c₀ / ∏ k, y ⟨k, cc k⟩ ^ A.a k) (Pg / Ph)`. Use `⟨hz, aeval s g * ↑hunit.unit⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_units_inv, IsUnit.unit_spec, hφ1, hφ1]`. Establish `hpow : ∏ k, y ⟨k, cc k⟩ ^ A.a k = (∏ k, y ⟨k, cc k⟩ ^ dg k) / ∏ k, y ⟨k, cc k⟩ ^ dh k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hd k, zpow_sub₀ (hy0 k), zpow_natCast, zpow_natCast]`. Establish `hc0 : c₀ = (Qg * ∏ k, y ⟨k, cc k⟩ ^ dg k) / (Qh * ∏ k, y ⟨k, cc k⟩ ^ dh k)`. Rewrite using `[hg2, hh2, he, mul_div_assoc, div_self hyh0, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpow, hc0, ← hQg, ← hQh]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `hq : (aeval s g * ↑hunit.unit⁻¹ : X.presheaf.stalk (centre z)) * aeval s h = aeval s g`. Rewrite using `[mul_assoc, Units.inv_mul_of_eq hunit.unit_spec, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key2` using `(RingHom.map_mul (Scheme.stalkClosedPointTo z).hom _ _).symm.trans (congrArg (Scheme.stalkClosedPointTo z).hom hq)`. Rewrite `key2` using `[hφ2, hφ2]`. Conclude with `(eq_div_iff hPh0).2 key2`. Establish `key` using `hyp cc (Pg / Ph) hw0 hval`. Establish `hnpow : ∏ k, ‖w ⟨k, cc k⟩‖ ^ A.a k = (∏ k, ‖w ⟨k, cc k⟩‖ ^ dg k) / ∏ k, ‖w ⟨k, cc k⟩‖ ^ dh k`.
-
-Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hd k, zpow_sub₀ (norm_ne_zero_iff.2 (hw0 k)), zpow_natCast, zpow_natCast]`. Establish `hnh : ∏ k, ‖w ⟨k, cc k⟩‖ ^ dh k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (norm_ne_zero_iff.2 (hw0 k))`. Establish `hPhn : ‖Ph‖ ≠ 0` using `norm_ne_zero_iff.2 hPh0`.
-
-Rewrite using `[← key, ← hg1, ← hh1, hnpow, norm_mul, norm_mul, norm_div, norm_prod, norm_prod]`. Simplify using `only [norm_pow]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem norm_evC_of_specializes {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {y : (Σ k, J k) → Ω} {z : Spec (CommRingCat.of ℂ) ⟶ X} {w : (Σ k, J k) → ℂ} {A : HermLine J} {c₀ : Ω} {C : ℝ}
@@ -171,7 +167,7 @@ theorem norm_evC_of_specializes {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp
   try ring
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ _ J _ y z w A c₀ C g h dg dh _ hco hyp hg hh hd he hw`. Take `⟨k⟩` from `‹Nonempty K›`. Take `⟨c, hc⟩` from `hco.1 k`. Take `⟨r, ⟨hz, _⟩, _⟩` from `(hco.2 k c hc).2 c`. Conclude with `norm_evC_of_specializes hz hco hyp hg hh hd he hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_evC_of_forms : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] [Nonempty K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : (Σ k, J k) → ℂ) (A : HermLine J) (c₀ : Ω) (C : ℝ) (g h : MRing J) (dg dh : K → ℕ), IsCptGen ξ → CoordsAt ξ y z w → (∀ (cc : (k : K) → J k) (u : ℂ), (∀ k, w ⟨k, cc k⟩ ≠ 0) → ValAt ξ z (c₀ / ∏ k, y ⟨k, cc k⟩ ^ A.a k) u → ‖u‖ * ∏ k, ‖w ⟨k, cc k⟩‖ ^ A.a k = C * A.h w) → IsMultiHomog g dg → IsMultiHomog h dh → (∀ k, (dg k : ℤ) - dh k = A.a k) → aeval y g = c₀ * aeval y h → evC w h ≠ 0 → ‖evC w g‖ = C * A.h w * ‖evC w h‖ := by
   intro X Ω _ ξ K _ _ J _ y z w A c₀ C g h dg dh _ hco hyp hg hh hd he hw

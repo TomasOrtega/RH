@@ -12,9 +12,9 @@ def ratFun (q N : ℕ) (α : Fin N → ℂˣ) (X : ℂ) : ℂ :=
       ∏ i ∈ Finset.Icc 1 N, (1 - (q : ℂ) ^ (-(i : ℂ)) * X ^ 2)
 
 /- English proof (translation)
-Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Establish `h1 : (q : ℂ) ^ (-(s + 1 / 2)) = (q : ℂ) ^ (-(1 / 2 : ℂ)) * (q : ℂ) ^ (-s)`. Rewrite using `[← Complex.cpow_add _ _ hq0]`. Put the polynomial expressions in normal form. Establish `h2 : ∀ i : ℕ, (q : ℂ) ^ (-(2 * s + i)) = (q : ℂ) ^ (-(i : ℂ)) * ((q : ℂ) ^ (-s)) ^ 2` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Rewrite using `[← Complex.cpow_nat_mul, ← Complex.cpow_add _ _ hq0]`. Use `push_cast`. Put the polynomial expressions in normal form. Simplify using `only [lFactor, invNormFactor, ratFun, h1, h2, Pi.inv_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 -/
 theorem ratFun_cpow {q : ℕ} (hq : 1 < q) (N : ℕ) (α : Fin N → ℂˣ) (s : ℂ) :
     lFactor q α (s + 1 / 2) * lFactor q α⁻¹ (s + 1 / 2) * invNormFactor q N s =
@@ -27,13 +27,13 @@ theorem ratFun_cpow {q : ℕ} (hq : 1 < q) (N : ℕ) (α : Fin N → ℂˣ) (s :
   simp only [lFactor, invNormFactor, ratFun, h1, h2, Pi.inv_apply, mul_assoc]
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hq0 : (0 : ℝ) < q` using `by linarith`. Establish `key : ∀ a : ℂ, ‖a‖ ≤ (q : ℝ) ^ ρ → ∀ X ∈ Metric.ball (0 : ℂ) ((q : ℝ) ^ (1 / 2 - ρ)), 1 - a * (q : ℂ) ^ (-(1 / 2 : ℂ)) * X ≠ 0`. Introduce `a ha X hX`. Rewrite `hX` using `[mem_ball_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : ‖a * (q : ℂ) ^ (-(1 / 2 : ℂ)) * X‖ < 1`. Rewrite using `[norm_mul, norm_mul, Complex.norm_natCast_cpow_of_pos (by omega)]`. Establish `hre : (-(1 / 2 : ℂ)).re = -(1 / 2)` using `by norm_num`. Rewrite using `[hre]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `h`. Establish `e : a * (q : ℂ) ^ (-(1 / 2 : ℂ)) * X = 1` using `by linear_combination -h`. Rewrite `hn` using `[e, norm_one]`. Conclude with `lt_irrefl _ hn`. Unfold `ratFun`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `DifferentiableOn.mul (DifferentiableOn.mul ?_ ?_) ?_` and prove the remaining obligations. Conclude with `DifferentiableOn.fun_finsetProd fun i _ => ((differentiableOn_const _).sub ((differentiableOn_const _).mul differentiableOn_id)).inv fun X hX => key _ (hα i).1 X hX`. Conclude with `DifferentiableOn.fun_finsetProd fun i _ => ((differentiableOn_const _).sub ((differentiableOn_const _).mul differentiableOn_id)).inv fun X hX => key (((α i)⁻¹ : ℂˣ) : ℂ) (by rw [Units.val_inv_eq_inv_val, norm_inv]; exact (hα i).2) X hX`. Conclude with `DifferentiableOn.fun_finsetProd fun i _ => (differentiableOn_const (𝕜 := ℂ) (1 : ℂ)).sub ((differentiableOn_const (𝕜 := ℂ) ((q : ℂ) ^ (-(i : ℂ)))).mul (differentiableOn_id (𝕜 := ℂ).pow 2))`.
+A detailed English derivation is pending.
 -/
 theorem ratFun_differentiableOn {q : ℕ} (hq : 1 < q) (N : ℕ) (α : Fin N → ℂˣ) (ρ : ℝ)
     (hα : ∀ x, ‖(α x : ℂ)‖ ≤ (q : ℝ) ^ ρ ∧ ‖(α x : ℂ)‖⁻¹ ≤ (q : ℝ) ^ ρ) :
@@ -67,11 +67,11 @@ theorem ratFun_differentiableOn {q : ℕ} (hq : 1 < q) (N : ℕ) (α : Fin N →
       (differentiableOn_const (𝕜 := ℂ) (1 : ℂ)).sub ((differentiableOn_const (𝕜 := ℂ) ((q : ℂ) ^ (-(i : ℂ)))).mul (differentiableOn_id (𝕜 := ℂ).pow 2))
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hl : 0 < Real.log q` using `Real.log_pos hq1`. Use `⟨-Complex.log z / (Real.log q : ℂ), ?_, ?_⟩` and prove the remaining obligations. Establish `e : (-Complex.log z / (Real.log q : ℂ)).re = -Real.log ‖z‖ / Real.log q`. Rewrite using `[Complex.div_ofReal_re, Complex.neg_re, Complex.log_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, lt_div_iff₀ hl]`. Use `Real.log_lt_log (norm_pos_iff.2 hz) hzs` as an intermediate fact. Rewrite `this` using `[Real.log_rpow (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Complex.cpow_def_of_ne_zero hq0, ← Complex.ofReal_natCast, ← Complex.ofReal_log (Nat.cast_nonneg _)]`. Establish `hl' : (Real.log q : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hl.ne'`. Rewrite using `[show (Real.log q : ℂ) * -(-Complex.log z / (Real.log q : ℂ)) = Complex.log z by field_simp]`. Conclude with `Complex.exp_log hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cpow_neg_eq {q : ℕ} (hq : 1 < q) (s₀ : ℝ) {z : ℂ} (hz : z ≠ 0) (hzs : ‖z‖ < (q : ℝ) ^ (-s₀)) :
     ∃ s : ℂ, s₀ < s.re ∧ (q : ℂ) ^ (-s) = z := by
@@ -91,9 +91,9 @@ theorem exists_cpow_neg_eq {q : ℕ} (hq : 1 < q) (s₀ : ℝ) {z : ℂ} (hz : z
     exact Complex.exp_log hz
 
 /- English proof (translation)
-Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.ofReal_natCast, ← Complex.cpow_nat_mul, ← Complex.cpow_add _ _ hq0]`. Use `congr 1`. Establish `: ((m.toNat : ℕ) : ℂ) = (m : ℂ)` using `by exact_mod_cast Int.toNat_of_nonneg hm`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cpow_split {q : ℕ} (hq : 1 < q) (N : ℕ) (s : ℂ) {m : ℤ} (hm : 0 ≤ m) :
     (q : ℂ) ^ (-((N : ℂ) / 2 + s) * (m : ℂ)) =
@@ -107,7 +107,7 @@ theorem cpow_split {q : ℕ} (hq : 1 < q) (N : ℕ) (s : ℂ) {m : ℤ} (hm : 0 
   ring
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun i _ => abs_nonneg (e i)`.
+A detailed English derivation is pending.
 -/
 theorem sumAbs_nonneg {D : Type} [Fintype D] (e : D → ℤ) : 0 ≤ sumAbs e :=
   Finset.sum_nonneg fun i _ => abs_nonneg (e i)

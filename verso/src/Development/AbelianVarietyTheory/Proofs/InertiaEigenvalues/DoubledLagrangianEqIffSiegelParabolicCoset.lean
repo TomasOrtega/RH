@@ -15,19 +15,19 @@ open GlobalTheory.RawLift GlobalTheory.SWLagTerms GlobalTheory.Doubling
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => W.herm.eq (W.frame j) (W.frame i)`.
+A detailed English derivation is pending.
 -/
 theorem gram_conjT (W : HSp D) : W.gramᴴ = W.gram :=
   Matrix.ext fun i j => W.herm.eq (W.frame j) (W.frame i)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`. Establish `key : ∀ v : Fin W.rank → D.host.E, W.gram *ᵥ v = 0 → v = 0`. Introduce `v hv`. Establish `h0 : ∑ j, v j • W.frame j = 0`. Apply `W.nondeg.2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Rewrite using `[← W.frame.sum_repr x]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi` using `congrFun hv i`. Simplify using `only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at hi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [hi, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 W.frame.linearIndependent v h0 j`. Introduce `a b hab`. Conclude with `sub_eq_zero.1 (key (a - b) (by rw [Matrix.mulVec_sub, hab, sub_self]))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gram_det_unit (W : HSp D) : IsUnit W.gram.det := by
   rw [← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]
@@ -58,7 +58,7 @@ theorem hAdj_eq (W : HSp D) (M : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     hAdj W M = W.gram⁻¹ * Mᴴ * W.gram := rfl
 
 /- English proof (translation)
-Simplify using `only [hAdj_eq, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc W.gram W.gram⁻¹, Matrix.mul_nonsing_inv _ (gram_det_unit W), Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hAdj_mul (W : HSp D) (M N : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     hAdj W (M * N) = hAdj W N * hAdj W M := by
@@ -66,7 +66,7 @@ theorem hAdj_mul (W : HSp D) (M N : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
   rw [← Matrix.mul_assoc W.gram W.gram⁻¹, Matrix.mul_nonsing_inv _ (gram_det_unit W), Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [hAdj_eq, Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, gram_conjT, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ (gram_det_unit W), Matrix.nonsing_inv_mul _ (gram_det_unit W), Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hAdj_hAdj (W : HSp D) (M : Matrix (Fin W.rank) (Fin W.rank) D.host.E) : hAdj W (hAdj W M) = M := by
   simp only [hAdj_eq, Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, gram_conjT,
@@ -89,7 +89,7 @@ theorem frameOf_eq (W : HSp D) (g : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank 
     frameOf W g = (hAdj W (rowD₂ W g), hAdj W (rowD₁ W g)) := rfl
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.SWLagTerms.blk, Matrix.submatrix_mul_equiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_mul (W : HSp D) (h g : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E) :
     GlobalTheory.SWLagTerms.blk W (h * g) = GlobalTheory.SWLagTerms.blk W h * GlobalTheory.SWLagTerms.blk W g := by
@@ -100,7 +100,7 @@ section Blocks
 variable {K : Type} [Field K] {r : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> ext i j <;>`. Simplify using `[Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks_mul_parts (X Y : Matrix (Fin r ⊕ Fin r) (Fin r ⊕ Fin r) K) :
     (X * Y).toBlocks₁₁ = X.toBlocks₁₁ * Y.toBlocks₁₁ + X.toBlocks₁₂ * Y.toBlocks₂₁ ∧
@@ -112,19 +112,17 @@ theorem toBlocks_mul_parts (X Y : Matrix (Fin r ⊕ Fin r) (Fin r ⊕ Fin r) K) 
       Fintype.sum_sum_type]
 
 /- English proof (translation)
-Take `⟨e11, e12, e21, e22⟩` from `toBlocks_mul_parts H G`. Rewrite using `[e11, e12, e21, e22]`. Prove the components needed by the constructor for the conclusion. Introduce `kd`. Establish `h22 : H.toBlocks₂₂ = H.toBlocks₁₁ + H.toBlocks₁₂ - H.toBlocks₂₁` using `by rw [← kd]; abel`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `refine ⟨H.toBlocks₁₁ - H.toBlocks₂₁, ?_, ?_⟩ <;> rw [h22] <;> noncomm_ring`. Introduce and unpack `⟨Q, h1, h2⟩ set X := H.toBlocks₁₁ - H.toBlocks₂₁ - Q set Y := H.toBlocks₂₂ - H.toBlocks₁₂ - Q`. Establish `hm : Matrix.fromBlocks X (-Y) (0 : Matrix (Fin r) (Fin r) K) 0 * G = 0` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks G]`. Rewrite using `[Matrix.fromBlocks_multiply]`. Establish `a1 : X * G.toBlocks₁₁ + -Y * G.toBlocks₂₁ = 0`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [X, Y]`. Rewrite `h1` using `[← sub_eq_zero]`. Rewrite using `[← h1]`. Use `noncomm_ring`. Establish `a2 : X * G.toBlocks₁₂ + -Y * G.toBlocks₂₂ = 0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [X, Y]`. Rewrite `h2` using `[← sub_eq_zero]`. Rewrite using `[← neg_eq_zero, ← h2]`. Use `noncomm_ring`. Rewrite using `[a1, a2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h0 : Matrix.fromBlocks X (-Y) (0 : Matrix (Fin r) (Fin r) K) 0 = 0`. Use `Matrix.mul_nonsing_inv_cancel_right G (Matrix.fromBlocks X (-Y) (0 : Matrix (Fin r) (Fin r) K) 0) hG` as an intermediate fact. Rewrite `this` using `[hm, Matrix.zero_mul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[← Matrix.fromBlocks_zero, Matrix.fromBlocks_inj]`. Establish `hX : X = 0` using `h0.1`. Establish `hY : Y = 0` using `neg_eq_zero.1 h0.2.1`. Establish `e1 : H.toBlocks₁₁ = H.toBlocks₂₁ + Q` using `sub_eq_zero.1 (by rw [← sub_sub]; exact hX)`. Establish `e2 : H.toBlocks₂₂ = H.toBlocks₁₂ + Q` using `sub_eq_zero.1 (by rw [← sub_sub]; exact hY)`.
-
-Rewrite using `[e1, e2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem keeps_iff_common (H G : Matrix (Fin r ⊕ Fin r) (Fin r ⊕ Fin r) K) (hG : IsUnit G.det) :
     H.toBlocks₂₁ + H.toBlocks₂₂ = H.toBlocks₁₁ + H.toBlocks₁₂ ↔
@@ -162,19 +160,17 @@ theorem keeps_iff_common (H G : Matrix (Fin r ⊕ Fin r) (Fin r ⊕ Fin r) K) (h
 end Blocks
 
 /- English proof (translation)
-Establish `hcol : ∀ (C : Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E) (B : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (j : Fin W.rank), ((fun a => (C.1 * B) a j), (fun a => (C.2 * B) a j)) = ∑ k, B k j • ((fun a => C.1 a k), (fun a => C.2 a k))`. Introduce `C B j`. Apply the tactic sequence `ext a <;> simp [Matrix.mul_apply, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, mul_comm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hmem : ∀ j, ((fun a => C'.1 a j), (fun a => C'.2 a j)) ∈ Submodule.span D.host.E (Set.range fun k => ((fun a => C.1 a k), (fun a => C.2 a k)))`. Introduce `j`. Rewrite `hY`, `hY'` using `[IsLagFrame]`. Rewrite using `[hY, ← hY']`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose c hc using fun j => (Submodule.mem_span_range_iff_exists_fun D.host.E).1 (hmem j)`. Use `⟨Matrix.of fun k j => c j k, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun a j => ?_` and prove the remaining obligations. Use `congrArg (fun p => p.1 a) (hc j)` as an intermediate fact. Simplify using `[Prod.fst_sum, Finset.sum_apply] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Matrix.mul_apply]`. Simplify `this.symm` using `[mul_comm]`. Use `Matrix.ext fun a j => ?_` and prove the remaining obligations. Use `congrArg (fun p => p.2 a) (hc j)` as an intermediate fact. Simplify using `[Prod.snd_sum, Finset.sum_apply] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Matrix.mul_apply]`. Simplify `this.symm` using `[mul_comm]`. Introduce and unpack `⟨B, h1, h2⟩`. Establish `hle : Y'.1 ≤ Y.1`. Rewrite `hY`, `hY'` using `[IsLagFrame]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hY, ← hY', Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `only [h1, h2]`. Rewrite using `[hcol]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
-
-Conclude with `Subtype.ext (Submodule.eq_of_le_of_finrank_eq hle (Y'.2.1.trans Y.2.1.symm)).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lag_eq_iff (W : HSp D) {Y Y' : Lag W}
     {C C' : Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E}
@@ -214,9 +210,9 @@ theorem lag_eq_iff (W : HSp D) {Y Y' : Lag W}
     exact Subtype.ext (Submodule.eq_of_le_of_finrank_eq hle (Y'.2.1.trans Y.2.1.symm)).symm
 
 /- English proof (translation)
-Simplify using `only [frameOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, h1, h2⟩`. Use `⟨hAdj W B, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hAdj_hAdj W (rowD₁ W g'), h2, hAdj_mul, hAdj_hAdj]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hAdj_hAdj W (rowD₂ W g'), h1, hAdj_mul, hAdj_hAdj]`. Introduce and unpack `⟨Q, h1, h2⟩`. Conclude with `⟨hAdj W Q, by rw [h2, hAdj_mul], by rw [h1, hAdj_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem frame_iff (W : HSp D) (g g' : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E) :
     (∃ B, (frameOf W g').1 = (frameOf W g).1 * B ∧ (frameOf W g').2 = (frameOf W g).2 * B) ↔
@@ -231,9 +227,7 @@ theorem frame_iff (W : HSp D) (g g' : Matrix (Fin (W.rank + W.rank)) (Fin (W.ran
     exact ⟨hAdj W Q, by rw [h2, hAdj_mul], by rw [h1, hAdj_mul]⟩
 
 /- English proof (translation)
-Establish `hb : IsUnit (GlobalTheory.SWLagTerms.blk W g).det`. Rewrite using `[GlobalTheory.SWLagTerms.blk, Matrix.det_submatrix_equiv_self]`. Conclude with `hg`. Use `keeps_iff_common (GlobalTheory.SWLagTerms.blk W (g' * g⁻¹)) (GlobalTheory.SWLagTerms.blk W g) hb` as an intermediate fact. Rewrite `this` using `[← blk_mul, Matrix.nonsing_inv_mul_cancel_right _ _ hg]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keeps_iff_rows (W : HSp D) (g g' : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E)
     (hg : IsUnit g.det) :
@@ -245,7 +239,7 @@ theorem keeps_iff_rows (W : HSp D) (g g' : Matrix (Fin (W.rank + W.rank)) (Fin (
   exact this
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Doubling.keepsDiag_iff e, GlobalTheory.Doubling.keepsDiag_iff e]`. Simplify using `only [Matrix.map_apply, ← map_add, hf.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem keeps_map_iff {K A : Type} [CommRing K] [CommRing A] (f : K →+* A) (hf : Function.Injective f) {n ι : Type}
     (e : n ⊕ n ≃ ι) (M : Matrix ι ι K) : KeepsDiag e (M.map f) ↔ KeepsDiag e M := by
@@ -253,15 +247,13 @@ theorem keeps_map_iff {K A : Type} [CommRing K] [CommRing A] (f : K →+* A) (hf
   simp only [Matrix.map_apply, ← map_add, hf.eq_iff]
 
 /- English proof (translation)
-Introduce `D W γ γ' g₀ g₀' hγ hγ' Y Y' hY hY'`. Establish `hinj : Function.Injective (incA D)` using `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`. Use `haveI := hinj.nontrivial`. Establish `hu : IsUnit (g₀.map (incA D)).det`. Rewrite using `[← hγ, ← Matrix.isUnit_iff_isUnit_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(matHom (GlobalTheory.Doubling.dblSp W) γ).isUnit`. Establish `hg₀ : IsUnit g₀.det`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Establish `h` using `hu`. Rewrite `h` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_isUnit_zero h`. Establish `h1 : mt _ γ⁻¹ * mt _ γ = 1` using `by show (matHom (GlobalTheory.Doubling.dblSp W) γ⁻¹).val * (matHom (GlobalTheory.Doubling.dblSp W) γ).val = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `h2 : (g₀⁻¹).map (incA D) * g₀.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hg₀, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hγ]`. Establish `hinv : mt _ γ⁻¹ = (g₀⁻¹).map (incA D)`. Rewrite using `[← Matrix.mul_nonsing_inv_cancel_right _ (mt _ γ⁻¹) hu, h1, ← h2, Matrix.mul_nonsing_inv_cancel_right _ _ hu]`. Establish `hmt : mt _ (γ' * γ⁻¹) = (g₀' * g₀⁻¹).map (incA D)`. Rewrite using `[Matrix.map_mul, ← hγ', ← hinv]`.
-
-Use `show (matHom (GlobalTheory.Doubling.dblSp W) (γ' * γ⁻¹)).val = (matHom (GlobalTheory.Doubling.dblSp W) γ').val * (matHom (GlobalTheory.Doubling.dblSp W) γ⁻¹).val`. Rewrite using `[map_mul, Units.val_mul]`. Rewrite using `[lag_eq_iff W hY hY', frame_iff, ← keeps_iff_rows W g₀ g₀' hg₀, ← keeps_map_iff (incA D) hinj, ← hmt]`. Conclude with `GlobalTheory.Doubling.mem_siegelOf.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameClass : ∀ (D : D7) (W : HSp D) (γ γ' : GA D (GlobalTheory.Doubling.dblSp W)) (g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E) (g₀' : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E), Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ = g₀.map (incA D) → Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) γ' = g₀'.map (incA D) → ∀ (Y Y' : Lag W), IsLagFrame W Y (frameOf W g₀) → IsLagFrame W Y' (frameOf W g₀') → (Y = Y' ↔ γ' * γ⁻¹ ∈ GlobalTheory.Doubling.siegel W) := by
   intro D W γ γ' g₀ g₀' hγ hγ' Y Y' hY hY'

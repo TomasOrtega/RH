@@ -8,21 +8,19 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedQuad
 namespace GlobalTheory.LatticeIntegralCoordinates
 
 /- English proof (translation)
-Use `haveI : Module.IsTorsionFree O V := by`. Use `Module.IsTorsionFree.of_smul_eq_zero ?_` and prove the remaining obligations. Introduce `c v h`. Rewrite `h` using `[← algebraMap_smul E c v]`. Break down `smul_eq_zero.mp h with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Use the proof step `left; exact (IsFractionRing.injective O E) (by simpa using h)`. Use `right`. Conclude with `h`. Use `haveI : Module.Finite O L := Module.Finite.iff_fg.mpr hfg`. Use `haveI : Module.Free O L := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `bL` to `Module.Free.chooseBasis O L`. Set `v : Module.Free.ChooseBasisIndex O L → V` to `fun i => (bL i : V)`. Establish `hli : LinearIndependent O v` using `bL.linearIndependent.map' L.subtype (Submodule.ker_subtype L)`. Establish `hliE : LinearIndependent E v` using `hli.localization E (nonZeroDivisors O)`. Establish `hL : Submodule.span O (Set.range v) = L`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Set.range v = L.subtype '' Set.range bL`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, bL.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `htop : ⊤ ≤ Submodule.span E (Set.range v)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← hspan, Submodule.span_le]`. Introduce `x hx`. Conclude with `Submodule.span_subset_span O E _ (hL.ge hx)`. Set `b0` to `Module.Basis.mk hliE htop`. Establish `hb0 : ∀ j, b0 j = v j` using `fun j => Module.Basis.mk_apply hliE htop j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hcard` using `Module.finrank_eq_card_basis b0`. Set `e` to `Fintype.equivFinOfCardEq hcard.symm`. Use `⟨b0.reindex e, fun y => ⟨fun hy i => ?_, fun hy => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 (hL.ge hy)`. Establish `h1 : ∑ j, c j • v j = ∑ j, algebraMap O E (c j) • b0 j` using `Finset.sum_congr rfl fun j _ => by rw [hb0, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.repr_reindex_apply, h1, b0.repr_sum_self]`. Conclude with `⟨_, rfl⟩`. Rewrite using `[← b0.sum_repr y]`. Use `L.sum_mem fun j _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hy (e j)`.
-
-Rewrite `hc` using `[Module.Basis.repr_reindex_apply, Equiv.symm_apply_apply]`. Rewrite using `[← hc, algebraMap_smul, hb0]`. Conclude with `L.smul_mem c (bL j).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis_of_lattice (O E V : Type) [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [Field E] [Algebra O E] [IsFractionRing O E] [AddCommGroup V] [Module E V] [Module O V]
@@ -71,7 +69,7 @@ theorem exists_basis_of_lattice (O E V : Type) [CommRing O] [IsDomain O] [IsPrin
     exact L.smul_mem c (bL j).2
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ L hfg hspan` and use `exists_basis_of_lattice K.O K.E V L hfg hspan`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lattice_eq_integral_coords :
     ∀ (K : GlobalTheory.UnitLemma.UQ) (V : Type) [AddCommGroup V] [Module K.E V] [Module K.O V]

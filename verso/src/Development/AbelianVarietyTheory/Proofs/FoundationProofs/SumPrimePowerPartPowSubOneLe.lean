@@ -6,11 +6,11 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Establish `ha2` using `h a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`. Break down `s.eq_empty_or_nonempty with rfl | ⟨b, hb⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `hne : ∏ i ∈ s, f i ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i hi => by`. Use `h i (Finset.mem_insert_of_mem hi)` as an intermediate fact.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hP : 2 ≤ ∏ i ∈ s, f i` using `(h b (Finset.mem_insert_of_mem hb)).trans (Nat.le_of_dvd (Nat.pos_of_ne_zero hne) (Finset.dvd_prod_of_mem f hb))`. Use the polynomial consequences of the given equalities and inequalities.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sum_le_prod_of_two_le {ι : Type*} (s : Finset ι) (f : ι → ℕ) (h : ∀ i ∈ s, 2 ≤ f i) :
     ∑ i ∈ s, f i ≤ ∏ i ∈ s, f i := by
@@ -31,9 +31,9 @@ theorem sum_le_prod_of_two_le {ι : Type*} (s : Finset ι) (f : ι → ℕ) (h :
       nlinarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Use `Nat.Coprime.mul_dvd_of_dvd_of_dvd ?_ (hd a (Finset.mem_insert_self a s)) (ih (fun l hl => hp l (Finset.mem_insert_of_mem hl)) (fun l hl => hd l (Finset.mem_insert_of_mem hl)))` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.Coprime.prod_right fun l hl => ?_` and prove the remaining obligations. Use `Nat.Coprime.pow _ _ ?_` and prove the remaining obligations. Conclude with `(Nat.coprime_primes (hp a (Finset.mem_insert_self a s)) (hp l (Finset.mem_insert_of_mem hl))).mpr (by rintro rfl; exact ha hl)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem prod_prime_pow_dvd_of_forall_dvd (s : Finset ℕ) (e : ℕ → ℕ) (M : ℕ)
     (hp : ∀ l ∈ s, l.Prime) (hd : ∀ l ∈ s, l ^ e l ∣ M) : ∏ l ∈ s, l ^ e l ∣ M := by
@@ -49,7 +49,7 @@ private theorem prod_prime_pow_dvd_of_forall_dvd (s : Finset ℕ) (e : ℕ → �
       (by rintro rfl; exact ha hl)
 
 /- English proof (translation)
-Establish `h2 : ∀ l ∈ s, 2 ≤ l ^ e l` using `fun l hl => le_trans (hp l hl).two_le (Nat.le_self_pow (he l hl) l)`. Conclude with `(sum_le_prod_of_two_le s _ h2).trans (Nat.le_of_dvd (Nat.pos_of_ne_zero hM) (prod_prime_pow_dvd_of_forall_dvd s e M hp hd))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_prime_pow_le_of_dvd (s : Finset ℕ) (e : ℕ → ℕ) (M : ℕ) (hM : M ≠ 0)
     (hp : ∀ l ∈ s, l.Prime) (he : ∀ l ∈ s, e l ≠ 0) (hd : ∀ l ∈ s, l ^ e l ∣ M) :
@@ -59,17 +59,17 @@ theorem sum_prime_pow_le_of_dvd (s : Finset ℕ) (e : ℕ → ℕ) (M : ℕ) (hM
     (Nat.le_of_dvd (Nat.pos_of_ne_zero hM) (prod_prime_pow_dvd_of_forall_dvd s e M hp hd))
 
 /- English proof (translation)
-Use `Fact.mk hl` as an intermediate fact. Establish `hlg' : ¬ l ∣ g`. Introduce `h`. Establish `h'` using `Nat.dvd_sub h hlg`. Establish `e : g - (g - 1) = 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h'` using `[e]`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.mp h')`. Break down `hl.eq_two_or_odd' with rfl | hodd` into its components or cases. Establish `hx : ¬ (2 : ℤ) ∣ (g : ℤ)` using `by exact_mod_cast hlg'`. Establish `h4' : (4 : ℤ) ∣ (g : ℤ) - 1`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Int.natCast_dvd_natCast.mpr h4` as an intermediate fact. Rewrite `this` using `[Nat.cast_sub (by omega : 1 ≤ g), Nat.cast_one, Nat.cast_ofNat]`. Then use the resulting hypothesis. Establish `key` using `Int.two_pow_sub_pow' d h4' hx`. Rewrite `key` using `[one_pow]`. Establish `e1 : (g : ℤ) ^ d - 1 = ((g ^ d - 1 : ℕ) : ℤ)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ (by omega))]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (g : ℤ) - 1 = ((g - 1 : ℕ) : ℤ)`. Rewrite using `[Nat.cast_sub (by omega : 1 ≤ g)]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : (2 : ℤ) = ((2 : ℕ) : ℤ)` using `rfl`. Rewrite `key` using `[e1, e2, e3, Int.natCast_emultiplicity, Int.natCast_emultiplicity, Int.natCast_emultiplicity]`. Establish `hN : g ^ d - 1 ≠ 0` using `Nat.sub_ne_zero_of_lt (Nat.one_lt_pow hd (by omega))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.cast_inj (R := ℕ∞), Nat.cast_add, padicValNat_eq_emultiplicity hN, padicValNat_eq_emultiplicity (by omega : g - 1 ≠ 0), padicValNat_eq_emultiplicity hd]`. Conclude with `key`. Use `padicValNat.pow_sub_pow hodd (by omega : 1 < g) hlg hlg' hd` as an intermediate fact. Rewrite `this` using `[one_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem padicValNat_pow_sub_one_eq_add (g d l : ℕ) (hg : 2 ≤ g) (h4 : 4 ∣ g - 1) (hd : d ≠ 0)
     (hl : l.Prime) (hlg : l ∣ g - 1) :
@@ -106,7 +106,7 @@ private theorem padicValNat_pow_sub_one_eq_add (g d l : ℕ) (hg : 2 ≤ g) (h4 
     rwa [one_pow] at this
 
 /- English proof (translation)
-Rewrite using `[padicValNat_pow_sub_one_eq_add g d l hg h4 hd hl hlg, pow_add, mul_comm d]`. Conclude with `mul_dvd_mul pow_padicValNat_dvd pow_padicValNat_dvd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_padicValNat_pow_sub_one_dvd (g d l : ℕ) (hg : 2 ≤ g) (h4 : 4 ∣ g - 1) (hd : d ≠ 0)
     (hl : l.Prime) (hlg : l ∣ g - 1) : l ^ padicValNat l (g ^ d - 1) ∣ d * (g - 1) := by
@@ -114,21 +114,21 @@ theorem pow_padicValNat_pow_sub_one_dvd (g d l : ℕ) (hg : 2 ≤ g) (h4 : 4 ∣
   exact mul_dvd_mul pow_padicValNat_dvd pow_padicValNat_dvd
 
 /- English proof (translation)
-Introduce `g d hg h4 hd`. Use `set N := g ^ d - 1 with hN`. Establish `hd0 : d ≠ 0` using `by omega`. Establish `hg1 : g - 1 ≠ 0` using `by omega`. Establish `hdiv : g - 1 ∣ N` using `by simpa using Nat.sub_dvd_pow_sub_pow g 1 d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ l ∈ N.primeFactors, padicValNat l N ≠ 0`. Introduce `l hl`. Take `⟨hlp, hlN, hN0⟩` from `Nat.mem_primeFactors.mp hl`. Use `Fact.mk hlp` as an intermediate fact. Conclude with `Nat.one_le_iff_ne_zero.mp (one_le_padicValNat_of_dvd hN0 hlN)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnat : ∑ l ∈ N.primeFactors, l ^ padicValNat l N ≤ d * (g - 1) + N / (g - 1)`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not N.primeFactors (fun l => l ∣ g - 1)]`. Use `add_le_add ?_ ?_` and prove the remaining obligations. Use `sum_prime_pow_le_of_dvd _ _ _ (mul_ne_zero hd0 hg1) (fun l hl => (Nat.mem_primeFactors.mp (Finset.mem_filter.mp hl).1).1) (fun l hl => hv l (Finset.mem_filter.mp hl).1) (fun l hl => ?_)` and prove the remaining obligations. Take `⟨hl1, hlg⟩` from `Finset.mem_filter.mp hl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_padicValNat_pow_sub_one_dvd g d l hg h4 hd0 (Nat.mem_primeFactors.mp hl1).1 hlg`. Establish `hQ0 : N / (g - 1) ≠ 0`. Introduce `h0`. Establish `hm` using `Nat.div_mul_cancel hdiv`. Rewrite `hm` using `[h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: 1 < g ^ d` using `Nat.one_lt_pow hd0 (by omega)`. Use linear arithmetic over natural numbers and integers. Use `sum_prime_pow_le_of_dvd _ _ _ hQ0 (fun l hl => (Nat.mem_primeFactors.mp (Finset.mem_filter.mp hl).1).1) (fun l hl => hv l (Finset.mem_filter.mp hl).1) (fun l hl => ?_)` and prove the remaining obligations. Take `⟨hl1, hlg⟩` from `Finset.mem_filter.mp hl`. Take `⟨hlp, -, -⟩` from `Nat.mem_primeFactors.mp hl1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcop : Nat.Coprime (l ^ padicValNat l N) (g - 1)` using `Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hlp).mpr hlg)`. Use `hcop.dvd_of_dvd_mul_right ?_` and prove the remaining obligations. Rewrite using `[Nat.div_mul_cancel hdiv]`. Conclude with `pow_padicValNat_dvd`. Establish `hgR : (2 : ℝ) ≤ g` using `by exact_mod_cast hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcast_g1 : ((g - 1 : ℕ) : ℝ) = (g : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega : 1 ≤ g)]`. Simplify using the standard rewrite rules. Establish `hcast_N : ((N : ℕ) : ℝ) = (g : ℝ) ^ d - 1`. Rewrite using `[hN, Nat.cast_sub (Nat.one_le_pow _ _ (by omega))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using the standard rewrite rules. Establish `hcast_Q : ((N / (g - 1) : ℕ) : ℝ) = ((g : ℝ) ^ d - 1) / ((g : ℝ) - 1)`. Rewrite using `[Nat.cast_div hdiv (by rw [hcast_g1]; linarith), hcast_N, hcast_g1]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem sum_primePowerPart_pow_sub_one_le :
     ∀ g d : ℕ, 2 ≤ g → 4 ∣ g - 1 → 2 ≤ d → (∑ l ∈ (g ^ d - 1).primeFactors, ((l ^ padicValNat l (g ^ d - 1) : ℕ) : ℝ)) ≤ d * ((g : ℝ) - 1) + ((g : ℝ) ^ d - 1) / ((g : ℝ) - 1) := by

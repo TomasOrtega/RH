@@ -55,7 +55,7 @@ def idelesShortComplex : ShortComplex (Rep ℤ (ℚ̄ ≃ₐ[ℚ] ℚ̄)) :=
     exact congrArg Additive.ofMul (IdeleLimit.toClassLimit_diag x.toMul))
 
 /- English proof (translation)
-Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Conclude with `hex`. Use `mono_f := (Rep.mono_iff_injective _).2 hf`. Use `epi_g := (Rep.epi_iff_surjective _).2 hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortExact_of_injective_of_surjective {k G : Type u} [CommRing k] [Group G]
     (S : ShortComplex (Rep.{u} k G)) (hf : Function.Injective S.f.hom)
@@ -69,7 +69,7 @@ theorem shortExact_of_injective_of_surjective {k G : Type u} [CommRing k] [Group
   epi_g := (Rep.epi_iff_surjective _).2 hg
 
 /- English proof (translation)
-Use `shortExact_of_injective_of_surjective _ (fun x y h => congrArg Additive.ofMul (IdeleLimit.diag_injective (congrArg Additive.toMul h))) (fun z hz => ?_) (fun c => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `(IdeleLimit.mem_range_diag_iff (Additive.toMul z)).2 (congrArg Additive.toMul hz)`. Conclude with `⟨Additive.ofMul a, congrArg Additive.ofMul ha⟩`. Take `⟨z, hz⟩` from `IdeleLimit.toClassLimit_surjective (Additive.toMul c)`. Conclude with `⟨Additive.ofMul z, congrArg Additive.ofMul hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem idelesShortComplex_shortExact : idelesShortComplex.ShortExact := by
   refine shortExact_of_injective_of_surjective _ (fun x y h =>
@@ -91,7 +91,7 @@ abbrev idelesShortComplexRes : ShortComplex (Rep ℤ K.1.fixingSubgroup) :=
   idelesShortComplex.map (Rep.resFunctor K.1.fixingSubgroup.subtype)
 
 /- English proof (translation)
-The claim follows from `(Rep.shortExact_res _).2 idelesShortComplex_shortExact`.
+A detailed English derivation is pending.
 -/
 theorem idelesShortComplexRes_shortExact : (idelesShortComplexRes K).ShortExact :=
   (Rep.shortExact_res _).2 idelesShortComplex_shortExact

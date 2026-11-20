@@ -21,7 +21,7 @@ namespace GlobalTheory.Adelic
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `have := h.smooth have := h.conn have : Smooth S.str := SmoothOfRelativeDimension.smooth S.D _ isIntegral_of_smooth_of_geometricallyConnected S.str`.
+A detailed English derivation is pending.
 -/
 theorem LinSys.IsVariety.isIntegral {k : Type} [Field k] {S : LinSys k} (h : S.IsVariety) : IsIntegral S.Y :=
   have := h.smooth
@@ -30,7 +30,7 @@ theorem LinSys.IsVariety.isIntegral {k : Type} [Field k] {S : LinSys k} (h : S.I
   isIntegral_of_smooth_of_geometricallyConnected S.str
 
 /- English proof (translation)
-Use `(map_sum _ _ _).trans (Finset.sum_congr rfl fun j _ => Eq.trans (congrArg (fun a => H0.ofSec S.str O (a • S.b j)) (?_ : _ = algX S.str ⊤ (u j))) (H0.ofSec_smul _ _))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.str.appTop _ = _`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem LinSys.ofSec_comb {k : Type} [Field k] (S : LinSys k) (O : S.Y.Opens) (u : Fin S.N → k) :
     H0.ofSec S.str O (S.comb u) = ∑ j, u j • H0.ofSec S.str O (S.b j) := by
@@ -48,13 +48,13 @@ def weight (hb : T.BasePointFree) (hh : T.Hermitian) (σ : F →+* ℂ) : Weight
   Weight.fsBasis T.str σ T.isLB T.b hb (T.A σ) (hh σ)
 
 /- English proof (translation)
-The claim follows from `Weight.isSmooth_fsBasis _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_weight (hb : T.BasePointFree) (hh : T.Hermitian) {σ : F →+* ℂ} {D : ℕ} (R : AnRead T.str σ D) :
     (T.weight hb hh σ).IsSmooth R := Weight.isSmooth_fsBasis _ _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[archSize, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Conclude with `Weight.fsBasis_φ _ _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weight_φ (hb : T.BasePointFree) (hh : T.Hermitian) (σ : F →+* ℂ) (i : T.L.ι) (y : CxPts T.str σ) :
     (T.weight hb hh σ).φ i y = Real.log (archSize (T.A σ) (fun j => secVal T.str σ (T.b j) i y) ^ 2) := by
@@ -68,11 +68,11 @@ abbrev withBundle (L : LB T.Y) (hL : L.IsLB) {N n : ℕ} (b : Fin N → L.Sec) (
 variable {T} (E : Type) [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `⟨h.variety.baseChange E, IndepBaseChange.indep_baseChange F E _ h.indep, ?_, h.bpf.baseChange E⟩` and prove the remaining obligations. Establish `key : ∀ u ∈ Submodule.span F (Set.range T.w.col), (fun j => algebraMap F E (u j)) ∈ Submodule.span E (Set.range (T.w.map (algebraMap F E)).col)` using `fun u hu => by`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨k, rfl⟩ := h`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => simp only [Pi.add_apply, map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => simp only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ _ ha`. Use `top_le_iff.1 fun (u : Fin T.N → E) _ => ?_` and prove the remaining obligations. Rewrite using `[pi_eq_sum_univ' u]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `(funext fun j => by simp [Pi.single_apply] : (fun j => algebraMap F E (Pi.single (M := fun _ => F) k 1 j)) = Pi.single k 1) ▸ key (Pi.single k 1) (h.spans.ge trivial)`.
+A detailed English derivation is pending.
 -/
 theorem IsAlgebraicData.baseChange (h : T.IsAlgebraicData) : (T.baseChange E).IsAlgebraicData := by
   refine ⟨h.variety.baseChange E, IndepBaseChange.indep_baseChange F E _ h.indep, ?_, h.bpf.baseChange E⟩
@@ -109,7 +109,7 @@ theorem U_baseChange : (T.baseChange E).U = T.bcFst E ⁻¹ᵁ T.U := rfl
 variable {T} in
 
 /- English proof (translation)
-Use `⟨h.alg.baseChange E, fun e => h.bd_ne (top_le_iff.1 fun y _ => ?_)⟩` and prove the remaining obligations. Establish `: Surjective (spMap (algebraMap F E))` using `⟨Function.surjective_to_subsingleton _⟩`. Establish `: Surjective (T.bcFst E)` using `MorphismProperty.of_isPullback (T.isPullback_baseChange E).flip this`. Take `⟨z, rfl⟩` from `(T.bcFst E).surjective y`. Conclude with `e.ge (Set.mem_univ z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsGeometric.baseChange (h : T.IsGeometric) : (T.baseChange E).IsGeometric := by
   refine ⟨h.alg.baseChange E, fun e => h.bd_ne (top_le_iff.1 fun y _ => ?_)⟩
@@ -121,7 +121,7 @@ theorem IsGeometric.baseChange (h : T.IsGeometric) : (T.baseChange E).IsGeometri
 variable {T} in
 
 /- English proof (translation)
-The claim follows from `Set.nonempty_compl.2 fun e => h.bd_ne (Closeds.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem IsGeometric.nonempty_U (h : T.IsGeometric) : (T.U : Set T.Y).Nonempty :=
   Set.nonempty_compl.2 fun e => h.bd_ne (Closeds.ext e)
@@ -186,9 +186,9 @@ instance secondCountableTopology (σ : F →+* ℂ) : SecondCountableTopology (C
   secondCountableTopology_of_isProjOver σ G.geom.alg.variety.proj
 
 /- English proof (translation)
-Take `⟨j, -⟩` from `Opens.mem_iSup.1 (G.geom.alg.bpf.ge (Set.mem_univ (genericPoint G.Y)))`. Assume the negation of the conclusion as `h`. Establish `: IsEmpty (Fin G.n)` using `⟨fun k => h (Nat.one_le_of_lt k.2)⟩`. Establish `e : (Pi.single j 1 : Fin G.N → F) ∈ Submodule.span F (Set.range G.w.col)` using `G.geom.alg.spans.ge trivial`. Rewrite `e` using `[Set.range_eq_empty, Submodule.span_empty, Submodule.mem_bot]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using congrFun e j`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_le_n : 1 ≤ G.n := by
   obtain ⟨j, -⟩ := Opens.mem_iSup.1 (G.geom.alg.bpf.ge (Set.mem_univ (genericPoint G.Y)))
@@ -207,7 +207,7 @@ def φ₂ (σ : F →+* ℂ) : Weight G.str σ G.L₂ := G.second.weight G.alg�
 def φTw (m : ℤ) (σ : F →+* ℂ) : Weight G.str σ (tw G.L₂ G.L m) := (G.φ₂ σ).tens ((G.φ σ).zpow m)
 
 /- English proof (translation)
-The claim follows from `(G.second.isSmooth_weight _ _ R).tens ((G.isSmooth_weight _ _ R).zpow m)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_φTw (m : ℤ) {σ : F →+* ℂ} (R : AnRead G.str σ G.D) : (G.φTw m σ).IsSmooth R :=
   (G.second.isSmooth_weight _ _ R).tens ((G.isSmooth_weight _ _ R).zpow m)
@@ -217,7 +217,7 @@ abbrev adj (j : ℕ) : LB G.Y := tw (tens G.K.bundle G.LA) G.L j
 abbrev adj₂ (j : ℕ) : LB G.Y := tw (tens G.K.bundle G.L₂) G.L (j + G.D)
 
 /- English proof (translation)
-The claim follows from `isLB_tw (isLB_tens G.K.isLB G.isLBA) G.isLB j`.
+A detailed English derivation is pending.
 -/
 theorem isLB_adj (j : ℕ) : (G.adj j).IsLB := isLB_tw (isLB_tens G.K.isLB G.isLBA) G.isLB j
 
@@ -226,7 +226,7 @@ abbrev Sec (j : ℕ) : Type := H0 G.str (G.adj j) G.U
 def global (j : ℕ) : Submodule F (G.Sec j) := LinearMap.range (H0.restr le_top)
 
 /- English proof (translation)
-The claim follows from `Vanishing.restr_injective _ G.geom.nonempty_U`.
+A detailed English derivation is pending.
 -/
 theorem restr_injective (B : LB G.Y) : Function.Injective (H0.restr le_top : H0 G.str B ⊤ → H0 G.str B G.U) :=
   Vanishing.restr_injective _ G.geom.nonempty_U
@@ -236,7 +236,7 @@ instance finiteDimensional_global (j : ℕ) : FiniteDimensional F (G.global j) :
   LinearMap.finiteDimensional_range _
 
 /- English proof (translation)
-The claim follows from `(LinearMap.finrank_range_of_inj (G.restr_injective _)).trans (H0.finrank_top _ _)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_global (j : ℕ) : Module.finrank F (G.global j) = lbH0 F (G.adj j) :=
   (LinearMap.finrank_range_of_inj (G.restr_injective _)).trans (H0.finrank_top _ _)
@@ -246,7 +246,7 @@ def mulW (j : ℕ) : (Fin G.N → F) →ₗ[F] G.Sec j →ₗ[F] G.Sec (j + 1) :
     Fintype.linearCombination F fun k => H0.ofSec G.str G.U (G.b k)
 
 /- English proof (translation)
-The claim follows from `congrArg (oneChart (isLB_tens G.K.isLB G.isLBA) G.isLB (Nat.cast_succ j).symm).mul (G.ofSec_comb G.U u).symm`.
+A detailed English derivation is pending.
 -/
 theorem mulW_apply (j : ℕ) (u : Fin G.N → F) :
     G.mulW j u = mulSec (isLB_tens G.K.isLB G.isLBA) G.isLB (G.comb u) (Nat.cast_succ j).symm :=
@@ -256,19 +256,19 @@ def mulE (j : ℕ) : H0 G.str (G.adj₂ j) ⊤ →ₗ[F] G.Sec j :=
   H0.restr le_top ∘ₗ Vanishing.mulE G.K G.isLB G.isLBA G.isLB₂ G.e rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mulE_mem_global (j : ℕ) (f : H0 G.str (G.adj₂ j) ⊤) : G.mulE j f ∈ G.global j := ⟨_, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(ProdChart.restr_mul _ _ _ _).trans (by rw [H0.restr_ofSec]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem mulE_apply (j : ℕ) (f : H0 G.str (G.adj₂ j) ⊤) :
     G.mulE j f = Vanishing.mulE G.K G.isLB G.isLBA G.isLB₂ G.e rfl (H0.restr le_top f) :=
   (ProdChart.restr_mul _ _ _ _).trans (by rw [H0.restr_ofSec]; rfl)
 
 /- English proof (translation)
-Introduce `f f' h` and use `by rw [mulE_apply, mulE_apply] at h exact G.restr_injective _ ((ProdChart.bijective_mul _ fun y hy i hi => by rw [H0.germ_ofSec, isUnit_ger_iff]; exact G.U_le hy).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulE_injective (j : ℕ) : Function.Injective (G.mulE j) := fun f f' h => by
   rw [mulE_apply, mulE_apply] at h
@@ -279,13 +279,13 @@ def sqInt (j : ℕ) (σ : F →+* ℂ) (f : (G.adj₂ j).ι → CxPts G.str σ �
   (AnRead.all G.str σ G.D).topInt G.K (G.φTw (j + G.D) σ) (assocVal f)
 
 /- English proof (translation)
-The claim follows from `AnRead.topInt_eq _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sqInt_eq (j : ℕ) {σ : F →+* ℂ} (R : AnRead G.str σ G.D) (f : (G.adj₂ j).ι → CxPts G.str σ → ℂ) :
     G.sqInt j σ f = R.topInt G.K (G.φTw (j + G.D) σ) (assocVal f) := AnRead.topInt_eq _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `AnRead.topInt_lt_top _ (G.isSmooth_φTw _ _) (assocVal_mem_holSec (Submodule.sum_mem _ fun _ _ => Submodule.smul_mem _ _ (cval_mem_holSec σ _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem sqInt_lt_top (j : ℕ) (σ : F →+* ℂ) {ι : Type*} [Fintype ι] (c : ι → ℂ) (f : ι → H0 G.str (G.adj₂ j) ⊤) :
     G.sqInt j σ (∑ i, c i • cval σ (f i)) < ⊤ :=
@@ -313,7 +313,7 @@ variable {G s} (hs : G.IsGood s)
 include hs in
 
 /- English proof (translation)
-Introduce `y hy` and use `G.U_le (hs.inU y hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsGood.suppIn_e : SuppIn (nonzeroLocus G.e) (G.ideal s) := fun y hy => G.U_le (hs.inU y hy)
 
@@ -321,7 +321,7 @@ def IsGood.res (j : ℕ) : G.Sec j →ₗ[F] G.SecOn s j :=
   Res G.K G.isLB G.isLBA G.isLB₂ (G.sec s) hs.etale j G.e hs.suppIn_e hs.inU
 
 /- English proof (translation)
-Rewrite using `[mulW_apply]`. Conclude with `Res_mulSec _ _ _ _ _ _ _ _ _ _ _ m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsGood.res_mulW (j : ℕ) (u : Fin G.N → F) (m : G.Sec j) :
     hs.res (j + 1) (G.mulW j u m) = mulSecOn G.isLB₂ G.isLB (G.comb u) (Nat.cast_succ j).symm (hs.res j m) := by
@@ -329,7 +329,7 @@ theorem IsGood.res_mulW (j : ℕ) (u : Fin G.N → F) (m : G.Sec j) :
   exact Res_mulSec _ _ _ _ _ _ _ _ _ _ _ m
 
 /- English proof (translation)
-The claim follows from `(Res_restr _ _ _ _ _ _ _ _ suppIn_top hs.inU le_top _).trans (Res_mulE _ _ _ _ _ _ _ _ _ rfl f)`.
+A detailed English derivation is pending.
 -/
 theorem IsGood.res_mulE (j : ℕ) (f : H0 G.str (G.adj₂ j) ⊤) :
     hs.res j (G.mulE j f) = resDs G.K G.isLB G.isLB₂ (G.sec s) hs.etale suppIn_top rfl f :=
@@ -347,7 +347,7 @@ def weightOn (s : Fin G.D → Fin G.N → F) (j : ℕ) (σ : F →+* ℂ) :
 def IsGood.normOn (j : ℕ) : HermFam F (G.SecOn s j) := pointHerm hs.finite hs.etale (weightOn s j)
 
 /- English proof (translation)
-The claim follows from `nrm_pointHerm_sq _ _ _ σ g`.
+A detailed English derivation is pending.
 -/
 theorem IsGood.nrm_normOn_sq (j : ℕ) (σ : F →+* ℂ) (g : G.SecOn s j) :
     (hs.normOn j).nrm σ g ^ 2 = ∑ᶠ y, (weightOn s j σ).nsq (cval σ g) y := nrm_pointHerm_sq _ _ _ σ g
@@ -381,7 +381,7 @@ def baseChange : Geo E where
 def fst : (G.baseChange E).Y ⟶ G.Y := G.bcFst E
 
 /- English proof (translation)
-The claim follows from `G.isPullback_baseChange E`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_fst : IsPullback (G.fst E) (G.baseChange E).str G.str (spMap (algebraMap F E)) :=
   G.isPullback_baseChange E
@@ -393,14 +393,14 @@ def toExt (j : ℕ) : G.Sec j →ₛₗ[algebraMap F E] (G.baseChange E).Sec j :
   pullChart (G.chartAdj E j) (G.isPullback_fst E).w le_rfl
 
 /- English proof (translation)
-The claim follows from `linearIndependent_pullChart (G.isPullback_fst E) (G.isLB_adj j) ((G.baseChange E).isLB_adj j) _ _ le_rfl hv`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_toExt (j n : ℕ) (v : Fin n → G.Sec j) (hv : LinearIndependent F v) :
     LinearIndependent E fun i => G.toExt E j (v i) :=
   linearIndependent_pullChart (G.isPullback_fst E) (G.isLB_adj j) ((G.baseChange E).isLB_adj j) _ _ le_rfl hv
 
 /- English proof (translation)
-Establish `h` using `(isExtension_pullChart_top (G.isPullback_fst E) (G.isLB_adj j) ((G.baseChange E).isLB_adj j) (G.chartAdj E j) G.geom.alg.variety.proj (G.baseChange E).geom.alg.variety.proj).span`. Use `Eq.symm ((LinearMap.range_eq_map _).trans ((congrArg _ h.symm).trans ((Submodule.map_span _ _).trans (congrArg _ ?_))))` and prove the remaining obligations. Rewrite using `[global, LinearMap.coe_range, ← Set.range_comp, ← Set.range_comp]`. Conclude with `congrArg _ (funext fun f => restr_pullChart _ _ _ _ _ _ f)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extSpace_global (j : ℕ) : extSpace (G.toExt E j) (G.global j) = (G.baseChange E).global j := by
   have h := (isExtension_pullChart_top (G.isPullback_fst E) (G.isLB_adj j) ((G.baseChange E).isLB_adj j)
@@ -413,7 +413,7 @@ theorem extSpace_global (j : ℕ) : extSpace (G.toExt E j) (G.global j) = (G.bas
 variable {G E} in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.finite, h.etale⟩, h.inU⟩, fun h => ⟨h.finiteEtale.finite, h.finiteEtale.etale, h.inOpen⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGood_baseChange_iff {s : Fin G.D → Fin G.N → E} : (G.baseChange E).IsGood s ↔ G.IsGoodSection E s :=
   ⟨fun h => ⟨⟨h.finite, h.etale⟩, h.inU⟩, fun h => ⟨h.finiteEtale.finite, h.finiteEtale.etale, h.inOpen⟩⟩
@@ -502,7 +502,7 @@ variable {F : Type} [Field F] [NumberField F] (X : Data F)
 instance finiteDimensional (j : ℕ) : FiniteDimensional F (X.V j) := (X.full j).finiteDimensional
 
 /- English proof (translation)
-The claim follows from `(X.full j).latRank_eq`.
+A detailed English derivation is pending.
 -/
 theorem latRank_M (j : ℕ) : latRank F (X.M j) = Module.finrank F (X.V j) := (X.full j).latRank_eq
 
@@ -523,7 +523,7 @@ section BaseChange
 variable (E : Type) [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `HermTools.isExtension_extMap _ (X.linearIndependent_toExt E j) _`.
+A detailed English derivation is pending.
 -/
 theorem isExtension_extMap (j : ℕ) : IsExtension (extMap (X.toExt E j) (X.V j)) :=
   HermTools.isExtension_extMap _ (X.linearIndependent_toExt E j) _
@@ -550,14 +550,14 @@ def baseChange : Data E where
 def toExtV (j : ℕ) : X.V j →ₛₗ[algebraMap F E] (X.baseChange E).V j := extMap (X.toExt E j) (X.V j)
 
 /- English proof (translation)
-The claim follows from `nrm_extend (X.isExtension_extMap E j) _ τ x`.
+A detailed English derivation is pending.
 -/
 theorem nrm_toExtV (j : ℕ) (τ : E →+* ℂ) (x : X.V j) :
     ((X.baseChange E).nm j).nrm τ (X.toExtV E j x) = (X.nm j).nrm (τ.comp (algebraMap F E)) x :=
   nrm_extend (X.isExtension_extMap E j) _ τ x
 
 /- English proof (translation)
-The claim follows from `(X.isExtension_extMap E j).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem finrank_V_baseChange (j : ℕ) : Module.finrank E ((X.baseChange E).V j) = Module.finrank F (X.V j) :=
   (X.isExtension_extMap E j).finrank_eq
@@ -651,17 +651,17 @@ def R : ℕ := (X.T - 1).choose X.D
 def z : ℝ := 1 - X.R * X.del / X.d
 
 /- English proof (translation)
-The claim follows from `(X.full _).latRank_eq`.
+A detailed English derivation is pending.
 -/
 theorem d_eq_finrank : X.d = Module.finrank F (X.V X.T) := (X.full _).latRank_eq
 
 /- English proof (translation)
-Use `X.le_T` as an intermediate fact. Rewrite using `[a₀]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem a₀_add : X.a₀ + X.D + 1 = X.T := by have := X.le_T; rw [a₀]; omega
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' X.geom.alg.variety.one_le`. Simplify using `only [R, ← X.a₀_add, Geo.Ra, hk, ← add_assoc, Nat.add_sub_cancel]`. Conclude with `Nat.sum_range_add_choose _ _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_Ra : ∑ a ∈ Finset.range (X.a₀ + 1), X.Ra a = X.R := by
   obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le' X.geom.alg.variety.one_le
@@ -669,19 +669,19 @@ theorem sum_Ra : ∑ a ∈ Finset.range (X.a₀ + 1), X.Ra a = X.R := by
   exact Nat.sum_range_add_choose _ _
 
 /- English proof (translation)
-The claim follows from `Nat.choose_pos (by have := X.le_T; omega)`.
+A detailed English derivation is pending.
 -/
 theorem R_pos : 0 < X.R := Nat.choose_pos (by have := X.le_T; omega)
 
 /- English proof (translation)
-Rewrite using `[d_eq_finrank, d_eq_finrank]`. Conclude with `X.finrank_V_baseChange E _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] : (X.baseChange E).d = X.d := by
   rw [d_eq_finrank, d_eq_finrank]
   exact X.finrank_V_baseChange E _
 
 /- English proof (translation)
-Rewrite using `[z, z, d_baseChange, ← FieldChangeInter.del_baseChange F E _ X.geom.alg.variety.proj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem z_baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] : (X.baseChange E).z = X.z := by
   rw [z, z, d_baseChange, ← FieldChangeInter.del_baseChange F E _ X.geom.alg.variety.proj]
@@ -690,7 +690,7 @@ theorem z_baseChange (E : Type) [Field E] [NumberField E] [Algebra F E] : (X.bas
 variable {X}
 
 /- English proof (translation)
-Establish `: ((X.mulW j).compl₂ (X.V j).subtype).compr₂ (X.V (j + 1)).mkQ = 0` using `LinearMap.ext_on X.geom.alg.spans fun w hw => LinearMap.ext_on (X.full j).span fun f hf => by`. Take `⟨g, -, e⟩` from `h j hj w (Submodule.subset_span hw) f hf`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (e ▸ g.2 :)`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 (LinearMap.congr_fun₂ this u f)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem MulStable.mem (h : X.MulStable) {j : ℕ} (hj : j < X.T) (u : Fin X.N → F) (f : X.V j) :
     X.mulW j u f ∈ X.V (j + 1) := by
@@ -701,7 +701,7 @@ theorem MulStable.mem (h : X.MulStable) {j : ℕ} (hj : j < X.T) (u : Fin X.N �
   exact (Submodule.Quotient.mk_eq_zero _).1 (LinearMap.congr_fun₂ this u f)
 
 /- English proof (translation)
-Introduce `j hj σ w _ f _ g e` and use `by have := hb σ j hj (fun k => σ (w k)) 1 (fun _ => σ 1) (fun _ => f) (fun t => ⟨_, h.mem hj (Pi.single t.1 1) f⟩) fun _ _ => rfl simp only [← map_mul, cnrm_map, mul_one, one_smul, Fin.sum_univ_one] at this refine le_of_eq_of_le (congrArg _ ?_) this refine Subtype.ext (e.trans ?_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MulStable.mulBound (h : X.MulStable) {β : (F →+* ℂ) → ℝ} (hb : ∀ σ, X.MulBoundAt σ (β σ)) :
     X.MulBound β := fun j hj σ w _ f _ g e => by
@@ -714,14 +714,14 @@ theorem MulStable.mulBound (h : X.MulStable) {β : (F →+* ℂ) → ℝ} (hb : 
   simp [Fintype.sum_prod_type, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[meanLog, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul, mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 Module.finrank_pos.ne')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem meanLog_const (c : ℝ) : meanLog F (fun _ => c) = Real.log c := by
   rw [meanLog, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul,
     mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 Module.finrank_pos.ne')]
 
 /- English proof (translation)
-Take `⟨v, h₁, h₂, h₃⟩` from `h`. Use `⟨v, h₁, h₂, fun i => meanLog_const (F := F) Λ ▸ div_le_div_of_nonneg_right (Finset.sum_le_sum fun σ _ => Real.log_le_log (nrm_pos _ σ (h₂.ne_zero i)) (h₃ i σ)) (Nat.cast_nonneg _)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ShortFamily.mean {j : ℕ} {Λ : ℝ} (h : X.ShortFamily j Λ) : X.ShortFamilyMean j Λ := by
   obtain ⟨v, h₁, h₂, h₃⟩ := h
@@ -729,7 +729,7 @@ theorem ShortFamily.mean {j : ℕ} {Λ : ℝ} (h : X.ShortFamily j Λ) : X.Short
     (Finset.sum_le_sum fun σ _ => Real.log_le_log (nrm_pos _ σ (h₂.ne_zero i)) (h₃ i σ)) (Nat.cast_nonneg _)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun _ => one_pos.trans_le X.one_le_beta, fun _ => one_pos, by rw [meanLog_const, max_eq_right (Real.log_nonneg X.one_le_beta)], h.2, h.3, h.4, h.5, h.6, h.7.mean, h.8.mean, h.9⟩`.
+Supply the required witnesses or components.
 -/
 theorem Hyp.meanHyp (h : X.Hyp) : X.MeanHyp (fun _ => X.beta) fun _ => 1 :=
   ⟨h.1, fun _ => one_pos.trans_le X.one_le_beta, fun _ => one_pos,
@@ -737,15 +737,15 @@ theorem Hyp.meanHyp (h : X.Hyp) : X.MeanHyp (fun _ => X.beta) fun _ => 1 :=
     h.8.mean, h.9⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.geom, h.pos.bir, X.herm, X.conj, h.shortW⟩`.
+Supply the required witnesses or components.
 -/
 theorem MeanHyp.isAdelic {β κ : (F →+* ℂ) → ℝ} (h : X.MeanHyp β κ) : X.IsAdelic :=
   ⟨X.geom, h.pos.bir, X.herm, X.conj, h.shortW⟩
 
 /- English proof (translation)
-Establish `h₁ : (1 : ℝ) ≤ X.n` using `Nat.one_le_cast.2 X.one_le_n`. Establish `h₂ : (1 : ℝ) ≤ X.D` using `Nat.one_le_cast.2 X.geom.alg.variety.one_le`. Establish `h₃ : (1 : ℝ) ≤ X.j₀` using `Nat.one_le_cast.2 h.pos.bir.one_le`. Establish `h₄ : (1 : ℝ) ≤ X.del` using `by exact_mod_cast hd`. Establish `h₅` using `Real.log_nonneg h.shortW.one_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by linarith [abs_nonneg t] : 2 ≤ 2 + |t| + Real.log X.abelian₂).trans (le_mul_of_one_le_left (by positivity) (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h₁ h₂) h₃) h₄))`.
+A detailed English derivation is pending.
 -/
 theorem MeanHyp.two_le_theta {β κ : (F →+* ℂ) → ℝ} (h : X.MeanHyp β κ) (hd : 0 < X.del) (t : ℝ) :
     2 ≤ X.theta t := by
@@ -760,14 +760,14 @@ theorem MeanHyp.two_le_theta {β κ : (F →+* ℂ) → ℝ} (h : X.MeanHyp β �
 end Data
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨_, LB.isLB_div G.isLBA (isLB_tw G.isLB₂ G.isLB _), G.e, G.U_le, range_restr_le_polar _ _ _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Geo.hasBoundedPoles_globalData {F : Type} [Field F] [NumberField F] (G : Geo F) {T : ℕ} (hT : G.D + 1 ≤ T) :
     (G.globalData T hT).HasBoundedPoles := fun _ _ =>
   ⟨_, LB.isLB_div G.isLBA (isLB_tw G.isLB₂ G.isLB _), G.e, G.U_le, range_restr_le_polar _ _ _ _⟩
 
 /- English proof (translation)
-Establish `e` using `(G.globalData T hT).latRank_M j`. Conclude with `⟨Module.finBasis F (G.global j) ∘ Fin.cast e, fun i => Submodule.subset_span (M := G.global j) ⟨_, rfl⟩, (Module.finBasis F (G.global j)).linearIndependent.comp _ (Fin.cast_injective e), fun i σ => (nrm_ofBasis _ σ _).le⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Geo.shortFamily_globalData {F : Type} [Field F] [NumberField F] (G : Geo F) {T : ℕ} (hT : G.D + 1 ≤ T)
     (j : ℕ) : (G.globalData T hT).ShortFamily j 1 := by
@@ -794,13 +794,13 @@ abbrev tuple : Tuple F where
   th := secToPow (coord F M (Fin.last M)) 1
 
 /- English proof (translation)
-The claim follows from `(Opens.compl_compl _).trans (nonzeroLocus_coord F M _).symm`.
+A detailed English derivation is pending.
 -/
 theorem U_eq : (tuple F M).U = nonzeroLocus (coord F M (Fin.last M)) :=
   (Opens.compl_compl _).trans (nonzeroLocus_coord F M _).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨projSys.isVariety F M hM, projSys.indep F M, top_le_iff.1 fun u _ => by rw [pi_eq_sum_univ' u] refine Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, funext fun j => ?_⟩) simp [Matrix.one_apply, Pi.single_apply], projSys.basePointFree F M⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAlgebraicData (hM : 1 ≤ M) : (tuple F M).IsAlgebraicData :=
   ⟨projSys.isVariety F M hM, projSys.indep F M, top_le_iff.1 fun u _ => by
@@ -811,12 +811,12 @@ theorem isAlgebraicData (hM : 1 ≤ M) : (tuple F M).IsAlgebraicData :=
 abbrev bundleA : LB (PSpace F M) := tens (O1 F M) (tw (O1 F M) (O1 F M) M)
 
 /- English proof (translation)
-The claim follows from `isLB_tens (O1_isLB F M) (isLB_tw (O1_isLB F M) (O1_isLB F M) M)`.
+A detailed English derivation is pending.
 -/
 theorem isLB_bundleA : (bundleA F M).IsLB := isLB_tens (O1_isLB F M) (isLB_tw (O1_isLB F M) (O1_isLB F M) M)
 
 /- English proof (translation)
-The claim follows from `have h := isLB_tw (O1_isLB F M) (O1_isLB F M) M exists_sec_nonzeroLocus_eq_of_lbIso (LB.isLB_div (isLB_bundleA F M) h) (O1_isLB F M) ((cls_eq_iff (LB.isLB_div (isLB_bundleA F M) h) _).1 (by rw [cls_div (isLB_bundleA F M) h, cls_tens (O1_isLB F M) h, add_sub_cancel_right])) _`.
+A detailed English derivation is pending.
 -/
 theorem exists_e : ∃ e : (LB.div (bundleA F M) (tw (O1 F M) (O1 F M) M)).Sec,
     nonzeroLocus e = nonzeroLocus (coord F M (Fin.last M)) :=
@@ -848,17 +848,15 @@ def geo : Geo F where
   U_le := ((U_eq F M).trans (exists_e F M).choose_spec.symm).le
 
 /- English proof (translation)
-The claim follows from `lineBundleHasNonzeroSection_of_globalSectionsDim_pos (k := F) (by rw [sectionDim_twistingSheaf_pow]; exact Nat.choose_pos (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem hasNonzeroSec_pow (M n : ℕ) : HasNonzeroSec (lbPow (O1 F M) n) :=
   lineBundleHasNonzeroSection_of_globalSectionsDim_pos (k := F) (by rw [sectionDim_twistingSheaf_pow]; exact Nat.choose_pos (by omega))
 
 /- English proof (translation)
-Establish `hl : nonzeroLocus (tuple F M).th = chart F M (Fin.last M)` using `(nonzeroLocus_secToPow _ le_rfl).trans (nonzeroLocus_coord F M (Fin.last M))`. Use `(geo F hM).isIntegral` as an intermediate fact. Establish `hc : cls _ (isLB_bundleA F M) = cls _ (isLB_lbPow (O1_isLB F M) (M + 2))`. Rewrite using `[cls_tens (O1_isLB F M) (isLB_tw (O1_isLB F M) (O1_isLB F M) M), cls_tens (O1_isLB F M) (Twist.isLB_lbZPow (O1_isLB F M) M), cls_lbZPow (O1_isLB F M), cls_lbPow (O1_isLB F M)]`. Use `module`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : IsNef F (bundleA F M) ∧ IsBig F (bundleA F M)` using `⟨((isNef_twistingSheaf F M).pow (isAmple_projective_O_one F M) _).of_cls_eq _ hc, (@IsBig.pow _ _ _ _ _ this _ (algebraMap_top_eq F M) (isProjOver_str F M) (isBig_twistingSheaf F M) _ (by omega)).of_cls_eq _ hc⟩`. Rewrite `key` using `[← projSys.algebraΓ_eq]`. Use `⟨⟨projSys.birational F M, projSys.noContract F M _, le_rfl, fun h => ?_, fun y hy => hl ▸ hy⟩, key.1, key.2⟩` and prove the remaining obligations. Use `hl.ge (projSys.gen_mem F M _)` as an intermediate fact. Rewrite `this` using `[show (tuple F M).th = 0 from h]`.
-
-Conclude with `nonzeroLocus_secZero.le this`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem positivity : (geo F hM).Positivity := by
   have hl : nonzeroLocus (tuple F M).th = chart F M (Fin.last M) :=
@@ -881,7 +879,7 @@ theorem positivity : (geo F hM).Positivity := by
 omit hM in
 
 /- English proof (translation)
-Establish `h` using `isLB_tens hL (isLB_tw hL hL M)`. Rewrite using `[cls_tens (isLB_tens hK h) (Twist.isLB_lbZPow hL j), cls_tens hK h, cls_tens hL (isLB_tw hL hL M), cls_tens hL (Twist.isLB_lbZPow hL M), cls_tens hK (isLB_lbPow hL _), cls_lbZPow hL, cls_lbZPow hL, cls_lbPow hL, cls_lbPow hL]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_adj {Y : Scheme.{0}} {K L : LB Y} (hK : K.IsLB) (hL : L.IsLB) (M j : ℕ) (h₁ h₂ h₃) :
     cls (tw (tens K (tens L (tw L L M))) L j) h₁ = cls (tens K (lbPow L (M + 1))) h₂ + cls (lbPow L (j + 1)) h₃ := by
@@ -892,9 +890,9 @@ theorem cls_adj {Y : Scheme.{0}} {K L : LB Y} (hK : K.IsLB) (hL : L.IsLB) (M j :
   module
 
 /- English proof (translation)
-Establish `hO` using `O1_isLB F M`. Set `G` to `geo F hM`. Take `⟨c, hc⟩` from `exists_chart (G.K.isLB_adj hO (M + 1)) (projSys.gen F M)`. Establish `h₁ : HasNonzeroSec (G.K.adj (O1 F M) (M + 1))` using `⟨G.K.jacSec (coord F M), sec_ne_zero_of_mem ((isUnit_ger_iff _ hc).1 ((@isUnit_jacSec_coord F _ M G.smooth G.K c).map _))⟩`. Take `⟨s, hs⟩` from `HasNonzeroSec.of_cls_eq_add (X := G.Y) h₁ (hasNonzeroSec_pow F M (j + 1)) (G.isLB_adj j) (G.K.isLB_adj hO _) (isLB_lbPow hO _) (cls_adj G.K.isLB hO M j _ _ _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨_, H0.ofSec _ ⊤ s, rfl⟩, fun h => hs ?_⟩` and prove the remaining obligations. Conclude with `H0.bijective_ofSec_top.1 ((G.restr_injective _ ((congrArg Subtype.val h).trans (map_zero _).symm)).trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finrank_global_pos (j : ℕ) : 0 < Module.finrank F ((geo F hM).global j) := by
   have hO := O1_isLB F M
@@ -911,7 +909,7 @@ theorem finrank_global_pos (j : ℕ) : 0 < Module.finrank F ((geo F hM).global j
 def data (T : ℕ) (hT : M + 1 ≤ T) : Data F := (geo F hM).globalData T hT
 
 /- English proof (translation)
-The claim follows from `(finrank_global_pos F hM T).trans_eq (data F hM T hT).d_eq_finrank.symm`.
+A detailed English derivation is pending.
 -/
 theorem d_pos (T : ℕ) (hT : M + 1 ≤ T) : 0 < (data F hM T hT).d :=
   (finrank_global_pos F hM T).trans_eq (data F hM T hT).d_eq_finrank.symm
@@ -919,7 +917,7 @@ theorem d_pos (T : ℕ) (hT : M + 1 ≤ T) : 0 < (data F hM T hT).d :=
 end Proj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Proj.data _ le_rfl 3 (by norm_num), fun h => AmpleModel.coord_ne_top _ ((Proj.U_eq _ 1).symm.trans h), Proj.d_pos _ le_rfl _ _, Proj.positivity _ le_rfl, Geo.hasBoundedPoles_globalData _ _, Geo.shortFamily_globalData _ _ _, Geo.shortFamily_globalData _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ X : Data (CyclotomicField 4 ℚ), X.U ≠ ⊤ ∧ 0 < X.d ∧ X.Positivity ∧ X.HasBoundedPoles ∧
     X.ShortFamily X.D X.LamD ∧ X.ShortFamily X.T X.LamT :=
@@ -928,13 +926,13 @@ example : ∃ X : Data (CyclotomicField 4 ℚ), X.U ≠ ⊤ ∧ 0 < X.d ∧ X.Po
     Geo.shortFamily_globalData _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : (Proj.data ℚ one_le_two 5 (by norm_num)).a₀ = 2 ∧ (Proj.data ℚ one_le_two 5 (by norm_num)).R = 6 ∧
     (Proj.data ℚ one_le_two 5 (by norm_num)).Ra 2 = 3 := ⟨rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(((1 : ℕ) : ℝ) + 1) * (Real.log ((1 + 1 : ℕ) : ℝ) + 1) / 2 + 1 = _`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
 example : (Proj.geo ℚ le_rfl).g = Real.log 2 + 2 := by
   change (((1 : ℕ) : ℝ) + 1) * (Real.log ((1 + 1 : ℕ) : ℝ) + 1) / 2 + 1 = _

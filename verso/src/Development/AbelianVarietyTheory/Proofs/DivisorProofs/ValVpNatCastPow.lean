@@ -6,15 +6,13 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h0 : (l : K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap O K)]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 (Nat.cast_ne_zero.2 hl)`. Establish `h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (l : K) < 1`. Rewrite using `[← map_natCast (algebraMap O K), HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (l : K) ≠ 0` using `by simpa using h0`. Establish `h3 : ord_vw O (l : K) ≠ 0`. Unfold `ord_vw`. Introduce `h4`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `WithZero.exp_log h2` as an intermediate fact. Rewrite `this` using `[neg_eq_zero.1 h4, WithZero.exp_zero]`. Conclude with `h1.ne this.symm`. Establish `hpow : algebraMap O K ((l : O) ^ k) = (l : K) ^ k` using `by simp`. Establish `hk : ord_vw O ((l : K) ^ k) = k * ord_vw O (l : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `ord_vw`. Rewrite using `[map_pow, WithZero.log_pow, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpow, val_vp, if_neg (pow_ne_zero k h0), hk]`. Use `congr 1`.
-
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem val_vp_natCast_pow (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K]
     [Algebra O K] [IsFractionRing O K] (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ IsLocalRing.maximalIdeal O) (k : ℕ) :

@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRe
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.ML UpperTheory.V.X
 
 /- English proof (translation)
-Use `haveI : Finite (Set.range f) := (Set.finite_range _).to_subtype`. Conclude with `IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral`.
+A detailed English derivation is pending.
 -/
 private theorem fd_adjoin_range (l : ℕ) [Fact l.Prime] {ι : Type} [Finite ι] (f : ι → PadicAlgCl l) :
     FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] (Set.range f)) := by
@@ -18,9 +18,9 @@ private theorem fd_adjoin_range (l : ℕ) [Fact l.Prime] {ι : Type} [Finite ι]
       (Algebra.IsAlgebraic.isAlgebraic z).isIntegral
 
 /- English proof (translation)
-Use `haveI : Finite (Γ ⧸ ψ.ker) := Subgroup.quotient_finite_of_isOpen _ hψ`. Use `⟨_, fd_adjoin_range l (fun q : Γ ⧸ ψ.ker => (ψ q.out : PadicAlgCl l)), fun g => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul ψ.ker g`. Use `IntermediateField.subset_adjoin _ _ ⟨(g : Γ ⧸ ψ.ker), ?_⟩` and prove the remaining obligations. Establish `h1 : ψ (h : Γ) = 1` using `h.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hh, map_mul, h1, mul_one]`.
+A detailed English derivation is pending.
 -/
 private theorem char_finext (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] (ψ : Γ →* (PadicAlgCl l)ˣ) (hψ : IsOpen (ψ.ker : Set Γ)) :
@@ -33,21 +33,15 @@ private theorem char_finext (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [Top
   simp only [hh, map_mul, h1, mul_one]
 
 /- English proof (translation)
-Take `⟨ι, _, K, hK, hcov⟩` from `GlobalTheory.CompactRepField.exists_countable_family l`. Establish `hc1 : c 1 = 0`. Use `hcoc 1 1` as an intermediate fact. Rewrite `this` using `[one_mul, hθ1, one_mul]`. Conclude with `left_eq_add.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `H : ι → Subgroup Γ` to `fun i => { carrier := {g | c g ∈ K₀ ⊔ K i} one_mem' := by show c 1 ∈ K₀ ⊔ K i`. Rewrite using `[hc1]`. Conclude with `zero_mem _`. Use the proof step `mul_mem' := fun {g h} hg hh => by show c (g * h) ∈ K₀ ⊔ K i`. Rewrite using `[hcoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hg (mul_mem ((le_sup_left : K₀ ≤ _) (hθ g)) hh)`. Use the proof step `inv_mem' := fun {g} hg => by show c g⁻¹ ∈ K₀ ⊔ K i`. Establish `h1` using `hcoc g⁻¹ g`. Rewrite `h1` using `[inv_mul_cancel, hc1]`. Rewrite using `[eq_neg_of_add_eq_zero_left h1.symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `neg_mem (mul_mem ((le_sup_left : K₀ ≤ _) (hθ _)) hg) }`. Establish `hcl : ∀ i, IsClosed (H i : Set Γ)` using `fun i => by haveI := hK i haveI : FiniteDimensional ℚ_[l] (K₀ ⊔ K i).toSubalgebra.toSubmodule := (inferInstance : FiniteDimensional ℚ_[l] (K₀ ⊔ K i : IntermediateField ℚ_[l] (PadicAlgCl l)))`. Conclude with `(Submodule.closed_of_finiteDimensional (K₀ ⊔ K i).toSubalgebra.toSubmodule).preimage hc`. Establish `hun : ⋃ i, (H i : Set Γ) = Set.univ`. Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi⟩` from `hcov {c g} (Set.finite_singleton _)`. Conclude with `Set.mem_iUnion.2 ⟨i, (le_sup_right : K i ≤ K₀ ⊔ K i) (hi rfl)⟩`. Take `⟨i, x, hx⟩` from `nonempty_interior_of_iUnion_of_closed hcl hun`. Establish `hop : IsOpen (H i : Set Γ)` using `Subgroup.isOpen_of_mem_nhds _ (mem_interior_iff_mem_nhds.1 hx)`. Use `haveI : Finite (Γ ⧸ H i) := Subgroup.quotient_finite_of_isOpen _ hop`.
-
-Use `haveI := fd_adjoin_range l (fun q : Γ ⧸ H i => c q.out)`. Use `haveI := hK i`. Use `⟨IntermediateField.adjoin ℚ_[l] (Set.range fun q : Γ ⧸ H i => c q.out) ⊔ (K₀ ⊔ K i), inferInstance, le_sup_left.trans le_sup_right, fun g => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (H i) g`. Establish `hg : g = (g : Γ ⧸ H i).out * (h : Γ)⁻¹`.
-
-Rewrite using `[hh, mul_inv_cancel_right]`. Rewrite using `[hg, hcoc]`. Use `add_mem ?_ (mul_mem ?_ ?_)` and prove the remaining obligations. Conclude with `(le_sup_left : IntermediateField.adjoin ℚ_[l] (Set.range fun q : Γ ⧸ H i => c q.out) ≤ _) (IntermediateField.subset_adjoin _ _ ⟨(g : Γ ⧸ H i), rfl⟩)`. Conclude with `(le_sup_left.trans le_sup_right : K₀ ≤ _) (hθ _)`.
-
-Conclude with `(le_sup_right : K₀ ⊔ K i ≤ _) ((H i).inv_mem h.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem coc_finext (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [T2Space Γ] (K₀ : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K₀]
@@ -101,11 +95,11 @@ private theorem coc_finext (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [Topo
   · exact (le_sup_right : K₀ ⊔ K i ≤ _) ((H i).inv_mem h.2)
 
 /- English proof (translation)
-Introduce `CK hK hPT hLF hLT k Ω _ _ _ _ _ l _ ψ hψ e he θ hθ c hc hcoc h1 h2`. Take `⟨K₀, hK₀, hψK⟩` from `char_finext l (G k Ω) ψ hψ`. Establish `hθK : ∀ g, θ g ∈ K₀` using `fun g => by`. Establish `h` using `hθ g`. Rewrite `h` using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_inv_of_mul_eq_one_left h]`. Use `inv_mem (mul_mem (hψK g) (pow_mem ?_ _))` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `K₀.algebraMap_mem _`. Establish `hθ1 : θ 1 = 1` using `by simpa using hθ 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE, hle, hcE⟩` from `coc_finext l (G k Ω) K₀ θ c hθK hθ1 hc hcoc`. Take `⟨m, -, hm⟩` from `UpperTheory.V.X.soVec CK hK hPT hLF hLT k Ω l E ψ hψ (fun g => hle (hψK g)) e he θ hθ c hc hcE hcoc h1 h2`. Conclude with `⟨m, hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.soBar :
     ∀ CK : ℝ, LemmaK CK → GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK → ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (ψ : G k Ω →* (PadicAlgCl l)ˣ), IsOpen (ψ.ker : Set (G k Ω)) →

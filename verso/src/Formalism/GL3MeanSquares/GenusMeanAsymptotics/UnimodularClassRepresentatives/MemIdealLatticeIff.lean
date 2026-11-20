@@ -17,29 +17,29 @@ def gW (F : Type) [Field F] [NumberField F] (m : ℕ) : mixedEmbedding.mixedSpac
   fun x => ∏ w, (x.1 w) ^ (m - 1)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[sBox, Set.mem_pi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sBox_eq : sBox F = (Set.univ.pi fun _ => Set.Ioc (0 : ℝ) 1) ×ˢ Set.univ := by
   ext x; simp [sBox, Set.mem_pi]
 
 /- English proof (translation)
-Rewrite using `[sBox_eq]`. Conclude with `(MeasurableSet.univ_pi fun _ => measurableSet_Ioc).prod MeasurableSet.univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_sBox : MeasurableSet (sBox F) := by
   rw [sBox_eq]
   exact (MeasurableSet.univ_pi fun _ => measurableSet_Ioc).prod MeasurableSet.univ
 
 /- English proof (translation)
-Rewrite using `[sBox_eq]`. Conclude with `(convex_pi fun _ _ => convex_Ioc _ _).prod convex_univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convex_sBox : Convex ℝ (sBox F) := by
   rw [sBox_eq]
   exact (convex_pi fun _ _ => convex_Ioc _ _).prod convex_univ
 
 /- English proof (translation)
-Use `(Metric.isBounded_closedBall (x := 0) (r := 1)).subset fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, Prod.norm_def, max_le_iff]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_pos (hx w).1]`. Conclude with `(hx w).2`. Rewrite using `[pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `w`. Conclude with `absurd (IsTotallyReal.isReal w.1) (InfinitePlace.not_isReal_iff_isComplex.2 w.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isBounded_sBox [IsTotallyReal F] : Bornology.IsBounded (sBox F) := by
   refine (Metric.isBounded_closedBall (x := 0) (r := 1)).subset fun x hx => ?_
@@ -54,16 +54,16 @@ theorem isBounded_sBox [IsTotallyReal F] : Bornology.IsBounded (sBox F) := by
     exact absurd (IsTotallyReal.isReal w.1) (InfinitePlace.not_isReal_iff_isComplex.2 w.2)
 
 /- English proof (translation)
-Unfold `gW`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gW (m : ℕ) : Continuous (gW F m) := by
   unfold gW
   fun_prop
 
 /- English proof (translation)
-Establish `hE : IsEmpty {w : InfinitePlace F // w.IsComplex}` using `⟨fun w => absurd (IsTotallyReal.isReal w.1) (InfinitePlace.not_isReal_iff_isComplex.2 w.2)⟩`. Establish `h1 : (volume : Measure ({w : InfinitePlace F // w.IsComplex} → ℂ)).real Set.univ = 1`. Rewrite using `[volume_pi, Measure.pi_of_empty]`. Simplify using the standard rewrite rules. Rewrite using `[sBox_eq, Measure.volume_eq_prod, ← Measure.prod_restrict, Measure.restrict_univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `gW`. Rewrite using `[integral_fun_fst (f := fun y : {w : InfinitePlace F // w.IsReal} → ℝ => ∏ w, y w ^ (m - 1)), h1, one_smul, volume_pi, Measure.restrict_pi_pi, integral_fintype_prod_eq_prod (fun _ (y : ℝ) => y ^ (m - 1)), Finset.prod_const, Finset.card_univ]`. Use `congr 1`. Rewrite using `[← intervalIntegral.integral_of_le zero_le_one, integral_pow, Nat.cast_sub hm]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_gW [IsTotallyReal F] {m : ℕ} (hm : 1 ≤ m) :
     ∫ x in sBox F, gW F m x = ((m : ℝ)⁻¹) ^ Fintype.card {w : InfinitePlace F // w.IsReal} := by
@@ -86,9 +86,9 @@ def fracU {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) : (FractionalIdeal (nonZeroDivis
   Units.mk0 (I : FractionalIdeal (nonZeroDivisors (𝓞 F)) F) (FractionalIdeal.coeIdeal_ne_zero.2 hI)
 
 /- English proof (translation)
-Rewrite using `[mixedEmbedding.mem_idealLattice]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `ha' : a ∈ (I : FractionalIdeal (nonZeroDivisors (𝓞 F)) F)` using `ha`. Take `⟨n, hn, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, hn, rfl⟩`. Introduce and unpack `⟨n, hn, rfl⟩`. Conclude with `⟨(n : F), (FractionalIdeal.mem_coeIdeal _).2 ⟨n, hn, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_idealLattice_iff {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) (y : mixedEmbedding.mixedSpace F) :
     y ∈ mixedEmbedding.idealLattice F (fracU hI) ↔ ∃ n ∈ I, mixedEmbedding F (n : F) = y := by
@@ -102,7 +102,7 @@ theorem mem_idealLattice_iff {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) (y : mixedEmb
     exact ⟨(n : F), (FractionalIdeal.mem_coeIdeal _).2 ⟨n, hn, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `gW`. Rewrite using `[absNorm_eq_prod_of_mem hK hF hn, ← Finset.prod_pow, pow_mul, ← card_real hK hF, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Prod.smul_fst, Pi.smul_apply, mixedEmbedding.mixedEmbedding_apply_isReal, smul_eq_mul, mul_pow, rEmb_apply, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gW_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (m : ℕ) {T : ℝ} {n : 𝓞 F}
     (hn : n ∈ boxSet K F T) (c : ℝ) :
@@ -116,17 +116,17 @@ theorem gW_smul (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFix
     rEmb_apply, mul_comm]
 
 /- English proof (translation)
-Establish `hfin : {n : 𝓞 F | n ∈ boxSet K F N ∧ n ∈ I}.Finite` using `(finite_boxSet hK hF N).subset fun n hn => hn.1`. Establish `hmem : ∀ n : {n : 𝓞 F | n ∈ boxSet K F N ∧ n ∈ I}, N⁻¹ • mixedEmbedding F ((n : 𝓞 F) : F) ∈ sBox F ∩ N⁻¹ • (mixedEmbedding.idealLattice F (fracU hI) : Set (mixedEmbedding.mixedSpace F))`. Introduce and unpack `⟨n, hn, hnI⟩`. Use `⟨fun w => ?_, Set.smul_mem_smul_set ((mem_idealLattice_iff hI _).2 ⟨n, hnI, rfl⟩)⟩` and prove the remaining obligations. Establish `h1` using `(mem_boxSet_iff hK hF).1 hn w`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Prod.smul_fst, Pi.smul_apply, mixedEmbedding.mixedEmbedding_apply_isReal, smul_eq_mul, ← rEmb_apply]`. Use `⟨mul_pos (inv_pos.2 hN) h1.1, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_le_iff₀ hN, mul_one]`. Conclude with `h1.2`. Set `ε : {n : 𝓞 F | n ∈ boxSet K F N ∧ n ∈ I} → ↑(sBox F ∩ N⁻¹ • (mixedEmbedding.idealLattice F (fracU hI) : Set (mixedEmbedding.mixedSpace F)))` to `fun n => ⟨_, hmem n⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hε : Function.Bijective ε`. Prove the components needed by the constructor for the conclusion. Introduce `n n' h`. Establish `h1 : N⁻¹ • mixedEmbedding F ((n : 𝓞 F) : F) = N⁻¹ • mixedEmbedding F ((n' : 𝓞 F) : F)` using `congrArg Subtype.val h`. Establish `h2` using `smul_right_injective _ (inv_ne_zero hN.ne') h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Subtype.ext (RingOfIntegers.coe_injective (mixedEmbedding_injective F h2))`. Introduce and unpack `⟨x, hx, hxL⟩`. Take `⟨y, hy, rfl⟩` from `hxL`. Take `⟨n, hnI, rfl⟩` from `(mem_idealLattice_iff hI _).1 hy`. Use `⟨⟨n, (mem_boxSet_iff hK hF).2 fun w => ?_, hnI⟩, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hx w`. Simplify using `only [] at h1`. Rewrite `h1` using `[Prod.smul_fst, Pi.smul_apply, mixedEmbedding.mixedEmbedding_apply_isReal, smul_eq_mul, ← rEmb_apply, inv_mul_le_iff₀ hN, mul_one]`. Conclude with `⟨(mul_pos_iff_of_pos_left (inv_pos.2 hN)).1 h1.1, h1.2⟩`. Establish `: Finite {n : 𝓞 F | n ∈ boxSet K F N ∧ n ∈ I}` using `hfin`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (Equiv.ofBijective ε hε).tsum_eq, tsum_eq_finsum (Set.toFinite _), finsum_mem_mul, ← finsum_set_coe_eq_finsum_mem]`. Use `finsum_congr fun n => ?_` and prove the remaining obligations. Conclude with `gW_smul hK hF m n.2.1 _`.
+A detailed English derivation is pending.
 -/
 theorem tsum_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (m : ℕ) {I : Ideal (𝓞 F)}
     (hI : I ≠ ⊥) {N : ℝ} (hN : 0 < N) :
@@ -170,15 +170,15 @@ theorem tsum_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFix
   exact gW_smul hK hF m n.2.1 _
 
 /- English proof (translation)
-Establish `hR : IsTotallyReal F` using `QuadraticExtensionConjugation.isTotallyReal hK hF`. Take `⟨-, hfr, hdisc⟩` from `discrTower K F hK hF`. Establish `key` using `LatSum.tendsto_tsum_div_pow (mixedEmbedding.idealLattice F (fracU hI)) volume isBounded_sBox measurableSet_sBox (convex_sBox.addHaar_frontier volume) (continuous_gW m)`. Rewrite `key` using `[integral_gW hm, card_real hK hF, mixedEmbedding.covolume_idealLattice, mixedEmbedding.finrank, hfr, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, mul_one]`. Establish `hsq : Tendsto (fun j : ℕ => j ^ 2) atTop atTop` using `tendsto_pow_atTop two_ne_zero`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key2` using `key.comp hsq`. Establish `hlim : ((m : ℝ)⁻¹) ^ Formalism.HermitianLatticesTheory.fDeg K / (((FractionalIdeal.absNorm ((fracU hI : (FractionalIdeal (nonZeroDivisors (𝓞 F)) F)ˣ) : FractionalIdeal (nonZeroDivisors (𝓞 F)) F) : ℚ) : ℝ) * Real.sqrt |(discr F : ℝ)|) = (m : ℝ) ^ (-(Formalism.HermitianLatticesTheo …`. Establish `h1 : FractionalIdeal.absNorm ((fracU hI : (FractionalIdeal (nonZeroDivisors (𝓞 F)) F)ˣ) : FractionalIdeal (nonZeroDivisors (𝓞 F)) F) = (Ideal.absNorm I : ℚ)` using `FractionalIdeal.coeIdeal_absNorm I`. Establish `h2 : |(discr F : ℝ)| = (2 * Formalism.HermitianLatticesTheory.vInv K) ^ Formalism.HermitianLatticesTheory.fDeg K`. Rewrite using `[hdisc, abs_of_nonneg (pow_nonneg (mul_nonneg zero_le_two (vInv_pos K).le) _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, zpow_neg, zpow_natCast, inv_pow, div_div, Rat.cast_natCast, mul_comm]`. Rewrite `key2` using `[hlim]`. Use `Tendsto.congr' ?_ key2` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with j hj`. Establish `hj' : (0 : ℝ) < (j : ℝ) ^ 2` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcast : ((j ^ 2 : ℕ) : ℝ) = (j : ℝ) ^ 2` using `by push_cast; rfl`. Establish `h3` using `tsum_eq hK hF m hI (N := ((j ^ 2 : ℕ) : ℝ)) (by rw [hcast]; exact hj')`. Rewrite using `[Function.comp_apply, h3, hcast, zpow_neg, zpow_natCast, inv_pow, div_eq_mul_inv, mul_assoc, ← mul_inv, ← pow_add, mul_comm]`. Use `congr 3`. Take `⟨m, rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tendsto_sum_ideal (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {m : ℕ} (hm : 1 ≤ m)
     {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) :

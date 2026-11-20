@@ -14,17 +14,15 @@ noncomputable section
 namespace GlobalTheory.NormSum.LocAgree
 
 /- English proof (translation)
-Establish `h0 : ∀ i j, ∃ m : ℕ, Nat.Coprime m q ∧ (m : AE D) * (((k : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j - (1 : Matrix (Fin N) (Fin N) (AE D)) i j) ∈ OhE D`. Introduce `i j`. Take `⟨m, -, hm, s, hs, he⟩` from `h i j 0`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[pow_zero, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `hs`. Use `choose m hm hmS using h0`. Use `set s : ℕ := ∏ r : Fin N × Fin N, m r.1 r.2 with hs`. Establish `hint : ∀ i j, (s : AE D) * ((k : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i j`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun r : Fin N × Fin N => m r.1 r.2) (Finset.mem_univ (i, j))`. Establish `h1 : (1 : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `: (s : AE D) * ((k : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j = (c : AE D) * ((m i j : AE D) * (((k : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j - (1 : Matrix (Fin N) (Fin N) (AE D)) i j)) + (s : AE D) * (1 : Matrix (Fin N) (Fin N) (AE D)) i j`. Rewrite using `[hs, hc]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (natCast_mem _ c) (hmS i j)) (mul_mem (natCast_mem _ s) h1)`. Use `⟨s, Nat.Coprime.prod_left fun r _ => hm r.1 r.2, hint, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [AdLattice.inv_entry (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) _ k.2]`.
-
-Use `Formalism.UG.P.csDual_sig_mem (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) (hint j i)` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_int_mul (D : D7) {N : ℕ} (q : ℕ) (k : GA D N) (h : TrivAt D q (k : GL (Fin N) (AE D))) :
     ∃ s : ℕ, Nat.Coprime s q ∧
@@ -62,7 +60,7 @@ theorem exists_int_mul (D : D7) {N : ℕ} (q : ℕ) (k : GA D N) (h : TrivAt D q
   rwa [map_mul, map_natCast] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Use `show δ * embT D τ ((m : D.host.E) * z i j) = m • (δ * embT D τ (z i j))`. Rewrite using `[map_mul, map_natCast, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pt_nsmul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (m : ℕ)
     (z : Matrix (Fin N') (Fin N) D.host.E) :
@@ -73,9 +71,9 @@ theorem pt_nsmul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (
   ring
 
 /- English proof (translation)
-Establish `e1 : (((s * s' : ℕ) : R) • z).map f = ((s : A) * (s' : A)) • z.map f`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Simplify using `only [Units.val_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (g₁ : Matrix (Fin N) (Fin N) A), Units.mul_inv, Matrix.one_mul, ← Matrix.mul_assoc (g₁' : Matrix (Fin N') (Fin N') A), Units.mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_move {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) {N N' : ℕ} (g₁ g₂ : GL (Fin N) A)
     (g₁' g₂' : GL (Fin N') A) (s s' : ℕ) (z : Matrix (Fin N') (Fin N) R) :
@@ -93,11 +91,11 @@ theorem matrix_move {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) {N N'
     ← Matrix.mul_assoc (g₁' : Matrix (Fin N') (Fin N') A), Units.mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨z, rfl, hz⟩` from `GlobalTheory.T.exists_rationalPoint_of_mem_movedThetaLattice D hG cc δ hc N N' g₁ g₁' L₁ L₁' h₁ h₁' x hx`. Rewrite using `[← pt_nsmul]`. Use `GlobalTheory.T.cmThetaLatticePoint_mem_thetaLattice_of_adelic D hG cc δ hc N N' g₂ g₂' L₂ L₂' h₂ h₂' _ ?_` and prove the remaining obligations. Establish `hI` using `(GlobalTheory.AdelicApprox.approx_mod_ideal D cc hc).2.2`. Introduce `i j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[matrix_move (inc D) (g₁ : GL (Fin N) (AE D)) _ (g₁' : GL (Fin N') (AE D)), Matrix.mul_apply]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `hI _ (hs l j) _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_mem fun r _ => hI _ (hs' i r) _ (hz r l)`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_La (D : D7) (hG : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : cc ≠ ⊥) {N N' : ℕ}
     (g₁ g₂ : GA D N) (g₁' g₂' : GA D N')
@@ -127,11 +125,11 @@ end GlobalTheory.NormSum.LocAgree
 open GlobalTheory.NormSum.LocAgree in
 
 /- English proof (translation)
-Introduce `D hG cc δ hc N N' q h k h' k' L₁ L₂ L₁' L₂' hk hk' h₁ h₁' h₂ h₂'`. Take `⟨s, hsq, hs, hsi⟩` from `exists_int_mul D q k hk`. Take `⟨s', hsq', hs', hsi'⟩` from `exists_int_mul D q k' hk'`. Use `⟨fun x hx => ⟨s * s', Nat.Coprime.mul_left hsq hsq', ?_⟩, fun x hx => ⟨s * s', Nat.Coprime.mul_left hsq hsq', ?_⟩⟩` and prove the remaining obligations. Use `smul_mem_La D hG cc δ hc h (h * k) h' (h' * k') h₁ h₁' h₂ h₂' s s' ?_ ?_ x hx` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.coe_mul, inv_mul_cancel_left]`. Conclude with `hs`. Rewrite using `[Subgroup.coe_mul, mul_inv_rev, inv_mul_cancel_right]`. Conclude with `hsi'`. Use `smul_mem_La D hG cc δ hc (h * k) h (h' * k') h' h₂ h₂' h₁ h₁' s s' ?_ ?_ x hx` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, mul_inv_rev, inv_mul_cancel_right]`. Conclude with `hsi`. Rewrite using `[Subgroup.coe_mul, inv_mul_cancel_left]`. Conclude with `hs'`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NormSum.La_agree_of_trivAt : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc ≠ ⊥ → ∀ (N N' q : ℕ) (h k : GA D N) (h' k' : GA D N') (L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' L₂' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), TrivAt D q (k : GL (Fin N) (AE D)) → TrivAt D q (k' : GL (Fin N') (AE D)) → Moves D (h : GL (Fin N) (AE D)) L₁ → Moves D (h' : GL (Fin N') (AE D)) L₁' → Moves D ((h * k : GA D N) : GL (Fin N) (AE D)) L₂ → Moves D ((h' * k' : GA D N') : GL (Fin N') (AE D)) L₂' → (∀ x ∈ La D (tor0 D cc δ) L₁ L₁', ∃ m : ℕ, Nat.Coprime m q ∧ m • x ∈ La D (tor0 D cc δ) L₂ L₂') ∧ (∀ x ∈ La D (tor0 D cc δ) L₂ L₂', ∃ m : ℕ, Nat.Coprime m q ∧ m • x ∈ La D (tor0 D cc δ) L₁ L₁') := by
   intro D hG cc δ hc N N' q h k h' k' L₁ L₂ L₁' L₂' hk hk' h₁ h₁' h₂ h₂'

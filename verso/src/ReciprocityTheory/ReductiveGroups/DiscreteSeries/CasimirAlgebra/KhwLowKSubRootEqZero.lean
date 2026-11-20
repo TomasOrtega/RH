@@ -15,14 +15,14 @@ instance signedOrder_decidable (ε : Fin n → Bool) : DecidableRel (wdP ε) := 
   unfold wdP; infer_instance
 
 /- English proof (translation)
-Simplify using `[wdP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem signedOrder_irrefl (ε : Fin n → Bool) (a : Fin n) : ¬ wdP ε a a := by simp [wdP]
 
 /- English proof (translation)
-Unfold `wdP`. Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Distinguish the cases in `he : ε a = ε b`. Simplify using `[h, lt_asymm h, he]`. Simplify using `[h, lt_asymm h, he, Ne.symm he]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `he : ε a = ε b`. Simplify using `[h, lt_asymm h, he]`. Simplify using `[h, lt_asymm h, he, Ne.symm he]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem signedOrder_iff_not_swap_of_ne (ε : Fin n → Bool) (a b : Fin n) (h : a ≠ b) : wdP ε a b ↔ ¬ wdP ε b a := by
   unfold wdP
@@ -35,9 +35,9 @@ theorem signedOrder_iff_not_swap_of_ne (ε : Fin n → Bool) (a b : Fin n) (h : 
     · simp [h, lt_asymm h, he, Ne.symm he]
 
 /- English proof (translation)
-Unfold `wdP`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Distinguish the cases in `he : ε a = ε b`. Simplify using `[h, lt_asymm h, he]`. Simplify using `[h, lt_asymm h, he, Ne.symm he]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Distinguish the cases in `he : ε a = ε b`. Simplify using `[h, lt_asymm h, he]`. Simplify using `[h, lt_asymm h, he, Ne.symm he]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wd_ind (ε : Fin n → Bool) (a b : Fin n) :
     ((if wdP ε a b then (1:ℝ) else 0) - (if wdP ε b a then (1:ℝ) else 0)) =
@@ -54,18 +54,18 @@ theorem wd_ind (ε : Fin n → Bool) (a b : Fin n) :
     · simp [h, lt_asymm h, he, Ne.symm he]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_boole]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wd_card (p : Fin n → Prop) [DecidablePred p] :
     ((univ.filter p).card : ℝ) = ∑ b, if p b then (1:ℝ) else 0 := by
   rw [Finset.sum_boole]
 
 /- English proof (translation)
-Establish `h1 : ∀ a, ∑ b ∈ univ.filter (fun b => wdP ε a b), (μ a - μ b) = ∑ b, (if wdP ε a b then μ a else 0) - ∑ b, (if wdP ε a b then μ b else 0)`. Introduce `a`. Rewrite using `[sum_filter, ← sum_sub_distrib]`. Apply the tactic sequence `exact sum_congr rfl (fun b _ => by split_ifs <;> simp)`. Establish `h2 : ∑ a, ∑ b, (if wdP ε a b then μ b else 0) = ∑ a, ∑ b, (if wdP ε b a then μ a else 0)` using `Finset.sum_comm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[sum_congr rfl (fun a _ => h1 a), sum_sub_distrib, h2, ← sum_sub_distrib, dot, mul_sum]`. Use `sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[← sum_sub_distrib]`. Establish `hk : ∀ b, (if wdP ε a b then μ a else 0) - (if wdP ε b a then μ a else 0) = μ a * ((if wdP ε a b then (1:ℝ) else 0) - (if wdP ε b a then (1:ℝ) else 0))`. Apply the tactic sequence `intro b; split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [hk, wd_ind, ← mul_sum, sum_sub_distrib, Pi.sub_apply, rhoC, rhoN, wd_card]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_diag (ε : Fin n → Bool) (μ : Fin n → ℝ) :
     ∑ a, ∑ b ∈ univ.filter (fun b => wdP ε a b), (μ a - μ b) = 2 * dot μ (rhoC ε - rhoN ε) := by
@@ -85,9 +85,9 @@ theorem wd_diag (ε : Fin n → Bool) (μ : Fin n → ℝ) :
   ring
 
 /- English proof (translation)
-Establish `h2 : ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b then f b a else 0) = ∑ a, ∑ b, (if b < a ∧ ε b ≠ ε a then f a b else 0)` using `Finset.sum_comm`. Simplify using `only [sum_filter]`. Rewrite using `[h2]`. Use `sum_congr rfl (fun a _ => sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Distinguish the cases in `h : b < a ∧ ε b ≠ ε a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hp : wdP ε a b` using `Or.inr ⟨h.1, Ne.symm h.2⟩`. Simplify using `[h, hp]`. Simplify using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem wd_offdiag (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
     ∑ a, ∑ b ∈ univ.filter (fun b => wdP ε a b), (if b < a ∧ ε b ≠ ε a then f a b else 0) =
@@ -103,28 +103,28 @@ theorem wd_offdiag (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
   · simp [h]
 
 /- English proof (translation)
-Simplify using `only [nsq, dot, Pi.add_apply, mul_sum, ← sum_add_distrib]`. Conclude with `sum_congr rfl (fun _ _ => by ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nsq_add' (x y : Fin n → ℝ) : nsq (x + y) = nsq x + 2 * dot x y + nsq y := by
   simp only [nsq, dot, Pi.add_apply, mul_sum, ← sum_add_distrib]
   exact sum_congr rfl (fun _ _ => by ring)
 
 /- English proof (translation)
-Simplify using `only [nsq, dot, Pi.sub_apply, mul_sum, ← sum_add_distrib, ← sum_sub_distrib]`. Conclude with `sum_congr rfl (fun _ _ => by ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nsq_sub' (x y : Fin n → ℝ) : nsq (x - y) = nsq x - 2 * dot x y + nsq y := by
   simp only [nsq, dot, Pi.sub_apply, mul_sum, ← sum_add_distrib, ← sum_sub_distrib]
   exact sum_congr rfl (fun _ _ => by ring)
 
 /- English proof (translation)
-Simplify using `only [nsq, dot, Pi.add_apply, Pi.sub_apply, mul_sum, ← sum_add_distrib, ← sum_sub_distrib]`. Conclude with `sum_congr rfl (fun _ _ => by ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nsq_shift (μ x y : Fin n → ℝ) : nsq (μ + x - y) - nsq (x - y) = nsq μ + 2 * dot μ (x - y) := by
   simp only [nsq, dot, Pi.add_apply, Pi.sub_apply, mul_sum, ← sum_add_distrib, ← sum_sub_distrib]
   exact sum_congr rfl (fun _ _ => by ring)
 
 /- English proof (translation)
-Simplify using `[nsq, dot, root, Pi.single_apply, mul_sub, sum_sub_distrib, hab, Ne.symm hab]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem nsq_root {a b : Fin n} (hab : a ≠ b) : nsq (root a b) = 2 := by
   simp [nsq, dot, root, Pi.single_apply, mul_sub, sum_sub_distrib, hab, Ne.symm hab]
@@ -135,15 +135,15 @@ section Unitary
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
 
 /- English proof (translation)
-The claim follows from `inner_self_eq_norm_sq_to_K x`.
+A detailed English derivation is pending.
 -/
 theorem wd_inner_self (x : M) : inner ℂ x x = ((‖x‖ : ℝ) : ℂ) ^ 2 :=
   inner_self_eq_norm_sq_to_K x
 
 /- English proof (translation)
-Break down `hab with ⟨h, he⟩ | ⟨h, he⟩` into its components or cases. Rewrite using `[hv.2 a b h he, map_zero, inner_zero_right]`. Simplify using `[lt_asymm h]`. Establish `h1` using `hU a b v (E a b v)`. Rewrite `h1` using `[adjSign, if_neg he, wd_inner_self]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_pos ⟨h, Ne.symm he⟩]`. Use `push_cast`. Take the linear combination `h1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wd_term (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M} (hU : IsInfUnitary ε E)
     {μ : Fin n → ℝ} {v : M} (hv : IsKHWVec ε E μ v) {a b : Fin n} (hab : wdP ε a b) :
@@ -158,21 +158,19 @@ theorem wd_term (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M}
     linear_combination h1
 
 /- English proof (translation)
-Establish `hs` using `casimir_split hE (wdP ε) (signedOrder_irrefl ε) (signedOrder_iff_not_swap_of_ne ε)`. Establish `h1 : inner ℂ v (casimir E v) = ((c * ‖v‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[hc, inner_smul_right, wd_inner_self]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hA : ∀ a, inner ℂ v (E a a (E a a v)) = (((μ a) ^ 2 * ‖v‖ ^ 2 : ℝ) : ℂ)`. Introduce `a`. Rewrite using `[hv.1 a, map_smul, hv.1 a, inner_smul_right, inner_smul_right, wd_inner_self]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hB : ∀ a b, wdP ε a b → inner ℂ v ((E a a - E b b + 2 • (E b a * E a b)) v) = (((μ a - μ b) * ‖v‖ ^ 2 + 2 * -(if b < a ∧ ε b ≠ ε a then ‖E a b v‖ ^ 2 else 0) : ℝ) : ℂ)`. Introduce `a b hab`. Rewrite using `[two_smul, LinearMap.add_apply, LinearMap.add_apply, LinearMap.sub_apply, Module.End.mul_apply, inner_add_right, inner_add_right, inner_sub_right, hv.1 a, hv.1 b, inner_smul_right, inner_smul_right, wd_inner_self, wd_term ε hU hv hab]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : inner ℂ v (casimir E v) = ((∑ a, (μ a) ^ 2 * ‖v‖ ^ 2 + ∑ a, ∑ b ∈ univ.filter (fun b => wdP ε a b), ((μ a - μ b) * ‖v‖ ^ 2 + 2 * -(if b < a ∧ ε b ≠ ε a then ‖E a b v‖ ^ 2 else 0)) : ℝ) : ℂ)`. Rewrite using `[hs, LinearMap.add_apply, inner_add_right]`. Simplify using `only [LinearMap.sum_apply, inner_sum]`. Use `push_cast`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `sum_congr rfl (fun a _ => by rw [Module.End.mul_apply, hA]; push_cast; ring)`. Use `sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Use `sum_congr rfl (fun b hb => ?_)` and prove the remaining obligations. Rewrite using `[hB a b (mem_filter.1 hb).2]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h4 : c * ‖v‖ ^ 2 = ∑ a, (μ a) ^ 2 * ‖v‖ ^ 2 + ∑ a, ∑ b ∈ univ.filter (fun b => wdP ε a b), ((μ a - μ b) * ‖v‖ ^ 2 + 2 * -(if b < a ∧ ε b ≠ ε a then ‖E a b v‖ ^ 2 else 0))`. Conclude with `h1.symm.trans h2` after adjusting the coercions. Establish `e1 : ∑ a, (μ a) ^ 2 * ‖v‖ ^ 2 = nsq μ * ‖v‖ ^ 2`. Rewrite using `[nsq, dot, sum_mul]; exact sum_congr rfl (fun _ _ => by ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∑ a, ∑ b ∈ univ.filter (fun b => wdP ε a b), ((μ a - μ b) * ‖v‖ ^ 2 + 2 * -(if b < a ∧ ε b ≠ ε a then ‖E a b v‖ ^ 2 else 0)) = (∑ a, ∑ b ∈ univ.filter (fun b => wdP ε a b), (μ a - μ b)) * ‖v‖ ^ 2 - 2 * ∑ a, ∑ b ∈ univ.filter (fun b => wdP ε a b), (if b < a ∧ ε b ≠ ε a then ‖ …`. Rewrite using `[sum_mul, mul_sum, ← sum_sub_distrib]`. Use `sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[sum_mul, mul_sum, ← sum_sub_distrib]`. Conclude with `sum_congr rfl (fun b _ => by ring)`.
-
-Rewrite using `[h4, e1, e2, wd_diag, wd_offdiag ε (fun a b => ‖E a b v‖ ^ 2), nsq_shift]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem casimir_khw_identity (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M}
     (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin n → ℝ} {v : M} (hv : IsKHWVec ε E μ v)
@@ -223,7 +221,7 @@ theorem casimir_khw_identity (ε : Fin n → Bool) {E : Fin n → Fin n → Modu
   ring
 
 /- English proof (translation)
-Establish `h` using `casimir_khw_identity ε hE hU hv hc`. Establish `hS : 0 ≤ ∑ a, ∑ b ∈ univ.filter (fun b => a < b ∧ ε a ≠ ε b), ‖E b a v‖ ^ 2` using `sum_nonneg (fun _ _ => sum_nonneg (fun _ _ => sq_nonneg _))`. Establish `hpos : 0 < ‖v‖ ^ 2` using `pow_pos (norm_pos_iff.2 hv0) 2`. Apply `le_of_mul_le_mul_right _ hpos` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem casimir_khw_le (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M}
     (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin n → ℝ} {v : M} (hv : IsKHWVec ε E μ v)
@@ -237,11 +235,11 @@ theorem casimir_khw_le (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End
   linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hv0`. Establish `hle` using `casimir_khw_le ε hE hU hv hv0 hc`. Establish `hμ : lowK ε lam - root a b + rhoC ε - rhoN ε = lam - root a b`. Use extensionality with `i`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hle` using `[hμ]`. Establish `e1` using `nsq_sub' lam (root a b)`. Establish `e2 : nsq (root a b) = 2` using `nsq_root (ne_of_lt hab)`. Establish `e3 : casVal lam = nsq lam - (nsq (rhoC ε) + 2 * dot (rhoC ε) (rhoN ε) + nsq (rhoN ε))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[casVal, rho_eq_rhoC_add_rhoN ε, nsq_add']`. Establish `e4` using `nsq_sub' (rhoC ε) (rhoN ε)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem khw_lowK_sub_root_eq_zero (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M}
     (hE : IsGlRep E) (hU : IsInfUnitary ε E) (lam : Fin n → ℝ) {a b : Fin n} (hab : a < b)

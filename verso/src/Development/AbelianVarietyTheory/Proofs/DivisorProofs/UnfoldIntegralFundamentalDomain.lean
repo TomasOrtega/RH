@@ -6,7 +6,7 @@ namespace GlobalTheory.UnfoldOrbits
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Rewrite using `[← Set.image_smul]`. Conclude with `(measurePreserving_mul_left μ a).setIntegral_image_emb (MeasurableEquiv.mulLeft a).measurableEmbedding h s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma setIntegral_smul_set (μ : Measure G) [μ.IsMulLeftInvariant] (a : G) (s : Set G) (h : G → ℂ) :
     ∫ x in a • s, h x ∂μ = ∫ x in s, h (a * x) ∂μ := by
@@ -15,7 +15,7 @@ lemma setIntegral_smul_set (μ : Measure G) [μ.IsMulLeftInvariant] (a : G) (s :
     (MeasurableEquiv.mulLeft a).measurableEmbedding h s
 
 /- English proof (translation)
-Rewrite using `[← Set.image_smul]`. Conclude with `((measurePreserving_mul_left μ a).setLIntegral_comp_emb (MeasurableEquiv.mulLeft a).measurableEmbedding h s).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma setLIntegral_smul_set (μ : Measure G) [μ.IsMulLeftInvariant] (a : G) (s : Set G) (h : G → ENNReal) :
     ∫⁻ x in a • s, h x ∂μ = ∫⁻ x in s, h (a * x) ∂μ := by
@@ -24,7 +24,7 @@ lemma setLIntegral_smul_set (μ : Measure G) [μ.IsMulLeftInvariant] (a : G) (s 
     (MeasurableEquiv.mulLeft a).measurableEmbedding h s).symm
 
 /- English proof (translation)
-Rewrite using `[← lintegral_tsum (f := fun q x => ‖f x * T q x‖ₑ) (fun q => ((hfm.mul (hTm q)).restrict).enorm)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← ENNReal.tsum_mul_left]`. Simplify using `only [enorm_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma tsum_setLIntegral_enorm_mul (μ : Measure G) (𝓕 : Set G) {Q : Type} [Countable Q]
     (T : Q → G → ℂ) (f : G → ℂ) (hTm : ∀ q, AEStronglyMeasurable (T q) μ)
@@ -37,35 +37,31 @@ lemma tsum_setLIntegral_enorm_mul (μ : Measure G) (𝓕 : Set G) {Q : Type} [Co
   simp only [enorm_mul]
 
 /- English proof (translation)
-Use `set O : Set Q := {q | ∃ γ, act q₀ γ = q} with hO`. Use `choose γ hγ using (fun q : O => q.2)`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS⟩ : ∃ S : Subgroup G, ∀ g, g ∈ S ↔ ∃ hg : g ∈ Γ, act q₀ ⟨g, hg⟩ = q₀ := by`. Use `⟨{ carrier := {g | ∃ hg : g ∈ Γ, act q₀ ⟨g, hg⟩ = q₀} one_mem' := ⟨Γ.one_mem, h1 q₀⟩ mul_mem' := ?_ inv_mem' := ?_ }, fun g => Iff.rfl⟩` and prove the remaining obligations. Introduce and unpack `a b ⟨ha, hqa⟩ ⟨hb, hqb⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Γ.mul_mem ha hb, ?_⟩` and prove the remaining obligations. Establish `: (⟨a * b, Γ.mul_mem ha hb⟩ : Γ) = ⟨a, ha⟩ * ⟨b, hb⟩` using `rfl`. Rewrite using `[this, ← hm, hqa, hqb]`. Introduce and unpack `a ⟨ha, hqa⟩`. Use `⟨Γ.inv_mem ha, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨a⁻¹, Γ.inv_mem ha⟩ : Γ) = (⟨a, ha⟩ : Γ)⁻¹` using `rfl`. Rewrite using `[this]`. Use `conv_lhs => rw [← hqa]`. Rewrite using `[hm, mul_inv_cancel, h1]`. Use `set D : Set G := ⋃ q : O, (γ q : G) • 𝓕 with hD_def`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγinj : Function.Injective γ` using `fun q q' h => Subtype.ext (by rw [← hγ q, ← hγ q', h])`. Establish `hmeas : ∀ q : O, NullMeasurableSet ((γ q : G) • 𝓕) μ` using `fun q => h𝓕.nullMeasurableSet_smul (γ q)`. Establish `hdisj : Pairwise (Function.onFun (AEDisjoint μ) fun q : O => (γ q : G) • 𝓕)` using `fun q q' hne => h𝓕.aedisjoint (hγinj.ne hne)`. Establish `hpt : ∀ (q : O) x, f ((γ q : G) * x) * T q₀ ((γ q : G) * x) = f x * T q x`. Introduce `q x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf _ (γ q).2, hT, hγ]`. Establish `hchange : ∀ q : O, ∫ x in (γ q : G) • 𝓕, f x * T q₀ x ∂μ = ∫ x in 𝓕, f x * T q x ∂μ`. Introduce `q`. Rewrite using `[setIntegral_smul_set]`. Simplify using `only [hpt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hlchange : ∀ q : O, ∫⁻ x in (γ q : G) • 𝓕, ‖f x * T q₀ x‖ₑ ∂μ = ∫⁻ x in 𝓕, ‖f x * T q x‖ₑ ∂μ`. Introduce `q`. Rewrite using `[setLIntegral_smul_set]`. Simplify using `only [hpt]`. Establish `hint : IntegrableOn (fun x => f x * T q₀ x) D μ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `⟨(hfm.mul (hTm q₀)).restrict, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ x in D, ‖f x * T q₀ x‖ₑ ∂μ < ⊤`. Rewrite using `[hD_def, lintegral_iUnion₀ hmeas hdisj]`. Simplify using `only [hlchange]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDfd : IsFundamentalDomain S D μ`. Use `IsFundamentalDomain.mk'' (NullMeasurableSet.iUnion hmeas) ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [h𝓕.ae_covers] with x hx`. Take `⟨δ, hδ⟩` from `hx`. Establish `hq : act q₀ δ⁻¹ ∈ O` using `⟨δ⁻¹, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ((γ ⟨_, hq⟩ : G) * δ) ∈ S`. Use `(hS _).2 ⟨Γ.mul_mem (γ ⟨_, hq⟩).2 δ.2, ?_⟩` and prove the remaining obligations. Establish `: (⟨(γ ⟨_, hq⟩ : G) * δ, Γ.mul_mem (γ ⟨_, hq⟩).2 δ.2⟩ : Γ) = γ ⟨_, hq⟩ * δ` using `rfl`. Rewrite using `[this, ← hm, hγ ⟨_, hq⟩, hm, inv_mul_cancel, h1]`. Use `⟨⟨_, hs⟩, Set.mem_iUnion.2 ⟨⟨_, hq⟩, Set.mem_smul_set.2 ⟨δ • x, hδ, ?_⟩⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (γ ⟨_, hq⟩ : G) * ((δ : G) * x) = ((γ ⟨_, hq⟩ : G) * δ) * x`. Rewrite using `[mul_assoc]`. Introduce `s hs1`. Take `⟨hsΓ, hsq⟩` from `(hS s).1 s.2`. Establish `hsD : s • D = ⋃ q : O, (((⟨s, hsΓ⟩ * γ q : Γ)) : G) • 𝓕` using `by show (s : G) • D = _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hD_def, Set.smul_set_iUnion]`. Simplify using `only [smul_smul, Subgroup.coe_mul]`. Rewrite using `[hsD, hD_def, AEDisjoint.iUnion_left_iff]`. Introduce `q`. Rewrite using `[AEDisjoint.iUnion_right_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Introduce `q'`. Use `h𝓕.aedisjoint (?_ : (⟨s, hsΓ⟩ * γ q : Γ) ≠ γ q')` and prove the remaining obligations. Introduce `heq`. Establish `hqq : q = q'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hγ q, ← hγ q', ← heq, ← hm, hsq]`. Substitute `hqq` using the available equality. Apply `hs1` to reduce the goal to its premises. Establish `h1' : (⟨s, hsΓ⟩ : Γ) = 1`. Simplify using `using heq`.
-
-Conclude with `Subtype.ext (congrArg Subtype.val h1' : (s : G) = 1)`. Introduce `s`. Conclude with `(measurePreserving_mul_left μ (s : G)).quasiMeasurePreserving`. Establish `hzero` using `hvan q₀ S hS D hDfd hint`. Rewrite `hzero` using `[hD_def, integral_iUnion_ae hmeas hdisj (hD_def ▸ hint)]`.
-
-Simplify `hzero` using `only [hchange]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tsum_orbit_eq_zero (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant]
     (𝓕 : Set G) {Q : Type} [Countable Q]
@@ -169,23 +165,23 @@ end GlobalTheory.UnfoldOrbits
 namespace GlobalTheory.UnfoldOrbits
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ Γ _ μ _ 𝓕 Q _ act T f h𝓕 h1 hm hT hTm hf hfm hfin hvan`. Establish `hL` using `tsum_setLIntegral_enorm_mul μ 𝓕 T f hTm hfm`. Establish `hfin' : ∑' q, ∫⁻ x in 𝓕, ‖f x * T q x‖ₑ ∂μ ≠ ⊤` using `by rw [hL]; exact hfin`. Establish `e1 : ∫ x in 𝓕, f x * ∑' q, T q x ∂μ = ∑' q, ∫ x in 𝓕, f x * T q x ∂μ`. Repeatedly rewrite using `[← tsum_mul_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `integral_tsum (fun q => (hfm.mul (hTm q)).restrict) hfin'`. Establish `hsum : Summable (fun q => ∫ x in 𝓕, f x * T q x ∂μ)`. Use `Summable.of_norm_bounded (ENNReal.summable_toReal hfin') (fun q => ?_)` and prove the remaining obligations. Use `(norm_integral_le_lintegral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [ofReal_norm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Set `g : Q → Set Q` to `fun q => {q' | ∃ γ, act q γ = q'}`. Establish `hfib : ∀ q₀, g ⁻¹' {g q₀} = g q₀`. Introduce `q₀`. Use extensionality with `q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: q ∈ g q` using `⟨1, h1 q⟩`. Rewrite `this` using `[h]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨γ, rfl⟩`. Use extensionality with `q'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, rfl⟩`. Conclude with `⟨γ * δ, (hm _ _ _).symm⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨δ, rfl⟩`. Use `⟨γ⁻¹ * δ, ?_⟩` and prove the remaining obligations. Use `show act (act q₀ γ) (γ⁻¹ * δ) = act q₀ δ`. Rewrite using `[hm, mul_inv_cancel_left]`. Establish `H` using `hsum.hasSum.tsum_fiberwise g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `H0 : (fun c => ∑' b : ↑(g ⁻¹' {c}), ∫ x in 𝓕, f x * T b x ∂μ) = fun _ => 0`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : ∃ q₀, g q₀ = c`. Take `⟨q₀, rfl⟩` from `hc`. Rewrite using `[hfib q₀]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `tsum_orbit_eq_zero Γ μ 𝓕 act T f h𝓕 h1 hm hT hTm hf hfm hfin hvan q₀`. Establish `: g ⁻¹' {c} = ∅`. Use extensionality with `q`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun h => hc ⟨q, h⟩`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite `H` using `[H0]`. Conclude with `H.unique hasSum_zero`.
+A detailed English derivation is pending.
 -/
 theorem integral_mul_tsum_eq_zero : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] (𝓕 : Set G) (Q : Type) [Countable Q]

@@ -18,19 +18,17 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.HalfFrameLift
 
 /- English proof (translation)
-Introduce `D S T βS βT Q e he ϖ hϖ y`. Establish `hee : e * e = e` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Take `⟨⟨es, hes, hsum⟩, hc⟩` from `he`. Substitute `hsum` using the available equality. Use `choose N hN hNe hNr using fun (i : Fin T.rank) (j : Fin S.rank) => GlobalTheory.T.exists_integral_lift_residues_idempotentSum D Q es hes hc (fun PP => y PP i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Introduce a local definition for the expression.
 
-Use `set e := ∑ PP ∈ Q, es PP with he_def`. Set `z : Matrix (Fin T.rank) (Fin S.rank) (EAf D)` to `Matrix.of N`. Set `A : Matrix (Fin T.rank) (Fin S.rank) (EAf D)` to `((βT.val : Matrix (Fin T.rank) (Fin T.rank) (EAf D)) * z : Matrix (Fin T.rank) (Fin S.rank) (EAf D)) * ((βS⁻¹).val : Matrix (Fin S.rank) (Fin S.rank) (EAf D))`. Use `choose w hw using fun (i : Fin T.rank) (j : Fin S.rank) => GlobalTheory.AdjDatumNe.toEAf_surjective (D := D) (A i j)`. Establish `hϖ' : (ϖ : D.host.E) ≠ 0` using `by exact_mod_cast hϖ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hinv : incA D (ϖ : D.host.E) * incA D (ϖ : D.host.E)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hϖ', map_one]`. Set `u : WO S T` to `Matrix.of fun i j => e * incA D (ϖ : D.host.E)⁻¹ * w i j`. Establish `key : frMapO S T βS βT (u.map fun v => incA D (ϖ : D.host.E) * v) = z`. Establish `hmap : (u.map fun v => incA D (ϖ : D.host.E) * v).map (toEAf D) = toEAf D e • A`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, u, Matrix.of_apply]`. Rewrite using `[← hw i j, ← map_mul]`. Use `congr 1`. Take the linear combination `(e * w i j) * hinv`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Unfold `frMapO`. Rewrite using `[hmap, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, z, Matrix.of_apply]`. Conclude with `hNe i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨u, fun i j => ?_, ?_, fun PP hPP => ?_⟩` and prove the remaining obligations. Use `show e * (e * incA D (ϖ : D.host.E)⁻¹ * w i j) = e * incA D (ϖ : D.host.E)⁻¹ * w i j`. Rewrite using `[← mul_assoc, ← mul_assoc, hee]`. Rewrite using `[key]`. Conclude with `fun i j => hN i j`.
-
-Rewrite using `[key]`. Use function extensionality and compare the values at `i j`. Conclude with `(dif_pos (hN i j)).trans (hNr i j PP hPP)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_half_redM_frMapO : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (Q : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Q → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (kP PP), ∃ u : WO S T, IsHalf e u ∧ IsIntM (frMapO S T βS βT (u.map fun w => incA D (ϖ : D.host.E) * w)) ∧ ∀ PP ∈ Q, redM PP (frMapO S T βS βT (u.map fun w => incA D (ϖ : D.host.E) * w)) = y PP := by
   intro D S T βS βT Q e he ϖ hϖ y

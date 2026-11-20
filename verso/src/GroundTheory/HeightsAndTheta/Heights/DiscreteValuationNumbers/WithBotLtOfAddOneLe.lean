@@ -13,7 +13,7 @@ namespace AdditivityInDivisor
 variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Unfold `cycEval`. Rewrite using `[← finsum_add_distrib (h₁.subset (Function.support_mul_subset_left _ _)) (h₂.subset (Function.support_mul_subset_left _ _))]`. Conclude with `finsum_congr fun W => by simp [add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycEval_add_cycle {n Z₁ Z₂ : Ideal (MRing ι R) → ℤ} (h₁ : (Function.support Z₁).Finite)
     (h₂ : (Function.support Z₂).Finite) : cycEval n (Z₁ + Z₂) = cycEval n Z₁ + cycEval n Z₂ := by
@@ -23,9 +23,9 @@ theorem cycEval_add_cycle {n Z₁ Z₂ : Ideal (MRing ι R) → ℤ} (h₁ : (Fu
   exact finsum_congr fun W => by simp [add_mul]
 
 /- English proof (translation)
-Unfold `cycEval`. Rewrite using `[← finsum_add_distrib (hZ.subset (Function.support_mul_subset_left _ _)) (hZ.subset (Function.support_mul_subset_left _ _))]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Distinguish the cases in `hW : Z W = 0`. Simplify using `[hW]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[h W hW, mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cycEval_add_fn {n n₁ n₂ Z : Ideal (MRing ι R) → ℤ} (hZ : (Function.support Z).Finite)
     (h : ∀ W, Z W ≠ 0 → n W = n₁ W + n₂ W) : cycEval n Z = cycEval n₁ Z + cycEval n₂ Z := by
@@ -38,7 +38,7 @@ theorem cycEval_add_fn {n n₁ n₂ Z : Ideal (MRing ι R) → ℤ} (hZ : (Funct
   · rw [h W hW, mul_add]
 
 /- English proof (translation)
-Use `(hf.union hg).subset fun W hW => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at h`. Conclude with `hW (by simp [ratDiv, h.1, h.2])`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratDiv_support_finite {P : Ideal (MRing ι R)} {f g : MRing ι R}
     (hf : (Function.support (divCycle P f)).Finite) (hg : (Function.support (divCycle P g)).Finite) :
@@ -49,11 +49,11 @@ theorem ratDiv_support_finite {P : Ideal (MRing ι R)} {f g : MRing ι R}
   exact hW (by simp [ratDiv, h.1, h.2])
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `e : ((⊤ : ℕ∞) : WithBot ℕ∞) + 1 = ((⊤ : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[← WithBot.coe_one, ← WithBot.coe_add, top_add]`. Rewrite `hx` using `[e]`. Conclude with `absurd (WithBot.coe_le_coe.mp hx) (by simp)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `coe m`. Establish `h1 : ((m + 1 : ℕ) : WithBot ℕ∞) ≤ ((n : ℕ) : WithBot ℕ∞)` using `by simpa using hx`. Establish `h2 : m + 1 ≤ n` using `by exact_mod_cast h1`. Establish `h3 : ((m : ℕ) : WithBot ℕ∞) < ((n : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast (show m < n by omega)`. Simplify using `using h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem withBot_lt_of_add_one_le {x : WithBot ℕ∞} {n : ℕ} (hx : x + 1 ≤ (n : WithBot ℕ∞)) :
     x < (n : WithBot ℕ∞) := by
@@ -74,7 +74,7 @@ theorem withBot_lt_of_add_one_le {x : WithBot ℕ∞} {n : ℕ} (hx : x + 1 ≤ 
       simpa using h3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `W`. Simplify using `only [ratDiv, Pi.add_apply, hmul O K ι P f₁ f₂ hP hf₁ hf₂, hmul O K ι P g₁ g₂ hP hg₁ hg₂]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ratDiv_mul_mul (hmul : DivCycleMul.Statement.{u}) {O : Type u} [CommRing O] [IsNoetherianRing O]
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι O)} (hP : P.IsPrime)
@@ -87,15 +87,13 @@ theorem ratDiv_mul_mul (hmul : DivCycleMul.Statement.{u}) {O : Type u} [CommRing
 end AdditivityInDivisor
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b₁ b₂ f₁ g₁ f₂ g₂ hD₁ hD₂ c s hs hsP hsH L`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Establish `rfin : ∀ (Q : Ideal (MRing ι O)) (x y : MRing ι O), (Function.support (ratDiv Q x y)).Finite` using `fun Q x y => ratDiv_support_finite (hfin O K ι Q x) (hfin O K ι Q y)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `cutIdentityLeftSide`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[ratDiv_mul_mul hmul hPp hD₁.num_not_mem hD₂.num_not_mem hD₁.den_not_mem hD₂.den_not_mem]`. Conclude with `cycEval_add_cycle (rfin _ _ _) (rfin _ _ _)`. Unfold `cutIdentityRightSide`. Use `cycEval_add_fn (hfin O K ι P s) fun W hW => ?_` and prove the remaining obligations. Take `⟨hWp, hPW, -⟩` from `le_and_isRelevant_of_divCycle_ne_zero hW`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `split_ifs with hϖW`. Establish `hWmin : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes`. Unfold `divCycle at hW`. Use `split_ifs at hW with h`. Conclude with `h.1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd rfl hW`. Establish `hWh : IsMultiHomogIdeal W` using `hmin O K ι _ W (hsup O K ι P s c hP.multiProj.multiHomog hs) hWmin`. Establish `hsW : s ∈ W` using `hWmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Establish `hlt : P < W` using `lt_of_le_of_ne hPW fun h => hsP (h ▸ hsW)`. Establish `hdim` using `hdrop (MRing ι O) P W hlt`.
-
-Rewrite `hdim` using `[hP.dim, ← hqd O ϖ hϖ K ι W hϖW, show d + 1 + 1 + Fintype.card K = d + 2 + Fintype.card K by ring]`. Conclude with `hadd _ K ι d (specialIdeal W) (hcor O ϖ hϖ K ι P W hWp hϖW).1 (hspm O K ι W hWh) (withBot_lt_of_add_one_le hdim) b₁ b₂ L`. Take `⟨hV₁, hV₂⟩` from `hsH W hW hϖW`. Rewrite using `[ratDiv_mul_mul hmul hWp hV₁.num_not_mem hV₂.num_not_mem hV₁.den_not_mem hV₂.den_not_mem]`. Conclude with `cycEval_add_cycle (rfin _ _ _) (rfin _ _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AdditivityInDivisor.proof (hmul : DivCycleMul.Statement.{u}) (hfin : DivCycleFiniteSupport.Statement.{u})
     (hadd : IntNumAddFirst.Statement.{u}) (hsup : SupSpanMultiHomog.Statement.{u})

@@ -10,23 +10,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Introduce `n Ξ ν v hv htop`. Set `S : Submodule ℂ (Fin Ξ.d → ℂ)` to `Submodule.span ℂ (Set.range fun y : Matrix (Fin n) (Fin n) ℂ => Ξ.mat y *ᵥ v)`. Establish `hS : ∀ y, ∀ w ∈ S, Ξ.mat y *ᵥ w ∈ S`. Introduce `y w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨z, rfl⟩` from `hx`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul]`. Conclude with `Submodule.subset_span ⟨y * z, rfl⟩`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x z _ _ hx hz`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `S.add_mem hx hz`. Consider the case `smul a x _ hx`. Rewrite using `[Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `S.smul_mem a hx`. Establish `hvS : v ∈ S`. Establish `h : Ξ.mat 1 *ᵥ v ∈ S` using `Submodule.subset_span ⟨1, rfl⟩`. Simplify using `using h`. Take `⟨Ξ', A, B, hd, hBA, hA, hD⟩` from `preSub n Ξ S hS`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hdiag, hup⟩` from `topLie n Ξ ν v htop`. Use `⟨Ξ', ?_, ?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `Module.finrank_pos_iff_exists_ne_zero.mpr ⟨⟨v, hvS⟩, fun h => hv (congrArg Subtype.val h)⟩`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Submodule.finrank_le S`. Use `set c : ℂ := ∏ k : Fin n, (u - ((k : ℕ) : ℂ) + (ν k : ℂ)) with hc`. Establish `hQv : Formalism.REAL.qdet Ξ.E u *ᵥ v = c • v` using `qdetHW n Ξ.d Ξ.E (fun k => (ν k : ℂ)) v (glRel n Ξ) hdiag hup u`. Establish `hcomm : ∀ y, Ξ.mat y * Formalism.REAL.qdet Ξ.E u = Formalism.REAL.qdet Ξ.E u * Ξ.mat y` using `commAll n Ξ _ (fun y hy => qdetComm n Ξ u y hy)`. Establish `hQS : ∀ w ∈ S, Formalism.REAL.qdet Ξ.E u *ᵥ w = c • w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[Matrix.mulVec_mulVec, ← hcomm y, ← Matrix.mulVec_mulVec, hQv, Matrix.mulVec_smul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [Matrix.mulVec_add, hx, hz, smul_add]`. Consider the case `smul a x _ hx => rw [Matrix.mulVec_smul, hx, smul_comm]`. Establish `hR` using `qdetRect n Ξ.d Ξ'.d Ξ.E Ξ'.E A (fun a b => hD _) u`. Establish `hcA : Formalism.REAL.qdet Ξ.E u * A = c • A`.
-
-Use `Matrix.toLin'.injective (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hQS _ (hA w), Matrix.smul_mulVec]`. Use `show Formalism.REAL.qdet Ξ'.E u = c • 1`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.scalar :
     ∀ (n : ℕ) (Ξ : Pre n) (ν : Fin n → ℕ) (v : Fin Ξ.d → ℂ), v ≠ 0 → Ξ.IsTop ν v →

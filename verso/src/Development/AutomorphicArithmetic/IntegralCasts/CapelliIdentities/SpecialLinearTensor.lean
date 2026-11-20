@@ -15,7 +15,7 @@ noncomputable def UpperTheory.Reformulated.B.SpecialLinearTensor.sl :
         (UpperTheory.Reformulated.B.SpecialLinearMap.slM v f)
 
 /- English proof (translation)
-Introduce `I _ _ W _ _ v f m`. Conclude with `PiTensorProduct.lift.tprod (φ := UpperTheory.Reformulated.B.SpecialLinearMap.slM v f) m`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SpecialLinearTensor.sl_tprod :
     ∀ {I : Type} [inst : Fintype I] [dI : DecidableEq I] {W : I → Type} [inst_1 : (i : I) → AddCommGroup (W i)]

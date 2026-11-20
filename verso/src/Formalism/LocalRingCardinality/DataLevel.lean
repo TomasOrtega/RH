@@ -46,7 +46,7 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   [Algebra F E] (sp : Spaces R F E)
 
 /- English proof (translation)
-Simplify `sp.X_rank 0 (Nat.zero_le _)` using `[Ranks.N]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rank0 : (sp.X 0).rank = R.k := by
   simpa [Ranks.N] using sp.X_rank 0 (Nat.zero_le _)
@@ -61,9 +61,9 @@ def crdLat0 (L : Submodule (𝓞 E) (sp.X 0).V) : Submodule (𝓞 E) (Fin R.k �
   L.map ((sp.crd0 : (sp.X 0).V →ₗ[E] (Fin R.k → E)).restrictScalars (𝓞 E))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[hform, HSpace.gram]`. Use `conv_lhs => rw [← S.frame.sum_repr x, ← S.frame.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem hT_eq_hform_gram_reindex_frame (S : HSpace E) {n : ℕ} (h : S.rank = n) (x y : S.V) :
     S.hT x y = hform (starRingEnd E) (S.gram.reindex (finCongr h) (finCongr h))
@@ -79,14 +79,14 @@ private theorem hT_eq_hform_gram_reindex_frame (S : HSpace E) {n : ℕ} (h : S.r
   ring
 
 /- English proof (translation)
-Conclude with `hT_eq_hform_gram_reindex_frame (sp.X 0) sp.rank0 x y`.
+A detailed English derivation is pending.
 -/
 theorem hermitianForm_base_coordinates (x y : (sp.X 0).V) :
     (sp.X 0).hT x y = hform (sp.cm.sig : E →+* E) sp.gram0 (sp.crd0 x) (sp.crd0 y) := by
   exact hT_eq_hform_gram_reindex_frame (sp.X 0) sp.rank0 x y
 
 /- English proof (translation)
-Unfold `IsHerm cT`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, gram0, Matrix.reindex_apply, Matrix.submatrix_apply, HSpace.gram]`. Conclude with `(sp.X 0).herm.eq _ _`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem baseGram_isHermitian : IsHerm (sp.cm.sig : E →+* E) sp.gram0 := by
   unfold IsHerm cT

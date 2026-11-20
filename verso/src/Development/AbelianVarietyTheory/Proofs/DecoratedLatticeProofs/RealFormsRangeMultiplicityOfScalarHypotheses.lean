@@ -20,7 +20,7 @@ open GlobalTheory.LiftRows (Given)
 namespace GlobalTheory.ChainTw
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG t`. Establish `hm` using `hG.core.models`. Conclude with `GlobalTheory.DefiniteMult.range_top R hm.inf hm.cX hm.prX hm.HX t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rangeX_of_given : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → RangeX R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG t

@@ -48,7 +48,7 @@ def RowL (x : ℝ) : Prop :=
 abbrev nLet : ℕ := finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)
 
 /- English proof (translation)
-Use `(D.nbr i w hw).Kw.2` as an intermediate fact. Establish `h0 : K0 (D.nbr i w hw).Kw ≤ (D.nbr i w hw).Kw.1` using `inf_le_left`. Establish `: FiniteDimensional ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw)` using `Module.Finite.of_injective (IntermediateField.inclusion h0).toLinearMap (IntermediateField.inclusion h0).injective`. Conclude with `⟨(finrank_pos).ne'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem nLet_neZero : NeZero (nLet i w hw) := by
   have := (D.nbr i w hw).Kw.2

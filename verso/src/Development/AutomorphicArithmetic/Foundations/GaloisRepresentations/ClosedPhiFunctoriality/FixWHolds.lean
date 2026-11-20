@@ -9,23 +9,21 @@ open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Introduce `l _ K bk P AI T n hn s`. Use `set x := f0 bk s with hx`. Establish `hact` using `ActLaws.act_laws l`. Establish `hσB : ∀ (g : GQ l) (y : Per.Acris l), Per.σB g (iB l y) = iB l (sigA g y)` using `hact.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hφB : ∀ y : Per.Acris l, Per.φB l (iB l y) = iB l (phiA l y)` using `hact.2.2.2.2.2.2.2.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, hσι⟩` from `GlobalTheory.T.acris_torsionFree_complete_frobenius_properties l K bk`. Establish `hfix : ∀ g : ↥(GK K), sigA (g : GQ l) x = x`. Introduce `g`. Establish `hxe : x = iA l (WittVector.frobenius (bk.ev (PowerSeries.C (PowerSeries.constantCoeff s))))`. Simplify using `only [hx, f0, fA, RingHom.comp_apply, bk.ev_frob]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hxe, hσι, ← GlobalTheory.RingBasics.φA_apply, ← ActLaws.φA_σA, bk.ev_C, bk.gal_w g]`. Establish `hinj : Function.Injective (iB l)` using `GlobalTheory.MemLoc.PhiInj.algebraMap_acris_bcris_injective l`. Use `set b := T.eB.symm (iB l x) with hb`. Establish `hbfix : ∀ g : ↥(GK K), (P.PD K).actB g b = b`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[P.PD_actB, T.actB, hb, RingEquiv.apply_symm_apply, hσB, hfix]`. Take `⟨c, hc⟩` from `(P.PD K).invB b hbfix`. Establish `hc' : algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ⟨c, c.2.2⟩ = b` using `hc`. Establish `hit : ∀ (m : ℕ) (y : ↥(MaximalUnramifiedExtension l)), (fun z => P.φB z)^[m] (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B y) = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ((frobUr l ^ m) y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `m y`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', ih, phiB_algebraMap, pow_succ', AlgHom.mul_apply]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbn : (fun z => P.φB z)^[n] b = b`. Rewrite using `[← hc', hit, hn ⟨c, c.2.2⟩ c.2.1]`. Establish `htr : ∀ (m : ℕ) (y : P.R.B), T.eB ((fun z => P.φB z)^[m] y) = (Per.φB l)^[m] (T.eB y)`. Introduce `m y`. Proceed by induction on `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', T.frob, ih]`. Establish `hin : ∀ (m : ℕ) (y : Per.Acris l), (Per.φB l)^[m] (iB l y) = iB l ((phiA l)^[m] y)`. Introduce `m y`. Proceed by induction on `m with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, hφB]`. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `htr n b`. Rewrite `h1` using `[hbn, hb, RingEquiv.apply_symm_apply, hin]`.
-
-Rewrite using `[RingHom.coe_pow]`. Conclude with `h1.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.fixW_holds :
     FixW := by

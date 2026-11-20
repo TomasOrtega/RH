@@ -6,9 +6,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.LeviIso
 
 /- English proof (translation)
-Use `⟨fun k => ∑ i, p k i *ᵥ u i, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : i < k`. Rewrite using `[hp k i hik, Matrix.zero_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hki : k ≤ i` using `not_lt.mp hik`. Establish `hi : ¬ i.castSucc < l` using `fun hi => hk (lt_of_le_of_lt (Fin.castSucc_le_castSucc_iff.mpr hki) hi)`. Rewrite using `[hu i hi, Matrix.mulVec_zero]`. Repeatedly rewrite using `[hA, Matrix.sum_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_sum]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_mulVec_of_triangular {n a : ℕ} {j : Fin a → ℕ} (A B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ)
     (p : ∀ k i, Matrix (Fin (j k)) (Fin (j i)) ℂ) (hp : ∀ k i, i < k → p k i = 0)
@@ -29,9 +29,9 @@ theorem exists_sum_mulVec_of_triangular {n a : ℕ} {j : Fin a → ℕ} (A B : �
     exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `k y`. Rewrite using `[h k y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `exists_sum_mulVec_of_triangular A B p (fun k i hik => (hpq k i hik).1) hA k u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨v, hv, rfl⟩`. Take `⟨w, hw, he⟩` from `exists_sum_mulVec_of_triangular B A q (fun k i hik => (hpq k i hik).2) hB k v hv`. Conclude with `⟨w, hw, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spansFlag_of_triangular (n a : ℕ) (j : Fin a → ℕ) (A B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ)
     (p q : ∀ k i, Matrix (Fin (j k)) (Fin (j i)) ℂ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ))

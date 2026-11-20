@@ -9,13 +9,13 @@ noncomputable section
 namespace GlobalTheory.RayOnto
 
 /- English proof (translation)
-Introduce `P hP`. Use `letI : Algebra L L' := τ.toAlgebra`. Set `Q : HeightOneSpectrum (𝓞 L)` to `P.under (𝓞 L)`. Establish `hQ : Q.asIdeal = P.asIdeal.comap (RingOfIntegers.mapRingHom τ)` using `rfl`. Use `haveI hPo : P.asIdeal.LiesOver Q.asIdeal := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ((n : ℕ) : 𝓞 L) ∉ Q.asIdeal` using `fun h' => hP (by`. Rewrite `h'` using `[hQ, Ideal.mem_comap, map_natCast]`. Conclude with `h')`. Take `⟨f, α, h1, h2, h3⟩` from `h Q hn`. Establish `hf` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver P.asIdeal Q.asIdeal Q.isPrime Q.ne_bot`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hcm : P.asIdeal.comap (RingOfIntegers.mapRingHom (τ.comp φ)) = Q.asIdeal.comap (RingOfIntegers.mapRingHom φ)`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hcm]`. Use `⟨f * Q.asIdeal.inertiaDeg' P.asIdeal, α ^ Q.asIdeal.inertiaDeg' P.asIdeal, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, h1, ← pow_mul]`. Rewrite using `[pow_mul, h2, Ideal.span_singleton_pow]`. Use `sub_dvd_pow_sub_pow α 1 (Q.asIdeal.inertiaDeg' P.asIdeal)` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `dvd_trans h3 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem containsRayField_comp {K L L' : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Field L'] [NumberField L']
     (φ : K →+* L) (τ : L →+* L') (n : ℕ) (h : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField φ n) :
@@ -43,21 +43,19 @@ theorem containsRayField_comp {K L L' : Type} [Field K] [NumberField K] [Field L
     exact dvd_trans h3 this
 
 /- English proof (translation)
-Introduce `hR P M hM`. Set `φK : P.host.K →+* ℂ` to `P.host.φ₀.comp (algebraMap P.host.K P.host.E)`. Take `⟨Rf, hRf⟩` from `GlobalTheory.Mem.Fld.exists_isRayFieldIn φK hR (GlobalTheory.Mem.Fld.natIdeal_ne_bot (E := P.host.K) hM)`. Use `haveI : NumberField Rf := hRf.numberField`. Set `b` to `Module.finBasis ℚ Rf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.univ.image (fun i => (b i : ℂ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Establish `h : IsAlgebraic ℚ (b i)` using `Algebra.IsAlgebraic.isAlgebraic _`. Conclude with `h.algHom Rf.val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `L _ _ σ φ hσφ hS`. Take `⟨hm, hNF, hray⟩` from `hRf`. Use `letI := GlobalTheory.Mem.Fld.algOf φK Rf hm`. Take `⟨hab, hun, -, hart⟩` from `hray`. Use `haveI : IsGalois P.host.K Rf := hab.toIsGalois`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (algebraMap P.host.K Rf) M` using `GlobalTheory.FieldSize.RayNorm.containsRayField_of_ray (K := P.host.K) (L := Rf) M hun (fun I hI hc hχ => (hart I hI hc).1 hχ)`. Establish `hle : Rf ≤ σ.toRatAlgHom.fieldRange`. Introduce `z hz`. Establish `hsum` using `congrArg Subtype.val (b.sum_repr ⟨z, hz⟩)`. Rewrite `hsum` using `[IntermediateField.coe_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [IntermediateField.coe_smul] at hsum`. Rewrite using `[← hsum]`. Use `sum_mem fun i _ => IntermediateField.smul_mem _ ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hS (b i) (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩)`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : L ≃ₐ[ℚ] σ.toRatAlgHom.fieldRange` to `AlgEquiv.ofInjectiveField σ.toRatAlgHom`. Set `τ : Rf →+* L` to `(e.symm : σ.toRatAlgHom.fieldRange →+* L).comp (IntermediateField.inclusion hle : Rf →+* σ.toRatAlgHom.fieldRange)`. Establish `key : ∀ w, σ (e.symm w) = (w : ℂ)` using `fun w => by conv_rhs => rw [← e.apply_symm_apply w]`. Both sides reduce to the same expression. Establish `hτ : τ.comp (algebraMap P.host.K Rf) = φ`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use extensionality with `x`. Apply `σ.injective` to reduce the goal to its premises. Establish `h1 : σ (φ x) = φK x` using `RingHom.congr_fun hσφ x`. Rewrite using `[h1]`. Conclude with `key _`.
-
-Rewrite using `[← hτ]`. Conclude with `containsRayField_comp _ τ M hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_containsRayField : GlobalTheory.NT.RayField → ∀ (P : Pre) (M : ℕ), M ≠ 0 → ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ (L : Type) [Field L] [NumberField L] (σ : L →+* ℂ) (φ : P.host.K →+* L), σ.comp φ = P.host.φ₀.comp (algebraMap P.host.K P.host.E) → (∀ z ∈ S, ∃ x, σ x = z) → GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField φ M := by
   intro hR P M hM

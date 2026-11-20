@@ -19,7 +19,7 @@ def selfDualMeasure (ψ : AddChar K Circle) : Measure K :=
 
 omit [MeasurableSpace K] [BorelSpace K] in
 /- English proof (translation)
-The claim follows from `(NNReal.rpow_pos (zero_lt_one.trans one_lt_residueCard_nnreal)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem selfDualMeasure_coeff_ne_zero (ψ : AddChar K Circle) :
     ((residueCard K : ℝ≥0) ^ ((addCharConductor ψ : ℝ) / 2)) ≠ 0 :=
@@ -30,7 +30,7 @@ instance (ψ : AddChar K Circle) : (selfDualMeasure ψ).IsAddHaarMeasure := by
   exact IsAddHaarMeasure.nnreal_smul (haarIntegers K) (selfDualMeasure_coeff_ne_zero ψ)
 
 /- English proof (translation)
-Rewrite using `[selfDualMeasure, Measure.smul_apply, haarIntegers_integers, ENNReal.smul_def, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem selfDualMeasure_integers (ψ : AddChar K Circle) :
     selfDualMeasure ψ (𝒪[K] : Set K) = ((residueCard K : ℝ≥0) ^ ((addCharConductor ψ : ℝ) / 2) : ℝ≥0) := by
@@ -38,7 +38,7 @@ theorem selfDualMeasure_integers (ψ : AddChar K Circle) :
     mul_one]
 
 /- English proof (translation)
-Rewrite using `[measureReal_def, coe_valBall_zero, selfDualMeasure_integers, ENNReal.coe_toReal, NNReal.coe_rpow, NNReal.coe_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem selfDualMeasure_real_valBall_zero (ψ : AddChar K Circle) :
     (selfDualMeasure ψ).real (valBall K 0) = (residueCard K : ℝ) ^ ((addCharConductor ψ : ℝ) / 2) := by
@@ -48,13 +48,13 @@ theorem selfDualMeasure_real_valBall_zero (ψ : AddChar K Circle) :
 omit [MeasurableSpace K] [BorelSpace K] in
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < residueCard K` using `by exact_mod_cast zero_lt_one.trans one_lt_residueCard`. Establish `hsq : ((residueCard K : ℝ) ^ ((n : ℝ) / 2)) ^ 2 = (residueCard K : ℝ) ^ n`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hq.le, ← Real.rpow_intCast]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hne : (residueCard K : ℝ) ^ (-n) ≠ 0` using `zpow_ne_zero _ hq.ne'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : r ^ 2 = (residueCard K : ℝ) ^ n`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun t => (residueCard K : ℝ) ^ n * t) h` as an intermediate fact. Simplify using `only [mul_one, ← mul_assoc] at this`. Rewrite `this` using `[← zpow_add₀ hq.ne', add_neg_cancel, zpow_zero, one_mul]`. Then use the resulting hypothesis. Rewrite `h2` using `[← hsq]`. Conclude with `(pow_left_inj₀ hr (Real.rpow_nonneg hq.le _) two_ne_zero).mp h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[h, hsq, ← zpow_add₀ hq.ne', neg_add_cancel, zpow_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inversion_const_eq_one_iff (n : ℤ) {r : ℝ} (hr : 0 ≤ r) :
     (residueCard K : ℝ) ^ (-n) * r ^ 2 = 1 ↔ r = (residueCard K : ℝ) ^ ((n : ℝ) / 2) := by
@@ -78,9 +78,9 @@ theorem inversion_const_eq_one_iff (n : ℤ) {r : ℝ} (hr : 0 ≤ r) :
 
 omit [MeasurableSpace K] [BorelSpace K] in
 /- English proof (translation)
-Use `⟨isLocallyConstant_of_add_valBall (N := 0) fun x h hh => ?_, ?_⟩` and prove the remaining obligations. Establish `hiff : x + h ∈ valBall K 0 ↔ x ∈ valBall K 0` using `⟨fun h' => by simpa using sub_mem h' hh, fun h' => add_mem h' hh⟩`. Distinguish the cases in `hx : x ∈ valBall K 0`. Rewrite using `[Set.indicator_of_mem (show x + h ∈ (valBall K 0 : Set K) from hiff.mpr hx), Set.indicator_of_mem (show x ∈ (valBall K 0 : Set K) from hx)]`. Rewrite using `[Set.indicator_of_notMem (show x + h ∉ (valBall K 0 : Set K) from mt hiff.mp hx), Set.indicator_of_notMem (show x ∉ (valBall K 0 : Set K) from hx)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HasCompactSupport.intro (isCompact_valBall 0) fun x hx => Set.indicator_of_notMem hx _`.
+A detailed English derivation is pending.
 -/
 theorem indicator_valBall_zero_mem_schwartzBruhat :
     (valBall K 0 : Set K).indicator (fun _ => (1 : ℂ)) ∈ schwartzBruhat K := by
@@ -98,7 +98,7 @@ variable {ψ : AddChar K Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
 include hψ hψ1
 
 /- English proof (translation)
-Rewrite using `[localFourier_localFourier _ hψ hψ1 hf x, selfDualMeasure_real_valBall_zero, (inversion_const_eq_one_iff (K := K) (addCharConductor ψ) (Real.rpow_nonneg (Nat.cast_nonneg _) _)).mpr rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem localFourier_localFourier_selfDual {f : K → ℂ} (hf : f ∈ schwartzBruhat K) (x : K) :
     localFourier (selfDualMeasure ψ) ψ (localFourier (selfDualMeasure ψ) ψ f) x = f (-x) := by
@@ -127,7 +127,7 @@ section Multiplicative
 variable [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-The claim follows from `Units.val_injective measurable := comap_measurable _ measurableSet_image' := by rintro _ ⟨t, ht, rfl⟩ have : (Units.val : Kˣ → K) '' (Units.val ⁻¹' t) = t ∩ {0}ᶜ := by ext x constructor · rintro ⟨u, hu, rfl⟩ exact ⟨hu, u.ne_zero⟩ · rintro ⟨hx, hx0⟩ exact ⟨Units.mk0 x hx0, hx, rfl …`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_units_val : MeasurableEmbedding (Units.val : Kˣ → K) where
   injective := Units.val_injective
@@ -147,9 +147,9 @@ theorem measurableEmbedding_units_val : MeasurableEmbedding (Units.val : Kˣ →
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [MeasurableSpace K]
   [BorelSpace K] in
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `u.ne_zero`. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 x hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_units_val : Set.range (Units.val : Kˣ → K) = {0}ᶜ := by
   ext x
@@ -162,7 +162,7 @@ theorem range_units_val : Set.range (Units.val : Kˣ → K) = {0}ᶜ := by
 omit [MeasurableSpace K] [BorelSpace K] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.isEmbedding_val₀, by rw [range_units_val]; exact isOpen_compl_singleton⟩`.
+Supply the required witnesses or components.
 -/
 theorem isOpenEmbedding_units_val : IsOpenEmbedding (Units.val : Kˣ → K) :=
   ⟨Units.isEmbedding_val₀, by rw [range_units_val]; exact isOpen_compl_singleton⟩
@@ -173,21 +173,21 @@ def multHaarConst : ℝ≥0∞ := (1 - ((residueCard K : ℝ≥0∞))⁻¹)⁻¹
 
 omit [MeasurableSpace K] [BorelSpace K] in
 /- English proof (translation)
-The claim follows from `(tsub_pos_of_lt (ENNReal.inv_lt_one.mpr (by exact_mod_cast one_lt_residueCard))).ne'`.
+A detailed English derivation is pending.
 -/
 theorem one_sub_inv_residueCard_ne_zero : (1 : ℝ≥0∞) - ((residueCard K : ℝ≥0∞))⁻¹ ≠ 0 :=
   (tsub_pos_of_lt (ENNReal.inv_lt_one.mpr (by exact_mod_cast one_lt_residueCard))).ne'
 
 omit [MeasurableSpace K] [BorelSpace K] in
 /- English proof (translation)
-The claim follows from `ENNReal.inv_ne_zero.mpr (ne_top_of_le_ne_top ENNReal.one_ne_top tsub_le_self)`.
+A detailed English derivation is pending.
 -/
 theorem multHaarConst_ne_zero : multHaarConst K ≠ 0 :=
   ENNReal.inv_ne_zero.mpr (ne_top_of_le_ne_top ENNReal.one_ne_top tsub_le_self)
 
 omit [MeasurableSpace K] [BorelSpace K] in
 /- English proof (translation)
-The claim follows from `ENNReal.inv_ne_top.mpr one_sub_inv_residueCard_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem multHaarConst_ne_top : multHaarConst K ≠ ∞ :=
   ENNReal.inv_ne_top.mpr one_sub_inv_residueCard_ne_zero
@@ -199,13 +199,13 @@ def multHaar : Measure Kˣ :=
     (multHaarConst K • (haarIntegers K).withDensity fun x => ((modulus x : ℝ≥0∞))⁻¹)
 
 /- English proof (translation)
-The claim follows from `measurable_modulus.coe_nnreal_ennreal.inv`.
+A detailed English derivation is pending.
 -/
 theorem measurable_modulus_inv : Measurable fun x : K => ((modulus x : ℝ≥0∞))⁻¹ :=
   measurable_modulus.coe_nnreal_ennreal.inv
 
 /- English proof (translation)
-Rewrite using `[multHaar, measurableEmbedding_units_val.comap_apply, Measure.smul_apply, withDensity_apply', smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem multHaar_apply (s : Set Kˣ) :
     multHaar K s =
@@ -214,7 +214,7 @@ theorem multHaar_apply (s : Set Kˣ) :
     smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← measurableEmbedding_units_val.lintegral_map, multHaar, measurableEmbedding_units_val.map_comap, range_units_val, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, setLIntegral_withDensity_eq_setLIntegral_mul _ measurable_modulus_inv hg (measurableSet_singleton 0).com …`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lintegral_multHaar {g : K → ℝ≥0∞} (hg : Measurable g) :
     ∫⁻ u, g u ∂(multHaar K) =
@@ -227,7 +227,7 @@ theorem lintegral_multHaar {g : K → ℝ≥0∞} (hg : Measurable g) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← measurableEmbedding_units_val.integral_map, multHaar, measurableEmbedding_units_val.map_comap, range_units_val, Measure.restrict_smul, integral_smul_measure, setIntegral_withDensity_eq_setIntegral_toReal_smul measurable_modulus_inv (ae_restrict_of_forall_mem (measurableSet_sin …`. Use `congr 1`. Use `setIntegral_congr_fun (measurableSet_singleton 0).compl fun x _ => ?_` and prove the remaining obligations. Simplify using `[ENNReal.toReal_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem integral_multHaar {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : K → E) :
     ∫ u, f u ∂(multHaar K) =
@@ -334,17 +334,17 @@ instance : IsOpenPosMeasure (multHaar K) := by
 instance : (multHaar K).IsHaarMeasure where
 
 /- English proof (translation)
-Rewrite using `[multHaar_apply]`. Establish `himg : Units.val '' (unitFiltrationUnits K 0 : Set Kˣ) = (valBall K 0 : Set K) \ valBall K 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `hu` using `[SetLike.mem_coe, mem_unitFiltrationUnits_zero_iff]`. Conclude with `⟨mem_valBall_zero_iff.mpr (le_of_eq hu), fun h => (mem_valBall_one_iff.mp h).ne hu⟩`. Introduce and unpack `⟨h0, h1⟩`. Establish `hx0 : x ≠ 0` using `fun h => h1 (h ▸ zero_mem _)`. Use `⟨Units.mk0 x hx0, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SetLike.mem_coe, mem_unitFiltrationUnits_zero_iff, Units.val_mk0]`. Establish `hle : valuation K x ≤ 1` using `mem_valBall_zero_iff.mp h0`. Establish `hnlt : ¬ valuation K x < 1` using `fun h => h1 (mem_valBall_one_iff.mpr h)`. Conclude with `le_antisymm hle (not_lt.mp hnlt)`. Rewrite using `[himg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ∀ x ∈ (valBall K 0 : Set K) \ valBall K 1, ((modulus x : ℝ≥0∞))⁻¹ = 1`. Introduce and unpack `x ⟨h0, h1⟩`. Establish `hx0 : x ≠ 0` using `fun h => h1 (h ▸ zero_mem _)`. Establish `hord : ord x = 0`. Establish `a` using `(mem_valBall_iff_le_ord hx0).mp h0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `mt (mem_valBall_iff_le_ord hx0).mpr h1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[modulus_eq_one_iff.mpr ⟨hx0, hord⟩]`. Simplify using the standard rewrite rules. Establish `hm` using `(measurableSet_valBall (K := K) 0).diff (measurableSet_valBall 1)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setLIntegral_congr_fun hm hd, setLIntegral_const, one_mul, measure_sdiff (valBall_antitone (by norm_num)) (measurableSet_valBall 1).nullMeasurableSet (isCompact_valBall 1).measure_lt_top.ne, haarIntegers_valBall, haarIntegers_valBall, neg_zero, zpow_zero, ENNReal.coe_one, zpow_n …`.
+A detailed English derivation is pending.
 -/
 theorem multHaar_unitFiltrationUnits_zero :
     multHaar K (unitFiltrationUnits K 0 : Set Kˣ) = 1 := by

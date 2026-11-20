@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.Hecke.FibreMulK
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Establish `h` using `I.add n 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[zero_smul, _root_.pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_left_cancel (a := I.ev n 0) (by rw [_root_.mul_one]; exact h.symm)`. Consider the case `succ j ih => rw [succ_nsmul, I.add, ih, _root_.pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem ev_nsmul' {p : ℕ} [Fact p.Prime] {D : Datum p} {k : Type} [Field k] {Q : Type} [Group Q]
     {act : D.O → Q → Q} {e : ℕ → Q → Q → kˣ → Prop} (I : TateIsoO D k Q act e) (n j : ℕ) (y : D.La) :
@@ -23,7 +23,7 @@ private theorem ev_nsmul' {p : ℕ} [Fact p.Prime] {D : Datum p} {k : Type} [Fie
   | succ j ih => rw [succ_nsmul, I.add, ih, _root_.pow_succ]
 
 /- English proof (translation)
-Establish `hk' : (k : ℤ) ≠ 0` using `by exact_mod_cast hk.ne'`. Apply `smul_right_injective M hk'` to reduce the goal to its premises. Simplify `h` using `only [natCast_zsmul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem nsmul_cancel {M : Type} [AddCommGroup M] [Module.Free ℤ M] {k : ℕ} (hk : 0 < k) {x y : M}
     (h : k • x = k • y) : x = y := by
@@ -32,27 +32,25 @@ private theorem nsmul_cancel {M : Type} [AddCommGroup M] [Module.Free ℤ M] {k 
   simpa only [natCast_zsmul] using h
 
 /- English proof (translation)
-Introduce `p _ D R _ b k N hk hN hkp hNp S s o K _ _ y y' hyy`. Use `set x : Sp K ⟶ S := y ≫ o.A.hom with hx`. Establish `hx' : y' ≫ o.A.hom = x`. Establish `e` using `congrArg (· ≫ o.A.hom) hyy`. Simplify using `only [Category.assoc, Over.w] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `e.symm`. Set `T : Over S` to `Over.mk x`. Set `yt : T ⟶ o.A` to `Over.homMk y rfl`. Set `yt' : T ⟶ o.A` to `Over.homMk y' hx'`. Establish `hpow : yt ^ k = yt' ^ k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : yt ≫ (𝟙 o.A) ^ k = yt' ≫ (𝟙 o.A) ^ k` using `Over.OverMorphism.ext hyy`. Rewrite `e` using `[comp_pow, comp_pow, Category.comp_id, Category.comp_id]`. Then use the resulting hypothesis. Use `set d : T ⟶ o.A := yt⁻¹ * yt' with hd`. Establish `hdk : d ^ k = 1` using `by rw [hd, mul_pow, inv_pow, hpow, inv_mul_cancel]`. Establish `hβ : x ≫ s = spMap (Spec.preimage (x ≫ s)).hom` using `(Spec.map_preimage _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨I, hI⟩` from `o.geom K x _ hβ`. Establish `hcop : (N * k * k).Coprime p` using `Nat.Coprime.mul (Nat.Coprime.mul hNp hkp) hkp`. Establish `hpos : 0 < N * k * k` using `Nat.mul_pos (Nat.mul_pos hN hk) hk`. Take `⟨z, hz⟩` from `(I.onto (N * k * k) hpos hcop d).1 (by`. Rewrite using `[pow_mul, pow_right_comm, hdk, one_pow])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkz : I.ev (N * k * k) (k • z) = 1` using `by rw [ev_nsmul', hz, hdk]`. Take `⟨w, hw⟩` from `(I.ker (N * k * k) hpos hcop _).1 hkz`. Use `haveI := D.freeLa`. Establish `hzw : z = (N * k) • w`. Apply `nsmul_cancel hk` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hw, smul_smul, show k * (N * k) = N * k * k by ring]`. Establish `key : ∀ a : heckeSub o LinearMap.id (N * k), y ≫ (transl a.1).left = y' ↔ toUnit T ≫ a.1 = d`. Introduce `a`. Establish `e1 : yt ≫ transl a.1 = yt * (toUnit T ≫ a.1)`. Rewrite using `[transl, comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (yt ≫ toUnit o.A) (toUnit T)]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e2 : yt ≫ transl a.1 = yt'` using `Over.OverMorphism.ext h`. Rewrite `e2` using `[e1]`. Rewrite using `[hd, ← e2, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Establish `e2 : yt ≫ transl a.1 = yt'` using `by rw [e1, h, hd, mul_inv_cancel_left]`. Conclude with `congrArg CommaMorphism.left e2`. Establish `hmem : o.eta ((N * k) • (LinearMap.id : D.La →ₗ[D.O] D.La) w) ∈ heckeSub o LinearMap.id (N * k)` using `mem_heckeSub o _ _ w`. Use `⟨⟨_, hmem⟩, (key _).2 ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show toUnit T ≫ o.eta ((N * k) • (LinearMap.id : D.La →ₗ[D.O] D.La) w) = d`. Rewrite using `[LinearMap.id_apply, hI, ← hzw, hz]`. Introduce `a ha`. Establish `h1 : toUnit T ≫ a.1 = d` using `(key a).1 ha`. Establish `h2 : toUnit T ≫ o.eta ((N * k) • (LinearMap.id : D.La →ₗ[D.O] D.La) w) = d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.id_apply, hI, ← hzw, hz]`. Establish `hm : a.1 * (o.eta ((N * k) • (LinearMap.id : D.La →ₗ[D.O] D.La) w))⁻¹ ∈ heckeSub o LinearMap.id (N * k)` using `Subgroup.mul_mem _ a.2 (Subgroup.inv_mem _ hmem)`. Establish `h3 : toUnit T ≫ (a.1 * (o.eta ((N * k) • (LinearMap.id : D.La →ₗ[D.O] D.La) w))⁻¹) = 1`. Establish `hi : toUnit T ≫ (o.eta ((N * k) • (LinearMap.id : D.La →ₗ[D.O] D.La) w))⁻¹ = d⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
-
-Rewrite using `[← h2, ← comp_mul, inv_mul_cancel, comp_one]`. Rewrite using `[comp_mul, h1, hi, mul_inv_cancel]`. Establish `h4` using `(heckeSub_finite_free p D R b LinearMap.id k (N * k) hk (Nat.mul_pos hN hk) hkp (Nat.Coprime.mul hNp hkp) S s o).2 K x _ hm h3`. Conclude with `Subtype.ext (mul_inv_eq_one.mp h4)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fibre_mulK : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (k N : ℕ), 0 < k → 0 < N → k.Coprime p → N.Coprime p → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k * k) s) (K : Type) [Field K] [IsAlgClosed K] (y y' : Sp K ⟶ o.A.left), y ≫ ((𝟙 o.A) ^ k).left = y' ≫ ((𝟙 o.A) ^ k).left → ∃! a : GlobalTheory.UPel.HT.Hecke.heckeSub o LinearMap.id (N * k), y ≫ (GlobalTheory.UPel.HT.Hecke.transl a.1).left = y' := by
   intro p _ D R _ b k N hk hN hkp hNp S s o K _ _ y y' hyy

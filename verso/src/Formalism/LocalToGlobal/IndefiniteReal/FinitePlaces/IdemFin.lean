@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : P.asIdeal = Q.asIdeal`. Use extensionality with `x`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Conclude with `⟨fun _ => Q.asIdeal.zero_mem, fun _ => P.asIdeal.zero_mem⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Rewrite using `[hP.2 x hx, hQ.2 x hx]`. Conclude with `HeightOneSpectrum.ext h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pin_eq {P Q : HeightOneSpectrum (𝓞 D.host.E)} {x : AE D} (hP : Formalism.L2.NTheta.IsIdemAt x P)
     (hQ : Formalism.L2.NTheta.IsIdemAt x Q) : P = Q := by
@@ -29,15 +29,13 @@ theorem pin_eq {P Q : HeightOneSpectrum (𝓞 D.host.E)} {x : AE D} (hP : Formal
   exact HeightOneSpectrum.ext h
 
 /- English proof (translation)
-Establish `hsp` using `idemAt_split hx`. Take `⟨e₀, ι, he₀, -, hs₀, hz, hκ⟩` from `idem_data P hsp (belowPl P) rfl`. Establish `hx0 : x = e₀` using `idemAt_eq_split hsp hx he₀`. Establish `hle : (belowPl P).asIdeal ≤ (belowPl Q).asIdeal`. Introduce `f hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc', hce⟩` from `hc _ hf`. Establish `: c = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) f`. Apply `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Use `show (c : D.host.E) = ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) f : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[hce, algebraMap_O]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(D.sp.cm.fixed _).2 ⟨_, rfl⟩`. Use `show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) f ∈ Q.asIdeal`. Rewrite using `[← this]`. Conclude with `hc'`. Establish `hbel : belowPl Q = belowPl P` using `(HeightOneSpectrum.ext ((belowPl P).isMaximal.eq_of_le (belowPl Q).isPrime.ne_top hle)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hs'` using `below_of_idemAt hy`. Rewrite `hs'` using `[hbel]`. Break down `idem_class P hsp e₀ ι hs₀ hz hκ he₀.1.1 he₀.1.2.1 y hy.1.1 hy.1.2.1 hs' with h | h` into its components or cases. It suffices to derive a contradiction. Rewrite `h` using `[← hx0]`.
-
-Establish `hPQ : P = Q` using `pin_eq hx (h ▸ hy)`. Substitute `hPQ` using the available equality. Conclude with `hsp hc`. Rewrite using `[h, hx0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_idem_eq {P Q : HeightOneSpectrum (𝓞 D.host.E)} {x y : AE D} (hx : Formalism.L2.NTheta.IsIdemAt x P)
     (hy : Formalism.L2.NTheta.IsIdemAt y Q) (hc : Lev.IsConjPl (D := D) P Q) : y = cA D x := by
@@ -67,9 +65,9 @@ theorem conj_idem_eq {P Q : HeightOneSpectrum (𝓞 D.host.E)} {x y : AE D} (hx 
   · rw [h, hx0]
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨c, hcP, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Establish `h` using `(he.2 c hc0).1 hcP`. Rewrite `h` using `[h0, zero_mul]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `exact h (by simp)`. Consider the case `simp at h`. Consider the case `exact h (map_zero (finPart D) ▸ (intAE D).zero_mem)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem ne_zero_of_isIdemAt' {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE D}
     (he : Formalism.L2.NTheta.IsIdemAt e P) : e ≠ 0 := by
@@ -83,7 +81,7 @@ private theorem ne_zero_of_isIdemAt' {P : HeightOneSpectrum (𝓞 D.host.E)} {e 
   | exact h (map_zero (finPart D) ▸ (intAE D).zero_mem)
 
 /- English proof (translation)
-Introduce `hc`. Establish `h1 : e = cA D e` using `conj_idem_eq he he hc`. Establish `h2 : e * cA D e = 0` using `he.1.2.1`. Rewrite `h2` using `[← h1, he.1.1]`. Conclude with `ne_zero_of_isIdemAt' he h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_isConjPl_of_isIdemAt {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE D}
     (he : Formalism.L2.NTheta.IsIdemAt e P) : ¬ Lev.IsConjPl (D := D) P P := by
@@ -94,19 +92,15 @@ private theorem not_isConjPl_of_isIdemAt {P : HeightOneSpectrum (𝓞 D.host.E)}
   exact ne_zero_of_isIdemAt' he h2
 
 /- English proof (translation)
-Take `⟨⟨es, hes, hsum⟩, hc⟩` from `he`. Use `⟨es, fun PP hPP => (hes PP hPP).1, hsum, fun PP hPP PP' hPP' hne => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `idem_orth (not_isConjPl_of_isIdemAt (hes PP hPP)) (hes PP hPP) (hes PP' hPP') hne`. Distinguish the cases in `hcj : Lev.IsConjPl (D := D) PP PP'`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hy : es PP' = cA D (es PP)` using `conj_idem_eq (hes PP hPP) (hes PP' hPP') hcj`. Establish `hL : es PP * e = es PP`. Rewrite using `[hsum, Finset.mul_sum, Finset.sum_eq_single PP]`. Conclude with `(hes PP hPP).1.1`. Introduce `b hb hbne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `idem_orth (not_isConjPl_of_isIdemAt (hes PP hPP)) (hes PP hPP) (hes b hb) (Ne.symm hbne)`. Introduce `h`. Conclude with `absurd hPP h`. Establish `hR : es PP * cA D e = es PP`. Rewrite using `[hsum, map_sum, Finset.mul_sum, Finset.sum_eq_single PP']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, cA_cA]`. Conclude with `(hes PP hPP).1.1`. Introduce `b hb hbne`. Distinguish the cases in `hb0 : b = PP`. Rewrite using `[hb0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hes PP hPP).1.2.1`. Use `idem_orth_conj (not_isConjPl_of_isIdemAt (hes PP hPP)) (hes PP hPP) (hes b hb) (fun hcb => hbne ?_)` and prove the remaining obligations. Establish `hyb : es b = cA D (es PP)` using `conj_idem_eq (hes PP hPP) (hes b hb) hcb`. Rewrite `hyb` using `[← hy]`. Establish `hb'` using `hes b hb`.
-
-Rewrite `hb'` using `[hyb]`. Conclude with `pin_eq hb' (hes PP' hPP')`. Introduce `h`. Conclude with `absurd hPP' h`. Establish `h0 : es PP * (e * cA D e) = 0` using `by rw [hc, mul_zero]`.
-
-Rewrite `h0` using `[← mul_assoc, hL, hR]`. Conclude with `ne_zero_of_isIdemAt' (hes PP hPP) h0`. Conclude with `idem_orth_conj (not_isConjPl_of_isIdemAt (hes PP hPP)) (hes PP hPP) (hes PP' hPP') hcj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idemSum_orth (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D) (he : Formalism.IndefR.Datum.IsIdemSum e P) :
     ∃ es : Formalism.L2.DIV.Pl D.host.E → AE D, (∀ PP ∈ P, IsSplitIdem D (es PP)) ∧ e = ∑ PP ∈ P, es PP ∧

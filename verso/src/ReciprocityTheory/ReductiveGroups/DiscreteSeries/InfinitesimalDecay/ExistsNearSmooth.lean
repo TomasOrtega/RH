@@ -12,9 +12,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨x, hxK, hxe⟩` from `exists_kfin_near hlam hgap hP hv₀ Ws hWs u hu he`. Take `⟨y, hy, hyx⟩` from `kfin_mem_genSub hlam hgap hP hv₀ x hxK`. Establish `hyH : ((y : smD ε (rreg ε)) : L2 ε) ∈ Hlam ε Ψ v₀` using `by rw [hyx]; exact x.2`. Use `⟨y, hy, hyH, ?_⟩` and prove the remaining obligations. Establish `hxy : (⟨((y : smD ε (rreg ε)) : L2 ε), hyH⟩ : Hlam ε Ψ v₀) = x` using `Subtype.ext hyx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hxy]`. Conclude with `hxe`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_near_smooth {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}

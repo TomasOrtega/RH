@@ -8,31 +8,25 @@ open scoped Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hconj : ∀ t ∈ T, ∀ k ∈ K', ∀ x : G, T ⊓ K'.map (MulAut.conj (t * x * k)).toMonoidHom = T ⊓ K'.map (MulAut.conj x).toMonoidHom`. Introduce `t ht k hk x`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hg, hm⟩`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Establish `e1 : t⁻¹ * g * t = g` using `by rw [mul_assoc, hT g hg t ht, inv_mul_cancel_left]`. Establish `e2 : (t * x * k)⁻¹ * g * (t * x * k) = k⁻¹ * (x⁻¹ * (t⁻¹ * g * t) * x) * k` using `by group`. Rewrite `e2` using `[e1]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[e2]`. Establish `e3 : x⁻¹ * g * x = k * (k⁻¹ * (x⁻¹ * g * x) * k) * k⁻¹` using `by group`. Rewrite using `[e3]`. Conclude with `K'.mul_mem (K'.mul_mem hk hm) (K'.inv_mem hk)`. Introduce and unpack `⟨hg, hm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hg, ?_⟩` and prove the remaining obligations. Establish `e1 : t⁻¹ * g * t = g` using `by rw [mul_assoc, hT g hg t ht, inv_mul_cancel_left]`. Establish `e2 : (t * x * k)⁻¹ * g * (t * x * k) = k⁻¹ * (x⁻¹ * (t⁻¹ * g * t) * x) * k` using `by group`. Rewrite `e2` using `[e1]`. Rewrite using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `K'.mul_mem (K'.mul_mem (K'.inv_mem hk) hm) hk`. Set `π : DoubleCoset.Quotient ((Γ ⊓ T : Subgroup G) : Set G) (K' : Set G) → DoubleCoset.Quotient (T : Set G) (K' : Set G)` to `fun q => DoubleCoset.mk T K' (Quotient.out q)`. Set `h : DoubleCoset.Quotient (T : Set G) (K' : Set G) → ℂ` to `fun p => ((Nat.card (Γ ⊓ (T ⊓ K'.map (MulAut.conj (Quotient.out p)).toMonoidHom) : Subgroup G) : ℂ))⁻¹ * φ (Quotient.out p)`. Establish `hLHS : ∀ q : DoubleCoset.Quotient ((Γ ⊓ T : Subgroup G) : Set G) (K' : Set G), ((Nat.card ((Γ ⊓ T) ⊓ K'.map (MulAut.conj (Quotient.out q)).toMonoidHom : Subgroup G) : ℂ))⁻¹ * φ (Quotient.out q) = h (π q)`. Introduce `q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, k, ht, hk, e⟩` from `DoubleCoset.mk_out_eq_mul T K' (Quotient.out q)`. Use `show _ = ((Nat.card (Γ ⊓ (T ⊓ K'.map (MulAut.conj (Quotient.out (DoubleCoset.mk T K' (Quotient.out q)))).toMonoidHom) : Subgroup G) : ℂ))⁻¹ * φ (Quotient.out (DoubleCoset.mk T K' (Quotient.out q)))`. Rewrite using `[e, hconj t ht k hk, hφ t ht k hk, inf_assoc]`. Use `set a : ℂ := (Nat.card (DoubleCoset.Quotient ((Γ.subgroupOf T : Subgroup T) : Set T) ((C.subgroupOf T : Subgroup T) : Set T)) : ℂ) / (Nat.card (Γ ⊓ C : Subgroup G) : ℂ) with ha_def`. Establish `hfinal : ∀ p, (Nat.card (π ⁻¹' {p}) : ℂ) * h p = a * ((((T ⊓ K'.map (MulAut.conj (Quotient.out p)).toMonoidHom).relIndex C : ℕ) : ℂ) * φ (Quotient.out p))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Establish `e1` using `GlobalTheory.T.card_fiber_doubleCoset_map_eq_card_inf_conj T Γ K' (Quotient.out p)`. Rewrite `e1` using `[DoubleCoset.out_eq']`. Establish `e2` using `GlobalTheory.T.doubleCoset_card_div_card_inf_commutative_subgroup T Γ (T ⊓ K'.map (MulAut.conj (Quotient.out p)).toMonoidHom) C hT (hU _).1 hCT (hU _).2`. Use `show (Nat.card (π ⁻¹' {p}) : ℂ) * (((Nat.card (Γ ⊓ (T ⊓ K'.map (MulAut.conj (Quotient.out p)).toMonoidHom) : Subgroup G) : ℂ))⁻¹ * φ (Quotient.out p)) = _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e1, ← mul_assoc, ← div_eq_mul_inv, e2, ha_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmul : ∀ (c : ℂ) (f : DoubleCoset.Quotient (T : Set G) (K' : Set G) → ℂ), c * ∑ᶠ p, f p = ∑ᶠ p, c * f p`. Introduce `c f`. Conclude with `mul_finsum f c`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hdich : (∀ p, h p ≠ 0 → (π ⁻¹' {p}).Finite) ∨ (∀ p, h p ≠ 0 → Nat.card (π ⁻¹' {p}) = 0)`. Distinguish the cases in `ha : a = 0`. Use `right`. Introduce `p hp`. Establish `hc` using `hfinal p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[ha, zero_mul]`. Break down `mul_eq_zero.mp hc with h1 | h1` into its components or cases. Conclude with `h1` after adjusting the coercions. Conclude with `absurd h1 hp`. Use `left`.
-
-Introduce `p hp`. Establish `hφp : φ (Quotient.out p) ≠ 0` using `fun e => hp (by simp [h, e])`. Establish `hne : (Nat.card (π ⁻¹' {p}) : ℂ) * h p ≠ 0`. Rewrite using `[hfinal p]`. Conclude with `mul_ne_zero ha (mul_ne_zero (by exact_mod_cast (hU _).2) hφp)`.
-
-Establish `hn : Nat.card (π ⁻¹' {p}) ≠ 0`. Introduce `e`. Apply `hne` to reduce the goal to its premises. Simplify using `[e]`. Conclude with `Set.finite_coe_iff.mp (Nat.finite_of_card_ne_zero hn)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finsum_doubleCoset_regroup (G : Type) [Group G] (T Γ C K' : Subgroup G) (φ : G → ℂ)
     (hT : ∀ a ∈ T, ∀ b ∈ T, a * b = b * a) (hCT : C ≤ T)

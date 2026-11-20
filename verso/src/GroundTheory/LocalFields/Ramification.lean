@@ -21,7 +21,7 @@ section Action
 variable {K L}
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Establish `hσϖ : Irreducible (integerAlgEquiv K L σ ϖ)` using `(MulEquiv.irreducible_iff (f := (integerAlgEquiv K L σ : 𝒪[L] ≃* 𝒪[L]))).mpr hϖ`. Rewrite using `[mem_maximalIdeal_pow_iff hσϖ, mem_maximalIdeal_pow_iff hϖ, ← map_pow, map_dvd_iff (integerAlgEquiv K L σ)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integerAlgEquiv_mem_maximalIdeal_pow_iff (σ : L ≃ₐ[K] L) (n : ℕ) (x : 𝒪[L]) :
     integerAlgEquiv K L σ x ∈ 𝓂[L] ^ n ↔ x ∈ 𝓂[L] ^ n := by
@@ -32,11 +32,9 @@ theorem integerAlgEquiv_mem_maximalIdeal_pow_iff (σ : L ≃ₐ[K] L) (n : ℕ) 
     map_dvd_iff (integerAlgEquiv K L σ)]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[AlgEquiv.one_apply]`. Distinguish the cases in `hy : valuation L y ≤ 1`. Conclude with `congrArg Subtype.val (h ⟨y, hy⟩)`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : valuation L y⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.mp hy))`. Use `congrArg Subtype.val (h ⟨y⁻¹, hinv⟩)` as an intermediate fact. Simplify using `only [coe_integerAlgEquiv_apply, map_inv₀] at this`.
-
-Conclude with `inv_injective this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algEquiv_eq_one_of_forall_integer {σ : L ≃ₐ[K] L}
     (h : ∀ x : 𝒪[L], integerAlgEquiv K L σ x = x) : σ = 1 := by
@@ -73,7 +71,7 @@ def lowerRamificationGroup (i : ℤ) : Subgroup (L ≃ₐ[K] L) where
 variable {K L}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lowerRamificationGroup_iff {i : ℤ} {σ : L ≃ₐ[K] L} :
     σ ∈ lowerRamificationGroup K L i ↔
@@ -81,7 +79,7 @@ theorem mem_lowerRamificationGroup_iff {i : ℤ} {σ : L ≃ₐ[K] L} :
   Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_lowerRamificationGroup_iff]`. Establish `: ((n : ℤ) + 1).toNat = n + 1` using `by omega`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lowerRamificationGroup_natCast_iff {n : ℕ} {σ : L ≃ₐ[K] L} :
     σ ∈ lowerRamificationGroup K L n ↔
@@ -93,14 +91,14 @@ theorem mem_lowerRamificationGroup_natCast_iff {n : ℕ} {σ : L ≃ₐ[K] L} :
 variable (K L)
 
 /- English proof (translation)
-Introduce `i j hij σ hσ x`. Conclude with `Ideal.pow_le_pow_right (by omega) (hσ x)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lowerRamificationGroup_antitone : Antitone (lowerRamificationGroup K L) := by
   intro i j hij σ hσ x
   exact Ideal.pow_le_pow_right (by omega) (hσ x)
 
 /- English proof (translation)
-Use `eq_top_iff.mpr fun σ _ x ↦ ?_` and prove the remaining obligations. Establish `: (i + 1).toNat = 0` using `by omega`. Rewrite using `[this, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerRamificationGroup_eq_top {i : ℤ} (hi : i ≤ -1) :
     lowerRamificationGroup K L i = ⊤ := by
@@ -123,7 +121,7 @@ instance lowerRamificationGroup_normal (i : ℤ) : (lowerRamificationGroup K L i
 variable {K L}
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Establish `hv : normalizedValuation L ((ϖ ^ n : 𝒪[L]) : L) = WithZero.exp (-(n : ℤ))`. Rewrite using `[SubmonoidClass.coe_pow, map_pow, normalizedValuation_uniformizer hϖ, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Rewrite using `[mem_maximalIdeal_pow_iff hϖ, (Valuation.integer.integers (valuation L)).dvd_iff_le, ← hv, normalizedValuation_le_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -138,13 +136,13 @@ theorem mem_maximalIdeal_pow_iff_normalizedValuation (n : ℕ) (y : 𝒪[L]) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_lowerRamificationGroup_iff]`. Use `⟨fun h x hx ↦ ?_, fun h x ↦ ?_⟩` and prove the remaining obligations. Use `(mem_maximalIdeal_pow_iff_normalizedValuation _ _).mp (h ⟨x, hx⟩)` as an intermediate fact. Establish `hc : ((integerAlgEquiv K L σ ⟨x, hx⟩ - ⟨x, hx⟩ : 𝒪[L]) : L) = σ x - x` using `rfl`. Rewrite `this` using `[hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Break down `le_or_gt (i + 1) 0 with hi | hi` into its components or cases. Establish `: (i + 1).toNat = 0` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[this, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`. Rewrite using `[mem_maximalIdeal_pow_iff_normalizedValuation]`. Establish `h'` using `h x x.2`. Establish `he : ((i + 1).toNat : ℤ) = i + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Simplify using `using h'`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_lowerRamificationGroup_iff_valuation {i : ℤ} {σ : L ≃ₐ[K] L} :
     σ ∈ lowerRamificationGroup K L i ↔
@@ -170,9 +168,9 @@ theorem mem_lowerRamificationGroup_iff_valuation {i : ℤ} {σ : L ≃ₐ[K] L} 
 variable (K L)
 
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, AlgEquiv.ext_iff]`. Establish `: ((0 : ℤ) + 1).toNat = 1` using `rfl`. Rewrite using `[mem_lowerRamificationGroup_iff, this, pow_one]`. Use `⟨fun h r ↦ ?_, fun h x ↦ ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `residue_surjective r`. Rewrite using `[residueAlgEquiv_residue, AlgEquiv.one_apply, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `h x`. Use `h (residue 𝒪[L] x)` as an intermediate fact. Rewrite `this` using `[residueAlgEquiv_residue, AlgEquiv.one_apply, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lowerRamificationGroup_zero : lowerRamificationGroup K L 0 = (residueAlgEquiv K L).ker := by
   ext σ
@@ -189,7 +187,7 @@ theorem lowerRamificationGroup_zero : lowerRamificationGroup K L 0 = (residueAlg
       residue_eq_zero_iff] at this
 
 /- English proof (translation)
-Rewrite `hσ` using `[lowerRamificationGroup_zero, MonoidHom.mem_ker]`. Rewrite using `[← residueAlgEquiv_residue, hσ, AlgEquiv.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_integerAlgEquiv_of_mem_zero {σ : L ≃ₐ[K] L} (hσ : σ ∈ lowerRamificationGroup K L 0)
     (x : 𝒪[L]) : residue 𝒪[L] (integerAlgEquiv K L σ x) = residue 𝒪[L] x := by
@@ -197,13 +195,11 @@ theorem residue_integerAlgEquiv_of_mem_zero {σ : L ≃ₐ[K] L} (hσ : σ ∈ l
   rw [← residueAlgEquiv_residue, hσ, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Establish `key : ∀ σ : L ≃ₐ[K] L, ∃ m : ℕ, σ ≠ 1 → σ ∉ lowerRamificationGroup K L m`. Introduce `σ`. Distinguish the cases in `hσ : σ = 1`. Conclude with `⟨0, fun h ↦ (h hσ).elim⟩`. Take `⟨x, hx⟩ : ∃ x : 𝒪[L], integerAlgEquiv K L σ x ≠ x` from `by by_contra! h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `hσ (algEquiv_eq_one_of_forall_integer h)`. Establish `hd : integerAlgEquiv K L σ x - x ≠ 0` using `sub_ne_zero.mpr hx`. Establish `hinf` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (𝓂[L]) (Ideal.IsPrime.ne_top')`. Take `⟨m, hm⟩ : ∃ m : ℕ, integerAlgEquiv K L σ x - x ∉ 𝓂[L] ^ m` from `by by_contra! h`. Conclude with `hd (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: integerAlgEquiv K L σ x - x ∈ ⨅ m : ℕ, 𝓂[L] ^ m` using `Submodule.mem_iInf _ |>.mpr h`. Rewrite using `[hinf, Ideal.mem_bot] at this)` and apply the resulting hypothesis. Use `⟨m, fun _ hmem ↦ hm ?_⟩` and prove the remaining obligations. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ m) (mem_lowerRamificationGroup_natCast_iff.mp hmem x)`. Use `choose f hf using key`.
-
-Take `⟨N, hN⟩` from `Finite.exists_le f`. Use `⟨N, fun i hi ↦ eq_bot_iff.mpr fun σ hσ ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hf σ h (lowerRamificationGroup_antitone K L (by have := hN σ; omega) hσ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_lowerRamificationGroup_eq_bot :
     ∃ n : ℕ, ∀ i : ℤ, n ≤ i → lowerRamificationGroup K L i = ⊥ := by

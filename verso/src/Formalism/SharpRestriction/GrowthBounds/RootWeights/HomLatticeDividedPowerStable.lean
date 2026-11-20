@@ -13,21 +13,21 @@ variable {n : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   {W : Type} [AddCommGroup W] [Module (KK O) W] [Module O W] [IsScalarTower O (KK O) W]
 
 /- English proof (translation)
-Establish `hres` using `restrictRepresentation_isRep E hE L hL`. Take `⟨s, π, h1, h2, h3, h4, h5⟩` from `weight_projections_exist (restrictRepresentation E L hL) hres`. Take `⟨s', π', h1', h2', h3', h4', h5'⟩` from `weight_projections_exist E hE`. Establish `hdec : f = ∑ mu' ∈ s', ∑ mu ∈ s, (π' mu' ∘ₗ f ∘ₗ π mu)`. Use extensionality with `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply]`. Establish `: ∀ mu' ∈ s', ∑ mu ∈ s, π' mu' (f (π mu x)) = π' mu' (f x)`. Introduce `mu' _`. Rewrite using `[← map_sum, ← map_sum, h5]`. Rewrite using `[Finset.sum_congr rfl this, h5']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hwt : ∀ mu' mu, (π' mu' ∘ₗ f ∘ₗ π mu) ∈ weightSp (homRepresentation (restrictRepresentation E L hL) E) (mu' - mu)`. Introduce `mu' mu`. Rewrite using `[mem_weightSp_iff_diagonal_apply]`. Introduce `c`. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [homRepresentation_apply, LinearMap.comp_apply, LinearMap.smul_apply, (mem_weightSp_iff_diagonal_apply E mu' _).1 (h4' mu' _) c, weightProjection_diagonal_apply_eq_smul _ hres mu (π mu) (h1 mu) c x, map_smul, Pi.sub_apply, Int.cast_sub, sub_smul, LinearMap.sub_apply]`. Establish `hcoe : ∀ mu, L.subtype ∘ₗ π mu = π' mu ∘ₗ L.subtype`. Introduce `mu`. Use `linearMap_ext_on_weightSpaces _ hres _ _ fun nu y hy => ?_` and prove the remaining obligations. Establish `hy' : (y : W) ∈ weightSp E nu` using `(restrict_mem_weightSpace_iff E L hL nu y).1 hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`. Distinguish the cases in `h : nu = mu`. Substitute `h` using the available equality. Rewrite using `[(h1 nu).1 y hy, (h1' nu).1 _ hy']`. Rewrite using `[(h1 mu).2 nu h y hy, (h1' mu).2 nu h _ hy']`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hmem : ∀ mu' mu, (π' mu' ∘ₗ f ∘ₗ π mu) ∈ homLattice M L`. Introduce `mu' mu x hx`. Establish `hx1 : ((π mu x : L) : W) ∈ M`. Use `congrArg (fun g : L →ₗ[KK O] W => g x) (hcoe mu)` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`. Rewrite using `[this]`. Conclude with `weightProjection_preserves_lattice E hE M hM mu (π' mu) (h1' mu) _ hx`. Conclude with `weightProjection_preserves_lattice E hE M hM mu' (π' mu') (h1' mu') _ (hf _ hx1)`. Rewrite using `[hdec, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun mu' _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun mu _ => ?_` and prove the remaining obligations. Rewrite using `[binomial_diagonal_apply_weight _ a (mu' - mu) _ (hwt mu' mu) k]`. Conclude with `int_smul_mem_lattice _ _ (hmem mu' mu)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homLattice_binomial_stable [CharZero (KK O)] [FiniteDimensional (KK O) W] (E : GLOps n (KK O) W) (hE : IsGLRep E)
     (M : Submodule O W) (hM : UZStable (O := O) E M)
@@ -76,11 +76,9 @@ theorem homLattice_binomial_stable [CharZero (KK O)] [FiniteDimensional (KK O) W
   exact int_smul_mem_lattice _ _ (hmem mu' mu)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf i`. Conclude with `hf (b i) (hbM i)`. Introduce `hf show ∀ x : L, (x : W) ∈ M → f x ∈ M`. Introduce `x hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose o ho using hbc x hx`. Establish `hx' : x = ∑ i, b.coord i x • b i`. Simplify using `only [Module.Basis.coord_apply]`. Conclude with `(b.sum_repr x).symm`. Rewrite using `[hx', map_sum]`.
-
-Use `M.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ho i, algebraMap_smul]`. Conclude with `M.smul_mem (o i) (hf i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_homLattice_iff_basis (M : Submodule O W) (L : Submodule (KK O) W) {d : ℕ} (b : Module.Basis (Fin d) (KK O) L)
     (hbM : ∀ i, ((b i : L) : W) ∈ M)
@@ -104,19 +102,17 @@ theorem mem_homLattice_iff_basis (M : Submodule O W) (L : Submodule (KK O) W) {d
 end lat
 
 /- English proof (translation)
-Introduce `O _ _ _ _ n W _ _ _ _ _ E hE M hM hMQ L hL`. Take `⟨d, b, hbM, hbc⟩` from `lattice_adapted_basis_exists O W M hM.2 hMQ L`. Establish `hiff` using `mem_homLattice_iff_basis M L b hbM hbc`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `u (⟨a, c, k, hac, rfl⟩ | ⟨a, k, rfl⟩) f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `homLattice_dividedPower_stable E M hM.1 L hL a c hac k f hf`. Conclude with `homLattice_binomial_stable E hE M hM.1 L hL a k f hf`. Establish `: homLattice M L = (Submodule.pi Set.univ fun _ : Fin d => M).map ((b.constr (KK O)).toLinearMap.restrictScalars O)`. Use extensionality with `f`. Rewrite using `[hiff]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Conclude with `⟨fun i => f (b i), fun i _ => hf i, b.constr_self (KK O) f⟩`. Introduce and unpack `⟨y, hy, rfl⟩ i`. Establish `: (b.constr (KK O) y) (b i) = y i` using `b.constr_basis (KK O) y i`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `hy i trivial` using `[this]`. Rewrite using `[this]`. Conclude with `(Submodule.fg_pi fun _ => hM.2).map _`. Rewrite using `[eq_top_iff]`. Introduce `f _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose a ha hax using fun i => exists_clear_denominators_alt M (f (b i)) (by rw [hMQ]; trivial)`. Establish `hA : (∏ i, a i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => ha i`. Establish `hA1 : algebraMap O (KK O) (∏ i, a i) ≠ 0`. Simplify using `using (IsFractionRing.injective O (KK O)).ne hA`. Establish `h1 : (∏ i, a i) • f ∈ homLattice M L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hiff]`. Introduce `i`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem a (Finset.mem_univ i)`. Rewrite using `[LinearMap.smul_apply, hc, mul_comm, mul_smul]`. Conclude with `M.smul_mem _ (hax i)`.
-
-Establish `h2 : f = (algebraMap O (KK O) (∏ i, a i))⁻¹ • ((∏ i, a i) • f)`. Rewrite using `[← algebraMap_smul (KK O) (∏ i, a i) f, smul_smul, inv_mul_cancel₀ hA1, one_smul]`. Rewrite using `[h2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_lattice_dividedPower_stable : HomLatticeDividedPowerStable := by
   intro O _ _ _ _ n W _ _ _ _ _ E hE M hM hMQ L hL

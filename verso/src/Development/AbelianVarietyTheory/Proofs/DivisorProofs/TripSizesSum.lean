@@ -10,7 +10,7 @@ namespace GlobalTheory.CuspBlock
 def tripSizes (l d N : ℕ) : Fin 3 → ℕ := ![l, d, N - (l + d)]
 
 /- English proof (translation)
-Simplify using `only [tripSizes, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tripSizes_sum {l d N : ℕ} (h : l + d ≤ N) : ∑ j, tripSizes l d N j = N := by
   simp only [tripSizes, Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,

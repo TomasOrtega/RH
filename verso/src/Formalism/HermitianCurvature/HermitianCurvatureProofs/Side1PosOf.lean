@@ -12,17 +12,15 @@ namespace Formalism.FourierDecayAlt.P.LevelPointCoordinates
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.PBQ
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hj1 hF hw hγ hΩ t ht e`. Establish `ht0 : t ≠ 0` using `(ht.1 (1, t) (List.mem_append_right _ (List.mem_singleton_self _))).2`. Take `⟨Fc, hFc, hag⟩` from `hE Wp Wq P p F j hj w h hh hF hw t ht e`. Rewrite using `[hC Wp Wq P p F j hj w h hh γ hF hw hγ hΩ t ht e Fc hFc hag]`. Rewrite using `[h0 Wp Wq P p Fc j hj [] h hh γ hj1 hFc ⟨fun a => a.elim0, fun a => a.elim0⟩ hγ hΩ (fun a => a.elim0) t ht0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Use `show ellH h v (CutHB.phf p Fc j hj [] h hh.2 γ v (fun a => a.elim0) t) = ellH h v _`. Use `congr 1`. Establish `hpt` using `CutHB.pts Wp Wq P p j hj h hh γ hγ hΩ v`. Establish `hyD` using `hpt.2 t ht0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyG` using `x0_GV hj hpt.1 ht0 hγ`. Take `⟨R, hR⟩` from `hF.2.1`. Use `set Cs : Set (B.Mat P.k P.r) := {g | B.gN g ≤ R} with hCs`. Establish `hCc : IsCompact Cs` using `Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le P.k P.r R`. Establish `e' : j + (P.r - j) = P.r` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : p.T.base.z = D.castV e' (liftVec P.k j (P.r - j) (p.T.bs j).z)` using `(p.T.z_lev j (by omega)).symm`. Establish `hPW` using `hW P.k j (P.r - j) P.r Wp Wq (p.T.bs j) p.T.base e' hz (j + 1) hj F Cs (fun g hg _ => hF.1 g hg) hCc (fun g hg hgC => by`. Assume the negation of the conclusion as `hne`. Conclude with `hgC (hR g hg hne))`. Use the proof step `(domP P.k P.r j p.T.base.z p.T.base.z') (isOpen_domP _ _ _ _ _)`.
+Assume the negation of the conclusion and derive a contradiction. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun g hg => hg.1 ⟨j + 1, by omega⟩ (show j ≤ j + 1 by omega) (show j + 1 ≤ P.r by omega))`. Use the proof step `(hPr Wp Wq P p j (by omega) Cs hCc) w e _ hyD hyG`. Use `show pbT p j (by omega) Fc (x0 P.k P.r j hj (zxH h j hh.2 v) t γ) = D.uwG P.k P.r p.T.base.z p.T.base.z' (pbT p j (by omega) F) (j + 1) hj w e (x0 P.k P.r j hj (zxH h j hh.2 v) t γ)`. Unfold `pbT`. Rewrite using `[hPW]`.
-
-Establish `hDv : Dmin P.k P.r p.T.base.z p.T.base.z' (x0 P.k P.r j hj (zxH h j hh.2 v) t γ) ⟨j + 1, by omega⟩ = aVal h t`. Rewrite using `[(CutHL.leading_minors_at_base_point P.k P.r j hj p.T.base.z p.T.base.z' (zxH h j hh.2 v) t γ hpt.1 ht0 hγ).2, zxH_det h j hh v]`. Both sides reduce to the same expression. Conclude with `pbT_agree P p j hj (aVal h t) Fc _ (fun g _ hg => hag g hg) _ hyG hDv`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem side1Pos_of (hC : CutOffStep) (hE : CutOffExists) (h0 : CutHB.Side0Pos) (hW : PartialBesselProperness.PbWords)
     (hPr : PBQ.ProperDomP) : CutHB.Side1Pos := by

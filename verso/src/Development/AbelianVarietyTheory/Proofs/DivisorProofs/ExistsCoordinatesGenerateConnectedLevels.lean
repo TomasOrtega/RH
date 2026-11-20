@@ -14,13 +14,13 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing A := isNoetherian_of_tower K inferInstance`. Establish `hxm : ∀ i, x i ∈ RingHom.ker (counitAlgHom K A)` using `fun i => by`. Rewrite using `[RingHom.mem_ker]`. Conclude with `hx i`. Establish `hnil : IsNilpotent (RingHom.ker (counitAlgHom K A))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian _)]`. Introduce `a ha`. Conclude with `mem_nilradical.2 (hconn a ha)`. Use `GlobalTheory.HeightOneHopf.aeval_surjective_of_span_cotangent (counitAlgHom K A) hnil x hxm ?_` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `hspan (dUnit K y)`. Use `⟨l, ?_⟩` and prove the remaining obligations. Establish `hmem : y - ∑ i, l i • x i ∈ RingHom.ker (counitAlgHom K A)` using `sub_mem hy (Ideal.sum_mem _ fun i _ => by`. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (hxm i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : dUnit K (y - ∑ i, l i • x i) = 0`. Establish `e : dUnit K (y - ∑ i, l i • x i) = dUnit K y - ∑ i, l i • dUnit K (x i)`. Simplify using `only [dUnit, map_sub, map_sum, map_smul]`. Rewrite using `[e, ← hl, sub_self]`. Rewrite `h0` using `[dUnit, AugCot.d_of_mem _ hmem, Ideal.toCotangent_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem aeval_surjective_of_dUnit_span {K A : Type} [Field K] [CommRing A] [Bialgebra K A]
     [Module.Finite K A] (hconn : ∀ a ∈ augIdeal K A, IsNilpotent a) {d : ℕ} (x : Fin d → A)
@@ -48,29 +48,27 @@ theorem aeval_surjective_of_dUnit_span {K A : Type} [Field K] [CommRing A] [Bial
   rwa [dUnit, AugCot.d_of_mem _ hmem, Ideal.toCotangent_eq_zero] at h0
 
 /- English proof (translation)
-Use `haveI : Module.Finite K (Cot K (G.A 1)) := Module.Finite.of_surjective (AugCot.d (counitAlgHom K (G.A 1))) (AugCot.d_surjective _)`. Use `haveI : Module.Finite K G.omega := Module.Finite.equiv (LinearEquiv.ofBijective _ (G.omegaLevel_one_bijective h)).symm`. Use `set d := Module.finrank K G.omega with hd`. Set `b` to `Module.finBasis K G.omega`. Establish `h1 : ∀ i, ∃ a : G.A 1, Coalgebra.counit (R` using `K) a = 0 ∧ dUnit K a = (b i).1 1 := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Take `⟨a, ha⟩` from `AugCot.d_surjective (counitAlgHom K (G.A 1)) ((b i).1 1)`. Use `⟨a - algebraMap K _ (Coalgebra.counit (R := K) a), ?_, ?_⟩` and prove the remaining obligations. Establish `e : Coalgebra.counit (R` using `K) (algebraMap K (G.A 1) (Coalgebra.counit (R := K) a)) = Coalgebra.counit (R := K) a := by`. Use `(counitAlgHom K (G.A 1)).commutes (Coalgebra.counit (R := K) a)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[map_sub, e, sub_self]`. Rewrite using `[dUnit, map_sub, AugCot.d_algebraMap, sub_zero]`. Conclude with `ha`. Use `choose x1 hx1c hx1d using h1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Set `z : (n : ℕ) → Fin d → G.A (n + 1)` to `fun n => Nat.rec (motive := fun n => Fin d → G.A (n + 1)) x1 (fun n zn i => Function.surjInv (G.res_surjective (n + 1)) (zn i)) n`. Set `x : ∀ n, Fin d → G.A n` to `fun n => Nat.rec (motive := fun n => Fin d → G.A n) (fun i => G.res 0 (x1 i)) (fun n _ => z n) n`. Establish `hres : ∀ n i, G.res n (x (n + 1) i) = x n i`. Introduce `n i`. Consider the cases of `n with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rfl`. Consider the case `succ n => exact Function.surjInv_eq (G.res_surjective (n + 1)) (z n i)`. Establish `hcou1 : ∀ n i, Coalgebra.counit (R` using `K) (x (n + 1) i) = 0 := by`. Introduce `n`. Proceed by induction on `n with`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero => exact hx1c`. Consider the case `succ n ih`. Introduce `i`. Rewrite using `[← ih i, ← hres (n + 1) i, CoalgHomClass.counit_comp_apply]`. Establish `hcou : ∀ n i, Coalgebra.counit (R` using `K) (x n i) = 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `n i`. Consider the cases of `n with`. Consider the case `zero => rw [← hres 0 i, CoalgHomClass.counit_comp_apply]`. Conclude with `hcou1 0 i`. Consider the case `succ n => exact hcou1 n i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdu : ∀ n i, dUnit K (x (n + 1) i) = (b i).1 (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hx1d`. Consider the case `succ n ih`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Take `⟨u, hu⟩` from `G.omegaLevel_surjective (n + 2) (dUnit K (x (n + 2) i))`. Rewrite `hu` using `[omegaLevel_apply]`. Establish `hn : (u - b i).1 (n + 1) = 0`. Express the relevant statement in the definitionally equal form `u.1 (n + 1) - (b i).1 (n + 1) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← ih i, ← cotMap_res_omega, hu, cotMap_d, hres, sub_self]`. Establish `h1' : G.omegaLevel 1 (u - b i) = 0` using `G.omega_val_eq_zero_of_le (by omega) hn`. Establish `hub : u = b i` using `sub_eq_zero.1 ((G.omegaLevel_one_bijective h).1 (h1'.trans (map_zero _).symm))`. Rewrite using `[← hu, hub]`. Establish `hspan : ∀ n (c : Cot K (G.A n)), ∃ l : Fin d → K, c = ∑ i, l i • dUnit K (x n i)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n c`. Consider the cases of `n with`. Consider the case `zero => exact ⟨0, by rw [G.cot_zero_eq_zero c]; simp⟩`. Consider the case `succ n`. Take `⟨w, rfl⟩` from `G.omegaLevel_surjective (n + 1) c`.
-
-Use `⟨b.repr w, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr w]`. Simplify using `only [map_sum, map_smul, omegaLevel_apply, hdu]`. Both sides reduce to the same expression. Conclude with `⟨x, hres, hcou, fun n => aeval_surjective_of_dUnit_span (hG n) (x n) (hcou n) (hspan n)⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coords_generate (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (h : (p : K) = 0)
     (G : PDivGroup p K) (hG : G.IsConn) :

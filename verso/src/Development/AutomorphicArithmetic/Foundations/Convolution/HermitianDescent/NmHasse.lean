@@ -7,7 +7,7 @@ open Matrix Polynomial NumberField IsDedekindDomain
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h1 : AdjoinRoot.mk p (X * p.divX + C (p.coeff 0)) = 0`. Rewrite using `[X_mul_divX_add, AdjoinRoot.mk_self]`. Rewrite `h1` using `[map_add, map_mul, AdjoinRoot.mk_X, AdjoinRoot.mk_C, add_eq_zero_iff_eq_neg]`. Conclude with `isUnit_of_mul_isUnit_left (h1 ▸ ((Ne.isUnit h).map (AdjoinRoot.of p)).neg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem root_isUnit {F : Type} [Field F] (p : F[X]) (h : p.coeff 0 ≠ 0) :
     IsUnit (AdjoinRoot.root p) := by
@@ -17,7 +17,7 @@ private theorem root_isUnit {F : Type} [Field F] (p : F[X]) (h : p.coeff 0 ≠ 0
   exact isUnit_of_mul_isUnit_left (h1 ▸ ((Ne.isUnit h).map (AdjoinRoot.of p)).neg)
 
 /- English proof (translation)
-The claim follows from `(Ideal.isRadical_iff_quotient_reduced _).1 (isRadical_iff_span_singleton.1 h.squarefree.isRadical)`.
+A detailed English derivation is pending.
 -/
 private theorem root_reduced {F : Type} [Field F] (p : F[X]) (h : p.Separable) :
     IsReduced (AdjoinRoot p) :=
@@ -25,11 +25,9 @@ private theorem root_reduced {F : Type} [Field F] (p : F[X]) (h : p.Separable) :
     (isRadical_iff_span_singleton.1 h.squarefree.isRadical)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ n γ hγ hf hi`. Establish `hG` using `galField F E σ hσ`. Use `haveI : IsCyclic (E ≃ₐ[F] E) := ⟨⟨σ, hσ⟩⟩`. Use `haveI := root_reduced _ hγ`. Use `haveI : Module.Finite F (AdjoinRoot (cp γ)) := (Matrix.charpoly_monic _).finite_adjoinRoot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu : IsUnit (AdjoinRoot.root (cp γ))`. Use `root_isUnit _ fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `Matrix.det_eq_sign_charpoly_coeff γ.val`. Rewrite `h0` using `[cp]`. Rewrite `h1` using `[h0, mul_zero]`.
-
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero h1`. Use `(nmAlg F E F σ _ hG n γ hγ).2.2 (hasseEt F E _ hu.unit (fun v => ?_) fun v => ?_)` and prove the remaining obligations. Conclude with `(nmAlg F E _ σ _ hG n γ hγ).1.1 (hf v)`. Conclude with `(nmAlg F E _ σ _ hG n γ hγ).1.1 (hi v)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.D.nmHasse :
     UpperTheory.ConvolutionTheory.D.NmHasse := by

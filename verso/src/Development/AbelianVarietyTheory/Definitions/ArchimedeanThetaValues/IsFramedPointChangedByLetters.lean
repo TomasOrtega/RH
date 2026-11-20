@@ -174,7 +174,7 @@ def ArcDatum.OverBase (d : ArcDatum Xo c K₁) : Prop :=
   d.χ ≫ d.Y.s = spMap (PowerSeries.C (R := K₁)) ≫ spMap ((algebraMap c.F K₁).comp (c.V d.Wp).subtype)
 
 /- English proof (translation)
-The claim follows from `d.arcDatum_isArc_point_basis.1`.
+A detailed English derivation is pending.
 -/
 theorem ArcDatum.overBase (d : ArcDatum Xo c K₁) : d.OverBase := d.arcDatum_isArc_point_basis.1
 
@@ -209,18 +209,18 @@ section Fld
 variable {Y : Model Xo c β} {K : Type} [Field K] {b : O →+* K} {a : ArcIn Dw l β K b} {χ : Sp (PowerSeries K) ⟶ Y.X}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem lieImg_iff_isLieImage (W : Wit Y a χ) (ν : Out.GtPt a.D₀ (epsR K)) (v : epsR (PowerSeries K) ⟶ W.t.G) :
     LieImg W ν v ↔ IsLieImage W ν v := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem gtTanR_iff_gtTan (ν : Out.GtPt a.D₀ (epsR K)) : GtTanR ν ↔ GtTan (a := a) ν := Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [ArcBasis, ArcLieBasis, hρ]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem arcBasis_iff_arcLieBasis [Algebra c.F K] (W : Wit Y a χ) (ρ : (E →+* ℂ) → (𝓞 E →+* K))
     (hρ : ∀ τ x, ρ τ x = algebraMap c.F K (embK c τ x))
@@ -229,7 +229,7 @@ theorem arcBasis_iff_arcLieBasis [Algebra c.F K] (W : Wit Y a χ) (ρ : (E →+*
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨-, t', m1, m2, φ, -, -, -, hφ0, hφ, -, θ, w1, w2, σ', s1, θ2, hΘ, hr1, hr2, hi1, hi2, hps, hs⟩` from `h`. Take `⟨σ, fam, θ', hexp, hcoh, hσ, hθ⟩` from `hΘ`. Conclude with `⟨σ, fam, θ', θ, hth, hexp, hcoh, hσ, hθ, t', m1, m2, w1, w2, σ', s1, θ2, ⟨φ, hφ0, hφ⟩, hr1, hr2, hi1, hi2, hps, hs⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsArcFr.isArcPt3At [Algebra c.F K] [Algebra c.F (ArcS Dw K)] {W : Wit Y a χ}
     {e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K)} {th : a.D₀.P.L.Sec}
@@ -241,9 +241,9 @@ theorem IsArcFr.isArcPt3At [Algebra c.F K] [Algebra c.F (ArcS Dw K)] {W : Wit Y 
     hr1, hr2, hi1, hi2, hps, hs⟩
 
 /- English proof (translation)
-Take `⟨z, _t', m1, m2, φ, hzj, hzx, -, hφ0, hφ, hvec, -⟩` from `h`. Take `⟨hx, hcomb, -⟩` from `hc`. Use `choose v u' hL hu1 hu2 _hu3 using hvec`. Use `⟨hb, ⟨z, hzj, hzx.trans hx.symm⟩, v, hL, fun τ i => ⟨y₀.u τ, fun k => ⟨u' τ k ≫ φ, ?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hφ, ← Category.assoc, hu2, Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hφ0, hu1]`. Rewrite using `[hx]`. Conclude with `hcomb τ i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsArcFr.isFramedPoint_changed_by_letters [Algebra c.F K] [Algebra c.F (ArcS Dw K)] {W : Wit Y a χ}
     {e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K)} {th : a.D₀.P.L.Sec} {ζ : ArcS Dw K}
@@ -266,7 +266,7 @@ section Dom
 variable {A A' : Type} [CommRing A] [IsDomain A] [CommRing A'] [IsDomain A'] {b : O →+* A}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hs, hb, ha, he, heA⟩`. Conclude with `⟨hs, hb, ha, he, heA⟩`. Introduce and unpack `⟨hs, hb, ha, he, heA⟩`. Conclude with `⟨rfl, hs, hb, ha, he, heA⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem inBC_iff_isBC (f : A →+* A') (a : ArcIn Dw l β A b) (a' : ArcIn Dw l β A' (f.comp b))
     (p : Out.IsPullDeg f a.D₀ a'.D₀) : InBC f a a' p ↔ GlobalTheory.ArcPull.IsBC f a a' p := by
@@ -279,13 +279,13 @@ theorem inBC_iff_isBC (f : A →+* A') (a : ArcIn Dw l β A b) (a' : ArcIn Dw l 
 variable {D₀ : Out.DegPre A}
 
 /- English proof (translation)
-Introduce `j` and use `by simp [constFn]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ThMul.refl (th : D₀.P.L.Sec) : ThMul 1 th th := fun j => by
   simp [constFn]
 
 /- English proof (translation)
-Introduce `j` and use `by rw [h' j, h j, ← mul_assoc] congr 1 simp [constFn]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ThMul.trans {γ δ : A} {t₁ t₂ t₃ : D₀.P.L.Sec} (h : ThMul γ t₁ t₂) (h' : ThMul δ t₂ t₃) :
     ThMul (δ * γ) t₁ t₃ := fun j => by
@@ -294,9 +294,9 @@ theorem ThMul.trans {γ δ : A} {t₁ t₂ t₃ : D₀.P.L.Sec} (h : ThMul γ t�
   simp [constFn]
 
 /- English proof (translation)
-Take `⟨x, -, hx⟩` from `h (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A)`. Unfold `Out.nonzeroLocus at hx`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Use `⟨j, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[h0, Scheme.basicOpen_zero]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hj`.
+Simplify using the standard rewrite rules.
 -/
 theorem ThNZ.ne_zero {th : D₀.P.L.Sec} (h : ThNZ th) : ∃ j, th.f j ≠ 0 := by
   obtain ⟨x, -, hx⟩ := h (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A)
@@ -307,14 +307,14 @@ theorem ThNZ.ne_zero {th : D₀.P.L.Sec} (h : ThNZ th) : ∃ j, th.f j ≠ 0 := 
   simp at hj
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, p, _, h0, _, h⟩ => h ▸ h0, fun h => ⟨e, fun _ => ν, fun i => i.elim0, h, fun i => i.elim0, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (cf : Fin 0 → A) (e : Fin 0 → Out.GtPt D₀ (epsR A)) (ν : Out.GtPt D₀ (epsR A)) :
     GtComb cf e ν ↔ ν.IsZero :=
   ⟨fun ⟨_, p, _, h0, _, h⟩ => h ▸ h0, fun h => ⟨e, fun _ => ν, fun i => i.elim0, h, fun i => i.elim0, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `hn` and use `by obtain ⟨j, hj⟩ := hn.ne_zero exact hj (by rw [h j]; simp [constFn])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (th th' : D₀.P.L.Sec) (h : ThMul 0 th th') : ¬ ThNZ th' := fun hn => by
   obtain ⟨j, hj⟩ := hn.ne_zero
@@ -323,7 +323,7 @@ example (th th' : D₀.P.L.Sec) (h : ThMul 0 th th') : ¬ ThNZ th' := fun hn => 
 end Dom
 
 /- English proof (translation)
-Simplify using `[cst]`.
+Simplify using the standard rewrite rules.
 -/
 example (Dw : Datum H) {K : Type} [Field K] (x y : K) : cst Dw (x * y) = cst Dw x * cst Dw y := by simp [cst]
 

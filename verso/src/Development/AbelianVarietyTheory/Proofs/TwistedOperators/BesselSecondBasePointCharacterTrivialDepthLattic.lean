@@ -34,9 +34,9 @@ def bnd (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : AddSubgroup (AE D) w
     exact ha.2 Q d h⟩
 
 /- English proof (translation)
-Use `⟨GlobalTheory.LatVac.infPart_pair α s, fun Q d h => ?_⟩` and prove the remaining obligations. Establish `h1 : finPart D ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] (1 : D.host.E)) ∈ intAE D`. Rewrite using `[GlobalTheory.LatVac.finPart_pair]`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, 1, rfl⟩`. Establish `h2 : Valued.v (cpt (D` using `D) Q (toEAf D ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] (1 : D.host.E)))) ≤ 1 := ((GlobalTheory.StdFrames.comp_toAd D).int _).1 h1 Q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : incA D d * (pairA D.host.F 0 α) ⊗ₜ[D.host.F] s = incA D (d * s) * (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[GlobalTheory.IdeleAA.tmul_eq, GlobalTheory.IdeleAA.tmul_eq, RingHom.map_mul, RingHom.map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, RingHom.map_mul, RingHom.map_mul, Valuation.map_mul, Good.cpt_incA, Good.valued_alg]`. Conclude with `mul_le_one' (h s hs) h2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mem_bnd {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} {α : Af D.host.F} (hα : α ∈ intAf D.host.F)
     {s : D.host.E} (hs : s ∈ I) : (pairA D.host.F 0 α) ⊗ₜ[D.host.F] s ∈ bnd I := by
@@ -53,11 +53,11 @@ theorem tmul_mem_bnd {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} {α : Af 
   exact mul_le_one' (h s hs) h2
 
 /- English proof (translation)
-Establish `hne : GlobalTheory.IdeleAA.Dual D ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero`. Establish `h1 : (1 : D.host.E) ∈ GlobalTheory.IdeleAA.Dual D * (GlobalTheory.IdeleAA.Dual D)⁻¹`. Rewrite using `[mul_inv_cancel₀ hne]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `key : GlobalTheory.FinPl.Conductor.chi ψ (finPart D (incA D 1 * t)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `FractionalIdeal.mul_induction_on (C := fun x => GlobalTheory.FinPl.Conductor.chi ψ (finPart D (incA D x * t)) = 1) h1 ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`. Establish `h2` using `GlobalTheory.IdeleAA.chi_dual hψ (γ := 1) (fun v => by rw [map_one]; exact one_mem _) hi (Good.mem_intAE (h j hj))`. Rewrite using `[RingHom.map_mul (incA D), mul_assoc, RingHom.map_mul (finPart D), GlobalTheory.LatVac.finPart_incA]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hx hy`. Rewrite using `[RingHom.map_add, add_mul, RingHom.map_add, GlobalTheory.FinPl.Conductor.chi_add, hx, hy, one_mul]`. Rewrite using `[GlobalTheory.FinPl.Conductor.psiE_eq_chi ψ h0]`. Rewrite `key` using `[RingHom.map_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem psiE_eq_one {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {t : AE D} (h0 : infPart D t = 0)
     (h : ∀ d ∈ (GlobalTheory.IdeleAA.Dual D)⁻¹, ∀ Q : HeightOneSpectrum (𝓞 D.host.E),
@@ -79,7 +79,7 @@ theorem psiE_eq_one {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
   rwa [RingHom.map_one, one_mul] at key
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`. Conclude with `Q.valuation_le_one c`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem val_le_of_mem_one (Q : HeightOneSpectrum (𝓞 D.host.E)) {x : D.host.E}
     (hx : x ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)) : Q.valuation D.host.E x ≤ 1 := by
@@ -87,9 +87,9 @@ theorem val_le_of_mem_one (Q : HeightOneSpectrum (𝓞 D.host.E)) {x : D.host.E}
   exact Q.valuation_le_one c
 
 /- English proof (translation)
-Establish `hI : I ≠ 0`. Introduce and unpack `rfl`. Establish `h` using `(FractionalIdeal.mem_zero_iff _).1 hc`. Establish `: c = 0` using `by simpa using h`. Conclude with `hQ (this ▸ zero_mem _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `val_le_of_mem_one Q ((FractionalIdeal.mem_inv_iff hI).1 hx _ hc)`. Rewrite `h` using `[map_mul, Q.valuation_of_algebraMap, Q.intValuation_eq_one_iff.2 hQ, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_le_of_mem_inv (Q : HeightOneSpectrum (𝓞 D.host.E)) {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E}
     {c : 𝓞 D.host.E} (hc : algebraMap _ D.host.E c ∈ I) (hQ : c ∉ Q.asIdeal) {x : D.host.E} (hx : x ∈ I⁻¹) :
@@ -116,11 +116,11 @@ def coefLat {m n : ℕ} (r : Fin m → D.host.E) (z : Fin n → D.host.E) (I : F
     rw [smul_mulVec, dotProduct_smul]; exact I.val.smul_mem c hx
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, x, hx, rfl⟩` from `hw`. Establish `e : ratV r ⬝ᵥ (Matrix.of fun i j => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] x i j : Mx D m n) *ᵥ ratV z = (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (r ⬝ᵥ x *ᵥ z)`. Simplify using `only [GlobalTheory.IdeleAA.tmul_eq, dotProduct, mulVec, ratV, Matrix.of_apply, map_sum, map_mul, Finset.mul_sum]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `tmul_mem_bnd hα (hM hx)`. Consider the case `zero => rw [zero_mulVec, dotProduct_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [add_mulVec, dotProduct_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_mulVec, dotProduct_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem coef_mem_bnd {m n : ℕ} (r : Fin m → D.host.E) (z : Fin n → D.host.E) (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
     {M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E)} (hM : M ≤ coefLat r z I) {u : Mx D m n}
@@ -144,9 +144,9 @@ variable {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensi
   (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
 
 /- English proof (translation)
-Use `⟨0, Λ.zero_mem, Pi.single p β, fun q => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q = p`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.single_eq_of_ne h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(𝔟 q).zero_mem`. Rewrite using `[mulVec_zero, zero_add]`. Use function extensionality and compare the values at `k`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem col_mem (p : Fin c) {β : D.host.E} (hβ : β ∈ 𝔟 p) : (β • fun k => d.a k p) ∈ d.lat Λ 𝔟 := by
   refine ⟨0, Λ.zero_mem, Pi.single p β, fun q => ?_, ?_⟩
@@ -158,13 +158,13 @@ theorem col_mem (p : Fin c) {β : D.host.E} (hβ : β ∈ 𝔟 p) : (β • fun 
     simp [mul_comm]
 
 /- English proof (translation)
-Take `⟨y₀, -, u, hu, rfl⟩` from `hy`. Establish `h1 : d.aᴴ * B.gram * d.a = antiDiagonalSignGramMatrix c ε` using `by rw [← cT_sig]; exact d.gram`. Establish `h2 : d.aᴴ * B.gram * frameMat B A d.ι = 0`. Establish `h` using `d.perp`. Rewrite `h` using `[cT_sig]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `congrArg conjTranspose h`. Rewrite `h'` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Rewrite using `[mulVec_add, mulVec_mulVec, mulVec_mulVec, h1, h2, zero_mulVec, zero_add]`. Establish `e : (antiDiagonalSignGramMatrix c ε *ᵥ u) p.rev = u p`. Use `p.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mulVec, dotProduct, Finset.sum_eq_single p]`. Rewrite using `[antiDiagonalSignGramMatrix, if_pos (by rw [Fin.val_rev]; omega), if_neg hp, one_mul]`. Introduce `q _ hq`. Rewrite using `[antiDiagonalSignGramMatrix, if_neg, zero_mul]`. Rewrite using `[Fin.val_rev]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hq (Fin.ext (by omega))`. Conclude with `fun h => absurd (Finset.mem_univ p) h`. Rewrite using `[e]`. Conclude with `hu p`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_mem (p : Fin c) (hp : p.rev ≠ p) {y : Fin B.rank → D.host.E} (hy : y ∈ d.lat Λ 𝔟) :
     ((d.aᴴ * B.gram) *ᵥ y) p.rev ∈ 𝔟 p := by
@@ -191,17 +191,17 @@ theorem coef_mem (p : Fin c) (hp : p.rev ≠ p) {y : Fin B.rank → D.host.E} (h
   exact hu p
 
 /- English proof (translation)
-Take `⟨h, he, s, he'⟩` from `hw`. Establish `hle : ρ ≤ c` using `by clear hp; omega`. Take `rfl : p = Fin.castLE hle i` from `Fin.ext hp`. Establish `k : ∀ y : Fin B.rank → D.host.E, (w.qX *ᵥ y) i = star (s i) * ((d.aᴴ * B.gram) *ᵥ y) (Fin.castLE (by omega) i : Fin c).rev` using `fun y => by`. Rewrite using `[HypDec.qX, ← mulVec_mulVec, ← mulVec_mulVec, he']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mulVec, dotProduct, conjTranspose_apply, colsOf, star_mul', Finset.mul_sum, mul_assoc]`. Establish `h1 : d.aᴴ * B.gram * d.a = antiDiagonalSignGramMatrix c (-1)` using `by rw [← cT_sig]; exact d.gram`. Establish `h2 : star (s i) * (-D.host.xi0) ^ (i.1 + 1) = 1`. Establish `h3 : (w.qX *ᵥ fun k => w.e k i) i = 1`. Use `congrFun (congrFun (qX_e w) i) i` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.one_apply_eq]`. Conclude with `this`. Establish `h4 : (fun k => w.e k i) = (-D.host.xi0) ^ (i.1 + 1) • fun k => d.a k (Fin.castLE (by omega) i)`. Rewrite using `[he]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h5 : ((d.aᴴ * B.gram) *ᵥ fun k => d.a k (Fin.castLE (by omega) i)) (Fin.castLE (by omega) i : Fin c).rev = 1`. Use `congrFun (congrFun h1 (Fin.castLE (by omega) i : Fin c).rev) (Fin.castLE (by omega) i)` as an intermediate fact. Use `Eq.trans this ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact. Rewrite using `[antiDiagonalSignGramMatrix, if_pos (by rw [Fin.val_rev, Fin.val_castLE]; omega), if_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[Fin.val_rev, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[k, h4, mulVec_smul, Pi.smul_apply, h5, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Rewrite using `[k, ← mul_assoc, mul_comm _ (star (s i)), h2, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem qX_apply {A B B₀ : HSp D} {c ρ : ℕ} (d : HermitianOrthogonalExtensionData A B c (-1)) (w : HypDec B B₀ ρ) (hw : IsAuxiliaryVectorWittDec d w) (i : Fin ρ)
     (p : Fin c) (hp : p.1 = i.1) (y : Fin B.rank → D.host.E) :
@@ -237,9 +237,9 @@ theorem qX_apply {A B B₀ : HSp D} {c ρ : ℕ} (d : HermitianOrthogonalExtensi
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `hle : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ x * I ≤ J`. Rewrite using `[FractionalIdeal.mul_le]`. Introduce `i hi j hj`. Take `⟨c, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hi`. Rewrite using `[smul_mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.val.smul_mem c (h j hj)`. Establish `h2` using `mul_le_mul_left hle I⁻¹`. Rewrite `h2` using `[mul_assoc, mul_inv_cancel₀ hI, mul_one]`. Conclude with `h2 (FractionalIdeal.mem_spanSingleton_self _ x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_forall_mul {I J : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hI : I ≠ 0) {x : D.host.E}
     (h : ∀ β ∈ I, x * β ∈ J) : x ∈ J * I⁻¹ := by
@@ -254,11 +254,11 @@ theorem mem_of_forall_mul {I J : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (h
   exact h2 (FractionalIdeal.mem_spanSingleton_self _ x)
 
 /- English proof (translation)
-Use `(AddSubgroup.closure_le (hatMx M)).2 ?_ hu` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Use `AddSubgroup.subset_closure ⟨α, hα, a • Matrix.of fun i j => t i * ∑ k, star (s k) * (negSp S).gram k j, hM a ha _ fun y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `(hS.2 y).1 hy s hs`. Establish `e : (Matrix.of fun i j => t i * ∑ k, star (s k) * (negSp S).gram k j) *ᵥ y = (-b) • t`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_neg]`. Express the relevant statement in the definitionally equal form `_ = -(b : D.host.E) * t i`. Rewrite using `[hb, Finset.sum_comm]`. Simplify using `only [mulVec, dotProduct, Matrix.of_apply, negSp_gram, Matrix.neg_apply, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[e]`. Conclude with `LT.smul_mem _ ht`. Use function extensionality and compare the values at `i j`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latO_le {S T : HSp D} {LS : Lat S} {LT : Lat T} (hS : IsSelfDualC S LS)
     {M : Submodule (𝓞 D.host.E) (Matrix (Fin T.rank) (Fin S.rank) D.host.E)}
@@ -285,13 +285,13 @@ theorem latO_le {S T : HSp D} {LS : Lat S} {LT : Lat T} (hS : IsSelfDualC S LS)
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.coeIdeal_ne_zero.2 h`.
+A detailed English derivation is pending.
 -/
 theorem coe_ne {I : Ideal (𝓞 D.host.E)} (h : I ≠ ⊥) : (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0 :=
   FractionalIdeal.coeIdeal_ne_zero.2 h
 
 /- English proof (translation)
-Establish `hne : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.host.xi0 * D.host.AA * D.host.AAbar ≠ 0`. Rewrite using `[Formalism.L2.Pj.dual_eq Formalism.IndefR.Fin.factPrincipalDatum D]`. Conclude with `FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero`. Conclude with `⟨left_ne_zero_of_mul (left_ne_zero_of_mul hne), right_ne_zero_of_mul (left_ne_zero_of_mul hne), right_ne_zero_of_mul hne⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ideals_ne (D : D7) : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.host.xi0 ≠ 0 ∧ D.host.AA ≠ 0 ∧ D.host.AAbar ≠ 0 := by
   have hne : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.host.xi0 * D.host.AA * D.host.AAbar ≠ 0 := by
@@ -302,9 +302,9 @@ theorem ideals_ne (D : D7) : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ D.
 
 open scoped Pointwise in
 /- English proof (translation)
-Use `⟨mul_ne_zero (ideals_ne D).2.1 (inv_ne_zero (coe_ne ?_)), mul_ne_zero (ideals_ne D).2.2 (inv_ne_zero (coe_ne (P.modul_ne_bot sc)))⟩` and prove the remaining obligations. Introduce `h`. Apply `P.modul_ne_bot sc` to reduce the goal to its premises. Establish `h2` using `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h`. Simplify using `only [Places.modulBar, inv_smul_smul] at h2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Conclude with `smul_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem st_ne (P : Places L) : P.stA sc ≠ 0 ∧ P.stAbar sc ≠ 0 := by
   refine ⟨mul_ne_zero (ideals_ne D).2.1 (inv_ne_zero (coe_ne ?_)),
@@ -317,7 +317,7 @@ theorem st_ne (P : Places L) : P.stA sc ≠ 0 ∧ P.stAbar sc ≠ 0 := by
   exact smul_zero _
 
 /- English proof (translation)
-Rewrite using `[vecB, mulVec_mulVec, hF.ζ (ρ + 1), mulVec_smul, hF.zB' ρ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem z_eq {F : Asc.Frames G} (hF : Std F) (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) :
     (F.dB ρ h).i₀ *ᵥ vecB (F.oB ρ h) (F.ζ (ρ + 1)) =
@@ -325,19 +325,17 @@ theorem z_eq {F : Asc.Frames G} (hF : Std F) (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.
   rw [vecB, mulVec_mulVec, hF.ζ (ρ + 1), mulVec_smul, hF.zB' ρ h]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨n1, n2⟩` from `st_ne (sc := sc) G.pl`. Establish `lS : G.Λ (.grid (2 * ρ + 1 + 1) 0) = _` using `G.sp.colLat (2 * ρ + 2) (by omega) h`. Establish `lT : G.Λ (.grid (2 * ρ + 1) 0) = _` using `G.sp.colLat (2 * ρ + 1) (by omega) (by omega)`. Use `set dS := G.colDec (2 * ρ + 2) (by omega) h with hdS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set dT := G.colDec (2 * ρ + 1) (by omega) (by omega) with hdT`. Set `pS : Fin (2 * ρ + 2 - 1)` to `⟨ρ, by omega⟩`. Set `pT : Fin (2 * ρ + 1 - 1)` to `⟨i.1, by omega⟩`. Establish `hrev : pT.rev ≠ pT` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[Fin.val_rev]`. Express the relevant statement in the definitionally equal form `2 * ρ + 1 - 1 - (i.1 + 1) = i.1 at this`. Use linear arithmetic over natural numbers and integers. Establish `hc` using `mem_of_forall_mul (I := stairId (G.pl.stA sc) (G.pl.stAbar sc) _ pS) (J := stairId (G.pl.stA sc) (G.pl.stAbar sc) _ pT) (x := ((dT.aᴴ * (G.V (.grid (2 * ρ + 1) 0)).gram) *ᵥ (x *ᵥ fun k => dS.a k pS)) pT.rev) (mul_ne_zero (pow_ne_zero _ n1) (inv_ne_zero (pow_ne_zero _ n2))) fun β …`. Establish `h1` using `hx _ (lS ▸ col_mem dS (G.Λ (.core (2 * ρ + 2))) _ pS hβ)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[lT]`. Establish `h2` using `coef_mem dT _ _ pT hrev h1`. Rewrite `h2` using `[mulVec_smul, mulVec_smul, Pi.smul_apply, smul_eq_mul, mul_comm β]`. Then use the resulting hypothesis. Establish `e : stairId (G.pl.stA sc) (G.pl.stAbar sc) _ pT * (stairId (G.pl.stA sc) (G.pl.stAbar sc) _ pS)⁻¹ = G.pl.stAbar sc`. Establish `e1 : 2 * ρ + 1 - 1 - pT.1 = ρ + 1` using `by change 2 * ρ + 1 - 1 - i.1 = _; omega`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : 2 * ρ + 2 - 1 - pS.1 = ρ + 1` using `by change 2 * ρ + 2 - 1 - ρ = _; omega`. Establish `e3 : pT.1 + 1 = ρ` using `hi`. Establish `e4 : pS.1 + 1 = ρ + 1` using `rfl`. Unfold `stairId`. Rewrite using `[e1, e2, e3, e4, pow_succ (G.pl.stAbar sc)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `hc` using `[e, ← qX_apply dT (F.dJ ρ h) (hF.hJ ρ h) i pT rfl, hi]`. Establish `h3` using `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self (𝓞 D.host.E)⁰ D.host.xi0) hc`. Express the relevant statement in the definitionally equal form `((F.dJ ρ h).qX *ᵥ (x *ᵥ _)) i ∈ (_ : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[z_eq hF ρ h, mulVec_smul, mulVec_smul, Pi.smul_apply, smul_eq_mul, pow_succ', mul_assoc, neg_mul]`.
-
-Conclude with `Submodule.neg_mem _ h3`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homLat_le {F : Asc.Frames G} (hF : Std F) (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) (i : Fin ρ) (hi : i.1 + 1 = ρ) :
     homLat (G.Λ (.grid (2 * ρ + 1 + 1) 0)) (G.Λ (.grid (2 * ρ + 1) 0)) ≤
@@ -380,7 +378,7 @@ theorem homLat_le {F : Asc.Frames G} (hF : Std F) (ρ : ℕ) (h : 2 * ρ + 2 ≤
   exact Submodule.neg_mem _ h3
 
 /- English proof (translation)
-Establish `h` using `FractionalIdeal.mul_mem_mul hd hs`. Rewrite `h` using `[← mul_assoc, inv_mul_cancel₀ hJ, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_mem_inv {J I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hJ : J ≠ 0) {d s : D.host.E} (hd : d ∈ J⁻¹)
     (hs : s ∈ J * I⁻¹) : d * s ∈ I⁻¹ := by
@@ -388,9 +386,9 @@ theorem mul_mem_inv {J I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hJ : J 
   rwa [← mul_assoc, inv_mul_cancel₀ hJ, one_mul] at h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hle : G.pl.modul sc ≤ Q.asIdeal` using `hc`. Rewrite `hle` using `[Places.modul]`. Take `⟨v, hv, h⟩` from `(Ideal.IsPrime.prod_le Q.isPrime).1 hle`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.IdemSupport.eq_of_le (Ideal.IsPrime.le_of_pow_le (hP := Q.isPrime) h)`. Apply `hQ` to reduce the goal to its premises. Rewrite using `[← h2]`. Unfold `Places.W0`. Use `Finset.mem_image_of_mem G.pl.w hv` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_modul (G : GridData L sc) {Q : HeightOneSpectrum (𝓞 D.host.E)} (hQ : Q ∉ G.pl.W0) :
     ∃ c ∈ G.modul, c ∉ Q.asIdeal := by
@@ -407,11 +405,11 @@ theorem exists_modul (G : GridData L sc) {Q : HeightOneSpectrum (𝓞 D.host.E)}
   convert Finset.mem_image_of_mem G.pl.w hv
 
 /- English proof (translation)
-Establish `hb` using `Good.badInt_notMem hL (G := G) (t := μ₀) hq (fun P hP => absurd (show (L.xiH μ₀).UnrAt P by rw [hL.xi_base]; exact fun x _ => rfl) ((hL.Q_ram μ₀ P).2 (Or.inl hP))) (Finset.mem_union_left _ hQ)`. Use `⟨((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E), ?_, fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro_left _ rfl))⟩` and prove the remaining obligations. Establish `h1 : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∈ D.host.ccE`. Use `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) (Ideal.absNorm_mem D.host.ccK)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0 : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `fun h => by`. Apply `(ideals_ne D).2.1` to reduce the goal to its premises. Rewrite using `[Host.AA, Host.AA0, h, _root_.inv_zero, mul_zero]`. Establish `h2 : (1 : D.host.E) ∈ D.host.AA0`. Rewrite using `[Host.AA0, FractionalIdeal.mem_inv_iff h0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite using `[one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one hy`. Establish `h3` using `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem (𝓞 D.host.E)⁰ h1) h2`. Rewrite `h3` using `[mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_AA {μ₀ : T} (hL : L.Is μ₀) (hq : OffQ D) (G : GridData L sc) {Q : HeightOneSpectrum (𝓞 D.host.E)}
     (hQ : Q ∈ G.pl.W0) : ∃ c : 𝓞 D.host.E, algebraMap _ D.host.E c ∈ D.host.AA ∧ c ∉ Q.asIdeal := by
@@ -438,25 +436,25 @@ theorem exists_AA {μ₀ : T} (hL : L.Is μ₀) (hq : OffQ D) (G : GridData L sc
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D hq T L μ₀ hL sc G W M _ F hF ρ h u hu`. Use `(congrArg W.ψ (symplO_yZero (F.dJ ρ h) _ _)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `psiE W.ψ _ = 1`. Break down `Nat.eq_zero_or_pos ρ with rfl | hρ` into its components or cases. Rewrite using `[dotProduct, Finset.sum_of_isEmpty, psiE_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Set `i : Fin ρ` to `⟨ρ - 1, by omega⟩`. Establish `hi : i.1 + 1 = ρ` using `by change ρ - 1 + 1 = ρ; omega`. Use `set r := (F.dJ ρ h).qX i with hr`. Use `set z := (F.dB ρ h).i₀ *ᵥ vecB (F.oB ρ h) (F.ζ (ρ + 1)) with hz`. Establish `e : ell D ρ ⬝ᵥ ((F.dJ ρ h).pX ⬝ (u ⬝ (F.dB ρ h).j0)) *ᵥ ratV (vecB (F.oB ρ h) (F.ζ (ρ + 1))) = ratV r ⬝ᵥ (show Mx D _ _ from u) *ᵥ ratV z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ratV_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct, Finset.sum_eq_single i]`. Rewrite using `[ell, if_pos hi, one_mul]`. Both sides reduce to the same expression. Introduce `j _ hj`. Rewrite using `[ell, if_neg fun e => hj (Fin.ext (by omega)), zero_mul]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => absurd (Finset.mem_univ i) h`. Rewrite using `[e]`. Take `⟨n0, n1, n2⟩` from `ideals_ne D`. Establish `n3` using `coe_ne (G.pl.modul_ne_bot sc)`. Establish `hJ : GlobalTheory.IdeleAA.Dual D = _` using `(Formalism.L2.Pj.dual_eq Formalism.IndefR.Fin.factPrincipalDatum D).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : GlobalTheory.IdeleAA.Dual D ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero`. Establish `hle` using `homLat_le hF ρ h i hi`. Establish `hS : IsSelfDualC _ (G.Λ (.grid (2 * ρ + 1 + 1) 0))` using `(G.sp.V_is (2 * ρ + 1 + 1) 0 (by omega) h (by omega)).sd`. Establish `b1 : ratV r ⬝ᵥ (show Mx D _ _ from u) *ᵥ ratV z ∈ bnd (GlobalTheory.IdeleAA.Dual D * ((G.modul : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)⁻¹)`. Use `coef_mem_bnd r z _ le_rfl (latO_le hS (fun a ha x hx => ?_) hu.1)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1` using `FractionalIdeal.mul_mem_mul ha (hle hx)`. Express the relevant statement in the definitionally equal form `_ ∈ (_ : FractionalIdeal _ _)`. Rewrite using `[smul_mulVec, dotProduct_smul, smul_eq_mul, hJ]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Places.stAbar]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨ε, hε⟩` from `GlobalTheory.GridIdem.exists_idempotentSum_auxiliaryPlaces D T L G.pl`. Establish `b2 : ε * (ratV r ⬝ᵥ (show Mx D _ _ from u) *ᵥ ratV z) ∈ bnd (GlobalTheory.IdeleAA.Dual D * D.host.AA⁻¹)`. Establish `h1` using `coef_mem_bnd r z (GlobalTheory.IdeleAA.Dual D * D.host.AA⁻¹) (Submodule.smul_le.2 fun a ha x hx => ?_) (hu.2 ε hε)`. Rewrite `h1` using `[smul_mulVec, dotProduct_smul, smul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1` using `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem (𝓞 D.host.E)⁰ ha) (hle hx)`. Express the relevant statement in the definitionally equal form `_ ∈ (_ : FractionalIdeal _ _)`. Rewrite using `[smul_mulVec, dotProduct_smul, Algebra.smul_def, hJ]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Places.stAbar]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Use `psiE_eq_one W.ψ_std b1.1 fun d hd Q => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : Q ∈ G.pl.W0`. Take `⟨c, hc, hcQ⟩` from `exists_AA hL hq G hQ`. Establish `h1` using `b2.2 Q d fun s hs => val_le_of_mem_inv Q hc hcQ (mul_mem_inv hne hd hs)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[mul_left_comm, RingHom.map_mul, RingHom.map_mul, (Comparison₂.cpt_idemSum hε).2.1 Q hQ, one_mul]`. Then use the resulting hypothesis. Take `⟨c, hc, hcQ⟩` from `exists_modul G hQ`. Conclude with `b1.2 Q d fun s hs => val_le_of_mem_inv Q (FractionalIdeal.mem_coeIdeal_of_mem (𝓞 D.host.E)⁰ hc) hcQ (mul_mem_inv hne hd hs)`.
+A detailed English derivation is pending.
 -/
 theorem ychar : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * ρ + 1), W.ψ (symplO (F.V₀ ρ) (G.V (.grid (2 * ρ + 1) 0)) ((F.dJ ρ h).incAdj (F.V₀ ρ) (yBF F ρ h)) ((F.dJ ρ h).incX (F.V₀ ρ) ((F.dJ ρ h).pX ⬝ (u ⬝ (F.dB ρ h).j0)))) = 1 := by
   intro D hq T L μ₀ hL sc G W M _ F hF ρ h u hu

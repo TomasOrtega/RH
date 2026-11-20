@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FSCrofton.LocalCrofton
 
 /- English proof (translation)
-Establish `hc : Continuous fun C : Fin d → α → ℂ => Real.exp (-∑ k, ∑ j, ‖C k j‖ ^ 2)` using `by fun_prop`. Conclude with `ENNReal.measurable_ofReal.comp hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_gW (d : ℕ) (α : Type) [Fintype α] : Measurable (gW d α) := by
   have hc : Continuous fun C : Fin d → α → ℂ => Real.exp (-∑ k, ∑ j, ‖C k j‖ ^ 2) := by
@@ -22,13 +22,13 @@ theorem measurable_gW (d : ℕ) (α : Type) [Fintype α] : Measurable (gW d α) 
   exact ENNReal.measurable_ofReal.comp hc.measurable
 
 /- English proof (translation)
-The claim follows from `ENNReal.ofReal_ne_top`.
+A detailed English derivation is pending.
 -/
 theorem gW_ne_top (d : ℕ) (α : Type) [Fintype α] (C : Fin d → α → ℂ) : gW d α C ≠ ∞ :=
   ENNReal.ofReal_ne_top
 
 /- English proof (translation)
-Establish `hc : Continuous fun c : Fin d → ℂ => Real.exp (-∑ k, ‖c k‖ ^ 2)` using `by fun_prop`. Conclude with `ENNReal.measurable_ofReal.comp hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_gauss (d : ℕ) :
     Measurable fun c : Fin d → ℂ => ENNReal.ofReal (Real.exp (-∑ k, ‖c k‖ ^ 2)) := by
@@ -37,11 +37,11 @@ theorem measurable_gauss (d : ℕ) :
   exact ENNReal.measurable_ofReal.comp hc.measurable
 
 /- English proof (translation)
-Unfold `gW`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]`. Use `congr 2`. Rewrite using `[← neg_add, ← Finset.sum_add_distrib]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ j₀, add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[joinCol, j.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[joinCol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gW_joinCol {d : ℕ} {α : Type} [Fintype α] [DecidableEq α] (j₀ : α) (c : Fin d → ℂ)
     (C : Fin d → {j : α // j ≠ j₀} → ℂ) :
@@ -60,9 +60,9 @@ theorem gW_joinCol {d : ℕ} {α : Type} [Fintype α] [DecidableEq α] (j₀ : �
   · simp [joinCol]
 
 /- English proof (translation)
-Use `forall_congr' fun k => ?_` and prove the remaining obligations. Establish `h : ∑ j, joinCol j₀ c C k j * b j z = b j₀ z * (c k + ∑ j : {j : α // j ≠ j₀}, C k j * (b j.1 z / b j₀ z))`. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ j₀, mul_add, Finset.mul_sum]`. Use `congr 1`. Simplify using `[joinCol, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [joinCol, j.2, dite_false]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h, mul_eq_zero]`. Simplify using `[hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem joinCol_zero_iff {X : Type} {d : ℕ} {α : Type} [Fintype α] [DecidableEq α] (j₀ : α)
     (c : Fin d → ℂ) (C : Fin d → {j : α // j ≠ j₀} → ℂ) (b : α → X → ℂ) (z : X)
@@ -82,9 +82,9 @@ theorem joinCol_zero_iff {X : Type} {d : ℕ} {α : Type} [Fintype α] [Decidabl
   simp [hz]
 
 /- English proof (translation)
-Establish `h1 : Continuous fun q : (Fin d → β → ℂ) × ((β → ℂ) × (β → Fin d → ℂ)) => (Matrix.of q.1 : Matrix (Fin d) β ℂ)` using `continuous_fst`. Establish `h2 : Continuous fun q : (Fin d → β → ℂ) × ((β → ℂ) × (β → Fin d → ℂ)) => (Matrix.of q.2.2 : Matrix β (Fin d) ℂ)` using `continuous_snd.comp continuous_snd`. Establish `h3 : Continuous fun q : (Fin d → β → ℂ) × ((β → ℂ) × (β → Fin d → ℂ)) => (Matrix.of q.1 * (Matrix.of q.2.2 : Matrix β (Fin d) ℂ)).det` using `(h1.matrix_mul h2).matrix_det`. Establish `h4 : Continuous fun q : (Fin d → β → ℂ) × ((β → ℂ) × (β → Fin d → ℂ)) => Real.exp (-∑ k, ‖∑ j, q.1 k j * q.2.1 j‖ ^ 2)`. Use `Real.continuous_exp.comp (continuous_neg.comp ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_finset_sum _ fun k _ => (Continuous.norm ?_).pow 2` and prove the remaining obligations. Use `continuous_finset_sum _ fun j _ => Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_apply j).comp ((continuous_apply k).comp continuous_fst)`. Conclude with `(continuous_apply j).comp (continuous_fst.comp continuous_snd)`. Conclude with `h4.mul (h3.norm.pow 2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_kernel (d : ℕ) (β : Type) [Fintype β] :
     Continuous fun q : (Fin d → β → ℂ) × ((β → ℂ) × (β → Fin d → ℂ)) =>
@@ -107,9 +107,7 @@ theorem continuous_kernel (d : ℕ) (β : Type) [Fintype β] :
   exact h4.mul (h3.norm.pow 2)
 
 /- English proof (translation)
-Establish `hm : Measurable fun p : (Fin d → β → ℂ) × X => ((p.1, (fun j => g j p.2), (fun j a => F j a p.2)) : (Fin d → β → ℂ) × ((β → ℂ) × (β → Fin d → ℂ)))`. Use `measurable_fst.prodMk (Measurable.prodMk ?_ ?_)` and prove the remaining obligations. Conclude with `measurable_pi_lambda _ fun j => (hg j).comp measurable_snd`. Conclude with `measurable_pi_lambda _ fun j => measurable_pi_lambda _ fun a => (hF j a).comp measurable_snd`. Establish `hq` using `(continuous_kernel d β).measurable.comp hm`.
-
-Conclude with `((measurable_gW d β).comp measurable_fst).mul (ENNReal.measurable_ofReal.comp hq)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_kernel {X : Type} [MeasurableSpace X] (d : ℕ) (β : Type) [Fintype β]
     (g : β → X → ℂ) (F : β → Fin d → X → ℂ) (hg : ∀ j, Measurable (g j))
@@ -128,7 +126,7 @@ theorem measurable_kernel {X : Type} [MeasurableSpace X] (d : ℕ) (β : Type) [
   exact ((measurable_gW d β).comp measurable_fst).mul (ENNReal.measurable_ofReal.comp hq)
 
 /- English proof (translation)
-Establish `h : DifferentiableOn ℂ (fun v => b j v * (b j₀ v)⁻¹) U` using `(hb j).mul ((hb j₀).inv hne)`. Simplify `h` using `only [div_eq_mul_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem differentiableOn_quot {d : ℕ} {α : Type} (U : Set (V d)) (b : α → V d → ℂ)
     (hb : ∀ j, DifferentiableOn ℂ (b j) U) (j₀ : α) (hne : ∀ z ∈ U, b j₀ z ≠ 0) (j : α) :
@@ -137,13 +135,13 @@ theorem differentiableOn_quot {d : ℕ} {α : Type} (U : Set (V d)) (b : α → 
   simpa only [div_eq_mul_inv] using h
 
 /- English proof (translation)
-Establish `hf : ∀ j : {j : α // j ≠ j₀}, DifferentiableOn ℂ (fun v => b j.1 v / b j₀ v) U` using `fun j => differentiableOn_quot U b hb j₀ hne j.1`. Establish `e1 : ∀ c : Fin d → ℂ, gW d α (joinCol j₀ c C) * zeroCnt d A b (joinCol j₀ c C) = gW d {j : α // j ≠ j₀} C * (ENNReal.ofReal (Real.exp (-∑ k, ‖c k‖ ^ 2)) * (({z ∈ A | ∀ k, c k + ∑ j : {j : α // j ≠ j₀}, C k j * (b j.1 z / b j₀ z) = 0}.encard : ℕ∞) : ℝ≥0∞))`. Introduce `c`. Establish `hs : {z ∈ A | ∀ k, ∑ j, joinCol j₀ c C k j * b j z = 0} = {z ∈ A | ∀ k, c k + ∑ j : {j : α // j ≠ j₀}, C k j * (b j.1 z / b j₀ z) = 0}`. Use extensionality with `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq]`. Use `and_congr_right fun hz => ?_` and prove the remaining obligations. Conclude with `joinCol_zero_iff j₀ c C b z (hne z (hAU hz))`. Rewrite using `[gW_joinCol, mul_assoc]`. Unfold `zeroCnt`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Repeatedly rewrite using `[e1]`. Rewrite using `[lintegral_const_mul' _ _ (gW_ne_top d _ C), GlobalTheory.T.change_variables_zero_count d {j : α // j ≠ j₀} U A (fun j v => b j.1 v / b j₀ v) C (fun c => ENNReal.ofReal (Real.exp (-∑ k, ‖c k‖ ^ 2))) hU hf hAU hAm (measurable_gauss d), ← lintegral_const_mul' _ _ (gW_ne_top d _ C)]`. Use `setLIntegral_congr_fun hAm fun z hz => ?_` and prove the remaining obligations. Simplify using `only [norm_neg]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.ofReal_mul (Real.exp_pos _).le]`. Simplify using `only [hgA _ z hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_integral (d : ℕ) (α : Type) [Fintype α] [DecidableEq α] (j₀ : α) (U A : Set (V d))
     (b : α → V d → ℂ) (hU : IsOpen U) (hb : ∀ j, DifferentiableOn ℂ (b j) U)
@@ -183,7 +181,7 @@ theorem inner_integral (d : ℕ) (α : Type) [Fintype α] [DecidableEq α] (j₀
   simp only [hgA _ z hz]
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.ofReal_mul (pow_nonneg Real.pi_pos.le _)]`. Use `congr 1`. Substitute `hn` using the available equality. Establish `hp : (Real.pi ^ d) ≠ 0` using `pow_ne_zero _ Real.pi_pos.ne'`. Rewrite using `[Nat.mul_succ, pow_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -199,15 +197,15 @@ theorem const_arith (d m n : ℕ) (hn : n = m + 1) (x : ℝ) :
   field_simp
 
 /- English proof (translation)
-Introduce `d α _ _ j₀ U A b hU hb hne hAU hA`. Establish `hAm : MeasurableSet A`. Take `⟨K, hK, hKA⟩` from `hA`. Rewrite using `[← hKA]`. Conclude with `MeasurableSet.iUnion fun n => (hK n).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦ : Measurable fun C : Fin d → α → ℂ => gW d α C * zeroCnt d A b C` using `(measurable_gW d α).mul (GlobalTheory.T.measurable_zero_count d α U A b (fun j => (hb j).continuousOn) hAU hA)`. Establish `hf : ∀ j : {j : α // j ≠ j₀}, DifferentiableOn ℂ (fun v => b j.1 v / b j₀ v) U` using `fun j => differentiableOn_quot U b hb j₀ hne j.1`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg, hgA⟩ : ∃ g : {j : α // j ≠ j₀} → V d → ℂ, (∀ j, Measurable (g j)) ∧ ∀ j, ∀ z ∈ A, g j z = b j.1 z / b j₀ z := by`. Use `⟨fun j => U.piecewise (fun v => b j.1 v / b j₀ v) (fun _ => 0), fun j => ?_, fun j z hz => by simp [Set.piecewise, hAU hz]⟩` and prove the remaining obligations. Conclude with `(hf j).continuousOn.measurable_piecewise continuousOn_const hU.measurableSet`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : ∀ (j : {j : α // j ≠ j₀}) (a : Fin d), Measurable fun z => fderiv ℂ (fun v => b j.1 v / b j₀ v) z (EuclideanSpace.single a 1)` using `fun j a => measurable_fderiv_apply_const ℂ _ _`. Establish `hK` using `measurable_kernel d {j : α // j ≠ j₀} g _ hg hF`. Rewrite using `[GlobalTheory.T.lintegral_split_column d α j₀ _ hΦ]`. Repeatedly rewrite using `[inner_integral d α j₀ U A b hU hb hne hAU hAm g hgA]`. Rewrite using `[lintegral_lintegral_swap (ν := volume.restrict A) hK.aemeasurable, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `setLIntegral_congr_fun hAm fun z hz => ?_` and prove the remaining obligations. Establish `hcard : Fintype.card α = Fintype.card {j : α // j ≠ j₀} + 1`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_eq]`. Establish `: 0 < Fintype.card α` using `Fintype.card_pos_iff.mpr ⟨j₀⟩`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GlobalTheory.T.gaussian_det_levi_integral d {j : α // j ≠ j₀} (fun j => b j.1 z / b j₀ z) (Matrix.of fun j a => fderiv ℂ (fun v => b (j : {j : α // j ≠ j₀}).1 v / b j₀ v) z (EuclideanSpace.single a 1))`. Rewrite using `[GlobalTheory.T.complex_hessian_log_dehomogenise d α j₀ U b hU hb hne z (hAU hz), GlobalTheory.T.complex_hessian_log_fubini_study d {j : α // j ≠ j₀} U (fun j v => b j.1 v / b j₀ v) hU hf z (hAU hz), ← const_arith d _ _ hcard, ← h1]`. Simplify using `only [hgA _ z hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crofton_local : ∀ (d : ℕ) (α : Type) [Fintype α] [DecidableEq α] (j₀ : α) (U A : Set (V d)) (b : α → V d → ℂ), IsOpen U → (∀ j, DifferentiableOn ℂ (b j) U) → (∀ z ∈ U, b j₀ z ≠ 0) → A ⊆ U → IsSigmaCompact A → ∫⁻ C : Fin d → α → ℂ, gW d α C * zeroCnt d A b C = ENNReal.ofReal (Real.pi ^ (d * Fintype.card α)) * ∫⁻ z in A, ENNReal.ofReal ((d.factorial : ℝ) / Real.pi ^ d * (cHess d (fun v => ((Real.log (∑ j, ‖b j v‖ ^ 2) : ℝ) : ℂ)) z).det.re) := by
   intro d α _ _ j₀ U A b hU hb hne hAU hA

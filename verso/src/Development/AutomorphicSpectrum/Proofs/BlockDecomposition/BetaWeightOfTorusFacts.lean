@@ -13,9 +13,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h : OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0}`. Use extensionality with `z`. Simplify using `[OmegaSet]`. Rewrite using `[h]`. Use `isOpen_iInter_of_finite fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous fun z : Matrix (Fin n) (Fin n) ℂ => lead ((i : ℕ) + 1) z`. Establish `hi : (i : ℕ) + 1 ≤ n` using `i.2`. Simplify using `only [lead, dif_pos hi]`. Conclude with `(continuous_id.matrix_submatrix _ _).matrix_det`. Conclude with `isOpen_ne_fun hc continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma isOpen_omegaSet (n : ℕ) : IsOpen (OmegaSet n) := by
   have h : OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0} := by
@@ -30,16 +30,16 @@ lemma isOpen_omegaSet (n : ℕ) : IsOpen (OmegaSet n) := by
   exact isOpen_ne_fun hc continuous_const
 
 /- English proof (translation)
-The claim follows from `(hF.1.contDiffAt ((isOpen_omegaSet n).mem_nhds hz)).differentiableAt (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma differentiableAt_of_mem {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n)
     {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaSet n) : DifferentiableAt ℂ F z :=
   (hF.1.contDiffAt ((isOpen_omegaSet n).mem_nhds hz)).differentiableAt (by simp)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ OmegaSet n`. Simplify using `only [lop, Pi.add_apply, if_pos hz]`. Establish `h : fderiv ℂ (F + G) z = fderiv ℂ F z + fderiv ℂ G z` using `((differentiableAt_of_mem hF hz).hasFDerivAt.add (differentiableAt_of_mem hG hz).hasFDerivAt).fderiv`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[lop, if_neg hz]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 lemma lop_add (Y : Matrix (Fin n) (Fin n) ℂ) {F G : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hF : F ∈ OmF n) (hG : G ∈ OmF n) : lop Y (F + G) = lop Y F + lop Y G := by
@@ -54,9 +54,9 @@ lemma lop_add (Y : Matrix (Fin n) (Fin n) ℂ) {F G : Matrix (Fin n) (Fin n) ℂ
   · simp [lop, if_neg hz]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ OmegaSet n`. Simplify using `only [lop, Pi.smul_apply, if_pos hz]`. Establish `h : fderiv ℂ (s • F) z = s • fderiv ℂ F z` using `((differentiableAt_of_mem hF hz).hasFDerivAt.const_smul s).fderiv`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[lop, if_neg hz]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma lop_smul (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hF : F ∈ OmF n) : lop Y (s • F) = s • lop Y F := by
@@ -70,9 +70,9 @@ lemma lop_smul (Y : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) {F : Matrix (Fin n) (F
   · simp [lop, if_neg hz]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ OmegaSet n`. Simplify using `[lop, if_pos hz]`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[lop, if_neg hz]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, lop_add Y (hf i) (Submodule.sum_mem _ fun j _ => hf j), ih]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma lop_sum (Y : Matrix (Fin n) (Fin n) ℂ) {ι : Type*} (s : Finset ι)
     (f : ι → Matrix (Fin n) (Fin n) ℂ → ℂ) (hf : ∀ i, f i ∈ OmF n) :
@@ -91,7 +91,7 @@ def wtL (c : Fin n) (w : List (Fin n × Fin n)) : ℝ :=
   (w.map fun p => (if p.1 = c then (1 : ℝ) else 0) - (if p.2 = c then 1 else 0)).sum
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact (H n μ).2.2.1`. Consider the case `cons p w ih => exact (H n μ).1 _ _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma lw_mem (H : HolFacts) (μ : Fin n → ℤ) (w : List (Fin n × Fin n)) : lw w (PhiO μ) ∈ OmF n := by
   induction w with
@@ -99,17 +99,17 @@ lemma lw_mem (H : HolFacts) (μ : Fin n → ℤ) (w : List (Fin n × Fin n)) : l
   | cons p w ih => exact (H n μ).1 _ _ ih
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Establish `h` using `(H n μ).2.2.2.1 c`. Simplify `h` using `[wtL, lw]`. Consider the case `cons p w ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Take `⟨a, b⟩` from `p`. Establish `hF` using `lw_mem H μ w`. Establish `rel` using `(H n μ).2.1 (lw w (PhiO μ)) c c a b hF`. Establish `hlw : lw ((a, b) :: w) (PhiO μ) = lop (Matrix.single a b 1) (lw w (PhiO μ))` using `rfl`. Establish `hwt : wtL c ((a, b) :: w) = ((if a = c then (1 : ℝ) else 0) - (if b = c then 1 else 0)) + wtL c w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[wtL]`. Rewrite `rel` using `[ih, lop_smul _ _ hF]`. Establish `rel' : lop (Matrix.single c c 1) (lop (Matrix.single a b 1) (lw w (PhiO μ))) = ((((μ c : ℤ) : ℝ) + wtL c w : ℝ) : ℂ) • lop (Matrix.single a b 1) (lw w (PhiO μ)) + ((((if a = c then (1 : ℝ) else 0) - (if b = c then 1 else 0) : ℝ)) : ℂ) • lop (Matrix.single a b 1) (lw w (PhiO μ))`. Rewrite `rel` using `[sub_eq_iff_eq_add]`. Rewrite using `[rel, add_comm]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `by_cases h1 : a = c <;> by_cases h2 : b = c`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h1` using the available equality. Simplify using `[h2]`. Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hlw, rel', hwt, ← add_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma lop_lw (H : HolFacts) (μ : Fin n → ℤ) (c : Fin n) (w : List (Fin n × Fin n)) :
     lop (Matrix.single c c 1) (lw w (PhiO μ)) =
@@ -145,19 +145,19 @@ lemma lop_lw (H : HolFacts) (μ : Fin n → ℤ) (c : Fin n) (w : List (Fin n ×
     ring
 
 /- English proof (translation)
-Establish `hH : (tor θ)ᴴ = tor (-θ)`. Unfold `tor`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.star_apply, Pi.neg_apply, RCLike.star_def, ← Complex.exp_conj]`. Simplify using the standard rewrite rules. Establish `hm : ∀ θ : Fin n → ℝ, tor θ * tor (-θ) = 1`. Introduce `θ`. Unfold `tor`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : tor θ * (tor θ)ᴴ = 1` using `by rw [hH, hm]`. Establish `h2 : (tor θ)ᴴ * tor θ = 1`. Use `hm (-θ)` as an intermediate fact. Rewrite `this` using `[neg_neg, ← hH]`. Then use the resulting hypothesis. Establish `hJ : tor θ * Jm ε = Jm ε * tor θ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `tor Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `mul_comm _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hUJ : inUJ ε (tor θ)`. Unfold `inUJ`. Rewrite using `[Matrix.mul_assoc, ← hJ, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `hK : tor θ ∈ Kset ε`. Use `⟨?_, hJ⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Conclude with `h1`. Set `u : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨tor θ, (tor θ)ᴴ, h1, h2⟩`. Set `g : UJ ε` to `⟨u, hUJ⟩`. Conclude with `⟨⟨g, hK⟩, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_tor (ε : Fin n → Bool) (θ : Fin n → ℝ) : ∃ k : KG ε, toMK k = tor θ := by
   have hH : (tor θ)ᴴ = tor (-θ) := by
@@ -197,9 +197,9 @@ lemma exists_tor (ε : Fin n → Bool) (θ : Fin n → ℝ) : ∃ k : KG ε, toM
   exact ⟨⟨g, hK⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hu : star (T.op k) * T.op k = 1` using `Unitary.star_mul_self_of_mem (T.τ k).2`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.star_eq_adjoint]`. Establish `: star (T.op k) (T.op k v) = v`. Establish `h : (star (T.op k) * T.op k) v = v` using `by rw [hu]; rfl`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 lemma inner_op_op {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (k : KG ε) (u v : T.V) :
     inner ℂ (T.op k u) (T.op k v) = inner ℂ u v := by
@@ -211,27 +211,25 @@ lemma inner_op_op {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (
   rw [this]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `set v : ℝ := η c - Λ c - wtL c (ofW x) with hv`. Establish `hv0 : v ≠ 0` using `fun h => hne (by rw [hv] at h; linarith)`. Use `set t : ℝ := Real.pi / v with ht`. Establish `htv : t * v = Real.pi` using `by rw [ht]; field_simp`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set θ : Fin n → ℝ := Pi.single c t with hθ`. Take `⟨k, hk⟩` from `exists_tor ε θ`. Establish `h1 : rhoA T m k a x = Complex.exp (((∑ c, η c * θ c : ℝ) : ℂ) * Complex.I) • a x`. Rewrite using `[ha θ k hk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hR n ε Λ T m θ k hk a x`. Establish `h3` using `hT n ε Λ T θ k hk`. Establish `hS : (∑ i, (θ (x.2 i).1 - θ (x.2 i).2) : ℝ) = t * wtL c (ofW x)`. Unfold `wtL ofW`. Rewrite using `[List.map_ofFn, List.sum_ofFn, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hθ, Pi.single_apply, Function.comp_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hE : (∑ a, η a * θ a : ℝ) = t * η c`. Simplify using `[hθ, Pi.single_apply, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL : (∑ a, Λ a * θ a : ℝ) = t * Λ c`. Simplify using `[hθ, Pi.single_apply, mul_comm]`. Rewrite `h2` using `[hS]`. Rewrite `h1` using `[hE]`. Rewrite `h3` using `[hL]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set E1 : ℂ := Complex.exp (((t * wtL c (ofW x) : ℝ) : ℂ) * Complex.I) with hE1`. Use `set E2 : ℂ := Complex.exp (((t * η c : ℝ) : ℂ) * Complex.I) with hE2`. Use `set E3 : ℂ := Complex.exp (((t * Λ c : ℝ) : ℂ) * Complex.I) with hE3`. Establish `h4 : E1 • T.op k (a x) = E2 • a x` using `by rw [← h2, h1]`. Establish `h5 : E1 * inner ℂ T.w (a x) = (starRingEnd ℂ) E3 * E2 * inner ℂ T.w (a x)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h4, h3, inner_smul_right, inner_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : E1 = (starRingEnd ℂ) E3 * E2` using `mul_right_cancel₀ hx h5`. Establish `h7 : (starRingEnd ℂ) E3 * E3 = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hE3, ← Complex.exp_conj, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Establish `h8 : E1 * E3 = E2`. Rewrite using `[h6]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h9 : E2 = -(E1 * E3)`. Establish `: ((t * η c : ℝ) : ℂ) * Complex.I = ((t * wtL c (ofW x) : ℝ) : ℂ) * Complex.I + ((t * Λ c : ℝ) : ℂ) * Complex.I + (Real.pi : ℂ) * Complex.I`. Rewrite using `[← htv, hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hE2, this, Complex.exp_add, Complex.exp_add, Complex.exp_pi_mul_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `h10 : E1 * E3 ≠ 0` using `mul_ne_zero (Complex.exp_ne_zero _) (Complex.exp_ne_zero _)`. Apply `h10` to reduce the goal to its premises. Establish `h11 : E1 * E3 = -(E1 * E3)` using `by rw [← h9, h8]`.
-
-Establish `h12 : (2 : ℂ) * (E1 * E3) = 0` using `by linear_combination h11`. Simplify using `using h12`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma wt_eq (hR : RhoTorus) (hT : TorW) {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) {m : ℕ}
     {η : Fin n → ℝ} {a : AS T m}
@@ -294,11 +292,11 @@ lemma wt_eq (hR : RhoTorus) (hT : TorW) {ε : Fin n → Bool} {Λ : Fin n → �
   simpa using h12
 
 /- English proof (translation)
-Introduce `H hR hT n ε Λ T μ m η a ha`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `betaF`. Conclude with `Submodule.sum_mem _ fun x _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨ofW x, rfl⟩)`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `betaF`. Rewrite using `[lop_sum _ _ _ fun x => Submodule.smul_mem _ _ (lw_mem H μ (ofW x)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[lop_smul _ _ (lw_mem H μ (ofW x)), lop_lw H]`. Distinguish the cases in `hx : inner ℂ T.w (a x) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hx]`. Rewrite using `[wt_eq hR hT T ha x hx c, smul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem betaWeight : HolFacts → RhoTorus → TorW → BetaWeight := by
   intro H hR hT n ε Λ T μ m η a ha

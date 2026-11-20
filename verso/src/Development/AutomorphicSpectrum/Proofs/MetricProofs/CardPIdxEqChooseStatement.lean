@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 open GlobalTheory.CompanionTheory.Ar.PB.PFl
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FCardPIdxEqChoose.lean&line=45#L45)
 -/

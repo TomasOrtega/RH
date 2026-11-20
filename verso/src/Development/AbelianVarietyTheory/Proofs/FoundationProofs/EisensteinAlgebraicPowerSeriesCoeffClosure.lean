@@ -11,9 +11,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.AlgPowerSeries
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ k`. Rewrite using `[PowerSeries.coeff_map]`. Conclude with `(PowerSeries.coeff k g).2`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨PowerSeries.mk fun k => ⟨PowerSeries.coeff k f, h k⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Simplify using `[PowerSeries.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_range_map_iff {L : Type} [CommRing L] (B : Subring L) (f : PowerSeries L) :
     f ∈ (PowerSeries.map B.subtype).range ↔ ∀ k, PowerSeries.coeff k f ∈ B := by
@@ -25,47 +25,41 @@ theorem mem_range_map_iff {L : Type} [CommRing L] (B : Subring L) (f : PowerSeri
     ext k; simp [PowerSeries.coeff_map]
 
 /- English proof (translation)
-Introduce `L _ _ A b Q hQ hA hb`. Take `⟨RA, hRAdef⟩ : ∃ RA : Subring (PowerSeries L), RA = (PowerSeries.map A.subtype).range` from `⟨_, rfl⟩`. Establish `hex : ∃ d, ∃ R : Polynomial (PowerSeries L), R ≠ 0 ∧ (∀ i, R.coeff i ∈ RA) ∧ R.eval b = 0 ∧ R.natDegree = d` using `⟨Q.natDegree, Q, hQ, fun i => hRAdef ▸ (mem_range_map_iff A _).2 (hA i), hb, rfl⟩`. Take `⟨R, hR0, hRA', hRb, hRd⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ R' : Polynomial (PowerSeries L), R' ≠ 0 → (∀ i, R'.coeff i ∈ RA) → R'.natDegree < R.natDegree → R'.eval b ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `R' h0 hc hlt he`. Conclude with `Nat.find_min hex (by omega) ⟨R', h0, hc, he, rfl⟩`. Establish `hdeg : R.natDegree ≠ 0`. Introduce `h`. Rewrite `hRb` using `[Polynomial.eq_C_of_natDegree_eq_zero h, Polynomial.eval_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hR0` to reduce the goal to its premises. Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero h, hRb, map_zero]`. Take `⟨D, hD⟩ : ∃ D, D = Polynomial.derivative R` from `⟨_, rfl⟩`. Establish `hD0 : D ≠ 0` using `by haveI : IsAddTorsionFree (PowerSeries L) := IsAddTorsionFree.of_isTorsionFree L _`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hD]`. Conclude with `hdeg (Polynomial.natDegree_eq_zero_of_derivative_eq_zero h)`. Establish `hDc : ∀ i, D.coeff i ∈ RA`. Introduce `i`. Rewrite using `[hD, Polynomial.coeff_derivative]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `RA.mul_mem (hRA' _) (RA.add_mem (natCast_mem RA _) RA.one_mem)`. Establish `hDb : D.eval b ≠ 0` using `hmin D hD0 hDc (hD ▸ Polynomial.natDegree_derivative_lt hdeg)`. Take `⟨F, hF⟩ : ∃ F, F = D.eval b` from `⟨_, rfl⟩`. Establish `hex2 : ∃ m, PowerSeries.coeff m F ≠ 0`. Assume the negation of the conclusion as `h; push_neg at h; exact hDb (hF ▸ PowerSeries.ext fun k => by simpa using h k)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, hc, hlow⟩ : ∃ m, PowerSeries.coeff m F ≠ 0 ∧ ∀ i < m, PowerSeries.coeff i F = 0` from `⟨Nat.find hex2, Nat.find_spec hex2, fun i hi => not_not.mp (Nat.find_min hex2 hi)⟩`. Take `⟨c, hcdef⟩ : ∃ c, c = PowerSeries.coeff m F` from `⟨_, rfl⟩`. Rewrite `hc` using `[← hcdef]`. Use `⟨insert c⁻¹ ((Finset.range (m+1)).image fun i => PowerSeries.coeff i b), ?_⟩` and prove the remaining obligations. Take `⟨B, hBdef⟩ : ∃ B, B = Subring.closure ((A : Set L) ∪ ↑(insert c⁻¹ ((Finset.range (m+1)).image fun i => PowerSeries.coeff i b)))` from `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hBdef]`. Establish `hAB : ∀ x ∈ A, x ∈ B` using `fun x hx => hBdef ▸ Subring.subset_closure (Or.inl hx)`. Establish `hcB : c⁻¹ ∈ B` using `hBdef ▸ Subring.subset_closure (Or.inr (by simp))`. Establish `hbB : ∀ i ≤ m, PowerSeries.coeff i b ∈ B` using `fun i hi => hBdef ▸ Subring.subset_closure (Or.inr (by simp; exact Or.inr ⟨i, by omega, rfl⟩))`. Take `⟨RB, hRBdef⟩ : ∃ RB : Subring (PowerSeries L), RB = (PowerSeries.map B.subtype).range` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hRARB : ∀ f ∈ RA, f ∈ RB` using `fun f hf => by`. Rewrite using `[hRBdef]`. Rewrite `hf` using `[hRAdef]`. Conclude with `(mem_range_map_iff B f).2 fun k => hAB _ ((mem_range_map_iff A f).1 hf k)`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `Nat.strong_induction_on n ?_` and prove the remaining obligations. Introduce `n ih`. Break down `le_or_gt n m with hnm | hmn` into its components or cases. Conclude with `hbB n hnm`. Take `⟨u, hu⟩ : ∃ u : PowerSeries L, u = PowerSeries.mk fun k => if k < n then PowerSeries.coeff k b else 0` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv⟩ : ∃ v : PowerSeries L, v = PowerSeries.mk fun k => PowerSeries.coeff (n + k) b` from `⟨_, rfl⟩`. Establish `hbuv : b = u + PowerSeries.X ^ n * v`. Use extensionality with `k`. Rewrite using `[map_add, PowerSeries.coeff_X_pow_mul', hu, hv]`. Simplify using `only [PowerSeries.coeff_mk]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : k < n`. Rewrite using `[if_pos h1, if_neg (by omega), add_zero]`. Rewrite using `[if_neg h1, if_pos (by omega), zero_add, show n + (k - n) = k by omega]`. Establish `huB : u ∈ RB`. Rewrite using `[hRBdef]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(mem_range_map_iff B u).2 fun k => ?_` and prove the remaining obligations. Rewrite using `[hu, PowerSeries.coeff_mk]`. Use `split_ifs with h`. Conclude with `ih k h`. Conclude with `B.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hRu : R.eval u ∈ RB`. Rewrite using `[Polynomial.eval_eq_sum_range]`. Conclude with `RB.sum_mem fun i _ => RB.mul_mem (hRARB _ (hRA' i)) (RB.pow_mem huB _)`. Establish `hdvd : PowerSeries.X ^ n ∣ F - D.eval u`. Establish `h1` using `Polynomial.sub_dvd_eval_sub b u D`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : b - u = PowerSeries.X ^ n * v` using `by rw [hbuv]; ring`. Rewrite `h1` using `[h2, ← hF]`. Conclude with `(dvd_mul_right _ _).trans h1`. Take `⟨w, hw⟩` from `hdvd`. Take `⟨k, hk⟩` from `R.binomExpansion u (PowerSeries.X ^ n * v)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hk` using `[← hbuv, hRb, ← hD]`. Establish `hDu : D.eval u = F - PowerSeries.X ^ n * w` using `by rw [← hw]; ring`. Rewrite `hk` using `[hDu]`. Establish `key : 0 = R.eval u + PowerSeries.X ^ n * (F * v) + PowerSeries.X ^ (n + n) * (k * v ^ 2 - w * v)`. Rewrite using `[hk]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc2` using `congrArg (PowerSeries.coeff (n + m)) key`. Rewrite `hc2` using `[map_zero, map_add, map_add, PowerSeries.coeff_X_pow_mul', PowerSeries.coeff_X_pow_mul', if_pos (by omega), if_neg (by omega), add_zero, Nat.add_sub_cancel_left]`. Establish `hFv : PowerSeries.coeff m (F * v) = c * PowerSeries.coeff n b`. Rewrite using `[PowerSeries.coeff_mul, Finset.sum_eq_single (m, 0)]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcdef, hv, PowerSeries.coeff_mk, add_zero]`. Introduce and unpack `⟨i, j⟩ hij hne`. Establish `hij' : i + j = m` using `by simpa using hij`. Establish `him : i < m`. Break down `Nat.lt_or_ge i m with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Simplify using `only [Prod.mk.injEq]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[hlow i him, zero_mul]`. Introduce `h; exfalso; exact h (by simp)`. Establish `hcn : c * PowerSeries.coeff n b ∈ B`. Establish `e : c * PowerSeries.coeff n b = - PowerSeries.coeff (n + m) (R.eval u)`. Take the linear combination `-hc2 - hFv`.
-
-Rewrite using `[e]`. Rewrite `hRu` using `[hRBdef]`. Conclude with `B.neg_mem ((mem_range_map_iff B _).1 hRu _)`. Establish `e2 : PowerSeries.coeff n b = c⁻¹ * (c * PowerSeries.coeff n b)`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
-
-Rewrite using `[e2]`. Conclude with `B.mul_mem hcB hcn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_coeff_mem_closure :
     ∀ (L : Type) [Field L] [CharZero L] (A : Subring L) (b : PowerSeries L)

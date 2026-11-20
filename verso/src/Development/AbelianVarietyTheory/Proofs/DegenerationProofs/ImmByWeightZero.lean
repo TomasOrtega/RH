@@ -24,7 +24,7 @@ def Alone (ε : X) : Prop := ∀ v : X, v ≠ 0 → q ε < q (ε + N • v)
 variable {q N}
 
 /- English proof (translation)
-Introduce `m` and use `by by_cases hm : m = 0 · simp [hm] · exact (h m hm).le`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Alone.short {ε : X} (h : Alone q N ε) : Short q N ε := fun m => by
   by_cases hm : m = 0
@@ -32,9 +32,9 @@ theorem Alone.short {ε : X} (h : Alone q N ε) : Short q N ε := fun m => by
   · exact (h m hm).le
 
 /- English proof (translation)
-Distinguish the cases in `hm : m = 0`. Simplify using `[e, hm]`. Establish `h1` using `hβ (-m)`. Establish `h2` using `h m hm`. Rewrite `h1` using `[e]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [smul_neg, add_neg_cancel_right] at h1`. Conclude with `absurd h2 (not_lt.2 h1)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Alone.eq {ε β m : X} (h : Alone q N ε) (hβ : Short q N β) (e : β = ε + N • m) : β = ε := by
   by_cases hm : m = 0
@@ -46,9 +46,9 @@ theorem Alone.eq {ε β m : X} (h : Alone q N ε) (hβ : Short q N β) (e : β =
     exact absurd h2 (not_lt.2 h1)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `hfin : {x : X | ¬ 0 < q x}.Finite` using `Filter.eventually_cofinite.1 (hq.eventually_gt_atTop 0)`. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℤ => n • v) (smul_left_injective ℤ hv) (fun n => ?_) hfin` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `¬ 0 < q (n • v)`. Rewrite using `[q.map_smul, zsmul_eq_mul, Int.cast_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_lt.2 (mul_nonpos_of_nonneg_of_nonpos (mul_self_nonneg _) (not_lt.1 hn))`.
+A detailed English derivation is pending.
 -/
 theorem pos_of_tendsto [Module.Free ℤ X] (hq : Filter.Tendsto q Filter.cofinite Filter.atTop) {v : X}
     (hv : v ≠ 0) : 0 < q v := by
@@ -61,7 +61,7 @@ theorem pos_of_tendsto [Module.Free ℤ X] (hq : Filter.Tendsto q Filter.cofinit
   exact not_lt.2 (mul_nonpos_of_nonneg_of_nonpos (mul_self_nonneg _) (not_lt.1 hn))
 
 /- English proof (translation)
-Introduce `v hv` and use `by rw [map_zero, zero_add] refine pos_of_tendsto hq ?_ rw [← natCast_zsmul] exact smul_ne_zero (by exact_mod_cast hN) hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem alone_zero [Module.Free ℤ X] (hq : Filter.Tendsto q Filter.cofinite Filter.atTop) (hN : N ≠ 0) :
     Alone q N (0 : X) := fun v hv => by
@@ -73,7 +73,7 @@ theorem alone_zero [Module.Free ℤ X] (hq : Filter.Tendsto q Filter.cofinite Fi
 end Lattice
 
 /- English proof (translation)
-Unfold `constFn`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp]`. Use `erw [Scheme.Hom.appLE_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_const {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens}
     (e : U ≤ V) (a : R) : resG X e (constFn p V a) = constFn p U a := by
@@ -82,7 +82,7 @@ theorem res_const {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V
   erw [Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Unfold `constFn`. Rewrite using `[map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem const_zero {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U : X.Opens) :
     constFn p U 0 = 0 := by
@@ -90,7 +90,7 @@ theorem const_zero {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) (U 
   rw [map_zero, map_zero]
 
 /- English proof (translation)
-Introduce `l` and use `by rw [h l, map_sum, map_sum, Finset.sum_mul] refine Finset.sum_congr rfl fun j _ => ?_ rw [map_mul, map_mul, res_const, res_const, hr j l, _root_.mul_assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRatio_lin {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) {H : LB X} {J : Type} [Fintype J]
     {s : J → H.Sec} {a : J → k} {φ t : H.Sec} (h : IsLin p s a φ) {W : X.Opens} {r : J → Γ(X, W)}
@@ -102,13 +102,11 @@ theorem isRatio_lin {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) {H
 variable {k : Type} [Field k] (Φ : FibPre k)
 
 /- English proof (translation)
-Establish `key : ∀ (U V : Φ.E.B.left.Opens) (h : V ≤ U) (h' : Φ.D.q.left ⁻¹ᵁ V ≤ Φ.D.q.left ⁻¹ᵁ U) (u : Γ(Φ.E.B.left, U)ˣ), res h' (pullU Φ.D.q.left U u ^ d) = pullU Φ.D.q.left V (res h u) ^ d`. Introduce `U V h h' u`. Rewrite using `[map_pow]`. Use `congr 1`. Use `ext`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `(congrArg (fun φ => φ.hom (u : Γ(Φ.E.B.left, U))) (Φ.D.q.left.naturality (homOfLE h).op)).symm`. Use `⟨?_, fun i => ?_, fun i j l => ?_⟩` and prove the remaining obligations. Use `show ⨆ l, Φ.D.q.left ⁻¹ᵁ Φ.N₀.U l = ⊤`. Rewrite using `[← Scheme.Hom.preimage_iSup, Φ.isLB.cover]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun u => pullU Φ.D.q.left _ u ^ d) (Φ.isLB.g_self i)` as an intermediate fact. Simplify using `only [map_one, one_pow] at this`. Conclude with `(key _ _ _ (Scheme.Hom.preimage_mono _ (le_inf le_rfl le_rfl)) _).trans this`. Use `congrArg (fun u => pullU Φ.D.q.left _ u ^ d) (Φ.isLB.cocycle i j l)` as an intermediate fact. Simplify using `only [map_mul, mul_pow] at this`.
-
-Rewrite `this` using `[← key _ _ _ (Scheme.Hom.preimage_mono _ inf_le_left), ← key _ _ _ (Scheme.Hom.preimage_mono _ (le_inf (inf_le_left.trans inf_le_right) inf_le_right)), ← key _ _ _ (Scheme.Hom.preimage_mono _ (le_inf (inf_le_left.trans inf_le_left) inf_le_right))]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLB_H (d : ℕ) : (Φ.H d).IsLB := by
   have key : ∀ (U V : Φ.E.B.left.Opens) (h : V ≤ U) (h' : Φ.D.q.left ⁻¹ᵁ V ≤ Φ.D.q.left ⁻¹ᵁ U)
@@ -133,7 +131,7 @@ theorem isLB_H (d : ℕ) : (Φ.H d).IsLB := by
     exact this
 
 /- English proof (translation)
-Introduce `l` and use `by have e := congrArg (Φ.D.q.left.app (V ⊓ Φ.N₀.U l)).hom (h l) rw [map_mul, app_res _ _ (Φ.D.q.left.preimage_mono inf_le_right), app_res _ _ (Φ.D.q.left.preimage_mono inf_le_left), app_res _ _ (Φ.D.q.left.preimage_mono inf_le_right)] at e rw [hφ, hψ] exact e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRatio_pull {s t : Φ.N₀.Sec} {φ ψ : (Φ.H 1).Sec}
     (hφ : ∀ l, φ.f l = (Φ.D.q.left.app (Φ.N₀.U l)).hom (s.f l))
@@ -151,7 +149,7 @@ variable {Φ} {N : ℕ} {q : QuadraticMap ℤ Φ.E.X ℝ} {J : Type} [Fintype J]
   {F : J → (Φ.H 1).Sec}
 
 /- English proof (translation)
-Introduce `β hβ` and use `by obtain ⟨h1, m, hm⟩ := hG.supp i β hβ exact hε.eq h1 (hi ▸ hm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pure_of_alone (hG : Φ.Good N q cls F) {ε : Φ.E.X} (hε : Alone q N ε) {i : J} (hi : cls i = ε) :
     Φ.Pure ε (F i) := fun β hβ => by
@@ -159,7 +157,7 @@ theorem pure_of_alone (hG : Φ.Good N q cls F) {ε : Φ.E.X} (hε : Alone q N ε
   exact hε.eq h1 (hi ▸ hm)
 
 /- English proof (translation)
-Take `⟨a, ha, h⟩` from `hG.onto ε hε.short φ hφ`. Use `⟨a, fun i hi => ?_, h⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `ha i hi`. Conclude with `hε.eq (m := -m) (hG.short i) (by rw [hm]; simp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem onto_of_alone (hG : Φ.Good N q cls F) {ε : Φ.E.X} (hε : Alone q N ε) {φ : (Φ.H 1).Sec}
     (hφ : Φ.Pure ε φ) : ∃ a : J → k, (∀ i, a i ≠ 0 → cls i = ε) ∧
@@ -170,13 +168,11 @@ theorem onto_of_alone (hG : Φ.Good N q cls F) {ε : Φ.E.X} (hε : Alone q N ε
   exact hε.eq (m := -m) (hG.short i) (by rw [hm]; simp)
 
 /- English proof (translation)
-Take `⟨a, ha, h⟩` from `onto_of_alone hG hε hφ`. Use `⟨a, fun l => eq_of_weight_eq Φ.D (Φ.ch l) _ (Φ.aff l) (Φ.le l) fun χ => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (WtLin.weight_sum Φ F a χ l).symm` and prove the remaining obligations. Distinguish the cases in `hχ : χ = ε`. Substitute `hχ` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `h l`. Establish `h0 : Φ.wt φ χ l = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hχ (hφ ⟨l, hne⟩)`. Use `h0.trans (Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : a i = 0`. Rewrite using `[hi, const_zero, zero_mul]`. Establish `h1 : Φ.wt (F i) χ l = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hχ (pure_of_alone hG hε (ha i hi) ⟨l, hne⟩)`.
-
-Rewrite using `[h1, mul_zero]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLin_of_alone (hG : Φ.Good N q cls F) {ε : Φ.E.X} (hε : Alone q N ε) {φ : (Φ.H 1).Sec}
     (hφ : Φ.Pure ε φ) : ∃ a : J → k, IsLin Φ.G.hom F a φ := by
@@ -198,21 +194,19 @@ theorem isLin_of_alone (hG : Φ.Good N q cls F) {ε : Φ.E.X} (hε : Alone q N �
       rw [h1, mul_zero]
 
 /- English proof (translation)
-Introduce `hL hL2 k _ _ Φ g N N' q J _ cls F π hB hG hg`. Establish `h4` using `hB.four`. Establish `h0 : Alone q N (0 : Φ.E.X)` using `alone_zero hG.pos (by omega)`. Take `⟨e, he, -⟩` from `GlobalTheory.exists_basis_unique_min_and_sums_separated Φ.E.X q hG.pos _ g N N' _ rfl (by omega) hB.lll hB.sep`. Establish `hp : ∀ i : {i // cls i = 0}, Φ.Pure 0 (F i.1)` using `fun i => pure_of_alone hG h0 i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose τ hτ₁ hτ₂ hτ₃ using fun i => (FibPre.pure_zero k Φ).2 _ (hp i)`. Take `⟨m, t, ht⟩` from `GlobalTheory.T.exists_closedImmersion_abelianPart_bundle hL hL2 k Φ N h4 π`. Use `Φ.E.isAbelian.proper` as an intermediate fact. Take `⟨hcov, hloc⟩` from `GlobalTheory.T.isClosedImmersionBySections_of_span k _ Φ.E.B.hom Φ.N₀ Φ.isLB _ _ t τ ht fun n => by`. Take `⟨φ, hφ, hφ'⟩` from `(FibPre.pure_zero k Φ).1 (t n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, h⟩` from `onto_of_alone hG h0 hφ`. Use `⟨fun i => a i.1, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ', h, ← Fintype.sum_subtype_add_sum_subtype (fun i => cls i = 0), Finset.sum_eq_zero (s := Finset.univ) (f := fun i : {i // ¬ cls i = 0} => constFn Φ.E.B.hom _ (a i.1) * Φ.wt (F i.1) 0 l) fun i _ => by`. Establish `: a i.1 = 0` using `by_contra fun hne => i.2 (ha _ hne)`. Rewrite using `[this, const_zero, zero_mul], add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hτ₁]`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hcov.ge (show Φ.D.q.left x ∈ ⊤ from trivial))`. Take `⟨-, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i.1, TopologicalSpace.Opens.mem_iSup.2 ⟨i.2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hτ₃]`. Conclude with `hi`. Take `⟨haff, ρ, hρ, hgen⟩` from `hloc ⟨i, hi⟩ trivial`. Establish `hle` using `(hτ₃ ⟨i, hi⟩).ge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `fun s => SecRatio.existsUnique_isRatio (isLB_H Φ 1) s (F i) _ hle`. Use `Φ.D.q_affine` as an intermediate fact. Rewrite using `[hτ₃ ⟨i, hi⟩]`. Use `choose r hr hr' using fun j => hu (F j)`. Use `⟨haff.preimage _, r, hr, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `GlobalTheory.T.pureSection_ratios_generate_functions k Φ _ e (F i) _ haff (hp ⟨i, hi⟩) hle (GlobalTheory.ZH.FibPre.exists_pure_ne_zero_at hL hL2 k Φ N h4 π) _ (fun a => ?_) fun n φ y hφ hy => ?_` and prove the remaining obligations. Establish `ha : a ∈ Subring.closure _` using `hgen.ge (Subring.mem_top a)`. Use `Subring.mem_comap.1 (Subring.closure_le.2 ?_ ha)` and prove the remaining obligations. Introduce and unpack `_ (⟨c, rfl⟩ | ⟨j, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inl ⟨c, (WtLin.app_constFn _ _ _ (Over.w Φ.D.q) _ c).symm⟩)`.
-
-Conclude with `Subring.subset_closure (Or.inr ⟨j.1, (hr' _ _ (isRatio_pull Φ (hτ₂ j) (hτ₂ ⟨i, hi⟩) (hρ j))).symm⟩)`. Take `⟨a, ha⟩ : ∃ a : J → k, IsLin Φ.G.hom F a φ` from `hφ.elim (isLin_of_alone hG fun v hv => (he n v hv).1) (isLin_of_alone hG fun v hv => (he n v hv).2)`. Rewrite using `[(hu φ).unique hy (isRatio_lin _ ha hr)]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨_, rfl⟩)) (Subring.subset_closure (Or.inr ⟨_, rfl⟩))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem immBy_weight_zero : Out.Laws → Out.Laws2 → (∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (g N N' : ℕ) (q : QuadraticMap ℤ Φ.E.X ℝ) (J : Type) [Fintype J] (cls : J → Φ.E.X) (F : J → (Φ.H 1).Sec) (π : Φ.Pol N), Big g N N' → Φ.Good N q cls F → π.PB.g + Module.finrank ℤ Φ.E.X = g → ImmBy Φ.G.hom (Φ.H 1) F {i | cls i = 0}) := by
   intro hL hL2 k _ _ Φ g N N' q J _ cls F π hB hG hg

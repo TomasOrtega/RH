@@ -24,25 +24,25 @@ variable {D : D7}
 open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger (cj)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cj_cj {X : Type} (f : X → ℂ) : cj id (cj id f) = f := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, Complex.star_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cj_eq_star {X : Type} (f : X → ℂ) : cj id f = star f := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, Complex.star_def]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cj_add {X : Type} (f g : X → ℂ) : cj id (f + g) = cj id f + cj id g := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cj_smul {X : Type} (c : ℂ) (f : X → ℂ) : cj id (c • f) = starRingEnd ℂ c • cj id f := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]
@@ -51,7 +51,7 @@ def conjFun {S T : HSp D} (ℓ : (WO S T → ℂ) → ℂ) : (WO (negSp S) T →
   fun f => starRingEnd ℂ (ℓ (cj id f : WO S T → ℂ))
 
 /- English proof (translation)
-Establish `h` using `(((GlobalTheory.CjNeg.theta_heis_neg D ψ hψ S T).1 (cj id f : WO S T → ℂ)).2).1`. Rewrite `h` using `[cj_cj]`. Conclude with `h hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_cj {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} (f : WO (negSp S) T → ℂ)
     (hf : IsThetaFunO ψ (negSp S) T f) : IsThetaFunO ψ S T (cj id f : WO S T → ℂ) := by
@@ -60,7 +60,7 @@ theorem theta_cj {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S
   exact h hf
 
 /- English proof (translation)
-Establish `h` using `((GlobalTheory.CjNeg.theta_heis_neg D ψ hψ S T).2 w (cj id f : WO S T → ℂ)).2`. Rewrite `h` using `[cj_cj]`. Rewrite using `[h, cj_cj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_heisO {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} (w : WO S T)
     (f : WO (negSp S) T → ℂ) : (cj id (heisO ψ (negSp S) T w f) : WO S T → ℂ) = heisO ψ S T w (cj id f) := by
@@ -69,19 +69,17 @@ theorem cj_heisO {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S
   rw [h, cj_cj]
 
 /- English proof (translation)
-Simplify using `only [conjFun]`. Rewrite using `[cj_add, h.add _ _ (theta_cj hψ f hf) (theta_cj hψ f' hf'), map_add]`. Use `smul c f hf := by`. Simplify using `only [conjFun]`. Rewrite using `[cj_smul, h.smul _ _ (theta_cj hψ f hf), map_mul, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `cont f hf := by`. Simplify using `only [conjFun, cj_heisO hψ]`. Conclude with `Complex.continuous_conj.comp (h.cont _ (theta_cj hψ f hf))`. Use `bdd f hf := by`. Take `⟨C, hC⟩` from `h.bdd _ (theta_cj hψ f hf)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `⟨C, fun w => by simp only [conjFun, cj_heisO hψ, Complex.norm_conj]; exact hC w⟩`. Use `sup f hf m _ α hα hth := by`. Establish `e1 : (cj id (fun x => ∫ w, α w * heisO ψ (negSp S) T w f x ∂m) : WO S T → ℂ) = fun x => ∫ w, starRingEnd ℂ (α w) * heisO ψ S T w (cj id f) x ∂m`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, id]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (cj_heisO (S := S) hψ w f) x` as an intermediate fact. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, id] at this`. Conclude with `this`. Establish `hint : Integrable (fun w => starRingEnd ℂ (α w)) m` using `(Complex.conjCLE.toContinuousLinearMap).integrable_comp hα`. Establish `hth' : IsThetaFunO ψ S T (fun x => ∫ w, starRingEnd ℂ (α w) * heisO ψ S T w (cj id f) x ∂m)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1]`. Conclude with `theta_cj hψ _ hth`. Simplify using `only [conjFun]`. Rewrite using `[e1, h.sup (cj id f) (theta_cj hψ f hf) m (fun w => starRingEnd ℂ (α w)) hint hth', ← integral_conj]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `w`. Rewrite using `[map_mul, Complex.conj_conj, cj_heisO hψ]`.
+A detailed English derivation is pending.
 -/
 theorem tame_conjFun {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {ℓ : (WO S T → ℂ) → ℂ}
     (h : Tame ψ S T ℓ) : Tame ψ (negSp S) T (conjFun ℓ) where
@@ -121,7 +119,7 @@ theorem tame_conjFun {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
     rw [map_mul, Complex.conj_conj, cj_heisO hψ]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[det_diagonal, isUnit_iff_ne_zero]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun a _ => by split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_Jm_unit {n : ℕ} (ε : Fin n → Bool) : IsUnit (Formalism.REAL.Jm ε).det := by
   unfold Formalism.REAL.Jm
@@ -129,7 +127,7 @@ theorem det_Jm_unit {n : ℕ} (ε : Fin n → Bool) : IsUnit (Formalism.REAL.Jm 
   exact Finset.prod_ne_zero_iff.2 fun a _ => by split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `hJ` using `det_Jm_unit ε`. Rewrite `hJ` using `[← h, det_mul]`. Conclude with `isUnit_of_mul_isUnit_right hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_gram {n : ℕ} {G b : Matrix (Fin n) (Fin n) ℂ} {ε : Fin n → Bool} (h : bᴴ * G * b = Formalism.REAL.Jm ε) :
     IsUnit b.det := by
@@ -138,7 +136,7 @@ theorem unit_of_gram {n : ℕ} {G b : Matrix (Fin n) (Fin n) ℂ} {ε : Fin n �
   exact isUnit_of_mul_isUnit_right hJ
 
 /- English proof (translation)
-Establish `hb` using `unit_of_gram h`. Establish `h1 : (bᴴ)⁻¹ * bᴴ = 1` using `nonsing_inv_mul _ (by rw [det_conjTranspose]; exact hb.star)`. Establish `h2 : b * b⁻¹ = 1` using `mul_nonsing_inv _ hb`. Rewrite using `[← h, conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_gram {n : ℕ} {G b : Matrix (Fin n) (Fin n) ℂ} {ε : Fin n → Bool} (h : bᴴ * G * b = Formalism.REAL.Jm ε) :
     (b⁻¹)ᴴ * Formalism.REAL.Jm ε * b⁻¹ = G := by
@@ -150,7 +148,7 @@ theorem inv_gram {n : ℕ} {G b : Matrix (Fin n) (Fin n) ℂ} {ε : Fin n → Bo
     _ = G := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[diagonal_neg]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases h : ε a <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jm_not {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm (fun a => !ε a) = -Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
@@ -160,9 +158,9 @@ theorem Jm_not {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm (fun a => !ε
   cases h : ε a <;> simp [h]
 
 /- English proof (translation)
-Use `choose ε hε using h`. Use `⟨⟨ε, fun τ => (b τ)⁻¹, fun τ => isUnit_nonsing_inv_iff.2 ((isUnit_iff_isUnit_det _).2 (unit_of_gram (hε τ).1)), fun τ => inv_gram (hε τ).1⟩, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Simplify using `only [GlobalTheory.ChainFr.Fr.cart]`. Rewrite using `[nonsing_inv_nonsing_inv _ (unit_of_gram (hε τ).1), ← (hε τ).2, Matrix.mul_assoc, mul_nonsing_inv _ (unit_of_gram (hε τ).1), Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Simplify using `only [GlobalTheory.ChainFr.Fr.onb]`. Rewrite using `[nonsing_inv_nonsing_inv _ (unit_of_gram (hε τ).1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_pos (V : HSp D) (c b : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (h : ∀ τ, ∃ ε : Fin V.rank → Bool, (b τ)ᴴ * gramAt D V τ * b τ = Formalism.REAL.Jm ε ∧ c τ * b τ = b τ * Formalism.REAL.Jm ε) :
@@ -179,9 +177,9 @@ theorem frame_pos (V : HSp D) (c b : D.what₂.Tau → Matrix (Fin V.rank) (Fin 
     rw [nonsing_inv_nonsing_inv _ (unit_of_gram (hε τ).1)]
 
 /- English proof (translation)
-Use `choose ε hε using h`. Use `⟨⟨fun τ a => !ε τ a, fun τ => (b τ)⁻¹, fun τ => isUnit_nonsing_inv_iff.2 ((isUnit_iff_isUnit_det _).2 (unit_of_gram (hε τ).1)), fun τ => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockRealNeg.gramAt_negSp, Jm_not, Matrix.mul_neg, Matrix.neg_mul, inv_gram (hε τ).1]`. Use function extensionality and compare the values at `τ`. Simplify using `only [GlobalTheory.ChainFr.Fr.cart]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nonsing_inv_nonsing_inv _ (unit_of_gram (hε τ).1), Jm_not, Matrix.mul_neg, Matrix.neg_mul, ← (hε τ).2, Matrix.mul_assoc, mul_nonsing_inv _ (unit_of_gram (hε τ).1), Matrix.mul_one]`. Use function extensionality and compare the values at `τ`. Simplify using `only [GlobalTheory.ChainFr.Fr.onb]`. Rewrite using `[nonsing_inv_nonsing_inv _ (unit_of_gram (hε τ).1)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_neg (V : HSp D) (c b : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (h : ∀ τ, ∃ ε : Fin V.rank → Bool, (b τ)ᴴ * gramAt D V τ * b τ = Formalism.REAL.Jm ε ∧ c τ * b τ = b τ * Formalism.REAL.Jm ε) :
@@ -199,37 +197,37 @@ theorem frame_neg (V : HSp D) (c b : D.what₂.Tau → Matrix (Fin V.rank) (Fin 
     rw [nonsing_inv_nonsing_inv _ (unit_of_gram (hε τ).1)]
 
 /- English proof (translation)
-Simplify using `only [symplO, Eqv.hO_smul_left, mul_smul_comm, LinearMap.map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_smul_left' {S T : HSp D} (c : AF D.host.F) (x y : WO S T) :
     symplO S T (c • x) y = c * symplO S T x y := by
   simp only [symplO, Eqv.hO_smul_left, mul_smul_comm, LinearMap.map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [symplO, Eqv.hO_smul_right, mul_smul_comm, LinearMap.map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplO_smul_right' {S T : HSp D} (c : AF D.host.F) (x y : WO S T) :
     symplO S T x (c • y) = c * symplO S T x y := by
   simp only [symplO, Eqv.hO_smul_right, mul_smul_comm, LinearMap.map_smul, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `Prod.ext (show (1 : Ainf D.host.F) * 1 = 1 from mul_one _) (show (0 : Af D.host.F) * 0 = 0 from mul_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem eInf_mul_self : Eqv.eInf D * Eqv.eInf D = Eqv.eInf D :=
   Prod.ext (show (1 : Ainf D.host.F) * 1 = 1 from mul_one _) (show (0 : Af D.host.F) * 0 = 0 from mul_zero _)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (show (0 : Ainf D.host.F) * 0 = 0 from mul_zero _) (show (1 : Af D.host.F) * 1 = 1 from mul_one _)`.
+A detailed English derivation is pending.
 -/
 theorem eFin_mul_self : Eqv.eFin D * Eqv.eFin D = Eqv.eFin D :=
   Prod.ext (show (0 : Ainf D.host.F) * 0 = 0 from mul_zero _) (show (1 : Af D.host.F) * 1 = 1 from mul_one _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply]`. Unfold `latO at hu`. Use `AddSubgroup.closure_induction (p := fun u _ => infPart D (u i j) = 0) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce and unpack `w ⟨α, -, -, a, -, s, -, t, -, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.of_apply]`. Conclude with `(show infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)) = (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) from rfl).trans (TensorProduct.zero_tmul _ _)`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[Matrix.add_apply, RingHom.map_add, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _ hx`. Rewrite using `[Matrix.neg_apply, RingHom.map_neg, hx, neg_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_latO' {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)} {u : WO S T}
     (hu : u ∈ latO S T LS LT fun _ => True) : u.map (infPart D) = 0 := by
@@ -249,13 +247,13 @@ section
 variable {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-The claim follows from `infPart_latO' hu.1`.
+A detailed English derivation is pending.
 -/
 theorem depLat_fin {G : GridData L sc} (p : Pair T) {u : WO (G.pS p) (G.pT p)} (hu : u ∈ depLat G p) :
     u.map (infPart D) = 0 := infPart_latO' hu.1
 
 /- English proof (translation)
-Introduce `u hu` and use `(Eqv.wo_fin_iff u).1 (depLat_fin (.chi i 0) hu)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latRow_fin {G : GridData L sc} (i : ℕ) : ∀ u ∈ latRow G i, Eqv.eFin D • u = u := fun u hu =>
   (Eqv.wo_fin_iff u).1 (depLat_fin (.chi i 0) hu)
@@ -268,33 +266,33 @@ namespace GlobalTheory.ConjDataTotal
 open GlobalTheory.ConjFock
 
 /- English proof (translation)
-Introduce `D hoff T L μ0 hL sc G W M hM i ℓ hℓ hkill f hf`. Establish `hψ` using `W.ψ_std`. Establish `hi : i.1 < D.R.m` using `i.2`. Establish `cos` using `GlobalTheory.T.heisenbergCommutant_permutes_firstRowCosetVectors D hoff T L μ0 hL sc G W M hM i.1 hi`. Take `⟨A, hAc, hAo⟩` from `frame_neg (G.V (.grid (i.1 + 1) 0)) (W.cart (.grid (i.1 + 1) 0)) (W.onb (.grid (i.1 + 1) 0)) (W.onb_is _ ⟨by omega, Nat.zero_le _⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hBc, hBo⟩` from `frame_pos (G.V (.grid i.1 0)) (W.cart (.grid i.1 0)) (W.onb (.grid i.1 0)) (W.onb_is _ ⟨by omega, Nat.zero_le _⟩)`. Establish `hfock : ∀ g P, GlobalTheory.ChainFr.ptF W.ψ W.θ A B g P = W.fock (.chi i.1 0) g P`. Introduce `g P`. Simplify using `only [GlobalTheory.ChainFr.ptF, hAc, hBc, hAo, hBo]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hreal : ∀ κ (w : WO (G.V (.grid (i.1 + 1) 0)) (G.V (.grid i.1 0))), w.map (finPart D) = 0 → ℓ (heisO W.ψ _ _ w (star (W.cosVec i.1 κ))) = 0`. Introduce `κ w hw`. Take `⟨-, hvac, hVac, -⟩` from `cos κ`. Establish `hth : IsThetaFunO W.ψ (negSp (G.V (.grid (i.1 + 1) 0))) (G.V (.grid i.1 0)) (W.cosVec i.1 κ)`. Establish `h` using `(((GlobalTheory.CjNeg.theta_heis_neg D W.ψ hψ (G.V (.grid (i.1 + 1) 0)) (G.V (.grid i.1 0))).1 (star (W.cosVec i.1 κ) : WO (G.V (.grid (i.1 + 1) 0)) (G.V (.grid i.1 0)) → ℂ)).2).2 hVac.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[cj_eq_star, star_star]`. Then use the resulting hypothesis. Establish `hv : GlobalTheory.ChainFr.IsVacF W.ψ W.θ A B (W.cosVec i.1 κ)` using `⟨hth, fun τ => by rw [hAc, hBc]; exact hvac τ⟩`. Establish `hk : ∀ P, conjFun ℓ (GlobalTheory.ChainFr.ptF W.ψ W.θ A B (W.cosVec i.1 κ) P) = 0`. Introduce `P`. Rewrite using `[hfock]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conjFun]`. Rewrite using `[cj_eq_star, hkill κ P, map_zero]`. Establish `h` using `GlobalTheory.T.tameFunctional_kills_fockVacuum_realTranslates D W.ψ W.θ hψ W.θ_is _ _ A B (conjFun ℓ) (tame_conjFun hψ hℓ) _ hv hk w hw`. Simplify using `only [conjFun] at h`. Rewrite `h` using `[cj_heisO (S := G.V (.grid (i.1 + 1) 0)) hψ, map_eq_zero, cj_eq_star]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Take `⟨hne₀, -, hVac₀, hspan₀⟩` from `cos default`. Use `GlobalTheory.T.tame_functional_vacuum_irreducibility D W.ψ hψ _ _ (latRow G i.1) ℓ hℓ (star (W.cosVec i.1 default)) hVac₀ ?_ ?_ f hf` and prove the remaining obligations. Introduce `h0`. Apply `hne₀` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg star h0` as an intermediate fact. Rewrite `this` using `[star_star, star_zero]`. Then use the resulting hypothesis. Introduce `w hw set wr : WO (G.V (.grid (i.1 + 1) 0)) (G.V (.grid i.1 0)) := Eqv.eInf D • w with hwr_def set wf : WO (G.V (.grid (i.1 + 1) 0)) (G.V (.grid i.1 0)) := Eqv.eFin D • w with hwf_def`. Establish `hsum : wr + wf = w` using `by rw [hwr_def, hwf_def, ← add_smul, Eqv.eInf_add_eFin, one_smul]`. Establish `hwr : Eqv.eInf D • wr = wr` using `by rw [hwr_def, smul_smul, eInf_mul_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwf : Eqv.eFin D • wf = wf` using `by rw [hwf_def, smul_smul, eFin_mul_self]`. Establish `hwr' : wr.map (finPart D) = 0` using `(Eqv.wo_real_iff wr).2 hwr`. Establish `hwf' : wf.map (infPart D) = 0` using `(Eqv.wo_fin_iff wf).2 hwf`. Establish `hsy : ∀ y, Eqv.eFin D • y = y → symplO _ _ wf y = symplO _ _ w y`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwf_def, symplO_smul_left', ← symplO_smul_right', hy]`. Establish `hfinΓ : ∀ u ∈ latRow G i.1, Eqv.eFin D • u = u` using `latRow_fin i.1`. Establish `hAnn : wf ∈ Ann W.ψ _ _ (latRow G i.1)`. Simplify using `only [Ann, Set.mem_setOf_eq] at hw ⊢`. Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsy _ (by rw [smul_comm, hfinΓ u hu])]; exact hw.1 u hu`. Rewrite using `[hsy _ (hfinΓ u hu)]`. Conclude with `hw.2 e he u hu hh`. Establish `hdec : heisO W.ψ _ _ w (star (W.cosVec i.1 default)) = heisO W.ψ _ _ wr (heisO W.ψ _ _ wf (star (W.cosVec i.1 default)))`. Rewrite using `[GlobalTheory.FinTranslate.heisO_heisO, Eqv.symplOH_real_fin wr wf hwr hwf, AddChar.map_zero_eq_one, one_smul, hsum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem` using `hspan₀ wf hAnn hwf'`. Rewrite using `[hdec]`. Establish `key : ∀ g ∈ Submodule.span ℂ (Set.range fun κ' => (star (W.cosVec i.1 κ') : WO (G.V (.grid (i.1 + 1) 0)) (G.V (.grid i.1 0)) → ℂ)), IsThetaFunO W.ψ _ _ g ∧ ℓ (heisO W.ψ _ _ wr g) = 0`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨κ, rfl⟩` from `hx`. Conclude with `⟨(cos κ).2.2.1.1, hreal κ wr hwr'⟩`. Consider the case `zero`. Use `⟨GlobalTheory.LocMod.LinSpace.isThetaFunO_zero _ _ _, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LocMod.LinSpace.heisO_zero']`. Establish `h0` using `hℓ.smul 0 0 (GlobalTheory.LocMod.LinSpace.isThetaFunO_zero _ _ _)`. Rewrite `h0` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Consider the case `add x y _ _ hx hy`. Use `⟨GlobalTheory.LocMod.LinSpace.isThetaFunO_add hx.1 hy.1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[GlobalTheory.LocMod.LinSpace.heisO_add', hℓ.add _ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hx.1 wr) (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hy.1 wr), hx.2, hy.2, add_zero]`. Consider the case `smul a x _ hx`. Use `⟨GlobalTheory.LocMod.LinSpace.isThetaFunO_smul a hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LocMod.LinSpace.heisO_smul', hℓ.smul _ _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hx.1 wr), hx.2, mul_zero]`. Conclude with `(key _ hmem).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockTot : FockTot := by
   intro D hoff T L μ0 hL sc G W M hM i ℓ hℓ hkill f hf

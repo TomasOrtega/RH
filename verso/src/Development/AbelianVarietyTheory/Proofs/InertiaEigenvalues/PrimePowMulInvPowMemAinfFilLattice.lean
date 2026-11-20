@@ -12,9 +12,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.ExpImage
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hs`. Distinguish the cases in `h : l = 2`. Use `⟨k + 1, by subst h; omega, ?_⟩` and prove the remaining obligations. Use `Nat.mul_le_mul_right k (h2 h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3 : 2 ≤ l - 1` using `by have := hl.two_le; omega`. Use `⟨k / 2 + 1, ?_, ?_⟩` and prove the remaining obligations. Use `Nat.mul_le_mul_right (k / 2 + 1) h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul_right k h1` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -33,13 +33,13 @@ theorem exists_exponent_small {l s : ℕ} (hl : l.Prime) (hs : Lev l s) (M n k :
       omega
 
 /- English proof (translation)
-Use `⟨2 * (M + n), fun k hk a => ?_⟩` and prove the remaining obligations. Establish `hu' : u ^ (k + 1) ∈ FilB P 0` using `by simpa using FilB_pow hu (k + 1)`. Break down `Nat.eq_zero_or_pos M with rfl | hM` into its components or cases. Apply `FilB_le_Lat` to reduce the goal to its premises. Use `FilB_zero_mul (io_mem AI (((l : ℕ) : Ainf l) ^ (s * k) * a)) hu'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `this` using `only [map_mul, map_pow, map_natCast, Nat.cast_zero]`. Take `⟨N, hN1, hN2⟩` from `exists_exponent_small (Fact.out : l.Prime) hs M n k hM hk`. Take `⟨a', b', hab⟩` from `Ideal.mem_span_pair.mp (GlobalTheory.T.ainf_invPi_mod_xi_pow_bounded_denominator l P AI (k + 1) N M hM hN1)`. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le hN2`. Establish `hio` using `congrArg (io AI) hab`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_pow, map_natCast, map_add] at hio`. Establish `hxk : io AI AI.π₁ ^ (k + 1) * u ^ (k + 1) = 1` using `by rw [← mul_pow, hx, one_pow]`. Establish `hξ : io AI AI.ξ ^ M ∈ FilB P (M : ℤ)` using `by simpa using FilB_pow (io_ξ_mem AI) M`. Use `⟨((l : ℕ) : Ainf l) ^ e * a * a', ?_⟩` and prove the remaining obligations. Use `FilB_zero_mul (FilB_zero_mul (io_mem AI (((l : ℕ) : Ainf l) ^ n * ((l : ℕ) : Ainf l) ^ e * a * b')) hu') hξ` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[he, pow_add, pow_add _ (N + M - 1), ← hio]`. Simplify using `only [map_mul, map_pow, map_natCast]`. Take the linear combination `((l : P.R.BdR) ^ n * (l : P.R.BdR) ^ e * io AI a * io AI a') * hxk`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pow_mul_inv_pow_mem_Lat (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (s : ℕ)
     (hs : Lev l s) (u : P.R.BdR) (hu : u ∈ FilB P 0) (hx : io AI AI.π₁ * u = 1) (M n : ℕ) :

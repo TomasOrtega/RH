@@ -13,15 +13,15 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 variable {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
 
 /- English proof (translation)
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `renPt_zero (chartIdeal P p) (affCoord p (rep x)) ((mem_conePts_iff_chartIdeal hP p (rep x) hx).1 (rep_mem x))`. Introduce `ht`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hwd⟩ : ∃ w, w = t ∘ Fintype.equivFin (Σ k, ι k)` from `⟨_, rfl⟩`. Establish `hren : renPt w = t`. Substitute `hwd` using the available equality. Use function extensionality and compare the values at `l`. Simplify using `[renPt]`.
+Establish an intermediate fact. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw : ∀ h ∈ chartIdeal P p, eval w h = 0`. Introduce `h hh`. Rewrite using `[← eval_renC w h, hren]`. Conclude with `ht _ (Ideal.mem_map_of_mem _ hh)`. Take `⟨hc, h1, ha⟩` from `conePts_of_chartIdeal hP p w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x : Pts P` to `⟨proj w, w, hc, rfl⟩`. Establish `ho : SameOrbit (rep x) w` using `sameOrbit_of_proj_eq (rep_mem x).1 hc.1 (proj_rep x)`. Use `⟨x, fun k => ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hcn, hcz⟩` from `ho`. Establish `hk : rep x ⟨k, p k⟩ = c k * w ⟨k, p k⟩` using `congrFun hcz ⟨k, p k⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, h1 k, mul_one]`. Conclude with `hcn k`. Use `show renPt (affCoord p (rep x)) = t`. Rewrite using `[affCoord_eq_of_sameOrbit p ho, ha, hren]`.
+A detailed English derivation is pending.
 -/
 theorem coord_image (hP : IsMultiHomogIdeal P) (p : (k : K) → ι k) :
     coord P p '' src P p = {t | ∀ h ∈ ideal P p, eval t h = 0} := by
@@ -52,15 +52,15 @@ theorem coord_image (hP : IsMultiHomogIdeal P) (p : (k : K) → ι k) :
       rw [affCoord_eq_of_sameOrbit p ho, ha, hren]
 
 /- English proof (translation)
-Take `⟨e, he⟩ : ∃ e, e = Fintype.equivFin (Σ k, ι k)` from `⟨_, rfl⟩`. Establish `hev : ∀ (y : Pts P) (q : Σ k, ι k), eval (coord P p y) (X (e q)) = affCoord p (rep y) q`. Introduce `y q`. Substitute `he` using the available equality. Simplify using `[coord, renPt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hev' : ∀ (y : Pts P) (q : Σ k, ι k), coord P p' y (e q) = affCoord p' (rep y) q`. Introduce `y q`. Substitute `he` using the available equality. Simplify using `[coord, renPt]`. Use `⟨∏ k, X (e ⟨k, p' k⟩), fun l => X l * ∏ k ∈ Finset.univ.erase (e.symm l).1, X (e ⟨k, p' k⟩), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_ne_zero_iff.2 fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hev]`. Conclude with `div_ne_zero (hx.2 k) (hx.1 k)`. Introduce `y hy _ l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `e.surjective l`. Establish `hprod` using `Finset.mul_prod_erase Finset.univ (fun k => affCoord p (rep y) ⟨k, p' k⟩) (Finset.mem_univ r.1)`. Establish `hA : affCoord p' (rep y) r * affCoord p (rep y) ⟨r.1, p' r.1⟩ = affCoord p (rep y) r`. Establish `h1` using `hy.1 r.1`. Establish `h2` using `hy.2 r.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [affCoord]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [map_prod, map_mul, hev, hev', Equiv.symm_apply_apply]`. Rewrite using `[← hprod, ← mul_assoc, hA]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_trans (p p' : (k : K) → ι k) (x : Pts P) (hx : x ∈ src P p ∩ src P p') :
     ∃ (q : MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ)
@@ -96,7 +96,7 @@ theorem coord_trans (p p' : (k : K) → ι k) (x : Pts P) (hx : x ∈ src P p �
     rw [← hprod, ← mul_assoc, hA]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coord_image hP, fun p p' x hx => coord_trans p p' x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem chart_image_and_trans (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (hP : IsMultiHomogIdeal P) :

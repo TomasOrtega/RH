@@ -17,7 +17,7 @@ open PI.UpqRep (vNormSq rhoC nsq)
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `h` using `hE (s a) (s b) (s c) (s d)`. Simplify `h` using `only [Equiv.apply_eq_iff_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem glRel_renum {A : Type*} [Ring A] {E : Fin n → Fin n → A} (hE : GlRel E) (s : Equiv.Perm (Fin n)) :
     GlRel (fun a b => E (s a) (s b)) := by
@@ -26,14 +26,14 @@ theorem glRel_renum {A : Type*} [Ring A] {E : Fin n → Fin n → A} (hE : GlRel
   simpa only [Equiv.apply_eq_iff_eq] using h
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.Tm, Equiv.apply_eq_iff_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tm_renum {A : Type*} [Ring A] [Algebra ℂ A] (E : Fin n → Fin n → A) (s : Equiv.Perm (Fin n)) (u : ℂ)
     (a b : Fin n) : Tm (fun a b => E (s a) (s b)) u a b = Tm E u (s a) (s b) := by
   simp only [Formalism.REAL.Tm, Equiv.apply_eq_iff_eq]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qminor`. Simplify using `only [tm_renum, Function.comp_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem qminor_renum {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (E : Fin n → Fin n → A) (s : Equiv.Perm (Fin n))
     (a b : Fin t → Fin n) (u : ℂ) :
@@ -42,9 +42,9 @@ theorem qminor_renum {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (E : Fin n �
   simp only [tm_renum, Function.comp_apply]
 
 /- English proof (translation)
-Establish `h1 : qdet (fun a b => E (s a) (s b)) u = qminor E (id ∘ ⇑s) (id ∘ ⇑s) u`. Unfold `Formalism.REAL.qdet`. Rewrite using `[qminor_renum]`. Both sides reduce to the same expression. Establish `hsq : ((Equiv.Perm.sign s : ℤ) : A) * ((Equiv.Perm.sign s : ℤ) : A) = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Rewrite using `[h1, Formalism.REAL.quantumMinorRowSkew_holds, Formalism.REAL.quantumMinorColSkew_holds A n n E hE, ← mul_assoc, hsq, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qdet_renum {A : Type} [Ring A] [Algebra ℂ A] {E : Fin n → Fin n → A} (hE : GlRel E)
     (s : Equiv.Perm (Fin n)) (u : ℂ) : qdet (fun a b => E (s a) (s b)) u = qdet E u := by
@@ -58,9 +58,7 @@ theorem qdet_renum {A : Type} [Ring A] [Algebra ℂ A] {E : Fin n → Fin n → 
   rfl
 
 /- English proof (translation)
-Break down `lt_trichotomy (s.symm a) (s.symm b) with h | h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (s.symm.injective h) (ne_of_lt hab)`. Establish `h'` using `hs (s.symm b) (s.symm a) h (by simp [he])`. Simplify using `only [Equiv.apply_symm_apply] at h'`.
-
-Conclude with `absurd h' (lt_asymm hab)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem symm_lt {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) {a b : Fin n} (hab : a < b) (he : ε a = ε b) :
@@ -73,9 +71,9 @@ theorem symm_lt {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     exact absurd h' (lt_asymm hab)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.KHighest Formalism.REAL.IsWeight`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hz⟩`. Conclude with `⟨fun a => hw (s a), fun a b hab he => hz (s a) (s b) (hs a b hab he) he⟩`. Introduce and unpack `⟨hw, hz⟩`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Simplify using `using hw (s.symm a)`. Establish `h` using `hz (s.symm a) (s.symm b) (symm_lt hs hab he) (by simpa using he)`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kHighest_iff {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool}
     (E : Fin n → Fin n → Module.End ℂ V) {s : Equiv.Perm (Fin n)}
@@ -92,17 +90,17 @@ theorem kHighest_iff {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → 
       simpa using h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `h1 : (Finset.univ.filter (fun b => a < b ∧ ε (s b) = ε (s a))).card = (Finset.univ.filter (fun b => s a < b ∧ ε b = ε (s a))).card`. Use `Finset.card_nbij' s s.symm ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_coe] at hb ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hs a b hb.1 hb.2.symm, hb.2⟩`. Introduce `c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_coe, Equiv.apply_symm_apply] at hc ⊢`. Use `⟨?_, hc.2⟩` and prove the remaining obligations. Establish `h'` using `symm_lt hs hc.1 hc.2.symm`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using h'`. Introduce `b _`. Simplify using the standard rewrite rules. Introduce `c _`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h2 : (Finset.univ.filter (fun b => b < a ∧ ε (s b) = ε (s a))).card = (Finset.univ.filter (fun b => b < s a ∧ ε b = ε (s a))).card`. Use `Finset.card_nbij' s s.symm ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_coe] at hb ⊢`. Conclude with `⟨hs b a hb.1 hb.2, hb.2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_coe, Equiv.apply_symm_apply] at hc ⊢`. Use `⟨?_, hc.2⟩` and prove the remaining obligations. Establish `h'` using `symm_lt hs hc.1 hc.2`. Simplify using `using h'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `b _`. Simplify using the standard rewrite rules. Introduce `c _`. Simplify using the standard rewrite rules. Simplify using `only [PI.UpqRep.rhoC, Function.comp_apply, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rhoC_renum {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) : rhoC (ε ∘ s) = rhoC ε ∘ s := by
@@ -140,7 +138,7 @@ theorem rhoC_renum {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
   simp only [PI.UpqRep.rhoC, Function.comp_apply, h1, h2]
 
 /- English proof (translation)
-Unfold `PI.UpqRep.vNormSq PI.UpqRep.nsq PI.UpqRep.dot`. Rewrite using `[rhoC_renum hs]`. Conclude with `Fintype.sum_equiv s _ _ (fun a => by simp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vNormSq_renum {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) (γ : Fin n → ℝ) :
@@ -150,11 +148,11 @@ theorem vNormSq_renum {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
   exact Fintype.sum_equiv s _ _ (fun a => by simp)
 
 /- English proof (translation)
-Unfold `CompanionTheory.RgExh.U.IsMinG`. Prove the components needed by the constructor for the conclusion. Introduce `h μ x hx hk`. Establish `hμ : μ = (μ ∘ s.symm) ∘ s`. Use function extensionality and compare the values at `a`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite `hk`, the goal using `[hμ]`. Rewrite using `[vNormSq_renum hs, vNormSq_renum hs]`. Conclude with `h _ x hx ((kHighest_iff E hs _ x).mpr hk)`. Introduce `h μ x hx hk`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `h (μ ∘ s) x hx ((kHighest_iff E hs μ x).mp hk)`. Rewrite `h'` using `[vNormSq_renum hs, vNormSq_renum hs]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isMinG_iff {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool}
     (E : Fin n → Fin n → Module.End ℂ V) {s : Equiv.Perm (Fin n)}
@@ -174,9 +172,9 @@ theorem isMinG_iff {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bo
     rwa [vNormSq_renum hs, vNormSq_renum hs] at h'
 
 /- English proof (translation)
-Introduce `n ε V _ _ E hE s hs`. Use `⟨glRel_renum hE s, fun hU a b x y => hU (s a) (s b) x y, ?_, ?_, fun γ u => kHighest_iff E hs γ u, fun γ => isMinG_iff E hs γ, rhoC_renum hs⟩` and prove the remaining obligations. Introduce `hL x`. Take `⟨S, hS, hK, hx⟩` from `hL x`. Conclude with `⟨S, hS, fun a b hab v hv => hK (s a) (s b) hab v hv, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `χ hχ Y`. Conclude with `(qdet_renum hE s _).trans (hχ Y)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem renumber : CompanionTheory.RgExh.U.Renumber := by
   intro n ε V _ _ E hE s hs

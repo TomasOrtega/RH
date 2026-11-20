@@ -18,9 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff.ChartGrp
 
 /- English proof (translation)
-Introduce `R _ G hsep B L _ _ _ _ _ em hem x y h`. Use `haveI := hsep`. Establish `hdom : IsDominant (spMap (em : B →+* L))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Introduce `a ha`. Establish `h0 : em a = 0` using `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show a = 0 from hem (h0.trans (map_zero em).symm)]`. Conclude with `zero_mem _)⟩`. Establish `h'` using `congrArg Over.Hom.left h`. Rewrite `h'` using `[Over.comp_left, Over.comp_left]`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Sp B) G.hom ((Over.w x).trans (Over.w y).symm) (spMap (em : B →+* L)) h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sepext : ∀ (R : Type) [CommRing R] (G : Over (Sp R)), IsSeparated G.hom → ∀ (B L : Type) [CommRing B] [IsDomain B] [Field L] [Algebra R B] [Algebra R L] (em : B →ₐ[R] L), Function.Injective em → ∀ x y : SpAlg R B ⟶ G, spOver em ≫ x = spOver em ≫ y → x = y := by
   intro R _ G hsep B L _ _ _ _ _ em hem x y h
@@ -36,11 +36,9 @@ theorem sepext : ∀ (R : Type) [CommRing R] (G : Over (Sp R)), IsSeparated G.ho
       (spMap (em : B →+* L)) h')
 
 /- English proof (translation)
-Introduce `R _ G W B L _ _ _ _ _ em hem z hne`. Take `⟨_, ⟨x, rfl⟩, hy⟩` from `hne`. Introduce and unpack `_ ⟨t, rfl⟩`. Set `t' : PrimeSpectrum L` to `t`. Set `x' : PrimeSpectrum B` to `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hbot : (PrimeSpectrum.comap (em : B →+* L) t').asIdeal = ⊥` using `by show Ideal.comap _ t'.asIdeal = ⊥`. Rewrite using `[show t'.asIdeal = ⊥ from Ideal.eq_bot_of_prime _]`. Conclude with `Ideal.comap_bot_of_injective _ hem`. Establish `hsp : PrimeSpectrum.comap (em : B →+* L) t' ⤳ x'` using `(PrimeSpectrum.le_iff_specializes _ _).1 (by show (PrimeSpectrum.comap (em : B →+* L) t').asIdeal ≤ x'.asIdeal`. Rewrite using `[hbot]`.
-
-Conclude with `bot_le)`. Conclude with `(hsp.map z.left.continuous).mem_open W.isOpen hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genmem : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) (W : G.left.Opens) (B L : Type) [CommRing B] [IsDomain B] [Field L] [Algebra R B] [Algebra R L] (em : B →ₐ[R] L), Function.Injective em → ∀ z : SpAlg R B ⟶ G, (Set.range z.left ∩ (W : Set G.left)).Nonempty → Set.range (spOver em ≫ z).left ⊆ W := by
   intro R _ G W B L _ _ _ _ _ em hem z hne
@@ -59,11 +57,11 @@ theorem genmem : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) (W : G.left.Opens
   exact (hsp.map z.left.continuous).mem_open W.isOpen hy
 
 /- English proof (translation)
-Introduce `R D _ _ _ G W u h`. Introduce and unpack `_ ⟨x0, rfl⟩`. Set `x : PrimeSpectrum D` to `x0`. Take `⟨P, hP, hle⟩` from `Ideal.exists_minimalPrimes_le (I := ⊥) (J := x.asIdeal) bot_le`. Establish `hPp : P.IsPrime` using `hP.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (Ideal.Quotient.mk P)` using `Ideal.Quotient.mk_surjective`. Establish `hker : RingHom.ker (Ideal.Quotient.mk P) ≤ x.asIdeal` using `by rw [Ideal.mk_ker]; exact hle`. Set `y : PrimeSpectrum (D ⧸ P)` to `⟨x.asIdeal.map (Ideal.Quotient.mk P), Ideal.map_isPrime_of_surjective hsurj hker⟩`. Establish `hy : PrimeSpectrum.comap (Ideal.Quotient.mk P) y = x` using `PrimeSpectrum.ext ((Ideal.comap_map_of_surjective' _ hsurj _).trans (sup_eq_left.2 hker))`. Use `h P hP ⟨y, rfl⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (spOver (Ideal.Quotient.mkₐ R P)).left y = x0` using `hy`. Rewrite `this` using `[Over.comp_left]`. Rewrite using `[← e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mincover : ∀ (R D : Type) [CommRing R] [CommRing D] [Algebra R D] (G : Over (Sp R)) (W : G.left.Opens) (u : SpAlg R D ⟶ G), (∀ P ∈ minimalPrimes D, Set.range (spOver (Ideal.Quotient.mkₐ R P) ≫ u).left ⊆ W) → Set.range u.left ⊆ W := by
   intro R D _ _ _ G W u h
@@ -85,13 +83,11 @@ end GlobalTheory.GroupBplus.Aff.ChartGrp
 namespace GlobalTheory.GroupBplus.Aff.ChartGrp
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ G _ _ N q c φ`. Establish `hr0` using `c.r_ne_zero`. Use `letI : Algebra (Localization.Away c.r) K := (c.toK K).toRingHom.toAlgebra`. Use `haveI : IsScalarTower R (Localization.Away c.r) K := IsScalarTower.of_algebraMap_eq fun x => ((c.toK K).commutes x).symm`. Establish `hle` using `powers_le_nonZeroDivisors_of_noZeroDivisors hr0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsDomain (Localization.Away c.r) := IsLocalization.isDomain_localization hle`. Use `haveI : IsIntegrallyClosed (Localization.Away c.r) := isIntegrallyClosed_of_isLocalization _ _ hle`. Use `haveI : IsFractionRing (Localization.Away c.r) K := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Submonoid.powers c.r) (Localization.Away c.r) K`. Use `haveI : Algebra.IsIntegral (Localization.Away c.r) c.C := Algebra.IsIntegral.of_finite _ _`. Set `φ' : c.C →ₐ[Localization.Away c.r] K` to `{ φ with commutes' := fun x => by haveI := IsLocalization.algHom_subsingleton (R := R) (M := Submonoid.powers c.r) (S := Localization.Away c.r) (P := K)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `h` using `congrArg (fun g : Localization.Away c.r →ₐ[R] K => g x) (Subsingleton.elim (φ.comp (IsScalarTower.toAlgHom R (Localization.Away c.r) c.C)) (IsScalarTower.toAlgHom R (Localization.Away c.r) K))`. Simplify using `using h }`. Take `⟨g, hg⟩` from `GlobalTheory.GroupBplus.exists_algHom_comp_eq φ'`. Use `⟨g.restrictScalars R, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
-
-Establish `h` using `congrArg (fun f : c.C →ₐ[Localization.Away c.r] K => f a) hg`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftRr : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q) (φ : c.C →ₐ[R] K), ∃ φ' : c.C →ₐ[R] Localization.Away c.r, (c.toK K).comp φ' = φ := by
   intro R K _ _ _ _ _ _ G _ _ N q c φ
@@ -121,13 +117,11 @@ theorem liftRr : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed 
   exact h
 
 /- English proof (translation)
-Introduce `R _ G _ _ N q c z`. Establish `hdisj : Disjoint (Submonoid.powers c.r : Set R) q.asIdeal`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨n, rfl⟩ h`. Conclude with `c.hr (q.isPrime.mem_of_pow_mem n h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `q' : Ideal (Localization.Away c.r)` to `q.asIdeal.map (algebraMap R (Localization.Away c.r))`. Use `haveI hq' : q'.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers c.r) _ q.asIdeal q.isPrime hdisj`. Set `k` to `q'.ResidueField`. Use `letI : Algebra R k := ((algebraMap (Localization.Away c.r) k).comp (algebraMap R (Localization.Away c.r))).toAlgebra`. Use `haveI : IsScalarTower R (Localization.Away c.r) k := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : RingHom.ker (algebraMap R k) = q.asIdeal`. Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, IsScalarTower.algebraMap_apply R (Localization.Away c.r) k, ← RingHom.mem_ker, Ideal.ker_algebraMap_residueField]`. Establish `e` using `IsLocalization.comap_map_of_isPrime_disjoint (Submonoid.powers c.r) (Localization.Away c.r) q.isPrime hdisj`. Use `show x ∈ q'.comap (algebraMap R (Localization.Away c.r)) ↔ _`.
-
-Conclude with `Iff.of_eq (congrArg (x ∈ ·) e)`. Establish `hW` using `c.fibre k hker (torsMap (IsScalarTower.toAlgHom R (Localization.Away c.r) k) z)`. Take `⟨t⟩ : Nonempty (PrimeSpectrum k)` from `inferInstance`. Use `⟨_, ⟨(spMap (algebraMap (Localization.Away c.r) k)) t, rfl⟩, hW ⟨t, rfl⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fibmeets : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q) (z : Tors G N (Localization.Away c.r)), (Set.range z.1.left ∩ (c.W : Set G.left)).Nonempty := by
   intro R _ G _ _ N q c z
@@ -156,23 +150,21 @@ end GlobalTheory.GroupBplus.Aff.ChartGrp
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N _ q c`. Establish `hsep : IsSeparated G.hom` using `hG.separated`. Establish `hdomr : IsDomain (Localization.Away c.r)` using `IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors c.r_ne_zero)`. Establish `hinj : Function.Injective (c.toK K)`. Establish `hM` using `powers_le_nonZeroDivisors_of_noZeroDivisors c.r_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsLocalization.lift_injective_iff _).2 fun x y => ⟨fun h => congrArg _ (IsLocalization.injective _ hM h), fun h => congrArg _ (IsFractionRing.injective R K h)⟩`. Establish `gen : ∀ z : Tors G N (Localization.Away c.r), Set.range (torsMap (c.toK K) z).1.left ⊆ c.W` using `fun z => ChartGrp.genmem R G c.W _ K (c.toK K) hinj z.1 (ChartGrp.fibmeets R G N q c z)`. Establish `hK : ∀ φ φ' : c.C →ₐ[R] K, Set.range (torsMap φ c.j * torsMap φ' c.j).1.left ⊆ c.W`. Introduce `φ φ'`. Take `⟨f, rfl⟩` from `ChartGrp.liftRr R K G N q c φ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f', rfl⟩` from `ChartGrp.liftRr R K G N q c φ'`. Rewrite using `[← torsMap_comp, ← torsMap_comp, ← torsMap_mul]`. Conclude with `gen _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨φ, -, hφ⟩` from `(c.bij K).2.2 (show (1 : Tors G N K) ∈ {z | Set.range z.1.left ⊆ c.W} from by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `gen 1` as an intermediate fact. Rewrite using `[torsMap_one] at this)` and apply the resulting hypothesis. Take `⟨f, rfl⟩` from `ChartGrp.liftRr R K G N q c φ`. Use `⟨f, Subtype.ext (ChartGrp.sepext R G hsep _ K (c.toK K) hinj _ _ ?_)⟩` and prove the remaining obligations. Establish `h1 : torsMap (c.toK K) (torsMap f c.j) = torsMap (c.toK K) 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[torsMap_comp, torsMap_one]`. Conclude with `hφ`. Conclude with `congrArg Subtype.val h1`. Introduce `B _ _ ψ ψ'`. Take `⟨hfl, halg⟩` from `GlobalTheory.T.flat_algebraic_tensor_chart_ring R G N q c`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `D` to `c.C ⊗[R] c.C`. Set `u : Tors G N D` to `torsMap Algebra.TensorProduct.includeLeft c.j * torsMap Algebra.TensorProduct.includeRight c.j`. Establish `hu : Set.range u.1.left ⊆ c.W`. Use `ChartGrp.mincover R D G c.W u.1 fun P hP => ?_` and prove the remaining obligations. Take `⟨em, hem⟩` from `GlobalTheory.T.exists_injective_embedding_minimal_prime R K D P hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsDomain (D ⧸ P)` using `(Ideal.Quotient.isDomain_iff_prime P).2 hP.1.1`. Establish `hunit : IsUnit (algebraMap R (D ⧸ P) c.r)`. Establish `h0 : IsUnit (algebraMap R c.C c.r)`. Rewrite using `[IsScalarTower.algebraMap_apply R (Localization.Away c.r) c.C]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit c.r).map _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `h0.map ((Ideal.Quotient.mkₐ R P).comp (Algebra.TensorProduct.includeLeft : c.C →ₐ[R] D))` as an intermediate fact. Rewrite `this` using `[AlgHom.commutes]`. Then use the resulting hypothesis. Use `GlobalTheory.T.torsion_chart_range_injective_embedding R K G hsep N q c (D ⧸ P) hunit em hem (torsMap (Ideal.Quotient.mkₐ R P) u) ?_` and prove the remaining obligations. Rewrite using `[torsMap_comp, torsMap_mul, torsMap_comp, torsMap_comp]`. Conclude with `hK _ _`.
-
-Take `⟨χ, -, hχ⟩` from `(c.bij D).2.2 hu`. Use `⟨(Algebra.TensorProduct.lift ψ ψ' fun _ _ => Commute.all _ _).comp χ, ?_⟩` and prove the remaining obligations. Establish `hχ' : torsMap χ c.j = u` using `hχ`. Rewrite using `[← torsMap_comp, hχ', torsMap_mul, torsMap_comp, torsMap_comp]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart_isGrp : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (q : PrimeSpectrum R) (c : PreChart G N q), c.IsGrp := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N _ q c

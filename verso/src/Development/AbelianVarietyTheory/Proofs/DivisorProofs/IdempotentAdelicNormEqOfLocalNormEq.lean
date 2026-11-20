@@ -11,7 +11,7 @@ namespace GlobalTheory.NormFin
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`. Conclude with `h w`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem af_ext {x y : Af F} (h : ∀ w, evalV F w x = evalV F w y) : x = y :=
   by
@@ -45,9 +45,9 @@ theorem iotaL_apply (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) :
     iotaL v a = pairA F 0 (singleV F v a) := rfl
 
 /- English proof (translation)
-Use `Prod.ext (by change (0 : Ainf F) = 0 * 0; simp) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `singleV F v (a * b) = singleV F v a * singleV F v b`. Use `af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Simplify using `only [evalV_single_same]`. Simplify using `only [evalV_single_ne hw, mul_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem iotaL_mul (v : HeightOneSpectrum (𝓞 F)) (a b : Fv F v) :
     iotaL v (a * b) = iotaL v a * iotaL v b := by
@@ -60,9 +60,9 @@ theorem iotaL_mul (v : HeightOneSpectrum (𝓞 F)) (a b : Fv F v) :
   · simp only [evalV_single_ne hw, mul_zero]
 
 /- English proof (translation)
-Use `Prod.ext (by change fstA F ε * 0 = 0; simp) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sndA F ε * singleV F v a = singleV F v a`. Use `af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[hε.2.2.1 w (Finset.mem_singleton_self w), one_mul]`. Simplify using `only [evalV_single_ne hw, mul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem idem_mul_iotaL (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) (hε : IsPlacesIdem ∅ {v} ε) (a : Fv F v) :
     ε * iotaL v a = iotaL v a := by
@@ -75,9 +75,9 @@ theorem idem_mul_iotaL (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) (hε : IsPla
   · simp only [evalV_single_ne hw, mul_zero]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `(hε.2.1 w (Finset.notMem_empty w)).symm`. Express the relevant statement in the definitionally equal form `singleV F v 1 = sndA F ε`. Use `af_ext fun w => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[evalV_single_same, hε.2.2.1 w (Finset.mem_singleton_self w)]`. Rewrite using `[evalV_single_ne hw, hε.2.2.2 w (fun h => hw (Finset.mem_singleton.1 h))]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotaL_one (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) (hε : IsPlacesIdem ∅ {v} ε) :
     iotaL v 1 = ε := by
@@ -98,15 +98,15 @@ def phi (v : HeightOneSpectrum (𝓞 F)) : Fv F v ⊗[F] E →ₗ[F] AF F ⊗[F]
   TensorProduct.map (iotaL v) LinearMap.id
 
 /- English proof (translation)
-The claim follows from `TensorProduct.map_tmul _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem phi_tmul (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) (e : E) :
     phi v (a ⊗ₜ[F] e) = iotaL v a ⊗ₜ[F] e := TensorProduct.map_tmul _ _ _ _
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul b f`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, phi_tmul, phi_tmul, phi_tmul, iotaL_mul, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add y z hy hz => rw [mul_add, map_add, hy, hz, map_add, mul_add]`. Consider the case `add x z hx hz => rw [add_mul, map_add, hx, hz, map_add, add_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem phi_mul (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v ⊗[F] E) :
     phi v (x * y) = phi v x * phi v y := by
@@ -122,7 +122,7 @@ theorem phi_mul (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v ⊗[F] E) :
   | add x z hx hz => rw [add_mul, map_add, hx, hz, map_add, add_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Simplify using `only [sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, phi_tmul]`. Consider the case `add x z hx hz => rw [map_add, map_add, hx, hz, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem phi_sig (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E) :
     phi v (sigR (Fv F v) σ x) = sigR (AF F) σ (phi v x) := by
@@ -134,7 +134,7 @@ theorem phi_sig (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : Fv F 
   | add x z hx hz => rw [map_add, map_add, hx, hz, map_add, map_add]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, phi_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, idem_mul_iotaL v ε hε]`. Consider the case `add x z hx hz => rw [map_add, mul_add, hx, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem idem_mul_phi (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) (hε : IsPlacesIdem ∅ {v} ε)
     (x : Fv F v ⊗[F] E) : algebraMap (AF F) (AF F ⊗[F] E) ε * phi v x = phi v x := by
@@ -146,7 +146,7 @@ theorem idem_mul_phi (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) (hε : IsPlace
   | add x z hx hz => rw [map_add, mul_add, hx, hz]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `phi v ((1 : Fv F v) ⊗ₜ[F] c) = algebraMap (AF F) (AF F ⊗[F] E) ε * ((1 : AF F) ⊗ₜ[F] c)`. Rewrite using `[phi_tmul, iotaL_one v ε hε, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_inclR (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) (hε : IsPlacesIdem ∅ {v} ε) (c : E) :
     phi v (inclR (Fv F v) c) = algebraMap (AF F) (AF F ⊗[F] E) ε * inclR (AF F) c := by
@@ -157,7 +157,7 @@ theorem phi_inclR (v : HeightOneSpectrum (𝓞 F)) (ε : AF F) (hε : IsPlacesId
 end Tensor
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ v ε hε c ⟨t, ht⟩`. Use `⟨phi v t, ?_⟩` and prove the remaining obligations. Rewrite using `[← phi_sig, ← phi_mul, mul_add, idem_mul_phi v ε hε, ← phi_inclR v ε hε, ← map_add, ht, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_norm_eq_of_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (v : HeightOneSpectrum (𝓞 F)) (ε : AF F), IsPlacesIdem ∅ {v} ε → ∀ c : E,

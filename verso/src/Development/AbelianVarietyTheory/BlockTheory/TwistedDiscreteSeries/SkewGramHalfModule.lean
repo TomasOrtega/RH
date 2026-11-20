@@ -25,7 +25,7 @@ def ofAdj (S T : HSp D) (z : Mx D S.rank T.rank) : WO S T :=
   incA D (-D.host.xi0⁻¹) • (giA T ⬝ (adj z ⬝ gA S))
 
 /- English proof (translation)
-Rewrite using `[starAdj, ofAdj, adj_smul, adj_mul, adj_mul, adj_adj, adj_gA, adj_giA, Matrix.smul_mul, Matrix.mul_smul, smul_smul, HypDec.wittDecomp_trace0Unit_mul_conj_neg_inv, one_smul, Matrix.mul_assoc, Matrix.mul_assoc, giA_gA_cancel, giA_mul_gA, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem starAdj_ofAdj (S T : HSp D) (z : Mx D S.rank T.rank) : starAdj S T (ofAdj S T z) = z := by
   rw [starAdj, ofAdj, adj_smul, adj_mul, adj_mul, adj_adj, adj_gA, adj_giA, Matrix.smul_mul, Matrix.mul_smul, smul_smul,
@@ -128,7 +128,7 @@ def HeisenbergTarget (D : D7) : Prop :=
         HasSum (fun y : Matrix (Fin S.rank) (Fin ρ) D.host.E => d.mixT S ψ μ 𝓕 f (rat y) 0) (f 0)
 
 /- English proof (translation)
-Use `Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 fun h => ?_)) _` and prove the remaining obligations. Use `(GlobalTheory.Doubling.absE D.host.F D.host.E).map_mul (Matrix.GeneralLinearGroup.det a) (Matrix.GeneralLinearGroup.det a)⁻¹` as an intermediate fact. Rewrite `this` using `[h, zero_mul, mul_inv_cancel, map_one]`. Conclude with `one_ne_zero this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfMod_pos {ρ : ℕ} (n : ℕ) (a : GL (Fin ρ) (AE D)) : 0 < halfMod n a := by
   refine Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 fun h => ?_)) _
@@ -138,7 +138,7 @@ theorem halfMod_pos {ρ : ℕ} (n : ℕ) (a : GL (Fin ρ) (AE D)) : 0 < halfMod 
   exact one_ne_zero this
 
 /- English proof (translation)
-Rewrite using `[d.nB_inv, ← Matrix.mul_assoc, d.wittDecomp_projAnisotropic_unipotentMixed, HypDec.incAdj_apply, HypDec.incY_apply, ← Matrix.mul_assoc, Matrix.sub_mul, Matrix.mul_assoc _ d.pY, d.p0_jY, d.pY_jY, Matrix.mul_one, zero_sub, plus_neg, neg_neg, ofAdj, plus, adj_mul, Matrix.mul_smul, M …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wittSmallProjection_wittNB_inv_mul_adjointInclusion {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (b : Mx D ρ T₀.rank) (y : Mx D S.rank ρ) :
     d.p0 ⬝ (mt T (d.nB b)⁻¹ ⬝ d.incAdj S y) = ofAdj S T₀ (y ⬝ b) := by

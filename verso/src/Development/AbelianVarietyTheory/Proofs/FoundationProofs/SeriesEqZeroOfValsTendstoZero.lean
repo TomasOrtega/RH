@@ -6,7 +6,7 @@ open GlobalTheory.KZ GlobalTheory.Ord2 UpperTheory.V.HV Formalism.ConjugateSelfD
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `PadicAlgCl.norm_extends l (l : ℚ_[l])`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KZ.norm_prime_lt_one_qbar (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h := PadicAlgCl.norm_extends l (l : ℚ_[l])
@@ -15,9 +15,9 @@ theorem KZ.norm_prime_lt_one_qbar (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qba
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Establish `hlt` using `KZ.norm_prime_lt_one_qbar l`. Establish `hn : 0 ≤ ‖((l : ℕ) : Qbar l)‖` using `norm_nonneg _`. Establish `ht : Filter.Tendsto (fun k : ℕ => ‖((l : ℕ) : Qbar l)‖ ^ k) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one hn hlt`. Establish `hle : ∀ k : ℕ, ‖x‖ ≤ ‖((l : ℕ) : Qbar l)‖ ^ k`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h k` as an intermediate fact. Unfold `Cg at this`. Simplify `this` using `[norm_pow]`. Establish `h0 : ‖x‖ ≤ 0` using `ge_of_tendsto' ht hle`. Conclude with `norm_le_zero_iff.mp h0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem KZ.eq_zero_of_cg_all (l : ℕ) [Fact l.Prime] (x : Qbar l) (h : ∀ k : ℕ, Cg k x 0) :
     x = 0 := by
@@ -34,9 +34,9 @@ theorem KZ.eq_zero_of_cg_all (l : ℕ) [Fact l.Prime] (x : Qbar l) (h : ∀ k : 
   exact norm_le_zero_iff.mp h0
 
 /- English proof (translation)
-Introduce `l _ c F hO hv`. Use extensionality with `n`. Rewrite using `[map_zero]`. Apply `KZ.eq_zero_of_cg_all l` to reduce the goal to its premises. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m₁, hm⟩` from `hv k`. Conclude with `GlobalTheory.T.coefficient_congruence_of_twisted_values l c F k m₁ hO hm n`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem KZ.series_eq_zero_of_vals_tendsto_zero : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (F : PowerSeries (Qbar l)), (∀ n, F.coeff n ∈ c.O) → (∀ k : ℕ, ∃ m₁ : ℕ, ∀ m, m₁ ≤ m → ∀ z : Qbar l, IsPrimitiveRoot z (l ^ m) → Cg k (tval F (l ^ (3 * m)) z) 0) → F = 0 := by
   intro l _ c F hO hv

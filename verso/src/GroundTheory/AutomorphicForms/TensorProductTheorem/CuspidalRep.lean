@@ -16,7 +16,7 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨d, b, ε, B, hε, horth, hsymm, hinv, hK⟩` from `exists_archCartanData (K := K) (n := n)`. Take `⟨μ, hμ⟩ : ∃ μ : Measure (Reduction.normOneGL K n), μ.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`. Conclude with `exists_isCompl_of_finite (cuspToL2 μ) (fun a ha h0 => injOn_cuspToL2 μ ha (fun _ _ => rfl) (h0.trans (map_zero (cuspToL2 μ)).symm)) (fun g a ha c hc => petersson_inner_finiteAdelic_invariant μ g ha hc) (fun k a ha c hc => petersson_inner_maximalCompact_invariant μ k ha hc) (fun X …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_compl_centralCuspForms (U : Submodule ℂ (cuspForms K n)) (hU : U ≤ centralCuspForms K n)
     (hUρ : ∀ X, ∀ φ ∈ U, (gkModuleCusp K n).ρ X φ ∈ U)
@@ -40,23 +40,19 @@ theorem exists_compl_centralCuspForms (U : Submodule ℂ (cuspForms K n)) (hU : 
     U hU hUρ hUσ hUτ
 
 /- English proof (translation)
-Use `set Mx := cuspSubmodule K n U hρ hσ hτ with hMx`. Take `⟨u, huU, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hne' : (⊥ : Subrepresentation Mx.fullRep) ≠ ⊤`. Introduce `h`. Establish `hmem : (⟨u, huU⟩ : U) ∈ (⊤ : Subrepresentation Mx.fullRep).toSubmodule` using `trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[← h]`. Conclude with `hu0 (congrArg Subtype.val ((Submodule.mem_bot ℂ).1 hmem))`. Use `{ toNontrivial := ⟨⟨⊥, ⊤, hne'⟩⟩, eq_bot_or_eq_top := fun Y => ?_ }` and prove the remaining obligations. Establish `hY : ∀ p, ∀ y ∈ Y.toSubmodule, Mx.fullRep p y ∈ Y.toSubmodule` using `fun p y hy => Y.apply_mem_toSubmodule p hy`. Use `set W := Y.toSubmodule.map U.subtype with hW`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hWρ : ∀ X, ∀ φ ∈ W, (gkModuleCusp K n).ρ X φ ∈ W`. Introduce and unpack `X _ ⟨y, hy, rfl⟩`. Use `⟨_, hY (FreeMonoid.of (Sum.inl X), 1) y hy, ?_⟩` and prove the remaining obligations. Use `show (((Mx.gk.rep (FreeMonoid.of (Sum.inl X))) (Mx.τ 1 y) : U) : cuspForms K n) = _`. Rewrite using `[map_one, Module.End.one_apply, IsExpLieAlgebra.GKModule.rep_of_inl]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hWσ : ∀ k, ∀ φ ∈ W, (gkModuleCusp K n).σ k φ ∈ W`. Introduce and unpack `k _ ⟨y, hy, rfl⟩`. Use `⟨_, hY (FreeMonoid.of (Sum.inr k), 1) y hy, ?_⟩` and prove the remaining obligations. Use `show (((Mx.gk.rep (FreeMonoid.of (Sum.inr k))) (Mx.τ 1 y) : U) : cuspForms K n) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one, Module.End.one_apply, IsExpLieAlgebra.GKModule.rep_of_inr]`. Both sides reduce to the same expression. Establish `hWτ : ∀ g, ∀ φ ∈ W, finRepCusp K n g φ ∈ W`. Introduce and unpack `g _ ⟨y, hy, rfl⟩`. Use `⟨_, hY (1, g) y hy, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show (((Mx.gk.rep 1) (Mx.τ g y) : U) : cuspForms K n) = _`. Rewrite using `[map_one, Module.End.one_apply]`. Both sides reduce to the same expression. Break down `hmin W (Submodule.map_subtype_le _ _) hWρ hWσ hWτ with h | h` into its components or cases. Use `left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `show Y.toSubmodule = (⊥ : Submodule ℂ U)`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Establish `: (y : cuspForms K n) ∈ W` using `⟨y, hy, rfl⟩`.
-
-Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext ((Submodule.mem_bot ℂ).1 this))`. Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `show Y.toSubmodule = (⊤ : Submodule ℂ U)`.
-
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `: (y : cuspForms K n) ∈ W` using `by rw [h]; exact y.2`. Take `⟨y', hy', e⟩` from `this`. Rewrite using `[← Subtype.ext e]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isIrreducible_cuspSubmodule_of (U : Submodule ℂ (cuspForms K n))
     (hρ : ∀ X, ∀ φ ∈ U, (gkModuleCusp K n).ρ X φ ∈ U) (hσ : ∀ k, ∀ φ ∈ U, (gkModuleCusp K n).σ k φ ∈ U)
@@ -150,13 +146,13 @@ abbrev toModule (π : CuspidalAutomorphicRepresentation K n) : AdelicGKModule K 
   cuspSubmodule K n π.carrier π.stable_ρ π.stable_σ π.stable_τ
 
 /- English proof (translation)
-The claim follows from `isAdmissible_cuspSubmodule π.carrier π.stable_ρ π.stable_σ π.stable_τ π.isIrreducible`.
+A detailed English derivation is pending.
 -/
 theorem isAdmissible (π : CuspidalAutomorphicRepresentation K n) : π.toModule.IsAdmissible :=
   isAdmissible_cuspSubmodule π.carrier π.stable_ρ π.stable_σ π.stable_τ π.isIrreducible
 
 /- English proof (translation)
-The claim follows from `AutomorphicForm.nonempty_adelicDecomposition π.toModule π.isIrreducible π.isAdmissible`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_adelicDecomposition (π : CuspidalAutomorphicRepresentation K n) :
     Nonempty (AdelicDecomposition π.toModule) :=

@@ -34,7 +34,7 @@ def invKer {A B : AbVar K} (f : A ⟶ B) : Subgroup A.Pt where
     exact ⟨by rw [map_inv, hx, inv_one], a, ha, by rw [inv_pow, hxa, inv_one]⟩
 
 /- English proof (translation)
-Establish `: Finite (ptMap f).ker` using `(GlobalTheory.AV.AbVar.isFinite_iff_finite_ker K A B f).1 hf.1`. Conclude with `Finite.of_injective (fun x : invKer f => (⟨x.1, x.2.1⟩ : (ptMap f).ker)) (fun x y h => Subtype.ext (congrArg (fun z : (ptMap f).ker => (z : A.Pt)) h))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_invKer {A B : AbVar K} (f : A ⟶ B) (hf : IsIsogeny f) : Finite (invKer f) := by
   have : Finite (ptMap f).ker := (GlobalTheory.AV.AbVar.isFinite_iff_finite_ker K A B f).1 hf.1
@@ -42,11 +42,11 @@ theorem finite_invKer {A B : AbVar K} (f : A ⟶ B) (hf : IsIsogeny f) : Finite 
     (fun x y h => Subtype.ext (congrArg (fun z : (ptMap f).ker => (z : A.Pt)) h))
 
 /- English proof (translation)
-Use `haveI := finite_invKer f hf`. Introduce `h0`. Establish `hpos : 0 < Nat.card (invKer f)` using `Nat.card_pos`. Establish `hpd : ringChar K ∣ Nat.card (invKer f)` using `(ringChar.spec K _).1 h0`. Break down `CharP.char_is_prime_or_zero K (ringChar K) with hpp | hp0` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `haveI := Fact.mk hpp`. Take `⟨y, hy⟩` from `exists_prime_orderOf_dvd_card' (ringChar K) hpd`. Take `⟨_, k, hk, hyk⟩` from `y.2`. Establish `: ringChar K ∣ k`. Rewrite using `[← hy, ← Subgroup.orderOf_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `orderOf_dvd_of_pow_eq_one hyk`. Conclude with `hk ((ringChar.spec K k).2 this)`. Rewrite `hpd` using `[hp0, zero_dvd_iff]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem card_invKer_ne_zero {A B : AbVar K} (f : A ⟶ B) (hf : IsIsogeny f) :
     ((Nat.card (invKer f) : ℕ) : K) ≠ 0 := by
@@ -66,7 +66,7 @@ theorem card_invKer_ne_zero {A B : AbVar K} (f : A ⟶ B) (hf : IsIsogeny f) :
     omega
 
 /- English proof (translation)
-Take `⟨h1, k, hk, hxk⟩` from `hx`. Use `⟨?_, k, hk, by rw [← map_pow, hxk, map_one]⟩` and prove the remaining obligations. Establish `e : ptMap f (galPts A.X σ x) = galPts B.X σ (ptMap f x)` using `show (specAut σ ≫ x) ≫ f.hom = specAut σ ≫ (x ≫ f.hom) from Category.assoc _ _ _`. Rewrite using `[e, h1, map_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem galPts_mem_invKer {A B : AbVar K} (f : A ⟶ B) (σ : Gal K) (x : A.Pt) (hx : x ∈ invKer f) :
     galPts A.X σ x ∈ invKer f := by

@@ -17,13 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-Take `⟨hK, hF, -⟩` from `h0 D`. Establish `hk : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hc` using `(cMass_spec hK hF (D.R.k - 1) (by omega)).1`. Establish `hd : 0 < |(NumberField.discr D.host.F : ℝ)| ^ (-((2 * D.R.rS * (D.R.rS + 1) * (D.R.k - 1) : ℕ) : ℤ))`. Apply `zpow_pos` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.F)`. Establish `hL : 0 < ∏ i ∈ Finset.Icc D.R.k D.R.r, lValEtaF D.host.E D.host.F i`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i hi`. Establish `hi2 : 2 ≤ i` using `by simp only [Finset.mem_Icc] at hi; omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lValEta_eq_lValEtaF hK hF i hi2]`. Conclude with `lValEta_pos hK i hi2`. Establish `hA : Formalism.L2.SG.PairVal.AutFin D F0 what₂`. Introduce `Λ hΛ`. Conclude with `_root_.automorphism_lattice_finite D (D.sp.Y_sig 0) (D.mem u).A.T (D.mem u).A.T_prime.pos F0 Λ (hR.2.2.1.1 Λ hΛ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Establish `hm` using `Formalism.L2.SG.PairVal.massRows_pos D F0 what₂ hA hR.2.2.2`. Unfold `cExpl`. Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem cExpl_pos (h0 : HostDict) (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (Tn u))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)) (hR : RowsOf u F0 what₂) :
@@ -52,7 +52,7 @@ theorem cExpl_pos (h0 : HostDict) (D : Formalism.BasicNotions.D7) (u : D.what₂
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-Introduce `D δ M hA L u u' hT F0 what₂ hR ϖ hϖ`. Use `⟨cExpl D F0 what₂, cExpl_pos h0 D u F0 what₂ hR, fun Z hP => ?_⟩` and prove the remaining obligations. Conclude with `hE D δ M hA L u u' hT F0 what₂ hR.2.2.1 ϖ hϖ Z hP`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem massAtUnif_of (h0 : HostDict) (hE : FormulaExplicit) : PI.UnitaryGroupMassFormula.CntFormula.MassAtUnif := by
   intro D δ M hA L u u' hT F0 what₂ hR ϖ hϖ

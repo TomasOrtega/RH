@@ -30,7 +30,7 @@ section Lattices
 variable {E : Type} [Field E] [NumberField E] {r : ℕ}
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin r)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨a, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem full_stdL (E : Type) [Field E] [NumberField E] (r : ℕ) :
     (stdL E r).FG ∧ Submodule.span E (stdL E r : Set (Fin r → E)) = ⊤ := by
@@ -41,9 +41,9 @@ theorem full_stdL (E : Type) [Field E] [NumberField E] (r : ℕ) :
   exact Submodule.subset_span ⟨a, by simp⟩
 
 /- English proof (translation)
-Use `⟨hL.1.of_le Submodule.smul_le_right, ?_⟩` and prove the remaining obligations. Take `⟨c, hc, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Rewrite using `[eq_top_iff, ← hL.2, Submodule.span_le]`. Introduce `v hv`. Establish `h1 : (c : E) ≠ 0` using `by simpa using h0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: v = (c : E)⁻¹ • (c • v)`. Express the relevant statement in the definitionally equal form `v = (c : E)⁻¹ • ((c : E) • v)`. Rewrite using `[inv_smul_smul₀ h1]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.smul_mem_smul hc hv))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem full_smul {L : Lt E r} (hL : L.FG ∧ Submodule.span E (L : Set (Fin r → E)) = ⊤)
     {𝔠 : Ideal (𝓞 E)} (h : 𝔠 ≠ ⊥) :
@@ -60,11 +60,11 @@ theorem full_smul {L : Lt E r} (hL : L.FG ∧ Submodule.span E (L : Set (Fin r �
   exact Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.smul_mem_smul hc hv))
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨v, hv, u, hu, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨v, hv, (M : 𝓞 E) • u, Submodule.smul_mem_smul hM (Submodule.smul_le_right hu), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, vecMulVec_apply, Pi.smul_apply, mul_smul_comm]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_mem_tens {n : ℕ} {Λ : Lt E n} {L : Lt E r} {𝔠 𝔪 : Ideal (𝓞 E)} {M : ℕ} (hM : (M : 𝓞 E) ∈ 𝔪)
     {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ (𝔠 • L)) : M • y ∈ tens Λ (𝔪 • L) := by
@@ -85,9 +85,9 @@ end Lattices
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, y, hy, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, M • y, h y hy, ?_⟩` and prove the remaining obligations. Conclude with `(map_nsmul (HatLat.fT D.host.F α) M y).symm`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [nsmul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_nsmul]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_mem_hatA {A B : AddSubgroup (Matrix (Fin S.rank) (Fin T.rank) D.host.E)} {M : ℕ}
     (h : ∀ y ∈ A, M • y ∈ B) {u : WO S T} (hu : u ∈ hatA S T A) : M • u ∈ hatA S T B := by
@@ -101,27 +101,27 @@ theorem nsmul_mem_hatA {A B : AddSubgroup (Matrix (Fin S.rank) (Fin T.rank) D.ho
   | neg x _ hx => rw [neg_nsmul]; exact neg_mem hx
 
 /- English proof (translation)
-The claim follows from `map_neg (HatLat.fT D.host.F 1) y`.
+A detailed English derivation is pending.
 -/
 theorem finW_neg (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) : finW S T (-y) = -finW S T y :=
   map_neg (HatLat.fT D.host.F 1) y
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_neg (h : GA D S) (g : GA D T) (u : WO S T) : actO S T h g (-u) = -actO S T h g u := by
   unfold actO
   rw [Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Establish `: mt V g * mt V g⁻¹ = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[fmt, fmt, ← Matrix.map_mul, this, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fmt_mul_inv (V : HSp D) (g : GA D V) : fmt V g * fmt V g⁻¹ = 1 := by
   have : mt V g * mt V g⁻¹ = 1 := by simp [Formalism.L2.Theta.mt]
   rw [fmt, fmt, ← Matrix.map_mul, this, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `: mt V g * mt V g⁻¹ = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[fmtC, fmtC, cM, cM, ← Matrix.map_mul, ← Matrix.map_mul, this, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fmtC_mul_inv (V : HSp D) (g : GA D V) : fmtC V g * fmtC V g⁻¹ = 1 := by
   have : mt V g * mt V g⁻¹ = 1 := by simp [Formalism.L2.Theta.mt]
@@ -129,16 +129,16 @@ theorem fmtC_mul_inv (V : HSp D) (g : GA D V) : fmtC V g * fmtC V g⁻¹ = 1 := 
     Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `: mt V 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[fmtC, cM, this, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fmtC_one (V : HSp D) : fmtC V 1 = 1 := by
   have : mt V 1 = 1 := by simp [Formalism.L2.Theta.mt]
   rw [fmtC, cM, this, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `h3 : heisO ψ S T a (heisO ψ S T u (heisO ψ S T a f)) = heisO ψ S T u f` using `by rw [h1, h2]`. Rewrite `h3` using `[FinTranslate.heisO_heisO S T ψ u a]`. Establish `h4` using `(FinTranslate.heisL S T ψ a).map_smul (ψ (symplOH S T u a)) (heisO ψ S T (u + a) f)`. Express the relevant statement in the definitionally equal form `heisO ψ S T a _ = _ • heisO ψ S T a _ at h4`. Rewrite `h3` using `[h4, FinTranslate.heisO_heisO, smul_smul, ← AddChar.map_add_eq_mul, FinTranslate.symplOH_add_right, FinTranslate.symplOH_self, FinTranslate.symplOH_skew S T u a, add_zero, add_neg_cancel, AddChar.map_zero_eq_one, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h3]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 -/
 theorem heisO_add_two (ψ : AddChar (AF D.host.F) ℂ) (u a : WO S T) (f : WO S T → ℂ)
     (h1 : heisO ψ S T a f = f) (h2 : heisO ψ S T a (heisO ψ S T u f) = heisO ψ S T u f) :
@@ -155,13 +155,13 @@ theorem heisO_add_two (ψ : AddChar (AF D.host.F) ℂ) (u a : WO S T) (f : WO S 
   abel
 
 /- English proof (translation)
-Take `⟨-, -, h3, h4, -⟩` from `HatLat.hatA_tens D S T C Λ L hΛ hL`. Take `⟨U, hU, hUf⟩` from `hf.level`. Take `⟨U', hU', hUf'⟩` from `(FinTranslate.isThetaFunO_heisO C.std.1.1 C.std.1.2.1 hf (h3 _ (neg_mem hu)).1).level`. Take `⟨N, hN, hNU⟩` from `h4 (U ⊓ U') (hU.inter hU')`. Take `⟨y, hy, u', hu', e⟩` from `(h3 u hu).2 (2 * (N * M)) (by positivity)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm` using `nsmul_mem hu' M`. Establish `hfin` using `(h3 _ (nsmul_mem hm N)).1`. Use `⟨y, hy, (2 * N) • u', nsmul_mem hu' _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, smul_smul]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: -finW S T y = -u + 2 • N • M • u'`. Rewrite using `[e, smul_smul, smul_smul, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `heisO_add_two _ _ _ _ (hUf _ (hNU _ hm).1 hfin) (hUf' _ (hNU _ hm).2 hfin)`.
+A detailed English derivation is pending.
 -/
 theorem exists_approx (C : Ctx S T) {Λ : Lt D.host.E S.rank} {L : Lt D.host.E T.rank}
     (hΛ : Λ.FG ∧ Submodule.span D.host.E (Λ : Set (Fin S.rank → D.host.E)) = ⊤)
@@ -184,7 +184,7 @@ theorem exists_approx (C : Ctx S T) {Λ : Lt D.host.E S.rank} {L : Lt D.host.E T
     exact heisO_add_two _ _ _ _ (hUf _ (hNU _ hm).1 hfin) (hUf' _ (hNU _ hm).2 hfin)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx 0 (RecSum.isSB_sum (∅ : Finset ι) φ hφ)).2.1 0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Conclude with `((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ (hφ a)).1 _ (RecSum.isSB_sum s φ hφ)).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Th_sum (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {ι : Type} (s : Finset ι)
     (φ : ι → TF S.rank C.g) (hφ : ∀ i, SW.IsSB (φ i)) : C.Th x (∑ i ∈ s, φ i) = ∑ i ∈ s, C.Th x (φ i) := by
@@ -195,7 +195,7 @@ theorem Th_sum (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {ι 
     exact ((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ (hφ a)).1 _ (RecSum.isSB_sum s φ hφ)).1
 
 /- English proof (translation)
-Establish `h` using `fun i => ((heisG_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even).2.2.2 (y i) v hv).1`. Rewrite using `[Th_sum C hx _ _ fun i => TensVac.sb_smul _ (h i)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ (h i)).2.1, ← finW_neg, (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ hv).2.2.1, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Th_sum_heis (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom) {ι : Type} [Fintype ι]
     (a : ι → ℂ) (y : ι → Matrix (Fin S.rank) (Fin T.rank) D.host.E) {v : TF S.rank C.g} (hv : SW.IsSB v) :
@@ -206,33 +206,29 @@ theorem Th_sum_heis (C : Ctx S T) {x : Frame C.X.Ψ T.rank} (hx : x ∈ C.X.dom)
   rw [(GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ (h i)).2.1, ← finW_neg, (GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx _ hv).2.2.1, neg_neg]
 
 /- English proof (translation)
-Introduce `D S T C om hom Lv hn M hw hM0 hM v₀ hv₀ B hB`. Establish `hx : C.xB B ∈ C.X.dom` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1`. Take `⟨hX, -, -, hl, -, hd, -⟩` from `level_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even Lv hn`. Establish `hS` using `full_stdL D.host.E S.rank`. Establish `hSV` using `Base.stdL_mem_Vset (E := D.host.E) S.rank M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX0 : C.X.Λ.FG ∧ _` using `⟨hX.1.1, (hl _ hX).2.1⟩`. Establish `hone : IsMov (fmtC S 1) (stdL D.host.E S.rank) (stdL D.host.E S.rank)`. Rewrite using `[fmtC_one]`. Conclude with `(GlobalTheory.T.finiteAdelicLatticeTransport_laws D _ _ hS).2.1`. Establish `H1 : ∀ h : GA D S, ∃ ep : ℂ, ∀ Λ : Lt D.host.E S.rank, h ∈ GfC S → TrivAt S (Ideal.span {(M : 𝓞 D.host.F)}) h → Λ.FG → IsMov (fmtC S h) (stdL D.host.E S.rank) Λ → ‖ep‖ = 1 ∧ ∀ (g : GA D T) (L : Lt D.host.E T.rank), g ∈ GfC T → TrivAt T (C.under Lv) g → L.FG → IsMov (fmt T g) C.X. …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Distinguish the cases in `H : ∃ Λ : Lt D.host.E S.rank, h ∈ GfC S ∧ TrivAt S (Ideal.span {(M : 𝓞 D.host.F)}) h ∧ Λ.FG ∧ IsMov (fmtC S h) (stdL D.host.E S.rank) Λ`. Take `⟨Λ, h1, h2, h3, h4⟩` from `H`. Take `⟨ep, hep⟩` from `GlobalTheory.T.definite_group_vacuum_phase_independent_of_lattice D S T C om hom Lv hn M hw hM0 hM v₀ hv₀ B hB h Λ h1 h2 h3 h4`. Use `⟨ep, fun Λ' _ _ h3' h4' => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(((GlobalTheory.T.finiteAdelicLatticeTransport_laws D _ _ hS).2.2.2 _ _ (fmtC_mul_inv S h)).2 Λ h3 h4).2.2.1 Λ' h3' h4']`. Conclude with `hep`. Conclude with `⟨1, fun Λ h1 h2 h3 h4 => (H ⟨Λ, h1, h2, h3, h4⟩).elim⟩`. Establish `H2 : ∀ g : GA D T, ∃ c : ℂ, ∀ L : Lt D.host.E T.rank, g ∈ GfC T → TrivAt T (C.under Lv) g → L.FG → IsMov (fmt T g) C.X.Λ L → ‖c‖ = 1 ∧ om (1, g) (C.Th (C.xB B) (v₀ C.X.Λ)) = c • C.Th (C.xB B) (v₀ L)`. Introduce `g`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `H : ∃ L : Lt D.host.E T.rank, g ∈ GfC T ∧ TrivAt T (C.under Lv) g ∧ L.FG ∧ IsMov (fmt T g) C.X.Λ L`. Take `⟨L, h1, h2, h3, h4⟩` from `H`. Establish `hL : L ∈ Lv.lats` using `((GlobalTheory.T.self_dual_lattices_at_level D S T C).2 Lv g L h3 h4).2.1 h2`. Establish `hm` using `((GlobalTheory.T.finiteAdelicLatticeTransport_laws D _ _ hX0).2.2.2 _ _ (fmt_mul_inv T g)).2 L h3 h4`. Establish `hc : conjI Lv.𝔪 ≠ ⊥` using `fun e => Lv.proper (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Lv.cop` as an intermediate fact. Rewrite using `[e, ← Ideal.zero_eq_bot, isCoprime_zero_right, Ideal.isUnit_iff] at this)` and apply the resulting hypothesis. Take `⟨c, hc⟩` from `GlobalTheory.T.finitePoints_carry_latticeVacuum_to_moved_vacuum D S T C om hom Lv.w Lv.w_int Lv.w_tr hw M _ hSV _ hSV _ _ (hl _ hX).1 (hl _ hL).1 1 (one_mem _) g h1 hone (hm.2.2.2.2 _ _ Lv.ne_bot hc).2.1 _ _ (hv₀ _ hX) (hv₀ _ hL) B hB`. Use `⟨c, fun L' _ _ h3' h4' => ?_⟩` and prove the remaining obligations. Rewrite using `[hm.2.2.1 L' h3' h4']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc`. Conclude with `⟨1, fun L h1 h2 h3 h4 => (H ⟨L, h1, h2, h3, h4⟩).elim⟩`. Use `choose ep hep using H1`. Use `choose c hc using H2`. Use `⟨ep, c, fun h Λ g L h1 h2 h3 h4 g1 g2 g3 g4 => ⟨(hep h Λ h1 h2 h3 h4).1, (hc g L g1 g2 g3 g4).1, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : L ∈ Lv.lats` using `((GlobalTheory.T.self_dual_lattices_at_level D S T C).2 Lv g L g3 g4).2.1 g2`. Establish `hΛ : Λ ∈ Vset D.host.E S.rank M` using `(GlobalTheory.T.self_dual_lattices_at_level D S T C).1 M h Λ hM0 h2 h3 h4`. Establish `hΛ0 : Λ.FG ∧ _` using `⟨h3, (((GlobalTheory.T.finiteAdelicLatticeTransport_laws D _ _ hS).2.2.2 _ _ (fmtC_mul_inv S h)).2 Λ h3 h4).1⟩`. Establish `hm` using `((GlobalTheory.T.finiteAdelicLatticeTransport_laws D _ _ hX0).2.2.2 _ _ (fmt_mul_inv T g)).2 L g3 g4`. Establish `h𝔠 : Ideal.span {2} * conjI Lv.𝔪 ≠ ⊥` using `fun e => Lv.proper (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `RecSum.cop_level Lv` as an intermediate fact. Rewrite using `[e, ← Ideal.zero_eq_bot, isCoprime_zero_left, Ideal.isUnit_iff] at this)` and apply the resulting hypothesis. Establish `hL0` using `full_smul ⟨g3, hm.1⟩ h𝔠`. Establish `hmov` using `(GlobalTheory.T.completedTensorLattice_lattice_vacuum_transport D S T C h g _ _ _ _ h4 (hm.2.2.2.2 _ _ h𝔠 h𝔠).1).1`. Establish `hV0` using `RecSum.isVac_unitv C.idx C.sympl C.even hSV (hl _ hX).1 (hv₀ _ hX)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hV` using `RecSum.isVac_unitv C.idx C.sympl C.even hΛ (hl _ hL).1 (hv₀ _ hL)`. Establish `e0 : unitv (projA C.X C.bas Lv.w (tens (stdL D.host.E S.rank) (Lv.sh C.X.Λ)) (v₀ C.X.Λ)) = v₀ C.X.Λ`. Rewrite using `[(RecSum.unitv_proj C.idx C.sympl C.even hSV (hl _ hX).1 (hv₀ _ hX) (hv₀ _ hX)).2, (hv₀ _ hX).2.1]`. Simplify using the standard rewrite rules. Establish `t0 : C.IsTh (C.Th (C.xB B) (v₀ C.X.Λ))` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx _ (hv₀ _ hX).1).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `t1` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx _ hV.1).1.1`. Establish `key : om (h, g) (C.Th (C.xB B) (v₀ C.X.Λ)) = (ep h * c g) • C.Th (C.xB B) (unitv (projA C.X C.bas Lv.w (tens Λ (Lv.sh L)) (v₀ L)))`. Rewrite using `[show ((h, g) : GA D S × GA D T) = (h, 1) * (1, g) by simp, map_mul, Module.End.mul_apply, (hc g L g1 g2 g3 g4).2, map_smul, (hep h Λ h1 h2 h3 h4).2 g L g1 g2 g3 g4, smul_smul, mul_comm]`. Use `haveI := RecSum.finite_J Lv`. Use `haveI : Fintype Lv.J := Fintype.ofFinite _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨f, f1, f2, f3, -⟩` from `RecSum.exists_reps C.idx C.sympl C.even hn hM hSV (RecSum.near_of_mem hX)`. Establish `hu : ∀ i, actO S T h g (finW S T (f i)) ∈ hatA S T (tens Λ ((Ideal.span {2} * conjI Lv.𝔪) • L))` using `fun i => (hmov _).2 ⟨_, ((HatLat.hatA_tens D S T C _ _ hS (full_smul hX0 h𝔠)).2.1 _).2 (f1 i), rfl⟩`. Use `choose f' f1' u' hu' eu er using fun i => exists_approx C hΛ0 hL0 t1 (hu i) hM0`. Establish `hcong : ∀ i k, Cong C.X Lv.𝔪 (f' i k) (f i k)` using `fun i => GlobalTheory.T.rows_congr_of_trivial_at_level D S T C Lv hn M hw hM0 hM h Λ g L h1 h2 h3 h4 g1 g2 g3 g4 _ _ (by`. Rewrite using `[eu i, sub_add_cancel_left]`.
-
-Conclude with `neg_mem (nsmul_mem_hatA (fun y hy => nsmul_mem_tens hM hy) (hu' i)))`. Rewrite using `[RecSum.phi_eq_sum C.idx C.sympl C.even hn hM hSV hX v₀ hV0 f f1 f2 f3, RecSum.phi_eq_sum C.idx C.sympl C.even hn hM hΛ hL v₀ hV f' f1' (fun i j e => f2 i j fun k => RecSum.cong_trans (RecSum.cong_symm (hcong i k)) (RecSum.cong_trans (e k) (hcong j k))) (fun y hy => (f3 y hy).imp …`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hom.om_heis h g _ _ t0, key, actO_neg, hd _ _ (hcong i), er i, smul_comm (ep h * c g)]`. Use `congr 1`.
-
-Conclude with `(FinTranslate.heisL S T C.ψ _).map_smul _ _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem om_Th_phi : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsWeak C.ψ S T om → ∀ (Lv : SW.Level C.X) (hn : T.rank ≤ S.rank) (M : ℕ), IdemTwo Lv.w → 0 < M → (M : 𝓞 D.host.E) ∈ Lv.𝔪 → ∀ v₀ : Lt D.host.E T.rank → TF S.rank C.g, (∀ L ∈ Lv.lats, IsVac C.X C.bas Lv.w (tens (stdL D.host.E S.rank) (Lv.sh L)) (v₀ L)) → ∀ B, C.IsB B → ∃ (ep : GA D S → ℂ) (c : GA D T → ℂ), ∀ (h : GA D S) (Λ : Lt D.host.E S.rank) (g : GA D T) (L : Lt D.host.E T.rank), h ∈ GfC S → TrivAt S (Ideal.span {(M : 𝓞 D.host.F)}) h → Λ.FG → IsMov (fmtC S h) (stdL D.host.E S.rank) Λ → g ∈ GfC T → TrivAt T (C.under Lv) g → L.FG → IsMov (fmt T g) C.X.Λ L → ‖ep h‖ = 1 ∧ ‖c g‖ = 1 ∧ om (h, g) (C.Th (C.xB B) (Lv.phi C.bas hn v₀ C.X.Λ (stdL D.host.E S.rank))) = (ep h * c g) • (C.Th (C.xB B) (Lv.phi C.bas hn v₀ L Λ)) := by
   intro D S T C om hom Lv hn M hw hM0 hM v₀ hv₀ B hB

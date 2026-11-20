@@ -10,13 +10,13 @@ namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 open Formalism.NG
 
 /- English proof (translation)
-Use `haveI hKinf : Infinite (AlgebraicClosure k) := by first`. Consider the case `exact inferInstance`. Consider the case `exact IsAlgClosed.instInfinite`. Take `⟨S, hS⟩` from `Infinite.exists_subset_card_eq (AlgebraicClosure k) (N + 1)`. Use `haveI hfd : FiniteDimensional k (IntermediateField.adjoin k (S : Set (AlgebraicClosure k))) := IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Use `haveI : Finite (IntermediateField.adjoin k (S : Set (AlgebraicClosure k))) := Module.finite_of_finite k`. Take `⟨α, hα⟩ : ∃ α : IntermediateField.adjoin k (S : Set (AlgebraicClosure k)), IntermediateField.adjoin k {α} = ⊤` from `by first`. Consider the case `exact Field.exists_primitive_element_of_finite_top k _`. Consider the case `exact Field.exists_primitive_element k _`. Establish `hint : IsIntegral k α` using `Algebra.IsIntegral.isIntegral α`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨minpoly k α, minpoly.monic hint, minpoly.irreducible hint, ?_⟩` and prove the remaining obligations. Establish `e1 : Cardinal.mk (AdjoinRoot (minpoly k α)) = Cardinal.mk (IntermediateField.adjoin k {α})` using `Cardinal.mk_congr (IntermediateField.adjoinRootEquivAdjoin k hint).toEquiv`. Rewrite using `[e1, hα]`. Rewrite using `[Cardinal.mk_congr IntermediateField.topEquiv.toEquiv]`. Establish `hSF : ∀ x ∈ S, x ∈ IntermediateField.adjoin k (S : Set (AlgebraicClosure k))` using `fun x hx => IntermediateField.subset_adjoin k _ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hle : (S.card : Cardinal) ≤ Cardinal.mk (IntermediateField.adjoin k (S : Set (AlgebraicClosure k)))`. Establish `hinj : Function.Injective (fun x : S => (⟨x, hSF x x.2⟩ : IntermediateField.adjoin k (S : Set (AlgebraicClosure k))))` using `fun a b h => Subtype.ext (by have h' := congrArg Subtype.val h; exact h')`. Simplify using `using Cardinal.mk_le_of_injective hinj`. Rewrite `hle` using `[hS]`. Conclude with `lt_of_lt_of_le (by exact_mod_cast Nat.lt_succ_self N) hle`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_irreducible_big (k : Type) [Field k] [Finite k] (N : ℕ) :
     ∃ f : k[X], f.Monic ∧ Irreducible f ∧ (N : Cardinal) < Cardinal.mk (AdjoinRoot f) := by
@@ -54,37 +54,35 @@ theorem exists_irreducible_big (k : Type) [Field k] [Finite k] (N : ℕ) :
   exact lt_of_lt_of_le (by exact_mod_cast Nat.lt_succ_self N) hle
 
 /- English proof (translation)
-Set `A` to `AdjoinRoot f`. Set `res` to `IsLocalRing.residue O`. Set `fb` to `f.map res`. Establish `: Fact (Irreducible fb)` using `⟨hirr⟩`. Set `F` to `AdjoinRoot fb`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfirr : Irreducible f` using `hf.irreducible_of_irreducible_map res f hirr`. Establish `hdom : IsDomain A` using `AdjoinRoot.isDomain_of_prime hfirr.prime`. Set `pb` to `AdjoinRoot.powerBasis' hf`. Establish `hfree : Module.Free O A` using `Module.Free.of_basis pb.basis`. Establish `hfin : Module.Finite O A` using `pb.finite`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Set `ψ : A →+* F` to `AdjoinRoot.lift ((AdjoinRoot.of fb).comp res) (AdjoinRoot.root fb) (by`. Rewrite using `[← Polynomial.eval₂_map, AdjoinRoot.eval₂_root])`. Establish `hψmk : ∀ p : O[X], ψ (AdjoinRoot.mk f p) = AdjoinRoot.mk fb (p.map res)`. Introduce `p`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AdjoinRoot.lift_mk, ← Polynomial.eval₂_map, ← AdjoinRoot.aeval_eq]`. Both sides reduce to the same expression. Establish `hres : Function.Surjective res` using `IsLocalRing.residue_surjective`. Establish `hψs : Function.Surjective ψ`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective z`. Take `⟨q, rfl⟩` from `Polynomial.map_surjective res hres p`. Conclude with `⟨AdjoinRoot.mk f q, hψmk q⟩`. Set `ϖ' : A` to `algebraMap O A ϖ`. Establish `hker : RingHom.ker ψ = Ideal.span {ϖ'}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective a`. Rewrite `ha` using `[RingHom.mem_ker, hψmk, AdjoinRoot.mk_eq_zero]`. Take `⟨qb, hqb⟩` from `ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `Polynomial.map_surjective res hres qb`. Establish `h1 : (p - f * q).map res = 0`. Rewrite using `[Polynomial.map_sub, Polynomial.map_mul, hqb, sub_self]`. Establish `h2 : C ϖ ∣ p - f * q`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `h3 : res ((p - f * q).coeff i) = 0`. Rewrite using `[← Polynomial.coeff_map, h1, Polynomial.coeff_zero]`. Rewrite `h3` using `[IsLocalRing.residue_eq_zero_iff, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `h2`. Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨AdjoinRoot.mk f h, ?_⟩` and prove the remaining obligations. Establish `h4 : AdjoinRoot.mk f p = AdjoinRoot.mk f (p - f * q)`. Rewrite using `[map_sub, map_mul, AdjoinRoot.mk_self, zero_mul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, hh, map_mul, AdjoinRoot.mk_C]`. Both sides reduce to the same expression. Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker] show ψ (AdjoinRoot.of f ϖ) = 0`. Rewrite using `[AdjoinRoot.lift_of]`. Use `show AdjoinRoot.of fb (res ϖ) = 0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(IsLocalRing.residue_eq_zero_iff ϖ).mpr hϖ.not_isUnit, map_zero]`. Establish `hmaxk : (RingHom.ker ψ).IsMaximal` using `RingHom.ker_isMaximal_of_surjective ψ hψs`. Establish `hloc : IsLocalRing A`. Use `IsLocalRing.of_unique_max_ideal ⟨RingHom.ker ψ, hmaxk, fun M hM => ?_⟩` and prove the remaining obligations. Establish `h1 : (M.comap (algebraMap O A)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ϖ ∈ M.comap (algebraMap O A)`. Rewrite using `[IsLocalRing.eq_maximalIdeal h1]`. Conclude with `hϖ.not_isUnit`. Establish `h3 : RingHom.ker ψ ≤ M`. Rewrite using `[hker, Ideal.span_singleton_le_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Conclude with `(hmaxk.eq_of_le hM.ne_top h3).symm`. Establish `hmA : IsLocalRing.maximalIdeal A = Ideal.span {ϖ'}`. Rewrite using `[← hker]`. Conclude with `(IsLocalRing.eq_maximalIdeal hmaxk).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective (algebraMap O A)` using `FaithfulSMul.algebraMap_injective O A`. Establish `hnf : ¬ IsField A` using `fun h => IsDiscreteValuationRing.not_isField O (isField_of_isIntegral_of_isField hinj h)`. Establish `hpr : (IsLocalRing.maximalIdeal A).IsPrincipal` using `⟨⟨ϖ', hmA⟩⟩`. Establish `hdvr : IsDiscreteValuationRing A` using `((IsDiscreteValuationRing.TFAE A hnf).out 0 4).mpr hpr`. Establish `hϖ' : Irreducible ϖ'` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ').mpr hmA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hdom, hdvr, hfree, hfin, ?_, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `exists_ramification O A hinj`. Establish `h1` using `he ϖ`. Rewrite `h1` using `[IsDiscreteValuationRing.addVal_uniformizer hϖ, mul_one]`. Establish `h2 : IsDiscreteValuationRing.addVal A ϖ' = 1` using `IsDiscreteValuationRing.addVal_uniformizer hϖ'`.
-
-Establish `h3 : (e : ℕ∞) = 1` using `h1.symm.trans h2`. Introduce `y`. Rewrite using `[he y, h3, one_mul]`. Establish `e1 : (A ⧸ IsLocalRing.maximalIdeal A) ≃+* (A ⧸ RingHom.ker ψ)` using `Ideal.quotEquivOfEq (by rw [hmA, hker])`. Conclude with `(e1.trans (RingHom.quotientKerEquivOfSurjective hψs)).toEquiv.cardinal_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unram_ext (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (f : O[X])
     (hf : f.Monic) (hirr : Irreducible (f.map (IsLocalRing.residue O))) :
@@ -180,11 +178,11 @@ theorem unram_ext (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
     exact (e1.trans (RingHom.quotientKerEquivOfSurjective hψs)).toEquiv.cardinal_eq
 
 /- English proof (translation)
-Introduce `O _ _ _ N`. Distinguish the cases in `hk : Finite (IsLocalRing.ResidueField O)`. Take `⟨g, hgm, hgi, hgN⟩` from `exists_irreducible_big (IsLocalRing.ResidueField O) N`. Establish `hlift : g ∈ Polynomial.lifts (IsLocalRing.residue O)` using `(Polynomial.mem_lifts _).2 (Polynomial.map_surjective _ IsLocalRing.residue_surjective g)`. Take `⟨f, hfmap, -, hfm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hlift hgm`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hgi`, `hgN` using `[← hfmap]`. Take `⟨h1, h2, hfree, hfin, hval, hcard⟩` from `unram_ext O f hfm hgi`. Conclude with `⟨AdjoinRoot f, inferInstance, h1, h2, inferInstance, hfree, hfin, hval, lt_of_lt_of_eq hgN hcard.symm⟩`. Establish `hinf : Infinite (IsLocalRing.ResidueField O)` using `not_finite_iff_infinite.mp hk`. Use `⟨O, inferInstance, inferInstance, inferInstance, Algebra.id O, inferInstance, inferInstance, fun y => rfl, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_of_lt_of_le (Cardinal.nat_lt_aleph0 N) (Cardinal.aleph0_le_mk _)`.
+A detailed English derivation is pending.
 -/
 theorem bigResidueExt : StatBigResidueExt := by
   intro O _ _ _ N

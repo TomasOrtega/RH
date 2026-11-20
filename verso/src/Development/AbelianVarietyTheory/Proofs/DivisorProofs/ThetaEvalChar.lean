@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.QLogPeriod
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ _ ε hε F G d c χ g hg t n z hz hnil E hE`. Use `haveI := F.frame.complete`. Set `Ev : MvPowerSeries (Fin d) O →ₐ[O] O` to `(t.pt n).comp (c.ev n)`. Establish `hEv : IsEval p (fun i => F.θ (z i)) Ev`. Use `⟨fun i => ?_, fun m => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `t.pt n (c.ev n (X i)) = F.θ (z i)`. Rewrite using `[(c.isEval n).1 i, hz]`. Take `⟨N, hN⟩` from `(c.isEval n).2 m`. Use `⟨N, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hN g hg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t.pt n w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t.pt n (c.ev n g) = _`. Rewrite using `[hw, map_mul, map_pow, map_natCast]`. Establish `h1 : F.θ (E g) = Ev (map F.θ g)` using `((GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p F.B F.B (Fin d) z hnil).2 E hE).2.2 O O F.θ F.θ Ev (fun _ => rfl) hEv g`. Establish `h2 : Ev (map F.θ g) = t.pt n (charElem χ n)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `t.pt n (c.ev n (map F.θ g)) = _`. Rewrite using `[hg n]`. Rewrite using `[h1, h2, ← GlobalTheory.PDivGroup.muRoot_pairing, ← GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsPairing_smul hε, GlobalTheory.PDivGroup.muRoot_smul]`. Unfold `epsTate`. Rewrite using `[GlobalTheory.PDivGroup.muRoot_muTate]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_eval_char : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] (ε : PreTilt O p) (hε : IsPrimitiveSystem ε) (F : BFrame ε) (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (χ : G.dual.Tate) (g : MvPowerSeries (Fin d) F.B), (∀ n, c.ev n (map F.θ g) = charElem χ n) → ∀ (t : G.Tate) (n : ℕ) (z : Fin d → F.B), (∀ i, F.θ (z i) = t.pt n (c.x n i)) → (∀ i, ∃ N : ℕ, (p : F.B) ∣ z i ^ N) → ∀ E : MvPowerSeries (Fin d) F.B →ₐ[F.B] F.B, IsEval p z E → F.θ (E g) = zeta ε n ^ GlobalTheory.PDiv.digit n (epsPairing hε G t χ) := by
   intro p _ O _ _ _ _ ε hε F G d c χ g hg t n z hz hnil E hE

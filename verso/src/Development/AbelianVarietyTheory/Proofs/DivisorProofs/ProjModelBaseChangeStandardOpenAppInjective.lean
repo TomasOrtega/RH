@@ -13,7 +13,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc.BaseInj
 
 /- English proof (translation)
-The claim follows from `fnOf_resG (X := Y) (U := ⊤) (V := U) le_top h (q.appTop.hom x)`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_appLE_top {Y S : Scheme.{0}} [IsIntegral Y] (q : Y ⟶ S) (U : Y.Opens) (e : U ≤ q ⁻¹ᵁ ⊤)
     (h : genericPoint Y ∈ U) (x : Γ(S, ⊤)) :
@@ -21,7 +21,7 @@ theorem fnOf_appLE_top {Y S : Scheme.{0}} [IsIntegral Y] (q : Y ⟶ S) (U : Y.Op
   fnOf_resG (X := Y) (U := ⊤) (V := U) le_top h (q.appTop.hom x)
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun t => t.hom x) (Scheme.Hom.appLE_comp_appLE f s ⊤ U (f ⁻¹ᵁ U) le_top le_rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_appLE_top {Y Z S : Scheme.{0}} (f : Y ⟶ Z) (s : Z ⟶ S) (U : Z.Opens) (x : Γ(S, ⊤)) :
     (f.app U).hom ((s.appLE ⊤ U le_top).hom x) = ((f ≫ s).appLE ⊤ (f ⁻¹ᵁ U) le_top).hom x := by
@@ -29,7 +29,7 @@ theorem app_appLE_top {Y Z S : Scheme.{0}} (f : Y ⟶ Z) (s : Z ⟶ S) (U : Z.Op
   exact congrArg (fun t => t.hom x) (Scheme.Hom.appLE_comp_appLE f s ⊤ U (f ⁻¹ᵁ U) le_top le_rfl)
 
 /- English proof (translation)
-The claim follows from `(congrArg _ (app_appLE_top f s U x)).trans (fnOf_appLE_top (f ≫ s) (f ⁻¹ᵁ U) le_top h x)`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_app_appLE_top {Y Z S : Scheme.{0}} [IsIntegral Y] (f : Y ⟶ Z) (s : Z ⟶ S) (U : Z.Opens)
     (h : genericPoint Y ∈ f ⁻¹ᵁ U) (x : Γ(S, ⊤)) :
@@ -37,7 +37,7 @@ theorem fnOf_app_appLE_top {Y Z S : Scheme.{0}} [IsIntegral Y] (f : Y ⟶ Z) (s 
   (congrArg _ (app_appLE_top f s U x)).trans (fnOf_appLE_top (f ≫ s) (f ⁻¹ᵁ U) le_top h x)
 
 /- English proof (translation)
-Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (ρ r) = (spMap ρ).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)` using `congrArg (fun t => t.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ρ))`. Rewrite using `[h1, app_appLE_top, w]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem const_agree {R R₁ : Type} [CommRing R] [CommRing R₁] (ρ : R →+* R₁) {P Z : Scheme.{0}} (p : P ⟶ Sp R)
     (g : Z ⟶ P) (s : Z ⟶ Sp R₁) (w : g ≫ p = s ≫ spMap ρ) (V : P.Opens) (r : R) :
@@ -50,21 +50,19 @@ theorem const_agree {R R₁ : Type} [CommRing R] [CommRing R₁] (ρ : R →+* R
   rfl
 
 /- English proof (translation)
-Introduce `R F _ _ _ c₀ N hN P _ p ψ Dp hM R₁ _ _ ρ hρ hc Y _ _ _ q θ D₁ hθ hld _ _ m hff hloc hm k hk b hb`. Distinguish the cases in `hb0 : b = 0`. Establish `hV : Dp k b = ⊥` using `eq_bot_iff.2 fun x hx => ((hM.gen k hk b hb).1 (gen_mem hx) hb0).elim`. Rewrite using `[hV]`. Establish `: Subsingleton Γ(pullback p (spMap ρ), (pullback.fst p (spMap ρ)) ⁻¹ᵁ (⊥ : P.Opens))` using `inferInstanceAs (Subsingleton Γ(pullback p (spMap ρ), ⊥))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `fun _ _ _ => Subsingleton.elim _ _`. Establish `hV : genericPoint P ∈ Dp k b` using `(hM.gen k hk b hb).2 hb0`. Establish `hY : genericPoint Y ∈ m ⁻¹ᵁ Dp k b` using `(hloc k hk b hb _).2 (CartierDiv.generatesAt_genericPoint _ ((map_ne_zero θ).2 hb0))`. Generalize the expression as in `hf : pullback.lift m q hm = f`. Establish `hf1 : f ≫ pullback.fst p (spMap ρ) = m` using `by rw [← hf, pullback.lift_fst]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hf2 : f ≫ pullback.snd p (spMap ρ) = q` using `by rw [← hf, pullback.lift_snd]`. Use `clear hf hm hloc`. Substitute `hf1 hf2` using the available equality. Use `(injective_iff_map_eq_zero (f.app _).hom).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨n, a, r, rfl⟩` from `GlobalTheory.T.sections_preimage_affine_baseChange_eq_sum_products R R₁ ρ P p (Dp k b) (hM.affine k hk b hb) x`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Algebra R R₁ := ρ.toAlgebra`. Use `letI : Algebra R Γ(P, Dp k b) := ((p.appLE ⊤ (Dp k b) le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).toAlgebra`. Establish `hsum : ∑ i, θ ((ψ.comp (fnOf (Dp k b) hV)) (a i)) * GlobalTheory.Desc.cst (f ≫ pullback.snd p (spMap ρ)) (r i) = 0`. Use `congrArg (fnOf (f ⁻¹ᵁ (pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b) hY) hx` as an intermediate fact. Rewrite `this` using `[map_zero, map_sum, map_sum]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Use `congr 1`. Conclude with `(GlobalTheory.T.rationalFunction_app_of_preservesGenericPoint P Y _ _ hff (Dp k b) hV hY (a i)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(fnOf_app_appLE_top f _ ((pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b) hY _).symm`. Establish `hz` using `GlobalTheory.T.sum_tmul_eq_zero_of_flat_linearlyDisjoint_subring R R₁ Γ(P, Dp k b) F Y.functionField hρ c₀ (ψ.comp (fnOf (Dp k b) hV)) _ θ hc (ψ.injective.comp (fnOf_injective _ hV)) (by`. Rewrite using `[← hM.const]`. Use extensionality with `t`. Conclude with `congrArg ψ (fnOf_appLE_top p _ le_top hV _)) hθ hld n a r hsum`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `g` to `(pullback.fst p (spMap ρ)).app (Dp k b)`. Set `s : R₁ →+* Γ(pullback p (spMap ρ), (pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b)` to `((pullback.snd p (spMap ρ)).appLE ⊤ ((pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b) le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom`. Use `letI : Algebra R Γ(pullback p (spMap ρ), (pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b) := (s.comp ρ).toAlgebra`. Set `gA : Γ(P, Dp k b) →ₐ[R] Γ(pullback p (spMap ρ), (pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b)` to `⟨g.hom, fun t => const_agree ρ p _ _ pullback.condition _ t⟩`. Set `sA : R₁ →ₐ[R] Γ(pullback p (spMap ρ), (pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b)` to `⟨s, fun _ => rfl⟩`.
-
-Use `congrArg (Algebra.TensorProduct.lift gA sA fun _ _ => Commute.all _ _) hz` as an intermediate fact. Rewrite `this` using `[map_zero, map_sum]`. Simplify using `only [Algebra.TensorProduct.lift_tmul] at this`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_injective : ∀ (R F : Type) [CommRing R] [IsDomain R] [Field F] (c₀ : R →+* F) (N : ℕ → Set F), GradedFam c₀ N → ∀ (P : Scheme.{0}) [IsIntegral P] (p : P ⟶ Sp R) (ψ : P.functionField →+* F) (Dp : ℕ → F → P.Opens), IsModel c₀ N p ψ Dp → ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] (ρ : R →+* R₁), ρ.Flat → Function.Injective c₀ → ∀ (Y : Scheme.{0}) [IsIntegral Y] [CompactSpace Y] [QuasiSeparatedSpace Y] (q : Y ⟶ Sp R₁) (θ : F →+* Y.functionField) (D₁ : CartierDiv Y), θ.comp c₀ = (GlobalTheory.Desc.cst q).comp ρ → LinDisj c₀ (GlobalTheory.Desc.cst q) θ → AmpleDiv D₁ → (∀ k, Sec D₁ k = spanBy (GlobalTheory.Desc.cst q) (θ '' N k)) → ∀ m : Y ⟶ P, PFF (𝟙 _) m (θ.comp ψ) → (∀ k, 1 ≤ k → ∀ b ∈ N k, ∀ y, m y ∈ Dp k b ↔ y ∈ locus D₁ k (θ b)) → ∀ (hm : m ≫ p = q ≫ spMap ρ) (k : ℕ), 1 ≤ k → ∀ b ∈ N k, Function.Injective ((pullback.lift m q hm).app ((pullback.fst p (spMap ρ)) ⁻¹ᵁ Dp k b)) := by
   intro R F _ _ _ c₀ N hN P _ p ψ Dp hM R₁ _ _ ρ hρ hc Y _ _ _ q θ D₁ hθ hld _ _ m hff hloc hm k hk b hb

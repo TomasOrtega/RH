@@ -4,9 +4,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir.W
 namespace GlobalTheory.CompanionTheory.AdmDict
 
 /- English proof (translation)
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv h hh`. Simplify using `using hv ⟨h, hh⟩`. Introduce `hv h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hv h h.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fixed_eq_fixedVectors {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (K : Subgroup G) :
@@ -19,11 +19,11 @@ theorem fixed_eq_fixedVectors {G V : Type} [Group G] [AddCommGroup V] [Module �
     simpa using hv h h.2
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ`. Establish `hs : GlobalTheory.PRep.IsSmooth ρ ↔ GroundTheory.Automorphic.IsSmooth ρ` using `Iff.rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨hs.1 h1, fun K hc ho => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2 K ho hc` as an intermediate fact. Rewrite `this` using `[fixed_eq_fixedVectors]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`. Use `⟨hs.2 h1, fun K ho hc => ?_⟩` and prove the remaining obligations. Rewrite using `[fixed_eq_fixedVectors]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 K hc ho`.
+A detailed English derivation is pending.
 -/
 theorem isAdmissible_iff : ∀ {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V), GlobalTheory.PRep.IsAdmissible ρ ↔ GroundTheory.Automorphic.IsAdmissible ρ := by
   intro G V _ _ _ _ _ ρ

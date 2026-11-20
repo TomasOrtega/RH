@@ -23,7 +23,7 @@ def piSL (f : ∀ i, M i →ₛₗ[algebraMap R R'] M' i) : (∀ i, M i) →ₛ�
   map_smul' r x := funext fun i ↦ map_smulₛₗ (f i) r (x i)
 
 /- English proof (translation)
-The claim follows from `liftSemi_pi_bijective R R' J M M' f (piSL f) (fun _ _ ↦ rfl) hf`.
+A detailed English derivation is pending.
 -/
 theorem piSL_bijective [Finite J] {f : ∀ i, M i →ₛₗ[algebraMap R R'] M' i}
     (hf : ∀ i, Function.Bijective (liftSemi (f i))) : Function.Bijective (liftSemi (piSL f)) :=
@@ -44,7 +44,7 @@ def prodSL (f : M →ₛₗ[algebraMap R R'] M') (g : N →ₛₗ[algebraMap R R
   map_smul' r x := Prod.ext (map_smulₛₗ f r x.1) (map_smulₛₗ g r x.2)
 
 /- English proof (translation)
-The claim follows from `liftSemi_prod_bijective R R' M N M' N' f g (prodSL f g) (fun _ ↦ rfl) hf hg`.
+A detailed English derivation is pending.
 -/
 theorem prodSL_bijective {f : M →ₛₗ[algebraMap R R'] M'} {g : N →ₛₗ[algebraMap R R'] N'}
     (hf : Function.Bijective (liftSemi f)) (hg : Function.Bijective (liftSemi g)) :
@@ -54,13 +54,13 @@ theorem prodSL_bijective {f : M →ₛₗ[algebraMap R R'] M'} {g : N →ₛₗ[
 end Prod
 
 /- English proof (translation)
-Introduce `R R' _ _ _ C _ _ _ F F' α hn hs H`. Set `a : ∀ T : C, F.obj T →ₛₗ[algebraMap R R'] F'.obj T` to `fun T ↦ { toFun := α T, map_add' := map_add _, map_smul' := hs T }`. Establish `h : ∀ T : C, SemiHom (algebraMap R R') (α T)` using `hs`. Establish `h0 : ∀ T, Function.Bijective (liftSemi (a T))` using `fun T ↦ H T (a T) fun _ ↦ rfl`. Establish `h1 : ∀ T, Function.Bijective (liftSemi (h T).m1)` using `fun T ↦ GlobalTheory.kaehler_liftSemi_bijective R R' _ _ (α T) (h T) (a T) (fun _ ↦ rfl) (h0 T)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ T, Function.Bijective (liftSemi ((h T).mOm 2))` using `fun T ↦ GlobalTheory.FormsBaseChange.bijective_liftSemi_mOm R R' _ _ (α T) (h T) (a T) (fun _ ↦ rfl) (h0 T) (h1 T) 2`. Establish `k2` using `piSL_bijective fun T : C ↦ piSL_bijective fun T' : C ↦ piSL_bijective fun T'' : C ↦ piSL_bijective fun _ : T ⟶ T' ↦ piSL_bijective fun _ : T' ⟶ T'' ↦ h0 T''`. Establish `k1` using `piSL_bijective fun T : C ↦ piSL_bijective fun T' : C ↦ piSL_bijective fun _ : T ⟶ T' ↦ h1 T'`. Establish `k0` using `piSL_bijective h2`. Establish `k` using `prodSL_bijective k1 k0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `liftSemi_prod_bijective R R' (C2 F) (A1 F × W0 F 2) (C2 F') (A1 F' × W0 F' 2) _ _ _ ?_ k2 k` and prove the remaining obligations. Introduce `x`. Use `Prod.ext ?_ (Prod.ext ?_ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' φ ψ`. Conclude with `cechDeRhamPullbackTotalDegreeTwo_function_part _ φ ψ x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `T T' φ`. Conclude with `pullTot2_a _ φ x`. Use function extensionality and compare the values at `T`. Conclude with `pullTot2_η _ x T`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (C : Type) [Category.{0} C] [Finite C] [∀ T T' : C, Finite (T ⟶ T')] (F : C ⥤ CommAlgCat.{0} R) (F' : C ⥤ CommAlgCat.{0} R') (α : ∀ T : C, F.obj T →+* F'.obj T) (hn : ∀ {T T' : C} (φ : T ⟶ T') (b : F.obj T), α T' (mp F φ b) = mp F' φ (α T b)) (hs : ∀ (T : C) (r : R) (b : F.obj T), α T (r • b) = algebraMap R R' r • α T b), (∀ (T : C) (f : F.obj T →ₛₗ[algebraMap R R'] F'.obj T), (∀ b, f b = α T b) → Function.Bijective (liftSemi f)) → Function.Bijective (liftSemi (pullTot2 (⟨𝟭 C, α, hn, hs⟩ : CoefMap (algebraMap R R') F F'))) := by
   intro R R' _ _ _ C _ _ _ F F' α hn hs H

@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.So
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `hle : ∀ x, x ∈ maximalIdeal O ^ n → a ∣ x`. Introduce `x hx`. Rewrite `hx` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hu, Units.mul_left_dvd]`. Conclude with `hx`. Establish `hlc` using `(IsLocallyConstant.iff_eventually_eq _).1 (hz n)`. Use `((IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_).continuous` and prove the remaining obligations. Use `filter_upwards [hlc x] with y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[Ideal.Quotient.eq]`. Rewrite using `[← sub_eq_zero, ← map_sub, Lev.mk_eq_zero]`. Conclude with `hle _ hy`.
+A detailed English derivation is pending.
 -/
 private theorem cont_lev {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Γ : Type} [TopologicalSpace Γ]
     (a : O) (ha : a ≠ 0) (z : Γ → O) (hz : Alg.AdicCont (maximalIdeal O) z) :
@@ -28,15 +28,15 @@ private theorem cont_lev {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
   exact hle _ hy
 
 /- English proof (translation)
-Use `set ρ := scalRep (Lev a) θ with hρ`. Establish `hρg : ∀ g (x : Lev a), ρ g x = (θ g : O) • x` using `fun _ _ => rfl`. Establish `hmem : (fun g => Lev.mk a (z g)) ∈ Z1 ρ`. Rewrite using `[mem_Z1_iff_cocycle]`. Use `⟨hc, fun g h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, hρg, map_add, ← smul_eq_mul, map_smul]`. Set `ζ : Z1 ρ` to `⟨_, hmem⟩`. Set `q : H1 ρ` to `Submodule.Quotient.mk ζ`. Establish `hpos : 0 < Nat.card (H1 ρ)` using `Nat.card_pos`. Establish `hq : B.factorial • q = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Nat.dvd_factorial hpos hB`. Rewrite using `[hk, mul_comm, mul_nsmul, card_nsmul_eq_zero']`. Establish `hq2 : (Submodule.Quotient.mk (B.factorial • ζ) : H1 ρ) = 0`. Rewrite using `[Submodule.Quotient.mk_smul]`. Conclude with `hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hq2` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Take `⟨mb, hmb⟩` from `(mem_coboundaries1 ρ _).1 hq2`. Take `⟨m, rfl⟩` from `Lev.mk_surjective a mb`. Use `⟨m, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Lev.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hmb g` as an intermediate fact. Simplify using `only [Submodule.subtype_apply, Submodule.coe_smul_of_tower, Pi.smul_apply] at this`. Rewrite using `[map_sub, map_sub, ← nsmul_eq_mul, map_nsmul, this, hρg, ← smul_eq_mul, map_smul, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_kill {O : Type} [CommRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ] (θ : Γ →* Oˣ) (a : O) (B : ℕ)
     (hf : Finite (H1 (scalRep (Lev a) θ))) (hB : Nat.card (H1 (scalRep (Lev a) θ)) ≤ B) (z : Γ → O) (hz : Coc θ z)
@@ -67,13 +67,13 @@ private theorem lev_kill {O : Type} [CommRing O] {Γ : Type} [Group Γ] [Topolog
   rw [map_sub, map_sub, ← nsmul_eq_mul, map_nsmul, this, hρg, ← smul_eq_mul, map_smul, sub_self]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ Γ _ _ θ p B hp0 hpm hθ hfin z hz hcont`. Take `⟨g0, hg0⟩` from `hθ`. Establish `hcl : ∀ r : ℕ, ∃ m : O, ∀ g, p ^ r ∣ (B.factorial : O) * z g - ((θ g : O) * m - m)` using `fun r => lev_kill θ (p ^ r) B (hfin r).1 (hfin r).2 z hz (cont_lev (p ^ r) (pow_ne_zero r hp0) z hcont)`. Establish `hpu : ¬IsUnit p` using `(IsLocalRing.mem_maximalIdeal p).1 hpm`. Establish `hkey : ∀ g, ((θ g0 : O) - 1) * ((B.factorial : O) * z g) = ((θ g : O) - 1) * ((B.factorial : O) * z g0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Assume the negation of the conclusion as `hne`. Take `⟨n, hn⟩` from `FiniteMultiplicity.of_not_isUnit hpu (sub_ne_zero.2 hne)`. Apply `hn` to reduce the goal to its premises. Take `⟨m, hm⟩` from `hcl (n + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Establish `e : ((θ g0 : O) - 1) * ((B.factorial : O) * z g) - ((θ g : O) - 1) * ((B.factorial : O) * z g0) = ((θ g0 : O) - 1) * ((B.factorial : O) * z g - ((θ g : O) * m - m)) - ((θ g : O) - 1) * ((B.factorial : O) * z g0 - ((θ g0 : O) * m - m))` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_mul_of_dvd_right (hm g) _) (dvd_mul_of_dvd_right (hm g0) _)`. Use `⟨((θ g0 : O) - 1) * (B.factorial : O), ?_, (B.factorial : O) * z g0, ?_⟩` and prove the remaining obligations. Use `mul_ne_zero (sub_ne_zero.2 fun h => hg0 (Units.val_eq_one.1 h)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero B)`. Introduce `g _`. Rewrite using `[mul_assoc, hkey g]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.So.cobLim :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (θ : Γ →* Oˣ) (p : O) (B : ℕ), p ≠ 0 → p ∈ maximalIdeal O → (∃ g, θ g ≠ 1) → (∀ r : ℕ, Finite (H1 (scalRep (Lev (p ^ r)) θ)) ∧ Nat.card (H1 (scalRep (Lev (p ^ r)) θ)) ≤ B) → ∀ z : Γ → O, Coc θ z → Alg.AdicCont (maximalIdeal O) z → CobOn θ z ⊤ := by

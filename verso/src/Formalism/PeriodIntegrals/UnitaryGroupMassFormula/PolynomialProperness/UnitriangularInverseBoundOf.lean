@@ -8,7 +8,7 @@ noncomputable section
 namespace PI.PolynomialProperness.CA
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_apply, hu.1 j i hij, star_zero]`. Rewrite using `[conjTranspose_apply, hu.2 i, star_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ut_conjT {m : ℕ} {u : Matrix (Fin m) (Fin m) ℂ} (hu : u ∈ UTset m) : uᴴ ∈ LTset m := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -16,11 +16,11 @@ theorem ut_conjT {m : ℕ} {u : Matrix (Fin m) (Fin m) ℂ} (hu : u ∈ UTset m)
   · rw [conjTranspose_apply, hu.2 i, star_one]
 
 /- English proof (translation)
-Take `⟨w, d, hd, rfl⟩` from `h`. Use `⟨w.symm, fun a => star (d (w.symm a)), fun a => by simpa using hd (w.symm a), ?_⟩` and prove the remaining obligations. Use extensionality with `i a`. Simplify using `only [monoP, conjTranspose_apply, of_apply]`. Distinguish the cases in `h : a = w i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `h' : i = w.symm a` using `by rw [h, Equiv.symm_apply_apply]`. Rewrite using `[if_pos h, if_pos h', h']`. Establish `h' : ¬ i = w.symm a`. Introduce `h'`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h', Equiv.apply_symm_apply]`. Rewrite using `[if_neg h, if_neg h', star_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMonomial_conjT {m : ℕ} {P : Matrix (Fin m) (Fin m) ℂ} (h : IsMonomial P) : IsMonomial Pᴴ := by
   obtain ⟨w, d, hd, rfl⟩ := h
@@ -35,13 +35,13 @@ theorem isMonomial_conjT {m : ℕ} {P : Matrix (Fin m) (Fin m) ℂ} (h : IsMonom
     rw [if_neg h, if_neg h', star_zero]
 
 /- English proof (translation)
-Rewrite using `[← conjTranspose_nonsing_inv, GN.mx_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mx_inv_conjT {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : mx (Mᴴ)⁻¹ = mx M⁻¹ := by
   rw [← conjTranspose_nonsing_inv, GN.mx_conjTranspose]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem finish_bound {M C0 X A G : ℝ} (e : ℕ) (hm : M ≤ C0 * X ^ e) (hX : 0 ≤ X) (hXY : X ≤ A * G) :
     M ≤ max C0 0 * A ^ e * G ^ e := by
@@ -52,7 +52,7 @@ theorem finish_bound {M C0 X A G : ℝ} (e : ℕ) (hm : M ≤ C0 * X ^ e) (hX : 
     _ = max C0 0 * A ^ e * G ^ e := by rw [mul_pow]; ring
 
 /- English proof (translation)
-Rewrite using `[Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_eq (r : ℕ) : (r + 1 - 1) * (r + 1) = r * (r + 1) := by
   rw [Nat.add_sub_cancel]
@@ -63,23 +63,21 @@ namespace PI.PolynomialProperness
 
 open CA in
 /- English proof (translation)
-Introduce `k r z z' γ hmono`. Take `⟨C1, h1⟩` from `h (r + 1) (Zhat k r z z' γ) hmono`. Take `⟨C2, h2⟩` from `h (r + 1) (Zhat k r z z' γ)ᴴ (isMonomial_conjT hmono)`. Take `⟨CZ, hCZ⟩` from `hZ k r z z'`. Use `set A : ℝ := 1 + max CZ 0 with hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set e : ℕ := r * (r + 1) with he`. Establish `hzg : ∀ g : B.Mat k r, 1 ≤ B.gN g → 1 + mx (Zhat k r z z' g) ≤ A * B.gN g`. Introduce `g hg`. Establish `h3` using `hCZ g`. Establish `h4 : CZ * B.gN g ≤ max CZ 0 * B.gN g` using `mul_le_mul_of_nonneg_right (le_max_left _ _) (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hA]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hX : ∀ g : B.Mat k r, 0 ≤ 1 + mx (Zhat k r z z' g)` using `fun g => by`. Use `GN.mx_nonneg (Zhat k r z z' g)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hApos : 0 ≤ A ^ e` using `pow_nonneg (by rw [hA]; have := le_max_right CZ 0; linarith) e`. Use `⟨max (max C1 0) (max C2 0) * A ^ e, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv hvl u' hu' g hg hZg`. Establish `hb` using `h1 vᴴ hvl u' hu'`. Rewrite `hb` using `[← hZg, exp_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : max C1 0 * A ^ e ≤ max (max C1 0) (max C2 0) * A ^ e` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hApos`. Establish `hG : 0 ≤ B.gN g ^ e` using `pow_nonneg (by linarith) e`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← mx_inv_conjT]`. Conclude with `(finish_bound e hb.2.2.1 (hX g) (hzg g hg)).trans (mul_le_mul_of_nonneg_right hmax hG)`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(finish_bound e hb.2.2.2 (hX g) (hzg g hg)).trans (mul_le_mul_of_nonneg_right hmax hG)`. Introduce `u hu v' hv' hPv g hg hZg`. Establish `hl : v'ᴴ ∈ LPg (Zhat k r z z' γ)ᴴ`. Use `⟨ut_conjT hv', ?_⟩` and prove the remaining obligations. Establish `e1 : ((Zhat k r z z' γ)ᴴ)⁻¹ * v'ᴴ * (Zhat k r z z' γ)ᴴ = (Zhat k r z z' γ * v' * (Zhat k r z z' γ)⁻¹)ᴴ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_nonsing_inv, Matrix.mul_assoc]`. Rewrite using `[e1]`. Conclude with `ut_conjT hPv`. Establish `hb` using `h2 v'ᴴ hl u hu`. Establish `e2 : v'ᴴ * (Zhat k r z z' γ)ᴴ * u = (Zhat k r z z' g)ᴴ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hZg, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite `hb` using `[e2, GN.mx_conjTranspose (Zhat k r z z' g), exp_eq]`. Establish `hmax : max C2 0 * A ^ e ≤ max (max C1 0) (max C2 0) * A ^ e` using `mul_le_mul_of_nonneg_right (le_max_right _ _) hApos`. Establish `hG : 0 ≤ B.gN g ^ e` using `pow_nonneg (by linarith) e`. Prove the components needed by the constructor for the conclusion.
-
-Conclude with `(finish_bound e hb.2.2.2 (hX g) (hzg g hg)).trans (mul_le_mul_of_nonneg_right hmax hG)`. Rewrite using `[← mx_inv_conjT]`. Conclude with `(finish_bound e hb.2.2.1 (hX g) (hzg g hg)).trans (mul_le_mul_of_nonneg_right hmax hG)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitriangular_inverse_bound_of (h : MonomialFactorizationBound) (hZ : ZhatBound) : UnitriangularInversePolynomialBound := by
   intro k r z z' γ hmono
@@ -129,7 +127,7 @@ theorem unitriangular_inverse_bound_of (h : MonomialFactorizationBound) (hZ : Zh
       exact (finish_bound e hb.2.2.1 (hX g) (hzg g hg)).trans (mul_le_mul_of_nonneg_right hmax hG)
 
 /- English proof (translation)
-The claim follows from `unitriangular_inverse_bound_of h zhatBound`.
+A detailed English derivation is pending.
 -/
 theorem unitriangular_inverse_bound (h : MonomialFactorizationBound) : UnitriangularInversePolynomialBound := unitriangular_inverse_bound_of h zhatBound
 

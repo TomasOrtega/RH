@@ -18,16 +18,14 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 namespace GlobalTheory.MomN
 
 /- English proof (translation)
-The claim follows from `contDiffOn_univ.1 (h.contDiffOn uniqueDiffOn_univ)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_of_analytic {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : V → ℂ}
     (h : AnalyticOnNhd ℂ f Set.univ) : ContDiff ℂ ⊤ f :=
   contDiffOn_univ.1 (h.contDiffOn uniqueDiffOn_univ)
 
 /- English proof (translation)
-Establish `hd : Differentiable ℂ (Formalism.L2.Th1.F.opU L s f)`. Establish `h1 : Differentiable ℂ (fun z : ℂ => f (z + s))` using `hf.comp (differentiable_id.add_const s)`. Establish `h2 : Differentiable ℂ (fun z : ℂ => Complex.exp (-(Real.pi : ℂ) * Formalism.L2.Th1.F.herm L z s - (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L s s / 2))`. Unfold `Formalism.L2.Th1.F.herm`. Use `fun_prop`.
-
-Conclude with `h1.mul h2`. Conclude with `hd.contDiff`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_opU_one (L : PeriodPair) (s : ℂ) {f : ℂ → ℂ} (hf : Differentiable ℂ f) :
     ContDiff ℂ ⊤ (Formalism.L2.Th1.F.opU L s f) := by
@@ -41,9 +39,9 @@ theorem contDiff_opU_one (L : PeriodPair) (s : ℂ) {f : ℂ → ℂ} (hf : Diff
   exact hd.contDiff
 
 /- English proof (translation)
-Establish `h1 : (((Real.sqrt m : ℝ) : ℂ)) ^ 2 = (m : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg m)]`. Simplify using the standard rewrite rules. Establish `h2 : ‖ι ((Real.sqrt m : ℝ) : ℂ)‖ ^ 2 = 1`. Rewrite using `[← norm_pow, ← map_pow, h1, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.MomOne.Basic.norm_nat_eq_one hm.symm`. Establish `h3 : ‖ι ((Real.sqrt m : ℝ) : ℂ)‖ = 1`. Use `norm_nonneg (ι ((Real.sqrt m : ℝ) : ℂ))` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg (‖ι ((Real.sqrt m : ℝ) : ℂ)‖ - 1), sq_nonneg (‖ι ((Real.sqrt m : ℝ) : ℂ)‖ + 1)]`. Rewrite using `[map_inv₀, norm_inv, h3, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sqrt_inv {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) {m : ℕ} (hm : Nat.Coprime m q) :
     ‖ι (((Real.sqrt m : ℝ) : ℂ)⁻¹)‖ = 1 := by
@@ -58,42 +56,38 @@ theorem norm_sqrt_inv {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) {m : ℕ
   rw [map_inv₀, norm_inv, h3, inv_one]
 
 /- English proof (translation)
-The claim follows from `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm).1 (by rw [← norm_pow, ← map_pow, hz, map_one, norm_one])`.
+A detailed English derivation is pending.
 -/
 theorem norm_root {q : ℕ} [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) {z : ℂ} {m : ℕ} (hm : m ≠ 0) (hz : z ^ m = 1) :
     ‖ι z‖ = 1 :=
   (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm).1 (by rw [← norm_pow, ← map_pow, hz, map_one, norm_one])
 
 /- English proof (translation)
-Introduce `D cc δ B hcc hδ q _ hq2 hjac hcop ι δ₀ θ Ω hPer t n hn hnt`. Take `⟨g, e, hS, hidx, he, hten⟩` from `GlobalTheory.T.exists_standard_isometry_fourthPower_split_prime D cc δ B hcc hδ q hq2 hjac hcop ι`. Establish `hmem : B.thMM ∈ Formalism.L2.Th1.H.Th (Formalism.L2.Th1.H.matH (hOne B.L D.what₂.Tau)) (Formalism.L2.Th1.H.alphaQ B.cq (Formalism.L2.Th1.H.matH (hOne B.L D.what₂.Tau))) B.lamM` using `(thM_spec B.L B.ω₀ B.cq B.lamM B.gC B.kappa (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ) B.kappa_ne_zero).1`. Establish `hUs : ContDiff ℂ ⊤ (Formalism.L2.Th1.H.opU (Formalism.L2.Th1.H.matH (hOne B.L D.what₂.Tau)) t B.thMM)` using `contDiff_of_analytic (Formalism.L2.Th1.H.opUAnalytic (D.what₂.Tau → ℂ) _ t B.thMM hmem.1)`. Establish `hthd : Differentiable ℂ B.th0` using `(Formalism.L2.Th1.F.th0Basic B.L B.ω₀ hS.per hS.half).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, hSr⟩` from `(Formalism.L2.Th1.H.repsExist _ _ _ hS.idx₁).1`. Establish `hshape` using `Formalism.L2.Th1.H.quadraticSemicharacter_identity_reformulated₂ B.L B.ω₀ D.what₂.Tau (hOne B.L D.what₂.Tau) B.lamM _ _ g hS e B.thMM hten S hSr t`. Establish `hidxC : Nat.Coprime (Formalism.L2.Th1.H.relIdx (Formalism.L2.Th1.H.stdLat B.L (Fin 4 × D.what₂.Tau)) (Formalism.L2.Th1.H.imgLat (g : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (Formalism.L2.Th1.H.pow4 B.lamM))) q` using `((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hidx).symm`. Use `set Im := Formalism.L2.Th1.H.imgLat (g : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (Formalism.L2.Th1.H.pow4 B.lamM) with hIm`. Use `set St := Formalism.L2.Th1.H.stdLat B.L (Fin 4 × D.what₂.Tau) with hSt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set idx := Formalism.L2.Th1.H.relIdx St Im with hidxdef`. Use `set v : Fin 4 × D.what₂.Tau → ℂ := g (fun w => t w.2) with hv`. Use `set ω : ℂ_[q] := Ω / ι δ₀ with hω`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : q = 1` using `by simpa using hn`. Conclude with `(Fact.out : q.Prime).one_lt.ne' h1`. Establish `hnv : (n : ℂ) • v ∈ Im`. Use `AddSubgroup.mem_map.2 ⟨(n : ℂ) • (fun w : Fin 4 × D.what₂.Tau => t w.2), fun a => hnt, ?_⟩` and prove the remaining obligations. Use `show g ((n : ℂ) • fun w : Fin 4 × D.what₂.Tau => t w.2) = (n : ℂ) • v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Establish `hord : ∀ x ∈ S, ∀ w, ((n * idx : ℕ) : ℂ) * (v w + x w) ∈ B.L.lattice`. Introduce `x hx w`. Establish `h1 : (n : ℂ) • (v + x) ∈ Im`. Rewrite using `[smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `add_mem hnv ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hSr.1 x hx) n`. Establish `h2` using `Formalism.L2.Th1.H.relIdx_smul_mem St Im h1`. Establish `h3` using `((AddSubgroup.mem_pi Set.univ).1 h2) w (Set.mem_univ _)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ((n * idx : ℕ) : ℂ) * (v w + x w) = (((idx : ℕ) : ℂ) • (n : ℂ) • (v + x)) w`. Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hNq : Nat.Coprime (n * idx) q` using `Nat.Coprime.mul_left hn hidxC`. Establish `hfac : ∀ x ∈ S, ∀ w, LatInt ι ω St (fun y : Fin 4 × D.what₂.Tau → ℂ => Formalism.L2.Th1.F.opU B.L (v w + x w) B.th0 (y w))`. Introduce `x hx w`. Use `GlobalTheory.T.latticeJetsAreBoundedMoments_pullback q ι ℂ (Fin 4 × D.what₂.Tau → ℂ) ω (lamOf D cc δ) St (ContinuousLinearMap.proj w) _ (contDiff_opU_one B.L _ hthd) ?_ (GlobalTheory.T.cm_theta_translates_prime_to_q_integral D cc δ B hcc hδ q hq2 hjac hcop ι δ₀ θ Ω hPer _ (n * id …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Use `⟨1, Nat.coprime_one_left q, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, ← B.lat]`. Conclude with `((AddSubgroup.mem_pi Set.univ).1 hy) w (Set.mem_univ _)`. Establish `hcd : ∀ (x : Fin 4 × D.what₂.Tau → ℂ) (w : Fin 4 × D.what₂.Tau), ContDiff ℂ ⊤ (fun y : Fin 4 × D.what₂.Tau → ℂ => Formalism.L2.Th1.F.opU B.L (v w + x w) B.th0 (y w))` using `fun x w => (contDiff_opU_one B.L _ hthd).comp (contDiff_apply ℂ ℂ w)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hprod : ∀ x : Fin 4 × D.what₂.Tau → ℂ, ContDiff ℂ ⊤ (fun y : Fin 4 × D.what₂.Tau → ℂ => ∏ w, Formalism.L2.Th1.F.opU B.L (v w + x w) B.th0 (y w))` using `fun x => contDiff_prod fun w _ => hcd x w`. Establish `hP : ∀ x ∈ S, LatInt ι ω St (fun y : Fin 4 × D.what₂.Tau → ℂ => ∏ w, Formalism.L2.Th1.F.opU B.L (v w + x w) B.th0 (y w))` using `fun x hx => (GlobalTheory.T.latticeJetsAreBoundedMoments_prod_and_sum q ι (Fin 4 × D.what₂.Tau → ℂ) ω St).1 (Fin 4 × D.what₂.Tau) (fun w y => Formalism.L2.Th1.F.opU B.L (v w + x w) B.th0 (y w)) (hcd x) (hfac x hx)`. Use `set r : (Fin 4 × D.what₂.Tau → ℂ) → ℂ := fun x => e * ((Real.sqrt idx : ℝ) : ℂ)⁻¹ * Formalism.L2.Th1.H.alphaQ B.cq (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.what₂.Tau)) x * Complex.exp (-(Real.pi : ℂ) * Complex.I * (Formalism.L2.Th1.H.altE (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.wh …`. Establish `hrn : ∀ x ∈ S, ‖ι (r x)‖ ≤ 1`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx2` using `hSr.1 x hx`. Establish `hb : ‖ι (Formalism.L2.Th1.H.alphaQ B.cq (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.what₂.Tau)) x)‖ = 1`. Apply the tactic sequence `rcases hS.betaSemi.1 x hx2 with h | h <;> simp [h]`. Establish `hph : ‖ι (Complex.exp (-(Real.pi : ℂ) * Complex.I * (Formalism.L2.Th1.H.altE (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.what₂.Tau)) v x : ℂ)))‖ = 1` using `norm_root ι (m := 2 * n) (by omega) (Formalism.L2.Th1.H.phase_root_selfDual _ Im hS.selfDual n hnv hx2)`. Simplify using `only [hr, map_mul, norm_mul, he, norm_sqrt_inv ι hidxC, hb, hph, one_mul, le_refl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set G : (Fin 4 × D.what₂.Tau → ℂ) → ℂ := fun y => ∑ x ∈ S, r x * ∏ w, Formalism.L2.Th1.F.opU B.L (v w + x w) B.th0 (y w) with hG`. Establish `hGd : ContDiff ℂ ⊤ G` using `ContDiff.sum fun x _ => contDiff_const.mul (hprod x)`. Establish `hGl : LatInt ι ω St G` using `(GlobalTheory.T.latticeJetsAreBoundedMoments_prod_and_sum q ι (Fin 4 × D.what₂.Tau → ℂ) ω St).2 _ S r _ (fun x _ => hprod x) hrn hP`. Establish `hpull : LatInt ι ω (Formalism.L2.Th1.H.pow4 B.lamM) (fun z => G (LinearMap.toContinuousLinearMap (g : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) z))`. Use `GlobalTheory.T.latticeJetsAreBoundedMoments_pullback q ι _ _ ω St _ _ G hGd ?_ hGl` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Use `⟨idx, hidxC, ?_⟩` and prove the remaining obligations. Establish `h1 : g x ∈ Im` using `AddSubgroup.mem_map.2 ⟨x, hx, rfl⟩`. Establish `h2` using `Formalism.L2.Th1.H.relIdx_smul_mem St Im h1`. Rewrite `h2` using `[Nat.cast_smul_eq_nsmul]`.
-
-Conclude with `h2`. Establish `hfun : (fun z => G (LinearMap.toContinuousLinearMap (g : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) z)) = Formalism.L2.Th1.H.tens4 (Formalism.L2.Th1.H.opU (Formalism.L2.Th1.H.matH (hOne B.L D.what₂.Tau)) t B.thMM)`. Use function extensionality and compare the values at `z`. Establish `hz` using `hshape (g z)`. Rewrite `hz` using `[LinearEquiv.symm_apply_apply]`.
-
-Rewrite using `[hz]`. Both sides reduce to the same expression. Rewrite `hpull` using `[hfun]`. Conclude with `GlobalTheory.T.latticeJetsAreBoundedMoments_of_tensorFourthPower q ι D.what₂.Tau ω B.lamM _ hUs hpull`.
+A detailed English derivation is pending.
 -/
 theorem translates_latInt : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (q : ℕ) [Fact q.Prime], q ≠ 2 → jacobiSym (-(D.host.d : ℤ)) q = 1 → Nat.Coprime (Ideal.absNorm cc) q → ∀ (ι : ℂ ≃+* ℂ_[q]) (δ₀ : ℂ) (θ : ℂ → ℂ) (Ω : ℂ_[q]), Per D.host.d ι δ₀ θ Ω → ∀ (t : D.what₂.Tau → ℂ) (n : ℕ), Nat.Coprime n q → (n : ℂ) • t ∈ B.lamM → LatInt ι (Ω / ι δ₀) B.lamM (Formalism.L2.Th1.H.opU (Formalism.L2.Th1.H.matH (hOne B.L D.what₂.Tau)) t B.thMM) := by
   intro D cc δ B hcc hδ q _ hq2 hjac hcop ι δ₀ θ Ω hPer t n hn hnt

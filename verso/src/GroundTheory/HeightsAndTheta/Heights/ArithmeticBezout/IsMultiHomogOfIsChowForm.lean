@@ -20,14 +20,14 @@ def genericIdeal {n : ℕ} (P : Ideal (MRing (PBlk n))) : Ideal (MvPolynomial (F
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[linForm, IndefiniteRowSideFullHecke.ArithBezout.linForm, map_sum, blk, Xc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_linForm (u : Fin n → ℤ) :
     rename (blk n) (linForm u) = IndefiniteRowSideFullHecke.ArithBezout.linForm u := by
   simp [linForm, IndefiniteRowSideFullHecke.ArithBezout.linForm, map_sum, blk, Xc]
 
 /- English proof (translation)
-Rewrite using `[IndefiniteRowSideFullHecke.ArithBezout.finIdeal, Ideal.mem_comap, ← rename_linForm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem linForm_mem_finIdeal (P : Ideal (MRing (PBlk n))) (u : Fin n → ℤ) :
     linForm u ∈ IndefiniteRowSideFullHecke.ArithBezout.finIdeal P ↔ IndefiniteRowSideFullHecke.ArithBezout.linForm u ∈ P := by
@@ -35,7 +35,7 @@ theorem linForm_mem_finIdeal (P : Ideal (MRing (PBlk n))) (u : Fin n → ℤ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[specFirst, IndefiniteRowSideFullHecke.ArithBezout.specFirst, aeval_eq_bind₁]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem specFirst_eq {R : Type*} [CommRing R] {e : ℕ} (f : MvPolynomial (Fin (e + 1) × Fin n) R)
     (u : Fin n → R) : specFirst f u = IndefiniteRowSideFullHecke.ArithBezout.specFirst u f := by
@@ -43,7 +43,7 @@ theorem specFirst_eq {R : Type*} [CommRing R] {e : ℕ} (f : MvPolynomial (Fin (
   rfl
 
 /- English proof (translation)
-Establish `h : (fun ij => map φ (specFirstVar u ij)) = (specFirstVar (φ ∘ u) : Fin (e + 1) × Fin n → MvPolynomial (Fin e × Fin n) S)`. Use function extensionality and compare the values at `ij`. Break down `ij with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simp [specFirstVar]`. Rewrite using `[← specFirst_eq, ← specFirst_eq, specFirst, specFirst, map_bind₁, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_specFirst {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {e : ℕ}
     (f : MvPolynomial (Fin (e + 1) × Fin n) R) (u : Fin n → R) :
@@ -56,7 +56,7 @@ theorem map_specFirst {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {
   rw [← specFirst_eq, ← specFirst_eq, specFirst, specFirst, map_bind₁, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by intros; exact zero_smul _ _), Finset.sum_apply, Fintype.sum_prod_type]`. Simplify using `[groupWeight, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_groupWeight {k : ℕ} (m : Fin k × Fin n →₀ ℕ) :
     Finsupp.weight (groupWeight k n) m = fun i => ∑ j, m (i, j) := by
@@ -66,7 +66,7 @@ theorem weight_groupWeight {k : ℕ} (m : Fin k × Fin n →₀ ℕ) :
   simp [groupWeight, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [IsMultiHomog, IsWeightedHomogeneous, IsMultihomog, mem_support_iff, weight_groupWeight, funext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_iff {R : Type*} [CommSemiring R] {e δ : ℕ}
     (f : MvPolynomial (Fin (e + 1) × Fin n) R) : IsMultiHomog δ f ↔ IsMultihomog f δ := by
@@ -74,7 +74,7 @@ theorem isMultiHomog_iff {R : Type*} [CommSemiring R] {e δ : ℕ}
     funext_iff]
 
 /- English proof (translation)
-Simplify using `only [IsMultihomog, support_map_of_injective _ hφ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isMultihomog_map_iff {R S : Type*} [CommRing R] [CommRing S] {φ : R →+* S}
     (hφ : Function.Injective φ) {e δ : ℕ} (f : MvPolynomial (Fin (e + 1) × Fin n) R) :
@@ -82,7 +82,7 @@ theorem isMultihomog_map_iff {R S : Type*} [CommRing R] [CommRing S] {φ : R →
   simp only [IsMultihomog, support_map_of_injective _ hφ]
 
 /- English proof (translation)
-The claim follows from `(isMultiHomog_iff f).mpr ((isMultihomog_map_iff (Rat.castHom ℂ).injective f).mp hf.1)`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_of_isChowForm {e δ : ℕ} {P : Ideal (MRing (PBlk n))}
     {f : MvPolynomial (Fin (e + 1) × Fin n) ℚ}
@@ -91,7 +91,7 @@ theorem isMultiHomog_of_isChowForm {e δ : ℕ} {P : Ideal (MRing (PBlk n))}
   (isMultiHomog_iff f).mpr ((isMultihomog_map_iff (Rat.castHom ℂ).injective f).mp hf.1)
 
 /- English proof (translation)
-Simplify using `only [IsRelevant, ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant, IndefiniteRowSideFullHecke.ArithBezout.finIdeal, Ideal.mem_comap, rename_X]`. Conclude with `⟨fun ⟨j, hj⟩ k => ⟨j, by cases k; exact hj⟩, fun h => h ()⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isRelevant_finIdeal_iff (W : Ideal (MRing (PBlk n))) :
     IsRelevant (IndefiniteRowSideFullHecke.ArithBezout.finIdeal W) ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant W := by
@@ -100,7 +100,7 @@ theorem isRelevant_finIdeal_iff (W : Ideal (MRing (PBlk n))) :
   exact ⟨fun ⟨j, hj⟩ k => ⟨j, by cases k; exact hj⟩, fun h => h ()⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isChowFormCycle_iff {F : Type*} [Field F] {k : ℕ} (Z : ProjCycle F n)
     (f : MvPolynomial (Fin k × Fin n) F) :
@@ -109,7 +109,7 @@ theorem isChowFormCycle_iff {F : Type*} [Field F] {k : ℕ} (Z : ProjCycle F n)
   Iff.rfl
 
 /- English proof (translation)
-Establish `hu : IsUnit (C c : MvPolynomial (Fin k × Fin n) F)` using `(isUnit_iff_ne_zero.mpr hc).map C`. Use `⟨mul_ne_zero (hu.ne_zero) hf.1, fun g => (hf.2 g).trans ?_⟩` and prove the remaining obligations. Conclude with `(hu.mul_left_dvd).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isChowForm_C_mul {F : Type*} [Field F] {I : Ideal (MvPolynomial (Fin n) F)} {k : ℕ}
     {f : MvPolynomial (Fin k × Fin n) F} (hf : IsChowForm I k f) {c : F} (hc : c ≠ 0) :
@@ -119,11 +119,11 @@ theorem isChowForm_C_mul {F : Type*} [Field F] {I : Ideal (MvPolynomial (Fin n) 
   exact (hu.mul_left_dvd).symm
 
 /- English proof (translation)
-Establish `key : ∀ δ', (∃ g, IsChowForm I k g ∧ IsMultiHomog δ' g) → δ' = δ`. Introduce and unpack `δ' ⟨g, hg, hδ'⟩`. Take `⟨a, rfl⟩ : f ∣ g` from `(hf.2 g).mp ((hg.2 g).mpr dvd_rfl)`. Take `⟨b, hb⟩ : f * a ∣ f` from `(hg.2 f).mp ((hf.2 f).mpr dvd_rfl)`. Establish `hab : a * b = 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hf.1` to reduce the goal to its premises. Rewrite using `[mul_one, ← mul_assoc, ← hb]`. Take `⟨r, hr, rfl⟩` from `(isUnit_iff_eq_C_of_isReduced (P := a)).mp (isUnit_iff_exists_inv.mpr ⟨b, hab⟩)`. Take `⟨d, hd⟩` from `ne_zero_iff.mp hf.1`. Establish `h1` using `hδ hd`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hδ' (show coeff d (f * C r) ≠ 0 by rw [mul_comm, coeff_C_mul]; exact mul_ne_zero hr.ne_zero hd)`. Conclude with `congrFun (h2.symm.trans h1) ⟨0, hk⟩`. Conclude with `le_antisymm (Nat.sInf_le ⟨f, hf, hδ⟩) (le_csInf ⟨δ, f, hf, hδ⟩ fun δ' h => (key δ' h).ge)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chowDegree_eq {F : Type*} [Field F] {I : Ideal (MvPolynomial (Fin n) F)} {k δ : ℕ}
     (hk : 0 < k) {f : MvPolynomial (Fin k × Fin n) F} (hf : IsChowForm I k f)
@@ -143,7 +143,7 @@ theorem chowDegree_eq {F : Type*} [Field F] {I : Ideal (MvPolynomial (Fin n) F)}
   exact le_antisymm (Nat.sInf_le ⟨f, hf, hδ⟩) (le_csInf ⟨δ, f, hf, hδ⟩ fun δ' h => (key δ' h).ge)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rename_linForm, fun _ => linForm_mem_finIdeal, fun _ _ _ _ => specFirst_eq, fun _ _ _ _ φ _ _ => map_specFirst φ, fun _ _ _ _ _ => isMultiHomog_iff, fun _ _ _ _ _ => isMultiHomog_of_isChowForm, fun _ => isRelevant_finIdeal_iff, fun _ _ _ _ => isChowFormCycle_iff, fun _ …`.
+Supply the required witnesses or components.
 -/
 theorem equiv :
     (∀ (n : ℕ) (u : Fin n → ℤ), rename (blk n) (linForm u) = IndefiniteRowSideFullHecke.ArithBezout.linForm u) ∧

@@ -7,15 +7,15 @@ open Matrix
 namespace GlobalTheory.Hk3.HoweG
 
 /- English proof (translation)
-Establish `: Module.Finite O N` using `Module.Finite.iff_fg.mpr hN`. Establish `: Module.Flat O N` using `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance)`. Establish `: Module.Free O N` using `Module.free_of_flat_of_isLocalRing`. Set `k` to `Module.finrank O N`. Set `B : Module.Basis (Fin k) O N` to `Module.finBasis O N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hli : LinearIndependent O (fun i => (B i : Fin n → L))` using `B.linearIndependent.map' N.subtype (Submodule.ker_subtype N)`. Establish `hliL : LinearIndependent L (fun i => (B i : Fin n → L))` using `(LinearIndependent.iff_fractionRing O L).1 hli`. Establish `hk : k ≤ n` using `by simpa using hliL.fintype_card_le_finrank`. Use `⟨fun j => if h : (j : ℕ) < k then (B ⟨j, h⟩ : Fin n → L) else 0, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Establish `hsp : N = Submodule.span O (Set.range fun i => (B i : Fin n → L))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (Submodule.map N.subtype) B.span_eq`. Rewrite `h1` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `h1.symm`. Use `hsp.le.trans (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨i, lt_of_lt_of_le i.2 hk⟩, by simp⟩`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Distinguish the cases in `h : (j : ℕ) < k`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem exists_span_fin_of_fg {L : Type} [Field L] (O : ValuationSubring L) (n : ℕ) (N : Submodule O (Fin n → L))
     (hN : N.FG) : ∃ c : Fin n → Fin n → L, N = Submodule.span O (Set.range c) := by
@@ -46,11 +46,11 @@ theorem exists_span_fin_of_fg {L : Type} [Field L] (O : ValuationSubring L) (n :
     · simp [h]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `⟨fun j => c j, fun j => (c j).2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun j => ⟨u j, hu j⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_cols_iff {L : Type} [Field L] (O : ValuationSubring L) {n : ℕ} {ι : Type} [Fintype ι]
     (M : Matrix (Fin n) ι L) (v : Fin n → L) :
@@ -69,9 +69,9 @@ theorem mem_span_cols_iff {L : Type} [Field L] (O : ValuationSubring L) {n : ℕ
     exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Introduce `L _ _ n ι _ _ M`. Set `O : ValuationSubring L` to `(Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring`. Take `⟨c, hc⟩` from `exists_span_fin_of_fg O n (Submodule.span O (Set.range fun j i => M i j)) (Submodule.fg_span (Set.finite_range _))`. Use `⟨Matrix.of fun i j => c j i, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `mem_span_cols_iff O M v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `mem_span_cols_iff O (Matrix.of fun i j => c j i) v`. Rewrite `h1` using `[hc]`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_square_span_cols : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (M : Matrix (Fin n) ι L), ∃ b : Matrix (Fin n) (Fin n) L, ∀ v : Fin n → L,

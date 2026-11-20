@@ -16,14 +16,14 @@ noncomputable section
 namespace GlobalTheory.UCanon.OpenPart
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : u = v` from `Over.OverMorphism.ext huv`. Conclude with `hu`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_left_eq {S T : Scheme.{0}} {G : Over S} [GrpObj G] {a b : T ⟶ S} (h : a = b)
     (u : Over.mk a ⟶ G) (v : Over.mk b ⟶ G) (huv : u.left = v.left) {n : ℕ} (hu : u ^ n = 1) : v ^ n = 1 := by
@@ -34,19 +34,17 @@ theorem pow_eq_one_of_left_eq {S T : Scheme.{0}} {G : Over S} [GrpObj G] {a b : 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Introduce `K _ _ κ x hx`. Set `κ' : K₀ →+* K` to `κ.comp ρ`. Establish `e₀ : spMap κ' ≫ spMap gA = spMap κ ≫ jK A`. Rewrite using `[spMap_comp', spMap_comp']`. Use `show spMap (κ.comp (ρ.comp gA)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ]`. Establish `hw : x.left ≫ tO.G.hom = spMap κ' ≫ spMap gA` using `(Over.w x).trans e₀.symm`. Set `xK : Over.mk (spMap κ') ⟶ tK.G` to `Over.homMk (k.cart.1.lift x.left (spMap κ') hw) (k.cart.1.lift_snd _ _ _)`. Establish `hxK : xK ^ l.M' = 1`. Establish `hpush : pushHom k.cart (Over.mk (spMap κ')) xK ^ l.M' = 1` using `pow_eq_one_of_left_eq e₀.symm x _ (k.cart.1.lift_fst _ _ _).symm hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(fun (u v : Over.mk (spMap κ') ⟶ tK.G) (e : pushHom k.cart (Over.mk (spMap κ')) u = pushHom k.cart (Over.mk (spMap κ')) v) => Over.OverMorphism.ext (k.cart.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w])))` to reduce the goal to its premises. Rewrite using `[map_pow, hpush, map_one]`. Set `x'` to `pushHom mK.cart (Over.mk (spMap κ')) xK`. Establish `hx' : x' ^ l.M' = 1` using `by rw [← map_pow, hxK, map_one]`. Take `⟨x₀, -, hx₀⟩` from `GlobalTheory.T.universalAbelianScheme_torsion_rational_fieldPoint Xo c φ K₀ K κ' y x' hx'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `w₀ : x₀.left ≫ Xo.univ.t.G.hom = 𝟙 _ ≫ (y ≫ pullback.fst _ _)`. Rewrite using `[Category.id_comp]`. Conclude with `Over.w x₀`. Set `s₀` to `mK.cart.1.lift x₀.left (𝟙 _) w₀`. Establish `hs₀ : s₀ ≫ tK.G.hom = 𝟙 _` using `mK.cart.1.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hK : xK.left = spMap κ' ≫ s₀`. Apply `mK.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mK.cart.1.lift_fst]`. Conclude with `hx₀`. Rewrite using `[Category.assoc, hs₀] erw [Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `k.cart.1.lift_snd _ _ _`. Establish `hover : (spMap ρ ≫ s₀ ≫ k.φ) ≫ tO.G.hom = jK A`. Rewrite using `[Category.assoc, Category.assoc, k.cart.1.w, ← Category.assoc s₀, hs₀, Category.id_comp, spMap_comp', hρ]`. Use `⟨Over.homMk (spMap ρ ≫ s₀ ≫ k.φ) hover, ?_⟩` and prove the remaining obligations. Use `show x.left = spMap κ ≫ spMap ρ ≫ s₀ ≫ k.φ`.
-
-Establish `e₁ : spMap κ ≫ spMap ρ = spMap κ'` using `spMap_comp' _ _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem torsRat_of_point {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E))
     {A : Type} [CommRing A] [IsDomain A] {K₀ : Type} [Field K₀] (gA : A →+* K₀) (ρ : K₀ →+* FractionRing A)
@@ -96,9 +94,9 @@ end GlobalTheory.UCanon.OpenPart
 namespace GlobalTheory.UCanon.OpenPart
 
 /- English proof (translation)
-Establish `hle : Submonoid.powers f ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors hf`. Establish `hu : IsUnit (algebraMap R (FractionRing R) f)` using `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hf)`. Establish `hgA : (IsLocalization.Away.lift f hu : A →+* FractionRing R).comp (algebraMap R A) = algebraMap R (FractionRing R)` using `IsLocalization.Away.lift_comp _ hu`. Establish `hinj : Function.Injective ((algebraMap A (FractionRing A)).comp (algebraMap R A))`. Rewrite using `[RingHom.coe_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsFractionRing.injective A (FractionRing A)).comp (IsLocalization.injective A hle)`. Use `⟨IsLocalization.Away.lift f hu, IsFractionRing.lift (K := FractionRing R) hinj, hgA, ?_, fun g hg => IsLocalization.ringHom_ext (Submonoid.powers f) (hg.trans hgA.symm)⟩` and prove the remaining obligations. Apply `IsLocalization.ringHom_ext (Submonoid.powers f)` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, hgA]`. Conclude with `RingHom.ext fun r => by rw [RingHom.comp_apply, IsFractionRing.lift_algebraMap, RingHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ring_facts {R : Type} [CommRing R] [IsDomain R] (f : R) (hf : f ≠ 0) (A : Type) [CommRing A] [IsDomain A]
     [Algebra R A] [IsLocalization.Away f A] :
@@ -124,25 +122,23 @@ end GlobalTheory.UCanon.OpenPart
 namespace GlobalTheory.UCanon.OpenPart
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c φ R _ _ _ hR C`. Take `⟨⟨hN, -, hIC, -⟩, -⟩` from `id hR`. Establish `hf0 : (∏ i, C.s i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => C.s_ne_zero i`. Establish `hle : Submonoid.powers (∏ i, C.s i) ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors hf0`. Use `haveI : IsDomain (Localization.Away (∏ i, C.s i)) := IsLocalization.isDomain_localization hle`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsNoetherianRing (Localization.Away (∏ i, C.s i)) := IsLocalization.isNoetherianRing (Submonoid.powers (∏ i, C.s i)) _ hN`. Use `haveI : IsIntegrallyClosed (Localization.Away (∏ i, C.s i)) := isIntegrallyClosed_of_isLocalization _ (Submonoid.powers (∏ i, C.s i)) hle`. Set `aR` to `algebraMap R (Localization.Away (∏ i, C.s i))`. Set `incl` to `(IntermediateField.inclusion c.le).toRingHom`. Take `⟨gA, ρ, hgA, hρ, hgU⟩` from `ring_facts _ hf0 (Localization.Away (∏ i, C.s i))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `eR : spMap gA ≫ spMap aR = jK R` using `by rw [spMap_comp', hgA]`. Take `⟨tO, ⟨mO⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap aR) C.t`. Take `⟨hprop, hamp, hkt⟩` from `GlobalTheory.T.isProper_relAmple_kTriv_of_trivialisations_generate R hR C.t C.P (∏ i, C.s i) (fun y => C.mono.psiUnitOn y fun p hp => hp) tO mO`. Set `s' : Sp (FractionRing R) ⟶ Sp (KA l)` to `(C.y ≫ pullback.fst _ _) ≫ Xo.s`. Take `⟨oK, ⟨mK⟩⟩` from `(GlobalTheory.UCanon.obj_pull_comp_cancel (D := Dw) (l := l)).1 Xo.s Xo.univ (C.y ≫ pullback.fst _ _) s' rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ⟨m₁⟩, ⟨m₂⟩⟩` from `C.gen`. Take `⟨k₁⟩` from `GlobalTheory.TraitOrder.cancel (Category.id_comp _) m₂ mK.toSABMap`. Take `⟨k₂⟩` from `GlobalTheory.TraitOrder.comp (Category.id_comp _) m₁ k₁`. Take `⟨k₃⟩` from `GlobalTheory.TraitOrder.cancel eR mO k₂`. Establish `htors` using `torsRat_of_point Xo c φ gA ρ hρ tO oK.t k₃ C.y mK.toSABMap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `b' : c.F →+* Localization.Away (∏ i, C.s i)` to `aR.comp C.b`. Establish `hs' : s' = spMap gA ≫ spMap (b'.comp incl)` using `by show (C.y ≫ pullback.fst _ _) ≫ Xo.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, C.y_over, ← eR]`. Simplify using `only [Category.assoc, spMap_comp']`. Take `⟨o, ho, ⟨mo⟩⟩` from `GlobalTheory.T.exists_unitaryModuliObject_spread_normal_domain Dw l c _ b' tO hprop hamp hkt htors (FractionRing R) gA s' oK hs' k₃`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨fX, ⟨hfs, ⟨mf⟩⟩, -⟩` from `Xo.rep (Sp (Localization.Away (∏ i, C.s i))) (spMap (b'.comp incl)) inferInstance o`. Establish `hfs' : fX ≫ Xo.s = spMap b' ≫ spMap incl` using `hfs.trans (spMap_comp' _ _).symm`. Substitute `ho` using the available equality. Use `⟨pullback.lift fX (spMap b') hfs', o.t, ⟨mO⟩, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨mf.toSABMap⟩`. Take `⟨g₀, rfl⟩` from `Spec.map_surjective g`. Establish `h₁ : CommRingCat.ofHom (algebraMap R (Localization.Away (∏ i, C.s i))) ≫ g₀ = CommRingCat.ofHom (algebraMap R (FractionRing R))` using `Spec.map_injective (by rw [Spec.map_comp]; exact hg)`. Establish `hg₀ : g₀ = CommRingCat.ofHom gA`. Establish `e` using `hgU g₀.hom (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg CommRingCat.Hom.hom h₁` as an intermediate fact. Simplify using `using this)`. Rewrite using `[← e]`. Both sides reduce to the same expression. Substitute `hg₀` using the available equality.
+Both sides reduce to the same expression. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, _, huK⟩` from `Xo.rep (Sp (FractionRing R)) s' inferInstance oK`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst]`. Take `⟨n₁, -⟩` from `((GlobalTheory.UCanon.obj_pull_comp_cancel (D := Dw) (l := l)).2 Xo.s (spMap (b'.comp incl)) s' Xo.univ o oK fX (spMap gA) mf).1 mo`. Conclude with `(huK _ ⟨by rw [Category.assoc, hfs]; exact hs'.symm, ⟨n₁⟩⟩).trans (huK _ ⟨rfl, ⟨mK⟩⟩).symm`.
-
-Rewrite using `[Category.assoc, pullback.lift_snd, C.y_over, ← eR, Category.assoc, spMap_comp' C.b aR]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem openCls : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ C : MonoFam Xo c φ R, OpenCls C := by
   intro E _ _ _ H Dw l Xo c φ R _ _ _ hR C

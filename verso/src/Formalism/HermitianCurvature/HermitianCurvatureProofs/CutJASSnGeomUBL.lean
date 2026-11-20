@@ -16,7 +16,7 @@ namespace S7
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hfun : (fun g : Mat k r => (Zhat k r z z' g).adjugate a b) = fun g => (-1) ^ ((b : ℕ) + a) * ((Zhat k r z z' g).submatrix b.succAbove a.succAbove).det`. Use function extensionality and compare the values at `g`. Conclude with `Matrix.adjugate_fin_succ_eq_det_submatrix _ _ _`. Rewrite using `[hfun]`. Conclude with `pd_mono (by omega) (pd_mul (pd_const _ 0) (pd_det _ fun i j => zhat_pd k r z z' _ _))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_pd (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
     U.IsPolyDeg r (fun g : Mat k r => (Zhat k r z z' g).adjugate a b) := by
@@ -28,7 +28,7 @@ theorem adj_pd (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
   exact pd_mono (by omega) (pd_mul (pd_const _ 0) (pd_det _ fun i j => zhat_pd k r z z' _ _))
 
 /- English proof (translation)
-The claim follows from `pd_sum _ fun j _ => pd_mono (by omega) (pd_mul (pd_const (c j) 0) (hf j))`.
+A detailed English derivation is pending.
 -/
 private theorem isPolyDeg_linear_combination {a : ℕ} (c : Fin (2 * r + k + 1) → ℂ) (f : Mat k r → Fin (2 * r + k + 1) → ℂ)
     (hf : ∀ j, U.IsPolyDeg a (fun g => f g j)) :
@@ -36,7 +36,7 @@ private theorem isPolyDeg_linear_combination {a : ℕ} (c : Fin (2 * r + k + 1) 
   pd_sum _ fun j _ => pd_mono (by omega) (pd_mul (pd_const (c j) 0) (hf j))
 
 /- English proof (translation)
-Establish `hfun : (fun g => (M g *ᵥ v g) i) = fun g => ∑ j ∈ Finset.univ, M g i j * v g j`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `pd_sum _ fun j _ => pd_mul (hM i j) (hv j)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_pd (M : Mat k r → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (v : Mat k r → Fin (2 * r + k + 1) → ℂ) {a b : ℕ}
@@ -48,7 +48,7 @@ theorem mv_pd (M : Mat k r → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)
   exact pd_sum _ fun j _ => pd_mul (hM i j) (hv j)
 
 /- English proof (translation)
-Establish `hfun : (fun g => herm (Hpk k r) (v g) (w g)) = fun g => ∑ i ∈ Finset.univ, star (w g i) * ∑ j ∈ Finset.univ, Hpk k r i j * v g j`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `pd_sum _ fun i _ => pd_mul (hw i) (isPolyDeg_linear_combination _ v hv)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_pd (v w : Mat k r → Fin (2 * r + k + 1) → ℂ) {a b : ℕ}
     (hv : ∀ j, U.IsPolyDeg a (fun g => v g j)) (hw : ∀ j, U.IsPolyDeg b (fun g => star (w g j))) :
@@ -60,7 +60,7 @@ theorem herm_pd (v w : Mat k r → Fin (2 * r + k + 1) → ℂ) {a b : ℕ}
   exact pd_sum _ fun i _ => pd_mul (hw i) (isPolyDeg_linear_combination _ v hv)
 
 /- English proof (translation)
-Establish `hfun : (fun g : Mat k r => (g *ᵥ u) i) = fun g => ∑ j ∈ Finset.univ, g i j * u j`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Apply the tactic sequence `exact pd_sum _ fun j _ => pd_mono (by omega) (pd_mul (pd_entry i j) (pd_const (u j) 0))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmv_pd (u : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     U.IsPolyDeg 1 (fun g : Mat k r => (g *ᵥ u) i) := by
@@ -70,9 +70,7 @@ theorem gmv_pd (u : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
   exact pd_sum _ fun j _ => pd_mono (by omega) (pd_mul (pd_entry i j) (pd_const (u j) 0))
 
 /- English proof (translation)
-Establish `hfun : (fun g : Mat k r => PI.UnitaryGroupMassFormula.GsFr.xcof k r z z' g i) = fun g => ∑ b ∈ Finset.univ, (Zhat k r z z' g).adjugate b (Fin.last r) * (g *ᵥ fvec k r z' b) i`. Use function extensionality and compare the values at `g`. Unfold `PI.UnitaryGroupMassFormula.GsFr.xcof`. Conclude with `Finset.sum_apply _ _ _`. Rewrite using `[hfun]`.
-
-Conclude with `pd_sum _ fun b _ => pd_mul (adj_pd z z' b (Fin.last r)) (gmv_pd _ i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xcof_pd (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     U.IsPolyDeg (r + 1) (fun g : Mat k r => PI.UnitaryGroupMassFormula.GsFr.xcof k r z z' g i) := by
@@ -85,7 +83,7 @@ theorem xcof_pd (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
   exact pd_sum _ fun b _ => pd_mul (adj_pd z z' b (Fin.last r)) (gmv_pd _ i)
 
 /- English proof (translation)
-Establish `hfun : (fun g => (M g).adjugate a b) = fun g => (-1) ^ ((b : ℕ) + a) * ((M g).submatrix b.succAbove a.succAbove).det`. Use function extensionality and compare the values at `g`. Conclude with `Matrix.adjugate_fin_succ_eq_det_submatrix _ _ _`. Rewrite using `[hfun]`. Conclude with `pd_mono (by omega) (pd_mul (pd_const _ 0) (pd_det _ fun i j => hM _ _))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isPolyDeg_adjugate_of_entries_isPolyDeg_one {m : ℕ} (M : Mat k r → Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
     (hM : ∀ a b, U.IsPolyDeg 1 (fun g => M g a b)) (a b : Fin (m + 1)) :
@@ -98,11 +96,11 @@ private theorem isPolyDeg_adjugate_of_entries_isPolyDeg_one {m : ℕ} (M : Mat k
   exact pd_mono (by omega) (pd_mul (pd_const _ 0) (pd_det _ fun i j => hM _ _))
 
 /- English proof (translation)
-Establish `hst : ∀ a, (fun g : Mat k r => star ((Zhat k r z z' g).adjugate (Fin.last r) a)) = fun g => ((Zhat k r z z' g)ᴴ).adjugate a (Fin.last r)`. Introduce `a`. Use function extensionality and compare the values at `g`. Rewrite using `[← Matrix.adjugate_conjTranspose]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfun : (fun g : Mat k r => PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g i) = fun g => ∑ a ∈ Finset.univ, ((Zhat k r z z' g)ᴴ).adjugate a (Fin.last r) * fvec k r z a i`. Use function extensionality and compare the values at `g`. Unfold `PI.UnitaryGroupMassFormula.GsFr.xcofL`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← congrFun (hst a) g]`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `pd_sum _ fun a _ => pd_mono (by omega) (pd_mul (isPolyDeg_adjugate_of_entries_isPolyDeg_one (fun g => (Zhat k r z z' g)ᴴ) (fun b c => zhat_star_pd k r z z' c b) a (Fin.last r)) (pd_const (fvec k r z a i) 0))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xcofL_pd (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     U.IsPolyDeg r (fun g : Mat k r => PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g i) := by
@@ -126,11 +124,11 @@ theorem xcofL_pd (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) 
       (pd_const (fvec k r z a i) 0))
 
 /- English proof (translation)
-Establish `hw : ∀ j, U.IsPolyDeg a (fun g => PI.UnitaryGroupMassFormula.GsFr.wbPart k r (v g) j)`. Introduce `j`. Distinguish the cases in `hj : r ≤ j.val ∧ j.val ≤ r + k`. Simplify `hv j` using `[PI.UnitaryGroupMassFormula.GsFr.wbPart, hj]`. Simplify `(pd_const (N := 2 * r + k + 1) (0 : ℂ) a)` using `[PI.UnitaryGroupMassFormula.GsFr.wbPart, hj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hfun : (fun g : Mat k r => PI.UnitaryGroupMassFormula.GsFr.prW k r z (v g) i) = fun g => PI.UnitaryGroupMassFormula.GsFr.wbPart k r (v g) i + (∑ j ∈ Finset.univ, star (z j) * ∑ l ∈ Finset.univ, Hpk k r j l * PI.UnitaryGroupMassFormula.GsFr.wbPart k r (v g) l) * ((Tz k r z : ℂ)⁻¹ …`. Use function extensionality and compare the values at `g`. Use `show PI.UnitaryGroupMassFormula.GsFr.wbPart k r (v g) i + herm (Hpk k r) (PI.UnitaryGroupMassFormula.GsFr.wbPart k r (v g)) z / (Tz k r z : ℂ) * z i = _`. Rewrite using `[div_eq_mul_inv, mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Conclude with `pd_add (hw i) (pd_mono (by omega) (pd_mul (isPolyDeg_linear_combination (fun j => star (z j)) _ fun j => isPolyDeg_linear_combination _ _ hw) (pd_const _ 0)))`.
+A detailed English derivation is pending.
 -/
 theorem pm_pd (z : Fin (2 * r + k + 1) → ℂ) (v : Mat k r → Fin (2 * r + k + 1) → ℂ) {a : ℕ}
     (hv : ∀ j, U.IsPolyDeg a (fun g => v g j)) (i : Fin (2 * r + k + 1)) :
@@ -154,13 +152,13 @@ theorem pm_pd (z : Fin (2 * r + k + 1) → ℂ) (v : Mat k r → Fin (2 * r + k 
     (pd_mul (isPolyDeg_linear_combination (fun j => star (z j)) _ fun j => isPolyDeg_linear_combination _ _ hw) (pd_const _ 0)))
 
 /- English proof (translation)
-The claim follows from `pm_pd z (fun g => PI.UnitaryGroupMassFormula.GsFr.xcof k r z z' g) (fun j => xcof_pd z z' j) i`.
+A detailed English derivation is pending.
 -/
 theorem omW_pd (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     U.IsPolyDeg (r + 1) (fun g : Mat k r => PI.UnitaryGroupMassFormula.GsFr.omW k r z z' g i) := pm_pd z (fun g => PI.UnitaryGroupMassFormula.GsFr.xcof k r z z' g) (fun j => xcof_pd z z' j) i
 
 /- English proof (translation)
-Establish `hfun : (fun g : Mat k r => (Hpk k r * gᴴ * Hpk k r) i j) = fun g => ∑ b ∈ Finset.univ, (∑ a ∈ Finset.univ, Hpk k r i a * star (g b a)) * Hpk k r b j`. Use function extensionality and compare the values at `g`. Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[hfun]`. Apply the tactic sequence `exact pd_sum _ fun b _ => pd_mono (by omega) (pd_mul (pd_sum _ fun a _ => pd_mul (pd_const _ 0) (pd_star_entry b a)) (pd_const _ 0))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hgh_pd (i j : Fin (2 * r + k + 1)) :
     U.IsPolyDeg 1 (fun g : Mat k r => (Hpk k r * gᴴ * Hpk k r) i j) := by
@@ -172,7 +170,7 @@ theorem hgh_pd (i j : Fin (2 * r + k + 1)) :
     (pd_mul (pd_sum _ fun a _ => pd_mul (pd_const _ 0) (pd_star_entry b a)) (pd_const _ 0))
 
 /- English proof (translation)
-Establish `h` using `pm_pd z' (fun g : Mat k r => (Hpk k r * gᴴ * Hpk k r) *ᵥ PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g) (fun j => mv_pd _ _ (fun a b => hgh_pd a b) (fun b => xcofL_pd z z' b) j) i`. Conclude with `pd_mono (by omega) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem omS_pd (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     U.IsPolyDeg (r + 1) (fun g : Mat k r => PI.UnitaryGroupMassFormula.GsFr.omS k r z z' g i) := by
@@ -181,13 +179,13 @@ theorem omS_pd (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
   exact pd_mono (by omega) h
 
 /- English proof (translation)
-Take `⟨w, hwdef⟩ : ∃ w, w = PI.UnitaryGroupMassFormula.GsFr.wbPart k r ξ` from `⟨_, rfl⟩`. Establish `hx : ξ - w ∈ PI.UnitaryGroupMassFormula.GsFr.Xsp k r` using `hwdef ▸ PI.UnitaryGroupMassFormula.GsFr.sub_wbPart_X hX`. Establish `hw : inWb k r w` using `hwdef ▸ PI.UnitaryGroupMassFormula.GsFr.wbPart_inWb ξ`. Establish `hξ : ξ = w + (ξ - w)` using `by abel`. Establish `e1 : herm (Hpk k r) ξ ξ = herm (Hpk k r) w w` using `by conv_lhs => rw [hξ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `PI.UnitaryGroupMassFormula.GsFr.herm_add_X hw hw hx hx`. Establish `e2 : herm (Hpk k r) ξ z = herm (Hpk k r) w z` using `by conv_lhs => rw [hξ]`. Rewrite using `[PI.UnitaryGroupMassFormula.GsFr.hm_add_l, PI.UnitaryGroupMassFormula.GsFr.herm_X_gen hx (PI.UnitaryGroupMassFormula.GsFr.wb_hi hz.1), add_zero]`. Establish `hzw : herm (Hpk k r) z w = star (herm (Hpk k r) w z)` using `PI.UnitaryGroupMassFormula.GsFr.hm_symm _ PI.UnitaryGroupMassFormula.GsFr.hH_ct w z`. Establish `hpr : PI.UnitaryGroupMassFormula.GsFr.prW k r z ξ = w + (herm (Hpk k r) w z / (Tz k r z : ℂ)) • z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwdef]`. Both sides reduce to the same expression. Establish `hzz : herm (Hpk k r) z z = -((Tz k r z : ℝ) : ℂ)` using `Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_self_eq z`. Establish `hT : ((Tz k r z : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hz.2.ne'`. Rewrite using `[e1, e2, hpr, PI.UnitaryGroupMassFormula.GsFr.hm_add_l, PI.UnitaryGroupMassFormula.GsFr.hm_add_r, PI.UnitaryGroupMassFormula.GsFr.hm_add_r, PI.UnitaryGroupMassFormula.GsFr.hm_smul_r, PI.UnitaryGroupMassFormula.GsFr.hm_smul_l, PI.UnitaryGroupMassFormula.GsFr.hm_smul_l, PI.UnitaryG …`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : star ((Tz k r z : ℝ) : ℂ) = ((Tz k r z : ℝ) : ℂ)` using `by rw [Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem prW_sq {z ξ : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hX : ∀ a : Fin r, ξ (esI k r a) = 0) :
     herm (Hpk k r) (PI.UnitaryGroupMassFormula.GsFr.prW k r z ξ) (PI.UnitaryGroupMassFormula.GsFr.prW k r z ξ) * herm (Hpk k r) z z =
@@ -215,9 +213,9 @@ theorem prW_sq {z ξ : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hX : �
   ring
 
 /- English proof (translation)
-Establish `h` using `prW_sq hz (PI.UnitaryGroupMassFormula.GsFr.xcof_esI z z' g)`. Rewrite `h` using `[PI.UnitaryGroupMassFormula.GsFr.xcof_self hz' hg, PI.UnitaryGroupMassFormula.GsFr.herm_Hpk_xcof_eq_det_Zhat, Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_self_eq z, Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_self_eq z', PI.UnitaryGroupMassFormula.GsFr.adj_LL]`. Establish `hT : ((Tz k r z : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hz.2.ne'`. Establish `hG : Gf k r z z' g = Complex.normSq (Zhat k r z z' g).det - Tz k r z * Tz k r z' * Complex.normSq ((Zhat k r z z' g).submatrix Fin.castSucc Fin.castSucc).det` using `rfl`. Rewrite using `[hG, Complex.ofReal_div, eq_div_iff hT]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_conj_mul_self]`. Simplify using `only [Complex.star_def] at h`. Unfold `PI.UnitaryGroupMassFormula.GsFr.omW`. Take the linear combination `-h`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omW_sq {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z') {g : Mat k r}
     (hg : g ∈ GV k r) :
@@ -237,11 +235,11 @@ theorem omW_sq {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : 
   linear_combination -h
 
 /- English proof (translation)
-Rewrite using `[← PI.UnitaryGroupMassFormula.GsFr.omS_eq z z' hg]`. Establish `h` using `prW_sq hz' (PI.UnitaryGroupMassFormula.GsFr.ginv_xcofL_esI z z' hg)`. Establish `hs : herm (Hpk k r) (g⁻¹ *ᵥ PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g) (g⁻¹ *ᵥ PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g) = herm (Hpk k r) (PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g) (PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g)`. Rewrite using `[← Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_UH hg, PI.UnitaryGroupMassFormula.GsFr.ginv_cancel hg]`. Rewrite `h` using `[hs, PI.UnitaryGroupMassFormula.GsFr.xcofL_self hz, PI.UnitaryGroupMassFormula.GsFr.xi_hermitian_cofactor_det hg, Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_self_eq z, Formalism.FourierDecayAlt.P.TwoByOneBlock.herm_self_eq z', PI.UnitaryGroupMassFormula.GsFr.adj_LL, star_star …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hT : ((Tz k r z' : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hz'.2.ne'`. Establish `hG : Gf k r z z' g = Complex.normSq (Zhat k r z z' g).det - Tz k r z * Tz k r z' * Complex.normSq ((Zhat k r z z' g).submatrix Fin.castSucc Fin.castSucc).det` using `rfl`. Rewrite using `[hG, Complex.ofReal_div, eq_div_iff hT]`. Use `push_cast`. Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_conj_mul_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.star_def] at h`. Unfold `PI.UnitaryGroupMassFormula.GsFr.omW'`. Take the linear combination `-h`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omS_sq {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z') {g : Mat k r}
     (hg : g ∈ GV k r) :
@@ -265,14 +263,14 @@ theorem omS_sq {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : 
   linear_combination -h
 
 /- English proof (translation)
-Introduce `_ hg` and use `hg.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem geG_sub (z z' : Fin (2 * r + k + 1) → ℂ) (ε : ℝ) : geG k r z z' ε ⊆ GV k r := fun _ hg => hg.1
 
 /- English proof (translation)
-Establish `hP : U.IsPolyDeg (2 * (r + 1)) (fun g => herm (Hpk k r) (v g) (v g))` using `pd_mono (by omega) (herm_pd v v hv fun j => Formalism.FourierDecayAlt.P.CutMP.jdh_pd_star (hv j))`. Establish `hs` using `h6 k r (2 * (r + 1)) _ hP S hSG c hc hlb n`. Establish `hv' : ∀ i, UBL (fun g => v g i) S n (r + 1) (2 * (r + 1))` using `fun i => ubl_poly (hv i) S hSG n _`. Establish `hfun : (fun g => unitH k r (v g)) = fun g i => (((Real.sqrt (herm (Hpk k r) (v g) (v g)).re)⁻¹ : ℝ) : ℂ) * v g i`. Use function extensionality and compare the values at `g i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[hfun]`. Use `ubl_pi hSG fun i => ?_` and prove the remaining obligations. Conclude with `ubl_mono hSG (ubl_mul hSG hs (hv' i)) (by omega) le_rfl`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ubl_unitH (h6 : UBLInvSqrt) {S : Set (Mat k r)} (hSG : S ⊆ GV k r) (v : Mat k r → Fin (2 * r + k + 1) → ℂ)
     (hv : ∀ i, U.IsPolyDeg (r + 1) (fun g => v g i)) {c : ℝ} (hc : 0 < c)
@@ -290,9 +288,9 @@ theorem ubl_unitH (h6 : UBLInvSqrt) {S : Set (Mat k r)} (hSG : S ⊆ GV k r) (v 
   exact ubl_mono hSG (ubl_mul hSG hs (hv' i)) (by omega) le_rfl
 
 /- English proof (translation)
-Establish `hT : 0 < Tz k r z` using `hz.2`. Use `ubl_unitH h6 (geG_sub z z' ε) (fun g => PI.UnitaryGroupMassFormula.GsFr.omW k r z z' g) (fun i => omW_pd z z' i) (c := ε / Tz k r z) (div_pos hε hT) (fun g hg => ?_) n` and prove the remaining obligations. Use `show ε / Tz k r z ≤ (herm (Hpk k r) (PI.UnitaryGroupMassFormula.GsFr.omW k r z z' g) (PI.UnitaryGroupMassFormula.GsFr.omW k r z z' g)).re`. Rewrite using `[omW_sq hz hz' hg.1, Complex.ofReal_re]`. Establish `hT0 : 0 ≤ Tz k r z` using `hT.le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ε ≤ Gf k r z z' g` using `hg.2`. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem ubl_nuG (h6 : UBLInvSqrt) {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z')
     {ε : ℝ} (hε : 0 < ε) (n : ℕ) : UBL (nuG z z') (geG k r z z' ε) n (r + 1) (2 * (r + 1)) := by
@@ -306,7 +304,7 @@ theorem ubl_nuG (h6 : UBLInvSqrt) {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.
   gcongr
 
 /- English proof (translation)
-Establish `hH : Hpk k r * Hpk k r = 1` using `(Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r).2.1`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ (Hpk k r) g, hg', hH]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_eq_Hpk_mul_conjTranspose_mul_Hpk_of_mem_GV {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   have hH : Hpk k r * Hpk k r = 1 := (Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r).2.1
@@ -315,11 +313,9 @@ private theorem inv_eq_Hpk_mul_conjTranspose_mul_Hpk_of_mem_GV {g : Mat k r} (hg
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ (Hpk k r) g, hg', hH]
 
 /- English proof (translation)
-Establish `hT : 0 < Tz k r z'` using `hz'.2`. Establish `key : UBL (fun g => unitH k r (PI.UnitaryGroupMassFormula.GsFr.omS k r z z' g)) (geG k r z z' ε) n (r + 1) (2 * (r + 1))`. Use `ubl_unitH h6 (geG_sub z z' ε) (fun g => PI.UnitaryGroupMassFormula.GsFr.omS k r z z' g) (fun i => omS_pd z z' i) (c := ε / Tz k r z') (div_pos hε hT) (fun g hg => ?_) n` and prove the remaining obligations. Use `show ε / Tz k r z' ≤ (herm (Hpk k r) (PI.UnitaryGroupMassFormula.GsFr.omS k r z z' g) (PI.UnitaryGroupMassFormula.GsFr.omS k r z z' g)).re`. Rewrite using `[omS_sq hz hz' hg.1, Complex.ofReal_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT0 : 0 ≤ Tz k r z'` using `hT.le`. Establish `hG : ε ≤ Gf k r z z' g` using `hg.2`. Use `gcongr`. Use `ubl_congr isOpen_univ (Set.subset_univ _) (geG_sub z z' ε) (fun g hg _ => ?_) key` and prove the remaining obligations. Use `show unitH k r (PI.UnitaryGroupMassFormula.GsFr.omW' k r z z' g) = unitH k r (PI.UnitaryGroupMassFormula.GsFr.omS k r z z' g)`.
-
-Use `congr 1`. Use `show PI.UnitaryGroupMassFormula.GsFr.prW k r z' (g⁻¹ *ᵥ PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g) = PI.UnitaryGroupMassFormula.GsFr.prW k r z' ((Hpk k r * gᴴ * Hpk k r) *ᵥ PI.UnitaryGroupMassFormula.GsFr.xcofL k r z z' g)`. Rewrite using `[inv_eq_Hpk_mul_conjTranspose_mul_Hpk_of_mem_GV hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ubl_nuG' (h6 : UBLInvSqrt) {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z')
     {ε : ℝ} (hε : 0 < ε) (n : ℕ) : UBL (nuG' z z') (geG k r z z' ε) n (r + 1) (2 * (r + 1)) := by
@@ -340,7 +336,7 @@ theorem ubl_nuG' (h6 : UBLInvSqrt) {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2
   rw [inv_eq_Hpk_mul_conjTranspose_mul_Hpk_of_mem_GV hg]
 
 /- English proof (translation)
-Establish `hfun : (fun g => v g i) = fun g => (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin (2 * r + k + 1) => ℂ) i) (v g) := by`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `ubl_clm _ hSG h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ubl_entry {S : Set (Mat k r)} (hSG : S ⊆ GV k r) {v : Mat k r → Fin (2 * r + k + 1) → ℂ} {n e γ : ℕ}
     (h : UBL v S n e γ) (i : Fin (2 * r + k + 1)) : UBL (fun g => v g i) S n e γ := by
@@ -351,7 +347,7 @@ theorem ubl_entry {S : Set (Mat k r)} (hSG : S ⊆ GV k r) {v : Mat k r → Fin 
   exact ubl_clm _ hSG h
 
 /- English proof (translation)
-Establish `hfun : (fun g => -f g) = fun g => (-ContinuousLinearMap.id ℝ ℂ) (f g)`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[hfun]`. Conclude with `ubl_clm _ hSG h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ubl_neg {S : Set (Mat k r)} (hSG : S ⊆ GV k r) {f : Mat k r → ℂ} {n e γ : ℕ} (h : UBL f S n e γ) :
     UBL (fun g => -f g) S n e γ := by
@@ -361,14 +357,14 @@ theorem ubl_neg {S : Set (Mat k r)} (hSG : S ⊆ GV k r) {f : Mat k r → ℂ} {
   exact ubl_clm _ hSG h
 
 /- English proof (translation)
-Simplify `ubl_add hSG h₁ (ubl_neg hSG h₂)` using `only [sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ubl_sub {S : Set (Mat k r)} (hSG : S ⊆ GV k r) {f₁ f₂ : Mat k r → ℂ} {n e γ : ℕ} (h₁ : UBL f₁ S n e γ)
     (h₂ : UBL f₂ S n e γ) : UBL (fun g => f₁ g - f₂ g) S n e γ := by
   simpa only [sub_eq_add_neg] using ubl_add hSG h₁ (ubl_neg hSG h₂)
 
 /- English proof (translation)
-Establish `h : (Zhat k r z z' g).submatrix (Fin.castLE (le_refl (r + 1))) (Fin.castLE (le_refl (r + 1))) = Zhat k r z z' g` using `Matrix.ext fun i j => rfl`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dlast_det (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) :
     Dmin k r z z' g (Fin.last (r + 1)) = (Zhat k r z z' g).det := by
@@ -378,23 +374,21 @@ theorem dlast_det (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) :
   rfl
 
 /- English proof (translation)
-Use `set S := geG k r z z' ε`. Establish `hSG : S ⊆ GV k r` using `geG_sub z z' ε`. Establish `hc : ∀ (M0 : Mat k r) (i j : Fin (2 * r + k + 1)) (e : ℕ), UBL (fun _ : Mat k r => M0 i j) S n e (2 * (r + 1))` using `fun M0 i j e => ubl_mono hSG (ubl_const (M0 i j) hSG n _) (Nat.zero_le e) le_rfl`. Apply the tactic sequence `have hg : ∀ i j : Fin (2 * r + k + 1), UBL (fun g : Mat k r => g i j) S n 1 (2 * (r + 1)) := fun i j => ubl_poly (pd_entry i j) S hSG n _`. Establish `hdetP : U.IsPolyDeg (r + 1) (fun g : Mat k r => (Zhat k r z z' g).det)` using `pd_det (fun g : Mat k r => Zhat k r z z' g) fun a b => zhat_pd k r z z' a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : UBL (fun g => -((Zhat k r z z' g).det)⁻¹) S n 0 (2 * (r + 1))`. Establish `h` using `ubl_invpow hdetP hSG hε (fun g hg => by`. Rewrite using `[← dlast_det]`. Conclude with `Formalism.FourierDecayAlt.P.gram_function_last_minor k r z z' hz.2.le hz'.2.le g ε hg.2) 1 n`. Conclude with `ubl_neg hSG (ubl_mono hSG (by simpa using h) le_rfl (by omega))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadj : ∀ a b, UBL (fun g => (Zhat k r z z' g).adjugate a b) S n r (2 * (r + 1))` using `fun a b => ubl_poly (adj_pd z z' a b) S hSG n _`. Establish `hLm : ∀ i j, UBL (fun g => PI.UnitaryGroupMassFormula.GsFr.Lm k r z z' g i j) S n (r + 1) (2 * (r + 1))`. Introduce `i j`. Establish `e : (fun g => PI.UnitaryGroupMassFormula.GsFr.Lm k r z z' g i j) = fun g => (fun _ => (1 : Mat k r) i j) g + ∑ c : Fin (r + 1), ∑ a : Fin (r + 1), (-((Zhat k r z z' g).det)⁻¹ * (Zhat k r z z' g).adjugate c a) * ((fun _ => PI.UnitaryGroupMassFormula.GsFr.Rk k r (fvec k r z' c) (fv …`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[PI.UnitaryGroupMassFormula.GsFr.Lm, Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply]`. Rewrite using `[e]`. Use `ubl_add hSG (hc 1 i j _) (ubl_sum hSG _ fun c _ => ubl_sum hSG _ fun a _ => ?_)` and prove the remaining obligations. Establish `h1` using `ubl_mul hSG (ubl_mul hSG hdet (hadj c a)) (ubl_mmul hSG (fun i j => hc (PI.UnitaryGroupMassFormula.GsFr.Rk k r (fvec k r z' c) (fvec k r z a)) i j 0) hg i j)`. Conclude with `ubl_mono hSG (by simpa using h1) (by omega) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPhi : ∀ i j, UBL (fun g => PI.UnitaryGroupMassFormula.GsFr.Phi k r z z' g i j) S n (r + 2) (2 * (r + 1))`. Introduce `i j`. Establish `h1` using `ubl_mmul hSG (ubl_mmul hSG (fun i j => hc (PI.UnitaryGroupMassFormula.GsFr.Pm k r z) i j 0) hg) hLm i j`. Conclude with `ubl_mono hSG (by simpa [PI.UnitaryGroupMassFormula.GsFr.Phi] using h1) (by omega) le_rfl`. Apply the tactic sequence `have hv : ∀ i, UBL (fun g => nuG' z z' g i) S n (r + 1) (2 * (r + 1)) := fun i => ubl_entry hSG (hnu' n) i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hRk : ∀ i j, UBL (fun g => PI.UnitaryGroupMassFormula.GsFr.Rk k r (nuG' z z' g) (nuG' z z' g) i j) S n (2 * (r + 1)) (2 * (r + 1))`. Introduce `i j`. Establish `e : (fun g => PI.UnitaryGroupMassFormula.GsFr.Rk k r (nuG' z z' g) (nuG' z z' g) i j) = fun g => nuG' z z' g i * ∑ l, star (nuG' z z' g l) * (fun _ => Hpk k r l j) g`. Use function extensionality and compare the values at `g`. Simplify using `[PI.UnitaryGroupMassFormula.GsFr.Rk, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `h1` using `ubl_mul hSG (hv i) (ubl_sum hSG Finset.univ fun l _ => ubl_mul hSG (ubl_star hSG (hv l)) (hc (Hpk k r) l j 0))`. Conclude with `ubl_mono hSG (by simpa using h1) (by omega) le_rfl`. Establish `hPp : ∀ i j, UBL (fun g => PpG z z' g i j) S n (2 * (r + 1)) (2 * (r + 1))`. Introduce `i j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `ubl_mmul hSG hRk (fun i j => hc (PI.UnitaryGroupMassFormula.GsFr.Pm k r z') i j 0) i j`. Establish `h2` using `ubl_sub hSG (hc (PI.UnitaryGroupMassFormula.GsFr.Pm k r z') i j (2 * (r + 1))) (by simpa using h1)`. Simplify `h2` using `[PpG, Matrix.sub_apply]`. Establish `hio : ∀ i j, UBL (fun g => ioG z z' g i j) S n (4 * (r + 1)) (2 * (r + 1))`. Introduce `i j`.
-
-Establish `h1` using `ubl_mmul hSG hPhi hPp i j`. Conclude with `ubl_mono hSG (by simpa [ioG] using h1) (by omega) le_rfl`. Conclude with `ubl_pi hSG fun i => ubl_pi hSG fun j => hio i j`.
+A detailed English derivation is pending.
 -/
 theorem ubl_ioG {ε : ℝ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hz' : C2.StdZ k r z')
     (hnu' : ∀ n, UBL (nuG' z z') (geG k r z z' ε) n (r + 1) (2 * (r + 1))) (hε : 0 < ε) (n : ℕ) :
@@ -456,7 +450,7 @@ theorem ubl_ioG {ε : ℝ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k 
 end S7
 
 /- English proof (translation)
-Introduce `k r z z' _ hz hz' ε hε`. Use `⟨⟨r + 1, 2 * (r + 1), by omega, le_rfl, fun n => S7.ubl_nuG h6 hz hz' hε n⟩, ⟨r + 1, 2 * (r + 1), by omega, le_rfl, fun n => S7.ubl_nuG' h6 hz hz' hε n⟩, ⟨4 * (r + 1), 2 * (r + 1), le_rfl, le_rfl, fun n => S7.ubl_ioG hz hz' (fun n => S7.ubl_nuG' h6 hz hz' hε n) hε n⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem geomUBL_of (h6 : UBLInvSqrt) : GeomUBL := by
   intro k r z z' _ hz hz' ε hε
@@ -466,7 +460,7 @@ theorem geomUBL_of (h6 : UBLInvSqrt) : GeomUBL := by
       fun n => S7.ubl_ioG hz hz' (fun n => S7.ubl_nuG' h6 hz hz' hε n) hε n⟩⟩
 
 /- English proof (translation)
-The claim follows from `geomUBL_of unipotent_inverse_sqrt_bound`.
+A detailed English derivation is pending.
 -/
 theorem geometry_unipotent_bound_holds : GeomUBL := geomUBL_of unipotent_inverse_sqrt_bound
 

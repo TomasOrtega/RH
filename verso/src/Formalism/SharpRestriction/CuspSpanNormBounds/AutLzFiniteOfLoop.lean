@@ -17,11 +17,11 @@ namespace Formalism.MainNotions.S.Lem.Comparison₂
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ Submodule.span E (Set.range F.fl.e), S.hT y F.fl.z = 0`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨b, rfl⟩` from `hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `F.fl.z_orth b`. Consider the case `zero => simp`. Consider the case `add w v _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c w _ h => simp [h]`. Use `show F.fl.z ∈ ⨅ x ∈ Xsp F, LinearMap.ker (S.hT x)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Conclude with `key x hx`.
+A detailed English derivation is pending.
 -/
 theorem z_mem_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   have key : ∀ y ∈ Submodule.span E (Set.range F.fl.e), S.hT y F.fl.z = 0 := by
@@ -39,7 +39,7 @@ theorem z_mem_orth {T : E} (F : LFlag S r T) : F.fl.z ∈ orth S (Xsp F) := by
   exact key x hx
 
 /- English proof (translation)
-Establish `ha : a ∈ {i : Fin r | i.1 < a.val + 1}` using `Nat.lt_succ_self _`. Use `show F.fl.e a ∈ Submodule.span E (F.fl.e '' {i | i.1 < a.val + 1})`. Conclude with `Submodule.subset_span (Set.mem_image_of_mem _ ha)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem e_mem {T : E} (F : LFlag S r T) (a : Fin r) : F.fl.e a ∈ Xflag F (a.val + 1) := by
   have ha : a ∈ {i : Fin r | i.1 < a.val + 1} := Nat.lt_succ_self _
@@ -58,7 +58,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace Formalism.MainNotions.S.Lem.Comparison₂
 
 /- English proof (translation)
-Simplify using `only [NLam, IsAutLam, Set.mem_setOf_eq]`. Use `⟨⟨?_, ?_⟩, fun j x _ => by simp, fun x _ => by simp⟩` and prove the remaining obligations. Conclude with `(Formalism.HermitianLatticesTheory.isom _).one_mem`. Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_NLam {D : D7} (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T : D.host.E} (F : LFlag (VS D) D.R.rS T) :
     (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ NLam Λ F := by
@@ -87,11 +87,9 @@ theorem cntSW_eq (D : D7) {T : D.host.E} (T' : D.host.E) (F : LFlag (VS D) D.R.r
         (TEqv D Λ F) := rfl
 
 /- English proof (translation)
-Set `g : ι → {O : Set α | ∃ a ∈ X, O = {b | b ∈ X ∧ R a b}}` to `fun i => ⟨{b | b ∈ X ∧ R (f i) b}, f i, hf i, rfl⟩`. Establish `hg : Function.Injective g`. Introduce `i j hij`. Establish `h2 : ({b | b ∈ X ∧ R (f i) b} : Set α) = {b | b ∈ X ∧ R (f j) b}` using `congrArg Subtype.val hij`. Establish `h3 : f j ∈ ({b | b ∈ X ∧ R (f j) b} : Set α)` using `⟨hf j, hR _ (hf j)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[← h2]`. Conclude with `hinj i j h3.2`. Unfold `cntCl`. Use `first`. Consider the case `exact ENat.card_le_card_of_injective hg`.
-
-Consider the case `(rw [← ENat.card_coe_set_eq]; exact ENat.card_le_card_of_injective hg)`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem card_le_cntCl {α ι : Type} (X : Set α) (R : α → α → Prop) (hR : ∀ a ∈ X, R a a) (f : ι → α) (hf : ∀ i, f i ∈ X)
     (hinj : ∀ i j, R (f i) (f j) → i = j) : ENat.card ι ≤ cntCl X R := by
@@ -109,9 +107,9 @@ theorem card_le_cntCl {α ι : Type} (X : Set α) (R : α → α → Prop) (hR :
     | (rw [← ENat.card_coe_set_eq]; exact ENat.card_le_card_of_injective hg)
 
 /- English proof (translation)
-Simplify using `only [NLam, IsAutLam, Set.mem_setOf_eq]`. Use `⟨⟨?_, ?_⟩, fun j x _ => by simp, fun x _ => by simp⟩` and prove the remaining obligations. Use `first`. Consider the case `exact (Formalism.HermitianLatticesTheory.isom _).one_mem`. Consider the case `exact fun _ _ => rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_NLam (D : D7) (Λ : LatV D) {T : D.host.E} (F : LFlag (hS D) D.R.rS T) :
     (LinearEquiv.refl D.host.E (hS D).V) ∈ NLam Λ F := by
@@ -124,11 +122,11 @@ theorem one_mem_NLam (D : D7) (Λ : LatV D) {T : D.host.E} (F : LFlag (hS D) D.R
     simp [Formalism.HermitianLatticesTheory.gmap]
 
 /- English proof (translation)
-Unfold `FrameEqv`. Use `⟨1, fun a b hab => Matrix.one_apply_ne (ne_of_lt hab).symm, fun a => Matrix.one_apply_eq a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Simplify using `only [frameAct, LinearEquiv.refl_apply]`. Rewrite using `[Finset.sum_eq_single b]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a _ hab`. Rewrite using `[Matrix.one_apply_ne hab]`. Simplify using the standard rewrite rules. Introduce `hb`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ b) hb`.
+A detailed English derivation is pending.
 -/
 theorem frameEqv_refl (D : D7) {T' : D.host.E} (F' : LFlag (VS D) D.R.rS T') :
     FrameEqv D (LinearEquiv.refl D.host.E (VS D).V) F' F' := by
@@ -145,7 +143,7 @@ theorem frameEqv_refl (D : D7) {T' : D.host.E} (F' : LFlag (VS D) D.R.rS T') :
     exact absurd (Finset.mem_univ b) hb
 
 /- English proof (translation)
-Unfold `TEqv`. Conclude with `⟨LinearEquiv.refl _ _, one_mem_NLam D Λ F, frameEqv_refl D F'⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem TEqv_refl (D : D7) (Λ : LatV D) {T T' : D.host.E} (F : LFlag (hS D) D.R.rS T) (F' : LFlag (hS D) D.R.rS T') :
     TEqv D Λ F F' F' := by
@@ -153,7 +151,7 @@ theorem TEqv_refl (D : D7) (Λ : LatV D) {T T' : D.host.E} (F : LFlag (hS D) D.R
   exact ⟨LinearEquiv.refl _ _, one_mem_NLam D Λ F, frameEqv_refl D F'⟩
 
 /- English proof (translation)
-Unfold `PEqv`. Conclude with `⟨LinearEquiv.refl _ _, one_mem_NLam D Λ F, LinearEquiv.refl _ _, one_mem_NLam D Λ F, frameEqv_refl D _, frameEqv_refl D _, fun x _ => by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem PEqv_refl (D : D7) (Λ : LatV D) {T T' : D.host.E} (F : LFlag (hS D) D.R.rS T) (p : Trip D T') :
     PEqv D Λ F p p := by
@@ -174,7 +172,7 @@ variable {D : Formalism.BasicNotions.D7}
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(unfold Dmin leadMinorE; by_cases hl : l ≤ n <;> simp [hl])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Dmin_eq {n : ℕ} (w : Point D.host.E n) (l : ℕ) : Dmin w l = leadMinorE (ptMat w) l := by
   first

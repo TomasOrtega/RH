@@ -16,15 +16,15 @@ instance compat : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multipli
   Valuation.Compatible.ofValuation _
 
 /- English proof (translation)
-The claim follows from `ValuativeRel.isEquiv _ _`.
+A detailed English derivation is pending.
 -/
 theorem isEquiv : (ValuativeRel.valuation (w.adicCompletion E)).IsEquiv Valued.v :=
   ValuativeRel.isEquiv _ _
 
 /- English proof (translation)
-Use `⟨Ideal.absNorm w.asIdeal, Nat.pos_of_ne_zero fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h), ?_⟩` and prove the remaining obligations. Establish `h1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 E)).mpr (Ideal.absNorm_mem w.asIdeal)`. Establish `h2` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (K := E) w ((Ideal.absNorm w.asIdeal : ℕ) : E)`. Simplify using `only [map_natCast] at h1 h2`. Rewrite using `[← map_natCast (algebraMap E (w.adicCompletion E))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h2.trans_lt h1 : _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_lt_one : ∃ d : ℕ, 0 < d ∧ Valued.v ((d : w.adicCompletion E)) < 1 := by
   refine ⟨Ideal.absNorm w.asIdeal, Nat.pos_of_ne_zero fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h), ?_⟩
@@ -37,21 +37,19 @@ theorem exists_nat_lt_one : ∃ d : ℕ, 0 < d ∧ Valued.v ((d : w.adicCompleti
   exact (h2.trans_lt h1 : _)
 
 /- English proof (translation)
-Set `O` to `Valuation.integer (ValuativeRel.valuation (w.adicCompletion E))`. Establish `hxO : x ∈ O`. Express the relevant statement in the definitionally equal form `ValuativeRel.valuation _ x ≤ 1`. Conclude with `((isEquiv w).le_one_iff_le_one).mpr hx`. Set `xo : O` to `⟨x, hxO⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdO : (d : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨b, hb⟩` from `hu.exists_right_inv`. Establish `hb1 : Valued.v (b : w.adicCompletion E) ≤ 1` using `((isEquiv w).le_one_iff_le_one).mp b.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Valued.v (((d : O) * b : O) : w.adicCompletion E) = 1` using `by rw [hb]; simp`. Establish `h2 : Valued.v (((d : O) * b : O) : w.adicCompletion E) < 1`. Establish `: (((d : O) * b : O) : w.adicCompletion E) = (d : w.adicCompletion E) * b` using `by push_cast; rfl`. Rewrite using `[this, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Conclude with `(ne_of_lt h2) h1`. Set `f : O[X]` to `X ^ (d * t + 1) - C (1 + (d : O) * xo ^ (d * t + 1))`. Establish `hmon : f.Monic` using `monic_X_pow_sub_C _ (Nat.succ_ne_zero _)`. Establish `hf1 : f.eval 1 ∈ IsLocalRing.maximalIdeal O`. Establish `: f.eval 1 = -(xo ^ (d * t + 1)) * d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [f, eval_sub, eval_pow, eval_X, one_pow, eval_C]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hdO`. Establish `hf2 : IsUnit (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O) (f.derivative.eval 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `: f.derivative.eval 1 = (d : O) * t + 1`. Simplify using `only [f, derivative_sub, derivative_X_pow, derivative_C, sub_zero, eval_mul, eval_C, eval_pow, eval_X, one_pow, mul_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_add, map_one, Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mul_mem_right _ _ hdO), zero_add]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `isUnit_one`. Take `⟨a, ha, -⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal O) f hmon 1 hf1 hf2`. Use `⟨(a : w.adicCompletion E), ?_⟩` and prove the remaining obligations. Establish `ha' : a ^ (d * t + 1) = 1 + (d : O) * xo ^ (d * t + 1)`. Use `ha` as an intermediate fact.
-
-Simplify using `only [f, IsRoot, eval_sub, eval_pow, eval_X, eval_C] at this`. Conclude with `sub_eq_zero.mp this`. Use `congrArg (fun z : O => (z : w.adicCompletion E)) ha'` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_root {d : ℕ} (hd : Valued.v ((d : w.adicCompletion E)) < 1) (t : ℕ) (x : w.adicCompletion E)
     (hx : Valued.v x ≤ 1) : ∃ y : w.adicCompletion E, y ^ (d * t + 1) = 1 + d * x ^ (d * t + 1) := by
@@ -97,17 +95,15 @@ theorem exists_root {d : ℕ} (hd : Valued.v ((d : w.adicCompletion E)) < 1) (t 
   simpa using this
 
 /- English proof (translation)
-Establish `hx0 : Valued.v x ≠ 0` using `ne_of_gt (lt_trans zero_lt_one hx)`. Use `set k := log (Valued.v x)`. Establish `hvx : Valued.v x = exp k` using `(exp_log hx0).symm`. Establish `hk : 0 < k`. Establish `: exp (0 : ℤ) < exp k` using `by rw [exp_zero, ← hvx]; exact hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `exp_lt_exp.mp this`. Establish `hbig : Valued.v ((d : w.adicCompletion E) * x ^ m) = exp (a + m * k)`. Rewrite using `[map_mul, map_pow, hda, hvx, ← exp_nsmul, ← exp_add, nsmul_eq_mul]`. Establish `hpos : 0 < a + m * k` using `by nlinarith`. Establish `hsum : Valued.v (1 + (d : w.adicCompletion E) * x ^ m) = exp (a + m * k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_add_eq_of_lt_right, hbig]`. Rewrite using `[hbig, map_one, ← exp_zero]`. Conclude with `exp_lt_exp.mpr hpos`. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : Valued.v y ≠ 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Establish `: Valued.v (y ^ m) = 0` using `by rw [map_pow, h0, zero_pow]; omega`. Rewrite `this` using `[hy, hsum]`. Conclude with `exp_ne_zero this`. Use `set j := log (Valued.v y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvy : Valued.v y = exp j` using `(exp_log hy0).symm`. Establish `h1 : exp ((m : ℤ) * j) = exp (a + m * k)`. Rewrite using `[← hsum, ← hy, map_pow, hvy, ← exp_nsmul, nsmul_eq_mul]`. Establish `h2 : (m : ℤ) * j = a + m * k` using `exp_injective h1`. Establish `h3 : (m : ℤ) * (j - k) = a` using `by linarith`.
-
-Break down `le_or_gt 0 (j - k) with h | h` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem no_root {d m : ℕ} (a : ℤ) (hda : Valued.v ((d : w.adicCompletion E)) = exp a) (ha : a < 0) (hm : -a < m)
     (x : w.adicCompletion E) (hx : 1 < Valued.v x) : ¬ ∃ y : w.adicCompletion E, y ^ m = 1 + d * x ^ m := by
@@ -141,15 +137,13 @@ theorem no_root {d m : ℕ} (a : ℤ) (hda : Valued.v ((d : w.adicCompletion E))
   · nlinarith
 
 /- English proof (translation)
-Establish `hne : Valued.v ((d : w.adicCompletion E)) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff, ← map_natCast (algebraMap E (w.adicCompletion E))]`. Conclude with `(_root_.map_ne_zero _).mpr (Nat.cast_ne_zero.mpr hd0.ne')`. Use `set a := log (Valued.v ((d : w.adicCompletion E)))`. Establish `hda : Valued.v ((d : w.adicCompletion E)) = exp a` using `(exp_log hne).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a < 0`. Establish `: exp a < exp (0 : ℤ)` using `by rw [exp_zero, ← hda]; exact hd`. Conclude with `exp_lt_exp.mp this`. Establish `hm : -a < ((d * a.natAbs + 1 : ℕ) : ℤ)`. Establish `h0 : ((d * a.natAbs + 1 : ℕ) : ℤ) = (d : ℤ) * (a.natAbs : ℤ) + 1` using `by push_cast; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℤ) ≤ d` using `by exact_mod_cast hd0`. Establish `h2 : (0 : ℤ) ≤ a.natAbs` using `by positivity`. Establish `h3 : -a ≤ (a.natAbs : ℤ)` using `by omega`. Establish `h4 : (1 : ℤ) * (a.natAbs : ℤ) ≤ (d : ℤ) * (a.natAbs : ℤ)` using `mul_le_mul_of_nonneg_right h1 h2`. Rewrite using `[h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `no_root w a hda ha hm (s x) h` to reduce the goal to its premises. Take `⟨y, hy⟩` from `exists_root w hd a.natAbs x hx`.
-
-Use `⟨s y, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hy]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem le_one_of_le_one (s : w.adicCompletion E →+* w.adicCompletion E) {d : ℕ} (hd0 : 0 < d)
     (hd : Valued.v ((d : w.adicCompletion E)) < 1) (x : w.adicCompletion E) (hx : Valued.v x ≤ 1) :
@@ -178,23 +172,21 @@ theorem le_one_of_le_one (s : w.adicCompletion E →+* w.adicCompletion E) {d : 
   simp
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `exists_nat_lt_one w`. Establish `hne : Valued.v ((d : w.adicCompletion E)) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff, ← map_natCast (algebraMap E (w.adicCompletion E))]`. Conclude with `(_root_.map_ne_zero _).mpr (Nat.cast_ne_zero.mpr hd0.ne')`. Establish `hdK : (d : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).mp hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a := log (Valued.v ((d : w.adicCompletion E)))`. Establish `hda : Valued.v ((d : w.adicCompletion E)) = exp a` using `(exp_log hne).symm`. Establish `ha : a < 0`. Establish `: exp a < exp (0 : ℤ)` using `by rw [exp_zero, ← hda]; exact hd`. Conclude with `exp_lt_exp.mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_of_continuousAt_zero s ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Use `((IsValuativeTopology.hasBasis_nhds_zero' _).tendsto_iff (IsValuativeTopology.hasBasis_nhds_zero' _)).mpr ?_` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨r, rfl⟩` from `ValuativeRel.valuation_surjective γ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : Valued.v r ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `(Valuation.ne_zero_iff _).mp hγ`. Use `set b := log (Valued.v r)`. Establish `hvr : Valued.v r = exp b` using `(exp_log hr).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set n := b.natAbs + 1`. Establish `hn : (n : ℤ) * a < b`. Establish `h1 : (n : ℤ) = (b.natAbs : ℤ) + 1` using `by simp only [n]; push_cast; ring`. Establish `h2 : -b ≤ (b.natAbs : ℤ)` using `by omega`. Establish `h3 : (n : ℤ) * (a + 1) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by positivity) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨ValuativeRel.valuation _ ((d : w.adicCompletion E) ^ n), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `pow_ne_zero _ hdK`. Introduce `x hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ValuativeRel.valuation _ x < ValuativeRel.valuation _ _ at hx`. Rewrite `hx` using `[(isEquiv w).lt_iff_lt]`. Express the relevant statement in the definitionally equal form `ValuativeRel.valuation _ (s x) < ValuativeRel.valuation _ r`. Rewrite using `[(isEquiv w).lt_iff_lt]`. Establish `hdn : (d : w.adicCompletion E) ^ n ≠ 0` using `pow_ne_zero _ hdK`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hz : Valued.v (x / (d : w.adicCompletion E) ^ n) ≤ 1`. Rewrite using `[map_div₀]`. Conclude with `(div_le_one₀ (by rw [Valuation.pos_iff]; exact hdn)).mpr hx.le`. Establish `hsz` using `le_one_of_le_one w s hd0 hd _ hz`. Establish `hx' : x = (d : w.adicCompletion E) ^ n * (x / (d : w.adicCompletion E) ^ n)`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hx', map_mul, map_pow, map_natCast, map_mul, map_pow, hda, hvr]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem continuous_ringHom (s : w.adicCompletion E →+* w.adicCompletion E) : Continuous s := by
   obtain ⟨d, hd0, hd⟩ := exists_nat_lt_one w
@@ -245,11 +237,11 @@ theorem continuous_ringHom (s : w.adicCompletion E →+* w.adicCompletion E) : C
 end ConjugationUpperEntries
 
 /- English proof (translation)
-Introduce `E _ _ _ w _ s hs`. Establish `hc` using `ConjugationUpperEntries.continuous_ringHom w s`. Establish `h : ∃ s' : w.adicCompletion E →+* w.adicCompletion E, Continuous s' ∧ ∀ x : E, s' (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)` using `⟨s, hc, hs⟩`. Establish `hcj : GlobalTheory.BCT.cj w = h.choose`. Unfold `GlobalTheory.BCT.cj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos h]`. Rewrite using `[hcj]`. Establish `hdense : DenseRange (algebraMap E (w.adicCompletion E))`. Apply `HeightOneSpectrum.denseRange_algebraMap` to reduce the goal to its premises. Use `hdense.equalizer hc h.choose_spec.1 (funext fun x => by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[hs x, h.choose_spec.2 x])`. Conclude with `RingHom.ext fun x => congrFun this x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cjEq : CjEq := by
   intro E _ _ _ w _ s hs

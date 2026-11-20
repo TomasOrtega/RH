@@ -41,104 +41,104 @@ variable (hv : W → ℝ) (vol : @HSpace H.E _ _ H.cmStar → ℝ) (hvol : ∀ V
   (htw : ∀ w, tw ((@placesOf H.E _ _ H.cmStar).conj w) = tw w)
 
 /- English proof (translation)
-Introduce `_ _` and use `inferInstanceAs (Subsingleton Z0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_multiplicity_trivial : ∀ μ j, Subsingleton ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Mult μ j) :=
   fun _ _ => inferInstanceAs (Subsingleton Z0)
 
 /- English proof (translation)
-Introduce `_` and use `inferInstanceAs (Subsingleton Z0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_ambient_subsingleton : ∀ μ, Subsingleton ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Amb μ) :=
   fun _ => inferInstanceAs (Subsingleton Z0)
 
 /- English proof (translation)
-Introduce `_ _` and use `inferInstanceAs (Subsingleton PUnit)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_metricLattice_trivial : ∀ μ j, Subsingleton ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.MtL μ j) :=
   fun _ _ => inferInstanceAs (Subsingleton PUnit)
 
 /- English proof (translation)
-Introduce `_` and use `inferInstanceAs (Subsingleton Z0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_multSpace_trivial : ∀ j, Subsingleton ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Mj j) :=
   fun _ => inferInstanceAs (Subsingleton Z0)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton Z0)`.
+A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_error_subsingleton : Subsingleton (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.EE0 :=
   inferInstanceAs (Subsingleton Z0)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton (zeroHLat H.E).V)`.
+A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_radical_subsingleton : Subsingleton (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).div.RR.V :=
   inferInstanceAs (Subsingleton (zeroHLat H.E).V)
 
 /- English proof (translation)
-Introduce `_` and use `inferInstanceAs (Subsingleton (zeroHLat H.E).V)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_nu_subsingleton : ∀ u, Subsingleton ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).div.Nu u).V :=
   fun _ => inferInstanceAs (Subsingleton (zeroHLat H.E).V)
 
 /- English proof (translation)
-Introduce `_ _` and use `inferInstanceAs (Subsingleton (fmZeroHLat H.E).V)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_lattice_subsingleton : ∀ u j, Subsingleton (((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).fm u).lat j).V :=
   fun _ _ => inferInstanceAs (Subsingleton (fmZeroHLat H.E).V)
 
 /- English proof (translation)
-Introduce `_ _ _` and use `⟨fun y => Empty.elim y⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem weightedTrivialDatum_points_isEmpty : ∀ u μ i, IsEmpty (((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).chTw u μ).Y i) :=
   fun _ _ _ => ⟨fun y => Empty.elim y⟩
 
 /- English proof (translation)
-Introduce `i` and use `Empty.elim i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_metricVector_trivial : ∀ i j b k Q ψ, Subsingleton ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).nexp.MtV i j b k Q ψ) :=
   fun i => Empty.elim i
 
 /- English proof (translation)
-Introduce `i` and use `Empty.elim i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_forms_subsingleton : ∀ i j b, Subsingleton ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).nexp.Fm i j b) :=
   fun i => Empty.elim i
 
 /- English proof (translation)
-Introduce `_` and use `trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_mem_base_lattice : ∀ x : (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.LL, x ∈ (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).LL0 :=
   fun _ => trivial
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Equiv.refl _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem weightedTrivialDatum_class_zero_equiv : ∀ u μ, Nonempty (((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).C.cls 0 ≃ ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).chTw u μ).cls 0) :=
   fun _ _ => ⟨Equiv.refl _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => Empty.elim a⟩`.
+Supply the required witnesses or components.
 -/
 theorem weightedTrivialDatum_isEmpty_local : IsEmpty (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).nd.Loc :=
   ⟨fun a => Empty.elim a⟩
 
 /- English proof (translation)
-Introduce `u _ j` and use `hE u j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_classes_isEmpty (hE : ∀ u i, IsEmpty ((K u).cls (i + 1))) : ∀ u μ j, IsEmpty (((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).chTw u μ).cls (j + 1)) :=
   fun u _ j => hE u j
 
 /- English proof (translation)
-Introduce `u _` and use `(hDG u).trans (hDG u0).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_gammaDiscriminant_eq (hDG : ∀ u, (K u).DGam = minkM (2 * R.f * R.N R.m)) :
     ∀ u μ, ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).chTw u μ).DGam = ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).u₀).C.DGam :=
   fun u _ => (hDG u).trans (hDG u0).symm
 
 /- English proof (translation)
-The claim follows from `weightedTrivialDatum_multiplicity_trivial H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw amb := weightedTrivialDatum_ambient_subsingleton H u0 hcW hv0 …`.
+A detailed English derivation is pending.
 -/
 theorem shape_zero_weightedTrivialDatum (hE : ∀ u i, IsEmpty ((K u).cls (i + 1))) (hDG : ∀ u, (K u).DGam = minkM (2 * R.f * R.N R.m)) :
     Shape0 (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) where
@@ -164,14 +164,14 @@ theorem shape_zero_weightedTrivialDatum (hE : ∀ u i, IsEmpty ((K u).cls (i + 1
   cls0 := weightedTrivialDatum_class_zero_equiv H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw
 
 /- English proof (translation)
-Use `show Module.finrank ℂ (⊥ : Submodule ℂ ((K u).cls 0 → Empty → ℂ)) = 0`. Conclude with `finrank_bot ℂ _`.
+A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_finrank_zero (u) : Module.finrank ℂ ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.Mu0 = 0 := by
   show Module.finrank ℂ (⊥ : Submodule ℂ ((K u).cls 0 → Empty → ℂ)) = 0
   exact finrank_bot ℂ _
 
 /- English proof (translation)
-The claim follows from `Function.bijective_id`.
+A detailed English derivation is pending.
 -/
 theorem weightedTrivialDatum_embedding_bijective : Function.Bijective (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).embE := Function.bijective_id
 

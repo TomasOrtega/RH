@@ -5,15 +5,15 @@ namespace Formalism.FourierDecayAlt.P.Cauchy
 open Complex Metric Set
 
 /- English proof (translation)
-Proceed by induction on `p with`. Consider the case `zero => simpa using ⟨hF, hfF⟩`. Consider the case `succ p ih`. Take `⟨hd, he⟩` from `ih`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[iteratedDeriv_succ]`. Conclude with `hd.deriv hU`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_succ]`. Establish `h0 : HasDerivAt (iteratedDeriv p F) (deriv (iteratedDeriv p F) x) (x : ℂ)` using `(hd.differentiableAt (hU.mem_nhds (hmem x))).hasDerivAt`. Establish `h1 : HasDerivAt (fun y : ℝ => (iteratedDeriv p F y).re) (deriv (iteratedDeriv p F) x).re x` using `h0.real_of_complex`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fun y : ℝ => (iteratedDeriv p F y).re) = iteratedDeriv p f`. Use function extensionality and compare the values at `y`. Rewrite using `[he y]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : HasDerivAt (fun y : ℝ => iteratedDeriv p F y) (deriv (iteratedDeriv p F) x) x` using `h0.comp_ofReal`. Establish `h4 : (fun y : ℝ => iteratedDeriv p F y) = fun y : ℝ => ((iteratedDeriv p f y : ℝ) : ℂ)`. Use function extensionality and compare the values at `y`. Rewrite using `[he y]`. Rewrite `h3` using `[h4]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `h3.unique h1.ofReal_comp`. Rewrite using `[h1.deriv]`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_ofReal {U : Set ℂ} (hU : IsOpen U) {F : ℂ → ℂ} (hF : DifferentiableOn ℂ F U)
     {f : ℝ → ℝ} (hmem : ∀ x : ℝ, (x : ℂ) ∈ U) (hfF : ∀ x : ℝ, F x = f x) (p : ℕ) :
@@ -44,15 +44,15 @@ theorem iteratedDeriv_ofReal {U : Set ℂ} (hU : IsOpen U) {F : ℂ → ℂ} (hF
       exact h5
 
 /- English proof (translation)
-Establish `hσ0 : 0 < σ` using `by linarith`. Establish `hx : 0 < 1 - 2 * (1 / (4 * σ))`. Establish `: 1 / (4 * σ) ≤ 1 / 16`. Apply the tactic sequence `apply one_div_le_one_div_of_le <;> linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Real.rpow_def_of_pos hx]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h1` using `Real.one_sub_inv_le_log_of_pos hx`. Establish `h2 : (1 - 2 * (1 / (4 * σ)))⁻¹ = 2 * σ / (2 * σ - 1)`. Establish `h21 : 1 - 2 * (1 / (4 * σ)) = (2 * σ - 1) / (2 * σ)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h21, inv_div]`. Rewrite `h1` using `[h2]`. Establish `h3 : 1 - 2 * σ / (2 * σ - 1) = -(1 / (2 * σ - 1))`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: 2 * σ - 1 ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h3]`. Establish `h4 : 1 / (2 * σ - 1) ≤ 1 / σ`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `apply one_div_le_one_div_of_le <;> linarith`. Establish `h5 : -(1 / σ) ≤ Real.log (1 - 2 * (1 / (4 * σ)))` using `by linarith`. Establish `h6 : σ * -(1 / σ) ≤ σ * Real.log (1 - 2 * (1 / (4 * σ)))` using `mul_le_mul_of_nonneg_left h5 hσ0.le`. Establish `h7 : σ * -(1 / σ) = -1` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rpow_le_exp_one {σ : ℝ} (hσ : 4 ≤ σ) : (1 - 2 * (1 / (4 * σ))) ^ (-σ) ≤ Real.exp 1 := by
   have hσ0 : 0 < σ := by linarith
@@ -83,15 +83,15 @@ theorem rpow_le_exp_one {σ : ℝ} (hσ : 4 ≤ σ) : (1 - 2 * (1 / (4 * σ))) ^
   nlinarith
 
 /- English proof (translation)
-Use `set a : ℝ := ε * Real.exp (-u) with ha`. Establish `ha0 : 0 < a` using `by positivity`. Establish `h1 : 1 + (ε : ℂ) * Complex.exp (-w) = ((1 + a : ℝ) : ℂ) + (a : ℂ) * (Complex.exp (-(w - u)) - 1)`. Establish `: Complex.exp (-w) = Complex.exp (-(u : ℂ)) * Complex.exp (-(w - u))`. Rewrite using `[← Complex.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h2 : ‖Complex.exp (-(w - u)) - 1‖ ≤ 2 * ρ`. Establish `h` using `Complex.norm_exp_sub_one_le (x := -(w - u)) (by rw [norm_neg]; linarith)`. Rewrite `h` using `[norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : -(2 * ρ) ≤ (Complex.exp (-(w - u)) - 1).re`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Complex.abs_re_le_norm (Complex.exp (-(w - u)) - 1)` as an intermediate fact. Use `neg_abs_le (Complex.exp (-(w - u)) - 1).re` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hρ0 : 0 ≤ ρ` using `(norm_nonneg _).trans hw`. Establish `h4 : a * -(2 * ρ) ≤ a * (Complex.exp (-(w - u)) - 1).re` using `mul_le_mul_of_nonneg_left h3 ha0.le`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem base_bound {ε : ℝ} (hε : 0 < ε) (u : ℝ) {ρ : ℝ} (hρ : ρ ≤ 1 / 16) {w : ℂ}
     (hw : ‖w - u‖ ≤ ρ) :
@@ -125,27 +125,23 @@ namespace Formalism.FourierDecayAlt.P
 open Complex Metric Set Formalism.FourierDecayAlt.P.Cauchy
 
 /- English proof (translation)
-Introduce `σ ε hσ hε p u`. Establish `hσ0 : 0 < σ` using `by linarith`. Use `set ρ : ℝ := 1 / (4 * σ) with hρdef`. Establish `hρ0 : 0 < ρ` using `by positivity`. Establish `hρ : ρ ≤ 1 / 16`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply one_div_le_one_div_of_le <;> linarith`. Use `set F : ℂ → ℂ := fun w => (1 + (ε : ℂ) * Complex.exp (-w)) ^ ((-σ : ℝ) : ℂ) with hF`. Use `set f : ℝ → ℝ := fun v => (1 + ε * Real.exp (-v)) ^ (-σ) with hf`. Use `set U : Set ℂ := {w | 0 < (1 + (ε : ℂ) * Complex.exp (-w)).re} with hUdef`. Establish `hU : IsOpen U`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `isOpen_lt continuous_const` to reduce the goal to its premises. Use `fun_prop`. Establish `hFd : DifferentiableOn ℂ F U`. Introduce `w hw`. Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `DifferentiableAt.cpow_const (by fun_prop)` to reduce the goal to its premises. Conclude with `Or.inl hw`. Establish `hpos : ∀ x : ℝ, 0 < 1 + ε * Real.exp (-x)` using `fun x => by positivity`. Establish `hcast : ∀ x : ℝ, 1 + (ε : ℂ) * Complex.exp (-(x : ℂ)) = ((1 + ε * Real.exp (-x) : ℝ) : ℂ)`. Introduce `x`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : ∀ x : ℝ, (x : ℂ) ∈ U`. Introduce `x`. Use `show 0 < (1 + (ε : ℂ) * Complex.exp (-(x : ℂ))).re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcast, Complex.ofReal_re]`. Conclude with `hpos x`. Establish `hfF : ∀ x : ℝ, F x = f x`. Introduce `x`. Use `show (1 + (ε : ℂ) * Complex.exp (-(x : ℂ))) ^ ((-σ : ℝ) : ℂ) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcast, ← Complex.ofReal_cpow (hpos x).le]`. Establish `key` using `(iteratedDeriv_ofReal hU hFd hmem hfF p).2 u`. Establish `hA : 0 < 1 + ε * Real.exp (-u)` using `hpos u`. Establish `h12 : 0 < 1 - 2 * ρ` using `by linarith`. Establish `hsub : closedBall (u : ℂ) ρ ⊆ U`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Use `base_bound hε u hρ (w := w) (by simpa [dist_eq_norm] using hw)` as an intermediate fact. Establish `h0 : 0 < (1 + ε * Real.exp (-u)) * (1 - 2 * ρ)` using `by positivity`. Conclude with `lt_of_lt_of_le h0 this`. Establish `hC : ∀ w ∈ sphere (u : ℂ) ρ, ‖F w‖ ≤ Real.exp 1 * (1 + ε * Real.exp (-u)) ^ (-σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw`. Establish `hb` using `base_bound hε u hρ (w := w) (by`. Establish `: ‖w - u‖ = ρ` using `by simpa [dist_eq_norm] using hw`. Conclude with `this.le)`. Establish `h0 : 0 < (1 + ε * Real.exp (-u)) * (1 - 2 * ρ)` using `by positivity`.
-
-Establish `hn : (1 + ε * Real.exp (-u)) * (1 - 2 * ρ) ≤ ‖1 + (ε : ℂ) * Complex.exp (-w)‖` using `hb.trans (Complex.re_le_norm _)`. Use `show ‖(1 + (ε : ℂ) * Complex.exp (-w)) ^ ((-σ : ℝ) : ℂ)‖ ≤ _`. Rewrite using `[Complex.norm_cpow_real]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcau` using `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le p hρ0 (hFd.diffContOnCl_ball hsub) hC`.
-
-Rewrite `hcau` using `[key, Complex.norm_real, Real.norm_eq_abs]`. Use `hcau.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hρdef, one_div, inv_pow, div_inv_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cauchy_theta_identity : Formalism.FourierDecayAlt.E.CauchyTheta := by
   intro σ ε hσ hε p u

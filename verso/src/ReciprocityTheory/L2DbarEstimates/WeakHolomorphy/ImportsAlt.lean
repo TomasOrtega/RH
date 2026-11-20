@@ -6,19 +6,17 @@ open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `n Ω F a hΩ hc hF ha h0 x hx`. Use `set L : ℂ → V n := fun t => a + t • (x - a) with hL`. Establish `hLd : Differentiable ℂ L` using `(differentiable_const a).add (differentiable_id.smul_const (x - a))`. Establish `hLc : Continuous L` using `hLd.continuous`. Use `set U : Set ℂ := L ⁻¹' Ω with hU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUo : IsOpen U` using `hΩ.preimage hLc`. Establish `hUconv : Convex ℝ U`. Introduce `t1 ht1 t2 ht2 s1 s2 hs1 hs2 hs`. Use `show L (s1 • t1 + s2 • t2) ∈ Ω`. Establish `key : L (s1 • t1 + s2 • t2) = s1 • L t1 + s2 • L t2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `e : s1 • L t1 + s2 • L t2 = (s1 + s2) • a + (s1 • t1 + s2 • t2) • (x - a)`. Simplify using `only [hL, smul_add, add_smul, smul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hs, one_smul]`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc ht1 ht2 hs1 hs2 hs`. Establish `hG : DifferentiableOn ℂ (F ∘ L) U` using `hF.comp hLd.differentiableOn (fun t ht => ht)`. Establish `hA : AnalyticOnNhd ℂ (F ∘ L) U` using `hG.analyticOnNhd hUo`. Establish `h0U : (0 : ℂ) ∈ U` using `by show L 0 ∈ Ω`. Simplify `ha` using `[hL]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1U : (1 : ℂ) ∈ U` using `by show L 1 ∈ Ω`. Simplify `hx` using `[hL]`. Establish `hL0 : L 0 = a` using `by simp [hL]`. Establish `hev : F ∘ L =ᶠ[𝓝 0] 0`. Establish `ht : Filter.Tendsto L (𝓝 0) (𝓝 a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hL0]`. Conclude with `hLc.continuousAt.tendsto`. Conclude with `ht.eventually h0`. Establish `hEq` using `hA.eqOn_zero_of_preconnected_of_eventuallyEq_zero hUconv.isPreconnected h0U hev`. Establish `h1` using `hEq h1U`.
-
-Simplify `h1` using `[hL]`.
+A detailed English derivation is pending.
 -/
 theorem ident : IdentStatement := by
   intro n Ω F a hΩ hc hF ha h0 x hx

@@ -5,15 +5,13 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ hK`. Establish `h1 : 1 < Module.finrank ℚ K`. Use `Module.finrank_pos (R := ℚ) (M := K)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2` using `NumberField.abs_discr_gt_two h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `set D := differentIdeal ℤ (𝓞 K) with hD`. Establish `hnorm : D.absNorm = (NumberField.discr K).natAbs` using `NumberField.absNorm_differentIdeal K (𝓞 K)`. Establish `hDtop : D ≠ ⊤`. Introduce `h`. Rewrite `hnorm` using `[h, Ideal.absNorm_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((NumberField.discr K).natAbs : ℤ) = |NumberField.discr K|` using `Int.natCast_natAbs _`. Rewrite `h3` using `[← hnorm]`. Use linear arithmetic over natural numbers and integers. Take `⟨P, hPmax, hDP⟩` from `Ideal.exists_le_maximal D hDtop`. Establish `hPne : P ≠ ⊥`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hDP` using `[h, le_bot_iff]`. Conclude with `differentIdeal_ne_bot hDP`. Use `haveI : NeZero P := ⟨hPne⟩`. Use `⟨Ideal.absNorm (Ideal.under ℤ P), Nat.absNorm_under_prime P, fun hun => ?_⟩` and prove the remaining obligations.
-
-Establish `hram` using `hun P hPmax.isPrime (Int.absNorm_under_mem P)`. Rewrite `hram` using `[Ideal.ramificationIdx_eq_one_iff]`. Conclude with `(dvd_differentIdeal_iff.mp (Ideal.dvd_iff_le.mpr hDP)) hram`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.minkRam :
     ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K ≠ 1 → ∃ p : ℕ, p.Prime ∧ ¬ UnramAt K p := by

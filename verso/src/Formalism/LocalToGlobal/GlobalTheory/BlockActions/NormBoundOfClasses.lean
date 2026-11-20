@@ -11,13 +11,13 @@ open scoped ComplexOrder
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `D.sp.cm.cmUnram.2.1 ι x`.
+A detailed English derivation is pending.
 -/
 theorem sig_at (ι : D.host.E →+* ℂ) (x : D.host.E) : ι (sigD D x) = starRingEnd ℂ (ι x) :=
   D.sp.cm.cmUnram.2.1 ι x
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, RingHom.coe_coe]`. Rewrite using `[sig_at]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_cT_at {m n : Type} (ι : D.host.E →+* ℂ) (M : Matrix m n D.host.E) :
     ((M.map (sigD D : D.host.E →+* D.host.E))ᵀ).map ι = (M.map ι)ᴴ := by
@@ -27,11 +27,11 @@ theorem map_cT_at {m n : Type} (ι : D.host.E →+* ℂ) (M : Matrix m n D.host.
   rfl
 
 /- English proof (translation)
-Take `⟨C, hC, -, -⟩` from `(Tf.val D.R.m le_rfl (Or.inr rfl)).de`. Establish `hC' : ((C.1.map (sigD D : D.host.E →+* D.host.E))ᵀ * C.1) = gramN D D.R.m le_rfl` using `hC`. Use `set A : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ := C.1.map ι with hA`. Establish `hG : (gramN D D.R.m le_rfl).map ι = Aᴴ * A`. Rewrite using `[← hC', Matrix.map_mul, map_cT_at, hA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective A.mulVec`. Introduce `x y hxy`. Establish `hCi : IsUnit C.1.det` using `(Matrix.isUnit_iff_isUnit_det _).mp C.isUnit`. Establish `h1 : (C.1⁻¹ * C.1).map ι = 1`. Rewrite using `[Matrix.nonsing_inv_mul _ hCi, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun v => ((C.1⁻¹).map ι) *ᵥ v) hxy`. Simplify using `only [Matrix.mulVec_mulVec, hA, ← Matrix.map_mul, h1, Matrix.one_mulVec] at h2`. Conclude with `h2`. Rewrite using `[hG]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self A hinj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramN_posDef_at {Ch : ℕ → Type} {u : D.what₂.Word} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (Tf : FormsTiedSym D u Ch chOf)
     (ι : D.host.E →+* ℂ) : ((gramN D D.R.m le_rfl).map ι).PosDef := by
@@ -52,13 +52,13 @@ theorem gramN_posDef_at {Ch : ℕ → Type} {u : D.what₂.Word} {chOf : ∀ i, 
   exact Matrix.PosDef.conjTranspose_mul_self A hinj
 
 /- English proof (translation)
-Take `⟨C, hC, -, -⟩` from `(Tf.val D.R.m le_rfl (Or.inr rfl)).de`. Establish `hC' : ((C.1.map (sigD D : D.host.E →+* D.host.E))ᵀ * C.1) = gramN D D.R.m le_rfl` using `hC`. Take `⟨L, hL⟩` from `iXm_leftInv D`. Use `set A : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m - 1)) ℂ := (C.1 * iXm D).map ι with hA`. Establish `hG : (gramP D).map ι = Aᴴ * A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ((iXm D).map (sigD D : D.host.E →+* D.host.E))ᵀ * (((C.1).map (sigD D : D.host.E →+* D.host.E))ᵀ * C.1) * iXm D = ((C.1 * iXm D).map (sigD D : D.host.E →+* D.host.E))ᵀ * (C.1 * iXm D)`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[gramP_eq, ← hC', e1, Matrix.map_mul, map_cT_at, hA]`. Establish `hinj : Function.Injective A.mulVec`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Establish `hCi : IsUnit C.1.det` using `(Matrix.isUnit_iff_isUnit_det _).mp C.isUnit`. Establish `h1 : ((L * C.1⁻¹) * (C.1 * iXm D)).map ι = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc C.1⁻¹, Matrix.nonsing_inv_mul _ hCi, Matrix.one_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2` using `congrArg (fun v => ((L * C.1⁻¹).map ι) *ᵥ v) hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec_mulVec, hA, ← Matrix.map_mul, h1, Matrix.one_mulVec] at h2`. Conclude with `h2`. Rewrite using `[hG]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self A hinj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramP_posDef_at {Ch : ℕ → Type} {u : D.what₂.Word} {chOf : ∀ i, (D.mem u).C.cls i → Ch i} (Tf : FormsTiedSym D u Ch chOf)
     (ι : D.host.E →+* ℂ) : ((gramP D).map ι).PosDef := by
@@ -85,9 +85,9 @@ theorem gramP_posDef_at {Ch : ℕ → Type} {u : D.what₂.Word} {chOf : ∀ i, 
   exact Matrix.PosDef.conjTranspose_mul_self A hinj
 
 /- English proof (translation)
-Introduce `D u Ch chOf Tf s`. Prove the components needed by the constructor for the conclusion. Establish `h` using `fun τ => exists_on_of_posDef (gramC (gramN D D.R.m le_rfl) (embS D s) τ) (gramN_posDef_at Tf (embS D s τ)) choose o ho1 ho2 using h`. Conclude with `⟨⟨o, ho1⟩, fun τ => Or.inl (ho2 τ)⟩`. Establish `h` using `fun τ => exists_on_of_posDef (gramC (gramP D) (embS D s) τ) (gramP_posDef_at Tf (embS D s τ)) choose o ho1 ho2 using h`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨o, ho1⟩, fun τ => Or.inl (ho2 τ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem framesAt : FramesAt := by
   intro D u Ch chOf Tf s
@@ -100,7 +100,7 @@ theorem framesAt : FramesAt := by
     exact ⟨⟨o, ho1⟩, fun τ => Or.inl (ho2 τ)⟩
 
 /- English proof (translation)
-The claim follows from `norm_bound_of_classes_frames h1 h2 framesAt hC`.
+A detailed English derivation is pending.
 -/
 theorem norm_bound_of_classes (h1 : ClassMapInjective) (h2 : StabiliserMapBijective) (hC : NormClsAt) : NormBoundAtInfinity :=
   norm_bound_of_classes_frames h1 h2 framesAt hC

@@ -13,7 +13,7 @@ namespace Formalism.IndefR.NX
 section PsiU
 
 /- English proof (translation)
-The claim follows from `tied_U_clauses D θ (fun _ => xiRedNZ D) hθ hU hψ`.
+A detailed English derivation is pending.
 -/
 theorem psiU_tied (D : D7)
     (θ : ∀ i, ∀ k : Fin 2, Multiplicative (ZMod (D.host.g k)) →* (FractionRing (D.ntw.O i))ˣ)
@@ -42,7 +42,7 @@ def bcRep {W₀ : Type} [AddCommGroup W₀] [Module K W₀] (ρ₀ : Representat
   map_mul' γ δ := by rw [map_mul]; exact LinearMap.baseChange_mul _ _
 
 /- English proof (translation)
-The claim follows from `LinearMap.toMatrix_baseChange K' (ρ₀ γ) b b`.
+A detailed English derivation is pending.
 -/
 theorem toMatrix_bcRep {W₀ : Type} [AddCommGroup W₀] [Module K W₀] {ι : Type} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι K W₀) (ρ₀ : Representation K G W₀) (γ : G) :
@@ -65,11 +65,11 @@ section AlgBC
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {K K' : Type} [Field K] [Field K'] [Algebra K K']
 
 /- English proof (translation)
-Take `⟨hfd, ι, hι, hdec, bs, κ, hκ, eb, P, hP⟩` from `h`. Use `hfd` as an intermediate fact. Use `⟨inferInstance, ι, hι, hdec, Algebra.TensorProduct.basis K' bs, κ, hκ, eb, fun a a' => MvPolynomial.map (algebraMap K K') (P a a'), fun γ γ₀ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[toMatrix_bcRep, hP γ γ₀ hγ]`. Use extensionality with `a a'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [MvPolynomial.eval_map]`. Use `show algebraMap K K' (MvPolynomial.eval₂ (RingHom.id K) _ (P a a')) = _`. Rewrite using `[MvPolynomial.eval₂_comp_left, RingHom.comp_id]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[map_ratCast]`.
+A detailed English derivation is pending.
 -/
 theorem isAlgWeightF_bc {W₀ : Type} [AddCommGroup W₀] [Module K W₀]
     (ρ₀ : Representation K (GQ L n) W₀) (h : IsAlgWeightF L n K ρ₀) : IsAlgWeightF L n K' (bcRep (K' := K') ρ₀) := by
@@ -129,15 +129,15 @@ end LevNX
 section ChrG
 
 /- English proof (translation)
-Unfold `Formalism.L2.NX.supSum Formalism.L2.Col.supSum`. Establish `hout : ∀ F : Fin n → R, (∀ i : Fin n, r ≤ i.val → F i = 0) → ∑ i : Fin n, F i = ∑ a : Fin r, F (Fin.castLE h a)`. Introduce `F hF`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression. Use `_ = ∑ i : Fin n, F i := Finset.sum_subset (Finset.subset_univ _) fun i _ hi => hF i (by`. Assume the negation of the conclusion as `hlt`. Conclude with `hi (Finset.mem_map.2 ⟨⟨i.val, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hout]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hout]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.val_castLE, Matrix.submatrix_apply, Finset.mem_range]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hcl` using `c.isLt`. Distinguish the cases in `hc : (c : ℕ) = a + 1`. Rewrite using `[if_pos hc, if_pos ⟨hc.symm, hcl, by omega⟩]`. Rewrite using `[if_neg hc, if_neg fun h' => hc h'.1.symm]`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg fun ⟨_, h2, _⟩ => by omega]`. Introduce `i hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg fun ⟨h1, h2, _⟩ => by omega]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supSum_block {R : Type} [CommRing R] {r n : ℕ} (h : r ≤ n) (M : Matrix (Fin n) (Fin n) R) :
     Formalism.L2.NX.supSum r (M.submatrix (Fin.castLE h) (Fin.castLE h)) =
@@ -169,7 +169,7 @@ theorem supSum_block {R : Type} [CommRing R] {r n : ℕ} (h : r ≤ n) (M : Matr
     rw [if_neg fun ⟨h1, h2, _⟩ => by omega]
 
 /- English proof (translation)
-Unfold `Formalism.L2.NX.supSum`. Simplify using `only [map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem supSum_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {r : ℕ} (A : Matrix (Fin r) (Fin r) R) :
     Formalism.L2.NX.supSum r (A.map f) = f (Formalism.L2.NX.supSum r A) := by
@@ -187,7 +187,7 @@ local notation3 "L⁺" => NumberField.maximalRealSubfield L
 variable {F : Type} [CommRing F]
 
 /- English proof (translation)
-Unfold `intLift`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem intLift_of_mem (v : HeightOneSpectrum (𝓞 L⁺)) (y : v.adicCompletion L⁺)
     (h : y ∈ v.adicCompletionIntegers L⁺) : intLift v y = ⟨y, h⟩ := by
@@ -195,7 +195,7 @@ theorem intLift_of_mem (v : HeightOneSpectrum (𝓞 L⁺)) (y : v.adicCompletion
   rw [dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular h.1]`. Simplify using `[h.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_det_of_uniTri {R : Type} [CommRing R] {r : ℕ} {A : Matrix (Fin r) (Fin r) R} (h : IsUniTri r A) :
     IsUnit A.det := by
@@ -203,7 +203,7 @@ theorem isUnit_det_of_uniTri {R : Type} [CommRing R] {r : ℕ} {A : Matrix (Fin 
   simp [h.2]
 
 /- English proof (translation)
-Simplify using `only [lamGen, MonoidHom.mul_apply, Units.val_mul, supChar_val, MonoidHom.comp_apply, detChar_apply, List.length_singleton, Finset.prod_range_one, zero_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamGen_val {κ K : Type} [CommRing κ] [Field K] {m r : ℕ} (ψ : AddChar κ K) (ξ : κˣ →* Kˣ) (S : Finset ℕ)
     (M : uniUT m κ r [m - r]) :
@@ -222,13 +222,15 @@ variable (D : D7) (i : D.ntw.Tw) (b : Bool) (k : ℕ)
 open Classical in
 
 /- English proof (translation)
-Establish `hmem : (Pi.mulSingle kv Gm : G0g D.nd) ∈ D.nexp.U`. Rewrite using `[hU, mem_U]`. Introduce `kv'`. Distinguish the cases in `h : kv' = kv`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `⟨fun a c hca => hG.1 hca, hG.2⟩`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Use `⟨fun a c hca => ?_, fun a => by simp⟩` and prove the remaining obligations. Establish `hne : a ≠ c` using `fun e => by subst e; exact lt_irrefl _ hca`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Matrix.one_apply_ne hne]`. Unfold `psiUTot`. Rewrite using `[dif_pos hmem, hψ ⟨_, hmem⟩, psiUD, psiUOf_apply, Finset.prod_eq_single kv]`. Simplify using `only`. Rewrite using `[Pi.mulSingle_eq_same]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `kv' _ hne dsimp only`. Rewrite using `[Pi.mulSingle_eq_of_ne hne]`. Simplify using `[Formalism.L2.NX.supSum_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ kv) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
+
+A detailed English derivation is pending.
 -/
 theorem psiUTot_single (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (FractionRing (D.ntw.O i))ˣ)
     (hU : D.nexp.U = U D.nd)
@@ -264,7 +266,7 @@ theorem psiUTot_single (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk))
 open Classical in
 
 /- English proof (translation)
-Establish `hU' : IsUnit (red (intLift s.v (detT D.R.r xm)))` using `by rw [hu]; exact u.isUnit`. Unfold `gVal`. Use `show toKk D i k (psiUTot D i b (Pi.mulSingle kv (glOf (redMat s.v red (topR hrn xm))))) * (if h : IsUnit (red (intLift s.v (detT D.R.r xm))) then toKk D i k ((τ' h.unit : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)) else 1) = _`. Rewrite using `[hG, dif_pos hU', show hU'.unit = u from Units.ext (by rw [IsUnit.unit_spec, hu])]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gVal_of (kv : Σ kk : Fin 2, D.nd.PlG kk) (s : SplitPlace D.host.E)
     (red : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1))
@@ -301,7 +303,7 @@ def tauNX (i : D.ntw.Tw) (j : ℕ) (b : Bool) (kv : Σ kk : Fin 2, D.nd.PlG kk) 
   if h : TauTame D i j b kv then h.choose else 1
 
 /- English proof (translation)
-Introduce `i j b kv x u hl hu`. Establish `h` using `hT i j b kv hl`. Rewrite using `[one_mul, tauNX, dif_pos h]`. Conclude with `h.choose_spec x u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted_character_value (hT : ∀ i j b kv, pG D kv ∉ placesOver D.host.E (D.ntw.l i) → TauTame D i j b kv) :
     ∀ i j b kv (x : (ZMod (D.host.g kv.1))ˣ) (u : 𝓞 D.host.E), pG D kv ∉ placesOver D.host.E (D.ntw.l i) →
@@ -336,7 +338,7 @@ def qpOf (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D
   S.filter fun P => ∀ v, NG.OverPl P v → P = Pq v ∨ Pq v ∉ S
 
 /- English proof (translation)
-Introduce `P hP`. Unfold `qpOf at hP`. Conclude with `(Finset.mem_filter.1 hP).1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qpOf_sub (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : Finset (PlE D.host)) :
     qpOf D Pq S ⊆ S := by
@@ -346,7 +348,7 @@ theorem qpOf_sub (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) �
   exact (Finset.mem_filter.1 hP).1
 
 /- English proof (translation)
-Unfold `qpOf at hP`. Conclude with `((Finset.mem_filter.1 hP).2 v hv).resolve_right (not_not.2 hS)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qpOf_eq (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : Finset (PlE D.host))
     {P : PlE D.host} (hP : P ∈ qpOf D Pq S) {v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))}

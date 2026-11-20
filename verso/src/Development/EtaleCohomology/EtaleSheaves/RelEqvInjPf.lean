@@ -12,14 +12,14 @@ abbrev pl {K L : CochainComplex C ℤ} (f : K ⟶ L) (M : CochainComplex C ℤ) 
     CohomologyClass L M n →+ CohomologyClass K M n := cpre (Cocycle.ofHom f) M n n (zero_add n)
 
 /- English proof (translation)
-Simplify using `[mappingCone.map]`.
+Simplify using the standard rewrite rules.
 -/
 lemma inr_map {A B A' B' : CochainComplex C ℤ} (φ : A ⟶ B) (φ' : A' ⟶ B') (α : A' ⟶ A) (β : B' ⟶ B)
     (comm : φ' ≫ β = α ≫ φ) : mappingCone.inr φ' ≫ mappingCone.map φ' φ α β comm = β ≫ mappingCone.inr φ := by
   simp [mappingCone.map]
 
 /- English proof (translation)
-Rewrite using `[mappingCone.ext_cochain_from_iff _ 0 1 (zero_add 1)]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Cochain.comp_assoc_of_second_is_zero_cochain, ← Cochain.comp_assoc _ _ _ (neg_add_cancel 1) (add_zero 1) (by omega)]`. Simplify using `[mappingCone.map]`. Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, inr_map, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -36,9 +36,9 @@ lemma map_fst {A B A' B' : CochainComplex C ℤ} (φ : A ⟶ B) (φ' : A' ⟶ B'
     simp
 
 /- English proof (translation)
-Establish `h0 : pl α I k (CohomologyClass.mk z) = 0`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom α) z (zero_add k)) = 0`. Rewrite using `[CohomologyClass.mk_eq_zero_iff]`. Conclude with `⟨j, hjk, ξ, h⟩`. Establish `h1 : CohomologyClass.mk z = 0` using `hα (h0.trans (map_zero _).symm)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h1` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨j', hj', t, ht⟩` from `h1`. Take `rfl : j' = j` from `by omega`. Conclude with `⟨t, ht⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma laurent_adjoin_eq_of_image_eq {A' A I : CochainComplex C ℤ} (α : A' ⟶ A) {j k : ℤ} (hjk : j + 1 = k)
     (hα : Function.Injective (pl α I k)) (z : Cocycle A I k) (ξ : Cochain A' I j)
@@ -54,9 +54,9 @@ lemma laurent_adjoin_eq_of_image_eq {A' A I : CochainComplex C ℤ} (α : A' ⟶
   exact ⟨t, ht⟩
 
 /- English proof (translation)
-Take `⟨W, hW⟩` from `hβ (CohomologyClass.mk z)`. Take `⟨w, rfl⟩` from `W.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom β) w (zero_add k)) = _ at hW`. Establish `h2` using `hW.symm`. Rewrite `h2` using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨j', hj', r, hr⟩` from `h2`. Take `rfl : j' = j` from `by omega`. Conclude with `⟨w, r, by rw [hr]; rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_finset_adjoin_laurent_preimage {B' B I : CochainComplex C ℤ} (β : B' ⟶ B) {j k : ℤ} (hjk : j + 1 = k)
     (hβ : Function.Surjective (pl β I k)) (z : Cocycle B' I k) :
@@ -71,33 +71,31 @@ lemma exists_finset_adjoin_laurent_preimage {B' B I : CochainComplex C ℤ} (β 
   exact ⟨w, r, by rw [hr]; rfl⟩
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨c, rfl⟩` from `y.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ c _) = 0 at hy`. Rewrite `hy` using `[CohomologyClass.mk_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m', hm', ξ0, hξ0⟩` from `hy`. Establish `em : m' = m` using `by omega`. Substitute `m'` using the available equality. Express the relevant statement in the definitionally equal form `δ m n ξ0 = (Cochain.ofHom (mappingCone.map φ' φ α β comm)).comp c.1 (zero_add n) at hξ0`. Use `set a := (mappingCone.inl φ).comp c.1 (show -1 + n = m by omega) with ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `set b := (Cochain.ofHom (mappingCone.inr φ)).comp c.1 (zero_add n) with hb`. Establish `hdec : c.1 = mappingCone.descCochain φ a b hm`. Rewrite using `[mappingCone.ext_cochain_from_iff _ m n hm]`. Simplify using `[ha, hb]`. Establish `hc : δ n (n + 1) c.1 = 0` using `Cocycle.δ_eq_zero c (n + 1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[hdec, mappingCone.δ_descCochain _ _ _ _ _ rfl]`. Establish `hδa : δ m n a = n.negOnePow • (Cochain.ofHom φ).comp b (zero_add n)`. Establish `h` using `congrArg (fun z => (mappingCone.inl φ).comp z (show -1 + (n + 1) = n by omega)) hc`. Simplify using `only [Cochain.comp_add, mappingCone.inl_fst_assoc, mappingCone.inl_snd_assoc, Cochain.comp_zero, add_zero] at h`. Rewrite `h` using `[Int.negOnePow_succ, Units.neg_smul, ← sub_eq_add_neg, sub_eq_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hδb : δ n (n + 1) b = 0`. Establish `h` using `congrArg (fun z => (Cochain.ofHom (mappingCone.inr φ)).comp z (zero_add (n + 1))) hc`. Simplify using `using h`. Establish `h1 : δ m n ((Cochain.ofHom (mappingCone.inr φ')).comp ξ0 (zero_add m)) = (Cochain.ofHom β).comp (Cocycle.mk b (n + 1) rfl hδb).1 (zero_add n)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[δ_ofHom_comp, hξ0, ← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, inr_map, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`. Both sides reduce to the same expression. Take `⟨η, hη⟩` from `laurent_adjoin_eq_of_image_eq β hm hβi _ _ h1`. Express the relevant statement in the definitionally equal form `δ m n η = b at hη`. Use `set s := n.negOnePow with hs`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set γ := a - s • (Cochain.ofHom φ).comp η (zero_add m) with hγ`. Establish `hδγ : δ m n γ = 0`. Rewrite using `[hγ, δ_sub, δ_units_smul, δ_ofHom_comp, hη, hδa, sub_self]`. Use `set D0 := mappingCone.descCochain φ (0 : Cochain A I l) η hl with hD0`. Establish `hcγ : c.1 = δ m n D0 + (mappingCone.fst φ).1.comp γ (by omega)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdec, hD0, mappingCone.δ_descCochain _ _ _ _ _ hm, hη, hγ]`. Simplify using `only [mappingCone.descCochain, δ_zero, zero_add, Cochain.comp_sub]`. Normalize the expressions using the abelian group laws. Use `set ξ := ξ0 - (Cochain.ofHom (mappingCone.map φ' φ α β comm)).comp D0 (zero_add m) with hξ`. Establish `h3 : δ m n ξ = (mappingCone.fst φ').1.comp ((Cochain.ofHom α).comp γ (zero_add m)) (by omega)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hξ, δ_sub, δ_ofHom_comp, hξ0, hcγ, Cochain.comp_add, add_sub_cancel_left, ← Cochain.comp_assoc_of_first_is_zero_cochain, map_fst, Cochain.comp_assoc_of_second_is_zero_cochain]`. Use `set p := (mappingCone.inl φ').comp ξ (show -1 + m = l by omega) with hp`. Use `set q := (Cochain.ofHom (mappingCone.inr φ')).comp ξ (zero_add m) with hq`. Establish `hdecξ : ξ = mappingCone.descCochain φ' p q hl`. Rewrite using `[mappingCone.ext_cochain_from_iff _ l m hl]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `[hp, hq]`. Rewrite `h3` using `[hdecξ, mappingCone.δ_descCochain _ _ _ _ _ hm]`. Establish `h3a : δ l m p + s • (Cochain.ofHom φ').comp q (zero_add m) = (Cochain.ofHom α).comp γ (zero_add m)`. Establish `h` using `congrArg (fun z => (mappingCone.inl φ').comp z (show -1 + n = m by omega)) h3`. Simplify `h` using `only [Cochain.comp_add, mappingCone.inl_fst_assoc, mappingCone.inl_snd_assoc, Cochain.comp_zero, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h3b : δ m n q = 0`. Establish `h` using `congrArg (fun z => (Cochain.ofHom (mappingCone.inr φ')).comp z (zero_add n)) h3`. Simplify using `using h`. Take `⟨w, r, hr⟩` from `exists_finset_adjoin_laurent_preimage β hl hβs (Cocycle.mk q n hm h3b)`. Express the relevant statement in the definitionally equal form `δ l m r = q - (Cochain.ofHom β).comp w.1 (zero_add m) at hr`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hw : δ m n w.1 = 0` using `Cocycle.δ_eq_zero w n`. Establish `h4 : δ l m (p + s • (Cochain.ofHom φ').comp r (zero_add l)) = (Cochain.ofHom α).comp (Cocycle.mk (γ - s • (Cochain.ofHom φ).comp w.1 (zero_add m)) n hm (by rw [δ_sub, δ_units_smul, δ_ofHom_comp, hδγ, hw]; simp)).1 (zero_add m)`. Express the relevant statement in the definitionally equal form `_ = (Cochain.ofHom α).comp (γ - s • (Cochain.ofHom φ).comp w.1 (zero_add m)) (zero_add m)`. Rewrite using `[δ_add, δ_units_smul, δ_ofHom_comp, hr, Cochain.comp_sub, Cochain.comp_sub, ← h3a, Cochain.comp_units_smul]`. Simplify using `only [← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comm, smul_sub]`. Normalize the expressions using the abelian group laws. Take `⟨t, ht⟩` from `laurent_adjoin_eq_of_image_eq α hl hαi _ _ h4`. Express the relevant statement in the definitionally equal form `δ l m t = γ - s • (Cochain.ofHom φ).comp w.1 (zero_add m) at ht`. Rewrite using `[CohomologyClass.mk_eq_zero_iff]`.
-
-Use `⟨m, hm, D0 + mappingCone.descCochain φ t w.1 hl, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_add, mappingCone.δ_descCochain φ t w.1 hl n hm, ht, hw, hcγ]`. Simplify using the standard rewrite rules. Rewrite using `[← hs, sub_add_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem main {A B A' B' I : CochainComplex C ℤ} (φ : A ⟶ B) (φ' : A' ⟶ B') (α : A' ⟶ A) (β : B' ⟶ B)
     (comm : φ' ≫ β = α ≫ φ) (l m n : ℤ) (hl : l + 1 = m) (hm : m + 1 = n)
@@ -186,7 +184,7 @@ theorem main {A B A' B' I : CochainComplex C ℤ} (φ : A ⟶ B) (φ' : A' ⟶ B
   rw [← hs, sub_add_cancel]
 
 /- English proof (translation)
-Introduce `R _ F U E U' E' f f' u e comm hu he n`. Conclude with `main ((chains R).map f) ((chains R).map f') ((chains R).map u) ((chains R).map e) (by rw [← Functor.map_comp, ← Functor.map_comp, comm]) (n - 1 - 1) (n - 1) n (by omega) (by omega) (hu (n - 1)).1 (he n).1 (he (n - 1)).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem RelEqvInj_of : LateralTheory.E.RelDescPf.RelEqvInj := by
   intro R _ F U E U' E' f f' u e comm hu he n

@@ -14,9 +14,7 @@ open GlobalTheory.LiftLeaf GlobalTheory.TwSys GlobalTheory.TwAll GlobalTheory.Su
 namespace GlobalTheory.TwExportSup
 
 /- English proof (translation)
-Introduce `i hi`. Use `⟨fun j b k P k' P' h h' => ?_, (hO i hi).2⟩` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ Finset.Icc 1 D.R.m`. Conclude with `(hC i hi j hj b k P k' P' h h').eq`. Use `haveI := (hO i hi).1 j hj b`.
-
-Conclude with `LinearMap.ext fun x => Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem heckeLaws_of_range (D : D7) (hC : HkComm D) (hO : OffRange D) : HeckeLaws D.nexp := by
   intro i hi
@@ -27,9 +25,9 @@ theorem heckeLaws_of_range (D : D7) (hC : HkComm D) (hO : OffRange D) : HeckeLaw
     exact LinearMap.ext fun x => Subsingleton.elim _ _
 
 /- English proof (translation)
-Introduce `D E N0 hS h103 hC hACD hTie hRel hHC hOff hGood h8 hG hFull hHk hU hT hComm hT4 hL3 hSig hSS`. Establish `hX : GaloisSideTwistedSelmerAuxiliaryPrimes (BlochKatoReduction.bk0 D)` using `GlobalTheory.TwSys.galois_twisted_selmer_auxprimes_of_matrix_and_bounds D D.nd D.ntw (BlochKatoReduction.bk0 D) hS (GlobalTheory.SelDetLength.twisted_selmer_lengths_eq_determinant_valuation D D.nd D.ntw (BlochKatoReduction.bk0 D)) h103 hC`. Establish `hP : PropABCD D.nexp` using `GlobalTheory.TwistDet.propABCD_of_rel D D.nd D.ntw D.nexp hRel (heckeLaws_of_range D hHC hOff) hGood h8`. Establish `hAB : admissibleIndexBoundAllPowers D.nexp (BlochKatoReduction.bk0 D) N0` using `GlobalTheory.TwistChoiceAll.admissibleIndexBoundAllPowers_of_conditions D D.nd D.ntw (BlochKatoReduction.bk0 D) N0 hTie hP hX hACD`. Establish `hInt : IntegralHeckeForms.IsotypicPartsInternalDirectSum D.nexp E` using `GlobalTheory.T.admInt_of_sup_laws D E hG hFull hHk hU hT hComm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAlg : IntegralHeckeForms.GroupAlgebraIntegrality D.nexp` using `GlobalTheory.T.admALG_of_commG_var D hComm`. Conclude with `GlobalTheory.exportAll_of_six_inputs D E N0 hAB hInt hAlg hT4 hL3 (GlobalTheory.T.admT3_of_hecke_semisimple D E hInt hAlg hSig hSS)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twistTheorem_allPowers_of_selmer_supLattice :
     ∀ (D : D7) (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ), ThmS (BlochKatoReduction.bk0 D) → ResidualBoundOddPrimes (BlochKatoReduction.bk0 D) → ThmC (BlochKatoReduction.bk0 D) →

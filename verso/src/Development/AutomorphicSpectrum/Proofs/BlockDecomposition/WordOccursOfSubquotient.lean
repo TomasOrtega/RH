@@ -10,7 +10,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.Words
 
 /- English proof (translation)
-Take `⟨hd, hne⟩` from `hw`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Conclude with `jhMult_ne_zero_iff.2 ((jhMult_ne_zero_iff.1 hne).trans (GlobalTheory.JacquetExact.isSubquotient_jac _ hπ h))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wd_of_isSubquotient {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]

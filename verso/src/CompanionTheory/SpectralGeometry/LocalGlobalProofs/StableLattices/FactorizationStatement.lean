@@ -17,11 +17,11 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.RgFl
 
 /- English proof (translation)
-Use extensionality with `v`. Establish `hperp : ∀ u, u ∈ Sᗮ → T u ∈ Sᗮ`. Introduce `u hu`. Rewrite `hu`, the goal using `[Submodule.mem_orthogonal]`. Introduce `w hw`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ⟪w, T u⟫_ℂ = ⟪star T w, u⟫_ℂ`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_left]`. Rewrite using `[h1]`. Conclude with `hu _ (hS _ (hN T hT) _ hw)`. Use `show T (S.starProjection v) = S.starProjection (T v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `symm`. Apply `Submodule.eq_starProjection_of_mem_orthogonal (hS T hT _ (S.starProjection_apply_mem v))` to reduce the goal to its premises. Rewrite using `[← map_sub]`. Conclude with `hperp _ (S.sub_starProjection_mem_orthogonal v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_comm_of_star_closed {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {N : Set (H →L[ℂ] H)} (hN : ∀ T ∈ N, star T ∈ N) (S : Submodule ℂ H) [S.HasOrthogonalProjection]
@@ -43,37 +43,33 @@ theorem proj_comm_of_star_closed {H : Type} [NormedAddCommGroup H] [InnerProduct
   exact hperp _ (S.sub_starProjection_mem_orthogonal v)
 
 /- English proof (translation)
-Introduce `G G₁ H _ _ _ _ _ π hπ hirr j p hpj hcomm E hE`. Take `⟨hE0, hEE, hEadj, hEc, m, hm⟩` from `hE`. Use `set ρ : G₁ →* (H →L[ℂ] H) := π.comp j with hρdef`. Establish `hρ : ∀ g v, ‖ρ g v‖ = ‖v‖` using `fun g v => hπ _ v`. Set `N : Set (H →L[ℂ] H)` to `{T | ∀ g, T * ρ g = ρ g * T}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A : Set (H →L[ℂ] H)` to `{T | ∀ n ∈ N, n * T = T * n}`. Establish `hN : ∀ T ∈ N, star T ∈ N`. Introduce `T hT g`. Establish `h` using `congrArg star (hT g⁻¹)`. Simplify using `only [star_mul, CompanionTheory.D.gk.admitted.FinOfPIAux.star_eq ρ hρ, inv_inv] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hAmul : ∀ a ∈ A, ∀ b ∈ A, a * b ∈ A`. Introduce `a ha b hb n hn`. Rewrite using `[← mul_assoc, ha n hn, mul_assoc, hb n hn, mul_assoc]`. Establish `hSA : Set.range ρ ⊆ A`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, rfl⟩ n hn`. Conclude with `hn g`. Establish `hprime : ∀ x ∈ A, ∀ y ∈ A, y ≠ 0 → (∀ s ∈ Set.range ρ, x * s * y = 0) → x = 0`. Introduce `x _ y hy hy0 h`. Conclude with `h2 G G₁ H π hirr j p hpj hcomm x y (fun T hT => hy T hT) hy0 (fun g => h _ ⟨g, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPI : ∀ a : Fin m → (H →L[ℂ] H), (∀ i, a i ∈ A) → stdPoly E a = 0` using `fun a ha => h1 G₁ H ρ hρ E m hm a fun i T hT => ha i T hT`. Set `R : Submodule ℂ H` to `LinearMap.range (E : H →ₗ[ℂ] H)`. Establish `hRmem : ∀ v, v ∈ R ↔ E v = v`. Introduce `v`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨w, rfl⟩`. Conclude with `DFunLike.congr_fun hEE w`. Introduce `h`. Conclude with `⟨v, h⟩`. Establish `hRcl : IsClosed (R : Set H)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (R : Set H) = {v | E v = v}` using `Set.ext hRmem`. Rewrite using `[this]`. Conclude with `isClosed_eq E.continuous continuous_id`. Set `L : Set (Submodule ℂ H)` to `{S | IsClosed (S : Set H) ∧ (∀ T ∈ N, ∀ v ∈ S, T v ∈ S) ∧ S ≤ R}`. Establish `hRL : R ∈ L`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hRcl, fun T hT v hv => ?_, le_rfl⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[hRmem]`. Use `DFunLike.congr_fun (hEc T hT) v` as an intermediate fact. Simplify using `only [mul_apply_eq_comp] at this`. Rewrite using `[← this, hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR0 : R ≠ ⊥`. Introduce `h`. Apply `hE0` to reduce the goal to its premises. Use extensionality with `v`. Establish `: E v ∈ R` using `⟨v, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Simplify using `using this`. Establish `hLinf : ∀ S ∈ L, ∀ T ∈ L, S ⊓ Tᗮ ∈ L`. Introduce and unpack `S ⟨hS1, hS2, hS3⟩ U ⟨hU1, hU2, hU3⟩`. Use `⟨hS1.inter U.isClosed_orthogonal, fun T hT v hv => ⟨hS2 T hT v hv.1, ?_⟩, inf_le_left.trans hS3⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hv2 : v ∈ Uᗮ` using `hv.2`. Use `show T v ∈ Uᗮ`. Rewrite `hv2`, the goal using `[Submodule.mem_orthogonal]`. Introduce `w hw`. Establish `h1 : ⟪w, T v⟫_ℂ = ⟪star T w, v⟫_ℂ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_left]`. Rewrite using `[h1]`. Conclude with `hv2 _ (hU2 _ (hN T hT) _ hw)`. Establish `hbound : ∀ f : Fin (m + 1) → Submodule ℂ H, (∀ i, f i ∈ L) → (∀ i, f i ≠ ⊥) → ¬ Pairwise fun i k => f i ⟂ f k`. Introduce `f hf hf0 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Establish `hc : ∀ i, CompleteSpace (f i)` using `fun i => (hf i).1.completeSpace_coe`. Use `h3 (H →L[ℂ] H) A (Set.range ρ) E m (fun i => (f i).starProjection) hAmul hSA hprime hPI (fun i n hn => proj_comm_of_star_closed hN (f i) (hf i).2.1 n hn) (fun i h0 => hf0 i ?_) (fun i => ?_) (fun i k hik => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `v hv`. Use `Submodule.starProjection_eq_self_iff.mpr hv` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← this, h0]`. Both sides reduce to the same expression. Use extensionality with `v`. Conclude with `Submodule.starProjection_eq_self_iff.mpr (Submodule.starProjection_apply_mem _ v) |> fun h => h`. Use extensionality with `v`.
-
-Establish `hv : (f k).starProjection v ∈ (f i)ᗮ` using `(hp hik).symm ((f k).starProjection_apply_mem v)`. Conclude with `Submodule.eq_starProjection_of_mem_orthogonal (zero_mem _) (by simpa using hv)`. Use extensionality with `v`. Conclude with `(hRmem _).mp ((hf i).2.2 ((f i).starProjection_apply_mem v))`. Take `⟨Q, hQL, hQ0, hQmin⟩` from `h4 H L m R (fun S hS => hS.1) hLinf hRL hR0 hbound`.
-
-Take `⟨ξ, hξ, hξ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hQ0`. Use `h6 G₁ H ρ hρ Q ξ hQL.1 hξ hξ0 (fun T hT v hv => hQL.2.1 T hT v hv) (fun g => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `h5 H N Q hN hQL.1 hQL.2.1 (fun U hU1 hU2 hU3 => hQmin U ⟨hU1, hU3, hU2.trans hQL.2.2⟩ hU2) (ρ g) (fun T hT => hT g)`. Conclude with `⟨c, hc ξ hξ⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stFactor_from (h1 : ∀ (G H : Type) [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : G →* (H →L[ℂ] H)),
     (∀ g v, ‖σ g v‖ = ‖v‖) → ∀ (E : H →L[ℂ] H) (m : ℕ), (∀ g : Fin m → G, stdPoly E (fun i => σ (g i)) = 0) →
@@ -184,7 +180,7 @@ theorem stFactor_from (h1 : ∀ (G H : Type) [Group G] [NormedAddCommGroup H] [I
   exact ⟨c, hc ξ hξ⟩
 
 /- English proof (translation)
-The claim follows from `stFactor_from GlobalTheory.CompanionTheory.Factor.stdPoly_bicomm GlobalTheory.CompanionTheory.DirectFactor.bicommutant_restriction_prime GlobalTheory.CompanionTheory.PrimeRing.StdChain.no_orthogonal_idempotents GlobalTheory.CompanionTheory.OrthoFamily.exists_minimal_of_orthogonal …`.
+A detailed English derivation is pending.
 -/
 theorem stFactor : StFactor :=
   stFactor_from GlobalTheory.CompanionTheory.Factor.stdPoly_bicomm GlobalTheory.CompanionTheory.DirectFactor.bicommutant_restriction_prime GlobalTheory.CompanionTheory.PrimeRing.StdChain.no_orthogonal_idempotents GlobalTheory.CompanionTheory.OrthoFamily.exists_minimal_of_orthogonal_bound GlobalTheory.CompanionTheory.Factor.schur_on_minimal_subspace GlobalTheory.CompanionTheory.CyclicScalar.exists_isIrredSubrep

@@ -15,14 +15,14 @@ open MeasureTheory NumberField Formalism.MainNotions.S GlobalTheory.Count
 namespace GlobalTheory.DeepRegion
 
 /- English proof (translation)
-Use `show 0 < Module.finrank ℚ I.F`. Conclude with `Module.finrank_pos`.
+A detailed English derivation is pending.
 -/
 theorem one_le_f (I : AutInst) : 1 ≤ I.f := by
   show 0 < Module.finrank ℚ I.F
   exact Module.finrank_pos
 
 /- English proof (translation)
-Establish `hd : (1 : ℝ) ≤ |(discr I.E : ℝ)|`. Establish `h0 : discr I.E ≠ 0` using `discr_ne_zero I.E`. Establish `: (1 : ℤ) ≤ |discr I.E|` using `Int.one_le_abs h0`. Conclude with `this` after adjusting the coercions. Conclude with `Real.one_le_rpow hd (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_rd (I : AutInst) : 1 ≤ I.rd := by
   have hd : (1 : ℝ) ≤ |(discr I.E : ℝ)| := by
@@ -32,47 +32,41 @@ theorem one_le_rd (I : AutInst) : 1 ≤ I.rd := by
   exact Real.one_le_rpow hd (by positivity)
 
 /- English proof (translation)
-Introduce `Cg hCg`. Use `⟨8, ?_⟩` and prove the remaining obligations. Introduce `B d p q b hq hH`. Take `⟨hDS, hSig, hn0, hqn, hrd, hf, hb, hbb, hlam, hg1, hgb, hg0p, hg0, hsplit, hgap⟩` from `id hH`. Establish `hgc : ∀ v, ∃ c : ℝ, 0 < c ∧ IsGauge (B.I.ε v) c` using `fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc, hc', -⟩` from `GlobalTheory.GaugeConst.exists_unique_isGauge B.I.n (B.I.ε v)`. Conclude with `⟨c, hc, hc'⟩`. Use `choose c hc0 hc using hgc`. Establish `hn8 : 8 ≤ B.I.n` using `hn0`. Establish `hf1 : 1 ≤ B.I.f` using `one_le_f B.I`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrd1 : 1 ≤ B.I.rd` using `one_le_rd B.I`. Establish `hnR : (8 : ℝ) ≤ B.I.n` using `by exact_mod_cast hn8`. Establish `hfR : (1 : ℝ) ≤ B.I.f` using `by exact_mod_cast hf1`. Establish `hgR : (1 : ℝ) ≤ B.g` using `by exact_mod_cast hg1`. Take `⟨X, hX⟩ : ∃ X : ℝ, X = (B.I.n : ℝ) * B.I.f * B.I.rd * B.g * b` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a1 : (8 : ℝ) ≤ B.I.n * B.I.f` using `by nlinarith`. Establish `a2 : (8 : ℝ) ≤ B.I.n * B.I.f * B.g` using `by nlinarith`. Establish `a3 : (16 : ℝ) ≤ B.I.n * B.I.f * B.g * b` using `by nlinarith`. Establish `hXe : X = B.I.rd * (B.I.n * B.I.f * B.g * b)` using `by rw [hX]; ring`. Establish `hX16 : 16 ≤ X` using `by rw [hXe]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXrd : B.I.rd ≤ X` using `by rw [hXe]; nlinarith`. Establish `hXf : 2 * B.I.f * B.I.rd ≤ X`. Establish `: 2 * (B.I.f : ℝ) ≤ B.I.n * B.I.f * B.g * b` using `by nlinarith`. Rewrite using `[hXe]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hXsq : 2 * B.I.f * B.I.rd ≤ X ^ 2` using `by nlinarith`. Apply the tactic sequence `have hVol := hV B.I p q (by first | exact hSig | exact fun v => hSig v) hqn hn8 X (by linarith) hXrd hXsq c B.μf (by first | exact hc | exact fun v => ⟨hc0 v, hc v⟩ | exact fun v => ⟨hc v, hc0 v⟩)`. Take `⟨hKs, hKg0, hKsT⟩` from `GlobalTheory.CongIndex.measure_Kset_le B.I B.μf B.g hg1`. Take `⟨hcov, -⟩` from `GlobalTheory.T.leftQuotientCovolume_eq_fundamentalDomain_inter B.I B.μf B.fund Set.univ B.fund_spec MeasurableSet.univ (fun _ _ _ _ => trivial)`. Rewrite `hcov` using `[Set.univ_inter]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ENNReal.ofReal (∏ v, c v) * _ / B.μf B.I.Kset ≤ _ at hVol`. Rewrite `hVol` using `[hcov]`. Use `set N : ℕ := B.I.n ^ 2 * B.I.f with hN`. Use `set P : ℝ := ∏ v, c v with hP`. Establish `hP0 : 0 < P` using `Finset.prod_pos fun v _ => hc0 v`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKgT : B.μf (B.I.Kg B.g) ≠ ⊤` using `ne_top_of_le_ne_top hKsT.ne (measure_mono fun x hx => hx.1)`. Use `set kR : ℝ := (B.μf (B.I.Kg B.g)).toReal with hkR`. Establish `hkR0 : 0 < kR` using `ENNReal.toReal_pos hKg0.ne' hKgT`. Establish `hX0 : 0 < X` using `by linarith`. Establish `hg0' : (0 : ℝ) < B.g` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : B.μf B.I.Kset ≠ 0` using `(lt_of_lt_of_le hKg0 (measure_mono fun x hx => hx.1)).ne'`. Establish `hF : B.I.muA B.μf B.fund ≤ ENNReal.ofReal (X ^ N * (B.g : ℝ) ^ (2 * N) * kR / P)`. Establish `h1 : ENNReal.ofReal P * B.I.muA B.μf B.fund ≤ ENNReal.ofReal (X ^ N) * B.μf B.I.Kset` using `(ENNReal.div_le_iff hm0 hKsT.ne).1 hVol`. Establish `h2 : B.μf B.I.Kset ≤ ENNReal.ofReal ((B.g : ℝ) ^ (2 * N) * kR)`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_toReal hKgT, ENNReal.ofReal_pow hg0'.le, ENNReal.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hKs`. Establish `h3 : ENNReal.ofReal P * B.I.muA B.μf B.fund ≤ ENNReal.ofReal (X ^ N * ((B.g : ℝ) ^ (2 * N) * kR))`. Rewrite using `[ENNReal.ofReal_mul (by positivity)]`. Conclude with `h1.trans (by gcongr)`. Rewrite using `[ENNReal.ofReal_div_of_pos hP0, ENNReal.le_div_iff_mul_le (Or.inl (by simpa using hP0)) (Or.inl ENNReal.ofReal_ne_top), mul_comm, ← mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `h3` using `[mul_assoc]`. Use `set Kc : ℝ := Real.exp (-(N : ℝ)) / ((B.g : ℝ) ^ (2 * N) * X ^ N) * B.D * P / kR with hKc`. Establish `hpt : ∀ x ∈ GlobalTheory.IndefiniteRowSideFullHecke.DeepSet.deepSet B q b, ENNReal.ofReal (kern B.I (phe B d) x x).re ≤ ENNReal.ofReal Kc`. Introduce `x hx`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DeepSet.deepSet, Set.mem_setOf_eq] at hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hτ0 : 0 < least B.I x` using `((GlobalTheory.T.canonicalLatticeFiltration_size_properties B.I x 1 one_pos).2.2.2.2.2.2.2.2 (by omega)).1`. Establish `hτle : least B.I x ≤ ((B.I.n : ℝ) * B.I.f * B.I.rd * B.g * b)⁻¹ ^ (11 * q)` using `hx.2.le`. Establish `hk` using `hK Cg 8 B d p q b c x hCg le_rfl hq hH hc hx.2`. Establish `he` using `(GlobalTheory.deep_region_exponents B.I.n B.I.f q B.I.rd B.g b (least B.I x) hn8 hf1 hq hqn hrd1 hb hgR hτ0 hτle).2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hN' : GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B = N` using `rfl`. Establish `hst : GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * N + N) = √(B.I.n : ℝ) * b ^ 2 + 1.5 * (B.I.n : ℝ) ^ ((3 : ℝ) / 2) + 3 * ((8 * q * N + N : ℕ) : ℝ)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe`. Establish `: (B.I.n : ℝ) ^ ((3 : ℝ) / 2) = B.I.n * √(B.I.n : ℝ)`. Rewrite using `[Real.sqrt_eq_rpow, show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add (by positivity), Real.rpow_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hk` using `[hN', hst]`. Rewrite `hKc` using `[hX]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA : ((2 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh B q (least B.I x) * √(B.I.f : ℝ) * (√(B.I.n : ℝ) * b ^ 2 + 1.5 * (B.I.n : ℝ) ^ ((3 : ℝ) / 2) + 3 * ((8 * q * N + N : ℕ) : ℝ))) ^ (16 * q * N) * (6 * (√(B.I.n : ℝ) * b ^ 2 + 1.5 * (B.I.n : ℝ) ^ ((3 : ℝ) …`. Rewrite using `[show 16 * q * N = 2 * (8 * q * N) by ring]`. Use `le_of_eq_of_le ?_ he` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : (0 : ℝ) ≤ B.D` using `Nat.cast_nonneg _`. Use `hk.trans ?_` and prove the remaining obligations. Rewrite using `[hKc]`. Establish `hpos : 0 < (B.g : ℝ) ^ (2 * N) * ((B.I.n : ℝ) * B.I.f * B.I.rd * B.g * b) ^ N`. Rewrite using `[← hX]`.
+Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Check the signs of the components of the expression. Use `gcongr`. Rewrite using `[le_div_iff₀ hpos]`. Conclude with `hA`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Consider the case `exact setLIntegral_mono measurable_const hpt`. Consider the case `exact lintegral_mono_ae ((ae_restrict_iff' (by`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DeepSet.deepSet]`. Conclude with `(measurableSet_eq_fun_of_countable measurable_const measurable_const))).2 (Filter.Eventually.of_forall hpt))`. Use `_ = ENNReal.ofReal Kc * B.I.muA B.μf (GlobalTheory.IndefiniteRowSideFullHecke.DeepSet.deepSet B q b) := setLIntegral_const _ _`.
-
-Use `_ ≤ ENNReal.ofReal Kc * B.I.muA B.μf B.fund := by gcongr`. Introduce `x hx`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DeepSet.deepSet, Set.mem_setOf_eq] at hx`. Conclude with `hx.1`. Use `_ ≤ ENNReal.ofReal Kc * ENNReal.ofReal (X ^ N * (B.g : ℝ) ^ (2 * N) * kR / P) := by gcongr`.
-
-Use `_ = ENNReal.ofReal ((B.D : ℝ) * Real.exp (-((B.I.n : ℝ) ^ 2 * (B.I.f : ℝ)))) := by`. Rewrite using `[← ENNReal.ofReal_mul (by rw [hKc]; positivity)]`. Use `congr 1`. Rewrite using `[hKc, hN]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem deepBound (hV : GlobalTheory.FlagMeas.AbsoluteVolume) (hK : GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.DeepKernelBound) :
     GlobalTheory.IndefiniteRowSideFullHecke.DeepSet.DeepBound := by

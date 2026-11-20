@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open MvPolynomial Finset
 
 /- English proof (translation)
-Set `f : ℕ → Polynomial ℂ` to `fun i => 1 - Polynomial.C (if i < k then rootOfUnity k ^ i else 0) * Polynomial.X`. Combine the equalities or inequalities in the displayed calculation. Use `(prod_subset (range_subset_range.2 hkN) fun i _ hik => ?_).symm` and prove the remaining obligations. Establish `: ¬ i < k` using `fun h => hik (mem_range.2 h)`. Simplify using `[f, this]`.
+Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `_ = ∏ i ∈ range k, (1 - Polynomial.C (rootOfUnity k ^ i) * Polynomial.X) := prod_congr rfl fun i hi => by simp [f, mem_range.1 hi]`. Use `_ = 1 - Polynomial.X ^ k := h1 k hk`.
+A detailed English derivation is pending.
 -/
 theorem prod_one_sub_rootOfUnityPoint (h1 : SchProdOneSubRootsOfUnity.Statement) {N k : ℕ}
     (hk : 1 ≤ k) (hkN : k ≤ N) :
@@ -29,15 +29,15 @@ theorem prod_one_sub_rootOfUnityPoint (h1 : SchProdOneSubRootsOfUnity.Statement)
     _ = 1 - Polynomial.X ^ k := h1 k hk
 
 /- English proof (translation)
-Introduce `N k d hk hkN`. Set `H : ℕ → ℂ` to `fun n => aeval (rootOfUnityPoint N k) (hsymm (Fin N) ℚ n)`. Establish `hrec : ∀ n, H n - (if k ≤ n then H (n - k) else 0) = if n = 0 then 1 else 0`. Introduce `n`. Establish `e` using `h2 N (rootOfUnityPoint N k) n`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[prod_one_sub_rootOfUnityPoint h1 hk hkN]`. Rewrite using `[← e]`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_one, Polynomial.coeff_X_pow, sub_mul, sum_sub_distrib, ite_mul, one_mul, zero_mul, sum_ite_eq', mem_range]`. Simplify using `[H]`. Use `show H d = _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Proceed by induction.
 
-Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Establish `e` using `hrec d`. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Rewrite `e` using `[if_neg (by omega), sub_zero, if_pos rfl]`.
+Treat this case separately. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, if_pos (dvd_zero k)]`. Distinguish the cases in `hkd : k ≤ d`. Rewrite `e` using `[if_pos hkd, if_neg (show d ≠ 0 by omega), sub_eq_zero, ih (d - k) (by omega)]`. Establish `hdvd : k ∣ d - k ↔ k ∣ d` using `by conv_rhs => rw [show d = d - k + k by omega]`. Conclude with `(Nat.dvd_add_self_right).symm`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `if_congr hdvd rfl rfl`. Rewrite `e` using `[if_neg hkd, if_neg (show d ≠ 0 by omega), sub_zero]`. Rewrite using `[e, if_neg]`. Conclude with `fun h => hkd (Nat.le_of_dvd hd h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem SchCompleteAtRootsOfUnity.proof (h1 : SchProdOneSubRootsOfUnity.Statement)
     (h2 : SchCompleteGenerating.Statement) : SchCompleteAtRootsOfUnity.Statement := by

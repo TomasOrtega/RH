@@ -11,7 +11,7 @@ section Forms
 variable {k K L : Type} [Field k] [Field K] [Field L] [Algebra k K] [Algebra k L] [Algebra K L] [IsScalarTower k K L]
 
 /- English proof (translation)
-Rewrite using `[map_smul]`. Conclude with `(algebraMap_smul L c (mapDR k K L w)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mapDR_smul' (c : K) (w : DR k K) :
     mapDR k K L (c • w) = algebraMap K L c • mapDR k K L w := by
@@ -19,11 +19,9 @@ private theorem mapDR_smul' (c : K) (w : DR k K) :
   exact (algebraMap_smul L c (mapDR k K L w)).symm
 
 /- English proof (translation)
-Rewrite `hw` using `[← ExteriorAlgebra.ιMulti_span_fixedDegree]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨v, rfl⟩` from `hz`. Rewrite using `[GlobalTheory.W1.Base.mapDR_ιMulti]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ExteriorAlgebra.ιMulti_range L q ⟨_, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a c _ _ ha hc => rw [map_add]`. Conclude with `add_mem ha hc`. Consider the case `smul r a _ ha => rw [mapDR_smul']`.
-
-Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mapDR_deg {q : ℕ} {w : DR k K} (hw : w ∈ ⋀[K]^q Ω[K⁄k]) :
     mapDR k K L w ∈ ⋀[L]^q Ω[L⁄k] := by
@@ -38,7 +36,7 @@ private theorem mapDR_deg {q : ℕ} {w : DR k K} (hw : w ∈ ⋀[K]^q Ω[K⁄k])
   | smul r a _ ha => rw [mapDR_smul']; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Establish `h : omB k K B q ≤ (⋀[K]^q Ω[K⁄k]).restrictScalars k`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨b, -, v, -, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (ExteriorAlgebra.ιMulti_range K q ⟨_, rfl⟩)`. Conclude with `h hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem omB_deg {B : Subalgebra k K} {q : ℕ} {w : DR k K} (hw : w ∈ omB k K B q) :
     w ∈ ⋀[K]^q Ω[K⁄k] := by
@@ -54,7 +52,7 @@ section Pr2
 variable {K K' : Type} [Field K] [Field K'] [Algebra ℂ K] [Algebra ℂ K']
 
 /- English proof (translation)
-Use `letI : Algebra K K' := j2.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ K K' := IsScalarTower.of_algebraMap_eq fun c => (j2.commutes c).symm`. Conclude with `mapDR_smul' c w`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem pullback_kahler_smul (j2 : K →ₐ[ℂ] K') (c : K) (w : DR ℂ K) :
     pr2L j2 (c • w) = j2 c • pr2L j2 w := by
@@ -63,7 +61,7 @@ private theorem pullback_kahler_smul (j2 : K →ₐ[ℂ] K') (c : K) (w : DR ℂ
   exact mapDR_smul' c w
 
 /- English proof (translation)
-Use `letI : Algebra K K' := j2.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ K K' := IsScalarTower.of_algebraMap_eq fun c => (j2.commutes c).symm`. Conclude with `mapDR_deg hw`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem pullback_kahler_degree (j2 : K →ₐ[ℂ] K') {q : ℕ} {w : DR ℂ K} (hw : w ∈ ⋀[K]^q Ω[K⁄ℂ]) :
     pr2L j2 w ∈ ⋀[K']^q Ω[K'⁄ℂ] := by
@@ -74,13 +72,13 @@ private theorem pullback_kahler_degree (j2 : K →ₐ[ℂ] K') {q : ℕ} {w : DR
 end Pr2
 
 /- English proof (translation)
-Rewrite `hm` using `[Submodule.map₂_eq_span_image2]`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨p, hp, q, hq, rfl⟩` from `hz`. Conclude with `⟨1, fun _ => p, fun _ => q, fun _ => ⟨hp, hq⟩, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, fun k => k.elim0, by simp⟩`. Consider the case `add a c _ _ ha hc`. Take `⟨n, v', v, hv, rfl⟩` from `ha`. Take `⟨n', u', u, hu, rfl⟩` from `hc`. Use `⟨n + n', Fin.append v' u', Fin.append v u, fun k => ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.addCases (fun i => ?_) (fun i => ?_) k` and prove the remaining obligations. Simplify using `using hv i`. Simplify using `using hu i`. Simplify using `[Fin.sum_univ_add]`. Consider the case `smul r a _ ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨n, v', v, hv, rfl⟩` from `ha`. Use `⟨n, fun k => r • v' k, v, fun k => ⟨P.smul_mem r (hv k).1, (hv k).2⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Finset.smul_sum, TensorProduct.smul_tmul']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem exists_sum {E E' : Type} [AddCommGroup E] [Module ℂ E] [AddCommGroup E'] [Module ℂ E']
     (P : Submodule ℂ E) (Q : Submodule ℂ E') {m : E ⊗[ℂ] E'}
@@ -106,9 +104,9 @@ private theorem exists_sum {E E' : Type} [AddCommGroup E] [Module ℂ E] [AddCom
     simp [Finset.smul_sum, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Take `⟨-, ⟨ev, hev⟩, h3, -⟩` from `hV L B e`. Use `⟨by simpa using h3 0, ?_⟩` and prove the remaining obligations. Introduce `v c v' c' h h'`. Take `⟨hv, rfl⟩` from `(hev _ _).1 h`. Take `⟨hv', rfl⟩` from `(hev _ _).1 h'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(hev _ _).2 ⟨add_mem hv hv', by rw [← map_add]; rfl⟩, (hev _ _).2 ⟨mul_mem hv hv', by rw [← map_mul]; rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem val_ring (hV : ValBasic) {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L) (e : B →ₐ[ℂ] ℂ) :
     Val B e 0 0 ∧ ∀ v c v' c', Val B e v c → Val B e v' c' →
@@ -122,7 +120,7 @@ private theorem val_ring (hV : ValBasic) {L : Type} [Field L] [Algebra ℂ L] (B
     (hev _ _).2 ⟨mul_mem hv hv', by rw [← map_mul]; rfl⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (val_ring hV B e).1`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `((val_ring hV B e).2 _ _ _ _ (h i (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_sum (hV : ValBasic) {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L) (e : B →ₐ[ℂ] ℂ)
     {ι : Type} (s : Finset ι) (f : ι → L) (c : ι → ℂ) (h : ∀ i ∈ s, Val B e (f i) (c i)) :
@@ -136,11 +134,9 @@ private theorem val_sum (hV : ValBasic) {L : Type} [Field L] [Algebra ℂ L] (B 
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))).1
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ = ∑ T ∈ P, μ T T := by`. Use `Finset.sum_congr rfl fun T hT => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun S hS => by rw [hδ S hS T hT]]`.
-
-Simplify using `[ite_mul, hT]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_delta {ι : Type} [DecidableEq ι] (P : Finset ι) (n : ℕ) (α β : Fin n → ι → ℂ) (μ : ι → ι → ℂ)
     (hδ : ∀ S ∈ P, ∀ T ∈ P, ∑ k, α k S * β k T = if S = T then 1 else 0) :
@@ -162,9 +158,9 @@ section Term
 variable {K K' : Type} [Field K] [Field K'] [Algebra ℂ K] [Algebra ℂ K'] [Algebra K K'] [IsScalarTower ℂ K K']
 
 /- English proof (translation)
-Establish `h1 : gY j2 (w' ⊗ₜ[ℂ] w) = mapDR ℂ K K' w' * pr2L j2 w` using `rfl`. Rewrite using `[h1, hb, map_sum, Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun T hT => ?_` and prove the remaining obligations. Rewrite using `[pullback_kahler_smul, hc T hT, Finset.smul_sum, Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul, mul_smul_comm, ← hmap S, ← map_mul, hg S hS, mapDR_smul', hmap U, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gY_term {ι : Type} (j2 : K →ₐ[ℂ] K') (dK : ι → DR ℂ K) (dL : ι → DR ℂ K') (U : ι) (P : Finset ι)
     (hmap : ∀ T, mapDR ℂ K K' (dK T) = dL T) (c : ι → ι → K')
@@ -179,9 +175,9 @@ private theorem gY_term {ι : Type} (j2 : K →ₐ[ℂ] K') (dK : ι → DR ℂ 
   rw [smul_smul, mul_smul_comm, ← hmap S, ← map_mul, hg S hS, mapDR_smul', hmap U, smul_smul]
 
 /- English proof (translation)
-Establish `h1 : gY j2 (w' ⊗ₜ[ℂ] w) = mapDR ℂ K K' w' * pr2L j2 w` using `rfl`. Rewrite using `[h1]`. Establish `h2 : mapDR ℂ K K' w' ∈ LinearMap.range (ExteriorAlgebra.ι K' (M` using `Ω[K'⁄ℂ])) ^ p := mapDR_deg h'`. Establish `h3 : pr2L j2 w ∈ LinearMap.range (ExteriorAlgebra.ι K' (M` using `Ω[K'⁄ℂ])) ^ q := pullback_kahler_degree j2 h`. Use `show _ ∈ LinearMap.range (ExteriorAlgebra.ι K' (M := Ω[K'⁄ℂ])) ^ (p + q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add]`. Conclude with `Submodule.mul_mem_mul h2 h3`.
+A detailed English derivation is pending.
 -/
 private theorem gY_deg (j2 : K →ₐ[ℂ] K') {p q : ℕ} {w' w : DR ℂ K} (h' : w' ∈ ⋀[K]^p Ω[K⁄ℂ]) (h : w ∈ ⋀[K]^q Ω[K⁄ℂ]) :
     gY j2 (w' ⊗ₜ[ℂ] w) ∈ ⋀[K']^(p + q) Ω[K'⁄ℂ] := by
@@ -196,25 +192,23 @@ private theorem gY_deg (j2 : K →ₐ[ℂ] K') {p q : ℕ} {w' w : DR ℂ K} (h'
 end Term
 
 /- English proof (translation)
-Introduce `hId hRed hFix hDt hMin hDtB hVB F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY τ hτ a ha m hm hAct`. Establish `hm' : m ∈ Submodule.map₂ (TensorProduct.mk ℂ (DR ℂ K) (DR ℂ K)) (omB ℂ K (rB ℂ K (xv x) {0}) (d - a)) (omB ℂ K (rB ℂ K (xv x) {0}) a)` using `hm`. Take `⟨n, w', w, hww, rfl⟩` from `exists_sum _ _ hm'`. Establish `hCov : IsFinCover ℂ K' (xv x)` using `hY.covY`. Take `⟨⟨τ', hτ'⟩, htop⟩` from `GlobalTheory.T.exists_topDegreeCoefficientForm_and_eq_on_top_forms ℂ F K' d (xv x) hCov`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hdt, -, -⟩` from `hDtB F K' d x hCov τ' hτ'`. Establish `hg0 : algebraMap F K' (omG x 0) ≠ 0`. Use `(map_ne_zero _).2 (Finset.prod_ne_zero_iff.2 fun l _ => ?_)` and prove the remaining obligations. Conclude with `div_ne_zero (x l).ne_zero (x 0).ne_zero`. Establish `hdt0 : dtS K' x Finset.univ ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdt]`. Conclude with `smul_ne_zero hg0 hCov.dlogRatioVolumeForm_ne_zero`. Establish `hdeg : gY j2 (∑ k, w' k ⊗ₜ[ℂ] w k) ∈ ⋀[K']^d Ω[K'⁄ℂ]`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `gY_deg j2 (omB_deg (hww k).1) (omB_deg (hww k).2)` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel ha]`. Then use the resulting hypothesis. Establish `hs : gY j2 (∑ k, w' k ⊗ₜ[ℂ] w k) = (τ' (gY j2 (∑ k, w' k ⊗ₜ[ℂ] w k)) / algebraMap F K' (omG x 0)) • dtS K' x Finset.univ`. Rewrite using `[hdt, smul_smul, div_mul_cancel₀ _ hg0]`. Conclude with `htop τ' hτ' _ hdeg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨_, hs, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hFix F K K' d x j2 Fx A hY e he`. Establish `hRK` using `hRed F K K' d x j2 hY.toY0`. Take `⟨g, b, α, β, hg1, hb1, hval, hδ⟩` from `hId F K d x hY.covZ τ hτ hRK a ha n w' w (fun k => hww k) hAct z`. Use `choose hmap c hc hv using hDt F K K' d x j2 Fx A hY e he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hP : ∀ {T : Finset (Fin d)}, T ∈ Finset.univ.powersetCard a → T.card = a` using `fun hT => (Finset.mem_powersetCard.1 hT).2`. Establish `hc' : ∀ T ∈ Finset.univ.powersetCard a, pr2L j2 (dtS K x T) = ∑ S ∈ Finset.univ.powersetCard a, c T S • dtS K' x S`. Introduce `T hT`. Use `hc T` as an intermediate fact. Rewrite `this` using `[hP hT]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hsum : gY j2 (∑ k, w' k ⊗ₜ[ℂ] w k) = (∑ k, ∑ T ∈ Finset.univ.powersetCard a, ∑ S ∈ Finset.univ.powersetCard a, j2 (b k T) * c T S * algebraMap K K' (g k S)) • dtS K' x Finset.univ`. Rewrite using `[map_sum, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun k _ => gY_term j2 (dtS K x) (dtS K' x) Finset.univ _ hmap c hc' (w' k) (w k) (g k) (b k) (fun S hS => hg1 k S (hP hS)) (hb1 k)`. Rewrite using `[smul_left_injective K' hdt0 (hs.symm.trans hsum)]`. Set `μ : Finset (Fin d) → Finset (Fin d) → ℂ` to `fun T S => if h : S.card = T.card then ((A e).submatrix (T.orderEmbOfFin rfl) (S.orderEmbOfFin h)).det else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV` using `val_sum hVB (rB ℂ K' (xv x) {0}) e.1 Finset.univ (fun k => ∑ T ∈ Finset.univ.powersetCard a, ∑ S ∈ Finset.univ.powersetCard a, j2 (b k T) * c T S * algebraMap K K' (g k S)) (fun k => ∑ T ∈ Finset.univ.powersetCard a, ∑ S ∈ Finset.univ.powersetCard a, β k T * μ T S * α k S) (fun k …`. Establish `hr` using `(val_ring hVB (rB ℂ K' (xv x) {0}) e.1).2`. Establish `h1` using `(hz _ _ (hval k T (hP hT)).2).2`. Establish `h2` using `(hz _ _ (hval k S (hP hS)).1).1`. Establish `hcard : S.card = T.card` using `(hP hS).trans (hP hT).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : Val (rB ℂ K' (xv x) {0}) e.1 (c T S) (μ T S)`. Simplify using `only [μ, dif_pos hcard]`. Conclude with `hv T S hcard`. Conclude with `(hr _ _ _ _ (hr _ _ _ _ h1 h3).2 h2).2)`. Rewrite `hV` using `[sum_delta _ n α β μ fun S hS T hT => hδ S T (hP hS) (hP hT)]`.
-
-Rewrite using `[hMin d a (A e)]`. Simplify `hV` using `[μ]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.valG_of :
     IdVal → RedK → FixZ → DtPull → MinorSum → DtBasic → ValBasic → ValG := by

@@ -155,7 +155,7 @@ def Shape : Prop :=
     OneClass ϖ ψ ν n hc L' ∧ OneCoset ϖ ψ ν n c L' ∧ FunMod ϖ ψ ν n c L' ∧ InjSupp ϖ ψ ν n c L'
 
 /- English proof (translation)
-Simplify using `[expo, Finset.sum_Icc_succ_top]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 example (d : ℕ) : expo 2 d = 3 * d + 1 := by
   simp [expo, Finset.sum_Icc_succ_top]; ring
@@ -163,9 +163,9 @@ example (d : ℕ) : expo 2 d = 3 * d + 1 := by
 open Classical in
 
 /- English proof (translation)
-Use `⟨fun x hx => by by_contra h; simp [h] at hx, fun x y hy => ?_⟩` and prove the remaining obligations. Establish `: MapsInto (x + (ϖ : k) • y) M' M ↔ MapsInto x M' M`. Use `forall₂_congr fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_mulVec, Matrix.smul_mulVec]`. Conclude with `M.add_mem_iff_left (M.smul_mem ϖ (hy v hv))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`.
+A detailed English derivation is pending.
 -/
 example {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ϖ : 𝒪[k])
     (M' : Submodule 𝒪[k] (ι → k)) (M : Submodule 𝒪[k] (κ → k)) :

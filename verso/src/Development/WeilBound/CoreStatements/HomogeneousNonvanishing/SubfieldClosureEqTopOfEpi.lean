@@ -4,17 +4,17 @@ open AlgebraicGeometry CategoryTheory
 namespace PositivityTheory.UnitarySelfGeneration
 
 /- English proof (translation)
-Introduce `O F _ _ β h`. Use `set K := Subfield.closure (Set.range β) with hK`. Assume the negation of the conclusion as `hne`. Establish `key` using `h (TensorProduct K F F) Algebra.TensorProduct.includeLeftRingHom (Algebra.TensorProduct.includeRight (R := K) (A := F) (B := F)).toRingHom (by`. Use extensionality with `o`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `ho : β o ∈ K` using `Subfield.subset_closure ⟨o, rfl⟩`. Establish `e : β o = (⟨β o, ho⟩ : K) • (1 : F)`. Rewrite using `[Subfield.smul_def, smul_eq_mul, mul_one]`. Use `show β o ⊗ₜ[K] (1 : F) = (1 : F) ⊗ₜ[K] β o`. Rewrite using `[e, TensorProduct.smul_tmul])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : Submodule.span K {(1 : F)} < ⊤`. Rewrite using `[lt_top_iff_ne_top]`. Introduce `ht`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x _`. Establish `hx : x ∈ Submodule.span K {(1 : F)}` using `ht ▸ Submodule.mem_top`. Take `⟨k, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Rewrite using `[Subfield.smul_def, smul_eq_mul, mul_one]`. Conclude with `k.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top _ hlt`. Establish `h1 : φ 1 = 0` using `hφ (Submodule.mem_span_singleton_self 1)`. Apply `hφ0` to reduce the goal to its premises. Use extensionality with `b`. Establish `e : b ⊗ₜ[K] (1 : F) = (1 : F) ⊗ₜ[K] b` using `RingHom.congr_fun key b`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e2` using `congrArg (fun z => TensorProduct.lid K F (TensorProduct.map φ LinearMap.id z)) e`. Simplify using `only [TensorProduct.map_tmul, TensorProduct.lid_tmul, LinearMap.id_apply, h1, zero_smul] at e2`. Break down `smul_eq_zero.1 e2 with h | h` into its components or cases. Simplify using `using h`. Conclude with `absurd h one_ne_zero`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem subfield_closure_eq_top_of_epi : ∀ (O F : Type) [CommRing O] [Field F] (β : O →+* F), (∀ (T : Type) [CommRing T] (g₁ g₂ : F →+* T), g₁.comp β = g₂.comp β → g₁ = g₂) → Subfield.closure (Set.range β) = ⊤ := by
   intro O F _ _ β h

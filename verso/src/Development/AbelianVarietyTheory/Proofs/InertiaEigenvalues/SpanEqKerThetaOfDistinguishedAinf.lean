@@ -11,15 +11,15 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l hl x hx hu`. Take `⟨ξ, h, -, h1⟩` from `GlobalTheory.Prism.exists_generator l`. Establish `h0 : Per.θ l ξ = 0` using `by rw [← RingHom.mem_ker, h]; exact Ideal.mem_span_singleton_self ξ`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ξ ∣ x := by`. Rewrite using `[← Ideal.mem_span_singleton, ← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hφ` using `(ainfDelta l).φ_eq x`. Establish `hφ' : (ainfDelta l).φ x = WittVector.frobenius x` using `rfl`. Establish `hfx : WittVector.frobenius x = WittVector.frobenius ξ * WittVector.frobenius c`. Rewrite using `[hc, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hφ` using `[hφ', hfx]`. Establish `h3` using `congrArg (Per.θ l) hφ`. Rewrite `h3` using `[map_mul, h1, map_add, map_pow, map_mul, map_natCast, hx, zero_pow hl.out.ne_zero, zero_add]`. Take `⟨v, hv⟩` from `hu.exists_left_inv`. Establish `h4 : v * WittVector.frobenius c - 1 ∈ Ideal.span {ξ}`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, RingHom.mem_ker, map_sub, map_mul, map_one, sub_eq_zero]`. Establish `h5 : Per.θ l (WittVector.frobenius c) = Per.θ l ((ainfDelta l).δ x)` using `mul_left_cancel₀ (Nat.cast_ne_zero.2 hl.out.ne_zero : (l : OC l) ≠ 0) h3`. Rewrite using `[h5, ← map_mul, hv, map_one]`. Use `(GlobalTheory.Per.AinfComplete.main l ξ fun hu => (hu.map (Per.θ l)).ne_zero h0).2` as an intermediate fact. Establish `h5` using `Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot _ h4) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[mul_one, sub_add_cancel]`. Establish `h6 : IsUnit c`. Rewrite using `[← (WittVector.frobeniusEquiv l (OCb l)).symm_apply_apply c]`. Conclude with `(isUnit_of_mul_isUnit_right h5).map (WittVector.frobeniusEquiv l (OCb l)).symm`. Rewrite using `[h, hc, Ideal.span_singleton_mul_right_unit h6]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_ker_theta_of_distinguished : ∀ (l : ℕ) [Fact l.Prime] (x : Ainf l), Per.θ l x = 0 →
     IsUnit ((ainfDelta l).δ x) → Ideal.span {x} = RingHom.ker (Per.θ l) := by

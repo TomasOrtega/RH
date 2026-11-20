@@ -33,11 +33,11 @@ open GroundTheory.Heights₂.Heights.PtsSegreChartFibreSum (isClosed_zeroSet exi
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hprod : ∏ p, (bsmul c z p) ^ m p = (∏ k, c k ^ a k) * ∏ p, z p ^ m p`. Simplify using `only [bsmul, mul_pow, Finset.prod_mul_distrib]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, c k ^ m ⟨k, i⟩ = c k ^ a k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs m hm k]`. Rewrite using `[hprod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem eval_bsmul_of_isMultiHomogC {s : MRingOver ℂ ι} {a : K → ℕ} (hs : IsMultiHomog s a) (c : K → ℂ)
     (z : (Σ k, ι k) → ℂ) :
@@ -55,9 +55,9 @@ theorem eval_bsmul_of_isMultiHomogC {s : MRingOver ℂ ι} {a : K → ℕ} (hs :
   ring
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hz.1 k`. Conclude with `⟨j, mul_ne_zero (hc k) hj⟩`. Take `⟨S, hS, hQS⟩` from `hQ`. Establish `hle : Q ≤ RingHom.ker (MvPolynomial.eval (bsmul c z))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hQS, Ideal.span_le]`. Introduce `s hs`. Take `⟨a, ha⟩` from `hS s hs`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, eval_bsmul_of_isMultiHomogC ha, hz.2 s (by rw [hQS]; exact Ideal.subset_span hs), mul_zero]`. Conclude with `hle hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bsmul_mem_conePts {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIdeal Q) {c : K → ℂ}
     (hc : ∀ k, c k ≠ 0) {z : (Σ k, ι k) → ℂ} (hz : z ∈ conePts Q) : bsmul c z ∈ conePts Q := by
@@ -74,7 +74,7 @@ theorem bsmul_mem_conePts {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIdeal
     exact hle hf
 
 /- English proof (translation)
-Use `⟨h.1, h.2.mono fun y' hy' => ⟨hy'.1, ⟨hy'.2.1.1, fun f hf => ?_⟩, hy'.2.2⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot.1 hf]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isSheet_bot_of_isSetSheet {e : ℕ} {Q : Ideal (MRingOver ℂ ι)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {y : Fin e → ℂ}
@@ -85,9 +85,9 @@ theorem isSheet_bot_of_isSetSheet {e : ℕ} {Q : Ideal (MRingOver ℂ ι)}
   simp
 
 /- English proof (translation)
-Take `⟨z, hz, hzi, hxe⟩` from `hx`. Establish `hw : (fun i' => x (σ.symm i')) = segre z`. Use function extensionality and compare the values at `i'`. Simplify using `[hxe]`. Use `⟨z, hz, hw.symm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw]`. Use function extensionality and compare the values at `r`. Use `Fin.cases ?_ (fun r => ?_) r` and prove the remaining obligations. Rewrite using `[hΨ0, hzi, Fin.cons_zero]`. Rewrite using `[Fin.cons_succ, chartProjMatrix_mulVec, hw]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_setFibre_of_chart {e m : ℕ} {S : Set ((Σ k, ι k) → ℂ)} {σ : Fin m ≃ ((k : K) → ι k)}
     {i : (k : K) → ι k} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hΨ0 : ∀ w, Ψ w 0 = w i)
@@ -105,9 +105,9 @@ theorem mem_setFibre_of_chart {e m : ℕ} {S : Set ((Σ k, ι k) → ℂ)} {σ :
   · rw [Fin.cons_succ, chartProjMatrix_mulVec, hw]
 
 /- English proof (translation)
-Take `⟨z, hz, rfl, hΨw⟩` from `hw`. Establish `hzi : segre z i = 1`. Establish `h` using `hΨ0 (segre z)`. Rewrite `h` using `[hΨw, Fin.cons_zero]`. Conclude with `h.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨z, hz, hzi, rfl⟩, funext fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[chartProjMatrix_mulVec]`. Simplify using `only [Equiv.apply_symm_apply]`. Rewrite using `[hΨw, Fin.cons_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_of_mem_setFibre {e m : ℕ} {S : Set ((Σ k, ι k) → ℂ)} {σ : Fin m ≃ ((k : K) → ι k)}
     {i : (k : K) → ι k} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hΨ0 : ∀ w, Ψ w 0 = w i)
@@ -126,13 +126,13 @@ theorem chart_of_mem_setFibre {e m : ℕ} {S : Set ((Σ k, ι k) → ℂ)} {σ :
 variable [DecidableEq K]
 
 /- English proof (translation)
-Take `⟨z, hz, hzi, rfl⟩` from `hx`. Establish `hne : ∀ k, z ⟨k, i k⟩ ≠ 0`. Establish `h1 : ∏ k, z ⟨k, i k⟩ ≠ 0`. Express the relevant statement in the definitionally equal form `segre z i ≠ 0`. Rewrite using `[hzi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Conclude with `fun k => (Finset.prod_ne_zero_iff.mp h1) k (Finset.mem_univ k)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `heq : chartLift σ i (fun a => segre z (σ a)) = bsmul (fun k => (z ⟨k, i k⟩)⁻¹) z`. Use function extensionality and compare the values at `p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨k, j⟩` from `p`. Rewrite using `[chartLift_segre_apply σ i z hzi k j]`. Simplify using `only [bsmul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bsmul_mem_conePts hQ (fun k => inv_ne_zero (hne k)) hz`. Rewrite using `[segre_chartLift σ i z hzi]`. Use function extensionality and compare the values at `i'`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartLift_of_chartSet {m : ℕ} {Q : Ideal (MRingOver ℂ ι)} (hQ : IsMultiHomogIdeal Q)
     {σ : Fin m ≃ ((k : K) → ι k)} {i : (k : K) → ι k} {x : Fin m → ℂ}
@@ -159,35 +159,31 @@ theorem chartLift_of_chartSet {m : ℕ} {Q : Ideal (MRingOver ℂ ι)} (hQ : IsM
     simp
 
 /- English proof (translation)
-Take `⟨U, hUo, hxU, hsd, hsx, hsU, V, hV, hloc⟩` from `hsh.choose_spec`. Generalize the expression as in `hsh.choose = s at hsd hsx hsU hloc ⊢`. Establish `hxy : chartProjMatrix σ Ψ *ᵥ x = y` using `hx.2`. Rewrite `hxU`, `hsx` using `[hxy]`. Establish `hxC : x ∈ chartSet (conePts Q) σ i` using `hsub J hJ hx.1`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx1 : x (σ.symm i) = 1`. Take `⟨z, -, hzi, rfl⟩` from `hxC`. Simplify using `using hzi`. Use `set w : ((k : K) → ι k) → ℂ := fun i' => x (σ.symm i') with hw`. Establish `hγ' : IsSetSheet (conePts Q) Ψ y w (fun y' => chartLift σ i (s y'))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show segre (chartLift σ i (s y)) = w`. Rewrite using `[hsx]`. Conclude with `(chartLift_of_chartSet hMH hxC).2`. Use `filter_upwards [hUo.mem_nhds hxU] with y' hy'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsy'` using `hsU y' hy'`. Establish `hC'` using `hsub J hJ hsy'.2`. Use `⟨?_, (chartLift_of_chartSet hMH hC').1, ?_⟩` and prove the remaining obligations. Establish `hd : DifferentiableAt ℂ s y'` using `hsd.differentiableAt (hUo.mem_nhds hy')`. Use `differentiableAt_pi.2 fun p => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `differentiableAt_pi.1 hd (σ.symm (Function.update i p.1 p.2))`. Rewrite using `[(chartLift_of_chartSet hMH hC').2]`. Establish `hf` using `mem_setFibre_of_chart (Ψ := Ψ) hΨ0 hC'`. Rewrite `hf` using `[hsy'.1]`. Take `⟨_, _, _, h⟩` from `hf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hex : ∃ γ, IsSetSheet (conePts Q) Ψ y w γ` using `⟨_, hγ'⟩`. Unfold `setSheetDensity`. Rewrite using `[dif_pos hex]`. Use `set γ := hex.choose with hγ_def`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hγ : IsSetSheet (conePts Q) Ψ y w γ` using `hex.choose_spec`. Establish `hγan` using `sheet_analyticAt osgood (isSheet_bot_of_isSetSheet hγ)`. Establish `hγ'an` using `sheet_analyticAt osgood (isSheet_bot_of_isSetSheet hγ')`. Establish `hcseg : Continuous fun z : (Σ k, ι k) → ℂ => fun a : Fin m => segre z (σ a)`. Use `continuous_pi fun a => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [segre]`. Conclude with `continuous_finsetProd _ fun k _ => continuous_apply _`. Establish `hxy0 : (fun a => segre (γ y) (σ a)) = x`. Use function extensionality and compare the values at `a`. Rewrite using `[hγ.1]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hw]`. Establish `ht : Tendsto (fun y' => fun a => segre (γ y') (σ a)) (𝓝 y) (𝓝 x)`. Establish `h2` using `(hcseg.continuousAt.comp hγan.continuousAt).tendsto`. Simplify using `only [Function.comp_def] at h2`. Rewrite `h2` using `[hxy0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hE4 : ∀ᶠ y' in 𝓝 y, ∀ J' ∈ chartComponents (conePts Q) σ i, J' ≠ J → (fun a => segre (γ y') (σ a)) ∉ zeroSet J'`. Use `(eventually_all_finset _).2 fun J' hJ' => ?_` and prove the remaining obligations. Distinguish the cases in `hJJ : J' = J`. Conclude with `Eventually.of_forall fun _ h => absurd hJJ h`. Conclude with `Filter.Eventually.mono (p := fun y' => (fun a => segre (γ y') (σ a)) ∈ (zeroSet J')ᶜ) (ht ((isClosed_zeroSet J').isOpen_compl.mem_nhds (hsep J' hJ' hJJ))) fun _ h _ => h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hseg : (fun y' => segre (γ y')) =ᶠ[𝓝 y] fun y' => segre (chartLift σ i (s y'))` using `by filter_upwards [hγ.2, hUo.mem_nhds hxU, ht hV, hE4] with y' hy' hyU hxV h4`. Take `⟨-, hmc, hΨy⟩` from `hy'`. Establish `hzi : segre (γ y') i = 1`. Establish `h` using `hΨ0 (segre (γ y'))`. Rewrite `h` using `[hΨy, Fin.cons_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm`. Establish `hC : (fun a => segre (γ y') (σ a)) ∈ chartSet (conePts Q) σ i` using `⟨γ y', hmc, hzi, rfl⟩`. Establish `hAx : chartProjMatrix σ Ψ *ᵥ (fun a => segre (γ y') (σ a)) = y'` using `(chart_of_mem_setFibre (Ψ := Ψ) hΨ0 ⟨γ y', hmc, rfl, hΨy⟩).2`. Take `⟨J', hJ', hxJ'⟩` from `hcov _ hC`. Establish `hJJ : J' = J`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Assume the negation of the conclusion as `h`. Conclude with `h4 J' hJ' h hxJ'`. Establish `hxJ : (fun a => segre (γ y') (σ a)) ∈ zeroSet J` using `hJJ ▸ hxJ'`. Establish `hxs : (fun a => segre (γ y') (σ a)) = s y'`. Establish `h` using `hloc _ ⟨hxJ, hxV⟩ (by rw [hAx]; exact hyU)`.
-
-Rewrite `h` using `[hAx]`. Then use the resulting hypothesis. Rewrite using `[← hxs]`. Conclude with `(segre_chartLift σ i (γ y') hzi).symm`. Establish `hy0 : ∀ k, ∃ j, γ y ⟨k, j⟩ ≠ 0` using `hγ.2.self_of_nhds.2.1.1`. Establish `hde` using `density_eq hL (isSectionOn_ofWeight_one (P := (⊥ : Ideal (MRing ι))) Ideal.isPrime_bot g hg) hγan hγ'an hy0 hseg`.
-
-Rewrite `hde` using `[logNorm_ofWeight_one, logNorm_ofWeight_one]`. Rewrite using `[hde, chartWeight_of_coord g hx1, hsx]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem term_eq {e m : ℕ} {Q : Ideal (MRingOver ℂ ι)} {σ : Fin m ≃ ((k : K) → ι k)} {i : (k : K) → ι k}
     {L : Fin e → HermLine ι} {g : ((Σ k, ι k) → ℂ) → ℝ}
@@ -285,31 +281,27 @@ theorem term_eq {e m : ℕ} {Q : Ideal (MRingOver ℂ ι)} {σ : Fin m ≃ ((k :
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Q e m σ i L g Ψ hQ hL hg hΨ0 hfinF hzero hdim hfinp`. Use `set A := chartProjMatrix σ Ψ with hAdef`. Use `set C := chartComponents (conePts Q) σ i with hCdef`. Establish `hMH : IsMultiHomogIdeal Q` using `hQ.2.1.2.1`. Establish `hmin : ∀ J ∈ C, J ∈ (GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartIdeal (conePts Q) σ i).minimalPrimes` using `fun J hJ => GlobalTheory.CompanionTheory.Ar.Pub.CxChart.mem_chartComponents.1 hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprime : ∀ J ∈ C, J.IsPrime` using `fun J hJ => (hmin J hJ).1.1`. Establish `hsub : ∀ J ∈ C, zeroSet J ⊆ chartSet (conePts Q) σ i`. Introduce `J hJ x hx`. Rewrite using `[← hzero]`. Conclude with `fun q hq => hx q ((hmin J hJ).1.2 hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcov : ∀ x ∈ chartSet (conePts Q) σ i, ∃ J ∈ C, x ∈ zeroSet J`. Introduce `x hx`. Rewrite `hx` using `[← hzero]`. Take `⟨J, hJ, hxJ⟩` from `exists_minimalPrime_of_mem_zeroSet hx`. Conclude with `⟨J, GlobalTheory.CompanionTheory.Ar.Pub.CxChart.mem_chartComponents.2 hJ, hxJ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG1 : ∀ᵐ y, ∀ J ∈ C, ∀ x ∈ GroundTheory.Heights₂.Heights.ComplexSets.fibre J A y, ∃ s, IsSheetAt J A x s`. Use `(eventually_all_finset C).2 fun J hJ => ?_` and prove the remaining obligations. Take `⟨Q', U, D, N, s, -, hUD, -, -, hvol, hfib⟩` from `GroundTheory.Heights₂.Heights.DiscriminantSheetCover.proof GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.full m e J A (hprime J hJ) (hdim J hJ) (hfinp J hJ)`. Establish `hae : (⋃ k, D k) ∈ ae volume` using `mem_ae_iff.2 hvol`. Use `filter_upwards [hae] with y hy x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩` from `Set.mem_iUnion.1 hy`. Take `⟨hrange, -, hsheet⟩` from `hfib k y ((hUD k).2.2.1 hk)`. Rewrite `hx` using `[hrange]`. Take `⟨j, rfl⟩` from `hx`. Conclude with `⟨_, hsheet j⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hG2 : ∀ᵐ y, ∀ J ∈ C, ∀ J' ∈ C, J' ≠ J → ∀ x ∈ GroundTheory.Heights₂.Heights.ComplexSets.fibre J A y, x ∉ zeroSet J'`. Use `(eventually_all_finset C).2 fun J hJ => (eventually_all_finset C).2 fun J' hJ' => ?_` and prove the remaining obligations. Distinguish the cases in `hJJ : J' = J`. Conclude with `Eventually.of_forall fun _ h => absurd hJJ h`. Establish `hnle : ¬ J' ≤ J` using `fun hle => hJJ (le_antisymm hle ((hmin J hJ).2 ⟨hprime J' hJ', (hmin J' hJ').1.2⟩ hle))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, hfJ', hfJ⟩` from `SetLike.not_le_iff_exists.1 hnle`. Take `⟨q, hq, hqz⟩` from `exists_poly_of_not_mem (hprime J hJ) (hfinp J hJ) hfJ`. Establish `hae : {y : Fin e → ℂ | MvPolynomial.eval y q = 0}ᶜ ∈ ae volume` using `compl_mem_ae_iff.2 (GroundTheory.Heights₂.Heights.DiscriminantSheetCover.volume_zero_set q hq)`. Use `filter_upwards [hae] with y hy _ x hx hxJ'`. Conclude with `hy (by rw [← hx.2]; exact hqz x hx.1 (hxJ' f hfJ'))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `filter_upwards [hG1, hG2] with y hy1 hy2`. Use `set ψ : (Fin m → ℂ) → ((k : K) → ι k) → ℂ := fun x i' => x (σ.symm i') with hψ`. Use `set S := ⋃ J ∈ (C : Set (Ideal (MvPolynomial (Fin m) ℂ))), GroundTheory.Heights₂.Heights.ComplexSets.fibre J A y with hS`. Establish `hψS : ∀ x ∈ S, ψ x ∈ setFibre (conePts Q) Ψ y`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨J, hJ, hxJ⟩` from `Set.mem_iUnion₂.1 hx`. Establish `h` using `mem_setFibre_of_chart (Ψ := Ψ) hΨ0 (hsub J hJ hxJ.1)`. Rewrite `h` using `[hxJ.2]`. Then use the resulting hypothesis. Establish `himg : ψ '' S = setFibre (conePts Q) Ψ y`. Use `Set.Subset.antisymm ?_ fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hψS x hx`. Take `⟨hC, hAw⟩` from `chart_of_mem_setFibre hΨ0 hw`. Take `⟨J, hJ, hxJ⟩` from `hcov _ hC`. Conclude with `⟨_, Set.mem_iUnion₂.2 ⟨J, hJ, hxJ, hAw⟩, funext fun i' => by simp [hψ]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hinj : Set.InjOn ψ S` using `fun x _ x' _ h => funext fun a => by`. Simplify `congrFun h (σ a)` using `[hψ]`. Establish `hfinJ : ∀ J ∈ (C : Set (Ideal (MvPolynomial (Fin m) ℂ))), (GroundTheory.Heights₂.Heights.ComplexSets.fibre J A y).Finite`. Introduce `J hJ`. Use `((hfinF y).image fun w a => w (σ a)).subset fun x hx => ?_` and prove the remaining obligations.
-
-Use `⟨ψ x, hψS x (Set.mem_iUnion₂.2 ⟨J, hJ, hx⟩), funext fun a => by simp [hψ]⟩` and prove the remaining obligations. Establish `hdisj : (C : Set (Ideal (MvPolynomial (Fin m) ℂ))).PairwiseDisjoint fun J => GroundTheory.Heights₂.Heights.ComplexSets.fibre J A y` using `fun J hJ J' hJ' hne => Set.disjoint_left.2 fun x hx hx' => hy2 J hJ J' hJ' (Ne.symm hne) x hx hx'.1`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun J hJ => ?_` and prove the remaining obligations. Simplify using `only [chartDens, sheetSum]`.
-
-Use `finsum_mem_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (hy1 J hJ x hx)]`. Conclude with `(term_eq hMH hL hg hΨ0 hsub hcov hJ hx (fun J' hJ' h => hy2 J hJ J' hJ' h x hx) (hy1 J hJ x hx)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreSum : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e m : ℕ) (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)

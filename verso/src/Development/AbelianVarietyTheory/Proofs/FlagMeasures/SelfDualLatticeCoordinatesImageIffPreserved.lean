@@ -7,11 +7,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CovDomGrp
 
 /- English proof (translation)
-Introduce `D X n γ hγ`. Establish `key : GlobalTheory.SgGlob.latMap γ (Lc X) = (Formalism.HermitianLatticesTheory.gmap n (VS D).L0).comap ((vecOf X).restrictScalars (𝓞 D.host.E))`. Use extensionality with `c`. Simplify using `only [GlobalTheory.SgGlob.latMap, Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, Submodule.mem_comap, Lc, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c', hc', rfl⟩`. Conclude with `⟨vecOf X c', hc', n_vecOf hγ c'⟩`. Introduce and unpack `⟨y, hy, hny⟩`. Use `⟨crdH X y, by rw [vecOf_crdH]; exact hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← hγ, hny, crdH_vecOf]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective ((vecOf X).restrictScalars (𝓞 D.host.E))` using `fun y => ⟨crdH X y, vecOf_crdH X y⟩`. Rewrite using `[key]`. Conclude with `(Submodule.comap_injective_of_surjective hsurj).eq_iff`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latMap_Lc_iff : ∀ {D : D7} (X : HidaSetting D) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E), (∀ y, crdH X (n y) = γ *ᵥ crdH X y) → (GlobalTheory.SgGlob.latMap γ (Lc X) = Lc X ↔ Formalism.HermitianLatticesTheory.gmap n (VS D).L0 = (VS D).L0) := by
   intro D X n γ hγ

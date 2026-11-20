@@ -14,14 +14,14 @@ namespace Objects
 variable {n d : ℕ}
 
 /- English proof (translation)
-Simplify using `[linPoly, GroundTheory.Heights₂.Heights.ComplexSets.linPoly]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linPoly_eq (A : Matrix (Fin d) (Fin n) ℂ) (i : Fin d) :
     linPoly A.mulVecLin i = GroundTheory.Heights₂.Heights.ComplexSets.linPoly A i := by
   simp [linPoly, GroundTheory.Heights₂.Heights.ComplexSets.linPoly]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[GroundTheory.Heights₂.Heights.ComplexSets.projHom, GroundTheory.Heights₂.Heights.ComplexSets.pullback, projAlgHom, linPoly_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem projHom_eq (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ) :
     GroundTheory.Heights₂.Heights.ComplexSets.projHom J A = projAlgHom J A.mulVecLin := by
@@ -31,7 +31,7 @@ theorem projHom_eq (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (F
     projAlgHom, linPoly_eq]
 
 /- English proof (translation)
-Rewrite using `[IsFiniteProjection, ← projHom_eq]`. Conclude with `⟨fun h => ⟨h.injective, h.finite⟩, fun h => ⟨h.1, h.2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isFiniteProjection_iff (J : Ideal (MvPolynomial (Fin n) ℂ))
     (A : Matrix (Fin d) (Fin n) ℂ) :

@@ -29,9 +29,9 @@ def mulVecCAE (A Ai : Matrix (Fin n) (Fin n) R) (h1 : A * Ai = 1) (h2 : Ai * A =
     continuous_invFun := (mulVecHomeo A Ai h1 h2).symm.continuous }
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ show Ai *ᵥ (A *ᵥ y) ∈ S`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Ai *ᵥ x, hx, ?_⟩` and prove the remaining obligations. Use `show A *ᵥ (Ai *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_eq_preimage (A Ai : Matrix (Fin n) (Fin n) R) (h1 : A * Ai = 1) (h2 : Ai * A = 1) (S : Set (Fin n → R)) :
     (fun x => A *ᵥ x) '' S = (fun x => Ai *ᵥ x) ⁻¹' S := by
@@ -46,11 +46,11 @@ theorem image_eq_preimage (A Ai : Matrix (Fin n) (Fin n) R) (h1 : A * Ai = 1) (h
     rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Set `e : (Fin n → R) ≃ₜ+ (Fin n → R)` to `mulVecCAE Ai A h2 h1`. Establish `hcoc : Filter.Tendsto (e : (Fin n → R) → (Fin n → R)) (Filter.cocompact _) (Filter.cocompact _)` using `(mulVecHomeo Ai A h2 h1).isClosedEmbedding.tendsto_cocompact`. Establish `: (lam.map e).IsAddHaarMeasure` using `Measure.isAddHaarMeasure_map lam (e : (Fin n → R) →+ (Fin n → R)) e.continuous e.surjective hcoc`. Establish `hsm` using `Measure.isAddLeftInvariant_eq_smul (lam.map e) lam`. Use `set c : ℝ≥0 := (lam.map e).addHaarScalarFactor lam`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : ∀ S : Set (Fin n → R), (lam.map e) S = lam ((fun x => Ai *ᵥ x) ⁻¹' S)` using `fun S => MeasurableEquiv.map_apply (mulVecHomeo Ai A h2 h1).toMeasurableEquiv S`. Establish `key : ∀ S : Set (Fin n → R), lam ((fun x => A *ᵥ x) '' S) = (c : ℝ≥0∞) * lam S`. Introduce `S`. Rewrite using `[image_eq_preimage A Ai h1 h2, ← hmap, hsm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, ?_, ENNReal.coe_ne_top, key⟩` and prove the remaining obligations. Introduce `h0`. Establish `hu` using `key Set.univ`. Rewrite `hu` using `[h0, zero_mul, Set.image_univ_of_surjective (f := fun x => A *ᵥ x) (mulVecHomeo A Ai h1 h2).surjective]`. Conclude with `isOpen_univ.measure_ne_zero lam Set.univ_nonempty hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scale (lam : Measure (Fin n → R)) [lam.IsAddHaarMeasure] (A Ai : Matrix (Fin n) (Fin n) R)
     (h1 : A * Ai = 1) (h2 : Ai * A = 1) :
@@ -82,13 +82,13 @@ variable {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [Loc
   [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨c, hc0, hct, hc⟩` from `exists_scale lam A Ai h1 h2`. Establish `hS : {x | ∃ y ∈ L.map (Matrix.mulVecLin A).toAddMonoidHom, ∃ y' ∈ L.map (Matrix.mulVecLin C).toAddMonoidHom, x = y + (A * B * A').mulVec y'} = (fun x => A *ᵥ x) '' {x | ∃ y ∈ L, ∃ y' ∈ L, x = y + B.mulVec y'}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨u, hu, rfl⟩, _, ⟨u', hu', rfl⟩, rfl⟩`. Use `⟨u + B *ᵥ u', ⟨u, hu, u', hu', rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.toAddMonoidHom_coe, Matrix.mulVecLin_apply, Matrix.mulVec_add, Matrix.mulVec_mulVec]`. Rewrite using `[Matrix.mul_assoc A B A', Matrix.mul_assoc A (B * A') C, Matrix.mul_assoc B A' C, hAC, Matrix.mul_one]`. Introduce and unpack `⟨_, ⟨u, hu, u', hu', rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨A *ᵥ u, ⟨u, hu, rfl⟩, C *ᵥ u', ⟨u', hu', rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_mulVec]`. Rewrite using `[Matrix.mul_assoc A B A', Matrix.mul_assoc A (B * A') C, Matrix.mul_assoc B A' C, hAC, Matrix.mul_one]`. Establish `hL : ((L.map (Matrix.mulVecLin A).toAddMonoidHom : AddSubgroup (Fin n → R)) : Set (Fin n → R)) = (fun x => A *ᵥ x) '' (L : Set (Fin n → R))`. Rewrite using `[AddSubgroup.coe_map]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `PositivityTheory.SiegelWeilFormula.Gen.nu2`. Rewrite using `[hS, hL, hc, hc, ENNReal.mul_div_mul_left _ _ hc0 hct]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lattice_norm_matrix_conj (lam : Measure (Fin n → R)) [lam.IsAddHaarMeasure] (L : AddSubgroup (Fin n → R))
     (A Ai A' C B : Matrix (Fin n) (Fin n) R) (h1 : A * Ai = 1) (h2 : Ai * A = 1) (hAC : A' * C = 1) :

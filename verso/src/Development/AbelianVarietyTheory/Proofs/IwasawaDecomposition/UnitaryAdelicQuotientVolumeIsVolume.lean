@@ -12,11 +12,11 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.Vol
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm I _ τ cd W hτ hW`. Apply `trueVol_spec` to reduce the goal to its premises. Take `⟨μ, hμ⟩` from `GlobalTheory.T.exists_isUnitaryAdelicVolumeMeasure F E cm I τ cd W hτ hW`. Take `⟨⟨𝓕, h𝓕⟩, hall⟩` from `GlobalTheory.T.fundamentalDomain_unitaryAdelic_exists_measure_eq F E cm.sig W.rank W.gram μ hμ.1`. Establish `hcm` using `cmData_isCMExt_and_gram_isHermND F E cm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin : μ 𝓕 < ⊤` using `GlobalTheory.T.finiteVolume_adelicUnitaryQuotient F E cm.sig hcm.1 W.rank W.gram (hcm.2 W) μ hμ.1 𝓕 h𝓕`. Establish `hne : μ 𝓕 ≠ 0` using `(hall 𝓕 𝓕 h𝓕 h𝓕).2`. Use `⟨(μ 𝓕).toReal, ENNReal.toReal_pos hne hfin.ne, ⟨μ, hμ⟩, ?_⟩` and prove the remaining obligations. Introduce `μ' hμ'`. Establish `e : μ = μ'` using `GlobalTheory.Mem.VolUnique.volMeas_unique F E cm I τ cd W hτ hW μ μ' hμ hμ'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Use `⟨⟨𝓕, h𝓕⟩, fun 𝓕' h' => ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_toReal hfin.ne]`. Conclude with `(hall 𝓕' 𝓕 h' h𝓕).1`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volIs_trueVol : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (I : Type) [Fintype I] (τ : I → (E →+* ℂ)) (cd : CDHaar) (W : HSpace E), IsCMFam τ → W.SigOK → VolIs cm τ cd W (trueVol cm τ cd W) := by
   intro F E _ _ _ _ _ _ cm I _ τ cd W hτ hW

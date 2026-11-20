@@ -11,13 +11,13 @@ open PowerSeries Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Fo
 namespace GlobalTheory.TruncDiag
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact ⟨fun _ => 0, by simp⟩`. Consider the case `succ m ih`. Take `⟨c, z, hz⟩` from `ih`. Establish `hu : IsUnit (constantCoeff (h m))` using `(hh m).map constantCoeff`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun n => if n = m then constantCoeff z * ↑hu.unit⁻¹ else c n, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_range_succ]`. Use `beta_reduce`. Rewrite using `[if_pos rfl]`. Establish `hsum : ∑ n ∈ Finset.range m, (if n = m then constantCoeff z * ↑hu.unit⁻¹ else c n) • ((X : S⟦X⟧) ^ n * h n) = ∑ n ∈ Finset.range m, c n • ((X : S⟦X⟧) ^ n * h n)` using `Finset.sum_congr rfl fun n hn => by rw [if_neg (Finset.mem_range.mp hn).ne]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Establish `hX : (X : S⟦X⟧) ∣ z - (constantCoeff z * ↑hu.unit⁻¹) • h m`. Rewrite using `[X_dvd_iff, smul_eq_C_mul, map_sub, map_mul, constantCoeff_C, mul_assoc, IsUnit.val_inv_mul, mul_one, sub_self]`. Take `⟨d, hd⟩` from `hX`. Use `⟨d, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_eq_C_mul] at hz hd ⊢`. Take the linear combination `hz + (X : S⟦X⟧) ^ m * hd`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_comb {S : Type} [CommRing S] (h : ℕ → S⟦X⟧) (hh : ∀ n, IsUnit (h n)) (m : ℕ) (y : S⟦X⟧) :
     ∃ c : ℕ → S, (X : S⟦X⟧) ^ m ∣ y - ∑ n ∈ Finset.range m, c n • (X ^ n * h n) := by
@@ -44,11 +44,11 @@ theorem exists_comb {S : Type} [CommRing S] (h : ℕ → S⟦X⟧) (hh : ∀ n, 
     linear_combination hz + (X : S⟦X⟧) ^ m * hd
 
 /- English proof (translation)
-Establish `key : ∀ k, (Pi.single k (y k) : Fin r → S⟦X⟧) ∈ N`. Introduce `k`. Take `⟨c, hc⟩` from `exists_comb (h k) (hh k) m (y k)`. Establish `hmem : (Pi.single k (y k) : Fin r → S⟦X⟧) - ∑ n ∈ Finset.range m, c n • (Pi.single k ((X : S⟦X⟧) ^ n * h k n) : Fin r → S⟦X⟧) ∈ N`. Apply `h0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify `hc` using `[Finset.sum_apply]`. Simplify using `[Finset.sum_apply, Pi.single_eq_of_ne hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `hsum : ∑ n ∈ Finset.range m, c n • (Pi.single k ((X : S⟦X⟧) ^ n * h k n) : Fin r → S⟦X⟧) ∈ N` using `N.sum_mem fun n hn => N.smul_mem _ (h1 k n (Finset.mem_range.mp hn))`. Simplify using `using N.add_mem hmem hsum`. Rewrite using `[← Finset.univ_sum_single y]`. Conclude with `N.sum_mem fun k _ => key k`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_gens {S : Type} [CommRing S] {r : ℕ} (m : ℕ) (h : Fin r → ℕ → S⟦X⟧) (hh : ∀ k n, IsUnit (h k n))
     (N : Submodule S (Fin r → S⟦X⟧)) (h0 : ∀ y : Fin r → S⟦X⟧, (∀ k, (X : S⟦X⟧) ^ m ∣ y k) → y ∈ N)
@@ -72,15 +72,15 @@ theorem mem_of_gens {S : Type} [CommRing S] {r : ℕ} (m : ℕ) (h : Fin r → �
   exact N.sum_mem fun k _ => key k
 
 /- English proof (translation)
-Establish `hcc : ∀ d : O⟦X⟧, constantCoeff (Λ d) = algebraMap O F (constantCoeff d)`. Introduce `d`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : (X : O⟦X⟧) ∣ d - C (constantCoeff d) := by`. Rewrite using `[X_dvd_iff, map_sub, constantCoeff_C, sub_self]`. Establish `hd : d = C (constantCoeff d) + X * e` using `by rw [← he]; ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : Λ (C (constantCoeff d)) = C (algebraMap O F (constantCoeff d))`. Establish `h1 : (C (constantCoeff d) : O⟦X⟧) = algebraMap O O⟦X⟧ (constantCoeff d)`. Rewrite using `[PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[h1, AlgHom.commutes, PowerSeries.algebraMap_apply]`. Use `conv_lhs => rw [hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, hC, hX, map_add, constantCoeff_C, map_mul, map_mul, constantCoeff_X, zero_mul, zero_mul, add_zero]`. Proceed by induction on `m generalizing c with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `h0 : constantCoeff c = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hcc, map_zero]`. Conclude with `X_dvd_iff.mp (dvd_trans (dvd_pow_self X (Nat.succ_ne_zero m)) hc)`. Take `⟨d, rfl⟩` from `X_dvd_iff.mpr h0`. Rewrite `hc` using `[map_mul, hX, pow_succ', mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : (X : F⟦X⟧) ^ m ∣ Λ d` using `hη.dvd_mul_left.mp ((mul_dvd_mul_iff_left (X_ne_zero (R := F))).mp hc)`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left X (ih d hc')`.
+A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_map {O F : Type} [CommRing O] [Field F] [Algebra O F] (Λ : O⟦X⟧ →ₐ[O] F⟦X⟧) (η : F⟦X⟧)
     (hinj : Function.Injective (algebraMap O F)) (hX : Λ X = X * η) (hη : IsUnit η) (m : ℕ) (c : O⟦X⟧)
@@ -112,7 +112,7 @@ theorem pow_dvd_of_map {O F : Type} [CommRing O] [Field F] [Algebra O F] (Λ : O
     exact mul_dvd_mul_left X (ih d hc')
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `hc`. Rewrite using `[map_mul, map_pow, hX, mul_pow, mul_assoc]`. Conclude with `dvd_mul_right _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_pow_dvd {O F : Type} [CommRing O] [Field F] [Algebra O F] (Λ : O⟦X⟧ →ₐ[O] F⟦X⟧) (η : F⟦X⟧)
     (hX : Λ X = X * η) (m : ℕ) (c : O⟦X⟧) (hc : (X : O⟦X⟧) ^ m ∣ c) : (X : F⟦X⟧) ^ m ∣ Λ c := by
@@ -121,7 +121,7 @@ theorem map_pow_dvd {O F : Type} [CommRing O] [Field F] [Algebra O F] (Λ : O⟦
   exact dvd_mul_right _ _
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.dvd_sum fun k _ => dvd_mul_of_dvd_right (hy k) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_dvd {R : Type} [CommRing R] {r : ℕ} (M : Matrix (Fin r) (Fin r) R) (a : R) (y : Fin r → R)
     (hy : ∀ k, a ∣ y k) (u : Fin r) : a ∣ M.mulVec y u := by
@@ -129,7 +129,7 @@ theorem mulVec_dvd {R : Type} [CommRing R] {r : ℕ} (M : Matrix (Fin r) (Fin r)
   exact Finset.dvd_sum fun k _ => dvd_mul_of_dvd_right (hy k) _
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `hy`. Conclude with `⟨C χ ^ m * rescale χ d, by rw [map_mul, map_pow, rescale_X]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rescale_dvd {F : Type} [Field F] (χ : F) (m : ℕ) (y : F⟦X⟧) (hy : (X : F⟦X⟧) ^ m ∣ y) :
     (X : F⟦X⟧) ^ m ∣ rescale χ y := by
@@ -140,9 +140,9 @@ def tr (F : Type) [Field F] (r m : ℕ) : (Fin r → F⟦X⟧) →ₗ[F] (Fin r 
   LinearMap.pi fun x => (coeff (x.2 : ℕ)) ∘ₗ LinearMap.proj x.1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k`. Rewrite using `[X_pow_dvd_iff]`. Introduce `n hn`. Use `congrFun h (k, ⟨n, hn⟩)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[tr]`. Introduce `h`. Use function extensionality and compare the values at `x`. Simplify `X_pow_dvd_iff.mp (h x.1) x.2 x.2.isLt` using `[tr]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tr_eq_zero {F : Type} [Field F] {r m : ℕ} (y : Fin r → F⟦X⟧) :
     tr F r m y = 0 ↔ ∀ k, (X : F⟦X⟧) ^ m ∣ y k := by
@@ -157,7 +157,7 @@ theorem tr_eq_zero {F : Type} [Field F] {r m : ℕ} (y : Fin r → F⟦X⟧) :
     simpa [tr] using X_pow_dvd_iff.mp (h x.1) x.2 x.2.isLt
 
 /- English proof (translation)
-Introduce `w`. Use `⟨fun k => PowerSeries.mk fun n => if hn : n < m then w (k, ⟨n, hn⟩) else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[tr, coeff_mk, x.2.isLt]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tr_surjective (F : Type) [Field F] (r m : ℕ) : Function.Surjective (tr F r m) := by
   intro w
@@ -176,9 +176,7 @@ def opD {F : Type} [Field F] {r : ℕ} (p : F⟦X⟧) (χ : F) (κ : Fin r → F
     simp only [Pi.smul_apply, smul_eq_C_mul, map_mul, this, RingHom.id_apply]; ring
 
 /- English proof (translation)
-Establish `h' : tr F r m (y - z) = 0` using `by rw [map_sub, h, sub_self]`. Rewrite `h'` using `[tr_eq_zero]`. Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub, tr_eq_zero]`. Introduce `u`. Use `show (X : F⟦X⟧) ^ m ∣ p⁻¹ * (C (κ u) * rescale χ ((y - z) u) - (y - z) u)`.
-
-Conclude with `dvd_mul_of_dvd_right (dvd_sub (dvd_mul_of_dvd_right (rescale_dvd χ m _ (h' u)) _) (h' u)) _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tr_opD_congr {F : Type} [Field F] {r m : ℕ} (p : F⟦X⟧) (χ : F) (κ : Fin r → F) (y z : Fin r → F⟦X⟧)
     (h : tr F r m y = tr F r m z) : tr F r m (opD p χ κ y) = tr F r m (opD p χ κ z) := by
@@ -190,11 +188,9 @@ theorem tr_opD_congr {F : Type} [Field F] {r m : ℕ} (p : F⟦X⟧) (χ : F) (�
   exact dvd_mul_of_dvd_right (dvd_sub (dvd_mul_of_dvd_right (rescale_dvd χ m _ (h' u)) _) (h' u)) _
 
 /- English proof (translation)
-Establish `hQ : Module.Finite F Q` using `⟨by rw [← hg]; exact Submodule.fg_span (Set.finite_range g)⟩`. Establish `hWf : Module.Finite F W` using `Module.Finite.of_surjective Ψ hΨ`. Establish `h1 : Module.finrank F Q ≤ Fintype.card ι`. Use `finrank_range_le_card (R := F) g` as an intermediate fact. Simplify using `only [Set.finrank] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[hg, finrank_top]`. Conclude with `this`. Establish `h2 : Module.finrank F W ≤ Module.finrank F Q`. Use `LinearMap.finrank_range_le Ψ` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.mpr hΨ, finrank_top]`. Then use the resulting hypothesis.
-
-Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by omega)).mpr hΨ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem injective_of_span {F Q W ι : Type} [Field F] [AddCommGroup Q] [Module F Q] [AddCommGroup W] [Module F W]
     [Fintype ι] (hW : Module.finrank F W = Fintype.card ι) (Ψ : Q →ₗ[F] W) (g : ι → Q)
@@ -212,23 +208,21 @@ theorem injective_of_span {F Q W ι : Type} [Field F] [AddCommGroup Q] [Module F
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by omega)).mpr hΨ
 
 /- English proof (translation)
-Use `choose hs hs0 hseq using fun (u : Fin r) (n : ℕ) => GlobalTheory.exists_rescale_eigen_series p χ (κ u) n hp (hκ u) hχ0 hχ`. Establish `hsu : ∀ u n, IsUnit (hs u n)` using `fun u n => by`. Rewrite using `[isUnit_iff_constantCoeff, hs0]`. Conclude with `isUnit_one`. Take `⟨ys, hys⟩ : ∃ ys : Fin r × Fin m → (Fin r → F⟦X⟧), ys = fun x => Pi.single x.1 ((X : F⟦X⟧) ^ (x.2 : ℕ) * hs x.1 x.2)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hopD : ∀ x, opD p χ κ (ys x) = ((κ x.1 * χ ^ (x.2 : ℕ) - 1) / constantCoeff p) • ys x`. Introduce `x`. Use function extensionality and compare the values at `v`. Use `show p⁻¹ * (C (κ v) * rescale χ (ys x v) - ys x v) = ((κ x.1 * χ ^ (x.2 : ℕ) - 1) / constantCoeff p) • ys x v`. Rewrite using `[hys]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hv : v = x.1`. Substitute `hv` using the available equality. Simplify using `only [Pi.single_eq_same]`. Rewrite using `[hseq, smul_eq_C_mul]`. Take the linear combination `(C ((κ x.1 * χ ^ (x.2 : ℕ) - 1) / constantCoeff p) * ((X : F⟦X⟧) ^ (x.2 : ℕ) * hs x.1 x.2)) * PowerSeries.inv_mul_cancel p hp`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.single_eq_of_ne hv, map_zero, mul_zero, sub_zero, smul_zero]`. Establish `hspan : ⊤ ≤ Submodule.span F (Set.range fun x => tr F r m (ys x))`. Introduce `t _`. Take `⟨y, rfl⟩` from `tr_surjective F r m t`. Use `mem_of_gens (S := F) m hs hsu ((Submodule.span F (Set.range fun x => tr F r m (ys x))).comap (tr F r m)) ?_ ?_ y` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite using `[Submodule.mem_comap, (tr_eq_zero y).mpr hy]`. Conclude with `Submodule.zero_mem _`. Introduce `k n hn`. Rewrite using `[Submodule.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.subset_span ⟨(k, ⟨n, hn⟩), by rw [hys]⟩`. Establish `hcard : Fintype.card (Fin r × Fin m) = Module.finrank F (Fin r × Fin m → F)` using `(Module.finrank_fintype_fun_eq_card F).symm`. Take `⟨bW, hbW⟩ : ∃ bW : Module.Basis (Fin r × Fin m) F (Fin r × Fin m → F), ⇑bW = fun x => tr F r m (ys x)` from `⟨basisOfTopLeSpanOfCardEqFinrank _ hspan hcard, coe_basisOfTopLeSpanOfCardEqFinrank _ _ _⟩`. Take `⟨Ψe, hΨe⟩ : ∃ Ψe : Q ≃ₗ[F] (Fin r × Fin m → F), ⇑Ψe = ⇑Ψ` from `⟨LinearEquiv.ofBijective Ψ hΨ, rfl⟩`. Use `⟨r * m, (bW.map Ψe.symm).reindex finProdFinEquiv, fun j => (κ (finProdFinEquiv.symm j).1 * χ ^ ((finProdFinEquiv.symm j).2 : ℕ) - 1) / constantCoeff p, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `only [Module.Basis.reindex_apply, Module.Basis.map_apply, hbW]`. Apply `hΨ.1` to reduce the goal to its premises. Take `⟨y, hy1, hy2⟩` from `hI (Ψe.symm (tr F r m (ys (finProdFinEquiv.symm j))))`. Establish `hq : Ψ (Ψe.symm (tr F r m (ys (finProdFinEquiv.symm j)))) = tr F r m (ys (finProdFinEquiv.symm j))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hΨe]`. Conclude with `Ψe.apply_symm_apply _`. Rewrite using `[hy2, map_smul, hq, tr_opD_congr p χ κ y _ (hy1.symm.trans hq), hopD, map_smul]`. Establish `he : (Finset.univ : Finset (Fin (r * m))).val.map finProdFinEquiv.symm = (Finset.univ : Finset (Fin r × Fin m)).val`. Conclude with `Multiset.map_univ_val_equiv (finProdFinEquiv (m := r) (n := m)).symm`.
-
-Rewrite using `[← he, Multiset.map_map]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem diag_of_model {F Q : Type} [Field F] [AddCommGroup Q] [Module F Q] (r m : ℕ) (p : F⟦X⟧) (χ : F)
     (κ : Fin r → F) (hp : constantCoeff p ≠ 0) (hχ0 : χ ≠ 0) (hχ : ∀ k : ℕ, 0 < k → χ ^ k ≠ 1)
@@ -292,49 +286,43 @@ theorem diag_of_model {F Q : Type} [Field F] [AddCommGroup Q] [Module F Q] (r m 
     rfl
 
 /- English proof (translation)
-Introduce `O F P _ _ _ _ _ P' r m θ Λ η p M χ κ nb hinj hP' hX hη hM hp hχ0 hχ hκ hnb`. Establish `hsolve : ∀ c c', nb (θ c) = θ c' → M.mulVec (fun k => Λ (c' k)) = opD p χ κ (M.mulVec (fun k => Λ (c k)))`. Introduce `c c' hcc`. Use function extensionality and compare the values at `u`. Use `show _ = p⁻¹ * (C (κ u) * rescale χ (M.mulVec (fun k => Λ (c k)) u) - M.mulVec (fun k => Λ (c k)) u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hnb c c' hcc u, ← mul_assoc, PowerSeries.inv_mul_cancel p hp, one_mul]`. Establish `hdiv : ∀ c : Fin r → O⟦X⟧, (∀ k, (X : O⟦X⟧) ^ m ∣ c k) → ∀ u, (X : F⟦X⟧) ^ m ∣ M.mulVec (fun k => Λ (c k)) u` using `fun c hc => mulVec_dvd M _ _ fun k => map_pow_dvd Λ η hX m (c k) (hc k)`. Establish `hs : P' ≤ P'.comap nb`. Introduce `x hx`. Rewrite using `[Submodule.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `θ.surjective x`. Establish `hcc : nb (θ c) = θ (θ.symm (nb (θ c)))` using `(θ.apply_symm_apply _).symm`. Rewrite using `[hcc, hP']`. Establish `hdc` using `(hP' c).mp hx`. Establish `h1 : ∀ u, (X : F⟦X⟧) ^ m ∣ M.mulVec (fun k => Λ (θ.symm (nb (θ c)) k)) u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[hsolve c _ hcc]`. Conclude with `dvd_mul_of_dvd_right (dvd_sub (dvd_mul_of_dvd_right (rescale_dvd χ m _ (hdiv c hdc u)) _) (hdiv c hdc u)) _`. Introduce `k`. Apply `pow_dvd_of_map Λ η hinj hX hη m` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `mulVec_dvd M⁻¹ _ _ h1 k`. Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul M hM, Matrix.one_mulVec]`. Then use the resulting hypothesis. Use `⟨hs, ?_⟩` and prove the remaining obligations. Establish `hΛs : ∀ (a : O) (c : O⟦X⟧), Λ (a • c) = algebraMap O F a • Λ c`. Introduce `a c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Algebra.smul_def, map_mul, AlgHom.commutes, PowerSeries.algebraMap_apply, smul_eq_C_mul]`. Take `⟨L, hL⟩ : ∃ L : (Fin r → F⟦X⟧) →ₗ[F] (Fin r × Fin m → F), ∀ y, L y = tr F r m (M.mulVec y)` from `⟨{ toFun := fun y => tr F r m (M.mulVec y) map_add' := fun y z => by simp only [Matrix.mulVec_add, map_add] map_smul' := fun b y => by simp only [Matrix.mulVec_smul, map_smul, RingHom.id_apply] }, fun _ => rfl⟩`. Take `⟨Ψ0, hΨ0⟩ : ∃ Ψ0 : P →ₗ[O] (Fin r × Fin m → F), ∀ x, Ψ0 x = L (fun k => Λ (θ.symm x k))` from `⟨{ toFun := fun x => L (fun k => Λ (θ.symm x k)) map_add' := fun x y => by`. Simplify using `only [map_add, Pi.add_apply]`. Rewrite using `[← map_add]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use the proof step `map_smul' := fun a x => by`. Simplify using `only [RingHom.id_apply]`. Establish `: (fun k => Λ (θ.symm (a • x) k)) = algebraMap O F a • (fun k => Λ (θ.symm x k))`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, Pi.smul_apply, hΛs, Pi.smul_apply]`. Rewrite using `[this, map_smul, algebraMap_smul] },`. Use `fun _ => rfl⟩`. Establish `hker : P' ≤ LinearMap.ker Ψ0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.mem_ker]`. Take `⟨c, rfl⟩` from `θ.surjective x`. Rewrite using `[hΨ0, hL, LinearEquiv.symm_apply_apply, tr_eq_zero]`. Conclude with `hdiv c ((hP' c).mp hx)`. Take `⟨Ψ, hΨ⟩ : ∃ Ψ : F ⊗[O] (P ⧸ P') →ₗ[F] (Fin r × Fin m → F), ∀ (a : F) (x : P), Ψ (a ⊗ₜ Submodule.Quotient.mk x) = a • Ψ0 x` from `⟨(P'.liftQ Ψ0 hker).liftBaseChange F, fun a x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.liftBaseChange_tmul, Submodule.liftQ_apply]⟩`. Establish `hsurj : Function.Surjective Ψ`. Introduce `t`. Establish `hN : ∀ y : Fin r → F⟦X⟧, L y ∈ LinearMap.range Ψ` using `fun y => mem_of_gens (S := F) m (fun _ n => η ^ n) (fun _ n => hη.pow n) ((LinearMap.range Ψ).comap L) (fun y hy => by`. Rewrite using `[Submodule.mem_comap, hL, (tr_eq_zero _).mpr (mulVec_dvd M _ _ hy)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Submodule.zero_mem _)`. Use the proof step `(fun k n _ => by`. Rewrite using `[Submodule.mem_comap, LinearMap.mem_range]`. Use `⟨1 ⊗ₜ Submodule.Quotient.mk (θ (Pi.single k ((X : O⟦X⟧) ^ n))), ?_⟩` and prove the remaining obligations. Rewrite using `[hΨ, one_smul, hΨ0, LinearEquiv.symm_apply_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[map_pow, hX, mul_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[Pi.single_eq_of_ne hj])`. Use `y`. Take `⟨y, rfl⟩` from `tr_surjective F r m t`. Take `⟨q, hq⟩` from `LinearMap.mem_range.mp (hN (M⁻¹.mulVec y))`. Use `⟨q, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, hL, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv M hM, Matrix.one_mulVec]`. Take `⟨g0, hg0⟩ : ∃ g0 : Fin r × Fin m → P ⧸ P', g0 = fun x => Submodule.Quotient.mk (θ (Pi.single x.1 ((X : O⟦X⟧) ^ (x.2 : ℕ))))` from `⟨_, rfl⟩`. Establish `hspanO : ∀ z : P ⧸ P', z ∈ Submodule.span O (Set.range g0)`. Introduce `z`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective P' z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨c, rfl⟩` from `θ.surjective x`. Conclude with `mem_of_gens (S := O) m (fun _ _ => 1) (fun _ _ => isUnit_one) ((Submodule.span O (Set.range g0)).comap (P'.mkQ ∘ₗ θ.toLinearMap)) (fun y hy => by`. Rewrite using `[Submodule.mem_comap, LinearMap.comp_apply, LinearEquiv.coe_coe, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero P').mpr ((hP' y).mpr hy)]`. Conclude with `Submodule.zero_mem _)`. Use the proof step `(fun k n hn => by`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap]`. Conclude with `Submodule.subset_span ⟨(k, ⟨n, hn⟩), by rw [hg0]; simp⟩)`. Use `c`. Establish `hspanF : Submodule.span F (Set.range fun x => (1 : F) ⊗ₜ[O] g0 x) = ⊤`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q _`. Proceed by induction on `q using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `tmul a z`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun O).mp (hspanO z)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hc, TensorProduct.tmul_sum]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Establish `: a ⊗ₜ[O] (c x • g0 x) = (c x • a) • ((1 : F) ⊗ₜ[O] g0 x)`. Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)`. Consider the case `add x y hx hy => exact Submodule.add_mem _ (hx Submodule.mem_top) (hy Submodule.mem_top)`. Establish `hinjΨ : Function.Injective Ψ` using `injective_of_span (ι := Fin r × Fin m) (Module.finrank_fintype_fun_eq_card F) Ψ _ hspanF hsurj`. Establish `hI : ∀ q, ∃ y, Ψ q = tr F r m y ∧ Ψ (((Submodule.mapQ P' P' nb hs).baseChange F) q) = tr F r m (opD p χ κ y)`. Introduce `q`.
-
-Proceed by induction on `q using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `tmul a z`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective P' z`. Take `⟨c, rfl⟩` from `θ.surjective x`.
-
-Use `⟨a • M.mulVec (fun k => Λ (c k)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hΨ, hΨ0, hL, LinearEquiv.symm_apply_apply, map_smul]`. Rewrite using `[LinearMap.baseChange_tmul, Submodule.mapQ_apply, hΨ, hΨ0, hL, hsolve c _ (θ.apply_symm_apply _).symm, map_smul, map_smul]`. Consider the case `add x y hx hy`. Take `⟨y1, h1, h2⟩` from `hx`.
-
-Take `⟨y2, h3, h4⟩` from `hy`. Conclude with `⟨y1 + y2, by rw [map_add, h1, h3, map_add], by rw [map_add, map_add, h2, h4, map_add, map_add]⟩`. Conclude with `diag_of_model r m p χ κ hp hχ0 hχ hκ _ Ψ ⟨hinjΨ, hsurj⟩ hI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem diagWith_trunc : ∀ {O F P : Type} [CommRing O] [Field F] [Algebra O F] [AddCommGroup P] [Module O P] (P' : Submodule O P) (r m : ℕ) (θ : (Fin r → O⟦X⟧) ≃ₗ[O] P) (Λ : O⟦X⟧ →ₐ[O] F⟦X⟧) (η p : F⟦X⟧) (M : Matrix (Fin r) (Fin r) F⟦X⟧) (χ : F) (κ : Fin r → F) (nb : P →ₗ[O] P), Function.Injective (algebraMap O F) → (∀ c, θ c ∈ P' ↔ ∀ k, (X : O⟦X⟧) ^ m ∣ c k) → Λ X = X * η → IsUnit η → IsUnit M.det → constantCoeff p ≠ 0 → χ ≠ 0 → (∀ k : ℕ, 0 < k → χ ^ k ≠ 1) → (∀ u, κ u ≠ 0) → (∀ c c', nb (θ c) = θ c' → ∀ u, p * M.mulVec (fun k => Λ (c' k)) u = C (κ u) * rescale χ (M.mulVec (fun k => Λ (c k)) u) - M.mulVec (fun k => Λ (c k)) u) → ∃ hs : P' ≤ P'.comap nb, DiagWith ((Submodule.mapQ P' P' nb hs).baseChange F) ((Finset.univ : Finset (Fin r × Fin m)).val.map fun x => (κ x.1 * χ ^ (x.2 : ℕ) - 1) / constantCoeff p) := by
   intro O F P _ _ _ _ _ P' r m θ Λ η p M χ κ nb hinj hP' hX hη hM hp hχ0 hχ hκ hnb

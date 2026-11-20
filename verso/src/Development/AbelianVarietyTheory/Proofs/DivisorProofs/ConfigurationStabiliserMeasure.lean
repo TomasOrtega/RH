@@ -18,9 +18,9 @@ namespace GlobalTheory.ConeSchwartz
 open scoped Classical in
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Set `A : (κ' → mixedEmbedding.mixedSpace F) ≃L[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `(LinearEquiv.funCongrLeft ℝ (mixedEmbedding.mixedSpace F) σ).toContinuousLinearEquiv`. Set `B : (κ' → FiniteAdeleRing (𝓞 F) F) ≃ₜ (κ → FiniteAdeleRing (𝓞 F) F)` to `(Homeomorph.piCongrLeft (Y := fun _ => FiniteAdeleRing (𝓞 F) F) σ).symm`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `Submodule.subset_span ⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ A f, g ∘ B, ⟨hg.1.comp_continuous B.continuous, hg.2.comp_homeomorph B⟩, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add Φ Ψ _ _ h1 h2 => exact Submodule.add_mem _ h1 h2`. Consider the case `smul c Φ _ h => exact Submodule.smul_mem _ c h`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comp_mem_schA' {F : Type} [Field F] [NumberField F] {κ κ' : Type} [Fintype κ] [Fintype κ'] (σ : κ ≃ κ')
     {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : (fun x : κ' → AF F => Φ (x ∘ σ)) ∈ schA F κ' := by
@@ -46,19 +46,17 @@ open GlobalTheory.ThetaTransform in
 open scoped Classical in
 
 /- English proof (translation)
-Set `s : κ ≃ Fin (Fintype.card κ)` to `Fintype.equivFin κ`. Set `Φ' : (Fin (Fintype.card κ) → AF F) → ℂ` to `fun y => Φ (y ∘ s)`. Establish `h' : Φ' ∈ schA F (Fin (Fintype.card κ))`. Use `GlobalTheory.LevelSchwartz.mem_schA_of_level F _ Φ' ?_ ?_ ?_` and prove the remaining obligations. Take `⟨U, hUo, hUi⟩` from `hU`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `r : (Fin (Fintype.card κ) → AF F) →+ (κ → AF F)` to `{ toFun := fun y => y ∘ s, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hr : Continuous r` using `continuous_pi fun i => continuous_apply _`. Use `⟨U.comap r, hUo.preimage hr, fun u hu hinf x => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ i, (r u i).1 = 0` using `fun i => congrFun hinf (s i)`. Conclude with `hUi (r u) hu h0 (r x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hCc, hCs⟩` from `hC`. Set `m : (κ → FiniteAdeleRing (𝓞 F) F) → (Fin (Fintype.card κ) → FiniteAdeleRing (𝓞 F) F)` to `fun f j => f (s.symm j)`. Establish `hm : Continuous m` using `continuous_pi fun j => continuous_apply _`. Use `⟨m '' C, hCc.image hm, fun x hx => ⟨fun i => (x (s i)).2, hCs _ hx, funext fun j => ?_⟩⟩` and prove the remaining obligations. Use `show (x (s (s.symm j))).2 = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Introduce `y`. Take `⟨g, hg⟩` from `hS (y ∘ s)`. Set `A : (Fin (Fintype.card κ) → mixedEmbedding.mixedSpace F) ≃L[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `(LinearEquiv.funCongrLeft ℝ (mixedEmbedding.mixedSpace F) s).toContinuousLinearEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ A g, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hg]`. Both sides reduce to the same expression. Establish `h2` using `comp_mem_schA' s.symm h'`. Establish `h3 : (fun x : κ → AF F => Φ' (x ∘ s.symm)) = Φ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Use `show Φ ((x ∘ s.symm) ∘ s) = Φ x`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← h3]`. Conclude with `h2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_schA_of_level_gen (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (Φ : (κ → AF F) → ℂ)
     (hU : ∃ U : AddSubgroup (κ → AF F), IsOpen (U : Set (κ → AF F)) ∧ ∀ u ∈ U, (∀ i, (u i).1 = 0) → ∀ x, Φ (x + u) = Φ x)
@@ -102,13 +100,13 @@ theorem mem_schA_of_level_gen (F : Type) [Field F] [NumberField F] (κ : Type) [
   exact h2
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Use `mem_schA_of_level_gen F _ _ ?_ ?_ (GlobalTheory.T.config_a_haar_eigen_unfolding hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ)` and prove the remaining obligations. Take `⟨U, hUo, hU⟩` from `GlobalTheory.T.config_a_eigen_stabilizer_triples F E σ B b a' G G₁ H H' hC e he K hK X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Use `⟨U, hUo, fun u hu h0 x => ?_⟩` and prove the remaining obligations. Simplify using `only [cone]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Use `congr 1`. Use function extensionality and compare the values at `l`. Rewrite using `[hU u hu h0 k l x]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hCc, hCs⟩` from `GlobalTheory.T.config_a_eigen_stabilizer_integral F E σ B b a' G G₁ H H' hC e he K hK X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Use `⟨C, hCc, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hx` to reduce the goal to its premises. Simplify using `only [cone]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∀ (k : K) (l : (AE F E)ˣ), e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ)) x = 0` using `fun k l => hCs k l x hn`. Simplify using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem cone_mem_schA : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

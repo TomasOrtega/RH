@@ -23,19 +23,19 @@ variable [CompactSpace K] {L : Type*} [Group L] [TopologicalSpace L] [IsTopologi
   [Module ℂ V]
 
 /- English proof (translation)
-Establish `: IsSimpleOrder (Subrepresentation Mx.fullRep)` using `hirr`. Establish `hnt : Nontrivial V`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation Mx.fullRep) ≠ ⊤)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use extensionality with `w`. Simplify using `[Subsingleton.elim w 0]`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Take `⟨F, hFd, hvF, hTF⟩` from `hfin v`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set T' : Module.End ℂ F := T.restrict hTF`. Establish `: Nontrivial F` using `⟨⟨⟨v, hvF⟩, 0, fun h => hv (congrArg Subtype.val h)⟩⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T'`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`. Establish `hcomm : ∀ p, Mx.fullRep p * T = T * Mx.fullRep p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, g⟩`. Use `show Mx.gk.rep a * Mx.τ g * T = T * (Mx.gk.rep a * Mx.τ g)`. Rewrite using `[mul_assoc, hτ, ← mul_assoc, Mx.gk.rep_comm hρ hσ a, mul_assoc]`. Set `Y : Subrepresentation Mx.fullRep` to `⟨LinearMap.ker (T - c • 1), fun p x hx => by`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at hx ⊢`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrArg (fun f : Module.End ℂ V => f x) (hcomm p)`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[← e, ← map_smul, ← map_sub, hx, map_zero]⟩`. Establish `hwT : T (w : V) = c • (w : V)` using `congrArg Subtype.val hw.apply_eq_smul`. Establish `hw0 : (w : V) ≠ 0` using `fun h0 => hw.2 (Subtype.ext h0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `IsSimpleOrder.eq_bot_or_eq_top Y with hY | hY` into its components or cases. It suffices to derive a contradiction. Establish `hmem : (w : V) ∈ Y.toSubmodule` using `by show (w : V) ∈ LinearMap.ker (T - c • 1)`. Simplify using `[hwT]`. Rewrite `hmem` using `[hY]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hw0 hmem`. Use `⟨c, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Establish `hmem : x ∈ Y.toSubmodule` using `by rw [hY]; trivial`. Establish `hx : (T - c • 1) x = 0` using `hmem`. Simplify `hx` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_one (Mx : GKLModule h K L V) (hirr : Mx.IsIrreducible)
     (T : Module.End ℂ V) (hρ : ∀ X, Mx.gk.ρ X * T = T * Mx.gk.ρ X)
@@ -92,14 +92,14 @@ noncomputable def casimirOp (M : h.GKModule K V) (b : Module.Basis ι ℝ h.lieS
   ∑ i, ε i • (M.ρ (b i) * M.ρ (b i))
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun v => M.map_ρ k (h.ofLie Y) v`.
+A detailed English derivation is pending.
 -/
 theorem σ_mul_ρ (M : h.GKModule K V) (k : K) (Y : h.lieSubalgebra) :
     M.σ k * M.ρ Y = M.ρ (h.AdLie (k : G) Y) * M.σ k :=
   LinearMap.ext fun v => M.map_ρ k (h.ofLie Y) v
 
 /- English proof (translation)
-Use `show h.toLie (h.Ad g (h.Ad g⁻¹ (h.ofLie Y))) = Y`. Establish `e` using `h.Ad_inv_Ad g⁻¹ (h.ofLie Y)`. Rewrite `e` using `[inv_inv]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem AdLie_AdLie_inv (g : G) (Y : h.lieSubalgebra) : h.AdLie g (h.AdLie g⁻¹ Y) = Y := by
   show h.toLie (h.Ad g (h.Ad g⁻¹ (h.ofLie Y))) = Y
@@ -109,29 +109,25 @@ theorem AdLie_AdLie_inv (g : G) (Y : h.lieSubalgebra) : h.AdLie g (h.AdLie g⁻�
   rfl
 
 /- English proof (translation)
-Use `set A := h.AdLie (k : G)`. Use `set f : ι → h.lieSubalgebra := fun i => A (b i) with hf`. Establish `hexp : ∀ Y, Y = ∑ i, (ε i * B Y (f i)) • f i`. Introduce `Y`. Establish `e` using `eq_sum_of_orthogonal hε horth (h.AdLie ((k : G)⁻¹) Y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrArg A e`. Rewrite `e2` using `[AdLie_AdLie_inv]`. Use `conv_lhs => rw [e2]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Use `congr 2`. Rewrite using `[← hAd k (b i) (h.AdLie ((k : G)⁻¹) Y), AdLie_AdLie_inv, hsymm]`. Establish `hsum : ∀ j l, ∑ i, ε i * B (b j) (f i) * B (b l) (f i) = B (b j) (b l)`. Introduce `j l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hexp (b l)]`. Rewrite using `[map_sum, Finset.sum_congr rfl]`. Introduce `i _`. Rewrite using `[map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hρf : ∀ i, M.ρ (f i) = ∑ j, (ε j * B (b j) (f i)) • M.ρ (b j)`. Introduce `i`. Use `conv_lhs => rw [eq_sum_of_orthogonal hε horth (f i)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_smul]`. Establish `hcas : ∑ i, ε i • (M.ρ (f i) * M.ρ (f i)) = casimirOp M b ε`. Repeatedly rewrite using `[hρf, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Unfold `casimirOp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Establish `e : ∀ l, ∑ i, (ε i * (ε j * B (b j) (f i) * (ε l * B (b l) (f i)))) • (M.ρ (b j) * M.ρ (b l)) = (if j = l then ε j else 0) • (M.ρ (b j) * M.ρ (b l))`. Introduce `l`. Rewrite using `[← Finset.sum_smul]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `hsum j l` as an intermediate fact. Rewrite `this` using `[horth]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = if j = l then ε j else 0 := by`. Rewrite using `[this]`. Use `split_ifs with hjl`.
+Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Substitute `hjl` using the available equality. Use `hε j` as an intermediate fact. Take the linear combination `(ε j) * this`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun l _ => e l]`.
-
-Simplify using the standard rewrite rules. Use `conv_rhs => rw [← hcas]`. Unfold `casimirOp`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_smul_comm, smul_mul_assoc, ← mul_assoc, σ_mul_ρ, mul_assoc, σ_mul_ρ, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σ_mul_casimirOp [DecidableEq ι] (M : h.GKModule K V)
     {B : LinearMap.BilinForm ℝ h.lieSubalgebra} {b : Module.Basis ι ℝ h.lieSubalgebra} {ε : ι → ℝ}
@@ -209,9 +205,9 @@ section KType
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hnot`. Take `⟨ψ, hψ, hψF⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`. Establish `hd` using `M.hasDerivAt_coeff (h.ofLie Z) hZ ψ v`. Establish `h0 : (fun t : ℝ => ψ (M.σ ⟨h.expG (t • h.ofLie Z), hZ t⟩ v)) = fun _ => 0`. Use function extensionality and compare the values at `t`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hm : ψ (M.σ ⟨_, hZ t⟩ v) ∈ F.map ψ` using `⟨_, hF _ v hv, rfl⟩`. Rewrite `hm` using `[hψF]`. Conclude with `(Submodule.mem_bot ℂ).1 hm`. Rewrite `hd` using `[h0]`. Conclude with `hψ (hd.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ρ_mem_of_stable (M : h.GKModule K V) {F : Submodule ℂ V}
     (hF : ∀ k, ∀ v ∈ F, M.σ k v ∈ F) {Z : h.lieSubalgebra}
@@ -228,11 +224,11 @@ theorem ρ_mem_of_stable (M : h.GKModule K V) {F : Submodule ℂ V}
   exact hψ (hd.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ)))
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `ψ`. Rewrite using `[map_sub, sub_eq_zero]`. Take `⟨ψ', hψ'⟩` from `LinearMap.exists_extend (ψ ∘ₗ f)`. Establish `e : ∀ w : F, ψ' w = ψ (f w)` using `fun w => congrArg (fun g => g w) hψ'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `M.hasDerivAt_coeff (h.ofLie Z) hZ ψ' v`. Establish `h2` using `M.hasDerivAt_coeff (h.ofLie Z) hZ ψ (f v)`. Establish `e2 : (fun t : ℝ => ψ' (M.σ ⟨h.expG (t • h.ofLie Z), hZ t⟩ v)) = fun t => ψ (M.σ ⟨h.expG (t • h.ofLie Z), hZ t⟩ (f v))`. Use function extensionality and compare the values at `t`. Rewrite using `[← hf ⟨h.expG (t • h.ofLie Z), hZ t⟩ v]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e ⟨_, _⟩`. Rewrite `h1` using `[e2]`. Use `h1.unique h2` as an intermediate fact. Rewrite using `[← e ⟨_, hv⟩]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ρ_of_equivariant (M : h.GKModule K V) {F : Submodule ℂ V}
     (hF : ∀ k, ∀ v ∈ F, M.σ k v ∈ F) (f : F →ₗ[ℂ] V)
@@ -273,13 +269,13 @@ def toSub (M : h.GKModule K V) (m : Submodule (MonoidAlgebra ℂ K) M.σ.asModul
     exact m.smul_mem _ hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_toSub (M : h.GKModule K V) {m : Submodule (MonoidAlgebra ℂ K) M.σ.asModule} {v : V} :
     v ∈ toSub M m ↔ M.σ.asModuleEquiv.symm v ∈ m := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_toSub, Representation.asModuleEquiv_symm_map_rho]`. Conclude with `m.smul_mem _ hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem σ_mem_toSub (M : h.GKModule K V) (m : Submodule (MonoidAlgebra ℂ K) M.σ.asModule) (k : K)
     {v : V} (hv : v ∈ toSub M m) : M.σ k v ∈ toSub M m := by
@@ -315,13 +311,13 @@ def ofStable (M : h.GKModule K V) (O : Submodule ℂ V) (hO : ∀ k, ∀ v ∈ O
       exact O.smul_mem r ha
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ofStable (M : h.GKModule K V) (O : Submodule ℂ V) (hO : ∀ k, ∀ v ∈ O, M.σ k v ∈ O)
     {x : M.σ.asModule} : x ∈ ofStable M O hO ↔ M.σ.asModuleEquiv x ∈ O := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => ρ_mem_of_stable M hF (hZ i) (ρ_mem_of_stable M hF (hZ i) hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumSq_mem_of_stable (M : h.GKModule K V) {ι : Type*} [Fintype ι]
     (Z : ι → h.lieSubalgebra) (hZ : ∀ i (t : ℝ), h.expG (t • h.ofLie (Z i)) ∈ K) {F : Submodule ℂ V}
@@ -332,23 +328,21 @@ theorem sumSq_mem_of_stable (M : h.GKModule K V) {ι : Type*} [Fintype ι]
     ρ_mem_of_stable M hF (hZ i) (ρ_mem_of_stable M hF (hZ i) hv)
 
 /- English proof (translation)
-Establish `hFs : ∀ k, ∀ v ∈ toSub M S, M.σ k v ∈ toSub M S` using `fun k v hv => σ_mem_toSub M S k hv`. Establish `hCF : ∀ v ∈ toSub M S, (∑ i, M.ρ (Z i) * M.ρ (Z i)) v ∈ toSub M S` using `fun v hv => sumSq_mem_of_stable M Z hZ hFs hv`. Set `fm : toSub M S →ₗ[ℂ] V` to `{ toFun := fun w => M.σ.asModuleEquiv (g.symm ⟨M.σ.asModuleEquiv.symm (w : V), w.2⟩ : m) map_add' := fun w w' => by`. Establish `e : (⟨M.σ.asModuleEquiv.symm ((w + w' : toSub M S) : V), (w + w').2⟩ : S) = ⟨M.σ.asModuleEquiv.symm (w : V), w.2⟩ + ⟨M.σ.asModuleEquiv.symm (w' : V), w'.2⟩` using `Subtype.ext (map_add _ _ _)`. Rewrite using `[e, map_add, Submodule.coe_add, map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun a w => by`. Establish `e : (⟨M.σ.asModuleEquiv.symm ((a • w : toSub M S) : V), (a • w).2⟩ : S) = a • (⟨M.σ.asModuleEquiv.symm (w : V), w.2⟩ : S)` using `Subtype.ext (map_smul _ _ _)`. Establish `e2 : g.symm (a • (⟨M.σ.asModuleEquiv.symm (w : V), w.2⟩ : S)) = a • g.symm ⟨M.σ.asModuleEquiv.symm (w : V), w.2⟩`. Rewrite using `[← algebraMap_smul (MonoidAlgebra ℂ K) a, map_smul, algebraMap_smul]`. Rewrite using `[e, e2, Submodule.coe_smul_of_tower, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `rfl }`. Establish `hfm : ∀ k (v : toSub M S), fm ⟨M.σ k v, hFs k v v.2⟩ = M.σ k (fm v)`. Introduce `k v`. Establish `e : (⟨M.σ.asModuleEquiv.symm (M.σ k v), hFs k v v.2⟩ : S) = MonoidAlgebra.of ℂ K k • (⟨M.σ.asModuleEquiv.symm (v : V), v.2⟩ : S)` using `Subtype.ext (by rw [Submodule.coe_smul]; exact Representation.asModuleEquiv_symm_map_rho _ _ _)`. Use `show M.σ.asModuleEquiv (g.symm ⟨M.σ.asModuleEquiv.symm (M.σ k v), _⟩ : m) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, map_smul, Submodule.coe_smul, Representation.asModuleEquiv_map_smul, Representation.asAlgebraHom_of]`. Both sides reduce to the same expression. Use `set A : Module.End ℂ (toSub M S) := LinearMap.restrict _ hCF with hA`. Establish `hAC : ∀ w : toSub M S, fm (A w) = (∑ i, M.ρ (Z i) * M.ρ (Z i)) (fm w)`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : A w = ∑ i, (⟨M.ρ (Z i) (M.ρ (Z i) w), ρ_mem_of_stable M hFs (hZ i) (ρ_mem_of_stable M hFs (hZ i) w.2)⟩ : toSub M S)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Use `show (∑ i, M.ρ (Z i) * M.ρ (Z i)) (w : V) = _`. Rewrite using `[LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply]`. Rewrite using `[map_ρ_of_equivariant M hFs fm hfm (hZ i) ⟨_, ρ_mem_of_stable M hFs (hZ i) w.2⟩, map_ρ_of_equivariant M hFs fm hfm (hZ i) w]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAsub : ∀ w : toSub M S, ((Polynomial.aeval A q w : toSub M S) : V) = Polynomial.aeval (∑ i, M.ρ (Z i) * M.ρ (Z i)) q (w : V)` using `AutomorphicForm.map_aeval_apply_of_intertwine (toSub M S).subtype (fun _ => rfl) q`. Use `set y : S := g ⟨x, hx⟩ with hy`. Establish `hyF : M.σ.asModuleEquiv (y : M.σ.asModule) ∈ toSub M S`. Rewrite using `[mem_toSub, LinearEquiv.symm_apply_apply]`. Conclude with `y.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfy : fm ⟨_, hyF⟩ = M.σ.asModuleEquiv x` using `by show M.σ.asModuleEquiv (g.symm ⟨M.σ.asModuleEquiv.symm (M.σ.asModuleEquiv (y : M.σ.asModule)), _⟩ : m) = _`. Establish `e : (⟨M.σ.asModuleEquiv.symm (M.σ.asModuleEquiv (y : M.σ.asModule)), hyF⟩ : S) = y` using `Subtype.ext (LinearEquiv.symm_apply_apply _ _)`. Rewrite using `[e, hy, LinearEquiv.symm_apply_apply]`. Establish `h0 : Polynomial.aeval A q ⟨_, hyF⟩ = 0` using `Subtype.ext ((hAsub _).trans (hq _ hyF))`. Establish `h3` using `AutomorphicForm.map_aeval_apply_of_intertwine fm hAC q ⟨_, hyF⟩`.
-
-Rewrite `h3` using `[h0, map_zero, hfy]`. Conclude with `h3.symm`.
+A detailed English derivation is pending.
 -/
 theorem aeval_eq_zero_of_equiv (M : h.GKModule K V) {ι : Type*} [Fintype ι]
     (Z : ι → h.lieSubalgebra) (hZ : ∀ i (t : ℝ), h.expG (t • h.ofLie (Z i)) ∈ K)
@@ -420,21 +414,17 @@ theorem aeval_eq_zero_of_equiv (M : h.GKModule K V) {ι : Type*} [Fintype ι]
   exact h3.symm
 
 /- English proof (translation)
-Establish `hSnt : Nontrivial S` using `IsSimpleModule.nontrivial (MonoidAlgebra ℂ K) S`. Take `⟨s₀, hs₀⟩` from `exists_ne (0 : S)`. Use `set O := Submodule.span ℂ (range fun k : K => M.σ k (M.σ.asModuleEquiv (s₀ : M.σ.asModule))) with hOdef`. Establish `hOfin : FiniteDimensional ℂ O` using `M.locallyFinite _`. Establish `hOs : ∀ k, ∀ v ∈ O, M.σ k v ∈ O`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k', rfl⟩` from `hx`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨k * k', rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `O.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `O.add_mem hx hy`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `O.smul_mem a hx`. Establish `hs₀O : M.σ.asModuleEquiv (s₀ : M.σ.asModule) ∈ O` using `Submodule.subset_span ⟨1, show M.σ 1 _ = _ by rw [map_one, Module.End.one_apply]⟩`. Establish `hatom : IsAtom S` using `(isSimpleModule_iff_isAtom).1 hS`. Establish `hSN : S ≤ ofStable M O hOs`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `hatom.le_iff.1 (inf_le_right : ofStable M O hOs ⊓ S ≤ S) with h0 | h1` into its components or cases. It suffices to derive a contradiction. Establish `hmem : (s₀ : M.σ.asModule) ∈ ofStable M O hOs ⊓ S` using `⟨hs₀O, s₀.2⟩`. Rewrite `hmem` using `[h0, Submodule.mem_bot]`. Conclude with `hs₀ (Subtype.ext hmem)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1]`. Conclude with `inf_le_left`. Establish `hFO : toSub M S ≤ O` using `fun v hv => by`. Conclude with `(mem_ofStable M O hOs).1 (hSN hv)`. Use `⟨Submodule.finiteDimensional_of_le hFO, ?_⟩` and prove the remaining obligations.
-
-Establish `hs₀F : M.σ.asModuleEquiv (s₀ : M.σ.asModule) ∈ toSub M S`. Rewrite using `[mem_toSub, LinearEquiv.symm_apply_apply]`. Conclude with `s₀.2`. Use `⟨⟨⟨_, hs₀F⟩, 0, fun he => hs₀ ?_⟩⟩` and prove the remaining obligations. Establish `h0 : M.σ.asModuleEquiv (s₀ : M.σ.asModule) = 0` using `congrArg Subtype.val he`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_zero]`. Conclude with `M.σ.asModuleEquiv.injective (h0.trans (map_zero _).symm)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_toSub_of_isSimpleModule (M : h.GKModule K V)
     {S : Submodule (MonoidAlgebra ℂ K) M.σ.asModule} (hS : IsSimpleModule (MonoidAlgebra ℂ K) S) :
@@ -478,13 +468,13 @@ theorem finiteDimensional_toSub_of_isSimpleModule (M : h.GKModule K V)
   exact M.σ.asModuleEquiv.injective (h0.trans (map_zero _).symm)
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hc`. Take `⟨hFfin, hFnt⟩` from `finiteDimensional_toSub_of_isSimpleModule M hS`. Establish `hFs : ∀ k, ∀ v ∈ toSub M S, M.σ k v ∈ toSub M S` using `fun k v hv => σ_mem_toSub M S k hv`. Establish `hCF : ∀ v ∈ toSub M S, (∑ i, M.ρ (Z i) * M.ρ (Z i)) v ∈ toSub M S` using `fun v hv => sumSq_mem_of_stable M Z hZ hFs hv`. Set `A : Module.End ℂ (toSub M S)` to `LinearMap.restrict _ hCF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨A.charpoly, LinearMap.charpoly_monic A, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.charpoly_natDegree]`. Conclude with `Module.finrank_pos`. Establish `hvanF : ∀ v ∈ toSub M S, Polynomial.aeval (∑ i, M.ρ (Z i) * M.ρ (Z i)) A.charpoly v = 0`. Introduce `v hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `AutomorphicForm.map_aeval_apply_of_intertwine (toSub M S).subtype (A := A) (B := ∑ i, M.ρ (Z i) * M.ρ (Z i)) (fun _ => rfl) A.charpoly ⟨v, hv⟩` as an intermediate fact. Rewrite `this` using `[LinearMap.aeval_self_charpoly, LinearMap.zero_apply, map_zero]`. Conclude with `this.symm`. Introduce `v hv`. Establish `hv' : M.σ.asModuleEquiv.symm v ∈ ⨆ m : {m : Submodule (MonoidAlgebra ℂ K) M.σ.asModule | Nonempty (m ≃ₗ[MonoidAlgebra ℂ K] S)}, m.1`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sSup_eq_iSup']`. Conclude with `hv`. Establish `key` using `Submodule.iSup_induction _ (motive := fun x => Polynomial.aeval (∑ i, M.ρ (Z i) * M.ρ (Z i)) A.charpoly (M.σ.asModuleEquiv x) = 0) hv' (fun m x hx => aeval_eq_zero_of_equiv M Z hZ m.2.some A.charpoly hvanF hx) (by rw [map_zero, map_zero]) (fun x y hx hy => by rw [map_add, map_add …`. Rewrite `key` using `[LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_aeval_eq_zero_of_mem_isotypic (M : h.GKModule K V) {ι : Type*} [Fintype ι]
     (Z : ι → h.lieSubalgebra) (hZ : ∀ i (t : ℝ), h.expG (t • h.ofLie (Z i)) ∈ K)

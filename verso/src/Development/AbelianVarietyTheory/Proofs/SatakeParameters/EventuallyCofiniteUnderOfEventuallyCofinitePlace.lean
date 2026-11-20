@@ -9,11 +9,11 @@ open GlobalTheory.AboveL
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ P hP`. Rewrite `hP`, the goal using `[Filter.eventually_cofinite]`. Establish `hfib : ∀ v : HeightOneSpectrum (𝓞 K), ((fun w : HeightOneSpectrum (𝓞 M) => w.under (𝓞 K)) ⁻¹' {v}).Finite`. Introduce `v`. Use `Set.Finite.of_finite_image (f := HeightOneSpectrum.asIdeal) ((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 M)).subset ?_) (fun a _ b _ h => HeightOneSpectrum.ext h)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hw`. Use `⟨w.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hw]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(hP.preimage' fun v _ => hfib v).subset fun w hw => hw`.
+A detailed English derivation is pending.
 -/
 theorem eventually_cofinite_under_of_eventually_cofinite :
     ∀ (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]

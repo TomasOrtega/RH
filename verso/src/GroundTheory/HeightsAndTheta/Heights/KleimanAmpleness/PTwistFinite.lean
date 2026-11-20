@@ -10,23 +10,21 @@ open MvPolynomial AddMonoidAlgebra TwistFin
 universe u w
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x G B r η hx _ hgen`. Take `⟨M0, -, hG⟩` from `hE S Ω N x Ω G.toSubFamily G.fg`. Take `⟨n0, d0, g0, -, hspan⟩` from `M0.fg`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `hx (funext h)`. Establish `hfin : Module.Finite (Sy S r) (cohom (tgraded x η S n0 d0 g0) 0 0)` using `hSF (Sy S r) N _ (tgraded x η S n0 d0 g0) inferInstance 0 0`. Set `Γ : Set (Amb x η)` to `{γ | ∃ (b : ℕ) (s : Ω), s ∈ (G.twist (B.pow b)).secs ∧ γ = (toA x η).symm (single ((0 : ℤ), (b : ℤ)) s)}`. Establish `hΓ : Γ ⊆ LinearMap.range (readChartH0 x η S n0 d0 g0 i0 hi0)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨b, s, hs, rfl⟩`. Use `mem_range_readChartH0 x η S n0 d0 g0 i0 hi0 _ fun I hI => ?_` and prove the remaining obligations. Use `chart_pre x η S M0 G B hgen hG hspan I hI b ?_` and prove the remaining obligations. Rewrite `hs` using `[SubSystem.secs, Submodule.mem_iInf]`. Conclude with `hs (toChart x I hI)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfg : (Submodule.span (Sy S r) Γ).FG`. Establish `: IsNoetherian (Sy S r) (LinearMap.range (readChartH0 x η S n0 d0 g0 i0 hi0))` using `isNoetherian_of_fg_of_noetherian _ (Module.Finite.iff_fg.mp inferInstance)`. Conclude with `isNoetherian_submodule.mp this _ (Submodule.span_le.mpr hΓ)`. Take `⟨t, ht⟩` from `hfg`. Take `⟨T, hTΓ, htT⟩` from `Submodule.subset_span_finite_of_subset_span (R := Sy S r) (s := Γ) (t := t) (by rw [← ht]; exact Submodule.subset_span)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hle : Submodule.span (Sy S r) Γ ≤ Submodule.span (Sy S r) (T : Set (Amb x η))`. Rewrite using `[← ht, Submodule.span_le]`. Conclude with `htT`. Establish `hT : ∀ γ : T, ∃ (b : ℕ) (s : Ω), s ∈ (G.twist (B.pow b)).secs ∧ (γ : Amb x η) = (toA x η).symm (single ((0 : ℤ), (b : ℤ)) s)` using `fun γ => hTΓ γ.2`. Use `choose bT sT hsT hγT using hT`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `e` to `T.equivFin`. Use `⟨T.card, fun k => bT (e.symm k), fun k => sT (e.symm k), fun k => hsT _, ?_⟩` and prove the remaining obligations. Introduce `b s hs`. Establish `hmem : (toA x η).symm (single ((0 : ℤ), (b : ℤ)) s) ∈ Submodule.span (Sy S r) (T : Set (Amb x η))` using `hle (Submodule.subset_span ⟨b, s, hs, rfl⟩)`. Take `⟨c, -, hc⟩` from `Submodule.mem_span_finset.mp hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoef` using `congrArg (fun a => (toA x η a).coeff ((0 : ℤ), (b : ℤ))) hc`. Simplify using `only [AddEquiv.apply_symm_apply, map_sum, toA_smulSy, AddMonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, coeff_single, Finsupp.single_eq_same] at hcoef`. Rewrite using `[← hcoef]`. Use `Submodule.sum_mem _ fun γ hγ => ?_` and prove the remaining obligations. Establish `h1 : toA x η γ = single ((0 : ℤ), ((bT ⟨γ, hγ⟩ : ℕ) : ℤ)) (sT ⟨γ, hγ⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congrArg (toA x η) (hγT ⟨γ, hγ⟩)` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Rewrite using `[h1, coeff_psi_mul_single]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Use `split_ifs with hdb`.
-
-Use `Submodule.subset_span ⟨e ⟨γ, hγ⟩, homogeneousComponent d (c γ), d, homogeneousComponent_isHomogeneous _ _, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `hdb`. Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TwistFinite.proof (hE : Extension.Statement.{u, w, w}) (hSF : SerreFinite.Statement.{u, w}) :
     TwistFinite.Statement.{u, w} := by

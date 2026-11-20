@@ -6,7 +6,7 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `LinearMap.exists_extend (((LinearMap.ker p).liftQ f h) ∘ₗ p.quotKerEquivRange.symm.toLinearMap)`. Use `⟨k, fun u => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hk ⟨p u, LinearMap.mem_range_self p u⟩` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_comp_eq_of_ker_le {F : Type} [Field F] {U X Y : Type} [AddCommGroup U] [Module F U]
     [AddCommGroup X] [Module F X] [AddCommGroup Y] [Module F Y] (p : U →ₗ[F] X) (f : U →ₗ[F] Y)
@@ -18,11 +18,11 @@ theorem exists_comp_eq_of_ker_le {F : Type} [Field F] {U X Y : Type} [AddCommGro
   simpa using this
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_comp_eq_of_ker_le (A.mkQ ∘ₗ W.subtype) (LinearMap.codRestrict A (W.subtype ∘ₗ h') (fun x => hh.1 x)) (by`. Introduce `x hx`. Establish `hx' : (x : V) ∈ A` using `by simpa using hx`. Use `hh.2 x hx'` as an intermediate fact. Rewrite using `[LinearMap.mem_ker]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[this])`. Use `⟨A.subtype ∘ₗ k ∘ₗ A.mkQ, ⟨fun x => by simp, fun x hx => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `: A.mkQ x = 0` using `by simpa using hx`. Simplify using `only [LinearMap.comp_apply, this, map_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg Subtype.val (hk x)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_nilRad_extend {F : Type} [Field F] {V : Type} [AddCommGroup V] [Module F V]
     (A W : Submodule F V) (h' : Module.End F W) (hh : h' ∈ nilRad (A.comap W.subtype)) :
@@ -42,29 +42,23 @@ theorem exists_nilRad_extend {F : Type} [Field F] {V : Type} [AddCommGroup V] [M
     simpa using this
 
 /- English proof (translation)
-Use `haveI : Finite V := Module.finite_of_finite F`. Use `haveI : Finite (Module.End F V) := Finite.of_injective _ DFunLike.coe_injective`. Use `haveI : Finite (Module.End F W) := Finite.of_injective _ DFunLike.coe_injective`. Use `set A' : Submodule F W := A.comap W.subtype with hA'`. Establish `hb : A' ≠ ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `h1` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `: (⟨x, hx.1⟩ : W) ∈ A'` using `hx.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[h, Submodule.mem_bot]`. Simplify using `using congrArg Subtype.val this`. Establish `ht : A' ≠ ⊤`. Introduce `h`. Apply `h2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `: (⟨x, hx⟩ : W) ∈ A'` using `h ▸ Submodule.mem_top`. Conclude with `this`. Set `S` to `{h : Module.End F V // h ∈ nilRad A ∧ ∀ x ∈ W, (g + h) x ∈ W}`. Use `haveI : Fintype S := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : Fintype (nilRad A') := Fintype.ofFinite _`. Establish `inner : ∀ h : S, ∑ h' : nilRad A', φ ((g + h.1).restrict h.2.2 + h'.1) = 0`. Introduce `h`. Use `hφ A' hb ht ((g + h.1).restrict h.2.2) (by` as an intermediate fact. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hx' : (x : V) ∈ A` using `hx`. Express the relevant statement in the definitionally equal form `(g + h.1) x ∈ A`. Rewrite using `[LinearMap.add_apply]`. Conclude with `A.add_mem (hg _ hx') (h.2.1.1 _))`. Rewrite `this` using `[← finsum_set_coe_eq_finsum_mem, finsum_eq_sum_of_fintype]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this`. Establish `shift : ∀ h' : nilRad A', ∑ h : S, φ ((g + h.1).restrict h.2.2 + h'.1) = ∑ h : S, φ ((g + h.1).restrict h.2.2)`. Introduce `h'`. Take `⟨L, hL, hLW⟩` from `exists_nilRad_extend A W h'.1 h'.2`. Set `T : S → S` to `fun h => ⟨h.1 + L, ⟨fun x => A.add_mem (h.2.1.1 x) (hL.1 x), fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[LinearMap.add_apply, h.2.1.2 x hx, hL.2 x hx, add_zero]⟩, fun x hx => by`. Rewrite using `[← add_assoc, LinearMap.add_apply, hLW ⟨x, hx⟩]`. Conclude with `W.add_mem (h.2.2 x hx) (h'.1 ⟨x, hx⟩).2⟩`. Establish `hT : Function.Bijective T`. Apply `Finite.injective_iff_bijective.mp` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a b hab`. Use `congrArg Subtype.val hab` as an intermediate fact. Conclude with `Subtype.ext (add_right_cancel this)`. Use `Fintype.sum_bijective T hT _ _ fun h => ?_` and prove the remaining obligations. Use `congr 1`.
-
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(g + h.1) x + (h'.1 x : V) = (g + (h.1 + L)) x`. Rewrite using `[← add_assoc, LinearMap.add_apply (g + h.1), hLW x]`. Establish `tot : ∑ h' : nilRad A', ∑ h : S, φ ((g + h.1).restrict h.2.2 + h'.1) = 0`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_eq_zero fun h _ => inner h`. Simplify using `only [shift, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_eq_zero] at tot`. Use `haveI : Nonempty (nilRad A') := ⟨⟨0, fun x => A'.zero_mem, fun x _ => rfl⟩⟩`. Rewrite using `[finsum_eq_sum_of_fintype]`. Break down `tot with h | h` into its components or cases.
-
-Conclude with `absurd h (Nat.cast_ne_zero.mpr Fintype.card_ne_zero)`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_restrict_eq_zero_of_mixed (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (A W : Submodule F V) (g : Module.End F V) (hg : ∀ x ∈ A, g x ∈ A)

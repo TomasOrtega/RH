@@ -36,15 +36,15 @@ structure NormChoiceFacts (D : D7) (C : NChoice D) : Prop extends toCore : _root
   same : GlobalTheory.PtCore.SameTwist D C
   good : GoodFTAll D
 /- English proof (translation)
-The claim follows from `h.adm.1.1`.
+A detailed English derivation is pending.
 -/
 theorem CoreNormFacts.admA {D : D7} (h : _root_.GlobalTheory.NFacts.CoreNormFacts D) : _root_.Formalism.MainNotions.SumRepresentations.AdmAAlt D := h.adm.1.1
 /- English proof (translation)
-The claim follows from `h.what₂.rank L`.
+A detailed English derivation is pending.
 -/
 theorem CoreNormFacts.a3 {D : D7} (h : _root_.GlobalTheory.NFacts.CoreNormFacts D) (L : SizeData₂ D) : TwistedPlaces.adm3 L := h.what₂.rank L
 /- English proof (translation)
-The claim follows from `h.adm.2.2`.
+A detailed English derivation is pending.
 -/
 theorem CoreNormFacts.isot {D : D7} (h : _root_.GlobalTheory.NFacts.CoreNormFacts D) : Rows.IsotInternal D.what₂ := h.adm.2.2
 end GlobalTheory.NFacts

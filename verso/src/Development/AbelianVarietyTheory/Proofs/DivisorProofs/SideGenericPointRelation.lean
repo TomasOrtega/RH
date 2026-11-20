@@ -10,16 +10,16 @@ noncomputable section
 namespace GlobalTheory.ShFam.GalCarry.Corr.CentreOfDominating
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+A detailed English derivation is pending.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) :=
   (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
 /- English proof (translation)
-Establish `: IsLocalHom r` using `⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Establish `hm : a ∈ IsLocalRing.maximalIdeal W` using `h`. Rewrite `hm` using `[← hr, RingHom.mem_ker]`. Rewrite `ha` using `[hm]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_zero ha⟩`. Conclude with `IsLocalRing.comap_closedPoint r`.
+A detailed English derivation is pending.
 -/
 theorem spMap_closedPoint {W : Type} [CommRing W] [IsLocalRing W] {Ω : Type} [Field Ω] (r : W →+* Ω)
     (hr : RingHom.ker r = IsLocalRing.maximalIdeal W) :
@@ -33,13 +33,13 @@ theorem spMap_closedPoint {W : Type} [CommRing W] [IsLocalRing W] {Ω : Type} [F
   exact IsLocalRing.comap_closedPoint r
 
 /- English proof (translation)
-Use `letI : Algebra (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField W₁) := (IsLocalRing.ResidueField.map ψ₁).toAlgebra`. Use `letI : Algebra (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField W₂) := (IsLocalRing.ResidueField.map ψ₂).toAlgebra`. Set `T` to `TensorProduct (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField W₁) (IsLocalRing.ResidueField W₂)`. Take `⟨m, hm⟩` from `Ideal.exists_maximal T`. Use `letI := Ideal.Quotient.field m`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Set `c : T →+* AlgebraicClosure (T ⧸ m)` to `(algebraMap (T ⧸ m) (AlgebraicClosure (T ⧸ m))).comp (Ideal.Quotient.mk m)`. Set `e₁ : IsLocalRing.ResidueField W₁ →+* AlgebraicClosure (T ⧸ m)` to `c.comp (Algebra.TensorProduct.includeLeft : _ →ₐ[IsLocalRing.ResidueField O] T).toRingHom`. Set `e₂ : IsLocalRing.ResidueField W₂ →+* AlgebraicClosure (T ⧸ m)` to `c.comp (Algebra.TensorProduct.includeRight : _ →ₐ[IsLocalRing.ResidueField O] T).toRingHom`. Establish `hk : ∀ {W : Type} [CommRing W] [IsLocalRing W] (e : IsLocalRing.ResidueField W →+* AlgebraicClosure (T ⧸ m)), RingHom.ker (e.comp (IsLocalRing.residue W)) = IsLocalRing.maximalIdeal W`. Introduce `W _ _ e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, map_eq_zero_iff e e.injective, IsLocalRing.residue_eq_zero_iff]`. Use `⟨AlgebraicClosure (T ⧸ m), inferInstance, inferInstance, e₁.comp (IsLocalRing.residue W₁), e₂.comp (IsLocalRing.residue W₂), hk e₁, hk e₂, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsLocalRing.ResidueField.map_residue ψ₁, ← IsLocalRing.ResidueField.map_residue ψ₂]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h₁ : IsLocalRing.ResidueField.map ψ₁ (IsLocalRing.residue O a) = algebraMap (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField W₁) (IsLocalRing.residue O a)` using `rfl`. Establish `h₂ : IsLocalRing.ResidueField.map ψ₂ (IsLocalRing.residue O a) = algebraMap (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField W₂) (IsLocalRing.residue O a)` using `rfl`. Rewrite using `[h₁, h₂]`. Simplify using `only [e₁, e₂, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_common_residue {O W₁ W₂ : Type} [CommRing O] [IsLocalRing O] [CommRing W₁] [IsLocalRing W₁]
     [CommRing W₂] [IsLocalRing W₂] (ψ₁ : O →+* W₁) (ψ₂ : O →+* W₂) [IsLocalHom ψ₁] [IsLocalHom ψ₂] :
@@ -82,17 +82,15 @@ namespace GlobalTheory.ShFam.GalCarry.Corr
 open CentreOfDominating in
 
 /- English proof (translation)
-Introduce `F _ _ I I' Y Y' Rel hS i i' p' hp y W₁ W₂ q₁ q₂ hW₁ hW₂ hq₁ hq₂`. Take `⟨-, -, h3, h4⟩` from `hS`. Take `⟨ψ₁, hψ₁, hψ₁'⟩` from `GlobalTheory.dominatesStalk_iff_exists_isLocalHom.mp hW₁`. Take `⟨ψ₂, hψ₂, hψ₂'⟩` from `GlobalTheory.dominatesStalk_iff_exists_isLocalHom.mp hW₂`. Take `⟨Ω, _, _, r₁, r₂, hk₁, hk₂, hr⟩` from `exists_common_residue ψ₁ ψ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (W : ValuationSubring (Y i).Fn) (ψ : (Y i).X.presheaf.stalk y →+* W), (∀ a, (ψ a : (Y i).Fn) = algebraMap _ (Y i).Fn a) → ∀ (q : Sp W ⟶ (Y' i').X), spMap (algebraMap W (Y i).Fn) ≫ q = p' → ∀ (r : W →+* Ω), RingHom.ker r = IsLocalRing.maximalIdeal W → Rel Ω i i' (spMap (r. …`. Introduce `W ψ hψ q hq r hr`. Establish `e1 : spMap (algebraMap W (Y i).Fn) ≫ spMap ψ ≫ (Y i).X.fromSpecStalk y = genericPt (Y i)`. Rewrite using `[← Category.assoc, sp_comp, show (algebraMap W (Y i).Fn).comp ψ = algebraMap _ (Y i).Fn from RingHom.ext hψ]`. Conclude with `GlobalTheory.specAlgebraMap_fromSpecStalk y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ((algebraMap (Y i).Fn (AlgebraicClosure (Y i).Fn)).comp (algebraMap W (Y i).Fn))` using `(algebraMap (Y i).Fn (AlgebraicClosure (Y i).Fn)).injective.comp Subtype.val_injective`. Establish `h` using `h4 W (AlgebraicClosure (Y i).Fn) _ Ω r i i' (spMap ψ ≫ (Y i).X.fromSpecStalk y) q hinj hr (by`. Rewrite using `[← sp_comp, Category.assoc, Category.assoc, e1, hq]`. Conclude with `hp)`. Rewrite `h` using `[← Category.assoc, sp_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `R1` using `key W₁ ψ₁ hψ₁' q₁ hq₁ r₁ hk₁`. Establish `R2` using `key W₂ ψ₂ hψ₂' q₂ hq₂ r₂ hk₂`. Rewrite `R2` using `[← hr]`. Take `⟨s, -, hu⟩` from `h3 Ω i (spMap (r₁.comp ψ₁) ≫ (Y i).X.fromSpecStalk y)`. Establish `e` using `(hu ⟨i', spMap r₁ ≫ q₁⟩ R1).trans (hu ⟨i', spMap r₂ ≫ q₂⟩ R2).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e' : spMap r₁ ≫ q₁ = spMap r₂ ≫ q₂` using `eq_of_heq (Sigma.mk.inj_iff.mp e).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[spMap_closedPoint r₁ hk₁]`. Use `_ = (spMap r₁ ≫ q₁) (IsLocalRing.closedPoint Ω) := (Scheme.Hom.comp_apply _ _ _).symm`. Use `_ = (spMap r₂ ≫ q₂) (IsLocalRing.closedPoint Ω) := by rw [e']`.
-
-Use `_ = q₂ ((spMap r₂) (IsLocalRing.closedPoint Ω)) := Scheme.Hom.comp_apply _ _ _`. Use `_ = q₂ (IsLocalRing.closedPoint W₂) := by rw [spMap_closedPoint r₂ hk₂]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centre_eq_of_dominatesStalk : ∀ (F : Type) [Field F] [CharZero F] (I I' : Type) (Y : I → Var F) (Y' : I' → Var F)
     (Rel : ∀ (K : Type) [Field K] (i : I) (i' : I'), (Sp K ⟶ (Y i).X) → (Sp K ⟶ (Y' i').X) → Prop), Side Y Y' Rel → ∀ (i : I) (i' : I') (p' : Sp (Y i).Fn ⟶ (Y' i').X),

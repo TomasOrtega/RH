@@ -5,9 +5,9 @@ open NumberField Module
 namespace GlobalTheory.CompanionTheory.TraceProj
 
 /- English proof (translation)
-Use `(RingHom.injective_iff_ker_eq_bot σ).mpr (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_)` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Rewrite `hn` using `[Ideal.mem_comap, RingHom.mem_ker, eq_intCast, map_intCast, Int.cast_eq_zero]`. Rewrite using `[Ideal.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_charZero (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [CharZero K]
     (σ : 𝓞 E →+* K) : Function.Injective σ := by
@@ -19,13 +19,13 @@ theorem injective_of_charZero (E : Type) [Field E] [NumberField E] (K : Type) [F
   exact hn
 
 /- English proof (translation)
-Establish `hB' : ∀ k, algebraMap (𝓞 E) E a * B k = ∑ i, ((b.repr (a * b k) i : ℤ) : E) * B i`. Introduce `k`. Rewrite using `[hB k, ← map_mul]`. Use `conv_lhs => rw [← b.sum_repr (a * b k)]`. Simplify using `[map_sum, hB, zsmul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hterm : ∀ k i, Algebra.trace ℚ E (D l * (((b.repr (a * b k) i : ℤ) : E) * B i)) = (b.repr (a * b k) i : ℚ) * (if i = l then 1 else 0)`. Introduce `k i`. Rewrite using `[← hD i l, Algebra.traceForm_apply, mul_left_comm, show (((b.repr (a * b k) i : ℤ) : E)) * (D l * B i) = (b.repr (a * b k) i : ℚ) • (D l * B i) by rw [Rat.smul_def]; push_cast; rfl, LinearMap.map_smul, smul_eq_mul]`. Establish `hcoord : ∀ k, D.repr (algebraMap (𝓞 E) E a * D l) k = (b.repr (a * b k) l : ℚ)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrepr, Algebra.traceForm_apply, mul_comm (algebraMap (𝓞 E) E a) (D l), mul_assoc, hB' k, Finset.mul_sum, map_sum]`. Simplify using `only [hterm, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hcoord, Rat.smul_def]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Use `_ = algebraMap (𝓞 E) E a * D l := D.sum_repr _`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_repr_smul_dual (E : Type) [Field E] [NumberField E] {ι : Type} [Fintype ι]
     [DecidableEq ι] (b : Basis ι ℤ (𝓞 E)) (B D : Basis ι ℚ E)
@@ -60,13 +60,13 @@ theorem sum_repr_smul_dual (E : Type) [Field E] [NumberField E] {ι : Type} [Fin
     _ = algebraMap (𝓞 E) E a * D l := D.sum_repr _
 
 /- English proof (translation)
-Establish `hnd` using `traceForm_nondegenerate ℚ E`. Set `D` to `(Algebra.traceForm ℚ E).dualBasis hnd B`. Establish `hD : ∀ i j, Algebra.traceForm ℚ E (D j) (B i) = if i = j then 1 else 0` using `fun i j => LinearMap.BilinForm.apply_dualBasis_left hnd B j i`. Establish `hrepr : ∀ (x : E) (k : ι), D.repr x k = Algebra.traceForm ℚ E x (B k)` using `fun x k => LinearMap.BilinForm.dualBasis_repr_apply hnd B x k`. Set `σ' : E →+* K` to `IsFractionRing.lift (injective_of_charZero E K σ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hσ' : ∀ x, σ' (algebraMap (𝓞 E) E x) = σ x` using `IsFractionRing.lift_algebraMap _`. Establish `h1 : ∑ k, D k * B k = 1`. Establish `h0 : ∑ k, D k * B k - 1 = 0`. Use `hnd.1 _ fun x => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, sub_mul, one_mul, map_sub, sub_eq_zero, Finset.sum_mul, map_sum, Algebra.trace_eq_matrix_trace D x, Matrix.trace]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, hrepr, Algebra.traceForm_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Put the polynomial expressions in normal form. Conclude with `sub_eq_zero.mp h0`. Use `⟨fun k => σ' (D k), ?_, fun a l => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Put the polynomial expressions in normal form. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h` using `congrArg σ' (sum_repr_smul_dual E b B D hB hD hrepr a l)`. Simplify `h` using `[map_sum, map_mul, hσ']`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_coeff (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [CharZero K]
     (σ : 𝓞 E →+* K) {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι ℤ (𝓞 E)) (B : Basis ι ℚ E)
@@ -97,15 +97,15 @@ theorem exists_coeff (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [
     simpa [map_sum, map_mul, hσ'] using h
 
 /- English proof (translation)
-Introduce `E _ _ K _ _ σ`. Set `b` to `RingOfIntegers.basis E`. Take `⟨c, hc1, hc2⟩` from `exists_coeff E K σ b (integralBasis E) (fun i => integralBasis_apply E i)`. Set `eqv` to `Fintype.equivFin (Module.Free.ChooseBasisIndex ℤ (𝓞 E))`. Use `⟨_, fun k => b (eqv.symm k), fun k => c (eqv.symm k), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hc1]`. Conclude with `Equiv.sum_comp eqv.symm (fun i => c i * σ (b i))`. Introduce `L W _ _ _ j ρ a w`. Rewrite using `[Equiv.sum_comp eqv.symm (fun i => j (c i) • ρ (b i) w)]`. Establish `hmul : ∀ i, ρ a (ρ (b i) w) = ∑ l, ((b.repr (a * b i) l : ℤ) : L) • ρ (b l) w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `conv_lhs => rw [← b.sum_repr (a * b i)]`. Simplify using `[map_sum, LinearMap.sum_apply, Int.cast_smul_eq_zsmul]`. Establish `hj : ∀ l, ∑ i, j (c i) * ((b.repr (a * b i) l : ℤ) : L) = j (σ a) * j (c l)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l`. Establish `h` using `congrArg j (hc2 a l)`. Simplify using `only [map_sum, map_mul, map_intCast] at h`. Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, map_smul, hmul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, hj l]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eigen_projector : ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [CharZero K]
     (σ : 𝓞 E →+* K), ∃ (n : ℕ) (e : Fin n → 𝓞 E) (c : Fin n → K), ∑ k, c k * σ (e k) = 1 ∧

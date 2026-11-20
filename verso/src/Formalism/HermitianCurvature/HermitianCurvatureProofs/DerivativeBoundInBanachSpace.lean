@@ -18,70 +18,70 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.ChangeOfVariablesXy
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `coordinate_sizes_of_parts slice_membership block3_apply_embedding aux_statement_17 hat_z_on_slice level_determinant_z`.
+A detailed English derivation is pending.
 -/
 theorem coordinate_sizes_in_norm : Formalism.FourierDecayAlt.U.SliceCoordinateSizes :=
   coordinate_sizes_of_parts slice_membership block3_apply_embedding aux_statement_17 hat_z_on_slice level_determinant_z
 
 /- English proof (translation)
-The claim follows from `norm_decay_of_coordinate_sizes coordinate_sizes_in_norm`.
+A detailed English derivation is pending.
 -/
 theorem norm_decay_in_coordinates : Formalism.FourierDecayAlt.U.CoordinateDecay :=
   norm_decay_of_coordinate_sizes coordinate_sizes_in_norm
 
 /- English proof (translation)
-The claim follows from `phi_bound_of_parts slice_membership derivative_cost_bound norm_decay_in_coordinates weight_integrability`.
+A detailed English derivation is pending.
 -/
 theorem phi_pointwise_bound : Formalism.FourierDecayAlt.U.PointwiseIntegralBound :=
   phi_bound_of_parts slice_membership derivative_cost_bound norm_decay_in_coordinates weight_integrability
 
 /- English proof (translation)
-The claim follows from `theorem_u_of_parts phi_pointwise_bound phi_support_determinant weak_to_strong_smoothness`.
+A detailed English derivation is pending.
 -/
 theorem theorem_u : Formalism.FourierDecayAlt.U.TheoremU :=
   theorem_u_of_parts phi_pointwise_bound phi_support_determinant weak_to_strong_smoothness
 
 /- English proof (translation)
-The claim follows from `phi_support_level_of_parts level_function_slice level_determinant_z hat_z_on_slice`.
+A detailed English derivation is pending.
 -/
 theorem phi_support_level_function : Formalism.FourierDecayAlt.U.PhiSuppG :=
   phi_support_level_of_parts level_function_slice level_determinant_z hat_z_on_slice
 
 /- English proof (translation)
-The claim follows from `corollary_u2_of_parts theorem_u corollary_u1_truncated_alt star_projection budget_second_corollary thresholds_second_corollary phi_support_level_function`.
+A detailed English derivation is pending.
 -/
 theorem corollary_u2_germ_hypothesis : Formalism.FourierDecayAlt.U.GermExpansionHypothesis :=
   corollary_u2_of_parts theorem_u corollary_u1_truncated_alt star_projection budget_second_corollary
     thresholds_second_corollary phi_support_level_function
 
 /- English proof (translation)
-The claim follows from `derivative_bound_use_of_parts corollary_u2_germ_hypothesis compactly_supported_banach_model compactly_supported_monotone seminorm_of_form seminorm_completion derivative_bound_of_decay derivative_bound_composition`.
+A detailed English derivation is pending.
 -/
 theorem derivative_bound_in_banach_space : Formalism.FourierDecayAlt.U.UseDerivBound :=
   derivative_bound_use_of_parts corollary_u2_germ_hypothesis compactly_supported_banach_model compactly_supported_monotone seminorm_of_form
     seminorm_completion derivative_bound_of_decay derivative_bound_composition
 
 /- English proof (translation)
-The claim follows from `germ_expansion_of_parts germ_rate det_weyl_matrix corollary_u2_germ_hypothesis derivative_bound_of_decay power_matching scale_matching`.
+A detailed English derivation is pending.
 -/
 theorem germ_expansion_applies : Formalism.FourierDecayAlt.U.UseGerm :=
   germ_expansion_of_parts germ_rate det_weyl_matrix corollary_u2_germ_hypothesis derivative_bound_of_decay
     power_matching scale_matching
 
 /- English proof (translation)
-The claim follows from `germ_top_level_of_parts germ_rate det_weyl_matrix top_cells derivative_bound_of_decay`.
+A detailed English derivation is pending.
 -/
 theorem germ_expansion_top_level : Formalism.FourierDecayAlt.U.UseGermTop :=
   germ_top_level_of_parts germ_rate det_weyl_matrix top_cells derivative_bound_of_decay
 
 /- English proof (translation)
-The claim follows from `germ_top_count_of_parts germ_expansion_top_level budget_top_convergence`.
+A detailed English derivation is pending.
 -/
 theorem germ_expansion_top_count : Formalism.FourierDecayAlt.U.UseGermTopCount :=
   germ_top_count_of_parts germ_expansion_top_level budget_top_convergence
 
 /- English proof (translation)
-The claim follows from `germ_in_form_of_parts germ_rate det_weyl_matrix derivative_bound_in_banach_space scale_matching`.
+A detailed English derivation is pending.
 -/
 theorem germ_expansion_in_form_space : Formalism.FourierDecayAlt.U.GermInForm :=
   germ_in_form_of_parts germ_rate det_weyl_matrix derivative_bound_in_banach_space scale_matching

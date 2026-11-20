@@ -18,7 +18,7 @@ open AdelicGLn AutomorphicForm
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
 /- English proof (translation)
-The claim follows from `exists_cuspForm_of_isCuspidal_liftEquiv f hf.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_cuspForm_of_liftEquiv_mem_cuspForms
     (f : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)

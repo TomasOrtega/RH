@@ -11,9 +11,9 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.SympBasis
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single i]`. Unfold `Out.stdSymp`. Rewrite using `[if_pos hij]`. Simplify using the standard rewrite rules. Introduce `l _ hl`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ¬ ((l : ℕ) < g ∧ (j : ℕ) = l + g)` using `fun h => hl (Fin.ext (by omega))`. Establish `h2 : ¬ ((j : ℕ) < g ∧ (l : ℕ) = j + g)` using `by omega`. Unfold `Out.stdSymp`. Rewrite using `[if_neg h1, if_neg h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -32,9 +32,9 @@ private theorem sum_inv_mulVec_smul_col_of_det_ne_zero {R : Type} [CommRing R] {
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single i]`. Establish `h1 : ¬ ((i : ℕ) < g ∧ (j : ℕ) = i + g)` using `by omega`. Unfold `Out.stdSymp`. Rewrite using `[if_neg h1, if_pos hij]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Establish `h1 : ¬ ((l : ℕ) < g ∧ (j : ℕ) = l + g)` using `by omega`. Establish `h2 : ¬ ((j : ℕ) < g ∧ (l : ℕ) = j + g)` using `fun h => hl (Fin.ext (by omega))`. Unfold `Out.stdSymp`. Rewrite using `[if_neg h1, if_neg h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
@@ -54,9 +54,9 @@ private theorem sum_mul_stdSymp_eq_neg_of_eq_add {R : Type} [CommRing R] {g : �
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hi2` using `i.isLt`. Distinguish the cases in `hi : (i : ℕ) < g`. Establish `h1` using `h ⟨i + g, by omega⟩`. Rewrite `h1` using `[sum_inv_mulVec_smul_col_of_det_ne_zero a i _ ⟨hi, rfl⟩, sum_inv_mulVec_smul_col_of_det_ne_zero b i _ ⟨hi, rfl⟩]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `h ⟨i - g, by omega⟩`. Rewrite `h1` using `[sum_mul_stdSymp_eq_neg_of_eq_add a i _ ⟨by simp; omega, by simp; omega⟩, sum_mul_stdSymp_eq_neg_of_eq_add b i _ ⟨by simp; omega, by simp; omega⟩]`. Conclude with `neg_inj.mp h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_sum_stdSymp {R : Type} [CommRing R] {g : ℕ} (a b : Fin (2 * g) → R)
     (h : ∀ j, ∑ i, a i * (Out.stdSymp g i j : R) = ∑ i, b i * (Out.stdSymp g i j : R)) : a = b := by
@@ -73,11 +73,9 @@ theorem eq_of_sum_stdSymp {R : Type} [CommRing R] {g : ℕ} (a b : Fin (2 * g) �
     exact neg_inj.mp h1
 
 /- English proof (translation)
-Establish `hpow : ∀ i (n : ℕ), W (p i ^ n) (u i ^ n)`. Introduce `i n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ, pow_succ]`. Conclude with `hm _ _ _ _ ih (hp i)`. Use `Finset.induction_on s (by simpa using h1) ?_` and prove the remaining obligations. Introduce `j t hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj]`.
-
-Conclude with `hm _ _ _ _ (hpow j (a j)) ih`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_prod {M U : Type} [CommMonoid M] [CommGroup U] (W : M → U → Prop) (h1 : W 1 1)
     (hm : ∀ x x' c c', W x c → W x' c' → W (x * x') (c * c')) {J : Type} (s : Finset J) (p : J → M) (u : J → U)
@@ -96,7 +94,7 @@ theorem rel_prod {M U : Type} [CommMonoid M] [CommGroup U] (W : M → U → Prop
   exact hm _ _ _ _ (hpow j (a j)) ih
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `j t hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.prod_insert hj, zpow_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem zpow_finset_sum_divisor {U : Type} [CommGroup U] (z : U) {I : Type} (s : Finset I) (f : I → ℤ) :
     z ^ (∑ i ∈ s, f i) = ∏ i ∈ s, z ^ f i := by
@@ -106,19 +104,19 @@ private theorem zpow_finset_sum_divisor {U : Type} [CommGroup U] (z : U) {I : Ty
   rw [Finset.sum_insert hj, Finset.prod_insert hj, zpow_add, ih]
 
 /- English proof (translation)
-Establish `hone : ∀ y, y ^ k = 1 → W 1 y 1`. Introduce `y hy`. Take `⟨c, hc, huniq⟩` from `hu 1 y (one_pow k) hy`. Establish `h2 : W 1 y (c * c)` using `by simpa using hm 1 1 y c c hc hc`. Establish `hcc : c * c = c` using `huniq _ h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : c = 1` using `by simpa using hcc`. Rewrite `hc` using `[hc1]`. Conclude with `hc`. Set `e : (Fin (2 * g) → ZMod k) → Fin (2 * g) → ℤ` to `fun c j => ∑ i, Out.stdSymp g i j * ((c i).val : ℤ)`. Establish `hW : ∀ (c : Fin (2 * g) → ZMod k) j, W (∏ i, p i ^ (c i).val) (p j) (z ^ e c j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c j`. Establish `h` using `rel_prod (fun x v => W x (p j) v) (hone _ (hp j)) (fun x x' v v' hx hx' => hm x x' (p j) v v' hx hx') Finset.univ p (fun i => z ^ Out.stdSymp g i j) (fun i => (c i).val) (fun i => hw i j)`. Establish `hz' : (∏ i, (z ^ Out.stdSymp g i j) ^ (c i).val) = z ^ e c j`. Simplify using `only [e, zpow_finset_sum_divisor]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_natCast, ← zpow_mul]`. Simplify `h` using `only [hz']`. Establish `htors : ∀ c : Fin (2 * g) → ZMod k, (∏ i, p i ^ (c i).val) ^ k = 1`. Introduce `c`. Rewrite using `[← Finset.prod_pow]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, hp i, one_pow]`. Introduce `c c' hcc`. Establish `hcc' : (∏ i, p i ^ (c i).val) = ∏ i, p i ^ (c' i).val` using `hcc`. Establish `key : ∀ j, z ^ e c j = z ^ e c' j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Take `⟨w, _, huniq⟩` from `hu _ (p j) (htors c) (hp j)`. Establish `h1` using `huniq _ (hW c j)`. Establish `h2` using `huniq _ (hcc' ▸ hW c' j)`. Rewrite using `[h1, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_of_sum_stdSymp (R := ZMod k) c c'` to reduce the goal to its premises. Introduce `j`. Establish `hd : ((e c j : ℤ) : ZMod k) = ((e c' j : ℤ) : ZMod k)`. Rewrite using `[ZMod.intCast_eq_intCast_iff_dvd_sub, ← hz.zpow_eq_one_iff_dvd, zpow_sub, key j, mul_inv_cancel]`. Simplify `hd` using `[e, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem injective_of_pairing {M U : Type} [CommMonoid M] [CommGroup U] (W : M → M → U → Prop) (k : ℕ) [NeZero k]
     (hu : ∀ x y, x ^ k = 1 → y ^ k = 1 → ∃! c, W x y c)
@@ -168,7 +166,7 @@ theorem injective_of_pairing {M U : Type} [CommMonoid M] [CommGroup U] (W : M �
   simpa [e, mul_comm] using hd
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [MonObj.comp_one]`. Consider the case `cons x l ih => simp [List.prod_cons, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem comp_list_prod_eq_prod_map_comp_over {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] (f : T' ⟶ T)
     (l : List (T ⟶ A)) : f ≫ l.prod = (l.map (f ≫ ·)).prod := by
@@ -177,7 +175,7 @@ private theorem comp_list_prod_eq_prod_map_comp_over {S : Scheme.{0}} {A T T' : 
   | cons x l ih => simp [List.prod_cons, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Unfold `Out.linComb`. Rewrite using `[comp_list_prod_eq_prod_map_comp_over, List.map_ofFn]`. Simplify using `[Function.comp_def, MonObj.comp_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comp_linComb {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] (f : T' ⟶ T) {n : ℕ} (y : Fin n → (T ⟶ A))
     (a : Fin n → ℕ) : f ≫ Out.linComb y a = Out.linComb (fun i => f ≫ y i) a := by
@@ -192,25 +190,23 @@ namespace GlobalTheory
 open SympBasis in
 
 /- English proof (translation)
-Introduce `hL K₀ _ P k ze pt hk hze hpt hw K _ _ x y hy`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hk (by simp)`. Establish `: NeZero k` using `⟨hk0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : IsSeparated P.A.hom`. Take `⟨_, _, _, _⟩` from `P.isAb`. Use `infer_instance`. Set `h : Over.mk x ⟶ Out.baseOver (Sp K₀)` to `Over.homMk x (by simp)`. Establish `hpre : ∀ s s' : Out.baseOver (Sp K₀) ⟶ P.A, h ≫ s = h ≫ s' → s = s'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s s' hss`. Establish `: IsReduced (Out.baseOver (Sp K₀)).left` using `inferInstanceAs (IsReduced (Sp K₀))`. Establish `: IsDominant (X` using `Sp K) (Y := (Out.baseOver (Sp K₀)).left) x := inferInstanceAs (IsDominant (X := Sp K) (Y := Sp K₀) x)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `ext_of_isDominant_of_isSeparated P.A.hom ?_ x ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Over.w s, Over.w s']`. Simplify `congrArg CommaMorphism.left hss` using `[h]`. Establish `hzu : IsPrimitiveRoot (unitOn ze) k`. Unfold `unitOn`. Use `hze.map_of_injective (Units.map_injective ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Function.LeftInverse.injective (g := (Scheme.ΓSpecIso (CommRingCat.of K₀)).hom.hom) fun a => by simp`. Take `⟨hu, hm, -, -⟩` from `hL.weil (Sp K₀) P k (Out.baseOver (Sp K₀))`. Establish `hinj0` using `SympBasis.injective_of_pairing (fun a b c => Out.WeilIs P.A P.L (k : ℤ) a b c) k hu (fun a a' b c c' => hm a a' b c c') pt hpt (unitOn ze) hzu hw`. Establish `hlin : ∀ c : Fin (2 * P.g) → ZMod k, Out.linComb (fun i => h ≫ pt i) (fun i => (c i).val) = h ≫ ∏ i, pt i ^ (c i).val`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← SympBasis.comp_linComb]`. Unfold `Out.linComb`. Rewrite using `[List.prod_ofFn]`. Establish `htors : ∀ c : Fin (2 * P.g) → ZMod k, (Out.linComb (fun i => h ≫ pt i) (fun i => (c i).val)) ^ k = 1`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hlin, ← MonObj.comp_pow, ← Finset.prod_pow, Finset.prod_eq_one fun i _ => by rw [← pow_mul, mul_comm, pow_mul, hpt i, one_pow]]`. Conclude with `MonObj.comp_one _`. Set `Φ : (Fin (2 * P.g) → ZMod k) → {y : Over.mk x ⟶ P.A // y ^ k = 1}` to `fun c => ⟨_, htors c⟩`. Establish `hΦ : Function.Injective Φ`. Introduce `c c' hcc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Out.linComb (fun i => h ≫ pt i) (fun i => (c i).val) = Out.linComb (fun i => h ≫ pt i) (fun i => (c' i).val)` using `congrArg Subtype.val hcc`. Rewrite `h1` using `[hlin, hlin]`. Conclude with `hinj0 (hpre _ _ h1)`. Establish `hkK : ((k : ℕ) : K) ≠ 0`. Establish `hc : ((k : ℕ) : K) = (Spec.preimage x).hom (k : K₀)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `(map_ne_zero_iff _ (Spec.preimage x).hom.injective).2 hk`. Establish `hcard` using `(hL.mulN (Sp K₀) P k (Nat.one_le_iff_ne_zero.2 hk0)).2.2.2.2 K x hkK`. Establish `: Finite {y : Over.mk x ⟶ P.A // y ^ k = 1}` using `Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Establish `hbij : Function.Bijective Φ` using `hΦ.bijective_of_nat_card_le (by`.
-
-Rewrite using `[hcard, Nat.card_eq_fintype_card, Fintype.card_fun, ZMod.card, Fintype.card_fin])`. Take `⟨c, hc⟩` from `hbij.2 ⟨y, hy⟩`. Conclude with `⟨c, congrArg Subtype.val hc, fun c' hc' => hbij.1 (Subtype.ext (hc'.trans (congrArg Subtype.val hc).symm))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem symplectic_system_torsion_basis :
     Out.Laws → ∀ (K₀ : Type) [Field K₀] (P : Out.PolAV (Sp K₀)) (k : ℕ) (ze : K₀ˣ) (pt : Fin (2 * P.g) → (Out.baseOver (Sp K₀) ⟶ P.A)), (k : K₀) ≠ 0 → IsPrimitiveRoot ze k → (∀ i, pt i ^ k = 1) → (∀ i j, Out.WeilIs P.A P.L k (pt i) (pt j) (unitOn ze ^ Out.stdSymp P.g i j)) → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Sp K₀) (y : Over.mk x ⟶ P.A), y ^ k = 1 → ∃! c : Fin (2 * P.g) → ZMod k, Out.linComb (fun i => (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver (Sp K₀)) ≫ pt i) (fun i => (c i).val) = y := by

@@ -27,7 +27,7 @@ def latOf (N : FractionalIdeal (𝓞 F)⁰ F) : Submodule ℤ (RSp F) :=
   Submodule.map (remb F).toIntLinearMap ((N : Submodule (𝓞 F) F).restrictScalars ℤ)
 
 /- English proof (translation)
-Simplify using `[latOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_latOf (N : FractionalIdeal (𝓞 F)⁰ F) (x : RSp F) :
     x ∈ latOf N ↔ ∃ a ∈ N, remb F a = x := by
@@ -42,7 +42,7 @@ def Phi (k : ℕ) (z : (F →+* ℝ) → ℂ) (ξ : RSp F) : ℂ :=
   ∏ τ : F →+* ℝ, phi1 k (z τ) (ξ τ)
 
 /- English proof (translation)
-Simplify using `[phi1, Complex.exp_ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 example : phi1 2 Complex.I 1 ≠ 0 := by
   simp [phi1, Complex.exp_ne_zero]

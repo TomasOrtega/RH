@@ -10,7 +10,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ar.TorusUnif
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgn.hermitian_norm_square_formula`.
+A detailed English derivation is pending.
 -/
 theorem sqAt_sum_eq_gram : ∀ (L : Type) [Field L] [NumberField L] (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (σ : L →+* ℂ) (n : ℕ)
     (ε : Fin n → B.carrier) (Γ : Matrix (Fin n) (Fin n) ℂ),

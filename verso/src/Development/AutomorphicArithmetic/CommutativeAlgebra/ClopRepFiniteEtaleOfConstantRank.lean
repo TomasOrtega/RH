@@ -8,13 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijecti
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `S G Y U n hf he hn hR`. Take `⟨S', t, h1, h2, h3, hs⟩` from `GlobalTheory.FinEt.exists_isSplitOfRank_pullback G.hom hn`. Take `⟨Y'', U'', hR'', hf'', he''⟩` from `UpperTheory.exists_clopRep_of_isSplitOfRank ((Over.pullback t).obj G) n hs`. Take `⟨U', hR'⟩` from `UpperTheory.exists_clopRep_pullback t G Y U hR`. Take `⟨e⟩` from `UpperTheory.clopRep_unique _ _ _ _ _ hR' hR''`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcomp : pullback.snd Y.hom t = e.hom.left ≫ Y''.hom` using `(Over.w e.hom).symm`. Establish `hiso : IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget S').map e.hom))`. Establish `hqf : IsFinite (pullback.snd Y.hom t)`. Rewrite using `[hcomp]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqe : Etale (pullback.snd Y.hom t)`. Rewrite using `[hcomp]`. Use `infer_instance`. Establish `hpb` using `IsPullback.of_hasPullback Y.hom t`. Use `⟨UpperTheory.isFinite_of_isPullback_fpqc _ _ _ _ hpb h3 inferInstance inferInstance hqf, ?_⟩` and prove the remaining obligations.
-
-Conclude with `MorphismProperty.of_isPullback_of_descendsAlong (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) hpb.flip ⟨⟨h3, inferInstance⟩, inferInstance⟩ hqe`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.clopRep_finite_etale_of_constant_rank :
     ∀ {S : Scheme.{0}} (G Y : Over S) (U : (Y ⊗ G).left.Opens) (n : ℕ), IsFinite G.hom → Etale G.hom → (∀ s, G.hom.finrank s = n) → UpperTheory.RepresentationRank.Rep G Y U → IsFinite Y.hom ∧ Etale Y.hom := by

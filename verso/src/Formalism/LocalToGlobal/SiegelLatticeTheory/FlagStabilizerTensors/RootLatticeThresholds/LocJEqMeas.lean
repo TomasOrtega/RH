@@ -10,13 +10,13 @@ namespace Formalism.L2.SG.Pf.LocJEq
 variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ)
 
 /- English proof (translation)
-Take `⟨hQiQ, hQQi, hH, -⟩` from `C.isT τ`. Establish `hJJ : Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) = 1`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> norm_num`. Generalize the expression as in `Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) = J at hH hJJ`. Establish `hHinv : (C.Qi τ * J * (C.Qi τ)ᴴ) * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS = 1`. Rewrite using `[← hH]`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hQQi, Matrix.conjTranspose_one, Matrix.mul_one, Matrix.mul_assoc (C.Qi τ), hJJ, Matrix.mul_one, hQiQ]`. Establish `hy' : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `C.y_mem τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (C.Qi τ * J * (C.Qi τ)ᴴ * ((C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) * C.y τ = 1`. Rewrite using `[Matrix.mul_assoc, hy', hHinv]`. Conclude with `Matrix.isUnit_det_of_left_inverse h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_y_det (τ : D.what₂.Tau) : IsUnit (C.y τ).det := by
   obtain ⟨hQiQ, hQQi, hH, -⟩ := C.isT τ
@@ -40,7 +40,7 @@ private theorem isUnit_y_det (τ : D.what₂.Tau) : IsUnit (C.y τ).det := by
   exact Matrix.isUnit_det_of_left_inverse h1
 
 /- English proof (translation)
-Take `⟨hQiQ, hQQi, -, -⟩` from `C.isT τ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQQi, Matrix.one_mul, ← Matrix.mul_assoc (C.y τ)⁻¹ (C.y τ), Matrix.nonsing_inv_mul _ (isUnit_y_det C τ), Matrix.one_mul, hQQi, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_lemma_2 (τ : D.what₂.Tau) (w : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) :
     C.Q τ * (C.Qi τ * w * C.Q τ * (C.y τ)⁻¹) * C.y τ * C.Qi τ = w := by
@@ -50,7 +50,7 @@ private theorem conj_lemma_2 (τ : D.what₂.Tau) (w : Matrix (Fin X.B.I.n) (Fin
     Matrix.nonsing_inv_mul _ (isUnit_y_det C τ), Matrix.one_mul, hQQi, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨hQiQ, hQQi, -, -⟩` from `C.isT τ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (C.Qi τ) (C.Q τ), hQiQ, Matrix.one_mul, ← Matrix.mul_assoc (C.Qi τ) (C.Q τ), hQiQ, Matrix.one_mul, Matrix.mul_nonsing_inv _ (isUnit_y_det C τ), Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Qi_mul_Q_conj_mul_y_inv_eq (τ : D.what₂.Tau) (x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS) :
     C.Qi τ * (C.Q τ * Matrix.of x * C.y τ * C.Qi τ) * C.Q τ * (C.y τ)⁻¹ = Matrix.of x := by
@@ -60,9 +60,9 @@ private theorem Qi_mul_Q_conj_mul_y_inv_eq (τ : D.what₂.Tau) (x : Formalism.Q
     Matrix.one_mul, Matrix.mul_nonsing_inv _ (isUnit_y_det C τ), Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `x.2`. Rewrite using `[← hz]`. Unfold `Smap`. Simplify using `only [Equiv.apply_symm_apply]`. Rewrite using `[conj_lemma_2 C τ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `umat UJset`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, Units.mul_inv_cancel_left]`. Conclude with `z.2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_range (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) (x : Set.range (Smap C τ γ)) :
     umat γ * (C.Q τ * Matrix.of x.1 * C.y τ * C.Qi τ) ∈ UJset (X.B.I.ε (vOf X τ)) := by
@@ -80,9 +80,9 @@ def smapInv (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) 
   ujOf' (umat γ * (C.Q τ * Matrix.of x.1 * C.y τ * C.Qi τ)) (mem_of_range C τ γ x)
 
 /- English proof (translation)
-Unfold `smapInv ujOf'`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Establish `hx : Continuous fun x : Set.range (Smap C τ γ) => (Matrix.of (x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS))` using `continuous_subtype_val`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_def] fun_prop`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Simplify using `only [Units.inv_mk] fun_prop`.
+Simplify by unfolding definitions.
 -/
 theorem smapInv_cont (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) : Continuous (smapInv C τ γ) := by
   unfold smapInv ujOf'
@@ -96,19 +96,17 @@ theorem smapInv_cont (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf
     fun_prop
 
 /- English proof (translation)
-Establish `hu : Continuous fun z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => umat (γ⁻¹ * z)`. Unfold `umat`. Conclude with `Units.continuous_val.comp (continuous_subtype_val.comp (continuous_const.mul continuous_id))`. Establish `hc : Continuous (Smap C τ γ)`. Establish `h2 : Continuous fun z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => C.Qi τ * umat (γ⁻¹ * z) * C.Q τ * (C.y τ)⁻¹` using `((continuous_const.matrix_mul hu).matrix_mul continuous_const).matrix_mul continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2`. Use `MeasurableEmbedding.of_measurable_inverse_on_range hc.measurable ?_ (smapInv_cont C τ γ).measurable ?_` and prove the remaining obligations. Establish `hS : Set.range (Smap C τ γ) = {x | umat γ * (C.Q τ * Matrix.of x * C.y τ * C.Qi τ) ∈ UJset (X.B.I.ε (vOf X τ))}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `mem_of_range C τ γ ⟨x, hx⟩`. Introduce `hx`. Establish `hx' : umat γ * (C.Q τ * Matrix.of x * C.y τ * C.Qi τ) ∈ UJset (X.B.I.ε (vOf X τ))` using `hx`. Use `⟨ujOf' _ hx', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `Smap umat ujOf'`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, Units.val_mk, Units.inv_mul_cancel_left]`. Rewrite using `[Qi_mul_Q_conj_mul_y_inv_eq C τ]`. Simplify using the standard rewrite rules. Rewrite using `[hS]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `IsClosed.measurableSet` to reduce the goal to its premises. Establish `hof : Continuous fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => Matrix.of x` using `continuous_id`. Establish `hf : Continuous fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => umat γ * (C.Q τ * Matrix.of x * C.y τ * C.Qi τ)` using `continuous_const.matrix_mul (((continuous_const.matrix_mul hof).matrix_mul continuous_const).matrix_mul continuous_const)`. Unfold `UJset Formalism.REAL.inUJ`. Conclude with `isClosed_eq ((hf.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hf) continuous_const`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Introduce `z`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Unfold `smapInv ujOf' Set.rangeFactorization Smap`. Simplify using `only [Equiv.apply_symm_apply, Units.val_mk]`.
-
-Rewrite using `[conj_lemma_2 C τ]`. Unfold `umat`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, Units.mul_inv_cancel_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smap_measEmb (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) : MeasurableEmbedding (Smap C τ γ) := by
   have hu : Continuous fun z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => umat (γ⁻¹ * z) := by
@@ -152,9 +150,9 @@ theorem smap_measEmb (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf
 variable (hB : WuBessel C)
 
 /- English proof (translation)
-Rewrite using `[phi'_S, phi_S]`. Unfold `Formalism.L2.SG.TermOp.rk1`. Establish `hc : (starRingEnd ℂ) (sclOf hB u u' τ) = sclOf hB u u' τ`. Unfold `sclOf`. Conclude with `Complex.conj_ofReal _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(innerSL ℂ (sclOf hB u u' τ • X.Wloc u' (vOf X τ) (γ⁻¹ * z))).smulRight (X.Wloc u (vOf X τ) z) = sclOf hB u u' τ • (innerSL ℂ (X.Wloc u' (vOf X τ) (γ⁻¹ * z))).smulRight (X.Wloc u (vOf X τ) z)`. Rewrite using `[map_smulₛₗ, hc]`. Use extensionality with `v`. Simplify using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrand_S (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     (innerSL ℂ ((locS hB u u' τ).Φ' (Matrix.of (Smap C τ γ z)))).smulRight
@@ -173,7 +171,7 @@ theorem integrand_S (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ z : Formali
   simp [smul_smul]
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.TermOp.rk1`. Establish `h1 : Continuous fun t => innerSL ℂ (b t)` using `(innerSL ℂ).continuous.comp hb`. Conclude with `(ContinuousLinearMap.smulRightL ℂ V' V).continuous₂.comp₂ h1 ha`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rank_one_continuous {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup V']
     [InnerProductSpace ℂ V'] {T : Type*} [TopologicalSpace T] {a : T → V} {b : T → V'} (ha : Continuous a)
@@ -183,11 +181,9 @@ theorem rank_one_continuous {V V' : Type*} [NormedAddCommGroup V] [InnerProductS
   exact (ContinuousLinearMap.smulRightL ℂ V' V).continuous₂.comp₂ h1 ha
 
 /- English proof (translation)
-Establish `hw : ∀ w : D.what₂.Word, Continuous (X.Wloc w (vOf X τ))` using `fun w => by first`. Consider the case `exact X.W.Wloc_cont w _`. Consider the case `exact X.Wloc_cont w _`. Consider the case `exact X.toWBlk.Wloc_cont w _`. Rewrite using `[(smap_measEmb C τ γ).aestronglyMeasurable_map_iff]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `he : (fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => (innerSL ℂ ((locS hB u u' τ).Φ' (Matrix.of x))).smulRight ((locS hB u u' τ).Φ (trG (C.Q τ) (C.Qi τ) γ * Matrix.of x))) ∘ Smap C τ γ = fun z => sclOf hB u u' τ • Formalism.L2.SG.TermOp.rk1 (X.Wloc u (vOf X τ) z) (X.Wlo …`. Use function extensionality and compare the values at `z`. Conclude with `integrand_S C hB u u' τ γ z`. Rewrite using `[he]`. Apply `Continuous.aestronglyMeasurable` to reduce the goal to its premises.
-
-Conclude with `(rank_one_continuous (hw u) ((hw u').comp (continuous_const.mul continuous_id))).const_smul (sclOf hB u u' τ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem integrand_aesm (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))
     (ν : Measure (Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))) :
@@ -212,7 +208,7 @@ theorem integrand_aesm (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ : Formal
   exact (rank_one_continuous (hw u) ((hw u').comp (continuous_const.mul continuous_id))).const_smul (sclOf hB u u' τ)
 
 /- English proof (translation)
-The claim follows from `locJ_map_eq (C := C) (hB := hB) u u' τ γ ν (integrand_aesm (C := C) (hB := hB) u u' τ γ ν)`.
+A detailed English derivation is pending.
 -/
 theorem locJ_map_eq' (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))
     (ν : Measure (Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))) :

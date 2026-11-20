@@ -10,28 +10,24 @@ namespace GlobalTheory.DualLoc
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul E c z, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hStd_osmul_right (y : Sp E n) (c : 𝓞 E) (z : Sp E n) :
     hStd E n y (c • z) = c • hStd E n y z := by
   rw [← algebraMap_smul E c z, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Take `⟨s, hs, hsx⟩` from `(mem_locP Q _ x).1 hx`. Take `⟨t, ht, hty⟩` from `(mem_locP (conjPrime₂ Q) L y).1 hy`. Rewrite `ht` using `[mem_conjP]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(mem_dual L (s • x)).1 hsx (t • y) hty`. Rewrite `h1` using `[hStd_osmul_left, smul_smul, hStd_osmul_right]`. Use `(mem_locP Q _ _).2 ⟨cO E t * s, ?_, h1⟩` and prove the remaining obligations. Introduce `hm`. Break down `Q.isPrime.mem_or_mem hm with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `ht h`. Conclude with `hs h`. Introduce `H`. Take `⟨S, hS⟩` from `hL`. Establish `H' : ∀ y ∈ S, ∃ s : 𝓞 E, s ∉ Q.asIdeal ∧ s • hStd E n y x ∈ (1 : Submodule (𝓞 E) E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hyL : y ∈ L` using `hS ▸ Submodule.subset_span hy`. Conclude with `(mem_locP Q _ _).1 (H y (Formalism.L2.DIV.lc_le_locP (conjPrime₂ Q) L hyL))`. Use `choose f hf hfx using H'`. Use `(mem_locP Q _ x).2 ⟨∏ y ∈ S.attach, f y.1 y.2, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Take `⟨a, _, ha⟩` from `(Q.isPrime.prod_mem_iff).1 hm`. Conclude with `hf a.1 a.2 ha`. Rewrite using `[mem_dual]`. Introduce `y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite `hy` using `[← hS]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Rewrite using `[hStd_osmul_right, ← Finset.prod_erase_mul S.attach (fun a => f a.1 a.2) (Finset.mem_attach S ⟨z, hz⟩), mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hfx z hz)`.
-
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[hStd_osmul_left, hStd_osmul_right]`.
-
-Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localization_dual_iff (Q : HeightOneSpectrum (𝓞 E)) (L : Submodule (𝓞 E) (Sp E n)) (hL : L.FG) (x : Sp E n) :
     x ∈ localization₂ Q.asIdeal (dual (hStd E n) L) ↔
@@ -74,7 +70,7 @@ theorem mem_localization_dual_iff (Q : HeightOneSpectrum (𝓞 E)) (L : Submodul
         exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_localization_dual_iff Q A hA.fg, mem_localization_dual_iff Q B hB.fg, h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem use₅ (Q : HeightOneSpectrum (𝓞 E)) (A B : Submodule (𝓞 E) (Sp E n))
     (hA : Submodule.IsLattice E A) (hB : Submodule.IsLattice E B)

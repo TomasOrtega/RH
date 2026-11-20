@@ -17,7 +17,7 @@ private def boxSet (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   {m | ∀ i j, m i j ∈ valBall K n}
 
 /- English proof (translation)
-Establish `: boxSet K n = ⋂ i, ⋂ j, (fun X : Matrix (Fin 2) (Fin 2) K => X i j) ⁻¹' (valBall K n : Set K)`. Use extensionality with `X`. Simplify using `[boxSet]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (isOpen_valBall _).preimage ((continuous_apply j).comp (continuous_apply i))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_boxSet (n : ℤ) : IsOpen (boxSet K n) := by
   have : boxSet K n = ⋂ i, ⋂ j, (fun X : Matrix (Fin 2) (Fin 2) K => X i j) ⁻¹'
@@ -28,7 +28,7 @@ private theorem isOpen_boxSet (n : ℤ) : IsOpen (boxSet K n) := by
     (isOpen_valBall _).preimage ((continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-Establish `: boxSet K n = Set.univ.pi fun _ : Fin 2 => Set.univ.pi fun _ : Fin 2 => (valBall K n : Set K)`. Use extensionality with `X`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_valBall n`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCompact_boxSet (n : ℤ) : IsCompact (boxSet K n) := by
   have : boxSet K n = Set.univ.pi fun _ : Fin 2 => Set.univ.pi fun _ : Fin 2 =>
@@ -46,11 +46,11 @@ private def boxGrp (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   inv_mem' := fun ha i j => neg_mem (ha i j)
 
 /- English proof (translation)
-Introduce `N hN`. Establish `hS : Multiplicative.ofAdd ⁻¹' N ∈ 𝓝 (0 : Matrix (Fin 2) (Fin 2) K)` using `(continuous_ofAdd.tendsto (0 : Matrix (Fin 2) (Fin 2) K)) hN`. Take `⟨r, hr⟩` from `GroundTheory.Automorphic.GodementJacquet.exists_valBall_subset hS`. Use `⟨boxGrp K r, (isOpen_boxSet (r : ℤ)).preimage continuous_toAdd, ?_, ?_⟩` and prove the remaining obligations. Use `(isCompact_boxSet (K := K) (r : ℤ)).image continuous_ofAdd` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨Multiplicative.toAdd x, hx, rfl⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `x hx`. Conclude with `hr hx`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem lgrp_matrix : Lgrp (Multiplicative (Matrix (Fin 2) (Fin 2) K)) := by
   intro N hN
@@ -103,7 +103,7 @@ private def cgrp (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     · exact h00
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : Matrix.SpecialLinearGroup (Fin 2) K => g.1 - 1` using `continuous_subtype_val.sub continuous_const`. Conclude with `(isOpen_boxSet _).preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isOpen_cgrp (n : ℕ) :
     IsOpen (cgrp K n : Set (Matrix.SpecialLinearGroup (Fin 2) K)) := by
@@ -112,11 +112,11 @@ private theorem isOpen_cgrp (n : ℕ) :
   exact (isOpen_boxSet _).preimage hc
 
 /- English proof (translation)
-Use `(Subtype.isCompact_iff (p := fun A : Matrix (Fin 2) (Fin 2) K => A.det = 1)).2 ?_` and prove the remaining obligations. Establish `hC : IsCompact ((fun m : Matrix (Fin 2) (Fin 2) K => m + 1) '' boxSet K ((n : ℤ) + 1))` using `(isCompact_boxSet _).image (continuous_id.add continuous_const)`. Establish `hD : IsClosed {m : Matrix (Fin 2) (Fin 2) K | m.det = 1}` using `isClosed_eq (Continuous.matrix_det continuous_id) continuous_const`. Use `hC.inter_right hD using 1` and compare the differences between its conclusion and the goal. Use extensionality with `m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨⟨g.1 - 1, hg, by simp⟩, g.2⟩`. Introduce and unpack `⟨⟨y, hy, rfl⟩, hd⟩`. Use `⟨⟨y + 1, hd⟩, ?_, rfl⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(y + 1) - 1 ∈ boxSet K ((n : ℤ) + 1)`. Simplify using `using hy`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isCompact_cgrp [T2Space K] (n : ℕ) :
     IsCompact (cgrp K n : Set (Matrix.SpecialLinearGroup (Fin 2) K)) := by
@@ -136,11 +136,11 @@ private theorem isCompact_cgrp [T2Space K] (n : ℕ) :
     simpa using hy
 
 /- English proof (translation)
-Introduce `N hN`. Take `⟨W, hW', hWN⟩` from `(mem_nhds_subtype _ _ _).1 hN`. Establish `hW : W ∈ 𝓝 (1 : Matrix (Fin 2) (Fin 2) K)` using `hW'`. Establish `hS : (fun m : Matrix (Fin 2) (Fin 2) K => m + 1) ⁻¹' W ∈ 𝓝 (0 : Matrix (Fin 2) (Fin 2) K)`. Establish `hc : Continuous fun m : Matrix (Fin 2) (Fin 2) K => m + 1` using `continuous_id.add continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hc.tendsto (0 : Matrix (Fin 2) (Fin 2) K)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `this hW`. Take `⟨r, hr⟩` from `GroundTheory.Automorphic.GodementJacquet.exists_valBall_subset hS`. Use `⟨cgrp K r, isOpen_cgrp r, isCompact_cgrp r, fun g hg => hWN ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : g.1 - 1 ∈ (fun m : Matrix (Fin 2) (Fin 2) K => m + 1) ⁻¹' W` using `hr fun i j => valBall_antitone (m := (r : ℤ)) (n := (r : ℤ) + 1) (by omega) (hg i j)`. Establish `h2 : (g.1 - 1) + 1 ∈ W` using `h1`. Rewrite `h2` using `[sub_add_cancel]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lgrp_sl [T2Space K] : Lgrp (Matrix.SpecialLinearGroup (Fin 2) K) := by
   intro N hN
@@ -163,7 +163,7 @@ private theorem lgrp_sl [T2Space K] : Lgrp (Matrix.SpecialLinearGroup (Fin 2) K)
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F _ _ v`. Conclude with `⟨lgrp_sl, lgrp_matrix⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.lgrp :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F), Lgrp (SL v) ∧ Lgrp (Multiplicative (M2 v)) := by

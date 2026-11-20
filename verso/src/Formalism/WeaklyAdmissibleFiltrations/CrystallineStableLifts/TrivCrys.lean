@@ -17,7 +17,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 
 include PD in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Apply `PD.not_mem_filtration_two` to reduce the goal to its premises. Rewrite using `[Subsingleton.elim PD.t 0, map_zero]`. Conclude with `zero_mem _`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trivCrys_nontrivial_B : Nontrivial B := by
   by_contra h
@@ -32,16 +32,16 @@ private def trivCrysMap : LL ⊗[Qp] K₀ →ₗ[LL] LL ⊗[Qp] B :=
   AlgebraTensorModule.lTensor LL LL (trivCrysIncl (Qp := Qp) (K₀ := K₀) (B := B))
 
 /- English proof (translation)
-Simplify using `[actVB]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem trivCrys_act_tmul (g : G) (l : LL) (b : B) :
     actVB PD (1 : Representation LL G LL) g (l ⊗ₜ[Qp] b) = l ⊗ₜ[Qp] PD.actB g b := by
   simp [actVB]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l c`. Simplify using `only [trivCrysMap, trivCrysIncl, AlgebraTensorModule.lTensor_tmul, LinearMap.restrictScalars_apply, Algebra.linearMap_apply, trivCrys_act_tmul]`. Rewrite using `[AlgEquiv.commutes]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+Treat this case separately.
 -/
 private theorem trivCrys_range_le (g : G) (y : LL ⊗[Qp] K₀) :
     actVB PD (1 : Representation LL G LL) g (trivCrysMap (LL := LL) (B := B) y) =
@@ -61,16 +61,16 @@ private def trivCrysCoord (b : Basis (Fin (finrank Qp LL)) Qp LL) (i : Fin (finr
   (TensorProduct.lid Qp B).toLinearMap ∘ₗ LinearMap.rTensor B (b.coord i)
 
 /- English proof (translation)
-Simplify using `[trivCrysCoord]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem trivCrysCoord_tmul (b : Basis (Fin (finrank Qp LL)) Qp LL) (i) (l : LL) (c : B) :
     trivCrysCoord (B := B) b i (l ⊗ₜ[Qp] c) = b.coord i l • c := by
   simp [trivCrysCoord]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l c`. Simplify using `only [trivCrysCoord_tmul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Basis.coord_apply]`. Rewrite using `[← TensorProduct.sum_tmul, Basis.sum_repr]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z hy hz => conv_lhs => rw [hy, hz]`. Rewrite using `[← Finset.sum_add_distrib]`. Simplify using `only [map_add, TensorProduct.tmul_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem trivCrys_decomp (b : Basis (Fin (finrank Qp LL)) Qp LL) (x : LL ⊗[Qp] B) :
     x = ∑ i, b i ⊗ₜ[Qp] trivCrysCoord (B := B) b i x := by
@@ -85,9 +85,9 @@ private theorem trivCrys_decomp (b : Basis (Fin (finrank Qp LL)) Qp LL) (x : LL 
     simp only [map_add, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l c`. Rewrite using `[trivCrys_act_tmul, trivCrysCoord_tmul, trivCrysCoord_tmul]`. Conclude with `(((PD.actB g).toAlgHom.toLinearMap).restrictScalars Qp).map_smul _ _ |>.symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+A detailed English derivation is pending.
 -/
 private theorem trivCrysCoord_act (b : Basis (Fin (finrank Qp LL)) Qp LL) (i) (g : G)
     (x : LL ⊗[Qp] B) :
@@ -101,13 +101,13 @@ private theorem trivCrysCoord_act (b : Basis (Fin (finrank Qp LL)) Qp LL) (i) (g
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx`. Set `b` to `Module.finBasis Qp LL`. Establish `hc : ∀ i, ∃ c : K₀, algebraMap K₀ B c = trivCrysCoord (B` using `B) b i x := by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Apply `PD.invB` to reduce the goal to its premises. Introduce `g`. Rewrite using `[← trivCrysCoord_act PD b i g x, hx g]`. Use `choose c hc using hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, b i ⊗ₜ[Qp] c i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, trivCrys_decomp b x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [trivCrysMap, trivCrysIncl, AlgebraTensorModule.lTensor_tmul, LinearMap.restrictScalars_apply, Algebra.linearMap_apply, hc i]`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `fun g => trivCrys_range_le PD g y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem trivCrys_Dcris_eq :
     Dcris PD (1 : Representation LL G LL) = LinearMap.range (trivCrysMap (LL := LL) (K₀ := K₀) (B := B)) := by
@@ -134,7 +134,7 @@ private theorem trivCrys_Dcris_eq :
 
 include PD in
 /- English proof (translation)
-Use `haveI := trivCrys_nontrivial_B PD`. Establish `hi : Function.Injective (trivCrysIncl (Qp` using `Qp) (K₀ := K₀) (B := B)) := (algebraMap K₀ B).injective`. Establish `h2` using `Module.Flat.lTensor_preserves_injective_linearMap (M := LL) _ hi`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem trivCrysMap_injective :
     Function.Injective (trivCrysMap (Qp := Qp) (LL := LL) (K₀ := K₀) (B := B)) := by
@@ -147,7 +147,7 @@ private theorem trivCrysMap_injective :
 end TrivCrysProof
 
 /- English proof (translation)
-Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ _ _`. Unfold `IsCrys`. Rewrite using `[trivCrys_Dcris_eq PD (LL := LL), LinearMap.finrank_range_of_inj (trivCrysMap_injective PD), Module.finrank_baseChange, Module.finrank_self, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem trivialIsCrystalline_holds : TrivCrys := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ _ _

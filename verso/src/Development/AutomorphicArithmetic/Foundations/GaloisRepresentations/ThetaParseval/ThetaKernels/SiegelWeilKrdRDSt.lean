@@ -27,9 +27,9 @@ def IotaEx_k : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
       (∀ w w' y, w' ≠ w → d.cw w' (inFrame d.b (ι w y)) = 1) ∧
       ∀ w y, finOne F • inFrame d.b (ι w y) = finOne F • (1 : Matrix _ _ (AE F E))
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d`. Take `⟨ε, hε, hs⟩` from `h1 F E σ d`. Break down `hs with ⟨hA, rfl⟩ | ⟨hA, rfl⟩` into its components or cases. Take `⟨fr, sg, hfr⟩` from `(h2 F E σ d).1 hA`. Take `⟨ι, hc, ha, ho, hf⟩` from `h3 F E σ d (-1) 1 hε (Or.inl ⟨rfl, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨-1, 1, fr, sg, ι, hε, Or.inl ⟨rfl, rfl⟩, hfr, hc, ha, ho, hf⟩⟩`. Take `⟨fr, sg, hfr⟩` from `(h2 F E σ d).2 hA`. Take `⟨ι, hc, ha, ho, hf⟩` from `h3 F E σ d 1 Complex.I hε (Or.inr ⟨rfl, rfl⟩)`. Conclude with `⟨⟨1, Complex.I, fr, sg, ι, hε, Or.inr ⟨rfl, rfl⟩, hfr, hc, ha, ho, hf⟩⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rdEx_of_k (h1 : _root_.PositivityTheory.SiegelWeilFormula.Krd.EpsEx_k) (h2 : _root_.PositivityTheory.SiegelWeilFormula.Krd.FrEx_k) (h3 : _root_.PositivityTheory.SiegelWeilFormula.Krd.IotaEx_k) : _root_.PositivityTheory.SiegelWeilFormula.RDEx_k := by
   intro F E _ _ _ _ _ σ d

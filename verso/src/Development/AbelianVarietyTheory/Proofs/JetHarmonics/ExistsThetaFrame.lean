@@ -24,13 +24,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL _ _ _ V _ _ _ ϖ hϖ D Q hQ F _ _ v hv`. Take `⟨b, hb⟩` from `IndivisibleSection.exists_secBGenerates hL.secBaseChange V (maximalIdeal V) D`. Take `⟨Φ, f, hf, hf0, -, -⟩` from `integralFamily_of_strictMin hL V ϖ hϖ D Q hQ 1 le_rfl 0 b (fun z hz => by`. Establish `h` using `QForm.Q_pos hϖ D hQ hz`. Rewrite using `[QForm.Q_zero hϖ D hQ, zero_add, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `omega)`. Take `⟨θ, hθ⟩` from `FamBaseChange.main hL.globalFns V (maximalIdeal V) D 1 Φ f hf F`. Use `⟨θ, (integralFamily_levelOne V ϖ hϖ D Q hQ F v hv θ f hθ).1, b, θ.s 0, hf0 ▸ hθ 0, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨σ', hσ'⟩`. Establish `h1 : SecIsMul D.toPre.P.A.hom ϖ b σ'` using `hσ'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, -⟩` from `hb σ'`. Establish `h2 : SecIsMul D.toPre.P.A.hom (ϖ * a) b b` using `fun j => by`. Use `(h1 j).trans ?_` and prove the remaining obligations. Rewrite using `[ha j]`. Simplify using `only [scal, resTop, map_mul, _root_.mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : SecIsMul D.toPre.P.A.hom 1 b b` using `fun j => by`. Simplify using `only [scal, resTop, map_one, _root_.one_mul]`. Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one a ((hb b).unique h2 h3))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_thetaFrame : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∃ θ : Fam D.toPre F 1, NuGe D Q F v 1 θ 0 ∧ ∃ (σ : D.toPre.SecB 1 0) (σF : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F 0) (DegPre.famε 1))), GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F 0) (DegPre.famε 1) σF (D.toPre.famφB 0) (DegPre.famε 1) σ (DegPre.prB D.toPre F).left 1 ∧ (∀ j, (θ.s 0).f j = σF.f j) ∧ ¬ ∃ σ' : D.toPre.SecB 1 0, ∀ j, σ.f j = constFn D.toPre.P.A.hom _ ϖ * σ'.f j := by
   intro hL _ _ _ V _ _ _ ϖ hϖ D Q hQ F _ _ v hv

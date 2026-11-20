@@ -16,14 +16,14 @@ namespace GlobalTheory.TwistThetaMean
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Matrix.add_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isoPart_add (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) (a b : Mx D W.rank r) :
     isoPart V W C (a + b) = isoPart V W C a + isoPart V W C b :=
   Matrix.add_mul _ _ _
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hγ`. Use `⟨g * (adj D C * V.gram), ?_⟩` and prove the remaining obligations. Use `show (g * (adj D C * V.gram)).map (incA D) = g.map (incA D) * (adj D C * V.gram).map (incA D)`. Conclude with `Matrix.map_mul`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isoPart_rat (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) {γ : Mx D W.rank r}
     (hγ : γ ∈ ratMx D W.rank r) : isoPart V W C γ ∈ ratL W V := by
@@ -33,14 +33,14 @@ theorem isoPart_rat (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.h
   exact Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isoPart_continuous (V W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) :
     Continuous (isoPart V W C) :=
   continuous_id.matrix_mul continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem midPart_continuous (V V' W : HSp D) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) :
     Continuous (midPart V V' W B) :=
@@ -51,7 +51,7 @@ end GlobalTheory.TwistThetaMean
 namespace GlobalTheory.TwistThetaMean
 
 /- English proof (translation)
-Use `⟨continuous_of_dominated (bound := fun _ => b) (fun p => ?_) (fun p => ?_) (integrable_const _) ?_, fun p => norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall fun y => hb _)⟩` and prove the remaining obligations. Conclude with `(hk.comp (Continuous.prodMk_right p)).aestronglyMeasurable`. Conclude with `Filter.Eventually.of_forall fun y => hb _`. Conclude with `Filter.Eventually.of_forall fun y => hk.comp (Continuous.prodMk_left y)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integral_continuous_of_bounded {X Y : Type*} [TopologicalSpace X] [FirstCountableTopology X]
     [TopologicalSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y] (ν : Measure Y) [IsFiniteMeasure ν]
@@ -70,19 +70,13 @@ namespace GlobalTheory.TwistThetaMean
 open TopologicalSpace in
 
 /- English proof (translation)
-Introduce `D V V' W r C B _hs C' _h1 _h2 _h3 ψ hψ μ 𝓨 hY μ' 𝓕' hμ' h𝓕' P G hP hG`. Use `haveI hAE : SecondCountableTopology (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.2.2.1`. Use `haveI hM : SecondCountableTopology (Mx D W.rank r) := inferInstanceAs (SecondCountableTopology (Fin W.rank → Fin r → AE D))`. Use `haveI hM2 : SecondCountableTopology (Mx D W.rank r × Mx D W.rank r) := @instSecondCountableTopologyProd _ _ _ _ hM hM`. Use `haveI : FirstCountableTopology (Mx D W.rank r × Mx D W.rank r) := SecondCountableTopology.to_firstCountableTopology _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : FirstCountableTopology (Mx D W.rank r) := SecondCountableTopology.to_firstCountableTopology _`. Use `haveI : BorelSpace (Mx D W.rank r) := ⟨rfl⟩`. Use `haveI : BorelSpace (WO V' W) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D W V'`. Use `haveI : Countable (ratL W V') := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsFiniteMeasure (μ'.restrict 𝓕') := ⟨by`. Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WO V' W) (ratL W V') hK hKc μ' h𝓕'⟩`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓨) := ⟨by`. Rewrite using `[Measure.restrict_apply_univ, hY.2.2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.one_lt_top⟩`. Take `⟨b1, hb1⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hP`. Take `⟨b2, hb2⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hG`. Establish `hh : Continuous fun w => P w * star (G w)` using `hP.cont.mul hG.cont.star`. Establish `hhb : ∀ w, ‖P w * star (G w)‖ ≤ b1 * b2` using `fun w => by`.
-
-Rewrite using `[norm_mul, norm_star]`. Conclude with `mul_le_mul (hb1 w) (hb2 w) (norm_nonneg _) ((norm_nonneg _).trans (hb1 w))`. Establish `hu : Continuous fun q : (Mx D W.rank r × Mx D W.rank r) × WO V' W => isoPart V W C' q.1.1 + isoPart V W C q.1.2 + midPart V V' W B q.2` using `(((isoPart_continuous V W C').comp (continuous_fst.comp continuous_fst)).add ((isoPart_continuous V W C).comp (continuous_snd.comp continuous_fst))).add ((midPart_continuous V V' W B).comp continuous_snd)`. Take `⟨hin, hinb⟩` from `integral_continuous_of_bounded (μ'.restrict 𝓕') (fun q : (Mx D W.rank r × Mx D W.rank r) × WO V' W => P (isoPart V W C' q.1.1 + isoPart V W C q.1.2 + midPart V V' W B q.2) * star (G (isoPart V W C' q.1.1 + isoPart V W C q.1.2 + midPart V V' W B q.2))) (hh.comp hu) (b1 * b2) (fun …`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `(integral_continuous_of_bounded (μ.restrict 𝓨) (fun q : Mx D W.rank r × Mx D W.rank r => ∫ x in 𝓕', P (isoPart V W C' q.1 + isoPart V W C q.2 + midPart V V' W B x) * star (G (isoPart V W C' q.1 + isoPart V W C q.2 + midPart V V' W B x)) ∂μ') hin _ hinb).1`. Introduce `γ hγ t`. Establish `key : ∀ y x, P (isoPart V W C' (γ + t) + isoPart V W C y + midPart V V' W B x) * star (G (isoPart V W C' (γ + t) + isoPart V W C y + midPart V V' W B x)) = P (isoPart V W C' t + isoPart V W C y + midPart V V' W B x) * star (G (isoPart V W C' t + isoPart V W C y + midPart V V' W B …` using `fun y x => by`. Rewrite using `[isoPart_add, add_assoc (isoPart V W C' γ) (isoPart V W C' t), add_assoc (isoPart V W C' γ) (isoPart V W C' t + isoPart V W C y)]`. Conclude with `GlobalTheory.ThetaSchur.prod_periodic hψ hP hG (isoPart_rat V W C' hγ) _`.
-
-Repeatedly rewrite using `[key]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_continuous_periodic : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ C' : Matrix (Fin V.rank) (Fin r) D.host.E, adj D C * V.gram * C' = 1 → adj D C' * V.gram * C' = 0 → adj D C' * V.gram * B = 0 → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ (μ' : Measure (WO V' W)) (𝓕' : Set (WO V' W)), μ'.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V') 𝓕' μ' → ∀ P G, IsThetaFunO ψ V W P → IsThetaFunO ψ V W G → Continuous (fun t : Mx D W.rank r => ∫ y' in 𝓨, ∫ x in 𝓕', P (isoPart V W C' t + isoPart V W C y' + midPart V V' W B x) * star (G (isoPart V W C' t + isoPart V W C y' + midPart V V' W B x)) ∂μ' ∂μ) ∧ ∀ γ ∈ ratMx D W.rank r, ∀ t : Mx D W.rank r, (∫ y' in 𝓨, ∫ x in 𝓕', P (isoPart V W C' (γ + t) + isoPart V W C y' + midPart V V' W B x) * star (G (isoPart V W C' (γ + t) + isoPart V W C y' + midPart V V' W B x)) ∂μ' ∂μ) = ∫ y' in 𝓨, ∫ x in 𝓕', P (isoPart V W C' t + isoPart V W C y' + midPart V V' W B x) * star (G (isoPart V W C' t + isoPart V W C y' + midPart V V' W B x)) ∂μ' ∂μ := by
   intro D V V' W r C B _hs C' _h1 _h2 _h3 ψ hψ μ 𝓨 hY μ' 𝓕' hμ' h𝓕' P G hP hG

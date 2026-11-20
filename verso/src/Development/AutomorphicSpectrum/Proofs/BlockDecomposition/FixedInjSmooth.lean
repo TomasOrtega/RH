@@ -8,7 +8,7 @@ open PositivityTheory.LowerBoundConstant GlobalTheory GlobalTheory.Published Glo
 open GlobalTheory.DepthZeroJac GlobalTheory.StepData GlobalTheory.IwahoriInj
 
 /- English proof (translation)
-Introduce `v hv h0`. Take `⟨c, hc0, hc1, hc2⟩` from `exists_deep (k := k) 1`. Establish `h1 : v ∈ twKer π (unipRad k e) 1` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Take `⟨M, hM⟩` from `(eventually_mem_twKer (hc := hc0) hc1 hc2 h1).exists`. Conclude with `claim_of_antitone hc1 hc2 hπ _ _ rfl (antitone_expo M) v hv hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fixed_inj_smooth (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (V : Type) [AddCommGroup V] [Module ℂ V]

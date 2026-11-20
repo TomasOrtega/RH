@@ -37,7 +37,7 @@ noncomputable def cochainsShortComplexMapAlong :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `HomologicalComplex.HomologySequence.δ_naturality (cochainsShortComplexMapAlong φ hφ α) (cochainsShortComplex_shortExact hS) (cochainsShortComplex_shortExact hT) i j hij`.
+A detailed English derivation is pending.
 -/
 theorem δ_comp_cohomologyMapAlong (hS : S.ShortExact) (hT : T.ShortExact) (i j : ℕ)
     (hij : i + 1 = j) :
@@ -68,14 +68,14 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep X.X₁] [IsDiscr
   [IsDiscreteRep X.X₃] in
 
 /- English proof (translation)
-The claim follows from `(Rep.shortExact_res U.subtype).2 hX @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_map_res (hX : X.ShortExact) : (X.map (Rep.resFunctor U.subtype)).ShortExact :=
   (Rep.shortExact_res U.subtype).2 hX
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `δ_comp_cohomologyMapAlong U.subtype (continuous_subgroup_subtype U) (𝟙 _) hX (shortExact_map_res U hX) i j hij`.
+A detailed English derivation is pending.
 -/
 theorem δ_comp_cohomologyRes (hX : X.ShortExact) (i j : ℕ) (hij : i + 1 = j) :
     δ hX i j hij ≫ cohomologyRes X.X₁ U j =
@@ -123,7 +123,7 @@ variable {X}
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `δ_comp_cohomologyMapAlong (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N) (mapQuotientToInvariantsResToSelf X N) hXN hX i j hij`.
+A detailed English derivation is pending.
 -/
 theorem δ_comp_cohomologyInfl (hX : X.ShortExact)
     (hXN : (X.map (Rep.quotientToInvariantsFunctor k N)).ShortExact) (i j : ℕ)

@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.BaseChangeIdentities
 
 /- English proof (translation)
-Take `⟨c, a, d, h, -, -, -, σ, -, -, hs⟩` from `H E hE n hn π hπ`. Conclude with `⟨fun w hw => { V := _ ρ := locProd h w (σ · w) smooth := GlobalTheory.SmGL.isSmooth_parInd _ _ irred := (hs w hw).1 }, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitComp (H : GlobalTheory.BcSpeh.BcSpeh) (E : Type) [Field E] [NumberField E] [IsCMField E]
     (hE : ∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal)

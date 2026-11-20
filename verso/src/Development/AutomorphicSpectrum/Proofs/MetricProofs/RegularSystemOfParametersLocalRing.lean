@@ -16,7 +16,7 @@ open MvPolynomial ReciprocityTheory.AnForm.R ReciprocityTheory.AnForm.R.Irreduci
 variable {m : ℕ}
 
 /- English proof (translation)
-Establish `halg : algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t) a = Ideal.Quotient.mk _ (algebraMap _ (locPt t) a)` using `rfl`. Rewrite using `[halg, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_locRing_eq_zero_of_mem (I : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin m → ℂ)
     {a : MvPolynomial (Fin m) ℂ} (ha : a ∈ I) : algebraMap _ (locRing I t) a = 0 := by
@@ -26,13 +26,13 @@ theorem algebraMap_locRing_eq_zero_of_mem (I : Ideal (MvPolynomial (Fin m) ℂ))
   exact Ideal.mem_map_of_mem _ ha
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_algebraMap_locRing_iff I t hp, not_not]`. Conclude with `RingHom.mem_ker.mp ha`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨a, b, hb, hab⟩` from `exists_mk_locRing I t x`. Establish `hbu` using `(isUnit_algebraMap_locRing_iff I t hp b).mpr hb`. Establish `hxn : ¬ IsUnit x` using `hx`. Establish `ha : eval t a = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `hau` using `(isUnit_algebraMap_locRing_iff I t hp a).mpr hne`. Rewrite `hau` using `[← hab]`. Conclude with `hxn (isUnit_of_mul_isUnit_left hau)`. Take `⟨u, hu⟩` from `hbu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x = algebraMap _ (locRing I t) a * ↑u⁻¹`. Rewrite using `[← hab, ← hu, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[hx']`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (RingHom.mem_ker.mpr ha))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ptIdeal_eq_maximalIdeal (I : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin m → ℂ)
     (hp : ∀ h ∈ I, eval t h = 0) [IsLocalRing (locRing I t)] :
@@ -59,15 +59,15 @@ theorem map_ptIdeal_eq_maximalIdeal (I : Ideal (MvPolynomial (Fin m) ℂ)) (t : 
     exact Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (RingHom.mem_ker.mpr ha))
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t)) D, ∃ a ∈ D, ∃ b, eval t b ≠ 0 ∧ x * algebraMap _ (locRing I t) b = algebraMap _ (locRing I t) a`. Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => ∃ a ∈ D, ∃ b, eval t b ≠ 0 ∧ x * algebraMap _ (locRing I t) b = algebraMap _ (locRing I t) a) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨a, ha, 1, by simp, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨0, D.zero_mem, 1, by simp, by simp⟩`. Introduce and unpack `x y _ _ ⟨a, ha, b, hb, hab⟩ ⟨c, hc, d, hd, hcd⟩`. Use `⟨a * d + c * b, D.add_mem (D.mul_mem_right _ ha) (D.mul_mem_right _ hc), b * d, by simpa using ⟨hb, hd⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, ← hab, ← hcd]`. Expand and normalize the polynomial expressions, which then agree.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce and unpack `c x _ ⟨a, ha, b, hb, hab⟩`. Take `⟨u, v, hv, huv⟩` from `exists_mk_locRing I t c`. Use `⟨u * a, D.mul_mem_left _ ha, v * b, by simpa using ⟨hv, hb⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, map_mul, ← hab, ← huv]`. Expand and normalize the polynomial expressions, which then agree.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨a, ha, b, hb, hab⟩` from `key _ hf`. Establish `h0 : algebraMap _ (locRing I t) (f * b - a) = 0`. Rewrite using `[map_sub, map_mul, hab, sub_self]`. Take `⟨s, hs, hsm⟩` from `exists_mul_mem_of_algebraMap_locRing_eq_zero I t h0`. Use `⟨s * b, by simpa using ⟨hs, hb⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: s * b * f = s * (f * b - a) + s * a` using `by ring`. Rewrite using `[this]`. Conclude with `D.add_mem (hID hsm) (D.mul_mem_left _ ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_of_mem_map (I D : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin m → ℂ) (hID : I ≤ D)
     (hp : ∀ h ∈ I, eval t h = 0) {f : MvPolynomial (Fin m) ℂ}
@@ -101,13 +101,13 @@ theorem exists_den_of_mem_map (I D : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin 
   exact D.add_mem (hID hsm) (D.mul_mem_left _ ha)
 
 /- English proof (translation)
-Apply `le_antisymm _ Ideal.le_radical` to reduce the goal to its premises. Introduce and unpack `g ⟨n, hn⟩`. Rewrite `hn`, the goal using `[Ideal.mem_span_singleton]`. Establish `hdiv : ∀ i ∈ J, R i ∣ g` using `fun i hi => (hpr i).dvd_of_dvd_pow ((Finset.dvd_prod_of_mem R hi).trans hn)`. Use `clear hn`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Take `⟨c, rfl⟩` from `ih fun i hi => hdiv i (Finset.mem_insert_of_mem hi)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hac` using `hdiv a (Finset.mem_insert_self _ _)`. Break down `(hpr a).dvd_or_dvd hac with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨j, hj, hd⟩` from `(Prime.exists_mem_finset_dvd (hpr a) h)`. Establish `hne : a ≠ j` using `fun e => ha (e ▸ hj)`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hna a j hne (((hpr a).dvd_prime_iff_associated (hpr j)).mp hd)`. Take `⟨d, rfl⟩` from `h`. Conclude with `⟨d, by ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem radical_span_prod_eq {O ι : Type*} [CommRing O] [IsDomain O] (R : ι → O) (J : Finset ι)
     (hpr : ∀ i, Prime (R i)) (hna : ∀ i j, i ≠ j → ¬ Associated (R i) (R j)) :
@@ -140,37 +140,31 @@ open MvPolynomial ReciprocityTheory.AnForm.R GlobalTheory.CompanionTheory.Ar.Cmp
 namespace GlobalTheory.CompanionTheory.Ar.Cmp.BdRad
 
 /- English proof (translation)
-Introduce `m e I Dc t r Jf hID hp hreg hdim hspan hprime`. Use `haveI := hreg`. Use `haveI : IsDomain (locRing I t) := isDomain_of_isRegularLocalRing`. Use `set alg : MvPolynomial (Fin m) ℂ →+* locRing I t := algebraMap _ (locRing I t) with halg`. Use `set R : Fin e → locRing I t := fun l => alg (r l) with hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan' : Ideal.span (Set.range R) = IsLocalRing.maximalIdeal (locRing I t)`. Rewrite using `[← map_ptIdeal_eq_maximalIdeal I t hp]`. Conclude with `hspan`. Establish `hpr : ∀ i, Prime (R i)` using `prime_of_regular_params R hspan' hdim.symm`. Establish `hna` using `(regular_params_spec R hspan' hdim.symm).2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Q : MvPolynomial (Fin m) ℂ := ∏ l ∈ Jf, r l with hQ`. Establish `hPQ : alg Q = ∏ l ∈ Jf, R l` using `map_prod alg _ _`. Establish `hpr2 : ∀ 𝔓 : Ideal (locRing I t), 𝔓.IsPrime → (Ideal.map alg Dc ≤ 𝔓 ↔ alg Q ∈ 𝔓)`. Introduce `𝔓 h𝔓`. Establish `hq1 : (Ideal.comap alg 𝔓).IsPrime` using `Ideal.comap_isPrime alg 𝔓`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq2 : I ≤ Ideal.comap alg 𝔓` using `fun a ha => by`. Rewrite using `[Ideal.mem_comap, halg, algebraMap_locRing_eq_zero_of_mem I t ha]`. Conclude with `𝔓.zero_mem`. Establish `hq3 : Ideal.comap alg 𝔓 ≤ ptIdeal t` using `fun a ha => by`. Assume the negation of the conclusion as `hne`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hu` using `(isUnit_algebraMap_locRing_iff I t hp a).mpr fun h => hne (RingHom.mem_ker.mpr h)`. Conclude with `h𝔓.ne_top (Ideal.eq_top_of_isUnit_mem _ ha hu)`. Rewrite using `[Ideal.map_le_iff_le_comap, hprime _ hq1 hq2 hq3, hPQ, Ideal.IsPrime.prod_mem_iff]`. Both sides reduce to the same expression. Establish `hrad : (Ideal.map alg Dc).radical = Ideal.span {alg Q}`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPQ, ← radical_span_prod_eq R Jf hpr hna, ← hPQ, Ideal.radical_eq_sInf, Ideal.radical_eq_sInf]`. Use `congr 1`. Use extensionality with `𝔓`. Simplify using `only [Set.mem_setOf_eq, Ideal.span_singleton_le_iff_mem]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨(hpr2 𝔓 h2).mp h1, h2⟩, fun ⟨h1, h2⟩ => ⟨(hpr2 𝔓 h2).mpr h1, h2⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨h', hh', hQrad⟩ : ∃ h', eval t h' ≠ 0 ∧ h' * Q ∈ Dc.radical := by`. Establish `h1 : alg Q ∈ (Ideal.map alg Dc).radical`. Rewrite using `[hrad]`. Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨N, hN⟩` from `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hN` using `[← map_pow]`. Take `⟨s, hs, hsm⟩` from `exists_den_of_mem_map I Dc t hID hp hN`. Use `⟨s, hs, N + 1, ?_⟩` and prove the remaining obligations. Establish `: (s * Q) ^ (N + 1) = s ^ N * Q * (s * Q ^ N)` using `by ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `Dc.mul_mem_left _ hsm`. Establish `hone : ∀ g ∈ Dc.radical, ∃ hg, eval t hg ≠ 0 ∧ hg * g ∈ Ideal.span {Q} ⊔ I`. Introduce and unpack `g ⟨n, hn⟩`. Establish `h1 : alg g ∈ (Ideal.map alg Dc).radical` using `⟨n, by rw [← map_pow]; exact Ideal.mem_map_of_mem _ hn⟩`. Rewrite `h1` using `[hrad, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `h1`. Take `⟨a, b, hb, hab⟩` from `exists_mk_locRing I t c`. Establish `h0 : algebraMap _ (locRing I t) (g * b - Q * a) = 0`. Express the relevant statement in the definitionally equal form `alg (g * b - Q * a) = 0`. Establish `hab' : c * alg b = alg a` using `hab`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul, map_mul, hc, ← hab']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨s, hs, hsm⟩` from `exists_mul_mem_of_algebraMap_locRing_eq_zero I t h0`. Use `⟨s * b, by simpa using ⟨hs, hb⟩, ?_⟩` and prove the remaining obligations. Establish `: s * b * g = s * (g * b - Q * a) + Q * (s * a)` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, add_comm]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))) (Ideal.mem_sup_right hsm)`. Take `⟨S, hS⟩ : Dc.radical.FG` from `IsNoetherian.noetherian _`. Establish `hSm : ∀ g, g ∈ S → ∃ hg, eval t hg ≠ 0 ∧ hg * g ∈ Ideal.span {Q} ⊔ I` using `fun g hg => hone g (hS ▸ Submodule.subset_span hg)`. Use `choose! f hf0 hf1 using hSm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set H : MvPolynomial (Fin m) ℂ := ∏ g ∈ S, f g with hH`. Establish `hH0 : eval t H ≠ 0`. Rewrite using `[hH, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr hf0`. Establish `hHS : Dc.radical ≤ Submodule.comap (LinearMap.mulLeft (MvPolynomial (Fin m) ℂ) H) (Ideal.span {Q} ⊔ I)`.
-
-Rewrite using `[← hS]`. Use `Submodule.span_le.mpr fun g hg => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `Finset.dvd_prod_of_mem f hg`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply]`. Rewrite using `[hH, hw, mul_comm (f g) w, mul_assoc]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (hf1 g hg)`. Use `⟨h' * H, by simpa using ⟨hh', hH0⟩, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `: h' * H * Q = H * (h' * Q)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hQrad`.
-
-Establish `h1` using `hHS hg`. Simplify using `only [Submodule.mem_comap, LinearMap.mulLeft_apply] at h1`. Rewrite using `[mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_prod_params : ∀ (m e : ℕ) (I Dc : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin m → ℂ) (r : Fin e → MvPolynomial (Fin m) ℂ) (Jf : Finset (Fin e)), I ≤ Dc → (∀ h ∈ I, eval t h = 0) → IsRegularLocalRing (locRing I t) → ringKrullDim (locRing I t) = e → Ideal.span (Set.range fun l => algebraMap _ (locRing I t) (r l)) = Ideal.map (algebraMap _ (locRing I t)) (ptIdeal t) → (∀ 𝔮 : Ideal (MvPolynomial (Fin m) ℂ), 𝔮.IsPrime → I ≤ 𝔮 → 𝔮 ≤ ptIdeal t → (Dc ≤ 𝔮 ↔ ∃ i ∈ Jf, r i ∈ 𝔮)) → ∃ h : MvPolynomial (Fin m) ℂ, eval t h ≠ 0 ∧ h * ∏ l ∈ Jf, r l ∈ Dc.radical ∧ ∀ g ∈ Dc.radical, h * g ∈ Ideal.span {∏ l ∈ Jf, r l} ⊔ I := by
   classical

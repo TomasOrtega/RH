@@ -11,19 +11,19 @@ variable {α : Type} [Finite α] {Γ X : α → Type} [∀ a, Group (Γ a)] [∀
   [∀ a, IsTopologicalGroup (Γ a)] [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite α`. Use `set N := twKer (piTensor ρ) (Subgroup.pi Set.univ K) 1`. Establish `key : ∀ S : Finset α, ∃ u : ∀ a, X a, (∀ a ∈ S, u a ∈ fixed (ρ a) (K a)) ∧ N.mkQ (PiTensorProduct.tprod ℂ u) = N.mkQ (PiTensorProduct.tprod ℂ v)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `empty => exact ⟨v, by simp, rfl⟩`. Consider the case `insert a S ha ih`. Take `⟨u, hu, e⟩` from `ih`. Set `f : X a →ₗ[ℂ] _` to `N.mkQ ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap u a`. Take `⟨y, hy, hfy⟩` from `IwahoriOnto.exists_fixed_map_eq (hρ a) (hK a) f (u a) fun h hh => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f, LinearMap.comp_apply, MultilinearMap.toLinearMap_apply, Submodule.mkQ_apply, Function.update_eq_self]`. Rewrite using `[Submodule.Quotient.eq]`. Use `Submodule.subset_span ⟨⟨Pi.mulSingle a h, fun b _ => ?_⟩, PiTensorProduct.tprod ℂ u, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hh`. Simplify using `[Pi.mulSingle_eq_of_ne hb]`. Establish `: (fun b => ρ b (Pi.mulSingle (M` using `Γ) a h b) (u b)) = Function.update u a (ρ a h (u a)) := by`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne hb, Function.update_of_ne hb]`. Simplify using `[this]`. Use `⟨Function.update u a y, fun b hb => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hba : b = a`. Substitute `hba` using the available equality. Simplify using `using hy`. Rewrite using `[Function.update_of_ne hba]`. Conclude with `hu b ((Finset.mem_insert.1 hb).resolve_left hba)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← e]`. Simplify `hfy` using `[f]`. Take `⟨u, hu, e⟩` from `key Finset.univ`. Conclude with `⟨u, fun a => hu a (Finset.mem_univ a), e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fixed_tprod (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (hρ : ∀ a, IsSmooth (ρ a))
     (K : ∀ a, Subgroup (Γ a)) (hK : ∀ a, IsCompact (K a : Set (Γ a))) (v : ∀ a, X a) :
@@ -66,17 +66,17 @@ theorem exists_fixed_tprod (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (hρ : 
   exact ⟨u, fun a => hu a (Finset.mem_univ a), e⟩
 
 /- English proof (translation)
-Use `set N := twKer (piTensor ρ) (Subgroup.pi Set.univ K) 1`. Use `set R := LinearMap.range (PiTensorProduct.map fun a => (fixed (ρ a) (K a)).subtype)`. Establish `hR : R ≤ fixed (piTensor ρ) (Subgroup.pi Set.univ K)`. Introduce and unpack `_ ⟨x, rfl⟩`. Proceed by induction on `x using PiTensorProduct.induction_on with`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul_tprod c x`. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ c (ContraRefl.mem_fix.2 fun h hh => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[PiTensorProduct.map_tprod, piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `ContraRefl.mem_fix.1 (x a).2 _ (hh a trivial)`. Establish `hall : ∀ w, ∃ r ∈ R, N.mkQ r = N.mkQ w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `w`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy`. Take `⟨r, hr, e⟩` from `hx`. Take `⟨s, hs, e'⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨r + s, add_mem hr hs, by rw [map_add, map_add, e, e']⟩`. Consider the case `smul_tprod c x`. Take `⟨u, hu, e⟩` from `exists_fixed_tprod ρ hρ K hK x`. Use `⟨c • PiTensorProduct.tprod ℂ u, Submodule.smul_mem _ c ⟨PiTensorProduct.tprod ℂ fun a => ⟨u a, hu a⟩, by simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Take `⟨r, hr, e⟩` from `hall w`. Establish `h0 : r - w = 0` using `ContraRefl.eq_zero_of_fixed_twKer (isSmooth_piTensor hρ) (isCompact_univ_pi hK) (sub_mem (hR hr) hw) ((Submodule.Quotient.eq N).1 e)`. Rewrite using `[← sub_eq_zero.1 h0]`. Conclude with `hr`.
+A detailed English derivation is pending.
 -/
 theorem fixed_le_range (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (hρ : ∀ a, IsSmooth (ρ a))
     (K : ∀ a, Subgroup (Γ a)) (hK : ∀ a, IsCompact (K a : Set (Γ a))) :
@@ -115,7 +115,7 @@ theorem fixed_le_range (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (hρ : ∀ 
   exact hr
 
 /- English proof (translation)
-Introduce `α _ Γ X _ _ _ _ _ ρ hρ K hK hfin`. Conclude with `Submodule.finiteDimensional_of_le (fixed_le_range ρ hρ K hK)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_fixed_piTensor : ∀ {α : Type} [Finite α] {Γ X : α → Type} [∀ a, Group (Γ a)] [∀ a, TopologicalSpace (Γ a)] [∀ a, IsTopologicalGroup (Γ a)] [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a)), (∀ a, IsSmooth (ρ a)) → ∀ (K : ∀ a, Subgroup (Γ a)), (∀ a, IsCompact (K a : Set (Γ a))) → (∀ a, FiniteDimensional ℂ (fixed (ρ a) (K a))) → FiniteDimensional ℂ (fixed (piTensor ρ) (Subgroup.pi Set.univ K)) := by
   intro α _ Γ X _ _ _ _ _ ρ hρ K hK hfin

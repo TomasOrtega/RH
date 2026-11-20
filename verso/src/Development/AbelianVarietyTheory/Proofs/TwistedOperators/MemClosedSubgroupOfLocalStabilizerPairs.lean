@@ -14,7 +14,7 @@ namespace GlobalTheory.StabDense
 section Generic
 
 /- English proof (translation)
-Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Conclude with `h1.prodMk_nhds (MulOpposite.continuous_op.continuousAt.tendsto.comp h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_tendsto {M ι : Type} [Monoid M] [TopologicalSpace M] {l : Filter ι} {f : ι → Mˣ} {u : Mˣ}
     (h1 : Filter.Tendsto (fun i => (f i : M)) l (nhds (u : M)))
@@ -26,7 +26,7 @@ theorem units_tendsto {M ι : Type} [Monoid M] [TopologicalSpace M] {l : Filter 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `only [add_mul, mul_add, smul_mul_smul_comm, mul_one, one_mul]`. Take the linear combination `(norm := module) hab • (2 • m - m * m - 1)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cut_mul {a b : A} (hab : a * b = 0) (m : Matrix n n A) :
     (a + b) • m + (1 - (a + b)) • (1 : Matrix n n A) =
@@ -36,7 +36,7 @@ theorem cut_mul {a b : A} (hab : a * b = 0) (m : Matrix n n A) :
 
 omit [Fintype n] in
 /- English proof (translation)
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cut_entry (a : A) (m : Matrix n n A) (i j : n) :
     (a • m + (1 - a) • (1 : Matrix n n A)) i j = a * (m - 1) i j + (1 : Matrix n n A) i j := by
@@ -45,14 +45,14 @@ theorem cut_entry (a : A) (m : Matrix n n A) (i j : n) :
 
 omit [Fintype n] in
 /- English proof (translation)
-Rewrite using `[Matrix.sub_apply, cut_entry, add_sub_cancel_right, ← mul_assoc, ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cut_supp {a : A} (ha : a * a = a) (m : Matrix n n A) (i j : n) :
     a * (a • m + (1 - a) • (1 : Matrix n n A) - 1) i j = (a • m + (1 - a) • (1 : Matrix n n A) - 1) i j := by
   rw [Matrix.sub_apply, cut_entry, add_sub_cancel_right, ← mul_assoc, ha]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hji => h0 i j (Ne.symm hji)) (fun hi' => absurd hi hi'), h i]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_idem {R ι : Type} [CommRing R] (p : ι → R) (s : Finset ι) (h : ∀ i, p i * p i = p i)
     (h0 : ∀ i j, i ≠ j → p i * p j = 0) : (∑ i ∈ s, p i) * (∑ i ∈ s, p i) = ∑ i ∈ s, p i := by
@@ -65,7 +65,7 @@ end Generic
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨pairA D.host.F 0 (singleV D.host.F v 1), singleV D.host.F v 1, rfl, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) v 1`. Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) 1 hw`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_placeIdem (v : HeightOneSpectrum (𝓞 D.host.F)) : ∃ ε, IsPlaceIdem D v ε := by
   classical
@@ -74,11 +74,11 @@ theorem exists_placeIdem (v : HeightOneSpectrum (𝓞 D.host.F)) : ∃ ε, IsPla
   · exact RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) 1 hw
 
 /- English proof (translation)
-Take `⟨α, rfl, -, hα0⟩` from `h`. Take `⟨α', rfl, -, hα0'⟩` from `h'`. Establish `hz : α * α' = 0`. Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations. Use `show α w * α' w = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w = v`. Establish `hw' : α' w = 0` using `hα0' w (by rw [hw]; exact hv)`. Rewrite using `[hw', mul_zero]`. Establish `hw' : α w = 0` using `hα0 w hw`. Rewrite using `[hw', zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show pairA D.host.F 0 α * pairA D.host.F 0 α' = pairA D.host.F (0 * 0) (α * α') from rfl, hz, mul_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem placeIdem_mul {v v' : HeightOneSpectrum (𝓞 D.host.F)} {ε ε' : AF D.host.F} (h : IsPlaceIdem D v ε)
     (h' : IsPlaceIdem D v' ε') (hv : v ≠ v') : ε * ε' = 0 := by
@@ -96,9 +96,9 @@ theorem placeIdem_mul {v v' : HeightOneSpectrum (𝓞 D.host.F)} {ε ε' : AF D.
   rfl
 
 /- English proof (translation)
-Take `⟨α, rfl, hα1, hα0⟩` from `h`. Establish `hz : α * α = α`. Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations. Use `show α w * α w = α w`. Distinguish the cases in `hw : w = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hw' : α w = 1` using `by rw [hw]; exact hα1`. Rewrite using `[hw', mul_one]`. Establish `hw' : α w = 0` using `hα0 w hw`. Rewrite using `[hw', mul_zero]`. Rewrite using `[show pairA D.host.F 0 α * pairA D.host.F 0 α = pairA D.host.F (0 * 0) (α * α) from rfl, hz, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeIdem_idem {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
     ε * ε = ε := by
@@ -114,7 +114,7 @@ theorem placeIdem_idem {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F
   rw [show pairA D.host.F 0 α * pairA D.host.F 0 α = pairA D.host.F (0 * 0) (α * α) from rfl, hz, mul_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `e`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mt_inj (V : HSp D) {g h : GA D V} (e : Formalism.L2.Theta.mt V g = Formalism.L2.Theta.mt V h) : g = h := by
   apply Subtype.ext
@@ -122,7 +122,7 @@ theorem mt_inj (V : HSp D) {g h : GA D V} (e : Formalism.L2.Theta.mt V g = Forma
   exact e
 
 /- English proof (translation)
-Establish `hind : Topology.IsInducing (Subtype.val : ↥(HR (AF D.host.F) D.sp.cm.sig V.gram) → GL (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E))` using `Topology.IsInducing.subtypeVal`. Conclude with `hind.tendsto_nhds_iff.2 (units_tendsto h1 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_of_mt {ι : Type} {l : Filter ι} (V : HSp D) {f : ι → GA D V} {g : GA D V}
     (h1 : Filter.Tendsto (fun i => Formalism.L2.Theta.mt V (f i)) l (nhds (Formalism.L2.Theta.mt V g)))
@@ -134,9 +134,9 @@ theorem tendsto_of_mt {ι : Type} {l : Filter ι} (V : HSp D) {f : ι → GA D V
   exact hind.tendsto_nhds_iff.2 (units_tendsto h1 h2)
 
 /- English proof (translation)
-Establish `h1 : infHom V g = 1` using `(MonoidHom.mem_ker).1 hg`. Establish `h2` using `congrArg (fun x : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => x.1 i j) h1`. Simplify using `only [infHom, MonoidHom.comp_apply, Formalism.UG.bc] at h2`. Establish `e1 : infPart D (Formalism.L2.Theta.mt V g i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E)) i j` using `h2`. Establish `e2 : infPart D ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E)) i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Matrix.sub_apply, map_sub, e1, e2, sub_self]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_entry (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) (i j : Fin V.rank) :
     infPart D ((Formalism.L2.Theta.mt V g - 1) i j) = 0 := by
@@ -152,15 +152,15 @@ theorem infPart_entry (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) (i j : Fin V.r
   rw [Matrix.sub_apply, map_sub, e1, e2, sub_self]
 
 /- English proof (translation)
-Establish `hid : ∀ s : Finset (HeightOneSpectrum (𝓞 D.host.F)), (∑ v ∈ s, ε v) * (∑ v ∈ s, ε v) = ∑ v ∈ s, ε v` using `fun s => sum_idem ε s (fun v => placeIdem_idem (hε v)) (fun v w hvw => placeIdem_mul (hε v) (hε w) hvw)`. Use `choose K hK using fun s => GlobalTheory.T.idempotent_twisted_group_endomorphism D V β (∑ v ∈ s, ε v) (hid s)`. Establish `hKm : ∀ s x, Formalism.L2.Theta.mt V (K s x) = algebraMap (AF D.host.F) (AE D) (∑ v ∈ s, ε v) • Formalism.L2.Theta.mt V x + (1 - algebraMap (AF D.host.F) (AE D) (∑ v ∈ s, ε v)) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))` using `fun s x => (hK s x).1`. Use `⟨fun s g => K s g, fun g => ?_, fun v s hv g => ?_, fun v g hg => ⟨(hK {v} g).2 hg, fun i j => ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Apply `mt_inj V` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hKm, Finset.sum_empty, map_zero, zero_smul, sub_zero, one_smul, zero_add, GlobalTheory.AdelicLatMove.mt_one]`. Apply `mt_inj V show Formalism.L2.Theta.mt V (K _ g) = Formalism.L2.Theta.mt V (K {v} g * K s g)` to reduce the goal to its premises. Rewrite using `[hKm, GlobalTheory.AdelicLatMove.mt_mul, hKm, hKm, Finset.sum_cons, Finset.sum_singleton, map_add]`. Apply `cut_mul` to reduce the goal to its premises. Rewrite using `[← map_mul, Finset.mul_sum, Finset.sum_eq_zero (fun w hw => placeIdem_mul (hε v) (hε w) (fun hvw => hv (by rw [hvw]; exact hw))), map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap (AF D.host.F) (AE D) (ε v) * (Formalism.L2.Theta.mt V (K {v} g) - 1) i j = (Formalism.L2.Theta.mt V (K {v} g) - 1) i j`. Rewrite using `[hKm, Finset.sum_singleton]`. Conclude with `cut_supp (by rw [← map_mul, placeIdem_idem (hε v)]) _ i j`. Establish `key : ∀ x : GA D V, x ∈ GfC V → Filter.Tendsto (fun s => Formalism.L2.Theta.mt V (K s x)) Filter.atTop (nhds (Formalism.L2.Theta.mt V x))`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [hKm, cut_entry]`. Apply the tactic sequence `have hlim := (GlobalTheory.T.tendsto_finitePlaceTruncation_adeleE D ε hε ((Formalism.L2.Theta.mt V x - 1) i j) (infPart_entry V hx i j)).add_const ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)`. Establish `e : (Formalism.L2.Theta.mt V x - 1) i j + (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j = Formalism.L2.Theta.mt V x i j`. Rewrite using `[Matrix.sub_apply, sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hlim` using `[e]`. Conclude with `hlim`. Use `tendsto_of_mt V (key g hg.1) ?_` and prove the remaining obligations. Simplify `key g⁻¹ (inv_mem hg.1)` using `only [map_inv]`.
+A detailed English derivation is pending.
 -/
 theorem exists_trunc (ε : HeightOneSpectrum (𝓞 D.host.F) → AF D.host.F) (hε : ∀ v, IsPlaceIdem D v (ε v))
     (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) :
@@ -201,11 +201,9 @@ theorem exists_trunc (ε : HeightOneSpectrum (𝓞 D.host.F) → AF D.host.F) (h
     simpa only [map_inv] using key g⁻¹ (inv_mem hg.1)
 
 /- English proof (translation)
-Use `choose ε hε using fun v => exists_placeIdem (D := D) v`. Take `⟨κS, hS0, hSc, hS1, hSt⟩` from `exists_trunc ε hε S βS`. Take `⟨κT, hT0, hTc, hT1, hTt⟩` from `exists_trunc ε hε T βT`. Establish `hmem : ∀ s, (κS s g, κT s h) ∈ H`. Introduce `s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => rw [hS0, hT0]`. Conclude with `H.one_mem`. Consider the case `cons v s hv ih`. Rewrite using `[hSc v s hv, hTc v s hv]`.
-
-Conclude with `H.mul_mem (hloc v (ε v) (hε v) _ _ (hS1 v g hg).1 (hT1 v h hh).1 (hS1 v g hg).2 (hT1 v h hh).2) ih`. Conclude with `hH.mem_of_tendsto ((hSt g hg).prodMk_nhds (hTt h hh)) (Filter.Eventually.of_forall hmem)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_local (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (H : Subgroup (GA D S × GA D T)) (hH : IsClosed (H : Set (GA D S × GA D T)))

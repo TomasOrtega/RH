@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LieImagePoly.exists_isLieImage_aeval | exact GlobalTheory.LieImagePoly.exists_isLieImage_aeval | (intros; apply GlobalTheory.LieImagePoly.exists_isLieImage_aeval <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.lie_image_polynomial_endomorphism : ∀ (A : Over (Sp ℂ)) [GrpObj A] (Lb : LB A.left) (g : ℕ) (u : HolUnif A Lb g) (α : A ⟶ A) [IsMonHom α]
     (D : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)), (∀ z, u.ex (D z) = u.ex z ≫ α) →

@@ -32,15 +32,15 @@ Both sides reduce to the same expression.
 theorem sigBar_res (σ : GK p K) (x : Obar p) : sigBar σ (res x) = res (sigO σ x) := rfl
 
 /- English proof (translation)
-Rewrite using `[red_of_le hx, sigBar_res, ← red_coe, coe_sigO]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigBar_red (σ : GK p K) {x : PadicAlgCl p} (hx : ‖x‖ ≤ 1) : sigBar σ (red x) = red (σ x) := by
   rw [red_of_le hx, sigBar_res, ← red_coe, coe_sigO]
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `(mem_resK_iff K c).1 hc`. Rewrite using `[sigBar_res]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sigO]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `σ.commutes ⟨x, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem sigBar_of_mem (σ : GK p K) {c : kbar p} (hc : c ∈ resK p K) : sigBar σ c = c := by
   obtain ⟨x, hx, rfl⟩ := (mem_resK_iff K c).1 hc
@@ -51,7 +51,7 @@ theorem sigBar_of_mem (σ : GK p K) {c : kbar p} (hc : c ∈ resK p K) : sigBar 
   exact σ.commutes ⟨x, hx⟩
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ q ^ n` using `Nat.one_le_pow _ _ hq`. Establish `: q ^ n = (q ^ n - 1) + 1` using `by omega`. Rewrite using `[this, pow_succ, h, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_pow_succ_sub {R : Type*} [Monoid R] {q n : ℕ} (hq : 0 < q) {c : R} (h : c ^ (q ^ n - 1) = 1) :
     c ^ (q ^ n) = c := by
@@ -60,27 +60,25 @@ theorem pow_pow_succ_sub {R : Type*} [Monoid R] {q n : ℕ} (hq : 0 < q) {c : R}
   rw [this, pow_succ, h, one_mul]
 
 /- English proof (translation)
-Take `⟨f, hf, hqf⟩` from `qK_eq_pow K hK`. Establish `hq` using `one_lt_qK K hK`. Use `set q := qK p K with hqdef`. Establish `hnd : ¬ p ∣ q ^ n - 1` using `not_dvd_qK_pow_sub_one K hK hn`. Establish `hm0 : q ^ n - 1 ≠ 0` using `by rintro h; exact hnd (h ▸ dvd_zero p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_eq_one_of_pow hm0 hζ`. Use `set c := red ζ with hc`. Establish `hcn : c ^ (q ^ n) = c`. Rewrite using `[hc, ← red_pow h1.le, pow_pow_succ_sub (by omega) hζ]`. Establish `: ExpChar (kbar p) p` using `ExpChar.prime Fact.out`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : kbar p →+* kbar p` to `iterateFrobenius (kbar p) p f`. Establish `hφ : ∀ x, φ x = x ^ q` using `fun x => by rw [hqf]; rfl`. Set `g : ℕ → (kbar p)[X]` to `fun i => X - C (c ^ (q ^ i))`. Use `set h : (kbar p)[X] := ∏ i ∈ Finset.range n, g i with hh`. Establish `hg : ∀ i, (g i).map φ = g (i + 1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Simplify using `only [g, Polynomial.map_sub, map_X, map_C, hφ]`. Rewrite using `[← pow_mul, ← pow_succ]`. Establish `hmap : h.map φ = h`. Rewrite using `[hh, Polynomial.map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hg]`. Establish `e1` using `Finset.prod_range_succ g n`. Establish `e2` using `Finset.prod_range_succ' g n`. Establish `e3 : g n = g 0` using `by simp only [g, hcn, pow_zero, pow_one]`. Establish `e4 : g 0 ≠ 0` using `X_sub_C_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e2` using `[e1, e3]`. Conclude with `(mul_right_cancel₀ e4 e2).symm`. Establish `hcoef : ∀ k, h.coeff k ∈ resK p K`. Introduce `k`. Apply `mem_resK_of_pow K hK` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ, ← coeff_map, hmap]`. Establish `hmapσ : h.map (sigBar σ) = h`. Use extensionality with `k`. Rewrite using `[coeff_map, sigBar_of_mem σ (hcoef k)]`. Establish `h0 : h.eval c = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hh, eval_prod]`. Apply `Finset.prod_eq_zero (Finset.mem_range.2 hn)` to reduce the goal to its premises. Simplify using `[g]`. Establish `h2 : h.eval (sigBar σ c) = 0` using `by conv_lhs => rw [← hmapσ]`. Rewrite using `[eval_map, eval₂_at_apply, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[hh, eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨i, hi, h3⟩` from `h2`. Use `⟨i, Finset.mem_range.1 hi, ?_⟩` and prove the remaining obligations. Simplify using `only [g, eval_sub, eval_X, eval_C, sub_eq_zero] at h3`. Rewrite `h3` using `[hc, sigBar_red σ h1.le, ← red_pow h1.le]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hσζ : (σ ζ) ^ (q ^ n - 1) = 1` using `by rw [← map_pow, hζ, map_one]`. Establish `hζi : (ζ ^ (q ^ i)) ^ (q ^ n - 1) = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Establish `h4` using `norm_sub_eq_one_of_pow_eq_one hnd hσζ hζi hne`. Establish `h5` using `(red_eq_iff (norm_eq_one_of_pow hm0 hσζ).le (norm_eq_one_of_pow hm0 hζi).le).1 h3`.
-
-Conclude with `absurd h4 (ne_of_lt h5)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pow_of_GK (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) (σ : GK p K)
     {ζ : PadicAlgCl p} (hζ : ζ ^ (qK p K ^ n - 1) = 1) : ∃ i < n, σ ζ = ζ ^ (qK p K ^ i) := by
@@ -140,29 +138,29 @@ theorem exists_pow_of_GK (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < 
 variable (K)
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem le_Kn (n : ℕ) : K ≤ Kn p K n := le_sup_left
 
 /- English proof (translation)
-The claim follows from `(le_sup_right : _ ≤ Kn p K n) (IntermediateField.subset_adjoin _ _ hζ)`.
+A detailed English derivation is pending.
 -/
 theorem mem_Kn_of_pow {n : ℕ} {ζ : PadicAlgCl p} (hζ : ζ ^ (qK p K ^ n - 1) = 1) : ζ ∈ Kn p K n :=
   (le_sup_right : _ ≤ Kn p K n) (IntermediateField.subset_adjoin _ _ hζ)
 
 /- English proof (translation)
-The claim follows from `sup_le h1 (IntermediateField.adjoin_le_iff.2 h2)`.
+A detailed English derivation is pending.
 -/
 theorem Kn_le {n : ℕ} {S : IntermediateField ℚ_[p] (PadicAlgCl p)} (h1 : K ≤ S)
     (h2 : ∀ ζ : PadicAlgCl p, ζ ^ (qK p K ^ n - 1) = 1 → ζ ∈ S) : Kn p K n ≤ S :=
   sup_le h1 (IntermediateField.adjoin_le_iff.2 h2)
 
 /- English proof (translation)
-Establish `h : Kn p K n ≤ (Kn p K n).comap ((σ.restrictScalars ℚ_[p] : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) : PadicAlgCl p →ₐ[ℚ_[p]] PadicAlgCl p)`. Apply `Kn_le` to reduce the goal to its premises. Introduce `y hy`. Express the relevant statement in the definitionally equal form `σ y ∈ Kn p K n`. Establish `: σ y = y` using `σ.commutes ⟨y, hy⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `le_Kn K n hy`. Introduce `ζ hζ`. Express the relevant statement in the definitionally equal form `σ ζ ∈ Kn p K n`. Apply `mem_Kn_of_pow` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, hζ, map_one]`. Conclude with `h hx`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_Kn (n : ℕ) (σ : GK p K) {x : PadicAlgCl p} (hx : x ∈ Kn p K n) : σ x ∈ Kn p K n := by
   have h : Kn p K n ≤ (Kn p K n).comap ((σ.restrictScalars ℚ_[p] : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) :
@@ -189,9 +187,7 @@ noncomputable def eqField (σ τ : GK p K) : IntermediateField ℚ_[p] (PadicAlg
     rw [map_inv₀, map_inv₀, hx']
 
 /- English proof (translation)
-Establish `h1 : Kn p K n ≤ eqField K σ τ`. Apply `Kn_le` to reduce the goal to its premises. Introduce `y hy`. Express the relevant statement in the definitionally equal form `σ y = τ y`. Conclude with `(σ.commutes ⟨y, hy⟩).trans (τ.commutes ⟨y, hy⟩).symm`.
-
-Conclude with `h`. Conclude with `h1 hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem eqOn_Kn {n : ℕ} {σ τ : GK p K}
     (h : ∀ ζ : PadicAlgCl p, ζ ^ (qK p K ^ n - 1) = 1 → σ ζ = τ ζ) {x : PadicAlgCl p} (hx : x ∈ Kn p K n) :
@@ -205,9 +201,9 @@ theorem eqOn_Kn {n : ℕ} {σ τ : GK p K}
   exact h1 hx
 
 /- English proof (translation)
-Apply `Kn_le K (le_Kn K n)` to reduce the goal to its premises. Introduce `ζ hζ`. Apply `mem_Kn_of_pow` to reduce the goal to its premises. Take `⟨k, rfl⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : qK p K ^ m - 1 ∣ qK p K ^ (m * k) - 1 := by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_mul]`. Simplify using `using Nat.sub_dvd_pow_sub_pow (qK p K ^ m) 1 k`. Rewrite using `[hd, pow_mul, hζ, one_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kn_mono {m n : ℕ} (h : m ∣ n) : Kn p K m ≤ Kn p K n := by
   apply Kn_le K (le_Kn K n)

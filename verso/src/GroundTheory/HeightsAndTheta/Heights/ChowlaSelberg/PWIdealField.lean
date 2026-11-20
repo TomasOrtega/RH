@@ -8,26 +8,24 @@ open NumberField
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `(isIntegral_algHom_iff j.toIntAlgHom j.injective).1 h`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_map {F F' : Type*} [Field F] [Field F'] (j : F →+* F') {x : F}
     (h : IsIntegral ℤ (j x)) : IsIntegral ℤ x :=
   (isIntegral_algHom_iff j.toIntAlgHom j.injective).1 h
 
 /- English proof (translation)
-Take `⟨b, hbB, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hB`. Take `⟨B', hB'⟩ : B ∣ Ideal.span {b}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hbB)`. Establish `hB'0 : B' ≠ 0`. Introduce and unpack `rfl`. Rewrite `hB'` using `[mul_zero, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hb0 hB'`. Establish `key : A * B' ≤ B * B'`. Rewrite using `[← hB', Ideal.mul_le]`. Introduce `x hx y hy`. Establish `hm : RingOfIntegers.mapRingHom j (x * y) ∈ (Ideal.span {b}).map (RingOfIntegers.mapRingHom j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB', Ideal.map_mul, map_mul]`. Conclude with `Ideal.mul_mem_mul (h (Ideal.mem_map_of_mem _ hx)) (Ideal.mem_map_of_mem _ hy)`. Rewrite `hm` using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨z, hz⟩` from `hm`. Establish `hbF : (b : F) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Conclude with `hb0 (RingOfIntegers.ext (by simpa using h0))`. Establish `hz' : (z : F') * j (b : F) = j ((x * y : 𝓞 F) : F)`. Use `congrArg (fun t : 𝓞 F' ↦ (t : F')) hz` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `himg : j (((x * y : 𝓞 F) : F) / (b : F)) = (z : F')`. Rewrite using `[map_div₀, ← hz', mul_div_assoc, div_self ((map_ne_zero j).2 hbF), mul_one]`. Establish `hq : IsIntegral ℤ (((x * y : 𝓞 F) : F) / (b : F))`. Apply `isIntegral_of_map j` to reduce the goal to its premises. Rewrite using `[himg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingOfIntegers.isIntegral_coe z`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨⟨_, hq⟩, RingOfIntegers.ext ?_⟩` and prove the remaining obligations. Use `show ((x * y : 𝓞 F) : F) / (b : F) * (b : F) = ((x * y : 𝓞 F) : F)`. Rewrite using `[div_mul_cancel₀ _ hbF]`.
-
-Establish `hdvd : B * B' ∣ A * B'` using `Ideal.dvd_iff_le.2 key`. Conclude with `Ideal.dvd_iff_le.1 ((mul_dvd_mul_iff_right hB'0).1 hdvd)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_of_map_le {F F' : Type*} [Field F] [NumberField F] [Field F'] [NumberField F']
     (j : F →+* F') {A B : Ideal (𝓞 F)} (hB : B ≠ ⊥)
@@ -68,9 +66,7 @@ theorem le_of_map_le {F F' : Type*} [Field F] [NumberField F] [Field F'] [Number
   exact Ideal.dvd_iff_le.1 ((mul_dvd_mul_iff_right hB'0).1 hdvd)
 
 /- English proof (translation)
-Establish `hA : A ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `h` using `[Ideal.map_bot, eq_comm, Ideal.map_eq_bot_iff_of_injective]`. Conclude with `hB h`. Introduce `x y hxy`.
-
-Conclude with `RingOfIntegers.ext (j.injective (by simpa using congrArg (fun t : 𝓞 F' ↦ (t : F')) hxy))`. Conclude with `le_antisymm (le_of_map_le j hB h.le) (le_of_map_le j hA h.ge)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_of_map_eq {F F' : Type*} [Field F] [NumberField F] [Field F'] [NumberField F']
     (j : F →+* F') {A B : Ideal (𝓞 F)} (hB : B ≠ ⊥)
@@ -84,11 +80,11 @@ theorem eq_of_map_eq {F F' : Type*} [Field F] [NumberField F] [Field F'] [Number
   exact le_antisymm (le_of_map_le j hB h.le) (le_of_map_le j hA h.ge)
 
 /- English proof (translation)
-Set `e` to `AlgEquiv.ofInjectiveField τ.toRatAlgHom`. Set `E₁ : IntermediateField ℚ ℂ` to `τ.toRatAlgHom.fieldRange`. Set `E₂ : IntermediateField ℚ ℂ` to `IntermediateField.adjoin ℚ {z₁, z₂}`. Establish `: FiniteDimensional ℚ E₁` using `LinearEquiv.finiteDimensional e.toLinearEquiv`. Establish `: FiniteDimensional ℚ E₂` using `IntermediateField.finiteDimensional_adjoin_pair h₁.isIntegral h₂.isIntegral`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℚ ↥(E₁ ⊔ E₂)` using `IntermediateField.finiteDimensional_sup E₁ E₂`. Establish `: NumberField ↥(E₁ ⊔ E₂)` using `NumberField.of_module_finite ℚ _`. Use `⟨↥(E₁ ⊔ E₂), inferInstance, inferInstance, ((IntermediateField.inclusion (le_sup_left : E₁ ≤ E₁ ⊔ E₂)).toRingHom.comp e.toRingEquiv.toRingHom), (E₁ ⊔ E₂).val.toRingHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Conclude with `⟨⟨z₁, (le_sup_right : E₂ ≤ E₁ ⊔ E₂) (IntermediateField.subset_adjoin ℚ _ (by simp))⟩, rfl⟩`. Conclude with `⟨⟨z₂, (le_sup_right : E₂ ≤ E₁ ⊔ E₂) (IntermediateField.subset_adjoin ℚ _ (by simp))⟩, rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_extension_mem_range {F : Type} [Field F] [NumberField F] (τ : F →+* ℂ) {z₁ z₂ : ℂ}
     (h₁ : IsAlgebraic ℚ z₁) (h₂ : IsAlgebraic ℚ z₂) :

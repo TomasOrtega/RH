@@ -9,11 +9,11 @@ namespace GlobalTheory.OrbDesc
 variable {H : Type} [Group H]
 
 /- English proof (translation)
-Unfold `GlobalTheory.LKLoc.locPart`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, k, hk, rfl⟩`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨hg, l * k * l⁻¹, L.mul_mem (L.mul_mem hl hk) (L.inv_mem hl), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨hg, k, hk, rfl⟩`. Use `⟨hg, l⁻¹ * k * l, L.mul_mem (L.mul_mem (L.inv_mem hl) hk) hl, ?_⟩` and prove the remaining obligations. Use `hT _ hg t ht` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem locPart_mul {T L : Subgroup H} (hT : ∀ s ∈ T, ∀ t ∈ T, s * t = t * s) {t x l : H} (ht : t ∈ T)
     (hl : l ∈ L) : GlobalTheory.LKLoc.locPart T L (t * x * l) = GlobalTheory.LKLoc.locPart T L x := by
@@ -34,7 +34,7 @@ theorem locPart_mul {T L : Subgroup H} (hT : ∀ s ∈ T, ∀ t ∈ T, s * t = t
       _ = x * k * x⁻¹ := by group
 
 /- English proof (translation)
-Unfold `wt`. Rewrite using `[locPart_mul hT ht hl, hΨr l hl, hΨl t ht]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_mul {T L : Subgroup H} (U : Subgroup H) {Ψ : H → ℂ} (hT : ∀ s ∈ T, ∀ t ∈ T, s * t = t * s)
     (hΨl : ∀ t ∈ T, ∀ x, Ψ (t * x) = Ψ x) (hΨr : ∀ l ∈ L, ∀ x, Ψ (x * l) = Ψ x) {t x l : H} (ht : t ∈ T)
@@ -43,7 +43,7 @@ theorem wt_mul {T L : Subgroup H} (U : Subgroup H) {Ψ : H → ℂ} (hT : ∀ s 
   rw [locPart_mul hT ht hl, hΨr l hl, hΨl t ht]
 
 /- English proof (translation)
-Take `⟨t, ht, l, hl, h⟩` from `(DoubleCoset.eq T L _ _).1 (DoubleCoset.out_eq' T L (DoubleCoset.mk T L x))`. Conclude with `(wt_mul U hT hΨl hΨr ht hl).symm.trans (congrArg _ h.symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wt_out {T L : Subgroup H} (U : Subgroup H) {Ψ : H → ℂ} (hT : ∀ s ∈ T, ∀ t ∈ T, s * t = t * s)
     (hΨl : ∀ t ∈ T, ∀ x, Ψ (t * x) = Ψ x) (hΨr : ∀ l ∈ L, ∀ x, Ψ (x * l) = Ψ x) (x : H) :

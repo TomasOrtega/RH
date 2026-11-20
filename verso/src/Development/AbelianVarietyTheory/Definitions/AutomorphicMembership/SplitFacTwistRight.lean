@@ -17,16 +17,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.Th.nonempty_tow (GlobalTheory.WittLow.wittLowEx D)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_tow (D : D7) : Nonempty (Tow D) := GlobalTheory.Mem.Th.nonempty_tow (GlobalTheory.WittLow.wittLowEx D)
 
 /- English proof (translation)
-Introduce `V hV`. Take `⟨b, hb⟩` from `GlobalTheory.HermDiag.exists_orthogonal_basis_fin (two_ne_zero : (2 : D.host.E) ≠ 0) V.rank V.hT.flip (fun x y => V.herm.eq y x) V.rank_eq`. Establish `ho : ∀ i j, i ≠ j → V.hT (b i) (b j) = 0` using `fun i j hij => hb j i hij.symm`. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.FockBasisMatrix.basis_matrix D V).2 b`. Establish `hd : ∀ τ, ((V.frame.toMatrix b).map (tauE D τ)).det ≠ 0` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(tauE D τ).map_det (V.frame.toMatrix b)` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← this]`. Conclude with `(h1.map (tauE D τ)).ne_zero`. Use `choose A hA hA' using fun τ => GlobalTheory.MonomialDiag.exists_monomial _ _ _ (gramAt D V τ) _ _ (hV (tauE D τ)) (hd τ) (h3 ho τ).1 (h3 ho τ).2.1`.
-
-Conclude with `⟨A, V.frame.toMatrix b, hA, h1, fun i j hij => (h2 i j).trans (ho i j hij), hA'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orthEx (D : D7) : OrthEx D := by
   intro V hV
@@ -44,12 +42,12 @@ theorem orthEx (D : D7) : OrthEx D := by
   exact ⟨A, V.frame.toMatrix b, hA, h1, fun i j hij => (h2 i j).trans (ho i j hij), hA'⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Mem.Th.nonempty_orthDec (orthEx D)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_orthDec (D : D7) : Nonempty (OrthDec D) := GlobalTheory.Mem.Th.nonempty_orthDec (orthEx D)
 
 /- English proof (translation)
-Establish `h0 : ∀ u : WA V W, symplH V W 0 u = 0` using `fun u => by`. Simplify using `[symplH, sympl, hHom]`. Establish `h1` using `congrFun (h.Heisenberg₂ γ δ w Φ Φ' e) 0`. Rewrite `h1` using `[h.aut γ hγ δ hδ, e]`. Simplify `h1.symm` using `[Heisenberg₂, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem om_rational {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χ χ' : IdC D}
     {om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)} (h : IsWeilOn ψ V W χ χ' om)
@@ -62,7 +60,7 @@ theorem om_rational {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χ χ' : IdC
   simpa [Heisenberg₂, h0] using h1.symm
 
 /- English proof (translation)
-Rewrite using `[map_add, map_mul, map_sub, map_one]`. Establish `h1 : d * (cA D e * cA D d + (1 - cA D e)) = cA D e * (d * cA D d) + d - d * cA D e` using `by ring`. Rewrite using `[h1, hd]`. Take the linear combination `hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem root_of_at {e d : AE D} (hd : d * cA D d = 1)
     (hs : (e + cA D e) * (d - 1) = d - 1) :
@@ -73,7 +71,7 @@ theorem root_of_at {e d : AE D} (hd : d * cA D d = 1)
   linear_combination hs
 
 /- English proof (translation)
-Unfold `splitFac`. Distinguish the cases in `k : V.rank < W.rank`. Rewrite using `[if_pos k.le, if_pos k.le, if_pos k, MonoidHom.mul_apply, _root_.mul_inv_rev, mul_assoc]`. Establish `k' : ¬ V.rank ≤ W.rank` using `by omega`. Rewrite using `[if_neg k', if_neg k', if_neg k, MonoidHom.mul_apply, mul_comm (χ' x), mul_assoc]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitFac_twist_right {V W : HSp D} (h : V.rank ≠ W.rank) (χ χ' ν : IdC D) (x y : (AE D)ˣ) :
     splitFac V W χ (χ' * ν) x y = (if V.rank < W.rank then (ν x)⁻¹ else ν x) * splitFac V W χ χ' x y := by
@@ -84,7 +82,7 @@ theorem splitFac_twist_right {V W : HSp D} (h : V.rank ≠ W.rank) (χ χ' ν : 
     rw [if_neg k', if_neg k', if_neg k, MonoidHom.mul_apply, mul_comm (χ' x), mul_assoc]
 
 /- English proof (translation)
-Unfold `splitFac`. Distinguish the cases in `k : V.rank < W.rank`. Rewrite using `[if_pos k.le, if_pos k.le, if_pos k, MonoidHom.mul_apply, mul_comm (χ y), mul_left_comm]`. Establish `k' : ¬ V.rank ≤ W.rank` using `by omega`. Rewrite using `[if_neg k', if_neg k', if_neg k, MonoidHom.mul_apply, _root_.mul_inv_rev, mul_left_comm]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitFac_twist_left {V W : HSp D} (h : V.rank ≠ W.rank) (χ χ' ν : IdC D) (x y : (AE D)ˣ) :
     splitFac V W (χ * ν) χ' x y = (if V.rank < W.rank then ν y else (ν y)⁻¹) * splitFac V W χ χ' x y := by

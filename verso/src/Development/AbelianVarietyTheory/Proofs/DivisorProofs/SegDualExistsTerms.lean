@@ -10,9 +10,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace GlobalTheory.SegDualProof
 
 /- English proof (translation)
-Introduce `k _ _ _ _ D hD _ hnu hcusp _ Δ`. Establish `hρ : (D (Δ.first.nu ((Δ.len : ℂ) - 1))).IsCusp` using `hcusp _ (Δ.isCusp_first.nu _)`. Use `⟨⟨Segment.ofFirst _ hρ Δ.len Δ.len_pos, rfl, (hD _ _).2 rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Δ' ⟨hl, hd⟩`. Use `⟨hl, fun a _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hD _ _).1 hd]`. Establish `h1` using `hnu (Δ.first.nu ((Δ.len : ℂ) - 1)) (-(a : ℂ))`. Rewrite `h1` using `[neg_neg, IrrGL.nu_nu, ← sub_eq_add_neg]`. Conclude with `h1.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segDual_exists_terms : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ D : IrrGL k → IrrGL k, (∀ x y, DualCl x y ↔ y = D x) → (∀ x, D (D x) = x) → (∀ (x : IrrGL k) (s : ℂ), D (x.nu s) = (D x).nu (-s)) → (∀ x, x.IsCusp → (D x).IsCusp) → (∀ x, (D x).1 = x.1) → ∀ Δ : Segment k, (∃ Δ', SegDual Δ Δ') ∧ ∀ Δ', SegDual Δ Δ' → Δ'.len = Δ.len ∧ ∀ a : ℕ, a < Δ.len → Δ'.first.nu (a : ℂ) = D (Δ.first.nu ((Δ.len : ℂ) - 1 - a)) := by
   intro k _ _ _ _ D hD _ hnu hcusp _ Δ

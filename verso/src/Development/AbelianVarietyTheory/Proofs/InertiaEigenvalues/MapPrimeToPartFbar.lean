@@ -13,17 +13,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.TameLabels
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Simplify using `[ZMod.val_one_eq_one_mod]`. Use `set q := l ^ n.factorization l with hq_def`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set m := n / q with hm_def`. Establish `hnqm : q * m = n` using `Nat.ordProj_mul_ordCompl_eq_self n l`. Establish `hm0 : m ≠ 0`. Introduce and unpack `h`. Rewrite `hnqm` using `[h, mul_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : NeZero m := ⟨hm0⟩`. Establish `hcop : Nat.Coprime q m` using `(Nat.coprime_ordCompl hl hpos.ne').pow_left _`. Establish `hym : y ^ m = 1`. Establish `h1 : (y ^ m) ^ q = 1` using `by rw [← pow_mul, mul_comm, hnqm, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (y ^ m - 1) ^ q = 0`. Rewrite using `[hq_def, sub_pow_char_pow, ← hq_def, h1, one_pow, sub_self]`. Establish `hq0 : q ≠ 0` using `pow_ne_zero _ hl.ne_zero`. Conclude with `sub_eq_zero.1 ((pow_eq_zero_iff hq0).1 h2)`. Establish `hmod : q * ((q : ZMod m)⁻¹).val ≡ 1 [MOD m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Conclude with `ZMod.coe_mul_inv_eq_one q hcop`. Establish `hdvd : orderOf y ∣ m` using `orderOf_dvd_of_pow_eq_one hym`.
-
-Establish `hmod'` using `hmod.of_dvd hdvd`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem pow_pow_factorization_mul_inv_val_eq_self {K : Type} [Field K] {l : ℕ} [Fact l.Prime] [CharP K l] (y : K) (n : ℕ)
     (hy : y ^ n = 1) :
@@ -59,7 +57,7 @@ private theorem pow_pow_factorization_mul_inv_val_eq_self {K : Type} [Field K] {
     _ = y := by rw [pow_mod_orderOf, pow_one]
 
 /- English proof (translation)
-Unfold `Formalism.CyclotomicNorms.primeToPart`. Rewrite using `[map_pow]`. Conclude with `pow_pow_factorization_mul_inv_val_eq_self _ _ (by rw [← map_pow, pow_orderOf_eq_one, map_one])`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_primeToPart_fbar {g l : ℕ} [Fact g.Prime] [Fact l.Prime] {K : Type} [Field K] [CharP K l]
     (ι : Formalism.CyclotomicNorms.Fbar g →* K) (x : Formalism.CyclotomicNorms.Fbar g) : ι (Formalism.CyclotomicNorms.primeToPart l x) = ι x := by

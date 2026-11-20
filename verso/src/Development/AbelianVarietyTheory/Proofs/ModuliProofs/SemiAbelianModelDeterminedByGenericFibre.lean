@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ModelUniqueChecks.extV_holds`.
+A detailed English derivation is pending.
 -/
 theorem semiAbelian_model_determined_by_generic_fibre : ExtVStatement :=
   GlobalTheory.ModelUniqueChecks.extV_holds

@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 theorem Lv.good_σ₀ (κ : Lv A) : Formalism.L2.PjFree.GoodEmb κ.c κ.σ₀ := rfl
 
 /- English proof (translation)
-The claim follows from `(s.unf _ κ.good_σ₀).1`.
+A detailed English derivation is pending.
 -/
 theorem FinalTheorems.isUnf : Formalism.L2.PjFree.IsUnf (s.U κ.σ₀) := (s.unf _ κ.good_σ₀).1
 
@@ -47,7 +47,7 @@ def Sig.wt (S : Sig A N j) (L : CmList A) : (D.what₂.Tau → Fin N → ℤ) �
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Simplify using `[Sig.wt]`.
+Simplify using the standard rewrite rules.
 -/
 example (S : Sig A N j) (L : CmList A) (la : D.what₂.Tau → Fin N → ℤ) (t : D.what₂.Tau) (i : Fin (S.Dw.p + S.Dw.q)) :
     S.wt L la (L.ψ t) i = la t (Fin.cast S.rank_eq i) := by

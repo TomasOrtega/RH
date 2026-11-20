@@ -35,7 +35,7 @@ noncomputable def placeProj : ∀ v : Place K, ideleRep K L ⟶ placeRep L v
   | .inr v => finiteProjAboveRep v
 
 /- English proof (translation)
-Break down `v with v | v` into its components or cases. Conclude with `infiniteEmbedAboveRep_comp_infiniteProjAboveRep v`. Conclude with `finiteEmbedAboveRep_comp_finiteProjAboveRep v`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem placeEmbed_comp_placeProj (v : Place K) : placeEmbed (L := L) v ≫ placeProj v = 𝟙 _ := by
   rcases v with v | v
@@ -43,7 +43,7 @@ theorem placeEmbed_comp_placeProj (v : Place K) : placeEmbed (L := L) v ≫ plac
   · exact finiteEmbedAboveRep_comp_finiteProjAboveRep v
 
 /- English proof (translation)
-Apply the tactic sequence `rcases v with v | v <;> rcases v' with v' | v'`. Conclude with `infiniteEmbedAboveRep_comp_infiniteProjAboveRep_of_ne fun e => h (by rw [e])`. Conclude with `infiniteEmbedAboveRep_comp_finiteProjAboveRep v v'`. Conclude with `finiteEmbedAboveRep_comp_infiniteProjAboveRep v' v`. Conclude with `finiteEmbedAboveRep_comp_finiteProjAboveRep_of_ne fun e => h (by rw [e])`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem placeEmbed_comp_placeProj_of_ne {v v' : Place K} (h : v ≠ v') :
     placeEmbed (L := L) v ≫ placeProj v' = 0 := by
@@ -62,7 +62,7 @@ noncomputable def idelesCohomologySum (n : ℕ) :
 
 open Classical in
 /- English proof (translation)
-Unfold `idelesCohomologySum`. Conclude with `DirectSum.toAddMonoid_of (β := fun v => cohomology (placeRep L v) n) _ v x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem idelesCohomologySum_of (n : ℕ) (v : Place K) (x : cohomology (placeRep L v) n) :
     idelesCohomologySum L n (DirectSum.of (fun v => cohomology (placeRep L v) n) v x) =
@@ -73,11 +73,11 @@ theorem idelesCohomologySum_of (n : ℕ) (v : Place K) (x : cohomology (placeRep
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `ξ using DirectSum.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, DirectSum.zero_apply]`. Consider the case `of u x`. Rewrite using `[idelesCohomologySum_of, ← ModuleCat.comp_apply, ← cohomologyMap_comp]`. Distinguish the cases in `h : u = v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[placeEmbed_comp_placeProj, cohomologyMap_id, DirectSum.of_eq_same]`. Both sides reduce to the same expression. Rewrite using `[placeEmbed_comp_placeProj_of_ne h, cohomologyMap_zero]`. Simplify using `only [DirectSum.of_apply, dif_neg h]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `add ξ η hξ hη => rw [map_add, map_add, hξ, hη, DirectSum.add_apply]`.
+Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem placeProj_idelesCohomologySum (n : ℕ) (ξ : ⨁ v : Place K, cohomology (placeRep L v) n)
     (v : Place K) : (cohomologyMap (placeProj v) n).hom (idelesCohomologySum L n ξ) = ξ v := by
@@ -96,7 +96,7 @@ theorem placeProj_idelesCohomologySum (n : ℕ) (ξ : ⨁ v : Place K, cohomolog
   | add ξ η hξ hη => rw [map_add, map_add, hξ, hη, DirectSum.add_apply]
 
 /- English proof (translation)
-Introduce `ξ η h`. Use extensionality with `v`. Rewrite using `[← placeProj_idelesCohomologySum n ξ v, ← placeProj_idelesCohomologySum n η v, h]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem idelesCohomologySum_injective (n : ℕ) :
     Function.Injective (idelesCohomologySum (K := K) L n) := by
@@ -110,7 +110,7 @@ noncomputable def ramifiedBelow : Finset (HeightOneSpectrum (𝓞 K)) :=
   ((finite_setOf_ramified K L).image (AdeleBaseChange.below K)).toFinset
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hv (by`. Rewrite using `[ramifiedBelow, Set.Finite.mem_toFinset]`. Conclude with `⟨w.1, h, (AdeleBaseChange.below_eq_iff w.1 v).2 w.2⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ramificationIdx_eq_one_of_not_mem {v : HeightOneSpectrum (𝓞 K)}
     (hv : v ∉ ramifiedBelow K L) (w : PlacesOver L v) :
@@ -123,7 +123,7 @@ theorem ramificationIdx_eq_one_of_not_mem {v : HeightOneSpectrum (𝓞 K)}
 variable [IsGalois K L]
 
 /- English proof (translation)
-Take `⟨w⟩` from `nonempty_placesOver L v.1`. Conclude with `isZero_cohomology_integerUnitsAboveRep v.1 w (ramificationIdx_eq_one_of_not_mem (fun h => v.2 (hS h)) w) hn`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_sComp (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hS : ramifiedBelow K L ⊆ S) {n : ℕ} (hn : 1 ≤ n) (v : ↥(S : Set (HeightOneSpectrum (𝓞 K)))ᶜ) :
@@ -139,7 +139,7 @@ def sIndexMain (S : Finset (HeightOneSpectrum (𝓞 K))) :
 omit [IsGalois K L] in
 open Classical in
 /- English proof (translation)
-The claim follows from `(congrArg (fun φ => ModuleCat.Hom.hom φ z) (cohomologyMap_comp (sEmbInf S v) (Rep.subtype _ _ (sIdelesSubmodule_stable K L S)) n)).symm.trans (idelesCohomologySum_of n (.inl v) z).symm`.
+A detailed English derivation is pending.
 -/
 theorem subtype_sEmbInf (S : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ) (v : InfinitePlace K)
     (z : cohomology (Rep.of (infiniteUnitsAboveRep L v)) n) :
@@ -153,7 +153,7 @@ theorem subtype_sEmbInf (S : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ) (v :
 omit [IsGalois K L] in
 open Classical in
 /- English proof (translation)
-The claim follows from `(congrArg (fun φ => ModuleCat.Hom.hom φ z) (cohomologyMap_comp (sEmbFin S v) (Rep.subtype _ _ (sIdelesSubmodule_stable K L S)) n)).symm.trans (idelesCohomologySum_of n (.inr v.1) z).symm`.
+A detailed English derivation is pending.
 -/
 theorem subtype_sEmbFin (S : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
     (v : (S : Set (HeightOneSpectrum (𝓞 K))))
@@ -168,11 +168,9 @@ theorem subtype_sEmbFin (S : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
 open Classical in
 
 /- English proof (translation)
-Introduce `x`. Take `⟨S, hS, y, rfl⟩` from `exists_sIdeles_cohomology_eq K L n (ramifiedBelow K L) x`. Establish `hy` using `eq_sum_cohomologyMap_of_pi (sProj S) (sProj_bijective S) (sEmb S) (sEmb_comp_sProj S) (sEmb_comp_sProj_of_ne S) (Finset.univ.map (sIndexMain S)) n (fun i hi => by`. Break down `i with v | v | v` into its components or cases. Conclude with `absurd (Finset.mem_map.2 ⟨Sum.inl v, Finset.mem_univ _, rfl⟩) hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd (Finset.mem_map.2 ⟨Sum.inr v, Finset.mem_univ _, rfl⟩) hi`. Conclude with `isZero_cohomology_sComp S hS hn v) y`. Use `⟨(∑ v : InfinitePlace K, DirectSum.of (fun v => cohomology (placeRep L v) n) (Sum.inl v) ((cohomologyMap (sProj (L := L) S (Sum.inl v)) n).hom y : cohomology (Rep.of (infiniteUnitsAboveRep L v)) n)) + ∑ v : (S : Set (HeightOneSpectrum (𝓞 K))), DirectSum.of (fun v => cohomology (p …` and prove the remaining obligations. Rewrite using `[map_add, map_sum, map_sum]`. Use `conv_rhs => rw [hy, map_sum, Finset.sum_map, Fintype.sum_sum_type]`.
-
-Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `(subtype_sEmbInf S n v _).symm`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `(subtype_sEmbFin S n v _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem idelesCohomologySum_surjective {n : ℕ} (hn : 1 ≤ n) :
     Function.Surjective (idelesCohomologySum (K := K) L n) := by
@@ -242,7 +240,7 @@ noncomputable def idelesCohomologyLocalEquiv {n : ℕ} (hn : 1 ≤ n) :
   (idelesCohomologyEquiv hn).symm.trans (DFinsupp.mapRange.addEquiv (placeShapiro n))
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (idelesCohomologyEquiv hn).apply_symm_apply x, idelesCohomologyEquiv_apply]`. Conclude with `(placeProj_idelesCohomologySum n _ v).symm`.
+A detailed English derivation is pending.
 -/
 theorem idelesCohomologyEquiv_symm_apply {n : ℕ} (hn : 1 ≤ n) (x : cohomology (ideleRep K L) n)
     (v : Place K) :
@@ -251,7 +249,7 @@ theorem idelesCohomologyEquiv_symm_apply {n : ℕ} (hn : 1 ≤ n) (x : cohomolog
   exact (placeProj_idelesCohomologySum n _ v).symm
 
 /- English proof (translation)
-Rewrite using `[idelesCohomologyLocalEquiv, AddEquiv.trans_apply, DFinsupp.mapRange.addEquiv_apply, DFinsupp.mapRange_apply, idelesCohomologyEquiv_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idelesCohomologyLocalEquiv_apply {n : ℕ} (hn : 1 ≤ n) (x : cohomology (ideleRep K L) n)
     (v : Place K) :

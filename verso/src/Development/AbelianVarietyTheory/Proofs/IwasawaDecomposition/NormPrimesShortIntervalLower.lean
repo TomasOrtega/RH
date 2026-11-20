@@ -19,11 +19,9 @@ namespace GlobalTheory.Mem.NormPrimes
 open Formalism.HermitianLattices.GL2PrimeSums
 
 /- English proof (translation)
-Establish `hL : 0 ≤ Real.log Y` using `Real.log_nonneg hY`. Establish `hlQ : 0 < Real.log Q` using `Real.log_pos hQ`. Establish `hlQB : Real.log Q ≤ Real.log B` using `Real.log_le_log (by linarith) hQB`. Establish `hm0 : 0 ≤ min c₃ (Real.sqrt (c₃ / 2))` using `le_min hc.le (Real.sqrt_nonneg _)`. Unfold `rhoErr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_add]`. Use `add_le_add (mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hCA.le) (mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hCA.le)` and prove the remaining obligations. Rewrite using `[neg_mul, neg_mul, neg_div, neg_div, neg_le_neg_iff]`. Conclude with `div_le_div₀ (mul_nonneg hc.le hL) (mul_le_mul_of_nonneg_right (min_le_left _ _) hL) hlQ hlQB`. Rewrite using `[neg_mul, neg_le_neg_iff, show c₃ * Real.log Y / 2 = c₃ / 2 * Real.log Y by ring, Real.sqrt_mul (by positivity)]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (min_le_right _ _) (Real.sqrt_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem err_le_rhoErr {CA c₃ Q B Y : ℝ} (hCA : 0 < CA) (hc : 0 < c₃) (hQ : 1 < Q) (hQB : Q ≤ B)
     (hY : 1 ≤ Y) :
@@ -45,13 +43,13 @@ theorem err_le_rhoErr {CA c₃ Q B Y : ℝ} (hCA : 0 < CA) (hc : 0 < c₃) (hQ :
     exact mul_le_mul_of_nonneg_right (min_le_right _ _) (Real.sqrt_nonneg _)
 
 /- English proof (translation)
-Establish `hl1 : 1 ≤ Real.log Q`. Establish `h1 : Real.log 4 ≤ Real.log Q` using `Real.log_le_log (by norm_num) hQ`. Establish `h2 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; push_cast; ring`. Establish `h3 : (0.6931471803 : ℝ) < Real.log 2` using `Real.log_two_gt_d9`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlQB : Real.log Q ≤ Real.log B` using `Real.log_le_log (by linarith) hQB`. Establish `hQ0 : 0 < Q` using `by linarith`. Establish `hp : 0 < Q ^ 2 * Real.log Q` using `mul_pos (by positivity) (by linarith)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: 1 / (8 * Real.log Q) ≤ 1 / 2` using `one_div_le_one_div_of_le (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `div_pos hc hp` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans (div_le_div_of_nonneg_left hc.le hp ?_) h2` and prove the remaining obligations.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul (pow_le_pow_left₀ hQ0.le hQB 2) hlQB (by linarith) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem exceptional_bounds {cS Q B β : ℝ} (hc : 0 < cS) (hQ : 4 ≤ Q) (hQB : Q ≤ B)
     (h1 : 1 - 1 / (8 * Real.log Q) < β) (h2 : cS / (Q ^ 2 * Real.log Q) ≤ 1 - β) :
@@ -74,11 +72,11 @@ theorem exceptional_bounds {cS Q B β : ℝ} (hc : 0 < cS) (hQ : 4 ≤ Q) (hQB :
     exact mul_le_mul (pow_le_pow_left₀ hQ0.le hQB 2) hlQB (by linarith) (by positivity)
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hπ`. Take `⟨a, b, rfl⟩` from `hgen z`. Establish `e : π = ((1 + M * a : ℤ) : 𝓞 K) + ((M * b : ℤ) : 𝓞 K) * ω`. Use `push_cast`. Take the linear combination `-hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hn` using `hnorm (1 + M * a) (M * b)`. Rewrite `hn` using `[← e]`. Establish `h0 : 0 ≤ Algebra.norm ℤ π`. Establish `: 0 ≤ (2 * (1 + (M : ℤ) * a) + M * b) ^ 2 + d * ((M : ℤ) * b) ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨2 * (1 + M * a) + M * b, M * b, ?_, Dvd.intro _ rfl, ⟨a, by ring⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_span_singleton, Int.natAbs_of_nonneg h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem normOne_of_generator {K : Type} [Field K] [NumberField K] {d M : ℕ} {ω : 𝓞 K}
     (hgen : ∀ z : 𝓞 K, ∃ a b : ℤ, z = a + b * ω)
@@ -101,9 +99,9 @@ theorem normOne_of_generator {K : Type} [Field K] [NumberField K] {d M : ℕ} {�
   linarith
 
 /- English proof (translation)
-Rewrite using `[Set.ncard_eq_toFinset_card T hT]`. Use `Finset.card_le_mul_card_image_of_maps_to (f := f) (fun v hv => hF v (by simpa using hv)) 2 (fun p hp => ?_)` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (h2 p hp)` and prove the remaining obligations. Rewrite using `[← Set.ncard_coe_finset]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `v`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ncard_le_two_mul_card {α : Type} {T : Set α} (hT : T.Finite) (f : α → ℕ) (F : Finset ℕ)
     (hF : ∀ v ∈ T, f v ∈ F) (h2 : ∀ p ∈ F, {v ∈ T | f v = p}.ncard ≤ 2) :
@@ -119,49 +117,43 @@ theorem ncard_le_two_mul_card {α : Type} {T : Set α} (hT : T.Finite) (f : α �
   simp
 
 /- English proof (translation)
-Introduce and unpack `⟨c₂, c₃, CA, cS, hc₂, hc₃, hCA, hcS, HT⟩`. Establish `hcr : 0 < min c₃ (Real.sqrt (c₃ / 2))` using `lt_min hc₃ (Real.sqrt_pos.2 (by positivity))`. Take `⟨C₀, c, hC₀, hc, H⟩` from `Formalism.HermitianLattices.GlobalBoundRefinements.shortIntervalLowerBound c₂ CA _ cS hc₂ hCA hcr hcS`. Use `⟨C₀, CA, _, c / 2, by linarith, hCA, hcr, by positivity, ?_⟩` and prove the remaining obligations. Introduce `d M hdp hd4 hd100 hM X h hX hh1 hρ hB7`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨K, _, _, ω, hK, h2, hD, -, hgen, hnorm⟩` from `GlobalTheory.Mem.ImagQuad.exists_imagQuad_integers d hdp hd4`. Use `set B : ℝ := 4 * (d : ℝ) * (M : ℝ) ^ 2 with hB`. Use `set 𝔮 : Ideal (𝓞 K) := Ideal.span {(M : 𝓞 K)} with h𝔮`. Establish `hq0 : 𝔮 ≠ ⊥`. Rewrite using `[h𝔮, Ne, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.cast_ne_zero.2 (by omega)`. Establish `hNq : (Ideal.absNorm 𝔮 : ℝ) = (M : ℝ) ^ 2`. Rewrite using `[h𝔮, Ideal.absNorm_span_natCast, RingOfIntegers.rank, h2]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hDR : |(discr K : ℝ)| = d`. Rewrite using `[hD]`. Use `push_cast`. Rewrite using `[abs_neg, abs_of_nonneg (Nat.cast_nonneg d)]`. Establish `hdR : (100 : ℝ) ≤ d` using `by exact_mod_cast hd100`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hMR : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM2 : (1 : ℝ) ≤ (M : ℝ) ^ 2` using `one_le_pow₀ hMR`. Take `⟨Q, β, θ, S, hQ1, hQ2, hθ, hβ, hS, hmain⟩` from `HT K hK h2 𝔮 hq0`. Rewrite `hQ1`, `hQ2` using `[hDR]`. Rewrite `hQ2` using `[hNq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQB : Q ≤ B` using `hQ2`. Establish `hQ4 : 4 ≤ Q` using `by linarith`. Establish `hB4 : 4 ≤ B` using `by linarith`. Take `⟨hfin, hfib, hdiv⟩` from `GlobalTheory.T.prime_ideals_counting_bounds K hK h2`. Take `⟨hG1, hG2, -⟩` from `GlobalTheory.T.ray_class_number_bounds K 𝔮 hq0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcl` using `GlobalTheory.classNumber_le_four_mul_abs_discr K h2`. Rewrite `hcl` using `[hDR]`. Establish `hGB : (rayNo 𝔮 : ℝ) ≤ B`. Establish `h1 : (rayNo 𝔮 : ℝ) ≤ (classNumber K : ℝ) * (Ideal.absNorm 𝔮 : ℝ)`. Conclude with `hG2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[hNq]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right hcl (by positivity))`. Establish `hrfin : ∀ Y : ℝ, 1 ≤ Y → (rayPrimes 𝔮 Y).Finite` using `fun Y hY => (hfin Y hY).1.subset (fun v hv => hv.2.1)`. Set `P₁ : ℝ → Set (HeightOneSpectrum (𝓞 K))` to `fun Y => {v ∈ rayPrimes 𝔮 Y | (Ideal.absNorm v.asIdeal).Prime}`. Set `P₂ : ℝ → Set (HeightOneSpectrum (𝓞 K))` to `fun Y => {v ∈ rayPrimes 𝔮 Y | ¬ (Ideal.absNorm v.asIdeal).Prime}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hsplit : ∀ Y : ℝ, 1 ≤ Y → (rayPrimes 𝔮 Y).ncard = (P₁ Y).ncard + (P₂ Y).ncard`. Introduce `Y hY`. Rewrite using `[← Set.ncard_union_eq ?_ ((hrfin Y hY).subset (fun v hv => hv.1)) ((hrfin Y hY).subset (fun v hv => hv.1))]`. Use `congr 1`. Use extensionality with `v`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [P₁, P₂, Set.mem_union, Set.mem_setOf_eq]`. The claim follows by propositional logic. Conclude with `Set.disjoint_left.2 (fun v hv hv' => hv'.2 hv.2)`. Establish `hdfin : {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ 𝔮}.Finite` using `Ideal.finite_factors hq0`. Establish `hX1 : 1 ≤ X` using `le_trans (Real.one_le_rpow (by linarith) (by linarith)) hX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have key := (H B (rayNo 𝔮) β θ (fun Y => (P₁ Y).ncard) (fun Y => (P₂ Y).ncard) (fun Y => ({v ∈ S | (Ideal.absNorm v.asIdeal : ℝ) ≤ Y}.ncard : ℝ)) hB4 (by exact_mod_cast hG1) hGB (by rcases hθ with h | h <;> simp [h]) (fun h0 => by`. Take `⟨a, b⟩` from `hβ (by omega)`. Conclude with `exceptional_bounds hcS hQ4 hQB a b)`. Use the proof step `(fun Y hY => by`. Establish `h1 : (P₂ Y).ncard ≤ {v : HeightOneSpectrum (𝓞 K) | (Ideal.absNorm v.asIdeal : ℝ) ≤ Y ∧ ¬ (Ideal.absNorm v.asIdeal).Prime}.ncard` using `Set.ncard_le_ncard (fun v hv => ⟨hv.1.2.1, hv.2⟩) ((hfin Y hY).1.subset (fun v hv => hv.1))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ((P₂ Y).ncard : ℝ) ≤ _` using `Nat.cast_le.2 h1`. Use `(hfin Y hY).2` as an intermediate fact. Use `Real.sqrt_nonneg Y` as an intermediate fact. Use the proof step `linarith)`. Use the proof step `(fun Y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `⟨Nat.cast_nonneg _, ?_⟩` and prove the remaining obligations. Establish `h1 : {v ∈ S | (Ideal.absNorm v.asIdeal : ℝ) ≤ Y}.ncard ≤ {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ 𝔮}.ncard` using `Set.ncard_le_ncard (fun v hv => hS v hv.1) hdfin`. Establish `h2 : ({v ∈ S | (Ideal.absNorm v.asIdeal : ℝ) ≤ Y}.ncard : ℝ) ≤ _` using `Nat.cast_le.2 h1`. Establish `h3` using `hdiv 𝔮 hq0`. Rewrite `h3` using `[hNq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Real.log (4 * (M : ℝ) ^ 2) ≤ Real.log B` using `Real.log_le_log (by positivity) (by rw [hB]; nlinarith)`. Use the proof step `linarith)`. Use the proof step `(fun Y hY => by`. Establish `hY1 : 1 ≤ Y` using `le_trans (Real.one_le_rpow (by linarith) hc₂.le) hY`. Establish `h1` using `hmain Y (le_trans (Real.rpow_le_rpow (by linarith) hQB hc₂.le) hY)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h1` using `[hsplit Y hY1]`. Move the coercions through the operations in `at h1`. Establish `hE : 0 ≤ Emain θ β Y` using `nonneg_of_mul_nonneg_right (le_trans (abs_nonneg _) h1) (by positivity)`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (err_le_rhoErr hCA hc₃ (by linarith) hQB hY1) hE))`. Use `X hX).2 h hh1 hρ hB7`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hρ0 : 0 < rhoErr CA (min c₃ (Real.sqrt (c₃ / 2))) B X` using `by unfold rhoErr; positivity`. Establish `hh0 : 0 < h` using `by linarith`. Establish `hX' : 1 ≤ X * (1 + h)` using `by nlinarith`. Establish `hP1 : (P₁ (X * (1 + h))).Finite` using `(hrfin _ hX').subset (fun v hv => hv.1)`. Establish `hP0 : (P₁ X).Finite` using `(hrfin _ hX1).subset (fun v hv => hv.1)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hcount : (P₁ (X * (1 + h)) \ P₁ X).ncard ≤ 2 * (normPrimes d M X (X * (1 + h))).card`. Use `ncard_le_two_mul_card (hP1.subset Set.diff_subset) (fun v => Ideal.absNorm v.asIdeal) _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `v ⟨⟨hv, hp⟩, hn⟩`. Establish `hlt : X < (Ideal.absNorm v.asIdeal : ℝ)`. Assume the negation of the conclusion as `hle`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hn ⟨⟨hv.1, not_lt.1 hle, hv.2.2⟩, hp⟩`. Take `⟨π, hπ1, hπ2⟩` from `GlobalTheory.T.ray_primes_principal_generator K 𝔮 hq0 _ v hv`. Establish `hN` using `normOne_of_generator hgen hnorm hπ2`. Rewrite `hN` using `[← hπ1]`. Unfold `normPrimes`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_Ioc]`. Conclude with `⟨⟨(Nat.floor_lt (by linarith)).2 hlt, Nat.le_floor hv.2.1⟩, hp, hN⟩`. Introduce `p hp`. Establish `hpp : p.Prime`. Unfold `normPrimes at hp`.
-
-Simplify using `only [Finset.mem_filter] at hp`. Conclude with `hp.2.1`. Use `le_trans (Set.ncard_le_ncard (fun v hv => hv.2) ?_) (hfib p hpp)` and prove the remaining obligations. Use `(hfin p (by exact_mod_cast hpp.one_lt.le)).1.subset (fun v hv => ?_)` and prove the remaining obligations. Establish `: Ideal.absNorm v.asIdeal = p` using `hv`.
-
-Simplify using `[this]`. Establish `hle : (P₁ (X * (1 + h))).ncard ≤ (P₁ (X * (1 + h)) \ P₁ X).ncard + (P₁ X).ncard` using `Set.ncard_le_ncard_diff_add_ncard _ _ hP0`. Establish `hR : ((P₁ (X * (1 + h))).ncard : ℝ) ≤ 2 * ((normPrimes d M X (X * (1 + h))).card : ℝ) + (P₁ X).ncard`. Conclude with `hle.trans (Nat.add_le_add_right hcount _)` after adjusting the coercions. Establish `e : c / 2 * h * B ^ (-6 : ℝ) * X / Real.log X = (c * h * B ^ (-6 : ℝ) * X / Real.log X) / 2` using `by ring`.
-
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem normPrimes_short_interval : GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates → ∃ C₀ Cr cr c : ℝ, 0 < C₀ ∧ 0 < Cr ∧ 0 < cr ∧ 0 < c ∧ ∀ d M : ℕ, d.Prime → d % 4 = 3 → 100 ≤ d → 1 ≤ M → ∀ X h : ℝ, (4 * (d : ℝ) * (M : ℝ) ^ 2) ^ C₀ ≤ X → h ≤ 1 → Formalism.HermitianLattices.GL2PrimeSums.rhoErr Cr cr (4 * (d : ℝ) * (M : ℝ) ^ 2) X ≤ h / 100 → (4 * (d : ℝ) * (M : ℝ) ^ 2) ^ (7 : ℝ) ≤ h * X ^ ((1 : ℝ) / 3) → c * h * (4 * (d : ℝ) * (M : ℝ) ^ 2) ^ (-6 : ℝ) * X / Real.log X ≤ ((normPrimes d M X (X * (1 + h))).card : ℝ) := by
   rintro ⟨c₂, c₃, CA, cS, hc₂, hc₃, hCA, hcS, HT⟩

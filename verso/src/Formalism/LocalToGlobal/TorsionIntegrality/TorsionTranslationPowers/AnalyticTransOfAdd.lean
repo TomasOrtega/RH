@@ -10,91 +10,91 @@ import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.Nonsi
 namespace Formalism.L2.Th1.E
 
 /- English proof (translation)
-The claim follows from `fourth_power`.
+A detailed English derivation is pending.
 -/
 theorem fourthPower : FourthPower := fourth_power
 /- English proof (translation)
-The claim follows from `general_integrality`.
+A detailed English derivation is pending.
 -/
 theorem generalIntOf : GeneralIntOf := general_integrality
 /- English proof (translation)
-The claim follows from `torsion_integral`.
+A detailed English derivation is pending.
 -/
 theorem torsionIntegral : TorsionIntegral := torsion_integral
 /- English proof (translation)
-The claim follows from `PtOfZero_of`.
+A detailed English derivation is pending.
 -/
 theorem ptOfZero : PtOfZero := PtOfZero_of
 /- English proof (translation)
-The claim follows from `AnaSys.wpBridge`.
+A detailed English derivation is pending.
 -/
 theorem wpBridge : WpBridge := AnaSys.wpBridge
 /- English proof (translation)
-The claim follows from `AnaSys.transWpBridge`.
+A detailed English derivation is pending.
 -/
 theorem transWpBridge : TransWpBridge := AnaSys.transWpBridge
 /- English proof (translation)
-The claim follows from `AnalyticSys_of transWpBridge`.
+A detailed English derivation is pending.
 -/
 theorem analyticSys : AnalyticSys := AnalyticSys_of transWpBridge
 /- English proof (translation)
-The claim follows from `cm_integrality_of_halves`.
+A detailed English derivation is pending.
 -/
 theorem cm4OfHalves : CMTorsionValuesOfIntegralAndUnramified := cm_integrality_of_halves
 /- English proof (translation)
-The claim follows from `OpUTh0Root_of`.
+A detailed English derivation is pending.
 -/
 theorem opUTh0Root : OpUTh0Root := OpUTh0Root_of
 
 /- English proof (translation)
-The claim follows from `PtOfInt_of hA ptOfZero torsionIntegral`.
+A detailed English derivation is pending.
 -/
 theorem ptOfInt_of_add (hA : PtOfAdd) : PtOfInt := PtOfInt_of hA ptOfZero torsionIntegral
 /- English proof (translation)
-The claim follows from `KernelPtInt_of (ptOfInt_of_add hA)`.
+A detailed English derivation is pending.
 -/
 theorem kernelPtInt_of_add (hA : PtOfAdd) : KernelPtInt := KernelPtInt_of (ptOfInt_of_add hA)
 /- English proof (translation)
-The claim follows from `cm_integrality_of_torsion_points (ptOfInt_of_add hA)`.
+A detailed English derivation is pending.
 -/
 theorem cm4Int_of_add (hA : PtOfAdd) : CMIntegrality := cm_integrality_of_torsion_points (ptOfInt_of_add hA)
 /- English proof (translation)
-The claim follows from `AnalyticTrans_of analyticSys hA ptOfZero (ptOfInt_of_add hA) transUnit`.
+A detailed English derivation is pending.
 -/
 theorem analyticTrans_of_add (hA : PtOfAdd) : AnalyticTrans :=
   AnalyticTrans_of analyticSys hA ptOfZero (ptOfInt_of_add hA) transUnit
 /- English proof (translation)
-The claim follows from `Th0Analytic_of analyticSys hA ptOfZero (ptOfInt_of_add hA) transUnit transGauss opUTh0Root`.
+A detailed English derivation is pending.
 -/
 theorem th0Analytic_of_add (hA : PtOfAdd) : ThetaZeroAnalytic :=
   Th0Analytic_of analyticSys hA ptOfZero (ptOfInt_of_add hA) transUnit transGauss opUTh0Root
 
 /- English proof (translation)
-The claim follows from `PtOfAdd_of`.
+A detailed English derivation is pending.
 -/
 theorem ptOfAdd : PtOfAdd := PtOfAdd_of
 /- English proof (translation)
-The claim follows from `ptOfInt_of_add ptOfAdd`.
+A detailed English derivation is pending.
 -/
 theorem ptOfInt : PtOfInt := ptOfInt_of_add ptOfAdd
 /- English proof (translation)
-The claim follows from `kernelPtInt_of_add ptOfAdd`.
+A detailed English derivation is pending.
 -/
 theorem kernelPtInt : KernelPtInt := kernelPtInt_of_add ptOfAdd
 /- English proof (translation)
-The claim follows from `cm4Int_of_add ptOfAdd`.
+A detailed English derivation is pending.
 -/
 theorem cm4Int : CMIntegrality := cm4Int_of_add ptOfAdd
 /- English proof (translation)
-The claim follows from `analyticTrans_of_add ptOfAdd`.
+A detailed English derivation is pending.
 -/
 theorem analyticTrans : AnalyticTrans := analyticTrans_of_add ptOfAdd
 /- English proof (translation)
-The claim follows from `th0Analytic_of_add ptOfAdd`.
+A detailed English derivation is pending.
 -/
 theorem th0Analytic : ThetaZeroAnalytic := th0Analytic_of_add ptOfAdd
 /- English proof (translation)
-The claim follows from `scaled_torsion_point_of_add ptOfAdd`.
+A detailed English derivation is pending.
 -/
 theorem cm4Pt : ScaledTorsionPointNonsingular := scaled_torsion_point_of_add ptOfAdd
 

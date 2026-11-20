@@ -11,7 +11,7 @@ section
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Set `P : Subrepresentation ρ` to `⟨S, fun g x hx => hS g x hx⟩`. Conclude with `(hi.eq_bot_or_eq_top P).imp (fun e => congrArg Subrepresentation.toSubmodule e) fun e => congrArg Subrepresentation.toSubmodule e`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem eq_bot_or_top {ρ : Representation ℂ G V} (hi : ρ.IsIrreducible) (S : Submodule ℂ V)
     (hS : ∀ g, ∀ x ∈ S, ρ g x ∈ S) : S = ⊥ ∨ S = ⊤ := by
@@ -22,7 +22,7 @@ private theorem eq_bot_or_top {ρ : Representation ℂ G V} (hi : ρ.IsIrreducib
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Rewrite using `[← rank_top]`. Use `GlobalTheory.CompanionTheory.SatAe.rank_le_of_simple (⊤ : Submodule ℂ V) (fun g : G => ρ g) ((Submodule.ne_bot_iff _).2 ⟨v, trivial, hv⟩) (fun W _ hW => eq_bot_or_top hi W hW) fun x _ => ?_` and prove the remaining obligations. Conclude with `⟨_, GlobalTheory.CompanionTheory.SatAe.countable_orbit ρ x (hs x), fun _ _ => trivial, fun g => Submodule.subset_span ⟨g, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 private theorem rank_le [SecondCountableTopology G] {ρ : Representation ℂ G V} (hs : IsSmooth ρ)
     (hi : ρ.IsIrreducible) {v : V} (hv : v ≠ 0) : Module.rank ℂ V ≤ Cardinal.aleph0 := by
@@ -32,13 +32,13 @@ private theorem rank_le [SecondCountableTopology G] {ρ : Representation ℂ G V
   exact ⟨_, GlobalTheory.CompanionTheory.SatAe.countable_orbit ρ x (hs x), fun _ _ => trivial, fun g => Submodule.subset_span ⟨g, rfl⟩⟩
 
 /- English proof (translation)
-Establish `hr` using `rank_le hs hi hv0`. Establish `hb : GlobalTheory.CompanionTheory.SatAe.IsBiSimple ρ` using `fun S h1 _ => eq_bot_or_top hi S h1`. Establish `hle : Submodule.span ℂ {v} ≤ fixed ρ K` using `(Submodule.span_singleton_le_iff_mem _ _).2 hv`. Establish `hH : ∀ f ∈ Hecke ℂ K, ∀ x ∈ Submodule.span ℂ {v}, heckeVec ρ K f x ∈ Submodule.span ℂ {v}`. Introduce `f hf x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc'⟩` from `GlobalTheory.CompanionTheory.SatAe.exists_scalar hs hc hK hcomm hb hr f hf`. Rewrite using `[hc' x (hle hx)]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hB : ∀ b : Module.End ℂ V, (∀ g, b * ρ g = ρ g * b) → ∀ x ∈ Submodule.span ℂ {v}, b x ∈ Submodule.span ℂ {v}`. Introduce `b hbc x hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc'⟩` from `GlobalTheory.CompanionTheory.SatAe.scalar_of_simple hr (Set.range fun g => ρ g) (fun W hW => eq_bot_or_top hi W fun g => hW _ ⟨g, rfl⟩) b (by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `(hbc g).symm)`. Rewrite using `[hc' x]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `((GlobalTheory.CompanionTheory.SatAe.fixed_simple hs hc hK hb _ hle hH hB).resolve_left fun h => hv0 ?_).symm` and prove the remaining obligations. Establish `: v ∈ Submodule.span ℂ {v}` using `Submodule.mem_span_singleton_self v`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`.
+A detailed English derivation is pending.
 -/
 private theorem fixed_eq_span [SecondCountableTopology G] {ρ : Representation ℂ G V} {K : Subgroup G}
     (hs : IsSmooth ρ) (hi : ρ.IsIrreducible) (hc : IsCompact (K : Set G)) (hK : IsCommensurated K)
@@ -69,11 +69,11 @@ private theorem fixed_eq_span [SecondCountableTopology G] {ρ : Representation �
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ n w τ hne`. Break down `τ with @⟨V, _, _, ρ, hs, hi⟩` into its components or cases. Express the relevant statement in the definitionally equal form `fixed ρ (KGL w n) ≠ ⊥ at hne`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hc` using `(isOpen_isCompact_KGL w n).2`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK` using `Final.GLintComm E w n`. Establish `hcomm` using `Final.HeckeCommGL E w n ℂ`. Establish `hline` using `fixed_eq_span hs hi hc hK hcomm hv hv0`. Use `⟨?_, GlobalTheory.CompanionTheory.SatAe.exists_hasSatGL_of_scalar (fun h hh => ?_) hne⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Module.finrank ℂ (fixed ρ (KGL w n)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hline]`. Conclude with `finrank_span_singleton hv0`. Conclude with `GlobalTheory.CompanionTheory.SatAe.exists_scalar hs hc hK hcomm (fun S h1 _ => eq_bot_or_top hi S h1) (rank_le hs hi hv0) h hh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitLine : SplitLine := by
   intro E _ _ _ n w τ hne

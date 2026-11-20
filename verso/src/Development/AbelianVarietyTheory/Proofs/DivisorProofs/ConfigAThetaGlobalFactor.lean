@@ -19,15 +19,15 @@ noncomputable section
 namespace GlobalTheory.IndLine
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ φ φ' hφ hφ' hx hx'`. Establish `hirr` using `GlobalTheory.T.config_a_theta_local_factor hK F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hland` using `GlobalTheory.T.configuration_seesaw_identity hK F E σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hirr₁` using `GlobalTheory.T.lowPart_invariant_submodule_equiv hK F E σ B b a' G₁ X om₁ om₁' R₁ Rf₁ hM₁`. Establish `key : ∀ ψ : R.Pi →ₗ[ℂ] R₁.Pi, IsFrobInf B G.M G₁.M om om₁ R.p R₁.p H' X.α ((a' : ℝ) / 2) ψ → (∃ x ∈ twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p), ψ x ≠ 0) → (twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p)).map ψ = lowPartInf B G₁.M …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ψ hψ ⟨x, hx, hψx⟩`. Establish `hle : (twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p)).map ψ ≤ lowPartInf B G₁.M R₁.p`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hland ψ hψ y hy`. Establish `hstab : ∀ k₁ ∈ KInf σ G₁.W B.emb, ∀ g ∈ G₁.M.Pol B.ψ B.emb, ∀ g₁ : SInf F (Fin b × Fin (b + a')), Acts (evI F) (om₁ (1, k₁)) g g₁ → R₁.p g ∈ (twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p)).map ψ → R₁.p g₁ ∈ (twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `k₁ hk₁ g hg g₁ hg₁ ⟨y, hy, hyg⟩`. Take `⟨k, hk, hL⟩` from `GlobalTheory.T.levi_lift_maximal_compact F E σ B _ _ G.W G₁.W H' 0 (b + 1) _ _ hM.triple.base.cm hM.triple.geo.hW hC.hH' k₁ hk₁`. Establish `hy0 : y ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hM.real.quot.onto]; exact Submodule.mem_top`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hy0`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hM.triple.base hM.triple.geo.hM hM.triple.weil k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hψ.cpt k hk 1 k₁ hL hk₁ f hf (A f) (hA f) g hg g₁ hg₁ hyg`. Establish `hin : R.p (A f) ∈ twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p)` using `hirr.2.1 k hk k₁ hk₁ hL f hf (A f) (hA f) hy`. Use `⟨R.p (A f), hin, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hirr₁ _ hle hstab with h | h` into its components or cases. Conclude with `absurd ((Submodule.eq_bot_iff _).1 h _ ⟨x, hx, rfl⟩) hψx`. Conclude with `h`. Rewrite using `[key φ hφ hx, key φ' hφ' hx']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twPart_map_eq : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

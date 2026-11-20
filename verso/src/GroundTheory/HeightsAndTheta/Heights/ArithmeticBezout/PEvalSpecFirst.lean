@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `n k f v w`. Express the relevant statement in the definitionally equal form `eval₂Hom (RingHom.id ℂ) w (bind₁ (specFirstVar v) f) = eval₂Hom (RingHom.id ℂ) (consGroup v w) f`. Rewrite using `[eval₂Hom_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `ij`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨i, j⟩` from `ij`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [specFirstVar, consGroup]`. Consider the case `succ i => simp [specFirstVar, consGroup]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem EvalSpecFirst.proof : EvalSpecFirst.Statement := by
   intro n k f v w

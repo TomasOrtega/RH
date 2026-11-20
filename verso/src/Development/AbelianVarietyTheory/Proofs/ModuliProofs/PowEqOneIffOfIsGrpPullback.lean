@@ -18,7 +18,7 @@ open GlobalTheory.UU
 namespace GlobalTheory.TorsionSection
 
 /- English proof (translation)
-Establish `e : (1 : T ⟶ G).left = T.hom ≫ η[G].left`. Rewrite using `[Hom.one_def, Over.comp_left]`. Both sides reduce to the same expression. Rewrite using `[← e, ← Over.comp_left, GrpTangent.comp_mulN]`. Conclude with `⟨fun h => by rw [h], fun h => Over.OverMorphism.ext h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pow_eq_one_iff_left {S : Scheme.{0}} {G T : Over S} [GrpObj G] (y : T ⟶ G) (n : ℕ) :
     y ^ n = 1 ↔ y.left ≫ (mulN G n).left = T.hom ≫ η[G].left := by
@@ -28,7 +28,7 @@ theorem pow_eq_one_iff_left {S : Scheme.{0}} {G T : Over S} [GrpObj G] (y : T �
   exact ⟨fun h => by rw [h], fun h => Over.OverMorphism.ext h⟩
 
 /- English proof (translation)
-Set `φ : (T ⟶ G') →* (Over.mk (T.hom ≫ f) ⟶ G)` to `MonoidHom.mk' (Out.toBase h.1.w) fun a b => Over.OverMorphism.ext (h.2 T a b _ _ rfl rfl).symm`. Establish `hφ : Function.Injective φ` using `fun a b hab => Over.OverMorphism.ext (h.1.hom_ext (congrArg Over.Hom.left hab) ((Over.w a).trans (Over.w b).symm))`. Rewrite using `[← map_eq_one_iff φ hφ, map_pow]`. Conclude with `pow_eq_one_iff_left (φ y) n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_iff_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' T : Over S'} [GrpObj G]
     [GrpObj G'] {f : S' ⟶ S} {F : G'.left ⟶ G.left} (h : IsGrpPullback G' G f F) (y : T ⟶ G')
@@ -42,27 +42,25 @@ theorem pow_eq_one_iff_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' T :
   exact pow_eq_one_iff_left (φ y) n
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l B _ b X U j s o t μ₀ hX hN h₁ h₂ h₃ h₄ hA k _ x p hp`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.separated` as an intermediate fact. Establish `hP` using `GrpTangent.isPullback_torsion t.G l.A`. Establish `hEt` using `GrpTangent.etale_torsion t.G hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : (torsion.ι t.G l.A).left ≫ t.G.hom = (torsion t.G l.A).hom` using `Over.w _`. Establish `hsep : IsSeparated (torsion t.G l.A).hom`. Establish `: IsSeparated ((mulN t.G l.A).left ≫ t.G.hom)` using `by rw [Over.w]; infer_instance`. Conclude with `MorphismProperty.of_isPullback (P := @IsSeparated) hP (IsSeparated.of_comp _ t.G.hom)`. Use `D.fin` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Establish `: AddGroup.FG D.La` using `Module.Finite.iff_addGroup_fg.mp this`. Set `K : AddSubgroup D.La` to `(nsmulAddMonoidHom (α := D.La) l.A).range`. Establish `: K.FiniteIndex` using `AddSubgroup.finiteIndex_range_nsmulAddMonoidHom_of_fg _ l.A_pos.ne'`. Set `e : Multiplicative D.La →* (𝟙_ (Over U) ⟶ o.t.G)` to `MonoidHom.mk' (fun a => o.etaA a.toAdd) fun a c => o.etaA_add _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpow (a : D.La) : o.etaA a ^ l.A = 1` using `(map_pow e (.ofAdd a) l.A).symm.trans (o.etaA_ker a)`. Establish `hout (a : D.La) : o.etaA (QuotientAddGroup.mk (s` using `K) a).out = o.etaA a := by`. Take `⟨⟨_, c, rfl⟩, hc⟩` from `QuotientAddGroup.mk_out_eq_add K a`. Rewrite using `[hc, o.etaA_add]`. Conclude with `(congrArg (o.etaA a * ·) (o.etaA_ker c)).trans (_root_.mul_one _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hw (a : D.La) : ((o.etaA a).left ≫ μ₀.φ) ≫ (mulN t.G l.A).left = j ≫ η[t.G].left` using `((pow_eq_one_iff_of_isGrpPullback μ₀.cart (o.etaA a) l.A).mp (hpow a)).trans (congrArg (· ≫ _) (Category.id_comp j))`. Set `σ (a : D.La) : U ⟶ (torsion t.G l.A).left` to `hP.lift _ _ (hw a)`. Establish `hσ (a : D.La) : σ a ≫ (torsion.ι t.G l.A).left = (o.etaA a).left ≫ μ₀.φ` using `hP.lift_fst _ _ _`. Set `p' : Sp k ⟶ (torsion t.G l.A).left` to `hP.lift p.left x ((pow_eq_one_iff_left p l.A).mp hp)`. Take `⟨i, W, hW, hW₁, hW₂⟩` from `exists_opens_isOpenImmersion_extending_section X U j hN h₁ h₂ h₃ h₄ (torsion t.G l.A).left (torsion t.G l.A).hom (D.La ⧸ K) (fun i => σ i.out) hEt hsep (fun i => hP.lift_snd _ _ _) (fun Ω _ _ u y hy => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : (y ≫ (torsion.ι t.G l.A).left) ≫ t.G.hom = u ≫ j`. Rewrite using `[Category.assoc, hι, hy]`. Set `z : Over.mk u ⟶ o.t.G` to `Over.homMk (μ₀.cart.1.lift _ _ hy') (μ₀.cart.1.lift_snd _ _ _)`. Establish `hz : z.left ≫ μ₀.φ = y ≫ (torsion.ι t.G l.A).left` using `μ₀.cart.1.lift_fst _ _ _`. Establish `hzA : z ^ l.A = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(pow_eq_one_iff_of_isGrpPullback μ₀.cart z l.A).mpr ?_` and prove the remaining obligations. Rewrite using `[hz, Category.assoc, hP.w, reassoc_of% hy]`. Conclude with `(Category.assoc _ _ _).symm`. Take `⟨β, hβ⟩` from `Spec.map_surjective (u ≫ s)`. Take `⟨-, I, -, hI, -⟩` from `o.geom Ω u β.hom hβ.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `(I.onto l.A l.A_pos z).mp hzA`. Use `⟨QuotientAddGroup.mk a, hP.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hσ, hout, ← hz, ← ha, ← hI, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[hy, Category.assoc, hP.lift_snd])`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(p' (IsLocalRing.closedPoint k))`. Establish `hr : Set.range p' ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Subsingleton.elim w (IsLocalRing.closedPoint k), Scheme.Opens.range_ι]`. Conclude with `hW`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨i.out, W, W.ι ≫ (torsion t.G l.A).hom, hW₁, W.ι ≫ (torsion.ι t.G l.A).left, IsOpenImmersion.lift W.ι p' hr, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsOpenImmersion.lift_fac_assoc]`. Conclude with `hP.lift_snd _ _ _`. Rewrite using `[Category.assoc, hι]`. Rewrite using `[reassoc_of% hW₂, hσ]`.
-
-Rewrite using `[IsOpenImmersion.lift_fac_assoc]`. Conclude with `hP.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_section_extending_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (X U : Scheme.{0}) (j : U ⟶ X) (s : U ⟶ Sp B) (o : Obj D l b s) (t : SAB H X) (μ₀ : SABMap o.t t j), IsLocallyNoetherian X → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → IsPreimmersion j → Flat j → IsDominant j → QuasiCompact j → IsUnit (l.A : Γ(X, ⊤)) → ∀ (k : Type) [Field k] (x : Sp k ⟶ X) (p : Over.mk x ⟶ t.G), p ^ l.A = 1 → ∃ (a : D.La) (V : Scheme.{0}) (v : V ⟶ X) (_ : IsOpenImmersion v) (σ : V ⟶ t.G.left) (xV : Sp k ⟶ V), xV ≫ v = x ∧ σ ≫ t.G.hom = v ∧ pullback.fst v j ≫ σ = pullback.snd v j ≫ (o.etaA a).left ≫ μ₀.φ ∧ xV ≫ σ = p.left := by
   intro E _ _ _ H D l B _ b X U j s o t μ₀ hX hN h₁ h₂ h₃ h₄ hA k _ x p hp

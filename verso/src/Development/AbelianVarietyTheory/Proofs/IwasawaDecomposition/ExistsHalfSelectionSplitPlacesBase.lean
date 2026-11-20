@@ -11,9 +11,7 @@ noncomputable section
 namespace GlobalTheory.Mem.Top.Bl.OnePrimeEach
 
 /- English proof (translation)
-Use `haveI := w.isMaximal`. Use `haveI : Finite (𝓞 L ⧸ w.asIdeal) := w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`. Use `letI := Ideal.Quotient.field w.asIdeal`. Take `⟨p, hp⟩` from `CharP.exists (𝓞 L ⧸ w.asIdeal)`. Use `⟨p, CharP.char_is_prime (𝓞 L ⧸ w.asIdeal) p, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratPrime_mem {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) :
     ∃ p : ℕ, p.Prime ∧ (p : 𝓞 L) ∈ w.asIdeal := by
@@ -26,9 +24,9 @@ theorem exists_ratPrime_mem {L : Type} [Field L] [NumberField L] (w : HeightOneS
   exact CharP.cast_eq_zero _ p
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `Int.ideal_span_isMaximal_of_prime p`. Take `⟨Q, hQ, hQ'⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 L) (Ideal.span {(p : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (algebraMap ℤ (𝓞 L)).injective_int]; exact bot_le)`. Establish `hmem : ((p : ℕ) : 𝓞 L) ∈ Q`. Establish `: (p : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 L))` using `by rw [hQ']; exact Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Ideal.mem_comap]`. Use `⟨⟨Q, hQ.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `(Nat.cast_ne_zero.2 hp.ne_zero) (Ideal.mem_bot.1 hmem)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_mem_of_prime (L : Type) [Field L] [NumberField L] {p : ℕ} (hp : p.Prime) :
     ∃ P : HeightOneSpectrum (𝓞 L), ((p : ℕ) : 𝓞 L) ∈ P.asIdeal := by
@@ -44,9 +42,9 @@ theorem exists_mem_of_prime (L : Type) [Field L] [NumberField L] {p : ℕ} (hp :
   exact (Nat.cast_ne_zero.2 hp.ne_zero) (Ideal.mem_bot.1 hmem)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Take `⟨a, b, hab⟩` from `hc.map (Int.castRingHom (𝓞 L))`. Apply `w.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hpw) (Ideal.mul_mem_left _ _ hqw)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratPrime_unique {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) {p q : ℕ}
     (hp : p.Prime) (hq : q.Prime) (hpw : (p : 𝓞 L) ∈ w.asIdeal) (hqw : (q : 𝓞 L) ∈ w.asIdeal) : p = q := by
@@ -63,18 +61,18 @@ variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
 def ratP (v : HeightOneSpectrum (𝓞 H.F)) : ℕ := (exists_ratPrime_mem v).choose
 
 /- English proof (translation)
-The claim follows from `(exists_ratPrime_mem v).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem ratP_prime (v : HeightOneSpectrum (𝓞 H.F)) : (ratP H v).Prime := (exists_ratPrime_mem v).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_ratPrime_mem v).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem ratP_mem (v : HeightOneSpectrum (𝓞 H.F)) : ((ratP H v : ℕ) : 𝓞 H.F) ∈ v.asIdeal :=
   (exists_ratPrime_mem v).choose_spec.2
 
 /- English proof (translation)
-The claim follows from `ratPrime_unique v (ratP_prime H v) hp (ratP_mem H v) h`.
+A detailed English derivation is pending.
 -/
 theorem ratP_eq (v : HeightOneSpectrum (𝓞 H.F)) {p : ℕ} (hp : p.Prime) (h : (p : 𝓞 H.F) ∈ v.asIdeal) :
     ratP H v = p := ratPrime_unique v (ratP_prime H v) hp (ratP_mem H v) h
@@ -83,7 +81,7 @@ def primeK (p : ℕ) : HeightOneSpectrum (𝓞 H.K) :=
   if hp : p.Prime then (exists_mem_of_prime H.K hp).choose else (exists_mem_of_prime H.K Nat.prime_two).choose
 
 /- English proof (translation)
-Unfold `primeK`. Rewrite using `[dif_pos hp]`. Conclude with `(exists_mem_of_prime H.K hp).choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeK_mem {p : ℕ} (hp : p.Prime) : ((p : ℕ) : 𝓞 H.K) ∈ (primeK H p).asIdeal := by
   unfold primeK
@@ -95,19 +93,19 @@ def sel (v : HeightOneSpectrum (𝓞 H.F)) : HeightOneSpectrum (𝓞 H.E) :=
     (ratP_mem H v)).choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.PlaceOverPair.exists_mem_pvSet H (ratP_prime H v) (primeK H (ratP H v)) (primeK_mem H (ratP_prime H v)) v (ratP_mem H v)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem sel_mem (v : HeightOneSpectrum (𝓞 H.F)) : sel H v ∈ PvSet H (primeK H (ratP H v)) v :=
   (GlobalTheory.PlaceOverPair.exists_mem_pvSet H (ratP_prime H v) (primeK H (ratP H v)) (primeK_mem H (ratP_prime H v)) v
     (ratP_mem H v)).choose_spec
 
 /- English proof (translation)
-The claim follows from `(sel_mem H v).1`.
+A detailed English derivation is pending.
 -/
 theorem sel_above (v : HeightOneSpectrum (𝓞 H.F)) : sel H v ∈ aboveF (L := H.E) H.F v := (sel_mem H v).1
 
 /- English proof (translation)
-Establish `h` using `sel_above H v`. Rewrite `h` using `[aboveF, Set.Finite.mem_toFinset]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sel_under (v : HeightOneSpectrum (𝓞 H.F)) : (sel H v).under (𝓞 H.F) = v := by
   have h := sel_above H v
@@ -115,12 +113,12 @@ theorem sel_under (v : HeightOneSpectrum (𝓞 H.F)) : (sel H v).under (𝓞 H.F
   exact h
 
 /- English proof (translation)
-The claim follows from `(sel_mem H v).2`.
+A detailed English derivation is pending.
 -/
 theorem sel_underK (v : HeightOneSpectrum (𝓞 H.F)) : (sel H v).under (𝓞 H.K) = primeK H (ratP H v) := (sel_mem H v).2
 
 /- English proof (translation)
-Establish `h` using `sel_mem H v`. Rewrite `h` using `[ratP_eq H v hp hv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sel_mem_of {p : ℕ} (hp : p.Prime) (v : HeightOneSpectrum (𝓞 H.F)) (hv : (p : 𝓞 H.F) ∈ v.asIdeal) :
     sel H v ∈ PvSet H (primeK H p) v := by
@@ -136,9 +134,9 @@ end GlobalTheory.Mem.Top.Bl.OnePrimeEach
 open GlobalTheory.Mem.Top.Bl.OnePrimeEach in
 
 /- English proof (translation)
-Introduce `B`. Use `⟨sel B.host, splitPlacesTwoPrimes B.host, ?_, sel_above B.host, ?_, fun _ _ => rfl, fun _ _ => rfl⟩` and prove the remaining obligations. Introduce `v`. Conclude with `congrArg HeightOneSpectrum.asIdeal (sel_under B.host v)`. Introduce `v v' p hp hv hv'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sel_underK, sel_underK, ratP_eq B.host v hp hv, ratP_eq B.host v' hp hv']`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Top.Bl.exists_half_selection_split_places : ∀ B : Base, ∃ (Pv : HeightOneSpectrum (𝓞 B.host.F) → HeightOneSpectrum (𝓞 B.host.E)) (d : PlacesOverCommonPrime B.host), Formalism.L2.Col.IsSel B.fields Pv ∧ (∀ v, Pv v ∈ aboveF (L := B.host.E) B.host.F v) ∧ Half B Pv ∧ (∀ v hv, Pv v = d.P v hv) ∧ ∀ v hv, Pv v = d.P' v hv := by
   intro B

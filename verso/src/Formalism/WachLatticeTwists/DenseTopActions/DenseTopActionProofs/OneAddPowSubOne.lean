@@ -7,7 +7,7 @@ namespace Formalism.RepresentationBoundsCohomology.JW
 open Matrix Formalism.RepresentationBoundsCohomology.N1 Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 /- English proof (translation)
-Rewrite using `[add_comm, add_pow, Finset.sum_range_succ', Finset.mul_sum]`. Simplify using `only [one_pow, mul_one, pow_zero, Nat.choose_zero_right, Nat.cast_one, add_sub_cancel_right]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem one_add_pow_sub_one' {R : Type} [CommRing R] (x : R) (n : ℕ) :
     (1 + x) ^ n - 1 = x * ∑ k ∈ Finset.range n, ((n.choose (k + 1) : ℕ) : R) * x ^ k := by
@@ -17,13 +17,13 @@ theorem one_add_pow_sub_one' {R : Type} [CommRing R] (x : R) (n : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `O A _ _ _ S ι As _ jS πs hπ`. Establish `hx : ∀ i, jS (xOf S.ℓ S.s πs) i = S.X`. Introduce `i`. Express the relevant statement in the definitionally equal form `((Pi.evalRingHom (fun _ => A) i).comp jS) (xOf S.ℓ S.s πs) = S.X`. Rewrite using `[S.X_eq, xOf, map_sub, map_pow, map_add, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hπ, HidaSetting.ε]`. Use `⟨hx, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `h1 : jS (xiOf S.ℓ S.s πs) i = ∑ k ∈ Finset.range S.ℓ, ((S.ℓ.choose (k + 1) : ℕ) : A) * (jS (xOf S.ℓ S.s πs) i) ^ k`. Express the relevant statement in the definitionally equal form `((Pi.evalRingHom (fun _ => A) i).comp jS) (xiOf S.ℓ S.s πs) = _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [xiOf, map_sum, map_mul, map_natCast, map_pow]`. Both sides reduce to the same expression. Rewrite using `[h1, hx]`. Both sides reduce to the same expression. Take `⟨t, ht⟩` from `sub_dvd_pow_sub_pow (1 + πs) 1 (S.ℓ ^ (S.s - 1))`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[xOf]`. Simplify using `using ht`. Conclude with `one_add_pow_sub_one' _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem xi : StatXi := by
   intro O A _ _ _ S ι As _ jS πs hπ
@@ -48,15 +48,13 @@ theorem xi : StatXi := by
   · exact one_add_pow_sub_one' _ _
 
 /- English proof (translation)
-Establish `hdet : Cm.det * P.det = c ^ r`. Rewrite using `[← Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hE : (P * Cm - c • (1 : Matrix (Fin r) (Fin r) R)) * P = 0`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc, h, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, sub_self]`. Establish `hE2 : P.det • (P * Cm - c • (1 : Matrix (Fin r) (Fin r) R)) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun M => M * P.adjugate) hE` as an intermediate fact. Simplify using `only [Matrix.zero_mul, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one] at this`. Conclude with `this`. Establish `hE3 : (c ^ r) • (P * Cm - c • (1 : Matrix (Fin r) (Fin r) R)) = 0`. Rewrite using `[← hdet, mul_smul, hE2, smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : ∀ (n : ℕ) (a : R), c ^ n * a = 0 → a = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro a ha`. Simplify using `using ha`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `succ n ih => intro a ha; exact hc a (ih _ (by rw [← mul_assoc, ← pow_succ]; exact ha))`. Establish `: P * Cm - c • (1 : Matrix (Fin r) (Fin r) R) = 0`. Use extensionality with `i j`. Use `congrFun (congrFun hE3 i) j` as an intermediate fact. Conclude with `hpow r _ (by simpa using this)`.
-
-Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mul_comm_of_regular {R : Type} [CommRing R] {r : ℕ} (Cm P : Matrix (Fin r) (Fin r) R) (c : R)
     (hc : ∀ a, c * a = 0 → a = 0) (h : Cm * P = c • (1 : Matrix (Fin r) (Fin r) R)) :
@@ -93,7 +91,7 @@ def lc (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) (c : Fin r 
   ∑ k, jS (c k) • b k
 
 /- English proof (translation)
-Simplify using `only [lc, Matrix.vecMul, dotProduct, map_sum, map_mul, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lc_vecMul (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) (v : Fin r → As)
     (Mx : Matrix (Fin r) (Fin r) As) :
@@ -103,7 +101,7 @@ theorem lc_vecMul (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [lc, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lc_smul_family (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) (v : Fin r → As)
     (a : ι → A) : lc jS (fun l => a • b l) v = a • lc jS b v := by
@@ -111,7 +109,7 @@ theorem lc_smul_family (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι �
   exact Finset.sum_congr rfl fun k _ => smul_comm _ _ _
 
 /- English proof (translation)
-Rewrite using `[lc, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Simplify using `[Pi.single_eq_of_ne hl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lc_single (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) (k : Fin r) (a : As) :
     lc jS b (Pi.single k a) = jS a • b k := by
@@ -123,21 +121,21 @@ theorem lc_single (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) 
   · simp
 
 /- English proof (translation)
-Simplify using `[lc, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_add (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) (c c' : Fin r → As) :
     lc jS b (c + c') = lc jS b c + lc jS b c' := by
   simp [lc, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[lc, sub_smul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_sub (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) (c c' : Fin r → As) :
     lc jS b (c - c') = lc jS b c - lc jS b c' := by
   simp [lc, sub_smul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[lc, mul_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_smul (jS : As →+* (ι → A)) {r : ℕ} (b : Fin r → ι → D) (a : As) (c : Fin r → As) :
     lc jS b (a • c) = jS a • lc jS b c := by
@@ -155,7 +153,7 @@ variable {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {S : HidaSetting O
   {ρ : Gg → Matrix (Fin r) (Fin r) ℤ_[ℓ]}
 
 /- English proof (translation)
-Use `hb.ind (c - c') (by` as an intermediate fact. Use `lc_sub jS b c c'` as an intermediate fact. Rewrite `this` using `[h, sub_self]`. Conclude with `this)`. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BasisN.uniq {b : Fin r → ι → D} (hb : BasisN W jS b) {c c' : Fin r → As}
     (h : lc jS b c = lc jS b c') : c = c' := by
@@ -166,7 +164,7 @@ theorem BasisN.uniq {b : Fin r → ι → D} (hb : BasisN W jS b) {c c' : Fin r 
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Use `choose c hc using fun k => hb.span (y k) (hy k)`. Conclude with `⟨Matrix.of c, hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BasisN.coords {b : Fin r → ι → D} (hb : BasisN W jS b) (y : Fin r → ι → D)
     (hy : ∀ k, InN W (y k)) : ∃ Mx : Matrix (Fin r) (Fin r) As, ∀ k, y k = lc jS b (Mx k) := by
@@ -174,7 +172,7 @@ theorem BasisN.coords {b : Fin r → ι → D} (hb : BasisN W jS b) (y : Fin r �
   exact ⟨Matrix.of c, hc⟩
 
 /- English proof (translation)
-Rewrite using `[lc, map_sum]`. Use extensionality with `j`. Simplify using `[C.smul, Matrix.vecMul, dotProduct, xMat, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cmp_lc (C : Cmp W jS jA io φ H act ρ) (b : Fin r → ι → D) (c : Fin r → As) :
     C.cmp (lc jS b c) = (fun l => io (jA (c l))) ᵥ* xMat C b := by
@@ -183,7 +181,7 @@ theorem cmp_lc (C : Cmp W jS jA io φ H act ρ) (b : Fin r → ι → D) (c : Fi
   simp [C.smul, Matrix.vecMul, dotProduct, xMat, Finset.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `k j`. Rewrite using `[Matrix.of_apply, h, cmp_lc, Matrix.mul_apply_eq_vecMul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mat_of_coords (C : Cmp W jS jA io φ H act ρ) (b y : Fin r → ι → D)
     (Mx : Matrix (Fin r) (Fin r) As) (h : ∀ k, y k = lc jS b (Mx k)) :
@@ -193,7 +191,7 @@ theorem mat_of_coords (C : Cmp W jS jA io φ H act ρ) (b y : Fin r → ι → D
   rfl
 
 /- English proof (translation)
-Introduce `i` and use `(W.N i).smul_mem (a i) (hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inN_smul (a : ι → A) {x : ι → D} (hx : InN W x) : InN W (a • x) :=
   fun i => (W.N i).smul_mem (a i) (hx i)

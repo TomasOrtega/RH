@@ -24,9 +24,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPi
 namespace GlobalTheory.SplitPlaceDistinct
 
 /- English proof (translation)
-Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Apply `w.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : ((a : 𝓞 E)) * ((p : ℕ) : 𝓞 E) + (b : 𝓞 E) * ((q : ℕ) : 𝓞 E) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (Int.cast : ℤ → 𝓞 E) hab` after adjusting the coercions. Rewrite using `[← e]`. Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ h1) (w.asIdeal.mul_mem_left _ h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_mem_both {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hne : p ≠ q) (w : IsDedekindDomain.HeightOneSpectrum (𝓞 E))
@@ -41,15 +41,13 @@ theorem not_mem_both {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Pr
   exact w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ h1) (w.asIdeal.mul_mem_left _ h2)
 
 /- English proof (translation)
-Introduce `D s s' kv kv' hs hs' hne hv`. Take `⟨k, v⟩` from `kv`. Take `⟨k', v'⟩` from `kv'`. Establish `hgk : ∀ a b : Fin 2, a ≠ b → D.host.g a ≠ D.host.g b`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h01` using `D.host.g_ne`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `absurd rfl hab`. Conclude with `h01`. Conclude with `h01.symm`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl hab`. Establish `hover` using `D.naut.plGw_over`. Break down `GlobalTheory.SplitPlaceOver.eq_or_isConjPl D s s'.w (s'.w_under.trans (congrArg IsDedekindDomain.HeightOneSpectrum.asIdeal hv.symm)) with e | e` into its components or cases. Rewrite `e` using `[hs, hs']`. Distinguish the cases in `hk : k = k'`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hk` using the available equality. Conclude with `hne (congrArg (Sigma.mk k) (D.naut.plGw_inj k e))`. Conclude with `not_mem_both (D.host.g_prime k) (D.host.g_prime k') (hgk k k' hk) _ (hover k v) (e ▸ hover k' v')`. Rewrite `e` using `[hs, hs']`. Distinguish the cases in `hk : k = k'`.
-
-Substitute `hk` using the available equality. Conclude with `D.naut.plGw_nconj k v' v e`. Establish `hm : ((D.host.g k' : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `(e _ _ (by simp)).1 (hover k' v')`. Conclude with `not_mem_both (D.host.g_prime k) (D.host.g_prime k') (hgk k k' hk) _ (hover k v) hm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem splitPlace_v_ne : ∀ (D : D7) (s s' : ReciprocityTheory.Aut.SplitPlace D.host.E) (kv kv' : Σ k : Fin 2, D.nd.PlG k),
     s.w = D.naut.plGw kv.1 kv.2 → s'.w = D.naut.plGw kv'.1 kv'.2 → kv ≠ kv' → s.v ≠ s'.v := by

@@ -12,7 +12,7 @@ open CategoryTheory
 namespace CrystallineSemistableComparison.HT
 
 /- English proof (translation)
-The claim follows from `lvEx_of l K levSys_ex`.
+A detailed English derivation is pending.
 -/
 theorem lvEx (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] : LvEx l K :=
   lvEx_of l K levSys_ex

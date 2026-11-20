@@ -6,7 +6,7 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThKSmoothDer.hasDerivAt_thetaIntegral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealMultLiftDividedPowers.lean&line=59#L59)
 -/

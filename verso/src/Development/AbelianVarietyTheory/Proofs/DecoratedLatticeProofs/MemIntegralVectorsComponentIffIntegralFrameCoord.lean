@@ -12,7 +12,7 @@ open GlobalTheory.AdForm
 open GlobalTheory.AdForm
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p S n _ _ β L hL Λ h x`. Rewrite using `[h x, GlobalTheory.SeeSaw.StdOff.mem_latV_int hL]`. Conclude with `forall_congr' fun r => ((p.int_iff _).trans (and_iff_right (GlobalTheory.SeeSaw.StdOff.sec_mem_idAt p _)).symm).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.Frame.isLat_intVec_iff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (L : Lat S),

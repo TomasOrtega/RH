@@ -11,9 +11,9 @@ open MvPolynomial
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Rewrite `hI`, the goal using `[isHomogIdeal_iff]`. Take `⟨T, hT⟩` from `(Ideal.IsHomogeneous.iff_exists _ _).mp hI`. Rewrite using `[hT, Ideal.map_span]`. Use `Ideal.homogeneous_span _ _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, -, rfl⟩, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨d, hd⟩` from `x.2`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite `hd`, the goal using `[mem_homogeneousSubmodule]`. Conclude with `hd.map φ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogIdeal_map {R S : Type*} [CommRing R] [CommRing S] {n : ℕ} (φ : R →+* S)
     {I : Ideal (MvPolynomial (Fin n) R)} (hI : IsHomogIdeal I) :
@@ -29,7 +29,7 @@ theorem isHomogIdeal_map {R S : Type*} [CommRing R] [CommRing S] {n : ℕ} (φ :
   exact hd.map φ
 
 /- English proof (translation)
-Introduce `K _ _ n k I f σ hI hf`. Establish `hJ : IsHomogIdeal (I.map (MvPolynomial.map σ))` using `isHomogIdeal_map σ hI.isHomog`. Use `⟨fun W hW => isProjPrime_of_mem_support_fundCycle hJ hW, ?_⟩` and prove the remaining obligations. Conclude with `hRed ℂ n k _ _ hJ (hRad K ℂ σ (Fin n) I hI.isPrime.isRadical) (hExt K ℂ σ n k I f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ChowFormBaseChange.proof (hRad : RadicalBaseChange.Statement)
     (hExt : ChowFormExtend.Statement) (hRed : ChowFormReduced.Statement) :

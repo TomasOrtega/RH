@@ -38,7 +38,7 @@ def mk (a : mixedEmbedding.mixedSpace F) (b : FiniteAdeleRing (𝓞 F) F) : AF F
   (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a, b) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply a`.
+A detailed English derivation is pending.
 -/
 theorem piI_mk (a : mixedEmbedding.mixedSpace F) (b : FiniteAdeleRing (𝓞 F) F) : piI (mk a b) = a :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply a
@@ -55,13 +55,11 @@ theorem pureA_apply {ι : Type} (f : (ι → mixedEmbedding.mixedSpace F) → �
     (u : ι → AF F) : pureA F f g u = f (piI ∘ u) * g (piF ∘ u) := rfl
 
 /- English proof (translation)
-Use `set p : AF F := (((a.1, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) : AF F) with hp`. Use `set q : AF F := (((0, a.2) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) : AF F) with hq`. Establish `e : p + q = a`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show a.1 + 0 = a.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[add_zero]`. Use `show 0 + a.2 = a.2`. Rewrite using `[zero_add]`. Use `conv_lhs => rw [← e, AddChar.map_add_eq_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(hψ.2.2 p fun u hu => ?_)` and prove the remaining obligations. Establish `h1 : u.1 = 0` using `(RingEquiv.map_eq_zero_iff _).1 hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * a.1 = 0`. Rewrite using `[h1, zero_mul]`.
-
-Use `show u.2 * 0 = 0`. Rewrite using `[mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem psi_split {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (a : AF F) :
     ψ a = Complex.exp (-(2 * Real.pi * Complex.I) *
@@ -82,14 +80,14 @@ theorem psi_split {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (a : AF F) :
   · show u.2 * 0 = 0; rw [mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [schr, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_add {ι : Type} [Fintype ι] (ψ : AddChar (AF F) ℂ) (w : (ι → AF F) × (ι → AF F))
     (φ φ' : (ι → AF F) → ℂ) : schr ψ w (φ + φ') = schr ψ w φ + schr ψ w φ' := by
   funext u; simp only [schr, Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_smul {ι : Type} [Fintype ι] (ψ : AddChar (AF F) ℂ) (w : (ι → AF F) × (ι → AF F)) (c : ℂ)
     (φ : (ι → AF F) → ℂ) : schr ψ w (c • φ) = c • schr ψ w φ := by
@@ -101,51 +99,49 @@ end
 open GlobalTheory.DiagUniq in
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ l hl hinv`. Take `⟨A, hAs, hAi, C₁, hC₁, hAe⟩` from `GlobalTheory.T.archimedean_partial_fourier_surjective F κ`. Take `⟨B, hBs, hBo, hBi, C₂, hC₂, hBe⟩` from `GlobalTheory.T.exists_finite_partial_fourier_bijective F ψ hψ κ`. Take `⟨H, hH⟩` from `GlobalTheory.T.exists_adelic_product_operator F (κ ⊕ κ) A.toLinearMap B`. Establish `hH' : ∀ (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ), H (pureA F f g) = pureA F (A f) (B g)` using `hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hHs : ∀ Ψ ∈ schA F (κ ⊕ κ), H Ψ ∈ schA F (κ ⊕ κ)`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hH']`. Conclude with `Submodule.subset_span ⟨A f, B g, hBs g hg, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `hHo : ∀ Φ ∈ schA F (κ ⊕ κ), ∃ Ψ ∈ schA F (κ ⊕ κ), H Ψ = Φ`. Introduce `Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Take `⟨f', rfl⟩` from `hAs f`. Take `⟨g', hg', rfl⟩` from `hBo g hg`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨pureA F f' g', Submodule.subset_span ⟨f', g', hg', rfl⟩, hH' f' g'⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, map_zero H⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a + b, Submodule.add_mem _ ha hb, map_add H a b⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨c • a, Submodule.smul_mem _ c ha, map_smul H c a⟩`. Establish `hHe : ∀ Ψ ∈ schA F (κ ⊕ κ), GlobalTheory.DiagForm.lDiag F κ (H Ψ) = (C₂ * C₁) * Ψ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Rewrite using `[hH', GlobalTheory.DiagForm.lDiag_pureA _ (hBs g hg), hBe g hg, hAe f, pureA_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : (piI ∘ (0 : κ ⊕ κ → AF F)) = 0` using `funext fun _ => map_zero _`. Establish `e2 : (piF ∘ (0 : κ ⊕ κ → AF F)) = 0` using `funext fun _ => map_zero _`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [map_zero, map_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c x _ hx => rw [map_smul, map_smul, hx, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hHi : ∀ z : κ ⊕ κ → AF F, ∃ x y : κ → AF F, ∀ Ψ ∈ schA F (κ ⊕ κ), H (fun u => ψ (u ⬝ᵥ z) * Ψ u) = schr ψ (Sum.elim x x, Sum.elim y (-y)) (H Ψ)`. Introduce `z`. Take `⟨x₀, y₀, hA⟩` from `hAi (piI ∘ z)`. Take `⟨x₁, y₁, hB⟩` from `hBi (piF ∘ z)`. Use `set x : κ → AF F := fun i => mk (x₀ i) (x₁ i) with hx`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set y : κ → AF F := fun i => mk (y₀ i) (y₁ i) with hy`. Use `⟨x, y, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f₁, hf₁, hAf₁⟩` from `hA f`. Establish `e1 : (fun u => ψ (u ⬝ᵥ z) * pureA F f g u) = pureA F f₁ (fun u' => ψ (((0, u' ⬝ᵥ piF ∘ z) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) : AF F) * g u')`. Use function extensionality and compare the values at `u`. Rewrite using `[pureA_apply, pureA_apply, psi_split hψ, hf₁, piI.map_dotProduct, piF.map_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e1, hH', hH', hB g hg]`. Use function extensionality and compare the values at `u`. Establish `hx1 : piI ∘ (u + Sum.elim x x) = piI ∘ u + Sum.elim x₀ x₀` using `funext fun i => by`. Apply the tactic sequence `cases i <;> simp [hx, map_add, piI_mk]`. Establish `hx2 : piF ∘ (u + Sum.elim x x) = piF ∘ u + Sum.elim x₁ x₁` using `funext fun i => by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases i <;> simp [hx, map_add, piF_mk]`. Establish `hy1 : piI ∘ Sum.elim y (-y) = Sum.elim y₀ (-y₀)` using `funext fun i => by`. Apply the tactic sequence `cases i <;> simp [hy, map_neg, piI_mk]`. Establish `hy2 : piF ∘ Sum.elim y (-y) = Sum.elim y₁ (-y₁)` using `funext fun i => by`. Apply the tactic sequence `cases i <;> simp [hy, map_neg, piF_mk]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show schr ψ (Sum.elim x x, Sum.elim y (-y)) (pureA F (A f) (B g)) u = ψ (u ⬝ᵥ Sum.elim y (-y) + ⅟(2 : AF F) * (Sum.elim x x ⬝ᵥ Sum.elim y (-y))) * pureA F (A f) (B g) (u + Sum.elim x x) from rfl]`. Rewrite using `[GlobalTheory.DiagForm.dot_anti, mul_zero, add_zero, psi_split hψ, pureA_apply, pureA_apply, hAf₁, piI.map_dotProduct, piF.map_dotProduct, hx1, hx2, hy1, hy2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Establish `e0 : (fun u => ψ (u ⬝ᵥ z) * (0 : (κ ⊕ κ → AF F) → ℂ) u) = 0` using `funext fun u => mul_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e0, map_zero]`. Use function extensionality and compare the values at `u`. Simplify using `[schr]`. Consider the case `add a b _ _ ha hb`. Establish `e0 : (fun u => ψ (u ⬝ᵥ z) * (a + b) u) = (fun u => ψ (u ⬝ᵥ z) * a u) + (fun u => ψ (u ⬝ᵥ z) * b u)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `fun u => mul_add _ _ _`. Rewrite using `[e0, map_add, map_add, ha, hb, schr_add]`. Consider the case `smul c a _ ha`. Establish `e0 : (fun u => ψ (u ⬝ᵥ z) * (c • a) u) = c • (fun u => ψ (u ⬝ᵥ z) * a u)`. Use function extensionality and compare the values at `u`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e0, map_smul, map_smul, ha, schr_smul]`. Use `set l' : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] ℂ := l ∘ₗ H with hl'def`. Establish `hl' : l' ∈ (adeleClass F).adm (κ ⊕ κ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Take `⟨T, hT⟩` from `hl (B g) (hBs g hg)`. Use `⟨T.comp A, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[hl'def, LinearMap.comp_apply, hH', hT]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hinv' : ∀ z : κ ⊕ κ → AF F, ∀ Ψ ∈ schA F (κ ⊕ κ), l' (fun u => ψ (u ⬝ᵥ z) * Ψ u) = l' Ψ`. Introduce `z Ψ hΨ`. Take `⟨x, y, h⟩` from `hHi z`. Rewrite using `[hl'def, LinearMap.comp_apply, LinearMap.comp_apply, h Ψ hΨ, hinv x y _ (hHs Ψ hΨ)]`. Take `⟨c, hc⟩` from `GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F ψ hψ (κ ⊕ κ) l' hl' hinv'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨c / (C₂ * C₁), fun Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨Ψ, hΨ, rfl⟩` from `hHo Φ hΦ`. Rewrite using `[hHe Ψ hΨ]`. Use `hc Ψ hΨ` as an intermediate fact. Rewrite `this` using `[hl'def, LinearMap.comp_apply]`.
-
-Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DiagUniq.eq_smul_lDiag : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ (κ : Type) [Fintype κ] (l : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] ℂ), l ∈ (adeleClass F).adm (κ ⊕ κ) →

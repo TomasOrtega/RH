@@ -15,7 +15,7 @@ def pairAct (g : GL (Fin n) R) (x : (Fin n → R) × (Fin n → R)) : (Fin n →
   ((g : Matrix (Fin n) (Fin n) R) *ᵥ x.1, x.2 ᵥ* ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R))
 
 /- English proof (translation)
-Simplify using `only [pairAct]`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.vecMul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairAct_dot (g : GL (Fin n) R) (x y : (Fin n → R) × (Fin n → R)) :
     (pairAct R n g x).2 ⬝ᵥ (pairAct R n g y).1 = x.2 ⬝ᵥ y.1 := by
@@ -24,9 +24,9 @@ theorem pairAct_dot (g : GL (Fin n) R) (x y : (Fin n → R) × (Fin n → R)) :
     Units.val_one, Matrix.vecMul_one]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.SeqCx.splitSeq, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hi hj`. Simplify `h ⟨i, hi⟩ ⟨j, hj⟩` using `[Fin.ext_iff]`. Introduce `h i j`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h i j i.2 j.2` using `[Fin.ext_iff]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_splitSeq_iff (l : List ((Fin n → R) × (Fin n → R))) :
     l ∈ splitSeq R n ↔ ∀ (i j : ℕ) (hi : i < l.length) (hj : j < l.length),
@@ -69,7 +69,7 @@ def face (p : ℕ) (i : Fin (p + 1)) (l : SplitSet R n (p + 1)) : SplitSet R n p
     by have := l.2.2; have := i.2; rw [List.length_eraseIdx, if_pos (by omega)]; omega⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((g • l).1).eraseIdx i = (face R n p i l).1.map (pairAct R n g)`. Rewrite using `[smul_val, List.eraseIdx_map]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem face_smul (p : ℕ) (i : Fin (p + 1)) (g : GL (Fin n) R) (l : SplitSet R n (p + 1)) :
     face R n p i (g • l) = g • face R n p i l := by

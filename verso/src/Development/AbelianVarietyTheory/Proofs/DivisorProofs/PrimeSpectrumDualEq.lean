@@ -13,11 +13,9 @@ namespace GlobalTheory.PeriodLattice
 open GlobalTheory.GrpTangent
 
 /- English proof (translation)
-Establish `h : ∀ z : PrimeSpectrum (DualNumber ℂ), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0` using `fun z a => by`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Assume the negation of the conclusion as `h0`. Conclude with `z.2.ne_top (z.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Use `z.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [show a ^ 2 = 0 by ext <;> simp [pow_two, ha]]`. Conclude with `z.asIdeal.zero_mem`. Use extensionality with `a`.
-
-Rewrite using `[h, h]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeSpectrum_dual_eq (x y : PrimeSpectrum (DualNumber ℂ)) : x = y := by
   have h : ∀ z : PrimeSpectrum (DualNumber ℂ), ∀ a, a ∈ z.asIdeal ↔ a.fst = 0 := fun z a => by
@@ -33,11 +31,11 @@ theorem primeSpectrum_dual_eq (x y : PrimeSpectrum (DualNumber ℂ)) : x = y := 
   rw [h, h]
 
 /- English proof (translation)
-Introduce `U hU f`. Establish `hU' : ⊤ ≤ v.left ⁻¹ᵁ U` using `fun x _ => by`. Use `hU (Set.mem_univ x)` as an intermediate fact. Establish `hx : (spMap (epsScaleR c)) x = x` using `primeSpectrum_dual_eq _ _`. Express the relevant statement in the definitionally equal form `v.left ((spMap (epsScaleR c)) x) ∈ U at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[hx]`. Then use the resulting hypothesis. Rewrite using `[map_smul, ← h U hU' f]`. Establish `e : (epsScale c ≫ v).left.appLE U ⊤ hU = v.left.appLE U ⊤ hU' ≫ (spMap (epsScaleR c)).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap (epsScaleR c)) v.left U ⊤ ⊤ hU' le_rfl).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun k => k.hom ((v.left.appLE U ⊤ hU').hom f)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (epsScaleR c)))`. Rewrite using `[e]`. Use `(congrArg TrivSqZeroExt.snd e2).trans ?_` and prove the remaining obligations. Simplify using `[epsScaleR]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDiff_epsScale {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) {w : Fin g → ℂ}
     {v : epsR ℂ ⟶ A} (h : u.IsDiff w v) (c : ℂ) : u.IsDiff (c • w) (epsScale c ≫ v) := by
@@ -62,13 +60,11 @@ section Ext
 variable {E : Type} {V : Type*} [AddCommGroup E] [AddCommGroup V] [Module ℂ V] (L : AddSubgroup E)
 
 /- English proof (translation)
-Establish `key : m • Q ⟨n • x, h⟩ = n • Q ⟨m • x, h'⟩`. Rewrite using `[← map_nsmul, ← map_nsmul]`. Use `congr 1`. Use `ext`. Simplify using `only [AddSubgroup.coe_nsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_smul, smul_smul, mul_comm]`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `key' : (m : ℂ) • Q ⟨n • x, h⟩ = (n : ℂ) • Q ⟨m • x, h'⟩`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use `_ = ((n : ℂ)⁻¹ * (m : ℂ)⁻¹) • ((n : ℂ) • Q ⟨m • x, h'⟩) := by rw [key']`.
-
-Use `_ = (m : ℂ)⁻¹ • Q ⟨m • x, h'⟩ := by rw [smul_smul]; congr 1; field_simp`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem inv_smul_eq (Q : L →+ V) {x : E} {n m : ℕ} (hn : 0 < n) (hm : 0 < m) (h : n • x ∈ L) (h' : m • x ∈ L) :
     (n : ℂ)⁻¹ • Q ⟨n • x, h⟩ = (m : ℂ)⁻¹ • Q ⟨m • x, h'⟩ := by
@@ -88,11 +84,11 @@ theorem inv_smul_eq (Q : L →+ V) {x : E} {n m : ℕ} (hn : 0 < n) (hm : 0 < m)
     _ = (m : ℂ)⁻¹ • Q ⟨m • x, h'⟩ := by rw [smul_smul]; congr 1; field_simp
 
 /- English proof (translation)
-Use `choose N hN hNL using hfull`. Set `P : E →+ V` to `{ toFun := fun x => (N x : ℂ)⁻¹ • Q ⟨N x • x, hNL x⟩ map_zero' := by`. Rewrite using `[show (⟨N 0 • (0 : E), hNL 0⟩ : L) = 0 from Subtype.ext (by simp), map_zero, smul_zero]`. Use the proof step `map_add' := fun x y => by`. Establish `hxy : (N x * N y) • (x + y) ∈ L`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_add, mul_comm, mul_smul, mul_comm, mul_smul]`. Conclude with `add_mem (L.nsmul_mem (hNL x) _) (L.nsmul_mem (hNL y) _)`. Establish `hx : (N x * N y) • x ∈ L` using `by rw [mul_comm, mul_smul]; exact L.nsmul_mem (hNL x) _`. Establish `hy : (N x * N y) • y ∈ L` using `by rw [mul_smul]; exact L.nsmul_mem (hNL y) _`. Establish `hpos : 0 < N x * N y` using `Nat.mul_pos (hN x) (hN y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[inv_smul_eq L Q (hN _) hpos _ hxy, inv_smul_eq L Q (hN _) hpos _ hx, inv_smul_eq L Q (hN _) hpos _ hy, ← smul_add, ← map_add]`. Use `congr 2`. Use `ext`. Simplify using `[smul_add] }`. Conclude with `⟨P, fun x n hn h => inv_smul_eq L Q (hN x) hn (hNL x) h⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ext (hfull : ∀ x : E, ∃ n : ℕ, 0 < n ∧ n • x ∈ L) (Q : L →+ V) :
     ∃ P : E →+ V, ∀ (x : E) (n : ℕ) (hn : 0 < n) (h : n • x ∈ L), P x = (n : ℂ)⁻¹ • Q ⟨n • x, h⟩ := by
@@ -122,23 +118,21 @@ end GlobalTheory.PeriodLattice
 namespace GlobalTheory.PeriodLattice
 
 /- English proof (translation)
-Use `set W := Submodule.span ℚ (L : Set E)`. Set `b` to `Module.finBasis ℚ W`. Establish `hsub : ι '' (L : Set E) ⊆ Submodule.span ℝ (Set.range fun k => ι (b k))`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hyW : y ∈ W` using `Submodule.subset_span hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨y, hyW⟩ : W) = ∑ k, b.repr ⟨y, hyW⟩ k • b k` using `(b.sum_repr _).symm`. Establish `e' : y = ∑ k, b.repr ⟨y, hyW⟩ k • (b k : E)`. Use `congrArg Subtype.val e` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.trans (Finset.sum_congr rfl fun k _ => Submodule.coe_smul _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e', map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul ℝ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `htop : Submodule.span ℝ (Set.range fun k => ι (b k)) = ⊤` using `top_unique (hsp ▸ Submodule.span_le.2 hsub)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Module.finrank ℝ (Fin g → ℂ) ≤ Module.finrank ℚ W`. Use `finrank_span_le_card (R := ℝ) (Set.range fun k => ι (b k))` as an intermediate fact. Rewrite `this` using `[htop, finrank_top]`. Use `this.trans ?_` and prove the remaining obligations. Use `(Set.toFinset_card _).le.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(Fintype.card_range_le _).trans (by simp)`. Establish `h2 : Module.finrank ℝ (Fin g → ℂ) = 2 * g`. Rewrite using `[Module.finrank_pi_fintype, Complex.finrank_real_complex]`. Simplify using `[mul_comm]`. Establish `hW : W = ⊤` using `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le W) (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hx : x ∈ W` using `hW ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_pos, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn, hny⟩` from `hy`. Take `⟨m, hm, hmz⟩` from `hz`. Use `⟨n * m, Nat.mul_pos hn hm, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_comm, mul_smul, mul_comm, mul_smul]`. Conclude with `add_mem (L.nsmul_mem hny _) (L.nsmul_mem hmz _)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul q y _ hy`. Take `⟨n, hn, hny⟩` from `hy`. Use `⟨q.den * n, Nat.mul_pos q.den_pos hn, ?_⟩` and prove the remaining obligations. Establish `: (q.den * n) • (q • y) = q.num • (n • y)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, ← Nat.cast_smul_eq_nsmul ℚ n y, ← Int.cast_smul_eq_zsmul ℚ, smul_smul]`.
-
-Use `congr 1`. Use `push_cast`. Rewrite using `[mul_comm (q.den : ℚ) n, mul_assoc, Rat.den_mul_eq_num, mul_comm]`. Rewrite using `[this]`. Conclude with `L.zsmul_mem hny _`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem {E : Type} [AddCommGroup E] [Module ℚ E] [FiniteDimensional ℚ E] {g : ℕ} (L : AddSubgroup E)
     (ι : E →ₗ[ℚ] (Fin g → ℂ)) (hdim : Module.finrank ℚ E ≤ 2 * g)

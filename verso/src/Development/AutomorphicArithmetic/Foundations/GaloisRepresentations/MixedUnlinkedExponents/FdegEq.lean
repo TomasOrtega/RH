@@ -10,9 +10,9 @@ open GroundTheory.Global.SemiLocal UpperTheory.V.Z.Gam
 namespace UpperTheory.Gal.GamX
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ v`. Use `⟨GroundTheory.Global.nonempty_placesOver L v, fun w w' => ?_⟩` and prove the remaining obligations. Establish `hw` using `w.2`. Establish `hw'` using `w'.2`. Unfold `fdeg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Ideal.inertiaDeg'_eq_inertiaDeg v.asIdeal w.1.asIdeal, Ideal.inertiaDeg'_eq_inertiaDeg v.asIdeal w'.1.asIdeal]`. Conclude with `Ideal.inertiaDeg_eq_of_isGaloisGroup v.asIdeal w.1.asIdeal w'.1.asIdeal Gal(L/K)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdegEq : FdegEq := by
   intro K L _ _ _ _ _ _ v

@@ -15,19 +15,19 @@ noncomputable section
 namespace GlobalTheory.CoinvLine
 variable {D : D7}
 /- English proof (translation)
-Introduce `_ D ψ θ W W₁ X A A₁ B α β ωA ωB Pi rf rl p p' hθ _ _ hM Vs hJ γ hγ Ψ hΨ Ψ₁ _ hder`. Establish `hω : IsWeilDatumO ψ W₁ X α (α / β) ωB` using `hM.weilB`. Establish `hψ : IsStdChar D ψ (-1)` using `hω.std`. Establish `hc : (-1 : D.host.E) ≠ 0` using `neg_ne_zero.2 one_ne_zero`. Take `⟨g, h1, h2, h3, h4⟩` from `GlobalTheory.OmegaDer.exists_line W₁ hc Vs hJ γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg : ∀ t : ℝ, GlobalTheory.ConjUTransport.conjUInv W₁ (-1) (neg_ne_zero.2 one_ne_zero) hJ (γ (Multiplicative.ofAdd t)) = g t` using `fun t => by rw [← h1 t]; exact (GlobalTheory.ConjUTransport.conjEquiv W₁ (-1) hc hJ).left_inv (g t)`. Take `⟨Z, hZ⟩` from `GlobalTheory.OmegaDer.exists_expInf hθ W₁ g h2 h3 h4`. Establish `hst` using `fun τ => hM.mapB.stabM.2 τ (Z τ).1 (Z τ).2 Ψ hΨ`. Use `choose Ψ' hΨ' hd using hst`. Establish `hk : ∀ τ, p' (Ψ' τ) = 0` using `fun τ => hM.mapB.invl τ (Z τ).1 (Z τ).2 Ψ hΨ (Ψ' τ) (hΨ' τ) (hd τ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : Ψ₁ = ∑ τ, Ψ' τ`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_apply]`. Establish `e1 : (fun t : ℝ => ωB (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) (neg_ne_zero.2 one_ne_zero) hJ (γ (Multiplicative.ofAdd t)), 1) Ψ z) = fun t : ℝ => ωB (GlobalTheory.SmoothForms.expInf θ W₁ (t • Z), 1) Ψ z`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg t, hZ t]`. Establish `hz` using `hder z`. Rewrite `hz` using `[e1]`. Break down `isEmpty_or_nonempty D.what₂.Tau with h0 | h0` into its components or cases. Establish `e : ∀ t : ℝ, t • Z = Z` using `fun t => funext fun τ => isEmptyElim τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e] at hz`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `hz.unique (hasDerivAt_const _ _)`. Set `𝒮 : Set (GA D W₁ → ℂ)` to `{φ | ∃ f z, IsThetaFunO ψ W₁ X f ∧ φ = fun g => ωB (g, 1) f z}`. Establish `hΘ` using `isThetaFunO_of_mem_algF hθ hψ A₁ B hΨ`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `hz.unique (GlobalTheory.OmegaDer.der_sum hθ 𝒮 ?_ ?_ ⟨Ψ, z, hΘ, rfl⟩ Z (fun τ => Ψ' τ z) fun τ => hd τ z)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, z, hf, rfl⟩`. Conclude with `(hω.om_cont f hf z).comp (continuous_id.prodMk continuous_const)`. Introduce and unpack `_ ⟨f, z, hf, rfl⟩ τ' Y hY`. Take `⟨G, hG', h⟩` from `GlobalTheory.LieScalar.genS hθ hω τ' Y hY f hf`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨_, ⟨G, z, hG', rfl⟩, fun g => ?_⟩` and prove the remaining obligations. Use `h (g, 1) z` as an intermediate fact. Simplify `this` using `only [MonoidHom.inl_apply, Prod.mk_mul_mk, mul_one]`. Rewrite using `[hsum, map_sum]`. Conclude with `Finset.sum_eq_zero fun τ _ => hk τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coinvariants_kill_line_derivative : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ωA : WRep W X) (ωB : WRep W₁ X) (Pi : ModuleCat.{0} ℂ)
@@ -88,7 +88,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CoinvLine.coinvariants_kill_line_derivative | exact _root_.GlobalTheory.CoinvLine.coinvariants_kill_line_derivative | (intros; apply _root_.GlobalTheory.CoinvLine.coinvariants_kill_line_derivative <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weil_coinvariants_vanish_on_line_derivatives : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ωA : WRep W X) (ωB : WRep W₁ X) (Pi : ModuleCat.{0} ℂ)

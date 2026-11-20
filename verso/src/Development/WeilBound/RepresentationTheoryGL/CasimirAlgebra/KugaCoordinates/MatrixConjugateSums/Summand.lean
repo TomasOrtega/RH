@@ -18,7 +18,7 @@ def Stab (S : Submodule ℂ (EuclideanSpace ℂ I)) : Prop :=
   ∀ g, ∀ v ∈ S, WithLp.toLp 2 (T g *ᵥ v.ofLp) ∈ S
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct, EuclideanSpace.inner_eq_star_dotProduct, star_mulVec, conjTranspose_conjTranspose, dotProduct_comm x.ofLp, ← dotProduct_mulVec, dotProduct_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_mulVec (M : Matrix I I ℂ) (s x : EuclideanSpace ℂ I) :
     ⟪s, WithLp.toLp 2 (M *ᵥ x.ofLp)⟫_ℂ = ⟪WithLp.toLp 2 (Mᴴ *ᵥ s.ofLp), x⟫_ℂ := by
@@ -28,9 +28,9 @@ theorem inner_mulVec (M : Matrix I I ℂ) (s x : EuclideanSpace ℂ I) :
 variable {T}
 
 /- English proof (translation)
-Introduce `g v hv`. Rewrite `hv`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Take `⟨g', hg'⟩` from `hadj g`. Rewrite using `[inner_mulVec, ← hg']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _ (hS g' u hu)`.
+A detailed English derivation is pending.
 -/
 theorem stab_orth (hadj : ∀ g, ∃ g', T g' = (T g)ᴴ) {S : Submodule ℂ (EuclideanSpace ℂ I)} (hS : Stab T S) :
     Stab T Sᗮ := by
@@ -42,7 +42,7 @@ theorem stab_orth (hadj : ∀ g, ∃ g', T g' = (T g)ᴴ) {S : Submodule ℂ (Eu
   exact hv _ (hS g' u hu)
 
 /- English proof (translation)
-Introduce `g v hv` and use `⟨hA g v hv.1, hB g v hv.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem stab_inf {A B : Submodule ℂ (EuclideanSpace ℂ I)} (hA : Stab T A) (hB : Stab T B) : Stab T (A ⊓ B) :=
   fun g v hv => ⟨hA g v hv.1, hB g v hv.2⟩
@@ -53,9 +53,9 @@ def Good (D : Submodule ℂ (I → ℂ)) (v₀ : I → ℂ) (S : Submodule ℂ (
   Stab T S ∧ (∀ v ∈ S, v.ofLp ∈ D) ∧ ∃ w ∈ S, ⟪w, WithLp.toLp 2 v₀⟫_ℂ ≠ 0
 
 /- English proof (translation)
-Set `D' : Submodule ℂ (EuclideanSpace ℂ I)` to `D.comap (WithLp.linearEquiv 2 ℂ (I → ℂ)).toLinearMap`. Establish `hD' : Good T D v₀ D'`. Use `⟨fun g v hv => ?_, fun v hv => hv, WithLp.toLp 2 v₀, hv, ?_⟩` and prove the remaining obligations. Conclude with `hD g _ hv`. Rewrite using `[inner_self_ne_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `h0 (congrArg WithLp.ofLp h)`. Establish `hex : ∃ n, ∃ S, Good T D v₀ S ∧ Module.finrank ℂ S = n` using `⟨_, D', hD', rfl⟩`. Take `⟨S, hS, hn⟩` from `Nat.find_spec hex`. Conclude with `⟨S, hS, fun S' h' => hn ▸ Nat.find_min' hex ⟨S', h', rfl⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_min {D : Submodule ℂ (I → ℂ)} (hD : ∀ g, ∀ v ∈ D, T g *ᵥ v ∈ D) {v₀ : I → ℂ} (hv : v₀ ∈ D)
     (h0 : v₀ ≠ 0) :
@@ -72,11 +72,11 @@ theorem exists_min {D : Submodule ℂ (I → ℂ)} (hD : ∀ g, ∀ v ∈ D, T g
   exact ⟨S, hS, fun S' h' => hn ▸ Nat.find_min' hex ⟨S', h', rfl⟩⟩
 
 /- English proof (translation)
-Distinguish the cases in `hg : ∃ w ∈ A, ⟪w, WithLp.toLp 2 v₀⟫_ℂ ≠ 0`. Conclude with `Or.inr (Submodule.eq_of_le_of_finrank_le hAS (hmin A ⟨hA, fun v hv => hS.2.1 v (hAS hv), hg⟩))`. Use `left push_neg at hg`. Establish `hB : Stab T (Aᗮ ⊓ S)` using `stab_inf (stab_orth hadj hA) hS.1`. Establish `hsum` using `Submodule.finrank_add_inf_finrank_orthogonal hAS`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hg' : ∃ w ∈ Aᗮ ⊓ S, ⟪w, WithLp.toLp 2 v₀⟫_ℂ ≠ 0`. Use `hmin _ ⟨hB, fun v hv => hS.2.1 v hv.2, hg'⟩` as an intermediate fact. Conclude with `Submodule.finrank_eq_zero.1 (by omega)`. Use `exfalso push_neg at hg'`. Take `⟨w, hw, hne⟩` from `hS.2.2`.
+Establish an intermediate fact. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hw` using `[← Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hAS]`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite `hne` using `[inner_add_left, hg x hx, hg' y hy, add_zero]`. Conclude with `hne rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem min_irred (hadj : ∀ g, ∃ g', T g' = (T g)ᴴ) {D : Submodule ℂ (I → ℂ)} {v₀ : I → ℂ}
     {S : Submodule ℂ (EuclideanSpace ℂ I)} (hS : Good T D v₀ S)
@@ -103,7 +103,7 @@ def Jm (S : Submodule ℂ (EuclideanSpace ℂ I)) : Matrix I (Fin (Module.finran
   Matrix.of fun i k => ((stdOrthonormalBasis ℂ S k : S) : EuclideanSpace ℂ I).ofLp i
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Jm, mulVec, dotProduct, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Jm_mulVec (S : Submodule ℂ (EuclideanSpace ℂ I)) (w : Fin (Module.finrank ℂ S) → ℂ) :
     Jm S *ᵥ w = (∑ k, w k • ((stdOrthonormalBasis ℂ S k : S) : EuclideanSpace ℂ I)).ofLp := by
@@ -111,7 +111,7 @@ theorem Jm_mulVec (S : Submodule ℂ (EuclideanSpace ℂ I)) (w : Fin (Module.fi
   simp [Jm, mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Jm_mulVec, WithLp.toLp_ofLp]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (stdOrthonormalBasis ℂ S k).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jm_mulVec_mem (S : Submodule ℂ (EuclideanSpace ℂ I)) (w : Fin (Module.finrank ℂ S) → ℂ) :
     WithLp.toLp 2 (Jm S *ᵥ w) ∈ S := by
@@ -119,7 +119,7 @@ theorem Jm_mulVec_mem (S : Submodule ℂ (EuclideanSpace ℂ I)) (w : Fin (Modul
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (stdOrthonormalBasis ℂ S k).2
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct]`. Simplify using `[Jm, mulVec, dotProduct, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Jm_conj_mulVec (S : Submodule ℂ (EuclideanSpace ℂ I)) (x : EuclideanSpace ℂ I) :
     (Jm S)ᴴ *ᵥ x.ofLp = fun k => ⟪((stdOrthonormalBasis ℂ S k : S) : EuclideanSpace ℂ I), x⟫_ℂ := by
@@ -128,9 +128,9 @@ theorem Jm_conj_mulVec (S : Submodule ℂ (EuclideanSpace ℂ I)) (x : Euclidean
   simp [Jm, mulVec, dotProduct, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `k l`. Establish `h` using `(stdOrthonormalBasis ℂ S).inner_eq_ite k l`. Rewrite `h` using `[Submodule.coe_inner, EuclideanSpace.inner_eq_star_dotProduct]`. Simplify using `only [dotProduct, Pi.star_apply] at h`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← h]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Jm, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_conj_mul (S : Submodule ℂ (EuclideanSpace ℂ I)) : (Jm S)ᴴ * Jm S = 1 := by
   ext k l
@@ -141,7 +141,7 @@ theorem Jm_conj_mul (S : Submodule ℂ (EuclideanSpace ℂ I)) : (Jm S)ᴴ * Jm 
   simp [Jm, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Jm_conj_mulVec, Jm_mulVec]`. Use `congr 1`. Establish `h` using `congrArg (fun z : S => (z : EuclideanSpace ℂ I)) ((stdOrthonormalBasis ℂ S).sum_repr' ⟨u, hu⟩)`. Simplify `h` using `[Submodule.coe_inner]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Jm_proj (S : Submodule ℂ (EuclideanSpace ℂ I)) {u : EuclideanSpace ℂ I} (hu : u ∈ S) :
     Jm S *ᵥ ((Jm S)ᴴ *ᵥ u.ofLp) = u.ofLp := by
@@ -151,7 +151,7 @@ theorem Jm_proj (S : Submodule ℂ (EuclideanSpace ℂ I)) {u : EuclideanSpace �
   simpa [Submodule.coe_inner] using h
 
 /- English proof (translation)
-Use `Matrix.toLin'.injective (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec]`. Establish `h` using `Jm_proj S (hM _ (Jm_mulVec_mem S w))`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Jm_colstab (S : Submodule ℂ (EuclideanSpace ℂ I)) (M : Matrix I I ℂ)
     (hM : ∀ v ∈ S, WithLp.toLp 2 (M *ᵥ v.ofLp) ∈ S) : Jm S * ((Jm S)ᴴ * (M * Jm S)) = M * Jm S := by
@@ -165,37 +165,31 @@ end LinAlg
 section Main
 
 /- English proof (translation)
-Introduce `E _ _ a I _ _ R dR hR D hD v₀ hv₀ h0`. Establish `hadj : ∀ y, ∃ y', R y' = (R y)ᴴ` using `fun y => ⟨star y, hR.star y⟩`. Take `⟨S, hS, hmin⟩` from `exists_min (T := R) hD hv₀ h0`. Establish `hcol : ∀ y, Jm S * ((Jm S)ᴴ * (R y * Jm S)) = R y * Jm S` using `fun y => Jm_colstab S (R y) (hS.1 y)`. Set `mat : GL (Fin a) (Cinf E) →* Matrix (Fin (Module.finrank ℂ S)) (Fin (Module.finrank ℂ S)) ℂ` to `{ toFun := fun y => (Jm S)ᴴ * R y * Jm S map_one' := by simp only [hR.one, Matrix.mul_one, Jm_conj_mul] map_mul' := fun y z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [hR.mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcol z]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc] }`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hRJ : ∀ y, R y * Jm S = Jm S * mat y` using `fun y => by`. Rewrite using `[← hcol y]`. Simplify using `only [mat, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.mul_assoc]`. Establish `hreg : ∀ k l, (fun y => mat y k l) ∈ regFun E a` using `fun k l => by`. Establish `e : (fun y => mat y k l) = ∑ m, ∑ i, (star (Jm S i k) * Jm S m l) • (fun y : GL (Fin a) (Cinf E) => R y i m)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [mat, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.mul_apply, conjTranspose_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e]`. Conclude with `Subalgebra.sum_mem _ fun m _ => Subalgebra.sum_mem _ fun i _ => Subalgebra.smul_mem _ (hR.reg i m) _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w₁, hw₁, hne₁⟩` from `hS.2.2`. Establish `hpos : 0 < Module.finrank ℂ S`. Use `Nat.pos_of_ne_zero fun h => hne₁ ?_` and prove the remaining obligations. Establish `: S = ⊥` using `Submodule.finrank_eq_zero.1 h`. Substitute `this` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[(Submodule.mem_bot ℂ).1 hw₁, inner_zero_left]`. Set `f : (Fin (Module.finrank ℂ S) → ℂ) →ₗ[ℂ] EuclideanSpace ℂ I` to `(WithLp.linearEquiv 2 ℂ (I → ℂ)).symm.toLinearMap ∘ₗ Matrix.toLin' (Jm S)`. Establish `hf : ∀ w, f w = WithLp.toLp 2 (Jm S *ᵥ w)` using `fun w => rfl`. Establish `hfi : Function.Injective f` using `fun w w' h => by`. Rewrite `h` using `[hf, hf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun x => (Jm S)ᴴ *ᵥ x) (congrArg WithLp.ofLp h)`. Simplify `h2` using `[Matrix.mulVec_mulVec, Jm_conj_mul]`. Establish `hirr : ∀ W : Submodule ℂ (Fin (Module.finrank ℂ S) → ℂ), (∀ y, ∀ v ∈ W, mat y *ᵥ v ∈ W) → W = ⊥ ∨ W = ⊤` using `fun W hW => by`. Establish `hA : Stab R (W.map f)`. Introduce and unpack `y _ ⟨w, hw, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨mat y *ᵥ w, hW y w hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hf]`. Simplify using `only [Matrix.mulVec_mulVec, ← hRJ]`. Establish `hAS : W.map f ≤ S`. Introduce and unpack `_ ⟨w, -, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Jm_mulVec_mem S w`. Break down `min_irred hadj hS hmin hA hAS with h | h` into its components or cases. Use `left`. Conclude with `Submodule.map_injective_of_injective hfi (h.trans (Submodule.map_bot f).symm)`. Use `right`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Module.finrank_fin_fun, LinearEquiv.finrank_eq (Submodule.equivMapOfInjective f hfi W), h]`. Set `Ξ : AlgRep E a` to `⟨Module.finrank ℂ S, mat, hreg, hpos, hirr⟩`. Use `⟨Ξ, Jm S, Jm_conj_mul S, fun w => hS.2.1 _ (Jm_mulVec_mem S w), ?_, hRJ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hne₁` to reduce the goal to its premises. Establish `hc` using `Jm_conj_mulVec S (WithLp.toLp 2 v₀)`. Rewrite `hc` using `[WithLp.ofLp_toLp, h]`. Establish `hw` using `congrArg (fun z : S => (z : EuclideanSpace ℂ I)) ((stdOrthonormalBasis ℂ S).sum_repr' ⟨w₁, hw₁⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hw, sum_inner]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, ← congrFun hc k, Pi.zero_apply, mul_zero]`. Introduce `y`. Establish `h1 : R y = (R (star y))ᴴ` using `by rw [← hR.star, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg conjTranspose (hRJ (star y))`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, ← h1, mat, MonoidHom.coe_mk, OneHom.coe_mk] at h2`. Use `show (Jm S)ᴴ * R y = (Jm S)ᴴ * R y * Jm S * (Jm S)ᴴ`. Conclude with `h2.trans (by simp only [Matrix.mul_assoc])`. Introduce `X`.
-
-Take `⟨c, -, hc0, -, hcX, -⟩` from `GlobalTheory.CompanionTheory.LieCurve.exists_curve E a X`. Use extensionality with `i k`. Establish `hL : HasDerivAt (fun t => (R (c t) * Jm S) i k) ((dR X * Jm S) i k) 0`. Simplify using `only [Matrix.mul_apply]`. Conclude with `HasDerivAt.fun_sum fun m _ => (hR.der c X hc0 hcX i m).mul_const _`.
-
-Establish `hRr : HasDerivAt (fun t => (Jm S * Ξ.mat (c t)) i k) ((Jm S * Ξ.dmat X) i k) 0`. Simplify using `only [Matrix.mul_apply]`. Conclude with `HasDerivAt.fun_sum fun m _ => (Ξ.hasDerivAt_curve c X hc0 hcX m k).const_mul _`. Establish `e : (fun t => (R (c t) * Jm S) i k) = fun t => (Jm S * Ξ.mat (c t)) i k` using `funext fun t => by rw [hRJ]`. Rewrite `hL` using `[e]`.
-
-Conclude with `hL.unique hRr`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summand_holds : Summand := by
   intro E _ _ a I _ _ R dR hR D hD v₀ hv₀ h0

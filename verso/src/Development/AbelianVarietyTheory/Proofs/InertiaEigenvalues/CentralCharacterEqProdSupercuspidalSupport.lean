@@ -15,9 +15,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CentralSupport
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, smul_comm, piTensor_tprod]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [h]`. Conclude with `MultilinearMap.map_smul_univ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piTensor_scalar {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Group (Γ a)] [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (g : ∀ a, Γ a) (c : α → ℂ)
@@ -31,7 +31,7 @@ theorem piTensor_scalar {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Gr
     exact MultilinearMap.map_smul_univ _ _ _
 
 /- English proof (translation)
-Simplify using `only [modExp, mul_sub, Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_filter]`. Rewrite using `[sub_eq_zero, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_card_mul_modExp {α : Type} [Fintype α] [LinearOrder α] (m : α → Type) [∀ a, Fintype (m a)] :
     ∑ a, (Fintype.card (m a) : ℤ) * modExp m a = 0 := by
@@ -43,7 +43,7 @@ theorem sum_card_mul_modExp {α : Type} [Fintype α] [LinearOrder α] (m : α �
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, absPow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_absPow {α : Type} (S : Finset α) (c : α → ℂ) : ∏ a ∈ S, absPow k (c a) = absPow k (∑ a ∈ S, c a) := by
   classical
@@ -52,18 +52,18 @@ theorem prod_absPow {α : Type} (S : Finset α) (c : α → ℂ) : ∏ a ∈ S, 
   | insert a S ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, absPow_add]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, val_absPow, val_absPow, Complex.cpow_nat_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem absPow_pow (s : ℂ) (N : ℕ) (z : kˣ) : absPow k s (z ^ N) = absPow k (N * s) z := by
   ext
   rw [map_pow, Units.val_pow_eq_pow_val, val_absPow, val_absPow, Complex.cpow_nat_mul]
 
 /- English proof (translation)
-Establish `hd : ∀ a, GeneralLinearGroup.det (GeneralLinearGroup.scalar (m a) z) = z ^ Fintype.card (m a)` using `fun a => by ext; simp [GeneralLinearGroup.scalar]`. Rewrite using `[deltaHalf_apply]`. Simplify using `only [hd, absPow_pow]`. Rewrite using `[← MonoidHom.finsetProd_apply, prod_absPow]`. Establish `h0 : ∑ a, ((Fintype.card (m a) : ℕ) : ℂ) * ((modExp m a : ℂ) / 2) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun t : ℤ => (t : ℂ) / 2) (sum_card_mul_modExp m)` as an intermediate fact. Simplify using `only [Int.cast_sum, Int.cast_mul, Int.cast_natCast, Int.cast_zero, zero_div, Finset.sum_div] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h0, absPow_zero, MonoidHom.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deltaHalf_scalar {α : Type} [Fintype α] [LinearOrder α] (m : α → Type) [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] (z : kˣ) : deltaHalf k m (fun a => GeneralLinearGroup.scalar (m a) z) = 1 := by
@@ -81,15 +81,15 @@ theorem deltaHalf_scalar {α : Type} [Fintype α] [LinearOrder α] (m : α → T
   rw [h0, absPow_zero, MonoidHom.one_apply]
 
 /- English proof (translation)
-Introduce `z f`. Establish `h1 : leviEmb k e (fun a => GeneralLinearGroup.scalar (c a) z) = GeneralLinearGroup.scalar n z`. Use extensionality with `i j`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b', y'⟩, rfl⟩` from `e.surjective j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Rewrite using `[leviEmb_apply_same]`. Simplify using `[GeneralLinearGroup.scalar, diagonal_apply]`. Rewrite using `[leviEmb_apply_ne _ _ _ hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GeneralLinearGroup.scalar, diagonal_apply, hb]`. Establish `h4` using `parInd_law e (piTensor σ) f ⟨_, leviEmb_mem_parab k e (fun a => GeneralLinearGroup.scalar (c a) z)⟩`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Establish `h5` using `h4 x`. Rewrite `h5` using `[leviProj_leviEmb, deltaHalf_scalar, piTensor_scalar σ _ (fun a => (ω a z : ℂ)) (fun a => hω a z)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : x * GeneralLinearGroup.scalar n z = GeneralLinearGroup.scalar n z * x`. Use extensionality with `i j`. Simplify using `[GeneralLinearGroup.scalar, mul_comm]`. Use `show f.1.1 (x * GeneralLinearGroup.scalar n z) = ((∏ a, ω a) z : ℂ) • f.1.1 x`. Rewrite using `[hc, ← h1, MonoidHom.finsetProd_apply, Units.coe_prod]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h5`.
+A detailed English derivation is pending.
 -/
 theorem hasCentralChar_multiProd_prod {α n : Type} [Fintype α] [LinearOrder α] [Fintype n] [DecidableEq n]
     {c : α → Type} [∀ a, Fintype (c a)] [∀ a, DecidableEq (c a)] (e : (Σ a, c a) ≃ n)
@@ -120,11 +120,11 @@ theorem hasCentralChar_multiProd_prod {α n : Type} [Fintype α] [LinearOrder α
   simpa using h5
 
 /- English proof (translation)
-Introduce `_ k _ _ _ _ _ x s ω hs hω`. Use `choose f _ hf using fun y : IrrGL k => LocGL.exists_smooth_hasCentralChar y.2.rep.smooth y.2.rep.irr`. Use `⟨f, fun y _ => hf y, fun z => ?_⟩` and prove the remaining obligations. Take `⟨h, x', rfl, hi, -, e, hsub⟩` from `hs`. Establish `hcen` using `hasCentralChar_multiProd_prod e (fun a => (x' a).rep) (fun a => f (x' a)) (fun a => hf (x' a))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Model.nontrivial_of_isIrreducible hi` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : x.2.rep.V)`. Establish `h1` using `Model.scalar_of_isSubquotient hsub (hcen z) v`. Rewrite `h1` using `[hω]`. Establish `h2` using `smul_left_injective ℂ hv h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.map_map]`. Express the relevant statement in the definitionally equal form `ω z = ∏ a, f (x' a) z`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h2, MonoidHom.finsetProd_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centralChar_eq_prod_support : BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (x : IrrGL k) (s : Multiset (IrrGL k))

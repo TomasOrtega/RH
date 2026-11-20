@@ -12,7 +12,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `[mem_levelOpen, mem_levelOffFin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_levelOpen_iff_projFin {g : GAd σ J} :
     g ∈ levelOpen σ J L ↔ projFin σ J g ∈ levelOffFin σ J L ∅ := by
@@ -20,9 +20,9 @@ theorem mem_levelOpen_iff_projFin {g : GAd σ J} :
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[mem_levelOffFin]`. Use `⟨fun h => ⟨by simp, fun u _ => ?_⟩, fun h => by simpa using h.2 v (by simp)⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[projFinLoc_embLocFin_ne σ J e]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stabLoc_iff_embLocFin {v : HeightOneSpectrum (𝓞 F)} {g : GLoc σ J v} :
     g ∈ stabLoc σ J L v ↔ embLocFin σ J v g ∈ levelOffFin σ J L ∅ := by
@@ -34,9 +34,9 @@ theorem mem_stabLoc_iff_embLocFin {v : HeightOneSpectrum (𝓞 F)} {g : GLoc σ 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Introduce `hg`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : g ∈ (ofFin σ J).range` using `by rw [range_ofFin]; exact (mem_levelOff.1 hg).1`. Take `⟨y, rfl⟩` from `h`. Conclude with `⟨y, hg, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem image_ofFin_levelOffFin (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ofFin σ J '' (levelOffFin σ J L S : Set (GFin σ J)) = (levelOff σ J L S : Set (GAd σ J)) := by
@@ -52,9 +52,9 @@ theorem image_ofFin_levelOffFin (S : Finset (HeightOneSpectrum (𝓞 F))) :
 variable [Submodule.IsLattice E L]
 
 /- English proof (translation)
-Establish `hfg : L.FG` using `Submodule.IsLattice.fg (A := E)`. Take `⟨K, hK, ho, hc⟩` from `GlobalTheory.Mem.Vol.StabGroup.exists_compact_open_stab F E σ n J L hfg Submodule.IsLattice.span_eq_top`. Establish `e : levelOffFin σ J L ∅ = K`. Use extensionality with `g`. Establish `h` using `mem_levelOpen_iff_latHat σ J hfg (ofFin σ J g)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h2 : Formalism.MainNotions.StandardLattice.finMat σ J (ofFin σ J g) = (HA.mat (Af F) σ J g).1` using `congrArg (fun x => (HA.mat (Af F) σ J x).1) (projFin_ofFin σ J g)`. Rewrite `h` using `[mem_levelOpen_iff_projFin, projFin_ofFin, h2]`. Conclude with `h.trans (hK g).symm`. Rewrite using `[e]`. Conclude with `⟨ho, hc⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_isCompact_levelOffFin_empty :
     IsOpen (levelOffFin σ J L ∅ : Set (GFin σ J)) ∧ IsCompact (levelOffFin σ J L ∅ : Set (GFin σ J)) := by
@@ -72,13 +72,13 @@ theorem isOpen_isCompact_levelOffFin_empty :
   exact ⟨ho, hc⟩
 
 /- English proof (translation)
-The claim follows from `(isOpen_isCompact_levelOffFin_empty σ J L).1`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_levelOffFin_empty : IsOpen (levelOffFin σ J L ∅ : Set (GFin σ J)) :=
   (isOpen_isCompact_levelOffFin_empty σ J L).1
 
 /- English proof (translation)
-Establish `: (levelOpen σ J L : Set (GAd σ J)) = projFin σ J ⁻¹' (levelOffFin σ J L ∅ : Set (GFin σ J))` using `Set.ext fun _ => mem_levelOpen_iff_projFin σ J L`. Rewrite using `[this]`. Conclude with `(isOpen_levelOffFin_empty σ J L).preimage (continuous_projFin σ J)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_levelOpen : IsOpen (levelOpen σ J L : Set (GAd σ J)) := by
   have : (levelOpen σ J L : Set (GAd σ J)) = projFin σ J ⁻¹' (levelOffFin σ J L ∅ : Set (GFin σ J)) :=
@@ -87,7 +87,7 @@ theorem isOpen_levelOpen : IsOpen (levelOpen σ J L : Set (GAd σ J)) := by
   exact (isOpen_levelOffFin_empty σ J L).preimage (continuous_projFin σ J)
 
 /- English proof (translation)
-Establish `: (stabLoc σ J L v : Set (GLoc σ J v)) = embLocFin σ J v ⁻¹' (levelOffFin σ J L ∅ : Set (GFin σ J))` using `Set.ext fun _ => mem_stabLoc_iff_embLocFin σ J L`. Rewrite using `[this]`. Conclude with `(isOpen_levelOffFin_empty σ J L).preimage (continuous_embLocFin σ J v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_stabLoc (v : HeightOneSpectrum (𝓞 F)) : IsOpen (stabLoc σ J L v : Set (GLoc σ J v)) := by
   have : (stabLoc σ J L v : Set (GLoc σ J v)) = embLocFin σ J v ⁻¹' (levelOffFin σ J L ∅ : Set (GFin σ J)) :=
@@ -96,7 +96,7 @@ theorem isOpen_stabLoc (v : HeightOneSpectrum (𝓞 F)) : IsOpen (stabLoc σ J L
   exact (isOpen_levelOffFin_empty σ J L).preimage (continuous_embLocFin σ J v)
 
 /- English proof (translation)
-Establish `: (stabLoc σ J L v : Set (GLoc σ J v)) = embLocFin σ J v ⁻¹' (levelOffFin σ J L ∅ : Set (GFin σ J))` using `Set.ext fun _ => mem_stabLoc_iff_embLocFin σ J L`. Rewrite using `[this]`. Conclude with `(Function.LeftInverse.isClosedEmbedding (projFinLoc_embLocFin_self σ J v) (continuous_projFinLoc σ J v) (continuous_embLocFin σ J v)).isCompact_preimage (isOpen_isCompact_levelOffFin_empty σ J L).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_stabLoc (v : HeightOneSpectrum (𝓞 F)) : IsCompact (stabLoc σ J L v : Set (GLoc σ J v)) := by
   have : (stabLoc σ J L v : Set (GLoc σ J v)) = embLocFin σ J v ⁻¹' (levelOffFin σ J L ∅ : Set (GFin σ J)) :=
@@ -106,9 +106,9 @@ theorem isCompact_stabLoc (v : HeightOneSpectrum (𝓞 F)) : IsCompact (stabLoc 
     (continuous_embLocFin σ J v)).isCompact_preimage (isOpen_isCompact_levelOffFin_empty σ J L).2
 
 /- English proof (translation)
-Establish `: (levelOffFin σ J L S : Set (GFin σ J)) = (levelOffFin σ J L ∅ : Set (GFin σ J)) ∩ ofFin σ J ⁻¹' (awayPts σ J S : Set (GAd σ J))`. Use extensionality with `g`. Express the relevant statement in the definitionally equal form `ofFin σ J g ∈ levelOff σ J L S ↔ ofFin σ J g ∈ levelOff σ J L ∅ ∧ ofFin σ J g ∈ awayPts σ J S`. Simplify using `only [levelOff_eq, finAwayPts, Subgroup.mem_inf, awayPts_empty, Subgroup.mem_top]`. The claim follows by propositional logic.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Rewrite using `[this]`. Conclude with `(isOpen_isCompact_levelOffFin_empty σ J L).2.inter_right ((isClosed_awayPts σ J S).preimage (continuous_ofFin σ J))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_levelOffFin (S : Finset (HeightOneSpectrum (𝓞 F))) :
     IsCompact (levelOffFin σ J L S : Set (GFin σ J)) := by
@@ -123,7 +123,7 @@ theorem isCompact_levelOffFin (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ((isClosed_awayPts σ J S).preimage (continuous_ofFin σ J))
 
 /- English proof (translation)
-Rewrite using `[← image_ofFin_levelOffFin]`. Conclude with `(isCompact_levelOffFin σ J L S).image (continuous_ofFin σ J)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_levelOff (S : Finset (HeightOneSpectrum (𝓞 F))) :
     IsCompact (levelOff σ J L S : Set (GAd σ J)) := by
@@ -131,12 +131,12 @@ theorem isCompact_levelOff (S : Finset (HeightOneSpectrum (𝓞 F))) :
   exact (isCompact_levelOffFin σ J L S).image (continuous_ofFin σ J)
 
 /- English proof (translation)
-The claim follows from `isCompact_levelOff σ J L ∅`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_levelFin : IsCompact (levelFin σ J L : Set (GAd σ J)) := isCompact_levelOff σ J L ∅
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v => ⟨isOpen_stabLoc σ J L v, isCompact_stabLoc σ J L v⟩, isOpen_levelOpen σ J L, isOpen_isCompact_levelOffFin_empty σ J L, isCompact_levelOff σ J L⟩`.
+Supply the required witnesses or components.
 -/
 theorem levels_open_compact :
     (∀ v, IsOpen (stabLoc σ J L v : Set (GLoc σ J v)) ∧ IsCompact (stabLoc σ J L v : Set (GLoc σ J v))) ∧

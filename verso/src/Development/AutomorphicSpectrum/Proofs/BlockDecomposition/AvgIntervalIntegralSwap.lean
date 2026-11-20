@@ -6,9 +6,9 @@ open GlobalTheory.CuspGeneric MeasureTheory
 namespace GlobalTheory.CompanionTheory.AvgSwap
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (volume.restrict (Set.uIoc (0 : ℝ) t)) := ⟨by rw [Measure.restrict_apply_univ]; exact measure_Ioc_lt_top⟩`. Establish `hint : Integrable (Function.uncurry fun x s => F (x, s)) (μ.prod (volume.restrict (Set.uIoc (0 : ℝ) t)))`. Use `Integrable.mono' (integrable_const C) hF.aestronglyMeasurable ?_` and prove the remaining obligations. Establish `hs : ∀ᵐ p ∂(μ.prod (volume.restrict (Set.uIoc (0 : ℝ) t))), p.2 ∈ Set.uIoc (0 : ℝ) t` using `Measure.quasiMeasurePreserving_snd.ae (ae_restrict_mem measurableSet_uIoc)`. Use `filter_upwards [hs] with p hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC p.1 p.2 (Set.uIoc_subset_uIcc hp)`. Repeatedly rewrite using `[intervalIntegral.intervalIntegral_eq_integral_uIoc]`. Rewrite using `[integral_smul]`. Use `congr 1`. Conclude with `integral_integral_swap hint`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem integral_intervalIntegral_comm_of_continuous_norm_le {G : Type} [TopologicalSpace G]
     {mG : MeasurableSpace G} [OpensMeasurableSpace G] (μ : Measure G) [IsFiniteMeasure μ]
@@ -30,11 +30,9 @@ private theorem integral_intervalIntegral_comm_of_continuous_norm_le {G : Type} 
   exact integral_integral_swap hint
 
 /- English proof (translation)
-Unfold `GlobalTheory.CuspGeneric.IsCoLat at hΓ`. Take `⟨-, K, hK, hKcov⟩` from `hΓ`. Take `⟨C, hC⟩` from `(hK.prod (isCompact_uIcc (a := (0 : ℝ)) (b := t))).exists_bound_of_continuousOn hF.continuousOn`. Establish `hbound : ∀ x, ∀ s ∈ Set.uIcc (0 : ℝ) t, ‖F (x, s)‖ ≤ C`. Introduce `x s hs`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, hγ, hγK⟩` from `hKcov x`. Rewrite using `[← hper γ hγ x s]`. Conclude with `hC (γ + x, s) ⟨hγK, hs⟩`. Use `borelize G`. Unfold `GlobalTheory.CuspGeneric.avg`.
-
-Use `split_ifs with h`. Apply the tactic sequence `try simp only [dif_pos h] haveI : IsFiniteMeasure (h.choose.1.restrict h.choose.2) := ⟨by rw [Measure.restrict_apply_univ, h.choose_spec.2.2]; exact ENNReal.one_lt_top⟩`. Conclude with `integral_intervalIntegral_comm_of_continuous_norm_le _ F hF t C hbound`. Simplify using `only [dif_neg h, intervalIntegral.integral_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_intervalIntegral_swap {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] (Γ : AddSubgroup G) (hΓ : IsCoLat Γ)

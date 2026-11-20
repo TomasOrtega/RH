@@ -28,43 +28,37 @@ namespace GlobalTheory.BotFourier
 open GlobalTheory.PlaceModel GlobalTheory.AlgWave
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX t`. Establish `hI` using `hX.is`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hI.isVac.1`. Establish `hν` using `(hI.weil' t).hecT`. Establish `hSd : IsSelfDualC (GlobalTheory.Grid.neg A) X.rA.Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hI.rigA.1.1, fun y => (hI.rigA.1.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.Grid.neg_gram, hc]`. Simplify using `[GlobalTheory.Grid.neg_gram] at hc ⊢`. Conclude with `neg_eq_iff_eq_neg.2 hc`. Establish `hWd : IsSelfDualC WW X.rW.Λ` using `hI.rigW.1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `hI.idem t`. Establish `hee` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Establish `hinf'` using `GlobalTheory.PlaceDatum.infPart_cA hinf`. Use `set S := GlobalTheory.Grid.neg A with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set e := X.e t with hedef`. Use `set Λ : AddSubgroup (WO S WW) := latO S WW X.rA.Λ X.rW.Λ fun _ => True with hΛ`. Take `⟨K, hK, hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO (S := S) hSd.1 hWd.1 X.rA.β X.rW.β`. Establish `hSB` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.stdFst_isSB hν.1 he (GlobalTheory.ConstRatio.ideal_ne_bot X (locPl G) t) A WW X.rA.β X.rW.β Λ (GlobalTheory.PlaceDatum.exists_den_frMapO (S := S) hSd.1.fg hWd.1.fg X.rA.β X.rW.β) ⟨K, hK, fun t ht => hC t (GlobalTheory.Pl …`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hI.fst t`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hall Tm hTm]`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D W.ψ S WW X.rA.Λ X.rW.Λ hψ hSd hWd).1`. Establish `hfin` using `GlobalTheory.LatFinMod.latO_finite_mod D S WW _ _ hSd.1.fg hWd.1.fg fun _ => True`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, hee]`. Establish `hsm : ∀ a : AE D, a * a = a → ∀ u ∈ Λ, a • u ∈ Λ ⊓ half S WW a` using `fun a ha u hu => AddSubgroup.mem_inf.2 ⟨GlobalTheory.LatticeStable.smul_mem_latO D S WW _ _ _ a (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, ha])) u hu, by rw [mem_half, smul_smul, ha]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `finX : ∀ x ∈ half S WW e, x.map (infPart D) = 0` using `fun x hx => GlobalTheory.PlaceDatum.infPart_of_half hinf ((isHalf_iff S WW).2 hx)`. Establish `finY : ∀ y ∈ half S WW (cA D e), y.map (infPart D) = 0` using `fun y hy => GlobalTheory.PlaceDatum.infPart_of_half hinf' ((isHalf_iff S WW).2 hy)`. Establish `tf : ∀ k : ℕ, 0 < k → Function.Injective fun t : WO S WW => k • t` using `fun k hk a b hab => by`. Rewrite using `[← inv_smul_nsmul S WW hk a, ← inv_smul_nsmul S WW hk b]`. Conclude with `congrArg _ hab`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hb` using `isBichar_symplO S WW W.ψ`. Take `⟨h1, k, hk, h2, h3⟩` from `hSB`. Establish `hmem` using `mem_algSpan (χ := fun x y : WO S WW => W.ψ (symplO S WW x y)) (X := half S WW e) (Y := half S WW (cA D e)) (L := Λ ⊓ half S WW e) (L' := Λ ⊓ half S WW (cA D e)) hb (fun x hx y hy => psi_mem hψ hSd hWd (finX x hx) (finY y hy)) inf_le_right inf_le_right (fun u hu y hy => (hdual u ( …`. Use `h _ (hsm _ he' u hu)` as an intermediate fact. Rewrite using `[← symplO_smul, (mem_half S WW).1 hx] at this, hx⟩)` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `(half_div S WW e) (half_div S WW _) tf`. Use the proof step `(fun k hk => by`. Take `⟨R, hR, h⟩` from `hfin k hk`. Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨_, ⟨r, hr, rfl⟩, e • u, hsm e hee u hu, ?_⟩` and prove the remaining obligations. Use `(mem_half S WW).1 ht.2` as an intermediate fact. Rewrite using `[← this, htr, smul_add, smul_comm e k u])`. Use `_ (fun x => stdFst_mem hν.1 he _ A WW X.rA.β X.rW.β x) (fun t ht => (isHalf_iff S WW).1 (h1 t ht)) k hk`. Use the proof step `(fun u hu => h2 u hu.1 ((isHalf_iff S WW).2 hu.2))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun t ht => ⟨h3 t ht, (half S WW e).nsmul_mem ((isHalf_iff S WW).1 (h1 t ht)) _⟩)`. Use `set V : Submodule Qb (WO S WW → ℂ) := Submodule.span Qb {F | ∃ w : WO S WW, w.map (infPart D) = 0 ∧ F = heisO W.ψ S WW w X.vac} with hV`. Establish `hvac : Tm (halfInd e Λ) = X.vac` using `by simpa using hTm.vac`. Establish `s0` using `GlobalTheory.isSBHalf_halfInd e Λ`. Establish `hT : ∀ Ψ ∈ algSpan (fun x y : WO S WW => W.ψ (symplO S WW x y)) (half S WW e) (half S WW (cA D e)) (Λ ⊓ half S WW e), Tm Ψ ∈ V`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem _ hh`. Take `⟨x, hx, y, hy, rfl⟩` from `hh`. Establish `s1 : IsSBHalf e Λ fun t => W.ψ (symplO S WW t y) * halfInd e Λ t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, hk, hk'⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO' (S := S) (T := WW) hSd.1 hWd.1 y (finY y hy)`. Take `⟨a1, k', hk1, a2, a3⟩` from `s0`. Use `⟨fun t ht => a1 t (right_ne_zero_of_mul ht), k * k', Nat.mul_pos hk hk1, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e1 : halfInd e Λ (t + (k * k') • u) = halfInd e Λ t`. Rewrite using `[mul_nsmul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a2 _ (nsmul_mem hu k) ((isHalf_iff S WW).2 (nsmul_mem ((isHalf_iff S WW).1 hh) k)) t`. Establish `e2 : W.ψ (symplO S WW ((k * k') • u) y) = 1`. Rewrite using `[mul_nsmul']`. Use `(hb.nsmul k _ y).trans ((hdual _ (finX _ (nsmul_mem ((isHalf_iff S WW).1 hh) k'))).1 (nsmul_mem hu k') _ hk')` and prove the remaining obligations. Simplify using `only [e1, symplO_add_left, AddChar.map_add_eq_mul, e2, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_nsmul']`. Conclude with `nsmul_mem (a3 t (right_ne_zero_of_mul ht)) k`. Establish `e1 : wave (fun x y : WO S WW => W.ψ (symplO S WW x y)) (Λ ⊓ half S WW e) x y = fun t => (fun t => W.ψ (symplO S WW t y) * halfInd e Λ t) (t + x)`. Rewrite using `[halfInd_eq_ind]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, hTm.trans _ s1 x ((isHalf_iff S WW).2 hx), hTm.modul _ s0 y ((isHalf_iff S WW).2 hy), hvac]`. Establish `e2 : heisO W.ψ S WW x (heisO W.ψ S WW y X.vac) = W.ψ (symplOH S WW x y) • heisO W.ψ S WW (x + y) X.vac` using `heisL_heisL S WW W.ψ x y X.vac`. Rewrite using `[e2]`. Use `smul_mem_of_mem (psiH_mem hψ hSd hWd (finX x hx) (finY y hy)) (Submodule.subset_span ⟨x + y, ?_, rfl⟩)` and prove the remaining obligations. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `q1 : infPart D (x a b) = 0` using `congrFun (congrFun (finX x hx) a) b`. Establish `q2 : infPart D (y a b) = 0` using `congrFun (congrFun (finY y hy) a) b`. Express the relevant statement in the definitionally equal form `infPart D (x a b + y a b) = 0`. Rewrite using `[RingHom.map_add, q1, q2, add_zero]`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add f g _ _ hf hg => rw [map_add]`. Conclude with `add_mem hf hg`. Consider the case `smul c f _ hf`. Express the relevant statement in the definitionally equal form `Tm ((c : ℂ) • f) ∈ V`.
-
-Rewrite using `[map_smul]`. Conclude with `V.smul_mem c hf`. Take `⟨n, f, g, hfg⟩` from `(Submodule.mem_span_set').1 (hT _ hmem)`. Use `choose w hw hgw using fun p => (g p).2`. Use `⟨n, fun p => (f p : ℂ), w, fun p => mem_algebraicClosure_iff.1 (f p).2, hw, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hfg]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← hgw p]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finite_datum_eq_sum_heisenberg : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc}
     {W : G.Weil} {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) →
@@ -193,7 +187,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotFourier.finite_datum_eq_sum_heisenberg | exact _root_.GlobalTheory.BotFourier.finite_datum_eq_sum_heisenberg | (intros; apply _root_.GlobalTheory.BotFourier.finite_datum_eq_sum_heisenberg <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottom_fourier_coeff_heisenberg_expansion : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

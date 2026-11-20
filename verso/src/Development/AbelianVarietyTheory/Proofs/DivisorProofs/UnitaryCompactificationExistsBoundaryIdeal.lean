@@ -17,13 +17,11 @@ open Classical
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw hpq φ hφ l Xo c C`. Use `haveI : IsNoetherianRing C.o := C.ded.toIsDedekindRing.toIsNoetherian`. Use `haveI : AlgebraicGeometry.IsNoetherian C.Z := GlobalTheory.isNoetherian_of_isProjOver C.proj`. Establish `hdom : ∀ x : C.Z, IsDomain (C.Z.presheaf.stalk x)` using `fun x => C.normal.isDomain_stalk x`. Establish `hfin : (irreducibleComponents C.Z).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Fintype (irreducibleComponents C.Z) := hfin.fintype`. Establish `hclo : ∀ k : irreducibleComponents C.Z, IsClopen (k : Set C.Z)` using `fun k => ⟨isClosed_of_mem_irreducibleComponents _ k.2, GlobalTheory.CompPart.isOpen_of_mem hdom k.2⟩`. Establish `key : ∀ k : irreducibleComponents C.Z, ∃ (d : ℕ) (J : C.Z.IdealSheafData), 1 ≤ d ∧ (∀ x ∈ J.support, x ∈ (k : Set C.Z) ∧ x ∉ Set.range C.i) ∧ UValThru Xo c C.i (𝟙 C.Z) k φ J d`. Introduce `k`. Distinguish the cases in `hk : ((k : Set C.Z) ∩ Set.range C.i).Nonempty`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨X₁, ι, J₁, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_unitaryThetaSetup_ideal_over_component E H Dw hpq φ hφ l Xo c C k (hclo k) k.2.1 hk`. Conclude with `GlobalTheory.T.ideal_descent_to_component_compactification E H Dw hpq φ hφ l Xo c C k (hclo k) k.2.1 hk X₁ ι J₁ h1 h2 h3 h4`. Use `⟨1, ⊤, le_rfl, fun x hx => ?_, uValThru_top_of_disjoint (hclo k).2 (Set.not_nonempty_iff_eq_empty.1 hk) φ 1⟩` and prove the remaining obligations. Rewrite `hx` using `[Scheme.IdealSheafData.support_top]`. Conclude with `absurd hx (by simp [← SetLike.mem_coe])`.
-
-Use `choose d J hd hJ hv using key`. Conclude with `exists_uValOn_of_pieces (ι := irreducibleComponents C.Z) C.i φ (fun k => (k : Set C.Z)) J d (GlobalTheory.CompPart.existsUnique_mem hdom) hd hJ hv`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uIdealSt_holds : UIdealSt := by
   intro E _ _ _ H Dw hpq φ hφ l Xo c C

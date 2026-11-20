@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-Introduce `W V V₁ _ _ _ _ Q ρ D e h`. Take `⟨pr, w, hmon, huniv, -⟩` from `h`. Establish `lim : IsLimit (Fan.mk D.P.A pr)` using `mkFanLimit _ (fun s => (huniv s.pt s.proj).choose) (fun s i => (huniv s.pt s.proj).choose_spec.1 i) (fun s m hm => (huniv s.pt s.proj).unique hm (huniv s.pt s.proj).choose_spec.1)`. Set `eI : D.P.A ≅ powObj ((Over.pullback (spMap ρ)).obj Q.B) 8` to `lim.conePointUniqueUpToIso (powIsLimit _ 8)`. Establish `hB : SmoothOfRelativeDimension Q.g ((Over.pullback (spMap ρ)).obj Q.B).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback Q.B.hom (spMap ρ)) Q.smoothDim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h8` using `GlobalTheory.smoothOfRelativeDimension_powObj _ Q.g hB 8`. Establish `hne : Nonempty (Sp V₁)` using `inferInstance`. Conclude with `GlobalTheory.relDim_unique_of_iso_grp (Sp V₁) hne D.P.A _ eI.hom inferInstance _ _ D.P.smoothDim h8`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sharpRef_relDim : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ) (V V₁ : Type) [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁] (Q : Data V) (ρ : V →+* V₁) (D : DegPre V₁) (e : (Fin 8 → Q.X) ≃+ D.X), SharpRef W Q ρ D e → D.P.g = 8 * Q.g := by
   intro W V V₁ _ _ _ _ Q ρ D e h

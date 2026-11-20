@@ -32,9 +32,9 @@ section Places
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Introduce `PP hP`. Take `⟨k, hk⟩` from `(h.Pg PP).1 hP`. Use `GlobalTheory.CoverHalf.not_mem_of_coprime PP.isPrime.ne_top (a := D.host.g k) ?_ (R.C.P.overP hk)` and prove the remaining obligations. Establish `hc` using `D.ntypes.g_cond k`. Establish `h1 : Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * D.host.d)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hc, Nat.gcd_one_left]`. Use `Nat.Coprime.mul_right h1 ?_` and prove the remaining obligations. Use `(D.host.ccK_coprime _ ?_).symm` and prove the remaining obligations. Simplify using `[D.host.g_level k]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem primeToHost (h : R.toLevCh.Is A.μ0) : AdelicScalarSectionLift.PrimeToHost R := by
   intro PP hP
@@ -65,19 +65,17 @@ variable {c}
 end Coord
 
 /- English proof (translation)
-Use `set E : H →ₗ[ℂ] H := ∑ g, a g • ρ g with hE`. Establish `hin : ∀ g u w, ⟪ρ g u, ρ g w⟫_ℂ = ⟪u, w⟫_ℂ` using `fun g => LinearIsometry.inner_map_map ⟨ρ g, hu g⟩`. Establish `hcomm : ∀ g u, E (ρ g u) = ρ g (E u)` using `fun g u => by`. Simplify using `only [hE, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, ← Module.End.mul_apply, ← map_mul]`. Use `(Fintype.sum_equiv (MulAut.conj g).toEquiv _ _ fun h => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = a (g * h * g⁻¹) • ρ (g * h * g⁻¹ * g) u`. Rewrite using `[ha.1, inv_mul_cancel_right]`. Establish `hidem : ∀ u, E (E u) = E u` using `fun u => by`. Establish `h1 : E u = ∑ g, ∑ h, (a h * a (h⁻¹ * g)) • ρ g u`. Simplify using `only [← Finset.sum_smul, ha.2, hE, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : E (E u) = ∑ h, ∑ g, (a h * a g) • ρ h (ρ g u)`. Simplify using `only [hE, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Rewrite using `[h2, h1, Finset.sum_comm (f := fun g h => (a h * a (h⁻¹ * g)) • ρ g u)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun h _ => Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]`. Establish `hadj : ∀ u, LinearMap.adjoint E u = ∑ g, star (a g) • ρ g⁻¹ u` using `fun u => by`. Use `ext_inner_right ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.adjoint_inner_left, sum_inner, hE, LinearMap.sum_apply, inner_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, inner_smul_right, inner_smul_left, ← hin g (ρ g⁻¹ u), ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Simplify using the standard rewrite rules. Establish `hfix : E (LinearMap.adjoint E x) = LinearMap.adjoint E x`. Rewrite using `[hadj, map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_smul, hcomm, hx]`. Establish `hz : LinearMap.adjoint E x - x = 0`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ)]`. Establish `h1 : E (LinearMap.adjoint E x - x) = LinearMap.adjoint E x - x` using `by rw [map_sub, hfix, hx]`. Rewrite using `[inner_sub_left, LinearMap.adjoint_inner_left, h1, sub_self]`.
-
-Rewrite using `[← LinearMap.adjoint_inner_left, sub_eq_zero.1 hz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_idem {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     (ρ : Representation ℂ G H) (hu : ∀ g x, ‖ρ g x‖ = ‖x‖) {a : G → ℂ} (ha : GoodBasisCentralIdempotents.IsCentralIdem a) {x : H}

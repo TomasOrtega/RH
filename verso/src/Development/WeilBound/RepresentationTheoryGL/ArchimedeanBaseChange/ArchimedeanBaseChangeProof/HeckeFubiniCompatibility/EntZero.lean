@@ -18,7 +18,7 @@ def ent {n : ℕ} (M : KMod n) (A : M.V →L[ℂ] M.V) (i j : Ix M) : ℂ :=
   inner ℂ (stdOrthonormalBasis ℂ M.V i) (A (stdOrthonormalBasis ℂ M.V j))
 
 /- English proof (translation)
-Simplify using `[ent]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ent_zero {n : ℕ} (M : KMod n) (i j : Ix M) : ent M 0 i j = 0 := by simp [ent]
 

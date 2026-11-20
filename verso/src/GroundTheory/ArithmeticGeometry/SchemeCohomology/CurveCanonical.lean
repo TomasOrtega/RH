@@ -27,7 +27,7 @@ noncomputable def invertibleDegree {L : X.Modules} (hL : IsInvertibleSheaf L) : 
 omit [IsProper (X ↘ Spec (.of k))] [IsFunctionField k X.functionField] in
 
 /- English proof (translation)
-Rewrite `h` using `[weilDivisorToPic_apply]`. Conclude with `(Pic.mk_eq_mk_iff _ _).mp (Additive.ofMul.injective h)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nonempty_iso_of_weilDivisorToPic {M : X.Modules} (hM : IsInvertibleSheaf M)
     {D : WeilDivisor X} (h : Additive.ofMul (Pic.mk M hM) = weilDivisorToPic D) :
@@ -38,7 +38,7 @@ lemma nonempty_iso_of_weilDivisorToPic {M : X.Modules} (hM : IsInvertibleSheaf M
 omit [IsProper (X ↘ Spec (.of k))] [IsFunctionField k X.functionField] in
 
 /- English proof (translation)
-Use `nonempty_iso_of_weilDivisorToPic ((isInvertibleSheaf_divisorSheaf D).tensor hL.dual) ?_` and prove the remaining obligations. Establish `hLE : Pic.mk L hL = Pic.mk (divisorSheaf E) (isInvertibleSheaf_divisorSheaf E)` using `(Pic.mk_eq_mk_iff _ _).mpr ⟨e⟩`. Rewrite using `[Pic.mk_tensor (isInvertibleSheaf_divisorSheaf D) hL.dual, Pic.mk_dualSheaf hL, hLE, map_sub, weilDivisorToPic_apply, weilDivisorToPic_apply, ofMul_mul, ofMul_inv, sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonempty_tensor_dualSheaf_iso (D : WeilDivisor X) {L : X.Modules}
     (hL : IsInvertibleSheaf L) {E : WeilDivisor X} (e : L ≅ divisorSheaf E) :
@@ -56,7 +56,7 @@ noncomputable def canonicalDifferential : WeilDifferential k X.functionField :=
 
 omit [AlgebraicGeometry.IsNoetherian X] [IsLocallyFactorial X] [IsProper (X ↘ Spec (.of k))] in
 /- English proof (translation)
-The claim follows from `(WeilDifferential.exists_ne_zero (k := k) (K := X.functionField)).choose_spec`.
+A detailed English derivation is pending.
 -/
 lemma canonicalDifferential_ne_zero : canonicalDifferential (k := k) (X := X) ≠ 0 :=
   (WeilDifferential.exists_ne_zero (k := k) (K := X.functionField)).choose_spec
@@ -65,7 +65,7 @@ noncomputable def canonicalDivisor : WeilDivisor X :=
   (divisorEquiv (k := k) hX).symm (canonicalDifferential (k := k) (X := X)).divisor
 
 /- English proof (translation)
-Simplify using `[canonicalDivisor]`.
+Simplify using the standard rewrite rules.
 -/
 lemma divisorEquiv_canonicalDivisor :
     divisorEquiv (k := k) hX (canonicalDivisor (k := k) hX) =

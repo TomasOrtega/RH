@@ -20,13 +20,13 @@ variable {E : Type} [Field E] [NumberField E] {w : Pl E} {K : GlobalTheory.UnitL
   (e : K.E ≃+* w.adicCompletion E) {B : GlobalTheory.UnitLemma.InvAlg K} {m : ℕ} (b : Module.Basis (Fin m) K.E B.A)
 
 /- English proof (translation)
-Take `⟨Y, hY⟩ : ∃ Y : Matrix (Fin m) (Fin m) (w.adicCompletion E), Y = (g⁻¹).val * GlobalTheory.TwLat.mulMat e b x * g.val` from `⟨_, rfl⟩`. Rewrite using `[← hY]`. Establish `hgY : g.val * Y = GlobalTheory.TwLat.mulMat e b x * g.val`. Rewrite using `[hY, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `hgcol : ∀ j, x * Lv.col e b g.val j = ∑ l, e.symm (Y l j) • Lv.col e b g.val l`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[Lv.mul_col, ← hgY]`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[Lv.repr_sum_smul_col, Lv.repr_col]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingEquiv.apply_symm_apply, Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Establish `hmem : x * Lv.col e b g.val j ∈ GlobalTheory.TwLat.lat e b g` using `hx _ (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun K.O).mp hmem`. Establish `ho' : ∑ l, algebraMap K.O K.E (o l) • Lv.col e b g.val l = ∑ l, e.symm (Y l j) • Lv.col e b g.val l`. Rewrite using `[← hgcol j, ← ho]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun l _ => algebraMap_smul K.E (o l) _`. Use `congrFun (Lv.sum_smul_col_inj e b g _ _ ho') i` as an intermediate fact. Establish `hi` using `(hint (algebraMap K.O K.E (o i))).mp ⟨o i, rfl⟩`. Rewrite `hi` using `[this, RingEquiv.apply_symm_apply]`. Conclude with `hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_le_one (hint : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1)
     (g : GLw m w) (x : B.A) (hx : ∀ y ∈ GlobalTheory.TwLat.lat e b g, x * y ∈ GlobalTheory.TwLat.lat e b g) (i j : Fin m) :
@@ -54,9 +54,9 @@ theorem entries_le_one (hint : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Value
   exact hi
 
 /- English proof (translation)
-Establish `hO : IsCompact ((w.adicCompletionIntegers E).toSubring : Set (w.adicCompletion E))` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers E w)`. Use `GlobalTheory.LFun.IntPtsUnitary.isCompact_GLint (n := Fin m) _ hO` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LFun.IntPtsUnitary.coe_GLint]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, ValuationSubring.mem_toSubring, mem_adicCompletionIntegers]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isCompact_intGL :
     IsCompact {h : GLw m w | (∀ i j, Valued.v (h.val i j) ≤ 1) ∧ ∀ i j, Valued.v ((h⁻¹).val i j) ≤ 1} := by
@@ -87,21 +87,17 @@ namespace GlobalTheory.TwLat
 open IsDedekindDomain.HeightOneSpectrum
 
 /- English proof (translation)
-Introduce `E _ _ _ hU w hw K e hc hint hval B m b a ha`. Set `R : Subalgebra K.O B.A` to `Algebra.adjoin K.O {(a : B.A), ((a⁻¹ : B.Aˣ) : B.A)}`. Use `haveI : Module.Finite K.O R := by`. Apply `Algebra.finite_adjoin_of_finite_of_isIntegral (Set.toFinite _)` to reduce the goal to its premises. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `ha.1`. Conclude with `ha.2`. Set `L : Submodule K.O B.A` to `(Submodule.span R (Set.range b)).restrictScalars K.O`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLfg : L.FG` using `Submodule.FG.restrictScalars (Submodule.fg_span (Set.finite_range b))`. Establish `hbL : ∀ i, b i ∈ L` using `fun i => Submodule.subset_span ⟨i, rfl⟩`. Establish `hLsp : Submodule.span K.E (L : Set B.A) = ⊤`. Rewrite using `[eq_top_iff, ← b.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span (hbL i)`. Establish `hLst : ∀ x ∈ R, ∀ y ∈ L, x * y ∈ L`. Introduce `x hx y hy`. Conclude with `(Submodule.span R (Set.range b)).smul_mem (⟨x, hx⟩ : R) hy`. Take `⟨g, hg⟩` from `GlobalTheory.TwLat.exists_GLw_lat_eq E hU w hw K e hc hint hval B m b L ⟨hLfg, hLsp⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `haH : a ∈ IntCpt.unitsIn R` using `⟨Algebra.subset_adjoin (Set.mem_insert _ _), Algebra.subset_adjoin (Set.mem_insert_of_mem _ rfl)⟩`. Set `S : Set (GLw m w)` to `{h | (∀ i j, Valued.v (h.val i j) ≤ 1) ∧ ∀ i j, Valued.v ((h⁻¹).val i j) ≤ 1}`. Establish `hC : IsCompact ((fun h => g * h * g⁻¹) '' S)` using `(IntCpt.isCompact_intGL (w := w) (m := m)).image (by fun_prop)`. Establish `hsub : (Subgroup.zpowers (mulU e b a) : Set (GLw m w)) ⊆ (fun h => g * h * g⁻¹) '' S`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : a ^ k ∈ IntCpt.unitsIn R` using `zpow_mem haH k`. Use `⟨g⁻¹ * mulU e b (a ^ k) * g, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i j`. Use `IntCpt.entries_le_one e b hint g _ (hg ▸ hLst _ hu.1) i j` as an intermediate fact. Rewrite using `[Units.val_mul, Units.val_mul, mulU_val]`.
-
-Conclude with `this`. Introduce `i j`. Use `IntCpt.entries_le_one e b hint g _ (hg ▸ hLst _ hu.2) i j` as an intermediate fact. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, ← map_inv (mulU e b), ← mul_assoc, Units.val_mul, Units.val_mul, mulU_val]`. Conclude with `this`.
-
-Use `show g * (g⁻¹ * mulU e b (a ^ k) * g) * g⁻¹ = mulU e b a ^ k`. Rewrite using `[map_zpow]`. Use `group`. Conclude with `hC.of_isClosed_subset isClosed_closure (closure_minimal hsub hC.isClosed)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_closure_zpowers_mulU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (m : ℕ) (b : Module.Basis (Fin m) K.E B.A) (a : B.Aˣ), a ∈ GlobalTheory.UnitLemma.intUnits K.O B.A → IsCompact (closure (Subgroup.zpowers (GlobalTheory.TwLat.mulU e b a) : Set (GLw m w))) := by
   intro E _ _ _ hU w hw K e hc hint hval B m b a ha

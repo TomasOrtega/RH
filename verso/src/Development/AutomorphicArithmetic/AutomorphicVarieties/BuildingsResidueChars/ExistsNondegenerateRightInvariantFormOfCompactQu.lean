@@ -5,47 +5,41 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EqZeroOfAeFundam
 
 open MeasureTheory in
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ Γ _ C hC hcov`. Use `letI : MeasurableSpace G := borel G`. Use `haveI : BorelSpace G := ⟨rfl⟩`. Use `haveI : Countable Γ := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨μ, hμ⟩ : ∃ μ : Measure G, μ.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨𝓕, -, h𝓕'⟩` from `Formalism.IndefR.Eqv.G5.fdom_exists_all Γ`. Establish `h𝓕` using `h𝓕' μ`. Establish `hfin : μ 𝓕 < ⊤`. Use `lt_of_le_of_lt ?_ (hC.measure_lt_top (μ := μ))` and prove the remaining obligations. Rewrite using `[h𝓕.measure_eq_tsum C]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations. Introduce `g hg`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov g`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨c, hc, rfl⟩, hg⟩`. Take `⟨-, hR, -⟩` from `GlobalTheory.CompanionTheory.SW.LatticeUnimod.unimodular_of_isFundamentalDomain G Γ μ 𝓕 h𝓕 hfin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hright : ∀ (y : G) (u : G → ℂ), (∀ γ ∈ Γ, ∀ h, u (γ * h) = u h) → ∫ h in 𝓕, u (h * y) ∂μ = ∫ h in 𝓕, u h ∂μ`. Introduce `y u hu`. Establish `h' : IsFundamentalDomain Γ ((fun h => h * y) '' 𝓕) μ`. Use `h𝓕.image_of_equiv (Equiv.mulRight y) ?_ (Equiv.refl _) ?_` and prove the remaining obligations. Conclude with `(measurePreserving_mul_right μ y⁻¹).quasiMeasurePreserving`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `γ h`. Simplify using `[Subgroup.smul_def, mul_assoc]`. Rewrite using `[h𝓕.setIntegral_eq h' (f := u) (fun γ h => hu γ γ.2 h)]`. Conclude with `((measurePreserving_mul_right μ y).setIntegral_image_emb (measurableEmbedding_mulRight y) u 𝓕).symm`. Set `N : Submodule ℂ (G → ℂ)` to `{ carrier := {φ | Continuous φ ∧ ∀ γ ∈ Γ, ∀ g, φ (γ * g) = φ g} add_mem' := fun {a b} ha hb => ⟨ha.1.add hb.1, fun γ hγ g => by simp [ha.2 γ hγ g, hb.2 γ hγ g]⟩ zero_mem' := ⟨continuous_const, fun _ _ _ => rfl⟩ smul_mem' := fun c a ha => ⟨ha.1.const_smul c, fun γ hγ g => by simp …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hRN : ∀ k : G, ∀ φ ∈ N, (fun g => φ (g * k)) ∈ N`. Introduce `k φ h`. Use `⟨h.1.comp (continuous_mul_const k), fun γ hγ g => ?_⟩` and prove the remaining obligations. Use `show φ (γ * g * k) = φ (g * k)`. Rewrite using `[mul_assoc, h.2 γ hγ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hI : ∀ x ∈ N, ∀ y ∈ N, IntegrableOn (fun g => star (x g) * y g) 𝓕 μ`. Introduce `x hx y hy`. Establish `hc : Continuous (fun g => star (x g) * y g)` using `hx.1.star.mul hy.1`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hc.continuousOn`. Use `Measure.integrableOn_of_bounded (M := M) hfin.ne hc.aestronglyMeasurable (ae_of_all _ fun g => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov g`. Rewrite using `[hx.2 γ hγ, hy.2 γ hγ]`. Conclude with `hM c hc`. Take `⟨q, hq⟩` from `Submodule.exists_isCompl N`. Set `P : (G → ℂ) →ₗ[ℂ] N` to `Submodule.projectionOnto N q hq`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hPN : ∀ T, ((P T : N) : G → ℂ) ∈ N` using `fun T => (P T).2`. Establish `hPid : ∀ T ∈ N, ((P T : N) : G → ℂ) = T` using `fun T hT => congrArg Subtype.val (Submodule.projectionOnto_apply_left hq ⟨T, hT⟩)`. Set `F : (G → ℂ) → (G → ℂ) → ℂ` to `fun x y => ∫ g in 𝓕, star ((P x).1 g) * (P y).1 g ∂μ`. Set `B : (G → ℂ) →ₗ⋆[ℂ] (G → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) F (fun x x' y => by`. Simplify using `only [F, map_add, Submodule.coe_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← integral_add (hI _ (hPN x) _ (hPN y)) (hI _ (hPN x') _ (hPN y))]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.add_apply, star_add, add_mul])`. Use the proof step `(fun c x y => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [F, map_smul, Submodule.coe_smul]`. Rewrite using `[smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul', starRingEnd_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use the proof step `ring)`. Use the proof step `(fun x y y' => by`. Simplify using `only [F, map_add, Submodule.coe_add]`. Rewrite using `[← integral_add (hI _ (hPN x) _ (hPN y)) (hI _ (hPN x) _ (hPN y'))]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Pi.add_apply, mul_add])`. Use the proof step `(fun c x y => by`. Simplify using `only [F, map_smul, Submodule.coe_smul]`. Rewrite using `[smul_eq_mul, ← integral_const_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use the proof step `ring)`. Establish `hB : ∀ x ∈ N, ∀ y ∈ N, B x y = ∫ g in 𝓕, star (x g) * y g ∂μ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `x hx y hy`. Use `show F x y = _`. Simplify using `only [F, hPid x hx, hPid y hy]`. Use `⟨B, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hT1 hT2 h0`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : T ∈ N` using `⟨hT1, hT2⟩`. Rewrite `h0` using `[hB _ hT _ hT]`. Establish `hre : ∫ g in 𝓕, star (T g) * T g ∂μ = ((∫ g in 𝓕, ‖T g‖ ^ 2 ∂μ : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h0` using `[hre, Complex.ofReal_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : IntegrableOn (fun g => ‖T g‖ ^ 2) 𝓕 μ`. Use `(hI T hT T hT).norm` as an intermediate fact. Establish `e2 : (fun g => ‖star (T g) * T g‖) = fun g => ‖T g‖ ^ 2`. Use function extensionality and compare the values at `g`. Rewrite using `[norm_mul, norm_star, sq]`.
-
-Rewrite `this` using `[e2]`. Conclude with `this`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun g => by positivity) hi).1 h0`. Use `GlobalTheory.eq_zero_of_ae_fundamentalDomain_of_leftInvariant Γ μ 𝓕 h𝓕 T hT1 hT2 (by filter_upwards [hae] with g hg` as an intermediate fact. Simplify using `using hg)`.
-
-Apply the tactic sequence `first | exact this | exact funext this`. Introduce `k T T' h1 h2 h3 h4`. Establish `hT : T ∈ N` using `⟨h1, h2⟩`. Establish `hT' : T' ∈ N` using `⟨h3, h4⟩`. Rewrite using `[hB _ (hRN k T hT) _ (hRN k T' hT'), hB _ hT _ hT']`.
-
-Conclude with `hright k (fun g => star (T g) * T' g) (fun γ hγ g => by simp only [h2 γ hγ, h4 γ hγ])`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_nondegenerate_right_invariant_form_of_compact_quotient :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [DiscreteTopology Γ] (C : Set G), IsCompact C → (∀ g, ∃ γ ∈ Γ, ∃ c ∈ C, g = γ * c) → ∃ B : (G → ℂ) →ₗ⋆[ℂ] (G → ℂ) →ₗ[ℂ] ℂ, (∀ φ : G → ℂ, Continuous φ → (∀ γ ∈ Γ, ∀ g, φ (γ * g) = φ g) → B φ φ = 0 → φ = 0) ∧ ∀ (x : G) (φ ψ : G → ℂ), Continuous φ → (∀ γ ∈ Γ, ∀ g, φ (γ * g) = φ g) → Continuous ψ → (∀ γ ∈ Γ, ∀ g, ψ (γ * g) = ψ g) → B (fun g => φ (g * x)) (fun g => ψ (g * x)) = B φ ψ := by

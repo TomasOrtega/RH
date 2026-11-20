@@ -26,9 +26,9 @@ def baseOfGBase {p : ℕ} [Fact p.Prime] {D : Datum p} (gb : GBase D.toG ℂ) : 
     exact (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) (CharP.cast_eq_zero k p)
 
 /- English proof (translation)
-Introduce `p _ D hC gb N hN hNp X`. Take `⟨M⟩` from `GlobalTheory.T.harrisTaylorIntegralModel_nonempty p D ℂ (baseOfGBase gb) N hN hNp`. Establish `hM : IsProjOver M.s` using `GlobalTheory.UPel.HT.Model.isProjOver_of_compactB p D ℂ (baseOfGBase gb) N hN hNp hC M`. Take `⟨j, _, hj, hjs, _⟩` from `GlobalTheory.T.exists_open_closed_immersion_genModel_to_fibre p D ℂ (baseOfGBase gb) ℂ (RingHom.id ℂ) gb rfl (fun _ => rfl) N hN hNp M X`. Rewrite using `[← hjs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion j (GlobalTheory.ProjSpace.isProjOver_pullback_snd (RingHom.id ℂ) hM)`.
+A detailed English derivation is pending.
 -/
 theorem isProjOver_genModel : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p), D.CompactB → ∀ (gb : GBase D.toG ℂ) (N : ℕ),
     3 ≤ N → N.Coprime p → ∀ X : GenModel gb N, IsProjOver X.s := by

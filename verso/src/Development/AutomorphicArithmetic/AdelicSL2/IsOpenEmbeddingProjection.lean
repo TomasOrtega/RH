@@ -4,11 +4,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperTheory.ConvolutionTheory.RankTwoDescent UpperTheory.ConvolutionTheory.RankTwoDescent.Cp UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.Fb
 open scoped Classical ENNReal NNReal
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `h : (fun g : G1 ℚ => (((gl g)⁻¹ : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ))) = fun g : G1 ℚ => ((g⁻¹ : G1 ℚ) : Matrix (Fin 2) (Fin 2) (A ℚ))`. Use function extensionality and compare the values at `g`. Establish `: (gl g)⁻¹ = gl g⁻¹`. Rewrite using `[inv_eq_iff_mul_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (by`. Express the relevant statement in the definitionally equal form `(g : Matrix (Fin 2) (Fin 2) (A ℚ)) * ((g⁻¹ : G1 ℚ) : Matrix (Fin 2) (Fin 2) (A ℚ)) = 1`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, mul_inv_cancel, Matrix.SpecialLinearGroup.coe_one])`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun x : G1 ℚ => ((((gl x)⁻¹ : GL (Fin 2) (A ℚ))) : Matrix (Fin 2) (Fin 2) (A ℚ))) = _ from h]`. Conclude with `continuous_subtype_val.comp (continuous_inv : Continuous fun g : G1 ℚ => g⁻¹)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_gl' : Continuous (gl : G1 ℚ → GL (Fin 2) (A ℚ)) := by
   refine Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩
@@ -26,7 +26,7 @@ private theorem continuous_gl' : Continuous (gl : G1 ℚ → GL (Fin 2) (A ℚ))
   exact continuous_subtype_val.comp (continuous_inv : Continuous fun g : G1 ℚ => g⁻¹)
 
 /- English proof (translation)
-Rewrite using `[inv_eq_iff_mul_eq_one, ← dM_mul, mul_inv_cancel]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `!![1, 0; 0, ((1 : (A ℚ)ˣ) : A ℚ)] = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dM_inv' (t : (A ℚ)ˣ) : (dM t)⁻¹ = dM t⁻¹ := by
   rw [inv_eq_iff_mul_eq_one, ← dM_mul, mul_inv_cancel]
@@ -36,9 +36,7 @@ private theorem dM_inv' (t : (A ℚ)ˣ) : (dM t)⁻¹ = dM t⁻¹ := by
   fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Establish `h : (fun t : (A ℚ)ˣ => ((dM t : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ))) = fun t : (A ℚ)ˣ => !![1, 0; 0, (t : A ℚ)]` using `rfl`. Rewrite using `[h]`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `continuous_const`.
-
-Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `Units.continuous_val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem continuous_dM_val : Continuous (fun t : (A ℚ)ˣ => ((dM t : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ))) := by
   have h : (fun t : (A ℚ)ˣ => ((dM t : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ))) =
@@ -52,7 +50,7 @@ private theorem continuous_dM_val : Continuous (fun t : (A ℚ)ˣ => ((dM t : GL
   · exact Units.continuous_val
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨continuous_dM_val, ?_⟩` and prove the remaining obligations. Establish `h : (fun t : (A ℚ)ˣ => (((dM t)⁻¹ : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ))) = fun t : (A ℚ)ˣ => ((dM t⁻¹ : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ))`. Use function extensionality and compare the values at `t`. Rewrite using `[dM_inv']`. Conclude with `h ▸ (continuous_dM_val.comp continuous_inv)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_dM' : Continuous (dM : (A ℚ)ˣ → GL (Fin 2) (A ℚ)) := by
   refine Units.continuous_iff.2 ⟨continuous_dM_val, ?_⟩
@@ -63,14 +61,14 @@ private theorem continuous_dM' : Continuous (dM : (A ℚ)ˣ → GL (Fin 2) (A �
   exact h ▸ (continuous_dM_val.comp continuous_inv)
 
 /- English proof (translation)
-Establish `h` using `det_el 1 t`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem det_dM' (t : (A ℚ)ˣ) : GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (dM t) = t := by
   have h := det_el 1 t
   simpa using h
 
 /- English proof (translation)
-Establish `h : GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (x * (dM (GroundTheory.Automorphic.AdelicGLn.det ℚ 2 x))⁻¹) = 1`. Rewrite using `[map_mul, map_inv, det_dM', mul_inv_cancel]`. Use `congrArg Units.val h` as an intermediate fact. Rewrite `this` using `[GroundTheory.Automorphic.AdelicGLn.coe_det]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem det_rest (x : GL (Fin 2) (A ℚ)) :
     Matrix.det (((x * (dM (GroundTheory.Automorphic.AdelicGLn.det ℚ 2 x))⁻¹ : GL (Fin 2) (A ℚ))) : Matrix (Fin 2) (Fin 2) (A ℚ)) = 1 := by
@@ -84,7 +82,7 @@ private noncomputable def rt (x : GL (Fin 2) (A ℚ)) : G1 ℚ × (A ℚ)ˣ :=
     GroundTheory.Automorphic.AdelicGLn.det ℚ 2 x)
 
 /- English proof (translation)
-Establish `hd` using `GroundTheory.Automorphic.AdelicGLn.continuous_det ℚ 2`. Use `Continuous.prodMk (Continuous.subtype_mk ?_ _) hd` and prove the remaining obligations. Conclude with `Units.continuous_val.comp (continuous_id.mul (continuous_dM'.comp hd).inv)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_rt : Continuous rt := by
   have hd := GroundTheory.Automorphic.AdelicGLn.continuous_det ℚ 2
@@ -92,7 +90,7 @@ private theorem continuous_rt : Continuous rt := by
   exact Units.continuous_val.comp (continuous_id.mul (continuous_dM'.comp hd).inv)
 
 /- English proof (translation)
-Introduce and unpack `⟨g, t⟩`. Use `Prod.ext (Subtype.ext ?_) (det_el g t)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((gl g * dM t) * (dM (GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (gl g * dM t)))⁻¹ : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ)) = (g : Matrix (Fin 2) (Fin 2) (A ℚ))`. Rewrite using `[det_el, mul_inv_cancel_right]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rt_pre : Function.LeftInverse rt (fun p : G1 ℚ × (A ℚ)ˣ => gl p.1 * dM p.2) := by
   rintro ⟨g, t⟩
@@ -102,9 +100,7 @@ private theorem rt_pre : Function.LeftInverse rt (fun p : G1 ℚ × (A ℚ)ˣ =>
   rfl
 
 /- English proof (translation)
-Establish `hi : (t⁻¹ : (A ℚ)ˣ) ∈ UU` using `US.inv_mem (show t ∈ US from ht)`. Use `RationalIdeles.mem_positiveSubgroup.2 ⟨(IdeleGroup.mem_standardOpenSubgroup ℚ).2 fun v => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).2 (ht.2 v).le`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).2 (hi.2 v).le`. Rewrite using `[RationalIdeles.coe_realPart, ht.1, map_one]`.
-
-Conclude with `one_pos`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pos_of_UU {t : (A ℚ)ˣ} (ht : t ∈ UU) : t ∈ RationalIdeles.positiveSubgroup := by
   have hi : (t⁻¹ : (A ℚ)ˣ) ∈ UU := US.inv_mem (show t ∈ US from ht)
@@ -115,11 +111,11 @@ private theorem pos_of_UU {t : (A ℚ)ˣ} (ht : t ∈ UU) : t ∈ RationalIdeles
     exact one_pos
 
 /- English proof (translation)
-Establish `hr : (RationalIdeles.realPart t : ℝ) = 1`. Rewrite using `[← GroundTheory.Automorphic.GL2Classical.ideleModule_eq_realPart_of_mem hp, hm]`. Take `⟨hs, -⟩` from `RationalIdeles.mem_positiveSubgroup.1 hp`. Use `⟨RationalIdeles.realEquiv.injective ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, ← RationalIdeles.coe_realPart, hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ha, hb⟩` from `(IdeleGroup.mem_standardOpenSubgroup ℚ).1 hs v`. Establish `ha' : Valued.v (H.cp v (t : A ℚ)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).1 ha`. Establish `hb' : Valued.v (H.cp v ((t⁻¹ : (A ℚ)ˣ) : A ℚ)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 ℚ) ℚ v).1 hb`. Establish `hm1 : Valued.v (H.cp v ((t⁻¹ : (A ℚ)ˣ) : A ℚ)) * Valued.v (H.cp v (t : A ℚ)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm ha' ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem UU_of_pos {t : (A ℚ)ˣ} (hp : t ∈ RationalIdeles.positiveSubgroup)
     (hm : ((IdeleGroup.ideleModule ℚ t : {r : ℝ // 0 < r}) : ℝ) = 1) : t ∈ UU := by
@@ -138,13 +134,11 @@ private theorem UU_of_pos {t : (A ℚ)ˣ} (hp : t ∈ RationalIdeles.positiveSub
       _ ≤ Valued.v (H.cp v (t : A ℚ)) := mul_le_of_le_one_left' hb'
 
 /- English proof (translation)
-Establish `hf : Topology.IsEmbedding (fun p : G1 ℚ × (A ℚ)ˣ => gl p.1 * dM p.2)` using `Function.LeftInverse.isEmbedding rt_pre continuous_rt ((continuous_gl'.comp continuous_fst).mul (continuous_dM'.comp continuous_snd))`. Establish `hu : Topology.IsEmbedding (Prod.map id Subtype.val : G1 ℚ × US → G1 ℚ × (A ℚ)ˣ)` using `Topology.IsEmbedding.id.prodMap Topology.IsEmbedding.subtypeVal`. Establish `he : (Subtype.val ∘ pm : G1 ℚ × US → GL (Fin 2) (A ℚ)) = (fun p : G1 ℚ × (A ℚ)ˣ => gl p.1 * dM p.2) ∘ (Prod.map id Subtype.val : G1 ℚ × US → G1 ℚ × (A ℚ)ˣ)`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Establish `hc : Topology.IsEmbedding (Subtype.val ∘ pm : G1 ℚ × US → GL (Fin 2) (A ℚ))`. Rewrite using `[he]`. Conclude with `hf.comp hu`. Establish `hp : Continuous pm` using `Continuous.subtype_mk hc.continuous _`. Use `⟨Topology.IsEmbedding.of_comp hp continuous_subtype_val hc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : Set.range pm = (fun x : GG => GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (x : GL (Fin 2) (A ℚ))) ⁻¹' (RationalIdeles.positiveSubgroup : Set (IdeleGroup ℚ))`. Rewrite using `[range_pm]`. Use extensionality with `x`. Use `⟨fun h => pos_of_UU h, fun h => UU_of_pos h ?_⟩` and prove the remaining obligations. Conclude with `GroundTheory.Automorphic.Reduction.mem_normOneGL.1 x.2`.
-
-Rewrite using `[hs]`. Conclude with `RationalIdeles.isOpen_positiveSubgroup.preimage ((GroundTheory.Automorphic.AdelicGLn.continuous_det ℚ 2).comp continuous_subtype_val)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isOpenEmbedding_projection :
     IsOpenEmbedding pm := by

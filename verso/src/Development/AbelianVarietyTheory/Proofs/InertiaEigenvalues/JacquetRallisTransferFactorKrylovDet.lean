@@ -6,13 +6,13 @@ namespace GlobalTheory.JR.TransferFactor
 variable {k : Type} [CommRing k] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[full, finSumFinEquiv_symm_apply_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem full_cc (Y : Gl r k) (a b : Fin r) : full Y (Fin.castSucc a) (Fin.castSucc b) = Y.1 a b := by
   simp [full, finSumFinEquiv_symm_apply_castSucc]
 
 /- English proof (translation)
-Simplify using `[full, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem full_lc (Y : Gl r k) (b : Fin r) : full Y (Fin.last r) (Fin.castSucc b) = Y.2.2.1 b := by
   simp [full, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]
@@ -20,7 +20,7 @@ theorem full_lc (Y : Gl r k) (b : Fin r) : full Y (Fin.last r) (Fin.castSucc b) 
 def vrow (Y : Gl r k) (i : ℕ) : Fin (r + 1) → k := Pi.single (Fin.last r) (1 : k) ᵥ* (full Y ^ i)
 
 /- English proof (translation)
-Simplify using `only [vrow, pow_succ, ← Matrix.vecMul_vecMul]`. Rewrite using `[Matrix.vecMul, dotProduct, Fin.sum_univ_castSucc]`. Simplify using `only [full_cc, full_lc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem vrow_succ_cast (Y : Gl r k) (i : ℕ) (j : Fin r) :
     vrow Y (i + 1) (Fin.castSucc j) =
@@ -31,13 +31,13 @@ theorem vrow_succ_cast (Y : Gl r k) (i : ℕ) (j : Fin r) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Use `⟨1, by simp, fun N hN => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_one]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `l`. Rewrite using `[vrow_succ_cast]`. Simplify using `[vrow, Pi.single_apply, Fin.castSucc_ne_last, Matrix.vecMul, dotProduct, Matrix.one_apply_ne' (Fin.castSucc_ne_last _), Matrix.one_apply]`. Consider the case `succ i ih`.
+Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨p, h1, h2, h3⟩` from `ih`. Use `⟨p * Polynomial.X + Polynomial.C (vrow Y (i + 1) (Fin.last r)), ?_, fun N hN => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_mul_X, Polynomial.coeff_C, h1]`. Simplify using the standard rewrite rules. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_C]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Rewrite using `[Polynomial.coeff_mul_X, h2 M (by omega)]; simp`. Use function extensionality and compare the values at `l`. Rewrite using `[vrow_succ_cast, h3]`. Simplify using `[map_add, Polynomial.aeval_X, Polynomial.aeval_C, Matrix.vecMul_add, Matrix.vecMul_vecMul, Algebra.algebraMap_eq_smul_one, Matrix.vecMul_smul, mul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vrow_poly (Y : Gl r k) (i : ℕ) : ∃ p : Polynomial k, p.coeff i = 1 ∧ (∀ N, i < N → p.coeff N = 0) ∧
     (fun l => vrow Y (i + 1) (Fin.castSucc l)) = Y.2.2.1 ᵥ* Polynomial.aeval Y.1 p := by
@@ -61,15 +61,15 @@ theorem vrow_poly (Y : Gl r k) (i : ℕ) : ∃ p : Polynomial k, p.coeff i = 1 �
         Algebra.algebraMap_eq_smul_one, Matrix.vecMul_smul, mul_comm]
 
 /- English proof (translation)
-Use `choose p hp1 hp2 hp3 using vrow_poly Y`. Set `T : Matrix (Fin r) (Fin r) k` to `Matrix.of fun i j => (p i).coeff j`. Establish `hT : T.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular T (fun i j hij => hp2 i j hij)]`. Conclude with `Finset.prod_eq_one fun i _ => hp1 i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmin : (Matrix.of fun (i j : Fin r) => vrow Y ((i : ℕ) + 1) (Fin.castSucc j)) = T * Cm Y`. Use extensionality with `i j`. Establish `hd : (p i).natDegree < r` using `lt_of_le_of_lt (Polynomial.natDegree_le_iff_coeff_eq_zero.mpr (hp2 i)) i.2`. Rewrite using `[Matrix.of_apply, congrFun (hp3 i) j, Polynomial.aeval_eq_sum_range' hd, Finset.sum_range (fun l => (p i).coeff l • Y.1 ^ l), Matrix.vecMul_sum]`. Simplify using `[Matrix.mul_apply, T, Cm, Matrix.vecMul_smul, Finset.sum_apply, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `lastDet`. Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_castSucc]`. Establish `hz : ∀ j : Fin r, (Matrix.of fun (i j : Fin (r + 1)) => (Pi.single (Fin.last r) (1 : k) ᵥ* (full Y ^ (i : ℕ))) j) 0 (Fin.castSucc j) = 0`. Introduce `j`. Simplify using `[Pi.single_apply, Fin.castSucc_ne_last, Matrix.one_apply_ne' (Fin.castSucc_ne_last _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [hz, mul_zero, zero_mul, Finset.sum_const_zero, zero_add]`. Rewrite using `[show (Matrix.of fun (i j : Fin (r + 1)) => (Pi.single (Fin.last r) (1 : k) ᵥ* (full Y ^ (i : ℕ))) j) 0 (Fin.last r) = 1 by simp]`. Rewrite using `[Fin.succAbove_last]`. Establish `hs : ((Matrix.of fun (i j : Fin (r + 1)) => (Pi.single (Fin.last r) (1 : k) ᵥ* (full Y ^ (i : ℕ))) j).submatrix Fin.succ Fin.castSucc) = Matrix.of fun (i j : Fin r) => vrow Y ((i : ℕ) + 1) (Fin.castSucc j)`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[vrow]`. Rewrite using `[hs, hmin, Matrix.det_mul, hT, Fin.val_last]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lastDet_eq (Y : Gl r k) : lastDet Y = (-1) ^ r * (Cm Y).det := by
   classical
@@ -101,7 +101,7 @@ theorem lastDet_eq (Y : Gl r k) : lastDet Y = (-1) ^ r * (Cm Y).det := by
   rw [hs, hmin, Matrix.det_mul, hT, Fin.val_last]; ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Cm, act, Matrix.of_apply, Units.conj_pow, Matrix.mul_apply]`. Rewrite using `[← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, Matrix.vecMul_vecMul _ _ (g : Matrix (Fin r) (Fin r) k)]`. Rewrite using `[show ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) * (g : Matrix (Fin r) (Fin r) k) = 1 from Units.inv_mul g, Matrix.vecMul_one]`. Simplify using `[Matrix.vecMul, dotProduct, Cm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Cm_act (g : GL (Fin r) k) (Y : Gl r k) :
     Cm (act g Y) = Cm Y * ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) := by
@@ -115,7 +115,7 @@ theorem Cm_act (g : GL (Fin r) k) (Y : Gl r k) :
 end GlobalTheory.JR.TransferFactor
 
 /- English proof (translation)
-Introduce `_ _ _` and use `⟨GlobalTheory.JR.TransferFactor.lastDet_eq, GlobalTheory.JR.TransferFactor.Cm_act⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.JR.transfer_factor_lemma : ∀ (k : Type) [CommRing k] (r : ℕ), (∀ Y : Gl r k, lastDet Y = (-1) ^ r * (Cm Y).det) ∧ ∀ (g : GL (Fin r) k) (Y : Gl r k), Cm (act g Y) = Cm Y * ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) :=
   fun _ _ _ => ⟨GlobalTheory.JR.TransferFactor.lastDet_eq, GlobalTheory.JR.TransferFactor.Cm_act⟩

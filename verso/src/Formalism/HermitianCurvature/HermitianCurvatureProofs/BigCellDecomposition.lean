@@ -23,17 +23,17 @@ def CellDecomp : Prop :=
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Establish `key : ∀ j, bigCell k r c 1 i j * z j = if j = i then z i else 0`. Introduce `j`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hz j hj, mul_zero] split_ifs with h`. Substitute `h` using the available equality. Conclude with `(hz _ hj).symm`. Both sides reduce to the same expression. Establish `hj1 : ¬ j.val < r` using `by omega`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj2 : j.val ≤ r + k` using `by omega`. Simplify using `only [bigCell, dif_neg hj1, dif_pos hj2]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`. Simplify using `only [dif_pos hi, Matrix.one_apply]`. Distinguish the cases in `hij : j = i`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Establish `hne : (⟨i.val - r, by omega⟩ : Fin (k + 1)) ≠ ⟨j.val - r, by omega⟩`. Introduce `h`. Apply `hij` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `only [Fin.mk.injEq] at h`. Use linear arithmetic over natural numbers and integers. Simplify using `[hne, hij]`. Simplify using `only [dif_neg hi, zero_mul]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl (fun j _ => key j)]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bigCell_one_fixes_vector {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : Fin r → ℂ) : bigCell k r c 1 *ᵥ z = z := by
   funext i
@@ -69,13 +69,13 @@ theorem bigCell_one_fixes_vector {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k 
   simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw z, n⁻¹, Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hn, (one_mul _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem n_inv_S {z : Fin (2 * r + k + 1) → ℂ} {n : Mat k r} (hn : n ∈ Nset k r) : n⁻¹ ∈ Sset k r z :=
   ⟨1, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw z, n⁻¹, Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hn, (one_mul _).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw z, n, hn, (one_mul n).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem n_S {z : Fin (2 * r + k + 1) → ℂ} {n : Mat k r} (hn : n ∈ Nset k r) : n ∈ Sset k r z :=
   ⟨1, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw z, n, hn, (one_mul n).symm⟩
@@ -87,25 +87,23 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 Formalism.FourierDecayAlt.JF
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D g hg`. Take `⟨n, hn, n', hn', c, hc, μ, hμ, rfl⟩` from `hCD k r D.z D.z' g hg.1 hg.2.1`. Use `set ζ := herm (Hb k) (μ *ᵥ wbPart k r D.z') (wbPart k r D.z) with hζdef`. Establish `hmin` using `bigCellMinors k r D.z D.z' c μ D.z_mem D.z'_mem`. Establish `hG : 0 < Gf k r D.z D.z' (bigCell k r c μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg.2.2` as an intermediate fact. Rewrite `this` using `[gInv k r D.z D.z' D.z_mem D.z'_mem _ (BigCellDecomposition.n_inv_S hn) _ (BigCellDecomposition.n_S hn')]`. Then use the resulting hypothesis. Establish `hζ : Tz k r D.z * Tz k r D.z' < Complex.normSq ζ`. Establish `hz` using `hmin.2.2 hc`. Rewrite `hz` using `[BigCellHermitian.herm_bigCell _ _ D.z_mem D.z'_mem]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr` using `hmin.1 (Fin.last r)`. Use `set P := Dmin k r D.z D.z' (bigCell k r c μ) ⟨r, by omega⟩ with hP`. Establish `hP0 : P ≠ 0`. Establish `: P = ∏ a : Fin r with a.val < (Fin.last r).val, c a` using `hr`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => hc a`. Establish `hlast : Dmin k r D.z D.z' (bigCell k r c μ) (Fin.last (r + 1)) = ζ * P`. Unfold `zeta at hz`. Rewrite `hz` using `[← hP]`. Establish `h2` using `div_mul_cancel₀ (Dmin k r D.z D.z' (bigCell k r c μ) (Fin.last (r + 1))) hP0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hz]`. Conclude with `h2.symm`. Unfold `Gf at hG`. Rewrite `hG` using `[hlast, ← hP, Complex.normSq_mul]`. Establish `h1 : 0 < Complex.normSq P` using `Complex.normSq_pos.2 hP0`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hfac` using `bruhat_big_cell_factorization k r c μ`. Establish `huw` using `unipotent_weyl_properties k r`. Establish `hm : embWb k r μ ∈ UWb k r` using `TwoByOneBlock.emb_mem_UWb hμ`. Establish `hmz : herm (Hpk k r) (embWb k r μ *ᵥ D.z') D.z = ζ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e1 : embWb k r μ *ᵥ D.z' = bigCell k r c μ *ᵥ D.z'`. Rewrite using `[hfac.2, ← Matrix.mulVec_mulVec, BigCellDecomposition.bigCell_one_fixes_vector D.z'_mem]`. Rewrite using `[e1, BigCellHermitian.herm_bigCell _ _ D.z_mem D.z'_mem]`. Take `⟨h, hh, h', hh', hmeq⟩` from `b2_rank_one_coord k r D.z D.z' D.μsec D.k_pos D.z_mem D.z'_mem D.T_pos D.T'_pos D.sec (embWb k r μ) hm (by rw [hmz]; exact hζ)`. Rewrite `hmeq` using `[hmz]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1` using `WeylGroupFacts.isUnit_of_uh hh.1`. Establish `hu2` using `WeylGroupFacts.isUnit_of_uh hh'.1`. Establish `hun` using `WeylGroupFacts.isUnit_of_uh hn.1`. Establish `hcomm : bigCell k r c 1 * h⁻¹ = h⁻¹ * bigCell k r c 1` using `(huw.2.2 c h⁻¹ (huw.2.1 D.z (BigCellInversePair.uw_inv hh))).symm`. Use `⟨((h, h * n * h⁻¹), (h', h' * n' * h'⁻¹)), ⟨hh, (uWNormal k r D.z D.z_mem h hh n hn).1, hh', (uWNormal k r D.z' D.z'_mem h' hh' n' hn').1⟩, (c, ζ), ⟨hc, hζ⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show n⁻¹ * bigCell k r c μ * n' = h⁻¹ * (h * n * h⁻¹)⁻¹ * bigCell k r c (D.μsec ζ) * (h' * n' * h'⁻¹) * h'`. Rewrite using `[hfac.1, hmeq, (bruhat_big_cell_factorization k r c (D.μsec ζ)).1]`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu1]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul _ hu2, Matrix.mul_one]`.
-
-Rewrite using `[← Matrix.mul_assoc (bigCell k r c 1) h⁻¹, hcomm]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hu1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jf_psiOnto_of_cellDecomp (hCD : BigCellDecomposition.CellDecomp) : Formalism.FourierDecayAlt.JF.PsiOnto := by
   intro k r Wp Wq _ _ _ _ D g hg
@@ -164,7 +162,7 @@ theorem jf_psiOnto_of_cellDecomp (hCD : BigCellDecomposition.CellDecomp) : Forma
   rw [Matrix.nonsing_inv_mul_cancel_left _ _ hu1]
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.equiv_det_of_onto (jf_psiOnto_of_cellDecomp hCD)`.
+A detailed English derivation is pending.
 -/
 theorem jf_equivDet_of_cellDecomp (hCD : BigCellDecomposition.CellDecomp) : Formalism.FourierDecayAlt.JF.EquivDet :=
   Formalism.FourierDecayAlt.P.equiv_det_of_onto (jf_psiOnto_of_cellDecomp hCD)

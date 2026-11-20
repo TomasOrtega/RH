@@ -16,14 +16,14 @@ noncomputable def doublingIterate (h : E → ℂ) : ℕ → E → ℂ
       3 * doublingIterate h n ((2 : ℂ)⁻¹ • z) + doublingIterate h n (-((2 : ℂ)⁻¹ • z))
 
 /- English proof (translation)
-Rewrite using `[norm_smul, norm_inv]`. Simplify using `[div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem norm_half_smul (z : E) : ‖(2 : ℂ)⁻¹ • z‖ = ‖z‖ / 2 := by
   rw [norm_smul, norm_inv]
   simp [div_eq_inv_mul]
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_half_smul]`. Combine the linear relations using `[norm_nonneg z]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem half_mem_ball {r : ℝ} {z : E} (hz : z ∈ Metric.ball (0 : E) r) :
     (2 : ℂ)⁻¹ • z ∈ Metric.ball (0 : E) r := by
@@ -32,7 +32,7 @@ private theorem half_mem_ball {r : ℝ} {z : E} (hz : z ∈ Metric.ball (0 : E) 
   linarith [norm_nonneg z]
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_neg]` and apply the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem neg_mem_ball' {r : ℝ} {z : E} (hz : z ∈ Metric.ball (0 : E) r) :
     -z ∈ Metric.ball (0 : E) r := by
@@ -40,9 +40,9 @@ private theorem neg_mem_ball' {r : ℝ} {z : E} (hz : z ∈ Metric.ball (0 : E) 
   rwa [norm_neg]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact hh.comp (by fun_prop) fun z hz => half_mem_ball hz`. Consider the case `succ n ih`. Establish `h1 : DifferentiableOn ℂ (fun z : E => doublingIterate h n ((2 : ℂ)⁻¹ • z)) (Metric.ball 0 r)` using `ih.comp (by fun_prop) fun z hz => half_mem_ball hz`. Establish `h2 : DifferentiableOn ℂ (fun z : E => doublingIterate h n (-((2 : ℂ)⁻¹ • z))) (Metric.ball 0 r)` using `ih.comp (by fun_prop) fun z hz => neg_mem_ball' (half_mem_ball hz)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1.const_mul 3).add h2`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_doublingIterate {h : E → ℂ} {r : ℝ}
     (hh : DifferentiableOn ℂ h (Metric.ball 0 r)) (n : ℕ) :
@@ -57,13 +57,13 @@ theorem differentiableOn_doublingIterate {h : E → ℂ} {r : ℝ}
     exact (h1.const_mul 3).add h2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `z hz`. Establish `h1` using `hh _ (half_mem_ball hz)`. Rewrite `h1` using `[norm_half_smul]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : 0 ≤ C * ‖z‖ ^ 3` using `by positivity`. Express the relevant statement in the definitionally equal form `‖h ((2 : ℂ)⁻¹ • z)‖ ≤ _`. Use the polynomial consequences of the given equalities and inequalities. Consider the case `succ n ih`. Introduce `z hz`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `ih _ (half_mem_ball hz)`. Establish `h2` using `ih _ (neg_mem_ball' (half_mem_ball hz))`. Rewrite `h2` using `[norm_neg]`. Rewrite `h1`, `h2` using `[norm_half_smul]`. Express the relevant statement in the definitionally equal form `‖3 * doublingIterate h n ((2 : ℂ)⁻¹ • z) + doublingIterate h n (-((2 : ℂ)⁻¹ • z))‖ ≤ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `h3 : ‖(3 : ℂ)‖ = 3` using `by simp`. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_doublingIterate_le {h : E → ℂ} {r C : ℝ} (hC : 0 ≤ C)
     (hh : ∀ z ∈ Metric.ball (0 : E) r, ‖h z‖ ≤ C * ‖z‖ ^ 3) (n : ℕ) :
@@ -93,17 +93,17 @@ theorem norm_doublingIterate_le {h : E → ℂ} {r C : ℝ} (hC : 0 ≤ C)
       _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨C, hC, hO⟩` from `hO.exists_nonneg`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.mp (hO.bound.and ha.eventually_analyticAt)`. Establish `hd : DifferentiableOn ℂ h (Metric.ball 0 r)` using `fun z hz => (hball z hz).2.differentiableAt.differentiableWithinAt`. Establish `hb : ∀ z ∈ Metric.ball (0 : E) r, ‖h z‖ ≤ C * ‖z‖ ^ 3` using `fun z hz => by`. Simplify using `using (hball z hz).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hB` using `norm_doublingIterate_le hC hb`. Establish `hgeom : ∀ c : ℝ, HasSum (fun n : ℕ => (1 / 2 : ℝ) ^ n * c) (2 * c)` using `fun c => hasSum_geometric_two.mul_right c`. Establish `hS : ∀ z ∈ Metric.ball (0 : E) r, Summable fun n => doublingIterate h n z` using `fun z hz => Summable.of_norm_bounded (hgeom _).summable fun n => hB n z hz`. Use `⟨fun z => ∑' n, doublingIterate h n z, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `SCV.analyticAt_of_differentiableOn (s := Metric.ball 0 r) (SCV.differentiableOn_tsum_of_locally_normal Metric.isOpen_ball (differentiableOn_doublingIterate hd) fun x hx => ⟨Metric.ball 0 r, Metric.isOpen_ball.mem_nhds hx, _, (hgeom (C * r ^ 3)).summable, fun n z hz => (hB n z hz) …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_ball_zero_iff.mp hz).le` as an intermediate fact. Use `gcongr`. Use `Asymptotics.IsBigO.of_bound (2 * C) ?_ filter_upwards [Metric.ball_mem_nhds 0 hr] with z hz` and prove the remaining obligations. Use `(tsum_of_norm_bounded (hgeom _) fun n => hB n z hz).trans_eq ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `filter_upwards [Metric.ball_mem_nhds (0 : E) (half_pos hr)] with z hz`. Rewrite `hz` using `[mem_ball_zero_iff]`. Establish `hz1 : z ∈ Metric.ball (0 : E) r`. Rewrite using `[mem_ball_zero_iff]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz2 : (2 : ℂ) • z ∈ Metric.ball (0 : E) r`. Rewrite using `[mem_ball_zero_iff, norm_smul]`. Establish `: ‖(2 : ℂ)‖ = 2` using `by simp`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (2 : ℂ)⁻¹ • (2 : ℂ) • z = z` using `inv_smul_smul₀ two_ne_zero z`. Rewrite using `[(hS _ hz2).tsum_eq_zero_add]`. Simplify using `only [doublingIterate, e]`. Rewrite using `[((hS z hz1).mul_left 3).tsum_add (hS _ (neg_mem_ball' hz1)), tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_doubling_solution [FiniteDimensional ℂ E] (h : E → ℂ) (ha : AnalyticAt ℂ h 0)
     (hO : h =O[𝓝 0] (fun z => ‖z‖ ^ 3)) :
@@ -152,7 +152,7 @@ theorem exists_doubling_solution [FiniteDimensional ℂ E] (h : E → ℂ) (ha :
 end
 
 /- English proof (translation)
-Introduce `_ h ha hO` and use `exists_doubling_solution h ha hO`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_doubling_solution_pi :
     ∀ (g : ℕ) (h : (Fin g → ℂ) → ℂ), AnalyticAt ℂ h 0 → h =O[𝓝 0] (fun z => ‖z‖ ^ 3) →

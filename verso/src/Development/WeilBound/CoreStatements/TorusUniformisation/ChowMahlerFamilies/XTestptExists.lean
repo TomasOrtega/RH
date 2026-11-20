@@ -4,15 +4,15 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsAbsoluteV
 open GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ A p _ hp0 _ _ hu`. Establish `hpA : algebraMap A Ω (p : A) = (p : Ω)` using `map_natCast _ p`. Establish `ha0 : (p : A) ≠ 0` using `fun h => hp0 (by rw [← hpA, h, map_zero])`. Take `⟨C, _, _, _, _, _, hC, hr⟩` from `GlobalTheory.exists_complete_isAlgClosed_of_isDiscreteValuationRing A Ω ha0 ((IsLocalRing.mem_maximalIdeal _).2 hu) (r := 1 / 2) (by norm_num) (by norm_num)`. Establish `hmem : ∀ a : Ω, ‖algebraMap Ω C a‖ ≤ 1 ↔ a ∈ A` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hC]`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨a, h⟩, rfl⟩⟩`. Establish `hp1 : ‖(p : C)‖ < 1`. Rewrite `hr` using `[hpA, map_natCast]`. Rewrite using `[hr]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Use `letI : Algebra o C := ((algebraMap Ω C).comp (algebraMap o Ω)).toAlgebra`. Use `haveI : IsScalarTower o Ω C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `RC : Subalgebra o C` to `{ (GlobalTheory.normIntegers C).toSubring.toSubsemiring with algebraMap_mem' := fun r => GlobalTheory.mem_normIntegers_iff.2 ((hmem _).2 (A.algebraMap_mem r)) }`. Establish `hRC : ∀ c : C, c ∈ RC ↔ ‖c‖ ≤ 1` using `fun c => GlobalTheory.mem_normIntegers_iff`.
+Evaluate the numerical expressions. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ c : C, c ∈ RC ↔ NormedField.valuation c ≤ 1` using `fun c => Iff.rfl`. Establish `hO : (NormedField.valuation (K` using `C)).Integers RC := ⟨Subtype.val_injective, fun x => (hv _).1 x.2, fun r hr => ⟨⟨r, (hv r).2 hr⟩, rfl⟩⟩`. Use `⟨C, inferInstance, inferInstance, inferInstance, inferInstance, RC, ⟨inferInstance, ⟨NormedField.valuation, hv, ?_⟩, ?_, fun a ha => (hRC _).2 ((hmem a).2 ha)⟩, fun a ha => (hmem a).1 ((hRC _).1 ha)⟩` and prove the remaining obligations. Rewrite using `[NormedField.valuation_apply, ← NNReal.coe_lt_coe]`. Conclude with `hp1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.NormIntegers.isAdicComplete_span_singleton hO ?_` and prove the remaining obligations. Rewrite using `[map_natCast]`. Conclude with `hp1`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_testpt_exists : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (A : Subalgebra o Ω) (p : ℕ), p.Prime → (p : Ω) ≠ 0 → IsDiscreteValuationRing A → IsFractionRing A Ω → ¬ IsUnit (p : A) → ∃ (C : Type) (_ : Field C) (_ : Algebra o C) (_ : Algebra Ω C) (_ : IsScalarTower o Ω C) (RC : Subalgebra o C), IsTestPt p A RC ∧ ∀ a : Ω, algebraMap Ω C a ∈ RC → a ∈ A := by
   intro o Ω _ _ _ A p _ hp0 _ _ hu

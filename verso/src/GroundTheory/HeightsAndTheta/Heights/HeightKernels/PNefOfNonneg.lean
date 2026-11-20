@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 namespace NefOfNonnegAlt
 
 /- English proof (translation)
-Unfold `geoNum`. Use `split_ifs`. Conclude with `Int.natCast_nonneg _`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem geoNum_zero_nonneg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     (V : Ideal (MRing ι)) (a : Fin 0 → K → ℤ) : 0 ≤ geoNum 0 V a := by
@@ -19,9 +19,7 @@ theorem geoNum_zero_nonneg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fi
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `geoNum`. Use `split_ifs`. Use `Finset.sum_nonneg fun k _ => mul_nonneg (ha k) ?_` and prove the remaining obligations. Use `finsum_nonneg fun W => finsum_nonneg fun _ => ?_` and prove the remaining obligations. Conclude with `mul_nonneg (Int.natCast_nonneg _) (geoNum_zero_nonneg _ _)`.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem geoNum_one_nonneg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     (V : Ideal (MRing ι)) (a : K → ℤ) (ha : ∀ k, 0 ≤ a k) : 0 ≤ geoNum 1 V (fun _ => a) := by
@@ -35,7 +33,7 @@ theorem geoNum_one_nonneg {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fin
 end NefOfNonnegAlt
 
 /- English proof (translation)
-Introduce `K _ ι _ P a ha W _ _ _ _`. Conclude with `NefOfNonnegAlt.geoNum_one_nonneg W a ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem NefOfNonneg.proof : NefOfNonneg.Statement := by
   intro K _ ι _ P a ha W _ _ _ _

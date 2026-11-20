@@ -39,7 +39,7 @@ noncomputable def cochainsMap (f : A ⟶ B) : cochainsComplex A ⟶ cochainsComp
     simp [inhomogeneousCochains.d_hom_apply, Rep.hom_comm_apply, map_add, map_sum, map_smul]
 
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem cochainsMap_f_hom_apply (f : A ⟶ B) (n : ℕ) (c : locallyConstantCochains A n) :
     ((cochainsMap f).f n).hom c = cochainsMapLinear f n c :=
@@ -47,7 +47,7 @@ theorem cochainsMap_f_hom_apply (f : A ⟶ B) (n : ℕ) (c : locallyConstantCoch
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `n c : 3`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cochainsMap_id : cochainsMap (𝟙 A) = 𝟙 (cochainsComplex A) := by
   ext n c : 3
@@ -55,7 +55,7 @@ theorem cochainsMap_id : cochainsMap (𝟙 A) = 𝟙 (cochainsComplex A) := by
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `n c : 3`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem cochainsMap_comp (f : A ⟶ B) (g : B ⟶ C) :
     cochainsMap (f ≫ g) = cochainsMap f ≫ cochainsMap g := by
@@ -63,7 +63,7 @@ theorem cochainsMap_comp (f : A ⟶ B) (g : B ⟶ C) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `n c : 3`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem cochainsMap_comp_cochainsComplexι (f : A ⟶ B) :
     cochainsMap f ≫ cochainsComplexι B =
@@ -93,13 +93,13 @@ noncomputable def cohomologyMap (f : A ⟶ B) (n : ℕ) : cohomology A n ⟶ coh
 
 @[simp]
 /- English proof (translation)
-Simplify using `[cohomologyMap, cohomology]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cohomologyMap_id (n : ℕ) : cohomologyMap (𝟙 A) n = 𝟙 (cohomology A n) := by
   simp [cohomologyMap, cohomology]
 
 /- English proof (translation)
-Rewrite using `[cohomologyMap, cochainsMap_comp]`. Conclude with `HomologicalComplex.homologyMap_comp _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_comp (f : A ⟶ B) (g : B ⟶ C) (n : ℕ) :
     cohomologyMap (f ≫ g) n = cohomologyMap f n ≫ cohomologyMap g n := by
@@ -107,7 +107,7 @@ theorem cohomologyMap_comp (f : A ⟶ B) (g : B ⟶ C) (n : ℕ) :
   exact HomologicalComplex.homologyMap_comp _ _ _
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.homologyπ_naturality _ _`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyπ_comp_cohomologyMap (f : A ⟶ B) (n : ℕ) :
     cohomologyπ A n ≫ cohomologyMap f n =
@@ -161,7 +161,7 @@ noncomputable def cohomologyToGroupCohomology (n : ℕ) : cohomology A n ⟶ gro
   HomologicalComplex.homologyMap (cochainsComplexι A) n
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `HomologicalComplex.homologyMap (cochainsMap f) n ≫ HomologicalComplex.homologyMap (cochainsComplexι B) n = HomologicalComplex.homologyMap (cochainsComplexι A) n ≫ HomologicalComplex.homologyMap (groupCohomology.cochainsMap (MonoidHom.id G) f) n`. Rewrite using `[← HomologicalComplex.homologyMap_comp, ← HomologicalComplex.homologyMap_comp, cochainsMap_comp_cochainsComplexι]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyMap_comp_cohomologyToGroupCohomology {B : Rep.{u} k G} [IsDiscreteRep B]
     (f : A ⟶ B) (n : ℕ) :
@@ -218,11 +218,11 @@ instance : Mono (shortComplexH0 A).f := by
   exact congrFun (congrArg Subtype.val h) Fin.elim0
 
 /- English proof (translation)
-Rewrite using `[ShortComplex.moduleCat_exact_iff]`. Introduce `c₀ hc`. Set `c : locallyConstantCochains A 0` to `c₀`. Establish `hc' : ∀ g : Fin 1 → G, (inhomogeneousCochains.d A 0).hom c.1 g = 0` using `fun g => congrArg (fun x : locallyConstantCochains A (0 + 1) => x.1 g) hc`. Use `⟨⟨c.1 Fin.elim0, fun g => ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hc' fun _ => g`. Establish `hfe : ∀ x : Fin 0 → G, c.1 x = c.1 Fin.elim0` using `fun x => by`. Rewrite using `[Subsingleton.elim x Fin.elim0]`. Simplify using `only [inhomogeneousCochains.d_hom_apply, hfe] at h`. Conclude with `add_neg_eq_zero.1 (by simpa using h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `c.1 Fin.elim0 = c.1 x`. Rewrite using `[Subsingleton.elim x Fin.elim0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shortComplexH0_exact : (shortComplexH0 A).Exact := by
   rw [ShortComplex.moduleCat_exact_iff]
@@ -241,7 +241,7 @@ theorem shortComplexH0_exact : (shortComplexH0 A).Exact := by
     rw [Subsingleton.elim x Fin.elim0]
 
 /- English proof (translation)
-The claim follows from `cochainsComplex_d A 0`.
+A detailed English derivation is pending.
 -/
 theorem cochainsComplex_d_zero_one :
     (cochainsComplex A).d 0 1 = dLocallyConstant A 0 :=

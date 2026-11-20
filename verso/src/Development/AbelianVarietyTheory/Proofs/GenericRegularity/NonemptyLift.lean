@@ -16,11 +16,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y M R _ _ f xF h1 h2`. Establish `hComp : SABCompSt` using `sabComp pullCubComp`. Establish `hP : ∃ t' : SAB H (Sp R), Nonempty (SABMap t' Y.oF.t xF)`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull xF Y.oF.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t', ⟨m'⟩⟩` from `hP`. Take `⟨m1, hm1⟩` from `hComp _ _ _ _ _ _ _ _ _ _ Y.m0.toSABMap m'`. Establish `key : ∀ g : Sp R ⟶ Y.X, xF ≫ Y.j = g → ∃ m2 : SABMap t' Y.t g, m2.φ = m'.φ ≫ Y.m.φ`. Introduce and unpack `g rfl`. Conclude with `hComp _ _ _ _ _ _ _ _ _ _ Y.m m'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨m2, hm2⟩` from `key _ h2`. Conclude with `⟨⟨xF, rfl, h1, h2, t', m', m1, m2, hm1, hm2⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem MChart.nonempty_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (R : Type) [CommRing R] [Algebra c.F R] (f : Γ(Y.X, M.U) →+* R) (xF : Sp R ⟶ Xo.XF c), xF ≫ pullback.snd _ _ = spMap (algebraMap c.F R) → xF ≫ Y.j = spMap f ≫ M.hU.fromSpec → Nonempty (M.Lift f (xF ≫ pullback.fst _ _)) := by
   intro E _ _ _ H Dw l Xo c O _ β Y M R _ _ f xF h1 h2

@@ -10,61 +10,55 @@ namespace GlobalTheory.Diag.PG
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
 /- English proof (translation)
-Take `⟨x1, hx1⟩` from `GlobalTheory.T.globalRankNumberBounds_size_comparisons eps CD he he' hCD 1 one_pos`. Use `⟨max x1 1, fun x hx D Cg C0 hG hN hA hW => ?_⟩` and prove the remaining obligations. Establish `hxx1 : x1 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hxone : 1 ≤ x` using `le_trans (le_max_right _ _) hx`. Take `⟨-, -, -, h12, -⟩` from `hx1 x hxx1 _ _ _ _ _ hG.nums`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk : 5 ≤ D.R.k`. Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hm2` using `D.R.two_le_m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hF : ∀ {n : ℕ} (g : Fin n → ℚ) (a b : ℕ) (ha : a < n) (hb : b < n), a = b → g ⟨a, ha⟩ = g ⟨b, hb⟩`. Introduce `n g a b ha hb h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `huO : ∀ u τ (i : ℕ) (h1 : 1 ≤ i) (h2 : i ≤ D.R.k), Formalism.MainNotions.S.uOne D u τ i = (((D.hcW u τ).u ⟨i - 1, by omega⟩ : ℚ) : ℝ)`. Introduce `u τ i h1 h2`. Unfold `Formalism.MainNotions.S.uOne Formalism.MainNotions.S.uS`. Rewrite using `[dif_pos ⟨h1, h2⟩]`. Establish `hvO : ∀ τ (l : ℕ) (h1 : 1 ≤ l) (h2 : l ≤ D.R.k - 1), Formalism.MainNotions.S.vOne D τ l = (((D.hc τ).v ⟨l - 1, by omega⟩ : ℚ) : ℝ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ l h1 h2`. Unfold `Formalism.MainNotions.S.vOne`. Rewrite using `[dif_pos ⟨h1, h2⟩]`. Establish `hbO : ∀ τ, Formalism.MainNotions.S.bOne D τ 1 = bFirst D τ`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Formalism.MainNotions.S.bOne bFirst`. Rewrite using `[dif_pos ⟨le_rfl, by have := D.R.two_le_m; omega⟩]`. Establish `hu1 : ∀ u τ, Formalism.MainNotions.S.uOne D u τ 1 = uFirst D τ`. Introduce `u τ`. Rewrite using `[huO u τ 1 le_rfl (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `uFirst`. Conclude with `congrArg (fun q : ℚ => (q : ℝ)) ((hF _ (1 - 1) 0 _ (by omega) (by norm_num)).trans (D.hcW_first u τ (by omega)))`. Establish `huk : ∀ u τ, Formalism.MainNotions.S.uOne D u τ D.R.k = uLast D τ`. Introduce `u τ`. Rewrite using `[huO u τ D.R.k (by omega) le_rfl]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `uLast`. Conclude with `congrArg (fun q : ℚ => (q : ℝ)) (D.hcW_last u τ (by omega))`. Establish `hv1 : ∀ τ, Formalism.MainNotions.S.vOne D τ 1 = vFirst D τ`. Introduce `τ`. Rewrite using `[hvO τ 1 le_rfl (by omega)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `vFirst`. Conclude with `congrArg (fun q : ℚ => (q : ℝ)) (hF _ _ _ _ _ (by norm_num))`. Establish `hvk : ∀ τ, Formalism.MainNotions.S.vOne D τ (D.R.k - 1) = vLast D τ`. Introduce `τ`. Rewrite using `[hvO τ (D.R.k - 1) (by omega) le_rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `vLast`. Conclude with `congrArg (fun q : ℚ => (q : ℝ)) (hF _ _ _ _ _ (by omega))`. Establish `hDel : (0 : ℝ) < D.s.Del` using `by exact_mod_cast D.s.Del_pos`. Establish `hkDel : (0 : ℝ) ≤ (D.R.k : ℝ) * D.s.Del` using `mul_nonneg (Nat.cast_nonneg _) hDel.le`. Establish `hbx : 1 ≤ bx x eps`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `bx`. Conclude with `Real.one_le_exp (Real.rpow_nonneg (by linarith) _)`. Establish `hg : ∀ i, 2 ≤ D.host.g i`. Introduce `i`. Establish `h` using `(hG.g_win i).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Establish `hk' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Establish `h5 : (5 : ℝ) ≤ (D.R.k : ℝ) * bx x eps` using `by nlinarith`. Establish `h2 : (2 : ℝ) ≤ ((D.R.k : ℝ) * bx x eps) ^ 8`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h2.trans h` after adjusting the coercions.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Formalism.MainNotions.S.StandingNumericalData`. Simplify using `only`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, hW, hA.2.1, hA.2.2.1, hA.2.2.2, ?_⟩` and prove the remaining obligations. Introduce `τ l h1 h2`. Rewrite using `[hvO τ l h1 h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hG.cloud τ ⟨l - 1, by omega⟩`. Introduce `u l h1 h2`. Establish `key : ∀ τ, Formalism.MainNotions.S.uOne D u τ (l + 1) = Formalism.MainNotions.S.vOne D τ l - 1 / 2 - (if D.s.letter u ⟨l - 1, by omega⟩ then (D.s.Del : ℝ) else 0)`. Introduce `τ`. Rewrite using `[huO u τ (l + 1) (by omega) (by omega), hvO τ l h1 (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `D.s.u_letter u τ (l - 1) (by omega)`. Rewrite `e` using `[D.hcW_v u τ]`. Establish `e' : (D.hcW u τ).u ⟨l + 1 - 1, by omega⟩ = (D.hcW u τ).u ⟨l - 1 + 1, by omega⟩` using `hF _ _ _ _ _ (by omega)`. Rewrite using `[e', e]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hL : D.s.letter u ⟨l - 1, by omega⟩ = true`. Use `right`. Introduce `τ`. Rewrite using `[key τ, if_pos hL]`. Use `left`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ`. Rewrite using `[key τ, if_neg hL]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u τ`. Rewrite using `[hu1 u τ, hv1 τ]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ht : Top D τ`. Establish `h1` using `(hN.top τ ht).1`. Establish `h2` using `(hG.cloud τ ⟨0, by omega⟩).2`. Establish `hvF : vFirst D τ = (((D.hc τ).v ⟨0, by omega⟩ : ℚ) : ℝ)`. Unfold `vFirst`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Rewrite using `[hvF]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(hG.off τ ht).1`. Introduce `u τ ht`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hu1 u τ, hv1 τ]`. Conclude with `(hG.off τ ht).2.1`. Introduce `u τ ht`. Rewrite using `[huk u τ, hvk τ]`. Conclude with `(hG.off τ ht).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ ht`. Unfold `Formalism.MainNotions.S.bTop`. Rewrite using `[huk D.u₀ τ, hbO τ]`. Take `⟨-, -, h3, h4⟩` from `hN.top τ ht`. Apply the tactic sequence `constructor <;> linarith`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u τ`. Prove the components needed by the constructor for the conclusion. Introduce `i hi`. Establish `hl : Formalism.MainNotions.S.lamS D.R (D.hc τ) ⟨i, by omega⟩ = (((D.hcW u τ).v ⟨i, by omega⟩ : ℚ) : ℝ)`. Unfold `Formalism.MainNotions.S.lamS`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (show i < D.R.k - 1 by omega), D.hcW_v u τ]`. Rewrite using `[hl]`. Unfold `Formalism.MainNotions.S.uS`. Conclude with `⟨by exact_mod_cast (D.hcW u τ).u_gt_v ⟨i, by omega⟩, by exact_mod_cast (D.hcW u τ).v_gt_u ⟨i, by omega⟩⟩`. Introduce `h`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : 0 < D.R.m`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hl : Formalism.MainNotions.S.lamS D.R (D.hc τ) ⟨D.R.k - 1, by omega⟩ = -(((D.hcW u τ).b ⟨0, hm⟩ : ℚ) : ℝ)`. Unfold `Formalism.MainNotions.S.lamS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[dif_neg (show ¬ (D.R.k - 1 < D.R.k - 1) by omega), dif_pos (show D.R.k - 1 - (D.R.k - 1) < D.R.m by omega), D.hcW_b u τ]`. Conclude with `congrArg (fun q : ℚ => -(q : ℝ)) (hF _ _ _ _ _ (by simp))`. Rewrite using `[hl]`. Unfold `Formalism.MainNotions.S.uS`. Conclude with `(D.hcW u τ).u_last_gt h hm` after adjusting the coercions.
-
-Introduce `u u' hne τ heq`. Establish `hl : D.s.letter u ≠ D.s.letter u'` using `fun h => hne (D.s.letter_inj h)`. Take `⟨⟨j, hj⟩, hjl⟩` from `Function.ne_iff.mp hl`. Establish `e` using `congrFun heq ⟨j + 1, by omega⟩`. Simplify using `only [Formalism.MainNotions.S.uS] at e`.
-
-Establish `e' : (D.hcW u τ).u ⟨j + 1, by omega⟩ = (D.hcW u' τ).u ⟨j + 1, by omega⟩`. Conclude with `e` after adjusting the coercions. Rewrite `e'` using `[D.s.u_letter u τ j hj, D.s.u_letter u' τ j hj, D.hcW_v, D.hcW_v]`. Establish `hQ` using `D.s.Del_pos`. Apply the tactic sequence `cases h1 : D.s.letter u ⟨j, hj⟩ <;> cases h2 : D.s.letter u' ⟨j, hj⟩ <;>`.
-
-Apply the tactic sequence `simp only [h1, h2] at e' hjl <;> simp at e' hjl <;> linarith`. Introduce `u`. Conclude with `⟨hA.1 u, Formalism.MainNotions.S.T_mod D u⟩`. Introduce `u`. Conclude with `Formalism.MainNotions.S.ne_of_mod (hg 0) (hg 1) (Formalism.MainNotions.S.T_mod D u)`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem data_of_rows (eps CD : ℝ) (he : 0 < eps) (he' : eps < 1 / 52) (hCD : 3 ≤ CD) :
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (D : D7) (Cg C0 : ℝ), Glob0 D x eps CD Cg → Nodes D x eps → ArithmeticConditionsOfDatum D →

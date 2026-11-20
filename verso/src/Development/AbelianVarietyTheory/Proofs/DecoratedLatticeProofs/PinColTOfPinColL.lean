@@ -19,13 +19,13 @@ def stdSp {D : D7} (V : HSp D) : DefSp V :=
   ⟨fun _ => 1, fun _ => 1, GlobalTheory.PlaceModel.latFrame V, (GlobalTheory.Unf.VolExist.nonempty_vol V).some⟩
 
 /- English proof (translation)
-Rewrite using `[gramAt, h, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gramAt_one {D : D7} {V : HSp D} (h : V.gram = 1) (τ : D.what₂.Tau) : gramAt D V τ = 1 := by
   rw [gramAt, h, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-The claim follows from `hs cpt := (GlobalTheory.Unf.CoCptOf.coCpt_of_isAniso_or_posDef D V).2 fun τ => by rw [gramAt_one h]; exact Matrix.PosDef.one cart := fun τ => VacStd.cartan_of_gram h τ pm := fun _ => Or.inl rfl onb := fun τ => ⟨V.rank, fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, by simp [gramAt_one h …`.
+A detailed English derivation is pending.
 -/
 theorem stdSp_is {D : D7} {V : HSp D} (hs : V.SigOK) (h : V.gram = 1) : (stdSp V).Is where
   sig := hs
@@ -38,14 +38,14 @@ theorem stdSp_is {D : D7} {V : HSp D} (hs : V.SigOK) (h : V.gram = 1) : (stdSp V
 variable {B : Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {u : B.Word} {a : I.ι}
 
 /- English proof (translation)
-Take `⟨hs, hX, -⟩` from `hI.spaces`. Conclude with `VacStd.gram_of_eq _ hs _ (hX j)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gram_X (hI : I.Ok) (j : ℕ) : ((I.rec7 l Z).sp.X j).gram = 1 := by
   obtain ⟨hs, hX, -⟩ := hI.spaces
   exact VacStd.gram_of_eq _ hs _ (hX j)
 
 /- English proof (translation)
-Take `⟨hs, hX, -⟩` from `hI.spaces`. Conclude with `VacStd.coe_latFrame_of_eq _ hs _ (hX j)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lat_X (hI : I.Ok) (j : ℕ) :
     (GlobalTheory.PlaceModel.latFrame ((I.rec7 l Z).sp.X j) : Set (Fin ((I.rec7 l Z).sp.X j).rank → (I.rec7 l Z).host.E)) =
@@ -54,7 +54,7 @@ theorem lat_X (hI : I.Ok) (j : ℕ) :
   exact VacStd.coe_latFrame_of_eq _ hs _ (hX j)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `GlobalTheory.Member.vacuum_oriented_exists (I.rec7 l Z) ψ θ hψ hθ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) (fun _ => 1) (fun _ => 1) ((I.rec7 l Z).sp.X_sig _) ((I.rec7 l Z).sp.X_sig _) (fun τ => VacStd.cartan_of_gram (gram_X hI _) τ) (fun τ => VacStd.cartan_of_gram (gram …`. Rewrite `hf` using `[lat_X hI i, lat_X hI (i + 1)]`. Conclude with `⟨f, hf⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_vac (hI : I.Ok) {ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ} {θ : InfFam (I.rec7 l Z)}
     (hψ : IsStdChar (I.rec7 l Z) ψ (-1)) (hθ : IsInfFam θ) (i : ℕ) :
@@ -67,9 +67,9 @@ theorem exists_vac (hI : I.Ok) {ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ} {θ :
   exact ⟨f, hf⟩
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.SeeSaw.ontoUni_inB _ θ ((I.rec7 l Z).sp.X j) (fun _ => 1) hθ fun τ => by`. Rewrite using `[gramAt_one (gram_X hI j)]`. Simplify using the standard rewrite rules. Take `⟨-, -, -, ν, -, -, h⟩` from `GlobalTheory.SeeSaw.integral_eq_classSum _ θ _ _ hθ hu`. Use `letI : Fintype {c : (I.stp u a j).Cl // A.chOf j c = β} := @Subtype.fintype _ _ _ ((I.chain l u a).clsFin j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Conclude with `(h v _ _ _ hr).1.ne'`.
+A detailed English derivation is pending.
 -/
 theorem volLev_ne_zero (hI : I.Ok) {θ : InfFam (I.rec7 l Z)} (hθ : IsInfFam θ) {Ch : ℕ → Type}
     {A : TwDat I l Z u a Ch} (j : ℕ) (v : GlobalTheory.Unf.Vol ((I.rec7 l Z).sp.X j)) (β : Ch j)

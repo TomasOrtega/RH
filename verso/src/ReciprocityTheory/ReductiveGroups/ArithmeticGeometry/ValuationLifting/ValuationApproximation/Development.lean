@@ -5,11 +5,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ValuationLifting.Val
 namespace ReciprocityTheory.ChartRestriction.G.Lift.VA
 
 /- English proof (translation)
-Introduce `Ω _ ι _ v h1 hne n`. Establish `h1' : ∀ i, ∃ x, v i x = WithZero.exp (1 : ℤ)` using `h1`. Establish `hgt : ∀ i, ∃ x, 1 < v i x` using `fun i => by`. Take `⟨x, hx⟩` from `h1' i`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx]`. Use `first`. Consider the case `exact WithZero.one_lt_exp_of_pos zero_lt_one`. Consider the case `(rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; exact zero_lt_one)`. Consider the case `exact WithZero.coe_lt_coe.2 (by decide)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hA Ω ι v h1' (hN Ω ι v (hL Ω ι v hgt (hP Ω ι v h1' hne))) n`. Conclude with `⟨x, hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem valApprox_of (hP : PairSep) (hL : LargeSmall) (hN : NearOne) (hA : Assembly) :
     ReciprocityTheory.ChartRestriction.G.Lift.ApproxStatement := by

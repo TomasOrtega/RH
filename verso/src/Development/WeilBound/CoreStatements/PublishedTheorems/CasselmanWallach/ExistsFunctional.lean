@@ -9,11 +9,11 @@ namespace PositivityTheory.CW
 namespace KInvarianceAlt
 
 /- English proof (translation)
-Take `⟨hu, hJ⟩` from `hk`. Establish `hu' : kᴴ * k = 1`. Use `Matrix.mem_unitaryGroup_iff'.1 hu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `hJh : (Jm ε)ᴴ = Jm ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i j; simp only [Jm, diagonal_conjTranspose, diagonal_apply]; split_ifs <;> simp_all`. Establish `hJ' : kᴴ * Jm ε = Jm ε * kᴴ`. Establish `h` using `congrArg Matrix.conjTranspose hJ`. Simplify using `only [Matrix.conjTranspose_mul, hJh] at h`. Conclude with `h.symm`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs' : kᴴ ∈ Matrix.unitaryGroup (Fin n) ℂ`. Use `Unitary.star_mem hu` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Conclude with `⟨kᴴ, ⟨hs', hJ'⟩, hu'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kinv {n : ℕ} {ε : Fin n → Bool} {k : Mx n} (hk : k ∈ Kset ε) : ∃ k' ∈ Kset ε, k' * k = 1 := by
   obtain ⟨hu, hJ⟩ := hk
@@ -32,27 +32,23 @@ theorem kinv {n : ℕ} {ε : Fin n → Bool} {k : Mx n} (hk : k ∈ Kset ε) : �
 end KInvarianceAlt
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ i`. Take `⟨q, N, hq, hg⟩` from `hπ.growth i`. Use `haveI : Nonempty (UJset ε) := ⟨⟨1, one_mem_UJ ε⟩⟩`. Use `set W : Mx n → ℝ := fun g => (1 + hs g) ^ N with hWdef`. Establish `hW : ∀ g, 0 < W g` using `fun g => pow_pos (by linarith [hs_nonneg g]) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hWm : ∀ a b : Mx n, W (a * b) ≤ W a * W b` using `fun a b => by`. Simplify using `only [hWdef]`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith [hs_nonneg (a * b)]) (one_add_hs_mul_le a b) N`. Establish `hmul : ∀ a ∈ UJset ε, ∀ b ∈ UJset ε, ∀ x, π (a * b) x = π a (π b x)` using `fun a ha b hb x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[hπ.map_mul a ha b hb]`. Both sides reduce to the same expression. Set `f : UJset ε → Seminorm ℂ E` to `fun g => (Real.toNNReal (W g.1)⁻¹) • (p i).comp (π g.1 : E →ₗ[ℂ] E)`. Establish `hf : ∀ g x, f g x = p i (π g.1 x) / W g.1` using `fun g x => by show ((Real.toNNReal (W g.1)⁻¹ : NNReal) : ℝ) * p i (π g.1 x) = _`. Rewrite using `[Real.coe_toNNReal _ (inv_nonneg.2 (hW _).le), div_eq_inv_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfq : ∀ g x, f g x ≤ q x` using `fun g x => by`. Rewrite using `[hf, div_le_iff₀ (hW _), mul_comm]`. Conclude with `hg g.1 g.2 x`. Establish `hbdd : BddAbove (Set.range f)` using `⟨q, by`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Pi.le_def.2 fun x => hfq g x⟩`. Establish `hfb : ∀ x, BddAbove (Set.range fun g => f g x)` using `fun x => ⟨q x, by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hfq g x⟩`. Use `set Q : Seminorm ℂ E := ⨆ g, f g with hQdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hQ : ∀ x, Q x = ⨆ g, f g x` using `fun x => Seminorm.iSup_apply hbdd`. Establish `hle : ∀ g x, f g x ≤ Q x` using `fun g x => by rw [hQ]; exact le_ciSup (hfb x) g`. Establish `hQq : Q ≤ q` using `Pi.le_def.2 fun x => by rw [hQ]; exact ciSup_le fun g => hfq g x`. Establish `h1 : ∀ g ∈ UJset ε, ∀ x, p i (π g x) ≤ W g * Q x` using `fun g hg x => by`. Use `hle ⟨g, hg⟩ x` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hf, div_le_iff₀ (hW _)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKk : ∀ k ∈ Kset ε, ∀ x, Q (π k x) ≤ Q x` using `fun k hk x => by`. Rewrite using `[hQ (π k x)]`. Use `ciSup_le fun g => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgk : g.1 * k ∈ UJset ε` using `mul_mem_UJ g.2 (K_le_UJ hk)`. Use `hle ⟨g.1 * k, hgk⟩ x` as an intermediate fact. Rewrite `this`, the goal using `[hf]`. Establish `e : W (g.1 * k) = W g.1`. Simplify using `only [hWdef, ((Formalism.REAL.hermitian_small_ball n ε).2 g.1 k hk).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hmul g.1 g.2 k (K_le_UJ hk), ← e]`. Conclude with `this`. Use `⟨Q, N, Seminorm.continuous_of_le hq hQq, h1, fun h hh x => ?_, fun k hk x => ?_⟩` and prove the remaining obligations. Rewrite using `[hQ (π h x)]`. Use `ciSup_le fun g => ?_` and prove the remaining obligations.
-
-Rewrite using `[hf, hmul g.1 g.2 h hh x |>.symm, div_le_iff₀ (hW _)]`. Combine the equalities or inequalities in the displayed calculation. Use `le_antisymm (hKk k hk x) ?_` and prove the remaining obligations. Take `⟨k', hk', e⟩` from `KInvarianceAlt.kinv hk`. Use `hKk k' hk' (π k x)` as an intermediate fact.
-
-Rewrite `this` using `[← hmul k' (K_le_UJ hk') k (K_le_UJ hk), e, hπ.map_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem e1a : SmoothSeminormGrowth := by
   intro n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ i

@@ -15,7 +15,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 /- English proof (translation)
-Take `⟨⟨hlc, hcs⟩, hsu⟩` from `hf`. Use `⟨⟨hlc.comp_continuous e.continuous, hcs.comp_homeomorph e⟩, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Conclude with `he p (hsu hp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_mem {e : Sp k n ≃ₜ Sp k n} (he : ∀ p, (e p).2 ≠ 0 → p.2 ≠ 0) {f : Sp k n → ℂ}
     (hf : f ∈ supportedIn (UU : Set (Sp k n))) : (fun p => f (e p)) ∈ supportedIn (UU : Set (Sp k n)) := by
@@ -25,7 +25,7 @@ theorem comp_mem {e : Sp k n ≃ₜ Sp k n} (he : ∀ p, (e p).2 ≠ 0 → p.2 �
   exact he p (hsu hp)
 
 /- English proof (translation)
-Take `⟨⟨hlc, hcs⟩, -⟩` from `hf`. Conclude with `⟨⟨hlc.comp_continuous e.continuous, hcs.comp_homeomorph e⟩, Set.subset_univ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp_mem_univ {e : Sp k n ≃ₜ Sp k n} {f : Sp k n → ℂ}
     (hf : f ∈ supportedIn (Set.univ : Set (Sp k n))) : (fun p => f (e p)) ∈ supportedIn (Set.univ : Set (Sp k n)) := by
@@ -35,7 +35,7 @@ theorem comp_mem_univ {e : Sp k n ≃ₜ Sp k n} {f : Sp k n → ℂ}
 def trH (c : Matrix (Fin n) (Fin n) k) : Sp k n ≃ₜ Sp k n := Homeomorph.addRight ((c, 0) : Sp k n)
 
 /- English proof (translation)
-The claim follows from `Prod.ext rfl (add_zero p.2)`.
+A detailed English derivation is pending.
 -/
 theorem trH_apply (c : Matrix (Fin n) (Fin n) k) (p : Sp k n) : trH c p = tr c p :=
   Prod.ext rfl (add_zero p.2)
@@ -58,7 +58,7 @@ def actH (g : GL (Fin n) k) : Sp k n ≃ₜ Sp k n where
       (continuous_const.matrix_mulVec continuous_snd)
 
 /- English proof (translation)
-Establish `key` using `comp_mem (e := trH c) (fun p hp => by simpa [trH_apply, tr] using hp) hf`. Simplify `key` using `[trH_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tr_mem {f : Sp k n → ℂ} (hf : f ∈ supportedIn (UU : Set (Sp k n))) (c : Matrix (Fin n) (Fin n) k) :
     (fun p => f (tr c p)) ∈ supportedIn (UU : Set (Sp k n)) := by
@@ -66,14 +66,14 @@ theorem tr_mem {f : Sp k n → ℂ} (hf : f ∈ supportedIn (UU : Set (Sp k n)))
   simpa [trH_apply] using key
 
 /- English proof (translation)
-The claim follows from `comp_mem (e := homH t) (fun p hp => hp) hf`.
+A detailed English derivation is pending.
 -/
 theorem hom_mem {f : Sp k n → ℂ} (hf : f ∈ supportedIn (UU : Set (Sp k n))) (t : kˣ) :
     (fun p => f (hom t p)) ∈ supportedIn (UU : Set (Sp k n)) :=
   comp_mem (e := homH t) (fun p hp => hp) hf
 
 /- English proof (translation)
-Use `comp_mem (e := actH g) (fun p hp h0 => hp ?_) hf` and prove the remaining obligations. Use `show g.val *ᵥ p.2 = 0`. Rewrite using `[h0, Matrix.mulVec_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem {f : Sp k n → ℂ} (hf : f ∈ supportedIn (UU : Set (Sp k n))) (g : GL (Fin n) k) :
     (fun p => f (act g p)) ∈ supportedIn (UU : Set (Sp k n)) := by
@@ -85,11 +85,11 @@ def Good (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (ζ : (Sp k n → ℂ) �
   TranslInv Z ζ ∧ SuppU ζ (CC Z ×ˢ Set.univ)
 
 /- English proof (translation)
-Establish `hsub : f - f' ∈ supportedIn (UU : Set (Sp k n))` using `Submodule.sub_mem _ hf hf'`. Establish `hz` using `hs (f - f') hsub (by`. Introduce and unpack `p ⟨hp1, -⟩`. Distinguish the cases in `hp2 : p.2 = 0`. Establish `h1 : f p = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hf.2 hne hp2`. Establish `h2 : f' p = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hf'.2 hne hp2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2]`. Simplify using `[h ⟨p.1, p.2⟩ ⟨hp1, hp2⟩])`. Rewrite `hz` using `[map_sub, sub_eq_zero]`. Conclude with `hz`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem agree {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hs : SuppU ζ (CC Z ×ˢ Set.univ)) {f f' : Sp k n → ℂ}
     (hf : f ∈ supportedIn (UU : Set (Sp k n))) (hf' : f' ∈ supportedIn (UU : Set (Sp k n)))
@@ -110,18 +110,18 @@ theorem agree {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hs : SuppU ζ (CC Z ×ˢ 
   exact hz
 
 /- English proof (translation)
-Conclude with `hg.1 c hc f ⟨hf.1, Set.subset_univ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem good_tr {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hg : Good Z ζ) {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z)
     {f : Sp k n → ℂ} (hf : f ∈ supportedIn (UU : Set (Sp k n))) : ζ (fun p => f (tr c p)) = ζ f := by
   exact hg.1 c hc f ⟨hf.1, Set.subset_univ _⟩
 
 /- English proof (translation)
-Use `⟨?_, hM.cpt.image (continuous_add_right c), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `Z.add_mem (hM.sub hm) hc`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Take `⟨U0, hU0, h0, hU0Z⟩` from `hM.nhd`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmZ : m + c ∈ Z` using `Z.add_mem (hM.sub hm) hc`. Use `⟨(fun x => x - (m + c)) ⁻¹' U0, hU0.preimage (continuous_sub_right _), by simpa using h0, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hxU, hxZ⟩`. Establish `hxM : x - (m + c) ∈ M` using `hU0Z ⟨hxU, Z.sub_mem hxZ hmZ⟩`. Use `⟨x - (m + c) + m, M.add_mem hxM hm, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws.
 
-Use `show x - (m + c) + m + c = x`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem coset_ok {M : AddSubgroup (Matrix (Fin n) (Fin n) k)} (hM : IsLat Z M) {c : Matrix (Fin n) (Fin n) k}
     (hc : c ∈ Z) :
@@ -143,7 +143,7 @@ theorem coset_ok {M : AddSubgroup (Matrix (Fin n) (Fin n) k)} (hM : IsLat Z M) {
     abel
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `coset_ok hM hc`. Conclude with `psi_lift hZ h1 h2 h3 hh`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lift_ex (hZ : CR Z) {M : AddSubgroup (Matrix (Fin n) (Fin n) k)} (hM : IsLat Z M) {c : Matrix (Fin n) (Fin n) k}
     (hc : c ∈ Z) {h : Sp k n → ℂ} (hh : h ∈ supportedIn (UU : Set (Sp k n))) :
@@ -159,7 +159,7 @@ theorem image_add_zero (M : Set (Matrix (Fin n) (Fin n) k)) : (fun a => a + (0 :
   simp
 
 /- English proof (translation)
-Establish `key` using `lift_ex hZ hM (c := 0) Z.zero_mem hh`. Rewrite `key` using `[image_add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_lift_of_lattice_average (hZ : CR Z) {M : AddSubgroup (Matrix (Fin n) (Fin n) k)} (hM : IsLat Z M) {h : Sp k n → ℂ}
     (hh : h ∈ supportedIn (UU : Set (Sp k n))) :
@@ -168,21 +168,21 @@ theorem exists_lift_of_lattice_average (hZ : CR Z) {M : AddSubgroup (Matrix (Fin
   rwa [image_add_zero] at key
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(cc_add hZ hc).1.2 hp.1, hp.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem tr_OO (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) {p : Sp k n} (hp : p ∈ OO Z) : tr c p ∈ OO Z :=
   ⟨(cc_add hZ hc).1.2 hp.1, hp.2⟩
 
 /- English proof (translation)
-Take `⟨D, hcard, hDL, hpsi⟩` from `psi_cosets hL hM hML`. Establish `hlift : ∀ d ∈ D, ∃ f ∈ supportedIn (UU : Set (Sp k n)), ∀ p ∈ OO Z, f p = psi Z ((fun a => a + d) '' (M : Set (Matrix (Fin n) (Fin n) k))) h p` using `fun d hd => lift_ex hZ hM (hL.sub (hDL d hd)) hh`. Use `choose! F hFmem hFeq using hlift`. Establish `hsum : ζ fL = ζ (∑ d ∈ D, F d)`. Use `agree hg.2 hfL (Submodule.sum_mem _ fun d hd => hFmem d hd) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Rewrite using `[eL p hp, hpsi h, Finset.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun d hd => (hFeq d hd p hp).symm`. Establish `hterm : ∀ d ∈ D, ζ (F d) = ζ fM`. Introduce `d hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcZ : d ∈ Z` using `hL.sub (hDL d hd)`. Establish `e1 : ∀ p, psi Z (M : Set (Matrix (Fin n) (Fin n) k)) h p = psi Z ((fun a => a + d) '' (M : Set (Matrix (Fin n) (Fin n) k))) h (tr d p)`. Introduce `p`. Establish `key` using `congrFun (psi_tr hZ ((fun a => a + d) '' (M : Set (Matrix (Fin n) (Fin n) k))) h hcZ) p`. Rewrite using `[key, Set.image_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [add_sub_cancel_right, Set.image_id']`. Establish `e2 : ζ fM = ζ (fun p => F d (tr d p))`. Use `agree hg.2 hfM (tr_mem (hFmem d hd) d) ?_` and prove the remaining obligations. Introduce `p hp`. Rewrite using `[eM p hp, hFeq d hd _ (tr_OO hZ hcZ hp), e1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, good_tr hg hcZ (hFmem d hd)]`. Rewrite using `[hsum, map_sum, Finset.sum_congr rfl hterm, Finset.sum_const, hcard, nsmul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem ind (hZ : CR Z) {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hg : Good Z ζ) {L M : AddSubgroup (Matrix (Fin n) (Fin n) k)}
     (hL : IsLat Z L) (hM : IsLat Z M) (hML : M ≤ L) {h : Sp k n → ℂ} (hh : h ∈ supportedIn (UU : Set (Sp k n)))
@@ -217,11 +217,11 @@ theorem ind (hZ : CR Z) {ζ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hg : Good Z ζ)
   rw [hsum, map_sum, Finset.sum_congr rfl hterm, Finset.sum_const, hcard, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `hL' : IsLat Z (t⁻¹.val • L)` using `isLat_smul hL t⁻¹`. Establish `hle : L ≤ t⁻¹.val • L` using `lat_le_inv hL ht`. Establish `hh' : (fun q => h (hom t q)) ∈ supportedIn (UU : Set (Sp k n))` using `hom_mem hh t`. Establish `hg' : (fun p => f (hom t p)) ∈ supportedIn (UU : Set (Sp k n))` using `hom_mem hf t`. Establish `eg : ∀ p ∈ OO Z, (fun p => f (hom t p)) p = psi Z ((t⁻¹.val • L : AddSubgroup (Matrix (Fin n) (Fin n) k)) : Set (Matrix (Fin n) (Fin n) k)) (fun q => h (hom t q)) p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp`. Establish `hp' : hom t p ∈ OO Z` using `⟨(cc_smul hZ (t : k) hp.1).1, hp.2⟩`. Establish `key` using `congrFun (psi_hom hZ (L : Set (Matrix (Fin n) (Fin n) k)) h t) p`. Simplify using `only at key ⊢`. Rewrite using `[e _ hp', key, AddSubgroup.coe_pointwise_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `main` using `ind hZ hg hL' hL hle hh' hg' hf' eg e'`. Rewrite using `[main]`. Use `congr 1`. Rewrite using `[← lat_index_smul hL t ht]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/

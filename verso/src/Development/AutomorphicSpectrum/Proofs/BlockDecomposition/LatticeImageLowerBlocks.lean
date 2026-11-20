@@ -11,7 +11,7 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 namespace GlobalTheory.CompanionTheory.MM.LowerRows
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[Matrix.submatrix_mulVec_equiv]`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Equiv.symm_symm, Matrix.fromBlocks_mulVec, Sum.elim_inr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem block_mulVec_lower_rows {A : Type} [CommRing A] {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) A)
     (w : Fin (n + n) → A) (i : Fin n) :
@@ -28,23 +28,21 @@ def glue {A : Type} {n : ℕ} (y y' : Fin n → A) : Fin (n + n) → A :=
   fun i => Sum.elim y y' (finSumFinEquiv.symm i)
 
 /- English proof (translation)
-Simplify using `only [glue, Equiv.symm_apply_apply, Sum.elim_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glue_inl {A : Type} {n : ℕ} (y y' : Fin n → A) (j : Fin n) :
     glue y y' (finSumFinEquiv (Sum.inl j)) = y j := by
   simp only [glue, Equiv.symm_apply_apply, Sum.elim_inl]
 
 /- English proof (translation)
-Simplify using `only [glue, Equiv.symm_apply_apply, Sum.elim_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glue_inr {A : Type} {n : ℕ} (y y' : Fin n → A) (j : Fin n) :
     glue y y' (finSumFinEquiv (Sum.inr j)) = y' j := by
   simp only [glue, Equiv.symm_apply_apply, Sum.elim_inr]
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective i`. Break down `j with j | j` into its components or cases. Rewrite using `[glue_inl]`. Conclude with `hy j`. Rewrite using `[glue_inr]`.
-
-Conclude with `hy' j`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_mem {A : Type} {n : ℕ} {S : Set A} {y y' : Fin n → A} (hy : ∀ i, y i ∈ S)
     (hy' : ∀ i, y' i ∈ S) (i : Fin (n + n)) : glue y y' i ∈ S := by
@@ -54,11 +52,11 @@ theorem glue_mem {A : Type} {n : ℕ} {S : Set A} {y y' : Fin n → A} (hy : ∀
   · rw [glue_inr]; exact hy' j
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, y', hy', rfl⟩ i`. Establish `h1` using `(hs (glue y y')).1 (glue_mem (S := (S : Set A)) hy hy') (finSumFinEquiv (Sum.inr i))`. Rewrite `h1` using `[hg, block_mulVec_lower_rows]`. Simplify `h1` using `only [glue_inl, glue_inr]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx set w : Fin (n + n) → A := h *ᵥ glue 0 x with hw`. Establish `hgw : g *ᵥ w = glue 0 x`. Rewrite using `[hw, Matrix.mulVec_mulVec, hgh, Matrix.one_mulVec]`. Establish `hwS : ∀ i, w i ∈ S` using `(hs w).2 fun i => by`. Rewrite using `[hgw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `glue_mem (S := (S : Set A)) (fun _ => S.zero_mem) hx i`. Use `⟨fun j => w (finSumFinEquiv (Sum.inl j)), fun _ => hwS _, fun j => w (finSumFinEquiv (Sum.inr j)), fun _ => hwS _, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← block_mulVec_lower_rows a b c d w i, ← hg, hgw, glue_inr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_image {A : Type} [CommRing A] (S : Subring A) {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) A)
     (g h : Matrix (Fin (n + n)) (Fin (n + n)) A) (hgh : g * h = 1) (hg : g = blk4 a b c d)
@@ -81,9 +79,9 @@ theorem lower_image {A : Type} [CommRing A] (S : Subring A) {n : ℕ} (a b c d :
     rw [← block_mulVec_lower_rows a b c d w i, ← hg, hgw, glue_inr]
 
 /- English proof (translation)
-Establish `hgh : g.1 * (g⁻¹).1 = 1` using `by simp`. Use extensionality with `x`. Establish `key` using `lower_image (intLoc F E v) a b c d g.1 (g⁻¹).1 hgh hg (fun y => by`. Use `hs y` as an intermediate fact. Rewrite using `[mem_latLoc_stdLattice, mem_latLoc_stdLattice] at this) x` and apply the resulting hypothesis.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, mem_latLoc_stdLattice]`. Conclude with `key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lower_image_lat {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) {n : ℕ}
@@ -102,7 +100,7 @@ theorem lower_image_lat {F E : Type} [Field F] [NumberField F] [Field E] [Algebr
   exact key
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blockMatrix_map {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) {n : ℕ}
@@ -115,7 +113,7 @@ theorem blockMatrix_map {F E : Type} [Field F] [NumberField F] [Field E] [Algebr
   rfl
 
 /- English proof (translation)
-Introduce `D n k k₁ k₂ k₃ k₄ hk hm v`. Establish `hlev : k ∈ levelOpen D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n))` using `(Subgroup.mem_inf.1 hk).1`. Establish `hst` using `mem_stabLoc.1 (mem_levelOpen.1 hlev v)`. Use `lower_image_lat v (PositivityTheory.SiegelWeilFormula.Gen.matV v k₁) (PositivityTheory.SiegelWeilFormula.Gen.matV v k₂) (PositivityTheory.SiegelWeilFormula.Gen.matV v k₃) (PositivityTheory.SiegelWeilFormula.Gen.matV v k₄) _ ?_ hst` and prove the remaining obligations. Rewrite using `[matHom_proj, ← blockMatrix_map, ← hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -15,9 +15,9 @@ def Vm {N : ℕ} (j0 : Fin (N + 1)) (s : Fin (N + 1) → R) : Matrix (Fin (N + 1
     if l = j0 then (if k = j0 then 1 else 0) else ((if k = l then 1 else 0) - (if k = j0 then s l else 0))
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_column (Vm j0 s) j0, Finset.sum_eq_single j0]`. Establish `hsub : (Vm j0 s).submatrix j0.succAbove j0.succAbove = 1`. Use extensionality with `k l`. Simplify using `only [Matrix.submatrix_apply, Vm, Matrix.of_apply, Fin.succAbove_ne, if_false, sub_zero, Matrix.one_apply, (Fin.succAbove_right_injective).eq_iff]`. Rewrite using `[hsub, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Vm, ← two_mul, pow_mul]`. Introduce `k _ hk`. Simplify using `[Vm, hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_Vm {N : ℕ} (j0 : Fin (N + 1)) (s : Fin (N + 1) → R) : (Vm j0 s).det = 1 := by
   rw [Matrix.det_succ_column (Vm j0 s) j0, Finset.sum_eq_single j0]
@@ -32,7 +32,7 @@ theorem det_Vm {N : ℕ} (j0 : Fin (N + 1)) (s : Fin (N + 1) → R) : (Vm j0 s).
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Vm, Matrix.of_apply]`. Distinguish the cases in `hl : l = j0`. Simplify using `[hl]`. Simplify using `only [hl, if_false, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_Vm {m N : ℕ} (X : Matrix (Fin m) (Fin (N + 1)) R) (j0 : Fin (N + 1))
     (s : Fin (N + 1) → R) (i : Fin m) (l : Fin (N + 1)) :
@@ -46,7 +46,7 @@ theorem mul_Vm {m N : ℕ} (X : Matrix (Fin m) (Fin (N + 1)) R) (j0 : Fin (N + 1
     ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Vm, Matrix.of_apply]`. Distinguish the cases in `hk : k = j0`. Simplify using `[hk]`. Simplify using `only [hk, if_false, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul]`. Simplify using `[Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem VmT_mul {N n : ℕ} (j0 : Fin (N + 1)) (u : Fin (N + 1) → R) (Y : Matrix (Fin (N + 1)) (Fin n) R)
     (k : Fin (N + 1)) (l : Fin n) :
@@ -62,13 +62,13 @@ def piv {N : ℕ} (i0 : Fin (N + 1)) : Equiv.Perm (Fin (N + 1)) :=
   (finSuccEquiv N).trans (finSuccEquiv' i0).symm
 
 /- English proof (translation)
-Simplify using `[piv, finSuccEquiv_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piv_zero {N : ℕ} (i0 : Fin (N + 1)) : piv i0 0 = i0 := by
   simp [piv, finSuccEquiv_zero]
 
 /- English proof (translation)
-Simplify using `[piv, finSuccEquiv_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piv_succ {N : ℕ} (i0 : Fin (N + 1)) (l : Fin N) : piv i0 l.succ = i0.succAbove l := by
   simp [piv, finSuccEquiv_succ]
@@ -97,7 +97,7 @@ Both sides reduce to the same expression.
     bd1 P l.succ k.succ = P l k := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Simplify using `only [blockOne_zero_zero_alt, blockOne_zero_succ_alt, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, mul_one, Fin.val_zero, pow_zero, one_mul]`. Apply the tactic sequence `all_goals congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_blockOne_alt {N : ℕ} (P : Matrix (Fin N) (Fin N) R) : (bd1 P).det = P.det := by
   rw [Matrix.det_succ_row_zero, Fin.sum_univ_succ]
@@ -106,11 +106,11 @@ theorem det_blockOne_alt {N : ℕ} (P : Matrix (Fin N) (Fin N) R) : (bd1 P).det 
   all_goals congr 1
 
 /- English proof (translation)
-Establish `hPC0 : ∀ j : Fin (n + 1), (bd1 P * Cm) 0 j = Cm 0 j`. Introduce `j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Establish `hPCs : ∀ (l : Fin d) (j : Fin (n + 1)), (bd1 P * Cm) l.succ j = ∑ m, P l m * Cm m.succ j`. Introduce `l j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Use `⟨?_, fun k => ?_, fun l => ?_, fun l k => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, hPC0, h0]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, hPC0, h0]`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hPCs, h1]`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Simplify using `only [hPCs, blockOne_zero_succ_alt, mul_zero, zero_add, blockOne_succ_succ_alt, Matrix.mul_apply, Matrix.of_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockOne_mul_mul_blockOne {d n : ℕ} (P : Matrix (Fin d) (Fin d) R) (Cm : Matrix (Fin (d + 1)) (Fin (n + 1)) R)
     (Q : Matrix (Fin n) (Fin n) R) (h0 : ∀ k : Fin n, Cm 0 k.succ = 0)
@@ -132,7 +132,7 @@ theorem blockOne_mul_mul_blockOne {d n : ℕ} (P : Matrix (Fin d) (Fin d) R) (Cm
     simp only [hPCs, blockOne_zero_succ_alt, mul_zero, zero_add, blockOne_succ_succ_alt, Matrix.mul_apply, Matrix.of_apply]
 
 /- English proof (translation)
-Establish `h` using `Matrix.det_permutation (R := R) σ`. Simplify using `only [Equiv.Perm.permMatrix] at h`. Rewrite using `[h]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs <;> simp [hs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUnit_det_perm {N : ℕ} (σ : Equiv.Perm (Fin N)) :
     IsUnit (σ.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) R).det := by
@@ -146,7 +146,7 @@ end general
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-The claim follows from `| 0, n, A => ⟨1, 1, Fin.elim0, by simp, by simp, fun j => j.elim0⟩ | d + 1, 0, A => ⟨1, 1, 0, by simp, by simp, fun j k => k.elim0⟩ | d + 1, n + 1, A => by classical set g : Fin (n + 1) → Fin (d + 1) → R := fun j i => A i j with hg obtain ⟨i0, a, u, s, hu, hau, hs, hz, hnz⟩ := ex …`.
+A detailed English derivation is pending.
 -/
 theorem smith_mat (hv : v.Integers R) : ∀ (d n : ℕ) (A : Matrix (Fin d) (Fin n) R),
     ∃ (P : Matrix (Fin d) (Fin d) R) (Q : Matrix (Fin n) (Fin n) R) (a : Fin d → R),

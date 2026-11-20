@@ -4,15 +4,15 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `hn : ∀ n : ℕ, z = (3 : ℤ) ^ n • (z * w ^ n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_mul_assoc, smul_smul, pow_succ', pow_succ, mul_assoc]`. Set `b` to `Module.Free.chooseBasis ℤ R`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hd : ∀ n : ℕ, (3 : ℤ) ^ n ∣ b.repr z i`. Introduce `n`. Use `⟨b.repr (z * w ^ n) i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hn n]`. Rewrite using `[map_zsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Assume the negation of the conclusion as `hne`. Establish `h1` using `Int.natAbs_le_of_dvd_ne_zero (hd (b.repr z i).natAbs) hne`. Rewrite `h1` using `[Int.natAbs_pow]`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (b.repr z i).natAbs < 3 ^ (b.repr z i).natAbs` using `Nat.lt_pow_self (by norm_num)`. Establish `h3 : (3 : ℤ).natAbs = 3` using `rfl`. Rewrite `h1` using `[h3]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.KT.torsfree_sep {R : Type} [Ring R] [Module.Free ℤ R]
     (z w : R) (h : z = (3 : ℤ) • (z * w)) : z = 0 := by
@@ -44,9 +44,9 @@ private theorem UpperTheory.V.KT.torsfree_sep {R : Type} [Ring R] [Module.Free �
   omega
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ k ih`. Take `⟨w, hw⟩` from `ih`. Use `⟨(k : ℤ) • 1 + w * (1 + z), ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, hw]`. Use `push_cast`. Simplify using `only [add_smul, one_smul, mul_add, add_mul, mul_one, one_mul, smul_mul_assoc, mul_smul_comm, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem UpperTheory.V.KT.torsfree_binom {R : Type} [Ring R] (z : R) (k : ℕ) :
     ∃ w : R, (1 + z) ^ k = 1 + (k : ℤ) • z + z * z * w := by
@@ -62,23 +62,21 @@ private theorem UpperTheory.V.KT.torsfree_binom {R : Type} [Ring R] (z : R) (k :
     abel
 
 /- English proof (translation)
-Introduce `R _ _ _ u x k`. Establish `h3 : ∀ y : R, 3 * y = (3 : ℤ) • y`. Introduce `y`. Rewrite using `[zsmul_eq_mul]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Proceed by induction on `k using Nat.strong_induction_on generalizing u x with`. Consider the case `_ k ih`. Introduce `hk hu hpow`. Rewrite `hu` using `[h3]`. Distinguish the cases in `hdiv : 3 ∣ k`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨m, rfl⟩` from `hdiv`. Establish `hm : 0 < m` using `by omega`. Take `⟨w, hw⟩` from `UpperTheory.V.KT.torsfree_binom ((3 : ℤ) • x) m`. Rewrite `hw` using `[← hu]`. Use `set y : R := (m : ℤ) • x + x * ((3 : ℤ) • x) * w with hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : u ^ m = 1 + (3 : ℤ) • y`. Rewrite using `[hw, hy, smul_add, smul_comm (3 : ℤ) (m : ℤ), add_assoc, smul_mul_assoc (3 : ℤ) x, smul_mul_assoc (3 : ℤ)]`. Establish `hv3 : (1 + (3 : ℤ) • y) ^ 3 = 1`. Rewrite using `[← hv, ← pow_mul, mul_comm, hpow]`. Establish `hz : (3 : ℤ) • y = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `UpperTheory.V.KT.torsfree_sep _ (-y - y * y)` to reduce the goal to its premises. Establish `hinj : Function.Injective (fun t : R => (3 : ℤ) • t)` using `smul_right_injective R (by norm_num)`. Apply `hinj` to reduce the goal to its premises. Establish `e : (3 : ℤ) • ((3 : ℤ) • y) - (3 : ℤ) • ((3 : ℤ) • (((3 : ℤ) • y) * (-y - y * y))) = (1 + (3 : ℤ) • y) ^ 3 - 1`. Simplify using `only [pow_succ, pow_zero, mul_add, add_mul, mul_sub, mul_neg, mul_one, one_mul, smul_mul_assoc, mul_smul_comm, mul_assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `module`. Rewrite `e` using `[hv3, sub_self, sub_eq_zero]`. Conclude with `e`. Rewrite `hv` using `[hz, add_zero]`. Conclude with `ih m (by omega) u x hm (by rw [h3]; exact hu) hv`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `UpperTheory.V.KT.torsfree_binom ((3 : ℤ) • x) k`. Rewrite `hw` using `[← hu, hpow, add_assoc, left_eq_add]`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b : ℤ, a * k + 3 * b = 1 := by`. Establish `: (k : ℤ) % 3 = 1 ∨ (k : ℤ) % 3 = 2` using `by omega`. Break down `this with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨1, -((k : ℤ) / 3), by omega⟩`. Conclude with `⟨-1, (k : ℤ) / 3 + 1, by omega⟩`. Establish `hz : (3 : ℤ) • x = 0`. Apply `UpperTheory.V.KT.torsfree_sep _ (b • 1 - a • (x * w))` to reduce the goal to its premises. Establish `e : (3 : ℤ) • (((3 : ℤ) • x) * (b • 1 - a • (x * w))) = (a * k + 3 * b) • ((3 : ℤ) • x) - a • ((k : ℤ) • ((3 : ℤ) • x) + (3 : ℤ) • x * (3 : ℤ) • x * w)`.
-
-Simplify using `only [mul_sub, mul_one, smul_mul_assoc, mul_smul_comm, mul_assoc]`. Use `module`. Rewrite using `[e, hw, hab, smul_zero, sub_zero, one_smul]`. Rewrite using `[hu, hz, add_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.torsfree :
     ∀ (R : Type) [Ring R] [Module.Free ℤ R] [Module.Finite ℤ R] (u x : R) (k : ℕ), 0 < k →

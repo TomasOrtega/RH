@@ -11,9 +11,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights�
 open ReciprocityTheory.AnForm.M (IsCompatChart FinHolAtlas)
 
 /- English proof (translation)
-Use `⟨fun s => Complex.log (F s / F 0) + (Real.log ‖F 0‖ : ℂ), ?_, ?_⟩` and prove the remaining obligations. Use `((hF.div analyticAt_const h0).clog ?_).add analyticAt_const show F 0 / F 0 ∈ Complex.slitPlane` and prove the remaining obligations. Rewrite using `[div_self h0]`. Conclude with `Complex.one_mem_slitPlane`. Use `filter_upwards [hF.continuousAt.eventually_ne h0] with s hs`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Complex.add_re, Complex.log_re, Complex.ofReal_re, norm_div, Real.log_div (norm_ne_zero_iff.mpr hs) (norm_ne_zero_iff.mpr h0)]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem RefChartDisc.log_norm_eq_re {F : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) (h0 : F 0 ≠ 0) :
     ∃ L : ℂ → ℂ, AnalyticAt ℂ L 0 ∧ ∀ᶠ s in 𝓝 (0 : ℂ), Real.log ‖F s‖ = (L s).re := by
@@ -28,7 +28,7 @@ theorem RefChartDisc.log_norm_eq_re {F : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) 
     ring
 
 /- English proof (translation)
-Establish `h0s : y 0 ∈ e.source` using `hys.self_of_nhds`. Establish `h1 : AnalyticAt ℂ (F ∘ e.symm) (e (y 0))` using `ReciprocityTheory.AnForm.M.PLAux.analyticAt_compat_fun he hF (e.map_source h0s) (by rwa [e.left_inv h0s])`. Use `(h1.comp (f := fun s => e (y s)) hy).congr ?_` and prove the remaining obligations. Use `filter_upwards [hys] with s hs`. Simplify using `[Function.comp, e.left_inv hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RefChartDisc.analyticAt_comp {n : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas n X}
     {e : OpenPartialHomeomorph X (Fin n → ℂ)} (he : IsCompatChart A e) {y : ℂ → X}
@@ -43,25 +43,23 @@ theorem RefChartDisc.analyticAt_comp {n : ℕ} {X : Type} [TopologicalSpace X] {
   simp [Function.comp, e.left_inv hs]
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D H M S j γ hγ hmem hsrc`. Use `set x := M.proj (γ 0) with hx`. Use `set e := S.R.chart j with he_def`. Establish `he : IsCompatChart M.atlas e` using `S.R.compat j`. Establish `hφ : AnalyticAt ℂ (fun s => e (M.proj (γ s))) 0` using `hProj II Ψ K ι Ω E D M e he γ hγ hmem hsrc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ0 : γ 0 ∈ mcPts (mCoordIdeal D.y)` using `hmem.self_of_nhds`. Establish `hcont : Tendsto (fun s => M.proj (γ s)) (𝓝 0) (𝓝 x)` using `(M.cont _ hγ0).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨hγ.continuousAt.tendsto, hmem⟩)`. Take `⟨U, hUo, hxU, hUsub, σ, hσ, hσh, G1, hG1, hG1eq⟩` from `S.th_ref x x (S.R.th.mem_U x)`. Take `⟨W, hWo, hxW, G2, hG2, hG2eq⟩` from `S.R.q_th j x x ⟨S.R.th.mem_U x, hsrc⟩`. Establish `hV : ∀ᶠ s in 𝓝 (0 : ℂ), M.proj (γ s) ∈ U ∩ W ∩ e.source` using `hcont.eventually (((hUo.inter hWo).inter e.open_source).mem_nhds ⟨⟨hxU, hxW⟩, hsrc⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ {V : Set M.Xc} {F : M.Xc → ℂ}, M.atlas.HoloOn V F → x ∈ V → AnalyticAt ℂ (fun s => F (M.proj (γ s))) 0` using `fun hF hxV => RefChartDisc.analyticAt_comp he hφ (hV.mono fun _ h => h.2) hF hxV`. Use `choose i hi using (hσ x hxU).1.1`. Use `set T : K → ℂ → ℂ := fun b s => γ s ⟨b, i b⟩ / σ (M.proj (γ s)) ⟨b, i b⟩ with hT_def`. Establish `hden : ∀ b, AnalyticAt ℂ (fun s => σ (M.proj (γ s)) ⟨b, i b⟩) 0` using `fun b => hA (hσh ⟨b, i b⟩) hxU`. Establish `hT : ∀ b, AnalyticAt ℂ (T b) 0` using `fun b => (analyticAt_pi_iff.1 hγ ⟨b, i b⟩).div (hden b) (hi b)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨c0, hc0, hγc0⟩` from `(M.fibre _ (hσ x hxU).1 _ hγ0).1 (hσ x hxU).2`. Establish `hT0 : ∀ b, T b 0 ≠ 0` using `fun b => by`. Establish `: γ 0 ⟨b, i b⟩ = c0 b * σ x ⟨b, i b⟩` using `by rw [hγc0]; rfl`. Simplify using `only [hT_def, ← hx, this]`. Conclude with `div_ne_zero (mul_ne_zero (hc0 b) (hi b)) (hi b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose L hL hLeq using fun b => RefChartDisc.log_norm_eq_re (hT b) (hT0 b)`. Establish `hdenev : ∀ᶠ s in 𝓝 (0 : ℂ), ∀ b, σ (M.proj (γ s)) ⟨b, i b⟩ ≠ 0` using `eventually_all.2 fun b => (hden b).continuousAt.eventually_ne (hi b)`. Use `⟨fun s => G1 (M.proj (γ s)) + G2 (M.proj (γ s)) - ∑ b, ((S.ref.a b : ℝ) : ℂ) * L b s, ?_, ?_⟩` and prove the remaining obligations. Use `((hA hG1 hxU).add (hA hG2 hxW)).sub ?_` and prove the remaining obligations. Use `Finset.analyticAt_sum (𝕜 := ℂ) Finset.univ fun b _ => (analyticAt_const (v := ((S.ref.a b : ℝ) : ℂ))).mul (hL b)` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `this.congr (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `[Finset.sum_apply]`. Use `filter_upwards [hV, hmem, hdenev, eventually_all.2 hLeq] with s hs hγs hds hLs`. Take `⟨⟨hsU, hsW⟩, hssrc⟩` from `hs`. Use `set y := M.proj (γ s) with hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hσy, hpσy⟩` from `hσ y hsU`. Take `⟨c, hc, hγc⟩` from `(M.fibre _ hσy _ hγs).1 (by rw [hpσy])`. Establish `hcT : ∀ b, c b = T b s` using `fun b => by`. Establish `: γ s ⟨b, i b⟩ = c b * σ y ⟨b, i b⟩` using `by rw [hγc]; rfl`. Simplify using `only [hT_def, ← hy, this]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear denominators, using `[hds b]` for the nonvanishing conditions. Establish `hmet : S.ref.h (γ s) = (∏ b, ‖c b‖ ^ S.ref.a b) * S.ref.h (σ y)`. Rewrite using `[← S.ref.smul c (σ y) hc, hγc]`. Both sides reduce to the same expression. Establish `hpos : 0 < S.ref.h (σ y)` using `S.ref.pos _ hσy.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlog : Real.log (S.ref.h (γ s)) = ∑ b, (S.ref.a b : ℝ) * (L b s).re + Real.log (S.ref.h (σ y))`. Rewrite using `[hmet, Real.log_mul (Finset.prod_ne_zero_iff.2 fun b _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc b))) hpos.ne', Real.log_prod (fun b _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc b)))]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_zpow, hcT b, hLs b]`.
-
-Establish `h1` using `hG1eq y hsU`. Establish `h2` using `hG2eq y ⟨⟨hsW, hUsub hsU⟩, hssrc⟩`. Simplify using `only [Complex.sub_re, Complex.add_re, Complex.re_sum, Complex.re_ofReal_mul]`. Rewrite using `[hlog]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem RefChartDisc.proof (hProj : ProjChartHolo.Statement) : RefChartDisc.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D H M S j γ hγ hmem hsrc

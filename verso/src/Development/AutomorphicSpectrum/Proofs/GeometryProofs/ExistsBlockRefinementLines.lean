@@ -14,11 +14,11 @@ namespace GlobalTheory.CompanionTheory.Ar.LinesDeg
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Take `⟨h0, hr⟩` from `h`. Establish `hne : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.mp h0) k (Finset.mem_univ k)`. Use `⟨hne k, fun j => ?_⟩` and prove the remaining obligations. Establish `hreg` using `hr (Function.update c k j)`. Establish `e : (∏ k', y ⟨k', Function.update c k j k'⟩) / ∏ k', y ⟨k', c k'⟩ = y ⟨k, j⟩ / y ⟨k, c k⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun k' => y ⟨k', Function.update c k j k'⟩) (Finset.mem_univ k), ← Finset.mul_prod_erase Finset.univ (fun k' => y ⟨k', c k'⟩) (Finset.mem_univ k)]`. Establish `hrest : ∏ k' ∈ Finset.univ.erase k, y ⟨k', Function.update c k j k'⟩ = ∏ k' ∈ Finset.univ.erase k, y ⟨k', c k'⟩` using `Finset.prod_congr rfl fun k' hk' => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk')]`. Establish `hP : ∏ k' ∈ Finset.univ.erase k, y ⟨k', c k'⟩ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k' _ => hne k'`. Simplify using `only [hrest, Function.update_self]`. Conclude with `mul_div_mul_right _ _ hP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `hreg`.
+A detailed English derivation is pending.
 -/
 theorem block_chart {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {c : (k : K) → J k} {p : Cpt ξ}
     (h : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c p) (k : K) :
@@ -42,7 +42,7 @@ theorem block_chart {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) →
   exact hreg
 
 /- English proof (translation)
-Use `⟨Finset.prod_ne_zero_iff.mpr fun k _ => (h k).1, fun c' => ?_⟩` and prove the remaining obligations. Use `show (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩ ∈ regAt ξ p`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun k _ => (h k).2 (c' k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segre_chart {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {c : (k : K) → J k} {p : Cpt ξ}
     (h : ∀ k, InChart ξ (fun i : J k => y ⟨k, i⟩) (c k) p) :
@@ -53,11 +53,11 @@ theorem segre_chart {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) →
   exact prod_mem fun k _ => (h k).2 (c' k)
 
 /- English proof (translation)
-Take `⟨i, hi0, hi⟩` from `hg`. Establish `ht : t i ≠ 0` using `fun h => hi0 (by simp [h])`. Use `⟨i, ht, fun j => ?_⟩` and prove the remaining obligations. Establish `hj` using `hm j`. Rewrite `hj` using `[hi, Submodule.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `hj`. Rewrite `hr` using `[Subring.smul_def, smul_eq_mul]`. Establish `: t j / t i = r`. Clear denominators, using `at hr ⊢` for the nonvanishing conditions. Conclude with `hr.symm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `r.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_of_gen {Q : Type} {t : Q → Ω} {d : Ω} (hd : d ≠ 0) {L : Lat ξ Ω} {p : Cpt ξ}
     (hm : ∀ i, t i / d ∈ L p) (hg : ∃ i, L.IsGenAt p (t i / d)) : ∃ i, InChart ξ t i p := by
@@ -75,9 +75,9 @@ theorem exists_chart_of_gen {Q : Type} {t : Q → Ω} {d : Ω} (hd : d ≠ 0) {L
   exact r.2
 
 /- English proof (translation)
-Take `⟨i, -, hi⟩` from `hg`. Use `le_antisymm ?_ ((Submodule.span_singleton_le_iff_mem _ _).mpr (hm i₀))` and prove the remaining obligations. Rewrite using `[hi, Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Use `⟨⟨t i / t i₀, hc.2 i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hc.1` as an intermediate fact. Use `show t i / t i₀ * (t i₀ / d) = t i / d`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem isGen_of_chart {Q : Type} {t : Q → Ω} {d : Ω} (hd : d ≠ 0) {L : Lat ξ Ω} {p : Cpt ξ} {i₀ : Q}
     (hc : InChart ξ t i₀ p) (hm : ∀ i, t i / d ∈ L p) (hg : ∃ i, L.IsGenAt p (t i / d)) :
@@ -110,21 +110,19 @@ namespace GlobalTheory.CompanionTheory.Ar
 open LinesDeg in
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y I _ Λ ht hvb`. Establish `key` using `fun i => GlobalTheory.T.line_bundle_global_generators X Ω ξ ((k : K) → J k) (fun c' => ∏ k, y ⟨k, c' k⟩) (Λ i) ht (hvb i)`. Use `choose n m s hmem hgen using key`. Set `J₂ : I → Type` to `fun i => Fin (m i + 1)`. Set `s₂ : (Σ i, J₂ i) → Ω` to `fun q => s q.1 q.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbpf : ∀ (i : I) (p : Cpt ξ), ∃ j, InChart ξ (fun j' : J₂ i => s₂ ⟨i, j'⟩) j p`. Introduce `i p`. Take `⟨c, hc⟩` from `ht.cover p`. Conclude with `exists_chart_of_gen (t := s i) (pow_ne_zero _ hc.1) (hmem i p c hc) (hgen i p c hc)`. Establish `hadd` using `GlobalTheory.T.coords_join_blocks X Ω ξ K J y I J₂ s₂ ht hbpf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨K ⊕ I, inferInstance, joinJ J J₂, joinFintype, joinY y s₂, Sum.inl, fun k => Equiv.refl _, Sum.inl_injective, fun k i => rfl, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `e : (fun c' : (k : K ⊕ I) → joinJ J J₂ k => ∏ k, joinY y s₂ ⟨k, c' k⟩) = fun c' : (k : K ⊕ I) → Sum.elim J J₂ k => (∏ k, y ⟨k, c' (Sum.inl k)⟩) * ∏ k, s₂ ⟨k, c' (Sum.inr k)⟩`. Use function extensionality and compare the values at `fun c' => Fintype.prod_sum_type (fun k => joinY y s₂ ⟨k, c' k⟩)`. Rewrite using `[e]`. Conclude with `hadd`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨Sum.elim (fun _ => -(n i : ℤ)) (fun i' => if i' = i then 1 else 0), 1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `p _ c hc`. Establish `hb` using `block_chart hc`. Set `c₀ : (k : K) → J k` to `fun k => c (Sum.inl k)`. Establish `hx : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c₀ p` using `segre_chart fun k => hb (Sum.inl k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : InChart ξ (s i) (c (Sum.inr i)) p` using `hb (Sum.inr i)`. Establish `hP : ∏ k, y ⟨k, c₀ k⟩ ≠ 0` using `hx.1`. Establish `hgen'` using `isGen_of_chart (t := s i) (pow_ne_zero (n i) hP) hs (hmem i p c₀ hx) (hgen i p c₀ hx)`. Establish `hprod : (∏ k : K ⊕ I, joinY y s₂ ⟨k, c k⟩ ^ (Sum.elim (fun _ => -(n i : ℤ)) (fun i' => if i' = i then 1 else 0) k : ℤ)) • (1 : Ω) = s i (c (Sum.inr i)) / (∏ k, y ⟨k, c₀ k⟩) ^ n i`. Rewrite using `[Fintype.prod_sum_type, smul_eq_mul, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∏ k : K, joinY y s₂ ⟨Sum.inl k, c (Sum.inl k)⟩ ^ (Sum.elim (fun _ => -(n i : ℤ)) (fun i' => if i' = i then (1 : ℤ) else 0) (Sum.inl k : K ⊕ I) : ℤ) = ((∏ k, y ⟨k, c₀ k⟩) ^ n i)⁻¹`. Simplify using `only [Sum.elim_inl]`. Rewrite using `[Finset.prod_zpow, zpow_neg, zpow_natCast]`. Both sides reduce to the same expression. Establish `h2 : ∏ i' : I, joinY y s₂ ⟨Sum.inr i', c (Sum.inr i')⟩ ^ (Sum.elim (fun _ => -(n i : ℤ)) (fun i' => if i' = i then (1 : ℤ) else 0) (Sum.inr i' : K ⊕ I) : ℤ) = s i (c (Sum.inr i))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[Fintype.prod_eq_single i]`. Simplify using `only [Sum.elim_inr, if_true, zpow_one]`. Both sides reduce to the same expression. Introduce `i' hi'`. Simplify using `[hi']`.
-
-Rewrite using `[h1, h2, div_eq_mul_inv, _root_.mul_comm]`. Rewrite using `[hprod]`. Conclude with `hgen'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_addBlocks_isDegOn : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (I : Type) [Fintype I] (Λ : I → Lat ξ Ω), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → (∀ i, (Λ i).IsVB 1 ⊤) → ∃ (K' : Type) (_ : Fintype K') (J' : K' → Type) (_ : ∀ k, Fintype (J' k)) (y' : (Σ k, J' k) → Ω) (κ : K → K') (v : ∀ k, J k ≃ J' (κ k)), Function.Injective κ ∧ (∀ k i, y' ⟨κ k, v k i⟩ = y ⟨k, i⟩) ∧ CoordTie ℤ ξ (fun c' : (k : K') → J' k => ∏ k, y' ⟨k, c' k⟩) ∧ ∀ i, ∃ (a : K' → ℤ) (e₀ : Ω), (Λ i).IsDegOn Set.univ y' a e₀ := by
   intro X Ω _ ξ K _ J _ y I _ Λ ht hvb

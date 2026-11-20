@@ -11,14 +11,14 @@ Both sides reduce to the same expression.
 theorem cast_rfl {q : ℕ} {E : Spc} {n i : ℤ} (x : Ht q E n i) (h1 : n = n) (h2 : i = i) : x.cast h1 h2 = x := rfl
 
 /- English proof (translation)
-Substitute `h1 h2 h3 h4` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_cast {q : ℕ} {E : Spc} {n i n' i' n'' i'' : ℤ} (x : Ht q E n i) (h1 : n = n') (h2 : i = i')
     (h3 : n' = n'') (h4 : i' = i'') : (x.cast h1 h2).cast h3 h4 = x.cast (h1.trans h3) (h2.trans h4) := by
   subst h1 h2 h3 h4; rfl
 
 /- English proof (translation)
-Substitute `hN hn hi` using the available equality. Rewrite using `[cast_rfl, P.map_ι]`. Conclude with `P.ι_mul h' k m _ _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term {q : ℕ} (P : Collected q) {E F : Spc} (f : F ⟶ E) (h : Inv q E) (h' : Inv q F) (y : Ht q F 2 1)
     {n' i' : ℤ} (u : Ht q E n' i') (k m N : ℕ) (hN : k + m = N) (hn : n' = 2 * (k : ℤ)) (hi : i' = k)
@@ -40,7 +40,7 @@ def ac (c : ∀ j : ℕ, Ht q E (2 * j) j) : ∀ j : Fin N, Ht q E (2 * (N : ℤ
   fun j => (c (N - j)).cast (by have := j.isLt; omega) (by have := j.isLt; omega)
 
 /- English proof (translation)
-Unfold `Phi`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[term P (PB.pr V) h (inv_of (PB.pr V) h) _ (a j) (N - j) j N (by have := j.isLt; omega) (by have := j.isLt; omega) (by have := j.isLt; omega), P.ι_cpow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_ι (P : Collected q) (h : Inv q E) (V : E ⟶ ofCat (glCat N))
     (a : ∀ j : Fin N, Ht q E (2 * (N : ℤ) - 2 * ((j : ℕ) : ℤ)) ((N : ℤ) - ((j : ℕ) : ℤ))) :
@@ -59,22 +59,22 @@ namespace LateralTheory.E.D2.ChernPf
 variable {q : ℕ} {E : Spc} {N : ℕ}
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Conclude with `e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cast_inj {n i n' i' : ℤ} {x y : Ht q E n i} (h1 : n = n') (h2 : i = i') (e : x.cast h1 h2 = y.cast h1 h2) : x = y := by
   subst h1 h2; exact e
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_idx {n i : Fin N → ℤ} (a : ∀ j, Ht q E (n j) (i j)) (j j' : Fin N) (e : j = j')
     (h1 : n j = n j') (h2 : i j = i j') : (a j).cast h1 h2 = a j' := by
   subst e; rfl
 
 /- English proof (translation)
-Establish `key : ∀ g : ℕ → P.R (PB V) (inv_of (PB.pr V) h), ∑ j ∈ Finset.range (N + 1), g j = ∑ j ∈ Finset.range N, g (N - j) + g 0`. Introduce `g`. Rewrite using `[← Finset.sum_range_reflect, Finset.sum_range_succ]`. Simplify using the standard rewrite rules. Rewrite using `[key, phi_ι P h V, h0, map_one, one_mul, Nat.sub_zero, add_comm, Finset.sum_range]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.sub_sub_self j.isLt.le]`. Simplify using `only [ac]`. Rewrite using `[ChernPf.cast_cast, cast_rfl]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_eq (P : Collected q) (h : Inv q E) (V : E ⟶ ofCat (glCat N)) (c : ∀ j : ℕ, Ht q E (2 * j) j)
     (h0 : P.ι h 0 (c 0) = 1) :
@@ -103,19 +103,19 @@ namespace LateralTheory.E.D2
 open ChernPf
 
 /- English proof (translation)
-Introduce `hD1 q _ P E h N V`. Establish `hB : Function.Bijective (Phi (q` using `q) V) := hD1 q V h (2 * (N : ℤ)) N`. Establish `hι : ∀ {F : Spc} (h : Inv q F) k, Function.Injective (P.ι h k)` using `fun h k a b e => by`. Simplify `congrArg (P.π h k) e` using `[P.π_ι]`. Establish `char : ∀ c, P.ι h 0 (c 0) = 1 → (IsChern P h V c ↔ (∀ j, N < j → c j = 0) ∧ Phi V (ac c) = -cpow q (c1 q (PB.line V)) N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `c h0`. Unfold `IsChern`. Rewrite using `[sum_eq P h V c h0, ← P.ι_cpow, ← map_add, map_eq_zero_iff _ (hι _ _), add_eq_zero_iff_neg_eq, eq_comm]`. Simplify using `only [h0, true_and]`. Conclude with `and_congr_right fun _ => eq_comm`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `uniq : ∀ c c', IsChern P h V c → IsChern P h V c' → c = c'`. Introduce `c c' hc hc'`. Establish `hA : ac c = ac c'` using `hB.1 (((char c hc.1).1 hc).2.trans ((char c' hc'.1).1 hc').2.symm)`. Use function extensionality and compare the values at `j`. Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Conclude with `hι h 0 (hc.1.trans hc'.1.symm)`. Distinguish the cases in `hjN : N < j`. Rewrite using `[hc.2.1 j hjN, hc'.2.1 j hjN]`. Use `cast_inj _ _ (congrFun hA ⟨N - j, by omega⟩)` as an intermediate fact. Establish `e : N - ((⟨N - j, by omega⟩ : Fin N) : ℕ) = j` using `by simp; omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[e]`. Conclude with `this`. Take `⟨a, ha⟩` from `hB.2 (-cpow q (c1 q (PB.line V)) N)`. Establish `hc0 : P.ι h 0 (mkc a 0) = 1` using `by dsimp only [mkc]`. Rewrite using `[dif_pos rfl]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `P.ι_one h`. Establish `hac : ac (mkc a) = a`. Use function extensionality and compare the values at `j`. Simplify using `only [ac, mkc]`. Rewrite using `[dif_neg (by omega), dif_pos (by omega), ChernPf.cast_cast]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cast_idx a _ _ (Fin.ext (by simp; omega)) _ _`. Establish `hC : IsChern P h V (mkc a)` using `(char _ hc0).2 ⟨fun j hj => by dsimp only [mkc]`. Rewrite using `[dif_neg (by omega), dif_neg (by omega)], by rw [hac]; exact ha⟩`. Conclude with `⟨mkc a, hC, fun c' hc' => uniq _ _ hc' hC⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LeafChern_of : LeafChern := by
   intro hD1 q _ P E h N V

@@ -7,17 +7,17 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal
 namespace GlobalTheory.CMVal.OrderUnits
 
 /- English proof (translation)
-Take `⟨P, hP, hP0⟩` from `w`. Establish `he : P.ramificationIdx ℤ = 1`. Establish `h1` using `(NumberField.not_dvd_discr_iff_forall_mem E (𝓞 E) (Nat.prime_iff_prime_int.mp hp)).1 hd P hP (by simpa using hv)`. Use `hP.isMaximal hP0` as an intermediate fact. Establish `: (P.under ℤ).IsMaximal` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : P.under ℤ ≠ ⊥`. Introduce `h0`. Establish `h1 : (p : ℤ) ∈ P.under ℤ` using `by rw [Ideal.under_def, Ideal.mem_comap]; simpa using hv`. Rewrite `h1` using `[h0]`. Conclude with `hp.ne_zero (by simpa using h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Finite (ℤ ⧸ P.under ℤ)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Establish `: Finite (P.under ℤ).ResidueField` using `inferInstance`. Conclude with `Ideal.ramificationIdx_eq_one_iff.2 h1`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) = Ideal.span {(p : 𝓞 E)}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.map_span]`. Simplify using the standard rewrite rules. Establish `hle : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(p : ℤ)}) ≤ P`. Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: P.LiesOver (Ideal.span {(p : ℤ)})` using `⟨hmax.eq_of_le (Ideal.comap_ne_top _ hP.ne_top) (Ideal.map_le_iff_le_comap.mp hle)⟩`. Establish `hb : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simpa using hp.ne_zero`. Rewrite `he` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(p : ℤ)}) P hb]`. Introduce `h2`. Use `(Ideal.ramificationIdx'_ne_one_iff hle).2 ?_ he` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 theorem prime_not_mem_sq {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) (hd : ¬ (p : ℤ) ∣ discr E)
     (w : HeightOneSpectrum (𝓞 E)) (hv : (p : 𝓞 E) ∈ w.asIdeal) : (p : 𝓞 E) ∉ w.asIdeal ^ 2 := by
@@ -50,7 +50,7 @@ theorem prime_not_mem_sq {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.
   simpa using h2
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ i ih`. Take `⟨r, hr⟩` from `ih`. Conclude with `⟨r + i + t * r, by rw [pow_succ, hr]; push_cast; ring⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pow_first_order {R : Type} [CommRing R] (t : R) (i : ℕ) : ∃ r, (1 + t) ^ i = 1 + i * t + t ^ 2 * r := by
   induction i with
@@ -60,9 +60,9 @@ theorem pow_first_order {R : Type} [CommRing R] (t : R) (i : ℕ) : ∃ r, (1 + 
     exact ⟨r + i + t * r, by rw [pow_succ, hr]; push_cast; ring⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`. Take `⟨r, hr⟩` from `ih`. Take `⟨s, hs⟩` from `pow_first_order t n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r + s, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_range_succ, hr, hs, Nat.choose_succ_succ' n 1, Nat.choose_one_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem geom_first_order {R : Type} [CommRing R] (t : R) (n : ℕ) :
     ∃ r, ∑ i ∈ Finset.range n, (1 + t) ^ i = n + (n.choose 2 : ℕ) * t + t ^ 2 * r := by
@@ -76,19 +76,17 @@ theorem geom_first_order {R : Type} [CommRing R] (t : R) (n : ℕ) :
     push_cast; ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hn : orderOf ζ ≠ 1` using `fun h => hne (orderOf_eq_one_iff.1 h)`. Take `⟨p, hp, m, hm⟩` from `Nat.exists_prime_and_dvd hn`. Establish `hpos` using `hζ.orderOf_pos`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; simp [hm] at hpos)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη1 : ζ ^ m ≠ 1` using `pow_ne_one_of_lt_orderOf hm0.ne' (by rw [hm]; nlinarith [hp.two_le])`. Establish `hηp : (ζ ^ m) ^ p = 1` using `by rw [← pow_mul, mul_comm, ← hm, pow_orderOf_eq_one]`. Establish `ht : ζ ^ m - 1 ∈ P`. Take `⟨s, hs⟩` from `sub_one_dvd_pow_sub_one ζ m`. Rewrite using `[hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.mul_mem_right _ h1`. Establish `hsum : ∑ i ∈ Finset.range p, (ζ ^ m) ^ i = 0`. Use `mul_geom_sum (ζ ^ m) p` as an intermediate fact. Rewrite `this` using `[hηp, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hη1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `geom_first_order (ζ ^ m - 1) p`. Rewrite `hr` using `[add_sub_cancel, hsum]`. Use `set t := ζ ^ m - 1`. Establish `hpe : (p : R) = -((p.choose 2 : ℕ) * t) - t ^ 2 * r` using `by linear_combination -hr`. Establish `hpP : (p : R) ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hpe]`. Conclude with `sub_mem (neg_mem (P.mul_mem_left _ ht)) (P.mul_mem_right _ (P.pow_mem_of_mem ht 2 two_pos))`. Establish `hpl : p = l`. Assume the negation of the conclusion as `h`. Establish `hc : IsCoprime (p : R) (l : R)` using `Nat.Coprime.cast ((Nat.coprime_primes hp hl).2 h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨a, b, hab⟩` from `hc`. Conclude with `hP ((Ideal.eq_top_iff_one P).2 (hab ▸ add_mem (P.mul_mem_left _ hpP) (P.mul_mem_left _ hlP)))`. Substitute `hpl` using the available equality. Take `⟨k, hk⟩` from `hp.dvd_choose_self two_ne_zero (lt_of_le_of_ne hp.two_le (Ne.symm hl2))`. Apply `hlP2` to reduce the goal to its premises.
-
-Rewrite using `[hpe, hk]`. Use `sub_mem (neg_mem ?_) (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow ht 2))` and prove the remaining obligations. Rewrite using `[sq]`. Use `push_cast`. Conclude with `Ideal.mul_mem_mul (P.mul_mem_right _ hlP) ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem root_of_unity_eq_one {R : Type} [CommRing R] [IsDomain R] {P : Ideal R} (hP : P ≠ ⊤) {l : ℕ} (hl : l.Prime) (hl2 : l ≠ 2)
     (hlP : (l : R) ∈ P) (hlP2 : (l : R) ∉ P ^ 2) {ζ : R} (hζ : IsOfFinOrder ζ) (h1 : ζ - 1 ∈ P) : ζ = 1 := by
@@ -128,23 +126,23 @@ theorem root_of_unity_eq_one {R : Type} [CommRing R] [IsDomain R] {P : Ideal R} 
   exact Ideal.mul_mem_mul (P.mul_mem_right _ hlP) ht
 
 /- English proof (translation)
-Take `⟨h0, h1, h⟩` from `h𝔣`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal 𝔣 h1`. Establish `hM0 : M ≠ ⊥` using `fun h => h0 (le_bot_iff.1 (h ▸ hle))`. Take `⟨⟨P, -, -, hP, -⟩, -, l, hl, hl2, hlv, hd, -⟩` from `h ⟨M, hM.isPrime, hM0⟩ (Ideal.dvd_iff_le.2 hle)`. Establish `hP' : P.asIdeal.comap (algebraMap (OF E) (𝓞 E)) = M` using `hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlP : (l : 𝓞 E) ∈ P.asIdeal`. Establish `: (l : OF E) ∈ P.asIdeal.comap (algebraMap (OF E) (𝓞 E))` using `by rw [hP']; exact hlv`. Simplify using `using this`. Establish `hcP : Ideal.map (algebraMap (OF E) (𝓞 E)) c ≤ P.asIdeal` using `Ideal.map_le_iff_le_comap.2 (hP' ▸ (Ideal.le_of_dvd hc).trans hle)`. Take `⟨a, b, hb, hab⟩` from `mem_orderC.1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a', b', -, hab'⟩` from `mem_orderC.1 hx'`. Establish `e1 : x = algebraMap (𝓞 E) E (algebraMap (OF E) (𝓞 E) a + b)` using `by rw [hab, map_add]; rfl`. Establish `e2 : x⁻¹ = algebraMap (𝓞 E) E (algebraMap (OF E) (𝓞 E) a' + b')` using `by rw [hab', map_add]; rfl`. Establish `hu : (algebraMap (OF E) (𝓞 E) a + b) * (algebraMap (OF E) (𝓞 E) a' + b') = 1`. Apply `FaithfulSMul.algebraMap_injective (𝓞 E) E` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, ← e1, ← e2, mul_inv_cancel₀ hx0, map_one]`. Set `u : (𝓞 E)ˣ` to `Units.mkOfMulEqOne _ _ hu`. Establish `huv : (u : 𝓞 E) = algebraMap (OF E) (𝓞 E) a + b` using `rfl`. Establish `hbc : IsCMField.ringOfIntegersComplexConj E b ∈ Ideal.map (algebraMap (OF E) (𝓞 E)) c`. Establish `: Ideal.map (algebraMap (OF E) (𝓞 E)) c ≤ (Ideal.map (algebraMap (OF E) (𝓞 E)) c).comap (IsCMField.ringOfIntegersComplexConj E)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, AlgEquiv.commutes]`. Conclude with `Ideal.mem_map_of_mem _ hy`. Conclude with `this hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu : ((IsCMField.unitsComplexConj E u : (𝓞 E)ˣ) : 𝓞 E) = algebraMap (OF E) (𝓞 E) a + IsCMField.ringOfIntegersComplexConj E b`. Establish `: ((IsCMField.unitsComplexConj E u : (𝓞 E)ˣ) : 𝓞 E) = IsCMField.ringOfIntegersComplexConj E u` using `rfl`. Rewrite using `[this, huv, map_add, AlgEquiv.commutes]`. Set `ζ : (𝓞 E)ˣ` to `u * (IsCMField.unitsComplexConj E u)⁻¹`. Establish `hfin : IsOfFinOrder ζ` using `(IsCMField.unitsMulComplexConjInv E u).2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin' : IsOfFinOrder (ζ : 𝓞 E)` using `(Units.coeHom (𝓞 E)).isOfFinOrder hfin`. Establish `hζ : (ζ : 𝓞 E) - 1 ∈ P.asIdeal`. Establish `: (ζ : 𝓞 E) - 1 = (b - IsCMField.ringOfIntegersComplexConj E b) * ↑(IsCMField.unitsComplexConj E u)⁻¹`. Establish `h3` using `(IsCMField.unitsComplexConj E u).mul_inv`. Rewrite `h3` using `[hcu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [ζ, Units.val_mul, huv]`. Take the linear combination `h3`. Rewrite using `[this]`. Conclude with `P.asIdeal.mul_mem_right _ (hcP (sub_mem hb hbc))`. Establish `hone : ζ = 1` using `Units.ext (root_of_unity_eq_one P.isPrime.ne_top hl hl2 hlP (prime_not_mem_sq hl hd P hlP) hfin' hζ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hreal` using `(IsCMField.unitsComplexConj_eq_self_iff E u).1 (mul_inv_eq_one.1 hone).symm`. Take `⟨v, hv⟩` from `(IsCMField.mem_realUnits_iff E u).1 hreal`. Use `⟨v, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, ← huv, ← hv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem orderC_units (E : Type) [Field E] [NumberField E] [IsCMField E] (𝔣 c : Ideal (OF E)) (h𝔣 : IsBaseCond 𝔣) (hc : 𝔣 ∣ c)
     (x : E) (hx0 : x ≠ 0) (hx : x ∈ orderC c) (hx' : x⁻¹ ∈ orderC c) : ∃ u : (OF E)ˣ, x = algebraMap (OF E) E u := by

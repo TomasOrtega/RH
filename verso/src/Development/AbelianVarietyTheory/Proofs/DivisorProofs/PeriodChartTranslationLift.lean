@@ -17,9 +17,9 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 namespace GlobalTheory.RelCotAb
 
 /- English proof (translation)
-Introduce `k _ S p D A _ _ g w σ c τ ex H v hv z u hz W₁ h`. Take `⟨h₁, h₂, -⟩` from `H.2.2 v hv`. Establish `hπ : divMap A ≫ A.hom ≫ p = Limits.pullback.fst A.hom A.hom ≫ A.hom ≫ p`. Rewrite using `[Category.assoc, ← Limits.pullback.condition_assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ A.hom ≫ p) (shear_left_fst A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e (z : Fin g → ℂ) : Over.mk (c.e.symm v).1 ⟶ A` to `Over.homMk (ex (v, z)).1 (h₁ z)`. Establish `hm : e z * e u = e (z + u)` using `Over.OverMorphism.ext (h₂ z u _ _ rfl rfl)`. Establish `hp : GlobalTheory.Points.PtsOver.map (divMap A) hπ _ (pairPt A (ex (v, z)) (ex (v, z + u)) hz) = ex (v, u)` using `Subtype.ext (lift_divMap A (e z) (e (z + u)) (e u) hm)`. Rewrite using `[← hp]`. Conclude with `ev_app _ hπ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_divMap_pairPt_periodChart : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ) (A : Over S) [GrpObj A]
     [QuasiSeparated A.hom] (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (c : AlgChart p σ D)

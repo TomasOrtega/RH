@@ -6,7 +6,7 @@ open Complex
 open scoped Real
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JacobiTriple.tendsto_finCoeff_sum_jacobiTheta₂` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FJacobiTripleProductLimit.lean&line=9#L9)
 -/

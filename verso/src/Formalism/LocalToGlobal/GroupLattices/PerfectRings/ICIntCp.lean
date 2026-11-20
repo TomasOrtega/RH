@@ -14,7 +14,7 @@ def iC : Kc p →+* C :=
   (IsAlgClosed.lift : Kc p →ₐ[K0 p] C).toRingHom
 
 /- English proof (translation)
-Set `: Algebra (K0 p) C` to `f.toAlgebra`. Conclude with `(IsAlgClosed.lift : Kc p →ₐ[K0 p] C).commutes y`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem iC_alg (y : K0 p) : iC f (algebraMap (K0 p) (Kc p) y) = f y := by
   let : Algebra (K0 p) C := f.toAlgebra
@@ -25,9 +25,9 @@ variable (hf : ∀ x : WW p, ‖f (algebraMap (WW p) (K0 p) x)‖ ≤ 1)
 include hf
 
 /- English proof (translation)
-Set `v : Valuation C NNReal` to `NormedField.valuation`. Set `φ : WW p →+* v.integer` to `(f.comp (algebraMap (WW p) (K0 p))).codRestrict v.integer (fun x => by show ‖f (algebraMap (WW p) (K0 p) x)‖₊ ≤ 1`. Conclude with `hf x)` after adjusting the coercions. Establish `h1 : IsIntegral v.integer (iC f x)` using `((mem_Oc p x).1 hx).map_of_comp_eq φ (iC f) (by`. Use extensionality with `z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show f (algebraMap (WW p) (K0 p) z) = iC f (algebraMap (WW p) (Kc p) z)`. Rewrite using `[IsScalarTower.algebraMap_apply (WW p) (K0 p) (Kc p), iC_alg])`. Establish `h2 : v (iC f x) ≤ 1` using `(Valuation.integer.integers v).isIntegral_iff_v_le_one.1 h1`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iC_le {x : Kc p} (hx : x ∈ Oc p) : ‖iC f x‖ ≤ 1 := by
   let v : Valuation C NNReal := NormedField.valuation
@@ -43,11 +43,11 @@ theorem iC_le {x : Kc p} (hx : x ∈ Oc p) : ‖iC f x‖ ≤ 1 := by
   exact_mod_cast h2
 
 /- English proof (translation)
-Use `⟨iC_le f hf, fun hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnot`. Take `⟨e, d, hd, he⟩` from `exists_pow_of_notMem_Oc hnot`. Establish `h1` using `congrArg (fun z => ‖iC f z‖) he`. Simplify using `only [map_pow, map_inv₀, map_mul, map_natCast, norm_pow, norm_inv, norm_mul] at h1`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ‖(p : C)‖ * ‖iC f d‖ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (iC_le f hf hd)) hp1`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hnot (Oc p).zero_mem`. Establish `hpos : 0 < ‖iC f x‖` using `norm_pos_iff.2 ((map_ne_zero _).2 hx0)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 1 ≤ (‖iC f x‖⁻¹) ^ e` using `one_le_pow₀ ((one_le_inv₀ hpos).2 hx)`. Rewrite `h3` using `[h1]`. Conclude with `absurd h2 (not_lt.2 h3)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iC_int (hp1 : ‖(p : C)‖ < 1) (x : Kc p) : x ∈ Oc p ↔ ‖iC f x‖ ≤ 1 := by
   refine ⟨iC_le f hf, fun hx => ?_⟩
@@ -76,9 +76,9 @@ open Formalism.MainNotions.FormalGroupSystem
 variable {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' p (p : ℚ_[p])`. Establish `h2 : ‖(p : ℂ_[p])‖ = ‖(p : ℚ_[p])‖`. Rewrite using `[← h]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2]`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   have h := PadicComplex.norm_extends' p (p : ℚ_[p])
@@ -90,7 +90,7 @@ theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-The claim follows from `iC_int f hf norm_p_lt_one x`.
+A detailed English derivation is pending.
 -/
 theorem iC_int_Cp (f : K0 p →+* ℂ_[p]) (hf : ∀ x : WW p, ‖f (algebraMap (WW p) (K0 p) x)‖ ≤ 1) (x : Kc p) :
     x ∈ Oc p ↔ ‖iC f x‖ ≤ 1 :=

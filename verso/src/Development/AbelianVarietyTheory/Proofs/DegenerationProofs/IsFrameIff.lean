@@ -40,7 +40,7 @@ def FrameAt (G : Over S) (L : LB G.left) (N : ℕ) {K : Type} [Field K] (x : Sp 
       Lin G L N (Over.homMk (spMap gam) h : Over.mk (jK W ≫ χ) ⟶ Over.mk x) (fun _ : Fin 1 => b i) (fun _ => 1) s ∧
       Lin G L N (Over.homMk (jK W) rfl : Over.mk (jK W ≫ χ) ⟶ Over.mk χ) (fun _ : Fin 1 => b' i) (fun _ => 1) s
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isFrame_iff (G : Over S) (L : LB G.left) (N : ℕ) {R₁ : Type} [CommRing R₁] [IsDomain R₁]
     (x : Sp (FractionRing R₁) ⟶ S) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (N : ℤ) (Over.mk x))) :
@@ -163,14 +163,14 @@ def Norms (k : ℕ) {r : ℕ} (cls : Fin r → D.toPre.X) (s : Fin r → Fam D.t
 end Dvr
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(AddValuation.toValuation v).valuationSubring, fun _ => Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_valuationSubring {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) :
     ∃ O : ValuationSubring F, ∀ x, x ∈ O ↔ 0 ≤ v x :=
   ⟨(AddValuation.toValuation v).valuationSubring, fun _ => Iff.rfl⟩
 
 /- English proof (translation)
-Establish `e : O = (AddValuation.toValuation v).valuationSubring` using `ValuationSubring.ext _ _ h`. Substitute `e` using the available equality. Conclude with `(Valuation.isEquiv_valuation_valuationSubring (AddValuation.toValuation v)).eq_one_iff_eq_one.symm`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem valuation_eq_one_iff {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {O : ValuationSubring F}
     (h : ∀ x, x ∈ O ↔ 0 ≤ v x) (x : F) : O.valuation x = 1 ↔ v x = 0 := by

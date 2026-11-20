@@ -14,11 +14,11 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : S
   {V : Type} [AddCommGroup V] [Module Ω V]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `he`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨Submodule.zero_mem _, fun d _ => by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Use `⟨Submodule.add_mem _ hx.1 hy.1, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ (hx.2 d hd) (hy.2 d hd)`. Consider the case `smul c x _ hx`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(GlobalTheory.CompanionTheory.Ar.eigSp ρ σ).smul_mem (c : Ω) hx.1, fun d hd => ?_⟩` and prove the remaining obligations. Establish `h : σ d • c • x = c • σ d • x` using `smul_comm _ _ _`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ c (hx.2 d hd)`. Conclude with `fun h => Submodule.subset_span h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem mem_htW_iff (M : LieModel G ξ V) (L : Semi.LB G.left) (n : ℕ) {R : Type} [CommRing R]
     (ρ : R →+* Module.End Ω V) (σ : R →+* Ω) (𝔡 : Ideal R) (q : Cpt ξ) (e : V) :
@@ -40,9 +40,9 @@ theorem mem_htW_iff (M : LieModel G ξ V) (L : Semi.LB G.left) (n : ℕ) {R : Ty
   · exact fun h => Submodule.subset_span h
 
 /- English proof (translation)
-Rewrite using `[mem_htW_iff]`. Use `and_congr_right fun he => ⟨fun h w hw d hd => ?_, fun h d hd => ?_⟩` and prove the remaining obligations. Use `((M.mem_htDual_iff L n ρ σ q _).1 (h d hd)).2 w hw` as an intermediate fact. Simplify `this` using `[map_smul, smul_eq_mul]`. Use `(M.mem_htDual_iff L n ρ σ q _).2 ⟨(GlobalTheory.CompanionTheory.Ar.eigSp ρ σ).smul_mem _ he, fun w hw => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h w hw d hd` using `[map_smul, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_htW_iff_forms (M : LieModel G ξ V) (L : Semi.LB G.left) (n : ℕ) {R : Type} [CommRing R]
     (ρ : R →+* Module.End Ω V) (σ : R →+* Ω) (𝔡 : Ideal R) (q : Cpt ξ) (e : V) :
@@ -58,17 +58,17 @@ theorem mem_htW_iff_forms (M : LieModel G ξ V) (L : Semi.LB G.left) (n : ℕ) {
 end Lattices
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : algebraMap A Ω ds ∈ Submodule.span A {algebraMap A Ω ds}` using `Submodule.subset_span rfl`. Rewrite `h1` using `[hds]`. Establish `h2 : ∀ z ∈ Submodule.span A {y : Ω | ∃ x ∈ differentIdeal ℤ (𝓞 E), y = σ (x : E)}, z * t ∈ B`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Conclude with `h x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simpa using B.zero_mem`. Consider the case `add u v _ _ hu hv`. Rewrite using `[add_mul]`. Conclude with `B.add_mem hu hv`. Consider the case `smul a u _ hu`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (a • u) * t = (a : Ω) * (u * t)`. Rewrite using `[Algebra.smul_def, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `B.mul_mem (hA a) hu`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2 _ h1`. Introduce `h x hx`. Establish `h1 : σ (x : E) ∈ Submodule.span A {y : Ω | ∃ x ∈ differentIdeal ℤ (𝓞 E), y = σ (x : E)}` using `Submodule.subset_span ⟨x, hx, rfl⟩`. Rewrite `h1` using `[← hds, Submodule.mem_span_singleton]`. Take `⟨a, ha⟩` from `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: σ (x : E) * t = (a : Ω) * ((ds : Ω) * t)`. Rewrite using `[← ha, Algebra.smul_def, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `B.mul_mem (hA a) h`.
+A detailed English derivation is pending.
 -/
 theorem forall_different_iff {o Ω E : Type} [CommRing o] [Field Ω] [Algebra o Ω] [Field E] [NumberField E]
     (A : Subalgebra o Ω) (B : Subring Ω) (hA : ∀ a : A, (a : Ω) ∈ B) (σ : E →+* Ω) (ds : A)
@@ -114,13 +114,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S y)
 
 /- English proof (translation)
-Establish `hZ` using `ModelTest.overZp_of_inFibre 𝔐 hp q hq`. Proceed by induction on `b using Nat.recOnMul with`. Consider the case `zero => exact absurd (dvd_zero p) hb`. Consider the case `one => simpa using (regAt 𝔐.ξ q).one_mem`. Consider the case `prime r hr`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hne : r ≠ p`. Introduce and unpack `rfl`. Conclude with `hb dvd_rfl`. Establish `hu : unitAt 𝔐.ξ q (r : Ω)`. Assume the negation of the conclusion as `hnot`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Treat this case separately.
 
-Conclude with `hne (hZ r hr hnot)`. Conclude with `hu.2.2`. Consider the case `mul a b ha hb'`. Establish `h1 : ¬ p ∣ a` using `fun h => hb (h.mul_right b)`. Establish `h2 : ¬ p ∣ b` using `fun h => hb (h.mul_left a)`.
-
-Rewrite using `[Nat.cast_mul, mul_inv]`. Conclude with `(regAt 𝔐.ξ q).mul_mem (ha h1) (hb' h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_natCast_mem {p : ℕ} (hp : p.Prime) {q : Cpt 𝔐.ξ} (hq : InFibre 𝔐.ξ p q) (b : ℕ) (hb : ¬ p ∣ b) :
     ((b : Ω))⁻¹ ∈ regAt 𝔐.ξ q := by
@@ -143,11 +141,11 @@ theorem inv_natCast_mem {p : ℕ} (hp : p.Prime) {q : Cpt 𝔐.ξ} (hq : InFibre
     exact (regAt 𝔐.ξ q).mul_mem (ha h1) (hb' h2)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `a`. Express the relevant statement in the definitionally equal form `a ∈ regAt 𝔐.ξ q`. Express the relevant statement in the definitionally equal form `a ∈ Algebra.adjoin o _ at ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hx`. Conclude with `hs.2 j`. Consider the case `algebraMap r`. Take `⟨u, b, hb, h⟩` from `(ho _).1 ⟨r, rfl⟩`. Rewrite using `[h, div_eq_mul_inv]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(regAt 𝔐.ξ q).mul_mem (intCast_mem _ u) (inv_natCast_mem 𝔐 hp hq b hb)`. Consider the case `add u v _ _ hu hv => exact (regAt 𝔐.ξ q).add_mem hu hv`. Consider the case `mul u v _ _ hu hv => exact (regAt 𝔐.ξ q).mul_mem hu hv`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chart_mem_regAt {p : ℕ} (hp : p.Prime) {o : Type} [CommRing o] [Algebra o Ω]
     (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω))
@@ -170,21 +168,21 @@ theorem chart_mem_regAt {p : ℕ} (hp : p.Prime) {o : Type} [CommRing o] [Algebr
 end Model
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ o _ _ ho Dc hD hpS τ σ hσ s ds hds q hs hq e`. Establish `hp : p.Prime` using `Fact.out`. Establish `hV : 𝔐.V (Sum.inl τ) q = 𝔐.HT p (Sum.inl τ) q` using `Lat.patch_of_unique S _ _ hpS hq fun p' hp' h => ModelTest.overZp_of_inFibre 𝔐 hp q hq p' (𝔐.S_prime p' hp') h`. Establish `hE : e ∈ GlobalTheory.CompanionTheory.Ar.eigSp 𝔐.ρ (𝔐.emb (Sum.inl τ)) ↔ e ∈ GlobalTheory.CompanionTheory.Ar.HT.eigSp 𝔐.ρ σ`. Rewrite using `[LatBasic.mem_eigSp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero, hσ]`. Establish `hA` using `chart_mem_regAt 𝔐 hp ho hs hq`. Establish `hO : omP 𝔐 p q = Submodule.span (regAt 𝔐.ξ q) ((Dc s).om' : Set (Module.Dual Ω 𝔐.Li))` using `hD.om'_loc s q hs hq`. Rewrite using `[hV]`. Express the relevant statement in the definitionally equal form `e ∈ 𝔐.M.htW _ _ _ _ _ q ↔ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mem_htW_iff_forms, hE]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `hT : ∀ w : Module.Dual Ω 𝔐.Li, (∀ d ∈ differentIdeal ℤ (𝓞 E), 𝔐.emb (Sum.inl τ) d * w e ∈ regAt 𝔐.ξ q) ↔ (ds : Ω) * w e ∈ regAt 𝔐.ξ q` using `fun w => by`. Rewrite using `[← forall_different_iff _ _ hA σ ds hds]`. Simplify using `only [hσ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Establish `hw' : w ∈ omP 𝔐 p q`. Rewrite using `[hO]`. Conclude with `Submodule.subset_span hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hT w).1 (h w hw')`. Introduce `h w hw`. Rewrite `hw` using `[show 𝔐.M.htOm 𝔐.t.PP.L (p ^ 𝔐.R p) q = omP 𝔐 p q from rfl, hO]`. Use `(hT w).2 ?_` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mem w hw => exact h w hw`. Consider the case `zero => simpa using (regAt 𝔐.ξ q).zero_mem`. Consider the case `add u v _ _ hu hv`. Establish `: (ds : Ω) * (u + v) e = (ds : Ω) * u e + (ds : Ω) * v e`. Rewrite using `[LinearMap.add_apply, mul_add]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `(regAt 𝔐.ξ q).add_mem hu hv`. Consider the case `smul a u _ hu`. Establish `: (ds : Ω) * (a • u) e = (a : Ω) * ((ds : Ω) * u e)`. Express the relevant statement in the definitionally equal form `(ds : Ω) * ((a : Ω) • u) e = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(regAt 𝔐.ξ q).mul_mem a.2 hu`.
+A detailed English derivation is pending.
 -/
 theorem mem_V_inl_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime] (o : Type) [CommRing o] [Algebra o Ω] (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω)) (Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, HTChart (chartRing o (mseg y) s.1) Ω (cmConj E) p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li)), IsHTFamily 𝔐 p o Dc → p ∈ S → ∀ (τ : CMType H) (σ : E →+* Ω), (∀ a : 𝓞 E, σ (a : E) = 𝔐.emb (Sum.inl τ) a) → ∀ (s : {s : ∀ k, J k // mseg y s ≠ 0}) (ds : chartRing o (mseg y) s.1), GeneratesDiff σ ds → ∀ q : Cpt 𝔐.ξ, InChart 𝔐.ξ (mseg y) s.1 q → InFibre 𝔐.ξ p q → ∀ e : 𝔐.Li, e ∈ 𝔐.V (Sum.inl τ) q ↔ e ∈ HTL.latOn (Dc s) (GlobalTheory.CompanionTheory.Ar.HT.eigSp 𝔐.ρ σ) (ds : Ω) (regAt 𝔐.ξ q) := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ o _ _ ho Dc hD hpS τ σ hσ s ds hds q hs hq e

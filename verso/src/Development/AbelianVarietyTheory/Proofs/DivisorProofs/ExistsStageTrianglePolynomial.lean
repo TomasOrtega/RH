@@ -25,11 +25,11 @@ noncomputable section
 namespace GlobalTheory.StageSmall
 
 /- English proof (translation)
-Introduce `hP hK hL`. Take `⟨c, hc⟩` from `GlobalTheory.SqTop.Model.gBig_and (GlobalTheory.T.stage_small_nonzero_base hP hK hL) (GlobalTheory.T.stage_kernel_integrable_polynomial_bound hP hK hL)`. Use `⟨c, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h⟩` from `hc ε CF hCF`. Use `⟨C0, x0, fun C hC D large₂ a b r T Lc μ hL G W S hW hN i j p q A A' WW X hX => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `h C hC D large₂ a b r T Lc μ hL G`. Break down `Nat.eq_zero_or_pos q with rfl | hq` into its components or cases. Establish `hi` using `GlobalTheory.T.integrableOn_thetaKernel_definiteSeesawStage G W i j p A A' WW X hX`. Take `⟨P', hP'⟩` from `h1 W S hW hN i j p A A' WW X hX hi`. Conclude with `⟨P', fun t h => hi t P' h, hP'⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h2 W S hW hN i j p q A A' WW X hX hq`.
+A detailed English derivation is pending.
 -/
 theorem small_stage : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

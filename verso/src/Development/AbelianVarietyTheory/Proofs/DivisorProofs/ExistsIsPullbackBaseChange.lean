@@ -32,22 +32,20 @@ section Scheme
 variable {N : ℕ} {R : Type} [CommRing R] [Algebra O R]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left (B : Type) [CommRing B] [Algebra O B] :
     (1 : SpAlg O B ⟶ A).left = spMap (algebraMap O B) ≫ η[A].left := by
   rw [Hom.one_def, Over.comp_left]; rfl
 
 /- English proof (translation)
-Establish `key : ∀ (B : Type) [CommRing B] [Algebra O B] (z : SpAlg O B ⟶ A), z ^ N = 1 ↔ z.left ≫ (mulN A N).left = spMap (algebraMap O B) ≫ η[A].left` using `fun B _ _ z => by`. Rewrite using `[← Over.comp_left, GrpTangent.comp_mulN, ← one_left]`. Conclude with `⟨congrArg _, Over.OverMorphism.ext⟩`. Use `⟨(key R y).2 h.w, fun B _ _ z hz => ?_⟩` and prove the remaining obligations. Establish `hw` using `(key B z).1 hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨χ, hχ⟩` from `Spec.map_surjective (R := .of R) (S := .of B) (h.lift _ _ hw)`. Establish `hc : CommRingCat.ofHom (algebraMap O R) ≫ χ = CommRingCat.ofHom (algebraMap O B)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hχ]`. Conclude with `h.lift_snd _ _ hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨χ.hom, fun r => congr(($hc).hom r)⟩, Over.OverMorphism.ext ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map χ ≫ y.left = z.left`. Rewrite using `[hχ]`. Conclude with `h.lift_fst _ _ hw`. Establish `h₅ : spMap (φ : R →+* B) = Spec.map χ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hχ]`. Use `h.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `(congrArg Over.Hom.left hφ).trans (h.lift_fst _ _ hw).symm`. Conclude with `(Over.w (spOver φ)).trans (h.lift_snd _ _ hw).symm`. Establish `h₆` using `Spec.map_injective h₅`.
-
-Conclude with `AlgHom.ext fun a => congr(($h₆).hom a)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnivTorsion_of_isPullback (y : SpAlg O R ⟶ A)
     (h : IsPullback y.left (spMap (algebraMap O R)) (mulN A N).left η[A].left) :
@@ -76,15 +74,15 @@ theorem isUnivTorsion_of_isPullback (y : SpAlg O R ⟶ A)
     exact AlgHom.ext fun a => congr(($h₆).hom a)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `AbTorsionAnyBase.isFinite_and_flat_mulA _ A hA N hN`. Rewrite `h1`, `h2` using `[ReciprocityTheory.ChartRestriction.G.Out.mulA, ← GrpTangent.mulN_eq_pow]`. Use `hA.smooth` as an intermediate fact. Establish `: LocallyOfFinitePresentation ((mulN A N).left ≫ A.hom)` using `by rw [Over.w]; infer_instance`. Establish `h3` using `TangentCrit.locallyOfFinitePresentation_of_comp (mulN A N).left A.hom`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : Sp O ⟶ A.left` to `η[A].left`. Set `X` to `pullback (mulN A N).left e`. Establish `: IsAffine X` using `isAffine_of_isAffineHom (pullback.snd (mulN A N).left e)`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (X.isoSpec.inv ≫ pullback.snd (mulN A N).left e)`. Establish `H : IsPullback (X.isoSpec.inv ≫ pullback.fst (mulN A N).left e) (Spec.map ψ) (mulN A N).left e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hψ]`. Apply the tactic sequence `refine (IsPullback.of_hasPullback (mulN A N).left e).of_iso X.isoSpec (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp`. Establish `f1 : ψ.hom.Finite` using `(IsFinite.SpecMap_iff _).1 (MorphismProperty.of_isPullback (P := @IsFinite) H h1)`. Establish `f2 : ψ.hom.Flat` using `(HasRingHomProperty.Spec_iff (P := @Flat)).1 (MorphismProperty.of_isPullback (P := @Flat) H h2)`. Establish `f3 : ψ.hom.FinitePresentation` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFinitePresentation)).1 (MorphismProperty.of_isPullback (P := @LocallyOfFinitePresentation) H h3)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `_ : Algebra O Γ(X, ⊤)` to `ψ.hom.toAlgebra`. Establish `: Module.Finite O Γ(X, ⊤)` using `f1`. Establish `: Module.Flat O Γ(X, ⊤)` using `f2`. Establish `: Algebra.FinitePresentation O Γ(X, ⊤)` using `f3`. Use `Module.FinitePresentation.of_finite_of_finitePresentation O Γ(X, ⊤)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Γ(X, ⊤), inferInstance, inferInstance, Over.homMk (X.isoSpec.inv ≫ pullback.fst (mulN A N).left e) ?_, inferInstance, Module.Flat.projective_of_finitePresentation, H⟩` and prove the remaining obligations. Establish `h4 : e ≫ A.hom = 𝟙 _` using `Over.w η[A]`. Rewrite using `[← Over.w (mulN A N), ← Category.assoc, H.w, Category.assoc, h4, Category.comp_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_isPullback (hA : IsAbelianScheme A) (hN : 1 ≤ N) :
     ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (y : SpAlg O R ⟶ A), Module.Finite O R ∧
@@ -122,15 +120,13 @@ theorem exists_isPullback (hA : IsAbelianScheme A) (hN : 1 ≤ N) :
   rfl
 
 /- English proof (translation)
-Set `t` to `spMap (algebraMap O K)`. Set `B` to `(Over.pullback t).obj A`. Establish `P1 : IsPullback (spMap (Algebra.TensorProduct.includeRight (R` using `O) (A := K) (B := R)).toRingHom) (spMap (algebraMap K (K ⊗[O] R))) (spMap (algebraMap O R)) t := (isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct O K R)).flip`. Establish `P2` using `P1.paste_horiz h`. Establish `w : pullback.fst A.hom t ≫ (mulN A N).left = (mulN B N).left ≫ pullback.fst A.hom t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← GrpTangent.pullback_map_mulN]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Establish `Q : IsPullback (pullback.fst A.hom t) (mulN B N).left (mulN A N).left (pullback.fst A.hom t)`. Use `IsPullback.of_bot ?_ w (IsPullback.of_hasPullback A.hom t)` and prove the remaining obligations. Rewrite using `[Over.w (mulN A N)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Over.w (mulN B N)).symm ▸ IsPullback.of_hasPullback A.hom t`. Rewrite `P2` using `[← GrpTangent.one_pullback_left_fst]`. Set `l` to `Q.lift _ (spMap (algebraMap K (K ⊗[O] R)) ≫ η[B].left) (P2.w.trans (Category.assoc _ _ _).symm)`. Establish `hl : l ≫ (mulN B N).left = spMap (algebraMap K (K ⊗[O] R)) ≫ η[B].left` using `Q.lift_snd _ _ _`. Establish `h4 : η[B].left ≫ B.hom = 𝟙 _` using `Over.w η[B]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Over.homMk l ?_, IsPullback.of_right ?_ hl Q⟩` and prove the remaining obligations. Rewrite using `[← Over.w (mulN B N), ← Category.assoc]`. Use `(congrArg (· ≫ B.hom) hl).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h4]`. Conclude with `Category.comp_id _`.
-
-Conclude with `(Q.lift_fst _ _ (P2.w.trans (Category.assoc _ _ _).symm)).symm ▸ P2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullback_baseChange (y : SpAlg O R ⟶ A)
     (h : IsPullback y.left (spMap (algebraMap O R)) (mulN A N).left η[A].left)
@@ -164,11 +160,11 @@ theorem exists_isPullback_baseChange (y : SpAlg O R ⟶ A)
   · exact (Q.lift_fst _ _ (P2.w.trans (Category.assoc _ _ _).symm)).symm ▸ P2
 
 /- English proof (translation)
-Use `hB.comm` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Establish `he : Etale (mulN B N).left` using `GrpTangent.etale_mulN B (by`. Simplify using `using (Ne.isUnit hN).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)`. Establish `: Algebra.Etale K S` using `RingHom.etale_algebraMap.1 ((HasRingHomProperty.Spec_iff (P := @Etale)).1 (MorphismProperty.of_isPullback (P := @Etale) h he))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hy` using `isUnivTorsion_of_isPullback y h`. Rewrite using `[← natCard_algHom_eq_finrank_of_etale K S K, ← UU.TorsionCount.card_torsion_points_unconditional K B g N hB hg hN]`. Set `i : SpAlg K K ≅ 𝟙_ (Over (Sp K))` to `Over.isoMk (Iso.refl _) (by`. Conclude with `(Category.comp_id _).trans (Cris.spMap_id K).symm)`. Use `Nat.card_eq_of_bijective (fun φ => ⟨i.inv ≫ spOver φ ≫ y, by` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MonObj.comp_pow, ← MonObj.comp_pow, hy.1, MonObj.comp_one, MonObj.comp_one]⟩) ⟨fun φ ψ e => ?_, fun x => ?_⟩`. Conclude with `(hy.2 K (spOver ψ ≫ y) (by rw [← MonObj.comp_pow, hy.1, MonObj.comp_one])).unique ((cancel_epi i.inv).1 (congrArg Subtype.val e)) rfl`. Take `⟨φ, hφ, -⟩` from `hy.2 K (i.hom ≫ x.1) (by rw [← MonObj.comp_pow, x.2, MonObj.comp_one])`. Conclude with `⟨φ, Subtype.ext (by simp only [hφ, Iso.inv_hom_id_assoc])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_field {K : Type} [Field K] [IsAlgClosed K] {B : Over (Sp K)} [GrpObj B]
     (hB : IsAbelianScheme B) {g : ℕ} (hg : SmoothOfRelativeDimension g B.hom) (hN : (N : K) ≠ 0)
@@ -194,11 +190,11 @@ theorem finrank_eq_of_field {K : Type} [Field K] [IsAlgClosed K] {B : Over (Sp K
     exact ⟨φ, Subtype.ext (by simp only [hφ, Iso.inv_hom_id_assoc])⟩
 
 /- English proof (translation)
-Take `⟨R, _, _, y, h1, h2, h⟩` from `exists_isPullback (N := N) hA (Nat.one_le_iff_ne_zero.2 (by rintro rfl; exact hN Nat.cast_zero))`. Use `⟨R, inferInstance, inferInstance, y, h1, h2, isUnivTorsion_of_isPullback y h, fun q => ?_⟩` and prove the remaining obligations. Set `K` to `AlgebraicClosure (FractionRing O)`. Establish `hi : Function.Injective (algebraMap O K)` using `(algebraMap (FractionRing O) K).injective.comp (IsFractionRing.injective O _)`. Take `⟨y', h'⟩` from `exists_isPullback_baseChange y h K`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr` using `finrank_eq_of_field (ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback _ A hA) ((smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback A.hom (spMap (algebraMap O K))) hg) (by rw [← map_natCast (algebraMap O K)]; exact (map_ne_ze …`. Rewrite using `[← Module.rankAtStalk_eq_of_le_of_finite_of_flat R (p := PrimeSpectrum.comap (algebraMap O K) ⊥) (q := q) ?_, ← Module.rankAtStalk_baseChange, Module.rankAtStalk_eq_finrank_of_free, hr]`. Both sides reduce to the same expression. Introduce `a ha`. Establish `ha' : algebraMap O K a = 0` using `ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[(map_eq_zero_iff _ hi).1 ha']`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnivTorsion [IsDomain O] (hA : IsAbelianScheme A) {g : ℕ}
     (hg : SmoothOfRelativeDimension g A.hom) (hN : (N : O) ≠ 0) :
@@ -235,13 +231,13 @@ variable {N : ℕ} {R : Type} [CommRing R] [Algebra O R] {y : SpAlg O R ⟶ A} (
 include h
 
 /- English proof (translation)
-Rewrite using `[← MonObj.comp_pow, h.1, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_pow (φ : R →ₐ[O] B) : (spOver φ ≫ y) ^ N = 1 := by
   rw [← MonObj.comp_pow, h.1, MonObj.comp_one]
 
 /- English proof (translation)
-The claim follows from `(h.2 B _ (h.comp_pow ψ)).unique e rfl`.
+A detailed English derivation is pending.
 -/
 theorem inj {φ ψ : R →ₐ[O] B} (e : spOver φ ≫ y = spOver ψ ≫ y) : φ = ψ :=
   (h.2 B _ (h.comp_pow ψ)).unique e rfl
@@ -249,13 +245,13 @@ theorem inj {φ ψ : R →ₐ[O] B} (e : spOver φ ≫ y = spOver ψ ≫ y) : φ
 def lift (z : SpAlg O B ⟶ A) (hz : z ^ N = 1) : R →ₐ[O] B := (h.2 B z hz).exists.choose
 
 /- English proof (translation)
-The claim follows from `(h.2 B z hz).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem lift_y (z : SpAlg O B ⟶ A) (hz : z ^ N = 1) : spOver (h.lift z hz) ≫ y = z :=
   (h.2 B z hz).exists.choose_spec
 
 /- English proof (translation)
-Rewrite using `[← spOver_comp, Category.assoc, lift_y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_lift_y {C : Type} [CommRing C] [Algebra O C] (f : B →ₐ[O] C) (z : SpAlg O B ⟶ A) (hz : z ^ N = 1) :
     spOver (f.comp (h.lift z hz)) ≫ y = spOver f ≫ z := by
@@ -266,7 +262,7 @@ def counitMap : R →ₐ[O] O := h.lift 1 (one_pow _)
 def antipodeMap : R →ₐ[O] R := h.lift y⁻¹ (by rw [inv_pow, h.1, inv_one])
 
 /- English proof (translation)
-Rewrite using `[counitMap, comp_lift_y, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem counitMap_y (f : O →ₐ[O] B) : spOver (f.comp h.counitMap) ≫ y = 1 := by
   rw [counitMap, comp_lift_y, MonObj.comp_one]
@@ -278,7 +274,7 @@ def comulMap : R →ₐ[O] R ⊗[O] R :=
     (by rw [mul_pow, h.comp_pow, h.comp_pow, _root_.mul_one])
 
 /- English proof (translation)
-Rewrite using `[comulMap, comp_lift_y, MonObj.comp_mul, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comulMap_y (f : R ⊗[O] R →ₐ[O] B) : spOver (f.comp h.comulMap) ≫ y =
     (spOver (f.comp Algebra.TensorProduct.includeLeft) ≫ y) *
@@ -286,7 +282,7 @@ theorem comulMap_y (f : R ⊗[O] R →ₐ[O] B) : spOver (f.comp h.comulMap) ≫
   rw [comulMap, comp_lift_y, MonObj.comp_mul, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]
 
 /- English proof (translation)
-Rewrite using `[comulMap_y, show f.comp Algebra.TensorProduct.includeLeft = φ from AlgHom.ext h₁, show f.comp Algebra.TensorProduct.includeRight = ψ from AlgHom.ext h₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comulMap_y' (f : R ⊗[O] R →ₐ[O] B) (φ ψ : R →ₐ[O] B) (h₁ : ∀ a, f (a ⊗ₜ 1) = φ a)
     (h₂ : ∀ a, f (1 ⊗ₜ a) = ψ a) : spOver (f.comp h.comulMap) ≫ y = (spOver φ ≫ y) * (spOver ψ ≫ y) := by
@@ -336,7 +332,7 @@ theorem comulMap_y' (f : R ⊗[O] R →ₐ[O] B) (φ ψ : R →ₐ[O] B) (h₁ :
       rw [antipodeMap, lift_y, spOver_id, Category.id_comp, mul_inv_cancel]))
 
 /- English proof (translation)
-Set `_` to `h.hopfAlgebra`. Establish `e : (Algebra.TensorProduct.comm O R R).toAlgHom.comp h.comulMap = (AlgHom.id O _).comp h.comulMap` using `h.inj (by`. Rewrite using `[h.comulMap_y' _ Algebra.TensorProduct.includeRight Algebra.TensorProduct.includeLeft (fun a => by simp) (fun a => by simp), h.comulMap_y' _ Algebra.TensorProduct.includeLeft Algebra.TensorProduct.includeRight (fun a => by simp) (fun a => by simp), mul_comm])`. Conclude with `⟨LinearMap.ext fun a => DFunLike.congr_fun e a⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isCocomm : letI := h.hopfAlgebra; IsCocomm O R := by
   let _ := h.hopfAlgebra
@@ -348,7 +344,7 @@ theorem isCocomm : letI := h.hopfAlgebra; IsCocomm O R := by
   exact ⟨LinearMap.ext fun a => DFunLike.congr_fun e a⟩
 
 /- English proof (translation)
-Set `_` to `h.hopfAlgebra`. Introduce `φ ψ`. Rewrite using `[← h.comulMap_y' (Algebra.TensorProduct.lift φ.ofConv ψ.ofConv fun _ _ => Commute.all _ _) _ _ (fun a => by simp) (fun a => by simp)]`. Conclude with `congrArg (spOver · ≫ y) (AlgHom.ext (AlgHom.convMul_apply φ ψ))`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_y : letI := h.hopfAlgebra; ∀ φ ψ : WithConv (R →ₐ[O] B),
     spOver (φ * ψ).ofConv ≫ y = (spOver φ.ofConv ≫ y) * (spOver ψ.ofConv ≫ y) := by
@@ -359,7 +355,7 @@ theorem mul_y : letI := h.hopfAlgebra; ∀ φ ψ : WithConv (R →ₐ[O] B),
   exact congrArg (spOver · ≫ y) (AlgHom.ext (AlgHom.convMul_apply φ ψ))
 
 /- English proof (translation)
-Set `_` to `h.hopfAlgebra`. Conclude with `fun φ k => map_pow (MonoidHom.mk' (fun φ : WithConv (R →ₐ[O] B) => spOver φ.ofConv ≫ y) h.mul_y) φ k`.
+Introduce a local definition for the expression. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pow_y : letI := h.hopfAlgebra; ∀ (φ : WithConv (R →ₐ[O] B)) (k : ℕ),
     spOver (φ ^ k).ofConv ≫ y = (spOver φ.ofConv ≫ y) ^ k := by
@@ -367,7 +363,7 @@ theorem pow_y : letI := h.hopfAlgebra; ∀ (φ : WithConv (R →ₐ[O] B)) (k : 
   exact fun φ k => map_pow (MonoidHom.mk' (fun φ : WithConv (R →ₐ[O] B) => spOver φ.ofConv ≫ y) h.mul_y) φ k
 
 /- English proof (translation)
-The claim follows from `h'.isCocomm; ∃ r : S →ₐc[O] R, Function.Surjective r ∧ RingHom.ker r = torsionIdeal O S N ∧ spOver (r : S →ₐ[O] R) ≫ x = y := by let _ := h.hopfAlgebra let _ := h'.hopfAlgebra have := h'.isCocomm let r := h'.lift y hy have hr : spOver r ≫ x = y := h'.lift_y _ _ have hc : ∀ {C : T …`.
+A detailed English derivation is pending.
 -/
 theorem exists_res {M : ℕ} {S : Type} [CommRing S] [Algebra O S] {x : SpAlg O S ⟶ A} (h' : IsUnivTorsion M x)
     (hy : y ^ M = 1) : letI := h.hopfAlgebra; letI := h'.hopfAlgebra; haveI := h'.isCocomm;
@@ -410,7 +406,7 @@ theorem exists_res {M : ℕ} {S : Type} [CommRing S] [Algebra O S] {x : SpAlg O 
 end IsUnivTorsion
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Use `choose R _ _ y h1 h2 h hr using fun n : ℕ => exists_isUnivTorsion (N := p ^ n) hA hg (by rw [Nat.cast_pow]; exact pow_ne_zero _ hp)`. Use `choose r r1 r2 r3 using fun n : ℕ => (h n).exists_res (h (n + 1)) (by rw [pow_succ, pow_mul, (h n).1, one_pow])`. Set `G : PDivGroup p O` to `{ height := 2 * g A := R hopf := fun n => (h n).hopfAlgebra cocomm := fun n => (h n).isCocomm finite := h1 projective := h2 rank_eq := fun n q => (hr n q).trans (pow_mul _ _ _).symm res := r res_surjective := r1 ker_res := r2 }`. Conclude with `⟨G, rfl, ⟨{ y := y mul := fun n B _ _ => (h n).mul_y inj := fun n B _ _ _ _ => (h n).inj surj := fun n B _ _ z hz => ((h n).2 B z hz).exists res := r3 }⟩⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pDivGroup (p : ℕ) (O : Type) [CommRing O] [IsDomain O] (hp : (p : O) ≠ 0)
     (A : Over (Sp O)) [GrpObj A] (hA : IsAbelianScheme A) (g : ℕ) (hg : SmoothOfRelativeDimension g A.hom) :

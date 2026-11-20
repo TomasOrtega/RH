@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i π D d B α k V' V s y h h'`. Prove the components needed by the constructor for the conclusion. Introduce `m`. Establish `hs : (⊤ : V'.Opens) ≤ s ⁻¹ᵁ (⊤ : V.Opens)` using `le_rfl`. Establish `key : (s ≫ y).appLE ((B.c α).C k) ⊤ h' = y.appLE ((B.c α).C k) ⊤ h ≫ s.appTop`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Scheme.Hom.appLE_comp_appLE s y ((B.c α).C k) ⊤ ⊤ h hs`. Rewrite using `[← h1]`. Use `congr 1`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.appTop]`. Express the relevant statement in the definitionally equal form `_ ≫ V'.presheaf.map (𝟙 _) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[CategoryTheory.Functor.map_id, Category.comp_id]`. Unfold `uV`. Rewrite using `[key]`. Both sides reduce to the same expression. Unfold `secOf`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Category.assoc]`. Use `congr 1`. Use `symm`. Apply `IsOpenImmersion.lift_uniq` to reduce the goal to its premises. Rewrite using `[Category.assoc, IsOpenImmersion.lift_fac]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.chartNat :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V' V : Scheme.{0}} (s : V' ⟶ V) (y : V ⟶ Y) (h : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k) (h' : ⊤ ≤ (s ≫ y) ⁻¹ᵁ (B.c α).C k), (∀ m, uV B α k (s ≫ y) h' m = s.appTop.hom (uV B α k y h m)) ∧ secOf B α k (s ≫ y) h' = s ≫ secOf B α k y h := by

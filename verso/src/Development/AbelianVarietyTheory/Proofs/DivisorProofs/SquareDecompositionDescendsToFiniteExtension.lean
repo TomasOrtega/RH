@@ -11,9 +11,9 @@ open GlobalTheory.Desc
 namespace GlobalTheory.SqDecFinite
 
 /- English proof (translation)
-Establish `: Algebra.FiniteType k R` using `(Subalgebra.fg_iff_finiteType _).1 hR`. Take `⟨m, hm⟩` from `Ideal.exists_maximal R`. Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Establish `: Algebra.FiniteType k (R ⧸ m)` using `Algebra.FiniteType.trans (S := R) inferInstance inferInstance`. Establish `: Module.Finite k (R ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing k (R ⧸ m)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨R ⧸ m, inferInstance, inferInstance, inferInstance, ⟨Ideal.Quotient.mkₐ k m⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algHom_finite (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] (R : Subalgebra k Ω) (hR : R.FG) :
     ∃ (k₁ : Type) (_ : Field k₁) (_ : Algebra k k₁) (_ : FiniteDimensional k k₁), Nonempty (R →ₐ[k] k₁) := by
@@ -25,7 +25,7 @@ theorem exists_algHom_finite (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] (
   exact ⟨R ⧸ m, inferInstance, inferInstance, inferInstance, ⟨Ideal.Quotient.mkₐ k m⟩⟩
 
 /- English proof (translation)
-Introduce `k Ω _ _ σ A₀ _ hA L M hL hM h`. Use `letI := σ.toAlgebra`. Take `⟨R, hR, hRd⟩` from `GlobalTheory.T.squareDecomposition_descends_to_finitelyGenerated k Ω A₀ hA L M hL hM h`. Take `⟨k₁, _, _, _, ⟨ρ⟩⟩` from `exists_algHom_finite k Ω R hR`. Conclude with `⟨k₁, inferInstance, inferInstance, inferInstance, GlobalTheory.T.squareDecomposition_baseChange_algebraMap k R k₁ ρ A₀ L M hL hM hRd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (k Ω : Type) [Field k] [Field Ω] (σ : k →+* Ω) (A₀ : Over (Sp k)) [GrpObj A₀], IsAbelianScheme A₀ → ∀ (L M : LB A₀.left), L.IsLB → M.IsLB → SqDec ((Over.pullback (spMap σ)).obj A₀) (L.pull (pullback.fst A₀.hom (spMap σ))) (M.pull (pullback.fst A₀.hom (spMap σ))) → ∃ (k₁ : Type) (_ : Field k₁) (_ : Algebra k k₁) (_ : FiniteDimensional k k₁), SqDec ((Over.pullback (spMap (algebraMap k k₁))).obj A₀) (L.pull (pullback.fst A₀.hom (spMap (algebraMap k k₁)))) (M.pull (pullback.fst A₀.hom (spMap (algebraMap k k₁)))) := by
   intro k Ω _ _ σ A₀ _ hA L M hL hM h

@@ -33,7 +33,7 @@ def twPOf (P : RowSideFamily ex) (tupT : D.what₂.Tup → P.T) (tupTie : ∀ μ
   else 0
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hS`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem dW_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df') {S0 : IndefData Df} {S1 : IndefData Df'}
     (hS : HEq S0 S1) : S0.dW = S1.dW := by
@@ -42,7 +42,7 @@ theorem dW_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df
   rfl
 
 /- English proof (translation)
-Use `(congrFun (dW_of_heq ?_ Q.s0) i).trans ?_` and prove the remaining obligations. Rewrite using `[Q.zs]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression.
 -/
 theorem dWL_eq (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
     Module.finrank D.what₂.LL (Q.Rl.toRealDat.WL Q.F.lv2 false i) = (P.A3.indefDown P.S0).dW i := by
@@ -114,7 +114,7 @@ namespace RealRec
 variable {Q : RealT Rc P Dcf Spf Zscf S Ks} (Qr : RealRec Q)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem tupT_inj_used {μ μ' : D.what₂.Tup} (hμ : Formalism.IndefR.RecTie.Used0 D μ) (hμ' : Formalism.IndefR.RecTie.Used0 D μ')
     (h : Qr.tupT μ = Qr.tupT μ') : μ = μ' := by
@@ -123,9 +123,9 @@ theorem tupT_inj_used {μ μ' : D.what₂.Tup} (hμ : Formalism.IndefR.RecTie.Us
     _ = μ' := Qr.tupTie μ' hμ'
 
 /- English proof (translation)
-Establish `h : P.I.tup P.A3.A.μ0 = D.what₂.mu0` using `by first`. Consider the case `exact P.tied.div.tup.mu0`. Consider the case `exact P.tied.div.1.tup.mu0`. Consider the case `exact P.tied.div.tied.tup.mu0`. Rewrite using `[← h]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Qr.tupT_tup _`.
+A detailed English derivation is pending.
 -/
 theorem tupleRead_baseTuple_eq_family : Qr.tupT D.what₂.mu0 = P.A3.A.μ0 := by
   have h : P.I.tup P.A3.A.μ0 = D.what₂.mu0 := by
@@ -137,9 +137,9 @@ theorem tupleRead_baseTuple_eq_family : Qr.tupT D.what₂.mu0 = P.A3.A.μ0 := by
   exact Qr.tupT_tup _
 
 /- English proof (translation)
-Establish `h0` using `Qr.tupleRead_baseTuple_eq_family`. Prove the components needed by the constructor for the conclusion. Introduce `hw he`. Apply `Q.charW.tup.mu_ne (D.plEq w) hw` to reduce the goal to its premises. Rewrite using `[← Qr.recR.tupAt w, he, h0]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hne`. Assume the negation of the conclusion as `hw`. Apply `hne` to reduce the goal to its premises. Apply `Qr.tupT_inj_used (Or.inr ⟨w, rfl⟩) (Or.inl rfl)` to reduce the goal to its premises. Rewrite using `[Qr.recR.tupAt w, Q.charW.tup.mu_off (D.plEq w) hw, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_iff (Qr : RealRec Q) (w : D.what₂.places.Pl) : D.plEq w ∈ Q.Rl.twPl ↔ D.what₂.muAt w ≠ D.what₂.mu0 := by
   have h0 := Qr.tupleRead_baseTuple_eq_family

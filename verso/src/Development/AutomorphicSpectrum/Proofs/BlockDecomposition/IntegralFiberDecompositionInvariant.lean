@@ -7,41 +7,37 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.LocVan.NormaliserAbs
 
 /- English proof (translation)
-Use `set E : ℕ → Set X := fun i => D i \ ⋃ j : {j // j < i}, Z j with hE`. Establish `hEm : ∀ i, MeasurableSet (E i)` using `fun i => (hD i).diff (MeasurableSet.iUnion fun j => hZ j)`. Use `set b : X → ℝ≥0∞ := fun x => ∑' i, (E i).indicator (1 : X → ℝ≥0∞) x with hb`. Establish `hbm : Measurable b` using `Measurable.ennreal_tsum fun i => measurable_one.indicator (hEm i)`. Use `set B : X → ℝ≥0∞ := fun x => ∫⁻ h, b (act h x) ∂ν with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBm : Measurable B` using `Measurable.lintegral_prod_left' (μ := ν) (f := fun p : H × X => b (act p.1 p.2)) (hbm.comp hact)`. Establish `hsec : ∀ x, Measurable fun h => act h x` using `fun x => hact.comp (measurable_id.prodMk measurable_const)`. Establish `hind : ∀ (i : ℕ) (x : X), ∫⁻ h, (D i).indicator (1 : X → ℝ≥0∞) (act h x) ∂ν = ν {h | act h x ∈ D i}`. Introduce `i x`. Establish `hm : MeasurableSet {h | act h x ∈ D i}` using `hsec x (hD i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `: (fun h => (D i).indicator (1 : X → ℝ≥0∞) (act h x)) = {h | act h x ∈ D i}.indicator 1`. Use function extensionality and compare the values at `h`. Distinguish the cases in `hh : act h x ∈ D i`. Simplify using `[Set.indicator, hh]`. Simplify using `[Set.indicator, hh]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, lintegral_indicator_one hm]`. Establish `hBpos : ∀ x, B x ≠ 0 ∧ B x ≠ ⊤`. Introduce `x`. Establish `hex` using `hcov x`. Use `set i₀ := Nat.find hex with hi₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxi : x ∈ Z i₀` using `Nat.find_spec hex`. Establish `hmin : ∀ j < i₀, x ∉ Z j` using `fun j hj => Nat.find_min hex hj`. Establish `hup : ∀ h, b (act h x) ≤ ∑ i ∈ Finset.range (i₀ + 1), (D i).indicator (1 : X → ℝ≥0∞) (act h x)`. Introduce `h`. Establish `hz : ∀ i ∉ Finset.range (i₀ + 1), (E i).indicator (1 : X → ℝ≥0∞) (act h x) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hlt : i₀ < i` using `by simpa [Nat.lt_succ_iff] using hi`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hmem`. Apply `hmem.2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.mem_iUnion.2 ⟨⟨i₀, hlt⟩, (hinv i₀ h x).2 hxi⟩`. Rewrite using `[hb]`. Simplify using `only`. Rewrite using `[tsum_eq_sum hz]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `Set.indicator_le_indicator_of_subset Set.diff_subset (fun _ => zero_le) _`. Establish `hlow : ∀ h, (D i₀).indicator (1 : X → ℝ≥0∞) (act h x) ≤ b (act h x)`. Introduce `h`. Establish `: (D i₀).indicator (1 : X → ℝ≥0∞) (act h x) = (E i₀).indicator (1 : X → ℝ≥0∞) (act h x)`. Distinguish the cases in `hh : act h x ∈ D i₀`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmem : act h x ∈ E i₀`. Use `⟨hh, fun hu => ?_⟩` and prove the remaining obligations. Take `⟨⟨j, hj⟩, hjz⟩` from `Set.mem_iUnion.1 hu`. Conclude with `hmin j hj ((hinv j h x).1 hjz)`. Simplify using `[Set.indicator, hh, hmem]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : act h x ∉ E i₀` using `fun hm => hh hm.1`. Simplify using `[Set.indicator, hh, hmem]`. Rewrite using `[this]`. Conclude with `ENNReal.le_tsum i₀`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `: ν {h | act h x ∈ D i₀} ≤ B x`. Rewrite using `[← hind]`. Conclude with `lintegral_mono hlow`. Conclude with `hpos i₀ x hxi (le_antisymm (h0 ▸ this) zero_le)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : B x ≤ ∑ i ∈ Finset.range (i₀ + 1), ν {h | act h x ∈ D i}`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(measurable_one.indicator (hD i)).comp (hsec x)`. Use `_ = _ := Finset.sum_congr rfl fun i _ => hind i x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ne_top_of_le_ne_top (ENNReal.sum_ne_top.2 fun i _ => hfin i x) h1`. Establish `hBact : ∀ h₀ x, B (act h₀ x) = B x`. Introduce `h₀ x`. Establish `hg : Measurable fun h => b (act h x)` using `hbm.comp (hsec x)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hbS : ∀ s ∈ S, ∀ x, b (s x) = b x`. Introduce `s hs x`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Establish `hiff : s x ∈ E i ↔ x ∈ E i`. Simplify using `only [hE, Set.mem_diff, Set.mem_iUnion, hSD s hs, hSZ s hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hx : x ∈ E i`. Simplify using `[Set.indicator, hx, hiff.2 hx]`. Establish `: s x ∉ E i` using `fun h => hx (hiff.1 h)`. Simplify using `[Set.indicator, hx, this]`. Establish `hBS : ∀ s ∈ S, ∀ x, B (s x) = B x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs x`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Take `⟨s', hs', he⟩` from `hSa s hs h`. Rewrite using `[he, hbS s' hs']`. Use `⟨fun x => b x / B x, hbm.div hBm, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `x`. Establish `: (fun h => b (act h x) / B (act h x)) = fun h => b (act h x) * (B x)⁻¹`. Use function extensionality and compare the values at `h`. Rewrite using `[hBact, div_eq_mul_inv]`. Simplify using `only [this]`.
-
-Establish `hgm : Measurable fun h => b (act h x)` using `hbm.comp (hsec x)`. Rewrite using `[lintegral_mul_const _ hgm]`. Conclude with `ENNReal.mul_inv_cancel (hBpos x).1 (hBpos x).2`. Introduce `s hs x`. Simplify using `only [hbS s hs, hBS s hs]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_normaliser {H X : Type} [MeasurableSpace H] [MeasurableSpace X] (ν : Measure H)
     [SFinite ν]

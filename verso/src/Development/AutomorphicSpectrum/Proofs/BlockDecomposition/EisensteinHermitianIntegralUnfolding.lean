@@ -9,7 +9,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.EisUnfold.NegStep
 
 /- English proof (translation)
-Establish `: μ.IsNegInvariant` using `Measure.IsAddHaarMeasure.isNegInvariant_of_regular μ`. Conclude with `integral_neg_eq_self f μ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_neg_of_secondCountable {G E : Type*} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
@@ -19,7 +19,7 @@ theorem integral_neg_of_secondCountable {G E : Type*} [AddCommGroup G] [Topologi
   exact integral_neg_eq_self f μ
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colJoin_zero_mul {R : Type*} [NonUnitalNonAssocSemiring R] {m r s : ℕ} (p : Matrix (Fin m) (Fin r) R)
     (a : Matrix (Fin (r + s)) (Fin (r + s)) R) (c : Matrix (Fin r) (Fin (r + s)) R)
@@ -29,7 +29,7 @@ theorem colJoin_zero_mul {R : Type*} [NonUnitalNonAssocSemiring R] {m r s : ℕ}
   simp [Matrix.mul_apply, Fin.sum_univ_add, h]
 
 /- English proof (translation)
-Unfold `GlobalTheory.StdUnn.inner`. Rewrite using `[adj_neg]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, neg_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_neg_neg {D : D7} (V : HSp D) {n : ℕ} (t : Mx D V.rank n) : inner V (-t) (-t) = inner V t t := by
   unfold GlobalTheory.StdUnn.inner
@@ -37,13 +37,11 @@ theorem inner_neg_neg {D : D7} (V : HSp D) {n : ℕ} (t : Mx D V.rank n) : inner
   simp only [Matrix.neg_mul, Matrix.mul_neg, neg_neg]
 
 /- English proof (translation)
-Introduce `D ψ V r s μr 𝓕r hcov c a hca b Φ`. Take `⟨h1, h2, h3, h4, -⟩` from `lattice_Mx D V.rank r`. Establish `hB : BorelSpace (Mx D V.rank r)` using `⟨rfl⟩`. Establish `hH : μr.IsAddHaarMeasure` using `hcov.1`. Establish `hrow : ∀ j : Fin r, rat a (Fin.castAdd s j) = rat c j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Use `hca.2 (Fin.castAdd s j) j.isLt` as an intermediate fact. Use function extensionality and compare the values at `k`. Use `show incA D (a (Fin.castAdd s j) k) = incA D (c j k)`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `key : ∀ t : Mx D V.rank r, ψ (halfTr (Matrix.trace (HMul.hMul (rat b.1) (inner V t t) : Mx D r r))) * Φ (HMul.hMul (colJoin (-t) (0 : Mx D V.rank s)) (rat a)) = (fun y : Mx D V.rank r => pull c Φ y * ψ (halfTr (Matrix.trace (HMul.hMul (rat b.1) (inner V y y) : Mx D r r)))) (-t)`. Introduce `t`. Establish `e : (HMul.hMul (colJoin (-t) (0 : Mx D V.rank s)) (rat a) : Mx D V.rank (r + s)) = HMul.hMul (-t) (rat c)` using `colJoin_zero_mul (-t) (rat a) (rat c) hrow`. Use `show _ = Φ (HMul.hMul (-t) (rat c)) * _`.
-
-Rewrite using `[e, inner_neg_neg, mul_comm]`. Conclude with `(integral_congr_ae (Filter.Eventually.of_forall key)).trans (integral_neg_of_secondCountable (E := ℂ) μr (fun y : Mx D V.rank r => pull c Φ y * ψ (halfTr (Matrix.trace (HMul.hMul (rat b.1) (inner V y y) : Mx D r r)))))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_colJoin_neg_eq_J : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) (r s : ℕ) (μr : Measure (Mx D V.rank r))
     (𝓕r : Set (Mx D V.rank r)), IsCovolOne (ratMx D V.rank r) μr 𝓕r →

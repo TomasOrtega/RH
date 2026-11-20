@@ -7,51 +7,47 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
 /- English proof (translation)
-Unfold `LPRingIndep`. Introduce `p n' R₁ R₂ m r lam0 t D κ cStar hLP`. Take `⟨I⟩` from `h1 p n' R₁ R₂`. Take `⟨Φ, Ψ, hΨ, hLat, hEdge, hHL, hHLe, hdim⟩` from `h2 p n' R₁ R₂ I m lam0`. Establish `hwK : ∀ z : ℤ, I.φK (algebraMap R₁.O R₁.Kf R₁.w ^ z) = algebraMap R₂.O R₂.Kf R₂.w ^ z`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[map_zpow₀, I.hOK, I.hw]`. Establish `hpK : ∀ z : ℤ, I.φK ((p : R₁.Kf) ^ z) = (p : R₂.Kf) ^ z`. Introduce `z`. Rewrite using `[map_zpow₀, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `back : Edge R₂.W R₂.Qq (m + 1) → Edge R₁.W R₁.Qq (m + 1)` to `fun e => ⟨Φ.symm e.src, Φ.symm e.tgt⟩`. Establish `hback : ∀ e, (⟨Φ (back e).src, Φ (back e).tgt⟩ : Edge R₂.W R₂.Qq (m + 1)) = e`. Introduce `e`. Consider the cases of `e`. Simplify using `[back]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Establish `hbackEdge : ∀ e, IsEdge p n' r e → IsEdge p n' r (back e)`. Introduce `e he`. Rewrite using `[hEdge r (back e), hback]`. Conclude with `he`. Establish `hHLe' : ∀ e x, x ∈ HLe p R₁.ι R₁.σ R₁.w lam0 (back e) ↔ Ψ x ∈ HLe p R₂.ι R₂.σ R₂.w lam0 e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e x`. Establish `h` using `hHLe (back e) x`. Rewrite `h` using `[hback]`. Then use the resulting hypothesis. Unfold `LPprime at hLP ⊢`. Take `⟨hc, hall⟩` from `hLP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc, fun L hL => ?_⟩` and prove the remaining obligations. Establish `hL1 : IsLattice R₁.W (Φ.symm L)` using `by rw [hLat, Φ.apply_symm_apply]; exact hL`. Establish `hAt` using `hall _ hL1`. Unfold `LPprimeAt at hAt ⊢`. Take `⟨M, e, F, he, hF, hF', n, hn, hG⟩` from `hAt`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, fun i => ⟨Φ (e i).src, Φ (e i).tgt⟩, fun i => Ψ (F i), ?_, ?_, ?_, n, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `⟨(hEdge r (e i)).1 (he i).1, ?_⟩` and prove the remaining obligations. Use `show Φ (e i).tgt = L`. Rewrite using `[(he i).2, Φ.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hFi` using `hF i`. Simplify using `only [Nsrc, Re, Submodule.mem_inf, Submodule.mem_iInf] at hFi ⊢`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `sl_scale I.φK Ψ hΨ _ (hHL (e i).src) hFi.1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[hwK]`. Then use the resulting hypothesis. Introduce `e' he'`. Establish `hb : IsEdge p n' r (back e') ∧ (back e').src = (e i).src`. Use `⟨hbackEdge e' he'.1, ?_⟩` and prove the remaining obligations. Use `show Φ.symm e'.src = (e i).src`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[he'.2]`. Conclude with `Φ.symm_apply_apply _`. Establish `h` using `sl_scale I.φK Ψ hΨ _ (hHLe' e') (hFi.2 (back e') hb)`. Rewrite `h` using `[hwK]`. Then use the resulting hypothesis. Introduce `i e' he' hsrc hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : (back e').src = (e i).src` using `by show Φ.symm e'.src = (e i).src`. Rewrite using `[hsrc]`. Conclude with `Φ.symm_apply_apply _`. Establish `hne' : back e' ≠ e i`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← hback e', h]`. Establish `hx` using `hF' i (back e') (hbackEdge e' he') hb hne'`. Simplify using `only [Re] at hx ⊢`. Establish `h` using `sl_scale2 I.φK Ψ hΨ _ _ (hHLe' e') hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hwK, hwK]`. Then use the resulting hypothesis. Rewrite using `[← hdim]`. Conclude with `hn`. Establish `hN : ∀ G, G ∈ Ntgt p n' R₁.ι R₁.σ R₁.w r lam0 t (Φ.symm L) → dT I.φK Ψ hΨ G ∈ Ntgt p n' R₂.ι R₂.σ R₂.w r lam0 t L`. Introduce `G hG`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Ntgt, Re', Submodule.mem_inf, Submodule.mem_iInf] at hG ⊢`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `sl_scale_dual I.φO I.φK Ψ hΨ I.hOK _ (hHL (Φ.symm L)) hG.1`. Rewrite `h` using `[hwK, Φ.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `e' he'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Establish `hb : IsEdge p n' r (back e') ∧ (back e').tgt = Φ.symm L`. Use `⟨hbackEdge e' he'.1, ?_⟩` and prove the remaining obligations. Use `show Φ.symm e'.tgt = Φ.symm L`. Rewrite using `[he'.2]`. Establish `h` using `sl_scale_dual I.φO I.φK Ψ hΨ I.hOK _ (hHLe' e') (hG.2 (back e') hb)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hwK]`. Then use the resulting hypothesis. Unfold `GoodRankK at hG ⊢`. Take `⟨u, Mt, hu⟩` from `hG`. Establish `hdTv : ∀ (G : Module.Dual R₁.Kf (Vsp R₁.Kf lam0)) v, dT I.φK Ψ hΨ G v = I.φK (G (Ψ.symm v))` using `fun _ _ => rfl`. Set `u₂ : (Fin n → R₂.O) →ₗ[R₂.O] Ntgt p n' R₂.ι R₂.σ R₂.w r lam0 t L` to `{ toFun := fun x => ⟨dT I.φK Ψ hΨ (u fun j => I.φO.symm (x j)), hN _ (u _).2⟩ map_add' := by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Establish `hx : (fun j => I.φO.symm ((x + y) j)) = (fun j => I.φO.symm (x j)) + (fun j => I.φO.symm (y j))`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [hx, map_add, Submodule.coe_add, LinearMap.add_apply, hdTv]`. Use the proof step `map_smul' := by`. Introduce `c x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx : (fun j => I.φO.symm ((c • x) j)) = I.φO.symm c • (fun j => I.φO.symm (x j))`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Use `show I.φK ((u fun j => I.φO.symm ((c • x) j) : Module.Dual R₁.Kf (Vsp R₁.Kf lam0)) (Ψ.symm v)) = (c • (dT I.φK Ψ hΨ (u fun j => I.φO.symm (x j)) : Module.Dual R₂.Kf (Vsp R₂.Kf lam0))) v`. Rewrite using `[hx, map_smul, LinearMap.smul_apply, hdTv]`. Simplify using `only [SetLike.val_smul, Submodule.coe_smul_of_tower, LinearMap.smul_apply]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, I.hOK, RingEquiv.apply_symm_apply] }`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u₂, Mt.map I.φO, ?_⟩` and prove the remaining obligations. Introduce `x j`. Establish `hbe : ∀ i (G : Module.Dual R₁.Kf (Vsp R₁.Kf lam0)), be p r lam0 (Ψ (F i)) (dT I.φK Ψ hΨ G) = I.φK (be p r lam0 (F i) G)`. Introduce `i G`. Simplify using `only [be]`.
-
-Rewrite using `[← hpK, ← hΨ, dT_apply]`. Establish `hx` using `hu (fun j => I.φO.symm (x j)) j`. Use `show ∑ i, algebraMap R₂.O R₂.Kf (I.φO (Mt j i)) * be p r lam0 (Ψ (F i)) (dT I.φK Ψ hΨ (u fun j => I.φO.symm (x j))) = algebraMap R₂.O R₂.Kf ((p : R₂.O) ^ D * x j)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hbe, map_mul, I.hOK]`. Use `_ = I.φK (∑ i, algebraMap R₁.O R₁.Kf (Mt j i) * be p r lam0 (F i) (u fun j => I.φO.symm (x j) : Module.Dual R₁.Kf (Vsp R₁.Kf lam0))) := (map_sum _ _ _).symm`. Use `_ = I.φK (algebraMap R₁.O R₁.Kf ((p : R₁.O) ^ D * I.φO.symm (x j))) := by rw [hx]`. Use `_ = algebraMap R₂.O R₂.Kf ((p : R₂.O) ^ D * x j) := by`. Rewrite using `[I.hOK, map_mul, map_pow, map_natCast, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpRingIndep_of (h1 : RestRSIso) (h2 : RestHLTransport) : LPRingIndep := by
   unfold LPRingIndep

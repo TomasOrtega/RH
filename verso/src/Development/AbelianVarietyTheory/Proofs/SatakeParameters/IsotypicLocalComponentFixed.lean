@@ -13,9 +13,9 @@ attribute [local instance] GlobalTheory.TypeRec.factG GlobalTheory.LocalData.com
 namespace GlobalTheory.SepLoc
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntertwiningFunctional.exists_intertwining_functional`. Consider the case `exact _root_.GlobalTheory.IntertwiningFunctional.exists_intertwining_functional`. Consider the case `(apply _root_.GlobalTheory.IntertwiningFunctional.exists_intertwining_functional <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntertwiningFunctional.exists_intertwining_functional <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntertwiningFunctional.exists_intertwining_functional <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntertwiningFunctional.exists_intertwining_functional ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_sep {K F V : Type*} [AddCommGroup F] [Module ℂ F] [AddCommGroup V] [Module ℂ V]
     (r : K → F →ₗ[ℂ] F) (ρ : K → V →ₗ[ℂ] V)
@@ -33,13 +33,13 @@ theorem exists_sep {K F V : Type*} [AddCommGroup F] [Module ℂ F] [AddCommGroup
   | (intros; exact _root_.GlobalTheory.IntertwiningFunctional.exists_intertwining_functional ..)
 
 /- English proof (translation)
-Introduce `L _ _ _ n a S hS s σ hloc c hc hcL f hf hf0`. Establish `hle` using `GlobalTheory.SpanLoc.main L n a S hS s σ hloc c hc hcL`. Establish `hirr : ∀ W : Submodule ℂ σ.V, (∀ k : {x : GAf L n // TrivOutside {s.v} x}, ∀ v ∈ W, σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n k.1)) v ∈ W) → W = ⊥ ∨ W = ⊤`. Introduce `W hW`. Set `R : Subrepresentation σ.ρ` to `⟨W, fun g v hv => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Take `⟨x, hx, hxe⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s (Matrix.GeneralLinearGroup.map c.symm.toRingHom g)`. Establish `hg : Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x) = g`. Rewrite using `[hxe]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `hW ⟨x, hx⟩ v hv` as an intermediate fact. Rewrite using `[hg] at this⟩` and apply the resulting hypothesis. Use `haveI := σ.irr`. Break down `eq_bot_or_eq_top R with h | h` into its components or cases. Use `left`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `congrArg Subrepresentation.toSubmodule h`. Use `right`. Conclude with `congrArg Subrepresentation.toSubmodule h`. Take `⟨φ, hφf, hφ⟩` from `exists_sep (K := {x : GAf L n // TrivOutside {s.v} x}) (fun k => NG.rt L n k.1) (fun k => σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n k.1))) hirr (fun (T : σ.V →ₗ[ℂ] (GAf L n → a.W)) => (∀ v, T v ∈ NG.AFall L n a.ρ) ∧ ∀ x : GAf L n, TrivOutside {s.v} x → ∀ v, T (σ.ρ ( …`. Conclude with `⟨φ, hφf, fun x hx f' hf' => hφ ⟨x, hx⟩ f' (hle hf')⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)), NG.IsIrrRep a.ρ S → ∀ (s : SplitPlace L) (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))), GlobalTheory.HeightCounting.IsLocS S s σ → ∀ c : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L, Continuous c → (∀ x : L, c (s.i x) = algebraMap L (s.w.adicCompletion L) x) → ∀ f ∈ NG.isoTyp a.ρ S, f ≠ 0 → ∃ φ : (GAf L n → a.W) →ₗ[ℂ] σ.V, φ f ≠ 0 ∧ ∀ x : GAf L n, TrivOutside {s.v} x → ∀ f' ∈ NG.isoTyp a.ρ S, φ (NG.rt L n x f') = σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc n x)) (φ f') := by
   intro L _ _ _ n a S hS s σ hloc c hc hcL f hf hf0

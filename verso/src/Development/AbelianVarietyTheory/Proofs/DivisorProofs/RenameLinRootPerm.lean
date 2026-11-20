@@ -9,7 +9,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Simplify using `only [linRoot, map_neg, map_sum, map_mul, rename_C, rename_X]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (σ.prodCongr (Equiv.refl (Fin N))) _ _ (fun x => rfl)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rename_linRoot_perm {ι : Type} [Fintype ι] {N : ℕ} (σ : Equiv.Perm ι) (v : ι → Fin N → ℝ) :
     rename (Prod.map σ id) (linRoot (fun ρ i => v (σ ρ) i)) = linRoot v := by

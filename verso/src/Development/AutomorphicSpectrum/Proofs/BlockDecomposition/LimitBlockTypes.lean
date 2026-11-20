@@ -18,21 +18,21 @@ namespace GlobalTheory.CompanionTheory.LimV.BlockTy
 section Abs
 
 /- English proof (translation)
-Set `ev : X → Module.Dual ℂ W` to `fun x => (LinearMap.proj x : (X → ℂ) →ₗ[ℂ] ℂ) ∘ₗ W.subtype`. Set `A : (X →₀ ℂ) →ₗ[ℂ] Module.Dual ℂ W` to `Finsupp.linearCombination ℂ ev`. Set `B : (X →₀ ℂ) →ₗ[ℂ] M` to `Finsupp.linearCombination ℂ v`. Establish `hAB : ∀ y μ, e y (B μ) = A μ ⟨_, hW y⟩`. Introduce `y μ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (e y) ∘ₗ B = (LinearMap.applyₗ (⟨_, hW y⟩ : W)) ∘ₗ A`. Use `Finsupp.lhom_ext' fun x => LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `[A, B, ev]`. Conclude with `LinearMap.congr_fun this μ`. Establish `hsurj : LinearMap.range A = ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Take `⟨w, rfl⟩` from `(Module.evalEquiv ℂ W).surjective f`. Apply `hf0` to reduce the goal to its premises. Establish `hw : w = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Establish `h1 : A (Finsupp.single x 1) ∈ LinearMap.ker (Module.evalEquiv ℂ W w : Module.Dual ℂ (Module.Dual ℂ W))` using `hf ⟨_, rfl⟩`. Rewrite `h1` using `[LinearMap.mem_ker]`. Simplify `h1` using `[A, ev]`. Rewrite using `[hw, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A', hA'⟩` from `A.exists_rightInverse_of_surjective hsurj`. Set `ξ : Module.Dual ℂ (Module.Dual ℂ W)` to `l ∘ₗ B ∘ₗ A'`. Take `⟨w, hw⟩` from `(Module.evalEquiv ℂ W).surjective ξ`. Establish `hval : ∀ d : Module.Dual ℂ W, d w = l (B (A' d))` using `fun d => by`. Use `LinearMap.congr_fun hw d` as an intermediate fact.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[ξ]`. Use `w.2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Establish `h1 : A (Finsupp.single x 1 - A' (A (Finsupp.single x 1))) = 0`. Rewrite using `[map_sub, sub_eq_zero]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(LinearMap.congr_fun hA' _).symm`. Establish `h2 : B (Finsupp.single x 1 - A' (A (Finsupp.single x 1))) = 0`. Use `hsep _ fun y => ?_` and prove the remaining obligations. Rewrite using `[hAB, h1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : B (Finsupp.single x 1) = v x` using `by simp [B]`. Rewrite `h2` using `[map_sub, sub_eq_zero, h3]`. Establish `h4 : A (Finsupp.single x 1) w = w.1 x` using `by simp [A, ev]`. Rewrite using `[h2, ← hval, h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_separating {X Y M : Type} [AddCommGroup M] [Module ℂ M] (W : Submodule ℂ (X → ℂ))
     [FiniteDimensional ℂ W] (v : X → M) (e : Y → M →ₗ[ℂ] ℂ) (hsep : ∀ m, (∀ y, e y m = 0) → m = 0)
@@ -85,14 +85,14 @@ def coreL (W : Submodule ℂ (G → ℂ)) : Submodule ℂ (G → ℂ) :=
   ⨅ a : G, W.comap (LinearMap.funLeft ℂ ℂ fun x => a * x)
 
 /- English proof (translation)
-Simplify using `only [coreL, Submodule.mem_iInf, Submodule.mem_comap]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_coreL {W : Submodule ℂ (G → ℂ)} {w : G → ℂ} : w ∈ coreL W ↔ ∀ a, (fun x => w (a * x)) ∈ W := by
   simp only [coreL, Submodule.mem_iInf, Submodule.mem_comap]
   rfl
 
 /- English proof (translation)
-Introduce `w hw` and use `by simpa using mem_coreL.1 hw 1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coreL_le (W : Submodule ℂ (G → ℂ)) : coreL W ≤ W := fun w hw => by
   simpa using mem_coreL.1 hw 1
@@ -115,7 +115,7 @@ instance fd_rs (W : Submodule ℂ (G → ℂ)) [FiniteDimensional ℂ W] : Finit
   exact LinearMap.finiteDimensional_range _
 
 /- English proof (translation)
-Use `⟨((LinearMap.proj k : (G → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (coreL W).subtype) ⊗ₜ ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.lift.tmul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_rs {W : Submodule ℂ (G → ℂ)} {w : G → ℂ} (hw : w ∈ coreL W) (k : G) : (fun x => w (x * k)) ∈ rs W := by
   refine ⟨((LinearMap.proj k : (G → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (coreL W).subtype) ⊗ₜ ⟨w, hw⟩, ?_⟩
@@ -123,9 +123,9 @@ theorem mem_rs {W : Submodule ℂ (G → ℂ)} {w : G → ℂ} (hw : w ∈ coreL
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ a, P a`. Take `⟨a, ha⟩` from `hex`. Use `(hA a ha).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨s, h, hx⟩`. Take `rfl` from `hP _ _ h ha`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hx`. Use `Set.finite_empty.subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨s, h, -⟩`. Conclude with `hex ⟨s, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem finite_sig {α : Type*} {P : ℕ → Prop} (hP : ∀ a b, P a → P b → a = b) (A : ∀ s, P s → Set α)
     (hA : ∀ s h, (A s h).Finite) : {x | ∃ s, ∃ h : P s, x ∈ A s h}.Finite := by
@@ -152,7 +152,7 @@ def resR (r s : ℕ) (W : Submodule ℂ (Kinf E (r + s) → ℂ)) : Submodule �
   (rs W).map (LinearMap.funLeft ℂ ℂ (Slice2.levK E r s))
 
 /- English proof (translation)
-Unfold `resL`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fd_resL (W : Submodule ℂ (Kinf E (r + s) → ℂ)) [FiniteDimensional ℂ W] :
     FiniteDimensional ℂ (resL r s W) := by
@@ -160,7 +160,7 @@ theorem fd_resL (W : Submodule ℂ (Kinf E (r + s) → ℂ)) [FiniteDimensional 
   infer_instance
 
 /- English proof (translation)
-Unfold `resR`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fd_resR (W : Submodule ℂ (Kinf E (r + s) → ℂ)) [FiniteDimensional ℂ W] :
     FiniteDimensional ℂ (resR r s W) := by
@@ -168,7 +168,7 @@ theorem fd_resR (W : Submodule ℂ (Kinf E (r + s) → ℂ)) [FiniteDimensional 
   infer_instance
 
 /- English proof (translation)
-Use `mem_coreL.2 fun a => ?_` and prove the remaining obligations. Simplify `hf (g * infGL E N (Unitary.toUnits a))` using `only [map_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem translate_mem_coreL {W : Submodule ℂ (Kinf E N → ℂ)} {f : GA E N → ℂ}
     (hf : ∀ g, (fun k : Kinf E N => f (g * infGL E N (Unitary.toUnits k))) ∈ W) (g : GA E N) :
@@ -177,7 +177,7 @@ theorem translate_mem_coreL {W : Submodule ℂ (Kinf E N → ℂ)} {f : GA E N �
   simpa only [map_mul, mul_assoc] using hf (g * infGL E N (Unitary.toUnits a))
 
 /- English proof (translation)
-Set `e : GA E N → Sm E N →ₗ[ℂ] ℂ` to `fun y => (LinearMap.proj y : (GA E N → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (Sm E N).subtype`. Establish `h` using `mem_of_separating W (fun k : Kinf E N => act (.cpt k) φ) e (fun m hm => Subtype.ext (funext hm)) (e g ∘ₗ f) hφ`. Use `h using 2 with k` and compare the differences between its conclusion and the goal. Conclude with `(congrArg (fun ψ : Sm E N => ψ.1 g) (hf k)).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem type_transfer {W : Submodule ℂ (Kinf E N → ℂ)} [FiniteDimensional ℂ W] {φ : Sm E N}
     (hφ : ∀ g, (fun k : Kinf E N => φ.1 (g * infGL E N (Unitary.toUnits k))) ∈ W) (f : Sm E N →ₗ[ℂ] Sm E N)
@@ -190,18 +190,18 @@ theorem type_transfer {W : Submodule ℂ (Kinf E N → ℂ)} [FiniteDimensional 
   exact (congrArg (fun ψ : Sm E N => ψ.1 g) (hf k)).symm
 
 /- English proof (translation)
-Rewrite using `[cf, infGL_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_eq (k : Kinf E N) (t : GL (Fin N) (Af E)) :
     cf N k t = finGL E N t * infGL E N (Unitary.toUnits k) := by
   rw [cf, infGL_comm]
 
 /- English proof (translation)
-Use `⟨fun u hu g => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `Slice1.lev_finGL_right g u y t (Unitary.toUnits k)`. Establish `h'` using `hf.1 _ (Slice1.mem_levelOne.1 hu) (lev (Ad E) r s (g, y) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits k))`. Rewrite `h'` using `[← h]`. Simplify `h'` using `only [cf_eq, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨_, mem_rs (translate_mem_coreL hf.2 (lev (Ad E) r s (g, y) * finGL E (r + s) t)) k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `κ`. Establish `h` using `Slice1.lev_infGL_right g (Unitary.toUnits κ) y t (Unitary.toUnits k)`. Establish `e : lev (Cinf E) r s (Unitary.toUnits κ, 1) * Unitary.toUnits k = Unitary.toUnits (Slice1.levK E r s κ * k)`. Rewrite using `[map_mul, Slice1.toUnits_levK]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[e]`. Simplify using `only [LinearMap.funLeft_apply, cf_eq]`. Rewrite using `[← h]`. Simplify using `only [mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem slice_first {K : Subgroup (GL (Fin (r + s)) (Af E))} {W : Submodule ℂ (Kinf E (r + s) → ℂ)}
     {f : GA E (r + s) → ℂ} (hf : f ∈ typeF K W) (k : Kinf E (r + s)) (t : GL (Fin (r + s)) (Af E)) (y : GA E s) :
@@ -224,9 +224,9 @@ theorem slice_first {K : Subgroup (GL (Fin (r + s)) (Af E))} {W : Submodule ℂ 
     simp only [mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun u hu g => ?_, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (lev (Ad E) r s (x, g * finGL E s u) * cf (r + s) k t) = f (lev (Ad E) r s (x, g) * cf (r + s) k t)`. Rewrite using `[SliceR.lev_finGL_right]`. Conclude with `hf.1 _ (SliceR.mem_levelTwo.1 hu) _`. Use `⟨_, mem_rs (translate_mem_coreL hf.2 (lev (Ad E) r s (x, g) * finGL E (r + s) t)) k, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `κ`. Express the relevant statement in the definitionally equal form `f _ = f (lev (Ad E) r s (x, g * infGL E s (Unitary.toUnits κ)) * cf (r + s) k t)`. Rewrite using `[SliceR.lev_infGL_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_second {K : Subgroup (GL (Fin (r + s)) (Af E))} {W : Submodule ℂ (Kinf E (r + s) → ℂ)}
     {f : GA E (r + s) → ℂ} (hf : f ∈ typeF K W) (k : Kinf E (r + s)) (t : GL (Fin (r + s)) (Af E)) (x : GA E r) :
@@ -241,15 +241,15 @@ theorem slice_second {K : Subgroup (GL (Fin (r + s)) (Af E))} {W : Submodule ℂ
     rw [SliceR.lev_infGL_right]
 
 /- English proof (translation)
-Take `⟨χ, hχ, rfl⟩` from `hF`. Establish `hval : ∀ x, (mulChi N (Model.absC E z) χ).1 x = ((chiDet N (Model.absC E z) x : ℂˣ) : ℂ) * χ.1 x` using `fun x => by rw [mulChi_apply, mul_comm]`. Establish `hfin : ∀ g, ∀ u ∈ KO E N, chiDet N (Model.absC E z) (g * finGL E N u) = chiDet N (Model.absC E z) g`. Introduce `g u hu`. Use `chiDet_absC_cf N z (1 : Kinf E N) hu` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[cf, map_one, map_one, one_mul]`. Rewrite using `[map_mul, this, mul_one]`. Establish `hinf : ∀ g, ∀ k : Kinf E N, chiDet N (Model.absC E z) (g * infGL E N (Unitary.toUnits k)) = chiDet N (Model.absC E z) g`. Introduce `g k`. Use `chiDet_absC_cf N z k (one_mem (KO E N))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[cf, map_one, mul_one]`. Rewrite using `[map_mul, this, mul_one]`. Use `⟨χ, hχ, fun h => h0 (by rw [LinearEquiv.coe_coe, h, map_zero]), fun u hu g => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `hT.1 u hu.1 g`. Simplify using `only [LinearEquiv.coe_coe] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hval, hval, hfin g u hu.2]`. Conclude with `mul_left_cancel₀ (Units.ne_zero _) h1`. Establish `h1` using `W.smul_mem (((chiDet N (Model.absC E z) g : ℂˣ) : ℂ))⁻¹ (hT.2 g)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.coe_coe, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hval, hinf, inv_mul_cancel_left₀ (Units.ne_zero _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasType_of_tw {U : Submodule ℂ (Sm E N)} {z : ℂ} {K : Subgroup (GL (Fin N) (Af E))}
     {W : Submodule ℂ (Kinf E N → ℂ)} {F : Sm E N} (hF : F ∈ tw U z) (h0 : F ≠ 0) (hT : F.1 ∈ typeF K W) :
@@ -280,21 +280,19 @@ theorem hasType_of_tw {U : Submodule ℂ (Sm E N)} {z : ℂ} {K : Subgroup (GL (
     rw [hval, hinf, inv_mul_cancel_left₀ (Units.ne_zero _)]
 
 /- English proof (translation)
-Take `⟨φ, hφV, hφ0, hlev, hty⟩` from `hty`. Take `⟨f, hmem, hinj, heq⟩` from `hemb`. Establish `hG0 : f φ ≠ 0` using `fun h => hφ0 (hinj φ hφV h)`. Establish `hGlev : ∀ u ∈ K, ∀ g, (f φ).1 (g * finGL E (r + s) u) = (f φ).1 g`. Introduce `u hu g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : act (.fin u) φ = φ` using `Subtype.ext (funext fun x => hlev u hu x)`. Establish `h1` using `heq (.fin u) φ hφV`. Rewrite `h1` using `[e]`. Conclude with `(congrArg (fun ψ : Sm E (r + s) => ψ.1 g) h1).symm`. Establish `hGf : (f φ).1 ∈ typeF K W` using `⟨hGlev, type_transfer hty f fun k => heq (.cpt k) φ hφV⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hu, hs⟩` from `hmem φ hφV`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀⟩ : ∃ g, (f φ).1 g ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hG0 (Subtype.ext (funext hc))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, m, t, k, l, ht, hl, rfl⟩` from `hT g₀`. Establish `hne : (f φ).1 (lev (Ad E) r s m * cf (r + s) k t) ≠ 0`. Establish `e : unip x * lev (Ad E) r s m * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) l = unip x * (lev (Ad E) r s m * cf (r + s) k t) * finGL E (r + s) l`. Rewrite using `[cf_eq]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hg₀` using `[e, hGlev l hl, hu]`. Conclude with `hg₀`. Take `⟨n, ψ₁, ψ₂, h₁, h₂, hsum⟩` from `ParabolicProjection.tensor_pair_finite_sum (hs k t)`. Establish `hsum' : ∀ m', (f φ).1 (lev (Ad E) r s m' * cf (r + s) k t) = ∑ i, (ψ₁ i).1 m'.1 * (ψ₂ i).1 m'.2` using `hsum`. Establish `hne' : ∑ i, (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2 ≠ 0` using `hsum' m ▸ hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨t, ht, ?_, ?_⟩` and prove the remaining obligations. Use `hasType_of_tw (F := ∑ i, (ψ₂ i).1 m.2 • ψ₁ i) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h₁ i)) (ParabolicProjection.sum_left_ne hne') ?_` and prove the remaining obligations. Use `slice_first hGf k t m.2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Rewrite using `[hsum' (y, m.2)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Submodule.coe_sum, Finset.sum_apply, mul_comm]`. Use `hasType_of_tw (F := ∑ i, (ψ₁ i).1 m.1 • ψ₂ i) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h₂ i)) (ParabolicProjection.sum_right_ne hne') ?_` and prove the remaining obligations. Use `slice_second hGf k t m.1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Rewrite using `[hsum' (m.1, y)]`.
-
-Simplify using `[Submodule.coe_sum, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blocks {K : Subgroup (GL (Fin (r + s)) (Af E))} {W : Submodule ℂ (Kinf E (r + s) → ℂ)}
     [FiniteDimensional ℂ W] {T : Finset (GL (Fin (r + s)) (Af E))}
@@ -348,19 +346,15 @@ theorem blocks {K : Subgroup (GL (Fin (r + s)) (Af E))} {W : Submodule ℂ (Kinf
 end Lin
 
 /- English proof (translation)
-Introduce `E _ _ _ N W hW`. Establish `hu₁ : ∀ M : ℕ, ∀ a b, M + a = N → M + b = N → a = b` using `fun M a b h h' => by omega`. Establish `hu₂ : ∀ M : ℕ, ∀ a b, a + M = N → b + M = N → a = b` using `fun M a b h h' => by omega`. Use `⟨fun M => {W' | ∃ s, ∃ h : M + s = N, W' ∈ ({resL M s (h ▸ W)} : Set (Submodule ℂ (Kinf E M → ℂ)))} ∪ {W' | ∃ r, ∃ h : r + M = N, W' ∈ ({resR r M (h ▸ W)} : Set (Submodule ℂ (Kinf E M → ℂ)))}, fun M => ⟨?_, ?_⟩, fun K hK => ?_⟩` and prove the remaining obligations. Conclude with `(finite_sig (hu₁ M) _ fun _ _ => Set.finite_singleton _).union (finite_sig (hu₂ M) _ fun _ _ => Set.finite_singleton _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `W' (⟨s, h, rfl⟩ | ⟨r, h, rfl⟩)`. Substitute `h` using the available equality. Conclude with `fd_resL W`. Substitute `h` using the available equality. Conclude with `fd_resR W`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `key : ∀ (r s : ℕ) (h : r + s = N), ∃ T : Finset (GL (Fin (r + s)) (Af E)), ∀ g : GA E (r + s), ∃ (x : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (t : GL (Fin (r + s)) (Af E)) (k : Kinf E (r + s)) (l : GL (Fin (r + s)) (Af E)), t ∈ T ∧ l ∈ (h ▸ K : Subgroup (GL (Fin (r + s)) …`. Introduce `r s h`. Substitute `h` using the available equality. Conclude with `GlobalTheory.CompanionTheory.CTFin.IwaAd.iwasawa_finite_cosets E r s K hK`. Establish `hopen : ∀ (r s : ℕ) (h : r + s = N), IsOpen ((h ▸ K : Subgroup (GL (Fin (r + s)) (Af E))) : Set (GL (Fin (r + s)) (Af E)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `r s h`. Substitute `h` using the available equality. Conclude with `hK`. Use `choose T hT using key`. Use `⟨fun M => {K' | ∃ s, ∃ h : M + s = N, K' ∈ (fun t => Slice1.levelOne s (h ▸ K) t ⊓ KO E M) '' (T M s h : Set _)} ∪ {K' | ∃ r, ∃ h : r + M = N, K' ∈ (fun t => SliceR.levelTwo (h ▸ K) t ⊓ KO E M) '' (T r M h : Set _)}, fun M => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `(finite_sig (hu₁ M) _ fun _ _ => (Finset.finite_toSet _).image _).union (finite_sig (hu₂ M) _ fun _ _ => (Finset.finite_toSet _).image _)`. Introduce and unpack `K' (⟨s, h, t, -, rfl⟩ | ⟨r, h, t, -, rfl⟩)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `(Slice1.isOpen_levelOne (hopen M s h) t).inter (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E M)`. Rewrite using `[Subgroup.coe_inf]`.
-
-Conclude with `(SliceR.isOpen_levelTwo (hopen r M h) t).inter (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL E M)`. Introduce `r s h V V₁ V₂ z₁ z₂ _ _ _ hty hemb`. Establish `hT'` using `hT r s h`. Substitute `h` using the available equality. Take `⟨t, ht, h₁, h₂⟩` from `blocks hT' hty hemb`.
-
-Conclude with `⟨⟨_, Or.inl ⟨s, rfl, t, ht, rfl⟩, _, Or.inl ⟨s, rfl, rfl⟩, h₁⟩, ⟨_, Or.inr ⟨r, rfl, t, ht, rfl⟩, _, Or.inr ⟨r, rfl, rfl⟩, h₂⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem blockTypes : PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5.BlockTypes := by
   intro E _ _ _ N W hW

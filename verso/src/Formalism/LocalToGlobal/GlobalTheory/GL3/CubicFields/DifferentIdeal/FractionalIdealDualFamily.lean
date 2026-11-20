@@ -9,16 +9,16 @@ open NumberField Classical
 open scoped Pointwise
 
 /- English proof (translation)
-Unfold `liftM`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma coe_lift_intermediate {M : IntermediateField ℚ ℂ} {z : ℂ} (h : z ∈ M) : ((liftM M z : M) : ℂ) = z := by
   unfold liftM
   rw [dif_pos h]
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℤ (liftM M z)`. Rewrite using `[← isIntegral_algHom_iff ((IntermediateField.val M).restrictScalars ℤ) Subtype.val_injective]`. Establish `h1 : ((IntermediateField.val M).restrictScalars ℤ) (liftM M z) = z` using `coe_lift_intermediate hz`. Rewrite using `[h1]`. Conclude with `hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨liftM M z, hint⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma lift_integral_mem_range (M : IntermediateField ℚ ℂ) [NumberField M] {z : ℂ} (hz : z ∈ M)
     (hi : IsIntegral ℤ z) : liftM M z ∈ (algebraMap (𝓞 M) M).range := by
@@ -30,17 +30,17 @@ lemma lift_integral_mem_range (M : IntermediateField ℚ ℂ) [NumberField M] {z
   exact ⟨⟨liftM M z, hint⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `b hb`. Establish `hι : Nonempty ι`. Rewrite using `[← Fintype.card_pos_iff, hcard]`. Conclude with `Module.finrank_pos`. Take `⟨i0⟩` from `hι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ : ∀ y, φ₀ y ∈ M` using `fun y => by rw [← hres i0 y]; exact hM i0 _`. Establish `hb' : ∀ a ∈ (I : Submodule (𝓞 E) E), Algebra.trace K E (b * a) ∈ (algebraMap (𝓞 K) K).range`. Introduce `a ha`. Use `(FractionalIdeal.mem_dual hI).mp hb a ha` as an intermediate fact. Simplify `this` using `[Algebra.traceForm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_induction (p := fun v _ => ∑ i, v i * liftM M (emb i b) ∈ (algebraMap (𝓞 M) M).range) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce and unpack `w ⟨a, ha, rfl⟩`. Establish `: ∑ i, liftM M (emb i a) * liftM M (emb i b) = liftM M (φ₀ (Algebra.trace K E (a * b)))`. Rewrite using `[← sum_emb_eq_trace K E φ₀ M ι emb hinj hres hcard hM]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[IntermediateField.coe_mul, coe_lift_intermediate (hM i a), coe_lift_intermediate (hM i b), coe_lift_intermediate (hM i (a * b)), map_mul]`. Simplify using `only [this]`. Take `⟨t, ht⟩` from `hb' a ha`. Apply `lift_integral_mem_range M (hφ _)` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm a b, ← ht]`. Conclude with `(t.isIntegral_coe).map φ₀.toIntAlgHom`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `add_mem hx hy`. Introduce `c x _ hx`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, mul_assoc, ← Finset.mul_sum]`. Conclude with `mul_mem ⟨c, rfl⟩ hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_mmR_of (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
     (φ₀ : K →+* ℂ) (M : IntermediateField ℚ ℂ) [NumberField M] (ι : Type) [Fintype ι] [DecidableEq ι]
@@ -79,13 +79,13 @@ theorem mem_mmR_of (K E : Type) [Field K] [Field E] [NumberField K] [NumberField
     exact mul_mem ⟨c, rfl⟩ hx
 
 /- English proof (translation)
-Establish `hne : (I : Submodule (𝓞 E) E) ≠ ⊥`. Introduce `h`. Apply `hI` to reduce the goal to its premises. Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Simplify using `using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, haI, ha0⟩` from `(Submodule.ne_bot_iff _).mp hne`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨m, hm0, hmz⟩` from `exists_integral_multiples ℤ ℚ ({x / a} : Finset E)`. Establish `hw` using `hmz (x / a) (by simp)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `w : 𝓞 E` to `⟨m • (x / a), hw⟩`. Establish `hwa : w • a ∈ (I : Submodule (𝓞 E) E)` using `Submodule.smul_mem _ w haI`. Establish `hx : x = ((m : K)⁻¹) • (w • a)`. Establish `hm : (m : E) ≠ 0` using `by exact_mod_cast hm0`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show x = algebraMap K E ((m : K)⁻¹) * ((m • (x / a)) * a)`. Rewrite using `[map_inv₀, map_intCast, zsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hwa)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fractional_ideal_span_top (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hI : I ≠ 0) :
@@ -109,15 +109,13 @@ lemma fractional_ideal_span_top (K E : Type) [Field K] [Field E] [NumberField K]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hwa)
 
 /- English proof (translation)
-Use `set P := (I : Submodule (𝓞 E) E).restrictScalars (𝓞 K)`. Establish `: Module.IsTorsionFree (𝓞 K) E` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 K) K E`. Establish `: Module.IsTorsionFree (𝓞 K) P` using `inferInstance`. Establish `hfg : P.FG` using `(FractionalIdeal.fg_of_isNoetherianRing le_rfl I).restrictScalars`. Establish `: Module.Finite (𝓞 K) P` using `Module.Finite.iff_fg.mpr hfg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.FinitePresentation (𝓞 K) P` using `Module.finitePresentation_of_finite (𝓞 K) P`. Establish `: Module.Projective (𝓞 K) P` using `Module.Flat.projective_of_finitePresentation`. Take `⟨n, F, G, -, -, hFG⟩` from `Module.Finite.exists_comp_eq_id_of_projective (𝓞 K) P`. Use `⟨n, fun i => (F (Pi.single i 1) : E), fun i => (LinearMap.proj i).comp G, fun i => (F (Pi.single i 1)).2, fun y => ?_⟩` and prove the remaining obligations. Establish `e1 : F (G y) = y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun φ => φ y) hFG` as an intermediate fact. Simplify using `using this`. Establish `e2 : y = ∑ i, ((LinearMap.proj i).comp G) y • F (Pi.single i 1)` using `by conv_lhs => rw [← e1]`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ F (G y)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval]`. Use `congr 2`. Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`. Use `conv_lhs => rw [e2]`.
-
-Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma fractional_ideal_dual_family (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
@@ -149,17 +147,17 @@ lemma fractional_ideal_dual_family (K E : Type) [Field K] [Field E] [NumberField
   simp
 
 /- English proof (translation)
-Set `F : E →ₗ[K] K` to `∑ l, algebraMap (𝓞 K) K (f ⟨e l, he l⟩) • e.coord l`. Use `⟨((Algebra.traceForm K E).toDual (traceForm_nondegenerate K E)).symm F, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.BilinForm.toDual_def (traceForm_nondegenerate K E), LinearEquiv.apply_symm_apply]`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (Finset.univ.image (e.repr y))`. Establish `hc : ∀ l, ∃ c : 𝓞 K, algebraMap (𝓞 K) K c = algebraMap (𝓞 K) K d * e.repr y l`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `l`. Take `⟨c, hc⟩` from `hd (e.repr y l) (Finset.mem_image_of_mem _ (Finset.mem_univ l))`. Conclude with `⟨c, by rw [hc]; exact Algebra.smul_def _ _⟩`. Use `choose c hc using hc`. Establish `hdy : (d : 𝓞 K) • (⟨y, hy⟩ : P) = ∑ l, c l • (⟨e l, he l⟩ : P)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SetLike.val_smul, Submodule.coe_sum]`. Use `conv_lhs => rw [← e.sum_repr y]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul K (c l), hc l, ← algebraMap_smul K (d : 𝓞 K), smul_smul]`. Establish `hf` using `congrArg (fun z => algebraMap (𝓞 K) K (f z)) hdy`. Simplify using `only [map_smul, map_sum, smul_eq_mul, map_mul] at hf`. Establish `hd0 : algebraMap (𝓞 K) K (d : 𝓞 K) ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap (𝓞 K) K), (IsFractionRing.injective (𝓞 K) K).eq_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nonZeroDivisors.ne_zero d.2`. Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Rewrite using `[hf]`. Simplify using `only [hc]`. Rewrite using `[LinearMap.sum_apply, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma trace_dual_of_functional (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
     (P : Submodule (𝓞 K) E) {κ : Type} [Fintype κ] (e : Module.Basis κ K E) (he : ∀ l, e l ∈ P)
@@ -196,27 +194,23 @@ lemma trace_dual_of_functional (K E : Type) [Field K] [Field E] [NumberField K] 
   ring
 
 /- English proof (translation)
-Use `⟨mem_mmR_of K E φ₀ M ι emb hinj hres hcard hM I hI v, fun hv => ?_⟩` and prove the remaining obligations. Take `⟨i0⟩ : Nonempty ι` from `by rw [← Fintype.card_pos_iff, hcard]; exact Module.finrank_pos`. Establish `hφ : ∀ y, φ₀ y ∈ M` using `fun y => by rw [← hres i0 y]; exact hM i0 _`. Set `ψ : ι → E →+* M` to `fun i => (emb i).codRestrict M (hM i)`. Set `φM : K →+* M` to `φ₀.codRestrict M hφ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hψ : ∀ i y, liftM M (emb i y) = ψ i y` using `fun i y => Subtype.ext (by rw [coe_lift_intermediate (hM i y)]; rfl)`. Establish `hψK : ∀ i (t : K) (y : E), ψ i (t • y) = φM t * ψ i y` using `fun i t y => by`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `congr 1`. Conclude with `Subtype.ext (hres i t)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Use `set P := (I : Submodule (𝓞 E) E).restrictScalars (𝓞 K)`. Take `⟨s, hs, hspan, hli⟩` from `exists_linearIndependent K ((I : Submodule (𝓞 E) E) : Set E)`. Set `e : Module.Basis s K E` to `Module.Basis.mk hli (by rw [Subtype.range_coe, hspan, fractional_ideal_span_top K E I hI])`. Use `letI : Fintype s := @Fintype.ofFinite _ (Module.Finite.finite_basis e)`. Establish `he : ∀ l, e l ∈ P` using `fun l => by rw [Module.Basis.mk_apply]; exact hs l.2`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, g, f, hg, hfg⟩` from `fractional_ideal_dual_family K E I`. Use `choose b hb using fun j => trace_dual_of_functional K E P e he (f j)`. Establish `hbd : ∀ j, b j ∈ ((FractionalIdeal.dual (𝓞 K) K I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E)` using `fun j => (FractionalIdeal.mem_dual hI).mpr fun a ha => ⟨f j ⟨a, ha⟩, (hb j a ha).symm⟩`. Establish `hid : ∀ y (hy : y ∈ P), y = ∑ j, Algebra.traceForm K E (b j) y • g j`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [show y = ((⟨y, hy⟩ : P) : E) from rfl, hfg ⟨y, hy⟩]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hb j y hy, algebraMap_smul]`. Use `set e' := (Algebra.traceForm K E).dualBasis (traceForm_nondegenerate K E) e with he'`. Establish `hbexp : ∀ j, b j = ∑ l, Algebra.traceForm K E (b j) (e l) • e' l` using `fun j => by conv_lhs => rw [← e'.sum_repr (b j)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[e']`. Establish `key : ∀ i k, ∑ j, ψ i (b j) * ψ k (g j) = if k = i then 1 else 0`. Introduce `i k`. Establish `hdb` using `sum_emb_dualBasis K E φ₀ M ι emb hinj hres hcard hM e k i`. Simplify using `only [hψ, ← he'] at hdb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hdb]`. Establish `h1 : ∀ l, ψ k (e l) = ∑ j, φM (Algebra.traceForm K E (b j) (e l)) * ψ k (g j)` using `fun l => by conv_lhs => rw [hid (e l) (he l)]`. Rewrite using `[map_sum]`. Simplify using `only [hψK]`. Establish `h2 : ∀ j, ψ i (b j) = ∑ l, φM (Algebra.traceForm K E (b j) (e l)) * ψ i (e' l)` using `fun j => by conv_lhs => rw [hbexp j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum]`. Simplify using `only [hψK]`. Simplify using `only [h1, h2, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose c hc using fun j => RingHom.mem_range.mp (hv (b j) (hbd j))`. Establish `hv' : v = ∑ j, c j • (fun i => liftM M (emb i (g j)))`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply]`.
-
-Simplify using `only [Pi.smul_apply, Algebra.smul_def, hc, hψ, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc, ← Finset.mul_sum, key]`. Simplify using the standard rewrite rules. Rewrite using `[hv']`.
-
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨g j, hg j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mmR_iff (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
     (φ₀ : K →+* ℂ) (M : IntermediateField ℚ ℂ) [NumberField M] (ι : Type) [Fintype ι] [DecidableEq ι]

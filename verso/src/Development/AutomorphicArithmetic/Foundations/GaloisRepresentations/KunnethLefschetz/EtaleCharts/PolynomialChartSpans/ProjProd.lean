@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.
 open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 
 /- English proof (translation)
-Use `haveI : MorphismProperty.IsStableUnderComposition (@IsClosedImmersion : MorphismProperty Scheme.{0}) := ⟨fun f g hf hg => by haveI := hf haveI := hg`. Conclude with `IsClosedImmersion.comp f g⟩`. Establish `hmap : IsClosedImmersion (pullback.map (i ≫ toSpecBase R N) (j ≫ toSpecBase R M) (toSpecBase R N) (toSpecBase R M) i j (𝟙 _) ((Category.comp_id _).trans rfl) ((Category.comp_id _).trans rfl))` using `MorphismProperty.pullback_map (P := (@IsClosedImmersion : MorphismProperty Scheme.{0})) inferInstance inferInstance rfl rfl`. Use `⟨pullback.map (i ≫ toSpecBase R N) (j ≫ toSpecBase R M) (toSpecBase R N) (toSpecBase R M) i j (𝟙 _) ((Category.comp_id _).trans rfl) ((Category.comp_id _).trans rfl) ≫ segre R N M, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, segre_toSpecBase, pullback.lift_fst_assoc, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_closed_prod {R : Type} [CommRing R] {X Y : Scheme.{0}} (N M : ℕ)
     (i : X ⟶ projectiveSpace R N) (j : Y ⟶ projectiveSpace R M)
@@ -35,9 +35,9 @@ private theorem exists_closed_prod {R : Type} [CommRing R] {X Y : Scheme.{0}} (N
   rw [Category.assoc, segre_toSpecBase, pullback.lift_fst_assoc, Category.assoc]
 
 /- English proof (translation)
-Introduce `R _ X Y p q hp`. Take `⟨N, i, hi, rfl⟩` from `hp`. Establish `hprop : IsProper (PSpace.str R N)` using `inferInstanceAs (IsProper (toSpecBase R N))`. Use `⟨?_, fun j hj => ⟨N, j ≫ i, inferInstance, by simp⟩, inferInstance⟩` and prove the remaining obligations. Introduce and unpack `⟨M, j, hj, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨h, hc, he⟩` from `exists_closed_prod (R := R) N M i j`. Conclude with `⟨_, h, hc, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.projProd :
     UpperTheory.Gal.KunnethLefschetz.G.ProjProd := by

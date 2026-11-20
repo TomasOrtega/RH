@@ -5,23 +5,23 @@ open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
 /- English proof (translation)
-Introduce `hAdm hAc hDec X M M' _ _ _ T L' Kw hF hAp t t' g`. Use `set Φ : X → ℂ := fun y => T.tf (L'.loc t') (y⁻¹ * g) with hΦ`. Establish `key : ∀ (a b : T.J), (a : M) = (b : M)⁻¹ → (((T.ψ a)⁻¹ : ℂˣ) : ℂ) = (T.ψ b : ℂ)`. Introduce `a b hab`. Establish `hab' : a = b⁻¹` using `Subtype.ext (by simpa using hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hab'` using the available equality. Simplify using the standard rewrite rules. Establish `hTy : T.IsTy Φ`. Introduce `k hk y`. Establish `hp : T.L.pr (L'.loc t') = 1` using `hAp.1 t'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `((hAdm X M T (L'.loc t') hp).2 k⁻¹ (T.K.inv_mem hk) (y⁻¹ * g)).1`. Simplify using `only [hΦ, smul_eq_mul, mul_inv_rev, mul_assoc]`. Rewrite using `[h1]`. Use `congr 1`. Conclude with `key _ _ (by simp)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `hAc X M M' T L' Kw hF hAp t 1 (by simp [TyLev.Cen]) ℂ Φ hTy 1`. Establish `hL : conv T.K₀ (T.tf (L'.loc t)) (T.tf (L'.loc t')) g = hAct T.K₀ (T.tf (L'.loc t * 1)) Φ 1`. Simplify using `only [conv, hAct, mul_one, one_mul, smul_eq_mul, hΦ]`. Establish `hpt : ∀ m : M', Φ (L'.loc m) = T.tf 1 (g * (L'.loc (L'.pr g))⁻¹) * dosetInd ℂ Kw t' (m⁻¹ * L'.pr g)`. Introduce `m`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : T.L.pr ((L'.loc m)⁻¹ * g) = T.L.pr g` using `by simp [hAp.1 m]`. Establish `e2 : T.L.pr ((L'.loc (L'.pr g))⁻¹ * g) = T.L.pr g` using `by simp [hAp.1]`. Establish `hu : g * (L'.loc (L'.pr g))⁻¹ = (L'.loc (L'.pr g))⁻¹ * g`. Establish `h0 : L'.pr ((L'.loc (L'.pr g))⁻¹ * g) = 1` using `by simp [L'.pr_loc]`. Establish `hc` using `L'.comm (L'.pr g) _ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmem : (L'.loc m)⁻¹ * g ∈ DoubleCoset.doubleCoset (L'.loc t') (T.K : Set X) T.K ↔ m⁻¹ * L'.pr g ∈ DoubleCoset.doubleCoset t' (Kw : Set M') Kw ∧ (L'.loc (L'.pr g))⁻¹ * g ∈ DoubleCoset.doubleCoset 1 (T.K : Set X) T.K`. Establish `h3 : L'.pr ((L'.loc m)⁻¹ * g) = m⁻¹ * L'.pr g` using `by simp [L'.pr_loc]`. Establish `h4 : (L'.loc (m⁻¹ * L'.pr g))⁻¹ * ((L'.loc m)⁻¹ * g) = (L'.loc (L'.pr g))⁻¹ * g`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd` using `hDec X M' L' T.K Kw hF t' 1 (map_one _) ((L'.loc m)⁻¹ * g)`. Rewrite `hd` using `[mul_one, h3, h4]`. Conclude with `hd`. Simplify using `only [hΦ, TyLev.tf]`. Rewrite using `[hu, e1, e2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [dosetInd, Set.indicator_apply, hmem, Pi.one_apply]`. Apply the tactic sequence `by_cases ha : m⁻¹ * L'.pr g ∈ DoubleCoset.doubleCoset t' (Kw : Set M') Kw <;>`. Apply the tactic sequence `by_cases hb : (L'.loc (L'.pr g))⁻¹ * g ∈ DoubleCoset.doubleCoset 1 (T.K : Set X) T.K <;>`. Simplify using `[ha, hb]`. Rewrite using `[hL, hsum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [one_mul, smul_eq_mul, hpt, conv]`. Rewrite using `[mul_finsum]`. Use `congr 1`. Use extensionality with `x`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pTfLoc :
     TfAdm → TfAct → (∀ (X M' : Type) [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X) (Kw : Subgroup M'), L'.Fact K Kw → ∀ (t : M') (r : X), L'.pr r = 1 → ∀ g, g ∈ DoubleCoset.doubleCoset (L'.loc t * r) (K : Set X) K ↔ L'.pr g ∈ DoubleCoset.doubleCoset t (Kw : Set M') Kw ∧ (L'.loc (L'.pr g))⁻¹ * g ∈ DoubleCoset.doubleCoset r (K : Set X) K) → TfLoc := by

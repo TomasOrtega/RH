@@ -7,9 +7,7 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hne`. Take `⟨u, hu, hsub⟩` from `isOpen_pi_iff'.1 hV x hx`. Use `MvPolynomial.funext_set u (fun i => ?_) (fun y hy => ?_)` and prove the remaining obligations. Conclude with `infinite_of_mem_nhds (x i) ((hu i).1.mem_nhds (hu i).2)`. Rewrite using `[map_zero]`.
-
-Conclude with `h y (hsub hy)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvPolynomial_eq_zero_of_vanish_on_open {σ : Type} [Fintype σ] (Q : MvPolynomial σ ℝ)
     (V : Set (σ → ℝ)) (hV : IsOpen V) (hne : V.Nonempty) (h : ∀ x ∈ V, eval x Q = 0) : Q = 0 := by
@@ -21,23 +19,21 @@ theorem mvPolynomial_eq_zero_of_vanish_on_open {σ : Type} [Fintype σ] (Q : MvP
     exact h y (hsub hy)
 
 /- English proof (translation)
-Set `s : σ → MvPolynomial σ ℝ` to `fun i => if i = a then X b else X i`. Establish `hdvd : ∀ Q : MvPolynomial σ ℝ, (X a - X b : MvPolynomial σ ℝ) ∣ Q - bind₁ s Q`. Introduce `Q`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `dvd_add hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, bind₁_X_right]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : (X a - X b : MvPolynomial σ ℝ) ∣ X i - s i`. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `[s]`. Simplify using `[s, hia]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: p * X i - bind₁ s p * s i = (p - bind₁ s p) * X i + bind₁ s p * (X i - s i)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_add (hp.mul_right _) (hi.mul_left _)`. Establish `hev : ∀ x : σ → ℝ, eval x (bind₁ s P) = eval (Function.update x a (x b)) P`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `h1 : eval x (bind₁ s P) = eval (fun i => eval x (s i)) P` using `eval₂Hom_bind₁ _ _ _ _`. Rewrite using `[h1]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `[s]`. Simplify using `[s, hia]`. Establish `hzero : bind₁ s P = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous (fun x : σ → ℝ => Function.update x a (x b))` using `continuous_id.update a (continuous_apply b)`. Use `mvPolynomial_eq_zero_of_vanish_on_open _ _ (hU.preimage hc) ?_ ?_` and prove the remaining obligations. Take `⟨x, hx, hxab⟩` from `hne`. Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hxab, Function.update_eq_self]`. Conclude with `hx`. Introduce `x hx`. Rewrite using `[hev]`. Use `h _ hx ?_` and prove the remaining obligations.
-
-Simplify using `[Function.update_of_ne hab.symm]`. Simplify `hdvd P` using `[hzero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem X_sub_X_dvd_of_vanish_on_open_hyperplane (σ : Type) [Fintype σ] [DecidableEq σ] (a b : σ)
     (P : MvPolynomial σ ℝ) (U : Set (σ → ℝ)) (hab : a ≠ b) (hU : IsOpen U)

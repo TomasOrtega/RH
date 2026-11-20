@@ -10,9 +10,9 @@ section Group
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, ρ, h⟩`. Set `r : Representation ℂ G (Fin n → ℂ)` to `(Matrix.toLinAlgEquiv' (R := ℂ) (n := Fin n)).toMonoidHom.comp ((Units.coeHom _).comp ρ)`. Use `⟨FDRep.of r, funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.trace_toLin'_eq _`. Introduce and unpack `⟨V, rfl⟩`. Set `b` to `Module.finBasis ℂ V`. Set `m : G →* Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ` to `(LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp V.ρ`. Conclude with `⟨_, m.toHomUnits, fun x => LinearMap.trace_eq_matrix_trace ℂ b _⟩`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isChar_iff (χ : G → ℂ) : IsChar χ ↔ ∃ V : FDRep ℂ G, V.character = χ := by
   constructor
@@ -29,7 +29,7 @@ theorem isChar_iff (χ : G → ℂ) : IsChar χ ↔ ∃ V : FDRep ℂ G, V.chara
     exact ⟨_, m.toHomUnits, fun x => LinearMap.trace_eq_matrix_trace ℂ b _⟩
 
 /- English proof (translation)
-Rewrite using `[FDRep.simple_iff_char_is_norm_one, Nat.card_eq_fintype_card]`. Simplify using `only [GlobalTheory.BadShare.ZCalc.character_inv, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_iff [Fintype G] (V : FDRep ℂ G) :
     (∑ x, V.character x * star (V.character x)) = (Fintype.card G : ℂ) ↔ Simple V := by
@@ -37,9 +37,9 @@ theorem norm_iff [Fintype G] (V : FDRep ℂ G) :
   simp only [GlobalTheory.BadShare.ZCalc.character_inv, starRingEnd_apply]
 
 /- English proof (translation)
-Unfold `IsIrrChar`. Rewrite using `[isChar_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨V, rfl⟩, h⟩`. Conclude with `⟨V, (norm_iff V).1 h, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨V, h, rfl⟩`. Conclude with `⟨⟨V, rfl⟩, (norm_iff V).2 h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isIrrChar_iff [Fintype G] (χ : G → ℂ) : IsIrrChar χ ↔ ∃ V : FDRep ℂ G, Simple V ∧ V.character = χ := by
   unfold IsIrrChar
@@ -51,11 +51,11 @@ theorem isIrrChar_iff [Fintype G] (χ : G → ℂ) : IsIrrChar χ ↔ ∃ V : FD
     exact ⟨⟨V, rfl⟩, (norm_iff V).2 h⟩
 
 /- English proof (translation)
-Establish `hc : (Nat.card U : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `haveI := invertibleOfNonzero hc`. Establish `h` using `Representation.card_inv_mul_sum_char_eq_finrank (V.ρ.comp U.subtype : Representation ℂ U V)`. Establish `hs : (∑ u : G, if u ∈ U then V.character u else 0) = ∑ g : U, Representation.character (V.ρ.comp U.subtype : Representation ℂ U V) g`. Rewrite using `[← Finset.sum_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_subtype _ (by simp) (fun g => V.character g)`. Rewrite using `[hs]`. Establish `h2 : (∑ g : U, Representation.character (V.ρ.comp U.subtype : Representation ℂ U V) g) = 0 ↔ Representation.invariants (V.ρ.comp U.subtype : Representation ℂ U V) = ⊥`. Rewrite using `[← Submodule.finrank_eq_zero, ← Nat.cast_eq_zero (R := ℂ), ← h, mul_eq_zero, or_iff_right (inv_ne_zero hc)]`. Rewrite using `[h2, Submodule.eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun v => imp_congr ?_ Iff.rfl` and prove the remaining obligations. Rewrite using `[Representation.mem_invariants]`. Conclude with `⟨fun h u hu => h ⟨u, hu⟩, fun h u => h u.1 u.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_subgroup_eq_zero_iff [Fintype G] (V : FDRep ℂ G) (U : Subgroup G) [DecidablePred (· ∈ U)] :
     (∑ u : G, if u ∈ U then V.character u else 0) = 0 ↔ ∀ v : V, (∀ u ∈ U, V.ρ u v = v) → v = 0 := by
@@ -76,12 +76,12 @@ theorem sum_subgroup_eq_zero_iff [Fintype G] (V : FDRep ℂ G) (U : Subgroup G) 
   exact ⟨fun h u hu => h ⟨u, hu⟩, fun h u => h u.1 u.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 1, fun _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_isChar : IsChar (fun _ : G => (0 : ℂ)) := ⟨0, 1, fun _ => by simp⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨-, h⟩`. Simplify using `only [zero_mul, Finset.sum_const_zero] at h`. Conclude with `(Nat.cast_ne_zero.2 Fintype.card_ne_zero) h.symm`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zero_not_isIrrChar [Fintype G] : ¬ IsIrrChar (fun _ : G => (0 : ℂ)) := by
   rintro ⟨-, h⟩
@@ -93,7 +93,7 @@ end Group
 variable {F : Type} [Field F] [Fintype F] [DecidableEq F]
 
 /- English proof (translation)
-Unfold `unipBlock`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, sub_eq_zero, Matrix.one_apply]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem mem_unipBlock_iff (d a : ℕ) (u : GL (Fin d) F) :
     u ∈ (unipBlock d a : Set (GL (Fin d) F)) ↔
@@ -105,9 +105,9 @@ theorem mem_unipBlock_iff (d a : ℕ) (u : GL (Fin d) F) :
 
 omit [Fintype F] [DecidableEq F] in
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k.val < a`. Rewrite using `[hX i k (by omega), zero_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY k j (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem block_mul_eq_zero {d a : ℕ} {X Y : Matrix (Fin d) (Fin d) F}
     (hX : ∀ i j : Fin d, ¬ (i.val < a ∧ a ≤ j.val) → X i j = 0)
@@ -143,9 +143,7 @@ def unipSubgroup (d a : ℕ) : Subgroup (GL (Fin d) F) where
     rw [h2, sub_sub_cancel_left, Matrix.neg_apply, hu i j hij, neg_zero]
 
 /- English proof (translation)
-Establish `h0` using `block_mul_eq_zero hX hX`. Use `⟨⟨1 + X, 1 - X, ?_, ?_⟩, (mem_unipBlock_iff d a _).2 (by simpa using hX), rfl⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← h0]`. Use `noncomm_ring`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← h0]`.
-
-Use `noncomm_ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_unipBlock (d a : ℕ) (X : Matrix (Fin d) (Fin d) F)
     (hX : ∀ i j : Fin d, ¬ (i.val < a ∧ a ≤ j.val) → X i j = 0) :
@@ -156,9 +154,9 @@ theorem exists_mem_unipBlock (d a : ℕ) (X : Matrix (Fin d) (Fin d) F)
   · rw [← sub_eq_zero, ← neg_eq_zero, ← h0]; noncomm_ring
 
 /- English proof (translation)
-Unfold `IsCuspChar`. Rewrite using `[isIrrChar_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨V, hV, rfl⟩, h⟩`. Use `⟨V, hV, rfl, fun a h0 h1 => (sum_subgroup_eq_zero_iff V _).1 ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `h a h0 h1 using 3` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Introduce and unpack `⟨V, hV, rfl, h⟩`. Use `⟨⟨V, hV, rfl⟩, fun a h0 h1 => ?_⟩` and prove the remaining obligations. Use `(sum_subgroup_eq_zero_iff V _).2 (h a h0 h1) using 3` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
 Both sides reduce to the same expression.
 -/
@@ -179,15 +177,15 @@ theorem isCuspChar_iff {d : ℕ} (χ : GL (Fin d) F → ℂ) :
     rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.1, fun h => ⟨h, fun a h0 h1 => by omega⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCuspChar_iff_of_le_one {d : ℕ} (hd : d ≤ 1) (χ : GL (Fin d) F → ℂ) : IsCuspChar χ ↔ IsIrrChar χ :=
   ⟨fun h => h.1, fun h => ⟨h, fun a h0 h1 => by omega⟩⟩
 
 /- English proof (translation)
-Establish `hc : IsChar (fun x => (c x : ℂ))` using `⟨1, (Units.map (Matrix.scalar (Fin 1) : ℂ →+* _).toMonoidHom).comp c, fun x => by simp⟩`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Take `⟨V, hV⟩` from `(isChar_iff _).1 hc`. Establish `: ∀ x, (c x : ℂ) * star (c x : ℂ) = 1` using `fun x => by`. Establish `h` using `GlobalTheory.BadShare.ZCalc.character_inv V x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hV, starRingEnd_apply]`. Rewrite using `[← h, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Rewrite using `[Finset.sum_congr rfl fun x _ => this x]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isIrrChar_of_hom {G : Type} [Group G] [Fintype G] (c : G →* ℂˣ) : IsIrrChar (fun x => (c x : ℂ)) := by
   have hc : IsChar (fun x => (c x : ℂ)) :=
@@ -202,13 +200,13 @@ theorem isIrrChar_of_hom {G : Type} [Group G] [Fintype G] (c : G →* ℂˣ) : I
   simp
 
 /- English proof (translation)
-The claim follows from `(isCuspChar_iff_of_le_one le_rfl _).2 (isIrrChar_of_hom c)`.
+A detailed English derivation is pending.
 -/
 theorem isCuspChar_rank_one (c : GL (Fin 1) F →* ℂˣ) : IsCuspChar (fun x => (c x : ℂ)) :=
   (isCuspChar_iff_of_le_one le_rfl _).2 (isIrrChar_of_hom c)
 
 /- English proof (translation)
-Introduce and unpack `⟨-, h⟩`. Establish `h1` using `h 1 one_pos (by omega)`. Rewrite `h1` using `[Finset.sum_boole, Nat.cast_eq_zero, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Conclude with `h1 (Finset.mem_univ 1) (unipSubgroup d 1 : Subgroup (GL (Fin d) F)).one_mem`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isCuspChar_one {d : ℕ} (hd : 2 ≤ d) : ¬ IsCuspChar (fun _ : GL (Fin d) F => (1 : ℂ)) := by
   classical
@@ -218,9 +216,9 @@ theorem not_isCuspChar_one {d : ℕ} (hd : 2 ≤ d) : ¬ IsCuspChar (fun _ : GL 
   exact h1 (Finset.mem_univ 1) (unipSubgroup d 1 : Subgroup (GL (Fin d) F)).one_mem
 
 /- English proof (translation)
-Use `⟨isIrrChar_of_hom _, fun a h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, hs⟩` from `hc a h0 h1`. Set `U : Subgroup (GL (Fin d) F)` to `unipSubgroup d a`. Set `f : U →* ℂ` to `((Units.coeHom ℂ).comp c).comp U.subtype`. Establish `h` using `sum_hom_units_eq_zero f (fun h => hs (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `DFunLike.congr_fun h (⟨t, ht⟩ : U)`. Conclude with `h2))`. Rewrite using `[← Finset.sum_filter]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Conclude with `Finset.sum_subtype (p := (· ∈ U)) _ (fun x => by rw [Finset.mem_filter]; exact and_iff_right (Finset.mem_univ _)) (fun g => ((c g : ℂˣ) : ℂ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCuspChar_of_hom {d : ℕ} (c : GL (Fin d) F →* ℂˣ)
     (hc : ∀ a, 0 < a → a < d → ∃ t ∈ (unipBlock d a : Set (GL (Fin d) F)), (c t : ℂ) ≠ 1) :
@@ -250,16 +248,16 @@ def signChar : GL (Fin 2) (ZMod 2) →* ℂˣ :=
 def transv : GL (Fin 2) (ZMod 2) := ⟨!![1, 1; 0, 1], !![1, 1; 0, 1], by decide, by decide⟩
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [transv]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transv_mem : transv ∈ (unipBlock 2 1 : Set (GL (Fin 2) (ZMod 2))) := by
   intro i j
   fin_cases i <;> fin_cases j <;> simp [transv]
 
 /- English proof (translation)
-Establish `hp : permOfGL 2 transv = Equiv.swap ![0, 1] ![1, 1]`. Use extensionality with `v i`. Use `revert v i`. Evaluate the decidable proposition. Use `show Units.map _ (Equiv.Perm.sign (permOfGL 2 transv)) = -1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hp, Equiv.Perm.sign_swap (by decide)]`. Use `ext`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem signChar_transv : signChar transv = -1 := by
   have hp : permOfGL 2 transv = Equiv.swap ![0, 1] ![1, 1] := by
@@ -271,7 +269,7 @@ theorem signChar_transv : signChar transv = -1 := by
   ext; simp
 
 /- English proof (translation)
-Use `isCuspChar_of_hom _ fun a h0 h1 => ?_` and prove the remaining obligations. Take `rfl : a = 1` from `by omega`. Use `⟨transv, transv_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[signChar_transv]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem isCuspChar_signChar : IsCuspChar (fun x => (signChar x : ℂ)) := by
   refine isCuspChar_of_hom _ fun a h0 h1 => ?_

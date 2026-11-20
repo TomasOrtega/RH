@@ -13,11 +13,11 @@ noncomputable section
 namespace RelOneStep
 
 /- English proof (translation)
-Set `μ : (Σ k, ι k) → ℕ` to `fun p => if p.2 = c p.1 then b p.1 else 0`. Establish `hμ : ∀ k, ∑ i, μ ⟨k, i⟩ = b k`. Introduce `k`. Simplify using `[μ]`. Establish `h` using `monomial_mem_relSecM R y μ hμ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `heq : ∏ p, y p ^ μ p = ∏ k, y ⟨k, c k⟩ ^ b k`. Rewrite using `[← Finset.univ_sigma_univ, Finset.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [μ]`. Apply the tactic sequence `rw [Finset.prod_congr rfl fun i _ => (show y ⟨k, i⟩ ^ (if i = c k then b k else 0) = if i = c k then y ⟨k, i⟩ ^ b k else 1 by split_ifs <;> simp)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[heq]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem chart_monomial_mem {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {Ω : Type*} [Field Ω]
     (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (b : K → ℕ) (c : ∀ k, ι k) :
@@ -40,13 +40,13 @@ theorem chart_monomial_mem {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fi
 end RelOneStep
 
 /- English proof (translation)
-Introduce `K _ _ ι _ Ω _ R hR y c0 hc0`. Use `choose n hn using fun k0 : K => hT K ι Ω R hR y c0 hc0 k0`. Use `⟨Finset.univ.sup n, fun b hb k0 t ht hxt => ?_⟩` and prove the remaining obligations. Establish `hbk : ∀ k, n k0 ≤ b k` using `fun k => le_trans (Finset.le_sup (Finset.mem_univ k0)) (hb k)`. Take `⟨g', hg', hfg⟩` from `hn k0 b hbk (y ⟨k0, c0 k0⟩ * t) hxt (by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Take `⟨N, hN⟩` from `hC K ι Ω R y c _ (ht c hc)`. Use `⟨N, t * (∏ k, y ⟨k, c k⟩) ^ N, ?_, by ring⟩` and prove the remaining obligations. Establish `hm` using `mul_mem_relSecM R y hN (RelOneStep.chart_monomial_mem R y b c)`. Establish `hone : (∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (b k : ℤ)))) * ∏ k, y ⟨k, c k⟩ ^ b k = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_add₀ (hc k)]`. Simplify using the standard rewrite rules. Establish `heq : t * (∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (b k : ℤ)))) * (∏ k, y ⟨k, c k⟩) ^ N * ∏ k, y ⟨k, c k⟩ ^ b k = t * (∏ k, y ⟨k, c k⟩) ^ N`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(t * (∏ k, y ⟨k, c k⟩) ^ N) * hone`. Rewrite `hm` using `[heq, add_comm]`. Conclude with `hm)`. Establish `hx : y ⟨k0, c0 k0⟩ ≠ 0` using `hc0 k0`. Rewrite using `[mul_left_cancel₀ hx hfg]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem RelOneStep.proof (hC : RelChartPoly.Statement) (hT : RelTorsionBound.Statement) : RelOneStep.Statement := by
   intro K _ _ ι _ Ω _ R hR y c0 hc0

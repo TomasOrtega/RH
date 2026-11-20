@@ -39,7 +39,7 @@ def EpsBy (Y : PT E) (w : 𝓞 E) : Prop := ∀ y ∈ Y.L, (Y.eps y : ℝ) = Rea
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `y hy` and use `by have : (Y'.eps (ψ y) : ℝ) = Y.eps y := by rw [he y hy, he' _ ((h.lat y).1 hy), ← h.act] rcases h.herm with h1 | h1 <;> simp [h1] exact_mod_cast this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Match.eps (h : Match Y Y' ψ) {w : 𝓞 E} (he : EpsBy Y w) (he' : EpsBy Y' w) :
     ∀ y ∈ Y.L, Y'.eps (ψ y) = Y.eps y := fun y hy => by

@@ -43,7 +43,7 @@ def presheafAb : TopCat.Presheaf Ab.{u} X where
       map_add' := fun _ _ => rfl }
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget Ab.{u})]`. Conclude with `TopCat.Presheaf.toTypes_isSheaf X E`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSheaf_presheafAb : (presheafAb E).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget Ab.{u})]
@@ -152,14 +152,14 @@ def oneTmul (x : X) (m : (M.presheaf.stalk (f x) : Type u)) : tensorStalk f M x 
   (1 : X.presheaf.stalk x) ⊗ₜ[Y.presheaf.stalk (f x)] m
 
 /- English proof (translation)
-The claim follows from `TensorProduct.tmul_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem oneTmul_add (x : X) (m n : (M.presheaf.stalk (f x) : Type u)) :
     oneTmul f M x (m + n) = oneTmul f M x m + oneTmul f M x n :=
   TensorProduct.tmul_add _ _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 : X.presheaf.stalk x) ⊗ₜ[Y.presheaf.stalk (f x)] (a • m) = (algebraMap (Y.presheaf.stalk (f x)) (X.presheaf.stalk x) a) • ((1 : X.presheaf.stalk x) ⊗ₜ[Y.presheaf.stalk (f x)] m)`. Rewrite using `[algebraMap_smul, TensorProduct.tmul_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneTmul_smul (x : X) (a : Y.presheaf.stalk (f x)) (m : (M.presheaf.stalk (f x) : Type u)) :
     oneTmul f M x (a • m) = f.stalkMap x a • oneTmul f M x m := by
@@ -169,7 +169,7 @@ theorem oneTmul_smul (x : X) (a : Y.presheaf.stalk (f x)) (m : (M.presheaf.stalk
   rw [algebraMap_smul, TensorProduct.tmul_smul]
 
 /- English proof (translation)
-Rewrite using `[QCoh.germ_smul, oneTmul_smul, Scheme.Hom.germ_stalkMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem oneTmul_germ_smul {V : Y.Opens} (r : Γ(Y, V)) (s : Γ(M, V)) (x : X) (hx : f x ∈ V) :
     oneTmul f M x (M.presheaf.germ V (f x) hx (r • s)) =
@@ -177,7 +177,7 @@ theorem oneTmul_germ_smul {V : Y.Opens} (r : Γ(Y, V)) (s : Γ(M, V)) (x : X) (h
   rw [QCoh.germ_smul, oneTmul_smul, Scheme.Hom.germ_stalkMap_apply]
 
 /- English proof (translation)
-Rewrite using `[M.presheaf.germ_res_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem oneTmul_germ_res {U V : Y.Opens} (i : V ⟶ U) (s : Γ(M, U)) (x : X) (hx : f x ∈ V) :
     oneTmul f M x (M.presheaf.germ V (f x) hx (M.presheaf.map i.op s)) =
@@ -205,7 +205,7 @@ def stalkUnit (x : X) : (M.presheaf.stalk (f x) : Type u) →+
     TopCat.Presheaf.stalkPushforward Ab.{u} f.base ((Scheme.Modules.pullback f).obj M).presheaf x).hom
 
 /- English proof (translation)
-Establish `e1` using `QCoh.stalkFunctor_map_germ ((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app M) (f x) hx s`. Establish `h'` using `congr(ConcreteCategory.hom $(TopCat.Presheaf.stalkPushforward_germ Ab.{u} f.base ((Scheme.Modules.pullback f).obj M).presheaf V x hx) (((Scheme.Modules.pullbackPushforwardAdjunction f).unit.app M).app V s))`. Use `Eq.trans ?_ h'` and prove the remaining obligations. Conclude with `congrArg (TopCat.Presheaf.stalkPushforward Ab.{u} f.base _ x).hom e1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stalkUnit_germ (x : X) {V : Y.Opens} (hx : f x ∈ V) (s : Γ(M, V)) :
     stalkUnit f M x (M.presheaf.germ V (f x) hx s) =
@@ -219,7 +219,7 @@ theorem stalkUnit_germ (x : X) {V : Y.Opens} (hx : f x ∈ V) (s : Γ(M, V)) :
   exact congrArg (TopCat.Presheaf.stalkPushforward Ab.{u} f.base _ x).hom e1
 
 /- English proof (translation)
-Take `⟨U, hU, r, rfl⟩` from `Y.presheaf.exists_germ_eq a`. Take `⟨V, hV, s, rfl⟩` from `M.presheaf.exists_germ_eq m`. Establish `hx : f x ∈ U ⊓ V` using `⟨hU, hV⟩`. Rewrite using `[← Y.presheaf.germ_res_apply (homOfLE (inf_le_left : U ⊓ V ≤ U)) (f x) hx, ← M.presheaf.germ_res_apply (homOfLE (inf_le_right : U ⊓ V ≤ V)) (f x) hx, ← QCoh.germ_smul, stalkUnit_germ, stalkUnit_germ, Scheme.Hom.germ_stalkMap_apply]`. Conclude with `(congrArg _ (Scheme.Modules.Hom.app_smul _ _ _)).trans (QCoh.germ_smul _ _ _ _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkUnit_smul (x : X) (a : Y.presheaf.stalk (f x)) (m : (M.presheaf.stalk (f x) : Type u)) :
     stalkUnit f M x (a • m) = f.stalkMap x a • stalkUnit f M x m := by

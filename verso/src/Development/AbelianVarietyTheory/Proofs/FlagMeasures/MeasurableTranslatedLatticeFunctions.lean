@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem of_oneInf (w : InfinitePlace E) : Matrix.of (oneInf E j w) = 1 := rfl
 
 /- English proof (translation)
-Unfold `detNorm`. Simplify using `[of_oneInf]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem detNorm_oneInf : 0 < detNorm E j (oneInf E j) := by
   unfold detNorm
@@ -27,9 +27,9 @@ theorem detNorm_oneInf : 0 < detNorm E j (oneInf E j) := by
 variable {E j}
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `hz : detNorm E j g = 0`. Unfold `detNorm`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ w) (by simp [h0])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_pos {g : MatInf E j} (hg : 0 < detNorm E j g) (w : InfinitePlace E) :
     IsUnit (Matrix.of (g w)).det := by
@@ -52,7 +52,7 @@ theorem act_apply (A : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ) (x : VecI
     act A x w = A w *ᵥ x w := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [act_apply, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem act_act {A B : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ} (h : ∀ w, A w * B w = 1) (x : VecInf E j) :
     act A (act B x) = x := by
@@ -60,7 +60,7 @@ theorem act_act {A B : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ} (h : ∀ 
   simp only [act_apply, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]
 
 /- English proof (translation)
-Unfold `latAt`. Rewrite using `[Submodule.map_span, ← Set.image_comp]`. Use `congr 2`. Use function extensionality and compare the values at `y w`. Simplify using `[act_apply, of_oneInf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latAt_eq (Λ : Submodule (𝓞 E) (Fin j → E)) (g : MatInf E j) :
     latAt E j Λ g = (latAt E j Λ (oneInf E j)).map (act fun w => (Matrix.of (g w))⁻¹) := by
@@ -71,7 +71,7 @@ theorem latAt_eq (Λ : Submodule (𝓞 E) (Fin j → E)) (g : MatInf E j) :
   simp [act_apply, of_oneInf]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [act_apply]`. Rewrite using `[dotProduct_comm, dotProduct_mulVec, dotProduct_comm, mulVec_transpose]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma dualAt_act_transpose (A : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ) (x y : VecInf E j) :
     ∑ w, (act A x w ⬝ᵥ y w).re = ∑ w, (x w ⬝ᵥ act (fun w => (A w)ᵀ) y w).re := by
@@ -80,13 +80,13 @@ private lemma dualAt_act_transpose (A : InfinitePlace E → Matrix (Fin j) (Fin 
   rw [dotProduct_comm, dotProduct_mulVec, dotProduct_comm, mulVec_transpose]
 
 /- English proof (translation)
-Establish `hBA : ∀ w, B w * A w = 1` using `fun w => mul_eq_one_comm.mp (h w)`. Establish `hT : ∀ y, act (fun w => (B w)ᵀ) (act (fun w => (A w)ᵀ) y) = y` using `fun y => act_act (fun w => by rw [← Matrix.transpose_mul, h w, Matrix.transpose_one]) y`. Establish `hT' : ∀ y, act (fun w => (A w)ᵀ) (act (fun w => (B w)ᵀ) y) = y` using `fun y => act_act (fun w => by rw [← Matrix.transpose_mul, hBA w, Matrix.transpose_one]) y`. Unfold `dualAt`. Rewrite using `[Submodule.map_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨act (fun w => (A w)ᵀ) y, fun x hx => ?_, hT y⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hy _ (Submodule.mem_map_of_mem hx)`. Conclude with `⟨z, by rw [← dualAt_act_transpose A x y]; exact hz⟩`. Introduce and unpack `⟨y', hy', rfl⟩ x hx`. Take `⟨x', hx', rfl⟩` from `Submodule.mem_map.mp hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hy' x' hx'`. Conclude with `⟨z, by rw [dualAt_act_transpose A x' _, hT' y']; exact hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dualAt_map (L : Submodule ℤ (VecInf E j)) {A B : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ}
     (h : ∀ w, A w * B w = 1) :
@@ -112,9 +112,9 @@ theorem dualAt_map (L : Submodule ℤ (VecInf E j)) {A B : InfinitePlace E → M
     exact ⟨z, by rw [dualAt_act_transpose A x' _, hT' y']; exact hz⟩
 
 /- English proof (translation)
-Establish `hBA : ∀ w, B w * A w = 1` using `fun w => mul_eq_one_comm.mp (h w)`. Set `e : {x : VecInf E j // x ∈ L ∧ x ≠ 0} ≃ {x : VecInf E j // x ∈ L.map (act A) ∧ x ≠ 0}` to `{ toFun := fun x => ⟨act A x.1, Submodule.mem_map_of_mem x.2.1, fun h0 => x.2.2 (by`. Rewrite using `[← act_act hBA x.1, h0, map_zero])⟩`. Use `invFun := fun y => ⟨act B y.1, by`. Take `⟨x, hx, hxy⟩` from `Submodule.mem_map.mp y.2.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxy, act_act hBA]`. Conclude with `hx, fun h0 => y.2.2 (by rw [← act_act h y.1, h0, map_zero])⟩`. Use `left_inv := fun x => Subtype.ext (act_act hBA x.1)`. Use `right_inv := fun y => Subtype.ext (act_act h y.1) }`. Conclude with `(e.tsum_eq (fun x => Φ x.1)).symm`.
+A detailed English derivation is pending.
 -/
 theorem tsum_map (L : Submodule ℤ (VecInf E j)) {A B : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ}
     (h : ∀ w, A w * B w = 1) (Φ : VecInf E j → ENNReal) :
@@ -138,11 +138,11 @@ def pairL (y : VecInf E j) : VecInf E j →ₗ[ℝ] ℝ where
   map_smul' c x := by simp [smul_dotProduct, Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `y y' hyy`. Establish `key : ∀ (w : InfinitePlace E) (a : Fin j) (c : ℂ), (c * y w a).re = (c * y' w a).re`. Introduce `w a c`. Establish `hv : ∀ z : VecInf E j, pairL z (Pi.single w (Pi.single a c)) = (c * z w a).re`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ∑ v, ((Pi.single w (Pi.single a c) : VecInf E j) v ⬝ᵥ z v).re = _`. Rewrite using `[Finset.sum_eq_single w (fun v _ hne => by simp [hne]) (by simp)]`. Simplify using `[single_dotProduct]`. Rewrite using `[← hv y, ← hv y', hyy]`. Use function extensionality and compare the values at `w a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using key w a 1`. Simplify using `using key w a Complex.I`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pairL_injective : Function.Injective (pairL : VecInf E j → _) := by
   classical
@@ -161,17 +161,17 @@ theorem pairL_injective : Function.Injective (pairL : VecInf E j → _) := by
   · simpa using key w a Complex.I
 
 /- English proof (translation)
-Establish `hsym : ∀ x y : VecInf E j, pairL y x = pairL x y` using `fun x y => by show ∑ w, (x w ⬝ᵥ y w).re = ∑ w, (y w ⬝ᵥ x w).re`. Conclude with `Finset.sum_congr rfl fun w _ => by rw [dotProduct_comm]`. Establish `hint : ∀ y ∈ dualAt E j L, ∀ x ∈ L, ∃ z : ℤ, pairL x y = z`. Introduce `y hy x hx`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy'`. Take `⟨z, hz⟩` from `hy' x hx`. Conclude with `⟨z, by rw [← hsym x y]; exact hz⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y y' _ _ h1 h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h1`. Take `⟨c, hc⟩` from `h2`. Conclude with `⟨a + c, by rw [map_add, ha, hc]; push_cast; ring⟩`. Consider the case `smul n y _ h1`. Take `⟨a, ha⟩` from `h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n * a, by rw [map_zsmul, ha, zsmul_eq_mul]; push_cast; ring⟩`. Take `⟨b, hbL, hbspan, hbli⟩` from `exists_linearIndependent ℝ (L : Set (VecInf E j))`. Use `haveI : Finite b := hbli.finite`. Use `choose φ hφ using fun (y : dualAt E j L) (i : b) => hint y.1 y.2 i.1 (hbL i.2)`. Use `Function.Injective.countable (f := φ) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y y' hyy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `pairL_injective` to reduce the goal to its premises. Use `LinearMap.ext_on (s := (b : Set (VecInf E j))) (hbspan.trans hL) ?_` and prove the remaining obligations. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `e1` using `hφ y ⟨x, hx⟩`. Establish `e2` using `hφ y' ⟨x, hx⟩`. Simplify using `only at e1 e2`. Rewrite using `[hsym x y.1, hsym x y'.1, e1, e2, hyy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_dualAt (L : Submodule ℤ (VecInf E j)) (hL : Submodule.span ℝ (L : Set (VecInf E j)) = ⊤) :
     Countable (dualAt E j L) := by
@@ -207,7 +207,7 @@ theorem countable_dualAt (L : Submodule ℤ (VecInf E j)) (hL : Submodule.span �
   rw [hsym x y.1, hsym x y'.1, e1, e2, hyy]
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : InfinitePlace E → Fin j → Fin j → ℂ => f (Matrix.of (g w))` using `hf.comp (continuous_apply w)`. Conclude with `hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_of_continuous {β : Type} [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β]
     (w : InfinitePlace E) (f : Matrix (Fin j) (Fin j) ℂ → β) (hf : Continuous f) :
@@ -217,7 +217,7 @@ theorem measurable_of_continuous {β : Type} [TopologicalSpace β] [MeasurableSp
   exact hc.measurable
 
 /- English proof (translation)
-Unfold `detNorm`. Conclude with `Finset.measurable_prod _ fun w _ => measurable_of_continuous w (fun M => ‖M.det‖ ^ 2) (continuous_id.matrix_det.norm.pow 2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_detNorm : Measurable (detNorm E j) := by
   unfold detNorm
@@ -225,9 +225,9 @@ theorem measurable_detNorm : Measurable (detNorm E j) := by
     measurable_of_continuous w (fun M => ‖M.det‖ ^ 2) (continuous_id.matrix_det.norm.pow 2)
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun w => ?_` and prove the remaining obligations. Simplify using `only [act_apply]`. Establish `hinv : ∀ M : Matrix (Fin j) (Fin j) ℂ, M⁻¹ = (M.det)⁻¹ • M.adjugate` using `fun M => by`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Simplify using `only [hinv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hd : Measurable fun g : MatInf E j => (Matrix.of (g w)).det` using `measurable_of_continuous w (fun M => M.det) continuous_id.matrix_det`. Use `measurable_pi_lambda _ fun a => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul]`. Use `Finset.measurable_sum _ fun b _ => ?_` and prove the remaining obligations. Conclude with `(hd.inv.mul (measurable_of_continuous w (fun M => M.adjugate a b) (continuous_id.matrix_adjugate.matrix_elem a b))).mul_const _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_act_inv (x : VecInf E j) :
     Measurable fun g : MatInf E j => act (fun w => (Matrix.of (g w))⁻¹) x := by
@@ -245,7 +245,7 @@ theorem measurable_act_inv (x : VecInf E j) :
     (continuous_id.matrix_adjugate.matrix_elem a b))).mul_const _
 
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun w => ?_` and prove the remaining obligations. Simplify using `only [act_apply]`. Conclude with `measurable_of_continuous w (fun M => Mᵀ *ᵥ x w) (continuous_id.matrix_transpose.matrix_mulVec continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_act_transpose (x : VecInf E j) :
     Measurable fun g : MatInf E j => act (fun w => (Matrix.of (g w))ᵀ) x := by
@@ -255,7 +255,7 @@ theorem measurable_act_transpose (x : VecInf E j) :
     (continuous_id.matrix_transpose.matrix_mulVec continuous_const)
 
 /- English proof (translation)
-Establish `hS : MeasurableSet {g : MatInf E j | 0 < detNorm E j g}` using `measurableSet_lt measurable_const measurable_detNorm`. Use `hf'.indicator hS using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `congrFun (Set.indicator_congr fun g hg => h g hg) g`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem measurable_indicator_of_eqOn {f f' : MatInf E j → ENNReal} (hf' : Measurable f')
     (h : ∀ g, 0 < detNorm E j g → f g = f' g) :
@@ -267,7 +267,7 @@ theorem measurable_indicator_of_eqOn {f f' : MatInf E j → ENNReal} (hf' : Meas
   exact congrFun (Set.indicator_congr fun g hg => h g hg) g
 
 /- English proof (translation)
-The claim follows from `Function.Injective.countable (f := fun x : {x : VecInf E j // x ∈ L ∧ x ≠ 0} => (⟨x.1, x.2.1⟩ : L)) fun _ _ hab => Subtype.ext (congrArg (fun y : L => (y : VecInf E j)) hab)`.
+A detailed English derivation is pending.
 -/
 private lemma countable_nonzero_lattice_vectors (L : Submodule ℤ (VecInf E j)) [Countable L] :
     Countable {x : VecInf E j // x ∈ L ∧ x ≠ 0} :=
@@ -275,13 +275,11 @@ private lemma countable_nonzero_lattice_vectors (L : Submodule ℤ (VecInf E j))
     fun _ _ hab => Subtype.ext (congrArg (fun y : L => (y : VecInf E j)) hab)
 
 /- English proof (translation)
-Introduce `E _ _ hE j wt Φ hw hΦ Λ hΛ`. Take `⟨κ, -, hK⟩` from `(GlobalTheory.T.translatedLatticeAtInfinity_full_covolume_dual E hE j).1 Λ hΛ`. Take `⟨⟨hd, hz⟩, -, -, -⟩` from `hK (oneInf E j) (detNorm_oneInf E j)`. Use `haveI : Countable (latAt E j Λ (oneInf E j)) := TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Use `haveI : Countable (dualAt E j (latAt E j Λ (oneInf E j))) := countable_dualAt _ hz.span_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := countable_nonzero_lattice_vectors (latAt E j Λ (oneInf E j))`. Use `haveI := countable_nonzero_lattice_vectors (dualAt E j (latAt E j Λ (oneInf E j)))`. Establish `hinv : ∀ g : MatInf E j, 0 < detNorm E j g → ∀ w, (Matrix.of (g w))⁻¹ * Matrix.of (g w) = 1` using `fun g hg w => Matrix.nonsing_inv_mul _ (isUnit_det_of_pos hg w)`. Establish `htr : ∀ g : MatInf E j, 0 < detNorm E j g → ∀ w, (Matrix.of (g w))ᵀ * ((Matrix.of (g w))⁻¹)ᵀ = 1`. Introduce `g hg w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.transpose_mul, hinv g hg w, Matrix.transpose_one]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `measurable_indicator_of_eqOn (f' := fun g => wt (κ / detNorm E j g)) (hw.comp (measurable_const.div measurable_detNorm)) fun g hg => by simp only [(hK g hg).2.1]`. Apply the tactic sequence `refine measurable_indicator_of_eqOn (f' := fun g => ∑' x : {x : VecInf E j // x ∈ latAt E j Λ (oneInf E j) ∧ x ≠ 0}, Φ (act (fun w => (Matrix.of (g w))⁻¹) x.1)) (Measurable.ennreal_tsum fun x => hΦ.comp (measurable_act_inv x.1)) fun g hg => ?_ try dsimp only`. Rewrite using `[latAt_eq Λ g, tsum_map _ (hinv g hg) Φ]`.
-
-Apply the tactic sequence `refine measurable_indicator_of_eqOn (f' := fun g => ∑' x : {x : VecInf E j // x ∈ dualAt E j (latAt E j Λ (oneInf E j)) ∧ x ≠ 0}, Φ (act (fun w => (Matrix.of (g w))ᵀ) x.1)) (Measurable.ennreal_tsum fun x => hΦ.comp (measurable_act_transpose x.1)) fun g hg => ?_ try dsimp only`. Rewrite using `[latAt_eq Λ g, dualAt_map _ (hinv g hg), tsum_map _ (htr g hg) Φ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_latFun : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, ∀ (w : ℝ → ENNReal) (Φ : VecInf E j → ENNReal), Measurable w → Measurable Φ → ∀ Λ : Submodule (𝓞 E) (Fin j → E), Submodule.IsLattice E Λ → Measurable (fun g : MatInf E j => {g | 0 < detNorm E j g}.indicator (fun g => w (covAt E j (latAt E j Λ g))) g) ∧ Measurable (fun g : MatInf E j => {g | 0 < detNorm E j g}.indicator (fun g => ∑' x : {x : VecInf E j // x ∈ latAt E j Λ g ∧ x ≠ 0}, Φ x.1) g) ∧ Measurable (fun g : MatInf E j => {g | 0 < detNorm E j g}.indicator (fun g => ∑' x : {x : VecInf E j // x ∈ dualAt E j (latAt E j Λ g) ∧ x ≠ 0}, Φ x.1) g) := by
   intro E _ _ hE j wt Φ hw hΦ Λ hΛ

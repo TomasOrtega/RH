@@ -18,13 +18,13 @@ def PsiRel (D : DegPre R) (ψ : PsiFam D) (q : D.X → (FractionRing R)ˣ) : Pro
     val (ψ χ) r z J = unitAt r z (q χ) * val (D.psi χ) r z J
 
 /- English proof (translation)
-Introduce `χ _ r _ _ hJ` and use `val_psi_rescale q χ r hJ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem psiRel_rescale (D : DegPre R) (q : D.X → (FractionRing R)ˣ) : PsiRel D (rescale D q).psi q :=
   fun χ _ r _ _ hJ => val_psi_rescale q χ r hJ
 
 /- English proof (translation)
-Introduce `χ Z r z J hJ` and use `by have e : val ((withPsi D ψ hψ).psi χ) r z J = _ := h χ Z r z J hJ rw [e, map_inv, inv_mul_cancel_left]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PsiRel.symm {q : D.X → (FractionRing R)ˣ} (h : PsiRel D ψ q) :
     PsiRel (withPsi D ψ hψ) D.psi fun χ => (q χ)⁻¹ := fun χ Z r z J hJ => by
@@ -32,11 +32,11 @@ theorem PsiRel.symm {q : D.X → (FractionRing R)ˣ} (h : PsiRel D ψ q) :
   rw [e, map_inv, inv_mul_cancel_left]
 
 /- English proof (translation)
-Establish `e` using `TauTwist.val_tau (withPsi D ψ hψ) a b r hJ`. Establish `e₁ : val ((withPsi D ψ hψ).psi (a + b)) r z J = _` using `h (a + b) Z r z J hJ`. Establish `e₂ : val ((withPsi D ψ hψ).psi a) r z J = _` using `h a Z r z J hJ`. Establish `e₃ : val ((withPsi D ψ hψ).psi b) r z J = _` using `h b Z r z J hJ`. Establish `e₄` using `TauTwist.val_tau D a b r hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁` using `[hx, map_mul, map_mul]`. Establish `e₅ : val (withPsi D ψ hψ).rigK r z J = val D.rigK r z J` using `rfl`. Rewrite `e` using `[e₁, e₂, e₃, e₅]`. Rewrite using `[e, e₄]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem PsiRel.val_tau {q : D.X → (FractionRing R)ˣ} (h : PsiRel D ψ q) {a b : D.X} {x : (FractionRing R)ˣ}
     (hx : q (a + b) = q a * q b * x) {Z : Scheme.{0}} (r : Z ⟶ (TK R).left) {z : Z} {J} (hJ : Good D.P.L z J) :
@@ -77,7 +77,7 @@ def gtScale (ψ : PsiFam D) (hψ : ∀ χ, (ψ χ).IsGen) (g : GtPtF D F) (a : D
     exact congrArg _ e
 
 /- English proof (translation)
-The claim follows from `(val_corr hJ (h.2 χ) r).trans (val_scale (a χ) (g.s χ) r hJ)`.
+A detailed English derivation is pending.
 -/
 theorem GtRel.val {g : GtPtF D F} {g' : GtPtF (withPsi D ψ hψ) F} {a : D.X → Fˣ} (h : GtRel g g' a) (χ : D.X)
     {Z : Scheme.{0}} (r : Z ⟶ (TF (R := R) F).left) {z : Z} {J} (hJ : Good D.P.L z J) :
@@ -85,7 +85,7 @@ theorem GtRel.val {g : GtPtF D F} {g' : GtPtF (withPsi D ψ hψ) F} {a : D.X →
   (val_corr hJ (h.2 χ) r).trans (val_scale (a χ) (g.s χ) r hJ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hb, fun χ => corr_of_val D.P.isLB fun y J hJ => (h χ y J hJ).trans (val_scale (a χ) (g.s χ) _ hJ).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem gtRel_of_val {g : GtPtF D F} {g' : GtPtF (withPsi D ψ hψ) F} {a : D.X → Fˣ} (hb : g'.b = g.b)
     (h : ∀ χ y J, Good D.P.L y J → charVal g' χ y J = unitAt (𝟙 (TF (R := R) F).left) y (a χ) * charVal g χ y J) :
@@ -93,7 +93,7 @@ theorem gtRel_of_val {g : GtPtF D F} {g' : GtPtF (withPsi D ψ hψ) F} {a : D.X 
   ⟨hb, fun χ => corr_of_val D.P.isLB fun y J hJ => (h χ y J hJ).trans (val_scale (a χ) (g.s χ) _ hJ).symm⟩
 
 /- English proof (translation)
-The claim follows from `gtRel_of_val rfl fun χ _ _ hJ => val_scale (a χ) (g.s χ) _ hJ`.
+A detailed English derivation is pending.
 -/
 theorem gtRel_gtScale (g : GtPtF D F) (a : D.X → Fˣ) (ha : ∀ χ χ', a (χ + χ') = a χ * a χ') :
     GtRel g (gtScale ψ hψ g a ha) a :=
@@ -104,7 +104,7 @@ namespace GtRel
 variable {g g₁ g₂ g₃ : GtPtF D F} {g' g₁' g₂' g₃' : GtPtF (withPsi D ψ hψ) F} {a a₁ a₂ a₃ : D.X → Fˣ}
 
 /- English proof (translation)
-The claim follows from `gtRel_of_val h.1.symm fun χ y J hJ => by have e : charVal g' χ y J = _ := h.val χ _ hJ rw [e, map_inv, inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem symm (h : GtRel g g' a) : GtRel (D := withPsi D ψ hψ) (ψ := D.psi) (hψ := D.psi_gen) g' g fun χ => (a χ)⁻¹ :=
   gtRel_of_val h.1.symm fun χ y J hJ => by
@@ -112,15 +112,15 @@ theorem symm (h : GtRel g g' a) : GtRel (D := withPsi D ψ hψ) (ψ := D.psi) (h
     rw [e, map_inv, inv_mul_cancel_left]
 
 /- English proof (translation)
-The claim follows from `gt_ext_val (h₁.1.trans h₂.1.symm) fun χ _ _ hJ => (h₁.val χ _ hJ).trans (h₂.val χ _ hJ).symm`.
+A detailed English derivation is pending.
 -/
 theorem unique (h₁ : GtRel g g₁' a) (h₂ : GtRel g g₂' a) : g₁' = g₂' :=
   gt_ext_val (h₁.1.trans h₂.1.symm) fun χ _ _ hJ => (h₁.val χ _ hJ).trans (h₂.val χ _ hJ).symm
 
 /- English proof (translation)
-Take `⟨b, v⟩` from `(isAdd_iff_val _ _ _).1 h`. Use `(isAdd_iff_val _ _ _).2 ⟨h₃.1.trans (b.trans (congrArg₂ (· * ·) h₁.1 h₂.1).symm), fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `e₁ : charVal g₁' χ y J = _` using `h₁.val χ _ hJ`. Establish `e₂ : charVal g₂' χ y J = _` using `h₂.val χ _ hJ`. Establish `e₃ : charVal g₃' χ y J = _` using `h₃.val χ _ hJ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e₁, e₂, e₃, h₁.1, h₂.1, ha, map_mul, _root_.mul_mul_mul_comm, _root_.mul_assoc]`. Conclude with `congrArg _ (v χ y J hJ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdd (h₁ : GtRel g₁ g₁' a₁) (h₂ : GtRel g₂ g₂' a₂) (h₃ : GtRel g₃ g₃' a₃) (ha : ∀ χ, a₃ χ = a₁ χ * a₂ χ)
     (h : g₁.IsAdd g₂ g₃) : g₁'.IsAdd g₂' g₃' := by
@@ -133,9 +133,9 @@ theorem isAdd (h₁ : GtRel g₁ g₁' a₁) (h₂ : GtRel g₂ g₂' a₂) (h�
   exact congrArg _ (v χ y J hJ)
 
 /- English proof (translation)
-Use `gtRel_of_val ((add_b g₁' g₂').trans ((congrArg₂ (· * ·) h₁.1 h₂.1).trans (add_b g₁ g₂).symm)) fun χ y J hJ => ?_` and prove the remaining obligations. Establish `e₁ : charVal g₁' χ y J = _` using `h₁.val χ _ hJ`. Establish `e₂ : charVal g₂' χ y J = _` using `h₂.val χ _ hJ`. Establish `e` using `add_val g₁' g₂' χ hJ`. Rewrite `e` using `[e₁, e₂, h₁.1, h₂.1, _root_.mul_mul_mul_comm, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel (e.trans ((congrArg _ (add_val g₁ g₂ χ hJ).symm).trans (_root_.mul_assoc _ _ _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem add (h₁ : GtRel g₁ g₁' a₁) (h₂ : GtRel g₂ g₂' a₂) : GtRel (g₁ + g₂) (g₁' + g₂') fun χ => a₁ χ * a₂ χ := by
   refine gtRel_of_val ((add_b g₁' g₂').trans ((congrArg₂ (· * ·) h₁.1 h₂.1).trans (add_b g₁ g₂).symm))
@@ -147,14 +147,14 @@ theorem add (h₁ : GtRel g₁ g₁' a₁) (h₂ : GtRel g₂ g₂' a₂) : GtRe
   exact mul_right_cancel (e.trans ((congrArg _ (add_val g₁ g₂ χ hJ).symm).trans (_root_.mul_assoc _ _ _).symm))
 
 /- English proof (translation)
-The claim follows from `gtRel_of_val ((zero_b (D := withPsi D ψ hψ)).trans (zero_b (D := D)).symm) fun χ y J hJ => by rw [zero_val (D := withPsi D ψ hψ) χ hJ, zero_val (D := D) χ hJ, map_one, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem zero : GtRel (0 : GtPtF D F) (0 : GtPtF (withPsi D ψ hψ) F) fun _ => 1 :=
   gtRel_of_val ((zero_b (D := withPsi D ψ hψ)).trans (zero_b (D := D)).symm) fun χ y J hJ => by
     rw [zero_val (D := withPsi D ψ hψ) χ hJ, zero_val (D := D) χ hJ, map_one, _root_.mul_one]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa only [zero_nsmul, pow_zero] using zero`. Consider the case `succ k ih => simpa only [succ_nsmul, pow_succ] using ih.add h`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem nsmul (h : GtRel g g' a) (k : ℕ) : GtRel (k • g) (k • g') fun χ => a χ ^ k := by
   induction k with
@@ -162,7 +162,7 @@ theorem nsmul (h : GtRel g g' a) (k : ℕ) : GtRel (k • g) (k • g') fun χ =
   | succ k ih => simpa only [succ_nsmul, pow_succ] using ih.add h
 
 /- English proof (translation)
-Take `rfl : a₂ = fun χ => a₁ χ ^ k` from `funext ha`. Take `rfl` from `(isNsmul_iff_eq _ _ _).1 h`. Conclude with `(isNsmul_iff_eq _ _ _).2 (h₂.unique (h₁.nsmul k))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isNsmul (h₁ : GtRel g₁ g₁' a₁) (h₂ : GtRel g₂ g₂' a₂) {k : ℕ} (ha : ∀ χ, a₂ χ = a₁ χ ^ k)
     (h : GtPtF.IsNsmul k g₁ g₂) : GtPtF.IsNsmul k g₁' g₂' := by
@@ -171,7 +171,7 @@ theorem isNsmul (h₁ : GtRel g₁ g₁' a₁) (h₂ : GtRel g₂ g₂' a₂) {k
   exact (isNsmul_iff_eq _ _ _).2 (h₂.unique (h₁.nsmul k))
 
 /- English proof (translation)
-Take `⟨b, v⟩` from `(isIota_iff_val _ _).1 hι`. Use `(isIota_iff_val _ _).2 ⟨h.1.trans b, fun χ y J hJ => (h.val χ _ hJ).trans (Eq.trans (congrArg₂ (· * ·) ?_ (v χ y J hJ)) (hq.val_tau (ht χ) _ hJ).symm)⟩` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `(unitAt_spMap _ (algebraMap (FractionRing R) F) y _).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIota {q : D.X → (FractionRing R)ˣ} (hq : PsiRel D ψ q) {x : D.X} {t : D.X → (FractionRing R)ˣ}
     (ht : ∀ χ, q (x + χ) = q x * q χ * t χ) (h : GtRel g g' a)
@@ -184,9 +184,9 @@ theorem isIota {q : D.X → (FractionRing R)ˣ} (hq : PsiRel D ψ q) {x : D.X} {
   exact (unitAt_spMap _ (algebraMap (FractionRing R) F) y _).symm
 
 /- English proof (translation)
-Take `⟨B, c₁, c₂⟩` from `oa'`. Take `rfl : B = oa.onB` from `ho`. Use `⟨h₂.1.trans (h.1.trans (congrArg (· ≫ oa.onB.act x) h₁.1.symm)), fun u hu u₀ χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (h.2 u hu u₀ χ) (𝟙 _))`. Rewrite `e` using `[val_pull hJ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(val_mul hJ _ _ _).trans ((congrArg₂ (· * ·) (h₁.val _ _ hJ) (val_pull hJ _ _ _)).trans (Eq.trans ?_ (h₂.val χ _ hJ).symm))` and prove the remaining obligations. Rewrite using `[ha, h₁.1, _root_.mul_assoc]`. Conclude with `congrArg _ e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtAct {O : Type} [CommRing O] [StarRing O] [Module O D.X] {oa : D.OAct O} {oa' : (withPsi D ψ hψ).OAct O}
     (ho : oa'.onB = oa.onB) {x : O} (h₁ : GtRel g₁ g₁' a₁) (h₂ : GtRel g₂ g₂' a₂) (ha : ∀ χ, a₂ χ = a₁ (star x • χ))
@@ -208,22 +208,20 @@ def QkRel {k : ℕ} (r : D.X → D.X → Fˣ) (p : QkPt D F k) (p' : QkPt (withP
   p'.y = p.y ∧ GtRel p.g p'.g (r p.y)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.symm, by rw [h.1]; exact h.2.symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem QkRel.symm {k : ℕ} {r : D.X → D.X → Fˣ} {p : QkPt D F k} {p' : QkPt (withPsi D ψ hψ) F k} (h : QkRel r p p') :
     QkRel (D := withPsi D ψ hψ) (ψ := D.psi) (hψ := D.psi_gen) (fun y x => (r y x)⁻¹) p' p :=
   ⟨h.1.symm, by rw [h.1]; exact h.2.symm⟩
 
 /- English proof (translation)
-The claim follows from `qk_ext (h₁.1.trans h₂.1.symm) (h₁.2.unique h₂.2)`.
+A detailed English derivation is pending.
 -/
 theorem QkRel.unique {k : ℕ} {r : D.X → D.X → Fˣ} {p : QkPt D F k} {p₁ p₂ : QkPt (withPsi D ψ hψ) F k}
     (h₁ : QkRel r p p₁) (h₂ : QkRel r p p₂) : p₁ = p₂ := qk_ext (h₁.1.trans h₂.1.symm) (h₁.2.unique h₂.2)
 
 /- English proof (translation)
-Use `⟨hq.1.trans (h.1.trans hp.1.symm), ?_, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hq.2.1, hp.2.1]`. Conclude with `h.2.1`. Use `(hq.2.val χ _ hJ).trans (Eq.trans (congrArg₂ (· * ·) ?_ ((val_corr hJ (h.2.2 χ) _).trans (val_pull hJ _ _ _))) ((val_pull hJ _ _ _).trans (hp.2.val χ _ hJ)).symm)` and prove the remaining obligations. Rewrite using `[hr, h.1]`.
-
-Conclude with `(unitAt_spMap _ f y _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QkRel.qkExt {k : ℕ} {F' : Type} [Field F'] [Algebra (FractionRing R) F'] {f : F →+* F'} {r : D.X → D.X → Fˣ}
     {r' : D.X → D.X → F'ˣ} (hr : ∀ y x, r' y x = Units.map f.toMonoidHom (r y x)) {p : QkPt D F k} {q : QkPt D F' k}
@@ -248,7 +246,7 @@ def IsRootForm {X K F : Type} [AddCommGroup X] [Module O X] [Field K] [Field F] 
   IsScalarForm O r ∧ ∀ y x, r y x ^ k = Units.map (algebraMap K F).toMonoidHom (t y x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.inv, fun y x => by rw [inv_pow, h.2, map_inv]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsRootForm.inv {X K F : Type} [AddCommGroup X] [Module O X] [Field K] [Field F] [Algebra K F] {k : ℕ}
     {t : X → X → Kˣ} {r : X → X → Fˣ} (h : IsRootForm O k t r) :
@@ -267,7 +265,7 @@ def qkScale (hw : w + star w = 1) (ht : IsScalarForm O t) (hq : PsiRel D ψ fun 
 variable (hw : w + star w = 1) (ht : IsScalarForm O t) (hq : PsiRel D ψ fun y => t y (w • y)) (hr : IsRootForm O k t r)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, gtRel_gtScale _ _ (hr.1.add_right p.y)⟩`.
+Supply the required witnesses or components.
 -/
 theorem qkRel_qkScale (p : QkPt D F k) : QkRel r p (qkScale hw ht hq hr hψ p) :=
   ⟨rfl, gtRel_gtScale _ _ (hr.1.add_right p.y)⟩
@@ -278,7 +276,7 @@ variable {p₁ p₂ p₃ : QkPt D F k} {p₁' p₂' p₃' : QkPt (withPsi D ψ h
 include hw ht hq hr
 
 /- English proof (translation)
-Take `⟨z, hy, g, hι, hg⟩` from `h`. Establish `e` using `gtRel_gtScale (hψ := hψ) g (fun χ => r z χ ^ k) ((hr.1.pow k).add_right z)`. Use `⟨z, h₂.1.trans (hy.trans (congrArg (· + k • z) h₁.1.symm)), _, e.isIota hq (ht.refine_add hw z) (hr.2 z) hι, h₁.2.isAdd e h₂.2 (fun χ => ?_) hg⟩` and prove the remaining obligations. Rewrite using `[hy, hr.1.add_left, hr.1.nsmul_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem equiv (h₁ : QkRel r p₁ p₁') (h₂ : QkRel r p₂ p₂') (h : QkPt.Equiv D F p₁ p₂) :
     QkPt.Equiv (withPsi D ψ hψ) F p₁' p₂' := by
@@ -289,7 +287,7 @@ theorem equiv (h₁ : QkRel r p₁ p₁') (h₂ : QkRel r p₂ p₂') (h : QkPt.
   rw [hy, hr.1.add_left, hr.1.nsmul_left]
 
 /- English proof (translation)
-Take `⟨q, hy, hg, he⟩` from `h`. Establish `e` using `qkRel_qkScale (hψ := hψ) hw ht hq hr q`. Use `⟨_, hy.trans (congrArg₂ (· + ·) h₁.1 h₂.1).symm, h₁.2.isAdd h₂.2 e.2 (fun χ => ?_) hg, equiv hw ht hq hr e h₃ he⟩` and prove the remaining obligations. Rewrite using `[hy, hr.1.add_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qkAdd (h₁ : QkRel r p₁ p₁') (h₂ : QkRel r p₂ p₂') (h₃ : QkRel r p₃ p₃') (h : QkAdd p₁ p₂ p₃) :
     QkAdd p₁' p₂' p₃' := by
@@ -300,7 +298,7 @@ theorem qkAdd (h₁ : QkRel r p₁ p₁') (h₂ : QkRel r p₂ p₂') (h₃ : Qk
   rw [hy, hr.1.add_left]
 
 /- English proof (translation)
-Take `⟨q, hy, hg, he⟩` from `h`. Establish `e` using `qkRel_qkScale (hψ := hψ) hw ht hq hr q`. Use `⟨_, hy.trans (congrArg (x • ·) h₁.1).symm, h₁.2.gtAct ho e.2 (fun χ => ?_) hg, equiv hw ht hq hr e h₂ he⟩` and prove the remaining obligations. Rewrite using `[hy, hr.1.bal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qkAct {oa : D.OAct O} {oa' : (withPsi D ψ hψ).OAct O} (ho : oa'.onB = oa.onB) {x : O} (h₁ : QkRel r p₁ p₁')
     (h₂ : QkRel r p₂ p₂') (h : QkAct oa x p₁ p₂) : QkAct oa' x p₁' p₂' := by
@@ -310,21 +308,21 @@ theorem qkAct {oa : D.OAct O} {oa' : (withPsi D ψ hψ).OAct O} (ho : oa'.onB = 
   rw [hy, hr.1.bal]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨equiv (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv h₁.symm h₂.symm, equiv hw ht hq hr h₁ h₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem equiv_iff (h₁ : QkRel r p₁ p₁') (h₂ : QkRel r p₂ p₂') :
     QkPt.Equiv (withPsi D ψ hψ) F p₁' p₂' ↔ QkPt.Equiv D F p₁ p₂ :=
   ⟨equiv (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv h₁.symm h₂.symm, equiv hw ht hq hr h₁ h₂⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨qkAdd (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv h₁.symm h₂.symm h₃.symm, qkAdd hw ht hq hr h₁ h₂ h₃⟩`.
+Supply the required witnesses or components.
 -/
 theorem qkAdd_iff (h₁ : QkRel r p₁ p₁') (h₂ : QkRel r p₂ p₂') (h₃ : QkRel r p₃ p₃') :
     QkAdd p₁' p₂' p₃' ↔ QkAdd p₁ p₂ p₃ :=
   ⟨qkAdd (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv h₁.symm h₂.symm h₃.symm, qkAdd hw ht hq hr h₁ h₂ h₃⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨qkAct (D := withPsi D ψ hψ) hw ht.inv hq.symm hr.inv ho.symm h₁.symm h₂.symm, qkAct hw ht hq hr ho h₁ h₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem qkAct_iff {oa : D.OAct O} {oa' : (withPsi D ψ hψ).OAct O} (ho : oa'.onB = oa.onB) {x : O} (h₁ : QkRel r p₁ p₁')
     (h₂ : QkRel r p₂ p₂') : QkAct oa' x p₁' p₂' ↔ QkAct oa x p₁ p₂ :=
@@ -340,7 +338,7 @@ def qkScaleEquiv (hψ : ∀ χ, (ψ χ).IsGen) : QkPt D F k ≃ QkPt (withPsi D 
     simpa only [inv_inv] using (qkRel_qkScale (D := withPsi D ψ hψ) (hψ := D.psi_gen) hw ht.inv hq.symm hr.inv p).symm)
 
 /- English proof (translation)
-The claim follows from `qkRel_qkScale hw ht hq hr p`.
+A detailed English derivation is pending.
 -/
 theorem qkRel_qkScaleEquiv (p : QkPt D F k) : QkRel r p (qkScaleEquiv hw ht hq hr hψ p) := qkRel_qkScale hw ht hq hr p
 

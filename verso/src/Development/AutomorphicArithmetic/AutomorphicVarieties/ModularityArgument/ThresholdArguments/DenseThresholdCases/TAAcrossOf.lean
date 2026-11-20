@@ -16,22 +16,22 @@ open private across_cc across_pair across_up across_irr across_tf from Developme
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.V.Z.Win
 /- English proof (translation)
-Use `mem_Dec.2 (ValuationSubring.ext _ _ fun x => ?_)` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← h ((s⁻¹ : G F Ω) • x), AlgEquiv.smul_def, mul_inv_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_dec_of {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A : ValuationSubring Ω} {s : G F Ω}
     (h : ∀ x, s x ∈ A ↔ x ∈ A) : s ∈ Dec (F := F) A := by
   refine mem_Dec.2 (ValuationSubring.ext _ _ fun x => ?_)
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← h ((s⁻¹ : G F Ω) • x), AlgEquiv.smul_def, mul_inv_apply]
 /- English proof (translation)
-Introduce `w hw hU A hA`. Establish `hA' : IsPlaceOver A (w.under (𝓞 K₂))` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply K₂ M Ω]`. Conclude with `hA (algebraMap (𝓞 K₂) (𝓞 M) x)`. Establish `hl : A.valuation (l : Ω) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hA ((l : ℕ) : 𝓞 M)).2 hw`. Simplify using `using h`. Take `⟨κ, ⟨g, hg⟩, hne⟩` from `hU A hA'`. Set `ρ : ↥(Dec (F` to `M) A) →* ↥(Dec (F := K₂) A) := ((AlgEquiv.restrictScalarsHom K₂ : G M Ω →* G K₂ Ω).comp (Dec (F := M) A).subtype).codRestrict _ fun s => mem_dec_of fun x => apply_mem_iff_of_mem_Dec s.2 x`. Establish `hρ : Function.Surjective ρ`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `hs0 : resG ℚ K₂ Ω s.1 ∈ (resG ℚ K₁ Ω).range`. Establish `hd : resG ℚ K₂ Ω s.1 ∈ Dec (F` using `ℚ) A := mem_dec_of fun x => apply_mem_iff_of_mem_Dec s.2 x`. Establish `hfix` using `hS A hl _ hd`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := (resG ℚ K₂ Ω s.1).toRingEquiv) hfix, AlgEquiv.ext fun x => rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hM s.1 hs0`. Establish `hx : ∀ x, t x = s.1 x` using `fun x => DFunLike.congr_fun ht x`. Use `⟨⟨t, mem_dec_of fun x => ?_⟩, Subtype.ext ht⟩` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `apply_mem_iff_of_mem_Dec s.2 x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => (κ i).comp ρ, ⟨g, fun s => hg (ρ s)⟩, fun i j e => hne i j (MonoidHom.ext fun s => ?_)⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hρ s`. Conclude with `DFunLike.congr_fun e t`.
+A detailed English derivation is pending.
 -/
 private theorem keeps_of_split {K₁ K₂ M Ω : Type} [Field K₁] [Field K₂] [NumberField K₂] [Field M] [NumberField M] [Field Ω] [Algebra ℚ Ω]
     [Algebra K₁ Ω] [Algebra K₂ Ω] [Algebra K₂ M] [Algebra M Ω] [IsScalarTower K₂ M Ω] [IsScalarTower ℚ K₂ Ω] [Algebra ℚ K₁] [IsScalarTower ℚ K₁ Ω]
@@ -64,15 +64,13 @@ private theorem keeps_of_split {K₁ K₂ M Ω : Type} [Field K₁] [Field K₂]
   obtain ⟨t, rfl⟩ := hρ s
   exact DFunLike.congr_fun e t
 /- English proof (translation)
-Take `⟨M, _, _, _, iK, iK', iM, tK, tK', gK, gK', hs, hs', hM, hM'⟩` from `UpperTheory.V.Z.Bc.biQuad K K' Ω hK hK'`. Use `haveI := across_up K Ω`. Use `haveI := across_up K' Ω`. Use `haveI := across_up M Ω`. Take `⟨c, hcc⟩` from `across_cc Ω`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : (r.comp (resG ℚ K Ω)).comp (resG K M Ω) = (r.comp (resG ℚ K' Ω)).comp (resG K' M Ω)` using `MonoidHom.ext fun s => rfl`. Establish `hiM : IsIrr ((r.comp (resG ℚ K Ω)).comp (resG K M Ω))`. Use `across_irr r _ ((resG ℚ K Ω).comp (resG K M Ω)) ?_ hi` and prove the remaining obligations. Introduce and unpack `⟨s, ⟨t, rfl⟩, h2⟩`. Take `⟨u, rfl⟩` from `(hM t).2 h2`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨u, rfl⟩`. Establish `hiM' : IsIrr ((r.comp (resG ℚ K' Ω)).comp (resG K' M Ω))` using `he ▸ hiM`. Establish `hiK : IsIrr (r.comp (resG ℚ K Ω))` using `across_irr r ((resG ℚ K Ω).comp (resG K M Ω)) (resG ℚ K Ω) (fun s => ⟨resG K M Ω s, rfl⟩) hiM`. Establish `hiK' : IsIrr (r.comp (resG ℚ K' Ω))` using `across_irr r ((resG ℚ K' Ω).comp (resG K' M Ω)) (resG ℚ K' Ω) (fun s => ⟨resG K' M Ω s, rfl⟩) hiM'`. Take `⟨P, hPa⟩` from `across_pair (F := K) r θ hd c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P', hPa'⟩` from `across_pair (F := K') r θ hd c`. Establish `pol : Sol.Pol ι (r.comp (resG ℚ K Ω))` using `⟨ℚ, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, θ, c, P, hθ, UpperTheory.V.Ws.auSign θ, hcc, hPa⟩`. Establish `pol' : Sol.Pol ι (r.comp (resG ℚ K' Ω))` using `⟨ℚ, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, θ, c, P', hθ, UpperTheory.V.Ws.auSign θ, hcc, hPa'⟩`. Establish `up` using `(hUD hP hR K M Ω hs l ι n hn (r.comp (resG ℚ K Ω)) (hc.comp (continuous_restrictScalarsHom ℚ K Ω)) hiM pol (hA hc K hK hiK) (((hFL ℚ Ω l n r).2.2.2 K).2.1 hF)).1 hW`. Rewrite `up` using `[he]`.
-
-Conclude with `(hUD hP hR K' M Ω hs' l ι n hn (r.comp (resG ℚ K' Ω)) (hc.comp (continuous_restrictScalarsHom ℚ K' Ω)) hiM' pol' (hA hc K' hK' hiK') (((hFL ℚ Ω l n r).2.2.2 K').2.1 hF)).2 (((hFL ℚ Ω l n r).2.2.2 K').1 hI) (keeps_of_split hS (fun s h => (hM' s).2 h) _) up`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step (hFL : FlagLaws) (hUD : _root_.UpperTheory.V.Z.Win.AUpDownAlt) (hP : _root_.UpperTheory.V.Af.HypothesesH') (hR : RowT) (K K' Ω : Type) [Field K] [NumberField K] [IsCMField K]
     [Field K'] [NumberField K'] [IsCMField K'] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω] [Algebra K' Ω]
@@ -115,9 +113,9 @@ private theorem step (hFL : FlagLaws) (hUD : _root_.UpperTheory.V.Z.Win.AUpDownA
     (keeps_of_split hS (fun s h => (hM' s).2 h) _) up
 end UpperTheory.V.Z.Win
 /- English proof (translation)
-Introduce `hFL hUD _ hP hR K Ω _ _ _ _ _ _ _ hK l _ ι n hn hS r hc hA ⟨θ, hθ, hd⟩ hI hF hirr hW K' _ _ _ inst _ _ hK' hirr'`. Take `rfl : inst = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Take `⟨K'', _, _, _, _, _, hK'', hS'', h1, h2⟩` from `UpperTheory.V.Z.Win.thirdSplit K K' Ω hK hK' l n r hirr hirr'`. Establish `h3` using `UpperTheory.V.Z.Win.step hFL hUD hP hR K K'' Ω hK hK'' l ι n hn hS r hc hA θ hθ hd hI hF h1 hW`. Rewrite `h2` using `[inf_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `UpperTheory.V.Z.Win.step hFL hUD hP hR K'' K' Ω hK'' hK' l ι n hn hS'' r hc hA θ hθ hd hI hF h2 h3`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.a_across_of_statement :
     _root_.UpperTheory.V.Z.Win.AAcrossOfAlt := by

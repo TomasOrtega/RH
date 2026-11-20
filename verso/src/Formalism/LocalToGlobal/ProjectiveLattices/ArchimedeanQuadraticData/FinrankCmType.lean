@@ -10,7 +10,7 @@ open NumberField Matrix
 open scoped ComplexConjugate
 
 /- English proof (translation)
-The claim follows from `star_star φ`.
+A detailed English derivation is pending.
 -/
 lemma conj_conj_emb {K : Type} [Field K] (φ : K →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ :=
@@ -50,11 +50,11 @@ def cmEquiv {K : Type} [Field K] {ι : Type} (σ : ι → K →+* ℂ) (hinj : F
         simp only [Sum.elim_inr, hi, conj_conj_emb])
 
 /- English proof (translation)
-Establish `h1 : (algebraMap ℚ ℂ) (Algebra.trace ℚ K z) = ∑ τ : K →+* ℂ, τ z`. Rewrite using `[trace_eq_sum_embeddings ℂ (x := z)]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom (R := K) (S := ℂ)).symm _ _ (fun _ => rfl)`. Establish `h2 : ∑ τ : K →+* ℂ, τ z = ∑ i, σ i z + ∑ i, conj (σ i z)`. Rewrite using `[← Equiv.sum_comp (cmEquiv σ hinj hcm), Fintype.sum_sum_type]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h3` using `congrArg Complex.re (h1.trans h2)`. Simplify using `only [Complex.add_re, Complex.re_sum, Complex.conj_re] at h3`. Establish `h4 : ((algebraMap ℚ ℂ) (Algebra.trace ℚ K z)).re = ((Algebra.trace ℚ K z : ℚ) : ℝ)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_re_cmType {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] (σ : ι → K →+* ℂ)
     (hinj : Function.Injective σ)
@@ -74,7 +74,7 @@ theorem sum_re_cmType {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype 
   linarith
 
 /- English proof (translation)
-Rewrite using `[← NumberField.Embeddings.card K ℂ, ← Fintype.card_congr (cmEquiv σ hinj hcm), Fintype.card_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_cmType {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] (σ : ι → K →+* ℂ)
     (hinj : Function.Injective σ)

@@ -16,11 +16,11 @@ namespace GlobalTheory.QVecJoin
 open GlobalTheory.QVec GlobalTheory.LocMod.StepVec
 
 /- English proof (translation)
-Introduce `D c v B χ hv r pl G E ξ Q S hinj hQ hS hres hrk j hj hmv hmv' hb hb' hsd hsd' sS sT LS χj vac d hPg hLr hvac hd hstep χS χT om hom g hg`. Establish `hn : ∀ i, ∃ n, j + n = (G i).s` using `fun i => ⟨(G i).s - j, by have := (G i).hs; omega⟩`. Use `gen (fun i => (G i).q) pl (fun i => (G i).idem) (fun i => (G i).unit) hinj hQ hS hom hsd hsd' _ _ hPg hvac hd hstep (fun i => (E i).eL j) (fun i => ?_) (fun i π' hπ => ?_) (fun e he Tm hTm i => ?_) g hg` and prove the remaining obligations. Take `⟨n, hn⟩` from `hn i`. Conclude with `((E i).eL_at j n hn).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hn i`. Take `⟨ea, -, mS⟩` from `(G i).frame j (n + 1) (by omega)`. Take `⟨eb, -, mT⟩` from `(G i).frame (j + 1) n (by omega)`. Conclude with `⟨lat_of_movedTo (G i).q ((hS _).2 ⟨i, rfl⟩) hsd (hv.sd j (by omega)) hmv _ (ea.symm.trans (stdOrd _ _ j (n + 1) (by omega))) mS ((G i).latY j (n + 1) _) π' hπ, lat_of_movedTo (G i).q ((hS _).2 ⟨i, rfl⟩) hsd' (hv.sd (j + 1) hj) hmv' _ (eb.symm.trans (stdOrd _ _ (j + 1) n (by omega …`. Take `⟨n, hn⟩` from `hn i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ea, ha, mS⟩` from `(G i).frame j (n + 1) (by omega)`. Take `⟨eb, hb, mT⟩` from `(G i).frame (j + 1) n (by omega)`. Conclude with `puts (G i).q hstep.1.2.inf hom hsd.1 hsd'.1 _ _ he ((hQ _).2 ⟨i, rfl⟩) (G i).idem hstep.1.2.theta hTm ea eb (parPhi (E i).δ) (int_of_parPhi _) _ (fun π' hπ hred N => GlobalTheory.T.parahoricTestFunction_integralAdelic_reduction D _ (G i).q (pl i) π' hπ hred _ (E i).tame _ (hres i …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem step_mid : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalTheory.Fam.Base c) (χ : ℕ → (AE D)ˣ →* Circle), v.Is → ∀ (r : ℕ) (pl : Fin r → Formalism.L2.DIV.Pl D.host.E) (G : ∀ i, QGeo v B (pl i)) (E : ∀ i, QExt (G i) χ) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (S : GlobalTheory.FinPl.Pl D → Prop), Function.Injective (fun i => (G i).q.v) → (∀ PP, PP ∈ Q ↔ ∃ i, pl i = PP) → (∀ p, S p ↔ ∃ i, (G i).q.v = p) → (∀ i, (G i).Res (E i).δ (ξ (pl i))) → (∀ i, D.R.r = D.R.k + ((G i).s + 1)) → ∀ j, j + 1 < D.R.m → GlobalTheory.FinPl.Moves (c.V j) (B.b j) (B.Λ j) (v.N j) S → GlobalTheory.FinPl.Moves (c.V (j + 1)) (B.b (j + 1)) (B.Λ (j + 1)) (v.N (j + 1)) S → B.b j ∈ GfC (c.V j) → B.b (j + 1) ∈ GfC (c.V (j + 1)) → IsSelfDualC _ (B.Λ j) → IsSelfDualC _ (B.Λ (j + 1)) → ∀ sS sT (LS : Formalism.L2.DIV.LevDat D.host.E ℂ (c.V j).rank) χj vac (d : WO (c.V j) (c.V (j + 1)) →₀ ℂ), LS.Pg = ∅ → LS.r = D.R.r → vac ≠ 0 → GlobalTheory.FinPl.CombAt S d → IsStepVecOf c.ψ c.θ (c.V j) (c.V (j + 1)) sS sT (B.Λ j : Set _) (B.Λ (j + 1) : Set _) (B.β j) (B.β (j + 1)) LS χj Q ξ vac (comb c.ψ _ _ d vac) → ∀ χS χT om, IsWeilDatumO c.ψ (c.V j) (c.V (j + 1)) χS χT om → ∀ g, GlobalTheory.FinPl.Vac c.ψ _ _ (B.Λ j) (B.Λ (j + 1)) S g → om (B.b j, B.b (j + 1)) (comb c.ψ _ _ d g) = comb c.ψ _ _ (aconv (List.ofFn fun i => (E i).eL j)) (om (B.b j, B.b (j + 1)) g) := by
   intro D c v B χ hv r pl G E ξ Q S hinj hQ hS hres hrk j hj hmv hmv' hb hb' hsd hsd' sS sT LS χj vac d hPg hLr hvac hd hstep
@@ -46,11 +46,11 @@ theorem step_mid : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalTheory.Fam.
         (hLr.trans (hrk i)) ea eb ha hb N) _ _ _ _ _ _ mS mT ((E i).reg.1 j n hn) rfl ((E i).eL_at j n hn)
 
 /- English proof (translation)
-Introduce `D c v B χ hv r pl G E ξ Q S hinj hQ hS hres hrk j hj hmv hmv' hb hb' hsd hsd' sS sT LS χj vac d hPg hLr hvac hd hstep χS χT om hom g hg`. Use `gen (fun i => (G i).q) pl (fun i => (G i).idem) (fun i => (G i).unit) hinj hQ hS hom hsd hsd' _ _ hPg hvac hd hstep (fun i => (E i).toAt.eT j hj) (fun i => ?_) (fun i π' hπ => ?_) (fun e he Tm hTm i => ?_) g hg` and prove the remaining obligations. Take `rfl : j = (G i).s` from `by have := (G i).hs; omega`. Conclude with `(E i).eLT_at.1`. Take `rfl : j = (G i).s` from `by have := (G i).hs; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ea, -, mS⟩` from `(G i).frame ((G i).s + 1) 0 rfl`. Take `⟨eb, -, mT⟩` from `(G i).frameTop`. Conclude with `⟨lat_of_movedTo (G i).q ((hS _).2 ⟨i, rfl⟩) hsd (hv.sd _ (by omega)) hmv _ (ea.symm.trans (stdOrd _ _ _ 0 rfl)) mS ((G i).latY _ 0 _) π' hπ, lat_of_movedTo (G i).q ((hS _).2 ⟨i, rfl⟩) hsd' hv.sdT hmv' _ eb.symm mT (G i).latT π' hπ⟩`. Take `rfl : j = (G i).s` from `by have := (G i).hs; omega`. Take `⟨ea, ha, mS⟩` from `(G i).frame ((G i).s + 1) 0 rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨eb, hb, mT⟩` from `(G i).frameTop`. Conclude with `puts (G i).q hstep.1.2.inf hom hsd.1 hsd'.1 _ _ he ((hQ _).2 ⟨i, rfl⟩) (G i).idem hstep.1.2.theta hTm ea eb (parPhi (E i).δ) (int_of_parPhi _) _ (fun π' hπ hred N => GlobalTheory.T.parahoricTestFunction_integralAdelic_reduction D _ (G i).q (pl i) π' hπ hred _ (E i).tame _ (hres i …`.
+A detailed English derivation is pending.
 -/
 theorem step_top : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalTheory.Fam.Base c) (χ : ℕ → (AE D)ˣ →* Circle), v.Is → ∀ (r : ℕ) (pl : Fin r → Formalism.L2.DIV.Pl D.host.E) (G : ∀ i, QGeo v B (pl i)) (E : ∀ i, QExt (G i) χ) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (S : GlobalTheory.FinPl.Pl D → Prop), Function.Injective (fun i => (G i).q.v) → (∀ PP, PP ∈ Q ↔ ∃ i, pl i = PP) → (∀ p, S p ↔ ∃ i, (G i).q.v = p) → (∀ i, (G i).Res (E i).δ (ξ (pl i))) → (∀ i, D.R.r = D.R.k + ((G i).s + 1)) → ∀ j (h : j + 2 * 0 + 2 = D.R.m), GlobalTheory.FinPl.Moves (c.V (j + 1)) (B.b (j + 1)) (B.Λ (j + 1)) (v.N (j + 1)) S → GlobalTheory.FinPl.Moves c.T B.bT B.ΛT v.NT S → B.b (j + 1) ∈ GfC (c.V (j + 1)) → B.bT ∈ GfC c.T → IsSelfDualC _ (B.Λ (j + 1)) → IsSelfDualC _ B.ΛT → ∀ sS sT (LS : Formalism.L2.DIV.LevDat D.host.E ℂ (c.V (j + 1)).rank) χj vac (d : WO (c.V (j + 1)) c.T →₀ ℂ), LS.Pg = ∅ → LS.r = D.R.r → vac ≠ 0 → GlobalTheory.FinPl.CombAt S d → IsStepVecOf c.ψ c.θ (c.V (j + 1)) c.T sS sT (B.Λ (j + 1) : Set _) (B.ΛT : Set _) (B.β (j + 1)) B.βT LS χj Q ξ vac (comb c.ψ _ _ d vac) → ∀ χS χT om, IsWeilDatumO c.ψ (c.V (j + 1)) c.T χS χT om → ∀ g, GlobalTheory.FinPl.Vac c.ψ _ _ (B.Λ (j + 1)) B.ΛT S g → om (B.b (j + 1), B.bT) (comb c.ψ _ _ d g) = comb c.ψ _ _ (aconv (List.ofFn fun i => (E i).toAt.eT j h)) (om (B.b (j + 1), B.bT) g) := by
   intro D c v B χ hv r pl G E ξ Q S hinj hQ hS hres hrk j hj hmv hmv' hb hb' hsd hsd' sS sT LS χj vac d hPg hLr hvac hd hstep
@@ -85,7 +85,7 @@ attribute [local instance] GlobalTheory.Fam.GeoAll.fld GlobalTheory.Fam.GeoAll.v
 namespace GlobalTheory.QVecJoin
 
 /- English proof (translation)
-Use `show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((n : ℕ) : 𝓞 D.host.F) ∈ PP.asIdeal ↔ _`. Rewrite using `[map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mem_under {D : D7} (PP : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) (n : ℕ) :
     ((n : ℕ) : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal ↔ ((n : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
@@ -93,9 +93,7 @@ theorem natCast_mem_under {D : D7} (PP : IsDedekindDomain.HeightOneSpectrum (�
   rw [map_natCast]
 
 /- English proof (translation)
-Use `haveI : PP.asIdeal.IsPrime := PP.isPrime`. Establish `ha' : ((a : ℕ) : (𝓞 D.host.E) ⧸ PP.asIdeal) = 0`. Simplify using `using (Ideal.Quotient.eq_zero_iff_mem (I := PP.asIdeal)).2 ha`. Establish `hb' : ((b : ℕ) : (𝓞 D.host.E) ⧸ PP.asIdeal) = 0`. Simplify using `using (Ideal.Quotient.eq_zero_iff_mem (I := PP.asIdeal)).2 hb`.
-
-Conclude with `CharP.ringChar_ne_one (Nat.eq_one_of_dvd_coprimes hab (ringChar.dvd ha') (ringChar.dvd hb'))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem false_of_coprime_mem {D : D7} (PP : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) {a b : ℕ} (hab : Nat.Coprime a b)
     (ha : ((a : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) (hb : ((b : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) : False := by
@@ -107,7 +105,7 @@ theorem false_of_coprime_mem {D : D7} (PP : IsDedekindDomain.HeightOneSpectrum (
   exact CharP.ringChar_ne_one (Nat.eq_one_of_dvd_coprimes hab (ringChar.dvd ha') (ringChar.dvd hb'))
 
 /- English proof (translation)
-Introduce and unpack `n rfl`. Conclude with `hω`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isWeilDatum_cast {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {T : HSp D} {a b : (AE D)ˣ →* Circle}
     (ω : Om (Yc D (D.R.m - 1)) T) (hω : IsWeilDatumO ψ _ _ a b ω) :
@@ -116,35 +114,31 @@ theorem isWeilDatum_cast {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {T : HSp D} {
   exact hω
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat J hJ row col hCh sc cT t`. Establish `hC3` using `hW.pk.bot.hyp.2.2.2.1`. Establish `hL` using `hC3.lev`. Take `⟨hinj, hund⟩` from `GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hat t (J t) (hJ t)`. Establish `hV` using `(ha.tie row col).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQS : ∀ p, p ∈ ((famOf a J row col hCh t).pinTup sc cT).Q ↔ ∃ i, ((J t).G i).q.v = p`. Introduce `p`. Simplify using `only [QFam.pinTup, famOf, Finset.mem_image]`. Conclude with `⟨fun ⟨i, _, h⟩ => ⟨i, h⟩, fun ⟨i, h⟩ => ⟨i, Finset.mem_univ _, h⟩⟩`. Establish `hSQ : ∀ p, (∃ i, ((J t).G i).q.v = p) ↔ ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 (I.rec7 l Z).host.F)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨(J t).pl i, (J t).mem i, hund i⟩`. Introduce and unpack `⟨PP, hPP, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨i, rfl⟩` from `(hJ t).surj PP hPP`. Conclude with `⟨i, hund i⟩`. Establish `hQiff : ∀ PP, PP ∈ (pk W).Q t ↔ ∃ i, (J t).pl i = PP` using `fun PP => ⟨fun h => (hJ t).surj PP h, by rintro ⟨i, rfl⟩; exact (J t).mem i⟩`. Establish `hrk : ∀ i, (I.rec7 l Z).R.r = (I.rec7 l Z).R.k + (((J t).G i).s + 1)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (I.rec7 l Z).R.r = (I.rec7 l Z).R.k + (I.rec7 l Z).R.m - 1` using `rfl`. Establish `e2` using `((J t).G i).hs`. Use linear arithmetic over natural numbers and integers. Establish `gIn : ∀ PP ∈ (pk W).Pg, ∃ k, (((I.rec7 l Z).host.g k : ℕ) : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal`. Introduce `PP hPP`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩` from `(hL.Pg PP).1 hPP`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hmemK : (((I.rec7 l Z).host.g k : ℕ) : 𝓞 (I.rec7 l Z).host.K) ∈ (PP.under (𝓞 (I.rec7 l Z).host.K)).asIdeal`. Establish `hk' : PP.under (𝓞 (I.rec7 l Z).host.K) = (pk W).C.P.pb k` using `hk`. Rewrite using `[hk']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pk W).C.P.pb_over k`. Establish `h2 : algebraMap (𝓞 (I.rec7 l Z).host.K) (𝓞 (I.rec7 l Z).host.E) (((I.rec7 l Z).host.g k : ℕ) : 𝓞 (I.rec7 l Z).host.K) ∈ PP.asIdeal` using `hmemK`. Simplify using `using h2`. Establish `hoff : ∀ p, (∃ i, ((J t).G i).q.v = p) → p ∉ a.v.gP`. Introduce `p hp hxg`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨PP, hPP, rfl⟩` from `(hSQ p).1 hp`. Take `⟨PP', hPP', e⟩` from `(hV.gP _).1 hxg`. Take `⟨k, hk⟩` from `gIn PP' hPP'`. Establish `hg : (((I.rec7 l Z).host.g k : ℕ) : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal` using `(natCast_mem_under PP _).1 (e ▸ (natCast_mem_under PP' _).2 hk)`. Take `⟨⟨q, hq, hcard, -, hne⟩, -⟩` from `hL.Q_pl t PP hPP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : PP.asIdeal.IsPrime := PP.isPrime`. Use `haveI : Finite (Formalism.L2.DIV.kP PP) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq.ne_zero)`. Use `haveI : Fintype (Formalism.L2.DIV.kP PP) := Fintype.ofFinite _`. Establish `hq0 : ((q : ℕ) : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal`. Establish `h0q : ((q : ℕ) : Formalism.L2.DIV.kP PP) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero (Formalism.L2.DIV.kP PP)`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem (I := PP.asIdeal)).1 (by simpa using h0q)`. Conclude with `false_of_coprime_mem PP ((Nat.coprime_primes hq ((I.rec7 l Z).host.g_prime k)).2 (hne k)) hq0 hg`. Establish `hS : (· ∈ ((famOf a J row col hCh t).pinTup sc cT).Q) = (fun p => ∃ i, ((J t).G i).q.v = p)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun p => propext (hQS p)`. Establish `hmv : ∀ j, j < (I.rec7 l Z).R.m → GlobalTheory.FinPl.Moves _ (a.g.b j) ((pk W).ΛY j) (a.v.N j) (fun p => ∃ i, ((J t).G i).q.v = p)` using `fun j hj => hV.moves j hj _ hoff`. Establish `hb : ∀ j, a.g.b j ∈ GfC (Yc (I.rec7 l Z) j)` using `fun j => (hV.b j) ▸ ha.vis.b j`. Establish `hS' : (fun p => ∃ i, ((J t).G i).q.v = p) = fun p => ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 (I.rec7 l Z).host.F)`. Use function extensionality and compare the values at `fun p => propext (hSQ p)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `sdY : ∀ j, j < (I.rec7 l Z).R.m → IsSelfDualC (Yc (I.rec7 l Z) j) ((pk W).ΛY j)` using `fun j hj => GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame _ _ _ _ _ (hL.βY j hj)`. Establish `sdX : IsSelfDualC (I.rec7 l Z).sp.X' (pk W).ΛX` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame _ _ _ _ _ hL.βX`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j hj d hd g hg`. Establish `hmid : ((famOf a J row col hCh t).pinTup sc cT).eQ j = aconv (List.ofFn fun i => ((J t).E i).eL j)` using `if_pos hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmid]`. Rewrite `hg` using `[hS]`. Conclude with `step_mid (I.rec7 l Z) (commOf (pk W) u a.g) a.v (baseOf (pk W) (lvP W) u a.g) (chrK W t) ha.vis (J t).r (J t).pl (fun i => (J t).G i) (fun i => (J t).E i) ((pk W).xiR t) ((pk W).Q t) _ hinj hQiff (fun p => Iff.rfl) (hJ t).res hrk j hj (hmv j (by omega)) (hmv (j + 1) hj) (hb j) (h …`. Introduce `j hj d hd g hg`. Rewrite `hg` using `[hS]`.
-
-Establish `hmT : GlobalTheory.FinPl.Moves _ a.g.bT (pk W).ΛX a.v.NT (fun p => ∃ i, ((J t).G i).q.v = p)`. Rewrite using `[hV.bT.2]`. Conclude with `hV.movesT _`. Establish `hbT : a.g.bT ∈ GfC (I.rec7 l Z).sp.X'`. Establish `h1` using `ha.vis.bT`.
-
-Rewrite `h1` using `[hV.bT.1]`. Then use the resulting hypothesis. Conclude with `step_top (I.rec7 l Z) (commOf (pk W) u a.g) a.v (baseOf (pk W) (lvP W) u a.g) (chrK W t) ha.vis (J t).r (J t).pl (fun i => (J t).G i) (fun i => (J t).E i) ((pk W).xiR t) ((pk W).Q t) _ hinj hQiff (fun p => Iff.rfl) (hJ t).res hrk j hj (hmv (j + 1) (by omega)) hmT (hb (j + 1)) hbT …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem qVec_pinTup : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (J : ∀ t, QJ a t), (∀ t, (J t).Reads) → ∀ (row : ∀ t, RowCh (pk W) (lvP W) u a.g t)
     (col : ∀ t : W.P.T, ColCh (D := I.rec7 l Z) u ((I.rec7 l Z).chTw u (W.P.I.tup t))) (hCh : ∀ t, (col t).Ch = (J t).Ch) (sc cT : ℕ → ℂ) t,

@@ -7,9 +7,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.EulerAbs
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Establish `hu : (fun k : K => f ((y * k)⁻¹ * δ * θ (y * k))) = fun _ => 0`. Use function extensionality and compare the values at `k`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Conclude with `hc k k.2`. Unfold `GlobalTheory.EulerAbs.twTerm`. Rewrite using `[hu]`. Simplify using `[GlobalTheory.BCT.avg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_twTerm_ne_zero {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G)
     (δ : G) (f : G → ℂ) (y : G) (h : GlobalTheory.EulerAbs.twTerm θ K δ f y ≠ 0) :

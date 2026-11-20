@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.CompleteCoords
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Conclude with `⟨ℓ, hℓ, fun i => rfl⟩`. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `h`. Take `⟨f, hf, hfℓ⟩` from `ih (by omega)`. Take `⟨x, hx⟩` from `exists_linearIndependent_snoc_of_lt_finrank hf (by omega)`. Use `⟨Fin.snoc f x, hx, fun i => ?_⟩` and prove the remaining obligations. Establish `e : (Fin.castAdd (m + 1) i : Fin (a + (m + 1))) = Fin.castSucc (Fin.castAdd m i)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, Fin.snoc_castSucc, hfℓ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_linearIndependent_extend {M : Type*} [AddCommGroup M] [Module ℂ M]
     [FiniteDimensional ℂ M] {a : ℕ} (ℓ : Fin a → M) (hℓ : LinearIndependent ℂ ℓ) :
@@ -33,45 +33,39 @@ theorem exists_linearIndependent_extend {M : Type*} [AddCommGroup M] [Module ℂ
     rw [e, Fin.snoc_castSucc, hfℓ]
 
 /- English proof (translation)
-Introduce `n a v₀ O G hO hv₀ hG hG0 hli`. Use `set ℓ : Fin a → (ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] ℂ) := fun i => fderiv ℂ (G i) v₀ with hℓdef`. Establish `hfr : Module.finrank ℂ (ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] ℂ) = n`. Rewrite using `[← LinearEquiv.finrank_eq (LinearMap.toContinuousLinearMap), Module.finrank_linearMap, finrank_euclideanSpace_fin, Module.finrank_self, Nat.mul_one]`. Establish `han : a ≤ n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hli.fintype_card_le_finrank` as an intermediate fact. Simplify `this` using `[hfr]`. Take `⟨f', hf', hf'ℓ⟩` from `exists_linearIndependent_extend ℓ hli (n - a) (by rw [hfr]; omega)`. Establish `hn : a + (n - a) = n` using `by omega`. Use `set f : Fin n → (ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] ℂ) := fun j => f' (Fin.cast hn.symm j) with hfdef`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : LinearIndependent ℂ f` using `hf'.comp _ (Fin.cast_injective _)`. Establish `hfa : ∀ (j : Fin n) (h : (j : ℕ) < a), f j = ℓ ⟨j, h⟩`. Introduce `j h`. Establish `e : Fin.cast hn.symm j = Fin.castAdd (n - a) ⟨j, h⟩` using `Fin.ext rfl`. Simplify using `only [hfdef, e, hf'ℓ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Φ : ReciprocityTheory.L2DbarEstimates.V n → (Fin n → ℂ) := fun v j => if h : (j : ℕ) < a then G ⟨j, h⟩ v else f j (v - v₀) with hΦ`. Establish `hGan : ∀ i, ∀ x ∈ O, AnalyticAt ℂ (G i) x` using `fun i x hx => ReciprocityTheory.ChartRestriction.G.AR.Up.DivLA.analyticAt_of_diffOn hO (hG i) hx`. Establish `hΦan : ∀ x ∈ O, AnalyticAt ℂ Φ x`. Introduce `x hx`. Use `(analyticAt_pi_iff (f := fun j v => Φ v j)).2 fun j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : (j : ℕ) < a`. Simplify `hGan ⟨j, h⟩ x hx` using `[hΦ, h]`. Simplify using `only [hΦ, h, dite_false]`. Conclude with `((f j).analyticAt _).comp (analyticAt_id.sub analyticAt_const)`. Use `set D : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (Fin n → ℂ) := ContinuousLinearMap.pi f with hD`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦD : HasFDerivAt Φ D v₀`. Use `(hasFDerivAt_pi (φ := fun j v => Φ v j)).2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : (j : ℕ) < a`. Simplify using `only [hΦ, h, dite_true]`. Rewrite using `[hfa j h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hGan ⟨j, h⟩ v₀ hv₀).differentiableAt).hasFDerivAt`. Simplify using `only [hΦ, h, dite_false]`. Establish `e : (fun x => f j (x - v₀)) = fun x => f j x - f j v₀`. Use function extensionality and compare the values at `x`. Simplify using `[map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(f j).hasFDerivAt.sub_const _`. Establish `hinj : Function.Injective D`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hv' : ∀ j, f j v = 0` using `fun j => by`. Use `congrFun hv j` as an intermediate fact. Simplify `this` using `[hD]`. Establish `hspan : Submodule.span ℂ (Set.range f) = ⊤`. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Substitute `h0` using the available equality. Conclude with `Subsingleton.elim _ _`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hpos⟩⟩`. Conclude with `hf.span_eq_top_of_card_eq_finrank (by simp [hfr])`. Establish `hall : ∀ φ : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] ℂ, φ v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `φ`. Establish `hmem : φ ∈ Submodule.span ℂ (Set.range f)` using `hspan ▸ Submodule.mem_top`. Use `Submodule.span_induction (p := fun φ _ => φ v = 0) ?_ ?_ ?_ ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hv' j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Simplify using `[hx, hy]`. Introduce `c x _ hx`. Simplify using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ⟩` from `SeparatingDual.exists_ne_zero (R := ℂ) hne`. Conclude with `hφ (hall φ)`. Establish `hsurj : Function.Surjective D`. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := (D : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] (Fin n → ℂ))) (by simp [finrank_euclideanSpace_fin])).1 hinj` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `set e : ReciprocityTheory.L2DbarEstimates.V n ≃L[ℂ] (Fin n → ℂ) := ContinuousLinearEquiv.ofBijective D (LinearMap.ker_eq_bot.2 hinj) (LinearMap.range_eq_top.2 hsurj) with he`. Establish `heD : (e : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (Fin n → ℂ)) = D`. Rewrite using `[he, ContinuousLinearEquiv.coe_ofBijective]`. Establish `hs : HasStrictFDerivAt Φ (e : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (Fin n → ℂ)) v₀`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h1` using `((hΦan v₀ hv₀).contDiffAt (n := 1)).hasStrictFDerivAt one_ne_zero`. Rewrite `h1` using `[hΦD.fderiv, ← heD]`. Then use the resulting hypothesis. Establish `hΦC : ContDiffOn ℂ 1 Φ O` using `AnalyticOnNhd.contDiffOn (fun x hx => hΦan x hx) hO.uniqueDiffOn`. Use `set W : Set (ReciprocityTheory.L2DbarEstimates.V n) := O ∩ fderiv ℂ Φ ⁻¹' Set.range ContinuousLinearEquiv.toContinuousLinearMap with hW`. Establish `hWo : IsOpen W` using `(hΦC.continuousOn_fderiv_of_isOpen hO le_rfl).isOpen_inter_preimage hO ContinuousLinearEquiv.isOpen`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv₀W : v₀ ∈ W` using `⟨hv₀, ⟨e, by rw [hΦD.fderiv, heD]⟩⟩`. Use `⟨(hs.toOpenPartialHomeomorph Φ).restrOpen W hWo, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[OpenPartialHomeomorph.restrOpen_source]`. Conclude with `⟨hs.mem_toOpenPartialHomeomorph_source, hv₀W⟩`. Rewrite using `[OpenPartialHomeomorph.restrOpen_source]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun x hx => hx.2.1`. Use `show Φ v₀ = 0`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : (j : ℕ) < a`. Simplify using `[hΦ, h, hG0]`.
-
-Simplify using `[hΦ, h]`. Introduce `x hx`. Rewrite `hx` using `[OpenPartialHomeomorph.restrOpen_source]`. Conclude with `(hΦan x hx.2.1).differentiableAt.differentiableWithinAt`. Introduce `y hy set ψ := (hs.toOpenPartialHomeomorph Φ).restrOpen W hWo with hψ`.
-
-Establish `hx : ψ.symm y ∈ ψ.source` using `ψ.map_target hy`. Rewrite `hx` using `[hψ, OpenPartialHomeomorph.restrOpen_source]`. Take `⟨e', he'⟩` from `hx.2.2`. Establish `hd : HasFDerivAt (ψ : ReciprocityTheory.L2DbarEstimates.V n → (Fin n → ℂ)) (e' : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] (Fin n → ℂ)) (ψ.symm y)`. Use `(hΦan _ hx.2.1).differentiableAt.hasFDerivAt` as an intermediate fact.
-
-Rewrite `this` using `[← he']`. Conclude with `this`. Conclude with `(ψ.hasFDerivAt_symm hy hd).differentiableAt.differentiableWithinAt`. Introduce `v _ j hj show Φ v j = _`. Simplify using `[hΦ, hj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem complete_coords : ∀ (n a : ℕ) (v₀ : ReciprocityTheory.L2DbarEstimates.V n) (O : Set (ReciprocityTheory.L2DbarEstimates.V n)) (G : Fin a → ReciprocityTheory.L2DbarEstimates.V n → ℂ), IsOpen O → v₀ ∈ O → (∀ i, DifferentiableOn ℂ (G i) O) → (∀ i, G i v₀ = 0) → LinearIndependent ℂ (fun i => fderiv ℂ (G i) v₀) → ∃ ψ : OpenPartialHomeomorph (ReciprocityTheory.L2DbarEstimates.V n) (Fin n → ℂ), v₀ ∈ ψ.source ∧ ψ.source ⊆ O ∧ ψ v₀ = 0 ∧ DifferentiableOn ℂ ψ ψ.source ∧ DifferentiableOn ℂ ψ.symm ψ.target ∧ ∀ v ∈ ψ.source, ∀ (j : Fin n) (hj : (j : ℕ) < a), ψ v j = G ⟨j, hj⟩ v := by
   intro n a v₀ O G hO hv₀ hG hG0 hli

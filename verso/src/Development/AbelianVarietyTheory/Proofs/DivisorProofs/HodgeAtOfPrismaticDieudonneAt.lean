@@ -24,7 +24,7 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [NormedField C] [NormedAlgebra ℚ_
 include H
 
 /- English proof (translation)
-The claim follows from `H.inj map_le_one a := by rw [NormedField.valuation_apply] exact_mod_cast (H.mem_iff _).1 ⟨a, rfl⟩ exists_of_le_one x hx := (H.mem_iff x).2 (by rw [NormedField.valuation_apply] at hx exact_mod_cast hx)`.
+A detailed English derivation is pending.
 -/
 theorem integers_valuation [IsUltrametricDist C] :
     (NormedField.valuation (K := C)).Integers O where
@@ -40,7 +40,7 @@ variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O]
 
 omit [IsAdicComplete (span {(p : O)}) O] in
 /- English proof (translation)
-Establish `: IsUltrametricDist C` using `IsUltrametricDist.of_normedAlgebra ℚ_[p]`. Establish `: IsDomain (PreTilt O p)` using `PreTilt.isDomain C _ O (integers_valuation H) p`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDomain_ainf : IsDomain (Ainf p O) := by
   have : IsUltrametricDist C := IsUltrametricDist.of_normedAlgebra ℚ_[p]
@@ -56,7 +56,7 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O]
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O] {ε : PreTilt O p}
 
 /- English proof (translation)
-Rewrite using `[nu, map_sub, fontaineTheta_teichmuller, map_one, sub_ne_zero]`. Establish `: Nontrivial O` using `⟨p, 1, fun h => (Fact.out : ¬IsUnit (p : O)) (h ▸ isUnit_one)⟩`. Conclude with `(hε 1).ne_one (by simpa using (Fact.out : p.Prime).one_lt)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theta_nu_ne_zero (hε : IsPrimitiveSystem ε) : fontaineTheta O p (nu ε) ≠ 0 := by
   rw [nu, map_sub, fontaineTheta_teichmuller, map_one, sub_ne_zero]
@@ -64,7 +64,7 @@ theorem theta_nu_ne_zero (hε : IsPrimitiveSystem ε) : fontaineTheta O p (nu ε
   exact (hε 1).ne_one (by simpa using (Fact.out : p.Prime).one_lt)
 
 /- English proof (translation)
-Introduce `h` and use `theta_nu_ne_zero hε (by rw [← phiInv_mu, h, map_zero, map_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mu_ne_zero (hε : IsPrimitiveSystem ε) : Sandwich.mu ε ≠ 0 := fun h =>
   theta_nu_ne_zero hε (by rw [← phiInv_mu, h, map_zero, map_zero])

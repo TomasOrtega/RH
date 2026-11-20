@@ -29,7 +29,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [fn2, Ex.fn, PositivityTheory.Rg.BcN.F2.mconv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem heckeFunction_mul (w : Pl E) (x y : Ex (Fin (a + 1) × Fin (b + 1))) :
     fn2 a b w (x.mul y) = PositivityTheory.Rg.BcN.F2.mconv (fn2 a b w x) (fn2 a b w y) := by
@@ -43,7 +43,7 @@ private theorem heckeFunction_one (w : Pl E) :
     fn2 a b w (.one : Ex (Fin (a + 1) × Fin (b + 1))) = (K2 a b w : Set _).indicator 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[heckeFunction_mul, heckeFunction_one]`. Conclude with `((locAlg E a b Z L w).2.2.2.2 _ (Asm.exHecke2 E a b w x)).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem heckeFunction_mul_one {Z : Finset (Pl E)} (L : Lv a b Z) (w : Pl E) (x : Ex (Fin (a + 1) × Fin (b + 1))) :
     fn2 a b w (x.mul .one) = fn2 a b w x := by
@@ -51,7 +51,7 @@ private theorem heckeFunction_mul_one {Z : Finset (Pl E)} (L : Lv a b Z) (w : Pl
   exact ((locAlg E a b Z L w).2.2.2.2 _ (Asm.exHecke2 E a b w x)).1
 
 /- English proof (translation)
-Rewrite using `[heckeFunction_mul, heckeFunction_one]`. Conclude with `((locAlg E a b Z L w).2.2.2.2 _ (Asm.exHecke2 E a b w x)).2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem heckeFunction_one_mul {Z : Finset (Pl E)} (L : Lv a b Z) (w : Pl E) (x : Ex (Fin (a + 1) × Fin (b + 1))) :
     fn2 a b w (Ex.one.mul x) = fn2 a b w x := by
@@ -59,9 +59,9 @@ private theorem heckeFunction_one_mul {Z : Finset (Pl E)} (L : Lv a b Z) (w : Pl
   exact ((locAlg E a b Z L w).2.2.2.2 _ (Asm.exHecke2 E a b w x)).2.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `intersection_update_fsHerm_neg_one`. Distinguish the cases in `hx : x = w`. Substitute `hx` using the available equality. Simplify using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hx]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem position_congr {Z : Finset (Pl E)} (φ : ∀ w : Pl E, LF a b w) {w : Pl E}
     {e e' : Pl E → Ex (Fin (a + 1) × Fin (b + 1))} (h : fn2 a b w (e w) = fn2 a b w (e' w)) :
@@ -76,35 +76,33 @@ private theorem position_congr {Z : Finset (Pl E)} (φ : ∀ w : Pl E, LF a b w)
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a b l₁ l₂ D A S Z L hS hZ f t₁ t₂ T e₁ e₂ hT hd hc hlv hev`. Take `⟨-, -, -, hone, hemp, hfx, hfin, hins⟩` from `hkMul E a b l₁ l₂ D A S Z L hS hZ`. Establish `hCM : ∀ ψ ψ' : Matrix Unit Unit (Hf E a b → ℂ), IsFinM ψ → IsFinM ψ' → convF A.ν (mulF A.ν ψ ψ') f = convF A.ν ψ (convF A.ν ψ' f) ∧ convF A.ν (ψ + ψ') f = convF A.ν ψ f + convF A.ν ψ' f ∧ ∀ c : ℂ, convF A.ν (c • ψ) f = c • convF A.ν ψ f ∧ convF A.ν ψ (c • f) = c • convF A.ν ψ f` using `(convMul E A.blk f hc).2`. Establish `hfix : convF A.ν (A.idm S L) f = f` using `(idmAct E a b l₁ l₂ D A S Z L hS hZ).2.2 f hlv`. Establish `hln : L.Fix L.ln` using `(positionTest E a b S Z L hZ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ (T : Finset (Pl E)) (x₁ x₂ y₁ y₂ : Pl E → Ex (Fin (a + 1) × Fin (b + 1))), mulF A.ν (A.hk S L T x₁ x₂) (A.hk S L T y₁ y₂) = A.hk S L T (fun w => (x₁ w).mul (y₁ w)) (fun w => (x₂ w).mul (y₂ w))` using `fun T x₁ x₂ y₁ y₂ => (hfx T L.ln x₁ x₂ hln).2.2 y₁ y₂`. Establish `hact : ∀ (ψ ψ' : Matrix Unit Unit (Hf E a b → ℂ)) (c c' : ℂ), IsFinM ψ → IsFinM ψ' → convF A.ν ψ f = c • f → convF A.ν ψ' f = c' • f → convF A.ν (mulF A.ν ψ ψ') f = (c * c') • f`. Introduce `ψ ψ' c c' h h' hc₁ hc₂`. Rewrite using `[(hCM ψ ψ' h h').1, hc₂, ((hCM ψ ψ' h h').2.2 c').2, hc₁, smul_smul, mul_comm]`. Establish `hcg : ∀ (w : Pl E) (x₁ x₂ y₁ y₂ : Pl E → Ex (Fin (a + 1) × Fin (b + 1))), fn2 a b w (x₁ w) = fn2 a b w (y₁ w) → fn2 a b w (x₂ w) = fn2 a b w (y₂ w) → A.hk S L {w} x₁ x₂ = A.hk S L {w} y₁ y₂`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w x₁ x₂ y₁ y₂ h₁ h₂`. Use `show A.ff S (intersection_update_fsHerm_neg_one Z {w} L.ln x₁) (intersection_update_fsHerm_neg_one Z {w} L.ln x₂) = A.ff S (intersection_update_fsHerm_neg_one Z {w} L.ln y₁) (intersection_update_fsHerm_neg_one Z {w} L.ln y₂)`. Rewrite using `[position_congr L.ln h₁, position_congr L.ln h₂]`. Establish `hone' : ∀ w : Pl E, convF A.ν (A.hk S L {w} (fun _ => .one) (fun _ => .one)) f = f`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hone, hfix]`. Establish `left : ∀ w ∈ T, ∀ x : Ex (Fin (a + 1) × Fin (b + 1)), convF A.ν (A.hk S L {w} (fun _ => x) (fun _ => .one)) f = x.ev (t₁ w) • f`. Introduce `w hw x`. Establish `hwS : w ∈ S` using `hT.1 w hw`. Establish `hwZ : w ∉ Z` using `Finset.disjoint_left.1 hd hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `fun x y z c => hkLin E a b l₁ l₂ D A S Z L hS hZ w hwS hwZ x y z c`. Proceed by induction on `x with`. Consider the case `one => rw [hone' w]`. Simplify using `[Ex.ev]`. Consider the case `gen p => simpa [Ar.hk1, Ex.ev] using (hev w hw p).1`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x ih`. Rewrite using `[(hl x x .one c).2.1, ((hCM _ _ (hfin {w} (fun _ => x) (fun _ => .one)).1 (hfin {w} (fun _ => x) (fun _ => .one)).1).2.2 c).1, ih, smul_smul]`. Both sides reduce to the same expression. Consider the case `add x y ihx ihy`. Rewrite using `[(hl x y .one 0).1, (hCM _ _ (hfin {w} (fun _ => x) (fun _ => .one)).1 (hfin {w} (fun _ => y) (fun _ => .one)).1).2.1, ihx, ihy, ← add_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Consider the case `mul x y ihx ihy`. Establish `h` using `hact _ _ _ _ (hfin _ _ _).1 (hfin _ _ _).1 ihx ihy`. Rewrite `h` using `[hmul, hcg w (fun w => (fun _ => x) w |>.mul ((fun _ => y) w)) (fun w => (Ex.one).mul .one) (fun _ => x.mul y) (fun _ => .one) rfl (heckeFunction_mul_one L w .one)]`. Conclude with `h`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `right : ∀ w ∈ T, IsSplitAt w → ∀ y : Ex (Fin (a + 1) × Fin (b + 1)), convF A.ν (A.hk S L {w} (fun _ => .one) (fun _ => y)) f = y.ev (t₂ w) • f`. Introduce `w hw hsp y`. Establish `hwS : w ∈ S` using `hT.1 w hw`. Establish `hwZ : w ∉ Z` using `Finset.disjoint_left.1 hd hw`. Establish `hl` using `fun x y z c => (hkLin E a b l₁ l₂ D A S Z L hS hZ w hwS hwZ x y z c).2.2.1 hsp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `y with`. Consider the case `one => rw [hone' w]`. Simplify using `[Ex.ev]`. Consider the case `gen p => simpa [Ar.hk1, Ex.ev] using (hev w hw p).2 hsp`. Consider the case `smul c x ih`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[(hl x x .one c).2, ((hCM _ _ (hfin {w} (fun _ => .one) (fun _ => x)).1 (hfin {w} (fun _ => .one) (fun _ => x)).1).2.2 c).1, ih, smul_smul]`. Both sides reduce to the same expression. Consider the case `add x y ihx ihy`. Rewrite using `[(hl x y .one 0).1, (hCM _ _ (hfin {w} (fun _ => .one) (fun _ => x)).1 (hfin {w} (fun _ => .one) (fun _ => y)).1).2.1, ihx, ihy, ← add_smul]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mul x y ihx ihy`. Establish `h` using `hact _ _ _ _ (hfin _ _ _).1 (hfin _ _ _).1 ihx ihy`. Rewrite `h` using `[hmul, hcg w (fun w => (Ex.one).mul .one) (fun w => (fun _ => x) w |>.mul ((fun _ => y) w)) (fun _ => .one) (fun _ => x.mul y) (heckeFunction_mul_one L w .one) rfl]`. Conclude with `h`. Establish `place : ∀ w ∈ T, convF A.ν (A.hk S L {w} e₁ e₂) f = ((e₁ w).ev (t₁ w) * (e₂ w).ev (t₂ w)) • f`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `w hw`. Distinguish the cases in `hsp : IsSplitAt w`. Establish `h` using `hact _ _ _ _ (hfin {w} (fun _ => e₁ w) (fun _ => .one)).1 (hfin {w} (fun _ => .one) (fun _ => e₂ w)).1 (left w hw (e₁ w)) (right w hw hsp (e₂ w))`. Rewrite `h` using `[hmul, hcg w _ _ e₁ e₂ (heckeFunction_mul_one L w (e₁ w)) (heckeFunction_one_mul L w (e₂ w))]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwS : w ∈ S` using `hT.1 w hw`. Establish `hwZ : w ∉ Z` using `Finset.disjoint_left.1 hd hw`. Establish `h₁ : A.hk S L {w} e₁ e₂ = A.hk S L {w} (fun _ => e₁ w) (fun _ => .one)` using `(hcg w e₁ e₂ (fun _ => e₁ w) (fun _ => e₂ w) rfl rfl).trans ((hkLin E a b l₁ l₂ D A S Z L hS hZ w hwS hwZ (e₂ w) .one (e₁ w) 0).2.2.2 hsp)`. Rewrite using `[h₁, left w hw (e₁ w), hT.2 w hw hsp, mul_one]`. Establish `all : ∀ T' : Finset (Pl E), T' ⊆ T → convF A.ν (A.hk S L T' e₁ e₂) f = (∏ w ∈ T', (e₁ w).ev (t₁ w) * (e₂ w).ev (t₂ w)) • f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `T'`. Use `Finset.induction_on T' ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[hemp, hfix]`. Simplify using the standard rewrite rules.
-
-Introduce `w T'' hw ih hsub`. Establish `hwT : w ∈ T` using `hsub (Finset.mem_insert_self w T'')`. Rewrite using `[hins T'' w e₁ e₂ hw, Finset.prod_insert hw]`. Conclude with `hact _ _ _ _ (hfin _ _ _).1 (hfin _ _ _).1 (place w hwT) (ih fun x hx => hsub (Finset.mem_insert_of_mem hx))`. Conclude with `all T subset_rfl`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkVal : HkVal := by
   intro E _ _ _ a b l₁ l₂ D A S Z L hS hZ f t₁ t₂ T e₁ e₂ hT hd hc hlv hev

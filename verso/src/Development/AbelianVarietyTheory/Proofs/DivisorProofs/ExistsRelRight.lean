@@ -17,7 +17,7 @@ open GlobalTheory.VB (IsFrame)
 open GlobalTheory.ChainPts.FrameNorm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr u]`. Simplify using `only [map_sum, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_map_eq_sum {R M N ι κ : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [Fintype ι] (b : Module.Basis ι R M) (b' : Module.Basis κ R N) (φ : M →ₗ[R] N) (u : M) (m : κ) :
@@ -26,9 +26,9 @@ theorem repr_map_eq_sum {R M N ι κ : Type} [CommRing R] [AddCommGroup M] [Modu
   simp only [map_sum, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `: b'.coord k ∘ₗ φ = b.coord (σ k)`. Use `b.ext fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ Set.range σ`. Take `⟨k', rfl⟩` from `hj`. Simplify using `[h, Finsupp.single_apply, hσ.eq_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `: j ≠ σ k` using `fun e => hj ⟨k, e.symm⟩`. Simplify using `[h0 j hj, Finsupp.single_apply, this]`. Conclude with `LinearMap.congr_fun this u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_proj {R M N ι κ : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (b : Module.Basis ι R M) (b' : Module.Basis κ R N) (φ : M →ₗ[R] N) (σ : κ → ι) (hσ : Function.Injective σ)
@@ -45,7 +45,7 @@ theorem repr_proj {R M N ι κ : Type} [CommRing R] [AddCommGroup M] [Module R M
   exact LinearMap.congr_fun this u
 
 /- English proof (translation)
-Use `symm`. Use `Fintype.sum_of_injective σ hσ _ _ (fun j hj => ?_) fun k => by rw [hσ.extend_apply]` and prove the remaining obligations. Rewrite using `[Function.extend_apply' _ _ _ hj, Pi.zero_apply, zero_mul]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_extend {C ι κ : Type} [Field C] [Fintype ι] [Fintype κ] (σ : κ → ι) (hσ : Function.Injective σ)
     (cf : κ → C) (g : ι → C) : ∑ j, Function.extend σ cf 0 j * g j = ∑ k, cf k * g (σ k) := by
@@ -54,13 +54,13 @@ theorem sum_extend {C ι κ : Type} [Field C] [Fintype ι] [Fintype κ] (σ : κ
   rw [Function.extend_apply' _ _ _ hj, Pi.zero_apply, zero_mul]
 
 /- English proof (translation)
-Distinguish the cases in `hx : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ (V ⊓ U)`. Establish `hU : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ ((V₀ ⊓ V₁) ⊓ (V ⊓ U))` using `fun q hq => ⟨⟨hw (Set.mem_univ (spMap (intO C).subtype q)), hV₁ (Set.mem_univ (spMap (intO C).subtype q))⟩, hx hq⟩`. Establish `h₀ : (V₀ ⊓ V₁) ⊓ (V ⊓ U) ≤ V₀` using `inf_le_left.trans inf_le_left`. Establish `h₁ : (V₀ ⊓ V₁) ⊓ (V ⊓ U) ≤ V₁ ⊓ U` using `inf_le_inf inf_le_right inf_le_right`. Establish `h : (V₀ ⊓ V₁) ⊓ (V ⊓ U) ≤ V ⊓ U` using `inf_le_right`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ k, valF (spMap (intO C).subtype ≫ w) _ (a m k) = ∑ l, valF (spMap (intO C).subtype ≫ w) _ (B m l) * valF (spMap (intO C).subtype ≫ w) _ (c l k)` using `fun k => by`. Rewrite using `[← valHom_resG _ h hU, hB _ h₀ h h₁, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, valHom_resG, valHom_resG]`. Establish `eq : ∑ k, cf k * valF (spMap (intO C).subtype ≫ w) _ (a m k) = ∑ l, valF (spMap (intO C).subtype ≫ w) _ (B m l) * ∑ k, cf k * valF (spMap (intO C).subtype ≫ w) _ (c l k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [key, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (norm_valF_le_one C w _ hw _) (norm_nonneg _) (H l)`. Simplify using `only [valF, dif_neg hx, mul_zero, Finset.sum_const_zero, norm_zero, zero_le_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_le_of_rel {X : Scheme.{0}} {ι κ n : Type} [Fintype κ] [Fintype n] {V V₁ U : X.Opens}
     (a : ι → n → Γ(X, V ⊓ U)) (c : κ → n → Γ(X, V₁ ⊓ U)) {V₀ : X.Opens} (B : ι → κ → Γ(X, V₀))
@@ -101,7 +101,7 @@ variable {X : Scheme.{0}} {F F₁ : X.Modules} {i : F₁ ⟶ F} {q : F ⟶ F₁}
   {U V V₁ : X.Opens} {s : Fin r → Γ(F, U)} {f : Fin r → Γ(F, V)} {e : Fin r' → Γ(F₁, V₁)}
 
 /- English proof (translation)
-The claim follows from `repr_proj (hs.basis h) (h₁.basis h) (appLinear q W) σ hσ (fun k => by rw [appLinear_apply, IsFrame.basis_apply, IsFrame.basis_apply, app_resM]) (fun j hj => by rw [appLinear_apply, IsFrame.basis_apply, app_resM, h0 j hj, map_zero]) u k`.
+A detailed English derivation is pending.
 -/
 theorem repr_app_proj (hσ : Function.Injective σ) (hs : IsFrame s) (h0 : ∀ j, j ∉ Set.range σ → q.app U (s j) = 0)
     (h₁ : IsFrame fun k => q.app U (s (σ k))) {W : X.Opens} (h : W ≤ U) (u : Γ(F, W)) (k : Fin r') :
@@ -111,11 +111,11 @@ theorem repr_app_proj (hσ : Function.Injective σ) (hs : IsFrame s) (h0 : ∀ j
     (fun j hj => by rw [appLinear_apply, IsFrame.basis_apply, app_resM, h0 j hj, map_zero]) u k
 
 /- English proof (translation)
-Consider the cases of `d`. Use `⟨fun m l => (hf.basis inf_le_left).repr (resM F inf_le_right (i.app V₁ (e l))) m, fun W h₀ h h' m k => ?_⟩` and prove the remaining obligations. Simplify using `only [coef, ← IsFrame.repr_resM, resM_resM]`. Use `conv_lhs => rw [← hi k, ← app_resM, ← appLinear_apply]`. Rewrite using `[repr_map_eq_sum (he.basis (h₀.trans inf_le_right))]`.
+Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, IsFrame.basis_apply, appLinear_apply, app_resM]`. Use `⟨fun m l => (he.basis inf_le_right).repr (resM F₁ inf_le_left (q.app V (f m))) l, fun W h₀ h h' m k => ?_⟩` and prove the remaining obligations. Simplify using `only [coef, ← IsFrame.repr_resM, resM_resM]`. Rewrite using `[← repr_app_proj hσ hs h0 h₁, app_resM, repr_eq_sum (he.basis (h₀.trans inf_le_right))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[IsFrame.basis_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rel_left (hσ : Function.Injective σ) (hs : IsFrame s)
     (hi : ∀ k, i.app U (q.app U (s (σ k))) = s (σ k)) (h0 : ∀ j, j ∉ Set.range σ → q.app U (s j) = 0)
@@ -139,11 +139,11 @@ theorem exists_rel_left (hσ : Function.Injective σ) (hs : IsFrame s)
     rw [IsFrame.basis_apply]
 
 /- English proof (translation)
-Consider the cases of `d`. Use `⟨fun l m => (he.basis inf_le_right).repr (resM F₁ inf_le_left (q.app V (f m))) l, fun W h₀ h' h l k => ?_⟩` and prove the remaining obligations. Simplify using `only [coef, ← IsFrame.repr_resM, resM_resM]`. Rewrite using `[← app_resM, ← appLinear_apply, repr_map_eq_sum (hf.basis (h₀.trans inf_le_left))]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, IsFrame.basis_apply, appLinear_apply, app_resM]`. Use `⟨fun l m => (hf.basis inf_le_left).repr (resM F inf_le_right (i.app V₁ (e l))) m, fun W h₀ h' h l k => ?_⟩` and prove the remaining obligations. Simplify using `only [coef, ← IsFrame.repr_resM, resM_resM]`. Establish `hq : ∀ u : Γ(F₁, W), q.app W (i.app W u) = u` using `fun u => by`. Rewrite using `[app_app, hiq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `conv_lhs => rw [← hq (resM F₁ _ (e l))]`. Rewrite using `[repr_app_proj hσ hs h0 h₁, app_resM, repr_eq_sum (hf.basis (h₀.trans inf_le_left))]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[IsFrame.basis_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rel_right (hiq : i ≫ q = 𝟙 F₁) (hσ : Function.Injective σ) (hs : IsFrame s)
     (h0 : ∀ j, j ∉ Set.range σ → q.app U (s j) = 0)
@@ -171,9 +171,9 @@ theorem exists_rel_right (hiq : i ≫ q = 𝟙 F₁) (hσ : Function.Injective �
 end Rel
 
 /- English proof (translation)
-Introduce `X F F₁ i q hiq r r' σ hσ U V V₁ s hs hi h0 h₁ f hf e he d C _ _ w hV hV₁ cf`. Simplify using `only [sum_extend σ hσ]`. Establish `hw : ⊤ ≤ w ⁻¹ᵁ (V ⊓ V₁)` using `fun q hq => ⟨hV hq, hV₁ hq⟩`. Take `⟨A, hA⟩` from `exists_rel_left hσ hs hi h0 h₁ hf he d`. Take `⟨B, hB⟩` from `exists_rel_right hiq hσ hs h0 h₁ hf he d`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨norm_le_of_rel _ (fun m k => coef d hf hs m (σ k)) B hB C w hw hV cf, norm_le_of_rel (fun m k => coef d hf hs m (σ k)) _ A hA C w hw hV₁ cf⟩`.
+Supply the required witnesses or components.
 -/
 theorem norm_le_one_iff : ∀ {X : Scheme.{0}} {F F₁ : X.Modules} (i : F₁ ⟶ F) (q : F ⟶ F₁), i ≫ q = 𝟙 F₁ → ∀ {r r' : ℕ} (σ : Fin r' → Fin r), Function.Injective σ → ∀ {U V V₁ : X.Opens} (s : Fin r → Γ(F, U)) (hs : GlobalTheory.VB.IsFrame s), (∀ k, i.app U (q.app U (s (σ k))) = s (σ k)) → (∀ j, j ∉ Set.range σ → q.app U (s j) = 0) → ∀ (h₁ : GlobalTheory.VB.IsFrame (fun k => q.app U (s (σ k)))) (f : Fin r → Γ(F, V)) (hf : GlobalTheory.VB.IsFrame f) (e : Fin r' → Γ(F₁, V₁)) (he : GlobalTheory.VB.IsFrame e) (d : Bool) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (w : Sp ↥(intO C) ⟶ X), ⊤ ≤ w ⁻¹ᵁ V → ⊤ ≤ w ⁻¹ᵁ V₁ → ∀ cf : Fin r' → C, (∀ l, ‖∑ j, Function.extend σ cf 0 j * valF (spMap (intO C).subtype ≫ w) _ (coef d hf hs l j)‖ ≤ 1) ↔ ∀ l, ‖∑ k, cf k * valF (spMap (intO C).subtype ≫ w) _ (coef d he h₁ l k)‖ ≤ 1 := by
   intro X F F₁ i q hiq r r' σ hσ U V V₁ s hs hi h0 h₁ f hf e he d C _ _ w hV hV₁ cf

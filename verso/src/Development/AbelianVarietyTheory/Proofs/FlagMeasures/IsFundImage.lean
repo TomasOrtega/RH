@@ -14,14 +14,14 @@ def reix (X : HidaSetting D) : (∀ τ : D.what₂.Tau, Formalism.REAL.UJ (X.B.I
   MeasurableEquiv.piCongrLeft (fun v => Formalism.REAL.UJ (X.B.I.ε v)) X.pl.symm
 
 /- English proof (translation)
-Conclude with `MeasurableEquiv.piCongrLeft_apply_apply (β := fun v => Formalism.REAL.UJ (X.B.I.ε v)) X.pl.symm p τ`.
+A detailed English derivation is pending.
 -/
 theorem reix_apply (p : ∀ τ : D.what₂.Tau, Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) (τ : D.what₂.Tau) :
     reix X p (vOf X τ) = p τ := by
   exact MeasurableEquiv.piCongrLeft_apply_apply (β := fun v => Formalism.REAL.UJ (X.B.I.ε v)) X.pl.symm p τ
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (reix X).apply_symm_apply x]`. Conclude with `(reix_apply _ τ).symm`.
+A detailed English derivation is pending.
 -/
 theorem reix_symm (x : X.B.I.Ginf) (τ : D.what₂.Tau) : (reix X).symm x τ = x (vOf X τ) := by
   conv_rhs => rw [← (reix X).apply_symm_apply x]
@@ -33,13 +33,13 @@ Both sides reduce to the same expression.
 theorem trI_apply (x : X.B.I.Ginf) (τ : D.what₂.Tau) : trI C x τ = GlobalTheory.PullbackComparison.eM C τ (x (vOf X τ)) := rfl
 
 /- English proof (translation)
-Use `choose g hg hgf using fun τ : D.what₂.Tau => (GlobalTheory.PullbackComparison.eM_emb C τ).exists_measurable_extend (g := id) measurable_id (fun _ => ⟨1⟩)`. Use `MeasurableEmbedding.of_measurable_inverse (g := fun m => reix X (fun τ => g τ (m τ))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `measurable_pi_lambda _ fun τ => (GlobalTheory.PullbackComparison.eM_emb C τ).measurable.comp (measurable_pi_apply (vOf X τ))`. Establish `hR : Set.range (trI C) = Set.univ.pi fun τ => Set.range (GlobalTheory.PullbackComparison.eM C τ)`. Use extensionality with `m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ τ _`. Conclude with `⟨x (vOf X τ), (trI_apply C x τ).symm⟩`. Introduce `hm choose a ha using fun τ => hm τ (Set.mem_univ τ)`. Use `⟨reix X a, funext fun τ => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trI_apply, reix_apply, ha]`. Rewrite using `[hR]`. Conclude with `MeasurableSet.univ_pi fun τ => (GlobalTheory.PullbackComparison.eM_emb C τ).measurableSet_range`. Conclude with `(reix X).measurable.comp (measurable_pi_lambda _ fun τ => (hg τ).comp (measurable_pi_apply τ))`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (fun τ => g τ (trI C x τ)) = (reix X).symm x`. Use function extensionality and compare the values at `τ`. Rewrite using `[trI_apply, reix_symm]`. Conclude with `congrFun (hgf τ) _`. Simplify using `only [h1, MeasurableEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem trI_emb : MeasurableEmbedding (trI C) := by
   choose g hg hgf using fun τ : D.what₂.Tau =>
@@ -69,7 +69,7 @@ theorem trI_emb : MeasurableEmbedding (trI C) := by
     simp only [h1, MeasurableEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hv : (q * y) (vOf X τ) = q (vOf X τ) * y (vOf X τ)` using `rfl`. Rewrite using `[trI_apply C (q * y), hv, GlobalTheory.PullbackComparison.eM_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trI_mul (q y : X.B.I.Ginf) : GlobalTheory.DegVol.mulP (trI C q) (trI C y) = trI C (q * y) := by
   funext τ
@@ -78,9 +78,9 @@ theorem trI_mul (q y : X.B.I.Ginf) : GlobalTheory.DegVol.mulP (trI C q) (trI C y
   rfl
 
 /- English proof (translation)
-Establish `hr : ∀ τ, x τ ∈ Set.range (GlobalTheory.PullbackComparison.eM C τ)` using `fun τ => GlobalTheory.PullbackComparison.uh_range C τ (hx τ).1.1`. Use `choose a ha using hr`. Use `⟨reix X a, ?_, funext fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.PullbackComparison.rset_iff C t]`. Introduce `τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reix_apply, ha]`. Conclude with `hx τ`. Rewrite using `[trI_apply, reix_apply, ha]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pre {Y : Full X} {u : D.what₂.Word} (t : GT Y u) {x : D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS}
     (hx : x ∈ GlobalTheory.DegVol.RP D.R.k D.R.rS (fun τ => (gamT C t τ)⁻¹)) :
@@ -96,11 +96,11 @@ theorem exists_pre {Y : Full X} {u : D.what₂.Word} (t : GT Y u) {x : D.what₂
   · rw [trI_apply, reix_apply, ha]
 
 /- English proof (translation)
-Introduce `D X Y u C t K hK`. Use `⟨(trI_emb C).measurableSet_image.2 hK.1, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `exists_pre C t hx`. Take `⟨q, ⟨hq, hqK⟩, huniq⟩` from `hK.2 y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨trI C q, ⟨⟨q, hq, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[trI_mul]`. Conclude with `⟨q * y, hqK, rfl⟩`. Introduce and unpack `m ⟨⟨q', hq', rfl⟩, hm⟩`. Rewrite `hm` using `[trI_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz, hzq⟩` from `hm`. Establish `hzq' : z = q' * y` using `(trI_emb C).injective hzq`. Rewrite using `[huniq q' ⟨hq', by rw [← hzq']; exact hz⟩]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFund_image : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word) (C : Choice X 1) (t : GT Y u) (K : Set X.B.I.Ginf), FundR t K → GlobalTheory.DegVol.IsFund (trI C '' Formalism.L2.SG.TermOp.ROinf t) (GlobalTheory.DegVol.RP D.R.k D.R.rS (fun τ => (gamT C t τ)⁻¹)) (trI C '' K) := by
   intro D X Y u C t K hK

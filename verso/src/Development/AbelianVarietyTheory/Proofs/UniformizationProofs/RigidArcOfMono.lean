@@ -27,19 +27,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {χ : Sp (PowerSeries k) ⟶ Y.X} {χ' : Sp (PowerSeries k) ⟶ Y'.X}
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨hD, hdat⟩` from `arcWit_data_iso hL₅ E H D l Xo c k bF a O O' β β' Y Y' χ χ' W W'`. Establish `hI : Ideal.span {(PowerSeries.X : PowerSeries k)} = IsLocalRing.maximalIdeal (PowerSeries k)` using `PowerSeries.maximalIdeal_eq_span_X.symm`. Take `⟨ψ, bc, hψ, hbc, hfst, hU⟩` from `GlobalTheory.T.exists_iso_uniformisations_of_iso_degeneration_data hL hL₂ (PowerSeries k) _ (admissibleBase_powerSeries k) hI W'.P.D W.P.D W'.P.A W.P.A W'.t.G W.t.G W'.t.semi W.t.semi W'.P.U W.P.U hD`. Establish `hx : ∀ (x : 𝓞 E) (z : W.P.D.toPre.X), hD.xe (x • z) = x • hD.xe z`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x z`. Take `⟨z₀, rfl⟩` from `W.e.surjective z`. Rewrite using `[← W.e.map_smul, hdat.2.1, hdat.2.1]`. Conclude with `W'.e.map_smul x z₀`. Establish `hB : ∀ x, (W.P.oD.onB.act x).left ≫ (hD.e.hom.left ≫ pullback.fst W'.P.D.toPre.P.A.hom (specOf (RingHom.id (PowerSeries k)))) = (hD.e.hom.left ≫ pullback.fst W'.P.D.toPre.P.A.hom (specOf (RingHom.id (PowerSeries k)))) ≫ (W'.P.oD.onB.act x).left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Apply `W'.spec.1.1.hom_ext` to reduce the goal to its premises. Establish `h₁ : (W.P.oD.onB.act x).left ≫ W.φ = W.φ ≫ (a.oa.onB.act x).left` using `W.spec.2.2.2.1 x`. Establish `h₂ : (W'.P.oD.onB.act x).left ≫ W'.φ = W'.φ ≫ (a.oa.onB.act x).left` using `W'.spec.2.2.2.1 x`. Conclude with `((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hdat.1).trans h₁)).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) h₂).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) hdat.1)))).symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (hD.e.hom.left ≫ pullback.fst W'.P.D.toPre.P.A.hom (specOf (RingHom.id (PowerSeries k)))) ≫ W'.P.D.toPre.P.A.hom = W.P.D.toPre.P.A.hom`. Establish `w : hD.e.hom.left ≫ pullback.snd W'.P.D.toPre.P.A.hom (specOf (RingHom.id (PowerSeries k))) = W.P.D.toPre.P.A.hom` using `Over.w hD.e.hom`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, w, specOf_id, Category.comp_id]`. Rewrite using `[Category.assoc, e, Over.w, Category.assoc, Over.w, e]`. Establish `hlin` using `act_comm_of_isPullUnif_id hL.globalFns (PowerSeries k) _ (admissibleBase_powerSeries k) hI W'.P.D W.P.D W'.P.A W.P.A W'.t.G W.t.G W'.t.semi W.t.semi W'.P.U W.P.U hD bc hbc hU (𝓞 E) W'.P.oD W.P.oD W'.P.oA W.P.oA W'.t.act.toRingAct W.t.act.toRingAct W'.P.lin W.P.lin hx hB`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hact : ∀ x, W.t.act.act x ≫ ψ.hom = ψ.hom ≫ W'.t.act.act x`. Introduce `x`. Establish `q` using `congrArg (fun z => z.left ≫ pullback.fst W'.t.G.hom (specOf (RingHom.id (PowerSeries k)))) (hlin x)`. Use `ext`. Simplify using `only [Over.comp_left, Category.assoc, Over.pullback_map_left, pullback.lift_fst] at q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `q` using `[hfst, ← Category.assoc, hfst]`. Conclude with `q`. Establish `hlev` using `GlobalTheory.T.uniformisedArc_iso_matches_levelPoints hL hL₂ hL₅ E H D l Xo c k bF a O O' β β' Y Y' χ χ' W W' hD hdat ψ bc hψ hbc hfst hU hact y y' hy hy' hs hs'`. Establish `hb : LBIso W.t.PP.L (W'.t.PP.L.pull ψ.hom.left)`. Take `⟨w, hw, -⟩` from `hU.lg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← W.P.bundle, ← W'.P.bundle, ← hfst]`. Conclude with `⟨w, hw⟩`. Take `⟨e, h⟩` from `ArcObj.point_eq hL W.m W'.m ψ hact hb _ y y' hy hy' (hs.trans hs'.symm) hlev`. Conclude with `⟨e, ψ, h, arcWit_agree_of_isPullUnif E H D l Xo c k bF a O O' β β' Y Y' χ χ' W W' hD hdat ψ bc hψ hbc hfst hU hact⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core (hL : Laws) (hL₂ : Laws2) (hL₅ : Laws5)
     (W : ArcWit Y (a.restrict β) (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ)
@@ -105,9 +105,9 @@ theorem core (hL : Laws) (hL₂ : Laws2) (hL₅ : Laws5)
   exact ⟨e, ψ, h, arcWit_agree_of_isPullUnif E H D l Xo c k bF a O O' β β' Y Y' χ χ' W W' hD hdat ψ bc hψ hbc hfst hU hact⟩
 
 /- English proof (translation)
-Use `ThetaShiftProofs.isOpenImmersion_jK_powerSeries k` as an intermediate fact. Establish `q : (g ≫ W.t.G.hom) ≫ χ = (g₁ ≫ Y.oF.t.G.hom) ≫ Y.j`. Establish `h₁' : g ≫ W.m.cm.F = g₁ ≫ Y.m.cm.F` using `h₁`. Rewrite using `[Category.assoc, ← W.m.cart.1.w, reassoc_of% h₁', Y.m.cart.1.w, Category.assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hr : Set.range (g ≫ W.t.G.hom) ⊆ Set.range (jK (PowerSeries k))`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `arcWit_mem_range_jK_of_mem_range_j E H D l Xo c k bF a O β Y χ W _ ⟨(g₁ ≫ Y.oF.t.G.hom) p, congrArg (fun z => z p) q.symm⟩`. Conclude with `⟨q, _, (IsOpenImmersion.lift_fac (jK (PowerSeries k)) _ hr).symm⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_generic
     (W : ArcWit Y (a.restrict β) (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := k)) PowerSeries.X χ)
@@ -127,9 +127,9 @@ theorem exists_generic
 end ArcRigidity
 
 /- English proof (translation)
-Introduce `hL hL₂ hL₅ E _ _ _ H D l Xo c k _ bF a O O' _ _ β β' Y Y' χ χ' W W' y y' hy hy' hs hs'`. Take `⟨e, ψ, h, hA⟩` from `ArcRigidity.core hL hL₂ hL₅ W W' y y' hy hy' hs hs'`. Use `⟨e, fun hm => ⟨ψ, hA fun T g g₁ g₂ h₁ h₂ h₃ => ?_⟩⟩` and prove the remaining obligations. Take `⟨q, τ, hτ⟩` from `ArcRigidity.exists_generic W g g₁ h₁`. Use `h T g g₁ g₂ τ hτ ?_ h₁ h₂ h₃` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← cancel_mono Y.j, ← q, hτ, Category.assoc, Category.assoc, hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rigidArc_of_mono : Laws → Laws2 → Laws5 →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
@@ -151,9 +151,9 @@ theorem rigidArc_of_mono : Laws → Laws2 → Laws5 →
   rw [← cancel_mono Y.j, ← q, hτ, Category.assoc, Category.assoc, hy]
 
 /- English proof (translation)
-Introduce `hL hL₂ hL₅ E _ _ _ H D l Xo c k _ bF a O _ β Y χ W W' y hy hs`. Take `⟨-, ψ, h, hA⟩` from `ArcRigidity.core hL hL₂ hL₅ W W' y y hy hy hs hs`. Use `⟨ψ, hA fun T g g₁ g₂ h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations. Take `rfl : g₁ = g₂` from `Y.m0.toSABMap.cart.1.hom_ext h₂ h₃`. Take `⟨-, τ, hτ⟩` from `ArcRigidity.exists_generic W g g₁ h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `w : (g ≫ W.m.cm.F) ≫ Y.t.G.hom = (τ ≫ y) ≫ Y.j`. Rewrite using `[Category.assoc, W.m.cart.1.w, reassoc_of% hτ, Category.assoc, hy]`. Take `⟨u, u₁, u₂⟩ : ∃ u : T ⟶ Y.oF.t.G.left, u ≫ Y.m.φ = g ≫ W.m.φ ∧ u ≫ Y.oF.t.G.hom = τ ≫ y` from `⟨Y.m.cart.1.lift _ _ w, Y.m.cart.1.lift_fst _ _ _, Y.m.cart.1.lift_snd _ _ _⟩`. Rewrite using `[h T g u u τ hτ u₂ u₁.symm rfl rfl, u₁, h₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem uniqWit_of_laws : Laws → Laws2 → Laws5 → UniqWitSt := by
   intro hL hL₂ hL₅ E _ _ _ H D l Xo c k _ bF a O _ β Y χ W W' y hy hs

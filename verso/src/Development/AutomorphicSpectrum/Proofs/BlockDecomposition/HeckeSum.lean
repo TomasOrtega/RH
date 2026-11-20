@@ -5,15 +5,13 @@ open UpperHalfPlane CongruenceSubgroup Ad3
 namespace GlobalTheory.CompanionTheory.HeckeSum
 
 /- English proof (translation)
-Establish `hprim : IsPrimitiveRoot (Complex.exp (2 * Real.pi * Complex.I / p)) p` using `Complex.isPrimitiveRoot_exp p hp.ne_zero`. Use `set ζ : ℂ := (Complex.exp (2 * Real.pi * Complex.I / p))⁻¹ ^ n with hζ`. Establish `hterm : ∀ b ∈ Finset.range p, Complex.exp (-(2 * Real.pi * Complex.I * n * b / p)) = ζ ^ b`. Introduce `b _`. Rewrite using `[hζ, ← Complex.exp_neg, ← pow_mul, ← Complex.exp_nat_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hterm]`. Establish `hζp : ζ ^ p = 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hζ, ← pow_mul, mul_comm n p, pow_mul, hprim.inv.pow_eq_one, one_pow]`. Use `split_ifs with h`. Establish `h1 : ζ = 1`. Rewrite using `[hζ]`. Conclude with `(hprim.inv.pow_eq_one_iff_dvd n).mpr h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1]`. Establish `h1 : ζ ≠ 1`. Rewrite using `[hζ]`. Introduce `h1`. Conclude with `h ((hprim.inv.pow_eq_one_iff_dvd n).mp h1)`.
-
-Rewrite using `[geom_sum_eq h1, hζp, sub_self, zero_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_root (p : ℕ) (hp : p.Prime) (n : ℕ) :
     ∑ b ∈ Finset.range p, Complex.exp (-(2 * Real.pi * Complex.I * n * b / p)) =
@@ -43,27 +41,27 @@ theorem sum_root (p : ℕ) (hp : p.Prime) (n : ℕ) :
     rw [geom_sum_eq h1, hζp, sub_self, zero_div]
 
 /- English proof (translation)
-Establish `hterm : ∀ n : ℕ, ∑ b ∈ Finset.range p, a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * ((w b : ℍ) : ℂ)) = if p ∣ n then (p : ℂ) * (a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * (z : ℂ) / p)) else 0`. Introduce `n`. Establish `hsplit : ∀ b : ℕ, a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * ((w b : ℍ) : ℂ)) = a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * (z : ℂ) / p) * Complex.exp (-(2 * Real.pi * Complex.I * n * b / p))`. Introduce `b`. Rewrite using `[hw b, mul_assoc (a n), ← Complex.exp_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun b _ => hsplit b, ← Finset.mul_sum, sum_root p hp n]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hL : HasSum (fun n : ℕ => if p ∣ n then (p : ℂ) * (a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * (z : ℂ) / p)) else 0) (∑ b ∈ Finset.range p, (f : ℍ → ℂ) (w b))`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h` using `hasSum_sum fun b (_ : b ∈ Finset.range p) => hf.exp (w b)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Conclude with `(hterm n).symm`. Establish `hinj : Function.Injective (fun m : ℕ => p * m)` using `fun x y h => Nat.eq_of_mul_eq_mul_left hp.pos h`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLm : HasSum (fun m : ℕ => (p : ℂ) * (a (p * m) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ)))) (∑ b ∈ Finset.range p, (f : ℍ → ℂ) (w b))`. Establish `h1` using `(hinj.hasSum_iff (f := fun n : ℕ => if p ∣ n then (p : ℂ) * (a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * (z : ℂ) / p)) else 0) (a := ∑ b ∈ Finset.range p, (f : ℍ → ℂ) (w b)) ?_).mpr hL`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (dvd_mul_right p m)]`. Use `congr 3`. Rewrite using `[eq_div_iff (Nat.cast_ne_zero.mpr hp.ne_zero)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[if_neg]`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `hx ⟨m, rfl⟩`. Establish `h2 : HasSum ((fun m : ℕ => if p ∣ m then a (m / p) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ)) else 0) ∘ (fun n : ℕ => p * n)) ((f : ℍ → ℂ) w')`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hf.exp w' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Simplify using `only [Function.comp_apply]`. Rewrite using `[if_pos (dvd_mul_right p n), Nat.mul_div_cancel_left n hp.pos, hw']`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hw's : HasSum (fun m : ℕ => if p ∣ m then a (m / p) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ)) else 0) ((f : ℍ → ℂ) w')`. Use `(hinj.hasSum_iff ?_).mp h2` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `hx ⟨m, rfl⟩`. Establish `hR` using `((hf.exp z).mul_left (a p)).sub (hw's.mul_left (χ p * (p : ℂ) ^ (k - 1)))`. Establish `key : ∀ m : ℕ, a p * (a m * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ))) - χ p * (p : ℂ) ^ (k - 1) * (if p ∣ m then a (m / p) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ)) else 0) = a (p * m) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce `m`. Establish `h` using `he.2.2 p m hp`. Distinguish the cases in `hm : p ∣ m`. Rewrite `h`, the goal using `[if_pos hm]`. Take the linear combination `(Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ))) * h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite `h`, the goal using `[if_neg hm]`. Take the linear combination `(Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ))) * h`. Simplify using `only [key] at hR`. Conclude with `hLm.unique (hR.mul_left (p : ℂ))`.
+A detailed English derivation is pending.
 -/
 theorem hecke_sum (k N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N)
     (f : CuspForm (Gamma1 N) (k : ℤ)) (a : ℕ → ℂ) (hf : IsForm k N χ f a)

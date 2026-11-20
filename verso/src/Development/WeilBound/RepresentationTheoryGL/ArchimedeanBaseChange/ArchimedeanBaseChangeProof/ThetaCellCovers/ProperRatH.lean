@@ -15,7 +15,7 @@ attribute [local instance] borelH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `(h E a).2.2 _ (hC.image continuous_fst)`. Establish `h2` using `(h E b).2.2 _ (hC.image continuous_snd)`. Use `((h1.prod h2).image ((ratGL E a).prodMap (ratGL E b)).rangeRestrict).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨_, γ, rfl⟩ hγ`. Conclude with `⟨γ, ⟨⟨_, hγ, rfl⟩, ⟨_, hγ, rfl⟩⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem proper_ratH (h : RatProper) (C : Set (H E a b)) (hC : IsCompact C) : {γ : ratH E a b | (γ : H E a b) ∈ C}.Finite := by
   have h1 := (h E a).2.2 _ (hC.image continuous_fst)
@@ -53,7 +53,7 @@ Both sides reduce to the same expression.
 theorem ctx_ker (h : RatProper) (D : Dom E a b) (φ : H E a b → ℂ) : ker (ctx h D).Γ φ = kerH φ := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem ctx_isOp (h : RatProper) (D : Dom E a b) {ι : Type} [Fintype ι] (Φ : Matrix ι ι (H E a b → ℂ))
     (T : Hs (ι := ι) D →L[ℂ] Hs (ι := ι) D) : (ctx h D).IsOp Φ T ↔ IsROp D Φ T := Iff.rfl

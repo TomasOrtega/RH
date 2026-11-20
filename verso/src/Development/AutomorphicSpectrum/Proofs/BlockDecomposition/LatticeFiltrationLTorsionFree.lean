@@ -8,11 +8,11 @@ open DividedPowers CrystallineSemistableComparison.Pb
 namespace GlobalTheory.CompanionTheory.Lat
 
 /- English proof (translation)
-Introduce `W B _ _ _ f ξ l M m hH hc r x hx`. Rewrite `hx`, the goal using `[GlobalTheory.T.lattice_filtration_comap_span_pow f ξ l M m hH hc r]`. Rewrite `hx` using `[Ideal.mem_comap, map_mul, map_natCast]`. Rewrite using `[Ideal.mem_comap]`. Establish `hl0 : l ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hH.l0 Nat.cast_zero`. Establish `hl : (l : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr hl0`. Establish `hu : algebraMap ℚ B (l : ℚ)⁻¹ * (l : B) = 1`. Rewrite using `[← map_natCast (algebraMap ℚ B) l, ← map_mul, inv_mul_cancel₀ hl, map_one]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Ideal.mul_mem_left _ (algebraMap ℚ B (l : ℚ)⁻¹) hx`. Rewrite `h2` using `[← mul_assoc, hu, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem quot_pdP_no_torsion : ∀ {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (f : W →+* B) (ξ : W) (l M : ℕ) (m : ℕ), Lat.Hyp f ξ l m → ∀ hc : Lat.DPClosed (Lat.ι f ξ l M) (Lat.γB f ξ), ∀ (r : ℕ) (x : Lat.A f ξ l M), (l : Lat.A f ξ l M) * x ∈ pdP (Lat.γ f ξ l M hc) r → x ∈ pdP (Lat.γ f ξ l M hc) r := by
   intro W B _ _ _ f ξ l M m hH hc r x hx

@@ -11,15 +11,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.TwistedCarrierFunction
 
 /- English proof (translation)
-Introduce `Y Y' _ _ _ _ _ _ τ hτ B`. Take `⟨n, s, hs⟩` from `Module.Finite.exists_fin' O Y`. Establish `hsy : ∀ (a : O) (y : Y), τ.symm (σ a • y) = a • τ.symm y` using `fun a y => by`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `s' : (Fin n → O) →ₗ[O] Y'` to `{ toFun := fun x => τ.symm (s fun i => σ (x i)) map_add' := fun x x' => by`. Establish `: (fun i => σ ((x + x') i)) = (fun i => σ (x i)) + fun i => σ (x' i)` using `by ext i; simp`. Rewrite using `[this, map_add, map_add]`. Use the proof step `map_smul' := fun c x => by`. Establish `: (fun i => σ ((c • x) i)) = σ c • fun i => σ (x i)` using `by ext i; simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_smul, hsy]`. Use `rfl }`. Establish `hs' : Function.Surjective s'` using `fun y => by`. Take `⟨x, hx⟩` from `hs (τ y)`. Use `⟨fun i => σ.symm (x i), ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show τ.symm (s fun i => σ (σ.symm (x i))) = y`. Simplify using `only [RingEquiv.apply_symm_apply]`. Rewrite using `[hx, AddEquiv.symm_apply_apply]`. Rewrite using `[ψ.eval_eq hs', ψ.eval_eq hs]`. Use `htw σ hσ n fun a b => B (s a) (s b)` as an intermediate fact.
-
-Simplify `this` using `[s']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem twEval_of_isTwG {O : Type} [CommRing O] {w0 : O} {ψ : InvFun O}
     (htw : IsTwG w0 ψ) {σ : O ≃+* O} (hσ : σ w0 = w0) : Tw.TwEval σ ψ := by
@@ -48,17 +46,17 @@ theorem twEval_of_isTwG {O : Type} [CommRing O] {w0 : O} {ψ : InvFun O}
   simpa [s'] using this
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar w0 hb ψ htw σ hσ n B`. Establish `hc : ∀ a, σ (bar a) = bar (σ a)` using `hb.comm σ`. Establish `hev : Tw.TwEval σ ψ` using `twEval_of_isTwG htw hσ`. Set `τ : (Fin n → O) ≃+ (Fin n → O)` to `AddEquiv.piCongrRight fun _ => σ.toAddEquiv`. Establish `hτ : ∀ (a : O) (y : Fin n → O), τ (a • y) = σ a • τ y` using `fun a y => by ext i; simp [τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτs` using `Tw.symm_smul hτ`. Establish `hcs` using `Tw.symm_comm hc`. Use `show (carFun bar ψ).toFun n (fun a b => B (τ a) (τ b)) = (carFun bar ψ).toFun n B`. Simplify using `only [carFun]`. Distinguish the cases in `h : ∃ β : LinearMap.BilinForm ℤ (Fin n → O), β ∈ balForms bar (Fin n → O) ∧ (∀ y, 0 ≤ β y y) ∧ ∀ a b, B a b = β a b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h' : ∃ β : LinearMap.BilinForm ℤ (Fin n → O), β ∈ balForms bar (Fin n → O) ∧ (∀ y, 0 ≤ β y y) ∧ ∀ a b, B (τ a) (τ b) = β a b` using `⟨Tw.pullA τ h.choose, Tw.pullA_mem hc hτ h.choose_spec.1, fun y => h.choose_spec.2.1 _, fun a b => h.choose_spec.2.2 _ _⟩`. Rewrite using `[dif_pos h, dif_pos h']`. Establish `e : h'.choose = Tw.pullA τ h.choose` using `LinearMap.ext₂ fun a b => by`. Establish `h1` using `h'.choose_spec.2.2 a b`. Establish `h2` using `h.choose_spec.2.2 (τ a) (τ b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Tw.pullA_apply]`. Conclude with `h1.symm.trans h2` after adjusting the coercions. Rewrite using `[e]`. Unfold `cdimQ`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Set.Subset.antisymm ?_ (Tw.cdimSet_subset hc hev hτ _))` and prove the remaining obligations. Use `Tw.cdimSet_subset (bar := bar) (ψ := ψ) hcs hev.symm hτs (Tw.pullA τ h.choose)` as an intermediate fact. Rewrite `this` using `[Tw.pullA_symm_pullA]`. Then use the resulting hypothesis. Establish `h' : ¬ ∃ β : LinearMap.BilinForm ℤ (Fin n → O), β ∈ balForms bar (Fin n → O) ∧ (∀ y, 0 ≤ β y y) ∧ ∀ a b, B (τ a) (τ b) = β a b`. Introduce and unpack `⟨β, h1, h2, h3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h ⟨Tw.pullA τ.symm β, Tw.pullA_mem hcs hτs h1, fun y => h2 _, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Tw.pullA_apply, ← h3, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[dif_neg h, dif_neg h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTwG_carFun : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (w0 : O), CMOrd O bar → ∀ (ψ : InvFun O), IsTwG w0 ψ → IsTwG w0 (carFun bar ψ) := by

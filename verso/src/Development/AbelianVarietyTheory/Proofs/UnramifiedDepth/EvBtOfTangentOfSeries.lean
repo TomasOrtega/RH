@@ -14,7 +14,7 @@ namespace BtAssembly
 variable {R₀ : Type} [CommRing R₀]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private lemma chi_congr {B : BX R₀} {K : LAlg R₀} {g : ℕ} (ch : FormalChartAtZero B K g) {R : LAlg R₀}
     (ρ : LHom R K) (hρ : IsNilOver ρ) {x y : B.G R} (hx : B.map ρ x = 0) (hy : B.map ρ y = 0)
@@ -22,9 +22,9 @@ private lemma chi_congr {B : BX R₀} {K : LAlg R₀} {g : ℕ} (ch : FormalChar
   subst h; rfl
 
 /- English proof (translation)
-Establish `hsq : (LHom.id R).SqZero`. Use `⟨fun a => ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: RingHom.ker (LHom.id R).1 = ⊥`. Use extensionality with `a`. Simplify using `[RingHom.mem_ker, LHom.id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `h` using `ch.χ_tg ρ hρ (LHom.id R) hsq ρ rfl 0 0 k`. Rewrite `h` using `[chi_congr ch ρ hρ _ h0 (by simp)]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma chi_zero {B : BX R₀} {K : LAlg R₀} {g : ℕ} (ch : FormalChartAtZero B K g) {R : LAlg R₀}
     (ρ : LHom R K) (hρ : IsNilOver ρ) (h0 : B.map ρ 0 = 0) (k : Fin g) :
@@ -39,11 +39,11 @@ private lemma chi_zero {B : BX R₀} {K : LAlg R₀} {g : ℕ} (ch : FormalChart
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use function extensionality and compare the values at `k`. Rewrite using `[chi_congr ch ρ hρ hn (map_zero _) (zero_nsmul x), chi_zero]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `succ n ih`. Establish `hn' : B.map ρ (n • x) = 0` using `by rw [map_nsmul, hx, nsmul_zero]`. Establish `h` using `ch.χ_add ρ hρ ⟨n • x, hn'⟩ ⟨x, hx⟩`. Rewrite `h` using `[ih hn']`. Rewrite using `[chi_congr ch ρ hρ hn (map_add_ker B ρ ⟨n • x, hn'⟩ ⟨x, hx⟩) (succ_nsmul x n)]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private lemma chi_nsmul {B : BX R₀} {K : LAlg R₀} {g : ℕ} (ch : FormalChartAtZero B K g) {R : LAlg R₀}
     (ρ : LHom R K) (hρ : IsNilOver ρ) (x : B.G R) (hx : B.map ρ x = 0) (n : ℕ)
@@ -63,7 +63,7 @@ private lemma chi_nsmul {B : BX R₀} {K : LAlg R₀} {g : ℕ} (ch : FormalChar
     exact h
 
 /- English proof (translation)
-Apply `hρ.2` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker]`. Establish `: ρ.1 a ∈ maximalIdeal (K : Type)` using `fun hu => a.2 (ρ.2.map_nonunit _ hu)`. Rewrite `this` using `[hK]`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma nil_of_mem {R K : LAlg R₀} (ρ : LHom R K) (hρ : IsNilOver ρ)
     (hK : maximalIdeal (K : Type) = ⊥) (a : maximalIdeal (R : Type)) :
@@ -75,7 +75,7 @@ private lemma nil_of_mem {R K : LAlg R₀} (ρ : LHom R K) (hρ : IsNilOver ρ)
   exact this
 
 /- English proof (translation)
-Use `choose n hn using h`. Use `⟨∑ l, n l, fun l => pow_eq_zero_of_le ?_ (hn l)⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma exists_pow_zero {S : Type} [CommRing S] {g : ℕ} (Y : Fin g → S)
     (h : ∀ l, IsNilpotent (Y l)) : ∃ N : ℕ, ∀ l, Y l ^ N = 0 := by
@@ -84,7 +84,7 @@ private lemma exists_pow_zero {S : Type} [CommRing S] {g : ℕ} (Y : Fin g → S
   exact Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private lemma comp_app {R S T : LAlg R₀} (f : LHom R S) (f' : LHom S T) (e : LHom R T)
     (h : f'.comp f = e) (a : (R : Type)) : f'.1 (f.1 a) = e.1 a := by
@@ -95,35 +95,35 @@ end BtAssembly
 open BtAssembly in
 
 /- English proof (translation)
-Introduce `hTAN hGAM hLAM hWF R₀ _ p _ g B Tw Dt _ Oe _ _ σ cp D C _ _ k`. Take `⟨hK, hρ1, hL⟩` from `hLAM D (Fin.pos k)`. Establish `key : ∀ i : D.fin.ι, ∃ F : (D.fin.AAx i : Type), ∀ φ : LHom (D.fin.AAx i) Tw.O, φ.comp (D.fin.sO i) = LHom.id Tw.O → ∀ t : TT p g, B.map φ (D.fin.y i) = ptOf B D.L.τ (red p g t) → (Tw.q 0).1 ((D.H.Bt *ᵥ (algebraMap ℤ_[p] (Tw.O : Type) ∘ t)) k) = (Tw.q 0).1 (φ.1 F)`. Introduce `i`. Take `⟨Λ, μ, j, ρΛ, hΛ, hμ, hj, -, hψ⟩` from `hL i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `D.sm.onto (B.map ρΛ (B.map μ (D.fin.y i)))`. Establish `hc : B.map D.wd.ρW (p • x) = 0`. Rewrite using `[map_nsmul, hx, ← map_nsmul, ← map_nsmul, D.fin.y_p, map_zero, map_zero]`. Establish `hz : B.map ρΛ (B.map μ (D.fin.y i) - B.map j (B.map D.wd.πW x)) = 0`. Rewrite using `[map_sub, ← B.map_comp j ρΛ, hj, ← B.map_comp D.wd.πW, D.wd.ρW_eq, hx, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN⟩` from `exists_pow_zero (fun l => ((D.ch.χ ρΛ hΛ ⟨_, hz⟩ l : maximalIdeal (Λ : Type)) : (Λ : Type))) (fun l => nil_of_mem ρΛ hΛ hK _)`. Take `⟨Γ, hΓ, hΓe⟩` from `hGAM p D.ch (D.wd.W : Type) (fun l => ((D.ch.χ D.wd.ρW D.sm.nil ⟨_, hc⟩ l : maximalIdeal (D.wd.W : Type)) : (D.wd.W : Type))) (fun l => nil_of_mem D.wd.ρW D.sm.nil hK _) (N * 2)`. Take `⟨Q, hQ⟩` from `hWF D.wd g (Γ k) (hΓ k)`. Take `⟨F, hF⟩` from `hμ (j.1 (D.wd.πW.1 ((D.wd.b⁻¹ : (D.wd.W : Type)ˣ) : (D.wd.W : Type))) * MvPolynomial.eval₂ (j.1 : (Tw.R 0 : Type) →+* (Λ : Type)) (fun l => ((D.ch.χ ρΛ hΛ ⟨_, hz⟩ l : maximalIdeal (Λ : Type)) : (Λ : Type))) Q)`. Use `⟨F, fun φ hφ t ht => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψμ, hψj, hψρ⟩` from `hψ φ hφ`. Take `⟨t', ht', h, hw⟩` from `hTAN D t`. Take `⟨w, hw1, hw2⟩` from `hw k`. Establish `e1 : B.map D.wd.πW t' = B.map ψ (B.map μ (D.fin.y i))`. Rewrite using `[ht', ← ht, ← B.map_comp, ← B.map_comp, hψμ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : B.map D.wd.ρW (t' - x) = 0`. Rewrite using `[map_sub, hx, ← D.wd.ρW_eq, B.map_comp, e1, ← B.map_comp ψ, hψρ, sub_self]`. Establish `e2 : B.map D.wd.πW (t' - x) = B.map ψ (B.map μ (D.fin.y i) - B.map j (B.map D.wd.πW x))`. Rewrite using `[map_sub, map_sub, e1, ← B.map_comp j ψ, hψj, B.map_id]`. Establish `e3 : ∀ l, D.wd.πW.1 ((D.ch.χ D.wd.ρW D.sm.nil ⟨_, hu⟩ l : maximalIdeal (D.wd.W : Type)) : (D.wd.W : Type)) = ψ.1 ((D.ch.χ ρΛ hΛ ⟨_, hz⟩ l : maximalIdeal (Λ : Type)) : (Λ : Type))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l`. Rewrite using `[← D.ch.χ_nat D.wd.ρW D.wd.ρ1 D.sm.nil hρ1 D.wd.πW D.wd.ρW_eq ⟨_, hu⟩ l, ← D.ch.χ_nat ρΛ D.wd.ρ1 hΛ hρ1 ψ hψρ ⟨_, hz⟩ l]`. Rewrite using `[chi_congr D.ch D.wd.ρ1 hρ1 _ _ e2]`. Establish `e4 : ∀ l, ((D.ch.χ D.wd.ρW D.sm.nil ⟨_, hu⟩ l : maximalIdeal (D.wd.W : Type)) : (D.wd.W : Type)) ^ (N * 2) = 0`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ((D.ch.χ D.wd.ρW D.sm.nil ⟨_, hu⟩ l : maximalIdeal (D.wd.W : Type)) : (D.wd.W : Type)) ^ N ∈ RingHom.ker D.wd.πW.1`. Rewrite using `[RingHom.mem_ker, map_pow, e3, ← map_pow, hN, map_zero]`. Rewrite `this` using `[D.wd.ker_πW, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `this`. Rewrite using `[pow_mul, ← ha, mul_pow, D.wd.p_sq, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hpu : B.map D.wd.ρW (p • (t' - x)) = 0` using `by rw [map_nsmul, hu, nsmul_zero]`. Establish `e5` using `D.ch.χ_add D.wd.ρW D.sm.nil ⟨_, hc⟩ ⟨_, hpu⟩`. Rewrite `e5` using `[chi_nsmul D.ch D.wd.ρW D.sm.nil _ hu p hpu, hΓe _ e4, chi_congr D.ch D.wd.ρW D.sm.nil _ h (show p • x + p • (t' - x) = p • t' by rw [← nsmul_add, add_sub_cancel])]`. Establish `e6` using `congrFun e5 k`. Rewrite `e6` using `[hw2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `D.wd.πW_surj (MvPolynomial.eval (fun l => D.wd.πW.1 ((D.ch.χ D.wd.ρW D.sm.nil ⟨_, hu⟩ l : maximalIdeal (D.wd.W : Type)) : (D.wd.W : Type))) Q)`. Establish `e7` using `hQ _ (by`. Rewrite using `[← e6, mul_assoc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)) a ha`. Rewrite `e7` using `[← e6]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e8 : D.wd.πW.1 ((D.wd.b : (D.wd.W : Type)) * w - a) = 0`. Rewrite using `[← D.wd.ann_p, mul_sub, ← mul_assoc, e7, sub_self]`. Rewrite `e8` using `[map_sub, sub_eq_zero]`. Establish `e9 : ψ.1 (MvPolynomial.eval₂ (j.1 : (Tw.R 0 : Type) →+* (Λ : Type)) (fun l => ((D.ch.χ ρΛ hΛ ⟨_, hz⟩ l : maximalIdeal (Λ : Type)) : (Λ : Type))) Q) = D.wd.πW.1 a`. Rewrite using `[ha]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hid : (ψ.1 : (Λ : Type) →+* (Tw.R 0 : Type)).comp (j.1 : (Tw.R 0 : Type) →+* (Λ : Type)) = RingHom.id _` using `RingHom.ext fun b => comp_app j ψ _ hψj b`. Use `MvPolynomial.eval₂_comp_left (ψ.1 : (Λ : Type) →+* (Tw.R 0 : Type)) (j.1 : (Tw.R 0 : Type) →+* (Λ : Type)) (fun l => ((D.ch.χ ρΛ hΛ ⟨_, hz⟩ l : maximalIdeal (Λ : Type)) : (Λ : Type))) Q` as an intermediate fact. Rewrite `this` using `[hid]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `l`. Conclude with `(e3 l).symm`. Establish `e10 : (Tw.q 0).1 (φ.1 F) = ψ.1 (μ.1 F)` using `(comp_app μ ψ _ hψμ F).symm`. Rewrite using `[e10, hF, map_mul, e9, comp_app j ψ _ hψj, ← hw1, ← e8]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = D.wd.πW.1 _ * _`. Rewrite using `[← map_mul, ← mul_assoc, Units.inv_mul, one_mul]`. Use `choose F hF using key`. Use `⟨D.evAll C F, Submodule.subset_span ⟨F, rfl⟩, fun t => ?_⟩` and prove the remaining obligations. Establish `hs` using `Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (LHom.id Tw.O) (ptOf B D.L.τ (red p g t)) (D.pt_p (red p g t))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hF (D.ptIdx (red p g t)) (D.ptMap (red p g t)) hs.1 t hs.2.1`. Establish `hm : (D.H.Bt *ᵥ (algebraMap ℤ_[p] (Tw.O : Type) ∘ t)) k - (D.ptMap (red p g t)).1 (F (D.ptIdx (red p g t))) ∈ RingHom.ker (Tw.q 0).1`. Rewrite using `[RingHom.mem_ker, map_sub, h, sub_self]`. Rewrite `hm` using `[D.tower_zero_ker, Ideal.mem_span_singleton']`. Take `⟨r, hr⟩` from `hm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, hr, map_sub]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem evBt_of_tangent_of_series :
   (∀ {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : BX R₀} {Tw : ATowerL R₀ p} {Dt : DualTower Tw} [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)} (D : Dat p g B Tw Dt Oe σ cp), ∀ t : TT p g, ∃ t' : B.G D.wd.W,

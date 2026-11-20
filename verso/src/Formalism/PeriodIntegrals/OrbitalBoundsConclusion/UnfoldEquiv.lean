@@ -1,6 +1,6 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnfoldingEquivalence.CompSymmComp
 
 /- English proof (translation)
-The claim follows from `PI.UnfoldEquiv.UnitaryGroupMassFormula.unfoldEquiv`.
+A detailed English derivation is pending.
 -/
 theorem unfolding_equivalence : PI.UnfoldEquiv.UnfoldEquiv := PI.UnfoldEquiv.UnitaryGroupMassFormula.unfoldEquiv

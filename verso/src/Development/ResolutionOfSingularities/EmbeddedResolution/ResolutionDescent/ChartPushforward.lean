@@ -21,7 +21,7 @@ def subschemeIsoOfEq {V : Scheme.{u}} {I J : V.IdealSheafData} (h : I = J) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `[subschemeIsoOfEq]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem subschemeIsoOfEq_hom_subschemeι {V : Scheme.{u}} {I J : V.IdealSheafData} (h : I = J) :
     (subschemeIsoOfEq h).hom ≫ J.subschemeι = I.subschemeι := by
@@ -68,7 +68,7 @@ instance instIsClosedImmersionLevelMap (P : ChartPushforward S S') (i : ℕ) (hi
   P.isClosedImmersion_levelMap i hi
 
 /- English proof (translation)
-The claim follows from `hi.trans_eq P.len_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem le_length (P : ChartPushforward S S') {i : ℕ} (hi : i ≤ S'.length) : i ≤ S.length :=
   hi.trans_eq P.len_eq.symm
@@ -81,7 +81,7 @@ variable (S S' : EmbeddedBlowupSequence k Y pY) (f : S.ambient ⟶ S'.ambient)
   [AlgebraicGeometry.IsClosedImmersion f]
 
 /- English proof (translation)
-The claim follows from `h.2.choose_spec.1 i (hi.trans_eq h.1.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem isClosedImmersion_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i ≤ S'.length) :
@@ -89,7 +89,7 @@ private theorem isClosedImmersion_of_isPushforwardBlowupSeq
   h.2.choose_spec.1 i (hi.trans_eq h.1.symm)
 
 /- English proof (translation)
-Conclude with `h.2.choose_spec.2.1`.
+A detailed English derivation is pending.
 -/
 private theorem isoObjZero_comm_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) :
@@ -98,7 +98,7 @@ private theorem isoObjZero_comm_of_isPushforwardBlowupSeq
   exact h.2.choose_spec.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.choose_spec.2.2.1 i (hi.trans_eq h.1.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem blowdown_comm_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i < S'.length) :
@@ -107,7 +107,7 @@ private theorem blowdown_comm_of_isPushforwardBlowupSeq
   h.2.choose_spec.2.2.1 i (hi.trans_eq h.1.symm)
 
 /- English proof (translation)
-The claim follows from `h.2.choose_spec.2.2.2.1 i (hi.trans_eq h.1.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem ambientCenter_eq_imageIdealSheaf_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i < S'.length) :
@@ -116,7 +116,7 @@ private theorem ambientCenter_eq_imageIdealSheaf_of_isPushforwardBlowupSeq
   h.2.choose_spec.2.2.2.1 i (hi.trans_eq h.1.symm)
 
 /- English proof (translation)
-The claim follows from `h.2.choose_spec.2.2.2.2 i (hi.trans_eq h.1.symm)`.
+A detailed English derivation is pending.
 -/
 private theorem ker_succ_eq_strictTransform_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i < S'.length) :
@@ -152,15 +152,15 @@ section
 variable {S S' : EmbeddedBlowupSequence k Y pY}
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Introduce `hi`. Establish `key : T.ambientSeq.isoZero.inv ≫ P.levelMap 0 hi = P.ambientMap ≫ T'.ambientSeq.isoZero.inv`. Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, ← P.levelMap_zero, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : (T.emb ≫ T.ambientSeq.isoZero.inv) ≫ P.levelMap 0 hi = T'.emb ≫ T'.ambientSeq.isoZero.inv`. Rewrite using `[Category.assoc, key, ← Category.assoc, P.emb_ambientMap]`. Rewrite using `[EmbeddedBlowupSequence.strictTransformIdeal_zero, EmbeddedBlowupSequence.strictTransformIdeal_zero, ← Scheme.Hom.ker_comp, hcomp]`. Consider the case `succ n ih`. Introduce `hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : n < T'.length` using `Nat.lt_of_succ_le hi`. Establish `: AlgebraicGeometry.IsNoetherian (T.schemeAt (n + 1))` using `T.isNoetherian_schemeAt (n + 1) (P.le_length hi)`. Establish `: AlgebraicGeometry.IsNoetherian (T'.schemeAt (n + 1))` using `T'.isNoetherian_schemeAt (n + 1) hi`. Establish `hsq : P.levelMap (n + 1) hi ≫ T'.blowdown n = T.blowdown n ≫ P.levelMap n hn.le` using `P.levelMap_blowdown n hn`. Establish `hcenter : (T.ambientCenter n).map (P.levelMap n hn.le) = T'.ambientCenter n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_eq_ker_subschemeι_comp, P.ambientCenter_eq n hn, imageIdealSheaf_eq_ker]`. Establish `hker : Scheme.Hom.ker (P.levelMap (n + 1) hi) = Blowup.strictTransform (T'.blowdown n) ((T.ambientCenter n).map (P.levelMap n hn.le)) (Scheme.Hom.ker (P.levelMap n hn.le))`. Rewrite using `[hcenter]`. Conclude with `P.ker_levelMap_succ n hn`. Establish `hmain` using `map_strictTransform_eq_strictTransform_map (P.levelMap n hn.le) (T.ambientCenter n) (T.strictTransformIdeal n) (T.blowdown n) (T'.blowdown n) (P.levelMap (n + 1) hi) hsq hker`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[EmbeddedBlowupSequence.strictTransformIdeal_succ, EmbeddedBlowupSequence.strictTransformIdeal_succ, hmain, ih hn.le, hcenter]`.
+A detailed English derivation is pending.
 -/
 private theorem map_strictTransformIdeal_levelMap {T T' : EmbeddedBlowupSequence k Y pY}
     (P : ChartPushforward T T') (i : ℕ) :
@@ -198,11 +198,11 @@ private theorem map_strictTransformIdeal_levelMap {T T' : EmbeddedBlowupSequence
     rw [EmbeddedBlowupSequence.strictTransformIdeal_succ, EmbeddedBlowupSequence.strictTransformIdeal_succ, hmain, ih hn.le, hcenter]
 
 /- English proof (translation)
-Establish `hmap` using `map_strictTransformIdeal_levelMap P i hi`. Establish `hA : Scheme.Hom.ker (S.strictTransformι i) = S.strictTransformIdeal i`. Rewrite using `[S.strictTransformι_eq_subschemeι]`. Conclude with `Scheme.IdealSheafData.ker_subschemeι _`. Establish `hA' : Scheme.Hom.ker (S'.strictTransformι i) = S'.strictTransformIdeal i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[S'.strictTransformι_eq_subschemeι]`. Conclude with `Scheme.IdealSheafData.ker_subschemeι _`. Establish `: AlgebraicGeometry.IsClosedImmersion (S.strictTransformι i ≫ P.levelMap i hi)` using `inferInstance`. Establish `hker : Scheme.Hom.ker (S'.strictTransformι i) = Scheme.Hom.ker (S.strictTransformι i ≫ P.levelMap i hi)`. Rewrite using `[Scheme.Hom.ker_comp, hA, hA', hmap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `AlgebraicGeometry.IsClosedImmersion.isIso_lift (S'.strictTransformι i) (S.strictTransformι i ≫ P.levelMap i hi) hker` as an intermediate fact. Use `⟨asIso (AlgebraicGeometry.IsClosedImmersion.lift (S'.strictTransformι i) (S.strictTransformι i ≫ P.levelMap i hi) (le_of_eq hker)), ?_⟩` and prove the remaining obligations. Rewrite using `[asIso_hom, AlgebraicGeometry.IsClosedImmersion.lift_fac]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_strictTransform_iso (P : ChartPushforward S S') (i : ℕ) (hi : i ≤ S'.length) :
     ∃ e : S.strictTransform i ≅ S'.strictTransform i,
@@ -229,7 +229,7 @@ def strictTransformIso (P : ChartPushforward S S') (i : ℕ) (hi : i ≤ S'.leng
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(P.exists_strictTransform_iso i hi).choose_spec @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem strictTransformIso_hom_comp_strictTransformι (P : ChartPushforward S S') (i : ℕ) (hi : i ≤ S'.length) :
     (P.strictTransformIso i hi).hom ≫ S'.strictTransformι i = S.strictTransformι i ≫ P.levelMap i hi :=
@@ -237,9 +237,9 @@ theorem strictTransformIso_hom_comp_strictTransformι (P : ChartPushforward S S'
 
 @[reassoc]
 /- English proof (translation)
-Establish `hmono : Mono (S'.strictTransformι i)`. Rewrite using `[EmbeddedBlowupSequence.strictTransformι_eq_subschemeι]`. Use `infer_instance`. Rewrite using `[← cancel_mono (S'.strictTransformι i)]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[strictTransformIso_hom_comp_strictTransformι P i hi.le, EmbeddedBlowupSequence.strictTransformMap_comp_strictTransformι S' i, ← Category.assoc, strictTransformIso_hom_comp_strictTransformι P (i + 1) hi, Category.assoc, P.levelMap_blowdown i hi, ← Category.assoc, ← EmbeddedBlowup …`.
+A detailed English derivation is pending.
 -/
 theorem strictTransformIso_hom_comp_strictTransformMap (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     (P.strictTransformIso (i + 1) hi).hom ≫ S'.strictTransformMap i =
@@ -254,15 +254,11 @@ theorem strictTransformIso_hom_comp_strictTransformMap (P : ChartPushforward S S
     ← Category.assoc, ← EmbeddedBlowupSequence.strictTransformMap_comp_strictTransformι S i, Category.assoc]
 
 /- English proof (translation)
-Establish `key : ((P.strictTransformIso 0 (Nat.zero_le _)).hom ≫ S'.strictTransformZeroIso.hom) ≫ S'.emb = S.strictTransformZeroIso.hom ≫ S'.emb`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc]`. Use `_ = (P.strictTransformIso 0 (Nat.zero_le _)).hom ≫ (S'.strictTransformι 0 ≫ S'.ambientSeq.isoZero.hom) := by`. Rewrite using `[S'.strictTransformZeroIso_hom_emb]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((P.strictTransformIso 0 (Nat.zero_le _)).hom ≫ S'.strictTransformι 0) ≫ S'.ambientSeq.isoZero.hom := by`. Rewrite using `[Category.assoc]`. Use `_ = (S.strictTransformι 0 ≫ P.levelMap 0 (Nat.zero_le _)) ≫ S'.ambientSeq.isoZero.hom := by`. Rewrite using `[P.strictTransformIso_hom_comp_strictTransformι 0 (Nat.zero_le _)]`. Use `_ = S.strictTransformι 0 ≫ (P.levelMap 0 (Nat.zero_le _) ≫ S'.ambientSeq.isoZero.hom) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Use `_ = S.strictTransformι 0 ≫ (S.ambientSeq.isoZero.hom ≫ P.ambientMap) := by`. Rewrite using `[P.levelMap_zero]`. Use `_ = (S.strictTransformι 0 ≫ S.ambientSeq.isoZero.hom) ≫ P.ambientMap := by`. Rewrite using `[Category.assoc]`.
-
-Use `_ = (S.strictTransformZeroIso.hom ≫ S.emb) ≫ P.ambientMap := by`. Rewrite using `[S.strictTransformZeroIso_hom_emb]`. Use `_ = S.strictTransformZeroIso.hom ≫ (S.emb ≫ P.ambientMap) := by`. Rewrite using `[Category.assoc]`. Use `_ = S.strictTransformZeroIso.hom ≫ S'.emb := by`.
-
-Rewrite using `[P.emb_ambientMap]`. Conclude with `(cancel_mono S'.emb).mp key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictTransformIso_zero_hom_comp_strictTransformZeroIso_hom (P : ChartPushforward S S') :
     (P.strictTransformIso 0 (Nat.zero_le _)).hom ≫ S'.strictTransformZeroIso.hom = S.strictTransformZeroIso.hom := by
@@ -292,7 +288,7 @@ theorem strictTransformIso_zero_hom_comp_strictTransformZeroIso_hom (P : ChartPu
   exact (cancel_mono S'.emb).mp key
 
 /- English proof (translation)
-Take `⟨e, he⟩ : ∃ e : U ⟶ V, e ≫ g = f` from `⟨AlgebraicGeometry.IsClosedImmersion.lift g f hle, by rw [IsClosedImmersion.lift_fac]⟩`. Introduce and unpack `y ⟨x, rfl⟩`. Use `⟨e.base x, ?_⟩` and prove the remaining obligations. Establish `hx : ⇑(e ≫ g) x = ⇑f x` using `by rw [he]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem range_subset_range_of_ker_le {U V W : Scheme.{u}} (f : U ⟶ W) (g : V ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion f] [AlgebraicGeometry.IsClosedImmersion g]
@@ -306,7 +302,7 @@ private theorem range_subset_range_of_ker_le {U V W : Scheme.{u}} (f : U ⟶ W) 
   exact hx
 
 /- English proof (translation)
-Establish `hker : Scheme.Hom.ker ((Scheme.Hom.ker h).subschemeι) = Scheme.Hom.ker h` using `Scheme.IdealSheafData.ker_subschemeι _`. Establish `h1 : Set.range ⇑((Scheme.Hom.ker h).subschemeι) = ((Scheme.Hom.ker h).support : Set ↥W)` using `Scheme.IdealSheafData.range_subschemeι _`. Rewrite using `[← h1]`. Conclude with `Set.Subset.antisymm (range_subset_range_of_ker_le _ h (le_of_eq hker.symm)) (range_subset_range_of_ker_le h _ (le_of_eq hker))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem support_ker_eq_range {U W : Scheme.{u}} (h : U ⟶ W)
     [AlgebraicGeometry.IsClosedImmersion h] :
@@ -321,9 +317,9 @@ private theorem support_ker_eq_range {U W : Scheme.{u}} (h : U ⟶ W)
     (range_subset_range_of_ker_le h _ (le_of_eq hker))
 
 /- English proof (translation)
-Establish `hJ` using `P.ambientCenter_eq i hi`. Rewrite `hJ` using `[imageIdealSheaf_eq_ker]`. Establish `hI : ((S.ambientCenter i).support : Set ↥(S.schemeAt i)) = Set.range ⇑((S.ambientCenter i).subschemeι)`. Establish `h2` using `support_ker_eq_range ((S.ambientCenter i).subschemeι)`. Rewrite `h2` using `[Scheme.IdealSheafData.ker_subschemeι]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hcomp : ⇑((S.ambientCenter i).subschemeι ≫ P.levelMap i hi.le) = ⇑(P.levelMap i hi.le) ∘ ⇑((S.ambientCenter i).subschemeι)` using `rfl`. Rewrite using `[hJ, support_ker_eq_range, hI, hcomp, Set.range_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem support_ambientCenter_eq_image (P : ChartPushforward S S') (i : ℕ) (hi : i < S'.length) :
     ((S'.ambientCenter i).support : Set ↥(S'.schemeAt i)) =

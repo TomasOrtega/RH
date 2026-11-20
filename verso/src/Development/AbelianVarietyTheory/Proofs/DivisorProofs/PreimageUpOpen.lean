@@ -10,7 +10,7 @@ section One
 variable {Y₀ Y₁ : Scheme.{0}} (i : Y₀ ⟶ Y₁) [IsClosedImmersion i] [Surjective i]
 
 /- English proof (translation)
-The claim follows from `isHomeomorph_iff_isEmbedding_surjective.mpr ⟨i.isClosedEmbedding.isEmbedding, i.surjective⟩`.
+A detailed English derivation is pending.
 -/
 theorem isHomeomorph : IsHomeomorph i :=
   isHomeomorph_iff_isEmbedding_surjective.mpr ⟨i.isClosedEmbedding.isEmbedding, i.surjective⟩
@@ -18,7 +18,7 @@ theorem isHomeomorph : IsHomeomorph i :=
 def upOpen (U : Y₀.Opens) : Y₁.Opens := ⟨i '' (U : Set Y₀), (isHomeomorph i).isOpenMap _ U.2⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `i x ∈ i '' (U : Set Y₀) ↔ x ∈ U`. Conclude with `(isHomeomorph i).injective.mem_set_image`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem preimage_upOpen (U : Y₀.Opens) : i ⁻¹ᵁ upOpen i U = U := by
   ext x
@@ -26,7 +26,7 @@ theorem preimage_upOpen (U : Y₀.Opens) : i ⁻¹ᵁ upOpen i U = U := by
   exact (isHomeomorph i).injective.mem_set_image
 
 /- English proof (translation)
-Use extensionality with `y`. Express the relevant statement in the definitionally equal form `y ∈ i '' (i ⁻¹' (V : Set Y₁)) ↔ y ∈ V`. Rewrite using `[Set.image_preimage_eq _ i.surjective]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem upOpen_preimage (V : Y₁.Opens) : upOpen i (i ⁻¹ᵁ V) = V := by
   ext y
@@ -35,7 +35,7 @@ theorem upOpen_preimage (V : Y₁.Opens) : upOpen i (i ⁻¹ᵁ V) = V := by
   rfl
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ Set.image_mono h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem upOpen_mono : Monotone (upOpen i) := fun _ _ h ↦ Set.image_mono h
 
@@ -45,7 +45,7 @@ def res (U : Y₀.Opens) : Γ(Y₁, upOpen i U) ⟶ Γ(Y₀, U) :=
   i.appLE (upOpen i U) U (preimage_upOpen i U).ge
 
 /- English proof (translation)
-Simplify using `only [res, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_naturality {U V : Y₀.Opens} (h : U ≤ V) :
     Y₁.presheaf.map (homOfLE (upOpen_mono i h)).op ≫ res i U =
@@ -73,7 +73,7 @@ def fibMap {U V : Y₀.Opens} (h : U ≤ V) : (cone i₁ i₂ V).pt ⟶ (cone i�
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `PullbackCone.IsLimit.lift_fst _ _ _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem fibMap_fst {U V : Y₀.Opens} (h : U ≤ V) : fibMap i₁ i₂ h ≫ (cone i₁ i₂ U).fst =
     (cone i₁ i₂ V).fst ≫ Y₁.presheaf.map (homOfLE (upOpen_mono i₁ h)).op :=
@@ -81,7 +81,7 @@ theorem fibMap_fst {U V : Y₀.Opens} (h : U ≤ V) : fibMap i₁ i₂ h ≫ (co
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `PullbackCone.IsLimit.lift_snd _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibMap_snd {U V : Y₀.Opens} (h : U ≤ V) : fibMap i₁ i₂ h ≫ (cone i₁ i₂ U).snd =
     (cone i₁ i₂ V).snd ≫ Y₂.presheaf.map (homOfLE (upOpen_mono i₂ h)).op :=

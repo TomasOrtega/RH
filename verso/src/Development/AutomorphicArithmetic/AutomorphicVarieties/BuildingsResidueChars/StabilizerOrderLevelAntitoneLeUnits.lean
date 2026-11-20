@@ -6,14 +6,14 @@ section
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K] {τ : K}
 
 /- English proof (translation)
-Rewrite using `[yy, algebraMap_etau (O := O), Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem yy_val (π : O) (m : ℕ) (x : Etau K τ) :
     yy π m x = algebraMap O (Etau K τ) (π ^ m) * x := by
   rw [yy, algebraMap_etau (O := O), Algebra.smul_def]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `w ∈ (Submodule.span O {1, y} : Submodule O (Etau K τ)) ↔ _`. Rewrite using `[Submodule.mem_span_pair]`. Simplify using `only [Algebra.smul_def, mul_one, eq_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem mem_ord {y w : Etau K τ} :
     w ∈ Ord O y ↔ ∃ a b : O, w = algebraMap O (Etau K τ) a + algebraMap O (Etau K τ) b * y := by
@@ -22,13 +22,13 @@ private theorem mem_ord {y w : Etau K τ} :
   simp only [Algebra.smul_def, mul_one, eq_comm]
 
 /- English proof (translation)
-The claim follows from `mem_ord.2 ⟨1, 0, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem one_mem_ord (y : Etau K τ) : (1 : Etau K τ) ∈ Ord O y :=
   mem_ord.2 ⟨1, 0, by simp⟩
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `mem_ord.1 hv`. Take `⟨p, q, rfl⟩` from `mem_ord.1 hw`. Use `mem_ord.2 ⟨a * p + b * q * c, a * q + b * p, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul]`. Take the linear combination `(algebraMap O (Etau K τ) b * algebraMap O (Etau K τ) q) * hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem ord_mul {y : Etau K τ} {c : O} (hy : y * y = algebraMap O (Etau K τ) c)
     {v w : Etau K τ} (hv : v ∈ Ord O y) (hw : w ∈ Ord O y) : v * w ∈ Ord O y := by
@@ -39,7 +39,7 @@ private theorem ord_mul {y : Etau K τ} {c : O} (hy : y * y = algebraMap O (Etau
   linear_combination (algebraMap O (Etau K τ) b * algebraMap O (Etau K τ) q) * hy
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨a, b, rfl⟩` from `mem_ord.1 hw`. Use `mem_ord.2 ⟨a, b * π, ?_⟩` and prove the remaining obligations. Simplify using `only [yy_val, pow_succ, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem ord_mono (π : O) (m : ℕ) (x : Etau K τ) :
     Ord O (yy π (m + 1) x) ⊆ Ord O (yy π m x) := by
@@ -50,7 +50,7 @@ private theorem ord_mono (π : O) (m : ℕ) (x : Etau K τ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [yy_val, map_mul]`. Take the linear combination `(algebraMap O (Etau K τ) (π ^ m) * algebraMap O (Etau K τ) (π ^ m)) * h`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem yy_sq {π e : O} {x : Etau K τ} (h : x * x = algebraMap O (Etau K τ) e) (m : ℕ) :
     yy π m x * yy π m x = algebraMap O (Etau K τ) (π ^ m * π ^ m * e) := by
@@ -58,7 +58,7 @@ private theorem yy_sq {π e : O} {x : Etau K τ} (h : x * x = algebraMap O (Etau
   linear_combination (algebraMap O (Etau K τ) (π ^ m) * algebraMap O (Etau K τ) (π ^ m)) * h
 
 /- English proof (translation)
-Establish `h : PS.ml u (Ord O y) = Ord O y` using `hu`. Use `⟨h.subset ⟨1, one_mem_ord y, mul_one _⟩, ?_⟩` and prove the remaining obligations. Use `PS.mem_ml.1 (h.symm.subset (one_mem_ord (O := O) y))` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem unit_mem {y : Etau K τ} {u : (Etau K τ)ˣ} (hu : u ∈ Hu O y) :
     (u : Etau K τ) ∈ Ord O y ∧ ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) ∈ Ord O y := by
@@ -68,9 +68,9 @@ private theorem unit_mem {y : Etau K τ} {u : (Etau K τ)ˣ} (hu : u ∈ Hu O y)
   rwa [mul_one] at this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `PS.ml u (Ord O y) = Ord O y`. Use extensionality with `w`. Rewrite using `[PS.mem_ml]`. Use `⟨fun hw => ?_, fun hw => ord_mul hy h2 hw⟩` and prove the remaining obligations. Use `ord_mul hy h1 hw` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Units.mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem hu_of_mem {y : Etau K τ} {c : O} (hy : y * y = algebraMap O (Etau K τ) c)
     {u : (Etau K τ)ˣ} (h1 : (u : Etau K τ) ∈ Ord O y)
@@ -83,7 +83,7 @@ private theorem hu_of_mem {y : Etau K τ} {c : O} (hy : y * y = algebraMap O (Et
   rwa [Units.mul_inv_cancel_left] at this
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `mem_ord.1 hw`. Conclude with `isIntegral_algebraMap.add (isIntegral_algebraMap.mul hy)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem ord_int {y w : Etau K τ} (hy : IsIntegral O y) (hw : w ∈ Ord O y) :
     IsIntegral O w := by
@@ -93,9 +93,9 @@ private theorem ord_int {y w : Etau K τ} (hy : IsIntegral O y) (hw : w ∈ Ord 
 end
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ _ _ π n e h x c m`. Use `⟨fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `unit_mem hu`. Conclude with `hu_of_mem (yy_sq c.sq m) (ord_mono π m x h1) (ord_mono π m x h2)`. Take `⟨h1, h2⟩` from `unit_mem hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi : IsIntegral O (yy π m x)`. Rewrite using `[yy_val]`. Conclude with `isIntegral_algebraMap.mul c.gen.int`. Conclude with `⟨ord_int hi h1, ord_int hi h2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.stabilizer_order_level_antitone_le_units :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → ∀ (π : O) (n : ℕ) (e : Oˣ) (h : O) (x : Etau K τ), Cond π n e h x → ∀ m : ℕ, Hu O (yy π (m + 1) x) ≤ Hu O (yy π m x) ∧ Hu O (yy π m x) ≤ Gu O τ := by

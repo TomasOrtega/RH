@@ -44,9 +44,9 @@ theorem psiX_mat (X : Stages) (hg : X.toD7.sp.X'.gram = 1) (γ : Formalism.L2.Co
       Formalism.UG.bc (incA X.toD7) (LiftBrg.castGL (rank_X' X).symm (γ : GL (Fin (X.B.R.N X.B.R.m - 1)) X.toD7.host.E)) := rfl
 
 /- English proof (translation)
-Rewrite using `[ptE_eq, Formalism.L2.Col.ratIn_val]`. Establish `e1 : ((Bridge.ratF X.toD7.sp.X' (psiX X hg γ)) : GL (Fin X.toD7.sp.X'.rank) _) = Formalism.UG.bc (inclR (F` using `X.toD7.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.toD7.host.F)) (LiftBrg.castGL (rank_X' X).symm (γ : GL (Fin (X.B.R.N X.B.R.m - 1)) X.toD7.host.E)) := by`. Express the relevant statement in the definitionally equal form `finHom X.toD7.sp.X' _ = _`. Rewrite using `[finHom, MonoidHom.comp_apply, Subgroup.coe_subtype, psiX_mat]`. Conclude with `GlobalTheory.HLatMove.bc_map_bc_inclR _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Establish `e2 : Formalism.UG.bc (swapAE X.toD7) (Formalism.UG.bc (inclR (F` using `X.toD7.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af X.toD7.host.F)) (LiftBrg.castGL (rank_X' X).symm (γ : GL (Fin (X.B.R.N X.B.R.m - 1)) X.toD7.host.E))) = Formalism.UG.bc (Formalism.L2.Col.iA X.toD7.host.F X.toD7.host.E) (LiftBrg.castGL (rank_X' X).symm …`. Use extensionality with `a b`. Simplify using `[Formalism.UG.bc, swapAE, inclR, Formalism.UG.inclE]`. Rewrite using `[e2, ← castGL_bc, castGL_symm_castGL']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptE_ratF_psiX (X : Stages) (hg : X.toD7.sp.X'.gram = 1) (γ : Formalism.L2.Col.URat X.toD7.sp.cm (X.B.R.N X.B.R.m - 1)) :
     ptE X (Bridge.ratF X.toD7.sp.X' (psiX X hg γ)) = (Formalism.L2.Col.ratIn X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) γ).1 := by
@@ -73,7 +73,7 @@ namespace GlobalTheory.Mem.R3.RowStdRat
 open GlobalTheory.Mem.R3.RowAd GlobalTheory.Mem.R3.LiftBrg.StdGroups
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h2 : (Formalism.L2.Col.ratIn X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) a).1 = (Formalism.L2.Col.ratIn X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) b).1`. Rewrite using `[← ptE_ratF_psiX X hg a, ← ptE_ratF_psiX X hg b, hab]`. Simplify using `only [Formalism.L2.Col.ratIn_val] at h2`. Conclude with `Subtype.ext (Formalism.L2.DIV.incl_inj _ _ _ h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psiX_injective (X : Stages) (hg : X.toD7.sp.X'.gram = 1) : Function.Injective (psiX X hg) := by
   intro a b hab
@@ -83,9 +83,9 @@ theorem psiX_injective (X : Stages) (hg : X.toD7.sp.X'.gram = 1) : Function.Inje
   exact Subtype.ext (Formalism.L2.DIV.incl_inj _ _ _ h2)
 
 /- English proof (translation)
-Introduce `δ`. Take `⟨γE, hγE, e⟩` from `Subgroup.mem_subgroupOf.1 δ.2`. Establish `hγ : LiftBrg.castGL (rank_X' X) γE ∈ Formalism.L2.Col.URat X.toD7.sp.cm (X.B.R.N X.B.R.m - 1)`. Rewrite `hγE` using `[hg]`. Conclude with `castGL_mem_UJ_one _ _ _ hγE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hγ⟩, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.UG.bc (inclR (F := X.toD7.host.F) (AF X.toD7.host.F)) (LiftBrg.castGL (rank_X' X).symm (LiftBrg.castGL (rank_X' X) γE)) = _`. Rewrite using `[castGL_symm_castGL' (rank_X' X) γE]`. Conclude with `e`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiX_surjective (X : Stages) (hg : X.toD7.sp.X'.gram = 1) : Function.Surjective (psiX X hg) := by
   intro δ
@@ -100,9 +100,9 @@ theorem psiX_surjective (X : Stages) (hg : X.toD7.sp.X'.gram = 1) : Function.Sur
   exact e
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨rfl, fun i j i' j' hi hj => ?_⟩` and prove the remaining obligations. Establish `hi' : i = i'` using `Fin.ext hi`. Establish `hj' : j = j'` using `Fin.ext hj`. Substitute `hi' hj'` using the available equality.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `[LiftBrg.castGL, Matrix.reindexAlgEquiv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matEq_castGL {A : Type} [CommRing A] {m n : ℕ} (h : m = n) (x : GL (Fin m) A) : MatEq (LiftBrg.castGL h x) x := by
   subst h
@@ -113,11 +113,11 @@ theorem matEq_castGL {A : Type} [CommRing A] {m n : ℕ} (h : m = n) (x : GL (Fi
   simp [LiftBrg.castGL, Matrix.reindexAlgEquiv_apply]
 
 /- English proof (translation)
-Introduce `X px I hI e he`. Establish `hg` using `RowDeco.gram_X'_eq_one X I hI`. Establish `hinj : Function.Injective (ptE X)`. Introduce `h h' hh`. Take `⟨x, rfl⟩` from `e.surjective h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x', rfl⟩` from `e.surjective h'`. Rewrite `hh` using `[he, he]`. Rewrite using `[Subtype.ext hh]`. Use `⟨MulEquiv.ofBijective (psiX X hg) ⟨psiX_injective X hg, psiX_surjective X hg⟩, fun γ => ?_, fun γ => ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[he]`. Conclude with `ptE_ratF_psiX X hg γ`. Conclude with `⟨LiftBrg.castGL (rank_X' X).symm (γ : GL (Fin (X.B.R.N X.B.R.m - 1)) X.toD7.host.E), psiX_mat X hg γ, matEq_castGL _ _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stdRat_equiv : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px), I.Ok →
     ∀ (e : Formalism.L2.Col.UAd X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ≃* Bridge.Gf X.toD7.sp.X'),

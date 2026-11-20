@@ -34,7 +34,7 @@ def L3 : Cn F 3 →ₗ[R] C3 F where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use `⟨fun f g h => funext fun c => ?_, fun e => ⟨fun c => e (c.obj (Fin.last 0)), rfl⟩⟩` and prove the remaining obligations. Take `⟨X, rfl⟩` from `ComposableArrows.mk₀_surjective c`. Conclude with `congr_fun h X`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem L0_bijective_cochain : Function.Bijective (L0 F) := by
   refine ⟨fun f g h => funext fun c => ?_, fun e => ⟨fun c => e (c.obj (Fin.last 0)), rfl⟩⟩
@@ -42,7 +42,7 @@ theorem L0_bijective_cochain : Function.Bijective (L0 F) := by
   exact congr_fun h X
 
 /- English proof (translation)
-Use `⟨fun f g h => funext fun c => ?_, fun e => ⟨fun c => e (c.obj 0) (c.obj (Fin.last 1)) (c.map (homOfLE (Fin.zero_le _))), rfl⟩⟩` and prove the remaining obligations. Take `⟨X₀, X₁, φ, rfl⟩` from `ComposableArrows.mk₁_surjective c`. Conclude with `congr_fun (congr_fun (congr_fun h X₀) X₁) φ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem L1_bijective_cochain : Function.Bijective (L1 F) := by
   refine ⟨fun f g h => funext fun c => ?_, fun e => ⟨fun c => e (c.obj 0) (c.obj (Fin.last 1))
@@ -51,7 +51,7 @@ theorem L1_bijective_cochain : Function.Bijective (L1 F) := by
   exact congr_fun (congr_fun (congr_fun h X₀) X₁) φ
 
 /- English proof (translation)
-Use `⟨fun f g h => funext fun c => ?_, fun e => ⟨fun c => e (c.obj 0) (c.obj 1) (c.obj (Fin.last 2)) (c.map (homOfLE (show (0 : Fin 3) ≤ 1 by decide))) (c.map (homOfLE (show (1 : Fin 3) ≤ Fin.last 2 by decide))), rfl⟩⟩` and prove the remaining obligations. Take `⟨X₀, X₁, X₂, φ, ψ, rfl⟩` from `ComposableArrows.mk₂_surjective c`. Conclude with `congr_fun (congr_fun (congr_fun (congr_fun (congr_fun h X₀) X₁) X₂) φ) ψ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem L2_bijective_cochain : Function.Bijective (L2 F) := by
   refine ⟨fun f g h => funext fun c => ?_, fun e => ⟨fun c => e (c.obj 0) (c.obj 1) (c.obj (Fin.last 2))
@@ -61,7 +61,7 @@ theorem L2_bijective_cochain : Function.Bijective (L2 F) := by
   exact congr_fun (congr_fun (congr_fun (congr_fun (congr_fun h X₀) X₁) X₂) φ) ψ
 
 /- English proof (translation)
-Use `⟨fun f g h => funext fun c => ?_, fun e => ⟨fun c => e (c.obj 0) (c.obj 1) (c.obj 2) (c.obj (Fin.last 3)) (c.map (homOfLE (show (0 : Fin 4) ≤ 1 by decide))) (c.map (homOfLE (show (1 : Fin 4) ≤ 2 by decide))) (c.map (homOfLE (show (2 : Fin 4) ≤ Fin.last 3 by decide))), rfl⟩⟩` and prove the remaining obligations. Take `⟨X₀, X₁, X₂, X₃, φ, ψ, χ, rfl⟩` from `ComposableArrows.mk₃_surjective c`. Conclude with `congr_fun (congr_fun (congr_fun (congr_fun (congr_fun (congr_fun (congr_fun h X₀) X₁) X₂) X₃) φ) ψ) χ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem L3_bijective_cochain : Function.Bijective (L3 F) := by
   refine ⟨fun f g h => funext fun c => ?_, fun e => ⟨fun c => e (c.obj 0) (c.obj 1) (c.obj 2)
@@ -72,7 +72,7 @@ theorem L3_bijective_cochain : Function.Bijective (L3 F) := by
   exact congr_fun (congr_fun (congr_fun (congr_fun (congr_fun (congr_fun (congr_fun h X₀) X₁) X₂) X₃) φ) ψ) χ
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl` from `eq_of_heq hu`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem cof_eq {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ C) (c' : Fin (n + 1) ⥤ C)
     (h : face i c = c') (u : c'.obj (Fin.last n) ⟶ c.obj (Fin.last (n + 1)))
@@ -83,27 +83,27 @@ theorem cof_eq {n : ℕ} (i : Fin (n + 2)) (c : Fin (n + 2) ⥤ C) (c' : Fin (n 
   rfl
 
 /- English proof (translation)
-Simplify using `[dn, Fin.sum_univ_two, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dn0 (f : Cn F 0) (c : Fin 2 ⥤ C) : dn F 0 f c = cof F 0 0 f c - cof F 0 1 f c := by
   simp [dn, Fin.sum_univ_two, sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `[dn, Fin.sum_univ_three, pow_succ, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dn1 (f : Cn F 1) (c : Fin 3 ⥤ C) :
     dn F 1 f c = cof F 1 0 f c - cof F 1 1 f c + cof F 1 2 f c := by
   simp [dn, Fin.sum_univ_three, pow_succ, sub_eq_add_neg]
 
 /- English proof (translation)
-Simplify using `[dn, Fin.sum_univ_four, pow_succ, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dn2 (f : Cn F 2) (c : Fin 4 ⥤ C) :
     dn F 2 f c = cof F 2 0 f c - cof F 2 1 f c + cof F 2 2 f c - cof F 2 3 f c := by
   simp [dn, Fin.sum_univ_four, pow_succ, sub_eq_add_neg]
 
 /- English proof (translation)
-Take `⟨X₀, X₁, g, rfl⟩` from `ComposableArrows.mk₁_surjective c`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem eq_mk₁ (c : ComposableArrows C 1) (x : c.left ⟶ c.right) (h : c.hom = x) : c = mk₁ x := by
   obtain ⟨X₀, X₁, g, rfl⟩ := ComposableArrows.mk₁_surjective c
@@ -111,7 +111,7 @@ theorem eq_mk₁ (c : ComposableArrows C 1) (x : c.left ⟶ c.right) (h : c.hom 
   rfl
 
 /- English proof (translation)
-Take `⟨X₀, X₁, X₂, g₀, g₁, rfl⟩` from `ComposableArrows.mk₂_surjective c`. Substitute `hx hy` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem eq_mk₂ (c : ComposableArrows C 2) (x : c.obj' 0 ⟶ c.obj' 1) (y : c.obj' 1 ⟶ c.obj' 2)
     (hx : map' c 0 1 = x) (hy : map' c 1 2 = y) : c = mk₂ x y := by
@@ -124,47 +124,47 @@ section Faces
 variable {T T' T'' T''' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T''')
 
 /- English proof (translation)
-Conclude with `ComposableArrows.ext₀ rfl`.
+A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_one_zero : face 0 (mk₁ φ) = mk₀ T' := by
   exact ComposableArrows.ext₀ rfl
 /- English proof (translation)
-Conclude with `ComposableArrows.ext₀ rfl`.
+A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_one_one : face 1 (mk₁ φ) = mk₀ T := by
   exact ComposableArrows.ext₀ rfl
 /- English proof (translation)
-Conclude with `eq_mk₁ (face 0 (mk₂ φ ψ)) ψ rfl`.
+A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_two_zero : face 0 (mk₂ φ ψ) = mk₁ ψ := by
   exact eq_mk₁ (face 0 (mk₂ φ ψ)) ψ rfl
 /- English proof (translation)
-Conclude with `eq_mk₁ (face 1 (mk₂ φ ψ)) (φ ≫ ψ) rfl`.
+A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_two_one : face 1 (mk₂ φ ψ) = mk₁ (φ ≫ ψ) := by
   exact eq_mk₁ (face 1 (mk₂ φ ψ)) (φ ≫ ψ) rfl
 /- English proof (translation)
-Conclude with `eq_mk₁ (face 2 (mk₂ φ ψ)) φ rfl`.
+A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_two_two : face 2 (mk₂ φ ψ) = mk₁ φ := by
   exact eq_mk₁ (face 2 (mk₂ φ ψ)) φ rfl
 /- English proof (translation)
-Conclude with `eq_mk₂ (face 0 (mk₃ φ ψ χ)) ψ χ rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem face_zero_mk3 : face 0 (mk₃ φ ψ χ) = mk₂ ψ χ := by
   exact eq_mk₂ (face 0 (mk₃ φ ψ χ)) ψ χ rfl rfl
 /- English proof (translation)
-Conclude with `eq_mk₂ (face 1 (mk₃ φ ψ χ)) (φ ≫ ψ) χ rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem face_one_mk3 : face 1 (mk₃ φ ψ χ) = mk₂ (φ ≫ ψ) χ := by
   exact eq_mk₂ (face 1 (mk₃ φ ψ χ)) (φ ≫ ψ) χ rfl rfl
 /- English proof (translation)
-Conclude with `eq_mk₂ (face 2 (mk₃ φ ψ χ)) φ (ψ ≫ χ) rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem face_two_mk3 : face 2 (mk₃ φ ψ χ) = mk₂ φ (ψ ≫ χ) := by
   exact eq_mk₂ (face 2 (mk₃ φ ψ χ)) φ (ψ ≫ χ) rfl rfl
 /- English proof (translation)
-Conclude with `eq_mk₂ (face 3 (mk₃ φ ψ χ)) φ ψ rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem face_three_mk3 : face 3 (mk₃ φ ψ χ) = mk₂ φ ψ := by
   exact eq_mk₂ (face 3 (mk₃ φ ψ χ)) φ ψ rfl rfl
@@ -172,16 +172,14 @@ theorem face_three_mk3 : face 3 (mk₃ φ ψ χ) = mk₂ φ ψ := by
 end Faces
 
 /- English proof (translation)
-Rewrite using `[mp, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mp_id_apply (X : C) (x : F.obj X) : mp F (𝟙 X) x = x := by
   rw [mp, CategoryTheory.Functor.map_id]
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' φ`. Use `show dn F 0 f (mk₁ φ) = L0 F f T' - mp F φ (L0 F f T)`. Rewrite using `[dn0, cof_eq F (n := 0) 0 (mk₁ φ) (mk₀ T') (cech_nerve_face_one_zero φ) (𝟙 T') HEq.rfl f, cof_eq F (n := 0) 1 (mk₁ φ) (mk₀ T) (cech_nerve_face_one_one φ) φ HEq.rfl f]`. Use `show mp F (𝟙 T') (f (mk₀ T')) - mp F φ (f (mk₀ T)) = _`. Rewrite using `[mp_id_apply F T' (f (mk₀ T'))]`.
-
-Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem L1_dn_zero_eq_d0_L0 (f : Cn F 0) : L1 F (dn F 0 f) = d0 F (L0 F f) := by
   funext T T' φ
@@ -193,9 +191,7 @@ theorem L1_dn_zero_eq_d0_L0 (f : Cn F 0) : L1 F (dn F 0 f) = d0 F (L0 F f) := by
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' T'' φ ψ`. Use `show dn F 1 f (mk₂ φ ψ) = mp F ψ (L1 F f T T' φ) - L1 F f T T'' (φ ≫ ψ) + L1 F f T' T'' ψ`. Rewrite using `[dn1, cof_eq F (n := 1) 0 (mk₂ φ ψ) (mk₁ ψ) (cech_nerve_face_two_zero φ ψ) (𝟙 T'') HEq.rfl f, cof_eq F (n := 1) 1 (mk₂ φ ψ) (mk₁ (φ ≫ ψ)) (cech_nerve_face_two_one φ ψ) (𝟙 T'') HEq.rfl f, cof_eq F (n := 1) 2 (mk₂ φ ψ) (mk₁ φ) (cech_nerve_face_two_two φ ψ) ψ HEq.rfl f]`. Use `conv_lhs => rw [sub_add_comm]`. Use `show mp F ψ (f (mk₁ φ)) - mp F (𝟙 T'') (f (mk₁ (φ ≫ ψ))) + mp F (𝟙 T'') (f (mk₁ ψ)) = _`.
-
-Rewrite using `[mp_id_apply F T'' (f (mk₁ (φ ≫ ψ))), mp_id_apply F T'' (f (mk₁ ψ))]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem L2_dn_one_eq_d1_L1 (f : Cn F 1) : L2 F (dn F 1 f) = d1 F (L1 F f) := by
   funext T T' T'' φ ψ
@@ -209,9 +205,7 @@ theorem L2_dn_one_eq_d1_L1 (f : Cn F 1) : L2 F (dn F 1 f) = d1 F (L1 F f) := by
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `T T' T'' T''' φ ψ χ`. Use `show dn F 2 f (mk₃ φ ψ χ) = L2 F f T' T'' T''' ψ χ - L2 F f T T'' T''' (φ ≫ ψ) χ + L2 F f T T' T''' φ (ψ ≫ χ) - mp F χ (L2 F f T T' T'' φ ψ)`. Rewrite using `[dn2, cof_eq F (n := 2) 0 (mk₃ φ ψ χ) (mk₂ ψ χ) (face_zero_mk3 φ ψ χ) (𝟙 T''') HEq.rfl f, cof_eq F (n := 2) 1 (mk₃ φ ψ χ) (mk₂ (φ ≫ ψ) χ) (face_one_mk3 φ ψ χ) (𝟙 T''') HEq.rfl f, cof_eq F (n := 2) 2 (mk₃ φ ψ χ) (mk₂ φ (ψ ≫ χ)) (face_two_mk3 φ ψ χ) (𝟙 T''') HEq.rfl f, cof_eq F (n …`. Use `show mp F (𝟙 T''') (f (mk₂ ψ χ)) - mp F (𝟙 T''') (f (mk₂ (φ ≫ ψ) χ)) + mp F (𝟙 T''') (f (mk₂ φ (ψ ≫ χ))) - mp F χ (f (mk₂ φ ψ)) = _`. Rewrite using `[mp_id_apply F T''' (f (mk₂ ψ χ)), mp_id_apply F T''' (f (mk₂ (φ ≫ ψ) χ)), mp_id_apply F T''' (f (mk₂ φ (ψ ≫ χ)))]`.
-
-Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem L3_dn_two_eq_d2_L2 (f : Cn F 2) : L3 F (dn F 2 f) = d2 F (L2 F f) := by
   funext T T' T'' T''' φ ψ χ
@@ -228,9 +222,9 @@ theorem L3_dn_two_eq_d2_L2 (f : Cn F 2) : L3 F (dn F 2 f) = d2 F (L2 F f) := by
   rfl
 
 /- English proof (translation)
-Introduce `R _ C _ F`. Apply the tactic sequence `refine ⟨LinearEquiv.ofBijective (L0 F) (L0_bijective_cochain F), LinearEquiv.ofBijective (L1 F) (L1_bijective_cochain F), LinearEquiv.ofBijective (L2 F) (L2_bijective_cochain F), LinearEquiv.ofBijective (L3 F) (L3_bijective_cochain F), fun _ _ => ?_, fun _ _ _ _ => ?_, fun _ _ _ …`. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `L1_dn_zero_eq_d0_L0 F f`. Conclude with `L2_dn_one_eq_d1_L1 F f`. Conclude with `L3_dn_two_eq_d2_L2 F f`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dictSt : DictSt := by
   intro R _ C _ F

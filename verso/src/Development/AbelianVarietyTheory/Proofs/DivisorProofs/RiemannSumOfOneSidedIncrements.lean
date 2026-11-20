@@ -5,11 +5,11 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨c, hc, hcd⟩` from `exists_deriv_eq_slope (fun x => s.eval x) hab s.continuous.continuousOn (fun x _ => s.differentiableAt.differentiableWithinAt)`. Rewrite `hcd` using `[Polynomial.deriv]`. Establish `hpos : 0 < b - a` using `sub_pos.mpr hab`. Establish `hsc : s.eval b - s.eval a = (b - a) * s.derivative.eval c`. Rewrite using `[hcd]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `have h1 := hδ c ⟨by linarith [hc.1], by linarith [hc.2]⟩ a ⟨ha, by linarith⟩ (by rw [Real.dist_eq, abs_lt]; constructor <;> linarith [hc.1, hc.2])`. Apply the tactic sequence `have h2 := hδ c ⟨by linarith [hc.1], by linarith [hc.2]⟩ b ⟨by linarith, hb⟩ (by rw [Real.dist_eq, abs_lt]; constructor <;> linarith [hc.1, hc.2])`. Rewrite `h1`, `h2` using `[Real.dist_eq, abs_lt]`. Prove the components needed by the constructor for the conclusion.
+Clear the denominators using the available nonvanishing facts. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hsc]`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left h1.1 hpos]`. Rewrite using `[hsc]`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left h2.2 hpos]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem polynomial_increment_near_derivative (s : Polynomial ℝ) {η δ : ℝ}
     (hδ : ∀ x ∈ Set.Icc (0:ℝ) 1, ∀ y ∈ Set.Icc (0:ℝ) 1, dist x y < δ →
@@ -33,31 +33,31 @@ theorem polynomial_increment_near_derivative (s : Polynomial ℝ) {η δ : ℝ}
   · rw [hsc]; nlinarith [mul_lt_mul_of_pos_left h2.2 hpos]
 
 /- English proof (translation)
-Introduce `s ℓ h`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨η, hη⟩ : ∃ η : ℝ, η = ε / 4` from `⟨_, rfl⟩`. Establish `hηpos : 0 < η` using `by rw [hη]; positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδpos, hδ⟩` from `Metric.uniformContinuousOn_iff.mp (isCompact_Icc.uniformContinuousOn_of_continuous s.derivative.continuous.continuousOn) η hηpos`. Take `⟨n, hn⟩` from `exists_nat_gt (1 / δ)`. Establish `hnpos : (0:ℝ) < n` using `lt_trans (by positivity) hn`. Establish `hn0 : n ≠ 0` using `by exact_mod_cast hnpos.ne'`. Establish `hstep : (1:ℝ) / n < δ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_lt_iff₀ hnpos]`. Rewrite `hn` using `[div_lt_iff₀ hδpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨t, ht⟩ : ∃ t : ℕ → ℚ, t = fun j : ℕ => (j : ℚ) / n` from `⟨_, rfl⟩`. Establish `ht0 : ∀ j, 0 ≤ t j` using `fun j => by rw [ht]; positivity`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht1 : ∀ j ≤ n, t j ≤ 1` using `fun j hj => by`. Rewrite using `[ht]`. Use `show (j:ℚ) / n ≤ 1`. Rewrite using `[div_le_one (by exact_mod_cast Nat.pos_of_ne_zero hn0)]; exact_mod_cast hj`. Establish `htR : ∀ j, ((t j : ℚ) : ℝ) = (j : ℝ) / n` using `fun j => by rw [ht]; push_cast; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : ∀ j, ((t (j+1) : ℚ) : ℝ) - t j = 1 / n` using `fun j => by`. Rewrite using `[htR, htR]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hηn : η * (1 / (n:ℝ)) = η / n` using `by ring`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup : ∀ᶠ m in atTop, ∀ j ∈ Finset.range n, ℓ (t j) m - ℓ (t (j+1)) m ≤ (((t (j+1)) : ℝ) - t j) * s.derivative.eval (t j : ℝ) + η / n`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `j hj`. Establish `hj'` using `Finset.mem_range.mp hj`. Conclude with `h _ _ (ht0 j) (ht1 j hj'.le) (ht0 (j+1)) (ht1 (j+1) hj') _ (by positivity)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlo : ∀ᶠ m in atTop, ∀ j ∈ Finset.range n, ℓ (t (j+1)) m - ℓ (t j) m ≤ (((t j) : ℝ) - t (j+1)) * s.derivative.eval (t (j+1) : ℝ) + η / n`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `j hj`. Establish `hj'` using `Finset.mem_range.mp hj`. Conclude with `h _ _ (ht0 (j+1)) (ht1 (j+1) hj') (ht0 j) (ht1 j hj'.le) _ (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hup, hlo] with m hu hl`. Establish `t0 : t 0 = 0` using `by rw [ht]; simp`. Establish `tn : t n = 1`. Rewrite using `[ht]; show (n:ℚ) / n = 1; exact div_self (by exact_mod_cast hn0)`. Establish `hsumℓ : ℓ 0 m - ℓ 1 m = ∑ j ∈ Finset.range n, (ℓ (t j) m - ℓ (t (j+1)) m)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_range_sub' (fun j => ℓ (t j) m) n` as an intermediate fact. Rewrite using `[this, t0, tn]`. Establish `hsums : s.eval 1 - s.eval 0 = ∑ j ∈ Finset.range n, (s.eval (t (j+1) : ℝ) - s.eval (t j : ℝ))`. Use `Finset.sum_range_sub (fun j => s.eval (t j : ℝ)) n` as an intermediate fact. Rewrite using `[this, t0, tn]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hstepb : ∀ j ∈ Finset.range n, |(ℓ (t j) m - ℓ (t (j+1)) m) - (s.eval (t (j+1) : ℝ) - s.eval (t j : ℝ))| ≤ 2 * (η / n)`. Introduce `j hj`. Establish `hj'` using `Finset.mem_range.mp hj`. Establish `hd` using `hdiff j`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1n : (0:ℝ) < 1 / n` using `by positivity`. Take `⟨k1, k2⟩` from `polynomial_increment_near_derivative s hδ (a := t j) (b := t (j+1)) (by exact_mod_cast ht0 j) (by linarith) (by exact_mod_cast ht1 _ hj') (by rw [hd]; exact hstep)`. Establish `u` using `hu j hj`. Establish `l` using `hl j hj`. Establish `hd' : ((t j : ℚ) : ℝ) - t (j+1) = -(1 / n)` using `by linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k1`, `k2`, `u` using `[hd]`. Rewrite `l` using `[hd']`. Rewrite `k1`, `k2` using `[hηn]`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Real.dist_eq, hsumℓ, hsums, ← Finset.sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem riemann_sum_of_one_sided_increments : ∀ (s : Polynomial ℝ) (ℓ : ℚ → ℕ → ℝ),
     (∀ t t' : ℚ, 0 ≤ t → t ≤ 1 → 0 ≤ t' → t' ≤ 1 → ∀ ε : ℝ, 0 < ε →

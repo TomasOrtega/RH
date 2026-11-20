@@ -12,9 +12,9 @@ universe w u
 variable {X : TopCat.{u}} {ι : Type w} (P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) (U : ι → Opens X)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_inter_iff]`. Introduce `a`. Take `⟨b, hb⟩` from `h ⟨a, rfl⟩`. Rewrite using `[← hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx b`.
+A detailed English derivation is pending.
 -/
 lemma inter_le_of_range {m n : ℕ} {i : Fin m → ι} {j : Fin n → ι}
     (h : Set.range j ⊆ Set.range i) : inter U i ≤ inter U j := by
@@ -29,13 +29,13 @@ def leSet {m n : ℕ} (i : Fin (n + 1) → ι) : Set (Fin (m + 1) → ι) := {j 
 
 variable {U} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_leSet {m n : ℕ} {i : Fin (n + 1) → ι} {j : Fin (m + 1) → ι} :
     j ∈ leSet U i ↔ inter U i ≤ inter U j := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hj` and use `mem_leSet.2 (inter_le_of_range U (mem_rangeIn.1 hj))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma rangeIn_subset_leSet {m n : ℕ} (i : Fin (n + 1) → ι) :
     rangeIn (n := m) (Set.range i) ⊆ leSet U i :=
@@ -46,7 +46,7 @@ noncomputable def cval {m n : ℕ} (σ : Cochain P U m) (i : Fin (n + 1) → ι)
   open Classical in if h : inter U i ≤ inter U j then res P h (σ j) else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 lemma cval_of_le {m n : ℕ} (σ : Cochain P U m) (i : Fin (n + 1) → ι) (j : Fin (m + 1) → ι)
     (h : inter U i ≤ inter U j) : cval P U σ i j = res P h (σ j) := dif_pos h
@@ -56,23 +56,23 @@ noncomputable def cev {m n : ℕ} (σ : Cochain P U m) (i : Fin (n + 1) → ι) 
   Finsupp.liftAddHom fun j => zmultiplesHom _ (cval P U σ i j)
 
 /- English proof (translation)
-Rewrite using `[cev, Finsupp.liftAddHom_apply_single, zmultiplesHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cev_single {m n : ℕ} (σ : Cochain P U m) (i : Fin (n + 1) → ι) (j : Fin (m + 1) → ι) (z : ℤ) :
     cev P U σ i (Finsupp.single j z) = z • cval P U σ i j := by
   rw [cev, Finsupp.liftAddHom_apply_single, zmultiplesHom_apply]
 
 /- English proof (translation)
-Rewrite using `[cev_single, one_smul, cval_of_le P U σ i i le_rfl, res_refl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cev_self {n : ℕ} (σ : Cochain P U n) (i : Fin (n + 1) → ι) :
     cev P U σ i (Finsupp.single i 1) = σ i := by
   rw [cev_single, one_smul, cval_of_le P U σ i i le_rfl, res_refl]
 
 /- English proof (translation)
-Establish `: cev P U (σ + τ) i = cev P U σ i + cev P U τ i`. Use `Finsupp.addHom_ext fun j z => ?_` and prove the remaining obligations. Rewrite using `[AddMonoidHom.add_apply, cev_single, cev_single, cev_single, ← smul_add]`. Use `congr 1`. Distinguish the cases in `h : inter U i ≤ inter U j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[cval_of_le P U _ i j h, cval_of_le P U _ i j h, cval_of_le P U _ i j h, Pi.add_apply, map_add]`. Simplify using `only [cval, h, dif_neg, not_false_eq_true, add_zero]`. Conclude with `congrArg (fun L => L c) this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cev_add {m n : ℕ} (σ τ : Cochain P U m) (i : Fin (n + 1) → ι) (c : Chain ι m) :
     cev P U (σ + τ) i c = cev P U σ i c + cev P U τ i c := by
@@ -86,7 +86,7 @@ lemma cev_add {m n : ℕ} (σ τ : Cochain P U m) (i : Fin (n + 1) → ι) (c : 
   exact congrArg (fun L => L c) this
 
 /- English proof (translation)
-Establish `h` using `cev_add P U (0 : Cochain P U m) 0 i c`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma cev_zero {m n : ℕ} (i : Fin (n + 1) → ι) (c : Chain ι m) : cev P U (0 : Cochain P U m) i c = 0 := by
   have h := cev_add P U (0 : Cochain P U m) 0 i c
@@ -94,7 +94,7 @@ lemma cev_zero {m n : ℕ} (i : Fin (n + 1) → ι) (c : Chain ι m) : cev P U (
   simpa using h
 
 /- English proof (translation)
-Use `eq_of_supported ((res P h).comp (cev P U σ i')) (cev P U σ i) (fun j hj z => ?_) hc` and prove the remaining obligations. Rewrite using `[AddMonoidHom.comp_apply, cev_single, cev_single, map_zsmul, cval_of_le P U σ i' j (mem_leSet.1 hj), cval_of_le P U σ i j (h.trans (mem_leSet.1 hj)), res_res]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma res_cev {m n p : ℕ} (σ : Cochain P U m) {i : Fin (n + 1) → ι} {i' : Fin (p + 1) → ι}
     (h : inter U i ≤ inter U i') {c : Chain ι m} (hc : c ∈ Finsupp.supported ℤ ℤ (leSet U i')) :
@@ -104,7 +104,7 @@ lemma res_cev {m n p : ℕ} (σ : Cochain P U m) {i : Fin (n + 1) → ι} {i' : 
     cval_of_le P U σ i' j (mem_leSet.1 hj), cval_of_le P U σ i j (h.trans (mem_leSet.1 hj)), res_res]
 
 /- English proof (translation)
-Use `eq_of_supported (cev P U (d P U m σ) i) ((cev P U σ i).comp (bd m)) (fun j hj z => ?_) hc` and prove the remaining obligations. Rewrite using `[AddMonoidHom.comp_apply, cev_single, cval_of_le P U _ i j (mem_leSet.1 hj), d_apply, map_sum, Finset.smul_sum, bd_single, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_zsmul, res_res, cev_single]`. Rewrite using `[cval_of_le P U σ i _ ((mem_leSet.1 hj).trans (inter_le_comp U j k.succAbove)), smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma cev_d {m n : ℕ} (σ : Cochain P U m) (i : Fin (n + 1) → ι) {c : Chain ι (m + 1)}
     (hc : c ∈ Finsupp.supported ℤ ℤ (leSet U i)) :
@@ -117,7 +117,7 @@ lemma cev_d {m n : ℕ} (σ : Cochain P U m) (i : Fin (n + 1) → ι) {c : Chain
   rw [cval_of_le P U σ i _ ((mem_leSet.1 hj).trans (inter_le_comp U j k.succAbove)), smul_comm]
 
 /- English proof (translation)
-Rewrite using `[bd_single, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, lin_single, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma lin_bd_single {m n : ℕ} (f : (Fin (m + 1) → ι) → Chain ι n) (i : Fin (m + 2) → ι) :
     lin f (bd m (Finsupp.single i 1)) = ∑ k : Fin (m + 2), ((-1 : ℤ) ^ (k : ℕ)) • f (i ∘ k.succAbove) := by
@@ -163,7 +163,7 @@ def toOrd (n : ℕ) : Cochain P U n →+ OCochain P U n where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[od_apply]`. Conclude with `(d_apply P U n σ i.1).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma toOrd_d (n : ℕ) (σ : Cochain P U n) : od P U n (toOrd P U n σ) = toOrd P U (n + 1) (d P U n σ) := by
   funext i
@@ -175,13 +175,13 @@ def oleSet {m n : ℕ} (i : Fin (n + 1) → ι) : Set (Fin (m + 1) → ι) :=
 
 variable {U} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_oleSet {m n : ℕ} {i : Fin (n + 1) → ι} {j : Fin (m + 1) → ι} :
     j ∈ oleSet U i ↔ StrictMono j ∧ inter U i ≤ inter U j := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hj` and use `mem_oleSet.2 ⟨(mem_ordIn.1 hj).1, inter_le_of_range U (mem_ordIn.1 hj).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma ordIn_subset_oleSet {m n : ℕ} (i : Fin (n + 1) → ι) :
     ordIn (n := m) (Set.range i) ⊆ oleSet U i :=
@@ -193,7 +193,7 @@ noncomputable def cvalO {m n : ℕ} (τ : OCochain P U m) (i : Fin (n + 1) → �
   if h : StrictMono j ∧ inter U i ≤ inter U j then res P h.2 (τ ⟨j, h.1⟩) else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos ⟨hj, h⟩`.
+A detailed English derivation is pending.
 -/
 lemma cvalO_of {m n : ℕ} (τ : OCochain P U m) (i : Fin (n + 1) → ι) (j : Fin (m + 1) → ι)
     (hj : StrictMono j) (h : inter U i ≤ inter U j) : cvalO P U τ i j = res P h (τ ⟨j, hj⟩) :=
@@ -204,16 +204,16 @@ noncomputable def cevO {m n : ℕ} (τ : OCochain P U m) (i : Fin (n + 1) → ι
   Finsupp.liftAddHom fun j => zmultiplesHom _ (cvalO P U τ i j)
 
 /- English proof (translation)
-Rewrite using `[cevO, Finsupp.liftAddHom_apply_single, zmultiplesHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cevO_single {m n : ℕ} (τ : OCochain P U m) (i : Fin (n + 1) → ι) (j : Fin (m + 1) → ι)
     (z : ℤ) : cevO P U τ i (Finsupp.single j z) = z • cvalO P U τ i j := by
   rw [cevO, Finsupp.liftAddHom_apply_single, zmultiplesHom_apply]
 
 /- English proof (translation)
-Establish `: cevO P U (τ + τ') i = cevO P U τ i + cevO P U τ' i`. Use `Finsupp.addHom_ext fun j z => ?_` and prove the remaining obligations. Rewrite using `[AddMonoidHom.add_apply, cevO_single, cevO_single, cevO_single, ← smul_add]`. Use `congr 1`. Distinguish the cases in `h : StrictMono j ∧ inter U i ≤ inter U j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[cvalO_of P U _ i j h.1 h.2, cvalO_of P U _ i j h.1 h.2, cvalO_of P U _ i j h.1 h.2, Pi.add_apply, map_add]`. Simplify using `only [cvalO, h, dif_neg, not_false_eq_true, add_zero]`. Conclude with `congrArg (fun L => L c) this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cevO_add {m n : ℕ} (τ τ' : OCochain P U m) (i : Fin (n + 1) → ι) (c : Chain ι m) :
     cevO P U (τ + τ') i c = cevO P U τ i c + cevO P U τ' i c := by
@@ -228,7 +228,7 @@ lemma cevO_add {m n : ℕ} (τ τ' : OCochain P U m) (i : Fin (n + 1) → ι) (c
   exact congrArg (fun L => L c) this
 
 /- English proof (translation)
-Establish `h` using `cevO_add P U (0 : OCochain P U m) 0 i c`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma cevO_zero {m n : ℕ} (i : Fin (n + 1) → ι) (c : Chain ι m) :
     cevO P U (0 : OCochain P U m) i c = 0 := by
@@ -237,7 +237,7 @@ lemma cevO_zero {m n : ℕ} (i : Fin (n + 1) → ι) (c : Chain ι m) :
   simpa using h
 
 /- English proof (translation)
-Use `eq_of_supported ((res P h).comp (cevO P U τ i')) (cevO P U τ i) (fun j hj z => ?_) hc` and prove the remaining obligations. Take `⟨hjm, hjle⟩` from `mem_oleSet.1 hj`. Rewrite using `[AddMonoidHom.comp_apply, cevO_single, cevO_single, map_zsmul, cvalO_of P U τ i' j hjm hjle, cvalO_of P U τ i j hjm (h.trans hjle), res_res]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma res_cevO {m n p : ℕ} (τ : OCochain P U m) {i : Fin (n + 1) → ι} {i' : Fin (p + 1) → ι}
     (h : inter U i ≤ inter U i') {c : Chain ι m} (hc : c ∈ Finsupp.supported ℤ ℤ (oleSet U i')) :
@@ -248,9 +248,9 @@ lemma res_cevO {m n p : ℕ} (τ : OCochain P U m) {i : Fin (n + 1) → ι} {i' 
     cvalO_of P U τ i j hjm (h.trans hjle), res_res]
 
 /- English proof (translation)
-Use `eq_of_supported (cevO P U (od P U m τ) i) ((cevO P U τ i).comp (bd m)) (fun j hj z => ?_) hc` and prove the remaining obligations. Take `⟨hjm, hjle⟩` from `mem_oleSet.1 hj`. Rewrite using `[AddMonoidHom.comp_apply, cevO_single, cvalO_of P U _ i j hjm hjle, od_apply, map_sum, Finset.smul_sum, bd_single, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_zsmul, res_res, cevO_single]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[cvalO_of P U τ i _ (hjm.comp (Fin.strictMono_succAbove k)) (hjle.trans (inter_le_comp U j k.succAbove)), smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cevO_od {m n : ℕ} (τ : OCochain P U m) (i : Fin (n + 1) → ι) {c : Chain ι (m + 1)}
     (hc : c ∈ Finsupp.supported ℤ ℤ (oleSet U i)) :
@@ -266,7 +266,7 @@ lemma cevO_od {m n : ℕ} (τ : OCochain P U m) (i : Fin (n + 1) → ι) {c : Ch
     (hjle.trans (inter_le_comp U j k.succAbove)), smul_comm]
 
 /- English proof (translation)
-Use `eq_of_supported _ _ (fun j hj z => ?_) hc` and prove the remaining obligations. Take `⟨hjm, hjle⟩` from `mem_oleSet.1 hj`. Rewrite using `[cevO_single, cev_single, cvalO_of P U _ i j hjm hjle, cval_of_le P U σ i j hjle]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma cevO_toOrd {m n : ℕ} (σ : Cochain P U m) (i : Fin (n + 1) → ι) {c : Chain ι m}
     (hc : c ∈ Finsupp.supported ℤ ℤ (oleSet U i)) :
@@ -288,14 +288,14 @@ lemma fromOrd_apply (n : ℕ) (τ : OCochain P U n) (i : Fin (n + 1) → ι) :
     fromOrd P U n τ i = cevO P U τ i (rho n i) := rfl
 
 /- English proof (translation)
-The claim follows from `Finsupp.supported_mono (ordIn_subset_oleSet U i) (rho_mem n i)`.
+A detailed English derivation is pending.
 -/
 lemma rho_mem_oleSet (n : ℕ) (i : Fin (n + 1) → ι) :
     rho n i ∈ Finsupp.supported ℤ ℤ (oleSet U i) :=
   Finsupp.supported_mono (ordIn_subset_oleSet U i) (rho_mem n i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `cevO P U τ i.1 (rho n i.1) = τ i`. Rewrite using `[rho_of_strictMono n i.1 i.2, cevO_single, one_smul, cvalO_of P U τ i.1 i.1 i.2 le_rfl, res_refl]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toOrd_fromOrd (n : ℕ) (τ : OCochain P U n) : toOrd P U n (fromOrd P U n τ) = τ := by
   funext i
@@ -304,7 +304,7 @@ theorem toOrd_fromOrd (n : ℕ) (τ : OCochain P U n) : toOrd P U n (fromOrd P U
     res_refl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[d_apply, fromOrd_apply, cevO_od P U τ i (rho_mem_oleSet U (n + 1) i), bd_rho, lin_bd_single, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, fromOrd_apply, res_cevO P U τ (inter_le_comp U i k.succAbove) (rho_mem_oleSet U n _)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_fromOrd (n : ℕ) (τ : OCochain P U n) :
     d P U n (fromOrd P U n τ) = fromOrd P U (n + 1) (od P U n τ) := by
@@ -316,7 +316,7 @@ theorem d_fromOrd (n : ℕ) (τ : OCochain P U n) :
     (rho_mem_oleSet U n _)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `cevO P U (toOrd P U 0 σ) i (Finsupp.single i 1) = σ i`. Rewrite using `[cevO_single, one_smul, cvalO_of P U _ i i (strictMono_of_fin_one i) le_rfl, res_refl]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma fromOrd_toOrd_zero (σ : Cochain P U 0) : fromOrd P U 0 (toOrd P U 0 σ) = σ := by
   funext i
@@ -325,9 +325,9 @@ lemma fromOrd_toOrd_zero (σ : Cochain P U 0) : fromOrd P U 0 (toOrd P U 0 σ) =
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hm : hmt (n + 1) i ∈ Finsupp.supported ℤ ℤ (leSet U i)` using `Finsupp.supported_mono (rangeIn_subset_leSet U i) (hmt_mem (n + 1) i)`. Establish `hsum : d P U n (hstar P U n σ) i = cev P U σ i (lin (hmt n) (bd n (Finsupp.single i 1)))`. Rewrite using `[d_apply, lin_bd_single, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul, hstar_apply, res_cev P U σ (inter_le_comp U i k.succAbove) (Finsupp.supported_mono (rangeIn_subset_leSet U _) (hmt_mem n _))]`. Rewrite using `[Pi.add_apply, Pi.sub_apply, hsum, hstar_apply, cev_d P U σ i hm, fromOrd_apply, cevO_toOrd P U σ i (rho_mem_oleSet U (n + 1) i), ← map_add, add_comm (lin (hmt n) (bd n (Finsupp.single i 1))), boundary_homotopy, map_sub, cev_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_hstar_add (n : ℕ) (σ : Cochain P U (n + 1)) :
     d P U n (hstar P U n σ) + hstar P U (n + 1) (d P U (n + 1) σ) =
@@ -402,7 +402,7 @@ noncomputable def fromOrdH (n : ℕ) : ocechH P U n →+ cechH P U n :=
       exact ⟨fromOrd P U n ρ, by rw [d_fromOrd, hρ]⟩)
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H τ`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (toOrdCocycles P U n (fromOrdCocycles P U n τ)) : ocechH P U n) = QuotientAddGroup.mk τ`. Use `congr 1`. Conclude with `Subtype.ext (toOrd_fromOrd P U n τ.1)`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma toOrdH_fromOrdH (n : ℕ) (x : ocechH P U n) : toOrdH P U n (fromOrdH P U n x) = x := by
   induction x using QuotientAddGroup.induction_on with
@@ -413,11 +413,11 @@ lemma toOrdH_fromOrdH (n : ℕ) (x : ocechH P U n) : toOrdH P U n (fromOrdH P U 
     exact Subtype.ext (toOrd_fromOrd P U n τ.1)
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H σ`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (fromOrdCocycles P U n (toOrdCocycles P U n σ)) : cechH P U n) = QuotientAddGroup.mk σ`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Express the relevant statement in the definitionally equal form `-fromOrd P U n (toOrd P U n σ.1) + σ.1 ∈ coboundaries P U n`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the cases of `n with`. Consider the case `zero`. Rewrite using `[fromOrd_toOrd_zero, neg_add_cancel]`. Conclude with `AddSubgroup.zero_mem _`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `h` using `d_hstar_add P U n σ.1`. Rewrite `h` using `[(mem_cocycles σ.1).1 σ.2, map_zero, add_zero]`. Rewrite using `[neg_add_eq_sub, ← h, coboundaries_succ]`. Conclude with `AddMonoidHom.mem_range.2 ⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fromOrdH_toOrdH (n : ℕ) (x : cechH P U n) : fromOrdH P U n (toOrdH P U n x) = x := by
   induction x using QuotientAddGroup.induction_on with
@@ -444,7 +444,7 @@ noncomputable def cechHOrderedEquiv (n : ℕ) : cechH P U n ≃+ ocechH P U n wh
   map_add' := map_add _
 
 /- English proof (translation)
-Use `⟨fun i => ?_⟩` and prove the remaining obligations. Use `Fintype.ofFinite ι` as an intermediate fact. Establish `h` using `Fintype.card_le_of_injective i.1 i.2.injective`. Rewrite `h` using `[Fintype.card_fin, ← Nat.card_eq_fintype_card]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma isEmpty_strictMono [Finite ι] {n : ℕ} (hn : Nat.card ι ≤ n) :
     IsEmpty {i : Fin (n + 1) → ι // StrictMono i} := by
@@ -457,9 +457,9 @@ lemma isEmpty_strictMono [Finite ι] {n : ℕ} (hn : Nat.card ι ≤ n) :
 end Ordered
 
 /- English proof (translation)
-Set `: LinearOrder ι` to `LinearOrder.lift' (Finite.equivFin ι) (Finite.equivFin ι).injective`. Use `isEmpty_strictMono (ι := ι) hn` as an intermediate fact. Establish `: Subsingleton (ocechH P U n)` using `⟨fun a b => by`. Proceed by induction on `a using QuotientAddGroup.induction_on with`. Consider the case `H a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `b using QuotientAddGroup.induction_on with`. Consider the case `H b`. Use `congr 1`. Conclude with `Subtype.ext (Subsingleton.elim _ _)⟩`. Conclude with `(cechHOrderedEquiv P U n).injective.subsingleton`.
+Proceed by induction. Treat this case separately. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cechH_subsingleton [Finite ι] {n : ℕ} (hn : Nat.card ι ≤ n) :
     Subsingleton (cechH P U n) := by

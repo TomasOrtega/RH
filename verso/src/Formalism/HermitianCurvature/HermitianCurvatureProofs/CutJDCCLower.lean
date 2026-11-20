@@ -11,17 +11,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 noncomputable section
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ Θ d A hd hG F hF hFA`. Establish `hO : IsOpen (∅ : Set (B.Mat k r))` using `isOpen_empty`. Establish `hcov : ∀ g ∈ B.GV k r, g ∈ (∅ : Set (B.Mat k r)) ∨ g ∈ B.GV k r` using `fun g hg => Or.inr hg`. Establish `hΦck : ∀ T ∈ Θ, B.CkOn ⊤ (B.GV k r) (B.Rw T.word F)`. Introduce `T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Dw_wR]`. Apply `CkOn_Dw (fun x hx => lie_LR (u := []) (by simp) T.word_lie x (by simpa [wL] using hx))` to reduce the goal to its premises. Simplify using `using hF`. Establish `hop : B.opApply Θ F = fun g => (Θ.map fun T => ap T.coef (B.Rw T.word F) g).sum` using `rfl`. Use `⟨?_, fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hop] clear hop`. Proceed by induction on `Θ with`. Consider the case `nil => simpa using (CkOn_zero : B.CkOn ⊤ (B.GV k r) (fun _ => (0 : Wq →L[ℂ] Wp)))`. Consider the case `cons T Θ ih`. Establish `h1 : B.CkOn ⊤ (B.GV k r) (ap T.coef (B.Rw T.word F))` using `Pr.ck hO hcov ⟨(hG T (by simp)).1, hΦck T (by simp), fun g _ hg => by simp at hg⟩`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2` using `ih (fun S hS => hG S (by simp [hS])) (fun S hS => hΦck S (by simp [hS]))`. Simplify using `using CkOn_add h1 h2`. Rewrite using `[hop]`. Use `InCC_opsum Θ (fun T => ap T.coef (B.Rw T.word F)) ?_` and prove the remaining obligations. Introduce `T hT`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hc1, -, hcb⟩` from `hG T hT`. Take `⟨C, hC⟩` from `hcb m`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : B.InCC (A - d + d) m (B.Rw T.word F) := by`. Rewrite using `[sub_add_cancel]`. Conclude with `InCC_Rw T.word_lie (hFA _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, prodBound hO hcov (sCkOn_mono le_top hc1) (fun u v hu hv hl g hg _ => (hC u v hu hv hl g hg).1) hc (fun g _ hg => by simp at hg)⟩`.
+A detailed English derivation is pending.
 -/
 theorem class_lower_decay_holds : JDCCLower := by
   intro k r Wp Wq _ _ _ _ _ _ Θ d A hd hG F hF hFA

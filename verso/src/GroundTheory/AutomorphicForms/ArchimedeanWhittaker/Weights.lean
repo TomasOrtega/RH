@@ -10,7 +10,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable (σ : UnitaryRep FiltrationCocycleLiftCriterion H)
 
 /- English proof (translation)
-Establish `: kMat = fun θ : ℝ => hGL2.expG (θ • lW)` using `funext fun θ => (expG_lW θ).symm`. Rewrite using `[this]`. Conclude with `hGL2.continuous_expG.comp (continuous_id.smul continuous_const)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_kMat : Continuous kMat := by
   have : kMat = fun θ : ℝ => hGL2.expG (θ • lW) := funext fun θ => (expG_lW θ).symm
@@ -18,7 +18,7 @@ theorem continuous_kMat : Continuous kMat := by
   exact hGL2.continuous_expG.comp (continuous_id.smul continuous_const)
 
 /- English proof (translation)
-Rewrite using `[kMat_add, kMat_two_pi, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kMat_add_two_pi (θ : ℝ) : kMat (θ + 2 * π) = kMat θ := by
   rw [kMat_add, kMat_two_pi, mul_one]
@@ -26,25 +26,25 @@ theorem kMat_add_two_pi (θ : ℝ) : kMat (θ + 2 * π) = kMat θ := by
 noncomputable def chi (j : ℤ) (θ : ℝ) : ℂ := Complex.exp ((j : ℂ) * θ * I)
 
 /- English proof (translation)
-Simplify using `only [chi, ofReal_add, ← Complex.exp_add]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem chi_add (j : ℤ) (a b : ℝ) : chi j (a + b) = chi j a * chi j b := by
   simp only [chi, ofReal_add, ← Complex.exp_add]; ring_nf
 
 /- English proof (translation)
-Simplify using `only [chi, ofReal_neg, ← Complex.exp_neg]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 -/
 theorem chi_neg (j : ℤ) (a : ℝ) : chi j (-a) = (chi j a)⁻¹ := by
   simp only [chi, ofReal_neg, ← Complex.exp_neg]; ring_nf
 
 /- English proof (translation)
-Rewrite using `[chi_neg, mul_inv_cancel₀ (by simp [chi, Complex.exp_ne_zero])]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_mul_chi_neg (j : ℤ) (a : ℝ) : chi j a * chi j (-a) = 1 := by
   rw [chi_neg, mul_inv_cancel₀ (by simp [chi, Complex.exp_ne_zero])]
 
 /- English proof (translation)
-Simplify using `only [chi]`. Use `Complex.exp_int_mul_two_pi_mul_I j` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -54,20 +54,20 @@ theorem chi_two_pi (j : ℤ) : chi j (2 * π) = 1 := by
   rw [← this]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Unfold `chi`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_chi (j : ℤ) : Continuous (chi j) := by
   unfold chi; fun_prop
 
 /- English proof (translation)
-Rewrite using `[chi, Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_chi (j : ℤ) (a : ℝ) : ‖chi j a‖ = 1 := by
   rw [chi, Complex.norm_exp]
   simp
 
 /- English proof (translation)
-Rewrite using `[chi, chi, ← Complex.exp_conj]`. Use `congr 1`. Simplify using `[map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem conj_chi (j : ℤ) (a : ℝ) : (starRingEnd ℂ) (chi j a) = chi j (-a) := by
   rw [chi, chi, ← Complex.exp_conj]
@@ -81,13 +81,13 @@ def weightSpace (j : ℤ) : Submodule ℂ H where
   smul_mem' c v hv θ := by simp [hv θ, smul_comm c]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_weightSpace {j : ℤ} {v : H} :
     v ∈ weightSpace σ j ↔ ∀ θ : ℝ, σ (kMat θ) v = chi j θ • v := Iff.rfl
 
 /- English proof (translation)
-Establish `: (weightSpace σ j : Set H) = ⋂ θ : ℝ, {v | σ (kMat θ) v = chi j θ • v}`. Use extensionality with `v`. Simplify using `[mem_weightSpace]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun θ => isClosed_eq (σ (kMat θ)).continuous (continuous_const_smul _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_weightSpace (j : ℤ) : IsClosed (weightSpace σ j : Set H) := by
   have : (weightSpace σ j : Set H) = ⋂ θ : ℝ, {v | σ (kMat θ) v = chi j θ • v} := by
@@ -99,26 +99,26 @@ noncomputable def wProj (j : ℤ) (x : H) : H :=
   ((2 * π : ℝ)⁻¹ : ℂ) • ∫ θ in (0 : ℝ)..(2 * π), chi j (-θ) • σ (kMat θ) x
 
 /- English proof (translation)
-The claim follows from `(σ.continuous_orbit x).comp continuous_kMat`.
+A detailed English derivation is pending.
 -/
 theorem continuous_orbit_kMat (x : H) : Continuous fun θ : ℝ => σ (kMat θ) x :=
   (σ.continuous_orbit x).comp continuous_kMat
 
 /- English proof (translation)
-The claim follows from `((continuous_chi j).comp continuous_neg).smul (continuous_orbit_kMat σ x)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_wIntegrand (j : ℤ) (x : H) :
     Continuous fun θ : ℝ => chi j (-θ) • σ (kMat θ) x :=
   ((continuous_chi j).comp continuous_neg).smul (continuous_orbit_kMat σ x)
 
 /- English proof (translation)
-Introduce `φ`. Establish `hper : Function.Periodic (fun θ : ℝ => chi j (-θ) • σ (kMat θ) x) (2 * π)`. Introduce `θ`. Simplify using `only [kMat_add_two_pi, neg_add, chi_add, chi_neg j (2 * π), chi_two_pi, inv_one, mul_one]`. Establish `hint` using `(continuous_wIntegrand σ j x).intervalIntegrable (μ := volume) 0 (2 * π)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : σ (kMat φ) (∫ θ in (0 : ℝ)..(2 * π), chi j (-θ) • σ (kMat θ) x) = ∫ θ in (0 : ℝ)..(2 * π), chi j φ • (chi j (-(φ + θ)) • σ (kMat (φ + θ)) x)`. Rewrite using `[← (σ (kMat φ)).intervalIntegral_comp_comm hint]`. Use `congr 1`. Use function extensionality and compare the values at `θ`. Simplify using `only [map_smul, ← UnitaryRep.map_mul_apply, ← kMat_add, smul_smul, neg_add, chi_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← mul_assoc, chi_mul_chi_neg, one_mul]`. Establish `h2 : ∫ θ in (0 : ℝ)..(2 * π), (chi j (-(φ + θ)) • σ (kMat (φ + θ)) x) = ∫ θ in (0 : ℝ)..(2 * π), chi j (-θ) • σ (kMat θ) x`. Rewrite using `[intervalIntegral.integral_comp_add_left (fun θ : ℝ => chi j (-θ) • σ (kMat θ) x) φ, add_zero]`. Use `hper.intervalIntegral_add_eq φ 0` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_add]`. Conclude with `this`. Unfold `wProj`. Rewrite using `[map_smul, h1, intervalIntegral.integral_smul, h2, smul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wProj_mem (j : ℤ) (x : H) : wProj σ j x ∈ weightSpace σ j := by
   intro φ
@@ -143,9 +143,9 @@ theorem wProj_mem (j : ℤ) (x : H) : wProj σ j x ∈ weightSpace σ j := by
   rw [map_smul, h1, intervalIntegral.integral_smul, h2, smul_comm]
 
 /- English proof (translation)
-Establish `: (fun θ : ℝ => chi j (-θ) • σ (kMat θ) x) = fun _ => x`. Use function extensionality and compare the values at `θ`. Rewrite using `[hx θ, smul_smul, mul_comm, chi_mul_chi_neg, one_smul]`. Rewrite using `[wProj, this, intervalIntegral.integral_const, sub_zero]`. Establish `hπ : (2 * π : ℝ) ≠ 0` using `by positivity`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Complex.coe_smul, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hπ), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wProj_of_mem {j : ℤ} {x : H} (hx : x ∈ weightSpace σ j) : wProj σ j x = x := by
   have : (fun θ : ℝ => chi j (-θ) • σ (kMat θ) x) = fun _ => x := by
@@ -156,9 +156,9 @@ theorem wProj_of_mem {j : ℤ} {x : H} (hx : x ∈ weightSpace σ j) : wProj σ 
   rw [← Complex.coe_smul, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hπ), one_smul]
 
 /- English proof (translation)
-Rewrite using `[wProj, inner_smul_right]`. Use `congr 1`. Establish `hint` using `(continuous_wIntegrand σ j x).intervalIntegrable (μ := volume) 0 (2 * π)`. Use `(innerSL ℂ y).intervalIntegral_comp_comm hint` as an intermediate fact. Simplify using `only [innerSL_apply_apply, inner_smul_right] at this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem inner_wProj (j : ℤ) (x y : H) :
     ⟪y, wProj σ j x⟫_ℂ = ((2 * π : ℝ)⁻¹ : ℂ) *
@@ -171,9 +171,9 @@ theorem inner_wProj (j : ℤ) (x y : H) :
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[wProj, norm_smul]`. Establish `hb : ‖∫ θ in (0 : ℝ)..(2 * π), chi j (-θ) • σ (kMat θ) x‖ ≤ ‖x‖ * |2 * π - 0|`. Use `intervalIntegral.norm_integral_le_of_norm_le_const fun θ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, norm_chi, one_mul, UnitaryRep.norm_map]`. Rewrite `hb` using `[sub_zero, abs_of_pos (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : ‖((2 * π : ℝ)⁻¹ : ℂ)‖ = (2 * π)⁻¹`. Rewrite using `[norm_inv, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Rewrite using `[hn]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_wProj_le (j : ℤ) (x : H) : ‖wProj σ j x‖ ≤ ‖x‖ := by
   rw [wProj, norm_smul]
@@ -189,7 +189,7 @@ theorem norm_wProj_le (j : ℤ) (x : H) : ‖wProj σ j x‖ ≤ ‖x‖ := by
     _ = ‖x‖ := by field_simp
 
 /- English proof (translation)
-Simplify using `only [wProj, map_sub, smul_sub]`. Rewrite using `[intervalIntegral.integral_sub ((continuous_wIntegrand σ j x).intervalIntegrable _ _) ((continuous_wIntegrand σ j y).intervalIntegrable _ _), smul_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wProj_sub (j : ℤ) (x y : H) : wProj σ j (x - y) = wProj σ j x - wProj σ j y := by
   simp only [wProj, map_sub, smul_sub]
@@ -207,9 +207,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable (σ : UnitaryRep FiltrationCocycleLiftCriterion H)
 
 /- English proof (translation)
-Introduce `θ`. Establish `e : kMat θ * eps = eps * kMat (-θ)`. Use `eps_kMat_eps (-θ)` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← UnitaryRep.map_mul_apply, e, UnitaryRep.map_mul_apply, hv (-θ), map_smul]`. Use `congr 1`. Simplify using `only [chi]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -226,7 +226,7 @@ theorem eps_mem_weightSpace {j : ℤ} {v : H} (hv : v ∈ weightSpace σ j) :
   simp only [chi]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Introduce `θ`. Rewrite using `[← UnitaryRep.map_mul_apply, ← zPos_mul_comm, UnitaryRep.map_mul_apply, hv θ, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem zPos_mem_weightSpace {j : ℤ} {v : H} (hv : v ∈ weightSpace σ j) (s : ℝ) :
     σ (zPos s) v ∈ weightSpace σ j := by
@@ -234,11 +234,9 @@ theorem zPos_mem_weightSpace {j : ℤ} {v : H} (hv : v ∈ weightSpace σ j) (s 
   rw [← UnitaryRep.map_mul_apply, ← zPos_mul_comm, UnitaryRep.map_mul_apply, hv θ, map_smul]
 
 /- English proof (translation)
-Use `set L := ContinuousLinearMap.inl ℝ P ℝ`. Establish `hpart : ∀ (θ : ℝ) (Y : P), iteratedFDeriv ℝ k (fun Y => Φ (Y, θ)) Y = ContinuousMultilinearMap.compContinuousLinearMapL (fun _ => L) (iteratedFDeriv ℝ k Φ (Y, θ))`. Introduce `θ Y`. Establish `e : (fun Y => Φ (Y, θ)) = (fun w => Φ (w + (0, θ))) ∘ L`. Use function extensionality and compare the values at `Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[L]`. Establish `hΦθ : ContDiff ℝ ∞ (fun w : P × ℝ => Φ (w + (0, θ)))` using `hΦ.comp (contDiff_id.add contDiff_const)`. Rewrite using `[e, L.iteratedFDeriv_comp_right hΦθ Y (by exact_mod_cast le_top), iteratedFDeriv_comp_add_right]`. Simplify using `[L]`. Repeatedly rewrite using `[hpart]`.
-
-Conclude with `(ContinuousLinearMap.continuous _).comp ((hΦ.continuous_iteratedFDeriv (by exact_mod_cast le_top)).comp (continuous_fst.prodMk continuous_snd))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_iteratedFDeriv_partial {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E'] {Φ : P × ℝ → E'}
@@ -261,15 +259,15 @@ theorem continuous_iteratedFDeriv_partial {P : Type*} [NormedAddCommGroup P] [No
       (continuous_fst.prodMk continuous_snd))
 
 /- English proof (translation)
-Set `ρ : ContDiffBump ((a + b) / 2)` to `⟨(b - a) / 2 + 1, (b - a) / 2 + 2, by linarith, by linarith⟩`. Use `set F : P → ℝ → E' := fun Y θ => ρ θ • Φ (Y, θ) with hF`. Establish `hρ1 : ∀ θ ∈ Ioc a b, ρ θ = 1`. Introduce `θ hθ`. Apply `ρ.one_of_mem_closedBall` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hr : ρ.rIn = (b - a) / 2 + 1` using `rfl`. Rewrite using `[Metric.mem_closedBall, Real.dist_eq, abs_le]`. Apply the tactic sequence `constructor <;> linarith [hθ.1, hθ.2]`. Establish `key : (fun Y => ∫ θ in a..b, Φ (Y, θ)) = fun Y => ∫ θ, F Y θ ∂(volume.restrict (Ioc a b))`. Use function extensionality and compare the values at `Y`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[intervalIntegral.integral_of_le hab]`. Use `setIntegral_congr_fun measurableSet_Ioc fun θ hθ => ?_` and prove the remaining obligations. Simplify using `[hF, hρ1 θ hθ]`. Rewrite using `[key]`. Establish `hcΦ : ∀ θ, ContDiff ℝ ∞ (fun Y => Φ (Y, θ))` using `fun θ => hΦ.comp (contDiff_id.prodMk contDiff_const)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `contDiff_integral_of_iteratedFDeriv F (fun θ => (hcΦ θ).const_smul _) (fun k => ?_) (fun Y₀ => ⟨univ, univ_mem, tsupport ρ, ρ.hasCompactSupport, fun Y _ θ hθ => ?_⟩)` and prove the remaining obligations. Establish `e : ∀ p : P × ℝ, ParamIntegral.iter F k p.1 p.2 = ρ p.2 • iteratedFDeriv ℝ k (fun Y => Φ (Y, p.2)) p.1`. Introduce `p`. Simplify using `only [ParamIntegral.iter, hF]`. Conclude with `iteratedFDeriv_const_smul_apply ((hcΦ p.2).contDiffAt.of_le (by exact_mod_cast le_top))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[e]`. Conclude with `(ρ.continuous.comp continuous_snd).smul (continuous_iteratedFDeriv_partial hΦ k)`. Simplify using `only [hF]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hθ, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_intervalIntegral_param {P : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     [FiniteDimensional ℝ P] {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E'] [CompleteSpace E']
@@ -304,13 +302,13 @@ theorem contDiff_intervalIntegral_param {P : Type*} [NormedAddCommGroup P] [Norm
     rw [image_eq_zero_of_notMem_tsupport hθ, zero_smul]
 
 /- English proof (translation)
-Rewrite using `[IsExpLieAlgebra.isSmoothVector_iff]`. Use `set πB := BanachRep.ofUnitary σ`. Use `set Φ : gl2 × ℝ → H := fun p => chi j (-p.2) • πB (hGL2.expG p.1 * hGL2.expG (p.2 • lW) * hGL2.expG 0) w with hΦ`. Establish `hΦs : ContDiff ℝ ∞ Φ`. Establish `h1` using `hGL2.contDiff_orbit_expG_mul πB hw (φ₁ := fun p : gl2 × ℝ => p.1) (φ₂ := fun p => p.2 • lW) (φ₃ := fun _ => 0) contDiff_fst (contDiff_snd.smul contDiff_const) contDiff_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ContDiff ℝ ∞ (fun p : gl2 × ℝ => chi j (-p.2))`. Simplify using `only [chi]`. Conclude with `Complex.contDiff_exp.comp (((contDiff_const.mul (Complex.ofRealCLM.contDiff.comp contDiff_snd.neg)).mul contDiff_const))`. Conclude with `h2.smul h1`. Establish `e : hGL2.expOrbit πB (wProj σ j w) = fun Y => ((2 * π : ℝ)⁻¹ : ℂ) • ∫ θ in (0 : ℝ)..(2 * π), Φ (Y, θ)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[IsExpLieAlgebra.expOrbit_apply, wProj, map_smul]`. Use `congr 1`. Rewrite using `[← (πB (hGL2.expG Y)).intervalIntegral_comp_comm ((continuous_wIntegrand σ j w).intervalIntegrable _ _)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `θ`. Simplify using `only [hΦ, map_smul, IsExpLieAlgebra.expG_zero, mul_one, expG_lW, BanachRep.map_mul_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(contDiff_intervalIntegral_param hΦs (by positivity)).const_smul _`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothVector_wProj {w : H} (hw : hGL2.IsSmoothVector (BanachRep.ofUnitary σ) w) (j : ℤ) :
     hGL2.IsSmoothVector (BanachRep.ofUnitary σ) (wProj σ j w) := by
@@ -351,7 +349,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable (σ : UnitaryRep FiltrationCocycleLiftCriterion H)
 
 /- English proof (translation)
-Rewrite using `[fourier_coe_apply, chi, sub_zero]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem fourier_neg_coe_eq_chi (n : ℤ) (θ : ℝ) :
     fourier (-n) (θ : AddCircle (2 * π - 0)) = chi n (-θ) := by
@@ -361,27 +359,23 @@ theorem fourier_neg_coe_eq_chi (n : ℤ) (θ : ℝ) :
   field_simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Use `set φ : ℝ → ℂ := fun θ => ⟪x, σ (kMat θ) x⟫_ℂ with hφ`. Establish `hφc : Continuous φ` using `continuous_const.inner (continuous_orbit_kMat σ x)`. Establish `hab : (0 : ℝ) < 2 * π` using `by positivity`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoeff : ∀ n : ℤ, fourierCoeffOn hab φ n = 0`. Introduce `n`. Rewrite using `[fourierCoeffOn_eq_integral]`. Establish `h1` using `inner_wProj σ n x x`. Rewrite `h1` using `[hall n, inner_zero_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∫ θ in (0 : ℝ)..(2 * π), chi n (-θ) * ⟪x, σ (kMat θ) x⟫_ℂ = 0`. Establish `hne : ((2 * π : ℝ)⁻¹ : ℂ) ≠ 0`. Rewrite using `[ne_eq, inv_eq_zero]`. Conclude with `hab.ne'` after adjusting the coercions. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[fourier_neg_coe_eq_chi, smul_eq_mul]`. Rewrite using `[show (∫ θ in (0 : ℝ)..(2 * π), chi n (-θ) * φ θ) = 0 from h2, smul_zero]`. Establish `hL2 : MemLp φ 2 (volume.restrict (Ioc 0 (2 * π)))`. Use `MemLp.of_bound hφc.aestronglyMeasurable (‖x‖ * ‖x‖) (Eventually.of_forall fun θ => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum` using `hasSum_sq_fourierCoeffOn hab hL2`. Establish `h0 : HasSum (fun i : ℤ => ‖fourierCoeffOn hab φ i‖ ^ 2) (0 : ℝ)`. Simplify using `only [hcoeff, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow]`. Conclude with `hasSum_zero`. Establish `hzero : (2 * π - 0)⁻¹ • ∫ θ in (0 : ℝ)..(2 * π), ‖φ θ‖ ^ 2 = 0` using `hsum.unique h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hint0 : ∫ θ in (0 : ℝ)..(2 * π), ‖φ θ‖ ^ 2 = 0`. Rewrite `hzero` using `[smul_eq_mul, sub_zero]`. Conclude with `(mul_eq_zero.1 hzero).resolve_left (inv_ne_zero hab.ne')`. Use `set g : ℝ → ℝ := fun θ => ‖φ θ‖ ^ 2 with hg`. Establish `hgc : Continuous g` using `(continuous_norm.comp hφc).pow 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg0 : 0 < g 0`. Simplify using `only [hg, hφ, kMat_zero]`. Establish `: ⟪x, σ 1 x⟫_ℂ ≠ 0`. Rewrite using `[UnitaryRep.map_one, ContinuousLinearMap.one_apply, inner_self_ne_zero]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hpos : 0 < ∫ θ in (0 : ℝ)..(2 * π), g θ`. Rewrite using `[intervalIntegral.integral_pos_iff_support_of_nonneg_ae (Eventually.of_forall fun θ => by positivity) (hgc.intervalIntegrable _ _)]`. Use `⟨hab, ?_⟩` and prove the remaining obligations. Establish `hopen : IsOpen (Function.support g)` using `isOpen_ne_fun hgc continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hopen 0 (Function.mem_support.2 hg0.ne')`. Use `set δ := min ε (2 * π) with hδ`. Establish `hδ0 : 0 < δ` using `lt_min hε hab`. Establish `hsub : Ioo 0 δ ⊆ Function.support g ∩ Ioc 0 (2 * π)`. Introduce `θ hθ`.
-
-Use `⟨hball ?_, hθ.1, le_trans hθ.2.le (min_le_right _ _)⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos hθ.1]`. Conclude with `lt_of_lt_of_le hθ.2 (min_le_left _ _)`. Use `lt_of_lt_of_le ?_ (measure_mono hsub)` and prove the remaining obligations. Rewrite using `[Real.volume_Ioo, sub_zero]`.
-
-Conclude with `ENNReal.ofReal_pos.2 hδ0`. Rewrite `hpos` using `[hint0]`. Conclude with `lt_irrefl _ hpos`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_wProj_ne_zero {x : H} (hx : x ≠ 0) : ∃ j : ℤ, wProj σ j x ≠ 0 := by
   by_contra hall
@@ -440,9 +434,9 @@ theorem exists_wProj_ne_zero {x : H} (hx : x ≠ 0) : ∃ j : ℤ, wProj σ j x 
   exact lt_irrefl _ hpos
 
 /- English proof (translation)
-Establish `hd` using `hGL2.dense_smoothVectors (BanachRep.ofUnitary σ)`. Take `⟨w, hw, hwx⟩` from `Metric.dense_iff.1 hd x ‖x‖ (norm_pos_iff.2 hx0)`. Use `⟨wProj σ j w, wProj_mem σ j w, ?_, isSmoothVector_wProj σ hwx j⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1 : ‖wProj σ j (x - w)‖ ≤ ‖x - w‖` using `norm_wProj_le σ j (x - w)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[wProj_sub, h0, sub_zero, wProj_of_mem σ hx]`. Rewrite `hw` using `[Metric.mem_ball, dist_comm, dist_eq_norm]`. Conclude with `lt_irrefl _ (lt_of_le_of_lt h1 hw)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smooth_weight {j : ℤ} {x : H} (hx : x ∈ weightSpace σ j) (hx0 : x ≠ 0) :
     ∃ v ∈ weightSpace σ j, v ≠ 0 ∧ hGL2.IsSmoothVector (BanachRep.ofUnitary σ) v := by

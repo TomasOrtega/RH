@@ -10,37 +10,35 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ ν _ β hβ hβc hβu U hU g N'`. Take `⟨Sg, hω, hωB, t, ht, hsieg⟩` from `exists_siegelSet (K := K) n`. Take `⟨f, hf⟩ : ∃ f, f = archConv ν hβ.continuous hβc hβu (finAvg U hU g)` from `⟨_, rfl⟩`. Rewrite using `[← hf]`. Take `⟨C₀, N₀, hC₀⟩` from `exists_norm_rconv_le_siegel_basic μ f hω ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Ch, hCh0, hCh⟩` from `exists_height_le_normOne (K := K) (n := n) hω`. Take `⟨e, he⟩ : ∃ e, e = 2 * Fintype.card (InfinitePlace K)` from `⟨_, rfl⟩`. Rewrite `hCh` using `[← he]`. Take `⟨C₁, hC₁⟩` from `exists_norm_rconv_le_decay μ ν hβ hβc hβu U hU g hω hωB ht (n * e * N')`. Rewrite `hC₁` using `[← hf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨τ, hτdef⟩ : ∃ τ, τ = (max 1 t⁻¹) ^ n` from `⟨_, rfl⟩`. Establish `hτ1 : 1 ≤ τ` using `hτdef ▸ one_le_pow₀ (le_max_left _ _)`. Take `⟨D, hDdef⟩ : ∃ D, D = max (Ch * τ ^ e) 1` from `⟨_, rfl⟩`. Establish `hD1 : 1 ≤ D` using `hDdef ▸ le_max_right _ _`. Establish `hD0 : 0 ≤ D` using `zero_le_one.trans hD1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨B, hBdef⟩ : ∃ B, B = max C₀ 0 + max C₁ 0` from `⟨_, rfl⟩`. Establish `hC₀B : C₀ ≤ B` using `hBdef ▸ (le_max_left _ _).trans (le_add_of_nonneg_right (le_max_right _ _))`. Establish `hC₁B : C₁ ≤ B` using `hBdef ▸ (le_max_left _ _).trans (le_add_of_nonneg_left (le_max_right _ _))`. Establish `hB0 : 0 ≤ B` using `hBdef ▸ add_nonneg (le_max_right _ _) (le_max_right _ _)`. Use `⟨B * D ^ N', fun φ hφ x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq1 : 1 ≤ qht x` using `le_ciInf fun γ => one_le_height _`. Establish `hq0 : 0 < qht x` using `zero_lt_one.trans_le hq1`. Establish `hqN : 0 < qht x ^ N'` using `pow_pos hq0 _`. Take `⟨γ, hγ⟩` from `hsieg (x : AdelicGLn.AdelicGL K n)`. Establish `hγ1 : AdelicGLn.diagonal K n γ ∈ normOneGL K n` using `rationalGL_le_normOneGL ⟨γ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ₁, hγ₁⟩ : ∃ γ₁ : normOneGL K n, γ₁ = ⟨AdelicGLn.diagonal K n γ, hγ1⟩` from `⟨_, rfl⟩`. Establish `hγΓ : γ₁ ∈ Gam K n` using `⟨γ, by rw [hγ₁]; rfl⟩`. Establish `hqle : qht x ≤ AutomorphicForm.height ((γ₁ * x : G1 K n) : AdelicGLn.AdelicGL K n)`. Use `ciInf_le ⟨0, ?_⟩ (⟨γ₁, hγΓ⟩ : Gam K n)` and prove the remaining obligations. Introduce and unpack `_ ⟨δ, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(height_pos _).le`. Rewrite using `[← rconv_mul_left (Gam K n) μ f φ hγΓ x]`. Take `⟨b, hb, _, ⟨ρ, hρ, hs, rfl⟩, kk, hkk, hx⟩` from `hγ`. Establish `hx' : ((γ₁ * x : normOneGL K n) : AdelicGLn.AdelicGL K n) = b * diagUnits n (fun i => posIdele (K` using `K) (ρ i) (hρ i)) * kk := by`. Rewrite using `[hγ₁]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `hheight : ∀ R : ℝ, 1 ≤ R → (∀ i j : Fin n, i < j → ρ i / ρ j ≤ R) → qht x ≤ D * R ^ e`. Introduce `R hR1 hR`. Establish `hall : ∀ i j : Fin n, ρ i / ρ j ≤ τ * R` using `fun i j => by`. Rewrite using `[hτdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `siegel_div_le_mul ht hρ hs hR1 hR i j`. Establish `h1` using `hCh b hb ρ hρ kk hkk _ (γ₁ * x).2 hx' (τ * R) (one_le_mul_of_one_le_of_one_le hτ1 hR1) hall`. Combine the equalities or inequalities in the displayed calculation. Establish `hsmall : (∀ i j : Fin n, i < j → ρ i / ρ j ≤ 1) → ‖rconv (Gam K n) μ f φ (γ₁ * x)‖ ≤ B * D ^ N' * (qht x ^ N')⁻¹ * ‖φ‖`. Introduce `hall`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hC₀ φ b hb ρ hρ hs kk hkk (γ₁ * x) hx' 1 le_rfl hall`. Rewrite `h` using `[one_pow, Real.sqrt_one, mul_one]`. Establish `hqD : qht x ≤ D` using `by simpa using hheight 1 le_rfl hall`. Establish `h1 : 1 ≤ D ^ N' * (qht x ^ N')⁻¹`. Rewrite using `[le_mul_inv_iff₀ hqN, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails.
 
-Conclude with `pow_le_pow_left₀ hq0.le hqD _`. Use `h.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hn : 2 ≤ n`. Take `⟨r, hr, hrn, hratio⟩` from `exists_le_max_pow hn ρ hρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Take `⟨α, hαdef⟩ : ∃ α, α = ρ ⟨r - 1, by omega⟩ / ρ ⟨r, hrn⟩` from `⟨_, rfl⟩`. Rewrite `hratio` using `[← hαdef]`. Break down `le_or_gt α 1 with hα1 | hα1` into its components or cases. Conclude with `hsmall fun i j hij => (hratio i j hij).trans (by rw [max_eq_left hα1, one_pow])`. Establish `hM : max 1 α = α` using `max_eq_right hα1.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hαn1 : 1 ≤ α ^ n` using `one_le_pow₀ hα1.le`. Establish `hlt : (⟨r - 1, by omega⟩ : Fin n) < ⟨r, hrn⟩`. Rewrite using `[Fin.mk_lt_mk]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hC₁ φ hφ b hb ρ hρ hs kk hkk (γ₁ * x) hx' α hα1.le ⟨_, _, hlt, hαdef.le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqA : qht x ≤ D * α ^ (n * e)`. Use `hheight (α ^ n) hαn1 fun i j hij => (hratio i j hij).trans (by rw [hM])` as an intermediate fact. Rewrite `this` using `[← pow_mul]`. Then use the resulting hypothesis. Establish `hAN : 0 < α ^ (n * e * N')` using `pow_pos (zero_lt_one.trans hα1) _`. Establish `h1 : (α ^ (n * e * N'))⁻¹ ≤ D ^ N' * (qht x ^ N')⁻¹`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[le_mul_inv_iff₀ hqN, inv_mul_le_iff₀ hAN, pow_mul α (n * e) N', ← mul_pow]`. Use `pow_le_pow_left₀ hq0.le ?_ _` and prove the remaining obligations. Combine the linear relations using `[mul_comm (α ^ (n * e)) D]`. Use `h.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Use `hsmall fun i j hij => ?_` and prove the remaining obligations. Establish `: (i : ℕ) < j` using `hij`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cuspDecay_archConv_finAvg :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure]

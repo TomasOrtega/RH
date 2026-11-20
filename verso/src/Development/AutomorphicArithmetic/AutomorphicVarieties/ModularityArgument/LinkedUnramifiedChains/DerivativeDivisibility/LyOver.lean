@@ -3,9 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial
 
 /- English proof (translation)
-Use `letI : Algebra R S := f.toAlgebra`. Use `letI : Algebra R K := φ.toAlgebra`. Use `haveI : Module.IsTorsionFree R S := Module.isTorsionFree_iff_algebraMap_injective.2 hi`. Use `haveI : Module.IsTorsionFree R K := Module.isTorsionFree_iff_algebraMap_injective.2 hφ`. Use `haveI : Algebra.IsIntegral R S := ⟨hf⟩`.
-
-Use `haveI : Algebra.IsAlgebraic R S := Algebra.IsIntegral.isAlgebraic`. Set `e : S →ₐ[R] K` to `IsAlgClosed.lift`. Conclude with `⟨e.toRingHom, RingHom.ext fun r => e.commutes r⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ext_injective {R S K : Type} [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] [Field K]
     [IsAlgClosed K] (f : R →+* S) (hi : Function.Injective f) (hf : f.IsIntegral) (φ : R →+* K)
@@ -20,15 +18,13 @@ private theorem ext_injective {R S K : Type} [CommRing R] [IsDomain R] [CommRing
   exact ⟨e.toRingHom, RingHom.ext fun r => e.commutes r⟩
 
 /- English proof (translation)
-Use `letI : Algebra R S := f.toAlgebra`. Use `haveI : Algebra.IsIntegral R S := ⟨hf⟩`. Use `haveI : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker φ) ⊥ (by`. Introduce `r hr`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker]`. Conclude with `Ideal.mem_bot.1 (Ideal.mem_comap.1 hr))`. Establish `hQc' : Q.comap f = RingHom.ker φ` using `hQc`. Set `φ' : R ⧸ Q.comap f →+* K` to `Ideal.Quotient.lift _ φ (fun a ha => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha` using `[hQc']`. Conclude with `ha)`. Establish `hφ' : Function.Injective φ'`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hQc']`. Conclude with `hx`. Take `⟨ψ, hψ⟩` from `ext_injective (Ideal.quotientMap Q f le_rfl) Ideal.quotientMap_injective (RingHom.IsIntegral.quotient f hf) φ' hφ'`. Use `⟨ψ.comp (Ideal.Quotient.mk Q), ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `r`. Use `congrArg (fun g => g (Ideal.Quotient.mk _ r)) hψ` as an intermediate fact. Simplify using `only [RingHom.comp_apply, Ideal.quotientMap_mk] at this ⊢`. Conclude with `this.trans (Ideal.Quotient.lift_mk _ _ _)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ext_integral {R S K : Type} [CommRing R] [CommRing S] [Field K] [IsAlgClosed K]
     (f : R →+* S) (hf : f.IsIntegral) (φ : R →+* K) (h : RingHom.ker f ≤ RingHom.ker φ) :
@@ -60,27 +56,25 @@ private theorem ext_integral {R S K : Type} [CommRing R] [CommRing S] [Field K] 
   exact this.trans (Ideal.Quotient.lift_mk _ _ _)
 
 /- English proof (translation)
-Introduce `O Λ B K _ _ _ _ _ _ _ _ _ lam J t s g hC p z i hz`. Take `⟨hprime, hdiv, hnot⟩` from `UpperTheory.V.J.cmpPrime O Λ B lam J t s g hC i`. Use `set Q := UpperTheory.V.J.cmp lam J t g i with hQdef`. Establish `hJQ : J ≤ Q`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQdef, UpperTheory.V.J.cmp, Submodule.mem_colon]`. Introduce `b hb`. Rewrite `hb` using `[Set.mem_singleton_iff]`. Substitute `hb` using the available equality. Simplify `J.mul_mem_right _ ha` using `[smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `f : Λ[X] →+* B ⧸ Q` to `(Ideal.Quotient.mk Q).comp (eval₂RingHom (lam : Λ →+* B) t)`. Establish `hfC : f.comp C = (Ideal.Quotient.mk Q).comp (lam : Λ →+* B)`. Use extensionality with `c`. Simplify using `[f]`. Establish `hint : f.IsIntegral`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingHom.IsIntegral.tower_top C f` to reduce the goal to its premises. Rewrite using `[hfC]`. Introduce `x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨q, hqm, hq⟩` from `hC.int b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hom_eval₂, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hJQ hq`. Set `φ : Λ[X] →+* K` to `eval₂RingHom (p : Λ →+* K) z`. Establish `hker : RingHom.ker f ≤ RingHom.ker φ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `q hq`. Rewrite `hq`, the goal using `[RingHom.mem_ker]`. Establish `hq' : eval₂ (lam : Λ →+* B) t q ∈ Q`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `hq` using `[f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨r, rfl⟩` from `(hdiv q).1 hq'`. Simplify using `only [φ, coe_eval₂RingHom, eval₂_mul]`. Rewrite using `[hz, zero_mul]`. Take `⟨ψ, hψ⟩` from `ext_integral f hint φ hker`. Establish `hc : ∀ c, ψ (Ideal.Quotient.mk Q (lam c)) = p c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c`. Use `congrArg (fun h => h (C c)) hψ` as an intermediate fact. Simplify `this` using `[f, φ]`. Establish `ht : ψ (Ideal.Quotient.mk Q t) = z`. Use `congrArg (fun h => h X) hψ` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[f, φ]`. Use `⟨{ toRingHom := ψ.comp (Ideal.Quotient.mk Q), commutes' := ?_ }, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `o`. Use `hc (algebraMap O Λ o)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.2 hb]`. Use extensionality with `c`. Simplify using `using hc c`.
-
-Simplify using `using ht`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.lyOver :
     UpperTheory.V.J.LyOver := by

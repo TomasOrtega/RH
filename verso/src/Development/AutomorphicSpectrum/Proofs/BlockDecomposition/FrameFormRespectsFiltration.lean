@@ -8,7 +8,7 @@ open CategoryTheory CrystallineSemistableComparison CrystallineSemistableCompari
 namespace GlobalTheory.CompanionTheory.FormMem
 
 /- English proof (translation)
-The claim follows from `| 0, f, _ => by have h : (Fil ((0 : ℕ) : ℤ)).S T = ⊤ := hF.top _ (by simp) T rw [h] exact Submodule.mem_top | n + 1, f, h => by rw [Fin.prod_univ_succ] have h0 : f 0 ∈ (Fil ((1 : ℕ) : ℤ)).S T := by simpa using h 0 have := hF.mul 1 n T h0 (prod_fil_mem hF T n (fun k => f k.succ) f …`.
+A detailed English derivation is pending.
 -/
 theorem prod_fil_mem {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A}
     (hF : IsFil Φ Fil) (T : C) : ∀ (n : ℕ) (f : Fin n → Φ.A.obj T), (∀ k, f k ∈ (Fil 1).S T) →
@@ -24,7 +24,7 @@ theorem prod_fil_mem {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ :
     rwa [Nat.add_comm] at this
 
 /- English proof (translation)
-Introduce `R _ C _ Φ Fil hF d E σ j q I x hx s`. Use `hF.mul j q _ (prod_fil_mem hF _ j _ fun k => (Fil 1).map_mem _ ?_) ((Fil q).map_mem (σ _) hx)` and prove the remaining obligations. Rewrite using `[hF.one]`. Conclude with `E.mem _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_mem : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil)
     {d : ℕ} (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (j q : ℕ) (I : Fin j → Fin d) (x : Φ.A.obj E.D), x ∈ (Fil q).S E.D →

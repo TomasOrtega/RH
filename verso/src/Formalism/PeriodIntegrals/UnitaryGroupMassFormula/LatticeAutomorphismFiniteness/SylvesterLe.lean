@@ -6,14 +6,14 @@ namespace PI.AutLzFinite.SlopeTestRemainingChoices
 open Matrix
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_conj_eq {m p : Type} (M : Matrix m p ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j
   simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Unfold `Formalism.UG.Jpq`. Apply the tactic sequence `simp [dotProduct, Fintype.sum_sum_type, Matrix.fromBlocks_mulVec, Matrix.neg_mulVec, Function.comp_def, sub_eq_add_neg] <;> ring`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem form_Jpq (p q : ℕ) (y : Fin p ⊕ Fin q → ℂ) :
     star y ⬝ᵥ (Formalism.UG.Jpq p q *ᵥ y) =
@@ -23,27 +23,25 @@ theorem form_Jpq (p q : ℕ) (y : Fin p ⊕ Fin q → ℂ) :
     Function.comp_def, sub_eq_add_neg] <;> ring
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `hJ`. Rewrite `hP` using `[cT_conj_eq]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Set `T : (k → ℂ) →ₗ[ℂ] (Fin q → ℂ)` to `(LinearMap.funLeft ℂ ℂ Sum.inr) ∘ₗ (Matrix.mulVecLin ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)) ∘ₗ (LinearMap.funLeft ℂ ℂ e.symm) ∘ₗ (Matrix.mulVecLin B)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker T ≠ ⊥`. Apply `LinearMap.ker_ne_bot_of_finrank_lt` to reduce the goal to its premises. Rewrite using `[Module.finrank_fin_fun, Module.finrank_fintype_fun_eq_card]`. Conclude with `hcon`. Take `⟨v, hvK, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTv : T v = 0` using `LinearMap.mem_ker.1 hvK`. Establish `hyr : ∀ j, (((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ ((B *ᵥ v) ∘ e.symm)) (Sum.inr j) = 0` using `fun j => congrFun hTv j`. Use `set w : n → ℂ := B *ᵥ v with hwdef`. Use `set y : Fin p ⊕ Fin q → ℂ := ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ (w ∘ e.symm) with hydef`. Establish `hw : w ∘ e.symm = (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hydef, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hwne : w ≠ 0`. Introduce `h`. Apply `hv0` to reduce the goal to its premises. Apply `hB` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show B *ᵥ v = B *ᵥ 0`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `h`. Establish `hyne : y ≠ 0`. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Apply `hwne` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun hw (e i)`. Rewrite `h3` using `[h, Matrix.mulVec_zero]`. Simplify using `using h3`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, y (Sum.inl i) ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hyne` to reduce the goal to its premises. Use function extensionality and compare the values at `s`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the cases of `s with`. Consider the case `inl i => exact hall i`. Consider the case `inr j => exact hyr j`. Establish `h1 : star w ⬝ᵥ (J *ᵥ w) = star (w ∘ e.symm) ⬝ᵥ (J.reindex e e *ᵥ (w ∘ e.symm))`. Simplify using `only [dotProduct, mulVec, Matrix.reindex_apply, Matrix.submatrix_apply, Function.comp_apply, Pi.star_apply]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv e _ _ (fun a => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply]`. Use `congr 1`. Conclude with `Fintype.sum_equiv e _ _ (fun b => by simp only [Equiv.symm_apply_apply])`. Establish `hform : star w ⬝ᵥ (J *ᵥ w) = star y ⬝ᵥ (Formalism.UG.Jpq p q *ᵥ y)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h1, hw, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hP]`. Establish `hre : ∀ z : ℂ, (star z * z).re = Complex.normSq z` using `fun z => by`. Rewrite using `[Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < (star w ⬝ᵥ (J *ᵥ w)).re`.
-
-Rewrite using `[hform, form_Jpq]`. Simplify using `only [hyr, mul_zero, Finset.sum_const_zero, sub_zero, Complex.re_sum, hre]`. Conclude with `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.2 hi⟩`. Use `hneg v` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sylvester_le {n k : Type} [Fintype n] [DecidableEq n] [Fintype k] [DecidableEq k]
     (J : Matrix n n ℂ) {p q : ℕ} (hJ : Formalism.UG.HasSignature J p q) (B : Matrix n k ℂ)

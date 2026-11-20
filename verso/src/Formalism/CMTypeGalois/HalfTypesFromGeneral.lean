@@ -16,35 +16,35 @@ open NumberField Ideal
 namespace Formalism.Q3
 
 /- English proof (translation)
-The claim follows from `mqKummer_of mqGalois`.
+A detailed English derivation is pending.
 -/
 theorem mqKummer : MQKummer := mqKummer_of mqGalois
 /- English proof (translation)
-The claim follows from `mqFrob_of mqGalois`.
+A detailed English derivation is pending.
 -/
 theorem mqFrob : MQFrob := mqFrob_of mqGalois
 /- English proof (translation)
-The claim follows from `hostGalois_of mqGalois mqKummer`.
+A detailed English derivation is pending.
 -/
 theorem hostGalois : HostGalois := hostGalois_of mqGalois mqKummer
 /- English proof (translation)
-The claim follows from `hostFrob_of mqFrob hostGalois kroneckerMeaning`.
+A detailed English derivation is pending.
 -/
 theorem hostFrob : HostFrob := hostFrob_of mqFrob hostGalois kroneckerMeaning
 /- English proof (translation)
-The claim follows from `hostConj_of hostGalois mqKummer`.
+A detailed English derivation is pending.
 -/
 theorem hostConj : HostConj := hostConj_of hostGalois mqKummer
 /- English proof (translation)
-The claim follows from `hostInertia_of hostGalois mqGalois`.
+A detailed English derivation is pending.
 -/
 theorem hostInertia : HostInertia := hostInertia_of hostGalois mqGalois
 /- English proof (translation)
-The claim follows from `hostMu_of mqKummer hostGalois`.
+A detailed English derivation is pending.
 -/
 theorem hostMu : HostMu := hostMu_of mqKummer hostGalois
 /- English proof (translation)
-The claim follows from `hostEmb_of hostConj hostGalois`.
+A detailed English derivation is pending.
 -/
 theorem hostEmb : HostEmb := hostEmb_of hostConj hostGalois
 

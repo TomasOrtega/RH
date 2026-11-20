@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `e : stalkOf (closedPoint W) = (stalkClosedPointIso (CommRingCat.of W)).inv.hom`. Unfold `stalkOf`. Rewrite using `[← ΓSpecIso_hom_stalkClosedPointIso_inv]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[e]`. Conclude with `(isUnit_map_iff (stalkClosedPointIso (CommRingCat.of W)).symm.commRingCatIsoToRingEquiv v).1 h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkOf_closedPoint_isUnit {W : Type} [CommRing W] [IsLocalRing W] (v : W)
     (h : IsUnit (stalkOf (closedPoint W) v)) : IsUnit v := by
@@ -31,13 +31,13 @@ theorem stalkOf_closedPoint_isUnit {W : Type} [CommRing W] [IsLocalRing W] (v : 
   exact (isUnit_map_iff (stalkClosedPointIso (CommRingCat.of W)).symm.commRingCatIsoToRingEquiv v).1 h
 
 /- English proof (translation)
-Introduce `R _ _ _ D k α b v hv hmem`. Establish `hmem' : ∃ j, eSec D.P.A (closedPoint R) ∈ D.P.A.left.basicOpen (b.f j)`. Unfold `nonzeroLocus at hmem`. Simplify `hmem` using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨j, hj⟩` from `hmem'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hjU` using `D.P.A.left.basicOpen_le (b.f j) hj`. Establish `hu` using `(Scheme.mem_basicOpen _ _ _ hjU).1 hj`. Take `⟨J, hJ, -⟩` from `exists_good (Z := Sp R) D.P.L D.P.isLB (closedPoint R) (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `hsv` using `hv (closedPoint R) J hJ`. Establish `e1` using `sec_trans b (unitW D.P.A) (closedPoint R) (hJ.mem (D.famφB α) (unitW D.P.A)) hjU`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : IsUnit (gs (unitW D.P.A) (closedPoint R) _ (b.f j))`. Rewrite using `[gs_eq _ _ _ hjU]`. Establish `e2` using `Scheme.Hom.germ_stalkMap_apply (eSec D.P.A) _ (closedPoint R) hjU (b.f j)`. Conclude with `e2 ▸ hu.map ((eSec D.P.A).stalkMap (closedPoint R)).hom`. Establish `hs : IsUnit (sval b (unitW D.P.A) (closedPoint R) J)` using `by show IsUnit (gs _ _ _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `(Units.isUnit _).mul hg`. Rewrite `hs` using `[hsv]`. Conclude with `stalkOf_closedPoint_isUnit v (isUnit_of_mul_isUnit_left hs)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_origVal : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (k : ℕ) (α : D.X) (b : D.SecB k α) (v : R), OrigVal D b v → eSec D.P.A (closedPoint R) ∈ nonzeroLocus b → IsUnit v := by
   intro R _ _ _ D k α b v hv hmem

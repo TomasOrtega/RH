@@ -26,7 +26,7 @@ structure IsDict (Λ : G → Submodule (𝓞 K) V) (ι : Γ → V ≃ₗ[K] V) :
 variable {Γ Kf h L0}
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [Formalism.HermitianLatticesTheory.gmap]; rw [← Submodule.map_comp]; rfl)`. Consider the case `(ext x; simp [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma gmap_mul_lemma (a b : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) :
     gmap (a * b) L = gmap a (gmap b L) := by
@@ -35,7 +35,7 @@ private lemma gmap_mul_lemma (a b : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) :
   | (ext x; simp [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map])
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [Formalism.HermitianLatticesTheory.gmap]; exact Submodule.map_id L)`. Consider the case `(ext x; simp [Formalism.HermitianLatticesTheory.gmap])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma gmap_one_unitary_class_mass (L : Submodule (𝓞 K) V) : gmap (1 : V ≃ₗ[K] V) L = L := by
   first
@@ -43,13 +43,13 @@ private lemma gmap_one_unitary_class_mass (L : Submodule (𝓞 K) V) : gmap (1 :
   | (ext x; simp [Formalism.HermitianLatticesTheory.gmap])
 
 /- English proof (translation)
-Rewrite using `[← gmap_mul_lemma, inv_mul_cancel, gmap_one_unitary_class_mass]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma gmap_inv_gmap_unitary_class_mass (g : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) : gmap g⁻¹ (gmap g L) = L := by
   rw [← gmap_mul_lemma, inv_mul_cancel, gmap_one_unitary_class_mass]
 
 /- English proof (translation)
-Establish `⟨ha1, ha2⟩ : a ∈ isom h ∧ gmap a N = N` using `ha`. Use `show g * a * g⁻¹ ∈ isom h ∧ gmap (g * a * g⁻¹) (gmap g N) = gmap g N`. Conclude with `⟨mul_mem (mul_mem hg ha1) (inv_mem hg), by rw [gmap_mul_lemma, gmap_mul_lemma, gmap_inv_gmap_unitary_class_mass, ha2]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma mul_mul_inv_mem_autL_gmap {g a : V ≃ₗ[K] V} {N : Submodule (𝓞 K) V} (hg : g ∈ isom h)
     (ha : a ∈ autL h N) : g * a * g⁻¹ ∈ autL h (gmap g N) := by
@@ -58,7 +58,7 @@ private lemma mul_mul_inv_mem_autL_gmap {g a : V ≃ₗ[K] V} {N : Submodule (�
   exact ⟨mul_mem (mul_mem hg ha1) (inv_mem hg), by rw [gmap_mul_lemma, gmap_mul_lemma, gmap_inv_gmap_unitary_class_mass, ha2]⟩
 
 /- English proof (translation)
-Establish `⟨hb1, hb2⟩ : b ∈ isom h ∧ gmap b (gmap g N) = gmap g N` using `hb`. Use `show g⁻¹ * b * g ∈ isom h ∧ gmap (g⁻¹ * b * g) N = N`. Conclude with `⟨mul_mem (mul_mem (inv_mem hg) hb1) hg, by rw [gmap_mul_lemma, gmap_mul_lemma, hb2, gmap_inv_gmap_unitary_class_mass]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma inv_mul_mul_mem_autL {g b : V ≃ₗ[K] V} {N : Submodule (𝓞 K) V} (hg : g ∈ isom h)
     (hb : b ∈ autL h (gmap g N)) : g⁻¹ * b * g ∈ autL h N := by
@@ -67,7 +67,7 @@ private lemma inv_mul_mul_mem_autL {g b : V ≃ₗ[K] V} {N : Submodule (𝓞 K)
   exact ⟨mul_mem (mul_mem (inv_mem hg) hb1) hg, by rw [gmap_mul_lemma, gmap_mul_lemma, hb2, gmap_inv_gmap_unitary_class_mass]⟩
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr { toFun := fun b => ⟨g⁻¹ * b.1 * g, inv_mul_mul_mem_autL hg b.2⟩ invFun := fun a => ⟨g * a.1 * g⁻¹, mul_mul_inv_mem_autL_gmap hg a.2⟩ left_inv := fun b => Subtype.ext (by simp [mul_assoc]) right_inv := fun a => Subtype.ext (by simp [mul_assoc]) }`.
+A detailed English derivation is pending.
 -/
 private lemma natCard_autL_gmap {g : V ≃ₗ[K] V} (hg : g ∈ isom h) (N : Submodule (𝓞 K) V) :
     Nat.card (autL h (gmap g N)) = Nat.card (autL h N) :=
@@ -78,15 +78,13 @@ private lemma natCard_autL_gmap {g : V ≃ₗ[K] V} (hg : g ∈ isom h) (N : Sub
       right_inv := fun a => Subtype.ext (by simp [mul_assoc]) }
 
 /- English proof (translation)
-Establish `hs' : (∀ M ∈ s, M ∈ genus h L0) ∧ ∀ M ∈ genus h L0, ∃! N, N ∈ s ∧ ∃ u ∈ isom h, gmap u N = M` using `hs`. Establish `ht' : (∀ M ∈ t, M ∈ genus h L0) ∧ ∀ M ∈ genus h L0, ∃! N, N ∈ t ∧ ∃ u ∈ isom h, gmap u N = M` using `ht`. Establish `hex : ∀ N ∈ s, ∃ P, P ∈ t ∧ ∃ u ∈ isom h, gmap u P = N` using `fun N hN => (ht'.2 N (hs'.1 N hN)).exists`. Use `Finset.sum_bij (fun N hN => (hex N hN).choose) (fun N hN => (hex N hN).choose_spec.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `N₁ h₁ N₂ h₂ heq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u₁, hu₁, e₁⟩` from `(hex N₁ h₁).choose_spec.2`. Take `⟨u₂, hu₂, e₂⟩` from `(hex N₂ h₂).choose_spec.2`. Rewrite `e₁` using `[heq]`. Establish `key : gmap (u₂ * u₁⁻¹) N₁ = N₂` using `by rw [gmap_mul_lemma, ← e₁, gmap_inv_gmap_unitary_class_mass, e₂]`. Conclude with `(hs'.2 N₂ (hs'.1 N₂ h₂)).unique ⟨h₁, _, mul_mem hu₂ (inv_mem hu₁), key⟩ ⟨h₂, 1, one_mem _, gmap_one_unitary_class_mass N₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Take `⟨N, ⟨hN, u, hu, e⟩, -⟩` from `hs'.2 P (ht'.1 P hP)`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Take `⟨v, hv, e'⟩` from `(hex N hN).choose_spec.2`. Establish `key : gmap (u * v) (hex N hN).choose = P` using `by rw [gmap_mul_lemma, e', e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(ht'.2 P (ht'.1 P hP)).unique ⟨(hex N hN).choose_spec.1, _, mul_mem hu hv, key⟩ ⟨hP, 1, one_mem _, gmap_one_unitary_class_mass P⟩`. Introduce `N hN`. Take `⟨v, hv, e'⟩` from `(hex N hN).choose_spec.2`. Establish `hc` using `natCard_autL_gmap hv (hex N hN).choose`. Rewrite `hc` using `[e']`.
-
-Rewrite using `[hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_inv_card_autL_eq_of_isClassReps {s t : Finset (Submodule (𝓞 K) V)} (hs : IsClassReps h L0 s)
     (ht : IsClassReps h L0 t) :
@@ -121,7 +119,7 @@ private lemma sum_inv_card_autL_eq_of_isClassReps {s t : Finset (Submodule (𝓞
     rw [hc]
 
 /- English proof (translation)
-Establish `hex : ∃ t, IsClassReps h L0 t` using `⟨s, hs⟩`. Rewrite using `[Formalism.HermitianLatticesTheory.mass, dif_pos hex]`. Conclude with `sum_inv_card_autL_eq_of_isClassReps hex.choose_spec hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_eq_of_reps {s : Finset (Submodule (𝓞 K) V)} (hs : IsClassReps h L0 s) :
     mass h L0 = ∑ N ∈ s, ((Nat.card (autL h N) : ℕ) : ℝ)⁻¹ := by
@@ -130,17 +128,17 @@ theorem mass_eq_of_reps {s : Finset (Submodule (𝓞 K) V)} (hs : IsClassReps h 
   exact sum_inv_card_autL_eq_of_isClassReps hex.choose_spec hs
 
 /- English proof (translation)
-Establish `hR : ∀ i j (u : V ≃ₗ[K] V), u ∈ isom h → gmap u (Λ (g j)) = Λ (g i) → i = j`. Introduce `i j u hu huj`. Take `⟨γ, k, hk⟩` from `D.inj (g i) (g j) u hu huj`. Conclude with `hdisj i j 1 γ 1 k (by simpa using hk)`. Establish `hinj : Function.Injective (fun i => Λ (g i))` using `fun i j hij => hR i j 1 (one_mem _) (by rw [gmap_one_unitary_class_mass]; exact hij.symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : IsClassReps h L0 (Finset.univ.image (fun i => Λ (g i)))` using `by show (∀ M ∈ Finset.univ.image (fun i => Λ (g i)), M ∈ genus h L0) ∧ ∀ M ∈ genus h L0, ∃! N, N ∈ Finset.univ.image (fun i => Λ (g i)) ∧ ∃ u ∈ isom h, gmap u N = M`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `M hM`. Take `⟨i, -, hi⟩` from `Finset.mem_image.1 hM`. Rewrite using `[← hi]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `D.mem _`. Introduce `M hM`. Take `⟨x, rfl⟩` from `D.surj M hM`. Take `⟨i, γ, k, rfl⟩` from `hcov x`. Use `⟨Λ (g i), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ i), ι γ, D.isIsom γ, (D.equiv (g i) γ k).symm⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `N ⟨hN, u, hu, huN⟩`. Take `⟨j, -, hj⟩` from `Finset.mem_image.1 hN`. Establish `hj' : Λ (g j) = N` using `hj`. Substitute `hj'` using the available equality. Rewrite `huN` using `[D.equiv]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : gmap ((ι γ)⁻¹ * u) (Λ (g j)) = Λ (g i)`. Rewrite using `[gmap_mul_lemma, huN, gmap_inv_gmap_unitary_class_mass]`. Take `rfl` from `hR i j _ (mul_mem (inv_mem (D.isIsom γ)) hu) key`. Both sides reduce to the same expression. Rewrite using `[mass_eq_of_reps hs, Finset.sum_image (by intro i _ j _ hij; exact hinj hij)]`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[D.card]`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq_mass {Λ : G → Submodule (𝓞 K) V} {ι : Γ → V ≃ₗ[K] V} (D : IsDict Γ Kf h L0 Λ ι)
     (n : ℕ) (g : Fin n → G)

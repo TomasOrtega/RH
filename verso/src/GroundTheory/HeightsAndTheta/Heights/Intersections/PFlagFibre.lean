@@ -36,7 +36,7 @@ def flagCompound {F : Type} [Field F] (B : Matrix (Fin n) (Fin N1) F) :
   | ⟨.inr _, _⟩ => fun S S' => (B.submatrix (S'.1.orderEmbOfFin S'.2) (S.1.orderEmbOfFin S.2)).det
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Use `match k with`. Consider the case `⟨.inl k, h⟩ => exact (h ⟨k, rfl⟩).elim`. Consider the case `⟨.inr _, _⟩ => rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fibreDeg_flag (a : K ⊕ Fin (n - 1) → ℤ) :
     fibreDeg Sum.inl a = (fun j => a (Sum.inr j)) ∘ (flagFibreBlocksEquiv (K := K) (n := n)) := by
@@ -46,7 +46,7 @@ theorem fibreDeg_flag (a : K ⊕ Fin (n - 1) → ℤ) :
   | ⟨.inr _, _⟩ => rfl
 
 /- English proof (translation)
-Unfold `flagMinor`. Rewrite using `[Matrix.submatrix_mul M B' _ id _ Function.bijective_id, CauchyBinet.proof]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem flagMinor_mul {R : Type} [CommRing R] (M : Matrix (Fin n) (Fin n) R) (B' : Matrix (Fin n) (Fin N1) R)
     (j : Fin (n - 1)) (S : PluckerBlocks N1 n j) :
@@ -63,13 +63,13 @@ section Compound
 variable {F : Type} [Field F] {N1 n : ℕ}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.vecMulLinear B)` using `Matrix.vecMul_injective_iff.2 hB`. Take `⟨g, hg⟩` from `(Matrix.vecMulLinear B).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨Matrix.of fun c b => g (Pi.single c 1) b, ?_⟩` and prove the remaining obligations. Use extensionality with `i b`. Establish `hrow : Matrix.vecMulLinear B (Pi.single i 1) = B i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `c`. Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`. Establish `h1` using `LinearMap.congr_fun hg (Pi.single i 1)`. Rewrite `h1` using `[LinearMap.comp_apply, hrow, LinearMap.id_apply]`. Establish `h2 : ∑ c, B i c • (Pi.single c 1 : Fin N1 → F) = B i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.mul_apply]`. Use `_ = g (B i) b := by conv_rhs => rw [← h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, Finset.sum_apply, map_smul]`. Use `_ = (1 : Matrix (Fin n) (Fin n) F) i b := by`. Rewrite using `[h1, Matrix.one_apply, Pi.single_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_one (B : Matrix (Fin n) (Fin N1) F) (hB : LinearIndependent F B.row) :
     ∃ C : Matrix (Fin N1) (Fin n) F, B * C = 1 := by
@@ -95,11 +95,11 @@ theorem exists_mul_eq_one (B : Matrix (Fin n) (Fin N1) F) (hB : LinearIndependen
         exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.submatrix_one _ (S'.1.orderEmbOfFin S'.2).injective, Matrix.det_one]`. Establish `hsub : ¬ S'.1 ⊆ S''.1` using `fun hs => h (Subtype.ext (Finset.eq_of_subset_of_card_le hs (by rw [S'.2, S''.2])))`. Take `⟨x, hx, hx'⟩` from `Finset.not_subset.1 hsub`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : x ∈ Set.range (S'.1.orderEmbOfFin S'.2)` using `by rw [Finset.range_orderEmbOfFin]; exact hx`. Take `⟨r, hr⟩` from `hr`. Use `Matrix.det_eq_zero_of_row_eq_zero r fun c => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_apply, Matrix.one_apply_ne]`. Introduce `he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx'` to reduce the goal to its premises. Rewrite using `[← hr, he]`. Conclude with `Finset.orderEmbOfFin_mem _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_one_submatrix {m : ℕ} (S' S'' : {S : Finset (Fin n) // S.card = m}) :
     ((1 : Matrix (Fin n) (Fin n) F).submatrix (S'.1.orderEmbOfFin S'.2) (S''.1.orderEmbOfFin S''.2)).det =
@@ -120,7 +120,7 @@ theorem det_one_submatrix {m : ℕ} (S' S'' : {S : Finset (Fin n) // S.card = m}
     exact Finset.orderEmbOfFin_mem _ _ _
 
 /- English proof (translation)
-Rewrite using `[← det_one_submatrix S' S'', ← hBC, Matrix.submatrix_mul B C _ id _ Function.bijective_id, CauchyBinet.proof]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compound_mul_eq {m : ℕ} (B : Matrix (Fin n) (Fin N1) F) (C : Matrix (Fin N1) (Fin n) F) (hBC : B * C = 1)
     (S' S'' : {S : Finset (Fin n) // S.card = m}) :
@@ -133,9 +133,9 @@ theorem compound_mul_eq {m : ℕ} (B : Matrix (Fin n) (Fin N1) F) (C : Matrix (F
   exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
 /- English proof (translation)
-Take `⟨C, hBC⟩` from `exists_mul_eq_one B hB`. Set `D : Matrix {S : Finset (Fin n) // S.card = m} {S : Finset (Fin N1) // S.card = m} F` to `Matrix.of fun S'' S => (C.submatrix (S.1.orderEmbOfFin S.2) (S''.1.orderEmbOfFin S''.2)).det`. Establish `hD : D * (Matrix.of fun (S : {S : Finset (Fin N1) // S.card = m}) (S' : {S : Finset (Fin n) // S.card = m}) => (B.submatrix (S'.1.orderEmbOfFin S'.2) (S.1.orderEmbOfFin S.2)).det) = 1`. Use extensionality with `S'' S'`. Establish `hc : (if S'' = S' then (1 : F) else 0) = if S' = S'' then 1 else 0` using `if_congr eq_comm rfl rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply, hc, ← compound_mul_eq B C hBC S' S'']`. Both sides reduce to the same expression. Introduce `x y hxy`. Use `congrArg D.mulVec hxy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hD, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem compound_injective {m : ℕ} (B : Matrix (Fin n) (Fin N1) F) (hB : LinearIndependent F B.row) :
     Function.Injective (Matrix.of fun (S : {S : Finset (Fin N1) // S.card = m})
@@ -156,7 +156,7 @@ theorem compound_injective {m : ℕ} (B : Matrix (Fin n) (Fin N1) F) (hB : Linea
   rwa [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hD, Matrix.one_mulVec, Matrix.one_mulVec] at this
 
 /- English proof (translation)
-Use `match k with`. Consider the case `⟨.inl k, h⟩ => exact (h ⟨k, rfl⟩).elim`. Consider the case `⟨.inr j, _⟩ => exact compound_injective (m := j + 1) B hB`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem flagCompound_injective {K : Type} {ι : K → Type} (B : Matrix (Fin n) (Fin N1) F)
     (hB : LinearIndependent F B.row) (k : FibreBlock (Sum.inl : K → K ⊕ Fin (n - 1))) :
@@ -174,15 +174,15 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {N1 n 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `show RingHom.ker (aeval (fun q : Σ k : FibreBlock (Sum.inl : K → K ⊕ Fin (n - 1)), fibreIdx (FlagBundleBlocks ι N1 n) Sum.inl k => algebraMap (MvPolynomial (Fin n × Fin n) (FnField P)) (FractionRing (MvPolynomial (Fin n × Fin n) (FnField P))) (flagMap P B (X ⟨q.1.1, q.2⟩))) : MRi …`. Establish `key : ∀ f, aeval (fun q : Σ k : FibreBlock (Sum.inl : K → K ⊕ Fin (n - 1)), fibreIdx (FlagBundleBlocks ι N1 n) Sum.inl k => algebraMap (MvPolynomial (Fin n × Fin n) (FnField P)) (FractionRing (MvPolynomial (Fin n × Fin n) (FnField P))) (flagMap P B (X ⟨q.1.1, q.2⟩))) f = algebraM …` using `K)) (flagCompound (ι := ι) B) f)) := by`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_C, show (C a : MRingOver (FnField P) (fibreIdx (FlagBundleBlocks ι N1 n) Sum.inl)) = algebraMap (FnField P) _ a from rfl, AlgHom.commutes, AlgHom.commutes]`. Conclude with `IsScalarTower.algebraMap_apply _ _ _ a`. Consider the case `add p q hp hq => rw [map_add, hp, hq, map_add, map_add, map_add]`. Consider the case `mul_X p q hp`. Rewrite using `[map_mul, hp, map_mul, map_mul, map_mul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[aeval_X, blockLinSubst, aeval_X]`. Take `⟨⟨k, hk⟩, S⟩` from `q`. Use `match k, hk, S with`. Consider the case `.inl k, h, _ => exact (h ⟨k, rfl⟩).elim`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Consider the case `.inr j, h, S`. Use `congr 1`. Rewrite using `[flagMap, eval₂Hom_X']`. Use `(flagMinor_mul (genMat (FnField P) n) (B.map C) j S).trans ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, aeval_C, aeval_X, algebraMap_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun S' _ => ?_` and prove the remaining obligations. Conclude with `(mul_comm _ _).trans (congrArg (· * flagMinor (genMat (FnField P) n) j S') (RingHom.map_det C _).symm)`. Use extensionality with `f`. Simplify using `only [flagIdealOver, RingHom.mem_ker, Ideal.mem_comap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[key, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreIdeal_flag (P : Ideal (MRing ι)) [hP : P.IsPrime] (B : Matrix (Fin n) (Fin N1) (FnField P)) :
     fibreIdeal Sum.inl (flagGenFibre P hP B) =
@@ -230,9 +230,9 @@ theorem fibreIdeal_flag (P : Ideal (MRing ι)) [hP : P.IsPrime] (B : Matrix (Fin
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `charZero_of_inj_zero fun m hm => ?_` and prove the remaining obligations. Establish `h1 : algebraMap (MRing ι ⧸ P) (FnField P) (Ideal.Quotient.mk P (C (m : ℤ))) = 0`. Simplify using `using hm`. Rewrite `h1` using `[map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2 : (m : ℤ) ∈ P.comap (C : ℤ →+* MRing ι)` using `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hP, Ideal.mem_bot]`. Conclude with `h2` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charZero_fnField (P : Ideal (MRing ι)) [P.IsPrime] (hP : IsHorizontal P) : CharZero (FnField P) := by
   refine charZero_of_inj_zero fun m hm => ?_
@@ -244,7 +244,7 @@ theorem charZero_fnField (P : Ideal (MRing ι)) [P.IsPrime] (hP : IsHorizontal P
   exact_mod_cast h2
 
 /- English proof (translation)
-Unfold `flagMinor`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[genMat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_flagMinor (F F' : Type) [Field F] [Field F'] [Algebra F F'] (j : Fin (n - 1)) (S : PluckerBlocks n n j) :
     MvPolynomial.map (algebraMap F F') (flagMinor (genMat F n) j S) = flagMinor (genMat F' n) j S := by
@@ -255,7 +255,7 @@ theorem map_flagMinor (F F' : Type) [Field F] [Field F'] [Algebra F F'] (j : Fin
   simp [genMat]
 
 /- English proof (translation)
-Unfold `flagIdealOver`. Rewrite using `[hRel F F']`. Simplify using `only [map_flagMinor]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem flagIdealOver_map (hRel : RelBaseChange.Statement) (F F' : Type) [Field F] [Field F'] [Algebra F F'] :
     (flagIdealOver F n).map (MvPolynomial.map (algebraMap F F')) = flagIdealOver F' n := by
@@ -266,13 +266,13 @@ theorem flagIdealOver_map (hRel : RelBaseChange.Statement) (F F' : Type) [Field 
 end Fibre
 
 /- English proof (translation)
-Introduce `K _ ι _ N1 t n P d c m B hP _ hB J₀ hJ₀`. Establish `: P.IsPrime` using `hP.2.1.1`. Establish `: CharZero (FnField P)` using `charZero_fnField P hP.2.2.1`. Take `⟨J, hJ, -⟩` from `hEU _ (FnField P) (fibreIdx (FlagBundleBlocks ι N1 n) Sum.inl)`. Take `⟨J₁, hJ₁, -⟩` from `hEU _ (FnField P) (PluckerBlocks n n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨J, hJ, fun a => ?_⟩` and prove the remaining obligations. Establish `hfib : fibreIdeal Sum.inl (flagGenFibre P hP.2.1.1 B) = (flagIdealOver (FnField P) n).comap (blockLinSubst (flagFibreBlocksEquiv (K` using `K)) (flagCompound (ι := ι) B)).toRingHom := fibreIdeal_flag P B`. Establish `hdeg : (fun j => fibreDeg Sum.inl (a j)) = fun j => (fun j' => a j (Sum.inr j')) ∘ (flagFibreBlocksEquiv (K` using `K) (n := n)) :=`. Use function extensionality and compare the values at `fun j => fibreDeg_flag (a j)`. Establish `h1 : J (fibreIdeal Sum.inl (flagGenFibre P hP.2.1.1 B)) (flagDim n) (fun j => fibreDeg Sum.inl (a j)) = J₁ (flagIdealOver (FnField P) n) (flagDim n) (fun j j' => a j (Sum.inr j'))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[hfib, hdeg]`. Conclude with `hLin (FnField P) (Fin (n - 1)) _ (PluckerBlocks n n) _ flagFibreBlocksEquiv (flagCompound B) (flagCompound_injective B hB.1) J₁ J hJ₁ hJ _ _ _ (hDim _ n)`. Rewrite using `[h1]`. Establish `h2` using `hBC _ ℚ (FnField P) (PluckerBlocks n n) J₀ J₁ hJ₀ hJ₁ (flagIdealQ n) (flagDim n) (fun j j' => a j (Sum.inr j')) (hDim ℚ n)`. Use `flagIdealOver_isPrime (FnField P) n` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, flagIdealQ_eq, flagIdealOver_map hRel, Ideal.minimalPrimes_eq_subsingleton_self, finsum_mem_singleton, inh_multAt_self]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FlagFibre.proof
     (hEU : ∀ (K : Type) [Fintype K] (F : Type) [Field F] (ι : K → Type) [∀ k, Fintype (ι k)],

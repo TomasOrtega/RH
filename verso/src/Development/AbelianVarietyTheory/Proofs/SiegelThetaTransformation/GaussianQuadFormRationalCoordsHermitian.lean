@@ -10,13 +10,11 @@ namespace GlobalTheory.SW.GaussDict
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ}
 
 /- English proof (translation)
-Set `e : (E →+* ℂ) ≃ Fin (Module.finrank ℚ E)` to `Fintype.equivFinOfCardEq (NumberField.Embeddings.card E ℂ)`. Set `A : Matrix (Fin (Module.finrank ℚ E)) (Fin (Module.finrank ℚ E)) ℂ` to `Matrix.of fun i j => e.symm i (Module.finBasis ℚ E j)`. Establish `hT : Function.Surjective Aᵀ.mulVec`. Introduce `c`. Take `⟨w', hw'⟩` from `GlobalTheory.SW.Dict.exists_emb_comb (E := E) c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => w' (e.symm i), funext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hw' j]`. Conclude with `e.symm.sum_comp (fun σ => σ (Module.finBasis ℚ E j) * w' σ)`. Establish `hA : IsUnit A`. Establish `h` using `Matrix.mulVec_surjective_iff_isUnit.mp hT`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mpr h`. Take `⟨c, hc⟩` from `Matrix.mulVec_surjective_iff_isUnit.mpr hA (fun i => w (e.symm i))`. Use `⟨c, fun σ => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun hc (e σ)`.
-
-Simplify `h` using `[Matrix.mulVec, dotProduct, A]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_emb_comb_transpose (w : (E →+* ℂ) → ℂ) :
     ∃ c : Fin (Module.finrank ℚ E) → ℂ, ∀ σ : E →+* ℂ,
@@ -43,11 +41,11 @@ theorem exists_emb_comb_transpose (w : (E →+* ℂ) → ℂ) :
   simpa [Matrix.mulVec, dotProduct, A] using h
 
 /- English proof (translation)
-Establish `hc : ∀ σ : E →+* ℂ, σ ∉ Ψ → ComplexEmbedding.conjugate σ ∈ Ψ` using `fun σ hσ => by`. Rewrite using `[hΨ, ComplexEmbedding.involutive_conjugate E σ]`. Conclude with `hσ`. Set `w : Fin N → (E →+* ℂ) → ℂ` to `fun a σ => if h : σ ∈ Ψ then v ⟨σ, h⟩ a else v' ⟨_, hc σ h⟩ a`. Use `choose c hc' using fun a => exists_emb_comb_transpose (w a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun p => c p.1 p.2, fun τ a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hc' a τ.1]`. Simplify using `[w, τ.2]`. Establish `hn : ComplexEmbedding.conjugate τ.1 ∉ Ψ` using `(hΨ τ.1).mp τ.2`. Establish `h` using `hc' a (ComplexEmbedding.conjugate τ.1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ComplexEmbedding.conjugate_coe_eq] at h`. Rewrite using `[h]`. Simplify using `only [w, dif_neg hn]`. Conclude with `congrArg (fun t => v' t a) (Subtype.ext (ComplexEmbedding.involutive_conjugate E τ.1))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coords {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (v v' : Ψ → Fin N → ℂ) :
     ∃ u : QI E N → ℂ, ∀ (τ : Ψ) (a : Fin N),
@@ -72,7 +70,7 @@ theorem exists_coords {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (v v' : Ψ �
     exact congrArg (fun t => v' t a) (Subtype.ext (ComplexEmbedding.involutive_conjugate E τ.1))
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, tauOf, Matrix.of_apply]`. Rewrite using `[Complex.im_eq_sub_conj, map_sum, ← Finset.sum_sub_distrib, Finset.sum_div]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [imH, Matrix.smul_apply, Matrix.sub_apply, Matrix.conjTranspose_apply, Complex.star_def, smul_eq_mul, map_add, map_mul, Complex.conj_conj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -87,7 +85,7 @@ theorem im_tauOf (Ψ : Finset (E →+* ℂ)) (Z : CM Ψ N N) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, tauOf, Matrix.of_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [add_mul, Finset.sum_add_distrib, Fintype.sum_prod_type, Finset.mul_sum]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => ?_ <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tauOf_mulVec (Ψ : Finset (E →+* ℂ)) (Y : CM Ψ N N) (u : QI E N → ℂ) (p : QI E N) :
     (tauOf Ψ Y *ᵥ u) p = ∑ τ : Ψ, (τ.1 (Module.finBasis ℚ E p.2) *
@@ -102,7 +100,7 @@ theorem tauOf_mulVec (Ψ : Finset (E →+* ℂ)) (Y : CM Ψ N N) (u : QI E N →
   congr 1 <;> refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => ?_ <;> ring
 
 /- English proof (translation)
-Simplify using `only [dotProduct, zetaOf, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [add_mul, Finset.sum_add_distrib, Fintype.sum_prod_type, Finset.mul_sum]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => ?_ <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zetaOf_dot (Ψ : Finset (E →+* ℂ)) (z z' : CM Ψ n N) (k : Fin n) (u : QI E N → ℂ) :
     zetaOf Ψ z z' k ⬝ᵥ u = ∑ τ : Ψ,
@@ -117,13 +115,13 @@ theorem zetaOf_dot (Ψ : Finset (E →+* ℂ)) (z z' : CM Ψ n N) (k : Fin n) (u
 end GlobalTheory.SW.GaussDict
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.SW.GaussDict.exists_coords hΨ (fun τ => ((Y τ)ᵀ)⁻¹ *ᵥ z' τ k) (fun τ => (Y τ)⁻¹ *ᵥ z τ k)`. Establish `h1 : ∀ τ : Ψ, (fun c => ∑ j, τ.1 (Module.finBasis ℚ E j) * u (c, j)) = ((Y τ)ᵀ)⁻¹ *ᵥ z' τ k` using `fun τ => funext fun a => (hu τ a).1`. Establish `h2 : ∀ τ : Ψ, (fun c => ∑ j, conj (τ.1 (Module.finBasis ℚ E j)) * u (c, j)) = (Y τ)⁻¹ *ᵥ z τ k` using `fun τ => funext fun a => (hu τ a).2`. Establish `hY1 : ∀ τ, Y τ * (Y τ)⁻¹ = 1` using `fun τ => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (hY τ))`. Establish `hY2 : ∀ τ, (Y τ)ᵀ * ((Y τ)ᵀ)⁻¹ = 1` using `fun τ => Matrix.mul_nonsing_inv _ (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_transpose]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (hY τ))`. Use `⟨u, funext fun p => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SW.GaussDict.tauOf_mulVec]`. Simplify using `only [h1, h2, Matrix.mulVec_mulVec, hY1, hY2, Matrix.one_mulVec, zetaOf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => by ring`. Rewrite using `[GlobalTheory.SW.GaussDict.zetaOf_dot]`. Simplify using `only [h1, h2]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Matrix.transpose_nonsing_inv, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, dotProduct_comm]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem exists_tauOf_mulVec_eq_zetaOf {E : Type} [Field E] [NumberField E] {Ψ : Finset (E →+* ℂ)}
     (hΨ : IsType Ψ) {m N : ℕ} (Y : CM Ψ N N) (hY : ∀ τ, IsUnit (Y τ)) (z z' : CM Ψ m N)
@@ -153,11 +151,11 @@ private theorem exists_tauOf_mulVec_eq_zetaOf {E : Type} [Field E] [NumberField 
     ring
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ hΨ n N Z hZ z z' k`. Rewrite using `[GlobalTheory.SW.GaussDict.im_tauOf]`. Establish `hY : ∀ τ : Ψ, IsUnit (imH (Z τ))` using `fun τ => ((show ∀ τ : Ψ, (imH (Z τ)).PosDef from hZ) τ).isUnit`. Establish `hsurj : Function.Surjective (tauOf Ψ fun τ => imH (Z τ)).mulVec` using `fun ξ => by`. Take `⟨w, w', hw⟩` from `GlobalTheory.SW.Dict.zetaOf_surj (n := 1) hΨ (fun _ => ξ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, -⟩` from `exists_tauOf_mulVec_eq_zetaOf hΨ (fun τ => imH (Z τ)) hY w w' 0`. Conclude with `⟨u, by rw [hu, hw]⟩`. Establish `hU` using `Matrix.mulVec_surjective_iff_isUnit.mp hsurj`. Take `⟨u, hu, hdot⟩` from `exists_tauOf_mulVec_eq_zetaOf hΨ (fun τ => imH (Z τ)) hY z z' k`. Establish `hinv : (tauOf Ψ fun τ => imH (Z τ))⁻¹ *ᵥ zetaOf Ψ z z' k = u`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hu, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp hU), Matrix.one_mulVec]`. Rewrite using `[hinv, hdot]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.SW.gauss_form_dictionary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), ∀ Z ∈ Hn Ψ N, ∀ (z z' : CM Ψ n N) (k : Fin n), zetaOf Ψ z z' k ⬝ᵥ ((tauOf Ψ Z).map fun t => (t.im : ℂ))⁻¹ *ᵥ zetaOf Ψ z z' k = 2 * ∑ τ : Ψ, z' τ k ⬝ᵥ (imH (Z τ))⁻¹ *ᵥ z τ k := by
   intro E _ _ _ Ψ hΨ n N Z hZ z z' k

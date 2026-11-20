@@ -19,7 +19,7 @@ variable {G X U : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [A
   [AddCommGroup U] [Module ℂ U] {P : Subgroup G} {σ : Representation ℂ P X} {ρ : Representation ℂ P U}
 
 /- English proof (translation)
-Introduce `φ ψ h` and use `Subtype.ext (Subtype.ext (funext fun g => hι (congrFun (congrArg (fun χ : smoothPart (ind P ρ) => χ.1.1) h) g)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smIndMap_injective (ι : σ.IntertwiningMap ρ) (hι : Function.Injective ι) :
     Function.Injective (smIndMap ι) := fun φ ψ h =>
@@ -27,9 +27,9 @@ theorem smIndMap_injective (ι : σ.IntertwiningMap ρ) (hι : Function.Injectiv
     hι (congrFun (congrArg (fun χ : smoothPart (ind P ρ) => χ.1.1) h) g)))
 
 /- English proof (translation)
-Use `choose u hu using hF`. Use `⟨⟨⟨u, fun h g => hι ?_⟩, mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds F.2 (by simp)) fun g hg => ?_)⟩, Subtype.ext (Subtype.ext (funext hu))⟩` and prove the remaining obligations. Rewrite using `[ι.isIntertwining, hu, hu, F.1.2 h g]`. Establish `hg' : ind P ρ g F.1 = F.1` using `hg`. Use `Subtype.ext (funext fun x => hι ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ι (u (x * g)) = ι (u x)`. Rewrite using `[hu, hu]`. Conclude with `congrFun (congrArg Subtype.val hg') x`.
+A detailed English derivation is pending.
 -/
 theorem exists_smIndMap_eq (ι : σ.IntertwiningMap ρ) (hι : Function.Injective ι)
     (F : smoothPart (ind P ρ)) (hF : ∀ g, ∃ u, ι u = F.1.1 g) : ∃ F', smIndMap ι F' = F := by
@@ -44,7 +44,7 @@ theorem exists_smIndMap_eq (ι : σ.IntertwiningMap ρ) (hι : Function.Injectiv
     exact congrFun (congrArg Subtype.val hg') x
 
 /- English proof (translation)
-Introduce `U hU`. Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hI⟩` from `hU`. Use `choose J h1 h2 h3 h4 using fun i => h i (t i) (ht i)`. Conclude with `⟨Subgroup.pi Set.univ J, isOpen_set_pi Set.finite_univ fun i _ => h1 i, fun x hx => hI fun i _ => h2 i (hx i trivial), fun x hx i _ => h3 i (hx i trivial), fun x hx j hj i _ => h4 i _ (hx i trivial) _ (hj i trivial)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_normalised_pi {α : Type} [Finite α] {Γ : α → Type} [∀ i, Group (Γ i)]
     [∀ i, TopologicalSpace (Γ i)] (K : ∀ i, Subgroup (Γ i))
@@ -72,7 +72,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
 
 /- English proof (translation)
-Unfold `relDeltaHalf`. Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) isSmoothChar_one fun a _ => ?_` and prove the remaining obligations. Conclude with `(isSmoothChar_deltaHalf k).comp _ (continuous_apply a)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmoothChar_relDeltaHalf : IsSmoothChar (relDeltaHalf k c) := by
   unfold relDeltaHalf
@@ -81,11 +81,11 @@ theorem isSmoothChar_relDeltaHalf : IsSmoothChar (relDeltaHalf k c) := by
   exact (isSmoothChar_deltaHalf k).comp _ (continuous_apply a)
 
 /- English proof (translation)
-Establish `H` using `fun i => GlobalTheory.SmGL.LeviInt.levi_integral_facts k β (m i) (c i) (f i)`. Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hP : IsClosed (relParab k f : Set (Levi k m))` using `isClosed_set_pi fun i _ => (H i).2.2.2.2.2.2.1`. Establish `hK : IsCompact (Subgroup.pi Set.univ (fun i => KO k (m i)) : Set (Levi k m))` using `isCompact_univ_pi fun i => SplitFlip.isCompact_KO`. Establish `hPK : ∀ g : Levi k m, ∃ q ∈ relParab k f, ∃ x ∈ Subgroup.pi Set.univ (fun i => KO k (m i)), g = q * x` using `fun g => by choose q hq x hx e using fun i => (H i).2.2.2.2.2.2.2.2 (g i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨q, fun i _ => hq i, x, fun i _ => hx i, funext e⟩`. Establish `hcont : Continuous (relProj k f)` using `continuous_pi fun i => (H i).2.2.2.2.2.1.comp (((continuous_apply i).comp continuous_subtype_val).subtype_mk _)`. Set `σ₀ : Representation ℂ (relParab k f) W` to `(twist π (relDeltaHalf k c)).comp (relProj k f)`. Set `z : Representation.IntertwiningMap σ₀ σ₀` to `{ toLinearMap := 0, isIntertwining' := fun _ => by ext; simp }`. Use `(GlobalTheory.SmGL.IndCoinv.smInd_coinvariants (Levi k m) (relParab k f) _ hP hK hPK (exists_normalised_pi _ fun i => GlobalTheory.SmGL.exists_open_normalised_subgroup_subset k (m i)) _ _ _ _ (isSmooth_comp (isSmooth_twist hπ isSmoothChar_relDeltaHalf) _ hcont) (compMap (twistMap …` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x _`. Use `Submodule.subset_span ⟨(), -x, ?_⟩` and prove the remaining obligations. Use `show x = (0 : _) - -x`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relInd_surjective (f : ∀ i, (Σ j, c i j) ≃ m i)
     {π : Representation ℂ (∀ i, Levi k (c i)) W} {π' : Representation ℂ (∀ i, Levi k (c i)) W'}
@@ -118,7 +118,7 @@ theorem relInd_surjective (f : ∀ i, (Σ j, c i j) ≃ m i)
 end Local
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α β _ _ _ m _ _ c _ _ f W W₁ W₂ _ _ _ _ _ _ π π₁ π₂ ι p hι hp h0 hker hπ Y _ _ τ hτ`. Use `GlobalTheory.JHMult.jhMult_exact (smIndMap (compMap (twistMap ι (relDeltaHalf k c)) (relProj k f))) (smIndMap (compMap (twistMap p (relDeltaHalf k c)) (relProj k f))) hτ (smIndMap_injective _ hι) (relInd_surjective f p hp hπ) (fun u => Subtype.ext (Subtype.ext (funext fun g => h0 …` and prove the remaining obligations. Conclude with `exists_smIndMap_eq _ hι F fun g => hker _ (congrFun (congrArg (fun χ => χ.1.1) hF) g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jhMult_relInd_exact : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α β : Type) [Fintype α] [Fintype β] [LinearOrder β] (m : α → Type) [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] (c : α → β → Type) [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)] (f : ∀ i, (Σ j, c i j) ≃ m i) (W W₁ W₂ : Type) [AddCommGroup W] [Module ℂ W] [AddCommGroup W₁] [Module ℂ W₁] [AddCommGroup W₂] [Module ℂ W₂] (π : Representation ℂ (∀ i, GlobalTheory.SmGL.Levi k (c i)) W) (π₁ : Representation ℂ (∀ i, GlobalTheory.SmGL.Levi k (c i)) W₁) (π₂ : Representation ℂ (∀ i, GlobalTheory.SmGL.Levi k (c i)) W₂) (ι : π₁.IntertwiningMap π) (p : π.IntertwiningMap π₂), Function.Injective ι → Function.Surjective p → (∀ u, p (ι u) = 0) → (∀ v, p v = 0 → ∃ u, ι u = v) → GlobalTheory.PRep.IsSmooth π → ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y] (τ : Representation ℂ (GlobalTheory.SmGL.Levi k m) Y), τ.IsIrreducible → GlobalTheory.SmGL.jhMult τ (GlobalTheory.SmGL.relInd f π) = GlobalTheory.SmGL.jhMult τ (GlobalTheory.SmGL.relInd f π₁) + GlobalTheory.SmGL.jhMult τ (GlobalTheory.SmGL.relInd f π₂) := by
   intro k _ _ _ _ α β _ _ _ m _ _ c _ _ f W W₁ W₂ _ _ _ _ _ _ π π₁ π₂ ι p hι hp h0 hker hπ Y _ _ τ hτ

@@ -73,7 +73,7 @@ def SphTri : Prop := AllTri fun B G om om' v =>
   (SphAt G.M B.ψ om v ∨ IrrAt om v) ∧ (SphAt G.M' B.ψ om' v ∨ IrrAt om' v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hs, h.gen, fun φ hφ => by obtain ⟨m, k, c, h1, h2⟩ := h.line φ hφ exact ⟨m, k, fun _ => 1, c, fun i => ⟨(h1 i).1, by rw [one_smul, h.fixW _ (h1 i)]⟩, by simpa using h2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsVacSph.isSph {M : Model σ X W} {om : Rep σ X W} {v : Pl F} {ω} (h : IsVacSph M om v ω) (hs : M.vac v ∈ SB _) :
     IsSph om v ω (M.vac v) :=
@@ -82,7 +82,7 @@ theorem IsVacSph.isSph {M : Model σ X W} {om : Rep σ X W} {v : Pl F} {ω} (h :
     exact ⟨m, k, fun _ => 1, c, fun i => ⟨(h1 i).1, by rw [one_smul, h.fixW _ (h1 i)]⟩, by simpa using h2⟩⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v`. Break down `isEmpty_or_nonempty (E →ₐ[F] Fv F v) with he | he` into its components or cases. Take `⟨p, q⟩` from `h2 F E σ B a a' G X om om' hT v he`. Conclude with `⟨Or.inl fun ω ρ L => ⟨_, (p ω ρ L).isSph (hT.geo.hM.vac v).1⟩, Or.inl fun ω ρ L => ⟨_, (q ω ρ L).isSph (hT.geo.hM'.vac v).1⟩⟩`. Conclude with `h1 F E σ B a a' G X om om' hT v he`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sphTri_of (h1 : SphSplit) (h2 : VacInert) : SphTri := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT v

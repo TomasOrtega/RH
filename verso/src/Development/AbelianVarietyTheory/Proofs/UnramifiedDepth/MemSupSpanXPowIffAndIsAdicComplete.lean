@@ -11,9 +11,9 @@ section
 variable {R : Type*} [CommRing R] (I : Ideal R) {κ : Type*} [Finite κ]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IdealPowerCoefficients.mem_pow_iff_coeff_mem`. Consider the case `exact _root_.GlobalTheory.IdealPowerCoefficients.mem_pow_iff_coeff_mem`. Consider the case `(apply _root_.GlobalTheory.IdealPowerCoefficients.mem_pow_iff_coeff_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IdealPowerCoefficients.mem_pow_iff_coeff_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IdealPowerCoefficients.mem_pow_iff_coeff_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IdealPowerCoefficients.mem_pow_iff_coeff_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mem_sup_pow_iff (n : ℕ) (f : MvPowerSeries κ R) :
     f ∈ (I.map (C : R →+* MvPowerSeries κ R) ⊔
@@ -28,22 +28,22 @@ private theorem mem_sup_pow_iff (n : ℕ) (f : MvPowerSeries κ R) :
   | (intros; exact _root_.GlobalTheory.IdealPowerCoefficients.mem_pow_iff_coeff_mem ..)
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem smodEq_pow_iff {S : Type*} [CommRing S] (J : Ideal S) (n : ℕ) (x y : S) :
     x ≡ y [SMOD (J ^ n • ⊤ : Submodule S S)] ↔ x - y ∈ J ^ n := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Establish `hH : IsHausdorff (I.map (C : R →+* MvPowerSeries κ R) ⊔ Ideal.span (Set.range (X : κ → MvPowerSeries κ R))) (MvPowerSeries κ R)`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `e`. Use `hI.toIsHausdorff.haus _ fun n => ?_` and prove the remaining obligations. Use `(mem_sup_pow_iff I _ _).1 ((smodEq_pow_iff _ _ _ _).1 (hx (n + e.degree))) e` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[smodEq_pow_iff]`. Simplify using `using this`. Establish `hP : IsPrecomplete (I.map (C : R →+* MvPowerSeries κ R) ⊔ Ideal.span (Set.range (X : κ → MvPowerSeries κ R))) (MvPowerSeries κ R)`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hf' : ∀ {m n : ℕ}, m ≤ n → ∀ e : κ →₀ ℕ, coeff e (f m) - coeff e (f n) ∈ I ^ (m - e.degree)` using `fun h e => by`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(mem_sup_pow_iff I _ _).1 ((smodEq_pow_iff _ _ _ _).1 (hf h)) e` as an intermediate fact. Rewrite `this` using `[map_sub]`. Then use the resulting hypothesis. Establish `hL : ∀ e : κ →₀ ℕ, ∃ L : R, ∀ n, coeff e (f (n + e.degree)) ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]` using `fun e => hI.toIsPrecomplete.prec (f := fun n => coeff e (f (n + e.degree))) fun {m n} h => by`. Rewrite using `[smodEq_pow_iff]`. Simplify using `using hf' (Nat.add_le_add_right h e.degree) e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose L hL using hL`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Use `(smodEq_pow_iff _ _ _ _).2 ((mem_sup_pow_iff I _ _).2 fun e => ?_)` and prove the remaining obligations. Establish `h1` using `(smodEq_pow_iff _ _ _ _).1 (hL e (n - e.degree))`. Establish `h2` using `hf' (show n ≤ n - e.degree + e.degree by omega) e`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `add_mem h2 h1`. Rewrite `h3` using `[sub_add_sub_cancel]`. Conclude with `h3`. Conclude with `IsAdicComplete.mk`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isAdicComplete_sup (hI : IsAdicComplete I R) :
     IsAdicComplete (I.map (C : R →+* MvPowerSeries κ R) ⊔
@@ -81,7 +81,7 @@ private theorem isAdicComplete_sup (hI : IsAdicComplete I R) :
 end
 
 /- English proof (translation)
-Introduce `_ _ I _ _` and use `⟨mem_sup_pow_iff I, isAdicComplete_sup I⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_sup_span_X_pow_iff_and_isAdicComplete : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : Type) [Finite κ], (∀ (n : ℕ) (f : MvPowerSeries κ R), f ∈ (I.map (MvPowerSeries.C : R →+* MvPowerSeries κ R) ⊔ Ideal.span (Set.range (MvPowerSeries.X : κ → MvPowerSeries κ R))) ^ n ↔ ∀ e : κ →₀ ℕ, MvPowerSeries.coeff e f ∈ I ^ (n - e.degree)) ∧ (IsAdicComplete I R → IsAdicComplete (I.map (MvPowerSeries.C : R →+* MvPowerSeries κ R) ⊔ Ideal.span (Set.range (MvPowerSeries.X : κ → MvPowerSeries κ R))) (MvPowerSeries κ R)) :=
   fun _ _ I _ _ => ⟨mem_sup_pow_iff I, isAdicComplete_sup I⟩

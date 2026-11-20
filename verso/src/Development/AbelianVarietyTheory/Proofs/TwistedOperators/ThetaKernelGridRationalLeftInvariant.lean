@@ -12,7 +12,7 @@ namespace GlobalTheory.RowReal
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨x, hx, e⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨x, ?_, e⟩)` and prove the remaining obligations. Establish `hx' : Formalism.UG.cT _ (x : Matrix _ _ _) * V.gram * (x : Matrix _ _ _) = V.gram` using `hx`. Use `show Formalism.UG.cT _ (x : Matrix _ _ _) * (-V.gram) * (x : Matrix _ _ _) = -V.gram`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hx']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GQ_negGA_mem (V : HSp D) {γ : GA D V} (hγ : γ ∈ GQ V) : negGA V γ ∈ GQ (negSp V) := by
   obtain ⟨x, hx, e⟩ := Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)
@@ -24,7 +24,7 @@ theorem GQ_negGA_mem (V : HSp D) {γ : GA D V} (hγ : γ ∈ GQ V) : negGA V γ 
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Consider the cases of `p with`. Consider the case `chi i j => exact ⟨GQ_negGA_mem _ hγ', hγ⟩`. Consider the case `mu t i j => exact ⟨hγ, hγ'⟩`. Consider the case `core i => exact ⟨GQ_negGA_mem _ hγ', hγ⟩`. Consider the case `top t j => exact ⟨hγ, hγ'⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem toPair_GQ (p : Pair T) {γ : GA D (G.V p.small)} {γ' : GA D (G.V p.big)} (hγ : γ ∈ GQ (G.V p.small))
     (hγ' : γ' ∈ GQ (G.V p.big)) : (G.toPair p γ γ').1 ∈ GQ (G.pS p) ∧ (G.toPair p γ γ').2 ∈ GQ (G.pT p) := by
@@ -35,9 +35,9 @@ theorem toPair_GQ (p : Pair T) {γ : GA D (G.V p.small)} {γ' : GA D (G.V p.big)
   | top t j => exact ⟨hγ, hγ'⟩
 
 /- English proof (translation)
-Introduce `D T L sc G W p hp f hf γ hγ γ' hγ' g h`. Establish `hw` using `W.om_is p hp`. Take `⟨h1, h2⟩` from `toPair_GQ p hγ hγ'`. Establish `e : W.ker p f (γ * g) (γ' * h) = W.om p (G.toPair p γ γ') (W.om p (G.toPair p g h) f) 0`. Simplify using `only [GridData.Weil.ker, thetaKO, toPair_mul, Prod.mk.eta, map_mul, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `hw.om_aut _ h1 _ h2 (W.om p (G.toPair p g h) f) (hw.om_pres (G.toPair p g h) f hf)` as an intermediate fact. Rewrite `this` using `[Prod.mk.eta]`. Rewrite using `[this]`. Simplify using `only [GridData.Weil.ker, thetaKO, Prod.mk.eta]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_rat_left : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (p : Pair T),
     p.InRange D.R.m →

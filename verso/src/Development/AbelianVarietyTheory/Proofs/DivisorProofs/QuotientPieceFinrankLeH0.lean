@@ -12,13 +12,13 @@ open AlgebraicGeometry CategoryTheory
 namespace GlobalTheory.Adelic.LinSys
 
 /- English proof (translation)
-Set `: Module k (lbPow S.L m).Sec` to `Module.compHom (lbPow S.L m).Sec (algebraMap k Γ(S.Y, ⊤))`. Establish `: IsScalarTower k Γ(S.Y, ⊤) (lbPow S.L m).Sec` using `⟨fun a b s => by show (a • b) • s = algebraMap k Γ(S.Y, ⊤) a • (b • s)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Establish `hfin : Module.Finite k (coh (twist (structureModule S.Y) (lbPow S.L m)) 0)` using `finite_coh_zero_twist_of_isProjOver (f := S.str) (fun _ => rfl) hS.proj (isLB_lbPow S.isLB m)`. Establish `: Module.Finite k (lbPow S.L m).Sec` using `Module.Finite.equiv ((cohZeroTwistEquiv (lbPow S.L m)).restrictScalars k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lineBundleGlobalSectionsDim_eq_finrank]`. Set `V` to `homogeneousSubmodule (Fin S.N) k m`. Set `φ : V →ₗ[k] (lbPow S.L m).Sec` to `{ toFun := fun g => S.form g.2 map_add' := fun g h => (ProjCoh.formSecAdd k S.b (m : ℤ)).map_add ⟨g.1, mem_polyGrading_natCast.2 g.2⟩ ⟨h.1, mem_polyGrading_natCast.2 h.2⟩ map_smul' := fun c g => ProjCoh.formSec_smul k S.b c (mem_polyGrading_natCast.2 g.2) _ }`. Set `f : V →ₗ[k] MvPolynomial (Fin S.N) k ⧸ S.imageIdeal` to `(Ideal.Quotient.mkₐ k S.imageIdeal).toLinearMap ∘ₗ V.subtype`. Establish `hker : LinearMap.ker f = LinearMap.ker φ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `g`. Simplify using `only [LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk S.imageIdeal g.1 = 0 ↔ S.form g.2 = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `S.mem_imageIdeal_iff g.2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrange : quotPiece S.imageIdeal (m : ℤ) = LinearMap.range f`. Rewrite using `[quotPiece_natCast, LinearMap.range_comp, Submodule.range_subtype]`. Rewrite using `[hrange, ← f.quotKerEquivRange.finrank_eq, (Submodule.quotEquivOfEq _ _ hker).finrank_eq, φ.quotKerEquivRange.finrank_eq]`. Conclude with `Submodule.finrank_le _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_quotient_piece_le_sections (k : Type) [Field k] (S : LinSys k) (hS : S.IsVariety)
     (m : ℕ) : Module.finrank k (quotPiece S.imageIdeal (m : ℤ)) ≤ lbH0 k (lbPow S.L m) := by

@@ -32,14 +32,14 @@ def selG : SSel (CG 𝒞) := fun Fm h => sel Fm h.1
 def yFG : ∀ {eps : ℝ} (Fm : FamP eps), CG 𝒞 Fm → ℝ := fun _ h => Classical.choose h.2
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec h.2 x hx i`.
+A detailed English derivation is pending.
 -/
 theorem gap_of {eps : ℝ} {Fm : FamP eps} (h : CG 𝒞 Fm) {x : ℝ} (hx : yFG Fm h ≤ x) (i : Fm.Ix x) :
     Formalism.L2.SG.ConcreteSettingExists.GapHyp (Fm.D x i) :=
   Classical.choose_spec h.2 x hx i
 
 /- English proof (translation)
-Introduce `eps Fm hc x hx h0 hy i`. Establish `hg` using `gap_of hc hy i`. Conclude with `⟨hFX _ _ hg, (hWu _ hg _).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hyFG (hFX : Formalism.L2.SG.PoincareAmplitudeLowerBounds.FinXC) (hWu : Formalism.L2.SG.Pf.WuDecayOfGap) : YFOK (selG sel) yFG := by
   intro eps Fm hc x hx h0 hy i
@@ -61,7 +61,7 @@ def BG (hJ : PI.BesselMapUniq.BesselMapUniq) (C1f : List ℝ → ℝ) (hC1 : ∀
     (Formalism.L2.SG.Pf.LoopBTheta.normWin_one (Fm.L x i) (hC1 _)) u u'
 
 /- English proof (translation)
-Take `⟨e, he, H⟩` from `h`. Conclude with `⟨e, he, fun eps h1 h2 => by`. Take `⟨K, hK⟩` from `H eps h1 h2`. Conclude with `⟨K, fun Fm CH hc hL => hK Fm CH (hs Fm hc) hL⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem closed_sub {𝒞' : FamClass} (hs : ∀ {eps : ℝ} (Fm : FamP eps), 𝒞' Fm → 𝒞 Fm)
     {P : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (h : Closed 𝒞 P) : Closed 𝒞' P := by
@@ -73,11 +73,11 @@ theorem closed_sub {𝒞' : FamClass} (hs : ∀ {eps : ℝ} (Fm : FamP eps), �
 variable (C0 : ℝ)
 
 /- English proof (translation)
-Introduce `aF`. Take `⟨e1, he1, H1⟩` from `h aF`. Take `⟨e2, he2, H2⟩` from `hG`. Use `⟨min e1 e2, lt_min he1 he2, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K1, hK1⟩` from `H1 eps he (hle.trans (min_le_left _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨K2, hK2⟩` from `H2 eps he (hle.trans (min_le_right _ _))`. Use `⟨K1.sup K2, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations. Take `⟨hL1, hL2⟩` from `(Fm.large_sup _ _ CH).1 hL`. Introduce `hc'`. Establish `hg` using `hK2 Fm CH hc hL2 hc'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hK1 Fm CH ⟨hc', hg⟩ hL1 ⟨hc', hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem loopRowS_of_sub (hG : Closed 𝒞 fun Fm _ => 𝒞 Fm → GapEv Fm) (h : LoopRowS C0 (CG 𝒞) (selG sel)) :
     LoopRowS C0 𝒞 sel := by

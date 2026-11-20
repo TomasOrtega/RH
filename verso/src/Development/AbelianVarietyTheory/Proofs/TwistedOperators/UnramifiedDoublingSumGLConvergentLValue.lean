@@ -14,7 +14,7 @@ namespace GlobalTheory.DoublingSeries
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
 
 /- English proof (translation)
-Use `borelize k`. Establish `e : m = _` using `hm.measurable_eq.trans (SplitFlip.borel_GL (k := k) (n := Fin N)).measurable_eq.symm`. Substitute `e` using the available equality. Conclude with `SplitFlip.isMulRightInvariant_of_haar μ`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_haar [m : MeasurableSpace (GL (Fin N) k)] [hm : BorelSpace (GL (Fin N) k)]
     (μ : Measure (GL (Fin N) k)) [μ.IsHaarMeasure] : μ.IsMulRightInvariant := by
@@ -24,7 +24,7 @@ theorem isMulRightInvariant_haar [m : MeasurableSpace (GL (Fin N) k)] [hm : Bore
   exact SplitFlip.isMulRightInvariant_of_haar μ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Take `⟨b, hb, x, hx, rfl⟩` from `iwasawa_blockTriangular k (Fin N) Fin.val g`. Establish `hb' : b ∈ borel k (Fin N)` using `(mem_borel _).2 hb`. Establish `ht` using `fun i => (GlobalTheory.CuspRep.ParLaws.val_diagU ⟨b, hb'⟩ i).symm`. Rewrite using `[h.1 _ _ hx, h'.1 _ _ hx, h.2 b hb' _ ht, h'.2 b hb' _ ht]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isBorelSph_unique {γ : Fin N → ℂ} {ψ ψ' : GL (Fin N) k → ℂ} (h : IsBorelSph k γ ψ) (h' : IsBorelSph k γ ψ') :
     ψ = ψ' := by
@@ -35,9 +35,9 @@ theorem isBorelSph_unique {γ : Fin N → ℂ} {ψ ψ' : GL (Fin N) k → ℂ} (
   rw [h.1 _ _ hx, h'.1 _ _ hx, h.2 b hb' _ ht, h'.2 b hb' _ ht]
 
 /- English proof (translation)
-Use `⟨fun g x hx => by simp only [h.1 g x hx], fun b hb t ht => ?_⟩` and prove the remaining obligations. Establish `hq : 0 < resCard k` using `zero_lt_one.trans (one_lt_resCard k)`. Simplify using `only [h.2 b hb t ht, norm_prod, norm_zpow, Complex.ofReal_prod, Complex.ofReal_zpow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : (((i : ℕ) : ℂ) - ((N : ℂ) - 1) / 2) = ((((i : ℕ) : ℝ) - ((N : ℝ) - 1) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[borelParam, borelParam, hβ, norm_mul, Complex.norm_natCast_cpow_of_pos hq, e, Complex.ofReal_re, Complex.ofReal_mul, Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.ofReal_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isBorelSph_norm {α β : Fin N → ℂˣ} (hβ : ∀ x, (β x : ℂ) = ((‖(α x : ℂ)‖ : ℝ) : ℂ)) {ψ : GL (Fin N) k → ℂ}
     (h : IsBorelSph k (borelParam (resCard k) α) ψ) :
@@ -52,7 +52,7 @@ theorem isBorelSph_norm {α β : Fin N → ℂˣ} (hβ : ∀ x, (β x : ℂ) = (
     Complex.ofReal_mul, Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.ofReal_natCast]
 
 /- English proof (translation)
-Simplify using `only [zonalInt, integral_complex_ofReal, Complex.ofReal_im, Complex.ofReal_re]`. Conclude with `⟨trivial, integral_nonneg fun _ => norm_nonneg _, norm_integral_le_integral_norm _⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem zonalInt_norm [MeasurableSpace (GL (Fin N) k)] (μK : Measure (GL (Fin N) k)) (ψ : GL (Fin N) k → ℂ)
     (g : GL (Fin N) k) :
@@ -62,23 +62,21 @@ theorem zonalInt_norm [MeasurableSpace (GL (Fin N) k)] (μK : Measure (GL (Fin N
   exact ⟨trivial, integral_nonneg fun _ => norm_nonneg _, norm_integral_le_integral_norm _⟩
 
 /- English proof (translation)
-Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hs`. Take `⟨u, rfl⟩` from `hf v`. Take `⟨w, hw, hfw⟩` from `IwahoriOnto.exists_fixed_map_eq hρ hK f.toLinearMap u fun h hh => by show f (ρ h u) = f u`. Rewrite using `[f.isIntertwining]`. Simplify using `using hv ⟨h, hh⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hw' : ∀ x ∈ K, ρ x w = w` using `fun x hx => by simpa using hw ⟨x, hx⟩`. Establish `hfw0 : f w ≠ 0` using `fun h => hv0 (hfw.symm.trans h)`. Establish `hEw : L w ≠ 0` using `fun h => hfw0 (by rw [hE w hw' h, map_zero])`. Take `⟨z, hz, hEz, hfz⟩ : ∃ z : X, (∀ x ∈ K, ρ x z = z) ∧ L z = 1 ∧ f z ≠ 0` from `⟨(L w)⁻¹ • w, fun x hx => by rw [map_smul, hw' x hx], by simp [hEw], by`. Rewrite using `[map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_ne_zero (inv_ne_zero hEw) hfw0⟩`. Establish `hker : LinearMap.ker f.toLinearMap ≤ LinearMap.ker L` using `fun y hy => by`. Establish `hy0 : f y = 0` using `hy`. Take `⟨y', hy', e⟩` from `IwahoriOnto.exists_fixed_map_eq hρ hK (f.toLinearMap.prod L) y fun h hh => by`. Use `Prod.ext ?_ (hL h hh y)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show f (ρ h y) = f y`. Rewrite using `[f.isIntertwining, hy0, map_zero]`. Establish `hy'' : ∀ x ∈ K, ρ x y' = y'` using `fun x hx => by simpa using hy' ⟨x, hx⟩`. Establish `e1 : f y' = f y` using `congrArg Prod.fst e`. Establish `e2 : L y' = L y` using `congrArg Prod.snd e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hE (y' - L y' • z) (fun x hx => by rw [map_sub, map_smul, hy'' x hx, hz x hx]) (by rw [map_sub, map_smul, hEz, smul_eq_mul, mul_one, sub_self])`. Establish `h2` using `congrArg f (sub_eq_zero.1 h1)`. Rewrite `h2` using `[map_smul, e1, hy0, eq_comm, smul_eq_zero]`. Use `show L y = 0`. Rewrite using `[← e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2.resolve_right hfz`. Set `l : Module.Dual ℂ V` to `(LinearMap.ker f.toLinearMap).liftQ L hker ∘ₗ (f.toLinearMap.quotKerEquivOfSurjective hf).symm.toLinearMap`. Establish `hl : ∀ y, l (f y) = L y` using `fun y => by`. Establish `: (f.toLinearMap.quotKerEquivOfSurjective hf).symm (f y) = Submodule.Quotient.mk y`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `show (LinearMap.ker f.toLinearMap).liftQ L hker ((f.toLinearMap.quotKerEquivOfSurjective hf).symm (f y)) = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Use `⟨z, hz, hEz, f z, fun x => ?_, l, fun x => ?_, by rw [hl, hEz], fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use `f.isIntertwining _ _ (x : G) z` as an intermediate fact. Rewrite `this` using `[hz x x.2]`. Simplify using `using this.symm`. Use extensionality with `v`. Take `⟨y, rfl⟩` from `hf v`.
-
-Use `f.isIntertwining _ _ (x : G)⁻¹ y` as an intermediate fact. Simplify using `[Module.Dual.transpose_apply, ← this, hl, hL _ (inv_mem x.2)]`. Use `show L (ρ g z) = _`. Rewrite using `[← hl, f.isIntertwining]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isZonal_of_form {G X V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G X}
@@ -134,25 +132,23 @@ theorem exists_isZonal_of_form {G X V : Type} [Group G] [TopologicalSpace G] [Is
     rw [← hl, f.isIntertwining]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `GlobalTheory.CuspRep.ParLaws.exists_hasSatake (k := k) α`. Use `⟨_, _, _, π.ρ, hπ, ?_⟩` and prove the remaining obligations. Take `⟨-, hs, S, f, hf⟩` from `hπ`. Use `haveI := isMulRightInvariant_haar μK`. Establish `hKm : MeasurableSet (KO k (Fin N) : Set (GL (Fin N) k))` using `SplitFlip.isOpen_KO.measurableSet`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : IsSmooth S.toRepresentation` using `IsSubquotient.isSmooth ⟨S, .id _, Function.surjective_id⟩ (isSmooth_parInd _ _)`. Establish `hcont : ∀ u : S.toSubmodule, Continuous u.1.1.1` using `fun u => by`. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_)` and prove the remaining obligations. Establish `ho : IsOpen ((fun x => g⁻¹ * x) ⁻¹' {x | S.toRepresentation x u = u})` using `(hsm u).preimage (by fun_prop)`. Use `filter_upwards [ho.mem_nhds (show S.toRepresentation (g⁻¹ * g) u = u by rw [inv_mul_cancel, map_one]; rfl)] with x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : S.toRepresentation (g⁻¹ * x) u = u` using `hx`. Establish `h1 : u.1.1.1 (g * (g⁻¹ * x)) = u.1.1.1 g` using `congrArg (fun z : S.toSubmodule => z.1.1.1 g) hx'`. Rewrite `h1` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hint : ∀ u : S.toSubmodule, IntegrableOn u.1.1.1 (KO k (Fin N) : Set (GL (Fin N) k)) μK` using `fun u => (hcont u).continuousOn.integrableOn_compact SplitFlip.isCompact_KO`. Set `L : S.toSubmodule →ₗ[ℂ] ℂ` to `{ toFun := fun u => ∫ κ in (KO k (Fin N) : Set (GL (Fin N) k)), u.1.1.1 κ ∂μK map_add' := fun u v => integral_add (hint u) (hint v) map_smul' := fun c u => integral_const_mul c _ }`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ u : S.toSubmodule, (∀ x ∈ KO k (Fin N), S.toRepresentation x u = u) → ∀ g, ∀ x ∈ KO k (Fin N), u.1.1.1 (g * x) = u.1.1.1 g` using `fun u h g x hx => congrArg (fun z : S.toSubmodule => z.1.1.1 g) (h x hx)`. Establish `hL1 : ∀ u : S.toSubmodule, (∀ x ∈ KO k (Fin N), S.toRepresentation x u = u) → L u = u.1.1.1 1` using `fun u h => by show ∫ κ in (KO k (Fin N) : Set (GL (Fin N) k)), u.1.1.1 κ ∂μK = _`. Rewrite using `[setIntegral_congr_fun hKm (g := fun _ => u.1.1.1 1) fun x hx => by`. Simplify using `using hr u h 1 x hx]`. Simplify using `[Measure.real, hμ]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∀ x ∈ KO k (Fin N), ∀ u, L (S.toRepresentation x u) = L u` using `fun x hx u => by show ∫ κ in (KO k (Fin N) : Set (GL (Fin N) k)), u.1.1.1 (κ * x) ∂μK = ∫ κ in (KO k (Fin N) : Set (GL (Fin N) k)), u.1.1.1 κ ∂μK`. Rewrite using `[← integral_indicator hKm, ← integral_indicator hKm, ← integral_mul_right_eq_self ((KO k (Fin N) : Set (GL (Fin N) k)).indicator u.1.1.1) x]`. Use `congr 1`. Use function extensionality and compare the values at `κ`. Distinguish the cases in `h : κ ∈ KO k (Fin N)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (mul_mem h hx)]`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem fun h' => h ((Subgroup.mul_mem_cancel_right _ hx).1 h')]`. Take `⟨w, hw, hw1, hz⟩` from `exists_isZonal_of_form hsm SplitFlip.isCompact_KO f hf hs L hL fun u h h0 => by`. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun g => ?_)))` and prove the remaining obligations. Take `⟨b, hb, x, hx, rfl⟩` from `iwasawa_blockTriangular k (Fin N) Fin.val g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `parInd_law _ _ u.1 ⟨b, (mem_borel _).2 hb⟩ 1`. Establish `h2 : u.1.1.1 1 = 0` using `(hL1 u h).symm.trans h0`. Rewrite `h1` using `[h2, map_zero, smul_zero, mul_one]`. Conclude with `(hr u h b x hx).trans h1`. Establish `hw2 : IsBorelSph k (borelParam (resCard k) α) w.1.1.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hr w hw, fun b hb t ht => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.SatakeBound.Rep.law α w.1 b hb t ht 1`. Establish `h2 : w.1.1.1 1 = 1` using `(hL1 w hw).symm.trans hw1`. Rewrite `h1` using `[h2, mul_one, mul_one]`. Rewrite using `[h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[borelParam, Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[isBorelSph_unique hψ hw2]`.
-
-Conclude with `hz`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isZonal_zonalInt [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL (Fin N) k)]
     (μK : Measure (GL (Fin N) k)) [μK.IsHaarMeasure] (hμ : μK (KO k (Fin N)) = 1) (α : Fin N → ℂˣ)
@@ -218,33 +214,29 @@ theorem exists_isZonal_zonalInt [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL
   exact hz
 
 /- English proof (translation)
-Introduce `H k _ _ _ _ _ N _ _ μK _ hμK ϖ hϖ α ρ hα ψ hψ s hs`. Establish `hq : 1 < resCard k` using `one_lt_resCard k`. Establish `hq1 : (1 : ℝ) < resCard k` using `by exact_mod_cast hq`. Establish `hq0 : (0 : ℝ) < resCard k` using `by linarith`. Set `β : Fin N → ℂˣ` to `fun x => Units.mk0 ((‖(α x : ℂ)‖ : ℝ) : ℂ) (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hβ : ∀ x, (β x : ℂ) = ((‖(α x : ℂ)‖ : ℝ) : ℂ)` using `fun x => rfl`. Establish `hβn : ∀ x, ‖(β x : ℂ)‖ = ‖(α x : ℂ)‖` using `fun x => by rw [hβ]; simp`. Take `⟨ψ', hψ', hM⟩ : ∃ ψ' : GL (Fin N) k → ℂ, IsBorelSph k (borelParam (resCard k) β) ψ' ∧ ∀ g, (zonalInt μK ψ' g).im = 0 ∧ 0 ≤ (zonalInt μK ψ' g).re ∧ ‖zonalInt μK ψ g‖ ≤ (zonalInt μK ψ' g).re` from `⟨_, isBorelSph_norm hβ hψ, zonalInt_norm μK ψ⟩`. Establish `hZ : ∀ (γ : Fin N → ℂˣ) (φ : GL (Fin N) k → ℂ), IsBorelSph k (borelParam (resCard k) γ) φ → ∃ s₀ : ℝ, ∀ s : ℂ, s₀ < s.re → HasSum (fun e : {e : Fin N → ℤ // Antitone e} => (μK.real (cell k (Fin N) ϖ e) : ℂ) * ((resCard k : ℂ) ^ (-((N : ℂ) / 2 + s) * (sumAbs e.1 : ℂ)) * zonalInt μ …`. Introduce `γ φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, _, _, π, hπ, hz⟩` from `exists_isZonal_zonalInt μK hμK γ φ hφ`. Conclude with `GlobalTheory.Published.UnramifiedDoublingGL.hasSum H k N μK hμK hϖ hπ hz`. Set `n : {e : Fin N → ℤ // Antitone e} → ℕ` to `fun e => (sumAbs e.1).toNat`. Set `wR : {e : Fin N → ℤ // Antitone e} → ℝ` to `fun e => μK.real (cell k (Fin N) ϖ e) * (resCard k : ℝ) ^ (-((N : ℝ) / 2) * (sumAbs e.1 : ℝ))`. Establish `hw0 : ∀ e, 0 ≤ wR e` using `fun e => mul_nonneg measureReal_nonneg (Real.rpow_nonneg hq0.le _)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : {e : Fin N → ℤ // Antitone e} → ℂ` to `fun e => (wR e : ℂ) * zonalInt μK ψ (torusElt k (Fin N) ϖ e)`. Set `c : {e : Fin N → ℤ // Antitone e} → ℝ` to `fun e => wR e * (zonalInt μK ψ' (torusElt k (Fin N) ϖ e)).re`. Establish `hterm : ∀ (e : {e : Fin N → ℤ // Antitone e}) (s : ℂ) (u : ℂ), (μK.real (cell k (Fin N) ϖ e) : ℂ) * ((resCard k : ℂ) ^ (-((N : ℂ) / 2 + s) * (sumAbs e.1 : ℂ)) * u) = ((wR e : ℂ) * u) * ((resCard k : ℂ) ^ (-s)) ^ n e`. Introduce `e s u`. Establish `h` using `cpow_split hq N s (sumAbs_nonneg e.1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using `only [wR, Complex.ofReal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hbc : ∀ e, ‖b e‖ ≤ c e` using `fun e => by`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [b, c, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hw0 e)]`. Conclude with `mul_le_mul_of_nonneg_left (hM _).2.2 (hw0 e)`. Establish `hc0 : ∀ e, 0 ≤ c e` using `fun e => mul_nonneg (hw0 e) (hM _).2.1`. Establish `hcb : ∀ e, (wR e : ℂ) * zonalInt μK ψ' (torusElt k (Fin N) ϖ e) = (c e : ℂ)` using `fun e => by`. Establish `h` using `(hM (torusElt k (Fin N) ϖ e)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [c, Complex.ofReal_mul]`. Use `congr 1`. Conclude with `Complex.ext (by simp) (by simp [h])`. Establish `hbα : ∀ x, ‖(α x : ℂ)‖ ≤ (resCard k : ℝ) ^ ρ ∧ ‖(α x : ℂ)‖⁻¹ ≤ (resCard k : ℝ) ^ ρ` using `hα`. Establish `hbβ : ∀ x, ‖(β x : ℂ)‖ ≤ (resCard k : ℝ) ^ ρ ∧ ‖(β x : ℂ)‖⁻¹ ≤ (resCard k : ℝ) ^ ρ` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hβn]`. Conclude with `hα x`. Establish `dα` using `ratFun_differentiableOn hq N α ρ hbα`. Establish `dβ` using `ratFun_differentiableOn hq N β ρ hbβ`. Establish `near : ∀ (γ : Fin N → ℂˣ) (φ : GL (Fin N) k → ℂ), IsBorelSph k (borelParam (resCard k) γ) φ → ∃ ε : ℝ, 0 < ε ∧ ∀ z : ℂ, 0 < ‖z‖ → ‖z‖ < ε → HasSum (fun e => ((wR e : ℂ) * zonalInt μK φ (torusElt k (Fin N) ϖ e)) * z ^ n e) (ratFun (resCard k) N γ z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `γ φ hφ`. Take `⟨s₀, h⟩` from `hZ γ φ hφ`. Use `⟨(resCard k : ℝ) ^ (-s₀), Real.rpow_pos_of_pos hq0 _, fun z hz hzε => ?_⟩` and prove the remaining obligations. Take `⟨s', hs', rfl⟩` from `exists_cpow_neg_eq hq s₀ (norm_pos_iff.1 hz) hzε`. Use `h s' hs'` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[ratFun_cpow hq N γ s']`. Conclude with `(funext fun e => hterm e s' _) ▸ this`. Take `⟨εα, hεα, hnα⟩` from `near α ψ hψ`. Take `⟨εβ, hεβ, hnβ⟩` from `near β ψ' hψ'`. Establish `hsum` using `GlobalTheory.summable_nonneg_family_of_differentiableOn c n (ratFun (resCard k) N β) _ εβ hc0 hεβ dβ fun z h1 h2 => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hnβ z h1 h2` as an intermediate fact. Simplify `this` using `only [hcb]`. Establish `hid` using `GlobalTheory.hasSum_of_dominated_of_eq_near_zero' b c n (ratFun (resCard k) N α) _ εα hbc hsum hεα dα hnα`. Establish `hz : ‖(resCard k : ℂ) ^ (-s)‖ = (resCard k : ℝ) ^ (-s.re)`. Rewrite using `[Complex.norm_natCast_cpow_of_pos (by omega)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hzr : ‖(resCard k : ℂ) ^ (-s)‖ < (resCard k : ℝ) ^ (1 / 2 - ρ)`. Rewrite using `[hz, Real.rpow_lt_rpow_left_iff hq1]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `Summable.of_nonneg_of_le (fun e => norm_nonneg _) (fun e => ?_) (hsum _ (norm_nonneg _) hzr)` and prove the remaining obligations. Rewrite using `[hterm, norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_right (hbc e) (pow_nonneg (norm_nonneg _) _)`. Use `hid _ hzr` as an intermediate fact. Rewrite `this` using `[← ratFun_cpow hq N α s]`.
-
-Conclude with `(funext fun e => hterm e s _) ▸ this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramified_doubling_sum : GlobalTheory.Published.UnramifiedDoublingGL →
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (N : ℕ) [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL (Fin N) k)]

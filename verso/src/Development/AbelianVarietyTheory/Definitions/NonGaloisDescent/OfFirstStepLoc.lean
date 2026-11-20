@@ -73,7 +73,7 @@ Both sides reduce to the same expression.
 example : (heckeOf X S Bs fi geq).hL = hL := rfl
 
 /- English proof (translation)
-The claim follows from `pow_zero _`.
+A detailed English derivation is pending.
 -/
 example (i : D.ntw.Tw) (b : Bool) (P : PlE D.host) : (heckeOf X S Bs fi geq).cHk i b 0 P = 1 := pow_zero _
 

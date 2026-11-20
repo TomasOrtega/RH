@@ -19,7 +19,7 @@ def bwE_Loc : Prop :=
 variable {O} {r : ℕ}
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.one_apply]; split_ifs · exact O.one_mem · exact O.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bwE_Int_one : bwE_Int O (1 : Matrix (Fin r) (Fin r) ℂ) := fun a b => by
   rw [Matrix.one_apply]; split_ifs
@@ -27,26 +27,26 @@ theorem bwE_Int_one : bwE_Int O (1 : Matrix (Fin r) (Fin r) ℂ) := fun a b => b
   · exact O.zero_mem
 
 /- English proof (translation)
-Introduce `a b` and use `O.add_mem (hA a b) (hB a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bwE_Int_add {A B : Matrix (Fin r) (Fin r) ℂ} (hA : bwE_Int O A) (hB : bwE_Int O B) : bwE_Int O (A + B) :=
   fun a b => O.add_mem (hA a b) (hB a b)
 
 /- English proof (translation)
-Introduce `a b` and use `O.sub_mem (hA a b) (hB a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bwE_Int_sub {A B : Matrix (Fin r) (Fin r) ℂ} (hA : bwE_Int O A) (hB : bwE_Int O B) : bwE_Int O (A - B) :=
   fun a b => O.sub_mem (hA a b) (hB a b)
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.mul_apply]; exact O.sum_mem (fun k _ => O.mul_mem (hA a k) (hB k b))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bwE_Int_mul {A B : Matrix (Fin r) (Fin r) ℂ} (hA : bwE_Int O A) (hB : bwE_Int O B) : bwE_Int O (A * B) :=
   fun a b => by
     rw [Matrix.mul_apply]; exact O.sum_mem (fun k _ => O.mul_mem (hA a k) (hB k b))
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.single_apply]; split_ifs · exact hx · exact O.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bwE_Int_single (p q : Fin r) {x : ℂ} (hx : x ∈ O) : bwE_Int O (Matrix.single p q x) := fun a b => by
   rw [Matrix.single_apply]; split_ifs
@@ -54,14 +54,14 @@ theorem bwE_Int_single (p q : Fin r) {x : ℂ} (hx : x ∈ O) : bwE_Int O (Matri
   · exact O.zero_mem
 
 /- English proof (translation)
-Introduce `a b` and use `by rw [Matrix.sum_apply]; exact O.sum_mem (fun i hi => h i hi a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bwE_Int_sum {ι : Type} (s : Finset ι) (X : ι → Matrix (Fin r) (Fin r) ℂ) (h : ∀ i ∈ s, bwE_Int O (X i)) :
     bwE_Int O (∑ i ∈ s, X i) := fun a b => by
   rw [Matrix.sum_apply]; exact O.sum_mem (fun i hi => h i hi a b)
 
 /- English proof (translation)
-Establish `e : M = (Matrix.of fun a b => (⟨M a b, h a b⟩ : O)).map O.subtype` using `by ext a b; rfl`. Rewrite using `[e, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `Subtype.property _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwE_det_mem {M : Matrix (Fin r) (Fin r) ℂ} (h : bwE_Int O M) : M.det ∈ O := by
   have e : M = (Matrix.of fun a b => (⟨M a b, h a b⟩ : O)).map O.subtype := by ext a b; rfl
@@ -69,13 +69,13 @@ theorem bwE_det_mem {M : Matrix (Fin r) (Fin r) ℂ} (h : bwE_Int O M) : M.det �
   exact Subtype.property _
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure ⟨q, p, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem bwE_gen_mem (p q : Fin r) {x : ℂ} (hx : x ∈ O) : (1 + Matrix.single p q x) ∈ bwA_EO O r :=
   Submonoid.subset_closure ⟨q, p, x, hx, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_insert ha, mul_add, add_mul, add_mul, one_mul, mul_one, one_mul, Finset.mul_sum, Finset.sum_eq_zero (fun i hi => h0 a (Finset.mem_insert_self _ _) i (Finset.mem_insert_of_mem hi)), add_zero]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem bwE_prod_eq {ι : Type} [DecidableEq ι] (s : Finset ι) (X : ι → Matrix (Fin r) (Fin r) ℂ) (a : ι) (ha : a ∉ s)
     (h0 : ∀ i ∈ insert a s, ∀ i' ∈ insert a s, X i * X i' = 0) :
@@ -85,9 +85,7 @@ theorem bwE_prod_eq {ι : Type} [DecidableEq ι] (s : Finset ι) (X : ι → Mat
   abel
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, add_zero]`. Conclude with `(bwA_EO O r).one_mem`. Consider the case `@insert a s ha ih`. Rewrite using `[bwE_prod_eq s X a ha h0]`.
-
-Conclude with `(bwA_EO O r).mul_mem (h1 a (Finset.mem_insert_self _ _)) (ih (fun i hi => h1 i (Finset.mem_insert_of_mem hi)) (fun i hi i' hi' => h0 i (Finset.mem_insert_of_mem hi) i' (Finset.mem_insert_of_mem hi')))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwE_sum_mem {ι : Type} [DecidableEq ι] (s : Finset ι) (X : ι → Matrix (Fin r) (Fin r) ℂ)
     (h1 : ∀ i ∈ s, 1 + X i ∈ bwA_EO O r) (h0 : ∀ i ∈ s, ∀ i' ∈ s, X i * X i' = 0) :
@@ -101,7 +99,7 @@ theorem bwE_sum_mem {ι : Type} [DecidableEq ι] (s : Finset ι) (X : ι → Mat
         (fun i hi i' hi' => h0 i (Finset.mem_insert_of_mem hi) i' (Finset.mem_insert_of_mem hi')))
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `h : a = p`. Substitute `h` using the available equality. Simplify using `[Matrix.single_apply]`. Simplify using `[Ne.symm h, h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bwE_single_mul_apply (p q : Fin r) (x : ℂ) (M : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r) :
     (Matrix.single p q x * M) a b = if a = p then x * M q b else 0 := by
@@ -111,49 +109,45 @@ theorem bwE_single_mul_apply (p q : Fin r) (x : ℂ) (M : Matrix (Fin r) (Fin r)
   · simp [Ne.symm h, h]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ d k, k + d = r → ∀ M : Matrix (Fin r) (Fin r) ℂ, bwE_Int O M → (∃ M', bwE_Int O M' ∧ M' * M = 1) → (∀ c : Fin r, c.val < k → ∀ a, M a c = if a = c then 1 else 0) → M ∈ bwA_EO O r from H r 0 (by omega) M hM hinv (fun c hc => absurd hc (Nat.not_lt_zero _))`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `k hk M _ _ hc`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : M = 1`. Use extensionality with `a c; rw [hc c (by omega) a, Matrix.one_apply]`. Rewrite using `[e]`. Conclude with `(bwA_EO O r).one_mem`. Consider the case `succ d ih`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk M hM hinv hc`. Take `⟨M', hM', hM'M⟩` from `hinv`. Establish `hkr : k < r` using `by omega`. Use `set kk : Fin r := ⟨k, hkr⟩ with hkk`. Establish `hne : ∀ c : Fin r, c.val < k → kk ≠ c` using `fun c hcl h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcl` using `[← h]`. Conclude with `lt_irrefl _ hcl`. Establish `hrow : ∀ c : Fin r, c.val < k → M' kk c = 0`. Introduce `c hcl`. Establish `h1` using `congrFun (congrFun hM'M kk) c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply, if_neg (hne c hcl)]`. Rewrite using `[← h1, Finset.sum_eq_single c]`. Rewrite using `[hc c hcl c, if_pos rfl, mul_one]`. Introduce `b _ hb`. Rewrite using `[hc c hcl b, if_neg hb, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`. Establish `hsum : ∑ i ∈ Finset.univ.filter (fun i : Fin r => k ≤ i.val), M' kk i * M i kk = 1`. Establish `h1` using `congrFun (congrFun hM'M kk) kk`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_filter, ← h1]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[hrow i (by omega), zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i₀, hi₀s, y, hyO, hy⟩` from `hL r _ (fun i => M' kk i) (fun i => M i kk) (fun i => hM' kk i) (fun i => hM i kk) hsum`. Establish `hi₀ : k ≤ i₀.val` using `(Finset.mem_filter.1 hi₀s).2`. Establish `hMkc : ∀ c : Fin r, c.val < k → M kk c = 0` using `fun c hcl => by rw [hc c hcl kk, if_neg (hne c hcl)]`. Establish `hMi₀c : ∀ c : Fin r, c.val < k → M i₀ c = 0` using `fun c hcl => by`. Rewrite using `[hc c hcl i₀, if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Introduce `h`. Rewrite `hi₀` using `[h]`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨G, G', hGI, hG', hG'I, hG'G, hA1, hAc⟩ : ∃ G G' : Matrix (Fin r) (Fin r) ℂ, bwE_Int O G ∧ G' ∈ bwA_EO O r ∧ bwE_Int O G' ∧ G' * G = 1 ∧ (G * M) kk kk = 1 ∧ ∀ c : Fin r, c.val < k → ∀ a, (G * M) a c = M a c := by`. Distinguish the cases in `h : i₀ = kk`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[h]`. Use `⟨1 + Matrix.single kk kk (y - 1), 1 + Matrix.single kk kk (M kk kk - 1), bwE_Int_add bwE_Int_one (bwE_Int_single _ _ (O.sub_mem hyO O.one_mem)), bwE_gen_mem _ _ (O.sub_mem (hM kk kk) O.one_mem), bwE_Int_add bwE_Int_one (bwE_Int_single _ _ (O.sub_mem (hM kk kk) O.one_mem)), ?_, ?_ …` and prove the remaining obligations. Rewrite using `[add_mul, one_mul, mul_add, mul_one, Matrix.single_mul_single_same, add_assoc, ← Matrix.single_add, ← Matrix.single_add]`. Establish `e : y - 1 + (M kk kk - 1 + (M kk kk - 1) * (y - 1)) = 0` using `by linear_combination hy`. Rewrite using `[e, Matrix.single_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[add_mul, one_mul, Matrix.add_apply, bwE_single_mul_apply, if_pos rfl]`. Take the linear combination `hy`. Introduce `c hcl a`. Rewrite using `[add_mul, one_mul, Matrix.add_apply, bwE_single_mul_apply, hMkc c hcl, mul_zero]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨1 + Matrix.single kk i₀ ((1 - M kk kk) * y), 1 + Matrix.single kk i₀ (-((1 - M kk kk) * y)), bwE_Int_add bwE_Int_one (bwE_Int_single _ _ (O.mul_mem (O.sub_mem O.one_mem (hM kk kk)) hyO)), bwE_gen_mem _ _ (O.neg_mem (O.mul_mem (O.sub_mem O.one_mem (hM kk kk)) hyO)), bwE_Int_add b …` and prove the remaining obligations. Rewrite using `[add_mul, one_mul, mul_add, mul_one, Matrix.single_mul_single_of_ne _ _ _ _ h, add_zero, add_assoc, ← Matrix.single_add, add_neg_cancel, Matrix.single_zero, add_zero]`. Rewrite using `[add_mul, one_mul, Matrix.add_apply, bwE_single_mul_apply, if_pos rfl]`. Take the linear combination `(1 - M kk kk) * hy`. Introduce `c hcl a`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_mul, one_mul, Matrix.add_apply, bwE_single_mul_apply, hMi₀c c hcl, mul_zero]`. Apply the tactic sequence `split_ifs <;> simp`. Use `set A := G * M with hAdef`. Establish `hAI : bwE_Int O A` using `bwE_Int_mul hGI hM`. Use `set X : Matrix (Fin r) (Fin r) ℂ := ∑ i ∈ Finset.univ.erase kk, Matrix.single i kk (A i kk) with hX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hXX0 : ∀ i ∈ Finset.univ.erase kk, ∀ i' ∈ Finset.univ.erase kk, Matrix.single i kk (A i kk) * Matrix.single i' kk (A i' kk) = 0` using `fun i _ i' hi' => Matrix.single_mul_single_of_ne _ _ _ _ (Finset.ne_of_mem_erase hi').symm _`. Establish `hXX : X * X = 0`. Rewrite using `[hX, Finset.sum_mul_sum]`. Conclude with `Finset.sum_eq_zero (fun i hi => Finset.sum_eq_zero (fun i' hi' => hXX0 i hi i' hi'))`. Establish `hXI : bwE_Int O X` using `bwE_Int_sum _ _ (fun i _ => bwE_Int_single _ _ (hAI i kk))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXE : 1 + X ∈ bwA_EO O r` using `bwE_sum_mem _ _ (fun i _ => bwE_gen_mem _ _ (hAI i kk)) hXX0`. Establish `hXmul : ∀ a b, (X * A) a b = if a ∈ Finset.univ.erase kk then A a kk * A kk b else 0`. Introduce `a b`. Rewrite using `[hX, Finset.sum_mul, Matrix.sum_apply]`. Repeatedly rewrite using `[bwE_single_mul_apply]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_ite_eq]`. Establish `h1X : (1 + X) * (1 - X) = 1`. Rewrite using `[mul_sub, mul_one, add_mul, one_mul, hXX]`. Normalize the expressions using the abelian group laws. Use `set C := (1 - X) * A with hCdef`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hCe : ∀ a b, C a b = A a b - if a ∈ Finset.univ.erase kk then A a kk * A kk b else 0`. Introduce `a b`. Rewrite using `[hCdef, sub_mul, one_mul, Matrix.sub_apply, hXmul]`. Establish `hCI : bwE_Int O C` using `bwE_Int_mul (bwE_Int_sub bwE_Int_one hXI) hAI`. Establish `hCinv : ∃ M'', bwE_Int O M'' ∧ M'' * C = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨M' * G' * (1 + X), bwE_Int_mul (bwE_Int_mul hM' hG'I) (bwE_Int_add bwE_Int_one hXI), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hCdef, hAdef]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1X, Matrix.one_mul, ← Matrix.mul_assoc G', hG'G, Matrix.one_mul, hM'M]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hAkc : ∀ c : Fin r, c.val < k → A kk c = 0` using `fun c hcl => by rw [hAc c hcl, hMkc c hcl]`. Establish `hCc : ∀ c : Fin r, c.val < k + 1 → ∀ a, C a c = if a = c then 1 else 0`. Introduce `c hcl a`. Rewrite using `[hCe]`. Distinguish the cases in `hck : c.val < k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hAkc c hck, mul_zero, ite_self, sub_zero, hAc c hck, hc c hck]`. Establish `e : c = kk` using `Fin.ext (by rw [hkk]; simp only; omega)`. Substitute `e` using the available equality. Distinguish the cases in `ha : a = kk`. Substitute `ha` using the available equality.
-
-Simplify using `[hA1]`. Establish `: a ∈ Finset.univ.erase kk` using `Finset.mem_erase.2 ⟨ha, Finset.mem_univ _⟩`. Rewrite using `[if_pos this, hA1, mul_one, sub_self, if_neg ha]`. Establish `hCE` using `ih (k + 1) (by omega) C hCI hCinv hCc`. Establish `eM : M = G' * ((1 + X) * C)`.
-
-Rewrite using `[hCdef, ← Matrix.mul_assoc (1 + X), h1X, Matrix.one_mul, hAdef, ← Matrix.mul_assoc, hG'G, Matrix.one_mul]`. Rewrite using `[eM]`. Conclude with `(bwA_EO O r).mul_mem hG' ((bwA_EO O r).mul_mem hXE hCE)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwE_elim (hL : bwE_Loc O) (M : Matrix (Fin r) (Fin r) ℂ) (hM : bwE_Int O M)
     (hinv : ∃ M', bwE_Int O M' ∧ M' * M = 1) : M ∈ bwA_EO O r := by
@@ -282,17 +276,15 @@ open scoped Matrix
 variable (D : D7) (u : D.what₂.Word)
 
 /- English proof (translation)
-Introduce `r s c m hc hm hsum`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Use `choose γ hγ hγe using fun i => Subring.mem_map.1 (hc i)`. Use `choose μ hμ hμe using fun i => Subring.mem_map.1 (hm i)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpos : ∀ i ∈ s, (0 : WithTop ℤ) < D.what₂.places.val w (γ i * μ i)`. Introduce `i hi`. Establish `h0 : (0 : WithTop ℤ) ≤ D.what₂.places.val w (μ i)` using `hμ i`. Establish `hne : D.what₂.places.val w (μ i) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hμ0 : μ i ≠ 0`. Introduce `h'`. Rewrite `h` using `[h', AddValuation.map_zero]`. Simplify using `at h`. Use `hno i hi (D.what₂.embLL (μ i)⁻¹) (Subring.mem_map.2 ⟨(μ i)⁻¹, ?_, rfl⟩) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (0 : WithTop ℤ) ≤ D.what₂.places.val w (μ i)⁻¹`. Rewrite using `[AddValuation.map_inv, h, neg_zero]`. Rewrite using `[← hμe i, ← map_mul, mul_inv_cancel₀ hμ0, map_one]`. Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_of_lt_of_le (lt_of_le_of_ne h0 (Ne.symm hne)) (le_add_of_nonneg_left (hγ i))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∑ i ∈ s, γ i * μ i = 1`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_one, ← hsum]`. Conclude with `Finset.sum_congr rfl (fun i _ => by rw [map_mul, hγe, hμe])`. Establish `h2 : (0 : WithTop ℤ) < D.what₂.places.val w (∑ i ∈ s, γ i * μ i)` using `AddValuation.map_lt_sum _ (by simp) hpos`.
-
-Rewrite `h2` using `[h1, AddValuation.map_one]`. Conclude with `lt_irrefl _ h2`.
+A detailed English derivation is pending.
 -/
 theorem bwE_loc_Ow (w : D.what₂.places.Pl) : bwE_Loc (bwA_Ow D w) := by
   intro r s c m hc hm hsum
@@ -323,7 +315,7 @@ theorem bwE_loc_Ow (w : D.what₂.places.Pl) : bwE_Loc (bwA_Ow D w) := by
   exact lt_irrefl _ h2
 
 /- English proof (translation)
-Rewrite using `[bwA_embT_eq]`. Conclude with `Subring.mem_map.2 ⟨_, bwA_val_locInt D w ((D.host.sigmaOf (D.eTau τ : D.R.GG) : D.host.E →+* D.host.E)) y s (by rw [hw]; exact hs) hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwE_mem_Ow (w : D.what₂.places.Pl) (hw : OverT D u w) (τ : D.what₂.Tau) (y : D.host.E) (s : ℕ)
     (hs : ¬ (D.mem u).A.T ∣ s) (hy : (s : D.host.E) * y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
@@ -339,7 +331,7 @@ theorem bwE_mulVec_col {n : ℕ} (A B : Matrix (Fin n) (Fin n) D.host.E) (a k : 
     (A *ᵥ fun r => B r k) a = (A * B) a k := rfl
 
 /- English proof (translation)
-Take `⟨s', hs', h⟩` from `(hB x).1 ⟨s, hs, hx⟩`. Conclude with `bwE_mem_Ow D u w hw τ _ s' hs' (h a)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bwE_locBasis_int (w : D.what₂.places.Pl) (hw : OverT D u w) (τ : D.what₂.Tau) {n : ℕ}
     {L : Set (Fin n → D.host.E)} {B : GL (Fin n) D.host.E} (hB : IsLocBasis (D.mem u).A.T L B)
@@ -349,9 +341,9 @@ theorem bwE_locBasis_int (w : D.what₂.places.Pl) (hw : OverT D u w) (τ : D.wh
   exact bwE_mem_Ow D u w hw τ _ s' hs' (h a)
 
 /- English proof (translation)
-Use `(hB _).2 ⟨1, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hw]`. Conclude with `(D.what₂.places.resChar_prime w).not_dvd_one`. Rewrite using `[Nat.cast_one, one_mul, bwE_mulVec_col, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply] split_ifs`. Conclude with `⟨1, map_one _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, map_zero _⟩`.
+A detailed English derivation is pending.
 -/
 theorem bwE_col_loc (w : D.what₂.places.Pl) (hw : OverT D u w) {n : ℕ} {L : Set (Fin n → D.host.E)}
     {B : GL (Fin n) D.host.E} (hB : IsLocBasis (D.mem u).A.T L B) (k : Fin n) :

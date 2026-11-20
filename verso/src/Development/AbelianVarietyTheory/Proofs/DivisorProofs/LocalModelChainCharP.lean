@@ -29,9 +29,9 @@ open GlobalTheory.Twist (resM_resM resM_smul app_resM)
 open GlobalTheory.VB (IsFrame)
 
 /- English proof (translation)
-Use `Preadditive.mono_of_cancel_zero _ fun {T} x hx => ?_` and prove the remaining obligations. Rewrite `ex` using `[ShortComplex.exact_iff_exact_up_to_refinements]`. Take `⟨T₁, q, hq, y, hy⟩` from `ex (x ≫ ι) (by simpa using hx)`. Simplify using `at hy y`. Establish `h0 : y = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono (k ≫ g), ← Category.assoc, ← hy, Category.assoc, Category.assoc, hι, comp_zero, comp_zero, zero_comp]`. Rewrite using `[← cancel_epi q, ← cancel_mono ι, Category.assoc, hy, h0, zero_comp, comp_zero, zero_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_comp_of_exact {C : Type*} [Category C] [Abelian C] {I P Q E E' : C} (ι : I ⟶ P) (f : P ⟶ Q) (g : P ⟶ E)
     (k : E' ⟶ P) (hk : k ≫ f = 0) (hι : ι ≫ g = 0) (ex : (ShortComplex.mk k f hk).Exact) [Mono ι] [Mono (k ≫ g)] :
@@ -45,7 +45,7 @@ theorem mono_comp_of_exact {C : Type*} [Category C] [Abelian C] {I P Q E E' : C}
   rw [← cancel_epi q, ← cancel_mono ι, Category.assoc, hy, h0, zero_comp, comp_zero, zero_comp]
 
 /- English proof (translation)
-Set `e : Scheme.Modules.pullback w ⋙ Scheme.Modules.pullback (w ⁻¹ᵁ U).ι ≅ Scheme.Modules.pullback U.ι ⋙ Scheme.Modules.pullback (w.resLE U (w ⁻¹ᵁ U) le_rfl)` to `Scheme.Modules.pullbackComp _ w ≪≫ Scheme.Modules.pullbackCongr (w.resLE_comp_ι le_rfl).symm ≪≫ (Scheme.Modules.pullbackComp _ _).symm`. Use `haveI : IsIso ((Scheme.Modules.pullback (w ⁻¹ᵁ U).ι).map ((Scheme.Modules.pullback w).map ψ)) := (NatIso.isIso_map_iff e ψ).2 (inferInstanceAs (IsIso ((Scheme.Modules.pullback (w.resLE U (w ⁻¹ᵁ U) le_rfl)).map ((Scheme.Modules.pullback U.ι).map ψ))))`. Conclude with `mono_of_isIso_pullback_ι (h.pullback w).isTorsionFree _ (w ⁻¹ᵁ U) (GlobalTheory.VB.genericPoint_mem hy)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem mono_pullback_map_of_isIso {X Y : Scheme.{0}} [IsIntegral Y] (w : Y ⟶ X) {E E' : X.Modules} {r : ℕ}
     (h : GlobalTheory.VB.IsVB E' r) (ψ : E' ⟶ E) (U : X.Opens) [IsIso ((Scheme.Modules.pullback U.ι).map ψ)] (y : Y) (hy : w y ∈ U) :
@@ -60,29 +60,25 @@ theorem mono_pullback_map_of_isIso {X Y : Scheme.{0}} [IsIntegral Y] (w : Y ⟶ 
   exact mono_of_isIso_pullback_ι (h.pullback w).isTorsionFree _ (w ⁻¹ᵁ U) (GlobalTheory.VB.genericPoint_mem hy)
 
 /- English proof (translation)
-Set `c : Q ⟶ cokernel ψ` to `cokernel.π j ≫ e.hom`. Set `d` to `cokernel.π ψ`. Establish `hc : kernel.ι (cokernel.π j) ≫ c = 0` using `by simp [c]`. Set `ι : kernel (cokernel.π j) ⟶ pullback c d` to `pullback.lift (kernel.ι _) 0 (by simp [hc])`. Set `k : E' ⟶ pullback c d` to `pullback.lift 0 ψ (by simp [d])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hι : ι ≫ pullback.snd c d = 0` using `pullback.lift_snd _ _ _`. Establish `hι' : ι ≫ pullback.fst c d = kernel.ι _` using `pullback.lift_fst _ _ _`. Establish `hk : k ≫ pullback.fst c d = 0` using `pullback.lift_fst _ _ _`. Establish `hk' : k ≫ pullback.snd c d = ψ` using `pullback.lift_snd _ _ _`. Use `haveI : Mono ι := mono_of_mono_fac hι'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₁ : (ShortComplex.mk ι _ hι).ShortExact`. Use `ShortComplex.ShortExact.mk' ?_ this (Abelian.epi_snd_of_isLimit _ _ (limit.isLimit _))` and prove the remaining obligations. Rewrite using `[ShortComplex.exact_iff_exact_up_to_refinements]`. Introduce `T x hx`. Simplify using `at x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Establish `h1 : (x ≫ pullback.fst c d) ≫ cokernel.π j = 0`. Rewrite using `[← cancel_mono e.hom, zero_comp, Category.assoc, Category.assoc]`. Express the relevant statement in the definitionally equal form `x ≫ pullback.fst c d ≫ c = 0`. Rewrite using `[pullback.condition, ← Category.assoc, hx, zero_comp]`. Use `⟨T, 𝟙 _, inferInstance, kernel.lift _ _ h1, pullback.hom_ext ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `dsimp`. Rewrite using `[Category.id_comp, Category.assoc, hι', kernel.lift_ι]`. Use `dsimp`. Rewrite using `[Category.id_comp, Category.assoc, hι, hx, comp_zero]`. Establish `s₂ : (ShortComplex.mk k _ hk).Exact`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ShortComplex.exact_iff_exact_up_to_refinements]`. Introduce `T x hx`. Simplify using `at x hx`. Establish `h1 : (x ≫ pullback.snd c d) ≫ cokernel.π ψ = 0`. Rewrite using `[Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `x ≫ pullback.snd c d ≫ d = 0`. Rewrite using `[← pullback.condition, ← Category.assoc, hx, zero_comp]`. Take `⟨T₁, q, hq, y, hy⟩` from `(ShortComplex.exact_iff_exact_up_to_refinements _).1 (ShortComplex.exact_cokernel ψ) _ h1`. Simplify using `at y hy`. Use `⟨T₁, q, hq, y, pullback.hom_ext ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `dsimp`. Rewrite using `[Category.assoc, Category.assoc, hx, hk, comp_zero, comp_zero]`. Use `dsimp`. Rewrite using `[Category.assoc, Category.assoc, hk', hy]`. Use `haveI := GlobalTheory.FlagPull.isQuasicoherent_X₂ _ s₁ vb`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `haveI : Mono ((Scheme.Modules.pullback w).map ι) := GlobalTheory.FlagPull.mono_pullback_map_f w _ s₁ vb`. Use `haveI : Epi (ShortComplex.mk k _ hk).g := Abelian.epi_fst_of_isLimit _ _ (limit.isLimit _)`. Use `haveI : Mono ((Scheme.Modules.pullback w).map k ≫ (Scheme.Modules.pullback w).map (pullback.snd c d)) := by`. Rewrite using `[← Functor.map_comp, hk']` and apply the resulting hypothesis. Establish `m` using `mono_comp_of_exact ((Scheme.Modules.pullback w).map ι) _ ((Scheme.Modules.pullback w).map (pullback.snd c d)) ((Scheme.Modules.pullback w).map k) _ (by rw [← Functor.map_comp, hι, Functor.map_zero]) (exact_map_pullback w s₂).1`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Simplify using `at m`. Rewrite `m` using `[← Functor.map_comp, hι']`. Establish `h' : a ≫ Abelian.factorThruImage j = 0`. Rewrite using `[← cancel_mono (Abelian.image.ι j), Category.assoc, Abelian.image.fac, h, zero_comp]`. Set `φ : ShortComplex.mk a _ h' ⟶ ShortComplex.mk a j h` to `{ τ₁ := 𝟙 _, τ₂ := 𝟙 _, τ₃ := Abelian.image.ι j, comm₁₂ := by simp, comm₂₃ := by simp }`.
-
-Use `haveI : Epi φ.τ₁ := inferInstanceAs (Epi (𝟙 A))`. Use `haveI : IsIso φ.τ₂ := inferInstanceAs (IsIso (𝟙 L))`. Use `haveI : Mono φ.τ₃ := inferInstanceAs (Mono (Abelian.image.ι j))`. Establish `ex'` using `(ShortComplex.exact_iff_of_epi_of_isIso_of_mono φ).2 ex`. Use `haveI : Epi (ShortComplex.mk a _ h').g := inferInstanceAs (Epi (Abelian.factorThruImage j))`.
-
-Set `φ'` to `(Scheme.Modules.pullback w).mapShortComplex.map φ`. Use `haveI : Epi φ'.τ₁ := inferInstanceAs (Epi ((Scheme.Modules.pullback w).map (𝟙 A)))`. Use `haveI : IsIso φ'.τ₂ := inferInstanceAs (IsIso ((Scheme.Modules.pullback w).map (𝟙 L)))`. Use `haveI : Mono φ'.τ₃ := m`. Conclude with `(ShortComplex.exact_iff_of_epi_of_isIso_of_mono φ').1 (exact_map_pullback w ex').1`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exact_map_pullback_of_pres {X Y : Scheme.{0}} (w : Y ⟶ X) {A L Q E E' : X.Modules} (a : A ⟶ L) (j : L ⟶ Q)
     (h : a ≫ j = 0) (ex : (ShortComplex.mk a j h).Exact) [L.IsQuasicoherent] [Q.IsQuasicoherent] {r : ℕ}
@@ -155,9 +151,9 @@ def crd {e : Fin r → Γ(F, V)} (he : IsFrame e) (t : Γ(F, T)) (l : Fin r) : �
   (he.basis inf_le_left).repr (resM F inf_le_right t) l
 
 /- English proof (translation)
-Unfold `crd`. Rewrite using `[← app_resM]`. Use `conv_lhs => rw [← (he.basis inf_le_left).sum_repr (resM F inf_le_right t)]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, IsFrame.basis_apply, app_resM]`. Simplify using `only [← he'.basis_apply (inf_le_left : V ⊓ T ≤ V)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum, Module.Basis.repr_sum_self]`.
+A detailed English derivation is pending.
 -/
 theorem crd_app (φ : F ⟶ G) {e : Fin r → Γ(F, V)} (he : IsFrame e) (he' : IsFrame fun i => φ.app V (e i)) (t : Γ(F, T))
     (l : Fin r) : crd he' (φ.app T t) l = crd he t l := by
@@ -172,9 +168,9 @@ def valR {R : Type} [CommRing R] (w : Sp R ⟶ X) (U : X.Opens) (h : ⊤ ≤ w �
   (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.comp (w.appLE U ⊤ h).hom
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap f ≫ w) ⁻¹ᵁ U` using `fun q _ => hw (Set.mem_univ (spMap f q))`. Rewrite using `[valF, dif_pos h']`. Establish `e : (spMap f ≫ w).appLE U ⊤ h' = w.appLE U ⊤ hw ≫ (spMap f).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap f) w U ⊤ ⊤ hw le_rfl).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f)`. Rewrite using `[e]`. Conclude with `(congrArg (fun q => q.hom ((w.appLE U ⊤ hw).hom a)) n).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_valR {R k : Type} [CommRing R] [Field k] (f : R →+* k) (w : Sp R ⟶ X) (U : X.Opens) (hw : ⊤ ≤ w ⁻¹ᵁ U)
     (a : Γ(X, U)) : f (valR w U hw a) = valF (spMap f ≫ w) U a := by
@@ -190,11 +186,9 @@ theorem map_valR {R k : Type} [CommRing R] [Field k] (f : R →+* k) (w : Sp R �
 variable {k : Type} [Field k] (x : Sp k ⟶ X)
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ x ⁻¹ᵁ (V ⊓ (V' ⊓ T))` using `fun q hq => ⟨hV hq, hV' hq, hT hq⟩`. Establish `h₀ : V ⊓ (V' ⊓ T) ≤ V' ⊓ T` using `inf_le_right`. Establish `h₁ : V ⊓ (V' ⊓ T) ≤ V' ⊓ V` using `le_inf (h₀.trans inf_le_left) inf_le_left`. Establish `h₂ : V ⊓ (V' ⊓ T) ≤ V ⊓ T` using `inf_le_inf_left _ inf_le_right`. Simplify using `only [← valHom_resG x h₀ hU, ← valHom_resG x h₁ hU, ← valHom_resG x h₂ hU, ← map_mul, ← map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [crd, ← IsFrame.repr_resM, resM_resM]`. Rewrite using `[← app_resM]`. Use `conv_lhs => rw [← (he.basis inf_le_left).sum_repr (resM F (h₀.trans inf_le_right) t)]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, IsFrame.basis_apply, app_resM, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valF_crd_app (φ : F ⟶ G) {e : Fin r → Γ(F, V)} {e' : Fin r → Γ(G, V')} (he : IsFrame e) (he' : IsFrame e')
     (hV : ⊤ ≤ x ⁻¹ᵁ V) (hV' : ⊤ ≤ x ⁻¹ᵁ V') (hT : ⊤ ≤ x ⁻¹ᵁ T) (t : Γ(F, T)) (m : Fin r) :
@@ -213,7 +207,7 @@ theorem valF_crd_app (φ : F ⟶ G) {e : Fin r → Γ(F, V)} {e' : Fin r → Γ(
   exact Finset.sum_congr rfl fun l _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ x ⁻¹ᵁ (V ⊓ T)` using `fun q hq => ⟨hV hq, hT hq⟩`. Rewrite using `[← valHom_resG x (le_top : V ⊓ T ≤ ⊤) hU, valF_eq_valHom _ _ hU, valF_eq_valHom _ _ hU, ← map_mul]`. Use `congr 1`. Unfold `crd`. Rewrite using `[← app_resM, smulHom_app_apply, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -227,7 +221,7 @@ theorem valF_crd_smul (π : Γ(X, ⊤)) {e : Fin r → Γ(F, V)} (he : IsFrame e
   rfl
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ x ⁻¹ᵁ (V ⊓ V)` using `fun q hq => ⟨hV hq, hV hq⟩`. Rewrite using `[valF_eq_valHom _ _ hU]`. Unfold `crd`. Use `erw [← he.basis_apply inf_le_left, Module.Basis.repr_self_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem valF_crd_self {e : Fin r → Γ(F, V)} (he : IsFrame e) (hV : ⊤ ≤ x ⁻¹ᵁ V) (l m : Fin r) :
     valF x _ (crd he (e l) m) = if l = m then 1 else 0 := by
@@ -238,17 +232,15 @@ theorem valF_crd_self {e : Fin r → Γ(F, V)} (he : IsFrame e) (hV : ⊤ ≤ x 
   split_ifs <;> simp
 
 /- English proof (translation)
-Set `g` to `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv`. Set `β` to `(he.pullback w).basis hV`. Set `β'` to `(he'.pullback w).basis hV'`. Establish `hβ : ∀ l, pullbackSections w G hV (e l) = β l` using `fun l => by`. Rewrite using `[IsFrame.basis_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(res_pullbackSections w G le_rfl hV (e l)).symm`. Establish `hβ' : ∀ l, β' l = pullbackSections w F hV' (e' l)` using `fun l => by`. Rewrite using `[IsFrame.basis_apply]`. Conclude with `res_pullbackSections w F le_rfl hV' (e' l)`. Establish `key : ∀ u l, g (β.repr (((Scheme.Modules.pullback w).map a).app ⊤ u) l) = ∑ m, valR w _ hU (crd he (a.app V' (e' m)) l) * g (β'.repr u m)` using `fun u l => by conv_lhs => rw [← β'.sum_repr u]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul, map_mul, hβ', pullback_map_app_pullbackSections]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← pullbackSections_res w G hU inf_le_right]`. Conclude with `congrArg (fun z => g z * _) (he.pullback_basis_repr w inf_le_left hU _ l)`. Establish `hc : ∀ (c : Fin r → R) l, g (β.repr (∑ l, g.symm (c l) • β l) l) = c l` using `fun c l => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[Module.Basis.repr_sum_self, RingEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `((Scheme.Modules.pullback w).map j).app ⊤ (∑ l, g.symm (c l) • pullbackSections w G hV (e l)) = 0 ↔ _`. Simplify using `only [hβ]`. Rewrite using `[ex]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu⟩`. Conclude with `⟨fun m => g (β'.repr u m), fun l => by rw [← key, hu, hc]⟩`. Introduce and unpack `⟨b, hb⟩`. Use `⟨∑ m, g.symm (b m) • β' m, β.repr.injective (Finsupp.ext fun l => g.injective ?_)⟩` and prove the remaining obligations. Rewrite using `[hc, key, hb]`.
-
-Simplify using `only [Module.Basis.repr_sum_self, RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_kerAt_iff {R : Type} [CommRing R] (w : Sp R ⟶ X) {Q : X.Modules} [F.IsQuasicoherent] [G.IsQuasicoherent]
     (a : F ⟶ G) (j : G ⟶ Q)
@@ -287,9 +279,9 @@ theorem mem_kerAt_iff {R : Type} [CommRing R] (w : Sp R ⟶ X) {Q : X.Modules} [
 end Crd
 
 /- English proof (translation)
-Establish `hr : IsIso ((Scheme.Modules.restrictFunctor U.ι).map φ)` using `(NatIso.isIso_map_iff (Scheme.Modules.restrictFunctorIsoPullback U.ι) φ).2 hf`. Establish `hb : ∀ D ≤ T, Function.Bijective (φ.app D)` using `fun D hD => by`. Establish `e : U.ι ''ᵁ (U.ι ⁻¹ᵁ D) = D`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.2 (hD.trans hT)]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ConcreteCategory.bijective_of_isIso (((Scheme.Modules.restrictFunctor U.ι).map φ).app (U.ι ⁻¹ᵁ D))`. Conclude with `he.map_of_linearEquiv (fun V h => LinearEquiv.ofBijective (appLinear φ V) (hb V h)) fun _ h i => app_resM φ h (e i)`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_app_of_isIso {X : Scheme.{0}} {F G : X.Modules} (φ : F ⟶ G) (U : X.Opens)
     (hf : IsIso ((Scheme.Modules.pullback U.ι).map φ)) {T : X.Opens} (hT : T ≤ U) {r : ℕ} {e : Fin r → Γ(F, T)}
@@ -304,21 +296,21 @@ theorem isFrame_app_of_isIso {X : Scheme.{0}} {F G : X.Modules} (φ : F ⟶ G) (
   exact he.map_of_linearEquiv (fun V h => LinearEquiv.ofBijective (appLinear φ V) (hb V h)) fun _ h i => app_resM φ h (e i)
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ w ⁻¹ᵁ (V ⊓ V')` using `fun q hq => ⟨hV hq, hV' hq⟩`. Establish `hx : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ V` using `fun q _ => hV (Set.mem_univ (spMap (intO C).subtype q))`. Establish `hx' : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ V'` using `fun q _ => hV' (Set.mem_univ (spMap (intO C).subtype q))`. Establish `hval` using `fun l m => map_valR (intO C).subtype w _ hU (crd he (a.app V' (e' m)) l)`. Simplify using `only [mem_kerAt_iff w a j ex he he' hV hV' hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `spMap (intO C).subtype ≫ w = x at hπ hT hx hx' hval ⊢`. Establish `k₁ : ∀ l, valF x ⊤ π * ∑ i, cf i * valF x _ (crd he (s i) l) = ∑ m, valF x _ (crd he (a.app V' (e' m)) l) * ∑ i, cf i * valF x _ (crd he' (ψ.app T (s i)) m)` using `fun l => by`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_left_comm, ← valF_crd_smul x π he hx hT, ← h₁]`. Express the relevant statement in the definitionally equal form `_ * valF x _ (crd he (a.app T (ψ.app T (s i))) l) = _`. Rewrite using `[valF_crd_app x a he' he hx' hx hT, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_left_comm _ _ _`. Establish `k₂ : ∀ (b : Fin r → C) n, ∑ l, valF x _ (crd he' (ψ.app V (e l)) n) * ∑ m, valF x _ (crd he (a.app V' (e' m)) l) * b m = valF x ⊤ π * b n` using `fun b n => by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ m, ∑ l, valF x _ (crd he' (ψ.app V (e l)) n) * valF x _ (crd he (a.app V' (e' m)) l) = valF x ⊤ π * if m = n then 1 else 0` using `fun m => by`. Rewrite using `[← valF_crd_app x ψ he he' hx hx' hx', ← valF_crd_self x he' hx', ← valF_crd_smul x π he' hx' hx', ← h₂]`. Both sides reduce to the same expression. Simplify using `only [Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Finset.sum_mul, this]`. Simplify using the standard rewrite rules. Simplify using `only [k₁]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, ⟨b, hb⟩, hc⟩ n`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: ∑ i, cf i * valF x _ (crd he' (ψ.app T (s i)) n) = (b n : C)`. Use `mul_left_cancel₀ hπ ?_` and prove the remaining obligations. Rewrite using `[← k₂ (fun m => ∑ i, cf i * valF x _ (crd he' (ψ.app T (s i)) m)), ← k₂ fun m => (b m : C)]`. Use `Finset.sum_congr rfl fun l _ => congrArg _ ?_` and prove the remaining obligations. Rewrite using `[← hc, hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(intO C).subtype _ = _`. Simplify using `only [map_sum, map_mul, hval]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(b n).2`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `H`. Use `⟨_, ⟨fun m => ⟨_, H m⟩, fun _ => rfl⟩, fun l => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(intO C).subtype _ = _`. Simplify using `only [map_sum, map_mul, hval]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_iff_mem_kerAt {X : Scheme.{0}} {A L Q : X.Modules} [A.IsQuasicoherent] [L.IsQuasicoherent] (ψ : L ⟶ A)
     (a : A ⟶ L) (j : L ⟶ Q) (π : Γ(X, ⊤)) (h₁ : ψ ≫ a = smulHom L π) (h₂ : a ≫ ψ = smulHom A π) {C : Type}
@@ -375,19 +367,15 @@ theorem norm_iff_mem_kerAt {X : Scheme.{0}} {A L Q : X.Modules} [A.IsQuasicohere
     rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p _ W Y i₀ Z O _ _ _ _ _ B h r x lw wl π P₁ P₃ j hj s hs hr hroot hψ hm ex ⟨eC⟩ hJ`. Establish `hgen : ∀ a, h ⁻¹ᵁ (Z.U a).1 ≤ B.gen` using `fun a => by`. Rewrite using `[B.gen_eq_basicOpen (natCast_ne_zero O p) (natCast_mem_maximalIdeal O p)]`. Use `le_basicOpen_of_isUnit le_top ?_` and prove the remaining obligations. Rewrite using `[show B.const (p : O) = (p : Γ(B.X, ⊤)) from map_natCast _ p, map_natCast, ← map_natCast ((h.app (Z.U a).1).hom.comp (Z.alg a))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)).map _`. Establish `fr : ∀ a, IsFrame fun i => lw.ψ.hom.app _ (s a i)` using `fun a => isFrame_app_of_isIso _ B.gen lw.iso (hgen a) (hs.2.2.1.frame a)`. Use `⟨hr, s, hs.2.2.1, ⟨fr, fun k _ w a a' φ φ' h1 h2 i => ?_, fun y w hw a φ hφ V' e' he' hV' cf v hv => ?_⟩, hs.2.2.2⟩` and prove the remaining obligations. Use `fun l => crd_app lw.ψ.hom (hs.2.2.1.frame a) (fr a) (s a' i) l` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsCombAtG _ _ _ (fun l => valF w _ (crd (fr a) (lw.ψ.hom.app _ (s a' i)) l)) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Conclude with `hs.2.2.1.glue k w a a' φ φ' h1 h2 i`. Take `⟨V, e, he, hV, hJ⟩` from `hJ y w hw a φ hφ haveI := lw.vb.isQuasicoherent haveI := lw.vb'.isQuasicoherent haveI := P₁.vb.isQuasicoherent haveI := P₁.vb'.isQuasicoherent haveI : P₁.mod.IsQuasicoherent := inferInstanceAs (cokernel P₁.ψ).IsQuasicoherent haveI := P₃.iso`. Establish `hT : ⊤ ≤ (spMap (intO ↥y.C.S).subtype ≫ w) ⁻¹ᵁ h ⁻¹ᵁ (Z.U a).1` using `fun q _ => by`. Establish `e : (spMap (intO ↥y.C.S).subtype ≫ w) ≫ h = spMap φ ≫ Z.chart a` using `by rw [hφ, Category.assoc, hw]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((spMap (intO ↥y.C.S).subtype ≫ w) ≫ h) q ∈ (Z.U a).1`. Rewrite using `[e]`. Conclude with `(Z.U a).2.opensRange_fromSpec.le ⟨_, rfl⟩`. Use `haveI := mono_pullback_map_of_isIso w P₃.vb' P₃.ψ B.gen (spMap (intO ↥y.C.S).subtype (closedPoint _)) (hgen a (hT (Set.mem_univ (closedPoint _))))`. Establish `ex'` using `exact_map_pullback_of_pres w wl.hom j hj ex P₃.vb P₃.ψ eC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : ((ShortComplex.mk wl.hom j hj).map (Scheme.Modules.pullback w)).X₁.IsQuasicoherent := isQuasicoherent_pullback w lw.E.V`. Use `haveI : ((ShortComplex.mk wl.hom j hj).map (Scheme.Modules.pullback w)).X₂.IsQuasicoherent := isQuasicoherent_pullback w lw.E'.V`. Use `haveI : ((ShortComplex.mk wl.hom j hj).map (Scheme.Modules.pullback w)).X₃.IsQuasicoherent := isQuasicoherent_pullback w P₁.mod`. Establish `h₁ : lw.ψ.hom ≫ wl.hom = smulHom _ π` using `congrArg Action.Hom.hom hψ`. Establish `h₂ : wl.hom ≫ lw.ψ.hom = smulHom _ π`.
-
-Rewrite using `[← cancel_mono wl.hom, Category.assoc, h₁, smulHom_comp]`. Establish `hπ : valF (spMap (intO ↥y.C.S).subtype ≫ w) ⊤ π ≠ 0` using `fun h0 => by`. Take `⟨u, hu⟩` from `hroot`. Rewrite `h0` using `[valF_eq_valHom _ _ le_top]`. Use `congrArg (valHom (spMap (intO ↥y.C.S).subtype ≫ w) ⊤ le_top) hu` as an intermediate fact.
-
-Rewrite `this` using `[map_pow, h0, zero_pow (Nat.sub_ne_zero_of_lt (Fact.out : p.Prime).one_lt), map_mul, map_natCast, ← map_natCast (φ.comp (Z.alg a))]`. Conclude with `mul_ne_zero (u.isUnit.map _).ne_zero ((map_ne_zero _).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)) this.symm`. Conclude with `(hJ cf v hv).trans (norm_iff_mem_kerAt lw.ψ.hom wl.hom j π h₁ h₂ w (exact_app_of_exact ex' (isAffineOpen_top _)) hπ he he' hV hV' hT (s a) cf)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEqLatPres_of_ptJ : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} [Fact p.Prime] {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} (Z : GlobalTheory.LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [CharP (ResidueField O) p] {B : GlobalTheory.Vert.Model O} (h : B.X ⟶ Z.X) {r : ℕ} (x : Fin r → Letter Dw) (lw : EPres B (𝓞 E)) (wl : lw.E ⟶ lw.E') (π : Γ(B.X, ⊤)) (P₁ P₃ : Pres B) (j : lw.E'.V ⟶ P₁.mod) (hj : wl.hom ≫ j = 0) (s : ∀ a : Fin Z.m, Fin r → Γ(lw.E'.V, h ⁻¹ᵁ (Z.U a).1)) (hs : IsEqLat Z h x false lw.E' s), lw.r = r → IsRootOfP p π (p - 1) → lw.ψ ≫ wl = smulA _ π → Mono wl.hom → (ShortComplex.mk wl.hom j hj).Exact → Nonempty (cokernel j ≅ P₃.mod) → PtJ Z h x hs.2.2.1.frame π j → IsEqLatPres Z h x false lw := by
   intro E _ _ _ H Dw Xo p _ W Y i₀ Z O _ _ _ _ _ B h r x lw wl π P₁ P₃ j hj s hs hr hroot hψ hm ex ⟨eC⟩ hJ

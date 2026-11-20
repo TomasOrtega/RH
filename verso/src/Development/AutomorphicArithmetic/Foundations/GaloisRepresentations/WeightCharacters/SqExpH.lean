@@ -9,17 +9,15 @@ open MvPolynomial
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Establish `hg : (fun v : Fin a × Fin a => ∑ b, MvPolynomial.C (Matrix.diagonal t v.1 b) * MvPolynomial.X (b, v.2)) = fun v => MvPolynomial.C (t v.1) * MvPolynomial.X v`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_eq_single v.1]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.diagonal_apply_ne t (Ne.symm hb), map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `show MvPolynomial.coeff m (MvPolynomial.aeval (fun v : Fin a × Fin a => ∑ b, MvPolynomial.C (Matrix.diagonal t v.1 b) * MvPolynomial.X (b, v.2)) f) = _`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial n c`. Rewrite using `[aeval_monomial, MvPolynomial.algebraMap_eq, Finsupp.prod]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod]`. Rewrite using `[MvPolynomial.prod_X_pow_eq_monomial, ← mul_assoc, ← map_mul, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one, mul_comm]`. Use `congr 1`. Use `Finset.prod_subset (Finset.subset_univ _) ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _ hv`. Simplify using `only [Finsupp.mem_support_iff, not_not] at hv`. Rewrite using `[hv, pow_zero]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`.
-
-Rewrite using `[map_add, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hp, hq, mul_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_diag {a : ℕ} (t : Fin a → ℂ) (f : MvPolynomial (Fin a × Fin a) ℂ) (m : Fin a × Fin a →₀ ℕ) :
     MvPolynomial.coeff m (Formalism.GradedWeylDivisibility.rowAct ℂ (n := a) (Matrix.diagonal t) f) = (∏ v : Fin a × Fin a, t v.1 ^ m v) * MvPolynomial.coeff m f := by
@@ -54,37 +52,33 @@ private theorem coeff_diag {a : ℕ} (t : Fin a → ℂ) (f : MvPolynomial (Fin 
     rw [map_add, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Introduce `hE hEv hDom a k κ w L`. Take `⟨_, _, hle, hmon, _, _⟩` from `hE`. Take `⟨D, hD⟩ : ∃ D : ℕ, D = (Finset.univ.filter fun i : Fin a => (i : ℕ) < k).card` from `⟨_, rfl⟩`. Take `⟨e, he⟩ : ∃ e : (Fin a × Fin a →₀ ℕ) → ℕ, e = fun m => ∑ i ∈ Finset.univ.filter (fun i : Fin a => (i : ℕ) < k), Formalism.GradedWeylDivisibility.rowDeg m i` from `⟨_, rfl⟩`. Establish `hdet : ∀ z : Circle, detPow ℂ a (tor a k z) κ.detShift = (z : ℂ) ^ ((D : ℤ) * κ.detShift)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z`. Simplify using `only [detPow]`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, tor_coe, Matrix.det_diagonal, ← Finset.prod_filter, Finset.prod_const, zpow_mul, zpow_natCast, hD]`. Establish `hprod : ∀ (z : Circle) (m : Fin a × Fin a →₀ ℕ), (∏ v : Fin a × Fin a, (if ((v.1 : Fin a) : ℕ) < k then (z : ℂ) else 1) ^ m v) = (z : ℂ) ^ e m`. Introduce `z m`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hin : ∀ i : Fin a, (∏ s : Fin a, (if (i : ℕ) < k then (z : ℂ) else 1) ^ m (i, s)) = if (i : ℕ) < k then (z : ℂ) ^ Formalism.GradedWeylDivisibility.rowDeg m i else 1`. Introduce `i`. Use `split_ifs`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only`. Simplify using `only [hin]`. Rewrite using `[← Finset.prod_filter, Finset.prod_pow_eq_pow_sum, he]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoeff : ∀ (z : Circle) (m : Fin a × Fin a →₀ ℕ), MvPolynomial.coeff m ((sqRep ℂ a κ (tor a k z) w : nablaSq ℂ a κ) : MvPolynomial (Fin a × Fin a) ℂ) = MvPolynomial.coeff m (w : MvPolynomial (Fin a × Fin a) ℂ) * (z : ℂ) ^ ((D : ℤ) * κ.detShift + (e m : ℤ))`. Introduce `z m`. Use `show MvPolynomial.coeff m (sqAct ℂ a κ (tor a k z) (w : MvPolynomial (Fin a × Fin a) ℂ)) = _`. Rewrite using `[sqAct, MvPolynomial.coeff_smul, hdet, tor_coe, Matrix.diagonal_transpose, coeff_diag]`. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Rewrite using `[hprod, smul_eq_mul, zpow_add₀ (Circle.coe_ne_zero z), zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Set `ev : (Fin a × Fin a →₀ ℕ) → nablaSq ℂ a κ →ₗ[ℂ] ℂ` to `fun x => (MvPolynomial.lcoeff ℂ x).comp (nablaSq ℂ a κ).subtype`. Establish `hsep : ∀ p : nablaSq ℂ a κ, (∀ x, ev x p = 0) → p = 0`. Introduce `p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify `hp x` using `[ev]`. Establish `hterm : ∀ T : Submodule ℂ (Circle → ℂ), (∀ x, MvPolynomial.coeff x (w : MvPolynomial (Fin a × Fin a) ℂ) ≠ 0 → (fun z : Circle => MvPolynomial.coeff x (w : MvPolynomial (Fin a × Fin a) ℂ) * (z : ℂ) ^ ((D : ℤ) * κ.detShift + (e x : ℤ))) ∈ T) → (fun z => L (sqRep ℂ a κ (tor a k z) w …`. Introduce `T hT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hEv (nablaSq ℂ a κ) (Fin a × Fin a →₀ ℕ) Circle ev hsep T (fun z => sqRep ℂ a κ (tor a k z) w) ?_ L` and prove the remaining obligations. Introduce `x`. Establish `hfun : (fun z => ev x (sqRep ℂ a κ (tor a k z) w)) = fun z : Circle => MvPolynomial.coeff x (w : MvPolynomial (Fin a × Fin a) ℂ) * (z : ℂ) ^ ((D : ℤ) * κ.detShift + (e x : ℤ))` using `funext fun z => hcoeff z x`. Rewrite using `[hfun]`. Distinguish the cases in `hx : MvPolynomial.coeff x (w : MvPolynomial (Fin a × Fin a) ℂ) = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h0 : (fun z : Circle => MvPolynomial.coeff x (w : MvPolynomial (Fin a × Fin a) ℂ) * (z : ℂ) ^ ((D : ℤ) * κ.detShift + (e x : ℤ))) = 0`. Use function extensionality and compare the values at `z`. Simplify using `[hx]`. Rewrite using `[h0]`. Conclude with `T.zero_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hT x hx`. Establish `hds : ∀ i : Fin a, κ.detShift ≤ κ.w i`. Introduce `i`. Simplify using `only [DomWeight.detShift, dif_pos (Fin.pos i)]`. Conclude with `κ.anti (Fin.le_iff_val_le_val.mpr (by simp only; omega))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnat : ∀ i : Fin a, ((κ.natW i : ℕ) : ℤ) = κ.w i - κ.detShift` using `fun i => Int.toNat_of_nonneg (sub_nonneg.mpr (hds i))`. Establish `hDa : D ≤ a`. Rewrite using `[hD]`. Conclude with `(Finset.card_filter_le _ _).trans (Finset.card_fin a).le`. Use `⟨hterm _ fun x hx => ?_, hterm _ fun x _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxs : x ∈ (w : MvPolynomial (Fin a × Fin a) ℂ).support` using `MvPolynomial.mem_support_iff.mpr hx`. Establish `hbound` using `hDom a κ _ w.2 x hxs k`. Establish `hup : (D : ℤ) * κ.detShift + (e x : ℤ) ≤ psum κ k`. Establish `h1 : (e x : ℤ) ≤ ((∑ i ∈ Finset.univ.filter (fun i : Fin a => (i : ℕ) < k), κ.natW i : ℕ) : ℤ)`. Rewrite using `[he]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `hbound` after adjusting the coercions. Establish `h2 : (D : ℤ) * κ.detShift + ((∑ i ∈ Finset.univ.filter (fun i : Fin a => (i : ℕ) < k), κ.natW i : ℕ) : ℤ) = psum κ k`. Rewrite using `[Nat.cast_sum]`. Simplify using `only [hnat]`. Rewrite using `[Finset.sum_sub_distrib, hD, psum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hle _ _ hup).1 (hmon _ _).1`. Establish `hlow : -((a * κ.detShift.natAbs : ℕ) : ℤ) ≤ (D : ℤ) * κ.detShift + (e x : ℤ)`.
-
-Establish `hD0 : (0 : ℤ) ≤ D` using `Int.natCast_nonneg D`. Establish `hDa' : (D : ℤ) ≤ a` using `by exact_mod_cast hDa`. Establish `he0 : (0 : ℤ) ≤ (e x : ℤ)` using `Int.natCast_nonneg _`. Establish `habs : 0 ≤ κ.detShift + |κ.detShift|` using `by linarith [neg_abs_le κ.detShift]`. Use `push_cast`.
-
-Use polynomial arithmetic with `[mul_nonneg hD0 habs, mul_nonneg (sub_nonneg.mpr hDa') (abs_nonneg κ.detShift)]`. Conclude with `(hle _ _ hlow).2 (hmon _ _).2`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.sqExp_h : ExpBasic → EvLem → Dom → SqExp := by
   intro hE hEv hDom a k κ w L

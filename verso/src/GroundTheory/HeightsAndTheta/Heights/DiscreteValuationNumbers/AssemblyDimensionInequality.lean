@@ -13,33 +13,33 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u v
 
 /- English proof (translation)
-The claim follows from `PolynomialDimensionInequality.proof PolynomialPrimeOverZeroHeight.proof.{u}`.
+A detailed English derivation is pending.
 -/
 theorem PolynomialDimensionInequality.full : PolynomialDimensionInequality.Statement.{u} :=
   PolynomialDimensionInequality.proof PolynomialPrimeOverZeroHeight.proof.{u}
 
 /- English proof (translation)
-The claim follows from `DimensionInequalityOneGenerator.proof PolynomialDimensionInequality.full.{u} QuotientHeightAddOne.proof.{u}`.
+A detailed English derivation is pending.
 -/
 theorem DimensionInequalityOneGenerator.full : DimensionInequalityOneGenerator.Statement.{u, v} :=
   DimensionInequalityOneGenerator.proof PolynomialDimensionInequality.full.{u}
     QuotientHeightAddOne.proof.{u}
 
 /- English proof (translation)
-The claim follows from `DimensionInequality.proof DimensionInequalityOneGenerator.full.{u, v} DimensionInequalityOneGenerator.full.{v, v}`.
+A detailed English derivation is pending.
 -/
 theorem DimensionInequality.full : DimensionInequality.Statement.{u, v} :=
   DimensionInequality.proof DimensionInequalityOneGenerator.full.{u, v}
     DimensionInequalityOneGenerator.full.{v, v}
 
 /- English proof (translation)
-The claim follows from `ReesAlgebraDim.proof DimensionInequality.full.{u, u}`.
+A detailed English derivation is pending.
 -/
 theorem ReesAlgebraDim.full : ReesAlgebraDim.Statement.{u} :=
   ReesAlgebraDim.proof DimensionInequality.full.{u, u}
 
 /- English proof (translation)
-The claim follows from `BlowUpModel.proof ReesAlgebraDim.full.{u}`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpModel.full : BlowUpModel.Statement.{u} :=
   BlowUpModel.proof ReesAlgebraDim.full.{u}

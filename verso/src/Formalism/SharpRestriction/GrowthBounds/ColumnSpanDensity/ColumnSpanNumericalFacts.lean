@@ -21,17 +21,17 @@ structure ColumnSpanNumericalFacts (K : Cst) (X : Dat) : Prop where
   eps : 12 * (X.N : ℝ) * X.k * X.ccl / X.b' ≤ 1 / X.Y
 
 /- English proof (translation)
-Use `Finset.sum_nbij' (fun aa s => (aa s).toNat) (fun A s => (A s : ℤ)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `aa haa`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at haa ⊢`. Introduce `s`. Use `haa s` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `A hA`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢`. Introduce `s`. Use `hA s` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `aa haa`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at haa`. Use function extensionality and compare the values at `s`. Use `haa s` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show ((aa s).toNat : ℤ) = aa s`. Use linear arithmetic over natural numbers and integers. Introduce `A _`. Use function extensionality and compare the values at `s`. Use `show ((A s : ℤ)).toNat = A s`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `aa haa`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at haa`. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `haa s` as an intermediate fact. Use `show aa s = ((aa s).toNat : ℤ)`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem sum_pi_cast {ι : Type} [Fintype ι] [DecidableEq ι] (lo hi : ℕ) (g : (ι → ℤ) → ℝ) :
     ∑ aa ∈ Fintype.piFinset (fun _ : ι => Finset.Icc (lo : ℤ) (hi : ℤ)), g aa =
@@ -66,20 +66,20 @@ theorem sum_pi_cast {ι : Type} [Fintype ι] [DecidableEq ι] (lo hi : ℕ) (g :
     omega
 
 /- English proof (translation)
-Rewrite using `[Int.card_Icc, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_Icc_cast (lo hi : ℕ) : (Finset.Icc (lo : ℤ) (hi : ℤ)).card = (Finset.Icc lo hi).card := by
   rw [Int.card_Icc, Nat.card_Icc]
   omega
 
 /- English proof (translation)
-Rewrite using `[← Int.ceil_toNat, Int.toNat_of_nonneg (Int.ceil_nonneg hx)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ceil_cast {x : ℝ} (hx : 0 ≤ x) : ((⌈x⌉₊ : ℕ) : ℤ) = ⌈x⌉ := by
   rw [← Int.ceil_toNat, Int.toNat_of_nonneg (Int.ceil_nonneg hx)]
 
 /- English proof (translation)
-Rewrite using `[← Int.floor_toNat, Int.toNat_of_nonneg (Int.floor_nonneg.mpr hx)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem floor_cast {x : ℝ} (hx : 0 ≤ x) : ((⌊x⌋₊ : ℕ) : ℤ) = ⌊x⌋ := by
   rw [← Int.floor_toNat, Int.toNat_of_nonneg (Int.floor_nonneg.mpr hx)]
@@ -87,15 +87,15 @@ theorem floor_cast {x : ℝ} (hx : 0 ≤ x) : ((⌊x⌋₊ : ℕ) : ℤ) = ⌊x�
 open Classical in
 
 /- English proof (translation)
-Establish `hIn : X.Inside (fun s => (A s : ℤ)) (fun s => (B s : ℤ)) ↔ ∀ s, X.a + X.ccl ≤ A s ∧ X.lb + X.ccl ≤ B s`. Unfold `Dat.Inside Dat.lb`. Use `forall_congr' fun s => and_congr ?_ ?_` and prove the remaining obligations. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only`. Rewrite using `[← Int.ceil_le, ← ceil_cast hbl]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (fun s => ((A s : ℤ) - (X.ccl : ℤ)).toNat) = (fun s => A s - X.ccl)`. Use function extensionality and compare the values at `s`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : (fun s => ((B s : ℤ) - (X.ccl : ℤ)).toNat) = (fun s => B s - X.ccl)`. Use function extensionality and compare the values at `s`. Use linear arithmetic over natural numbers and integers. Establish `h3 : (fun s => ((A s : ℤ) + (X.ccl : ℤ)).toNat) = (fun s => A s + X.ccl)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Use linear arithmetic over natural numbers and integers. Establish `h4 : (fun s => ((B s : ℤ) + (X.ccl : ℤ)).toNat) = (fun s => B s + X.ccl)`. Use function extensionality and compare the values at `s`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Dat.kText]`. Distinguish the cases in `hc : ∀ s, X.a + X.ccl ≤ A s ∧ X.lb + X.ccl ≤ B s`. Rewrite using `[if_pos (hIn.mpr hc), if_pos hc, h1, h2, h3, h4]`. Rewrite using `[if_neg (mt hIn.mp hc), if_neg hc, h3, h4]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem kText_cast (K : Cst) (X : Dat) (R : RS X.p X.n') (hbl : 0 ≤ X.bl) (A B : X.TT → ℕ) :
     X.kText K R (fun s => (A s : ℤ)) (fun s => (B s : ℤ)) =
@@ -125,7 +125,7 @@ theorem kText_cast (K : Cst) (X : Dat) (R : RS X.p X.n') (hbl : 0 ≤ X.bl) (A B
   · rw [if_neg (mt hIn.mp hc), if_neg hc, h3, h4]
 
 /- English proof (translation)
-Establish `hD : (0 : ℝ) < (Sa.card : ℝ) ^ Fintype.card ι * (Sb.card : ℝ) ^ Fintype.card ι` using `mul_pos (pow_pos (by exact_mod_cast ha) _) (pow_pos (by exact_mod_cast hb) _)`. Unfold `meanN at h`. Rewrite `h` using `[div_le_iff₀ hD]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sum_of_meanN {ι : Type} [Fintype ι] [DecidableEq ι] (Sa Sb : Finset ℕ) (f : (ι → ℕ) → (ι → ℕ) → ℝ) (M : ℝ)
     (ha : 0 < Sa.card) (hb : 0 < Sb.card) (h : meanN Sa Sb f ≤ M) :
@@ -139,31 +139,27 @@ theorem sum_of_meanN {ι : Type} [Fintype ι] [DecidableEq ι] (Sa Sb : Finset �
 open Classical in
 
 /- English proof (translation)
-Establish `sub_le : ∀ (lo hi : ℕ) (g : (ι → ℕ) → ℝ), (∀ A, 0 ≤ g A) → ∑ A ∈ Fintype.piFinset (fun _ : ι => Finset.Icc (lo + c) hi), g (fun s => A s - c) ≤ ∑ A ∈ Fintype.piFinset (fun _ : ι => Finset.Icc lo hi), g A`. Introduce `lo hi g hg`. Establish `hinj : ∀ x ∈ Fintype.piFinset (fun _ : ι => Finset.Icc (lo + c) hi), ∀ y ∈ Fintype.piFinset (fun _ : ι => Finset.Icc (lo + c) hi), (fun s => x s - c) = (fun s => y s - c) → x = y`. Introduce `x hx y hy hxy`. Rewrite `hx`, `hy` using `[Fintype.mem_piFinset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Establish `h1 : x s - c = y s - c` using `congrFun hxy s`. Establish `h2` using `Finset.mem_Icc.mp (hx s)`. Establish `h3` using `Finset.mem_Icc.mp (hy s)`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← Finset.sum_image hinj]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `B hB`. Rewrite `hB` using `[Finset.mem_image]`. Take `⟨A, hA, rfl⟩` from `hB`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hA`, the goal using `[Fintype.mem_piFinset]`. Introduce `s`. Use `Finset.mem_Icc.mp (hA s)` as an intermediate fact. Use `show A s - c ∈ Finset.Icc lo hi`. Rewrite using `[Finset.mem_Icc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `A _ _`. Conclude with `hg A`. Use `set pa := Fintype.piFinset (fun _ : ι => Finset.Icc a ua) with hpa`. Use `set pb := Fintype.piFinset (fun _ : ι => Finset.Icc lb ub) with hpb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set qa := Fintype.piFinset (fun _ : ι => Finset.Icc (a + c) ua) with hqa`. Use `set qb := Fintype.piFinset (fun _ : ι => Finset.Icc (lb + c) ub) with hqb`. Rewrite using `[← Finset.sum_product' (f := fun (A B : ι → ℕ) => (if (∀ s, a + c ≤ A s ∧ lb + c ≤ B s) then kf (fun s => A s - c) (fun s => B s - c) else (1 : ℝ)))]`. Rewrite using `[Finset.sum_ite]`. Establish `hF : (pa ×ˢ pb).filter (fun x : (ι → ℕ) × (ι → ℕ) => ∀ s, a + c ≤ x.1 s ∧ lb + c ≤ x.2 s) = qa ×ˢ qb`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `⟨A, B⟩`. Simplify using `only [hpa, hpb, hqa, hqb, Finset.mem_filter, Finset.mem_product, Fintype.mem_piFinset, Finset.mem_Icc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hA, hB⟩, hP⟩`. Conclude with `⟨fun s => ⟨(hP s).1, (hA s).2⟩, fun s => ⟨(hP s).2, (hB s).2⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce and unpack `⟨hA, hB⟩`. Use `⟨⟨fun s => ⟨?_, (hA s).2⟩, fun s => ⟨?_, (hB s).2⟩⟩, fun s => ⟨(hA s).1, (hB s).1⟩⟩` and prove the remaining obligations. Use `hA s` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hB s` as an intermediate fact.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcard : ((pa ×ˢ pb).filter (fun x : (ι → ℕ) × (ι → ℕ) => ∀ s, a + c ≤ x.1 s ∧ lb + c ≤ x.2 s)).card + ((pa ×ˢ pb).filter (fun x : (ι → ℕ) × (ι → ℕ) => ¬ ∀ s, a + c ≤ x.1 s ∧ lb + c ≤ x.2 s)).card = (pa ×ˢ pb).card` using `by first`. Consider the case `exact Finset.filter_card_add_filter_neg_card_eq_card _`. Consider the case `exact Finset.card_filter_add_card_filter_not _`. Consider the case `(rw [← Finset.card_union_of_disjoint (Finset.disjoint_filter_filter_neg _ _ _), Finset.filter_union_filter_neg_eq])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(rw [← Finset.card_disjoint_union (Finset.disjoint_filter_filter_neg _ _ _), Finset.filter_union_filter_neg_eq])`. Rewrite `hcard`, the goal using `[hF]`. Establish `hcS : (pa ×ˢ pb).card = (Finset.Icc a ua).card ^ Fintype.card ι * (Finset.Icc lb ub).card ^ Fintype.card ι`. Rewrite using `[Finset.card_product, hpa, hpb, Fintype.card_piFinset, Fintype.card_piFinset, Finset.prod_const, Finset.prod_const, Finset.card_univ]`. Establish `hcQ : (qa ×ˢ qb).card = (Finset.Icc (a + c) ua).card ^ Fintype.card ι * (Finset.Icc (lb + c) ub).card ^ Fintype.card ι`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_product, hqa, hqb, Fintype.card_piFinset, Fintype.card_piFinset, Finset.prod_const, Finset.prod_const, Finset.card_univ]`. Establish `hneg : ((((pa ×ˢ pb).filter (fun x : (ι → ℕ) × (ι → ℕ) => ¬ ∀ s, a + c ≤ x.1 s ∧ lb + c ≤ x.2 s)).card : ℕ) : ℝ) = ((Finset.Icc a ua).card : ℝ) ^ Fintype.card ι * ((Finset.Icc lb ub).card : ℝ) ^ Fintype.card ι - ((Finset.Icc (a + c) ua).card : ℝ) ^ Fintype.card ι * ((Finset.Icc ( …`. Establish `h` using `congrArg (fun n : ℕ => (n : ℝ)) hcard`. Simplify using `only [Nat.cast_add, hcS, hcQ, Nat.cast_mul, Nat.cast_pow] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite using `[Finset.sum_const, nsmul_eq_mul, mul_one, hneg, Finset.sum_product]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `A _`.
-
-Conclude with `sub_le lb ub (fun B => kf (fun s => A s - c) B) (fun B => hkf _ _)`. Use `_ ≤ ∑ A ∈ pa, ∑ B ∈ pb, kf A B := sub_le a ua (fun A => ∑ B ∈ pb, kf A B) (fun A => Finset.sum_nonneg fun B _ => hkf A B)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_first {ι : Type} [Fintype ι] [DecidableEq ι] (a ua lb ub c : ℕ) (kf : (ι → ℕ) → (ι → ℕ) → ℝ)
     (hkf : ∀ A B, 0 ≤ kf A B) :
@@ -252,15 +248,15 @@ theorem sum_first {ι : Type} [Fintype ι] [DecidableEq ι] (a ua lb ub c : ℕ)
           (fun A => Finset.sum_nonneg fun B _ => hkf A B)
 
 /- English proof (translation)
-Use `Finset.sum_nbij' (fun A s => A s + c) (fun A s => A s - c) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `A hA`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢`. Introduce `s`. Use `hA s` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `A hA`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢`. Introduce `s`. Use `hA s` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `A _`. Use function extensionality and compare the values at `s`. Use `show A s + c - c = A s`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A hA`. Simplify using `only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at hA`. Use function extensionality and compare the values at `s`. Use `hA s` as an intermediate fact. Use `show A s - c + c = A s`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `A _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem sum_piFinset_Icc_shift_eq {ι : Type} [Fintype ι] [DecidableEq ι] (lo hi c : ℕ) (g : (ι → ℕ) → ℝ) :
     ∑ A ∈ Fintype.piFinset (fun _ : ι => Finset.Icc lo hi), g (fun s => A s + c) =
@@ -290,29 +286,29 @@ private theorem sum_piFinset_Icc_shift_eq {ι : Type} [Fintype ι] [DecidableEq 
     rfl
 
 /- English proof (translation)
-Take `⟨arnn, uann, blnn, bunn, Y1, N1, Npos, wpos, below, eps⟩` from `hF`. Establish `hu : 0 ≤ X.ar + X.ar / (((X.m : ℝ) + 1) * X.Y)` using `by simpa [Dat.k] using uann`. Establish `hIa : Formalism.MainNotions.flipOneThree.IaZ X.m X.Y X.ar = Finset.Icc ((X.a : ℕ) : ℤ) ((X.ua : ℕ) : ℤ)`. Unfold `Formalism.MainNotions.flipOneThree.IaZ Dat.a Dat.ua Dat.k`. Rewrite using `[ceil_cast arnn, floor_cast hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hIb : Formalism.MainNotions.flipOneThree.IbZ X.bl X.bu = Finset.Icc ((X.lb : ℕ) : ℤ) ((X.ub : ℕ) : ℤ)`. Unfold `Formalism.MainNotions.flipOneThree.IbZ Dat.lb Dat.ub`. Rewrite using `[ceil_cast blnn, floor_cast bunn]`. Establish `hWa0 : X.Wa 0 = Finset.Icc X.a X.ua` using `by simp [Dat.Wa]`. Establish `hWb0 : X.Wb 0 = Finset.Icc X.lb X.ub` using `by simp [Dat.Wb]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA : (X.Wa X.ccl).card = (Finset.Icc X.a X.ua).card`. Simplify using `only [Dat.Wa, Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `hcB : (X.Wb X.ccl).card = (Finset.Icc X.lb X.ub).card`. Simplify using `only [Dat.Wb, Nat.card_Icc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hN : Fintype.card X.TT = X.N` using `by simp [Dat.N]`. Establish `hNN : X.TT.card = X.N` using `rfl`. Establish `hkf : ∀ A B, 0 ≤ X.kF K R A B`. Introduce `A B`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Dat.kF`. Conclude with `Real.sInf_nonneg fun x hx => hx.1`. Establish `Ypos : (0 : ℝ) < X.Y` using `by linarith`. Unfold `Avg at h0 hc`. Unfold `MeanX at hx`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `wpos`, `below`, `h0` using `[hWa0, hWb0]`. Establish `hT : (0 : ℝ) < ((Finset.Icc X.a X.ua).card : ℝ) ^ X.N * ((Finset.Icc X.lb X.ub).card : ℝ) ^ X.N` using `mul_pos (pow_pos (by exact_mod_cast wpos.1) _) (pow_pos (by exact_mod_cast wpos.2) _)`. Establish `s0` using `sum_of_meanN _ _ (X.kF K R) _ wpos.1 wpos.2 h0`. Establish `sc` using `sum_of_meanN _ _ (X.kF K R) _ (by rw [hcA]; exact wpos.1) (by rw [hcB]; exact wpos.2) hc`. Establish `s1` using `sum_first X.a X.ua X.lb X.ub X.ccl (X.kF K R) hkf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `s0`, `sc`, `s1` using `[hN]`. Rewrite `sc` using `[hcA, hcB]`. Establish `hsh : (∑ A ∈ Fintype.piFinset (fun _ : X.TT => Finset.Icc X.a X.ua), ∑ B ∈ Fintype.piFinset (fun _ : X.TT => Finset.Icc X.lb X.ub), X.kF K R (fun s => A s + X.ccl) (fun s => B s + X.ccl)) = ∑ A ∈ Fintype.piFinset (fun _ : X.TT => X.Wa X.ccl), ∑ B ∈ Fintype.piFinset (fun _ : X.TT …`. Unfold `Dat.Wa Dat.Wb`. Rewrite using `[← sum_piFinset_Icc_shift_eq X.a X.ua X.ccl (fun A => ∑ B ∈ Fintype.piFinset (fun _ : X.TT => Finset.Icc (X.lb + X.ccl) (X.ub + X.ccl)), X.kF K R A B)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Conclude with `sum_piFinset_Icc_shift_eq X.lb X.ub X.ccl (fun B => X.kF K R (fun s => A s + X.ccl) B)`. Rewrite `sc` using `[← hsh]`. Establish `hS : (∑ aa ∈ Fintype.piFinset (fun _ : X.TT => Formalism.MainNotions.flipOneThree.IaZ X.m X.Y X.ar), ∑ bb ∈ Fintype.piFinset (fun _ : X.TT => Formalism.MainNotions.flipOneThree.IbZ X.bl X.bu), X.kText K R aa bb) = ∑ A ∈ Fintype.piFinset (fun _ : X.TT => Finset.Icc X.a X.ua), ∑ B …`. Rewrite using `[hIa, hIb, sum_pi_cast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Rewrite using `[sum_pi_cast]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Conclude with `kText_cast K X R blnn A B`. Unfold `Formalism.MainNotions.flipOneThree.meanKap`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hS, hIa, hIb, card_Icc_cast, card_Icc_cast, hNN, div_le_iff₀ hT]`. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, nsmul_eq_mul, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, hN, Nat.cast_pow]`. Establish `p1` using `mul_le_mul_of_nonneg_left eps hT.le`. Establish `p2` using `mul_le_mul_of_nonneg_left hx hT.le`. Establish `hN1 : (1 : ℝ) ≤ (X.N : ℝ) * (X.N₁ : ℝ)` using `one_le_mul_of_one_le_of_one_le (by exact_mod_cast Npos) (by exact_mod_cast N1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `p3 : 2 / X.Y ≤ 8 * (X.N : ℝ) * X.N₁ / X.Y`. Apply `div_le_div_of_nonneg_right _ Ypos.le` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `p4` using `mul_le_mul_of_nonneg_left p3 hT.le`. Unfold `Cst.Cmean`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((Finset.Icc X.a X.ua).card : ℝ) ^ X.N * ((Finset.Icc X.lb X.ub).card : ℝ) ^ X.N * (1 / X.Y) + ((Finset.Icc X.a X.ua).card : ℝ) ^ X.N * ((Finset.Icc X.lb X.ub).card : ℝ) ^ X.N * (1 / X.Y) = ((Finset.Icc X.a X.ua).card : ℝ) ^ X.N * ((Finset.Icc X.lb X.ub).card : ℝ) ^ X.N * (2 …` using `by ring`. Establish `e2 : (6 * (K.CA + K.Cs) + 8) * (X.N : ℝ) * X.N₁ / X.Y * (((Finset.Icc X.a X.ua).card : ℝ) ^ X.N * ((Finset.Icc X.lb X.ub).card : ℝ) ^ X.N) = 6 * (((Finset.Icc X.a X.ua).card : ℝ) ^ X.N * ((Finset.Icc X.lb X.ub).card : ℝ) ^ X.N * ((K.CA + K.Cs) * X.N * X.N₁ / X.Y)) + ((Finset.Icc …` using `by ring`. Rewrite using `[e2]`. Use polynomial arithmetic with `[s0, s1, sc, below, p1, p2, p4, e1]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mean_of (K : Cst) (hKp : K.Pos) (X : Dat) (hF : ColumnSpanNumericalFacts K X) (R : RS X.p X.n') (h0 : Avg K X R 0)
     (hc : Avg K X R X.ccl) (hx : MeanX K X R) :

@@ -10,17 +10,15 @@ namespace DiscreteGroups.sglob.DzType.Rt
 open GlobalTheory.SerSys.LabLoc in
 
 /- English proof (translation)
-Introduce `g _ S τ ine b hτ hP n hn π hπ f hm h0 hine v hv`. Establish `key : ∀ f', actK π.ρ (S.e n f') v ≠ 0 → f' = f`. Introduce `f' hf'`. Establish `hne : S.e n f' ≠ 0` using `fun e => hf' (by rw [e]; simp [actK])`. Take `⟨hm', -, h0'⟩` from `S.label n f' hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `(hP n hn π hπ f' ⟨v, hv, hf'⟩).symm.trans hine`. Establish `e1' : (((Formalism.CyclotomicNorms.rootsBar f').map τ).map fun a => X - C a).prod = (((Formalism.CyclotomicNorms.rootsBar f).map τ).map fun a => X - C a).prod`. Rewrite using `[Multiset.map_map, Multiset.map_map]`. Conclude with `e1`. Establish `e2` using `congrArg Polynomial.roots e1'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Conclude with `eq_of_roots_eq hm' hm (map_eq_map hτ (fun x hx => ne_zero_of_mem_roots h0' hx) (fun x hx => ne_zero_of_mem_roots h0 hx) e2)`. Take `⟨T, hT⟩` from `S.sum n`. Establish `hv1 : v = ∑ f' ∈ T, actK π.ρ (S.e n f') v` using `by conv_lhs => rw [← actK_one_of_mem π.ρ hv, ← hT, actK_finset_sum]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv2 : ∑ f' ∈ T, actK π.ρ (S.e n f') v = if f ∈ T then actK π.ρ (S.e n f) v else 0` using `by split_ifs with hfT`. Rewrite using `[Finset.sum_eq_single f]`. Introduce `f' _ h`. Assume the negation of the conclusion as `h'`. Conclude with `h (key f' h')`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `h`. Conclude with `absurd hfT h`. Use `Finset.sum_eq_zero fun f' hf' => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `hfT (key f' h' ▸ hf')`.
-
-Use `split_ifs at hv2 with hfT`. Conclude with `(hv1.trans hv2).symm`. Establish `: v = 0` using `hv1.trans hv2`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actK_e_eq_self_le : ∀ (g : ℕ) [Fact g.Prime] (S : Sys g) (τ : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ine : ∀ n, QRep g n → ℂ[X]) (b : ℕ), Set.InjOn τ {x | x ≠ 0} → DiscreteGroups.sglob.DzType.Rt.SerParamLe b S.e τ ine → ∀ (n : ℕ), n ≤ b → ∀ (π : QRep g n), IrrSm π → ∀ f : (ZMod g)[X], f.Monic → f.coeff 0 ≠ 0 → ine n π = ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (τ x)).prod → ∀ v ∈ fixK1 π.ρ, actK π.ρ (S.e n f) v = v := by
   intro g _ S τ ine b hτ hP n hn π hπ f hm h0 hine v hv

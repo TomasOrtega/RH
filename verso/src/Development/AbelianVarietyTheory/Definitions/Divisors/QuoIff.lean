@@ -36,7 +36,7 @@ def wtsAt (PP : ℝ) (h0 : ℤ) (S eta : ℝ) (u1 : Weight (dat p i)) :
     eta := eta, b := 4 * L.sc.b, w := fun τ => (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ), u := uW p i, u1 := u1 }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem quo_iff (PP : ℝ) (h0 : ℤ) (S eta : ℝ) (u1 : Weight (dat p i)) : Quo p i PP u1 ↔ (wtsAt p i PP h0 S eta u1).IsDiv :=
   Iff.rfl

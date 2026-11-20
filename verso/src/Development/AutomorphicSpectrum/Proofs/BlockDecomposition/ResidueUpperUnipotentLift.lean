@@ -5,7 +5,7 @@ open Matrix GlobalTheory.CompanionTheory.Jp
 namespace GlobalTheory.CompanionTheory.Jp
 
 /- English proof (translation)
-Use extensionality with `i k`. Apply the tactic sequence `rcases i with i | i <;> rcases k with k | k <;>`. Simplify using `[tauM, pM, scM, Matrix.one_apply, Matrix.diagonal_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem tauM_val_blocks {L : Type} [Field L] {n : ℕ} (w : Lˣ) :
     ((tauM (n := n) w : GL (Ix n) L) : Matrix (Ix n) (Ix n) L) =
@@ -15,19 +15,19 @@ theorem tauM_val_blocks {L : Type} [Field L] {n : ℕ} (w : Lˣ) :
     simp [tauM, pM, scM, Matrix.one_apply, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Introduce `O L _ _ _ _ _ _ n ϖ hϖ w hw x hx`. Take `⟨ℓ, hℓ⟩ : ∃ ℓ : IsLocalRing.ResidueField O → O, ∀ a, IsLocalRing.residue O (ℓ a) = a` from `⟨Function.surjInv IsLocalRing.residue_surjective, Function.surjInv_eq _⟩`. Establish `hmapℓ : ∀ B : Matrix (Fin n) (Fin n) (IsLocalRing.ResidueField O), (B.map ℓ).map (IsLocalRing.residue O) = B`. Introduce `B`. Use extensionality with `i k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[hℓ]`. Take `⟨A, hA⟩ : ∃ A, A = x.1.toBlocks₁₁.map ℓ` from `⟨_, rfl⟩`. Take `⟨C, hC⟩ : ∃ C, C = x.1.toBlocks₂₁.map ℓ` from `⟨_, rfl⟩`. Take `⟨D, hD⟩ : ∃ D, D = x.1.toBlocks₂₂.map ℓ` from `⟨_, rfl⟩`. Establish `hred : (fromBlocks A 0 C D).map (IsLocalRing.residue O) = x.1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.fromBlocks_map, hA, hC, hD, hmapℓ, hmapℓ, hmapℓ, Matrix.map_zero _ (map_zero _), ← hx, Matrix.fromBlocks_toBlocks]`. Establish `hdet : IsUnit (A.det * D.det)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Establish `h1 : IsLocalRing.residue O (A.det * D.det) = x.1.det`. Rewrite using `[← Matrix.det_fromBlocks_zero₁₂ A C D, RingHom.map_det, RingHom.mapMatrix_apply, hred]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp x.isUnit).ne_zero`. Set `j' : GL (Ix n) O` to `Matrix.nonsingInvUnit (fromBlocks A 0 C D) (by rw [Matrix.det_fromBlocks_zero₁₂]; exact hdet)`. Set `j : GL (Ix n) O` to `Matrix.nonsingInvUnit (fromBlocks A 0 (ϖ • C) D) (by rw [Matrix.det_fromBlocks_zero₁₂]; exact hdet)`. Use `⟨j, j', ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, tauM_val_blocks]`. Use `show (fromBlocks A 0 (ϖ • C) D).map (algebraMap O L) * _ = _ * (fromBlocks A 0 C D).map (algebraMap O L)`. Rewrite using `[Matrix.fromBlocks_map, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use extensionality with `i k`. Simplify using `[hw, Matrix.map_apply, Matrix.smul_apply]`. Rewrite using `[Algebra.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i k`. Simplify using `[hw]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hred`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem twist_low : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field L] [Algebra O L] [IsFractionRing O L]
     (n : ℕ) (ϖ : O), Irreducible ϖ → ∀ w : Lˣ, (w : L) = algebraMap O L ϖ →

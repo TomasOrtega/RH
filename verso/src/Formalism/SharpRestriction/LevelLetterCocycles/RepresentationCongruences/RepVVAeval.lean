@@ -19,11 +19,11 @@ variable (W : LocWach PD LL O v n) {T : LocLat G Qp LL O} {c' : ZMod n} {e M : �
   {b : Fin d → W.DD T} {sol : Fin d → ℕ → Fin d → LL}
 
 /- English proof (translation)
-Take `⟨κ, κ', Hh, a, hH, ha, y, hy, hxy⟩` from `h`. Use `⟨κ, κ', Hh, fun k => a₀ * a k, hH, fun k => ⟨W.AΔ.mul_mem ha₀ (ha k).1, ?_⟩, a₀ • y, Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.Pp_smul W ha₀ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← (ha k).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ k, (a₀ * a k) • ((W.φD T) ^ e) (Hh k) = a₀ • ∑ k, a k • ((W.φD T) ^ e) (Hh k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`. Rewrite using `[hsum]`. Establish `e1 : lA W ^ κ' • (lA W ^ κ • Λ • a₀ • x - a₀ • ∑ k, a k • ((W.φD T) ^ e) (Hh k)) = a₀ • (lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (Hh k)))`. Rewrite using `[smul_comm Λ a₀ x, smul_comm (lA W ^ κ) a₀, ← smul_sub, smul_comm (lA W ^ κ') a₀]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hxy, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem RepVV_smulA {a₀ : LetA O n} (ha₀ : a₀ ∈ W.AΔ) {x : W.DD T} {f : Fin d → W.EE}
     (h : RepVV W T c' e M Λ b sol x f) :
@@ -43,9 +43,9 @@ theorem RepVV_smulA {a₀ : LetA O n} (ha₀ : a₀ ∈ W.AΔ) {x : W.DD T} {f :
     rw [e1, hxy, smul_comm]
 
 /- English proof (translation)
-Establish `h1` using `RepVV_smulA W (W.AΔ.algebraMap_mem o) h`. Establish `hx : o • x = algebraMap O (LetA O n) o • x` using `(algebraMap_smul (LetA O n) o x).symm`. Establish `hf : (fun k => algebraMap O W.EE o * f k) = fun k => algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) o) * f k`. Use function extensionality and compare the values at `k`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hf]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RepVV_smulO (o : O) {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' e M Λ b sol x f) :
     RepVV W T c' e M Λ b sol (o • x) (fun k => algebraMap O W.EE o * f k) := by
@@ -59,7 +59,7 @@ theorem RepVV_smulO (o : O) {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' 
   exact h1
 
 /- English proof (translation)
-Take `⟨κ, κ', Hh, a, hH, ha, y, hy, hxy⟩` from `h`. Use `⟨κ, κ', Hh, fun _ => 0, hH, fun k => ⟨W.AΔ.zero_mem, by simp⟩, (0 : LetA O n) • y, Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.Pp_smul W W.AΔ.zero_mem hy, by simp⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem RepVV_zero {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' e M Λ b sol x f) :
     RepVV W T c' e M Λ b sol 0 (fun _ => 0) := by
@@ -68,7 +68,7 @@ theorem RepVV_zero {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' e M Λ b 
     (0 : LetA O n) • y, Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.Pp_smul W W.AΔ.zero_mem hy, by simp⟩
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s (fun _ => by simpa using h0) ?_` and prove the remaining obligations. Introduce `j s hj ih h`. Use `Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.RepVV_add W (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Simplify `this` using `[Finset.sum_insert hj]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem RepVV_sum (h0 : RepVV W T c' e M Λ b sol 0 (fun _ => 0)) {ι : Type} (s : Finset ι)
     (x : ι → W.DD T) (f : ι → Fin d → W.EE) (h : ∀ i ∈ s, RepVV W T c' e M Λ b sol (x i) (f i)) :
@@ -82,25 +82,23 @@ theorem RepVV_sum (h0 : RepVV W T c' e M Λ b sol 0 (fun _ => 0)) {ι : Type} (s
   simpa [Finset.sum_insert hj] using this
 
 /- English proof (translation)
-Take `⟨κ, κ', Hh, a, hH, ha, y, hy, hxy⟩` from `h`. Take `⟨R, hR, R', hR', hRR', hΛR⟩` from `hΛ`. Take `⟨u, hu, hu'⟩` from `hpi0`. Take `⟨u₂, hu₂, hM'⟩` from `hM`. Establish `hγH : ∀ k, ∃ z, Formalism.MainNotions.LiftingTheory.InNΔi W T c' z ∧ W.γ T (Hh k) = Hh k + W.π₀ ^ M • z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨yy, hyy, hHk⟩` from `hH k`. Take `⟨z, hz, hzeq⟩` from `(hb.2 k).1 M κ yy hyy`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hHk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hzeq` using `[smul_zero, sub_zero, sub_eq_iff_eq_add]`. Rewrite using `[hzeq, add_comm]`. Use `choose z hz hγz using hγH`. Establish `hZ : ∑ k, W.γA W.gam (a k) • ((W.φA ^ e) (W.π₀ ^ M) • ((W.φD T) ^ e) (z k)) = (W.π₀ * Λ ^ 2) • ∑ k, (W.γA W.gam (a k) * u₂) • ((W.φD T) ^ e) (z k)`. Rewrite using `[Finset.smul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, hM', smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `congrArg (W.γ T) hxy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [γ_smul W, map_sub, map_sum, γA_lA W, γ_φpow W, hγz, map_add, φpow_smulA W, smul_add, Finset.sum_add_distrib, hΛR] at h1`. Rewrite `h1` using `[hZ, map_mul, map_pow, hu', hΛR]`. Establish `hlA : lA W ∈ W.AΔ`. Unfold `lA`. Conclude with `W.AΔ.natCast_mem _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨κ, κ', Hh, fun k => R' * W.γA W.gam (a k), hH, fun k => ⟨W.AΔ.mul_mem hR' (Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γA_mem W _ (ha k).1), ?_⟩, (R' * u * R ^ 2) • W.γ T y + lA W ^ κ' • R' • ∑ k, (W.γA W.gam (a k) * u₂) • ((W.φD T) ^ e) (z k), AddSubgroup.add_mem _ (Formali …` and prove the remaining obligations. Establish `h2` using `congrArg (W.γE W.gam) (ha k).2`. Rewrite `h2` using `[map_mul, Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γE_ι W, Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γE_ι W, hΛR, map_mul]`. Establish `h3 : algebraMap (LetA O n) W.EE R' * algebraMap (LetA O n) W.EE R = 1`. Rewrite using `[← map_mul, mul_comm, hRR', map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_mul, ← h2]`. Take the linear combination `(-(algebraMap (LetA O n) W.EE Λ * W.γE W.gam (f k))) * h3`. Establish `hsH : ∑ k, (R' * W.γA W.gam (a k)) • ((W.φD T) ^ e) (Hh k) = R' • ∑ k, W.γA W.gam (a k) • ((W.φD T) ^ e) (Hh k)`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΛ1 : lA W ^ κ • Λ • W.γ T x = lA W ^ κ • ((R' * R) * Λ) • W.γ T x`. Rewrite using `[mul_comm R' R, hRR', one_mul]`. Rewrite using `[hsH, hΛ1]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [smul_sub, smul_add, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Normalize the expressions using the abelian group laws.
 
-Put the polynomial expressions in normal form. Normalize the expressions using the abelian group laws. Use `_ = _ := by`. Rewrite using `[h1]`. Simplify using `only [smul_add, smul_smul]`.
-
-Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem RepVV_γ (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) (hb : IsHor W T c' b sol)
@@ -171,7 +169,7 @@ theorem RepVV_γ (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvaria
           ring_nf
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using h`. Consider the case `succ i ih`. Use `RepVV_γ W hT hP2 hpi0 hb hΛ hM ih` as an intermediate fact. Simplify `this` using `[Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem RepVV_iter (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) (hb : IsHor W T c' b sol)
@@ -186,9 +184,9 @@ theorem RepVV_iter (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvar
     simpa [Function.iterate_succ_apply'] using this
 
 /- English proof (translation)
-Rewrite using `[aeval_eq W P x]`. Establish `hf : (fun k => Polynomial.aeval ((W.γE W.gam).toLinearMap : Module.End O W.EE) P (f k)) = fun k => ∑ i ∈ Finset.range (P.natDegree + 1), algebraMap O W.EE (P.coeff i) * (W.γE W.gam)^[i] (f k)`. Use function extensionality and compare the values at `k`. Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, Module.End.pow_apply, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[hf]`. Conclude with `RepVV_sum W (RepVV_zero W h) _ _ (fun i k => algebraMap O W.EE (P.coeff i) * (W.γE W.gam)^[i] (f k)) fun i _ => RepVV_smulO W (P.coeff i) (RepVV_iter W hT hP2 hpi0 hb hΛ hM h i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RepVV_aeval (hT : IsCrys PD T.ρ) (hP2 : Formalism.MainNotions.DeltaInvariantLattices.P2W W)
     (hpi0 : ∃ u ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * u) (hb : IsHor W T c' b sol)

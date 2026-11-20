@@ -17,7 +17,7 @@ section Points
 variable {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω]
 
 /- English proof (translation)
-Substitute `hAB` using the available equality. Conclude with `⟨p, hp, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_locIn_of_eq {A B : Subalgebra F Ω} (hAB : A = B) (p : Ideal A) (hp : p.IsPrime) :
     ∃ q : Ideal B, q.IsPrime ∧ IndefiniteRowSideFullHecke.Kleiman2.locIn A p = IndefiniteRowSideFullHecke.Kleiman2.locIn B q := by
@@ -25,9 +25,9 @@ theorem exists_locIn_of_eq {A B : Subalgebra F Ω} (hAB : A = B) (p : Ideal A) (
   exact ⟨p, hp, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[SectionsOverLocalization.chartRingOver_oneBlock_eq, SectionsOverLocalization.chartRingOver_oneBlock_eq]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨σ i, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨σ.symm i, by simp⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem chartRingOver_oneBlock_comp {κ κ' : Type} (σ : κ' ≃ κ) (v : κ → Ω) (c : Unit → κ') :
     chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (v ∘ σ)) c =
@@ -44,11 +44,11 @@ theorem chartRingOver_oneBlock_comp {κ κ' : Type} (σ : κ' ≃ κ) (v : κ �
 variable (F) in
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, p, hp, rfl⟩`. Take `⟨q, hq, he⟩` from `exists_locIn_of_eq (chartRingOver_oneBlock_comp σ v c) p hp`. Conclude with `⟨fun u => σ (c u), fun u => hc u, q, hq, he⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨c, hc, p, hp, rfl⟩`. Establish `hc' : ∀ u, IndefiniteRowSideFullHecke.Kleiman2.oneBlock (v ∘ σ) ⟨u, σ.symm (c u)⟩ ≠ 0` using `fun u => by`. Simplify `hc u` using `[IndefiniteRowSideFullHecke.Kleiman2.oneBlock]`. Establish `hch : chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock v) c = chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (v ∘ σ)) (fun u => σ.symm (c u))`. Rewrite using `[chartRingOver_oneBlock_comp σ v]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨q, hq, he⟩` from `exists_locIn_of_eq hch p hp`. Conclude with `⟨fun u => σ.symm (c u), hc', q, hq, he⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem modelPts_oneBlock_comp {κ κ' : Type} (σ : κ' ≃ κ) (v : κ → Ω) :
     IndefiniteRowSideFullHecke.Kleiman2.modelPts F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (v ∘ σ)) =
@@ -71,7 +71,7 @@ theorem modelPts_oneBlock_comp {κ κ' : Type} (σ : κ' ≃ κ) (v : κ → Ω)
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[hy.2, hy'.2, ← modelPts_oneBlock_comp F e.symm, hx, modelPts_oneBlock_comp F e'.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modelPts_eq_of_base {N : ℕ} {K : Type} {ι : K → Type} (y : (Σ k, ι k) → Ω) (k₀ : K)
     (e : ι k₀ ≃ Fin (N + 1)) {K' : Type} {ι' : K' → Type} (y' : (Σ k, ι' k) → Ω) (k₀' : K')
@@ -84,11 +84,11 @@ theorem modelPts_eq_of_base {N : ℕ} {K : Type} {ι : K → Type} (y : (Σ k, �
 end Points
 
 /- English proof (translation)
-Establish `h0 : secOver F y β = secOver F y' β'` using `by simpa using hs 0`. Establish `hpts` using `modelPts_eq_of_base F y k₀ e y' k₀' e' hy hy' hx`. Unfold `IndefiniteRowSideFullHecke.Kleiman2.VeryAmple IndefiniteRowSideFullHecke.Kleiman2.SameModel`. Rewrite using `[hpts]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨n, x', hmem, hgen, hsame⟩`. Use `⟨n, x', fun j => h0 ▸ hmem j, ?_, hsame⟩` and prove the remaining obligations. Conclude with `(hGen F Ω N K ι y k₀ e K' ι' y' k₀' e' hy hy' hx β β' hs n x' hmem).1 hgen`. Introduce and unpack `⟨n, x', hmem, hgen, hsame⟩`. Establish `hmem' : ∀ j, x' j ∈ secOver F y β` using `fun j => h0 ▸ hmem j`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨n, x', hmem', (hGen F Ω N K ι y k₀ e K' ι' y' k₀' e' hy hy' hx β β' hs n x' hmem').2 hgen, hsame⟩`.
+A detailed English derivation is pending.
 -/
 theorem veryAmple_change (hGen : ModelChangeGen.Statement) (F : Type) [Field F] (Ω : Type) [Field Ω]
     [Algebra F Ω] (N : ℕ) (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
@@ -114,11 +114,11 @@ theorem veryAmple_change (hGen : ModelChangeGen.Statement) (F : Type) [Field F] 
     exact ⟨n, x', hmem', (hGen F Ω N K ι y k₀ e K' ι' y' k₀' e' hy hy' hx β β' hs n x' hmem').2 hgen, hsame⟩
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e x hxe hmod Q β hQ`. Substitute `hxe` using the available equality. Establish `hx : ∃ i, (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) i ≠ 0`. Take `⟨i, hi⟩` from `hmod.1 k₀`. Conclude with `⟨e i, by simpa [IndefiniteRowSideFullHecke.Kleiman2.blockVec] using hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn⟩` from `Generated.full.{0, 0} F Ω N (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) Q`. Take `⟨r, g, -, hg⟩` from `GraphClosedAlt.exists_fin_generators (Q.tensorProd (twistBundle F (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ ∘ e.symm) n)) (hn n le_rfl)`. Establish `hgen : IsGraphGen Q n g` using `hg`. Establish `hmod'` using `GraphModel.full F N Ω _ Q n (r + 1) g hx hgen`. Establish `hsec` using `realises_graph Q n g hgen`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hVA F N Ω _ Q n (r + 1) g hgen]`. Conclude with `(veryAmple_change hGen F Ω N K ι y k₀ e (Unit ⊕ Unit) (graphIdx N (r + 1)) _ baseBlock (Equiv.refl _) hmod hmod' rfl β (graphDeg n) (fun c => (hQ c).symm.trans (hsec c))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VeryAmpleModel.proof (hVA : VeryAmpleEq.Statement) (hGen : ModelChangeGen.Statement) :
     VeryAmpleModel.Statement := by

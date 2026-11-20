@@ -9,11 +9,9 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.QuadSymbol
 
 /- English proof (translation)
-Establish `hr : Module.finrank K L = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two K L`. Use `haveI : FiniteDimensional K L := Module.finite_of_finrank_eq_succ hr`. Establish `hc : Nat.card (L ≃ₐ[K] L) = 2` using `(IsGalois.card_aut_eq_finrank K L).trans hr`. Use `haveI : Nontrivial (L ≃ₐ[K] L) := Finite.one_lt_card_iff_nontrivial.1 (by omega)`. Take `⟨σ, hσ⟩` from `exists_ne (1 : L ≃ₐ[K] L)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : σ * σ = 1` using `by rw [← sq, ← hc]; exact pow_card_eq_one'`. Take `⟨δ, b, h1, h0, -, h3⟩` from `GlobalTheory.QuadNormBase.exists_basis K L (σ : L →ₐ[K] L) hr (fun x => by`. Use `congrArg (fun τ : L ≃ₐ[K] L => τ x) h2` as an intermediate fact. Simplify using `using this)`. Use the proof step `(by`.
-
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hσ (AlgEquiv.ext h))`. Conclude with `⟨δ, b, h1, h0, h3⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem AlmostNorm.exists_basis_sq (K L : Type) [Field K] [CharZero K] [Field L] [Algebra K L]
     [Algebra.IsQuadraticExtension K L] :
@@ -36,11 +34,11 @@ theorem AlmostNorm.exists_basis_sq (K L : Type) [Field K] [CharZero K] [Field L]
   exact ⟨δ, b, h1, h0, h3⟩
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ t`. Take `⟨δ, b, hδ, h0, h1⟩` from `AlmostNorm.exists_basis_sq K L`. Establish `hδ0 : δ ≠ 0` using `fun h => hδ (h ▸ IsSquare.zero)`. Use `(((GlobalTheory.QNorm.finite_valuation_ne_one K (Units.mk0 2 two_ne_zero)).union (GlobalTheory.QNorm.finite_valuation_ne_one K (Units.mk0 δ hδ0))).union (GlobalTheory.QNorm.finite_valuation_ne_one K t)).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not, Units.val_mk0] at hn`. Take `⟨⟨h2, hd⟩, ht⟩` from `hn`. Establish `key : ∀ x : K, Valued.v (algebraMap K (v.adicCompletion K) x) = v.valuation K x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Take `⟨x, -, y, -, h⟩` from `GlobalTheory.QNorm.exists_integral_sq_sub_mul_sq_of_unit K v (algebraMap K _ δ) (algebraMap K _ (t : K)) (by rw [← map_ofNat (algebraMap K (v.adicCompletion K)) 2]; exact (key _).trans h2) (by rw [key, hd]) (by rw [key, ht])`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hv ((mem_normGroup_iff_form b h0 h1).2 ⟨x, y, h⟩)`.
+A detailed English derivation is pending.
 -/
 theorem almostNorm_finDiag :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]

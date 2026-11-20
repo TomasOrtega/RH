@@ -11,9 +11,9 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `sqAct`. Establish `hm` using `congrArg (fun φ => φ f) (Formalism.GradedWeylDivisibility.rowActMul K n n ((g : Matrix (Fin n) (Fin n) K)ᵀ) ((h : Matrix (Fin n) (Fin n) K)ᵀ))`. Simplify using `only [AlgHom.comp_apply] at hm`. Rewrite using `[map_smul, hm, smul_smul, ← Matrix.transpose_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `detPow`. Rewrite using `[map_mul, mul_zpow, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqAct_sqAct_nabla (K : Type) [Field K] (n : ℕ) (lam : DomWeight n) (g h : GL (Fin n) K)
     (f : MvPolynomial (Fin n × Fin n) K) :
@@ -28,9 +28,9 @@ theorem sqAct_sqAct_nabla (K : Type) [Field K] (n : ℕ) (lam : DomWeight n) (g 
   rw [map_mul, mul_zpow, Units.val_mul]
 
 /- English proof (translation)
-Unfold `sqAct detPow`. Simplify using `only [Matrix.GeneralLinearGroup.coe_one, Matrix.transpose_one, map_one, one_zpow, Units.val_one, one_smul]`. Establish `h1 : Formalism.GradedWeylDivisibility.rowAct K (n` using `n) (1 : Matrix (Fin n) (Fin n) K) = AlgHom.id K _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Formalism.GradedWeylDivisibility.rowAct`. Rewrite using `[aeval_X]`. Simplify using `[Matrix.one_apply, ite_mul]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sqAct_one_nabla (K : Type) [Field K] (n : ℕ) (lam : DomWeight n)
     (f : MvPolynomial (Fin n × Fin n) K) : sqAct K n lam 1 f = f := by
@@ -45,25 +45,23 @@ theorem sqAct_one_nabla (K : Type) [Field K] (n : ℕ) (lam : DomWeight n)
   rw [h1]; rfl
 
 /- English proof (translation)
-Introduce `K _ _ n lam`. Use `set M := Submodule.span K (Set.range fun g : GL (Fin n) K => sqAct K n lam g (extremal K n lam)) with hM`. Establish `hanti : Antitone lam.natW`. Introduce `i j hij`. Use `lam.anti hij` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `DomWeight.natW`. Use linear arithmetic over natural numbers and integers. Establish `hext : extremal K n lam ∈ nablaSq K n lam` using `Formalism.GradedWeylDivisibility.hwMem K n n le_rfl lam.natW hanti`. Establish `hstab : ∀ g : GL (Fin n) K, ∀ f ∈ nablaSq K n lam, sqAct K n lam g f ∈ nablaSq K n lam`. Introduce `g f hf`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `sqAct`. Conclude with `Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable K n n lam.natW _ f hf)`. Establish `hle : M ≤ nablaSq K n lam`. Rewrite using `[hM, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hstab g _ hext`. Establish `hlin : ∀ g : GL (Fin n) K, ∀ (c : K) (f₁ f₂ : MvPolynomial (Fin n × Fin n) K), sqAct K n lam g (c • f₁ + f₂) = c • sqAct K n lam g f₁ + sqAct K n lam g f₂`. Introduce `g c f₁ f₂`. Unfold `sqAct`. Rewrite using `[map_add, map_smul, smul_add, smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hMstab : ∀ g : GL (Fin n) K, ∀ f ∈ M, sqAct K n lam g f ∈ M`. Introduce `g f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[sqAct_sqAct_nabla]`. Conclude with `Submodule.subset_span ⟨g * h, rfl⟩`. Consider the case `zero`. Establish `h0 : sqAct K n lam g 0 = 0` using `by unfold sqAct; simp`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.zero_mem`. Consider the case `add x y _ _ hx hy`. Use `hlin g 1 x y` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this]`.
+Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `hs : sqAct K n lam g (c • x) = c • sqAct K n lam g x`. Unfold `sqAct`. Rewrite using `[map_smul, smul_comm]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hs]`. Conclude with `M.smul_mem c hx`. Break down `GlobalTheory.T.dualWeylModule_simple_charZero K n lam M hle hMstab with h0 | h1` into its components or cases. It suffices to derive a contradiction. Establish `hmem : extremal K n lam ∈ M`.
-
-Establish `: sqAct K n lam 1 (extremal K n lam) ∈ M` using `Submodule.subset_span ⟨1, rfl⟩`. Rewrite `this` using `[sqAct_one_nabla]`. Then use the resulting hypothesis. Rewrite `hmem` using `[h0, Submodule.mem_bot]`. Conclude with `Formalism.GradedWeylDivisibility.hwNe K n n le_rfl lam.natW hmem`. Rewrite using `[h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nablaSq_le_span_extremal : ∀ (K : Type) [Field K] [CharZero K] (n : ℕ) (lam : DomWeight n),
     nablaSq K n lam ≤ Submodule.span K (Set.range fun g : GL (Fin n) K => sqAct K n lam g (extremal K n lam)) := by

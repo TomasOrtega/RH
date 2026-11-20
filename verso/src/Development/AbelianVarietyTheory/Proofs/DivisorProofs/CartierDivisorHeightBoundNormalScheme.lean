@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.SteinDescent
 
 /- English proof (translation)
-Establish `e1 : spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤) = Spec.map (p.appTop) ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e1, ← Category.assoc, ← Scheme.toSpecΓ_naturality, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSpecΓ_comp_spMap_algX {R : Type} [CommRing R] (X : Scheme.{0}) (p : X ⟶ Sp R) :
     (X.toSpecΓ : X ⟶ Sp Γ(X, ⊤)) ≫ spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤) = p := by
@@ -38,11 +38,11 @@ theorem toSpecΓ_comp_spMap_algX {R : Type} [CommRing R] (X : Scheme.{0}) (p : X
     Category.comp_id]
 
 /- English proof (translation)
-Introduce `hP F _ _ X _ _ p e hX hN L r hr hv hc hdeg`. Establish `hS : IsArithVar (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)) 0` using `GlobalTheory.SteinBase.isArithVar_globalSections F X p e hX`. Establish `hoff : ∀ (σ : 𝓞 F →+* ℂ) (y : CxPts p σ), y ∈ GlobalTheory.Cartier.offSupp p σ (L.div hr)` using `GlobalTheory.CxOffSupp.offSupp_of_mult_vertical F X p e hX hN (L.div hr) hv`. Take `⟨m, g, a, b, hm, hb, hab, hmult⟩` from `GlobalTheory.SteinFibre.exists_smul_mult_eq_ord hP F X p e hX hS hN L r hr hv hdeg`. Establish `hD : m • L.div hr = GlobalTheory.Cartier.CartierDiv.principal g` using `GlobalTheory.WeilCartier.eq_principal_of_mult_eq X hN _ g hmult`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc' : ∀ σ, ∃ a : ℝ, ∀ y : CxPts p σ, GlobalTheory.Cartier.logNorm (L.φ σ) r y = a` using `fun σ =>`. Set `⟨a, ha⟩` to `hc σ`. Use the proof step `⟨a, fun y => ha y (hoff σ y)⟩`. Take `⟨M, hM⟩` from `GlobalTheory.SteinIso.exists_isometric_pull_toSpec F X p e hX hS L r hr hoff hc' m g a b hb hab hD (toSpecΓ_comp_spMap_algX X p)`. Use `letI : Algebra (𝓞 F) Γ(X, ⊤) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤).toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components.
 
-Conclude with `⟨m, Γ(X, ⊤), inferInstance, inferInstance, this, X.toSpecΓ, toSpecΓ_comp_spMap_algX X p, M, hm, hS, hM⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isometric_pull_stein : GlobalTheory.CovTop.Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp (𝓞 F)) (e : ℕ),
     IsArithVar p e → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ∀ (L : HermLB p) (r : L.B.ι → X.functionFieldˣ)

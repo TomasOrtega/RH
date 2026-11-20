@@ -3,14 +3,14 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `[ell, Matrix.trace, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ell_toL {E : Type} [Field E] [NumberField E] {a : ℕ} (X : Matrix (Fin a) (Fin a) (Cinf E)) :
     ell E a (toL X) = (∑ w : InfinitePlace E, (X.trace w).re) / ((a : ℝ) * Fintype.card (InfinitePlace E)) := by
   simp [ell, Matrix.trace, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[ell_toL, Matrix.trace_sub, Matrix.trace_mul_comm, sub_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem ell_br {E : Type} [Field E] [NumberField E] {a : ℕ} (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
     ell E a (toL (X * Y - Y * X)) = 0 := by
@@ -18,11 +18,11 @@ private theorem ell_br {E : Type} [Field E] [NumberField E] {a : ℕ} (X Y : Mat
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Use `⟨fun ha => ?_, ell_br, fun k X => ?_, fun A _ _ _ _ L r hL X Y => ?_⟩` and prove the remaining obligations. Establish `h1 : (a : ℝ) ≠ 0` using `by exact_mod_cast (by omega : a ≠ 0)`. Establish `h2 : (Fintype.card (InfinitePlace E) : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Express the relevant statement in the definitionally equal form `ell E a (toL 1) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ell_toL, div_eq_one_iff_eq (mul_ne_zero h1 h2)]`. Simplify using `[mul_comm]`. Rewrite using `[ell_toL, ell_toL, Matrix.trace_mul_cycle, k.2.1, one_mul]`. Establish `h` using `hL X Y`. Simplify using `only [shift_apply, ell_br, mul_zero, zero_smul, add_zero, ← h, mul_add, add_mul, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_add, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm (r * ell E a (toL Y))]`. Normalize the expressions using the abelian group laws.
+Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem UpperTheory.V.Lit.Bor.ellFacts :
     UpperTheory.V.Lit.Bor.EllFacts := by

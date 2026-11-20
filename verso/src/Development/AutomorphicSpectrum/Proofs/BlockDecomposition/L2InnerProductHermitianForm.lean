@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ModelS.L2InnerProduct
 
 /- English proof (translation)
-Establish `hK : IsCompact (Set.pi Set.univ (fun _ : Fin n => Set.pi Set.univ (fun _ : Fin n => Metric.closedBall (0 : ℂ) 1)) : Set (Matrix (Fin n) (Fin n) ℂ))` using `isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_closedBall _ _))`. Establish `hC : IsClosed ((Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)))` using `isClosed_unitary (R := Matrix (Fin n) (Fin n) ℂ)`. Use `hK.of_isClosed_subset hC ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Metric.mem_closedBall, dist_zero_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Conclude with `entry_norm_bound_of_unitary hx i j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompact_unitary_set (n : ℕ) :
     IsCompact ((Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ))) := by
@@ -31,13 +31,13 @@ theorem isCompact_unitary_set (n : ℕ) :
   exact entry_norm_bound_of_unitary hx i j
 
 /- English proof (translation)
-The claim follows from `isCompact_iff_compactSpace.mp (isCompact_unitary_set n)`.
+A detailed English derivation is pending.
 -/
 theorem compactSpace_unitary (n : ℕ) : CompactSpace (Matrix.unitaryGroup (Fin n) ℂ) :=
   isCompact_iff_compactSpace.mp (isCompact_unitary_set n)
 
 /- English proof (translation)
-The claim follows from `x.2.1.continuousOn.comp_continuous continuous_subtype_val unit_mem`.
+A detailed English derivation is pending.
 -/
 theorem continuous_restrict {n : ℕ} (x : SmF n) :
     Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => x.1 k.1 :=
@@ -50,7 +50,7 @@ variable {n : ℕ} [MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ)]
   (κ : Measure (Matrix.unitaryGroup (Fin n) ℂ)) [IsFiniteMeasure κ]
 
 /- English proof (translation)
-Use `haveI := compactSpace_unitary n`. Conclude with `((Complex.continuous_conj.comp (continuous_restrict x)).mul (continuous_restrict y)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_integrand (x y : SmF n) :
     Integrable (fun k : Matrix.unitaryGroup (Fin n) ℂ => conj (x.1 k.1) * y.1 k.1) κ := by
@@ -59,7 +59,7 @@ theorem integrable_integrand (x y : SmF n) :
     (continuous_restrict y)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Use `haveI := compactSpace_unitary n`. Conclude with `((continuous_restrict x).norm.pow 2).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_normSq (x : SmF n) :
     Integrable (fun k : Matrix.unitaryGroup (Fin n) ℂ => ‖x.1 k.1‖ ^ 2) κ := by
@@ -68,7 +68,7 @@ theorem integrable_normSq (x : SmF n) :
     (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Rewrite using `[← integral_complex_ofReal]`. Unfold `ipK`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `[Complex.conj_mul']`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ipK_self (x : SmF n) :
     ipK κ x x = ((∫ k, ‖x.1 k.1‖ ^ 2 ∂κ : ℝ) : ℂ) := by
@@ -78,7 +78,7 @@ theorem ipK_self (x : SmF n) :
   simp [Complex.conj_mul']
 
 /- English proof (translation)
-Unfold `ipK`. Rewrite using `[← integral_conj]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ipK_conj (x y : SmF n) : conj (ipK κ y x) = ipK κ x y := by
   unfold ipK
@@ -87,7 +87,7 @@ theorem ipK_conj (x y : SmF n) : conj (ipK κ y x) = ipK κ x y := by
   simp [mul_comm]
 
 /- English proof (translation)
-Unfold `ipK`. Rewrite using `[← integral_add (integrable_integrand κ x z) (integrable_integrand κ y z)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `[add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ipK_add_left (x y z : SmF n) : ipK κ (x + y) z = ipK κ x z + ipK κ y z := by
   unfold ipK
@@ -96,7 +96,7 @@ theorem ipK_add_left (x y z : SmF n) : ipK κ (x + y) z = ipK κ x z + ipK κ y 
   simp [add_mul]
 
 /- English proof (translation)
-Unfold `ipK`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ipK_smul_left (c : ℂ) (x y : SmF n) : ipK κ (c • x) y = conj c * ipK κ x y := by
   unfold ipK
@@ -105,7 +105,7 @@ theorem ipK_smul_left (c : ℂ) (x y : SmF n) : ipK κ (c • x) y = conj c * ip
   simp [mul_assoc]
 
 /- English proof (translation)
-Rewrite `h` using `[ipK_self, Complex.ofReal_eq_zero]`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun k => by positivity) (integrable_normSq κ x)).1 h`. Establish `hc : Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => ‖x.1 k.1‖ ^ 2` using `(continuous_restrict x).norm.pow 2`. Use `(hc.ae_eq_iff_eq κ continuous_zero).1 hae` as an intermediate fact. Simplify using `using congrFun this k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_ipK_self [κ.IsOpenPosMeasure] (x : SmF n) (h : ipK κ x x = 0)
     (k : Matrix.unitaryGroup (Fin n) ℂ) : x.1 k.1 = 0 := by
@@ -119,7 +119,7 @@ theorem eq_zero_of_ipK_self [κ.IsOpenPosMeasure] (x : SmF n) (h : ipK κ x x = 
 end
 
 /- English proof (translation)
-Introduce `n _ _ κ _ _`. Use `⟨ipK_conj κ, fun x => ?_, ipK_add_left κ, ipK_smul_left κ, eq_zero_of_ipK_self κ⟩` and prove the remaining obligations. Rewrite using `[ipK_self, Complex.ofReal_re]`. Conclude with `integral_nonneg fun k => by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipK_form : ∀ (n : ℕ) [MeasurableSpace (Matrix.unitaryGroup (Fin n) ℂ)] [BorelSpace (Matrix.unitaryGroup (Fin n) ℂ)] (κ : Measure (Matrix.unitaryGroup (Fin n) ℂ)) [IsFiniteMeasure κ] [κ.IsOpenPosMeasure], (∀ x y : GlobalTheory.CompanionTheory.ModelS.SmF n, conj (GlobalTheory.CompanionTheory.ModelS.ipK κ y x) = GlobalTheory.CompanionTheory.ModelS.ipK κ x y) ∧ (∀ x : GlobalTheory.CompanionTheory.ModelS.SmF n, 0 ≤ (GlobalTheory.CompanionTheory.ModelS.ipK κ x x).re) ∧ (∀ x y z : GlobalTheory.CompanionTheory.ModelS.SmF n, GlobalTheory.CompanionTheory.ModelS.ipK κ (x + y) z = GlobalTheory.CompanionTheory.ModelS.ipK κ x z + GlobalTheory.CompanionTheory.ModelS.ipK κ y z) ∧ (∀ (c : ℂ) (x y : GlobalTheory.CompanionTheory.ModelS.SmF n), GlobalTheory.CompanionTheory.ModelS.ipK κ (c • x) y = conj c * GlobalTheory.CompanionTheory.ModelS.ipK κ x y) ∧ ∀ x : GlobalTheory.CompanionTheory.ModelS.SmF n, GlobalTheory.CompanionTheory.ModelS.ipK κ x x = 0 → ∀ k : Matrix.unitaryGroup (Fin n) ℂ, x.1 k.1 = 0 := by
   intro n _ _ κ _ _

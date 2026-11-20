@@ -9,7 +9,7 @@ open Polynomial CategoryTheory
 namespace GlobalTheory.SerOSys
 
 /- English proof (translation)
-Unfold `zIdem PI.CharIdem.charIdem`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem zIdem_eq_charIdem {Γ : Type} [Group Γ] [Fintype Γ] (τ : FDRep ℂ Γ) :
     zIdem τ = PI.CharIdem.charIdem τ := by
@@ -17,7 +17,7 @@ theorem zIdem_eq_charIdem {Γ : Type} [Group Γ] [Fintype Γ] (τ : FDRep ℂ Γ
   rfl
 
 /- English proof (translation)
-Introduce `Γ _ _ τ hτ`. Establish `h` using `orthogonalCentral Γ τ τ hτ hτ`. Rewrite using `[zIdem_eq_charIdem]`. Conclude with `⟨h.2.2.1, h.2.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem zIdem_centralIdempotent : ∀ {Γ : Type} [Group Γ] [Fintype Γ] (τ : FDRep ℂ Γ), Simple τ →
     zIdem τ * zIdem τ = zIdem τ ∧ ∀ a, zIdem τ * a = a * zIdem τ := by

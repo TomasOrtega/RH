@@ -4,9 +4,7 @@ open Polynomial Topology
 namespace GlobalTheory.HypersurfaceApprox
 
 /- English proof (translation)
-Proceed by induction on `c using MvPolynomial.induction_on with`. Consider the case `C a => simpa using continuous_const`. Consider the case `add f g hf hg => simp only [map_add]`. Conclude with `hf.add hg`. Consider the case `mul_X f n hf => simp only [map_mul, MvPolynomial.aeval_X]`.
-
-Conclude with `hf.mul (continuous_apply n)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_mvAeval {K : Type*} [CommRing K] {R : Type*} [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] [Algebra K R] {d : ℕ} (c : MvPolynomial (Fin d) K) :
@@ -17,7 +15,7 @@ theorem continuous_mvAeval {K : Type*} [CommRing K] {R : Type*} [CommRing R] [To
   | mul_X f n hf => simp only [map_mul, MvPolynomial.aeval_X]; exact hf.mul (continuous_apply n)
 
 /- English proof (translation)
-Simplify using `only [Polynomial.eval₂_eq_sum_range]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `((continuous_mvAeval (Q.coeff i)).comp continuous_fst).mul (continuous_snd.pow i)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_eval₂_mvAeval {K : Type*} [CommRing K] {R : Type*} [CommRing R]
     [TopologicalSpace R] [IsTopologicalRing R] [Algebra K R] {d : ℕ}
@@ -33,37 +31,33 @@ end GlobalTheory.HypersurfaceApprox
 open GlobalTheory.HypersurfaceApprox in
 
 /- English proof (translation)
-Introduce `p _ K _ E _ _ _ ι hι _ hc d m t θ P Δ Q η hη hP hθ hΔ`. Use `set n := P.natDegree with hn`. Establish `hcontC` using `fun c : MvPolynomial (Fin d) K => continuous_mvAeval (R := ℂ_[p]) c`. Establish `hD : ContinuousAt (fun yz : (Fin d → ℂ_[p]) × ℂ_[p] => MvPolynomial.aeval yz.1 Δ) (t, θ)` using `((hcontC Δ).comp continuous_fst).continuousAt`. Establish `hR : ∀ᶠ yz in 𝓝 (t, θ), MvPolynomial.aeval yz.1 Δ ≠ 0 ∧ ∀ j, ‖Polynomial.eval₂ (MvPolynomial.aeval yz.1).toRingHom yz.2 (Q j) / MvPolynomial.aeval yz.1 Δ - Polynomial.eval₂ (MvPolynomial.aeval t).toRingHom θ (Q j) / MvPolynomial.aeval t Δ‖ < η`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hD.eventually_ne hΔ).and (Filter.eventually_all.2 fun j => ?_)` and prove the remaining obligations. Establish `hcj` using `((continuous_eval₂_mvAeval (R := ℂ_[p]) (Q j)).continuousAt (x := (t, θ))).div hD hΔ`. Use `filter_upwards [Metric.tendsto_nhds.1 hcj η hη] with yz h`. Rewrite `h` using `[dist_eq_norm]`. Then use the resulting hypothesis. Rewrite `hR` using `[nhds_prod_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨pa, hpa, pb, hpb, hR⟩` from `Filter.eventually_prod_iff.1 hR`. Take `⟨ε₀, hε₀, hpb⟩` from `Metric.eventually_nhds_iff.1 hpb`. Establish `hn0 : n ≠ 0`. Introduce `h0`. Establish `h1 : P = 1` using `Polynomial.eq_one_of_monic_natDegree_zero hP h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h1] at hθ`. Use `set M := max ‖θ‖ 1 with hMdef`. Establish `hM : 0 < M` using `lt_max_of_lt_right one_pos`. Use `set ε' : ℝ := (ε₀ / (2 * M)) ^ n / (n + 1) with hε'def`. Establish `hε' : 0 < ε'` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hbound : ((n + 1 : ℝ) * ε') ^ (n : ℝ)⁻¹ * M < ε₀`. Establish `h1 : (n + 1 : ℝ) * ε' = (ε₀ / (2 * M)) ^ n`. Rewrite using `[hε'def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, Real.pow_rpow_inv_natCast (by positivity) hn0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2 : ε₀ / (2 * M) * M = ε₀ / 2` using `by field_simp`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcoef : ∀ᶠ y in 𝓝 t, ∀ i ∈ Finset.range (n + 1), ‖MvPolynomial.aeval y (P.coeff i) - MvPolynomial.aeval t (P.coeff i)‖ < ε'`. Rewrite using `[Filter.eventually_all_finset]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i _`. Use `filter_upwards [Metric.tendsto_nhds.1 ((hcontC (P.coeff i)).continuousAt (x := t)) ε' hε'] with y h`. Rewrite `h` using `[dist_eq_norm]`. Then use the resulting hypothesis. Take `⟨r, hr, hU⟩` from `Metric.eventually_nhds_iff.1 (hpa.and hcoef)`. Establish `hex : ∀ i, ∃ e : E, dist (ι e) (t i) < r` using `fun i => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `hι.exists_dist_lt (t i) hr`. Conclude with `⟨e, by rw [dist_comm]; exact he⟩`. Use `choose t' ht' using hex`. Use `set y : Fin d → ℂ_[p] := ι ∘ t' with hydef`. Establish `hy : dist y t < r` using `(dist_pi_lt_iff hr).2 ht'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hya, hyc⟩` from `hU hy`. Establish `hmap : ∀ c : MvPolynomial (Fin d) K, MvPolynomial.aeval y c = ι (MvPolynomial.aeval t' c)`. Introduce `c`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_comp_left, hc]`. Establish `hmapR : ι.comp (MvPolynomial.aeval t').toRingHom = (MvPolynomial.aeval y).toRingHom` using `RingHom.ext fun c => (hmap c).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set f := P.map (MvPolynomial.aeval t).toRingHom with hfdef`. Use `set g := P.map (MvPolynomial.aeval y).toRingHom with hgdef`. Establish `hfm : f.Monic` using `hP.map _`. Establish `hgm : g.Monic` using `hP.map _`. Establish `hfdeg : f.natDegree = n` using `hP.natDegree_map _`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hgdeg : g.natDegree = n` using `hP.natDegree_map _`. Establish `hfa : f.eval θ = 0` using `by rw [hfdef, eval_map]; exact hθ`. Establish `hco : ∀ i, ‖g.coeff i - f.coeff i‖ < ε'`. Introduce `i`. Simplify using `only [hgdef, hfdef, coeff_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hi : i ≤ n`. Conclude with `hyc i (Finset.mem_range.2 (Nat.lt_succ_of_le hi))`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (not_le.1 hi)]`. Simplify using `using hε'`. Take `⟨b, hb, hθb⟩` from `exists_roots_norm_sub_lt_of_norm_coeff_sub_lt hε' hfa hfm hgm (hgdeg.trans hfdeg.symm) hco (IsAlgClosed.splits g)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hθb` using `[hfdeg]`. Use `set g' := P.map (MvPolynomial.aeval t').toRingHom with hg'def`. Establish `hg'g : g'.map ι = g` using `by rw [hg'def, Polynomial.map_map, hmapR]`. Establish `hg'm : g'.Monic` using `hP.map _`. Rewrite `hb` using `[← hg'g, (IsAlgClosed.splits g').roots_map_of_injective ι.injective]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨θ', hθ'r, rfl⟩` from `Multiset.mem_map.1 hb`. Establish `hθ'0 : g'.eval θ' = 0` using `(mem_roots hg'm.ne_zero).1 hθ'r`. Establish `hpbb : pb (ι θ')` using `hpb (by rw [dist_comm, dist_eq_norm]; exact hθb.trans hbound)`. Take `⟨hΔy, hQ⟩` from `hR hya hpbb`. Use `⟨t', θ', ?_, ?_, fun j => ?_⟩` and prove the remaining obligations.
-
-Introduce `h0`. Apply `hΔy` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[hmap, h0, map_zero]`. Rewrite using `[← eval_map]`.
-
-Conclude with `hθ'0`. Establish `h` using `hQ j`. Simplify using `only at h`. Rewrite `h` using `[hmap Δ, ← hmapR, ← Polynomial.hom_eval₂]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_approx_point_of_denseRange : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (E : Type) [Field E] [IsAlgClosed E] [Algebra K E] (ι : E →+* ℂ_[p]), DenseRange ι → ∀ [Algebra K ℂ_[p]], ι.comp (algebraMap K E) = algebraMap K ℂ_[p] → ∀ (d m : ℕ) (t : Fin d → ℂ_[p]) (θ : ℂ_[p]) (P : Polynomial (MvPolynomial (Fin d) K)) (Δ : MvPolynomial (Fin d) K) (Q : Fin m → Polynomial (MvPolynomial (Fin d) K)) (η : ℝ), 0 < η → P.Monic → Polynomial.eval₂ (MvPolynomial.aeval t).toRingHom θ P = 0 → MvPolynomial.aeval t Δ ≠ 0 → ∃ (t' : Fin d → E) (θ' : E), MvPolynomial.aeval t' Δ ≠ 0 ∧ Polynomial.eval₂ (MvPolynomial.aeval t').toRingHom θ' P = 0 ∧ ∀ j, ‖ι (Polynomial.eval₂ (MvPolynomial.aeval t').toRingHom θ' (Q j)) / ι (MvPolynomial.aeval t' Δ) - Polynomial.eval₂ (MvPolynomial.aeval t).toRingHom θ (Q j) / MvPolynomial.aeval t Δ‖ < η := by
   intro p _ K _ E _ _ _ ι hι _ hc d m t θ P Δ Q η hη hP hθ hΔ

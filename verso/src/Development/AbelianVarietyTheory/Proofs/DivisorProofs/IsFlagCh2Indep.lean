@@ -12,11 +12,11 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hA k _ X p _ hR hX E r h H fl fl' a b ha hb`. Take `⟨C, m, g, h₀, h₁, hg⟩` from `GlobalTheory.FlagChain.exists_chain hA k X p hR hX E r h H fl fl'`. Establish `key : ∀ j : Fin (m + 1), VMetric.IsFlagCh2 (H.pull C.ρ rfl) (g j) (C.deg * a)`. Introduce `j`. Proceed by induction on `j using Fin.induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact (h₀ a).1 ha`. Consider the case `succ j ih`. Take `⟨c, hc⟩` from `GlobalTheory.VMetric.exists_isFlagCh2 hA k C.Y (C.ρ ≫ p) C.reg _ r _ (H.pull C.ρ rfl) (g j.succ)`. Rewrite using `[GlobalTheory.AdjFlag.isFlagCh2_eq_of_adjacent hA k C.Y (C.ρ ≫ p) C.reg _ r _ (H.pull C.ρ rfl) _ _ (hg j) _ _ ih hc]` and apply the resulting hypothesis. Establish `e` using `(key (Fin.last m)).unique C.reg.toIsArithVar ((h₁ b).1 hb)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 C.deg_pos.ne') e`.
+A detailed English derivation is pending.
 -/
 theorem isFlagCh2_indep : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], (∀ (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q)) → IsArithVar p 1 → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (fl fl' : Vert.Flag E r) (a b : ℝ), VMetric.IsFlagCh2 H fl a → VMetric.IsFlagCh2 H fl' b → a = b := by
   intro hA k _ X p _ hR hX E r h H fl fl' a b ha hb

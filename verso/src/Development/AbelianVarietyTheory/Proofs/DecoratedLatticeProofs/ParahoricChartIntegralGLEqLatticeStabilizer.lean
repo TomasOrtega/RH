@@ -33,19 +33,17 @@ namespace GlobalTheory.ChartStab
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `set e := GlobalTheory.EmbChart.idem (GlobalTheory.SplitProjChart.emb φ) with he_def`. Establish `hπ : GlobalTheory.SplitHecke.Chart e v (rdA φ)` using `GlobalTheory.SplitProjChart.chart_idem φ`. Establish `he : IsSplitIdem D e` using `GlobalTheory.EmbChart.isSplitIdem_idem _`. Establish `hemb : GlobalTheory.AdelicU.chartEmb hπ = GlobalTheory.SplitProjChart.emb φ` using `AlgHom.ext fun x => by`. Rewrite using `[GlobalTheory.AdelicU.chartEmb_apply, GlobalTheory.SplitProjChart.rdA_incA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `choose y hy using fun k => hπ.1 (u k)`. Take `⟨Λ₁, hle, hfg, heq⟩` from `GlobalTheory.ChainOnto.LStab.exists_fg_sub hβ`. Establish `hsl : GlobalTheory.AdelicU.splitLat (GlobalTheory.SplitProjChart.emb φ) Λ₁ = GlobalTheory.AdelicU.splitLat (GlobalTheory.SplitProjChart.emb φ) Λ`. Use extensionality with `w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.AdelicU.mem_splitLat, GlobalTheory.AdelicU.mem_splitLat, GlobalTheory.ChainOnto.LStab.latLoc_eq hle hfg heq v]`. Establish `h1` using `GlobalTheory.AdelicU.SplitFrame.mem_latHat_iff_of_support (GlobalTheory.AdelicU.isCMExt_host D) _ hfg (GlobalTheory.AdelicU.SplitFrame.vecLoc_self he hπ y) (GlobalTheory.AdelicU.SplitFrame.vecLoc_ne he hπ y)`. Rewrite `h1` using `[hemb, hsl, show (fun k => rdA φ (y k)) = u from funext hy]`. Rewrite using `[← h1, GlobalTheory.SplitFrameColumn.latHat_iff_hatL, heq]`. Establish `hβ'` using `hβ (fun k => Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E (finPart D (e * y k)))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hβ']`. Establish `hsw : (fun k => Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E (finPart D (e * y k))) = toEAf D e • fun k => toEAf D (y k)` using `funext fun k => (toEAf D).map_mul e (y k)`. Rewrite using `[hsw, Matrix.mulVec_smul]`. Use `set w : Fin n → EAf D := (β⁻¹).1 *ᵥ fun k => toEAf D (y k) with hw`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : (toEAf D e • w) i = toEAf D (e * GlobalTheory.AdelicLatMove.finEmb D (w i))`. Rewrite using `[map_mul, GlobalTheory.SplitFrameColumn.toEAf_finEmb]`. Both sides reduce to the same expression. Establish `h3 : rdA φ (GlobalTheory.AdelicLatMove.finEmb D (w i)) = ((((frCo φ β)⁻¹ : GL (Fin n) (Fv D.host.F v)).1 *ᵥ u) i)`. Rewrite using `[← GlobalTheory.SplitProjChart.rdE_toEAf, GlobalTheory.SplitFrameColumn.toEAf_finEmb, hw, RingHom.map_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `frCo`. Rewrite using `[← map_inv]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `(GlobalTheory.SplitProjChart.rdE_toEAf φ (y k)).trans (hy k)`.
-
-Rewrite using `[h2, show toEAf D (e * GlobalTheory.AdelicLatMove.finEmb D (w i)) = Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E (finPart D (e * GlobalTheory.AdelicLatMove.finEmb D (w i))) from rfl, GlobalTheory.SplitFrameCo …`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_splitLat_iff {D : D7} {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {β : GL (Fin n) (EAf D)}
     (hβ : Formalism.L2.DIV.IsFrame β Λ) {v : HeightOneSpectrum (𝓞 D.host.F)} (φ : SplitProj D v) (u : Fin n → Fv D.host.F v) :
@@ -87,15 +85,15 @@ theorem mem_splitLat_iff {D : D7} {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin
     GlobalTheory.SplitFrameColumn.comm_mem_intAf_iff, hπ.2.2.2, GlobalTheory.SplitHecke.isInt_Ov, HeightOneSpectrum.mem_adicCompletionIntegers, h3]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V`.
+A detailed English derivation is pending.
 -/
 theorem hermND (D : D7) (V : HSp D) : IsHermND D.sp.cm.sig V.gram :=
   (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V
 
 /- English proof (translation)
-Use `(GlobalTheory.AdelicU.SelfDual.forall_isSelfDualAt_iff (hermND D V).2 hΛ.1).2 (fun y => ?_) v` and prove the remaining obligations. Use `(hΛ.2 y).trans (forall₂_congr fun x _ => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Conclude with `⟨b, hb⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, hb⟩`. Conclude with `⟨b, hb⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isSelfDualAt_of_isSelfDualC {D : D7} (V : HSp D) {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hΛ : IsSelfDualC V Λ) (v : HeightOneSpectrum (𝓞 D.host.F)) :
@@ -109,7 +107,7 @@ theorem isSelfDualAt_of_isSelfDualC {D : D7} (V : HSp D) {Λ : Submodule (𝓞 D
     exact ⟨b, hb⟩
 
 /- English proof (translation)
-Introduce `u` and use `by rw [mem_splitLat_iff hβ φ, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] simp only [HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSplitBasis_frCo {D : D7} {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {β : GL (Fin n) (EAf D)}
     (hβ : Formalism.L2.DIV.IsFrame β Λ) {v : HeightOneSpectrum (𝓞 D.host.F)} (φ : SplitProj D v) :
@@ -118,7 +116,7 @@ theorem isSplitBasis_frCo {D : D7} {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fi
   simp only [HeightOneSpectrum.mem_adicCompletionIntegers]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.AdelicU.splitEquivIn_apply, ← GlobalTheory.SplitChartLink.rdA_matHom_embV]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem grpCo_emb {D : D7} (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} (φ : SplitProj D v)
     (B : GL (Fin V.rank) (Fv D.host.F v)) (x : GlobalTheory.FinZeta.Gv V v) :
@@ -132,7 +130,7 @@ section Reindex
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Use `⟨Units.map (Matrix.reindexAlgEquiv (ValuativeRel.valuation K).integer (ValuativeRel.valuation K).integer ε.symm).toMonoidHom a, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[h]`. Simplify using `[Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem reindex_mem_KO {m ι : Type} [Fintype m] [DecidableEq m] [Fintype ι] [DecidableEq ι] (ε : ι ≃ m)
     {x : GL m K} (hx : x ∈ GlobalTheory.SplitWeil.KO K m) (y : GL ι K) (h : ∀ i j, y.1 i j = x.1 (ε i) (ε j)) :
@@ -144,7 +142,7 @@ theorem reindex_mem_KO {m ι : Type} [Fintype m] [DecidableEq m] [Fintype ι] [D
   simp [Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hx => reindex_mem_KO ε hx y h, fun hy => reindex_mem_KO ε.symm hy x fun i j => by rw [h]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_KO_iff_reindex {m ι : Type} [Fintype m] [DecidableEq m] [Fintype ι] [DecidableEq ι] (ε : ι ≃ m)
     (x : GL m K) (y : GL ι K) (h : ∀ i j, y.1 i j = x.1 (ε i) (ε j)) :
@@ -155,9 +153,9 @@ theorem mem_KO_iff_reindex {m ι : Type} [Fintype m] [DecidableEq m] [Fintype ι
 end Reindex
 
 /- English proof (translation)
-Introduce `D s k v φ ι hsd hfr hch e he y`. Take `⟨ε, -, hε⟩` from `hch`. Establish `hB` using `isSplitBasis_frCo hfr φ`. Establish `hL` using `isSelfDualAt_of_isSelfDualC s.V hsd v`. Rewrite using `[GlobalTheory.AdelicU.mem_stabLoc_iff_GLint (GlobalTheory.AdelicU.isCMExt_host D) (hermND D s.V) hL hB, (GlobalTheory.AdelicU.GLint_eq_KO_and_princ_eq_KOne v _).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(hε y).2`. Rewrite `h2` using `[he y, grpCo_emb]`. Conclude with `mem_KO_iff_reindex ε _ y fun i j => by rw [← h2]; rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_stab : ∀ (D : D7) (s : PiLocalization₂ D) (k : ℕ) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (ι : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) →* GA D s.V), IsSelfDualC s.V s.Λ → Formalism.L2.DIV.IsFrame s.β s.Λ → IsChart s k φ ι → ∀ e : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) → GlobalTheory.FinZeta.Gv s.V v, (∀ y, ι y = GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v (e y)) → ∀ y, e y ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig s.V.gram s.Λ v ↔ y ∈ GlobalTheory.SplitWeil.KO (Fv D.host.F v) _ := by
   intro D s k v φ ι hsd hfr hch e he y

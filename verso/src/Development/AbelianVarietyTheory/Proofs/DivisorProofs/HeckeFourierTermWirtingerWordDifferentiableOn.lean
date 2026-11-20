@@ -17,13 +17,13 @@ namespace GlobalTheory.HeckeTwo.TermHol
 open Classical in
 
 /- English proof (translation)
-Establish `hU` using `GlobalTheory.HeckeTwo.GoodAdd.upperHalf_isOpen F`. Proceed by induction on `w with`. Consider the case `nil`. Use `⟨Unit, inferInstance, fun _ => 1, fun _ => 0, fun σ _ z _ => ?_⟩` and prove the remaining obligations. Simplify using `[wirtWord_nil, termQ_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `cons x ws ih`. Take `⟨ι, _, c, qf, h⟩` from `ih`. Take `⟨τ₀, bar⟩` from `x`. Use `⟨ι ⊕ ι, inferInstance, Sum.elim (fun i => c i * (2 * (Real.pi : ℂ) * I * ((τ₀ ν * τ₀ b : ℝ) : ℂ)) / 2) (fun i => (if bar then I else -I) * c i * ((τ₀ b : ℝ) : ℂ) / 2), Sum.elim qf (fun i => qf i + Pi.single τ₀ 1), fun σ hσ z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[wirtWord_cons]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.HeckeTwo.GoodAdd.wirt_congr hU (g := fun z => ∑ i, c i * termQ σ b ν (qf i) z) (fun z hz => h σ hσ z hz) _ _ hz]`. Establish `hd` using `fun i => GlobalTheory.T.heckeYDerivativeTerm_hasFDeriv_upperHalfPlane F b ν hb hJ σ hσ (qf i) z hz τ₀`. Establish `hF : HasFDerivAt (fun z => ∑ i, c i * termQ σ b ν (qf i) z) (∑ i, c i • fderiv ℝ (termQ σ b ν (qf i)) z) z` using `HasFDerivAt.fun_sum fun i _ => ((hd i).1.hasFDerivAt.const_mul (c i))`. Simplify using `only [wirt, hF.fderiv, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, (hd _).2.1, (hd _).2.2, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_div, ← Finset.sum_add_distrib]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wirtWord_eq_sum (F : Type) [Field F] [NumberField F] (b ν : F) (hb : b ≠ 0) (hJ : (∀ (n : ℝ) (k : ℕ) (y : ℝ), y ≠ 0 →
     (∀ σ ∈ halfPlane, HasDerivAt (iteratedDeriv k (hTrans σ n)) (iteratedDeriv (k + 1) (hTrans σ n) y) y) ∧
@@ -61,9 +61,9 @@ end GlobalTheory.HeckeTwo.TermHol
 open GlobalTheory.HeckeTwo.TermHol in
 
 /- English proof (translation)
-Introduce `F _ _ b ν hb w z hz`. Establish `hJ` using `GlobalTheory.T.iteratedDeriv_heckePhiTransform_hasDerivAt_holo GlobalTheory.T.heckeHankelTransformAB_hasDerivAt_y GlobalTheory.T.heckeHankelTransformAB_differentiableOn_sigma`. Take `⟨ι, _, c, qf, h⟩` from `wirtWord_eq_sum F b ν hb hJ w`. Use `DifferentiableOn.congr ?_ (fun σ hσ => h σ hσ z hz)` and prove the remaining obligations. Use `DifferentiableOn.fun_sum fun i _ => DifferentiableOn.const_mul ?_ _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `termQ`. Use `DifferentiableOn.fun_finset_prod fun τ _ => DifferentiableOn.const_mul ?_ _` and prove the remaining obligations. Establish `hy : (τ b : ℝ) * (z τ).im ≠ 0` using `mul_ne_zero ((map_ne_zero τ).2 hb) (hz τ).ne'`. Conclude with `(hJ (τ ν) (qf i τ) _ hy).2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeTwo.fTerm_wirtWord_differentiableOn : ∀ (F : Type) [Field F] [NumberField F] (b ν : F), b ≠ 0 → ∀ w : List (Emb F × Bool), ∀ z ∈ upperHalf F,
   DifferentiableOn ℂ (fun σ => wirtWord w (fun z : Emb F → ℂ => fTerm σ z b ν) z) halfPlane := by

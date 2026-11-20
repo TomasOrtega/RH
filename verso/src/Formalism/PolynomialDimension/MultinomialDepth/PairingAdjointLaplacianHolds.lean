@@ -20,30 +20,30 @@ def eulY (f : PolXY K k) : PolXY K k := ∑ i : Fin k, X (Sum.inr i) * pderiv (S
 variable {K k}
 
 /- English proof (translation)
-Simplify using `[ctrF, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ctrF_apply (f : PolXY K k) :
     ctrF K k f = ∑ i : Fin k, pderiv (Sum.inl i) (pderiv (Sum.inr i) f) := by
   simp [ctrF, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `[hXY, pderiv_X, Pi.single_apply, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inl_h (i : Fin k) : pderiv (Sum.inl i) (hXY K k) = X (Sum.inr i) := by
   classical
   simp [hXY, pderiv_X, Pi.single_apply, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Simplify using `[hXY, pderiv_X, Pi.single_apply, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_inr_h (i : Fin k) : pderiv (Sum.inr i) (hXY K k) = X (Sum.inl i) := by
   classical
   simp [hXY, pderiv_X, Pi.single_apply, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Establish `key : ∀ i : Fin k, pderiv (Sum.inl i) (pderiv (Sum.inr i) (hXY K k * f)) = hXY K k * pderiv (Sum.inl i) (pderiv (Sum.inr i) f) + f + X (Sum.inl i) * pderiv (Sum.inl i) f + X (Sum.inr i) * pderiv (Sum.inr i) f`. Introduce `i`. Rewrite using `[pderiv_mul, pderiv_inr_h, map_add, pderiv_mul, pderiv_mul, pderiv_inl_h, pderiv_X_self]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ctrF_apply, ctrF_apply, eulX_har, eulY, Finset.sum_congr rfl (fun i _ => key i)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← Nat.cast_smul_eq_nsmul K]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ctrF_h_mul (f : PolXY K k) :
     ctrF K k (hXY K k * f) = hXY K k * ctrF K k f + (k : K) • f + eulX_har K k f + eulY K k f := by
@@ -60,9 +60,9 @@ theorem ctrF_h_mul (f : PolXY K k) :
   rw [← Nat.cast_smul_eq_nsmul K]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => simp [mul_add, hp, hq]`. Consider the case `monomial n a`. Rewrite using `[X_mul_pderiv_monomial, coeff_smul, coeff_monomial]`. Distinguish the cases in `h : n = m`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coeff_X_mul_pderiv (v : XY k) (f : PolXY K k) (m : XY k →₀ ℕ) :
     coeff m (X v * pderiv v f) = (m v : K) * coeff m f := by
@@ -76,21 +76,21 @@ theorem coeff_X_mul_pderiv (v : XY k) (f : PolXY K k) (m : XY k →₀ ℕ) :
     · simp [h]
 
 /- English proof (translation)
-Simplify using `[eulX_har, coeff_sum, coeff_X_mul_pderiv, xDeg, Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_eulX (f : PolXY K k) (m : XY k →₀ ℕ) :
     coeff m (eulX_har K k f) = (xDeg m : K) * coeff m f := by
   simp [eulX_har, coeff_sum, coeff_X_mul_pderiv, xDeg, Finset.sum_mul]
 
 /- English proof (translation)
-Simplify using `[eulY, coeff_sum, coeff_X_mul_pderiv, yDeg, Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_eulY (f : PolXY K k) (m : XY k →₀ ℕ) :
     coeff m (eulY K k f) = (yDeg m : K) * coeff m f := by
   simp [eulY, coeff_sum, coeff_X_mul_pderiv, yDeg, Finset.sum_mul]
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_eulX, coeff_smul, smul_eq_mul]`. Distinguish the cases in `hm : m ∈ f.support`. Rewrite using `[(hf m hm).1]`. Rewrite using `[notMem_support_iff.1 hm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -103,7 +103,7 @@ theorem eulX_of_mem {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
   · rw [notMem_support_iff.1 hm]; simp
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_eulY, coeff_smul, smul_eq_mul]`. Distinguish the cases in `hm : m ∈ f.support`. Rewrite using `[(hf m hm).2]`. Rewrite using `[notMem_support_iff.1 hm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -118,7 +118,7 @@ theorem eulY_of_mem {A B : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k A B) :
 end Gen
 
 /- English proof (translation)
-Introduce `K _ _ k A B f hf`. Rewrite using `[ctrF_h_mul, eulX_of_mem hf, eulY_of_mem hf]`. Simplify using `only [Algebra.smul_def, Nat.cast_add, Nat.cast_mul, Nat.cast_one, Nat.cast_zero, map_add, map_mul, map_one, map_zero, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem slTwoCommutator_holds : SlTwo := by
   intro K _ _ k A B f hf

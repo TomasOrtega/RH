@@ -18,7 +18,7 @@ open GlobalTheory.HkFam
 namespace GlobalTheory.HkFam.KerSch
 
 /- English proof (translation)
-Establish `: CompactSpace ↥(pullback q x)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd q x)`. Take `⟨p, -⟩` from `(pullback.snd q x).surjective (default : PrimeSpectrum k)`. Take `⟨z, -, hz⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback q x)) ⟨p, trivial⟩`. Use `⟨pointOfClosedPoint (pullback.snd q x) z hz ≫ pullback.fst q x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_of_finite {k : Type} [Field k] [IsAlgClosed k] {Y Z : Scheme.{0}} (q : Y ⟶ Z)
     [IsFinite q] [Surjective q] (x : Sp k ⟶ Z) : ∃ y : Sp k ⟶ Y, y ≫ q = x := by
@@ -29,9 +29,9 @@ theorem exists_lift_of_finite {k : Type} [Field k] [IsAlgClosed k] {Y Z : Scheme
   rw [Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨w, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback y₀ t h`. Take `⟨k', _, _, z, -⟩` from `exists_geomPt_range_eq (pullback f u) w`. Use `⟨k', inferInstance, inferInstance, z ≫ pullback.snd f u, z ≫ pullback.fst f u, ?_, ?_⟩` and prove the remaining obligations. Generalize the expression as in `z ≫ pullback.snd f u = a`. Establish `: Surjective a` using `⟨fun x => ⟨(default : PrimeSpectrum k'), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `: Subsingleton (Sp k)` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Establish `: Flat a` using `inferInstance`. Conclude with `Flat.epi_of_flat_of_surjective a`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_ext {k : Type} [Field k] {Y Z : Scheme.{0}} (f : Y ⟶ Z) (u : Sp k ⟶ Z) (t : Sp k) (y₀ : Y)
     (h : f y₀ = u t) : ∃ (k' : Type) (_ : Field k') (_ : IsAlgClosed k') (a : Sp k' ⟶ Sp k) (y : Sp k' ⟶ Y),
@@ -52,13 +52,13 @@ variable {A X G₁ Z GY Y : Scheme.{0}} {α : A ⟶ X} {g₁ : G₁ ⟶ Z} {gY :
   {π : Z ⟶ X} {q : Y ⟶ Z} {n : ℕ} {σ : Fin n → (Y ⟶ GY)}
 
 /- English proof (translation)
-Establish `hs : ∀ j, σ j ≫ ψ ≫ g₁ = q` using `fun j => by rw [h₂.w, reassoc_of% hσ j]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨w, hw, e⟩` from `h ⟨(default : PrimeSpectrum k), rfl⟩`. Take `⟨j, y₀, rfl⟩` from `Set.mem_iUnion.1 hw`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k', _, _, a, y', ha, e'⟩` from `exists_lift_ext (σ j ≫ ψ) u _ y₀ (by rw [Scheme.Hom.comp_apply]; exact e)`. Establish `e₁ : y' ≫ q = (a ≫ y) ≫ q`. Rewrite using `[Category.assoc, ← hu, ← reassoc_of% e', hs j]`. Establish `e₂ : y' ≫ σ j ≫ ψ ≫ φ ∈ Set.range (fun j => (a ≫ y) ≫ σ j ≫ ψ ≫ φ)` using `hfib k' _ _ e₁ ▸ ⟨j, rfl⟩`. Take `⟨j', e₃⟩` from `e₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨j', h₁.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi a, ← reassoc_of% e']`. Simplify using `using e₃.symm`. Simplify using `only [Category.assoc, hs, hu]`. Introduce and unpack `⟨j, rfl⟩ _ ⟨t, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨σ j (y t), Set.mem_iUnion.2 ⟨j, _, rfl⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem range_subset_iff (h₁ : IsPullback φ g₁ α π) (h₂ : IsPullback ψ gY g₁ q) (hσ : ∀ j, σ j ≫ gY = 𝟙 Y)
     (hfib : ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ Y), y ≫ q = y' ≫ q →
@@ -83,13 +83,13 @@ theorem range_subset_iff (h₁ : IsPullback φ g₁ α π) (h₂ : IsPullback ψ
     exact ⟨σ j (y t), Set.mem_iUnion.2 ⟨j, _, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨j, t, rfl⟩` from `Set.mem_iUnion.1 hw`. Use `⟨σ j (h t), Set.mem_iUnion.2 ⟨j, _, rfl⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hh]`. Introduce `hw`. Take `⟨k, _, _, z, hz⟩` from `exists_geomPt_range_eq GT w`. Establish `hzw : ∀ t, z t = w` using `fun t => by`. Establish `: z t ∈ Set.range z` using `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hz]`. Then use the resulting hypothesis. Take `⟨t₀⟩ : Nonempty (Sp k)` from `⟨(default : PrimeSpectrum k)⟩`. Take `⟨j, e⟩` from `(range_subset_iff h₁ h₂ hσ hfib (z ≫ gT ≫ h) (z ≫ ν) (by simp [h₃.w])).1 (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply, hzw]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw)`. Establish `e' : z = z ≫ gT ≫ τ j` using `h₃.hom_ext (by simp [e, hh]) (by simp [hτ])`. Use `Set.mem_iUnion.2 ⟨j, gT w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzw t₀, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← e']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_eq (h₁ : IsPullback φ g₁ α π) (h₂ : IsPullback ψ gY g₁ q) (hσ : ∀ j, σ j ≫ gY = 𝟙 Y)
     (hfib : ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ Y), y ≫ q = y' ≫ q →
@@ -118,11 +118,11 @@ theorem preimage_eq (h₁ : IsPullback φ g₁ α π) (h₂ : IsPullback ψ gY g
     rw [← hzw t₀, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← e']
 
 /- English proof (translation)
-Establish `hs : ∀ j, σ j ≫ ψ ≫ g₁ = q` using `fun j => by rw [h₂.w, reassoc_of% hσ j]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `w : (y ≫ σ j ≫ ψ ≫ φ) ≫ α = (y' ≫ q) ≫ π`. Simplify using `only [Category.assoc, h₁.w, reassoc_of% hs, e]`. Establish `hu : (y ≫ σ j ≫ ψ) ≫ g₁ = y ≫ q` using `by simp only [Category.assoc, hs]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `H (y ≫ σ j ≫ ψ) (h₁.lift _ _ w) hu (h₁.lift_snd _ _ _) (by simp) ((range_subset_iff h₁ h₂ hσ hfib y _ hu).2 ⟨j, rfl⟩)` as an intermediate fact. Take `⟨j', e'⟩` from `(range_subset_iff h₁ h₂ hσ hfib y' _ (h₁.lift_snd _ _ w)).1 this`. Use `⟨j', ?_⟩` and prove the remaining obligations. Use `h₁.lift_fst _ _ w` as an intermediate fact. Rewrite `this` using `[e']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem range_subset_range (h₁ : IsPullback φ g₁ α π) (h₂ : IsPullback ψ gY g₁ q) (hσ : ∀ j, σ j ≫ gY = 𝟙 Y)
     (hfib : ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ Y), y ≫ q = y' ≫ q →
@@ -153,23 +153,23 @@ namespace GlobalTheory.HkFam
 open KerSch
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo 𝔓 p i hA`. Take `⟨Y, Hk, q, π₁, oY, m, σ, K, hqf, hqe, hqs, hπf, hπe, hL, hK, hfib, huniv⟩` from `GlobalTheory.T.exists_heckeKernelLists_modulo_permutations E H D l Xo 𝔓 p i (p ^ (2 * (Module.finrank ℚ E / 2 * (D.p + D.q)))) hA`. Take `⟨o₁, ⟨m₁⟩⟩` from `obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ Xo.s (π₁ ≫ Xo.s) π₁ rfl rfl (by simp [spMap]) Xo.univ`. Take `⟨m', hm'⟩` from `((ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o₁ oY).2 π₁ q m₁).2 m`. Establish `h₁` using `m₁.cart.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₂` using `m'.cart.1`. Establish `hσ : ∀ j, (σ j).left ≫ oY.t.G.hom = 𝟙 Y` using `fun j => Over.w (σ j)`. Rewrite `hfib` using `[hm']`. Establish `hfib'` using `fun (k : Type) [Field k] [IsAlgClosed k] (y y' : Sp k ⟶ Y) e => ((hfib k y y').1 e).1`. Establish `hKσ` using `hL.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : K = m'.toSABMap.φ ⁻¹' (m'.toSABMap.φ '' K)`. Use `preimage_eq (σ := fun j => (σ j).left) h₁ h₂ hσ hfib' (h := 𝟙 Y) (ν := m'.toSABMap.φ) (gT := oY.t.G.hom) (by simpa using h₂) (τ := fun j => (σ j).left) hσ (fun j => by simp)` as an intermediate fact. Rewrite using `[hKσ]`. Conclude with `this`. Use `⟨Hk, π₁, o₁, m₁, m'.toSABMap.φ '' K, hπf, hπe, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.heckeSet_descends E H D l 𝔓 p i _ _ _ _ q o₁ oY m' _ hA hqs (hpre ▸ hK)`. Use `etSet_of_lists _ _ q _ _ m'.toSABMap.φ (p ^ 2) _ σ _ (ObjDim.isAbelianScheme o₁) m'.cart ?_ hqf hqe hqs (hpre ▸ hL)` and prove the remaining obligations. Use `((baseKA l).unit (p ^ 2) (pow_pos hA.2.2.1.pos 2)).map ((Scheme.ΓSpecIso (CommRingCat.of (KA l))).inv ≫ (π₁ ≫ Xo.s).appTop).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Introduce `k _ _ z z' e h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `exists_lift_of_finite q z`. Take `⟨y', rfl⟩` from `exists_lift_of_finite q z'`. Rewrite `e` using `[Category.assoc, Category.assoc]`. Rewrite `h` using `[hKσ]`. Use `(hfib k y y').2 ⟨subset_antisymm ?_ ?_, e⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `range_subset_range (σ := fun j => (σ j).left) h₁ h₂ hσ hfib' y y' e fun u u' hu hu' e' => (h (Over.homMk u hu) (Over.homMk u' hu') e').1`. Conclude with `range_subset_range (σ := fun j => (σ j).left) h₁ h₂ hσ hfib' y' y e.symm fun u u' hu hu' e' => (h (Over.homMk u' hu') (Over.homMk u hu) e'.symm).2`. Introduce `T s o f mu τ K' hL' hK'`. Take `⟨h, hf, hh⟩` from `huniv T f o.t mu.toSABMap τ K' hL' hK'`. Rewrite `hf` using `[← Category.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hf` using the available equality. Take `⟨n, hn⟩` from `((ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o₁ o).2 π₁ (h ≫ q) m₁).2 mu`. Establish `h₃` using `n.cart.1`. Establish `hτ : ∀ j, (τ j).left ≫ o.t.G.hom = 𝟙 T` using `fun j => Over.w (τ j)`. Use `⟨h ≫ q, n, rfl, hn.symm, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hL'.2.1, hKσ]`. Use `preimage_eq (σ := fun j => (σ j).left) h₁ h₂ hσ hfib' h₃ (τ := fun j => (τ j).left) hτ fun j => ?_` and prove the remaining obligations. Use `h₁.hom_ext ?_ ?_` and prove the remaining obligations. Use `hh j` as an intermediate fact. Rewrite `this` using `[hm', hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using this.symm`. Establish `e₁` using `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ (h ≫ q)) (hτ j))`. Establish `e₂` using `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ q) (hσ j))`. Simplify using `only [Category.assoc, h₃.w, h₂.w]`. Conclude with `(e₁.trans (Category.id_comp _)).trans (congrArg (h ≫ ·) (e₂.trans (Category.id_comp _)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_heckeKernelScheme : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ), admitted l 𝔓 p → ∃ (Hk : Scheme.{0}) (π₁ : Hk ⟶ Xo.X) (o₁ : Ob D l (π₁ ≫ Xo.s)) (m₁ : ObjMap o₁ Xo.univ π₁) (K : Set o₁.t.G.left), IsFinite π₁ ∧ Etale π₁ ∧ HeckeSet D o₁.t 𝔓 p i K ∧ EtSet o₁.t.G K ∧ (∀ (k : Type) [Field k] [IsAlgClosed k] (z : Sp k ⟶ Hk) (z' : Sp k ⟶ Hk), z ≫ π₁ = z' ≫ π₁ → (∀ (u : Over.mk z ⟶ o₁.t.G) (u' : Over.mk z' ⟶ o₁.t.G), u.left ≫ m₁.toSABMap.φ = u'.left ≫ m₁.toSABMap.φ → (Set.range u.left ⊆ K ↔ Set.range u'.left ⊆ K)) → z = z') ∧ ∀ (T : Scheme.{0}) (s : T ⟶ Sp (KA l)) (o : Ob D l s) (f : T ⟶ Xo.X) (mu : ObjMap o Xo.univ f) (τ : Fin (p ^ (2 * (Module.finrank ℚ E / 2 * (D.p + D.q)))) → (𝟙_ (Over T) ⟶ o.t.G)) (K' : Set o.t.G.left), Lists (p ^ 2) τ K' → HeckeSet D o.t 𝔓 p i K' → ∃ (h : T ⟶ Hk) (n : ObjMap o o₁ h), h ≫ π₁ = f ∧ n.toSABMap.φ ≫ m₁.toSABMap.φ = mu.toSABMap.φ ∧ K' = n.toSABMap.φ ⁻¹' K := by
   intro E _ _ _ H D l Xo 𝔓 p i hA

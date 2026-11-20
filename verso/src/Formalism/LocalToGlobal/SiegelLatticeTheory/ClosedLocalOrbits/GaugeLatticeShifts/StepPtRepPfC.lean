@@ -13,12 +13,12 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj
 variable {n : ℕ} {ε : Fin n → Bool} {r k : ℕ}
 
 /- English proof (translation)
-Simplify using `[uMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uMat_mul_inv (g : Formalism.REAL.UJ ε) : uMat g * uMat g⁻¹ = 1 := by simp [uMat]
 
 /- English proof (translation)
-Unfold `eN`. Rewrite using `[Finset.sum_eq_single i0 (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, Real.sqrt_sq (norm_nonneg _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eN_single (i0 : Fin k) (z : ℂ) : eN (Pi.single i0 z) = ‖z‖ := by
   unfold eN
@@ -26,7 +26,7 @@ theorem eN_single (i0 : Fin k) (z : ℂ) : eN (Pi.single i0 z) = ‖z‖ := by
     Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = L`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_last_smul (L : Fin (r + 1)) (d : ℂ) : Pi.single L d = d • Pi.single L (1 : ℂ) := by
   funext j
@@ -35,39 +35,35 @@ theorem single_last_smul (L : Fin (r + 1)) (d : ℂ) : Pi.single L d = d • Pi.
   · simp [hj]
 
 /- English proof (translation)
-Use `set L := Fin.last r with hL`. Use `set c := Z⁻¹ *ᵥ Pi.single L 1 with hcdef`. Establish `hZc : Z *ᵥ c = Pi.single L 1` using `by rw [hcdef, mulVec_mulVec, mul_nonsing_inv _ hZ, one_mulVec]`. Establish `hc0 : c ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hZc` using `[h, mulVec_zero]`. Use `congrFun hZc L` as an intermediate fact. Simplify using `at this`. Take `⟨N, hNdef⟩ : ∃ N : ℂ, N = star c ⬝ᵥ c` from `⟨_, rfl⟩`. Establish `hN : N ≠ 0` using `by rw [hNdef]; exact fun h => hc0 (dotProduct_star_self_eq_zero.1 h)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, htdef⟩ : ∃ t : Fin (r + 1) → ℂ, t = ((σ : ℂ) / N) • star c` from `⟨_, rfl⟩`. Establish `htc : t ⬝ᵥ c = σ` using `by rw [htdef, smul_dotProduct, smul_eq_mul, ← hNdef, div_mul_cancel₀ _ hN]`. Take `⟨Γ, hΓ⟩ : ∃ Γ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ, Γ = Matrix.of fun b c' => if b = L then (if c' = L then -(B.T : ℂ) else 0) else 0` from `⟨_, rfl⟩`. Take `⟨Q, hQdef⟩ : ∃ Q : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ, Q = Γ + ((A.T : ℂ)⁻¹) • vecMulVec (star (Z L)) (Z L) - vecMulVec (star t) t` from `⟨_, rfl⟩`. Establish `hAstar : star ((A.T : ℂ)⁻¹) = (A.T : ℂ)⁻¹` using `by rw [star_inv₀, Complex.star_def, Complex.conj_ofReal]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBstar : star (-(B.T : ℂ)) = -(B.T : ℂ)` using `by rw [star_neg, Complex.star_def, Complex.conj_ofReal]`. Establish `hQ : Qᴴ = Q`. Use extensionality with `b c'`. Simplify using `only [hQdef, hΓ, conjTranspose_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, of_apply, vecMulVec_apply, Pi.star_apply, smul_eq_mul, star_add, star_sub, star_mul', star_star, hAstar]`. Apply the tactic sequence `by_cases hb : b = L <;> by_cases hc : c' = L <;> simp [hb, hc, hBstar] <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzc : Z L ⬝ᵥ c = 1`. Use `congrFun hZc L` as an intermediate fact. Simplify `this` using `[mulVec]`. Establish `hΓv : Γ *ᵥ c = Pi.single L (-(B.T : ℂ) * c L)`. Use function extensionality and compare the values at `b`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hb : b = L`. Substitute `hb` using the available equality. Simplify using `[hΓ, mulVec, dotProduct, Finset.sum_ite_eq']`. Simplify using `[hΓ, mulVec, dotProduct, hb]`. Establish `hcQ : star c ⬝ᵥ (Q *ᵥ c) = 0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQdef, sub_mulVec, add_mulVec, smul_mulVec, dotProduct_sub, dotProduct_add, dotProduct_smul, dot_vmv, dot_vmv, hΓv, dotProduct_single, star_dotProduct_star, star_dotProduct_star, hzc, htc, smul_eq_mul, star_one, mul_one, mul_one]`. Establish `h1 : star (c L) * c L = ((‖c L‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : star (σ : ℂ) * σ = ((σ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, hσ2, Pi.star_apply, show star (c L) * (-(B.T : ℂ) * c L) = -(B.T : ℂ) * (star (c L) * c L) by ring, h1]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Aα, hAlast, hAeq⟩` from `solveHerm Z Q hZ hQ hcQ`. Use `set y := A.yv i0 Z Aα t with hydef`. Establish `hgram : ∀ b c', hJ ε (y b) (y c') = hJ ε (fam B.e B.z b) (fam B.e B.z c')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `b c'`. Rewrite using `[hydef, A.gram i0 Z Aα t hAlast, B.gf]`. Establish `hq` using `congrFun (congrFun hAeq b) c'`. Rewrite `hq` using `[Matrix.add_apply]`. Establish `hQbc : Q b c' = Γ b c' + (A.T : ℂ)⁻¹ * (star (Z L b) * Z L c') - star (t b) * t c'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hQdef, vecMulVec_apply]`. Establish `hΓbc : Γ b c' = if b = L ∧ c' = L then -(B.T : ℂ) else 0`. Rewrite using `[hΓ, of_apply]`. Apply the tactic sequence `by_cases hb : b = L <;> by_cases hc : c' = L <;> simp [hb, hc]`. Rewrite using `[← hΓbc]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take the linear combination `hq + hQbc`. Set `s : (Fin (r + 1) ⊕ {i : Fin k // i ≠ i0}) → Fin n → ℂ` to `Sum.elim (fam B.e B.z) (fun i => B.wb i.1)`. Set `tt : (Fin (r + 1) ⊕ {i : Fin k // i ≠ i0}) → Fin n → ℂ` to `Sum.elim y (fun i => A.wb i.1)`. Establish `hs : LinearIndependent ℂ s` using `li_of_pair ε s (Sum.elim B.Fv (fun i => B.wb i.1)) 1 (by simp) (by`. Introduce and unpack `(a|j) (b|i)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[s, B.Fv_fam, one_apply]`. Simplify using `[s, B.Fv_w, one_apply]`. Simplify using `[s, B.w_fam, one_apply]`. Simplify using `[s, B.ww, one_apply, Subtype.ext_iff])`. Establish `ht : LinearIndependent ℂ tt` using `li_of_pair ε tt (Sum.elim (fam A.e A.z) (fun i => A.wb i.1)) (Matrix.fromBlocks Z 0 0 1) (by rw [det_fromBlocks_zero₂₁, det_one, mul_one]; exact hZ) (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce and unpack `(a|j) (b|i)`. Simplify using `[tt, hydef, A.p1]`. Simplify using `[tt, A.fam_w]`. Simplify using `[tt, hydef, A.p4, j.2]`. Simplify using `[tt, A.ww, one_apply, Subtype.ext_iff])`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : ∀ i j, hJ ε (tt i) (tt j) = hJ ε (s i) (s j)`. Introduce and unpack `(b|i) (c'|j)`. Conclude with `hgram b c'`. Use `show hJ ε (y b) (A.wb j.1) = hJ ε (fam B.e B.z b) (B.wb j.1)`. Rewrite using `[swapJ (A.p4 i0 Z Aα t j.1 b), if_neg j.2, star_zero, B.fam_w]`.
-
-Use `show hJ ε (A.wb i.1) (y c') = hJ ε (B.wb i.1) (fam B.e B.z c')`. Rewrite using `[hydef, A.p4, if_neg i.2, B.w_fam]`. Use `show hJ ε (A.wb i.1) (A.wb j.1) = hJ ε (B.wb i.1) (B.wb j.1)`. Rewrite using `[A.ww, B.ww]`. Take `⟨g, hg⟩` from `wittFam ε s tt hs ht hG`.
-
-Conclude with `⟨g, y, t, htc, fun b => hg (Sum.inl b), fun i hi => hg (Sum.inr ⟨i, hi⟩), A.p1 i0 Z Aα t, A.p4 i0 Z Aα t⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realize (A B : Fr ε r k) (i0 : Fin k) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (hZ : IsUnit Z.det)
     (σ : ℝ) (hσ2 : σ ^ 2 = (A.T)⁻¹ - B.T * ‖(Z⁻¹ *ᵥ Pi.single (Fin.last r) 1) (Fin.last r)‖ ^ 2) :

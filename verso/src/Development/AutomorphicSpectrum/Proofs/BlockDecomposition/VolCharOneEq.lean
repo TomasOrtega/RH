@@ -7,11 +7,11 @@ open PositivityTheory.He2M1 GroundTheory.Global GroundTheory.Automorphic GroundT
 namespace GlobalTheory.CompanionTheory.EpsteinVol
 
 /- English proof (translation)
-Use `haveI := GroundTheory.Global.isHaarMeasure_normOneMeasure k`. Use `haveI : Countable ↥(GroundTheory.Global.diagonalNormOne k).op := by haveI := GroundTheory.Global.countable_diagonalNormOne k`. Use `Function.Injective.countable (f := fun x : ↥(GroundTheory.Global.diagonalNormOne k).op => (⟨x.1.unop, Subgroup.mem_op.mp x.2⟩ : ↥(GroundTheory.Global.diagonalNormOne k))) ?_` and prove the remaining obligations. Introduce `x y h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `MulOpposite.unop_injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Establish `hfin : GroundTheory.Global.normOneMeasure k (GroundTheory.Global.normOneFundamentalDomain k) < ⊤` using `GroundTheory.Global.normOneMeasure_normOneFundamentalDomain_lt_top k`. Establish `hne : GroundTheory.Global.normOneMeasure k (GroundTheory.Global.normOneFundamentalDomain k) ≠ 0` using `(GroundTheory.Global.isFundamentalDomain_normOneFundamentalDomain k (GroundTheory.Global.normOneMeasure k)).measure_ne_zero (NeZero.ne _)`. Use `⟨(GroundTheory.Global.normOneMeasure k (GroundTheory.Global.normOneFundamentalDomain k)).toReal, ENNReal.toReal_pos hne hfin.ne, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2 : volChar (1 : HeckeCharacter k) = ∫ _u in GroundTheory.Global.normOneFundamentalDomain k, (1 : ℂ) ∂GroundTheory.Global.normOneMeasure k`. Unfold `volChar`. Use `congr 1`. Rewrite using `[h2, MeasureTheory.setIntegral_const]`. Simplify using `[Measure.real]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem volChar_one_eq {k : Type} [Field k] [NumberField k] :
     ∃ V : ℝ, 0 < V ∧ volChar (1 : HeckeCharacter k) = (V : ℂ) := by

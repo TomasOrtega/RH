@@ -16,13 +16,11 @@ open GlobalTheory.ConvSer
 namespace GlobalTheory.ConvSer.HeightOne
 
 /- English proof (translation)
-Establish `hp0 : 0 < p` using `hp.out.pos`. Establish `: NeZero p` using `⟨hp0.ne'⟩`. Take `⟨z, hz⟩ : ∃ z : K, IsPrimitiveRoot z p` from `HasEnoughRootsOfUnity.exists_primitiveRoot K p`. Use `choose r hr using fun x : K => IsAlgClosed.exists_pow_nat_eq x hp0`. Establish `h : ∀ n, (fun n : ℕ => Nat.casesOn (motive` using `fun _ => K) n 1 fun m => r^[m] z) (n + 1) ^ p = (fun n : ℕ => Nat.casesOn (motive := fun _ => K) n 1 fun m => r^[m] z) n := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Consider the cases of `n with`. Consider the case `zero => exact hz.pow_eq_one`. Consider the case `succ m => show (r^[m + 1] z) ^ p = r^[m] z`. Rewrite using `[Function.iterate_succ_apply', hr]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun n : ℕ => Nat.casesOn (motive := fun _ => K) n 1 fun m => r^[m] z, rfl, hz, h, ?_⟩` and prove the remaining obligations. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, h n]`.
-
-Conclude with `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_root_tower (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (p : ℕ)
     [hp : Fact p.Prime] :
@@ -47,15 +45,15 @@ theorem exists_root_tower (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (p :
   | succ n ih => rw [pow_succ', pow_mul, h n]; exact ih
 
 /- English proof (translation)
-Establish `hz1 : ‖z‖ = 1`. Establish `h` using `congrArg norm hz.pow_eq_one`. Rewrite `h` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hp.ne_zero).1 h`. Establish `hle : ∀ j : ℕ, ‖1 - z ^ j‖ ≤ ‖z - 1‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `: 1 - z ^ (j + 1) = (1 - z ^ j) + -(z ^ j * (z - 1))` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul, norm_pow, hz1, one_pow, one_mul]`. Take `⟨m, rfl⟩ : ∃ m, p = m + 1` from `⟨p - 1, (Nat.succ_pred_eq_of_pos hp.pos).symm⟩`. Establish `h` using `hz.prod_one_sub_pow_eq_order`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((m + 1 : ℕ) : K) = ∏ k ∈ Finset.range m, (1 - z ^ (k + 1))`. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, norm_prod, Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_le_pow_of_primitive {K : Type} [NormedField K] [IsUltrametricDist K] {p : ℕ}
     (hp : p.Prime) {z : K} (hz : IsPrimitiveRoot z p) :
@@ -83,57 +81,53 @@ theorem norm_le_pow_of_primitive {K : Type} [NormedField K] [IsUltrametricDist K
     _ = _ := by simp
 
 /- English proof (translation)
-Take `⟨t, ht1, ht0, htne, htp⟩` from `GlobalTheory.T.exists_formalGroup_heightOne_torsion_tower K p F hF h1 h2`. Take `⟨ζ, hζ0, hζ1, hζp, hζn⟩` from `exists_root_tower K p`. Take `⟨-, hpt⟩` from `GlobalTheory.T.formalGroupNatMulSeries_eval_openDisc_properties K F hF`. Take `⟨ho1, -, ho3⟩` from `GlobalTheory.T.formalGroup_torsionTower_exact_order K p F hF t ht1 ht0 htne htp`. Take `⟨hn1, hn2, hn3, hn4⟩` from `GlobalTheory.T.norm_formalGroup_heightOne_torsion_tower K p F hF h1 h2 t ht1 ht0 htne htp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose g hgI hgv using fun n => GlobalTheory.T.exists_integral_polynomial_torsion_character_level K p F hF t ht1 ht0 htne htp n (ζ n) (hζn n)`. Take `⟨bI, -, bP, bC, bX, -, -, bS, -, bf⟩` from `GlobalTheory.BddAlg.bdd_alg K (Fin 2)`. Take `⟨bI1, -, bP1, bC1, -⟩` from `GlobalTheory.BddAlg.bdd_alg K Unit`. Use `set P : ℕ → ℕ → K := fun n j => ev1 (nMul F j) (t n) with hP`. Establish `hP0 : ∀ n, P n 0 = 0` using `fun n => (hpt _ (ht1 n)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPlt : ∀ n j, ‖P n j‖ < 1` using `fun n j => (((hpt _ (ht1 n)).2.2.1 j).1).trans_lt (ht1 n)`. Use `set G : ℕ → Finset K := fun n => (Finset.Ico 1 (p ^ n)).image (P n) with hG`. Establish `hpn : ∀ n, 0 < p ^ n` using `fun n => pow_pos hp.out.pos n`. Establish `hmem : ∀ n x, x ∈ G n ↔ ∃ j, ¬ p ^ n ∣ j ∧ P n j = x`. Introduce `n x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [hG, Finset.mem_image, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, ⟨hj1, hj2⟩, rfl⟩`. Conclude with `⟨j, Nat.not_dvd_of_pos_of_lt hj1 hj2, rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j % p ^ n, ⟨?_, Nat.mod_lt _ (hpn n)⟩, (ho3 n _ _).2 (Nat.mod_modEq _ _)⟩` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero fun h => hj (Nat.dvd_of_mod_eq_zero h)`. Establish `hmono : Monotone G`. Use `monotone_nat_of_le_succ fun n x hx => ?_` and prove the remaining obligations. Take `⟨j, hj, rfl⟩` from `(hmem n x).1 hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hmem _ _).2 ⟨p * j, fun h => hj ?_, ho1 n j⟩` and prove the remaining obligations. Rewrite `h` using `[pow_succ']`. Conclude with `Nat.dvd_of_mul_dvd_mul_left hp.out.pos h`. Establish `hr0 : 0 < ‖t 1‖` using `norm_pos_iff.2 htne`. Establish `hGr : ∀ n, ∀ x ∈ G n, ‖t 1‖ ≤ ‖x‖ ∧ ‖x‖ < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n x hx`. Take `⟨j, hj, rfl⟩` from `(hmem n x).1 hx`. Conclude with `⟨hn3 n j hj, hPlt n j⟩`. Establish `hlim : Filter.Tendsto (fun n => ∏ x ∈ G n, ‖x‖) Filter.atTop (nhds 0)`. Establish `: (fun n => ∏ x ∈ G n, ‖x‖) = fun n => ‖(p : K)‖ ^ n`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `n`. Rewrite using `[← hn4 n, hG]`. Use `Finset.prod_image ?_` and prove the remaining obligations. Introduce `i hi j hj hij`. Simplify using `only [Finset.coe_Ico, Set.mem_Ico] at hi hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.ModEq.eq_of_lt_of_lt ((ho3 n i j).1 hij) hi.2 hj.2`. Rewrite using `[this]`. Conclude with `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hn2`. Establish `hgev : ∀ n m j k, P m k = P n j → ev1 (g m : PowerSeries K) (P n j) = ζ m ^ k`. Introduce `n m j k h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[((GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K _ (hPlt n j)).2.2.2.2.1 (g m)).2, ← h]`. Conclude with `hgv m k`. Take `⟨φ, hφI, hφc, hφv⟩` from `GlobalTheory.T.exists_limit_powerSeries_agree_on_annulus_points K G ‖t 1‖ hr0 (ht1 1).le hmono hGr hlim (fun n => (g n : PowerSeries K)) (fun n => (bf _).1.2 fun k => by rw [Polynomial.coeff_coe]; exact hgI n k) (by`. Introduce `n x hx`. Take `⟨j, -, rfl⟩` from `(hmem n x).1 hx`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hgev n (n + 1) j (p * j) (ho1 n j), hgev n n j j rfl, pow_mul, hζp])`. Establish `hφ0 : PowerSeries.coeff 0 φ = 1`. Establish `h` using `hφc 0`. Establish `: (fun n => PowerSeries.coeff 0 (g n : PowerSeries K)) = fun _ => (1 : K)`. Use function extensionality and compare the values at `n`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `hgv n 0`. Express the relevant statement in the definitionally equal form `(g n).eval (P n 0) = _ at h3`. Rewrite `h3` using `[hP0, pow_zero]`. Rewrite using `[Polynomial.coeff_coe, Polynomial.coeff_zero_eq_eval_zero, h3]`. Rewrite `h` using `[this]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(tendsto_nhds_unique tendsto_const_nhds h).symm`. Establish `hz : ‖(0 : K)‖ < 1` using `by simp`. Establish `hφP : ∀ n j, ev1 φ (P n j) = ζ n ^ j`. Introduce `n j`. Distinguish the cases in `hj : p ^ n ∣ j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: P n j = 0`. Rewrite using `[← hP0 n]`. Conclude with `(ho3 n _ _).2 ((Nat.modEq_zero_iff_dvd).2 hj)`. Rewrite using `[this, (GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K 0 hz).2.2.2.2.2.2.2.2.2.2 φ, hφ0]`. Take `⟨c, rfl⟩` from `hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_mul, hζn, one_pow]`. Rewrite using `[hφv n _ ((hmem _ _).2 ⟨j, hj, rfl⟩)]`. Conclude with `hgev n n j j rfl`. Establish `hC1 : Intg (PowerSeries.C (1 : K) : PowerSeries K)` using `(bC1 1).2.1 (by simp)`. Use `set f : PowerSeries K := φ - PowerSeries.C 1 with hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hfI : Intg f` using `(bI1 _ _ hφI hC1).2.1`. Establish `hfB : Bdd f` using `(bP1 _ 0).2.2 hfI`. Establish `hf0 : PowerSeries.coeff 0 f = 0`. Rewrite using `[hf, map_sub, hφ0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hfP : ∀ n j, ev1 f (P n j) = ζ n ^ j - 1`. Introduce `n j`. Establish `h` using `GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K _ (hPlt n j)`. Rewrite using `[hf, (h.2.1 φ _ ((bP1 _ 0).2.2 hφI) ((bP1 _ 0).2.2 hC1)).2.1, h.2.2.1, hφP]`. Use `⟨f, hfI, by simpa using hf0, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Assume the negation of the conclusion as `hne`. Establish `hlt : ‖PowerSeries.coeff 1 f‖ < 1` using `lt_of_le_of_ne ((bf f).1.1 hfI 1) hne`. Establish `hv : ev1 f (t 1) = ζ 1 - 1`. Establish `h` using `hfP 1 1`. Rewrite `h` using `[pow_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Use `congr 1`. Conclude with `((hpt _ (ht1 1)).2.1).symm`. Establish `he` using `((GlobalTheory.T.powerSeriesEvalTsum_unitDisc_properties_alt K _ (ht1 1)).2.2.2.2.2.2.1 f hfI).2.2`. Rewrite `he` using `[hv, hf0, sub_zero]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hlt2 : ‖ζ 1 - 1‖ < ‖t 1‖`. Establish `: ζ 1 - 1 = (ζ 1 - 1 - PowerSeries.coeff 1 f * t 1) + PowerSeries.coeff 1 f * t 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (he.trans_lt ?_) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ht1 1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[norm_mul]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3` using `norm_le_pow_of_primitive hp.out hζ1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ‖ζ 1 - 1‖ ^ (p - 1) < ‖t 1‖ ^ (p - 1)` using `pow_lt_pow_left₀ hlt2 (norm_nonneg _) (Nat.sub_ne_zero_of_lt hp.out.one_lt)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF0 : MvPowerSeries.constantCoeff F.toPowerSeries = 0` using `F.zero_constantCoeff`. Establish `hX : ∀ i : Fin 2, Intg (MvPowerSeries.X i : MvPowerSeries (Fin 2) K)` using `fun i => (bX i).1`. Establish `hX0 : ∀ i : Fin 2, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => MvPowerSeries.constantCoeff_X i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `iF` using `(bS _ f hF hF0).1 hfI`. Establish `i0` using `(bS _ f (hX 0) (hX0 0)).1 hfI`. Establish `i1` using `(bS _ f (hX 1) (hX0 1)).1 hfI`. Establish `i01` using `(bI _ _ i0 i1).1`. Establish `i01'` using `(bI _ _ i0 i1).2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `iR` using `(bI _ _ i01 i01').1`. Establish `bd : ∀ S : MvPowerSeries (Fin 2) K, Intg S → Bdd S` using `fun S h => (bP S 0).2.2 h`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.T.integralMvPowerSeries_two_eq_zero_of_vanish_on_squares K G ‖t 1‖ hr0 (ht1 1).le hmono hGr hlim _ (bI _ _ iF iR).2.1 ?_` and prove the remaining obligations. Introduce `n x hx y hy`.
-
-Take `⟨i, -, rfl⟩` from `(hmem n x).1 hx`. Take `⟨j, -, rfl⟩` from `(hmem n y).1 hy`. Take `⟨-, eA, -, eX, -, -, -, eS⟩` from `GlobalTheory.T.mvPowerSeriesEvalTsum_openPolydisc_properties K (Fin 2) ![P n i, P n j] (Fin.forall_fin_two.2 ⟨hPlt n i, hPlt n j⟩)`. Establish `hs : ev F.toPowerSeries ![P n i, P n j] = P n (i + j)` using `(hpt _ (ht1 n)).2.2.2.1 i j`. Rewrite using `[(eA _ _ (bd _ iF) (bd _ iR)).2.1, (eA _ _ (bd _ i01) (bd _ i01')).1, (eA _ _ (bd _ i0) (bd _ i1)).1, (eA _ _ (bd _ i0) (bd _ i1)).2.2, eS _ f hF hF0 hfB, eS _ f (hX 0) (hX0 0) hfB, eS _ f (hX 1) (hX0 1) hfB, eX, eX, hs]`.
-
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[hfP, hfP, hfP]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_multiplicative (K : Type) [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] [IsAlgClosed K] [CharZero K] (p : ℕ) [hp : Fact p.Prime]

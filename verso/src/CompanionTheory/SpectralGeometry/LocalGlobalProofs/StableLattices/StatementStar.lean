@@ -31,9 +31,9 @@ theorem restrictAlg_coe [AddCommGroup V] [Module ℂ V] (ρ : A →ₐ[ℂ] Modu
     (hW : ∀ h, ∀ w ∈ W, ρ h w ∈ W) (h : A) (x : W) : ((restrictAlg ρ W hW h x : W) : V) = ρ h x := rfl
 
 /- English proof (translation)
-Introduce `h x hx`. Take `⟨hxU, hxW⟩` from `Submodule.mem_inf.mp hx`. Use `Submodule.mem_inf.mpr ⟨?_, hW h x hxW⟩` and prove the remaining obligations. Rewrite `hxU`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h', hh'⟩` from `hs h`. Rewrite using `[← inner_conj_symm, hh' x u, inner_conj_symm]`. Conclude with `hxU _ (hU h' u hu)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_orthogonal_invariant [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (ρ : A →ₐ[ℂ] Module.End ℂ V) (hs : StarClosed ρ) {U W : Submodule ℂ V}
@@ -51,7 +51,7 @@ theorem inf_orthogonal_invariant [NormedAddCommGroup V] [InnerProductSpace ℂ V
 end
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => show f 1 = 1`. Conclude with `map_one f`. Consider the case `cons a l ih => show f (1 * a * word 1 l) = 1 * f a * word 1 (l.map f)`. Rewrite using `[map_mul, map_mul, map_one, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_word_one {A B : Type} [Ring A] [Ring B] [Algebra ℂ A] [Algebra ℂ B]
     (f : A →ₐ[ℂ] B) (l : List A) : f (word 1 l) = word 1 (l.map f) := by
@@ -64,7 +64,7 @@ private theorem map_word_one {A B : Type} [Ring A] [Ring B] [Algebra ℂ A] [Alg
     rw [map_mul, map_mul, map_one, ih]
 
 /- English proof (translation)
-Unfold `stdPoly`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_word_one, List.map_ofFn]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem map_stdPoly_one {A B : Type} [Ring A] [Ring B] [Algebra ℂ A] [Algebra ℂ B]
     (f : A →ₐ[ℂ] B) {M : ℕ} (b : Fin M → A) : f (stdPoly 1 b) = stdPoly 1 (fun i => f (b i)) := by
@@ -75,35 +75,31 @@ private theorem map_stdPoly_one {A B : Type} [Ring A] [Ring B] [Algebra ℂ A] [
   rfl
 
 /- English proof (translation)
-Unfold `StStar`. Introduce `C A _ _ hirr`. It suffices to establish `key : ∀ n : ℕ, ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V], Module.finrank ℂ V = n → ∀ (ρ : A →ₐ[ℂ] Module.End ℂ V), StarClosed ρ → ∀ (b : Fin (C ^ 2 + 1) → A), ρ (stdPoly 1 b) = 0 by`. Introduce `V _ _ _ ρ hs b`. Conclude with `key _ V rfl ρ hs b`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V _ _ _ hn ρ hs b`. Break down `Nat.eq_zero_or_pos n with hn0 | hnpos` into its components or cases.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: Subsingleton V` using `Module.finrank_zero_iff.mp (hn.trans hn0)`. Conclude with `LinearMap.ext fun v => Subsingleton.elim _ _`. Establish `: Nontrivial V` using `Module.finrank_pos_iff.mp (hn ▸ hnpos)`. Establish `hex : ∃ d, ∃ W : Submodule ℂ V, ((∀ h, ∀ w ∈ W, ρ h w ∈ W) ∧ W ≠ ⊥) ∧ Module.finrank ℂ W = d` using `⟨_, ⊤, ⟨fun _ _ _ => Submodule.mem_top, bot_ne_top.symm⟩, rfl⟩`. Take `⟨W, ⟨hWinv, hWne⟩, hWd⟩` from `Nat.find_spec hex`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmin : ∀ W' : Submodule ℂ V, (∀ h, ∀ w ∈ W', ρ h w ∈ W') → W' ≠ ⊥ → Module.finrank ℂ W ≤ Module.finrank ℂ W'`. Introduce `W' h1 h2`. Rewrite using `[hWd]`. Conclude with `Nat.find_min' hex ⟨W', ⟨h1, h2⟩, rfl⟩`. Establish `hWirr : ∀ U : Submodule ℂ W, (∀ h, ∀ u ∈ U, restrictAlg ρ W hWinv h u ∈ U) → U = ⊥ ∨ U = ⊤`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Introduce `U hU`. Distinguish the cases in `hUb : U = ⊥`. Conclude with `Or.inl hUb`. Use `right`. Establish `hU'inv : ∀ h, ∀ v ∈ U.map W.subtype, ρ h v ∈ U.map W.subtype`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h v hv`. Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.mp hv`. Conclude with `Submodule.mem_map.mpr ⟨restrictAlg ρ W hWinv h u, hU h u hu, restrictAlg_coe ρ W hWinv h u⟩`. Establish `hfr : Module.finrank ℂ (U.map W.subtype) = Module.finrank ℂ U` using `Submodule.finrank_map_subtype_eq W U`. Establish `hU'ne : U.map W.subtype ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hUb` to reduce the goal to its premises. Apply `Submodule.finrank_eq_zero.mp` to reduce the goal to its premises. Rewrite using `[← hfr]`. Conclude with `Submodule.finrank_eq_zero.mpr h0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hmin _ hU'inv hU'ne`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Conclude with `le_antisymm (Submodule.finrank_le U) (hfr ▸ h1)`. Establish `hdimW : Module.finrank ℂ W ≤ C` using `hirr W (restrictAlg ρ W hWinv) hWirr`. Establish `hlt : Module.finrank ℂ W ^ 2 < C ^ 2 + 1` using `Nat.lt_succ_of_le (Nat.pow_le_pow_left hdimW 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPW : ∀ w ∈ W, ρ (stdPoly 1 b) w = 0`. Introduce `w hw`. Rewrite using `[map_stdPoly_one ρ b]`. Conclude with `CompanionTheory.D.gk.admitted.small_irreducible_representation V W W le_rfl 1 (fun w hw => hw) (C ^ 2 + 1) hlt (fun i => ρ (b i)) (fun i w hw => hWinv (b i) w hw) w hw`. Establish `hperp : ∀ h, ∀ x ∈ Wᗮ, ρ h x ∈ Wᗮ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h x hx`. Establish `h1` using `inf_orthogonal_invariant ρ hs (U := W) (W := ⊤) hWinv (fun _ _ _ => Submodule.mem_top) h x (Submodule.mem_inf.mpr ⟨hx, Submodule.mem_top⟩)`. Conclude with `(Submodule.mem_inf.mp h1).1`. Establish `hs2 : StarClosed (restrictAlg ρ Wᗮ hperp)`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h', hh'⟩` from `hs h`. Use `⟨h', fun u w => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, restrictAlg_coe, restrictAlg_coe]`. Conclude with `hh' u w`. Establish `hWpos : 0 < Module.finrank ℂ W` using `Nat.pos_of_ne_zero fun h0 => hWne (Submodule.finrank_eq_zero.mp h0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `Submodule.finrank_add_finrank_orthogonal W`. Establish `hltp : Module.finrank ℂ Wᗮ < n` using `by omega`. Establish `hrest` using `ih _ hltp Wᗮ rfl (restrictAlg ρ Wᗮ hperp) hs2 b`. Establish `hPperp : ∀ x ∈ Wᗮ, ρ (stdPoly 1 b) x = 0`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h0` using `congrArg (fun T => ((T ⟨x, hx⟩ : Wᗮ) : V)) hrest`. Simplify `h0` using `[restrictAlg_coe]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ W ⊔ Wᗮ`. Establish `htop : W ⊔ Wᗮ = ⊤`.
-
-Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq W Wᗮ`. Establish `h2 : W ⊓ Wᗮ = ⊥` using `disjoint_iff.mp (Submodule.orthogonal_disjoint W)`. Rewrite `h1` using `[h2, Submodule.finrank_eq_zero.mpr rfl]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Take `⟨w, hw, x, hx, rfl⟩` from `Submodule.mem_sup.mp hv`. Rewrite using `[map_add, hPW w hw, hPperp x hx, add_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stStar : StStar := by
   unfold StStar

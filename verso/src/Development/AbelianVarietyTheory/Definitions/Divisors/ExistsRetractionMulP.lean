@@ -50,7 +50,7 @@ def ptIdeal {O A : Type} [CommRing O] [CommRing A] [HopfAlgebra O A]
   ⨅ q : Q, RingHom.ker q.1.ofConv
 
 /- English proof (translation)
-Introduce `x q hq` and use `by rw [Subgroup.mem_bot.1 hq, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInv_bot {O A : Type} [CommRing O] [CommRing A] [HopfAlgebra O A] (a : A) :
     IsInv (⊥ : Subgroup (WithConv (A →ₐ[O] O))) a := fun x q hq => by
@@ -78,9 +78,9 @@ def QuotTower.trivial {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O) : Qu
     rw [CoalgHomClass.counit_comp_apply, ha']
 
 /- English proof (translation)
-Set `f : G.A m →ₗ[O] G.A (m + 1)` to `(G.mulP m : G.A m →ₐ[O] G.A (m + 1)).toLinearMap`. Establish `hs : Function.Surjective f.dualMap` using `fun φ => by`. Take `⟨ψ, hψ⟩` from `G.dual_mulP_surjective m (WithConv.toConv φ)`. Conclude with `⟨ψ.ofConv, congrArg WithConv.ofConv hψ⟩`. Take `⟨σ, hσ⟩` from `f.dualMap.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hs)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨(Module.evalEquiv O (G.A m)).symm.toLinearMap ∘ₗ σ.dualMap ∘ₗ (Module.evalEquiv O (G.A (m + 1))).toLinearMap, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Module.evalEquiv O (G.A m)).symm _ = a`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use extensionality with `φ`. Conclude with `LinearMap.congr_fun (LinearMap.congr_fun hσ φ) a`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_retraction_mulP {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O) (m : ℕ) :
     ∃ ρ : G.A (m + 1) →ₗ[O] G.A m, ∀ a, ρ (G.mulP m a) = a := by
@@ -110,7 +110,7 @@ def QuotTower.full {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O) : QuotT
     rw [← kerIdeal_comp_of_surjective _ (G.res_surjective m), G.mulP_comp_res]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `kerIdeal (G.mulP m) = _`. Rewrite using `[← kerIdeal_comp_of_surjective _ (G.res_surjective m), G.mulP_comp_res]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem QuotTower.kerIdeal_full {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O) (m : ℕ) :
     kerIdeal ((QuotTower.full G).j m) = torsionIdeal O (G.A (m + 1)) p := by
@@ -118,7 +118,7 @@ theorem QuotTower.kerIdeal_full {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup
   rw [← kerIdeal_comp_of_surjective _ (G.res_surjective m), G.mulP_comp_res]
 
 /- English proof (translation)
-Establish `h : (G.res (m + 1)).comp (T.j (m + 1)) = (T.j m).comp (T.r m)` using `BialgHom.ext fun b => (T.j_r m b).symm`. Rewrite using `[← kerIdeal_comp, h, kerIdeal_comp_of_surjective (T.j m) (T.r_surjective m)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem QuotTower.map_res_kerIdeal {p : ℕ} {O : Type} [CommRing O] {G : PDivGroup p O}
     (T : QuotTower G) (m : ℕ) :
@@ -129,11 +129,9 @@ theorem QuotTower.map_res_kerIdeal {p : ℕ} {O : Type} [CommRing O] {G : PDivGr
   rw [← kerIdeal_comp, h, kerIdeal_comp_of_surjective (T.j m) (T.r_surjective m)]
 
 /- English proof (translation)
-Rewrite using `[QuotTower.kerIdeal_full]`. Introduce `h`. Establish `h1 : torsionIdeal O ((PDivGroup.mu p O).A 1) p ≤ RingHom.ker (AlgHom.id O _)` using `(torsionIdeal_le_ker_iff p _).2 (by`. Simplify using `using (PDivGroup.mu p O).pts_pow_self 1 (WithConv.toConv (AlgHom.id O _)))`. Establish `h2 : muT O (p ^ 1) - 1 ∈ augIdeal O ((PDivGroup.mu p O).A 1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `counit (R := O) (muT O (p ^ 1) - 1) = 0`. Rewrite using `[map_sub, (isGroupLikeElem_muT O _).counit_eq_one, Bialgebra.counit_one, sub_self]`. Establish `h3 : muT O (p ^ 1) = 1` using `sub_eq_zero.1 (h1 (h.ge h2))`. Use `haveI : Fact (1 < p ^ 1) := ⟨by simpa using (Fact.out : p.Prime).one_lt⟩`. Establish `h4 : (AddMonoidAlgebra.single (1 : ZMod (p ^ 1)) (1 : O)) = AddMonoidAlgebra.single 0 1` using `h3`.
-
-Conclude with `one_ne_zero (AddMonoidAlgebra.single_left_injective one_ne_zero h4)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem QuotTower.kerIdeal_full_mu_ne (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Nontrivial O] :
     kerIdeal ((QuotTower.full (PDivGroup.mu p O)).j 0) ≠ augIdeal O ((PDivGroup.mu p O).A 1) := by
@@ -151,7 +149,7 @@ theorem QuotTower.kerIdeal_full_mu_ne (p : ℕ) [Fact p.Prime] (O : Type) [CommR
   exact one_ne_zero (AddMonoidAlgebra.single_left_injective one_ne_zero h4)
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [ptIdeal, Ideal.mem_iInf, RingHom.mem_ker, Subtype.forall, Subgroup.mem_bot, forall_eq]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem ptIdeal_bot {O A : Type} [CommRing O] [CommRing A] [HopfAlgebra O A] :
     ptIdeal (⊥ : Subgroup (WithConv (A →ₐ[O] O))) = augIdeal O A := by
@@ -161,7 +159,7 @@ theorem ptIdeal_bot {O A : Type} [CommRing O] [CommRing A] [HopfAlgebra O A] :
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `x q _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isInv_algebraMap {O A : Type} [CommRing O] [CommRing A] [HopfAlgebra O A]
     (Q : Subgroup (WithConv (A →ₐ[O] O))) (c : O) : IsInv Q (algebraMap O A c) := by

@@ -8,7 +8,7 @@ open scoped Matrix
 open GlobalTheory.Sl2Ad
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Sl2Ad.form_ne_zero_of_isIrr` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FTraceFormNeZeroOfStableLineIrreducible.lean&line=10#L10)
 -/

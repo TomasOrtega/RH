@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.MajC
 
 /- English proof (translation)
-Unfold `kern`. Use `mul_nonneg (by positivity) (le_min ?_ ?_)` and prove the remaining obligations. Conclude with `Real.rpow_nonneg (by positivity) _`. Conclude with `Real.rpow_nonneg (by positivity) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kern_nonneg' (s T : ℝ) (hT : 0 < T) (z : ℂ) : 0 ≤ kern s T z := by
   unfold kern
@@ -17,9 +17,9 @@ theorem kern_nonneg' (s T : ℝ) (hT : 0 < T) (z : ℂ) : 0 ≤ kern s T z := by
   · exact Real.rpow_nonneg (by positivity) _
 
 /- English proof (translation)
-Unfold `gm`. Use `split_ifs with hc`. Establish `h1 : 0 ≤ β ^ (-ε)` using `Real.rpow_nonneg hβ.le _`. Establish `h2 : 0 ≤ ‖h 0 0‖ ^ (-4 + ε)` using `Real.rpow_nonneg (norm_nonneg _) _`. Establish `h3` using `kern_nonneg' ε β hβ (h 1 1 - h 1 0 / h 0 0 * h 0 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem gm_nonneg' (ε β : ℝ) (m : ℕ) (hβ : 0 < β) (h : M22) : 0 ≤ gm ε β m h := by
   unfold gm
@@ -31,19 +31,17 @@ theorem gm_nonneg' (ε β : ℝ) (m : ℕ) (hβ : 0 < β) (h : M22) : 0 ≤ gm �
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hw : 0 < β / r` using `div_pos hβ hr`. Use `set a := r ^ ε with ha`. Use `set b := β ^ ε with hb`. Establish `ha0 : 0 < a` using `Real.rpow_pos_of_pos hr _`. Establish `hb0 : 0 < b` using `Real.rpow_pos_of_pos hβ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W := (1 + β / r) ^ N with hWdef`. Establish `hW1 : 1 ≤ W` using `one_le_pow₀ (by linarith)`. Establish `hW0 : 0 < W` using `by linarith`. Establish `e1 : (β / r) ^ ε = b / a` using `Real.div_rpow hβ.le hr.le _`. Establish `e2 : (r / β) ^ ε = a / b` using `Real.div_rpow hr.le hβ.le _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : r ^ (-(2 + ε)) = (r ^ 2)⁻¹ * a⁻¹`. Rewrite using `[neg_add, Real.rpow_add hr, Real.rpow_neg hr.le, Real.rpow_neg hr.le, Real.rpow_two]`. Establish `e4 : β ^ (-ε) = b⁻¹` using `Real.rpow_neg hβ.le _`. Establish `hW2 : (b / a) ^ 2 ≤ W`. Establish `s1 : (b / a) ^ 2 = (β / r) ^ (2 * ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1, mul_comm, Real.rpow_mul hw.le, Real.rpow_two]`. Establish `s2 : (β / r) ^ (2 * ε) ≤ (1 + β / r) ^ (2 * ε)` using `Real.rpow_le_rpow hw.le (by linarith) (by positivity)`. Establish `s3 : (1 + β / r) ^ (2 * ε) ≤ (1 + β / r) ^ (N : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) hN`. Rewrite `s3` using `[Real.rpow_natCast]`. Rewrite using `[s1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `s2.trans s3`. Rewrite using `[e1, e2, e3, e4]`. Establish `hr2 : 0 < (r ^ 2)⁻¹` using `by positivity`. Establish `key : a⁻¹ * W⁻¹ ≤ b⁻¹ * min (a / b) (b / a)`. Rewrite using `[mul_min_of_nonneg _ _ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `le_min ?_ ?_` and prove the remaining obligations. Establish `: W⁻¹ ≤ ((b / a) ^ 2)⁻¹` using `inv_anti₀ (by positivity) hW2`. Combine the equalities or inequalities in the displayed calculation. Establish `: W⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ hW1`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem radial_bound (ε β r : ℝ) (N : ℕ) (hε : 0 < ε) (hβ : 0 < β) (hr : 0 < r)
     (hN : 2 * ε ≤ N) :
@@ -88,7 +86,7 @@ theorem radial_bound (ε β r : ℝ) (N : ℕ) (hε : 0 < ε) (hβ : 0 < β) (hr
     _ = b⁻¹ * ((r ^ 2)⁻¹ * min (a / b) (b / a)) := by ring
 
 /- English proof (translation)
-Unfold `dt`. Rewrite using `[Matrix.det_fin_two]`. Simplify using `[Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dt_eq (h : M22) : dt h = ‖h 0 0 * h 1 1 - h 0 1 * h 1 0‖ := by
   unfold dt
@@ -96,7 +94,7 @@ theorem dt_eq (h : M22) : dt h = ‖h 0 0 * h 1 1 - h 0 1 * h 1 0‖ := by
   simp [Matrix.of_apply]
 
 /- English proof (translation)
-Rewrite using `[dt_eq, dt_eq]`. Establish `: (swp h) 0 0 * (swp h) 1 1 - (swp h) 0 1 * (swp h) 1 0 = -(h 0 0 * h 1 1 - h 0 1 * h 1 0)`. Simplify using `[swp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem dt_swp (h : M22) : dt (swp h) = dt h := by
   rw [dt_eq, dt_eq]
@@ -106,13 +104,13 @@ theorem dt_swp (h : M22) : dt (swp h) = dt h := by
   rw [this, norm_neg]
 
 /- English proof (translation)
-Simplify using `[col, swp, max_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem col_swp (h : M22) : col (swp h) = col h := by
   simp [col, swp, max_comm]
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify `norm_le_pi_norm h 1` using `[swp]`. Simplify `norm_le_pi_norm h 0` using `[swp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_swp_le (h : M22) : ‖swp h‖ ≤ ‖h‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_
@@ -121,53 +119,51 @@ theorem norm_swp_le (h : M22) : ‖swp h‖ ≤ ‖h‖ := by
   · simpa [swp] using norm_le_pi_norm h 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [swp]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swp_swp (h : M22) : swp (swp h) = h := by
   funext i
   fin_cases i <;> simp [swp]
 
 /- English proof (translation)
-The claim follows from `le_antisymm (norm_swp_le h) (by simpa [swp_swp] using norm_swp_le (swp h))`.
+A detailed English derivation is pending.
 -/
 theorem norm_swp (h : M22) : ‖swp h‖ = ‖h‖ :=
   le_antisymm (norm_swp_le h) (by simpa [swp_swp] using norm_swp_le (swp h))
 
 /- English proof (translation)
-Unfold `hm`. Rewrite using `[dt_swp, col_swp, norm_swp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hm_swp (ε β : ℝ) (N : ℕ) (h : M22) : hm ε N β (swp h) = hm ε N β h := by
   unfold hm
   rw [dt_swp, col_swp, norm_swp]
 
 /- English proof (translation)
-The claim follows from `(norm_le_pi_norm (h i) j).trans (norm_le_pi_norm h i)`.
+A detailed English derivation is pending.
 -/
 theorem entry_le (h : M22) (i j : Fin 2) : ‖h i j‖ ≤ ‖h‖ :=
   (norm_le_pi_norm (h i) j).trans (norm_le_pi_norm h i)
 
 /- English proof (translation)
-Establish `hu : h 0 0 ≠ 0`. Introduce `hu`. Establish `hv0 : h 1 0 = 0`. Rewrite `hv` using `[hu, norm_zero]`. Conclude with `norm_le_zero_iff.1 hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hd` to reduce the goal to its premises. Rewrite using `[dt_eq, hu, hv0]`. Simplify using the standard rewrite rules. Use `set z := h 1 1 - h 1 0 / h 0 0 * h 0 1 with hz`. Establish `hdet : h 0 0 * h 1 1 - h 0 1 * h 1 0 = h 0 0 * z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hz]`. Clear the denominators using the available nonvanishing facts. Establish `hU : 0 < ‖h 0 0‖` using `norm_pos_iff.2 hu`. Establish `hdt : dt h = ‖h 0 0‖ * ‖z‖` using `by rw [dt_eq, hdet, norm_mul]`. Establish `hr : 0 < ‖z‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: 0 < dt h` using `lt_of_le_of_ne (by rw [dt_eq]; exact norm_nonneg _) (Ne.symm hd)`. Rewrite `this` using `[hdt]`. Conclude with `(pos_iff_pos_of_mul_pos this).1 hU`. Establish `hcol : col h = ‖h 0 0‖` using `max_eq_left hv`. Establish `hgm : gm ε β m h = β ^ (-ε) * ‖h 0 0‖ ^ (-4 + ε) * ((1 + ‖h 0 0‖) ^ m)⁻¹ * ((1 + ‖h 0 1‖) ^ m)⁻¹ * kern ε β z`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `gm`. Rewrite using `[if_pos ⟨hv, hu⟩]`. Rewrite using `[hgm]`. Establish `hfrac : β * (‖h 0 0‖ / (‖h 0 0‖ * ‖z‖)) = β / ‖z‖` using `by field_simp`. Establish `hpow : (‖h 0 0‖ * ‖z‖) ^ (-(2 + ε)) * ‖h 0 0‖ ^ (-2 + 2 * ε) = ‖h 0 0‖ ^ (-4 + ε) * ‖z‖ ^ (-(2 + ε))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Real.mul_rpow hU.le hr.le, mul_right_comm, ← Real.rpow_add hU]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ((1 + ‖h‖) ^ N)⁻¹ ≤ ((1 + ‖h 0 0‖) ^ m)⁻¹ * ((1 + ‖h 0 1‖) ^ m)⁻¹`. Rewrite using `[← mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Establish `h1 : 1 + ‖h 0 0‖ ≤ 1 + ‖h‖` using `by linarith [entry_le h 0 0]`. Establish `h2 : 1 + ‖h 0 1‖ ≤ 1 + ‖h‖` using `by linarith [entry_le h 0 1]`. Establish `h3 : (1 : ℝ) ≤ 1 + ‖h‖` using `by linarith [norm_nonneg h]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : 2 * ε ≤ (N : ℝ)`. Establish `: (m : ℝ) ≤ N`. Establish `: m ≤ N` using `by omega`. Conclude with `this` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hB` using `radial_bound ε β ‖z‖ N hε hβ hr hN'`. Establish `hk : kern ε β z = (‖z‖ ^ 2)⁻¹ * min ((‖z‖ / β) ^ ε) ((β / ‖z‖) ^ ε)` using `rfl`. Unfold `hm`. Rewrite using `[hdt, hcol, hfrac, hpow, hk]`. Establish `hUp : 0 ≤ ‖h 0 0‖ ^ (-4 + ε)` using `Real.rpow_nonneg hU.le _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Chain the equalities or inequalities of the calculation.
 
-Establish `hzp : 0 ≤ ‖z‖ ^ (-(2 + ε)) * ((1 + β / ‖z‖) ^ N)⁻¹`. Use `Real.rpow_nonneg hr.le (-(2 + ε))` as an intermediate fact. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ hUp` and prove the remaining obligations.
-
-Conclude with `mul_le_mul hA hB hzp (by positivity)`. Use `_ = _ := by ring`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_region (ε β : ℝ) (m N : ℕ) (hε : 0 < ε) (hβ : 0 < β) (hm' : 2 * ε ≤ m)
     (hN : 2 * m ≤ N) (h : M22) (hv : ‖h 1 0‖ ≤ ‖h 0 0‖) (hd : dt h ≠ 0) :
@@ -234,13 +230,13 @@ theorem one_region (ε β : ℝ) (m N : ℕ) (hε : 0 < ε) (hβ : 0 < β) (hm' 
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `g1` using `gm_nonneg' ε β m hβ h`. Establish `g2` using `gm_nonneg' ε β m hβ (swp h)`. Distinguish the cases in `hd : dt h = 0`. Establish `: hm ε N β h = 0`. Unfold `hm`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hd, Real.zero_rpow (by linarith)]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `add_nonneg g1 g2`. Distinguish the cases in `hv : ‖h 1 0‖ ≤ ‖h 0 0‖`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `one_region ε β m N hε hβ hm' hN h hv hd` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv' : ‖(swp h) 1 0‖ ≤ ‖(swp h) 0 0‖`. Establish `: ‖h 0 0‖ ≤ ‖h 1 0‖` using `(not_le.1 hv).le`. Simplify `this` using `[swp]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `one_region ε β m N hε hβ hm' hN (swp h) hv' (by rw [dt_swp]; exact hd)` as an intermediate fact. Rewrite `this` using `[hm_swp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hm_le_gm_add (ε β : ℝ) (m N : ℕ) (hε : 0 < ε) (hβ : 0 < β) (hm' : 2 * ε ≤ m)
     (hN : 2 * m ≤ N) (h : M22) : hm ε N β h ≤ gm ε β m h + gm ε β m (swp h) := by

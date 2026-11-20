@@ -10,11 +10,11 @@ open GlobalTheory.Twist (resM)
 namespace GlobalTheory.FlagZ.Univ
 
 /- English proof (translation)
-Establish `hU : IsAffineOpen (cellOpen ι N w)` using `(isAffineOpen_top (Sp (CellRing (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd))).image_of_isOpenImmersion _`. Establish `key : spMap (cellRing ι N w) ≫ cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w = hU.fromSpec`. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec (cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w) hU (isAffineOpen_top _) (Scheme.Hom.preimage_image_eq _ ⊤).ge`. Establish `e₀ : ((cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w).appIso ⊤).hom = (cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w).appLE (cellOpen ι N w) ⊤ (Scheme.Hom.preimage_image_eq _ ⊤).ge` using `Scheme.Hom.appIso_hom' _ _`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← e₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : spMap (cellRing ι N w) = Spec.map ((cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w).appIso ⊤).inv ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of (CellRing (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd))).inv`. Conclude with `Spec.map_comp _ _`. Rewrite using `[e]`. Use `erw [Category.assoc, ← h]`. Use `erw [← Spec.map_comp_assoc, Iso.hom_inv_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← spMap_flagPt, ← cell, ← hU.fromSpecStalk_eq_fromSpecStalk hy, IsAffineOpen.fromSpecStalk, ← key]`. Rewrite using `[spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem flagPt_germ_cellGL_eq_fromSpecStalk (ι : Type) [Fintype ι] (N : ℕ) (w : ι → Equiv.Perm (Fin N)) (y : Fl ι N)
     (hy : y ∈ cellOpen ι N w) :

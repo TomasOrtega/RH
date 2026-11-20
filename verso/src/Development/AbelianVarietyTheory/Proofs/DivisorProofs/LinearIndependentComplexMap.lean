@@ -4,13 +4,13 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra E ℂ := τ.toAlgebra`. Establish `h1 : LinearIndependent ℂ (fun i => (1 : ℂ) ⊗ₜ[E] e i)` using `Module.Flat.linearIndependent_one_tmul he`. Set `j` to `(matrixEquivTensor (Fin r) E ℂ).symm`. Establish `hc : ∀ (c : ℂ) (x : TensorProduct E ℂ (Matrix (Fin r) (Fin r) E)), j (c • x) = c • j x`. Introduce `c x`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a M`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`. Simplify using `only [j, matrixEquivTensor_apply_symm, mul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`. Establish `h2 : LinearIndependent ℂ (j.toRingEquiv.toAddEquiv.toAddMonoidHom ∘ fun i => (1 : ℂ) ⊗ₜ[E] e i)` using `h1.map_of_injective_injective id _ (fun _ h => h) (fun m hm => by simpa using hm) (fun c x => hc c x)`. Establish `h3 : (j.toRingEquiv.toAddEquiv.toAddMonoidHom ∘ fun i => (1 : ℂ) ⊗ₜ[E] e i) = fun i => (e i).map τ`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `show j ((1 : ℂ) ⊗ₜ[E] e i) = _`. Simplify using `only [j, matrixEquivTensor_apply_symm, one_smul]`. Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Conclude with `h2.restrict_scalars' ℝ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_real_map_of_fieldEmb {E : Type} [Field E] {r n : ℕ} (τ : E →+* ℂ)
     (e : Fin n → Matrix (Fin r) (Fin r) E) (he : LinearIndependent E e) :

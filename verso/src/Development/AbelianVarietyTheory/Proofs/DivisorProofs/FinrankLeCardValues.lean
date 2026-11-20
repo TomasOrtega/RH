@@ -4,31 +4,29 @@ open Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C V Γ _ _ _ _ ν _h1 _h2 h3 F _`. Use `set S : Set Γ := ν '' {u | u ∈ F ∧ u ≠ 0} with hS`. Establish `hg : ∀ s ∈ S, ∃ u, (u ∈ F ∧ u ≠ 0) ∧ ν u = s` using `fun s hs => hs`. Use `choose! g hgF hgν using hg`. It suffices to establish `hcard : ∃ e : Fin (Module.finrank C F) → Γ, Function.Injective e ∧ ∀ i, e i ∈ S by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he, heS⟩` from `hcard`. Use `⟨fun i => g (e i), fun i => hgF _ (heS i), ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Simplify using `only at hij`. Rewrite `hij` using `[hgν _ (heS i), hgν _ (heS j)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `he hij`. Distinguish the cases in `hfin : S.Finite`. Establish `key : ∀ n : ℕ, ∀ u, u ∈ F → u ≠ 0 → (hfin.toFinset.filter (fun s => ν u < s)).card = n → u ∈ Submodule.span C (g '' S)`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `_ n ih`. Introduce `u huF hu0 hn`. Establish `huS : ν u ∈ S` using `⟨u, ⟨huF, hu0⟩, rfl⟩`. Take `⟨hgF', hg0⟩` from `hgF _ huS`. Take `⟨c, hc⟩` from `h3 u (g (ν u)) hu0 hg0 (hgν _ huS).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgmem : g (ν u) ∈ Submodule.span C (g '' S)` using `Submodule.subset_span ⟨ν u, huS, rfl⟩`. Establish `hdec : u = (u - c • g (ν u)) + c • g (ν u)` using `(sub_add_cancel _ _).symm`. Rewrite using `[hdec]`. Use `Submodule.add_mem _ ?_ (Submodule.smul_mem _ _ hgmem)` and prove the remaining obligations. Break down `hc with hc | hc` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `Submodule.zero_mem _`. Distinguish the cases in `hw0 : u - c • g (ν u) = 0`. Rewrite using `[hw0]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hwF : u - c • g (ν u) ∈ F` using `F.sub_mem huF (F.smul_mem c hgF')`. Use `ih _ ?_ _ hwF hw0 rfl` and prove the remaining obligations. Rewrite using `[← hn]`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨ν (u - c • g (ν u)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Conclude with `⟨⟨_, ⟨hwF, hw0⟩, rfl⟩, hc⟩`. Rewrite using `[Finset.mem_filter]`. Conclude with `fun h => lt_irrefl _ h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Rewrite `hs`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hs.1, lt_trans hc hs.2⟩`. Establish `hle : F ≤ Submodule.span C (g '' S)`. Introduce `u huF`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hu0 : u = 0`. Rewrite using `[hu0]`. Conclude with `Submodule.zero_mem _`. Conclude with `key _ u huF hu0 rfl`. Establish `himg : g '' S = ((hfin.toFinset.image g : Finset V) : Set V)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hdim : Module.finrank C F ≤ hfin.toFinset.card`. Rewrite `hle` using `[himg]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `emb : Fin (Module.finrank C F) ↪ hfin.toFinset` to `(Fin.castLEEmb hdim).trans hfin.toFinset.equivFin.symm.toEmbedding`. Use `⟨fun i => (emb i : Γ), ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Conclude with `emb.injective (Subtype.ext hij)`. Introduce `i`.
-
-Conclude with `(Set.Finite.mem_toFinset hfin).1 (emb i).2`. Set `emb : ℕ ↪ S` to `Set.Infinite.natEmbedding S hfin`. Use `⟨fun i => (emb i : Γ), ?_, fun i => (emb i).2⟩` and prove the remaining obligations. Introduce `i j hij`. Conclude with `Fin.ext (emb.injective (Subtype.ext hij))`.
+A detailed English derivation is pending.
 -/
 theorem finrank_le_card_values : ∀ (C V Γ : Type) [Field C] [AddCommGroup V] [Module C V] [LinearOrder Γ] (ν : V → Γ), (∀ (c : C) (u : V), c ≠ 0 → ν (c • u) = ν u) → (∀ u v : V, u ≠ 0 → v ≠ 0 → ν u < ν v → u + v ≠ 0 ∧ ν (u + v) = ν u) → (∀ u v : V, u ≠ 0 → v ≠ 0 → ν u = ν v → ∃ c : C, u - c • v = 0 ∨ ν u < ν (u - c • v)) → ∀ (F : Submodule C V) [Module.Finite C F], ∃ f : Fin (Module.finrank C F) → V, (∀ i, f i ∈ F ∧ f i ≠ 0) ∧ Function.Injective (fun i => ν (f i)) := by
   intro C V Γ _ _ _ _ ν _h1 _h2 h3 F _

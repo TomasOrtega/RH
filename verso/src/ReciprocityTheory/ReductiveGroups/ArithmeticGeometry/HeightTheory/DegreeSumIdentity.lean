@@ -17,7 +17,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Conclude with `d.fZ_multiHomogeneous_degree_sum hd h c F hF`.
+A detailed English derivation is pending.
 -/
 theorem DegreeSumIdentity (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (F : KTp K d.D d.N)
     (hF : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = d.fZ h c) :

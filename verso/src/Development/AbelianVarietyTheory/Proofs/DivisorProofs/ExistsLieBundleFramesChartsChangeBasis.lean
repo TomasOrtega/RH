@@ -16,7 +16,7 @@ open GlobalTheory.Twist (resM resM_resM)
 namespace GlobalTheory.ChartLieFrame
 
 /- English proof (translation)
-The claim follows from `ext_ev_loc fun p hp => by obtain ⟨N, e, hpN, hab⟩ := h p hp exact ⟨N, hpN, fun S _ z hz hN => by rw [← ev_res z e hN hz a, ← ev_res z e hN hz b, hab]⟩`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_loc {Z : Scheme.{0}} {W : Z.Opens} {a b : Γ(Z, W)}
     (h : ∀ p ∈ W, ∃ (N : Z.Opens) (e : N ≤ W), p ∈ N ∧ resG Z e a = resG Z e b) : a = b :=
@@ -33,7 +33,7 @@ def Rep (M : MChart Y) (j : Fin M.n) {U : Y.X.Opens} (hU : U ≤ M.U) (s : Γ(Gl
     VB.dualApp s h w = tanEv Y.t (isTan_tv (lieBasis M (tau hW) (tau_le hW (h.trans hU)) j)) (tau_le hW le_rfl) w
 
 /- English proof (translation)
-Establish `φe : spMap (ev (tau hW) W₀ (tau_le hW e)) ≫ tau hW₀ = tau hW` using `spMap_ev (tau hW) hW₀ (tau_le hW e)`. Rewrite using `[← tanPull_lieBasis M _ φe (tau_le hW₀ hM) (tau_le hW (e.trans hM)) j, tanLin_tanPull Y.t _ φe (tau_le hW₀ hV) (tau_le hW (e.trans hV))]`. Use function extensionality and compare the values at `i`. Conclude with `ev_tau hW e (tau_le hW e) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem tanLin_res (M : MChart Y) {W W₀ V : Y.X.Opens} (hW : IsAffineOpen W) (hW₀ : IsAffineOpen W₀) (e : W ≤ W₀)
     (hM : W₀ ≤ M.U) (hV : W₀ ≤ V) {n : ℕ} (s : Fin n → Γ(GlobalTheory.LieVB.omega Y.t.G, V)) (j : Fin M.n) :
@@ -46,7 +46,7 @@ theorem tanLin_res (M : MChart Y) {W W₀ V : Y.X.Opens} (hW : IsAffineOpen W) (
   exact ev_tau hW e (tau_le hW e) _
 
 /- English proof (translation)
-Rewrite using `[tanEv_resM]`. Conclude with `congrFun (tanLin_res M hW hW₀ e hM le_rfl ![w] j) 0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanEv_res (M : MChart Y) {W W₀ : Y.X.Opens} (hW : IsAffineOpen W) (hW₀ : IsAffineOpen W₀) (e : W ≤ W₀)
     (hM : W₀ ≤ M.U) (w : Γ(GlobalTheory.LieVB.omega Y.t.G, W₀)) (j : Fin M.n) :
@@ -56,7 +56,7 @@ theorem tanEv_res (M : MChart Y) {W W₀ : Y.X.Opens} (hW : IsAffineOpen W) (hW�
   exact congrFun (tanLin_res M hW hW₀ e hM le_rfl ![w] j) 0
 
 /- English proof (translation)
-Introduce `W hW h w` and use `by rw [VB.dualApp_res] exact hs W hW (h.trans e) w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Rep.res {M : MChart Y} {j : Fin M.n} {U : Y.X.Opens} {hU : U ≤ M.U} {s : Γ(GlobalTheory.LieVB.Lie Y.t.G, U)}
     (hs : Rep M j hU s) {U' : Y.X.Opens} (e : U' ≤ U) : Rep M j (e.trans hU) (resM _ e s) := fun W hW h w => by
@@ -64,7 +64,7 @@ theorem Rep.res {M : MChart Y} {j : Fin M.n} {U : Y.X.Opens} {hU : U ≤ M.U} {s
   exact hs W hW (h.trans e) w
 
 /- English proof (translation)
-The claim follows from `VB.dual_ext fun W h w => eq_of_loc fun p hp => by obtain ⟨N, hN, hpN, hNW'⟩ := exists_isAffineOpen_mem_and_subset (x := p) (U := W) hp have hNW : N ≤ W := hNW' refine ⟨N, hNW, hpN, ?_⟩ rw [← VB.dualApp_resM, ← VB.dualApp_resM, hs N hN, hs' N hN]`.
+A detailed English derivation is pending.
 -/
 theorem rep_unique (M : MChart Y) (j : Fin M.n) {U : Y.X.Opens} (hU : U ≤ M.U) {s s' : Γ(GlobalTheory.LieVB.Lie Y.t.G, U)}
     (hs : Rep M j hU s) (hs' : Rep M j hU s') : s = s' :=
@@ -75,7 +75,7 @@ theorem rep_unique (M : MChart Y) (j : Fin M.n) {U : Y.X.Opens} (hU : U ≤ M.U)
     rw [← VB.dualApp_resM, ← VB.dualApp_resM, hs N hN, hs' N hN]
 
 /- English proof (translation)
-Introduce `W hW h w` and use `eq_of_loc fun p hp => by obtain ⟨k, hk⟩ := TopologicalSpace.Opens.mem_iSup.1 (hc (h hp)) obtain ⟨N, hN, hpN, hNW⟩ := exists_isAffineOpen_mem_and_subset (x := p) (U := W ⊓ V k) ⟨hp, hk⟩ have eW : N ≤ W := fun q hq => (hNW hq).1 have eV : N ≤ V k := fun q hq => (hNW hq).2 refine ⟨N …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rep_of_cover (M : MChart Y) (j : Fin M.n) {U : Y.X.Opens} (hU : U ≤ M.U) {ι : Type} (V : ι → Y.X.Opens)
     (hV : ∀ k, V k ≤ U) (hc : U ≤ iSup V) (s : Γ(GlobalTheory.LieVB.Lie Y.t.G, U))
@@ -97,7 +97,7 @@ def locSec (M : MChart Y) (j : Fin M.n) {n : ℕ} (C : VB.Chart (GlobalTheory.Li
     (C.isFrame.coord i : Γ(GlobalTheory.LieVB.Lie Y.t.G, C.U))
 
 /- English proof (translation)
-Introduce `W hW h w` and use `by rw [locSec, VB.dualApp_sum] simp only [VB.dualApp_smul, LinearMap.sum_apply, LinearMap.smul_apply, VB.IsFrame.dualApp_coord, smul_eq_mul] conv_rhs => rw [← (C.isFrame.basis h).sum_repr w] rw [tanEv_sum_smul] refine Finset.sum_congr rfl fun i _ => ?_ rw [VB.IsFrame.basis_apply, …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rep_locSec (M : MChart Y) (j : Fin M.n) {n : ℕ} (C : VB.Chart (GlobalTheory.LieVB.omega Y.t.G) n)
     (hC : IsAffineOpen C.U) (hM : C.U ≤ M.U) : Rep M j hM (locSec M j C hC hM) := fun W hW h w => by
@@ -111,11 +111,11 @@ theorem rep_locSec (M : MChart Y) (j : Fin M.n) {n : ℕ} (C : VB.Chart (GlobalT
   exact congrArg (((C.isFrame.basis h).repr w i) * ·) (congrFun (tanLin_res M hW hC h hM le_rfl C.e j) i).symm
 
 /- English proof (translation)
-Use `haveI := Y.t.semi`. Use `haveI := Y.t.semi.smooth`. Set `V : (Σ n : ℕ, {C : VB.Chart (GlobalTheory.LieVB.omega Y.t.G) n // IsAffineOpen C.U ∧ C.U ≤ M.U}) → Y.X.Opens` to `fun k => k.2.1.U`. Establish `hV : ∀ k, V k ≤ M.U` using `fun k => k.2.2.2`. Establish `hc : M.U ≤ iSup V` using `fun p hp => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U₀, n, e, hp₀, he⟩` from `GlobalTheory.LieVB.exists_isFrame_omega Y.t.G p`. Take `⟨N, hN, hpN, hNU⟩` from `exists_isAffineOpen_mem_and_subset (x := p) (U := M.U ⊓ U₀) ⟨hp, hp₀⟩`. Establish `e₁ : N ≤ M.U` using `fun q hq => (hNU hq).1`. Establish `e₂ : N ≤ U₀` using `fun q hq => (hNU hq).2`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨n, ⟨⟨N, fun i => resM _ e₂ (e i), he.res e₂⟩, hN, e₁⟩⟩, hpN⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hrep : ∀ k, Rep M j (hV k) (locSec M j k.2.1 k.2.2.1 k.2.2.2)` using `fun k => rep_locSec M j _ _ _`. Take `⟨t, ht⟩` from `Twist.exists_sec_of_cover V hV hc (fun k => locSec M j k.2.1 k.2.2.1 k.2.2.2) fun k k' => rep_unique M j (inf_le_left.trans (hV k)) ((hrep k).res inf_le_left) ((hrep k').res inf_le_right)`. Conclude with `⟨t, rep_of_cover M j le_rfl V hV hc t fun k => by rw [ht k]; exact hrep k⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep (M : MChart Y) (j : Fin M.n) : ∃ s : Γ(GlobalTheory.LieVB.Lie Y.t.G, M.U), Rep M j le_rfl s := by
   haveI := Y.t.semi
@@ -135,15 +135,13 @@ theorem exists_rep (M : MChart Y) (j : Fin M.n) : ∃ s : Γ(GlobalTheory.LieVB.
   exact ⟨t, rep_of_cover M j le_rfl V hV hc t fun k => by rw [ht k]; exact hrep k⟩
 
 /- English proof (translation)
-Use `haveI := Y.t.semi`. Use `haveI := Y.t.semi.smooth`. Use `VB.isFrame_of_forall_exists fun V h p hp => ?_` and prove the remaining obligations. Take `⟨U₀, n, e, hp₀, he⟩` from `GlobalTheory.LieVB.exists_isFrame_omega Y.t.G p`. Take `⟨W, hW, hpW, hWU⟩` from `exists_isAffineOpen_mem_and_subset (x := p) (U := V ⊓ U₀) ⟨hp, hp₀⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : W ≤ V` using `fun q hq => (hWU hq).1`. Establish `e₂ : W ≤ U₀` using `fun q hq => (hWU hq).2`. Set `C : VB.Chart (GlobalTheory.LieVB.omega Y.t.G) n` to `⟨W, fun i => resM _ e₂ (e i), he.res e₂⟩`. Use `⟨W, e₁, hpW, ?_⟩` and prove the remaining obligations. Set `R` to `(C.isFrame.dual.basis (le_rfl : C.U ≤ C.U)).equivFun`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T : (Fin M.n → Γ(Y.X, W)) → (Fin n → Γ(Y.X, W))` to `(tanLin Y.t (tau_le hW (le_rfl : W ≤ C.U)) C.e) ∘ (lieBasis M (tau hW) (tau_le hW (e₁.trans h))).equivFun.symm`. Establish `hT : Function.Bijective T` using `(HodgeCech.tanLin_bijective Y.t C (tau hW) (tau_le hW le_rfl)).comp (LinearEquiv.bijective _)`. Establish `key : ∀ a, R (Fintype.linearCombination Γ(Y.X, W) (fun j => resM _ (e₁.trans h) (f j)) a) = T a`. Introduce `a`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [R, T, Function.comp_apply, Module.Basis.equivFun_apply, VB.IsFrame.dual_basis_repr, Fintype.linearCombination_apply, VB.dualApp_sum, LinearMap.sum_apply, VB.dualApp_smul, LinearMap.smul_apply, VB.dualApp_res, Module.Basis.equivFun_symm_apply, map_sum, map_smul, Finset.sum_a …`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hf k W hW _ _, GlobalTheory.Twist.resM_self]`. Both sides reduce to the same expression. Establish `hc : R ∘ (Fintype.linearCombination Γ(Y.X, W) (fun j => resM _ (e₁.trans h) (f j))) = T` using `funext key`.
-
-Conclude with `(Function.Bijective.of_comp_iff' R.bijective _).1 (hc ▸ hT)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFrame_of_rep (M : MChart Y) (f : Fin M.n → Γ(GlobalTheory.LieVB.Lie Y.t.G, M.U)) (hf : ∀ j, Rep M j le_rfl (f j)) :
     VB.IsFrame f := by
@@ -175,7 +173,7 @@ theorem isFrame_of_rep (M : MChart Y) (f : Fin M.n → Γ(GlobalTheory.LieVB.Lie
   exact (Function.Bijective.of_comp_iff' R.bijective _).1 (hc ▸ hT)
 
 /- English proof (translation)
-Introduce `W hW h w` and use `by have ev' : ∀ v, tanEv Y.t (isTan_tv v) (tau_le hW le_rfl) w = tanLin Y.t (tau_le hW le_rfl) ![w] v 0 := fun v => rfl rw [VB.dualApp_sum] simp only [VB.dualApp_smul, LinearMap.sum_apply, LinearMap.smul_apply, VB.dualApp_res, smul_eq_mul] rw [ev', ← (lieBasis M (tau hW) (tau_le …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rep_chg (M M' : MChart Y) (f : Fin M.n → Γ(GlobalTheory.LieVB.Lie Y.t.G, M.U)) (hf : ∀ i, Rep M i le_rfl (f i))
     (j : Fin M'.n) :
@@ -193,7 +191,7 @@ theorem rep_chg (M M' : MChart Y) (f : Fin M.n → Γ(GlobalTheory.LieVB.Lie Y.t
     Matrix.map_apply, ev_tau hW h]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y`. Use `choose f hf using fun (M : MChart Y) (j : Fin M.n) => exists_rep M j`. Conclude with `⟨f, fun M => isFrame_of_rep M (f M) (hf M), fun M M' j => rep_unique M' j inf_le_right ((hf M' j).res inf_le_right) (rep_chg M M' (f M) (hf M) j)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lieFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), ∃ f : ∀ M : GlobalTheory.Reg.MChart Y, Fin M.n → Γ(GlobalTheory.LieVB.Lie Y.t.G, M.U), (∀ M, GlobalTheory.VB.IsFrame (f M)) ∧ ∀ (M M' : GlobalTheory.Reg.MChart Y) (j : Fin M'.n), GlobalTheory.Twist.resM _ (inf_le_right : M.U ⊓ M'.U ≤ M'.U) (f M' j) = ∑ i, GlobalTheory.FlagMod.chg M M' i j • GlobalTheory.Twist.resM _ (inf_le_left : M.U ⊓ M'.U ≤ M.U) (f M i) := by
   intro E _ _ _ H Dw l Xo c O _ β Y

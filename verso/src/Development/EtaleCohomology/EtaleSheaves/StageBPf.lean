@@ -6,14 +6,14 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.StageBPf
 
 /- English proof (translation)
-Rewrite using `[Functor.map_comp, pull_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pp {q : ℕ} {i n : ℤ} {X Y Z : Scheme.{0}} (a : X ⟶ Y) (b : Y ⟶ Z) (x : Ht q (sch.obj Z) n i) :
     pull _ (sch.map a) _ _ (pull _ (sch.map b) _ _ x) = pull _ (sch.map (a ≫ b)) (tw q i) n x := by
   rw [Functor.map_comp, pull_comp]
 
 /- English proof (translation)
-Rewrite using `[← c.w (IsCofiltered.minToLeft j j'), ← c.w (IsCofiltered.minToRight j j'), Category.assoc, Category.assoc, hι, hι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem indep {Y : Scheme.{0}} {J : Type} [SmallCategory J] [IsCofiltered J] (D : J ⥤ Scheme.{0}) (c : Cone D)
     (ι : ∀ j, D.obj j ⟶ Y) (hι : ∀ {j k : J} (f : j ⟶ k), D.map f ≫ ι k = ι j) (j j' : J) :
@@ -21,22 +21,22 @@ theorem indep {Y : Scheme.{0}} {J : Type} [SmallCategory J] [IsCofiltered J] (D 
   rw [← c.w (IsCofiltered.minToLeft j j'), ← c.w (IsCofiltered.minToRight j j'), Category.assoc, Category.assoc, hι, hι]
 
 /- English proof (translation)
-The claim follows from `QuasiCompact.compactSpace_of_compactSpace f`.
+A detailed English derivation is pending.
 -/
 theorem qc_of {X Y : Scheme.{0}} (f : X ⟶ Y) (h : IsAffineHom f) (hY : CompactSpace Y) : CompactSpace X :=
   QuasiCompact.compactSpace_of_compactSpace f
 /- English proof (translation)
-The claim follows from `quasiSeparatedSpace_of_quasiSeparated f`.
+A detailed English derivation is pending.
 -/
 theorem qs_of {X Y : Scheme.{0}} (f : X ⟶ Y) (h : IsAffineHom f) (hY : QuasiSeparatedSpace Y) : QuasiSeparatedSpace X :=
   quasiSeparatedSpace_of_quasiSeparated f
 /- English proof (translation)
-Use `IsSeparated.of_isAffineHom g` as an intermediate fact. Conclude with `IsAffineHom.of_comp f g`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aff_canc {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (h1 : IsAffineHom (f ≫ g)) (h2 : IsAffineHom g) : IsAffineHom f := by
   have := IsSeparated.of_isAffineHom g; exact IsAffineHom.of_comp f g
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem aff_comp {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (h1 : IsAffineHom f) (h2 : IsAffineHom g) : IsAffineHom (f ≫ g) :=
   inferInstance
@@ -74,7 +74,7 @@ def isLimit_fib {Y : Scheme.{0}} (g : Y ⟶ Spec (CommRingCat.of A)) {J : Type} 
   exact isLimitOfPreserves _ (isLimitOfPreserves _ (isLimit_CO g D c ι hι j0 hl))
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [fm, pullback.map, Category.assoc] erw [pullback.lift_fst, pullback.lift_fst, ← Category.assoc, h1, Category.assoc, hd]`. Simplify using `only [fm, pullback.map, Category.assoc] erw [pullback.lift_snd, pullback.lift_snd, Category.comp_id, Category.comp_id, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fm_comp {Y : Scheme.{0}} (g : Y ⟶ Spec (CommRingCat.of A)) {U V : Scheme.{0}} (u : U ⟶ Y) (v : V ⟶ Y) (d : U ⟶ V)
     (hd : d ≫ v = u) (h : pullback (u ≫ g) (cpt A) ⟶ pullback (v ≫ g) (cpt A))
@@ -91,21 +91,19 @@ end LateralTheory.E.StageBPf
 namespace LateralTheory.E.StageBPf
 
 /- English proof (translation)
-Introduce `hC H q i A _ _ hq Y _ _ g y J _ _ D c ι hc hp n z`. Take `⟨⟨hl⟩, hι, hD⟩` from `hc`. Take `⟨j0⟩` from `IsCofiltered.nonempty (C := J)`. Establish `hcs : ∀ j, CompactSpace (D.obj j)` using `fun j => by`. Use `(hι j).2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `QuasiCompact.compactSpace_of_compactSpace (ι j)`. Establish `hqs : ∀ j, QuasiSeparatedSpace (D.obj j)` using `fun j => by`. Use `(hι j).1` as an intermediate fact. Conclude with `quasiSeparatedSpace_of_quasiSeparated (ι j)`. Establish `hι' : ∀ {j k : J} (f : j ⟶ k), D.map f ≫ ι k = ι j` using `fun f => (hD f).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `(hp j0 n).2 (pull _ (sch.map (fm (c.π.app j0 ≫ ι j0) g)) _ _ z)`. Take `⟨j1, u, hu⟩` from `(hC H q D c hl (fun f => (hD f).2) hcs hqs (fun j => unit_of hq (ι j ≫ g)) n i).1 w`. Establish `hfa : ∀ j, IsAffineHom (pullback.fst (ι j ≫ g) (cpt A))` using `fun j => MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback _ _).flip inferInstance`. Establish `hκ : IsUnit (q : IsLocalRing.ResidueField A)` using `by simpa using hq.map (IsLocalRing.residue A)`. Set `Cg` to `(Over.forget _).mapCone ((Over.pullback (cpt A)).mapCone (CO g D c ι hι' j0))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlim : IsLimit Cg` using `isLimit_fib g D c ι hι' j0 hl`. Establish `hEaff : ∀ {j k : J} (f : j ⟶ k), IsAffineHom (((DO g D ι hι' ⋙ Over.pullback (cpt A)) ⋙ Over.forget _).map f)`. Introduce `j k f`. Establish `e : ((DO g D ι hι' ⋙ Over.pullback (cpt A)) ⋙ Over.forget _).map f ≫ pullback.fst (ι k ≫ g) (cpt A) = pullback.fst (ι j ≫ g) (cpt A) ≫ D.map f` using `pullback.lift_fst _ _ _`. Use `aff_canc _ (pullback.fst (ι k ≫ g) (cpt A)) ?_ (hfa k)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `aff_comp _ _ (hfa j) (hD f).2`. Establish `hEc : ∀ j, CompactSpace (((DO g D ι hι' ⋙ Over.pullback (cpt A)) ⋙ Over.forget _).obj j)` using `fun j => qc_of (pullback.fst (ι j ≫ g) (cpt A)) (hfa j) (hcs j)`. Establish `hEq : ∀ j, QuasiSeparatedSpace (((DO g D ι hι' ⋙ Over.pullback (cpt A)) ⋙ Over.forget _).obj j)` using `fun j => qs_of (pullback.fst (ι j ≫ g) (cpt A)) (hfa j) (hqs j)`. Establish `hEu : ∀ j, IsUnit (q : Γ((((DO g D ι hι' ⋙ Over.pullback (cpt A)) ⋙ Over.forget _).obj j), ⊤))` using `fun j => unit_of hκ (pullback.snd (ι j ≫ g) (cpt A))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key1 : Cg.π.app j1 ≫ pullback.fst (ι j1 ≫ g) (cpt A) = pullback.fst _ _ ≫ c.π.app j1` using `pullback.lift_fst _ _ _`. Establish `key1s : Cg.π.app j1 ≫ pullback.snd (ι j1 ≫ g) (cpt A) = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `key2 : Cg.π.app j1 ≫ fm (ι j1) g = fm (c.π.app j0 ≫ ι j0) g` using `fm_comp g (c.π.app j0 ≫ ι j0) (ι j1) (c.π.app j1) (indep D c ι hι' j1 j0) _ key1 key1s`. Establish `hv : pull _ (sch.map (Cg.π.app j1)) _ _ (pull _ (sch.map (pullback.fst (ι j1 ≫ g) (cpt A))) _ _ u - pull _ (sch.map (fm (ι j1) g)) (tw q i) n z) = 0` using `by erw [map_sub, pp, pp, key1, key2, ← pp, hu, hw, sub_self]`. Take `⟨k, f, hk⟩` from `(hC H q _ Cg hlim hEaff hEc hEq hEu n i).2 j1 _ hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨k, pull _ (sch.map (D.map f)) _ _ u, ?_⟩` and prove the remaining obligations. Establish `key3 : ((DO g D ι hι' ⋙ Over.pullback (cpt A)) ⋙ Over.forget _).map f ≫ pullback.fst (ι j1 ≫ g) (cpt A) = pullback.fst (ι k ≫ g) (cpt A) ≫ D.map f` using `pullback.lift_fst _ _ _`. Establish `key5 : ((DO g D ι hι' ⋙ Over.pullback (cpt A)) ⋙ Over.forget _).map f ≫ pullback.snd (ι j1 ≫ g) (cpt A) = pullback.snd (ι k ≫ g) (cpt A)` using `pullback.lift_snd _ _ _`. Establish `key4` using `fm_comp g (ι k) (ι j1) (D.map f) (hι' f) _ key3 key5`. Use `erw [map_sub, pp, pp, key3, key4, ← pp, sub_eq_zero] at hk`.
-
-Conclude with `hk`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem StageB_of : StageB := by
   intro hC H q i A _ _ hq Y _ _ g y J _ _ D c ι hc hp n z

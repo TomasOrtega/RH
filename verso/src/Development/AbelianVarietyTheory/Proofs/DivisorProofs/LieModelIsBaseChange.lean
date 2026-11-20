@@ -22,16 +22,16 @@ noncomputable section
 namespace GlobalTheory.DiagSqAxes
 
 /- English proof (translation)
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_mul_lift₂ {S : Scheme.{0}} {A B T : Over S} [GrpObj A] [GrpObj B] (x x' : T ⟶ A) (y y' : T ⟶ B) :
     lift x y * lift x' y' = lift (x * x') (y * y') := by
   apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp]
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hM : (GlobalTheory.UU.trivRig A).L.IsLB` using `Out.Inh.trivLB_isLB _`. Establish `h1 : Out.WeilIs A (GlobalTheory.UU.trivRig A).L N (x ≫ 𝟙 A) (y ≫ 𝟙 A) 1`. Rewrite using `[Category.comp_id, Category.comp_id]`. Conclude with `(GlobalTheory.UU.cubWeil_iff_weilIs (c := GlobalTheory.UU.trivCub A) hG hA hx hy 1).1 (GlobalTheory.UU.cubWeil_triv hx hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : LBIso (lbPow L 1) ((GlobalTheory.UU.trivRig A).L.pull (Over.Hom.left (𝟙 A)))` using `LBIso.trans (GlobalTheory.isLB_lbPow hL 1) hL (pull_isLB hM _) (GlobalTheory.lbIso_lbPow_one hL) (GlobalTheory.ZH.AbelianFibre.lbIso_of_gens t ht (GlobalTheory.UU.unitGen _ _) (GlobalTheory.UU.unitGen_isGen _ _))`. Establish `h2` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom hG hA hL hM (𝟙 A) hw h1`. Simplify using `only [Nat.cast_one, _root_.mul_one] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weilIs_one_of_gen {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     {L : LB A.left} (hL : L.IsLB) (t : L.Gen) (ht : t.IsGen) {N : ℕ} {T : Over S} {x y : T ⟶ A}
@@ -49,9 +49,9 @@ theorem weilIs_one_of_gen {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj
   exact h2
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.globalFns_holds`. Take `⟨t, ht⟩` from `ht`. Establish `hL : (P.pull ψ.left).IsLB` using `pull_isLB hP _`. Establish `pa : (a ≫ ψ) ^ N = 1` using `by rw [← MonObj.pow_comp, ha, MonObj.one_comp]`. Establish `pb : (b ≫ ψ) ^ N = 1` using `by rw [← MonObj.pow_comp, hb, MonObj.one_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c', hc'⟩` from `GlobalTheory.WeilGeomPt.exists_weilIs_geomPt S B P hB hP κ y N hN hNk _ _ pa pb`. Establish `h1` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom hG hA hL hP ψ (GlobalTheory.lbIso_lbPow_one hL) hc'`. Simplify using `only [Nat.cast_one, _root_.mul_one] at h1`. Establish `h2` using `weilIs_one_of_gen hA hL t ht ha hb`. Rewrite `hc'` using `[GlobalTheory.CommutatorPairing.weilIs_unique hG hA hL h1 h2]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem weilIs_axis {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB B.left} (hP : P.IsLB) (ψ : A ⟶ B) [IsMonHom ψ]
@@ -74,19 +74,17 @@ end GlobalTheory.DiagSqAxes
 namespace GlobalTheory.DiagSqAxes
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP h₂ h₁ hsym κ _ _ y N hN hNk a b ha hb c hc`. Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hAA : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA`. Establish `e11 : Out.WeilIs (G2 A) P N (lift a 1) (lift b 1) 1`. Establish `h` using `weilIs_axis hA hAA hP (lift (𝟙 A) (1 : A ⟶ A)) h₁ κ y N hN hNk a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `only [comp_lift, Category.comp_id, MonObj.comp_one]`. Establish `e22 : Out.WeilIs (G2 A) P N (lift 1 a) (lift 1 b) 1`. Establish `h` using `weilIs_axis hA hAA hP (lift (1 : A ⟶ A) (𝟙 A)) h₂ κ y N hN hNk a b ha hb`. Simplify `h` using `only [comp_lift, Category.comp_id, MonObj.comp_one]`. Establish `e21 : Out.WeilIs (G2 A) P N (lift 1 a) (lift b 1) c`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hw : LBIso (lbPow P 1) (P.pull (lift (snd A A) (fst A A)).left)` using `LBIso.trans (GlobalTheory.isLB_lbPow hP 1) hP (pull_isLB hP _) (GlobalTheory.lbIso_lbPow_one hP) hsym`. Establish `h' : Out.WeilIs (G2 A) P N (lift 1 a ≫ lift (snd A A) (fst A A)) (lift b 1 ≫ lift (snd A A) (fst A A)) c`. Simplify `hc` using `only [comp_lift, lift_fst, lift_snd]`. Establish `h` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom hG hAA hP hP _ hw h'`. Simplify using `only [Nat.cast_one, _root_.mul_one] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Establish `r1` using `GlobalTheory.DiagPairing.weilIs_mul_left hG hAA hP e11 e21`. Establish `r2` using `GlobalTheory.DiagPairing.weilIs_mul_left hG hAA hP hc e22`. Rewrite `r1`, `r2` using `[lift_mul_lift₂]`. Establish `s` using `GlobalTheory.DiagPairing.weilIs_mul_left hG hAA hP (GlobalTheory.CommPairing.weilIs_symm hP r1) (GlobalTheory.CommPairing.weilIs_symm hP r2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s'` using `GlobalTheory.CommPairing.weilIs_symm hP s`. Rewrite `s'` using `[lift_mul_lift₂]`. Simplify using `only [_root_.mul_one, _root_.one_mul] at s'`. Establish `hd : Out.WeilIs (G2 A) P N (a ≫ lift (𝟙 A) (𝟙 A)) (b ≫ lift (𝟙 A) (𝟙 A)) (c ^ 2)`. Simplify using `only [comp_lift, Category.comp_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `s' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← _root_.mul_inv, inv_inv, pow_two]`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `h` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom hG hA hD hP (lift (𝟙 A) (𝟙 A)) (GlobalTheory.lbIso_lbPow_one hD) hd`. Simplify using `only [Nat.cast_one, _root_.mul_one] at h`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weilIs_diag_sq : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (y : Sp κ ⟶ S) (N : ℕ), 0 < N → (N : κ) ≠ 0 → ∀ (a b : Over.mk y ⟶ A), a ^ N = 1 → b ^ N = 1 → ∀ (c : (Γ((Over.mk y).left, ⊤))ˣ), Out.WeilIs (G2 A) P N (lift a 1) (lift 1 b) c → Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N a b (c ^ 2) := by
   intro S A _ _ hA P hP h₂ h₁ hsym κ _ _ y N hN hNk a b ha hb c hc

@@ -10,27 +10,27 @@ import Formalism.SobolevGaussianKernels.StatementNC
 namespace Formalism.SL.Final
 
 /- English proof (translation)
-The claim follows from `Formalism.SL.P.eichler_isometry_holds`.
+A detailed English derivation is pending.
 -/
 theorem eichIsom : Formalism.SL.IwahoriBlocks.EichIsom := Formalism.SL.P.eichler_isometry_holds
 /- English proof (translation)
-The claim follows from `Formalism.SL.P.eichler_inverse_holds`.
+A detailed English derivation is pending.
 -/
 theorem eichInv : Formalism.SL.IwahoriBlocks.EichInv := Formalism.SL.P.eichler_inverse_holds
 /- English proof (translation)
-The claim follows from `Formalism.SL.P.eichler_move_holds`.
+A detailed English derivation is pending.
 -/
 theorem eichMove : Formalism.SL.IwahoriBlocks.EichMove := Formalism.SL.P.eichler_move_holds
 /- English proof (translation)
-The claim follows from `Formalism.SL.P.eichler_integrality_holds`.
+A detailed English derivation is pending.
 -/
 theorem eichInt : Formalism.SL.IwahoriBlocks.EichInt := Formalism.SL.P.eichler_integrality_holds
 /- English proof (translation)
-The claim follows from `Formalism.SL.P.primes_over_holds`.
+A detailed English derivation is pending.
 -/
 theorem primesOver : Formalism.SL.LF.PrimesOver := Formalism.SL.P.primes_over_holds
 /- English proof (translation)
-The claim follows from `Formalism.SL.P.frame_gram_holds`.
+A detailed English derivation is pending.
 -/
 theorem frameGram : Formalism.SL.FU.FrameGram := Formalism.SL.P.frame_gram_holds
 

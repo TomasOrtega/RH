@@ -39,27 +39,27 @@ section abelian₂
 variable {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p])
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem lamC_of_mem {x : ℂ} (h : x ∈ TaylorLogMetric.Qbar) : TaylorLogMetric.lamC lam x = lam ⟨x, h⟩ := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[lamC_of_mem lam hx, lamC_of_mem lam hy, lamC_of_mem lam (mul_mem hx hy), ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_mul {x y : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (hy : y ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (x * y) = TaylorLogMetric.lamC lam x * TaylorLogMetric.lamC lam y := by
   rw [lamC_of_mem lam hx, lamC_of_mem lam hy, lamC_of_mem lam (mul_mem hx hy), ← map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[lamC_of_mem lam hx, lamC_of_mem lam (zpow_mem hx n), ← map_zpow₀]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_zpow {x : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (n : ℤ) : TaylorLogMetric.lamC lam (x ^ n) = TaylorLogMetric.lamC lam x ^ n := by
   rw [lamC_of_mem lam hx, lamC_of_mem lam (zpow_mem hx n), ← map_zpow₀]; rfl
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, lamC_of_mem lam (zero_mem _)]`. Conclude with `map_zero lam`. Consider the case `insert i T hi ih`. Establish `h1` using `h i (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ j ∈ T, f j ∈ TaylorLogMetric.Qbar` using `fun j hj => h j (Finset.mem_insert_of_mem hj)`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih h2, lamC_of_mem lam h1, lamC_of_mem lam (sum_mem h2), lamC_of_mem lam (add_mem h1 (sum_mem h2)), ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lamC_sum {κ : Type} (T : Finset κ) (f : κ → ℂ) (h : ∀ i ∈ T, f i ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (∑ i ∈ T, f i) = ∑ i ∈ T, TaylorLogMetric.lamC lam (f i) := by
@@ -81,9 +81,9 @@ variable {X : Fields} (A : Amb X) {a b : ℕ} (S : Finset (HeightOneSpectrum (�
   (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
 
 /- English proof (translation)
-Establish `: A.IsLift S N N' c (x + y) = A.IsLift S N N' c x`. Use function extensionality and compare the values at `t`. Unfold `Amb.IsLift`. Establish `e : t - x = (t - (x + y)) + y` using `by abel`. Rewrite using `[e, add_mem_cancel_right hy]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Amb.thInd Amb.liftW`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem thInd_add (c : ℕ) (x y : HomE X.E a b) (hy : y ∈ mulLat c (homAt S N N')) :
     A.thInd S N N' c (x + y) = A.thInd S N N' c x := by
@@ -96,7 +96,7 @@ theorem thInd_add (c : ℕ) (x y : HomE X.E a b) (hy : y ∈ mulLat c (homAt S N
   rw [this]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `M.smul_mem _ (M.smul_mem _ hy)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mulLat_le_divLat {H : Type} [AddCommGroup H] [Module (𝓞 X.E) H] (c c' : ℕ) (M : Submodule (𝓞 X.E) H) :
     mulLat c M ≤ divLat c' M := by
@@ -104,21 +104,19 @@ theorem mulLat_le_divLat {H : Type} [AddCommGroup H] [Module (𝓞 X.E) H] (c c'
   exact M.smul_mem _ (M.smul_mem _ hy)
 
 /- English proof (translation)
-Take `⟨R, hR, hsum⟩` from `_root_.GlobalTheory.latSum_eq_sum_sum_reps X.E _ (divLat cA (homAt S N N')) (mulLat c (homAt S N N')) C J (mulLat_le_divLat _ _ _) hC (_root_.GlobalTheory.MomT.finite_quot_divLat_mulLat_homAt X.E a b S N N' cA c hN.1 hN'.1 hcA hc) hJ`. Establish `hχ0 : A.chiF a b N N' ≠ 0`. Introduce `h`. Rewrite `hχ1` using `[h, lamC_of_mem lam (zero_mem _)]`. Establish `: lam ⟨0, zero_mem _⟩ = 0` using `map_zero lam`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hχ1` using `[this, norm_zero]`. Conclude with `zero_ne_one hχ1`. Establish `hinv : TaylorLogMetric.lamC lam (A.chiF a b N N')⁻¹ = (TaylorLogMetric.lamC lam (A.chiF a b N N'))⁻¹`. Simplify using `using lamC_zpow lam hχ (-1)`. Use `clo_congr (clo_sum R (fun x m => if Ξ x = 0 then 0 else ι (Ξ x) * TaylorLogMetric.lamC lam (A.chiF a b N N')⁻¹ * TaylorLogMetric.lamC lam (∑ j ∈ J, jetC A.cD (A.thInd S N N' c (x + j)) m)) (M := Set.univ) fun x hx => ?_) subset_rfl (Set.subset_univ _) fun m hm => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : Ξ x = 0`. Simplify `clo_zero Sup tab Set.univ` using `[h]`. Simplify using `only [if_neg h]`. Use `clo_mul (h3 x (hR x hx) h) _ ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hinv, norm_inv, hχ1, inv_one, mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `h2 x (hR x hx)`. Unfold `jetSum`. Rewrite using `[hsum X.K _ (fun x hx y hy => by rw [h0 x hx y hy]; unfold Amb.jetK; rw [thInd_add A S N N' c x y hy]), map_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hj : ∀ j ∈ J, Ξ (x + j) = Ξ x` using `fun j hj => h1 x (hR x hx) j (hJ.1 j hj)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl fun j hj' => by rw [hj j hj'], ← Finset.mul_sum]`. Use `split_ifs with h`. Simplify using `[h]`. Establish `hk : ∀ j ∈ J, A.σ₀ (A.jetK S N N' c (x + j) m) = (A.chiF a b N N')⁻¹ * jetC A.cD (A.thInd S N N' c (x + j)) m`. Introduce `j hj'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `hm (x + j) (add_mem (hR x hx) (hC (hJ.1 j hj'))) (by rw [hj j hj']; exact h)` as an intermediate fact. Unfold `Amb.jetK desc`. Rewrite using `[dif_pos this]`. Conclude with `this.choose_spec`. Establish `e : A.σ₀ (∑ j ∈ J, A.jetK S N N' c (x + j) m) = (A.chiF a b N N')⁻¹ * ∑ j ∈ J, jetC A.cD (A.thInd S N N' c (x + j)) m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl hk`. Establish `hq : ∑ j ∈ J, jetC A.cD (A.thInd S N N' c (x + j)) m ∈ TaylorLogMetric.Qbar`. Use `mul_mem hχ (hlam (∑ j ∈ J, A.jetK S N N' c (x + j) m)).1` as an intermediate fact. Rewrite `this` using `[e, mul_inv_cancel_left₀ hχ0]`. Then use the resulting hypothesis.
-
-Rewrite using `[map_mul, ← (hlam (∑ j ∈ J, A.jetK S N N' c (x + j) m)).2, e, lamC_mul lam (inv_mem hχ) hq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assemble {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ι : X.K →+* ℂ_[p])
     (hlam : ∀ k, A.σ₀ k ∈ TaylorLogMetric.Qbar ∧ TaylorLogMetric.lamC lam (A.σ₀ k) = ι k) (cA c : ℕ) (hcA : 0 < cA) (hc : 0 < c)
@@ -182,7 +180,7 @@ section Phi
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ} {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Introduce `P v hv`. Use `⟨add_mem (hx P v hv).1 (hy P v hv).1, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hd'.f_add P _ (hx P v hv).1 _ (hy P v hv).1, (hy P v hv).2, add_zero, (hx P v hv).2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppBar_add {d : Deco E a ST SG} {d' : Deco E b ST SG'} (hd' : d'.Ok) {x y : HomE E a b} (hx : x ∈ suppBar d d')
     (hy : ∀ P : ST, ∀ v ∈ d.at P.1, y v ∈ d'.at P.1 ∧ d'.f P (y v) = 0) : x + y ∈ suppBar d d' := by
@@ -191,11 +189,9 @@ theorem suppBar_add {d : Deco E a ST SG} {d' : Deco E b ST SG'} (hd' : d'.Ok) {x
   rw [LinearMap.add_apply, hd'.f_add P _ (hx P v hv).1 _ (hy P v hv).1, (hy P v hv).2, add_zero, (hx P v hv).2]
 
 /- English proof (translation)
-Establish `h : x + y ∈ suppBar d d' ↔ x ∈ suppBar d d'`. Use `⟨fun h => ?_, fun h => suppBar_add hd' h hy⟩` and prove the remaining obligations. Use `suppBar_add hd' (y := -y) h fun P v hv => ⟨neg_mem (hy P v hv).1, by` as an intermediate fact. Use `hd'.f_smul P (-1) _ (hy P v hv).1` as an intermediate fact. Rewrite `this` using `[(hy P v hv).2, mul_zero, neg_one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this⟩`. Simplify using `using this`. Unfold `phiT`. Distinguish the cases in `hx : x ∈ suppBar d d'`. Conclude with `(if_pos (h.2 hx)).trans (if_pos hx).symm`.
-
-Conclude with `(if_neg fun h' => hx (h.1 h')).trans (if_neg hx).symm`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem phiT_add (K : Type) [Field K] {d : Deco E a ST SG} {d' : Deco E b ST SG'} (hd' : d'.Ok) (x : HomE E a b)
     {y : HomE E a b} (hy : ∀ P : ST, ∀ v ∈ d.at P.1, y v ∈ d'.at P.1 ∧ d'.f P (y v) = 0) :
@@ -213,9 +209,9 @@ theorem phiT_add (K : Type) [Field K] {d : Deco E a ST SG} {d' : Deco E b ST SG'
   · exact (if_neg fun h' => hx (h.1 h')).trans (if_neg hx).symm
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hy`. Introduce `P v hv`. Establish `h1 : y v ∈ d'.at P.1` using `hy P.1 (hS P.2) v hv`. Use `⟨Submodule.smul_mem _ (c : 𝓞 E) h1, ?_⟩` and prove the remaining obligations. Use `hd'.f_smul P (c : 𝓞 E) _ h1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.Quotient.eq_zero_iff_mem.2 (hc P.1 P.2), zero_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_of_mulLat {d : Deco E a ST SG} {d' : Deco E b ST SG'} (hd' : d'.Ok) {S : Finset (HeightOneSpectrum (𝓞 E))}
     (hS : ST ⊆ S) {c : ℕ} (hc : ∀ P ∈ ST, (c : 𝓞 E) ∈ P.asIdeal) {y : HomE E a b} (hy : y ∈ mulLat c (homAt S d.N d'.N)) :
@@ -229,13 +225,13 @@ theorem ker_of_mulLat {d : Deco E a ST SG} {d' : Deco E b ST SG'} (hd' : d'.Ok) 
   exact this
 
 /- English proof (translation)
-Introduce `_ hx P hP` and use `hx P (h hP)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem homAt_mono {S S' : Finset (HeightOneSpectrum (𝓞 E))} (h : S ⊆ S') (N : Submodule (𝓞 E) (Sp E a))
     (N' : Submodule (𝓞 E) (Sp E b)) : homAt S' N N' ≤ homAt S N N' := fun _ hx P hP => hx P (h hP)
 
 /- English proof (translation)
-Unfold `phiT`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_phiT_le {K : Type} [Field K] {p : ℕ} [Fact p.Prime] (ι : K →+* ℂ_[p]) (d : Deco E a ST SG) (d' : Deco E b ST SG')
     (x : HomE E a b) : ‖ι (phiT K d d' x)‖ ≤ 1 := by
@@ -243,7 +239,7 @@ theorem norm_phiT_le {K : Type} [Field K] {p : ℕ} [Fact p.Prime] (ι : K →+*
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `phiT at h`. Use `split_ifs at h with h'`. Use `exacts [h', absurd rfl h]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_suppBar_of_ne {K : Type} [Field K] {d : Deco E a ST SG} {d' : Deco E b ST SG'} {x : HomE E a b}
     (h : phiT K d d' x ≠ 0) : x ∈ suppBar d d' := by
@@ -259,7 +255,7 @@ variable {X : Fields} {A : Amb X} {a b : ℕ} {S SG SG₁ SG₂ : Finset (Height
   [Fact p.Prime] {lam : TaylorLogMetric.Qbar →+* ℂ_[p]} {ι : X.K →+* ℂ_[p]} {un : X.Tau → ℂ_[p]} {w : HeightOneSpectrum (𝓞 X.K)}
 
 /- English proof (translation)
-Use `ext`. Conclude with `star_star (x : X.E)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem conjO_conjO (x : 𝓞 X.E) : X.conjO (X.conjO x) = x := by
   ext
@@ -267,7 +263,7 @@ theorem conjO_conjO (x : 𝓞 X.E) : X.conjO (X.conjO x) = x := by
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Introduce and unpack `rfl`. Use `h.2.2.2.2.2.1` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Conclude with `h.2.2.2.2.1.ne_zero (by exact_mod_cast this.symm)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ctx.ne_zero (h : Ctx A a b S SG ϖ p g cA) : ϖ ≠ 0 := by
   rintro rfl
@@ -277,9 +273,7 @@ theorem Ctx.ne_zero (h : Ctx A a b S SG ϖ p g cA) : ϖ ≠ 0 := by
 
 omit [Fact p.Prime] in
 /- English proof (translation)
-Take `⟨-, -, -, -, hp, hn, -, hS, -, hg, hA⟩` from `id h`. Use `⟨fun P hP => (hS P).2 (Or.inl ((mem_divs h.ne_zero P).1 hP)), fun P hP => (hS P).2 (Or.inr hP), fun P hP => hn ▸ Ideal.mul_mem_right _ _ ((mem_divs h.ne_zero P).1 hP), Nat.pos_of_ne_zero ?_, Nat.mul_pos hp.pos (Nat.pos_of_ne_zero ?_)⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hp.ne_one (by simpa using hA)`. Introduce and unpack `rfl`.
-
-Conclude with `hp.ne_one (by simpa using hg)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Ctx.sub (h : Ctx A a b S SG ϖ p g cA) : divs ϖ ⊆ S ∧ SG ⊆ S ∧ (∀ P ∈ divs ϖ, (p : 𝓞 X.E) ∈ P.asIdeal) ∧
     0 < cA ∧ 0 < p * g := by
@@ -293,9 +287,9 @@ theorem Ctx.sub (h : Ctx A a b S SG ϖ p g cA) : divs ϖ ⊆ S ∧ SG ⊆ S ∧ 
     exact hp.ne_one (by simpa using hg)
 
 /- English proof (translation)
-Take `⟨s1, s2, s3, s4, s5⟩` from `h.sub`. Establish `hd : ∀ x ∈ divLat cA (homAt S d.1.N d'.1.N), x ∈ divLat cA (homAt SG d.1.N d'.1.N)` using `fun x hx => homAt_mono s2 _ _ hx`. Use `assemble A S d.1.N d'.1.N lam ι hlam cA (p * g) s4 s5 ⟨d.2.lat, d.2.uni⟩ ⟨d'.2.lat, d'.2.uni⟩ _ hχ hχ1 C (fun y hy => Submodule.smul_mem (homAt S d.1.N d'.1.N) (cA : 𝓞 X.E) (hC y hy).1) J hJ (fun x hx y hy => ?_) (fun x hx y hy => ?_) (fun x hx => ?_) Sup tab fun x hx h0 => h3 x …` and prove the remaining obligations. Rewrite using `[phiT_add X.K d'.2 x (ker_of_mulLat d'.2 s1 (fun P hP => ?_) hy), (hΞ x (hd x hx)).2 y (Submodule.map_mono (homAt_mono s2 _ _) hy)]`. Rewrite using `[Nat.cast_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (s3 P hP)`. Rewrite using `[phiT_add X.K d'.2 x (hC y hy).2.2, (hΞ x (hd x hx)).2 y (hC y hy).2.1]`. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_one₀ (norm_phiT_le ι _ _ x) (norm_nonneg _) ((_root_.GlobalTheory.MomPlace.places X.K p A.σ₀ ι).2.1 w hw _ (hΞ x (hd x hx)).1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assemble_phi (h : Ctx A a b S SG ϖ p g cA) (hlam : ∀ k, A.σ₀ k ∈ TaylorLogMetric.Qbar ∧ TaylorLogMetric.lamC lam (A.σ₀ k) = ι k)
     (hw : Induces ι w) (d : DecoSet X.E a (divs ϖ) SG₁) (d' : DecoSet X.E b (divs ϖ) SG₂)
@@ -325,9 +319,9 @@ theorem assemble_phi (h : Ctx A a b S SG ϖ p g cA) (hlam : ∀ k, A.σ₀ k ∈
       ((_root_.GlobalTheory.MomPlace.places X.K p A.σ₀ ι).2.1 w hw _ (hΞ x (hd x hx)).1)
 
 /- English proof (translation)
-Use `assemble_phi h hlam hw d d' hχ hχ1 Ξ₀ hΞ ⊥ (fun y hy => ?_) {0} ⟨by simp, by simp, by simp⟩ _ _ fun x hx hs => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_bot.1 hy]`. Use `⟨zero_mem _, zero_mem _, fun P v _ => ⟨zero_mem _, ?_⟩⟩` and prove the remaining obligations. Use `d'.2.f_smul P 0 0 (zero_mem _)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(_root_.GlobalTheory.MomT.CosetBar.moments_thInd X A a b S SG ϖ p g cA d.1.N d'.1.N lam ι un h ⟨d.2.lat, d.2.uni⟩ ⟨d'.2.lat, d'.2.uni⟩ hm x hx fun P hP v hv => (hs ⟨P, hP⟩ v hv).1).2` as an intermediate fact. Use `clo_congr this (fun t ht => ?_) subset_rfl fun m _ => by simp` and prove the remaining obligations. Use `suppBar_add d'.2 hs (ker_of_mulLat d'.2 subset_rfl h.sub.2.2.1 ht)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem type_bar (h : Ctx A a b S SG ϖ p g cA) (hlam : ∀ k, A.σ₀ k ∈ TaylorLogMetric.Qbar ∧ TaylorLogMetric.lamC lam (A.σ₀ k) = ι k)
     (hw : Induces ι w) (d : DecoSet X.E a (divs ϖ) SG₁) (d' : DecoSet X.E b (divs ϖ) SG₂)
@@ -349,21 +343,19 @@ theorem type_bar (h : Ctx A a b S SG ϖ p g cA) (hlam : ∀ k, A.σ₀ k ∈ Tay
     simpa using this
 
 /- English proof (translation)
-Take `⟨s1, s2, s3, s4, s5⟩` from `h.sub`. Establish `hN : IsSdLat d.1.N` using `⟨d.2.lat, d.2.uni⟩`. Establish `hN' : IsSdLat d'.1.N` using `⟨d'.2.lat, d'.2.uni⟩`. Take `⟨hAA, -, -, -, l4, -⟩` from `_root_.GlobalTheory.MomT.HalfIncl.half_inclusions X A a b S SG ϖ p g cA d.1.N d'.1.N h hN hN'`. Establish `hFG : A.AA.FG` using `h.2.1.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : A.AAUnit S` using `h.2.1.2.2.2.1`. Use `set r : X.E := ((cA * g : ℕ) : X.E) * star (ϖ : X.E) with hr`. Establish `hrO : ∀ (W : Type) [AddCommGroup W] [Module X.E W] [Module (𝓞 X.E) W] [IsScalarTower (𝓞 X.E) X.E W] (y : W), r • y = (((cA * g : ℕ) : 𝓞 X.E) * X.conjO ϖ) • y`. Introduce `W _ _ _ _ y`. Rewrite using `[← algebraMap_smul X.E (((cA * g : ℕ) : 𝓞 X.E) * X.conjO ϖ) y, map_mul, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hC : ∀ y ∈ (smulLat r (per A d.1.N d'.1.N ⊓ per A d.1.N N'')).toAddSubgroup, y ∈ homAt S d.1.N d'.1.N ∧ y ∈ mulLat (p * g) (homAt SG d.1.N d'.1.N) ∧ ∀ P : ↥(divs ϖ), ∀ v ∈ d.1.at P.1, y v ∈ d'.1.at P.1 ∧ d'.1.f P (y v) = 0`. Introduce `y hy`. Take `⟨m, hm', rfl⟩` from `(mem_smulLat _ _ _).1 hy`. Use `⟨?_, (l4 m hm'.1).2.2.1, fun P v hv => (hc.2.2 P _).1 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrO]`. Conclude with `Submodule.smul_mem _ _ (l4 m hm'.1).1`. Rewrite using `[LinearMap.smul_apply, hrO]`. Conclude with `Submodule.smul_mem _ _ (((_root_.GlobalTheory.MomT.LatFin.per_lattice_facts X A a b d.1.N N'' hFG hAA hN hN'').2.2.2 P.1 (hU P.1 (s1 P.2)) m).1 (le_locP _ _ hm'.2) v hv)`. Take `⟨J, hJ⟩` from `(_root_.GlobalTheory.RepsMod.reps_facts (HomE X.E a b)).1 (mulLat (p * g) (homAt S d.1.N d'.1.N)).toAddSubgroup (smulLat r (per A d.1.N d'.1.N ⊓ per A d.1.N N'')).toAddSubgroup (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf` using `_root_.GlobalTheory.MomT.finite_quot_divLat_mulLat_homAt X.E a b S d.1.N d'.1.N cA (p * g) hN.1 hN'.1 s4 s5`. Establish `h1 : (mulLat (p * g) (homAt S d.1.N d'.1.N)).toAddSubgroup.relIndex (divLat cA (homAt S d.1.N d'.1.N)).toAddSubgroup ≠ 0` using `@AddSubgroup.index_ne_zero_of_finite _ _ _ hf`. Introduce `h0`. Conclude with `h1 (AddSubgroup.relIndex_eq_zero_of_le_right (fun y hy => Submodule.smul_mem (homAt S d.1.N d'.1.N) (cA : 𝓞 X.E) (hC y hy).1) h0))`. Use `assemble_phi h hlam hw d d' hχ hχ1 Ξ₀ hΞ _ hC J hJ _ _ fun x hx hs => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `clo_congr (_root_.GlobalTheory.MomT.CosetSum.moments_coset_sum X A a b S SG ϖ p g cA d.1.N d'.1.N N'' lam ι un κ _ h hN hN' hN'' hc.1 hc.2.1 hm hκ hκ1 (_root_.GlobalTheory.MomT.IdxBound.relIndex_per_dvd X A a b SG₂ ϖ p d.1.N d' N'' hFG hAA (fun P hP => hU P (s1 hP)) h.ne_zero hno …` and prove the remaining obligations. Use `_root_.GlobalTheory.AdjMem.adj_per_mem X A a b d.1.N N'' P.1 hN hN'' (h.2.2.1 _ ?_) t ht y ((hc.2.2 P y).2 ⟨hy, hf⟩)` and prove the remaining obligations. Establish `h0 : X.conjO ϖ ≠ 0`. Introduce `h0`. Use `h.2.2.2.2.2.1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h0, mul_zero]`. Conclude with `h.2.2.2.2.1.ne_zero (by exact_mod_cast this.symm)`. Rewrite using `[mem_divs h0, mem_conjP]`. Establish `: cO X.E (X.conjO ϖ) = ϖ` using `conjO_conjO ϖ`. Rewrite using `[this]`.
-
-Conclude with `(mem_divs h.ne_zero _).1 P.2`.
+A detailed English derivation is pending.
 -/
 theorem type_p (h : Ctx A a b S SG ϖ p g cA) (hlam : ∀ k, A.σ₀ k ∈ TaylorLogMetric.Qbar ∧ TaylorLogMetric.lamC lam (A.σ₀ k) = ι k)
     (hw : Induces ι w) (d : DecoSet X.E a (divs ϖ) SG₁) (d' : DecoSet X.E b (divs ϖ) SG₂) (hstd : StdAtT d.1)
@@ -430,11 +422,11 @@ end Types
 section Main
 
 /- English proof (translation)
-Establish `hp : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Establish `h1 : ‖ρ (ϖ : X.E)‖ * ‖ρ (star (ϖ : X.E))‖ = (p : ℝ)⁻¹`. Establish `e : (ϖ : X.E) * star (ϖ : X.E) = (p : X.E)`. Use `congrArg (algebraMap (𝓞 X.E) X.E) h` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← norm_mul, ← map_mul, e, map_natCast, ← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`. Establish `h2 : ‖ρ (star (ϖ : X.E))‖ ≤ 1` using `GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral (map_isIntegral_int ρ (X.conjO ϖ).isIntegral_coe)`. Establish `h0 : ‖ρ (ϖ : X.E)‖ ≠ 0` using `left_ne_zero_of_mul (h1 ▸ (inv_pos.2 hp).ne')`. Establish `h3 : ‖ρ (star (ϖ : X.E))‖ / ‖ρ (ϖ : X.E)‖ = ‖ρ (star (ϖ : X.E))‖ ^ 2 * p`. Establish `: (p : ℝ) * (‖ρ (ϖ : X.E)‖ * ‖ρ (star (ϖ : X.E))‖) = 1` using `by rw [h1, mul_inv_cancel₀ hp.ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_eq_iff h0]`. Take the linear combination `(-‖ρ (star (ϖ : X.E))‖) * this`. Rewrite using `[map_div₀, inv_div, norm_div, h3]`. Conclude with `mul_le_of_le_one_left hp.le (pow_le_one₀ (norm_nonneg _) h2)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ratio_le {X : Fields} {p : ℕ} [Fact p.Prime] (ρ : X.E →+* ℂ_[p]) {ϖ : 𝓞 X.E}
     (h : ϖ * X.conjO ϖ = (p : 𝓞 X.E)) : ‖(ρ ((ϖ : X.E) / star (ϖ : X.E)))⁻¹‖ ≤ p := by
@@ -455,43 +447,39 @@ theorem norm_ratio_le {X : Fields} {p : ℕ} [Fact p.Prime] (ρ : X.E →+* ℂ_
   exact mul_le_of_le_one_left hp.le (pow_le_one₀ (norm_nonneg _) h2)
 
 /- English proof (translation)
-Introduce `D hD H s cc δ B χ cD ⟨hs, _, hcc, hδ, hχ, hcD⟩ u _ hcop w ι hw`. Take `⟨lam, hlam⟩` from `(_root_.GlobalTheory.MomPlace.places D.X.K (D.Pr.T u) s.σ₀ ι).1`. Take `⟨⟨hTs, hTq⟩, -⟩ : (D.Pr.T u ∉ H.host.small ∧ D.Pr.T u ≠ H.host.q) ∧ ∀ i, D.Pr.g i ∉ H.host.small ∧ D.Pr.g i ≠ H.host.q` from `⟨(_root_.GlobalTheory.AAUnitAway.locP_AA_and_primes_ne.2 D H s hD).1 u, (_root_.GlobalTheory.AAUnitAway.locP_AA_and_primes_ne.2 D H s hD).2⟩`. Establish `hT2 : D.Pr.T u ≠ 2` using `UpperTheory.Small.ne_two H.host hTs`. Establish `hP` using `hD.primes`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `hP.T_prime u`. Establish `hn` using `hP.piT_norm u`. Take `⟨Ω, hΩ, hmom⟩` from `hM H cc δ B χ hcc hδ hχ (D.Pr.T u) lam (Or.inr ((_root_.GlobalTheory.MomT.SplitK.splitk H D.X s (D.Pr.piT u) _ hs (hP.piT_Kq u)).2 hp hT2 hn (hP.piT_cop u))) hcop`. Take `⟨M, _, hMe, hMs⟩` from `hcD`. Establish `hcQ : ∀ τ, cD τ ∈ TaylorLogMetric.Qbar`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `τ`. Take `⟨x, hx, -⟩` from `hMs τ`. Rewrite using `[← hx]`. Conclude with `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (algebraMap M ℂ).toRatAlgHom)`. Use `⟨fun τ => TaylorLogMetric.lamC lam (cD (s.iT τ)) / Ω, fun τ => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hx'⟩` from `hMs (s.iT τ)`. Rewrite using `[norm_div, hΩ.1, div_one, ← hx]`. Conclude with `GlobalTheory.EigenGenerator.norm_generator_eq_one H _ lam hTs hTq M hMe _ x hx'`. Introduce `sel S mu cst hsel hS hcq i b _ hb SG SG' d d' hd hd' Ξ₀ hΞ`. Establish `hev : ∀ j, Even (D.R.N j)` using `fun j => D.R.k_even.add ((D.R.t_odd.add_one).mul_left j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `hev i`. Establish `hb' : Even b` using `hb ▸ hev _`. Take `⟨hla, hsm⟩` from `hL H D.X s cc δ B χ cD hD.fields hs hcc hδ hχ _ _ ha hb'`. Establish `hπ0 : D.Pr.piT u ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn` using `[h0, zero_mul]`. Conclude with `hp.ne_zero (by exact_mod_cast hn.symm)`. Establish `hπ0' : D.X.conjO (D.Pr.piT u) ≠ 0`. Introduce `h0`. Rewrite `hn` using `[h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hp.ne_zero (by exact_mod_cast hn.symm)`. Apply the tactic sequence `obtain ⟨hfree, hrow⟩ := _root_.GlobalTheory.Proof.AbsNormSplitPlace.main D u sel S mu hD hsel (hS (Or.inr ⟨u, rfl⟩)) (fun k => hS (Or.inl (by fin_cases k <;> simp)))`. Establish `hUT : ∀ P : HeightOneSpectrum (𝓞 D.X.E), ((D.Pr.T u : ℕ) : 𝓞 D.X.E) ∈ P.asIdeal → localization₂ P.asIdeal (ambOf s B χ cD).AA = localization₂ P.asIdeal (1 : Submodule (𝓞 D.X.E) D.X.E)` using `fun P h => _root_.GlobalTheory.AAUnitAway.locP_AA_and_primes_ne.1 H D.X s cc δ B χ cD P _ hp hTs hTq h hcop`. Establish `hmemS : ∀ P, P ∈ Sall sel mu u ↔ D.Pr.piT u ∈ P.asIdeal ∨ P ∈ rowSG D.Pr sel mu`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Sall`. Rewrite using `[Finset.mem_union, Primes.vT, mem_divs hπ0]`. Establish `hU : (ambOf s B χ cD).AAUnit (Sall sel mu u)`. Introduce `P hPS`. Break down `(hmemS P).1 hPS with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hUT P (hn ▸ Ideal.mul_mem_right _ _ h)`. Apply the tactic sequence `have bad := _root_.GlobalTheory.ThetaMove.BadPrimes.bad_primes D.X D.Pr sel S mu u hD.fields hP hsel (hS (Or.inr ⟨u, rfl⟩)) (fun k => hS (Or.inl (by fin_cases k <;> simp))) P hPS`. Conclude with `_root_.GlobalTheory.PeriodIdealUnit.locP_AA_eq_one D.X H s cc δ B χ cD P bad.2.1 bad.2.2.1 (hcq P h)`. Establish `hG : Nat.Coprime (∏ P : rowSG D.Pr sel mu, Formalism.L2.Col.qOf P.1) (D.Pr.T u)` using `Nat.Coprime.prod_left fun P _ => (Nat.coprime_primes (hrow P.1 P.2).1 hp).2 (hrow P.1 P.2).2.1`. Establish `hctx : Ctx (ambOf s B χ cD) (D.R.N i) b (Sall sel mu u) (rowSG D.Pr sel mu) (D.Pr.piT u) (D.Pr.T u) ((∏ P : rowSG D.Pr sel mu, Formalism.L2.Col.qOf P.1) ^ cst.B) (cAof sel mu cst)` using `⟨hD.fields, ⟨hla.1, hla.2.1, hfree, hU, hla.2.2.2.2⟩, fun P h => hUT P (hn ▸ Ideal.mul_mem_left _ _ ((mem_divs hπ0' P).1 h)), hsm, hp, hn, hP.piT_cop u, hmemS, fun P h => (hrow P h).2.2.1, hG.pow_left _, hG.pow_left _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : IsSdLat d.1.N` using `⟨d.2.lat, d.2.uni⟩`. Establish `hN' : IsSdLat d'.1.N` using `⟨d'.2.lat, d'.2.uni⟩`. Take `⟨c1, c1'⟩` from `_root_.GlobalTheory.MomT.ChiUnit.chi_det_unit H D.X s χ _ lam (D.Pr.piT u) _ d.1.N hD.fields hs hχ hn hN fun P h => hd ⟨P, (mem_divs hπ0 P).2 h⟩`. Take `⟨c2, c2'⟩` from `_root_.GlobalTheory.MomT.ChiUnit.chi_det_unit H D.X s χ _ lam (D.Pr.piT u) _ d'.1.N hD.fields hs hχ hn hN' fun P h => hd' ⟨P, (mem_divs hπ0 P).2 h⟩`. Establish `hF : (ambOf s B χ cD).chiF (D.R.N i) b d.1.N d'.1.N ∈ TaylorLogMetric.Qbar` using `mul_mem (zpow_mem c1 _) (zpow_mem c2 _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hF1 : ‖TaylorLogMetric.lamC lam ((ambOf s B χ cD).chiF (D.R.N i) b d.1.N d'.1.N)‖ = 1`. Use `(congrArg norm (lamC_mul lam (zpow_mem c1 _) (zpow_mem c2 _))).trans ?_` and prove the remaining obligations. Rewrite using `[lamC_zpow lam c1, lamC_zpow lam c2, norm_mul, norm_zpow, norm_zpow, c1', c2', one_zpow, one_zpow, one_mul]`. Use `⟨fun hseen => ?_, fun hseen => ?_⟩` and prove the remaining obligations. Use `type_bar hctx hlam hw d d' hF hF1 Ξ₀ hΞ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_root_.GlobalTheory.MomT.PtMoments.ptMom H D.X s cc δ B χ cD _ lam ι Ω (D.X.conjO (D.Pr.piT u)) (D.R.N i) b hD.fields hs hcc hT2 hcop (fun k => (hlam k).2) hcQ (fun τ τ' => ?_) (by rw [conjO_conjO, mul_comm, hn]) (by rw [conjO_conjO]; exact (hP.piT_cop u).symm) (fun τ => (hw _).1 …` as an intermediate fact. Establish `e : ((D.X.conjO (D.Pr.piT u) : 𝓞 D.X.E) : D.X.E) = star ((D.Pr.piT u : 𝓞 D.X.E) : D.X.E)` using `rfl`. Rewrite `this` using `[e, star_star]`. Then use the resulting hypothesis. Establish `e : ((D.X.conjO (D.Pr.piT u) : 𝓞 D.X.E) : D.X.E) = star ((D.Pr.piT u : 𝓞 D.X.E) : D.X.E)` using `rfl`. Rewrite using `[e, hD.fields.emb_star, hD.fields.emb_star, hP.piT_Kq u τ τ']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsq : ∀ P ∈ divs (D.Pr.piT u), D.Pr.piT u ∉ P.asIdeal ^ 2`. Introduce `P hPm h2`. Use `GlobalTheory.SplitUnram.natCast_notMem_sq D.X.E D.X.conjO (D.Pr.piT u) _ conjO_conjO hp hn (hP.piT_cop u) ?_ (hP.vT_norm u) P hPm (hn ▸ Ideal.mul_mem_right _ _ h2)` and prove the remaining obligations. Establish `h1 : (divs (D.Pr.piT u)).card = Module.finrank ℚ D.X.F` using `(hP.vT_card u).trans hD.fields.card_Tau`. Rewrite using `[h1, ← Module.finrank_mul_finrank ℚ D.X.F D.X.E, hD.fields.rankE, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N'', hN'', hc⟩` from `_root_.GlobalTheory.MomT.MomentCompanion.companion D.X b SG' (D.Pr.piT u) d' hD.fields hπ0 (hP.piT_cop u) hsq`. Establish `hval` using `_root_.GlobalTheory.MomT.ChiMove.chi_move H D.X s χ b SG' (D.Pr.piT u) d' N'' hD.fields hs hχ hπ0 (hP.piT_cop u) hsq hN'' hc`. Use `set k : D.X.K := ∏ τ, (D.X.emb τ (((D.Pr.piT u : 𝓞 D.X.E) : D.X.E) / star ((D.Pr.piT u : 𝓞 D.X.E) : D.X.E)))⁻¹ with hk`. Establish `hval' : χ (TaylorLogMetric.detId H (s.lat d'.1.N) (s.lat N'')) = s.σ₀ k`. Rewrite using `[hval, hk, map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun τ _ => (map_inv₀ _ _).symm`. Establish `hk0 : k ≠ 0`. Establish `h0 : ((D.Pr.piT u : 𝓞 D.X.E) : D.X.E) ≠ 0` using `by exact_mod_cast hπ0`. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => inv_ne_zero ((map_ne_zero _).2 (div_ne_zero h0 (star_ne_zero.2 h0)))`. Establish `hkn : ‖ι k‖ ≤ (D.Pr.T u : ℝ) ^ D.X.f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hk, map_prod, norm_prod]`. Use `(Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => ?_).trans_eq (Finset.prod_const (D.Pr.T u : ℝ))` and prove the remaining obligations. Rewrite using `[map_inv₀]`. Conclude with `norm_ratio_le (ι.comp (D.X.emb τ)) hn`. Establish `hcard : (divs (D.Pr.piT u)).card = D.X.f` using `hP.vT_card u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `type_p hctx hlam hw d d' hd hF hF1 Ξ₀ hΞ (_root_.GlobalTheory.MomT.PtMoments.ptMom H D.X s cc δ B χ cD _ lam ι Ω (D.Pr.piT u) (D.R.N i) b hD.fields hs hcc hT2 hcop (fun k => (hlam k).2) hcQ (hP.piT_Kq u) hn (hP.piT_cop u) (fun τ => (hw _).1 (hseen τ)) ha hb' hla hsm hmom) (hP.vT_ …`. Rewrite `key` using `[hcard]`. Conclude with `key`. Rewrite using `[(hlam _).2, map_pow, norm_pow, ← pow_mul, Nat.div_two_mul_two_of_even ha, hcard, pow_mul]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hkn _`.
-
-Introduce `R hR z`. Establish `hmv` using `_root_.GlobalTheory.MomT.Move.move H D.X s cc δ B χ cD _ b d.1.N d'.1.N N'' hD.fields hs (hE H cc δ B χ hcc hδ hχ) ha hb' hla hN hN' hN'' R hR z`. Establish `hR0 : ((Real.sqrt (R.card : ℝ) : ℝ) : ℂ) ≠ 0`. Take `⟨x, hx, -⟩` from `hR.2.2 0 (zero_mem _)`. Establish `: (0 : ℝ) < R.card` using `by exact_mod_cast Finset.card_pos.2 ⟨x, hx⟩`.
-
-Conclude with `(Real.sqrt_pos.2 this).ne'` after adjusting the coercions. Establish `hσ : s.σ₀ k ≠ 0` using `(map_ne_zero _).2 hk0`. Rewrite using `[hmv, hval', map_pow, zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem jetMoments_of (hM : TranslateMomentsAll) (hE : MovesAll) (hL : LatticeFactsAll) : JetMoments := by
   intro D hD H s cc δ B χ cD ⟨hs, _, hcc, hδ, hχ, hcD⟩ u _ hcop w ι hw

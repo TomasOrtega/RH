@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.CTFin.CapRes
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a b n : ℕ}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Take `⟨p, rfl⟩` from `e.surjective p`. Take `⟨q, rfl⟩` from `e.surjective q`. Express the relevant statement in the definitionally equal form `f ((GlobalTheory.SmGL.emb₂ R e g : Matrix _ _ R) (e p) (e q)) = (GlobalTheory.SmGL.emb₂ S e _ : Matrix _ _ S) (e p) (e q)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.val_emb₂]`. Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_emb₂ {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (e : Fin a ⊕ Fin b ≃ Fin n)
     (g : GL (Fin a) R × GL (Fin b) R) :
@@ -27,9 +27,9 @@ theorem map_emb₂ {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (e : F
   rcases p with p | p <;> rcases q with q | q <;> simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.val_emb₂]`. Use extensionality with `p q`. Take `⟨p, rfl⟩` from `e.surjective p`. Take `⟨q, rfl⟩` from `e.surjective q`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emb₂_swap {R : Type} [CommRing R] (e : Fin a ⊕ Fin b ≃ Fin n) (g₁ : GL (Fin a) R) (g₂ : GL (Fin b) R) :
     GlobalTheory.SmGL.emb₂ R ((Equiv.sumComm (Fin b) (Fin a)).trans e) (g₂, g₁) = GlobalTheory.SmGL.emb₂ R e (g₁, g₂) := by
@@ -41,7 +41,7 @@ theorem emb₂_swap {R : Type} [CommRing R] (e : Fin a ⊕ Fin b ≃ Fin n) (g�
   rcases p with p | p <;> rcases q with q | q <;> simp
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_infGL, map_emb₂]`. Simplify using the standard rewrite rules. Rewrite using `[pFin_infGL, map_emb₂, pFin_infGL, map_one]`. Conclude with `map_one _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_infGL (e : Fin a ⊕ Fin b ≃ Fin n) (y : GL (Fin a) (Cinf E)) :
     GlobalTheory.SmGL.emb₂ (Ad E) e (infGL E a y, (1 : GL (Fin b) (Ad E))) =
@@ -66,7 +66,7 @@ def blockL (e : Fin a ⊕ Fin b ≃ Fin n) : Lie E a →L[ℝ] Lie E n :=
         rcases p with p | p <;> rcases q with q | q <;> simp }
 
 /- English proof (translation)
-Simplify using `[blockL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockL_apply (e : Fin a ⊕ Fin b ≃ Fin n) (x : Lie E a) (p q : Fin a ⊕ Fin b) :
     blockL e x (e p) (e q) = fromBlocks (Matrix.of x) 0 0 0 p q := by
@@ -75,14 +75,14 @@ theorem blockL_apply (e : Fin a ⊕ Fin b ≃ Fin n) (x : Lie E a) (p q : Fin a 
 def shift (e : Fin a ⊕ Fin b ≃ Fin n) (x : Lie E a) : Lie E n := (oneL E n - blockL e (oneL E a)) + blockL e x
 
 /- English proof (translation)
-Simplify using `[shift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shift_one (e : Fin a ⊕ Fin b ≃ Fin n) : shift e (oneL E a) = oneL E n := by simp [shift]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.val_emb₂]`. Use function extensionality and compare the values at `p q`. Take `⟨p, rfl⟩` from `e.surjective p`. Take `⟨q, rfl⟩` from `e.surjective q`. Simplify using `only [shift, Pi.add_apply, Pi.sub_apply, blockL_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q <;> simp [Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toL_emb (e : Fin a ⊕ Fin b ≃ Fin n) (y : GL (Fin a) (Cinf E)) :
     toL (GlobalTheory.SmGL.emb₂ (Cinf E) e (y, 1)).val = shift e (toL y.val) := by
@@ -94,9 +94,9 @@ theorem toL_emb (e : Fin a ⊕ Fin b ≃ Fin n) (y : GL (Fin a) (Cinf E)) :
   rcases p with p | p <;> rcases q with q | q <;> simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Take `⟨p, rfl⟩` from `e.surjective p`. Take `⟨q, rfl⟩` from `e.surjective q`. Rewrite using `[blockL_apply]`. Express the relevant statement in the definitionally equal form `fromBlocks (Matrix.single i j x) 0 0 0 p q = Matrix.single (e (.inl i)) (e (.inl j)) x (e p) (e q)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q <;> simp [Matrix.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockL_single (e : Fin a ⊕ Fin b ≃ Fin n) (i j : Fin a) (x : Cinf E) :
     blockL e (toL (Matrix.single i j x)) = toL (Matrix.single (e (.inl i)) (e (.inl j)) x) := by
@@ -116,7 +116,7 @@ Both sides reduce to the same expression.
 theorem iota_apply (e : Fin a ⊕ Fin b ≃ Fin n) (m : GA E a) : iota e m = GlobalTheory.SmGL.emb₂ (Ad E) e (m, 1) := rfl
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `id hx`. Establish `e1 : x = toL u.val` using `hu.symm`. Substitute `e1` using the available equality. Rewrite using `[chart_val, h, map_mul, ← toL_emb, chart_val, iota_apply e (infGL E a u), emb_infGL]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_eq (e : Fin a ⊕ Fin b ≃ Fin n) {F : GA E n → ℂ} {G : GA E a → ℂ} (h : ∀ m, G m = F (iota e m))
     (m : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) : chart G m x = chart F (iota e m) (shift e x) := by
@@ -126,9 +126,9 @@ theorem chart_eq (e : Fin a ⊕ Fin b ≃ Fin n) {F : GA E n → ℂ} {G : GA E 
   rw [chart_val, h, map_mul, ← toL_emb, chart_val, iota_apply e (infGL E a u), emb_infGL]
 
 /- English proof (translation)
-Establish `hd : HasFDerivAt (shift e) (blockL e : Lie E a →L[ℝ] Lie E n) (oneL E a)` using `(blockL e).hasFDerivAt.const_add _`. Establish `hc : HasFDerivAt (chart F (iota e m)) (fderiv ℝ (chart F (iota e m)) (oneL E n)) (shift e (oneL E a))`. Rewrite using `[shift_one]`. Conclude with `(differentiableAt_chart hF _).hasFDerivAt`. Establish `h2` using `hc.comp (oneL E a) hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : chart G m =ᶠ[𝓝 (oneL E a)] chart F (iota e m) ∘ shift e` using `by filter_upwards [isOpen_invSet.mem_nhds (show oneL E a ∈ invSet E a from isUnit_one)] with x hx`. Conclude with `chart_eq e h m hx`. Unfold `lieD`. Rewrite using `[h3.fderiv_eq, h2.fderiv]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lieD_eq (e : Fin a ⊕ Fin b ≃ Fin n) {F : GA E n → ℂ} (hF : F ∈ Sm E n) {G : GA E a → ℂ}
     (h : ∀ m, G m = F (iota e m)) (X : Lie E a) (m : GA E a) :
@@ -153,14 +153,14 @@ def relAlg (e : Fin a ⊕ Fin b ≃ Fin n) : Subalgebra ℂ (Module.End ℂ (Sm 
   algebraMap_mem' := fun c F G h m => congrArg (c • ·) (h m)
 
 /- English proof (translation)
-Introduce `F _ h m` and use `lieD_eq e F.2 h X m`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lie_mem (e : Fin a ⊕ Fin b ≃ Fin n) (X : Lie E a) :
     ((lie E a X, lie E n (blockL e X)) : Module.End ℂ (Sm E a) × Module.End ℂ (Sm E n)) ∈ relAlg e :=
   fun F _ h m => lieD_eq e F.2 h X m
 
 /- English proof (translation)
-Use `lie_mem e (toL (Matrix.single i j x))` as an intermediate fact. Rewrite `this` using `[blockL_single]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lieS_mem (e : Fin a ⊕ Fin b ≃ Fin n) (i j : Fin a) (x : Cinf E) :
     ((lieS E a i j x, lieS E n (e (.inl i)) (e (.inl j)) x) : Module.End ℂ (Sm E a) × Module.End ℂ (Sm E n)) ∈
@@ -169,18 +169,16 @@ theorem lieS_mem (e : Fin a ⊕ Fin b ≃ Fin n) (i j : Fin a) (x : Cinf E) :
   rwa [blockL_single] at this
 
 /- English proof (translation)
-The claim follows from `(relAlg e).smul_mem ((relAlg e).sub_mem (lieS_mem e i j _) ((relAlg e).smul_mem (lieS_mem e i j _) _)) _`.
+A detailed English derivation is pending.
 -/
 theorem Eop_mem (e : Fin a ⊕ Fin b ≃ Fin n) (τ : E →+* ℂ) (i j : Fin a) :
     ((Eop τ i j, Eop τ (e (.inl i)) (e (.inl j))) : Module.End ℂ (Sm E a) × Module.End ℂ (Sm E n)) ∈ relAlg e :=
   (relAlg e).smul_mem ((relAlg e).sub_mem (lieS_mem e i j _) ((relAlg e).smul_mem (lieS_mem e i j _) _)) _
 
 /- English proof (translation)
-Set `P` to `Module.End ℂ (Sm E a) × Module.End ℂ (Sm E n)`. Set `Z : Fin a → Fin a → P` to `fun i j => (Eop τ i j, Eop τ (e (.inl i)) (e (.inl j)))`. Establish `h1` using `map_qdet (AlgHom.fst ℂ (Module.End ℂ (Sm E a)) (Module.End ℂ (Sm E n))) Z v`. Establish `h2` using `map_qdet (AlgHom.snd ℂ (Module.End ℂ (Sm E a)) (Module.End ℂ (Sm E n))) Z v`. Establish `h3 : Formalism.REAL.qdet Z v ∈ relAlg e`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(relAlg e).sum_mem fun σ _ => (relAlg e).mul_mem (intCast_mem (relAlg e) _) ((relAlg e).list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `(relAlg e).add_mem ?_ (Eop_mem e τ _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `(relAlg e).algebraMap_mem _`.
-
-Conclude with `(relAlg e).zero_mem`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Conclude with `Prod.ext h1.symm h2.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem qdet_mem (e : Fin a ⊕ Fin b ≃ Fin n) (τ : E →+* ℂ) (v : ℂ) :
     ((Formalism.REAL.qdet (Eop τ) v, Formalism.REAL.qdet (fun i j : Fin a => Eop τ (e (.inl i)) (e (.inl j))) v) :
@@ -201,9 +199,9 @@ theorem qdet_mem (e : Fin a ⊕ Fin b ≃ Fin n) (τ : E →+* ℂ) (v : ℂ) :
   exact Prod.ext h1.symm h2.symm
 
 /- English proof (translation)
-Establish `h1` using `Polynomial.aeval_algHom_apply (AlgHom.fst ℂ (Module.End ℂ (Sm E a)) (Module.End ℂ (Sm E n))) (z, z') q`. Establish `h2` using `Polynomial.aeval_algHom_apply (AlgHom.snd ℂ (Module.End ℂ (Sm E a)) (Module.End ℂ (Sm E n))) (z, z') q`. Establish `h3 : Polynomial.aeval (z, z') q ∈ relAlg e`. Rewrite using `[Polynomial.aeval_eq_sum_range]`. Conclude with `(relAlg e).sum_mem fun i _ => (relAlg e).smul_mem ((relAlg e).pow_mem hz i) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Conclude with `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mem (e : Fin a ⊕ Fin b ≃ Fin n) {z : Module.End ℂ (Sm E a)} {z' : Module.End ℂ (Sm E n)}
     (hz : (z, z') ∈ relAlg e) (q : Polynomial ℂ) :
@@ -223,9 +221,9 @@ namespace GlobalTheory.CompanionTheory.CTFin
 open CapRes
 
 /- English proof (translation)
-Introduce `E _ _ _ r s τ u q F`. Prove the components needed by the constructor for the conclusion. Introduce `G h m`. Conclude with `aeval_mem (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)) (qdet_mem _ τ _) q F G h m`. Introduce `G h m`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hι : ∀ m : GA E s, iota ((Equiv.sumComm (Fin s) (Fin r)).trans (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))) m = lev (Ad E) r s (1, m)` using `fun m => emb₂_swap _ _ _`. Use `aeval_mem ((Equiv.sumComm (Fin s) (Fin r)).trans (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))) (qdet_mem _ τ (u + ((s : ℂ) - 1) / 2)) q F G (fun m => by rw [hι]; exact h m) m` as an intermediate fact. Rewrite `this` using `[hι]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capelli_restrict : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) (τ : E →+* ℂ) (u : ℂ) (q : Polynomial ℂ) (F : Sm E (r + s)), (∀ G : Sm E r, (∀ m, G.1 m = F.1 (lev (Ad E) r s (m, 1))) → ∀ m, (Polynomial.aeval (cap (a := r) τ u) q G).1 m = (Polynomial.aeval (capR r s τ u) q F).1 (lev (Ad E) r s (m, 1))) ∧ (∀ G : Sm E s, (∀ m, G.1 m = F.1 (lev (Ad E) r s (1, m))) → ∀ m, (Polynomial.aeval (cap (a := s) τ u) q G).1 m = (Polynomial.aeval (capS r s τ u) q F).1 (lev (Ad E) r s (1, m))) := by
   intro E _ _ _ r s τ u q F

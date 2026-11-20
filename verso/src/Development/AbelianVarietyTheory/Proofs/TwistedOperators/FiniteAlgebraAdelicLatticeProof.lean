@@ -14,11 +14,11 @@ namespace GlobalTheory.RegSSLattice
 open NumberField Topology in
 open scoped TensorProduct in
 /- English proof (translation)
-Take `⟨U, hU, hUF⟩` from `_root_.GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F`. Establish `hsub : Filter.Tendsto (fun p : AdeleRing (𝓞 F) F × AdeleRing (𝓞 F) F => p.1 - p.2) (𝓝 (0, 0)) (𝓝 0)` using `(continuous_fst.sub continuous_snd).tendsto' _ _ (by simp)`. Establish `hpre : (fun p : AdeleRing (𝓞 F) F × AdeleRing (𝓞 F) F => p.1 - p.2) ⁻¹' U ∈ 𝓝 ((0 : AdeleRing (𝓞 F) F), (0 : AdeleRing (𝓞 F) F))` using `hsub hU`. Rewrite `hpre` using `[nhds_prod_eq]`. Take `⟨V, hV, W, hW, hVW⟩` from `Filter.mem_prod_iff.mp hpre`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hVU : ∀ v ∈ V ∩ W, ∀ w ∈ V ∩ W, v - w ∈ U` using `fun v hv w hw => hVW (Set.mk_mem_prod hv.1 hw.2)`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun k => {y | y - k ∈ V ∩ W}) fun k _ => (continuous_id.sub continuous_const).continuousAt.preimage_mem_nhds (by simpa using Filter.inter_mem hV hW)`. Use `(t.finite_toSet.biUnion (t := fun k => {c : F | algebraMap F (AdeleRing (𝓞 F) F) c - k ∈ V ∩ W}) fun k _ => ?_).subset fun c hc => ?_` and prove the remaining obligations. Use `Set.Subsingleton.finite fun c hc c' hc' => ?_` and prove the remaining obligations. Use `hUF (c - c') (by simpa [map_sub] using hVU _ hc _ hc')` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp this`. Simplify using `using ht hc`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma finite_setOf_algebraMap_mem_of_isCompact (F : Type) [Field F] [NumberField F]
     {K : Set (AdeleRing (𝓞 F) F)} (hK : IsCompact K) :
@@ -48,23 +48,19 @@ open NumberField Topology in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.RegSS.TensorLattice`. Introduce `F B _ _ _ _ _`. Use `haveI := _root_.GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := _root_.GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := _root_.GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Take `⟨U, hU, hUF⟩` from `_root_.GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F`. Use `haveI : Nontrivial (AdeleRing (𝓞 F) F) := ⟨⟨0, 1, fun h01 => one_ne_zero (hUF 1 (by rw [map_one, ← h01]; exact mem_of_mem_nhds hU))⟩⟩`. Use `letI : Algebra (AdeleRing (𝓞 F) F) (B ⊗[F] AdeleRing (𝓞 F) F) := Algebra.TensorProduct.rightAlgebra`. Use `letI : TopologicalSpace (B ⊗[F] AdeleRing (𝓞 F) F) := _root_.Formalism.BasicNotions.tensTopL (AdeleRing (𝓞 F) F)`. Use `haveI : IsModuleTopology (AdeleRing (𝓞 F) F) (B ⊗[F] AdeleRing (𝓞 F) F) := ⟨rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `haveI : ContinuousAdd (B ⊗[F] AdeleRing (𝓞 F) F) := IsModuleTopology.toContinuousAdd (AdeleRing (𝓞 F) F) _`. Set `b` to `Module.finBasis F B`. Set `c : B ⊗[F] AdeleRing (𝓞 F) F ≃ₗ[AdeleRing (𝓞 F) F] AdeleRing (𝓞 F) F ⊗[F] B` to `{ TensorProduct.comm F B (AdeleRing (𝓞 F) F) with map_smul' := fun a t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `tmul x y`. Express the relevant statement in the definitionally equal form `TensorProduct.comm F B _ (a • (x ⊗ₜ y)) = a • TensorProduct.comm F B _ (x ⊗ₜ y)`. Rewrite using `[Algebra.smul_def]`. Simplify using `[Algebra.TensorProduct.right_algebraMap_apply, TensorProduct.smul_tmul', mul_comm]`. Consider the case `add x y hx hy => simp_all [smul_add] }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Set `e` to `c.trans (Algebra.TensorProduct.basis (AdeleRing (𝓞 F) F) b).equivFun`. Use `haveI : Module.Finite (AdeleRing (𝓞 F) F) (B ⊗[F] AdeleRing (𝓞 F) F) := Module.Finite.of_basis ((Algebra.TensorProduct.basis (AdeleRing (𝓞 F) F) b).map c.symm)`. Set `h : B ⊗[F] AdeleRing (𝓞 F) F ≃L[AdeleRing (𝓞 F) F] (Fin (Module.finrank F B) → AdeleRing (𝓞 F) F)` to `{ e with continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }`. Establish `he : ∀ β : B, h (_root_.Formalism.UG.inclE (AdeleRing (𝓞 F) F) β) = fun i => algebraMap F (AdeleRing (𝓞 F) F) (b.equivFun β i)`. Introduce `β`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i`. Use `show e (β ⊗ₜ 1) i = _`. Simplify using `[e, c, Algebra.TensorProduct.basis_repr_tmul]`. Use `⟨IsModuleTopology.isTopologicalRing (AdeleRing (𝓞 F) F) _, h.toHomeomorph.isClosedEmbedding.locallyCompactSpace, h.toHomeomorph.isEmbedding.t2Space, h.toHomeomorph.secondCountableTopology, _root_.Formalism.UG.P.inclE_injective F B (AdeleRing (𝓞 F) F), ?_, ?_⟩` and prove the remaining obligations. Introduce `D hD`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD' : IsCompact (h '' D)` using `hD.image h.continuous`. Use `((Set.Finite.pi (t := fun i => {x : F | algebraMap F (AdeleRing (𝓞 F) F) x ∈ (fun y => y i) '' (h '' D)}) fun i => finite_setOf_algebraMap_mem_of_isCompact F (hD'.image (continuous_apply i))).preimage b.equivFun.injective.injOn).subset ?_` and prove the remaining obligations. Introduce `β hβ`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, Set.mem_setOf_eq]`. Introduce `i`.
-
-Conclude with `⟨h (_root_.Formalism.UG.inclE (AdeleRing (𝓞 F) F) β), ⟨_, hβ, rfl⟩, by rw [he]⟩`. Take `⟨K, hK, hKF⟩` from `_root_.GlobalTheory.AdeleCocompact.exists_compact_adele F`. Use `⟨h.symm '' Set.univ.pi fun _ => K, (isCompact_univ_pi fun _ => hK).image h.symm.continuous, fun x => ?_⟩` and prove the remaining obligations. Use `choose y hy using fun i => hKF (h x i)`. Use `⟨b.equivFun.symm y, h (x - _root_.Formalism.UG.inclE (AdeleRing (𝓞 F) F) (b.equivFun.symm y)), ?_, by simp⟩` and prove the remaining obligations.
-
-Introduce `i _`. Rewrite using `[map_sub, he, LinearEquiv.apply_symm_apply]`. Simplify using `using hy i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RegSSLattice.tensorLattice : _root_.GlobalTheory.RegSS.TensorLattice := by
   unfold _root_.GlobalTheory.RegSS.TensorLattice

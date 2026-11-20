@@ -37,7 +37,7 @@ def MExistsCore : Prop :=
     ∃ Mb : MBlk A L, ∃ hb : Formalism.L2.SG.AdBridge.AdBridgeIso A.I, MeasTieCore A L μf muN muH Mb hb
 
 /- English proof (translation)
-Introduce `A L P Rf Xu Bu Pi Mu Wb`. Use `haveI := Bu.haar`. Use `haveI := Bu.sf`. Take `⟨Mb, hb, hT⟩` from `h A L Bu.μf Mu.muN Mu.muH Mu.muN_haar Mu.muH_haar`. Conclude with `⟨Mb, hb, hT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mExists_of_core (h : MExistsCore D) : MExists D := by
   intro A L P Rf Xu Bu Pi Mu Wb

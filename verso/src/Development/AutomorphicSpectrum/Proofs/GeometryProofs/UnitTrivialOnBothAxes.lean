@@ -19,14 +19,14 @@ attribute [local instance] Over.cartesianMonoidalCategory
 abbrev pb {A C : Scheme.{0}} (f : A ⟶ C) : Γ(C, ⊤)ˣ →* Γ(A, ⊤)ˣ := Units.map f.appTop.hom.toMonoidHom
 
 /- English proof (translation)
-The claim follows from `Units.ext (Rosenlicht.appTop_comp_apply f g w.val)`.
+A detailed English derivation is pending.
 -/
 theorem pb_comp {A C D : Scheme.{0}} (f : A ⟶ C) (g : C ⟶ D) (w : Γ(D, ⊤)ˣ) :
     pb (f ≫ g) w = pb f (pb g w) :=
   Units.ext (Rosenlicht.appTop_comp_apply f g w.val)
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem pb_id {A : Scheme.{0}} (w : Γ(A, ⊤)ˣ) : pb (𝟙 A) w = w :=
   Units.ext (by simp)
@@ -38,9 +38,9 @@ section Whisker
 variable {X Y : Over S} (f : X ⟶ Y) (Z : Over S)
 
 /- English proof (translation)
-Establish `h1 : IsPullback (fst Y Z).left (snd Y Z).left Y.hom Z.hom` using `IsPullback.of_hasPullback _ _`. Establish `h2 : IsPullback (fst X Z).left (snd X Z).left X.hom Z.hom` using `IsPullback.of_hasPullback _ _`. Establish `e1 : (f ▷ Z).left ≫ (snd Y Z).left = (snd X Z).left`. Rewrite using `[← Over.comp_left, whiskerRight_snd]`. Establish `e2 : (f ▷ Z).left ≫ (fst Y Z).left = (fst X Z).left ≫ f.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`. Use `IsPullback.of_right (t := h1.flip) ?_ e2` and prove the remaining obligations. Rewrite using `[e1, Over.w f]`. Conclude with `h2.flip`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_whiskerRight :
     IsPullback (f ▷ Z).left (fst X Z).left (fst Y Z).left f.left := by
@@ -55,9 +55,9 @@ theorem isPullback_whiskerRight :
   exact h2.flip
 
 /- English proof (translation)
-Establish `h1 : IsPullback (fst Z Y).left (snd Z Y).left Z.hom Y.hom` using `IsPullback.of_hasPullback _ _`. Establish `h2 : IsPullback (fst Z X).left (snd Z X).left Z.hom X.hom` using `IsPullback.of_hasPullback _ _`. Establish `e1 : (Z ◁ f).left ≫ (fst Z Y).left = (fst Z X).left`. Rewrite using `[← Over.comp_left, whiskerLeft_fst]`. Establish `e2 : (Z ◁ f).left ≫ (snd Z Y).left = (snd Z X).left ≫ f.left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, whiskerLeft_snd, Over.comp_left]`. Use `IsPullback.of_right (t := h1) ?_ e2` and prove the remaining obligations. Rewrite using `[e1, Over.w f]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_whiskerLeft :
     IsPullback (Z ◁ f).left (snd Z X).left (snd Z Y).left f.left := by
@@ -74,13 +74,11 @@ theorem isPullback_whiskerLeft :
 end Whisker
 
 /- English proof (translation)
-Use `set ρ := pb a.left u * (pb (snd (splitTorus S Ch) W).left u)⁻¹ with hρ`. Establish `hu : pb (GlobalTheory.BiextTriv.unitSec Ch W) ρ = 1`. Establish `c1 : pb (GlobalTheory.BiextTriv.unitSec Ch W) (pb a.left u) = u`. Rewrite using `[← pb_comp, GlobalTheory.BiextTriv.unitSec, ← Over.comp_left, ha, Over.id_left, pb_id]`. Establish `c2 : pb (GlobalTheory.BiextTriv.unitSec Ch W) (pb (snd (splitTorus S Ch) W).left u) = u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pb_comp, GlobalTheory.BiextTriv.unitSec, ← Over.comp_left, lift_snd, Over.id_left, pb_id]`. Rewrite using `[hρ, map_mul, map_inv, c1, c2, mul_inv_cancel]`. Take `⟨χ, hχ⟩` from `GlobalTheory.BiextTriv.exists_char (X := Ch) (Y := W) ρ (congrArg Units.val hu)`. Establish `hχ' : ρ = pb (fst (splitTorus S Ch) W).left (charUnit S Ch χ)` using `Units.ext hχ`. Establish `hc : charUnit S Ch χ = 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c0 : pb (lift (𝟙 _) e).left ρ = charUnit S Ch χ`. Rewrite using `[hχ', ← pb_comp, ← Over.comp_left, lift_fst, Over.id_left, pb_id]`. Rewrite using `[← c0, hρ, map_mul, map_inv, ← pb_comp, ← pb_comp, ← Over.comp_left, ← Over.comp_left, lift_snd, h₁, h₂]`. Simplify using the standard rewrite rules. Rewrite `hχ'` using `[hc, map_one]`.
-
-Conclude with `mul_inv_eq_one.1 (hρ.symm.trans hχ')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_act_eq {Ch : Type} [AddCommGroup Ch] [Module.Free ℤ Ch] (W : Over S) [IsIntegral W.left]
     (a : splitTorus S Ch ⊗ W ⟶ W) (ha : lift (1 : W ⟶ splitTorus S Ch) (𝟙 W) ≫ a = 𝟙 W)
@@ -109,7 +107,7 @@ section Orbit
 variable {G B : Over S} [GrpObj G] [GrpObj B] {T : Over S} [GrpObj T]
 
 /- English proof (translation)
-Establish `e : (g⁻¹ * g') ≫ q = toUnit Z ≫ η`. Rewrite using `[MonObj.mul_comp, ← h, ← MonObj.mul_comp, inv_mul_cancel, MonObj.one_comp, Hom.one_def]`. Use `⟨hk.lift (g⁻¹ * g') (toUnit Z) e, ?_⟩` and prove the remaining obligations. Rewrite using `[hk.lift_fst, mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_orbit (q : G ⟶ B) [IsMonHom q] (i : T ⟶ G) (hk : IsPullback i (toUnit _) q (η : 𝟙_ _ ⟶ B))
     {Z : Over S} (g g' : Z ⟶ G) (h : g ≫ q = g' ≫ q) : ∃ s : Z ⟶ T, g' = g * (s ≫ i) := by
@@ -131,14 +129,14 @@ def act₂ (i : T ⟶ G) : T ⊗ (G ⊗ G) ⟶ G ⊗ G :=
   lift (snd T (G ⊗ G) ≫ fst G G) ((snd T (G ⊗ G) ≫ snd G G) * (fst T (G ⊗ G) ≫ i))
 
 /- English proof (translation)
-Simplify using `[act₁, MonObj.comp_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_act₁ (i : T ⟶ G) {Z : Over S} (s : Z ⟶ T) (y : Z ⟶ G ⊗ G) :
     lift s y ≫ act₁ i = lift ((y ≫ fst G G) * (s ≫ i)) (y ≫ snd G G) := by
   simp [act₁, MonObj.comp_mul]
 
 /- English proof (translation)
-Simplify using `[act₂, MonObj.comp_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_act₂ (i : T ⟶ G) {Z : Over S} (s : Z ⟶ T) (y : Z ⟶ G ⊗ G) :
     lift s y ≫ act₂ i = lift (y ≫ fst G G) ((y ≫ snd G G) * (s ≫ i)) := by
@@ -151,28 +149,28 @@ section Act2
 variable {G T : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj T] (i : T ⟶ G) [IsMonHom i]
 
 /- English proof (translation)
-Rewrite using `[lift_act₁]`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act₁_unit : lift (1 : G ⊗ G ⟶ T) (𝟙 _) ≫ act₁ i = 𝟙 _ := by
   rw [lift_act₁]
   apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp]
 
 /- English proof (translation)
-Rewrite using `[lift_act₂]`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act₂_unit : lift (1 : G ⊗ G ⟶ T) (𝟙 _) ≫ act₂ i = 𝟙 _ := by
   rw [lift_act₂]
   apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp]
 
 /- English proof (translation)
-Rewrite using `[lift_act₁]`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act₁_axis : lift (𝟙 T) (1 : T ⟶ G ⊗ G) ≫ act₁ i = i ≫ lift (𝟙 G) (1 : G ⟶ G) := by
   rw [lift_act₁]
   apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp, MonObj.comp_one]
 
 /- English proof (translation)
-Rewrite using `[lift_act₂]`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act₂_axis : lift (𝟙 T) (1 : T ⟶ G ⊗ G) ≫ act₂ i = i ≫ lift (1 : G ⟶ G) (𝟙 G) := by
   rw [lift_act₂]
@@ -185,29 +183,29 @@ section Main
 variable {G B : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj B] {Ch : Type} [AddCommGroup Ch] [Module.Free ℤ Ch]
 
 /- English proof (translation)
-Establish `e₀ : pb (1 : splitTorus S Ch ⟶ G ⊗ G).left u = 1`. Establish `: (1 : splitTorus S Ch ⟶ G ⊗ G) = (1 : splitTorus S Ch ⟶ G) ≫ lift (1 : G ⟶ G) (𝟙 G)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.one_comp, MonObj.comp_one]`. Rewrite using `[this, Over.comp_left, pb_comp, h0, map_one]`. Establish `i₁ : pb (act₁ i).left u = pb (snd (splitTorus S Ch) (G ⊗ G)).left u`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `pb_act_eq (G ⊗ G) (act₁ i) (act₁_unit i) 1 u ?_ e₀` and prove the remaining obligations. Rewrite using `[act₁_axis, Over.comp_left, pb_comp, h1, map_one]`. Establish `i₂ : pb (act₂ i).left u = pb (snd (splitTorus S Ch) (G ⊗ G)).left u`. Use `pb_act_eq (G ⊗ G) (act₂ i) (act₂_unit i) 1 u ?_ e₀` and prove the remaining obligations. Rewrite using `[act₂_axis, Over.comp_left, pb_comp, h0, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `j₁ : ∀ {Z : Over S} (s : Z ⟶ splitTorus S Ch) (y : Z ⟶ G ⊗ G), pb (lift s y ≫ act₁ i).left u = pb y.left u` using `fun s y => by`. Rewrite using `[Over.comp_left, pb_comp, i₁, ← pb_comp, ← Over.comp_left, lift_snd]`. Establish `j₂ : ∀ {Z : Over S} (s : Z ⟶ splitTorus S Ch) (y : Z ⟶ G ⊗ G), pb (lift s y ≫ act₂ i).left u = pb y.left u` using `fun s y => by`. Rewrite using `[Over.comp_left, pb_comp, i₂, ← pb_comp, ← Over.comp_left, lift_snd]`. Set `qo : G ⊗ G ⟶ B ⊗ B` to `lift (fst G G ≫ q) (snd G G ≫ q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hfac : qo = (q ▷ G) ≫ (B ◁ q)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [qo]`. Set `r` to `qo.left`. Establish `hr : r = (q ▷ G).left ≫ (B ◁ q).left`. Simplify using `only [r]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfac, Over.comp_left]`. Establish `: Flat (q ▷ G).left` using `MorphismProperty.of_isPullback (isPullback_whiskerRight q G).flip ‹_›`. Establish `: Flat (B ◁ q).left` using `MorphismProperty.of_isPullback (isPullback_whiskerLeft q B).flip ‹_›`. Establish `: Surjective (q ▷ G).left` using `MorphismProperty.of_isPullback (isPullback_whiskerRight q G).flip ‹_›`. Establish `: Surjective (B ◁ q).left` using `MorphismProperty.of_isPullback (isPullback_whiskerLeft q B).flip ‹_›`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact (q ▷ G).left` using `MorphismProperty.of_isPullback (isPullback_whiskerRight q G).flip ‹_›`. Establish `: QuasiCompact (B ◁ q).left` using `MorphismProperty.of_isPullback (isPullback_whiskerLeft q B).flip ‹_›`. Establish `: Flat r` using `by rw [hr]; infer_instance`. Establish `: Surjective r` using `by rw [hr]; infer_instance`. Establish `: QuasiCompact r` using `by rw [hr]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `IsPullback.of_hasPullback r r`. Establish `hW : r ≫ (B ⊗ B).hom = (G ⊗ G).hom` using `Over.w qo`. Set `P : Over S` to `Over.mk (pullback.fst r r ≫ (G ⊗ G).hom)`. Set `g : P ⟶ G ⊗ G` to `Over.homMk (pullback.fst r r) rfl`. Set `g' : P ⟶ G ⊗ G` to `Over.homMk (pullback.snd r r) (by show pullback.snd r r ≫ (G ⊗ G).hom = pullback.fst r r ≫ (G ⊗ G).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← hW, pullback.condition_assoc])`. Establish `hq : g ≫ qo = g' ≫ qo`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `pullback.condition`. Establish `hq₁ : (g ≫ fst G G) ≫ q = (g' ≫ fst G G) ≫ q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (· ≫ fst B B) hq` as an intermediate fact. Simplify `this` using `[qo]`. Establish `hq₂ : (g ≫ snd G G) ≫ q = (g' ≫ snd G G) ≫ q`. Use `congrArg (· ≫ snd B B) hq` as an intermediate fact. Simplify `this` using `[qo]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨s₁, hs₁⟩` from `exists_orbit q i hk _ _ hq₁`. Take `⟨s₂, hs₂⟩` from `exists_orbit q i hk _ _ hq₂`. Establish `hg' : g' = lift s₂ (lift s₁ g ≫ act₁ i) ≫ act₂ i`. Rewrite using `[lift_act₂, lift_act₁]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hs₁`. Simplify using `using hs₂`. Establish `key : pb g'.left u = pb g.left u`. Rewrite using `[hg', j₂, j₁]`. Take `⟨c, hc, -⟩` from `(GlobalTheory.FlatDescent.existsUnique_appTop_eq_iff r hp u.val).2 (congrArg Units.val key).symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c, hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_descent (q : G ⟶ B) [IsMonHom q] [Flat q.left] [Surjective q.left] [QuasiCompact q.left]
     (i : splitTorus S Ch ⟶ G) [IsMonHom i] (hk : IsPullback i (toUnit _) q (η : 𝟙_ _ ⟶ B))
@@ -275,13 +273,13 @@ theorem exists_descent (q : G ⟶ B) [IsMonHom q] [Flat q.left] [Surjective q.le
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_descent q i hk u h0 h1`. Take `⟨b, rfl⟩` from `hB c`. Establish `hw : (lift (fst G G ≫ q) (snd G G ≫ q)).left ≫ (B ⊗ B).hom = (G ⊗ G).hom` using `Over.w (lift (fst G G ≫ q) (snd G G ≫ q))`. Rewrite `hc` using `[← Rosenlicht.appTop_comp_apply, hw]`. Establish `hv : (lift (1 : G ⟶ G) (𝟙 G)).left ≫ (G ⊗ G).hom = G.hom` using `Over.w (lift (1 : G ⟶ G) (𝟙 G))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : (η : 𝟙_ (Over S) ⟶ G).left ≫ G.hom = 𝟙 S` using `Over.w (η : 𝟙_ (Over S) ⟶ G)`. Establish `hb : b = 1`. Establish `e1` using `congrArg Units.val h0`. Simplify using `only [Units.coe_map, Units.val_one] at e1`. Establish `e2 : (lift (1 : G ⟶ G) (𝟙 G)).left.appTop.hom ((G ⊗ G).hom.appTop.hom b) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Conclude with `e1`. Rewrite `e2` using `[← Rosenlicht.appTop_comp_apply, hv]`. Establish `e3` using `congrArg (η : 𝟙_ (Over S) ⟶ G).left.appTop.hom e2`. Rewrite `e3` using `[← Rosenlicht.appTop_comp_apply, hs, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using e3`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hc, hb, map_one, Units.val_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_eq_one (q : G ⟶ B) [IsMonHom q] [Flat q.left] [Surjective q.left] [QuasiCompact q.left]
     (i : splitTorus S Ch ⟶ G) [IsMonHom i] (hk : IsPullback i (toUnit _) q (η : 𝟙_ _ ⟶ B))
@@ -309,13 +307,13 @@ theorem unit_eq_one (q : G ⟶ B) [IsMonHom q] [Flat q.left] [Surjective q.left]
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ _ X t k _ _ p _ _ x Q d _ u h0 h1`. Establish `hs : IsSemiAbelian (GF t x)` using `IsSemiAbelian.pullback x t.G t.semi`. Use `hs.smooth` as an intermediate fact. Use `hs.geomConnected` as an intermediate fact. Use `Q.proper` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Q.q_hom` as an intermediate fact. Use `Q.i_hom` as an intermediate fact. Use `Q.q_flat` as an intermediate fact. Use `Q.q_surjective` as an intermediate fact. Use `Q.q_quasiCompact` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c₁, c₂⟩` from `GlobalTheory.GroupConn.connectedSpace_group _ (GF t x)`. Take `⟨-, c₄⟩` from `c₂ Q.Ch (GF t x) c₁`. Establish `: Smooth (GF t x ⊗ GF t x).hom` using `inferInstanceAs (Smooth (pullback.fst (GF t x).hom (GF t x).hom ≫ _))`. Establish `: IsIntegral (GF t x ⊗ GF t x).left` using `isIntegral_of_smooth_field_of_connectedSpace (GF t x ⊗ GF t x).hom`. Establish `hA` using `AbelianSchemeGerms.isAbelianScheme_of_proper Q.tB.G Q.tB.semi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `(GlobalTheory.globalFns_holds _ _ (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA)).2`. Conclude with `unit_eq_one Q.q Q.i Q.isKernel hB u (Units.ext h0) (Units.ext h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unit_eq_one_of_axes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X) (_ : AbQuot t x) (d : ℕ) (_ : GermAt t x d) (u : Γ((GF t x ⊗ GF t x).left, ⊤)ˣ), (ax0 t x).appTop.hom u.val = 1 → (ax1 t x).appTop.hom u.val = 1 → u = 1 := by
   intro E _ _ _ H _ _ X t k _ _ p _ _ x Q d _ u h0 h1

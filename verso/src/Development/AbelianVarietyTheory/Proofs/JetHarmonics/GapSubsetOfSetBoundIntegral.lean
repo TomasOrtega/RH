@@ -13,21 +13,21 @@ namespace GlobalTheory.CompareIterDegree
 open Formalism.QuantumDeterminants Formalism.HermitianLatticeCounting.ExpansionTerms GlobalTheory.IndefiniteRowSideFullHecke.DegreeProportionalWords
 
 /- English proof (translation)
-Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg r), abs_norm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_mul_sqrt (z : ℂ) (r : ℝ) : ‖z * ((Real.sqrt r : ℝ) : ℂ)‖ = |‖z‖| * √r := by
   rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg r), abs_norm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n l H H' τ ρ hH hH' hτ hρ`. Use `h n l (fun I => ‖τ I‖) ρ (H * H') (mul_nonneg hH hH') (fun I hI => ⟨by simpa using hτ I hI, (hρ I hI).1.le, (hρ I hI).2⟩)` as an intermediate fact. Simplify using `only [norm_mul_sqrt, gam]`. Simplify `this` using `only [mul_assoc]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h n l tau ratio H hH hI classical`. Establish `key` using `h n l H 1 (fun I => if ratio I = 0 then 0 else (tau I : ℂ)) (fun I => if ratio I = 0 then (Real.exp 1 * n) ^ l else ratio I) hH zero_le_one ?_ ?_`. Simplify using `only [norm_mul_sqrt, gam, mul_one] at key`. Use `le_trans (le_of_eq (sum_congr rfl fun I _ => ?_)) key` and prove the remaining obligations. Apply the tactic sequence `by_cases h0 : ratio I = 0 <;> simp [h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `I hc`. Distinguish the cases in `h0 : ratio I = 0`. Simplify using `[h0, pow_nonneg hH]`. Simplify `(hI I hc).1` using `[h0]`. Introduce `I hc`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : ratio I = 0`. Simplify using `only [h0, if_true, le_refl, and_true]`. Break down `I.eq_empty_or_nonempty with rfl | ⟨s, _⟩` into its components or cases. Simplify using `[← hc]`. Establish `: (0 : ℝ) < n` using `by exact_mod_cast s.pos`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Simplify using `only [h0, if_false]`. Conclude with `⟨lt_of_le_of_ne (hI I hc).2.1 (Ne.symm h0), (hI I hc).2.2⟩`.
+Check the signs of the components of the expression. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem termCount_iff : FormalDegreeSubsetSum ↔ TermCount := by
   constructor
@@ -58,9 +58,9 @@ theorem termCount_iff : FormalDegreeSubsetSum ↔ TermCount := by
         exact ⟨lt_of_le_of_ne (hI I hc).2.1 (Ne.symm h0), (hI I hc).2.2⟩
 
 /- English proof (translation)
-Introduce `V _ _ n l H H' τ ρ v w hH hH' hτ hρ hw`. Use `(norm_sum_le _ _).trans (le_trans ?_ (mul_le_mul_of_nonneg_right (h n l H H' τ ρ hH hH' hτ hρ) (norm_nonneg v)))` and prove the remaining obligations. Rewrite using `[sum_mul]`. Use `sum_le_sum fun I hI => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, norm_mul_sqrt, abs_norm, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hw I (mem_powersetCard.1 hI).2) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem termCountNorm_of (h : TermCount) : TermCountNorm := by
   intro V _ _ n l H H' τ ρ v w hH hH' hτ hρ hw
@@ -72,15 +72,15 @@ theorem termCountNorm_of (h : TermCount) : TermCountNorm := by
   exact mul_le_mul_of_nonneg_left (hw I (mem_powersetCard.1 hI).2) (norm_nonneg _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h A V ι _ _ _ N M j D w lam R Γ hN hM hΓ hone L μ hμ`. Establish `hsub : ∀ (P : A → ℝ), IsGauge P → ∀ x y, ⌈P (x + y)⌉₊ ≤ ⌈P x⌉₊ + ⌈P y⌉₊` using `fun P hP x y => (Nat.ceil_mono (hP.2 x y)).trans (Nat.ceil_add_le _ _)`. Take `⟨a, ha, hb, hc⟩` from `h V A ι j D w (fun x => ⌈N x⌉₊) (fun x => ⌈M x⌉₊) μ Γ 0 (wordWt w L) hΓ (hsub N hN) (hsub M hM) (by simp [hN.1]) (by simp [hM.1]) (by`. Introduce `κ i hκ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : N (κ - μ) ≤ (wordWt w L : ℝ)` using `Nat.ceil_le.1 (by simpa using hκ)`. Establish `h2` using `hN.2 (κ - μ) (μ - lam)`. Rewrite `h2` using `[sub_add_sub_cancel]`. Take `⟨a, ha, hs, hl⟩` from `hone i κ (by linarith)`. Conclude with `⟨a, ha, hl, fun ν hν => ⟨Nat.ceil_le.2 (hs ν hν).1, Nat.ceil_le.2 (by simpa using (hs ν hν).2)⟩⟩) μ L (by simp [hN.1, wordWt])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha, fun ν hν => ⟨Nat.ceil_le.1 (hc ν hν).1, Nat.ceil_le.1 (hc ν hν).2⟩, hb⟩`. Introduce `h V P Λ _ _ _ jh Dop wt N1 Ninf lam Gam c0 q0 hG h1 h2 h3 h4 hone μ al hμ`. Take `⟨a, ha, hs, hl⟩` from `h P V Λ (fun x => (N1 x : ℝ)) (fun x => (Ninf x : ℝ)) jh Dop wt lam ((q0 : ℝ) - c0) Gam ⟨by simp [h3], fun x y => by beta_reduce; exact_mod_cast h1 x y⟩ ⟨by simp [h4], fun x y => by beta_reduce; exact_mod_cast h2 x y⟩ hG (by`. Introduce `i κ hκ`. Establish `hκ' : N1 (κ - lam) + c0 ≤ q0`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((N1 (κ - lam) + c0 : ℕ) : ℝ) ≤ q0` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Take `⟨a, ha, hl, hs⟩` from `hone κ i hκ'`. Conclude with `⟨a, ha, fun ν hν => ⟨by beta_reduce; exact_mod_cast (hs ν hν).1, by beta_reduce; exact_mod_cast (hs ν hν).2⟩, hl⟩)`. Use `al μ (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ((N1 (μ - lam) + (al.map wt).sum + c0 : ℕ) : ℝ) ≤ q0` using `by exact_mod_cast hμ`. Rewrite `this` using `[Nat.cast_add, Nat.cast_add]`. Simplify using `only [wordWt]`. Use the proof step `linarith)`. Conclude with `⟨a, ha, hl, fun ν hν => ⟨by have := (hs ν hν).1; simp only [wordWt] at this; exact_mod_cast this, Nat.cast_le.1 (hs ν hν).2⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iteration_iff : IteratedHighestWeightBound ↔ Iteration := by
   constructor
@@ -117,7 +117,7 @@ theorem iteration_iff : IteratedHighestWeightBound ↔ Iteration := by
       Nat.cast_le.1 (hs ν hν).2⟩⟩
 
 /- English proof (translation)
-Establish `e : ∀ c : A →₀ ℂ, c.support ⊆ a.support ∪ b.support → l1 c = ∑ ν ∈ a.support ∪ b.support, ‖c ν‖` using `fun c hc => sum_subset hc fun ν _ hν => by simp [Finsupp.notMem_support_iff.1 hν]`. Rewrite using `[e _ Finsupp.support_add, e a subset_union_left, e b subset_union_right, ← sum_add_distrib]`. Conclude with `sum_le_sum fun ν _ => norm_add_le _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l1_add_le {A : Type} (a b : A →₀ ℂ) : l1 (a + b) ≤ l1 a + l1 b := by
   classical
@@ -134,19 +134,17 @@ theorem comb_eq {A V : Type} [AddCommGroup A] [AddCommGroup V] [Module ℂ V] (j
     comb j μ a = Finsupp.linearCombination ℂ (fun ν => j (μ + ν)) a := rfl
 
 /- English proof (translation)
-Introduce `A V ι _ _ _ N M j D w lam R Γ hN hM hΓ hone L μ c hc`. Establish `key : ∀ S : Finset A, S ⊆ c.support → ∃ c' : A →₀ ℂ, wordOp D L (∑ ν ∈ S, c ν • j (μ + ν)) = comb j μ c' ∧ (∀ ν' ∈ c'.support, ∃ ν ∈ c.support, N (ν' - ν) ≤ (wordWt w L : ℝ) ∧ M (ν' - ν) ≤ (L.length : ℝ)) ∧ l1 c' ≤ Γ ^ wordWt w L * ∑ ν ∈ S, ‖c ν‖`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨0, by simp [comb], by simp, by simp [l1]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert ν S hν ih`. Introduce `hS`. Take `⟨c', h1, h2, h3⟩` from `ih ((subset_insert _ _).trans hS)`. Establish `hνc : ν ∈ c.support` using `hS (mem_insert_self _ _)`. Take `⟨a, ha, hs, hl⟩` from `h A V ι N M j D w lam R Γ hN hM hΓ hone L (μ + ν) (hc ν hνc)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set b : A →₀ ℂ := c ν • Finsupp.equivMapDomain (Equiv.addLeft ν) a with hb`. Establish `hbs : ∀ x, b x = c ν * a (x - ν)`. Introduce `x`. Simplify using `[hb, Finsupp.equivMapDomain_apply, neg_add_eq_sub]`. Use `⟨b + c', ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_insert hν, map_add, map_smul, h1, ha, comb_eq j μ (b + c'), map_add, hb, map_smul, Finsupp.equivMapDomain_eq_mapDomain, Finsupp.linearCombination_mapDomain, comb_eq, comb_eq]`. Simplify using `[Function.comp_def, add_assoc]`. Introduce `x hx`. Break down `mem_union.1 (Finsupp.support_add hx) with hx | hx` into its components or cases. Use `⟨ν, hνc, hs _ ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[Finsupp.mem_support_iff]`. Rewrite `hx` using `[hbs]`. Conclude with `right_ne_zero_of_mul hx`. Conclude with `h2 x hx`. Establish `hb1 : l1 b = ‖c ν‖ * l1 a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : l1 b = (Finsupp.equivMapDomain (Equiv.addLeft ν) a).sum fun _ z => ‖c ν • z‖` using `Finsupp.sum_smul_index' (h := fun _ z => ‖z‖) (by simp)`. Rewrite using `[e1, Finsupp.sum_equivMapDomain]`. Simplify using `[Finsupp.sum, l1, mul_sum]`. Rewrite using `[sum_insert hν, mul_add]`. Use `(l1_add_le _ _).trans (add_le_add ?_ h3)` and prove the remaining obligations.
-
-Rewrite using `[hb1, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hl (norm_nonneg _)`. Conclude with `key c.support subset_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterationSum_of (h : Iteration) : IterationSum := by
   intro A V ι _ _ _ N M j D w lam R Γ hN hM hΓ hone L μ c hc
@@ -189,11 +187,11 @@ theorem iterationSum_of (h : Iteration) : IterationSum := by
   exact key c.support subset_rfl
 
 /- English proof (translation)
-Introduce `A V ι _ _ _ N M j D w lam R Γ p K hN hM hΓ hone hadd hsm hK L μ hμ`. Take `⟨a, ha, hs, hl⟩` from `h A V ι N M j D w lam R Γ hN hM hΓ hone L μ hμ`. Establish `hp0 : p 0 = 0` using `by simpa using hsm 0 0`. Establish `h1 : p (comb j μ a) ≤ ∑ ν ∈ a.support, p (a ν • j (μ + ν))` using `Finset.le_sum_of_subadditive p hp0.le hadd _ _`. Rewrite using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h1.trans (le_trans (sum_le_sum (g := fun ν => ‖a ν‖ₑ * K) fun ν hν => ?_) ?_)` and prove the remaining obligations. Rewrite using `[hsm]`. Use `mul_le_mul' le_rfl (hK _ ?_)` and prove the remaining obligations. Establish `h2` using `hN.2 (μ - lam) ν`. Rewrite `h2` using `[show μ - lam + ν = μ + ν - lam by abel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear relations using `[(hs ν hν).1]`. Rewrite using `[← sum_mul]`. Use `mul_le_mul' (le_trans (le_of_eq ?_) (ENNReal.ofReal_le_ofReal hl)) le_rfl` and prove the remaining obligations. Rewrite using `[l1, ENNReal.ofReal_sum_of_nonneg fun _ _ => norm_nonneg _]`. Simplify using the standard rewrite rules.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iterationGauge_of (h : Iteration) : IterationGauge := by
   intro A V ι _ _ _ N M j D w lam R Γ p K hN hM hΓ hone hadd hsm hK L μ hμ
@@ -214,27 +212,27 @@ theorem iterationGauge_of (h : Iteration) : IterationGauge := by
     simp
 
 /- English proof (translation)
-Use `set μ' : Fin n → ℝ := μ + Pi.single s t with hμ'`. Establish `hμ'a : ∀ a, μ' a = μ a + if a = s then t else 0`. Introduce `a`. Simplify using `[hμ', Pi.single_apply]`. Use `set r : Fin n → ℝ := fun c => |(μ s + t - μ c) / (μ s - μ c)| with hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfac : ∀ a b : Fin n, a < b → |μ' a - μ' b| / |μ a - μ b| = (if a = s then r b else 1) * (if b = s then r a else 1)`. Introduce `a b hab`. Establish `hne : a ≠ b` using `ne_of_lt hab`. Distinguish the cases in `has : a = s`. Substitute `has` using the available equality.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbs : b ≠ a` using `fun h => hne h.symm`. Rewrite using `[hμ'a, hμ'a, if_pos rfl, if_neg hbs, if_pos rfl, if_neg hbs]`. Simplify using `[hr, abs_div]`. Distinguish the cases in `hbs : b = s`. Substitute `hbs` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hμ'a, hμ'a, if_neg has, if_pos rfl, if_neg has, if_pos rfl]`. Simplify using `only [hr, one_mul, add_zero, abs_div]`. Rewrite using `[abs_sub_comm (μ a) (μ b + t), abs_sub_comm (μ a) (μ b)]`. Rewrite using `[hμ'a, hμ'a, if_neg has, if_neg hbs, if_neg has, if_neg hbs]`. Establish `h0 : μ a - μ b ≠ 0` using `sub_ne_zero.2 (fun h => hne (hinj h))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [add_zero, mul_one]`. Conclude with `div_self (abs_ne_zero.2 h0)`. Establish `hden : (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))) ≠ 0`. Use `prod_ne_zero_iff.2 fun a _ => prod_ne_zero_iff.2 fun b hb => ?_` and prove the remaining obligations. Establish `hab : a < b` using `(mem_filter.1 hb).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `fdegHC`. Rewrite using `[div_div_div_cancel_right₀ hden, ← prod_div_distrib]`. Repeatedly rewrite using `[← prod_div_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[prod_congr rfl (fun a _ => prod_congr rfl (fun b hb => hfac a b (mem_filter.1 hb).2))]`. Repeatedly rewrite using `[prod_mul_distrib]`. Establish `h1 : (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), (if a = s then r b else 1)) = ∏ b ∈ univ.filter (fun b : Fin n => s < b), r b`. Rewrite using `[prod_eq_single s]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _ has`. Simplify using `[has]`. Introduce `h`. Conclude with `absurd (mem_univ s) h`. Establish `h2 : (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), (if b = s then r a else 1)) = ∏ a ∈ univ.filter (fun a : Fin n => a < s), r a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[prod_filter]`. Use `prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[prod_ite_eq']`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, ← prod_filter_mul_prod_filter_not (univ.erase s) (fun c => s < c)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `congr 1`. Use extensionality with `c`. Simplify using `only [mem_filter, mem_erase, mem_univ, and_true, true_and, ne_eq, Fin.lt_def, Fin.ext_iff]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Use extensionality with `c`. Simplify using `only [mem_filter, mem_erase, mem_univ, and_true, true_and, ne_eq, Fin.lt_def, Fin.ext_iff]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem fdeg_ratio_abs {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) (t : ℝ) (hinj : Function.Injective μ) :
     fdegHC (μ + Pi.single s t) / fdegHC μ = ∏ c ∈ univ.erase s, |(μ s + t - μ c) / (μ s - μ c)| := by
@@ -293,7 +291,7 @@ theorem fdeg_ratio_abs {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) (t : ℝ) (hin
     constructor <;> intro h <;> omega
 
 /- English proof (translation)
-Rewrite `ht` using `[abs_le]`. Break down `le_abs.1 hd with h | h` into its components or cases. Conclude with `div_nonneg (by linarith) (by linarith)`. Conclude with `div_nonneg_of_nonpos (by linarith) (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem fac_nonneg {d t : ℝ} (hd : 1 ≤ |d|) (ht : |t| ≤ 1) : 0 ≤ (d + t) / d := by
   rw [abs_le] at ht
@@ -302,9 +300,9 @@ theorem fac_nonneg {d t : ℝ} (hd : 1 ≤ |d|) (ht : |t| ≤ 1) : 0 ≤ (d + t)
   · exact div_nonneg_of_nonpos (by linarith) (by linarith)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective μ` using `fun a b hab => by`. Assume the negation of the conclusion as `hne`. Use `hgap a b hne` as an intermediate fact. Rewrite `this` using `[hab, sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[fdeg_ratio_abs μ s t hinj]`. Use `prod_congr rfl fun c hc => abs_of_nonneg ?_` and prove the remaining obligations. Rewrite using `[add_sub_right_comm]`. Conclude with `fac_nonneg (hgap s c (ne_of_mem_erase hc).symm) ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdeg_ratio {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) (t : ℝ) (ht : |t| ≤ 1)
     (hgap : ∀ a b, a ≠ b → 1 ≤ |μ a - μ b|) :
@@ -320,9 +318,9 @@ theorem fdeg_ratio {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) (t : ℝ) (ht : |t
   exact fac_nonneg (hgap s c (ne_of_mem_erase hc).symm) ht
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨m, hm⟩` from `h.2 a b`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hab (h.1 (by simpa [sub_eq_zero] using hm))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `Int.one_le_abs hm0` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem gapOne_of_regInt {n : ℕ} {μ : Fin n → ℝ} (h : RegInt μ) : ∀ a b, a ≠ b → 1 ≤ |μ a - μ b| := by
   intro a b hab
@@ -334,14 +332,14 @@ theorem gapOne_of_regInt {n : ℕ} {μ : Fin n → ℝ} (h : RegInt μ) : ∀ a 
   exact_mod_cast Int.one_le_abs hm0
 
 /- English proof (translation)
-Rewrite using `[Pi.single_neg, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_single {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) :
     μ - Pi.single s 1 = μ + Pi.single s (-1) := by
   rw [Pi.single_neg, sub_eq_add_neg]
 
 /- English proof (translation)
-Use `⟨fdeg_ratio μ s 1 (by simp) (gapOne_of_regInt h), ?_⟩` and prove the remaining obligations. Rewrite using `[sub_single, fdeg_ratio μ s (-1) (by simp) (gapOne_of_regInt h)]`. Simplify using `only [← sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem step_ratio_eq {n : ℕ} {μ : Fin n → ℝ} (h : RegInt μ) (s : Fin n) :
     fdegHC (μ + Pi.single s 1) / fdegHC μ = ∏ c ∈ univ.erase s, (μ s + 1 - μ c) / (μ s - μ c) ∧
@@ -351,7 +349,7 @@ theorem step_ratio_eq {n : ℕ} {μ : Fin n → ℝ} (h : RegInt μ) (s : Fin n)
   simp only [← sub_eq_add_neg]
 
 /- English proof (translation)
-Use `forall_congr' fun n => forall_congr' fun μ => forall_congr' fun s => ?_` and prove the remaining obligations. Rewrite using `[RegInt, and_imp]`. Use `forall_congr' fun h1 => forall_congr' fun h2 => ?_` and prove the remaining obligations. Rewrite using `[(step_ratio_eq ⟨h1, h2⟩ s).1, (step_ratio_eq ⟨h1, h2⟩ s).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem stepSize_iff : DegStepBound ↔ StepSize := by
   refine forall_congr' fun n => forall_congr' fun μ => forall_congr' fun s => ?_
@@ -360,9 +358,9 @@ theorem stepSize_iff : DegStepBound ↔ StepSize := by
   rw [(step_ratio_eq ⟨h1, h2⟩ s).1, (step_ratio_eq ⟨h1, h2⟩ s).2]
 
 /- English proof (translation)
-Establish `h0` using `hpos ∅ (empty_subset _)`. Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp [h0.ne']`. Consider the case `insert s J hs ih`. Establish `hJ` using `hpos J (subset_insert _ _)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨i1, i2⟩` from `ih (fun K hK => hpos K (hK.trans (subset_insert _ _))) (fun K u hu hK => hstep K u hu (hK.trans (subset_insert _ _)))`. Take `⟨j1, j2⟩` from `hstep J s hs subset_rfl`. Establish `e : F (insert s J) / F ∅ = F J / F ∅ * (F (insert s J) / F J)` using `by field_simp`. Rewrite using `[card_insert_of_notMem hs, pow_succ, pow_succ, e]`. Conclude with `⟨mul_le_mul i1 j1 hlo (div_pos hJ h0).le, mul_le_mul i2 j2 (hlo.trans j1) ((div_pos hJ h0).le.trans i2)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem chain_bound {α : Type} [DecidableEq α] (F : Finset α → ℝ) (lo hi : ℝ) (hlo : 0 ≤ lo) (I : Finset α)
     (hpos : ∀ J ⊆ I, 0 < F J)
@@ -382,7 +380,7 @@ theorem chain_bound {α : Type} [DecidableEq α] (F : Finset α → ℝ) (lo hi 
       mul_le_mul i2 j2 (hlo.trans j1) ((div_pos hJ h0).le.trans i2)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = s`. Substitute `h` using the available equality. Simplify using `[eSet, hs]`. Simplify using `[eSet, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eSet_insert {n : ℕ} {J : Finset (Fin n)} {s : Fin n} (hs : s ∉ J) :
     eSet (insert s J) = eSet J + Pi.single s 1 := by
@@ -392,13 +390,13 @@ theorem eSet_insert {n : ℕ} {J : Finset (Fin n)} {s : Fin n} (hs : s ∉ J) :
   · simp [eSet, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[eSet]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eSet_empty {n : ℕ} : eSet (∅ : Finset (Fin n)) = 0 := by
   funext a; simp [eSet]
 
 /- English proof (translation)
-Introduce `a b hab` and use `by by_contra hne have := h a b hne rw [hab, sub_self, abs_zero] at this linarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inj_of_gapTwo {n : ℕ} {μ : Fin n → ℝ} (h : GapTwo μ) : Function.Injective μ := fun a b hab => by
   by_contra hne
@@ -407,7 +405,7 @@ theorem inj_of_gapTwo {n : ℕ} {μ : Fin n → ℝ} (h : GapTwo μ) : Function.
   linarith
 
 /- English proof (translation)
-Introduce `a b hab` and use `by by_contra hne have h1 := h a b hne have h2 := he b a rw [show μ a - μ b = e b - e a by simp only [Pi.add_apply] at hab; linarith] at h1 linarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inj_add_of_gapTwo {n : ℕ} {μ e : Fin n → ℝ} (h : GapTwo μ) (he : ∀ a b, |e a - e b| ≤ 1) :
     Function.Injective (μ + e) := fun a b hab => by
@@ -418,9 +416,9 @@ theorem inj_add_of_gapTwo {n : ℕ} {μ e : Fin n → ℝ} (h : GapTwo μ) (he :
   linarith
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg a b hab`. Break down `lt_or_gt_of_ne hab with h1 | h1` into its components or cases. Conclude with `(hg a b h1).trans (le_abs_self _)`. Rewrite using `[abs_sub_comm]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hg b a h1).trans (le_abs_self _)`. Introduce `hg a b hab`. Use `hg a b hab.ne` as an intermediate fact. Rewrite `this` using `[abs_of_pos (sub_pos.2 (h hab))]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gapTwo_iff {n : ℕ} {μ : Fin n → ℝ} (h : StrictAnti μ) :
     (∀ a b, a < b → 2 ≤ μ a - μ b) ↔ GapTwo μ := by
@@ -434,11 +432,11 @@ theorem gapTwo_iff {n : ℕ} {μ : Fin n → ℝ} (h : StrictAnti μ) :
     rwa [abs_of_pos (sub_pos.2 (h hab))] at this
 
 /- English proof (translation)
-Introduce `n μ I hanti hint hgap`. Establish `hg` using `(gapTwo_iff hanti).1 hgap`. Apply the tactic sequence `have hreg : ∀ J : Finset (Fin n), RegInt (μ + eSet J) := fun J => ⟨inj_add_of_gapTwo hg fun a b => by unfold eSet; split_ifs <;> simp, fun a b => by`. Take `⟨m, hm⟩` from `hint a b`. Use `⟨m + (if a ∈ J then 1 else 0) - (if b ∈ J then 1 else 0), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply, eSet]`. Use `push_cast`. Use the proof step `linarith⟩`. Use `chain_bound (fun J => fdegHC (μ + eSet J)) (1 / n) n (by positivity) I (fun J _ => formal_degree_pos_holds n _ (hreg J).1) (fun J s hs _ => by` as an intermediate fact. Establish `h1` using `(hreg (insert s J)).1`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h1`, the goal using `[eSet_insert hs, ← add_assoc]`. Conclude with `(h n _ s (hreg J)).1 h1)`. Simplify using `only [eSet_empty, add_zero, one_div, inv_pow] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setBound_of_stepSize (h : StepSize) : DegSetBound := by
   intro n μ I hanti hint hgap
@@ -459,11 +457,11 @@ theorem setBound_of_stepSize (h : StepSize) : DegSetBound := by
   exact this
 
 /- English proof (translation)
-Introduce `n μ I`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `chain_bound (fun J => fdegHC (μ + eSet J)) (1 / (4 * (n : ℝ) ^ 2)) (Real.exp 1 * n) (by positivity) I (fun J hJ => formal_degree_pos_holds n _ (inj_of_gapTwo (hg J hJ))) (fun J s hs hJ => by` as an intermediate fact. Establish `h1` using `hg _ hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, the goal using `[eSet_insert hs, ← add_assoc]`. Conclude with `(h n _ s (hg J ((subset_insert _ _).trans hJ))).1 h1)`. Simplify `this` using `only [eSet_empty, add_zero]`. Introduce `hg`. Use `chain_bound (fun J => fdegHC (μ - eSet J)) (1 / (4 * (n : ℝ) ^ 2)) (Real.exp 1 * n) (by positivity) I (fun J hJ => formal_degree_pos_holds n _ (inj_of_gapTwo (hg J hJ))) (fun J s hs hJ => by` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hg _ hJ`. Rewrite `h1`, the goal using `[eSet_insert hs, ← sub_sub]`. Conclude with `(h n _ s (hg J ((subset_insert _ _).trans hJ))).2 h1)`. Simplify `this` using `only [eSet_empty, sub_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gapSubset_of_gapStep (h : GapStepSize) : GapSubsetSize := by
   intro n μ I
@@ -484,13 +482,11 @@ theorem gapSubset_of_gapStep (h : GapStepSize) : GapSubsetSize := by
     simpa only [eSet_empty, sub_zero] using this
 
 /- English proof (translation)
-Establish `key : ∀ x y : ℝ, x + 2 ≤ y → (g x : ℝ) + 2 ≤ g y` using `fun x y hxy => by`. Use `hm hxy` as an intermediate fact. Rewrite `this` using `[h2]`. Conclude with `this` after adjusting the coercions. Use `⟨fun a b hab => ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_abs.1 (hg a b hab) with h | h` into its components or cases. Use `key (μ s - μ a) (μ s - μ b) (by linarith)` as an intermediate fact. Conclude with `le_abs.2 (Or.inl (by linarith))`. Use `key (μ s - μ b) (μ s - μ a) (by linarith)` as an intermediate fact. Conclude with `le_abs.2 (Or.inr (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `le_abs.1 (hg s c hc.symm) with h | h` into its components or cases. Use `key 0 (μ s - μ c) (by linarith)` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `mul_pos (by linarith) (by push_cast at this; linarith)`. Use `key (μ s - μ c) 0 (by linarith)` as an intermediate fact.
-
-Rewrite `this` using `[h0]`. Conclude with `mul_pos_of_neg_of_neg (by linarith) (by push_cast at this; linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem round_gap {n : ℕ} {μ : Fin n → ℝ} (hg : GapTwo μ) (s : Fin n) (g : ℝ → ℤ) (hm : Monotone g)
     (h2 : ∀ x, g (x + 2) = g x + 2) (h0 : g 0 = 0) :
@@ -514,7 +510,7 @@ theorem round_gap {n : ℕ} {μ : Fin n → ℝ} (hg : GapTwo μ) (s : Fin n) (g
       exact mul_pos_of_neg_of_neg (by linarith) (by push_cast at this; linarith)
 
 /- English proof (translation)
-Establish `hx : x ≠ 0` using `left_ne_zero_of_mul hxy.ne'`. Establish `hy : y ≠ 0` using `right_ne_zero_of_mul hxy.ne'`. Establish `: (y + t) / y - (x + t) / x = (t * x - t * y) / (x * y)` using `by field_simp; ring`. Establish `h2` using `div_nonneg (sub_nonneg.2 h) hxy.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem fac_le {x y t : ℝ} (hxy : 0 < x * y) (h : t * y ≤ t * x) : (x + t) / x ≤ (y + t) / y := by
   have hx : x ≠ 0 := left_ne_zero_of_mul hxy.ne'
@@ -524,17 +520,17 @@ theorem fac_le {x y t : ℝ} (hxy : 0 < x * y) (h : t * y ≤ t * x) : (x + t) /
   linarith
 
 /- English proof (translation)
-Apply the tactic sequence `have ht1 : |t| ≤ 1 := by rcases ht with rfl | rfl <;> simp`. Rewrite using `[fdeg_ratio μ s t ht1 fun a b hab => le_trans one_le_two (hg a b hab)]`. Establish `main : ∀ g : ℝ → ℤ, Monotone g → (∀ x, g (x + 2) = g x + 2) → g 0 = 0 → ((∀ x, t * g x ≤ t * x) → ∏ c ∈ univ.erase s, (μ s + t - μ c) / (μ s - μ c) ≤ n) ∧ ((∀ x, t * x ≤ t * g x) → 1 / (n : ℝ) ≤ ∏ c ∈ univ.erase s, (μ s + t - μ c) / (μ s - μ c))`. Introduce `g hm h2 h0`. Take `⟨hg', hsg⟩` from `round_gap hg s g hm h2 h0`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hb : 1 / (n : ℝ) ≤ ∏ c ∈ univ.erase s, ((g (μ s - μ c) : ℝ) + t) / g (μ s - μ c) ∧ ∏ c ∈ univ.erase s, ((g (μ s - μ c) : ℝ) + t) / g (μ s - μ c) ≤ n`. Establish `hinj : Function.Injective ((fun c => -(g (μ s - μ c) : ℝ)) + Pi.single s t)` using `inj_add_of_gapTwo hg' fun a b => by`. Apply the tactic sequence `simp only [Pi.single_apply]; split_ifs <;> simp [ht1]`. Use `h n _ s (inj_of_gapTwo hg') fun a b => ⟨-g (μ s - μ a) - -g (μ s - μ b), by push_cast; rfl⟩` as an intermediate fact. Break down `ht with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify `this.1 hinj` using `[h0, add_comm]`. Rewrite `this` using `[sub_single]`. Simplify `this.2 hinj` using `[h0, add_comm, sub_eq_add_neg]`. Establish `hn1 : ∀ c ∈ univ.erase s, 0 ≤ (μ s + t - μ c) / (μ s - μ c)` using `fun c hc => by`. Rewrite using `[add_sub_right_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fac_nonneg (le_trans one_le_two (hg s c (ne_of_mem_erase hc).symm)) ht1`. Establish `hn2 : ∀ c ∈ univ.erase s, 0 ≤ ((g (μ s - μ c) : ℝ) + t) / g (μ s - μ c)` using `fun c hc => by`. Use `hg' s c (ne_of_mem_erase hc).symm` as an intermediate fact. Simplify using `only [sub_self, h0, Int.cast_zero, neg_zero, zero_sub, neg_neg] at this`. Conclude with `fac_nonneg (le_trans one_le_two this) ht1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun hx => le_trans (prod_le_prod hn1 fun c hc => ?_) hb.2, fun hx => le_trans hb.1 (prod_le_prod hn2 fun c hc => ?_)⟩` and prove the remaining obligations. Rewrite using `[add_sub_right_comm]`. Conclude with `fac_le (hsg c (ne_of_mem_erase hc)) (hx _)`. Rewrite using `[add_sub_right_comm]`. Conclude with `fac_le (by rw [mul_comm]; exact hsg c (ne_of_mem_erase hc)) (hx _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hf` using `main (fun x => ⌊x⌋) Int.floor_mono (fun x => Int.floor_add_ofNat x 2) Int.floor_zero`. Establish `hc` using `main (fun x => ⌈x⌉) Int.ceil_mono (fun x => Int.ceil_add_ofNat x 2) Int.ceil_zero`. Break down `ht with rfl | rfl` into its components or cases. Conclude with `⟨hc.2 fun x => by simpa using Int.le_ceil x, hf.1 fun x => by simpa using Int.floor_le x⟩`. Conclude with `⟨hf.2 fun x => by simpa using Int.floor_le x, hc.1 fun x => by simpa using Int.le_ceil x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem real_step (h : DegStepBound) {n : ℕ} {μ : Fin n → ℝ} (hg : GapTwo μ) (s : Fin n) (t : ℝ)
     (ht : t = 1 ∨ t = -1) :
@@ -577,7 +573,7 @@ theorem real_step (h : DegStepBound) {n : ℕ} {μ : Fin n → ℝ} (hg : GapTwo
   · exact ⟨hf.2 fun x => by simpa using Int.floor_le x, hc.1 fun x => by simpa using Int.le_ceil x⟩
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use `⟨one_div_le_one_div_of_le (by linarith) (by nlinarith), ?_⟩` and prove the remaining obligations. Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem weaken_consts {n : ℕ} (hn : 0 < n) :
     1 / (4 * (n : ℝ) ^ 2) ≤ 1 / (n : ℝ) ∧ (n : ℝ) ≤ Real.exp 1 * n := by
@@ -587,9 +583,9 @@ theorem weaken_consts {n : ℕ} (hn : 0 < n) :
   nlinarith
 
 /- English proof (translation)
-Introduce `n μ s hg`. Take `⟨w1, w2⟩` from `weaken_consts s.pos`. Use `⟨fun _ => ?_, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `real_step h hg s 1 (Or.inl rfl)`. Conclude with `⟨w1.trans a, b.trans w2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, b⟩` from `real_step h hg s (-1) (Or.inr rfl)`. Rewrite using `[sub_single]`. Conclude with `⟨w1.trans a, b.trans w2⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gapStep_of_stepBound (h : DegStepBound) : GapStepSize := by
   intro n μ s hg
@@ -602,19 +598,19 @@ theorem gapStep_of_stepBound (h : DegStepBound) : GapStepSize := by
     exact ⟨w1.trans a, b.trans w2⟩
 
 /- English proof (translation)
-Establish `w : (1 / (4 * (n : ℝ) ^ 2)) ^ I.card ≤ ((n : ℝ) ^ I.card)⁻¹ ∧ (n : ℝ) ^ I.card ≤ (Real.exp 1 * n) ^ I.card ∧ 0 < (n : ℝ) ^ I.card`. Break down `I.eq_empty_or_nonempty with rfl | ⟨s, _⟩` into its components or cases. Simplify using the standard rewrite rules. Take `⟨w1, w2⟩` from `weaken_consts s.pos`. Establish `: (0 : ℝ) < n` using `by exact_mod_cast s.pos`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← inv_pow, ← one_div (n : ℝ)]`. Conclude with `⟨pow_le_pow_left₀ (by positivity) w1 _, pow_le_pow_left₀ (by positivity) w2 _, by positivity⟩`. Use `⟨fun hg => ?_, fun hg => ?_⟩` and prove the remaining obligations. Establish `h0` using `hg ∅ (empty_subset _)`. Rewrite `h0` using `[eSet_empty, add_zero]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, b⟩` from `h n μ I hanti hint ((gapTwo_iff hanti).2 h0)`. Conclude with `⟨w.1.trans a, b.trans w.2.1⟩`. Establish `h0` using `hg ∅ (empty_subset _)`. Rewrite `h0` using `[eSet_empty, sub_zero]`. Establish `hI` using `hg I subset_rfl`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hanti' : StrictAnti (μ - eSet I)` using `fun a b hab => by`. Use `(gapTwo_iff hanti).2 h0 a b hab` as an intermediate fact. Simplify using `only [Pi.sub_apply, eSet]`. Apply the tactic sequence `split_ifs <;> linarith`. Take `⟨a, b⟩` from `h n (μ - eSet I) I hanti' (fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hint a b`. Use `⟨m - (if a ∈ I then 1 else 0) + (if b ∈ I then 1 else 0), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, eSet]`. Use `push_cast`. Use the proof step `linarith) ((gapTwo_iff hanti').2 hI)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `e : (fun a => (μ - eSet I) a + if a ∈ I then 1 else 0) = μ`. Use function extensionality and compare the values at `a`. Simplify using `[eSet]`. Rewrite `a`, `b` using `[e]`. Establish `p : 0 < fdegHC μ / fdegHC (μ - eSet I)` using `div_pos (formal_degree_pos_holds n _ hanti.injective) (formal_degree_pos_holds n _ hanti'.injective)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inv_div (fdegHC μ)]`. Conclude with `⟨w.1.trans (inv_anti₀ p b), le_trans (inv_le_of_inv_le₀ w.2.2 a) w.2.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gapSubset_of_setBound_integral (h : DegSetBound) (n : ℕ) (μ : Fin n → ℝ) (I : Finset (Fin n))
     (hanti : StrictAnti μ) (hint : ∀ a b, ∃ m : ℤ, μ a - μ b = (m : ℝ)) :
@@ -659,15 +655,15 @@ theorem gapSubset_of_setBound_integral (h : DegSetBound) (n : ℕ) (μ : Fin n �
     exact ⟨w.1.trans (inv_anti₀ p b), le_trans (inv_le_of_inv_le₀ w.2.2 a) w.2.1⟩
 
 /- English proof (translation)
-Establish `hsymm : ∀ {x y}, StepIn Q x y → StepIn Q y x`. Introduce and unpack `x y ⟨hx, hy, s, rfl | rfl⟩`. Conclude with `⟨hy, hx, s, Or.inr (by simp)⟩`. Conclude with `⟨hy, hx, s, Or.inl (by simp)⟩`. Establish `hrev : ∀ {x y}, Relation.ReflTransGen (StepIn Q) x y → Relation.ReflTransGen (StepIn Q) y x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x y h`. Proceed by induction on `h with`. Consider the case `refl => exact .refl`. Consider the case `tail _ hs ih => exact .head (hsymm hs) ih`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Proceed by induction on `h with`. Consider the case `rel x y h => obtain ⟨hx, hy, s, hs⟩ := h`. Conclude with `.single ⟨hx, hy, s, Or.inl hs⟩`. Consider the case `refl x => exact .refl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `symm x y _ ih => exact hrev ih`. Consider the case `trans x y z _ _ ih1 ih2 => exact ih1.trans ih2`. Introduce `h`. Proceed by induction on `h with`. Consider the case `refl => exact .refl _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tail _ hs ih`. Use `.trans _ _ _ ih ?_` and prove the remaining obligations. Take `⟨hx, hy, s, rfl | rfl⟩` from `hs`. Conclude with `.rel _ _ ⟨hx, hy, s, rfl⟩`. Conclude with `.symm _ _ (.rel _ _ ⟨hy, hx, s, by simp⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem joined_iff {n : ℕ} (Q : Set (Fin n → ℝ)) (μ ν : Fin n → ℝ) :
     Relation.EqvGen (fun x y => x ∈ Q ∧ y ∈ Q ∧ ∃ s, y = x + Pi.single s 1) μ ν ↔
@@ -698,13 +694,13 @@ theorem joined_iff {n : ℕ} (Q : Set (Fin n → ℝ)) (μ ν : Fin n → ℝ) :
       · exact .symm _ _ (.rel _ _ ⟨hy, hx, s, by simp⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n P Q d hreg hpos hstep hPQ hjoin`. Break down `P.eq_empty_or_nonempty with rfl | ⟨μ₀, h0⟩` into its components or cases. Conclude with `⟨1, one_pos, by simp⟩`. Use `⟨d μ₀ / fdegHC μ₀, div_pos (hpos _ (hPQ h0)) (formal_degree_pos_holds n _ (hreg _ (hPQ h0)).1), fun μ hμ => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h n Q d hreg hpos hstep μ₀ μ ((joined_iff Q _ _).2 (hjoin _ h0 _ hμ)) (hPQ h0), div_mul_cancel₀ _ (formal_degree_pos_holds n _ (hreg _ (hPQ hμ)).1).ne']`. Introduce `h n Q d hreg hpos hstep μ ν hj hμ`. Establish `hν : ν ∈ Q`. Use `(joined_iff Q _ _).1 hj` as an intermediate fact. Proceed by induction on `this with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `refl => exact hμ`. Consider the case `tail _ hs _ => exact hs.2.1`. Take `⟨c, -, hc⟩` from `h n {μ, ν} Q d hreg hpos hstep (Set.pair_subset hμ hν) (by`. Introduce and unpack `x (rfl | rfl) y (rfl | rfl)`. Conclude with `.refl`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(joined_iff Q _ _).1 hj`. Conclude with `(joined_iff Q _ _).1 (.symm _ _ hj)`. Conclude with `.refl)`. Rewrite using `[hc μ (by simp), hc ν (by simp), mul_div_cancel_right₀ _ (formal_degree_pos_holds n _ (hreg _ hμ).1).ne', mul_div_cancel_right₀ _ (formal_degree_pos_holds n _ (hreg _ hν).1).ne']`.
+A detailed English derivation is pending.
 -/
 theorem degreeProportional_iff : DegVand ↔ DegreeProportional := by
   constructor
@@ -731,9 +727,9 @@ theorem degreeProportional_iff : DegVand ↔ DegreeProportional := by
       mul_div_cancel_right₀ _ (formal_degree_pos_holds n _ (hreg _ hν).1).ne']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, -, h4, h5⟩`. Establish `t` using `termCount_iff.1 h1`. Establish `i` using `iteration_iff.1 h2`. Establish `g` using `gapStep_of_stepBound h4`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨t, termCountNorm_of t, i, iterationSum_of i, iterationGauge_of i, stepSize_iff.1 h4, g, gapSubset_of_gapStep g, degreeProportional_iff.1 h5⟩`. Introduce and unpack `⟨t, -, i, -, -, s, -, -, d⟩`. Conclude with `⟨termCount_iff.2 t, iteration_iff.2 i, setBound_of_stepSize s, stepSize_iff.2 s, degreeProportional_iff.2 d⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem typings_iff :
     (FormalDegreeSubsetSum ∧ IteratedHighestWeightBound ∧ DegSetBound ∧ DegStepBound ∧ DegVand) ↔ Statement := by

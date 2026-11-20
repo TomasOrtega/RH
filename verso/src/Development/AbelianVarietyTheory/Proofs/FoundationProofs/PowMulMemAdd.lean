@@ -15,13 +15,13 @@ def MemE (c : Coef l) (x : Qbar l) : Prop := ∃ k : ℕ, (l : Qbar l) ^ k * x �
 def VecE (c : Coef l) (y : Fin 2 → Qbar l) : Prop := ∃ k : ℕ, ∀ i, (l : Qbar l) ^ k * y i ∈ c.O
 
 /- English proof (translation)
-The claim follows from `c.O.pow_mem (c.O.natCast_mem l) k`.
+A detailed English derivation is pending.
 -/
 theorem natPow_mem (c : Coef l) (k : ℕ) : (l : Qbar l) ^ k ∈ c.O :=
   c.O.pow_mem (c.O.natCast_mem l) k
 
 /- English proof (translation)
-Rewrite using `[pow_add, mul_comm ((l : Qbar l) ^ k), mul_assoc]`. Conclude with `c.O.mul_mem (natPow_mem c j) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_mem_add (c : Coef l) {x : Qbar l} {k : ℕ} (h : (l : Qbar l) ^ k * x ∈ c.O) (j : ℕ) :
     (l : Qbar l) ^ (k + j) * x ∈ c.O := by
@@ -29,9 +29,9 @@ theorem pow_mul_mem_add (c : Coef l) {x : Qbar l} {k : ℕ} (h : (l : Qbar l) ^ 
   exact c.O.mul_mem (natPow_mem c j) h
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hx`. Take `⟨j, hj⟩` from `hy`. Use `⟨k + j, ?_⟩` and prove the remaining obligations. Establish `h2` using `pow_mul_mem_add c hj k`. Rewrite `h2` using `[add_comm j k]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_add]`. Conclude with `c.O.add_mem (pow_mul_mem_add c hk j) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memE_add {c : Coef l} {x y : Qbar l} (hx : MemE c x) (hy : MemE c y) : MemE c (x + y) := by
   obtain ⟨k, hk⟩ := hx
@@ -43,16 +43,16 @@ theorem memE_add {c : Coef l} {x y : Qbar l} (hx : MemE c x) (hy : MemE c y) : M
   exact c.O.add_mem (pow_mul_mem_add c hk j) h2
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hx`. Conclude with `⟨k, by rw [mul_neg]; exact c.O.neg_mem hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem memE_neg {c : Coef l} {x : Qbar l} (hx : MemE c x) : MemE c (-x) := by
   obtain ⟨k, hk⟩ := hx
   exact ⟨k, by rw [mul_neg]; exact c.O.neg_mem hk⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hx`. Take `⟨j, hj⟩` from `hy`. Use `⟨k + j, fun i => ?_⟩` and prove the remaining obligations. Establish `h2` using `pow_mul_mem_add c (hj i) k`. Rewrite `h2` using `[add_comm j k]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `c.O.add_mem (pow_mul_mem_add c (hk i) j) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecE_add {c : Coef l} {x y : Fin 2 → Qbar l} (hx : VecE c x) (hy : VecE c y) : VecE c (x + y) := by
   obtain ⟨k, hk⟩ := hx
@@ -64,7 +64,7 @@ theorem vecE_add {c : Coef l} {x y : Fin 2 → Qbar l} (hx : VecE c x) (hy : Vec
   exact c.O.add_mem (pow_mul_mem_add c (hk i) j) h2
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hx`. Conclude with `⟨k, fun i => by rw [Pi.neg_apply, mul_neg]; exact c.O.neg_mem (hk i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vecE_neg {c : Coef l} {x : Fin 2 → Qbar l} (hx : VecE c x) : VecE c (-x) := by
   obtain ⟨k, hk⟩ := hx
@@ -152,9 +152,9 @@ abbrev DivSel (c : Coef l) (W : R2 Ω l) (S : Finset Pl) (A : ValuationSubring �
   ↥(divSelCoc c W S A) ⧸ (divCob c W).addSubgroupOf (divSelCoc c W S A)
 
 /- English proof (translation)
-Introduce `x`. Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H z`. Take `⟨k, hk⟩` from `z.2.1`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Use `⟨0, ⟨0, fun i => by simp⟩, fun s i => ?_⟩` and prove the remaining obligations. Simplify using `only [AddSubgroup.coe_nsmul, Pi.smul_apply, nsmul_eq_mul, Matrix.mulVec_zero, sub_zero, Pi.zero_apply]`. Use `push_cast`. Conclude with `hk s i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem divSel_torsion (c : Coef l) (W : R2 Ω l) (S : Finset Pl) (A : ValuationSubring Ω) :
     ∀ x : DivSel c W S A, ∃ n : ℕ, l ^ n • x = 0 := by

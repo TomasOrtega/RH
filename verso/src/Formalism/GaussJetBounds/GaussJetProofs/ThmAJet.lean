@@ -26,9 +26,7 @@ def jetHom (n : σ →₀ ℕ) (f : MvPowerSeries ι K) : Prop :=
   ∀ m, MvPowerSeries.coeff m f ≠ 0 → m.mapDomain lt = n
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[MvPowerSeries.coeff_one]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetHom_one : jetHom lt 0 (1 : MvPowerSeries ι K) := by
   classical
@@ -39,9 +37,9 @@ theorem jetHom_one : jetHom lt 0 (1 : MvPowerSeries ι K) := by
   · exact absurd rfl hm
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[MvPowerSeries.coeff_mul]`. Take `⟨p, hp, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hm`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h1 : MvPowerSeries.coeff p.1 f ≠ 0` using `left_ne_zero_of_mul hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : MvPowerSeries.coeff p.2 g ≠ 0` using `right_ne_zero_of_mul hne`. Rewrite using `[← hp, Finsupp.mapDomain_add, hf _ h1, hg _ h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetHom_mul {n1 n2 : σ →₀ ℕ} {f g : MvPowerSeries ι K} (hf : jetHom lt n1 f)
     (hg : jetHom lt n2 g) : jetHom lt (n1 + n2) (f * g) := by
@@ -55,7 +53,7 @@ theorem jetHom_mul {n1 n2 : σ →₀ ℕ} {f g : MvPowerSeries ι K} (hf : jetH
   rw [← hp, Finsupp.mapDomain_add, hf _ h1, hg _ h2]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using jetHom_one (K := K) lt`. Consider the case `succ k ih => rw [pow_succ, succ_nsmul]`. Conclude with `jetHom_mul lt ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jetHom_pow {n : σ →₀ ℕ} {f : MvPowerSeries ι K} (hf : jetHom lt n f) (k : ℕ) :
     jetHom lt (k • n) (f ^ k) := by
@@ -64,7 +62,7 @@ theorem jetHom_pow {n : σ →₀ ℕ} {f : MvPowerSeries ι K} (hf : jetHom lt 
   | succ k ih => rw [pow_succ, succ_nsmul]; exact jetHom_mul lt ih hf
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using jetHom_one (K := K) lt`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `jetHom_mul lt (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetHom_prod {α : Type*} (s : Finset α) (n : α → σ →₀ ℕ) (F : α → MvPowerSeries ι K)
     (h : ∀ a ∈ s, jetHom lt (n a) (F a)) : jetHom lt (∑ a ∈ s, n a) (∏ a ∈ s, F a) := by
@@ -77,9 +75,9 @@ theorem jetHom_prod {α : Type*} (s : Finset α) (n : α → σ →₀ ℕ) (F :
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `only [map_sum, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X] at hm`. Take `⟨i, -, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hm`. Use `split_ifs at hne with h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.mapDomain_single, hc i (left_ne_zero_of_mul hne)]`. Simplify using `at hne`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetHom_lin [Fintype ι] (c : ι → K) (t : σ) (hc : ∀ i, c i ≠ 0 → lt i = t) :
     jetHom lt (Finsupp.single t 1) (∑ i, MvPowerSeries.C (c i) * MvPowerSeries.X i) := by
@@ -92,9 +90,9 @@ theorem jetHom_lin [Fintype ι] (c : ι → K) (t : σ) (hc : ∀ i, c i ≠ 0 �
   · simp at hne
 
 /- English proof (translation)
-Establish `h` using `jetHom_prod lt n.support (fun s => n s • Finsupp.single s 1) (fun s => a s ^ n s) fun s _ => jetHom_pow lt (ha s) (n s)`. Establish `hd : ∑ s ∈ n.support, n s • Finsupp.single s 1 = n`. Repeatedly rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`. Conclude with `Finsupp.sum_single n`. Rewrite `h` using `[hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[Finsupp.prod]`.
+A detailed English derivation is pending.
 -/
 theorem jetHom_substProd (a : σ → MvPowerSeries ι K)
     (ha : ∀ t, jetHom lt (Finsupp.single t 1) (a t)) (n : σ →₀ ℕ) :
@@ -111,15 +109,15 @@ theorem jetHom_substProd (a : σ → MvPowerSeries ι K)
 end Collapse
 
 /- English proof (translation)
-Unfold `bSum`. Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun ab _ => ?_` and prove the remaining obligations. Establish `hlin0 : ∀ s, MvPowerSeries.constantCoeff (linSub M (s, ab.1, ab.2)) = 0` using `fun s => by`. Simplify using `[linSub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hlin0`. Establish `hhom : ∀ t, jetHom lt (Finsupp.single t 1) (linSub M (t, ab.1, ab.2))` using `fun t => jetHom_lin lt _ t fun i hi => hMlt _ i hi`. Establish `hlinI : ∀ t, WtGe (1 : ℝ) (fun _ : ι => (0 : ℝ)) 0 (linSub M (t, ab.1, ab.2))`. Introduce `t`. Unfold `linSub`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `wtGe_sum one_pos _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using wtGe_CX (K := K) one_pos (fun _ : ι => (0 : ℝ)) i (hM1 (t, ab.1, ab.2) i)`. Rewrite using `[MvPowerSeries.coeff_subst hs, finsum_eq_single _ (m.mapDomain lt)]`. Rewrite using `[smul_eq_mul, norm_mul]`. Use `mul_le_of_le_one_right (norm_nonneg _) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `wtGe_prod (K := K) one_pos (r := fun _ : ι => (0 : ℝ)) (m.mapDomain lt).support (fun s => ((m.mapDomain lt) s : ℝ) * 0) (fun s => linSub M (s, ab.1, ab.2) ^ (m.mapDomain lt) s) (fun s _ => wtGe_pow one_pos (hlinI s) _) m`. Rewrite `hp` using `[monoWtGe_iff, Real.one_rpow]`. Simplify `hp` using `[Finsupp.prod]`. Introduce `n hn`. Establish `h0 : MvPowerSeries.coeff m (n.prod fun s e => linSub M (s, ab.1, ab.2) ^ e) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hn (jetHom_substProd lt (fun s => linSub M (s, ab.1, ab.2)) hhom n m h).symm`. Rewrite using `[h0, smul_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_collapse {K : Type u} [NormedField K] [IsUltrametricDist K] {d N0 N1 : ℕ} [NeZero d]
     {ι : Type*}
@@ -157,7 +155,7 @@ theorem jet_collapse {K : Type u} [NormedField K] [IsUltrametricDist K] {d N0 N1
     rw [h0, smul_zero]
 
 /- English proof (translation)
-Establish `h' : ((s.val + α : ℕ) : ZMod d) = ((s'.val + β : ℕ) : ZMod d)` using `by push_cast; rwa [ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Rewrite `h'` using `[ZMod.natCast_eq_natCast_iff]`. Establish `h2` using `Nat.ModEq.of_dvd (even_iff_two_dvd.mp hde) h'`. Unfold `Nat.ModEq at h2`. Rewrite using `[Nat.odd_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -173,25 +171,25 @@ theorem jet_parity {d : ℕ} [NeZero d] (hde : Even d) {s s' : ZMod d} {α β : 
   omega
 
 /- English proof (translation)
-Take `⟨s, s', α', β', hs, hs', -, heq, hn⟩` from `h`. Establish `hss : s ≠ s'` using `by rintro rfl; omega`. Establish `hpar` using `jet_parity hde hs hs' heq`. Establish `hpos : ∀ k : ℕ, l ^ k ≠ 0` using `fun k => pow_ne_zero _ (by omega)`. Establish `hinj : ∀ a b : ℕ, l ^ a = l ^ b → a = b` using `fun a b hab => Nat.pow_right_injective hl hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `F1 : (Finsupp.single t1 (l ^ α) + Finsupp.single t2 (l ^ β)) s = l ^ α'`. Rewrite using `[hn]`. Simplify using `[hss]`. Establish `F2 : (Finsupp.single t1 (l ^ α) + Finsupp.single t2 (l ^ β)) s' = l ^ β'`. Rewrite using `[hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Ne.symm hss]`. Establish `F3 : ∀ t, (Finsupp.single t1 (l ^ α) + Finsupp.single t2 (l ^ β)) t ≠ 0 → t = s ∨ t = s'`. Introduce `t ht`. Rewrite `ht` using `[hn]`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [not_or] at hc`. Apply `ht` to reduce the goal to its premises. Simplify using `[Ne.symm hc.1, Ne.symm hc.2]`. Establish `G3 : ∀ t, (Finsupp.single t1 (l ^ α) + Finsupp.single t2 (l ^ β)) t ≠ 0 → t = t1 ∨ t = t2`. Introduce `t ht`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [not_or] at hc`. Apply `ht` to reduce the goal to its premises. Simplify using `[Ne.symm hc.1, Ne.symm hc.2]`. Establish `ht12 : t1 ≠ t2`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `a` using `G3 s (by rw [F1]; exact hpos _)`. Establish `b` using `G3 s' (by rw [F2]; exact hpos _)`. Simplify using `only [or_self] at a b`. Conclude with `hss (a.trans b.symm)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `H1 : (Finsupp.single t1 (l ^ α) + Finsupp.single t2 (l ^ β)) t1 = l ^ α`. Simplify using `[ht12]`. Establish `H2 : (Finsupp.single t1 (l ^ α) + Finsupp.single t2 (l ^ β)) t2 = l ^ β`. Simplify using `[Ne.symm ht12]`. Use `⟨ht12, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases F3 t1 (by rw [H1]; exact hpos _) with h1 | h1 <;>`. Break down `F3 t2 (by rw [H2]; exact hpos _) with h2 | h2` into its components or cases. Conclude with `absurd (h1.trans h2.symm) ht12`. Substitute `h1 h2` using the available equality. Establish `e1` using `hinj _ _ (H1.symm.trans F1)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e2` using `hinj _ _ (H2.symm.trans F2)`. Substitute `e1 e2` using the available equality. Conclude with `⟨heq, hpar⟩`. Substitute `h1 h2` using the available equality. Establish `e1` using `hinj _ _ (H1.symm.trans F2)`.
+Supply the required witnesses or components. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e2` using `hinj _ _ (H2.symm.trans F1)`. Substitute `e1 e2` using the available equality. Conclude with `⟨heq.symm, by rwa [add_comm]⟩`. Conclude with `absurd (h1.trans h2.symm) ht12`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jet_bipower {d : ℕ} [NeZero d] (hde : Even d) {l : ℕ} (hl : 2 ≤ l) {t1 t2 : ZMod d}
     {α β : ℕ} (h : IsBiPower l (Finsupp.single t1 (l ^ α) + Finsupp.single t2 (l ^ β))) :
@@ -249,9 +247,7 @@ theorem jet_bipower {d : ℕ} [NeZero d] (hde : Even d) {l : ℕ} (hl : 2 ≤ l)
   · exact absurd (h1.trans h2.symm) ht12
 
 /- English proof (translation)
-Unfold `rowRad`. Rewrite using `[if_neg (by simp [hi])]`. Break down `spec i with _ | ⟨s, j⟩` into its components or cases. Conclude with `le_rfl`. Simplify using `only split_ifs`.
-
-Conclude with `le_max_left _ _`. Conclude with `le_max_left _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem jet_rowRad_ge {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → ℝ) (lt : ι → ZMod d)
     (isTop : ι → Bool) (spec : ι → Option (ZMod d × ℤ)) (i : ι) (hi : isTop i = false) :
@@ -266,7 +262,7 @@ theorem jet_rowRad_ge {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → ℝ)
     · exact le_max_left _ _
 
 /- English proof (translation)
-Consider the cases of `hi : isTop i`. Conclude with `(hs _).trans (jet_rowRad_ge l sig eps lt isTop spec i hi)`. Unfold `rowRad`. Rewrite using `[if_pos hi]`. Conclude with `he _`.
+Split into cases according to the possible forms of the given data. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_rowRad_nonneg {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → ℝ) (lt : ι → ZMod d)
     (isTop : ι → Bool) (spec : ι → Option (ZMod d × ℤ)) (hs : ∀ s, 0 ≤ sig s)
@@ -276,7 +272,7 @@ theorem jet_rowRad_nonneg {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → 
   · unfold rowRad; rw [if_pos hi]; exact he _
 
 /- English proof (translation)
-Unfold `rowRad`. Rewrite using `[if_pos hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_rowRad_top {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → ℝ) (lt : ι → ZMod d)
     (isTop : ι → Bool) (spec : ι → Option (ZMod d × ℤ)) (i : ι) (hi : isTop i = true) :
@@ -284,7 +280,7 @@ theorem jet_rowRad_top {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → ℝ
   unfold rowRad; rw [if_pos hi]
 
 /- English proof (translation)
-Unfold `rowRad`. Rewrite using `[if_neg (by simp [hi]), hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_rowRad_spec {d : ℕ} {ι : Type} (l : ℕ) (sig eps : ZMod d → ℝ) (lt : ι → ZMod d)
     (isTop : ι → Bool) (spec : ι → Option (ZMod d × ℤ)) (i : ι) (hi : isTop i = false)

@@ -15,7 +15,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} {large₂ : SizeData₂ D}
 
 /- English proof (translation)
-Take `⟨⟨P, -, -⟩, -⟩` from `h.size`. Establish `key : ∀ p ∈ D.host.levelPrimes, p.Prime → Nat.Coprime p (D.host.QS * D.host.q)` using `fun p hp hpp => UpperTheory.Ram.Fun.coprime_QSq_of_splitK D.host hpp (P.level_split p hp)`. Conclude with `⟨key _ D.host.pde_level.1 D.host.pde_prime, key _ D.host.pde_level.2 D.host.pde'_prime⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pde_ne_q (h : HidaSetting large₂ R F) : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q) := by
   obtain ⟨⟨P, -, -⟩, -⟩ := h.size
@@ -24,14 +24,14 @@ theorem pde_ne_q (h : HidaSetting large₂ R F) : Nat.Coprime D.host.pde (D.host
   exact ⟨key _ D.host.pde_level.1 D.host.pde_prime, key _ D.host.pde_level.2 D.host.pde'_prime⟩
 
 /- English proof (translation)
-The claim follows from `guard_of_qGuard h.guard`.
+A detailed English derivation is pending.
 -/
 theorem guard (h : HidaSetting large₂ R F) : Guard R := guard_of_qGuard h.guard
 
 /- English proof (translation)
-Establish `: (Set.univ : Set T) ⊆ insert A.μ0 (R.mu '' (R.twPl : Set _))` using `fun t _ => by`. Break down `h2 t with h | ⟨w, rfl⟩` into its components or cases. Conclude with `Or.inl h`. Distinguish the cases in `hw : w ∈ R.twPl`. Conclude with `Or.inr ⟨w, hw, rfl⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Conclude with `Or.inl (h1 w hw)`. Conclude with `Set.finite_univ_iff.1 ((((R.twPl).finite_toSet.image _).insert _).subset this)`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem finite_of_tup (h1 : R.tup_mu_off) (h2 : R.tup_mu_used) : Finite T := by
   classical
@@ -44,7 +44,7 @@ theorem finite_of_tup (h1 : R.tup_mu_off) (h2 : R.tup_mu_used) : Finite T := by
   exact Set.finite_univ_iff.1 ((((R.twPl).finite_toSet.image _).insert _).subset this)
 
 /- English proof (translation)
-Take `⟨a, h⟩` from `h`. Use `⟨a, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x, h⟩` from `h ε CF hC`. Conclude with `⟨x, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j => hQ ch i (h D large₂ e hx Γ Pl0 T A Ks R F s ch i j)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem big_mono {Q Q' : ChP} (h : Big Q) (hQ : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
@@ -59,7 +59,7 @@ variable {ch : Choice R} {κ κ' : ℂ} {ze ze' : T → D.what₂.LL}
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Simplify using `only [FormulaAt, map_one, one_mul, zero_mul, one_pow]`. Conclude with `and_iff_right fun _ => ⟨1, one_pos, trivial⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formulaAt_zero_iff : FormulaAt ch 0 (fun _ => 1) ↔ ∀ t (x : A.fam.amb.FR t), x ∈ (A.fam.R t).goodF A.fam.X → ∀ a,
     cTot ch t * psiK ch a (R.Th t (R.jX t x)) = 0 := by
@@ -69,7 +69,7 @@ theorem formulaAt_zero_iff : FormulaAt ch 0 (fun _ => 1) ↔ ∀ t (x : A.fam.am
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-The claim follows from `formulaAt_zero_iff.2 fun t x _ a => by rw [Subsingleton.elim (R.Th t _) 0, psiK_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem formulaAt_of_subsingleton [Subsingleton R.HE.H] (ch : Choice R) : FormulaAt ch 0 fun _ => 1 :=
   formulaAt_zero_iff.2 fun t x _ a => by rw [Subsingleton.elim (R.Th t _) 0, psiK_zero, mul_zero]
@@ -77,11 +77,11 @@ theorem formulaAt_of_subsingleton [Subsingleton R.HE.H] (ch : Choice R) : Formul
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨n, hn, e⟩` from `h.1 A.μ0`. Establish `hz : ze A.μ0 ≠ 0` using `fun z => by`. Rewrite `e` using `[z, zero_pow hn.ne']`. Conclude with `zero_ne_one e`. Use `⟨⟨fun t => ?_, fun t x hx a => ?_⟩, inv_mul_cancel₀ hz⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, e'⟩` from `h.1 t`. Use `⟨n * k, mul_pos hn hk, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, inv_pow, pow_mul, e, one_pow, inv_one, one_mul, mul_comm, pow_mul, e', one_pow]`. Use `h.2 t x hx a` as an intermediate fact. Rewrite using `[map_mul, map_inv₀, mul_assoc _ κ, ← this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem formulaAt_normalise (h : FormulaAt ch κ ze) :
     FormulaAt ch ((D.what₂.embLL (ze A.μ0))⁻¹ * κ) (fun t => (ze A.μ0)⁻¹ * ze t) ∧ (ze A.μ0)⁻¹ * ze A.μ0 = 1 := by
@@ -100,9 +100,9 @@ theorem formulaAt_normalise (h : FormulaAt ch κ ze) :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `n1 : ∀ z : D.what₂.LL, (∃ n : ℕ, 0 < n ∧ z ^ n = 1) → ‖D.what₂.embLL z‖ = 1`. Introduce and unpack `z ⟨n, hn, e⟩`. Conclude with `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, e, map_one]) hn.ne'`. Establish `e1` using `congrArg norm (h.2 t x hx a)`. Establish `e2` using `congrArg norm (h'.2 t x hx a)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [norm_mul, n1 _ (h.1 t), n1 _ (h'.1 t)] at e1 e2`. Conclude with `mul_right_cancel₀ (norm_ne_zero_iff.2 h0) (e1.symm.trans e2)`.
+A detailed English derivation is pending.
 -/
 theorem norm_unique (h : FormulaAt ch κ ze) (h' : FormulaAt ch κ' ze') {t : T} {x : A.fam.amb.FR t}
     (hx : x ∈ (A.fam.R t).goodF A.fam.X) {a : Fin ch.n} (h0 : vK ch t x a ≠ 0) : ‖κ‖ = ‖κ'‖ := by
@@ -117,9 +117,9 @@ theorem norm_unique (h : FormulaAt ch κ ze) (h' : FormulaAt ch κ' ze') {t : T}
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `big_mono ((hI.and hC).and hF) ?_` and prove the remaining obligations. Introduce and unpack `D Γ _ _ Pl0 T A Ks _ _ _ R ch - ⟨⟨h1, h2⟩, h3⟩ hf`. Take `⟨κ, ze, h⟩` from `h3 hf`. Use `⟨κ, ze, h, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, x, hx, h0⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨a, ha⟩` from `not_forall.1 fun k => h0 (h1 _ k)`. Conclude with `h.ne_zero ((cTot_ne_zero_iff ch t).2 fun i j => (h2 i j t).2) hx ha`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem scalar_ne_zero (hI : InjK) (hC : ConstK) (hF : Formula2K) :
     Big fun {D} _ _ _ _ _ A _ _ _ _ R ch => ch.FieldOK → ∃ κ ze, FormulaAt ch κ ze ∧
@@ -133,7 +133,7 @@ theorem scalar_ne_zero (hI : InjK) (hC : ConstK) (hF : Formula2K) :
   exact h.ne_zero ((cTot_ne_zero_iff ch t).2 fun i j => (h2 i j t).2) hx ha
 
 /- English proof (translation)
-Use `big_mono h ?_` and prove the remaining obligations. Introduce and unpack `D Γ _ _ Pl0 T A Ks _ _ _ R ch - h hf t`. Rewrite using `[ratio_eq_prod]`. Conclude with `D.what₂.embLL.fieldRange.prod_mem fun i _ => D.what₂.embLL.fieldRange.prod_mem fun j _ => h hf i j t`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_mem (h : RatioK) :
     Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ch.FieldOK → ∀ t, ratio ch t ∈ Set.range D.what₂.embLL := by

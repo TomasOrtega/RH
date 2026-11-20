@@ -13,19 +13,19 @@ def rowsM (X : Matrix (Fin k) (Fin m) ℂ) (Y : Matrix (Fin m) (Fin m) ℂ) : Ma
   fun i j => if hi : i ∈ S then X (eS.symm ⟨i, hi⟩) j else Y (eU.symm ⟨i, hi⟩) j
 
 /- English proof (translation)
-Simplify using `[rowsM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowsM_S (X Y) (a : Fin k) (j) : rowsM S eS eU X Y (eS a) j = X a j := by
   simp [rowsM]
 
 /- English proof (translation)
-Simplify using `[rowsM, (eU a).2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowsM_U (X Y) (a : Fin m) (j) : rowsM S eS eU X Y (eU a) j = Y a j := by
   simp [rowsM, (eU a).2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hi : i ∈ S`. Simplify using `using h1 (eS.symm ⟨i, hi⟩) j`. Simplify using `using h2 (eU.symm ⟨i, hi⟩) j`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rows_ext {p : Type} (X Y : Matrix (Fin n) p ℂ) (h1 : ∀ a j, X (eS a) j = Y (eS a) j)
     (h2 : ∀ a j, X (eU a) j = Y (eU a) j) : X = Y := by
@@ -35,7 +35,7 @@ theorem rows_ext {p : Type} (X Y : Matrix (Fin n) p ℂ) (h1 : ∀ a j, X (eS a)
   · simpa using h2 (eU.symm ⟨i, hi⟩) j
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[cpx_reim]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem of_cpx_reim {a b : ℕ} (X : Matrix (Fin a) (Fin b) ℂ) : Matrix.of (cpx (reim X)) = X := by
   ext a b
@@ -59,11 +59,11 @@ Both sides reduce to the same expression.
 theorem rsL_apply (z) : rsL S eS eU z = reim (rowsM S eS eU (Matrix.of (cpx z.1)) (Matrix.of (cpx z.2))) := rfl
 
 /- English proof (translation)
-Apply `mp_of_isom_prod` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[rsL_apply, norm_reim_sq, sum_split S eS eU, norm_cpx_sq a, norm_cpx_sq b]`. Simplify using `[rowsM_S, rowsM_U]`. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Y, rfl⟩` from `reim_surj y`. Use `⟨(reim (Matrix.of fun a j => Y (eS a) j), reim (Matrix.of fun a j => Y (eU a) j)), ?_⟩` and prove the remaining obligations. Rewrite using `[rsL_apply, of_cpx_reim, of_cpx_reim]`. Use `congr 1`. Apply `rows_ext S eS eU` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a j`. Rewrite using `[rowsM_S]`. Both sides reduce to the same expression. Introduce `a j`. Rewrite using `[rowsM_U]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -9,25 +9,21 @@ open scoped TensorProduct
 namespace GlobalTheory.GoodEtaleBase
 
 /- English proof (translation)
-Introduce `A _ _ _ _ _ _ EA _ _ _ _ _ QA _ _ ρ _ _`. Use `set R := Localization.AtPrime QA`. Use `haveI : Algebra.Smooth A (Polynomial A) := Algebra.Smooth.mk`. Use `haveI : Algebra.Smooth A EA := Algebra.Smooth.comp A (Polynomial A) EA`. Use `haveI : Module.Flat EA R := IsLocalization.flat R QA.primeCompl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Flat A EA := Algebra.Smooth.flat A EA`. Use `haveI : Module.Flat (Polynomial A) EA := Algebra.Smooth.flat (Polynomial A) EA`. Establish `hflat : Module.Flat A R` using `Module.Flat.trans A EA R`. Use `⟨hflat, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsNoetherianRing EA := Algebra.FiniteType.isNoetherianRing (Polynomial A) EA`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `IsLocalization.isNoetherianRing QA.primeCompl R inferInstance`. Use `haveI : Module.Flat (Polynomial A) R := Module.Flat.trans (Polynomial A) EA R`. Establish `hX : (Polynomial.X : Polynomial A) ∈ nonZeroDivisors (Polynomial A)` using `Polynomial.monic_X.mem_nonZeroDivisors`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := R) hX`. Establish `h1 : ∀ z : R, algebraMap (Polynomial A) R Polynomial.X * z = 0 → z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Apply `hreg` to reduce the goal to its premises. Simplify using `only [Algebra.smul_def, smul_zero, mul_zero]`. Conclude with `hz`. Conclude with `⟨h1, fun z hz => h1 z (by rw [mul_comm]; exact hz)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f hf set K := FractionRing A`. Use `letI : Algebra K (R ⊗[A] K) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : IsScalarTower A K (R ⊗[A] K) := inferInstance`. Use `haveI hloc : IsLocalization (Algebra.algebraMapSubmonoid R (nonZeroDivisors A)) (R ⊗[A] K) := (Algebra.isLocalization_iff_isPushout (nonZeroDivisors A) K).2 inferInstance`. Set `e : GlobalTheory.LocAcyc.GenFib A R ≃ₐ[R] R ⊗[A] K` to `IsLocalization.algEquiv (Algebra.algebraMapSubmonoid R (nonZeroDivisors A)) _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `H1 : Function.Bijective (TensorProduct.toIntegralClosure A EA K)` using `TensorProduct.toIntegralClosure_bijective_of_smooth`. Establish `H2 : Function.Bijective (TensorProduct.toIntegralClosure EA R (EA ⊗[A] K))` using `TensorProduct.toIntegralClosure_bijective_of_isLocalization QA.primeCompl`. Establish `H : Function.Bijective (TensorProduct.toIntegralClosure A R K)` using `TensorProduct.toIntegralClosure_bijective_of_tower H1 H2`. Establish `hf' : IsIntegral R (e f)` using `hf.map e.toAlgHom`. Take `⟨y, hy⟩` from `H.2 ⟨e f, hf'⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hy' : (TensorProduct.toIntegralClosure A R K y : R ⊗[A] K) = e f` using `congrArg Subtype.val hy`. Establish `key : ∀ y : R ⊗[A] integralClosure A K, ∃ b : R, (TensorProduct.toIntegralClosure A R K y : R ⊗[A] K) = b ⊗ₜ[A] (1 : K)`. Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `tmul b c`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 c.2`. Use `⟨r • b, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, hr]`. Both sides reduce to the same expression.
-
-Consider the case `add u v hu hv`. Take `⟨a, ha⟩` from `hu`. Take `⟨b, hb⟩` from `hv`. Conclude with `⟨a + b, by rw [map_add, Subalgebra.coe_add, ha, hb, TensorProduct.add_tmul]⟩`. Take `⟨b, hb⟩` from `key y`.
-
-Use `⟨b, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.commutes, ← hy', hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem flat_noetherian_nzd_intClosed : ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [IsIntegrallyClosed A]
       [Algebra.EssFiniteType ℤ A]

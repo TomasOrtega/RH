@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.DetZeroFactorization
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = 0`. Establish `hc : c ≠ 0` using `fun hc => hn ⟨ha, hc⟩`. Substitute `ha` using the available equality. Establish `hb : b = 0`. Establish `hbc : b * c = 0` using `by linear_combination -h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp hbc).resolve_right hc`. Use `⟨d / c, by simp [hb], ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `⟨b / a, by field_simp, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_comm, mul_div_assoc', div_eq_iff ha]`.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-h`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_of_det_zero {K : Type*} [Field K] (a b c d : K) (h : a * d - b * c = 0)
     (hn : ¬ (a = 0 ∧ c = 0)) : ∃ u : K, b = a * u ∧ d = c * u := by
@@ -24,19 +24,19 @@ theorem exists_mul_of_det_zero {K : Type*} [Field K] (a b c d : K) (h : a * d - 
     linear_combination -h
 
 /- English proof (translation)
-Introduce `d1 q hq δ hdet`. Establish `: Fact q.Prime` using `⟨hq⟩`. Establish `hq0 : (q : ℤ) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Establish `hdet' : δ 0 0 * δ 1 1 - δ 0 1 * δ 1 0 = q` using `by rw [← hdet, Matrix.det_fin_two]`. Distinguish the cases in `hdiv : (q : ℤ) ∣ δ 0 0 ∧ (q : ℤ) ∣ δ 1 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨⟨a', ha'⟩, ⟨c', hc'⟩⟩` from `hdiv`. Establish `h1 : a' * δ 1 1 - δ 0 1 * c' = 1`. Apply `mul_left_cancel₀ hq0` to reduce the goal to its premises. Take the linear combination `hdet' - δ 1 1 * ha' + δ 0 1 * hc'`. Use `⟨⟨!![a', δ 0 1; c', δ 1 1], by rw [Matrix.det_fin_two_of]; exact h1⟩, none, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [d1, Matrix.mul_apply, Fin.sum_univ_two, ha', hc'] <;> ring`. Establish `h0 : (δ 0 0 : ZMod q) * δ 1 1 - δ 0 1 * δ 1 0 = 0`. Use `congrArg (Int.cast : ℤ → ZMod q) hdet'` as an intermediate fact. Move the coercions through the operations in `at this`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[this, ZMod.natCast_self]`. Establish `hn : ¬ ((δ 0 0 : ZMod q) = 0 ∧ (δ 1 0 : ZMod q) = 0)`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd, ZMod.intCast_zmod_eq_zero_iff_dvd]` and apply the resulting hypothesis. Take `⟨u, hb, hd⟩` from `exists_mul_of_det_zero (δ 0 0 : ZMod q) (δ 0 1) (δ 1 0) (δ 1 1) h0 hn`. Take `⟨n, hnq, hnu⟩ : ∃ n : ℕ, n < q ∧ (n : ZMod q) = u` from `⟨u.val, ZMod.val_lt u, ZMod.natCast_zmod_val u⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨b', hb'⟩ : (q : ℤ) ∣ δ 0 1 - δ 0 0 * (n : ℤ) := by`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[hnu, hb, sub_self]`. Choose the witnesses or unpack the hypotheses as in `⟨d', hd'⟩ : (q : ℤ) ∣ δ 1 1 - δ 1 0 * (n : ℤ) := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[hnu, hd, sub_self]`. Establish `h1 : δ 0 0 * d' - b' * δ 1 0 = 1`. Apply `mul_left_cancel₀ hq0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `hdet' - δ 0 0 * hd' + δ 1 0 * hb'`. Use `⟨⟨!![δ 0 0, b'; δ 1 0, d'], by rw [Matrix.det_fin_two_of]; exact h1⟩, some ⟨n, hnq⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [d1, Matrix.mul_apply, Fin.sum_univ_two] <;> linarith`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem main : (let d1 : (q : ℕ) → Option (Fin q) → Matrix (Fin (2 : ℕ)) (Fin (2 : ℕ)) ℤ := @(fun (q : ℕ) (x : Option (Fin q)) ↦ match x with | Option.none => !![(↑q : ℤ), (0 : ℤ); (0 : ℤ), (1 : ℤ)] | Option.some u => !![(1 : ℤ), (↑(↑u : ℕ) : ℤ); (0 : ℤ), (↑q : ℤ)]); ∀ {q : ℕ}, Nat.Prime q → ∀ (δ : Matrix (Fin (2 : ℕ)) (Fin (2 : ℕ)) ℤ), Matrix.det δ = (↑q : ℤ) → ∃ (γ : Matrix.SpecialLinearGroup (Fin (2 : ℕ)) ℤ) (y : Option (Fin q)), δ = (↑γ : Matrix (Fin (2 : ℕ)) (Fin (2 : ℕ)) ℤ) * d1 q y) := by
   intro d1 q hq δ hdet

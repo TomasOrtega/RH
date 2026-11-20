@@ -9,9 +9,9 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HuaInt
 open MeasureTheory Matrix
 
 /- English proof (translation)
-Introduce `n b hb`. Unfold `detW`. Establish `h1 : (1 + b * b : Matrix (Fin n) (Fin n) ℂ) = (1 + Complex.I • b) * (1 + Complex.I • b)ᴴ`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_smul, hb.eq, Complex.star_def, Complex.conj_I]`. Simplify using `only [add_mul, mul_add, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_neg, Complex.I_mul_I, one_smul, neg_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h1, Matrix.det_mul, Matrix.det_conjTranspose, Complex.star_def, Complex.mul_conj, Complex.ofReal_re]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem detW_eq_normSq_det_one_add_I_smul :
     ∀ (n : ℕ) (b : Matrix (Fin n) (Fin n) ℂ), b.IsHermitian →

@@ -16,11 +16,11 @@ section Pullback
 variable {K : Type*} {ι : K → Type} {J : Type} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Set `φ : MRing ι R →ₐ[R] Polynomial (MRing ι R ⧸ P)` to `(Polynomial.CAlgHom (R := R) (A := MRing ι R ⧸ P)).comp (Ideal.Quotient.mkₐ R P)`. Establish `hcomp : (aeval (blowUpSubst P u)).comp (liftForm (ι` using `ι) (J := J) (R := R)) = φ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[AlgHom.comp_apply, liftForm, rename_X, aeval_X]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h` using `DFunLike.congr_fun hcomp p`. Rewrite `h` using `[AlgHom.comp_apply]`. Unfold `blowUpOf`. Rewrite using `[RingHom.mem_ker, h]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show Polynomial.C (Ideal.Quotient.mk P p) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr hp, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftForm_mem_blowUpOf_of_mem (P : Ideal (MRing ι R)) (u : J → MRing ι R) {p : MRing ι R}
     (hp : p ∈ P) : liftForm (J := J) p ∈ blowUpOf P u := by
@@ -45,9 +45,9 @@ section Sums
 open Classical in
 
 /- English proof (translation)
-Establish `e : ∀ W, (Z₁ W - Z₂ W) * n W = Z₁ W * (if p W then n W else 0) - Z₂ W * (if p W then n W else 0)`. Introduce `W`. Distinguish the cases in `h : Z₁ W - Z₂ W = 0`. Rewrite using `[h, zero_mul, sub_eq_zero.mp h, sub_self]`. Rewrite using `[if_pos (hv W h), ← sub_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_congr e, finsum_sub_distrib]`. Conclude with `h₁.subset fun W hW => left_ne_zero_of_mul hW`. Conclude with `h₂.subset fun W hW => left_ne_zero_of_mul hW`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_sub_mul_eq_of_support {α : Type*} (Z₁ Z₂ n : α → ℤ) (p : α → Prop)
     (h₁ : (Function.support Z₁).Finite) (h₂ : (Function.support Z₂).Finite)
@@ -67,21 +67,21 @@ theorem finsum_sub_mul_eq_of_support {α : Type*} (Z₁ Z₂ n : α → ℤ) (p 
 end Sums
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP b f g hD N u hu hu' a`. Establish `hfin` using `DivCycleFiniteSupport.proof.{u}`. Take `⟨bf, bg, hbf, hbg, -⟩` from `hD.degrees`. Establish `hvertB : ∀ W, divCycle (blowUpOf P u) (liftForm (J` using `J) f) W - divCycle (blowUpOf P u) (liftForm (J := J) g) W ≠ 0 → (C ϖ : MRing (extIdx ι J) O) ∈ W := by`. Introduce `W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hϖW`. Establish `hsupp : W.IsPrime ∧ blowUpOf P u ≤ W ∧ IsRelevant W`. Distinguish the cases in `h1 : divCycle (blowUpOf P u) (liftForm (J := J) f) W = 0`. Establish `h2 : divCycle (blowUpOf P u) (liftForm (J` using `J) g) W ≠ 0 := by`. Introduce `h2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hW` to reduce the goal to its premises. Rewrite using `[h1, h2, sub_zero]`. Conclude with `le_and_isRelevant_of_divCycle_ne_zero h2`. Conclude with `le_and_isRelevant_of_divCycle_ne_zero h1`. Take `⟨hWp, hBW, hWrel⟩` from `hsupp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `W₀ : Ideal (MRing ι O)` to `W.comap (liftForm (ι := ι) (J := J) (R := O))`. Establish `hW₀ : W₀.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hPW₀ : P ≤ W₀` using `fun p hp => hBW (liftForm_mem_blowUpOf_of_mem P u hp)`. Establish `hrel₀ : IsRelevant W₀`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hWrel (some k)`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Establish `h' : liftForm (ι` using `ι) (J := J) (R := O) (X ⟨k, i⟩) ∈ W := h`. Rewrite `h'` using `[liftForm, rename_X]`. Then use the resulting hypothesis. Establish `hϖ₀ : (C ϖ : MRing ι O) ∉ W₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : liftForm (ι` using `ι) (J := J) (R := O) (C ϖ) ∈ W := h`. Rewrite `h'` using `[liftForm, rename_C]`. Conclude with `hϖW h'`. Take `⟨s, t, hs, ht, hst⟩` from `hD.unit_off_special W₀ hW₀ hPW₀ hrel₀ hϖ₀`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hW` to reduce the goal to its premises. Rewrite using `[divCycle_eq_of_mul_sub_mem (u := liftForm (J := J) s) (v := liftForm (J := J) t) hs ht ?_, sub_self]`. Use `liftForm_mem_blowUpOf_of_mem (J := J) P u hst` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_mul]`. Then use the resulting hypothesis. Establish `e₁` using `hvert O ϖ hϖ K ι J P n hP N u hu hu' bf f hbf hD.num_not_mem a`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Establish `e₂` using `hvert O ϖ hϖ K ι J P n hP N u hu hu' bg g hbg hD.den_not_mem a`. Unfold `cycEval at e₁ e₂`. Unfold `cycEval ratDiv`. Rewrite using `[finsum_sub_mul_eq_of_support (divCycle (blowUpOf P u) (liftForm (J := J) f)) (divCycle (blowUpOf P u) (liftForm (J := J) g)) _ _ (hfin _ _ _ _ _) (hfin _ _ _ _ _) hvertB, finsum_sub_mul_eq_of_support (divCycle P f) (divCycle P g) _ _ (hfin _ _ _ _ _) (hfin _ _ _ _ _) hD.vertical …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlowUpDivisorPush.proof (hvert : BlowUpVerticalPush.Statement.{u}) :
     BlowUpDivisorPush.Statement.{u} := by

@@ -15,7 +15,7 @@ open MvPowerSeries
 variable {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[coeff_map, coeff_pderiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_pderiv {σ : Type} (i : σ) (f : MvPowerSeries σ R) :
     MvPowerSeries.map φ (pderiv R i f) = pderiv S i (MvPowerSeries.map φ f) := by
@@ -23,9 +23,9 @@ theorem map_pderiv {σ : Type} (i : σ) (f : MvPowerSeries σ R) :
   simp [coeff_map, coeff_pderiv]
 
 /- English proof (translation)
-Unfold `ev`. Establish `h : HasSubst (fun p : Fin 2 × Fin d => (![pt R d b, 0] : Fin 2 → Pt R n d) p.1 p.2)`. Apply `hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce and unpack `⟨j, i⟩`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[MvPowerSeries.map_subst h]`. Use `congr 1`. Use function extensionality and compare the values at `⟨j, i⟩`. Apply the tactic sequence `fin_cases j <;> simp [pt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_ev_axis {d n : ℕ} (b : Fin n) (g : PS R 2 d) :
     MvPowerSeries.map φ (ev (n := n) ![pt R d b, 0] g) =
@@ -41,7 +41,7 @@ theorem map_ev_axis {d n : ℕ} (b : Fin n) (g : PS R 2 d) :
   fin_cases j <;> simp [pt]
 
 /- English proof (translation)
-Simplify using `only [DofN, map_sum, map_mul, map_C, map_ev_axis, map_pderiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_DofN {d n : ℕ} (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (f : PS R n d) :
     MvPowerSeries.map φ (DofN F b u f) =
@@ -49,7 +49,7 @@ theorem map_DofN {d n : ℕ} (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d →
   simp only [DofN, map_sum, map_mul, map_C, map_ev_axis, map_pderiv]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', map_DofN, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_DofN_iterate {d n : ℕ} (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (k : ℕ)
     (f : PS R n d) :
@@ -60,7 +60,7 @@ theorem map_DofN_iterate {d n : ℕ} (F : Fin d → PS R 2 d) (b : Fin n) (u : F
   | succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', map_DofN, ih]
 
 /- English proof (translation)
-Unfold `DmonN`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => rfl`. Consider the case `cons l L ih => rw [List.foldr_cons, List.foldr_cons, map_DofN_iterate, ih]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_DmonN {d n : ℕ} (F : Fin d → PS R 2 d) {ι : Type} [Fintype ι] (cp : ι → Fin n)
     (u : ι → Fin d → R) (m : ι →₀ ℕ) (f : PS R n d) :
@@ -76,9 +76,9 @@ end GlobalTheory.InvDerCopiesMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S S' _ _ ψ d n F κ _ cp u P f`. Unfold `DpolyN`. Rewrite using `[Finset.sum_subset (MvPolynomial.support_map_subset ψ P) (fun m _ hm => by`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm, map_zero, zero_mul]), map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, MvPowerSeries.map_C, InvDerCopiesMap.map_DmonN, MvPolynomial.coeff_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyN_map : ∀ (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (d n : ℕ) (F : Fin d → PS S 2 d) (κ : Type) [Fintype κ] (cp : κ → Fin n) (u : κ → Fin d → S) (P : MvPolynomial κ S) (f : PS S n d), DpolyN (fun i => MvPowerSeries.map ψ (F i)) cp (fun l j => ψ (u l j)) (MvPolynomial.map ψ P) (MvPowerSeries.map ψ f) = MvPowerSeries.map ψ (DpolyN F cp u P f) := by
   intro S S' _ _ ψ d n F κ _ cp u P f

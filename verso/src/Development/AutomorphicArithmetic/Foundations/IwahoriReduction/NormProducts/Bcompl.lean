@@ -12,7 +12,7 @@ section Abs
 variable {R : Type*} [CommRing R] (p : R) {M : Type*} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul]`. Simplify using `[Submodule.mem_smul_pointwise_iff_exists, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem memP (n : ℕ) (x : M) :
     x ∈ ((Ideal.span {p}) ^ n • (⊤ : Submodule R M)) ↔ ∃ y : M, x = p ^ n • y := by
@@ -23,7 +23,7 @@ private def IsS (x : ℕ → M) (s : M) : Prop :=
   ∀ n, ∃ y : M, s = ∑ k ∈ Finset.range n, p ^ k • x k + p ^ n • y
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_add, Finset.smul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [pow_add, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem splt (x : ℕ → M) (m j : ℕ) :
     ∑ k ∈ Finset.range (m + j), p ^ k • x k =
@@ -33,9 +33,9 @@ private theorem splt (x : ℕ → M) (m j : ℕ) :
   exact Finset.sum_congr rfl fun i _ => by rw [pow_add, mul_smul]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (I := Ideal.span {p}) inferInstance _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, memP]`. Take `⟨y, hy⟩` from `hs n`. Take `⟨z, hz⟩` from `ht n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y - z, by rw [hy, hz, smul_sub]; abel⟩`.
+Supply the required witnesses or components.
 -/
 private theorem IsS.eq' [IsHausdorff (Ideal.span {p}) M] {x : ℕ → M} {s t : M}
     (hs : IsS p x s) (ht : IsS p x t) : s = t := by
@@ -47,11 +47,11 @@ private theorem IsS.eq' [IsHausdorff (Ideal.span {p}) M] {x : ℕ → M} {s t : 
   exact ⟨y - z, by rw [hy, hz, smul_sub]; abel⟩
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := Ideal.span {p}) (inferInstance : IsPrecomplete (Ideal.span {p}) M) (f := fun n => ∑ k ∈ Finset.range n, p ^ k • x k) (by`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, memP]`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Use `⟨-∑ i ∈ Finset.range j, p ^ i • x (m + i), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [splt p x m j, smul_neg]`. Use the proof step `abel)`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `hL n`. Rewrite `h` using `[SModEq.sub_mem, memP]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `h`. Conclude with `⟨-y, by rw [smul_neg, ← hy]; abel⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem IsS.ex [IsPrecomplete (Ideal.span {p}) M] (x : ℕ → M) : ∃ s, IsS p x s := by
   obtain ⟨L, hL⟩ := IsPrecomplete.prec (I := Ideal.span {p}) (inferInstance : IsPrecomplete (Ideal.span {p}) M)
@@ -69,9 +69,9 @@ private theorem IsS.ex [IsPrecomplete (Ideal.span {p}) M] (x : ℕ → M) : ∃ 
   exact ⟨-y, by rw [smul_neg, ← hy]; abel⟩
 
 /- English proof (translation)
-Introduce `m`. Take `⟨y, hy⟩` from `ht m`. Use `⟨∑ i ∈ Finset.range n, p ^ i • x (m + i) + p ^ n • y, ?_⟩` and prove the remaining obligations. Establish `e1` using `splt p x n m`. Establish `e2` using `splt p x m n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[Nat.add_comm m n]`. Rewrite using `[hy, smul_add, ← add_assoc, ← e1, e2, smul_add (p ^ m), smul_comm (p ^ m) (p ^ n) y, add_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem IsS.shift {x : ℕ → M} {t : M} (n : ℕ) (ht : IsS p (fun k => x (n + k)) t) :
     IsS p x (∑ k ∈ Finset.range n, p ^ k • x k + p ^ n • t) := by
@@ -84,7 +84,7 @@ private theorem IsS.shift {x : ℕ → M} {t : M} (n : ℕ) (ht : IsS p (fun k =
   rw [hy, smul_add, ← add_assoc, ← e1, e2, smul_add (p ^ m), smul_comm (p ^ m) (p ^ n) y, add_assoc]
 
 /- English proof (translation)
-Introduce `n`. Take `⟨y, hy⟩` from `h n`. Conclude with `⟨φ y, by rw [hy]; simp [map_sum]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem IsS.map {x : ℕ → M} {s : M} (φ : M →ₗ[R] M) (h : IsS p x s) :
     IsS p (fun k => φ (x k)) (φ s) := by
@@ -93,9 +93,9 @@ private theorem IsS.map {x : ℕ → M} {s : M} (φ : M →ₗ[R] M) (h : IsS p 
   exact ⟨φ y, by rw [hy]; simp [map_sum]⟩
 
 /- English proof (translation)
-Introduce `n`. Use `choose! y hy using fun i (hi : i ∈ S) => h i hi n`. Use `⟨∑ i ∈ S, y i, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl hy, Finset.sum_add_distrib, Finset.smul_sum]`. Simplify using `only [Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem IsS.fsum {ι : Type*} (S : Finset ι) {x : ι → ℕ → M} {s : ι → M}
     (h : ∀ i ∈ S, IsS p (x i) (s i)) :
@@ -108,7 +108,7 @@ private theorem IsS.fsum {ι : Type*} (S : Finset ι) {x : ι → ℕ → M} {s 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-The claim follows from `h.map p (r • LinearMap.id)`.
+A detailed English derivation is pending.
 -/
 private theorem IsS.smul {x : ℕ → M} {s : M} (r : R) (h : IsS p x s) :
     IsS p (fun k => r • x k) (r • s) := h.map p (r • LinearMap.id)
@@ -120,15 +120,15 @@ section Conc
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-The claim follows from `AdicCompletion.isAdicComplete ⟨{(l : ℤ_[l])}, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem khat_complete (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] : IsAdicComplete (idl l) (X.Khat l) :=
   AdicCompletion.isAdicComplete ⟨{(l : ℤ_[l])}, by simp⟩
 
 /- English proof (translation)
-Use `Submodule.subset_span fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hs n`. Take `⟨φ, hφ, hd⟩` from `X.j_hol`. Take `⟨f, hf, e⟩` from `GlobalTheory.T.exists_unit_eval_eq_kummer_class ε X ⟨φ, hd, hφ⟩ l n (∑ k ∈ Finset.range n, (l : ℤ_[l]) ^ k • x k) (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hx k))`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy, map_add, e, map_smul]`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (idl l) (X.Kl l) n y)`. Rewrite using `[← hz, ← Submodule.Quotient.mk_smul, (Submodule.Quotient.mk_eq_zero _).2 ((memP _ n _).2 ⟨z, rfl⟩), add_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem memA (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {x : ℕ → X.Khat l} {s : X.Khat l}
     (hx : ∀ k, x k ∈ X.A l) (hs : IsS (l : ℤ_[l]) x s) : s ∈ X.A l := by
@@ -144,11 +144,11 @@ private theorem memA (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {x : ℕ → X.K
   rw [← hz, ← Submodule.Quotient.mk_smul, (Submodule.Quotient.mk_eq_zero _).2 ((memP _ n _).2 ⟨z, rfl⟩), add_zero]
 
 /- English proof (translation)
-Unfold `Tower.B at hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero`. Conclude with `⟨⟨fun _ => 0, fun _ => Submodule.zero_mem _, fun u => by simp⟩, fun γ _ => map_zero _⟩`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨⟨c, hc, ec⟩, ix⟩` from `hx`. Take `⟨⟨d, hd, ed⟩, iy⟩` from `hy`. Use `⟨⟨fun i => c i + d i, fun i => Submodule.add_mem _ (hc i) (hd i), fun u => ?_⟩, fun γ hγ => by rw [map_add, ix γ hγ, iy γ hγ]⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, ec, ed, smul_add, Finset.sum_add_distrib]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `smul r x _ hx`. Take `⟨⟨c, hc, ec⟩, ix⟩` from `hx`. Use `⟨⟨fun i => r • c i, fun i => Submodule.smul_mem _ _ (hc i), fun u => ?_⟩, fun γ hγ => by rw [map_smul, ix γ hγ]⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, ec, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem bset_of_mem (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w : ℕ) {b : X.Fn l}
     (hb : b ∈ X.B N l w) : b ∈ X.BSet N l w := by
@@ -171,11 +171,9 @@ private theorem bset_of_mem (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w : �
     exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Use `haveI := khat_complete X l`. Use `choose c hcA hc using fun k => (hd k).1`. Use `choose s hs using fun i => IsS.ex (l : ℤ_[l]) (fun k => c k i)`. Establish `hsum : ∀ u : Fin 2 → ℤ_[l], IsS (l : ℤ_[l]) (fun k => d k u) (∑ i : Fin (w + 1), (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • s i)` using `fun u => by`. Establish `h` using `IsS.fsum (l : ℤ_[l]) (Finset.univ : Finset (Fin (w + 1))) (x := fun i k => (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • c k i) (s := fun i => (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • s i) (fun i _ => (hs i).smul _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify `h` using `only [hc]`. Use `⟨fun u => ∑ i : Fin (w + 1), (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • s i, ⟨⟨s, fun i => memA X l (fun k => hcA k i) (hs i), fun u => rfl⟩, fun γ hγ => ?_⟩, hsum⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Establish `h1` using `(hsum (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u)).map (l : ℤ_[l]) (X.kmap l (X.sl (toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv)`. Establish `e : (fun k => X.kmap l (X.sl (toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (d k (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u))) = fun k => d k u`.
-
-Use function extensionality and compare the values at `fun k => congrFun ((hd k).2 γ hγ) u`. Rewrite `h1` using `[e]`. Conclude with `h1.eq' _ (hsum u)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sfun (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w : ℕ) (d : ℕ → X.Fn l)
     (hd : ∀ k, d k ∈ X.BSet N l w) :
@@ -207,19 +205,19 @@ end UpperTheory.Kd.K4.BoundedComplement
 
 open UpperTheory.Kd.K4.BoundedComplement in
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N w`. Use `haveI := khat_complete X l`. Establish `hH : IsHausdorff (idl l) (X.B N l w)` using `⟨fun x hx => by`. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Use `show (x : X.Fn l) u = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsHausdorff.haus (I := idl l) (inferInstance : IsHausdorff (idl l) (X.Khat l)) _ fun n => ?_` and prove the remaining obligations. Establish `h` using `hx n`. Rewrite `h`, the goal using `[SModEq.zero, memP]`. Take `⟨y, hy⟩` from `h`. Conclude with `⟨(y : X.Fn l) u, by rw [hy]; rfl⟩⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : IsPrecomplete (idl l) (X.B N l w)` using `⟨fun {f} hf => by`. Establish `hstep : ∀ k, ∃ y : X.B N l w, f k - f (k + 1) = (l : ℤ_[l]) ^ k • y` using `fun k => by`. Establish `h` using `hf (Nat.le_succ k)`. Rewrite `h` using `[SModEq.sub_mem, memP]`. Then use the resulting hypothesis. Use `choose d hd using hstep`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hB : ∀ k, (d k : X.Fn l) ∈ X.BSet N l w` using `fun k => bset_of_mem X l N w (d k).2`. Establish `mkB : ∀ {b : X.Fn l}, b ∈ X.BSet N l w → b ∈ X.B N l w` using `fun h => Submodule.subset_span h`. Take `⟨t0, ht0, hs0⟩` from `sfun X l N w (fun k => (d k : X.Fn l)) hB`. Establish `hfn : ∀ n, f n = f 0 - ∑ k ∈ Finset.range n, (l : ℤ_[l]) ^ k • d k` using `fun n => by`. Proceed by induction on `n with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ← hd n, ih]`. Normalize the expressions using the abelian group laws. Use `⟨f 0 - ⟨t0, mkB ht0⟩, fun n => ?_⟩` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SModEq.sub_mem, memP]`. Take `⟨tn, htn, hsn⟩` from `sfun X l N w (fun k => (d (n + k) : X.Fn l)) fun k => hB _`. Use `⟨⟨tn, mkB htn⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hfn n]`. Use extensionality with `u`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `e` using `(hs0 u).eq' _ ((hsn u).shift (l : ℤ_[l]) n (x := fun k => (d k : X.Fn l) u))`. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul, Pi.sub_apply, Pi.smul_apply, Submodule.coe_sum, Finset.sum_apply, e]`. Use the proof step `abel_nf⟩`. Conclude with `⟨⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.K4.bcompl :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w : ℕ), IsAdicComplete (idl l) (X.B N l w) := by

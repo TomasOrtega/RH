@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.ThTw
 variable {D : D7} {n ρ p : ℕ} {hn : ρ + p = n}
 
 /- English proof (translation)
-Establish `h : b₀.1ᴴ = b₀.1` using `b₀.2`. Use `rat_conjTranspose (D := D) b₀.1` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_B (b₀ : HermE D ρ) : adj (b₀.1.map (incA D)) = b₀.1.map (incA D) := by
   have h : b₀.1ᴴ = b₀.1 := b₀.2
@@ -34,51 +34,51 @@ Both sides reduce to the same expression.
 theorem pr_def (b₀ : HermE D ρ) (u v : Mx D ρ p) : pr b₀ u v = adj u ⬝ (b₀.1.map (incA D) ⬝ v) := rfl
 
 /- English proof (translation)
-Simplify using `only [pr_def, adj_add, Matrix.add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pr_add_left (b₀ : HermE D ρ) (u u' v : Mx D ρ p) : pr b₀ (u + u') v = pr b₀ u v + pr b₀ u' v := by
   simp only [pr_def, adj_add, Matrix.add_mul]
 
 /- English proof (translation)
-Simplify using `only [pr_def, Matrix.mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pr_add_right (b₀ : HermE D ρ) (u v v' : Mx D ρ p) : pr b₀ u (v + v') = pr b₀ u v + pr b₀ u v' := by
   simp only [pr_def, Matrix.mul_add]
 
 /- English proof (translation)
-Simplify using `only [pr_def, adj_neg, Matrix.neg_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pr_neg_left (b₀ : HermE D ρ) (u v : Mx D ρ p) : pr b₀ (-u) v = -pr b₀ u v := by
   simp only [pr_def, adj_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Simplify using `only [pr_def, Matrix.mul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pr_neg_right (b₀ : HermE D ρ) (u v : Mx D ρ p) : pr b₀ u (-v) = -pr b₀ u v := by
   simp only [pr_def, Matrix.mul_neg]
 
 /- English proof (translation)
-Simplify using `only [pr_def, adj_mul, adj_adj, adj_B, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adj_pr (b₀ : HermE D ρ) (u v : Mx D ρ p) : adj (pr b₀ u v) = pr b₀ v u := by
   simp only [pr_def, adj_mul, adj_adj, adj_B, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← trace_adj, adj_pr]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_pr_swap (b₀ : HermE D ρ) (u v : Mx D ρ p) :
     Matrix.trace (pr b₀ v u) = cA D (Matrix.trace (pr b₀ u v)) := by
   rw [← trace_adj, adj_pr]
 
 /- English proof (translation)
-Rewrite using `[trace_pr_swap, trA, GlobalTheory.DualPairCheck.trace_cA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trA_pr_comm (b₀ : HermE D ρ) (u v : Mx D ρ p) :
     trA (Matrix.trace (pr b₀ v u)) = trA (Matrix.trace (pr b₀ u v)) := by
   rw [trace_pr_swap, trA, GlobalTheory.DualPairCheck.trace_cA]
 
 /- English proof (translation)
-Establish `: pr b₀ u (v ⬝ b) = pr b₀ u v ⬝ b` using `by simp only [pr_def, Matrix.mul_assoc]`. Rewrite using `[this, Matrix.trace_mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_mul_pr (b₀ : HermE D ρ) (b : Mx D p p) (u v : Mx D ρ p) :
     Matrix.trace (pr b₀ u (v ⬝ b)) = Matrix.trace (b ⬝ pr b₀ u v) := by
@@ -86,26 +86,26 @@ theorem trace_mul_pr (b₀ : HermE D ρ) (b : Mx D p p) (u v : Mx D ρ p) :
   rw [this, Matrix.trace_mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← trace_adj, adj_mul, hb, adj_pr, Matrix.trace_mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_swap_pr (b₀ : HermE D ρ) {b : Mx D p p} (hb : adj b = b) (u v : Mx D ρ p) :
     Matrix.trace (b ⬝ pr b₀ v u) = cA D (Matrix.trace (b ⬝ pr b₀ u v)) := by
   rw [← trace_adj, adj_mul, hb, adj_pr, Matrix.trace_mul_comm]
 
 /- English proof (translation)
-Simplify using `only [halfTr, trA, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfTr_add'' (a c : AE D) : halfTr (a + c) = halfTr a + halfTr c := by
   simp only [halfTr, trA, map_add, mul_add]
 
 /- English proof (translation)
-Simplify using `only [halfTr, trA, map_neg, mul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfTr_neg'' (a : AE D) : halfTr (-a) = -halfTr a := by
   simp only [halfTr, trA, map_neg, mul_neg]
 
 /- English proof (translation)
-Rewrite using `[pr_add_left, pr_add_right, pr_add_right, Matrix.mul_add, Matrix.mul_add, Matrix.mul_add, Matrix.trace_add, Matrix.trace_add, Matrix.trace_add, halfTr_add'', halfTr_add'', halfTr_add'', trace_swap_pr b₀ hb u v, trace_mul_pr, trace_mul_pr, ← Unip.halfTr_add_cA (Matrix.trace (b ⬝ p …`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem quad_shift_pr (b₀ : HermE D ρ) {b : Mx D p p} (hb : adj b = b) (u v : Mx D ρ p) :
     halfTr (Matrix.trace (b ⬝ pr b₀ (u + v) (u + v))) =
@@ -117,7 +117,7 @@ theorem quad_shift_pr (b₀ : HermE D ρ) {b : Mx D p p} (hb : adj b = b) (u v :
   abel
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.HermPoisson.halfTr_incA']`. Conclude with `hψ.2.2.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_halfTr_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (e : D.host.E) :
     ψ (halfTr (incA D e)) = 1 := by
@@ -125,7 +125,7 @@ theorem psi_halfTr_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F
   exact hψ.2.2.1 _
 
 /- English proof (translation)
-Simplify using `only [chz]`. Rewrite using `[Matrix.mul_add, Matrix.trace_add, halfTr_add'', AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chz_add (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (z : hermA D ρ) (w : Mx D ρ ρ) (h : z.1 + w ∈ hermA D ρ) :
     chz ψ b₀ ⟨z.1 + w, h⟩ = chz ψ b₀ z * ψ (halfTr (Matrix.trace (b₀.1.map (incA D) ⬝ w))) := by
@@ -133,7 +133,7 @@ theorem chz_add (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (z : hermA 
   rw [Matrix.mul_add, Matrix.trace_add, halfTr_add'', AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, rat, Matrix.map_apply]`. Conclude with `(map_sum (incA D) _ _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_rat {k : ℕ} (N : Matrix (Fin k) (Fin k) D.host.E) :
     Matrix.trace (rat N : Mx D k k) = incA D (Matrix.trace N) := by
@@ -141,7 +141,7 @@ theorem trace_rat {k : ℕ} (N : Matrix (Fin k) (Fin k) D.host.E) :
   exact (map_sum (incA D) _ _).symm
 
 /- English proof (translation)
-Rewrite using `[← AddChar.map_add_eq_mul, show a - c + (q + c + u) = q + (u + a) by abel, AddChar.map_add_eq_mul, hq, one_mul, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem character_phase_identity {A : Type} [AddCommGroup A] (ψ : AddChar A ℂ) (a c q u : A) (hq : ψ q = 1) :
     ψ (a - c) * ψ (q + c + u) = ψ u * ψ a := by
@@ -149,7 +149,7 @@ theorem character_phase_identity {A : Type} [AddCommGroup A] (ψ : AddChar A ℂ
     AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, pr_add_left, pr_neg_left, Matrix.trace_add, Matrix.trace_neg, Weyl.trA_add, Weyl.trA_neg, sub_eq_add_neg, trA_pr_comm b₀ X w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trA_pr_sub (b₀ : HermE D ρ) (x w X : Mx D ρ p) :
     trA (Matrix.trace (pr b₀ (x - w) X)) = trA (Matrix.trace (pr b₀ x X)) - trA (Matrix.trace (pr b₀ X w)) := by
@@ -157,7 +157,7 @@ theorem trA_pr_sub (b₀ : HermE D ρ) (x w X : Mx D ρ p) :
     sub_eq_add_neg, trA_pr_comm b₀ X w]
 
 /- English proof (translation)
-Rewrite using `[hΩ.unip g b hg h, quad_shift_pr b₀ hb, trA_pr_sub, ← mul_assoc, character_phase_identity ψ _ _ _ _ hq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem term_unip {ψ : AddChar (AF D.host.F) ℂ} {b₀ : HermE D ρ}
     {χ : (AE D)ˣ →* Circle} {θ : InfFam D} {μ : Measure (Mx D ρ p)} {Ω : G D p → Mx D ρ p → ℂ}
@@ -169,7 +169,7 @@ theorem term_unip {ψ : AddChar (AF D.host.F) ℂ} {b₀ : HermE D ρ}
   rw [hΩ.unip g b hg h, quad_shift_pr b₀ hb, trA_pr_sub, ← mul_assoc, character_phase_identity ψ _ _ _ _ hq, mul_assoc]
 
 /- English proof (translation)
-Establish `e : rat b ⬝ pr b₀ (rat ξ) (rat ξ) = (rat (b * (ξᴴ * (b₀.1 * ξ))) : Mx D p p)`. Rewrite using `[rat_mul, rat_mul, rat_mul, rat_conjTranspose]`. Both sides reduce to the same expression. Rewrite using `[e, trace_rat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_quad (b₀ : HermE D ρ) (b : Matrix (Fin p) (Fin p) D.host.E) (ξ : Matrix (Fin ρ) (Fin p) D.host.E) :
     Matrix.trace (rat b ⬝ pr b₀ (rat ξ) (rat ξ) : Mx D p p) = incA D (Matrix.trace (b * (ξᴴ * (b₀.1 * ξ)))) := by
@@ -179,13 +179,13 @@ theorem rat_quad (b₀ : HermE D ρ) (b : Matrix (Fin p) (Fin p) D.host.E) (ξ :
   rw [e, trace_rat]
 
 /- English proof (translation)
-Use `set u := halfTr (Matrix.trace (pr b₀ y (y ⬝ rat b))) with hu`. Establish `hz : chz ψ b₀ (zU z y (rat b) hb) = chz ψ b₀ z * ψ (-u)`. Establish `e : (zU z y (rat b) hb : hermA D ρ) = ⟨z.1 + -(y ⬝ (rat b ⬝ adj y)), by`. Use `(zU z y (rat b) hb).2` as an intermediate fact. Simplify `this⟩ := Subtype.ext (sub_eq_add_neg _ _)` using `[zU, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e2 : Matrix.trace (b₀.1.map (incA D) ⬝ (y ⬝ (rat b ⬝ adj y))) = Matrix.trace (pr b₀ y (y ⬝ rat b))`. Rewrite using `[pr_def, ← Matrix.mul_assoc y, ← Matrix.mul_assoc (b₀.1.map (incA D)) (y ⬝ rat b) (adj y), Matrix.trace_mul_comm]`. Rewrite using `[e, chz_add, Matrix.mul_neg, Matrix.trace_neg, halfTr_neg'', e2]`. Establish `ht : ∀ ξ : Matrix (Fin ρ) (Fin p) D.host.E, ψ (trA (Matrix.trace (pr b₀ (x - y ⬝ rat b) (ξ.map (incA D))))) * Ω (g * h) (ξ.map (incA D) + y) = ψ u * (ψ (trA (Matrix.trace (pr b₀ x (ξ.map (incA D))))) * Ω h (ξ.map (incA D) + y))`. Introduce `ξ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `term_unip hΩ g hb hg h x y _ ?_` and prove the remaining obligations. Use `rat_quad b₀ b ξ` as an intermediate fact. Rewrite using `[show ξ.map (incA D) = rat ξ from rfl, this]`. Conclude with `psi_halfTr_rat hψ _`. Simplify using `only [th, ht, tsum_mul_left, hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ψ (-u) * ψ u = 1`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Take the linear combination `(-(chz ψ b₀ z * ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, ψ (trA (Matrix.trace (pr b₀ x (ξ.map (incA D))))) * Ω h (ξ.map (incA D) + y))) * e1`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem th_unip {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {b₀ : HermE D ρ}
     {χ : (AE D)ˣ →* Circle} {θ : InfFam D} {μ : Measure (Mx D ρ p)} {Ω : G D p → Mx D ρ p → ℂ}
@@ -216,37 +216,37 @@ theorem th_unip {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {b
 def Pp (b₀ : HermE D ρ) (u v : Mx D ρ p) : AF D.host.F := trA (Matrix.trace (pr b₀ u v))
 
 /- English proof (translation)
-The claim follows from `(trA_pr_comm b₀ v u)`.
+A detailed English derivation is pending.
 -/
 theorem Pp_comm (b₀ : HermE D ρ) (u v : Mx D ρ p) : Pp b₀ u v = Pp b₀ v u := (trA_pr_comm b₀ v u)
 
 /- English proof (translation)
-Simplify using `only [Pp, pr_add_left, Matrix.trace_add, Weyl.trA_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pp_add_left (b₀ : HermE D ρ) (u u' v : Mx D ρ p) : Pp b₀ (u + u') v = Pp b₀ u v + Pp b₀ u' v := by
   simp only [Pp, pr_add_left, Matrix.trace_add, Weyl.trA_add]
 
 /- English proof (translation)
-Simplify using `only [Pp, pr_add_right, Matrix.trace_add, Weyl.trA_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pp_add_right (b₀ : HermE D ρ) (u v v' : Mx D ρ p) : Pp b₀ u (v + v') = Pp b₀ u v + Pp b₀ u v' := by
   simp only [Pp, pr_add_right, Matrix.trace_add, Weyl.trA_add]
 
 /- English proof (translation)
-Simplify using `only [Pp, pr_neg_left, Matrix.trace_neg, Weyl.trA_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Pp_neg_left (b₀ : HermE D ρ) (u v : Mx D ρ p) : Pp b₀ (-u) v = -Pp b₀ u v := by
   simp only [Pp, pr_neg_left, Matrix.trace_neg, Weyl.trA_neg]
 
 /- English proof (translation)
-Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, show -c + (a + b + c) = a + b by abel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phase_weyl {A : Type} [AddCommGroup A] (ψ : AddChar A ℂ) (a b c : A) :
     ψ a * ψ b = ψ (-c) * ψ (a + b + c) := by
   rw [← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, show -c + (a + b + c) = a + b by abel]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing, GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.gramQ, GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.mmul, Pp, pr_def]`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairing_eq (b₀ : HermE D ρ) (ψ : AddChar (AF D.host.F) ℂ) (u v : Mx D ρ p) :
     GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing b₀.1 ψ u v = ψ (Pp b₀ u v) := by
@@ -255,7 +255,7 @@ theorem pairing_eq (b₀ : HermE D ρ) (ψ : AddChar (AF D.host.F) ℂ) (u v : M
   rfl
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `ht : Continuous (trA (D` using `D)) := IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`. Conclude with `hψ.1.comp (ht.comp (continuous_const.matrix_mul (continuous_const.matrix_mul continuous_id)).matrix_trace)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_psi_Pp {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (x : Mx D ρ p) :
     Continuous fun u : Mx D ρ p => ψ (Pp b₀ x u) := by
@@ -266,25 +266,23 @@ theorem continuous_psi_Pp {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.hos
   exact hψ.1.comp (ht.comp (continuous_const.matrix_mul (continuous_const.matrix_mul continuous_id)).matrix_trace)
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D ρ p`. Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`. Establish `hT : IsHermND (D.sp.cm.sig) b₀.1` using `⟨fun i j => congrFun (congrFun b₀.2 i) j, hb⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.T.rationalAdelicMatrices_self_annihilator D ρ p b₀.1 hT ψ hψ`. Establish `hs` using `ThetaPoisson.pairing_symm (n := p) hT ψ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ` using `m.hμ`. Use `haveI := hμ.1`. Establish `hn1 : ∀ a, ‖ψ a‖ = 1` using `hψ.2.1`. Set `f : Mx D ρ p → ℂ` to `fun u => Ω h (u + y) * ψ (Pp b₀ x u)`. Establish `hfc : Continuous f` using `(hΩ.cont.comp (continuous_const.prodMk (continuous_id.add continuous_const))).mul (continuous_psi_Pp hψ b₀ x)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ γ : Mx D ρ p, ∫ u, f u * GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing b₀.1 ψ u γ ∂m.μ = ψ (-Pp b₀ (γ + x) y) * Ω (g * h) (γ + x)`. Introduce `γ`. Rewrite using `[hΩ.weyl g hg h (γ + x), ← integral_add_right_eq_self (μ := m.μ) (fun t => Ω h t * ψ (trA (Matrix.trace (pr b₀ (γ + x) t)))) y, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `e : Pp b₀ (γ + x) (u + y) = Pp b₀ x u + Pp b₀ u γ + Pp b₀ (γ + x) y`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Pp_add_right, Pp_add_left b₀ γ x u, Pp_comm b₀ γ u]`. Normalize the expressions using the abelian group laws. Establish `e2` using `phase_weyl ψ (Pp b₀ x u) (Pp b₀ u γ) (Pp b₀ (γ + x) y)`. Rewrite `e2` using `[← e]`. Use `show Ω h (u + y) * ψ (Pp b₀ x u) * GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing b₀.1 ψ u γ = ψ (-Pp b₀ (γ + x) y) * (Ω h (u + y) * ψ (Pp b₀ (γ + x) (u + y)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[pairing_eq]`. Take the linear combination `(Ω h (u + y)) * e2`. Establish `key` using `ThetaPoisson.poisson_translates (ratMx D ρ p) K hK hKc (GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing (n := p) b₀.1 ψ) (fun w => ?_) hs (fun a a' w => ?_) (fun a w => ?_) h1 h2 m.μ m.𝓕 hμ.2.1 hμ.2.2 (f := f) hfc ?_ ?_`. Simplify using `only [hval] at key`. Rewrite `key` using `[ThetaPoisson.tsum_ratMx f, ThetaPoisson.tsum_ratMx (fun γ => ψ (-Pp b₀ (γ + x) y) * Ω (g * h) (γ + x))]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Establish `e : -Pp b₀ (ξ.map (incA D) + x) y = -Pp b₀ x y + Pp b₀ (-y) (ξ.map (incA D))`. Rewrite using `[Pp_add_left, Pp_neg_left, Pp_comm b₀ y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, AddChar.map_add_eq_mul, mul_assoc]`. Simplify using `only [hs _ w, pairing_eq]`. Conclude with `continuous_psi_Pp hψ b₀ w`. Rewrite using `[pairing_eq, pairing_eq, pairing_eq, Pp_add_left, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pairing_eq]`. Conclude with `hn1 _`. Introduce `Q hQ`. Establish `hcy : Continuous fun u : Mx D ρ p => u + y` using `continuous_id.add continuous_const`. Take `⟨b, hb1, hb2⟩` from `ThetaPoisson.translates_bound hθ ⟨Ω h, hΩ.mem h⟩ ((· + y) '' Q) (hQ.image hcy)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨b, hb1, fun u hu ξ => ?_⟩` and prove the remaining obligations. Establish `h3` using `hb2 (u + y) ⟨u, hu, rfl⟩ ξ`. Simplify using `only [f]`. Rewrite using `[norm_mul, hn1, mul_one, add_assoc]`. Conclude with `h3`.
-
-Take `⟨b, hb1, hb2⟩` from `ThetaPoisson.translates_bound hθ ⟨Ω (g * h), hΩ.mem _⟩ {x} isCompact_singleton`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun γ => ?_) hb1` and prove the remaining obligations. Rewrite using `[hval, norm_mul, hn1, one_mul]`. Conclude with `hb2 x rfl γ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poisson_step {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {b₀ : HermE D ρ} (hb : b₀.1.det ≠ 0)
     {χ : (AE D)ˣ →* Circle} {θ : InfFam D} (hθ : IsInfFam θ) (m : Meas D ρ p) {Ω : G D p → Mx D ρ p → ℂ}
@@ -353,11 +351,11 @@ theorem poisson_step {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F �
     exact hb2 x rfl γ
 
 /- English proof (translation)
-Establish `e : (zW z x y : hermA D ρ) = ⟨z.1 + -(x ⬝ adj y + y ⬝ adj x), by`. Use `(zW z x y).2` as an intermediate fact. Establish `e' : z.1 + -(x ⬝ adj y + y ⬝ adj x) = (zW z x y).1` using `by simp only [zW]; abel`. Rewrite using `[e']`. Conclude with `this⟩ := Subtype.ext (by simp only [zW]; abel)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : Matrix.trace (b₀.1.map (incA D) ⬝ (y ⬝ adj x)) = Matrix.trace (pr b₀ x y)`. Rewrite using `[pr_def, ← Matrix.mul_assoc (b₀.1.map (incA D)) y (adj x), Matrix.trace_mul_comm]`. Establish `e2 : Matrix.trace (b₀.1.map (incA D) ⬝ (x ⬝ adj y)) = cA D (Matrix.trace (pr b₀ x y))`. Rewrite using `[← trace_pr_swap, pr_def, ← Matrix.mul_assoc (b₀.1.map (incA D)) x (adj y), Matrix.trace_mul_comm]`. Rewrite using `[e, chz_add, Matrix.mul_neg, Matrix.mul_add, Matrix.trace_neg, Matrix.trace_add, e1, e2, halfTr_neg'', halfTr_add'', add_comm (halfTr (cA D _)), Unip.halfTr_add_cA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem chz_zW (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (z : hermA D ρ) (x y : Mx D ρ p) :
     chz ψ b₀ (zW z x y) = chz ψ b₀ z * ψ (-Pp b₀ x y) := by
@@ -375,7 +373,7 @@ theorem chz_zW (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (z : hermA D
   rfl
 
 /- English proof (translation)
-Establish `key` using `poisson_step hψ hb hθ m hΩ g hg h x y`. Use `show chz ψ b₀ z * ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, ψ (Pp b₀ x (ξ.map (incA D))) * Ω h (ξ.map (incA D) + y) = chz ψ b₀ (zW z x y) * ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, ψ (Pp b₀ (-y) (ξ.map (incA D))) * Ω (g * h) (ξ.map (incA D) + x)`. Rewrite using `[key, chz_zW, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_weyl {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {b₀ : HermE D ρ} (hb : b₀.1.det ≠ 0)
     {χ : (AE D)ˣ →* Circle} {θ : InfFam D} (hθ : IsInfFam θ) (m : Meas D ρ p) {Ω : G D p → Mx D ρ p → ℂ}
@@ -392,7 +390,7 @@ def glR (a : Matrix (Fin p) (Fin p) D.host.E) (ha : IsUnit a.det) : GL (Fin p) (
     by rw [← rat_mul, Matrix.nonsing_inv_mul _ ha, rat_one]⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, IsUnit.unit_spec]`. Conclude with `((incA D).map_det a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_glR (a : Matrix (Fin p) (Fin p) D.host.E) (ha : IsUnit a.det) :
     ((Matrix.GeneralLinearGroup.det (glR a ha) : (AE D)ˣ) : AE D) = incA D (ha.unit : D.host.Eˣ) := by
@@ -400,7 +398,7 @@ theorem det_glR (a : Matrix (Fin p) (Fin p) D.host.E) (ha : IsUnit a.det) :
   exact ((incA D).map_det a).symm
 
 /- English proof (translation)
-Rewrite using `[← hχ.2 u]`. Conclude with `congrArg χ (Units.ext hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_rat {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (v : (AE D)ˣ) (u : D.host.Eˣ)
     (hv : (v : AE D) = incA D u) : χ v = 1 := by
@@ -408,14 +406,14 @@ theorem chi_rat {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (v : (AE D)
   exact congrArg χ (Units.ext hv)
 
 /- English proof (translation)
-Rewrite using `[← absE_inclR (F := D.host.F) u]`. Conclude with `congrArg _ (Units.ext hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absA_rat (v : (AE D)ˣ) (u : D.host.Eˣ) (hv : (v : AE D) = incA D u) : absA D v = 1 := by
   rw [← absE_inclR (F := D.host.F) u]
   exact congrArg _ (Units.ext hv)
 
 /- English proof (translation)
-Simplify using `only [pr_def, adj_mul, adj_adj]`. Rewrite using `[Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_pr_levi (b₀ : HermE D ρ) (x X : Mx D ρ p) (a : Mx D p p) :
     Matrix.trace (pr b₀ (x ⬝ adj a) X) = Matrix.trace (pr b₀ x (X ⬝ a)) := by
@@ -424,13 +422,13 @@ theorem trace_pr_levi (b₀ : HermE D ρ) (x X : Mx D ρ p) (a : Mx D p p) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : (((glR a ha)⁻¹).1 : Mx D p p) ⬝ (glR a ha).1 = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Set `e : Matrix (Fin ρ) (Fin p) D.host.E ≃ Matrix (Fin ρ) (Fin p) D.host.E` to `{ toFun := fun ξ => ξ * a invFun := fun ξ => ξ * a⁻¹ left_inv := fun ξ => by simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ha, Matrix.mul_one] right_inv := fun ξ => by simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ ha, Matrix.mul_one] }`. Establish `hc : (χ (Matrix.GeneralLinearGroup.det (glR a ha)) : ℂ) = 1`. Rewrite using `[chi_rat hχ _ ha.unit (det_glR a ha)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hA : absA D (Matrix.GeneralLinearGroup.det (glR a ha)) = 1`. Conclude with `absA_rat _ ha.unit (det_glR a ha)`. Simplify using `only [th]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.tsum_eq]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[hΩ.levi g (glR a ha) hg h, hc, hA, trace_pr_levi]`. Establish `e1 : ((ξ.map (incA D) + y ⬝ ((glR a ha)⁻¹).1) ⬝ (glR a ha).1 : Mx D ρ p) = (e ξ).map (incA D) + y`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `(rat_mul ξ a).symm`. Establish `e2 : (ξ.map (incA D) ⬝ (glR a ha).1 : Mx D ρ p) = (e ξ).map (incA D)` using `(rat_mul ξ a).symm`. Rewrite using `[e1, e2]`. Simplify using `[npow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem th_levi {ψ : AddChar (AF D.host.F) ℂ} {b₀ : HermE D ρ}
     {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) {θ : InfFam D} {μ : Measure (Mx D ρ p)} {Ω : G D p → Mx D ρ p → ℂ}
@@ -468,9 +466,9 @@ def St (M : Maps D hn) (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (Ω 
     th ψ b₀ (Ω h) z x y = th ψ b₀ (Ω (γ * h)) z' x' y'
 
 /- English proof (translation)
-Introduce `h z x y`. Take `⟨z2, x2, y2, e2, t2⟩` from `h₂ h z x y`. Take `⟨z3, x3, y3, e3, t3⟩` from `h₁ (γ₂ * h) z2 x2 y2`. Use `⟨z3, x3, y3, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, e2, ← mul_assoc, e3, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[t2, t3, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem St_mul {M : Maps D hn} {ψ : AddChar (AF D.host.F) ℂ} {b₀ : HermE D ρ} {Ω : G D p → Mx D ρ p → ℂ} {γ₁ γ₂ : G D p}
     (h₁ : St M ψ b₀ Ω γ₁) (h₂ : St M ψ b₀ Ω γ₂) : St M ψ b₀ Ω (γ₁ * γ₂) := by
@@ -482,15 +480,13 @@ theorem St_mul {M : Maps D hn} {ψ : AddChar (AF D.host.F) ℂ} {b₀ : HermE D 
   · rw [t2, t3, mul_assoc]
 
 /- English proof (translation)
-Introduce `γ hγ`. Establish `hF : FieldGen D.host.E (D.sp.cm.sig : D.host.E →+* D.host.E) p` using `FieldGenPf.fieldGen_of_bruhat GlobalTheory.CompanionTheory.BruhatCell.bruhat D.host.E _ (fun x => star_star x) two_ne_zero p`. Take `⟨h1, h2, -⟩` from `GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn D p`. Take `⟨g, hgu, hgU, hg⟩` from `h1 γ hγ`. Set `T : Matrix (Fin (p + p)) (Fin (p + p)) D.host.E → Prop` to `fun N => IsUnit N.det ∧ IsUnitary (D.sp.cm.sig : D.host.E →+* D.host.E) (EC.Jm D.host.E p) N ∧ ∀ γ' : G D p, mat γ' = N.map (incA D) → S γ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hprod : ∀ M₁ M₂, T M₁ → T M₂ → T (M₁ * M₂)`. Introduce and unpack `M₁ M₂ ⟨u₁, U₁, s₁⟩ ⟨u₂, U₂, s₂⟩`. Use `⟨by rw [Matrix.det_mul]; exact u₁.mul u₂, Transfer.isUnitary_mul U₁ U₂, fun γ' e => ?_⟩` and prove the remaining obligations. Take `⟨γ₁, -, e₁⟩` from `h2 M₁ u₁ U₁`. Take `⟨γ₂, -, e₂⟩` from `h2 M₂ u₂ U₂`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e' : γ' = γ₁ * γ₂` using `mat_injective' (by rw [e, mat_mul', e₁, e₂, Matrix.map_mul])`. Rewrite using `[e']`. Conclude with `hmul _ _ (s₁ _ e₁) (s₂ _ e₂)`. Establish `hmA : ∀ a : Matrix (Fin p) (Fin p) D.host.E, IsUnit a.det → T (mA (D.sp.cm.sig : D.host.E →+* D.host.E) a)` using `fun a ha => ⟨Transfer.mA_isUnit_det _ ha, Transfer.mA_isUnitary Transfer.sig_sig ha, fun γ' e => hm γ' a ha (e.trans (Transfer.map_mA a))⟩`. Establish `hnB : ∀ b : Matrix (Fin p) (Fin p) D.host.E, cT (D.sp.cm.sig : D.host.E →+* D.host.E) b = b → T (nB b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Use `⟨Transfer.nB_isUnit_det b, Transfer.nB_isUnitary hb, fun γ' e => hn γ' b ?_ (e.trans (Transfer.map_nB b))⟩` and prove the remaining obligations. Rewrite using `[← rat_conjTranspose]`. Conclude with `congrArg rat hb`. Establish `hJ : T (EC.Jm D.host.E p)` using `⟨Transfer.Jm_isUnit_det, Transfer.Jm_isUnitary _, fun γ' e => hw γ' (e.trans Transfer.map_Jm)⟩`.
-
-Conclude with `(hF T hprod hmA hnB hJ g hgu hgU).2.2 γ hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratGen (D : D7) (p : ℕ) (S : G D p → Prop) (hmul : ∀ g h, S g → S h → S (g * h))
     (hm : ∀ (g : G D p) (a : Matrix (Fin p) (Fin p) D.host.E) (ha : IsUnit a.det),
@@ -528,11 +524,11 @@ theorem ratGen (D : D7) (p : ℕ) (S : G D p → Prop) (hmul : ∀ g h, S g → 
   exact (hF T hprod hmA hnB hJ g hgu hgU).2.2 γ hg
 
 /- English proof (translation)
-Introduce `D n ρ p hn M m ψ hψ b₀ hb χ hχ θ hθ Ω hΩ γ hγ z x y z' x' y' e`. Establish `hS : St M ψ b₀ Ω γ`. Use `ratGen D p (St M ψ b₀ Ω) (fun _ _ => St_mul) ?_ ?_ ?_ γ hγ` and prove the remaining obligations. Introduce `g a ha hg h z x y`. Conclude with `⟨z, _, _, gl_levi M g (glR a ha) hg z x y, th_levi hχ hΩ g a ha hg h z x y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `g b hb' hg h z x y`. Conclude with `⟨_, _, y, gl_unip M g (rat b) hb' hg z x y, th_unip hψ hΩ g b hb' hg h z x y⟩`. Introduce `g hg h z x y`. Conclude with `⟨_, _, _, gl_weyl M g hg z x y, th_weyl hψ hb hθ m hΩ g hg h z x y⟩`. Take `⟨z2, x2, y2, e2, t2⟩` from `hS 1 z x y`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `e3 : M.nzx z' x' * M.sh y' = M.nzx z2 x2 * M.sh y2` using `mul_right_cancel (e.symm.trans e2)`. Take `⟨rfl, rfl, rfl⟩` from `nzx_sh_inj M e3`. Rewrite using `[t2, mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem thTwist : ThTwist := by
   intro D n ρ p hn M m ψ hψ b₀ hb χ hχ θ hθ Ω hΩ γ hγ z x y z' x' y' e

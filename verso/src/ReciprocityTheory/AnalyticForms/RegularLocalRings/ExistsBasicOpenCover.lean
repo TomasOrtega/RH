@@ -16,9 +16,9 @@ def comps (T : Set α) : Set (Set α) :=
   {C | Maximal (fun C => IsIrreducible C ∧ C ⊆ T) C}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hD.1`. Conclude with `⟨⟨y, hDT hy⟩, hy⟩`. Introduce `u v hu hv hau hbv`. Take `⟨u', hu', rfl⟩` from `isOpen_induced_iff.1 hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hv', rfl⟩` from `isOpen_induced_iff.1 hv`. Take `⟨a, ha, hau⟩` from `hau`. Take `⟨b, hb, hbv⟩` from `hbv`. Take `⟨c, hc, hcu, hcv⟩` from `hD.2 u' v' hu' hv' ⟨a.1, ha, hau⟩ ⟨b.1, hb, hbv⟩`. Conclude with `⟨⟨c, hDT hc⟩, hc, hcu, hcv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isIrreducible_preimage_coe_of_subset (T D : Set α) (hDT : D ⊆ T) (hD : IsIrreducible D) :
     IsIrreducible ((↑) ⁻¹' D : Set T) := by
@@ -34,11 +34,11 @@ private theorem isIrreducible_preimage_coe_of_subset (T D : Set α) (hDT : D ⊆
     exact ⟨⟨c, hDT hc⟩, hc, hcu, hcv⟩
 
 /- English proof (translation)
-Establish `hfin : (irreducibleComponents T).Finite` using `NoetherianSpace.finite_irreducibleComponents`. Use `(hfin.image (fun S : Set T => ((↑) '' S : Set α))).subset ?_` and prove the remaining obligations. Introduce `C hC`. Establish `hC' : Maximal (fun C => IsIrreducible C ∧ C ⊆ T) C` using `hC`. Establish `himg : ((↑) '' ((↑) ⁻¹' C : Set T) : Set α) = C`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subtype.image_preimage_coe, Set.inter_eq_right.2 hC'.1.2]`. Use `⟨(↑) ⁻¹' C, ⟨isIrreducible_preimage_coe_of_subset T C hC'.1.2 hC'.1.1, fun S hS hCS => ?_⟩, himg⟩` and prove the remaining obligations. Establish `hSI : IsIrreducible ((↑) '' S : Set α)` using `hS.image _ continuous_subtype_val.continuousOn`. Establish `hle` using `hC'.2 ⟨hSI, by rintro _ ⟨z, -, rfl⟩; exact z.2⟩ (by rw [← himg]; exact Set.image_mono hCS)`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hle ⟨z, hz, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem comps_finite [NoetherianSpace α] (T : Set α) : (comps T).Finite := by
   have hfin : (irreducibleComponents T).Finite := NoetherianSpace.finite_irreducibleComponents
@@ -55,7 +55,7 @@ theorem comps_finite [NoetherianSpace α] (T : Set α) : (comps T).Finite := by
   exact hle ⟨z, hz, rfl⟩
 
 /- English proof (translation)
-Establish `hC' : Maximal (fun C => IsIrreducible C ∧ C ⊆ T) C` using `hC`. Establish `hcl : closure C ≤ C` using `hC'.2 ⟨hC'.1.1.closure, closure_minimal hC'.1.2 hT⟩ subset_closure`. Conclude with `closure_subset_iff_isClosed.1 hcl`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_of_mem_comps {T : Set α} (hT : IsClosed T) {C : Set α} (hC : C ∈ comps T) :
     IsClosed C := by
@@ -64,9 +64,9 @@ theorem isClosed_of_mem_comps {T : Set α} (hT : IsClosed T) {C : Set α} (hC : 
   exact closure_subset_iff_isClosed.1 hcl
 
 /- English proof (translation)
-Use `Set.Subset.antisymm (Set.sUnion_subset fun C hC => hC.1.2) fun x hx => ?_` and prove the remaining obligations. Set `y : T` to `⟨x, hx⟩`. Establish `hI : IsIrreducible (irreducibleComponent y)` using `isIrreducible_irreducibleComponent`. Use `⟨(↑) '' irreducibleComponent y, ⟨⟨hI.image _ continuous_subtype_val.continuousOn, by rintro _ ⟨z, -, rfl⟩; exact z.2⟩, ?_⟩, ⟨y, mem_irreducibleComponent, rfl⟩⟩` and prove the remaining obligations. Introduce `D hD hCD`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpre` using `isIrreducible_preimage_coe_of_subset T D hD.2 hD.1`. Establish `hsub : irreducibleComponent y ⊆ (↑) ⁻¹' D` using `fun z hz => hCD ⟨z, hz, rfl⟩`. Establish `hle` using `(irreducibleComponent_mem_irreducibleComponents y).2 hpre hsub`. Introduce `d hd`. Conclude with `⟨⟨d, hD.2 hd⟩, hle hd, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sUnion_comps (T : Set α) : ⋃₀ comps T = T := by
   refine Set.Subset.antisymm (Set.sUnion_subset fun C hC => hC.1.2) fun x hx => ?_
@@ -90,7 +90,7 @@ def IsBranch (T : Set W) {U : W.Opens} (f : Γ(W, U)) (y : W) (C : Set W) : Prop
   C ∈ comps T ∧ y ∈ C ∧ ∃ h : IsIrreducible C, h.genericPoint ∈ U ∧ h.genericPoint ∈ W.zeroLocus {f}
 
 /- English proof (translation)
-Conclude with `existsUnique_branchH y U hy f J hrsp hZU i hi`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_branch [IsNoetherian W] {Z : W.IdealSheafData} (y : W) (U : W.affineOpens)
     (hy : y ∈ U.1) {n : ℕ} (f : Fin n → Γ(W, U.1)) (J : Finset (Fin n))
@@ -101,7 +101,7 @@ theorem existsUnique_branch [IsNoetherian W] {Z : W.IdealSheafData} (y : W) (U :
   exact existsUnique_branchH y U hy f J hrsp hZU i hi
 
 /- English proof (translation)
-Conclude with `branch_neH y U hy f J hrsp hZU hi hj hij hC hC'`.
+A detailed English derivation is pending.
 -/
 theorem branch_ne [IsNoetherian W] {Z : W.IdealSheafData} (y : W) (U : W.affineOpens)
     (hy : y ∈ U.1) {n : ℕ} (f : Fin n → Γ(W, U.1)) (J : Finset (Fin n))
@@ -113,7 +113,7 @@ theorem branch_ne [IsNoetherian W] {Z : W.IdealSheafData} (y : W) (U : W.affineO
   exact branch_neH y U hy f J hrsp hZU hi hj hij hC hC'
 
 /- English proof (translation)
-Conclude with `exists_open_compsH y U hy f J hrsp hZU`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_comps [IsNoetherian W] {Z : W.IdealSheafData} (y : W) (U : W.affineOpens)
     (hy : y ∈ U.1) {n : ℕ} (f : Fin n → Γ(W, U.1)) (J : Finset (Fin n))
@@ -130,7 +130,7 @@ section Chart
 variable {s : W ⟶ Spec (.of ℂ)}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsAffine.of_isIso P.iso.hom`. Consider the case `exact AlgebraicGeometry.isAffine_of_isIso P.iso.hom`. Consider the case `exact (inferInstance : IsAffine (Spec (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K)))).of_isIso P.iso.hom`. Consider the case `exact isAffine_of_isIso P.iso.hom`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem AffPres.isAffineOpen (P : AffPres s) : IsAffineOpen P.V := by
   first
@@ -145,9 +145,7 @@ def AffPres.bdIdeal (P : AffPres s) (Z : W.IdealSheafData) : Ideal (MvPolynomial
   (Z.ideal P.affOpen).comap P.secHom
 
 /- English proof (translation)
-Introduce `g hg`. Use `show P.secHom g ∈ Z.ideal P.affOpen`. Establish `h0 : P.secHom g = 0`. Simplify using `only [AffPres.secHom, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.mpr hg, map_zero]`. Rewrite using `[h0]`.
-
-Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AffPres.le_bdIdeal (P : AffPres s) (Z : W.IdealSheafData) : P.K ≤ P.bdIdeal Z := by
   intro g hg
@@ -158,11 +156,11 @@ theorem AffPres.le_bdIdeal (P : AffPres s) (Z : W.IdealSheafData) : P.K ≤ P.bd
   exact zero_mem _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ ↔ x ∈ Z.support`. Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := P.affOpen) hx, Scheme.mem_zeroLocus_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h f hf`. Take `⟨g, rfl⟩` from `secHom_surjective P f`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz` using `(mem_zeroLocus_secHom_iff P x hx hc g).2 (h g hf)`. Conclude with `(Scheme.mem_zeroLocus_iff W {P.secHom g} x).1 hz _ rfl`. Introduce `h g hg`. Apply `(mem_zeroLocus_secHom_iff P x hx hc g).1` to reduce the goal to its premises. Rewrite using `[Scheme.mem_zeroLocus_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `f rfl`. Conclude with `h _ hg`.
+A detailed English derivation is pending.
 -/
 theorem AffPres.zero_bdIdeal_iff [LocallyOfFiniteType s] (P : AffPres s) (Z : W.IdealSheafData)
     (x : W) (hx : x ∈ P.V) (hc : IsClosed ({x} : Set W)) :
@@ -181,9 +179,9 @@ theorem AffPres.zero_bdIdeal_iff [LocallyOfFiniteType s] (P : AffPres s) (Z : W.
     exact h _ hg
 
 /- English proof (translation)
-Use `⟨{g | W.basicOpen (P.secHom g) ≤ O}, fun y hy => ⟨fun hyO => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨f, hf, hyf⟩` from `P.isAffineOpen.exists_basicOpen_le (V := O) ⟨y, hyO⟩ hy`. Take `⟨g, rfl⟩` from `secHom_surjective P f`. Conclude with `⟨g, hf, hyf⟩`. Introduce and unpack `⟨g, hg, hyg⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `hg hyg`.
+A detailed English derivation is pending.
 -/
 theorem AffPres.exists_basicOpen_cover (P : AffPres s) (O : W.Opens) :
     ∃ T : Set (MvPolynomial (Fin P.n) ℂ), ∀ y ∈ P.V,
@@ -196,41 +194,37 @@ theorem AffPres.exists_basicOpen_cover (P : AffPres s) (O : W.Opens) :
     exact hg hyg
 
 /- English proof (translation)
-Take `⟨hreg, U, hxU, n', f, J, hrsp, hZU⟩` from `hZ x`. Establish `hn : n' = e`. Establish `h1` using `hrsp.2`. Rewrite `h1` using `[hdim]`. Conclude with `h1` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hn` using the available equality. Establish `hV : IsAffineOpen P.V` using `P.isAffineOpen`. Establish `hpK : ∀ h ∈ P.K, eval (P.coord x hx) h = 0` using `P.eval_coord_eq_zero x hx hcl`. Establish `hfrac` using `fun l => exists_mk_locRing P.K (P.coord x hx) (P.stalkEquiv x hx hcl (W.presheaf.germ U.1 x hxU (f l)))`. Use `choose a b hb hab using hfrac`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgerm : ∀ l, W.presheaf.germ P.V x hx (P.secHom (a l)) = W.presheaf.germ U.1 x hxU (f l) * W.presheaf.germ P.V x hx (P.secHom (b l))`. Introduce `l`. Apply `(P.stalkEquiv x hx hcl).injective` to reduce the goal to its premises. Rewrite using `[map_mul, P.stalkEquiv_germ, P.stalkEquiv_germ]`. Conclude with `(hab l).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbu : ∀ l, IsUnit (W.presheaf.germ P.V x hx (P.secHom (b l)))` using `fun l => (germ_unit_iff P x hx hcl (b l)).mpr (hb l)`. Establish `hbr` using `fun l (hl : l ∈ J) => existsUnique_branch x U hxU f J hrsp hZU l hl`. Set `B` to `fun l => if hl : l ∈ J then Classical.choose (hbr l hl).exists else (∅ : Set W)`. Establish `hB : ∀ l (hl : l ∈ J), IsBranch (Z.support : Set W) (f l) x (B l)`. Introduce `l hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `only [B, dif_pos hl]`. Conclude with `Classical.choose_spec (hbr l hl).exists`. Establish `hBu : ∀ l (hl : l ∈ J) C, IsBranch (Z.support : Set W) (f l) x C → C = B l` using `fun l hl C hC => (hbr l hl).unique hC (hB l hl)`. Set `σ` to `fun l => if hl : l ∈ J then some (c.symm ⟨B l, (hB l hl).1⟩) else none`. Establish `hσ : ∀ l k, σ l = some k ↔ l ∈ J ∧ IsBranch (Z.support : Set W) (f l) x (c k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `l k`. Distinguish the cases in `hl : l ∈ J`. Simplify using `only [σ, dif_pos hl, Option.some.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨hl, ?_⟩` and prove the remaining obligations. Establish `: c k = ⟨B l, (hB l hl).1⟩` using `by rw [← h]; simp`. Rewrite using `[this]`. Conclude with `hB l hl`. Introduce and unpack `⟨-, hbk⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `: (⟨B l, (hB l hl).1⟩ : comps (Z.support : Set W)) = c k` using `Subtype.ext (hBu l hl _ hbk).symm`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Simplify using `only [σ, dif_neg hl]`. Simplify using `[hl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hinj : Set.InjOn σ J`. Introduce `l hl l' hl' h`. Establish `hl₁ : l ∈ J` using `hl`. Establish `hl₁' : l' ∈ J` using `hl'`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk⟩ : ∃ k, σ l = some k` from `⟨c.symm ⟨B l, (hB l hl₁).1⟩, by simp only [σ, dif_pos hl₁]⟩`. Establish `h1` using `((hσ l k).mp hk).2`. Establish `h2` using `((hσ l' k).mp (h.symm.trans hk)).2`. Conclude with `branch_ne x U hxU f J hrsp hZU hl₁ hl₁' hne h1 h2 rfl`. Establish `hnone : ∀ l, σ l = none ↔ l ∉ J`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l`. Apply the tactic sequence `by_cases hl : l ∈ J <;> simp [σ, hl]`. Establish `hspan : Ideal.span (Set.range fun l => algebraMap _ (locRing P.K (P.coord x hx)) (a l)) = Ideal.map (algebraMap _ (locRing P.K (P.coord x hx))) (ptIdeal (P.coord x hx))`. Establish `hr` using `((P.rsp_iff x hx hcl (fun l => W.presheaf.germ U.1 x hxU (f l))).mp hrsp).1`. Rewrite using `[← hr]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `span_range_eq_of_mul_unit _ _ (fun l => algebraMap _ _ (b l)) (fun l => (isUnit_algebraMap_locRing_iff _ _ hpK _).mpr (hb l)) hab`. Establish `hst : (Z.ideal P.affOpen).map (W.presheaf.germ P.V x hx).hom = Ideal.span {W.presheaf.germ U.1 x hxU (∏ i ∈ J, f i)}`. Establish `h` using `stalkIdeal_eq Z U P.affOpen x hxU hx`. Rewrite `h` using `[hZU, Ideal.map_span, Set.image_singleton]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e1 : W.presheaf.germ P.V x hx (P.secHom (∏ l ∈ J, a l)) = W.presheaf.germ U.1 x hxU (∏ i ∈ J, f i) * ∏ l ∈ J, W.presheaf.germ P.V x hx (P.secHom (b l))`. Simplify using `only [map_prod, hgerm, Finset.prod_mul_distrib]`. Establish `hprod : P.stalkEquiv x hx hcl (W.presheaf.germ U.1 x hxU (∏ i ∈ J, f i)) * algebraMap _ (locRing P.K (P.coord x hx)) (∏ l ∈ J, b l) = algebraMap _ (locRing P.K (P.coord x hx)) (∏ l ∈ J, a l)`. Simplify using `only [map_prod, ← Finset.prod_mul_distrib, hab]`. Take `⟨hh, heval, hmbd, hlesp⟩` from `exists_den P x hx hcl hV (Z.ideal P.affOpen) J a b hb _ hst e1 hprod`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨O₁, hxO₁, -, hO₁⟩` from `exists_open_comps x U hxU f J hrsp hZU`. Establish `hnb` using `fun l => exists_nbhd_zeroLocus hxU hx (f l) (P.secHom (a l)) _ (hbu l) (hgerm l)`. Use `choose O' hxO' hO' using hnb`. Set `Oset : Set W` to `(O₁ : Set W) ∩ P.V ∩ ⋂ l, (O' l : Set W)`. Establish `hOo : IsOpen Oset` using `(O₁.isOpen.inter P.V.isOpen).inter (isOpen_iInter_of_finite fun l => (O' l).isOpen)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨a, J, hh, σ, hinj, hnone, hspan, heval, hmbd, hlesp⟩, ?_, ⟨Oset, hOo⟩, ⟨⟨hxO₁, hx⟩, Set.mem_iInter.mpr hxO'⟩, fun z hz => hz.1.2, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Establish `hl' : l ∈ J` using `hl`. Use `⟨c.symm ⟨B l, (hB l hl').1⟩, by show σ l = _; simp only [σ, dif_pos hl'], ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `isBranch_of_germ Z.support.isClosed hxU hx (hB l hl') _ (hgerm l)`. Introduce `k y hy hyO hcy`. Establish `hyO' : y ∈ Oset` using `hyO`. Establish `e2 : ∀ l, eval (P.coord y hy) (a l) = 0 ↔ y ∈ W.zeroLocus {f l}`. Introduce `l`.
-
-Rewrite using `[← mem_zeroLocus_secHom_iff P y hy hcy, hO' l y (Set.mem_iInter.mp hyO'.2 l)]`. Establish `e1 : y ∈ (c k : Set W) ↔ y ∈ (c k : Set W) ∩ (O₁ : Set W)` using `⟨fun h => ⟨h, hyO'.1.1⟩, fun h => h.1⟩`. Rewrite using `[e1, hO₁ (c k) (c k).2]`. Use `show (y ∈ (O₁ : Set W) ∧ ∃ i ∈ J, IsBranch (Z.support : Set W) (f i) x (c k) ∧ y ∈ W.zeroLocus {f i}) ↔ ∃ l, σ l = some k ∧ eval (P.coord y hy) (a l) = 0`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨-, i, hi, hbi, hyi⟩`. Conclude with `⟨i, (hσ i k).mpr ⟨hi, hbi⟩, (e2 i).mpr hyi⟩`. Introduce and unpack `⟨l, hl, hev⟩`. Take `⟨hlJ, hbl⟩` from `(hσ l k).mp hl`. Conclude with `⟨hyO'.1.1, l, hlJ, hbl, (e2 l).mp hev⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sncData [IsNoetherian W] [LocallyOfFiniteType s] {Z : W.IdealSheafData}
     (hZ : FinalTheorems.Snc Z) (P : AffPres s) {rc : ℕ} (c : Fin rc ≃ comps (Z.support : Set W)) (e : ℕ)

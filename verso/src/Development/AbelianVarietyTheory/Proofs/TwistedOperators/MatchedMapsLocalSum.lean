@@ -19,11 +19,11 @@ namespace GlobalTheory.HoweSplitPlace
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
 
 /- English proof (translation)
-Use `⟨le_inf (hm.fin.inv v) ?_, inf_le_right, ?_⟩` and prove the remaining obligations. Rewrite using `[augAt, Submodule.span_le]`. Introduce and unpack `_ ⟨g, -, φ, hφ, φ₁, hφ₁, -, rfl⟩`. Conclude with `Submodule.sub_mem _ hφ₁ hφ`. Introduce `h hh φ hφ φ₁ hφ₁ hact`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hφ₁⟩` and prove the remaining obligations. Establish `h0 : Acts (evFin F v) (om' (1, h)) 0 0`. Introduce `r _`. Establish `: tens (evFin F v) (0 : (Fin a' × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ) r = 0`. Use function extensionality and compare the values at `fun x => by simp [tens]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Use `hm.fin.equiv v h hh φ hφ.2 0 (Submodule.zero_mem _) φ₁ hφ₁ 0 (Submodule.zero_mem _) hact h0 (by rw [map_zero]; exact hφ.1)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_thetaSub {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {Bs : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Xc : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
@@ -46,31 +46,27 @@ theorem ker_thetaSub {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     exact this
 
 /- English proof (translation)
-Introduce `hP hMin F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hm v hv`. Take `⟨χ, ι, hχ, hbij, htr⟩` from `GlobalTheory.T.exists_embedding_at_every_place hP F E σ Bs a a' G Xc om om' hm.triple v hv`. Establish `ha : 1 ≤ a` using `by have := hm.triple.geo.lt; omega`. Establish `hd : 1 ≤ a + a'` using `by omega`. Establish `hSB : (GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)).map ι = GlobalTheory.SplitWeil.SB _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hbij.mapsTo hx`. Introduce `hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `hbij.surjOn hy`. Conclude with `⟨x, hx, rfl⟩`. Establish `hinj : ∀ N N' : Submodule ℂ ((Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ), N ≤ GlobalTheory.WeilM.SB _ → N' ≤ GlobalTheory.WeilM.SB _ → N.map ι ≤ N'.map ι → N ≤ N'`. Introduce `N N' hN hN' hle x hx`. Take `⟨y, hy, hyx⟩` from `hle ⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hbij.injOn (hN' hy) (hN hx) hyx]`. Conclude with `hy`. Establish `hne : ∀ N : Submodule ℂ ((Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) → ℂ), N ≤ GlobalTheory.WeilM.SB _ → N ≠ GlobalTheory.WeilM.SB _ → N.map ι ≠ GlobalTheory.SplitWeil.SB _`. Introduce `N hN hN' he`. Conclude with `hN' (le_antisymm hN (hinj _ _ le_rfl hN (by rw [hSB, he])))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `GlobalTheory.T.theta_submodule_chain_bounded hP _ a (a + a') χ hχ`. Use `⟨L, fun r N hN hT => hL r (fun i => (N i).map ι) ?_ fun i => (htr _ (hT i).2.1).1 (hT i)⟩` and prove the remaining obligations. Introduce `i j hij`. Use `lt_of_le_of_ne (Submodule.map_mono (hN hij).le) fun heq => (hN hij).ne ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_antisymm (hN hij).le (hinj _ _ (hT j).2.1 (hT i).2.1 heq.ge)`. Introduce `N hN hNne φ hφ set K := LinearMap.ker (Rf.p v) ⊓ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) with hKdef`. Establish `hK : GlobalTheory.Published.ThetaSub om v K` using `ker_thetaSub hm v`. Establish `hKne : K ≠ GlobalTheory.WeilM.SB _`. Introduce `he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hm.fin.nontriv v`. Take `⟨y, hy⟩` from `exists_ne (0 : Rf.Pi v)`. Establish `hy' : y ∈ (GlobalTheory.WeilM.SB _).map (Rf.p v)` using `by rw [hm.fin.onto v]; trivial`. Take `⟨x, hx, rfl⟩` from `hy'`. Rewrite `hx` using `[← he]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hy hx.1`. Establish `hNK : N ⊔ K ≤ GlobalTheory.WeilM.SB _` using `sup_le hN.2.1 inf_le_right`. Establish `hsub : GlobalTheory.Published.ThetaSub om v (N ⊔ K)`. Use `(htr _ hNK).2 ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_sup]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((htr _ hN.2.1).1 hN).sup ((htr _ inf_le_right).1 hK)`. Establish `hNKne : N ⊔ K ≠ GlobalTheory.WeilM.SB _`. Introduce `he`. Use `GlobalTheory.T.theta_submodule_sup_ne_top hP hMin _ a (a + a') ha hd χ hχ _ _ ((htr _ hN.2.1).1 hN) ((htr _ inf_le_right).1 hK) (hne _ hN.2.1 hNne) (hne _ inf_le_right hKne)` as an intermediate fact. Apply `this` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.map_sup, he, hSB]`. Establish `hmem : ∀ x ∈ GlobalTheory.WeilM.SB (Fin a × Fin (a + a') → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v), Rf.p v x ∈ (N ⊔ K).map (Rf.p v) → x ∈ N ⊔ K`. Introduce `x hx hpx`. Take `⟨y, hy, hyx⟩` from `hpx`. Establish `hxy : x - y ∈ K` using `⟨by simp [LinearMap.mem_ker, map_sub, hyx], Submodule.sub_mem _ hx (hNK hy)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: x = y + (x - y)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hy (Submodule.mem_sup_right hxy)`. Break down `hm.fin.irred v ((N ⊔ K).map (Rf.p v)) (fun h hh x hx x₁ hx₁ hact hpx => ⟨x₁, hsub.2.2 h hh x (hmem x hx hpx) x₁ hx₁ hact, rfl⟩) with hbot | htop` into its components or cases. Establish `: Rf.p v φ ∈ (N ⊔ K).map (Rf.p v)` using `⟨φ, Submodule.mem_sup_left hφ, rfl⟩`.
-
-Rewrite `this` using `[hbot]`. Conclude with `this`. It suffices to derive a contradiction. Apply `hNKne` to reduce the goal to its premises. Use `le_antisymm hNK fun x hx => hmem x hx ?_` and prove the remaining obligations.
-
-Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.MinguezThetaGL → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

@@ -11,11 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.RatioUnit
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one => intro _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_one]`. Conclude with `fun h => hP.ne_top ((Ideal.eq_top_iff_one P).2 h)`. Consider the case `prime p hp => intro _ h`. Conclude with `h p hp dvd_rfl`. Consider the case `mul a b ha hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hab h hmem`. Rewrite `hmem` using `[Nat.cast_mul]`. Break down `hP.mem_or_mem hmem with h1 | h1` into its components or cases. Conclude with `ha (left_ne_zero_of_mul hab) (fun p hp hd => h p hp (dvd_mul_of_dvd_left hd b)) h1`. Conclude with `hb (right_ne_zero_of_mul hab) (fun p hp hd => h p hp (dvd_mul_of_dvd_right hd a)) h1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem natCast_notMem_of_primes {R : Type} [CommRing R] (P : Ideal R) [hP : P.IsPrime] :
     ∀ m : ℕ, m ≠ 0 → (∀ p : ℕ, p.Prime → p ∣ m → (p : R) ∉ P) → (m : R) ∉ P := by
@@ -32,15 +32,15 @@ theorem natCast_notMem_of_primes {R : Type} [CommRing R] (P : Ideal R) [hP : P.I
     · exact hb (right_ne_zero_of_mul hab) (fun p hp hd => h p hp (dvd_mul_of_dvd_right hd a)) h1
 
 /- English proof (translation)
-The claim follows from `hp.not_dvd_one (by simpa [Nat.Coprime.gcd_eq_one r.reduced] using Nat.dvd_gcd h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem not_dvd_both {r : ℚ} {p : ℕ} (hp : p.Prime) (h1 : p ∣ r.num.natAbs) (h2 : p ∣ r.den) : False :=
   hp.not_dvd_one (by simpa [Nat.Coprime.gcd_eq_one r.reduced] using Nat.dvd_gcd h1 h2)
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Establish `hnd : ¬ p ∣ r.den` using `fun hd' => not_dvd_both hp hd hd'`. Establish `h0 : r.num.natAbs ≠ 0` using `by simpa using hr`. Establish `h1` using `one_le_padicValNat_of_dvd h0 hd`. Simplify using `only [padicValRat, padicValInt, padicValNat.eq_zero_of_not_dvd hnd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem padicValRat_ne_zero_of_dvd_num {r : ℚ} (hr : r ≠ 0) {p : ℕ} (hp : p.Prime)
     (hd : p ∣ r.num.natAbs) : padicValRat p r ≠ 0 := by
@@ -52,7 +52,7 @@ theorem padicValRat_ne_zero_of_dvd_num {r : ℚ} (hr : r ≠ 0) {p : ℕ} (hp : 
   omega
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Establish `hnd : ¬ p ∣ r.num.natAbs` using `fun hd' => not_dvd_both hp hd' hd`. Establish `h1` using `one_le_padicValNat_of_dvd r.den_nz hd`. Simplify using `only [padicValRat, padicValInt, padicValNat.eq_zero_of_not_dvd hnd]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem padicValRat_ne_zero_of_dvd_den {r : ℚ} {p : ℕ} (hp : p.Prime)
     (hd : p ∣ r.den) : padicValRat p r ≠ 0 := by
@@ -68,7 +68,7 @@ namespace GlobalTheory.Fam
 open Formalism.DivisionValues GlobalTheory.Fam.RatioUnit
 
 /- English proof (translation)
-Break down `Int.natAbs_eq z with e | e` into its components or cases. Rewrite using `[e]`. Simplify using `using h`. Rewrite using `[e]`. Simplify `h` using `[Ideal.neg_mem_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem RatioUnit.intCast_notMem_of_natAbs {R : Type} [CommRing R] (P : Ideal R) (z : ℤ)
     (h : ((z.natAbs : ℕ) : R) ∉ P) : ((z : ℤ) : R) ∉ P := by
@@ -77,19 +77,19 @@ theorem RatioUnit.intCast_notMem_of_natAbs {R : Type} [CommRing R] (P : Ideal R)
   · rw [e]; simpa [Ideal.neg_mem_iff] using h
 
 /- English proof (translation)
-Introduce `K _ _ σ w S x y hU hS a ha`. Use `letI : StarRing K := starRingOfComm`. Take `⟨_, n, hn, r, hr0, hpow, hrS⟩` from `hU`. Establish `hpow' : a ^ n = (r : K)`. Apply `σ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, ha, hpow, map_ratCast]`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hpow'` using `[zero_pow hn.ne']`. Conclude with `hr0 (by exact_mod_cast hpow'.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnum : ((r.num : ℤ) : 𝓞 K) ∉ w.asIdeal`. Use `intCast_notMem_of_natAbs _ _ (natCast_notMem_of_primes w.asIdeal _ (by simpa using hr0) ?_)` and prove the remaining obligations. Introduce `p hp hd`. Conclude with `hS p hp (hrS p hp (padicValRat_ne_zero_of_dvd_num hr0 hp hd))`. Establish `hden : ((r.den : ℕ) : 𝓞 K) ∉ w.asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `natCast_notMem_of_primes w.asIdeal _ r.den_nz ?_` and prove the remaining obligations. Introduce `p hp hd`. Conclude with `hS p hp (hrS p hp (padicValRat_ne_zero_of_dvd_den hp hd))`. Establish `vnum` using `ReductionFirst.vw_unit w _ hnum`. Establish `vden` using `ReductionFirst.vw_unit w _ hden`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `vnum` using `[show (((r.num : ℤ) : 𝓞 K) : K) = (r.num : K) from map_intCast (algebraMap (𝓞 K) K) _]`. Rewrite `vden` using `[show (((r.den : ℕ) : 𝓞 K) : K) = (r.den : K) from map_natCast (algebraMap (𝓞 K) K) _]`. Establish `hd0 : (r.den : K) ≠ 0` using `by exact_mod_cast r.den_nz`. Establish `hrK0 : (r : K) ≠ 0` using `by exact_mod_cast hr0`. Establish `key : (r : K) * (r.den : K) = (r.num : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[Rat.cast_def]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `ReductionFirst.vw_mul w hrK0 hd0`. Rewrite `h1` using `[key, vnum, vden]`. Establish `h2` using `ReductionFirst.vw_pow w a n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h2` using `[hpow']`. Establish `h3 : (n : ℤ) * vw w a = 0` using `by rw [← h2]; omega`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `absurd (by exact_mod_cast h) hn.ne'`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem vw_eq_zero_of_unitRatio : ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (w : HeightOneSpectrum (𝓞 K)) (S : ℕ → Prop) (x y : ℂ), GlobalTheory.Fam.UnitRatio S x y → (∀ p : ℕ, p.Prime → S p → (p : 𝓞 K) ∉ w.asIdeal) → ∀ a : K, σ a = x / y → Formalism.DivisionValues.vw w a = 0 := by
   intro K _ _ σ w S x y hU hS a ha

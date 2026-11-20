@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: Fintype A` using `Fintype.ofFinite A`. Establish `hinj : Function.Injective fun f : A →+ ZMod N ↦ (ZMod.stdAddChar (N` using `N)).compAddMonoidHom f := AddChar.compAddMonoidHom_injective_right _ ZMod.injective_stdAddChar`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, AddChar.card_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_addMonoidHom_zmod_le (N : ℕ) [NeZero N] (A : Type) [AddCommGroup A] [Finite A] :
     Nat.card (A →+ ZMod N) ≤ Nat.card A := by

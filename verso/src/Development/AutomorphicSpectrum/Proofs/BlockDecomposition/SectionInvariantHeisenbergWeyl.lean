@@ -27,9 +27,9 @@ def qm (hn : ρ + p = n) (x : Mx D ρ p) : Mx D (n + n) (n + n) :=
   blk4 (bl hn 1 0 (adj x) 1) 0 0 (bl hn 1 (-x) 0 1)
 
 /- English proof (translation)
-Rewrite using `[M.w_mat, M.nzx_mat, qm, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Establish `hz : ((0 : hermA D ρ).1 : Mx D ρ ρ) = 0` using `rfl`. Rewrite using `[hz]`. Simplify using `only [blockMatrix_multiply]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[blockMatrix_add']`. Simplify using the standard rewrite rules. Rewrite using `[blockMatrix_add']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qm_mul_w (M : Maps D hn) (x : Mx D ρ p) :
     qm hn x * mat M.w = mat M.w * mat (M.nzx 0 x) := by
@@ -42,7 +42,7 @@ theorem qm_mul_w (M : Maps D hn) (x : Mx D ρ p) :
   · rw [blockMatrix_add']; simp
 
 /- English proof (translation)
-Establish `h : mat M.w * mat M.w⁻¹ = 1` using `by rw [← mat_mul, mul_inv_cancel, mat_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mat_conj (M : Maps D hn) (x : Mx D ρ p) : mat (M.w * M.nzx 0 x * M.w⁻¹) = qm hn x := by
   have h : mat M.w * mat M.w⁻¹ = 1 := by rw [← mat_mul, mul_inv_cancel, mat_one]
@@ -51,14 +51,14 @@ theorem mat_conj (M : Maps D hn) (x : Mx D ρ p) : mat (M.w * M.nzx 0 x * M.w⁻
     _ = qm hn x := by rw [h, mul_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨bl hn 1 0 c 1, bl hn 1 0 (-c) 1, by rw [lowerUnipotent_mul, add_neg_cancel, blockMatrix_one], by rw [lowerUnipotent_mul, neg_add_cancel, blockMatrix_one]⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_low (hn : ρ + p = n) (c : Mx D p ρ) :
     ∃ a : GL (Fin n) (AE D), a.1 = bl hn 1 0 c 1 :=
   ⟨⟨bl hn 1 0 c 1, bl hn 1 0 (-c) 1, by rw [lowerUnipotent_mul, add_neg_cancel, blockMatrix_one], by rw [lowerUnipotent_mul, neg_add_cancel, blockMatrix_one]⟩, rfl⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `a.1.det = 1`. Rewrite using `[ha, bl, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₁₂]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_low (hn : ρ + p = n) (c : Mx D p ρ) (a : GL (Fin n) (AE D)) (ha : a.1 = bl hn 1 0 c 1) :
     Matrix.GeneralLinearGroup.det a = 1 := by
@@ -68,16 +68,16 @@ theorem det_low (hn : ρ + p = n) (c : Mx D p ρ) (a : GL (Fin n) (AE D)) (ha : 
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[qm, blkA, blk4, Matrix.toBlocks₁₁]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blkA_qm (hn : ρ + p = n) (x : Mx D ρ p) : blkA (qm hn x) = bl hn 1 0 (adj x) 1 := by
   ext i j
   simp [qm, blkA, blk4, Matrix.toBlocks₁₁]
 
 /- English proof (translation)
-Introduce `D n ρ p hn M χ s f hf x h`. Establish `hq` using `mat_conj M x`. Establish `hP : M.w * M.nzx 0 x * M.w⁻¹ ∈ P D n` using `GlobalTheory.CompanionTheory.SwUnf.SmallCell.mem_siegelParabolic_of_lowerLeft_entries_eq_zero hq`. Take `⟨a, ha⟩` from `exists_low hn (adj x)`. Establish `hA : blkA (mat (M.w * M.nzx 0 x * M.w⁻¹)) = a.1` using `by rw [hq, blkA_qm, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `hf _ hP a hA (M.w * h)`. Rewrite `key` using `[det_low hn (adj x) a ha, map_one, map_one]`. Establish `e : M.w * M.nzx 0 x * M.w⁻¹ * (M.w * h) = M.w * M.nzx 0 x * h` using `by group`. Rewrite `key` using `[e]`. Simplify using `using key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem law_w : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (χ : (AE D)ˣ →* Circle) (s : ℂ) (f : G D n → ℂ),
     IsLaw χ s f → ∀ (x : Mx D ρ p) (h : G D n), f (M.w * M.nzx 0 x * h) = f (M.w * h) := by

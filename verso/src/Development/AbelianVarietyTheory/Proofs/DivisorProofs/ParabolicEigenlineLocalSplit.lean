@@ -16,7 +16,7 @@ namespace GlobalTheory.LeviLineAt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : mat (g * h) - 1 = mat g * (mat h - 1) + (mat g - 1)`. Rewrite using `[show mat (g * h) = mat g * mat h from rfl, Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_add, ← Matrix.mul_smul, hh u hu, hg u hu, Matrix.mul_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem uAt_mul' {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g h : UA σ W.J}
     (hg : g ∈ UAt σ W (evFin F v)) (hh : h ∈ UAt σ W (evFin F v)) : g * h ∈ UAt σ W (evFin F v) := by
@@ -26,7 +26,7 @@ theorem uAt_mul' {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g h 
   rw [e, smul_add, ← Matrix.mul_smul, hh u hu, hg u hu, Matrix.mul_zero, add_zero]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `e : mat g⁻¹ - 1 = -(mat g⁻¹ * (mat g - 1))`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, show mat g⁻¹ * mat g = 1 from Units.inv_mul g.1]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hg u hu, Matrix.mul_zero, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem uAt_inv' {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g : UA σ W.J}
     (hg : g ∈ UAt σ W (evFin F v)) : g⁻¹ ∈ UAt σ W (evFin F v) := by
@@ -36,13 +36,13 @@ theorem uAt_inv' {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g : 
   rw [e, smul_neg, ← Matrix.mul_smul, hg u hu, Matrix.mul_zero, neg_zero]
 
 /- English proof (translation)
-Establish `hmi : mat m⁻¹ * mat m = 1` using `Units.inv_mul m.1`. Establish `hhi : mat h₁ * mat h₁⁻¹ = 1` using `Units.mul_inv h₁.1`. Establish `hmul : mat (p * m⁻¹) = mat p * mat m⁻¹` using `rfl`. Establish `hx : mat m⁻¹ *ᵥ incV F H'.x = (t⁻¹).1 • incV F H'.x`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = (t⁻¹).1 • incV F H'.x := by`. Rewrite using `[← hl.1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hmi, Matrix.one_mulVec]`. Establish `hι : mat m⁻¹ * incM F H'.ι = incM F H'.ι * mat h₁⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc (incM F H'.ι), ← hl.2.2]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = incM F H'.ι * mat h₁⁻¹ := by rw [hmi, Matrix.one_mul]`. Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_smul, hpx, smul_smul, Units.inv_mul, one_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `hpι (mat h₁⁻¹ *ᵥ z)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z (mat m⁻¹) (incM F H'.ι), hι, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec z (mat h₁), hhi, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_inv_mem_unip {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁}
     {t : (AE F E)ˣ} {h₁ : UA σ W₁.J} {m p : UA σ W.J} (hl : IsLevi H' t h₁ m)
@@ -70,7 +70,7 @@ theorem mul_inv_mem_unip {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {W�
       Matrix.mulVec_mulVec z (mat h₁), hhi, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v p hp t hpx`. Take `⟨ht, h₁, hh₁, hpι⟩` from `GlobalTheory.T.unitary_eigen_isotropic_vector_local F E σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v p hp t hpx`. Take `⟨m, hl, hm⟩` from `GlobalTheory.T.unitary_local_torus_factorization F E σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v t ht h₁ hh₁`. Conclude with `⟨p * m⁻¹, mul_inv_mem_unip hl hpx hpι, uAt_mul' hp (uAt_inv' hm), h₁, m, hl, hm, hh₁, by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levi_line_at : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r₁ s₁ : ℕ),

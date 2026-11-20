@@ -20,13 +20,11 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hf : ∀ v w : Pl F, evalV F w (singleFin v (a v)) ∈ w.adicCompletionIntegers F` using `fun v w => by`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[evalV_singleFin_self]`. Conclude with `ha w`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evalV_singleFin_ne h]`. Conclude with `zero_mem _`. Establish `hc` using `(RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := cofinite)).continuous`. Establish `ht : Tendsto (fun v : Pl F => fun w : HeightOneSpectrum (𝓞 F) => (⟨evalV F w (singleFin v (a v)), hf v w⟩ : (w.adicCompletionIntegers F : Set (w.adicCompletion F)))) cofinite (𝓝 fun w => ⟨0, zero_mem (w.adicCompletionIntegers F)⟩)`. Use `tendsto_pi_nhds.2 fun w => tendsto_subtype_rng.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_cofinite_ne w] with v hv`. Conclude with `(evalV_singleFin_ne (Ne.symm hv) _).symm`. Establish `h2 : Tendsto (fun v : Pl F => singleFin v (a v)) cofinite (𝓝 (0 : Af F))` using `(hc.tendsto _).comp ht`. Establish `hp : Continuous fun β : Af F => pairA F 0 β` using `continuous_const.prodMk continuous_id`.
-
-Conclude with `(hp.tendsto 0).comp h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_liftV (a : ∀ v : Pl F, Fv F v) (ha : ∀ v, a v ∈ v.adicCompletionIntegers F) :
     Tendsto (fun v => GlobalTheory.LatVac.liftV v (a v)) cofinite (𝓝 0) := by
@@ -49,9 +47,9 @@ theorem tendsto_liftV (a : ∀ v : Pl F, Fv F v) (ha : ∀ v, a v ∈ v.adicComp
   exact (hp.tendsto 0).comp h2
 
 /- English proof (translation)
-Use `intLoc_induction (p := fun y => ∃ a : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → Fv F v, (∀ i, a i ∈ v.adicCompletionIntegers F) ∧ y = ∑ i, a i ⊗ₜ[F] ((RingOfIntegers.basis E i : 𝓞 E) : E)) (fun a ha x => ?_) ⟨0, fun _ => zero_mem _, by simp⟩ ?_ ?_ hy` and prove the remaining obligations. Use `⟨fun i => (RingOfIntegers.basis E).repr x i • a, fun i => zsmul_mem ha _, ?_⟩` and prove the remaining obligations. Establish `hx : (x : E) = ∑ i, (RingOfIntegers.basis E).repr x i • ((RingOfIntegers.basis E i : 𝓞 E) : E)` using `by conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr x]`. Simplify using the standard rewrite rules. Rewrite using `[hx, TensorProduct.tmul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => (TensorProduct.smul_tmul _ _ _).symm`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨c, hc, rfl⟩`. Conclude with `⟨a + c, fun i => add_mem (ha i) (hc i), by simp [TensorProduct.add_tmul, Finset.sum_add_distrib]⟩`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨-a, fun i => neg_mem (ha i), by simp [TensorProduct.neg_tmul]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coords {v : Pl F} {y : Fv F v ⊗[F] E} (hy : y ∈ intLoc F E v) :
     ∃ a : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → Fv F v, (∀ i, a i ∈ v.adicCompletionIntegers F) ∧
@@ -71,17 +69,15 @@ theorem exists_coords {v : Pl F} {y : Fv F v ⊗[F] E} (hy : y ∈ intLoc F E v)
     exact ⟨-a, fun i => neg_mem (ha i), by simp [TensorProduct.neg_tmul]⟩
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `key : ∀ v : Pl F, ∃ a : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → Fv F v, (∀ i, a i ∈ v.adicCompletionIntegers F) ∧ (At (evFin F v) (x v) ∧ compFin F E v (x v) ∈ intLoc F E v → x v = ∑ i, GlobalTheory.LatVac.liftV v (a i) • ((1 : AF F) ⊗ₜ[F] ((RingOfIntegers.basis E i : 𝓞 E) : E)))` using `fun v => by`. Distinguish the cases in `hv : At (evFin F v) (x v) ∧ compFin F E v (x v) ∈ intLoc F E v`. Take `⟨a, ha, e⟩` from `exists_coords hv.2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `at_evFin_iff.1 hv.1`. Use `⟨a, ha, fun _ => GlobalTheory.Doubling.adele_ext (fun w => ?_) fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, map_sum]`. Conclude with `(Finset.sum_eq_zero fun i _ => by`. Rewrite using `[compInf_smul, show evInf F w (GlobalTheory.LatVac.liftV v (a i)) = 0 from rfl, zero_smul]).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[map_sum]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compFin_smul, GlobalTheory.LatVac.evFin_liftV]`. Express the relevant statement in the definitionally equal form `_ = a i • (evFin F w 1 ⊗ₜ[F] _)`. Rewrite using `[map_one, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Rewrite using `[h2 w hw]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `(Finset.sum_eq_zero fun i _ => by`. Rewrite using `[compFin_smul, show evFin F w (GlobalTheory.LatVac.liftV v (a i)) = 0 from evalV_singleFin_ne hw _, zero_smul]).symm`. Conclude with `⟨0, fun _ => zero_mem _, fun h => absurd h hv⟩`. Use `choose a ha e using key`. Establish `ht : Tendsto (fun v => ∑ i, GlobalTheory.LatVac.liftV v (a v i) • ((1 : AF F) ⊗ₜ[F] ((RingOfIntegers.basis E i : 𝓞 E) : E) : AE F E)) cofinite (𝓝 (∑ i, (0 : AF F) • ((1 : AF F) ⊗ₜ[F] ((RingOfIntegers.basis E i : 𝓞 E) : E) : AE F E)))` using `tendsto_finset_sum _ fun i _ => (tendsto_liftV (fun v => a v i) fun v => ha v i).smul_const _`.
-
-Simplify using `only [zero_smul, Finset.sum_const_zero] at ht`. Use `ht.congr' ?_` and prove the remaining obligations. Use `filter_upwards [h] with v hv using (e v hv).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_zero_of_intLoc (x : Pl F → AE F E)
     (h : ∀ᶠ v in cofinite, At (evFin F v) (x v) ∧ compFin F E v (x v) ∈ intLoc F E v) :
@@ -122,9 +118,9 @@ theorem tendsto_zero_of_intLoc (x : Pl F → AE F E)
   filter_upwards [h] with v hv using (e v hv).symm
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `key : ∀ m : Pl F → (AE F E)ˣ, (∀ᶠ v in cofinite, m v ∈ unitsAt E v) → Tendsto (fun v => (m v : AE F E)) cofinite (𝓝 1)` using `fun m h => by`. Use `(tendsto_zero_of_intLoc (fun v => (m v : AE F E) - 1) (h.mono fun v hv => ⟨hv.1, by` as an intermediate fact. Rewrite using `[map_sub, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem (mem_unitsAt.1 hv).2.1 (one_mem _)⟩)).add_const 1`. Simplify using `using this`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Conclude with `(key m h).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (key (fun v => (m v)⁻¹) (h.mono fun v hv => inv_mem hv)))`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_one_of_unitsAt (m : Pl F → (AE F E)ˣ) (h : ∀ᶠ v in cofinite, m v ∈ unitsAt E v) :
     Tendsto m cofinite (𝓝 1) := by
@@ -140,9 +136,9 @@ theorem tendsto_one_of_unitsAt (m : Pl F → (AE F E)ˣ) (h : ∀ᶠ v in cofini
     (key (fun v => (m v)⁻¹) (h.mono fun v hv => inv_mem hv)))
 
 /- English proof (translation)
-Establish `key : ∀ v, ∃ n : ℕ, ‖(ν (m v) : ℂ) ^ n - 1‖ < 1 → ν (m v) = 1` using `fun v => by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `(hc 0).2 (GlobalTheory.CharDualMat.circle_eq_one_of_pow_near _ fun n => (hc n).1)`. Use `choose n hn using key`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `tendsto_one_of_unitsAt (fun v => m v ^ n v) (h.mono fun v hv => pow_mem hv _)`. Establish `hc : Continuous fun x : (AE F E)ˣ => ‖(ν x : ℂ) - 1‖` using `((continuous_subtype_val.comp hν).sub continuous_const).norm`. Establish `h1` using `((hc.tendsto 1).comp ht).eventually (gt_mem_nhds (show ‖(ν 1 : ℂ) - 1‖ < 1 by simp))`. Use `filter_upwards [h1] with v hv`. Conclude with `hn v (by simpa using hv)`.
+A detailed English derivation is pending.
 -/
 theorem eventually_chr_eq_one {ν : Chr F E} (hν : Continuous ν) (m : Pl F → (AE F E)ˣ)
     (h : ∀ᶠ v in cofinite, m v ∈ unitsAt E v) : ∀ᶠ v in cofinite, ν (m v) = 1 := by
@@ -159,13 +155,13 @@ theorem eventually_chr_eq_one {ν : Chr F E} (hν : Continuous ν) (m : Pl F →
   exact hn v (by simpa using hv)
 
 /- English proof (translation)
-Establish `h1 : (eInf F).1 = 1` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by`. Rewrite using `[map_one]`. Conclude with `evI_realAd_one)`. Establish `ha : GlobalTheory.Doubling.cutIdele ∅ l = unitArch F E l`. Use `GlobalTheory.Doubling.idele_ext (fun w => ?_) fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Doubling.unitInf_cutIdele]`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `compInf F E w l = compInf F E w (eInf F • (l : AE F E) + (1 - eInf F) • 1)`. Establish `h : evInf F w (eInf F) = 1` using `congrFun h1 w`. Rewrite using `[map_add, compInf_smul, compInf_smul, map_sub, map_one, h, sub_self, zero_smul, one_smul, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Doubling.unitFin_cutIdele_of_notMem _ (Finset.notMem_empty v)]`. Use `at_evI_iff.1 (unitArch_mem l) v` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `Units.ext this.symm`. Rewrite using `[← ha, GlobalTheory.Doubling.cutIdele, GlobalTheory.Doubling.cutIdele, Finset.prod_empty, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← ideleAt_unitFin (unitAt_mem v l)]`. Conclude with `congrArg _ (Units.ext (compFin_unitAt_self v l).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutIdele_eq (S : Finset (Pl F)) (l : (AE F E)ˣ) :
     GlobalTheory.Doubling.cutIdele S l = unitArch F E l * ∏ v ∈ S, unitAt E v l := by
@@ -189,11 +185,11 @@ theorem cutIdele_eq (S : Finset (Pl F)) (l : (AE F E)ˣ) :
   exact congrArg _ (Units.ext (compFin_unitAt_self v l).symm)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ ν hν l z`. Establish `hu` using `eventually_unitAt_mem_unitsAt F E l`. Establish `hfin : (Function.mulSupport fun v : Pl F => (ν (unitAt E v l) : ℂ) * ((absE F E (unitAt E v l) : ℝ) : ℂ) ^ z).Finite`. Use `(eventually_cofinite.1 (hu.and (eventually_chr_eq_one hν _ hu))).subset fun v hv h => hv ?_` and prove the remaining obligations. Simplify using `only [h.2, absE_of_mem_unitsAt h.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Set `χ : (AE F E)ˣ →* ℂ` to `{ toFun := fun x => (ν x : ℂ) * ((absE F E x : ℝ) : ℂ) ^ z map_one' := by simp map_mul' := fun x y => by simp only [map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul]; ring }`. Establish `hχ : Continuous χ` using `(continuous_subtype_val.comp hν).mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE)).pow z)`. Use `tendsto_nhds_unique ((hχ.tendsto l).comp (GlobalTheory.Doubling.tendsto_cutIdele l)) (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [eventually_ge_atTop hfin.toFinset] with S hS`. Rewrite using `[finprod_eq_prod_of_mulSupport_toFinset_subset _ hfin hS, Function.comp_apply, cutIdele_eq, map_mul, map_prod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chr_abs_eq_finprod : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ν : Chr F E), Continuous ν → ∀ (l : (AE F E)ˣ) (z : ℕ),

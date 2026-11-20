@@ -18,7 +18,7 @@ noncomputable def padicIntToOO (p : ℕ) [Fact p.Prime] : ℤ_[p] →+* OO p :=
     (mem_OO_iff _).2 ((GlobalTheory.isIntegral_padicInt_iff_norm_le_one _).1 isIntegral_algebraMap)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨q, hq, h⟩` from `(GlobalTheory.isIntegral_padicInt_iff_norm_le_one (x : PadicAlgCl p)).2 ((mem_OO_iff _).1 x.2)`. Use `⟨q, hq, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(Polynomial.hom_eval₂ q (padicIntToOO p) (OO p).subtype x).trans h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIntegral_padicIntToOO : (padicIntToOO p).IsIntegral := by
   intro x
@@ -27,7 +27,7 @@ theorem isIntegral_padicIntToOO : (padicIntToOO p).IsIntegral := by
   exact (Polynomial.hom_eval₂ q (padicIntToOO p) (OO p).subtype x).trans h
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (residue (OO p)), residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, not_isUnit_OO_iff]`. Establish `h : (((p : ℕ) : OO p) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) p` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_residueField_OO : ((p : ℕ) : ResidueField (OO p)) = 0 := by
   rw [← map_natCast (residue (OO p)), residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff,
@@ -37,13 +37,13 @@ theorem natCast_residueField_OO : ((p : ℕ) : ResidueField (OO p)) = 0 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Introduce `x`. Use `set ψ : ℤ_[p] →+* ResidueField (OO p) := (residue (OO p)).comp (padicIntToOO p)`. Establish `hψ : ψ.IsIntegral` using `RingHom.IsIntegral.trans _ _ isIntegral_padicIntToOO (RingHom.isIntegral_of_surjective _ residue_surjective)`. Take `⟨q, hq, h⟩` from `hψ x`. Establish `hl : q.map ψ ∈ Polynomial.lifts (Int.castRingHom (ResidueField (OO p)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Establish `h1` using `PadicInt.sub_zmodRepr_mem (q.coeff n)`. Rewrite `h1` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `h1`. Establish `h2` using `congrArg ψ hc`. Rewrite `h2` using `[map_sub, map_mul, map_natCast, map_natCast, natCast_residueField_OO, zero_mul, sub_eq_zero]`. Conclude with `⟨((q.coeff n).zmodRepr : ℤ), by rw [h2]; simp⟩`. Take `⟨r, hr, -, hrm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl (hq.map ψ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, hrm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map, hr, Polynomial.eval_map, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_int_residueField_OO : (Int.castRingHom (ResidueField (OO p))).IsIntegral := by
   intro x
@@ -67,9 +67,9 @@ theorem isIntegral_int_residueField_OO : (Int.castRingHom (ResidueField (OO p)))
   rw [← Polynomial.eval_map, hr, Polynomial.eval_map, h]
 
 /- English proof (translation)
-Establish `h : ((residue (OO p)).comp φ).IsIntegral`. Use `RingHom.IsIntegral.tower_top (Int.castRingHom A) _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.ext_int (RingHom.comp _ _) (Int.castRingHom _)]`. Conclude with `isIntegral_int_residueField_OO`. Use `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' _ h ⊥` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← Ideal.comap_comap, ← RingHom.ker_eq_comap_bot, ker_residue]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isMaximal_comap_maximalIdeal_OO {A : Type*} [CommRing A] (φ : A →+* OO p) :
     ((maximalIdeal (OO p)).comap φ).IsMaximal := by
@@ -81,15 +81,15 @@ theorem isMaximal_comap_maximalIdeal_OO {A : Type*} [CommRing A] (φ : A →+* O
   rwa [← Ideal.comap_comap, ← RingHom.ker_eq_comap_bot, ker_residue] at this
 
 /- English proof (translation)
-Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `w hw`. Establish `hs : y (cPt p) ⤳ w` using `specializes_iff_mem_closure.2 hw`. Take `⟨U, hU, hwU, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := w) trivial`. Establish `hzU : y (cPt p) ∈ U` using `hs.mem_open U.isOpen hwU`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : ⊤ ≤ y ⁻¹ᵁ U` using `(le_preimage_iff y U).2 hzU`. Establish `key : ∀ f : Γ(X, U), y (cPt p) ∈ X.basicOpen f ↔ f ∉ (maximalIdeal (OO p)).comap (valMap y U hle).hom` using `fun f => by`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff, not_not, ← le_preimage_iff, le_preimage_basicOpen_iff y hle, valR_eq y U hle]`. Establish `hm` using `isMaximal_comap_maximalIdeal_OO (valMap y U hle).hom`. Use `(Specializes.antisymm ?_ hs).eq` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[specializes_iff_forall_open]`. Introduce `V hV hzV`. Take `⟨f, hfV, hzf⟩` from `hU.exists_basicOpen_le (V := ⟨V, hV⟩) ⟨_, hzV⟩ hzU`. Use `hfV ?_` and prove the remaining obligations. Take `⟨g, c, hc, e⟩` from `hm.exists_inv ((key f).1 hzf)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hwc : w ∉ X.basicOpen c` using `fun h => (key c).1 (hs.mem_open (X.basicOpen c).isOpen h) hc`. Rewrite `hwc` using `[X.mem_basicOpen _ _ hwU]`. Use `show w ∈ X.basicOpen f`. Rewrite using `[X.mem_basicOpen _ _ hwU]`. Establish `e'` using `congrArg (X.presheaf.germ U w hwU).hom e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[map_add, map_mul, map_one]`. Break down `isUnit_or_isUnit_of_add_one e' with h | h` into its components or cases. Conclude with `isUnit_of_mul_isUnit_right h`. Conclude with `absurd h hwc`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isClosed_singleton_cPt {X : Scheme.{0}} (y : Sp (OO p) ⟶ X) : IsClosed ({y (cPt p)} : Set X) := by
   rw [← closure_subset_iff_isClosed]
@@ -120,7 +120,7 @@ theorem isClosed_singleton_cPt {X : Scheme.{0}} (y : Sp (OO p) ⟶ X) : IsClosed
   · exact absurd h hwc
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ y h` and use `h.1 ▸ isClosed_singleton_cPt y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isClosed_centre : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [Algebra.FiniteType ℤ o]
     (M : RatModel o Ω) (U : Set M.Z) (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z),

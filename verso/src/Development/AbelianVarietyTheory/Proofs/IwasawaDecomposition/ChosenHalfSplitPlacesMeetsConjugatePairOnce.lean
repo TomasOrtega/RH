@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.ChosenHalf
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Take `⟨x, hx⟩` from `(RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv).surjective y`. Establish `hy : (y : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[← hx]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← h x y hy, ← h' x y hy]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem isConjPl_unique (D : D7) {P w w' : PlE D.host} (h : IsConjPl D.host P w) (h' : IsConjPl D.host P w') :
     w = w' := by
@@ -26,7 +26,7 @@ theorem isConjPl_unique (D : D7) {P w w' : PlE D.host} (h : IsConjPl D.host P w)
   rw [← h x y hy, ← h' x y hy]
 
 /- English proof (translation)
-Introduce `hc`. Take `⟨x, hx, hy⟩` from `hs`. Establish `hyx : ((RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E)` using `rfl`. Conclude with `hy _ hyx ((hc x _ hyx).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_isConjPl_self (D : D7) {P : PlE D.host} (hs : IsSplitPl D.host P) : ¬ IsConjPl D.host P P := by
   intro hc
@@ -36,26 +36,24 @@ theorem not_isConjPl_self (D : D7) {P : PlE D.host} (hs : IsSplitPl D.host P) : 
   exact hy _ hyx ((hc x _ hyx).1 hx)
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (h.symm.trans h')`.
+A detailed English derivation is pending.
 -/
 theorem overPl_unique (D : D7) {P : PlE D.host} {v v' : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))}
     (h : NG.OverPl P v) (h' : NG.OverPl P v') : v = v' :=
   HeightOneSpectrum.ext (h.symm.trans h')
 
 /- English proof (translation)
-Introduce `D Pq hPq S hS`. Establish `pair` using `GlobalTheory.T.comap_realSubfield_eq_iff_eq_or_isConjPlace D`. Establish `memq : ∀ P, P ∈ qpOf D Pq S ↔ P ∈ S ∧ ∀ v, NG.OverPl P v → P = Pq v ∨ Pq v ∉ S`. Introduce `P`. Unfold `qpOf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.mem_filter]`. Use `⟨fun P hP => ?_, fun P hP P' hP' hc => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : P ∈ qpOf D Pq S`. Conclude with `⟨P, hq, Or.inl rfl⟩`. Establish `hn : ¬ ∀ v, NG.OverPl P v → P = Pq v ∨ Pq v ∉ S` using `fun h => hq ((memq P).2 ⟨hP, h⟩) push_neg at hn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨v, hv, -, hin⟩` from `hn`. Use `⟨Pq v, (memq _).2 ⟨hin, fun v' hv' => Or.inl ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[overPl_unique D (hPq v) hv']`. Break down `(pair P (Pq v)).1 (hv.trans (hPq v).symm) with h | h` into its components or cases. Conclude with `Or.inl h.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr h`. Establish `hPS` using `((memq P).1 hP).1`. Establish `hP'S` using `((memq P').1 hP').1`. Set `v` to `HeightOneSpectrum.under (𝓞 (maximalRealSubfield D.host.E)) P`. Establish `hv : NG.OverPl P v` using `rfl`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hv' : NG.OverPl P' v` using `((pair P P').2 (Or.inr hc)).symm.trans hv`. Establish `hqS : Pq v ∈ S`. Break down `(pair P (Pq v)).1 (hv.trans (hPq v).symm) with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `hPS`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← isConjPl_unique D hc h]`. Conclude with `hP'S`. Establish `e1` using `qpOf_eq D Pq S hP hv hqS`. Establish `e2` using `qpOf_eq D Pq S hP' hv' hqS`. Establish `e : P' = P` using `e2.trans e1.symm`.
-
-Rewrite `hc` using `[e]`. Conclude with `not_isConjPl_self D (hS P hPS) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qpOf_half : ∀ (D : D7) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host), (∀ v, NG.OverPl (Pq v) v) →
     ∀ S : Finset (PlE D.host), (∀ P ∈ S, IsSplitPl D.host P) →

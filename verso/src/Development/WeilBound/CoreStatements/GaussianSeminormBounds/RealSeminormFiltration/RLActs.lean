@@ -11,7 +11,7 @@ namespace PositivityTheory.RL.SeminormBoundRestriction
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F` as an intermediate fact. Establish `he` using `RestrictedProduct.isOpenEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) fun _ => Valued.isOpen_valuationSubring _`. Establish `: ∀ v : HeightOneSpectrum (𝓞 F), CompactSpace ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))` using `fun v => GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Conclude with `⟨_, isCompact_range he.continuous, he.isOpen_range, ⟨_, ⟨fun v => ⟨0, zero_mem _⟩, rfl⟩⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_compact_open : ∃ U : Set (Af F), IsCompact U ∧ IsOpen U ∧ U.Nonempty := by
   have := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F
@@ -23,11 +23,11 @@ theorem exists_compact_open : ∃ U : Set (Af F), IsCompact U ∧ IsOpen U ∧ U
   exact ⟨_, isCompact_range he.continuous, he.isOpen_range, ⟨_, ⟨fun v => ⟨0, zero_mem _⟩, rfl⟩⟩⟩
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F` as an intermediate fact. Take `⟨U, hc, ho, u, hu⟩` from `exists_compact_open (F := F)`. Set `W : Set (κ → Af F)` to `Set.pi Set.univ fun _ => U`. Establish `hWc : IsCompact W` using `isCompact_univ_pi fun _ => hc`. Establish `hW : IsClopen W` using `⟨hWc.isClosed, isOpen_set_pi Set.finite_univ fun _ _ => ho⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨W.indicator fun _ => (1 : ℂ), ⟨?_, ?_⟩, fun _ => u, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ W`. Use `filter_upwards [hW.isOpen.mem_nhds hx] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Use `filter_upwards [hW.compl.isOpen.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Conclude with `HasCompactSupport.intro hWc fun x hx => Set.indicator_of_notMem hx _`. Conclude with `Set.indicator_of_mem (show (fun _ => u) ∈ W from fun _ _ => hu) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_SB : ∃ g ∈ SB (κ → Af F), ∃ y, g y = 1 := by
   have := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
@@ -51,18 +51,18 @@ def pt (a : κ → mixedEmbedding.mixedSpace F) (y : κ → Af F) : κ → AF F 
 
 omit [Fintype κ] in
 /- English proof (translation)
-Simplify using `only [pureA, pt, RingEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pureA_pt (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ) (a : κ → mixedEmbedding.mixedSpace F)
     (y : κ → Af F) : pureA F f g (pt a y) = f a * g y := by
   simp only [pureA, pt, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`. Establish `: (fun y => pureA F f g (pt a y)) = f a • g`. Use function extensionality and compare the values at `y`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[pureA_pt]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hg`. Consider the case `zero => exact Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add Φ Ψ _ _ h₁ h₂ => exact Submodule.add_mem _ h₁ h₂`. Consider the case `smul c Φ _ h₁ => exact Submodule.smul_mem _ c h₁`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem slice_mem {Φ : (κ → AF F) → ℂ} (h : Φ ∈ schA F κ) (a : κ → mixedEmbedding.mixedSpace F) :
     (fun y => Φ (pt a y)) ∈ SB (κ → Af F) := by
@@ -81,11 +81,11 @@ theorem slice_mem {Φ : (κ → AF F) → ℂ} (h : Φ ∈ schA F κ) (a : κ �
 
 omit [Fintype κ] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `h1` using `congrFun (h ((0 : Ainf F), (1 : Af F)) (map_zero _)) i`. Establish `h2` using `congrArg Prod.snd h1`. Conclude with `(one_mul (z i).2).symm.trans h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h u hu`. Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hu`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * (z i).1 = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu1, zero_mul]`. Use `show u.2 * (z i).2 = 0`. Rewrite using `[h i, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem at_iff (z : κ → AF F) : At (evI F) z ↔ ∀ i, (z i).2 = 0 := by
   constructor
@@ -103,7 +103,7 @@ theorem at_iff (z : κ → AF F) : At (evI F) z ↔ ∀ i, (z i).2 = 0 := by
       rw [h i, mul_zero]
 
 /- English proof (translation)
-Use `⟨fun x z hz => ?_, Submodule.subset_span ⟨f, g, hg, rfl⟩⟩` and prove the remaining obligations. Rewrite `hz` using `[at_iff]`. Use `congrArg g (funext fun i => ?_)` and prove the remaining obligations. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[hz i, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rest_of_SB (f : SInf F κ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) :
     Rest (evI F) f (fun x => g fun i => (x i).2) := by
@@ -114,11 +114,11 @@ theorem rest_of_SB (f : SInf F κ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (�
   rw [hz i, add_zero]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, f a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hf (SchwartzMap.ext h)`. Establish `key : ∀ x : κ → AF F, r x = r (pt a fun i => (x i).2)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `h` using `hr.1 (pt a fun i => (x i).2) (x - pt a fun i => (x i).2) ((at_iff _).2 fun i => sub_self (x i).2)`. Rewrite `h` using `[add_sub_cancel]`. Then use the resulting hypothesis. Use `⟨(f a)⁻¹ • fun y => tens (evI F) f r (pt a y), Submodule.smul_mem _ _ (slice_mem hr.2 a), funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[key x]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tens, evI, pt, RingEquiv.apply_symm_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ ha, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_of_rest {f : SInf F κ} (hf : f ≠ 0) {r : (κ → AF F) → ℂ} (hr : Rest (evI F) f r) :
     ∃ g ∈ SB (κ → Af F), r = fun x => g fun i => (x i).2 := by
@@ -136,7 +136,7 @@ theorem exists_of_rest {f : SInf F κ} (hf : f ≠ 0) {r : (κ → AF F) → ℂ
   rw [← mul_assoc, inv_mul_cancel₀ ha, one_mul]
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g (fun i => (x i).2) • (BoundedContinuousFunction.evalCLM ℂ (fun i => evI F (x i))).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ), fun f => ?_⟩` and prove the remaining obligations. Use `show f (fun i => evI F (x i)) * g (fun i => (x i).2) = g (fun i => (x i).2) * f (fun i => evI F (x i))`. Conclude with `mul_comm _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eval_adm (x : κ → AF F) : (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
   intro g _
@@ -146,7 +146,7 @@ theorem eval_adm (x : κ → AF F) : (LinearMap.proj x : ((κ → AF F) → ℂ)
   exact mul_comm _ _
 
 /- English proof (translation)
-Take `⟨g, hg, y, hy⟩` from `exists_SB (F := F) (κ := κ)`. Use extensionality with `a`. Use `h g hg (pt a y)` as an intermediate fact. Rewrite `this` using `[pureA_pt, pureA_pt, hy, mul_one, mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_of_pureA {f₁ f₂ : SInf F κ} (h : ∀ g ∈ SB (κ → Af F), ∀ x, pureA F f₁ g x = pureA F f₂ g x) : f₁ = f₂ := by
   obtain ⟨g, hg, y, hy⟩ := exists_SB (F := F) (κ := κ)
@@ -155,14 +155,14 @@ theorem eq_of_pureA {f₁ f₂ : SInf F κ} (h : ∀ g ∈ SB (κ → Af F), ∀
   rwa [pureA_pt, pureA_pt, hy, mul_one, mul_one] at this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Conclude with `zero_mul _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pureA_zero (g : (κ → Af F) → ℂ) : pureA F (0 : SInf F κ) g = 0 := by
   funext x
   exact zero_mul _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Conclude with `zero_mul _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem tens_zero (r : (κ → AF F) → ℂ) : tens (evI F) (0 : SInf F κ) r = 0 := by
   funext x
@@ -175,17 +175,15 @@ namespace PositivityTheory.RL
 open SeminormBoundRestriction
 
 /- English proof (translation)
-Introduce `F _ _ κ _ f f₁ f₂`. Use `⟨fun T hT h r hr x => ?_, fun T hT h r hr => ?_, fun T h₁ h₂ => ?_, fun T h₁ h₂ => ?_, fun T h₁ h₂ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Establish `h1 : f₁ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `eq_of_pureA fun g hg y => ?_` and prove the remaining obligations. Establish `h2` using `h g hg _ (eval_adm y)`. Simplify using `only [pureA_zero, hT, map_zero] at h2`. Rewrite using `[pureA_zero]`. Conclude with `h2.unique (hasDerivAt_const _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h1` using the available equality. Simplify using `only [tens_zero, hT]`. Conclude with `hasDerivAt_const _ _`. Take `⟨g, hg, rfl⟩` from `exists_of_rest hf hr`. Conclude with `h g hg _ (eval_adm x)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Establish `h1 : f₁ = 0`. Use `eq_of_pureA fun g hg y => ?_` and prove the remaining obligations. Establish `h2` using `h g hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite `h2` using `[pureA_zero, hT]`. Rewrite using `[pureA_zero, ← h2]`. Substitute `h1` using the available equality. Rewrite using `[tens_zero, hT]`. Take `⟨g, hg, rfl⟩` from `exists_of_rest hf hr`.
-
-Conclude with `h g hg`. Conclude with `eq_of_pureA fun g hg x => (h₁ _ (rest_of_SB f hg) x).unique (h₂ _ (rest_of_SB f hg) x)`. Conclude with `eq_of_pureA fun g hg x => congrFun ((h₁ _ (rest_of_SB f hg)).symm.trans (h₂ _ (rest_of_SB f hg))) x`. Conclude with `eq_of_pureA fun g hg x => (h₁ g hg _ (eval_adm x)).unique (h₂ g hg _ (eval_adm x))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem actsLaws : GlobalTheory.RealLift.ActsLaws := by
   intro F _ _ κ _ f f₁ f₂

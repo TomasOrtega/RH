@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.FockLetters
 
 /- English proof (translation)
-Simplify using `only [fockVarEquiv, Equiv.prodCongr_apply, Prod.map, Equiv.trans_apply, Equiv.refl_apply]`. Use `Prod.ext rfl (Prod.ext ?_ rfl)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -32,7 +32,7 @@ theorem fockVarEquiv_lt {D : D7} {H : Geo.Tor.Host D.host.E} (Dw : Datum H) {m n
   simp
 
 /- English proof (translation)
-Simplify using `only [fockVarEquiv, Equiv.prodCongr_apply, Prod.map, Equiv.trans_apply, Equiv.refl_apply]`. Use `Prod.ext rfl (Prod.ext ?_ rfl)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -52,9 +52,9 @@ end GlobalTheory.FockLetters
 namespace GlobalTheory.FockLetters
 
 /- English proof (translation)
-Rewrite using `[minorPlus, GlobalTheory.Harm.xMinor, AlgHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use `ext1 a b`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `i.isLt`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.transpose_apply, GlobalTheory.Harm.baseCovec, GlobalTheory.Harm.xForm_single, varF]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩, MvPolynomial.rename_X, fockVarEquiv_lt Dw hΨ hm ρ _ _ (by omega)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rename_minorPlus {D : D7} {H : Geo.Tor.Host D.host.E} (Dw : Datum H) {m n : ℕ}
     (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) (hm : m = Dw.p + Dw.q) (hn : Dw.p + Dw.q ≤ n)
@@ -71,11 +71,11 @@ theorem rename_minorPlus {D : D7} {H : Geo.Tor.Host D.host.E} (Dw : Datum H) {m 
   rfl
 
 /- English proof (translation)
-Rewrite using `[minorMinus, GlobalTheory.Harm.yMinor, AlgHom.map_det, ← Matrix.det_permute']`. Use `conv_lhs => rw [← Matrix.det_transpose]`. Use `congr 1`. Use `ext1 a b`. Establish `ha` using `a.isLt`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `b.isLt`. Establish `hi` using `i.isLt`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.submatrix_apply, id, GlobalTheory.Harm.baseVec, GlobalTheory.Harm.yForm_single, varF]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩, MvPolynomial.rename_X, fockVarEquiv_ge Dw hΨ hm ρ _ _ (by omega)]`. Use `congrArg MvPolynomial.X (Prod.ext rfl (Prod.ext rfl (Fin.ext ?_)))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fin.val_rev, Fin.val_castLE, Fin.revPerm_apply]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem rename_minorMinus {D : D7} {H : Geo.Tor.Host D.host.E} (Dw : Datum H) {m n : ℕ}
     (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) (hm : m = Dw.p + Dw.q) (hn : Dw.p + Dw.q ≤ n)
@@ -100,17 +100,17 @@ end GlobalTheory.FockLetters
 namespace GlobalTheory.FockLetters
 
 /- English proof (translation)
-Introduce `D H Dw m n hΨ hm w a hw hn`. Establish `hp : ∀ ρ, w.p ρ = Dw.p` using `fun ρ => (hw ρ).1`. Establish `hq : ∀ ρ, w.q ρ = Dw.q` using `fun ρ => (hw ρ).2.1`. Use `⟨∏ ρ : D.what₂.Tau, ∏ i : Fin Dw.q, (((Equiv.Perm.sign (Fin.revPerm (n := i.val + 1)) : ℤ) : ℂ)) ^ stepsY Dw a (tauPsi hΨ ρ) i, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ExportSeries.Weight.delta, Datum.delta, map_prod, GlobalTheory.Harm.basePoly, GlobalTheory.Harm.minorProd, map_prod, ← (tauPsi hΨ).prod_comp, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[deltaAt, hp ρ, hq ρ, map_mul, map_prod, map_prod, Finset.prod_range, Finset.prod_range]`. Establish `hx : ∀ i : Fin Dw.p, MvPolynomial.rename (fockVarEquiv Dw hΨ hm) ((minorPlus ρ (i.val + 1) : MvPolynomial (FVar D m n) ℂ) ^ (w.ap ρ i - if i.val + 1 < Dw.p then w.ap ρ (i.val + 1) else 0)) = GlobalTheory.Harm.xMinor (tauPsi hΨ ρ) i (GlobalTheory.Harm.baseCovec ℂ hn) ^ stepsX Dw a …`. Introduce `i`. Rewrite using `[map_pow, rename_minorPlus Dw hΨ hm hn ρ i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [stepsX, GlobalTheory.Harm.diffOf, tauPsi_apply]`. Rewrite using `[(hw ρ).2.2.1 i i.isLt]`. Use `split_ifs with h1`. Rewrite using `[(hw ρ).2.2.1 _ h1]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hy : ∀ i : Fin Dw.q, MvPolynomial.rename (fockVarEquiv Dw hΨ hm) ((minorMinus ρ Dw.p (i.val + 1) : MvPolynomial (FVar D m n) ℂ) ^ (w.am ρ i - if i.val + 1 < Dw.q then w.am ρ (i.val + 1) else 0)) = MvPolynomial.C ((((Equiv.Perm.sign (Fin.revPerm (n` using `i.val + 1)) : ℤ) : ℂ)) ^ stepsY Dw a (tauPsi hΨ ρ) i) * GlobalTheory.Harm.yMinor (tauPsi hΨ ρ) i (GlobalTheory.Harm.baseVec ℂ hn) ^ stepsY Dw a (tauPsi hΨ ρ) i := by`. Introduce `i`. Establish `he : (w.am ρ i - if i.val + 1 < Dw.q then w.am ρ (i.val + 1) else 0) = stepsY Dw a (tauPsi hΨ ρ) i`. Simplify using `only [stepsY, GlobalTheory.Harm.diffOf, tauPsi_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e0 : ∀ j < Dw.q, a (ComplexEmbedding.conjugate (tauE D ρ), j) = w.am ρ j` using `(hw ρ).2.2.2`. Rewrite using `[e0 i i.isLt]`. Use `split_ifs with h1`. Rewrite using `[e0 _ h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_pow, rename_minorMinus Dw hΨ hm hn ρ i, he, mul_pow, map_pow, map_intCast]`. Simplify using `only [hx, hy, Finset.prod_mul_distrib, map_prod]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rename_delta_eq_smul_basePoly : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (m n : ℕ) (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) (hm : m = Dw.p + Dw.q) (w : Weight D n) (a : (D.host.E →+* ℂ) × ℕ → ℕ), WtIs Dw w a → ∀ (hn : Dw.p + Dw.q ≤ n), ∃ c : ℂ, MvPolynomial.rename (GlobalTheory.FockLetters.fockVarEquiv Dw hΨ hm) (w.delta m) = MvPolynomial.C c * GlobalTheory.Harm.basePoly ℂ hn (GlobalTheory.FockLetters.stepsX Dw a) (GlobalTheory.FockLetters.stepsY Dw a) := by
   intro D H Dw m n hΨ hm w a hw hn

@@ -11,11 +11,11 @@ namespace GlobalTheory.CompanionTheory.SW.Core.Density
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V]
 
 /- English proof (translation)
-Establish `hne : ∀ x y, χ x y ≠ 0` using `fun x y h => by simpa [h] using hn x y`. Establish `h0 : ∀ y, χ 0 y = 1` using `fun y => by`. Establish `h` using `ha 0 0 y`. Rewrite `h` using `[add_zero]`. Establish `h' : χ 0 y * χ 0 y = χ 0 y * 1` using `by rw [mul_one]; exact h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ (hne 0 y) h'`. Establish `hi : ∀ x y, χ (-x) y * χ x y = 1` using `fun x y => by`. Rewrite using `[← ha, neg_add_cancel, h0]`. Establish `h1` using `hi x y`. Establish `h2` using `hi y x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hs (-y) x, hs y x]`. Conclude with `mul_right_cancel₀ (hne x y) (h1.trans h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem chi_neg_left {χ : V → V → ℂ} (hs : ∀ x y, χ x y = χ y x) (hn : ∀ x y, ‖χ x y‖ = 1)
     (ha : ∀ x x' y, χ (x + x') y = χ x y * χ x' y) (x y : V) : χ (-x) y = χ x (-y) := by
@@ -43,9 +43,7 @@ section Top
 variable [IsTopologicalAddGroup V]
 
 /- English proof (translation)
-Use `continuous_of_dominated (bound := fun y => ‖mhat χ m y‖) ?_ ?_ hint.norm ?_` and prove the remaining obligations. Introduce `x`. Conclude with `hint.aestronglyMeasurable.mul (hc.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable`. Introduce `x`. Conclude with `Filter.Eventually.of_forall fun y => by simp [hn]`.
-
-Conclude with `Filter.Eventually.of_forall fun y => continuous_const.mul (hc.comp (continuous_neg.prodMk continuous_const))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dens_continuous [SecondCountableTopology V] [BorelSpace V] {χ : V → V → ℂ} {μ m : Measure V}
     (hc : Continuous (fun p : V × V => χ p.1 p.2)) (hn : ∀ x y, ‖χ x y‖ = 1)
@@ -60,15 +58,15 @@ theorem dens_continuous [SecondCountableTopology V] [BorelSpace V] {χ : V → V
       continuous_const.mul (hc.comp (continuous_neg.prodMk continuous_const))
 
 /- English proof (translation)
-The claim follows from `hL.preimage (continuous_id.sub continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem coset_isOpen {L : AddSubgroup V} (hL : IsOpen (L : Set V)) (a : V) : IsOpen (coset L a) :=
   hL.preimage (continuous_id.sub continuous_const)
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨x - a, h, by simp⟩`. Introduce and unpack `⟨l, hl, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify `hl` using `[coset]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coset_eq_image (L : AddSubgroup V) (a : V) : coset L a = (fun x => x + a) '' (L : Set V) := by
   ext x
@@ -79,7 +77,7 @@ theorem coset_eq_image (L : AddSubgroup V) (a : V) : coset L a = (fun x => x + a
     simpa [coset] using hl
 
 /- English proof (translation)
-Rewrite using `[coset_eq_image]`. Conclude with `hL.image (continuous_id.add continuous_const)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coset_isCompact {L : AddSubgroup V} (hL : IsCompact (L : Set V)) (a : V) :
     IsCompact (coset L a) := by
@@ -87,7 +85,7 @@ theorem coset_isCompact {L : AddSubgroup V} (hL : IsCompact (L : Set V)) (a : V)
   exact hL.image (continuous_id.add continuous_const)
 
 /- English proof (translation)
-Establish `hc` using `coset_isCompact hK a`. Establish `ho` using `coset_isOpen hO a`. Use `⟨?_, .intro hc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Conclude with `(LocallyConstant.indicator (1 : LocallyConstant V ℂ) ⟨hc.isClosed, ho⟩).isLocallyConstant`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coset_sb [T2Space V] {L : AddSubgroup V} (hK : IsCompact (L : Set V)) (hO : IsOpen (L : Set V))
     (a : V) : SB (Set.indicator (coset L a) (fun _ => (1 : ℂ))) := by
@@ -104,21 +102,19 @@ variable [IsTopologicalAddGroup V] [T2Space V] [LocallyCompactSpace V] [SecondCo
   [BorelSpace V]
 
 /- English proof (translation)
-Take `⟨hsb, hinv⟩` from `GlobalTheory.T.fourier_inversion_schwartz_bruhat V χ μ h φ hφ`. Establish `hφi : Integrable φ μ` using `hφ.1.continuous.integrable_of_hasCompactSupport hφ.2`. Establish `hfi : Integrable (fou χ μ φ) μ` using `hsb.1.continuous.integrable_of_hasCompactSupport hsb.2`. Establish `hfni : Integrable (fun y => fou χ μ φ (-y)) μ` using `hfi.comp_neg`. Establish `hF : Integrable (Function.uncurry fun x y => φ x * (mhat χ m y * χ (-x) y)) (μ.prod μ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Integrable (fun p : V × V => φ p.1 * mhat χ m p.2) (μ.prod μ)` using `hφi.mul_prod hint`. Establish `h2` using `h1.mul_bdd (c := 1) (g := fun p : V × V => χ (-p.1) p.2) (hc.comp ((continuous_neg.comp continuous_fst).prodMk continuous_snd)).aestronglyMeasurable (Filter.Eventually.of_forall fun p => by simp [hn])`. Use `h2.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `[Function.uncurry, mul_assoc]`. Establish `hH : Integrable (Function.uncurry fun y z => fou χ μ φ (-y) * χ z y) (μ.prod m)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : Integrable (fun p : V × V => fou χ μ φ (-p.1) * (1 : ℂ)) (μ.prod m)` using `hfni.mul_prod (integrable_const (1 : ℂ))`. Establish `h2` using `h1.mul_bdd (c := 1) (g := fun p : V × V => χ p.2 p.1) (hc.comp (continuous_snd.prodMk continuous_fst)).aestronglyMeasurable (Filter.Eventually.of_forall fun p => by simp [hn])`. Use `h2.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `[Function.uncurry]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [dens, integral_const_mul]`. Use `_ = ∫ y, ∫ x, φ x * (mhat χ m y * χ (-x) y) ∂μ ∂μ := integral_integral_swap hF`. Use `_ = ∫ y, ∫ z, fou χ μ φ (-y) * χ z y ∂m ∂μ := by`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e1 : ∀ x, φ x * (mhat χ m y * χ (-x) y) = mhat χ m y * (φ x * χ x (-y))` using `fun x => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[chi_neg_left hs hn ha]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1]`. Rewrite using `[integral_const_mul, integral_const_mul, mul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = ∫ z, ∫ y, fou χ μ φ (-y) * χ z y ∂μ ∂m := integral_integral_swap hH`. Use `_ = ∫ z, φ z ∂m := by`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Establish `e2 : ∫ y, fou χ μ φ (-y) * χ z y ∂μ = ∫ y, fou χ μ φ y * χ z (-y) ∂μ`. Rewrite using `[← integral_neg_eq_self (fun y => fou χ μ φ y * χ z (-y)) μ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e3 : ∀ y, χ z (-y) = χ y (-z)` using `fun y => by`. Rewrite using `[← chi_neg_left hs hn ha, hs]`. Simplify using `only [e2, e3]`. Use `hinv (-z)` as an intermediate fact.
-
-Simplify `this` using `[fou]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_mul_dens {χ : V → V → ℂ} {μ m : Measure V} [μ.IsAddHaarMeasure] [IsFiniteMeasure m]
     (h : NADual V χ μ) (hc : Continuous (fun p : V × V => χ p.1 p.2)) (hs : ∀ x y, χ x y = χ y x)
@@ -168,9 +164,9 @@ theorem integral_mul_dens {χ : V → V → ℂ} {μ m : Measure V} [μ.IsAddHaa
         simpa [fou] using this
 
 /- English proof (translation)
-Establish `hm : MeasurableSet (coset L a)` using `(coset_isOpen hO a).measurableSet`. Establish `key` using `integral_mul_dens h hc hs hn ha hint (coset_sb hK hO a)`. Establish `e : ∀ x, Set.indicator (coset L a) (fun _ => (1 : ℂ)) x * dens χ μ m x = Set.indicator (coset L a) (dens χ μ m) x` using `fun x => by`. Apply the tactic sequence `by_cases hx : x ∈ coset L a <;> simp [hx]`. Simplify using `only [e] at key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[integral_indicator hm, integral_indicator_const _ hm]`. Rewrite using `[key]`. Simplify using `[Measure.real]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem setIntegral_dens {χ : V → V → ℂ} {μ m : Measure V} [μ.IsAddHaarMeasure] [IsFiniteMeasure m]
     (h : NADual V χ μ) (hc : Continuous (fun p : V × V => χ p.1 p.2)) (hs : ∀ x y, χ x y = χ y x)
@@ -189,13 +185,13 @@ theorem setIntegral_dens {χ : V → V → ℂ} {μ m : Measure V} [μ.IsAddHaar
   simp [Measure.real]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Use `push_neg at hx`. Establish `hU : (fun t => f (t + x)) ⁻¹' Set.Iio 0 ∈ 𝓝 (0 : V)` using `((isOpen_Iio.preimage (hf.comp (continuous_id.add continuous_const))).mem_nhds (by simpa using hx))`. Take `⟨L, hK, hO, hLU⟩` from `hb _ hU`. Establish `hneg : ∀ y ∈ coset L x, f y < 0` using `fun y hy => by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hLU hy` as an intermediate fact. Simplify using `using this`. Establish `hmeas : MeasurableSet (coset L x)` using `(coset_isOpen hO x).measurableSet`. Establish `hnon : (coset L x).Nonempty` using `⟨x, by simp [coset, L.zero_mem]⟩`. Establish `hpos : 0 < μ (coset L x)` using `(coset_isOpen hO x).measure_pos μ hnon`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfi : IntegrableOn (fun y => -f y) (coset L x) μ` using `(hf.neg.continuousOn).integrableOn_compact (coset_isCompact hK x)`. Establish `h0 : 0 ≤ᵐ[μ.restrict (coset L x)] fun y => -f y`. Use `(ae_restrict_iff' hmeas).2 (Filter.Eventually.of_forall fun y hy => ?_)` and prove the remaining obligations. Simplify using `using (hneg y hy).le`. Establish `hsup : Function.support (fun y => -f y) ∩ coset L x = coset L x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.inter_eq_right.2 fun y hy => ?_` and prove the remaining obligations. Simplify using `using (hneg y hy).ne`. Use `(setIntegral_pos_iff_support_of_nonneg_ae h0 hfi).2 (by rw [hsup]; exact hpos)` as an intermediate fact. Rewrite `this` using `[integral_neg]`. Combine the linear relations using `[hi L x hK hO]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nonneg_of_cosets {μ : Measure V} [μ.IsAddHaarMeasure] {f : V → ℝ} (hf : Continuous f)
     (hb : ∀ U ∈ 𝓝 (0 : V), ∃ L : AddSubgroup V, IsCompact (L : Set V) ∧ IsOpen (L : Set V) ∧
@@ -232,31 +228,29 @@ section Ext
 variable [IsTopologicalAddGroup V] [T2Space V] [SecondCountableTopology V] [BorelSpace V]
 
 /- English proof (translation)
-Set `S : Set (Set V)` to `{C | C = ∅ ∨ ∃ (L : AddSubgroup V) (a : V), IsCompact (L : Set V) ∧ IsOpen (L : Set V) ∧ C = coset L a}`. Establish `hbasis : TopologicalSpace.IsTopologicalBasis S`. Use `TopologicalSpace.isTopologicalBasis_of_isOpen_of_nhds ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ (rfl | ⟨L, a, -, hO, rfl⟩)`. Conclude with `isOpen_empty`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `coset_isOpen hO a`. Introduce `a u hau hu`. Establish `hU : (fun t => t + a) ⁻¹' u ∈ 𝓝 (0 : V)` using `(hu.preimage (continuous_id.add continuous_const)).mem_nhds (by simpa using hau)`. Take `⟨L, hK, hO, hLU⟩` from `hb _ hU`. Use `⟨coset L a, Or.inr ⟨L, a, hK, hO, rfl⟩, by simp [coset, L.zero_mem], fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hLU hx`. Establish `hgen : ‹MeasurableSpace V› = MeasurableSpace.generateFrom S` using `(BorelSpace.measurable_eq).trans hbasis.borel_eq_generateFrom`. Establish `hpi : IsPiSystem S`. Introduce and unpack `s hs t ht ⟨c, hcs, hct⟩`. Break down `hs with rfl | ⟨L, a, hK, hO, rfl⟩` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `at hcs`. Break down `ht with rfl | ⟨L', b, hK', hO', rfl⟩` into its components or cases. Simplify using `at hct`. Use `Or.inr ⟨L ⊓ L', c, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.coe_inf]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `hK.inter_right hK'.isClosed`. Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `hO.inter hO'`. Use extensionality with `x`. Establish `e1 : x - c = (x - a) - (c - a)` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : x - c = (x - b) - (c - b)` using `by abel`. Establish `e3 : x - a = (x - c) + (c - a)` using `by abel`. Establish `e4 : x - b = (x - c) + (c - b)` using `by abel`. Establish `hca : c - a ∈ L` using `hcs`. Establish `hcb : c - b ∈ L'` using `hct`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h1' : x - a ∈ L` using `h1`. Establish `h2' : x - b ∈ L'` using `h2`. Conclude with `⟨e1 ▸ L.sub_mem h1' hca, e2 ▸ L'.sub_mem h2' hcb⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Establish `h1' : x - c ∈ L` using `h1`. Establish `h2' : x - c ∈ L'` using `h2`. Conclude with `⟨show x - a ∈ L from e3 ▸ L.add_mem h1' hca, show x - b ∈ L' from e4 ▸ L'.add_mem h2' hcb⟩`. Set `T : Set (Set V)` to `{C | ∃ L : AddSubgroup V, IsCompact (L : Set V) ∧ IsOpen (L : Set V) ∧ C = coset L 0}`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T', hT'c, hT'T, hT'u⟩` from `TopologicalSpace.isOpen_sUnion_countable T (by`. Introduce and unpack `_ ⟨L, -, hO, rfl⟩`. Conclude with `coset_isOpen hO 0)`. Establish `huniv : ⋃₀ T' = Set.univ`. Rewrite using `[hT'u]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Take `⟨L, hK, hO, hx⟩` from `hcov x`. Conclude with `⟨coset L 0, ⟨L, hK, hO, rfl⟩, by simpa [coset] using hx⟩`. Establish `hne : T'.Nonempty`. Establish `: (0 : V) ∈ ⋃₀ T'` using `huniv ▸ Set.mem_univ _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, -⟩` from `this`. Conclude with `⟨C, hC⟩`. Take `⟨B, hB⟩` from `hT'c.exists_eq_range hne`. Establish `hBS : ∀ i, B i ∈ S` using `fun i => by`. Take `⟨L, hK, hO, hL⟩` from `hT'T (hB ▸ Set.mem_range_self i : B i ∈ T')`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `Or.inr ⟨L, 0, hK, hO, hL⟩`. Use `MeasureTheory.Measure.ext_of_generateFrom_of_iUnion S B hgen hpi ?_ hBS (fun i => measure_ne_top _ _) ?_` and prove the remaining obligations. Rewrite using `[← Set.sUnion_range, ← hB, huniv]`. Introduce and unpack `_ (rfl | ⟨L, a, hK, hO, rfl⟩)`. Simplify using the standard rewrite rules.
-
-Conclude with `heq L a hK hO`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_cosets {m m' : Measure V} [IsFiniteMeasure m]
     (hb : ∀ U ∈ 𝓝 (0 : V), ∃ L : AddSubgroup V, IsCompact (L : Set V) ∧ IsOpen (L : Set V) ∧
@@ -334,19 +328,19 @@ theorem eq_of_cosets {m m' : Measure V} [IsFiniteMeasure m]
 end Ext
 
 /- English proof (translation)
-Introduce `V _ _ _ χ μ h m hm hint`. Take `⟨i1, i2, i3, i4, i5, i6, hb, hcov, hc, hs, hn, ha, -⟩` from `id h`. Establish `hmi : Integrable (mhat χ m) μ` using `hint`. Establish `hG : Continuous (dens χ μ m)` using `dens_continuous hc hn hmi`. Establish `hcos` using `fun (L : AddSubgroup V) (hK : IsCompact (L : Set V)) (hO : IsOpen (L : Set V)) (a : V) => setIntegral_dens h hc hs hn ha hmi hK hO a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGi : ∀ (L : AddSubgroup V) (a : V), IsCompact (L : Set V) → IntegrableOn (dens χ μ m) (coset L a) μ` using `fun L a hK => hG.continuousOn.integrableOn_compact (coset_isCompact hK a)`. Establish `hrei : ∀ (L : AddSubgroup V) (a : V), IsCompact (L : Set V) → IsOpen (L : Set V) → ∫ x in coset L a, (dens χ μ m x).re ∂μ = (m (coset L a)).toReal` using `fun L a hK hO => by`. Use `Complex.reCLM.integral_comp_comm (hGi L a hK)` as an intermediate fact. Simplify using `only [Complex.reCLM_apply] at this`. Rewrite using `[this, hcos L hK hO a]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `himi : ∀ (L : AddSubgroup V) (a : V), IsCompact (L : Set V) → IsOpen (L : Set V) → ∫ x in coset L a, (dens χ μ m x).im ∂μ = 0` using `fun L a hK hO => by`. Use `Complex.imCLM.integral_comp_comm (hGi L a hK)` as an intermediate fact. Simplify using `only [Complex.imCLM_apply] at this`. Rewrite using `[this, hcos L hK hO a]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hre : ∀ x, 0 ≤ (dens χ μ m x).re` using `nonneg_of_cosets (μ := μ) (Complex.continuous_re.comp hG) hb fun L a hK hO => by`. Simplify `ENNReal.toReal_nonneg` using `[hrei L a hK hO]`. Establish `him1 : ∀ x, 0 ≤ (dens χ μ m x).im` using `nonneg_of_cosets (μ := μ) (Complex.continuous_im.comp hG) hb fun L a hK hO => by`. Simplify using `[himi L a hK hO]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `him2 : ∀ x, 0 ≤ -(dens χ μ m x).im` using `nonneg_of_cosets (μ := μ) (Complex.continuous_im.comp hG).neg hb fun L a hK hO => by`. Simplify using `[integral_neg, himi L a hK hO]`. Establish `hD : Continuous fun x => (dens χ μ m x).re` using `Complex.continuous_re.comp hG`. Establish `hmeq : m = μ.withDensity fun x => ENNReal.ofReal (dens χ μ m x).re`. Use `eq_of_cosets hb hcov fun L a hK hO => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmeas : MeasurableSet (coset L a)` using `(coset_isOpen hO a).measurableSet`. Rewrite using `[withDensity_apply _ hmeas, ← ofReal_integral_eq_lintegral_ofReal (hD.continuousOn.integrableOn_compact (coset_isCompact hK a)) (Filter.Eventually.of_forall fun x => hre x), hrei L a hK hO, ENNReal.ofReal_toReal (measure_ne_top _ _)]`. Use `⟨fun x => (dens χ μ m x).re, hD, hre, fun x => ?_, fun U hU => ?_⟩` and prove the remaining obligations. Establish `him : (dens χ μ m x).im = 0` using `le_antisymm (by linarith [him2 x]) (him1 x)`. Express the relevant statement in the definitionally equal form `(((dens χ μ m x).re : ℝ) : ℂ) = dens χ μ m x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Complex.ext (by simp) (by simp [him])`. Use `conv_lhs => rw [hmeq]`. Conclude with `withDensity_apply _ hU`.
+A detailed English derivation is pending.
 -/
 theorem exists_density : ∀ (V : Type) [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V]
     (χ : V → V → ℂ) (μ : Measure V), NADual V χ μ → ∀ (m : Measure V), IsFiniteMeasure m →

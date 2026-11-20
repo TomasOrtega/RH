@@ -30,7 +30,7 @@ def upper {κ : Type} (ht : a + t = n) (y : Matrix (Fin n) (Fin a) κ) : Matrix 
   (rowsTB ht y).submatrix Sum.inl id
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1 : i.val < n ∧ j.val < a` using `⟨by omega, j.2⟩`. Unfold `topL`. Rewrite using `[dif_pos h1]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem topL_eq_upper {κ : Type} [Zero κ] (ht : a + t = n) (y : Matrix (Fin n) (Fin a) κ) : topL a y = upper ht y := by
   ext i j
@@ -40,9 +40,9 @@ theorem topL_eq_upper {κ : Type} [Zero κ] (ht : a + t = n) (y : Matrix (Fin n)
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `h _ j (Nat.le_add_right _ _) j.2`. Introduce `h i j hi _`. Use `h ⟨i.val - a, by omega⟩ j` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : i = Fin.cast ht (finSumFinEquiv (Sum.inr ⟨i.val - a, by omega⟩))` using `Fin.ext (by simp; omega)`. Rewrite using `[e]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowZero_iff {κ : Type} [Zero κ] (ht : a + t = n) (y : Matrix (Fin n) (Fin a) κ) :
     LowZero a y ↔ ∀ i j, rowsTB ht y (Sum.inr i) j = 0 := by
@@ -56,9 +56,9 @@ theorem lowZero_iff {κ : Type} [Zero κ] (ht : a + t = n) (y : Matrix (Fin n) (
     exact this
 
 /- English proof (translation)
-Unfold `localNewformFunction at h`. Use `split_ifs at h with hc`. Take `⟨⟨g, hg⟩, h2⟩` from `hc`. Establish `key : ∀ s, rowsTB ht u s j ∈ v.adicCompletionIntegers D.host.F`. Introduce and unpack `(s | s)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `congrFun (congrFun hg s) j` as an intermediate fact. Conclude with `(show _ = rowsTB ht u (Sum.inl s) j from this) ▸ Subtype.property _`. Conclude with `(h2 s j).1`. Simplify `key (finSumFinEquiv.symm (Fin.cast ht.symm i))` using `[rowsTB]`. Conclude with `absurd rfl h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem int_of_phi_ne_zero (ht : a + t = n) (P : Subgroup (GL (Fin a) (v.adicCompletionIntegers D.host.F))) (lam : P →* ℂˣ)
     (mu : (Fv D.host.F v)ˣ →* ℂˣ) (u : Matrix (Fin n) (Fin a) (Fv D.host.F v))
@@ -79,9 +79,9 @@ variable (r : v.adicCompletionIntegers D.host.F →+* k)
 include hr
 
 /- English proof (translation)
-Unfold `localNewformFunction`. Establish `h : ∃ k : P, ((k : GL (Fin a) (v.adicCompletionIntegers D.host.F)) : Matrix (Fin a) (Fin a) _).map (algebraMap (v.adicCompletionIntegers D.host.F) (Fv D.host.F v)) = (rowsTB ht (y.map (algebraMap _ (Fv D.host.F v)))).submatrix Sum.inl id` using `⟨⟨g, hg⟩, by rw [hy]; rfl⟩`. Rewrite using `[dif_pos ⟨h, fun i j => ⟨Subtype.property _, (hr _).1 ((lowZero_iff ht _).1 hl i j)⟩⟩]`. Establish `e : (h.choose : GL (Fin a) (v.adicCompletionIntegers D.host.F)) = g`. Use `Units.ext (Matrix.ext fun i j => Subtype.ext ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy]`. Conclude with `congrFun (congrFun h.choose_spec i) j`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_pos (ht : a + t = n) (P : Subgroup (GL (Fin a) (v.adicCompletionIntegers D.host.F)))
     (mu : (Fv D.host.F v)ˣ →* ℂˣ) (y : Matrix (Fin n) (Fin a) (v.adicCompletionIntegers D.host.F))
@@ -103,7 +103,7 @@ theorem phi_pos (ht : a + t = n) (P : Subgroup (GL (Fin a) (v.adicCompletionInte
   simp
 
 /- English proof (translation)
-Unfold `localNewformFunction`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨⟨g, hg⟩, h2⟩`. Conclude with `h ⟨(lowZero_iff ht _).2 fun i j => (hr _).2 (h2 i j).2, g, g.2, Matrix.ext fun i j => Subtype.ext (congrFun (congrFun hg i) j)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem phi_neg (ht : a + t = n) (P : Subgroup (GL (Fin a) (v.adicCompletionIntegers D.host.F)))
     (mu : (Fv D.host.F v)ˣ →* ℂˣ) (y : Matrix (Fin n) (Fin a) (v.adicCompletionIntegers D.host.F))
@@ -116,14 +116,14 @@ theorem phi_neg (ht : a + t = n) (P : Subgroup (GL (Fin a) (v.adicCompletionInte
     Matrix.ext fun i j => Subtype.ext (congrFun (congrFun hg i) j)⟩
 
 /- English proof (translation)
-Rewrite using `[hr, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Conclude with `((Valuation.isEquiv_valuation_valuationSubring _).lt_one_iff_lt_one)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_zero_iff (x : v.adicCompletionIntegers D.host.F) : r x = 0 ↔ IsLocalRing.residue _ x = 0 := by
   rw [hr, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]
   exact ((Valuation.isEquiv_valuation_valuationSubring _).lt_one_iff_lt_one)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Establish `h0 : r x = 0` using `(red_eq_zero_iff r hr x).2 ((IsLocalRing.residue_eq_zero_iff _).2 hx)`. Rewrite `h` using `[h0, isUnit_zero_iff]`. Use `(hr 1).1 (by rw [map_one, h])` as an intermediate fact. Simplify using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_of_red {x : v.adicCompletionIntegers D.host.F} (h : IsUnit (r x)) : IsUnit x := by
   by_contra hx
@@ -133,7 +133,7 @@ theorem isUnit_of_red {x : v.adicCompletionIntegers D.host.F} (h : IsUnit (r x))
   simp at this
 
 /- English proof (translation)
-Establish `: ∀ {k' : Type} [CommRing k'] (s : v.adicCompletionIntegers D.host.F →+* k'), z.map s = 1 ↔ ∀ i j, s ((z - 1) i j) = 0` using `fun s => by`. Rewrite using `[← Matrix.map_one s (map_zero s) (map_one s), ← Matrix.ext_iff]`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[this, this]`. Simplify using `only [red_eq_zero_iff r hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_eq_one_iff (z : Matrix (Fin a) (Fin a) (v.adicCompletionIntegers D.host.F)) :
     z.map r = 1 ↔ z.map (IsLocalRing.residue _) = 1 := by
@@ -147,11 +147,9 @@ theorem map_eq_one_iff (z : Matrix (Fin a) (Fin a) (v.adicCompletionIntegers D.h
 open Classical in
 
 /- English proof (translation)
-Establish `e : topL a (y.map r) = (upper ht y).map r` using `topL_eq_upper ht _`. Rewrite using `[e]`. Use `split_ifs with h`. Establish `hd : r (upper ht y).det = 1` using `by rw [RingHom.map_det, RingHom.mapMatrix_apply, h.2, det_one]`. Establish `hu : IsUnit (upper ht y)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_red r hr (hd ▸ isUnit_one))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[phi_pos r hr ht _ mu y hu.unit (Units.ext ((map_eq_one_iff r hr _).1 h.2)) rfl h.1, hmu]`. Simplify using the standard rewrite rules. Conclude with `(hr ((upper ht y).det - 1)).1 (by rw [map_sub, hd, map_one, sub_self])`. Use `phi_neg r hr ht _ mu y fun ⟨h1, g, hg, h2⟩ => h ⟨h1, (map_eq_one_iff r hr _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← h2]`.
-
-Conclude with `congrArg Units.val hg`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_princ (ht : a + t = n) (mu : (Fv D.host.F v)ˣ →* ℂˣ)
     (hmu : ∀ u : (Fv D.host.F v)ˣ, Valued.v ((u : Fv D.host.F v) - 1) < 1 → mu u = 1)
@@ -173,11 +171,9 @@ theorem phi_princ (ht : a + t = n) (mu : (Fv D.host.F v)ˣ →* ℂˣ)
 open Classical in
 
 /- English proof (translation)
-Establish `e : (topL a (y.map r)).det = r (upper ht y).det`. Rewrite using `[RingHom.map_det, topL_eq_upper ht]`. Both sides reduce to the same expression. Use `split_ifs with h`. Establish `hu : IsUnit (upper ht y)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_red r hr (e ▸ h.2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (w : (v.adicCompletionIntegers D.host.F)ˣ) (b : kˣ), r w = b → mu (Units.map (algebraMap (v.adicCompletionIntegers D.host.F) (Fv D.host.F v)).toMonoidHom w) = ξ b` using `fun w b hw => hmu _ b (Subtype.property w.val) hw`. Rewrite using `[phi_pos r hr ht _ mu y hu.unit (Subgroup.mem_top _) hu.unit_spec h.1, _root_.zpow_neg_one, key _ h.2.unit]`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hu.unit_spec, IsUnit.unit_spec, e]`. Use `phi_neg r hr ht _ mu y fun ⟨h1, g, _, h2⟩ => h ⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← h2]`.
-
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).map r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_top (ht : a + t = n) (mu : (Fv D.host.F v)ˣ →* ℂˣ) (ξ : kˣ →* ℂˣ)
     (hmu : ∀ (u : (Fv D.host.F v)ˣ) (b : kˣ) (h : (u : Fv D.host.F v) ∈ v.adicCompletionIntegers D.host.F),
@@ -213,9 +209,7 @@ def locQ {k : Type} [CommRing k] {n a : ℕ} (ξ : kˣ →* ℂˣ) (y : Matrix (
   if h : LowZero a y ∧ IsUnit (topL a y).det then ((ξ h.2.unit : ℂˣ) : ℂ) ^ (-1 : ℤ) else 0
 
 /- English proof (translation)
-Unfold `omegaK locK`. Use `split_ifs with h`. Conclude with `(Finset.prod_eq_one fun PP hPP => if_pos (h PP hPP)).symm`. Use `push_neg at h`. Take `⟨PP, hPP, h⟩` from `h`.
-
-Conclude with `(Finset.prod_eq_zero hPP (if_neg fun h' => h h'.1 h'.2)).symm`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem omegaK_eq {n a : ℕ} (Pg : Finset (Formalism.L2.DIV.Pl D.host.E))
     (y : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin n) (Fin a) (Formalism.L2.DIV.kP PP)) :
@@ -228,9 +222,7 @@ theorem omegaK_eq {n a : ℕ} (Pg : Finset (Formalism.L2.DIV.Pl D.host.E))
     exact (Finset.prod_eq_zero hPP (if_neg fun h' => h h'.1 h'.2)).symm
 
 /- English proof (translation)
-Unfold `omegaQ`. Use `split_ifs with h`. Rewrite using `[← Finset.prod_attach Q]`. Conclude with `Finset.prod_congr rfl fun PP _ => by rw [locQ, dif_pos (h PP.1 PP.2)]`. Take `⟨PP, h⟩` from `not_forall.1 h`.
-
-Take `⟨hPP, h⟩` from `Classical.not_imp.1 h`. Conclude with `(Finset.prod_eq_zero hPP (dif_neg h)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem omegaQ_eq {n a : ℕ} (Q : Finset (Formalism.L2.DIV.Pl D.host.E))
     (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ)
@@ -247,7 +239,7 @@ theorem omegaQ_eq {n a : ℕ} (Q : Finset (Formalism.L2.DIV.Pl D.host.E))
 variable (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
 
 /- English proof (translation)
-Establish `h : (((cA D e • x).map (toEAf D)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ = toEAf D e • ((x.map (toEAf D)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ` using `Matrix.ext fun i j => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.AdelicLatMove.cF D (toEAf D (cA D e * x j i)) = toEAf D e * GlobalTheory.AdelicLatMove.cF D (toEAf D (x j i))`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, GlobalTheory.AdelicLatMove.toEAf_cA, GlobalTheory.PlaceVec.cF_cF_toEAf]`. Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_eq, GlobalTheory.PlaceVec.frMapAdj_eq, h, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem frMapAdj_smul (e : AE D) (x : WO S T) :
     frMapAdj S T βS βT (cA D e • x) = toEAf D e • frMapAdj S T βS βT x := by
@@ -258,7 +250,7 @@ theorem frMapAdj_smul (e : AE D) (x : WO S T) :
   rw [GlobalTheory.PlaceVec.frMapAdj_eq, GlobalTheory.PlaceVec.frMapAdj_eq, h, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `h : cA D e • x = x` using `Matrix.ext hx`. Use `frMapAdj_smul S T βS βT e x` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `(congrFun (congrFun this i) j).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMapAdj_half {e : AE D} {x : WO S T} (hx : IsHalf (cA D e) x) (i : Fin S.rank) (j : Fin T.rank) :
     toEAf D e * frMapAdj S T βS βT x i j = frMapAdj S T βS βT x i j := by
@@ -268,7 +260,7 @@ theorem frMapAdj_half {e : AE D} {x : WO S T} (hx : IsHalf (cA D e) x) (i : Fin 
   exact (congrFun (congrFun this i) j).symm
 
 /- English proof (translation)
-Unfold `adjCo frMapAdj`. Rewrite using `[Matrix.map_mul (f := rdE φ), Matrix.map_mul (f := rdE φ), Matrix.map_map, show (rdE φ) ∘ (toEAf D) = rdA φ from funext hφ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adjCo_eq {v : FinPl D} (φ : SplitProj D v) (hφ : ∀ a : AE D, rdE φ (toEAf D a) = rdA φ a) (x : WO S T) :
     adjCo φ S T (frCo φ βS) (frCo φ βT) x = (frMapAdj S T βS βT x).map (rdE φ) := by
@@ -278,7 +270,7 @@ theorem adjCo_eq {v : FinPl D} (φ : SplitProj D v) (hφ : ∀ a : AE D, rdE φ 
   rfl
 
 /- English proof (translation)
-Take `⟨hc, hφ, -⟩` from `GlobalTheory.SplitProjChart.chart_rdA D v φ e he`. Take `⟨w, rfl⟩` from `GlobalTheory.AdjDatumNe.toEAf_surjective N`. Rewrite using `[← hN, ← RingHom.map_mul]`. Rewrite `h` using `[hφ]`. Conclude with `GlobalTheory.IdemRes.toEAf_mem_of_finPart ((hc.2.2.2 w).2 (GlobalTheory.SplitHecke.isInt_Ov.2 h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int_of_rdE {v : FinPl D} {φ : SplitProj D v} {e : AE D} (he : IsIdemOf φ e) {N : EAf D}
     (hN : toEAf D e * N = N) (h : rdE φ N ∈ v.adicCompletionIntegers D.host.F) :
@@ -296,11 +288,11 @@ def redFun (a : AE D) (PP : Formalism.L2.DIV.Pl D.host.E) (ω : Matrix (Fin S.ra
   fun x => if IsHalf a x ∧ IsIntM (frMapAdj S T βS βT x) then ω (redM PP (frMapAdj S T βS βT x)) else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `onHalfAdj redFun`. Rewrite using `[adjCo_eq S T βS βT φ (GlobalTheory.SplitProjChart.chart_rdA D v φ e he).2.1]`. Distinguish the cases in `hx : IsHalf (cA D e) x`. Rewrite using `[if_pos hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : IsIntM (frMapAdj S T βS βT x)`. Rewrite using `[if_pos ⟨hx, hi⟩] choose h hh using fun i j => hr _ (hi i j)`. Use `(h1 (Matrix.of fun i j => ⟨_, h i j⟩)).trans (congrArg ω (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Conclude with `(hh i j).trans (by rw [redM, dif_pos (hi i j)])`. Rewrite using `[if_neg fun h => hi h.2]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hi fun i j => mem_int_of_rdE he (frMapAdj_half S T βS βT hx i j) (h0 _ hne i j)`. Rewrite using `[if_neg hx, if_neg fun h => hx h.1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onHalfAdj_eq {v : FinPl D} {φ : SplitProj D v} {e : AE D} (he : IsIdemOf φ e) (PP : Formalism.L2.DIV.Pl D.host.E)
     (r : v.adicCompletionIntegers D.host.F →+* Formalism.L2.DIV.kP PP)
@@ -328,7 +320,7 @@ theorem onHalfAdj_eq {v : FinPl D} {φ : SplitProj D v} {e : AE D} (he : IsIdemO
   · rw [if_neg hx, if_neg fun h => hx h.1]
 
 /- English proof (translation)
-Take `⟨⟨r, -, h1, -, h3⟩, -⟩` from `GlobalTheory.PlaceRed.red_dict D v φ PP hP`. Conclude with `onHalfAdj_eq S T βS βT he PP r h3 _ _ (int_of_phi_ne_zero ht _ _ _) (phi_princ r h1 ht mu hmu)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem onHalfAdj_princ {v : FinPl D} {φ : SplitProj D v} {e : AE D} (he : IsIdemOf φ e) {PP : Formalism.L2.DIV.Pl D.host.E}
     (hP : IsProjAt φ PP) {t : ℕ} (ht : T.rank + t = S.rank) (mu : (Fv D.host.F v)ˣ →* ℂˣ)
@@ -339,7 +331,7 @@ theorem onHalfAdj_princ {v : FinPl D} {φ : SplitProj D v} {e : AE D} (he : IsId
   exact onHalfAdj_eq S T βS βT he PP r h3 _ _ (int_of_phi_ne_zero ht _ _ _) (phi_princ r h1 ht mu hmu)
 
 /- English proof (translation)
-Take `⟨⟨r, -, h1, h2, h3⟩, -⟩` from `GlobalTheory.PlaceRed.red_dict D v φ PP hP`. Conclude with `onHalfAdj_eq S T βS βT he PP r h3 _ _ (int_of_phi_ne_zero ht _ _ _) (phi_top r h1 ht mu ξ fun u b h hb => hmu u b ((h2 _ _).2 ⟨h, hb⟩))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem onHalfAdj_top {v : FinPl D} {φ : SplitProj D v} {e : AE D} (he : IsIdemOf φ e) {PP : Formalism.L2.DIV.Pl D.host.E}
     (hP : IsProjAt φ PP) {t : ℕ} (ht : T.rank + t = S.rank) (mu : (Fv D.host.F v)ˣ →* ℂˣ)
@@ -351,7 +343,7 @@ theorem onHalfAdj_top {v : FinPl D} {φ : SplitProj D v} {e : AE D} (he : IsIdem
     (phi_top r h1 ht mu ξ fun u b h hb => hmu u b ((h2 _ _).2 ⟨h, hb⟩))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PlaceVec.isSBHalf_of_red hS.1 hT.1 ha (frMapAdj S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_up S T βS βT) (GlobalTheory.PlaceVec.frMapAdj_down S T βS βT) {PP} (fun y => ω (y PP)) fun _ _ h => by rw [h PP (Finset.mem_singl …`.
+A detailed English derivation is pending.
 -/
 theorem isSBHalf_redFun {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {a : AE D}
@@ -364,15 +356,15 @@ theorem isSBHalf_redFun {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with hi`. Use `Finset.prod_congr rfl fun PP hPP => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D _ _ (hes PP hPP)`. Establish `h3 : IsIntM (toEAf D (es PP) • frMapAdj S T βS βT x)` using `fun i j => mul_mem h1 (hi i j)`. Establish `h4 : IsHalf (cA D (es PP)) (cA D (es PP) • x)` using `fun i j => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `cA D (es PP) * (cA D (es PP) * x i j) = cA D (es PP) * x i j`. Rewrite using `[← mul_assoc, ← RingHom.map_mul, (hes PP hPP).1.1]`. Unfold `redFun`. Rewrite using `[frMapAdj_smul, if_pos ⟨h4, h3⟩]`. Use `congrArg (ω PP) (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(dif_pos (h3 i j)).trans (Eq.trans ?_ (dif_pos (hi i j)).symm)` and prove the remaining obligations. Use `(Formalism.L2.DIV.resS D.host.F PP).map_mul ⟨_, h1⟩ ⟨_, hi i j⟩` as an intermediate fact. Rewrite `this` using `[h2, one_mul]`. Conclude with `this`. Establish `: ∃ PP ∈ s, ¬ IsIntM (toEAf D (es PP) • frMapAdj S T βS βT x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `hi fun i j => ?_` and prove the remaining obligations. Rewrite using `[← frMapAdj_half S T βS βT hx i j, map_sum, Finset.sum_mul]`. Conclude with `sum_mem fun PP hPP => h PP hPP i j`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨PP, hPP, h⟩` from `this`. Use `Finset.prod_eq_zero hPP ?_` and prove the remaining obligations. Unfold `redFun`. Rewrite using `[frMapAdj_smul, if_neg fun h' => h h'.2]`.
+A detailed English derivation is pending.
 -/
 theorem prod_redFun (s : Finset (Formalism.L2.DIV.Pl D.host.E)) (es : Formalism.L2.DIV.Pl D.host.E → AE D)
     (hes : ∀ PP ∈ s, Formalism.L2.NTheta.IsIdemAt (es PP) PP)
@@ -408,7 +400,7 @@ theorem prod_redFun (s : Finset (Formalism.L2.DIV.Pl D.host.E)) (es : Formalism.
 end Local
 
 /- English proof (translation)
-Take `⟨h1, h2, v, ε, h3, h4⟩` from `h`. Use `⟨by rw [← RingHom.map_mul, h1], ?_, v, ε, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA, mul_comm, h2]`. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA, add_comm, h4]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSplitIdem_cA {e : AE D} (h : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨h1, h2, v, ε, h3, h4⟩ := h
@@ -417,31 +409,25 @@ theorem isSplitIdem_cA {e : AE D} (h : IsSplitIdem D e) : IsSplitIdem D (cA D e)
   · rw [GlobalTheory.DualPairCheck.cA_cA, add_comm, h4]
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT βS βT Pg Q ξ f₀ f μ 𝓕 t ht hB hμ _ _ hdis hv`. Take `⟨-, e, ⟨⟨es, hes, rfl⟩, hc⟩, hf⟩` from `hv`. Take `⟨d1, d2⟩` from `GlobalTheory.SplitIdemDict.idem_dictionary D`. Establish `hS` using `hB.2.2.1`. Establish `hT` using `hB.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ω : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (Formalism.L2.DIV.kP PP) → ℂ` to `fun PP => if PP ∈ Pg then locK else locQ (ξ PP)`. Establish `ω1 : ∀ PP ∈ Pg, ω PP = locK` using `fun PP h => if_pos h`. Establish `ω2 : ∀ PP ∈ Q, ω PP = locQ (ξ PP)` using `fun PP h => if_neg fun h' => Finset.disjoint_left.1 hdis h' h`. Set `v : Formalism.L2.DIV.Pl D.host.E → FinPl D` to `fun PP => PP.under (𝓞 D.host.F)`. Establish `hvφ : ∀ {w : FinPl D} {φ : SplitProj D w} {PP}, IsProjAt φ PP → w = v PP` using `fun h => HeightOneSpectrum.ext (d2 _ _ _ h).1.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : ∀ PP ∈ Pg ∪ Q, ∃ φ : SplitProj D (v PP), IsIdemOf φ (es PP) ∧ IsProjAt φ PP` using `fun PP h => by`. Take `⟨w, φ, h1, h2⟩` from `d1 _ _ (hes PP h)`. Take `rfl` from `hvφ h2`. Conclude with `⟨φ, h1, h2⟩`. Establish `hsum : ∀ PP ∈ Pg ∪ Q, es PP + cA D (es PP) = idem D (.inl (v PP))` using `fun PP h => (hφ PP h).choose_spec.1.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `ha : ∀ PP ∈ Pg ∪ Q, IsSplitIdem D (cA D (es PP)) ∧ cA D (es PP) + cA D (cA D (es PP)) = idem D (.inl (v PP))` using `fun PP h => ⟨isSplitIdem_cA (hes PP h).1, by rw [GlobalTheory.DualPairCheck.cA_cA, add_comm, hsum PP h]⟩`. Establish `hcross` using `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es _ (fun i hi => (hes i hi).1.1) hc`. Establish `hinj : Set.InjOn v (Pg ∪ Q : Finset _)` using `fun i hi j hj hij => by`. Establish `hi'` using `Finset.mem_coe.1 hi`. Establish `hj'` using `Finset.mem_coe.1 hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: es i = es j` using `GlobalTheory.PlaceDatum.idempotent_eq_of_orthogonal_decomp (hes i hi').1.1 (hes i hi').1.2.1 (hes j hj').1.1 (hes j hj').1.2.1 (by rw [hsum i hi', hsum j hj', hij]) (hcross i hi' j hj') (hcross j hj' i hi')`. Conclude with `GlobalTheory.PlaceVec.isIdemAt_inj (hes i hi') (this ▸ hes j hj')`. Establish `hSB : ∀ PP ∈ Pg ∪ Q, IsSBHalf (cA D (es PP)) (latO S T ΛS ΛT fun _ => True) (redFun S T βS βT (cA D (es PP)) PP (ω PP))` using `fun PP h => isSBHalf_redFun S T βS βT hS hT (GlobalTheory.SplitScalar.infPart_splitIdem (ha PP h).1) PP _`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `choose g hg using fun PP : ↥(Pg ∪ Q) => GlobalTheory.PlaceVec.exists_isThetaAt (base_std hB) hS hT (ha PP.1 PP.2).1.1 (GlobalTheory.SplitScalar.infPart_splitIdem (ha PP.1 PP.2).1) (GlobalTheory.T.split_idempotent_base_function_identity D ψ θ S T sS sT ΛS ΛT f₀ hB _ _ (ha PP.1 PP. …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Function.Injective fun PP : ↥(Pg ∪ Q) => (Sum.inl (v PP.1) : Place D)` using `fun i j h => Subtype.ext (hinj (Finset.mem_coe.2 i.2) (Finset.mem_coe.2 j.2) (Sum.inl_injective h))`. Establish `key : ∀ (w : FinPl D) (φ : SplitProj D w) (e : AE D), IsIdemOf φ e → ∀ PP ∈ Pg ∪ Q, IsProjAt φ PP → IsThetaAt ψ (symplO S T) (heisO ψ S T) (cA D e) (latO S T ΛS ΛT fun _ => True) 1 f₀ (redFun S T βS βT (cA D e) PP (ω PP)) (Function.extend (fun PP : ↥(Pg ∪ Q) => (Sum.inl (v PP.1) …`. Introduce `w φ e he PP h hP`. Take `rfl` from `((d2 _ _ _ hP).2.2 e he).2.1 _ (hes PP h)`. Take `rfl` from `hvφ hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hi.extend_apply g _ ⟨PP, h⟩]`. Conclude with `hg ⟨PP, h⟩`. Use `⟨Function.extend (fun PP : ↥(Pg ∪ Q) => (Sum.inl (v PP.1) : Place D)) g fun _ => f₀, ⟨fun τ => Function.extend_apply' _ _ _ (by rintro ⟨_, ⟨⟩⟩), fun w hw => Function.extend_apply' _ _ _ ?_⟩, fun w φ e he mu => ⟨fun PP h hP hmu => ?_, fun PP h hP hmu => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨PP, h⟩`. Take `rfl` from `Sum.inl_injective h`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hw PP.1 PP.2 rfl`. Rewrite using `[onHalfAdj_princ S T βS βT he hP ht mu hmu, ← ω1 PP h]`. Conclude with `key w φ e he PP (Finset.mem_union_left _ h) hP`. Rewrite using `[onHalfAdj_top S T βS βT he hP ht mu _ hmu, ← ω2 PP h]`. Conclude with `key w φ e he PP (Finset.mem_union_right _ h) hP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨b1, b2⟩, hx⟩` from `hx`. Establish `hcs : cA D (∑ PP ∈ Pg ∪ Q, es PP) = ∑ PP ∈ Pg ∪ Q, cA D (es PP)` using `map_sum _ _ _`. Use `GlobalTheory.T.thetaFunction_splitProductDatum_isPureTensor D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ _ (Pg ∪ Q) v (fun PP => cA D (es PP)) ha hinj _ hSB x f _ (fun PP h => ?_) (fun p hp => ?_) (fun y hy => ?_) (fun y hy => ?_) (hcs ▸ hf)` and prove the remaining obligations. Take `⟨φ, h1, h2⟩` from `hφ PP h`. Break down `Finset.mem_union.1 h with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[ω1 PP h, ← onHalfAdj_princ S T βS βT h1 h2 ht 1 fun _ _ => rfl]`. Conclude with `(hx _ φ _ h1 1).1 PP h h2 fun _ _ => rfl`. Take `⟨mu, hmu⟩` from `(GlobalTheory.PlaceRed.red_dict D _ φ PP h2).2 (ξ PP)`. Rewrite using `[ω2 PP h, ← onHalfAdj_top S T βS βT h1 h2 ht mu _ hmu]`. Conclude with `(hx _ φ _ h1 mu).2 PP h h2 hmu`.
-
-Break down `p with w | τ` into its components or cases. Conclude with `b2 w fun PP h h' => hp PP h (congrArg Sum.inl (HeightOneSpectrum.ext h'.symm))`. Conclude with `b1 τ`. Rewrite using `[prod_redFun S T βS βT _ es hes ω y (hcs ▸ hy)]`. Distinguish the cases in `hi : IsIntM (frMapAdj S T βS βT y)`.
-
-Rewrite using `[if_pos ⟨hy, hi⟩, if_pos hi, omegaK_eq, omegaQ_eq, Finset.prod_union hdis]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun PP h => by rw [ω1 PP h]`. Conclude with `Finset.prod_congr rfl fun PP h => by rw [ω2 PP h]`. Rewrite using `[if_neg fun h => hi h.2, if_neg hi]`.
-
-Conclude with `if_neg fun h => hy h.1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaVecLocal : ∀ D : D7, ThetaVecLocal D := by
   intro D ψ θ S T sS sT ΛS ΛT βS βT Pg Q ξ f₀ f μ 𝓕 t ht hB hμ _ _ hdis hv

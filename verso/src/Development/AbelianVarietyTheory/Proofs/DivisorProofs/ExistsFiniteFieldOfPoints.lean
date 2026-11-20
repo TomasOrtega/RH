@@ -5,11 +5,11 @@ open Polynomial
 namespace GlobalTheory.FiniteFieldOfPoints
 
 /- English proof (translation)
-Use `choose f hf using h`. Use `⟨{ toFun := f, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, ?_⟩` and prove the remaining obligations. Apply `j.injective` to reduce the goal to its premises. Simplify using `[hf]`. Introduce `a b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `j.injective` to reduce the goal to its premises. Simplify using `[hf]`. Apply `j.injective` to reduce the goal to its premises. Simplify using `[hf]`. Introduce `a b`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `j.injective` to reduce the goal to its premises. Simplify using `[hf]`. Use extensionality with `c`. Simplify using `[hf]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem factor_of_range {C K₂ Ω : Type} [CommRing C] [Field K₂] [Field Ω]
     (j : K₂ →+* Ω) (ψ : C →+* Ω) (h : ∀ c, ∃ x, j x = ψ c) :
@@ -23,21 +23,17 @@ theorem factor_of_range {C K₂ Ω : Type} [CommRing C] [Field K₂] [Field Ω]
   · ext c; simp [hf]
 
 /- English proof (translation)
-Use `letI : Algebra K C := φ.toAlgebra`. Use `haveI : Module.Finite K C := hφ`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := K) (M := C)`. Establish `hint : ∀ c : C, IsIntegral K c` using `fun c => Algebra.IsIntegral.isIntegral c`. Use `choose p hpm hpe using hint`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : K[X] := ∏ c ∈ s, p c with hP`. Establish `hPm : P.Monic` using `monic_prod_of_monic _ _ (fun c _ => hpm c)`. Establish `hsf : IsSplittingField K (IntermediateField.adjoin K (P.rootSet (AlgebraicClosure K))) P` using `IntermediateField.adjoin_rootSet_isSplittingField (IsAlgClosed.splits _)`. Use `⟨IntermediateField.adjoin K (P.rootSet (AlgebraicClosure K)), IsSplittingField.finiteDimensional _ P, ?_⟩` and prove the remaining obligations. Generalize the expression as in `IntermediateField.adjoin K (P.rootSet (AlgebraicClosure K)) = E at hsf ⊢`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `K₂ Ω _ _ e j ψ hc`. Establish `hspl : (P.map (algebraMap K E)).Splits` using `hsf.splits'`. Establish `hspl2 : (P.map (e.comp (algebraMap K E))).Splits`. Rewrite using `[← Polynomial.map_map]`. Conclude with `hspl.map e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgen : ∀ c ∈ s, ψ c ∈ j.range`. Introduce `c hcs`. Establish `h0 : eval₂ φ c P = 0`. Rewrite using `[hP, eval₂_finsetProd]`. Conclude with `Finset.prod_eq_zero hcs (hpe c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ((P.map (e.comp (algebraMap K E))).map j).IsRoot (ψ c)`. Rewrite using `[Polynomial.map_map, ← hc, IsRoot, eval_map, ← hom_eval₂, h0, map_zero]`. Conclude with `hspl2.mem_range_of_isRoot (hPm.map _).ne_zero h1`. Apply `factor_of_range` to reduce the goal to its premises. Introduce `c`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hmem : c ∈ Submodule.span K (s : Set C)` using `by rw [hs]; trivial`. Express the relevant statement in the definitionally equal form `ψ c ∈ j.range`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem x hx => exact hgen x hx`. Consider the case `zero => simp`.
-
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `mul_mem ?_ hx` and prove the remaining obligations.
-
-Use `⟨e (algebraMap K E a), ?_⟩` and prove the remaining obligations. Conclude with `(RingHom.congr_fun hc a).symm`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finite_field_of_points (K : Type) [Field K] (C : Type) [CommRing C] (φ : K →+* C)
     (hφ : RingHom.Finite φ) :

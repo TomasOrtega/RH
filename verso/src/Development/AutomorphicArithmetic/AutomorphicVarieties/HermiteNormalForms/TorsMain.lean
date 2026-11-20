@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTupl
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms.Assembly
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.KT.torsBoundPow`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KT.torsMain :
     ∃ C : ℝ, UpperTheory.V.K.TorsBoundPow C :=

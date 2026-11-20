@@ -13,9 +13,9 @@ open GroundTheory.Global.AdeleBaseChange GlobalTheory.Mem.LocTriv
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h2` using `unif_spec w`. Establish `h3` using `hu (y * (atFin w (unif w))⁻¹) (by`. Unfold `IsUnitAt`. Unfold `IsUnifAt at hy h2`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hy, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_cancel₀ WithZero.exp_ne_zero)`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem loc_eq_val (ψ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (hu : ψ.UnrAt w)
     (y : (w.adicCompletion E)ˣ) (hy : IsUnifAt w y) : ψ.loc w y = ψ.val w := by
@@ -29,13 +29,13 @@ private theorem loc_eq_val (ψ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (hu :
   exact h3
 
 /- English proof (translation)
-Establish `hs : ∀ u, ((c • (Neutral.B1.localIdele E w x : IdeleGroup E) : IdeleGroup E) : AdeleRing (𝓞 E) E).2 u = finiteCompletionMap (c : E ≃+* E) u (ev (comapPrime (c : E ≃+* E) u) (Neutral.B1.localIdele E w x : AdeleRing (𝓞 E) E))` using `fun u => smul_snd c _ u`. Use `⟨Units.map (ev (c • w)) (c • (Neutral.B1.localIdele E w x : IdeleGroup E)), ?_, Units.ext (Prod.ext ?_ (Subtype.ext (funext fun u => ?_)))⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (((c • (Neutral.B1.localIdele E w x : IdeleGroup E) : IdeleGroup E) : AdeleRing (𝓞 E) E).2 (c • w)) = _`. Rewrite using `[hs, valued_finiteCompletionMap, comapPrime_eq_inv_smul, inv_smul_smul, ev_local_self]`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(c • ((Neutral.B1.localIdele E w x : IdeleGroup E) : AdeleRing (𝓞 E) E)).1 u = 1`. Rewrite using `[smul_fst]`. Conclude with `map_one _`. Express the relevant statement in the definitionally equal form `((c • (Neutral.B1.localIdele E w x : IdeleGroup E) : IdeleGroup E) : AdeleRing (𝓞 E) E).2 u = ev u (Neutral.B1.localIdele E (c • w) _ : AdeleRing (𝓞 E) E)`. Distinguish the cases in `hu : u = c • w`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hu` using the available equality. Rewrite using `[ev_local_self]`. Both sides reduce to the same expression. Establish `h1 : comapPrime (c : E ≃+* E) u ≠ w`. Rewrite using `[comapPrime_eq_inv_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hu (smul_inv_smul c u).symm`. Rewrite using `[ev_local_ne hu, hs, ev_local_ne h1]`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smul_local (c : E ≃ₐ[ℚ] E) (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompletion E)ˣ) :
     ∃ x' : ((c • w).adicCompletion E)ˣ, Valued.v (x' : (c • w).adicCompletion E) = Valued.v (x : w.adicCompletion E) ∧
@@ -68,17 +68,15 @@ end UpperTheory.LocalScalarValues
 
 open UpperTheory.LocalScalarValues in
 /- English proof (translation)
-Introduce `E _ _ _ P ω hω hc c z`. Set `ψ : Neutral.B1.Ideles E →* ℂˣ` to `{ toFun := fun a => ω.1 (c • (a : IdeleGroup E)) * (ω.1 a)⁻¹ map_one' := by`. Rewrite using `[smul_one, map_one, inv_one, mul_one]`. Use the proof step `map_mul' := fun a b => by`. Rewrite using `[smul_mul', map_mul, map_mul, mul_inv, mul_mul_mul_comm] }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψ : ∀ a, ψ a = ω.1 (c • (a : IdeleGroup E)) * (ω.1 a)⁻¹` using `fun _ => rfl`. Establish `hcont : Continuous ψ` using `(ω.2.1.comp (continuous_const_smul c)).mul ω.2.1.inv`. Establish `hd : ∀ k, ψ (Neutral.B1.diagUnits E k) = 1` using `fun k => by`. Establish `e : ∀ k : Eˣ, (Neutral.B1.diagUnits E k : IdeleGroup E) = IdeleGroup.diagonal E k` using `fun _ => Units.ext rfl`. Establish `e2 : ∀ k : Eˣ, ω.1 (IdeleGroup.diagonal E k) = 1` using `fun k => (congrArg ω.1 (e k)).symm.trans (ω.2.2 k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ, e, smul_diagonal, e2, e2, inv_one, mul_one]`. Establish `hev : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ω.UnrAt w ∧ ω.UnrAt (c • w) ∧ ∀ w' : HeightOneSpectrum (𝓞 E), w'.under (𝓞 ℚ) = w.under (𝓞 ℚ) → ∃ B, (CG.mk P).HasSat w B ∧ (CG.mk P).HasSat w' B`. Establish `h1` using `Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified ω)`. Establish `h2` using `(MulAction.injective c).tendsto_cofinite.eventually h1`. Use `filter_upwards [h1, h2, hc] with w a b d using ⟨a, b, d⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ψ = 1` using `GlobalTheory.FrobDense.eq_one_of_away ψ hcont hd (Filter.eventually_cofinite.1 hev).toFinset fun w hw y => by`. Establish `hw'` using `not_not.1 (fun h => hw ((Set.Finite.mem_toFinset _).2 h))`. Take `⟨hu, hu', hs⟩` from `hw'`. Use `GlobalTheory.FrobDense.eq_one_of_unif (ψ.comp (Neutral.B1.localIdele E w)) (fun x hx => ?_) y` and prove the remaining obligations. Take `⟨x', hv, he⟩` from `smul_local c w x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, hB, hB'⟩` from `hs (c • w) (HeightOneSpectrum.ext (Ideal.under_smul (𝓞 ℚ) w.asIdeal c))`. Establish `e1 : ω.1 (Neutral.B1.localIdele E w x) = B.prod` using `(loc_eq_val ω w hu x hx).trans (PositivityTheory.jumpWindows.PSmo.val_eq_prod hω hB)`. Establish `e2 : ω.1 (Neutral.B1.localIdele E (c • w) x') = B.prod` using `(loc_eq_val ω (c • w) hu' x' (hv.trans hx)).trans (PositivityTheory.jumpWindows.PSmo.val_eq_prod hω hB')`. Rewrite using `[MonoidHom.comp_apply, hψ, he, e1, e2, mul_inv_cancel]`. Establish `h2 : ψ z = 1` using `by rw [h1]; rfl`.
-
-Rewrite `h2` using `[hψ, mul_inv_eq_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.centralChar_galois_invariant_of_conjInv :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (P : CuspSub E 2) (ω : HChar E), P.HasCentChar ω → ConjInv P → ∀ (c : E ≃ₐ[ℚ] E) (z : IdeleGroup E), ω.1 (c • z) = ω.1 z := by

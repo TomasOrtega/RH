@@ -11,17 +11,17 @@ section Ring
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n] (O : Subring R)
 
 /- English proof (translation)
-Establish `key : ∀ (A : Matrix n n R), (∀ i j, A i j ∈ O) → ∀ y : n → R, (∀ i, y i ∈ O) → ∀ i, A.mulVec y i ∈ O` using `fun A hA y hy i => O.sum_mem fun j _ => O.mul_mem (hA i j) (hy j)`. Establish `hs : ∀ j i : n, (Pi.single j (1 : R) : n → R) i ∈ O`. Introduce `j i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[O.one_mem]`. Simplify using `[h, O.zero_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩ y`. Use `⟨key _ (fun i j => (k.1 i j).2) y, fun h => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `key (Formalism.UG.bc (n := n) O.subtype k⁻¹).1 (fun i j => ((k⁻¹).1 i j).2) _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `h`. Establish `h1 : ∀ i j, m.1 i j ∈ O` using `fun i j => by`. Simplify using `using (h (Pi.single j 1)).1 (hs j) i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ∀ i j, (m⁻¹).1 i j ∈ O` using `fun i j => by`. Use `(h ((m⁻¹).1.mulVec (Pi.single j 1))).2 (by` as an intermediate fact. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hs j) i`. Rewrite `this` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `A : Matrix n n O` to `Matrix.of fun i j => ⟨m.1 i j, h1 i j⟩`. Set `B : Matrix n n O` to `Matrix.of fun i j => ⟨(m⁻¹).1 i j, h2 i j⟩`. Establish `hA : O.subtype.mapMatrix A = m.1` using `rfl`. Establish `hB : O.subtype.mapMatrix B = (m⁻¹).1` using `rfl`. Establish `hinj : Function.Injective (O.subtype.mapMatrix : Matrix n n O →+* Matrix n n R)` using `fun X Y hXY => Matrix.ext fun i j => Subtype.ext (congrFun (congrFun hXY i) j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨A, B, hinj ?_, hinj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[map_mul, hA, hB, map_one, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_iff (m : GL n R) :
     m ∈ (Formalism.UG.bc (n := n) O.subtype).range ↔
@@ -61,27 +61,23 @@ theorem mem_range_iff (m : GL n R) :
 end Ring
 
 /- English proof (translation)
-Establish `hev : ∀ w (y : Fin V.rank → Af F ⊗[F] E), (fun i => evF E w ((finMat hc.sig V.gram g).mulVec y i)) = (locMat hc V w g).1.mulVec fun i => evF E w (y i)` using `fun w y => by`. Use function extensionality and compare the values at `i`. Rewrite using `[locMat_val]`. Conclude with `RingHom.map_mulVec (evF E w) _ y i`. Establish `hloc : Stab hc V g ↔ ∀ x, x ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F` using `F) V v ↔ (locMat hc V v g).1.mulVec x ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc (F := F) V v := by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hs x`. Establish `hx : ∀ w, w ≠ v → (fun i => evF E w (sgT E v (x i))) = 0` using `fun w hw =>`. Use function extensionality and compare the values at `fun i => evF_sgT_ne hw _`. Establish `hxv : (fun i => evF E v (sgT E v (x i))) = x` using `funext fun i => evF_sgT_self v _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hs fun i => sgT E v (x i)` as an intermediate fact. Rewrite `this` using `[mem_lamHat_iff, mem_lamHat_iff]`. Simplify using `only [hev] at this`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `this.1 (fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hxv]`. Conclude with `h0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hx w hw]`. Conclude with `zero_mem _) v`. Rewrite `h1` using `[hxv]`. Then use the resulting hypothesis. Introduce `h0`. Establish `h1` using `this.2 (fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hxv]`. Conclude with `h0`. Rewrite using `[hx w hw, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _) v`. Rewrite `h1` using `[hxv]`. Then use the resulting hypothesis. Introduce `hs y`. Rewrite using `[mem_lamHat_iff, mem_lamHat_iff]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Conclude with `hs _`. Rewrite using `[hg w hw, Units.val_one, Matrix.one_mulVec]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hloc, mem_range_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hs y`. Use `hs (h.1.mulVec y)` as an intermediate fact. Rewrite `this` using `[hh, hh, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
-
-Rewrite using `[Units.val_mul, Units.val_mul]` and apply the resulting hypothesis. Introduce `hs x`. Use `hs ((h⁻¹).1.mulVec x)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right, Units.val_mul, ← Matrix.mulVec_mulVec]`. Rewrite using `[hh, hh]`.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_iff (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     (hc : CMData F E) (V : HSpace E) (v : HeightOneSpectrum (𝓞 F)) (h : GL (Fin V.rank) (Fv F v ⊗[F] E))

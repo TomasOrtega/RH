@@ -15,11 +15,11 @@ namespace GlobalTheory.CompanionTheory.Ar.FamLines
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {V : Type} [AddCommGroup V] [Module Ω V]
 
 /- English proof (translation)
-Set `L' : Submodule R V` to `{ L with smul_mem' := fun a e he => h.1 a a.2 e he }`. Take `⟨k, φ, v, hφ, hv⟩` from `LocFreeProj.exists_dualBasis (L := L') (r := r) h`. Use `⟨Finset.univ.image fun i => (v i : V), le_antisymm (fun e he => ?_) ?_⟩` and prove the remaining obligations. Rewrite using `[← hv e]`. Use `sum_mem fun i _ => AddSubgroup.subset_closure ⟨φ i e, hφ i e he, v i, ?_, rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, e, he, rfl⟩`. Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at he`. Take `⟨i, rfl⟩` from `he`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `h.1 a ha _ (v i).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset {R : Subalgebra o Ω} {r : ℕ} {L : AddSubgroup V} (h : LocFree R r L) :
     ∃ S : Finset V, L = spanOver R (S : Set V) := by
@@ -37,9 +37,9 @@ theorem exists_finset {R : Subalgebra o Ω} {r : ℕ} {L : AddSubgroup V} (h : L
     exact h.1 a ha _ (v i).2
 
 /- English proof (translation)
-Take `⟨-, k, f, c, -, -, hs, hb⟩` from `h`. Establish `hex : ∃ l, f l ≠ 0`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Simplify using `[hn] at hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `hex`. Take `⟨b, hli, -, hb⟩` from `hb l`. Take `⟨m, hm⟩` from `(hb (b 0)).2 ⟨fun _ => 1, fun _ => ⟨0, by simp⟩, by simp⟩`. Introduce and unpack `rfl`. Conclude with `smul_ne_zero (pow_ne_zero m hl) (hli.ne_zero 0) (AddSubgroup.mem_bot.1 hm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_bot {R : Subalgebra o Ω} {L : AddSubgroup V} (h : LocFree R 1 L) : L ≠ ⊥ := by
   obtain ⟨-, k, f, c, -, -, hs, hb⟩ := h
@@ -54,9 +54,9 @@ theorem ne_bot {R : Subalgebra o Ω} {L : AddSubgroup V} (h : LocFree R 1 L) : L
   exact smul_ne_zero (pow_ne_zero m hl) (hli.ne_zero 0) (AddSubgroup.mem_bot.1 hm)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `h1 : a ∈ (mcIdeal O x).comap (C : O →+* _)`. Rewrite using `[Ideal.mem_comap, mcIdeal, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcMap O x (algebraMap O _ a) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[AlgHom.commutes, MvPolynomial.algebraMap_apply, ha, map_zero]`. Rewrite `h1` using `[h.2.2.1]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω]
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {x : (Σ k, ι k) → Ω} {d : ℕ}
@@ -72,15 +72,15 @@ theorem injective {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   exact h1
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hx hfn F _ _ _ n Sg _ r s p hp w χ φ D hD hG`. Establish `hinj` using `injective hx`. Establish `hchar : ∀ R : Subalgebra O Ω, CharData R p (algebraMap O Ω w) (fun τ a => algebraMap O Ω (χ τ a))`. Introduce `R`. Take `⟨hp0, ⟨u, hu, huw⟩, -, h01, hχ⟩` from `hD.char`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, R.algebraMap_mem _, ?_, h01, fun τ => ⟨?_, ?_, fun a => R.algebraMap_mem _⟩⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω)]`. Conclude with `fun h => hp0 (hinj (h.trans (map_zero _).symm))`. Take `⟨u, rfl⟩` from `hu`. Use `⟨algebraMap O Ω (↑u⁻¹ * w ^ (p - 2)), R.algebraMap_mem _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, ← map_natCast (algebraMap O Ω), mul_assoc, ← pow_succ, show p - 2 + 1 = p - 1 by have := hp.two_le; omega, huw, Units.inv_mul_cancel_left]`. Simplify using `[(hχ τ).1]`. Simplify using `[(hχ τ).2]`. Establish `hbc` using `fun c (hc : mseg x c ≠ 0) => GlobalTheory.T.lattice_good_base_change (D c) (chartRing O (mseg x) c) p _ _ (hchar _) (hD.base c hc) (hG c hc)`. Establish `hfam` using `(GlobalTheory.T.lattice_family_injective_model_facts O Ω K ι x hinj p hp w χ φ D hD).2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K', i1, i2, ι', i3, z, hz, hl⟩` from `GlobalTheory.T.line_lattice_family_model O Ω K ι x d hx hfn (Sg × Fin n) (fun j c => (D c).xId (fun a => algebraMap O Ω (χ j.1 a)) j.2) fun j => ⟨((hfam j.1).2.1 j.2).1, fun c hc => ⟨ne_bot (((hbc c hc).1 j.1).2.2.2 j.2), exists_finset (((hbc c hc).1 j.1).2.2.2 j.2)⟩⟩`. Use `⟨K', i1, i2, ι', i3, z, hz, fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hl (τ, i)`. Use `⟨1, a, one_ne_zero, fun c hc v => ?_⟩` and prove the remaining obligations. Take `⟨hc', hle⟩` from `((GlobalTheory.T.chart_rings_noetherian_fraction O Ω K ι x).2.2 K' ι' z).2 c hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(((hbc _ hc').2 Ω (chartRing O (mseg (joinCoord x z)) c) fun a ha => hle ha).2 τ).2.2 i`. Rewrite using `[← ha c hc v]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, Set.image_id'] at h`. Simplify using `only [pullFamily, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → fnField O x = ⊤ → ∀ {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} [Fintype Sg] {r s : Sg → ℕ} (p : ℕ), p.Prime → ∀ (w : O) (χ : Sg → F → O) (φ : Equiv.Perm Sg) (D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s), IsLatticeFamily O x p w χ φ D → (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → ∃ (K' : Type) (_ : Fintype K') (_ : DecidableEq K') (ι' : K' → Type) (_ : ∀ k, Fintype (ι' k)) (z : (Σ k, ι' k) → Ω), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x z)) d ∧ (∀ τ i, ∃ (u : Ω) (a : _ → ℤ), u ≠ 0 ∧ IsLine O (joinCoord x z) u a fun c => (pullFamily O x z D c).xId (fun a => algebraMap O Ω (χ τ a)) i) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hx hfn F _ _ _ n Sg _ r s p hp w χ φ D hD hG

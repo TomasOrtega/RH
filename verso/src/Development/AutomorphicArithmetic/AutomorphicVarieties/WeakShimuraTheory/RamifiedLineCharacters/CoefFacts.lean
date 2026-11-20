@@ -4,11 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `l _ c k _ a ha`. Use `haveI := c.dvr`. Use `haveI := c.fin`. Take `⟨_, hfin, hl, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : (l : k) = 0`. Rewrite using `[← map_natCast a l]`. Conclude with `ha _ hl`. Conclude with `(CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime)).2 hk`. Set `f : ResidueField c.O →+* k` to `Ideal.Quotient.lift (maximalIdeal c.O) a ha`.
-
-Use `(Set.finite_range f).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨IsLocalRing.residue c.O x, Ideal.Quotient.lift_mk _ _ _⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Gys.coefFacts :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) → CharP k l ∧ (Set.range a).Finite := by

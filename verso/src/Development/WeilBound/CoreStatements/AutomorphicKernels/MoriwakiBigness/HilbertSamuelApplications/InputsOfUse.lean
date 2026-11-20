@@ -6,7 +6,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hII hU hBig hRes`. Conclude with `⟨⟨GlobalTheory.T.convergence_statement_holds, GlobalTheory.T.signed_convergence_statement_holds, GlobalTheory.T.convergence_rate_statement_holds, GlobalTheory.T.uniform_integrability_statement_holds, GlobalTheory.T.pullback_statement_holds, GlobalTheory.T.global_regularization_st …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem inputs_of_use :
     ArithIntersectionSystemStatement → PositivityTheory.MbHsUse.HSUse →

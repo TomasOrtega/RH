@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `h1 : f h = 0` using `by simpa using h0 1`. Establish `h2` using `hf (g * h * g⁻¹) g`. Establish `h3 : A (g * h * g⁻¹) = A h` using `by simp [mul_comm (A g) (A h)]`. Rewrite `h2` using `[h0, h3, inv_mul_cancel_right, hf, h1]`. Establish `h4 : f g * (a (A h) - a (B h)) = 0` using `by linear_combination -h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 h4).resolve_right (sub_ne_zero.2 hh)`.
+A detailed English derivation is pending.
 -/
 private theorem coc_zero {Γ O k : Type} [Group Γ] [CommRing O] [Field k] (a : O →+* k) (A B : Γ →* Oˣ) (f : Γ → k)
     (hf : ∀ g h, f (g * h) = a (A g) * f h + f g * a (B h)) (h : Γ) (hh : a (A h) ≠ a (B h))
@@ -20,9 +20,9 @@ private theorem coc_zero {Γ O k : Type} [Group Γ] [CommRing O] [Field k] (a : 
   exact (mul_eq_zero.1 h4).resolve_right (sub_ne_zero.2 hh)
 
 /- English proof (translation)
-Use `⟨{ (g * resQ F h * g⁻¹).toRingEquiv with commutes' := fun x => ?_ }, rfl⟩` and prove the remaining obligations. Establish `h1` using `AlgEquiv.restrictNormal_commutes g⁻¹ F x`. Establish `h2` using `h.commutes ((AlgEquiv.restrictNormal g⁻¹ F) x)`. Rewrite `h2` using `[h1]`. Use `show g (h (g⁻¹ (algebraMap F Ω x))) = algebraMap F Ω x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `g.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 private theorem conj_mem {Ω : Type} [Field Ω] [CharZero Ω] (F : IntermediateField ℚ Ω) [Normal ℚ F]
     (h : G F Ω) (g : G ℚ Ω) : ∃ h' : G F Ω, resQ F h' = g * resQ F h * g⁻¹ := by
@@ -35,9 +35,9 @@ private theorem conj_mem {Ω : Type} [Field Ω] [CharZero Ω] (F : IntermediateF
   exact g.apply_symm_apply _
 
 /- English proof (translation)
-Establish `h1 : IsUnit (x - y)`. Assume the negation of the conclusion as `hn`. Apply `h` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `hn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(h1.map a).ne_zero`. Rewrite `h2` using `[map_sub, sub_ne_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem ne_of_res {O k : Type} [CommRing O] [IsLocalRing O] [Field k] (a : O →+* k) {x y : O}
     (h : residue O x ≠ residue O y) : a x ≠ a y := by
@@ -50,15 +50,15 @@ private theorem ne_of_res {O k : Type} [CommRing O] [IsLocalRing O] [Field k] (a
   rwa [map_sub, sub_ne_zero] at h2
 
 /- English proof (translation)
-Establish `a21 : n 2 1 = 0` using `hq 2 1 (by decide) (by decide)`. Establish `r01 : r 0 1 = 0` using `hr 0 1 (by decide) (by decide)`. Establish `r02 : r 0 2 = 0` using `hr 0 2 (by decide) (by decide)`. Establish `r03 : r 0 3 = 0` using `hr 0 3 (by decide) (by decide)`. Establish `r13 : r 1 3 = 0` using `hr 1 3 (by decide) (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r21 : r 2 1 = 0` using `hr 2 1 (by decide) (by decide)`. Establish `r23 : r 2 3 = 0` using `hr 2 3 (by decide) (by decide)`. Take `⟨-, d, u⟩` from `hn`. Take `⟨g', d', u'⟩` from `hn'`. Establish `a01` using `u 0 1 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `b01` using `u' 0 1 (by decide)`. Establish `b02` using `u' 0 2 (by decide)`. Establish `b12` using `u' 1 2 (by decide)`. Establish `e21` using `hu 2 1 (by decide)`. Establish `e20` using `hu 2 0 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e10` using `hu 1 0 (by decide)`. Establish `g20` using `congrFun (congrFun g' 2) 0`. Establish `g10` using `congrFun (congrFun g' 1) 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, a21, r01, r02, r03, r13, r21, r23, a01, b01, b02, b12, d, d', h1] at e21 e20 e10 g20 g10`. Rewrite `e20`, `g20` using `[e21]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨e21, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `(r 0 0) * g20 - e20`. Take the linear combination `(r 0 0) * g10 - e10`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem flag_facts {k : Type} [Field k] (n n' r : M4 k) (hn : IsLow n) (hq : SuppM qQ n) (hn' : IsLow n')
     (hr : SuppM nP r) (h1 : r 1 1 ≠ 0) (hu : IsUp (adj n' * r * n)) :
@@ -88,35 +88,31 @@ private theorem flag_facts {k : Type} [Field k] (n n' r : M4 k) (hn : IsLow n) (
   · linear_combination (r 0 0) * g10 - e10
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D _ T hT k _ a _ g0 s s' hs _ hov hres W`. Take `⟨hr, hfl⟩` from `hov`. Establish `hre : ∀ g, s'.r g = s.r (resQ T.F g)` using `fun g => by rw [hr]; rfl`. Establish `diag : ∀ g i, s.r g i i = a (chi D T.pr i g)` using `hs.res.res.diag`. Establish `ne0 : ∀ g i, s.r g i i ≠ 0` using `fun g i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[diag]`. Conclude with `((chi D T.pr i g).isUnit.map a).ne_zero`. Establish `low : IsLow (s.n ())` using `hs.res.pair.low ()`. Establish `low' : ∀ v, IsLow (s'.n v)` using `hres.pair.low`. Establish `key : ∀ i j, i ≠ j → (∀ g h, s.r (g * h) i j = s.r g i i * s.r h i j + s.r g i j * s.r h j j) → (∀ g, s'.r g i j = 0) → ∀ g, s.r g i j = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij hc h0`. Use `coc_zero a (chi D T.pr i) (chi D T.pr j) (fun g => s.r g i j) (fun g h => by rw [hc, diag, diag]) (resQ T.F T.g0) (ne_of_res a (hT.1.dist i j hij)) fun g => ?_` and prove the remaining obligations. Take `⟨h', e⟩` from `conj_mem T.F T.g0 g`. Rewrite using `[← e, ← hre]`. Conclude with `h0 h'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z : ∀ g i j, i ≠ j → wt i j ∉ nP → s.r g i j = 0` using `hs.supp`. Establish `ff : ∀ v, ∃ g, s'.n v 2 1 = 0 ∧ s'.n v 2 0 * s.r g 0 0 = s.r g 2 0 + s.r g 2 2 * s.n () 2 0`. Introduce `v`. Take `⟨u, g, -, hu⟩` from `hfl v`. Use `flag_facts (s.n ()) (s'.n v) (s.r g) low hs.flag (low' v) (hs.supp g) (ne0 g 1) hu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨g, this.1, this.2.1⟩`. Establish `hq : ∀ v, SuppM qQ (s'.n v)`. Introduce `v i j hij hw`. Take `⟨g, h21, -⟩` from `ff v`. Establish `: i < j ∨ (i = 2 ∧ j = 1)` using `by revert i j; decide`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `this with h | ⟨rfl, rfl⟩` into its components or cases. Conclude with `(low' v).2.2 i j h`. Conclude with `h21`. Use `⟨⟨⟨hres.pair.mult, fun g hg => hres.pair.kill g ?_, hres.pair.nrm, hres.pair.low, hres.pair.flag, hres.pair.mu⟩, ⟨hres.res.diag, hres.res.char, hres.res.shape⟩, hres.cont⟩, ⟨fun g => by rw [hre]; exact hs.supp _, hq⟩, ?_⟩` and prove the remaining obligations. Take `⟨A, hA, h⟩` from `hg`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `⟨A, fun p hp => hA p (Finset.insert_subset_insert l (Finset.empty_subset W) hp), h⟩`. Break down `hs.ps with hps | ⟨hv, h20, -, hnc⟩` into its components or cases. Use `left`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Evaluate the decidable proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, i, j, hw, hg⟩` from `hps`. Use `hg (key i j ?_ (fun g h => ?_) (fun g => by_contra fun h => hn ⟨g, i, j, hw, h⟩) g)` and prove the remaining obligations. Use `clear hg`. Use `revert i j`. Evaluate the decidable proposition.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `: (i = 2 ∧ j = 0) ∨ (i = 3 ∧ j = 1)` using `by clear hg; revert i j; decide`. Rewrite using `[map_mul, Matrix.mul_apply, Fin.sum_univ_four]`. Break down `this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Rewrite using `[z g 2 1 (by decide) (by decide), z g 2 3 (by decide) (by decide)]; ring`. Rewrite using `[z h 0 1 (by decide) (by decide), z h 2 1 (by decide) (by decide)]; ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Assume the negation of the conclusion as `hn`. Take `⟨g, i, j, hw, hg⟩` from `hs.be`. Establish `: i = 1 ∧ j = 2` using `by clear hg; revert i j; decide`. Take `⟨rfl, rfl⟩` from `this`. Use `hg (key 1 2 (by decide) (fun g h => ?_) (fun g => by_contra fun h => hn ⟨g, 1, 2, hw, h⟩) g)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, Matrix.mul_apply, Fin.sum_univ_four, z h 0 2 (by decide) (by decide), z g 1 3 (by decide) (by decide)]`. Expand and normalize the polynomial expressions, which then agree. Use `right`. Establish `y0 : ∀ g, s.r g 2 0 = 0` using `fun g => hv g 2 0 (by decide) (by decide)`. Use `⟨⟨fun g => by rw [hre]; exact hv _, fun v => ⟨hq v, fun h => ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨g, -, e⟩` from `ff v`. Establish `h' : s'.n v 2 0 = 0` using `h`. Rewrite `e` using `[h', y0, zero_mul, zero_add]`. Conclude with `mul_ne_zero (ne0 g 2) h20 e.symm`. Assume the negation of the conclusion as `hn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `x0 : ∀ g, s.r g 1 0 = 0`. Use `key 1 0 (by decide) (fun g h => ?_) (fun g => by_contra fun h => hn ⟨g, 1, 0, by decide, h⟩)` and prove the remaining obligations. Rewrite using `[map_mul, Matrix.mul_apply, Fin.sum_univ_four, y0, z g 1 3 (by decide) (by decide)]`. Expand and normalize the polynomial expressions, which then agree. Use `hnc ⟨s.n () 1 0 / s.n () 2 0, fun g hg => ?_⟩` and prove the remaining obligations.
-
-Take `⟨-, e1, e2⟩` from `flag_facts (s.n ()) (s.n ()) (s.r g) low hs.flag low (hs.supp g) (ne0 g 1) (hs.res.pair.flag () g hg)`. Rewrite `e1` using `[y0, zero_add, mul_comm]`. Establish `e3` using `mul_right_cancel₀ h20 e1`. Rewrite `e2` using `[x0, e3]`. Rewrite using `[← diag, ← diag]`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-e2`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.goodQ :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ T : Tower D, T.Fit → ∀ (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) → ∀ (g0 : G ℚ Ω) (s : PD Unit (G ℚ Ω) k) (s' : PD T.ι (G T.F Ω) k), LatShape D T.pr g0 a s → (∀ w ∈ roots, a ((frQ D T.pr g0).rt w g0) ≠ 1) →

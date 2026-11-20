@@ -10,16 +10,16 @@ open scoped Quaternion Topology TensorProduct
 namespace GlobalTheory.QSA.PureSq
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [QuaternionAlgebra.algebraMap_eq, hp] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_self_of_re_eq_zero {R : Type*} [CommRing R] {a b : R} (p : ℍ[R, a, b]) (hp : p.re = 0) :
     p * p = algebraMap R ℍ[R, a, b] (a * p.imI ^ 2 + b * p.imJ ^ 2 - a * b * p.imK ^ 2) := by
   ext <;> simp [QuaternionAlgebra.algebraMap_eq, hp] <;> ring
 
 /- English proof (translation)
-Establish `hφ : ComplexEmbedding.IsReal (Complex.ofRealHom.comp σ)`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hw : (InfinitePlace.mk (Complex.ofRealHom.comp σ)).IsReal` using `InfinitePlace.isReal_mk_iff.2 hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨_, InfinitePlace.Completion.extensionEmbeddingOfIsReal hw, fun x => ?_⟩` and prove the remaining obligations. Establish `he` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv _).symm x)`. Use `Eq.trans he ?_` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, InfinitePlace.embedding_mk_eq_of_isReal hφ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -41,9 +41,9 @@ theorem exists_completion_hom_of_real {K : Type} [Field K] (σ : K →+* ℝ) :
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite `hqq` using `[mul_self_of_re_eq_zero q hq0]`. Establish `h1` using `congrArg QuaternionAlgebra.re hqq`. Simplify using `only [QuaternionAlgebra.algebraMap_eq, QuaternionAlgebra.re_coe] at h1`. Establish `h2` using `congrArg φ h1`. Simplify using `only [map_add, map_sub, map_mul, map_pow, hφ] at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨![φ q.imI, φ q.imJ, φ q.imK, 1], fun h => by simpa using congrFun h 3, ?_⟩` and prove the remaining obligations. Simplify using `[Fin.sum_univ_four]`. Take the linear combination `h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isotropic_of_ringHom {a b c : F} (q : DA F a b) (hq0 : q.re = 0)
     (hqq : q * q = algebraMap (AF F) (DA F a b) (algebraMap F (AF F) c))
@@ -66,7 +66,7 @@ namespace GlobalTheory.QSA.PureSq
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨w, f, hf⟩` from `exists_completion_hom_of_real σ`. Use `isotropic_of_ringHom q hq0 hqq (f.comp ((Pi.evalRingHom (fun v : InfinitePlace F => v.Completion) w).comp (fstA F).toRingHom)) σ (fun x => ?_)` and prove the remaining obligations. Rewrite using `[← hf x]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isotropic_real {a b c : F} (q : DA F a b) (hq0 : q.re = 0)
     (hqq : q * q = algebraMap (AF F) (DA F a b) (algebraMap F (AF F) c)) (σ : F →+* ℝ) :
@@ -79,7 +79,7 @@ theorem isotropic_real {a b c : F} (q : DA F a b) (hq0 : q.re = 0)
   rfl
 
 /- English proof (translation)
-The claim follows from `isotropic_of_ringHom q hq0 hqq ((evalV F v).comp (sndA F)).toRingHom (algebraMap F _) (fun x => ((evalV F v).comp (sndA F)).commutes x)`.
+A detailed English derivation is pending.
 -/
 theorem isotropic_finite {a b c : F} (q : DA F a b) (hq0 : q.re = 0)
     (hqq : q * q = algebraMap (AF F) (DA F a b) (algebraMap F (AF F) c)) (v : HeightOneSpectrum (𝓞 F)) :
@@ -89,11 +89,9 @@ theorem isotropic_finite {a b c : F} (q : DA F a b) (hq0 : q.re = 0)
     (fun x => ((evalV F v).comp (sndA F)).commutes x)
 
 /- English proof (translation)
-Establish `key : ∀ v₁ v₂ v₃ : F, a * u₁ * v₁ + b * u₂ * v₂ - a * b * u₃ * v₃ ≠ 0 → ∃ y₁ y₂ y₃ : F, a * y₁ ^ 2 + b * y₂ ^ 2 - a * b * y₃ ^ 2 = c`. Introduce `v₁ v₂ v₃ hD`. Use `set D := a * u₁ * v₁ + b * u₂ * v₂ - a * b * u₃ * v₃ with hDdef`. Use `set t := (c - (a * v₁ ^ 2 + b * v₂ ^ 2 - a * b * v₃ ^ 2)) / (2 * D) with ht`. Establish `h2 : (2 : F) * D ≠ 0` using `mul_ne_zero two_ne_zero hD`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht' : t * (2 * D) = c - (a * v₁ ^ 2 + b * v₂ ^ 2 - a * b * v₃ ^ 2)` using `div_mul_cancel₀ _ h2`. Use `⟨t * u₁ + v₁, t * u₂ + v₂, t * u₃ + v₃, ?_⟩` and prove the remaining obligations. Take the linear combination `t ^ 2 * h + ht'`. Distinguish the cases in `h1 : u₁ = 0`. Distinguish the cases in `h2 : u₂ = 0`.
-
-Establish `h3 : u₃ ≠ 0` using `fun h3 => hu (by simp [h1, h2, h3])`. Conclude with `key 0 0 1 (by simp [ha, hb, h3])`. Conclude with `key 0 1 0 (by simp [hb, h2, h1])`. Conclude with `key 1 0 0 (by simp [ha, h1])`.
+Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ternary_eq {a b : F} (ha : a ≠ 0) (hb : b ≠ 0) {u₁ u₂ u₃ : F}
     (hu : (u₁, u₂, u₃) ≠ (0, 0, 0)) (h : a * u₁ ^ 2 + b * u₂ ^ 2 - a * b * u₃ ^ 2 = 0) (c : F) :
@@ -115,13 +113,13 @@ theorem exists_ternary_eq {a b : F} (ha : a ≠ 0) (hb : b ≠ 0) {u₁ u₂ u�
   · exact key 1 0 0 (by simp [ha, h1])
 
 /- English proof (translation)
-Introduce `F _ _ a b ha hb c hc q hq0 hqq`. Apply the tactic sequence `obtain ⟨x, hx0, hx⟩ := GlobalTheory.LocalQuad.isotropic_of_locally_isotropic GlobalTheory.QNorm.hasseNormSt F (ι := Fin 4) (by simp) ![a, b, -(a * b), -c] (fun i => by fin_cases i <;> simp [ha, hb, hc]) (isotropic_real q hq0 hqq) (isotropic_finite q hq0 hqq)`. Simplify using `[Fin.sum_univ_four] at hx`. Establish `pure : ∀ y₁ y₂ y₃ : F, a * y₁ ^ 2 + b * y₂ ^ 2 - a * b * y₃ ^ 2 = c → ∃ p : ℍ[F, a, b], p.re = 0 ∧ p * p = algebraMap F ℍ[F, a, b] c`. Introduce `y₁ y₂ y₃ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨0, y₁, y₂, y₃⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_self_of_re_eq_zero _ rfl]`. Express the relevant statement in the definitionally equal form `algebraMap F ℍ[F, a, b] (a * y₁ ^ 2 + b * y₂ ^ 2 - a * b * y₃ ^ 2) = _`. Rewrite using `[hy]`. Distinguish the cases in `h3 : x 3 = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `hx` using `[h3]`. Take `⟨y₁, y₂, y₃, hy⟩` from `exists_ternary_eq ha hb (u₁ := x 0) (u₂ := x 1) (u₃ := x 2) (fun h => hx0 (by`. Simplify using `only [Prod.mk.injEq] at h`. Apply the tactic sequence `funext i; fin_cases i <;> simp [h.1, h.2.1, h.2.2, h3]))`. Use the proof step `(by linear_combination hx) c`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pure y₁ y₂ y₃ hy`. Use `pure (x 0 / x 3) (x 1 / x 3) (x 2 / x 3) ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `hx`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_rat_of_adelic : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 → ∀ c : F, c ≠ 0 →
     ∀ q : DA F a b, q.re = 0 → q * q = algebraMap (AF F) (DA F a b) (algebraMap F (AF F) c) →

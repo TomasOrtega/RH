@@ -15,9 +15,7 @@ open IsDedekindDomain NumberField
 namespace PositivityTheory.Rg.Rsw.L.LApproxId
 
 /- English proof (translation)
-Establish `hW : R ⁻¹' U ∈ 𝓝 (0 : ι → A)` using `hR.continuousAt.preimage_mem_nhds (hU.mem_nhds h0)`. Rewrite `hW` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, tt, htt, hsub⟩` from `hW`. Establish `hN : (⋂ i, tt i) ∈ 𝓝 (0 : A)` using `Filter.iInter_mem.mpr htt`. Use `filter_upwards [tendsto_smallSets_iff.mp hSp _ hN] with k hk w hw`.
-
-Conclude with `hsub (fun i _ => Set.mem_iInter.mp (hk (hw i)) i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem small_eventually {ι A M : Type} [Finite ι] [TopologicalSpace A] [Zero A] [TopologicalSpace M]
     (R : (ι → A) → M) (hR : Continuous R) (U : Set M) (hU : IsOpen U) (h0 : R 0 ∈ U) (Sp : ℕ → Set A)
@@ -33,39 +31,33 @@ open GlobalTheory.CompanionTheory.SiegelND.Coef.TestN in
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Introduce `D t ψ hψ S e he lam hlam`. Establish `hCM : IsCMExt D.host.F D.host.E D.sp.cm.sig` using `isCMExt_host D`. Establish `: Module.Finite D.host.F D.host.E` using `Module.finite_of_finrank_eq_succ (n := 1) hCM.2.2.1`. Establish `: BorelSpace (AF D.host.F)` using `⟨rfl⟩`. Establish `: BorelSpace (Mx D t t)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨eA, heA⟩` from `GlobalTheory.T.exists_homeomorph_hermR_coordinates D.host.F D.host.E D.sp.cm.sig hCM (AF D.host.F) _ (Module.finBasis D.host.F D.host.E) t`. Take `⟨-, hBd⟩` from `GlobalTheory.T.coordinate_form_symmetric_nondegenerate D.host.F D.host.E D.sp.cm.sig hCM _ (Module.finBasis D.host.F D.host.E) t`. Establish `hpair` using `GlobalTheory.T.hermitian_pairing_in_coordinates D.host.F D.host.E D.sp.cm.sig hCM (AF D.host.F) _ (Module.finBasis D.host.F D.host.E) t`. Generalize the expression as in `Module.finBasis D.host.F D.host.E = b at heA hBd hpair`. Establish `hε0 : IsIdF S ((1, LIdemEx.indS S) : AF D.host.F)` using `⟨rfl, fun v => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Take `⟨ε, hε, heS⟩ : ∃ ε : AF D.host.F, IsIdF S ε ∧ e = algebraMap (AF D.host.F) (AE D) ε` from `⟨_, hε0, e_eq D S e he⟩`. Establish `hcA : cA D e = e` using `(LIdemEx.idem_props S e he).2`. Take `⟨Θ, hΘ⟩` from `exTheta' D t e ε heS hcA b eA heA`. Establish `hcl : IsClosed ((fixE ε : AddSubgroup (AF D.host.F)) : Set (AF D.host.F))` using `isClosed_eq (continuous_const.mul continuous_id) continuous_id`. Establish `: LocallyCompactSpace (fixE ε)` using `hcl.locallyCompactSpace`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (fixE ε)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Take `⟨g1, G1, Sp, hg, hlim, hsupp, hSp⟩` from `h1 D.host.F hCM.1 ψ hψ S ε hε (Measure.addHaar) inferInstance`. Take `⟨c, -, hTr⟩` from `transfer Θ lam (Measure.addHaar : Measure (fixE ε))`. Use `set Bm := (coordForm D.sp.cm.sig b t).map (algebraMap D.host.F (AF D.host.F)) with hBm`. Set `sT : Mx D t t → _` to `fun T => if hT : T ∈ hermA D t then Bm *ᵥ hCo (AF D.host.F) D.sp.cm.sig b ⟨T, (memHA D t T).1 hT⟩ else 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k x => ∏ i, g1 k (Θ x i), fun k T => if T ∈ hermA D t then (c : ℝ) * ∏ i, G1 k (sT T i) else 0, fun k => ⟨?_, ?_, fun T hT => ⟨?_, ?_⟩⟩, fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hTr (fun _ => g1 k)).2 (fun _ => (hg k).1)`. Introduce `x`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun i _ => (hg k).2.1 _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `beta_reduce`. Rewrite using `[if_pos hT]`. Conclude with `mul_nonneg c.2 (Finset.prod_nonneg fun i _ => ((hg k).2.2 _).1)`. Use `beta_reduce`. Establish `hpt : ∀ x : hermS D t e, pch ψ x.1.1 T = ∏ i, ψ ((Θ x i).1 * sT T i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `x`. Rewrite using `[pch_eq D t ψ x.1.1 T x.1.2 hT, hpair, dotProduct, char_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [sT, dif_pos hT, hΘ, heA]`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hpt, ← Finset.prod_mul_distrib]`. Use `_ = (c : ℂ) * ∏ i, ∫ h, g1 k h * ψ (h.1 * sT T i) ∂(Measure.addHaar : Measure (fixE ε)) := (hTr (fun i h => g1 k h * ψ (h.1 * sT T i))).1`. Use `_ = _ := by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hT]`. Use `push_cast`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => ((hg k).2.2 _).2`. Use `tendsto_finsetProd Finset.univ (fun i _ => hlim (Θ x i))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `C hC hCT ε' hε'`. Establish `hunit : IsUnit Bm.det`. Establish `h` using `(RingHom.map_det (algebraMap D.host.F (AF D.host.F)) (coordForm D.sp.cm.sig b t)).symm`. Rewrite using `[hBm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h ▸ (isUnit_iff_ne_zero.mpr hBd).map _`. Set `R : (Idx t (Module.finrank D.host.F D.host.E) → AF D.host.F) → Mx D t t` to `fun w => (eA.symm (Bm⁻¹ *ᵥ w)).1`. Establish `hRc : Continuous R` using `continuous_subtype_val.comp (eA.symm.continuous.comp (continuous_const.matrix_mulVec continuous_id))`. Establish `hU : IsOpen {M : Mx D t t | -M ∉ C}` using `hC.isOpen_compl.preimage continuous_neg`. Establish `h0 : R 0 ∈ {M : Mx D t t | -M ∉ C}`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: R 0 = 0` using `by simp [R, Matrix.mulVec_zero]`. Simplify using `only [Set.mem_ofPred_eq, this, neg_zero]`. Conclude with `fun h => (hCT 0 h).2.2 rfl`. Use `filter_upwards [small_eventually R hRc _ hU h0 Sp hSp] with k hk T hTC`. Take `⟨hTA, heT, -⟩` from `hCT T hTC`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Establish `hpos` using `lt_trans hε' (not_le.mp hlt)`. Use `beta_reduce at hpos`. Rewrite `hpos` using `[if_pos hTA]`. Establish `hprod : ∀ i, G1 k (sT T i) ≠ 0` using `fun i => Finset.prod_ne_zero_iff.mp (right_ne_zero_of_mul hpos.ne') i (Finset.mem_univ i)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfixT : ∀ i, ε * sT T i = sT T i`. Introduce `i`. Simplify using `only [sT, dif_pos hTA, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, coord_fix D t e ε heS b _ heT j]`.
-
-Establish `hw : ∀ i, -(sT T i) ∈ Sp k` using `fun i => by`. Use `hsupp k (sT T i) (hprod i)` as an intermediate fact. Rewrite `this` using `[hfixT]`. Then use the resulting hypothesis. Establish `hmem` using `hk (fun i => -(sT T i)) hw`. Establish `hR : R (fun i => -(sT T i)) = -T`.
-
-Establish `h2 : (fun i => -(sT T i)) = -(Bm *ᵥ hCo (AF D.host.F) D.sp.cm.sig b ⟨T, (memHA D t T).1 hTA⟩)`. Use function extensionality and compare the values at `i`. Simplify using `only [sT, dif_pos hTA, Pi.neg_apply]`. Simplify using `only [R, h2, Matrix.mulVec_neg, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hunit, Matrix.one_mulVec, map_neg, ← heA, eA.symm_apply_apply]`. Both sides reduce to the same expression.
-
-Simplify using `only [hR, neg_neg] at hmem`. Conclude with `hmem hTC`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem approxId_of (h1 : OneD) : ApproxId := by
   classical

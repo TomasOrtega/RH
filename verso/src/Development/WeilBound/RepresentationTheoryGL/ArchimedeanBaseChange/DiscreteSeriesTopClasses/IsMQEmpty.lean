@@ -18,7 +18,7 @@ def IsMQ {ι R : Type} [Fintype ι] [CommRing R] [Algebra ℂ R] (D : ι → Der
     ∀ i k, (2 * k + 1 < Fintype.card ι ∨ Fintype.card ι ≤ k) → Q i k = 0
 
 /- English proof (translation)
-Use `⟨fun k => by simp, fun k hk => ?_, fun i => i.elim⟩` and prove the remaining obligations. Simplify using `at hk`. Simplify using `[hk.ne']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMQ_empty (R : Type) [CommRing R] [Algebra ℂ R] :
     IsMQ (ι := Empty) (R := R) Empty.elim Empty.elim (fun k => if k = 0 then 1 else 0) Empty.elim := by

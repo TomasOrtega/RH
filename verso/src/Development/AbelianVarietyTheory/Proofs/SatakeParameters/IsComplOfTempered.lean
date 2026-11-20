@@ -33,7 +33,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `map_absSpace_le e.toLinearMap (he (frob h)) _`. Introduce `v hv`. Use `⟨e.symm v, ?_, by simp⟩` and prove the remaining obligations. Conclude with `(mem_absSpace_iff e (he (frob h)) _ (e.symm v)).mp (by rw [LinearEquiv.apply_symm_apply]; exact hv)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_wtSpace {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V'] (a : WDRep h V) (b : WDRep h V')
@@ -46,11 +46,11 @@ theorem map_wtSpace {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensi
     exact (mem_absSpace_iff e (he (frob h)) _ (e.symm v)).mp (by rw [LinearEquiv.apply_symm_apply]; exact hv)
 
 /- English proof (translation)
-Take `⟨-, hNk⟩` from `GlobalTheory.T.weil_deligne_weight_space_stable E Ω A w h _ a`. Establish `hpure` using `ha (frob h) deg_frob`. Establish `hq : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Establish `hq0` using `zero_lt_one.trans hq`. Establish `hind : iSupIndep (wtSpace a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `iSupIndep_absSpace _ fun i j hij => ?_` and prove the remaining obligations. Rewrite `hij` using `[Real.rpow_right_inj hq0 hq.ne']`. Conclude with `(by linarith : (i : ℝ) = j)` after adjusting the coercions. Establish `htop : ⨆ i, wtSpace a i = ⊤` using `hpure.1`. Establish `hbij : ∀ i : ℕ, Set.BijOn (a.N ^ i) (wtSpace a (-(i : ℤ))) (wtSpace a i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Simplify using `only [wtSpace, Int.cast_neg, Int.cast_natCast]`. Conclude with `hpure.2 i`. Conclude with `GlobalTheory.T.primitive_strand_complement_lefschetz _ (wtSpace a) a.N m hind htop hNk hbij hmtop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCompl_of_tempered {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (a : WDRep h V) (ha : a.Tempered) (m : ℕ) (hmtop : ∀ k : ℤ, (m : ℤ) < k → wtSpace a k = ⊥) :
@@ -71,21 +71,21 @@ theorem isCompl_of_tempered {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDi
   exact GlobalTheory.T.primitive_strand_complement_lefschetz _ (wtSpace a) a.N m hind htop hNk hbij hmtop
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Conclude with `WD.sound ⟨e, he, fun v => by rw [Subsingleton.elim v 0]; simp⟩`. Take `⟨m, hm0, hmtop⟩` from `GlobalTheory.T.tempered_weight_space_bound E Ω A w h V a ha hV`. Establish `hmap` using `map_wtSpace a b e he`. Establish `hmtop' : ∀ k : ℤ, (m : ℤ) < k → wtSpace b k = ⊥` using `fun k hk => by`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmap, hmtop k hk, Submodule.map_bot]`. Take `⟨hρa, hNa⟩` from `GlobalTheory.T.weil_deligne_weight_space_stable E Ω A w h _ a`. Take `⟨hρb, hNb⟩` from `GlobalTheory.T.weil_deligne_weight_space_stable E Ω A w h _ b`. Take `⟨hBa, hCa⟩` from `GlobalTheory.T.weight_filtration_strand_decomposition E Ω A w h _ a m hρa hNa hmtop`. Take `⟨hBb, hCb⟩` from `GlobalTheory.T.weight_filtration_strand_decomposition E Ω A w h _ b m hρb hNb hmtop'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1a` using `GlobalTheory.T.weil_deligne_direct_sum_of_compl E Ω A w h _ a _ _ hBa hCa (isCompl_of_tempered a ha m hmtop)`. Establish `e1b` using `GlobalTheory.T.weil_deligne_direct_sum_of_compl E Ω A w h _ b _ _ hBb hCb (isCompl_of_tempered b hb m hmtop')`. Establish `e2a` using `GlobalTheory.T.tempered_top_weight_strand E Ω A w h _ a m (fun σ v hv => hρa _ σ v hv) hBa ha hmtop`. Establish `e2b` using `GlobalTheory.T.tempered_top_weight_strand E Ω A w h _ b m (fun σ v hv => hρb _ σ v hv) hBb hb hmtop'`. Establish `hy : WD.mk (restrictρ a (wtSpace a (-(m : ℤ))) (fun σ v hv => hρa _ σ v hv)) = WD.mk (restrictρ b (wtSpace b (-(m : ℤ))) (fun σ v hv => hρb _ σ v hv))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `WD.sound ⟨(e.submoduleMap (wtSpace a (-(m : ℤ)))).trans (LinearEquiv.ofEq _ _ (hmap _)), fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[he]`. Simplify using the standard rewrite rules. Establish `hB : WD.mk (restrict a _ hBa) = WD.mk (restrict b _ hBb)` using `by rw [e2a, e2b, hy]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcC : ∀ g, (WD.mk (restrict a _ hCa)).charPol g = (WD.mk (restrict b _ hCb)).charPol g`. Introduce `g`. Establish `hab : (WD.mk a).charPol g = (WD.mk b).charPol g`. Rewrite using `[WD.charPol_mk, WD.charPol_mk, ← LinearEquiv.charpoly_conj e]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using `[LinearEquiv.conj_apply, he]`. Rewrite `hab` using `[e1a, e1b, WD.charPol_lpSum, WD.charPol_lpSum, hB]`. Conclude with `mul_left_cancel₀ (WD.charPol_monic _ g).ne_zero hab`. Establish `htC : (WD.mk (restrict a _ hCa)).tempered` using `GlobalTheory.T.tempered_of_tempered_lpSum' E Ω A w h _ _ (by rw [← e1a, WD.tempered_mk]; exact ha)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htC' : (WD.mk (restrict b _ hCb)).tempered` using `GlobalTheory.T.tempered_of_tempered_lpSum' E Ω A w h _ _ (by rw [← e1b, WD.tempered_mk]; exact hb)`. Establish `hdim : (WD.mk (restrict a _ hCa)).lpDim < d`. Establish `h1` using `congrArg WD.lpDim e1a`. Rewrite `h1` using `[WD.lpDim_sum, WD.lpDim_mk, hd]`. Establish `hUpos : 0 < finrank ℂ (wtSpace a (-(m : ℤ)))` using `Nat.pos_of_ne_zero fun h0 => hm0 (Submodule.finrank_eq_zero.mp h0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBpos : 0 < (WD.mk (restrict a _ hBa)).lpDim`. Rewrite using `[WD.lpDim_mk]`. Conclude with `hUpos.trans_le (Submodule.finrank_mono (le_strand _ _ _))`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1a, e1b, hB, ih _ _ hdim htC htC' hcC]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step {d : ℕ}
     (ih : ∀ x y : WD h, x.lpDim < d → x.tempered → y.tempered → (∀ g, x.charPol g = y.charPol g) → x = y)
@@ -142,11 +142,11 @@ theorem step {d : ℕ}
   rw [e1a, e1b, hB, ih _ _ hdim htC htC' hcC]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h`. Establish `key : ∀ d : ℕ, ∀ x y : WD h, x.lpDim = d → x.tempered → y.tempered → (∀ g, x.charPol g = y.charPol g) → x = y`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x y hxd hx hy hc`. Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `y using WD.ind with`. Consider the case `hP n' b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite `hx`, `hy` using `[WD.tempered_mk]`. Rewrite `hxd` using `[WD.lpDim_mk]`. Take `⟨e, he⟩` from `GlobalTheory.AboveL.weil_rep_equiv_of_charpoly_eq E Ω A w h n n' a b (fun σ => by rw [← WD.charPol_mk, ← WD.charPol_mk]; exact hc σ)`. Conclude with `step (fun x y hxy => ih _ hxy x y rfl) a b hxd hx hy e he`. Conclude with `fun x y => key _ x y rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x y : WD h), x.tempered → y.tempered → (∀ g : Weil h, x.charPol g = y.charPol g) → x = y := by
   intro E Ω _ _ _ _ _ A w h

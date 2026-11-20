@@ -5,11 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `T _ hF hA`. Use `letI : Field T := hF.toField`. Use `⟨Field.henselian T, ?_⟩` and prove the remaining obligations. Use `haveI hT : IsAlgClosed T := by`. Use `IsAlgClosed.of_exists_root T ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hm hirr`. Take `⟨a, ha⟩` from `hA p hm (Polynomial.natDegree_pos_iff_degree_pos.mpr (Polynomial.degree_pos_of_irreducible hirr))`. Conclude with `⟨a, by simpa [Polynomial.IsRoot] using ha⟩`. Establish `hinj : Function.Injective (IsLocalRing.residue T)` using `(IsLocalRing.residue T).injective`. Establish `hbij : Function.Bijective (IsLocalRing.residue T)` using `⟨hinj, IsLocalRing.residue_surjective⟩`.
-
-Use `haveI : IsAlgClosed (IsLocalRing.ResidueField T) := IsAlgClosed.of_ringEquiv T _ (RingEquiv.ofBijective _ hbij)`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isField_aic_sh : ∀ (T : Type) [CommRing T], IsField T → AIC T → SH T := by
   intro T _ hF hA

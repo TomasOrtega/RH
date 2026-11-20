@@ -53,11 +53,11 @@ abbrev PlusOf.pt {B : TopCat.{0}} (M : PlusOf B) : M.X := M.q M.b
 abbrev PlusOf.K {B : TopCat.{0}} (M : PlusOf B) (n : ℕ) : Type := HomotopyGroup.Pi n M.X M.pt
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (R : Type) [CommRing R] (M : Plus R) (n : ℕ) : Group (M.K (n + 1)) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (R : Type) [CommRing R] (M : Plus R) (n : ℕ) : AddCommGroup (Additive (M.K (2 * n + 2))) := inferInstance
 

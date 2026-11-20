@@ -26,7 +26,7 @@ def IsIdx (l : ℕ) (V : Submodule (FractionRing R) W) (L₁ L₂ : Submodule R 
       x = vK R l (LinearMap.det (g : ↥V →ₗ[FractionRing R] ↥V))
 
 /- English proof (translation)
-Establish `h` using `(IsLocalization.surj (nonZeroDivisors R) (1 : FractionRing R)).choose_spec`. Rewrite `h` using `[one_mul]`. Establish `h'` using `IsFractionRing.injective R (FractionRing R) h`. Simplify using `only [vK]`. Rewrite using `[h', sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vK_one (l : ℕ) : vK R l 1 = 0 := by
   have h := (IsLocalization.surj (nonZeroDivisors R) (1 : FractionRing R)).choose_spec
@@ -38,7 +38,7 @@ theorem vK_one (l : ℕ) : vK R l 1 = 0 := by
 omit [IsScalarTower R (FractionRing R) W] in
 
 /- English proof (translation)
-Use `⟨h, h, LinearEquiv.refl _ _, fun v => Iff.rfl, ?_⟩` and prove the remaining obligations. Simplify using `[vK_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isIdx_self (l : ℕ) (V : Submodule (FractionRing R) W) (L : Submodule R W) (h : IsLatIn V L) :
     IsIdx l V L L 0 := by
@@ -109,15 +109,15 @@ def ThetaMt (Q : Finset (PlE D.host)) (ψ : GE N →* (X.Ok i k)ˣ) : Submodule 
     (Y.MtLat i j b k Q ψ : Set (Y.MtV i j b k Q ψ)))
 
 /- English proof (translation)
-Establish `hi : ∀ x : Y.Fm i j b, incl Y i j b O' k ((1 : X.Ok i k) ⊗ₜ[X.O i] x) = (1 : FractionRing O') ⊗ₜ[X.O i] x`. Introduce `x`. Simplify using `[incl]`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Simplify using `only [Set.mem_iUnion, Y.thPsi_one, Set.image_singleton, Set.mem_singleton_iff, hi] at hy`. Take `⟨d, -, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨d, rfl⟩, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [SetLike.mem_coe] at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨d, rfl⟩` from `hx`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, Y.thPsi_one, Set.image_singleton, Set.mem_singleton_iff, hi]`. Conclude with `⟨d, by simp, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [TensorProduct.tmul_add]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul O' a]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaPsi_one : ThetaPsi Y i j b O' k ∅ 1 = ThetaExt Y i j b O' := by
   have hi : ∀ x : Y.Fm i j b, incl Y i j b O' k ((1 : X.Ok i k) ⊗ₜ[X.O i] x) =
@@ -188,9 +188,9 @@ def exportAt (N0 : X.Tw → ℕ) (i : X.Tw) : Prop :=
         partC N0 i Q k' (ψ' ^ a) eps' ∧ partD i Q k' (ψ' ^ a) eps'
 
 /- English proof (translation)
-Introduce `hs eps' he A`. Take `⟨n, d, -, H⟩` from `h hs`. Take `⟨Q, k', ψ', epsB, h1, -, -, -, -, h2⟩` from `H eps' he A`. Take `⟨ha, hat, -, hc, hd⟩` from `h2 1 isCoprime_one_left`. Rewrite `ha`, `hat`, `hc`, `hd` using `[zpow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨Q, k', ψ', h1, ha, hat, hc, hd⟩`.
+Supply the required witnesses or components.
 -/
 theorem projectionDerivative_of_exportAt (N0 : X.Tw → ℕ) (i : X.Tw) (h : exportAt bkP N0 i) : ProjectionDerivativeEstimate bkP N0 i := by
   intro hs eps' he A

@@ -3,19 +3,19 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `c : G → Set G` to `fun δ => {δ' | IsConj δ δ'}`. Establish `hsum : HasSum g (∑' δ, g δ)` using `(summable_of_finite_support hg).hasSum`. Establish `h1` using `hsum.tsum_fiberwise c`. Establish `hfib : ∀ γ : G, c ⁻¹' {c γ} = c γ`. Introduce `γ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `b`. Simplify using `only [c, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: b ∈ {δ' | IsConj b δ'}` using `IsConj.refl b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Conclude with `this`. Introduce `h`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨fun hx => h.trans hx, fun hx => h.symm.trans hx⟩`. Establish `hsupp : Function.support (fun s : Set G => ∑' b : c ⁻¹' {s}, g b) ⊆ {s | ∃ γ, R γ ∧ s = {δ | IsConj γ δ}}`. Introduce `s hs`. Assume the negation of the conclusion as `hns`. Apply `hs` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: ∀ b : c ⁻¹' {s}, g b = 0`. Introduce `⟨b, hb⟩`. Assume the negation of the conclusion as `hgb`. Conclude with `hns ⟨b, hR b hgb, (hb : c b = s).symm⟩`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hasSum_subtype_iff_of_support_subset hsupp]`. Establish `key : (fun i : {𝔬 : Set G // ∃ γ, R γ ∧ 𝔬 = {δ | IsConj γ δ}} => ∑' δ : i.1, g δ) = fun i => (fun s : Set G => ∑' b : c ⁻¹' {s}, g b) i.1`. Use function extensionality and compare the values at `i`. Take `⟨s, γ, _, hs⟩` from `i`. Substitute `hs` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Substitute using the available equality. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[show c ⁻¹' {{δ | IsConj γ δ}} = {δ | IsConj γ δ} from hfib γ]`. Rewrite using `[key]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_conjClasses_tsum_of_finite_support {G : Type} [Group G] (g : G → ℂ) (hg : (Function.support g).Finite)
     (R : G → Prop) (hR : ∀ δ, g δ ≠ 0 → R δ) :
@@ -55,19 +55,19 @@ theorem hasSum_conjClasses_tsum_of_finite_support {G : Type} [Group G] (g : G �
   rw [key]; exact h1
 
 /- English proof (translation)
-Introduce `G _ g hg R P hR hP`. Use `⟨hasSum_conjClasses_tsum_of_finite_support g hg R hR, ?_⟩` and prove the remaining obligations. Set `g' : G → ℂ` to `fun δ => if P δ then g δ else 0`. Establish `hg' : (Function.support g').Finite`. Use `hg.subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `δ h`. Apply the tactic sequence `by_cases hp : P δ <;> simp_all [g']`. Establish `hR' : ∀ δ, g' δ ≠ 0 → R δ`. Apply the tactic sequence `intro δ h; apply hR; by_cases hp : P δ <;> simp_all [g']`. Establish `H` using `hasSum_conjClasses_tsum_of_finite_support g' hg' R hR'`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `htot : ∑' δ, g' δ = ∑' δ : {δ // P δ}, g δ`. Rewrite using `[show (∑' δ : {δ // P δ}, g δ) = ∑' δ : ({δ | P δ} : Set G), g δ from rfl, tsum_subtype]`. Use `congr 1`. Rewrite `H` using `[htot]`. Use `H using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `i`. Take `⟨s, γ, hγ, rfl⟩` from `i`. Rewrite using `[Set.indicator_apply]`. Use `split_ifs with hall`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `δ`. Take `⟨δ, hδ⟩` from `δ`. Simplify using `[g', hall δ hδ]`. Establish `hall' : ¬ ∀ δ ∈ ({δ | IsConj γ δ} : Set G), P δ` using `hall push_neg at hall'`. Take `⟨δ0, hδ0, hnP⟩` from `hall'`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use symmetry to reverse the relation.
 
-Use `symm`. Establish `: ∀ δ : ({δ | IsConj γ δ} : Set G), g' δ = 0`. Introduce `⟨δ, hδ⟩`. Establish `hnδ : ¬ P δ` using `fun h => hnP (hP δ δ0 ((hδ : IsConj γ δ).symm.trans hδ0) h)`. Simplify using `[g', hnδ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem classSum_regroup : ∀ {G : Type} [Group G] (g : G → ℂ), (Function.support g).Finite →
     ∀ (R P : G → Prop), (∀ δ, g δ ≠ 0 → R δ) → (∀ a b, IsConj a b → P a → P b) →

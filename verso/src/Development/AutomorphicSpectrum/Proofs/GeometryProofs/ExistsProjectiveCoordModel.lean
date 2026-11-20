@@ -25,15 +25,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.GeoModel.NormPatch
 
 /- English proof (translation)
-Establish `hAR : ∀ b : A, (b : Ω) ∈ R` using `fun b => (h b).2 ⟨1, fun h1 => hq.ne_top ((Ideal.eq_top_iff_one q).2 h1), by simp⟩`. Use `letI : Algebra A R := (RingHom.codRestrict A.val.toRingHom R hAR).toAlgebra`. Establish `hmap : ∀ b : A, ((algebraMap A R b : R) : Ω) = b` using `fun _ => rfl`. Establish `hne : ∀ s : A, s ∉ q → (s : Ω) ≠ 0` using `fun s hs0 h0 => hs0 (by rw [show s = 0 from Subtype.ext h0]; exact q.zero_mem)`. Use `haveI : IsLocalization.AtPrime R q := { map_units := by`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s, hs0⟩`. Establish `hs1 : s ∉ q` using `hs0`. Use `IsUnit.of_mul_eq_one (⟨(s : Ω)⁻¹, (h _).2 ⟨s, hs1, ?_⟩⟩ : R) (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[mul_inv_cancel₀ (hne s hs1)]`. Conclude with `A.one_mem`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[hmap, mul_inv_cancel₀ (hne s hs1)]`. Use `surj := by`. Introduce and unpack `⟨r, hr⟩`. Take `⟨s, hs1, hsr⟩` from `(h r).1 hr`. Conclude with `⟨⟨⟨_, hsr⟩, ⟨s, hs1⟩⟩, Subtype.ext (by simp [hmap, mul_comm])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `exists_of_eq := by`. Introduce `x y hxy`. Conclude with `⟨1, by`. Establish `: (x : Ω) = y` using `by simpa [hmap] using congrArg (Subtype.val) hxy`. Rewrite using `[Subtype.ext this]⟩ }`.
-
-Use `haveI : IsIntegrallyClosed A := GlobalTheory.isIntegrallyClosed_of_smooth ℚ A`. Use `haveI : IsIntegrallyClosed R := isIntegrallyClosed_of_isLocalization R q.primeCompl (Ideal.primeCompl_le_nonZeroDivisors q)`. Take `⟨r, rfl⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := R) (K := Ω)).1 ha`. Conclude with `r.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral_of_isLocAt {Ω : Type} [Field Ω] [CharZero Ω] (R : Subring Ω) [IsFractionRing R Ω]
     (A : Subalgebra ℚ Ω) (hs : Algebra.Smooth ℚ A) (q : Ideal A) (hq : q.IsPrime) (h : IsLocAt A q R)
@@ -69,11 +67,11 @@ theorem mem_of_isIntegral_of_isLocAt {Ω : Type} [Field Ω] [CharZero Ω] (R : S
 end GlobalTheory.CompanionTheory.Ar.GeoModel.NormPatch
 
 /- English proof (translation)
-Introduce `Ω _ _ X ξ N x e Ab hall htie hsnc`. Set `M0 : PModel ℤ x` to `{ X := X, ξ := ξ, s := specZIsTerminal.from X, hover := specZIsTerminal.hom_ext _ _, all := hall, tie := htie }`. Take `⟨κ', _, y, M', f, hdom, hnorm, -, hat⟩` from `GlobalTheory.T.exists_normal_dominating_model ℤ Ω (Fin (N + 1)) x M0 Ω`. Establish `hdom' : GlobalTheory.CompanionTheory.Ar.Dominates M'.ξ ξ f (RingHom.id Ω)` using `hdom`. Establish `hiso : ∀ q ∈ genFib ξ, IsoAt M'.ξ f (RingHom.id Ω) q`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q hq`. Establish `hc : Char0 ξ q` using `fun r hr hf => hf (hq r hr.pos)`. Take `⟨A, z, n, P, hp, hP, hloc⟩` from `hsnc q hc`. Use `haveI := (GlobalTheory.T.regAt_fraction_noetherian_closed X Ω ξ htie.gen q).1`. Conclude with `GlobalTheory.T.normal_iso_of_integrally_closed X Ω ξ M'.X M'.ξ f q (hat q) (fun a ha => mem_of_isIntegral_of_isLocAt _ A hp.smooth P hP hloc a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N', x', hx'⟩` from `GlobalTheory.T.coord_over_int_of_finite_order M'.X Ω M'.ξ ℤ κ' y M'.tie`. Establish `hone` using `GlobalTheory.T.coords_single_block_segre M'.X Ω M'.ξ N' x' hx'`. Establish `hsnc'` using `GlobalTheory.T.snc_points_transfer_dominating Ω (Fin (N + 1)) _ x _ X M'.X ξ M'.ξ f e Ab hall M'.all htie hone hdom' hiso hsnc`. Conclude with `⟨Unit, inferInstance, fun _ => Fin (N' + 1), fun _ => inferInstance, fun p => x' p.2, { X := M'.X, ξ := M'.ξ, s := M'.s, hover := M'.hover, all := M'.all, tie := hone }, f, inferInstance, hdom', hnorm, hsnc'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.GeoModel.NormPatch.exists_normal_model : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (N : ℕ) (x : Fin (N + 1) → Ω) (e : ℕ) (Ab : Set X), (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ x → SncPts ξ e {p | Char0 ξ p ∧ p.1 ∉ Ab} → ∃ (K : Type) (_ : Fintype K) (J : K → Type) (_ : ∀ k, Fintype (J k)) (y : (Σ k, J k) → Ω) (M : PModel ℤ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩)) (g : M.X ⟶ X), Nonempty K ∧ GlobalTheory.CompanionTheory.Ar.Dominates M.ξ ξ g (RingHom.id Ω) ∧ Flat.NormalCpt M.ξ ∧ SncPts M.ξ e {p | Char0 M.ξ p ∧ g p.1 ∉ Ab} := by
   intro Ω _ _ X ξ N x e Ab hall htie hsnc

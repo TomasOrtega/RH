@@ -21,11 +21,11 @@ def DefiniteCountFin : Prop :=
       B.I.muA B.μf B.fund ≠ ⊤ ∧ (B.D : ℝ) = mainTerm B d
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace B.I.F)` from `inferInstance`. Take `⟨hp, hq⟩` from `h.2.1 v`. Unfold `AutInst.pAt at hp`. Unfold `AutInst.qAt at hq`. Establish `hall : ∀ a, B.I.ε v a = true`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `a`. Assume the negation of the conclusion as `ha`. Establish `hm : a ∈ (Finset.univ.filter fun a => B.I.ε v a = false)`. Simplify using `using ha`. Rewrite `hm` using `[Finset.card_eq_zero.mp hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hm`. Rewrite using `[← hp, Finset.filter_true_of_mem fun a _ => hall a]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem DefiniteHyp.rank_eq {B : RowsAut} {d : InfinitePlace B.I.F → ℝ} {p : ℕ}
     (h : DefiniteHyp B d p) : B.I.n = p := by

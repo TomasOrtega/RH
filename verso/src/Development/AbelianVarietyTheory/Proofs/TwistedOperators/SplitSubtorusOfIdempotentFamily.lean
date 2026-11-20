@@ -17,9 +17,9 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] {ι : Ty
 def idemLin (p : ι → Matrix n n A) (c : ι → A) : Matrix n n A := 1 + ∑ k, (c k - 1) • p k
 
 /- English proof (translation)
-Unfold `idemLin`. Rewrite using `[add_mul, one_mul, Finset.sum_mul, Finset.sum_eq_single k]`. Rewrite using `[smul_mul_assoc, hi, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Introduce `l _ hl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_mul_assoc, ho l k hl, smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem idemLin_mul_idem {p : ι → Matrix n n A} (hi : ∀ k, p k * p k = p k)
     (ho : ∀ k l, k ≠ l → p k * p l = 0) (c : ι → A) (k : ι) :
@@ -31,11 +31,11 @@ theorem idemLin_mul_idem {p : ι → Matrix n n A} (hi : ∀ k, p k * p k = p k)
   · simp
 
 /- English proof (translation)
-Establish `h : idemLin p c * idemLin p c' = idemLin p c + ∑ k, (c' k - 1) • (idemLin p c * p k)` using `by conv_lhs => rw [show idemLin p c' = 1 + ∑ k, (c' k - 1) • p k from rfl]`. Rewrite using `[mul_add, mul_one, Finset.mul_sum]`. Repeatedly rewrite using `[mul_smul_comm]`. Rewrite using `[h]`. Repeatedly rewrite using `[idemLin_mul_idem hi ho, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Unfold `idemLin`. Rewrite using `[add_assoc, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← add_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem idemLin_mul {p : ι → Matrix n n A} (hi : ∀ k, p k * p k = p k)
     (ho : ∀ k l, k ≠ l → p k * p l = 0) (c c' : ι → A) :
@@ -53,20 +53,20 @@ theorem idemLin_mul {p : ι → Matrix n n A} (hi : ∀ k, p k * p k = p k)
   rw [← add_smul]; congr 1; simp only [Pi.mul_apply]; ring
 
 /- English proof (translation)
-Simplify using `[idemLin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem idemLin_one (p : ι → Matrix n n A) : idemLin p 1 = 1 := by
   simp [idemLin]
 
 /- English proof (translation)
-The claim follows from `(Commute.one_right x).add_right (Commute.sum_right _ _ _ fun k _ => (h k).smul_right _)`.
+A detailed English derivation is pending.
 -/
 theorem idemLin_commute (p : ι → Matrix n n A) (x : Matrix n n A) (h : ∀ k, Commute x (p k))
     (c : ι → A) : Commute x (idemLin p c) :=
   (Commute.one_right x).add_right (Commute.sum_right _ _ _ fun k _ => (h k).smul_right _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[idemLin, Matrix.sum_apply, Matrix.one_apply, map_sum, apply_ite]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem idemLin_map {B : Type} [CommRing B] (g : A →+* B) (p : ι → Matrix n n A) (c : ι → A) :
     (idemLin p c).map g = idemLin (fun k => (p k).map g) (fun k => g (c k)) := by
@@ -74,7 +74,7 @@ theorem idemLin_map {B : Type} [CommRing B] (g : A →+* B) (p : ι → Matrix n
   simp [idemLin, Matrix.sum_apply, Matrix.one_apply, map_sum, apply_ite]
 
 /- English proof (translation)
-Establish `: cT σ (∑ k, M k) = ∑ k, cT σ (M k)`. Use extensionality with `i j`. Simplify using `[cT, Matrix.sum_apply, map_sum]`. Simplify using `only [adj, this, Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem adj_sum (σ : A →+* A) (J : Matrix n n A) (M : ι → Matrix n n A) :
     adj σ J (∑ k, M k) = ∑ k, adj σ J (M k) := by
@@ -83,7 +83,7 @@ theorem adj_sum (σ : A →+* A) (J : Matrix n n A) (M : ι → Matrix n n A) :
   simp only [adj, this, Finset.mul_sum, Finset.sum_mul]
 
 /- English proof (translation)
-Unfold `idemLin`. Rewrite using `[adj_add, adj_one σ hJ, adj_sum]`. Repeatedly rewrite using `[adj_smul, map_sub, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem adj_idemLin (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det) (p : ι → Matrix n n A)
     (c : ι → A) : adj σ J (idemLin p c) = idemLin (fun k => adj σ J (p k)) (fun k => σ (c k)) := by
@@ -92,7 +92,7 @@ theorem adj_idemLin (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det) (p :
   simp_rw [adj_smul, map_sub, map_one]
 
 /- English proof (translation)
-Unfold `idemLin`. Use `congr 1`. Use `Equiv.sum_comp (Equiv.sumComm (Fin s) (Fin s)) (fun k => (c k.swap - 1) • p k)` as an intermediate fact. Simplify `this` using `[Sum.swap_swap]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem idemLin_swap {s : ℕ} (p : Fin s ⊕ Fin s → Matrix n n A) (c : Fin s ⊕ Fin s → A) :
     idemLin (fun k => p k.swap) c = idemLin p (fun k => c k.swap) := by
@@ -120,35 +120,35 @@ def idemCoef (R : Type) [CommRing R] [Algebra F R] {s : ℕ} (t : Fin s → Rˣ)
   Sum.elim (fun i => (1 : E) ⊗ₜ[F] (t i : R)) (fun i => (1 : E) ⊗ₜ[F] (((t i)⁻¹ : Rˣ) : R))
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; cases k <;> simp [idemCoef, Algebra.TensorProduct.one_def]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idemCoef_one (R : Type) [CommRing R] [Algebra F R] {s : ℕ} :
     idemCoef (F := F) (E := E) R (1 : Fin s → Rˣ) = 1 := by
   funext k; cases k <;> simp [idemCoef, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; cases k <;> simp [idemCoef, Algebra.TensorProduct.tmul_mul_tmul, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idemCoef_mul (R : Type) [CommRing R] [Algebra F R] {s : ℕ} (a b : Fin s → Rˣ) :
     idemCoef (F := F) (E := E) R (a * b) = idemCoef R a * idemCoef R b := by
   funext k; cases k <;> simp [idemCoef, Algebra.TensorProduct.tmul_mul_tmul, mul_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; cases k <;> simp [idemCoef]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idemCoef_swap (R : Type) [CommRing R] [Algebra F R] {s : ℕ} (t : Fin s → Rˣ) :
     (fun k => idemCoef (F := F) (E := E) R t k.swap) = idemCoef R t⁻¹ := by
   funext k; cases k <;> simp [idemCoef]
 
 /- English proof (translation)
-Apply the tactic sequence `cases k <;> simp [idemCoef, sigR]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sigR_idemCoef (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] {s : ℕ}
     (t : Fin s → Rˣ) (k : Fin s ⊕ Fin s) : sigR σ R (idemCoef R t k) = idemCoef R t k := by
   cases k <;> simp [idemCoef, sigR]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one F he`. Introduce `x y h`. Use `congrArg (fun z => TensorProduct.lid F R (LinearMap.rTensor R φ z)) h` as an intermediate fact. Simplify `this` using `[hφ]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tmul_right_injective {e : E} (he : e ≠ 0) (R : Type) [CommRing R] [Algebra F R] :
     Function.Injective (fun x : R => e ⊗ₜ[F] x) := by
@@ -168,19 +168,19 @@ section Main
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Take `⟨hmem, -, hid, hor, had⟩` from `h`. Establish `hcomm : ∀ a b : Matrix n n E, a ∈ genAlg (γ : Matrix n n E) → b ∈ genAlg (γ : Matrix n n E) → a * b = b * a` using `fun a b ha hb => congrArg Subtype.val (mul_comm (⟨a, ha⟩ : genAlg (γ : Matrix n n E)) ⟨b, hb⟩)`. Establish `hmem' : ∀ k, idemFam σ J ε k ∈ genAlg (γ : Matrix n n E)`. Introduce `k`. Consider the cases of `k with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl i => exact hmem i`. Consider the case `inr i => exact hA.2.2.2.2.1 _ (hmem i)`. Use `⟨?_, ?_, ?_, fun k => commute_of_mem_genAlg rfl (hmem' k)⟩` and prove the remaining obligations. Introduce `k`. Consider the cases of `k with`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl i => exact hid i`. Consider the case `inr i`. Simplify using `only [idemFam, Sum.elim_inr]`. Rewrite using `[← adj_mul _ hR.nondeg, hid]`. Introduce `k l hkl`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `k with`. Consider the case `inl i`. Consider the cases of `l with`. Consider the case `inl j => exact hor i j (fun e => hkl (congrArg _ e))`. Consider the case `inr j => exact had i j`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `inr i`. Consider the cases of `l with`. Consider the case `inl j`. Simplify using `only [idemFam, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[hcomm _ (ε j) (hA.2.2.2.2.1 _ (hmem i)) (hmem j), had]`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `inr j`. Simplify using `only [idemFam, Sum.elim_inr]`. Rewrite using `[← adj_mul _ hR.nondeg, hor j i (fun e => hkl (congrArg _ e.symm)), adj_zero]`. Introduce `k`. Consider the cases of `k with`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl i => rfl`. Consider the case `inr i => exact adj_adj _ hR.quad.invol hR.herm hR.nondeg _`.
+Treat this case separately. Treat this case separately.
 -/
 theorem idemFam_facts {σ : E →ₐ[F] E} {J : Matrix n n E} {γ : GL n E} (hR : IsRegular σ J γ)
     (hA : ClauseAlg σ J γ) {s : ℕ} {ε : Fin s → Matrix n n E} (h : IsIdemFamily σ J γ ε) :
@@ -230,7 +230,7 @@ def idemFamR (σ : E →ₐ[F] E) (J : Matrix n n E) {s : ℕ} (ε : Fin s → M
 variable {σ : E →ₐ[F] E} {J : Matrix n n E} {s : ℕ} {ε : Fin s → Matrix n n E}
 
 /- English proof (translation)
-Simplify using `only [idemFamR]`. Rewrite using `[← Matrix.map_mul, hi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem idemFamR_idem (hi : ∀ k, idemFam σ J ε k * idemFam σ J ε k = idemFam σ J ε k)
     (R : Type) [CommRing R] [Algebra F R] (k : Fin s ⊕ Fin s) :
@@ -238,7 +238,7 @@ theorem idemFamR_idem (hi : ∀ k, idemFam σ J ε k * idemFam σ J ε k = idemF
   simp only [idemFamR]; rw [← Matrix.map_mul, hi]
 
 /- English proof (translation)
-Simplify using `only [idemFamR]`. Rewrite using `[← Matrix.map_mul, ho k l hkl, Matrix.map_zero _ (map_zero _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem idemFamR_orth (ho : ∀ k l, k ≠ l → idemFam σ J ε k * idemFam σ J ε l = 0)
     (R : Type) [CommRing R] [Algebra F R] (k l : Fin s ⊕ Fin s) (hkl : k ≠ l) :
@@ -257,25 +257,23 @@ def idemHom (hi : ∀ k, idemFam σ J ε k * idemFam σ J ε k = idemFam σ J ε
 end Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ n _ _ σ J γ hR hA s ε h`. Take `⟨hi, ho, had, hγ⟩` from `idemFam_facts hR hA h`. Establish `hJ' : ∀ (R : Type) [CommRing R] [Algebra F R], IsUnit (J.map (inclE (F` using `F) R)).det := fun R _ _ => isUnit_det_map _ hR.nondeg`. Establish `hadR : ∀ (R : Type) [CommRing R] [Algebra F R] (k : Fin s ⊕ Fin s), adj (sigR σ R) (J.map (inclE (F` using `F) R)) (idemFamR σ J ε R k) = idemFamR σ J ε R k.swap := by`. Introduce `R _ _ k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [idemFamR]`. Rewrite using `[adj_map (σ : E →+* E) (sigR σ R) (inclE R) (inclE_conj σ R) hR.nondeg, had]`. Establish `hadjHom : ∀ (R : Type) [CommRing R] [Algebra F R] (t : Fin s → Rˣ), adj (sigR σ R) (J.map (inclE (F` using `F) R)) (idemHom hi ho R t) = idemHom hi ho R t⁻¹ := by`. Introduce `R _ _ t`. Use `show adj _ _ (idemLin _ _) = idemLin _ _`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adj_idemLin _ (hJ' R)]`. Establish `e1 : (fun k => adj (sigR σ R) (J.map (inclE (F` using `F) R)) (idemFamR σ J ε R k)) = fun k => idemFamR σ J ε R k.swap := funext (hadR R)`. Establish `e2 : (fun k => sigR σ R (idemCoef R t k)) = idemCoef R t` using `funext (sigR_idemCoef σ R t)`. Rewrite using `[e1, e2, idemLin_swap, idemCoef_swap]`. Use `⟨⟨(fun R _ _ => (idemHom hi ho R).toHomUnits), ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `R _ _ t`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `(mem_UJ_iff_mul_adj (sigR σ R) (hJ' R) _).2 ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.coe_toHomUnits, hadjHom, ← map_mul, mul_inv_cancel, map_one]`. Use `Subgroup.mem_centralizer_singleton_iff.2 (Units.ext ?_) show idemHom hi ho R t * (γ : Matrix n n E).map (inclE (F := F) R) = (γ : Matrix n n E).map (inclE (F := F) R) * idemHom hi ho R t` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(idemLin_commute _ _ (fun k => ?_) _).eq.symm` and prove the remaining obligations. Use `show (γ : Matrix n n E).map (inclE (F := F) R) * (idemFam σ J ε k).map (inclE (F := F) R) = (idemFam σ J ε k).map (inclE (F := F) R) * (γ : Matrix n n E).map (inclE (F := F) R)`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hγ]`. Introduce `R _ _ a b hab`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `congrArg (fun g : GL n (E ⊗[F] R) => (g : Matrix n n (E ⊗[F] R)) * idemFamR σ J ε R (.inl i)) hab`. Express the relevant statement in the definitionally equal form `idemLin _ (idemCoef R a) * _ = idemLin _ (idemCoef R b) * _ at h1`. Rewrite `h1` using `[idemLin_mul_idem (idemFamR_idem hi R) (idemFamR_orth ho R), idemLin_mul_idem (idemFamR_idem hi R) (idemFamR_orth ho R)]`. Choose the witnesses or unpack the hypotheses as in `⟨k, l, hkl⟩ : ∃ k l, ε i k l ≠ 0 := by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h.2.1 i (Matrix.ext hc)`. Establish `h2` using `congrFun (congrFun h1 k) l`. Simplify using `[idemFamR, idemFam, idemCoef, inclE, Algebra.TensorProduct.tmul_mul_tmul] at h2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `tmul_right_injective hkl R h2`. Introduce `R S _ _ _ _ f t`. Use `Units.ext ?_` and prove the remaining obligations. Use `show idemLin (idemFamR σ J ε S) (idemCoef S _) = (idemLin (idemFamR σ J ε R) (idemCoef R t)).map (Algebra.TensorProduct.map (AlgHom.id F E) f).toRingHom`. Rewrite using `[idemLin_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [idemFamR, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Simplify using `[inclE]`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> simp [idemCoef]`. Introduce `R _ _ t i`. Conclude with `idemLin_mul_idem (idemFamR_idem hi R) (idemFamR_orth ho R) _ (.inl i)`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subtorusOfIdempotents : SubtorusOfIdempotents := by
   intro F E _ _ _ _ n _ _ σ J γ hR hA s ε h

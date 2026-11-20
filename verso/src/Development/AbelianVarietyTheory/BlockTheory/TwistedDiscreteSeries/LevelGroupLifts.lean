@@ -56,7 +56,7 @@ def UnitConstEquivariant : Prop :=
           (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) c') ρ chi ℓ
 
 /- English proof (translation)
-Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[gLat]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 example (V : HSp D) : (1 : GA D V) ∈ GfC V ∧
     gLat V 1 = (latHat V : Set (Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)) := by

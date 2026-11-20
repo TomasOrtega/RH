@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge Formalism.L2.SG.TypedSets Formalism.L2.SG.MassDataConc Formalism.L2.SG.LocVol MeasureTheory
 
 /- English proof (translation)
-Apply `typFacts_of (h1 := gSplitX_holds X) (h3 := Formalism.L2.SG.LocVolKap.kapX X hb u u')` to reduce the goal to its premises. Conclude with `tCongX X u u'`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem typFacts_holds {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u u' : D.what₂.Word) : TypFacts X u u' := by
   apply typFacts_of (h1 := gSplitX_holds X) (h3 := Formalism.L2.SG.LocVolKap.kapX X hb u u')

@@ -13,11 +13,11 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 namespace GlobalTheory.RealFibre
 
 /- English proof (translation)
-Establish `h1 : c * ((∑ i, Complex.normSq (x i) : ℝ) : ℂ) = 0`. Rewrite using `[← h, Complex.ofReal_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : (Complex.normSq (x i) : ℂ) = star (x i) * x i` using `Complex.normSq_eq_conj_mul_self`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ i, Complex.normSq (x i) = 0`. Establish `h3` using `(mul_eq_zero.mp h1).resolve_left hc`. Conclude with `h3` after adjusting the coercions. Use function extensionality and compare the values at `i`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg (x j))).mp h2 i (Finset.mem_univ i)`. Simplify using `using h4`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma eq_zero_of_sum_star_mul_const_mul_eq_zero {n : ℕ} (x : Fin n → ℂ) (c : ℂ) (hc : c ≠ 0)
     (h : ∑ i, star (x i) * (c * x i) = 0) : x = 0 := by
@@ -35,15 +35,13 @@ private lemma eq_zero_of_sum_star_mul_const_mul_eq_zero {n : ℕ} (x : Fin n →
   simpa using h4
 
 /- English proof (translation)
-Unfold `IsIsoC herm Jm at hW`. Take `⟨hne, hiso⟩` from `hW`. Take `⟨x, hxW, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hq` using `hiso x hxW x hxW`. Establish `hall : ∀ b : Bool, ∃ i, ε i = b`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hb : ∀ i, ε i = !b` using `fun i => by`. Establish `h'` using `hno i`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases hε : ε i <;> cases b <;> simp_all`. Apply `hx0` to reduce the goal to its premises. Apply the tactic sequence `apply eq_zero_of_sum_star_mul_const_mul_eq_zero x (if (!b) = true then (1 : ℂ) else -1) (by split_ifs <;> norm_num)`. Rewrite using `[← hq]`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, hb]`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hall true`. Take `⟨j, hj⟩` from `hall false`. Unfold `rkR`. Apply `le_min` to reduce the goal to its premises. Conclude with `Finset.card_pos.mpr ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi⟩⟩`.
-
-Conclude with `Finset.card_pos.mpr ⟨j, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj⟩⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem one_le_rkR_of_isIsoC {n : ℕ} {ε : Fin n → Bool} {W : Submodule ℂ (Fin n → ℂ)} (hW : IsIsoC ε W) :
     1 ≤ rkR ε := by
@@ -71,15 +69,15 @@ theorem one_le_rkR_of_isIsoC {n : ℕ} {ε : Fin n → Bool} {W : Submodule ℂ 
   · exact Finset.card_pos.mpr ⟨j, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj⟩⟩
 
 /- English proof (translation)
-Establish `hq0 : (0 : ℝ) < q` using `Nat.cast_pos.mpr (by omega)`. Establish `hs : 0 < Real.sqrt q` using `Real.sqrt_pos.mpr hq0`. Establish `hs1 : 1 ≤ Real.sqrt q`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`. Conclude with `Real.sqrt_le_sqrt (by exact_mod_cast hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `decE`. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Take `⟨s, hsd⟩ : ∃ s, s = Real.sqrt q` from `⟨_, rfl⟩`. Rewrite `hs`, `hs1`, the goal using `[← hsd]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0` using `hs.ne'`. Establish `key : t / s - min (2 * t ^ 2) (t / s) ≤ 1`. Break down `le_total (2 * t ^ 2) (t / s) with h' | h'` into its components or cases. Rewrite using `[min_eq_left h']`. Take `⟨u, hu⟩ : ∃ u, u = t / s` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu]`. Establish `ht : t = u * s` using `by rw [hu]; field_simp`. Establish `h2 : t ^ 2 = u ^ 2 * s ^ 2` using `by rw [ht]; ring`. Establish `h1 : 0 ≤ u ^ 2 * (s ^ 2 - 1)` using `mul_nonneg (sq_nonneg u) (by nlinarith)`. Use polynomial arithmetic with `[sq_nonneg (u - 1 / 4)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_right h']`. Evaluate the numerical expressions. Establish `e : h / (8 * s) * t = h / 8 * (t / s)` using `by ring`. Rewrite using `[e]`. Use polynomial arithmetic with `[mul_nonneg hh (sub_nonneg.mpr key)]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem decE_le_exp {q : ℕ} (hq : 1 ≤ q) {h : ℝ} (hh : 0 ≤ h) (t : ℝ) :
     decE q h t ≤ Real.exp (h / 8) * Real.exp (-(h / (8 * Real.sqrt q) * t)) := by
@@ -110,9 +108,9 @@ theorem decE_le_exp {q : ℕ} (hq : 1 ≤ q) {h : ℝ} (hh : 0 ≤ h) (t : ℝ) 
   nlinarith [mul_nonneg hh (sub_nonneg.mpr key)]
 
 /- English proof (translation)
-Establish `hq0 : (0 : ℝ) < q` using `Nat.cast_pos.mpr (by omega)`. Establish `hn0 : (0 : ℝ) < n` using `Nat.cast_pos.mpr (by omega)`. Establish `hs : 0 < Real.sqrt q` using `Real.sqrt_pos.mpr hq0`. Establish `hpow : (q : ℝ) ^ ((3 : ℝ) / 2) = q * Real.sqrt q`. Rewrite using `[show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add hq0, Real.rpow_one, Real.sqrt_eq_rpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hh` using `[hpow]`. Establish `hP : 0 < (n : ℝ) * q * Real.sqrt q` using `by positivity`. Use `⟨by nlinarith, ?_⟩` and prove the remaining obligations. Rewrite using `[lt_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rate_lt {n q : ℕ} (hn : 1 ≤ n) (hq : 1 ≤ q) {h : ℝ}
     (hh : 120 * (n : ℝ) * (q : ℝ) ^ ((3 : ℝ) / 2) ≤ h) :
@@ -129,14 +127,14 @@ theorem rate_lt {n q : ℕ} (hn : 1 ≤ n) (hq : 1 ≤ q) {h : ℝ}
   nlinarith
 
 /- English proof (translation)
-The claim follows from `(Finset.mul_prod_erase _ _ (Finset.mem_univ v)).symm`.
+A detailed English derivation is pending.
 -/
 private lemma list_prod_eq_take_mul_pair_mul_drop {ι : Type*} [Fintype ι] [DecidableEq ι] (F : ι → ℂ) (v : ι) :
     ∏ u, F u = F v * ∏ u ∈ Finset.univ.erase v, F u :=
   (Finset.mul_prod_erase _ _ (Finset.mem_univ v)).symm
 
 /- English proof (translation)
-Unfold `rkR`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 private lemma rkR_le' {n : ℕ} (ε : Fin n → Bool) : rkR ε ≤ n := by
   unfold rkR
@@ -146,15 +144,15 @@ private lemma rkR_le' {n : ℕ} (ε : Fin n → Bool) : rkR ε ≤ n := by
     _ = n := by simp
 
 /- English proof (translation)
-Introduce `hS B d h hD hL hh v Wv hW ν hν x y`. Take `⟨hHC, hDS, hLow, hFd⟩` from `hD v`. Establish `hDS'` using `hDS`. Take `⟨_, _, hU, _⟩` from `hDS'`. Take `⟨hw1, hwS⟩` from `hLow`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hq1 : 1 ≤ rkR (B.I.ε v)` using `one_le_rkR_of_isIsoC hW`. Establish `hn1 : 1 ≤ B.I.n` using `le_trans hq1 (rkR_le' _)`. Take `⟨h0, hc⟩` from `rate_lt hn1 hq1 (hh v)`. Take `⟨α, hαs, hαc, hαfix⟩` from `exists_smooth_fix_lowKSub B.I.n (B.I.ε v) (B.lam v) (B.H v) (B.σ v) hU (hS B.I.n (B.I.ε v) (B.lam v) hHC (B.H v) (B.σ v) hDS).1`. Establish `hT` using `GlobalTheory.T.unitary_rep_matrixCoeff_integral_eq_zero B.I.n (B.I.ε v) Wv ν hW hν (B.H v) (B.σ v) (d v) (h / (8 * Real.sqrt (rkR (B.I.ε v) : ℝ))) α (B.w v) hU hFd hc hw1 hαs hαc (fun u => hαfix (B.w v) hwS u) ⟨Real.exp (h / 8), fun g => (hL v g).trans (decE_le_exp hq1 h0 _)⟩ (x. …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstar : ∫ m, star ⟪B.w v, B.σ v (uMat (x.1 v * m * y.1 v)) (B.w v)⟫_ℂ ∂ν = 0`. Use `(integral_conj (μ := ν) (f := fun m => ⟪B.w v, B.σ v (uMat (x.1 v * m * y.1 v)) (B.w v)⟫_ℂ)).trans ?_` and prove the remaining obligations. Rewrite using `[hT]`. Simplify using the standard rewrite rules. Establish `hfun : ∀ m : UJ (B.I.ε v), phe B d (x * (open Classical in ((Pi.mulSingle v m, 1) : B.I.GA)) * y) = ((((∏ u, d u : ℝ) : ℂ) * star (∏ u ∈ Finset.univ.erase v, ⟪B.w u, B.σ u (uMat (x.1 u * y.1 u)) (B.w u)⟫_ℂ)) * B.e (x.2 * y.2)) * star ⟪B.w v, B.σ v (uMat (x.1 v * m * y.1 v)) (B.w …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `m`. Establish `hrest : ∏ u ∈ Finset.univ.erase v, ⟪B.w u, B.σ u (uMat (x.1 u * (open Classical in (Pi.mulSingle v m : B.I.Ginf)) u * y.1 u)) (B.w u)⟫_ℂ = ∏ u ∈ Finset.univ.erase v, ⟪B.w u, B.σ u (uMat (x.1 u * y.1 u)) (B.w u)⟫_ℂ` using `Finset.prod_congr rfl fun u hu => by`. Rewrite using `[Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hu), mul_one]`. Simplify using `only [GlobalTheory.Count.phe, GlobalTheory.Count.ph, Prod.fst_mul, Prod.snd_mul, Pi.mul_apply, mul_one]`. Rewrite using `[list_prod_eq_take_mul_pair_mul_drop _ v, hrest, Pi.mulSingle_eq_same, star_mul']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `(integral_congr_ae (ae_of_all ν hfun)).trans ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, hstar, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_phe_eq_zero : StrictLow → ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → LocDec B h → (∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) → ∀ (v : InfinitePlace B.I.F) (Wv : Submodule ℂ (Fin B.I.n → ℂ)), IsIsoC (B.I.ε v) Wv → ∀ ν : Measure (UJ (B.I.ε v)), IsHaarSub (NW (B.I.ε v) Wv) ν → ∀ x y : B.I.GA, ∫ m, phe B d (x * (open Classical in ((Pi.mulSingle v m, 1) : B.I.GA)) * y) ∂ν = 0 := by
   classical

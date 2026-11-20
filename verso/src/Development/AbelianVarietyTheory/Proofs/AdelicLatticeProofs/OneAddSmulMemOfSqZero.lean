@@ -6,11 +6,11 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨Polynomial.C (algebraMap ℚ ℂ a), fun t => by simp [ev]⟩`. Consider the case `add f g hf hg`. Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨p + q, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval_add, hp, hq]`. Simplify using `[ev]`. Consider the case `mul_X f ij hf`. Take `⟨p, hp⟩` from `hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨p * (Polynomial.C (A ij.1 ij.2) + Polynomial.X * Polynomial.C (B ij.1 ij.2)), fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval_mul, hp, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_C, Polynomial.eval_X]`. Simplify using `[ev]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_poly_ev_line {ι : Type} [Fintype ι] [DecidableEq ι] (f : MvPolynomial (ι × ι) ℚ)
     (A B : Matrix ι ι ℂ) : ∃ p : Polynomial ℂ, ∀ t : ℂ, p.eval t = ev f (A + t • B) := by
@@ -30,15 +30,13 @@ theorem exists_poly_ev_line {ι : Type} [Fintype ι] [DecidableEq ι] (f : MvPol
     simp [ev]
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ ε hε h1 t`. Establish `hn : ∀ n : ℕ, 1 + (n : ℂ) • ε ∈ Γ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hΓ.one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `h` using `hΓ.mul_mem _ ih _ h1`. Establish `e : (1 + (n : ℂ) • ε) * (1 + ε) = 1 + ((n + 1 : ℕ) : ℂ) • ε`. Rewrite using `[mul_add, mul_one, add_mul, one_mul, smul_mul_assoc, hε, smul_zero, add_zero, Nat.cast_succ, add_smul, one_smul, add_assoc]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `hΓ.closed` to reduce the goal to its premises. Introduce `f hf`. Take `⟨p, hp⟩` from `exists_poly_ev_line f 1 ε`. Establish `hp0 : p = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => (n : ℂ)) Nat.cast_injective ?_` and prove the remaining obligations. Introduce `n`. Use `show p.eval (n : ℂ) = 0`. Rewrite using `[hp]`. Conclude with `hf _ (hn n)`.
-
-Rewrite using `[← hp, hp0, Polynomial.eval_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_smul_mem_of_sq_zero :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsQGroup Γ →

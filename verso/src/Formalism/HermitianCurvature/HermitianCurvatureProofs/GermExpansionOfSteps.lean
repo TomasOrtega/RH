@@ -7,9 +7,9 @@ open Matrix Formalism.DoubleCosetMeasures Formalism.FourierDecayAlt.A5 Formalism
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `hHead hPhi K _ _ _ R ψ hD hn m hm γ hγ h Q hQ hQu`. Take `⟨L₀, Λ₀, hL₀, hΛ₀, hΦ⟩` from `hHead K R ψ hD hn m h Q hQ hQu`. Take `⟨V, hV, hG⟩` from `hPhi K R ψ hD hn m hm γ hγ L₀ Λ₀ Q hL₀ hΛ₀ hQ hQu`. Use `⟨V, hV, fun t c ht hc n' Z' => ?_⟩` and prove the remaining obligations. Take `⟨Φ, hyp, h1, h2⟩` from `hΦ n' Z'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1 t c, hG Φ hyp t c ht hc]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `(h2 z).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem germExpansionOfSteps : Formalism.FourierDecayAlt.A6.GermAssemble := by
   intro hHead hPhi K _ _ _ R ψ hD hn m hm γ hγ h Q hQ hQu

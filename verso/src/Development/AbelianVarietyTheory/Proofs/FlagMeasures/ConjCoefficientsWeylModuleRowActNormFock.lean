@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.ConjCoeff
 
 /- English proof (translation)
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨v, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a y _ hy`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_delSq {n : ℕ} (lam : DomWeight n) {p : MvPolynomial (Fin n × Fin n) ℂ}
     (hp : p ∈ delSq ℂ n lam) : MvPolynomial.map (starRingEnd ℂ) p ∈ delSq ℂ n lam := by
@@ -32,9 +32,9 @@ theorem conj_mem_delSq {n : ℕ} (lam : DomWeight n) {p : MvPolynomial (Fin n ×
     exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h : ∀ (h : Matrix (Fin n) (Fin n) ℂ) (b : ℂ), Formalism.GradedWeylDivisibility.rowAct ℂ h (MvPolynomial.C b : MvPolynomial (Fin n × Fin n) ℂ) = MvPolynomial.C b` using `fun h b => (Formalism.GradedWeylDivisibility.rowAct ℂ h).commutes b`. Rewrite using `[h, MvPolynomial.map_C, h]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, MvPolynomial.map_X]`. Use `congr 1`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_X]`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem conj_rowAct {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomial (Fin n × Fin n) ℂ) :
     MvPolynomial.map (starRingEnd ℂ) (Formalism.GradedWeylDivisibility.rowAct ℂ g p) =
@@ -52,13 +52,13 @@ theorem conj_rowAct {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomial
     simp [Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Establish `hs : (MvPolynomial.map (starRingEnd ℂ) p).support = p.support` using `MvPolynomial.support_map_of_injective _ (starRingEnd ℂ).injective`. Unfold `Formalism.REAL.fockF`. Rewrite using `[hs]`. Establish `h1 : ∑ m ∈ p.support, MvPolynomial.coeff m (MvPolynomial.map (starRingEnd ℂ) p) * star (MvPolynomial.coeff m (MvPolynomial.map (starRingEnd ℂ) q)) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℂ) = ∑ m ∈ p.support ∪ q.support, MvPolynomial.coeff m q * star (MvPolynomial.coeff m p) …`. Use `Finset.sum_subset_zero_on_sdiff Finset.subset_union_left ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm`. Establish `: MvPolynomial.coeff m p = 0`. Simplify using `using (Finset.mem_sdiff.1 hm).2`. Simplify using `[this]`. Introduce `m _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [MvPolynomial.coeff_map]`. Simplify using `[mul_comm]`. Establish `h2 : ∑ m ∈ q.support, MvPolynomial.coeff m q * star (MvPolynomial.coeff m p) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℂ) = ∑ m ∈ p.support ∪ q.support, MvPolynomial.coeff m q * star (MvPolynomial.coeff m p) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℂ)`. Use `Finset.sum_subset_zero_on_sdiff Finset.subset_union_right ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `m hm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: MvPolynomial.coeff m q = 0`. Simplify using `using (Finset.mem_sdiff.1 hm).2`. Simplify using `[this]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockF_conj {σ : Type} (p q : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (MvPolynomial.map (starRingEnd ℂ) p) (MvPolynomial.map (starRingEnd ℂ) q) =
@@ -93,7 +93,7 @@ theorem fockF_conj {σ : Type} (p q : MvPolynomial σ ℂ) :
   rw [h1, h2]
 
 /- English proof (translation)
-Introduce `n lam`. Use `⟨fun p hp => conj_mem_delSq lam hp, conj_rowAct, fun p q => ?_⟩` and prove the remaining obligations. Rewrite using `[normFock, normFock, fockF_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_coefficients : ∀ (n : ℕ) (lam : DomWeight n), (∀ p ∈ delSq ℂ n lam, MvPolynomial.map (starRingEnd ℂ) p ∈ delSq ℂ n lam) ∧ (∀ (g : Matrix (Fin n) (Fin n) ℂ) (p : MvPolynomial (Fin n × Fin n) ℂ), MvPolynomial.map (starRingEnd ℂ) (Formalism.GradedWeylDivisibility.rowAct ℂ g p) = Formalism.GradedWeylDivisibility.rowAct ℂ (g.map (starRingEnd ℂ)) (MvPolynomial.map (starRingEnd ℂ) p)) ∧ ∀ p q : MvPolynomial (Fin n × Fin n) ℂ, normFock lam (MvPolynomial.map (starRingEnd ℂ) p) (MvPolynomial.map (starRingEnd ℂ) q) = normFock lam q p := by
   intro n lam

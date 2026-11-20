@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Integ
 namespace UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-The claim follows from `geoOne_of h₁ (packEx_of h₂ h₃)`.
+A detailed English derivation is pending.
 -/
 theorem geoOne_of_parts (h₁ : Steps) (h₂ : KSAll) (h₃ : PlanEx) : GeoOne := geoOne_of h₁ (packEx_of h₂ h₃)
 

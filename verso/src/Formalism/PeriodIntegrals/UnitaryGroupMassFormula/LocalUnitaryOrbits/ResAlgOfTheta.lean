@@ -24,7 +24,7 @@ def redR : v.adicCompletionIntegers F →+* 𝓞 F ⧸ v.asIdeal where
   map_add' x y := red_add v x.2 y.2
 
 /- English proof (translation)
-Introduce `t` and use `by obtain ⟨x, hx, h⟩ := red_surj v t exact ⟨⟨x, hx⟩, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem redR_surj : Function.Surjective (redR v) := fun t => by
   obtain ⟨x, hx, h⟩ := red_surj v t
@@ -36,7 +36,7 @@ Both sides reduce to the same expression.
 theorem sc_eq' (c : Fv F v) : sc (E := E) v c = algebraMap (Fv F v) (Fv F v ⊗[F] E) c := rfl
 
 /- English proof (translation)
-Rewrite using `[sc_eq', ← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E).commutes a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclR_alg' (a : F) :
     inclR (F := F) (Fv F v) (algebraMap F E a) = sc (E := E) v (algebraMap F (Fv F v) a) := by
@@ -44,7 +44,7 @@ theorem inclR_alg' (a : F) :
   exact (Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E).commutes a
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ (c ⊗ₜ (1 : E)) = c ⊗ₜ (1 : E)`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigR_sc (c : Fv F v) : sigR (Fv F v) σ (sc (E := E) v c) = sc (E := E) v c := by
   show Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ (c ⊗ₜ (1 : E)) = c ⊗ₜ (1 : E)
@@ -52,7 +52,7 @@ theorem sigR_sc (c : Fv F v) : sigR (Fv F v) σ (sc (E := E) v c) = sc (E := E) 
   rfl
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ ((1 : Fv F v) ⊗ₜ e) = (1 : Fv F v) ⊗ₜ σ e`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigR_incl (e : E) : sigR (Fv F v) σ (inclR (F := F) (Fv F v) e) = inclR (F := F) (Fv F v) (σ e) := by
   show Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ ((1 : Fv F v) ⊗ₜ e) = (1 : Fv F v) ⊗ₜ σ e
@@ -71,55 +71,49 @@ def ThetaBas : Prop :=
       q = algebraMap _ (QE (E := E) v) a0 + algebraMap _ (QE (E := E) v) a1 * Ideal.Quotient.mk (IE (E := E) v) θ)
 
 /- English proof (translation)
-Introduce `hstd hun ϖ hϖ`. Take `⟨θ, h1, h2, h3, h4⟩` from `hT hstd hun`. Use `set iθ : Fv F v ⊗[F] E := inclR (F := F) (Fv F v) (θ : E) with hiθ`. Establish `hss : sigO σ (sigO σ θ) = θ` using `RingOfIntegers.ext (by simp only [sigO_coe]; exact sig_sig σ hstd.1 _)`. Take `⟨t, ht⟩` from `fix_int σ hstd.1 (θ + sigO σ θ) (by rw [map_add, hss, add_comm])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `fix_int σ hstd.1 (θ * sigO σ θ) (by rw [map_mul, hss, mul_comm])`. Establish `hθ2 : θ * θ = algebraMap (𝓞 F) (𝓞 E) t * θ - algebraMap (𝓞 F) (𝓞 E) m`. Rewrite using `[ht, hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `hσθ : sigO σ θ = algebraMap (𝓞 F) (𝓞 E) t - θ` using `by rw [ht]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinc : ∀ a : 𝓞 F, inclR (F` using `F) (Fv F v) ((algebraMap (𝓞 F) (𝓞 E) a : 𝓞 E) : E) = sc (E := E) v (iO v a) := fun a => inclR_alg' v (a : F)`. Establish `hiθ2 : iθ * iθ = sc (E` using `E) v (iO v t) * iθ - sc (E := E) v (iO v m) := by`. Establish `e1` using `congrArg (fun y : 𝓞 E => inclR (F := F) (Fv F v) (y : E)) hθ2`. Simplify using `only [MulMemClass.coe_mul, AddSubgroupClass.coe_sub, map_mul, map_sub, hinc] at e1`. Conclude with `e1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsiθ : sigR (Fv F v) σ iθ = sc (E` using `E) v (iO v t) - iθ := by`. Establish `e1` using `congrArg (fun y : 𝓞 E => inclR (F := F) (Fv F v) (y : E)) hσθ`. Simplify using `only [AddSubgroupClass.coe_sub, map_sub, hinc, sigO_coe] at e1`. Rewrite using `[hiθ, sigR_incl]`. Conclude with `e1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T0 : v.adicCompletionIntegers F` to `⟨iO v t, mem_O_iO v t⟩`. Set `M0 : v.adicCompletionIntegers F` to `⟨iO v m, mem_O_iO v m⟩`. Establish `huniq : ∀ a0 a1 b0 b1 : Fv F v, sc (E` using `E) v a0 + sc (E := E) v a1 * iθ = sc (E := E) v b0 + sc (E := E) v b1 * iθ → a0 = b0 ∧ a1 = b1 := by`. Introduce `a0 a1 b0 b1 h`. Use `h2 (a0 - b0) (a1 - b1) (by simp only [sc_eq', map_sub] at h ⊢; linear_combination h)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨sub_eq_zero.1 this.1, sub_eq_zero.1 this.2⟩`. Use `choose c0 c1 hc using fun x : OR (E := E) v => h1 (x : Fv F v ⊗[F] E) x.2`. Establish `hco : ∀ (x : OR (E` using `E) v) (a0 a1 : v.adicCompletionIntegers F), (x : Fv F v ⊗[F] E) = sc (E := E) v (a0 : Fv F v) + sc (E := E) v (a1 : Fv F v) * iθ → c0 x = a0 ∧ c1 x = a1 := by`. Introduce `x a0 a1 h`. Use `huniq _ _ _ _ ((hc x).symm.trans h)` as an intermediate fact.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `⟨Subtype.ext this.1, Subtype.ext this.2⟩`. Set `g : 𝓞 F ⧸ v.asIdeal →+* QE (E` to `E) v := algebraMap _ _`. Set `θb : QE (E` to `E) v := Ideal.Quotient.mk (IE (E := E) v) θ`. Set `ρf : OR (E` to `E) v → QE (E := E) v := fun x => g (redR v (c0 x)) + g (redR v (c1 x)) * θb`. Establish `hρ : ∀ (x : OR (E` using `E) v) (a0 a1 : v.adicCompletionIntegers F), (x : Fv F v ⊗[F] E) = sc (E := E) v (a0 : Fv F v) + sc (E := E) v (a1 : Fv F v) * iθ → ρf x = g (redR v a0) + g (redR v a1) * θb := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x a0 a1 h`. Take `⟨e0, e1⟩` from `hco x a0 a1 h`. Simplify using `only [ρf, e0, e1]`. Establish `hgt : ∀ a : 𝓞 F, g (redR v ⟨iO v a, mem_O_iO v a⟩) = Ideal.Quotient.mk (IE (E` using `E) v) (algebraMap (𝓞 F) (𝓞 E) a) := by`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap _ _ (red v (iO v a)) = _`. Rewrite using `[red_iO, Ideal.Quotient.algebraMap_quotient_map_quotient]`. Establish `hQθ : θb * θb = Ideal.Quotient.mk (IE (E` using `E) v) (algebraMap (𝓞 F) (𝓞 E) t) * θb - Ideal.Quotient.mk (IE (E := E) v) (algebraMap (𝓞 F) (𝓞 E) m) := by`. Simplify using `only [θb]`. Rewrite using `[← map_mul, ← map_mul, ← map_sub, hθ2]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `ρ : OR (E` to `E) v →+* QE (E := E) v := { toFun := ρf map_one' := by`. Rewrite using `[hρ 1 1 0 (by simp only [sc_eq', OneMemClass.coe_one, ZeroMemClass.coe_zero, map_one, map_zero, zero_mul, add_zero])]`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun x y => by`. Rewrite using `[hρ (x * y) (c0 x * c0 y - c1 x * c1 y * M0) (c0 x * c1 y + c1 x * c0 y + c1 x * c1 y * T0) ?_]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = ρf x * ρf y`. Simplify using `only [ρf, map_add, map_sub, map_mul, T0, M0, hgt]`. Take the linear combination `(-(g (redR v (c1 x)) * g (redR v (c1 y)))) * hQθ`. Use `show (x : Fv F v ⊗[F] E) * (y : Fv F v ⊗[F] E) = _`. Rewrite using `[hc x, hc y]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MulMemClass.coe_mul, AddSubgroupClass.coe_sub, AddMemClass.coe_add, sc_eq', map_mul, map_sub, map_add, T0, M0] at hiθ2 ⊢`. Take the linear combination `(algebraMap (Fv F v) (Fv F v ⊗[F] E) (c1 x) * algebraMap (Fv F v) (Fv F v ⊗[F] E) (c1 y)) * hiθ2`. Use the proof step `map_zero' := by`. Rewrite using `[hρ 0 0 0 (by simp only [sc_eq', ZeroMemClass.coe_zero, map_zero, zero_mul, add_zero])]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `map_add' := fun x y => by`. Rewrite using `[hρ (x + y) (c0 x + c0 y) (c1 x + c1 y) ?_]`. Use `show _ = ρf x + ρf y`. Simplify using `only [ρf, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `show (x : Fv F v ⊗[F] E) + (y : Fv F v ⊗[F] E) = _`. Rewrite using `[hc x, hc y]`. Simplify using `only [AddMemClass.coe_add, sc_eq', map_add]`. Use `ring }`. Use `⟨ρ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Take `⟨a0, a1, rfl⟩` from `h4 q`. Take `⟨b0, rfl⟩` from `redR_surj v a0`. Take `⟨b1, rfl⟩` from `redR_surj v a1`. Establish `m0 : sc (E` using `E) v (b0 : Fv F v) ∈ OEv (E := E) v := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using sc_mul_mem_oEv v b0.2 (Orb.oSub (E := E) v).1`. Establish `m1 : sc (E` using `E) v (b1 : Fv F v) * iθ ∈ OEv (E := E) v := sc_mul_mem_oEv v b1.2 (Orb.gen_mem v θ)`. Conclude with `⟨⟨_, Orb.oev_add v m0 m1⟩, hρ _ b0 b1 rfl⟩`. Introduce `x`. Establish `hρx : ρ x = g (redR v (c0 x)) + g (redR v (c1 x)) * θb` using `rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∀ c : v.adicCompletionIntegers F, redR v c = 0 ↔ ∃ d : v.adicCompletionIntegers F, (c : Fv F v) = ϖ * d`. Introduce `c`. Use `show red v (c : Fv F v) = 0 ↔ _`. Rewrite using `[red_eq_zero_iff v c.2, ← mem_unifO_iff v hϖ c]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Establish `hϖO : ϖ ∈ v.adicCompletionIntegers F` using `by show Valued.v ϖ ≤ 1`. Rewrite using `[show Valued.v ϖ = _ from hϖ]`. Conclude with `le_of_lt (by decide)`. Rewrite using `[hρx]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `h0`. Take `⟨z0, z1⟩` from `h3 _ _ h0`. Take `⟨d0, hd0⟩` from `(hz _).1 z0`. Take `⟨d1, hd1⟩` from `(hz _).1 z1`. Use `⟨sc (E := E) v (d0 : Fv F v) + sc (E := E) v (d1 : Fv F v) * iθ, Orb.oev_add v (by simpa using sc_mul_mem_oEv v d0.2 (Orb.oSub (E := E) v).1) (sc_mul_mem_oEv v d1.2 (Orb.gen_mem v θ)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hc x, hd0, hd1]`. Simplify using `only [sc_eq', map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨o, ho, hxo⟩`. Take `⟨d0, d1, hd⟩` from `h1 o ho`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx' : (x : Fv F v ⊗[F] E) = sc (E` using `E) v (ϖ * d0) + sc (E := E) v (ϖ * d1) * iθ := by`. Rewrite using `[hxo, hd]`. Simplify using `only [sc_eq', map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e0, e1⟩` from `huniq _ _ _ _ ((hc x).symm.trans hx')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hz _).2 ⟨d0, e0⟩, (hz _).2 ⟨d1, e1⟩]`. Simplify using the standard rewrite rules. Introduce `x y hxy`. Establish `hy : (y : Fv F v ⊗[F] E) = sc (E` using `E) v ((c0 x + c1 x * T0 : v.adicCompletionIntegers F) : Fv F v) + sc (E := E) v ((-c1 x : v.adicCompletionIntegers F) : Fv F v) * iθ := by`. Rewrite using `[hxy, hc x, map_add, map_mul, sigR_sc, sigR_sc, hsiθ]`.
-
-Simplify using `only [AddMemClass.coe_add, MulMemClass.coe_mul, NegMemClass.coe_neg, sc_eq', map_add, map_mul, map_neg, T0]`. Expand and normalize the polynomial expressions, which then agree. Use `show ρf y = sigQ σ v (ρf x)`. Rewrite using `[hρ y _ _ hy]`. Simplify using `only [ρf, map_add, map_mul, map_neg, hgt, sigQ_alg]`.
-
-Establish `hsq : sigQ σ v θb = Ideal.Quotient.mk (IE (E` using `E) v) (algebraMap (𝓞 F) (𝓞 E) t) - θb := by`. Simplify using `only [θb]`. Rewrite using `[sigQ_mk, hσθ, map_sub]`. Rewrite using `[hsq]`. Establish `hsg : ∀ c, sigQ σ v (g c) = g c` using `fun c => sigQ_alg σ v c`.
-
-Simplify using `only [hsg]`. Rewrite using `[show g (redR v T0) = Ideal.Quotient.mk (IE (E := E) v) (algebraMap (𝓞 F) (𝓞 E) t) from hgt t]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem resQ_of (hT : ThetaBas σ J ψ v) : ResQ σ J ψ v := by
   intro hstd hun ϖ hϖ
@@ -262,7 +256,7 @@ theorem resQ_of (hT : ThetaBas σ J ψ v) : ResQ σ J ψ v := by
     ring
 
 /- English proof (translation)
-The claim follows from `resAlg_of' σ J ψ v (resQ_of σ J ψ v hT) hE`.
+A detailed English derivation is pending.
 -/
 theorem resAlg_of_theta (hT : ThetaBas σ J ψ v) (hE : EtaLink σ J ψ v) : ResAlg σ J ψ v :=
   resAlg_of' σ J ψ v (resQ_of σ J ψ v hT) hE

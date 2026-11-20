@@ -10,9 +10,9 @@ open Finset MeasureTheory
 namespace Pgsn2pfran
 
 /- English proof (translation)
-Introduce `a b hab`. Use `show (if b < c then (1:ℝ) else 0) ≤ (if a < c then (1:ℝ) else 0)`. Distinguish the cases in `h1 : b < c`. Establish `h2 : a < c` using `lt_of_le_of_lt hab h1`. Simplify using `[h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h2 : a < c <;> simp [h1, h2]`.
+A detailed English derivation is pending.
 -/
 lemma ind_anti (c : ℝ) : Antitone (fun τ : ℝ => if τ < c then (1:ℝ) else 0) := by
   intro a b hab
@@ -23,13 +23,13 @@ lemma ind_anti (c : ℝ) : Antitone (fun τ : ℝ => if τ < c then (1:ℝ) else
   · by_cases h2 : a < c <;> simp [h1, h2]
 
 /- English proof (translation)
-Establish `hi1 : IntervalIntegrable (fun τ : ℝ => if τ < c then (1:ℝ) else 0) volume 0 c` using `(ind_anti c).intervalIntegrable`. Establish `hi2 : IntervalIntegrable (fun τ : ℝ => if τ < c then (1:ℝ) else 0) volume c HH` using `(ind_anti c).intervalIntegrable`. Establish `hne : ∀ᵐ x ∂(volume : Measure ℝ), x ≠ c`. Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∫ τ in (0:ℝ)..c, (if τ < c then (1:ℝ) else 0) = ∫ τ in (0:ℝ)..c, (1:ℝ)`. Apply `intervalIntegral.integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hne] with x hx hmem`. Rewrite `hmem` using `[Set.uIoc_of_le hc0]`. Establish `hxc : x < c` using `lt_of_le_of_ne hmem.2 hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hxc]`. Establish `h2 : ∫ τ in c..HH, (if τ < c then (1:ℝ) else 0) = ∫ τ in c..HH, (0:ℝ)`. Apply `intervalIntegral.integral_congr` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Set.uIcc_of_le hc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[not_lt.mpr hx.1]`. Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals hi1 hi2, h1, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma ind_int (c HH : ℝ) (hc0 : 0 ≤ c) (hc : c ≤ HH) :
     ∫ τ in (0:ℝ)..HH, (if τ < c then (1:ℝ) else 0) = c := by
@@ -55,9 +55,9 @@ lemma ind_int (c HH : ℝ) (hc0 : 0 ≤ c) (hc : c ≤ HH) :
   simp
 
 /- English proof (translation)
-Break down `le_total (a - xj) 0 with h0 | h0` into its components or cases. Establish `hpos : 0 ≤ ∫ τ in (0:ℝ)..HH, (if τ < a - xj then (1:ℝ) else 0)`. Apply `intervalIntegral.integral_nonneg hHH` to reduce the goal to its premises. Introduce `u _`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_eq (ind_int (a - xj) HH h0 (by linarith)).symm`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma ind_lb (a xj HH : ℝ) (h : a - HH ≤ xj) (hHH : 0 ≤ HH) :
     a - xj ≤ ∫ τ in (0:ℝ)..HH, (if τ < a - xj then (1:ℝ) else 0) := by
@@ -74,19 +74,17 @@ end Pgsn2pfran
 open Pgsn2pfran
 
 /- English proof (translation)
-Unfold `LayerCake`. Introduce `D x a HH w hD hHH hx hw hcnt`. Establish `hDpos : (0:ℝ) < D` using `by exact_mod_cast hD`. Establish `hcount : ∀ τ : ℝ, ∑ j, (if τ < a - x j then (1:ℝ) else 0) = ((Finset.univ.filter fun j => x j < a - τ).card : ℝ)`. Introduce `τ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_boole]`. Apply the tactic sequence `have hf : (Finset.univ.filter fun j => τ < a - x j) = (Finset.univ.filter fun j => x j < a - τ) := Finset.filter_congr (fun j _ => by constructor <;> intro hh <;> linarith)`. Rewrite using `[hf]`. Establish `hanti : Antitone (fun τ : ℝ => ∑ j, (if τ < a - x j then (1:ℝ) else 0))` using `fun t1 t2 ht => Finset.sum_le_sum fun j _ => ind_anti (a - x j) ht`. Establish `hint : ∫ τ in (0:ℝ)..HH, ∑ j, (if τ < a - x j then (1:ℝ) else 0) = ∑ j, ∫ τ in (0:ℝ)..HH, (if τ < a - x j then (1:ℝ) else 0)` using `intervalIntegral.integral_finset_sum fun j _ => (ind_anti (a - x j)).intervalIntegrable`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ j, (a - x j) ≤ ∑ j, ∫ τ in (0:ℝ)..HH, (if τ < a - x j then (1:ℝ) else 0)` using `Finset.sum_le_sum fun j _ => ind_lb a (x j) HH (hx j) hHH`. Establish `hL : ∑ j, (a - x j) = (D:ℝ) * a - ∑ j, x j`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hmono : ∫ τ in (0:ℝ)..HH, ∑ j, (if τ < a - x j then (1:ℝ) else 0) ≤ ∫ τ in (0:ℝ)..HH, (D:ℝ) * min 1 (w τ)`. Apply `intervalIntegral.integral_mono_on hHH hanti.intervalIntegrable (hw.const_mul (D:ℝ))` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `τ hτ`. Use `show ∑ j, (if τ < a - x j then (1:ℝ) else 0) ≤ (D:ℝ) * min 1 (w τ)`. Rewrite using `[hcount τ]`. Establish `hc1 : (Finset.univ.filter fun j => x j < a - τ).card ≤ D`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hc1' : ((Finset.univ.filter fun j => x j < a - τ).card : ℝ) ≤ D`. Conclude with `hc1` after adjusting the coercions. Establish `hc2` using `hcnt τ hτ`. Break down `le_total 1 (w τ) with hw1 | hw1` into its components or cases. Rewrite using `[min_eq_left hw1]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[min_eq_right hw1]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hmono` using `[intervalIntegral.integral_const_mul]`. Rewrite using `[le_div_iff₀ hDpos]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem layer_cake_formula : LayerCake := by
   unfold LayerCake

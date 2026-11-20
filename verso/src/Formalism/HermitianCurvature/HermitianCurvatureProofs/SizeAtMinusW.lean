@@ -14,7 +14,7 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-The claim follows from `| [], x => rfl | y :: ys, x => by funext e simp only [KB.onOld] rw [onOld_id ys] exact congrArg x (Fin.cons_self_tail e)`.
+A detailed English derivation is pending.
 -/
 theorem onOld_id {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] {w : List C.Letter} :
@@ -28,9 +28,9 @@ theorem onOld_id {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
     exact congrArg x (Fin.cons_self_tail e)
 
 /- English proof (translation)
-Unfold `KB.mix PBD.pushTh`. Simplify using `only [Complex.ofReal_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `hmem : mk (List.ofFn fun b => grid b (n b)) ∈ PBD.pushU grid mk` using `Finset.mem_image_of_mem _ (Finset.mem_univ n)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single_of_mem _ hmem]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg (Ne.symm hb)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mix_push {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
@@ -58,7 +58,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Unfold `C.HidaSetting.sizeAt`. Rewrite using `[PBD.plusW_eq, List.map_append, List.prod_append, List.map_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sizeAt_plusW (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (ys : List ℝ) (a : List C.Letter) :
     S.sizeAt v (KB.plusW ys a) = (ys.map fun y => |S.P v y|).prod * S.sizeAt v a := by
@@ -67,7 +67,7 @@ theorem sizeAt_plusW (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (ys : List ℝ) (
   rfl
 
 /- English proof (translation)
-Unfold `C.HidaSetting.sizeAt`. Rewrite using `[PBD.minusW_eq, List.map_append, List.prod_append, List.map_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sizeAt_minusW (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (ys : List ℝ) (a : List C.Letter) :
     S.sizeAt v (KB.minusW ys a) = (ys.map fun y => |S.P v (y + 1)|).prod * S.sizeAt v a := by
@@ -76,13 +76,13 @@ theorem sizeAt_minusW (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (ys : List ℝ) 
   rfl
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `ha`. Establish `hA` using `(PBD.admissible_list_of_word S w v).1`. Rewrite `hA` using `[hw]`. Unfold `C.HidaSetting.sizeAt`. Use `List.prod_pos fun x hx => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, hl, rfl⟩` from `List.mem_map.1 hx`. Take `⟨j, hj, rfl⟩` from `List.getElem_of_mem hl`. Establish `hnode` using `hA j hj`. Establish `hgrid : (∃ a', PBD.nodeOf a[j] ∈ S.grid v a') ∨ PBD.nodeOf a[j] ∈ S.grid1 v`. Break down `Finset.mem_union.1 hnode with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl ⟨_, h⟩`. Conclude with `Or.inr h`. Take `⟨-, -, hP, hP1⟩` from `(hG v).2.2.2.2.2 _ hgrid`. Use `abs_pos.2 ?_` and prove the remaining obligations. Unfold `PBD.nodeOf at hP hP1`.
+Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `split_ifs at hP hP1 with hs`. Conclude with `hP`. Simplify using `using hP1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sizeAt_pos (S : C.HidaSetting E Wp Wq) (hG : C.GridsOK S) (v : Fin S.f) (a : List C.Letter)
     (ha : D.AdmAt S v a) : 0 < S.sizeAt v a := by
@@ -120,21 +120,19 @@ def NodeOK (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (a : List C.Letter) (one : 
     (one = true ∧ y ∈ S.grid1 v ∧ ∀ x ∈ a, PBD.Sep (true, y) x)
 
 /- English proof (translation)
-Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, hGo, hGr, -⟩` from `hB'`. Establish `hCI` using `PBCut.cutInside_of_built hB`. Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases. Take `⟨ys, hlen, -, hg1, hp, hm, hcp, hcm, hpw⟩` from `Formalism.FourierDecayAlt.P.new_letters_admissible_level_one E Wp Wq S hGo hGr hCI v a K ha hK`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `set grid : Fin K → Fin (2 * 0 + 1) → ℝ := fun b _ => ys.get ⟨b, by rw [hlen]; exact b.2⟩ with hgrid`. Establish `hys : ∀ n : Fin K → Fin (2 * 0 + 1), (List.ofFn fun b => grid b (n b)) = ys`. Introduce `n`. Apply `List.ext_get` to reduce the goal to its premises. Simplify using `[hlen]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i h1 h2`. Simplify using `[hgrid]`. Establish `hsep : ∀ y ∈ ys, ∀ x ∈ a, PBD.Sep (true, y) x`. Take `⟨w, hw⟩` from `hp`. Establish `hA` using `(PBD.admissible_list_of_word S w v).2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA` using `[hw, PBD.plusW_eq]`. Introduce `y hy x hx`. Conclude with `(List.pairwise_append.1 hA).2.2 _ (List.mem_map.2 ⟨y, hy, rfl⟩) _ hx`. Establish `hmk : ∀ mk : List ℝ → List C.Letter, (mk ys = KB.plusW ys a ∨ mk ys = KB.minusW ys a) → ∀ n : Fin K → Fin (2 * 0 + 1), D.AdmAt S v (mk (List.ofFn fun b => grid b (n b))) ∧ (mk (List.ofFn fun b => grid b (n b))).length ≤ a.length + K`. Introduce `mk hmk n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hys n]`. Apply the tactic sequence `rcases hmk with h | h <;> rw [h]`. Conclude with `⟨hp, by rw [PBD.plusW_eq]; simp [hlen]; omega⟩`. Conclude with `⟨hm, by rw [PBD.minusW_eq]; simp [hlen]; omega⟩`. Use `⟨grid, fun b => fun i i' _ => Fin.ext (by have := i.isLt; have := i'.isLt; omega), fun b => ?_, fun n => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[F7.lagCo]`. Rewrite using `[hys n]`. Use `⟨hp, hm, hcp, hcm, hpw.imp fun h => by linarith, fun y hy => Or.inr ⟨rfl, hg1 y hy, hsep y hy⟩⟩` and prove the remaining obligations. Conclude with `PBD.locProb_push S v _ grid (fun b => fun i i' _ => Fin.ext (by have := i.isLt; have := i'.isLt; omega)) _ (hmk (fun ys => KB.plusW ys a) (Or.inl rfl))`. Conclude with `PBD.locProb_push S v _ grid (fun b => fun i i' _ => Fin.ext (by have := i.isLt; have := i'.isLt; omega)) _ (hmk (fun ys => KB.minusW ys a) (Or.inr rfl))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, grid, hinj, hl1, hmem, hall, hlp, hlm⟩` from `Formalism.FourierDecayAlt.P.new_letters_admissible E Wp Wq S hGo hGr hCI v a K (2 * j) ha hK (by omega)`. Use `⟨grid, hinj, hl1, fun n => ?_, hlp, hlm⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5⟩` from `hall n`. Use `⟨h1, h2, h3, h4, h5.imp fun h => by linarith, fun y hy => Or.inl ⟨by simp; omega, ?_⟩⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `List.mem_ofFn.1 hy`.
-
-Conclude with `⟨a.length + K - b, by omega, by omega, hmem b (n b)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nodes_level (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) (a : List C.Letter) (ha : D.AdmAt S v a)
     (K : ℕ) (hK : a.length + K ≤ S.Ntop) (j : ℕ) (hj : j ≤ S.G.r) :

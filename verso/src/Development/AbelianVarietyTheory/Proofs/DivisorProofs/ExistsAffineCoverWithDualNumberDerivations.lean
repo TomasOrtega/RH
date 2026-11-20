@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.CompHS
 
 /- English proof (translation)
-Take `⟨ι, σ, _, _, P, hP⟩` from `‹Algebra.IsStandardSmoothOfRelativeDimension D k A›.out`. Use `letI := Fintype.ofFinite ι`. Use `letI := Fintype.ofFinite σ`. Establish `hc : Fintype.card ((Set.range P.map)ᶜ : Set ι) = D`. Rewrite using `[Fintype.card_compl_set, Set.card_range_of_injective P.map_inj, ← hP]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.Presentation.dimension]`. Set `e` to `Fintype.equivFinOfCardEq hc`. Conclude with `⟨fun i => P.val (e.symm i), P.basisKaehler.reindex e, fun i => by simp⟩`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_basis_kaehler_D {k A : Type} [CommRing k] [CommRing A] [Algebra k A] {D : ℕ}
     [Algebra.IsStandardSmoothOfRelativeDimension D k A] :
@@ -45,9 +45,9 @@ def derivHom {k A : Type} [CommRing k] [CommRing A] [Algebra k A] (δ : Derivati
   map_add' a b := by ext <;> simp [add_comm, add_left_comm, add_assoc]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SecondComponentSum.snd_eq_sum`. Consider the case `exact _root_.GlobalTheory.SecondComponentSum.snd_eq_sum`. Consider the case `(apply _root_.GlobalTheory.SecondComponentSum.snd_eq_sum <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SecondComponentSum.snd_eq_sum <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SecondComponentSum.snd_eq_sum <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SecondComponentSum.snd_eq_sum ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem snd_eq_sum_of_basis {k A : Type} [CommRing k] [CommRing A] [Algebra k A] {D : ℕ}
     (f : Fin D → A) (B : Module.Basis (Fin D) A Ω[A⁄k]) (hB : ∀ i, B i = KaehlerDifferential.D k A (f i))
@@ -63,9 +63,9 @@ theorem snd_eq_sum_of_basis {k A : Type} [CommRing k] [CommRing A] [Algebra k A]
   | (intros; exact _root_.GlobalTheory.SecondComponentSum.snd_eq_sum ..)
 
 /- English proof (translation)
-Use `letI : Algebra ℚ (DualNumber K) := (φ.comp (algebraMap ℚ F)).toAlgebra`. Establish `: Algebra.FormallyUnramified ℚ F` using `Algebra.FormallyUnramified.of_isSeparable ℚ F`. Use `Algebra.FormallyUnramified.ext' (R := ℚ) (A := F) (B := DualNumber K) (TrivSqZeroExt.fstHom K K K).toRingHom ⟨2, TrivSqZeroExt.kerIdeal_sq K K⟩ φ.toRatAlgHom ((algebraMap K (DualNumber K)).comp ((TrivSqZeroExt.fstHom K K K).toRingHom.comp φ)).toRatAlgHom (fun a => by simp [TrivSq …` as an intermediate fact. Establish `e` using `DFunLike.congr_fun this a`. Express the relevant statement in the definitionally equal form `φ a = _ at e`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem snd_eq_zero_of_isAlgebraic {F K : Type} [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ F] [Field K]
     (φ : F →+* DualNumber K) (a : F) : (φ a).snd = 0 := by
@@ -84,11 +84,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c}
 
 /- English proof (translation)
-Take `⟨V, hV, hx, hVW⟩` from `Opens.isBasis_iff_nbhd.1 M.X.isBasis_affineOpens hp`. Establish `h` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension (dimFlag Dw)) M.str M.smooth ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`. Take `⟨s, hs, h⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h`. Take `⟨t, hxt⟩ : ∃ t : (s : Set Γ(M.X, V)), p ∈ M.X.basicOpen (t : Γ(M.X, V))` from `Opens.mem_iSup.1 (((IsAffineOpen.iSup_basicOpen_eq_self_iff hV).2 hs).ge hx)`. Use `IsAffineOpen.isLocalization_basicOpen hV (t : Γ(M.X, V))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₁` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of c.F)).symm.commRingCatIsoToRingEquiv (h t t.2 Γ(M.X, M.X.basicOpen (t : Γ(M.X, V))))`. Establish `h₂ : (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX M.str (M.X.basicOpen (t : Γ(M.X, V)))).IsStandardSmoothOfRelativeDimension (dimFlag Dw)`. Rewrite using `[← resG_comp_algX M.str (M.X.basicOpen_le (t : Γ(M.X, V)))]`. Conclude with `h₁`. Use `letI := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX M.str (M.X.basicOpen (t : Γ(M.X, V)))).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension (dimFlag Dw) c.F Γ(M.X, M.X.basicOpen (t : Γ(M.X, V))) := h₂`. Take `⟨f, B, hB⟩` from `exists_basis_kaehler_D (D := dimFlag Dw) (k := c.F) (A := Γ(M.X, M.X.basicOpen (t : Γ(M.X, V))))`. Use `⟨_, IsAffineOpen.basicOpen hV _, fun b => derivHom ((B.coord b).compDer (KaehlerDifferential.D c.F _)), hxt, (M.X.basicOpen_le _).trans (hVW.trans le_rfl), fun b s => by simp [derivHom], fun K _ θ => ⟨fun b => (θ (f b)).snd, fun s => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[snd_eq_sum_of_basis f B hB θ (fun a => snd_eq_zero_of_isAlgebraic (θ.comp (algebraMap c.F _)) a) s]`. Simplify using `[derivHom]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_derivFrame (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)) (W : M.X.Opens) (p : M.X)
     (hp : p ∈ W) : ∃ (W' : M.X.Opens) (_ : IsAffineOpen W')

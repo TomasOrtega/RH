@@ -11,11 +11,11 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree Submodule Module
 namespace WedgeTransition
 
 /- English proof (translation)
-Set `T : (Fin n → R) →ₗ[R] M` to `(Pi.basisFun R (Fin n)).constr R v`. Establish `h` using `congrArg (fun g => g (fun q a => A a q)) (AlternatingMap.eq_smul_basis_det (Pi.basisFun R (Fin n)) (f.compLinearMap T))`. Establish `hT : ∀ x, T x = ∑ a, x a • v a` using `fun x => by`. Simplify using `[T, Basis.constr_apply_fintype]`. Establish `hTe : (fun i => T (Pi.basisFun R (Fin n) i)) = v` using `funext fun i => by simp [T]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlternatingMap.compLinearMap_apply, AlternatingMap.smul_apply, Pi.basisFun_det_apply, smul_eq_mul] at h`. Establish `e1 : (fun i => T fun a => A a i) = fun q => ∑ a, A a q • v a` using `funext fun q => hT _`. Rewrite `h` using `[e1, hTe]`. Rewrite using `[h, mul_comm]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Matrix.det_transpose A`.
+A detailed English derivation is pending.
 -/
 theorem alternating_sum_smul {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {n : ℕ}
     (f : M [⋀^Fin n]→ₗ[R] R) (v : Fin n → M) (A : Matrix (Fin n) (Fin n) R) :
@@ -35,7 +35,7 @@ theorem alternating_sum_smul {R M : Type*} [CommRing R] [AddCommGroup M] [Module
   exact Matrix.det_transpose A
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[tailIdx] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem castLE_ne_tailIdx {j N : ℕ} (hj : j ≤ N) (a : Fin j) (a' : Fin (N - j)) :
     Fin.castLE hj a ≠ tailIdx hj a' := by
@@ -48,19 +48,19 @@ def splitEquiv {j N : ℕ} (hj : j ≤ N) : Fin j ⊕ Fin (N - j) ≃ Fin N :=
   finSumFinEquiv.trans (finCongr (Nat.add_sub_cancel' hj))
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [splitEquiv])`.
+A detailed English derivation is pending.
 -/
 theorem splitEquiv_inl {j N : ℕ} (hj : j ≤ N) (a : Fin j) : splitEquiv hj (Sum.inl a) = Fin.castLE hj a :=
   Fin.ext (by simp [splitEquiv])
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by simp [splitEquiv, tailIdx])`.
+A detailed English derivation is pending.
 -/
 theorem splitEquiv_inr {j N : ℕ} (hj : j ≤ N) (a : Fin (N - j)) : splitEquiv hj (Sum.inr a) = tailIdx hj a :=
   Fin.ext (by simp [splitEquiv, tailIdx])
 
 /- English proof (translation)
-Rewrite using `[← (splitEquiv hj).sum_comp, Fintype.sum_sum_type]`. Simplify using `[splitEquiv_inl, splitEquiv_inr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_split {M : Type*} [AddCommMonoid M] {j N : ℕ} (hj : j ≤ N) (g : Fin N → M) :
     ∑ p, g p = ∑ a, g (Fin.castLE hj a) + ∑ a, g (tailIdx hj a) := by
@@ -68,9 +68,9 @@ theorem sum_split {M : Type*} [AddCommMonoid M] {j N : ℕ} (hj : j ≤ N) (g : 
   simp [splitEquiv_inl, splitEquiv_inr]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self (splitEquiv hj) G, ← Matrix.fromBlocks_toBlocks (G.submatrix (splitEquiv hj) (splitEquiv hj))]`. Establish `h21 : (G.submatrix (splitEquiv hj) (splitEquiv hj)).toBlocks₂₁ = 0`. Use extensionality with `a a'`. Simplify using `[Matrix.toBlocks₂₁, splitEquiv_inl, splitEquiv_inr, h0]`. Rewrite using `[h21, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem det_split_of_zero {R : Type*} [CommRing R] {j N : ℕ} (hj : j ≤ N) (G : Matrix (Fin N) (Fin N) R)
     (h0 : ∀ a a', G (tailIdx hj a) (Fin.castLE hj a') = 0) :
@@ -87,17 +87,17 @@ theorem det_split_of_zero {R : Type*} [CommRing R] {j N : ℕ} (hj : j ≤ N) (G
 variable {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] (F : Submodule Ω V) {N j : ℕ} (hj : j ≤ N)
 
 /- English proof (translation)
-Set `B` to `Basis.mk hli hsp.ge`. Establish `: Module.Finite Ω V` using `Module.Finite.of_basis B`. Establish `hV : Module.finrank Ω V = N` using `by simpa using Module.finrank_eq_card_basis B`. Establish `hFr : Module.finrank Ω F = j`. Rewrite using `[← hF, finrank_span_eq_card (hli.comp _ (Fin.castLE_injective hj))]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hQ` using `Submodule.finrank_quotient_add_finrank F`. Set `w : Fin (N - j) → V ⧸ F` to `fun a => F.mkQ (b' (tailIdx hj a))`. Establish `hspan : ⊤ ≤ span Ω (Set.range w)`. Introduce `x _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective F x`. Establish `h1 : F.mkQ v ∈ span Ω (F.mkQ '' Set.range b')`. Rewrite using `[← Submodule.map_span, hsp]`. Conclude with `⟨v, trivial, rfl⟩`. Use `(Submodule.span_le.mpr ?_) h1` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Distinguish the cases in `hi : i.val < j`. Establish `hmem : b' i ∈ F` using `hF ▸ subset_span ⟨⟨i, hi⟩, rfl⟩`. Establish `: F.mkQ (b' i) = 0` using `by simpa using hmem`. Rewrite using `[SetLike.mem_coe, this]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Establish `: i = tailIdx hj ⟨i - j, by omega⟩` using `Fin.ext (by simp [tailIdx]; omega)`. Rewrite using `[this]`. Conclude with `subset_span ⟨_, rfl⟩`. Establish `hli' : LinearIndependent Ω w` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan (by simp; omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `Q` to `Basis.mk hli' hspan`. Use `⟨exteriorPower.alternatingMapLinearEquiv Q.det, ?_⟩` and prove the remaining obligations. Rewrite using `[quotWedge, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]`. Establish `: (fun a => F.mkQ (b' (tailIdx hj a))) = ⇑Q` using `funext fun a => (Basis.mk_apply hli' hspan a).symm`. Rewrite using `[this, Basis.det_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_quotWedge_eq_one {b' : Fin N → V} (hli : LinearIndependent Ω b')
     (hsp : span Ω (Set.range b') = ⊤) (hF : span Ω (Set.range (b' ∘ Fin.castLE hj)) = F) :
@@ -135,19 +135,19 @@ theorem exists_form_quotWedge_eq_one {b' : Fin N → V} (hli : LinearIndependent
   rw [this, Basis.det_self]
 
 /- English proof (translation)
-Set `B` to `Basis.mk hb'.1 hb'.2.1.ge`. Establish `hB : ∀ i, B i = b' i` using `fun i => Basis.mk_apply _ _ i`. Set `S` to `B.toMatrix b`. Establish `hexp : ∀ q, b q = ∑ p, S p q • b' p`. Introduce `q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [S, Basis.toMatrix_apply, ← hB]`. Conclude with `(B.sum_repr (b q)).symm`. Establish `hzero : ∀ a a', S (tailIdx hj a) (Fin.castLE hj a') = 0`. Introduce `a a'`. Establish `hm : b (Fin.castLE hj a') ∈ span Ω (Set.range (b' ∘ Fin.castLE hj))` using `hb'.2.2 ▸ hb.2.2 ▸ subset_span ⟨a', rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).mp hm`. Simplify using `only [S, Basis.toMatrix_apply, ← hc, Function.comp_apply, ← hB, map_sum, map_smul, Basis.repr_self, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, Finsupp.single_apply, castLE_ne_tailIdx, if_false, smul_zero, Finset.sum_const_zero]`. Establish `hF' : ∀ a, b' (Fin.castLE hj a) ∈ F` using `fun a => hb'.2.2 ▸ subset_span ⟨a, rfl⟩`. Establish `hφ : φ b = S.det * φ b'`. Rewrite using `[← alternating_sum_smul φ b' S]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg φ (funext hexp)`. Establish `hψ : ψ (b ∘ Fin.castLE hj) = (S.submatrix (Fin.castLE hj) (Fin.castLE hj)).det * ψ (b' ∘ Fin.castLE hj)`. Rewrite using `[← alternating_sum_smul ψ (b' ∘ Fin.castLE hj)]`. Use `congrArg ψ (funext fun q => ?_)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, hexp, sum_split hj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hzero]`. Establish `hq : ∀ ℓ' : ⋀[Ω]^(N - j) (V ⧸ F) →ₗ[Ω] Ω, ℓ' (quotWedge F hj b) = (S.submatrix (tailIdx hj) (tailIdx hj)).det * ℓ' (quotWedge F hj b')`. Introduce `ℓ'`. Use `alternating_sum_smul (ℓ'.compAlternatingMap (exteriorPower.ιMulti Ω (N - j))) (fun a => F.mkQ (b' (tailIdx hj a))) (S.submatrix (tailIdx hj) (tailIdx hj))` as an intermediate fact. Simplify using `only [LinearMap.compAlternatingMap_apply, Matrix.submatrix_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[quotWedge, quotWedge, ← this]`. Use `congr 2`. Use function extensionality and compare the values at `q`. Rewrite using `[hexp, map_sum, sum_split hj]`. Establish `h0 : ∀ a, F.mkQ (S (Fin.castLE hj a) (tailIdx hj q) • b' (Fin.castLE hj a)) = 0` using `fun a => by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using Or.inr (hF' a)`. Simplify using `only [h0, Finset.sum_const_zero, zero_add, map_smul]`. Establish `hdet` using `det_split_of_zero hj S hzero`. Rewrite using `[hφ, hψ, hq ℓ, hℓ, hdet]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem one_factor {b b' : Fin N → V}
     (hb : LinearIndependent Ω b ∧ span Ω (Set.range b) = ⊤ ∧ span Ω (Set.range (b ∘ Fin.castLE hj)) = F)
@@ -199,9 +199,9 @@ theorem one_factor {b b' : Fin N → V}
 end WedgeTransition
 
 /- English proof (translation)
-Introduce and unpack `Ψ _ Ω _ E _ _ F N j r s hj hr hs rfl rfl b b' hb hb' φ ψ κ κ' h`. Use `choose ℓ hℓ using fun τ => WedgeTransition.exists_form_quotWedge_eq_one (F τ) hj (hb' τ).1 (hb' τ).2.1 (hb' τ).2.2`. Establish `key` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra Ω Ψ Ω).compLinearMap ℓ)) h`. Simplify using `only [map_smul, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, hℓ, Finset.prod_const_one, smul_eq_mul, mul_one] at key`. Establish `hτ : ∀ τ, φ τ (b τ ∘ Fin.castLE hs) * ψ τ (b' τ ∘ Fin.castLE hr) = φ τ (b' τ ∘ Fin.castLE hs) * ψ τ (b τ ∘ Fin.castLE hr) * ℓ τ (quotWedge (F τ) hj (b τ))` using `fun τ => WedgeTransition.one_factor (F τ) hj (hb τ) (hb' τ) (φ τ) (ψ τ) (ℓ τ) (hℓ τ)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl fun τ _ => hτ τ, Finset.prod_mul_distrib, ← key]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem WedgeTransition.proof : WedgeTransition.Statement := by
   rintro Ψ _ Ω _ E _ _ F N j r s hj hr hs rfl rfl b b' hb hb' φ ψ κ κ' h

@@ -4,25 +4,21 @@ open MeasureTheory Filter Topology Set
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g K c m τ _ hc hg hτ`. Use `set B : ℝ := 2 + ‖τ - Complex.I‖ with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Use `set F : ℝ → ℝ := fun S => |K| * Real.exp (-c * (1 + S)) * (B + S) ^ m with hF`. Establish `hpt : ∀ S : ℝ, 0 ≤ S → ∀ t ∈ Set.uIoc (0:ℝ) 1, ‖g (Complex.I + t * (τ - Complex.I) + S * Complex.I)‖ ≤ F S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `S hS t ht`. Rewrite `ht` using `[Set.uIoc_of_le zero_le_one]`. Take `⟨ht0, ht1⟩` from `ht`. Use `set z := Complex.I + t * (τ - Complex.I) + S * Complex.I with hz`. Establish `him : z.im = 1 + t * (τ.im - 1) + S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hz]`. Establish `him1 : 1 + S ≤ z.im`. Rewrite using `[him]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hnorm : 1 + ‖z‖ ≤ B + S`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ‖z‖ ≤ ‖Complex.I‖ + ‖(t:ℂ) * (τ - Complex.I)‖ + ‖(S:ℂ) * Complex.I‖`. Rewrite using `[hz]`. Conclude with `norm_add₃_le`. Establish `h2 : ‖(t:ℂ) * (τ - Complex.I)‖ ≤ ‖τ - Complex.I‖`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) ht1`. Establish `h3 : ‖(S:ℂ) * Complex.I‖ = S`. Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hS]`. Rewrite `h1` using `[Complex.norm_I]`. Rewrite using `[hB]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : Real.exp (-c * z.im) ≤ Real.exp (-c * (1 + S))` using `Real.exp_le_exp.mpr (by nlinarith)`. Establish `hp : (1 + ‖z‖) ^ m ≤ (B + S) ^ m` using `pow_le_pow_left₀ (by positivity) hnorm m`. Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Tendsto F atTop (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Tendsto (fun S : ℝ => c * (B + S)) atTop atTop` using `(tendsto_atTop_add_const_left atTop B tendsto_id).const_mul_atTop hc`. Establish `h2` using `((Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero m).comp h1).const_mul (|K| * (c ^ m)⁻¹ * Real.exp (c * B - c))`. Rewrite `h2` using `[mul_zero]`. Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards with S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcm : c ^ m ≠ 0` using `pow_ne_zero _ hc.ne'`. Establish `hexp : Real.exp (c * B - c) * Real.exp (-(c * (B + S))) = Real.exp (-c * (1 + S))`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Simplify using `only [Function.comp, hF]`.
-
-Rewrite using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `squeeze_zero_norm' ?_ hlim` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (0:ℝ)] with S hS`. Use `intervalIntegral.norm_integral_le_of_norm_le_const (hpt S hS)` as an intermediate fact.
-
-Rewrite `this` using `[sub_zero, abs_one, mul_one]`. Then use the resulting hypothesis.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem top_side_integral_tendsto_zero : ∀ (g : ℂ → ℂ) (K c : ℝ) (m : ℕ) (τ : ℂ), ContinuousOn g {z : ℂ | 0 < z.im} → 0 < c →
     (∀ z : ℂ, 1 ≤ z.im → ‖g z‖ ≤ K * Real.exp (-c * z.im) * (1 + ‖z‖) ^ m) → 1 ≤ τ.im →

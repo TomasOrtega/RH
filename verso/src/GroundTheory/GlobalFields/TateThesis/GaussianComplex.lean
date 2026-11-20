@@ -12,7 +12,7 @@ def traceFormℂ : ℂ →L[ℝ] ℂ →L[ℝ] ℝ :=
   (2 : ℝ) • (ContinuousLinearMap.compL ℝ ℂ ℂ ℝ Complex.reCLM).comp (ContinuousLinearMap.mul ℝ ℂ)
 
 /- English proof (translation)
-Simplify using `[traceFormℂ]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem traceFormℂ_apply (z w : ℂ) : traceFormℂ z w = 2 * (z * w).re := by
   simp [traceFormℂ]
@@ -23,7 +23,7 @@ def complexFourier (f : ℂ → ℂ) (w : ℂ) : ℂ :=
   ∫ z, 𝐞 (-(2 * (z * w).re)) • f z ∂complexPlaceMeasure
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[complexFourier, VectorFourier.fourierIntegral]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem complexFourier_eq_fourierIntegral (f : ℂ → ℂ) :
     complexFourier f =
@@ -35,16 +35,16 @@ def complexGaussian (m : ℤ) (z : ℂ) : ℂ :=
   (if 0 ≤ m then z ^ m.natAbs else conj z ^ m.natAbs) * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)
 
 /- English proof (translation)
-Simplify using `[complexGaussian]`.
+Simplify using the standard rewrite rules.
 -/
 theorem complexGaussian_zero (z : ℂ) :
     complexGaussian 0 z = Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2) := by
   simp [complexGaussian]
 
 /- English proof (translation)
-Rewrite using `[complexFourier, complexPlaceMeasure, integral_smul_measure, fourier_eq]`. Simplify using `only [ENNReal.toReal_ofNat, Complex.real_smul, ofReal_ofNat]`. Use `congr 2`. Use function extensionality and compare the values at `z`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Complex.inner]`. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem complexFourier_eq_two_mul_fourier (f : ℂ → ℂ) (w : ℂ) :
     complexFourier f w = 2 * 𝓕 f (2 * conj w) := by
@@ -58,15 +58,15 @@ theorem complexFourier_eq_two_mul_fourier (f : ℂ → ℂ) (w : ℂ) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Rewrite using `[complexFourier_eq_two_mul_fourier]`. Establish `hb : 0 < ((2 * π : ℝ) : ℂ).re` using `by simp [Real.pi_pos]`. Establish `h` using `fourier_gaussian_innerProductSpace (V := ℂ) hb (2 * conj w)`. Establish `e : complexGaussian 0 = fun v : ℂ ↦ Complex.exp (-((2 * π : ℝ) : ℂ) * (‖v‖ : ℂ) ^ 2)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[complexGaussian_zero]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[e, h, Complex.finrank_real_complex]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Establish `hpi : (π : ℂ) ≠ 0` using `ofReal_ne_zero.mpr Real.pi_ne_zero`. Establish `hn : ‖2 * conj w‖ = 2 * ‖w‖` using `by simp`. Rewrite using `[hn]`. Establish `h1 : ((π : ℂ) / ((2 * π : ℝ) : ℂ)) ^ (((2 : ℕ) : ℂ) / 2) = 1 / 2`. Establish `: ((2 : ℕ) : ℂ) / 2 = 1` using `by norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, cpow_one]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← mul_assoc, show (2 : ℂ) * (1 / 2) = 1 by norm_num, one_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem complexFourier_complexGaussian_zero :
     complexFourier (complexGaussian 0) = complexGaussian 0 := by
@@ -90,9 +90,9 @@ theorem complexFourier_complexGaussian_zero :
   field_simp
 
 /- English proof (translation)
-Establish `h` using `(integrable_fun_norm_addHaar (volume : Measure ℂ) (f := fun y : ℝ ↦ y ^ k * Real.exp (-(2 * π) * y ^ 2))).2`. Use `h ?_` and prove the remaining obligations. Rewrite using `[Complex.finrank_real_complex]`. Establish `h2` using `integrableOn_rpow_mul_exp_neg_mul_sq (b := 2 * π) (by positivity) (s := ((k + 1 : ℕ) : ℝ)) (by have := Nat.cast_nonneg (α := ℝ) (k + 1); linarith)`. Use `h2.congr_fun (fun y _ ↦ ?_) measurableSet_Ioi` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Real.rpow_natCast, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integrable_norm_pow_mul_exp_neg_two_pi_mul_sq (k : ℕ) :
     Integrable (fun z : ℂ ↦ ‖z‖ ^ k * Real.exp (-(2 * π) * ‖z‖ ^ 2)) := by
@@ -107,11 +107,11 @@ theorem integrable_norm_pow_mul_exp_neg_two_pi_mul_sq (k : ℕ) :
   ring
 
 /- English proof (translation)
-Use `(integrable_norm_pow_mul_exp_neg_two_pi_mul_sq (k + m.natAbs)).mono' ?_ ?_` and prove the remaining obligations. Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Unfold `complexGaussian`. Apply the tactic sequence `split_ifs <;> fun_prop`. Use `Filter.Eventually.of_forall fun z ↦ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_smul, complexGaussian, norm_mul, norm_exp]`. Establish `: (-2 * π * (‖z‖ : ℂ) ^ 2).re = -(2 * π) * ‖z‖ ^ 2`. Rewrite using `[← ofReal_pow, ← ofReal_ofNat, ← ofReal_neg, ← ofReal_mul, ← ofReal_mul, ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [pow_add, mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integrable_norm_pow_smul_complexGaussian (m : ℤ) (k : ℕ) :
     Integrable (fun z : ℂ ↦ (‖z‖ ^ k : ℝ) • complexGaussian m z) := by
@@ -128,27 +128,27 @@ theorem integrable_norm_pow_smul_complexGaussian (m : ℤ) (k : ℕ) :
     split_ifs <;> simp [pow_add, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(integrable_norm_pow_smul_complexGaussian m k).smul_measure (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_norm_pow_smul_complexGaussian' (m : ℤ) (k : ℕ) :
     Integrable (fun z : ℂ ↦ (‖z‖ ^ k : ℝ) • complexGaussian m z) complexPlaceMeasure :=
   (integrable_norm_pow_smul_complexGaussian m k).smul_measure (by simp)
 
 /- English proof (translation)
-Simplify using `using integrable_norm_pow_smul_complexGaussian' m 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integrable_complexGaussian (m : ℤ) :
     Integrable (complexGaussian m) complexPlaceMeasure := by
   simpa using integrable_norm_pow_smul_complexGaussian' m 0
 
 /- English proof (translation)
-Establish `hn : (‖z‖ : ℂ) ≠ 0` using `by simpa using hz`. Rewrite using `[complexGaussian]`. Use `split_ifs with hm`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hm`. Simplify using `only [Int.natAbs_natCast, zpow_neg, zpow_natCast, div_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨n, hn'⟩ : ∃ n : ℕ, m = -(n : ℤ)` from `⟨m.natAbs, by omega⟩`. Substitute `hn'` using the available equality. Simplify using `only [Int.natAbs_neg, Int.natAbs_natCast, neg_neg, zpow_natCast, div_pow]`. Establish `hc : conj z * z = (‖z‖ : ℂ) ^ 2`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_conj, normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `: conj z ^ n * z ^ n = (‖z‖ : ℂ) ^ n * (‖z‖ : ℂ) ^ n`. Rewrite using `[← mul_pow, hc, ← pow_mul, ← pow_add]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem complexGaussian_mul_zpow {z : ℂ} (hz : z ≠ 0) (m : ℤ) :
     complexGaussian m z * (z / (‖z‖ : ℂ)) ^ (-m) =
@@ -170,9 +170,9 @@ theorem complexGaussian_mul_zpow {z : ℂ} (hz : z ≠ 0) (m : ℤ) :
     linear_combination this
 
 /- English proof (translation)
-Rewrite using `[complexPlaceMeasure, integral_smul_measure, integral_fun_norm_addHaar volume f, Complex.finrank_real_complex]`. Establish `hb : (volume : Measure ℂ).real (Metric.ball 0 1) = π`. Simplify using `[Measure.real, Complex.volume_ball]`. Rewrite using `[hb]`. Simplify using `only [ENNReal.toReal_ofNat, pow_one, Complex.real_smul, nsmul_eq_mul, Nat.cast_ofNat, Nat.add_one_sub_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_comp_norm_complexPlaceMeasure (f : ℝ → ℂ) :
     ∫ z, f ‖z‖ ∂complexPlaceMeasure = 4 * π * ∫ y in Ioi (0 : ℝ), (y : ℂ) * f y := by
@@ -187,17 +187,17 @@ theorem integral_comp_norm_complexPlaceMeasure (f : ℝ → ℂ) :
   ring
 
 /- English proof (translation)
-Use `set n := m.natAbs with hn`. Establish `h : (fun z : ℂ ↦ complexGaussian m z * (z / (‖z‖ : ℂ)) ^ (-m) * ((‖z‖ ^ 2 : ℝ) : ℂ) ^ s / ((‖z‖ ^ 2 : ℝ) : ℂ)) = fun z ↦ (fun y : ℝ ↦ (y : ℂ) ^ n * ((Real.exp (-(2 * π * y ^ 2)) : ℝ) : ℂ) * ((y ^ 2 : ℝ) : ℂ) ^ s / ((y ^ 2 : ℝ) : ℂ)) ‖z‖`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only`. Rewrite using `[complexGaussian_mul_zpow hz, ofReal_exp, ← hn]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h, integral_comp_norm_complexPlaceMeasure (fun y : ℝ ↦ (y : ℂ) ^ n * ((Real.exp (-(2 * π * y ^ 2)) : ℝ) : ℂ) * ((y ^ 2 : ℝ) : ℂ) ^ s / ((y ^ 2 : ℝ) : ℂ))]`. Establish `ha : 0 < (2 * s + n).re` using `by simp; linarith`. Establish `: ∫ y in Ioi (0 : ℝ), (y : ℂ) * ((y : ℂ) ^ n * ((Real.exp (-(2 * π * y ^ 2)) : ℝ) : ℂ) * ((y ^ 2 : ℝ) : ℂ) ^ s / ((y ^ 2 : ℝ) : ℂ)) = mellin (fun t : ℝ ↦ ((Real.exp (-(2 * π * t ^ 2)) : ℝ) : ℂ)) (2 * s + n)`. Rewrite using `[mellin]`. Use `setIntegral_congr_fun measurableSet_Ioi fun y hy ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy0 : (y : ℂ) ≠ 0` using `ofReal_ne_zero.mpr (ne_of_gt hy)`. Establish `e1 : ((y ^ 2 : ℝ) : ℂ) ^ s = (y : ℂ) ^ (((2 : ℝ) : ℂ) * s)`. Rewrite using `[cpow_mul_ofReal_nonneg (le_of_lt hy), Real.rpow_two]`. Establish `e2 : (y : ℂ) ^ (2 * s + n - 1) = (y : ℂ) ^ (((2 : ℝ) : ℂ) * s) * (y : ℂ) ^ n / y`. Rewrite using `[cpow_sub _ _ hy0, cpow_add _ _ hy0, cpow_natCast, cpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mellin_exp_neg_mul_sq (by positivity) ha, Gammaℂ_def]`. Establish `e3 : (2 * s + n) / 2 = s + n / 2` using `by ring`. Rewrite using `[e3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_complexGaussian_mul_zpow_mul_cpow (m : ℤ) {s : ℂ}
     (hs : 0 < s.re + m.natAbs / 2) :

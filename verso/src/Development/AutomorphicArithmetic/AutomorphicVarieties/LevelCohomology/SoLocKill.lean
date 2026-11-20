@@ -20,45 +20,37 @@ private def lkRepZ {O Γ M : Type} [CommRing O] [Group Γ] [AddCommGroup M] [Mod
     rw [map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Introduce `hFin hTate hEul k Ω _ _ _ _ _ l _ O _ _ _ _ _ ψ hψ n hn0 hn1 v A hA hl`. Take `⟨g₁, hg₁D, hg₁⟩` from `So.decNe k Ω l O ψ hψ n hn0 v A hA`. Establish `hψ' : IsOpen ((ψ⁻¹).ker : Set (G k Ω))`. Establish `hk : (ψ⁻¹).ker = ψ.ker`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[MonoidHom.mem_ker]`. Rewrite using `[hk]`. Conclude with `hψ`. Take `⟨g₂, hg₂D, hg₂⟩` from `So.decNe k Ω l O ψ⁻¹ hψ' (1 - n) (sub_ne_zero.mpr (Ne.symm hn1)) v A hA`. Use `set d₁ : O := (((ψ * chiO k Ω l O ^ n) g₁ : Oˣ) : O) - 1 with hd₁`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set d₂ : O := (((ψ⁻¹ * chiO k Ω l O ^ (1 - n)) g₂ : Oˣ) : O) - 1 with hd₂`. Establish `hd₁0 : d₁ ≠ 0`. Introduce `h`. Apply `hg₁` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h` using `[hd₁, sub_eq_zero]`. Establish `hd₂0 : d₂ ≠ 0`. Introduce `h`. Apply `hg₂` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify `h` using `[hd₂, sub_eq_zero]`. Take `⟨hM0fin, ⟨r₀, -, hr₀k⟩, -⟩` from `So.levFacts l O d₂ hd₂0 (O ⧸ Ideal.span {d₂}) ⟨LinearEquiv.refl O _⟩`. Use `haveI := hM0fin`. Use `haveI : NeZero (l ^ r₀) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `haveI : Module (ZMod (l ^ r₀)) (O ⧸ Ideal.span {d₂}) := AddCommGroup.zmodModule hr₀k`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ι₀, -, hι₀rng, -⟩` from `So.dualEmb l O d₂ hd₂0 r₀ (O ⧸ Ideal.span {d₂}) ⟨LinearEquiv.refl O _⟩`. Use `haveI hTfin : Finite (TDual (ZMod (l ^ r₀)) (O ⧸ Ideal.span {d₂})) := by`. Unfold `TDual Module.Dual`. Conclude with `Finite.of_injective (fun f : (O ⧸ Ideal.span {d₂}) →ₗ[ZMod (l ^ r₀)] ZMod (l ^ r₀) => (f : (O ⧸ Ideal.span {d₂}) → ZMod (l ^ r₀))) (fun f g h => LinearMap.ext (congrFun h))`. Use `⟨Nat.card (O ⧸ Ideal.span {d₁}) * Nat.card (TDual (ZMod (l ^ r₀)) (O ⧸ Ideal.span {d₂})), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a M _ _ _ _ ρ hρ`. Take `⟨hMfin, ⟨r, hr, hrk⟩, hMt⟩` from `So.levFacts l O a hρ.ne M hρ.cyc`. Use `haveI := hMfin`. Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `haveI : Module (ZMod (l ^ r)) M := AddCommGroup.zmodModule hrk`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `set ρZ := lkRepZ (l ^ r) ρ with hρZ`. Establish `hρZapp : ∀ g m, ρZ g m = ρ g m` using `fun g m => rfl`. Set `ρG : Representation O (G k Ω) M` to `(Module.toModuleEnd O (S := O) M).toMonoidHom.comp ((Units.coeHom O).comp (ψ * chiO k Ω l O ^ n))`. Establish `hρG : IsLev a (ψ * chiO k Ω l O ^ n) ρG` using `⟨hρ.ne, hρ.cyc, fun g m => rfl⟩`. Establish `hcG` using `So.contLev k Ω l O ψ n hψ a M ρG hρG`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcZ : ReciprocityTheory.Gal.ContAction ρZ`. Establish `hf : (fun p : Dec (F` using `k) A × M => ρZ p.1 p.2) = (fun p : G k Ω × M => ρG p.1 p.2) ∘ (fun p : Dec (F := k) A × M => ((p.1 : G k Ω), p.2)) := by`. Use function extensionality and compare the values at `p`. Rewrite using `[hρZapp, hρ.act]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[hf]`. Conclude with `hcG.comp (continuous_subtype_val.prodMap continuous_id)`. Set `τ : Representation (ZMod (l ^ r)) (Dec (F` to `k) A) (TDual (ZMod (l ^ r)) M) := { toFun := fun g => ((cycMod k Ω l r (g : G k Ω) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) • (ρZ g⁻¹).dualMap map_one' := by`. Use `LinearMap.ext fun φ => LinearMap.ext fun m => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((cycMod k Ω l r ((1 : Dec (F := k) A) : G k Ω) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * φ (ρZ 1⁻¹ m) = φ m`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `g h`. Use `LinearMap.ext fun φ => LinearMap.ext fun m => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show ((cycMod k Ω l r ((g * h : Dec (F := k) A) : G k Ω) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * φ (ρZ (g * h)⁻¹ m) = ((cycMod k Ω l r (g : G k Ω) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * (((cycMod k Ω l r (h : G k Ω) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * φ (ρZ h⁻¹ (ρZ g⁻¹ m)))`. Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply, Subgroup.coe_mul, map_mul, Units.val_mul, mul_assoc] }`. Establish `hτ : ∀ (g : Dec (F` using `k) A) (φ : TDual (ZMod (l ^ r)) M) (m : M), τ g φ m = ((cycMod k Ω l r (g : G k Ω) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * φ (ρZ g⁻¹ m) := fun g φ m => rfl`. Establish `hEq` using `(hEul k Ω l r M A ρZ v hr hA hcZ).2 hl`. Take `⟨hH1f, -, hH2⟩` from `So.locCard hFin hTate k Ω l r hr v A hA M ρZ hcZ τ hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hB1 : Nat.card (H0 ρZ) ≤ Nat.card (O ⧸ Ideal.span {d₁})`. Establish `hmem : ∀ x : H0 ρZ, d₁ • (x : M) = 0`. Introduce `x`. Establish `hx` using `(Representation.mem_invariants ρZ (x : M)).mp x.2 ⟨g₁, hg₁D⟩`. Rewrite `hx` using `[hρZapp, hρ.act]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hd₁, sub_smul, one_smul, sub_eq_zero]`. Conclude with `hx`. Use `le_trans ?_ (hMt d₁ hd₁0)` and prove the remaining obligations. Use `Nat.card_le_card_of_injective (fun x => ⟨(x : M), hmem x⟩) ?_` and prove the remaining obligations. Introduce `x y h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (congrArg (fun z : {m : M // d₁ • m = 0} => (z : M)) h)`. Establish `hB2 : Nat.card (H0 τ) ≤ Nat.card (TDual (ZMod (l ^ r₀)) (O ⧸ Ideal.span {d₂}))`. Take `⟨ι, hιinj, -, hιact⟩` from `So.dualEmb l O a hρ.ne r M hρ.cyc`. Establish `hu : (algebraMap ℤ_[l] O) ((cycZ k Ω l g₂ : ℤ_[l]ˣ) : ℤ_[l]) * (((ψ * chiO k Ω l O ^ n) g₂⁻¹ : Oˣ) : O) = (((ψ⁻¹ * chiO k Ω l O ^ (1 - n)) g₂ : Oˣ) : O)`. Establish `hc : (algebraMap ℤ_[l] O) ((cycZ k Ω l g₂ : ℤ_[l]ˣ) : ℤ_[l]) = ((chiO k Ω l O g₂ : Oˣ) : O)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← Units.val_mul]`. Use `congr 1`. Simplify using `only [map_inv, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.zpow_apply, zpow_sub, zpow_one, mul_inv, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc]`. Establish `hmem : ∀ φ : H0 τ, ι (φ : TDual (ZMod (l ^ r)) M) ∈ Set.range ι₀`. Introduce `φ`.
-
-Rewrite using `[← hι₀rng]`. Establish `hinv` using `(Representation.mem_invariants τ (φ : TDual (ZMod (l ^ r)) M)).mp φ.2 ⟨g₂, hg₂D⟩`. Establish `key` using `hιact ((cycZ k Ω l g₂ : ℤ_[l]ˣ) : ℤ_[l]) (((ψ * chiO k Ω l O ^ n) g₂⁻¹ : Oˣ) : O) (φ : TDual (ZMod (l ^ r)) M) (τ ⟨g₂, hg₂D⟩ φ) (fun m => by`. Rewrite using `[hτ, hρZapp, hρ.act]`. Use the proof step `rfl)`.
-
-Rewrite `key` using `[hinv, hu]`. Rewrite using `[hd₂, sub_smul, one_smul, ← key, sub_self]`. Use `Nat.card_le_card_of_injective (fun φ => Classical.choose (hmem φ)) ?_` and prove the remaining obligations. Introduce `φ₁ φ₂ h`. Establish `h1` using `Classical.choose_spec (hmem φ₁)`.
-
-Establish `h2` using `Classical.choose_spec (hmem φ₂)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hιinj` to reduce the goal to its premises. Rewrite using `[← h1, ← h2]`. Conclude with `congrArg ι₀ h`.
-
-Take `⟨-, ⟨e1⟩, -⟩` from `So.scal O (ZMod (l ^ r)) (Dec (F := k) A) M ρ ρZ (fun g m => rfl)`. Use `haveI := hH1f`. Use `⟨Finite.of_equiv _ e1.symm.toEquiv, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr e1.toEquiv, hEq, hH2]`. Conclude with `Nat.mul_le_mul hB1 hB2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.So.locKill :
     LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (ψ : G k Ω →* Oˣ), IsOpen (ψ.ker : Set (G k Ω)) → ∀ n : ℤ, n ≠ 0 → n ≠ 1 → ∀ (v : HeightOneSpectrum (𝓞 k)) (A : ValuationSubring Ω), IsPlaceOver A v → ((l : ℕ) : 𝓞 k) ∉ v.asIdeal → ∃ B : ℕ, ∀ (a : O) (M : Type) [AddCommGroup M] [Module O M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation O (Dec (F := k) A) M), IsLev a ((ψ * chiO k Ω l O ^ n).comp (Dec (F := k) A).subtype) ρ → Finite (H1 ρ) ∧ Nat.card (H1 ρ) ≤ B := by

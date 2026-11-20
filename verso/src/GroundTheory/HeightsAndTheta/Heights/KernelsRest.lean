@@ -111,11 +111,9 @@ def flagIntegralOne : RootPoly 1 1 1 →ₗ[ℝ] ℝ :=
   lcoeff ℝ (Finsupp.single (0, Sum.inl 0) 1) - lcoeff ℝ (Finsupp.single (0, Sum.inr 0) 1)
 
 /- English proof (translation)
-Introduce `m τ G h1 h2 _`. Establish `hD : flagDim 1 1 1 = 1` using `by decide`. Establish `hm : m = 1` using `by omega`. Substitute `hm` using the available equality. Use `fin_cases τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[flagIntegralOne, rootPsum, Fintype.sum_sum_type, add_mul, coeff_X_mul']`. Use `ne_zero := by`. Use `⟨X (0, Sum.inl 0), ?_, ?_⟩` and prove the remaining obligations. Establish `hD : flagDim 1 1 1 = 1` using `by decide`. Rewrite using `[hD]`.
-
-Conclude with `isHomogeneous_X _ _`. Simplify using `[flagIntegralOne, coeff_X, Finsupp.single_eq_single_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFlagIntegral_one : IsFlagIntegral 1 1 1 flagIntegralOne where
   kills := by
@@ -132,14 +130,14 @@ theorem isFlagIntegral_one : IsFlagIntegral 1 1 1 flagIntegralOne where
     · simp [flagIntegralOne, coeff_X, Finsupp.single_eq_single_iff]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_pos, fun _ h => h, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : (0 : ℝ) < 1 ∧ (∀ p ∈ {p : ℕ | p.Prime}, p.Prime) ∧
     4 * (1 : ℕ) * ((1 + 1 : ℕ) : ℝ) ^ 2 ≤ 16 :=
   ⟨one_pos, fun _ h => h, by norm_num⟩
 
 /- English proof (translation)
-Introduce `a b h`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : Antitone (![2, 1] : Fin 2 → ℕ) := by
   intro a b h

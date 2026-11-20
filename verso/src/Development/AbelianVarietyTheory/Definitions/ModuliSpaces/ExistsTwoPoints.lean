@@ -12,31 +12,29 @@ variable {R : Type} [CommRing R] {N : ℕ} {A : Type} [CommRing A] {Y : Scheme.{
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `hU : ∀ j : PUnit → PUnit → Fin (N + 1), (((O1 R N).pull φ).pull x).U j = (x ≫ φ) ⁻¹ᵁ chart R N (j ⟨⟩ ⟨⟩)` using `fun j => by`. Rewrite using `[pull_U, pull_U]`. Both sides reduce to the same expression. Establish `hval : ∀ (l : Fin (N + 1)) (j : PUnit → PUnit → Fin (N + 1)) (h : (((O1 R N).pull φ).pull x).U j ≤ x ⁻¹ᵁ ((O1 R N).pull φ).U (j PUnit.unit)), (x.appLE _ _ h).hom ((Cartier.secPull (coord R N l) φ).f (j PUnit.unit)) = pullRatio (x ≫ φ) _ (j ⟨⟩ ⟨⟩) (hU j).le l` using `fun l j h => by`. Use `resG_secPull_coord φ l (j ⟨⟩) le_rfl` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[resG_self]`. Rewrite using `[this, appLE_pullRatio]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, -, H⟩`. Establish `H' : ∀ (l i : Fin (N + 1)), pullRatio (x ≫ φ) _ i (hU fun _ _ => i).le l = fnOn _ (v (e.symm l)) * (show Γ(Sp A, (((O1 R N).pull φ).pull x).U fun _ _ => i) from (τ.s fun _ _ => i).val)` using `fun l i => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(hval _ (fun _ _ => i) _).symm.trans (H (e.symm l) (fun _ _ => i) (pull_U _ _ _).le)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this`. Establish `hle : ∀ i, (((O1 R N).pull φ).pull x).U (fun _ _ => i) ≤ spOpen (v (e.symm i))` using `fun i => by`. Establish `h1` using `H' i i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[pullRatio_self]`. Establish `hu : IsUnit (fnOn ((((O1 R N).pull φ).pull x).U (fun _ _ => i)) (v (e.symm i)))` using `IsUnit.of_mul_eq_one _ h1.symm`. Use `(Sp A).basicOpen_of_isUnit hu` as an intermediate fact. Rewrite `this` using `[basicOpen_fnOn]`. Conclude with `inf_eq_left.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcov : ∀ y : Sp A, ∃ i, y ∈ (((O1 R N).pull φ).pull x).U (fun _ _ => i)` using `fun y => by`. Take `⟨i, hi⟩` from `exists_mem_chart R N ((x ≫ φ) y)`. Conclude with `⟨i, (hU _).ge hi⟩`. Establish `hv : Ideal.span (Set.range (v ∘ e.symm)) = ⊤`. Use `iSup_spOpen_eq_top_iff.1 (top_le_iff.1 fun y _ => ?_)` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hcov y`. Conclude with `Opens.mem_iSup.2 ⟨i, hle i hi⟩`. Use `⟨hv, hom_ext (hx.trans (pt_str c _ hv).symm) fun y => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov y`. Establish `h2` using `(hle i).trans (pt_preimage_chart c _ hv i).ge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, hi, i, (hU _).le, h2, fun l => ?_⟩` and prove the remaining obligations. Establish `h1` using `H' i i`. Rewrite `h1` using `[pullRatio_self]`. Establish `h3` using `pullRatio_pt_mul c _ hv i l h2`. Rewrite using `[H' l i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Function.comp] at h3`. Rewrite using `[← h3, mul_assoc, ← h1, mul_one]`. Introduce and unpack `⟨hv, hp⟩`. Establish `hle : ∀ j : PUnit → PUnit → Fin (N + 1), (((O1 R N).pull φ).pull x).U j ≤ pt c _ hv ⁻¹ᵁ chart R N (j ⟨⟩ ⟨⟩)` using `fun j => hp ▸ (hU j).le`. Establish `hu : ∀ j : PUnit → PUnit → Fin (N + 1), IsUnit (fnOn ((((O1 R N).pull φ).pull x).U j) (v (e.symm (j ⟨⟩ ⟨⟩))))` using `fun j => isUnit_of_basicOpen_eq _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[basicOpen_fnOn]`. Conclude with `inf_eq_left.2 ((hle j).trans (pt_preimage_chart c _ hv _).le))`. Use `⟨⟨fun j => (hu j).unit⁻¹⟩, fun i j => ?_, fun a j h => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[map_inv, map_inv, ← div_eq_mul_inv, eq_div_iff_mul_eq', inv_mul_eq_iff_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Units.ext ?_` and prove the remaining obligations. Establish `hW : (((O1 R N).pull φ).pull x).U i ⊓ (((O1 R N).pull φ).pull x).U j ≤ (x ≫ φ) ⁻¹ᵁ chart R N (i ⟨⟩ ⟨⟩)` using `inf_le_left.trans (hU i).le`. Establish `hg : ((((O1 R N).pull φ).pull x).g i j).val = pullRatio (x ≫ φ) _ (i ⟨⟩ ⟨⟩) hW (j ⟨⟩ ⟨⟩)`. Establish `h1` using `restrict_pullback_O1_transition φ (i ⟨⟩) (j ⟨⟩) inf_le_left inf_le_right`. Rewrite `h1` using `[resG_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pull_g]`. Establish `hW' : (((O1 R N).pull φ).pull x).U i ⊓ (((O1 R N).pull φ).pull x).U j ≤ x ⁻¹ᵁ (((O1 R N).pull φ).U (i ⟨⟩) ⊓ ((O1 R N).pull φ).U (j ⟨⟩))` using `le_inf (inf_le_left.trans (pull_U _ _ _).le) (inf_le_right.trans (pull_U _ _ _).le)`. Conclude with `(congrArg (x.appLE _ _ hW').hom h1).trans (appLE_pullRatio x hW')`. Rewrite using `[Units.val_mul, hg, pullRatio_of_eq hp hW (hp ▸ hW)]`. Establish `h3` using `pullRatio_pt_mul c _ hv (i ⟨⟩ ⟨⟩) (j ⟨⟩ ⟨⟩) (hp ▸ hW)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Eq.trans (resG_fnOn inf_le_right _) (h3.symm.trans ((mul_comm _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg (· * _) (resG_fnOn inf_le_left _).symm`. Rewrite using `[hval, pullRatio_of_eq hp _ (hle j)]`. Establish `h3` using `pullRatio_pt_mul c _ hv (j ⟨⟩ ⟨⟩) (e a) (hle j)`. Simplify using `only [Function.comp, Equiv.symm_apply_apply] at h3`.
-
-Express the relevant statement in the definitionally equal form `_ = fnOn _ (v a) * ((hu j).unit⁻¹).val`. Rewrite using `[← h3, mul_assoc, IsUnit.mul_val_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secCoord_iff {σ : Type} (e : σ ≃ Fin (N + 1)) (φ : Y ⟶ PSpace R N) (c : R →+* A) (x : Sp A ⟶ Y)
     (hx : (x ≫ φ) ≫ PSpace.str R N = spMap c) (v : σ → A) :
@@ -114,15 +112,15 @@ theorem secCoord_iff {σ : Type} (e : σ ≃ Fin (N + 1)) (φ : Y ⟶ PSpace R N
 omit [CommRing A] in
 
 /- English proof (translation)
-The claim follows from `e.symm.surjective.range_comp v`.
+A detailed English derivation is pending.
 -/
 theorem range_comp_symm {σ τ : Type} (e : σ ≃ τ) (v : σ → A) : Set.range (v ∘ e.symm) = Set.range v :=
   e.symm.surjective.range_comp v
 
 /- English proof (translation)
-Use `⟨LB.isLB_pull (O1_isLB R N) _, fun R' _ β x v hx h => ?_, fun R' _ β v hv _ => ?_⟩` and prove the remaining obligations. Take `⟨hv, -⟩` from `(secCoord_iff (Equiv.refl _) (𝟙 _) β x (by simpa using hx) v).1 h`. Conclude with `⟨hv, fun F hF => by rw [Ideal.mem_bot.1 hF, eval₂_zero]⟩`. Use `⟨pt β v hv, ⟨pt_str _ _ _, ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(secCoord_iff (Equiv.refl _) (𝟙 _) β _ (by simpa using pt_str β v hv) v).2 ⟨hv, Category.comp_id _⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨_, h⟩` from `(secCoord_iff (Equiv.refl _) (𝟙 _) β x (by simpa using hx.1) v).1 hx.2`. Conclude with `(Category.comp_id _).symm.trans h`.
+A detailed English derivation is pending.
 -/
 theorem projRep_pspace (R : Type) [CommRing R] (N : ℕ) :
     ProjRep (⊥ : Ideal (MvPolynomial (Fin (N + 1)) R)) (PSpace.str R N) ((O1 R N).pull (𝟙 _))
@@ -144,7 +142,7 @@ def cosetOpen : (PSpace K M).Opens :=
     isOpen_iInter_of_finite fun _ => Opens.isOpen _⟩
 
 /- English proof (translation)
-Use `Set.mem_iInter.trans (forall_congr' fun a => Opens.mem_iSup.trans (exists_congr fun c => ?_))` and prove the remaining obligations. Use `pt_preimage_chart β _ hv (e (a + (N' / n) • c))` as an intermediate fact. Use `Iff.trans (b := q ∈ spOpen ((v ∘ e.symm) (e (a + (N' / n) • c)))) (this ▸ Iff.rfl) ?_` and prove the remaining obligations. Rewrite using `[mem_spOpen, Function.comp, Equiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_mem_cosetOpen {β : K →+* A} {v : Ix g (N' ^ 2) → A} (hv : Ideal.span (Set.range (v ∘ e.symm)) = ⊤) (q : Sp A) :
     pt β _ hv q ∈ cosetOpen K g n N' e ↔ Coset n N' v q.asIdeal := by
@@ -194,11 +192,11 @@ def mmBot : MMPre (o := K) (g := g) n N' ⊥ where
 end
 
 /- English proof (translation)
-Establish `hin : ∀ v : Ix g (N' ^ 2) → ℚ, (∀ i, v i ≠ 0) → InMM n N' ⊥ (RingHom.id ℚ) v` using `fun v hv => ⟨fun F hF => by rw [Ideal.mem_bot.1 hF, eval₂_zero], fun q hq b => ⟨0, fun hm => hq.ne_top (Ideal.eq_top_of_isUnit_mem _ hm (hv _).isUnit)⟩⟩`. Take `⟨x, hx, -⟩` from `(mmBot ℚ g n N' e).pts ℚ _ _ (hin (fun _ => 1) fun _ => one_ne_zero)`. Apply the tactic sequence `obtain ⟨y, hy, -⟩ := (mmBot ℚ g n N' e).pts ℚ _ _ (hin (fun i => if i = 0 then 2 else 1) fun i => by split_ifs <;> norm_num)`. Use `⟨x, y, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨h1, e1⟩` from `(secCoord_iff e _ (RingHom.id ℚ) x ((Category.assoc _ _ _).trans hx.1) _).1 hx.2`. Take `⟨h2, e2⟩` from `(secCoord_iff e _ (RingHom.id ℚ) x ((Category.assoc _ _ _).trans hy.1) _).1 hy.2`. Take `⟨u, hu⟩` from `(pt_eq_pt_iff _ h1 h2).1 (e1.symm.trans e2)`. Establish `a0` using `congrFun hu (e 0)`. Establish `a1` using `congrFun hu (e a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[ha, Units.smul_def] at a0 a1`. Rewrite `a0` using `[← a1]`. Evaluate the numerical expressions using `at a0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem exists_two_points {g n N' M : ℕ} (e : Ix g (N' ^ 2) ≃ Fin (M + 1)) (a : Ix g (N' ^ 2)) (ha : a ≠ 0) :
     ∃ x y : Sp ℚ ⟶ (mmBot ℚ g n N' e).MM, x ≠ y := by

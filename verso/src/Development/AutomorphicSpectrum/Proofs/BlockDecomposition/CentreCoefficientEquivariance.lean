@@ -22,17 +22,15 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D n ρ p hn M m ψ hψ b₀ F hF c h`. Take `⟨hadd, hnorm, hrat, -⟩` from `GlobalTheory.T.centre_character_properties ψ hψ b₀`. Take `⟨hl, hFD, -⟩` from `m.hz`. Take `⟨i1, i2, i3, i4, -, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D ρ ρ`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (hermA D ρ) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (hermA D ρ) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : DiscreteTopology (ratHerm D ρ) := GlobalTheory.CompanionTheory.FourierN.discrete_ratHerm`. Use `haveI : Countable (ratHerm D ρ) := countable_of_Lindelof_of_discrete`. Establish `hnz : ∀ z z' : hermA D ρ, M.nzx z 0 * M.nzx z' 0 = M.nzx (z + z') 0` using `fun z z' => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.T.unipotent_heisenberg_mul M z z' 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Establish `hconj : conj (chz ψ b₀ c) * chz ψ b₀ c = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hnorm c]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set u : hermA D ρ → ℂ := fun z => F (M.nzx z 0 * h) * conj (chz ψ b₀ z) with hu`. Establish `hper : ∀ γ ∈ ratHerm D ρ, ∀ x, u (γ + x) = u x`. Introduce `γ hγ x`. Simplify using `only [hu]`. Rewrite using `[← hnz, mul_assoc, hF _ ((GlobalTheory.T.rational_points_heisenberg_group M).2.2 γ hγ), hadd, hrat γ hγ, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Establish `hpt : ∀ z : hermA D ρ, F (M.nzx z 0 * (M.nzx c 0 * h)) * conj (chz ψ b₀ z) = chz ψ b₀ c * u (z + c)`. Introduce `z`. Simplify using `only [hu]`. Rewrite using `[← mul_assoc, hnz, hadd, map_mul]`. Take the linear combination `(-(F (M.nzx (z + c) 0 * h) * conj (chz ψ b₀ z))) * hconj`.
-
-Unfold `zc`. Simplify using `only [hpt]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `GlobalTheory.CompanionTheory.ConstN.setIntegral_add_right (ratHerm D ρ) m.lz hFD u hper c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem zc_shift : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) (F : G D n → ℂ), LeftInv (GF D n) F → ∀ (c : hermA D ρ) (h : G D n), zc M m ψ b₀ F (M.nzx c 0 * h) = chz ψ b₀ c * zc M m ψ b₀ F h := by
   intro D n ρ p hn M m ψ hψ b₀ F hF c h

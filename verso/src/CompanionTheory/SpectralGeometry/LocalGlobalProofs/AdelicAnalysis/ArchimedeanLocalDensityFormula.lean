@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} (R 
   [Algebra F R]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y => simp [sigR, hs]`. Consider the case `add a c ha hc => rw [map_add, map_add, ha, hc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (hs : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -27,13 +27,13 @@ theorem sigR_sigR (hs : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (sigR
   | add a c ha hc => rw [map_add, map_add, ha, hc]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (y : E) : sigR R σ (inclR R y) = inclR R (σ y) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Simplify using `only [hR, hform, JR, map_sum, map_mul, Matrix.map_apply, sigR_sigR R hs, sigR_inclR, hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sigR_hR (hs : ∀ x, σ (σ x) = x) {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin M → R ⊗[F] E) :
@@ -44,7 +44,7 @@ theorem sigR_hR (hs : ∀ x, σ (σ x) = x) {M : ℕ} {J : Matrix (Fin M) (Fin M
   ring
 
 /- English proof (translation)
-Introduce `a c` and use `sigR_hR R hs hJ (X c) (X a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gramR_mem (hs : ∀ x, σ (σ x) = x) {M n : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (X : Fin n → Fin M → R ⊗[F] E) :
@@ -57,11 +57,11 @@ section Real
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Set `ew : Ainf F →+* ℝ` to `(Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) w).comp (e : Ainf F →+* _)`. Establish `hew : ∀ a, ew a = e a w` using `fun _ => rfl`. Establish `hcomp : ew.comp (algebraMap F (Ainf F)) = ρ w` using `RingHom.ext fun x => hρ x w`. Establish `hx : xw e b X w = ew ∘ cv (Ainf F) b (X 0)` using `rfl`. Establish `hm : B.map (ρ w) = (B.map (algebraMap F (Ainf F))).map ew`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hcomp]`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hhalf : ρ w (1 / 2) = 1 / 2` using `by rw [map_div₀, map_one, map_ofNat]`. Rewrite using `[← hew, map_mul, hew, hρ, hhalf]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show _ * ew (Algebra.trace (Ainf F) (Ainf F ⊗[F] E) (hR (Ainf F) σ J (X 0) (X 0))) = _`. Rewrite using `[hB, hx, hm, RingHom.map_dotProduct]`. Establish `hv : ⇑ew ∘ (B.map (algebraMap F (Ainf F)) *ᵥ cv (Ainf F) b (X 0)) = (B.map (algebraMap F (Ainf F))).map ew *ᵥ (⇑ew ∘ cv (Ainf F) b (X 0))`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec ew _ _ i`. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_half_trace {σ : E →ₐ[F] E} {M d : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (b : Module.Basis (Fin d) F E) (B : Matrix (Fin M × Fin d) (Fin M × Fin d) F)
@@ -94,37 +94,31 @@ theorem e_half_trace {σ : E →ₐ[F] E} {M d : ℕ} {J : Matrix (Fin M) (Fin M
 end Real
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm M J hJ hM d b B hB ρ e he hρ Pm laminf hlam hmap Dinf hDc hD0 hDinf U hU`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := i4`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : BorelSpace (HermR (Ainf F) σ 1) := ⟨rfl⟩`. Use `haveI : SigmaFinite laminf := inferInstance`. Establish `hd : d = 2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1` using `Module.finrank_eq_card_basis b`. Rewrite `h1` using `[hcm.2.2.1]`. Simplify using `using h1.symm`. Establish `hs : ∀ x, σ (σ x) = x` using `HermOne.sig_sig hcm`. Use `set κ : ℝ := (Real.sqrt |(discr F : ℝ)|)⁻¹ with hκ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hκ0 : 0 ≤ κ` using `inv_nonneg.2 (Real.sqrt_nonneg _)`. Set `tt` to `HermOne.hermHomeo (Ainf F) (σ := σ) hcm`. Set `eH : Ainf F ≃ₜ (InfinitePlace F → ℝ)` to `he.homeomorph e`. Set `τ : HermR (Ainf F) σ 1 ≃ₜ (InfinitePlace F → ℝ)` to `tt.trans eH`. Establish `hτ : ∀ S, τ S = e (algebraMap F (Ainf F) (1 / 2) * Algebra.trace (Ainf F) (Ainf F ⊗[F] E) ((S : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) 0 0))` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpush : (coordHerm (Ainf F) σ b laminf 1).map τ = ENNReal.ofReal κ • volume`. Establish `h1 : (τ : HermR (Ainf F) σ 1 → _) = e ∘ tt` using `rfl`. Rewrite using `[h1, ← Measure.map_map (f := tt) (g := e) eH.measurable tt.measurable, HermOne.map_coordHerm (Ainf F) hcm b laminf, hmap]`. Use `set U' : Set (InfinitePlace F → ℝ) := τ.symm ⁻¹' U with hU'def`. Establish `hU' : MeasurableSet U'` using `τ.symm.measurable hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpre : τ ⁻¹' U' = U`. Use extensionality with `S`. Simplify using `[hU'def]`. Establish `hR1 : ∫⁻ S in U, ENNReal.ofReal (κ ^ (2 * M - 1) * Dinf (e (algebraMap F (Ainf F) (1 / 2) * Algebra.trace (Ainf F) (Ainf F ⊗[F] E) ((S : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) 0 0)))) ∂(coordHerm (Ainf F) σ b laminf 1) = ENNReal.ofReal (κ ^ (2 * M)) * ∫⁻ y in U', ENNReal.ofReal …`. Establish `h2` using `setLIntegral_map (μ := coordHerm (Ainf F) σ b laminf 1) (g := τ) (f := fun y => ENNReal.ofReal (κ ^ (2 * M - 1) * Dinf y)) hU' (continuous_const.mul hDc).measurable.ennreal_ofReal τ.measurable`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hpre, hpush]`. Simplify using `only [hτ] at h2`. Rewrite using `[← h2, Measure.restrict_smul, lintegral_smul_measure]`. Establish `h3 : ∀ y, ENNReal.ofReal (κ ^ (2 * M - 1) * Dinf y) = ENNReal.ofReal (κ ^ (2 * M - 1)) * ENNReal.ofReal (Dinf y)` using `fun y => ENNReal.ofReal_mul (pow_nonneg hκ0 _)`. Simplify using `only [h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_const_mul _ (hDc.measurable.ennreal_ofReal), smul_eq_mul, ← mul_assoc, ← ENNReal.ofReal_mul hκ0, ← pow_succ', show 2 * M - 1 + 1 = 2 * M by omega]`. Set `Φ : (Fin 1 → Fin M → Ainf F ⊗[F] E) → (InfinitePlace F → Fin M × Fin d → ℝ)` to `fun X w => xw e b X w`. Establish `hcoord` using `(GlobalTheory.T.coordinate_homeomorph_rank_one_tuples F E σ hcm (Ainf F) d b laminf hlam M).2.1`. Establish `hΦm : Measurable Φ`. Establish `hc : Continuous fun (z : Fin M × Fin d → Ainf F) (w : InfinitePlace F) (p : Fin M × Fin d) => e (z p) w` using `continuous_pi fun w => continuous_pi fun p => (continuous_apply w).comp (eH.continuous.comp (continuous_apply p))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hc.measurable.comp hcoord.measurable`. Establish `hpushL` using `GlobalTheory.T.archimedean_coordinate_measure_transport F E σ hcm M d b e he laminf hlam hmap`. Set `Q : (InfinitePlace F → Fin M × Fin d → ℝ) → (InfinitePlace F → ℝ)` to `fun x w => (1 / 2 : ℝ) * (x w ⬝ᵥ (B.map (ρ w) *ᵥ x w))`. Establish `hQc : Continuous Q`. Use `continuous_pi fun w => continuous_const.mul ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_apply w).dotProduct (continuous_const.matrix_mulVec (continuous_apply w))`. Set `G : (InfinitePlace F → Fin M × Fin d → ℝ) → ℝ≥0∞` to `fun x => ENNReal.ofReal (Real.exp (-Real.pi * ∑ w, x w ⬝ᵥ (Pm w *ᵥ x w)))`. Establish `hGm : Measurable G`. Establish `hc : Continuous fun x : InfinitePlace F → Fin M × Fin d → ℝ => Real.exp (-Real.pi * ∑ w, x w ⬝ᵥ (Pm w *ᵥ x w))`. Use `Real.continuous_exp.comp (continuous_const.mul (continuous_finset_sum _ fun w _ => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(continuous_apply w).dotProduct (continuous_const.matrix_mulVec (continuous_apply w))`. Conclude with `hc.measurable.ennreal_ofReal`. Establish `hset : gramR (Ainf F) σ J ⁻¹' (Subtype.val '' U) = Φ ⁻¹' (Q ⁻¹' U')`. Use extensionality with `X`. Establish `hmem` using `gramR_mem (Ainf F) hs hJ.1 X`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : Q (Φ X) = τ ⟨gramR (Ainf F) σ J X, hmem⟩`. Use function extensionality and compare the values at `w`. Rewrite using `[hτ]`. Conclude with `(e_half_trace b B hB ρ e hρ X w).symm`. Simplify using `only [Set.mem_preimage, hU'def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, Homeomorph.symm_apply_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, hSX⟩`. Establish `: (⟨gramR (Ainf F) σ J X, hmem⟩ : HermR (Ainf F) σ 1) = S` using `Subtype.ext hSX.symm`. Rewrite using `[this]` and apply the resulting hypothesis.
-
-Introduce `h`. Conclude with `⟨_, h, rfl⟩`. Establish `hL1 : ∫⁻ X in gramR (Ainf F) σ J ⁻¹' (Subtype.val '' U), ENNReal.ofReal (gaussQ e b Pm X) ∂(coordW (Ainf F) b laminf 1 M) = ENNReal.ofReal (κ ^ (M * d)) * ∫⁻ y in U', ENNReal.ofReal (Dinf y)`. Establish `hA : MeasurableSet (Q ⁻¹' U')` using `hQc.measurable hU'`. Establish `h2` using `setLIntegral_map (μ := coordW (Ainf F) b laminf 1 M) hA hGm hΦm`.
-
-Rewrite using `[hset]`. Establish `h3 : ∀ X, ENNReal.ofReal (gaussQ e b Pm X) = G (Φ X)` using `fun _ => rfl`. Simplify using `only [h3]`. Rewrite using `[← h2]`. Establish `h4 : (coordW (Ainf F) b laminf 1 M).map Φ = ENNReal.ofReal (κ ^ (M * d)) • (volume : Measure (InfinitePlace F → Fin M × Fin d → ℝ))` using `hpushL`.
-
-Rewrite using `[h4, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul]`. Conclude with `congrArg _ (hDinf U' hU')`. Rewrite using `[hL1, hR1, hd, mul_comm M 2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infDens : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (B : Matrix (Fin M × Fin d) (Fin M × Fin d) F), (∀ x y : Fin M → Ainf F ⊗[F] E, Algebra.trace (Ainf F) (Ainf F ⊗[F] E) (hR (Ainf F) σ J x y) = cv (Ainf F) b x ⬝ᵥ (B.map (algebraMap F (Ainf F)) *ᵥ cv (Ainf F) b y)) → ∀ (ρ : InfinitePlace F → (F →+* ℝ)) (e : Ainf F ≃+* (InfinitePlace F → ℝ)), IsHomeomorph e → (∀ x w, e (algebraMap F (Ainf F) x) w = ρ w x) → ∀ (Pm : InfinitePlace F → Matrix (Fin M × Fin d) (Fin M × Fin d) ℝ) (laminf : Measure (Ainf F)), laminf.IsAddHaarMeasure → laminf.map e = ENNReal.ofReal (Real.sqrt |(discr F : ℝ)|)⁻¹ • (volume : Measure (InfinitePlace F → ℝ)) → ∀ Dinf : (InfinitePlace F → ℝ) → ℝ, Continuous Dinf → (∀ y, 0 ≤ Dinf y) → (∀ U : Set (InfinitePlace F → ℝ), MeasurableSet U → ∫⁻ x in {x : InfinitePlace F → Fin M × Fin d → ℝ | (fun w => (1 / 2 : ℝ) * (x w ⬝ᵥ (B.map (ρ w) *ᵥ x w))) ∈ U}, ENNReal.ofReal (Real.exp (-Real.pi * ∑ w, x w ⬝ᵥ (Pm w *ᵥ x w))) = ∫⁻ y in U, ENNReal.ofReal (Dinf y)) → ∀ U : Set (HermR (Ainf F) σ 1), MeasurableSet U → ∫⁻ X in gramR (Ainf F) σ J ⁻¹' (Subtype.val '' U), ENNReal.ofReal (gaussQ e b Pm X) ∂(coordW (Ainf F) b laminf 1 M) = ∫⁻ S in U, ENNReal.ofReal ((Real.sqrt |(discr F : ℝ)|)⁻¹ ^ (2 * M - 1) * Dinf (e (algebraMap F (Ainf F) (1 / 2) * Algebra.trace (Ainf F) (Ainf F ⊗[F] E) ((S : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) 0 0)))) ∂(coordHerm (Ainf F) σ b laminf 1) := by
   intro F E _ _ _ _ _ σ hcm M J hJ hM d b B hB ρ e he hρ Pm laminf hlam hmap Dinf hDc hD0 hDinf U hU

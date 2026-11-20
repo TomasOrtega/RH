@@ -12,29 +12,27 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.SiegelTor GlobalTheory.HTSympCover
 
 /- English proof (translation)
-Introduce `p _ D R _ b N M e hM3 hModd hMp hMe hperf S t o K _ _ x`. Establish `hM0 : 0 < M` using `by omega`. Take `⟨β, hβ⟩ : ∃ β : R →+* K, x ≫ t = spMap β` from `⟨(Spec.preimage (x ≫ t)).hom, (Spec.map_preimage _).symm⟩`. Take `⟨I, -⟩` from `o.geom K x β hβ`. Use `haveI := D.freeLa`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := D.finLa`. Take `⟨L, hLker, hLonto, hLω⟩` from `GlobalTheory.T.exists_lattice_map_mod_of_perfect_alternating D.La D.EF D.alt D.nondeg e M hperf hMe`. Establish `hMK : IsUnit (M : K)` using `by simpa using (b.unit M hMp).map β`. Establish `hprim : IsPrimitiveRoot ((I.ζ M : Kˣ) : K) M` using `IsPrimitiveRoot.coe_units_iff.2 (I.ζ_prim M hM0 hMp)`. Take `⟨β₀, hβ₀⟩` from `GlobalTheory.T.exists_ringHom_cyclotomicAway_to_field_primitiveRoot M (by omega) K _ hprim hMK`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨spMap β₀, fun a => I.ev M (L a), fun a c => by show I.ev M (L (a + c)) = I.ev M (L a) * I.ev M (L c); rw [map_add, I.add], fun a => (I.onto M hM0 hMp _).2 ⟨L a, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `k _ _ x' β' z hx' hz`. Take `⟨φ, rfl⟩ : ∃ φ : K →+* k, x' = spMap φ` from `⟨(Spec.preimage x').hom, (Spec.map_preimage _).symm⟩`. Establish `hβ' : β' = φ.comp β₀`. Establish `e2 : CommRingCat.ofHom β' = CommRingCat.ofHom (φ.comp β₀)` using `Spec.map_injective (hx'.symm.trans (by simp [spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `congrArg CommRingCat.Hom.hom e2`. Substitute `hβ'` using the available equality. Establish `hz' : z = Units.map φ.toMonoidHom (I.ζ M)` using `Units.ext (by simpa [hβ₀] using hz)`. Substitute `hz'` using the available equality. Take `⟨β'', hβ''⟩ : ∃ β'' : R →+* k, (spMap φ ≫ x) ≫ t = spMap β''` from `⟨(Spec.preimage ((spMap φ ≫ x) ≫ t)).hom, (Spec.map_preimage _).symm⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨I', -⟩` from `o.geom k (spMap φ ≫ x) β'' hβ''`. Set `h : Over.mk (spMap φ ≫ (Over.mk x).hom) ⟶ Over.mk x` to `Over.homMk (spMap φ) rfl`. Establish `: Epi h.left` using `GlobalTheory.UPel.GeometricLevelExistence.epi_spMap_field φ`. Establish `: Epi h` using `Over.epi_of_epi_left h`. Express the relevant statement in the definitionally equal form `(∀ a, h ≫ I.ev M (L a) = 1 ↔ _) ∧ (∀ g : Over.mk (spMap φ ≫ (Over.mk x).hom) ⟶ o.A, g ^ M = 1 → ∃ a, h ≫ I.ev M (L a) = g) ∧ ∀ a c, Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) M (h ≫ I.ev M (L a)) (h ≫ I.ev M (L c)) (unitOn (Units.map φ.toMonoidHom (I.ζ M) ^ (2 * omegaS …`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPa : ∀ a b, h ≫ I.ev M (a + b) = (h ≫ I.ev M a) * (h ≫ I.ev M b)` using `fun a b => by`. Rewrite using `[I.add, MonObj.comp_mul]`. Establish `hP : ∀ a, h ≫ I.ev M a = 1 ↔ ∃ b, a = M • b` using `fun a => by`. Rewrite using `[← I.ker M hM0 hMp a]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Rewrite using `[← cancel_epi h, e, MonObj.comp_one]`. Introduce `e`. Rewrite using `[e, MonObj.comp_one]`. Establish `hQ : ∀ a, I'.ev M a = 1 ↔ ∃ b, a = M • b` using `I'.ker M hM0 hMp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPQ : ∀ a, ∃ c, h ≫ I.ev M a = I'.ev M c` using `fun a => by`. Establish `e : (h ≫ I.ev M a) ^ M = 1`. Rewrite using `[← MonObj.comp_pow, (I.onto M hM0 hMp (I.ev M a)).2 ⟨a, rfl⟩, MonObj.comp_one]`. Take `⟨c, hc⟩` from `(I'.onto M hM0 hMp _).1 e`. Conclude with `⟨c, hc.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a => (hP (L a)).trans (hLker a), fun g hg => ?_, fun a c => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(I'.onto M hM0 hMp g).1 hg`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.UPel.GeometricLevelExistence.exists_eq_of_count M hM0 _ _ hPa (I'.add M) hP hQ hPQ c`. Take `⟨a, y, rfl⟩` from `hLonto x₀`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx₀, hPa, (hP _).2 ⟨y, rfl⟩, _root_.mul_one]`. Establish `H` using `CommPairing.weilIs_pull globalFns_holds o.ab (LB.isLB_pull o.isLB _) h (I.isom M hM0 hMp (L a) (L c))`. Establish `e : Units.map h.left.appTop.hom.toMonoidHom (unitOn (I.ζ M ^ (2 * D.EF (L a) (L c)))) = unitOn (Units.map φ.toMonoidHom (I.ζ M) ^ (2 * omegaStd a c))`. Take `⟨k₀, hk₀⟩` from `hLω a c`. Establish `hζM : I.ζ M ^ (M : ℤ) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[zpow_natCast]`. Conclude with `(I.ζ_prim M hM0 hMp).pow_eq_one`. Establish `hK : I.ζ M ^ (2 * D.EF (L a) (L c)) = I.ζ M ^ (2 * omegaStd a c)`. Rewrite using `[hk₀, show (2 : ℤ) * (omegaStd a c + M * k₀) = 2 * omegaStd a c + M * (2 * k₀) by ring, zpow_add, zpow_mul (I.ζ M) (M : ℤ), hζM, one_zpow, _root_.mul_one]`. Rewrite using `[hK, ← map_zpow]`.
-
-Conclude with `GlobalTheory.UPel.GeometricLevelExistence.unitOn_pull_spMap φ _`. Rewrite `H` using `[e]`. Conclude with `H`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sympCond_geom : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N M e : ℕ),
   3 ≤ M → Odd M → M.Coprime p → M.Coprime e → (∀ f : D.La →ₗ[ℤ] ℤ, ∃ x, D.EF x = e • f) →

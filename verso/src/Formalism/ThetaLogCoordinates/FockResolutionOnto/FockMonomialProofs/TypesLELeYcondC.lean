@@ -7,9 +7,9 @@ open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.CountingSumsFrames Mv
 variable {p : ℕ} [Fact p.Prime] {N r : ℕ}
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [HWC, Submodule.mem_inf] at hx`. Establish `hw` using `hx.1`. Rewrite `hw` using `[WtSpC, MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Establish `hm'` using `hw hm`. Simplify using `only [Set.mem_setOf_eq] at hm' ⊢`. Rewrite using `[hm' 0 h0]`. Conclude with `hla`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem HWC_le_restrictSupport_wt_le [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r))
     (h0 : (0 : Fin r) ∈ Cs) (la : Fin r → ℤ) (Mt : WithTop ℤ) (hla : ((la 0 : ℤ) : WithTop ℤ) ≤ Mt) :
@@ -26,13 +26,11 @@ private theorem HWC_le_restrictSupport_wt_le [NeZero r] (LL : Letters N) (j : �
   exact hla
 
 /- English proof (translation)
-Distinguish the cases in `hlt : d < c`. Conclude with `Formalism.CountingSumsFrames.lower_action_preserves_weight_le LL j c d hlt Mt x hx`. Use `Formalism.CountingSumsFrames.comm_preserves_weight_le LL j Mt (glAct p LL j c d) ?_ x hx` and prove the remaining obligations. Introduce `y`. Establish `h` using `Formalism.CountingSumsFrames.glAct_comm (p := p) LL j c d 0 0 y`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hd : d = 0`. Establish `hc : c = 0`. Assume the negation of the conclusion as `hc0`. Apply `hlt` to reduce the goal to its premises. Rewrite using `[hd]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `(Fin.pos_iff_ne_zero' c).2 hc0`. Substitute `hc` using the available equality. Substitute `hd` using the available equality. Both sides reduce to the same expression. Establish `hc : c ≠ 0` using `hcd.resolve_right hd`.
-
-Rewrite `h` using `[if_neg hd, if_neg (Ne.symm hc), sub_self]`. Conclude with `sub_eq_zero.mp h`.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem glAct_mem_restrictSupport_wt_le_of_ne [NeZero r] (LL : Letters N) (j : ℕ) (Mt : WithTop ℤ) (c d : Fin r)
     (hcd : c ≠ 0 ∨ d = 0) (x : MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -57,29 +55,23 @@ private theorem glAct_mem_restrictSupport_wt_le_of_ne [NeZero r] (LL : Letters N
       exact sub_eq_zero.mp h
 
 /- English proof (translation)
-Establish `hB` using `HWC_le_restrictSupport_wt_le (p := p) LL j Cs h0 la Mt hla`. Take `⟨L, hLdef⟩ : ∃ L : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]), L = sInf {S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]) | HWC p LL j Cs la ≤ S ∧ ∀ c ∈ Cs, ∀ d ∈ Cs, (c ≠ 0 ∨ d = 0) → ∀ x ∈ S, glAct p LL j c d x ∈ S}` from `⟨_, rfl⟩`. Establish `hHL : HWC p LL j Cs la ≤ L`. Rewrite using `[hLdef]`. Conclude with `le_sInf fun S hS => hS.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLst : ∀ c ∈ Cs, ∀ d ∈ Cs, (c ≠ 0 ∨ d = 0) → ∀ x ∈ L, glAct p LL j c d x ∈ L`. Introduce `c hc d hd hcd x hx`. Rewrite `hx`, the goal using `[hLdef, Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.2 c hc d hd hcd x (hx S hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hLB : L ≤ restrictSupport ℚ_[p] {m : Fin N × Fin r →₀ ℕ | ↑(wt LL j 0 m) ≤ Mt}`. Rewrite using `[hLdef]`. Conclude with `sInf_le ⟨hB, fun c _ d _ hcd x hx => glAct_mem_restrictSupport_wt_le_of_ne LL j Mt c d hcd x hx⟩`. Establish `hraise : ∀ x ∈ L, ∀ e ∈ Cs, e ≠ 0 → glAct p LL j 0 e x ∈ L`. Take `⟨L', hmem⟩ : ∃ L' : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]), ∀ x, x ∈ L' ↔ x ∈ L ∧ ∀ e ∈ Cs, e ≠ 0 → glAct p LL j 0 e x ∈ L` from `⟨L ⊓ ⨅ e ∈ Cs, ⨅ (_ : e ≠ 0), L.comap (glAct p LL j 0 e), fun x => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Submodule.mem_iInf]⟩`. Establish `key : L' ∈ {S : Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]) | HWC p LL j Cs la ≤ S ∧ ∀ c ∈ Cs, ∀ d ∈ Cs, (c ≠ 0 ∨ d = 0) → ∀ x ∈ S, glAct p LL j c d x ∈ S}`. Use `⟨fun h hh => (hmem h).2 ⟨hHL hh, fun e he he0 => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hk : h ∈ LinearMap.ker (glAct p LL j 0 e)`. Simplify using `only [HWC, Submodule.mem_inf, Submodule.mem_iInf] at hh`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hh.2 0 e ⟨h0, he, (Fin.pos_iff_ne_zero' e).2 he0⟩`. Rewrite `hk` using `[LinearMap.mem_ker]`. Rewrite using `[hk]`. Conclude with `L.zero_mem`. Introduce `c hc d hd hcd x hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[hmem]`. Use `⟨hLst c hc d hd hcd x hx.1, fun e he he0 => ?_⟩` and prove the remaining obligations. Establish `hcomm` using `Formalism.CountingSumsFrames.glAct_comm (p := p) LL j 0 e c d x`. Establish `hsplit : glAct p LL j 0 e (glAct p LL j c d x) = glAct p LL j c d (glAct p LL j 0 e x) + ((if e = c then glAct p LL j 0 d x else 0) - if d = 0 then glAct p LL j c e x else 0)`. Rewrite using `[← hcomm]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hsplit]`. Use `L.add_mem (hLst c hc d hd hcd _ (hx.2 e he he0)) (L.sub_mem ?_ ?_)` and prove the remaining obligations. Use `split_ifs with hec`. Distinguish the cases in `hd0 : d = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hd0` using the available equality. Conclude with `hLst 0 h0 0 h0 (Or.inr rfl) x hx.1`. Conclude with `hx.2 d hd hd0`. Conclude with `L.zero_mem`. Use `split_ifs with hd0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc0 : c = 0`. Substitute `hc0` using the available equality. Conclude with `hx.2 e he he0`. Conclude with `hLst c hc e he (Or.inl hc0) x hx.1`. Conclude with `L.zero_mem`.
-
-Establish `hLL'` using `sInf_le key`. Rewrite `hLL'` using `[← hLdef]`. Introduce `x hx e he he0`. Conclude with `((hmem x).1 (hLL' hx)).2 e he he0`. Establish `hIL : IsoC p LL j Cs la ≤ L`.
-
-Unfold `IsoC`. Use `sInf_le ⟨hHL, ?_⟩` and prove the remaining obligations. Introduce `c hc d hd x hx`. Distinguish the cases in `hA : c ≠ 0 ∨ d = 0`. Conclude with `hLst c hc d hd hA x hx`.
-
-Use `push_neg at hA`. Rewrite using `[hA.1]`. Conclude with `hraise x hx d hd hA.2`. Conclude with `le_ycondC LL j Cs Mt _ (hIL.trans hLB) (fun c hc d hd x hx => isoC_glStableC LL j Cs la c hc d hd x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoC_le_ycondC [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (h0 : (0 : Fin r) ∈ Cs)
     (la : Fin r → ℤ) (Mt : WithTop ℤ) (hla : ((la 0 : ℤ) : WithTop ℤ) ≤ Mt) :
@@ -152,7 +144,7 @@ theorem isoC_le_ycondC [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r
     (fun c hc d hd x hx => isoC_glStableC LL j Cs la c hc d hd x hx)
 
 /- English proof (translation)
-The claim follows from `iSup_le fun la => iSup_le fun hla => isoC_le_ycondC LL j Cs h0 la Mt hla`.
+A detailed English derivation is pending.
 -/
 theorem typesLE_le_ycondC [NeZero r] (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (h0 : (0 : Fin r) ∈ Cs)
     (Mt : WithTop ℤ) : TypesLE p LL j Cs Mt ≤ YCondC p LL j Cs Mt :=

@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.JR.WeilQuad
 
 /- English proof (translation)
-Establish `hfin : Module.Finite F E` using `Module.finite_of_finrank_eq_succ hU.finrank_eq`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hU.finrank_eq`. Establish `hp` using `((Algebra.IsPushout.comm F E A.K A.L).1 A.push).out`. Set `c` to `hp.basis b`. Unfold `Et.NL`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[Algebra.smul_def, map_mul, Algebra.norm_algebraMap_of_basis c, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem NL_smul {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [hU : Unram F E] (A : Et F E) (s : A.K) (y : A.L) :
@@ -22,7 +22,7 @@ theorem NL_smul {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedFiel
   rw [Algebra.smul_def, map_mul, Algebra.norm_algebraMap_of_basis c, Fintype.card_fin]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x μ ω _ s z φ`. Use function extensionality and compare the values at `y`. Simplify using `only [mOp, nOp, NL_smul]`. Rewrite using `[show (z * (x : A.K) * ((s : A.K) ^ 2 * A.NL y)) = (s : A.K) ^ 2 * z * x * A.NL y by ring]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mOp_nOp : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L) (ω : A.K → ℂ),

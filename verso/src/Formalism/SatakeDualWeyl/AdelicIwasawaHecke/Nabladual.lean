@@ -12,9 +12,9 @@ noncomputable def monFam (k : ℕ) : {d : n →₀ ℕ | d.degree = k} → MvPol
   fun d => monomial (d : n →₀ ℕ) 1
 
 /- English proof (translation)
-Establish `h` using `(basisMonomials n O).linearIndependent.comp (Subtype.val : {d : n →₀ ℕ | d.degree = k} → n →₀ ℕ) Subtype.val_injective`. Establish `e : monFam O n k = ⇑(basisMonomials n O) ∘ Subtype.val`. Use function extensionality and compare the values at `d`. Simplify using `[monFam, coe_basisMonomials]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem monFam_linearIndependent (k : ℕ) : LinearIndependent O (monFam O n k) := by
   have h := (basisMonomials n O).linearIndependent.comp
@@ -26,7 +26,7 @@ theorem monFam_linearIndependent (k : ℕ) : LinearIndependent O (monFam O n k) 
   exact h
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.nabla, homogeneousSubmodule_eq_finsupp_supported]`. Express the relevant statement in the definitionally equal form `_ = restrictSupport O _`. Rewrite using `[restrictSupport_eq_span, Set.image_eq_range]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem span_monFam (k : ℕ) :
     Submodule.span O (Set.range (monFam O n k)) = Formalism.UG.nabla O n k := by
@@ -47,15 +47,15 @@ section
 variable (n : Type) [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hd`. Establish `hne : d ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hd`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, d i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (Finsupp.ext h)`. Establish `hle : d i ≤ 1` using `hd ▸ Finsupp.le_degree i d`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi1 : d i = 1` using `by omega`. Establish `hsle : Finsupp.single i 1 ≤ d`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hsplit : d = Finsupp.single i 1 + (d - Finsupp.single i 1)` using `(add_tsub_cancel_of_le hsle).symm`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (d - Finsupp.single i 1).degree = 0`. Use `congrArg Finsupp.degree hsplit` as an intermediate fact. Rewrite `this` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Rewrite `hdeg` using `[Finsupp.degree_eq_zero_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite `hsplit` using `[hdeg, add_zero]`. Conclude with `hsplit`. Introduce and unpack `⟨i, rfl⟩`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degree_eq_one_iff (d : n →₀ ℕ) : d.degree = 1 ↔ ∃ i, d = Finsupp.single i 1 := by
   constructor

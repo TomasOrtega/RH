@@ -12,21 +12,19 @@ namespace GroundTheory.Heights₂.Heights
 open MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ L g hP hΨ hL hg`. Take `⟨M, hMb⟩` from `PtsPosDens.exists_bound hg`. Use `choose T hTs hTp hLTp using fun j => Inter.SemiPosTwist.proof Inter.TorusInvLevi.proof K ι (L j) (hL j)`. Use `set N : Fin e → HermLine ι := fun j => ((L j).tensor (T j)).tensor (T j) with hNdef`. Establish `hLT : ∀ j, IsSmoothHerm ((L j).tensor (T j))` using `fun j => ReciprocityTheory.ChartRestriction.G.Geo.isSmoothHerm_tensor (hL j) (hTs j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNs : ∀ j, IsSmoothHerm (N j)` using `fun j => ReciprocityTheory.ChartRestriction.G.Geo.isSmoothHerm_tensor (hLT j) (hTs j)`. Establish `hNp : ∀ j, Inter.IsSemiPosHerm (N j)` using `fun j => PtsPosDens.isSemiPosHerm_tensor (hLT j) (hTs j) (hLTp j) (hTp j)`. Establish `hfinM` using `hMass K ι P e Ψ N hP hΨ hNs hNp`. Establish `hfib` using `fibreFinite K ι P e Ψ hP hΨ`. Use `set C : ℝ := max M 0 * 3 ^ e with hCdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : 0 ≤ C` using `by positivity`. Establish `key : ∀ y w, max (sheetDensity P Ψ (pot L) g y w) 0 ≤ C * max (sheetDensity P Ψ (pot N) (fun _ => 1) y w) 0`. Introduce `y w`. Unfold `sheetDensity`. Distinguish the cases in `hγ : ∃ γ, IsSheet P Ψ y w γ`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hγ, dif_pos hγ]`. Establish `hS` using `hγ.choose_spec`. Establish `hab : |maDensity (fun j y' => pot L j (hγ.choose y')) y| ≤ 3 ^ e * maDensity (fun j y' => pot N j (hγ.choose y')) y` using `Inter.PointsAbsIntegrable.abs_maDensity_le hL hTs hTp hLTp hS`. Establish `hmc : hγ.choose y ∈ mcPts P` using `hS.2.self_of_nhds.2.1`. Establish `hgb : |g (hγ.choose y)| ≤ max M 0` using `(hMb _ hmc.1).trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : 0 ≤ maDensity (fun j y' => pot N j (hγ.choose y')) y` using `nonneg_of_mul_nonneg_right ((abs_nonneg _).trans hab) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul, max_eq_left hn, hCdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg hγ, dif_neg hγ, max_self, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ y, ENNReal.ofReal (ptsPosDens P Ψ (pot L) g y) ≤ ENNReal.ofReal C * ENNReal.ofReal (ptsPosDens P Ψ (pot N) (fun _ => 1) y)`. Introduce `y`. Rewrite using `[← ENNReal.ofReal_mul hC]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Unfold `ptsPosDens`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfib y), finsum_mem_eq_finite_toFinset_sum _ (hfib y), Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun w _ => key y w`. Establish `hnn : ∀ y, 0 ≤ ptsPosDens P Ψ (pot L) g y` using `fun y => finsum_nonneg fun w => finsum_nonneg fun _ => le_max_right _ _`. Use `⟨PtsPosDens.aestronglyMeasurable hP hΨ hL hg, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hnn)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem PtsPosDensIntegrable.proof (hMass : PtsSemiPosMassFinite.Statement) : PtsPosDensIntegrable.Statement := by
   intro K _ ι _ P e Ψ L g hP hΨ hL hg

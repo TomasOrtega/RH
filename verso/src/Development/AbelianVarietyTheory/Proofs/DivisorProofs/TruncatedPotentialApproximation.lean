@@ -17,9 +17,9 @@ open scoped ComplexOrder
 namespace GlobalTheory.InterpClose
 
 /- English proof (translation)
-Use `PosSemidef.of_dotProduct_mulVec_nonneg ((hM.smul (show star (a : ℂ) = a from Complex.conj_ofReal a)).sub hN) fun v => ?_` and prove the remaining obligations. Establish `e : star v ⬝ᵥ ((a : ℂ) • M - N) *ᵥ v = (a : ℂ) * (star v ⬝ᵥ M *ᵥ v) - star v ⬝ᵥ N *ᵥ v`. Rewrite using `[sub_mulVec, dotProduct_sub, smul_mulVec, dotProduct_smul, smul_eq_mul]`. Rewrite using `[e, Complex.nonneg_iff]`. Establish `h1 : (star v ⬝ᵥ M *ᵥ v).im = 0` using `hM.im_star_dotProduct_mulVec_self v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (star v ⬝ᵥ N *ᵥ v).im = 0` using `hN.im_star_dotProduct_mulVec_self v`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Combine the linear relations using `[h v]`. Simplify using `[Complex.sub_im, Complex.mul_im, h1, h2]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem psd_smul_sub {n : ℕ} {M N : Matrix (Fin n) (Fin n) ℂ} (hM : M.IsHermitian) (hN : N.IsHermitian) (a : ℝ)
     (h : ∀ v : Fin n → ℂ, (star v ⬝ᵥ N *ᵥ v).re ≤ a * (star v ⬝ᵥ M *ᵥ v).re) : ((a : ℂ) • M - N).PosSemidef := by
@@ -40,7 +40,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) {σ : F →+* ℂ}
 
 /- English proof (translation)
-Rewrite using `[pn_eq (FlagCpt.prodPow_mem n (Y.exists_adapted p).choose_spec.1), FlagCpt.met_h G n (Y.exists_adapted p).choose_spec.2]`. Simplify using `[prodPow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pn_met_chosen (G : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (f : Y.Y.FnC σ) (p : Y.Y.pts σ) :
     pn Y.Y σ _ (Y.met G n) f p =
@@ -49,7 +49,7 @@ theorem pn_met_chosen (G : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (f : Y
   simp [prodPow]
 
 /- English proof (translation)
-Rewrite using `[FlagCpt.genSq, Real.log_prod (fun w _ => (zpow_pos (grSq_pos (G.pos _ _ _) _) _).ne')]`. Conclude with `Finset.sum_congr rfl fun w _ => Real.log_zpow _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_genSq (G : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) {p : Y.Y.pts σ} (g : Y.FrameAt p) :
     Real.log (Y.genSq G n g) = ∑ w : Letter Dw, (n w : ℝ) * Real.log (grSq (G.gram _ g w.1) w.2) := by
@@ -57,9 +57,9 @@ theorem log_genSq (G : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) {p : Y.Y.p
   exact Finset.sum_congr rfl fun w _ => Real.log_zpow _ _
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[pn_met_chosen]`. Rewrite using `[pn_met_chosen]`. Establish `ha : ‖fval (prodPow (Y.exists_adapted p).choose.1 n) f p‖ ^ 2 ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h`. Rewrite using `[Real.log_mul ha (Y.genSq_pos G n _).ne', Real.log_mul ha (Y.genSq_pos G' n _).ne', log_genSq, log_genSq]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_pn_sub (G G' : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (f : Y.Y.FnC σ) (p : Y.Y.pts σ)
     (h : 0 < pn Y.Y σ _ (Y.met G n) f p) :
@@ -84,11 +84,11 @@ def bnd (O : Setup D) : ℝ :=
   ∑ y : DV.Rt D.what₂.Tau O.N, ∑ w : Letter O.S.Dw, |(O.ex y w : ℝ)| * (2 * (O.S.Dw.mult w.1 : ℝ))
 
 /- English proof (translation)
-Establish `hC : O.Core` using `⟨x, P, hW⟩`. Simplify using `only [Setup.chg, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `hp` using `hC.posAt_hm c σ (some R) (O.ex y) z`. Unfold `PosAt at hp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hp` using `[hW.hm_eq]`. Establish `key` using `log_pn_sub (O.Φ.C c) (x.eigMetAt (embOf O.κ.e σ) (some R)) (x.eigMetAt (embOf O.κ.e σ) none) (O.ex y) _ z hp`. Establish `e : lnN (O.met.hm c (some R) σ (O.ex y)) (genAt (divOf (O.Φ.C c) (O.ex y)) (under z)) z - lnN (O.met.hm c none σ (O.ex y)) (genAt (divOf (O.Φ.C c) (O.ex y)) (under z)) z = (∑ w : Letter O.S.Dw, (O.ex y w : ℝ) * (Real.log (grSq ((x.eigMetAt (embOf O.κ.e σ) (some R)).gram _ ((O.Φ.C …`. Rewrite using `[hW.hm_eq]`. Simplify using `only [lnN]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← sub_div, ← key]`. Both sides reduce to the same expression. Simplify using `only [lnRatio]`. Take the linear combination `u y.1 y.2 * e`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem chg_sub (hW : O.CoreWith x P) (c : O.s.Comp) (R : ℝ) (u : D.what₂.Tau → Fin O.N → ℝ) (σ : D.what₂.LL →+* ℂ)
     (z : Pts (O.var c) σ) :
@@ -116,9 +116,9 @@ theorem chg_sub (hW : O.CoreWith x P) (c : O.s.Comp) (R : ℝ) (u : D.what₂.Ta
   linear_combination u y.1 y.2 * e
 
 /- English proof (translation)
-Establish `hR0 : 0 < R` using `by linarith`. Establish `hm : (1 - R⁻¹)⁻¹ = R / (R - 1)` using `by field_simp`. Establish `hR1 : 0 < R - 1` using `by linarith`. Rewrite using `[hm]`. Use `(Real.log_le_sub_one_of_pos (div_pos hR0 hR1)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[div_sub_one hR1.ne', div_le_div_iff₀ hR1 hR0]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_inv_one_sub_le {R : ℝ} (hR : 2 ≤ R) : Real.log (1 - R⁻¹)⁻¹ ≤ 2 / R := by
   have hR0 : 0 < R := by linarith
@@ -130,7 +130,7 @@ theorem log_inv_one_sub_le {R : ℝ} (hR : 2 ≤ R) : Real.log (1 - R⁻¹)⁻¹
   nlinarith
 
 /- English proof (translation)
-Establish `h1 : 0 < 1 - R⁻¹`. Establish `: R⁻¹ ≤ 1 / 2` using `by rw [inv_eq_one_div]; exact one_div_le_one_div_of_le (by norm_num) hR`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 1 - R⁻¹ ≤ 1` using `by have := inv_nonneg.2 (show (0:ℝ) ≤ R by linarith); linarith`. Conclude with `one_le_inv₀ h1 |>.2 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_inv_one_sub {R : ℝ} (hR : 2 ≤ R) : 1 ≤ (1 - R⁻¹)⁻¹ := by
   have h1 : 0 < 1 - R⁻¹ := by
@@ -140,7 +140,7 @@ theorem one_le_inv_one_sub {R : ℝ} (hR : 2 ≤ R) : 1 ≤ (1 - R⁻¹)⁻¹ :=
   exact one_le_inv₀ h1 |>.2 h2
 
 /- English proof (translation)
-The claim follows from `|Real.log (grSq ((x.eigMetAt (embOf O.κ.e σ) (some R)).gram _ ((O.Φ.C c).exists_adapted z).choose.2 w.1) w.2) - Real.log (grSq ((x.eigMetAt (embOf O.κ.e σ) none).gram _ ((O.Φ.C c).exists_adapted z).choose.2 w.1) w.2)| ≤ 2 * (O.S.Dw.mult w.1 : ℝ) * (2 / R) := by set y := (O.Φ.C c) …`.
+A detailed English derivation is pending.
 -/
 theorem abs_log_grSq_sub_le (hW : O.CoreWith x P) (c : O.s.Comp) {R : ℝ} (hR : 2 ≤ R) (σ : D.what₂.LL →+* ℂ)
     (z : Pts (O.var c) σ) (hz : (O.Φ.C c).π (under z) ∉ genBd O.s.T.Z) (hr : O.met.r c σ z ≤ Real.sqrt R)
@@ -204,7 +204,7 @@ theorem abs_log_grSq_sub_le (hW : O.CoreWith x P) (c : O.s.Comp) {R : ℝ} (hR :
   · exact fin _ hA k3 k4
 
 /- English proof (translation)
-The claim follows from `|O.chg c (some R) u σ z - O.chg c none u σ z| ≤ bnd O * ‖u‖ / R := by have hR0 : 0 < R := by linarith rw [chg_sub hW] refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ rw [bnd, Finset.sum_mul, Finset.sum_div] refine Finset.sum_le_sum fun y _ => ?_ have hu : |u y.1 y.2| ≤ ‖u‖ := by …`.
+A detailed English derivation is pending.
 -/
 theorem abs_chg_sub_le (hW : O.CoreWith x P) (c : O.s.Comp) {R : ℝ} (hR : 2 ≤ R) (u : D.what₂.Tau → Fin O.N → ℝ)
     (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ) (hz : (O.Φ.C c).π (under z) ∉ genBd O.s.T.Z)
@@ -243,9 +243,9 @@ end Obj
 open GlobalTheory.Mean4O in
 
 /- English proof (translation)
-Introduce `_ _ D O hC _ A T H h c`. Take `⟨x, P, hW⟩` from `hC`. Use `⟨bnd O, fun u a R hR z hz hr => ?_⟩` and prove the remaining obligations. Establish `e1` using `(h.an c).phR R hR u a z`. Establish `e2` using `(h.an c).ph u a z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `erw [e1, e2]`. Establish `hz'` using `((h.an c).Z a z).not.1 hz`. Rewrite `hr` using `[(h.an c).r a z hz]`. Conclude with `abs_chg_sub_le hW c hR u _ _ hz' hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interp_close_hodge : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => ∀ c, ∃ C : ℝ, ∀ u σ (R : ℝ), 2 ≤ R → ∀ x, x ∉ (T.M c).Z σ → (T.M c).r σ x ≤ Real.sqrt R → |(T.F c).phR R u σ x - (T.F c).ph u σ x| ≤ C * ‖u‖ / R := by
   intro _ _ D O hC _ A T H h c

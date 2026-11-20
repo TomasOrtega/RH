@@ -21,7 +21,7 @@ end
 section
 variable {cf : CharFrame D} {C : NChoice D} {tp : TupTied D cf C}
 /- English proof (translation)
-The claim follows from `@_root_.GlobalTheory.HeightCounting.PhtOn.mk (_) (_) (_) (_) (_) (card := (by with_unfolding_all exact (x.card :)))`.
+A detailed English derivation is pending.
 -/
 theorem Mv.phtOn_alt {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {fr : Formalism.L2.OmFrame D} (x : PhtOn A.wd fr fun _ _ _ _ => True) : PhtOn (m.sideA_alt A).wd (m.omFrame fr) fun _ _ _ _ => True := @_root_.GlobalTheory.HeightCounting.PhtOn.mk (_) (_) (_) (_) (_)
     (card := (by with_unfolding_all exact (x.card :)))

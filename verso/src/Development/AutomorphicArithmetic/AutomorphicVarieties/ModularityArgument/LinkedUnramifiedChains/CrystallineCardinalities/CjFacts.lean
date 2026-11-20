@@ -10,24 +10,24 @@ section Abs
 variable {C : Type} [CommRing C]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h 1 0 (by decide), h 2 0 (by decide), h 2 1 (by decide)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem up_entries {T : Matrix (Fin 3) (Fin 3) C} (h : UpT T) : T 1 0 = 0 ∧ T 2 0 = 0 ∧ T 2 1 = 0 :=
   ⟨h 1 0 (by decide), h 2 0 (by decide), h 2 1 (by decide)⟩
 
 /- English proof (translation)
-Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact h1 | exact h2 | exact h3 | exact absurd hij (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem up_of {T : Matrix (Fin 3) (Fin 3) C} (h1 : T 1 0 = 0) (h2 : T 2 0 = 0) (h3 : T 2 1 = 0) : UpT T := by
   intro i j hij
   fin_cases i <;> fin_cases j <;> first | exact h1 | exact h2 | exact h3 | exact absurd hij (by decide)
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `up_entries hT`. Take `⟨b1, b2, b3⟩` from `up_entries hB`. Establish `e : ∀ i j, (T * B) i j = (1 : Matrix (Fin 3) (Fin 3) C) i j` using `fun i j => by rw [h]`. Establish `e00` using `e 0 0`. Establish `e11` using `e 1 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e22` using `e 2 2`. Establish `e01` using `e 0 1`. Establish `e12` using `e 1 2`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply, a1, a2, a3, b1, b2, b3, mul_zero, zero_mul, add_zero, zero_add] at e00 e11 e22 e01 e12`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using e00`. Simplify using `using e11`. Simplify using `using e22`. Simplify using `using e01`. Simplify using `using e12`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem inv_entries {T B : Matrix (Fin 3) (Fin 3) C} (hT : UpT T) (hB : UpT B) (h : T * B = 1) :
     T 0 0 * B 0 0 = 1 ∧ T 1 1 * B 1 1 = 1 ∧ T 2 2 * B 2 2 = 1 ∧ T 0 0 * B 0 1 + T 0 1 * B 1 1 = 0 ∧
@@ -50,7 +50,7 @@ private theorem inv_entries {T B : Matrix (Fin 3) (Fin 3) C} (hT : UpT T) (hB : 
   · simpa using e12
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_apply (T X B : Matrix (Fin 3) (Fin 3) C) (i j : Fin 3) :
     (T * X * B) i j = (T i 0 * X 0 0 + T i 1 * X 1 0 + T i 2 * X 2 0) * B 0 j +
@@ -59,19 +59,19 @@ private theorem conj_apply (T X B : Matrix (Fin 3) (Fin 3) C) (i j : Fin 3) :
   simp only [Matrix.mul_apply, Fin.sum_univ_three]
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `up_entries hT`. Take `⟨b1, b2, b3⟩` from `up_entries hB`. Take `⟨x1, x2, x3⟩` from `up_entries hX`. Take `⟨i00, i11, i22, i01, i12⟩` from `inv_entries hT hB h`. Establish `d0 : (T * X * B) 0 0 = X 0 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[conj_apply]`. Simplify using `only [a1, a2, a3, b1, b2, b3, x1, x2, x3, mul_zero, zero_mul, add_zero, zero_add]`. Take the linear combination `X 0 0 * i00`. Establish `d1 : (T * X * B) 1 1 = X 1 1`. Rewrite using `[conj_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [a1, a2, a3, b1, b2, b3, x1, x2, x3, mul_zero, zero_mul, add_zero, zero_add]`. Take the linear combination `X 1 1 * i11`. Establish `d2 : (T * X * B) 2 2 = X 2 2`. Rewrite using `[conj_apply]`. Simplify using `only [a1, a2, a3, b1, b2, b3, x1, x2, x3, mul_zero, zero_mul, add_zero, zero_add]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `X 2 2 * i22`. Establish `s0 : (T * X * B) 0 1 = T 0 0 * B 1 1 * X 0 1 - T 0 1 * B 1 1 * (X 0 0 - X 1 1)`. Rewrite using `[conj_apply]`. Simplify using `only [a1, a2, a3, b1, b2, b3, x1, x2, x3, mul_zero, zero_mul, add_zero, zero_add]`. Take the linear combination `X 0 0 * i01`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `s1 : (T * X * B) 1 2 = T 1 1 * B 2 2 * X 1 2 - T 1 2 * B 2 2 * (X 1 1 - X 2 2)`. Rewrite using `[conj_apply]`. Simplify using `only [a1, a2, a3, b1, b2, b3, x1, x2, x3, mul_zero, zero_mul, add_zero, zero_add]`. Take the linear combination `X 1 1 * i12`. Use `⟨up_of ?_ ?_ ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[conj_apply]`. Simplify using `only [a1, a2, a3, b1, b2, b3, x1, x2, x3, mul_zero, zero_mul, add_zero, zero_add]`. Rewrite using `[conj_apply]`. Simplify using `only [a1, a2, a3, b1, b2, b3, x1, x2, x3, mul_zero, zero_mul, add_zero, zero_add]`. Rewrite using `[conj_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [a1, a2, a3, b1, b2, b3, x1, x2, x3, mul_zero, zero_mul, add_zero, zero_add]`. Introduce `i fin_cases i exacts [d0, d1, d2]`. Introduce `i fin_cases i exacts [s0, s1]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 -/
 private theorem conj_facts {T B X : Matrix (Fin 3) (Fin 3) C} (hT : UpT T) (hB : UpT B) (h : T * B = 1) (hX : UpT X) :
     UpT (T * X * B) ∧ (∀ i, (T * X * B) i i = X i i) ∧ ∀ i : Fin 2, (T * X * B) i.castSucc i.succ =
@@ -116,7 +116,7 @@ private theorem conj_facts {T B X : Matrix (Fin 3) (Fin 3) C} (hT : UpT T) (hB :
     exacts [s0, s1]
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `up_entries hT`. Take `⟨b1, b2, b3⟩` from `up_entries hB`. Use extensionality with `i j`. Rewrite using `[conj_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.single_apply, a1, a2, a3, b1, b2, b3] <;> ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem conj_single {T B : Matrix (Fin 3) (Fin 3) C} (hT : UpT T) (hB : UpT B) (x : C) :
     T * Matrix.single 0 2 x * B = Matrix.single 0 2 (T 0 0 * B 2 2 * x) := by
@@ -127,13 +127,13 @@ private theorem conj_single {T B : Matrix (Fin 3) (Fin 3) C} (hT : UpT T) (hB : 
   fin_cases i <;> fin_cases j <;> simp [Matrix.single_apply, a1, a2, a3, b1, b2, b3] <;> ring
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `up_entries hT`. Establish `hBT'` using `hBT`. Generalize the expression as in `hZ : T * Y * B - Y = Z at hY`. Take `⟨z1, z2, z3⟩` from `up_entries hY`. Establish `key : T * Y - Y * T = Z * T`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hZ, Matrix.sub_mul, Matrix.mul_assoc (T * Y), hBT', Matrix.mul_one]`. Establish `e20` using `congrFun (congrFun key 2) 0`. Establish `e10` using `congrFun (congrFun key 1) 0`. Establish `e21` using `congrFun (congrFun key 2) 1`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Fin.sum_univ_three, a1, a2, a3, z1, z2, z3, mul_zero, zero_mul, add_zero, zero_add] at e20 e10 e21`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `y20 : Y 2 0 = 0`. Establish `: (T 2 2 - T 0 0) * Y 2 0 = 0` using `by linear_combination e20`. Conclude with `u0.mul_right_eq_zero.mp this`. Establish `y10 : Y 1 0 = 0`. Establish `: (T 1 1 - T 0 0) * Y 1 0 = 0` using `by linear_combination e10 - T 1 2 * y20`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `u1.mul_right_eq_zero.mp this`. Establish `y21 : Y 2 1 = 0`. Establish `: (T 2 2 - T 1 1) * Y 2 1 = 0` using `by linear_combination e21 + T 0 1 * y20`. Conclude with `u2.mul_right_eq_zero.mp this`. Conclude with `up_of y10 y20 y21`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem up_of_conj {T B Y : Matrix (Fin 3) (Fin 3) C} (hT : UpT T) (hBT : B * T = 1)
     (hY : UpT (T * Y * B - Y)) (u0 : IsUnit (T 2 2 - T 0 0)) (u1 : IsUnit (T 1 1 - T 0 0))
@@ -163,7 +163,7 @@ private theorem up_of_conj {T B Y : Matrix (Fin 3) (Fin 3) C} (hT : UpT T) (hBT 
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem map_pair (φ : O →+* C) {A B : Matrix (Fin 3) (Fin 3) O} (h : A * B = 1) :
     A.map φ * B.map φ = 1 := by
@@ -171,13 +171,13 @@ private theorem map_pair (φ : O →+* C) {A B : Matrix (Fin 3) (Fin 3) O} (h : 
   simp
 
 /- English proof (translation)
-Introduce `i j hij` and use `by rw [Matrix.map_apply, h i j hij, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem up_map (φ : O →+* C) {A : Matrix (Fin 3) (Fin 3) O} (h : UpT A) : UpT (A.map φ) :=
   fun i j hij => by rw [Matrix.map_apply, h i j hij, map_zero]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem smul_q (I : Ideal O) (a : O) (x : O ⧸ I) : a • x = Ideal.Quotient.mk I a * x := by
   rw [Algebra.smul_def]; rfl
@@ -188,33 +188,27 @@ end UpperTheory.V.Z.J.ConjugationUpperEntries
 
 open UpperTheory.V.Z.J.ConjugationUpperEntries in
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ D _ _ _ _ t k hl ht`. Set `mk` to `Ideal.Quotient.mk (Ideal.span {(l : O) ^ k})`. Establish `hT : ∀ s, UpT (t s : Matrix (Fin 3) (Fin 3) O)` using `ht.tri`. Establish `hTB : ∀ s, (t s : Matrix (Fin 3) (Fin 3) O) * ((t s)⁻¹ : GL (Fin 3) O) = 1` using `fun s => (t s).mul_inv`. Establish `hBT : ∀ s, (((t s)⁻¹ : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) * (t s : Matrix (Fin 3) (Fin 3) O) = 1` using `fun s => (t s).inv_mul`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ s, UpT (((t s)⁻¹ : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O)`. Introduce `s`. Use `letI := (t s).invertible`. Establish `h1 : Matrix.BlockTriangular (t s : Matrix (Fin 3) (Fin 3) O) id` using `fun i j hij => hT s i j hij`. Establish `h2` using `Matrix.blockTriangular_inv_of_blockTriangular h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j hij`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `h2 hij`. Establish `hdiag : ∀ s i, (t s : Matrix (Fin 3) (Fin 3) O) i i * ((t s)⁻¹ : GL (Fin 3) O) i i = 1`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i0, i1, i2, -, -⟩` from `inv_entries (hT s) (hB s) (hTB s)`. Introduce `i`. Use `fin_cases i`. Use `exacts [i0, i1, i2]`. Use `⟨?_, fun s => ⟨hB s, hdiag s⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `F : D → (Matrix (Fin 3) (Fin 3) (Ok l O k) →ₗ[ℤ] Matrix (Fin 3) (Fin 3) (Ok l O k))` to `fun s => LinearMap.mulRight ℤ ((((t s)⁻¹ : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O).map mk) ∘ₗ LinearMap.mulLeft ℤ ((t s : Matrix (Fin 3) (Fin 3) O).map mk)`. Set `ρ : Representation ℤ D (Matrix (Fin 3) (Fin 3) (Ok l O k))` to `{ toFun := F map_one' := by`. Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Simplify using `[F]`. Use the proof step `map_mul' := by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b`. Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Simplify using `[F, Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_inv_rev] }`. Use `⟨ρ, fun s X => rfl, ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `(okFin l O hl).2.2.2.2.1 k`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `U : Set D` to `⋂ i, ⋂ j, {g | Ideal.Quotient.mk (maximalIdeal O ^ N) ((t g : Matrix (Fin 3) (Fin 3) O) i j) = Ideal.Quotient.mk (maximalIdeal O ^ N) ((t 1 : Matrix (Fin 3) (Fin 3) O) i j)}`. Establish `hU : IsOpen U` using `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (ht.cont i j N).isOpen_fiber _`. Establish `h1U : (1 : D) ∈ U` using `by simp [U]`. Establish `hUK : U ⊆ (ρ.ker : Set D)`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [U, Set.mem_iInter, Set.mem_setOf_eq] at hg`. Establish `hT1 : (t g : Matrix (Fin 3) (Fin 3) O).map mk = (t 1 : Matrix (Fin 3) (Fin 3) O).map mk`. Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq.mpr (hN (Ideal.Quotient.eq.mp (hg i j)))`. Establish `hone : (t 1 : Matrix (Fin 3) (Fin 3) O).map mk = 1` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hB1 : (((t g)⁻¹ : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O).map mk = 1`. Establish `h` using `map_pair mk (hTB g)`. Rewrite `h` using `[hT1, hone, Matrix.one_mul]`. Conclude with `h`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(t g : Matrix (Fin 3) (Fin 3) O).map mk * X * (((t g)⁻¹ : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O).map mk = X`. Rewrite using `[hT1, hone, hB1, Matrix.one_mul, Matrix.mul_one]`. Conclude with `Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (hU.mem_nhds h1U) hUK)`. Introduce `s X hX`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, d, sd⟩` from `conj_facts (up_map mk (hT s)) (up_map mk (hB s)) (map_pair mk (hTB s)) hX`. Use `⟨u, d, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_q, smul_q, map_mul, map_mul]`. Conclude with `sd i`. Introduce `s x`.
-
-Rewrite using `[smul_q, map_mul]`. Conclude with `conj_single (up_map mk (hT s)) (up_map mk (hB s)) x`. Introduce `Y hY`. Take `⟨s, hd⟩` from `ht.dist`. Use `up_of_conj (up_map mk (hT s)) (map_pair mk (hBT s)) (hY s) ?_ ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← map_sub]`. Conclude with `(hd 2 0 (by decide)).map _`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← map_sub]`. Conclude with `(hd 1 0 (by decide)).map _`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← map_sub]`.
-
-Conclude with `(hd 2 1 (by decide)).map _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.cjFacts :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (D : Type) [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [CompactSpace D] (t : D →* GL (Fin 3) O) (k : ℕ), (l : O) ≠ 0 → TriRep t → (∃ ρ : Representation ℤ D (Matrix (Fin 3) (Fin 3) (Ok l O k)), (∀ s X, ρ s X = cj k t s X) ∧ IsOpen (ρ.ker : Set D)) ∧ (∀ s, UpT (((t s)⁻¹ : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) ∧ ∀ i, (t s : Matrix (Fin 3) (Fin 3) O) i i * ((t s)⁻¹ : GL (Fin 3) O) i i = 1) ∧ (∀ s (X : Matrix (Fin 3) (Fin 3) (Ok l O k)), UpT X → UpT (cj k t s X) ∧ (∀ i, cj k t s X i i = X i i) ∧ ∀ i : Fin 2, cj k t s X i.castSucc i.succ = ((t s : Matrix (Fin 3) (Fin 3) O) i.castSucc i.castSucc * ((t s)⁻¹ : GL (Fin 3) O) i.succ i.succ) • X i.castSucc i.succ - ((t s : Matrix (Fin 3) (Fin 3) O) i.castSucc i.succ * ((t s)⁻¹ : GL (Fin 3) O) i.succ i.succ) • (X i.castSucc i.castSucc - X i.succ i.succ)) ∧ (∀ s (x : Ok l O k), cj k t s (Matrix.single 0 2 x) = Matrix.single 0 2 (((t s : Matrix (Fin 3) (Fin 3) O) 0 0 * ((t s)⁻¹ : GL (Fin 3) O) 2 2) • x)) ∧ ∀ Y : Matrix (Fin 3) (Fin 3) (Ok l O k), (∀ s, UpT (cj k t s Y - Y)) → UpT Y := by

@@ -8,13 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hlo : q.LiesOver (q.under R)` using `⟨rfl⟩`. Set `_` to `Localization.AtPrime.algebraOfLiesOver (q.under R) q`. Establish `hmax : (q.under R).map (algebraMap R (Localization.AtPrime q)) = IsLocalRing.maximalIdeal (Localization.AtPrime q)` using `((Algebra.isUnramifiedAt_iff_map_eq R (q.under R) q).mp inferInstance).2`. Establish `hsf : (IsLocalRing.maximalIdeal (Localization.AtPrime q)).spanFinrank ≤ (IsLocalRing.maximalIdeal (Localization.AtPrime (q.under R))).spanFinrank`. Establish `heq : IsLocalRing.maximalIdeal (Localization.AtPrime q) = (IsLocalRing.maximalIdeal (Localization.AtPrime (q.under R))).map (algebraMap (Localization.AtPrime (q.under R)) (Localization.AtPrime q))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hmax, ← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, ← IsScalarTower.algebraMap_eq]`. Rewrite using `[heq]`. Conclude with `Ideal.spanFinrank_map_le_of_fg _ (IsLocalRing.maximalIdeal _).fg_of_isNoetherianRing`. Establish `hht : (q.under R).height ≤ q.height`. Rewrite using `[Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (q.under R) q]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `le_self_add`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `hsf` after adjusting the coercions. Use `_ = ringKrullDim (Localization.AtPrime (q.under R)) := h.spanFinrank_maximalIdeal`.
-
-Use `_ = ((q.under R).height : WithBot ℕ∞) := IsLocalization.AtPrime.ringKrullDim_eq_height (q.under R) _`. Use `_ ≤ (q.height : WithBot ℕ∞) := by exact_mod_cast hht`. Use `_ = ringKrullDim (Localization.AtPrime q) := (IsLocalization.AtPrime.ringKrullDim_eq_height q _).symm`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem isRegularLocalRing_atPrime_of_etale' (R S : Type*) [CommRing R] [CommRing S]
     [Algebra R S] [IsNoetherianRing R] [IsNoetherianRing S] [Algebra.Etale R S] (q : Ideal S) [q.IsPrime]
@@ -49,7 +47,7 @@ private theorem isRegularLocalRing_atPrime_of_etale' (R S : Type*) [CommRing R] 
         (IsLocalization.AtPrime.ringKrullDim_eq_height q _).symm
 
 /- English proof (translation)
-Establish `: IsNoetherianRing S` using `Algebra.FiniteType.isNoetherianRing R S`. Conclude with `isRegularRing_iff.mpr fun q _ => isRegularLocalRing_atPrime_of_etale' R S q inferInstance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isRegularRing_of_etale (R S : Type*) [CommRing R] [IsRegularRing R] [CommRing S]
     [Algebra R S] [Algebra.Etale R S] : IsRegularRing S := by
@@ -57,11 +55,11 @@ theorem isRegularRing_of_etale (R S : Type*) [CommRing R] [IsRegularRing R] [Com
   exact isRegularRing_iff.mpr fun q _ => isRegularLocalRing_atPrime_of_etale' R S q inferInstance
 
 /- English proof (translation)
-Introduce `V B _ _ _ _ _`. Establish `: IsNoetherianRing B` using `Algebra.FiniteType.isNoetherianRing V B`. Use `isRegularRing_iff.mpr fun Q _ => ?_` and prove the remaining obligations. Take `⟨f, hf, n, _, _, _⟩` from `Algebra.IsSmoothAt.exists_isStandardEtale_mvPolynomial (R := V) (p := Q)`. Establish `hT : IsRegularRing (Localization.Away f)` using `isRegularRing_of_etale (MvPolynomial (Fin n) V) (Localization.Away f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `disj : Disjoint (Submonoid.powers f : Set B) (Q : Set B)` using `(Ideal.disjoint_powers_iff_notMem_of_isPrime _).mpr hf`. Set `Q'` to `Q.map (algebraMap B (Localization.Away f))`. Establish `: Q'.IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint (.powers f) _ _ ‹_› disj`. Establish `: IsLocalization.AtPrime (Localization.AtPrime Q') Q`. Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (.powers f) (Localization.AtPrime Q') Q'` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `(IsLocalization.under_map_of_isPrime_disjoint (.powers f) _ ‹_› disj).symm`. Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv Q.primeCompl (Localization.AtPrime Q') (Localization.AtPrime Q)).toRingEquiv`.
+A detailed English derivation is pending.
 -/
 theorem isRegularRing_of_smooth :
     ∀ (V B : Type) [CommRing V] [IsRegularRing V] [CommRing B] [Algebra V B] [Algebra.Smooth V B],

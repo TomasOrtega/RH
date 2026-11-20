@@ -16,21 +16,19 @@ noncomputable section
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX hG P hL ω r f hf hli hr u ε hε`. Establish `hcomp : ∀ σ, CompactSpace (CxPts p σ)` using `hX.compactSpace`. Establish `hcont : ∀ σ, Continuous (u.u σ)` using `fun σ => continuous_iff_continuousAt.2 fun y => (u.cInf σ y).continuousAt`. Establish `hT` using `GlobalTheory.T.tendsto_bergmanMeasure_chernForm_pow k X p D hX hG P hL ω r f hf hli hr u.u hcont`. Establish `hev : ∀ᶠ m : ℕ in atTop, (∑ᶠ σ, ∫ y, u.u σ y * bergmanDensity (fun σ => (ω σ).meas) (vals P m 1 (f m)) σ y ∂(ω σ).meas) / (m : ℝ) ^ D < chInt P.L D u.u / D.factorial + ε` using `hT (Iio_mem_nhds (by linarith))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hev, eventually_ge_atTop 1] with m hm hm1`. Take `⟨hF, hPD, -⟩` from `GlobalTheory.T.gram_posDef_l2_le_sup_of_lin_indep k X p D hX hG P ω m 1 (Fin (r m)) (f m) (hf m) (hli m)`. Use `haveI : Finite (k →+* ℂ) := hF.finite`. Use `haveI : Fintype (k →+* ℂ) := Fintype.ofFinite _`. Establish `hB : ∀ σ, ∃ C : ℝ, ∀ y, |u.u σ y| ≤ C` using `fun σ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (hcont σ).continuousOn`. Conclude with `⟨C, fun y => by simpa [Real.norm_eq_abs] using hC y (Set.mem_univ y)⟩`. Use `choose C hC using hB`. Use `set w : ∀ σ, CxPts p σ → ℝ := fun σ y => (((m : ℤ) : ℝ)) * u.u σ y with hw`. Establish `hwm : ∀ σ, Measurable (w σ)` using `fun σ => (continuous_const.mul (hcont σ)).measurable`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwb : ∀ σ y, |w σ y| ≤ (m : ℝ) * ∑ τ, |C τ|` using `fun σ y => by`. Simplify using `only [hw, Int.cast_natCast, abs_mul, Nat.abs_cast]`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg m)` and prove the remaining obligations. Conclude with `(hC σ y).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun τ => |C τ|) (fun τ _ => abs_nonneg _) (Finset.mem_univ σ)))`. Take `⟨-, -, hJ⟩` from `GlobalTheory.T.gramDeterminant_jensen_change_of_weight (k →+* ℂ) (fun σ => CxPts p σ) (Fin (r m)) (fun σ => (ω σ).meas) (vals P m 1 (f m)) hF hPD w _ hwm hwb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnew : (fun σ y i => vals P m 1 (f m) σ y i * ((Real.exp (-(w σ y) / 2) : ℝ) : ℂ)) = vals (upperParabolic P u) m 1 (f m)`. Use function extensionality and compare the values at `σ y i`. Simplify using `only [vals, hw]`. Rewrite using `[((GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u m 1).2.2 σ y (f m i)).1]`. Rewrite `hJ` using `[hnew]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hsum : (∑ᶠ σ, ∫ y, w σ y * bergmanDensity (fun σ => (ω σ).meas) (vals P m 1 (f m)) σ y ∂(ω σ).meas) = (m : ℝ) * ∑ᶠ σ, ∫ y, u.u σ y * bergmanDensity (fun σ => (ω σ).meas) (vals P m 1 (f m)) σ y ∂(ω σ).meas`. Rewrite using `[mul_finsum]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hw, Int.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hJ` using `[hsum]`. Establish `hmpos : (0 : ℝ) < (m : ℝ) ^ D` using `pow_pos (by exact_mod_cast hm1) D`. Rewrite `hm` using `[div_lt_iff₀ hmpos]`.
-
-Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Establish `h2` using `mul_le_mul_of_nonneg_left hm.le hm0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gram_det_up_le : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (P : Pair p), P.L.SemiPos D → ∀ (ω : ∀ σ, VolDens p σ D) (r : ℕ → ℕ) (f : ∀ m, Fin (r m) → X.functionField), (∀ (m : ℕ) i, f m i ∈ P.H m 1) → (∀ m, LinearIndependent ℤ (f m)) → Tendsto (fun m : ℕ => (r m : ℝ) / (m : ℝ) ^ D) atTop (𝓝 (gdeg P.L D / D.factorial)) → ∀ (u : SmFn p) (ε : ℝ), 0 < ε → ∀ᶠ m : ℕ in atTop, Real.log (gram (fun σ => (ω σ).meas) (vals P m 1 (f m))).det.re - Real.log (gram (fun σ => (ω σ).meas) (vals (upperParabolic P u) m 1 (f m))).det.re ≤ (chInt P.L D u.u / D.factorial + ε) * (m : ℝ) ^ (D + 1) := by
   intro k _ X _ p D hX hG P hL ω r f hf hli hr u ε hε

@@ -67,13 +67,11 @@ def uniqueLastBlockThree {m : ℕ} : Unique (Fin (GlobalTheory.IndLineGL.blk3 m 
 attribute [local instance] uniqueFirstBlockThree uniqueLastBlockThree
 
 /- English proof (translation)
-Use extensionality with `⟨i, a⟩ ⟨j, b⟩`. Establish `hab : ∀ a b : Fin (GlobalTheory.IndLineGL.blk3 m 1), ∑ k : Fin (GlobalTheory.IndLineGL.blk3 m 1), K a k * L k b = if a = b then 1 else 0` using `fun a b => by`. Use `congrFun (congrFun h a) b` as an intermediate fact. Conclude with `this`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> dsimp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk] at a b ⊢ <;>`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [Matrix.mul_apply, Fintype.sum_sigma, Fin.sum_univ_three, Matrix.neg_apply] <;>`. Apply the tactic sequence `simp only [gamS_00, gamS_01, gamS_02, gamS_10, gamS_11, gamS_12, gamS_20, gamS_21, gamS_22] <;>`. Simplify using `only [Fintype.sum_unique, Matrix.one_apply, Sigma.mk.inj_iff, heq_eq_eq, mul_zero, zero_mul, neg_zero, Finset.sum_const_zero, add_zero, zero_add, mul_one, one_mul, neg_neg, mul_neg, Finset.sum_neg_distrib, hab, true_and, and_true, if_true]`. Use `case «1».«1» => show -∑ x : Fin (GlobalTheory.IndLineGL.blk3 m 1), K a x * -(L x b) = _`. Simplify using `only [mul_neg, Finset.sum_neg_distrib, neg_neg, hab]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `case «0».«0» =>`. Rewrite using `[Subsingleton.elim a b]`. Conclude with `(if_pos rfl).symm`. Use `case «2».«2» =>`. Rewrite using `[Subsingleton.elim a b]`.
-
-Conclude with `(if_pos rfl).symm`. Use `all_goals`. Rewrite using `[if_neg (fun hc => absurd (congrArg (fun x : Ix m => x.1.val) hc) (by simp))]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamS_mul_neg_gamS_neg {R : Type} [Field R] {m : ℕ} (K L : Matrix (Fin m) (Fin m) R) (h : K * L = 1) :
     gamS K * (-gamS (-L)) = 1 := by
@@ -99,7 +97,7 @@ theorem gamS_mul_neg_gamS_neg {R : Type} [Field R] {m : ℕ} (K L : Matrix (Fin 
     rw [if_neg (fun hc => absurd (congrArg (fun x : Ix m => x.1.val) hc) (by simp))]
 
 /- English proof (translation)
-Establish `hK : (K : Matrix (Fin m) (Fin m) R) * ((K⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `Matrix.isUnit_det_of_right_inverse (B := Matrix.reindex e e (-gamS (-((K⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R)))) ?_` and prove the remaining obligations. Rewrite using `[gam, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, gamS_mul_neg_gamS_neg _ _ hK, Matrix.submatrix_one_equiv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_det_gam (R : Type) [Field R] (m n : ℕ) (e : Ix m ≃ Fin n) (K : GL (Fin m) R) :
     IsUnit (gam e (K : Matrix (Fin m) (Fin m) R)).det := by
@@ -112,7 +110,7 @@ theorem isUnit_det_gam (R : Type) [Field R] (m n : ℕ) (e : Ix m ≃ Fin n) (K 
 end GlobalTheory.SplitCoord.GamInv
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SplitCoord.GamInv.isUnit_det_gam`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SplitCoord.isUnit_det_gam_of_GL : ∀ (R : Type) [Field R] (m n : ℕ) (e : GlobalTheory.SplitCoord.Ix m ≃ Fin n) (K : GL (Fin m) R),
     IsUnit (GlobalTheory.SplitCoord.gam e (K : Matrix (Fin m) (Fin m) R)).det :=

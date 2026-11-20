@@ -4,11 +4,11 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 open scoped IntermediateField Algebra TensorProduct Matrix Pointwise NumberField Topology ContDiff NNReal ENNReal Polynomial DirectSum BigOperators InnerProductSpace Manifold
 
 /- English proof (translation)
-Introduce `E _ _ _ H y hy`. Establish `hsq : (H.rt : E) * (H.rt : E) = -(H.d : E)`. Establish `h` using `congrArg (fun z : NumberField.RingOfIntegers E => (z : E)) H.rt_sq`. Simplify `h` using `[sq]`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction.
 
-Consider the case `mem x hx => exact ⟨0, 1, by rw [Set.mem_singleton_iff.mp hx]; simp⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨⟨a, b, rfl⟩, c, e, rfl⟩` from `And.intro hx hz`. Conclude with `⟨a + c, b + e, by push_cast; ring⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul x z _ _ hx hz`. Take `⟨⟨a, b, rfl⟩, c, e, rfl⟩` from `And.intro hx hz`. Conclude with `⟨a * c - b * e * H.d, a * e + b * c, by push_cast; linear_combination (b * e : E) * hsq⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.ExistsCoordinate.exists_coord :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E]

@@ -22,7 +22,7 @@ open scoped TensorProduct
 namespace GlobalTheory.LocFinComp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => exact Eq.refl _`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prV_swap_snd {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (u : HeightOneSpectrum (𝓞 F)) (x : AF F ⊗[F] E) :
@@ -35,11 +35,11 @@ theorem prV_swap_snd {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `D V v u huv g`. Establish `hp : GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram u (locFin V v g : GA D V) = 1` using `GlobalTheory.AdelicU.proj_emb_ne D.sp.cm.sig V.gram huv g`. Establish `hm` using `congrArg (fun y => (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram y).val) hp`. Simplify using `only [GlobalTheory.AdelicU.matHom_proj, map_one, Units.val_one] at hm`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `hij` using `congrFun (congrFun hm i) j`. Establish `key` using `prV_swap_snd (F := D.host.F) (E := D.host.E) u ((Formalism.L2.Theta.matHom V (locFin V v g : GA D V)).val i j)`. Use `key.trans ((congrArg (Algebra.TensorProduct.comm _ _ _) hij).trans ?_)` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem finE_locFin_map_prV_ne : ∀ {D : D7} (V : HSp D) {v u : HeightOneSpectrum (𝓞 D.host.F)}, u ≠ v → ∀ (g : Gv V v), (Formalism.IndefR.Lev.finE V (locFin V v g : GA D V)).val.map (Formalism.UG.prV (E := D.host.E) u) = 1 := by
   intro D V v u huv g

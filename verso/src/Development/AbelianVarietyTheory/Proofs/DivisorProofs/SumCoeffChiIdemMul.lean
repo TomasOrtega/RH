@@ -9,11 +9,11 @@ namespace GlobalTheory.IdemChar
 open Classical in
 
 /- English proof (translation)
-Establish `hG : (Fintype.card G : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `hc` using `conv_char hχ hφ 1`. Establish `hre : ∑ s : G, χ s⁻¹ * φ (s * 1) = ∑ g : G, φ g⁻¹ * χ g` using `Fintype.sum_equiv (Equiv.inv G) _ _ (fun s => by simp [mul_comm])`. Rewrite `hc` using `[hre]`. Establish `hsum : ∑ g : G, (chiIdem φ).coeff g * χ g = ((∑ g : G, φ g⁻¹ * χ g) * φ 1) / (Fintype.card G : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul, Finset.sum_div]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_chiIdem]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : φ = χ`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, mul_div_cancel_left₀ _ hG]`. Establish `h' : ¬ χ = φ` using `fun e => h e.symm`. Rewrite using `[if_neg h', if_neg h, zero_div]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_coeff_chiIdem_mul {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G]
     {φ χ : G → K} (hφ : IsAbsIrrChar φ) (hχ : IsAbsIrrChar χ) :
@@ -38,9 +38,9 @@ theorem sum_coeff_chiIdem_mul {K : Type} [Field K] [CharZero K] {G : Type} [Grou
     rw [if_neg h', if_neg h, zero_div]
 
 /- English proof (translation)
-Introduce `K _ _ G _ _ X hX χ hχ`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_idemOf, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ψ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_chiIdem]`. Use `_ = ∑ ψ ∈ X, ∑ g : G, (chiIdem ψ).coeff g * χ g := Finset.sum_comm`. Use `_ = ∑ ψ ∈ X, if ψ = χ then χ 1 else 0 := Finset.sum_congr rfl fun ψ hψ => sum_coeff_chiIdem_mul (hX ψ hψ) (hX χ hχ)`. Use `_ = χ 1 := by simp [hχ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_coeff_idemOf_mul : ∀ (K : Type) [Field K] [CharZero K] (G : Type) [Group G] [Fintype G] (X : Finset (G → K)), (∀ χ ∈ X, IsAbsIrrChar χ) → ∀ χ ∈ X, ∑ g : G, (idemOf X).coeff g * χ g = χ 1 := by
   intro K _ _ G _ _ X hX χ hχ

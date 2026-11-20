@@ -9,43 +9,39 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000
 
 /- English proof (translation)
-Introduce `D X E Y i j b t h1 h2 x`. Establish `hB` using `Y.Z.good.base i j b`. Establish `hbo` using `GlobalTheory.PinBase.baseOf_of_pin D X Y.Z.ρ Y.Z.good Y.Z.pin i j b`. Establish `hL : X.R.toLevCh.Is X.A3.A.μ0` using `X.char.lev`. Establish `hQe : (Y.Z.ρ.tw i b 0 ∅ 1).Q = ∅` using `half_empty _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hce : (Y.Z.ρ.tw i b 0 ∅ 1).chi = 1` using `charOf_one _ _`. Establish `hψ : (Y.Z.ρ.tw i b 0 ∅ 1).Good`. Establish `g0` using `Twist.triv_good (D := D) (A := Circle) splitSet_empty`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hce]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g0.isOpen`. Rewrite using `[hce]`. Conclude with `g0.rat`. Rewrite using `[hce]`. Conclude with `g0.real`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQe]`. Conclude with `g0.split`. Rewrite using `[hce, hQe]`. Conclude with `g0.unram`. Rewrite using `[hQe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `PP hPP`. Conclude with `absurd hPP (Finset.notMem_empty _)`. Establish `hAdm : (Y.Z.ρ.B i j b).admitted (Y.Z.ρ.tw i b 0 ∅ 1).Q`. Rewrite using `[hQe]`. Conclude with `⟨by rw [Finset.union_empty]; exact hB.places, Finset.disjoint_empty_right _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : GlobalTheory.ConjTwist.IsTupOf X.R.toRealDat (Y.Z.ρ.B i j b) (Y.Z.ρ.tw i b 0 ∅ 1) t` using `⟨by rw [hce, mul_one]; exact h1, by rw [hQe, Finset.union_empty]; exact h2⟩`. Take `⟨hPg, hQ, hcg, hxq⟩` from `GlobalTheory.ConjTwist.Test.levS_chars hbo hL hB hψ hAdm ht`. Establish `rV : (Vc D j).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) j.2`. Establish `rW : (Wc D j).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) j.2`. Establish `htW : (Vc D j).rank - (Wc D j).rank = D.R.t` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eβ : (Y.Z.ρ.B i j b).F.βS = X.R.βV j` using `hbo.βS`. Establish `ebo : blkOf ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).r ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).t = blkOf (n` using `(Vc D j).rank) (X.R.datVt j t).r (X.R.datVt j t).t := by show blkOf (Wc D j).rank ((Vc D j).rank - (Wc D j).rank) = blkOf D.R.r D.R.t`. Rewrite using `[htW, rW]`. Establish `eb2 : blk2 (n` using `(Vc D j).rank) ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).r = blk2 (X.R.datVt j t).r := by show blk2 (Wc D j).rank = blk2 D.R.r`. Rewrite using `[rW]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpar : ∀ y, y ∈ parLev D.sp.cm (Vc D j).gram (Y.Z.ρ.B i j b).F.βS ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)) ↔ y ∈ parLev D.sp.cm (Vc D j).gram (X.R.βV j) (X.R.datVt j t)`. Introduce `y`. Rewrite using `[mem_parLev, mem_parLev, eβ, ebo, eb2, hPg, hQ]`. Establish `hrt : ∀ y (hy : y ∈ parLev D.sp.cm (Vc D j).gram (X.R.βV j) (X.R.datVt j t)), rTup (Y.Z.ρ.B i j b).F.βS ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)) y = Y.Z.ρ.eG i j b (X.cG (rTup (X.R.βV j) (X.R.datVt j t) y))`. Introduce `y hy`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hy'` using `(hpar y).2 hy`. Use function extensionality and compare the values at `PP`. Take `⟨P, hP⟩` from `PP`. Establish `h' : P ∈ X.R.Pg` using `by rw [← hbo.Pg]; exact hP`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a c`. Establish `hg` using `Y.Z.pin.grp i j b (X.cG (rTup (X.R.βV j) (X.R.datVt j t) y)) P hP h' a c`. Use `Eq.trans ?_ hg.symm` and prove the remaining obligations. Establish `m1` using `blockTri_blkOf_le _ _ (parLev_g hy' hP)`. Establish `m2` using `blockTri_blkOf_le _ _ (parLev_g hy h')`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `X.cG.symm_apply_apply (rTup (X.R.βV j) (X.R.datVt j t) y)`. Rewrite using `[hz]`. Simplify using `only [rTup]`. Rewrite using `[upper_block_val_submatrix _ m1, upper_block_val_submatrix _ m2]`. Simplify using `only [Matrix.submatrix_apply]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eβ]`. Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lev, hpar x]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hx, hr⟩`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[hrt x hx]`. Conclude with `((Y.Z.tie i j b).U_eq _).1 hr`. Introduce and unpack `⟨hx, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hrt x hx]`. Conclude with `((Y.Z.tie i j b).U_eq _).2 hu`. Introduce `hx hu`. Establish `hmem : Y.Z.ρ.eG i j b (X.cG (rTup (X.R.βV j) (X.R.datVt j t) x)) ∈ (Y.Z.ρ.B i j b).G.P.H` using `((Y.Z.tie i j b).U_eq _).2 hu`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hmem' : rTup (Y.Z.ρ.B i j b).F.βS ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)) x ∈ ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).P.H`. Rewrite using `[hrt x hx]`. Conclude with `hmem`. Establish `f1 : ext1 ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).P.H ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).P.chi (rTup (Y.Z.ρ.B i j b).F.βS ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)) x) = (Y.Z.ρ.B i j b).G.P.chi ⟨_, hmem⟩`. Rewrite using `[extendOne_of_mem _ hmem']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 1`. Conclude with `Subtype.ext (hrt x hx)`. Establish `f1' : ext1 (Lev.flagL (X.R.datVt j t)).P.H (Lev.flagL (X.R.datVt j t)).P.chi (rTup (X.R.βV j) (Lev.flagL (X.R.datVt j t)) x) = 1`. Rewrite using `[extendOne_of_mem _ (show _ ∈ (Lev.flagL (X.R.datVt j t)).P.H from Subgroup.mem_top _)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `f2 : (∏ PP ∈ ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).Pg, ∏ c ∈ Finset.range ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).s, ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).cg (c + 1) PP (dBlk (blkOf ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).r ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b …`. Use `Finset.prod_congr hPg fun PP hP => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `h' : PP ∈ X.R.Pg` using `hP`. Rewrite using `[hcg _ PP h', ebo, eβ]`. Both sides reduce to the same expression.
-
-Establish `f3 : (∏ PP ∈ ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).Q, ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).xq PP (dBlk (blk2 ((Y.Z.ρ.B i j b).levS (Y.Z.ρ.tw i b 0 ∅ 1)).r) 1 (redFn (Y.Z.ρ.B i j b).F.βS PP x))) = ∏ PP ∈ (Lev.flagL (X.R.datVt j t)).Q, (Lev.flagL (X.R.datVt j t)).xq PP …`. Use `Finset.prod_congr hQ fun PP hP => ?_` and prove the remaining obligations. Establish `h' : PP ∈ X.R.Q t` using `hP`. Rewrite using `[hxq PP h', eb2, eβ]`. Both sides reduce to the same expression.
-
-Unfold `levFn`. Rewrite using `[f1, f1', f2, f3, Units.val_mul, Units.val_mul, Units.val_mul, Units.val_mul, Units.val_one, (Y.Z.tie i j b).psiU_eq ⟨_, hu⟩ hmem]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TrivTwistLevel.levS_triv_iff_and_levFn : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (t : X.T),
     X.R.xi t = (Y.Z.ρ.B i j b).de.chi → X.R.Q t = (Y.Z.ρ.B i j b).de.Q →

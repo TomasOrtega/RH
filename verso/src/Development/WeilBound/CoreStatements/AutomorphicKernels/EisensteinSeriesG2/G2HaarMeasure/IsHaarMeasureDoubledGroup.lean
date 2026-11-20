@@ -11,7 +11,7 @@ namespace GlobalTheory.EisBL.DoubledGroupTopology
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem borelSpace_doubled_group_eq (σ : E →ₐ[F] E) {n : ℕ} (Y : Spc F E n) : BorelSpace (G2 σ Y) := inferInstance
 

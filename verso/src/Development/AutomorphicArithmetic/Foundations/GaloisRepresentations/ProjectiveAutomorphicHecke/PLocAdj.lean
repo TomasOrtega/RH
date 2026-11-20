@@ -21,7 +21,7 @@ private noncomputable def Lvl.ofFI {χ : C →* ℂˣ} (N : Subgroup C) (hN : N.
   ⟨N.normalCore, inferInstance, inferInstance, fun n hn => h n (Subgroup.normalCore_le N hn)⟩
 
 /- English proof (translation)
-The claim follows from `Subgroup.normalCore_le N`.
+A detailed English derivation is pending.
 -/
 private theorem Lvl.ofFI_le {χ : C →* ℂˣ} (N : Subgroup C) (hN : N.FiniteIndex) (h : ∀ n ∈ N, χ n = 1) :
     (Lvl.ofFI N hN h).N ≤ N := Subgroup.normalCore_le N
@@ -32,7 +32,7 @@ private def Lvl.inf {χ : C →* ℂˣ} (L L' : Lvl χ) : Lvl χ :=
 private def Fx (σ : Representation ℂ C V) (N : Subgroup C) (x : V) : Prop := ∀ n ∈ N, σ n x = x
 
 /- English proof (translation)
-Introduce `n hn` and use `h n (hle hn)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Fx.mono {σ : Representation ℂ C V} {N N' : Subgroup C} {x : V} (h : Fx σ N x) (hle : N' ≤ N) : Fx σ N' x :=
   fun n hn => h n (hle hn)
@@ -45,20 +45,20 @@ private noncomputable def av (σ : Representation ℂ C V) (χ : C →* ℂˣ) (
 variable {σ : Representation ℂ C V} {χ : C →* ℂˣ}
 
 /- English proof (translation)
-Simplify using `[av, tw, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem av_apply (L : Lvl χ) (x : V) :
     av σ χ L x = (Nat.card (C ⧸ L.N) : ℂ)⁻¹ • ∑ q : C ⧸ L.N, tw σ χ x q.out := by
   simp [av, tw, LinearMap.sum_apply]
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+A detailed English derivation is pending.
 -/
 private theorem card_ne (L : Lvl χ) : (Nat.card (C ⧸ L.N) : ℂ) ≠ 0 :=
   Nat.cast_ne_zero.2 Nat.card_pos.ne'
 
 /- English proof (translation)
-Establish `hn : a⁻¹ * b ∈ L.N` using `QuotientGroup.eq.1 h`. Establish `hb : b = a * (a⁻¹ * b)` using `by group`. Generalize the expression as in `a⁻¹ * b = n at hn hb`. Substitute `hb` using the available equality. Simplify using `only [tw, map_mul, Module.End.mul_apply, hx n hn, L.triv n hn, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem tw_congr (L : Lvl χ) {x : V} (hx : Fx σ L.N x) {a b : C} (h : (a : C ⧸ L.N) = b) :
     tw σ χ x a = tw σ χ x b := by
@@ -69,7 +69,7 @@ private theorem tw_congr (L : Lvl χ) {x : V} (hx : Fx σ L.N x) {a b : C} (h : 
   simp only [tw, map_mul, Module.End.mul_apply, hx n hn, L.triv n hn, mul_one]
 
 /- English proof (translation)
-Simplify using `only [tw, map_smul, map_mul, Module.End.mul_apply, Units.val_mul, smul_smul]`. Use `congr 1`. Establish `h1 : ((χ k : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `h2 : ((χ a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem tw_left (x : V) (k a : C) : σ k (tw σ χ x a) = ((χ k : ℂˣ) : ℂ) • tw σ χ x (k * a) := by
   simp only [tw, map_smul, map_mul, Module.End.mul_apply, Units.val_mul, smul_smul]
@@ -79,7 +79,7 @@ private theorem tw_left (x : V) (k a : C) : σ k (tw σ χ x a) = ((χ k : ℂˣ
   field_simp
 
 /- English proof (translation)
-Simplify using `only [tw, map_mul, Module.End.mul_apply, Units.val_mul, smul_smul]`. Use `congr 1`. Establish `h1 : ((χ k : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `h2 : ((χ a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem tw_right (x : V) (k a : C) : tw σ χ (σ k x) a = ((χ k : ℂˣ) : ℂ) • tw σ χ x (a * k) := by
   simp only [tw, map_mul, Module.End.mul_apply, Units.val_mul, smul_smul]
@@ -89,9 +89,9 @@ private theorem tw_right (x : V) (k a : C) : tw σ χ (σ k x) a = ((χ k : ℂ�
   field_simp
 
 /- English proof (translation)
-Establish `hs : ∑ q : C ⧸ L.N, tw σ χ x q.out = ∑ q : C ⧸ L.N, tw σ χ x (k * q.out)`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft (k : C ⧸ L.N)) (fun q => tw σ χ x q.out)]`. Use `Finset.sum_congr rfl fun q _ => tw_congr L hx ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `e : ∑ q : C ⧸ L.N, σ k (tw σ χ x q.out) = ((χ k : ℂˣ) : ℂ) • ∑ q : C ⧸ L.N, tw σ χ x q.out`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hs, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => tw_left x k _`. Rewrite using `[av_apply, map_smul, map_sum, e, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem av_eig (L : Lvl χ) {x : V} (hx : Fx σ L.N x) (k : C) :
     σ k (av σ χ L x) = ((χ k : ℂˣ) : ℂ) • av σ χ L x := by
@@ -105,9 +105,9 @@ private theorem av_eig (L : Lvl χ) {x : V} (hx : Fx σ L.N x) (k : C) :
   rw [av_apply, map_smul, map_sum, e, smul_comm]
 
 /- English proof (translation)
-Establish `hs : ∑ q : C ⧸ L.N, tw σ χ x q.out = ∑ q : C ⧸ L.N, tw σ χ x (q.out * k)`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight (k : C ⧸ L.N)) (fun q => tw σ χ x q.out)]`. Use `Finset.sum_congr rfl fun q _ => tw_congr L hx ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[av_apply, av_apply, hs, smul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [tw_right, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem av_translate (L : Lvl χ) {x : V} (hx : Fx σ L.N x) (k : C) :
     av σ χ L (σ k x) = ((χ k : ℂˣ) : ℂ) • av σ χ L x := by
@@ -119,7 +119,7 @@ private theorem av_translate (L : Lvl χ) {x : V} (hx : Fx σ L.N x) (k : C) :
   simp only [tw_right, Finset.smul_sum]
 
 /- English proof (translation)
-Establish `h : ∀ k, tw σ χ y k = y` using `fun k => by`. Rewrite using `[tw, hy k, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Simplify using `only [av_apply, h, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul ℂ]`. Rewrite using `[smul_smul, inv_mul_cancel₀ (card_ne L), one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem av_of_eig (L : Lvl χ) {y : V} (hy : ∀ k, σ k y = ((χ k : ℂˣ) : ℂ) • y) : av σ χ L y = y := by
   have h : ∀ k, tw σ χ y k = y := fun k => by
@@ -128,9 +128,9 @@ private theorem av_of_eig (L : Lvl χ) {y : V} (hy : ∀ k, σ k y = ((χ k : �
   rw [smul_smul, inv_mul_cancel₀ (card_ne L), one_smul]
 
 /- English proof (translation)
-Establish `h1 : av σ χ L' (av σ χ L x) = av σ χ L x` using `av_of_eig L' (av_eig L hx)`. Establish `h2 : av σ χ L' (av σ χ L x) = av σ χ L' x`. Establish `h : ∀ k, av σ χ L' (tw σ χ x k) = av σ χ L' x` using `fun k => by`. Rewrite using `[tw, map_smul, av_translate L' (hx.mono hle), smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Rewrite using `[av_apply L x, map_smul, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul ℂ]`. Rewrite using `[smul_smul, inv_mul_cancel₀ (card_ne L), one_smul]`. Rewrite using `[← h2, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem av_refine {L' L : Lvl χ} (hle : L'.N ≤ L.N) {x : V} (hx : Fx σ L.N x) : av σ χ L' x = av σ χ L x := by
   have h1 : av σ χ L' (av σ χ L x) = av σ χ L x := av_of_eig L' (av_eig L hx)
@@ -143,13 +143,13 @@ private theorem av_refine {L' L : Lvl χ} (hle : L'.N ≤ L.N) {x : V} (hx : Fx 
   rw [← h2, h1]
 
 /- English proof (translation)
-The claim follows from `(av_refine (L' := L.inf L') inf_le_left hx).symm.trans (av_refine (L' := L.inf L') inf_le_right hx')`.
+A detailed English derivation is pending.
 -/
 private theorem av_indep {L L' : Lvl χ} {x : V} (hx : Fx σ L.N x) (hx' : Fx σ L'.N x) : av σ χ L x = av σ χ L' x :=
   (av_refine (L' := L.inf L') inf_le_left hx).symm.trans (av_refine (L' := L.inf L') inf_le_right hx')
 
 /- English proof (translation)
-Simplify using `only [av_apply, map_smul, map_sum, tw, hT]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem av_comm (L : Lvl χ) (T : V →ₗ[ℂ] V) (hT : ∀ k x, T (σ k x) = σ k (T x)) (x : V) :
     av σ χ L (T x) = T (av σ χ L x) := by
@@ -158,14 +158,14 @@ private theorem av_comm (L : Lvl χ) (T : V →ₗ[ℂ] V) (hT : ∀ k x, T (σ 
 private def Z (σ : Representation ℂ C V) (χ : C →* ℂˣ) (x : V) : Prop := ∃ L : Lvl χ, Fx σ L.N x ∧ av σ χ L x = 0
 
 /- English proof (translation)
-Take `⟨L', h', h0⟩` from `h`. Rewrite using `[av_indep hx h', h0]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Z.av_eq {x : V} (h : Z σ χ x) {L : Lvl χ} (hx : Fx σ L.N x) : av σ χ L x = 0 := by
   obtain ⟨L', h', h0⟩ := h
   rw [av_indep hx h', h0]
 
 /- English proof (translation)
-Take `⟨L, h, h0⟩` from `id hx`. Take `⟨L', h', h0'⟩` from `id hy`. Establish `a : Fx σ (L.inf L').N x` using `h.mono inf_le_left`. Establish `b : Fx σ (L.inf L').N y` using `h'.mono inf_le_right`. Conclude with `⟨L.inf L', fun n hn => by rw [map_add, a n hn, b n hn], by rw [map_add, hx.av_eq a, hy.av_eq b, add_zero]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem Z.add {x y : V} (hx : Z σ χ x) (hy : Z σ χ y) : Z σ χ (x + y) := by
   obtain ⟨L, h, h0⟩ := id hx
@@ -175,18 +175,16 @@ private theorem Z.add {x y : V} (hx : Z σ χ x) (hy : Z σ χ y) : Z σ χ (x +
   exact ⟨L.inf L', fun n hn => by rw [map_add, a n hn, b n hn], by rw [map_add, hx.av_eq a, hy.av_eq b, add_zero]⟩
 
 /- English proof (translation)
-Take `⟨L, h, h0⟩` from `hx`. Conclude with `⟨L, fun n hn => by rw [map_smul, h n hn], by rw [map_smul, h0, smul_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem Z.smul {x : V} (hx : Z σ χ x) (a : ℂ) : Z σ χ (a • x) := by
   obtain ⟨L, h, h0⟩ := hx
   exact ⟨L, fun n hn => by rw [map_smul, h n hn], by rw [map_smul, h0, smul_zero]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨L₀, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨L, hL⟩` from `ih fun x hx => hs x (Finset.mem_insert_of_mem hx)`. Take `⟨N, hN, hfix⟩` from `hsm a (hs a (Finset.mem_insert_self _ _))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfi : (L.N ⊓ N).FiniteIndex` using `inferInstance`. Establish `hle` using `Lvl.ofFI_le (χ := χ) (L.N ⊓ N) hfi (fun n hn => L.triv n hn.1)`. Use `⟨Lvl.ofFI (L.N ⊓ N) hfi (fun n hn => L.triv n hn.1), fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `hfix.mono (hle.trans inf_le_right)`.
-
-Conclude with `(hL x hx).mono (hle.trans inf_le_left)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem exists_lvl {π : Submodule ℂ V} (hsm : ∀ φ ∈ π, ∃ N : Subgroup C, N.FiniteIndex ∧ Fx σ N φ)
     (L₀ : Lvl χ) (s : Finset V) (hs : ∀ x ∈ s, x ∈ π) : ∃ L : Lvl χ, ∀ x ∈ s, Fx σ L.N x := by
@@ -206,33 +204,27 @@ end UpperTheory.Gal.CertificateRingHomMap.LocalAdjunction
 
 open UpperTheory.Gal.CertificateRingHomMap.LocalAdjunction in
 /- English proof (translation)
-Introduce `G V X _ _ _ _ _ _ ρ π hinv hirr H C hCH hdec hsm χ ⟨φ₀, hφ₀π, hφ₀, hφ₀χ⟩ f hf hfπ`. Set `σ : Representation ℂ C V` to `ρ.comp C.subtype`. Establish `hσ : ∀ (k : C) x, σ k x = ρ (k : G) x` using `fun _ _ => rfl`. Establish `hsm' : ∀ φ ∈ π, ∃ N : Subgroup C, N.FiniteIndex ∧ Fx σ N φ` using `hsm`. Take `⟨N₀, hN₀, hfix₀⟩` from `hsm' φ₀ hφ₀π`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hχ₀ : ∀ n ∈ N₀, χ n = 1` using `fun n hn => by`. Establish `h1 : ((χ n : ℂˣ) : ℂ) • φ₀ = (1 : ℂ) • φ₀` using `by rw [one_smul, ← hφ₀χ n]; exact hfix₀ n hn`. Conclude with `Units.ext (smul_left_injective ℂ hφ₀ h1)`. Set `L₀ : Lvl χ` to `Lvl.ofFI N₀ hN₀ hχ₀`. Establish `hfixL₀ : Fx σ L₀.N φ₀` using `hfix₀.mono (Lvl.ofFI_le _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Nn : Submodule ℂ V` to `{ carrier := {φ | φ ∈ π ∧ ∀ h ∈ H, Z σ χ (ρ h φ)} zero_mem' := ⟨π.zero_mem, fun h _ => ⟨L₀, fun n _ => by simp, by simp⟩⟩ add_mem' := fun {a b} ha hb => ⟨π.add_mem ha.1 hb.1, fun h hh => by`. Rewrite using `[map_add]`. Conclude with `(ha.2 h hh).add (hb.2 h hh)⟩`. Use the proof step `smul_mem' := fun c x hx => ⟨π.smul_mem c hx.1, fun h hh => by`. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(hx.2 h hh).smul c⟩ }`. Establish `hNn : Nn ≤ π` using `fun x hx => hx.1`. Establish `hstab : ∀ g, ∀ φ ∈ Nn, ρ g φ ∈ Nn`. Introduce and unpack `g φ ⟨hπ, hZ⟩`. Take `⟨h₁, hh₁, c, hc, rfl⟩` from `hdec g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨hinv _ _ hπ, fun h hh => ?_⟩` and prove the remaining obligations. Take `⟨L, hL, h0⟩` from `hZ (h * h₁) (H.mul_mem hh hh₁)`. Establish `e : ρ h (ρ (h₁ * c) φ) = ρ c (ρ (h * h₁) φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, ← mul_assoc, hc (h * h₁) (H.mul_mem hh hh₁)]`. Establish `hT : ∀ (k : C) x, ρ c (σ k x) = σ k (ρ c x)` using `fun k x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hσ, hσ, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, hc k (hCH k.2)]`. Rewrite using `[e]`. Conclude with `⟨L, fun n hn => by rw [← hT, hL n hn], by rw [av_comm L (ρ c) hT, h0, map_zero]⟩`. Establish `hφ₀N : φ₀ ∉ Nn` using `fun h => by`. Establish `h1` using `h.2 1 H.one_mem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[map_one, Module.End.one_apply]`. Conclude with `hφ₀ ((av_of_eig L₀ hφ₀χ).symm.trans (h1.av_eq hfixL₀))`. Establish `hbot : Nn = ⊥`. Break down `hirr Nn hNn hstab with h | h` into its components or cases. Conclude with `h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (h ▸ hφ₀π) hφ₀N`. Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v, f v ≠ 0 := by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `hf (LinearMap.ext hh)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨h, hh, hZ⟩ : ∃ h ∈ H, ¬ Z σ χ (ρ h (f v₀)) := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `: f v₀ ∈ Nn` using `⟨hfπ v₀, hcon⟩`. Rewrite `this` using `[hbot]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hv₀ ((Submodule.mem_bot ℂ).1 this)`. Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℂ X).FG)`. Take `⟨L, hL⟩` from `exists_lvl (σ := σ) hsm' L₀ (s.image fun v => ρ h (f v)) (fun x hx => by`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hinv _ _ (hfπ v))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ v, Fx σ L.N (ρ h (f v))` using `fun v n hn => by`. Use `LinearMap.ext_on hs (f := (σ n) ∘ₗ (ρ h) ∘ₗ f) (g := (ρ h) ∘ₗ f) (fun v hv => hL _ (Finset.mem_image_of_mem _ hv) n hn)` as an intermediate fact. Conclude with `LinearMap.congr_fun this v`. Set `r : G →₀ ℂ` to `∑ q : C ⧸ L.N, Finsupp.single (((q.out : C) : G) * h) ((Nat.card (C ⧸ L.N) : ℂ)⁻¹ * ((χ q.out : ℂˣ) : ℂ)⁻¹)`. Establish `hr : ∀ v, (r.sum fun g a => a • ρ g (f v)) = av σ χ L (ρ h (f v))` using `fun v => by`.
-
-Establish `e : (r.sum fun g a => a • ρ g (f v)) = Finsupp.linearCombination ℂ (fun g => ρ g (f v)) r` using `(Finsupp.linearCombination_apply _ _).symm`. Rewrite using `[e, av_apply, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.linearCombination_single, map_mul, Module.End.mul_apply, tw, mul_smul]`. Both sides reduce to the same expression.
-
-Use `⟨r, fun g hg => ?_, ⟨v₀, ?_⟩, fun k v => ?_⟩` and prove the remaining obligations. Establish `: r ∈ Finsupp.supported ℂ ℂ (H : Set G)` using `Submodule.sum_mem _ fun q _ => Finsupp.single_mem_supported ℂ _ (H.mul_mem (hCH q.out.2) hh)`. Conclude with `Finsupp.mem_supported _ _ |>.1 this hg`. Rewrite using `[hr]`. Conclude with `fun h0 => hZ ⟨L, hfix v₀, h0⟩`.
-
-Rewrite using `[hr]`. Conclude with `av_eig L (hfix v) k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pLocAdj_of :
     UpperTheory.Gal.CertificateRingHomMap.LocAdj := by

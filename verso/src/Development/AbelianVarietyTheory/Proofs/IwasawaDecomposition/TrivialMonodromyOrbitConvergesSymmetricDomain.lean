@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.ShFam.OrbitLimit
 
 /- English proof (translation)
-The claim follows from `(tendsto_comap (f := Complex.im) (x := atTop)).eventually (eventually_gt_atTop T)`.
+A detailed English derivation is pending.
 -/
 theorem eventually_imTop (T : ℝ) : ∀ᶠ w in imTop, T < w.im :=
   (tendsto_comap (f := Complex.im) (x := atTop)).eventually (eventually_gt_atTop T)
@@ -25,21 +25,19 @@ instance imTop_neBot : imTop.NeBot :=
     exact ⟨y * Complex.I, by simpa using hy⟩
 
 /- English proof (translation)
-Set `g : ℂ → ℂ` to `fun w => if T < w.im then f w else 0`. Establish `hg : ∀ w : ℂ, T < w.im → g w = f w` using `fun w hw => if_pos hw`. Establish `hgp : Function.Periodic g h` using `fun w => by`. Distinguish the cases in `hw : T < w.im`. Rewrite using `[hg w hw, hg _ (by simpa using hw), hp w hw]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[g, hw]`. Establish `ho : IsOpen {w : ℂ | T < w.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hgd : ∀ w : ℂ, T < w.im → DifferentiableAt ℂ g w` using `fun w hw => (hd.congr fun z hz => hg z hz).differentiableAt (ho.mem_nhds hw)`. Establish `hhol : ∀ᶠ w in imTop, DifferentiableAt ℂ g w` using `(eventually_imTop T).mono hgd`. Establish `hbd : BoundedAtFilter imTop g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Asymptotics.IsBigO.of_bound c ((eventually_imTop T).mono fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[hg w hw]`. Simplify using `using (hb w hw).le`. Use `set F := Function.Periodic.cuspFunction h g with hF`. Use `set r : ℝ := Real.exp (-2 * Real.pi * (T + 1) / h) with hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : 0 < r` using `Real.exp_pos _`. Establish `him : ∀ q : ℂ, q ≠ 0 → ‖q‖ ≤ r → T < (Function.Periodic.invQParam h q).im` using `fun q hq hqr => by`. Rewrite using `[← Function.Periodic.norm_qParam_lt_iff hh, Function.Periodic.qParam_right_inv hh.ne' hq]`. Use `hqr.trans_lt (Real.exp_lt_exp.2 ?_)` and prove the remaining obligations. Rewrite using `[div_lt_div_iff_of_pos_right hh]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[Real.pi_pos]`. Establish `hFd : DifferentiableOn ℂ F (closure (Metric.ball 0 r))` using `fun q hq => by`. Rewrite `hq` using `[closure_ball _ hr0.ne', mem_closedBall_zero_iff]`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `hq0 : q = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq0]`. Conclude with `Function.Periodic.differentiableAt_cuspFunction_zero hh hgp hhol hbd`. Rewrite using `[← Function.Periodic.qParam_right_inv hh.ne' hq0]`. Conclude with `Function.Periodic.differentiableAt_cuspFunction hh.ne' hgp (hgd _ (him q hq0 hq))`. Use `⟨F 0, (Function.Periodic.tendsto_at_I_inf hh hgp hhol hbd).congr' ((eventually_imTop T).mono hg), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz, hmax⟩` from `Complex.exists_mem_frontier_isMaxOn_norm (f := F) Metric.isBounded_ball (Metric.nonempty_ball.2 hr0) hFd.diffContOnCl`. Rewrite `hz` using `[frontier_ball _ hr0.ne', mem_sphere_zero_iff_norm]`. Establish `hz0 : z ≠ 0` using `fun h0 => by simp [h0] at hz; exact hr0.ne hz`. Establish `h1 : ‖F 0‖ ≤ ‖F z‖` using `hmax (subset_closure (Metric.mem_ball_self hr0))`. Use `h1.trans_lt ?_` and prove the remaining obligations.
-
-Rewrite using `[hF, Function.Periodic.cuspFunction_eq_of_nonzero _ _ hz0, hg _ (him z hz0 hz.le)]`. Conclude with `hb _ (him z hz0 hz.le)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tendsto_norm_lt {T h c : ℝ} (hh : 0 < h) {f : ℂ → ℂ} (hd : DifferentiableOn ℂ f {w | T < w.im})
     (hp : ∀ w : ℂ, T < w.im → f (w + h) = f w) (hb : ∀ w : ℂ, T < w.im → ‖f w‖ < c) :
@@ -88,16 +86,16 @@ theorem exists_tendsto_norm_lt {T h c : ℝ} (hh : 0 < h) {f : ℂ → ℂ} (hd 
 def nsq {n : ℕ} (u : Fin n → ℂ) : ℝ := ∑ a, ‖u a‖ ^ 2
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nsq_nonneg {n : ℕ} (u : Fin n → ℂ) : 0 ≤ nsq u := Finset.sum_nonneg fun _ _ => sq_nonneg _
 
 /- English proof (translation)
-Take `⟨l, hl, hlt⟩` from `exists_tendsto_norm_lt (c := (nsq L + c) / 2) hh (f := fun w => ∑ a, (starRingEnd ℂ) (L a) * u w a) (DifferentiableOn.fun_sum fun a _ => (hd a).const_mul _) (fun w hw => by simp only [hp w hw]) fun w hw => by`. Use `(norm_sum_le _ _).trans_lt (lt_of_le_of_lt (b := (nsq L + nsq (u w)) / 2) ?_ (by linarith [hb w hw]))` and prove the remaining obligations. Rewrite using `[nsq, nsq, ← Finset.sum_add_distrib, Finset.sum_div]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_conj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[sq_nonneg (‖L a‖ - ‖u w a‖)]`. Establish `h2` using `tendsto_nhds_unique hl (tendsto_finsetSum _ fun a _ => (hL a).const_mul ((starRingEnd ℂ) (L a)))`. Establish `h3 : l = (nsq L : ℝ)`. Rewrite using `[h2, nsq]`. Use `push_cast`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `Finset.sum_congr rfl fun a _ => Complex.conj_mul' _`. Rewrite `hlt` using `[h3, Complex.norm_real, Real.norm_of_nonneg (nsq_nonneg L)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nsq_lim_lt {n : ℕ} {T h c : ℝ} (hh : 0 < h) {u : ℂ → Fin n → ℂ}
     (hd : ∀ a, DifferentiableOn ℂ (fun w => u w a) {w | T < w.im})
@@ -122,7 +120,7 @@ theorem nsq_lim_lt {n : ℕ} {T h c : ℝ} (hh : 0 < h) {u : ℂ → Fin n → �
 def Jm (N p : ℕ) : Matrix (Fin N) (Fin N) ℂ := diagonal fun a : Fin N => ((sgn p (a : ℕ) : ℝ) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_bij (fun j _ => Fin.castLE hp j) (fun j _ => by simp) (fun a _ b _ h => Fin.castLE_injective hp h) (fun a ha => ⟨⟨a, by simpa using ha⟩, Finset.mem_univ _, rfl⟩) fun _ _ => rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_castLE {N p : ℕ} (hp : p ≤ N) {R : Type} [AddCommMonoid R] (f : Fin N → R) :
     ∑ j, f (Fin.castLE hp j) = ∑ a : Fin N, if (a : ℕ) < p then f a else 0 := by
@@ -131,7 +129,7 @@ theorem sum_castLE {N p : ℕ} (hp : p ≤ N) {R : Type} [AddCommMonoid R] (f : 
     (fun a ha => ⟨⟨a, by simpa using ha⟩, Finset.mem_univ _, rfl⟩) fun _ _ => rfl
 
 /- English proof (translation)
-Rewrite using `[nsq, nsq, sum_castLE hp (fun a => ‖u a‖ ^ 2), Finset.mul_sum, ← Finset.sum_sub_distrib, Complex.ofReal_sum, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Jm, mulVec_diagonal, mul_left_comm, Pi.star_apply, Complex.star_def, Complex.conj_mul', sgn]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem form_eq {N p : ℕ} (hp : p ≤ N) (u : Fin N → ℂ) :
     star u ⬝ᵥ Jm N p *ᵥ u = ((2 * nsq (fun j => u (Fin.castLE hp j)) - nsq u : ℝ) : ℂ) := by
@@ -142,11 +140,11 @@ theorem form_eq {N p : ℕ} (hp : p ≤ N) (u : Fin N → ℂ) :
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Establish `hH : (Uᴴ * Jm N p * U).IsHermitian`. Use `isHermitian_conjTranspose_mul_mul _ ?_` and prove the remaining obligations. Rewrite using `[Jm, IsHermitian, diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Establish `key : ∀ v, star v ⬝ᵥ (Uᴴ * Jm N p * U) *ᵥ v = ((2 * nsq (U.submatrix (Fin.castLE hp) id *ᵥ v) - nsq (U *ᵥ v) : ℝ) : ℂ)` using `fun v => by`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, form_eq hp]`. Both sides reduce to the same expression. Rewrite using `[posDef_iff_dotProduct_mulVec, and_iff_right hH]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun v => forall_congr' fun _ => ?_` and prove the remaining obligations. Rewrite using `[key, Complex.zero_lt_real, sub_pos]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem posDef_iff {N p : ℕ} (hp : p ≤ N) (U : Matrix (Fin N) (Fin p) ℂ) :
     (Uᴴ * Jm N p * U).PosDef ↔
@@ -166,7 +164,7 @@ theorem posDef_iff {N p : ℕ} (hp : p ≤ N) (U : Matrix (Fin N) (Fin p) ℂ) :
   rw [key, Complex.zero_lt_real, sub_pos]
 
 /- English proof (translation)
-Introduce `h0` and use `by obtain ⟨v, hv, h1⟩ := exists_mulVec_eq_zero_iff.2 h0 have h2 := (posDef_iff hp U).1 hU v hv rw [h1] at h2 have h3 := nsq_nonneg (U *ᵥ v) simp [nsq] at h2 h3 linarith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem det_top_ne {N p : ℕ} (hp : p ≤ N) {U : Matrix (Fin N) (Fin p) ℂ} (hU : (Uᴴ * Jm N p * U).PosDef) :
     (U.submatrix (Fin.castLE hp) id).det ≠ 0 := fun h0 => by
@@ -181,7 +179,7 @@ def IsGraph {N p : ℕ} (hp : p ≤ N) (Y : Matrix (Fin N) (Fin p) ℂ) : Prop :
   Y.submatrix (Fin.castLE hp) id = 1 ∧ (Yᴴ * Jm N p * Y).PosDef
 
 /- English proof (translation)
-Use `(posDef_iff hp Y).1 h.2 v hv` as an intermediate fact. Rewrite `this` using `[h.1, one_mulVec]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsGraph.nsq_lt {N p : ℕ} {hp : p ≤ N} {Y : Matrix (Fin N) (Fin p) ℂ} (h : IsGraph hp Y) {v : Fin p → ℂ}
     (hv : v ≠ 0) : nsq (Y *ᵥ v) < 2 * nsq v := by
@@ -189,9 +187,9 @@ theorem IsGraph.nsq_lt {N p : ℕ} {hp : p ≤ N} {Y : Matrix (Fin N) (Fin p) �
   rwa [h.1, one_mulVec] at this
 
 /- English proof (translation)
-Establish `hd` using `(det_top_ne hp hU).isUnit`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_nonsing_inv _ hd]`. Both sides reduce to the same expression. Use `hU.conjTranspose_mul_mul_same (B := (U.submatrix (Fin.castLE hp) id)⁻¹) (mulVec_injective_of_isUnit ((isUnit_iff_isUnit_det _).2 (isUnit_nonsing_inv_det _ hd)))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify `this` using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isGraph_mul_inv {N p : ℕ} (hp : p ≤ N) {U : Matrix (Fin N) (Fin p) ℂ} (hU : (Uᴴ * Jm N p * U).PosDef) :
     IsGraph hp (U * (U.submatrix (Fin.castLE hp) id)⁻¹) := by
@@ -204,15 +202,13 @@ theorem isGraph_mul_inv {N p : ℕ} (hp : p ≤ N) {U : Matrix (Fin N) (Fin p) �
     simpa only [conjTranspose_mul, Matrix.mul_assoc] using this
 
 /- English proof (translation)
-Establish `hex : ∀ a j, ∃ L, Tendsto (fun w => Y w a j) imTop (𝓝 L)` using `fun a j => by`. Take `⟨L, hL, -⟩` from `exists_tendsto_norm_lt (c := 2) hh (hd a j) (fun w hw => by simp only [hper w hw]) fun w hw => by`. Establish `h1` using `(hG w hw).nsq_lt (v := Pi.single j 1) (by simp)`. Establish `h2 : nsq (Pi.single j (1 : ℂ) : Fin p → ℂ) = 1`. Apply the tactic sequence `rw [nsq, Finset.sum_eq_single j] <;> simp +contextual`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h3 : ‖Y w a j‖ ^ 2 ≤ nsq (Y w *ᵥ Pi.single j 1)`. Use `Finset.single_le_sum (f := fun a => ‖(Y w *ᵥ Pi.single j 1) a‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ a)` as an intermediate fact. Simplify `this` using `[nsq]`. Use polynomial arithmetic with `[norm_nonneg (Y w a j)]`. Conclude with `⟨L, hL⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components.
 
-Use `choose Y₀ hY using hex`. Establish `h1 : (Matrix.of Y₀).submatrix (Fin.castLE hp) id = 1`. Use extensionality with `i j`. Use `tendsto_nhds_unique (hY (Fin.castLE hp i) j) (tendsto_const_nhds.congr' ((eventually_imTop T).mono ?_))` and prove the remaining obligations. Introduce `w hw`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrFun (congrFun (hG w hw).1 i) j).symm`. Use `⟨Matrix.of Y₀, ⟨h1, (posDef_iff hp _).2 fun v hv => ?_⟩, hY⟩` and prove the remaining obligations. Rewrite using `[h1, one_mulVec]`. Use `nsq_lim_lt (T := T) hh (u := fun w => Y w *ᵥ v) (fun a => ?_) (fun w hw => by simp only [hper w hw]) (fun w hw => (hG w hw).nsq_lt hv) fun a => ?_` and prove the remaining obligations. Conclude with `DifferentiableOn.fun_sum (u := Finset.univ) fun j _ => (hd a j).mul_const (v j)`.
-
-Conclude with `tendsto_finsetSum Finset.univ fun j _ => (hY a j).mul_const (v j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem graph_limit {N p : ℕ} (hp : p ≤ N) {T h : ℝ} (hh : 0 < h) {Y : ℂ → Matrix (Fin N) (Fin p) ℂ}
     (hd : ∀ a j, DifferentiableOn ℂ (fun w => Y w a j) {w | T < w.im})
@@ -247,7 +243,7 @@ def extend {N p : ℕ} (Y : Matrix (Fin N) (Fin p) ℂ) : Matrix (Fin N) (Fin N)
   Matrix.of fun a b => if h : (b : ℕ) < p then Y a ⟨b, h⟩ else (1 : Matrix (Fin N) (Fin N) ℂ) a b
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `[extend]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem extend_submatrix {N p : ℕ} (hp : p ≤ N) (Y : Matrix (Fin N) (Fin p) ℂ) :
     (extend Y).submatrix id (Fin.castLE hp) = Y := by
@@ -255,11 +251,11 @@ theorem extend_submatrix {N p : ℕ} (hp : p ≤ N) (Y : Matrix (Fin N) (Fin p) 
   simp [extend]
 
 /- English proof (translation)
-Establish `key : ∀ a b : Fin N, a ≤ b → extend Y a b = (1 : Matrix (Fin N) (Fin N) ℂ) a b` using `fun a b hab => by`. Rewrite using `[extend, of_apply]`. Use `split_ifs with hb`. Establish `ha : (a : ℕ) < p` using `lt_of_le_of_lt hab hb`. Use `congrFun (congrFun h.1 ⟨a, ha⟩) ⟨b, hb⟩` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[one_apply, Fin.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[det_of_isLowerTriangular _ fun a b hab => by`. Establish `hab' : a < b` using `hab`. Rewrite using `[key a b hab'.le, one_apply_ne hab'.ne]]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[key]`.
+A detailed English derivation is pending.
 -/
 theorem det_extend {N p : ℕ} {hp : p ≤ N} {Y : Matrix (Fin N) (Fin p) ℂ} (h : IsGraph hp Y) : (extend Y).det = 1 := by
   have key : ∀ a b : Fin N, a ≤ b → extend Y a b = (1 : Matrix (Fin N) (Fin N) ℂ) a b := fun a b hab => by
@@ -275,9 +271,9 @@ theorem det_extend {N p : ℕ} {hp : p ≤ N} {Y : Matrix (Fin N) (Fin p) ℂ} (
   simp [key]
 
 /- English proof (translation)
-Rewrite using `[range_mulVecLin]`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨a, ha⟩, rfl⟩`. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨Fin.castLE hp j, j.2, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem span_col {N p : ℕ} (hp : p ≤ N) (m : Matrix (Fin N) (Fin N) ℂ) :
     Submodule.span ℂ (ReciprocityTheory.ChartRestriction.G.FD.col m '' {a | (a : ℕ) < p}) =
@@ -292,9 +288,9 @@ theorem span_col {N p : ℕ} (hp : p ≤ N) (m : Matrix (Fin N) (Fin N) ℂ) :
     exact ⟨Fin.castLE hp j, j.2, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `only [submatrix_apply, mul_apply, id]`. Rewrite using `[sum_castLE hp fun k => y a k * b k (Fin.castLE hp j)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with hk`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hb k _ (by have := j.2; simp only [Fin.lt_def, Fin.val_castLE]; omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem submatrix_mul_upper {N p : ℕ} (hp : p ≤ N) (y b : Matrix (Fin N) (Fin N) ℂ)
     (hb : ∀ a c, c < a → b a c = 0) :
@@ -309,9 +305,9 @@ theorem submatrix_mul_upper {N p : ℕ} (hp : p ≤ N) (y b : Matrix (Fin N) (Fi
   · rw [hb k _ (by have := j.2; simp only [Fin.lt_def, Fin.val_castLE]; omega), mul_zero]
 
 /- English proof (translation)
-Establish `h1 : (X.gramPos x τ)ᵀ = (y.submatrix id (Fin.castLE X.p0_le))ᴴ * Jm N X.p0 * y.submatrix id (Fin.castLE X.p0_le)`. Establish `h2 : (gram τ.1 X.Gm (mat x τ))ᵀ = yᴴ * Jm N X.p0 * y`. Rewrite using `[hx, FrameDegreeData.gram_mul, hP, transpose_mul, transpose_mul, transpose_transpose, Jm, diagonal_transpose, Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[Data.gramPos, transpose_submatrix, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← h1]`. Conclude with `⟨fun h => h.transpose, fun h => by simpa using h.transpose⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gramPos_iff {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {N : ℕ} (X : Data E N)
     {x : Frame X.Ψ N} {τ : X.Ψ} {P y : Matrix (Fin N) (Fin N) ℂ} (hP : gram τ.1 X.Gm P = Jm N X.p0)
@@ -330,25 +326,21 @@ theorem gramPos_iff {E : Type} [Field E] [NumberField E] [NumberField.IsCMField 
   exact ⟨fun h => h.transpose, fun h => by simpa using h.transpose⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ N X T M x ⟨hM, _, hd, hdom, hper⟩`. Use `choose P hP0 hP using X.signature`. Establish `hp` using `X.p0_le`. Set `U : X.Ψ → ℂ → Matrix (Fin N) (Fin X.p0) ℂ` to `fun τ w => ((P τ)⁻¹ * mat (x w) τ).submatrix id (Fin.castLE hp)`. Set `Y : X.Ψ → ℂ → Matrix (Fin N) (Fin X.p0) ℂ` to `fun τ w => U τ w * ((U τ w).submatrix (Fin.castLE hp) id)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx : ∀ τ w, mat (x w) τ = P τ * ((P τ)⁻¹ * mat (x w) τ)` using `fun τ w => (mul_nonsing_inv_cancel_left _ _ (hP0 τ).isUnit).symm`. Establish `hU : ∀ τ (w : ℂ), T < w.im → ((U τ w)ᴴ * Jm N X.p0 * U τ w).PosDef` using `fun τ w hw => (gramPos_iff X (hP τ) (hx τ w)).1 (X.gramPos_posDef (hdom w hw) τ)`. Establish `hUd : ∀ τ a j, DifferentiableOn ℂ (fun w => U τ w a j) {w | T < w.im}` using `fun τ a j => DifferentiableOn.fun_sum (u := Finset.univ) fun k _ => (differentiableOn_pi.1 (differentiableOn_pi.1 (differentiableOn_pi.1 hd τ) k) (Fin.castLE hp j)).const_mul ((P τ)⁻¹ a k)`. Establish `hG : ∀ τ (w : ℂ), T < w.im → IsGraph hp (Y τ w)` using `fun τ w hw => isGraph_mul_inv hp (hU τ w hw)`. Establish `hlim : ∀ τ, ∃ Y₀, IsGraph hp Y₀ ∧ ∀ a j, Tendsto (fun w => Y τ w a j) imTop (𝓝 (Y₀ a j))` using `fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `graph_limit hp (T := T) (h := M) (by exact_mod_cast hM) (fun a j => ?_) (fun w hw => ?_) (hG τ)` and prove the remaining obligations. Conclude with `DifferentiableOn.fun_sum (u := Finset.univ) fun k _ => (hUd τ a k).fun_mul (GlobalTheory.TorsionHolomorphic.differentiableOn_matrix_inv (fun w => (U τ w).submatrix (Fin.castLE hp) id) _ (fun i l => hUd τ _ l) (fun w hw => det_top_ne hp (hU τ w hw)) k j)`. Take `⟨b, hb, -, hxb⟩` from `hper w hw`. Establish `h1 : mat (x (w + M)) τ = mat (x w) τ * mat b τ`. Rewrite using `[hxb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show ((1 : GL (Fin N) E) : Matrix (Fin N) (Fin N) E).map τ.1 * mat (x w) τ * mat b τ = _`. Simplify using the standard rewrite rules. Use `set c := (mat b τ).submatrix (Fin.castLE hp) (Fin.castLE hp) with hc`. Establish `h2 : U τ (w + M) = U τ w * c`. Simplify using `only [U]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, ← Matrix.mul_assoc, submatrix_mul_upper hp _ (mat b τ) (hb τ).2]`. Establish `h3 : (U τ w * c).submatrix (Fin.castLE hp) id = (U τ w).submatrix (Fin.castLE hp) id * c` using `rfl`. Establish `h4` using `det_top_ne hp (hU τ (w + M) (by simpa using hw))`. Rewrite `h4` using `[h2, h3, det_mul]`. Simplify using `only [Y, Complex.ofReal_natCast]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, h3, Matrix.mul_inv_rev, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ (right_ne_zero_of_mul h4).isUnit]`. Use `choose Y₀ hY₀ hlim using hlim`. Set `fr : (X.Ψ → Matrix (Fin N) (Fin X.p0) ℂ) → Frame X.Ψ N` to `fun Z τ => (P τ * extend (Z τ) : Matrix (Fin N) (Fin N) ℂ)`. Establish `hfr : ∀ Z τ, mat (fr Z) τ = P τ * extend (Z τ)` using `fun _ _ => rfl`. Establish `hmem : ∀ Z, (∀ τ, IsGraph hp (Z τ)) → fr Z ∈ X.dom` using `fun Z hZ => ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.mem_dom_of_gramPos X fun τ => ⟨by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfr, det_mul, det_extend (hZ τ), mul_one]`. Conclude with `hP0 τ, (gramPos_iff X (hP τ) (hfr Z τ)).2 (by rw [extend_submatrix]; exact (hZ τ).2)⟩`. Use `⟨fr Y₀, hmem _ hY₀, fun w => fr fun τ => Y τ w, ?_, (eventually_imTop T).mono fun w hw => ⟨hmem _ fun τ => hG τ w hw, fun τ => ?_⟩⟩` and prove the remaining obligations. Use `tendsto_pi_nhds.2 fun τ => tendsto_pi_nhds.2 fun a => tendsto_pi_nhds.2 fun b => ?_` and prove the remaining obligations. Use `tendsto_finsetSum Finset.univ (f := fun k w => P τ a k * extend (Y τ w) k b) (a := fun k => P τ a k * extend (Y₀ τ) k b) fun k _ => Tendsto.const_mul _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [extend, of_apply]`. Use `split_ifs with hb`. Conclude with `hlim τ k _`. Conclude with `tendsto_const_nhds`. Establish `h1 : (mat (x w) τ).submatrix id (Fin.castLE hp) = P τ * U τ w` using `by conv_lhs => rw [hx τ w]`.
-
-Both sides reduce to the same expression. Establish `h2 : (P τ * extend (Y τ w)).submatrix id (Fin.castLE hp) = P τ * U τ w * ((U τ w).submatrix (Fin.castLE hp) id)⁻¹`. Rewrite using `[Matrix.mul_assoc, ← extend_submatrix hp (U τ w * _)]`. Both sides reduce to the same expression. Rewrite using `[span_col hp, span_col hp, hfr, h1, h2, mulVecLin_mul (P τ * U τ w), LinearMap.range_comp_of_range_eq_top]`.
-
-Conclude with `LinearMap.range_eq_top.2 (mulVec_surjective_iff_isUnit.2 ((isUnit_iff_isUnit_det _).2 (isUnit_nonsing_inv_det _ (det_top_ne hp (hU τ w hw)).isUnit)))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_limit : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (N : ℕ) (X : Data E N) (T : ℝ)
     (M : ℕ) (x : ℂ → Frame X.Ψ N), IsOrbit X T M 1 x → ∃ x₀ ∈ X.dom, ∃ x' : ℂ → Frame X.Ψ N,

@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DescentOfPoint
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.descent_of_points_killed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FDescentOfPointsKilled.lean&line=7#L7)
 -/

@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.TangentDim
 
 /- English proof (translation)
-Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Use extensionality with `n`. Simplify using `[Ideal.mem_comap, RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ringHom_injective {E : Type} [Field E] [NumberField E] (s : 𝓞 E →+* ℂ) : Function.Injective s := by
   rw [RingHom.injective_iff_ker_eq_bot]
@@ -24,9 +24,9 @@ theorem ringHom_injective {E : Type} [Field E] [NumberField E] (s : 𝓞 E →+*
   simp [Ideal.mem_comap, RingHom.mem_ker]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f f' h`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h`. Introduce `s`. Use `⟨IsFractionRing.lift (ringHom_injective s), ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem restrict_bijective (E : Type) [Field E] [NumberField E] :
     Function.Bijective (fun f : E →+* ℂ => f.comp (algebraMap (𝓞 E) E)) := by
@@ -39,7 +39,7 @@ theorem restrict_bijective (E : Type) [Field E] [NumberField E] :
     simp
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_congr (Equiv.ofBijective _ (restrict_bijective E)), Nat.card_eq_fintype_card]`. Conclude with `NumberField.Embeddings.card E ℂ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_ringHom (E : Type) [Field E] [NumberField E] :
     Nat.card (𝓞 E →+* ℂ) = Module.finrank ℚ E := by
@@ -50,7 +50,7 @@ def both {E Ψ : Type} [Field E] [NumberField E] (σ : Ψ → (𝓞 E →+* ℂ)
   Sum.elim σ fun τ => (starRingEnd ℂ).comp (σ τ)
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj_comp {E : Type} [Field E] [NumberField E] (s : 𝓞 E →+* ℂ) :
     (starRingEnd ℂ).comp ((starRingEnd ℂ).comp s) = s := by
@@ -58,15 +58,13 @@ theorem conj_conj_comp {E : Type} [Field E] [NumberField E] (s : 𝓞 E →+* �
   simp
 
 /- English proof (translation)
-Establish `hconj : Function.Injective fun s : 𝓞 E →+* ℂ => (starRingEnd ℂ).comp s`. Introduce `s t hst`. Use `congrArg (fun u : 𝓞 E →+* ℂ => (starRingEnd ℂ).comp u) hst` as an intermediate fact. Simplify `this` using `only [conj_conj_comp]`. Establish `hcross : ∀ τ τ', σ τ ≠ (starRingEnd ℂ).comp (σ τ')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `τ τ' e`. Conclude with `((h.2 (σ τ')).1 ⟨τ', rfl⟩) ⟨τ, e⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(τ | τ) (τ' | τ') e`. Conclude with `congrArg Sum.inl (h.1 e)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd e (hcross τ τ')`. Conclude with `absurd e.symm (hcross τ' τ)`. Conclude with `congrArg Sum.inr (h.1 (hconj e))`. Introduce `s`. Distinguish the cases in `hs : ∃ τ, σ τ = s`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, rfl⟩` from `hs`. Conclude with `⟨Sum.inl τ, rfl⟩`. Establish `h' : ∃ τ, σ τ = (starRingEnd ℂ).comp s`. Assume the negation of the conclusion as `hn`. Conclude with `hs ((h.2 s).2 hn)`.
-
-Take `⟨τ, e⟩` from `h'`. Use `⟨Sum.inr τ, ?_⟩` and prove the remaining obligations. Use `show (starRingEnd ℂ).comp (σ τ) = s`. Rewrite using `[e, conj_conj_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem both_bijective {E Ψ : Type} [Field E] [NumberField E] [IsCMField E] [Fintype Ψ] {σ : Ψ → (𝓞 E →+* ℂ)}
     (h : IsCMFam σ) : Function.Bijective (both σ) := by
@@ -96,14 +94,14 @@ theorem both_bijective {E Ψ : Type} [Field E] [NumberField E] [IsCMField E] [Fi
       rw [e, conj_conj_comp]
 
 /- English proof (translation)
-Rewrite using `[← natCard_ringHom E, ← Nat.card_congr (Equiv.ofBijective _ (both_bijective h)), Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_sum_eq_finrank {E Ψ : Type} [Field E] [NumberField E] [IsCMField E] [Fintype Ψ] {σ : Ψ → (𝓞 E →+* ℂ)}
     (h : IsCMFam σ) : Fintype.card (Ψ ⊕ Ψ) = Module.finrank ℚ E := by
   rw [← natCard_ringHom E, ← Nat.card_congr (Equiv.ofBijective _ (both_bijective h)), Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hx`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `hx θ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigSp_le_eigenspace {E V : Type} [Field E] [NumberField E] [AddCommGroup V] [Module ℂ V]
     (B : 𝓞 E →+* Module.End ℂ V) (s : 𝓞 E →+* ℂ) (θ : 𝓞 E) :
@@ -115,11 +113,11 @@ theorem eigSp_le_eigenspace {E V : Type} [Field E] [NumberField E] [AddCommGroup
   exact hx θ
 
 /- English proof (translation)
-Take `⟨θ, m, -, -, -, hgen⟩` from `exists_integral_generator E`. Establish `hagree : ∀ (τ : 𝓞 E →+* ℂ) (P : Polynomial ℤ), τ (Polynomial.aeval θ P) = Polynomial.aeval (τ θ) P` using `fun τ P => (Polynomial.aeval_algHom_apply τ.toIntAlgHom θ P).symm`. Establish `hinj : Function.Injective fun s => σ s θ`. Introduce `s t hst`. Apply `hσ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `a`. Take `⟨n, P, hn, hP⟩` from `hgen a`. Establish `h1` using `hagree (σ s) P`. Establish `h2` using `hagree (σ t) P`. Establish `hst' : σ s θ = σ t θ` using `hst`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hst', ← h2, ← hP, map_mul, map_mul, map_intCast, map_intCast]`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hn) h1`. Conclude with `((Module.End.eigenspaces_iSupIndep (B θ)).comp hinj).mono fun s => eigSp_le_eigenspace B (σ s) θ`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSupIndep_eigSp {E V ι : Type} [Field E] [NumberField E] [AddCommGroup V] [Module ℂ V]
     (B : 𝓞 E →+* Module.End ℂ V) (σ : ι → (𝓞 E →+* ℂ)) (hσ : Function.Injective σ) :
@@ -140,11 +138,11 @@ theorem iSupIndep_eigSp {E V ι : Type} [Field E] [NumberField E] [AddCommGroup 
   exact ((Module.End.eigenspaces_iSupIndep (B θ)).comp hinj).mono fun s => eigSp_le_eigenspace B (σ s) θ
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ g j j' B σ hσ hdim`. Establish `hb` using `both_bijective hσ`. Establish `htop` using `iSup_eigSp_eq_top B (both σ) hb.1 (card_sum_eq_finrank hσ)`. Establish `hind` using `iSupIndep_eigSp B (both σ) hb.1`. Establish `hint` using `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind htop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(LinearEquiv.ofBijective (DirectSum.coeLinearMap fun s => eigSp B (both σ s)) hint).finrank_eq`. Rewrite `e` using `[Module.finrank_directSum, Module.finrank_fin_fun, Fintype.sum_sum_type]`. Establish `h1 : ∀ τ, Module.finrank ℂ (eigSp B (both σ (Sum.inl τ))) = j'` using `fun τ => (hdim τ).1`. Establish `h2 : ∀ τ, Module.finrank ℂ (eigSp B (both σ (Sum.inr τ))) = j` using `fun τ => (hdim τ).2`. Simplify using `only [h1, h2, Finset.sum_const, Finset.card_univ, smul_eq_mul] at e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dim_eq_card_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (g j j' : ℕ) (B : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (σ : Ψ → (𝓞 E →+* ℂ)), IsCMFam σ → (∀ τ, Module.finrank ℂ (eigSp B (σ τ)) = j' ∧ Module.finrank ℂ (eigSp B ((starRingEnd ℂ).comp (σ τ))) = j) → g = Fintype.card Ψ * (j + j') := by
   intro E _ _ _ Ψ _ g j j' B σ hσ hdim

@@ -19,11 +19,11 @@ def lowerZero (n : ℕ) (i : Fin n) : Submodule ℂ (Fin n → ℂ) where
   smul_mem' := fun c v hv a h => by simp [hv a h]
 
 /- English proof (translation)
-Introduce `a i h`. Establish `hle : Submodule.span ℂ {v : Fin n → ℂ | ∃ j ≤ i, v = fun a => A a j} ≤ (lowerZero n i).comap (A⁻¹).mulVecLin`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `v ⟨j, hj, rfl⟩ b hb`. Establish `h1 : (A⁻¹ * A) b j = (1 : Matrix (Fin n) (Fin n) ℂ) b j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[nonsing_inv_mul _ hA]`. Rewrite `h1` using `[mul_apply]`. Simplify using `only [Matrix.mulVecLin_apply, mulVec, dotProduct]`. Rewrite using `[h1, one_apply_ne]`. Conclude with `fun e' => absurd (e' ▸ hb) (not_lt.2 hj)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `hle (hmem i) a h` as an intermediate fact. Simplify `this` using `[Matrix.mulVecLin_apply, mulVec, dotProduct, mul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inv_mul_upper (A e : Matrix (Fin n) (Fin n) ℂ) (hA : IsUnit A.det)
     (hmem : ∀ i, (fun a => e a i) ∈ Submodule.span ℂ {v : Fin n → ℂ | ∃ j ≤ i, v = fun a => A a j}) :
@@ -43,7 +43,7 @@ theorem inv_mul_upper (A e : Matrix (Fin n) (Fin n) ℂ) (hA : IsUnit A.det)
   simpa [Matrix.mulVecLin_apply, mulVec, dotProduct, mul_apply] using this
 
 /- English proof (translation)
-Distinguish the cases in `hu : IsUnit T.det`. Use `letI := invertibleOfIsUnitDet T hu`. Conclude with `blockTriangular_inv_of_blockTriangular hT`. Rewrite using `[nonsing_inv_apply_not_isUnit _ hu]`. Conclude with `fun _ _ _ => rfl`.
+Consider separately whether the proposition holds or fails. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inv_upper {T : Matrix (Fin n) (Fin n) ℂ} (hT : T.BlockTriangular id) :
     T⁻¹.BlockTriangular id := by
@@ -58,15 +58,15 @@ end GlobalTheory.Proof.theta_zero_one_lower_vanish
 open GlobalTheory.Proof.theta_zero_one_lower_vanish in
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ ι _ n U H Y π A e _ hA he y hy k l η hkl`. Establish `hYn : Y ∈ 𝓝 y` using `hA.isOpen.mem_nhds hy`. Establish `hAh : ∀ a b, DifferentiableAt ℂ (fun x => A x a b) y` using `fun a b => ((hA.hol_frame a b).contDiffAt hYn).differentiableAt (by simp)`. Establish `hA1 : MContDiffAt 1 A y` using `fun a b => (((hA.hol_frame a b).contDiffAt hYn).restrict_scalars ℝ).of_le (by simp)`. Establish `he1 : MContDiffAt 1 e y` using `fun a b => ((he.smooth a b).contDiffAt hYn).of_le (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAu` using `hA.isUnit y hy`. Use `set T : E → Matrix (Fin n) (Fin n) ℂ := fun x => (A x)⁻¹ * e x with hTdef`. Establish `hT1 : MContDiffAt 1 T y` using `(hA1.inv hAu).mul he1`. Establish `hTup : ∀ x ∈ Y, (T x).BlockTriangular id` using `fun x hx => inv_mul_upper (A x) (e x) (hA.isUnit x hx) (he.mem x hx)`. Establish `heq : e =ᶠ[𝓝 y] fun x => A x * T x` using `Filter.mem_of_superset hYn fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, hTdef, ← Matrix.mul_assoc, mul_nonsing_inv _ (hA.isUnit x hx), Matrix.one_mul]`. Establish `hAbar : mdbar A y η = 0`. Use extensionality with `a b`. Simplify using `[dbar_eq_zero (hAh a b)]`. Establish `hTbar : (mdbar T y η).BlockTriangular id`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Rewrite using `[mdbar_apply, dbar_congr (g := fun _ => (0 : ℂ)) (Filter.mem_of_superset hYn fun x hx => hTup x hx hab)]`. Simplify using the standard rewrite rules. Establish `hebar : mdbar e y η = A y * mdbar T y η`. Rewrite using `[mdbar_congr heq, mdbar_mul hA1 hT1, hAbar, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hth : thetaZeroOne e y η = (T y)⁻¹ * mdbar T y η`. Establish `hey : e y = A y * T y` using `heq.self_of_nhds`. Rewrite using `[thetaZeroOne, hebar, hey, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc (A y)⁻¹, nonsing_inv_mul _ hAu, Matrix.one_mul]`. Rewrite using `[hth]`. Conclude with `((inv_upper (hTup y hy)).mul hTbar) hkl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Proof.theta_zero_one_lower_vanish.thetaZeroOne_lower_eq_zero :
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]

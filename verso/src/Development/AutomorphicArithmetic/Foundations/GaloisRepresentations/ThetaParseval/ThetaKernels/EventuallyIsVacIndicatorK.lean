@@ -54,33 +54,31 @@ namespace Tw.VacIndic
 open _root_.GlobalTheory
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `hθ`. Take `⟨G, hG⟩` from `exists_gen X.L Y.L hX.lat hY.lat`. Use `choose yc zc hc using hrat`. Establish `e1` using `eventually_psiLoc_eq_one B.ψ hB.std.1`. Establish `e2` using `eventually_int (F := F) (1 / 2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ∀ᶠ v in cofinite, ∀ g ∈ G, ∀ k, algebraMap F (Fv F v) (yc g k) ∈ v.adicCompletionIntegers F ∧ algebraMap F (Fv F v) (zc g k) ∈ v.adicCompletionIntegers F`. Use `(Filter.eventually_all_finset G).2 fun g _ => Filter.eventually_all.2 fun k => ?_` and prove the remaining obligations. Conclude with `(eventually_int (yc g k)).and (eventually_int (zc g k))`. Establish `e4 : ∀ᶠ v in cofinite, ∀ g ∈ G, ∀ g' ∈ G, algebraMap F (Fv F v) (symp σ (θ : E) X.J Y.J g g') ∈ v.adicCompletionIntegers F`. Use `(Filter.eventually_all_finset G).2 fun g _ => (Filter.eventually_all_finset G).2 fun g' _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eventually_int _`. Use `filter_upwards [e1, e2, e3, e4] with v h1 h2 h3 h4`. Use `set O := v.adicCompletionIntegers F`. Use `set T : Set (Matrix (Fin n) (Fin d) (AE F E)) := {z | ∃ a : AF F, At (evFin F v) a ∧ evFin F v a ∈ O ∧ ∃ g ∈ G, z = a • incM F g} with hT`. Establish `hA : ∀ z ∈ AddSubgroup.closure T, ∀ k, At (evFin F v) ((co.e z).1 k) ∧ At (evFin F v) ((co.e z).2 k) ∧ evFin F v ((co.e z).1 k) ∈ O ∧ evFin F v ((co.e z).2 k) ∈ O`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hai, g, hg, rfl⟩` from `hz`. Introduce `k`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_smul, hc g]`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul, evFin_algebraMap]`. Conclude with `⟨at_mul_right ha, at_mul_right ha, mul_mem hai (h3 g hg k).1, mul_mem hai (h3 g hg k).2⟩`. Consider the case `zero`. Introduce `k`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [map_zero, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply]`. Conclude with `⟨at_zero, at_zero, zero_mem _, zero_mem _⟩`. Consider the case `add z z' _ _ h h'`. Introduce `k`. Simplify using `only [map_add, Prod.fst_add, Prod.snd_add, Pi.add_apply]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨at_add (h k).1 (h' k).1, at_add (h k).2.1 (h' k).2.1, add_mem (h k).2.2.1 (h' k).2.2.1, add_mem (h k).2.2.2 (h' k).2.2.2⟩`. Consider the case `neg z _ h`. Introduce `k`. Simplify using `only [map_neg, Prod.fst_neg, Prod.snd_neg, Pi.neg_apply]`. Conclude with `⟨at_neg (h k).1, at_neg (h k).2.1, neg_mem (h k).2.2.1, neg_mem (h k).2.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `set S := symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F Y.J) with hS`. Establish `hB1 : ∀ z ∈ T, ∀ z' ∈ AddSubgroup.closure T, At (evFin F v) (S z z') ∧ evFin F v (S z z') ∈ O`. Introduce `z hz z' hz'`. Take `⟨a, ha, hai, g, hg, rfl⟩` from `hz`. Proceed by induction on `hz' using AddSubgroup.closure_induction with`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mem z' hz'`. Take `⟨a', ha', hai', g', hg', rfl⟩` from `hz'`. Rewrite using `[hS, symp_smul_incM, map_mul, map_mul, evFin_algebraMap]`. Conclude with `⟨at_mul_right (at_mul_right ha), mul_mem (mul_mem hai hai') (h4 g hg g' hg')⟩`. Consider the case `zero => rw [hS, symp_zero_right, map_zero]`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨at_zero, zero_mem _⟩`. Consider the case `add z₁ z₂ _ _ h h' => rw [hS, symp_add_right, map_add]`. Conclude with `⟨at_add h.1 h'.1, add_mem h.2 h'.2⟩`. Consider the case `neg z₁ _ h => rw [hS, symp_neg_right, map_neg]`. Conclude with `⟨at_neg h.1, neg_mem h.2⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Establish `hB2 : ∀ z ∈ AddSubgroup.closure T, ∀ z' ∈ AddSubgroup.closure T, At (evFin F v) (S z z') ∧ evFin F v (S z z') ∈ O`. Introduce `z hz z' hz'`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz => exact hB1 z hz z' hz'`. Consider the case `zero => rw [hS, symp_zero_left, map_zero]`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨at_zero, zero_mem _⟩`. Consider the case `add z₁ z₂ _ _ h h' => rw [hS, symp_add_left, map_add]`. Conclude with `⟨at_add h.1 h'.1, add_mem h.2 h'.2⟩`. Consider the case `neg z₁ _ h => rw [hS, symp_neg_left, map_neg]`. Conclude with `⟨at_neg h.1, neg_mem h.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨indicator_int_mem_SB v, indicator_int_ne_zero v, θ, hθ, fun γ hγ => ?_⟩` and prove the remaining obligations. Establish `hγ'` using `latAtV_le X Y G hG v hγ`. Establish `hval : B.ψ (⅟(2 : AF F) * S γ γ) = 1`. Establish `hat` using `hB2 γ hγ' γ hγ'`. Rewrite using `[psi_of_at B.ψ (at_mul_left hat.1)]`.
-
-Use `h1 _ ?_` and prove the remaining obligations. Rewrite using `[map_mul, invOf_two_eq, evFin_algebraMap]`. Conclude with `mul_mem h2 hat.2`. Rewrite using `[← hS, hval, one_smul]`. Conclude with `acts_indicator co B.ψ v γ h1 h2 (fun k => (hA γ hγ' k).1) (fun k => (hA γ hγ' k).2.1) (fun k => (hA γ hγ' k).2.2.1) (fun k => (hA γ hγ' k).2.2.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVac_indicator_of_theta_k {σ : E →ₐ[F] E} (B : Base F E) (hB : _root_.UpperTheory.TP.W.GoodK σ B) {n d : ℕ} (X : Spc F E n)
     (Y : Spc F E d) (r s r' s' : ℕ) (hX : X.IsHerm σ B r s) (hY : Y.IsSkew σ B r' s')
@@ -167,7 +165,7 @@ end Tw.VacIndic
 namespace Tw.VacIndic
 open _root_.GlobalTheory
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n d X Y r s r' s' hX hY co hrat`. Conclude with `_root_.Tw.VacIndic.isVac_indicator_of_theta_k B hB X Y r s r' s' hX hY co hrat (_root_.Tw.exists_int_add_conj_eq_one_of_base_good_k B hB)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eventually_isVac_indicator_k : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ),

@@ -57,7 +57,7 @@ def LocType (D : D7) (S : ∀ k, Sys (D.host.g k)) : Prop :=
 def Sys.IsOf (S : Sys g) (L : LabelDatum g) : Prop := ∀ n f, S.e n f = eSerC L n f
 
 /- English proof (translation)
-Rewrite using `[Has, h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Sys.IsOf.has_iff {S : Sys g} {L : LabelDatum g} (h : S.IsOf L) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (f : (ZMod g)[X]) : Has S π f ↔ HasLab L π f := by
@@ -105,13 +105,13 @@ def LabParam (D : D7) (L : ∀ k, LabelDatum (D.host.g k)) (rc : Corr D) : Prop 
   ∀ k v, SerParam (eSerC (L k)) (L k).teich fun n π => D.naut.inePol (rc k v n π) (D.ntypes.tg k v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun k => (h k).choose, fun k => (h k).choose_spec⟩, fun ⟨L, h⟩ k => ⟨L k, h k⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem eSerTie_iff (D : D7) : ESerTie D ↔ ∃ L, LabTie D L :=
   ⟨fun h => ⟨fun k => (h k).choose, fun k => (h k).choose_spec⟩, fun ⟨L, h⟩ k => ⟨L k, h k⟩⟩
 
 /- English proof (translation)
-Introduce `k f` and use `((h k).2 f).trans (hS k _ f).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LabTie.sysTie {D : D7} {L : ∀ k, LabelDatum (D.host.g k)} {S : ∀ k, Sys (D.host.g k)} (h : LabTie D L)
     (hS : ∀ k, (S k).IsOf (L k)) : SysTie D S := fun k f => ((h k).2 f).trans (hS k _ f).symm
@@ -121,9 +121,9 @@ namespace Loc
 open Matrix.GeneralLinearGroup
 
 /- English proof (translation)
-Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb, add_smul, Finset.sum_add_distrib]`. Consider the case `single x c`. Rewrite using `[Finset.sum_eq_single x]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `y _ hy`. Simplify using `[Finsupp.single_eq_of_ne hy]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem alg_sum {G U : Type} [Group G] [Fintype G] [AddCommGroup U] [Module ℂ U] (ρ : Representation ℂ G U)
     (a : MonoidAlgebra ℂ G) (w : U) : ρ.asAlgebraHom a w = ∑ x, a.coeff x • ρ x w := by
@@ -138,13 +138,13 @@ theorem alg_sum {G U : Type} [Group G] [Fintype G] [AddCommGroup U] [Module ℂ 
     · simp
 
 /- English proof (translation)
-Use `set M : Mt g (a + b) := fun i j : Fin (a + b) => if (i : ℕ) < a ∧ (j : ℕ) < a then entN (x : Mt g a) i j else if a ≤ (i : ℕ) ∧ a ≤ (j : ℕ) then entN (y : Mt g b) (i - a) (j - a) else 0 with hM`. Establish `h0 : InPar a M` using `fun i j hj hi => by rw [hM]; dsimp only; rw [if_neg (by omega), if_neg (by omega)]`. Establish `h1 : tl a M = x`. Use extensionality with `i j`. Establish `hi : (i : ℕ) < a + b` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : (j : ℕ) < a + b` using `by omega`. Simplify using `[tl, entN, hM, hi, hj]`. Establish `h2 : br a b M = y`. Use extensionality with `i j`. Simplify using `[br, entN, hM]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd` using `LabelDet.det_inPar a b M h0`. Rewrite `hd` using `[h1, h2]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((det (toG M) : (ZMod g)ˣ) : ZMod g) = _`. Rewrite using `[LabelDet.det_toG M (hd ▸ mul_ne_zero x.det_ne_zero y.det_ne_zero), hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem det_blocks (a b : ℕ) (x : Gn g a) (y : Gn g b) : det (blk a b (a + b) x y) = det x * det y := by
   set M : Mt g (a + b) := fun i j : Fin (a + b) =>
@@ -167,7 +167,7 @@ theorem det_blocks (a b : ℕ) (x : Gn g a) (y : Gn g b) : det (blk a b (a + b) 
   simp
 
 /- English proof (translation)
-Rewrite using `[LabelDet.det_par a b u h0, h1, h2, LabelDet.toG_one, LabelDet.toG_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_rad {a b : ℕ} {u : Gn g (a + b)} (h0 : InPar a (u : Mt g (a + b))) (h1 : tl a (u : Mt g (a + b)) = 1)
     (h2 : br a b (u : Mt g (a + b)) = 1) : det u = 1 := by
@@ -176,7 +176,7 @@ theorem det_rad {a b : ℕ} {u : Gn g (a + b)} (h0 : InPar a (u : Mt g (a + b)))
 def ev (χ : (ZMod g)ˣ →* ℂˣ) {n : ℕ} (a : MonoidAlgebra ℂ (Gn g n)) : ℂ := ∑ y : Gn g n, a.coeff y * ((χ (det y) : ℂˣ) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[alg_sum, ev, Finset.sum_mul]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem alg_ev (χ : (ZMod g)ˣ →* ℂˣ) {n : ℕ} (a : MonoidAlgebra ℂ (Gn g n)) (v : ℂ) :
     (Model.chRep (χ.comp (det (n := Fin n)))).asAlgebraHom a v = ev χ a * v := by
@@ -184,7 +184,7 @@ theorem alg_ev (χ : (ZMod g)ˣ →* ℂˣ) {n : ℕ} (a : MonoidAlgebra ℂ (Gn
   simp [mul_assoc]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ev χ (S.e b h) ≠ 0 ↔ _`. Use `⟨fun h0 => ?_, fun h1 => h1 ▸ one_ne_zero⟩` and prove the remaining obligations. Use `alg_ev χ (S.e b h * S.e b h) 1` as an intermediate fact. Rewrite `this` using `[map_mul, Module.End.mul_apply, alg_ev, alg_ev, S.idem]`. Conclude with `mul_left_cancel₀ h0 (by simpa using this)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charIn_iff (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) (b : ℕ) (h : (ZMod g)[X]) :
     CharIn S χ b h ↔ ev χ (S.e b h) = 1 := by
@@ -195,7 +195,7 @@ theorem charIn_iff (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) (b : ℕ) (h : (ZMod
   exact mul_left_cancel₀ h0 (by simpa using this)
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `S.sum b`. Establish `h1` using `congrArg (fun a => (Model.chRep (χ.comp (det (n := Fin b)))).asAlgebraHom a 1) hT`. Simplify using `only [map_sum, LinearMap.sum_apply, alg_ev, map_one, Module.End.one_apply, mul_one] at h1`. Take `⟨h, -, hh⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (h1 ▸ one_ne_zero)`. Conclude with `⟨h, hh, S.label b h fun e => hh (by rw [e]; simp [ev])⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_charIn (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) (b : ℕ) :
     ∃ h, CharIn S χ b h ∧ h.Monic ∧ h.natDegree = b ∧ h.coeff 0 ≠ 0 := by
@@ -206,7 +206,7 @@ theorem exists_charIn (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) (b : ℕ) :
   exact ⟨h, hh, S.label b h fun e => hh (by rw [e]; simp [ev])⟩
 
 /- English proof (translation)
-Rewrite `h`, `h'`, the goal using `[charIn_iff]`. Use `S.mul a b _ rfl f f' ℂ (Model.chRep (χ.comp (det (n := Fin (a + b))))) 1 (fun u h0 h1 h2 => by simp [det_rad h0 h1 h2]) (by simpa [det_blocks, ev] using h) (by simpa [det_blocks, ev] using h')` as an intermediate fact. Rewrite `this` using `[alg_ev, mul_one]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem charIn_mul (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) {a b : ℕ} {f f' : (ZMod g)[X]} (h : CharIn S χ a f)
     (h' : CharIn S χ b f') : CharIn S χ (a + b) (f * f') := by
@@ -216,7 +216,7 @@ theorem charIn_mul (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) {a b : ℕ} {f f' : 
   rwa [alg_ev, mul_one] at this
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero`. Take `⟨f, hf, hm, hd, -⟩` from `exists_charIn S χ 0`. Rewrite `hf` using `[hm.natDegree_eq_zero.1 hd, ← pow_zero h]`. Then use the resulting hypothesis. Consider the case `succ b ih => exact pow_succ h b ▸ charIn_mul S χ ih h1`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 -/
 theorem charIn_pow (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) {h : (ZMod g)[X]} (h1 : CharIn S χ 1 h) (b : ℕ) :
     CharIn S χ b (h ^ b) := by
@@ -227,7 +227,7 @@ theorem charIn_pow (S : Sys g) (χ : (ZMod g)ˣ →* ℂˣ) {h : (ZMod g)[X]} (h
   | succ b ih => exact pow_succ h b ▸ charIn_mul S χ ih h1
 
 /- English proof (translation)
-Introduce `u` and use `by rw [Model.tame, MonoidHom.comp_apply, MonoidHom.comp_apply, Model.unitPart_unit]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tamePart_tame (χ : (ZMod g)ˣ →* ℂˣ) : TamePart (Model.tame χ) χ := fun u => by
   rw [Model.tame, MonoidHom.comp_apply, MonoidHom.comp_apply, Model.unitPart_unit]
@@ -238,7 +238,7 @@ variable {μ : ℚ_[g]ˣ →* ℂˣ} {χ : (ZMod g)ˣ →* ℂˣ} (h : TamePart 
 include h
 
 /- English proof (translation)
-Establish `h1 : det (inc g n k) = Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom (det k)` using `by ext; simp [inc, RingHom.map_det]`. Establish `h2 : det (red g n k) = Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom (det k) := by ext; simp [red, RingHom.map_det]`. Rewrite using `[h1, h2, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_inc (k : GL (Fin n) ℤ_[g]) : μ (det (inc g n k)) = χ (det (red g n k)) := by
   have h1 : det (inc g n k) = Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom (det k) := by
@@ -248,14 +248,14 @@ theorem det_inc (k : GL (Fin n) ℤ_[g]) : μ (det (inc g n k)) = χ (det (red g
   rw [h1, h2, h]
 
 /- English proof (translation)
-Rewrite using `[Model.mem_principalCongruenceFixedVectors_iff]`. Introduce `k hk`. Simplify using `[Model.detRep, det_inc h, hk]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem detCharacter_mem_principalCongruenceFixedVectors (v : ℂ) : v ∈ fixK1 (Model.detRep n μ) := by
   rw [Model.mem_principalCongruenceFixedVectors_iff]; intro k hk
   simp [Model.detRep, det_inc h, hk]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Model.red_surjective n x`. Rewrite using `[Model.lift_red _ (detCharacter_mem_principalCongruenceFixedVectors h v)]`. Simplify using `[Model.detRep, det_inc h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_lift (x : Gn g n) (v : ℂ) : Model.detRep n μ (lift g n x) v = χ (det x) * v := by
   obtain ⟨k, rfl⟩ := Model.red_surjective n x
@@ -263,13 +263,13 @@ theorem det_lift (x : Gn g n) (v : ℂ) : Model.detRep n μ (lift g n x) v = χ 
   simp [Model.detRep, det_inc h]
 
 /- English proof (translation)
-Simplify using `[actK, LinearMap.sum_apply, det_lift h, ev, Finset.sum_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actK_det (a : MonoidAlgebra ℂ (Gn g n)) (v : ℂ) : actK (Model.detRep n μ) a v = ev χ a * v := by
   simp [actK, LinearMap.sum_apply, det_lift h, ev, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Use `⟨fun ⟨v, _, hv⟩ => ?_, fun hf => ⟨1, detCharacter_mem_principalCongruenceFixedVectors h 1, by rwa [actK_det h, mul_one]⟩⟩` and prove the remaining obligations. Rewrite `hv` using `[actK_det h]`. Conclude with `left_ne_zero_of_mul hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem has_det (S : Sys g) (f : (ZMod g)[X]) : Has S (Model.detRep n μ) f ↔ CharIn S χ n f := by
   refine ⟨fun ⟨v, _, hv⟩ => ?_, fun hf => ⟨1, detCharacter_mem_principalCongruenceFixedVectors h 1, by rwa [actK_det h, mul_one]⟩⟩
@@ -277,15 +277,15 @@ theorem has_det (S : Sys g) (f : (ZMod g)[X]) : Has S (Model.detRep n μ) f ↔ 
   exact left_ne_zero_of_mul hv
 
 /- English proof (translation)
-Use `⟨Model.isIrrRep_chRep _, fun (v : ℂ) => ?_⟩` and prove the remaining obligations. Set `H : Subgroup (GL (Fin n) ℚ_[g])` to `{ carrier := {x | Model.detRep n μ x v = v} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `Model.detRep n μ (a * b) v = v`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Model.detRep n μ a⁻¹ v = v`. Use `conv_lhs => rw [← show Model.detRep n μ a v = v from ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hc : Continuous fun x : GL (Fin n) ℚ_[g] => ‖x.val.det - 1‖` using `((Units.continuous_val.matrix_det).sub continuous_const).norm`. Use `H.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset ((isOpen_lt hc continuous_const).mem_nhds (show ‖(1 : GL (Fin n) ℚ_[g]).val.det - 1‖ < 1 by simp)) fun x hx => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : ‖x.val.det - 1‖ < 1` using `hx`. Establish `h1 : ‖x.val.det‖ = 1`. Use `Padic.norm_eq_of_norm_sub_lt_right (z1 := x.val.det) (z2 := 1) (by simpa using hx')` as an intermediate fact. Simplify using `using this`. Establish `e1 : det x = Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom (PadicInt.mkUnits h1)` using `by ext; simp; rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom (PadicInt.mkUnits h1) = 1 := by`. Establish `: ((PadicInt.mkUnits h1 : ℤ_[g]ˣ) : ℤ_[g]) - 1 ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `hx'`. Rewrite `this` using `[RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext this`. Express the relevant statement in the definitionally equal form `Model.detRep n μ x v = v`. Simplify using `only [Model.detRep, Model.chRep_apply, MonoidHom.comp_apply]`. Rewrite using `[e1, h, e2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem irrSm_det : IrrSm (Rep.of (Model.detRep n μ)) := by
   refine ⟨Model.isIrrRep_chRep _, fun (v : ℂ) => ?_⟩
@@ -320,14 +320,14 @@ theorem irrSm_det : IrrSm (Rep.of (Model.detRep n μ)) := by
   rw [e1, h, e2]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨detCharacter_mem_principalCongruenceFixedVectors h v, fun u h0 h1 h2 => by rw [det_lift h, det_rad h0 h1 h2]; simp, fun y => by rw [det_lift h, det_blocks]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isParVec_det (r t : ℕ) (v : ℂ) : IsParVec (Model.detRep (r + t) μ) r t χ v :=
   ⟨detCharacter_mem_principalCongruenceFixedVectors h v, fun u h0 h1 h2 => by rw [det_lift h, det_rad h0 h1 h2]; simp,
     fun y => by rw [det_lift h, det_blocks]; simp⟩
 
 /- English proof (translation)
-Use `⟨Unit, LinearMap.pi fun _ => (⊤ : Submodule ℂ ℂ).subtype, fun x y e => Subtype.ext (congrFun e ()), fun F _ => isParVec_det h r t _, fun a _ F => ⟨trivial, fun _ => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev χ a * F.1 = actTop (Model.detRep (r + t) μ) r t a F.1`. Simplify using `[actTop, LinearMap.sum_apply, det_lift h, det_blocks, ev, Finset.sum_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem actsThrough_det (r t : ℕ) :
     ActsThrough (Rep.of (Model.detRep (r + t) μ)) r t χ (⊤ : Submodule ℂ ℂ) fun a => ev χ a • LinearMap.id := by
@@ -337,9 +337,9 @@ theorem actsThrough_det (r t : ℕ) :
   simp [actTop, LinearMap.sum_apply, det_lift h, det_blocks, ev, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Take `⟨J, ι, hi, -, he⟩` from `H`. Take `⟨hm, hj⟩` from `he a ha ⟨F, hF⟩`. Use `congrArg Subtype.val (hi (a₁ := ⟨_, hm⟩) (a₂ := ev χ a • ⟨F, hF⟩) (funext fun j => ?_))` and prove the remaining obligations. Rewrite using `[hj, map_smul, Pi.smul_apply]`. Generalize the expression as in `ι ⟨F, hF⟩ j = z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Express the relevant statement in the definitionally equal form `actTop (Model.detRep (r + t) μ) r t a (z : ℂ) = ev χ a * (z : ℂ)`. Simplify using `[actTop, LinearMap.sum_apply, det_lift h, det_blocks, ev, Finset.sum_mul, mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem act_eq_of_actsThrough_det {r t : ℕ} {χ' : (ZMod g)ˣ →* ℂˣ} {M : Type} [AddCommGroup M] [Module ℂ M]
     {W : Submodule ℂ M} {act : MonoidAlgebra ℂ (Gn g r) → Module.End ℂ M}
@@ -356,7 +356,7 @@ theorem act_eq_of_actsThrough_det {r t : ℕ} {χ' : (ZMod g)ˣ →* ℂˣ} {M :
 end Det
 
 /- English proof (translation)
-Simplify using `[Formalism.CyclotomicNorms.rootsBar]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_linear (τ : Formalism.CyclotomicNorms.Fbar g →* ℂ) (c : ZMod g) :
     ((Formalism.CyclotomicNorms.rootsBar (X - C c)).map fun x => X - C (τ x)).prod =
@@ -364,7 +364,7 @@ theorem prod_linear (τ : Formalism.CyclotomicNorms.Fbar g →* ℂ) (c : ZMod g
   simp [Formalism.CyclotomicNorms.rootsBar]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n π => ((Formalism.CyclotomicNorms.rootsBar (Classical.epsilon fun f => ∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f) v ≠ 0)).map fun x => X - C (τ x)).prod, fun n π hπ f hf => by rw [h n π hπ f _ hf (Classical.epsilon_spec (p := fun f => ∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f) v ≠ 0) ⟨f, hf⟩ …`.
+Supply the required witnesses or components.
 -/
 theorem exists_serParam (e : ∀ n : ℕ, (ZMod g)[X] → MonoidAlgebra ℂ (Gn g n)) (τ : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     (h : ∀ n (π : QRep g n), IrrSm π → ∀ f f', (∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f) v ≠ 0) →
@@ -375,7 +375,7 @@ theorem exists_serParam (e : ∀ n : ℕ, (ZMod g)[X] → MonoidAlgebra ℂ (Gn 
       rw [h n π hπ f _ hf (Classical.epsilon_spec (p := fun f => ∃ v ∈ fixK1 π.ρ, actK π.ρ (e n f) v ≠ 0) ⟨f, hf⟩)]⟩
 
 /- English proof (translation)
-Introduce `n π _` and use `⟨rfl, fun π' _ => by rw [Sigma.mk.inj_iff, heq_eq_eq, Quotient.eq]; exact and_iff_right rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isClassMap_mk : IsClassMap (LP := Σ n, Quotient (CategoryTheory.isIsomorphicSetoid (QRep g n))) Sigma.fst
     fun n π => ⟨n, Quotient.mk _ π⟩ := fun n π _ =>
@@ -409,7 +409,7 @@ def coarse (g : ℕ) [Fact g.Prime] : Sys g where
 end Loc
 
 /- English proof (translation)
-Take `⟨J, ι, hi, hp, he⟩` from `H`. Take `⟨hm, hj⟩` from `he a ha ⟨F, hF⟩`. Take `⟨j, h1⟩` from `Function.ne_iff.1 ((map_ne_zero_iff ι hi).2 (fun e => h0 (congrArg Subtype.val e) : (⟨_, hm⟩ : W) ≠ 0))`. Conclude with `⟨_, hp _ j, hj j ▸ h1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ActsThrough.exists_parVec {n r t : ℕ} {π : QRep g n} {χ : (ZMod g)ˣ →* ℂˣ} {M : Type} [AddCommGroup M] [Module ℂ M]
     {W : Submodule ℂ M} {act : MonoidAlgebra ℂ (Gn g r) → Module.End ℂ M} (H : ActsThrough π r t χ W act) {F : M}
@@ -421,25 +421,25 @@ theorem ActsThrough.exists_parVec {n r t : ℕ} {π : QRep g n} {χ : (ZMod g)ˣ
   exact ⟨_, hp _ j, hj j ▸ h1⟩
 
 /- English proof (translation)
-Rewrite using `[← Loc.has_det (Loc.tamePart_tame χ'), h.has_iff, Model.hasLab_tame L hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Sys.IsOf.charIn_one {S : Sys g} {L : LabelDatum g} (h : S.IsOf L) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g}
     (hc : IsCharLab L χ c) (χ' : (ZMod g)ˣ →* ℂˣ) : CharIn S χ' 1 (X - C c) ↔ χ' = χ := by
   rw [← Loc.has_det (Loc.tamePart_tame χ'), h.has_iff, Model.hasLab_tame L hc]
 
 /- English proof (translation)
-The claim follows from `Loc.charIn_pow S χ ((h.charIn_one hc χ).2 rfl) b`.
+A detailed English derivation is pending.
 -/
 theorem Sys.IsOf.charIn {S : Sys g} {L : LabelDatum g} (h : S.IsOf L) {χ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g}
     (hc : IsCharLab L χ c) (b : ℕ) : CharIn S χ b ((X - C c) ^ b) :=
   Loc.charIn_pow S χ ((h.charIn_one hc χ).2 rfl) b
 
 /- English proof (translation)
-Introduce `h`. Take `⟨u, hu, ho⟩` from `Model.exists_gen L`. Set `T : (ZMod g)ˣ →* ℂ` to `L.teich.comp ((algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).toMonoidHom.comp (Units.coeHom _))`. Establish `hc : IsCharLab L T.toHomUnits u` using `⟨u.ne_zero, fun w hw => by rw [hu, ← hw]; rfl⟩`. Establish `h1` using `(h.charIn_one hc _).2 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : X - C (u : ZMod g) = (X - C 1) ^ 1`. Assume the negation of the conclusion as `e`. Apply `h1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `∑ y : Gn g 1, (if X - C (u : ZMod g) = (X - C 1) ^ 1 then (1 : MonoidAlgebra ℂ (Gn g 1)) else 0).coeff y * _ = 0`. Rewrite using `[if_neg e]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h2` using `[pow_one, sub_right_inj, C_inj, Units.val_eq_one]`. Rewrite `ho` using `[h2, orderOf_one]`. Use `(Fact.out : g.Prime).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Loc.not_isOf_coarse (hg : g ≠ 2) (L : LabelDatum g) : ¬ (Loc.coarse g).IsOf L := by
   intro h
@@ -458,7 +458,7 @@ theorem Loc.not_isOf_coarse (hg : g ≠ 2) (L : LabelDatum g) : ¬ (Loc.coarse g
   omega
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Model.isCharLab_exists (L k) χ`. Rewrite using `[hc.2 u hu, ← Loc.prod_linear]`. Conclude with `h k v 1 _ (Loc.irrSm_det (Loc.tamePart_tame χ)) _ ((Model.hasLab_tame (L k) hc χ).2 rfl)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LabParam.char {D : D7} {L : ∀ k, LabelDatum (D.host.g k)} {rc : Corr D} (h : LabParam D L rc) (k : Fin 2)
     (v : D.nd.PlG k) (χ : (ZMod (D.host.g k))ˣ →* ℂˣ) (u : (ZMod (D.host.g k))ˣ)
@@ -469,9 +469,9 @@ theorem LabParam.char {D : D7} {L : ∀ k, LabelDatum (D.host.g k)} {rc : Corr D
   exact h k v 1 _ (Loc.irrSm_det (Loc.tamePart_tame χ)) _ ((Model.hasLab_tame (L k) hc χ).2 rfl)
 
 /- English proof (translation)
-Introduce `i P k v`. Take `⟨μ, χ, hμ, h1, h2⟩` from `hC.2 i k v`. Take `⟨π, hπ, h3, h4⟩` from `h2 P`. Take `⟨f, hf, hm, hd, -⟩` from `Loc.exists_charIn (S k) χ 1`. Take `⟨c, rfl⟩ : ∃ c, f = X - C c` from `⟨-f.coeff 0, by rw [C_neg, sub_neg_eq_add]; exact hm.eq_X_add_C hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨π, χ, c, fun F hF a ha h0 => h4.exists_parVec hF ha h0, Loc.charIn_pow _ χ hf _, ?_, fun f' hf' => h3 ▸ hP k v _ π hπ f' hf'⟩` and prove the remaining obligations. Rewrite using `[h1, ← Loc.prod_linear]`. Conclude with `hP k v 1 _ (Loc.irrSm_det hμ) _ ((Loc.has_det hμ (S k) _).2 hf)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locType_of_serParam {D : D7} {S : ∀ k, Sys (D.host.g k)} {rc : Corr D} (hC : LocComp D rc)
     (hP : ∀ k v, SerParam (S k).e (D.ntypes.teichC k) fun n π => D.naut.inePol (rc k v n π) (D.ntypes.tg k v)) :
@@ -487,7 +487,7 @@ theorem locType_of_serParam {D : D7} {S : ∀ k, Sys (D.host.g k)} {rc : Corr D}
   exact hP k v 1 _ (Loc.irrSm_det hμ) _ ((Loc.has_det hμ (S k) _).2 hf)
 
 /- English proof (translation)
-The claim follows from `locType_of_serParam hC fun k v => by rw [← (hL k).1, show (S k).e = eSerC (L k) from funext fun n => funext (hS k n)] exact hP k v`.
+A detailed English derivation is pending.
 -/
 theorem locType_of_ties {D : D7} {L : ∀ k, LabelDatum (D.host.g k)} {S : ∀ k, Sys (D.host.g k)} {rc : Corr D}
     (hL : LabTie D L) (hS : ∀ k, (S k).IsOf (L k)) (hC : LocComp D rc) (hP : LabParam D L rc) : LocType D S :=

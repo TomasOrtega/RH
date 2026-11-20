@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.I2
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ n v _ x hx`. Take `⟨w, hw, hle⟩` from `exists_int_comb_norm_sub_sq_le n v hx`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hw`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ i, ((c i : ℤ) : ℝ) • v i = ∑ i, c i • v i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Int.cast_smul_eq_zsmul]`. Rewrite using `[hsum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nearestPlane_rounding : Ext.NearestPlane := by
   intro V _ _ n v _ x hx

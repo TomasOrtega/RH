@@ -8,7 +8,7 @@ open scoped Classical
 namespace GlobalTheory.PlaceIdemUniq
 
 /- English proof (translation)
-Introduce `D a b PP PP' ha hb`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `Formalism.IndefR.Fin.idemAt_eq_split (Formalism.IndefR.Fin.idemAt_split ha) ha hb`. Conclude with `Formalism.IndefR.Fin.idem_orth (Formalism.IndefR.Fin.idemAt_split ha) ha hb h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem idemAt_unique_orth : ∀ (D : D7) (a b : AE D) (PP PP' : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt a PP → Formalism.L2.NTheta.IsIdemAt b PP' → (PP = PP' → a = b) ∧ (PP ≠ PP' → a * b = 0) := by
   intro D a b PP PP' ha hb

@@ -25,21 +25,17 @@ noncomputable section
 namespace GlobalTheory.ThetaFiniteIso
 
 /- English proof (translation)
-Introduce `G N' J K _ _ b Q ho _`. Use `haveI : NeZero (N' ^ 2) := ⟨pow_ne_zero _ ho.pos.ne'⟩`. Set `T : Over (Sp K)` to `Over.mk (𝟙 (Sp K))`. Set `T₀ : Over (Sp K)` to `Over.mk (T.hom ≫ 𝟙 (Sp K))`. Set `fn : K → Γ(T.left, ⊤)` to `fun c => (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Tor` to `{y : T₀ ⟶ Q.A // y ^ (N' ^ 2) = 1}`. Establish `e : T₀ ≅ 𝟙_ (Over (Sp K))` using `(CartesianMonoidalCategory.isTerminalTensorUnit).uniqueUpToIso (IsTerminal.ofUniqueHom (fun Y => Over.homMk Y.hom (by simp [T₀, T])) (fun Y m => Over.OverMorphism.ext (by simpa [T₀, T] using Over.w m))) |>.symm`. Use `haveI hTor : Finite Tor := by`. Use `GlobalTheory.AbTorsionFinite.finite_torsion K Q.A Q.isAb (N' ^ 2) (Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ ho.pos.ne'))` as an intermediate fact. Use `Finite.of_injective (fun y : Tor => (⟨e.inv ≫ y.1, by rw [← MonObj.comp_pow, y.2, MonObj.comp_one]⟩ : {x : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ Q.A // x ^ (N' ^ 2) = 1})) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `y y' h`. Conclude with `Subtype.ext ((cancel_epi e.inv).1 (congrArg Subtype.val h))`. Set `ch : (Ix G (N' ^ 2) → Tor) → (Ix G (N' ^ 2) → K)` to `fun l => if h : ∃ v : Ix G (N' ^ 2) → K, IsThetaPt Q N' (fun a => (l a).1) (fun a => fn (v a)) then h.choose else 0`. Use `⟨Set.range ch, Set.finite_range ch, fun t ⟨φ, hφ, hw⟩ => ?_⟩` and prove the remaining obligations. Use `haveI := hφ`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x : Ix G (N' ^ 2) → (T ⟶ t.pol.A)` to `fun a => (Over.homMk (𝟙 (Sp K)) (by simp [T]) : T ⟶ Out.baseOver (Sp K)) ≫ t.lab a`. Establish `hk : ∀ a, x a ^ (N' ^ 2) = 1` using `fun a => by`. Conclude with `(MonObj.comp_pow _ _ _).symm.trans ((congrArg (_ ≫ ·) (GlobalTheory.ThetaPtUp.lab_pow t a)).trans (MonObj.comp_one _))`. Set `x₀ : Ix G (N' ^ 2) → (T₀ ⟶ Q.A)` to `fun a => Over.homMk ((x a).left ≫ φ.hom.left) (by`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((x a).left ≫ ·) (Over.w φ.hom)).trans ((Over.w (x a)).trans (Category.comp_id _).symm)))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ∀ a, (x₀ a).left = (x a).left ≫ φ.hom.left` using `fun a => rfl`. Establish `hp : IsGrpPullback t.pol.A Q.A (𝟙 (Sp K)) φ.hom.left` using `isGrpPullback_of_iso φ`. Establish `key : ∀ v : Ix G (N' ^ 2) → K, t.HasTh (𝟙 _) v ↔ IsThetaPt Q N' x₀ (fun a => fn (v a))` using `fun v => GlobalTheory.ThetaPtUp.isThetaPt_iff (P := t.pol) (P₀ := Q) (T := T) hp hw hx hk _`. Set `r : T₀ ⟶ T` to `Over.homMk (𝟙 (Sp K)) (by simp [T₀, T])`. Establish `hk₀ : ∀ a, x₀ a ^ (N' ^ 2) = 1` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e₁ : x₀ a = r ≫ x a ≫ φ.hom` using `Over.OverMorphism.ext (Category.id_comp _).symm`. Establish `h2 : (x a ≫ φ.hom) ^ (N' ^ 2) = 1`. Use `map_pow (IsMonHom.monoidHom φ.hom T) (x a) (N' ^ 2)` as an intermediate fact. Establish `h1 : IsMonHom.monoidHom φ.hom T (x a ^ (N' ^ 2)) = 1` using `by erw [hk a]; exact map_one _`. Conclude with `this.symm.trans h1`.
-
-Rewrite using `[e₁, ← MonObj.comp_pow, h2, MonObj.comp_one]`. Set `l : Ix G (N' ^ 2) → Tor` to `fun a => ⟨x₀ a, hk₀ a⟩`. Take `⟨v, hv⟩` from `GlobalTheory.FamRep.exists_hasTh_field GlobalTheory.firstFiveLaws.1 GlobalTheory.firstFiveLaws.2.1 ho t K (𝟙 _)`. Establish `h : ∃ v : Ix G (N' ^ 2) → K, IsThetaPt Q N' (fun a => (l a).1) (fun a => fn (v a))` using `⟨v, (key v).1 hv⟩`. Use `⟨ch l, ⟨l, rfl⟩, (key _).2 ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [ch, dif_pos h]`. Conclude with `h.choose_spec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaPts_finite : ∀ (G N' : ℕ) (J : Type) (K : Type) [Field K] [IsAlgClosed K] (b : TBase K (N' ^ 2)) (Q : PolAV (Sp K)), Odd N' → 3 ≤ N' → ∃ V : Set (Ix G (N' ^ 2) → K), V.Finite ∧ ∀ t : TObj G (N' ^ 2) J b (𝟙 (Sp K)), (∃ φ : t.A ≅ Q.A, IsMonHom φ.hom ∧ LBIso t.L (Q.L.pull φ.hom.left)) → ∃ v ∈ V, t.HasTh (𝟙 _) v := by
   intro G N' J K _ _ b Q ho _

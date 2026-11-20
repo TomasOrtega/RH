@@ -80,7 +80,7 @@ def SplitRepresentativesCM : Prop :=
     ∀ N D : ℕ, N ≠ 0 → D ≠ 0 → HasSplitRepresentatives c G (L : Set (Fin n → E)) N D
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _` and use `H F E`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SplitRepresentatives.cm (H : SplitRepresentatives) : SplitRepresentativesCM :=
   fun F E _ _ _ _ _ _ _ => H F E

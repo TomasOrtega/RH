@@ -12,13 +12,13 @@ open MeasureTheory NumberField IsDedekindDomain Matrix in
 open scoped InnerProductSpace ComplexOrder TensorProduct Pointwise Classical in
 
 /- English proof (translation)
-Introduce `I g hg`. Establish `hg0 : g ≠ 0` using `by omega`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨b, t, hbt⟩` from `_root_.GlobalTheory.RowLev.Inhab.exists_approx (F := I.F) (E := I.E) hg0 ⟨z, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨b, t, t.2, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val hbt`. Simplify `h` using `[_root_.GlobalTheory.RowLev.Inhab.psi]`. Introduce `a`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ha`. Establish `hint : IsIntegral ℤ a` using `_root_.Formalism.UG.P.csGlob_int a ha`. Conclude with `⟨⟨a, hint⟩, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `_root_.Formalism.UG.CS.incl_int b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hF : IsUnit (g : I.F)` using `isUnit_iff_ne_zero.mpr (by exact_mod_cast hg0)`. Simplify using `using hF.map (algebraMap I.F (I.E ⊗[I.F] _root_.Formalism.MainNotions.S.Af I.F))`. Introduce `z hz`. Conclude with `_root_.Formalism.UG.P.csDual_sig_mem _ hz`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RowLev.intAf_approx_inter_unit_conj : ∀ (I : _root_.Formalism.MainNotions.S.AutInst) (g : ℕ), 1 ≤ g →
     (∀ z ∈ _root_.Formalism.MainNotions.S.IntAf I.F I.E, ∃ a : 𝓞 I.E, ∃ z' ∈ _root_.Formalism.MainNotions.S.IntAf I.F I.E,

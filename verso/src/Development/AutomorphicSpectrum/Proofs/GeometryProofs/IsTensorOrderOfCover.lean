@@ -16,7 +16,7 @@ open scoped TensorProduct
 variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T]
 
 /- English proof (translation)
-Establish `hle : x.appLE ⊤ ⊤ le_top = x.appTop`. Simplify using `only [Scheme.Hom.appLE]`. Conclude with `Category.comp_id _`. Simplify using `only [valAt]`. Rewrite using `[hle]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_top {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X) (s : Γ(X, ⊤)) :
     valAt x ⊤ le_top s = (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom (x.appTop.hom s) := by
@@ -27,27 +27,23 @@ theorem valAt_top {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCa
   rw [hle]
 
 /- English proof (translation)
-Set `I` to `{t : T // Set.range (Γ.pt t).left ⊆ Set.range c}`. Establish `lift : ∀ i : I, ∃ e : B →ₐ[R] FractionRing R, Spec.map (CommRingCat.ofHom e.toRingHom) ≫ c = (Γ.pt i.1).left`. Introduce `i`. Set `g` to `IsOpenImmersion.lift c (Γ.pt i.1).left i.2`. Establish `hg : g ≫ c = (Γ.pt i.1).left` using `IsOpenImmersion.lift_fac _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : B →+* FractionRing R` to `(Spec.preimage g).hom`. Establish `hφ : Spec.map (CommRingCat.ofHom φ) = g` using `Spec.map_preimage g`. Establish `hcomp : φ.comp (algebraMap R B) = algebraMap R (FractionRing R)`. Establish `h1 : Spec.map (CommRingCat.ofHom (φ.comp (algebraMap R B))) = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, hφ, ← hc, ← Category.assoc, hg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.w (Γ.pt i.1)`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Use `⟨{ φ with commutes' := fun r => congr($hcomp r) }, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (· ≫ c) hφ).trans hg`. Use `choose e he using lift`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨I, inferInstance, Subtype.val, e, he, fun b hb => ?_⟩` and prove the remaining obligations. Use `haveI : Flat Γ.G.hom := Γ.flat`. Use `haveI : Module.Flat R B := by`. Establish `: Flat (Spec.map (CommRingCat.ofHom (algebraMap R B)))` using `hc ▸ inferInstance`. Rewrite `this` using `[Flat.SpecMap_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(RingHom.flat_algebraMap_iff).1 this`. Use `haveI : IsReduced (pullback Γ.G.hom (genPt R).hom) := Γ.gen_reduced`. Establish `hred : _root_.IsReduced (B ⊗[R] FractionRing R)`. Establish `h1 : IsReduced (pullback (c ≫ Γ.G.hom) (genPt R).hom)` using `isReduced_of_isOpenImmersion ((pullbackRightPullbackFstIso Γ.G.hom (genPt R).hom c).inv ≫ pullback.snd _ _)`. Rewrite `h1` using `[hc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2 : IsReduced (pullback (Spec.map (CommRingCat.ofHom (algebraMap R B))) (Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))))` using `h1`. Establish `h3` using `isReduced_of_isOpenImmersion (pullbackSpecIso R B (FractionRing R)).inv`. Conclude with `(affine_isReduced_iff _).1 h3`. Establish `hinj : Function.Injective (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] FractionRing R)` using `Algebra.TensorProduct.includeLeft_injective (IsFractionRing.injective R (FractionRing R))`. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[map_zero]`. Use `IsNilpotent.eq_zero (nilpotent_iff_mem_prime.2 fun Q hQ => ?_)` and prove the remaining obligations. Set `P : Spec (CommRingCat.of B)` to `PrimeSpectrum.comap (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] FractionRing R).toRingHom ⟨Q, hQ⟩`. Establish `hP : (Γ.G.hom (c P)).asIdeal = ⊥`. Rewrite using `[← Scheme.Hom.comp_apply, hc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `eq_bot_iff.2 fun r hr => ?_` and prove the remaining obligations. Establish `h1 : (Algebra.TensorProduct.includeLeft : B →ₐ[R] B ⊗[R] FractionRing R) (algebraMap R B r) ∈ Q` using `hr`. Rewrite `h1` using `[AlgHom.commutes, ← (Algebra.TensorProduct.includeRight : FractionRing R →ₐ[R] B ⊗[R] FractionRing R).commutes]`. Assume the negation of the conclusion as `h0`. Establish `h2 : algebraMap R (FractionRing R) r ≠ 0` using `fun h => h0 ((injective_iff_map_eq_zero _).1 (IsFractionRing.injective R (FractionRing R)) r h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ h1 ((Ne.isUnit h2).map _))`. Take `⟨t, x, hx⟩` from `Γ.pt_onto _ hP`. Establish `hr : Set.range (Γ.pt t).left ⊆ Set.range c`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨P, by rw [← hx, Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) x y]⟩`.
-
-Establish `hPx : Spec.map (CommRingCat.ofHom (e ⟨t, hr⟩).toRingHom) x = P` using `c.isOpenEmbedding.injective (by rw [← Scheme.Hom.comp_apply, he, hx])`. Establish `hbP : b ∈ P.asIdeal`. Rewrite using `[← hPx]`. Express the relevant statement in the definitionally equal form `e ⟨t, hr⟩ b ∈ PrimeSpectrum.asIdeal x`. Rewrite using `[hb]`.
-
-Conclude with `Ideal.zero_mem _`. Conclude with `hbP`.
+A detailed English derivation is pending.
 -/
 theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra R B]
     (c : Spec (CommRingCat.of B) ⟶ Γ.G.left) [IsOpenImmersion c]
@@ -120,11 +116,11 @@ theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra
   exact hbP
 
 /- English proof (translation)
-Set `𝒰` to `Γ.G.left.affineOpenCover`. Use `Scheme.OpenCover.ext_elem s 0 𝒰.openCover fun k => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Set `c : Spec (CommRingCat.of (𝒰.X k)) ⟶ Γ.G.left` to `𝒰.f k`. Use `haveI : IsOpenImmersion c := 𝒰.openCover.map_prop k`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra R (𝒰.X k) := (Spec.preimage (c ≫ Γ.G.hom)).hom.toAlgebra`. Take `⟨I, _, τ, e, he, hi⟩` from `chart_sep Γ (𝒰.X k) c (Spec.map_preimage (c ≫ Γ.G.hom)).symm`. Establish `h0` using `hi ((Scheme.ΓSpecIso (CommRingCat.of (𝒰.X k))).hom (c.appTop s)) fun i => by`. Establish `h1` using `hs (τ i)`. Rewrite `h1` using `[← he i, valAt_top, Scheme.Hom.comp_appTop]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congr($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (e i).toRingHom)) (c.appTop s))).symm.trans h1`. Establish `h2` using `congr((Scheme.ΓSpecIso (CommRingCat.of (𝒰.X k))).inv $h0)`. Rewrite `h2` using `[Iso.hom_inv_id_apply, map_zero]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_zero [Finite T] (Γ : QFGroup R T) (s : Γ(Γ.G.left, ⊤))
     (hs : ∀ t, valAt (Γ.pt t).left ⊤ le_top s = 0) : s = 0 := by
@@ -144,11 +140,11 @@ theorem sec_zero [Finite T] (Γ : QFGroup R T) (s : Γ(Γ.G.left, ⊤))
   exact h2
 
 /- English proof (translation)
-Use `letI : Algebra R A₁ := (Spec.preimage (c₁ ≫ Γ.G.hom)).hom.toAlgebra`. Use `letI : Algebra R A₂ := (Spec.preimage (c₂ ≫ Γ.G.hom)).hom.toAlgebra`. Establish `h₁ : c₁ ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R A₁))` using `(Spec.map_preimage (c₁ ≫ Γ.G.hom)).symm`. Establish `h₂ : c₂ ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R A₂))` using `(Spec.map_preimage (c₂ ≫ Γ.G.hom)).symm`. Use `haveI : Flat Γ.G.hom := Γ.flat`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Flat R A₁ := by`. Establish `: Flat (Spec.map (CommRingCat.ofHom (algebraMap R A₁)))` using `h₁ ▸ inferInstance`. Rewrite `this` using `[Flat.SpecMap_iff]`. Conclude with `(RingHom.flat_algebraMap_iff).1 this`. Take `⟨I, _, τ, e, he, hi⟩` from `chart_sep Γ A₁ c₁ h₁`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨J, _, τ', f, hf, hj⟩` from `chart_sep Γ A₂ c₂ h₂`. Use `CharMul.pullback_sep e f hi hj _ _ h₁ h₂ u fun i j w hw₁ hw₂ => hu (τ i) (τ' j) w ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hw₁, he]`. Rewrite using `[← Category.assoc, hw₂, hf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_pair [Finite T] (Γ : QFGroup R T) (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂]
     (c₁ : Spec (CommRingCat.of A₁) ⟶ Γ.G.left) (c₂ : Spec (CommRingCat.of A₂) ⟶ Γ.G.left)
@@ -174,13 +170,11 @@ theorem chart_pair [Finite T] (Γ : QFGroup R T) (A₁ A₂ : Type) [CommRing A�
   · rw [← Category.assoc, hw₂, hf]
 
 /- English proof (translation)
-Set `𝒰` to `Γ.G.left.affineOpenCover`. Use `Scheme.OpenCover.ext_elem (X := pullback Γ.G.hom Γ.G.hom) u 0 (Scheme.Pullback.openCoverOfLeftRight 𝒰.openCover 𝒰.openCover Γ.G.hom Γ.G.hom) fun ij => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Take `⟨i, j⟩` from `ij`. Use `chart_pair Γ (𝒰.X i) (𝒰.X j) (𝒰.f i) (𝒰.f j) (𝒰.openCover.map_prop i) (𝒰.openCover.map_prop j) _ fun a b w h₁ h₂ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : w ≫ (Scheme.Pullback.openCoverOfLeftRight 𝒰.openCover 𝒰.openCover Γ.G.hom Γ.G.hom).f (i, j) = (lift (Γ.pt a) (Γ.pt b)).left`. Rewrite using `[Over.lift_left, Scheme.Pullback.openCoverOfLeftRight_f]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans (Eq.trans ?_ (pullback.lift_fst _ _ _).symm)` and prove the remaining obligations. Conclude with `(congrArg (w ≫ ·) (pullback.lift_fst _ _ _)).trans h₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Category.assoc _ _ _).trans (Eq.trans ?_ (pullback.lift_snd _ _ _).symm)` and prove the remaining obligations. Conclude with `(congrArg (w ≫ ·) (pullback.lift_snd _ _ _)).trans h₂`. Establish `h0` using `hu a b`. Rewrite `h0` using `[← hw]`. Establish `e` using `congr($(Scheme.Hom.comp_appTop w ((Scheme.Pullback.openCoverOfLeftRight 𝒰.openCover 𝒰.openCover Γ.G.hom Γ.G.hom).f (i, j))) u)`.
-
-Conclude with `e.symm.trans h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sec_prod_zero [Finite T] (Γ : QFGroup R T) (u : Γ((Γ.G ⊗ Γ.G).left, ⊤))
     (hu : ∀ a b, (lift (Γ.pt a) (Γ.pt b)).left.appTop u = 0) : u = 0 := by
@@ -209,27 +203,27 @@ def pullSec {A : Type} [CommRing A] {X : Scheme.{0}} (j : X ⟶ Spec (CommRingCa
   j.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom f)
 
 /- English proof (translation)
-The claim follows from `ValEmb.valAt_pull j x (Spec.preimage (x ≫ j)).hom (Spec.map_preimage _).symm f`.
+A detailed English derivation is pending.
 -/
 theorem valAt_pullSec {A B : Type} [CommRing A] [CommRing B] {X : Scheme.{0}} (j : X ⟶ Spec (CommRingCat.of A))
     (x : Spec (CommRingCat.of B) ⟶ X) (f : A) : valAt x ⊤ le_top (pullSec j f) = valSpec (x ≫ j) f :=
   ValEmb.valAt_pull j x (Spec.preimage (x ≫ j)).hom (Spec.map_preimage _).symm f
 
 /- English proof (translation)
-Introduce `t` and use `ValEmb.valAt_pull j (Γ.pt t).left _ (hj.pt t) f`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasValues_pullSec (Γ : QFGroup R T) {A : Subalgebra R (T → R)} {j : Γ.G.left ⟶ Spec (CommRingCat.of A)}
     (hj : Γ.IsEmb A j) (f : A) : Γ.HasValues (pullSec j f) (f : T → R) := fun t =>
   ValEmb.valAt_pull j (Γ.pt t).left _ (hj.pt t) f
 
 /- English proof (translation)
-Introduce `B _ β y z f m a b hf`. Establish `univ : (fst Γ.G Γ.G * snd Γ.G Γ.G).left.appTop (pullSec j f) = ∑ k, (fst Γ.G Γ.G).left.appTop (pullSec j (a k)) * (snd Γ.G Γ.G).left.appTop (pullSec j (b k))`. Rewrite using `[← sub_eq_zero]`. Use `sec_prod_zero Γ _ fun s t => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sum, CharMul.pull, comp_mul, lift_fst, lift_snd, ← map_mul, CharMul.appTop_pt Γ _ _ (hasValues_pullSec Γ hj f), hf, map_sum, map_sum, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, CharMul.pull, CharMul.pull, lift_fst, lift_snd, CharMul.appTop_pt Γ _ _ (hasValues_pullSec Γ hj (a k)), CharMul.appTop_pt Γ _ _ (hasValues_pullSec Γ hj (b k))]`. Establish `h` using `congrArg (lift y z).left.appTop univ`. Rewrite `h` using `[CharMul.pull, comp_mul, lift_fst, lift_snd, map_sum]`. Rewrite using `[← valAt_pullSec, valAt_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom h).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← valAt_pullSec, ← valAt_pullSec, valAt_top, valAt_top, ← map_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, CharMul.pull, CharMul.pull, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isHomEmb_of_isEmb [Finite T] (Γ : QFGroup R T) (A : Subalgebra R (T → R))
     (j : Γ.G.left ⟶ Spec (CommRingCat.of A)) (hj : Γ.IsEmb A j) : IsHomEmb Γ A j := by
@@ -254,17 +248,17 @@ theorem isHomEmb_of_isEmb [Finite T] (Γ : QFGroup R T) (A : Subalgebra R (T →
   rw [map_mul, CharMul.pull, CharMul.pull, lift_fst, lift_snd]
 
 /- English proof (translation)
-Set `p : T → (Over.mk ((genPt R).hom ≫ x) ⟶ G)` to `fun t => Over.homMk ((Γ.pt t).left ≫ i) (by`. Express the relevant statement in the definitionally equal form `((Γ.pt t).left ≫ i) ≫ G.hom = (genPt R).hom ≫ x`. Rewrite using `[Category.assoc, hi.isOver, ← Category.assoc, Over.w (Γ.pt t)])`. Establish `hp : ∀ t, (p t).left = (Γ.pt t).left ≫ i` using `fun t => rfl`. Establish `ex : ∀ t, ∃ u, (Γ.pt u).left ≫ i = (Γ.pt t).left ≫ i ≫ a.left`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Establish `h1 : p t ^ N = 1` using `(hi.kernel _ (p t)).2 ⟨Γ.pt t, rfl⟩`. Establish `h2 : (p t ≫ a) ^ N = 1`. Rewrite using `[← MonObj.pow_comp, h1, MonObj.one_comp]`. Take `⟨y, hy⟩` from `(hi.kernel _ (p t ≫ a)).1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `QFGroup.exists_eq_comp_pt R T Γ (FractionRing R) (RingHom.id _) y.left (Over.w y)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hu' : y.left = (Γ.pt u).left` using `by simpa using hu`. Rewrite using `[← hu', hy, Over.comp_left, hp, Category.assoc]`. Use `choose α hα using ex`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `inj : ∀ s t, (Γ.pt s).left ≫ i = (Γ.pt t).left ≫ i → s = t`. Introduce `s t h`. Establish `h'` using `hi.inj _ _ _ h`. Set `q : Spec (CommRingCat.of (FractionRing R))` to `(⊥ : PrimeSpectrum (FractionRing R))`. Conclude with `Γ.pt_inj _ _ q q (by rw [h'])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmul : ∀ s t, p (s * t) = p s * p t`. Introduce `s t`. Use `ext1`. Rewrite using `[hi.mul _ (Γ.pt s) (Γ.pt t) (p s) (p t) rfl rfl, hp, map_mul]`. Establish `hpa : ∀ t, p (α t) = p t ≫ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t`. Use `ext1`. Rewrite using `[hp, hα, Over.comp_left, hp, Category.assoc]`. Use `⟨MonoidHom.mk' α fun s t => inj _ _ ?_, hα⟩` and prove the remaining obligations. Rewrite using `[← hp, ← hp, hmul, hpa, hpa, hpa, hmul, MonObj.mul_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inducesOnPts (Γ : QFGroup R T) {S : Scheme.{0}} {G : Over S} [GrpObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ} {i : Γ.G.left ⟶ G.left} (hi : Γ.IsTorsionAlong G x N i)
@@ -302,28 +296,28 @@ theorem exists_inducesOnPts (Γ : QFGroup R T) {S : Scheme.{0}} {G : Over S} [Gr
   rw [← hp, ← hp, hmul, hpa, hpa, hpa, hmul, MonObj.mul_comp]
 
 /- English proof (translation)
-Simplify using `only [valAt_top, map_add, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valAt_add_one {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X)
     (a : Γ(X, ⊤)) : valAt x ⊤ le_top (a + 1) = valAt x ⊤ le_top a + 1 := by
   simp only [valAt_top, map_add, map_one]
 
 /- English proof (translation)
-Simplify using `only [valAt_top, map_sub, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valAt_sub_one {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X)
     (a : Γ(X, ⊤)) : valAt x ⊤ le_top (a - 1) = valAt x ⊤ le_top a - 1 := by
   simp only [valAt_top, map_sub, map_one]
 
 /- English proof (translation)
-Simplify using `only [valAt_top, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valAt_sub' {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X)
     (a b : Γ(X, ⊤)) : valAt x ⊤ le_top (a - b) = valAt x ⊤ le_top a - valAt x ⊤ le_top b := by
   simp only [valAt_top, map_sub]
 
 /- English proof (translation)
-Simplify using `[valAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valAt_mul {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (a b : Γ(X, U)) : valAt x U h (a * b) = valAt x U h a * valAt x U h b := by
@@ -335,11 +329,11 @@ variable (Γ : QFGroup R T) {S : Scheme.{0}} {G : Over S} [GrpObj G] {x : Spec (
   (i : Γ.G.left ⟶ G.left) {L : Type} [AddCommGroup L] [Module R L] (M : LieModel G x L) (N : ℕ)
 
 /- English proof (translation)
-Establish `h1 : (f.1.1 : T → R) 1 = 0` using `f.2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩ e`. Take `⟨v, h₁, h₂, h₃⟩` from `h e`. Use `⟨v, ⟨h₁, h₂⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h₃` using `[h1, map_zero, TrivSqZeroExt.inl_zero, zero_add]`. Rewrite using `[← h₃]`. Establish `hz : s - pullSec j f.1 = 0` using `sec_zero Γ _ fun t => by`. Rewrite using `[valAt_sub', hs t, hasValues_pullSec Γ hj f.1 t, sub_self]`. Rewrite using `[sub_eq_zero.1 hz, valAt_pullSec]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨pullSec j f.1, hasValues_pullSec Γ hj f.1, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, ⟨h₁, h₂⟩, h₃⟩` from `h e`. Use `⟨v, h₁, h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, map_zero, TrivSqZeroExt.inl_zero, zero_add, valAt_pullSec, h₃]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDerAtOne_iff [Finite T] (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤)))
     (hj : Γ.IsEmb (Γ.btOrder ⊤) j) (f : augIdeal (Γ.btOrder ⊤)) (w : Module.Dual R L) :
@@ -363,7 +357,7 @@ theorem isDerAtOne_iff [Finite T] (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.bt
     rw [h1, map_zero, TrivSqZeroExt.inl_zero, zero_add, valAt_pullSec, h₃]
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `h`. Use `Algebra.subset_adjoin fun t g _ => ⟨⊤, trivial, pullSec Γ.G.hom ((χ t : Rˣ) : R) * s, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : valAt (Γ.pt u).left ⊤ hu (pullSec Γ.G.hom ((χ t : Rˣ) : R)) = algebraMap R (FractionRing R) ((χ t : Rˣ) : R)` using `ValEmb.valAt_pull Γ.G.hom (Γ.pt u).left _ (Over.w (Γ.pt u)) _`. Rewrite using `[valAt_mul, h1, hs u, ← map_mul]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem char_mem_of_isHT (χ : T →* Rˣ) (w : Module.Dual R L) (h : Γ.IsHT i M N χ w) :
     (fun t => ((χ t : Rˣ) : R)) ∈ Γ.btOrder ⊤ := by
@@ -376,13 +370,13 @@ theorem char_mem_of_isHT (χ : T →* Rˣ) (w : Module.Dual R L) (h : Γ.IsHT i 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Use `⟨s - 1, fun t => ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[valAt_sub_one, hs t, map_sub, map_one]`. Take `⟨v, h₁, h₂, h₃⟩` from `h e`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨v, h₁, h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[valAt_sub_one, h₃]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨s, hs, h⟩`. Use `⟨s + 1, fun t => ?_, fun e => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[valAt_add_one, hs t]`. Simplify using the standard rewrite rules. Take `⟨v, h₁, h₂, h₃⟩` from `h e`. Use `⟨v, h₁, h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[valAt_add_one, h₃]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isHT_iff_isDerAtOne (χ : T →* Rˣ) (w : Module.Dual R L) :
     Γ.IsHT i M N χ w ↔ Γ.IsDerAtOne i M N (fun t => ((χ t : Rˣ) : R) - 1) w := by
@@ -405,7 +399,7 @@ theorem isHT_iff_isDerAtOne (χ : T →* Rˣ) (w : Module.Dual R L) :
 
 omit [IsDomain R] in
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `only [Submodule.mem_top, true_and, Nat.cast_smul_eq_nsmul]`. Conclude with `⟨fun ⟨u, h⟩ => ⟨u, h.symm⟩, fun ⟨u, h⟩ => ⟨u, h.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_span_smul_top {V : Type} [AddCommGroup V] [Module R V] (w : V) :
     w ∈ Ideal.span {(N : R)} • (⊤ : Submodule R V) ↔ ∃ u, w = N • u := by
@@ -414,13 +408,13 @@ theorem mem_span_smul_top {V : Type} [AddCommGroup V] [Module R V] (w : V) :
   exact ⟨fun ⟨u, h⟩ => ⟨u, h.symm⟩, fun ⟨u, h⟩ => ⟨u, h.symm⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨θ, ⟨hs, hd⟩, hk, hχ⟩`. Establish `hker : Ideal.span {(N : R)} • (⊤ : Submodule R (Module.Dual R L)) = LinearMap.ker θ`. Use extensionality with `w`. Rewrite using `[mem_span_smul_top, LinearMap.mem_ker, hk]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Set `θ' : OmegaMod R L N ≃ₗ[R] omega (Γ.btOrder ⊤)` to `(Submodule.quotEquivOfEq _ _ hker).trans (θ.quotKerEquivOfSurjective hs)`. Establish `hθ : ∀ w, θ' (Submodule.Quotient.mk w) = θ w` using `fun w => rfl`. Use `⟨θ', fun w f => ?_, fun χ w => ⟨fun h => ⟨char_mem_of_isHT Γ i M N χ w h, ?_⟩, fun ⟨hm, h⟩ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hθ, hd, isDerAtOne_iff Γ i M N j hj]`. Rewrite using `[hθ, hχ χ w h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hθ, OrderApi.dlogChar_of_mem _ _ hm, hd]`. Conclude with `(isHT_iff_isDerAtOne Γ i M N χ w).2 h`. Introduce and unpack `⟨θ, hd, hχ⟩`. Use `⟨θ.toLinearMap ∘ₗ Submodule.mkQ _, ⟨θ.surjective.comp (Submodule.mkQ_surjective _), fun f w => ?_⟩, fun w => ?_, fun χ w h => ((hχ χ w).1 h).2⟩` and prove the remaining obligations. Rewrite using `[isDerAtOne_iff Γ i M N j hj]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd w f`. Rewrite using `[← mem_span_smul_top (R := R), ← Submodule.Quotient.mk_eq_zero]`. Conclude with `θ.map_eq_zero_iff`.
+A detailed English derivation is pending.
 -/
 theorem omega_iff [Finite T] (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤)))
     (hj : Γ.IsEmb (Γ.btOrder ⊤) j) :
@@ -454,9 +448,9 @@ theorem omega_iff [Finite T] (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder
 end Omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Take `⟨aT, haT⟩` from `exists_inducesOnPts Γ hi a`. Conclude with `⟨aT, haT, h a aT haT⟩`. Introduce `h a ha α hα`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨aT, haT, h'⟩` from `h a ha`. Rewrite using `[InducesOnPts.unique hi hα haT]`. Conclude with `h'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endo_iff (Γ : QFGroup R T) {S : Scheme.{0}} {G : Over S} [GrpObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ} {i : Γ.G.left ⟶ G.left} (hi : Γ.IsTorsionAlong G x N i)
@@ -476,7 +470,7 @@ theorem endo_iff (Γ : QFGroup R T) {S : Scheme.{0}} {G : Over S} [GrpObj G]
 omit [IsDomain R] [CommGroup T] in
 
 /- English proof (translation)
-Use `exists_congr fun e => ⟨fun h r f t => ?_, fun h a t => by rw [h, _root_.one_mul]⟩` and prove the remaining obligations. Establish `: r ⊗ₜ[R] f = r • ((1 : R') ⊗ₜ[R] f)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[this, map_smul, ← h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tensor_iff {R' : Type} [CommRing R'] [Algebra R R'] (A : Subalgebra R (T → R))
     (A' : Subalgebra R' (T → R')) :
@@ -488,21 +482,19 @@ theorem tensor_iff {R' : Type} [CommRing R'] [Algebra R R'] (A : Subalgebra R (T
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ T _ Γ A j hj ho R' _ _ _ Γ' F hF ev hev`. Set `iL : R' →+* R' ⊗[R] A` to `Algebra.TensorProduct.includeLeftRingHom`. Set `iR : A →+* R' ⊗[R] A` to `(Algebra.TensorProduct.includeRight (R := R) (A := R') (B := A)).toRingHom`. Establish `sq : IsPullback (Spec.map (CommRingCat.ofHom iL)) (Spec.map (CommRingCat.ofHom iR)) (Spec.map (CommRingCat.ofHom (algebraMap R R'))) (Spec.map (CommRingCat.ofHom (algebraMap R A)))` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct R R' A)`. Establish `w : Γ'.G.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')) = (F ≫ j) ≫ Spec.map (CommRingCat.ofHom (algebraMap R A))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hj.isOver, hF.cart.w]`. Set `j'` to `sq.lift Γ'.G.hom (F ≫ j) w`. Establish `h1 : j' ≫ Spec.map (CommRingCat.ofHom iL) = Γ'.G.hom` using `sq.lift_fst _ _ _`. Establish `h2 : j' ≫ Spec.map (CommRingCat.ofHom iR) = F ≫ j` using `sq.lift_snd _ _ _`. Establish `sq' : IsPullback F j' j (Spec.map (CommRingCat.ofHom iR))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPullback.of_bot ?_ h2.symm sq.flip` and prove the remaining obligations. Rewrite using `[h1, hj.isOver]`. Conclude with `hF.cart`. Use `⟨j', MorphismProperty.of_isPullback (P := @IsOpenImmersion) sq' ho, fun t => ?_, fun Q g hQ => ?_⟩` and prove the remaining obligations. Take `⟨B, _, i, k, k', σ, hk, hki, hki', -, hσ, hσ'⟩` from `hF.pts`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `sq.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h1, Over.w (Γ'.pt t), ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Express the relevant statement in the definitionally equal form `Spec.map _ = _`. Use `congr 2`. Use extensionality with `r`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (algebraMap R' (FractionRing R')) (congrFun (ev.commutes r) t).symm`. Take `⟨ρ, hρ⟩` from `Spec.map_surjective (σ t ≫ j)`. Establish `e1 : ρ ≫ CommRingCat.ofHom k = CommRingCat.ofHom ((algebraMap R (FractionRing R)).comp ((Pi.evalRingHom (fun _ : T => R) t).comp A.val.toRingHom))` using `Spec.map_injective (by`. Rewrite using `[Spec.map_comp, hρ, ← Category.assoc, hσ, hj.pt t])`. Establish `e2 : ∀ a : A, ρ.hom a = i (a.1 t)` using `fun a => hk (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: k (ρ.hom a) = algebraMap R (FractionRing R) (a.1 t)` using `congrArg (fun φ => φ.hom a) e1`. Conclude with `this.trans (congrArg (fun φ : R →+* FractionRing R => φ (a.1 t)) hki).symm)`. Rewrite using `[Category.assoc, h2, ← Category.assoc, ← hσ', Category.assoc, ← hρ, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `k' (ρ.hom a) = algebraMap R' (FractionRing R') (ev (1 ⊗ₜ[R] a) t)`. Rewrite using `[e2, hev]`. Conclude with `congrArg (fun φ : R →+* FractionRing R' => φ (a.1 t)) hki'`. Establish `hg : j g = Spec.map (CommRingCat.ofHom iR) Q`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
-
-Use extensionality with `a`. Conclude with `(hQ a).symm`. Take `⟨g', -, h⟩` from `Scheme.exists_preimage_of_isPullback sq' g Q hg`. Conclude with `⟨g', h⟩`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_emb_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] (Γ : QFGroup R T) (A : Subalgebra R (T → R)) (j : Γ.G.left ⟶ Spec (CommRingCat.of A)), Γ.IsEmb A j → IsOpenImmersion j → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → ∀ (ev : R' ⊗[R] A →ₐ[R'] (T → R')), (∀ (a : A) (t : T), ev (1 ⊗ₜ[R] a) t = algebraMap R R' (a.1 t)) → ∃ j' : Γ'.G.left ⟶ Spec (CommRingCat.of (R' ⊗[R] A)), IsOpenImmersion j' ∧ (∀ t : T, (Γ'.pt t).left ≫ j' = Spec.map (CommRingCat.ofHom ((algebraMap R' (FractionRing R')).comp ((Pi.evalRingHom (fun _ : T => R') t).comp ev.toRingHom)))) ∧ ∀ (Q : PrimeSpectrum (R' ⊗[R] A)) (g : Γ.G.left), (∀ a : A, (1 : R') ⊗ₜ[R] a ∈ Q.asIdeal ↔ a ∈ (j g).asIdeal) → ∃ g' : Γ'.G.left, j' g' = Q := by
   intro R _ _ T _ Γ A j hj ho R' _ _ _ Γ' F hF ev hev
@@ -550,19 +542,19 @@ theorem exists_emb_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Ty
     exact ⟨g', h⟩
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ C _ _ ev τ hτ j ho hpt hc`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc0`. Establish `hz : ∀ t, pullSec j (τ t c) = 0` using `fun t => sec_zero Γ _ fun u => by`. Use `(ValEmb.valAt_pull j (Γ.pt u).left _ (hpt u) (τ t c)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `algebraMap R (FractionRing R) (ev (τ t c) u) = 0`. Rewrite using `[hτ, hc0, Pi.zero_apply, map_zero]`. Assume the negation of the conclusion as `hne`. Establish `hI : (Submodule.span C {c}).annihilator ≠ ⊤`. Rewrite using `[Ne, Submodule.annihilator_eq_top_iff, Submodule.span_singleton_eq_bot]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hI`. Take `⟨t, g, hg⟩` from `hc ⟨m, hm.isPrime⟩`. Establish `h1 : (Spec (CommRingCat.of C)).presheaf.germ ⊤ (j g) trivial ((Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom (τ t c)) = 0`. Apply `(ConcreteCategory.bijective_of_isIso (j.stalkMap g)).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Use `Scheme.Hom.germ_stalkMap_apply j ⊤ g trivial ((Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom (τ t c))` as an intermediate fact. Rewrite using `[this]`. Establish `h0 : j.app ⊤ ((Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom (τ t c)) = 0` using `hz t`. Rewrite using `[h0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `p : PrimeSpectrum C` to `j g`. Use `letI : Algebra C ((Spec (CommRingCat.of C)).presheaf.stalk p) := StructureSheaf.stalkAlgebra C p`. Use `haveI : IsLocalization.AtPrime ((Spec (CommRingCat.of C)).presheaf.stalk p) p.asIdeal := StructureSheaf.IsLocalization.to_stalk C p`. Establish `h2 : algebraMap C ((Spec (CommRingCat.of C)).presheaf.stalk p) (τ t c) = 0` using `h1`. Take `⟨u, hu⟩` from `(IsLocalization.map_eq_zero_iff p.asIdeal.primeCompl _ _).1 h2`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `u.2` to reduce the goal to its premises. Establish `: (τ t).symm u ∈ m` using `hle (by`. Rewrite using `[Submodule.mem_annihilator_span_singleton, smul_eq_mul]`. Apply `(τ t).injective` to reduce the goal to its premises. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, hu, map_zero])`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(hg _).1 this` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem ev_injective : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (C : Type) [CommRing C] [Algebra R C] (ev : C →ₐ[R] (T → R)) (τ : T → (C ≃+* C)), (∀ (t : T) (c : C) (h : T), ev (τ t c) h = ev c (t * h)) → ∀ (j : Γ.G.left ⟶ Spec (CommRingCat.of C)), IsOpenImmersion j → (∀ t : T, (Γ.pt t).left ≫ j = Spec.map (CommRingCat.ofHom ((algebraMap R (FractionRing R)).comp ((Pi.evalRingHom (fun _ : T => R) t).comp ev.toRingHom)))) → (∀ P : PrimeSpectrum C, ∃ (t : T) (g : Γ.G.left), ∀ c : C, c ∈ P.asIdeal ↔ τ t c ∈ (j g).asIdeal) → Function.Injective ev := by
   intro R _ _ T _ _ Γ C _ _ ev τ hτ j ho hpt hc
@@ -602,7 +594,7 @@ theorem ev_injective : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [Comm
   rwa [RingEquiv.apply_symm_apply] at this
 
 /- English proof (translation)
-Unfold `valAt`. Rewrite using `[← Scheme.Hom.map_appLE y h (homOfLE hUV).op]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valAt_res {B : Type} [CommRing B] {X : Scheme.{0}} (y : Spec (CommRingCat.of B) ⟶ X) {U V : X.Opens}
     (hUV : U ≤ V) (h : ⊤ ≤ y ⁻¹ᵁ U) (h' : ⊤ ≤ y ⁻¹ᵁ V) (s : Γ(X, V)) :
@@ -612,9 +604,9 @@ theorem valAt_res {B : Type} [CommRing B] {X : Scheme.{0}} (y : Spec (CommRingCa
   rfl
 
 /- English proof (translation)
-Establish `h1 : (y ≫ j).appLE (j ''ᵁ U) ⊤ h' = (j.appIso U).hom ≫ y.appLE U ⊤ h`. Rewrite using `[Scheme.Hom.appIso_hom', Scheme.Hom.appLE_comp_appLE]`. Establish `h3 : (j.appIso U).hom ((j.appIso U).inv s) = s` using `Iso.inv_hom_id_apply _ _`. Unfold `valAt`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun z => (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom ((y.appLE U ⊤ h).hom z)) h3`.
+A detailed English derivation is pending.
 -/
 theorem valAt_image {B : Type} [CommRing B] {X Y : Scheme.{0}} (j : X ⟶ Y) [IsOpenImmersion j]
     (y : Spec (CommRingCat.of B) ⟶ X) (U : X.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) (h' : ⊤ ≤ (y ≫ j) ⁻¹ᵁ (j ''ᵁ U))
@@ -627,15 +619,15 @@ theorem valAt_image {B : Type} [CommRing B] {X Y : Scheme.{0}} (j : X ⟶ Y) [Is
   exact congrArg (fun z => (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom ((y.appLE U ⊤ h).hom z)) h3
 
 /- English proof (translation)
-Establish `hU` using `isAffineOpen_top (Spec (CommRingCat.of C))`. Take `⟨f, hf, hpf⟩` from `hU.exists_basicOpen_le ⟨p, hp⟩ trivial`. Take `⟨u, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of C)).inv).2 f`. Use `haveI := hU.isLocalization_basicOpen ((Scheme.ΓSpecIso (CommRingCat.of C)).inv u)`. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj ((Scheme.ΓSpecIso (CommRingCat.of C)).inv u) ((Spec (CommRingCat.of C)).presheaf.map (homOfLE hf).op s)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of C)).inv).2 a`. Establish `hmem : ∀ q : Spec (CommRingCat.of C), q ∈ (Spec (CommRingCat.of C)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of C)).inv u) ↔ u ∉ q.asIdeal` using `fun q => by`. Rewrite using `[basicOpen_eq_of_affine]`. Both sides reduce to the same expression. Use `⟨u ^ (n + 1), a * u, fun h => (hmem p).1 hpf (p.isPrime.mem_of_pow_mem _ h), fun K _ ρ => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_pow]`. Rewrite using `[map_mul, pow_eq_zero_iff (Nat.succ_ne_zero n) |>.1 h, mul_zero]`. Establish `hu : ρ u ≠ 0` using `fun h0 => h (by rw [map_pow, h0, zero_pow (Nat.succ_ne_zero n)])`. Establish `hb : ⊤ ≤ (Spec.map (CommRingCat.ofHom ρ)) ⁻¹ᵁ (Spec (CommRingCat.of C)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of C)).inv u)` using `fun q _ => (hmem _).2 fun hq => by`. Establish `hq' : ρ u ∈ PrimeSpectrum.asIdeal q` using `hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq'` using `[@Ideal.eq_bot_of_prime K _ (PrimeSpectrum.asIdeal q) (PrimeSpectrum.isPrime q)]`. Conclude with `hu hq'`. Establish `hV : ⊤ ≤ (Spec.map (CommRingCat.ofHom ρ)) ⁻¹ᵁ V` using `fun q hq => hf (hb hq)`. Use `⟨hV, ?_⟩` and prove the remaining obligations. Establish `hv : ∀ c : C, valAt (Spec.map (CommRingCat.ofHom ρ)) _ hb (algebraMap Γ(Spec (CommRingCat.of C), ⊤) _ ((Scheme.ΓSpecIso (CommRingCat.of C)).inv c)) = ρ c` using `fun c => (valAt_res _ le_top hb le_top _).trans (ValEmb.valAt_pull (𝟙 _) (Spec.map (CommRingCat.ofHom ρ)) ρ (Category.comp_id _) c)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg (valAt (Spec.map (CommRingCat.ofHom ρ)) _ hb) ha`. Rewrite `e` using `[valAt_mul, valAt_res _ hf hb hV, ← map_pow, ← map_pow, hv, hv]`. Rewrite using `[pow_succ, map_mul, map_mul, ← _root_.mul_assoc, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frac {C : Type} [CommRing C] (V : (Spec (CommRingCat.of C)).Opens) (s : Γ(Spec (CommRingCat.of C), V))
     (p : Spec (CommRingCat.of C)) (hp : p ∈ V) :
@@ -672,21 +664,19 @@ theorem exists_frac {C : Type} [CommRing C] (V : (Spec (CommRingCat.of C)).Opens
     rw [pow_succ, map_mul, map_mul, ← _root_.mul_assoc, e]
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ C _ _ ev τ hτ j ho hpt hc f hf`. Set `I : Ideal C` to `{ carrier := {a | ∃ b, ev b = ev a * f} add_mem' := by`. Introduce and unpack `a a' ⟨b, hb⟩ ⟨b', hb'⟩`. Conclude with `⟨b + b', by rw [map_add, map_add, hb, hb', add_mul]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨b, hb⟩`. Conclude with `⟨c * b, by rw [smul_eq_mul, map_mul, map_mul, hb, _root_.mul_assoc]⟩ }`. Distinguish the cases in `hI : I = ⊤`. Take `⟨b, hb⟩ : (1 : C) ∈ I` from `hI ▸ Submodule.mem_top`.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, by rw [hb, map_one, _root_.one_mul]⟩`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hI`. Take `⟨t, g, hg⟩` from `hc ⟨m, hm.isPrime⟩`. Take `⟨U, hgU, s, hs⟩` from `hf t g trivial`. Take `⟨u, a, hu, H⟩` from `exists_frac (j ''ᵁ U) ((j.appIso U).inv s) (j g) ⟨g, hgU, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ h, ev a h = ev u h * f (t * h)`. Introduce `h`. Apply `IsFractionRing.injective R (FractionRing R)` to reduce the goal to its premises. Take `⟨H0, H1⟩` from `H (FractionRing R) ((algebraMap R (FractionRing R)).comp ((Pi.evalRingHom (fun _ : T => R) h).comp ev.toRingHom))`. Distinguish the cases in `h0 : algebraMap R (FractionRing R) (ev u h) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, h0, zero_mul]`. Conclude with `H0 h0`. Establish `H2` using `H1 h0`. Rewrite `H2` using `[← hpt h]`. Take `⟨hV, e⟩` from `H2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ U` using `fun q hq => by`. Take `⟨z, hz, hz'⟩` from `hV hq`. Establish `: z = (Γ.pt h).left q` using `j.isOpenEmbedding.injective (hz'.trans (Scheme.Hom.comp_apply _ _ _))`. Rewrite `hz` using `[this]`. Conclude with `hz`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `e` using `[valAt_image j _ U hU, hs h hU]`. Rewrite using `[map_mul, mul_comm]`. Conclude with `e.symm`. Establish `hmem : (τ t).symm u ∈ m` using `hle ⟨(τ t).symm a, by`. Use function extensionality and compare the values at `z`.
-
-Take `⟨z, rfl⟩ : ∃ y, z = t * y` from `⟨t⁻¹ * z, by simp⟩`. Rewrite using `[Pi.mul_apply, ← hτ, ← hτ, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, key]⟩`. Use `(hg _).1 hmem` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `absurd this hu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ev_eq : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (C : Type) [CommRing C] [Algebra R C] (ev : C →ₐ[R] (T → R)) (τ : T → (C ≃+* C)), (∀ (t : T) (c : C) (h : T), ev (τ t c) h = ev c (t * h)) → ∀ (j : Γ.G.left ⟶ Spec (CommRingCat.of C)), IsOpenImmersion j → (∀ t : T, (Γ.pt t).left ≫ j = Spec.map (CommRingCat.ofHom ((algebraMap R (FractionRing R)).comp ((Pi.evalRingHom (fun _ : T => R) t).comp ev.toRingHom)))) → (∀ P : PrimeSpectrum C, ∃ (t : T) (g : Γ.G.left), ∀ c : C, c ∈ P.asIdeal ↔ τ t c ∈ (j g).asIdeal) → ∀ f ∈ Γ.btSet ⊤, ∃ c : C, ev c = f := by
   intro R _ _ T _ _ Γ C _ _ ev τ hτ j ho hpt hc f hf
@@ -734,9 +724,9 @@ theorem exists_ev_eq : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [Comm
   exact absurd this hu
 
 /- English proof (translation)
-Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem g hg`. Use `Algebra.subset_adjoin fun s y hy => ?_` and prove the remaining obligations. Simplify `hg (t * s) y hy` using `[_root_.mul_assoc]`. Consider the case `algebraMap r => exact Subalgebra.algebraMap_mem _ r`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => exact Subalgebra.add_mem _ ha hb`. Consider the case `mul a b _ _ ha hb => exact Subalgebra.mul_mem _ ha hb`.
+Treat this case separately. Treat this case separately.
 -/
 theorem translate_mem (Γ : QFGroup R T) (t : T) (f : T → R) (hf : f ∈ Γ.btOrder ⊤) :
     (fun h => f (t * h)) ∈ Γ.btOrder ⊤ := by
@@ -758,19 +748,19 @@ def translate (Γ : QFGroup R T) (t : T) : Γ.btOrder ⊤ ≃ₐ[R] Γ.btOrder �
   commutes' _ := rfl
 
 /- English proof (translation)
-Set `ev : R' ⊗[R] (Γ.btOrder ⊤) →ₐ[R'] (T → R')` to `Algebra.TensorProduct.lift (Algebra.ofId R' (T → R')) (Pi.algHom R _ fun t => (Algebra.ofId R R').comp (evalAt (Γ.btOrder ⊤) t)) fun _ _ => Commute.all _ _`. Establish `hev : ∀ (r : R') (a : Γ.btOrder ⊤) (t : T), ev (r ⊗ₜ[R] a) t = r * algebraMap R R' (a.1 t)` using `fun r a t => rfl`. Set `τ : T → (R' ⊗[R] (Γ.btOrder ⊤) ≃+* R' ⊗[R] (Γ.btOrder ⊤))` to `fun t => (Algebra.TensorProduct.congr (AlgEquiv.refl : R' ≃ₐ[R] R') (translate Γ t)).toRingEquiv`. Establish `hτ1 : ∀ t (r : R') (a : Γ.btOrder ⊤), τ t (r ⊗ₜ[R] a) = r ⊗ₜ[R] translate Γ t a` using `fun t r a => rfl`. Establish `hτ : ∀ t c h, ev (τ t c) h = ev c (t * h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t c h`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a => rw [hτ1, hev, hev]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, map_add, Pi.add_apply, Pi.add_apply, ha, hb]`. Take `⟨j', ho', hpt, hQ⟩` from `exists_emb_baseChange R T Γ _ j hj ho R' Γ' F hF ev fun a t => by rw [hev, _root_.one_mul]`. Establish `hcov : ∀ P : PrimeSpectrum (R' ⊗[R] (Γ.btOrder ⊤)), ∃ (t : T) (g : Γ'.G.left), ∀ c, c ∈ P.asIdeal ↔ τ t c ∈ (j' g).asIdeal`. Introduce `P`. Take `⟨t, g, -, hg⟩` from `hc (PrimeSpectrum.comap (Algebra.TensorProduct.includeRight (R := R) (A := R') (B := Γ.btOrder ⊤)).toRingHom P)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg'⟩` from `hQ (PrimeSpectrum.comap (τ t).symm.toRingHom P) g fun a => by`. Rewrite using `[← hg ((translate Γ t).symm a) a fun h => congrArg (fun z : Γ.btOrder ⊤ => z.1 h) ((translate Γ t).apply_symm_apply a).symm]`. Both sides reduce to the same expression. Use `⟨t, g', fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hg']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `c ∈ P.asIdeal ↔ (τ t).symm (τ t c) ∈ P.asIdeal`. Rewrite using `[RingEquiv.symm_apply_apply]`. Establish `hinj` using `ev_injective R' T Γ' _ ev τ hτ j' ho' hpt hcov`. Establish `hsurj` using `exists_ev_eq R' T Γ' _ ev τ hτ j' ho' hpt hcov`. Establish `hr : ev.range = Γ'.btOrder ⊤`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_antisymm ?_ (Algebra.adjoin_le fun f hf => hsurj f hf)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Use `Algebra.subset_adjoin fun t g _ => ⟨⊤, trivial, pullSec j' (τ t c), fun u hu => ?_⟩` and prove the remaining obligations. Use `(ValEmb.valAt_pull j' (Γ'.pt u).left _ (hpt u) (τ t c)).trans ?_` and prove the remaining obligations. Conclude with `congrArg (algebraMap R' (FractionRing R')) (hτ t c u)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨(AlgEquiv.ofInjective ev hinj).trans (Subalgebra.equivOfEq _ _ hr), hev⟩`.
+A detailed English derivation is pending.
 -/
 theorem isTensorOrder_of_cover [Finite T] (Γ : QFGroup R T) (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤)))
     (hj : Γ.IsEmb (Γ.btOrder ⊤) j) (ho : IsOpenImmersion j) (hc : Γ.TranslatesCover (Γ.btOrder ⊤) j ⊤)
@@ -815,7 +805,7 @@ theorem isTensorOrder_of_cover [Finite T] (Γ : QFGroup R T) (j : Γ.G.left ⟶ 
   exact ⟨(AlgEquiv.ofInjective ev hinj).trans (Subalgebra.equivOfEq _ _ hr), hev⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, ⟨j, hj, ho, hc, hp⟩, h3, h4, h5, h6⟩`. Conclude with `⟨h1, ⟨j, hj, ho, isHomEmb_of_isEmb Γ _ j hj, hc, hp, fun L _ _ M => (omega_iff Γ i M N j hj).1 (h6 L M)⟩, h3, (endo_iff Γ hi _).1 h4, fun R' _ _ _ _ Γ' F hF => (tensor_iff _ _).1 (h5 R' Γ' F hF)⟩`. Introduce and unpack `⟨h1, ⟨j, hj, ho, -, hc, hp, h6⟩, h3, h4, -⟩`. Conclude with `⟨h1, ⟨j, hj, ho, hc, hp⟩, h3, (endo_iff Γ hi _).2 h4, fun R' _ _ _ Γ' F hF => (tensor_iff _ _).2 (isTensorOrder_of_cover Γ j hj ho hc R' Γ' F hF), fun L _ _ M => (omega_iff Γ i M N j hj).2 (h6 L M)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem conclusion_iff [Finite T] (Γ : QFGroup R T) {S : Scheme.{0}} (G : Over S) [GrpObj G]
     (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left) (hi : Γ.IsTorsionAlong G x N i) :
@@ -847,7 +837,7 @@ theorem conclusion_iff [Finite T] (Γ : QFGroup R T) {S : Scheme.{0}} (G : Over 
       fun L _ _ M => (omega_iff Γ i M N j hj).2 (h6 L M)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h R _ _ _ _ T _ _ S G _ _ hG x N Γ i hi => (conclusion_iff Γ G x N i hi).1 (h R T Γ S G x N i hi hG), fun h R _ _ _ _ T _ _ Γ S G _ _ x N i hi hG => (conclusion_iff Γ G x N i hi).2 (h R T S G hG x N Γ i hi)⟩`.
+Supply the required witnesses or components.
 -/
 theorem lemmaBT_iff : GlobalTheory.CompanionTheory.Ar.BT.LemmaBT ↔ GlobalTheory.CompanionTheory.IndefiniteRowSideFullHecke.TensorOrderReduction.LemmaBT :=
   ⟨fun h R _ _ _ _ T _ _ S G _ _ hG x N Γ i hi => (conclusion_iff Γ G x N i hi).1 (h R T Γ S G x N i hi hG),

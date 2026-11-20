@@ -13,11 +13,11 @@ namespace RestrictedProduct
 variable {ι : Type*} {R : ι → Type*} [∀ i, TopologicalSpace (R i)] {A : (i : ι) → Set (R i)}
 
 /- English proof (translation)
-Use `set S : Set ι := {i | V i = A i}`. Establish `hSf : Sᶜ.Finite` using `hVA`. Establish `hEq : {x : Πʳ i, [R i, A i] | ∀ i, x i ∈ V i} = {x : Πʳ i, [R i, A i] | ∀ i, i ∈ S → x.1 i ∈ A i} ∩ ⋂ i ∈ Sᶜ, (fun x : Πʳ i, [R i, A i] ↦ x i) ⁻¹' V i`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun i hi ↦ (show V i = A i from hi) ▸ h i, fun i _ ↦ h i⟩`. Introduce and unpack `⟨h1, h2⟩ i`. Distinguish the cases in `hi : i ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show V i = A i from hi]`. Conclude with `h1 i hi`. Conclude with `h2 i hi`. Rewrite using `[hEq]`. Conclude with `(_root_.RestrictedProduct.isOpen_forall_imp_mem hAopen).inter (hSf.isOpen_biInter fun i _ ↦ (hV i).preimage (_root_.RestrictedProduct.continuous_eval i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_forall_mem (hAopen : ∀ i, IsOpen (A i)) {V : ∀ i, Set (R i)}
     (hV : ∀ i, IsOpen (V i)) (hVA : ∀ᶠ i in cofinite, V i = A i) :
@@ -42,23 +42,19 @@ theorem isOpen_setOf_forall_mem (hAopen : ∀ i, IsOpen (A i)) {V : ∀ i, Set (
     (hSf.isOpen_biInter fun i _ ↦ (hV i).preimage (_root_.RestrictedProduct.continuous_eval i))
 
 /- English proof (translation)
-Use `isTopologicalBasis_of_isOpen_of_nhds ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨V, hV, hVA, rfl⟩`. Conclude with `isOpen_setOf_forall_mem hAopen hV hVA`. Introduce `x u hxu hu set T : Set ι := {i | x i ∈ A i}`. Establish `hT : cofinite ≤ 𝓟 T` using `le_principal_iff.mpr x.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hxx'⟩` from `_root_.RestrictedProduct.exists_inclusion_eq_of_eventually R A hT (fun i hi ↦ hi)`. Establish `hu' : IsOpen (_root_.RestrictedProduct.inclusion R A hT ⁻¹' u)` using `hu.preimage (_root_.RestrictedProduct.continuous_inclusion hT)`. Rewrite `hu'` using `[_root_.RestrictedProduct.isEmbedding_coe_of_principal.isInducing.isOpen_iff]`. Take `⟨t, ht, htu⟩` from `hu'`. Establish `hx't : (x' : ∀ i, R i) ∈ t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x' ∈ _root_.RestrictedProduct.inclusion R A hT ⁻¹' u`. Rewrite using `[Set.mem_preimage, hxx']`. Conclude with `hxu`. Rewrite `this` using `[← htu]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨I, W, hW, hIW⟩` from `isOpen_pi_iff.1 ht _ hx't`. Set `V : ∀ i, Set (R i)` to `fun i ↦ (if i ∈ I then W i else Set.univ) ∩ (if i ∈ T then A i else Set.univ)`. Use `⟨{y | ∀ i, y i ∈ V i}, ⟨V, fun i ↦ ?_, ?_, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `IsOpen.inter ?_ ?_` and prove the remaining obligations. Use `split_ifs with h exacts [(hW i h).1, isOpen_univ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs exacts [hAopen i, isOpen_univ]`. Use `filter_upwards [x.2, I.finite_toSet.compl_mem_cofinite] with i hi hiI`. Establish `hiI' : i ∉ I` using `hiI`. Establish `hiT : i ∈ T` using `hi`. Simplify using `only [V, if_neg hiI', if_pos hiT, Set.univ_inter]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← hxx']`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `split_ifs with h exacts [(hW i h).2, Set.mem_univ _]`. Use `split_ifs with h exacts [eventually_principal.1 x'.2 i h, Set.mem_univ _]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y hy`. Set `y' : Πʳ i, [R i, A i]_[𝓟 T]` to `⟨y.1, eventually_principal.2 fun i hi ↦ by`. Use `(hy i).2` as an intermediate fact. Simplify using `only [if_pos hi] at this`. Conclude with `this⟩`.
-
-Establish `hy' : y' ∈ _root_.RestrictedProduct.inclusion R A hT ⁻¹' u`. Rewrite using `[← htu]`. Use `hIW fun i hi ↦ ?_` and prove the remaining obligations. Use `(hy i).1` as an intermediate fact. Simplify using `only [if_pos (Finset.mem_coe.1 hi)] at this`.
-
-Conclude with `this`. Conclude with `hy'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTopologicalBasis (hAopen : ∀ i, IsOpen (A i)) :
     IsTopologicalBasis {s : Set (Πʳ i, [R i, A i]) | ∃ V : ∀ i, Set (R i),
@@ -122,35 +118,31 @@ namespace IdeleGroup
 variable (K : Type*) [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem finiteProj_eq (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
     finiteProj v x = (prodRestrictedEquiv K x).2 v :=
   Units.ext rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem infiniteProj_eq (w : InfinitePlace K) (x : IdeleGroup K) :
     infiniteProj w x = ContinuousMulEquiv.piUnits (prodRestrictedEquiv K x).1 w :=
   Units.ext rfl
 
 /- English proof (translation)
-Use `set e := prodRestrictedEquiv K`. Use `set p := (ContinuousMulEquiv.piUnits : (InfiniteAdeleRing K)ˣ ≃ₜ* ∀ w : InfinitePlace K, (w.Completion)ˣ)`. Use `isTopologicalBasis_of_isOpen_of_nhds ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨U, V, hU, hV, hVO, rfl⟩`. Establish `h1 : IsOpen {x : IdeleGroup K | ∀ w, infiniteProj w x ∈ U w}`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun w ↦ (hU w).preimage (continuous_infiniteProj w)`. Establish `h2 : IsOpen {x : IdeleGroup K | ∀ v, finiteProj v x ∈ V v}`. Simplify using `only [finiteProj_eq]`. Conclude with `(RestrictedProduct.isOpen_setOf_forall_mem (fun v ↦ isOpen_units_adicCompletionIntegers K v) hV hVO).preimage (continuous_snd.comp e.continuous)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h1.inter h2`. Introduce `x u hxu hu`. Establish `hu' : IsOpen (e.symm ⁻¹' u)` using `hu.preimage e.symm.continuous`. Establish `hxu' : e x ∈ e.symm ⁻¹' u` using `by simpa using hxu`. Take `⟨a, b, ha, hb, hxa, hxb, hab⟩` from `isOpen_prod_iff.1 hu' (e x).1 (e x).2 hxu'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨V, hV, hVO, rfl⟩, hxV, hVb⟩` from `(RestrictedProduct.isTopologicalBasis (fun v ↦ isOpen_units_adicCompletionIntegers K v)).exists_subset_of_mem_open hxb hb`. Establish `ha' : IsOpen (p.symm ⁻¹' a)` using `ha.preimage p.symm.continuous`. Establish `hxa' : p (e x).1 ∈ p.symm ⁻¹' a`. Express the relevant statement in the definitionally equal form `p.symm (p (e x).1) ∈ a`. Conclude with `(congrArg (fun z : (InfiniteAdeleRing K)ˣ ↦ z ∈ a) (p.symm_apply_apply (e x).1)).mpr hxa`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨U, hU, hUa⟩` from `isOpen_pi_iff'.1 ha' _ hxa'`. Use `⟨{y | (∀ w, infiniteProj w y ∈ U w) ∧ ∀ v, finiteProj v y ∈ V v}, ⟨U, V, fun w ↦ (hU w).1, hV, hVO, rfl⟩, ⟨fun w ↦ ?_, fun v ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[infiniteProj_eq]`. Conclude with `(hU w).2`. Rewrite using `[finiteProj_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxV v`. Introduce and unpack `y ⟨hyU, hyV⟩`. Establish `hya : (e y).1 ∈ a`. Establish `: p (e y).1 ∈ p.symm ⁻¹' a` using `hUa fun w _ ↦ by`. Rewrite using `[← infiniteProj_eq]`.
-
-Conclude with `hyU w`. Express the relevant statement in the definitionally equal form `p.symm (p (e y).1) ∈ a at this`. Conclude with `(congrArg (fun z : (InfiniteAdeleRing K)ˣ ↦ z ∈ a) (p.symm_apply_apply (e y).1)).mp this`. Establish `hyb : (e y).2 ∈ b` using `hVb fun v ↦ by`. Rewrite using `[← finiteProj_eq]`.
-
-Conclude with `hyV v`. Use `hab (Set.mk_mem_prod hya hyb)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isTopologicalBasis :
     IsTopologicalBasis {s : Set (IdeleGroup K) |

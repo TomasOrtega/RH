@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Establish `hle : maximalIdeal B ≤ I.radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `Q ⟨hIQ, hQ⟩`. Rewrite using `[h Q hQ hIQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.exists_pow_le_of_le_radical_of_fg hle (IsNoetherian.noetherian _)`.
+A detailed English derivation is pending.
 -/
 private theorem pow_le_of_primes {B : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] (I : Ideal B)
     (h : ∀ Q : Ideal B, Q.IsPrime → I ≤ Q → Q = maximalIdeal B) : ∃ n, maximalIdeal B ^ n ≤ I := by
@@ -19,15 +19,13 @@ private theorem pow_le_of_primes {B : Type} [CommRing B] [IsLocalRing B] [IsNoet
   exact Ideal.exists_pow_le_of_le_radical_of_fg hle (IsNoetherian.noetherian _)
 
 /- English proof (translation)
-Introduce `O _ _ _ B _ _ _ hnf`. Use `haveI : IsLocalHom (algebraMap O B) := IsCO.isLocalHom`. Establish `hIm : (maximalIdeal O).map (algebraMap O B) ≤ maximalIdeal B`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `map_nonunit (algebraMap O B) x hx`. Establish `hex : ∃ Q : Ideal B, Q.IsPrime ∧ (maximalIdeal O).map (algebraMap O B) ≤ Q ∧ Q ≠ maximalIdeal B`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨n, hn⟩` from `pow_le_of_primes _ (fun Q hQ hIQ => hcon Q hQ hIQ)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hnf (UpperTheory.V.Ws.Po.finPow hIm IsCO.res_surj n hn)`. Take `⟨P, ⟨hP, hIP, hPm⟩, hmax⟩` from `set_has_maximal_iff_noetherian.mpr (inferInstance : IsNoetherian B B) {Q : Ideal B | Q.IsPrime ∧ (maximalIdeal O).map (algebraMap O B) ≤ Q ∧ Q ≠ maximalIdeal B} hex`. Establish `hPle : P ≤ maximalIdeal B` using `IsLocalRing.le_maximalIdeal hP.ne_top`. Take `⟨t, htm, htP⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hPle hPm)`. Take `⟨n, hn⟩` from `pow_le_of_primes (P ⊔ Ideal.span {t}) (by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Q hQ hPQ`. Assume the negation of the conclusion as `hQm`. Establish `hPQ' : P ≤ Q` using `le_trans le_sup_left hPQ`. Establish `htQ : t ∈ Q` using `hPQ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self t))`. Conclude with `hmax Q ⟨hQ, hIP.trans hPQ', hQm⟩ (lt_of_le_of_ne hPQ' (fun e => htP (by rw [e]; exact htQ))))`.
-
-Conclude with `⟨P, t, n, hP, hIP, htm, htP, hn⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.dimOne :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsAdicComplete (maximalIdeal O) O] (B : Type) [CommRing B] [Algebra O B] [IsCO O B], ¬ Module.Finite O B →

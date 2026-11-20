@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.HoweNonsplitKerSmall
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Set `A' : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e.symm`. Establish `h1 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.map_apply]`. Establish `h2 : (A'ᵀ * M * A'.map star).det ≠ 0`. Rewrite using `[h1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Apply `h2` to reduce the goal to its premises. Rewrite using `[Matrix.det_mul, Matrix.det_mul, h0]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_ne_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -39,9 +39,9 @@ theorem det_ne_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Has
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Use `det_ne_of_hasSig (h w)` as an intermediate fact. Introduce `h0`. Apply `this` to reduce the goal to its premises. Establish `e` using `RingHom.map_det (B.emb w).1 J`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `e` using `[RingHom.mapMatrix_apply]`. Rewrite using `[Matrix.det_smul, ← e, h0, map_zero, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_of_sig {n r s : ℕ} (B : Base F E) (J : Matrix (Fin n) (Fin n) E) (c : ℂ)
     (h : ∀ w, HasSig (c • J.map (B.emb w).1) r s) : J.det ≠ 0 := by
@@ -53,7 +53,7 @@ theorem det_ne_of_sig {n r s : ℕ} (B : Base F E) (J : Matrix (Fin n) (Fin n) E
   rw [Matrix.det_smul, ← e, h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Use `show Continuous fun x => χ₁ x / χ₂ x`. Conclude with `h₁.1.div' h₂.1`. Rewrite using `[MonoidHom.div_apply, h₁.2 x, h₂.2 x, div_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHecke_div {χ₁ χ₂ : Chr F E} (h₁ : IsHecke F E χ₁) (h₂ : IsHecke F E χ₂) : IsHecke F E (χ₁ / χ₂) := by
   refine ⟨?_, fun x => ?_⟩
@@ -62,13 +62,11 @@ theorem isHecke_div {χ₁ χ₂ : Chr F E} (h₁ : IsHecke F E χ₁) (h₂ : I
   · rw [MonoidHom.div_apply, h₁.2 x, h₂.2 x, div_one]
 
 /- English proof (translation)
-Introduce `x`. Establish `e₁` using `h₁ x`. Establish `e₂` using `h₂ x`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e₁, e₂, hn.neg_one_pow]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Break down `Nat.even_or_odd n₁ with h | h` into its components or cases. Establish `h' : Even n₂` using `(Nat.even_add.mp he).mp h`. Rewrite using `[h.neg_one_pow, h'.neg_one_pow]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h' : Odd n₂`. Break down `Nat.even_or_odd n₂ with h'' | h''` into its components or cases. Conclude with `absurd ((Nat.even_add.mp he).mpr h'') (Nat.not_even_iff_odd.mpr h)`. Conclude with `h''`. Rewrite using `[h.neg_one_pow, h'.neg_one_pow]`.
-
-Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resEtaPow_div {K : Subgroup (AF F)ˣ} {χ₁ χ₂ : Chr F E} {n₁ n₂ n : ℕ} (h₁ : ResEtaPow K χ₁ n₁)
     (h₂ : ResEtaPow K χ₂ n₂) (he : Even (n₁ + n₂)) (hn : Even n) : ResEtaPow K (χ₁ / χ₂) n := by
@@ -88,7 +86,7 @@ theorem resEtaPow_div {K : Subgroup (AF F)ˣ} {χ₁ χ₂ : Chr F E} {n₁ n₂
       rw [h.neg_one_pow, h'.neg_one_pow]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, isHecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα, resEtaPow_div h.chars.resα h.chars.resβ (by rw [add_comm]; exact h.geo.even) h.geo.even, h.weil'⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPair_second {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (h : IsTriple B G X om om') :
@@ -97,29 +95,25 @@ theorem isPair_second {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F
     resEtaPow_div h.chars.resα h.chars.resβ (by rw [add_comm]; exact h.geo.even) h.geo.even, h.weil'⟩
 
 /- English proof (translation)
-Introduce `hHD F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM v hv`. Establish `hT` using `hM.triple`. Establish `P` using `isPair_second hT`. Take `⟨hbdd, hsum⟩` from `hHD F E σ P.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' P.base.std P.herm.herm (det_ne_of_sig Bs G.V'.J 1 (fun w => by rw [one_smul]; exact P.herm.sig w)) P.skew.skew (det_ne_of_sig Bs G.W.J _ P.skew.sig) P.resX P.resW P.hX P.hW P.weil v hv`. Use `⟨hbdd, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `N hN hNe φ hφ`. Establish `hex : ∀ h ∈ UAt σ G.W (evFin F v), ∀ ψ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∃ ψ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (1, h)) ψ ψ₁` using `GlobalTheory.T.weilRepresentation_localAtFinitePlace_unitaryGroupW F E σ Bs a a' G Xc om om' hT v`. Use `set K : Submodule ℂ ((Fin a' × Fin (a + a') → Fv F v) → ℂ) := LinearMap.ker (Rf.p' v) ⊓ SB (Fin a' × Fin (a + a') → Fv F v) with hKdef`. Establish `haugSB : augAt om' v ≤ SB (Fin a' × Fin (a + a') → Fv F v)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `z ⟨g, -, ψ, hψ, ψ₁, hψ₁, -, rfl⟩`. Conclude with `sub_mem hψ₁ hψ`. Establish `hK : GlobalTheory.Published.ThetaSub om' v K`. Use `⟨le_inf (hM.fin.inv' v) haugSB, inf_le_right, ?_⟩` and prove the remaining obligations. Introduce `h hh ψ hψ ψ₁ hψ₁ hact`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ'` using `Submodule.mem_inf.1 hψ`. Establish `h0 : Acts (evFin F v) (om (1, h)) (0 : (Fin a × Fin (a + a') → Fv F v) → ℂ) 0`. Introduce `r _`. Establish `e : tens (evFin F v) (0 : (Fin a × Fin (a + a') → Fv F v) → ℂ) r = 0`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[tens]`. Rewrite using `[e, map_zero]`. Establish `hp` using `hM.fin.equiv v h hh 0 (zero_mem _) ψ hψ'.2 0 (zero_mem _) ψ₁ hψ₁ h0 hact (by rw [map_zero]; exact (LinearMap.mem_ker.1 hψ'.1).symm)`. Rewrite `hp` using `[map_zero]`. Conclude with `Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 hp.symm, hψ₁⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hKne : K ≠ SB (Fin a' × Fin (a + a') → Fv F v)`. Introduce `hKe`. Establish `hbot : (SB (Fin a' × Fin (a + a') → Fv F v)).map (Rf.p' v) = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hψ` using `[← hKe]`. Conclude with `LinearMap.mem_ker.1 (Submodule.mem_inf.1 hψ).1`. Rewrite `hbot` using `[hM.fin.onto' v]`. Use `haveI := hM.fin.nontriv v`. Conclude with `top_ne_bot hbot`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hNK : N ⊔ K ≠ SB (Fin a' × Fin (a + a') → Fv F v)` using `hsum N K hN hK hNe hKne`. Break down `hM.fin.irred v (N.map (Rf.p' v)) (by` into its components or cases. Introduce `h hh ψ hψ ψ₁ hψ₁ hact hpm`. Take `⟨n, hn, hpn⟩` from `Submodule.mem_map.1 hpm`. Establish `hnSB : n ∈ SB (Fin a' × Fin (a + a') → Fv F v)` using `hN.2.1 hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction.
 
-Take `⟨n₁, hn₁, hactn⟩` from `hex h hh n hnSB`. Establish `hn₁N : n₁ ∈ N` using `hN.2.2 h hh n hn n₁ hn₁ hactn`. Rewrite using `[hM.fin.equiv v h hh ψ hψ n hnSB ψ₁ hψ₁ n₁ hn₁ hact hactn hpn.symm]`. Conclude with `Submodule.mem_map_of_mem hn₁N) with h0 | htop`. Establish `hmem : Rf.p' v φ ∈ N.map (Rf.p' v)` using `Submodule.mem_map_of_mem hφ`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hmem` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 hmem`. It suffices to derive a contradiction. Apply `hNK` to reduce the goal to its premises. Use `le_antisymm (sup_le hN.2.1 inf_le_right) ?_` and prove the remaining obligations.
-
-Introduce `ψ hψ`. Establish `hm : Rf.p' v ψ ∈ N.map (Rf.p' v)` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨n, hn, hpn⟩` from `Submodule.mem_map.1 hm`. Establish `hk : ψ - n ∈ K` using `Submodule.mem_inf.2 ⟨LinearMap.mem_ker.2 (by rw [map_sub, hpn, sub_self]), sub_mem hψ (hN.2.1 hn)⟩`. Use `Submodule.add_mem_sup hn hk` as an intermediate fact.
-
-Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem howe_nonsplit_ker_small : GlobalTheory.Published.HoweDualityFinite →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)

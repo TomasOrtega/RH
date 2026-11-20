@@ -7,11 +7,11 @@ open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `_ hKN hCG E _ _ _ A n p _ S F x U w₀ Up V _ _ _ _ _ r W haux N _ _ L hw Ty hTy k hk hkr`. Take `⟨k', hk', hlev, hJ, hχ⟩` from `hk`. Establish `hK : k ∈ Ty.K`. Use `(hTy.K_iff k).2 ⟨⟨k', hk', hlev⟩, fun w hwW => ?_⟩` and prove the remaining obligations. Establish `hr : (r : 𝓞 E) ∈ w.1.asIdeal` using `haux.half.above w hwW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨K, hK, -, -, -, -, hIw, -⟩` from `hCG E n r haux.prime.pos w.1`. Establish `hf` using `hKN E A n p S F w (L w) (hTy.fac w) r haux.prime haux.good hr r haux.prime.pos K hK`. Conclude with `hIw hr (hf.2 k hkr)`. Use `(Ty.mem_kerK k).2 ⟨hK, ?_⟩` and prove the remaining obligations. Establish `hpr : Ty.L.pr k = comp w₀ k'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTy.L_eq, ← hk']`. Conclude with `(hTy.fac ⟨w₀, hw⟩).1 k'`. Use `(hTy.ψ_eq _ ⟨comp w₀ (F.th k'), hJ⟩ ?_).trans hχ` and prove the remaining obligations. Simplify using `only [hpr, th_eq F, CertificateRingHomMap.comp_th, CertificateRingHomMap.invT_val]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pStabKer :
     FacEq → KNFact → CongGrpEx → StabKer := by

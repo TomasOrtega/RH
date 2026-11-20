@@ -15,9 +15,9 @@ namespace GlobalTheory.UlCusp
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `Api.exists_root_of_isAlgClosed ε x.den_pos`. Establish `h : ∃ a, ε a = Complex.exp (2 * Real.pi * Complex.I * (x : ℂ))`. Use `⟨ζ ^ x.num, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow₀, hζ, ← Complex.exp_int_mul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [← Rat.num_div_den x]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Function.invFun_eq h`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eOm_spec [IsAlgClosed Ω] (ε : Ω →+* ℂ) (x : ℚ) :
     ε (eOm ε x) = Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) := by
@@ -31,16 +31,16 @@ theorem eOm_spec [IsAlgClosed Ω] (ε : Ω →+* ℂ) (x : ℚ) :
   exact Function.invFun_eq h
 
 /- English proof (translation)
-Apply `Api.eOm_eq_of` to reduce the goal to its premises. Rewrite using `[map_mul, eOm_spec, eOm_spec, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eOm_add [IsAlgClosed Ω] (ε : Ω →+* ℂ) (x y : ℚ) : eOm ε (x + y) = eOm ε x * eOm ε y := by
   apply Api.eOm_eq_of
   rw [map_mul, eOm_spec, eOm_spec, ← Complex.exp_add]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Apply `Api.eOm_eq_of` to reduce the goal to its premises. Rewrite using `[map_one]`. Use `Complex.exp_int_mul_two_pi_mul_I m` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eOm_intCast [IsAlgClosed Ω] (ε : Ω →+* ℂ) (m : ℤ) : eOm ε (m : ℚ) = 1 := by
   apply Api.eOm_eq_of
@@ -49,13 +49,13 @@ theorem eOm_intCast [IsAlgClosed Ω] (ε : Ω →+* ℂ) (m : ℤ) : eOm ε (m :
   rw [← this]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Simplify using `using eOm_intCast ε 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eOm_zero [IsAlgClosed Ω] (ε : Ω →+* ℂ) : eOm ε 0 = 1 := by
   simpa using eOm_intCast ε 0
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using eOm_zero ε`. Consider the case `succ k ih => rw [Nat.cast_succ, add_mul, one_mul, eOm_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eOm_nsmul [IsAlgClosed Ω] (ε : Ω →+* ℂ) (x : ℚ) (k : ℕ) : eOm ε (k * x) = eOm ε x ^ k := by
   induction k with
@@ -63,9 +63,9 @@ theorem eOm_nsmul [IsAlgClosed Ω] (ε : Ω →+* ℂ) (x : ℚ) (k : ℕ) : eOm
   | succ k ih => rw [Nat.cast_succ, add_mul, one_mul, eOm_add, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[← eOm_nsmul]`. Establish `: (x.den : ℚ) * x = (x.num : ℚ)`. Use `Rat.mul_den_eq_num x` as an intermediate fact. Rewrite using `[mul_comm]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, eOm_intCast]`.
+A detailed English derivation is pending.
 -/
 theorem eOm_pow_den [IsAlgClosed Ω] (ε : Ω →+* ℂ) (x : ℚ) : eOm ε x ^ x.den = 1 := by
   rw [← eOm_nsmul]
@@ -74,9 +74,9 @@ theorem eOm_pow_den [IsAlgClosed Ω] (ε : Ω →+* ℂ) (x : ℚ) : eOm ε x ^ 
   rw [this, eOm_intCast]
 
 /- English proof (translation)
-Break down `A.mem_or_inv_mem (eOm ε x) with h | h` into its components or cases. Conclude with `h`. Establish `hd` using `eOm_pow_den ε x`. Establish `h0 : eOm ε x ≠ 0` using `by rintro h0; rw [h0, zero_pow x.den_pos.ne'] at hd; exact zero_ne_one hd`. Establish `: eOm ε x = (eOm ε x)⁻¹ ^ (x.den - 1)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_pow]; exact eq_inv_of_mul_eq_one_left (by rw [← pow_succ', Nat.sub_add_cancel x.den_pos, hd])`. Rewrite using `[this]`. Conclude with `pow_mem h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eOm_mem [IsAlgClosed Ω] (ε : Ω →+* ℂ) (A : ValuationSubring Ω) (x : ℚ) : eOm ε x ∈ A := by
   rcases A.mem_or_inv_mem (eOm ε x) with h | h
@@ -88,7 +88,7 @@ theorem eOm_mem [IsAlgClosed Ω] (ε : Ω →+* ℂ) (A : ValuationSubring Ω) (
     rw [this]; exact pow_mem h _
 
 /- English proof (translation)
-Establish `: (eOm ε x)⁻¹ = eOm ε (-x)`. Conclude with `inv_eq_of_mul_eq_one_right (by rw [← eOm_add, add_neg_cancel, eOm_zero])`. Rewrite using `[this]`. Conclude with `eOm_mem ε A _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eOm_inv_mem [IsAlgClosed Ω] (ε : Ω →+* ℂ) (A : ValuationSubring Ω) (x : ℚ) : (eOm ε x)⁻¹ ∈ A := by
   have : (eOm ε x)⁻¹ = eOm ε (-x) := by
@@ -96,17 +96,17 @@ theorem eOm_inv_mem [IsAlgClosed Ω] (ε : Ω →+* ℂ) (A : ValuationSubring �
   rw [this]; exact eOm_mem ε A _
 
 /- English proof (translation)
-Introduce `h`. Use `eOm_pow_den ε x` as an intermediate fact. Rewrite `this` using `[h, zero_pow x.den_pos.ne']`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eOm_ne_zero [IsAlgClosed Ω] (ε : Ω →+* ℂ) (x : ℚ) : eOm ε x ≠ 0 := by
   intro h; have := eOm_pow_den ε x; rw [h, zero_pow x.den_pos.ne'] at this; exact zero_ne_one this
 
 /- English proof (translation)
-Use extensionality with `r`. Establish `h1 : (cm c φ).support ⊆ φ.support` using `fun s hs h => hs (by rw [Api.coeff_cm, h, mul_zero])`. Establish `h2 : (cm c ψ).support ⊆ ψ.support` using `fun s hs h => hs (by rw [Api.coeff_cm, h, mul_zero])`. Rewrite using `[Api.coeff_cm, HahnSeries.coeff_mul (x := φ), Finset.mul_sum, HahnSeries.coeff_mul_right' ψ.isPWO_support h2]`. Rewrite using `[Finset.sum_subset (Finset.antidiagonal_mono_left (hs := φ.isPWO_support) h1)]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations. Use `(Finset.mem_addAntidiagonal.1 hij).2.2` as an intermediate fact. Rewrite using `[Api.coeff_cm, Api.coeff_cm, ← this, hc]`. Expand and normalize the polynomial expressions, which then agree. Introduce `ij hij hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `Finset.mem_addAntidiagonal.1 hij`. Establish `: (cm c φ).coeff ij.1 = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hn (Finset.mem_addAntidiagonal.2 ⟨h0, hm.2.1, hm.2.2⟩)`. Rewrite using `[this, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cm_mul_of_char {R : Type*} [CommRing R] (c : ℚ → R) (hc : ∀ x y, c (x + y) = c x * c y)
     (φ ψ : HahnSeries ℚ R) : cm c (φ * ψ) = cm c φ * cm c ψ := by
@@ -131,9 +131,9 @@ noncomputable section
 namespace GlobalTheory.UlCusp
 
 /- English proof (translation)
-Establish `hdet : (0 : ℤ) < (!![1, 0; 0, (l : ℤ)] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hl` after adjusting the coercions. Establish `hT : ((ModularGroup.T ^ j : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) = !![1, (j : ℤ); 0, 1]`. Establish `h` using `ModularGroup.coe_T_zpow (j : ℤ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[zpow_natCast]`. Conclude with `h`. Establish `hS : (((ofSL (ModularGroup.T ^ j) : GQ) : GL (Fin 2) ℚ) : Matrix (Fin 2) (Fin 2) ℚ) = ((ModularGroup.T ^ j : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast)` using `rfl`. Simplify using `only [ent, toGQ, dif_pos hdet, Subgroup.coe_mul, Units.val_mul, hS, hT, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem ent_piece (l j : ℕ) (hl : 0 < l) (i k : Fin 2) :
     ent (toGQ !![1, 0; 0, (l : ℤ)] * ofSL (ModularGroup.T ^ j)) i k = (!![1, (j : ℚ); 0, (l : ℚ)] : Matrix (Fin 2) (Fin 2) ℚ) i k := by
@@ -157,7 +157,7 @@ namespace GlobalTheory.UlCusp
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `h : (0 : ℚ) < 1 / d` using `by positivity`. Rewrite using `[sub, Api.coeff_scale h, Api.coeff_cm, one_div, div_inv_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_S (ε : Ω →+* ℂ) (b : ℚ) {d : ℚ} (hd : 0 < d) (χ : HahnSeries ℚ Ω) (r : ℚ) :
     (sub ε 1 b d χ).coeff r = eOm ε (r * d * b / d) * χ.coeff (r * d) := by
@@ -165,7 +165,7 @@ theorem coeff_S (ε : Ω →+* ℂ) (b : ℚ) {d : ℚ} (hd : 0 < d) (χ : HahnS
   rw [sub, Api.coeff_scale h, Api.coeff_cm, one_div, div_inv_eq_mul]
 
 /- English proof (translation)
-Unfold `sub`. Rewrite using `[cm_mul_of_char _ (fun x y => by rw [← eOm_add]; congr 1; ring), Api.scale_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_mul [IsAlgClosed Ω] (ε : Ω →+* ℂ) (b d : ℚ) (χ ψ : HahnSeries ℚ Ω) :
     sub ε 1 b d (χ * ψ) = sub ε 1 b d χ * sub ε 1 b d ψ := by
@@ -173,30 +173,28 @@ theorem S_mul [IsAlgClosed Ω] (ε : Ω →+* ℂ) (b d : ℚ) (χ ψ : HahnSeri
   rw [cm_mul_of_char _ (fun x y => by rw [← eOm_add]; congr 1; ring), Api.scale_mul]
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[HahnSeries.coeff_sub, coeff_S ε b hd, coeff_S ε b hd, coeff_S ε b hd, HahnSeries.coeff_sub, mul_sub]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem S_sub (ε : Ω →+* ℂ) (b : ℚ) {d : ℚ} (hd : 0 < d) (χ ψ : HahnSeries ℚ Ω) :
     sub ε 1 b d (χ - ψ) = sub ε 1 b d χ - sub ε 1 b d ψ := by
   ext r; rw [HahnSeries.coeff_sub, coeff_S ε b hd, coeff_S ε b hd, coeff_S ε b hd, HahnSeries.coeff_sub, mul_sub]
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[HahnSeries.coeff_smul, coeff_S ε b hd, coeff_S ε b hd, HahnSeries.coeff_smul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem S_smul (ε : Ω →+* ℂ) (b : ℚ) {d : ℚ} (hd : 0 < d) (c : Ω) (χ : HahnSeries ℚ Ω) :
     sub ε 1 b d (c • χ) = c • sub ε 1 b d χ := by
   ext r; rw [HahnSeries.coeff_smul, coeff_S ε b hd, coeff_S ε b hd, HahnSeries.coeff_smul, smul_eq_mul, smul_eq_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[coeff_S ε b hd]`. Conclude with `mul_mem (eOm_mem ε A _) (h _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_int [IsAlgClosed Ω] (ε : Ω →+* ℂ) (A : ValuationSubring Ω) (b : ℚ) {d : ℚ} (hd : 0 < d)
     {χ : HahnSeries ℚ Ω} (h : ∀ r, χ.coeff r ∈ A) (r : ℚ) : (sub ε 1 b d χ).coeff r ∈ A := by
   rw [coeff_S ε b hd]; exact mul_mem (eOm_mem ε A _) (h _)
 
 /- English proof (translation)
-Take `⟨hi, r, hr, hu⟩` from `h`. Use `⟨S_int ε A b hd hi, r / d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_S ε b hd, div_mul_cancel₀ r hd.ne']`. Conclude with `mul_ne_zero (eOm_ne_zero ε _) hr`. Rewrite using `[coeff_S ε b hd, div_mul_cancel₀ r hd.ne', mul_inv]`.
-
-Conclude with `mul_mem (eOm_inv_mem ε A _) hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_prim [IsAlgClosed Ω] (ε : Ω →+* ℂ) (A : ValuationSubring Ω) (b : ℚ) {d : ℚ} (hd : 0 < d)
     {χ : HahnSeries ℚ Ω} (h : Prim A χ) : Prim A (sub ε 1 b d χ) := by
@@ -208,11 +206,9 @@ theorem S_prim [IsAlgClosed Ω] (ε : Ω →+* ℂ) (A : ValuationSubring Ω) (b
     exact mul_mem (eOm_inv_mem ε A _) hu
 
 /- English proof (translation)
-Establish `hd' : algebraMap ℚ Ω d ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (algebraMap ℚ Ω).injective]`. Conclude with `hd.ne'`. Use extensionality with `r`. Rewrite using `[HahnSeries.coeff_smul, coeff_S ε b hd, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap ℚ Ω (1 * r) * (sub ε 1 b d χ).coeff r = _`. Rewrite using `[coeff_S ε b hd]`. Use `show algebraMap ℚ Ω (1 * r) * (eOm ε (r * d * b / d) * χ.coeff (r * d)) = (algebraMap ℚ Ω d)⁻¹ * (eOm ε (r * d * b / d) * (algebraMap ℚ Ω (1 * (r * d)) * χ.coeff (r * d)))`. Rewrite using `[show (1 : ℚ) * (r * d) = (1 * r) * d by ring, map_mul]`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem theta_S [Algebra ℚ Ω] (ε : Ω →+* ℂ) (b : ℚ) {d : ℚ} (hd : 0 < d) (χ : HahnSeries ℚ Ω) :
     theta 1 (sub ε 1 b d χ) = (algebraMap ℚ Ω d)⁻¹ • sub ε 1 b d (theta 1 χ) := by
@@ -229,7 +225,7 @@ theorem theta_S [Algebra ℚ Ω] (ε : Ω →+* ℂ) (b : ℚ) {d : ℚ} (hd : 0
   rw [map_mul, map_one]; ring
 
 /- English proof (translation)
-Rewrite using `[← X.sl_mul, Api.exp_sl_upper X _ (by rw [ent_piece l j hl]; simp) x, ent_piece l j hl, ent_piece l j hl, ent_piece l j hl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_piece [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l j : ℕ) (hl : 0 < l) (x : X.K) :
     X.exp (X.sl (ofSL (ModularGroup.T ^ j)) (X.sl (toGQ !![1, 0; 0, (l : ℤ)]) x)) = sub ε 1 (j : ℚ) (l : ℚ) (X.exp x) := by
@@ -247,9 +243,9 @@ variable {Ω : Type} [Field Ω]
 def Dv (A : ValuationSubring Ω) (l m : ℕ) (χ : HahnSeries ℚ Ω) : Prop := ∀ r, CgA A l m (χ.coeff r) 0
 
 /- English proof (translation)
-Introduce `r`. Take `⟨z, hz, e⟩` from `h1 r`. Take `⟨w, hw, e'⟩` from `h2 r`. Use `⟨z + w, add_mem hz hw, ?_⟩` and prove the remaining obligations. Rewrite `e`, `e'`, the goal using `[sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[HahnSeries.coeff_add, e, e', mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_add {A : ValuationSubring Ω} {l m : ℕ} {χ ψ : HahnSeries ℚ Ω} (h1 : Dv A l m χ) (h2 : Dv A l m ψ) :
     Dv A l m (χ + ψ) := by
@@ -261,7 +257,7 @@ theorem dv_add {A : ValuationSubring Ω} {l m : ℕ} {χ ψ : HahnSeries ℚ Ω}
   rw [HahnSeries.coeff_add, e, e', mul_add]
 
 /- English proof (translation)
-Introduce `r`. Take `⟨z, hz, e⟩` from `h1 r`. Use `⟨-z, neg_mem hz, ?_⟩` and prove the remaining obligations. Rewrite `e`, the goal using `[sub_zero]`. Rewrite using `[HahnSeries.coeff_neg, e, mul_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_neg {A : ValuationSubring Ω} {l m : ℕ} {χ : HahnSeries ℚ Ω} (h1 : Dv A l m χ) : Dv A l m (-χ) := by
   intro r
@@ -271,19 +267,19 @@ theorem dv_neg {A : ValuationSubring Ω} {l m : ℕ} {χ : HahnSeries ℚ Ω} (h
   rw [HahnSeries.coeff_neg, e, mul_neg]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Glue.DlUniq.cg_mul A l m χ G h1 hG`.
+A detailed English derivation is pending.
 -/
 theorem dv_mul {A : ValuationSubring Ω} {l m : ℕ} {χ G : HahnSeries ℚ Ω} (h1 : Dv A l m χ) (hG : ∀ r, G.coeff r ∈ A) :
     Dv A l m (χ * G) := GlobalTheory.Glue.DlUniq.cg_mul A l m χ G h1 hG
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `dv_mul h1 hG`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_mul_left {A : ValuationSubring Ω} {l m : ℕ} {χ G : HahnSeries ℚ Ω} (hG : ∀ r, G.coeff r ∈ A) (h1 : Dv A l m χ) :
     Dv A l m (G * χ) := by rw [mul_comm]; exact dv_mul h1 hG
 
 /- English proof (translation)
-Introduce `r`. Take `⟨z, hz, e⟩` from `h1 (r * d)`. Use `⟨eOm ε (r * d * b / d) * z, mul_mem (eOm_mem ε A _) hz, ?_⟩` and prove the remaining obligations. Rewrite `e`, the goal using `[sub_zero]`. Rewrite using `[coeff_S ε b hd, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -296,9 +292,9 @@ theorem dv_S [IsAlgClosed Ω] (ε : Ω →+* ℂ) {A : ValuationSubring Ω} {l m
   rw [coeff_S ε b hd, e]; ring
 
 /- English proof (translation)
-Establish `hl' : (l : Ω) ≠ 0`. Rewrite using `[← map_natCast (algebraMap ℚ Ω) l]`. Conclude with `(map_ne_zero_iff _ (algebraMap ℚ Ω).injective).2 (by exact_mod_cast hl.ne')`. Introduce `r`. Take `⟨z, hz, e⟩` from `h1 r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite `e`, the goal using `[sub_zero]`. Rewrite using `[HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, e, smul_eq_mul, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dv_inv [Algebra ℚ Ω] {A : ValuationSubring Ω} {l m : ℕ} (hl : 0 < l) {χ : HahnSeries ℚ Ω}
     (h1 : Dv A l (m + 1) χ) : Dv A l m (HahnSeries.C ((l : Ω)⁻¹) * χ) := by
@@ -313,7 +309,7 @@ theorem dv_inv [Algebra ℚ Ω] {A : ValuationSubring Ω} {l m : ℕ} (hl : 0 < 
   field_simp
 
 /- English proof (translation)
-Introduce `r`. Take `⟨z, hz, e⟩` from `h1 r`. Use `⟨l * z, mul_mem (natCast_mem A l) hz, ?_⟩` and prove the remaining obligations. Rewrite using `[e, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dv_of_succ {A : ValuationSubring Ω} {l m : ℕ} {χ : HahnSeries ℚ Ω} (h1 : Dv A l (m + 1) χ) : Dv A l m χ := by
   intro r
@@ -322,9 +318,9 @@ theorem dv_of_succ {A : ValuationSubring Ω} {l m : ℕ} {χ : HahnSeries ℚ Ω
   rw [e, pow_succ]; ring
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro r; rw [Finset.prod_empty, HahnSeries.coeff_one]; split_ifs <;> simp`. Consider the case `insert j S hj ih`. Introduce `r`. Rewrite using `[Finset.prod_insert hj]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.DlEx.intA_mul A (h j) ih r`.
+A detailed English derivation is pending.
 -/
 theorem int_prod [Algebra ℚ Ω] {A : ValuationSubring Ω} (S : Finset ℕ) (F : ℕ → HahnSeries ℚ Ω) (h : ∀ j, ∀ r, (F j).coeff r ∈ A) :
     ∀ r, (∏ j ∈ S, F j).coeff r ∈ A := by
@@ -336,14 +332,14 @@ theorem int_prod [Algebra ℚ Ω] {A : ValuationSubring Ω} (S : Finset ℕ) (F 
 def Br [Algebra ℚ Ω] (x y : HahnSeries ℚ Ω) : HahnSeries ℚ Ω := theta 1 x * y - x * theta 1 y
 
 /- English proof (translation)
-Unfold `Br`. Rewrite using `[(GlobalTheory.T.thetaDerivationHahnSeries_leibniz_add_const (1 : ℚ) x X).1, (GlobalTheory.T.thetaDerivationHahnSeries_leibniz_add_const (1 : ℚ) y Y).1]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Br_mul [Algebra ℚ Ω] (x X y Y : HahnSeries ℚ Ω) : Br (x * X) (y * Y) = Br x y * (X * Y) + (x * y) * Br X Y := by
   unfold Br
   rw [(GlobalTheory.T.thetaDerivationHahnSeries_leibniz_add_const (1 : ℚ) x X).1, (GlobalTheory.T.thetaDerivationHahnSeries_leibniz_add_const (1 : ℚ) y Y).1]; ring
 
 /- English proof (translation)
-Establish `hd : (0 : ℚ) < l` using `by exact_mod_cast hl`. Unfold `Br`. Rewrite using `[theta_S ε b hd, theta_S ε b hd, S_sub ε b hd, S_mul, S_mul, map_natCast, ← HahnSeries.C_mul_eq_smul, ← HahnSeries.C_mul_eq_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Br_S [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (l : ℕ) (hl : 0 < l) (b : ℚ) (x y : HahnSeries ℚ Ω) :
     Br (sub ε 1 b l x) (sub ε 1 b l y) = HahnSeries.C ((l : Ω)⁻¹) * sub ε 1 b l (Br x y) := by
@@ -361,15 +357,13 @@ namespace GlobalTheory.UlCusp
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `hd : (0 : ℚ) < l` using `by exact_mod_cast hl`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `r`. Use `⟨0, zero_mem A, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Br]`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj, Finset.sum_insert hj, Finset.prod_insert hj]`. Use `set Δ := φ0 * Ea * Eb - Br Ea Eb with hΔ`. Use `set x := sub ε 1 (j : ℚ) (l : ℚ) Ea`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set y := sub ε 1 (j : ℚ) (l : ℚ) Eb`. Use `set X := ∏ j ∈ S, sub ε 1 (j : ℚ) (l : ℚ) Ea`. Use `set Y := ∏ j ∈ S, sub ε 1 (j : ℚ) (l : ℚ) Eb`. Use `set Q := ∏ j ∈ S, (sub ε 1 (j : ℚ) (l : ℚ) Ea * sub ε 1 (j : ℚ) (l : ℚ) Eb)`. Use `set Sg := ∑ j ∈ S, HahnSeries.C ((l : Ω)⁻¹) * sub ε 1 (j : ℚ) (l : ℚ) φ0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXY : X * Y = Q` using `(Finset.prod_mul_distrib).symm`. Establish `hB : Br Ea Eb = φ0 * Ea * Eb - Δ` using `by rw [hΔ]; ring`. Establish `e : Br (x * X) (y * Y) - (HahnSeries.C ((l : Ω)⁻¹) * sub ε 1 (j : ℚ) (l : ℚ) φ0 + Sg) * (x * y * Q) = -(HahnSeries.C ((l : Ω)⁻¹) * sub ε 1 (j : ℚ) (l : ℚ) Δ) * Q + (x * y) * (Br X Y - Sg * Q)`. Rewrite using `[Br_mul, hXY, Br_S ε l hl, hB, S_sub ε _ hd, S_mul, S_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Establish `hQ : ∀ r, Q.coeff r ∈ A` using `int_prod S _ (fun i => GlobalTheory.DlEx.intA_mul A (S_int ε A _ hd hEa) (S_int ε A _ hd hEb))`. Establish `hxy : ∀ r, (x * y).coeff r ∈ A` using `GlobalTheory.DlEx.intA_mul A (S_int ε A _ hd hEa) (S_int ε A _ hd hEb)`. Conclude with `dv_add (dv_mul (dv_neg (dv_inv hl (dv_S ε _ hd hD))) hQ) (dv_mul_left hxy ih)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem key_ind [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (A : ValuationSubring Ω) (l n : ℕ) (hl : 0 < l)
     (φ0 Ea Eb : HahnSeries ℚ Ω) (hEa : ∀ r, Ea.coeff r ∈ A) (hEb : ∀ r, Eb.coeff r ∈ A)
@@ -411,7 +405,7 @@ namespace GlobalTheory.UlCusp
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Use `⟨fun r => ?_, 0, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [HahnSeries.coeff_one]; split_ifs <;> simp`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prim_one (A : ValuationSubring Ω) : Prim A (1 : HahnSeries ℚ Ω) := by
   refine ⟨fun r => ?_, 0, ?_, ?_⟩
@@ -420,7 +414,7 @@ theorem prim_one (A : ValuationSubring Ω) : Prim A (1 : HahnSeries ℚ Ω) := b
   · simp
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty]`. Conclude with `prim_one A`. Consider the case `insert j S hj ih => rw [Finset.prod_insert hj]`. Conclude with `GlobalTheory.Glue.Prim.mul A _ _ (h j) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prim_prod (A : ValuationSubring Ω) (S : Finset ℕ) (F : ℕ → HahnSeries ℚ Ω) (h : ∀ j, Prim A (F j)) :
     Prim A (∏ j ∈ S, F j) := by
@@ -429,13 +423,11 @@ theorem prim_prod (A : ValuationSubring Ω) (S : Finset ℕ) (F : ℕ → HahnSe
   | insert j S hj ih => rw [Finset.prod_insert hj]; exact GlobalTheory.Glue.Prim.mul A _ _ (h j) ih
 
 /- English proof (translation)
-Use `⟨inferInstance, ⟨fun c => ?_⟩⟩` and prove the remaining obligations. Take `⟨D, hD, hk⟩` from `X.bdd (algebraMap Ω X.K c)`. Take `⟨k, hint⟩` from `hk 0`. Establish `hc : (X.exp (algebraMap Ω X.K c)).coeff 0 = c`. Rewrite using `[X.exp.commutes, HahnSeries.algebraMap_apply', PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, HahnSeries.ofPowerSeries_C]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[HahnSeries.C_apply, HahnSeries.coeff_single, Pi.single_apply]`. Rewrite `hint` using `[hc]`. Establish `h1 : IsIntegral ℚ ((D : Ω) ^ k * c)` using `hint.tower_top`. Establish `h2 : IsIntegral ℚ (algebraMap ℚ Ω (((D : ℚ) ^ k)⁻¹))` using `isIntegral_algebraMap`. Establish `hD' : (D : Ω) ^ k ≠ 0` using `pow_ne_zero _ (by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (algebraMap ℚ Ω) D]`. Conclude with `(map_ne_zero_iff _ (algebraMap ℚ Ω).injective).2 (by exact_mod_cast hD.ne'))`. Establish `: c = algebraMap ℚ Ω (((D : ℚ) ^ k)⁻¹) * ((D : Ω) ^ k * c)`. Rewrite using `[map_inv₀, map_pow, map_natCast, ← mul_assoc, inv_mul_cancel₀ hD', one_mul]`. Rewrite using `[this]`.
-
-Conclude with `(h2.mul h1).isAlgebraic`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgClosure_of_tower [Algebra ℚ Ω] [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) : IsAlgClosure ℚ Ω := by
   refine ⟨inferInstance, ⟨fun c => ?_⟩⟩
@@ -461,35 +453,31 @@ end GlobalTheory.UlCusp
 namespace GlobalTheory.UlCusp
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X A l _ n hl f φ hT hφ`. Use `haveI : IsAlgClosure ℚ Ω := isAlgClosure_of_tower X`. Establish `hl0 : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hd : (0 : ℚ) < l` using `by exact_mod_cast hl0`. Establish `Hj : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, h1, h2⟩` from `X.j_hol`. Conclude with `⟨g, h2, h1⟩`. Establish `hf0 : f ≠ 0`. Take `⟨-, a, b, κ, hκ, hfb, hPa, -, -⟩` from `hφ`. Introduce and unpack `rfl`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hfb` using `[zero_mul, eq_comm, mul_eq_zero]`. Break down `hfb with h | h` into its components or cases. Conclude with `hκ ((map_eq_zero_iff _ (algebraMap Ω X.K).injective).1 h)`. Take `⟨-, r, hr, -⟩` from `hPa`. Conclude with `hr (by rw [h, map_zero, HahnSeries.coeff_zero])`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hKT : f ∈ KT X 1` using `by show (X.sl (ofSL (ModularGroup.T ^ 1))) f = f`. Rewrite using `[pow_one]`. Conclude with `hT`. Take `⟨φ0, hφ0, hsp⟩` from `GlobalTheory.T.exists_logDerivQExpansion_modPrimePow_of_translationInvariant ε X Hj l A hl (n + 1) 1 f one_pos hf0 hKT`. Rewrite `hφ0` using `[Nat.cast_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniq` using `GlobalTheory.Glue.isDl_unique ε X Hj l A hl (n + 1) 1 f φ φ0 hφ hφ0`. Take `⟨hφ0A, a, b, κ, hκ, hfb, hPa, hPb, hc0⟩` from `hφ0`. Establish `hφA` using `hφ.1`. Use `set D : GQ := toGQ !![1, 0; 0, (l : ℤ)]`. Establish `hE : ∀ x : X.K, X.exp (nrmT X l (X.sl D x)) = ∏ j ∈ Finset.range l, sub ε 1 (j : ℚ) (l : ℚ) (X.exp x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[nrmT, map_prod]`. Conclude with `Finset.prod_congr rfl fun j _ => exp_piece X l j hl0 x`. Establish `hEq : nrmT X l (X.sl D f) * nrmT X l (X.sl D b) = algebraMap Ω X.K (κ ^ l) * nrmT X l (X.sl D a)`. Unfold `nrmT`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Establish `: ∀ j ∈ Finset.range l, X.sl (ofSL (ModularGroup.T ^ j)) (X.sl D f) * X.sl (ofSL (ModularGroup.T ^ j)) (X.sl D b) = algebraMap Ω X.K κ * X.sl (ofSL (ModularGroup.T ^ j)) (X.sl D a)`. Introduce `j _`. Rewrite using `[← map_mul, ← map_mul, hfb, map_mul, map_mul, AlgEquiv.commutes, AlgEquiv.commutes]`. Rewrite using `[Finset.prod_congr rfl this, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hEa : ∀ r, (X.exp a).coeff r ∈ A` using `hPa.1`. Establish `hEb : ∀ r, (X.exp b).coeff r ∈ A` using `hPb.1`. Establish `hD : Dv A l (n + 1) (φ0 * X.exp a * X.exp b - Br (X.exp a) (X.exp b))`. Introduce `r`. Take `⟨z, hz, e⟩` from `hc0 r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨z, hz, by unfold Br; rw [sub_zero, HahnSeries.coeff_sub, e]⟩`. Establish `hkey` using `key_ind ε A l n hl0 φ0 (X.exp a) (X.exp b) hEa hEb hD (Finset.range l)`. Establish `hsum : (∑ j ∈ Finset.range l, HahnSeries.C ((l : Ω)⁻¹) * sub ε 1 (j : ℚ) (l : ℚ) φ0) = uq l φ0`. Rewrite using `[← Api.hq_eq_uq_of_isAlgClosed (ε := ε) hl0 (fun r hr => by simpa using hsp r hr), hq, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[HahnSeries.C_mul_eq_smul]`. Rewrite `hkey` using `[hsum, Finset.prod_mul_distrib]`. Establish `hdiff : Dv A l n (uq l φ - uq l φ0)`. Introduce `r`. Rewrite using `[HahnSeries.coeff_sub, Api.coeff_uq hl0, Api.coeff_uq hl0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `split_ifs`. Take `⟨z, hz, e⟩` from `huniq (l * r)`. Use `⟨l * z, mul_mem (natCast_mem A l) hz, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero, e, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, zero_mem A, by simp⟩`. Establish `hQ : ∀ r, ((∏ j ∈ Finset.range l, sub ε 1 (j : ℚ) (l : ℚ) (X.exp a)) * (∏ j ∈ Finset.range l, sub ε 1 (j : ℚ) (l : ℚ) (X.exp b))).coeff r ∈ A` using `GlobalTheory.DlEx.intA_mul A (int_prod _ _ fun j => S_int ε A _ hd hEa) (int_prod _ _ fun j => S_int ε A _ hd hEb)`. Establish `hfin` using `dv_add (dv_mul hdiff hQ) (dv_neg hkey)`. Use `⟨fun r => ?_, nrmT X l (X.sl D a), nrmT X l (X.sl D b), κ ^ l, pow_ne_zero _ hκ, hEq, ?_, ?_, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[Api.coeff_uq hl0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `split_ifs`. Conclude with `hφA _`. Conclude with `zero_mem A`. Rewrite using `[hE]`. Conclude with `prim_prod A _ _ fun j => S_prim ε A _ hd hPa`.
-
-Rewrite using `[hE]`. Conclude with `prim_prod A _ _ fun j => S_prim ε A _ hd hPb`. Take `⟨z, hz, e⟩` from `hfin r`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[sub_zero]`.
-
-Rewrite using `[← e, hE, hE, ← HahnSeries.coeff_sub]`. Use `congr 1`. Unfold `Br`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dl_norm_uq : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (l : ℕ) [Fact l.Prime] (n : ℕ), (l : Ω) ∈ A.nonunits →
   ∀ (f : X.K) (φ : HahnSeries ℚ Ω), X.sl (ofSL ModularGroup.T) f = f → IsDl X A l (n + 1) 1 f φ →
@@ -572,7 +560,7 @@ theorem dl_norm_uq : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω
 end GlobalTheory.UlCusp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UlCusp.dl_norm_uq`.
+A detailed English derivation is pending.
 -/
 example : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (l : ℕ) [Fact l.Prime] (n : ℕ), (l : Ω) ∈ A.nonunits →
   ∀ (f : X.K) (φ : HahnSeries ℚ Ω), X.sl (ofSL ModularGroup.T) f = f → IsDl X A l (n + 1) 1 f φ →

@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open private euler_factor_log_bound partial_sums_log_euler_factor_le from Formalism.GL3MeanSquares.HookFormulaTorsion.SumWeightsOverPrimeLeHalfDegree
 
 /- English proof (translation)
-Establish `hpos : ∀ P : {P : Ideal (𝓞 E) // P.IsMaximal}, 0 < Formalism.HermitianLatticesTheory.eulerFac E M P.1` using `fun P => (euler_factor_log_bound E hE M (by omega) P.1 P.2).1`. Establish `habs : Summable (fun P : {P : Ideal (𝓞 E) // P.IsMaximal} => |Real.log (Formalism.HermitianLatticesTheory.eulerFac E M P.1)|)` using `summable_of_sum_le (fun P => abs_nonneg _) (partial_sums_log_euler_factor_le E hE M hM)`. Conclude with `Real.multipliable_of_summable_log hpos habs.of_abs`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem multipliable_eulerFac (E : Type) [Field E] [NumberField E] [StarRing E]
     (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) (M : ℕ) (hM : 2 ≤ M) :
@@ -40,7 +40,7 @@ Both sides reduce to the same expression.
 theorem normDifferentV_eq : IndefiniteRowSideFullHecke.LocalDualIndex.normDifferentV F = IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.normDiffV F := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.resCard IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.resCard`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem resCard_eq : IndefiniteRowSideFullHecke.LocalDualIndex.resCard F = IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.resCard F := by
   funext v
@@ -48,23 +48,23 @@ theorem resCard_eq : IndefiniteRowSideFullHecke.LocalDualIndex.resCard F = Indef
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.absDiscr`. Rewrite using `[Int.cast_abs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem absDiscr_eq : IndefiniteRowSideFullHecke.LocalDualIndex.absDiscr F = ((|discr F| : ℤ) : ℝ) := by
   unfold IndefiniteRowSideFullHecke.LocalDualIndex.absDiscr
   rw [Int.cast_abs]
 
 /- English proof (translation)
-Unfold `InfinitePlace.mult`. Rewrite using `[if_pos (IsTotallyReal.isReal w)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mult_eq_one [IsTotallyReal F] (w : InfinitePlace F) : w.mult = 1 := by
   unfold InfinitePlace.mult
   rw [if_pos (IsTotallyReal.isReal w)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.stdInf IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.stdInf IndefiniteRowSideFullHecke.LocalDualIndex.traceInf`. Rewrite using `[← Complex.exp_sum, ← Finset.mul_sum]`. Use `congr 2`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_eq_one]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stdInf_eq [IsTotallyReal F] : IndefiniteRowSideFullHecke.LocalDualIndex.stdInf F = IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.stdInf F := by
   funext x
@@ -76,7 +76,7 @@ theorem stdInf_eq [IsTotallyReal F] : IndefiniteRowSideFullHecke.LocalDualIndex.
   rw [mult_eq_one]; simp
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.IsStdChar`. Rewrite using `[stdInf_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isStdChar_iff [IsTotallyReal F] (ψ : AddChar (AF F) ℂ) :
     IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar F ψ ↔ IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.IsStdChar F ψ := by
@@ -84,7 +84,7 @@ theorem isStdChar_iff [IsTotallyReal F] (ψ : AddChar (AF F) ℂ) :
   rw [stdInf_eq]
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.IsScalingInf IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.ScalesInf`. Rewrite using `[stdInf_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isScalingInf_iff [IsTotallyReal F] (ψ : AddChar (AF F) ℂ) (a : Fˣ) :
     IndefiniteRowSideFullHecke.LocalDualIndex.IsScalingInf F ψ a ↔ IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.ScalesInf F ψ a := by
@@ -92,7 +92,7 @@ theorem isScalingInf_iff [IsTotallyReal F] (ψ : AddChar (AF F) ℂ) (a : Fˣ) :
   rw [stdInf_eq]
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.absInf IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.absInf`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mult_eq_one, pow_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem absInf_eq [IsTotallyReal F] (a : Fˣ) :
     IndefiniteRowSideFullHecke.LocalDualIndex.absInf F a = IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.absInf F a := by
@@ -108,7 +108,7 @@ Both sides reduce to the same expression.
 theorem etaV_eq : IndefiniteRowSideFullHecke.LocalDualIndex.etaV F E = IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.eta F E := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `M v`. Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.eulerInv IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.eulerInv`. Rewrite using `[etaV_eq, resCard_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eulerInv_eq : IndefiniteRowSideFullHecke.LocalDualIndex.eulerInv F E = IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.eulerInv F E := by
   funext M v
@@ -116,7 +116,7 @@ theorem eulerInv_eq : IndefiniteRowSideFullHecke.LocalDualIndex.eulerInv F E = I
   rw [etaV_eq, resCard_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ψ M v`. Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.localDensity IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.locDens`. Rewrite using `[dualIndex_eq, eulerInv_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem localDensity_eq : IndefiniteRowSideFullHecke.LocalDualIndex.localDensity F E = IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.locDens F E := by
   funext ψ M v
@@ -124,13 +124,13 @@ theorem localDensity_eq : IndefiniteRowSideFullHecke.LocalDualIndex.localDensity
   rw [dualIndex_eq, eulerInv_eq]
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.eulerInv`. Establish `hq : 1 < IndefiniteRowSideFullHecke.LocalDualIndex.resCard F v`. Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.resCard`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : (1 : ℝ) < (IndefiniteRowSideFullHecke.LocalDualIndex.resCard F v : ℝ)` using `by exact_mod_cast hq`. Establish `h1 : (IndefiniteRowSideFullHecke.LocalDualIndex.resCard F v : ℝ) ^ (-(M : ℤ)) < 1` using `zpow_lt_one_of_neg₀ hq' (by omega)`. Establish `h0 : 0 < (IndefiniteRowSideFullHecke.LocalDualIndex.resCard F v : ℝ) ^ (-(M : ℤ))` using `zpow_pos (by linarith) _`. Establish `he : IndefiniteRowSideFullHecke.LocalDualIndex.etaV F E v ^ M ≤ 1`. Use `(le_abs_self _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[abs_pow]`. Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.etaV`. Apply the tactic sequence `split_ifs <;> simp`. Use the polynomial consequences of the given equalities and inequalities.
+Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem eulerInv_pos (M : ℕ) (hM : 1 ≤ M) (v : HeightOneSpectrum (𝓞 F)) :
     0 < IndefiniteRowSideFullHecke.LocalDualIndex.eulerInv F E M v := by
@@ -156,19 +156,19 @@ theorem eulerInv_pos (M : ℕ) (hM : 1 ≤ M) (v : HeightOneSpectrum (𝓞 F)) :
 end Defs
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hab`. Establish `hc : a - b ≠ 0` using `sub_ne_zero.mpr hab`. Establish `hn : (0 : ℝ) < Fintype.card (InfinitePlace F)` using `by exact_mod_cast Fintype.card_pos`. Use `set n : ℕ := Fintype.card (InfinitePlace F) with hndef`. Use `set y : F := (a - b)⁻¹ * ((2 * n : ℕ) : F)⁻¹ with hy`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `(ha (algebraMap F (Ainf F) y)).symm.trans (hb (algebraMap F (Ainf F) y))`. Rewrite `h` using `[← map_mul, ← map_mul]`. Establish `hay : a * y = b * y + ((2 * n : ℕ) : F)⁻¹`. Rewrite using `[hy]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `htr : ∀ z : F, IndefiniteRowSideFullHecke.LocalDualIndex.traceInf F (algebraMap F (Ainf F) (z + ((2 * n : ℕ) : F)⁻¹)) = IndefiniteRowSideFullHecke.LocalDualIndex.traceInf F (algebraMap F (Ainf F) z) + 1 / 2`. Introduce `z`. Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.traceInf`. Establish `: ∀ w : InfinitePlace F, (w.mult : ℝ) * (InfinitePlace.Completion.extensionEmbedding w (algebraMap F (Ainf F) (z + ((2 * n : ℕ) : F)⁻¹) w)).re = (w.mult : ℝ) * (InfinitePlace.Completion.extensionEmbedding w (algebraMap F (Ainf F) z w)).re + ((2 * n : ℕ) : ℝ)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Establish `e : ∀ u : F, algebraMap F (Ainf F) u w = algebraMap F w.Completion u` using `fun u => rfl`. Rewrite using `[mult_eq_one, e, e, map_add, map_add, map_inv₀, map_natCast, map_inv₀, map_natCast, Complex.add_re, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun w _ => this w, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, ← hndef, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Unfold `IndefiniteRowSideFullHecke.LocalDualIndex.stdInf at h`. Rewrite `h` using `[hay, htr]`.
+Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Complex.ofReal_add, mul_add, Complex.exp_add]`. Establish `h2 : Complex.exp (-(2 * Real.pi * Complex.I) * ((1 / 2 : ℝ) : ℂ)) = -1`. Use `push_cast`. Rewrite using `[show -(2 * (Real.pi : ℂ) * Complex.I) * (1 / 2) = -(Real.pi * Complex.I) by ring, Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions.
+Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[h2]`. Establish `h3` using `Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * (IndefiniteRowSideFullHecke.LocalDualIndex.traceInf F (algebraMap F (Ainf F) (b * y)) : ℂ))`. Apply `h3` to reduce the goal to its premises. Take the linear combination `(-1 / 2 : ℂ) * h`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem scaling_unique (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (ψ : AddChar (AF F) ℂ) (a b : F) (ha : IndefiniteRowSideFullHecke.LocalDualIndex.IsScalingInf F ψ a)
@@ -249,7 +249,7 @@ def SecondConclusion : Prop :=
         (∃ a : Fˣ, ScalesInf F ψ a) ∧ ∀ a : Fˣ, ScalesInf F ψ a → DensityProduct F E ψ a M
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2.2⟩, fun h => ⟨h.1, IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.star_eq_sigma σ h.1 h.2, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypotheses_iff (σ : E →ₐ[F] E) :
     (IsCMExt F E σ ∧ (∀ x : E, star x = σ x) ∧ Formalism.HermitianLatticesTheory.IsCMUnram E) ↔
@@ -257,21 +257,17 @@ theorem hypotheses_iff (σ : E →ₐ[F] E) :
   ⟨fun h => ⟨h.1, h.2.2⟩, fun h => ⟨h.1, IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.star_eq_sigma σ h.1 h.2, h.2⟩⟩
 
 /- English proof (translation)
-Take `⟨⟨ψ₁, hψ₁, -⟩, hdual, ⟨hfin, hprod, hd⟩, htw, hL, hdens⟩` from `h`. Use `⟨⟨⟨ψ₁, (isStdChar_iff F _).1 hψ₁⟩, ?_⟩, ⟨?_, ?_, hfin, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ₀ h₀ ψ hψ`. Establish `h₀'` using `(isStdChar_iff F _).2 h₀`. Take `⟨a, ha, hx⟩` from `htw ψ₀ h₀' ψ hψ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Units.mk0 a ha, hx, fun b hb => Units.ext ?_⟩` and prove the remaining obligations. Conclude with `scaling_unique F ψ _ _ (IndefiniteRowSideFullHecke.LocalDualIndex.isScalingInf_of_eq F h₀' hb) (IndefiniteRowSideFullHecke.LocalDualIndex.isScalingInf_of_eq F h₀' hx)`. Introduce `ψ₀ h₀`. Conclude with `hdual ψ₀ ((isStdChar_iff F _).2 h₀)`. Introduce `v h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(hdual ψ₁ hψ₁ v).2`. Take `⟨h2, h3⟩` from `(hdens ψ₁ hψ₁.1).1 v`. Rewrite `h1` using `[normDifferentV_eq, h0, Nat.cast_zero, IndefiniteRowSideFullHecke.LocalDualIndex.dualIndex, div_eq_zero_iff]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `h2 (by exact_mod_cast h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h3 (by exact_mod_cast h1)`. Rewrite `hprod` using `[absDiscr_eq, normDifferentV_eq]`. Conclude with `Int.cast_injective (α := ℝ) (by rw [Int.cast_natCast]; exact hprod)`. Rewrite using `[← absDiscr_eq]`. Conclude with `hd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M hM`. Use `⟨⟨multipliable_eulerFac E hE M hM, (hL M hM).1, ?_⟩, fun ψ hψ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← eulerInv_eq]`. Conclude with `(hL M hM).2`. Take `⟨a, ha, hx⟩` from `htw ψ₁ hψ₁ ψ hψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨Units.mk0 a ha, (isScalingInf_iff F ψ _).1 (IndefiniteRowSideFullHecke.LocalDualIndex.isScalingInf_of_eq F hψ₁ hx)⟩`. Introduce `a ha`. Take `⟨hidx, hrest⟩` from `hdens ψ hψ`. Take `⟨hs, P, hP, hPr, hval⟩` from `hrest a a.ne_zero ((isScalingInf_iff F ψ a).2 ha) M hM`. Unfold `IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.DensityProduct`.
-
-Rewrite using `[← localDensity_eq, hPr.tprod_eq, ← absInf_eq]`. Use `⟨hidx, fun v => ?_, hs, hPr.multipliable, hP, ?_⟩` and prove the remaining obligations. Use `mul_pos (Real.rpow_pos_of_pos (div_pos ?_ ?_) _) (eulerInv_pos F E M (by omega) v)` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero (hidx v).1` after adjusting the coercions. Conclude with `Nat.pos_of_ne_zero (hidx v).2` after adjusting the coercions.
-
-Rewrite using `[hval, hd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem second_of_first [IsTotallyReal F] (hE : Formalism.HermitianLatticesTheory.IsCMUnram E)
     (h : FirstConclusion F E) : SecondConclusion F E := by
@@ -312,17 +308,17 @@ theorem second_of_first [IsTotallyReal F] (hE : Formalism.HermitianLatticesTheor
       · rw [hval, hd]; rfl
 
 /- English proof (translation)
-Take `⟨⟨⟨ψ₁, hψ₁⟩, htw⟩, ⟨hdual, -, hfin, hprod⟩, hd, hM⟩` from `h`. Establish `hψ₁'` using `(isStdChar_iff F _).2 hψ₁`. Establish `hd' : IndefiniteRowSideFullHecke.LocalDualIndex.absDiscr F = IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.dF E` using `by rw [absDiscr_eq]; exact hd`. Use `⟨⟨ψ₁, hψ₁', fun ψ₂ hψ₂ => ?_⟩, ?_, ⟨hfin, ?_, hd'⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `htw ψ₁ hψ₁ ψ₂ hψ₂.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (a : F) = 1` using `scaling_unique F ψ₂ _ _ (IndefiniteRowSideFullHecke.LocalDualIndex.isScalingInf_of_eq F hψ₁' ha) hψ₂.isScalingInf_one`. Use extensionality with `x`. Rewrite using `[ha x, h1, map_one, one_mul]`. Introduce `ψ₀ h₀`. Conclude with `hdual ψ₀ ((isStdChar_iff F _).1 h₀)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[absDiscr_eq, normDifferentV_eq, ← hprod, Int.cast_natCast]`. Introduce `ψ₀ h₀ ψ hψ`. Take `⟨a, ha, -⟩` from `htw ψ₀ ((isStdChar_iff F _).1 h₀) ψ hψ`. Conclude with `⟨a, a.ne_zero, ha⟩`. Introduce `M h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨-, hpos, hPr⟩, -⟩` from `hM M h2`. Rewrite using `[eulerInv_eq]`. Conclude with `⟨hpos, hPr⟩`. Introduce `ψ hψ`. Use `⟨?_, fun a ha hsc M h2 => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, ha⟩, hall⟩` from `(hM 2 le_rfl).2 ψ hψ`. Conclude with `(hall a ha).1`. Take `⟨-, -, hs, hmul, hpos, hval⟩` from `((hM M h2).2 ψ hψ).2 (Units.mk0 a ha) ((isScalingInf_iff F ψ (Units.mk0 a ha)).1 hsc)`. Rewrite using `[localDensity_eq, hd']`. Use `⟨hs, _, hpos, hmul.hasProd, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hval, ← absInf_eq]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem first_of_second [IsTotallyReal F] (h : SecondConclusion F E) : FirstConclusion F E := by
   obtain ⟨⟨⟨ψ₁, hψ₁⟩, htw⟩, ⟨hdual, -, hfin, hprod⟩, hd, hM⟩ := h
@@ -355,7 +351,7 @@ theorem first_of_second [IsTotallyReal F] (h : SecondConclusion F E) : FirstConc
       rw [← hval, ← absInf_eq]; rfl
 
 /- English proof (translation)
-The claim follows from `haveI := h.1 ⟨second_of_first F E hE, first_of_second F E⟩`.
+A detailed English derivation is pending.
 -/
 theorem conclusions_iff (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) :
     FirstConclusion F E ↔ SecondConclusion F E :=
@@ -365,7 +361,7 @@ theorem conclusions_iff (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (hE : Formalis
 end Conclusions
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h F E _ _ _ _ _ _ σ hσ hE`. Conclude with `(conclusions_iff F E σ hσ hE).1 (h F E σ hσ ((hypotheses_iff F E σ).2 ⟨hσ, hE⟩).2.1 hE)`. Introduce `h F E _ _ _ _ _ _ σ hσ _ hE`. Conclude with `(conclusions_iff F E σ hσ hE).2 (h F E σ hσ hE)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem densityProduct_iff :
     IndefiniteRowSideFullHecke.LocalDualIndex.DensityProduct ↔ IndefiniteRowSideFullHecke.LocalAdditiveCharacterDual.EulerProductOfDensities := by

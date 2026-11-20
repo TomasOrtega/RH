@@ -12,11 +12,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V.Z.J
 
 /- English proof (translation)
-Establish `hv : v ∈ Finset.univ` using `Finset.mem_univ v`. Take `⟨E, hE⟩ : ∃ E, E = ∏ w, q ^ (9 + 3 * d w)` from `⟨_, rfl⟩`. Establish `hEeq : E = (q ^ 3) ^ (∑ w, d w) * (q ^ 9) ^ Fintype.card V`. Rewrite using `[hE]`. Simplify using `only [pow_add, pow_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Finset.prod_pow_eq_pow_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hEpos : 0 < E`. Rewrite using `[hE]`. Conclude with `Finset.prod_pos fun w _ => pow_pos hq _`. Establish `key : q * E ≤ C * ∏ w, z w`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE, ← Finset.mul_prod_erase _ _ hv, ← Finset.mul_prod_erase _ _ hv]`. Combine the equalities or inequalities in the displayed calculation. Establish `main : q ^ 2 * (q ^ 8 * E) ≤ (C * N) * (q ^ 8 * E)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.le_of_mul_le_mul_right main (Nat.mul_pos (pow_pos hq 8) hEpos)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem sel_arith {V : Type} [Fintype V] (q C L N : ℕ) (hq : 0 < q) (d z : V → ℕ) (v : V)
     (h1 : ∀ w, q ^ (9 + 3 * d w) ≤ z w) (h2 : q ^ (10 + 3 * d v) ≤ C * z v)
@@ -49,7 +49,7 @@ private theorem sel_arith {V : Type} [Fintype V] (q C L N : ℕ) (hq : 0 < q) (d
   exact Nat.le_of_mul_le_mul_right main (Nat.mul_pos (pow_pos hq 8) hEpos)
 
 /- English proof (translation)
-Establish `b : q ^ 6 * q ^ (a + 3 + e) ≤ q ^ 6 * (C * z)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.le_of_mul_le_mul_left b (pow_pos hq _)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem sel_cut (q a e z n C : ℕ) (hq : 0 < q) (h : q ^ (a + e) ≤ C * n) (h' : n * q ^ 9 ≤ z * q ^ 6) :
     q ^ (a + 3 + e) ≤ C * z := by
@@ -62,7 +62,7 @@ private theorem sel_cut (q a e z n C : ℕ) (hq : 0 < q) (h : q ^ (a + e) ≤ C 
   exact Nat.le_of_mul_le_mul_left b (pow_pos hq _)
 
 /- English proof (translation)
-Use `show Nat.card (Fin 3 → Fin 3 → A) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun]`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem card_mat (A : Type) : Nat.card (Matrix (Fin 3) (Fin 3) A) = Nat.card A ^ 9 := by
   show Nat.card (Fin 3 → Fin 3 → A) = _
@@ -71,17 +71,15 @@ private theorem card_mat (A : Type) : Nat.card (Matrix (Fin 3) (Fin 3) A) = Nat.
   ring
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F C₀ hF hl ρ B hρ hB hc cw hcw hG hE v i hU`. Establish `T` using `triOk l O F C₀ hF hl ρ B hρ hB hc`. Take `⟨C, hC⟩` from `locHigh l O (F.Gv v) (F.Iv v) _ (F.dv v) (triOf B v) hl (hE v) (T v).2.1 (T v).1 i hU`. Use `⟨C, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hlow` using `fun w => locLow l O (F.Gv w) (F.Iv w) _ (F.dv w) (triOf B w) hl (hE w) (T w).2.1 (T w).1 k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose Z hZ1 hZ2 hZ3 hZ4 using fun w => zvCnt l O F C₀ hF hl ρ B hρ hB hc k hk w (hlow w).1`. Take `⟨hfin, -, hkill, -⟩` from `okFin l O hl`. Use `haveI : Finite (Ok l O k) := hfin k`. Establish `hq : 0 < Nat.card (Ok l O k)` using `Nat.card_pos`. Use `haveI : Finite (Matrix (Fin 3) (Fin 3) (Ok l O k)) := inferInstanceAs (Finite (Fin 3 → Fin 3 → Ok l O k))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hk2 : ∀ x : Matrix (Fin 3) (Fin 3) (Ok l O k), l ^ k • x = 0` using `fun x => by`. Use extensionality with `a b`. Conclude with `hkill k (x a b)`. Establish `hop : IsOpen ((adK B k).ker : Set F.Γ)` using `by first`. Consider the case `exact adOpen l O F C₀ hF hl B k hc`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `exact (adOpen l O F C₀ hF hl ρ B hρ hB hc k).1`. Establish `hmain : (ZL F (adK B k) fun w => Z w).Finite ∧ Nat.card (Matrix (Fin 3) (Fin 3) (Ok l O k)) * ∏ w, Nat.card (Z w) ≤ (ZL F (adK B k) fun w => Z w).ncard * (HomMu l k F.eps (adK B k)).ncard * (∏ w, {x | adK B k (cw w) x = x}.ncard) * Nat.card (Matrix (Fin 3) (Fin 3) (Ok l O k)) ^ F …` using `hG k hk (Matrix (Fin 3) (Fin 3) (Ok l O k)) (adK B k) hk2 hop Z hZ2 hZ3`. Establish `hZe : (fun w => (Z w : Set (F.Gv w → Matrix (Fin 3) (Fin 3) (Ok l O k)))) = Zv B k` using `funext hZ1`. Rewrite `hmain` using `[hZe, dualZero l O F C₀ hF hl ρ B hρ hB hc k hk, Set.ncard_singleton, mul_one, card_mat]`. Establish `harch : (∏ w, {x | adK B k (cw w) x = x}.ncard) ≤ (Nat.card (Ok l O k) ^ 3) ^ (∑ w, F.dv w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∑ w, F.dv w = Fintype.card F.Inf` using `hF.card_inf.symm`. Rewrite using `[e, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_le_prod' fun w _ => ?_` and prove the remaining obligations. Conclude with `archUp l O hl hF.l_odd (B.r (cw w)) (by rw [← map_mul, (hcw w).1, map_one]) ((B.nu _).trans (hcw w).2) k hk`. Use `⟨hmain.1.subset fun z hz => hz.1, ?_⟩` and prove the remaining obligations.
-
-Use `sel_arith _ C _ _ hq F.dv (fun w => Nat.card (Z w)) v (fun w => ?_) ?_ ?_ (normCnt l O F C₀ hF hl ρ B hρ hB hc k hk (fun w => ⟨Z w, hZ1 w⟩) hmain.1)` and prove the remaining obligations. Use `sel_cut _ 6 (3 * F.dv w) _ _ 1 hq ((hlow w).2.trans (one_mul _).ge) (hZ4 w)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Conclude with `sel_cut _ 7 (3 * F.dv v) _ _ C hq (hC k hk) (hZ4 v)`. Conclude with `hmain.2.trans (Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ harch))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.selLow :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (F : Frame l (ResidueField O)) (C₀ : ℕ), F.Ok C₀ → (l : O) ≠ 0 → ∀ (ρ : NRep F 3 O) (B : Box F 3 O), UpperTheory.V.Fr.IsLift O ρ → B.Of ρ → B.Cont (maximalIdeal O) → ∀ cw : F.Inf → F.Γ, (∀ w, cw w * cw w = 1 ∧ F.del (cw w) = -1) → GWL { F with cw := cw } → LocE F → ∀ (v : F.V) (i : Fin 2), UnitStep (F.Iv v) (F.eps.comp (F.loc v)) (triOf B v) i → ∃ C : ℕ, ∀ k, 0 < k → (ZN B k).Finite ∧ Nat.card (Ok l O k) ^ 2 ≤ C * (ZN B k).ncard := by

@@ -10,21 +10,21 @@ namespace GlobalTheory.ExportSeries
 open MvPolynomial Matrix
 
 /- English proof (translation)
-Use `set d : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ := ∏ τ, (Matrix.of fun a b => (X (τ, a, b) : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ)).det with hd`. Establish `hev : ∀ v : D.what₂.Tau × Fin n × Fin n → ℂ, eval v d = ∏ τ, (Matrix.of fun a b => v (τ, a, b)).det`. Introduce `v`. Rewrite using `[hd, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply, eval_X]`. Establish `hd0 : d ≠ 0`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `hev (fun w => (1 : Matrix (Fin n) (Fin n) ℂ) w.2.1 w.2.2)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Establish `h1 : ∀ τ : D.what₂.Tau, (Matrix.of fun a b => (1 : Matrix (Fin n) (Fin n) ℂ) a b).det = 1`. Introduce `τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (Matrix.of fun a b => (1 : Matrix (Fin n) (Fin n) ℂ) a b) = 1` using `by ext a b; rfl`. Rewrite using `[this, det_one]`. Rewrite `this` using `[Finset.prod_eq_one fun τ _ => h1 τ]`. Conclude with `zero_ne_one this`. Establish `hFd : F * d = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_mul, map_zero, hev]`. Distinguish the cases in `h : ∏ τ, (Matrix.of fun a b => v (τ, a, b)).det = 0`. Rewrite using `[h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hτ : ∀ τ, (Matrix.of fun a b => v (τ, a, b)).det ≠ 0` using `fun τ hτ => h (Finset.prod_eq_zero (Finset.mem_univ τ) hτ)`. Set `x : GLR D n` to `fun τ => GeneralLinearGroup.mkOfDetNeZero _ (hτ τ)`. Establish `hx` using `hF x`. Rewrite `hx` using `[coefFn]`. Establish `hu : ((detFam (fun τ => (lam τ).detShift) x : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(mul_eq_zero.mp hx).resolve_left hu`. Establish `h3 : (fun w : D.what₂.Tau × Fin n × Fin n => (x w.1).val w.2.1 w.2.2) = v`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Rewrite `h2` using `[h3]`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : eval v F = 0`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Rewrite using `[h4, zero_mul]`. Conclude with `(mul_eq_zero.mp hFd).resolve_right hd0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_coefFn_id_eq_zero (D : D7) (n : ℕ) (lam : D.what₂.Tau → DomWeight n) (F : Formalism.L2.DIV.Pol ℂ D.what₂.Tau n)
     (hF : ∀ x : GLR D n, coefFn (RingHom.id ℂ) lam F x = 0) : F = 0 := by

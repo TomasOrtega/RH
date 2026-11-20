@@ -16,13 +16,13 @@ open GlobalTheory.TUniq
 namespace GlobalTheory.TUniq
 
 /- English proof (translation)
-Introduce `o _ g k J b R _ _ s t t' Sg φ hd hg hc hφ`. Establish `hp` using `pull_isLB t'.isLB φ`. Establish `hN` using `LB.isLB_div hp t.isLB`. Establish `key : ∀ {Y : Scheme.{0}} (f : Y ⟶ t.A.left), CechPic.pull (f ≫ φ) (CechPic.cls _ t'.isLB) = CechPic.pull f (CechPic.cls _ t.isLB) → ∃ w : ((LB.div (t'.L.pull φ) t.L).pull f).Gen, w.IsGen` using `fun f e => by`. Use `(CechPic.cls_eq_zero_iff (pull_isLB hN f)).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CechPic.cls_pull hN, CechPic.cls_div hp t.isLB, map_sub, CechPic.cls_pull t'.isLB, ← CechPic.pull_comp, e, sub_self]`. Use `GlobalTheory.T.seesaw_rigidified_lineBundle_dense_fibres R t.A t.L _ Sg t.ab t.isLB t.ample hN hd (key _ ?_) fun p hpS => ?_` and prove the remaining obligations. Establish `e : eSec t.A ≫ φ = eSec t'.A` using `(PolBaseChange.eSec_comm hφ).trans (Category.id_comp _)`. Establish `e₁` using `(CechPic.cls_eq_zero_iff (pull_isLB t.isLB _)).2 t.rigid`. Establish `e₂` using `(CechPic.cls_eq_zero_iff (pull_isLB t'.isLB _)).2 t'.rigid`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `e₂.trans e₁.symm`. Take `⟨Ω, _, _, i, su, u, ψ, ψ', h₁, h₂⟩` from `hg ((Sp R).residueField p) ((Sp R).fromSpecResidueField p) (by`. Rewrite using `[Scheme.range_fromSpecResidueField]`. Conclude with `Set.singleton_subset_iff.2 hpS)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Ω, inferInstance, _, _, ψ, _, ⟨(default : PrimeSpectrum Ω), ?_⟩, h₁.1.1, key ψ ?_⟩` and prove the remaining obligations. Conclude with `Scheme.fromSpecResidueField_apply p _`. Rewrite using `[hc.fibre h₁ h₂]`. Conclude with `((CechPic.cls_eq_iff u.isLB (pull_isLB t'.isLB _)).2 h₂.2.1).symm.trans ((CechPic.cls_eq_iff u.isLB (pull_isLB t.isLB _)).2 h₁.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_of_compat : ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (R : Type) [CommRing R] [IsReduced R] (s : Sp R ⟶ Sp o) (t t' : TObj g k J b s) (Sg : Set (Sp R)) (φ : t.A.left ⟶ t'.A.left), Dense Sg → GeoGood t t' Sg → Compat t t' (𝟙 _) φ → IsGrpPullback t.A t'.A (𝟙 _) φ → LBIso t.L (t'.L.pull φ) := by
   intro o _ g k J b R _ _ s t t' Sg φ hd hg hc hφ

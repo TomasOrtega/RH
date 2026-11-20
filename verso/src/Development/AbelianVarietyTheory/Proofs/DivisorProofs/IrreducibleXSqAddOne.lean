@@ -9,9 +9,9 @@ namespace GlobalTheory.GaussExt
 variable (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Establish `hdeg : (X ^ 2 + 1 : F[X]).natDegree = 2` using `by compute_degree!`. Use `(Polynomial.irreducible_iff_roots_eq_zero_of_degree_le_three (by rw [hdeg]) (by rw [hdeg]; norm_num)).2 ?_` and prove the remaining obligations. Use `Multiset.eq_zero_of_forall_notMem fun r hr => ?_` and prove the remaining obligations. Rewrite `hr` using `[mem_roots (Monic.ne_zero (by monicity!)), IsRoot, eval_add, eval_pow, eval_X, eval_one]`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty (F →+* ℝ) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨φ⟩` from `(inferInstance : Nonempty (F →+* ℂ))`. Conclude with `⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding⟩`. Use `congrArg τ hr` as an intermediate fact. Simplify using `at this`. Use polynomial arithmetic with `[sq_nonneg (τ r)]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem irreducible_X_sq_add_one : Irreducible (X ^ 2 + 1 : F[X]) := by
   have hdeg : (X ^ 2 + 1 : F[X]).natDegree = 2 := by compute_degree!
@@ -39,7 +39,7 @@ instance : NumberField (Ext F) where
 def ii : Ext F := AdjoinRoot.root _
 
 /- English proof (translation)
-Establish `h` using `AdjoinRoot.eval₂_root (X ^ 2 + 1 : F[X])`. Simplify using `only [eval₂_add, eval₂_pow, eval₂_X, eval₂_one] at h`. Rewrite using `[ii]`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ii_sq : ii F ^ 2 = -1 := by
   have h := AdjoinRoot.eval₂_root (X ^ 2 + 1 : F[X])

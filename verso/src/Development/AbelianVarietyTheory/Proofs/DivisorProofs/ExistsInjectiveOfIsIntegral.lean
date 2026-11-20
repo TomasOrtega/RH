@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory.InjectiveOfIntegral
 
 /- English proof (translation)
-Set `_ : Algebra A C` to `((algebraMap O C).comp j).toAlgebra`. Set `_ : Algebra A O` to `j.toAlgebra`. Establish `: IsScalarTower A O C` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hAC : Function.Injective (algebraMap A C)` using `hj`. Establish `: Module.IsTorsionFree A B` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hAB`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.IsTorsionFree A C` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hAC`. Establish `: Algebra.IsAlgebraic A B` using `Algebra.IsIntegral.isAlgebraic`. Set `ψ : B →ₐ[A] C` to `IsAlgClosed.lift`. Establish `hker : RingHom.ker (ψ : B →+* C) = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := A)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, Ideal.mem_bot, show (ψ : B →+* C) (algebraMap A B a) = algebraMap A C a from ψ.commutes a]`. Conclude with `⟨fun h => hAC (h.trans (map_zero _).symm), fun h => by rw [h, map_zero]⟩`. Establish `hψ : Function.Injective (ψ : B →+* C)` using `(RingHom.injective_iff_ker_eq_bot _).mpr hker`. Establish `hint : ∀ b : B, v (ψ b) ≤ 1`.
+By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Establish `hb : IsIntegral A (ψ b)` using `(Algebra.IsIntegral.isIntegral b).map ψ`. Conclude with `hv.mem_of_integral hb.tower_top`. Use `choose g hg using fun b => hv.exists_of_le_one (hint b)`. Set `j' : B →+* O` to `{ toFun := g map_one' := hv.hom_inj (by simp only [hg, map_one]) map_mul' := fun x y => hv.hom_inj (by simp only [hg, map_mul]) map_zero' := hv.hom_inj (by simp only [hg, map_zero]) map_add' := fun x y => hv.hom_inj (by simp only [hg, map_add]) }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨j', ?_⟩` and prove the remaining obligations. Establish `e : (algebraMap O C).comp j' = (ψ : B →+* C)` using `RingHom.ext hg`. Rewrite using `[e]`. Conclude with `hψ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_injective_of_isIntegral {A B O C : Type} [CommRing A] [IsDomain A] [CommRing B]
     [IsDomain B] [CommRing O] [Field C] [IsAlgClosed C] [Algebra O C] (v : Valuation C NNReal)

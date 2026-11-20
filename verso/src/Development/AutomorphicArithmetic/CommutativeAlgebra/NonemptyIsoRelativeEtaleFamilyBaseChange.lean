@@ -47,11 +47,11 @@ private def baseI {B : Scheme.{0}} (U : B.Etale) : U.left ≅ pullback (𝟙 B) 
     · simp [pullback.lift_snd]
 
 /- English proof (translation)
-Introduce `B Y W p ι`. Apply the tactic sequence `refine ⟨⟨NatIso.ofComponents (fun U => swapI p ι U) ?_⟩, ⟨NatIso.ofComponents (fun U => baseI U) ?_⟩, ⟨NatIso.ofComponents (fun U => pullbackSymmetry U.hom ι) ?_⟩⟩`. Introduce `U U' a`. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `apply pullback.hom_ext <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[swapI, swapF, gYW, gY, resY, resYW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Simplify using `[swapI, swapF, gYW, gY, resY, resYW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Introduce `U U' a`. Establish `hw : a.left ≫ U'.hom = U.hom` using `by simpa using a.w`. Apply the tactic sequence `apply pullback.hom_ext <;> simp [baseI, gB, gY, resY, pullback.map, hw, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `U U' a`. Apply the tactic sequence `apply pullback.hom_ext <;>`. Simplify using `[gBW, gY, resY, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.nonempty_iso_relativeEtaleFamily_baseChange :
     ∀ {B Y W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B), Nonempty (gYW p ι ≅ gY (pullback.fst p ι ≫ p)) ∧ Nonempty (gB B ≅ gY (𝟙 B)) ∧ Nonempty (gBW ι ≅ gY ι) := by

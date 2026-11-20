@@ -5,21 +5,17 @@ namespace GlobalTheory
 
 open IntermediateField.algebraAdjoinAdjoin in
 /- English proof (translation)
-Introduce `k C _ _ _ d t α ht hα`. Use `set A := Algebra.adjoin k (Set.range t) with hAdef`. Use `set K0 := IntermediateField.adjoin k (Set.range t) with hK0def`. Establish `hαA : IsAlgebraic A α` using `(IsFractionRing.isAlgebraic_iff A K0 C).mpr hα`. Take `⟨y, hy0, hyint⟩` from `hαA.exists_integral_multiple`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set θ := y • α with hθ`. Set `e : MvPolynomial (Fin d) k ≃ₐ[k] A` to `ht.aevalEquiv`. Use `haveI : IsIntegrallyClosed (MvPolynomial (Fin d) k) := UniqueFactorizationMonoid.instIsIntegrallyClosed`. Use `haveI : IsIntegrallyClosed A := IsIntegrallyClosed.of_equiv e.toRingEquiv`. Establish `he : ∀ p : MvPolynomial (Fin d) k, algebraMap A C (e p) = MvPolynomial.aeval t p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `p`. Conclude with `ht.algebraMap_aevalEquiv p`. Establish `hcomp : (MvPolynomial.aeval t).toRingHom.comp e.symm.toRingEquiv.toRingHom = algebraMap A C`. Use extensionality with `a`. Simplify using `[← he]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp2 : (algebraMap A C).comp e.toRingEquiv.toRingHom = (MvPolynomial.aeval t).toRingHom`. Apply the tactic sequence `ext p <;> simp [he]`. Use `⟨θ, (minpoly A θ).map e.symm.toRingEquiv.toRingHom, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(minpoly.monic hyint).map _`. Rewrite using `[eval₂_map, hcomp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `minpoly.aeval A θ`. Conclude with `(hyint.tower_top (A := K0)).isAlgebraic`. Establish `hyC : (y : C) ≠ 0` using `fun h => hy0 (Subtype.ext h)`. Establish `hyK : (y : C) ∈ K0` using `IntermediateField.algebra_adjoin_le_adjoin k _ y.2`. Establish `hinv : (y : C)⁻¹ ∈ K0` using `K0.inv_mem hyK`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hθmem : θ ∈ IntermediateField.adjoin K0 {θ}` using `IntermediateField.mem_adjoin_simple_self K0 θ`. Establish `hinvmem : (y : C)⁻¹ ∈ IntermediateField.adjoin K0 {θ}` using `IntermediateField.algebraMap_mem (IntermediateField.adjoin K0 {θ}) (⟨(y : C)⁻¹, hinv⟩ : K0)`. Establish `: α = (y : C)⁻¹ * θ`. Rewrite using `[hθ, Subalgebra.smul_def, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hyC, one_mul]`. Rewrite using `[this]`.
-
-Conclude with `mul_mem hinvmem hθmem`. Introduce `R hR`. Establish `h1 : aeval θ (R.map e.toRingEquiv.toRingHom) = 0`. Rewrite using `[aeval_def, eval₂_map, hcomp2]`. Conclude with `hR`.
-
-Establish `h2` using `Polynomial.map_dvd e.symm.toRingEquiv.toRingHom (minpoly.isIntegrallyClosed_dvd hyint h1)`. Apply the tactic sequence `rwa [Polynomial.map_map, show e.symm.toRingEquiv.toRingHom.comp e.toRingEquiv.toRingHom = RingHom.id _ by ext p <;> simp, Polynomial.map_id] at h2`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_monic_integral_primitive_multiple : ∀ (k C : Type) [Field k] [Field C] [Algebra k C] (d : ℕ) (t : Fin d → C) (α : C), AlgebraicIndependent k t → IsAlgebraic (IntermediateField.adjoin k (Set.range t)) α → ∃ (θ : C) (P : Polynomial (MvPolynomial (Fin d) k)), P.Monic ∧ Polynomial.eval₂ (MvPolynomial.aeval t).toRingHom θ P = 0 ∧ IsAlgebraic (IntermediateField.adjoin k (Set.range t)) θ ∧ α ∈ IntermediateField.adjoin (IntermediateField.adjoin k (Set.range t)) {θ} ∧ ∀ R : Polynomial (MvPolynomial (Fin d) k), Polynomial.eval₂ (MvPolynomial.aeval t).toRingHom θ R = 0 → P ∣ R := by
   intro k C _ _ _ d t α ht hα

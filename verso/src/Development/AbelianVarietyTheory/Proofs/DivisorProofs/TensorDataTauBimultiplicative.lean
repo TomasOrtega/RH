@@ -17,9 +17,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.TensBimult
 
 /- English proof (translation)
-Establish `hr' : rig'⁻¹ = ψ' 0` using `(eq_inv_of_mul_eq_one_right hr).symm ▸ inv_inv _`. Rewrite using `[eq_mul_inv_of_mul_eq hc, hτ, hτ, hτ, hr']`. Simplify using `only [hψ, ht, Fintype.prod_prod_type, Fin.prod_univ_four, tensε, Oε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, map_add, Pi.add_apply, map_zero, Pi.zero_apply, add_zero, zero_add]`. Establish `e1 : ∀ x x1, Ψ (e a x + e a x1 + (e a' x + e a' x1) + (e b x + e b x1)) = Ψ (e a x + e a' x + e b x + (e a x1 + e a' x1 + e b x1))` using `fun x x1 => congrArg Ψ (by abel)`. Establish `e2 : ∀ x x1, Ψ (e a x + e a x1 + (e a' x + e a' x1)) = Ψ (e a x + e a' x + (e a x1 + e a' x1))` using `fun x x1 => congrArg Ψ (by abel)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ∀ x x1, Ψ (e a x + e a x1 + (e b x + e b x1)) = Ψ (e a x + e b x + (e a x1 + e b x1))` using `fun x x1 => congrArg Ψ (by abel)`. Establish `e4 : ∀ x x1, Ψ (e a' x + e a' x1 + (e b x + e b x1)) = Ψ (e a' x + e b x + (e a' x1 + e b x1))` using `fun x x1 => congrArg Ψ (by abel)`. Simplify using `only [e1, e2, e3, e4]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_prod, ofMul_zpow, smul_add, smul_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib, _root_.mul_one, mul_neg, neg_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -55,23 +55,21 @@ end GlobalTheory.TensBimult
 namespace GlobalTheory.TensBimult
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D D' r W T hn a a' b`. Establish `hG : GlobalFnsSt` using `GlobalTheory.lawsAndExpansions.1.1.globalFns`. Use `corr_of_val D'.P.isLB fun y J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩ : ∃ J, Good D.toPre.P.L y J` from `⟨fun ψ => (exists_chart D.toPre.P.isLB (ψ y)).choose, fun ψ => (exists_chart D.toPre.P.isLB (ψ y)).choose_spec⟩`. Establish `key` using `GlobalTheory.T.tensorPreData_cubicalStructure_eq_prod_pulled_back hG R D.toPre D' W T (TK R) y J J' hJ hJ' (cP D' _ a) (cP D' _ a') (cP D' _ b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hψ : ∀ u, val (D'.psi u) (𝟙 _) y J' = gm (cP D' (TK R) u).left y _ (T.w.s (fun k => J ((cP D' (TK R) u).left ≫ tensφ T.pr k), J' (cP D' (TK R) u).left)) * ∏ i, ∏ j, val (D.toPre.tau (T.xe u i) (T.xe u j)) (𝟙 _) y J ^ W i j` using `fun u => T.psi u y J J' hJ hJ'`. Establish `vt : ∀ u v, val (D'.tau u v) (𝟙 _) y J' = val (D'.psi (u + v)) (𝟙 _) y J' * (val (D'.psi u) (𝟙 _) y J')⁻¹ * (val (D'.psi v) (𝟙 _) y J')⁻¹ * (val D'.rigK (𝟙 _) y J')⁻¹`. Introduce `u v`. Simplify using `only [DegPre.tau, val_mul hJ', val_inv]`. Establish `vtE : ∀ u v, val (D.toPre.tau u v) (𝟙 _) y J = val (D.toPre.psi (u + v)) (𝟙 _) y J * (val (D.toPre.psi u) (𝟙 _) y J)⁻¹ * (val (D.toPre.psi v) (𝟙 _) y J)⁻¹ * (val D.toPre.rigK (𝟙 _) y J)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u v`. Simplify using `only [DegPre.tau, val_mul hJ, val_inv]`. Establish `hB : ∀ u u' v, val (D.toPre.tau (u + u') v) (𝟙 _) y J * cubV D.toPre.cub y J (cP D.toPre _ u) (cP D.toPre _ u') (cP D.toPre _ v) = val (D.toPre.tau u v) (𝟙 _) y J * val (D.toPre.tau u' v) (𝟙 _) y J` using `fun u u' v => (GlobalTheory.TauBimultBox.val_lhs D.toPre hJ u u' v).symm.trans ((val_corr hJ (D.tau_bimult u u' v) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `c0 : ∀ (E : DegPre R) (S : Over (Spec (CommRingCat.of R))), cP E S 0 = 1` using `fun E S => by`. Use `cPoint_add E S 0 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `hP : ∀ u (k : (Fin r × Fin r) × Fin 4), cP D' (TK R) u ≫ ![T.pr k.1.1 * T.pr k.1.2, T.pr k.1.1, T.pr k.1.2, 1] k.2 = cP D.toPre (TK R) (![T.xe u k.1.1 + T.xe u k.1.2, T.xe u k.1.1, T.xe u k.1.2, 0] k.2)`. Introduce `u k`. Establish `e : ∀ i, cP D' (TK R) u ≫ T.pr i = cP D.toPre (TK R) (T.xe u i)` using `fun i => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cP, Category.assoc, T.c_pr]`. Both sides reduce to the same expression. Take `⟨⟨i, j⟩, m⟩` from `k`. Use `fin_cases m`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[MonObj.comp_mul, e, e, cPoint_add]`. Simplify using `using e i`. Simplify using `using e j`. Simplify using `only [Fin.reduceFinMk, Fin.isValue, Matrix.cons_val]`. Rewrite using `[c0]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Hom.one_def]`. Rewrite using `[GlobalTheory.TauBimultBox.val_lhs D' hJ' a a' b, val_mul hJ']`. Establish `hC : ∀ u u' v, cubV D.toPre.cub y J (cP D.toPre _ u) (cP D.toPre _ u') (cP D.toPre _ v) = val (D.toPre.tau u v) (𝟙 _) y J * val (D.toPre.tau u' v) (𝟙 _) y J * (val (D.toPre.tau (u + u') v) (𝟙 _) y J)⁻¹` using `fun u u' v => by`. Rewrite using `[← hB u u' v, mul_comm, inv_mul_cancel_left]`. Simplify using `only [hP, hC] at key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : cP D' (TK R) a * cP D' (TK R) a' * cP D' (TK R) b = cP D' (TK R) (a + a' + b)` using `by rw [cPoint_add, cPoint_add]`. Establish `h2 : cP D' (TK R) a * cP D' (TK R) a' = cP D' (TK R) (a + a')` using `(cPoint_add _ _ _ _).symm`. Establish `h3 : cP D' (TK R) a * cP D' (TK R) b = cP D' (TK R) (a + b)` using `(cPoint_add _ _ _ _).symm`. Establish `h4 : cP D' (TK R) a' * cP D' (TK R) b = cP D' (TK R) (a' + b)` using `(cPoint_add _ _ _ _).symm`. Rewrite `key` using `[h1, h2, h3, h4, ← c0 D' (TK R)]`.
-
-Use `alg W T.xe (fun u => val (D.toPre.psi u) (𝟙 _) y J) (val D.toPre.rigK (𝟙 _) y J) (fun u => gm (cP D' (TK R) u).left y _ (T.w.s (fun k => J ((cP D' (TK R) u).left ≫ tensφ T.pr k), J' (cP D' (TK R) u).left))) (fun u => val (D'.psi u) (𝟙 _) y J') (fun u v => val (D'.tau u v) (𝟙 _) y …` and prove the remaining obligations. Use `beta_reduce`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), Tens D.toPre D' W → (∀ (z : (TK R).left) (J : ((TK R).left ⟶ D'.P.A.left) → D'.P.L.ι), Good D'.P.L z J → val (D'.psi 0) (𝟙 _) z J * val D'.rigK (𝟙 _) z J = 1) → D'.TauBimult := by
   intro R _ _ _ _ D D' r W T hn a a' b

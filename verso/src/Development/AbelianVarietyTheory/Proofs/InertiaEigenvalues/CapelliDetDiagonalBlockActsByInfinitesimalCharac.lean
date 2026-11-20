@@ -13,13 +13,13 @@ namespace GlobalTheory.BlockCap
 open Matrix
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ (Module.End ℂ M × Module.End ℂ M')` to `{ carrier := {z | R ∘ₗ z.1 = z.2 ∘ₗ R} mul_mem' := fun {x y} hx hy => by`. Express the relevant statement in the definitionally equal form `R ∘ₗ (x.1 ∘ₗ y.1) = (x.2 ∘ₗ y.2) ∘ₗ R`. Rewrite using `[← LinearMap.comp_assoc, hx, LinearMap.comp_assoc, hy, LinearMap.comp_assoc]`. Use the proof step `add_mem' := fun {x y} hx hy => by`. Express the relevant statement in the definitionally equal form `R ∘ₗ (x.1 + y.1) = (x.2 + y.2) ∘ₗ R`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_add, LinearMap.add_comp, hx, hy]`. Use the proof step `algebraMap_mem' := fun c => by`. Express the relevant statement in the definitionally equal form `R ∘ₗ (algebraMap ℂ (Module.End ℂ M) c) = (algebraMap ℂ (Module.End ℂ M') c) ∘ₗ R`. Use extensionality with `φ`. Simplify using `}`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Z : Fin k → Fin k → S` to `fun p q => ⟨(X p q, Y p q), h p q⟩`. Establish `h1` using `map_qdet ((AlgHom.fst ℂ _ _).comp S.val) Z v`. Establish `h2` using `map_qdet ((AlgHom.snd ℂ _ _).comp S.val) Z v`. Establish `hm : R ∘ₗ ((Formalism.REAL.qdet Z v : S) : Module.End ℂ M × Module.End ℂ M').1 = ((Formalism.REAL.qdet Z v : S) : Module.End ℂ M × Module.End ℂ M').2 ∘ₗ R` using `(Formalism.REAL.qdet Z v).2`. Establish `e1 : ((Formalism.REAL.qdet Z v : S) : Module.End ℂ M × Module.End ℂ M').1 = Formalism.REAL.qdet X v` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : ((Formalism.REAL.qdet Z v : S) : Module.End ℂ M × Module.End ℂ M').2 = Formalism.REAL.qdet Y v` using `h2`. Rewrite `hm` using `[e1, e2]`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem qdet_intertwine {M M' : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M'] {k : ℕ}
     (R : M →ₗ[ℂ] M') (X : Fin k → Fin k → Module.End ℂ M) (Y : Fin k → Fin k → Module.End ℂ M')
@@ -49,11 +49,11 @@ theorem qdet_intertwine {M M' : Type} [AddCommGroup M] [Module ℂ M] [AddCommGr
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Set `L : ((∀ j, GA E (n j)) → ℂ) →ₗ[ℂ] (GA E (n i) → ℂ)` to `{ toFun := fun F y => F (Function.update m i y), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hle : tensorForms π ≤ ((π i).V.map (Sm E (n i)).subtype).comap L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, rfl⟩`. Use `⟨(∏ j ∈ Finset.univ.erase i, (φ j).1.1 (m j)) • (φ i).1, (π i).V.smul_mem _ (φ i).2, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `(∏ j ∈ Finset.univ.erase i, (φ j).1.1 (m j)) * (φ i).1.1 y = ∏ j, (φ j).1.1 (Function.update m i y j)`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), Function.update_self, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`. Take `⟨θ, hθ, e⟩` from `hle hF`. Conclude with `⟨θ, hθ, fun y => (congrFun e y).symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tensorForms_update {c : ℕ} {n : Fin c → ℕ} (π : ∀ i, CuspSub E (n i)) (i : Fin c)
     (m : ∀ j, GA E (n j)) {F : (∀ j, GA E (n j)) → ℂ} (hF : F ∈ tensorForms π) :
@@ -76,9 +76,9 @@ theorem tensorForms_update {c : ℕ} {n : Fin c → ℕ} (π : ∀ i, CuspSub E 
   exact ⟨θ, hθ, fun y => (congrFun e y).symm⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨⟨j, x⟩, rfl⟩` from `e.surjective a`. Take `⟨⟨k, y⟩, rfl⟩` from `e.surjective b`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[leviEmb_apply_same]`. Simplify using `[leviEmb_apply_ne _ e _ hjk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_leviEmb {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) {c N : ℕ} {n : Fin c → ℕ}
     (e : (Σ j, Fin (n j)) ≃ Fin N) (g : Levi R fun j => Fin (n j)) :
@@ -94,13 +94,13 @@ theorem map_leviEmb {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) {c N 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {c N : ℕ} {n : Fin c → ℕ}
 
 /- English proof (translation)
-Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_infGL, map_leviEmb]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj]`. Rewrite using `[pFin_infGL, map_leviEmb]`. Establish `: (fun j => GeneralLinearGroup.map (pFin E) (Function.update (1 : Levi (Ad E) fun j => Fin (n j)) i (infGL E (n i) y) j)) = 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem leviEmb_update_infGL (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (y : GL (Fin (n i)) (Cinf E)) :
     leviEmb (Ad E) e (Function.update 1 i (infGL E (n i) y)) =
@@ -123,7 +123,7 @@ theorem leviEmb_update_infGL (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (y : 
     rw [this, map_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_mul (m : Levi (Ad E) fun j => Fin (n j)) (i : Fin c) (g z : GA E (n i)) :
     Function.update m i (g * z) = Function.update m i g * Function.update (1 : Levi (Ad E) fun j => Fin (n j)) i z := by
@@ -138,9 +138,9 @@ def iota (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (x : Lie E (n i)) : Lie E
     (Matrix.of x))))
 
 /- English proof (translation)
-Establish `h : (fun j => ((Function.update (1 : Levi (Cinf E) fun j => Fin (n j)) i y j : GL _ _) : Matrix (Fin (n j)) (Fin (n j)) (Cinf E))) = Function.update (fun j => (1 : Matrix (Fin (n j)) (Fin (n j)) (Cinf E))) i y.val`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne hj]`. Simplify using `only [iota, leviEmb, MonoidHom.coe_toHomUnits, MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[h]`. Reduce the equality to equality of the corresponding arguments. Conclude with `Subsingleton.elim _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem iota_val (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (y : GL (Fin (n i)) (Cinf E)) :
     iota e i (toL y.val) = toL (leviEmb (Cinf E) e (Function.update 1 i y)).val := by
@@ -185,9 +185,9 @@ theorem blockCLM_apply (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (x : Lie E 
     blockCLM e i x = blockLin e i x := rfl
 
 /- English proof (translation)
-Establish `h : Function.update (fun j => (1 : Matrix (Fin (n j)) (Fin (n j)) (Cinf E))) i (Matrix.of x) = Function.update (fun j => (1 : Matrix (Fin (n j)) (Fin (n j)) (Cinf E))) i (Matrix.of 0) + Pi.single (M` using `fun j => Matrix (Fin (n j)) (Fin (n j)) (Cinf E)) i (Matrix.of x) := by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Use `ext`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj, Pi.single_eq_of_ne hj]`. Simplify using `only [iota, blockCLM_apply, blockLin, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[h, blockDiagonal'_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iota_eq (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (x : Lie E (n i)) :
     iota e i x = iota e i 0 + blockCLM e i x := by
@@ -204,7 +204,7 @@ theorem iota_eq (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (x : Lie E (n i)) 
   rfl
 
 /- English proof (translation)
-Establish `: iota (E` using `E) e i = fun x => iota e i 0 + blockCLM e i x := funext (iota_eq e i)`. Rewrite using `[this]`. Establish `h2 : ContDiff ℝ ∞ (blockCLM (E` using `E) e i) := (blockCLM (E := E) e i).contDiff`. Conclude with `contDiff_const.add h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_iota (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) : ContDiff ℝ ∞ (iota (E := E) e i) := by
   have : iota (E := E) e i = fun x => iota e i 0 + blockCLM e i x := funext (iota_eq e i)
@@ -213,7 +213,7 @@ theorem contDiff_iota (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) : ContDiff �
   exact contDiff_const.add h2
 
 /- English proof (translation)
-Establish `: iota (E` using `E) e i = fun x => iota e i 0 + blockCLM e i x := funext (iota_eq e i)`. Rewrite using `[this]`. Conclude with `(blockCLM e i).hasFDerivAt.const_add _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_iota (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (x : Lie E (n i)) :
     HasFDerivAt (iota (E := E) e i) (blockCLM e i) x := by
@@ -222,7 +222,7 @@ theorem hasFDerivAt_iota (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (x : Lie 
   exact (blockCLM e i).hasFDerivAt.const_add _
 
 /- English proof (translation)
-Establish `h` using `iota_val (E := E) e i 1`. Rewrite `h` using `[show Function.update (1 : Levi (Cinf E) fun j => Fin (n j)) i 1 = 1 from Function.update_eq_self i 1, map_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_one (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) : iota (E := E) e i (oneL E (n i)) = oneL E N := by
   have h := iota_val (E := E) e i 1
@@ -231,7 +231,7 @@ theorem iota_one (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) : iota (E := E) e
   exact h
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hx`. Establish `e1 : x = toL u.val` using `hu.symm`. Rewrite using `[e1, iota_val]`. Conclude with `val_mem_invSet _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_mem_invSet (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) {x : Lie E (n i)} (hx : x ∈ invSet E (n i)) :
     iota e i x ∈ invSet E N := by
@@ -241,13 +241,13 @@ theorem iota_mem_invSet (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) {x : Lie E
   exact val_mem_invSet _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Take `⟨⟨j, p'⟩, rfl⟩` from `e.surjective a`. Take `⟨⟨k, q'⟩, rfl⟩` from `e.surjective b`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [blockLin, LinearMap.coe_mk, AddHom.coe_mk]`. Express the relevant statement in the definitionally equal form `(blockDiagonal' _).submatrix e.symm e.symm (e ⟨j, p'⟩) (e ⟨j, q'⟩) = Matrix.single (e ⟨j, p⟩) (e ⟨j, q⟩) x (e ⟨j, p'⟩) (e ⟨j, q'⟩)`. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply, blockDiagonal'_apply_eq, Pi.single_eq_same, Matrix.single_apply, Matrix.of_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Matrix.single p q x p' q' = _`. Rewrite using `[Matrix.single_apply]`. Simplify using the standard rewrite rules. Simplify using `[blockLin, blockDiagonal'_apply_eq, Pi.single_eq_of_ne hj, Matrix.single_apply, Ne.symm hj]`. Simplify using `only [blockLin, LinearMap.coe_mk, AddHom.coe_mk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(blockDiagonal' _).submatrix e.symm e.symm (e ⟨j, p'⟩) (e ⟨k, q'⟩) = Matrix.single (e ⟨i, p⟩) (e ⟨i, q⟩) x (e ⟨j, p'⟩) (e ⟨k, q'⟩)`. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply, blockDiagonal'_apply_ne _ _ _ hjk, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hjk ((congrArg Sigma.fst (e.injective h1)).symm.trans (congrArg Sigma.fst (e.injective h2)))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem blockLin_single (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (p q : Fin (n i)) (x : Cinf E) :
     blockLin e i (toL (Matrix.single p q x)) = toL (Matrix.single (e ⟨i, p⟩) (e ⟨i, q⟩) x) := by
@@ -279,7 +279,7 @@ def restr (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j => Fin (n j))
     GA E (n i) → ℂ := fun y => φ (leviEmb (Ad E) e (Function.update m i y))
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hx`. Establish `e1 : x = toL u.val` using `hu.symm`. Substitute `e1` using the available equality. Rewrite using `[chart_val, iota_val, chart_val, restr, update_mul, map_mul, leviEmb_update_infGL]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_restr (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j => Fin (n j)) (i : Fin c)
     (φ : GA E N → ℂ) (g : GA E (n i)) {x : Lie E (n i)} (hx : x ∈ invSet E (n i)) :
@@ -290,7 +290,7 @@ theorem chart_restr (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j => 
   rw [chart_val, iota_val, chart_val, restr, update_mul, map_mul, leviEmb_update_infGL]
 
 /- English proof (translation)
-Introduce `g` and use `((hφ _).comp (contDiff_iota e i).contDiffOn fun _ hx => iota_mem_invSet e i hx).congr fun _ hx => chart_restr e m i φ g hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem restr_mem_Sm (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j => Fin (n j)) (i : Fin c)
     {φ : GA E N → ℂ} (hφ : φ ∈ Sm E N) : restr e m i φ ∈ Sm E (n i) := fun g =>
@@ -298,9 +298,9 @@ theorem restr_mem_Sm (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j =>
     fun _ hx => chart_restr e m i φ g hx
 
 /- English proof (translation)
-Establish `ev : chart (restr e m i φ) y =ᶠ[𝓝 (oneL E (n i))] chart φ (leviEmb (Ad E) e (Function.update m i y)) ∘ iota e i` using `Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun _ hx => chart_restr e m i φ y hx`. Establish `hd : HasFDerivAt (chart φ (leviEmb (Ad E) e (Function.update m i y)) ∘ iota e i) ((fderiv ℝ (chart φ (leviEmb (Ad E) e (Function.update m i y))) (oneL E N)).comp (blockCLM e i)) (oneL E (n i))`. Establish `h1` using `(differentiableAt_chart hφ (leviEmb (Ad E) e (Function.update m i y))).hasFDerivAt`. Rewrite `h1` using `[← iota_one e i]`. Rewrite using `[← iota_one (E := E) e i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.comp _ (hasFDerivAt_iota e i _)`. Rewrite using `[lieD, ev.fderiv_eq, hd.fderiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lieD_restr (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j => Fin (n j)) (i : Fin c)
     {φ : GA E N → ℂ} (hφ : φ ∈ Sm E N) (X : Lie E (n i)) (y : GA E (n i)) :
@@ -325,14 +325,14 @@ def restrLin (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j => Fin (n 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun ψ => Subtype.ext <| funext fun y => (lieD_restr e m i ψ.2 X y).symm`.
+A detailed English derivation is pending.
 -/
 theorem restrLin_lie (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j => Fin (n j)) (i : Fin c)
     (X : Lie E (n i)) : restrLin e m i ∘ₗ lie E N (blockCLM e i X) = lie E (n i) X ∘ₗ restrLin e m i :=
   LinearMap.ext fun ψ => Subtype.ext <| funext fun y => (lieD_restr e m i ψ.2 X y).symm
 
 /- English proof (translation)
-Establish `hS : ∀ z : Cinf E, restrLin e m i ∘ₗ lieS E N (e ⟨i, p⟩) (e ⟨i, q⟩) z = lieS E (n i) p q z ∘ₗ restrLin e m i`. Introduce `z`. Rewrite using `[lieS_apply, lieS_apply, ← blockLin_single, ← blockCLM_apply, restrLin_lie]`. Simplify using `only [Eop]`. Rewrite using `[LinearMap.comp_smul, LinearMap.smul_comp, LinearMap.comp_sub, LinearMap.sub_comp, LinearMap.comp_smul, LinearMap.smul_comp, hS, hS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrLin_Eop (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j => Fin (n j)) (i : Fin c)
     (τ : E →+* ℂ) (p q : Fin (n i)) :
@@ -346,11 +346,11 @@ theorem restrLin_Eop (e : (Σ j, Fin (n j)) ≃ Fin N) (m : Levi (Ad E) fun j =>
     LinearMap.smul_comp, hS, hS]
 
 /- English proof (translation)
-Introduce `E _ _ _ c N n h π τ i M hM u ψ hψ m`. Take `⟨θ, hθ, hθe⟩` from `tensorForms_update π i m hψ`. Establish `hR : restrLin (stdBlocks n h) m i ψ = θ` using `Subtype.ext (funext fun y => hθe y)`. Establish `key` using `LinearMap.congr_fun (qdet_intertwine (restrLin (stdBlocks n h) m i) _ (Eop τ) (restrLin_Eop (stdBlocks n h) m i τ) (u + ((n i : ℂ) - 1) / 2)) ψ`. Rewrite `key` using `[LinearMap.comp_apply, LinearMap.comp_apply, hR]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k2` using `congrArg (fun φ : Sm E (n i) => φ.1 (m i)) key`. Establish `hc : Formalism.REAL.qdet (Eop τ) (u + ((n i : ℂ) - 1) / 2) θ = (M.map (u + ·)).prod • θ` using `hM.2 u θ hθ`. Establish `hm : Function.update m i (m i) = m` using `Function.update_eq_self i m`. Simplify using `only [hc] at k2`. Establish `k3 : (Formalism.REAL.qdet (fun p q : Fin (n i) => Eop (a` using `N) τ (stdBlocks n h ⟨i, p⟩) (stdBlocks n h ⟨i, q⟩)) (u + ((n i : ℂ) - 1) / 2) ψ).1 (leviEmb (Ad E) (stdBlocks n h) (Function.update m i (m i))) = (M.map (u + ·)).prod * θ.1 (m i) := k2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `k3` using `[hm, ← hθe, hm]`. Conclude with `k3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qdet_block_levi : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] {c N : ℕ} (n : Fin c → ℕ)
     (h : ∑ i, n i = N) (π : ∀ i, CuspSub E (n i)) (τ : E →+* ℂ) (i : Fin c) (M : Multiset ℂ),

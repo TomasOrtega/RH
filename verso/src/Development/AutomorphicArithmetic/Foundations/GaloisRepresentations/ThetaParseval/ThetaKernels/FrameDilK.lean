@@ -21,15 +21,15 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Act.CL
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Use `d.cm.1` as an intermediate fact. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Set `u : ℝ → ℝˣ` to `fun τ => ⟨Real.exp τ, Real.exp (-τ), by rw [← Real.exp_add, add_neg_cancel, Real.exp_zero], by rw [← Real.exp_add, neg_add_cancel, Real.exp_zero]⟩`. Set `r : ℝ → GroundTheory.Global.IdeleGroup F` to `fun τ => GroundTheory.Global.IdeleGroup.infiniteEmbedding w (Units.map e.symm.toMonoidHom (u τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hu : ∀ τ τ', u (τ + τ') = u τ * u τ'` using `fun τ τ' => Units.ext (Real.exp_add τ τ')`. Establish `hu0 : u 0 = 1` using `Units.ext Real.exp_zero`. Establish `hr1 : ∀ τ, ((r τ : AF F)).1 = GroundTheory.Global.IdeleGroup.infiniteAdeleSingle w (e.symm (Real.exp τ))` using `fun τ => rfl`. Establish `hr2 : ∀ τ, ((r τ : AF F)).2 = 1` using `fun τ => rfl`. Establish `hee : ∀ x : ℝ, InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (e.symm x) = x` using `fun x => e.apply_symm_apply x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hext : ∀ τ, InfinitePlace.Completion.extensionEmbedding w (e.symm (Real.exp τ)) = (Real.exp τ : ℂ)`. Introduce `τ`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw, hee]`. Use `⟨r, fun τ τ' => by simp only [r, hu, map_mul], by simp only [r, hu0, map_one], fun τ => ?_, fun τ => ?_, fun τ w' hw' => ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.IdeleGroup.ideleModule_infiniteEmbedding, hw.mult_eq_one, pow_one] show ‖e.symm (Real.exp τ)‖ = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _), hee, Real.norm_of_nonneg (Real.exp_pos τ).le]`. Rewrite using `[St.piInf_smul, map_one, mul_one, hr1, GroundTheory.Global.IdeleGroup.infiniteAdeleSingle_apply, Pi.mulSingle_eq_same]`. Conclude with `hext τ`. Rewrite using `[St.piInf_smul, map_one, mul_one, hr1, GroundTheory.Global.IdeleGroup.infiniteAdeleSingle_apply, Pi.mulSingle_eq_of_ne hw', map_one]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (0 : Ainf F) * _ = 0`. Rewrite using `[zero_mul]`. Use `show (1 : Af F) * (r τ : AF F).2 = 1`. Rewrite using `[hr2, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rEx_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : InfinitePlace F) : ∃ r : ℝ → GroundTheory.Global.IdeleGroup F,
     (∀ τ τ', r (τ + τ') = r τ * r τ') ∧ r 0 = 1 ∧
@@ -66,15 +66,15 @@ theorem rEx_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : Infin
     · show (1 : Af F) * (r τ : AF F).2 = 1
       rw [hr2, mul_one]
 /- English proof (translation)
-Establish `hζ0 : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Establish `hC : Matrix.fromBlocks (Matrix.diagonal fun j => (Real.exp (τ * (Pi.single i₀ 1 : Fin d.n → ℝ) j) : ℂ)) 0 0 (Matrix.diagonal fun j => (Real.exp (-(τ * (Pi.single i₀ 1 : Fin d.n → ℝ) j)) : ℂ)) = dM i₀ (Real.exp τ : ℂ) (Real.exp (-τ) : ℂ)`. Use extensionality with `u v`. Rewrite using `[dM_apply]`. Apply the tactic sequence `rcases u with u | u <;> rcases v with v | v <;>`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.diagonal_apply, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false, Matrix.zero_apply] <;>`. Apply the tactic sequence `by_cases h : u = v <;> by_cases h' : u = i₀ <;> subst_vars <;> simp_all [Pi.single_apply]`. Use `_root_.PositivityTheory.SiegelWeilFormula.Place.cw_ext_k d (fun w' => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hw' : w' = w`. Substitute `hw'` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[R.cw_iota_pf w' y, hy, dZ_conj_diag hζ0, hC, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, dM_map, hw, hw]`. Rewrite using `[R.off_w w w' y hw', _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, dM_map, ho τ w' hw', ho (-τ) w' hw']`. Use extensionality with `u v`. Rewrite using `[dM_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[R.off_f w y]`. Use extensionality with `u v`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, dM_apply, Matrix.one_apply]`. Establish `e : ∀ t, finOne F • ((r t : AF F) • (1 : AE F E)) = finOne F • (1 : AE F E)` using `fun t => by`. Rewrite using `[smul_smul, hf]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [e]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem frame_dil_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (r : ℝ → GroundTheory.Global.IdeleGroup F)
     (hw : ∀ τ, piInf (d.B.emb w) ((r τ : AF F) • (1 : AE F E)) = (Real.exp τ : ℂ))
@@ -106,19 +106,19 @@ theorem frame_dil_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R :
       rw [smul_smul, hf]
     split_ifs <;> simp [e]
 /- English proof (translation)
-Take `⟨t0, ht0⟩` from `d.ok.frame.2`. Use `set A : Matrix (Fin d.n) (Fin d.n) ℂ := Matrix.diagonal fun j => (Real.exp (τ * (Pi.single i₀ 1 : Fin d.n → ℝ) j) : ℂ) with hAdef`. Use `set D : Matrix (Fin d.n) (Fin d.n) ℂ := Matrix.diagonal fun j => (Real.exp (-(τ * (Pi.single i₀ 1 : Fin d.n → ℝ) j)) : ℂ)`. Establish `hy' : mR y = Matrix.fromBlocks A 0 0 D` using `hy`. Take `⟨-, hA, -, hoA, hfA, -⟩` from `R.frame_diag w y A D hy'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h21 : (mR y).toBlocks₂₁ = 0` using `by rw [hy', Matrix.toBlocks_fromBlocks₂₁]`. Take `⟨t, ht, habs⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSplitP.iota_isPar_k d R w y h21`. Establish `hdetA : A.det = (Real.exp τ : ℂ)`. Rewrite using `[hAdef, Matrix.det_diagonal, Finset.prod_eq_single i₀ (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (fun h => absurd (Finset.mem_univ _) h)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, ht, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[habs, hy', Matrix.toBlocks_fromBlocks₁₁, hdetA, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos τ).le, ← Real.exp_nat_mul]`. Evaluate the numerical expressions. Establish `ht1` using `((kunf.isPar_frame ht0 (R.ι w y) t).1 ht).2 set P := (inFrame d.b (R.ι w y)).toBlocks₁₁ with hP`. Establish `hcw : ∀ w', d.cw w' t.1 = d.cw w' (incM F t0.1) * d.cw w' P * d.cw w' (incM F (t0⁻¹).1)`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w'`. Rewrite using `[ht1]`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, Matrix.map_mul]`. Establish `hI : incM F t0.1 * incM F (t0⁻¹).1 = 1`. Rewrite using `[← kunf.incM_mul', Units.mul_inv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hT : ∀ w', d.cw w' (incM F t0.1) * d.cw w' (incM F (t0⁻¹).1) = 1`. Introduce `w'`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, _root_.PositivityTheory.SiegelWeilFormula.SD_k.cw, ← Matrix.map_mul, hI, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1` using `fun w' h => by rw [hcw, (hoA w' h).1, Matrix.mul_one, hT]`. Establish `hf : finOne F • t.1 = finOne F • (1 : Matrix (Fin d.n) (Fin d.n) (AE F E))`. Rewrite using `[ht1, ← Matrix.smul_mul, ← Matrix.mul_smul, hfA, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, hI]`. Establish `hdet : (d.cw w t.1).det = (Real.exp τ : ℂ)`. Establish `hXY` using `congrArg Matrix.det (hT w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hXY` using `[Matrix.det_mul, Matrix.det_one]`. Rewrite using `[hcw, Matrix.det_mul, Matrix.det_mul, hA, hdetA]`. Take the linear combination `((Real.exp τ : ℝ) : ℂ) * hXY`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.RD_k.chi_det (d := d) w t _ rfl ho hf, hdet]`. Conclude with `d.chiW_pos w _ (Real.exp_pos τ)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_dil_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (i₀ : Fin d.n) {τ : ℝ} {y : GR d.n}
     (hy : IsDil (Pi.single i₀ 1) τ y) :

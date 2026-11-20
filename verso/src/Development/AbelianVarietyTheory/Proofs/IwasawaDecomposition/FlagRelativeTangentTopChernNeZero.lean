@@ -5,9 +5,9 @@ open AlgebraicGeometry CategoryTheory MvPolynomial NumberField ReciprocityTheory
 namespace GlobalTheory.GoodMetric
 
 /- English proof (translation)
-Introduce `ι _ m`. Unfold `rootDiscr`. Use `Finset.prod_ne_zero_iff.mpr fun τ _ => Finset.prod_ne_zero_iff.mpr fun j _ => Finset.prod_ne_zero_iff.mpr fun i hi => ?_` and prove the remaining obligations. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `X_injective (σ := Root m) (R := ℝ) h`. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and] at h2`. Conclude with `(Finset.mem_Iio.mp hi).ne h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rootDiscr_ne_zero : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ), rootDiscr m ≠ 0 := by
   intro ι _ m

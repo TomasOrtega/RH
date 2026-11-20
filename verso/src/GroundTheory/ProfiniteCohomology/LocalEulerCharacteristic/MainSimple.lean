@@ -28,7 +28,7 @@ def fixedSubmodule (M : Rep k G) (W : Subgroup G) : Submodule k M where
     rw [map_smul, hm g hg]
 
 /- English proof (translation)
-Introduce `m hm w hw`. Establish `h` using `hm (g⁻¹ * w * g) (by simpa using hW.conj_mem w hw g⁻¹)`. Establish `e : w * g = g * (g⁻¹ * w * g)` using `by group`. Express the relevant statement in the definitionally equal form `M.ρ w (M.ρ g m) = M.ρ g m`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 -/
 theorem fixedSubmodule_le_comap (M : Rep k G) (W : Subgroup G) [hW : W.Normal] (g : G) :
     fixedSubmodule M W ≤ (fixedSubmodule M W).comap (M.ρ g) := by
@@ -51,63 +51,53 @@ variable {K Ksep : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
   [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep]
 
 /- English proof (translation)
-Take `⟨l, hlp, hldvd⟩` from `Nat.exists_prime_and_dvd (Finite.one_lt_card (α := M)).ne'`. Use `Fact.mk hlp` as an intermediate fact. Establish `: NeZero l` using `⟨hlp.ne_zero⟩`. Establish `hlK : (l : K) ≠ 0`. Take `⟨c, hc⟩` from `hldvd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Apply `hM` to reduce the goal to its premises. Rewrite using `[hc, Nat.cast_mul, h, zero_mul]`. Establish `hPdvd : ∀ m n : ℕ, m ∣ n → (n : K) ≠ 0 → (m : K) ≠ 0`. Introduce and unpack `m n ⟨c, rfl⟩ hn hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hn` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul, hm, zero_mul]`. Establish `hPmul : ∀ m n : ℕ, (m : K) ≠ 0 → (n : K) ≠ 0 → ((m * n : ℕ) : K) ≠ 0`. Introduce `m n hm hn`. Rewrite using `[Nat.cast_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hm hn`. Establish `hMl : ∀ m : M, l • m = 0`. Set `N : Submodule (ULift.{0} ℤ) M` to `LinearMap.ker (l • LinearMap.id)`. Establish `hN : ∀ g, N ≤ N.comap (M.ρ g)` using `fun g m hm => by`. Simplify using `only [N, LinearMap.mem_ker, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply] at hm ⊢`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_nsmul, hm, map_zero]`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' l hldvd`. Establish `hxN : x ∈ N`. Simplify using `only [N, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `addOrderOf_nsmul_eq_zero x`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[addOrderOf_zero]`. Conclude with `hlp.one_lt.ne hx`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hsimple N hN with h | h` into its components or cases. Rewrite `hxN` using `[h]`. Conclude with `absurd ((Submodule.mem_bot _).1 hxN) hx0`. Introduce `m`. Establish `: m ∈ N` using `h ▸ Submodule.mem_top`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify `this` using `[N]`. Take `⟨d, hd⟩` from `exists_card_eq_prime_pow_of_nsmul hMl`. Establish `hG` using `hasFiniteCohomology_galois_top K Ksep`. Set `` to `algebraicValuativeRel K Ksep`. Set `` to `algebraicTopology K Ksep`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `algebraicTopology_isValuativeTopology K Ksep` as an intermediate fact. Use `algebraicValuativeRel_valuativeExtension K Ksep` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨V, hVM, hVμ⟩ : ∃ V : OpenNormalSubgroup Gal(Ksep/K), (∀ g ∈ (V : Subgroup Gal(Ksep/K)), ∀ m : M, M.ρ g m = m) ∧ ∀ σ ∈ (V : Subgroup Gal(Ksep/K)), ∀ ζ : Ksep, ζ ^ l = 1 → σ ζ = ζ := by`. Establish `hdisc` using `(isDiscreteRep_iff_forall_exists_openNormalSubgroup M).1 inferInstance`. Use `choose U hU using hdisc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨V, hV⟩` from `OpenNormalSubgroup.exists_le_of_finite (fun o : Option M => o.elim (rootsOfUnityFixingNormal (K := K) (Ksep := Ksep) l) U)`. Use `⟨V, fun g hg m => ?_, fun σ hσ ζ hζ => ?_⟩` and prove the remaining obligations. Conclude with `(Representation.mem_invariants _ _).1 (hU m) ⟨g, hV (some m) hg⟩`. Conclude with `apply_eq_of_mem_rootsOfUnityFixing (hV none hσ) hζ`. Establish `hμV : ∀ ζ : Ksep, ζ ^ l = 1 → ζ ∈ fixedField (V : Subgroup Gal(Ksep/K))` using `fun ζ hζ => (mem_fixedField_iff _ _).2 fun σ hσ => hVμ σ hσ ζ hζ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set L : IntermediateField K Ksep := fixedField (V : Subgroup Gal(Ksep/K)) with hL`. Distinguish the cases in `hlq : l = ringChar 𝓀[K]`. Establish `hlE : ∀ E : IntermediateField K Ksep, (l : E) ≠ 0` using `fun E h => hlK ((algebraMap K E).injective (by rw [map_natCast, map_zero]; exact h))`. Take `⟨m0, hm0, hm0fix⟩` from `exists_ne_zero_forall_mem_eq M hMl (preimageOpen V (lowerRamificationGroup K L 1)) (V : Subgroup Gal(Ksep/K)) hVM (fun g hg => by`. Take `⟨n, hn⟩` from `isPGroup_lowerRamificationGroup_one K L ⟨restrictFixed V g, hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_V_iff_restrictFixed_eq_one, map_pow, hlq]`. Conclude with `congrArg Subtype.val hn)`. Establish `h1fix : ∀ g ∈ (preimageOpen V (lowerRamificationGroup K L 1) : Subgroup Gal(Ksep/K)), ∀ m : M, M.ρ g m = m`. Establish `htop` using `(hsimple _ (fixedSubmodule_le_comap M _)).resolve_left (fun h => hm0 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: m0 ∈ fixedSubmodule M (preimageOpen V (lowerRamificationGroup K L 1))` using `hm0fix`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot _).1 this))`. Introduce `g hg m`. Establish `: m ∈ fixedSubmodule M _` using `htop ▸ Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this g hg`. Take `⟨nE, hnE⟩` from `exists_card_quotient_eq_pow (E := fixedField (preimageOpen V (coprimeQuotientPreimage (lowerRamificationGroup K L 0) (ringChar 𝓀[K])) : Subgroup Gal(Ksep/K))) (p := l) (hlE _)`. Establish `hX` using `eulerChar_coprime (U := preimageOpen V (coprimeQuotientPreimage (lowerRamificationGroup K L 0) (ringChar 𝓀[K]))) (V := preimageOpen V (lowerRamificationGroup K L 1)) hlK (preimageOpen_le_preimageOpen (lowerRamificationGroup_one_le_coprimeQuotientPreimage (K := K) (L := L))) (by`. Rewrite using `[relIndex_preimageOpen, hlq]`. Conclude with `coprime_card_coprimeQuotientPreimage_quotient_lowerRamificationGroup_one (K := K) (L := L))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun ζ hζ => pow_eq_one_mem_fixedField_preimageOpen hVμ (fun ζ' hζ' => pow_eq_one_mem_fixedField_lowerRamificationGroup_one (K := K) (L := L) (by rw [← hlq]; exact hζ')) hζ)`. Use the proof step `(Rep.res ((preimageOpen V (coprimeQuotientPreimage (lowerRamificationGroup K L 0) (ringChar 𝓀[K])) : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).subtype M) hMl`. Use the proof step `(fun g hg m => h1fix g hg m) hnE`. Establish `: IsCyclic (Gal(L/K) ⧸ coprimeQuotientPreimage (lowerRamificationGroup K L 0) (ringChar 𝓀[K]))` using `isCyclic_quotient_coprimeQuotientPreimage_lowerRamificationGroup (K := K) (L := L)`. Establish `: IsCyclic (Gal(Ksep/K) ⧸ ((preimageOpen V (coprimeQuotientPreimage (lowerRamificationGroup K L 0) (ringChar 𝓀[K])) : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)))` using `isCyclic_quotient_preimageOpen _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `exists_card_quotient_coprimeQuotientPreimage_lowerRamificationGroup_eq_pow (K := K) (L := L)`. Establish `hcard : Nat.card (Gal(Ksep/K) ⧸ ((preimageOpen V (coprimeQuotientPreimage (lowerRamificationGroup K L 0) (ringChar 𝓀[K])) : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K))) = l ^ a`. Rewrite using `[card_quotient_preimageOpen, ha, hlq]`. Establish `hC` using `eulerChar_res_eq_pow (P := fun m => (m : K) ≠ 0) hPdvd hPmul hG _ hcard M hM hMl`. Establish `hfin : Module.finrank K (fixedField ((preimageOpen V (coprimeQuotientPreimage (lowerRamificationGroup K L 0) (ringChar 𝓀[K])) : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K))) = l ^ a`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← index_openSubgroup, Subgroup.index, hcard]`. Take `⟨nK, hnK⟩` from `exists_card_quotient_eq_pow (E := K) (p := l) hlK`. Establish `hext` using `card_quotient_span_natCast_finiteExtension (K := K) (L := fixedField ((preimageOpen V (coprimeQuotientPreimage (lowerRamificationGroup K L 0) (ringChar 𝓀[K])) : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K))) l`. Rewrite `hext` using `[hnE, hnK, hfin, ← pow_mul]`. Establish `hnE' : nE = nK * l ^ a` using `Nat.pow_right_injective hlp.two_le hext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hpos` using `eulerChar_pos hG M hM`. Establish `key : eulerChar M ^ (l ^ a) = (((Nat.card M : ℚ) ^ nK)⁻¹) ^ (l ^ a)`. Rewrite using `[← hC, hX, hnE', pow_mul, inv_pow]`. Establish `hχ` using `(pow_left_inj₀ hpos.le (by positivity) (pow_ne_zero a hlp.ne_zero)).1 key`. Rewrite using `[hχ, hd, card_quotient_span_natCast_pow hlK, hnK]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hl𝓀 : (l : 𝓀[K]) ≠ 0`. Rewrite using `[Ne, ringChar.spec]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hlq ((Nat.prime_dvd_prime_iff_eq (CharP.char_is_prime 𝓀[K] _) hlp).1 h).symm`. Establish `hRHS : Nat.card (𝒪[K] ⧸ Ideal.span {(Nat.card M : 𝒪[K])}) = 1` using `card_quotient_span_natCast_eq_one (by rw [hd, Nat.cast_pow]; exact pow_ne_zero _ hl𝓀)`. Rewrite using `[hRHS, Nat.cast_one, inv_one]`. Establish `hBle : coprimeRelPreimage (lowerRamificationGroup K L 0) (lowerRamificationGroup K L 1) l ≤ lowerRamificationGroup K L 0` using `coprimeRelPreimage_le _ _ l`. Distinguish the cases in `hB : fixedSubmodule M (preimageOpen V (coprimeRelPreimage (lowerRamificationGroup K L 0) (lowerRamificationGroup K L 1) l)) = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : ∀ i ≤ 2, Subsingleton (cohomology M i)` using `fun i hi => subsingleton_cohomology_of_inertia hlp hl𝓀 (V := V.toOpenSubgroup) (le_preimageOpen _) hμV (fun g hg x hx hx1 => valuation_sub_lt_one_of_mem_preimageOpen hBle hg hx hx1) (by`. Rewrite using `[relIndex_V_preimageOpen]`. Conclude with `coprime_card_coprimeRelPreimage_lowerRamificationGroup (K := K) (L := L) hlp hlq)`. Use `M hMl hVM (fun m hm => by`. Establish `: m ∈ fixedSubmodule M (preimageOpen V (coprimeRelPreimage (lowerRamificationGroup K L 0) (lowerRamificationGroup K L 1) l))` using `hm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hB]`. Conclude with `(Submodule.mem_bot _).1 this) hi`. Establish `h0` using `hsub 0 (by norm_num)`. Establish `h1` using `hsub 1 (by norm_num)`. Establish `h2` using `hsub 2 le_rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eulerChar_eq, Nat.card_of_subsingleton (0 : cohomology M 0), Nat.card_of_subsingleton (0 : cohomology M 1), Nat.card_of_subsingleton (0 : cohomology M 2)]`. Evaluate the numerical expressions. Establish `hBfix : ∀ g ∈ (preimageOpen V (coprimeRelPreimage (lowerRamificationGroup K L 0) (lowerRamificationGroup K L 1) l) : Subgroup Gal(Ksep/K)), ∀ m : M, M.ρ g m = m`. Establish `htop` using `(hsimple _ (fixedSubmodule_le_comap M _)).resolve_left hB`. Introduce `g hg m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: m ∈ fixedSubmodule M _` using `htop ▸ Submodule.mem_top`. Conclude with `this g hg`. Take `⟨m0, hm0, hm0fix⟩` from `exists_ne_zero_forall_mem_eq M hMl (preimageOpen V (primaryQuotientPreimage (lowerRamificationGroup K L 0) l)) (preimageOpen V (coprimeRelPreimage (lowerRamificationGroup K L 0) (lowerRamificationGroup K L 1) l)) hBfix (fun g hg => by`. Take `⟨n, hn⟩` from `isPGroup_primaryQuotientPreimage_quotient_lowerRamificationGroup (K := K) (L := L) hlp (QuotientGroup.mk ⟨restrictFixed V g, hg⟩)`. Use `⟨n, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hn` using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]`. Rewrite using `[mem_preimageOpen, map_pow]`. Simplify using `using hn)`. Establish `hAfix : ∀ g ∈ (preimageOpen V (primaryQuotientPreimage (lowerRamificationGroup K L 0) l) : Subgroup Gal(Ksep/K)), ∀ m : M, M.ρ g m = m`. Establish `htop` using `(hsimple _ (fixedSubmodule_le_comap M _)).resolve_left (fun h => hm0 (by`.
-
-Establish `: m0 ∈ fixedSubmodule M (preimageOpen V (primaryQuotientPreimage (lowerRamificationGroup K L 0) l))` using `hm0fix`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot _).1 this))`. Introduce `g hg m`. Establish `: m ∈ fixedSubmodule M _` using `htop ▸ Submodule.mem_top`.
-
-Conclude with `this g hg`. Establish `hX` using `eulerChar_coprime (U := ⊤) (V := preimageOpen V (primaryQuotientPreimage (lowerRamificationGroup K L 0) l)) hlK le_top (by`. Rewrite using `[show ((⊤ : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)) = ⊤ from rfl, Subgroup.relIndex_top_right, index_preimageOpen]`. Conclude with `coprime_card_quotient_primaryQuotientPreimage_lowerRamificationGroup (K := K) (L := L) hlp)`. Use the proof step `(fun ζ hζ => pow_eq_one_mem_fixedField_preimageOpen hVμ (fun ζ' hζ' => pow_eq_one_mem_fixedField_primaryQuotientPreimage (K := K) (L := L) hlp hlq hζ') hζ)`.
-
-Use the proof step `(Rep.res ((⊤ : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).subtype M) hMl`. Use the proof step `(fun g hg m => hAfix g hg m) (n := 0)`. Use the proof step `(by`. Rewrite using `[pow_zero]`. Conclude with `card_quotient_span_natCast_eq_one (natCast_residueField_fixedField_ne_zero hl𝓀 ⊤))`.
-
-Establish `hres : eulerChar (Rep.res ((⊤ : OpenSubgroup Gal(Ksep/K)) : Subgroup Gal(Ksep/K)).subtype M) = eulerChar M`. Simplify using `only [eulerChar]`. Use `Finset.prod_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.card_eq_of_bijective _ (bijective_cohomologyRes_top M q)]`. Rewrite using `[← hres, hX, pow_zero, inv_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulerChar_of_forall_eq_bot_or_eq_top (M : Rep (ULift.{0} ℤ) Gal(Ksep/K)) [IsDiscreteRep M]
     [Finite M] [Nontrivial M] (hM : (Nat.card M : K) ≠ 0)

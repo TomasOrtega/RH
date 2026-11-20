@@ -9,9 +9,9 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Dec ReciprocityTheory.ChartRest
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu k`. Take `⟨i, hi⟩` from `h2 k`. Rewrite using `[hi]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu i`. Introduce `hu i`. Take `⟨k, hk⟩` from `h1 i`. Rewrite using `[hk]`. Conclude with `hu k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nset_congr (ε : Fin n → Bool) {V : Type} [AddCommGroup V] [Module ℂ V] {ι κ : Type}
     (c : ι → V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (d : κ → V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ))
@@ -29,13 +29,13 @@ theorem nset_congr (ε : Fin n → Bool) {V : Type} [AddCommGroup V] [Module ℂ
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `ss`. Proceed by induction on `ss with`. Consider the case `nil`. Introduce `X ι c χ Λ F _ hF _ _ hP`. Use `⟨F, fun s u => (hF s u).trans ?_, hP⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Set.ext_iff.1 (nset_congr ε c (fun p : ι × List (Fin n) => pathCoef X (c p.1) χ [] p.2) (fun i => ⟨(i, []), rfl⟩) (fun k => ⟨k.1, rfl⟩) A μ s) u`. Consider the case `cons s ss ih`. Introduce `X ι c χ Λ F hc hF hX hG hP`. Take `⟨hc', hsand⟩` from `hSF n ε X ι c (χ s) A μ hc hA`. Take `⟨s0, hs0⟩` from `F.top`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htop : ∃ t, ∀ u, u ∈ NSet ε (fun p : ι × Fin n => stepCoef X (χ s) (c p.1) p.2) A μ t` using `⟨s0 + 1, fun u => (hsand (s0 + 1) u).1 fun i => by`. Rewrite using `[← hF]`. Simplify using `[add_sub_cancel_right, hs0]⟩`. Take `⟨F1, hF1⟩` from `hFF n ε (step X (χ s)) (ι × Fin n) _ A μ hc' hA hμ htop`. Establish `hSS : SandStep F (χ s) F1` using `fun t u => ⟨fun h => (hF1 t u).2 ((hsand t u).1 fun i => (hF (t - 1) _).1 (h i)), fun h i => (hF (t + 1) _).2 ((hsand t u).2 ((hF1 t u).1 h) i)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP1` using `hT hSC hTD n X A F B χ s F1 Λ hX hG.1 hSS hP`. Take `⟨F', hF', hP'⟩` from `ih (step X (χ s)) (ι × Fin n) _ (χ + Pi.single s 1) (move χ Λ s) F1 hc' hF1 (hSC n X χ s hX) hG.2 hP1`. Use `⟨F', fun t u => ?_, hP'⟩` and prove the remaining obligations. Establish `e` using `Set.ext_iff.1 (nset_congr (V := (path X χ (s :: ss)).V) ε (fun p : (ι × Fin n) × List (Fin n) => pathCoef (step X (χ s)) (stepCoef X (χ s) (c p.1.1) p.1.2) (χ + Pi.single s 1) ss p.2) (fun p : ι × List (Fin n) => pathCoef X (c p.1) χ (s :: ss) p.2) (fun k => ⟨(k.1.1, k.1.2 :: k.2 …`. Conclude with `(hF' t u).trans e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem along (hT : Transport) (hSC : StepChar) (hTD : TensDecomp) (hFF : FamFilt) (hSF : StepFam)
     (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) (μ : MeasureTheory.Measure (ReciprocityTheory.ChartRestriction.DS.S7.UJ ε))
@@ -76,9 +76,7 @@ theorem along (hT : Transport) (hSC : StepChar) (hTD : TensDecomp) (hFF : FamFil
     exact (hF' t u).trans e
 
 /- English proof (translation)
-Introduce `ss`. Proceed by induction on `ss with`. Consider the case `nil => intro X χ h`. Conclude with `h`. Consider the case `cons s ss ih => intro X χ h`.
-
-Conclude with `ih _ _ (hSC n X χ s h)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasChar_path (hSC : StepChar) : ∀ (ss : List (Fin n)) (X : GMod n) (χ : Fin n → ℂ), HasChar X χ →
     HasChar (path X χ ss) (pathEnd χ ss) := by
@@ -88,13 +86,13 @@ theorem hasChar_path (hSC : StepChar) : ∀ (ss : List (Fin n)) (X : GMod n) (χ
   | cons s ss ih => intro X χ h; exact ih _ _ (hSC n X χ s h)
 
 /- English proof (translation)
-Introduce `hSC n`. Use `⟨1, fun ε H _ _ _ σ D E hK χ ss hU hC hG hFL A μ hA hμ h0 => ?_⟩` and prove the remaining obligations. Take `⟨B⟩` from `hB n ε A hA`. Establish `hc` using `hBF n ε H σ D E hK hU`. Take `⟨F0, hF0⟩` from `hFF n ε ⟨D, E, hK.gl⟩ D (fun ξ : D => baseCoef σ D (ξ : H)) A μ hc hA hμ ⟨-rhoA A, h0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htop : F0.N (-rhoA A) = ⊤`. Use extensionality with `u`. Simplify using `only [Submodule.mem_top, iff_true]`. Conclude with `(hF0 _ u).2 (h0 u)`. Establish `hP0` using `hS1 n ⟨D, E, hK.gl⟩ A F0 B χ (hLF n ε _ A F0 χ hA hC) hC htop`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F', hF', hP'⟩` from `along hT hSC hTD hFF hSF ε A μ hA hμ B ss ⟨D, E, hK.gl⟩ D (fun ξ : D => baseCoef σ D (ξ : H)) χ _ F0 hc hF0 hC hG hP0`. Establish `hlab : ∀ L ∈ moveIter χ {L | IsLabel B.j L ∧ (deg χ L).re < 0} ss, (deg (pathEnd χ ss) L).re < (-rhoA A - 1) + rhoA A`. Introduce `L hL`. Use `hLT n χ ss 1 B.j hG hFL L hL` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hN` using `hD n _ A F' B (pathEnd χ ss) _ (-rhoA A - 1) (hLF n ε _ A F' _ hA (hasChar_path hSC ss _ χ hC)) (hasChar_path hSC ss _ χ hC) hP' hlab`. Introduce `u`. Establish `hu : u ∈ F'.N (-rhoA A - 1)` using `by rw [hN]; exact Submodule.mem_top`. Conclude with `(hF' _ u).1 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem labels_of (hLF : LocFin) (hTD : TensDecomp) (hT : Transport) (hFF : FamFilt) (hSF : StepFam) (hBF : BaseFam)
     (hS1 : Start1) (hD : Degree) (hB : Basis) (hLT : LabelTrack) : Labels := by

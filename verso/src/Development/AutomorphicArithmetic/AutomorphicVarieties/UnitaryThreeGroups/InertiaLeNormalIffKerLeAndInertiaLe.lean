@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Establish `h` using `hA ((l : ℕ) : 𝓞 ℚ)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem valuation_natCast_lt_one_iff_mem_asIdeal {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ)
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 ℚ)) (hA : IsPlaceOver A v) :
@@ -16,29 +16,27 @@ private theorem valuation_natCast_lt_one_iff_mem_asIdeal {Ω : Type} [Field Ω] 
   simpa using h
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ S A v₀ hS hA hv₀ H _ hH M _ hM`. Establish `hker : (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ)))).ker = NS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ)))`. Simplify using `[toGS, QuotientGroup.ker_mk']`. Establish `hin : ∀ (B : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 ℚ)), w ∉ (S : Set (HeightOneSpectrum (𝓞 ℚ))) → IsPlaceOver B w → (Ine (F` using `ℚ) B : Set (G ℚ Ω)) ⊆ NS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) := by`. Introduce `B w hw hB g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨w, hw, B, hB, hg⟩`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hker]`. Apply `Subgroup.topologicalClosure_minimal _ _ hM` to reduce the goal to its premises. Apply `Subgroup.normalClosure_le_normal` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g hg`. Simplify using `only [Set.mem_iUnion] at hg`. Take `⟨w, hw, B, hB, hgB⟩` from `hg`. Establish `hgI : g ∈ Ine (F` using `ℚ) B := hgB`. Apply `h g` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨B, ?_, hgI, ?_⟩` and prove the remaining obligations. Rewrite using `[valuation_natCast_lt_one_iff_mem_asIdeal l B w hB]`. Introduce `hl`. Conclude with `hw (by simpa using hS w hl)`. Apply `hH` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hker]`. Conclude with `hin B w hw hB hgI`. Introduce `v hv g hg`. Rewrite `hg` using `[Subgroup.mem_inf]`. Apply `h g` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨A v, ?_, hg.1, hg.2⟩` and prove the remaining obligations. Rewrite using `[valuation_natCast_lt_one_iff_mem_asIdeal l (A v) v.1 (hA v), hv₀]`. Conclude with `hv`. Introduce and unpack `⟨h1, h2⟩ g ⟨B, hBl, hgB, hgH⟩`. Distinguish the cases in `hBt : B = ⊤`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hBt` using the available equality. Rewrite `hgB` using `[(Kum.placeDict ℚ Ω).1]`. Rewrite `hgB` using `[Subgroup.mem_bot]`. Substitute `hgB` using the available equality. Conclude with `M.one_mem`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `(Kum.placeDict ℚ Ω).2.1 B hBt`. Distinguish the cases in `hwS : w ∈ (S : Set (HeightOneSpectrum (𝓞 ℚ)))`. Set `u : S` to `⟨w, hwS⟩`. Establish `hu0 : u ≠ v₀`. Introduce `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[← hv₀ u]`. Conclude with `hBl ((valuation_natCast_lt_one_iff_mem_asIdeal l B w hw).2 hu)`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (hA u) hw`. Rewrite `hgB` using `[← hσ]`. Establish `hc : σ⁻¹ * g * σ ∈ Ine (F` using `ℚ) (A u) := ((ML.placeBasic Ω).2.2.2.2.2.2.2.2.2 (A u) σ).2.1 g |>.1 hgB`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcH : σ⁻¹ * g * σ ∈ H`. Use `‹H.Normal›.conj_mem g hgH σ⁻¹` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hcM` using `h2 u hu0 (Subgroup.mem_inf.2 ⟨hc, hcH⟩)`. Use `‹M.Normal›.conj_mem _ hcM σ` as an intermediate fact.
-
-Simplify `this` using `[mul_assoc]`. Apply `h1` to reduce the goal to its premises. Rewrite using `[hker]`. Conclude with `hin B w hwS hw hgB`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.inertia_le_normal_iff_ker_le_and_inertia_le :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (S : Finset (HeightOneSpectrum (𝓞 ℚ))) (A : S → ValuationSubring Ω) (v₀ : S), ContainsAbove S l → (∀ v, IsPlaceOver (A v) v.1) →

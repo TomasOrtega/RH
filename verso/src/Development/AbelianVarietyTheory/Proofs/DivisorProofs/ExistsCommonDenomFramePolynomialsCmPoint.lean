@@ -25,13 +25,11 @@ open GlobalTheory.LamT (CMPt)
 namespace GlobalTheory.LatFull.CMInt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z f La hz e k he0`. Take `⟨S, hS⟩` from `GlobalTheory.T.framePolynomial_coeff_integral_almost_all_primes E H Dw l Xo c z f La hz e k he0`. Use `choose x hx0 hx using GlobalTheory.T.exists_clear_denominators_framePolynomial_at_prime E H Dw l Xo c z f La hz e k he0`. Use `⟨∏ p ∈ S, x p, Finset.prod_ne_zero_iff.2 fun p _ => hx0 p, fun F hF hv G hG μ => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ r : 𝓞 z.K, ∀ p : IsDedekindDomain.HeightOneSpectrum (𝓞 z.K), p.valuation z.K (r : z.K) ≤ 1` using `fun r p => p.valuation_le_one r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1 : ∀ p : IsDedekindDomain.HeightOneSpectrum (𝓞 z.K), p.valuation z.K (((∏ q ∈ S, x q : 𝓞 z.K) : z.K) * MvPolynomial.coeff μ G) ≤ 1`. Introduce `p`. Distinguish the cases in `hp : p ∈ S`. Rewrite using `[← Finset.mul_prod_erase S x hp]`. Establish `e1 : (((x p * ∏ q ∈ S.erase p, x q : 𝓞 z.K)) : z.K) * MvPolynomial.coeff μ G = ((∏ q ∈ S.erase p, x q : 𝓞 z.K) : z.K) * (((x p : 𝓞 z.K) : z.K) * MvPolynomial.coeff μ G)` using `by push_cast; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, map_mul]`. Conclude with `mul_le_one' (hint _ p) (hx p F hF hv G hG μ)`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hint _ p) (hS p hp F hF hv G hG μ)`. Take `⟨r, hr⟩` from `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one z.K _ hv1`.
-
-Rewrite using `[← hr]`. Conclude with `RingOfIntegers.isIntegral_coe r`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeff_denom_intWt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →

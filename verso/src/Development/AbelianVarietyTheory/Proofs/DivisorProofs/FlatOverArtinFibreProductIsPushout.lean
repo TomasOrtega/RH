@@ -16,7 +16,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.FlatPinch
 
 /- English proof (translation)
-Introduce `r`. Take `⟨s, hs⟩` from `hg₂ (g₁ r)`. Take `⟨a, ha, -⟩` from `(GlobalTheory.DualOpen.elem_of_isPullback_ring hP).2 r s hs.symm`. Conclude with `⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_fst_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P ⟶ R₁} {f₂ : P ⟶ R₂}
     {g₁ : R₁ ⟶ R₀} {g₂ : R₂ ⟶ R₀} (hP : IsPullback f₁ f₂ g₁ g₂) (hg₂ : Function.Surjective g₂) :
@@ -31,7 +31,7 @@ end GlobalTheory.FlatPinch
 namespace GlobalTheory.FlatPinch
 
 /- English proof (translation)
-Establish `e : f'.resLE V' _ le_rfl ≫ T.homOfLE h = Y'.homOfLE (f'.preimage_mono h) ≫ f'.resLE V _ le_rfl`. Rewrite using `[← cancel_mono V.ι]`. Simplify using `only [Category.assoc, Scheme.homOfLE_ι, Scheme.Hom.resLE_comp_ι, Scheme.homOfLE_ι_assoc]`. Rewrite using `[reassoc_of% e, hg, Scheme.homOfLE_ι_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem resLE_homOfLE {Y' T X : Scheme.{0}} (f' : Y' ⟶ T) {V V' : T.Opens} (h : V' ≤ V) (g : V.toScheme ⟶ X)
     (w : Y' ⟶ X) (hg : f'.resLE V _ le_rfl ≫ g = (f' ⁻¹ᵁ V).ι ≫ w) :
@@ -42,35 +42,31 @@ theorem resLE_homOfLE {Y' T X : Scheme.{0}} (f' : Y' ⟶ T) {V V' : T.Opens} (h 
   rw [reassoc_of% e, hg, Scheme.homOfLE_ι_assoc]
 
 /- English proof (translation)
-Introduce `P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hg₁ hg₂ Y Y₁ Y₂ Y₀ j₁ j₂ i₁ i₂ hfl h₁ h₂ h₀ hij hp₂`. Establish `hf₁ : Function.Surjective f₁` using `surjective_fst_of_isPullback hP hg₂`. Establish `hf₂ : Function.Surjective f₂` using `surjective_fst_of_isPullback hP.flip hg₁`. Use `haveI : IsClosedImmersion j₁ := MorphismProperty.of_isPullback (P := @IsClosedImmersion) h₁.flip (IsClosedImmersion.spec_of_surjective f₁ hf₁)`. Use `haveI : IsClosedImmersion j₂ := MorphismProperty.of_isPullback (P := @IsClosedImmersion) h₂.flip (IsClosedImmersion.spec_of_surjective f₂ hf₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hcov, hpts⟩` from `GlobalTheory.T.points_of_scheme_over_artinian_fibre_product _ _ _ _ _ _ _ _ hP hloc hart hg₁ hg₂ _ _ _ _ Y.hom Y₁.hom Y₂.hom Y₀.hom j₁ j₂ i₁ i₂ h₁ h₂ h₀ hij`. Establish `hM : GlobalTheory.DualOpen.Milnor (Spec.map f₂) (Spec.map f₁) (Spec.map g₂) (Spec.map g₁)` using `GlobalTheory.DualOpen.Milnor.of_isPullback hP.flip hg₁`. Use `haveI : Flat Y.hom := hfl`. Establish `SEC` using `fun W => GlobalTheory.DualOpen.sections_of_squares hM h₂ h₁ h₀ hij.symm hp₂ W`. Establish `hinj : ∀ (W : Y.left.Opens) (a b : Γ(Y.left, W)), j₁.app W a = j₁.app W b → j₂.app W a = j₂.app W b → a = b` using `fun W a b e1 e2 => (SEC W).1 a b e2 e1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `uniqV` using `fun (X : Scheme.{0}) (V : Y.left.Opens) => GlobalTheory.T.scheme_hom_ext_of_jointly_surjective_of_app_injective _ _ _ X _ _ ((GlobalTheory.T.jointCover_sectionDetect_restrict_open _ _ _ j₁ j₂ hcov hinj V).1) ((GlobalTheory.T.jointCover_sectionDetect_restrict_open _ _ _ j₁ j₂ hcov …`. Establish `uniq : ∀ (X : Scheme.{0}) (a b : Y.left ⟶ X), j₁ ≫ a = j₁ ≫ b → j₂ ≫ a = j₂ ≫ b → a = b` using `fun X => GlobalTheory.T.scheme_hom_ext_of_jointly_surjective_of_app_injective _ _ _ X j₁ j₂ hcov hinj`. Establish `key : ∀ (X : Scheme.{0}) (a₁ : Y₁.left ⟶ X) (a₂ : Y₂.left ⟶ X), i₁ ≫ a₁ = i₂ ≫ a₂ → ∃ a : Y.left ⟶ X, j₁ ≫ a = a₁ ∧ j₂ ≫ a = a₂`. Introduce `X a₁ a₂ ha`. Establish `hpa : ∀ (y₁ : Y₁.left) (y₂ : Y₂.left), j₁ y₁ = j₂ y₂ → a₁ y₁ = a₂ y₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y₁ y₂ h`. Take `⟨y₀, rfl, rfl⟩` from `hpts y₁ y₂ h`. Use `congrArg (fun q : Y₀.left ⟶ X => q y₀) ha` as an intermediate fact. Simplify using `using this`. Establish `hloc` using `GlobalTheory.T.exists_affine_nbhd_preimage_le_of_closed_cover _ _ _ X j₁ j₂ a₁ a₂ hcov hpa`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Idx` to `{p : Y.left.Opens × X.affineOpens // IsAffineOpen p.1 ∧ j₁ ⁻¹ᵁ p.1 ≤ a₁ ⁻¹ᵁ p.2.1 ∧ j₂ ⁻¹ᵁ p.1 ≤ a₂ ⁻¹ᵁ p.2.1}`. Establish `hcovI : TopologicalSpace.IsOpenCover (fun p : Idx => p.1.1)`. Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`. Introduce `y _`. Take `⟨W, U, hW, hy, h1, h2⟩` from `hloc y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨(W, U), hW, h1, h2⟩, hy⟩`. Establish `EO : ∀ p : Idx, ∃ g : p.1.1.toScheme ⟶ X, j₁.resLE _ _ le_rfl ≫ g = (j₁ ⁻¹ᵁ p.1.1).ι ≫ a₁ ∧ j₂.resLE _ _ le_rfl ≫ g = (j₂ ⁻¹ᵁ p.1.1).ι ≫ a₂`. Introduce and unpack `⟨⟨W, U⟩, hW, hx, hz⟩`. Establish `hW1 : IsAffineOpen (j₁ ⁻¹ᵁ W)` using `hW.preimage j₁`. Establish `hW2 : IsAffineOpen (j₂ ⁻¹ᵁ W)` using `hW.preimage j₂`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpre : i₂ ⁻¹ᵁ (j₂ ⁻¹ᵁ W) = i₁ ⁻¹ᵁ (j₁ ⁻¹ᵁ W)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, hij]`. Use `GlobalTheory.Pinch.exists_glue_of_sections j₁ j₂ W hW hW1 hW2 U a₁ a₂ hx hz ?_ ?_` and prove the remaining obligations. Introduce `t₁ t₂ e1 e2`. Rewrite `e1`, `e2` using `[← Scheme.Hom.app_eq_appLE]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hinj W t₁ t₂ e1 e2`. Introduce `u`. Take `⟨t, ht2, ht1⟩` from `(SEC W).2 (i₂ ⁻¹ᵁ (j₂ ⁻¹ᵁ W)) le_rfl hpre.le le_rfl (a₂.appLE U.1 _ hz u) (a₁.appLE U.1 _ hx u) (by`. Establish `e1` using `Scheme.Hom.appLE_comp_appLE i₂ a₂ U.1 _ (i₂ ⁻¹ᵁ (j₂ ⁻¹ᵁ W)) hz le_rfl`. Establish `e2` using `Scheme.Hom.appLE_comp_appLE i₁ a₁ U.1 _ (i₂ ⁻¹ᵁ (j₂ ⁻¹ᵁ W)) hx hpre.le`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e3` using `GlobalTheory.Pinch.appLE_congr_hom ha.symm U.1 (i₂ ⁻¹ᵁ (j₂ ⁻¹ᵁ W)) (fun w hw => hz hw) (fun w hw => hx (hpre.le hw))`. Use `congrArg (fun q => q.hom u) (e1.trans (e3.trans e2.symm))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Conclude with `this)`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `ht1`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `ht2`. Set `𝒰` to `Y.left.openCoverOfIsOpenCover _ hcovI`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose g hg using EO`. Establish `hc : ∀ a b : Idx, pullback.fst (𝒰.f a) (𝒰.f b) ≫ g a = pullback.snd (𝒰.f a) (𝒰.f b) ≫ g b`. Introduce `a b`. Establish `hPb` using `isPullback_opens_inf a.1.1 b.1.1`. Express the relevant statement in the definitionally equal form `pullback.fst a.1.1.ι b.1.1.ι ≫ g a = pullback.snd a.1.1.ι b.1.1.ι ≫ g b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi hPb.isoPullback.hom, IsPullback.isoPullback_hom_fst_assoc, IsPullback.isoPullback_hom_snd_assoc]`. Use `uniqV X (a.1.1 ⊓ b.1.1) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[resLE_homOfLE j₁ _ _ a₁ (hg a).1, resLE_homOfLE j₁ _ _ a₁ (hg b).1]`. Rewrite using `[resLE_homOfLE j₂ _ _ a₂ (hg a).2, resLE_homOfLE j₂ _ _ a₂ (hg b).2]`. Set `z₀` to `𝒰.glueMorphisms g hc`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz₀ : ∀ a : Idx, a.1.1.ι ≫ z₀ = g a` using `fun a => 𝒰.ι_glueMorphisms g hc a`. Use `⟨z₀, ?_, ?_⟩` and prove the remaining obligations. Establish `hcov1 : TopologicalSpace.IsOpenCover (fun p : Idx => j₁ ⁻¹ᵁ p.1.1)`. Rewrite using `[TopologicalSpace.IsOpenCover, ← Scheme.Hom.preimage_iSup, hcovI, Scheme.Hom.preimage_top]`. Use `Scheme.Cover.hom_ext (Y₁.left.openCoverOfIsOpenCover _ hcov1) _ _ fun a => ?_` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `(j₁ ⁻¹ᵁ a.1.1).ι ≫ j₁ ≫ z₀ = (j₁ ⁻¹ᵁ a.1.1).ι ≫ a₁`. Rewrite using `[← (hg a).1, ← hz₀ a, ← Category.assoc, ← Scheme.Hom.resLE_comp_ι j₁ (le_rfl), Category.assoc]`. Establish `hcov2 : TopologicalSpace.IsOpenCover (fun p : Idx => j₂ ⁻¹ᵁ p.1.1)`. Rewrite using `[TopologicalSpace.IsOpenCover, ← Scheme.Hom.preimage_iSup, hcovI, Scheme.Hom.preimage_top]`. Use `Scheme.Cover.hom_ext (Y₂.left.openCoverOfIsOpenCover _ hcov2) _ _ fun a => ?_` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `(j₂ ⁻¹ᵁ a.1.1).ι ≫ j₂ ≫ z₀ = (j₂ ⁻¹ᵁ a.1.1).ι ≫ a₂`. Rewrite using `[← (hg a).2, ← hz₀ a, ← Category.assoc, ← Scheme.Hom.resLE_comp_ι j₂ (le_rfl), Category.assoc]`. Use `IsPushout.of_isColimit (c := PushoutCocone.mk j₁ j₂ hij) (PushoutCocone.IsColimit.mk _ (fun s => Classical.choose (key _ s.inl s.inr s.condition)) (fun s => (Classical.choose_spec (key _ s.inl s.inr s.condition)).1) (fun s => (Classical.choose_spec (key _ s.inl s.inr s.condition) …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (Y : Over (Spec P)) (Y₁ : Over (Spec R₁)) (Y₂ : Over (Spec R₂)) (Y₀ : Over (Spec R₀)) (j₁ : Y₁.left ⟶ Y.left) (j₂ : Y₂.left ⟶ Y.left) (i₁ : Y₀.left ⟶ Y₁.left) (i₂ : Y₀.left ⟶ Y₂.left), Flat Y.hom → IsPullback j₁ Y₁.hom Y.hom (Spec.map f₁) → IsPullback j₂ Y₂.hom Y.hom (Spec.map f₂) → IsPullback i₁ Y₀.hom Y₁.hom (Spec.map g₁) → i₁ ≫ j₁ = i₂ ≫ j₂ → i₂ ≫ Y₂.hom = Y₀.hom ≫ Spec.map g₂ → IsPushout i₁ i₂ j₁ j₂ := by
   intro P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hg₁ hg₂ Y Y₁ Y₂ Y₀ j₁ j₂ i₁ i₂ hfl h₁ h₂ h₀ hij hp₂

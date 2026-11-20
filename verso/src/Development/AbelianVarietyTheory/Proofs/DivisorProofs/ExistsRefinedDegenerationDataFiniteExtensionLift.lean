@@ -22,22 +22,22 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.SharpExt
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_ext {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Introduce `g n F Z i W hW V _ _ _ Q m t δ hrk ht hsym hnn hpos hmono ξ hU Y q hq hs`. Take `⟨V₀, _, _, _, ρ₀, r, D₀, e₀, hCN₀, hinj₀, hfin₀, -, -, hRef₀, -⟩` from `GlobalTheory.PolDeg.refine_monomial_of_polarised V Q m t δ hU.1 hmono (fun k => (ht k).1) (fun k => (ht k).2) hsym hnn hpos`. Take `⟨G', _, _, A', U', y₀, α, α₂, -, hy₀, -⟩` from `hU.2 V₀ ρ₀ hCN₀ hinj₀ hfin₀ D₀ e₀ hRef₀`. Take `⟨L, _, _, _, yL, hyL⟩` from `GlobalTheory.T.exists_lift_fieldPoint_finite_surjective_after_extension (FractionRing V₀) F.X Y y₀ q hq hs`. Take `⟨V₁, _, _, _, ρ, σ, hCN₁, hinj, hfin, hloc, hσ⟩` from `GlobalTheory.T.exists_finite_local_extension_with_embedded_field_extension V₀ hCN₀ L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsNoetherianRing V₀ := hCN₀.1`. Establish `hR : AdmBase V₀ (maximalIdeal V₀)` using `⟨hCN₀.1, inferInstance, hCN₀.2.1, hCN₀.2.2.1⟩`. Take `⟨Wo, hWo, hψ⟩` from `GlobalTheory.psiOnExists V₀ _ hR D₀`. Establish `hgen : (specOf ρ).base (genericPoint (Spec (CommRingCat.of V₁))) ∈ Wo`. Establish `: (specOf ρ).base (genericPoint (Spec (CommRingCat.of V₁))) = genericPoint (Spec (CommRingCat.of V₀))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`. Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective ρ hinj)`. Rewrite using `[this]`. Conclude with `hWo`. Take `⟨D₁, hD, -, -⟩` from `GlobalTheory.exists_degData_isPullDeg GlobalTheory.polBaseChange_holds GlobalTheory.globalFns_holds V₀ V₁ _ _ ρ (map_maximalIdeal_le ρ) D₀ Wo hψ hgen`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hfr : GlobalTheory.Mum.GenDesc.fracMap ρ hinj = σ.comp (algebraMap (FractionRing V₀) L)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors V₀) (RingHom.ext fun x => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.Mum.GenDesc.fracMap_algebraMap, hσ]`. Use `⟨V₁, inferInstance, inferInstance, inferInstance, ρ.comp ρ₀, D₁, hD.xe.trans e₀, spMap (GlobalTheory.Mum.GenDesc.fracMap ρ hinj) ≫ y₀, spMap σ ≫ yL, hCN₁, hinj.comp hinj₀, hfin.comp hfin₀, GlobalTheory.T.refinesPolarised_pullback_injective Q ρ₀ D₀.toPre e₀ hinj₀ hRef₀ ρ D₁.toPre …` and prove the remaining obligations. Rewrite using `[Category.assoc, hy₀, spMap_comp_ext ρ₀ ρ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc (jK V₁) (spMap ρ), GlobalTheory.Mum.GenDesc.jK_comp_spMap ρ hinj]`. Simplify using `only [Category.assoc]`. Rewrite using `[Category.assoc, hyL, hfr, spMap_comp_ext]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_refined_ext_lift : ∀ g n : ℕ, ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (i : F.X ⟶ Z) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (Q : Data V) (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ Q.X), Module.finrank ℤ Q.X ≤ g → (∀ k, t k ∈ maximalIdeal V ∧ t k ≠ 0) → (∀ k a b, δ k a b = δ k b a) → (∀ k a, 0 ≤ δ k a a) → (∀ a, a ≠ 0 → ∃ k, 0 < δ k a a) → Q.IsMonomialTau t δ → ∀ ξ : Sp V ⟶ Z, UnifOver F i ξ Q → ∀ (Y : Scheme.{0}) (q : Y ⟶ F.X), IsFinite q → Surjective q → ∃ (V₁ : Type) (_ : CommRing V₁) (_ : IsDomain V₁) (_ : IsLocalRing V₁) (ρ : V →+* V₁) (D₀ : DegData V₁ (maximalIdeal V₁)) (e₀ : D₀.toPre.X ≃+ Q.X) (y : Sp (FractionRing V₁) ⟶ F.X) (y' : Sp (FractionRing V₁) ⟶ Y), IsCN V₁ ∧ Function.Injective ρ ∧ ρ.Finite ∧ Refines Q ρ D₀.toPre e₀ ∧ y ≫ i = jK V₁ ≫ spMap ρ ≫ ξ ∧ y' ≫ q = y := by
   intro g n F Z i W hW V _ _ _ Q m t δ hrk ht hsym hnn hpos hmono ξ hU Y q hq hs

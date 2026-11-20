@@ -13,7 +13,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨DVR.pullSec L φ ε s h, fun _ _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_pull_linComb {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (φ' : K → (Z ⟶ X)) (ε : K → ℤ) (h : Z ⟶ Y) (e : (fun k => h ≫ φ k) = φ') (s : LB.Sec (LB.LinComb L φ ε)) :
@@ -23,7 +23,7 @@ theorem exists_pull_linComb {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype 
   exact ⟨DVR.pullSec L φ ε s h, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Consider the cases of `s`. Consider the cases of `t`. Use `congr 1`. Conclude with `funext h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lbSec_ext {X : Scheme.{0}} {L : LB X} {s t : LB.Sec L} (h : ∀ i, s.f i = t.f i) : s = t := by
   cases s; cases t
@@ -34,9 +34,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hp' : ∀ k, p ∈ (snd (Over.mk x') Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `Set.mem_iInter.1 hp`. Establish `e` using `congrArg (fun f : Gx x' ⟶ Xo.univ.t.G.left => f.base p) hs`. Use `show pm.base p ∈ ⋂ k, (snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (pm ≫ (snd (Over.mk x) Xo.univ.t.G).left).base p ∈ (Xo.univ.t.PP.L.U (i k) : Set _)`. Rewrite using `[e]`. Conclude with `hp' k`.
+A detailed English derivation is pending.
 -/
 theorem ppx_chart_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
@@ -53,7 +53,7 @@ theorem ppx_chart_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} 
   exact hp' k
 
 /- English proof (translation)
-Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res_top {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (g : Γ(X, ⊤)) :
     (X.presheaf.map (homOfLE h).op).hom ((X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom g) =
@@ -62,7 +62,7 @@ theorem res_res_top {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (g : Γ(X, �
   rfl
 
 /- English proof (translation)
-Simplify using `only [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun]`. Rewrite using `[res_res_top, res_res_top]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem scal_res {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a : S) (i j : (PPx x).ι) :
     ((Gx x).presheaf.map (homOfLE (inf_le_left : (PPx x).U i ⊓ (PPx x).U j ≤ (PPx x).U i)).op).hom (scal x a i) =
@@ -76,7 +76,7 @@ def gxMap {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ 
   ((Over.homMk (spMap ψ) h : Over.mk x' ⟶ Over.mk x) ▷ Xo.univ.t.G).left
 
 /- English proof (translation)
-Unfold `gxMap`. Rewrite using `[← Over.comp_left, whiskerRight_snd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gxMap_snd {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X) (x' : Sp T ⟶ Xo.X)
     (h : spMap ψ ≫ x = x') :
@@ -85,7 +85,7 @@ theorem gxMap_snd {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : S
   rw [← Over.comp_left, whiskerRight_snd]
 
 /- English proof (translation)
-Unfold `gxMap`. Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gxMap_fst {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X) (x' : Sp T ⟶ Xo.X)
     (h : spMap ψ ≫ x = x') :
@@ -95,7 +95,7 @@ theorem gxMap_fst {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (x : S
   rfl
 
 /- English proof (translation)
-The claim follows from `Over.tensorObj_ext f₁ f₂ h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem gx_hom_ext {S : Type} [CommRing S] {W : Scheme.{0}} {x : Sp S ⟶ Xo.X} (f₁ f₂ : W ⟶ Gx x)
     (h₁ : f₁ ≫ (fst (Over.mk x) Xo.univ.t.G).left = f₂ ≫ (fst (Over.mk x) Xo.univ.t.G).left)
@@ -109,9 +109,9 @@ def scalSec {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a : S) (s : LB.Sec (PPx
     ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S T _ _ φ a x x' hx s`. Establish `hs` using `gxMap_snd φ x x' hx.symm`. Establish `hf` using `gxMap_fst φ x x' hx.symm`. Take `⟨s', hs'⟩` from `exists_pull_linComb Xo.univ.t.PP.L (K := Fin 1) (fun _ => (snd (Over.mk x) Xo.univ.t.G).left) (fun _ => (snd (Over.mk x') Xo.univ.t.G).left) _ (gxMap φ x x' hx.symm) (funext fun _ => hs) (scalSec x a s)`. Use `⟨s', ⟨_, hs, hf, hs'⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `t ⟨pm, ps, pf, ht⟩`. Take `rfl : pm = gxMap φ x x' hx.symm` from `gx_hom_ext _ _ (pf.trans hf.symm) (ps.trans hs.symm)`. Conclude with `lbSec_ext fun i => (ht i (ppx_chart_le _ hs i)).symm.trans (hs' i (ppx_chart_le _ hs i))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem existsUnique_secBC : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S T : Type) [CommRing S] [CommRing T] (φ : S →+* T) (a : S) (x : Sp S ⟶ Xo.X) (x' : Sp T ⟶ Xo.X), x' = spMap φ ≫ x → ∀ s : LB.Sec (PPx x), ∃! s' : LB.Sec (PPx x'), SecBC φ a x x' s s' := by
   intro E _ _ _ H Dw l Xo S T _ _ φ a x x' hx s

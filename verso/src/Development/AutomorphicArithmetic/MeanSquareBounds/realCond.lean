@@ -5,17 +5,17 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM0⟩`. Establish `hf : χ.FactorsThrough M`. Rewrite using `[DirichletCharacter.factorsThrough_iff_ker_unitsMap hM]`. Introduce `u hu`. Rewrite `hu`, the goal using `[MonoidHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `ZMod.intCast_surjective (u : ZMod N)`. Establish `h1 : ((a : ℤ) : ZMod M) = ((1 : ℤ) : ZMod M)`. Establish `h` using `congrArg (fun x : (ZMod M)ˣ => (x : ZMod M)) hu`. Simplify using `only [ZMod.unitsMap_val, Units.val_one] at h`. Rewrite `h` using `[← ha, ZMod.cast_intCast hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Rewrite `h1` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Take `⟨t, ht⟩` from `h1`. Take `⟨v, hv⟩` from `hsq (-t)`. Establish `ha' : a = 1 + (M : ℤ) * (-t)` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huv : (u : ZMod N) = v ^ 2`. Rewrite using `[hv, ← ha, ha']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hvu : IsUnit v`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsUnit (v ^ 2)` using `huv ▸ u.isUnit`. Conclude with `(isUnit_pow_iff two_ne_zero).mp this`. Use `ext`. Rewrite using `[MulChar.coe_toUnitHom, huv, map_pow, ← MulChar.pow_apply' χ two_ne_zero, h2, MulChar.one_apply hvu, Units.val_one]`. Establish `hle : χ.conductor ≤ M` using `Nat.sInf_le hf`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hp` using `[DirichletCharacter.isPrimitive_def]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem conductor_le_of_quadratic_squares {N M : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) (hM : M ∣ N) (hM0 : M ≠ 0)
@@ -48,13 +48,13 @@ private theorem conductor_le_of_quadratic_squares {N M : ℕ} [NeZero N] (χ : D
   omega
 
 /- English proof (translation)
-Introduce and unpack `⟨k, hk⟩`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk; exact hN hk`. Take `⟨r, hr⟩` from `hpp.odd_of_ne_two hodd`. Establish `hle : N ≤ p * k`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `conductor_le_of_quadratic_squares χ hp h2 ⟨p, by rw [hk]; ring⟩ (mul_ne_zero hpp.ne_zero hk0) fun t => ?_` and prove the remaining obligations. Use `⟨1 + (p : ZMod N) * k * t * (r + 1), ?_⟩` and prove the remaining obligations. Establish `h0 : (p : ZMod N) ^ 2 * k = 0`. Establish `h` using `congrArg (Nat.cast : ℕ → ZMod N) hk`. Rewrite `h` using `[ZMod.natCast_self]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h`. Take the linear combination `-h`. Establish `hr' : (p : ZMod N) = 2 * r + 1` using `by rw [hr]; push_cast; ring`. Use `push_cast`. Take the linear combination `(t + k * t ^ 2 * (r + 1) ^ 2) * h0 - (p : ZMod N) * k * t * hr'`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h1` using `hpp.one_lt`. Establish `: 0 < p * k` using `Nat.pos_of_ne_zero (mul_ne_zero hpp.ne_zero hk0)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem real_cond_odd {N p : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) (hpp : p.Prime) (hodd : p ≠ 2) : ¬ p ^ 2 ∣ N := by
@@ -78,11 +78,11 @@ private theorem real_cond_odd {N p : ℕ} [NeZero N] (χ : DirichletCharacter �
   nlinarith
 
 /- English proof (translation)
-Introduce and unpack `⟨k, hk⟩`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk; exact hN hk`. Establish `hle : N ≤ 8 * k`. Use `conductor_le_of_quadratic_squares χ hp h2 ⟨2, by rw [hk]; ring⟩ (mul_ne_zero (by norm_num) hk0) fun t => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1 + 4 * (k : ZMod N) * t, ?_⟩` and prove the remaining obligations. Establish `h0 : (16 : ZMod N) * k = 0`. Establish `h` using `congrArg (Nat.cast : ℕ → ZMod N) hk`. Rewrite `h` using `[ZMod.natCast_self]`. Move the coercions through the operations in `at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `-h`. Use `push_cast`. Take the linear combination `(k * t ^ 2) * h0`. Use linear arithmetic over natural numbers and integers.
+Take a linear combination of the given relations to obtain the conclusion. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem real_cond_two {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hp : χ.IsPrimitive)
     (h2 : χ ^ 2 = 1) : ¬ 2 ^ 4 ∣ N := by
@@ -102,13 +102,11 @@ private theorem real_cond_two {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ 
   omega
 
 /- English proof (translation)
-Introduce `N₀ q d N _ χ hp h2 h8 hq hd hall`. Rewrite using `[Nat.dvd_iff_prime_pow_dvd_dvd]`. Introduce `p k hpp hk`. Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hk3 : k ≤ 3`. Assume the negation of the conclusion as `hc`. Conclude with `real_cond_two χ hp h2 ((pow_dvd_pow 2 (by omega)).trans hk)`. Establish `: 2 ^ k ∣ 8` using `pow_dvd_pow 2 hk3`. Conclude with `((this.trans h8).mul_right q).mul_right d`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hk1 : k ≤ 1`. Assume the negation of the conclusion as `hc`. Conclude with `real_cond_odd χ hp h2 hpp hp2 ((pow_dvd_pow p (by omega)).trans hk)`. Use `interval_cases k`. Simplify using the standard rewrite rules.
-
-Rewrite `hk`, the goal using `[pow_one]`. Break down `hall p hpp hk with h | rfl | rfl` into its components or cases. Conclude with `(h.mul_right q).mul_right d`. Conclude with `(Dvd.intro_left N₀ rfl).mul_right d`. Conclude with `Dvd.intro_left _ rfl`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem real_cond :
     ∀ (N₀ q d : ℕ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive → χ ^ 2 = 1 → 8 ∣ N₀ → q.Prime → d.Prime →

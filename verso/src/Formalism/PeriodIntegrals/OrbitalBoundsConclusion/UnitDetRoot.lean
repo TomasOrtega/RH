@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitDeterminantRoot.Par
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitDeterminantRoot.GlobFin
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.UnitDetRoot.unitDetRoot_of_global PI.UnitaryGroupMassFormula.UnitDetRoot.globalLUnit`.
+A detailed English derivation is pending.
 -/
 theorem unit_det_root_of_unity : PI.UnitDetRoot :=
   PI.UnitaryGroupMassFormula.UnitDetRoot.unitDetRoot_of_global PI.UnitaryGroupMassFormula.UnitDetRoot.globalLUnit

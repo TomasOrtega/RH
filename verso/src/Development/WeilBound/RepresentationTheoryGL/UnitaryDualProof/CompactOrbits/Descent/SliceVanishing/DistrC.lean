@@ -15,11 +15,11 @@ open PositivityTheory.PfBern.Loc
 variable {S : Type*} [TopologicalSpace S] [T2Space S] [LocallyCompactSpace S] [TotallyDisconnectedSpace S]
 
 /- English proof (translation)
-Set `ξ' : SC S →ₗ[ℂ] ℂ` to `ξ ∘ₗ (SC S).subtype`. Establish `hker : LinearMap.ker (restr hC) ≤ LinearMap.ker ξ'`. Introduce `f hf`. Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Apply `hξ` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨f.2, Set.subset_univ _⟩`. Introduce `p hp`. Establish `h0` using `congrArg (fun g : SC C => (g : C → ℂ) ⟨p, hp⟩) hf`. Simplify `h0` using `[restr]`. Set `D0 : LinearMap.range (restr hC) →ₗ[ℂ] ℂ` to `(LinearMap.ker (restr hC)).liftQ ξ' hker ∘ₗ (restr hC).quotKerEquivRange.symm.toLinearMap`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Take `⟨r, hr⟩` from `(LinearMap.range (restr hC)).subtype.exists_leftInverse_of_injective (LinearMap.range (restr hC)).ker_subtype`. Use `⟨D0 ∘ₗ r, fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : r (restr hC f) = ⟨restr hC f, LinearMap.mem_range_self _ f⟩` using `LinearMap.congr_fun hr ⟨_, _⟩`. Rewrite using `[LinearMap.comp_apply, h1]`. Simplify using `only [D0, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.liftQ_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -48,7 +48,7 @@ theorem exists_distr_on (ξ : (S → ℂ) →ₗ[ℂ] ℂ) {C : Set S} (hC : IsC
   rfl
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(SC S).subtype.exists_leftInverse_of_injective (SC S).ker_subtype`. Use `⟨E ∘ₗ restr hC ∘ₗ r, fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : r (f : S → ℂ) = f` using `LinearMap.congr_fun hr f`. Simplify using `only [LinearMap.comp_apply, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_functional {C : Set S} (hC : IsClosed C) (E : Distr C) :
     ∃ η : (S → ℂ) →ₗ[ℂ] ℂ, ∀ f : SC S, η f = E (restr hC f) := by

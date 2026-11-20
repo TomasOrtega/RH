@@ -15,9 +15,9 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.TermCount
 
 /- English proof (translation)
-Establish `h1 : s ⊆ ⋃ b : t, {a | a ∈ s ∧ f a = b.1}`. Introduce `a ha`. Conclude with `Set.mem_iUnion.2 ⟨⟨f a, hf a ha⟩, ha, rfl⟩`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.tsum_le_tsum fun b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.tsum_set_one]`. Conclude with `hB b.1 b.2`. Use `_ = (t.encard : ℝ≥0∞) * B := ENNReal.tsum_set_const t B`. Use `_ ≤ A * B := by gcongr`.
+A detailed English derivation is pending.
 -/
 theorem encard_le_mul {α β : Type} (s : Set α) (f : α → β) (t : Set β) (A B : ℝ≥0∞)
     (hf : ∀ a ∈ s, f a ∈ t) (ht : (t.encard : ℝ≥0∞) ≤ A)
@@ -39,23 +39,21 @@ theorem encard_le_mul {α β : Type} (s : Set α) (f : α → β) (t : Set β) (
     _ ≤ A * B := by gcongr
 
 /- English proof (translation)
-Unfold `Frames.nT`. Use `set s : Set (Submodule L.O S.V) := {Λ | S.IsTerm d Λ ∧ S.cardI d Λ = j ∧ S.Fr d Λ = C} with hs`. Break down `s.eq_empty_or_nonempty with he | ⟨Λ₁, hΛ₁, -, hC₁⟩` into its components or cases. Simplify using `[he]`. Take `⟨ha, -, -, hq, hH1, -⟩` from `GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ₁ hΛ₁`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcls : S.IsCls C` using `hC₁ ▸ (GlobalTheory.HL.TermBasic.term_basic L r k S d Λ₁ hΛ₁).2.2.2.2.2.2.1.1`. Establish `hp : (S.fr d Λ₁, S.fr' d Λ₁) ∈ C` using `hC₁ ▸ (GlobalTheory.HL.FrameClass.frame_classes L r k S (S.fr d Λ₁) (S.fr' d Λ₁)).1`. Establish `hM : ∀ Λ ∈ s, S.Mof (S.fr d Λ₁) (S.fr' d Λ₁) ≤ S.sat Λ`. Introduce and unpack `Λ ⟨hΛ, -, hC⟩`. Establish `h1` using `((GlobalTheory.HL.FrameClass.frame_classes L r k S (S.fr d Λ) (S.fr' d Λ)).2.1 (S.fr d Λ₁, S.fr' d Λ₁) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: S.frameCls (S.fr d Λ) (S.fr' d Λ) = C` using `hC`. Rewrite using `[this]`. Conclude with `hp)).2`. Simplify using `only at h1`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hΛ).2.2.1`. Establish `hmain : (s.encard : ℝ≥0∞) ≤ (S.q : ℝ≥0∞) ^ (2 * S.a.toNat * (2 * r + 2)) * (((S.q : ℝ≥0∞) ^ (S.a.toNat * (2 * r + 2)) * (j : ℝ≥0∞) ^ (k - 1)) * (S.q : ℝ≥0∞) ^ (2 * S.a.toNat * (2 * r + 2)))`. Use `encard_le_mul s S.sat _ _ _ ?_ (GlobalTheory.T.lattice_count_bound_frames L r k S C hcls _ hp ha) ?_` and prove the remaining obligations. Introduce `Λ hΛ`. Use `⟨hM Λ hΛ, fun x hx => hx.2, fun x hx y hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `((GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hΛ.1).1.2 y).2 hy.1 x hx.1`. Introduce `Mh hMh`. Use `encard_le_mul _ (fun Λ : Submodule L.O S.V => Λ ⊓ S.W0.restrictScalars L.O) _ _ _ ?_ (GlobalTheory.T.encard_gluingHom_kernels_le L r k S d C Mh j) ?_` and prove the remaining obligations. Introduce and unpack `Λ ⟨⟨h1, h2, h3⟩, h4⟩`. Conclude with `⟨Λ, ⟨h1, h3, h4, h2⟩, rfl⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `Λ₀ _`. Use `le_trans ?_ (GlobalTheory.T.encard_selfDual_sat_inf_W0_le_q_pow L r k S C hcls _ hp Mh Λ₀ hMh.1)` and prove the remaining obligations. Use `ENat.toENNReal_le.2 (Set.encard_le_encard ?_)` and prove the remaining obligations. Introduce and unpack `Λ ⟨⟨⟨h1, -, -⟩, h4⟩, h5⟩`. Conclude with `⟨(GlobalTheory.HL.TermBasic.term_basic L r k S d Λ h1).1, h4, h5⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hmain.trans ?_` and prove the remaining obligations. Establish `hq' : (S.q : ℝ) ^ S.a.toNat ≤ S.Hp`. Establish `: S.a = (S.a.toNat : ℤ)` using `(Int.toNat_of_nonneg ha).symm`. Rewrite `hq` using `[this, zpow_natCast]`. Conclude with `hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hreal : ((S.q : ℝ) ^ S.a.toNat) ^ (10 * (r + 1)) * (j : ℝ) ^ (k - 1) ≤ S.Hp ^ (12 * (r + 1)) * (j : ℝ) ^ (k - 1)`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `le_trans (le_of_eq ?_) (ENNReal.ofReal_le_ofReal hreal)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_pow (by positivity), ENNReal.ofReal_natCast, ENNReal.ofReal_natCast]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nT_cardI_le {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]

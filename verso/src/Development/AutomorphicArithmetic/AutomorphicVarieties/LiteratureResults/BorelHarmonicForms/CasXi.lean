@@ -6,9 +6,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a n e he Ξ r`. Take `⟨h1, h2⟩` from `UpperTheory.V.Lit.Bor.xiSchur E a Ξ`. Establish `h3 : IsLieHom (shift Ξ.dmat r)` using `(UpperTheory.V.Lit.Bor.ellFacts E a).2.2.2 _ _ r h1`. Use `h2 _ fun X => ?_` and prove the remaining obligations. Establish `h4` using `UpperTheory.V.Lit.Bor.casComm E a n e he _ _ h3 X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h4` using `[shift_apply]`. Establish `h5 : Commute (cas (shift Ξ.dmat r) e) ((r * ell E a X) • (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ))` using `(Commute.one_right _).smul_right _`. Simplify using `using h4.sub_right h5`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.Lit.Bor.casXi :
     UpperTheory.V.Lit.Bor.CasXi := by

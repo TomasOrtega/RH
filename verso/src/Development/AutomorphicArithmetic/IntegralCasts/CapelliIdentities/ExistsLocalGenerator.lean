@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `B _ _ I p hp`. Distinguish the cases in `hI : I = ⊥`. Use `⟨0, I.zero_mem, 1, (Ideal.ne_top_iff_one p).mp hp.ne_top, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hI, Ideal.mem_bot]`. Simplify using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hne : ¬ I ≤ I * p`. Introduce `h`. Establish `h1 : I * p = I * 1`. Rewrite using `[mul_one]`. Conclude with `le_antisymm Ideal.mul_le_left h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : p = 1` using `mul_left_cancel₀ (show I ≠ 0 from hI) h1`. Conclude with `hp.ne_top (by rw [h2, Ideal.one_eq_top])`. Take `⟨π, hπ, hπ'⟩` from `SetLike.not_le_iff_exists.mp hne`. Establish `hle : Ideal.span {π} ≤ I` using `(Ideal.span_singleton_le_iff_mem I).mpr hπ`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.mpr hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJp : ¬ J ≤ p`. Introduce `h`. Apply `hπ'` to reduce the goal to its premises. Establish `: π ∈ I * J` using `hJ ▸ Ideal.mem_span_singleton_self π`. Conclude with `Ideal.mul_mono_right h this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs, hs'⟩` from `SetLike.not_le_iff_exists.mp hJp`. Use `⟨π, hπ, s, hs', fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, mul_comm s x]`. Conclude with `Ideal.mul_mem_mul hx hs`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExistsLocalGenerator.exists_local_generator :
     ∀ {B : Type} [inst : CommRing B] [IsDedekindDomain B] (I p : Ideal B) [hp : p.IsPrime],

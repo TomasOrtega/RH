@@ -10,27 +10,23 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hsH e he m hm hmP hmH G' hϖG' hsG' hresG'`. Use `set P' := blowUpOf P (blowUpGens s g f m e) with hP'def`. Establish `hPprime : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hP'prime : P'.IsPrime` using `RingHom.ker_isPrime _`. Establish `hmul` using `DivCycleMul.proof O (Option K) (extIdx ι (BlowUpIdx ι)) P'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlm : liftForm (J` using `BlowUpIdx ι) m ∉ P' := fun h => by`. Rewrite `h` using `[hP'def, blowUpOf, RingHom.mem_ker, aeval_blowUpSubst_liftForm, Polynomial.C_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmP h`. Establish `hY₁P' : (newVar (some none) : MRing (extIdx ι (BlowUpIdx ι)) O) ∉ P'` using `fun h => by`. Rewrite `h` using `[hP'def, blowUpOf, RingHom.mem_ker]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [newVar, aeval_X, blowUpSubst, blowUpGens, mul_eq_zero, Polynomial.X_ne_zero, or_false, Polynomial.C_eq_zero, Ideal.Quotient.eq_zero_iff_mem] at h`. Conclude with `(hPprime.mem_or_mem h).elim hD.1.num_not_mem hmP`. Establish `hnonneg : ∀ x W, 0 ≤ divCycle P' x W` using `fun x W => by`. Apply the tactic sequence `unfold divCycle; split_ifs <;> simp`. Establish `hzero : ∀ x, x ∉ G' → divCycle P' x G' = 0` using `fun x hx => by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (form_mem_of_divCycle_ne_zero h)`. Establish `hG'supp : G' ∈ (P' ⊔ Ideal.span {liftForm s}).minimalPrimes ∧ IsRelevant G'`. Assume the negation of the conclusion as `h`. Unfold `divCycle at hsG'`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hsG'` using `[dif_neg h]`. Conclude with `lt_irrefl _ hsG'`. Establish `hP'G' : P' ≤ G'` using `le_sup_left.trans hG'supp.1.1.2`. Establish `hY₁G' : (newVar (some none) : MRing (extIdx ι (BlowUpIdx ι)) O) ∈ G'`. Apply `form_mem_of_divCycle_ne_zero (P := P')` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hnonneg (liftForm m) G'` as an intermediate fact. Unfold `ratDiv at hresG'`. Use linear arithmetic over natural numbers and integers. Establish `hYiG' : ∀ i : ∀ k, ι k, (newVar (some (some i)) : MRing (extIdx ι (BlowUpIdx ι)) O) ∈ G'`. Introduce `i`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Assume the negation of the conclusion as `hYi`. Establish `hrel : liftForm (powMonomial e i) * newVar (some none) - liftForm m * newVar (some (some i)) ∈ P'`. Rewrite using `[hP'def, blowUpOf, RingHom.mem_ker]`. Simplify using `only [map_sub, map_mul, aeval_blowUpSubst_liftForm, newVar, aeval_X, blowUpSubst, blowUpGens]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hYiP' : (newVar (some (some i)) : MRing (extIdx ι (BlowUpIdx ι)) O) ∉ P'` using `fun h => hYi (hP'G' h)`. Distinguish the cases in `hp : liftForm (J := BlowUpIdx ι) (powMonomial e i : MRing ι O) ∈ P'`. Establish `h` using `P'.sub_mem (P'.mul_mem_right (newVar (some none)) hp) hrel`. Rewrite `h` using `[sub_sub_cancel]`. Conclude with `(hP'prime.mem_or_mem h).elim hlm hYiP'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1` using `congrFun (divCycle_congr_of_sub_mem hrel) G'`. Rewrite `h1` using `[hmul _ _ hP'prime hp hY₁P', hmul _ _ hP'prime hlm hYiP']`. Simplify using `only [Pi.add_apply] at h1`. Establish `h2` using `hzero _ hYi`. Establish `h3` using `hnonneg (liftForm (powMonomial e i)) G'`.
-
-Unfold `ratDiv at hresG'`. Use linear arithmetic over natural numbers and integers. Take `⟨j, hj⟩` from `hG'supp.2 none`. Express the relevant statement in the definitionally equal form `BlowUpIdx ι at j`. Break down `j with _ | _ | i` into its components or cases.
-
-Conclude with `hj`. Conclude with `absurd hY₁G' hj`. Conclude with `absurd (hYiG' i) hj`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ResidualDisjoint.proof : ResidualDisjoint.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hsH e he m hm hmP hmH G' hϖG' hsG' hresG'

@@ -3,7 +3,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersecti
 namespace ReciprocityTheory.ChartRestriction.G.AI
 
 /- English proof (translation)
-Introduce `c₁ c₂`. Simplify using `only`. Apply the tactic sequence `constructor <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fl3Test_thm : FlatnessTestCriterion := by
   intro c₁ c₂

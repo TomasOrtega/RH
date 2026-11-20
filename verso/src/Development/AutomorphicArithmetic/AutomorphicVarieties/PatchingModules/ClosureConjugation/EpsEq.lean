@@ -3,19 +3,17 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P g`. Establish `hl : (l : x.K) = 0`. Assume the negation of the conclusion as `hn`. Take `⟨p, hp⟩` from `CharP.exists x.K`. Establish `hpp : p.Prime` using `CharP.char_is_prime x.K p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : p ≠ l` using `by rintro rfl; exact hn (CharP.cast_eq_zero _ _)`. Establish `h6 : IsUnit ((p : ℤ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => hne ?_)` and prove the remaining obligations. Rewrite `hlt` using `[PadicInt.norm_int_lt_one_iff_dvd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((Nat.prime_dvd_prime_iff_eq Fact.out hpp).1 (by exact_mod_cast hlt)).symm`. Establish `h8` using `h6.map (algebraMap ℤ_[l] x.K)`. Rewrite `h8` using `[map_intCast, Int.cast_natCast, CharP.cast_eq_zero]`. Conclude with `not_isUnit_zero h8`. Establish `hA : (l : x.A) = 0` using `by rw [← map_natCast (PowerSeries.C (R := x.K)), hl, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ φ : ℤ_[l] →+* x.A, ∀ a, φ a = (a.zmodRepr : x.A)` using `fun φ a => by`. Establish `h1` using `PadicInt.sub_zmodRepr_mem a`. Rewrite `h1` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `h1`. Establish `h2` using `congrArg φ hc`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[map_mul, map_natCast, hA, mul_zero, map_sub, map_natCast]`. Conclude with `sub_eq_zero.1 h2.symm`. Use `⟨?_, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `e1` using `key (P.f.toRingHom.comp ((algebraMap O B).comp (algebraMap ℤ_[l] O))) (G.ε g : ℤ_[l])`. Establish `e2` using `key ((algebraMap ℤ_[l] x.A).comp (algebraMap ℤ_[l] ℤ_[l])) (G0.ε (h.p g) : ℤ_[l])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[h.ε]`. Use `e1.trans (e2.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[← h.ε]`. Both sides reduce to the same expression. Use `show h.p (G.c * g * G.c⁻¹) = G0.c * h.p g * G0.c⁻¹`.
-
-Rewrite using `[map_mul, map_mul, map_inv, h.c]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.eps_eq :
     ∀ {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} {h : G.Hom G0} {n : ℕ} {x : NP G0.frame n} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] [Algebra O x.K] {r : Resid G.frame O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] {u : Pair r B} (P : OoPt h x u), ∀ g : G.G₀, P.f (G.frame.eps O B g : Bˣ) = ((G0.frame.eps ℤ_[l] x.A (h.p₀ g) : x.Aˣ) : x.A) ∧ h.p₀ (G.frame.conj g) = G0.frame.conj (h.p₀ g) := by

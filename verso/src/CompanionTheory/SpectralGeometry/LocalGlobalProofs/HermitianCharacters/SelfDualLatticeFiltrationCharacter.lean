@@ -12,15 +12,15 @@ namespace GlobalTheory.CompanionTheory.AdeleCharLocal
 section
 
 /- English proof (translation)
-Establish `hm : ∀ a, g a ∈ Submonoid.unitSphere ℂ` using `fun a => by simpa [Submonoid.unitSphere] using hn a`. Set `χ : C(ℝ, Circle)` to `⟨fun a => ⟨g a, hm a⟩, hc.subtype_mk hm⟩`. Establish `hχ : ∀ s t, χ (s + t) = χ s * χ t` using `fun s t => Subtype.ext (hadd s t)`. Take `⟨L, ⟨hL0, hL⟩, hu⟩` from `Circle.isCoveringMap_exp.existsUnique_continuousMap_lifts χ 0 0 (by rw [Circle.exp_zero]; exact Subtype.ext h0.symm)`. Establish `hL' : ∀ t, Circle.exp (L t) = χ t` using `congrFun hL`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLa : ∀ s t, L (s + t) = L s + L t` using `fun s t => by`. Use `hu ⟨fun t => L (s + t) - L s, by fun_prop⟩ ⟨by simp, by` as an intermediate fact. Use function extensionality and compare the values at `t`. Use `show Circle.exp (L (s + t) - L s) = χ t`. Rewrite using `[Circle.exp_sub, hL', hL', hχ, mul_div_cancel_left]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : L (s + t) - L s = L t` using `DFunLike.congr_fun this t`. Combine the linear equalities and inequalities to obtain the conclusion. Set `l : ℝ →+ ℝ` to `AddMonoidHom.mk' L hLa`. Use `⟨L 1 / (2 * Real.pi), fun t => ?_⟩` and prove the remaining obligations. Establish `h3 : L t = t * L 1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `map_real_smul l L.continuous t 1` as an intermediate fact. Simplify `this` using `[l]`. Establish `h4 : g t = (Circle.exp (L t) : ℂ)` using `by rw [hL']; rfl`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Rewrite using `[h4, Circle.coe_exp, h3]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_eq_exp (g : ℝ → ℂ) (hc : Continuous g) (hn : ∀ t, ‖g t‖ = 1) (h0 : g 0 = 1)
     (hadd : ∀ s t, g (s + t) = g s * g t) :
@@ -59,7 +59,7 @@ theorem pairA_add (x x' : Ainf F) (y y' : Af F) :
     pairA F (x + x') (y + y') = pairA F x y + pairA F x' y' := rfl
 
 /- English proof (translation)
-Rewrite using `[← pairA_add, add_zero, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_eq_pairA (x : F) :
     algebraMap F (AF F) x = pairA F (algebraMap F _ x) 0 + pairA F 0 (algebraMap F _ x) := by
@@ -67,9 +67,9 @@ theorem algebraMap_eq_pairA (x : F) :
   rfl
 
 /- English proof (translation)
-Introduce `y`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `U hU`. Establish `hc : Continuous fun z : Af F => y - z` using `continuous_const.sub continuous_id`. Establish `hV : (fun z : Af F => y - z) ⁻¹' U ∈ 𝓝 (0 : Af F)` using `hc.continuousAt.preimage_mem_nhds (by simpa using hU)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, hN, hNU⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hV`. Take `⟨a, β, hβ, e⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).1 y`. Use `⟨y - N • β, hNU β hβ, a, ?_⟩` and prove the remaining obligations. Rewrite using `[e, add_sub_cancel_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem denseRange_fin : DenseRange (algebraMap F (Af F)) := by
   intro y
@@ -84,11 +84,11 @@ theorem denseRange_fin : DenseRange (algebraMap F (Af F)) := by
   rw [e, add_sub_cancel_right]
 
 /- English proof (translation)
-Establish `h1 : (fun z => ψ (pairA F z 0)) = fun z => ψ' (pairA F z 0)` using `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer (hc.comp (continuous_id.prodMk continuous_const)) (hc'.comp (continuous_id.prodMk continuous_const)) (funext h)`. Establish `h2 : (fun z => ψ (pairA F 0 z)) = fun z => ψ' (pairA F 0 z)` using `denseRange_fin.equalizer (hc.comp (continuous_const.prodMk continuous_id)) (hc'.comp (continuous_const.prodMk continuous_id)) (funext fun a => by`. Establish `e` using `hr a`. Establish `e'` using `hr' a`. Rewrite `e` using `[algebraMap_eq_pairA, ha, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[algebraMap_eq_pairA, ha']`. Conclude with `mul_left_cancel₀ (left_ne_zero_of_mul_eq_one e) (e.trans e'.symm))`. Establish `e : x = pairA F x.1 0 + pairA F 0 x.2`. Rewrite using `[← pairA_add, add_zero, zero_add]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ha, ha', congrFun h1, congrFun h2]`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_inf {ψ ψ' : AF F → ℂ} (hc : Continuous ψ) (hc' : Continuous ψ')
     (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (ha' : ∀ x y, ψ' (x + y) = ψ' x * ψ' y)
@@ -114,15 +114,13 @@ theorem ext_of_inf {ψ ψ' : AF F → ℂ} (hc : Continuous ψ) (hc' : Continuou
   rw [e, ha, ha', congrFun h1, congrFun h2]
 
 /- English proof (translation)
-Set `χ : Af F → Circle` to `fun a => ⟨ψ (pairA F 0 a), by simpa [Submonoid.unitSphere] using hn _⟩`. Establish `hχ : Continuous χ` using `(hc.comp (continuous_const.prodMk continuous_id)).subtype_mk _`. Establish `h0 : χ 0 = 1` using `Subtype.ext ψ.map_zero_eq_one`. Establish `hV : χ ⁻¹' Circle.centeredArc (Real.pi / 2) ∈ 𝓝 (0 : Af F)`. Use `((Circle.isOpen_centeredArc _).preimage hχ).mem_nhds ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.mem_preimage, h0, Circle.mem_centeredArc (by linarith [Real.pi_pos])]`. Simplify using `[Real.pi_pos]`. Take `⟨N, hN, hNV⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hV`. Use `Filter.mem_of_superset (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F N hN) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: χ (N • a) = 1`. Use `Circle.eq_one_of_forall_pow_mem_centeredArc_pi_div_two fun n _ => ?_` and prove the remaining obligations. Establish `h1` using `hNV (n • a) fun v => nsmul_mem (ha v) n`. Establish `h2 : χ (N • n • a) = χ (N • a) ^ n`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show ψ (pairA F 0 (N • n • a)) = ((χ (N • a) ^ n : Circle) : ℂ)`. Rewrite using `[Circle.coe_pow, smul_comm]`. Use `show _ = ψ (pairA F 0 (N • a)) ^ n`. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Use `congr 1`.
-
-Conclude with `Prod.ext (smul_zero n).symm rfl`. Rewrite `h1` using `[Set.mem_preimage, h2]`. Then use the resulting hypothesis. Conclude with `congrArg Subtype.val this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ker_mem_nhds {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ)
     (hn : ∀ x, ‖ψ x‖ = 1) : {a : Af F | ψ (pairA F 0 a) = 1} ∈ 𝓝 (0 : Af F) := by
@@ -151,9 +149,9 @@ theorem ker_mem_nhds {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ)
   exact congrArg Subtype.val this
 
 /- English proof (translation)
-Take `⟨N, hN, h⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ (ker_mem_nhds hψ.1 hψ.2.1)`. Use `⟨N, hN, fun r => ?_⟩` and prove the remaining obligations. Establish `h1 : ψ (pairA F 0 (N • algebraMap F (Af F) r)) = 1` using `h _ fun v => HeightOneSpectrum.coe_mem_adicCompletionIntegers v r`. Establish `h2` using `hψ.2.2.1 ((N : F) * r)`. Rewrite `h1` using `[nsmul_eq_mul, ← map_natCast (algebraMap F (Af F)), ← map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[algebraMap_eq_pairA, AddChar.map_add_eq_mul, h1, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_nsmul_inf {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     ∃ N : ℕ, 0 < N ∧ ∀ r : 𝓞 F, ψ (pairA F (algebraMap F _ ((N : F) * r)) 0) = 1 := by
@@ -166,7 +164,7 @@ theorem exists_nsmul_inf {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
   rwa [algebraMap_eq_pairA, AddChar.map_add_eq_mul, h1, mul_one] at h2
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨x, hx⟩` from `hψ.2.2.2`. Use `hx (ext_of_inf (ψ' := fun _ => 1) hψ.1 continuous_const ψ.map_add_eq_mul (fun _ _ => by simp) hψ.2.2.1 (fun _ => rfl) (fun y => by simp [h]) x)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem trace_mul_ne_zero {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) {a : F}
     (h : ∀ x : F, ψ (pairA F (algebraMap F _ x) 0) =
@@ -177,9 +175,9 @@ theorem trace_mul_ne_zero {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) {a : F
     hψ.2.2.1 (fun _ => rfl) (fun y => by simp [h]) x)
 
 /- English proof (translation)
-Establish `h : ∀ w : InfinitePlace F, ∃ ρ : ℝ →+* w.Completion, Continuous ρ` using `fun w => by`. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Conclude with `⟨(InfinitePlace.Completion.ringEquivRealOfIsReal hw).symm.toRingHom, (InfinitePlace.Completion.isometryEquivRealOfIsReal hw).symm.continuous⟩`. Conclude with `⟨(InfinitePlace.Completion.ringEquivComplexOfIsComplex hw).symm.toRingHom.comp Complex.ofRealHom, (InfinitePlace.Completion.isometryEquivComplexOfIsComplex hw).symm.continuous.comp Complex.continuous_ofReal⟩`. Use `choose ρ hρ using h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨Pi.ringHom ρ, continuous_pi hρ⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_realHom : ∃ ρ : ℝ →+* Ainf F, Continuous ρ := by
   have h : ∀ w : InfinitePlace F, ∃ ρ : ℝ →+* w.Completion, Continuous ρ := fun w => by
@@ -193,21 +191,21 @@ theorem exists_realHom : ∃ ρ : ℝ →+* Ainf F, Continuous ρ := by
   exact ⟨Pi.ringHom ρ, continuous_pi hρ⟩
 
 /- English proof (translation)
-Take `⟨N, hN, hNr⟩` from `exists_nsmul_inf hψ`. Take `⟨ρ, hρ⟩` from `exists_realHom (F := F)`. Establish `hρq : ∀ q : ℚ, ρ (q : ℝ) = algebraMap F (Ainf F) (q : F)` using `fun q => RingHom.congr_fun (RingHom.ext_rat (ρ.comp (Rat.castHom ℝ)) ((algebraMap F (Ainf F)).comp (Rat.castHom F))) q`. Establish `hadd : ∀ x y : Ainf F, ψ (pairA F (x + y) 0) = ψ (pairA F x 0) * ψ (pairA F y 0)` using `fun x y => by`. Rewrite using `[← AddChar.map_add_eq_mul, ← pairA_add, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ψ (pairA F 0 0) = 1` using `ψ.map_zero_eq_one`. Establish `key : ∀ r : 𝓞 F, ∃ c : ℚ, ∀ q : ℚ, ψ (pairA F (algebraMap F _ (q • (r : F))) 0) = Complex.exp (2 * Real.pi * Complex.I * ((q * c : ℚ) : ℂ))` using `fun r => by`. Take `⟨c, hc⟩` from `exists_eq_exp (fun t => ψ (pairA F (ρ t * algebraMap F _ (r : F)) 0)) (hψ.1.comp ((hρ.mul continuous_const).prodMk continuous_const)) (fun t => hψ.2.1 _) (by simp only [map_zero, zero_mul, h0]) (fun s t => by simp only [map_add, add_mul, hadd])`. Establish `hq : ∀ q : ℚ, ψ (pairA F (algebraMap F _ ((q : F) * (r : F))) 0) = Complex.exp (2 * Real.pi * Complex.I * ((c * q : ℝ) : ℂ))` using `fun q => by`. Rewrite using `[← hc, hρq, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hq N`. Rewrite `h1` using `[Rat.cast_natCast, hNr, eq_comm, Complex.exp_eq_one_iff]`. Take `⟨n, hn⟩` from `h1`. Rewrite `hn` using `[mul_comm (n : ℂ), mul_right_inj' Complex.two_pi_I_ne_zero]`. Establish `hN' : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨n / N, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[Rat.smul_def, hq]`. Use `congr 2`. Move the coercions through the operations in `at hn ⊢`. Rewrite using `[← hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `choose c hc using key`. Set `b` to `integralBasis F`. Set `φ : F →ₗ[ℚ] ℚ` to `b.constr ℚ fun i => c (RingOfIntegers.basis F i)`. Take `⟨a, ha⟩` from `((Algebra.traceForm ℚ F).toDual (traceForm_nondegenerate ℚ F)).surjective φ`.
+Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha' : ∀ x, Algebra.trace ℚ F (a * x) = φ x` using `fun x => by`. Rewrite using `[← ha]`. Both sides reduce to the same expression. Use `⟨a, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[ha', ← b.sum_repr x]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_induction _ (fun y : F => ψ (pairA F (algebraMap F _ y) 0) = Complex.exp (2 * Real.pi * Complex.I * ((φ y : ℚ) : ℂ))) (fun y z hy hz => ?_) ?_ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, hadd, hy, hz, map_add, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zero, h0, Rat.cast_zero, mul_zero, Complex.exp_zero]`. Rewrite using `[map_smul φ, Module.Basis.constr_basis, smul_eq_mul, ← hc, integralBasis_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trace {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     ∃ a : F, ∀ x : F, ψ (pairA F (algebraMap F _ x) 0) =
@@ -257,11 +255,11 @@ theorem exists_trace {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
   · rw [map_smul φ, Module.Basis.constr_basis, smul_eq_mul, ← hc, integralBasis_apply]
 
 /- English proof (translation)
-Establish `e` using `congrArg Complex.re (trace_eq_sum_embeddings ℂ (K := ℚ) (L := F) (x := a))`. Simplify using `only [eq_ratCast, Complex.ratCast_re, Complex.re_sum] at e`. Rewrite using `[e, ← (RingHom.equivRatAlgHom (R := F) (S := ℂ)).sum_comp, ← Finset.univ.sum_fiberwise (fun φ : F →+* ℂ => InfinitePlace.mk φ)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: ∀ φ ∈ Finset.univ.filter (fun φ : F →+* ℂ => InfinitePlace.mk φ = w), ((RingHom.equivRatAlgHom (R` using `F) (S := ℂ)) φ a).re = (w.embedding a).re := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `φ hφ`. Establish `h1 : InfinitePlace.mk φ = InfinitePlace.mk w.embedding`. Rewrite using `[InfinitePlace.mk_embedding]`. Simplify using `using hφ`. Break down `InfinitePlace.mk_eq_iff.1 h1 with h2 | h2` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← h2]`. Both sides reduce to the same expression. Rewrite using `[← h2]`. Simplify using `[RingHom.equivRatAlgHom]`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, InfinitePlace.card_filter_mk_eq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -285,17 +283,17 @@ theorem trace_eq_sum (a : F) :
   simp
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_trace hψ`. Establish `ha0` using `trace_mul_ne_zero hψ ha`. Set `T : Ainf F → ℝ` to `fun z => ∑ u : InfinitePlace F, u.mult * (u.embedding a * InfinitePlace.Completion.extensionEmbedding u (z u)).re`. Establish `hT : Continuous T` using `continuous_finset_sum _ fun u _ => continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul ((InfinitePlace.Completion.isometry_extensionEmbedding u).continuous.comp (continuous_apply u))))`. Establish `hemb : ∀ (u : InfinitePlace F) (x : F), InfinitePlace.Completion.extensionEmbedding u (algebraMap F u.Completion x) = u.embedding x` using `fun u x => InfinitePlace.Completion.extensionEmbedding_coe u _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (fun z => ψ (pairA F z 0)) = fun z => Complex.exp (2 * Real.pi * Complex.I * ((T z : ℝ) : ℂ))` using `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer (hψ.1.comp (continuous_id.prodMk continuous_const)) (Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hT))) (funext fun x => by`. Establish `e : T (algebraMap F (Ainf F) x) = ((Algebra.trace ℚ F (a * x) : ℚ) : ℝ)`. Rewrite using `[trace_eq_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hemb u x]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [Function.comp_apply, ha, e, Complex.ofReal_ratCast])`. Establish `hm : (w.mult : F) ≠ 0` using `Nat.cast_ne_zero.2 w.mult_ne_zero`. Set `z : Ainf F` to `Pi.single (M := fun u : InfinitePlace F => u.Completion) w (algebraMap F _ (a * 2 * w.mult)⁻¹)`. Establish `hz : ∀ w', w' ≠ w → z w' = 0` using `fun w' h => Pi.single_eq_of_ne h _`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Establish `e : T z = 1 / 2`. Establish `hzw : z w = algebraMap F _ (a * 2 * w.mult)⁻¹` using `Pi.single_eq_same _ _`. Establish `hm' : (w.mult : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 w.mult_ne_zero`. Establish `e2 : a * (a * 2 * w.mult)⁻¹ = (((2 * w.mult : ℚ)⁻¹ : ℚ) : F)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [T]`. Rewrite using `[Finset.sum_eq_single w (fun u _ hu => by simp [hz u hu]) (by simp), hzw, hemb, ← map_mul, e2, map_ratCast, Complex.ratCast_re]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Establish `e3 : 2 * Real.pi * Complex.I * ((1 / 2 : ℝ) : ℂ) = Real.pi * Complex.I`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[psiInf, congrFun h1 z, e, e3, Complex.exp_pi_mul_I]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -349,9 +347,9 @@ theorem exists_inf {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (w : Infinite
 open Classical in
 
 /- English proof (translation)
-Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F)))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`. Set `f : v.adicCompletion F → Πʳ w : HeightOneSpectrum (𝓞 F), [w.adicCompletion F, w.adicCompletionIntegers F]_[Filter.principal ({v}ᶜ : Set _)]` to `fun x => ⟨Pi.single (M := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v x, by`. Introduce `w hw`. Establish `hw' : w ≠ v` using `hw`. Simplify using `only [Set.mem_ofPred_eq, Pi.single_eq_of_ne hw', SetLike.mem_coe]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)`. Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_singleV (v : HeightOneSpectrum (𝓞 F)) : Continuous (singleV F v) := by
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F))) :=
@@ -367,11 +365,11 @@ theorem continuous_singleV (v : HeightOneSpectrum (𝓞 F)) : Continuous (single
   exact (RestrictedProduct.continuous_inclusion hS).comp hf
 
 /- English proof (translation)
-Set `P : (Ideal (𝓞 F))⁰` to `⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩`. Establish `h1 : ClassGroup.mk0 (P ^ Fintype.card (ClassGroup (𝓞 F))) = 1`. Rewrite using `[map_pow, pow_card_eq_one]`. Take `⟨t, ht⟩` from `(ClassGroup.mk0_eq_one_iff (P ^ Fintype.card (ClassGroup (𝓞 F))).2).1 h1`. Establish `ht' : v.asIdeal ^ Fintype.card (ClassGroup (𝓞 F)) = Ideal.span {t}` using `ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨t, ?_, ?_, fun w hw hm => hw ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `pow_ne_zero _ v.ne_bot (by rw [ht']; simp)`. Conclude with `Ideal.pow_le_self Fintype.card_ne_zero (ht' ▸ Ideal.mem_span_singleton_self t)`. Establish `h2 : v.asIdeal ^ Fintype.card (ClassGroup (𝓞 F)) ≤ w.asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht', Ideal.span_singleton_le_iff_mem]`. Conclude with `hm`. Establish `h3` using `w.isPrime.le_of_pow_le h2`. Conclude with `HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top h3).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_only (v : HeightOneSpectrum (𝓞 F)) :
     ∃ t : 𝓞 F, t ≠ 0 ∧ t ∈ v.asIdeal ∧ ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → t ∉ w.asIdeal := by
@@ -391,31 +389,29 @@ theorem exists_mem_only (v : HeightOneSpectrum (𝓞 F)) :
     exact HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top h3).symm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨a, ha⟩` from `exists_trace hψ`. Establish `ha0` using `trace_mul_ne_zero hψ ha`. Take `⟨N, hN, hNU⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ (ker_mem_nhds hψ.1 hψ.2.1)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht0, htv, htw⟩` from `exists_mem_only v`. Establish `key : ∀ y : F, (∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → w.valuation F y ≤ 1) → ∃ n : ℤ, Algebra.trace ℚ F (a * (N * y)) = n` using `fun y hy => by`. Set `β : Af F` to `algebraMap F (Af F) y - singleV F v (algebraMap F (Fv F v) y)`. Establish `hβ : ∀ w, β w ∈ w.adicCompletionIntegers F` using `fun w => by`. Establish `e : β w = algebraMap F (Fv F w) y - Pi.single (M` using `fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v (algebraMap F (Fv F v) y) w := rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Pi.single_eq_same, sub_self]`. Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_eq_of_ne hw, sub_zero, HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w y).trans_le (hy w hw)`. Establish `h1 : ψ (pairA F 0 (N • β)) = 1` using `hNU _ hβ`. Establish `h2 : ψ (N • pairA F 0 (singleV F v (algebraMap F (Fv F v) y))) = 1`. Rewrite using `[AddChar.map_nsmul_eq_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(congrArg (· ^ N) (h _)).trans (one_pow N)`. Establish `h3 : pairA F 0 (algebraMap F (Af F) (N * y)) = pairA F 0 (N • β) + N • pairA F 0 (singleV F v (algebraMap F (Fv F v) y))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf F) = 0 + N • 0`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `algebraMap F (Af F) (N * y) = N • β + N • singleV F v (algebraMap F (Fv F v) y)`. Rewrite using `[← nsmul_add, sub_add_cancel, map_mul, map_natCast, nsmul_eq_mul]`. Establish `h4` using `hψ.2.2.1 (N * y)`. Rewrite `h4` using `[algebraMap_eq_pairA, AddChar.map_add_eq_mul, h3, AddChar.map_add_eq_mul, h1, h2, mul_one, mul_one, ha, Complex.exp_eq_one_iff]`. Take `⟨n, hn⟩` from `h4`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hn` using `[mul_comm (n : ℂ), mul_right_inj' Complex.two_pi_I_ne_zero]`. Conclude with `⟨n, by exact_mod_cast hn⟩`. Set `D` to `FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Establish `h1 : (1 : FractionalIdeal (𝓞 F)⁰ F) ≠ 0` using `by first`. Consider the case `exact one_ne_zero`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact FractionalIdeal.one_ne_zero`. Consider the case `simp`. Consider the case `(rw [← FractionalIdeal.coeIdeal_top]; exact FractionalIdeal.coeIdeal_ne_zero.2 top_ne_bot)`. Consider the case `(rw [← Ideal.one_eq_top, FractionalIdeal.coeIdeal_one]; simp)`. Establish `hD : ∀ k : ℕ, a * N / (t : F) ^ k ∈ D` using `fun k => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[FractionalIdeal.mem_dual h1]`. Introduce `x hx`. Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`. Take `⟨n, hn⟩` from `key (algebraMap (𝓞 F) F r / (t : F) ^ k) fun w hw => by`. Establish `e : w.valuation F (t : F) = 1` using `le_antisymm (w.valuation_le_one t) (not_lt.1 fun hl => htw w hw ((w.valuation_lt_one_iff_mem t).1 hl))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_div₀, map_pow, e, one_pow, div_one]`. Conclude with `w.valuation_le_one r`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, eq_intCast, ← hn]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd, hdD⟩` from `D.isFractional`. Establish `hd0 : algebraMap (𝓞 F) F d ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hd`. Establish `hc : v.valuation F (algebraMap (𝓞 F) F d * (a * N)) ≠ 0` using `(Valuation.ne_zero_iff _).2 (mul_ne_zero hd0 (mul_ne_zero ha0 (Nat.cast_ne_zero.2 hN.ne')))`. Establish `htl : v.valuation F (t : F) < 1` using `(v.valuation_lt_one_iff_mem t).2 htv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `exists_pow_lt₀ htl (Units.mk0 _ hc)`. Take `⟨s, hs⟩` from `hdD _ (hD k)`. Establish `ht0' : (t : F) ≠ 0` using `by simpa using ht0`. Establish `e : algebraMap (𝓞 F) F d * (a * N) = algebraMap (𝓞 F) F s * (t : F) ^ k`. Rewrite using `[hs, Algebra.smul_def]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite `hk` using `[Units.val_mk0, e, map_mul, map_pow]`. Conclude with `absurd hk (not_lt.2 (mul_le_of_le_one_left' (v.valuation_le_one s)))`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fin {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (v : HeightOneSpectrum (𝓞 F)) :
     ∃ y, psiV F ψ v y ≠ 1 := by
@@ -497,7 +493,7 @@ theorem exists_fin {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (v : HeightOn
 end
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ`. Conclude with `⟨fun v => ⟨hψ.1.comp (continuous_const.prodMk (continuous_singleV v)), exists_fin hψ v⟩, hψ.1.comp (continuous_id.prodMk continuous_const), fun w => exists_inf hψ w⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem char_nontrivial_at_every_place : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → (∀ v : HeightOneSpectrum (𝓞 F), Continuous (psiV F ψ v) ∧ ∃ y, psiV F ψ v y ≠ 1) ∧ Continuous (psiInf F ψ) ∧ ∀ (w : InfinitePlace F), ∃ x : Ainf F, (∀ w', w' ≠ w → x w' = 0) ∧ psiInf F ψ x ≠ 1 := by
   intro F _ _ ψ hψ

@@ -9,7 +9,7 @@ open Filter Topology
 namespace GlobalTheory.PSerLin
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_subst_linear {σ κ R S : Type*} [Finite σ] [Fintype κ] [CommRing R] [CommRing S]
     (h : R →+* S) (c : σ → κ → R) (F : MvPowerSeries σ R) :
@@ -26,15 +26,15 @@ open Formalism.MainNotions.G Formalism.BasicNotions Formalism.MainNotions Formal
 open Classical in
 
 /- English proof (translation)
-Set `L : (D.what₂.Tau × Fin N' × Fin N → ℂ) →L[ℂ] VC D N N'` to `ContinuousLinearMap.pi fun τ => ContinuousLinearMap.pi fun a => ContinuousLinearMap.pi fun b => ContinuousLinearMap.proj (τ, a, b)`. Establish `hL : ∀ z τ a b, L z τ a b = z (τ, a, b)` using `fun _ _ _ _ => rfl`. Establish `hc : Formalism.MainNotions.TaylorLogMetric.coordV D = fun k => L (Pi.single k 1)`. Use function extensionality and compare the values at `⟨k1, k2, k3⟩ τ a b`. Simplify using `[hL, Formalism.MainNotions.TaylorLogMetric.coordV, Pi.single_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `han : AnalyticAt ℂ G 0` using `SCV.analyticAt_iff_eventually_differentiableAt.2 (Eventually.of_forall hG)`. Establish `han' : AnalyticAt ℂ (fun z => G (L z)) 0` using `han.comp_of_eq (L.analyticAt 0) (map_zero L)`. Set `ev : (D.what₂.Tau × Fin N' × Fin N) → (VC D N N' →L[ℂ] ℂ)` to `fun x => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N => ℂ) x.2.2).comp ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N' => Fin N → ℂ) x.2.1).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : D.what₂.Tau => Fin N' → Fin N → ℂ) x.1))`. Set `ℓ : (D.what₂.Tau × Fin N' × Fin N) → (VC D N N' →L[ℂ] ℂ)` to `fun k => ∑ x, c k x • ev x`. Establish `hℓ : ∀ k z, ℓ k z = ∑ x, c k x * z x.1 x.2.1 x.2.2` using `fun k z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[ℓ, ev]`. Establish `h` using `taylorDir_comp (Formalism.MainNotions.TaylorLogMetric.coordV D) (φ := fun z k => ℓ k z) (analyticAt_pi_iff.2 fun k => (ℓ k).analyticAt 0) (funext fun k => map_zero (ℓ k)) han'`. Rewrite `h` using `[taylor_comp_clm L han, ← hc]`. Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg G ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`. Conclude with `(hℓ (τ, i, j) z).symm`. Use function extensionality and compare the values at `k`. Rewrite using `[show (fun z => ℓ k z) = ⇑(ℓ k) from rfl, taylorDir_clm]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.smul_eq_C_mul, hℓ, hc]`. Simplify using `[hL, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem taylorDir_linear (D : D7) {N N' : ℕ} (G : VC D N N' → ℂ)
     (c : D.what₂.Tau × Fin N' × Fin N → D.what₂.Tau × Fin N' × Fin N → ℂ)
@@ -77,15 +77,15 @@ theorem taylorDir_linear (D : D7) {N N' : ℕ} (G : VC D N N' → ℂ)
     simp [hL, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `D N N' p _ lam G c hG hco hc`. Set `F₀ : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) Qbar` to `fun α => ⟨_, hco α⟩`. Set `c₀ : D.what₂.Tau × Fin N' × Fin N → D.what₂.Tau × Fin N' × Fin N → Qbar` to `fun k x => ⟨_, hc k x⟩`. Establish `hl : ∀ x : Qbar, lamC lam x = lam x` using `fun x => by simp [lamC]`. Establish `h1 : MvPowerSeries.map (algebraMap Qbar ℂ) F₀ = taylorDir (Formalism.MainNotions.TaylorLogMetric.coordV D) G`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `α`. Rewrite using `[MvPowerSeries.coeff_map, ← ConjSeries.taylor_eq_coeff]`. Both sides reduce to the same expression. Establish `h2 : MvPowerSeries.map lam F₀ = pSer D lam G`. Use extensionality with `α`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[MvPowerSeries.coeff_map, ← hl]`. Both sides reduce to the same expression. Establish `h3` using `map_subst_linear (algebraMap Qbar ℂ) c₀ F₀`. Establish `h4` using `map_subst_linear lam c₀ F₀`. Rewrite `h3` using `[h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h2]`. Establish `h5` using `h3.trans (taylorDir_linear D G c hG).symm`. Simplify using `only [← hl] at h4`. Use `Eq.trans ?_ h4` and prove the remaining obligations. Use extensionality with `α`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[MvPowerSeries.coeff_map, ← hl]`. Express the relevant statement in the definitionally equal form `lamC lam (Formalism.MainNotions.TaylorLogMetric.taylor D _ α) = _`. Rewrite using `[ConjSeries.taylor_eq_coeff, ← h5, MvPowerSeries.coeff_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pSer_linear : ∀ (D : D7) (N N' p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (G : VC D N N' → ℂ) (c : D.what₂.Tau × Fin N' × Fin N → D.what₂.Tau × Fin N' × Fin N → ℂ), Differentiable ℂ G → CoefIn D G Qbar → (∀ k x, c k x ∈ Qbar) → pSer D lam (fun z : VC D N N' => G (fun τ i j => ∑ x : D.what₂.Tau × Fin N' × Fin N, c (τ, i, j) x * z x.1 x.2.1 x.2.2)) = linAt (fun k x => lamC lam (c k x)) (pSer D lam G) := by
   intro D N N' p _ lam G c hG hco hc

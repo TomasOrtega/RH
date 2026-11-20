@@ -13,7 +13,7 @@ section Helpers
 variable {F : Type} [Field F]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `congrArg p (Subsingleton.elim (α := PrimeSpectrum k) _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp_apply_field {Z : Scheme.{0}} {k K : Type} [Field k] [Field K] (σ : k →+* K) (p : Sp k ⟶ Z)
     (w : Sp K) (w' : Sp k) : (spMap σ ≫ p) w = p w' := by
@@ -21,7 +21,7 @@ theorem spMap_comp_apply_field {Z : Scheme.{0}} {k K : Type} [Field k] [Field K]
   exact congrArg p (Subsingleton.elim (α := PrimeSpectrum k) _ _)
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ∈ M.O (p (IsLocalRing.closedPoint k))`. Use `RatModel.val_spMap_comp σ p specializes_rfl ⟨y, hy⟩` as an intermediate fact. Rewrite `this` using `[RatModel.valLoc_eq_val]`. Conclude with `this`. Rewrite using `[RatModel.val_of_notMem (y := p) (IsLocalRing.closedPoint k) hy, map_zero, RatModel.val_of_notMem (y := spMap σ ≫ p) (IsLocalRing.closedPoint K) (fun h' => hy (by convert h' using 2; exact (spMap_comp_apply_field σ p _ _).symm))]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_spMap_comp_field {Ω : Type} [Field Ω] [Algebra F Ω] (M : RatModel F Ω) {k K : Type} [Field k]
     [Field K] (σ : k →+* K) (p : Sp k ⟶ M.Z) (y : Ω) : M.val (spMap σ ≫ p) y = σ (M.val p y) := by
@@ -34,9 +34,9 @@ theorem val_spMap_comp_field {Ω : Type} [Field Ω] [Algebra F Ω] (M : RatModel
         (fun h' => hy (by convert h' using 2; exact (spMap_comp_apply_field σ p _ _).symm))]
 
 /- English proof (translation)
-Take `⟨A', hA', hP⟩` from `hb`. Use `⟨A', ?_, ?_⟩` and prove the remaining obligations. Use `hA' using 2` and compare the differences between its conclusion and the goal. Conclude with `spMap_comp_apply_field σ p _ _`. Establish `e : (A' * (A.map φ)⁻¹).map ((ratOf Y).val (spMap σ ≫ p)) = ((A' * (A.map φ)⁻¹).map ((ratOf Y).val p)).map σ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Use extensionality with `i j`. Conclude with `val_spMap_comp_field (ratOf Y) σ p _`. Rewrite using `[e, ← Mat.map_inv, ← Mat.map_mul]`. Conclude with `hP.map σ fun _ _ => trivial`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bears_spMap {ι : Type} {m : ι → ℕ} {X Y : Var F} (S : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn)
     (A : Mat m X.Fn) {k K : Type} [Field k] [Field K] (σ : k →+* K) (h : Mat m k) (p : Sp k ⟶ Y.X)
@@ -56,7 +56,7 @@ theorem bears_spMap {ι : Type} {m : ι → ℕ} {X Y : Var F} (S : Fr (ratOf Y)
 end Helpers
 
 /- English proof (translation)
-Introduce `F _ ι _ m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ _ _ k K _ _ σ x p₁ p₂ hc`. Take `⟨A, hA, h, hh, h1, h2⟩` from `hc`. Use `⟨A, ?_, h.map σ, hh.map σ fun _ _ => trivial, bears_spMap S₁ φ₁ A σ h p₁ h1, bears_spMap S₂ φ₂ A σ h p₂ h2⟩` and prove the remaining obligations. Use `hA using 2` and compare the differences between its conclusion and the goal. Conclude with `congrArg Eb.S (spMap_comp_apply_field σ x _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem coBear_spMap : ∀ (F : Type) [Field F] (ι : Type) [Fintype ι] (m : ι → ℕ) (X Y₁ Y₂ : Var F) (Eb : Fr (ratOf X) m 0) (S₁ : Fr (ratOf Y₁) m m) (φ₁ : X.Fn →ₐ[F] Y₁.Fn) (f₁ : Y₁.X ⟶ X.X) (S₂ : Fr (ratOf Y₂) m m) (φ₂ : X.Fn →ₐ[F] Y₂.Fn) (f₂ : Y₂.X ⟶ X.X), Reps Eb S₁ φ₁ f₁ → Reps Eb S₂ φ₂ f₂ → ∀ (k K : Type) [Field k] [Field K] (σ : k →+* K) (x : Sp k ⟶ X.X) (p₁ : Sp k ⟶ Y₁.X) (p₂ : Sp k ⟶ Y₂.X), CoBear Eb S₁ φ₁ S₂ φ₂ x p₁ p₂ → CoBear Eb S₁ φ₁ S₂ φ₂ (spMap σ ≫ x) (spMap σ ≫ p₁) (spMap σ ≫ p₂) := by
   intro F _ ι _ m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ _ _ k K _ _ σ x p₁ p₂ hc

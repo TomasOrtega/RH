@@ -12,13 +12,13 @@ open NormedSpace Set MeasureTheory Filter
 variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
 
 /- English proof (translation)
-Set `M : Submonoid 𝔸` to `(H.toSubmonoid.map (Units.coeHom 𝔸)).topologicalClosure`. Establish `hc : IsClosed (M : Set 𝔸)` using `isClosed_closure`. Establish `hsub : ∀ u ∈ H, (u : 𝔸) ∈ (M : Set 𝔸)` using `fun u hu => subset_closure ⟨u, hu, rfl⟩`. Establish `hcl : ∀ u : 𝔸ˣ, (u : 𝔸) ∈ (M : Set 𝔸) → u ∈ H` using `fun u hu => by`. Establish `: u ∈ closure (H : Set 𝔸ˣ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.isOpenEmbedding_val.isInducing.closure_eq_preimage_closure_image]`. Conclude with `hu`. Rewrite `this` using `[hH.closure_eq]`. Then use the resulting hypothesis. Establish `hm : ∀ a ∈ (M : Set 𝔸), ∀ b ∈ (M : Set 𝔸), a * b ∈ (M : Set 𝔸)` using `fun a ha b hb => M.mul_mem ha hb`. Establish `hi : ∀ Z : 𝔸, exp Z ∈ (M : Set 𝔸) → exp (-Z) ∈ (M : Set 𝔸)` using `fun Z hZ => hsub _ (H.inv_mem (hcl (expUnit ℝ 𝔸 Z) hZ))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.ClosedMatGroup.lieSub M hc M.one_mem hm, fun X hX => hcl _ (by simpa using hX 1), ?_⟩` and prove the remaining obligations. Establish `hs` using `(expPartialHomeomorph ℝ 𝔸).open_source.mem_nhds (zero_mem_expPartialHomeomorph_source ℝ 𝔸)`. Establish `h1` using `GlobalTheory.ClosedMatGroup.eventually_exists_exp hc M.one_mem hm hi hs`. Establish `h2 : Tendsto (exp : 𝔸 → 𝔸) (𝓝 0) (𝓝 1)`. Simplify using `using (contDiff_exp ℝ 𝔸 (n := 0)).continuous.tendsto 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUo, h0⟩` from `mem_nhds_iff.1 ((h2.eventually h1).and hs)`. Use `⟨U, hUo, h0, fun X hX => (hU hX).2, fun X hX hG => ?_⟩` and prove the remaining obligations. Take `⟨Y, hY, hY', e⟩` from `(hU hX).1 (hsub _ hG)`. Take `rfl : Y = X` from `(expPartialHomeomorph ℝ 𝔸).injOn hY (hU hX).2 e`. Conclude with `hY'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lie (H : Subgroup 𝔸ˣ) (hH : IsClosed (H : Set 𝔸ˣ)) : ∃ 𝔤 : Submodule ℝ 𝔸, IsExpLieAlgebra H 𝔤 := by
   let M : Submonoid 𝔸 := (H.toSubmonoid.map (Units.coeHom 𝔸)).topologicalClosure
@@ -44,13 +44,11 @@ theorem exists_lie (H : Subgroup 𝔸ˣ) (hH : IsClosed (H : Set 𝔸ˣ)) : ∃ 
   exact hY'
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, Φ, hΦ, e⟩`. Use `⟨?_, hc⟩` and prove the remaining obligations. Rewrite using `[show f = Φ ∘ fun x : H => ((x : 𝔸ˣ) : 𝔸) from funext e]`.
+Equip the data with the indicated structure. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hΦ.contMDiff.comp (h.contMDiff_val ∞)`. Introduce and unpack `⟨hf, hc⟩`. Use `⟨hc, GlobalTheory.T.exists_contDiff_comp_of_locally_smooth_compactSupport H 𝔸 _ f (continuous_val_val H) hc fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : ContDiff ℝ ∞ fun Y : 𝔤 => f (a * h.expG Y)`. Use `(h.contDiff_comp_expG_smul_mul_mul_expG hf 0 a).comp (contDiff_id.prodMk (contDiff_const (c := (0 : ℝ))))` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Function.comp_def, h.expG_zero]`. Set `L : 𝔸 → 𝔸` to `fun y => ((a⁻¹ : H) : 𝔸ˣ) * y`. Establish `hL : ContDiff ℝ ∞ L` using `contDiff_const.mul contDiff_id`. Use `⟨L ⁻¹' h.nhdOne, h.isOpen_nhdOne.preimage hL.continuous, ?_, fun y => f (a * h.expG (subspaceProj 𝔤 ((expPartialHomeomorph ℝ 𝔸).symm (L y)))), ?_, fun g hg => ?_⟩` and prove the remaining obligations. Simplify `h.one_mem_nhdOne` using `[L]`.
-
-Conclude with `(h1.comp (subspaceProj 𝔤).contDiff).comp_contDiffOn ((contDiffOn_expPartialHomeomorph_symm ℝ 𝔸).comp hL.contDiffOn fun y hy => h.nhdOne_subset_target hy)`. Conclude with `congrArg f (h.chart_symm_chart (g := a) (x := g) hg).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_ccSmooth_iff {H : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra H 𝔤) (f : H → ℂ) :
     f ∈ CcSmooth (fun x : H => ((x : 𝔸ˣ) : 𝔸)) ↔
@@ -76,17 +74,15 @@ theorem mem_ccSmooth_iff {H : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : 
     · exact congrArg f (h.chart_symm_chart (g := a) (x := g) hg).symm
 
 /- English proof (translation)
-Set `H` to `ι.toHomUnits.range`. Take `⟨𝔤, h⟩` from `exists_lie H hι.isClosed_range`. Set `e : G ≃* H` to `MonoidHom.ofInjective hι.injective`. Establish `he : ∀ g, (((e g : H) : 𝔸ˣ) : 𝔸) = ι g` using `fun g => rfl`. Establish `c1 : Continuous e` using `hι.continuous.subtype_mk _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : Continuous e.symm` using `hι.isEmbedding.continuous_iff.2 (continuous_subtype_val.congr fun x => (congrArg Subtype.val (e.apply_symm_apply x)).symm)`. Set `E : G ≃ₜ H` to `⟨e.toEquiv, c1, c2⟩`. Use `letI : MeasurableSpace H := borel H`. Use `haveI : BorelSpace H := ⟨rfl⟩`. Use `haveI := e.isHaarMeasure_map μ c1 c2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf' : f ∘ E.symm ∈ CcSmooth (fun x : H => ((x : 𝔸ˣ) : 𝔸))`. Take `⟨hc, Φ, hΦ, e'⟩` from `hf`. Use `⟨hc.comp_homeomorph E.symm, Φ, hΦ, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Function.comp_apply, e']`. Conclude with `congrArg (fun y : H => Φ ((y : 𝔸ˣ) : 𝔸)) (e.apply_symm_apply x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `back : ∀ φ : H → ℂ, φ ∈ CcSmooth (fun x : H => ((x : 𝔸ˣ) : 𝔸)) → φ ∘ E ∈ CcSmooth fun g => ι g` using `fun φ ⟨hc, Φ, hΦ, e'⟩ => ⟨hc.comp_homeomorph E, Φ, hΦ, fun g => e' _⟩`. Take `⟨hs, hc⟩` from `(mem_ccSmooth_iff h _).1 hf'`. Take `⟨N, φ, ψ, hp, hsum⟩` from `factor h (μ.map e) (V := E.symm ⁻¹' V) (E.symm.continuous.continuousAt.preimage_mem_nhds (by rwa [show E.symm 1 = 1 from map_one e.symm])) _ hs hc`. Use `⟨N, fun i => φ i ∘ E, fun i => ψ i ∘ E, fun i => ⟨back _ ((mem_ccSmooth_iff h _).2 ⟨(hp i).1, (hp i).2.1⟩), back _ ((mem_ccSmooth_iff h _).2 ⟨(hp i).2.2.1, hc.of_isClosed_subset (isClosed_tsupport _) (hp i).2.2.2.2⟩), fun x hx => ?_, fun x hx => ?_⟩, funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `using (hp i).2.2.2.1 (tsupport_comp_subset_preimage _ E.continuous hx)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using tsupport_comp_subset_preimage _ E.symm.continuous ((hp i).2.2.2.2 (tsupport_comp_subset_preimage _ E.continuous hx))`. Use `congrFun hsum (E x)` as an intermediate fact. Rewrite `this` using `[Function.comp_apply, E.symm_apply_apply, Finset.sum_apply]`. Rewrite using `[this, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Use `(E.measurableEmbedding.integral_map _).trans (integral_congr_ae (.of_forall fun y => ?_))` and prove the remaining obligations. Use `show φ i (e y) * ψ i ((e y)⁻¹ * e x) = φ i (e y) * ψ i (e (y⁻¹ * x))`. Rewrite using `[map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem factor_abs {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (ι : G →* 𝔸) (hι : Topology.IsClosedEmbedding (ι.toHomUnits : G → 𝔸ˣ)) (μ : Measure G) [μ.IsHaarMeasure]
@@ -133,9 +129,9 @@ end CompanionTheory.DM
 
 open GlobalTheory.Orb in
 /- English proof (translation)
-Introduce `G _ _ _ _ _ n _ _ ι hι μ _ V hV f hf`. Use `letI := Matrix.linftyOpNormedRing (n := n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (R := ℝ) (n := n) (α := ℂ)`. Use `haveI : CompleteSpace (Matrix n n ℂ) := FiniteDimensional.complete ℝ _`. Set `T : (n → n → ℂ) ≃L[ℝ] Matrix n n ℂ` to `(Matrix.ofLinearEquiv ℝ).toContinuousLinearEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : CcMat ι = CcSmooth fun g => ι g` using `le_antisymm (ccSmooth_le (p := T.symm) T.symm.contDiff fun _ => rfl) (ccSmooth_le (p := T) T.contDiff fun _ => rfl)`. Rewrite `hf`, the goal using `[e]`. Conclude with `CompanionTheory.DM.factor_abs ι hι μ hV hf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompanionTheory.DM.dixmierMalliavinFactorisation_holds : GlobalTheory.Published.DixmierMalliavinFactorisation := by
   intro G _ _ _ _ _ n _ _ ι hι μ _ V hV f hf

@@ -33,7 +33,7 @@ def IsEigBasis (act : OAct O G) (x : Sp R ⟶ S) (χ : O →+* R) {n : ℕ} (v :
   (∀ i, IsEigTan act x χ (v i)) ∧ ∀ w, IsEigTan act x χ w → ∃! c : Fin n → R, IsCombAt c v w
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem lieMult_iff {k : Type} [Field k] (act : OAct O G) (t : Sp k ⟶ S) (χ : O →+* k) (n : ℕ) :
     LieMult act t χ n ↔ ∃ v : Fin n → (epsAt t ⟶ G), IsEigBasis act t χ v := Iff.rfl
@@ -76,7 +76,7 @@ def IsDetSection (Y : Model Xo c β) (τ : E →+* ℂ) (f : Rule Y) : Prop :=
       f R' (g.comp φ) (spMap g ≫ x) v' w' = g (f R φ x v w)
 
 /- English proof (translation)
-Use `⟨fun R _ φ x v v' w w' M N h h' hM hN => ?_, fun R R' _ _ g φ x v w v' w' h h' hv hw => ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.mul_assoc, hf.1 R φ x v v' w w' M N h h' hM hN]`. Simplify using `only [hf.2 R R' g φ x v w v' w' h h' hv hw, map_mul, RingHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem IsDetSection.smul {Y : Model Xo c β} {τ : E →+* ℂ} {f : Rule Y} (hf : IsDetSection Y τ f) (a : c.F) :
     IsDetSection Y τ (fun R _ φ x v w => φ a * f R φ x v w) := by
@@ -132,7 +132,7 @@ def Stmt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), RamifiedPlacesSplit H → ValConstAt H
 
 /- English proof (translation)
-Rewrite using `[← PadicComplex.coe_natCast, PadicComplex.norm_extends, ← map_natCast (algebraMap ℚ_[ℓ] (PadicAlgCl ℓ)), PadicAlgCl.norm_extends, Padic.norm_p, Rat.cast_one, Real.rpow_neg_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (ℓ : ℕ) [Fact ℓ.Prime] : ‖(ℓ : ℂ_[ℓ])‖ = (ℓ : ℝ) ^ (-((1 : ℚ) : ℝ)) := by
   rw [← PadicComplex.coe_natCast, PadicComplex.norm_extends, ← map_natCast (algebraMap ℚ_[ℓ] (PadicAlgCl ℓ)),

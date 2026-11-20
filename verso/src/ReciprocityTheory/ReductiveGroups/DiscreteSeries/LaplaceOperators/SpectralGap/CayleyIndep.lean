@@ -10,29 +10,27 @@ open ReciprocityTheory.ChartRestriction.DS
 open Matrix
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ _ σ P₀ P h0 h1 hDS`. Use `set σ₁ : Mat k r → (H →L[ℂ] H) := fun g => σ (P₀⁻¹ * g * P₀) with hσ₁`. Establish `e0 : star P₀ * P₀ = 1` using `Matrix.mem_unitaryGroup_iff'.mp h0.2`. Establish `e0' : P₀ * star P₀ = 1` using `Matrix.mem_unitaryGroup_iff.mp h0.2`. Establish `e1 : star P * P = 1` using `Matrix.mem_unitaryGroup_iff'.mp h1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1' : P * star P = 1` using `Matrix.mem_unitaryGroup_iff.mp h1.2`. Establish `hinv0 : P₀⁻¹ = star P₀` using `Matrix.inv_eq_left_inv e0`. Establish `hinv1 : P⁻¹ = star P` using `Matrix.inv_eq_left_inv e1`. Establish `hH0` using `h0.1.2`. Establish `hH1` using `h1.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : star P₀ * Formalism.REAL.Jm ε * P₀ = star P * Formalism.REAL.Jm ε * P`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.star_eq_conjTranspose, hH0, hH1]`. Establish `hbK : P₀ * star P ∈ Formalism.REAL.Kset ε`. Use `⟨Submonoid.mul_mem _ h0.2 (Matrix.mem_unitaryGroup_iff.mpr (by rw [star_star]; exact e1)), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc P₀ _ (star P), Matrix.mul_assoc (star P * _) P (star P), e1', Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = P₀ * (star P₀ * Formalism.REAL.Jm ε * P₀) * star P := by rw [hJ]`. Use `_ = Formalism.REAL.Jm ε * (P₀ * star P) := by`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[e0', Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `haK : P * star P₀ ∈ Formalism.REAL.Kset ε`. Use `⟨Submonoid.mul_mem _ h1.2 (Matrix.mem_unitaryGroup_iff.mpr (by rw [star_star]; exact e0)), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc P _ (star P₀), Matrix.mul_assoc (star P₀ * _) P₀ (star P₀), e0', Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = P * (star P * Formalism.REAL.Jm ε * P) * star P₀ := by rw [hJ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = Formalism.REAL.Jm ε * (P * star P₀) := by`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[e1', Matrix.one_mul]`. Establish `hbU` using `ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA.kset_uj hbK`. Establish `haU` using `ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA.kset_uj haK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : P * star P₀ * (P₀ * star P) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (star P₀), e0, Matrix.one_mul, e1']`. Establish `hba : P₀ * star P * (P * star P₀) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (star P), e1, Matrix.one_mul, e0']`. Establish `hfun : (fun g => σ (P⁻¹ * g * P)) = fun g => σ₁ (P₀ * star P * g * (P * star P₀))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hσ₁]`. Use `congr 1`. Rewrite using `[hinv0, hinv1]`. Simplify using `only [← Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e0, Matrix.mul_one]`. Take `⟨hc, hnt, hU, hI, hS, ⟨S0, hS0⟩, hmin⟩` from `hDS`. Rewrite using `[hfun]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨hc, hnt, ?_, ?_, ?_, ⟨S0, ?_⟩, fun μ S hS' => hmin μ S ?_⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA.urep_conj all_goals first | assumption | exact hU`. Apply the tactic sequence `apply ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA.irred_conj (hirr := hI) all_goals first | assumption | exact hU`. Apply the tactic sequence `apply ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA.sqint_conj (hsq := hS) all_goals first | assumption | exact hU`. Rewrite using `[ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA.ktype_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hS0`. Apply the tactic sequence `all_goals first | assumption | exact hU`. Rewrite `hS'` using `[ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA.ktype_iff]`. Conclude with `hS'`. Apply the tactic sequence `all_goals first | assumption | exact hU`.
-
-Unfold `Formalism.MainNotions.S.lowKSub`. Use `congrArg sSup (Set.ext fun S => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[ReciprocityTheory.ChartRestriction.DS.Lap.CayleyIndepA.ktype_iff]`. Apply the tactic sequence `all_goals first | assumption | exact hU`.
+A detailed English derivation is pending.
 -/
 theorem cayleyIndep : CayleyIndepStatement := by
   intro k r ε lam H _ _ _ σ P₀ P h0 h1 hDS

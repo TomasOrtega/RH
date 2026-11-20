@@ -7,9 +7,9 @@ open GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory
 namespace GlobalTheory.OriginChart
 
 /- English proof (translation)
-Introduce `K'' _ P N`. Take `⟨y⟩ : Nonempty (PrimeSpectrum K'')` from `inferInstance`. Establish `hy : (eSec P.A) y ∈ ⨆ i, P.L.U i` using `by rw [P.isLB.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Use `⟨fun _ => i, fun w _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.Cartier.lbPow_U]`. Establish `hw : w = y` using `Subsingleton.elim (α := PrimeSpectrum K'') _ _`. Rewrite using `[hw]`. Conclude with `hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_lbPow_eSec : ∀ (K'' : Type) [Field K''] (P : Out.PolAV (Sp K'')) (N : ℕ),
     ∃ i₀ : (lbPow P.L N).ι, ⊤ ≤ (eSec P.A) ⁻¹ᵁ (lbPow P.L N).U i₀ := by

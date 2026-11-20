@@ -38,7 +38,7 @@ def maInt (φ : Fin D → (Fin D → ℂ) → ℝ) (g : (Fin D → ℂ) → ℝ)
   ∫ z in U, g z * maDens φ z
 
 /- English proof (translation)
-Simplify using `[mdisc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mdisc_zero (A : Fin 0 → Matrix (Fin 0) (Fin 0) ℂ) : mdisc A = 1 := by
   simp [mdisc]

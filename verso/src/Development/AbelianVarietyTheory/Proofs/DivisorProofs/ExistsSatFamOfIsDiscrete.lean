@@ -17,13 +17,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ResW
 
 /- English proof (translation)
-Introduce `E _ _ _ N`. Establish `hF` using `GlobalTheory.automorphicFormsFiniteGL`. Use `⟨fun x => UnrSat.eventually_hasSatGL_locRep hF E N x, fun V hV => ?_⟩` and prove the remaining obligations. Use `choose σ hσ using GlobalTheory.DiscLocEx.exists_isLocCompGL hF E N V hV`. Establish `h : ∀ w, ∃ B, GlobalTheory.LGrp.IsSpherical (σ w).ρ (GlobalTheory.LFun.KGL w N) → GlobalTheory.LFun.HasSatGL w (σ w).ρ B` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hs : GlobalTheory.LGrp.IsSpherical (σ w).ρ (GlobalTheory.LFun.KGL w N)`. Take `⟨B, hB⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible (σ w).smooth (σ w).irred hs`. Conclude with `⟨B, fun _ => hB⟩`. Conclude with `⟨0, fun h => absurd h hs⟩`. Use `choose B hB using h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, fun φ hφ h0 => ?_⟩` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.SpehPair.eventually_spherical hV, LocSph.eventually_mem ((hV.aut φ hφ).level.mem_nhds (by simp))] with w hw hK`. Use `GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup (σ w).irred (hB w (hw _ (hσ w))) (fun f : GlobalTheory.LocDual.Maps V w (σ w) => f.1) (fun f => f.2.2) ?_ (GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_) h0` and prove the remaining obligations. Rewrite using `[GlobalTheory.LocDual.iSup_range_eq V hV.stable hV.irred w (σ w) (hσ w)]`. Conclude with `hφ`.
-
-Take `⟨g, rfl⟩` from `hk`. Conclude with `hK g`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_satFam_of_isDiscrete : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ), (∀ x : CuspSub E N, ∀ᶠ v in Filter.cofinite, ∃ C, (CG.mk x).HasSat v C) ∧ ∀ (V : Submodule ℂ (Sm E N)), IsDiscrete V → ∃ B, SatFam V B := by
   intro E _ _ _ N

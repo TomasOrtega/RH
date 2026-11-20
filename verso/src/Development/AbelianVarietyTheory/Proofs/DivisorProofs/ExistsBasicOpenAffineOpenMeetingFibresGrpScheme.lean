@@ -7,13 +7,13 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Set `e : Sp R ⟶ A.left` to `(η[A]).left`. Establish `he : e ≫ A.hom = 𝟙 (Sp R)` using `Over.w (η[A])`. Establish `hpt : ∀ t : Sp R, A.hom (e t) = t`. Introduce `t`. Rewrite using `[← Scheme.Hom.comp_apply, he]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨W, hW, hsW, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := e s) trivial`. Establish `hrange : ∀ f : R, Set.range (spMap (algebraMap R (Localization.Away f))) = (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R))`. Introduce `f`. Conclude with `PrimeSpectrum.localization_away_comap_range (Localization.Away f) f`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hopen : IsOpen (e ⁻¹' (W : Set A.left))` using `W.isOpen.preimage e.continuous`. Take `⟨_, ⟨f, rfl⟩, hsf, hsub⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := R)).exists_subset_of_mem_open (a := s) hsW hopen`. Use `⟨f, ?_, W, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[hrange]`. Conclude with `hsf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `t ht`. Rewrite `ht` using `[hrange]`. Conclude with `⟨e t, hsub ht, hpt t⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.chartAroundUnit (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (s : Sp R) :
     ∃ f : R, s ∈ Set.range (spMap (algebraMap R (Localization.Away f))) ∧ ∃ W : A.left.Opens,

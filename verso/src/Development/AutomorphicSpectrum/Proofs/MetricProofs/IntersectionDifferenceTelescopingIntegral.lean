@@ -20,23 +20,23 @@ def ratioWt (A B : HermLine ι) (z : (Σ k, ι k) → ℂ) : ℝ :=
   if ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0 then Real.log (A.h z) - Real.log (B.h z) else 0
 
 /- English proof (translation)
-The claim follows from `if_pos hz`.
+A detailed English derivation is pending.
 -/
 theorem ratioWt_of_mem {A B : HermLine ι} {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     ratioWt A B z = Real.log (A.h z) - Real.log (B.h z) := if_pos hz
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_mem_iff (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (hc : ∀ k, c k ≠ 0) :
     (∀ k, ∃ i, (fun p : Σ k, ι k => c p.1 * z p) ⟨k, i⟩ ≠ 0) ↔ ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0 := by
   simp [hc]
 
 /- English proof (translation)
-Distinguish the cases in `hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0`. Rewrite using `[ratioWt_of_mem hz, ratioWt_of_mem ((smul_mem_iff c z hc).2 hz), A.smul c z hc, B.smul c z hc, hab]`. Establish `h0 : (∏ k, ‖c k‖ ^ B.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Rewrite using `[Real.log_mul h0 (A.pos z hz).ne', Real.log_mul h0 (B.pos z hz).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hz'` using `fun h => hz ((smul_mem_iff c z hc).1 h)`. Simplify using `only [ratioWt, if_neg hz, if_neg hz']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ratioWt_smul {A B : HermLine ι} (hab : A.a = B.a) (c : K → ℂ) (z : (Σ k, ι k) → ℂ)
     (hc : ∀ k, c k ≠ 0) : ratioWt A B (fun p => c p.1 * z p) = ratioWt A B z := by
@@ -50,7 +50,7 @@ theorem ratioWt_smul {A B : HermLine ι} (hab : A.a = B.a) (c : K → ℂ) (z : 
     simp only [ratioWt, if_neg hz, if_neg hz']
 
 /- English proof (translation)
-Establish `h : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => Real.log (A.h z) - Real.log (B.h z)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `(ContDiffOn.log hA fun z hz => (A.pos z hz).ne').sub (ContDiffOn.log hB fun z hz => (B.pos z hz).ne')`. Conclude with `h.congr fun z hz => ratioWt_of_mem hz`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratioWt_smooth {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     SmoothFn (ratioWt A B) := by
@@ -74,14 +74,14 @@ theorem wtLine_h {A B : HermLine ι} (hab : A.a = B.a) (z : (Σ k, ι k) → ℂ
     (wtLine hab).h z = Real.exp (-ratioWt A B z) := rfl
 
 /- English proof (translation)
-The claim follows from `Real.contDiff_exp.comp_contDiffOn (ratioWt_smooth hA hB).neg`.
+A detailed English derivation is pending.
 -/
 theorem wtLine_smooth {A B : HermLine ι} (hab : A.a = B.a) (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     IsSmoothHerm (wtLine hab) :=
   Real.contDiff_exp.comp_contDiffOn (ratioWt_smooth hA hB).neg
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[logNormRat, wtLine_h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem logNormRat_wtLine {A B : HermLine ι} (hab : A.a = B.a) :
     logNormRat (wtLine hab) 1 1 = ratioWt A B := by
@@ -89,7 +89,7 @@ theorem logNormRat_wtLine {A B : HermLine ι} (hab : A.a = B.a) :
   simp [logNormRat, wtLine_h]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `A.h z * Real.exp (-ratioWt A B z) = B.h z`. Rewrite using `[ratioWt_of_mem hz, neg_sub, Real.exp_sub, Real.exp_log (B.pos z hz), Real.exp_log (A.pos z hz)]`. Clear denominators, using `[(A.pos z hz).ne']` for the nonvanishing conditions.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem tensor_wtLine_h {A B : HermLine ι} (hab : A.a = B.a) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : (A.tensor (wtLine hab)).h z = B.h z := by
@@ -98,7 +98,7 @@ theorem tensor_wtLine_h {A B : HermLine ι} (hab : A.a = B.a) {z : (Σ k, ι k) 
   field_simp [(A.pos z hz).ne']
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Conclude with `hB`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `hL i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snoc_smooth {n : ℕ} {L : Fin n → HermLine ι} {B : HermLine ι} (hL : ∀ j, IsSmoothHerm (L j))
     (hB : IsSmoothHerm B) (j : Fin (n + 1)) :
@@ -110,11 +110,11 @@ theorem snoc_smooth {n : ℕ} {L : Fin n → HermLine ι} {B : HermLine ι} (hL 
     exact hL i
 
 /- English proof (translation)
-Establish `hT : IsSmoothHerm (A.tensor (wtLine hab))` using `ContDiffOn.mul hA (wtLine_smooth hab hA hB)`. Establish `mc : II K ι P (D + 1) (Fin.snoc L (A.tensor (wtLine hab))) = II K ι P (D + 1) (Fin.snoc L A) - ptsIntegral P (pot L) (ratioWt A B)` using `Known.metricChange K ι (II K ι) (hII K ι) P D L A (ratioWt A B) (fun c z hc => ratioWt_smul hab c z hc) hP hL hA (ratioWt_smooth hA hB)`. Rewrite using `[← mc]`. Use `hML K ι (II K ι) (hII K ι) P (D + 1) _ _ hP (snoc_smooth hL hB) (snoc_smooth hL hT) ?_ ?_` and prove the remaining obligations. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, Fin.snoc_last]`. Express the relevant statement in the definitionally equal form `B.a = A.a + 0`. Rewrite using `[add_zero, hab]`. Rewrite using `[Fin.snoc_castSucc, Fin.snoc_castSucc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j z hz`. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, Fin.snoc_last]`. Conclude with `(tensor_wtLine_h hab hz.1).symm`. Rewrite using `[Fin.snoc_castSucc, Fin.snoc_castSucc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem position_metric (hML : MetricLocalStatement) (II : IntersectionSystem) (hII : IsIntersectionSystem II)
     {P : Ideal (MRing ι)} {D : ℕ} (hP : IsArithVar P (D + 1)) (L : Fin D → HermLine ι)
@@ -141,11 +141,11 @@ theorem position_metric (hML : MetricLocalStatement) (II : IntersectionSystem) (
     · rw [Fin.snoc_castSucc, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Establish `h1P : (1 : MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).mpr h)`. Establish `hm : IsMultiHomog (1 : MRing ι) (fun _ => 0)` using `ReciprocityTheory.ChartRestriction.G.Geo.isMultiHomog_one`. Establish `hrat : IsRatSectionOn P (wtLine hab) 1 1`. Use `⟨fun _ => 0, fun _ => 0, hm, hm, h1P, h1P, fun k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((0 : ℕ) : ℤ) - ((0 : ℕ) : ℤ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Establish `hnull : IsNull R.A (∅ : Set R.X)` using `fun j => by simp`. Establish `hlift : ∀ x ∉ (∅ : Set R.X), logNormRat (wtLine hab) 1 1 (R.lift x x) = v (π x)`. Introduce `x _`. Rewrite using `[logNormRat_wtLine, ratioWt_of_mem (R.mem x x (R.mem_U x)).1, hlog x]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `GlobalTheory.T.intersection_number_pullback_degree_alt hE K ι P J D R X A π hπ dg br hP hdeg L Φ hL hΦ hS (wtLine hab) 1 1 v ∅ (wtLine_smooth hab h₁ h₂) hrat hnull hlift (mIntegrableCont A Φ hΦ v hv)`. Rewrite `hb` using `[logNormRat_wtLine]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem position_integral (hE : ResExistsStatement) {P J : Ideal (MRing ι)} {D : ℕ} (R : AnLogRes P J D) {X : Type}
     [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas D X) (π : R.X → X)
@@ -175,13 +175,13 @@ def toEnd {D : ℕ} (r : Fin (D + 1)) : Equiv.Perm (Fin (D + 1)) :=
   (finSuccEquiv' r).trans finSuccEquivLast.symm
 
 /- English proof (translation)
-Simplify using `[toEnd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toEnd_self {D : ℕ} (r : Fin (D + 1)) : toEnd r r = Fin.last D := by
   simp [toEnd]
 
 /- English proof (translation)
-Simplify using `[toEnd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toEnd_succAbove {D : ℕ} (r : Fin (D + 1)) (i : Fin D) : toEnd r (r.succAbove i) = i.castSucc := by
   simp [toEnd]
@@ -193,27 +193,25 @@ namespace GlobalTheory.CompanionTheory.Ar.PB
 open Tele in
 
 /- English proof (translation)
-Introduce `hIn II hII K _ ι _ D σ _ S P Re t t' w ht ht0 ht' ht'0`. Establish `hF` using `hII.1`. Establish `hP` using `Re.arith`. Establish `hpot` using `(GlobalTheory.T.realisation_potential_degree_compatibility hIn.resExists K ι D σ S P Re).1`. Establish `hbasic` using `(anSys_open_basics D σ S).2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : ∀ (b : Prop) [Decidable b], 0 < (if b then t else t') ∧ (if b then t else t') ≤ S.t₀`. Introduce `b _`. Use `split_ifs`. Use `exacts [⟨ht, ht0⟩, ⟨ht', ht'0⟩]`. Set `Wd : ℕ → Fin (D + 1) → HermLine ι` to `fun m j => Re.line (w j) (if (j : ℕ) < m then t else t')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (Re.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Re.deg_pos.ne'`. Establish `step : ∀ r : Fin (D + 1), II K ι P (D + 1) (Wd (r + 1)) - II K ι P (D + 1) (Wd r) = Re.deg * mInt S.A (fun i => S.potT (w (r.succAbove i)) (if r.succAbove i < r then t else t')) (fun x => S.phT (w r) t x - S.phT (w r) t' x)`. Introduce `r`. Set `L : Fin D → HermLine ι` to `fun i => Re.line (w (r.succAbove i)) (if r.succAbove i < r then t else t')`. Establish `hL : ∀ i, IsSmoothHerm (L i)` using `fun i => Re.line_smooth _ _ (hsc _).1 (hsc _).2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ B : HermLine ι, IsSmoothHerm B → ∀ j : Fin (D + 1), IsSmoothHerm ((Fin.snoc L B : Fin (D + 1) → HermLine ι) j)` using `fun B hB j => snoc_smooth hL hB j`. Establish `e1 : Wd (r + 1) = (Fin.snoc L (Re.line (w r) t) : Fin (D + 1) → HermLine ι) ∘ toEnd r`. Use function extensionality and compare the values at `j`. Break down `Fin.eq_self_or_eq_succAbove r j with rfl | ⟨i, rfl⟩` into its components or cases. Rewrite using `[Function.comp_apply, toEnd_self, Fin.snoc_last]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (Re.line (w _)) (if_pos (Nat.lt_succ_self _))`. Establish `hne : ((r.succAbove i : Fin (D + 1)) : ℕ) ≠ r` using `fun h => Fin.succAbove_ne r i (Fin.ext h)`. Establish `hiff : ((r.succAbove i : Fin (D + 1)) : ℕ) < r + 1 ↔ r.succAbove i < r`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.comp_apply, toEnd_succAbove, Fin.snoc_castSucc]`. Conclude with `congrArg (Re.line (w (r.succAbove i))) (if_congr hiff rfl rfl)`. Establish `e0 : Wd r = (Fin.snoc L (Re.line (w r) t') : Fin (D + 1) → HermLine ι) ∘ toEnd r`. Use function extensionality and compare the values at `j`. Break down `Fin.eq_self_or_eq_succAbove r j with rfl | ⟨i, rfl⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.comp_apply, toEnd_self, Fin.snoc_last]`. Conclude with `congrArg (Re.line (w _)) (if_neg (lt_irrefl _))`. Rewrite using `[Function.comp_apply, toEnd_succAbove, Fin.snoc_castSucc]`. Conclude with `congrArg (Re.line (w (r.succAbove i))) (if_congr Fin.lt_def.symm rfl rfl)`. Rewrite using `[e1, e0, (hF K ι).1 P (D + 1) _ (toEnd r) hP fun j => hsm _ (Re.line_smooth _ _ ht ht0) _, (hF K ι).1 P (D + 1) _ (toEnd r) hP fun j => hsm _ (Re.line_smooth _ _ ht' ht'0) _]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hab : (Re.line (w r) t).a = (Re.line (w r) t').a` using `(Re.line_deg _ _).trans (Re.line_deg _ _).symm`. Establish `hsl` using `position_metric hIn.metricLocal II hF hP L hL _ _ (Re.line_smooth (w r) t ht ht0) (Re.line_smooth (w r) t' ht' ht'0) hab`. Rewrite using `[hsl, sub_sub_cancel]`. Use `position_integral hIn.resExists Re.R S.A Re.π Re.holo Re.deg Re.br hP Re.degree L _ hL (fun i => hbasic _ _ (hsc _).1 (hsc _).2) (fun i => hpot _ _ (hsc _).1 (hsc _).2) _ _ (Re.line_smooth _ _ ht ht0) (Re.line_smooth _ _ ht' ht'0) hab _ ?_ ?_` and prove the remaining obligations. Conclude with `(ReciprocityTheory.AnForm.M.PLC.continuous_of_smooth S.A ((S.reg (w r)).2.2 t ht ht0).1).sub (ReciprocityTheory.AnForm.M.PLC.continuous_of_smooth S.A ((S.reg (w r)).2.2 t' ht' ht'0).1)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x`. Rewrite using `[Re.line_eq _ _ ht ht0, Re.line_eq _ _ ht' ht'0]`. Expand and normalize the polynomial expressions, which then agree. Establish `tel : II K ι P (D + 1) (Wd (D + 1)) - II K ι P (D + 1) (Wd 0) = ∑ r : Fin (D + 1), (II K ι P (D + 1) (Wd (r + 1)) - II K ι P (D + 1) (Wd r))`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun m => II K ι P (D + 1) (Wd (m + 1)) - II K ι P (D + 1) (Wd m)) (D + 1)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(Finset.sum_range_sub (fun m => II K ι P (D + 1) (Wd m)) (D + 1)).symm`. Establish `hWt : Wd (D + 1) = fun j => Re.line (w j) t`. Use function extensionality and compare the values at `j`. Simplify using `[Wd, j.is_lt]`. Establish `hWt' : Wd 0 = fun j => Re.line (w j) t'`.
-
-Use function extensionality and compare the values at `j`. Simplify using `[Wd]`. Simplify using `only [Realis.num]`. Rewrite using `[← sub_div, ← hWt, ← hWt', tel, Finset.sum_congr rfl fun r _ => step r, ← Finset.mul_sum, mul_div_cancel_left₀ _ hdeg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem num_sub_num : Inputs → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (D : ℕ) (σ : Type) [Fintype σ] (S : AnSys D σ) (P : Ideal (MRing ι)) (Re : Realis S P) (t t' : ℝ) (w : Fin (D + 1) → σ), 0 < t → t ≤ S.t₀ → 0 < t' → t' ≤ S.t₀ → Re.num II t w - Re.num II t' w = ∑ r : Fin (D + 1), mInt S.A (fun i => S.potT (w (r.succAbove i)) (if r.succAbove i < r then t else t')) (fun x => S.phT (w r) t x - S.phT (w r) t' x) := by
   intro hIn II hII K _ ι _ D σ _ S P Re t t' w ht ht0 ht' ht'0

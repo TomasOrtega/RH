@@ -16,14 +16,14 @@ abbrev dl (n : ℕ) (i : Fin (n + 2)) : Fin (n + 1) →o Fin (n + 2) := (Fin.suc
 def incl (n : ℕ) : Fin 3 →o Fin (n + 3) := ⟨Fin.castLE (by omega), fun _ _ h ↦ h⟩
 
 /- English proof (translation)
-The claim follows from `Fin.sum_univ_succ f`.
+A detailed English derivation is pending.
 -/
 private theorem sum_fin_add_two_eq_zero_add_sum_succ {M : Type*} [AddCommMonoid M] {m : ℕ} (f : Fin (m + 2) → M) :
     ∑ i, f i = f 0 + ∑ k : Fin (m + 1), f k.succ :=
   Fin.sum_univ_succ f
 
 /- English proof (translation)
-The claim follows from `((Fin.sum_univ_succ f).trans (congrArg _ (Fin.sum_univ_succ fun i : Fin (m + 1) => f i.succ))).trans (add_assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem sum_fin_add_two_eq_zero_add_one_add_sum {M : Type*} [AddCommMonoid M] {m : ℕ} (f : Fin (m + 2) → M) :
     ∑ i, f i = f 0 + f 1 + ∑ k : Fin m, f k.succ.succ :=
@@ -31,9 +31,9 @@ private theorem sum_fin_add_two_eq_zero_add_one_add_sum {M : Type*} [AddCommMono
     (congrArg _ (Fin.sum_univ_succ fun i : Fin (m + 1) => f i.succ))).trans (add_assoc _ _ _).symm
 
 /- English proof (translation)
-Establish `hv : GlobalTheory.CompanionTheory.HopfLe.DnCup.dl n i j = i.succAbove j`. Simplify using `only [OrderEmbedding.toOrderHom_coe, Fin.succAboveOrderEmb_apply]`. Rewrite using `[hv]`. Break down `Nat.lt_or_ge (j : ℕ) i with h | h` into its components or cases. Use `left`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ (by rw [Fin.lt_def, Fin.coe_castSucc]; exact h), Fin.coe_castSucc]`. Use `right`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (by rw [Fin.le_def, Fin.coe_castSucc]; exact h), Fin.val_succ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dl_spec (n : ℕ) (i : Fin (n + 2)) (j : Fin (n + 1)) :
     ((j : ℕ) < i ∧ (dl n i j : ℕ) = j) ∨ ((i : ℕ) ≤ j ∧ (dl n i j : ℕ) = j + 1) := by
@@ -56,7 +56,7 @@ Both sides reduce to the same expression.
 theorem front_val (n : ℕ) (j : Fin 2) : (front n j : ℕ) = j := rfl
 
 /- English proof (translation)
-Establish `hv : GlobalTheory.CompanionTheory.HopfLe.back n j = Fin.succAbove 0 j`. Simplify using `only [GlobalTheory.CompanionTheory.HopfLe.back, OrderEmbedding.toOrderHom_coe, Fin.succAboveOrderEmb_apply]`. Rewrite using `[hv, Fin.succAbove_of_le_castSucc _ _ (by simp), Fin.val_succ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem back_val (n : ℕ) (j : Fin (n + 1)) : (back n j : ℕ) = j + 1 := by
   have hv : GlobalTheory.CompanionTheory.HopfLe.back n j = Fin.succAbove 0 j := by
@@ -69,9 +69,9 @@ Both sides reduce to the same expression.
 theorem incl_val (n : ℕ) (j : Fin 3) : (incl n j : ℕ) = j := rfl
 
 /- English proof (translation)
-Use `DFunLike.ext _ _ fun j => Fin.ext ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.front_val n j`. Establish `h2` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.front_val (n + 1) j`. Establish `h3` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec (n + 1) k.succ.succ (GlobalTheory.CompanionTheory.HopfLe.front n j)`. Establish `hj` using `j.isLt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [OrderHom.comp_coe, Function.comp_apply, Fin.val_succ] at *`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dl_front_high (n : ℕ) (k : Fin (n + 1)) : (dl (n + 1) k.succ.succ).comp (front n) = front (n + 1) := by
   refine DFunLike.ext _ _ fun j => Fin.ext ?_
@@ -83,9 +83,9 @@ theorem dl_front_high (n : ℕ) (k : Fin (n + 1)) : (dl (n + 1) k.succ.succ).com
   omega
 
 /- English proof (translation)
-Use `DFunLike.ext _ _ fun j => Fin.ext ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.back_val n j`. Establish `h2` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.back_val (n + 1) (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl n k.succ j)`. Establish `h3` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec (n + 1) k.succ.succ (GlobalTheory.CompanionTheory.HopfLe.back n j)`. Establish `h4` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec n k.succ j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [OrderHom.comp_coe, Function.comp_apply, Fin.val_succ] at *`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dl_back_high (n : ℕ) (k : Fin (n + 1)) :
     (dl (n + 1) k.succ.succ).comp (back n) = (back (n + 1)).comp (dl n k.succ) := by
@@ -98,9 +98,9 @@ theorem dl_back_high (n : ℕ) (k : Fin (n + 1)) :
   omega
 
 /- English proof (translation)
-Use `DFunLike.ext _ _ fun j => Fin.ext ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.back_val n j`. Establish `h2` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.back_val (n + 1) (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl n 0 j)`. Establish `h3` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec (n + 1) 0 (GlobalTheory.CompanionTheory.HopfLe.back n j)`. Establish `h4` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec n 0 j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [OrderHom.comp_coe, Function.comp_apply, Fin.val_zero] at *`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dl_back_zero (n : ℕ) : (dl (n + 1) 0).comp (back n) = (back (n + 1)).comp (dl n 0) := by
   refine DFunLike.ext _ _ fun j => Fin.ext ?_
@@ -112,9 +112,9 @@ theorem dl_back_zero (n : ℕ) : (dl (n + 1) 0).comp (back n) = (back (n + 1)).c
   omega
 
 /- English proof (translation)
-Use `DFunLike.ext _ _ fun j => Fin.ext ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.back_val n j`. Establish `h2` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.back_val (n + 1) (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl n 0 j)`. Establish `h3` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec (n + 1) 1 (GlobalTheory.CompanionTheory.HopfLe.back n j)`. Establish `h4` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec n 0 j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [OrderHom.comp_coe, Function.comp_apply, Fin.val_zero, Fin.val_one] at *`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dl_back_one (n : ℕ) : (dl (n + 1) 1).comp (back n) = (back (n + 1)).comp (dl n 0) := by
   refine DFunLike.ext _ _ fun j => Fin.ext ?_
@@ -126,9 +126,9 @@ theorem dl_back_one (n : ℕ) : (dl (n + 1) 1).comp (back n) = (back (n + 1)).co
   omega
 
 /- English proof (translation)
-Use `DFunLike.ext _ _ fun j => Fin.ext ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.front_val n j`. Establish `h2` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.incl_val n (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl 1 0 j)`. Establish `h3` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec (n + 1) 0 (GlobalTheory.CompanionTheory.HopfLe.front n j)`. Establish `h4` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec 1 0 j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [OrderHom.comp_coe, Function.comp_apply, Fin.val_zero] at *`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dl_front_zero (n : ℕ) : (dl (n + 1) 0).comp (front n) = (incl n).comp (dl 1 0) := by
   refine DFunLike.ext _ _ fun j => Fin.ext ?_
@@ -140,9 +140,9 @@ theorem dl_front_zero (n : ℕ) : (dl (n + 1) 0).comp (front n) = (incl n).comp 
   omega
 
 /- English proof (translation)
-Use `DFunLike.ext _ _ fun j => Fin.ext ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.front_val n j`. Establish `h2` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.incl_val n (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl 1 1 j)`. Establish `h3` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec (n + 1) 1 (GlobalTheory.CompanionTheory.HopfLe.front n j)`. Establish `h4` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec 1 1 j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [OrderHom.comp_coe, Function.comp_apply, Fin.val_one] at *`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dl_front_one (n : ℕ) : (dl (n + 1) 1).comp (front n) = (incl n).comp (dl 1 1) := by
   refine DFunLike.ext _ _ fun j => Fin.ext ?_
@@ -154,9 +154,9 @@ theorem dl_front_one (n : ℕ) : (dl (n + 1) 1).comp (front n) = (incl n).comp (
   omega
 
 /- English proof (translation)
-Use `DFunLike.ext _ _ fun j => Fin.ext ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.front_val (n + 1) j`. Establish `h2` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.incl_val n (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl 1 2 j)`. Establish `h3` using `GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_spec 1 2 j`. Establish `h5 : ((2 : Fin (1 + 2)) : ℕ) = 2` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `j.isLt`. Simplify using `only [OrderHom.comp_coe, Function.comp_apply] at *`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem front_eq_incl (n : ℕ) : front (n + 1) = (incl n).comp (dl 1 2) := by
   refine DFunLike.ext _ _ fun j => Fin.ext ?_
@@ -169,9 +169,9 @@ theorem front_eq_incl (n : ℕ) : front (n + 1) = (incl n).comp (dl 1 2) := by
   omega
 
 /- English proof (translation)
-Establish `hface : ∀ (m : ℕ) (j : Fin (m + 2)), MainStatements.Hodge.cof F m j = GlobalTheory.CompanionTheory.HodgeCx.act F (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl m j)` using `fun m j => GlobalTheory.CompanionTheory.HodgeCx.cof_eq F m j`. Establish `hd : MainStatements.Hodge.dn F 1 y = GlobalTheory.CompanionTheory.HodgeCx.act F (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl 1 0) y - GlobalTheory.CompanionTheory.HodgeCx.act F (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl 1 1) y + GlobalTheory.CompanionTheory.HodgeCx.act F (Glo …`. Rewrite using `[MainStatements.Hodge.dn, LinearMap.sum_apply, Fin.sum_univ_three]`. Simplify using `only [LinearMap.smul_apply, hface, Fin.val_zero, Fin.val_one, Fin.val_two, pow_zero, pow_one, neg_one_sq, one_smul, neg_smul, sub_eq_add_neg]`. Apply the tactic sequence `first | done | rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_front_zero, GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_front_one, GlobalTheory.CompanionTheory.HopfLe.DnCup.front_eq_incl, GlobalTheory.CompanionTheory.HodgeCx.act_comp, GlobalTheory.CompanionTheory.HodgeCx.act_comp, GlobalTheory.Co …`.
+A detailed English derivation is pending.
 -/
 theorem bracket (F : C ⥤ CommAlgCat.{0} R) (n : ℕ) (y : Cn F 1) (hy : dn F 1 y = 0) :
     act F ((dl (n + 1) 0).comp (front n)) y - act F ((dl (n + 1) 1).comp (front n)) y
@@ -191,15 +191,15 @@ theorem bracket (F : C ⥤ CommAlgCat.{0} R) (n : ℕ) (y : Cn F 1) (hy : dn F 1
     ← map_sub, ← map_add, ← hd, hy, map_zero]
 
 /- English proof (translation)
-Establish `hface : ∀ (m : ℕ) (j : Fin (m + 2)), MainStatements.Hodge.cof F m j = GlobalTheory.CompanionTheory.HodgeCx.act F (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl m j)` using `fun m j => GlobalTheory.CompanionTheory.HodgeCx.cof_eq F m j`. Establish `hcup : ∀ i : Fin (n + 1 + 2), MainStatements.Hodge.cof F (n + 1) i (GlobalTheory.CompanionTheory.HopfLe.cup1 F y z) = GlobalTheory.CompanionTheory.HodgeCx.act F ((GlobalTheory.CompanionTheory.HopfLe.DnCup.dl (n + 1) i).comp (GlobalTheory.CompanionTheory.HopfLe.front n)) y * Globa …`. Introduce `i`. Rewrite using `[hface, GlobalTheory.CompanionTheory.HopfLe.cup1, GlobalTheory.CompanionTheory.HopfLe.act_mul, GlobalTheory.CompanionTheory.HodgeCx.act_comp F (GlobalTheory.CompanionTheory.HopfLe.front n), GlobalTheory.CompanionTheory.HodgeCx.act_comp F (GlobalTheory.CompanionTheory.HopfLe.back …`. Establish `hback : ∀ {k : ℕ} (θ : Fin (k + 1) →o Fin (n + 1 + 1)) (w : MainStatements.Hodge.Cn F k), GlobalTheory.CompanionTheory.HodgeCx.act F ((GlobalTheory.CompanionTheory.HopfLe.back (n + 1)).comp θ) w = GlobalTheory.CompanionTheory.HodgeCx.act F (GlobalTheory.CompanionTheory.HopfLe.bac …` using `fun θ w => GlobalTheory.CompanionTheory.HodgeCx.act_comp F θ (GlobalTheory.CompanionTheory.HopfLe.back (n + 1)) w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `eq_neg_iff_add_eq_zero.mpr (GlobalTheory.CompanionTheory.HopfLe.DnCup.bracket F n y hy)`. Establish `key : GlobalTheory.CompanionTheory.HodgeCx.act F ((GlobalTheory.CompanionTheory.HopfLe.DnCup.dl (n + 1) 0).comp (GlobalTheory.CompanionTheory.HopfLe.front n)) y * GlobalTheory.CompanionTheory.HodgeCx.act F (GlobalTheory.CompanionTheory.HopfLe.back (n + 1)) (GlobalTheory.Companion …`. Rewrite using `[← neg_mul, ← add_mul, ← h']`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Establish `h0 : MainStatements.Hodge.cof F (n + 1) 0 (GlobalTheory.CompanionTheory.HopfLe.cup1 F y z) = GlobalTheory.CompanionTheory.HodgeCx.act F ((GlobalTheory.CompanionTheory.HopfLe.DnCup.dl (n + 1) 0).comp (GlobalTheory.CompanionTheory.HopfLe.front n)) y * GlobalTheory.CompanionTheory.H …`. Rewrite using `[hcup, GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_back_zero, hback]`. Establish `h1 : MainStatements.Hodge.cof F (n + 1) 1 (GlobalTheory.CompanionTheory.HopfLe.cup1 F y z) = GlobalTheory.CompanionTheory.HodgeCx.act F ((GlobalTheory.CompanionTheory.HopfLe.DnCup.dl (n + 1) 1).comp (GlobalTheory.CompanionTheory.HopfLe.front n)) y * GlobalTheory.CompanionTheory.H …`. Rewrite using `[hcup, GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_back_one, hback]`. Establish `hk : ∀ k : Fin (n + 1), MainStatements.Hodge.cof F (n + 1) k.succ.succ (GlobalTheory.CompanionTheory.HopfLe.cup1 F y z) = GlobalTheory.CompanionTheory.HodgeCx.act F (GlobalTheory.CompanionTheory.HopfLe.front (n + 1)) y * GlobalTheory.CompanionTheory.HodgeCx.act F (GlobalTheory.Co …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hcup, GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_back_high, hback]`. Use `congr 1`. Conclude with `congrArg (fun θ : Fin 2 →o Fin (n + 1 + 2) => GlobalTheory.CompanionTheory.HodgeCx.act F θ y) (GlobalTheory.CompanionTheory.HopfLe.DnCup.dl_front_high n k)`. Simplify using `only [MainStatements.Hodge.dn, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_fin_add_two_eq_zero_add_one_add_sum (m := n + 1), sum_fin_add_two_eq_zero_add_sum_succ (m := n), h0, h1]`. Simplify using `only [hk]`. Simplify using `only [hface, GlobalTheory.CompanionTheory.HopfLe.cup1, map_add, map_neg, map_sum, map_smul, map_zsmul, mul_add, Finset.mul_sum, mul_smul_comm, Fin.val_zero, Fin.val_one, Fin.val_succ, pow_zero, pow_one, pow_succ, one_smul, neg_smul, mul_neg, mul_one, neg_neg, Finset.sum_neg_distr …`. Rewrite using `[key]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem coboundary_cup1 (F : C ⥤ CommAlgCat.{0} R) {n : ℕ} (y : Cn F 1) (z : Cn F n) (hy : dn F 1 y = 0) :
     dn F (n + 1) (cup1 F y z) = - cup1 F y (dn F n z) := by

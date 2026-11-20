@@ -6,17 +6,17 @@ open MeasureTheory Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalis
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Establish `hS : Real.sqrt (∑ a, ∑ b, ‖(g - 1) a b‖ ^ 2) ≤ 1 / 4` using `hg`. Establish `hS0 : 0 ≤ ∑ a, ∑ b, ‖(g - 1) a b‖ ^ 2` using `by positivity`. Establish `hS2 : ∑ a, ∑ b, ‖(g - 1) a b‖ ^ 2 ≤ 1 / 16`. Establish `h` using `Real.sq_sqrt hS0`. Establish `h0` using `Real.sqrt_nonneg (∑ a, ∑ b, ‖(g - 1) a b‖ ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hent : ∀ a b, ‖g a b‖ ^ 2 ≤ 2 * ‖(g - 1) a b‖ ^ 2 + 2 * (if a = b then (1 : ℝ) else 0)`. Introduce `a b`. Establish `hsplit : g a b = (g - 1) a b + (1 : Matrix (Fin n) (Fin n) ℂ) a b` using `by simp`. Establish `hone : ‖(1 : Matrix (Fin n) (Fin n) ℂ) a b‖ ^ 2 = if a = b then (1 : ℝ) else 0`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`. Establish `htri` using `norm_add_le ((g - 1) a b) ((1 : Matrix (Fin n) (Fin n) ℂ) a b)`. Rewrite `htri` using `[← hsplit]`. Establish `hp` using `norm_nonneg (g a b)`. Establish `hq` using `norm_nonneg ((g - 1) a b)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `norm_nonneg ((1 : Matrix (Fin n) (Fin n) ℂ) a b)`. Rewrite using `[← hone]`. Use polynomial arithmetic with `[sq_nonneg (‖(g - 1) a b‖ - ‖(1 : Matrix (Fin n) (Fin n) ℂ) a b‖)]`. Establish `hsum : ∑ a, ∑ b, ‖g a b‖ ^ 2 ≤ 2 * (∑ a, ∑ b, ‖(g - 1) a b‖ ^ 2) + 2 * n`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hent a b`. Use `_ = 2 * (∑ a, ∑ b, ‖(g - 1) a b‖ ^ 2) + 2 * n := by`. Simplify using `[Finset.sum_add_distrib, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Use `show Real.sqrt (∑ a, ∑ b, ‖g a b‖ ^ 2) ≤ (n : ℝ) + 1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression.
 
-Rewrite using `[Real.sqrt_le_iff]`. Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Establish `h0 : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem hsn_le_of_near {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : GlobalTheory.SepReal.hsn (g - 1) ≤ 1 / 4) :
     GlobalTheory.SepReal.hsn g ≤ (n : ℝ) + 1 := by
@@ -54,21 +54,21 @@ private theorem hsn_le_of_near {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : 
     nlinarith
 
 /- English proof (translation)
-Establish `hn' : (3 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hm1 : 1 ≤ ((n : ℝ) + 1) ^ 2` using `by nlinarith`. Establish `hB1 : 1 ≤ B ^ 2` using `by nlinarith`. Establish `hp1 : 1 ≤ ((n : ℝ) + 1) ^ 2 * B ^ 2` using `one_le_mul_of_one_le_of_one_le hm1 hB1`. Establish `hmP : ((n : ℝ) + 1) ^ 2 ≤ ((n : ℝ) + 1) ^ 2 * B ^ 2` using `le_mul_of_one_le_right (by positivity) hB1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqp : (n : ℝ) ^ 2 * B ^ 2 ≤ ((n : ℝ) + 1) ^ 2 * B ^ 2`. Establish `hB2 : 0 ≤ B ^ 2` using `by positivity`. Establish `: (n : ℝ) ^ 2 ≤ ((n : ℝ) + 1) ^ 2` using `by nlinarith`. Conclude with `mul_le_mul_of_nonneg_right this hB2`. Establish `hq0 : 0 ≤ (n : ℝ) ^ 2 * B ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : 2 * ((n : ℝ) + 1) ^ 2 / (1 / (4 * (8 * (n : ℝ) * B) ^ 2)) = 512 * ((n : ℝ) + 1) ^ 2 * ((n : ℝ) ^ 2 * B ^ 2)`. Rewrite using `[one_div, div_inv_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (8 * ((n : ℝ) + 1) * B) ^ 4 = 4096 * (((n : ℝ) + 1) ^ 2 * B ^ 2) ^ 2` using `by ring`. Establish `hX0 : 0 ≤ 1 + 2 * ((n : ℝ) + 1) ^ 2 / (1 / (4 * (8 * (n : ℝ) * B) ^ 2))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Check the signs of the components of the expression. Establish `hX : 1 + 2 * ((n : ℝ) + 1) ^ 2 / (1 / (4 * (8 * (n : ℝ) * B) ^ 2)) ≤ (8 * ((n : ℝ) + 1) * B) ^ 4`. Rewrite using `[e1, e2]`. Use `mul_le_mul hmP hqp hq0 (by linarith)` as an intermediate fact.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hL4 : (4 : ℝ) ≤ 8 * ((n : ℝ) + 1) * B` using `by nlinarith`. Establish `hL0 : 0 < 8 * ((n : ℝ) + 1) * B` using `by linarith`. Establish `hstep : (1 + 2 * ((n : ℝ) + 1) ^ 2 / (1 / (4 * (8 * (n : ℝ) * B) ^ 2))) ^ (2 * n ^ 2) * 4 ≤ (8 * ((n : ℝ) + 1) * B) ^ (8 * n ^ 2 + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, pow_succ]`. Put the polynomial expressions in normal form. Establish `hexp : (8 * ((n : ℝ) + 1) * B) ^ (8 * n ^ 2 + 1) = Real.exp (((8 * n ^ 2 + 1 : ℕ) : ℝ) * Real.log (8 * ((n : ℝ) + 1) * B))`. Rewrite using `[Real.exp_nat_mul, Real.exp_log hL0]`. Establish `hN : ((8 * n ^ 2 + 1 : ℕ) : ℝ) ≤ 11 * ((n : ℝ) + 1) ^ 4`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use polynomial arithmetic with `[sq_nonneg ((n : ℝ) + 1), sq_nonneg (n : ℝ)]`. Establish `hlog : 0 ≤ Real.log (8 * ((n : ℝ) + 1) * B)` using `Real.log_nonneg (by linarith)`. Unfold `big`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `mul_le_mul_of_nonneg_right hN hlog` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem vol_arith (n : ℕ) (B : ℝ) (hn : 3 ≤ n) (hB : 1 ≤ B) :
     (1 + 2 * ((n : ℝ) + 1) ^ 2 / (1 / (4 * (8 * (n : ℝ) * B) ^ 2))) ^ (2 * n ^ 2) * 4 ≤ big 11 n B := by
@@ -121,13 +121,13 @@ private theorem vol_arith (n : ℕ) (B : ℝ) (hn : 3 ≤ n) (hB : 1 ≤ B) :
       linarith
 
 /- English proof (translation)
-Establish `hVol : VolBall` using `GlobalTheory.T.volume_of_ball_bound`. Establish `hDegU : DegUpper` using `GlobalTheory.T.formalDegree_le_of_neighbourhoodVolume GlobalTheory.T.unitary_near_identity_eq_exp_log_bound GlobalTheory.T.lowestKType_lieWord_normBound hVol`. Use `⟨11, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `n e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ d hd`. Establish `hn` using `hP.three_le`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn' : (3 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hB1 : 1 ≤ B` using `RealAsm.one_le_B hP`. Establish `hgap' : GapAtLeast ε' mu (1000 * (n : ℝ) ^ 3)` using `RealAsm.gap_mono (by`. Establish `: (0 : ℝ) ≤ n` using `n.cast_nonneg`. Use polynomial arithmetic with `[pow_le_pow_left₀ this (by linarith : (n : ℝ) ≤ n + 1) 3]) hP.gap'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hdu` using `hDegU n ε' mu B hn hP.hmu hgap' hP.bound.2 H' σ hσ d hd`. Take `⟨-, htop, hvb⟩` from `hVol n ε' (1 / (4 * (8 * (n : ℝ) * B) ^ 2)) ((n : ℝ) + 1) (by positivity) (by positivity)`. Establish `hsub : nbh ε' (1 / 4) ⊆ {g | GlobalTheory.SepReal.hsn (umat g) ≤ (n : ℝ) + 1}` using `fun g hg => hsn_le_of_near _ hg`. Establish `h1` using `(measure_mono hsub).trans hvb`. Establish `h2` using `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top htop.ne) h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`. Establish `hd0 : 0 < d` using `hd.1`. Use `h2.trans ((mul_le_mul_of_nonneg_left hdu (by positivity)).trans ?_)` and prove the remaining obligations. Rewrite using `[← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right (vol_arith n B hn hB1) hd0.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Branch.volDeg :
     VolDeg := by

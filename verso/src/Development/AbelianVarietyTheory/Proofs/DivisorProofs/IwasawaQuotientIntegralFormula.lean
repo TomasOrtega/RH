@@ -9,41 +9,37 @@ open scoped NNReal ENNReal
 namespace GlobalTheory.EquivAEMeas
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ P K μG μP μK δ U hP hK hμG hμP hμK hright _hδ hsurj hU hU0 hUeq hδ1 Φ hΦ hΦK`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hK`. Establish `: LocallyCompactSpace P` using `hP.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology K` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: SecondCountableTopology P` using `TopologicalSpace.Subtype.secondCountableTopology _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M : Subgroup K := P.subgroupOf K with hM`. Establish `hMc : IsClosed (M : Set K)`. Rewrite using `[hM, Subgroup.coe_subgroupOf]`. Conclude with `hP.preimage continuous_subtype_val`. Establish `hδM : ∀ m ∈ M, ∀ k : K, ∃ p : P, ((m * k : K) : G) = (p : G) * k ∧ δ p = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m hm k`. Establish `hm' : ((m : K) : G) ∈ P` using `Subgroup.mem_subgroupOf.mp hm`. Conclude with `⟨⟨m, hm'⟩, rfl, hδ1 ⟨m, hm'⟩ m.2⟩`. Establish `hφinv : ∀ m ∈ M, ∀ k : K, (fun k : K => Φ (k : G)) (m * k) = (fun k : K => Φ (k : G)) k`. Introduce `m hm k`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨p, hp, h1⟩` from `hδM m hm k`. Simplify using `only [hp, hΦ, h1, ENNReal.coe_one, one_mul]`. Establish `hUinv : ∀ m ∈ M, ∀ k : K, U ((m * k : K) : G) = U k`. Introduce `m hm k`. Take `⟨p, hp, h1⟩` from `hδM m hm k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hp, hUeq, h1, ENNReal.coe_one, one_mul]`. Take `⟨ψ, N, hψ, hN, hN0, hNinv, hψinv, hφψ⟩` from `GlobalTheory.T.invariant_measurable_modification K M μK hMc hμK (fun k : K => Φ (k : G)) hΦK hφinv`. Establish `hex : ∀ g : G, ∃ x : P × K, (x.1 : G) * x.2 = g` using `fun g => by`. Take `⟨p, hp, k, hk, rfl⟩` from `hsurj g`. Conclude with `⟨(⟨p, hp⟩, ⟨k, hk⟩), rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose dec hdec using hex`. Set `R : K → ℝ≥0∞` to `fun k => ψ k / U k`. Set `Φh : G → ℝ≥0∞` to `fun g => U g * R (dec g).2`. Establish `hdiff : ∀ (p p' : P) (k k' : K), (p : G) * k = p' * k' → ∃ m ∈ M, k' = m * k`. Introduce `p p' k k' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨k' * k⁻¹, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`. Establish `e : ((k' * k⁻¹ : K) : G) = ((p'⁻¹ * p : P) : G)`. Use `push_cast`. Rewrite using `[eq_inv_mul_iff_mul_eq, ← mul_assoc, ← h, mul_inv_cancel_right]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `(p'⁻¹ * p).2`. Establish `hRinv : ∀ m ∈ M, ∀ k : K, R (m * k) = R k`. Introduce `m hm k`. Simplify using `only [R, hψinv m hm k, hUinv m hm k]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hΦh_mul : ∀ (p : P) (k : K), Φh ((p : G) * k) = U ((p : G) * k) * R k`. Introduce `p k`. Take `⟨m, hm, he⟩` from `hdiff p (dec ((p : G) * k)).1 k (dec ((p : G) * k)).2 (hdec _).symm`. Simplify using `only [Φh]`. Rewrite using `[he, hRinv m hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRm : Measurable R` using `hψ.div (hU.comp measurable_subtype_coe)`. Establish `hmm : Measurable (GroundTheory.Automorphic.HaarSK.mulMap P K)` using `GroundTheory.Automorphic.HaarSK.continuous_mulMap.measurable`. Establish `hsurj' : Surjective (GroundTheory.Automorphic.HaarSK.mulMap P K)` using `fun g => ⟨dec g, hdec g⟩`. Establish `hcomp : Measurable (Φh ∘ GroundTheory.Automorphic.HaarSK.mulMap P K)`. Establish `e : Φh ∘ GroundTheory.Automorphic.HaarSK.mulMap P K = fun x : P × K => U ((x.1 : G) * x.2) * R x.2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Conclude with `hΦh_mul x.1 x.2`. Rewrite using `[e]`. Conclude with `(hU.comp hmm).mul (hRm.comp measurable_snd)`. Establish `: PolishSpace P` using `GroundTheory.Automorphic.polishSpace_of_locallyCompact`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: PolishSpace K` using `GroundTheory.Automorphic.polishSpace_of_locallyCompact`. Establish `hΦhm : Measurable Φh` using `(hmm.measurable_comp_iff_of_surjective hsurj').mp hcomp`. Use `set S : Set G := GroundTheory.Automorphic.HaarSK.mulMap P K '' (univ ×ˢ N) with hS`. Establish `hpre : GroundTheory.Automorphic.HaarSK.mulMap P K ⁻¹' S = univ ×ˢ N`. Use extensionality with `⟨p, k⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨p', k'⟩, ⟨-, hk'⟩, h⟩`. Take `⟨m, hm, he⟩` from `hdiff p' p k' k h`. Use `⟨trivial, ?_⟩` and prove the remaining obligations. Use `show k ∈ N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `(hNinv m hm k').2 hk'`. Introduce and unpack `⟨-, hk⟩`. Conclude with `⟨(p, k), ⟨trivial, hk⟩, rfl⟩`. Establish `hSm : MeasurableSet S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← hmm.measurableSet_preimage_iff_of_surjective hsurj', hpre]`. Conclude with `MeasurableSet.univ.prod hN`. Take `⟨c, hc⟩` from `GlobalTheory.NAK.exists_eq_smul_map_mulMap_of_right P K μG (fun k _ => hright k) hP hK hsurj' μP μK`. Establish `hS0 : μG S = 0`. Rewrite using `[hc, Measure.smul_apply, Measure.map_apply hmm hSm, hpre, Measure.prod_prod, hN0, mul_zero, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : {g | ¬ Φ g = Φh g} ⊆ S`. Introduce `g hg`. Assume the negation of the conclusion as `hgS`. Apply `hg` to reduce the goal to its premises. Establish `hg'` using `hdec g`.
-
-Establish `hxN : (dec g).2 ∉ N` using `fun h => hgS ⟨dec g, ⟨trivial, h⟩, hg'⟩`. Establish `e1 : Φ g = δ (dec g).1 * ψ (dec g).2`. Use `hφψ (dec g).2 hxN` as an intermediate fact. Rewrite using `[← this, ← hΦ, hg']`. Establish `e2 : Φh g = δ (dec g).1 * ψ (dec g).2` using `by show U g * (ψ (dec g).2 / U (dec g).2) = _`.
-
-Rewrite using `[show U g = δ (dec g).1 * U (dec g).2 by rw [← hUeq, hg'], mul_assoc, ENNReal.mul_div_cancel (hU0 _).1 (hU0 _).2]`. Rewrite using `[e1, e2]`. Conclude with `⟨Φh, hΦhm, ae_iff.2 (measure_mono_null hsub hS0)⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem aemeasurable_of_equivariant : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (P K : Subgroup G) (μG : Measure G) (μP : Measure P) (μK : Measure K) (δ : P → ℝ≥0) (U : G → ℝ≥0∞),

@@ -13,9 +13,9 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Take `⟨n, i, x, rfl⟩` from `hφ y`. Use `⟨(List.ofFn fun m => x m ≫ χ (i m)).prod, ?_⟩` and prove the remaining obligations. Set `F : (Over.mk t ⟶ A') →* (Over.mk t ⟶ A)` to `MonoidHom.mk' (fun z => z ≫ Φ) fun z w => MonObj.mul_comp z w Φ`. Express the relevant statement in the definitionally equal form `_ = F _`. Rewrite using `[map_list_prod, List.map_ofFn]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `m`. Simplify using `[F, e]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem OntoAt.exists_eq_comp {S : Scheme.{0}} {I : Type} {B : I → Over S} {A A' : Over S} [GrpObj A] [GrpObj A']
     {φ : ∀ i, B i ⟶ A} {k : Type} [Field k] {t : Sp k ⟶ S} (hφ : OntoAt φ t) (Φ : A' ⟶ A) [IsMonHom Φ]
@@ -31,11 +31,11 @@ theorem OntoAt.exists_eq_comp {S : Scheme.{0}} {I : Type} {B : I → Over S} {A 
   simp [F, e]
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H R _ _ _ σ ω C D ε h T ψ hσ hh hpos hfam honto`. Take `⟨T₁, ⟨t⟩, -⟩` from `GlobalTheory.T.exists_cm_tensor_lattice_curve_principal_triple hL E H R ω C D ε h hh hpos`. Take `⟨Φ, hlin, htm, hlam⟩` from `GlobalTheory.T.exists_tensorProduct_hom_of_cmCurveHomFamily E H R ω C D D ε h h T₁ T t ⊤ ψ (Submodule.topEquiv.symm : D.La ≃ₗ[𝓞 E] (⊤ : Submodule (𝓞 E) D.La)).toLinearMap 1 hh hh (fun a b => by rw [one_smul]; rfl) hfam`. Rewrite `hlam` using `[T₁.t.act.one]`. Establish `hm : IsMonHom Φ` using `hlin.isMonHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsurj` using `(GlobalTheory.T.abelianScheme_surjective_of_onto_complex_points R σ hσ T.t.G T₁.t.G Φ T.ab T₁.ab (honto.exists_eq_comp Φ (fun a => t.ten.tmul a.1) fun a => htm a.1)).1`. Establish `hred : IsReduced (Sp R)` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of R)))`. Establish `hiso : IsIso Φ` using `GlobalTheory.T.isIso_of_surjective_principalPairing (Sp R) T₁.t.G T.t.G T₁.t.PP.L T.t.PP.L Φ T₁.ab T.ab T₁.t.PP.isLB T.t.PP.isLB hm T₁.ktriv hlam hsurj`. Establish `key : ∀ a, (t.ten.ofIso (b'` using `Serre.comapAct T.t.act (algebraMap (OK H) (𝓞 E))) (asIso Φ) ⟨hm, fun c => hlin.comm _⟩).tmul a = ψ ⟨a, trivial⟩ := fun a => htm a`. Use `⟨⟨t.ten.ofIso (asIso Φ) ⟨hm, fun c => hlin.comm _⟩, fun s a => ?_, fun a b => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, key]`. Conclude with `hfam.2.2.1 s ⟨a, trivial⟩`. Rewrite using `[key, key]`. Conclude with `hfam.2.2.2 ⟨a, trivial⟩ ⟨b, trivial⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_isTen_of_isFam_top : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (σ : R →+* ℂ) (ω : R) (C : Ell H R ω) (D : Datum H) (ε : ℤˣ) (h : D.La → D.La → OK H) (T : PAT H (Sp R)) (ψ : (⊤ : Submodule (𝓞 E) D.La) → (C.P.A ⟶ T.t.G)), Function.Injective σ → IsKForm D ε h → (∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) → IsFam C T h ⊤ ψ → OntoAt ψ (spMap σ) → Nonempty (IsTen C D h T) := by
   intro hL E _ _ _ H R _ _ _ σ ω C D ε h T ψ hσ hh hpos hfam honto

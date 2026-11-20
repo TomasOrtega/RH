@@ -11,7 +11,7 @@ section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial
 open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Base UpperTheory.V.Published UpperTheory.V.Sd Formalism.L2.Host.CT UpperTheory.V.Z.Bc
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
@@ -22,9 +22,9 @@ private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [
   rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 /- English proof (translation)
-Establish `e : ∀ (q : ℕ) (B : Multiset ℂˣ), algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ)` using `fun q B => by`. Simplify using `only [algSat, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Simplify using `only [e, Multiset.map_map, Function.comp_def]`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `h : (((q ^ f : ℕ) : ℝ)) ^ (((n : ℝ) - 1) / 2) = ((q : ℝ) ^ (((n : ℝ) - 1) / 2)) ^ f`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q), ← Real.rpow_mul (Nat.cast_nonneg q), mul_comm]`. Rewrite using `[h, mul_pow, Units.val_pow_eq_pow_val, Complex.ofReal_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
     algSat n (q ^ f) (B.map (· ^ f)) = (algSat n q B).map (· ^ f) := by
@@ -38,13 +38,11 @@ private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
       ← Real.rpow_mul (Nat.cast_nonneg q), mul_comm]
   rw [h, mul_pow, Units.val_pow_eq_pow_val, Complex.ofReal_pow]
 /- English proof (translation)
-Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.trans F E Ω⟩`. Break down `hL F E hp π hreg with ⟨η, hη, hT⟩ | ⟨P, hinf, hbc⟩` into its components or cases. Take `⟨δ, hδ1, -, hiso, hres⟩` from `_root_.UpperTheory.V.Sd.self_twist_galois_of_printed_results hP F Ω l ι 2 r (CG.mk π).HasSat (fun _ _ _ h h' => h.unique h') hr hatt η _ hp.pos hη.2.1 hη.1 hT`. Conclude with `(hδ1 (UpperTheory.schur_twist_holds _ _ _ 2 r _ δ hirr (hres E hη) hiso)).elim`. Use `⟨P, (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, ⟨(UpperTheory.galoisRep_irreducibility_criterion.1 _ Unit _ 2 _).2.1 hirr, ?_⟩, hinf⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hreg (τ.comp (algebraMap F E))`. Establish `hm : π.HasInfChar (τ.comp (algebraMap F E)) ((CG.mk π).infChar (τ.comp (algebraMap F E)))` using `ParLaws.hasInfChar_infChar (CG.mk π) _`. Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk P) (hinf τ _ hm)]`. Conclude with `h`. Use `filter_upwards [hbc, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under F E).eventually hatt.2] with w h1 h2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, hB, hPw⟩` from `h1 _ (normV_under (K := F) w)`. Take `⟨B', hB', hF⟩` from `h2`. Take `rfl` from `hB.unique hB'`. Use `⟨_, hPw, ?_⟩` and prove the remaining obligations. Establish `h3` using `(UpperTheory.frobenius_power_compatibility F E Ω l ι w _ (normV_under (K := F) w)).1 2 r _ hF`.
-
-Rewrite `h3` using `[← algSat_pow, ← normV_under]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem upCycI (hP : _root_.UpperTheory.V.Af.Hypotheses') (hL : CyclicBaseChangeLiftRankTwo) (F E Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field E]
     [NumberField E] [IsTotallyComplex E] [Field Ω] [Algebra F E] [Algebra F Ω] [Algebra E Ω] [IsScalarTower F E Ω] [IsAlgClosure E Ω]
@@ -72,13 +70,13 @@ private theorem upCycI (hP : _root_.UpperTheory.V.Af.Hypotheses') (hL : CyclicBa
       rw [← algSat_pow, ← normV_under] at h3
       exact h3
 /- English proof (translation)
-Take `⟨M, hM, hle⟩` from `(eq_top_or_exists_le_coatom (commutator Γ)).resolve_left (Group.IsSolvable.commutator_lt_top_of_nontrivial Γ).ne`. Establish `hn : M.Normal` using `⟨fun n hn g => by`. Establish `h1 : g * n * g⁻¹ * n⁻¹ ∈ M` using `hle (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top n))`. Simplify using `using M.mul_mem h1 hn⟩`. Use `⟨M, hn, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp, hd⟩` from `Nat.exists_prime_and_dvd (n := Nat.card (Γ ⧸ M)) (mt Subgroup.index_eq_one.1 hM.1)`. Use `haveI := Fact.mk hp`. Take `⟨g, hg⟩` from `exists_prime_orderOf_dvd_card' p hd`. Establish `h1 : (Subgroup.zpowers g).comap (QuotientGroup.mk' M) = ⊤`. Use `hM.2 _ (lt_of_le_of_ne (fun x hx => ?_) fun e => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_comap, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff x).2 hx]`. Conclude with `one_mem _`. Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective M g`. Establish `hx : x ∈ M` using `e ▸ Subgroup.mem_zpowers _`. Rewrite `hg` using `[QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff x).2 hx, orderOf_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp.one_lt.ne hg`. Establish `h2 : Subgroup.zpowers g = ⊤` using `Subgroup.comap_injective (QuotientGroup.mk'_surjective M) (h1.trans (Subgroup.comap_top _).symm)`. Rewrite using `[Subgroup.index, ← Subgroup.card_top, ← h2, Nat.card_zpowers, hg]`. Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 private theorem exists_prime_index (Γ : Type) [Group Γ] [Finite Γ] [Nontrivial Γ] [Group.IsSolvable Γ] :
     ∃ M : Subgroup Γ, M.Normal ∧ M.index.Prime := by
@@ -104,17 +102,17 @@ private theorem exists_prime_index (Γ : Type) [Group Γ] [Finite Γ] [Nontrivia
   rw [Subgroup.index, ← Subgroup.card_top, ← h2, Nat.card_zpowers, hg]
   exact hp
 /- English proof (translation)
-The claim follows from `{ isAlgClosed := IsAlgClosure.isAlgClosed E, isAlgebraic := Algebra.IsAlgebraic.trans K E Ω }`.
+A detailed English derivation is pending.
 -/
 private theorem closure_tower (K E Ω : Type) [Field K] [Field E] [Field Ω] [Algebra K E] [Algebra K Ω] [Algebra E Ω]
     [IsScalarTower K E Ω] [Algebra.IsAlgebraic K E] [IsAlgClosure E Ω] : IsAlgClosure K Ω :=
   { isAlgClosed := IsAlgClosure.isAlgClosed E, isAlgebraic := Algebra.IsAlgebraic.trans K E Ω }
 /- English proof (translation)
-Take `⟨-, hat⟩` from `ha`. Set `j : E ≃+* F` to `(RingEquiv.ofBijective (algebraMap F E) (Algebra.finrank_eq_one_iff_bijective_algebraMap.1 h1)).symm`. Use `⟨UpperTheory.V.FieldIso.pullSub j π, UpperTheory.V.FieldIso.isRegAlg_pullSub j hreg, ⟨(UpperTheory.galoisRep_irreducibility_criterion.1 _ (G E Ω) _ n _).2.1 hi, ?_⟩, fun τ m hm => by` and prove the remaining obligations. Establish `h` using `(UpperTheory.V.FieldIso.hasInfChar_pullSub j π _ m).2 hm`. Rewrite using `[show (τ.comp (algebraMap F E)).comp (j : E →+* F) = τ from RingHom.ext fun x => congrArg τ (j.symm_apply_apply x)] at h⟩` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `filter_upwards [(plMap_injective j).tendsto_cofinite.eventually hat] with w hw`. Take `⟨B, hB, hF⟩` from `hw`. Establish `hu : w.under (𝓞 F) = plMap j w` using `HeightOneSpectrum.ext (Ideal.ext fun x => Iff.rfl)`. Establish `hn : normV w = normV (plMap j w)` using `(absNorm_plMap j w).symm`. Use `⟨B, UpperTheory.V.FieldIso.hasSat_pullSub j hB, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `(UpperTheory.frobenius_power_compatibility F E Ω l ι w 1 (by rw [hu, pow_one, hn])).1 n r _ (hu ▸ hF)`. Rewrite using `[hn, ← hu]`. Simplify using `only [pow_one, Multiset.map_id'] at h3`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem up_one (F E Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field E] [NumberField E]
     [IsTotallyComplex E] [Field Ω] [Algebra F E] [Algebra F Ω] [Algebra E Ω] [IsScalarTower F E Ω] [IsAlgClosure E Ω]
@@ -138,17 +136,15 @@ private theorem up_one (F E Ω : Type) [Field F] [NumberField F] [IsTotallyCompl
   simp only [pow_one, Multiset.map_id'] at h3
   exact h3
 /- English proof (translation)
-Introduce `P hL F E Ω _ _ _ _ _ _ _ _ _ _ _ _ _ _ l _ ι`. Proceed by induction on `hd : Module.finrank F E using Nat.strong_induction_on generalizing F with`. Consider the case `_ d ih`. Introduce `r π hc hreg ha hi`. Distinguish the cases in `h1 : Module.finrank F E = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `up_one F E Ω h1 l ι 2 r π hreg ha hi`. Use `haveI : Nontrivial (E ≃ₐ[F] E) := by`. Rewrite using `[← Finite.one_lt_card_iff_nontrivial, IsGalois.card_aut_eq_finrank]`. Use `Module.finrank_pos (R := F) (M := E)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨M, hM, hp⟩` from `exists_prime_index (E ≃ₐ[F] E)`. Set `K` to `IntermediateField.fixedField M`. Use `haveI : IsGalois F K := IsGalois.of_fixedField_normal_subgroup M`. Use `haveI : IsTotallyComplex K := isTotallyComplex_of_algebra F K`. Use `haveI : Module.IsTorsionFree K Ω := DivisionSemiring.to_moduleIsTorsionFree`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsAlgClosure K Ω := closure_tower K E Ω`. Use `haveI : Group.IsSolvable (E ≃ₐ[K] E) := Group.isSolvable_of_isSolvable_injective (f := AlgEquiv.restrictScalarsHom F) (AlgEquiv.restrictScalars_injective F)`. Establish `hdeg : Module.finrank F K = M.index`. Establish `h2` using `Module.finrank_mul_finrank F K E`. Rewrite `h2` using `[IntermediateField.finrank_fixedField_eq_card, ← IsGalois.card_aut_eq_finrank F E, ← M.index_mul_card]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Nat.eq_of_mul_eq_mul_right Nat.card_pos h2`. Establish `hlt : Module.finrank K E < d`. Rewrite using `[← hd, ← Module.finrank_mul_finrank F K E, hdeg]`. Conclude with `lt_mul_of_one_lt_left Module.finrank_pos hp.one_lt`. Establish `e : r.comp (galEmb F E Ω) = (r.comp (galEmb F K Ω)).comp (galEmb K E Ω)` using `rfl`.
-
-Rewrite `hi`, the goal using `[e]`. Take `⟨Q, q1, q2, q3⟩` from `upCycI P hL F K Ω l ι (hdeg ▸ hp) r π hc hreg ha ((UpperTheory.galoisRep_irreducibility_criterion.1 _ _ _ 2 _).1 _ hi)`. Take `⟨Q', p1, p2, p3⟩` from `ih _ hlt K rfl _ Q (hc.comp (resFacts F K Ω l 2 r).1) q1 q2 hi`. Use `⟨Q', p1, p2, fun τ m hm => p3 τ m (q3 _ m ?_)⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Bc.upSolI_of_alt :
     _root_.UpperTheory.V.Af.Hypotheses' → CyclicBaseChangeLiftRankTwo → UpSolI := by
@@ -184,7 +180,7 @@ theorem UpperTheory.V.Z.Bc.upSolI_of_alt :
   refine ⟨Q', p1, p2, fun τ m hm => p3 τ m (q3 _ m ?_)⟩
   rwa [RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]
 /- English proof (translation)
-Introduce `F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE r π hr hreg hatt hirr`. Take `⟨P, hBC⟩` from `(h F E hE π hreg).resolve_left fun ⟨η, hη, ht⟩ => UpperTheory.baseChange_noSelfTwist_of_frobenius_sign_irreducible (_root_.UpperTheory.V.Af.iso_of_frobenius_of_printed_results hP) UpperTheory.frobenius_eigenvalues_twist UpperTheory.exists_quadratic_sign_character UpperTheory.frob …`. Establish `h1` using `UpperTheory.V.Br.bcAtt0 F E Ω l ι 2 r π P hBC`. Conclude with `⟨P, h1.1 hreg, h1.2 hatt ((UpperTheory.galoisRep_irreducibility_criterion.1 _ Unit _ 2 _).2.1 hirr), hBC.inf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Bc.upQuadI_of_alt (hP : _root_.UpperTheory.V.Af.Hypotheses') (h : QuadLiftRealToComplexRankTwo) : UpQuadI := by
   intro F E Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι hE r π hr hreg hatt hirr

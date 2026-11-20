@@ -15,7 +15,7 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 noncomputable def sg (v : InfinitePlace F) : F →+* ℝ := (Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) v).comp rhom
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.hilbert_slash_rational_matrix_properties F 0 (fun _ => 0)).1 v x).symm`.
+A detailed English derivation is pending.
 -/
 theorem reAt_eq (v : InfinitePlace F) (x : F) : reAt v x = sg v x :=
   ((GlobalTheory.T.hilbert_slash_rational_matrix_properties F 0 (fun _ => 0)).1 v x).symm
@@ -28,12 +28,12 @@ theorem cmp_wm (c : Fˣ) (v : InfinitePlace F) (i j : Fin 2) :
       = sg v (((wm c : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) i j) := rfl
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero _).2 c.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem sg_ne (c : Fˣ) (v : InfinitePlace F) : sg v (c : F) ≠ 0 := (map_ne_zero _).2 c.ne_zero
 
 /- English proof (translation)
-Unfold `denom`. Rewrite using `[cmp_wm, cmp_wm]`. Simplify using `[wm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem denom_wm (c : Fˣ) (v : InfinitePlace F) (z : ℂ) :
     denom (HilbertThetaSeries.cmp v (toInf (wm c))) z = (sg v (c : F) : ℂ) * z := by
@@ -42,9 +42,9 @@ theorem denom_wm (c : Fˣ) (v : InfinitePlace F) (z : ℂ) :
   simp [wm]
 
 /- English proof (translation)
-Establish `hc : (sg v (c : F) : ℂ) ≠ 0` using `by exact_mod_cast sg_ne c v`. Establish `hz : ((z v : ℍ) : ℂ) ≠ 0` using `(z v).ne_zero`. Unfold `HilbertThetaSeries.act`. Rewrite using `[coe_smul_of_det_pos, denom_wm]`. Unfold `num`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[cmp_wm, cmp_wm]`. Simplify using `[wm]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, cmp_wm, cmp_wm, cmp_wm, cmp_wm]`. Simplify using `[wm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_wm (c : Fˣ) (z : Hn F) (v : InfinitePlace F) :
     ((act (toInf (wm c)) z v : ℍ) : ℂ) = -((sg v (c : F) : ℂ) ^ 2 * (z v : ℂ))⁻¹ := by
@@ -60,9 +60,9 @@ theorem act_wm (c : Fˣ) (z : Hn F) (v : InfinitePlace F) :
     simp [wm]
 
 /- English proof (translation)
-Unfold `ez QF`. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[reAt_eq, map_mul, map_div₀, map_ofNat, ← reAt_eq v (BF G x x), ← he]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← Finset.mul_sum]`. Use `push_cast`. Simplify using `only [sq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ez_QF {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ) (e : (κ → F) →+ (InfinitePlace F × κ → ℝ))
     (he : ∀ x y v, ∑ i, e x (v, i) * e y (v, i) = reAt v (BF G x y)) (b : F) (x : κ → F) (w : Hn F) :
@@ -80,7 +80,7 @@ theorem ez_QF {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ) (
   ring
 
 /- English proof (translation)
-Unfold `et`. Use `congr 2`. Rewrite using `[← Complex.ofReal_ratCast, ← ((GlobalTheory.T.hilbert_slash_rational_matrix_properties F 0 (fun _ => 0)).2.2.2.2 (BF G x y)).2, ← Complex.ofReal_sum, Fintype.sum_prod_type]`. Simplify using `only [he]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem et_BF {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ) (e : (κ → F) →+ (InfinitePlace F × κ → ℝ))
     (he : ∀ x y v, ∑ i, e x (v, i) * e y (v, i) = reAt v (BF G x y)) (x y : κ → F) :
@@ -92,13 +92,13 @@ theorem et_BF {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ) (
   simp only [he]
 
 /- English proof (translation)
-Establish `hP : (∏ v, (sg v (c : F) : ℂ) * (z v : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => mul_ne_zero (by exact_mod_cast sg_ne c v) (z v).ne_zero`. Establish `hcard : Fintype.card (InfinitePlace F) = Module.finrank ℚ F`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, ← InfinitePlace.card_add_two_mul_card_eq_rank, IsTotallyReal.nrComplexPlaces_eq_zero]`. Establish `hN : (∏ v, (sg v (c : F) : ℂ)) = ((Algebra.norm ℚ (c : F) : ℚ) : ℂ)`. Rewrite using `[← Complex.ofReal_ratCast, ← ((GlobalTheory.T.hilbert_slash_rational_matrix_properties F 0 (fun _ => 0)).2.2.2.2 (c : F)).1, Complex.ofReal_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [reAt_eq]`. Establish `h : (∏ v, -Complex.I * ((sg v (c : F) : ℂ) ^ 2 * (z v : ℂ))) = (-Complex.I) ^ Module.finrank ℚ F * ((Algebra.norm ℚ (c : F) : ℚ) : ℂ) * ∏ v, (sg v (c : F) : ℂ) * (z v : ℂ)`. Rewrite using `[← hN, ← hcard, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => by ring`. Rewrite using `[h, hd, wC]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(∏ v, (sg v (c : F) : ℂ) * (z v : ℂ)) = P at hP`. Use `push_cast`. Rewrite using `[mul_pow _ P, mul_pow, ← pow_mul, mul_comm (Module.finrank ℚ F) k, div_eq_mul_inv, inv_pow]`. Establish `: (P ^ k)⁻¹ * P ^ k = 1` using `inv_mul_cancel₀ (pow_ne_zero _ hP)`. Generalize the expression as in `(P ^ k)⁻¹ = Q at this`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(_ * _ * _ : ℂ)⁻¹ = R`. Take the linear combination `(R * ((-Complex.I) ^ (k * Module.finrank ℚ F) * ((Algebra.norm ℚ (c : F) : ℚ) : ℂ) ^ k)) * this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem const_eq (k t : ℕ) (a : F) (c : Fˣ) (z : Hn F) (d : ℝ)
     (hd : d = ((Algebra.norm ℚ a : ℚ) : ℝ) ^ (2 * k) * ((discr F).natAbs : ℝ) ^ k * (t : ℝ) ^ Module.finrank ℚ F) :
@@ -126,23 +126,21 @@ theorem const_eq (k t : ℕ) (a : F) (c : Fˣ) (z : Hn F) (d : ℝ)
   linear_combination (R * ((-Complex.I) ^ (k * Module.finrank ℚ F) * ((Algebra.norm ℚ (c : F) : ℚ) : ℂ) ^ k)) * this
 
 /- English proof (translation)
-Introduce `F _ _ _ κ _ _ G hG t ht k hk a c x₀ ha`. Use `letI : DecidableEq (InfinitePlace F) := Classical.decEq _`. Take `⟨e, B, α, β, he, hα, hβ, hB, hdet⟩` from `GlobalTheory.T.exists_realMatrix_for_lattice_and_dual_with_det F κ G hG t ht k hk a ha`. Establish `hsm` using `(GlobalTheory.HilbertThetaSeries.formLatticeProps F κ G hG).2.1`. Establish `hc : (c : F) ≠ 0` using `c.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Establish `hz : ∀ v, 0 < ((sg v (c : F) : ℂ) ^ 2 * (z v : ℂ)).im` using `fun v => by`. Rewrite using `[← Complex.ofReal_pow, Complex.im_ofReal_mul]`. Conclude with `mul_pos (sq_pos_of_ne_zero (sg_ne c v)) (z v).im_pos`. Establish `hP` using `GlobalTheory.T.poisson_summation_gaussian_constant_on_even_blocks (InfinitePlace F) κ k hk B hB (e x₀) (fun v => (sg v (c : F) : ℂ) ^ 2 * (z v : ℂ)) hz`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ Φ : (κ → F) → ℂ, (∀ x, x - x₀ ∈ aL κ a → Φ x = 1) → (∀ x, x - x₀ ∉ aL κ a → Φ x = 0) → th G Φ (HilbertThetaSeries.act (toInf (wm c)) z) = ∑' m : InfinitePlace F × κ → ℤ, Complex.exp (Real.pi * Complex.I * ∑ j, (-((sg j.1 (c : F) : ℂ) ^ 2 * (z j.1 : ℂ))⁻¹) * (((B *ᵥ fun i = …`. Introduce `Φ h1 h0`. Unfold `th`. Establish `hinj : Function.Injective fun m : InfinitePlace F × κ → ℤ => (α m : κ → F) + x₀` using `fun m n h => α.injective (Subtype.ext (add_right_cancel h))`. Rewrite using `[← hinj.tsum_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[h1 _ (by rw [add_sub_cancel_right]; exact (α m).2), one_mul, ← one_mul (QF G _), ez_QF G e he, map_add, hα]`. Simplify using `only [act_wm, map_one, Complex.ofReal_one, one_mul, Pi.add_apply]`. Introduce `x hx`. Establish `hx' : x - x₀ ∈ aL κ a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (by simp [h0 x h])`. Conclude with `⟨α.symm ⟨_, hx'⟩, by simp⟩`. Establish `hR : th G (wT G k t a c {x₀} fun _ => 1) z = wC k t a (c : F) * ∑' m : InfinitePlace F × κ → ℤ, Complex.exp (Real.pi * Complex.I * ∑ j, ((sg j.1 (c : F) : ℂ) ^ 2 * (z j.1 : ℂ)) * (((B⁻¹ᵀ *ᵥ fun i => (m i : ℝ)) j : ℝ) : ℂ) ^ 2) * Complex.exp (2 * Real.pi * Complex.I * ∑ j, (((B⁻¹ᵀ …`. Unfold `th`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective fun m : InfinitePlace F × κ → ℤ => (c : F) • (β m : κ → F)` using `fun m n h => β.injective (Subtype.ext (smul_right_injective _ hc h))`. Rewrite using `[← hinj.tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Establish `h1 : (a / (c : F)) • (c : F) • (β m : κ → F) ∈ dualL F G`. Rewrite using `[smul_smul, div_mul_cancel₀ _ hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(β m).2`. Rewrite using `[wT, if_pos h1, Finset.sum_singleton, one_mul, (hsm _ _ x₀).1, (hsm _ _ x₀).2.1, mul_div_cancel_left₀ _ hc, ez_QF G e he, et_BF G e he, hβ, mul_assoc, mul_comm (Complex.exp _)]`. Simplify using `only [map_pow, Complex.ofReal_pow]`. Introduce `y hy`. Establish `hy' : (a / (c : F)) • y ∈ dualL F G`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `h`. Conclude with `hy (by simp [wT, h])`. Use `⟨β.symm ⟨(c : F)⁻¹ • y, by rwa [smul_smul, ← div_eq_mul_inv]⟩, ?_⟩` and prove the remaining obligations. Simplify using `[smul_smul, hc]`. Unfold `sl0`.
-
-Simplify using `only [denom_wm]`. Rewrite using `[hL _ (fun x h => if_pos h) (fun x h => if_neg h), hP, hR, ← mul_assoc, const_eq k t a c z _ hdet]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wcos : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ t : ℕ, G.det = (t : ℤ) ^ 2 → ∀ k : ℕ, Fintype.card κ = 2 * k → ∀ (a : F) (c : Fˣ) (x₀ : κ → F), a ≠ 0 → sl0 k (toInf (wm c)) (th G fun x => open Classical in if x - x₀ ∈ aL κ a then 1 else 0) = th G (wT G k t a c {x₀} fun _ => 1) := by
   intro F _ _ _ κ _ _ G hG t ht k hk a c x₀ ha
@@ -203,7 +201,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WCos.wcos | exact GlobalTheory.WCos.wcos | (intros; apply GlobalTheory.WCos.wcos <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.hilbertThetaSeries_coset_inversion_formula : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ t : ℕ, G.det = (t : ℤ) ^ 2 → ∀ k : ℕ, Fintype.card κ = 2 * k → ∀ (a : F) (c : Fˣ) (x₀ : κ → F), a ≠ 0 → sl0 k (toInf (wm c)) (th G fun x => open Classical in if x - x₀ ∈ aL κ a then 1 else 0) = th G (wT G k t a c {x₀} fun _ => 1) := by
   first | exact @GlobalTheory.WCos.wcos | exact GlobalTheory.WCos.wcos | (intros; apply GlobalTheory.WCos.wcos <;> assumption)

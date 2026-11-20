@@ -13,7 +13,7 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Bas
   {k : Type} [Field k] [IsAlgClosed k] {s : Sp k ⟶ Sp R} {o : Obj b N s} {w0 : Ideal (𝓞 D.F)} {r : ℕ}
 
 /- English proof (translation)
-Establish `hi : (Over.mkIdTerminal (X` using `Sp k)).from (𝟙_ (Over (Sp k))) ≫ toUnit (Over.mk (𝟙 (Sp k))) = 𝟙 _ := toUnit_unique _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hi, Category.id_comp]`. Use `_ = g := by rw [Category.assoc, h, ← Category.assoc, hi, Category.id_comp]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cancel_pt {X : Over (Sp k)} {f g : 𝟙_ (Over (Sp k)) ⟶ X}
     (h : toUnit (Over.mk (𝟙 (Sp k))) ≫ f = toUnit (Over.mk (𝟙 (Sp k))) ≫ g) : f = g := by
@@ -27,7 +27,7 @@ section lev
 variable {lv : D.La → (𝟙_ (Over (Sp k)) ⟶ o.A)}
 
 /- English proof (translation)
-Rewrite using `[h.1, MonObj.comp_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_add (h : IsEtLev o w0 r lv) (x y : D.La) :
     toUnit (Over.mk (𝟙 (Sp k))) ≫ lv (x + y) =
@@ -35,23 +35,23 @@ theorem pt_add (h : IsEtLev o w0 r lv) (x y : D.La) :
   rw [h.1, MonObj.comp_mul]
 
 /- English proof (translation)
-Rewrite using `[h.2.2.1 x hx, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_mem (h : IsEtLev o w0 r lv) {x : D.La} (hx : x ∈ wSub D w0 r) :
     toUnit (Over.mk (𝟙 (Sp k))) ≫ lv x = 1 := by
   rw [h.2.2.1 x hx, MonObj.comp_one]
 
 /- English proof (translation)
-Rewrite using `[h.2.1, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_smul (h : IsEtLev o w0 r lv) (a : D.O) (x : D.La) :
     toUnit (Over.mk (𝟙 (Sp k))) ≫ lv (a • x) = (toUnit (Over.mk (𝟙 (Sp k))) ≫ lv x) ≫ o.act.act a := by
   rw [h.2.1, Category.assoc]
 
 /- English proof (translation)
-Apply `(h.2.2.2 k (𝟙 (Sp k))).1` to reduce the goal to its premises. Establish `h0 : toUnit (Over.mk (𝟙 (Sp k))) ≫ lv 0 = 1` using `pt_mem h (Submodule.zero_mem _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_neg_cancel, h0, _root_.mul_one]`. Use `_ = (toUnit (Over.mk (𝟙 (Sp k))) ≫ lv (x - y + y)) * (toUnit (Over.mk (𝟙 (Sp k))) ≫ lv (-y)) := by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pt_add h, pt_add h, _root_.mul_assoc]`. Use `_ = (toUnit (Over.mk (𝟙 (Sp k))) ≫ lv (y + -y)) := by`. Rewrite using `[sub_add_cancel, hxy, pt_add h]`. Use `_ = 1 := by rw [add_neg_cancel, h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_inj (h : IsEtLev o w0 r lv) {x y : D.La}
     (hxy : toUnit (Over.mk (𝟙 (Sp k))) ≫ lv x = toUnit (Over.mk (𝟙 (Sp k))) ≫ lv y) : x - y ∈ wSub D w0 r := by
@@ -67,7 +67,7 @@ theorem pt_inj (h : IsEtLev o w0 r lv) {x y : D.La}
     _ = 1 := by rw [add_neg_cancel, h0]
 
 /- English proof (translation)
-Introduce `c hc`. Rewrite using `[← pt_smul h]`. Conclude with `pt_mem h (Submodule.subset_span ⟨c, hc, y, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_killed (h : IsEtLev o w0 r lv) (y : D.La) :
     ∀ c ∈ w0 ^ r, (toUnit (Over.mk (𝟙 (Sp k))) ≫ lv y) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1 := by
@@ -78,21 +78,19 @@ theorem pt_killed (h : IsEtLev o w0 r lv) (y : D.La) :
 end lev
 
 /- English proof (translation)
-Establish `hz : ∀ y, ∃ z, toUnit (Over.mk (𝟙 (Sp k))) ≫ l₂ z = toUnit (Over.mk (𝟙 (Sp k))) ≫ l₁ y` using `fun y => (h₂.2.2.2 k (𝟙 (Sp k))).2 _ (pt_killed h₁ y)`. Use `choose z hz using hz`. Set `ψ : D.La →ₗ[D.O] D.La ⧸ wSub D w0 r` to `{ toFun := fun y => Submodule.Quotient.mk (z y) map_add' := fun x y => by`. Rewrite using `[← Submodule.Quotient.mk_add, Submodule.Quotient.eq]`. Apply `pt_inj h₂` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, pt_add h₁, pt_add h₂, hz, hz]`. Use the proof step `map_smul' := fun a y => by`. Rewrite using `[RingHom.id_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Apply `pt_inj h₂` to reduce the goal to its premises. Rewrite using `[hz, pt_smul h₁, pt_smul h₂, hz] }`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : wSub D w0 r ≤ LinearMap.ker ψ` using `fun y hy => by`. Rewrite using `[LinearMap.mem_ker]`. Use `show Submodule.Quotient.mk (z y) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `pt_inj h₂ (x := z y) (y := 0) (by rw [hz, pt_mem h₁ hy, pt_mem h₂ (Submodule.zero_mem _)])` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using this`. Set `F` to `(wSub D w0 r).liftQ ψ hker`. Establish `hF : ∀ y, F (Submodule.Quotient.mk y) = Submodule.Quotient.mk (z y)` using `fun y => rfl`. Establish `inj : Function.Injective F`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `q hq`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite `hq` using `[hF, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Apply `(h₁.2.2.2 k (𝟙 (Sp k))).1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hz, pt_mem h₂ hq]`. Establish `surj : Function.Surjective F`. Introduce `q`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨y, hy⟩` from `(h₁.2.2.2 k (𝟙 (Sp k))).2 _ (pt_killed h₂ w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨Submodule.Quotient.mk y, ?_⟩` and prove the remaining obligations. Rewrite using `[hF, Submodule.Quotient.eq]`. Apply `pt_inj h₂` to reduce the goal to its premises. Rewrite using `[hz, hy]`. Use `⟨LinearEquiv.ofBijective F ⟨inj, surj⟩, fun y => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[h₂.congr_mk (x := liftAct _ y) (y := z y) (by rw [mk_liftAct]; rfl)]`. Conclude with `cancel_pt (hz y).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_levGrp {l₁ l₂ : D.La → (𝟙_ (Over (Sp k)) ⟶ o.A)} (h₁ : IsEtLev o w0 r l₁)
     (h₂ : IsEtLev o w0 r l₂) : ∃ g : LevGrp D w0 r, ∀ y, l₁ y = l₂ (liftAct g y) := by

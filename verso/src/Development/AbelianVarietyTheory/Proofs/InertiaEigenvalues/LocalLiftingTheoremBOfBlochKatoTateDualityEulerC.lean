@@ -13,9 +13,9 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hBK hTD hEC D HW F Cm C hC`. Establish `h22 : CrystallineLiftingBounds.adm22 D HW F` using `GlobalTheory.FontaineIneq.one_place_admissible_of_gap_constant_le D HW F`. Establish `h23 : CrystallineLiftingBounds.adm23 D HW F` using `(GlobalTheory.jumps_exact_adm D HW F).1`. Establish `hN1 : Formalism.MainNotions.DeltaInvariantLattices.DeltaInvariantNormBound D HW F Cm` using `GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm`. Establish `hC4 : Formalism.MainNotions.N.LetterConditionGlobal D HW F` using `GlobalTheory.T.letterConditionGlobal_of_N1used D HW F Cm hN1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.theoremB_of_localFilteredHypotheses D HW F Cm C 10 23 32 32 8 hC h22 h23 hC4 (GlobalTheory.T.localLifting_theoremB_hypotheses_admitted hBK hTD hEC D HW F Cm)`.
+A detailed English derivation is pending.
 -/
 theorem theoremB_closing : GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK →
     Formalism.GaloisCohomology.LocalEulerCharK → ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)

@@ -8,11 +8,11 @@ namespace GlobalTheory
 open Scheme.IdealSheafData in
 
 /- English proof (translation)
-Introduce `A X g _ B B' h`. Establish `hB : (vanishingIdeal B).support = B`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hr : (vanishingIdeal B).radical = vanishingIdeal B`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← vanishingIdeal_support, hB]`. Establish `hs : ((vanishingIdeal B).comap g).support = B'`. Use extensionality with `x`. Simplify using `[support_comap, h]`. Rewrite using `[← hs, vanishingIdeal_support]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `U : 2`. Rewrite using `[radical_ideal, ideal_comap_of_isOpenImmersion, ← Ideal.comap_radical, ← radical_ideal, hr]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem vanishingIdeal_comap_of_isOpenImmersion : ∀ (A X : Scheme.{0}) (g : A ⟶ X) [IsOpenImmersion g] (B : Closeds X) (B' : Closeds A), (∀ x : A, x ∈ B' ↔ g x ∈ B) → (Scheme.IdealSheafData.vanishingIdeal B).comap g = Scheme.IdealSheafData.vanishingIdeal B' := by
   intro A X g _ B B' h

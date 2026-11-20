@@ -6,7 +6,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgInf
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun (congrFun h ⟨r, by omega⟩) ⟨r, by omega⟩` as an intermediate fact. Simplify using `only [Hpk, Matrix.zero_apply] at this`. Apply the tactic sequence `split_ifs at this <;> first | omega | norm_num at this | skip`. Apply the tactic sequence `all_goals simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hpk_ne_zero (k r : ℕ) : Hpk k r ≠ 0 := by
   intro h
@@ -16,11 +16,9 @@ theorem hpk_ne_zero (k r : ℕ) : Hpk k r ≠ 0 := by
   all_goals simp_all
 
 /- English proof (translation)
-Take `⟨hU, hc, h1, hm, hi⟩` from `hS`. Use `⟨hc, h1, hm, fun a ha => ⟨hi a ha, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hd : IsUnit a.det`. Conclude with `Matrix.mul_nonsing_inv a hd`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : a⁻¹ = 0` using `Matrix.nonsing_inv_apply_not_isUnit a hd`. Establish `hmem` using `hU (hi a ha)`. Rewrite `hmem` using `[h0]`. Establish `: (0 : Mat k r)ᴴ * Hpk k r * 0 = Hpk k r` using `hmem`. Simplify using `at this`.
-
-Conclude with `hpk_ne_zero k r this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMatGroup_of_isClosedSub {k r : ℕ} {S : Set (Mat k r)} (hS : IsClosedSub k r S) :
     PI.IsMatGroup S := by
@@ -37,7 +35,7 @@ theorem isMatGroup_of_isClosedSub {k r : ℕ} {S : Set (Mat k r)} (hS : IsClosed
     exact hpk_ne_zero k r this.symm
 
 /- English proof (translation)
-Introduce `k r S μ μ' hS hμ hμ'`. Conclude with `(GlobalTheory.MatHaar.haar_unique_locFinite_openPos (2 * r + k + 1) S μ (isMatGroup_of_isClosedSub hS) hμ).1 μ' hμ'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem haarOn_unique : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ μ' : Measure (Mt k r)), IsClosedSub k r S →
     IsHaarOn S μ → IsHaarOn S μ' → ∃ c : ENNReal, 0 < c ∧ c < ⊤ ∧ μ' = c • μ := by
@@ -47,6 +45,6 @@ theorem haarOn_unique : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ μ' : Measure (M
 end GlobalTheory.SgInf
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SgInf.haarOn_unique`.
+A detailed English derivation is pending.
 -/
 example : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ μ' : Measure (Mt k r)), IsClosedSub k r S → IsHaarOn S μ → IsHaarOn S μ' → ∃ c : ENNReal, 0 < c ∧ c < ⊤ ∧ μ' = c • μ := GlobalTheory.SgInf.haarOn_unique

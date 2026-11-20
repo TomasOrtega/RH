@@ -30,25 +30,21 @@ variable {O C : Type} [CommRing O] [IsDomain O] [ValuationRing O] [Field C] [Alg
   {G : Over (Sp O)} [GrpObj G] [IsCommMonObj G] [Smooth G.hom] {Λ : Type} [CommRing Λ] (α : Out.RingAct G Λ)
 
 /- English proof (translation)
-Take `⟨n, x, hx⟩` from `Chart.univChartLoc G`. Establish `hB : LieLatCompare.CoordBC hx C` using `(LieLatCompare.tangentBaseChange_iff_one.2 (LieLatCompare.tanBCOne_of_tanBCSt Chart.tanBC)) O G n x hx C`. Rewrite `h` using `[LieLatCompare.lieMult_iff hx hB]`. Take `⟨h₁, h₂⟩` from `finite_free_eigSub α τ`. Rewrite using `[rTau_eq, eigRank_eq, Module.finrank_linearMap_self, ← h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `choose f₀ hf₀ using fun c : Fin n → O => (lieEquiv G).surjective ⟨Chart.tvec (x := x) c, Chart.isTan_tvec hx c⟩`. Establish `hf : ∀ c, (lieEquiv G (f₀ c)).1 = Chart.tvec (x` using `x) c := fun c => congrArg Subtype.val (hf₀ c)`. Set `f : (Fin n → O) →ₗ[O] GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems.Lie G` to `{ toFun := f₀ map_add' := fun c c' => lie_ext (by`. Rewrite using `[lieEquiv_add, hf, hf, hf]`. Conclude with `Chart.tvec_add hx c c')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use the proof step `map_smul' := fun a c => lie_ext (by`. Rewrite using `[RingHom.id_apply, lieEquiv_smul, hf, hf]`. Conclude with `Chart.tvec_smul hx a c) }`. Use `replace hf : ∀ c, (lieEquiv G (f c)).1 = Chart.tvec (x := x) c := hf`. Set `e : (Fin n → O) ≃ₗ[O] GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateCharacterSystems.Lie G` to `LinearEquiv.ofBijective f ⟨fun c c' hc => Chart.tvec_inj hx (by rw [← hf, ← hf, hc]), fun y => ⟨Chart.tcoord hx (lieEquiv G y).1 (lieEquiv G y).2, lie_ext (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hf]`. Conclude with `(Chart.tcoord_spec hx _ _).symm)⟩⟩`. Establish `hmem : ∀ c, e c ∈ eigSub α τ ↔ ∀ a, lieAct hx (ofRingAct α) a c = τ a • c` using `fun c => forall_congr' fun a => by haveI := α.hom a`. Express the relevant statement in the definitionally equal form `(lieEquiv G (f c)).1 ≫ _ = (lieEquiv G (τ a • f c)).1 ↔ _`. Rewrite using `[← map_smul, hf, hf, Chart.tvec_smul hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Chart.tvec_eig_iff hx (α.act a) c (τ a)`. Set `B : eigSub α τ →ₗ[O] (Fin n → C)` to `(Algebra.linearMap O C).compLeft (Fin n) ∘ₗ e.symm.toLinearMap ∘ₗ (eigSub α τ).subtype`. Establish `hinj` using `IsFractionRing.injective O C`. Establish `hBi : Function.Injective B` using `fun y y' hy => Subtype.ext (e.symm.injective (funext fun k => hinj (congrFun hy k)))`. Establish `key : ∀ (c : Fin n → O) (a : Λ), (extendLin C (lieAct hx (ofRingAct α) a) - (algebraMap O C).comp τ a • (LinearMap.id : (Fin n → C) →ₗ[C] _)) (algebraMap O C ∘ c) = 0 ↔ lieAct hx (ofRingAct α) a c = τ a • c` using `fun c a => by`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[LinearMap.sub_apply, LieLatCompare.extendLin_comp, sub_eq_zero]`. Use `⟨fun hc => funext fun k => hinj ?_, fun hc => funext fun k => ?_⟩` and prove the remaining obligations. Simplify `congrFun hc k` using `[Algebra.smul_def]`. Simplify using `[hc, Algebra.smul_def]`. Rewrite using `[← HodgeTateEigenRank.finrank_span_range (C := C) B hBi]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun S : Submodule C (Fin n → C) => Module.finrank C S) (le_antisymm (Submodule.span_le.2 ?_) fun w hw => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Use `(Submodule.mem_iInf _).2 fun a => (key (e.symm y.1) a).2 ?_` and prove the remaining obligations. Conclude with `(hmem _).1 (by rw [e.apply_symm_apply]; exact y.2) a`. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) w choose c hc using hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hs' : algebraMap O C s ≠ 0` using `fun h0 => nonZeroDivisors.coe_ne_zero s (hinj (by rw [h0, map_zero]))`. Establish `hc' : algebraMap O C ∘ c = algebraMap O C s • w` using `funext fun k => by`. Simplify `hc k` using `[Algebra.smul_def]`. Establish `hm : e c ∈ eigSub α τ` using `(hmem c).2 fun a => (key c a).1 (by`. Rewrite using `[hc']`.
-
-Conclude with `(Submodule.mem_iInf _).1 (Submodule.smul_mem _ _ hw) a)`. Establish `: w = (algebraMap O C s)⁻¹ • B ⟨e c, hm⟩`. Establish `h1 : B ⟨e c, hm⟩ = algebraMap O C ∘ c`. Express the relevant statement in the definitionally equal form `algebraMap O C ∘ e.symm (e c) = _`. Rewrite using `[e.symm_apply_apply]`.
-
-Rewrite using `[h1, hc', smul_smul, inv_mul_cancel₀ hs', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTau_eq_of_lieMult (τ : Λ →+* O) {N : ℕ}
     (h : LieMult (ofRingAct α) (spMap (algebraMap O C)) ((algebraMap O C).comp τ) N) : AvDefs.rTau G α τ = N := by
@@ -125,13 +121,13 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
 /- English proof (translation)
-Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Take `⟨-, -, hb⟩` from `Point.omega_free_finite_bijective p C v O Λ P`. Establish `hp : algebraMap O C ((p : O) ^ 2) ≠ 0`. Rewrite using `[map_pow, map_natCast]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x y hxy`. Establish `h0 : ∀ t, (P.al₀ t).1 x = (P.al₀ t).1 y` using `fun t => P.integers.hom_inj (by`. Rewrite using `[← P.pairV_bLie, ← P.pairV_bLie, hxy])`. Establish `h1 : ∀ z, (P.al z).1 x = (P.al z).1 y` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add z z' hz hz' => simp only [map_add, Submodule.coe_add, Pi.add_apply, hz, hz']`. Consider the case `tmul c t => simp only [Point.al_tmul, Submodule.coe_smul, Pi.smul_apply, h0]`. Use `hb.1 (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `hcok f`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `h1 z`. Rewrite `h2` using `[hz]`. Conclude with `mul_left_cancel₀ (fun h => hp (by rw [h, map_zero])) h2`.
+A detailed English derivation is pending.
 -/
 theorem bLie_injective (hcok : CokernelBound P) : Function.Injective P.bLie := by
   haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)
@@ -154,17 +150,13 @@ theorem bLie_injective (hcok : CokernelBound P) : Function.Injective P.bLie := b
   exact mul_left_cancel₀ (fun h => hp (by rw [h, map_zero])) h2
 
 /- English proof (translation)
-Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := ValuationRing.of_integers v P.integers`. Use `haveI : IsFractionRing O C := P.integers.isFractionRing`. Use `haveI := (GlobalTheory.UnitRigidity.smooth_geometricallyConnected_of_isGt _ _ ⟨P.D⟩).1`. Take `⟨h₁, h₂⟩` from `finite_free_eigSub P.oGt τ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hn` using `[rTau_eq, eigRank_eq, Module.finrank_linearMap_self]`. Set `B : eigSub P.oGt τ →ₗ[O] P.V` to `{ toFun := fun x => P.bLie (lieEquiv P.Gt x.1) map_add' := fun x y => by`. Rewrite using `[← P.bLie_add]`. Conclude with `congrArg P.bLie (Subtype.ext (lieEquiv_add x.1 y.1))`. Use the proof step `map_smul' := fun c x => by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[RingHom.id_apply, ← P.bLie_scale]`. Conclude with `congrArg P.bLie (Subtype.ext (lieEquiv_smul c x.1)) }`. Establish `hBi : Function.Injective B` using `fun x y h => Subtype.ext ((lieEquiv P.Gt).injective (hinj h))`. Establish `hr : LinearMap.range B = P.wRec τ`. Use extensionality with `w`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨(eigEquiv P.oGt τ).symm (subEquiv P.oGt τ x), rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Use `⟨(subEquiv P.oGt τ).symm (eigEquiv P.oGt τ x), congrArg P.bLie ?_⟩` and prove the remaining obligations.
-
-Conclude with `(subEquiv_val P.oGt τ _).symm.trans (congrArg Subtype.val ((subEquiv P.oGt τ).apply_symm_apply _))`. Set `b` to `Module.finBasisOfFinrankEq O (eigSub P.oGt τ) hn`. Use `⟨fun j => lieEquiv P.Gt (b j).1, fun j => ((eigEquiv P.oGt τ).symm (subEquiv P.oGt τ (b j))).2, (LinearIndependent.iff_fractionRing O C).1 (b.linearIndependent.map' B (LinearMap.ker_eq_bot.2 hBi)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`. Express the relevant statement in the definitionally equal form `Submodule.span O (Set.range (B ∘ b)) = _`.
-
-Rewrite using `[Set.range_comp, Submodule.span_image, b.span_eq, Submodule.map_top]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_wRec (hinj : Function.Injective P.bLie) (τ : Λ →+* O) {n : ℕ}
     (hn : AvDefs.rTau P.Gt P.oGt τ = n) :
@@ -204,7 +196,7 @@ theorem exists_basis_wRec (hinj : Function.Injective P.bLie) (τ : Λ →+* O) {
   rw [Set.range_comp, Submodule.span_image, b.span_eq, Submodule.map_top]
 
 /- English proof (translation)
-Take `⟨x, h1, h2, h3⟩` from `exists_basis_wRec P hinj τ hn`. Take `⟨g, g1, g2, g3⟩` from `FlagBasis.exists_adapted_basis O C P.V v P.integers n La hfg _ h2 fun j => ⟨1, one_ne_zero, by rw [one_smul]; exact hle ⟨⟨x j, h1 j⟩, rfl⟩⟩`. Use `⟨x, g, h1, h2, h3, ?_, g3⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_of_lowerTriangular _ fun i j hij => g1 i j hij]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => g2 i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame (hinj : Function.Injective P.bLie) (τ : Λ →+* O) {n : ℕ} (hn : AvDefs.rTau P.Gt P.oGt τ = n)
     {La : Submodule O P.V} (hfg : La.FG) (hle : P.wRec τ ≤ La) :
@@ -220,7 +212,7 @@ theorem exists_frame (hinj : Function.Injective P.bLie) (τ : Λ →+* O) {n : �
   exact Finset.prod_ne_zero_iff.2 fun i _ => g2 i
 
 /- English proof (translation)
-Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨hW.ge (Submodule.subset_span ⟨_, rfl⟩), bLie_mem_eigV (h1 j)⟩`. Rewrite using `[finrank_span_eq_card h2, Fintype.card_fin, HodgeTateEigenRank.finrank_eigW p C v O Λ P hcok hW, hn]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_eq_eigW (hcok : CokernelBound P) (hW : P.W = Submodule.span C (Set.range P.bLie)) (τ : Λ →+* O) {n : ℕ}
     (hn : AvDefs.rTau P.Gt P.oGt τ = n) {x : Fin n → LieG P.Gt} (h1 : ∀ j, AvDefs.IsEig P.Gt P.oGt τ (x j))
@@ -244,11 +236,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {K : Ty
 omit [NumberField K] [IsAlgClosed C] in
 
 /- English proof (translation)
-Introduce `h`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h1` using `IsCMField.complexEmbedding_complexConj E φ (H.rt : E)`. Rewrite `h1` using `[h]`. Establish `h2 : φ (H.rt : E) ^ 2 = -(H.d : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, RingOfIntegers.coe_eq_algebraMap, ← map_pow, H.rt_sq]`. Simplify using the standard rewrite rules. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h1.symm`. Rewrite `h2` using `[hr]`. Establish `h3 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg r]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem conj_rt_ne (H : Host E) : IsCMField.complexConj E (H.rt : E) ≠ (H.rt : E) := by
   intro h
@@ -266,11 +258,9 @@ theorem conj_rt_ne (H : Host E) : IsCMField.complexConj E (H.rt : E) ≠ (H.rt :
 open Classical in
 
 /- English proof (translation)
-Use `letI := H.starRing`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Use `haveI := (GlobalTheory.UnitRigidity.smooth_geometricallyConnected_of_isGt _ _ ⟨(patPoint hv ε i T).D⟩).1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hβ : ∀ a, ((algebraMap O C).comp (embO hv i)) a = i (a : K)` using `fun a => algebraMap_embO hv i a`. Establish `h` using `hT C ((algebraMap O C).comp (embO hv i)) (fun a b hab => by`. Rewrite `hab` using `[hβ, hβ]`. Conclude with `RingOfIntegers.coe_injective (i.injective hab)) ((algebraMap O C).comp τ)`. Rewrite `h` using `[hβ, ← spMap_spMap]`.
-
-Use `rTau_eq_of_lieMult (C := C) _ τ ((LiePull.lieMult_pull (𝓞 E) _ _ T.t.G (patPoint hv ε i T).Gt (spMap (embO hv i)) (pullback.fst T.t.G.hom _) T.t.act _ (isGrpPullback_pullback T.t.G _) (fun a => ?_) C _ _ _).2 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((patPoint hv ε i T).oGt.act a).left ≫ _ = _`. Rewrite using `[goodPoint_oGt]`. Conclude with `pullback.lift_fst _ _ _`. Use `split_ifs with h0 exacts [h.1 h0, h.2 h0]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rTau_patPoint (T : PAT H (Sp (𝓞 K))) {ρ : 𝓞 K} {p q : ℕ} (hT : HasType H T.t.act ρ p q) (τ : 𝓞 E →+* O) :
     letI := H.starRing
@@ -325,9 +315,9 @@ def HasSigFrames [StarRing (𝓞 E)] (P : Point ℓ v O (𝓞 E)) (rt : 𝓞 E) 
 open Classical in
 
 /- English proof (translation)
-Establish `hinj` using `bLie_injective P hcok`. Establish `hp : AvDefs.rTau P.Gt P.oGt (embO P.integers τ) = p` using `by rw [h, algebraMap_embO, if_pos rfl]`. Establish `hq : AvDefs.rTau P.Gt P.oGt ((embO P.integers τ).comp (starRingEnd (𝓞 E))) = q`. Rewrite using `[h, RingHom.comp_apply, algebraMap_embO, starRingEnd_apply, if_neg hrt]`. Take `⟨x, g, a1, a2, a3, a4, a5⟩` from `exists_frame P hinj _ hp (P.fg_latTQuot (σ := fun φ : E →+* C => embO P.integers φ) (isSplitting_embO P.integers) τ) ((P.wRec_le_latTSub _).trans (P.latTSub_le_latTQuot (σ := fun φ : E →+* C => embO P.integers φ) _ τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x', g', b1, b2, b3, b4, b5⟩` from `exists_frame P hinj _ hq (fg_inf P.integers P.fg_latT _) (P.wRec_le_latTSub _)`. Use `⟨fun φ => ?_, x, x', g, g', a3, b3, a5, b5, a4, b4, a1, b1, a2, b2, span_eq_eigW P hcok hW _ hp a1 a2, span_eq_eigW P hcok hW _ hq b1 b2⟩` and prove the remaining obligations. Rewrite using `[HodgeTateEigenRank.finrank_eigW ℓ C v O _ P hcok hW, h, algebraMap_embO]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasSigFrames_of_rTau [StarRing (𝓞 E)] (P : Point ℓ v O (𝓞 E)) (hcok : CokernelBound P)
     (hW : P.W = Submodule.span C (Set.range P.bLie)) (rt : 𝓞 E) (τ : E →+* C) (hrt : τ ((star rt : 𝓞 E) : E) ≠ τ (rt : E))

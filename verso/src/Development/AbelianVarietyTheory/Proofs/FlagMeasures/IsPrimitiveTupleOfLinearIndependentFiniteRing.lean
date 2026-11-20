@@ -7,9 +7,9 @@ open scoped Classical
 namespace GlobalTheory.GramCount
 
 /- English proof (translation)
-Set `f : (Fin m → B) →+ B` to `{ toFun := fun s => ∑ a, s a * t a map_zero' := by simp map_add' := fun s s' => by simp [add_mul, Finset.sum_add_distrib] }`. Establish `h : χ.compAddMonoidHom f ≠ 0`. Introduce `h0`. Take `⟨a, ha⟩` from `Function.ne_iff.1 ht`. Use `hχ ha ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `r`. Establish `h1` using `DFunLike.congr_fun h0 (Pi.single a r)`. Simplify `h1` using `[f, Pi.single_apply, mul_comm]`. Conclude with `AddChar.sum_eq_zero_iff_ne_zero.2 h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_char_dot_eq_zero {B : Type} [CommRing B] [Fintype B] (χ : AddChar B ℂ)
     (hχ : χ.IsPrimitive) {m : ℕ} (t : Fin m → B) (ht : t ≠ 0) :
@@ -28,15 +28,15 @@ theorem sum_char_dot_eq_zero {B : Type} [CommRing B] [Fintype B] (χ : AddChar B
   exact AddChar.sum_eq_zero_iff_ne_zero.2 h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h1 : ∑ z : Fin n → B, ∑ s : Fin k → B, χ (∑ a, s a * (∑ i, x a i * z i - u a)) = 0`. Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations. Use `sum_char_dot_eq_zero χ hχ (fun a => ∑ i, x a i * z i - u a) ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hne z`. Introduce `h0`. Conclude with `ha (sub_eq_zero.1 (congrFun h0 a))`. Rewrite `h1` using `[Finset.sum_comm, Finset.sum_eq_single (0 : Fin k → B)]`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s _ hs`. Establish `h2 : ∀ z : Fin n → B, χ (∑ a, s a * (∑ i, x a i * z i - u a)) = χ (∑ i, z i * (∑ a, s a • x a) i) * χ (-∑ a, s a * u a)`. Introduce `z`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [mul_sub, Finset.sum_sub_distrib, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, sub_eq_add_neg, mul_add, Finset.sum_add_distrib, mul_neg, Finset.sum_neg_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h2]`. Rewrite using `[← Finset.sum_mul, sum_char_dot_eq_zero χ hχ _ (fun h => hs (hx s h)), zero_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dot_eq_of_indep {B : Type} [CommRing B] [Fintype B] (χ : AddChar B ℂ)
     (hχ : χ.IsPrimitive) {k n : ℕ} (x : Fin k → Fin n → B)
@@ -70,7 +70,7 @@ theorem exists_dot_eq_of_indep {B : Type} [CommRing B] [Fintype B] (χ : AddChar
   · simp
 
 /- English proof (translation)
-Introduce `B _ _ c hc χ hχ k n x hx`. Use `choose z hz using fun b : Fin k => exists_dot_eq_of_indep χ hχ x hx (Pi.single b 1)`. Use `⟨fun b i => c (z b i), fun a b => ?_⟩` and prove the remaining obligations. Simplify using `only [ip, hc]`. Rewrite using `[hz, Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_of_indep_of_isPrimitive : ∀ {B : Type} [CommRing B] [Fintype B] (c : B →+* B),
     (∀ u, c (c u) = u) → ∀ (χ : AddChar B ℂ), χ.IsPrimitive →

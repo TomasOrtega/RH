@@ -20,7 +20,7 @@ namespace GlobalTheory.BasisMatch
 open GlobalTheory.AbLaw GlobalTheory.Cartier TensorProduct
 
 /- English proof (translation)
-Use `DVR.SecOps.sec_ext fun i => ?_` and prove the remaining obligations. Use `(congrArg (rs X' _) (SecOn.coord_pullLE π le_top x i)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(π.appLE _ _ _ ≫ X'.presheaf.map _).hom _ = (X.presheaf.map _ ≫ π.appLE _ _ _).hom _`. Rewrite using `[Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem topEquiv_pull {X X' : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] {f : X ⟶ Sp R}
     {f' : X' ⟶ Sp R'} {π : X' ⟶ X} {g : R →+* R'} (w : π ≫ f = f' ≫ Spec.map (CommRingCat.ofHom g))
@@ -33,7 +33,7 @@ theorem topEquiv_pull {X X' : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R
   rfl
 
 /- English proof (translation)
-Introduce `p`. Establish `e` using `SecOn.coord_congr hL hN w hw ((SecOn.topEquiv L).symm a) p.1 p.2 (O := N.U p.1 ⊓ L.U p.2) (le_inf le_top inf_le_left) (le_inf le_top inf_le_right) le_rfl`. Rewrite `e` using `[SecOn.topEquiv_symm_apply, GlobalTheory.LB.coord_ofSec, rs_self, rs_rs]`. Rewrite using `[SecOn.topEquiv_f]`. Conclude with `(rs_rs _ _ _).trans e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secMaps_congr {Y : Scheme.{0}} {L N : LB Y} (hL : L.IsLB) (hN : N.IsLB) (w : LB.Iso L N)
     (hw : w.IsGen) (a : L.Sec) :
@@ -46,7 +46,7 @@ theorem secMaps_congr {Y : Scheme.{0}} {L N : LB Y} (hL : L.IsLB) (hN : N.IsLB) 
   exact (rs_rs _ _ _).trans e
 
 /- English proof (translation)
-Simplify using `only [map_sum, SecOnR.smul_def, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem topEquiv_sum {X : Scheme.{0}} {R : Type} [CommRing R] (f : X ⟶ Sp R) (M : LB X) {n : ℕ}
     (c : Fin n → R) (x : Fin n → SecOnR f M ⊤) :
@@ -54,7 +54,7 @@ theorem topEquiv_sum {X : Scheme.{0}} {R : Type} [CommRing R] (f : X ⟶ Sp R) (
   simp only [map_sum, SecOnR.smul_def, map_smul]
 
 /- English proof (translation)
-The claim follows from `map_sum ({ toFun := fun s : H.Sec => s.f k, map_zero' := rfl, map_add' := fun _ _ => rfl } : H.Sec →+ Γ(X, H.U k)) s Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem sum_f {X : Scheme.{0}} {H : LB X} {m : ℕ} (s : Fin m → H.Sec) (k : H.ι) :
     (∑ j, s j).f k = ∑ j, (s j).f k :=
@@ -62,11 +62,11 @@ theorem sum_f {X : Scheme.{0}} {H : LB X} {m : ℕ} (s : Fin m → H.Sec) (k : H
     H.Sec →+ Γ(X, H.U k)) s Finset.univ
 
 /- English proof (translation)
-Establish `E : ∀ {p : ℕ} (u : Fin (p + 1) → H.Sec), VeryAmpleBy f H u ↔ AmpleSpan.EmbedsBy f u` using `fun u => (AmpleSpan.embedsBy_spec_iff f u).symm`. Use `(E s).2 (((E s₁).1 hs₁).of_inSpan fun i => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `hsp i`. Use `⟨fun k => (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (c k), fun k' => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, sum_f]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.smul_f]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `rs X le_top (cst f ⊤ (c k)) = _`. Rewrite using `[rs_cst]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AbLaw.cst, RingHom.comp_apply, Scheme.Hom.appLE, CommRingCat.hom_comp, Scheme.Hom.appTop]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem veryAmpleBy_of_span {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) [UniversallyClosed f]
     (H : LB X) {m n : ℕ} (s₁ : Fin (m + 1) → H.Sec) (s : Fin (n + 1) → H.Sec) (hs₁ : VeryAmpleBy f H s₁)
@@ -101,34 +101,30 @@ def basisOfExistsUnique {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] 
       exact ⟨c, hc.symm⟩))
 
 /- English proof (translation)
-The claim follows from `Module.Basis.mk_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem basisOfExistsUnique_apply {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] {n : ℕ}
     (v : Fin n → V) (h : ∀ x, ∃! c : Fin n → R, x = ∑ j, c j • v j) (j : Fin n) :
     basisOfExistsUnique v h j = v j := Module.Basis.mk_apply _ _ _
 
 /- English proof (translation)
-Establish `hLy : (M.pull πG).IsLB` using `LB.isLB_pull hM _`. Establish `hHy : (H.pull πA).IsLB` using `LB.isLB_pull hH _`. Set `bcA` to `LinearEquiv.ofBijective _ (GlobalTheory.PlaceInt.Ext.baseChangeHom_top_bijective hH PA)`. Set `bcG` to `LinearEquiv.ofBijective _ (GlobalTheory.PlaceInt.Ext.baseChangeHom_top_bijective hM PG)`. Set `ψ` to `SecOnR.linEquiv fY (R := K') (SecOn.congr hLy hHy w hw ⊤)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `htt : ∀ x : SecOnR fG M ⊤, ∃! c : Fin (N + 1) → W, x = ∑ j, c j • (SecOnR.topEquiv fG M).symm (t j)`. Introduce `x`. Use `(existsUnique_congr fun c => ?_).1 (ht (SecOnR.topEquiv fG M x))` and prove the remaining obligations. Use `Iff.trans ?_ (SecOnR.topEquiv fG M).injective.eq_iff` and prove the remaining obligations. Rewrite using `[topEquiv_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearEquiv.apply_symm_apply]`. Set `bt` to `basisOfExistsUnique _ htt`. Set `tY` to `((bt.baseChange K').map bcG).map ψ`. Establish `hfr : Module.finrank K (SecOnR fA H ⊤) = N + 1`. Rewrite using `[← Module.finrank_baseChange (R := K') (S := K), Module.finrank_eq_card_basis (tY.map bcA.symm), Fintype.card_fin]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite K (SecOnR fA H ⊤) := Module.finite_of_finrank_eq_succ hfr`. Set `bs` to `Module.finBasisOfFinrankEq K _ hfr`. Set `s : Fin (N + 1) → H.Sec` to `fun k => SecOnR.topEquiv fA H (bs k)`. Set `bV` to `(bs.baseChange K').map bcA`. Establish `hbV : ∀ k, SecOnR.topEquiv fY (H.pull πA) (bV k) = secPull (s k) πA` using `fun k => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [bV, bcA, Module.Basis.map_apply, Module.Basis.baseChange_apply, LinearEquiv.ofBijective_apply]`. Conclude with `(congrArg (SecOnR.topEquiv fY (H.pull πA)) (one_smul K' (SecOnR.pull H PA.w ⊤ ⊤ le_top (bs k)))).trans (topEquiv_pull PA.w H _)`. Establish `htY : ∀ j, SecOnR.topEquiv fY (H.pull πA) (tY j) = SecOn.topEquiv (H.pull πA) (SecOn.congr hLy hHy w hw ⊤ ((SecOn.topEquiv (M.pull πG)).symm (secPull (t j) πG)))` using `fun j => by`. Establish `e1 : SecOnR.topEquiv fY (M.pull πG) (bcG (1 ⊗ₜ bt j)) = secPull (t j) πG`. Simplify using `only [bcG, LinearEquiv.ofBijective_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (SecOnR.topEquiv fY (M.pull πG)) (one_smul K' (SecOnR.pull M PG.w ⊤ ⊤ le_top (bt j)))).trans ?_` and prove the remaining obligations. Rewrite using `[topEquiv_pull]`. Use `show secPull (SecOnR.topEquiv fG M (basisOfExistsUnique _ htt j)) πG = _`. Rewrite using `[basisOfExistsUnique_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[← e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [tY, Module.Basis.map_apply, Module.Basis.baseChange_apply]`. Use `show SecOn.topEquiv _ (SecOn.congr hLy hHy w hw ⊤ (bcG (1 ⊗ₜ bt j))) = SecOn.topEquiv _ (SecOn.congr hLy hHy w hw ⊤ ((SecOn.topEquiv _).symm (SecOn.topEquiv _ (bcG (1 ⊗ₜ bt j)))))`. Conclude with `congrArg (fun z => SecOn.topEquiv (H.pull πA) (SecOn.congr hLy hHy w hw ⊤ z)) ((SecOn.topEquiv (M.pull πG)).symm_apply_apply _).symm`. Set `g : Matrix (Fin (N + 1)) (Fin (N + 1)) K'` to `fun j k => bV.repr (tY j) k`. Establish `hsum : ∀ c : Fin (N + 1) → K', ∑ k, cst fY ⊤ (c k) • secPull (s k) πA = SecOnR.topEquiv fY (H.pull πA) (∑ k, c k • bV k)` using `fun c => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[topEquiv_sum]`. Simplify using `only [hbV]`. Use `⟨s, g, ?_, ?_, fun j => ?_, fun c c' h => ?_⟩` and prove the remaining obligations. Use `veryAmpleBy_of_span fA H s₁ s hs₁ fun i => ⟨bs.repr ((SecOnR.topEquiv fA H).symm (s₁ i)), ?_⟩ conv_lhs => rw [← (SecOnR.topEquiv fA H).apply_symm_apply (s₁ i), ← bs.sum_repr ((SecOnR.topEquiv fA H).symm (s₁ i))]` and prove the remaining obligations. Rewrite using `[topEquiv_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Establish `: g = Matrix.transpose (bV.toMatrix tY)`. Use extensionality with `j k`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.det_transpose]`. Use `letI := bV.invertibleToMatrix tY`.
-
-Conclude with `Matrix.isUnit_det_of_invertible _`. Rewrite using `[hsum, bV.sum_repr (tY j), htY]`. Conclude with `secMaps_congr hLy hHy w hw _`. Rewrite `h` using `[hsum, hsum]`. Establish `h3 : bV.equivFun.symm c = bV.equivFun.symm c'`.
-
-Simplify `(SecOnR.topEquiv fY (H.pull πA)).injective h` using `only [Module.Basis.equivFun_symm_apply]`. Conclude with `bV.equivFun.symm.injective h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem core {K W K' : Type} [Field K] [CommRing W] [Field K'] [Algebra W K'] [Algebra K K']
     [Module.Flat W K'] {XA XG Y : Scheme.{0}} (fA : XA ⟶ Sp K) (fG : XG ⟶ Sp W) (fY : Y ⟶ Sp K')
@@ -212,13 +208,11 @@ end GlobalTheory.BasisMatch
 open GlobalTheory.AbLaw GlobalTheory.Cartier in
 
 /- English proof (translation)
-Introduce `K W K' _ _ _ _ _ _ _ _ A _ hA G _ hG e H m s₁ M w N t hH hs₁ hM hw ht`. Use `haveI := hA.proper`. Use `haveI := hG.proper`. Use `haveI : CompactSpace A.left := QuasiCompact.compactSpace_of_compactSpace A.hom`. Use `haveI : CompactSpace G.left := QuasiCompact.compactSpace_of_compactSpace G.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `haveI : Module.Flat W K' := IsLocalization.flat K' (nonZeroDivisors W)`. Establish `PG : IsPullback (pullback.fst G.hom (spMap (algebraMap W K'))) (pullback.snd G.hom (spMap (algebraMap W K'))) G.hom (spMap (algebraMap W K'))` using `IsPullback.of_hasPullback _ _`. Establish `PA : IsPullback (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) (pullback.snd G.hom (spMap (algebraMap W K'))) A.hom (spMap (algebraMap K K'))`. Use `(IsPullback.of_hasPullback A.hom (spMap (algebraMap K K'))).of_iso ((Over.forget _).mapIso e).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [Functor.mapIso_symm, Iso.symm_hom, Functor.mapIso_inv, Over.forget_map, Iso.refl_hom, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, ← Over.comp_left, e.inv_hom_id, Over.id_left]`. Conclude with `(Category.id_comp _).symm`. Use `Over.w e.inv` as an intermediate fact. Simplify using `only [Functor.mapIso_symm, Iso.symm_hom, Functor.mapIso_inv, Over.forget_map, Iso.refl_hom, Category.comp_id]`. Conclude with `this.symm`.
-
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.BasisMatch.core A.hom G.hom _ _ _ PA PG H M w s₁ t hH hs₁ hM hw ht`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BasisMatch.exists_basis_match : ∀ (K W K' : Type) [Field K] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra K K'], ∀ (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ e : (Over.pullback (spMap (algebraMap W K'))).obj G ≅ (Over.pullback (spMap (algebraMap K K'))).obj A, ∀ (H : LB A.left) (m : ℕ) (s₁ : Fin (m + 1) → H.Sec) (M : LB G.left) (w : LB.Iso (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))) (H.pull (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))))) (N : ℕ) (t : Fin (N + 1) → M.Sec), H.IsLB → GlobalTheory.AbLaw.VeryAmpleBy A.hom H s₁ → M.IsLB → w.IsGen → (∀ u : M.Sec, ∃! c : Fin (N + 1) → W, u = ∑ j, GlobalTheory.AbLaw.cst G.hom ⊤ (c j) • t j) → ∃ (s : Fin (N + 1) → H.Sec) (g : Matrix (Fin (N + 1)) (Fin (N + 1)) K'), GlobalTheory.AbLaw.VeryAmpleBy A.hom H s ∧ IsUnit g.det ∧ (∀ j, GlobalTheory.Cartier.SecMaps w (GlobalTheory.Cartier.secPull (t j) (pullback.fst G.hom (spMap (algebraMap W K')))) (∑ k, GlobalTheory.AbLaw.cst (pullback.snd G.hom (spMap (algebraMap W K'))) ⊤ (g j k) • GlobalTheory.Cartier.secPull (s k) (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))))) ∧ ∀ c c' : Fin (N + 1) → K', ∑ k, GlobalTheory.AbLaw.cst (pullback.snd G.hom (spMap (algebraMap W K'))) ⊤ (c k) • GlobalTheory.Cartier.secPull (s k) (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) = ∑ k, GlobalTheory.AbLaw.cst (pullback.snd G.hom (spMap (algebraMap W K'))) ⊤ (c' k) • GlobalTheory.Cartier.secPull (s k) (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) → c = c' := by
   intro K W K' _ _ _ _ _ _ _ _ A _ hA G _ hG e H m s₁ M w N t hH hs₁ hM hw ht

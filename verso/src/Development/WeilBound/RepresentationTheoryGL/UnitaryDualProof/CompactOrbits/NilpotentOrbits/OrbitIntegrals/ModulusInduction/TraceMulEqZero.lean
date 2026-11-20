@@ -13,21 +13,21 @@ set_option linter.unusedSectionVars false
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[qZ, mul_add, trace_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qZ_add (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x y : Matrix (Fin n) (Fin n) k) :
     qZ Z (x + y) = qZ Z x + qZ Z y := by
   funext i; simp [qZ, mul_add, trace_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[qZ, mul_sub, trace_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qZ_sub (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x y : Matrix (Fin n) (Fin n) k) :
     qZ Z (x - y) = qZ Z x - qZ Z y := by
   funext i; simp [qZ, mul_sub, trace_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [qZ, Pi.smul_apply, Matrix.mul_smul, trace_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qZ_smul (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (r : k) (x : Matrix (Fin n) (Fin n) k) :
     qZ Z (r • x) = r • qZ Z x := by
@@ -35,14 +35,14 @@ theorem qZ_smul (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (r : k) (x : Matri
   simp only [qZ, Pi.smul_apply, Matrix.mul_smul, trace_smul]
 
 /- English proof (translation)
-Unfold `piZ`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem piZ_congr (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {x y : Matrix (Fin n) (Fin n) k}
     (h : qZ Z x = qZ Z y) : piZ Z x = piZ Z y := by
   unfold piZ; rw [h]
 
 /- English proof (translation)
-Unfold `piZ`. Use `split`. Name the introduced variables `h`. Conclude with `h.choose_spec.1`. Conclude with `Z.zero_mem`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem piZ_mem (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n) k) : piZ Z x ∈ Z := by
   unfold piZ
@@ -51,9 +51,9 @@ theorem piZ_mem (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n
   · exact Z.zero_mem
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [qZ]`. Establish `hb` using `hh _ ((Module.finBasis k Z) i).2`. Establish `e1 : (((Module.finBasis k Z) i : Z) : Matrix (Fin n) (Fin n) k) * (h.val * x * h⁻¹.val) = h.val * ((((Module.finBasis k Z) i : Z) : Matrix (Fin n) (Fin n) k) * x) * h⁻¹.val`. Simplify using `only [← mul_assoc, hb]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, trace_mul_comm, ← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qZ_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (h : GL (Fin n) k) (hh : h ∈ Gz Z)
     (x : Matrix (Fin n) (Fin n) k) : qZ Z (h.val * x * h⁻¹.val) = qZ Z x := by
@@ -66,16 +66,16 @@ theorem qZ_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (h : GL (Fin n) k)
   rw [e1, trace_mul_comm, ← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← hh c hc, mul_assoc, Units.mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_of_mem (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (h : GL (Fin n) k) (hh : h ∈ Gz Z)
     {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) : h.val * c * h⁻¹.val = c := by
   rw [← hh c hc, mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-Establish `h1 : piZ Z (h.val * q.1 * h⁻¹.val) = piZ Z q.1` using `piZ_congr Z (qZ_conj Z h hh q.1)`. Establish `h2 : h.val * piZ Z q.1 * h⁻¹.val = piZ Z q.1` using `conj_of_mem Z h hh (piZ_mem Z q.1)`. Simplify using `only [sig, act]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show piZ Z (h.val * q.1 * h⁻¹.val) + (t : k) • (h.val * q.1 * h⁻¹.val - piZ Z (h.val * q.1 * h⁻¹.val)) = h.val * (piZ Z q.1 + (t : k) • (q.1 - piZ Z q.1)) * h⁻¹.val`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, mul_add, add_mul, h2, Matrix.mul_smul, Matrix.smul_mul, mul_sub, sub_mul, h2]`.
+A detailed English derivation is pending.
 -/
 theorem sig_act (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (t : kˣ) (h : GL (Fin n) k) (hh : h ∈ Gz Z)
     (q : Sp k n) : sig Z t (act h q) = act h (sig Z t q) := by
@@ -88,21 +88,21 @@ theorem sig_act (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (t : kˣ) (h : GL 
   rw [h1, mul_add, add_mul, h2, Matrix.mul_smul, Matrix.smul_mul, mul_sub, sub_mul, h2]
 
 /- English proof (translation)
-Take `⟨hcomm, hred⟩` from `hZ`. Use `haveI := hred`. Establish `hint : IsIntegral k c` using `Algebra.IsIntegral.isIntegral c`. Establish `hp0 : minpoly k c ≠ 0` using `minpoly.ne_zero hint`. Take `⟨q, hpq, hnd⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd (minpoly k c) hp0 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq0 : q.coeff 0 ≠ 0`. Introduce `h0`. Apply `hnd` to reduce the goal to its premises. Rewrite using `[map_zero, sub_zero, Polynomial.X_dvd_iff]`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haZ : Polynomial.aeval c q.divX ∈ Z` using `Algebra.adjoin_le (Set.singleton_subset_iff.2 hc) (Polynomial.aeval_mem_adjoin_singleton k c)`. Establish `hev : q.coeff 0 • c ^ Polynomial.rootMultiplicity 0 (minpoly k c) + c ^ Polynomial.rootMultiplicity 0 (minpoly k c) * c * Polynomial.aeval c q.divX = 0`. Establish `h1` using `minpoly.aeval k c`. Rewrite `h1` using `[hpq, ← Polynomial.X_mul_divX_add q]`. Simplify using `only [map_mul, map_pow, map_sub, map_add, Polynomial.aeval_X, Polynomial.aeval_C, map_zero, sub_zero] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[mul_add, Algebra.algebraMap_eq_smul_one, mul_smul_comm, mul_one, ← mul_assoc]`. Rewrite using `[add_comm]`. Conclude with `h1`. Generalize the expression as in `Polynomial.rootMultiplicity 0 (minpoly k c) = m at hev`. Generalize the expression as in `Polynomial.aeval c q.divX = a at hev haZ`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `q.coeff 0 = s at hev hq0`. Establish `h2 : c ^ m * c * a = -(s • c ^ m)`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `hev`. Establish `hgZ : (-(s⁻¹) • a) ∈ Z` using `Z.smul_mem haZ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hmu : c ^ m * (1 - c * (-(s⁻¹) • a)) = 0`. Rewrite using `[mul_sub, mul_one, Matrix.mul_smul, Matrix.mul_smul, ← mul_assoc, h2, smul_neg, neg_smul, neg_neg, smul_smul, inv_mul_cancel₀ hq0, one_smul, sub_self]`. Generalize the expression as in `-(s⁻¹) • a = g at hgZ hmu`. Establish `hcg : Commute c g` using `hcomm c hc g hgZ`. Establish `hcomm' : Commute c (1 - c * g)` using `(Commute.one_right c).sub_right ((Commute.refl c).mul_right hcg)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (c * (1 - c * g)) ^ (m + 1) = 0`. Rewrite using `[hcomm'.mul_pow, pow_succ', pow_succ', mul_assoc, ← mul_assoc (c ^ m), hmu, zero_mul, mul_zero]`. Establish `hdZ : c * (1 - c * g) ∈ Z` using `Z.mul_mem hc (Z.sub_mem Z.one_mem (Z.mul_mem hc hgZ))`. Establish `hnil : IsNilpotent (⟨c * (1 - c * g), hdZ⟩ : Z)` using `⟨m + 1, Subtype.ext (by simpa using hpow)⟩`. Establish `hd0 : c * (1 - c * g) = 0` using `congrArg Subtype.val hnil.eq_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, hgZ, ?_⟩` and prove the remaining obligations. Rewrite `hd0` using `[mul_sub, mul_one, sub_eq_zero]`. Establish `hcg' : c * g = g * c` using `hcg`. Rewrite using `[mul_assoc, ← hcg']`. Conclude with `hd0.symm`.
+A detailed English derivation is pending.
 -/
 theorem reg_in (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k}
     (hc : c ∈ Z) : ∃ g ∈ Z, c * g * c = c := by
@@ -153,9 +153,9 @@ theorem reg_in (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) {c : Ma
   exact hd0.symm
 
 /- English proof (translation)
-Establish `hf : IsIdempotentElem (Matrix.toLin' e)` using `by show Matrix.toLin' e * Matrix.toLin' e = Matrix.toLin' e`. Rewrite using `[Module.End.mul_eq_comp, ← Matrix.toLin'_mul, he]`. Establish `ht' : LinearMap.trace k _ (Matrix.toLin' e) = 0`. Rewrite using `[LinearMap.trace_eq_matrix_trace k (Pi.basisFun k (Fin n)), LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']`. Conclude with `ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero hf ht'`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h0`.
+A detailed English derivation is pending.
 -/
 theorem idem_zero [CharZero k] (e : Matrix (Fin n) (Fin n) k) (he : e * e = e) (ht : trace e = 0) : e = 0 := by
   have hf : IsIdempotentElem (Matrix.toLin' e) := by
@@ -169,11 +169,11 @@ theorem idem_zero [CharZero k] (e : Matrix (Fin n) (Fin n) k) (he : e * e = e) (
   exact (LinearEquiv.map_eq_zero_iff _).1 h0
 
 /- English proof (translation)
-Establish `hsum` using `(Module.finBasis k Z).sum_repr ⟨b, hb⟩`. Establish `hb' : b = ∑ i, ((Module.finBasis k Z).repr ⟨b, hb⟩ i) • (((Module.finBasis k Z) i : Z) : Matrix (Fin n) (Fin n) k)`. Establish `h1` using `congrArg Subtype.val hsum`. Move the coercions through the operations in `at h1`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb', Finset.sum_mul, trace_sum]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, trace_smul]`. Establish `h2` using `congrFun hq i`. Simplify using `only [qZ, Pi.zero_apply] at h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem trace_mul_eq_zero (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {c : Matrix (Fin n) (Fin n) k}
     (hq : qZ Z c = 0) {b : Matrix (Fin n) (Fin n) k} (hb : b ∈ Z) : trace (b * c) = 0 := by
@@ -191,9 +191,9 @@ theorem trace_mul_eq_zero (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {c : Mat
   rw [h2, smul_zero]
 
 /- English proof (translation)
-Take `⟨g, hg, hcgc⟩` from `reg_in Z hZ hc`. Establish `hgc : g * c = c * g` using `hZ.1 g hg c hc`. Establish `hidem : (c * g) * (c * g) = c * g`. Rewrite using `[← mul_assoc, hcgc]`. Establish `htr : trace (c * g) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[trace_mul_comm]`. Conclude with `trace_mul_eq_zero Z hq hg`. Establish `he0` using `idem_zero (c * g) hidem htr`. Rewrite using `[← hcgc, he0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qZ_inj [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z)
     {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) (hq : qZ Z c = 0) : c = 0 := by
@@ -208,9 +208,9 @@ theorem qZ_inj [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : 
   rw [← hcgc, he0, zero_mul]
 
 /- English proof (translation)
-Set `φ : Z →ₗ[k] (Fin (Module.finrank k Z) → k)` to `{ toFun := fun c => qZ Z c.1 map_add' := fun a b => qZ_add Z a.1 b.1 map_smul' := fun r a => qZ_smul Z r a.1 }`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Conclude with `Subtype.ext (qZ_inj Z hZ a.2 ha)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).1 hinj`. Take `⟨a, ha⟩` from `hsurj (qZ Z x)`. Conclude with `⟨a.1, a.2, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_qZ [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z)
     (x : Matrix (Fin n) (Fin n) k) : ∃ c ∈ Z, qZ Z c = qZ Z x := by
@@ -228,7 +228,7 @@ theorem exists_qZ [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ
   exact ⟨a.1, a.2, ha⟩
 
 /- English proof (translation)
-Unfold `piZ`. Rewrite using `[dif_pos (exists_qZ Z hZ x)]`. Conclude with `(exists_qZ Z hZ x).choose_spec.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piZ_spec [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z)
     (x : Matrix (Fin n) (Fin n) k) : qZ Z (piZ Z x) = qZ Z x := by
@@ -237,7 +237,7 @@ theorem piZ_spec [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ 
   exact (exists_qZ Z hZ x).choose_spec.2
 
 /- English proof (translation)
-Use `qZ_inj Z hZ (Z.sub_mem (piZ_mem Z x) hc) (by rw [qZ_sub, piZ_spec Z hZ, h, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem piZ_eq [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z)
     {x c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) (h : qZ Z c = qZ Z x) : piZ Z x = c := by
@@ -255,11 +255,9 @@ def piL [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) :
     rw [qZ_smul, qZ_smul, piZ_spec Z hZ]; rfl
 
 /- English proof (translation)
-Establish `hrep : ∀ x : Matrix (Fin n) (Fin n) k, piZ Z x = ∑ i, ∑ j, x i j • piZ Z (Matrix.single i j (1 : k))`. Introduce `x`. Establish `h` using `congrArg (piL Z hZ) (Matrix.matrix_eq_sum_single x)`. Establish `hs : ∀ i j, Matrix.single i j (x i j) = x i j • Matrix.single i j (1 : k)`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Simplify using `only [hs, map_sum, map_smul] at h`. Conclude with `h`. Establish `hfun : piZ Z (n` using `n) = fun x => ∑ i, ∑ j, x i j • piZ Z (Matrix.single i j (1 : k)) := funext hrep`. Rewrite using `[hfun]`.
-
-Use `fun_prop`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_piZ [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) :
     Continuous (piZ Z (n := n)) := by
@@ -277,9 +275,9 @@ theorem continuous_piZ [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)
   fun_prop
 
 /- English proof (translation)
-Take `⟨x, v⟩` from `q`. Establish `hP : piZ Z (piZ Z x + (t : k) • (x - piZ Z x)) = piZ Z x`. Use `piZ_eq Z hZ (piZ_mem Z x) ?_` and prove the remaining obligations. Rewrite using `[qZ_add, qZ_smul, qZ_sub, piZ_spec Z hZ, sub_self, smul_zero, add_zero]`. Simplify using `only [sig]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show piZ Z (piZ Z x + (t : k) • (x - piZ Z x)) + ((t⁻¹ : kˣ) : k) • (piZ Z x + (t : k) • (x - piZ Z x) - piZ Z (piZ Z x + (t : k) • (x - piZ Z x))) = x`. Rewrite using `[hP, add_sub_cancel_left, smul_smul, Units.inv_mul, one_smul, add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_inv_sig [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ)
     (q : Sp k n) : sig Z t⁻¹ (sig Z t q) = q := by
@@ -293,7 +291,7 @@ theorem sig_inv_sig [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (
   rw [hP, add_sub_cancel_left, smul_smul, Units.inv_mul, one_smul, add_sub_cancel]
 
 /- English proof (translation)
-Establish `hc` using `continuous_piZ Z hZ`. Unfold `sig`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_sig [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (t : kˣ) :
     Continuous (sig Z t) := by

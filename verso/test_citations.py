@@ -30,6 +30,7 @@ end Example
 """
         [(_, prose)] = self.references(supporting)
         self.assertIn("?module=Supporting.lean&line=3#L3", prose)
+        self.assertNotIn("Example.reflexive", prose)
 
     def test_rejects_different_statement(self):
         supporting = """namespace Example

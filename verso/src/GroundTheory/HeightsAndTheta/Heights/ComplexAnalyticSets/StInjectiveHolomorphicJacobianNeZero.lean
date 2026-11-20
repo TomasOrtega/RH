@@ -10,7 +10,7 @@ def InjectiveHolomorphicJacobianNeZero.Statement : Prop :=
       ∀ x ∈ U, LinearMap.det (fderiv ℂ f x : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ) ≠ 0
 
 /- English proof (translation)
-The claim follows from `InjectiveHolomorphicOpen.hypotheses_inhabited`.
+A detailed English derivation is pending.
 -/
 theorem InjectiveHolomorphicJacobianNeZero.hypotheses_inhabited :
     IsOpen (Metric.ball (0 : Fin 2 → ℂ) 1) ∧

@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hfp` using `factPrincipalDatum D.R D.host`. Establish `hdd` using `coeIdeal_differentIdeal ℤ ℚ D.host.E (𝓞 D.host.E)`. Use `eq_inv_of_mul_eq_one_left hfp` as an intermediate fact. Rewrite using `[this]`. Use `show (((differentIdeal ℤ (𝓞 D.host.E)) : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)⁻¹ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdd, inv_inv]`.
+A detailed English derivation is pending.
 -/
 theorem xi_AA_AAbar : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0 * D.host.AA *
     D.host.AAbar = FractionalIdeal.dual ℤ ℚ 1 := by
@@ -32,19 +32,19 @@ theorem xi_AA_AAbar : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.hos
   rw [hdd, inv_inv]
 
 /- English proof (translation)
-Rewrite using `[← FractionalIdeal.coeIdeal_top]`. Conclude with `FractionalIdeal.coeIdeal_ne_zero.2 top_ne_bot`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_ne_zero' : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 := by
   rw [← FractionalIdeal.coeIdeal_top]; exact FractionalIdeal.coeIdeal_ne_zero.2 top_ne_bot
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero'`.
+A detailed English derivation is pending.
 -/
 theorem dual_ne_zero' : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 :=
   FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero'
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `xi_AA_AAbar (D := D)`. Rewrite `h` using `[h0, mul_zero, zero_mul]`. Conclude with `dual_ne_zero' h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AA_ne_zero : D.host.AA ≠ 0 := by
   intro h0
@@ -55,23 +55,21 @@ theorem AA_ne_zero : D.host.AA ≠ 0 := by
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hX` using `xi_AA_AAbar (D := D)`. Establish `h10 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `one_ne_zero'`. Establish `hmem : ∀ j ∈ D.host.AAbar, D.host.xi0 * z * j ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Introduce `j hj`. Rewrite using `[FractionalIdeal.mem_dual h10]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Establish `hc : D.host.conj j ∈ D.host.AA` using `Formalism.L2.Pj.conj_mem_AA D hj`. Establish `hco : D.host.conj j * star (algebraMap (𝓞 D.host.E) D.host.E o) ∈ D.host.AA`. Establish `e : D.host.conj j * star (algebraMap (𝓞 D.host.E) D.host.E o) = starO o • D.host.conj j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hc`. Take `⟨k, hk⟩` from `h _ hco 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[show ((1 : 𝓞 D.host.F) : D.host.F) = 1 from rfl, mul_one]`. Establish `hs : star (D.host.conj j) = j`. Rewrite using `[Formalism.BasicNotions.Examples₂.star_eq_conj, Formalism.MainNotions.UnusedSlot33.HK.conj_conj]`. Establish `he : D.host.xi0 * (star (D.host.conj j * star (algebraMap (𝓞 D.host.E) D.host.E o)) * z) = D.host.xi0 * z * j * algebraMap (𝓞 D.host.E) D.host.E o`. Rewrite using `[star_mul', star_star, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hk` using `[he]`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, ← Algebra.trace_trace (S := D.host.F), hk, eq_intCast]`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (D.host.xi0 * z) * D.host.AAbar ≤ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.mul_le]`. Introduce `i hi j hj`. Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hi`. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r (hmem j hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y := FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0 * D.host.AAbar with hYdef`. Establish `hAY : D.host.AA * Y = FractionalIdeal.dual ℤ ℚ 1` using `by rw [← hX, hYdef]; ring`. Establish `hY : Y ≠ 0`. Establish `h0 : D.host.AA * Y ≠ 0` using `by rw [hAY]; exact dual_ne_zero'`. Conclude with `right_ne_zero_of_mul h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hzY : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) z * Y ≤ D.host.AA * Y`. Rewrite using `[hAY, hYdef, ← mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, mul_comm z]`. Conclude with `hle`. Establish `hsp : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) z ≤ D.host.AA`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_assoc, mul_inv_cancel₀ hY, mul_one]`. Use `_ ≤ D.host.AA * Y * Y⁻¹ := by gcongr`. Use `_ = D.host.AA := by rw [mul_assoc, mul_inv_cancel₀ hY, mul_one]`. Conclude with `hsp (FractionalIdeal.mem_spanSingleton_self _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_AA_of_trace {z : D.host.E}
     (h : ∀ c ∈ D.host.AA, Algebra.trace D.host.F D.host.E (D.host.xi0 * (star c * z)) ∈ invDiff D.host.F) :
@@ -123,7 +121,7 @@ theorem mem_AA_of_trace {z : D.host.E}
   exact hsp (FractionalIdeal.mem_spanSingleton_self _ _)
 
 /- English proof (translation)
-Unfold `hF`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hF_smul_right (T : HSp D) (x v : Fin T.rank → D.host.E) (j : D.host.E) :
     hF T x (j • v) = j * hF T x v := by
@@ -132,15 +130,13 @@ theorem hF_smul_right (T : HSp D) (x v : Fin T.rank → D.host.E) (j : D.host.E)
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Establish `hA` using `AA_ne_zero (D := D)`. Establish `key : ∀ x ∈ D.host.AA * D.host.AA⁻¹, P (x • v)`. Introduce `x hx`. Use `FractionalIdeal.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjv : j • v ∈ ΛT`. Use `(hT.2 (j • v)).2 fun t ht => ?_` and prove the remaining obligations. Establish `hm : j * hF T t v ∈ D.host.AA⁻¹ * D.host.AA` using `FractionalIdeal.mul_mem_mul hj (hv t ht)`. Rewrite `hm` using `[inv_mul_cancel₀ hA]`. Take `⟨b, hb⟩` from `(FractionalIdeal.mem_one_iff _).1 hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[show (b : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E b from rfl, hb, ← hF_smul_right]`. Both sides reduce to the same expression. Rewrite using `[mul_smul]`. Conclude with `hgen i hi _ hjv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hx hy`. Rewrite using `[add_smul]`. Conclude with `hadd _ _ hx hy`. Establish `h1 : (1 : D.host.E) ∈ D.host.AA * D.host.AA⁻¹`. Rewrite using `[mul_inv_cancel₀ hA]`.
-
-Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Simplify using `using key 1 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ind_of_hF {T : HSp D} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hT : IsSelfDualC T ΛT)
     {v : Fin T.rank → D.host.E} (hv : ∀ t ∈ ΛT, hF T t v ∈ D.host.AA) (P : (Fin T.rank → D.host.E) → Prop)
@@ -173,7 +169,7 @@ abbrev rkSpan (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.h
   Submodule.span ℤ {M | ∃ c ∈ D.host.AA, ∃ s ∈ ΛS, ∃ t ∈ ΛT, M = rk1 S T c s t}
 
 /- English proof (translation)
-Unfold `hF`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hF_mulVec (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (s : Fin S.rank → D.host.E)
     (t : Fin T.rank → D.host.E) :
@@ -182,23 +178,21 @@ theorem hF_mulVec (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E)
   simp only [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Take `⟨N, g, s', hg, hs', hid⟩` from `hB`. Establish `h1 : ∀ s ∈ ΛS, ∀ t ∈ ΛT, hF T t (γ.mulVec s) ∈ D.host.AA`. Introduce `s hs t ht`. Apply `mem_AA_of_trace` to reduce the goal to its premises. Introduce `c hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h c hc s hs t ht` as an intermediate fact. Unfold `betaO at this`. Rewrite `this` using `[hermitian_rank_one_right, hF_mulVec]`. Then use the resulting hypothesis. Establish `h2 : ∀ s ∈ ΛS, ∀ v : Fin T.rank → D.host.E, (∀ t ∈ ΛT, hF T t v ∈ D.host.AA) → rk1 S T 1 s v ∈ rkSpan S T ΛS ΛT`. Introduce `s hs v hv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ind_of_hF hT hv (fun w => rk1 S T 1 s w ∈ rkSpan S T ΛS ΛT) ?_ ?_ ?_` and prove the remaining obligations. Establish `: rk1 S T 1 s 0 = 0` using `by ext i j; simp [rk1]`. Simplify using `only [this]`. Conclude with `zero_mem _`. Introduce `x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: rk1 S T 1 s (x + y) = rk1 S T 1 s x + rk1 S T 1 s y`. Use extensionality with `i j`. Simplify using `only [rk1, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem hx hy`. Introduce `a ha t ht`. Establish `: rk1 S T 1 s (a • t) = rk1 S T a s t`. Use extensionality with `i j`. Simplify using `only [rk1, Matrix.of_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this]`. Conclude with `Submodule.subset_span ⟨a, ha, s, hs, t, ht, rfl⟩`. Establish `h3 : γ = ∑ i, rk1 S T 1 (s' i) (γ.mulVec (g i))`. Use `Matrix.ext fun a j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : γ.mulVec (∑ i, hF S (s' i) (Pi.single j 1) • g i) a = γ.mulVec (Pi.single j 1) a` using `congrArg (fun w => γ.mulVec w a) (hid (Pi.single j 1))`. Rewrite `hj` using `[Matrix.mulVec_single_one, Matrix.col_apply]`. Rewrite using `[← hj]`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.sum_apply, rk1, Matrix.of_apply, one_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : hF S (s' i) (Pi.single j 1) = ∑ k, star (s' i k) * S.gram k j`. Unfold `hF`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Rewrite using `[e]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `Submodule.sum_mem _ fun i _ => h2 (s' i) (hs' i) _ fun t ht => h1 (g i) (hg i) t ht`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globalDual_of_basis (S T : HSp D) {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hT : IsSelfDualC T ΛT)

@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.FunObj
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL i j w hw`. Establish `hi` using `i.2`. Establish `h1 : 1 ≤ D.R.m - i` using `by omega`. Establish `h2 : D.R.m - i ≤ D.R.m` using `by omega`. Establish `hχ : GlobalTheory.LFun.UnrAt (F` using `D.host.F) (E := D.host.E) (G.ch.chi (D.R.m - i)) w := (GlobalTheory.LFun.unrAt_iff_of_chrEq (G.ch.chi_eq _ h1 h2) w).2 (G.ch.unr _ h1 h2 w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : GlobalTheory.LFun.UnrAt (F` using `D.host.F) (E := D.host.E) L.eta w := (GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 (L.C.isEta.unr w)`. Establish `hp : ∀ n : ℕ, GlobalTheory.LFun.UnrAt (F` using `D.host.F) (E := D.host.E) (L.eta ^ n) w := fun n x hx => (map_pow Circle.toUnits _ n).trans (show GlobalTheory.LFun.locChar (F := D.host.F) (E := D.host.E) L.eta w x ^ n = 1 by rw [hη x hx, one_pow])`. Conclude with `hχ.mul (hp _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem beta_unrAt_off : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀)
     (i j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) ∉ G.pl.S0 →

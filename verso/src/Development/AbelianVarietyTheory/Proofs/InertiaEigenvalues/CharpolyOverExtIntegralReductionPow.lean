@@ -13,31 +13,27 @@ namespace GlobalTheory.UnitLemma.Unr
 open GlobalTheory.UnitLemma Polynomial
 
 /- English proof (translation)
-Introduce `K K' d φ hU B ψ hψ hσ hO hl hsep hint s hres`. Use `set S := Algebra.adjoin K.O ({B.g} : Set B.A) with hSdef`. Use `letI : Algebra K'.E B.A := ψ.toAlgebra`. Use `letI : Algebra K'.O B.A := (ψ.comp (algebraMap K'.O K'.E)).toAlgebra`. Use `haveI : IsScalarTower K'.O K'.E B.A := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `haveI : Module.Finite K'.E B.A := (overExt φ B ψ hψ hσ).fd`. Set `f0 : K'.O →+* S` to `(ψ.comp (algebraMap K'.O K'.E)).codRestrict S hO`. Use `letI : Algebra K'.O S := f0.toAlgebra`. Set `ι : S →ₐ[K'.O] B.A` to `{ S.val.toRingHom with commutes' := fun _ => rfl }`. Establish `hinj : Function.Injective ι` using `Subtype.val_injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : Module.Finite K.O S := Algebra.finite_adjoin_simple_of_isIntegral hint`. Use `haveI : Module.Finite K'.O S := by`. Take `⟨T, hT⟩` from `(inferInstance : Module.Finite K.O S).fg_top`. Use `⟨⟨T, eq_top_iff.2 fun y hy0 => ?_⟩⟩` and prove the remaining obligations. Use `clear hy0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hy : y ∈ Submodule.span K.O (T : Set S)` using `hT ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact zero_mem _`. Consider the case `add x z _ _ hx hz => exact add_mem hx hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Consider the case `smul a x _ hx`. Take `⟨y', hy'⟩` from `GlobalTheory.T.unramifiedInvolutionExt_maps_integers_to_integers K K' d φ hU a`. Establish `h : a • x = y' • x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Algebra.smul_def, Algebra.smul_def, MulMemClass.coe_mul, MulMemClass.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `algebraMap K.O B.A a * (x : B.A) = ψ (algebraMap K'.O K'.E y') * (x : B.A)`. Rewrite using `[hy', hψ, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hspan : Submodule.span K'.E (Set.range ι) = ⊤`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Use `eq_top_iff.2 fun y hy0 => ?_` and prove the remaining obligations. Use `clear hy0`. Establish `hy : y ∈ Submodule.span K.E (Set.range fun i : ℕ => B.g ^ i)` using `GlobalTheory.T.span_pow_generator_eq_top_of_charpoly_separable K B hsep ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨⟨B.g ^ i, pow_mem (Algebra.self_mem_adjoin_singleton K.O B.g) i⟩, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add x z _ _ hx hz => exact add_mem hx hz`. Consider the case `smul e x _ hx`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : e • x = (φ e) • x`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, ← hψ e]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `haveI : IsLocalRing S := hl`. Take `⟨n, b, hb⟩` from `GlobalTheory.T.charpoly_mulLeft_eq_map_of_span_range_eq K'.O K'.E B.A S ι hinj hspan`. Set `x0 : S` to `⟨B.g, Algebra.self_mem_adjoin_singleton K.O B.g⟩`. Use `⟨(LinearMap.toMatrix b b (LinearMap.mulLeft K'.O x0)).charpoly, (hb x0).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, ← Matrix.charpoly_map]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set t : S := x0 - algebraMap K'.O S s with ht`. Establish `htm : t ∈ IsLocalRing.maximalIdeal S`. Rewrite using `[ht, ← Ideal.Quotient.eq]`. Conclude with `hres`. Establish `hsplit : LinearMap.toMatrix b b (LinearMap.mulLeft K'.O x0) = LinearMap.toMatrix b b (LinearMap.mulLeft K'.O t) + Matrix.scalar (Fin n) s`.
-
-Establish `: LinearMap.mulLeft K'.O x0 = LinearMap.mulLeft K'.O t + s • LinearMap.id`. Use extensionality with `y`. Simplify using `[ht, Algebra.smul_def, sub_mul]`. Rewrite using `[this, map_add, map_smul, LinearMap.toMatrix_id, Matrix.smul_one_eq_diagonal]`. Both sides reduce to the same expression.
-
-Rewrite using `[hsplit, Matrix.map_add _ (map_add _)]`. Establish `hsc : (Matrix.scalar (Fin n) s).map (IsLocalRing.residue K'.O) = Matrix.scalar (Fin n) (IsLocalRing.residue K'.O s)`. Apply the tactic sequence `ext i j; simp [Matrix.scalar_apply, Matrix.diagonal_apply]; split_ifs <;> simp`. Rewrite using `[hsc]`. Conclude with `GlobalTheory.T.charpoly_nilpotent_add_scalar' _ n _ _ (GlobalTheory.T.isNilpotent_residue_toMatrix_mulLeft' K'.O S n b t htm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_overExt_integral_reduction : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), IsUnrExt K K' d φ → ∀ (B : InvAlg K) (ψ : K'.E →+* B.A) (hψ : ∀ e, ψ (φ e) = algebraMap K.E B.A e) (hσ : ∀ e, B.σ (ψ e) = ψ (K'.c e)) (hO : ∀ y : K'.O, ψ (algebraMap K'.O K'.E y) ∈ Algebra.adjoin K.O ({B.g} : Set B.A)) (hl : IsLocalRing (Algebra.adjoin K.O ({B.g} : Set B.A))), B.P.Separable → IsIntegral K.O B.g → ∀ s : K'.O, @IsLocalRing.residue _ _ hl ⟨B.g, Algebra.self_mem_adjoin_singleton K.O B.g⟩ = @IsLocalRing.residue _ _ hl ⟨ψ (algebraMap K'.O K'.E s), hO s⟩ → ∃ Q : K'.O[X], Q.map (algebraMap K'.O K'.E) = (overExt φ B ψ hψ hσ).P ∧ Q.map (IsLocalRing.residue K'.O) = (X - C (IsLocalRing.residue K'.O s)) ^ Q.natDegree := by
   intro K K' d φ hU B ψ hψ hσ hO hl hsep hint s hres

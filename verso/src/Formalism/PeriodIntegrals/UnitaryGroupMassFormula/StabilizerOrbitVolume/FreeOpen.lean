@@ -11,7 +11,7 @@ open NumberField IsDedekindDomain MeasureTheory Topology Formalism.MainNotions.G
   PI.VolFromSW TensAllW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT hdet`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `⟨isOpen_linIndep (Module.finBasis F E) (Ainf F) (isOpen_units_Ainf F) (lip_ainf F), fun v => ?_⟩` and prove the remaining obligations. Conclude with `isOpen_linIndep (Module.finBasis F E) (Fv F v) (isOpen_units_Fv F v) (lip_field _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem freeOpen_holds : FreeOpen := by
   intro F E _ _ _ _ _ σ hCM M J hJ _ _ a _ _ X0 hT hdet

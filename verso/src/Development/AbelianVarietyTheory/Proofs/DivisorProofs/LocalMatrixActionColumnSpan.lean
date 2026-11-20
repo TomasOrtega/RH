@@ -14,17 +14,15 @@ open GlobalTheory.AdelicU.Supp (singleTens compFin_singleTens_self compFin_singl
   compFin_one_tmul adTens_ext)
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Establish `h : (adMat F X)ᵀ l ∈ GlobalTheory.StdPar.colSpan F X I` using `Submodule.subset_span ⟨l, hl, rfl⟩`. Establish `e : (fun a => singleTens E v (inclR (F` using `F) (Fv F v) (X a l))) = singleTens E v 1 • (adMat F X)ᵀ l := by`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Pi.smul_apply, smul_eq_mul, singleTens_mul, one_mul]`. Conclude with `congrArg _ (compFin_one_tmul v (X a l)).symm`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero`. Establish `e : (fun a => singleTens E v ((0 : Fin n → Fv F v ⊗[F] E) a)) = 0`. Use function extensionality and compare the values at `a`. Conclude with `map_zero _`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `zero_mem _`. Consider the case `add y y' _ _ h h'`. Establish `e : (fun a => singleTens E v ((y + y') a)) = (fun a => singleTens E v (y a)) + fun a => singleTens E v (y' a)`. Use function extensionality and compare the values at `a`. Conclude with `map_add _ _ _`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `add_mem h h'`. Consider the case `smul c y _ h`. Establish `e : (fun a => singleTens E v ((c • y) a)) = singleTens E v c • fun a => singleTens E v (y a)`. Use function extensionality and compare the values at `a`.
-
-Conclude with `map_mul _ _ _`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_colSpan {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n r : ℕ}
     (X : Matrix (Fin n) (Fin r) E) (v : HeightOneSpectrum (𝓞 F)) (I : Set (Fin r)) (y : Fin n → Fv F v ⊗[F] E)
@@ -55,11 +53,11 @@ theorem single_mem_colSpan {F E : Type} [Field F] [NumberField F] [Field E] [Num
     rw [e]; exact Submodule.smul_mem _ _ h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X v x z I h`. Establish `key` using `single_mem_colSpan X v I _ h`. Establish `hf : ∀ (u : HeightOneSpectrum (𝓞 F)) (g : GAd σ J) (a : Fin n), compFin F E u (((matHom _ σ J g).1 *ᵥ z) a) = ((matHom _ σ J (proj σ J u g)).1 *ᵥ fun b => compFin F E u (z b)) a` using `fun u g a => RingHom.map_mulVec (compFin F E u) _ z a`. Establish `hi : ∀ (w : InfinitePlace F) (g : GAd σ J) (a : Fin n), compInf F E w (((matHom _ σ J g).1 *ᵥ z) a) = ((matHom _ σ J (projArch σ J w g)).1 *ᵥ fun b => compInf F E w (z b)) a` using `fun w g a => RingHom.map_mulVec (compInf F E w) _ z a`. Use `key using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `a`. Use `adTens_ext (fun w => ?_) fun u => ?_` and prove the remaining obligations. Rewrite using `[compInf_singleTens, Pi.sub_apply, map_sub, hi, projArch_emb, map_one, Units.val_one, one_mulVec, sub_self]`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[compFin_singleTens_self, Pi.sub_apply, map_sub, hf, proj_emb_self, Pi.sub_apply]`. Rewrite using `[compFin_singleTens_ne e, Pi.sub_apply, map_sub, hf, proj_emb_ne σ J e, map_one, Units.val_one, one_mulVec, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_mulVec_sub_mem_colSpan : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X : Matrix (Fin n) (Fin r) E)
     (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) (z : Fin n → AF F ⊗[F] E) (I : Set (Fin r)),

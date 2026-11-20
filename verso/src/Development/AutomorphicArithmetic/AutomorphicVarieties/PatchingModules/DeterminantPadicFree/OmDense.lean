@@ -9,7 +9,7 @@ private noncomputable def dsc {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin
   resultant M.charpoly (derivative M.charpoly) n n
 
 /- English proof (translation)
-Unfold `dsc`. Rewrite using `[Matrix.charpoly_map, derivative_map, resultant_map_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dsc_map {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (φ : R →+* S) (M : Matrix (Fin n) (Fin n) R) :
     dsc (M.map φ) = φ (dsc M) := by
@@ -17,11 +17,11 @@ private theorem dsc_map {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (φ : R
   rw [Matrix.charpoly_map, derivative_map, resultant_map_map]
 
 /- English proof (translation)
-Establish `hm : M.charpoly.Monic` using `Matrix.charpoly_monic M`. Establish `hd : M.charpoly.natDegree = n` using `by simp [Matrix.charpoly_natDegree_eq_dim]`. Establish `hle : (derivative M.charpoly).natDegree ≤ n` using `(natDegree_derivative_le _).trans (by omega)`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Establish `hc : M.charpoly.coeff n = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hm.coeff_natDegree` as an intermediate fact. Rewrite `this` using `[hd]`. Then use the resulting hypothesis. Establish `h1 : dsc M = resultant M.charpoly (derivative M.charpoly)`. Unfold `dsc`. Use `resultant_add_right_deg M.charpoly (derivative M.charpoly) n (derivative M.charpoly).natDegree k le_rfl` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `this` using `[← hk, hc, one_pow, one_mul]`. Rewrite using `[this, hd]`. Rewrite using `[h1, ← isUnit_iff_ne_zero, isUnit_resultant_iff_isCoprime hm]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem dsc_ne_iff {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) :
     dsc M ≠ 0 ↔ M.charpoly.Separable := by
@@ -42,7 +42,7 @@ private theorem dsc_ne_iff {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (F
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.charpoly_map, ← dsc_ne_iff, dsc_map]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective A (FractionRing A)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep_iff {A : Type} [CommRing A] [IsDomain A] {n : ℕ} (M : Matrix (Fin n) (Fin n) A) :
     (M.charpoly.map (algebraMap A (FractionRing A))).Separable ↔ dsc M ≠ 0 := by
@@ -50,15 +50,13 @@ private theorem sep_iff {A : Type} [CommRing A] [IsDomain A] {n : ℕ} (M : Matr
   exact (map_ne_zero_iff _ (IsFractionRing.injective A (FractionRing A)))
 
 /- English proof (translation)
-Simplify using `only [sep_iff]`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `s hs`. Establish `hN : ∃ N : ℕ, dsc (mat x.ρ s) ∉ maximalIdeal x.A ^ N`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hc`. Use `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal x.A) (maximalIdeal.isMaximal _).ne_top` as an intermediate fact. Establish `h2 : dsc (mat x.ρ s) ∈ ⨅ N : ℕ, maximalIdeal x.A ^ N` using `Submodule.mem_iInf _ |>.2 hc`. Rewrite `h2` using `[this]`. Conclude with `hs (by simpa using h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `hN`. Establish `hev : ∀ᶠ g in nhds s, ∀ i j, Ideal.Quotient.mk (maximalIdeal x.A ^ N) (mat x.ρ g i j) = Ideal.Quotient.mk (maximalIdeal x.A ^ N) (mat x.ρ s i j)`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`. Conclude with `(x.cont i j N).eventually_eq s`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `filter_upwards [hev] with g hg h0`. Apply `hN` to reduce the goal to its premises. Establish `hM : (mat x.ρ g).map (Ideal.Quotient.mk (maximalIdeal x.A ^ N)) = (mat x.ρ s).map (Ideal.Quotient.mk (maximalIdeal x.A ^ N))`. Use extensionality with `i j`. Conclude with `hg i j`.
-
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← dsc_map, ← hM, dsc_map, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep_open {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) :
     IsOpen {σ : F.G₀ | ((mat x.ρ σ).charpoly.map (algebraMap x.A (FractionRing x.A))).Separable} := by
@@ -88,13 +86,13 @@ private theorem sep_open {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : 
 end UpperTheory.V.Pa.Det
 
 /- English proof (translation)
-Introduce `l _ F n h x hx σ hσ`. Rewrite using `[mem_closure_iff]`. Introduce `U hU hσU`. Establish `key : ∀ S : Finset (Fin h), ∃ τ ∈ U ∩ (F.G' : Set F.G₀), ∀ i ∈ S, ((mat (x i).ρ τ).charpoly.map (algebraMap (x i).A (FractionRing (x i).A))).Separable`. Introduce `S`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨σ, ⟨hσU, hσ⟩, by simp⟩`. Consider the case `insert a S ha ih`. Take `⟨τ, ⟨h1, h2⟩, h3⟩` from `ih`. Establish `ho : IsOpen (U ∩ ⋂ i ∈ S, {σ : F.G₀ | ((mat (x i).ρ σ).charpoly.map (algebraMap (x i).A (FractionRing (x i).A))).Separable})` using `hU.inter (isOpen_biInter_finset fun i _ => UpperTheory.V.Pa.Det.sep_open (x i))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ', ⟨⟨g1, g2⟩, g3⟩, g4⟩` from `hx a _ ho ⟨τ, ⟨h1, Set.mem_iInter₂.2 h3⟩, h2⟩`. Use `⟨τ', ⟨g1, g3⟩, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `g4`. Conclude with `Set.mem_iInter₂.1 g2 i hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨τ, ⟨h1, h2⟩, h3⟩` from `key Finset.univ`. Conclude with `⟨τ, h1, h2, fun i => h3 i (Finset.mem_univ i)⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.omDense :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n h : ℕ} (x : Fin h → NP F n), (∀ i, (x i).N3) → (F.G' : Set F.G₀) ⊆ closure {σ : F.G₀ | σ ∈ F.G' ∧ ∀ i, ((mat (x i).ρ σ).charpoly.map (algebraMap (x i).A (FractionRing (x i).A))).Separable} := by

@@ -18,7 +18,7 @@ variable (d : SD σ)
 abbrev Ix : Type := Fin d.m × Fin d.n × Fin 2
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [SD.cmb, SD.crd]`. Use `conv_rhs => rw [← (Algebra.TensorProduct.basis (AF F) d.bs).sum_repr (X i j)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmb_crd (X : Mx F E d.m d.n) : d.cmb (d.crd X) = X := by
   ext i j
@@ -28,9 +28,9 @@ theorem cmb_crd (X : Mx F E d.m d.n) : d.cmb (d.crd X) = X := by
   rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, j, k⟩`. Simplify using `only [SD.crd, SD.cmb]`. Establish `h : ∑ k', c (i, j, k') ⊗ₜ[F] d.bs k' = ∑ k', c (i, j, k') • (Algebra.TensorProduct.basis (AF F) d.bs) k'`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `congrFun (Module.Basis.repr_sum_self _ (fun k' => c (i, j, k'))) k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_cmb (c : Ix d → AF F) : d.crd (d.cmb c) = c := by
   funext ⟨i, j, k⟩
@@ -42,13 +42,13 @@ theorem crd_cmb (c : Ix d → AF F) : d.crd (d.cmb c) = c := by
   exact congrFun (Module.Basis.repr_sum_self _ (fun k' => c (i, j, k'))) k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[SD.crd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crd_add (X X' : Mx F E d.m d.n) : d.crd (X + X') = d.crd X + d.crd X' := by
   funext k; simp [SD.crd]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[SD.crd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem crd_smul (a : AF F) (X : Mx F E d.m d.n) : d.crd (a • X) = a • d.crd X := by
   funext k; simp [SD.crd]
@@ -61,15 +61,15 @@ def cmbL : (Ix d → AF F) →ₗ[AF F] Mx F E d.m d.n where
 def ek (k : Ix d) : Mx F E d.m d.n := d.cmb fun j => if k = j then 1 else 0
 
 /- English proof (translation)
-The claim follows from `LinearMap.pi_apply_eq_sum_univ (cmbL d) c`.
+A detailed English derivation is pending.
 -/
 theorem cmb_sum (c : Ix d → AF F) : d.cmb c = ∑ k, c k • ek d k :=
   LinearMap.pi_apply_eq_sum_univ (cmbL d) c
 
 /- English proof (translation)
-Use `⟨Matrix.of fun i j => (∑ k', (if k = (i, j, k') then (1 : F) else 0) • d.bs k' : E), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [ek, SD.cmb, incM, Matrix.map_apply, Matrix.of_apply, map_sum]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Use `show _ = (1 : AF F) ⊗ₜ[F] _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem ek_rat (k : Ix d) : ∃ M : Matrix (Fin d.m) (Fin d.n) E, ek d k = incM F M := by
   refine ⟨Matrix.of fun i j => (∑ k', (if k = (i, j, k') then (1 : F) else 0) • d.bs k' : E), ?_⟩
@@ -80,7 +80,7 @@ theorem ek_rat (k : Ix d) : ∃ M : Matrix (Fin d.m) (Fin d.n) E, ek d k = incM 
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [SD.crd, incM, Matrix.map_apply]`. Rewrite using `[show inclR (F := F) (AF F) (M k.1 k.2.1) = (1 : AF F) ⊗ₜ[F] M k.1 k.2.1 from rfl, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem crd_incM (M : Matrix (Fin d.m) (Fin d.n) E) (k : Ix d) :
     d.crd (incM F M) k = algebraMap F (AF F) (d.bs.repr (M k.1 k.2.1) k.2.2) := by
@@ -90,7 +90,7 @@ theorem crd_incM (M : Matrix (Fin d.m) (Fin d.n) E) (k : Ix d) :
   simp
 
 /- English proof (translation)
-Rewrite using `[xs, ← incM_transpose, ← incM_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem xs_incM (x : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) E) :
     xs d (incM F x) = incM F ((x * ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E).1)ᵀ).toCols₂) := by
@@ -98,14 +98,14 @@ theorem xs_incM (x : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) E) :
   rfl
 
 /- English proof (translation)
-Simplify using `[om, ratV, dotProduct, map_sum, map_mul, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem om_ratV {κ : Type} [Fintype κ] (y z y' z' : κ → F) :
     om (ratV y z) (ratV y' z') = algebraMap F (AF F) (om (y, z) (y', z')) := by
   simp [om, ratV, dotProduct, map_sum, map_mul, map_sub]
 
 /- English proof (translation)
-Rewrite using `[dotProduct, Equiv.sum_comp τ (fun i => d.crd X i * sy d (ek d i * (yy d)ᵀ) w), ← sy_sum_left]`. Use `congr 1`. Use `conv_rhs => rw [← cmb_crd d X, cmb_sum, Matrix.sum_mul]`. Simplify using `only [Matrix.smul_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dot_sv {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (X : Mx F E d.m d.n)
     (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
@@ -134,7 +134,7 @@ theorem coordinates_apply {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (w : Matri
     c0 d τ w = (fun k => d.crd (xs d w) (τ k), fun k => sy d (ek d (τ k) * (yy d)ᵀ) w) := rfl
 
 /- English proof (translation)
-Rewrite using `[coordinates_apply, coordinates_apply, om, dot_sv, dot_sv]`. Conclude with `(sy_split d w w').symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplecticForm_coordinates {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (w w' : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     om (c0 d τ w) (c0 d τ w') = sy d w w' := by
@@ -142,7 +142,7 @@ theorem symplecticForm_coordinates {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (
   exact (sy_split d w w').symm
 
 /- English proof (translation)
-Rewrite using `[coordinates_apply, xs_frame]`. Use `Prod.ext rfl (funext fun k => ?_)` and prove the remaining obligations. Conclude with `sy_frame d _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coordinates_frame {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (X : Mx F E d.m d.n) :
     c0 d τ (X * (yy d)ᵀ) = (fun k => d.crd X (τ k), 0) := by
@@ -151,9 +151,9 @@ theorem coordinates_frame {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (X : Mx F 
   exact sy_frame d _ _
 
 /- English proof (translation)
-Establish `h1 : d.crd (xs d w) = 0`. Use function extensionality and compare the values at `i`. Use `congrFun h (τ.symm i)` as an intermediate fact. Simplify `this` using `[coordinates_apply]`. Establish `h2 : xs d w = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← cmb_crd d (xs d w), h1]`. Conclude with `(cmbL d).map_zero`. Take `⟨Z, hZ⟩` from `decomp d w`. Conclude with `⟨Z, by rw [hZ, h2, Matrix.zero_mul, add_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coordinates_fst_eq_zero {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (w : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E))
     (h : (c0 d τ w).1 = 0) : ∃ Z : Mx F E d.m d.n, w = Z * (dg d)ᵀ := by
@@ -168,11 +168,11 @@ theorem coordinates_fst_eq_zero {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (w :
   exact ⟨Z, by rw [hZ, h2, Matrix.zero_mul, add_zero]⟩
 
 /- English proof (translation)
-Establish `hs : ∀ k, ∃ r : F, sy d (ek d (τ k) * (yy d)ᵀ) (incM F x) = algebraMap F (AF F) r`. Introduce `k`. Take `⟨M, hM⟩` from `ek_rat d (τ k)`. Rewrite using `[hM, yy, ← incM_transpose, ← incM_mul, sy_eq]`. Take `⟨y, z, h⟩` from `d.ok.dbl.rat (M * (d.b.1.toCols₂)ᵀ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y', z', h'⟩` from `d.ok.dbl.rat x`. Conclude with `⟨om (y, z) (y', z'), by rw [h, h']; exact om_ratV y z y' z'⟩`. Use `choose r hr using hs`. Use `⟨fun k => d.bs.repr (((x * ((d.b⁻¹ : GL (Fin d.n ⊕ Fin d.n) E).1)ᵀ).toCols₂) (τ k).1 (τ k).2.1) (τ k).2.2, r, ?_⟩` and prove the remaining obligations. Rewrite using `[coordinates_apply, xs_incM]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Conclude with `crd_incM d _ (τ k)`. Conclude with `hr k`.
+A detailed English derivation is pending.
 -/
 theorem coordinates_rational {κ : Type} [Fintype κ] (τ : κ ≃ Ix d) (x : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) E) :
     ∃ y z : κ → F, c0 d τ (incM F x) = ratV y z := by

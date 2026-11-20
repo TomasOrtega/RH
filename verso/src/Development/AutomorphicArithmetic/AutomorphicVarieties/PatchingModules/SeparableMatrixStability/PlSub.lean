@@ -3,27 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ _ _ _ H K _ _ hK hHK U hU g hg`. Establish `hl : l.Prime` using `Fact.out`. Establish `hKc : IsClosed (K : Set Γ)` using `OpenSubgroup.isClosed ⟨K, hK⟩`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc.isCompact`. Use `haveI : U.toSubgroup.FiniteIndex := U.toOpenSubgroup.toSubgroup.finiteIndex_of_finite_quotient`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : U.toSubgroup.Normal := U.isNormal'`. Establish `hn0 : U.toSubgroup.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`. Establish `lem : ∀ k : K, (k : Γ) ∈ H → k ^ l ^ U.toSubgroup.index ∈ U.toSubgroup`. Introduce `k hk`. Take `⟨e, he⟩` from `hU k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set q : K ⧸ U.toSubgroup := (QuotientGroup.mk k : K ⧸ U.toSubgroup)`. Establish `hqe : q ^ l ^ e = 1`. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `he`. Establish `hqn : q ^ U.toSubgroup.index = 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `U.toSubgroup.pow_index_mem k`. Take `⟨a, -, ha⟩` from `(Nat.dvd_prime_pow hl).mp (orderOf_dvd_of_pow_eq_one hqe)`. Establish `h1 : l ^ a ≤ U.toSubgroup.index`. Rewrite using `[← ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero hn0) (orderOf_dvd_of_pow_eq_one hqn)`. Establish `h2 : a < l ^ a` using `Nat.lt_pow_self hl.one_lt`. Establish `h3 : orderOf q ∣ l ^ U.toSubgroup.index`. Rewrite using `[ha]`. Conclude with `pow_dvd_pow l (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hq : q ^ l ^ U.toSubgroup.index = 1` using `orderOf_dvd_iff_pow_eq_one.mp h3`. Rewrite `hq` using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `hq`. Set `O : Subgroup Γ` to `U.toSubgroup.map K.subtype`. Establish `hOo : IsOpen (O : Set Γ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_map]`. Conclude with `hK.isOpenMap_subtype_val _ U.toOpenSubgroup.isOpen`. Establish `hOc : IsClosed (O : Set Γ)` using `OpenSubgroup.isClosed ⟨O, hOo⟩`. Use `haveI : Finite (Γ ⧸ O) := O.quotient_finite_of_isOpen hOo`. Use `haveI : O.FiniteIndex := O.finiteIndex_of_finite_quotient`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hCo : IsOpen (O.normalCore : Set Γ)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ (O.normalCore_isClosed hOc)`. Set `C : OpenNormalSubgroup Γ` to `{ toOpenSubgroup := ⟨O.normalCore, hCo⟩ isNormal' := O.normalCore_normal }`. Establish `hcond : ∀ h ∈ H, ∃ e : ℕ, h ^ l ^ e ∈ C.toOpenSubgroup`. Introduce `h hh`. Use `⟨U.toSubgroup.index, ?_⟩` and prove the remaining obligations.
-
-Use `show ∀ b : Γ, b * h ^ l ^ U.toSubgroup.index * b⁻¹ ∈ O`. Introduce `b`. Rewrite using `[← conj_pow]`. Establish `hbH : b * h * b⁻¹ ∈ H` using `‹H.Normal›.conj_mem h hh b`. Establish `hm` using `lem ⟨b * h * b⁻¹, hHK hbH⟩ hbH`.
-
-Conclude with `Subgroup.mem_map.mpr ⟨_, hm, rfl⟩`. Establish `hgC : (g : Γ) ∈ C.toOpenSubgroup`. Unfold `PL at hg`. Conclude with `Subgroup.mem_iInf.mp (Subgroup.mem_iInf.mp hg C) hcond`. Establish `hgO : (g : Γ) ∈ O` using `O.normalCore_le hgC`.
-
-Take `⟨x, hx, hxg⟩` from `Subgroup.mem_map.mp hgO`. Establish `: x = g` using `Subtype.ext hxg`. Rewrite using `[← this]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.pl_sub :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (H K : Subgroup Γ) [H.Normal] [K.Normal], IsOpen (K : Set Γ) → H ≤ K → ∀ U : OpenNormalSubgroup K, (∀ h : K, (h : Γ) ∈ H → ∃ e : ℕ, h ^ l ^ e ∈ U) → ∀ g : K, (g : Γ) ∈ PL l H → g ∈ U := by

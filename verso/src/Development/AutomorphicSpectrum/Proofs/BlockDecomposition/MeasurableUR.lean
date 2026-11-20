@@ -13,13 +13,13 @@ def uR (ε : Bool) (θ : ℝ) : Fin 2 → ℝ := ![-Real.sin θ, if ε then -Rea
 def sgE (ε : Bool) : ℝ := if ε then -1 else 1
 
 /- English proof (translation)
-Apply the tactic sequence `cases ε <;> simp [sgE]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgE_ne_zero (ε : Bool) : sgE ε ≠ 0 := by
   cases ε <;> simp [sgE]
 
 /- English proof (translation)
-Establish `hd : (!![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ] : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0`. Rewrite using `[Matrix.det_fin_two_of]`. Use `Real.sin_sq_add_cos_sq θ` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [rotR, dif_pos hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -33,9 +33,9 @@ theorem rotR_val (θ : ℝ) :
   rfl
 
 /- English proof (translation)
-Take `⟨a, b, θ⟩` from `p`. Apply the tactic sequence `cases ε <;>`. Simplify using `only [hIw, kR, Units.val_mul, rotR_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[dg2, sgE, Matrix.mul_apply, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hIw_val (ε : Bool) (p : ℝˣ × ℝˣ × ℝ) :
     (hIw ε p).val = !![((p.1 : ℝ) * p.2.1) * Real.cos p.2.2, ((p.1 : ℝ) * p.2.1) * Real.sin p.2.2 * sgE ε;
@@ -48,9 +48,9 @@ theorem hIw_val (ε : Bool) (p : ℝˣ × ℝˣ × ℝ) :
       simp [dg2, sgE, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h` using `hIw_val ε p`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `i fin_cases i`. Simplify using `[Psi, h, uR]`. Apply the tactic sequence `cases ε <;> simp [Psi, h, uR, sgE]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Psi, h, Matrix.det_fin_two_of]`. Use `Real.sin_sq_add_cos_sq p.2.2` as an intermediate fact. Establish `e : sgE ε * (p.1 : ℝ) * (p.2.1 : ℝ) ^ 2 = sgE ε * (p.1 : ℝ) * (p.2.1 : ℝ) ^ 2 * (Real.sin p.2.2 ^ 2 + Real.cos p.2.2 ^ 2)`. Rewrite using `[this, mul_one]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -70,9 +70,9 @@ theorem Psi_eq (ε : Bool) (p : ℝˣ × ℝˣ × ℝ) :
     rw [e]; ring
 
 /- English proof (translation)
-Use `measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify `Real.measurable_sin` using `[uR]`. Consider the cases of `ε`. Simplify `Real.measurable_cos` using `[uR]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `Real.measurable_cos` using `[uR]`.
+A detailed English derivation is pending.
 -/
 theorem measurable_uR (ε : Bool) : Measurable (uR ε) := by
   refine measurable_pi_iff.2 fun i => ?_

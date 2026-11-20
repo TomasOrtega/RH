@@ -16,9 +16,9 @@ def ColW (m : Matrix (Idx r k) (Idx r k) K) : Prop :=
     Submodule.span K ((fun j => Pi.single j (1 : K)) '' posW (r := r) i)
 
 /- English proof (translation)
-Unfold `ColW`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[mem_span_single]`. Use `forall_congr' fun j => forall_congr' fun _ => ?_` and prove the remaining obligations. Establish `e : (m *ᵥ Pi.single (wI i) (1 : K)) j = m j (wI i)` using `by rw [Matrix.mulVec_single_one]; rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Pi.sub_apply, sub_eq_zero, e, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem colW_iff (m : Matrix (Idx r k) (Idx r k) K) :
     ColW m ↔ ∀ i : Fin k, ∀ j, j ∉ posW (r := r) i → m j (wI i) = if j = wI i then 1 else 0 := by
@@ -30,33 +30,31 @@ theorem colW_iff (m : Matrix (Idx r k) (Idx r k) K) :
   rw [Pi.sub_apply, sub_eq_zero, e, Pi.single_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hu : Par (fun h => IsUnit h.det) x`. Take `⟨h11, h33, h21, h31, h32, h, hh, h22⟩` from `hx`. Conclude with `⟨h11, h33, h21, h31, h32, h, uni_unit hh, h22⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hC, hR⟩` from `(par_iff_flags x y hxy hyx).1 hu`. Use `⟨hC, ?_, hR⟩` and prove the remaining obligations. Take `⟨h11, h33, h21, h31, h32, h, hh, h22⟩` from `hx`. Rewrite using `[colW_iff]`. Introduce `i j hj`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `j with a | (j | u) | c` into its components or cases. Conclude with `absurd (Or.inl ⟨a, rfl⟩) hj`. Establish `e` using `congrFun (congrFun h22 (Sum.inl j)) (Sum.inl i)`. Simplify using `only [b22, midEmb, Matrix.of_apply, Matrix.fromBlocks_apply₁₁] at e`. Establish `hji : ¬ j < i` using `fun hlt => hj (Or.inr ⟨j, hlt, rfl⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show x (wI j) (wI i) = _`. Rewrite using `[show x (wI j) (wI i) = h j i from e]`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `[hh.2 j, wI]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : i < j` using `lt_of_le_of_ne (not_lt.1 hji) (Ne.symm hij)`. Rewrite using `[hh.1 hlt]`. Establish `: (wI j : Idx r k) ≠ wI i`. Introduce `e'`. Apply `hij` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify `e'` using `[wI]`. Simplify using `[wI, hij]`. Establish `e` using `congrFun (congrFun h22 (Sum.inr u)) (Sum.inl i)`. Simplify using `only [b22, midEmb, Matrix.of_apply, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply] at e`. Establish `e' : x (Sum.inr (Sum.inl (Sum.inr u))) (wI i) = 0` using `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e']`. Simplify using `[wI]`. Establish `e` using `congrFun (congrFun h32 c) (Sum.inl i)`. Simplify using `only [b32, Matrix.of_apply, Matrix.zero_apply] at e`. Establish `e' : x (Sum.inr (Sum.inr c)) (wI i) = 0` using `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e']`. Simplify using `[wI]`. Introduce and unpack `⟨hC, hW, hR⟩`. Take `⟨h11, h33, h21, h31, h32, h, -, h22⟩` from `(par_iff_flags x y hxy hyx).2 ⟨hC, hR⟩`. Use `⟨h11, h33, h21, h31, h32, h, ⟨fun j i hlt => ?_, fun i => ?_⟩, h22⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrFun (congrFun h22 (Sum.inl j)) (Sum.inl i)`. Simplify using `only [b22, midEmb, Matrix.of_apply, Matrix.fromBlocks_apply₁₁] at e`. Rewrite using `[← e]`. Establish `hnot : (wI j : Idx r k) ∉ posW (r` using `r) i := by`. Introduce and unpack `(⟨a, ha⟩ | ⟨j', hj', he⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[wI] at ha`. Establish `: j' = j` using `by simpa [wI] using he`. Substitute `this` using the available equality. Conclude with `absurd hlt (not_lt.2 (le_of_lt hj'))`. Use `(colW_iff x).1 hW i (wI j) hnot` as an intermediate fact.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[show x (wI j) (wI i) = x (Sum.inr (Sum.inl (Sum.inl j))) (Sum.inr (Sum.inl (Sum.inl i))) from rfl]`. Rewrite using `[this]`. Establish `hne : (wI j : Idx r k) ≠ wI i`. Introduce `e'; have : j = i := by simpa [wI] using e'`. Conclude with `absurd hlt (by rw [this]; exact lt_irrefl _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hne]`. Establish `e` using `congrFun (congrFun h22 (Sum.inl i)) (Sum.inl i)`. Simplify using `only [b22, midEmb, Matrix.of_apply, Matrix.fromBlocks_apply₁₁] at e`. Rewrite using `[← e]`. Establish `hnot : (wI i : Idx r k) ∉ posW (r` using `r) i := by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce and unpack `(⟨a, ha⟩ | ⟨j', hj', he⟩)`. Simplify using `[wI] at ha`. Establish `: j' = i` using `by simpa [wI] using he`. Substitute `this` using the available equality. Conclude with `lt_irrefl j' hj'`.
-
-Use `(colW_iff x).1 hW i (wI i) hnot` as an intermediate fact. Establish `h1 : x (wI i) (wI i) = 1` using `by simpa using this`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem par_uni_iff_flags (x y : Matrix (Idx r k) (Idx r k) K) (hxy : x * y = 1) (hyx : y * x = 1) :
     Par IsUpUni x ↔ ColC x ∧ ColW x ∧ RowC y := by
@@ -126,7 +124,7 @@ theorem par_uni_iff_flags (x y : Matrix (Idx r k) (Idx r k) K) (hxy : x * y = 1)
       exact h1
 
 /- English proof (translation)
-Rewrite using `[colFlag_iff, rowFlag_iff]`. Conclude with `par_uni_iff_flags _ _ (by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]) (by rw [← Units.val_mul, inv_mul_cancel, Units.val_one])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nuG_iff_flags (g : GL (Idx r k) K) :
     g ∈ nuG K r k ↔ ColFlag (g : Matrix (Idx r k) (Idx r k) K) ∧ ColW (g : Matrix (Idx r k) (Idx r k) K) ∧

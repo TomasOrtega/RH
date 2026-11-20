@@ -11,15 +11,15 @@ open Formalism.BasicNotions Formalism.MainNotions
 namespace GlobalTheory.BigOn
 
 /- English proof (translation)
-Take `⟨Y, hY1, -, -, hY4⟩` from `P.g_Y`. Establish `hx1 : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hL1 : 1 ≤ L.sc.L` using `by unfold Scale.L; exact Real.one_le_rpow hx1.le L.sc.eps_pos.le`. Establish `hb2 : 2 ≤ L.sc.b`. Unfold `Scale.b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Real.add_one_le_exp L.sc.L` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmk` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r ≤ 2 * D.R.k` using `by unfold Ranks.r; omega`. Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (show 1 ≤ D.R.k by omega)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkb : (2 : ℝ) * D.R.k ≤ (D.R.k : ℝ) * L.sc.b` using `by nlinarith`. Establish `hpow : (D.R.k : ℝ) * L.sc.b * ((D.R.k : ℝ) * L.sc.b) ^ 7 = ((D.R.k : ℝ) * L.sc.b) ^ 8` using `by ring`. Establish `h7 : (2 : ℝ) ^ 7 ≤ ((D.R.k : ℝ) * L.sc.b) ^ 7` using `pow_le_pow_left₀ (by norm_num) (by nlinarith) 7`. Establish `hbig : (6 : ℝ) * D.R.k < ((D.R.k : ℝ) * L.sc.b) ^ 8`. Rewrite using `[← hpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (2 : ℝ) * D.R.k * 2 ^ 7 ≤ (D.R.k : ℝ) * L.sc.b * ((D.R.k : ℝ) * L.sc.b) ^ 7` using `mul_le_mul hkb h7 (by norm_num) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hr' : ((3 * D.R.r : ℕ) : ℝ) ≤ 6 * D.R.k`. Establish `: 3 * D.R.r ≤ 6 * D.R.k` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ((3 * D.R.r : ℕ) : ℝ) < (D.host.g k : ℝ)`. Combine the linear relations using `[(hY4 k).1]`. Conclude with `hg` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem three_r_lt_g_of_params (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (k : Fin 2) :
     3 * D.R.r < D.host.g k := by
@@ -50,7 +50,7 @@ theorem three_r_lt_g_of_params (D : D7) (L : SizeData₂ D) (P : ParameterChoice
   exact_mod_cast hg
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ?_⟩⟩` and prove the remaining obligations. Conclude with `EvPt.of_forall fun x hx i _ _ _ k => three_r_lt_g_of_params _ _ (Fm.params x hx i) k`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem typePrimes_gt_three_r :
     AtPts fun Fm x _ i _ => ∀ k : Fin 2, 3 * (Fm.D x i).R.r < (Fm.D x i).host.g k := by

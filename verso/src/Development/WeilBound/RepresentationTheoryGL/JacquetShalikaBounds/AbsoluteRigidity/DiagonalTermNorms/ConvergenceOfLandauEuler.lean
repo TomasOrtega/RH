@@ -13,7 +13,7 @@ variable {W : Type} (q : W → ℕ)
 def ll (p : W × ℕ) : ℝ := ((p.2 : ℝ) + 1) * Real.log (q p.1)
 
 /- English proof (translation)
-Unfold `ll`. Establish `h1 : (1 : ℝ) ≤ q p.1` using `by exact_mod_cast (le_trans (by norm_num) (hq p.1))`. Conclude with `mul_nonneg (by positivity) (Real.log_nonneg h1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ll_nonneg (hq : ∀ w, 2 ≤ q w) (p : W × ℕ) : 0 ≤ ll q p := by
   unfold ll
@@ -21,7 +21,7 @@ theorem ll_nonneg (hq : ∀ w, 2 ≤ q w) (p : W × ℕ) : 0 ≤ ll q p := by
   exact mul_nonneg (by positivity) (Real.log_nonneg h1)
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) < q p.1` using `by exact_mod_cast (lt_of_lt_of_le (by norm_num) (hq p.1))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul h0.le, Real.rpow_def_of_pos h0]`. Unfold `ll`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,9 +35,9 @@ theorem pow_eq_exp (hq : ∀ w, 2 ≤ q w) (σ : ℝ) (p : W × ℕ) :
   ring
 
 /- English proof (translation)
-Establish `h0 : 0 < q p.1` using `lt_of_lt_of_le (by norm_num) (hq p.1)`. Unfold `lterm`. Rewrite using `[norm_div, norm_mul, norm_mul, Complex.norm_conj, norm_pow, Complex.norm_natCast_cpow_of_pos h0, ← pow_eq_exp q hq]`. Establish `hd : ‖((p.2 : ℂ) + 1)‖ = (p.2 : ℝ) + 1`. Establish `: ((p.2 : ℂ) + 1) = (((p.2 : ℝ) + 1 : ℝ) : ℂ)` using `by push_cast; ring`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Establish `hre : (-(σ : ℂ)).re = -σ` using `by simp`. Rewrite using `[hre, hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lterm {A B : Type} [Fintype A] [Fintype B] (hq : ∀ w, 2 ≤ q w) (α : W → A → ℂ) (β : W → B → ℂ) (σ : ℝ)
     (p : W × ℕ) :
@@ -55,15 +55,15 @@ theorem norm_lterm {A B : Type} [Fintype A] [Fintype B] (hq : ∀ w, 2 ≤ q w) 
 def cd {A : Type} [Fintype A] (α : W → A → ℂ) (p : W × ℕ) : ℝ := ‖∑ a, α p.1 a ^ (p.2 + 1)‖ ^ 2 / ((p.2 : ℝ) + 1)
 
 /- English proof (translation)
-Unfold `cd`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem cd_nonneg {A : Type} [Fintype A] (α : W → A → ℂ) (p : W × ℕ) : 0 ≤ cd α p := by
   unfold cd; positivity
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) < q p.1` using `by exact_mod_cast (lt_of_lt_of_le (by norm_num) (hq p.1))`. Unfold `lterm cd`. Establish `e1 : ((q p.1 : ℂ) ^ (-(σ : ℂ))) = (((q p.1 : ℝ) ^ (-σ) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_cpow h0.le]`. Use `push_cast`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[e1, ← Complex.ofReal_pow, pow_eq_exp q hq, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lterm_diag {A : Type} [Fintype A] (hq : ∀ w, 2 ≤ q w) (α : W → A → ℂ) (σ : ℝ) (p : W × ℕ) :
     lterm q α α σ p = ((cd α p * Real.exp (-(ll q p * σ)) : ℝ) : ℂ) := by
@@ -76,7 +76,7 @@ theorem lterm_diag {A : Type} [Fintype A] (hq : ∀ w, 2 ≤ q w) (α : W → A 
   ring
 
 /- English proof (translation)
-Rewrite using `[lterm_diag q hq, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg]`. Conclude with `mul_nonneg (cd_nonneg α p) (Real.exp_pos _).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_lterm_diag {A : Type} [Fintype A] (hq : ∀ w, 2 ≤ q w) (α : W → A → ℂ) (σ : ℝ) (p : W × ℕ) :
     ‖lterm q α α σ p‖ = cd α p * Real.exp (-(ll q p * σ)) := by
@@ -84,11 +84,9 @@ theorem norm_lterm_diag {A : Type} [Fintype A] (hq : ∀ w, 2 ≤ q w) (α : W �
   exact mul_nonneg (cd_nonneg α p) (Real.exp_pos _).le
 
 /- English proof (translation)
-Rewrite using `[norm_lterm q hq, norm_lterm_diag q hq, norm_lterm_diag q hq]`. Unfold `cd`. Use `set u := ‖∑ a, α p.1 a ^ (p.2 + 1)‖`. Use `set v := ‖∑ b, β p.1 b ^ (p.2 + 1)‖`. Use `set e := Real.exp (-(ll q p * σ))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : 0 ≤ e` using `(Real.exp_pos _).le`. Establish `hk : (0 : ℝ) < (p.2 : ℝ) + 1` using `by positivity`. Establish `h2 : u * v ≤ (u ^ 2 + v ^ 2) / 2` using `by nlinarith [sq_nonneg (u - v)]`. Establish `e1 : (u ^ 2 / ((p.2 : ℝ) + 1) * e + v ^ 2 / ((p.2 : ℝ) + 1) * e) / 2 = ((u ^ 2 + v ^ 2) / 2 * e) / ((p.2 : ℝ) + 1)` using `by field_simp`. Rewrite using `[e1]`.
-
-Apply `div_le_div_of_nonneg_right _ hk.le` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right h2 he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem norm_lterm_le {A B : Type} [Fintype A] [Fintype B] (hq : ∀ w, 2 ≤ q w) (α : W → A → ℂ) (β : W → B → ℂ)
     (σ : ℝ) (p : W × ℕ) :
@@ -108,9 +106,9 @@ theorem norm_lterm_le {A B : Type} [Fintype A] [Fintype B] (hq : ∀ w, 2 ≤ q 
   exact mul_le_mul_of_nonneg_right h2 he
 
 /- English proof (translation)
-Rewrite using `[norm_lterm q hq, norm_lterm q hq]`. Establish `hk : (0 : ℝ) < (p.2 : ℝ) + 1` using `by positivity`. Apply `div_le_div_of_nonneg_right _ hk.le` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `ll_nonneg q hq p` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_lterm_anti {A B : Type} [Fintype A] [Fintype B] (hq : ∀ w, 2 ≤ q w) (α : W → A → ℂ) (β : W → B → ℂ)
     {σ σ₁ : ℝ} (h : σ₁ ≤ σ) (p : W × ℕ) : ‖lterm q α β σ p‖ ≤ ‖lterm q α β σ₁ p‖ := by
@@ -126,23 +124,19 @@ end DiagonalEntryNormBounds
 
 open DiagonalEntryNormBounds in
 /- English proof (translation)
-Introduce `hL hE W q X d A hS`. Establish `hq` using `hS.primes.two`. Establish `diag : ∀ x : X, ∀ σ : ℝ, 1 < σ → Summable fun p => ‖lterm q (A x) (A x) σ p‖`. Introduce `x`. Take `⟨F, σ₀, hF, hFe⟩` from `hS.rs x x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set σ₁ : ℝ := max σ₀ 2 with hσ₁`. Establish `hsum : ∀ σ : ℝ, σ₁ < σ → Summable fun p => cd (A x) p * Real.exp (-(ll q p * σ))`. Introduce `σ hσ`. Establish `h2 : 2 < (σ : ℂ).re` using `by simp; exact lt_of_le_of_lt (le_max_right _ _) hσ`. Use `(hE W q _ _ (A x) (A x) σ hS.primes (hS.bd x) (hS.bd x) h2).1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.congr fun p => norm_lterm_diag q hq (A x) σ p`. Establish `key` using `hL (W × ℕ) (cd (A x)) (ll q) 1 σ₁ (fun s => F s / (s - 1)) (cd_nonneg (A x)) (ll_nonneg q hq) (fun σ hσ => by`. Establish `h1 : ((σ : ℂ) - 1) ≠ 0`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hF σ (by linarith)).div (analyticAt_id.sub analyticAt_const) h1)`. Use `hsum`. Use the proof step `(fun σ hσ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hσ0 : σ₀ < σ` using `lt_of_le_of_lt (le_max_left _ _) hσ`. Establish `h2 : 2 < (σ : ℂ).re` using `by simp; exact lt_of_le_of_lt (le_max_right _ _) hσ`. Establish `h1 : ((σ : ℂ) - 1) ≠ 0`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at this`. Combine the linear relations using `[le_max_right σ₀ 2]`. Rewrite using `[hFe σ hσ0, if_pos rfl, mul_div_cancel_left₀ _ h1, (hE W q _ _ (A x) (A x) σ hS.primes (hS.bd x) (hS.bd x) h2).2.1]`. Establish `e : (∑' p, lterm q (A x) (A x) (σ : ℂ) p) = ((∑' p, cd (A x) p * Real.exp (-(ll q p * σ)) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_tsum]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `tsum_congr fun p => lterm_diag q hq (A x) σ p`. Rewrite using `[e, ← Complex.ofReal_exp])`. Introduce `σ hσ`. Conclude with `(key σ hσ).congr fun p => (norm_lterm_diag q hq (A x) σ p).symm`. Establish `all : ∀ x y : X, ∀ σ : ℝ, 1 < σ → Summable fun p => ‖lterm q (A x) (A y) σ p‖`.
-
-Introduce `x y σ hσ`. Use `Summable.of_nonneg_of_le (fun p => norm_nonneg _) (fun p => norm_lterm_le q hq (A x) (A y) σ p) ?_` and prove the remaining obligations. Conclude with `((diag x σ hσ).add (diag y σ hσ)).div_const 2`. Introduce `x y`. Use `⟨all x y, fun σ₁ hσ₁ => ⟨∑' p, ‖lterm q (A x) (A y) σ₁ p‖, fun σ hσ => ?_⟩⟩` and prove the remaining obligations.
-
-Use `(norm_tsum_le_tsum_norm (all x y σ (by linarith))).trans ?_` and prove the remaining obligations. Conclude with `(all x y σ (by linarith)).tsum_le_tsum (fun p => norm_lterm_anti q hq (A x) (A y) hσ p) (all x y σ₁ hσ₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem convergence_of_landau_euler : LandauL → EulerLog → Conv1 := by
   intro hL hE W q X d A hS

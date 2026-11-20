@@ -40,9 +40,9 @@ def kers (φ : AddChar k Circle) (s : Finset (Fin n → k)) : AddSubgroup (Fin n
     rw [dotProduct_neg, AddChar.map_neg_eq_inv, hx ξ hξ, inv_one]
 
 /- English proof (translation)
-Establish `: (kers φ s : Set (Fin n → k)) = ⋂ ξ ∈ s, {x | φ (ξ ⬝ᵥ x) = 1}`. Use extensionality with `x`. Simplify using `[kers]`. Rewrite using `[this]`. Use `isOpen_biInter_finset fun ξ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isOpen_ker φ hφ).preimage (by fun_prop)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_kers (φ : AddChar k Circle) (hφ : Continuous φ) (s : Finset (Fin n → k)) :
     IsOpen (kers φ s : Set (Fin n → k)) := by
@@ -54,9 +54,9 @@ theorem isOpen_kers (φ : AddChar k Circle) (hφ : Continuous φ) (s : Finset (F
   exact (isOpen_ker φ hφ).preimage (by fun_prop)
 
 /- English proof (translation)
-Set `H` to `A ⊓ stab col hc0 hca v ⊓ kers φ s`. Establish `hHo : IsOpen (H : Set (Fin n → k))`. Simplify using `only [H, AddSubgroup.coe_inf]`. Conclude with `(hA.2.inter (hsm v)).inter (isOpen_kers φ hφ s)`. Establish `hHA : H ≤ A` using `fun x hx => hx.1.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, hu⟩` from `exists_tr A H hA.1 hHo hHA`. Conclude with `⟨(H, T), fun ξ hξ => ⟨hHA, hHo, fun a ha => ha.1.2, fun a ha => ha.2 ξ hξ, hT, hu⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_AD (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hc0 : ∀ v, col 0 v = v) (hca : ∀ x y v, col (x + y) v = col x (col y v))
@@ -72,7 +72,7 @@ theorem exists_AD (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n �
   exact ⟨(H, T), fun ξ hξ => ⟨hHA, hHo, fun a ha => ha.1.2, fun a ha => ha.2 ξ hξ, hT, hu⟩⟩
 
 /- English proof (translation)
-Introduce `x h hh`. Simplify using `only [dotProduct_add, AddChar.map_add_eq_mul, h4 h hh, mul_one, hca, h3 h hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem summand_inv (φ : AddChar k Circle) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hca : ∀ x y v, col (x + y) v = col x (col y v)) (ξ : Fin n → k) (v : V) (H : AddSubgroup (Fin n → k))
@@ -83,9 +83,9 @@ theorem summand_inv (φ : AddChar k Circle) (col : (Fin n → k) → V →ₗ[�
   simp only [dotProduct_add, AddChar.map_add_eq_mul, h4 h hh, mul_one, hca, h3 h hh]
 
 /- English proof (translation)
-Establish `hd : ∃ p, AD φ col ξ A v p` using `⟨p, hp⟩`. Unfold `av`. Rewrite using `[dif_pos hd]`. Take `⟨h1, -, h3, h4, h5, h6⟩` from `hd.choose_spec`. Take `⟨g1, -, g3, g4, g5, g6⟩` from `hp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `avg_indep A _ _ h1 g1 _ _ h5 h6 g5 g6 _ (summand_inv φ col hca ξ v _ h3 h4) (summand_inv φ col hca ξ v _ g3 g4)`.
+A detailed English derivation is pending.
 -/
 theorem av_eq' (φ : AddChar k Circle) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hca : ∀ x y v, col (x + y) v = col x (col y v))
@@ -101,7 +101,7 @@ theorem av_eq' (φ : AddChar k Circle) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (summand_inv φ col hca ξ v _ g3 g4)
 
 /- English proof (translation)
-Rewrite using `[dotProduct_add, dotProduct_add, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, mul_inv]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem circ_char (φ ψ : AddChar k Circle) (ξ η : Fin n → k) (x y : Fin n → k) :
     (φ (ξ ⬝ᵥ (x + y)))⁻¹ * ψ (η ⬝ᵥ (x + y)) = ((φ (ξ ⬝ᵥ x))⁻¹ * ψ (η ⬝ᵥ x)) * ((φ (ξ ⬝ᵥ y))⁻¹ * ψ (η ⬝ᵥ y)) := by
@@ -110,21 +110,21 @@ theorem circ_char (φ ψ : AddChar k Circle) (ξ η : Fin n → k) (x y : Fin n 
 
 open Classical in
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_AD φ hφ col hc0 hca hsm A hA {ξ} v`. Establish `hp'` using `hp ξ (Finset.mem_singleton_self ξ)`. Rewrite using `[av_eq' φ col hca A ξ v p hp']`. Take `⟨h1, -, h3, h4, h5, h6⟩` from `hp'`. Set `χ : (Fin n → k) → Circle` to `fun t => (φ (ξ ⬝ᵥ t))⁻¹ * ψ (η ⬝ᵥ t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hexp : E (((p.2.card : ℂ)⁻¹) • ∑ t ∈ p.2, (starRingEnd ℂ ((φ (ξ ⬝ᵥ t) : Circle) : ℂ)) • col t v) w = ((p.2.card : ℂ)⁻¹ * ∑ t ∈ p.2, ((χ t : Circle) : ℂ)) * E v w`. Simplify using `only [map_smul, map_sum, LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul, hE]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Simplify using `only [χ, Circle.coe_mul, Circle.coe_inv_eq_conj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp]`. Distinguish the cases in `hEv : E v w = 0`. Apply the tactic sequence `rw [hEv, mul_zero] split_ifs <;> rfl`. Establish `hψ : ∀ a ∈ p.1, ψ (η ⬝ᵥ a) = 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `h` using `hE a v w`. Rewrite `h` using `[h3 a ha]`. Establish `h' : (((ψ (η ⬝ᵥ a) : Circle) : ℂ) - 1) * E v w = 0` using `by rw [sub_mul, one_mul, ← h, sub_self]`. Conclude with `Circle.coe_eq_one.1 (sub_eq_zero.1 ((mul_eq_zero.1 h').resolve_right hEv))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχH : ∀ a ∈ p.1, χ a = 1`. Introduce `a ha`. Simplify using `only [χ, h4 a ha, hψ a ha, inv_one, mul_one]`. Establish `hN` using `card_ne_zero A p.1 p.2 h6`. Use `split_ifs with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ t ∈ p.2, ((χ t : Circle) : ℂ) = p.2.card`. Rewrite using `[Finset.sum_congr rfl (fun t ht => by`. Simplify using `only [χ, hc t (h5 t ht), inv_mul_cancel, Circle.coe_one] : ∀ t ∈ p.2, ((χ t : Circle) : ℂ) = 1)]`. Simplify using the standard rewrite rules. Rewrite using `[this, inv_mul_cancel₀ hN, one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [not_forall] at hc`. Take `⟨a, ha, hne⟩` from `hc`. Establish `hχa : χ a ≠ 1`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun z => φ (ξ ⬝ᵥ a) * z) h` as an intermediate fact. Simplify `this` using `[χ]`. Rewrite using `[sum_circ_eq_zero A p.1 h1 p.2 h5 h6 χ (circ_char φ ψ ξ η) hχH a ha hχa, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem av_eigen' (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hc0 : ∀ v, col 0 v = v) (hca : ∀ x y v, col (x + y) v = col x (col y v)) (hsm : ∀ v, IsOpen {x | col x v = v})
@@ -174,23 +174,23 @@ theorem av_eigen' (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n �
     rw [sum_circ_eq_zero A p.1 h1 p.2 h5 h6 χ (circ_char φ ψ ξ η) hχH a ha hχa, mul_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_ginv (g : GL (Fin n) k) (x : Fin n → k) :
     ((g : Matrix (Fin n) (Fin n) k)) *ᵥ (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ginv_mulVec (g : GL (Fin n) k) (x : Fin n → k) :
     (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) *ᵥ ((g : Matrix (Fin n) (Fin n) k) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
 
 /- English proof (translation)
-Simplify using `only [gmap, AddSubgroup.mem_map, LinearMap.toAddMonoidHom_coe, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite using `[ginv_mulVec]` and apply the resulting hypothesis. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, mulVec_ginv g x⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_gmap (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) (x : Fin n → k) :
     x ∈ gmap g A ↔ (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) *ᵥ x ∈ A := by
@@ -202,7 +202,7 @@ theorem mem_gmap (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) (x : Fin n �
     exact ⟨_, h, mulVec_ginv g x⟩
 
 /- English proof (translation)
-Establish `: (gmap g A : Set (Fin n → k)) = (fun x => (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) *ᵥ x) ⁻¹' (A : Set (Fin n → k))`. Use extensionality with `x`. Conclude with `mem_gmap g A x`. Rewrite using `[this]`. Conclude with `hA.preimage (continuous_const.matrix_mulVec continuous_id)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_gmap (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) (hA : IsOpen (A : Set (Fin n → k))) :
     IsOpen (gmap g A : Set (Fin n → k)) := by
@@ -214,9 +214,9 @@ theorem isOpen_gmap (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) (hA : IsO
   exact hA.preimage (continuous_const.matrix_mulVec continuous_id)
 
 /- English proof (translation)
-Use `⟨?_, isOpen_gmap g A hA.2⟩` and prove the remaining obligations. Establish `: (gmap g A : Set (Fin n → k)) = (fun x => (g : Matrix (Fin n) (Fin n) k) *ᵥ x) '' (A : Set (Fin n → k))`. Simplify using `only [gmap, AddSubgroup.coe_map]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA.1.image (continuous_const.matrix_mulVec continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem lat_gmap' (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) (hA : Lat A) : Lat (gmap g A) := by
   refine ⟨?_, isOpen_gmap g A hA.2⟩
@@ -227,7 +227,7 @@ theorem lat_gmap' (g : GL (Fin n) k) (A : AddSubgroup (Fin n → k)) (hA : Lat A
   exact hA.1.image (continuous_const.matrix_mulVec continuous_id)
 
 /- English proof (translation)
-Rewrite using `[dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_g (g : GL (Fin n) k) (ξ x : Fin n → k) :
     (ξ ᵥ* ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) ⬝ᵥ x =
@@ -235,21 +235,21 @@ theorem dot_g (g : GL (Fin n) k) (ξ x : Fin n → k) :
   rw [dotProduct_mulVec]
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_AD φ hφ col hc0 hca hsm A hA {ξ} v`. Establish `hp'` using `hp ξ (Finset.mem_singleton_self ξ)`. Rewrite using `[av_eq' φ col hca A ξ v p hp']`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hp'`. Establish `hinj : Function.Injective (fun t : Fin n → k => (g : Matrix (Fin n) (Fin n) k) *ᵥ t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x y hxy`. Use `congrArg (fun z => (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) *ᵥ z) hxy` as an intermediate fact. Simplify `this` using `only [ginv_mulVec]`. Set `q : AddSubgroup (Fin n → k) × Finset (Fin n → k)` to `(gmap g p.1, p.2.image (fun t => (g : Matrix (Fin n) (Fin n) k) *ᵥ t))`. Establish `hsub : ∀ a t, (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) *ᵥ (a - (g : Matrix (Fin n) (Fin n) k) *ᵥ t) = (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) *ᵥ a - t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a t`. Rewrite using `[Matrix.mulVec_sub, ginv_mulVec]`. Establish `hq : AD φ col (ξ ᵥ* ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (gmap g A) (gl g v) q`. Use `⟨AddSubgroup.map_mono h1, isOpen_gmap g p.1 h2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ha` using `[mem_gmap]`. Rewrite using `[← mulVec_ginv g a, ← hconj, h3 _ ha]`. Introduce `a ha`. Rewrite `ha` using `[mem_gmap]`. Rewrite using `[dot_g]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4 _ ha`. Introduce `t ht`. Take `⟨t₀, ht₀, rfl⟩` from `Finset.mem_image.1 ht`. Rewrite using `[mem_gmap, ginv_mulVec]`. Conclude with `h5 t₀ ht₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Rewrite `ha` using `[mem_gmap]`. Take `⟨t₀, ⟨ht₀, hb⟩, huq⟩` from `h6 _ ha`. Use `⟨(g : Matrix (Fin n) (Fin n) k) *ᵥ t₀, ⟨Finset.mem_image.2 ⟨t₀, ht₀, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_gmap, hsub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hb`. Introduce and unpack `t ⟨ht, hat⟩`. Take `⟨t₁, ht₁, rfl⟩` from `Finset.mem_image.1 ht`. Rewrite `hat` using `[mem_gmap, hsub]`. Rewrite using `[huq t₁ ⟨ht₁, hat⟩]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[av_eq' φ col hca (gmap g A) _ (gl g v) q hq]`. Simplify using `only [q]`. Rewrite using `[Finset.card_image_of_injective _ hinj, Finset.sum_image (fun x _ y _ h => hinj h)]`. Simplify using `only [map_smul, map_sum, hconj, dot_g, ginv_mulVec]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem av_conj' (φ : AddChar k Circle) (hφ : Continuous φ) (col : (Fin n → k) → V →ₗ[ℂ] V)
     (hc0 : ∀ v, col 0 v = v) (hca : ∀ x y v, col (x + y) v = col x (col y v)) (hsm : ∀ v, IsOpen {x | col x v = v})

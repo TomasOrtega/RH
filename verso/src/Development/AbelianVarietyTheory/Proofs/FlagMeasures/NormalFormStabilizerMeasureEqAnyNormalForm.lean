@@ -9,13 +9,13 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.Amp.StabHaar
 
 /- English proof (translation)
-Introduce `k r j hj z z' n₁ n₂ g₀ β c μR hn₁ hn₂ hg₀ hR`. Take `⟨hz, hz', hT, -⟩` from `id hR`. Establish `hN : IsNormalFormStabilizerMeasure k r hj z z' (n₁ * g₀ * n₂) 1 ((lebR0 k r j β).map (conjM n₂⁻¹))`. Unfold `IsNormalFormStabilizerMeasure`. Conclude with `⟨hz, hz', hT, n₁, hn₁, n₂, hn₂, g₀, β, c, hg₀, rfl, by rw [ENNReal.ofReal_one, one_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Take `⟨-, hcl, hHaar, -⟩` from `GlobalTheory.Amp.StabMeas.stabilizer_measure_normalisation k r j hj z z' _ 1 _ one_pos hN`. Take `⟨-, -, hHaarR, -⟩` from `GlobalTheory.Amp.StabMeas.stabilizer_measure_normalisation k r j hj z z' _ 1 μR one_pos hR`. Take `⟨huniq, -, -⟩` from `GlobalTheory.MatHaar.haar_unique_locFinite_openPos (2 * r + k + 1) (Rset k r (n₁ * g₀ * n₂)) ((lebR0 k r j β).map (conjM n₂⁻¹)) (matGroup hcl) hHaar`. Take `⟨t, -, htop, ht⟩` from `huniq μR hHaarR`. Establish `hNt : IsNormalFormStabilizerMeasure k r hj z z' (n₁ * g₀ * n₂) t.toReal μR`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `IsNormalFormStabilizerMeasure`. Conclude with `⟨hz, hz', hT, n₁, hn₁, n₂, hn₂, g₀, β, c, hg₀, rfl, by`. Rewrite using `[ht, ENNReal.ofReal_toReal htop.ne, Measure.map_smul]⟩`. Establish `h1` using `normalFormStabilizerMeasure_scalar_le hj z z' _ 1 t.toReal μR hR hNt`. Establish `h2` using `normalFormStabilizerMeasure_scalar_le hj z z' _ t.toReal 1 μR hNt hR`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[ENNReal.ofReal_one, ENNReal.ofReal_toReal htop.ne]`. Establish `ht1 : t = 1` using `le_antisymm h2 h1`. Take `⟨hH, -⟩` from `GlobalTheory.T.stabilizer_haar_unimodular_normal k r j hj z z' g₀ β c hz hz' hT hg₀`. Take `⟨hσ, -⟩` from `hH`. Conclude with `⟨by rw [ht, ht1, one_smul], hσ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normalFormStabilizerMeasure_eq_any_normalForm : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (n₁ n₂ g₀ : Mat k r) (β : Fin r → ℕ) (c : ℂ) (μR : Measure (Mt k r)), n₁ ∈ Nset k r → n₂ ∈ Nset k r → IsNormal0 k r hj β c z z' g₀ → IsNormalFormStabilizerMeasure k r hj z z' (n₁ * g₀ * n₂) 1 μR → μR = (lebR0 k r j β).map (conjM n₂⁻¹) ∧ SigmaFinite (lebR0 k r j β) := by
   intro k r j hj z z' n₁ n₂ g₀ β c μR hn₁ hn₂ hg₀ hR

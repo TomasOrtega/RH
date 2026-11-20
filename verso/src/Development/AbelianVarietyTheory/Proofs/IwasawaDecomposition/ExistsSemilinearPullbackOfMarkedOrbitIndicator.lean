@@ -7,27 +7,25 @@ noncomputable section
 namespace GlobalTheory.PolFan.OrbMark
 
 /- English proof (translation)
-Introduce `O _ w0 X₀ _ _ v X _ _ _ β h1`. Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite `h1` using `[InvFun.evalZ, (orbFun O w0 v).eval_eq hr, orbFun_toFun]`. Use `split_ifs at h1 with hc`. Use `swap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `absurd h1 zero_ne_one`. Take `⟨-, σ, hσ, s, hs, H⟩` from `hc`. Set `g : (Fin n → O) →+ X` to `{ toFun := fun a => r (twv σ a) map_zero' := by rw [twv_zero, map_zero] map_add' := fun a b => by`. Establish `e : twv σ (a + b) = twv σ a + twv σ b` using `funext fun _ => map_add σ _ _`. Rewrite using `[e, map_add] }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ a, g a = r (twv σ a)` using `fun _ => rfl`. Establish `hgs : ∀ (c : O) a, g (c • a) = σ c • g a` using `fun c a => by`. Rewrite using `[hg, hg, twv_smul, map_smul]`. Establish `hgsurj : Function.Surjective g` using `fun x => by`. Take `⟨a, ha⟩` from `hr x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨twv σ.symm a, by rw [hg, twv_twv_symm, ha]⟩`. Establish `hker : ∀ z, g z = 0 → s z = 0`. Introduce `z hz`. Take `⟨x, hx⟩` from `Submodule.mkQ_surjective _ (s z)`. Rewrite using `[← hx]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(Submodule.Quotient.mk_eq_zero _).2 fun c y => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hs (Submodule.Quotient.mk y)`. Establish `h1` using `H (c • z) b (c • x) y (by rw [Submodule.Quotient.mk_smul, map_smul]; exact congrArg _ hx) hb.symm`. Establish `e : r (twv σ (c • z)) = 0` using `by rw [← hg, hgs, hz, smul_zero]`. Simplify using `only at h1`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, map_zero, LinearMap.zero_apply]`. Conclude with `h1.symm` after adjusting the coercions. Establish `hwd : ∀ a a', g a = g a' → s a = s a'` using `fun a a' h => by`. Use `hker (a - a') (by rw [map_sub, h, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `pre : X → (Fin n → O)` to `fun x => (hgsurj x).choose`. Establish `hpre : ∀ x, g (pre x) = x` using `fun x => (hgsurj x).choose_spec`. Establish `hf : ∀ a, s (pre (g a)) = s a` using `fun a => hwd _ _ (hpre _)`. Set `f : X →+ X₀ ⧸ (CarDim.orad v : Submodule O X₀)` to `{ toFun := fun x => s (pre x) map_zero' := by`. Use `hf 0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_zero]`. Rewrite using `[this, map_zero]`. Use the proof step `map_add' := fun x y => by`. Use `hf (pre x + pre y)` as an intermediate fact. Rewrite `this` using `[map_add, hpre, hpre]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[this, map_add] }`. Establish `hfg : ∀ a, f (g a) = s a` using `hf`. Use `⟨σ.symm, f, by rw [RingEquiv.symm_apply_eq, hσ], fun q => ?_, fun c x => ?_, fun x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hs q`. Conclude with `⟨g a, hfg a⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hgsurj x`. Establish `e : c • g a = g (σ.symm c • a)` using `by rw [hgs, σ.apply_symm_apply]`. Rewrite using `[e, hfg, hfg, map_smul]`. Take `⟨a, rfl⟩` from `hgsurj x`. Take `⟨b, rfl⟩` from `hgsurj y`.
-
-Rewrite `hx`, `hy` using `[hfg]`. Establish `h` using `H a b x₀ y₀ hx hy`. Simplify using `only at h`. Rewrite `h` using `[← hg, ← hg]`. Conclude with `h` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_semilinear_pull_of_evalZ_eq_one : ∀ {O : Type} [CommRing O] (w0 : O) {X₀ : Type} [AddCommGroup X₀] [Module O X₀] (v : LinearMap.BilinForm ℤ X₀)
   {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] (β : LinearMap.BilinForm ℤ X), (OrbMark.orbFun O w0 v).evalZ β = 1 →

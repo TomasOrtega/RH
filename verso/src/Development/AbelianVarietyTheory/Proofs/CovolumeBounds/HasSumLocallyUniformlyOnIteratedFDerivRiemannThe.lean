@@ -18,9 +18,9 @@ def riemannThetaJointForm (a : ι → ℝ) (n : ι → ℤ) : ((ι → ℂ) × (
       (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : ι => ι → ℂ) i))
 
 /- English proof (translation)
-Take `⟨w, A⟩` from `p`. Establish `: ∑ i, ∑ j, π * I * (((n i : ℂ) + a i) * ((n j : ℂ) + a j)) * A i j = π * I * ((fun i => (n i : ℂ) + a i) ⬝ᵥ (of A *ᵥ fun i => (n i : ℂ) + a i))`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Simplify using `only [riemannThetaJointForm, ContinuousLinearMap.coprod_apply, riemannThetaForm_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, smul_eq_mul, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 @[simp] theorem riemannThetaJointForm_apply (a : ι → ℝ) (n : ι → ℤ)
     (p : (ι → ℂ) × (ι → ι → ℂ)) :
@@ -38,7 +38,7 @@ Expand and normalize the polynomial expressions, which then agree.
   ring
 
 /- English proof (translation)
-Establish `: (fun i => p.1 i + (b i : ℂ)) = p.1 + fun i => (b i : ℂ)` using `rfl`. Rewrite using `[riemannThetaTerm, riemannThetaJointForm_apply, riemannThetaForm_apply, this, dotProduct_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem riemannThetaTerm_eq_cexp_jointForm (a b : ι → ℝ) (n : ι → ℤ)
     (p : (ι → ℂ) × (ι → ι → ℂ)) :
@@ -50,7 +50,7 @@ theorem riemannThetaTerm_eq_cexp_jointForm (a b : ι → ℝ) (n : ι → ℤ)
   ring
 
 /- English proof (translation)
-Simplify using `only [riemannThetaTerm_eq_cexp_jointForm]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_riemannThetaTerm (a b : ι → ℝ) (n : ι → ℤ) :
     Differentiable ℂ fun p : (ι → ℂ) × (ι → ι → ℂ) => riemannThetaTerm a b (of p.2) p.1 n := by
@@ -58,7 +58,7 @@ theorem differentiable_riemannThetaTerm (a b : ι → ℝ) (n : ι → ℤ) :
   fun_prop
 
 /- English proof (translation)
-Take `⟨c, hc, S, hS⟩` from `h.exists_eventually_norm_riemannThetaTerm_le a b v`. Take `⟨U, hU, hUo, hp⟩` from `_root_.eventually_nhds_iff.mp hS`. Conclude with `⟨U, hUo, hp, _, summable_riemannThetaBound a hc S, fun n p hp => hU p hp n⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsSiegel.exists_isOpen_norm_riemannThetaTerm_le {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) : ∃ U : Set ((ι → ℂ) × (ι → ι → ℂ)), IsOpen U ∧ (v, of.symm Ω) ∈ U ∧
@@ -69,7 +69,7 @@ theorem IsSiegel.exists_isOpen_norm_riemannThetaTerm_le {Ω : Matrix ι ι ℂ} 
   exact ⟨U, hUo, hp, _, summable_riemannThetaBound a hc S, fun n p hp => hU p hp n⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hp, u, hu, hle⟩` from `h.exists_isOpen_norm_riemannThetaTerm_le a b v`. Conclude with `SCV.analyticAt_of_differentiableOn (SCV.differentiableOn_tsum_of_locally_normal hU (fun n => (differentiable_riemannThetaTerm a b n).differentiableOn) fun x hx => ⟨U, hU.mem_nhds hx, u, hu, hle⟩) (hU.mem_nhds hp)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsSiegel.analyticAt_riemannTheta_entries {Ω : Matrix ι ι ℂ} (h : IsSiegel Ω)
     (a b : ι → ℝ) (v : ι → ℂ) :
@@ -85,7 +85,7 @@ section Families
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `x hx` and use `((h x hx).analyticAt_riemannTheta_entries a b (v x)).differentiableAt.comp_differentiableWithinAt (f := fun y => (v y, of.symm (Ω y))) x ((hv x hx).prodMk (differentiableWithinAt_pi.mpr fun i => differentiableWithinAt_pi.mpr fun j => hΩ i j x hx))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem differentiableOn_riemannTheta_comp (a b : ι → ℝ) {Ω : E → Matrix ι ι ℂ} {v : E → ι → ℂ}
     {U : Set E} (h : ∀ x ∈ U, IsSiegel (Ω x)) (hΩ : ∀ i j, DifferentiableOn ℂ (fun y => Ω y i j) U)
@@ -112,7 +112,7 @@ def siegelUpperCoords (ι : Type*) [LinearOrder ι] : Set ({p : ι × ι // p.1 
   symmOfUpper ⁻¹' siegelUpperHalfSpace ι
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 @[simp] theorem mem_siegelUpperCoords {x : {p : ι × ι // p.1 ≤ p.2} → ℂ} :
     x ∈ siegelUpperCoords ι ↔ IsSiegel (symmOfUpper x) := Iff.rfl

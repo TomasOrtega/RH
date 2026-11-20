@@ -19,7 +19,7 @@ private noncomputable def repOf {E V : Type} [Field E] [Algebra ℚ E] [AddCommG
     (fun x y => by ext v; simp [Matrix.mulVec_mulVec])
 
 /- English proof (translation)
-Simplify using `[repOf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem repOf_apply {E V : Type} [Field E] [Algebra ℚ E] [AddCommGroup V] [Module ℚ V] {n : ℕ}
     (β : V ≃ₗ[ℚ] (Fin n → E)) (x : Matrix (Fin n) (Fin n) E) (z : V) : β (repOf β x z) = x *ᵥ β z := by
@@ -28,17 +28,17 @@ private theorem repOf_apply {E V : Type} [Field E] [Algebra ℚ E] [AddCommGroup
 end UpperTheory.Gal.W2.Seed
 
 /- English proof (translation)
-Introduce `hF hFP hS hD hP hR hL hA hO E _ _ _ A n p _ hn hg`. Establish `facts : A.Facts n` using `⟨hn, hF E A n, hD E A n hn⟩`. Establish `hs : A.SigOK n` using `hS E A n hn`. Establish `perf : A.FormPerf n p` using `hFP E A n p hg.2`. Take `⟨P⟩` from `hP E A p hg.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ⟩` from `hR E n`. Establish `hok : RepOK A n (repOf β)` using `⟨β, hβ, repOf_apply β⟩`. Take `⟨r1, r2, r3, r4⟩` from `hL E A n (repOf β) hok`. Establish `radj` using `hA E A n (repOf β) hok`. Take `⟨J, j1, j2, j3, j4⟩` from `hO E A n hn hs p P (repOf β) hok`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsig : ∀ v : InfinitePlace E, sigPos (A.herm n) v.embedding = 1 ↔ ∃ _ : Fin 1, v = InfinitePlace.mk (P.iotaC.comp P.s)` using `fun v => by`. Establish `hv` using `hs v.embedding`. Rewrite `hv` using `[InfinitePlace.mk_embedding]`. Establish `hc : P.iotaC.comp P.s = A.τ₀` using `RingHom.ext P.s_C`. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hv0 : v = InfinitePlace.mk A.τ₀`. Conclude with `⟨0, hv0⟩`. Establish `h0` using `(hv.2 hv0).1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨_, h⟩`. Conclude with `(hv.1 h).1`. Use `⟨⟨facts, hs, hg, perf, P, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `{ e := RingEquiv.refl E n_eq := rfl rep := repOf β rep_inj := r1 rep_range := r2 rep_F := fun c => r3 c adj := radj ρp := P.ρp ρp_eq := P.ρp_eq s := fun _ => P.s s_C := fun _ x => P.s_C x w := fun _ => P.w s_P := fun _ x => P.s_P x sig := hsig orient := ⟨J, j1, j2, j3, j4⟩ }`.
+Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `x`. Both sides reduce to the same expression. Conclude with `r4`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pSetupEx :
     FormOKSt → FormPerfSt → SigSt → DomSt → AtPEx → RepEx → RepLaws → RepAdj → Orient → SetupEx := by

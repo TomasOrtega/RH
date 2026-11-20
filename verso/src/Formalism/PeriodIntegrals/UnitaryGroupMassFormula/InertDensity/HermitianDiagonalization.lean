@@ -11,31 +11,29 @@ section
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Establish `hq : q ≠ 0`. Introduce and unpack `rfl`. Establish `h` using `hinv 0`. Simplify using `at h`. Establish `iso : ∀ (d : ℕ) (W : Submodule L (Fin m → L)), finrank L W = d → (∀ e ∈ W, hf q B e e = 0) → ∃ (v : Fin d → Fin m → L) (r : ℕ), r ≤ d ∧ (∀ i, v i ∈ W) ∧ LinearIndependent L v ∧ (∀ i j, i ≠ j → hf q B (v i) (v j) = 0) ∧ (∀ i, hf q B (v i) (v i) ≠ 0 ↔ i.val < r)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `d W hW h0`. Establish `hz` using `hf_eq_zero_of_diag hadd hinv hB htr W h0`. Set `b` to `Module.finBasisOfFinrankEq L W hW`. Use `⟨fun i => (b i : Fin m → L), 0, Nat.zero_le _, fun i => (b i).2, ?_, fun i j _ => hz _ (b i).2 _ (b j).2, fun i => ?_⟩` and prove the remaining obligations. Conclude with `b.linearIndependent.map' W.subtype (Submodule.ker_subtype W)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hz _ (b i).2 _ (b i).2]`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : ∃ e ∈ W, hf q B e e ≠ 0`. Take `⟨e, he, hee⟩` from `h`. Use `finrank_perp_aniso W e he hee` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `push_neg at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `iso 0 W hW h`. Consider the case `succ d ih`. Introduce `W hW`. Distinguish the cases in `h : ∃ e ∈ W, hf q B e e ≠ 0`. Take `⟨e, he, hee⟩` from `h`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hd : finrank L ↥(W ⊓ LinearMap.ker (hfL q B e)) = d`. Use `finrank_perp_aniso W e he hee` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨v, r, hr, hvW, hli, horth, hdiag⟩` from `ih _ hd`. Establish `hvk : ∀ i, hf q B (v i) e = 0` using `fun i => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfL_apply]`. Conclude with `LinearMap.mem_ker.mp (Submodule.mem_inf.mp (hvW i)).2`. Establish `hek : ∀ i, hf q B e (v i) = 0` using `fun i => by`. Rewrite using `[hf_symm hadd hinv hB, hvk i, zero_pow hq]`. Use `⟨Fin.cons e v, r + 1, by omega, fun i => ?_, ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa using he`. Consider the case `succ j => simpa using (Submodule.mem_inf.mp (hvW j)).1`. Rewrite using `[linearIndependent_fin_cons]`. Use `⟨hli, fun hmem => hee ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hle : Submodule.span L (Set.range v) ≤ LinearMap.ker (hfL q B e)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(Submodule.mem_inf.mp (hvW i)).2`. Establish `h1` using `LinearMap.mem_ker.mp (hle hmem)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite `h1` using `[hfL_apply]`. Then use the resulting hypothesis. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact absurd rfl hij`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j => simpa using hek j`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simpa using hvk i`. Consider the case `succ j => simpa using horth i j fun h => hij (by rw [h])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa using hee`. Consider the case `succ i`. Simplify using `only [Fin.cons_succ, Fin.val_succ]`. Rewrite using `[hdiag i]`.
-
-Use linear arithmetic over natural numbers and integers. Use `push_neg at h`. Conclude with `iso _ W hW h`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem diag_orth_family {m q : ℕ} {B : Matrix (Fin m) (Fin m) L}
     (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q) (hinv : ∀ a : L, (a ^ q) ^ q = a)
@@ -112,11 +110,9 @@ theorem diag_orth_family {m q : ℕ} {B : Matrix (Fin m) (Fin m) L}
       exact iso _ W hW h
 
 /- English proof (translation)
-Take `⟨v, r, hr, -, hli, horth, hdiag⟩` from `diag_orth_family hadd hinv hB htr m ⊤ (by rw [finrank_top, Module.finrank_fin_fun])`. Use `⟨Matrix.of fun i => v i, ?_, fun i => hf q B (v i) (v i), r, hr, ?_, hdiag, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hli)`. Use extensionality with `i j`. Establish `e : (Matrix.of (fun i => v i) * B * ((Matrix.of fun i => v i).map fun y => y ^ q).transpose) i j = hf q B (v i) (v j)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, hf, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite using `[e, Matrix.diagonal_apply]`. Use `split_ifs with h`. Rewrite using `[h]`.
-
-Conclude with `horth i j h`. Conclude with `(hf_symm hadd hinv hB (v i) (v i)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_of_hyps {m q : ℕ} (B : Matrix (Fin m) (Fin m) L)
     (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q) (hinv : ∀ a : L, (a ^ q) ^ q = a)
@@ -142,19 +138,17 @@ theorem diag_of_hyps {m q : ℕ} (B : Matrix (Fin m) (Fin m) L)
 end
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ h2 m B hB`. Take `⟨n, hp, hcard⟩` from `FiniteField.card K (ringChar K)`. Use `haveI : Fact (ringChar K).Prime := ⟨hp⟩`. Use `haveI : CharP L (ringChar K) := charP_of_injective_algebraMap (algebraMap K L).injective _`. Establish `hadd : ∀ a b : L, (a + b) ^ Fintype.card K = a ^ Fintype.card K + b ^ Fintype.card K` using `fun a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcard]`. Conclude with `add_pow_char_pow a b _ _`. Establish `hcL : Fintype.card L = Fintype.card K ^ 2`. Rewrite using `[Module.card_eq_pow_finrank (K := K) (V := L), h2]`. Establish `hinv : ∀ a : L, (a ^ Fintype.card K) ^ Fintype.card K = a` using `fun a => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul, ← sq, ← hcL, FiniteField.pow_card]`. Establish `hq2 : 2 ≤ Fintype.card K` using `Fintype.one_lt_card`. Establish `htr : ∀ z : L, z ≠ 0 → ∃ c : L, c * z + (c * z) ^ Fintype.card K ≠ 0`. Introduce `z hz`. Assume the negation of the conclusion as `hall`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hall`. Set `P : Polynomial L` to `Polynomial.X ^ Fintype.card K + Polynomial.X`. Establish `hroot : ∀ y : L, P.eval y = 0` using `fun y => by`. Establish `h` using `hall (y / z)`. Rewrite `h` using `[div_mul_cancel₀ y hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [P, Polynomial.eval_add, Polynomial.eval_pow, Polynomial.eval_X]`. Take the linear combination `h`. Establish `hP0 : P ≠ 0`. Introduce `h0`. Establish `h` using `congrArg (Polynomial.coeff · 1) h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Simplify using `only [P, Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_X_one, Polynomial.coeff_zero] at h`. Use `split_ifs at h with hh`. Use linear arithmetic over natural numbers and integers. Evaluate the numerical expressions using `at h`. Establish `hdeg : P.natDegree ≤ Fintype.card K` using `(Polynomial.natDegree_add_le _ _).trans (max_le (by simp) (by simp; omega))`.
-
-Establish `hsub : (Finset.univ : Finset L).val ≤ P.roots` using `(Multiset.le_iff_subset Finset.univ.nodup).mpr fun y _ => (Polynomial.mem_roots hP0).mpr (hroot y)`. Establish `hc` using `(Multiset.card_le_card hsub).trans ((Polynomial.card_roots' P).trans hdeg)`. Rewrite `hc` using `[Finset.card_val, Finset.card_univ, hcL]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `diag_of_hyps B hadd hinv hB htr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem hermitianDiagonalization : Diag := by
   intro K L _ _ _ _ _ h2 m B hB

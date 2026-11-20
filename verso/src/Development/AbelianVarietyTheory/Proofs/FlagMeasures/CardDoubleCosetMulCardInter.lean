@@ -7,21 +7,19 @@ open scoped Classical
 namespace GlobalTheory.GLm
 
 /- English proof (translation)
-Establish `hmaps : ∀ p ∈ (Finset.univ : Finset (H × K)), (p.1 : G) * w * p.2 ∈ Finset.univ.filter fun y : G => ∃ h ∈ H, ∃ k ∈ K, y = h * w * k`. Introduce `p _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨p.1, p.1.2, p.2, p.2.2, rfl⟩`. Establish `hcard` using `Finset.card_eq_sum_card_fiberwise (f := fun p : H × K => (p.1 : G) * w * p.2) (s := Finset.univ) hmaps`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hfib : ∀ y ∈ (Finset.univ.filter fun y : G => ∃ h ∈ H, ∃ k ∈ K, y = h * w * k), ((Finset.univ : Finset (H × K)).filter fun p => (p.1 : G) * w * p.2 = y).card = (Finset.univ.filter fun x : G => x ∈ H ∧ w⁻¹ * x * w ∈ K).card`. Introduce `y hy`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy`. Take `⟨h0, hh0, k0, hk0, rfl⟩` from `hy`. Use `symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Use symmetry to reverse the relation.
 
-Use `Finset.card_bij' (fun t ht => ((⟨h0 * t, H.mul_mem hh0 (Finset.mem_filter.1 ht).2.1⟩ : H), (⟨w⁻¹ * t⁻¹ * w * k0, by` and prove the remaining obligations. Establish `hinv` using `K.inv_mem (Finset.mem_filter.1 ht).2.2`. Rewrite `hinv` using `[show (w⁻¹ * t * w)⁻¹ = w⁻¹ * t⁻¹ * w by group]`. Conclude with `K.mul_mem hinv hk0⟩ : K)))`. Use the proof step `(fun p _ => h0⁻¹ * (p.1 : G)) ?_ ?_ ?_ ?_`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `group`. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (p.1 : G) = h0 * w * k0 * (p.2 : G)⁻¹ * w⁻¹`. Rewrite using `[← hp]`. Use `group`. Use `⟨H.mul_mem (H.inv_mem hh0) p.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[e, show w⁻¹ * (h0⁻¹ * (h0 * w * k0 * (p.2 : G)⁻¹ * w⁻¹)) * w = k0 * (p.2 : G)⁻¹ by group]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `K.mul_mem hk0 (K.inv_mem p.2.2)`. Introduce `t _ group`. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Establish `e : (p.2 : G) = w⁻¹ * (p.1 : G)⁻¹ * (h0 * w * k0)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp]`. Use `group`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `only`.
-
-Rewrite using `[e]`. Use `group`. Rewrite `hcard` using `[Finset.sum_congr rfl hfib, Finset.sum_const, smul_eq_mul]`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, ← Fintype.card_prod, ← Finset.card_univ, hcard]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_doubleCoset_mul_card_inter {G : Type} [Group G] [Fintype G] (H K : Subgroup G) (w : G) :
     (Finset.univ.filter fun y : G => ∃ h ∈ H, ∃ k ∈ K, y = h * w * k).card *
@@ -73,11 +71,11 @@ theorem card_doubleCoset_mul_card_inter {G : Type} [Group G] [Fintype G] (H K : 
     hcard]
 
 /- English proof (translation)
-Use `(Fintype.sum_equiv (MulAut.conj h).toEquiv _ _ fun x => ?_).symm` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply]`. Establish `e1 : (h * w * k)⁻¹ * (h * x * h⁻¹) * (h * w * k) = k⁻¹ * (w⁻¹ * x * w) * k` using `by group`. Simplify using `only [e1]`. Establish `eH : h * x * h⁻¹ ∈ H ↔ x ∈ H`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[H.mul_mem_cancel_right (H.inv_mem hh), H.mul_mem_cancel_left hh]`. Establish `eK : k⁻¹ * (w⁻¹ * x * w) * k ∈ K ↔ w⁻¹ * x * w ∈ K`. Rewrite using `[K.mul_mem_cancel_right hk, K.mul_mem_cancel_left (K.inv_mem hk)]`. Distinguish the cases in `hx : x ∈ H ∧ w⁻¹ * x * w ∈ K`. Establish `hc` using `hφ k⁻¹ (K.inv_mem hk) _ hx.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `hc` using `[inv_inv]`. Rewrite using `[if_pos hx, if_pos ⟨eH.2 hx.1, eK.2 hx.2⟩, hlam h hh x hx.1, hc]`. Rewrite using `[if_neg hx, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hx ⟨eH.1 h1, eK.1 h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem sum_conj_double_coset_eq_of_invariant {G : Type} [Group G] [Fintype G] (H K : Subgroup G) (w h k : G)
     (hh : h ∈ H) (hk : k ∈ K) (lam φ : G → ℂ)
@@ -103,23 +101,21 @@ private theorem sum_conj_double_coset_eq_of_invariant {G : Type} [Group G] [Fint
     exact hx ⟨eH.1 h1, eK.1 h2⟩
 
 /- English proof (translation)
-Introduce `G _ _ H K ι R w hR lam φ hlam hφ`. Establish `hHpos : (Nat.card H : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Establish `hKpos : (Nat.card K : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Establish `h1 : ∀ x : G, (if x ∈ H then lam x * ((Nat.card K : ℂ)⁻¹ * ∑ y : G, if y⁻¹ * x * y ∈ K then φ (y⁻¹ * x * y) else 0) else 0) = (Nat.card K : ℂ)⁻¹ * ∑ y : G, (if x ∈ H ∧ y⁻¹ * x * y ∈ K then lam x * φ (y⁻¹ * x * y) else 0)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ H`. Rewrite using `[if_pos hx]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y⁻¹ * x * y ∈ K`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hy, if_pos ⟨hx, hy⟩]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hy, if_neg (fun hc => hy hc.2)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl (fun x _ => h1 x), ← Finset.mul_sum, Finset.sum_comm]`. Establish `h2 : ∀ y : G, (∑ x : G, (if x ∈ H ∧ y⁻¹ * x * y ∈ K then lam x * φ (y⁻¹ * x * y) else 0)) = ∑ i ∈ R, if (∃ h ∈ H, ∃ k ∈ K, y = h * w i * k) then (∑ x : G, if x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K then lam x * φ ((w i)⁻¹ * x * w i) else 0) else 0`. Introduce `y`. Take `⟨i, ⟨hi, h, hhH, k, hkK, rfl⟩, huniq⟩` from `hR y`. Rewrite using `[Finset.sum_eq_single_of_mem i hi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ⟨h, hhH, k, hkK, rfl⟩]`. Conclude with `sum_conj_double_coset_eq_of_invariant H K (w i) h k hhH hkK lam φ hlam hφ`. Introduce `j hj hji`. Rewrite using `[if_neg]`. Introduce `hP`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hji (huniq j ⟨hj, hP⟩)`. Rewrite using `[Finset.sum_congr rfl (fun y _ => h2 y), Finset.sum_comm]`. Establish `h3 : ∀ i ∈ R, (∑ y : G, if (∃ h ∈ H, ∃ k ∈ K, y = h * w i * k) then (∑ x : G, if x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K then lam x * φ ((w i)⁻¹ * x * w i) else 0) else 0) = ((Nat.card H : ℂ) * Nat.card K) * ((Finset.univ.filter fun x : G => x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K).card : ℂ)⁻¹ * (∑ …`. Introduce `i _`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((Finset.univ.filter fun y : G => ∃ h ∈ H, ∃ k ∈ K, y = h * w i * k).card : ℂ) * ((Finset.univ.filter fun x : G => x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K).card : ℂ) = (Nat.card H : ℂ) * Nat.card K`. Conclude with `card_doubleCoset_mul_card_inter H K (w i)` after adjusting the coercions. Establish `hI : ((Finset.univ.filter fun x : G => x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K).card : ℂ) ≠ 0`. Establish `hmem : (1 : G) ∈ Finset.univ.filter fun x : G => x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K`. Simplify using `[H.one_mem, K.one_mem]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Finset.card_pos.2 ⟨1, hmem⟩).ne'` after adjusting the coercions. Rewrite using `[← hc, mul_inv_cancel_right₀ hI]`. Rewrite using `[Finset.sum_congr rfl h3, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e1 : (Nat.card H : ℂ)⁻¹ * Nat.card H = 1` using `inv_mul_cancel₀ hHpos`.
-
-Establish `e2 : (Nat.card K : ℂ)⁻¹ * Nat.card K = 1` using `inv_mul_cancel₀ hKpos`. Take the linear combination `((Nat.card K : ℂ)⁻¹ * Nat.card K * ((Finset.univ.filter fun x : G => x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K).card : ℂ)⁻¹ * (∑ x : G, if x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K then lam x * φ ((w i)⁻¹ * x * w i) else 0)) * e1 + (((Finset.univ.filter fun x : G => x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K).card : …`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mackey_doubleCoset_pairing : ∀ (G : Type) [Group G] [Fintype G] (H K : Subgroup G) (ι : Type) (R : Finset ι) (w : ι → G), (∀ x : G, ∃! i, i ∈ R ∧ ∃ h ∈ H, ∃ k ∈ K, x = h * w i * k) → ∀ (lam φ : G → ℂ), (∀ h ∈ H, ∀ x ∈ H, lam (h * x * h⁻¹) = lam x) → (∀ k ∈ K, ∀ x ∈ K, φ (k * x * k⁻¹) = φ x) → (Nat.card H : ℂ)⁻¹ * ∑ x : G, (if x ∈ H then lam x * ((Nat.card K : ℂ)⁻¹ * ∑ y : G, if y⁻¹ * x * y ∈ K then φ (y⁻¹ * x * y) else 0) else 0) = ∑ i ∈ R, ((Finset.univ.filter fun x : G => x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K).card : ℂ)⁻¹ * ∑ x : G, if x ∈ H ∧ (w i)⁻¹ * x * w i ∈ K then lam x * φ ((w i)⁻¹ * x * w i) else 0 := by
   intro G _ _ H K ι R w hR lam φ hlam hφ

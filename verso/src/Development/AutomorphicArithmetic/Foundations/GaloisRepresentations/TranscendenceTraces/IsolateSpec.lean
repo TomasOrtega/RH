@@ -10,22 +10,22 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.comp_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pt_comp {Ω : Type} [Field Ω] {X Y : Scheme.{0}} (x : gp Ω ⟶ X) (f : X ⟶ Y) : pt (x ≫ f) = f (pt x) :=
   Scheme.Hom.comp_apply _ _ _
 
 /- English proof (translation)
-Simplify using `only [pt]`. Conclude with `congrArg x (Subsingleton.elim _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pt_eq {Ω : Type} [Field Ω] {X : Scheme.{0}} (x : gp Ω ⟶ X) (t : gp Ω) : x t = pt x := by
   simp only [pt]
   exact congrArg x (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Use `⟨fun z hz => ?_, fun z hz z' hz' he => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [fib, Set.mem_setOf_eq] at hz ⊢`. Rewrite using `[Category.assoc, h.w, ← Category.assoc, hz]`. Simplify using `only [fib, Set.mem_setOf_eq] at hz hz'`. Conclude with `h.hom_ext he (hz.trans hz'.symm)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [fib, Set.mem_setOf_eq] at hy`. Conclude with `⟨h.lift y x hy, by simp [fib], by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fib_bijOn {V U Z S : Scheme.{0}} {v : V ⟶ Z} {r : V ⟶ U} {p : Z ⟶ S} {u : U ⟶ S} (h : IsPullback v r p u)
     {Ω : Type} [Field Ω] (x : gp Ω ⟶ U) : Set.BijOn (fun z => z ≫ v) (fib r x) (fib p (x ≫ u)) := by
@@ -38,13 +38,13 @@ theorem fib_bijOn {V U Z S : Scheme.{0}} {v : V ⟶ Z} {r : V ⟶ U} {p : Z ⟶ 
     exact ⟨h.lift y x hy, by simp [fib], by simp⟩
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_right (by rw [t.hv, t.hu]; exact A.pb) t.hr B.pb`.
+A detailed English derivation is pending.
 -/
 theorem Sq.To.isPullback {Z S : Scheme.{0}} {p : Z ⟶ S} {A B : Sq p} (t : A.To B) : IsPullback t.k A.r B.r t.g :=
   IsPullback.of_right (by rw [t.hv, t.hu]; exact A.pb) t.hr B.pb
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback A.pb ‹_›`.
+A detailed English derivation is pending.
 -/
 theorem Sq.finite {Z S : Scheme.{0}} {p : Z ⟶ S} [IsFinite p] (A : Sq p) : IsFinite A.r :=
   MorphismProperty.of_isPullback A.pb ‹_›
@@ -53,13 +53,13 @@ section Sec
 variable {R : Type} [CommRing R] {F G : Shv R}
 
 /- English proof (translation)
-The claim follows from `congrArg (fun h => h.hom x) (φ.hom.naturality g.op)`.
+A detailed English derivation is pending.
 -/
 theorem map_res (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := congrArg (fun h => h.hom x) (φ.hom.naturality g.op)
 
 /- English proof (translation)
-Unfold `Sec.res`. Rewrite using `[op_comp, F.obj.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res k (Sec.res g x) = Sec.res (k ≫ g) x := by
@@ -68,7 +68,7 @@ theorem res_res {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
   rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun h => h.hom x) (F.obj.map_id (op U))`.
+A detailed English derivation is pending.
 -/
 theorem res_id {U : Scheme.{0}} (x : Sec F U) : Sec.res (𝟙 U) x = x := congrArg (fun h => h.hom x) (F.obj.map_id (op U))
 

@@ -5,15 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
 /- English proof (translation)
-Establish `hsum : ∑ i ∈ S, (f i + (b : ℕ∞) * (E : ℕ∞)) = ((∑ i ∈ S, ((f i).toNat + b * E) : ℕ) : ℕ∞)`. Rewrite using `[Nat.cast_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[ENat.coe_toNat (hf i hi)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hsum]`. Establish `ha : a ≠ ⊤`. Introduce and unpack `rfl`. Rewrite `h` using `[ENat.top_mul (by exact_mod_cast hE)]`. Conclude with `absurd h (not_le.2 (ENat.coe_lt_top _))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ha, ?_⟩` and prove the remaining obligations. Establish `h2 : a.toNat * E ≤ ∑ i ∈ S, ((f i).toNat + b * E)`. Rewrite `h` using `[← ENat.coe_toNat ha]`. Conclude with `h` after adjusting the coercions. Establish `hE' : (0 : ℝ) < E` using `by exact_mod_cast Nat.pos_of_ne_zero hE`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (a.toNat : ℝ) * E ≤ ∑ i ∈ S, (((f i).toNat : ℝ) + b * E)` using `by exact_mod_cast h2`. Rewrite `h3` using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[← Finset.sum_div]`. Establish `h4 : (∑ i ∈ S, ((f i).toNat : ℝ)) / E + S.card * (b : ℝ) = ((∑ i ∈ S, ((f i).toNat : ℝ)) + S.card * ((b : ℝ) * E)) / E`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[h4, le_div_iff₀ hE']`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sumBack_one {ι : Type} (S : Finset ι) (f : ι → ℕ∞) (a : ℕ∞) (b E : ℕ) (hE : E ≠ 0)
     (hf : ∀ i ∈ S, f i ≠ ⊤) (h : a * (E : ℕ∞) ≤ ∑ i ∈ S, (f i + (b : ℕ∞) * (E : ℕ∞))) :
@@ -42,15 +40,13 @@ private theorem sumBack_one {ι : Type} (S : Finset ι) (f : ι → ℕ∞) (a :
   exact h3
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ ι T T₀ f a b t hT h`. Take `⟨-, -, -, -, -, hne, hle, -, -⟩` from `dvrFacts l O`. Establish `htop : eO l O ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) hle`. Establish `hEO : eO l O = (((eO l O).toNat : ℕ) : ℕ∞)` using `(ENat.coe_toNat htop).symm`. Establish `hE : (eO l O).toNat ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hEO, h0]`. Both sides reduce to the same expression. Establish `key : ∀ e ∈ Finset.Ico 1 t, a e ≠ ⊤ ∧ ((a e).toNat : ℝ) ≤ ∑ i ∈ T e, ((f i e).toNat : ℝ) / ((eO l O).toNat : ℝ) + (T e).card * (b e : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `e he`. Rewrite `he` using `[Finset.mem_Ico]`. Take `⟨h1, h2⟩` from `h e (by omega) he.2`. Rewrite `h2` using `[hEO]`. Conclude with `sumBack_one (T e) (fun i => f i e) (a e) (b e) _ hE h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun e he0 het => (key e (Finset.mem_Ico.2 ⟨he0, het⟩)).1, ?_⟩` and prove the remaining obligations. Establish `hn : ∀ x, nrm l O x = (x.toNat : ℝ) / ((eO l O).toNat : ℝ)` using `fun x => rfl`. Simplify using `only [hn]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun e he => (key e he).2.trans ?_` and prove the remaining obligations.
-
-Use `gcongr`. Conclude with `hT e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Chr.sumBack :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (ι : Type) (T : ℕ → Finset ι) (T₀ : Finset ι) (f : ι → ℕ → ℕ∞) (a : ℕ → ℕ∞) (b : ℕ → ℕ) (t : ℕ),

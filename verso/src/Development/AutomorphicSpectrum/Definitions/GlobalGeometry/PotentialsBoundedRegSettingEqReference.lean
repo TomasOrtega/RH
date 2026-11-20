@@ -73,16 +73,16 @@ section Coord
 variable {K : Type} {J : K → Type}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[conjVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj (z : (Σ k, J k) → ℂ) : conjVec (conjVec z) = z := by
   funext p
   simp [conjVec]
 
 /- English proof (translation)
-Establish `h : ∀ f : MRing J, eval (conjVec z) (map (Int.castRingHom ℂ) f) = starRingEnd ℂ (eval z (map (Int.castRingHom ℂ) f))` using `fun f => by`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp, conjVec]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨fun k => (hz.1 k).imp fun i hi => (map_ne_zero _).2 hi, fun f hf => by rw [h, hz.2 f hf, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_mem {P : Ideal (MRing J)} {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts P) : conjVec z ∈ mcPts P := by
   have h : ∀ f : MRing J, eval (conjVec z) (map (Int.castRingHom ℂ) f) =
@@ -94,7 +94,7 @@ theorem conj_mem {P : Ideal (MRing J)} {z : (Σ k, J k) → ℂ} (hz : z ∈ mcP
   exact ⟨fun k => (hz.1 k).imp fun i hi => (map_ne_zero _).2 hi, fun f hf => by rw [h, hz.2 f hf, map_zero]⟩
 
 /- English proof (translation)
-Rewrite using `[mem_ball_zero_iff]`. Use `(norm_add_le _ _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hε.le]`. Use polynomial arithmetic with `[norm_nonneg t]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem add_smul_mem_ball {n : ℕ} {t₀ t : Fin n → ℂ} {ε : ℝ} (h₀ : ‖t₀‖ ≤ 1 / 2) (hε : 0 < ε) (hε' : ε ≤ 1 / 4)
     (ht : ‖t‖ < 2) : t₀ + (ε : ℂ) • t ∈ Metric.ball (0 : Fin n → ℂ) 1 := by
@@ -104,9 +104,9 @@ theorem add_smul_mem_ball {n : ℕ} {t₀ t : Fin n → ℂ} {ε : ℝ} (h₀ : 
   nlinarith [norm_nonneg t]
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `⟨fun h => ?_, fun h => by rw [h.1, h.2, mul_zero, add_zero]⟩` and prove the remaining obligations. Establish `h0 : t₀ i = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hi hne`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[eq_neg_of_add_eq_zero_left h, norm_neg, norm_mul, Complex.norm_real, Real.norm_of_nonneg hε.le]`. Use polynomial arithmetic with `[norm_le_pi_norm t i]`. Rewrite `h` using `[h0, zero_add]`. Conclude with `⟨h0, (mul_eq_zero.1 h).resolve_left (Complex.ofReal_ne_zero.2 hε.ne')⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem add_smul_eq_zero_iff {n : ℕ} {t₀ t : Fin n → ℂ} {ε : ℝ} (hε : 0 < ε) (ht : ‖t‖ < 2) {i : Fin n}
     (hi : t₀ i ≠ 0 → 2 * ε ≤ ‖t₀ i‖) : (t₀ + (ε : ℂ) • t) i = 0 ↔ t₀ i = 0 ∧ t i = 0 := by
@@ -129,19 +129,19 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   (D : ComponentData II Ψ K J Ω W)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => conj_conj z ▸ D.bd_conj _ h, D.bd_conj z⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_mem_bd_iff (z : (Σ k, J k) → ℂ) : conjVec z ∈ D.Bd ↔ z ∈ D.Bd :=
   ⟨fun h => conj_conj z ▸ D.bd_conj _ h, D.bd_conj z⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨conj_mem hz.1, fun h => hz.2 ((conj_mem_bd_iff D z).1 h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_mem_Xo {z : (Σ k, J k) → ℂ} (hz : z ∈ D.Xo) : conjVec z ∈ D.Xo :=
   ⟨conj_mem hz.1, fun h => hz.2 ((conj_mem_bd_iff D z).1 h)⟩
 
 /- English proof (translation)
-Rewrite using `[← mem_ball_zero_iff]`. Use `and_congr_right fun h => ?_` and prove the remaining obligations. Rewrite using `[(D.chart a).boundary t h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_offBd {a : Fin D.nCharts} {t : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ} :
     t ∈ offBd D a ↔ ‖t‖ < 1 ∧ ∀ i : Fin _, (i : ℕ) < (D.chart a).a → t i ≠ 0 := by
@@ -151,9 +151,9 @@ theorem mem_offBd {a : Fin D.nCharts} {t : Fin (Fintype.card Ψ * D.j * (D.N - D
   simp
 
 /- English proof (translation)
-Establish `: offBd D a = {t | ‖t‖ < 1} ∩ ⋂ i : Fin (Fintype.card Ψ * D.j * (D.N - D.j)), {t | (i : ℕ) < (D.chart a).a → t i ≠ 0}`. Use extensionality with `t`. Simplify using `[mem_offBd]`. Rewrite using `[this]`. Use `(isOpen_lt continuous_norm continuous_const).inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : (i : ℕ) < (D.chart a).a`. Simplify `isOpen_ne_fun (continuous_apply i) continuous_const` using `[h]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem isOpen_offBd (a : Fin D.nCharts) : IsOpen (offBd D a) := by
   have : offBd D a = {t | ‖t‖ < 1} ∩ ⋂ i : Fin (Fintype.card Ψ * D.j * (D.N - D.j)), {t | (i : ℕ) < (D.chart a).a → t i ≠ 0} := by
@@ -166,13 +166,13 @@ theorem isOpen_offBd (a : Fin D.nCharts) : IsOpen (offBd D a) := by
   · simp [h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(D.chart a).mem t ht.1, ht.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Xo_of_offBd {a : Fin D.nCharts} {t : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ} (ht : t ∈ offBd D a) :
     (D.chart a).γ t ∈ D.Xo := ⟨(D.chart a).mem t ht.1, ht.2⟩
 
 /- English proof (translation)
-Use `((D.chart a).boundary _ (add_smul_mem_ball h₀ hε hε' ht)).trans (exists_congr fun i => ?_)` and prove the remaining obligations. Rewrite using `[and_assoc]`. Conclude with `and_congr_right fun hi => add_smul_eq_zero_iff hε ht (hsep i hi)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_bd_iff {a : Fin D.nCharts} {t₀ t : Fin D.n → ℂ} {ε : ℝ} (h₀ : ‖t₀‖ ≤ 1 / 2) (hε : 0 < ε) (hε' : ε ≤ 1 / 4)
     (hsep : ∀ i : Fin D.n, (i : ℕ) < (D.chart a).a → t₀ i ≠ 0 → 2 * ε ≤ ‖t₀ i‖) (ht : ‖t‖ < 2) :
@@ -182,7 +182,7 @@ theorem mem_bd_iff {a : Fin D.nCharts} {t₀ t : Fin D.n → ℂ} {ε : ℝ} (h�
   exact and_congr_right fun hi => add_smul_eq_zero_iff hε ht (hsep i hi)
 
 /- English proof (translation)
-Introduce `z hz c hc`. Establish `hp : ∀ k, ‖c k‖ ^ A.a k ≠ 0` using `fun k => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Express the relevant statement in the definitionally equal form `Real.log (A.h fun p => c p.1 * z p) = _`. Rewrite using `[A.smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => hp k) (A.pos z hz.1.1).ne', Real.log_prod fun k _ => hp k, add_comm]`. Simplify using `only [Real.log_zpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem logHom_log (A : HermLine J) : LogHom D A.a fun z => Real.log (A.h z) := by
   intro z hz c hc
@@ -202,14 +202,14 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) 
   [Module Ω E] {L : Lat ξ E} {r : ℕ} {b₀ : Fin r → E} {p : Cpt ξ}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨b, T, hb, hT, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem det_mem_detLat {b : Fin r → E} {T : Matrix (Fin r) (Fin r) Ω} (hb : L.IsFrameAt b p)
     (hT : ∀ k, b k = ∑ k', T k' k • b₀ k') : T.det ∈ detLat L b₀ p :=
   Submodule.subset_span ⟨b, T, hb, hT, rfl⟩
 
 /- English proof (translation)
-Apply the tactic sequence `have := det_mem_detLat (L := (fun q => Submodule.span (regAt ξ q) (Set.range ![(a, b), (c, d)]) : Lat ξ (Ω × Ω))) (b₀ := ![(1, 0), (0, 1)]) (p := p) (T := !![a, c; b, d]) ⟨h, rfl⟩ fun k => by fin_cases k <;> simp`. Rewrite `this` using `[Matrix.det_fin_two_of, mul_comm c]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 example {a b c d : Ω} (h : LinearIndependent Ω ![(a, b), (c, d)]) :
     a * d - b * c ∈ detLat (fun q => Submodule.span (regAt ξ q) (Set.range ![(a, b), (c, d)]) : Lat ξ (Ω × Ω))
@@ -229,7 +229,7 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : In
   {D : ComponentData II Ψ K J Ω W} {M : XModel D} {P : PotentialCharts M.atlas} {S : Fin P.N → Finset (Fin D.n)}
 
 /- English proof (translation)
-Rewrite using `[h j z hz (e ▸ (P.chart j).map_target ht), ← e, (P.chart j).right_inv ht]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Adapted.mem_bd_iff (h : Adapted M P S) {j : Fin P.N} {t : Fin D.n → ℂ} (ht : t ∈ (P.chart j).target)
     {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal D.y)) (e : (P.chart j).symm t = M.proj z) :
@@ -237,11 +237,11 @@ theorem Adapted.mem_bd_iff (h : Adapted M P S) {j : Fin P.N} {t : Fin D.n → �
   rw [h j z hz (e ▸ (P.chart j).map_target ht), ← e, (P.chart j).right_inv ht]
 
 /- English proof (translation)
-Set `t : Fin D.n → ℂ` to `fun l => if l = i then 0 else 1 / 2`. Apply the tactic sequence `have ht0 : ∀ l, t l = 0 ↔ l = i := fun l => by by_cases hl : l = i <;> simp [t, hl]`. Apply the tactic sequence `have hst : star t = t := funext fun l => by by_cases hl : l = i <;> simp [t, hl]`. Apply the tactic sequence `have hn : ‖t‖ < 1 := (pi_norm_lt_iff one_pos).2 fun l => by by_cases hl : l = i <;> norm_num [t, hl]`. Establish `ht : t ∈ (P.chart j).target` using `hj ▸ mem_ball_zero_iff.2 hn`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hm` using `(D.chart a).mem _ (SncPiece.add_smul_mem_ball h₀ hε hε' (hn.trans one_lt_two))`. Establish `key : (D.chart a).γ (t₀ + (ε : ℂ) • t) ∈ D.Bd ↔ t ∈ ReciprocityTheory.AnForm.A.coordDiv (S j)`. Break down `hγ with hγ | hγ` into its components or cases. Conclude with `h.mem_bd_iff ht hm (hγ t ht)`. Conclude with `(SncPiece.conj_mem_bd_iff D _).symm.trans (h.mem_bd_iff ht (SncPiece.conj_mem hm) (by rw [hγ t ht, hst]))`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `key` using `[SncPiece.mem_bd_iff D h₀ hε hε' hsep (hn.trans one_lt_two)]`. Simplify `key.symm` using `[ReciprocityTheory.AnForm.A.coordDiv, ht0]`.
+A detailed English derivation is pending.
 -/
 theorem Adapted.mem_iff_of_piece (h : Adapted M P S) {j : Fin P.N} (hj : (P.chart j).target = Metric.ball 0 1)
     {a : Fin D.nCharts} {t₀ : Fin D.n → ℂ} {ε : ℝ} (h₀ : ‖t₀‖ ≤ 1 / 2) (hε : 0 < ε) (hε' : ε ≤ 1 / 4)
@@ -264,7 +264,7 @@ theorem Adapted.mem_iff_of_piece (h : Adapted M P S) {j : Fin P.N} (hj : (P.char
   simpa [ReciprocityTheory.AnForm.A.coordDiv, ht0] using key.symm
 
 /- English proof (translation)
-Take `⟨hj, a, t₀, ε, h₀, hε, hε', hsep, hγ⟩` from `h' j`. Conclude with `⟨a, t₀, ε, h₀, hε, hε', hsep, hγ, h.mem_iff_of_piece hj h₀ hε hε' hsep hγ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Adapted.exists_piece (h : Adapted M P S) (h' : FromSnc M P) (j : Fin P.N) :
     ∃ (a : Fin D.nCharts) (t₀ : Fin D.n → ℂ) (ε : ℝ), ‖t₀‖ ≤ 1 / 2 ∧ 0 < ε ∧ ε ≤ 1 / 4 ∧
@@ -276,7 +276,7 @@ theorem Adapted.exists_piece (h : Adapted M P S) (h' : FromSnc M P) (j : Fin P.N
   exact ⟨a, t₀, ε, h₀, hε, hε', hsep, hγ, h.mem_iff_of_piece hj h₀ hε hε' hsep hγ⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Take `⟨hj, a, t₀, ε, h₀, hε, hε', hsep, hγ⟩` from `h' j`. Use extensionality with `i`. Rewrite using `[h.mem_iff_of_piece hj h₀ hε hε' hsep hγ, h₁.mem_iff_of_piece hj h₀ hε hε' hsep hγ]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem Adapted.unique {S' : Fin P.N → Finset (Fin D.n)} (h : Adapted M P S) (h₁ : Adapted M P S')
     (h' : FromSnc M P) : S = S' := by
@@ -296,7 +296,7 @@ open scoped Matrix ComplexOrder
 def bd : Set ((Σ _ : Unit, Fin 2) → ℂ) := {z | z ∈ mcPts (mCoordIdeal yLine) ∧ z ⟨(), 1⟩ = 0}
 
 /- English proof (translation)
-The claim follows from `mem_mcPts_line.2 ⟨a, by rw [chartMap_apply, if_pos rfl]; exact one_ne_zero⟩`.
+A detailed English derivation is pending.
 -/
 theorem chartMap_mem (a : Fin 2) (t : Fin 1 → ℂ) : chartMap a t ∈ mcPts (mCoordIdeal yLine) :=
   mem_mcPts_line.2 ⟨a, by rw [chartMap_apply, if_pos rfl]; exact one_ne_zero⟩
@@ -337,9 +337,9 @@ def chart (a : Fin 2) : SncChart (mCoordIdeal yLine) 1 bd where
     fin_cases a <;> simp [bd, chartMap_mem, chartMap_apply]
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨a, t, ht, c, hc, h⟩` from `lineChart_cover z hz`. Use `⟨a, (4 : ℂ)⁻¹ • t, ?_, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Combine the linear relations using `[norm_nonneg t]`. Rewrite using `[h] show _ = torusSmul c (chartMap a ((4 : ℂ) • (4 : ℂ)⁻¹ • t))`. Rewrite using `[smul_smul]`. Evaluate the numerical expressions. Both sides reduce to the same expression.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Both sides reduce to the same expression.
 -/
 theorem chart_cover : ∀ z ∈ mcPts (mCoordIdeal yLine), ∃ a, ∃ t : Fin 1 → ℂ,
     ‖t‖ ≤ 1 / 2 ∧ ∃ c : Unit → ℂ, (∀ k, c k ≠ 0) ∧ z = torusSmul c ((chart a).γ t) := by
@@ -352,7 +352,7 @@ theorem chart_cover : ∀ z ∈ mcPts (mCoordIdeal yLine), ∃ a, ∃ t : Fin 1 
     rw [smul_smul]; norm_num; rfl
 
 /- English proof (translation)
-Use `le_add_of_le_of_nonneg (Real.one_le_exp zero_le_one) (Finset.sum_nonneg fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[one_div, Real.log_inv, neg_nonneg]`. Conclude with `Real.log_nonpos (by positivity) (pow_le_one₀ (norm_nonneg _) ((norm_le_pi_norm t i).trans ht.le))`. Conclude with `le_rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_logR (a : Fin 2) {t : Fin 1 → ℂ} (ht : ‖t‖ < 1) : 1 ≤ (chart a).logR t := by
   refine le_add_of_le_of_nonneg (Real.one_le_exp zero_le_one) (Finset.sum_nonneg fun i _ => ?_)
@@ -417,9 +417,9 @@ def charts : PotentialCharts model.atlas := cpCharts
 def hyp : Fin charts.N → Finset (Fin data.n) := (![Finset.univ, ∅] : Fin 2 → Finset (Fin 1))
 
 /- English proof (translation)
-Establish `hv : vecL (chartMap a t) = CP.chartVec a ((2 : ℂ) • t)`. Use function extensionality and compare the values at `m`. Break down `fin_two_other a m with rfl | rfl` into its components or cases. Simplify using `[vecL, chartMap_apply]`. Rewrite using `[CP.chartVec_succAbove]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[vecL, chartMap_apply, Fin.succAbove_ne]`. Unfold `projL`. Rewrite using `[dif_pos (by rw [hv]; exact CP.chartVec_ne_zero _ _)]`. Simplify using `only [hv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem projL_chartMap (a : Fin 2) (t : Fin 1 → ℂ) : projL (chartMap a t) = CP.chartInv a ((2 : ℂ) • t) := by
   have hv : vecL (chartMap a t) = CP.chartVec a ((2 : ℂ) • t) := by
@@ -434,7 +434,7 @@ theorem projL_chartMap (a : Fin 2) (t : Fin 1 → ℂ) : projL (chartMap a t) = 
   rfl
 
 /- English proof (translation)
-Introduce `(j : Fin 2)`. Use `⟨rfl, j, 0, 1 / 4, by simp, by norm_num, le_rfl, fun _ _ h => absurd rfl h, Or.inl fun (t : Fin 1 → ℂ) _ => ?_⟩` and prove the remaining obligations. Use `show CP.chartInv j ((2 : ℂ) • t) = projL (chartMap j ((4 : ℂ) • ((0 : Fin 1 → ℂ) + ((1 / 4 : ℝ) : ℂ) • t)))`. Rewrite using `[projL_chartMap, zero_add, smul_smul (4 : ℂ)]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem fromSnc : FromSnc model charts := by
   intro (j : Fin 2)
@@ -445,9 +445,9 @@ theorem fromSnc : FromSnc model charts := by
   norm_num
 
 /- English proof (translation)
-Introduce `(j : Fin 2) z hz hs`. Use `replace hz : z ∈ mcPts (mCoordIdeal yLine) := hz`. Establish `h1` using `vecL_ne_zero hz`. Establish `hs' : projL z ∈ CP.chartDomain j` using `hs.1`. Express the relevant statement in the definitionally equal form `z ∈ bd ↔ ∃ i ∈ (![Finset.univ, ∅] : Fin 2 → Finset (Fin 1)) j, sChart j (projL z) i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sChart_apply]`. Unfold `projL at hs' ⊢`. Rewrite `hs'`, the goal using `[dif_pos h1]`. Apply the tactic sequence `fin_cases j <;> simp [vecL, bd, hz] at hs' ⊢ <;> simp [hs']`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem adapted : Adapted model charts hyp := by
   intro (j : Fin 2) z hz hs
@@ -461,9 +461,9 @@ theorem adapted : Adapted model charts hyp := by
   fin_cases j <;> simp [vecL, bd, hz] at hs' ⊢ <;> simp [hs']
 
 /- English proof (translation)
-Establish `h1` using `vecL_ne_zero hz`. Establish `h2 : vecL (conjVec z) ≠ 0` using `fun h => h1 (funext fun i => by simpa [vecL, conjVec] using congrFun h i)`. Unfold `projL`. Rewrite using `[dif_pos h1, dif_pos h2]`. Use `⟨by simp [vecL, conjVec], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[vecL, conjVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conj_region (j : Fin 2) {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : z ∈ mcPts (mCoordIdeal yLine)) :
     (projL (conjVec z) ∈ CP.chartDomain j ↔ projL z ∈ CP.chartDomain j) ∧
@@ -477,11 +477,11 @@ theorem conj_region (j : Fin 2) {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : z ∈ m
   simp [vecL, conjVec]
 
 /- English proof (translation)
-Use `⟨fun _ => rfl, fun _ _ => rfl, fun (j : Fin 2) z hz => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `conj_region j hz`. Use `⟨?_, ?_, ?_, fun _ => ?_⟩` and prove the remaining obligations. Use `show projL (conjVec z) ∈ (sChart j).source ↔ projL z ∈ (sChart j).source`. Rewrite using `[mem_sChart_source_iff, mem_sChart_source_iff, h1, h2, norm_star]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show projL (conjVec z) ∈ cpMid j ↔ projL z ∈ cpMid j`. Unfold `cpMid`. Rewrite using `[mem_region_iff _ _ (by norm_num), mem_region_iff _ _ (by norm_num), h1, h2, norm_star]`. Use `show projL (conjVec z) ∈ cpInner j ↔ projL z ∈ cpInner j`. Unfold `cpInner`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_region_iff _ _ (by norm_num), mem_region_iff _ _ (by norm_num), h1, h2, norm_star]`. Use `show sChart j (projL (conjVec z)) = star (sChart j (projL z))`. Rewrite using `[sChart_apply, sChart_apply, h2]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem symmCharts : SymmCharts model charts 1 := by
   refine ⟨fun _ => rfl, fun _ _ => rfl, fun (j : Fin 2) z hz => ?_⟩
@@ -500,12 +500,12 @@ theorem symmCharts : SymmCharts model charts 1 := by
     simp
 
 /- English proof (translation)
-Introduce `x y _` and use `th_ref_line x y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thRef : ThRef model refOne charts.th := fun x y _ => th_ref_line x y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨thRef, adapted, fromSnc, symmCharts, fun h => Finset.univ_nonempty.ne_empty (congrFun (adapted.unique h fromSnc) (0 : Fin 2))⟩`.
+Supply the required witnesses or components.
 -/
 example : ThRef model refOne charts.th ∧ Adapted model charts hyp ∧ FromSnc model charts ∧ SymmCharts model charts 1 ∧
     ¬ Adapted model charts fun _ => ∅ :=
@@ -513,13 +513,13 @@ example : ThRef model refOne charts.th ∧ Adapted model charts hyp ∧ FromSnc 
     Finset.univ_nonempty.ne_empty (congrFun (adapted.unique h fromSnc) (0 : Fin 2))⟩
 
 /- English proof (translation)
-Use `⟨fun z hz c hc => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : z ⟨(), 1⟩ ≠ 0` using `fun h => hz.2 ⟨hz.1, h⟩`. Simplify using `[torusSmul, Real.log_mul, h1, hc, add_comm]`. Take `⟨ε, hε, C, hC⟩` from `h (0 : Fin 2) 0 (mem_ball_self one_pos) set s : ℝ := min (min ε 1 / 2) (Real.exp (-(C + 1)) / 8) with hs`. Establish `hm : 0 < min ε 1` using `lt_min hε one_pos`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs0 : 0 < s` using `lt_min (by linarith) (by positivity)`. Establish `hn : ‖(fun _ => (s : ℂ) : Fin 1 → ℂ)‖ < min ε 1`. Rewrite using `[pi_norm_const, Complex.norm_real, Real.norm_of_nonneg hs0.le]`. Conclude with `(min_le_left _ _).trans_lt (by linarith)`. Establish `h1` using `hC (fun _ => (s : ℂ)) ((SncPiece.mem_offBd data).2 ⟨hn.trans_le (min_le_right _ _), fun _ _ => Complex.ofReal_ne_zero.2 hs0.ne'⟩) (by rw [sub_zero]; exact hn.trans_le (min_le_left _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖(data.chart (0 : Fin 2)).γ (fun _ => (s : ℂ)) ⟨(), 1⟩‖ = 8 * s`. Express the relevant statement in the definitionally equal form `‖chartMap 0 ((4 : ℂ) • fun _ => (s : ℂ)) ⟨(), 1⟩‖ = _`. Simplify using `[chartMap_apply, abs_of_pos hs0]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : Real.log (8 * s) ≤ -(C + 1)`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_le_iff_le_exp (by positivity)]`. Combine the linear relations using `[min_le_right (min ε 1 / 2) (Real.exp (-(C + 1)) / 8)]`. Simplify using `only [h2] at h1`. Combine the linear relations using `[(abs_le.1 h1).1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 example : LogHom data (fun _ => 1) (fun z => Real.log ‖z ⟨(), 1⟩‖) ∧
     ¬ ChartBdd data fun z => Real.log ‖z ⟨(), 1⟩‖ := by

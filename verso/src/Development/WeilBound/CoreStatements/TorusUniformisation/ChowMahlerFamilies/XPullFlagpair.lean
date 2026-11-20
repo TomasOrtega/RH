@@ -12,7 +12,7 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace PositivityTheory.Xgn.A_pull_flagpair
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Apply the tactic sequence `rcases p with ⟨k | k, i⟩ <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem joinCoord_eq {K K' : Type} {ι : K → Type} {ι' : K' → Type} {Ω : Type} [Field Ω]
     (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) : joinCoord x z = joinCoords x z := by
@@ -20,7 +20,7 @@ theorem joinCoord_eq {K K' : Type} {ι : K → Type} {ι' : K' → Type} {Ω : T
   rcases p with ⟨k | k, i⟩ <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with k | k <;> simp [pullDeg, joinDeg]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pullDeg_sub {K K' : Type} (b b' : K → ℤ) :
     pullDeg (K' := K') b - pullDeg (K' := K') b' = joinDeg (K' := K') (b - b') := by
@@ -28,9 +28,9 @@ theorem pullDeg_sub {K K' : Type} (b b' : K → ℤ) :
   rcases s with k | k <;> simp [pullDeg, joinDeg]
 
 /- English proof (translation)
-Establish `key : ∀ f : MRing ι O, pointConeMap O (fun p => algebraMap Ω Ω₁ (x p)) f = MvPolynomial.map (algebraMap Ω Ω₁) (pointConeMap O x f)`. Introduce `f`. Simplify using `only [pointConeMap]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [IsScalarTower.algebraMap_apply O Ω Ω₁]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p v hp => simp [hp]`. Use extensionality with `f`. Simplify using `only [pointIdeal, RingHom.mem_ker, key]`. Conclude with `map_eq_zero_iff _ (MvPolynomial.map_injective _ (algebraMap Ω Ω₁).injective)`.
+Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pointIdeal_algebraMap {K : Type} {ι : K → Type} (O : Type) [CommRing O] {Ω Ω₁ : Type}
     [Field Ω] [Field Ω₁] [Algebra O Ω] [Algebra O Ω₁] [Algebra Ω Ω₁] [IsScalarTower O Ω Ω₁]
@@ -49,7 +49,7 @@ theorem pointIdeal_algebraMap {K : Type} {ι : K → Type} (O : Type) [CommRing 
   exact map_eq_zero_iff _ (MvPolynomial.map_injective _ (algebraMap Ω Ω₁).injective)
 
 /- English proof (translation)
-Rewrite using `[joinCoord_eq, pullDeg_sub]`. Conclude with `VerticalDivisorJoinPullback.proof O ϖ Ω K ι K' ι' x z (b - b') f g h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vertical_join (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O)
     {Ω : Type} [Field Ω] [Algebra O Ω]
@@ -63,7 +63,7 @@ theorem vertical_join (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationR
   exact VerticalDivisorJoinPullback.proof O ϖ Ω K ι K' ι' x z (b - b') f g h
 
 /- English proof (translation)
-Rewrite using `[aeval_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_join {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
     {K K' : Type} {ι : K → Type} {ι' : K' → Type}
@@ -73,7 +73,7 @@ theorem aeval_join {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
   rfl
 
 /- English proof (translation)
-Establish `h : bc v = ∑ i, algebraMap Ω Ω₁ (w.repr v i) • w₁ i` using `by conv_lhs => rw [← w.sum_repr v, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hw, algebraMap_smul]`. Rewrite using `[h, w₁.repr_sum_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_bc {Ω Ω₁ : Type} [Field Ω] [Field Ω₁] [Algebra Ω Ω₁] {N : ℕ}
     {V : Type} [AddCommGroup V] [Module Ω V]
@@ -91,13 +91,13 @@ end PositivityTheory.Xgn.A_pull_flagpair
 
 open PositivityTheory.Xgn.A_pull_flagpair in
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x ϖ N V _ _ E E' w w' b b' f g h`. Take `⟨h1, h1'⟩` from `GlobalTheory.T.flag_frame_base_extension O Ω K ι x N V E w b h.flag`. Take `⟨h2, h2'⟩` from `GlobalTheory.T.flag_frame_base_extension O Ω K ι x N V E' w' b' h.flag'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `K' _ _ ι' _ z EB E'B hE hE'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨h1 K' ι' z EB hE, h2 K' ι' z E'B hE', h.sameFlag, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `vertical_join O ϖ x z _ _ _ _ (h.vertical i)`. Rewrite using `[aeval_join, aeval_join]`. Conclude with `h.generic i`. Introduce `Ω₁ _ _ _ _ K' _ _ ι' _ z V₁ _ _ _ _ bc w₁ w₁' hw hw' EB E'B hE hE'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1' Ω₁ K' ι' z V₁ bc w₁ hw EB hE, h2' Ω₁ K' ι' z V₁ bc w₁' hw' E'B hE', fun i j hij => ?_, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hw', repr_bc bc w w₁ hw, h.sameFlag i j hij, map_zero]`. Use `vertical_join O ϖ _ z _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[pointIdeal_algebraMap]`. Conclude with `h.vertical i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `bcCoord`. Establish `e : ∀ p : MRing ι O, aeval (fun q => algebraMap Ω Ω₁ (x q)) p = algebraMap Ω Ω₁ (aeval x p)` using `fun p => aeval_algebraMap_apply Ω₁ x p`. Rewrite using `[aeval_join, aeval_join, hw', repr_bc bc w w₁ hw, e, e, h.generic i, map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_pull_flagpair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (ϖ : O) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E E' : ChartBundle O (mseg x) N V) (w w' : Module.Basis (Fin N) Ω V) (b b' : Fin N → K → ℤ) (f g : Fin N → MRing ι O), IsFlagPair ϖ x E E' w w' b b' f g → (∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω) (EB E'B : ChartBundle O (mseg (joinCoord x z)) N V), IsPull O x z E EB → IsPull O x z E' E'B → IsFlagPair ϖ (joinCoord x z) EB E'B w w' (fun i => pullDeg (K' := K') (b i)) (fun i => pullDeg (K' := K') (b' i)) (fun i => rename (liftVar ι') (f i)) (fun i => rename (liftVar ι') (g i))) ∧ ∀ (Ω₁ : Type) [Field Ω₁] [Algebra O Ω₁] [Algebra Ω Ω₁] [IsScalarTower O Ω Ω₁] (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω₁) (V₁ : Type) [AddCommGroup V₁] [Module Ω₁ V₁] [Module Ω V₁] [IsScalarTower Ω Ω₁ V₁] (bc : V →ₗ[Ω] V₁) (w₁ w₁' : Module.Basis (Fin N) Ω₁ V₁), (∀ i, w₁ i = bc (w i)) → (∀ i, w₁' i = bc (w' i)) → ∀ EB E'B : ChartBundle O (mseg (bcCoord x z)) N V₁, IsPullBC O x z bc E EB → IsPullBC O x z bc E' E'B → IsFlagPair ϖ (bcCoord x z) EB E'B w₁ w₁' (fun i => pullDeg (K' := K') (b i)) (fun i => pullDeg (K' := K') (b' i)) (fun i => rename (liftVar ι') (f i)) (fun i => rename (liftVar ι') (g i)) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x ϖ N V _ _ E E' w w' b b' f g h

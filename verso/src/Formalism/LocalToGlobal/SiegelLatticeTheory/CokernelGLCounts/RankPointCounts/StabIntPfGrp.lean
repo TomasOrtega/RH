@@ -18,23 +18,23 @@ def LoIn (S : Subring K) (l : Matrix (Fin n) (Fin n) K) : Prop :=
   (∀ a, l a a = 1) ∧ (∀ a b, a < b → l a b = 0) ∧ ∀ a b, l a b ∈ S
 
 /- English proof (translation)
-Introduce `i j hij`. Conclude with `h.2.1 i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem loIn_lower {S : Subring K} {l : Matrix (Fin n) (Fin n) K} (h : LoIn S l) : l.IsLowerTriangular := by
   intro i j hij
   exact h.2.1 i j hij
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_right_bis_other.goal1 .. | (apply Bl.general_b_fact_right_bis_other.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_bis_other.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_bis_other.goal1 <;> assumption) | (intros; apply @B …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_diag_of_lower {l l' : Matrix (Fin n) (Fin n) K} (hl : ∀ a b, a < b → l a b = 0)
     (hl' : ∀ a b, a < b → l' a b = 0) (a : Fin n) : (l * l') a a = l a a * l' a a := by
   first | exact Bl.general_b_fact_right_bis_other.goal1 .. | (apply Bl.general_b_fact_right_bis_other.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_bis_other.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_bis_other.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right_bis_other.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_bis_other.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_right_bis_other.goal1 K ‹_› n l l' hl hl' a | exact @Bl.general_b_fact_right_bis_other.goal1 K ‹_› n l l' hl hl' | exact @Bl.general_b_fact_right_bis_other.goal1 K ‹_› n l l' hl | exact @Bl.general_b_fact_right_bis_other.goal1 K ‹_› n l l' | exact @Bl.general_b_fact_right_bis_other.goal1 K ‹_› n l | exact @Bl.general_b_fact_right_bis_other.goal1 K ‹_› n | exact @Bl.general_b_fact_right_bis_other.goal1 K ‹_› | exact @Bl.general_b_fact_right_bis_other.goal1 K
 
 /- English proof (translation)
-Use `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h), fun a b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `S.one_mem`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne h]`. Conclude with `S.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem loIn_one (S : Subring K) : LoIn S (1 : Matrix (Fin n) (Fin n) K) := by
   refine ⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h), fun a b => ?_⟩
@@ -43,9 +43,9 @@ theorem loIn_one (S : Subring K) : LoIn S (1 : Matrix (Fin n) (Fin n) K) := by
   · rw [Matrix.one_apply_ne h]; exact S.zero_mem
 
 /- English proof (translation)
-Use `⟨fun a => by rw [mul_diag_of_lower hl.2.1 hl'.2.1, hl.1, hl'.1, one_mul], fun a b hab => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge a c with h | h` into its components or cases. Rewrite using `[hl.2.1 a c h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl'.2.1 c b (lt_of_le_of_lt h hab), mul_zero]`. Rewrite using `[Matrix.mul_apply]`. Conclude with `S.sum_mem fun c _ => S.mul_mem (hl.2.2 a c) (hl'.2.2 c b)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loIn_mul {S : Subring K} {l l' : Matrix (Fin n) (Fin n) K} (hl : LoIn S l) (hl' : LoIn S l') :
     LoIn S (l * l') := by
@@ -60,18 +60,18 @@ theorem loIn_mul {S : Subring K} {l l' : Matrix (Fin n) (Fin n) K} (hl : LoIn S 
     exact S.sum_mem fun c _ => S.mul_mem (hl.2.2 a c) (hl'.2.2 c b)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isLowerTriangular l (loIn_lower hl)]`. Conclude with `Finset.prod_eq_one fun a _ => hl.1 a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_loIn {S : Subring K} {l : Matrix (Fin n) (Fin n) K} (hl : LoIn S l) : l.det = 1 := by
   rw [Matrix.det_of_isLowerTriangular l (loIn_lower hl)]
   exact Finset.prod_eq_one fun a _ => hl.1 a
 
 /- English proof (translation)
-Establish `hd : IsUnit l.det` using `by rw [det_loIn hl]; exact isUnit_one`. Establish `hinv : l⁻¹ = l.adjugate` using `by rw [Matrix.inv_def, det_loIn hl, Ring.inverse_one, one_smul]`. Use `letI : Invertible l := Matrix.invertibleOfIsUnitDet l hd`. Establish `hlow : l⁻¹.IsLowerTriangular` using `Matrix.blockTriangular_inv_of_blockTriangular (loIn_lower hl)`. Establish `hlow' : ∀ a b, a < b → l⁻¹ a b = 0` using `fun a b h => hlow h`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun a => ?_, hlow', fun a b => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (Matrix.nonsing_inv_mul l hd) a) a`. Rewrite `h1` using `[mul_diag_of_lower hlow' hl.2.1, hl.1, mul_one, Matrix.one_apply_eq]`. Conclude with `h1`. Set `lS : Matrix (Fin n) (Fin n) S` to `fun i j => ⟨l i j, hl.2.2 i j⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmap : l = S.subtype.mapMatrix lS` using `by ext i j; rfl`. Rewrite using `[hinv, hmap, ← RingHom.map_adjugate]`. Conclude with `(lS.adjugate a b).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loIn_inv {S : Subring K} {l : Matrix (Fin n) (Fin n) K} (hl : LoIn S l) : LoIn S l⁻¹ := by
   have hd : IsUnit l.det := by rw [det_loIn hl]; exact isUnit_one
@@ -89,7 +89,7 @@ theorem loIn_inv {S : Subring K} {l : Matrix (Fin n) (Fin n) K} (hl : LoIn S l) 
     exact (lS.adjugate a b).2
 
 /- English proof (translation)
-Unfold `LoIn`. Simplify using `only [Matrix.transpose_apply]`. Conclude with `⟨fun ⟨h1, h2, h3⟩ => ⟨h1, fun a b h => h2 b a h, fun a b => h3 b a⟩, fun ⟨h1, h2, h3⟩ => ⟨h1, fun a b h => h2 b a h, fun a b => h3 b a⟩⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem upIn_iff (S : Subring K) (ρ : Matrix (Fin n) (Fin n) K) :
     ((∀ a, ρ a a = 1) ∧ (∀ a b, b < a → ρ a b = 0) ∧ ∀ a b, ρ a b ∈ S) ↔ LoIn S ρ.transpose := by
@@ -106,56 +106,56 @@ variable {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing 
   [TopologicalSpace E] [MeasurableSpace E] (Mp : Loc.Model F E) {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `upIn_iff Mp.R ρ`.
+A detailed English derivation is pending.
 -/
 theorem intUp_iff (ρ : Matrix (Fin n) (Fin n) E) : Formalism.MainNotions.S.TieN.IntUp Mp ρ ↔ LoIn Mp.R ρ.transpose :=
   upIn_iff Mp.R ρ
 
 /- English proof (translation)
-The claim follows from `loIn_one _`.
+A detailed English derivation is pending.
 -/
 theorem intLow_one : Formalism.MainNotions.S.TieN.IntLow Mp (1 : Matrix (Fin n) (Fin n) E) := loIn_one _
 
 /- English proof (translation)
-Rewrite using `[intUp_iff, Matrix.transpose_one]`. Conclude with `loIn_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intUp_one : Formalism.MainNotions.S.TieN.IntUp Mp (1 : Matrix (Fin n) (Fin n) E) := by
   rw [intUp_iff, Matrix.transpose_one]; exact loIn_one _
 
 /- English proof (translation)
-The claim follows from `loIn_mul h h'`.
+A detailed English derivation is pending.
 -/
 theorem intLow_mul {l l' : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntLow Mp l)
     (h' : Formalism.MainNotions.S.TieN.IntLow Mp l') : Formalism.MainNotions.S.TieN.IntLow Mp (l * l') := loIn_mul h h'
 
 /- English proof (translation)
-Rewrite `*` using `[intUp_iff]`. Rewrite using `[Matrix.transpose_mul]`. Conclude with `loIn_mul h' h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intUp_mul {ρ ρ' : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntUp Mp ρ)
     (h' : Formalism.MainNotions.S.TieN.IntUp Mp ρ') : Formalism.MainNotions.S.TieN.IntUp Mp (ρ * ρ') := by
   rw [intUp_iff] at *; rw [Matrix.transpose_mul]; exact loIn_mul h' h
 
 /- English proof (translation)
-The claim follows from `loIn_inv h`.
+A detailed English derivation is pending.
 -/
 theorem intLow_inv {l : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntLow Mp l) :
     Formalism.MainNotions.S.TieN.IntLow Mp l⁻¹ := loIn_inv h
 
 /- English proof (translation)
-Rewrite `*` using `[intUp_iff]`. Rewrite using `[Matrix.transpose_nonsing_inv]`. Conclude with `loIn_inv h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intUp_inv {ρ : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntUp Mp ρ) :
     Formalism.MainNotions.S.TieN.IntUp Mp ρ⁻¹ := by
   rw [intUp_iff] at *; rw [Matrix.transpose_nonsing_inv]; exact loIn_inv h
 
 /- English proof (translation)
-Rewrite using `[det_loIn h]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intLow_det {l : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntLow Mp l) : IsUnit l.det := by
   rw [det_loIn h]; exact isUnit_one
 
 /- English proof (translation)
-Rewrite `h` using `[intUp_iff]`. Rewrite using `[← Matrix.det_transpose, det_loIn h]`. Conclude with `isUnit_one`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intUp_det {ρ : Matrix (Fin n) (Fin n) E} (h : Formalism.MainNotions.S.TieN.IntUp Mp ρ) : IsUnit ρ.det := by
   rw [intUp_iff] at h; rw [← Matrix.det_transpose, det_loIn h]; exact isUnit_one
@@ -167,7 +167,7 @@ section Field
 variable {E : Type*} [Field E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `IsLoUni LoIn`. Conclude with `⟨fun h => ⟨fun i => (h i i).2 rfl, fun i j hij => (h i j).1 hij, fun _ _ => Subring.mem_top _⟩, fun h i j => ⟨h.2.1 i j, fun hij => hij ▸ h.1 i⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem isLoUni_iff (a : Matrix (Fin n) (Fin n) E) : IsLoUni a ↔ LoIn (⊤ : Subring E) a := by
   unfold IsLoUni LoIn
@@ -175,7 +175,7 @@ theorem isLoUni_iff (a : Matrix (Fin n) (Fin n) E) : IsLoUni a ↔ LoIn (⊤ : S
     fun h i j => ⟨h.2.1 i j, fun hij => hij ▸ h.1 i⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← upIn_iff]`. Unfold `IsUpUni`. Conclude with `⟨fun h => ⟨fun i => (h i i).2 rfl, fun i j hij => (h i j).1 hij, fun _ _ => Subring.mem_top _⟩, fun h i j => ⟨h.2.1 i j, fun hij => hij ▸ h.1 i⟩⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem isUpUni_iff (b : Matrix (Fin n) (Fin n) E) : IsUpUni b ↔ LoIn (⊤ : Subring E) b.transpose := by
   rw [← upIn_iff]
@@ -186,7 +186,7 @@ theorem isUpUni_iff (b : Matrix (Fin n) (Fin n) E) : IsUpUni b ↔ LoIn (⊤ : S
 end Field
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Simplify using `only [ZhatOM]`. Rewrite using `[← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zhatOM_zhatOM {K : Type*} [CommRing K] {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     ZhatOM (ZhatOM Z) = Z := by
@@ -201,7 +201,7 @@ variable (D : D7) (u u' : D.what₂.Word) (δ : ∀ p : Formalism.MainNotions.S.
   (w : Point D.host.E (D.R.rS + 1))
 
 /- English proof (translation)
-Use `⟨(isLoUni_iff _).2 (by simpa using loIn_one _), 1, (isUpUni_iff _).2 (by simpa using loIn_one _), by simp, fun p => ⟨1, 1, intLow_one _, intUp_one _, fun Z => ?_⟩⟩` and prove the remaining obligations. Simplify using `[zhatOM_zhatOM]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem one_mem_set : (1 : GLR D) ∈ stabIntSet D u u' δ M w := by
   refine ⟨(isLoUni_iff _).2 (by simpa using loIn_one _), 1, (isUpUni_iff _).2 (by simpa using loIn_one _),
@@ -209,13 +209,13 @@ theorem one_mem_set : (1 : GLR D) ∈ stabIntSet D u u' δ M w := by
   simp [zhatOM_zhatOM]
 
 /- English proof (translation)
-Take `⟨hla, b, hb, hab, hp⟩` from `ha`. Take `⟨hla', b', hb', hab', hp'⟩` from `ha'`. Use `⟨?_, b' * b, ?_, ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, isLoUni_iff]`. Conclude with `loIn_mul ((isLoUni_iff _).1 hla) ((isLoUni_iff _).1 hla')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isUpUni_iff, Matrix.transpose_mul]`. Conclude with `loIn_mul ((isUpUni_iff _).1 hb) ((isUpUni_iff _).1 hb')`. Rewrite using `[Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `_ = ptMat w := by rw [hab', hab]`. Take `⟨l, ρ, hl, hρ, hm⟩` from `hp p`. Take `⟨l', ρ', hl', hρ', hm'⟩` from `hp' p`. Use `⟨l * l', ρ' * ρ, intLow_mul _ hl hl', intUp_mul _ hρ' hρ, fun Z => ?_⟩` and prove the remaining obligations. Establish `e : ((a * a' : GLR D) : MatR D) * ZhatOM Z * (b' * b) = (a : MatR D) * ZhatOM (ZhatOM ((a' : MatR D) * ZhatOM Z * b')) * b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zhatOM_zhatOM, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hm, hm']`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_set {a a' : GLR D} (ha : a ∈ stabIntSet D u u' δ M w) (ha' : a' ∈ stabIntSet D u u' δ M w) :
     a * a' ∈ stabIntSet D u u' δ M w := by
@@ -238,15 +238,13 @@ theorem mul_mem_set {a a' : GLR D} (ha : a ∈ stabIntSet D u u' δ M w) (ha' : 
     simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨hla, b, hb, hab, hp⟩` from `ha`. Establish `hbT` using `(isUpUni_iff _).1 hb`. Establish `hbd : IsUnit b.det` using `by rw [← Matrix.det_transpose, det_loIn hbT]; exact isUnit_one`. Establish `hai : ((a⁻¹ : GLR D) : MatR D) = (a : MatR D)⁻¹` using `Matrix.coe_units_inv a`. Establish `had : IsUnit (a : MatR D).det` using `by rw [det_loIn ((isLoUni_iff _).1 hla)]; exact isUnit_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, b⁻¹, ?_, ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hai, isLoUni_iff]`. Conclude with `loIn_inv ((isLoUni_iff _).1 hla)`. Rewrite using `[isUpUni_iff, Matrix.transpose_nonsing_inv]`. Conclude with `loIn_inv hbT`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hai]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (a : MatR D)⁻¹ * ((a : MatR D) * ptMat w * b) * b⁻¹ = ((a : MatR D)⁻¹ * (a : MatR D)) * ptMat w * (b * b⁻¹) by simp only [Matrix.mul_assoc], Matrix.nonsing_inv_mul _ had, Matrix.mul_nonsing_inv _ hbd, Matrix.one_mul, Matrix.mul_one]`. Take `⟨l, ρ, hl, hρ, hm⟩` from `hp p`. Use `⟨l⁻¹, ρ⁻¹, intLow_inv _ hl, intUp_inv _ hρ, fun Z => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `set Z' := ZhatOM (((a⁻¹ : GLR D) : MatR D) * ZhatOM Z * b⁻¹) with hZ'`. Establish `e : (a : MatR D) * ZhatOM Z' * b = ZhatOM Z`. Rewrite using `[hZ', zhatOM_zhatOM, hai, show (a : MatR D) * ((a : MatR D)⁻¹ * ZhatOM Z * b⁻¹) * b = ((a : MatR D) * (a : MatR D)⁻¹) * ZhatOM Z * (b⁻¹ * b) by simp only [Matrix.mul_assoc], Matrix.mul_nonsing_inv _ had, Matrix.nonsing_inv_mul _ hbd, Matrix.one_mul, Matrix.mul_one]`. Establish `h1` using `hm Z'`. Rewrite `h1` using `[e, zhatOM_zhatOM]`.
-
-Rewrite using `[h1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (intLow_det _ hl), Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_right _ _ (intUp_det _ hρ)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_set {a : GLR D} (ha : a ∈ stabIntSet D u u' δ M w) : a⁻¹ ∈ stabIntSet D u u' δ M w := by
   obtain ⟨hla, b, hb, hab, hp⟩ := ha
@@ -282,14 +280,14 @@ def stabIntGrp : Subgroup (GLR D) where
   inv_mem' := inv_mem_set D u u' δ M w
 
 /- English proof (translation)
-Unfold `stabInt`. Conclude with `Subgroup.closure_eq (stabIntGrp D u u' δ M w)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem stabInt_eq : stabInt D u u' δ M w = stabIntGrp D u u' δ M w := by
   unfold stabInt
   exact Subgroup.closure_eq (stabIntGrp D u u' δ M w)
 
 /- English proof (translation)
-Rewrite using `[stabInt_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_stabInt_iff (a : GLR D) : a ∈ stabInt D u u' δ M w ↔ a ∈ stabIntSet D u u' δ M w := by
   rw [stabInt_eq]; rfl

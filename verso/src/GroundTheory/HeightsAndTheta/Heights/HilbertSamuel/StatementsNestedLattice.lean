@@ -21,7 +21,7 @@ def ChangeOfLatticeNested.Statement : Prop :=
 namespace ChangeOfLatticeNested
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [matAct, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Ne.symm hj]) (by simp)]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem matAct_one {Ω : Type} [Field Ω] [CharZero Ω] {J : Type} [Fintype J] [DecidableEq J] (x : J → Ω) :
     matAct (1 : Matrix J J ℚ) x = x := by

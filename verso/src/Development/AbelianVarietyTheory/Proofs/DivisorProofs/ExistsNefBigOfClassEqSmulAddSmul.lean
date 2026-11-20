@@ -24,9 +24,9 @@ open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hNN k _ X _ q hq`. Use `letI := algebraΓOfHom q`. Introduce `N N' hN hN' a b hNn hNb hN'n ha`. Establish `hp : IsProjOver (strHom k X)`. Rewrite using `[strHom_eq (f := q) fun _ => rfl]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨_, hH⟩` from `exists_isAmpleLB_of_isProjOver hq`. Use `⟨tens (lbPow N a) (lbPow N' b), isLB_tens (isLB_lbPow hN a) (isLB_lbPow hN' b), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cls_tens (isLB_lbPow hN a) (isLB_lbPow hN' b), cls_lbPow hN, cls_lbPow hN']`. Conclude with `(hNn.pow hH a).tens (hN'n.pow hH b) hH`. Conclude with `(hNb.pow (fun _ => rfl) hq ha).tens_nef hNN hp (hNn.pow hH a) (hN'n.pow hH b)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nef_big_of_cls_eq_smul_add_smul : GlobalTheory.Published.NefNumerics → ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k), IsProjOver q → letI := algebraΓOfHom q; ∀ (N N' : LB X) (hN : N.IsLB) (hN' : N'.IsLB) (a b : ℕ), IsNef k N → IsBig k N → IsNef k N' → 0 < a → ∃ (N₀ : LB X) (h₀ : N₀.IsLB), cls N₀ h₀ = a • cls N hN + b • cls N' hN' ∧ IsNef k N₀ ∧ IsBig k N₀ := by
   intro hNN k _ X _ q hq

@@ -12,13 +12,13 @@ namespace GlobalTheory.CompanionTheory.GeoCell
 open GroundTheory.Automorphic.Parabolic
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h1 | h1` into its components or cases. Use `(h _ _).2 h1` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `this` using `[hxy]`. Conclude with `lt_irrefl _ this`. Use `(h _ _).2 h1` as an intermediate fact. Rewrite `this` using `[hxy]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `hxy`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h1 | h1` into its components or cases. Use `(h _ _).1 h1` as an intermediate fact. Rewrite `this` using `[hxy]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ this`. Use `(h _ _).1 h1` as an intermediate fact. Rewrite `this` using `[hxy]`. Conclude with `lt_irrefl _ this`.
+A detailed English derivation is pending.
 -/
 theorem eq_iff_of_lt_iff {C A B : Type} [LinearOrder A] [LinearOrder B] (f : C → A) (g : C → B)
     (h : ∀ x y, f x < f y ↔ g x < g y) (x y : C) : f x = f y ↔ g x = g y := by
@@ -43,17 +43,17 @@ theorem eq_iff_of_lt_iff {C A B : Type} [LinearOrder A] [LinearOrder B] (f : C �
       exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, (Finset.univ.filter fun j => γ j = b ∧ a ≤ β (w j)).card = (Finset.univ.filter fun j => γ j = b ∧ a ≤ β (w' j)).card`. Introduce `a b`. Consider the cases of `b with`. Consider the case `zero => simpa using h a 0`. Consider the case `succ b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `key : ∀ u : Equiv.Perm (Fin n), (Finset.univ.filter fun j => γ j ≤ b + 1 ∧ a ≤ β (u j)).card = (Finset.univ.filter fun j => γ j = b + 1 ∧ a ≤ β (u j)).card + (Finset.univ.filter fun j => γ j ≤ b ∧ a ≤ β (u j)).card`. Introduce `u`. Rewrite using `[← Finset.card_union_of_disjoint]`. Use `congr 1`. Use extensionality with `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.disjoint_filter]`. Introduce `j _ h1 h2`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers.
 
-Use `h a (b + 1)` as an intermediate fact. Rewrite `this` using `[key w, key w', h a b]`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ u : Equiv.Perm (Fin n), (Finset.univ.filter fun j => γ j = b ∧ a ≤ β (u j)).card = (Finset.univ.filter fun j => γ j = b ∧ β (u j) = a).card + (Finset.univ.filter fun j => γ j = b ∧ a + 1 ≤ β (u j)).card`. Introduce `u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.card_union_of_disjoint]`. Use `congr 1`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.disjoint_filter]`. Introduce `j _ h1 h2`. Use linear arithmetic over natural numbers and integers. Use `h1 a b` as an intermediate fact. Rewrite `this` using `[key w, key w', h1 (a + 1) b]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -103,33 +103,31 @@ theorem card_cell_of_card_corner {n : ℕ} {β γ : Fin n → ℕ} {w w' : Equiv
   omega
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α _ _ N m _ _ β' _ _ m' _ _ e β hβ e' γ hγ w w'`. Establish `hβe` using `eq_iff_of_lt_iff β (blk e) hβ`. Establish `hγe` using `eq_iff_of_lt_iff γ (blk e') hγ`. Establish `reidx : ∀ (u : Equiv.Perm (Fin N)) (i : α) (j : β'), (Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (u.symm x) = j).card = (Finset.univ.filter fun y : Fin N => blk e (u y) = i ∧ blk e' y = j).card`. Introduce `u i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.card_equiv u.symm` to reduce the goal to its premises. Introduce `x`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hmem i j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ a b, (Finset.univ.filter fun j => γ j ≤ b ∧ a ≤ β (w j)).card = (Finset.univ.filter fun j => γ j ≤ b ∧ a ≤ β (w' j)).card`. Introduce `a b`. Rewrite using `[← cellRank_permGL (F := k), ← cellRank_permGL (F := k)]`. Conclude with `(cellRank_of_mem_doubleCoset hmem a b).symm`. Rewrite using `[reidx, reidx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : ∃ x0, blk e x0 = i`. Distinguish the cases in `hj : ∃ y0, blk e' y0 = j`. Take `⟨x0, rfl⟩` from `hi`. Take `⟨y0, rfl⟩` from `hj`. Establish `conv : ∀ u : Equiv.Perm (Fin N), (Finset.univ.filter fun y : Fin N => blk e (u y) = blk e x0 ∧ blk e' y = blk e' y0) = Finset.univ.filter fun y => γ y = γ y0 ∧ β (u y) = β x0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Use extensionality with `y`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hβe, hγe]`. The claim follows by propositional logic. Rewrite using `[conv, conv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `card_cell_of_card_corner hc _ _`. Establish `hz : ∀ u : Equiv.Perm (Fin N), (Finset.univ.filter fun y : Fin N => blk e (u y) = i ∧ blk e' y = j) = ∅`. Introduce `u`. Use extensionality with `y`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hj ⟨y, h.2⟩`. Rewrite using `[hz, hz]`. Establish `hz : ∀ u : Equiv.Perm (Fin N), (Finset.univ.filter fun y : Fin N => blk e (u y) = i ∧ blk e' y = j) = ∅`. Introduce `u`. Use extensionality with `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Conclude with `fun h => hi ⟨u y, h.1⟩`. Rewrite using `[hz, hz]`. Introduce `h`. Establish `hcard : ∀ c : α × β', Fintype.card {y : Fin N // (blk e (w y), blk e' y) = c} = Fintype.card {y : Fin N // (blk e (w' y), blk e' y) = c}`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`. Establish `conv : ∀ u : Equiv.Perm (Fin N), (Finset.univ.filter fun y : Fin N => (blk e (u y), blk e' y) = c) = Finset.univ.filter fun y => blk e (u y) = c.1 ∧ blk e' y = c.2`. Introduce `u`. Use extensionality with `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.ext_iff]`. Rewrite using `[conv, conv, ← reidx, ← reidx]`. Conclude with `h c.1 c.2`. Set `v : Fin N ≃ Fin N` to `Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hcard c)`. Establish `hv : ∀ j, (blk e (w' (v j)), blk e' (v j)) = (blk e (w j), blk e' j)` using `fun j => Equiv.ofFiberEquiv_map (fun c => Fintype.equivOfCardEq (hcard c)) j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hvβ : ∀ j, β (w' (v j)) = β (w j)` using `fun j => (hβe _ _).2 (Prod.ext_iff.1 (hv j)).1`. Establish `hvγ : ∀ j, γ (v j) = γ j` using `fun j => (hγe _ _).2 (Prod.ext_iff.1 (hv j)).2`. Set `u : Equiv.Perm (Fin N)` to `w' * v * w⁻¹`. Establish `hu : ∀ x, β (u x) = β x`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [u, Equiv.Perm.mul_apply]`. Rewrite using `[hvβ]`. Simplify using the standard rewrite rules. Establish `hv' : ∀ x, γ ((v⁻¹ : Equiv.Perm (Fin N)) x) = γ x`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hvγ ((v⁻¹ : Equiv.Perm (Fin N)) x)` as an intermediate fact. Establish `h' : v ((v⁻¹ : Equiv.Perm (Fin N)) x) = x` using `Equiv.apply_symm_apply v x`. Rewrite `this` using `[h']`. Conclude with `this.symm`. Use `DoubleCoset.mem_doubleCoset.2 ⟨permGL k u, permGL_mem_blockUpper hu, permGL k v⁻¹, permGL_mem_blockUpper hv', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Simplify using `only [u]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem permGL_mem_doubleCoset_iff_card : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α : Type} [Fintype α] [LinearOrder α] {N : ℕ} {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {β' : Type} [Fintype β'] [LinearOrder β'] {m' : β' → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)] (e : (Σ i, m i) ≃ Fin N) (β : Fin N → ℕ), (∀ x y, β x < β y ↔ blk e x < blk e y) → ∀ (e' : (Σ j, m' j) ≃ Fin N) (γ : Fin N → ℕ), (∀ x y, γ x < γ y ↔ blk e' x < blk e' y) → ∀ (w w' : Equiv.Perm (Fin N)), permGL k w' ∈ doubleCoset (permGL k w) (blockUpper k N β : Set (GL (Fin N) k)) (blockUpper k N γ) ↔ ∀ i j, ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w.symm x) = j).card) = ((Finset.univ.filter fun x : Fin N => blk e x = i ∧ blk e' (w'.symm x) = j).card) := by
   intro k _ _ _ _ α _ _ N m _ _ β' _ _ m' _ _ e β hβ e' γ hγ w w'

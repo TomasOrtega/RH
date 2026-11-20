@@ -10,21 +10,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 4000000
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS v π hπ j hj La Lb hab`. Establish `hA` using `hD j hj La hab.1`. Establish `hB` using `hD j hj Lb hab.2.1`. Establish `pa` using `GlobalTheory.T.lattice_det_mem_U1_and_ordA_eq_neg_len S hD hS j hj La hab.1`. Establish `pb` using `GlobalTheory.T.lattice_det_mem_U1_and_ordA_eq_neg_len S hD hS j hj Lb hab.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sa` using `GlobalTheory.T.adelicPoints_agreeAway_of_latticeTuples_agreeAway S hD hS v j hj La Lb hab`. Establish `hone` using `J.one`. Take `⟨hadd, hint, -, -⟩` from `GlobalTheory.TwV.Xc.OrdA.ordA_props _ _ _ _ _ (A0 J) hone.int hS.1 v`. Use `set n : ℤ := len (sysS H X std) v j Lb.2 - len (sysS H X std) v j La.2 with hn`. Use `set k := ((J.fd std).dt j Lb * π ^ n)⁻¹ * (J.fd std).dt j La with hk`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `oh : (AfE D.host.F D.host.E)ˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => Multiplicative.ofAdd (ordA (A0 J) v x)) (fun x y => by simp [hadd x y, ofAdd_add])`. Establish `hoh : ∀ x, ordA (A0 J) v x = Multiplicative.toAdd (oh x)` using `fun x => rfl`. Establish `hkU : k ∈ U1 (sigD D)` using `Subgroup.mul_mem _ (Subgroup.inv_mem _ (Subgroup.mul_mem _ pb.1 (Subgroup.zpow_mem _ hπ.1 n))) pa.1`. Establish `hkOff : OneOff ((A0 J).pl v).1 k`. Introduce `w' hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : (AfE D.host.F D.host.E)ˣ →* _` to `Units.map (prV (E := D.host.E) w').toMonoidHom`. Establish `hfπ : f π = 1` using `Units.ext (hπ.2.1 w' hw')`. Establish `hdet : ∀ x : GL (Fin (D.R.N j)) (AfE D.host.F D.host.E), f (Matrix.GeneralLinearGroup.det x) = Matrix.GeneralLinearGroup.det (Formalism.UG.bc (prV (E` using `D.host.E) w') x) := by`. Introduce `x`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[f, Formalism.UG.bc, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Establish `hfab : f ((J.fd std).dt j La) = f ((J.fd std).dt j Lb)`. Rewrite using `[hA.2.2.2, hB.2.2.2, hdet, hdet, sa.1 w' hw']`. Establish `: f k = 1`. Simplify using `only [hk, map_mul, map_inv, map_zpow, hfπ, one_zpow, mul_one, hfab, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Units.val this`. Establish `hkOrd : ordA (A0 J) v k = 0`. Establish `hz : ordA (A0 J) v (π ^ n) = n * ordA (A0 J) v π`. Rewrite using `[hoh, hoh, map_zpow, toAdd_zpow, smul_eq_mul]`. Establish `hi : ∀ x, ordA (A0 J) v x⁻¹ = -ordA (A0 J) v x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[hoh, hoh, map_inv, toAdd_inv]`. Rewrite using `[hk, hadd, hi, hadd, hz, pa.2 v, pb.2 v, hπ.2.2, hn]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨k, hkU, ?_, hkOff, ?_⟩` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.TwV.Xc.mem_intU_of_oneOff_ordA _ _ (sigD D) _ _ _ (A0 J) _ hone.good hone.int hS.1 v k hkU hkOff hkOrd`. Rewrite using `[hk, mul_inv_cancel_left]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.Xc.dt_sameAway_step : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ v π, IsUnifAt J v π → ∀ j (hj : j ≤ D.R.m) (La Lb : (sysS H X std).Lt j), SameAway (hT := hT) (H := H) (X := X) std v j La Lb → ∃ k ∈ U1 (sigD D), k ∈ intU D.host.F D.host.E ∧ OneOff ((A0 J).pl v).1 k ∧ (J.fd std).dt j La = (J.fd std).dt j Lb * π ^ (len (sysS H X std) v j Lb.2 - len (sysS H X std) v j La.2) * k) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS v π hπ j hj La Lb hab

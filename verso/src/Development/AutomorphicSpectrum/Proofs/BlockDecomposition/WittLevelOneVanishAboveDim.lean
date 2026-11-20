@@ -14,11 +14,11 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers Crystal
 namespace GlobalTheory.CompanionTheory.WittLevel.Van
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Use `Ideal.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hs, rfl⟩`. Establish `h : ∃ p ∈ l, p.1 ≠ 0`. Assume the negation of the conclusion as `h`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Establish `: (l.map Prod.fst).sum = 0` using `List.sum_eq_zero (by simpa using h)`. Use linear arithmetic over natural numbers and integers. Take `⟨p, hp, h0⟩` from `h`. Use `List.prod_eq_zero (List.mem_map.2 ⟨p, hp, ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : p.2 = 0` using `hl p hp`. Rewrite using `[e]`. Conclude with `δ.dpow_eval_zero h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_eq_bot {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (hJ : J = ⊥) {r : ℕ} (hr : 1 ≤ r) :
     pdP δ r = ⊥ := by
@@ -37,11 +37,11 @@ theorem dividedPowerFiltration_eq_bot {B : Type} [CommRing B] {J : Ideal B} (δ 
   exact δ.dpow_eval_zero h0
 
 /- English proof (translation)
-Take `⟨c', -, -⟩` from `GlobalTheory.CompanionTheory.FlatChartP.exists_flat_chart γ p hp hn q κ c`. Establish `hgood` using `GlobalTheory.CompanionTheory.ChartMaps.good c'`. Establish `hQ : ∀ T, St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {V} T → InU V T := by`. Introduce and unpack `T ⟨-, W, rfl, h⟩`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hD : St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {V} c'.D := ⟨trivial, V, rfl, c'.inV⟩`. Take `⟨hpow, -⟩` from `GlobalTheory.CompanionTheory.ChartFil.chart_grConst c' hgood _ hQ hD`. Take `⟨PQ, hPQ⟩` from `CrystallineSemistableComparison.Pb.Site.poly_all' γ p hp q κ ⊤ (Or.inl rfl) {V}`. Use `CrystallineSemistableComparison.Pb.vanishing_of_ladder e PQ (a := sFil _) (b := fun _ => IdF.bot _) (c'.frame hgood _ hQ hD) ((d : ℤ) + 1) ⟨fun r' T x hx => ?_, fun r' _ => (hPQ r').1, fun r' _ => (hPQ r').2.1⟩ (fun r' h1 _ x hx => ?_) j` and prove the remaining obligations. Establish `h0 : x = 0` using `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `Ideal.zero_mem _`. Establish `h2 : (show c'.D.B from x) ∈ c'.D.pdPow r'.toNat` using `hx`. Rewrite `h2` using `[hpow, dividedPowerFiltration_eq_bot γ hI (by omega), Ideal.map_bot]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem van_on {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) (hI : I = ⊥) (p : ℕ) (hp : p ≠ 0)
     (hn : IsNilpotent (p : R)) {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) {V : X.Opens} {e : ℕ}
@@ -65,7 +65,7 @@ theorem van_on {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : Divide
     exact h2
 
 /- English proof (translation)
-Use `(Ideal.map_eq_bot_iff_le_ker _).2 ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using Ideal.mem_span_singleton_self _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Im_one_eq_bot (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] [PerfectRing k l] : Wc.Im l k 1 = ⊥ := by
   refine (Ideal.map_eq_bot_iff_le_ker _).2 ?_
@@ -73,7 +73,7 @@ theorem Im_one_eq_bot (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] 
   simpa using Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nat_eq_zero (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] [PerfectRing k l] :
     ((l : ℕ) : Wc.Wm l k 1) = 0 := by
@@ -81,9 +81,9 @@ theorem nat_eq_zero (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] [P
   simpa using Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Introduce `l _ k _ _ _ O _ X q ρ U d hd j`. Establish `hp : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Establish `hn : IsNilpotent ((l : ℕ) : Wc.Wm l k 1)`. Rewrite using `[nat_eq_zero]`. Conclude with `IsNilpotent.zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.T.stable_cover_cech_vanishing.1 (sq (thFil (nlFun (Wc.pd l k 1) l X q ((Wc.res l k 1).comp ρ)) ((d : ℤ) + 1)) (IdF.bot _)) (⊤ : ObjectProperty (Thick (nlFun (Wc.pd l k 1) l X q ((Wc.res l k 1).comp ρ)))) U.U 0).2.1 (fun S hS j => ?_) j` and prove the remaining obligations. Take `⟨α, hα⟩` from `id hS`. Take `⟨c', -⟩` from `GlobalTheory.T.coordinates_restrict_affine_open (U.c α) (iInf₂_le α hα) (U.inter S hS)`. Conclude with `van_on (Wc.pd l k 1) (Im_one_eq_bot l k) l hp hn q _ c' d (hd α) j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem witt_level_one_filtration_vanish : ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing k l] {O : Type} [CommRing O] {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) (U : Cov q) (d : ℕ), (∀ α, U.d α ≤ d) →

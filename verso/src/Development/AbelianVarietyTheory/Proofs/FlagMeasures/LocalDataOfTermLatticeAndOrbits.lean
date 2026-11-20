@@ -31,7 +31,7 @@ variable {D : D7}
 section Tri
 
 /- English proof (translation)
-Take `⟨A, hA, hc⟩` from `h`. Use `⟨A, hA, fun b => ?_⟩` and prove the remaining obligations. Simplify using `only [hc b, map_sum, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tri_map {K W W' : Type} [CommSemiring K] [AddCommMonoid W] [Module K W] [AddCommMonoid W'] [Module K W']
     {n : ℕ} (φ : W →ₗ[K] W') {f g : Fin n → W} (h : GlobalTheory.LocOver.Tri K f g) :
@@ -41,15 +41,15 @@ theorem tri_map {K W W' : Type} [CommSemiring K] [AddCommMonoid W] [Module K W] 
   simp only [hc b, map_sum, map_smul]
 
 /- English proof (translation)
-Take `⟨A, ⟨hA1, hA2⟩, hcA⟩` from `h1`. Take `⟨B, ⟨hB1, hB2⟩, hcB⟩` from `h2`. Use `⟨A * B, ⟨fun a c hca => ?_, fun a => ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `lt_or_ge b a with hb | hb` into its components or cases. Rewrite using `[hA1 a b hb, zero_mul]`. Rewrite using `[hB1 b c (lt_of_lt_of_le hca hb), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hA2, hB2, one_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Break down `lt_or_gt_of_ne hb with hb | hb` into its components or cases. Rewrite using `[hA1 a b hb, zero_mul]`. Rewrite using `[hB1 b a hb, mul_zero]`. Introduce `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ a) hn`. Use `show h c = ∑ a, (A * B) a c • f a`. Rewrite using `[hcB c]`. Simplify using `only [show ∀ b, g b = ∑ a, A a b • f a from hcA, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem tri_trans {K W : Type} [CommSemiring K] [AddCommMonoid W] [Module K W] {n : ℕ} {f g h : Fin n → W}
     (h1 : GlobalTheory.LocOver.Tri K f g) (h2 : GlobalTheory.LocOver.Tri K g h) : GlobalTheory.LocOver.Tri K f h := by
@@ -78,7 +78,7 @@ theorem tri_trans {K W : Type} [CommSemiring K] [AddCommMonoid W] [Module K W] {
 end Tri
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isTerm_localTermMove_of_isometry H g t hg ht`.
+A detailed English derivation is pending.
 -/
 theorem isTerm_move {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E]
     [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
@@ -87,11 +87,11 @@ theorem isTerm_move {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {
   GlobalTheory.T.isTerm_localTermMove_of_isometry H g t hg ht
 
 /- English proof (translation)
-Take `⟨A, ⟨hA1, hA2⟩, hc⟩` from `GlobalTheory.Unfold.BasePt.tri_of_adapt g F₁ F₂ hg.1 hg.2`. Establish `hu` using `fun a => Formalism.L2.SG.Pf.BBTie.bt_frFac_unit Z p a`. Use `⟨fun a b => frFac Z.δ p b * (D.s.atP p).ιE (A a b) * Ring.inverse (frFac Z.δ p a), ⟨fun a b hba => ?_, fun a => ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Simplify using `[hA1 a b hba]`. Use `show frFac Z.δ p a * (D.s.atP p).ιE (A a a) * Ring.inverse (frFac Z.δ p a) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA2, map_one, mul_one, Ring.mul_inverse_cancel _ (hu a)]`. Establish `e` using `hc b`. Rewrite `e` using `[Formalism.L2.SG.Saturated.frame_mapL]`. Simplify using `only [GlobalTheory.LocOver.scaled]`. Rewrite using `[map_smul, he, e, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [baseChange_smul₂, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc (frFac Z.δ p b * _), Ring.inverse_mul_cancel _ (hu a), mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_adapt_loc (Z : LocDat D) (p : PlF D) (g : GV D) {T : D.host.E} (F₁ F₂ : LFlag (VS D) D.R.rS T)
     (g' : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (hg : Adapt g F₁ F₂) (he : Ext p g g') :
@@ -113,7 +113,7 @@ theorem tri_adapt_loc (Z : LocDat D) (p : PlF D) (g : GV D) {T : D.host.E} (F₁
     rw [mul_assoc (frFac Z.δ p b * _), Ring.inverse_mul_cancel _ (hu a), mul_one]
 
 /- English proof (translation)
-Use `⟨hA.fg.map _, ?_⟩` and prove the remaining obligations. Establish `: (Formalism.HermitianLatticesTheory.gmap g A : Set (VS D).V) = (g : (VS D).V →ₗ[D.host.E] (VS D).V) '' (A : Set (VS D).V)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, hA.span_eq_top, Submodule.map_top]`. Conclude with `LinearEquiv.range g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_gmap (g : GV D) (A : LV D) (hA : Submodule.IsLattice D.host.E A) :
     Submodule.IsLattice D.host.E (Formalism.HermitianLatticesTheory.gmap g A) := by
@@ -123,7 +123,7 @@ theorem isLattice_gmap (g : GV D) (A : LV D) (hA : Submodule.IsLattice D.host.E 
   exact LinearEquiv.range g
 
 /- English proof (translation)
-Rewrite using `[finrank_Vp]`. Establish `h1` using `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Take `⟨c, hc⟩` from `h1`. Simplify using `only [Ranks.r, Ranks.rS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -136,19 +136,17 @@ theorem finrank_Vp_eq (p : PlF D) : Module.finrank (D.s.atP p).Ep (Vp D p) = D.R
   omega
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hZ hG Z FP hB hRel t Λ hTG`. Take `⟨hExt, -, hlat, -⟩` from `GlobalTheory.T.rationalAutomorphism_local_extension_moves_lattices D X Y u u' F F' w hZ hG Z FP hB hRel`. Establish `hGt : t.G ≠ 0` using `(GlobalTheory.T.term_at_base_point_of_frames D X Y u u' F F' w hZ hG t Λ hTG).1`. Take `⟨g, hgF, hgF', hΛ⟩` from `hTG`. Establish `hrow : IsRowLat D (X.Fu u) t.lam` using `(Y.rowsOK u).1 t.lam t.mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPD : Formalism.L2.SG.TermDef.PD D t.lam (lf D (X.Fu u)) u' t.frame` using `t.rep.2.2.2.2`. Establish `hGv : Gval (lf D (X.Fu u)) t.frame ≠ 0` using `by rwa [Formalism.L2.SG.Pf.SatGram.gterm_G Y t] at hGt`. Use `choose gp hgp using fun p => (hExt g p).exists`. Establish `hu : ∀ p, LocNG.IsUnitary (locH Z p) (gp p)` using `fun p => GlobalTheory.Unfold.Model.ext_unitary hgF.1 (hgp p)`. Establish `hτ` using `fun p => GlobalTheory.LocOver.locU_isTerm D Z u u' (X.Fu u) t.lam hrow t.frame hPD hGv p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ p, ∃ d, LocNG.IsTermOver (FP p) d (GlobalTheory.LocOver.move (gp p) (GlobalTheory.LocOver.locU Z p t.lam (lf D (X.Fu u)) t.frame (Tu D u) (Tu D u')))`. Introduce `p`. Use `GlobalTheory.T.exists_datum_of_two_congruent_frames (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p) _ (isTerm_move (locH Z p) (gp p) _ (hu p) (hτ p).1) (hB p).2.2.1.symm (hB p).2.2.2.symm ?_ ?_` and prove the remaining obligations. Rewrite using `[(hB p).1]`. Conclude with `tri_adapt_loc Z p g _ _ (gp p) hgF (hgp p)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hB p).2.1]`. Conclude with `tri_trans (tri_adapt_loc Z p g _ _ (gp p) hgF' (hgp p)) (tri_map (gp p).toLinearMap (hτ p).2)`. Use `choose y hy using hex`. Use `⟨y, ⟨?_, fun p => ⟨_, hy p, ?_⟩⟩, fun p d => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isLattice_gmap g _ hrow.1.1`. Use `show LocNG.img (gp p) (lattice₂ D Z.M p t.lam) = _`. Rewrite using `[hΛ, hlat g p (gp p) t.lam (hgp p)]`. Establish `hDC : Formalism.L2.SG.TermDef.DCRel t.lam (lf D (X.Fu u)) t.frame (Quot.out t.toTerm.cls).1` using `(Formalism.L2.SG.Closed.TermEqIff_holds D u u' (X.Fu u) t.lam hrow ⟨t.frame, hPD⟩ (Quot.out t.toTerm.cls)).1 (Quot.out_eq t.toTerm.cls).symm`. Use `(GlobalTheory.T.localData_globalTerm_independent_of_representative D Z u u' (X.Fu u) t.lam hrow t.frame (Quot.out t.toTerm.cls).1 hPD (Quot.out t.toTerm.cls).2 hGv hDC p (FP p) (hRel p) d).symm.trans ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.LocOver.Check.over_move_iff (FP p) d _ (gp p) (hu p)).symm.trans ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `GlobalTheory.T.term_datum_orbit_unique (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS D.R.k (FP p) (finrank_Vp_eq p) (hRel p) d (y p) _ h (GlobalTheory.LocOver.Check.over_of_isTermOver _ _ _ (hy p))`. Introduce `h`.
-
-Use `⟨1, fun _ _ => rfl, y p, h, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LocOver.Check.move_one]`. Conclude with `hy p`.
+A detailed English derivation is pending.
 -/
 theorem local_data_of_term : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (t : TauC Y u u') (Λ : LV D), TG F F' t Λ → ∃ y : Dat Z FP, LocOver Λ y ∧ ∀ p d, GlobalTheory.LocOver.Over (FP p) d (GlobalTheory.LocOver.locU Z p t.toTerm.lam (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1 (Tu D u) (Tu D u')) ↔ LocNG.Datum.Rel d (y p) := by
   intro D X Y u u' F F' w hZ hG Z FP hB hRel t Λ hTG

@@ -12,17 +12,15 @@ open MvPolynomial ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Introduce `n J q M hJ P`. Take `⟨e, he⟩` from `hLoc n J q M hJ`. Take `⟨P', hP'def⟩ : ∃ P' : @Ideal (Localization (normalModelSubmonoid M q)) CommSemiring.toSemiring, P' = P.asIdeal.comap (e.symm : Localization (normalModelSubmonoid M q) →+* curveNormalisation J q)` from `⟨_, rfl⟩`. Establish `hP' : P'.IsMaximal`. Rewrite using `[hP'def]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.comap_isMaximal_of_surjective _ e.symm.surjective`. Establish `hPp : P'.IsPrime`. Rewrite using `[hP'def]`. Use `infer_instance`. Take `⟨w, hw, hq, hcomap⟩` from `hMax n J q M P' hP'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨eAt, heAt⟩` from `hAt (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) M.ideal (normalModelSubmonoid M q) P' (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ)) hcomap`. Set `eP : Localization.AtPrime P.asIdeal ≃+* Localization.AtPrime P'` to `IsLocalization.ringEquivOfRingEquiv (M := P.asIdeal.primeCompl) (T := P'.primeCompl) (Localization.AtPrime P.asIdeal) (Localization.AtPrime P') e (by`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hP'def` using the available equality. Use `show e.symm (e x) ∉ P.asIdeal`. Simplify using `using hx`. Introduce `hy`. Substitute `hP'def` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨e.symm y, hy, by simp⟩)`. Use `⟨w, hw, hq, fun f ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← ord_ringEquiv (eP.trans eAt)]`. Use `congr 1`. Rewrite using `[RingEquiv.trans_apply, IsLocalization.ringEquivOfRingEquiv_eq, he, heAt]`.
-
-Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem NormalModelPointOfPlace.proof (hLoc : NormalisationModelLocalization.Statement)
     (hMax : ModelLocalizationMaximalPoint.Statement) (hAt : LocalizationAtPrimeQuotient.Statement.{0}) :

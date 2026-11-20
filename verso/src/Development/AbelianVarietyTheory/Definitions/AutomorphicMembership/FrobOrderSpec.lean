@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.BasicNot
 abbrev frobOrder (D : D7) (p : ℕ) : ℕ := orderOf (zH D.R.toFrame (hP D p))
 
 /- English proof (translation)
-Take `⟨hp, -, hc, hn, -⟩` from `hg`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hpI : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ`. Take `⟨⟨P, hPp, hL⟩⟩ : Nonempty ((Ideal.span {(p : ℤ)}).primesOver (𝓞 D.host.E))` from `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨σ, hσ⟩, -⟩` from `D.host.der.frob p (not_dvd_conductor_of_inert hp hc) P`. Establish `hne : ∃ g, g ∈ frobSet D p` using `⟨_, P, hPp, hL, σ, hσ, rfl⟩`. Take `⟨P', hP', hL', σ', hσ', heq⟩` from `Classical.epsilon_spec hne`. Establish `hnF : frobOrder D p = orderOf (D.R.iota (hP D p))`. Unfold `frobOrder`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Subgroup.orderOf_coe]`. Conclude with `orderOf_injective (MonoidHom.inr Formalism.FrobeniusOrbits.G0 D.R.MA) (fun a b hab => (Prod.ext_iff.1 hab).2) _`. Establish `hev : Even (orderOf (D.R.iota (hP D p)))`. Unfold `hP`. Rewrite using `[Formalism.HC.Frame.iota_iotaInv, ← heq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `@hn P' hP' hL' σ' hσ'`. Establish `hpos : 0 < orderOf (D.R.iota (hP D p))` using `orderOf_pos _`. Rewrite using `[hnF]`. Take `⟨k, hk⟩` from `hev`. Conclude with `⟨by omega, k, hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frobOrder_spec (D : D7) {T p : ℕ} (hg : GIdx D.host T p) : 2 ≤ frobOrder D p ∧ Even (frobOrder D p) := by
   obtain ⟨hp, -, hc, hn, -⟩ := hg
@@ -121,7 +121,7 @@ example (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u
 end Record
 
 /- English proof (translation)
-Take `⟨h2, k, hk⟩` from `frobOrder_spec D hg`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 -/
 example (D : D7) {T p : ℕ} (hg : GIdx D.host T p) : frobOrder D p ≠ 1 ∧ frobOrder D p ≠ 3 := by
   obtain ⟨h2, k, hk⟩ := frobOrder_spec D hg

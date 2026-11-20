@@ -15,13 +15,13 @@ def dualMapS {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A
     DualNumber A →ₐ[S] DualNumber A' := Bl.ThirdBlockLemmaB.goal1 ι
 
 /- English proof (translation)
-Simplify using `[dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualMapS_fst {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] (ι : A →ₐ[S] A')
     (x : DualNumber A) : (dualMapS ι x).fst = ι x.fst := by simp [dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]
 
 /- English proof (translation)
-Simplify using `[dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualMapS_snd {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] (ι : A →ₐ[S] A')
     (x : DualNumber A) : (dualMapS ι x).snd = ι x.snd := by simp [dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]
@@ -30,13 +30,13 @@ def scaleS {A : Type} [CommRing A] [Algebra S A] (c : A) : DualNumber A →ₐ[S
   (scaleD c).restrictScalars S
 
 /- English proof (translation)
-Simplify using `[scaleS, scaleD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaleS_fst {A : Type} [CommRing A] [Algebra S A] (c : A) (x : DualNumber A) : (scaleS (S := S) c x).fst = x.fst := by
   simp [scaleS, scaleD]
 
 /- English proof (translation)
-Simplify using `[scaleS, scaleD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaleS_snd {A : Type} [CommRing A] [Algebra S A] (c : A) (x : DualNumber A) :
     (scaleS (S := S) c x).snd = c * x.snd := by
@@ -85,12 +85,12 @@ def ofLin (g : Ω[B⁄S] →ₗ[B] A) : B →ₐ[S] DualNumber A where
   commutes' r := by ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Simplify using `[ofLin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ofLin_fst (g : Ω[B⁄S] →ₗ[B] A) (b : B) : (ofLin e hsm g b).fst = e b := by simp [ofLin]
 
 /- English proof (translation)
-Simplify using `[ofLin]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ofLin_snd (g : Ω[B⁄S] →ₗ[B] A) (b : B) : (ofLin e hsm g b).snd = g (KaehlerDifferential.D S B b) := by
   simp [ofLin]
@@ -101,15 +101,15 @@ variable {A' : Type} [CommRing A'] [Algebra S A'] [Algebra A A'] [IsScalarTower 
   [IsLocalization (Algebra.algebraMapSubmonoid A M) A']
 
 /- English proof (translation)
-Use `⟨fun x => ?_, fun y => ?_, fun {x₁ x₂} hx => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨m, hm, rfl⟩⟩` from `x`. Establish `hu : IsUnit (algebraMap A A' (e (algebraMap S B m)))`. Rewrite using `[AlgHom.commutes]`. Conclude with `IsLocalization.map_units A' (⟨algebraMap S A m, Algebra.mem_algebraMapSubmonoid_of_mem (⟨m, hm⟩ : M)⟩ : Algebra.algebraMapSubmonoid A M)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.isUnit_iff]`. Take `⟨u, hu⟩` from `hu`. Prove the components needed by the constructor for the conclusion. Introduce `a₁ a₂ h`. Simplify using `only [Module.algebraMap_end_apply, hsm'] at h`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hu]`. Conclude with `u.isUnit.mul_left_cancel h`. Introduce `a`. Use `⟨((u⁻¹ : A'ˣ) : A') * a, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.algebraMap_end_apply, hsm', ← hu, ← mul_assoc, Units.mul_inv, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨a, ⟨_, ⟨m, hm, rfl⟩⟩⟩, h⟩` from `IsLocalization.surj (Algebra.algebraMapSubmonoid A M) y`. Use `⟨⟨a, ⟨algebraMap S B m, Algebra.mem_algebraMapSubmonoid_of_mem (⟨m, hm⟩ : M)⟩⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap S B m • y = f a`. Rewrite using `[hsm', hf, AlgHom.commutes, ← h, mul_comm]`. Rewrite `hx` using `[hf, hf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨_, ⟨m, hm, rfl⟩⟩, h⟩` from `IsLocalization.exists_of_eq (M := Algebra.algebraMapSubmonoid A M) hx`. Use `⟨⟨algebraMap S B m, Algebra.mem_algebraMapSubmonoid_of_mem (⟨m, hm⟩ : M)⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap S B m • x₁ = algebraMap S B m • x₂`. Rewrite using `[hsm, hsm, AlgHom.commutes]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_tan [Module B A] [Module B A'] (hsm : ∀ (b : B) (a : A), b • a = e b * a)
     (hsm' : ∀ (b : B) (a : A'), b • a = algebraMap A A' (e b) * a) (f : A →ₗ[B] A') (hf : ∀ a, f a = algebraMap A A' a) :
@@ -151,15 +151,15 @@ variable {S : Type} [CommRing S] {B : Type} [CommRing B] [Algebra S B] [Algebra.
   [IsLocalization (Algebra.algebraMapSubmonoid A M) A']
 
 /- English proof (translation)
-Set `ι` to `IsScalarTower.toAlgHom S A A'`. Set `iA : Module B A` to `Module.compHom A e.toRingHom`. Set `iA' : Module B A'` to `Module.compHom A' (ι.comp e).toRingHom`. Establish `hsm : ∀ (b : B) (a : A), b • a = e b * a` using `fun _ _ => rfl`. Establish `hsm' : ∀ (b : B) (a : A'), b • a = algebraMap A A' (e b) * a` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower S B A` using `⟨fun r b a => by show e (r • b) * a = r • (e b * a)`. Rewrite using `[map_smul, smul_mul_assoc]⟩`. Establish `: IsScalarTower S B A'` using `⟨fun r b a => by show ι (e (r • b)) * a = r • (ι (e b) * a)`. Rewrite using `[map_smul, map_smul, smul_mul_assoc]⟩`. Set `f : A →ₗ[B] A'` to `{ toFun := algebraMap A A' map_add' := map_add _ map_smul' := fun b a => by show algebraMap A A' (e b * a) = algebraMap A A' (e b) * algebraMap A A' a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[map_mul] }`. Use `isLocalizedModule_tan e M hsm hsm' f (fun _ => rfl)` as an intermediate fact. Establish `hsm'' : ∀ (b : B) (a : A'), b • a = (ι.comp e) b * a` using `fun _ _ => rfl`. Set `g'` to `(derOf (ι.comp e) hsm'' h' hh').liftKaehlerDifferential`. Take `⟨g, ⟨_, ⟨m, hm, rfl⟩⟩, hg⟩` from `Module.FinitePresentation.exists_lift_of_isLocalizedModule (Algebra.algebraMapSubmonoid B M) f g'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨m, hm, ofLin e hsm g, fun b => ofLin_fst e hsm g b, ?_⟩` and prove the remaining obligations. Use extensionality with `b`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, dualMapS_fst, scaleS_fst, ofLin_fst, hh']`. Both sides reduce to the same expression. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, dualMapS_snd, scaleS_snd, ofLin_snd]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.congr_fun hg (KaehlerDifferential.D S B b)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply] at this`. Use `this.trans ?_` and prove the remaining obligations. Use `show (algebraMap S B m) • g' (KaehlerDifferential.D S B b) = _`. Rewrite using `[hsm', Derivation.liftKaehlerDifferential_comp_D, derOf_apply, AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_lift (h' : B →ₐ[S] DualNumber A') (hh' : IsTanAt ((IsScalarTower.toAlgHom S A A').comp e) h') :
     ∃ m ∈ M, ∃ h : B →ₐ[S] DualNumber A, IsTanAt e h ∧
@@ -198,17 +198,17 @@ theorem tan_lift (h' : B →ₐ[S] DualNumber A') (hh' : IsTanAt ((IsScalarTower
     rw [hsm', Derivation.liftKaehlerDifferential_comp_D, derOf_apply, AlgHom.commutes, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Set `ι` to `IsScalarTower.toAlgHom S A A'`. Set `iA : Module B A` to `Module.compHom A e.toRingHom`. Set `iA' : Module B A'` to `Module.compHom A' (ι.comp e).toRingHom`. Establish `hsm : ∀ (b : B) (a : A), b • a = e b * a` using `fun _ _ => rfl`. Establish `hsm' : ∀ (b : B) (a : A'), b • a = algebraMap A A' (e b) * a` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower S B A` using `⟨fun r b a => by show e (r • b) * a = r • (e b * a)`. Rewrite using `[map_smul, smul_mul_assoc]⟩`. Set `f : A →ₗ[B] A'` to `{ toFun := algebraMap A A' map_add' := map_add _ map_smul' := fun b a => by show algebraMap A A' (e b * a) = algebraMap A A' (e b) * algebraMap A A' a`. Rewrite using `[map_mul] }`. Use `isLocalizedModule_tan e M hsm hsm' f (fun _ => rfl)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `g₁` to `(derOf e hsm h₁ t₁).liftKaehlerDifferential`. Set `g₂` to `(derOf e hsm h₂ t₂).liftKaehlerDifferential`. Establish `hfg : f.comp g₁ = f.comp g₂`. Apply `Derivation.liftKaehlerDifferential_unique` to reduce the goal to its premises. Use extensionality with `b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `show f (g₁ (KaehlerDifferential.D S B b)) = f (g₂ (KaehlerDifferential.D S B b))`. Simplify using `only [g₁, g₂, Derivation.liftKaehlerDifferential_comp_D, derOf_apply]`. Use `congrArg TrivSqZeroExt.snd (AlgHom.congr_fun heq b)` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, dualMapS_snd] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨_, ⟨m, hm, rfl⟩⟩, hc⟩` from `Module.Finite.exists_smul_of_comp_eq_of_isLocalizedModule (Algebra.algebraMapSubmonoid B M) f g₁ g₂ hfg`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Use extensionality with `b`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, scaleS_fst, scaleS_fst, t₁, t₂]`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, scaleS_snd, scaleS_snd]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `LinearMap.congr_fun hc (KaehlerDifferential.D S B b)` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, g₁, g₂, Derivation.liftKaehlerDifferential_comp_D, derOf_apply] at this`. Express the relevant statement in the definitionally equal form `algebraMap S B m • (h₁ b).snd = algebraMap S B m • (h₂ b).snd at this`. Rewrite `this` using `[hsm, hsm, AlgHom.commutes]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem tan_uniq (h₁ h₂ : B →ₐ[S] DualNumber A) (t₁ : IsTanAt e h₁) (t₂ : IsTanAt e h₂)
     (heq : (dualMapS (IsScalarTower.toAlgHom S A A')).comp h₁ = (dualMapS (IsScalarTower.toAlgHom S A A')).comp h₂) :

@@ -11,7 +11,7 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.GrpPullbackPaste
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Establish `h1 : x = x'` using `Over.OverMorphism.ext hx`. Establish `h2 : y = y'` using `Over.OverMorphism.ext hy`. Rewrite using `[h1, h2]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_left_congr {B : Scheme.{0}} (Gb : Over B) [GrpObj Gb] {X : Scheme.{0}} (a b : X ⟶ B) (hab : a = b)
     (x y : Over.mk a ⟶ Gb) (x' y' : Over.mk b ⟶ Gb) (hx : x.left = x'.left) (hy : y.left = y'.left) :
@@ -25,19 +25,17 @@ end GlobalTheory.GrpPullbackPaste
 
 open GlobalTheory.GrpPullbackPaste in
 /- English proof (translation)
-Introduce `B S T T' Gb _ Gs _ Gt _ Gt' _ fS fT g h φS φT ψ hS hT hψ hcomm`. Establish `hsq : (ψ ≫ φT) ≫ Gb.hom = (Gt'.hom ≫ h) ≫ fS`. Rewrite using `[Category.assoc, hT.1.w, ← Category.assoc, hψ.1.w, Category.assoc, Category.assoc, hcomm]`. Use `⟨hS.1.lift (ψ ≫ φT) (Gt'.hom ≫ h) hsq, ⟨?_, ?_⟩, hS.1.lift_fst _ _ hsq⟩` and prove the remaining obligations. Establish `hpaste` using `hψ.1.paste_horiz hT.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsPullback.of_right ?_ (hS.1.lift_snd _ _ hsq) hS.1` and prove the remaining obligations. Rewrite using `[hS.1.lift_fst _ _ hsq, hcomm]`. Conclude with `hpaste`. Introduce `X x y x₀ y₀ hx hy set φ := hS.1.lift (ψ ≫ φT) (Gt'.hom ≫ h) hsq with hφ`. Establish `hφ1 : φ ≫ φS = ψ ≫ φT` using `hS.1.lift_fst _ _ hsq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ2 : φ ≫ Gs.hom = Gt'.hom ≫ h` using `hS.1.lift_snd _ _ hsq`. Set `mk1 (z : Over.mk (X.hom ≫ h) ⟶ Gs) : Over.mk ((Over.mk (X.hom ≫ h)).hom ≫ fS) ⟶ Gb` to `Over.homMk (z.left ≫ φS) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[hS.1.w, ← Category.assoc, Over.w z]`. Use the proof step `rfl)`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `mk2 (z : X ⟶ Gt') : Over.mk (X.hom ≫ g) ⟶ Gt` to `Over.homMk (z.left ≫ ψ) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[hψ.1.w, ← Category.assoc, Over.w z])`. Set `mk3 (z : Over.mk (X.hom ≫ g) ⟶ Gt) : Over.mk ((Over.mk (X.hom ≫ g)).hom ≫ fT) ⟶ Gb` to `Over.homMk (z.left ≫ φT) (by`. Simplify using `only [Over.mk_hom, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT.1.w, ← Category.assoc, Over.w z]`. Use the proof step `rfl)`. Establish `e1` using `hS.2 (Over.mk (X.hom ≫ h)) x₀ y₀ (mk1 x₀) (mk1 y₀) rfl rfl`. Establish `e2` using `hψ.2 X x y (mk2 x) (mk2 y) rfl rfl`. Establish `e3` using `hT.2 (Over.mk (X.hom ≫ g)) (mk2 x) (mk2 y) (mk3 (mk2 x)) (mk3 (mk2 y)) rfl rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hab : (Over.mk (X.hom ≫ h)).hom ≫ fS = (Over.mk (X.hom ≫ g)).hom ≫ fT`. Simplify using `only [Over.mk_hom, Category.assoc, hcomm]`. Establish `e4` using `mul_left_congr Gb _ _ hab (mk1 x₀) (mk1 y₀) (mk3 (mk2 x)) (mk3 (mk2 y)) (by simp only [mk1, mk2, mk3, Over.homMk_left, hx, Category.assoc, hφ1]) (by simp only [mk1, mk2, mk3, Over.homMk_left, hy, Category.assoc, hφ1])`. Apply `hS.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ1, ← e1, e4, e3, ← Category.assoc, e2]`.
-
-Rewrite using `[Category.assoc, hφ2, ← Category.assoc, Over.w (x * y), Over.w (x₀ * y₀)]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.isGrpPullback_paste : ∀ {B S T T' : Scheme.{0}} (Gb : Over B) [GrpObj Gb] (Gs : Over S) [GrpObj Gs] (Gt : Over T) [GrpObj Gt] (Gt' : Over T') [GrpObj Gt'] (fS : S ⟶ B) (fT : T ⟶ B) (g : T' ⟶ T) (h : T' ⟶ S) (φS : Gs.left ⟶ Gb.left) (φT : Gt.left ⟶ Gb.left) (ψ : Gt'.left ⟶ Gt.left), IsGrpPullback Gs Gb fS φS → IsGrpPullback Gt Gb fT φT → IsGrpPullback Gt' Gt g ψ → h ≫ fS = g ≫ fT → ∃ φ : Gt'.left ⟶ Gs.left, IsGrpPullback Gt' Gs h φ ∧ φ ≫ φS = ψ ≫ φT := by
   intro B S T T' Gb _ Gs _ Gt _ Gt' _ fS fT g h φS φT ψ hS hT hψ hcomm

@@ -16,19 +16,17 @@ attribute [local instance] GlobalTheory.ThK.Dbl.St.ae_ring GlobalTheory.ThK.Dbl.
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨Φ, hΦ, eΦ⟩` from `GlobalTheory.ThK.Dbl.St.exists_section hB.cm B.emb`. Establish `hI : IsCompact (intHat F E : Set (AE F E))` using `isCompact_intHat`. Establish `hfe : finOne F = GlobalTheory.ThK.Dbl.St.eF F` using `rfl`. Use `set T : Set (AE F E) := Φ '' Set.univ.pi (fun _ => Metric.closedBall (0 : ℂ) 1) + (intHat F E : Set (AE F E)) with hTdef`. Establish `hT : IsCompact T` using `((isCompact_univ_pi fun _ => isCompact_closedBall _ _).image hΦ).add hI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hentry : ∀ k ∈ K, ∀ i j, inFrame b k i j ∈ T := by`. Introduce `k hk i j`. Take `⟨h1, h2⟩` from `(hK k).1 hk`. Rewrite using `[eΦ (inFrame b k i j)]`. Use `Set.add_mem_add ⟨_, fun w _ => ?_, rfl⟩ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Establish `hu : (inFrame b k).map (piInf (B.emb w)) ∈ Matrix.unitaryGroup (Fin n ⊕ Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff.2 (by rw [Matrix.star_eq_conjTranspose]; exact h1 w)`. Conclude with `entry_norm_bound_of_unitary hu i j`. Rewrite using `[← hfe]`. Conclude with `h2 k (Set.mem_insert _ _) i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set S : Set (Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) := (fun M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) => incM F b.1 * M * incM F (b⁻¹).1) '' Set.univ.pi (fun _ => Set.univ.pi fun _ => T) with hSdef`. Establish `hS : IsCompact S` using `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hT).image ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)`. Apply the tactic sequence `have hmat : ∀ k ∈ K, mat2 k ∈ S := fun k hk => ⟨inFrame b k, fun i _ j _ => hentry k hk i j, by show incM F b.1 * (incM F (b⁻¹).1 * mat2 k * incM F b.1) * incM F (b⁻¹).1 = mat2 k`. Simplify using `only [Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv, Matrix.one_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ w, Continuous (piInf (B.emb w))` using `fun w => GlobalTheory.Grow.continuous_infEmb_compInf F w (B.emb w)`. Establish `hIc` using `hI.isClosed`. Establish `hfr` using `GlobalTheory.EisBL.DoubledParabolic.continuous_inFrame (σ := σ) (Y := Y) b`. Establish `hKset : (K : Set (G2 σ Y)) = (⋂ w, {k | (inFrame b k).map (piInf (B.emb w)) * ((inFrame b k).map (piInf (B.emb w)))ᴴ = 1}) ∩ ((⋂ i, ⋂ j, {k : G2 σ Y | finOne F • inFrame b k i j ∈ intHat F E}) ∩ (⋂ i, ⋂ j, {k : G2 σ Y | finOne F • inFrame b k⁻¹ i j ∈ intHat F E}))`. Use extensionality with `k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SetLike.mem_coe, hK k, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Set.forall_mem_insert, Set.mem_singleton_iff, forall_eq]`. Establish `hKc : IsClosed (K : Set (G2 σ Y))`. Rewrite using `[hKset]`. Use `(isClosed_iInter fun w => isClosed_eq ?_ continuous_const).inter ((isClosed_iInter fun i => isClosed_iInter fun j => hIc.preimage ?_).inter (isClosed_iInter fun i => isClosed_iInter fun j => hIc.preimage ?_))` and prove the remaining obligations. Conclude with `(hfr.matrix_map (hp w)).matrix_mul (hfr.matrix_map (hp w)).matrix_conjTranspose`.
-
-Conclude with `(hfr.matrix_elem i j).const_smul (finOne F)`. Conclude with `((hfr.comp continuous_inv).matrix_elem i j).const_smul (finOne F)`. Conclude with `GlobalTheory.ThK.Dbl.St.isCompact_of_units (UG (cA σ) (dbl (incM F Y.J))) (GlobalTheory.EisBL.DoubledGroupTopology.isClosed_doubled_group σ Y) K hKc S hS fun k hk => ⟨hmat k hk, hmat k⁻¹ (K.inv_mem hk)⟩`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_stdK' (B : Base F E) (Y : Spc F E n) (hB : B.IsGood σ) (b : GL (Fin n ⊕ Fin n) E)
     (K : Subgroup (G2 σ Y)) (hK : IsStdK (σ := σ) (Y := Y) B b K) : IsCompact (K : Set (G2 σ Y)) := by
@@ -84,14 +82,14 @@ variable {Y : Spc F E n}
 def tBlk (p : G2 σ Y) : Matrix (Fin n) (Fin n) (AE F E) := (mat2 p * dC n (AE F E)).toRows₁
 
 /- English proof (translation)
-Rewrite using `[tBlk, isPar_iff.1 hp]`. Simplify using `[dC, diagCols, Matrix.fromRows_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tBlk_eq_tF_mul_prod_tV {p : G2 σ Y} {t : GL (Fin n) (AE F E)} (hp : IsPar p t) : tBlk p = t.1 := by
   rw [tBlk, isPar_iff.1 hp]
   simp [dC, diagCols, Matrix.fromRows_mul]
 
 /- English proof (translation)
-Establish `hm : Continuous fun g : G2 σ Y => mat2 g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `h1 : Continuous fun g : G2 σ Y => mat2 g * dC n (AE F E)` using `hm.matrix_mul continuous_const`. Conclude with `continuous_pi fun i => continuous_pi fun j => h1.matrix_elem (Sum.inl i) j`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_levi_block : Continuous (tBlk (σ := σ) (Y := Y)) := by
   have hm : Continuous fun g : G2 σ Y => mat2 g := Units.continuous_val.comp continuous_subtype_val
@@ -109,13 +107,13 @@ def uDet (p : par2 σ Y) : (AE F E)ˣ where
     rw [tBlk_eq_tF_mul_prod_tV ht, tBlk_eq_tF_mul_prod_tV ht.inv, ← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one]
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp [uDet, tBlk_eq_tF_mul_prod_tV hp])`.
+A detailed English derivation is pending.
 -/
 theorem uDet_eq {p : par2 σ Y} {t : GL (Fin n) (AE F E)} (hp : IsPar p.1 t) : uDet p = Matrix.GeneralLinearGroup.det t :=
   Units.ext (by simp [uDet, tBlk_eq_tF_mul_prod_tV hp])
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Use `⟨(continuous_levi_block.comp continuous_subtype_val).matrix_det, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_levi_block.comp (continuous_inv.comp continuous_subtype_val)).matrix_det`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_uDet : Continuous (uDet (σ := σ) (Y := Y)) := by
   rw [Units.continuous_iff]

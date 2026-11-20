@@ -14,9 +14,9 @@ namespace GlobalTheory.FiniteStable
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Set `s : E ≃+* E` to `IsFractionRing.ringEquivOfRingEquiv σ`. Establish `hs : ∀ x : 𝓞 E, ((σ x : 𝓞 E) : E) = s x` using `fun x => (IsFractionRing.ringEquivOfRingEquiv_algebraMap σ x).symm`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `φ.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[H.bar_eq, hs, hs, H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Conclude with `IsCMField.complexEmbedding_complexConj E (φ.comp s.toRingHom) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aut_bar (σ : 𝓞 E ≃+* 𝓞 E) (a : 𝓞 E) : σ (H.bar a) = H.bar (σ a) := by
   obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -53,11 +53,11 @@ def twistCpt (σ : 𝓞 E ≃+* 𝓞 E) (hσ : σ H.w0 = H.w0) {U : Scheme.{0}} 
     ⟨C.m.cm, C.m.cart, C.m.base, fun a => C.m.act (σ a), C.m.lin⟩, C.ab_gen⟩
 
 /- English proof (translation)
-Take `⟨-, h1, h2, h3, h4⟩` from `C.arith_and_proOpen hβ hO`. Establish `hj : C.j ≫ C.s = c ≫ spMap β`. Rewrite using `[Cpt.j, Category.assoc, pullback.condition, ← Category.assoc, C.jQ_over]`. Establish `e : spMap β ≫ spMap γ₀ = spMap γ ≫ spMap β`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Conclude with `hγ x`. Establish `: IsLocallyNoetherian C.X`. Take `⟨⟨_, _⟩, -, hfr⟩` from `hβ`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI := β.toAlgebra`. Conclude with `(GlobalTheory.genericPart_dense_proOpen O F C.X U C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense).1`. Take `⟨ρ, ⟨k1, k2⟩, -⟩` from `GlobalTheory.existsUnique_lift_of_densePart C.X U _ C.X C.j C.normal h1 h2 h3 h4 C.s (C.s ≫ spMap γ₀) (r ≫ C.j) inferInstance (by`. Rewrite using `[Category.assoc, hj, reassoc_of% hj, reassoc_of% hr, e])`. Conclude with `⟨ρ, k2, k1⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ext {U : Scheme.{0}} {F O : Type} [Field F] [CommRing O]
     {c : U ⟶ Sp F} {t : SAB H U} {β : O →+* F} (C : Cpt c t β) (hβ : IsDedFrac β) (hO : Algebra.FiniteType ℤ O)

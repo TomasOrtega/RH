@@ -11,11 +11,11 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Unfold `PushforwardProjLineRankTwo.Statement`. Introduce `I hI K _ ι _ K' _ ι' _ κ v P' d G k₀ L L' N hv hP' hP hk₀ hS hL hLL' hN`. Take `⟨J, hJ, -⟩` from `hR4 G.Φ (FibreBlock κ) (fibreIdx ι' κ)`. Establish `hV : IsProjVarF (fibreIdeal κ G) 1` using `hF K ι K' ι' κ v P' d 1 G hv hP' hP`. Establish `h1` using `hPF I hI K ι K' ι' κ v P' d 1 G J L L' ![N] hv hP' hP hJ hL hLL' (fun j => by fin_cases j; exact hN)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hLine G.Φ (FibreBlock κ) (fibreIdx ι' κ) k₀ (fibreIdeal κ G) J hk₀ hV hS hJ (fibreDeg κ N.a)`. Establish `h3 : (fun j : Fin 1 => fibreDeg κ ((![N] : Fin 1 → HermLine ι') j).a) = ![fibreDeg κ N.a]`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h3, h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PushforwardProjLineRankTwo.proof (hPF : PushforwardProjLineFlag.Statement) (hF : FibreDimStatement)
     (hR4 : ∀ (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)],

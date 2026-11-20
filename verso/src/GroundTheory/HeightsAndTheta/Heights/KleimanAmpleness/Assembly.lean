@@ -16,24 +16,24 @@ namespace GroundTheory.Heights₂.Heights.Kleiman
 universe u w
 
 /- English proof (translation)
-The claim follows from `GraphClosed.proof`.
+A detailed English derivation is pending.
 -/
 theorem GraphClosed.full : GraphClosed.Statement.{u, w} := GraphClosed.proof
 /- English proof (translation)
-The claim follows from `VeryAmplePow.proof`.
+A detailed English derivation is pending.
 -/
 theorem VeryAmplePow.full : VeryAmplePow.Statement.{u, w} := VeryAmplePow.proof
 /- English proof (translation)
-The claim follows from `LineTwist.proof`.
+A detailed English derivation is pending.
 -/
 theorem LineTwist.full : LineTwist.Statement.{u, w} := LineTwist.proof
 /- English proof (translation)
-The claim follows from `TwistAlg.proof`.
+A detailed English derivation is pending.
 -/
 theorem TwistAlg.full : TwistAlg.Statement.{u, w} := TwistAlg.proof
 
 /- English proof (translation)
-The claim follows from `SectionExists.proof (SectionCount.assembled hTop hF hT hH hR) VeryAmplePow.full (LeadingCoeffPos.proof_of_cut hR hPos)`.
+A detailed English derivation is pending.
 -/
 theorem SectionExists.assembled (hTop : SectionCount.Top.Statement.{u, w})
     (hF : SectionCount.Drop.Filt.Statement.{u, w}) (hT : SectionCount.Drop.Term.Statement.{u, w})
@@ -43,7 +43,7 @@ theorem SectionExists.assembled (hTop : SectionCount.Top.Statement.{u, w})
     (LeadingCoeffPos.proof_of_cut hR hPos)
 
 /- English proof (translation)
-The claim follows from `VeryAmpleNefPlusAmple.proof Generated.full (SectionExists.assembled hTop hF hT hH hR hPos) (StepThree.assembled hL hG) GraphClosed.full hPt`.
+A detailed English derivation is pending.
 -/
 theorem VeryAmpleNefPlusAmple.assembled (hTop : SectionCount.Top.Statement.{u, w})
     (hF : SectionCount.Drop.Filt.Statement.{u, w}) (hT : SectionCount.Drop.Term.Statement.{u, w})
@@ -55,7 +55,7 @@ theorem VeryAmpleNefPlusAmple.assembled (hTop : SectionCount.Top.Statement.{u, w
     (StepThree.assembled hL hG) GraphClosed.full hPt
 
 /- English proof (translation)
-The claim follows from `NefProductNonneg.proof (VeryAmpleNefPlusAmple.assembled hTop hF hT hH hR hPos hL hG hPt) hR`.
+A detailed English derivation is pending.
 -/
 theorem NefProductNonneg.assembled (hTop : SectionCount.Top.Statement.{u, w})
     (hF : SectionCount.Drop.Filt.Statement.{u, w}) (hT : SectionCount.Drop.Term.Statement.{u, w})
@@ -66,7 +66,7 @@ theorem NefProductNonneg.assembled (hTop : SectionCount.Top.Statement.{u, w})
   NefProductNonneg.proof (VeryAmpleNefPlusAmple.assembled hTop hF hT hH hR hPos hL hG hPt) hR
 
 /- English proof (translation)
-The claim follows from `NefPlusAmple.proof (GeneratedAmple.assembled hA) (VeryAmpleNefPlusAmple.assembled hTop hF hT hH hR hPos hL hG hPt) VeryAmpleTwistGenerated.full`.
+A detailed English derivation is pending.
 -/
 theorem NefPlusAmple.assembled (hA : AmpleAffineGen.Statement.{u, w})
     (hTop : SectionCount.Top.Statement.{u, w})

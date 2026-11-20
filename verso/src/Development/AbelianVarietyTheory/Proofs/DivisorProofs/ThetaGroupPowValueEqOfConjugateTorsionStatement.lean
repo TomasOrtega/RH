@@ -8,7 +8,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum GlobalTheory.ThetaMove
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThetaPowConj.val_powGen_transport` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FThetaGroupPowValueEqOfConjugateTorsion.lean&line=25#L25)
 -/

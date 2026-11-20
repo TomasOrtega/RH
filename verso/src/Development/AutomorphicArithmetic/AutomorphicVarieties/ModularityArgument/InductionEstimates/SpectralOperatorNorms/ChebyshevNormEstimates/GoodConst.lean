@@ -22,13 +22,13 @@ private def Good (J : L V →ₗᵢ[ℂ] H) (P : H →L[ℂ] H) (a : V →L[ℂ]
 variable {J : L V →ₗᵢ[ℂ] H} {P : H →L[ℂ] H} {a : V →L[ℂ] V}
 
 /- English proof (translation)
-The claim follows from `((actLaws J).2.2.1 _ _ (actLaws J).1).2 c`.
+A detailed English derivation is pending.
 -/
 private theorem act_const (c : ℂ) : Act J (c • (1 : H →L[ℂ] H)) fun _ => c • (1 : V →L[ℂ] V) :=
   ((actLaws J).2.2.1 _ _ (actLaws J).1).2 c
 
 /- English proof (translation)
-Use `⟨⟨_, act_const c, fun x _ v _ => by simp⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem good_const (c : ℂ) : Good J P a (c • (1 : H →L[ℂ] H)) fun _ => c := by
   refine ⟨⟨_, act_const c, fun x _ v _ => by simp⟩, ?_⟩
@@ -36,7 +36,7 @@ private theorem good_const (c : ℂ) : Good J P a (c • (1 : H →L[ℂ] H)) fu
   simp
 
 /- English proof (translation)
-Take `⟨⟨s, hs, hz⟩, hc⟩` from `h`. Take `⟨⟨s', hs', hz'⟩, hc'⟩` from `h'`. Use `⟨⟨_, ((actLaws J).2.2.2.1 _ _ _ _ hs hs').1, fun x hx v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.add_apply, hz x hx v hv, hz' x hx v hv, add_smul]`. Rewrite using `[ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_add, hc, hc']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem good_add {Y Y' : H →L[ℂ] H} {c c' : ℝ → ℂ} (h : Good J P a Y c) (h' : Good J P a Y' c') :
     Good J P a (Y + Y') fun x => c x + c' x := by
@@ -47,9 +47,9 @@ private theorem good_add {Y Y' : H →L[ℂ] H} {c c' : ℝ → ℂ} (h : Good J
   · rw [ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_add, hc, hc']
 
 /- English proof (translation)
-Take `⟨⟨s, hs, hz⟩, hc⟩` from `h`. Take `⟨⟨s', hs', hz'⟩, hc'⟩` from `h'`. Use `⟨⟨_, ((actLaws J).2.2.2.1 _ _ _ _ hs hs').2, fun x hx v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, hz x hx v hv, hz' x hx v hv, map_smul, smul_smul, mul_comm]`. Express the relevant statement in the definitionally equal form `(Y ∘L Y') ∘L P = P ∘L (Y ∘L Y')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ContinuousLinearMap.comp_assoc, hc', ← ContinuousLinearMap.comp_assoc, hc, ContinuousLinearMap.comp_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem good_mul {Y Y' : H →L[ℂ] H} {c c' : ℝ → ℂ} (h : Good J P a Y c) (h' : Good J P a Y' c') :
     Good J P a (Y * Y') fun x => c x * c' x := by
@@ -61,9 +61,9 @@ private theorem good_mul {Y Y' : H →L[ℂ] H} {c c' : ℝ → ℂ} (h : Good J
     rw [ContinuousLinearMap.comp_assoc, hc', ← ContinuousLinearMap.comp_assoc, hc, ContinuousLinearMap.comp_assoc]
 
 /- English proof (translation)
-Use `choose s hs using h`. Establish `h1 : s 1 = fun _ => 1` using `actUniq J _ _ _ (hs 1) (by rw [map_one]; exact (actLaws J).1)`. Establish `h0 : s 0 = fun _ => 0` using `actUniq J _ _ _ (hs 0) (by`. Use `act_const (J := J) 0` as an intermediate fact. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this)` using `only [zero_smul]`. Establish `ha : ∀ r r', s (r + r') = fun z => s r z + s r' z` using `fun r r' => actUniq J _ _ _ (hs _) (by rw [map_add]; exact ((actLaws J).2.2.2.1 _ _ _ _ (hs r) (hs r')).1)`. Establish `hm : ∀ r r', s (r * r') = fun z => s r z * s r' z` using `fun r r' => actUniq J _ _ _ (hs _) (by rw [map_mul]; exact ((actLaws J).2.2.2.1 _ _ _ _ (hs r) (hs r')).2)`. Conclude with `⟨fun z => { toFun := fun r => s r z map_one' := congrFun h1 z map_mul' := fun r r' => congrFun (hm r r') z map_zero' := congrFun h0 z map_add' := fun r r' => congrFun (ha r r') z }, hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem symb_hom {R : Type} [Semiring R] (f : R →+* (H →L[ℂ] H)) (h : ∀ r, ∃ s, Act J (f r) s) :
     ∃ e : ℂ → R →+* (V →L[ℂ] V), ∀ r, Act J (f r) fun z => e z r := by
@@ -85,9 +85,9 @@ private theorem symb_hom {R : Type} [Semiring R] (f : R →+* (H →L[ℂ] H)) (
       map_add' := fun r r' => congrFun (ha r r') z }, hs⟩
 
 /- English proof (translation)
-Proceed by induction on `r using MvPolynomial.induction_on with`. Consider the case `C p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => exact hc c`. Consider the case `add p q hp hq => simpa only [map_add] using good_add hp hq`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p t hp => simpa only [map_mul] using good_mul hp (ht t)`. Consider the case `add p q hp hq => simpa only [map_add] using good_add hp hq`. Consider the case `mul_X p t hp => simpa only [map_mul] using good_mul hp (hs t)`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem good_poly {σ τ : Type} (f : MvPolynomial σ (MvPolynomial τ ℂ) →+* (H →L[ℂ] H))
     (g : ℝ → MvPolynomial σ (MvPolynomial τ ℂ) →+* ℂ)
@@ -107,29 +107,27 @@ private theorem good_poly {σ τ : Type} (f : MvPolynomial σ (MvPolynomial τ �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ μ _ θ 𝔢 𝔵 ev hev`. Set `π : PR E (2 + 2) →+* PR E (2 + 2)` to `eval₂Hom C fun y => if y.1 ∈ 𝔢.S then 0 else X y`. Establish `hπC : ∀ p, π (C p) = C p` using `fun p => eval₂Hom_C _ _ _`. Establish `hπX : ∀ y, π (X y) = if y.1 ∈ 𝔢.S then 0 else X y` using `fun y => eval₂Hom_X' _ _ _`. Establish `hπ : ∀ R : PR E (2 + 2), (∀ y ∈ R.vars, y.1 ∉ 𝔢.S) → π R = R` using `fun R hR => hom_congr_vars (f₁ := π) (f₂ := RingHom.id _) (RingHom.ext fun p => hπC p) (fun y hy _ => by rw [hπX, if_neg (hR y hy)]; rfl) rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : Act 𝔵.A'.J 𝔢.toAmp.A (symb 𝔵.βa)`. Rewrite using `[← 𝔢.a_op]`. Conclude with `(actLaws 𝔵.A'.J).2.1 _ _ 𝔵.a_acts.1 𝔵.a_acts.2.1`. Establish `hG : ∀ R, Good 𝔵.A'.J 𝔵.P 𝔵.a₀ ((ev.comp π) R) fun x => ((val x 𝔵.Λ 𝔵.t).comp π) R`. Use `good_poly (ev.comp π) (fun x => (val x 𝔵.Λ 𝔵.t).comp π) (fun c => ?_) (fun t => ?_) (fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, hπC, hev.const, val, eval₂Hom_C, eval_C]`. Conclude with `good_const c`. Simplify using `only [RingHom.comp_apply, hπC, val, eval₂Hom_C, eval_X]`. Consider the cases of `t with`. Consider the case `none`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hev.amp]`. Use `⟨⟨_, hA, fun x _ v hv => Module.End.mem_eigenspace_iff.1 hv⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← 𝔢.a_op]`. Conclude with `(Hecke₃ E μ _ _ _ 𝔵.pair 𝔵.D _ _ 𝔵.A 𝔵.A' 𝔵.P 𝔵.isP).2 _ 𝔵.a_hecke`. Consider the case `some y`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hev.cen]`. Take `⟨⟨β, hk, hc, hz⟩, hP⟩` from `genZ 𝔵 y`. Use `⟨⟨_, (actLaws 𝔵.A'.J).2.1 _ _ hk hc, fun x _ v hv => ?_⟩, hP⟩` and prove the remaining obligations. Establish `hv' : 𝔵.a₀ v = (x : ℂ) • v` using `Module.End.mem_eigenspace_iff.1 hv`. Rewrite using `[hz, ContinuousLinearMap.smul_apply, hv', smul_smul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, hπX]`. Distinguish the cases in `hy : y.1 ∈ 𝔢.S`. Simplify using `only [if_pos hy, map_zero]`. Simplify `good_const (J := 𝔵.A'.J) (P := 𝔵.P) (a := 𝔵.a₀) 0` using `only [zero_smul]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, i⟩` from `y`. Simplify using `only [if_neg hy, val, eval₂Hom_X']`. Rewrite using `[hev.hecke w hy i]`. Take `⟨⟨s, hs, hz⟩, hP⟩` from `genT 𝔵 w hy i`. Use `⟨⟨s, hs, fun x hx v hv => ?_⟩, hP⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv' : 𝔵.a₀ v = (x : ℂ) • v` using `Module.End.mem_eigenspace_iff.1 hv`. Establish `h1 : s 0 (𝔵.a₀ v) = hval 𝔵.t (w, i) • 𝔵.a₀ v` using `DFunLike.congr_fun hz v`. Rewrite `h1` using `[hv', map_smul, smul_comm]`. Conclude with `smul_right_injective _ (Complex.ofReal_ne_zero.2 hx.ne') h1`. Take `⟨e, he⟩` from `symb_hom (J := 𝔵.A'.J) (ev.comp π) fun R => (hG R).1.imp fun _ h => h.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨e, fun R hR => ?_, fun R hR => ?_, fun z c => ?_, fun z => ?_, fun R hR x hx v hv => ?_⟩` and prove the remaining obligations. Use `he R` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, hπ R hR]`. Then use the resulting hypothesis. Use `(hG R).2` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, hπ R hR]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `he (C (C c))` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, hπC, hev.const]`. Conclude with `congrFun (actUniq _ _ _ _ this (act_const c)) z`. Use `he (C (X none))` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, hπC, hev.amp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (actUniq _ _ _ _ this hA) z`. Take `⟨s, hs, hz⟩` from `(hG R).1`. Establish `h1 : e 0 R = s 0` using `congrFun (actUniq _ _ _ _ (he R) hs) 0`. Establish `h2` using `hz x hx v hv`. Simplify using `only [RingHom.comp_apply, hπ R hR] at h2`.
-
-Rewrite using `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.evzEx :
     ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {μ : Measure (normOneGL E (2 + 2))} [μ.IsHaarMeasure] {θ : Twist μ} {𝔢 : Side θ 2} (𝔵 : Fam 𝔢) (ev : PR E (2 + 2) →+* (LL μ →L[ℂ] LL μ)), 𝔢.toAmp.IsEv ev → ∃ evz, 𝔵.IsEvz ev evz := by

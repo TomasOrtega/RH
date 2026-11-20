@@ -17,19 +17,17 @@ variable {ψ : AddChar k Circle} {m N : ℕ} {h : m + 2 ≤ N} {V : Type} [AddCo
   {π : Representation ℂ (GL (Fin N) k) V} {s : ℝ} {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
 /- English proof (translation)
-Establish `: CompactSpace C` using `isCompact_iff_compactSpace.mp hC`. Establish `hfin : Finite (C ⧸ D.addSubgroupOf C)` using `AddSubgroup.quotient_finite_of_isOpen _ (hD.preimage continuous_subtype_val)`. Use `Fintype.ofFinite (C ⧸ D.addSubgroupOf C)` as an intermediate fact. Set `f : (C ⧸ D.addSubgroupOf C) → Fin n → k` to `fun q => ((Quotient.out q : C) : Fin n → k)`. Establish `hf : Function.Injective f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `q q' e`. Establish `e' : Quotient.out q = Quotient.out q'` using `Subtype.ext e`. Rewrite using `[← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q', e']`. Use `⟨Finset.univ.image f, ⟨fun t ht => ?_, fun a ha => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(Quotient.out q).2`. Use `set q : C ⧸ D.addSubgroupOf C := QuotientAddGroup.mk ⟨a, ha⟩ with hqd`. Establish `hq : -(Quotient.out q) + ⟨a, ha⟩ ∈ D.addSubgroupOf C` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' q)`. Use `⟨f q, ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hm` using `AddSubgroup.mem_addSubgroupOf.1 hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : a - f q = -((Quotient.out q : C) : Fin n → k) + a`. Simplify using `only [f]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Simplify using `using hm`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `y ⟨hy, hyd⟩`. Take `⟨q', -, rfl⟩` from `Finset.mem_image.1 hy`. Use `congr 1`. Rewrite using `[← QuotientAddGroup.out_eq' q', hqd]`. Apply `QuotientAddGroup.eq.2` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Establish `e : -((Quotient.out q' : C) : Fin n → k) + a = a - f q'`. Simplify using `only [f]`. Normalize the expressions using the abelian group laws. Simplify `hyd` using `[e]`.
-
-Rewrite using `[Finset.card_image_of_injective _ hf, Finset.card_univ, AddSubgroup.relIndex, AddSubgroup.index_eq_card, Nat.card_eq_fintype_card]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_tr_lemma {n : ℕ} (C D : AddSubgroup (Fin n → k)) (hC : IsCompact (C : Set (Fin n → k)))
     (hD : IsOpen (D : Set (Fin n → k))) :
@@ -71,15 +69,15 @@ private theorem exists_tr_lemma {n : ℕ} (C D : AddSubgroup (Fin n → k)) (hC 
       Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Take `⟨T, hT, hTc⟩` from `exists_tr_lemma (ball (m + 1) r) A hr.1 hA.2`. Establish `hAc` using `ann_isLat_pf hB.cont hB.ne hA`. Establish `hrc` using `ann_isLat_pf hB.cont hB.ne hr`. Take `⟨R, hR, -⟩` from `exists_tr_lemma (ann ψ A) (ann ψ (ball (m + 1) r)) hAc.1 hrc.2`. Establish `hdec` using `avg_decomp_pf (h := h) (π := π) hB.cont hB.ne hB.smooth (xi0 k m) hA hr hAr hR hT v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hterm : ∀ η ∈ R, B (avg ψ h π (xi0 k m + η) (ball (m + 1) r) v) w = B (avg ψ h π (xi0 k m) (ball (m + 1) r) v) w`. Introduce `η hη`. Take `⟨g, hg, hdet, hpre, hxi⟩` from `hDK η (hAD (hR.1 η hη))`. Establish `hc` using `avg_conj (h := h) hB.cont hB.smooth g (xi0 k m) hr v`. Rewrite `hc` using `[hxi, hpre r, hv g hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e` using `congrArg (fun x => B x w) hdec`. Simplify using `only [map_smul, map_sum, LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul] at e`. Rewrite `e` using `[Finset.sum_congr rfl hterm, Finset.sum_const, nsmul_eq_mul]`. Establish `hR0 : (R.card : ℂ) ≠ 0`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ⟨ht, -⟩, -⟩` from `hR.2 0 (ann ψ A).zero_mem`. Conclude with `Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem ht)`. Establish `e2 : B (avg ψ h π (xi0 k m) A v) w = (T.card : ℂ) * B (avg ψ h π (xi0 k m) (ball (m + 1) r) v) w`. Apply `mul_left_cancel₀ hR0` to reduce the goal to its premises. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, hTc, ← mul_assoc, ← Nat.cast_mul, AddSubgroup.relIndex_mul_relIndex _ _ _ h0 hAr]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key' (hB : Lv ψ h π s B) (K : Subgroup (GL (Fin (m + 1)) k)) (D : Set (Fin (m + 1) → k))
     (hDK : ∀ η ∈ D, ∃ g ∈ K, nabs k (Matrix.GeneralLinearGroup.det g) = 1 ∧
@@ -119,7 +117,7 @@ theorem key' (hB : Lv ψ h π s B) (K : Subgroup (GL (Fin (m + 1)) k)) (D : Set 
   rw [e2, hTc, ← mul_assoc, ← Nat.cast_mul, AddSubgroup.relIndex_mul_relIndex _ _ _ h0 hAr]
 
 /- English proof (translation)
-Take `⟨D, hD, hDK⟩` from `good_nbhd_pf K hK`. Take `⟨A₁, hA₁, h01, hA₁D⟩` from `exists_big_pf hB.cont hB.ne D hD hA₀`. Use `⟨A₁, hA₁, h01, fun v w hv hw A hA h1A => ?_⟩` and prove the remaining obligations. Take `⟨r, hAr, hr⟩` from `exists_ball_pf hA`. Rewrite using `[key' hB K D hDK hA₀ hA (h01.trans h1A) (fun x hx => hA₁D (ann_anti h1A hx)) r hAr hr v w hv hw, key' hB K D hDK hA₀ hA₁ h01 hA₁D r (h1A.trans hAr) hr v w hv hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem stab' (hB : Lv ψ h π s B) (K : Subgroup (GL (Fin (m + 1)) k)) (hK : IsOpen (K : Set (GL (Fin (m + 1)) k)))
     {A₀ : AddSubgroup (Fin (m + 1) → k)} (hA₀ : IsLat A₀) :

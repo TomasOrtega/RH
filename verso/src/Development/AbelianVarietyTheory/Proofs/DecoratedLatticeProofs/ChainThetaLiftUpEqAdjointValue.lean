@@ -23,29 +23,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.ChainTw
 
 /- English proof (translation)
-Introduce `D hSoft hSpan hAdj`. Introduce `hgap c tw htw k hk s s' hs hs' p hp ipD ip ipD' ip' hM hM' φ v hv`. Establish `hk' : k + 1 ≤ D.R.m` using `hk`. Use `haveI : FiniteDimensional ℂ (s'.CC c) := (hSoft c tw htw (k + 1) hk' s' hs').1`. Establish `hl : ∀ (u : s.CC c) (x : s'.CC c), (∀ y, ip' y x = ip (p.io y) u) → ∀ (y : s'.CC c), ∀ w ∈ s'.KF, s'.pet (PiLocalization₂.val y w) (p.up φ (PiLocalization₂.val u v)) = ip' y x * ipD (p.It φ w) v`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u x hx y w hw`. Rewrite using `[hx y]`. Conclude with `(hAdj hgap c tw htw k hk s s' hs hs' p hp u y φ v hv w hw).trans (hM.schur _ _ _ _)`. Establish `key : ∀ (u : s.CC c) (x : s'.CC c), (∀ y, ip' y x = ip (p.io y) u) → p.up φ (PiLocalization₂.val u v) ≠ 0 → x ≠ 0 ∧ ∃ w₁, IsAdjVec p ipD ipD' φ v w₁ ∧ p.up φ (PiLocalization₂.val u v) = PiLocalization₂.val x w₁`. Introduce `u x hx hF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hx0, w₁, hw₁, hFx⟩` from `GlobalTheory.ChainOnto.value_of_adjoint_of_mem_span (GA D s'.V) (SmT s'.M) (s'.CC c) (s'.CC c).subtype s'.KF ipD' ip' s'.pet hM'.hermD hM'.posD hM'.herm hM'.pos (fun y w n ys ws => pet_val_sum hM' y w n ys ws) x (p.up φ (PiLocalization₂.val u v)) (fun w => ipD (p.It φ w) v) (hSpa …`. Establish `hFx' : p.up φ (PiLocalization₂.val u v) = PiLocalization₂.val x w₁` using `hFx`. Use `⟨hx0, w₁, ⟨hw₁, fun w hw => ?_⟩, hFx'⟩` and prove the remaining obligations. Establish `h1` using `hl u x hx x w hw`. Rewrite `h1` using `[hFx']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hM'.schur x x w w₁).symm.trans h1`. Establish `hxx : ip' x x ≠ 0` using `fun h => by`. Use `hM'.pos x hx0` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_left_cancel₀ hxx h2`. Use `⟨fun ⟨u, hF⟩ => ?_, fun w₀ hw₀ u x hx => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, -⟩` from `GlobalTheory.hermitian_adjoint_exists_unique (s.CC c) (s'.CC c) ip ip' hM'.herm hM'.pos p.io u`. Take `⟨-, w₁, hw₁, hFx⟩` from `key u x hx hF`. Use `⟨w₁, fun h => hF ?_, hw₁⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hFx, h]`. Simplify using the standard rewrite rules. Distinguish the cases in `hF : p.up φ (PiLocalization₂.val u v) = 0`. Establish `h1` using `hl u x hx x w₀ hw₀.1`. Rewrite `h1` using `[hF, ← hw₀.2 w₀ hw₀.1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : s'.pet (PiLocalization₂.val x w₀) (0 : GA D s'.V → ℂ) = 0`. Simplify using `[PiLocalization₂.pet, Lift.pet]`. Rewrite `h1` using `[h0]`. Rewrite using `[hF]`. Break down `mul_eq_zero.mp h1.symm with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hx0 : x = 0`. Assume the negation of the conclusion as `hne`. Use `hM'.pos x hne` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Substitute `hx0` using the available equality. Apply the tactic sequence `first | rfl | simp [PiLocalization₂.val]`. Establish `hw0 : w₀ = 0`. Assume the negation of the conclusion as `hne`. Use `hM'.posD w₀ hne` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h]`. Simplify using `at this`. Substitute `hw0` using the available equality. Simplify using the standard rewrite rules. Take `⟨-, w₁, hw₁, hFx⟩` from `key u x hx hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : w₁ = w₀`. Assume the negation of the conclusion as `hne`. Establish `hdK : w₁ - w₀ ∈ s'.KF` using `s'.KF.sub_mem hw₁.1 hw₀.1`. Establish `hz : ipD' (w₁ - w₀) (w₁ - w₀) = 0`. Rewrite using `[map_sub, hw₁.2 _ hdK, hw₀.2 _ hdK, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hM'.posD _ (sub_ne_zero.mpr hne)` as an intermediate fact. Rewrite `this` using `[hz]`. Simplify using `at this`. Rewrite using `[hFx, hd]`.
+A detailed English derivation is pending.
 -/
 theorem upVal_of_span_adj : ∀ D : D7, SoftQ D → UpSpanQ D → UpAdjQ D → UpVal D := by
   intro D hSoft hSpan hAdj

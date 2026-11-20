@@ -24,24 +24,24 @@ def toAddCircle : QZ ≃+ AddCircle (1 : ℚ) := AddEquiv.refl _
 def mk (q : ℚ) : QZ := toAddCircle.symm (q : AddCircle (1 : ℚ))
 
 /- English proof (translation)
-Introduce `x` and use `QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℚ)) (toAddCircle x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mk_surjective : Function.Surjective mk := fun x =>
   QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℚ)) (toAddCircle x)
 
 /- English proof (translation)
-Simplify using `[mk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mk_add (p q : ℚ) : mk (p + q) = mk p + mk q := by
   simp [mk]
 
 /- English proof (translation)
-Simplify using `[mk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem mk_zero : mk 0 = 0 := by simp [mk]
 
 /- English proof (translation)
-Simplify using `only [mk, AddEquivClass.map_eq_zero_iff, AddCircle.coe_eq_zero_iff, zsmul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_eq_zero_iff (q : ℚ) : mk q = 0 ↔ ∃ n : ℤ, (n : ℚ) = q := by
   simp only [mk, AddEquivClass.map_eq_zero_iff, AddCircle.coe_eq_zero_iff, zsmul_eq_mul, mul_one]
@@ -60,7 +60,7 @@ def map (f : A →ₜ+ B) : QZDual B →ₜ+ QZDual A :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem map_apply (f : A →ₜ+ B) (χ : QZDual B) (a : A) : map f χ a = χ (f a) :=
   rfl
@@ -88,7 +88,7 @@ def toAddMonoidHomEquiv [DiscreteTopology A] : QZDual A ≃+ (A →+ QZ) where
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem toAddMonoidHomEquiv_apply [DiscreteTopology A] (χ : QZDual A) (a : A) :
     toAddMonoidHomEquiv χ a = χ a :=

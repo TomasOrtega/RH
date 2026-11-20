@@ -10,7 +10,7 @@ namespace GlobalTheory.DefU.Inert
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `k` and use `by have h1 : Valued.v (algebraMap E (w.adicCompletion E) k) = w.valuation E k := w.valuedAdicCompletion_eq_valuation' k have h2 : Valued.v (algebraMap E (w.adicCompletion E) (IsCMField.complexConj E k)) = w.valuation E (IsCMField.complexConj E k) := w.valuedAdicCompletion_eq_valu …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjPl_self (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+* w.adicCompletion E)
     (hs : ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x))
@@ -24,7 +24,7 @@ theorem conjPl_self (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →
   exact h3
 
 /- English proof (translation)
-Break down `(under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) w u).1 hu with h | h` into its components or cases. Conclude with `h`. Conclude with `(existsUnique_conjPl _ w).unique h hw`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_of_under_eq {w u : HeightOneSpectrum (𝓞 E)} (hw : ConjPl (IsCMField.complexConj E).toRingEquiv w w)
     (hu : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))) : u = w := by
@@ -34,21 +34,21 @@ theorem eq_of_under_eq {w u : HeightOneSpectrum (𝓞 E)} (hw : ConjPl (IsCMFiel
   · exact (existsUnique_conjPl _ w).unique h hw
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finGL : Continuous (finGL E n) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map
     (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))))
 
 /- English proof (translation)
-The claim follows from `(Continuous.units_map _ (continuous_id.matrix_map ((RestrictedProduct.continuous_eval w).comp continuous_snd))).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cLoc (w : HeightOneSpectrum (𝓞 E)) : Continuous (cLoc (n := n) w) :=
   (Continuous.units_map _ (continuous_id.matrix_map
     ((RestrictedProduct.continuous_eval w).comp continuous_snd))).comp continuous_subtype_val
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `ad_ext (congrFun (congrFun h1 i) j) (FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Conclude with `congrFun (congrFun (h2 v) i) j`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mat_ext {A B : Matrix (Fin n) (Fin n) (Ad E)} (h1 : A.map (pInf E) = B.map (pInf E))
     (h2 : ∀ v, A.map ((pLoc E v).comp (pFin E)) = B.map ((pLoc E v).comp (pFin E))) : A = B := by
@@ -57,7 +57,7 @@ theorem mat_ext {A B : Matrix (Fin n) (Fin n) (Ad E)} (h1 : A.map (pInf E) = B.m
   exact congrFun (congrFun (h2 v) i) j
 
 /- English proof (translation)
-The claim follows from `Units.ext (congrArg (fun g : GL (Fin n) (v.adicCompletion E) => (g : Matrix (Fin n) (Fin n) (v.adicCompletion E))) (congrArg (GeneralLinearGroup.map (pLoc E v)) (pFin_finGL k)))`.
+A detailed English derivation is pending.
 -/
 theorem map_finGL (v : HeightOneSpectrum (𝓞 E)) (k : GL (Fin n) (Af E)) :
     GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (finGL E n k) = GeneralLinearGroup.map (pLoc E v) k :=
@@ -65,31 +65,31 @@ theorem map_finGL (v : HeightOneSpectrum (𝓞 E)) (k : GL (Fin n) (Af E)) :
     (congrArg (GeneralLinearGroup.map (pLoc E v)) (pFin_finGL k)))
 
 /- English proof (translation)
-The claim follows from `(infEq E).symm_apply_apply _`.
+A detailed English derivation is pending.
 -/
 theorem pInf_conjAd (x : Ad E) : pInf E (conjAd E x) = star (pInf E x) :=
   (infEq E).symm_apply_apply _
 
 /- English proof (translation)
-Establish `hg' : cT s g.val * g.val = 1`. Establish `h : cT s g.val * 1 * g.val = 1` using `hg`. Rewrite `h` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hw` using `conjPl_self w s hs hv`. Express the relevant statement in the definitionally equal form `cT (conjAd E) (finGL E n (locGL E n w g)).val * 1 * (finGL E n (locGL E n w g)).val = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mul_one]`. Generalize the expression as in `hh : finGL E n (locGL E n w g) = h`. Establish `hI : h.val.map (pInf E) = 1`. Rewrite using `[← hh]`. Conclude with `congrArg Units.val (pInf_finGL (locGL E n w g))`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : ∀ v, h.val.map ((pLoc E v).comp (pFin E)) = (GeneralLinearGroup.map (pLoc E v) (locGL E n w g)).val` using `fun v => by`. Rewrite using `[← hh]`. Conclude with `congrArg Units.val (map_finGL v (locGL E n w g))`. Use `mat_ext ?_ fun v => ?_` and prove the remaining obligations. Establish `hc : (cT (conjAd E) h.val).map (pInf E) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1 : pInf E (h.val j i) = (1 : Matrix (Fin n) (Fin n) (Cinf E)) j i` using `congrFun (congrFun hI j) i`. Express the relevant statement in the definitionally equal form `pInf E (conjAd E (h.val j i)) = _`. Rewrite using `[pInf_conjAd, h1]`. Distinguish the cases in `e : i = j`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, e, Ne.symm e]`. Rewrite using `[Matrix.map_mul, hc, hI, Matrix.mul_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Break down `eq_or_ne v w with rfl | hvw` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hL v`. Rewrite `h0` using `[pLoc_locGL]`. Establish `hc : (cT (conjAd E) h.val).map ((pLoc E v).comp (pFin E)) = cT s g.val`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1 : pLoc E v (pFin E (h.val j i)) = g.val j i` using `congrFun (congrFun h0 j) i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `pLoc E v (conjFin (IsCMField.complexConj E).toRingEquiv (pFin E (h.val j i))) = s (g.val j i)`. Rewrite using `[pLoc_conjFin_eq _ v s hs hv, h1]`. Rewrite using `[Matrix.map_mul, hc, h0, hg', Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h0` using `hL v`. Rewrite `h0` using `[pLoc_locGL_of_ne hvw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : conjSrc (IsCMField.complexConj E).toRingEquiv v ≠ w` using `fun e => hvw ((existsUnique_conjPl _ w).unique (e ▸ conjPl_conjSrc _ v) hw)`. Establish `h2` using `hL (conjSrc (IsCMField.complexConj E).toRingEquiv v)`. Rewrite `h2` using `[pLoc_locGL_of_ne hne]`. Establish `hc : (cT (conjAd E) h.val).map ((pLoc E v).comp (pFin E)) = 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : pLoc E (conjSrc (IsCMField.complexConj E).toRingEquiv v) (pFin E (h.val j i)) = (1 : Matrix (Fin n) (Fin n) _) j i` using `congrFun (congrFun h2 j) i`. Express the relevant statement in the definitionally equal form `pLoc E v (conjFin (IsCMField.complexConj E).toRingEquiv (pFin E (h.val j i))) = _`. Rewrite using `[pLoc_conjFin, h1]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, e, Ne.symm e]`. Establish `h0' : h.val.map ((pLoc E v).comp (pFin E)) = 1` using `h0`. Rewrite using `[Matrix.map_mul, hc, h0', Matrix.mul_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finGL_mem (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+* w.adicCompletion E)
     (hs : ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x))
@@ -148,7 +148,7 @@ theorem finGL_mem (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+*
       rw [Matrix.map_mul, hc, h0', Matrix.mul_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Use `Subgroup.mem_inf.2 ⟨pInf_finGL _, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.mem_iInf]`. Introduce `u hu`. Establish `hne : u ≠ w` using `fun e => hu (by rw [e])`. Conclude with `(map_finGL u _).trans (pLoc_locGL_of_ne hne g)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finGL_mem_locU {w : HeightOneSpectrum (𝓞 E)} (hw : ConjPl (IsCMField.complexConj E).toRingEquiv w w)
     (g : GL (Fin n) (w.adicCompletion E)) (hU : finGL E n (locGL E n w g) ∈ UA E n) :
@@ -160,11 +160,11 @@ theorem finGL_mem_locU {w : HeightOneSpectrum (𝓞 E)} (hw : ConjPl (IsCMField.
   exact (map_finGL u _).trans (pLoc_locGL_of_ne hne g)
 
 /- English proof (translation)
-Establish `hx` using `Subgroup.mem_inf.1 x.2`. Establish `hx2` using `hx.2`. Simplify using `only [Subgroup.mem_iInf] at hx2`. Use `Units.ext (mat_ext ?_ fun v => ?_)` and prove the remaining obligations. Establish `h1 : GeneralLinearGroup.map (pInf E) (x : UA E n).1 = 1` using `hx.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `pInf_finGL (locGL E n w (cLoc w (x : UA E n)))`. Conclude with `congrArg Units.val (h2.trans h1.symm)`. Establish `h1 : GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (finGL E n (locGL E n w (cLoc w (x : UA E n)))) = GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (x : UA E n).1`. Use `(map_finGL v _).trans ?_` and prove the remaining obligations. Break down `eq_or_ne v w with rfl | hvw` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pLoc_locGL v _`. Rewrite using `[pLoc_locGL_of_ne hvw]`. Use `hx2 v fun e => hvw (eq_of_under_eq hw e)` as an intermediate fact. Conclude with `(MonoidHom.mem_ker.1 this).symm`. Conclude with `congrArg Units.val h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finGL_cLoc {w : HeightOneSpectrum (𝓞 E)} (hw : ConjPl (IsCMField.complexConj E).toRingEquiv w w)
     (x : locU n w) : finGL E n (locGL E n w (cLoc w (x : UA E n))) = (x : UA E n).1 := by
@@ -186,9 +186,9 @@ theorem finGL_cLoc {w : HeightOneSpectrum (𝓞 E)} (hw : ConjPl (IsCMField.comp
     exact congrArg Units.val h1
 
 /- English proof (translation)
-Introduce `E _ _ _ n w s hs hv`. Establish `hw` using `conjPl_self w s hs hv`. Establish `hf : ∀ x : locU n w, cLoc w (x : UA E n) ∈ UJ s (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))` using `fun x => by`. Express the relevant statement in the definitionally equal form `cT s _ * 1 * _ = 1`. Rewrite using `[Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cT_cLoc w s hs hv _`. Use `⟨{ toFun := fun x => ⟨cLoc w (x : UA E n), hf x⟩ invFun := fun g => ⟨⟨finGL E n (locGL E n w g.1), finGL_mem w s hs hv g.1 g.2⟩, finGL_mem_locU hw g.1 _⟩ left_inv := fun x => Subtype.ext (Subtype.ext (finGL_cLoc hw x)) right_inv := fun g => Subtype.ext ?_ map_mul' := fun x y => S …` and prove the remaining obligations. Conclude with `(map_finGL w _).trans (pLoc_locGL w _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locU_equiv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : HeightOneSpectrum (𝓞 E))
     (s : w.adicCompletion E →+* w.adicCompletion E),

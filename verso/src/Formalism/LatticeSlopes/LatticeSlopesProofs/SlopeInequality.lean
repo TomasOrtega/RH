@@ -12,13 +12,11 @@ namespace Formalism.F
 universe u v
 
 /- English proof (translation)
-Establish `hsub : ∀ x ∈ L, x ∈ Submodule.span ℝ (L : Set E)` using `fun x hx => Submodule.subset_span hx`. Set `L₀ : Submodule ℤ (Submodule.span ℝ (L : Set E))` to `L.comap ((Submodule.span ℝ (L : Set E)).subtype.restrictScalars ℤ)`. Set `e : L₀ ≃ₗ[ℤ] L` to `{ toFun := fun x => ⟨((x : Submodule.span ℝ (L : Set E)) : E), x.2⟩ invFun := fun y => ⟨⟨y, hsub y y.2⟩, y.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Use `haveI : DiscreteTopology L₀ := by`. Use `DiscreteTopology.of_continuous_injective (f := e) ?_ e.injective` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Continuous.subtype_mk (continuous_subtype_val.comp continuous_subtype_val) _`. Establish `himg : (Submodule.span ℝ (L : Set E)).subtype '' (L₀ : Set _) = (L : Set E)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `hy`. Introduce `hx`. Conclude with `⟨⟨x, hsub x hx⟩, hx, rfl⟩`. Use `haveI : IsZLattice ℝ L₀ := by`. Use `⟨?_⟩` and prove the remaining obligations.
-
-Apply `Submodule.map_injective_of_injective (Submodule.span ℝ (L : Set E)).injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, himg, Submodule.map_top, Submodule.range_subtype]`. Rewrite using `[← e.finrank_eq, ZLattice.rank ℝ L₀]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finrank_int_eq_finrank_real_span {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L] :
@@ -51,9 +49,9 @@ private theorem finrank_int_eq_finrank_real_span {E : Type*} [NormedAddCommGroup
   rw [← e.finrank_eq, ZLattice.rank ℝ L₀]
 
 /- English proof (translation)
-Establish `h1 : Submodule.span ℤ (Set.range (fun i => (b i : E))) = L`. Use `congrArg (Submodule.map L.subtype) b.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `this`. Establish `hspan : Submodule.span ℝ (Set.range (fun i => (b i : E))) = Submodule.span ℝ (L : Set E)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.span_span_of_tower ℤ ℝ (Set.range (fun i => (b i : E)))`. Rewrite `h2` using `[h1]`. Conclude with `h2.symm`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, hspan, ← finrank_int_eq_finrank_real_span L, Module.finrank_eq_card_basis b]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_coe_basis'' {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (L : Submodule ℤ E) [hL : DiscreteTopology L]
@@ -72,7 +70,7 @@ theorem linearIndependent_coe_basis'' {E : Type*} [NormedAddCommGroup E]
     Module.finrank_eq_card_basis b]
 
 /- English proof (translation)
-The claim follows from `(Matrix.posDef_gram_of_linearIndependent (linearIndependent_coe_basis'' L b)).det_pos`.
+A detailed English derivation is pending.
 -/
 theorem det_gram_basis_pos {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L]
@@ -81,7 +79,7 @@ theorem det_gram_basis_pos {E : Type*} [NormedAddCommGroup E]
   (Matrix.posDef_gram_of_linearIndependent (linearIndependent_coe_basis'' L b)).det_pos
 
 /- English proof (translation)
-Rewrite using `[covol, dif_pos (inferInstance : DiscreteTopology L)]`. Conclude with `Real.sqrt_pos.mpr (det_gram_basis_pos L _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covol_pos_of_discrete {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L] :
@@ -91,17 +89,15 @@ theorem covol_pos_of_discrete {E : Type*} [NormedAddCommGroup E]
   exact Real.sqrt_pos.mpr (det_gram_basis_pos L _)
 
 /- English proof (translation)
-Establish `hq : ∀ q : ι → ℚ, ‖∑ i, (q i : ℝ) • w i‖ ≤ C * ‖∑ i, (q i : ℝ) • v i‖`. Introduce `q`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hz⟩ : ∃ m : ℕ, 0 < m ∧ ∀ i, ∃ z : ℤ, (q i : ℝ) * m = z := by`. Use `⟨∏ i, (q i).den, Finset.prod_pos (fun i _ => (q i).den_pos), fun i => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩ : (q i).den ∣ ∏ j, (q j).den` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨(q i).num * k, ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Use `push_cast`. Rewrite using `[← mul_assoc]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Rat.mul_den_eq_num (q i)` after adjusting the coercions. Use `choose n hn using hz`. Establish `hm' : (0 : ℝ) < m` using `by exact_mod_cast hm`. Establish `hw : ∑ i, (n i : ℝ) • w i = (m : ℝ) • ∑ i, (q i : ℝ) • w i`. Rewrite using `[Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hn i, smul_smul, mul_comm]`. Establish `hv : ∑ i, (n i : ℝ) • v i = (m : ℝ) • ∑ i, (q i : ℝ) • v i`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hn i, smul_smul, mul_comm]`. Establish `key` using `h n`. Rewrite `key` using `[hw, hv, norm_smul, norm_smul, Real.norm_of_nonneg hm'.le, mul_left_comm]`. Conclude with `le_of_mul_le_mul_left key hm'`. Introduce `c`.
-
-Establish `hd : DenseRange (fun q : ι → ℚ => fun i => (q i : ℝ))` using `DenseRange.piMap (fun _ => Rat.denseRange_cast)`. Use `hd.induction_on (p := fun c : ι → ℝ => ‖∑ i, c i • w i‖ ≤ C * ‖∑ i, c i • v i‖) c ?_ hq` and prove the remaining obligations. Conclude with `isClosed_le (by fun_prop) (by fun_prop)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_sum_smul_le_of_int {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {ι : Type*} [Fintype ι] (v : ι → E) (w : ι → F)
@@ -142,31 +138,27 @@ theorem norm_sum_smul_le_of_int {E F : Type*} [NormedAddCommGroup E] [NormedSpac
   exact isClosed_le (by fun_prop) (by fun_prop)
 
 /- English proof (translation)
-Introduce `E F _ _ _ _ _ _ L M hL hM hne φ C hφ hC`. Set `g : L →ₗ[ℤ] F` to `M.subtype.comp φ`. Establish `ginj : Function.Injective g` using `M.injective_subtype.comp hφ`. Set `N : Submodule ℤ F` to `LinearMap.range g`. Establish `hNM : N ≤ M`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(φ x).2`. Use `haveI : DiscreteTopology L := hL`. Use `haveI : DiscreteTopology M := hM`. Use `haveI : DiscreteTopology N := DiscreteTopology.of_continuous_injective (continuous_inclusion hNM) (Submodule.inclusion_injective hNM)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e : L ≃ₗ[ℤ] N` to `LinearEquiv.ofInjective g ginj`. Take `⟨x, hxL, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hφx : ((φ ⟨x, hxL⟩ : M) : F) ≠ 0`. Introduce `h0`. Apply `hx0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : φ ⟨x, hxL⟩ = φ 0`. Rewrite using `[map_zero]`. Conclude with `Subtype.ext h0`. Conclude with `congrArg Subtype.val (hφ h1)`. Establish `hNne : N ≠ ⊥`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hφx` to reduce the goal to its premises. Establish `hmem : g ⟨x, hxL⟩ ∈ N` using `LinearMap.mem_range_self g _`. Rewrite `hmem` using `[h0, Submodule.mem_bot]`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hCpos : 0 < C`. Establish `h1 : ‖((φ ⟨x, hxL⟩ : M) : F)‖ ≤ C * ‖x‖` using `hC ⟨x, hxL⟩`. Establish `h2 : 0 < ‖((φ ⟨x, hxL⟩ : M) : F)‖` using `norm_pos_iff.mpr hφx`. Establish `h3 : 0 < ‖x‖` using `norm_pos_iff.mpr hx0`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `push_neg at hc`. Use polynomial arithmetic with `[mul_nonpos_of_nonpos_of_nonneg hc h3.le]`. Establish `h1 : slope N ≤ muMax M` using `h F M N hM hNM hNne`. Use `set r := Module.finrank ℤ L with hr_def`. Establish `hrkL : rk L = r` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrkN : rk N = r` using `by show Module.finrank ℤ N = Module.finrank ℤ L`. Conclude with `e.finrank_eq.symm`. Use `haveI : Nontrivial L := Submodule.nontrivial_iff_ne_bot.mpr hne`. Establish `hrpos : 0 < r` using `Module.finrank_pos`. Set `b` to `Module.finBasis ℤ L`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcL : covol L = Real.sqrt (Matrix.gram ℝ (fun i => (b i : E))).det` using `covol_eq_gram E L (Fin r) b`. Establish `hcN : covol N = Real.sqrt (Matrix.gram ℝ (fun i => ((φ (b i) : M) : F))).det` using `covol_eq_gram F N (Fin r) (b.map e)`. Establish `hint : ∀ n : Fin r → ℤ, ‖∑ i, (n i : ℝ) • ((φ (b i) : M) : F)‖ ≤ C * ‖∑ i, (n i : ℝ) • (b i : E)‖`. Introduce `n`. Establish `h2` using `hC (∑ i, n i • b i)`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_zsmul, Submodule.coe_sum, Submodule.coe_smul] at h2`. Simplify `h2` using `only [Int.cast_smul_eq_zsmul]`. Establish `hreal` using `norm_sum_smul_le_of_int (fun i => (b i : E)) (fun i => ((φ (b i) : M) : F)) C hint`. Establish `hdet` using `gram_det_le E F (Fin r) (fun i => (b i : E)) (fun i => ((φ (b i) : M) : F)) C hreal`. Establish `hle : covol N ≤ C ^ r * covol L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hcN, hcL]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Fintype.card_fin, show C ^ (2 * r) = (C ^ r) ^ 2 by ring, Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]`. Establish `hcLpos` using `covol_pos_of_discrete L`. Establish `hcNpos` using `covol_pos_of_discrete N`.
-
-Establish `hlog : Real.log (covol N) ≤ r * Real.log C + Real.log (covol L)`. Establish `h2` using `Real.log_le_log hcNpos hle`. Rewrite `h2` using `[Real.log_mul (by positivity) hcLpos.ne', Real.log_pow]`. Then use the resulting hypothesis. Establish `hr : (0 : ℝ) < (r : ℝ)` using `by exact_mod_cast hrpos`. Establish `hs : slope L ≤ slope N + Real.log C`.
-
-Unfold `slope deg`. Rewrite using `[hrkL, hrkN, div_add' _ _ _ hr.ne', div_le_div_iff_of_pos_right hr]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem slopeInequality_of (h : SlopeLeMuMax.{v}) : SlopeInequality.{u, v} := by
   intro E F _ _ _ _ _ _ L M hL hM hne φ C hφ hC

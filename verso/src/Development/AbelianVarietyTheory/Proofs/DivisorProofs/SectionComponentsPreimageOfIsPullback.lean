@@ -8,25 +8,25 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X S X' S' f f' p q e e' hf hq he he' hee`. Use extensionality with `x'`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Establish `hfq : f (q x') = p (f' x')`. Rewrite using `[← Scheme.Hom.comp_apply, hq.w, Scheme.Hom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfq]`. Establish `hY` using `IsPullback.of_hasPullback f (S.fromSpecResidueField (p (f' x')))`. Establish `hY'` using `IsPullback.of_hasPullback f' (S'.fromSpecResidueField (f' x'))`. Establish `hsq : S'.fromSpecResidueField (f' x') ≫ p = Spec.map (p.residueFieldMap (f' x')) ≫ S.fromSpecResidueField (p (f' x'))` using `(Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField p (f' x')).symm`. Set `eY : Spec (S.residueField (p (f' x'))) ⟶ pullback f (S.fromSpecResidueField (p (f' x')))` to `pullback.lift (S.fromSpecResidueField (p (f' x')) ≫ e) (𝟙 _) (by simp [he])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `eY' : Spec (S'.residueField (f' x')) ⟶ pullback f' (S'.fromSpecResidueField (f' x'))` to `pullback.lift (S'.fromSpecResidueField (f' x') ≫ e') (𝟙 _) (by simp [he'])`. Set `r : pullback f' (S'.fromSpecResidueField (f' x')) ⟶ pullback f (S.fromSpecResidueField (p (f' x')))` to `pullback.lift (pullback.fst _ _ ≫ q) (pullback.snd _ _ ≫ Spec.map (p.residueFieldMap (f' x'))) (by simp only [Category.assoc]; rw [hq.w, ← Category.assoc, pullback.condition, Category.assoc, hsq])`. Establish `hbig` using `hY'.paste_horiz hq`. Establish `hr : IsPullback r (pullback.snd _ _) (pullback.snd _ _) (Spec.map (p.residueFieldMap (f' x')))`. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) hY` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : r ≫ pullback.fst _ _ = pullback.fst _ _ ≫ q` using `pullback.lift_fst _ _ _`. Rewrite using `[h1, ← hsq]`. Conclude with `hbig`. Establish `hsec : eY ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hsec' : eY' ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : eY' ≫ r = Spec.map (p.residueFieldMap (f' x')) ≫ eY`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [r, eY, eY', Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Rewrite using `[hee, reassoc_of% hsq]`. Simplify using `only [r, eY, eY', Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.id_comp, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsm : Smooth (pullback.snd f (S.fromSpecResidueField (p (f' x'))))` using `inferInstance`. Establish `key` using `GlobalTheory.T.preimage_connectedComponent_rationalPoint_fieldExt (S.residueField (p (f' x'))) (S'.residueField (f' x')) _ _ (pullback.snd _ _) (pullback.snd _ _) (Spec.map (p.residueFieldMap (f' x'))) r eY eY' hsm hr hsec hsec' hcomm`. Take `⟨y', hy'1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f') (g := S'.fromSpecResidueField (f' x')) x' (IsLocalRing.closedPoint _) (Scheme.fromSpecResidueField_apply _ _).symm`. Establish `hy₀ : pullback.fst f (S.fromSpecResidueField (p (f' x'))) (eY (IsLocalRing.closedPoint _)) = e (p (f' x'))`. Establish `h1 : eY ≫ pullback.fst _ _ = S.fromSpecResidueField (p (f' x')) ≫ e` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Scheme.Hom.comp_apply eY (pullback.fst _ _) _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg e (Scheme.fromSpecResidueField_apply _ _))`. Establish `hy₀' : pullback.fst f' (S'.fromSpecResidueField (f' x')) (eY' (IsLocalRing.closedPoint _)) = e' (f' x')`. Establish `h1 : eY' ≫ pullback.fst _ _ = S'.fromSpecResidueField (f' x') ≫ e'` using `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Scheme.Hom.comp_apply eY' (pullback.fst _ _) _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg e' (Scheme.fromSpecResidueField_apply _ _))`. Establish `hqx : pullback.fst f (S.fromSpecResidueField (p (f' x'))) (r y') = q x'`. Establish `h1 : r ≫ pullback.fst _ _ = pullback.fst _ _ ≫ q` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Scheme.Hom.comp_apply r (pullback.fst _ _) _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h1, Scheme.Hom.comp_apply, hy'1]`. Establish `A` using `GlobalTheory.T.mem_connectedComponentIn_fibre_iff_of_isPullback X S f e (p (f' x')) _ (pullback.snd _ _) (pullback.fst _ _) _ hY hy₀ (r y')`. Establish `B` using `GlobalTheory.T.mem_connectedComponentIn_fibre_iff_of_isPullback X' S' f' e' (f' x') _ (pullback.snd _ _) (pullback.fst _ _) _ hY' hy₀' y'`. Rewrite `A` using `[hqx]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `B` using `[hy'1]`. Rewrite using `[A, B, ← key]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sectionComponents_preimage_of_isPullback :
     ∀ (X S X' S' : Scheme.{0}) (f : X ⟶ S) (f' : X' ⟶ S') (p : S' ⟶ S) (q : X' ⟶ X)

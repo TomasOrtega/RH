@@ -5,25 +5,23 @@ namespace GlobalTheory
 open Module in
 
 /- English proof (translation)
-Introduce `X _ _ _ k hk`. Use `set n := Module.finrank ℤ X`. Set `b : Basis (Fin n) ℤ X` to `Module.finBasis ℤ X`. Establish `hk0 : (k : ℤ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Establish `hkpos : (0 : ℤ) < k` using `by exact_mod_cast (by omega : 0 < k)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `coord : ∀ (x y : X) (j : Fin n), b.repr (x + k • y) j = b.repr x j + k * b.repr y j`. Introduce `x y j`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ]`. Simplify using the standard rewrite rules. Use `⟨fun x y h => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `b.ext_elem` to reduce the goal to its premises. Introduce `j`. Establish `hj : b.repr (0 + k • x) j = b.repr (0 + k • y) j` using `by rw [h]`. Rewrite `hj` using `[coord, coord]`. Simplify using `only [map_zero, Finsupp.zero_apply, zero_add] at hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `mul_left_cancel₀ hk0 hj`. Set `d : Fin (k ^ n) → Fin n → ℤ` to `fun i j => ((finFunctionFinEquiv.symm i j : ℕ) : ℤ)`. Use `⟨fun i => ∑ j, d i j • b j, fun χ => ?_⟩` and prove the remaining obligations. Establish `rep : ∀ i j, b.repr (∑ j', d i j' • b j') j = d i j`. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[b.repr_sum_self]`. Set `r : Fin n → Fin k` to `fun j => ⟨(b.repr χ j % k).toNat, by`. Establish `h1` using `Int.emod_nonneg (b.repr χ j) hk0`. Establish `h2` using `Int.emod_lt_of_pos (b.repr χ j) hkpos`. Use the proof step `omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨finFunctionFinEquiv r, ⟨∑ j, (b.repr χ j / k) • b j, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `b.ext_elem` to reduce the goal to its premises. Introduce `j`. Rewrite using `[coord, rep, b.repr_sum_self]`. Simplify using `only [d, Equiv.symm_apply_apply, r]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `Int.emod_nonneg (b.repr χ j) hk0`. Rewrite using `[Int.toNat_of_nonneg h1, Int.emod_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `i ⟨m, hm⟩`. Apply `finFunctionFinEquiv.symm.injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[Equiv.symm_apply_apply]`. Use function extensionality and compare the values at `j`. Establish `h : b.repr χ j = b.repr (∑ j', d i j' • b j' + k • m) j` using `by rw [hm]`. Rewrite `h` using `[coord, rep]`. Establish `hd : d i j < k` using `by show ((finFunctionFinEquiv.symm i j : ℕ) : ℤ) < k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(finFunctionFinEquiv.symm i j).isLt` after adjusting the coercions. Establish `hd0 : 0 ≤ d i j` using `Int.natCast_nonneg _`. Establish `hmod : b.repr χ j % k = d i j`. Rewrite using `[h, Int.add_mul_emod_self_left]`. Conclude with `Int.emod_eq_of_lt hd0 hd`.
-
-Apply `Fin.ext` to reduce the goal to its premises. Use `show (finFunctionFinEquiv.symm i j : ℕ) = (b.repr χ j % k).toNat`. Rewrite using `[hmod]`. Conclude with `(Int.toNat_natCast _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_representatives_mod_nsmul : ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (k : ℕ), 1 ≤ k → (∀ a b : X, k • a = k • b → a = b) ∧ ∃ e : Fin (k ^ Module.finrank ℤ X) → X, ∀ χ : X, ∃! i, ∃ m : X, χ = e i + k • m := by
   intro X _ _ _ k hk

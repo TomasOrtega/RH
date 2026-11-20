@@ -24,7 +24,7 @@ def gauss : 𝓢(NumberField.mixedEmbedding.mixedSpace F, ℂ) :=
 def gJ (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) : Ad F → ℂ := schwartzBruhatTensor (gauss F) (cosetIndicator J 0)
 
 /- English proof (translation)
-The claim follows from `schwartzBruhatTensor_mem _ (cosetIndicator_mem_finiteSchwartzBruhat J 0)`.
+A detailed English derivation is pending.
 -/
 theorem gJ_mem (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) : gJ J ∈ schwartzBruhat F :=
   schwartzBruhatTensor_mem _ (cosetIndicator_mem_finiteSchwartzBruhat J 0)
@@ -35,7 +35,7 @@ def invN (N : ℕ) : IdeleGroup F :=
   diagonal F (Units.mk0 ((N : F) + 1)⁻¹ (inv_ne_zero (Nat.cast_add_one_ne_zero N)))
 
 /- English proof (translation)
-Rewrite using `[homeomorphMixedSpace_apply, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pInf_apply_eq (x : Ad F) (v : InfinitePlace F) :
     UpperTheory.V.TR.pInf F x v = (homeomorphMixedSpace F x.1).1 ⟨v, IsTotallyReal.isReal v⟩ := by
@@ -43,7 +43,7 @@ theorem pInf_apply_eq (x : Ad F) (v : InfinitePlace F) :
   rfl
 
 /- English proof (translation)
-Repeatedly rewrite using `[pInf_apply_eq]`. Conclude with `(continuous_apply (⟨v, IsTotallyReal.isReal v⟩ : {w : InfinitePlace F // w.IsReal})).comp (continuous_fst.comp ((homeomorphMixedSpace F).continuous.comp continuous_fst))`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_pInf_apply (v : InfinitePlace F) : Continuous fun x : Ad F => UpperTheory.V.TR.pInf F x v := by
   simp_rw [pInf_apply_eq]
@@ -51,11 +51,11 @@ theorem continuous_pInf_apply (v : InfinitePlace F) : Continuous fun x : Ad F =>
     (continuous_fst.comp ((homeomorphMixedSpace F).continuous.comp continuous_fst))
 
 /- English proof (translation)
-Unfold `arch`. Rewrite using `[norm_prod, Finset.mul_sum, Real.exp_sum]`. Use `Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => ?_` and prove the remaining obligations. Establish `he : -(Real.pi : ℂ) * (((x v : ℝ) : ℂ) ^ 2 + ((y v : ℝ) : ℂ) ^ 2) = ((-Real.pi * (x v ^ 2 + y v ^ 2) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[norm_mul, he, Complex.norm_exp_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖((x v : ℝ) : ℂ) + Complex.I * ((y v : ℝ) : ℂ)‖ ≤ |x v| + |y v|`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs]`. Establish `h2 : |x v| + |y v| ≤ Real.exp (x v ^ 2 + y v ^ 2)`. Use `Real.add_one_le_exp (x v ^ 2 + y v ^ 2)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_abs (x v), sq_abs (y v), sq_nonneg (|x v| - 1), sq_nonneg (|y v| - 1)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem arch_norm_le (x y : UpperTheory.V.TR.Rinf F) :
     ‖arch x y‖ ≤ Real.exp (-(Real.pi - 1) * ∑ v, (x v ^ 2 + y v ^ 2)) := by
@@ -85,7 +85,7 @@ theorem gauss_apply (m : NumberField.mixedEmbedding.mixedSpace F) :
     gauss F m = ((Real.exp (-Real.pi * ‖mixedToEuclidean F m‖ ^ 2) : ℝ) : ℂ) := rfl
 
 /- English proof (translation)
-Rewrite using `[gauss_apply, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, norm_mixedToEuclidean_sq]`. Use `haveI : IsEmpty {w : InfinitePlace F // w.IsComplex} := ⟨fun w => (InfinitePlace.not_isComplex_iff_isReal.2 (IsTotallyReal.isReal w.1)) w.2⟩`. Rewrite using `[Finset.univ_eq_empty (α := {w : InfinitePlace F // w.IsComplex}), Finset.sum_empty, mul_zero, add_zero]`. Use `congr 2`. Conclude with `Fintype.sum_equiv (Equiv.subtypeUnivEquiv fun v => IsTotallyReal.isReal v) _ _ fun w => rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem norm_gauss (m : NumberField.mixedEmbedding.mixedSpace F) :
     ‖gauss F m‖ = Real.exp (-Real.pi * ∑ v : InfinitePlace F, (m.1 ⟨v, IsTotallyReal.isReal v⟩) ^ 2) := by
@@ -97,14 +97,14 @@ theorem norm_gauss (m : NumberField.mixedEmbedding.mixedSpace F) :
   exact Fintype.sum_equiv (Equiv.subtypeUnivEquiv fun v => IsTotallyReal.isReal v) _ _ fun w => rfl
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, invN, coe_diagonal, Units.val_mk0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem invN_smul (N : ℕ) (x : Ad F) : invN F N • x = algebraMap F (Ad F) ((N : F) + 1)⁻¹ * x := by
   rw [Units.smul_def, invN, coe_diagonal, Units.val_mk0]
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul, Pi.mul_apply, pInf_apply_eq (algebraMap F (Ad F) a)]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(homeomorphMixedSpace F (algebraMap F (InfiniteAdeleRing F) a)).1 _ = _`. Rewrite using `[homeomorphMixedSpace_algebraMap, mixedEmbedding_apply_isReal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pInf_algebraMap_mul (a : F) (x : Ad F) (v : InfinitePlace F) :
     UpperTheory.V.TR.pInf F (algebraMap F (Ad F) a * x) v =
@@ -115,11 +115,11 @@ theorem pInf_algebraMap_mul (a : F) (x : Ad F) (v : InfinitePlace F) :
   rw [homeomorphMixedSpace_algebraMap, mixedEmbedding_apply_isReal]
 
 /- English proof (translation)
-Rewrite using `[invN_smul]`. Unfold `gJ schwartzBruhatTensor`. Rewrite using `[norm_mul, norm_gauss, cosetIndicator_apply, sub_zero]`. Establish `hs : ∑ v : InfinitePlace F, ((homeomorphMixedSpace F (algebraMap F (Ad F) ((N : F) + 1)⁻¹ * x).1).1 ⟨v, IsTotallyReal.isReal v⟩) ^ 2 = ∑ v, (((N : ℝ) + 1)⁻¹ * UpperTheory.V.TR.pInf F x v) ^ 2`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pInf_apply_eq, pInf_algebraMap_mul]`. Use `congr 2`. Simplify using `[map_inv₀]`. Rewrite using `[hs]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2 : (algebraMap F (Ad F) ((N : F) + 1)⁻¹ * x).2 = algebraMap F (Af F) ((N : F) + 1)⁻¹ * pFin F x` using `rfl`. Rewrite using `[h2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_gJ_invN (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (N : ℕ) (x : Ad F) :
     ‖gJ J (invN F N • x)‖ = Real.exp (-Real.pi * ∑ v, (((N : ℝ) + 1)⁻¹ * UpperTheory.V.TR.pInf F x v) ^ 2) *
@@ -140,7 +140,7 @@ theorem norm_gJ_invN (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (N : ℕ) (x : Ad F
     split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, map_add, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pInf_vecMul (y : Fin 2 → Ad F) (A : Matrix (Fin 2) (Fin 2) (Ad F)) (i : Fin 2) (v : InfinitePlace F) :
     UpperTheory.V.TR.pInf F ((y ᵥ* A) i) v =
@@ -148,16 +148,16 @@ theorem pInf_vecMul (y : Fin 2 → Ad F) (A : Matrix (Fin 2) (Fin 2) (Ad F)) (i 
   simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, map_add, map_mul]
 
 /- English proof (translation)
-Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, map_add, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pFin_vecMul (y : Fin 2 → Ad F) (A : Matrix (Fin 2) (Fin 2) (Ad F)) (i : Fin 2) :
     pFin F ((y ᵥ* A) i) = pFin F (y 0) * pFin F (A 0 i) + pFin F (y 1) * pFin F (A 1 i) := by
   simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, map_add, map_mul]
 
 /- English proof (translation)
-Establish `hp2 : p ^ 2 ≤ H ^ 2`. Rewrite using `[← sq_abs p]`. Conclude with `pow_le_pow_left₀ (abs_nonneg p) hp 2`. Establish `hq2 : q ^ 2 ≤ H ^ 2`. Rewrite using `[← sq_abs q]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `pow_le_pow_left₀ (abs_nonneg q) hq 2`. Use polynomial arithmetic with `[sq_nonneg (a * p - b * q), mul_le_mul_of_nonneg_left hp2 (sq_nonneg a), mul_le_mul_of_nonneg_left hq2 (sq_nonneg b)]`.
+A detailed English derivation is pending.
 -/
 private theorem sq_lin_le {a b p q H : ℝ} (hp : |p| ≤ H) (hq : |q| ≤ H) :
     (a * p + b * q) ^ 2 ≤ 2 * H ^ 2 * (a ^ 2 + b ^ 2) := by
@@ -171,31 +171,27 @@ private theorem sq_lin_le {a b p q H : ℝ} (hp : |p| ≤ H) (hq : |q| ≤ H) :
 open Classical in
 
 /- English proof (translation)
-Establish `hb : ∀ p : Fin 2 × Fin 2 × InfinitePlace F, ∃ C : ℝ, ∀ A ∈ Kc, ‖UpperTheory.V.TR.pInf F (A p.1 p.2.1) p.2.2‖ ≤ C` using `fun p => hK.exists_bound_of_continuousOn ((continuous_pInf_apply p.2.2).comp (continuous_id.matrix_elem p.1 p.2.1)).continuousOn`. Use `choose C hC using hb`. Use `set H : ℝ := 1 + ∑ p, |C p| with hH`. Establish `hent : ∀ A ∈ Kc, ∀ i j v, |UpperTheory.V.TR.pInf F (A i j) v| ≤ H`. Introduce `A hA i j v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hC (i, j, v) A hA`. Rewrite `h1` using `[Real.norm_eq_abs]`. Establish `h2 : |C (i, j, v)| ≤ ∑ p, |C p|` using `Finset.single_le_sum (f := fun p => |C p|) (fun p _ => abs_nonneg _) (Finset.mem_univ _)`. Combine the linear relations using `[le_abs_self (C (i, j, v))]`. Use `set N : ℕ := ⌈4 * Real.pi * H ^ 2 / (Real.pi - 1)⌉₊ with hNdef`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi1 : 0 < Real.pi - 1` using `by linarith [Real.pi_gt_three]`. Establish `hN : 4 * Real.pi * H ^ 2 ≤ (Real.pi - 1) * ((N : ℝ) + 1) ^ 2`. Establish `h1 : 4 * Real.pi * H ^ 2 / (Real.pi - 1) ≤ (N : ℝ)` using `Nat.le_ceil _`. Establish `h0 : (0 : ℝ) ≤ N` using `N.cast_nonneg`. Establish `h2 : (N : ℝ) + 1 ≤ ((N : ℝ) + 1) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[div_le_iff₀ hpi1]`. Use the polynomial consequences of the given equalities and inequalities. Use `set c : ℝ := ((N : ℝ) + 1)⁻¹ with hcdef`. Establish `hc2 : Real.pi * c ^ 2 * (4 * H ^ 2) ≤ Real.pi - 1`. Establish `hN1 : (0 : ℝ) < (N : ℝ) + 1` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Establish `hc : c ^ 2 * ((N : ℝ) + 1) ^ 2 = 1`. Rewrite using `[hcdef, ← mul_pow, inv_mul_cancel₀ hN1.ne', one_pow]`. Combine the equalities or inequalities in the displayed calculation. Set `f : Fin 2 → (Af F × Af F) × Matrix (Fin 2) (Fin 2) (Ad F) → Af F` to `fun i p => algebraMap F (Af F) ((N : F) + 1)⁻¹ * (p.1.1 * pFin F (p.2 0 i) + p.1.2 * pFin F (p.2 1 i))`. Establish `hfc : ∀ i, Continuous (f i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Establish `hp : ∀ j, Continuous fun p : (Af F × Af F) × Matrix (Fin 2) (Fin 2) (Ad F) => pFin F (p.2 j i)` using `fun j => continuous_snd.comp (continuous_snd.matrix_elem j i)`. Conclude with `continuous_const.mul (((continuous_fst.comp continuous_fst).mul (hp 0)).add ((continuous_snd.comp continuous_fst).mul (hp 1)))`. Use `set S : Set (Af F) := f 0 '' ((L ×ˢ L) ×ˢ Kc) ∪ f 1 '' ((L ×ˢ L) ×ˢ Kc) with hSdef`. Establish `hS : IsCompact S` using `(((hL.prod hL).prod hK).image (hfc 0)).union (((hL.prod hL).prod hK).image (hfc 1))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `exists_subset_idealFiniteAdeles hS`. Use `⟨J, N, fun A hA y => ?_⟩` and prove the remaining obligations. Use `split_ifs with hy`. Use `swap`. Rewrite using `[mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the first alternative.
 
-Check the signs of the components of the expression. Rewrite using `[mul_one]`. Establish `hfin : ∀ i : Fin 2, algebraMap F (Af F) ((N : F) + 1)⁻¹ * pFin F ((y ᵥ* A) i) ∈ idealFiniteAdeles J`. Introduce `i`. Apply `hJ` to reduce the goal to its premises.
+Prove the second alternative. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pFin_vecMul]`. Establish `hmem : f i ((pFin F (y 0), pFin F (y 1)), A) ∈ S` using `by fin_cases i`. Conclude with `Or.inl ⟨_, ⟨⟨hy.1, hy.2⟩, hA⟩, rfl⟩`. Conclude with `Or.inr ⟨_, ⟨⟨hy.1, hy.2⟩, hA⟩, rfl⟩`. Conclude with `hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[norm_gJ_invN, norm_gJ_invN, if_pos (hfin 0), if_pos (hfin 1), mul_one, mul_one, ← Real.exp_add]`. Use `(arch_norm_le _ _).trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Repeatedly rewrite using `[pInf_vecMul]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `set a := UpperTheory.V.TR.pInf F (y 0) v`. Use `set b := UpperTheory.V.TR.pInf F (y 1) v`. Establish `L1 : (a * UpperTheory.V.TR.pInf F (A 0 0) v + b * UpperTheory.V.TR.pInf F (A 1 0) v) ^ 2 + (a * UpperTheory.V.TR.pInf F (A 0 1) v + b * UpperTheory.V.TR.pInf F (A 1 1) v) ^ 2 ≤ 4 * H ^ 2 * (a ^ 2 + b ^ 2)`. Establish `e1` using `sq_lin_le (a := a) (b := b) (hent A hA 0 0 v) (hent A hA 1 0 v)`. Establish `e2` using `sq_lin_le (a := a) (b := b) (hent A hA 0 1 v) (hent A hA 1 1 v)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hab : 0 ≤ a ^ 2 + b ^ 2` using `by positivity`. Establish `h3` using `mul_le_mul_of_nonneg_left L1 (by positivity : (0 : ℝ) ≤ Real.pi * c ^ 2)`. Establish `h4 : Real.pi * c ^ 2 * (4 * H ^ 2 * (a ^ 2 + b ^ 2)) ≤ (Real.pi - 1) * (a ^ 2 + b ^ 2)`. Combine the equalities or inequalities in the displayed calculation.
-
-Use polynomial arithmetic with `[h3, h4]`.
+A detailed English derivation is pending.
 -/
 theorem dom_gen {Kc : Set (Matrix (Fin 2) (Fin 2) (Ad F))} (hK : IsCompact Kc) {L : Set (Af F)} (hL : IsCompact L) :
     ∃ (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (N : ℕ), ∀ A ∈ Kc, ∀ y : Fin 2 → Ad F,

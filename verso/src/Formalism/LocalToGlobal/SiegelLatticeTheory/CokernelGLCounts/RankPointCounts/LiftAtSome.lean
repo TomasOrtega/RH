@@ -13,9 +13,9 @@ namespace Formalism.L2.SG.Pf
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.Pf.RowForm
 
 /- English proof (translation)
-Introduce `R ρ s hrel`. Establish `hG : s.1.toTerm.G ≠ 0`. Introduce `h0`. Apply `s.2.1` to reduce the goal to its premises. Use `show Formalism.L2.SG.TermOp.Gt s.1 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.SG.TermOp.Gt`. Conclude with `if_pos h0`. Conclude with `Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u' s.1.toTerm hG hrel`.
+A detailed English derivation is pending.
 -/
 theorem liftAtSomeC_holds {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
     (κ : Formalism.L2.SG.TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ) : LiftAtSomeC X Y u u' κ := by
@@ -29,14 +29,14 @@ theorem liftAtSomeC_holds {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full
   exact Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u' s.1.toTerm hG hrel
 
 /- English proof (translation)
-Introduce `t w h` and use `Formalism.L2.SG.Pf.FinXP.atPtRelevant_holds D u u' (X.Fu u) (Y.what₂ u) t w h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem atPtRelevantC_holds {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word) :
     AtPtRelevantC X Y u u' := fun t w h =>
   Formalism.L2.SG.Pf.FinXP.atPtRelevant_holds D u u' (X.Fu u) (Y.what₂ u) t w h
 
 /- English proof (translation)
-Introduce `s₁ s₂ hG₁ hG₂ hg₁ hg₂ hrow`. Establish `hlam : s₁.lam = s₂.lam` using `congrArg (fun r => r.1.1) hrow`. Establish `hlam' : s₁.lam' = s₂.lam'` using `congrArg (fun r => r.2.1.1) hrow`. Establish `hio : Formalism.L2.SG.TermOp.iotaOf Y.TR (Y.cs u) (Y.cs u') s₁ = Formalism.L2.SG.TermOp.iotaOf Y.TR (Y.cs u) (Y.cs u') s₂` using `congrArg (fun r => r.2.2) hrow`. Conclude with `(hD D X Y u u' s₁ s₂ hG₁ hG₂ hg₁ hg₂ hlam hlam').mp hio`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftIotaC_of (hD : Formalism.L2.SG.Pf.IotaDictC) {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X)
     (u u' : D.what₂.Word) : Formalism.L2.SG.Pf.RowForm.ScalT.LiftIotaC X Y u u' := by

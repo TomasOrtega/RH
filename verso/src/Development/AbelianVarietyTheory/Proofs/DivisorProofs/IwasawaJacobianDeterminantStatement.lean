@@ -14,7 +14,7 @@ open ReciprocityTheory.L2DbarEstimates (V cHess bas)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagFibre.abs_det_fderiv_flag | exact GlobalTheory.FlagFibre.abs_det_fderiv_flag | (intros; apply GlobalTheory.FlagFibre.abs_det_fderiv_flag <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.iwasawa_jacobian_determinant : ∀ (m : ℕ) (g : Matrix (Fin m) (Fin m) ℂ) (φ : (Low m → ℂ) → Low m → ℂ) (B : (Low m → ℂ) → Matrix (Fin m) (Fin m) ℂ) (x : Low m → ℂ), (∀ᶠ y in 𝓝 x, (B y).BlockTriangular id ∧ g * uni y = uni (φ y) * B y) → IsUnit (B x).det → DifferentiableAt ℂ φ x → (∀ a c, DifferentiableAt ℂ (fun y => B y a c) x) → |((fderiv ℂ φ x).restrictScalars ℝ).det| = ∏ s : Low m, ‖B x s.1.1 s.1.1 / B x s.1.2 s.1.2‖ ^ 2 := by
   first | exact @GlobalTheory.FlagFibre.abs_det_fderiv_flag | exact GlobalTheory.FlagFibre.abs_det_fderiv_flag | (intros; apply GlobalTheory.FlagFibre.abs_det_fderiv_flag <;> assumption)

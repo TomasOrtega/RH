@@ -9,7 +9,7 @@ namespace Formalism.L2.SG.Pf
 open Formalism.L2.SG.Pf.BH Formalism.L2.SG.Pf.WB Formalism.L2.SG.Pf.GE
 
 /- English proof (translation)
-The claim follows from `jacGauge_of_sandwich_gaugeMeasure hS VL.volLim hU hL`.
+A detailed English derivation is pending.
 -/
 theorem jacGauge_of_hearts3 (hS : Sandwich) (hU : ExistsGaugeMeasureForEachRank) (hL : RhsWLim) : JacGauge :=
   jacGauge_of_sandwich_gaugeMeasure hS VL.volLim hU hL

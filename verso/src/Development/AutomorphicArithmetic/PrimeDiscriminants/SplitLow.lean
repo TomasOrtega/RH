@@ -6,7 +6,7 @@ namespace UpperTheory.Host
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Use `Nat.le_floor ?_` and prove the remaining obligations. Establish `hB : (0 : ℝ) ≤ B` using `Nat.cast_nonneg B`. Establish `e : (B : ℝ) = ((B : ℝ) ^ (5 / c)) ^ (c / 5)`. Rewrite using `[← Real.rpow_mul hB, show 5 / c * (c / 5) = 1 by field_simp, Real.rpow_one]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_floor_ez (s : Scale) {c : ℝ} (hc : 0 < c) (hce : c ≤ s.ez) (B : ℕ) (hx : (B : ℝ) ^ (5 / c) ≤ s.x) :
     B ≤ ⌊s.x ^ (s.ez / 5)⌋₊ := by

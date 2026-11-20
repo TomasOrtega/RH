@@ -13,19 +13,17 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 private noncomputable def invL (x : Lie E 2) : Lie E 2 := toL ((Matrix.of x)⁻¹)
 
 /- English proof (translation)
-Simplify using `[invL, Matrix.coe_units_inv]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem invL_val (u : GL (Fin 2) (Cinf E)) : invL (toL u.val) = toL (u⁻¹).val := by
   simp [invL, Matrix.coe_units_inv]
 
 /- English proof (translation)
-Establish `hdet : ContDiffOn ℝ ∞ (fun x : Lie E 2 => Ring.inverse (Matrix.of x).det) (invSet E 2)`. Introduce `x hx`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).1 hx`. Establish `h1 : ContDiffAt ℝ ∞ (Ring.inverse : Cinf E → Cinf E) (Matrix.of x).det` using `hu ▸ contDiffAt_ringInverse ℝ u`. Conclude with `(h1.comp x contDiff_det.contDiffAt).contDiffWithinAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hent : ∀ i j, ContDiff ℝ ∞ fun x : Lie E 2 => x i j` using `fun i j => (contDiff_apply ℝ _ j).comp (contDiff_apply ℝ _ i)`. Establish `hadj : ∀ i j, ContDiff ℝ ∞ fun x : Lie E 2 => (Matrix.adjugate (Matrix.of x)) i j`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.adjugate_fin_two]`. Conclude with `hent 1 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hent 0 1).neg`. Conclude with `(hent 1 0).neg`. Conclude with `hent 0 0`. Use `contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => ?_` and prove the remaining obligations. Use `(hdet.mul (hadj i j).contDiffOn).congr fun x _ => ?_` and prove the remaining obligations.
-
-Simplify using `[invL, Matrix.inv_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem contDiffOn_invL : ContDiffOn ℝ ∞ (invL (E := E)) (invSet E 2) := by
   have hdet : ContDiffOn ℝ ∞ (fun x : Lie E 2 => Ring.inverse (Matrix.of x).det) (invSet E 2) := by
@@ -48,16 +46,16 @@ private theorem contDiffOn_invL : ContDiffOn ℝ ∞ (invL (E := E)) (invSet E 2
   simp [invL, Matrix.inv_def]
 
 /- English proof (translation)
-Rewrite using `[← chart_mul, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem chart_eq (Φ : GL (Fin 2) (A E) → ℂ) (g : GL (Fin 2) (A E)) (u : GL (Fin 2) (Cinf E)) :
     chart Φ g = chart Φ (g * infGL E 2 u) ∘ lmul (toL (u⁻¹).val) := by
   rw [← chart_mul, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]
 
 /- English proof (translation)
-Establish `e1 : lmul (toL (u⁻¹).val) (toL u.val) = oneL E 2` using `u.inv_mul`. Establish `hd : DifferentiableAt ℝ (chart Φ (g * infGL E 2 u)) (lmul (toL (u⁻¹).val) (toL u.val))`. Rewrite using `[e1]`. Conclude with `(h _).1`. Establish `hc` using `hd.comp (toL u.val) (lmul (toL (u⁻¹).val)).differentiableAt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[← chart_eq]`. Use `⟨hc, fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[chart_eq Φ g u, fderiv_comp _ hd (lmul (toL (u⁻¹).val)).differentiableAt, e1, ContinuousLinearMap.fderiv]`. Conclude with `(h _).2 _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fd {Φ : GL (Fin 2) (A E) → ℂ} {T : Lie E 2 →ₗ[ℝ] (GL (Fin 2) (A E) → ℂ)}
     (h : ∀ g, DifferentiableAt ℝ (chart Φ g) (oneL E 2) ∧ ∀ X, fderiv ℝ (chart Φ g) (oneL E 2) X = T X g)
@@ -75,7 +73,7 @@ private theorem fd {Φ : GL (Fin 2) (A E) → ℂ} {T : Lie E 2 →ₗ[ℝ] (GL 
   exact (h _).2 _
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨u, hu⟩` from `id hx`. Take `rfl : x = toL u.val` from `hu.symm`. Conclude with `(fd h g u).1.differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem diffOn {Φ : GL (Fin 2) (A E) → ℂ} {T : Lie E 2 →ₗ[ℝ] (GL (Fin 2) (A E) → ℂ)}
     (h : ∀ g, DifferentiableAt ℝ (chart Φ g) (oneL E 2) ∧ ∀ X, fderiv ℝ (chart Φ g) (oneL E 2) X = T X g)
@@ -86,7 +84,7 @@ private theorem diffOn {Φ : GL (Fin 2) (A E) → ℂ} {T : Lie E 2 →ₗ[ℝ] 
   exact (fd h g u).1.differentiableWithinAt
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr Y]`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [map_smul, Pi.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem T_apply (T : Lie E 2 →ₗ[ℝ] (GL (Fin 2) (A E) → ℂ)) (b : Module.Basis (Fin (Module.finrank ℝ (Lie E 2))) ℝ (Lie E 2))
     (Y : Lie E 2) (h : GL (Fin 2) (A E)) : T Y h = ∑ j, (b.repr Y j) • T (b j) h := by
@@ -95,15 +93,15 @@ private theorem T_apply (T : Lie E 2 →ₗ[ℝ] (GL (Fin 2) (A E) → ℂ)) (b 
   simp only [map_smul, Pi.smul_apply]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `Φ hΦ g`. Take `⟨T, -, h⟩` from `hS Φ hΦ`. Rewrite using `[Nat.cast_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `contDiffOn_zero.2 (diffOn h g).continuousOn`. Consider the case `succ n ih`. Introduce `Φ hΦ g`. Take `⟨T, hT, h⟩` from `hS Φ hΦ`. Rewrite using `[Nat.cast_add, Nat.cast_one]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(contDiffOn_succ_iff_fderiv_of_isOpen isOpen_invSet).2 ⟨diffOn h g, by simp, ?_⟩` and prove the remaining obligations. Use `contDiffOn_clm_apply.2 fun Z => ?_` and prove the remaining obligations. Set `b` to `Module.finBasis ℝ (Lie E 2)`. Establish `hinv : ContDiffOn ℝ n (invL (E` using `E)) (invSet E 2) := contDiffOn_invL.of_le (by exact_mod_cast le_top)`. Establish `key : ContDiffOn ℝ n (fun x => ∑ j, (b.repr (rmul Z (invL x)) j) • chart (T (b j)) g x) (invSet E 2)` using `ContDiffOn.sum fun j _ => ContDiffOn.smul ((LinearMap.toContinuousLinearMap (b.coord j)).contDiff.comp_contDiffOn ((rmul Z).contDiff.comp_contDiffOn hinv)) (ih _ (hT _) g)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `key.congr fun x hx => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `id hx`. Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[(fd h g u).2 Z, T_apply T b, invL_val]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chart_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem smN (S : Submodule ℂ (GL (Fin 2) (A E) → ℂ))
     (hS : ∀ Φ ∈ S, ∃ T : Lie E 2 →ₗ[ℝ] (GL (Fin 2) (A E) → ℂ), (∀ X, T X ∈ S) ∧
@@ -139,7 +137,7 @@ private theorem smN (S : Submodule ℂ (GL (Fin 2) (A E) → ℂ))
 end UpperTheory.ConvolutionTheory.R2.Ff
 
 /- English proof (translation)
-Introduce `E _ _ _ S hc hd Φ hΦ g`. Use `contDiffOn_infty.2 fun n => smN S (fun Φ hΦ => ?_) n Φ hΦ g` and prove the remaining obligations. Take `⟨T, hT, h⟩` from `hd Φ hΦ`. Conclude with `⟨T, hT, smFre E Φ T (fun X g => hc _ (hT X) g) h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.smCrit :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], SmCrit E := by

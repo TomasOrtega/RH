@@ -18,7 +18,7 @@ section Cyclic
 variable {R : Type} [CommRing R] {C : Type} [Group C] [Fintype C] [TopologicalSpace C] [IsTopologicalGroup C] [DiscreteTopology C]
 
 /- English proof (translation)
-Establish `: IsCyclic C` using `⟨g, hg⟩`. Set `: CommGroup C` to `IsCyclic.commGroup`. Conclude with `nonempty_cyclic_odd M g hg i hi`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cyc_odd (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.zpowers g) (i : ℕ) (hi : Odd i) :
     Nonempty (M.H i ≃ₗ[R] (LinearMap.ker M.rho.norm ⧸
@@ -28,7 +28,7 @@ theorem cyc_odd (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.zpowers g) (i
   exact nonempty_cyclic_odd M g hg i hi
 
 /- English proof (translation)
-Establish `: IsCyclic C` using `⟨g, hg⟩`. Set `: CommGroup C` to `IsCyclic.commGroup`. Conclude with `nonempty_cyclic_even M g hg i h0 hi`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem cyc_even (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.zpowers g) (i : ℕ) (h0 : i ≠ 0)
     (hi : Even i) :
@@ -39,15 +39,15 @@ theorem cyc_even (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.zpowers g) (
   exact nonempty_cyclic_even M g hg i h0 hi
 
 /- English proof (translation)
-Simplify using `[Representation.norm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_apply' (M : TRep R C) (u : M.V) : M.rho.norm u = ∑ c, M.rho c u := by
   simp [Representation.norm]
 
 /- English proof (translation)
-Take `⟨e⟩` from `cyc_odd M g hg 1 (by decide)`. Establish `hs` using `e.symm.injective.subsingleton`. Rewrite `hs` using `[Submodule.Quotient.subsingleton_iff]`. Establish `hk : u ∈ LinearMap.ker M.rho.norm` using `by rw [LinearMap.mem_ker, norm_apply', hu]`. Establish `hm : (⟨u, hk⟩ : LinearMap.ker M.rho.norm) ∈ (LinearMap.range (M.rho g - LinearMap.id)).comap (LinearMap.ker M.rho.norm).subtype`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `Submodule.mem_top`. Take `⟨w, hw⟩` from `hm`. Conclude with `⟨w, hw⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sub_eq_of_cyclic_of_h1_subsingleton (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.zpowers g) (h1 : Subsingleton (M.H 1))
     (u : M.V) (hu : ∑ c, M.rho c u = 0) : ∃ w, M.rho g w - w = u := by
@@ -62,11 +62,11 @@ theorem exists_sub_eq_of_cyclic_of_h1_subsingleton (M : TRep R C) (g : C) (hg : 
   exact ⟨w, hw⟩
 
 /- English proof (translation)
-Break down `Nat.even_or_odd i with h | h` into its components or cases. Take `⟨e⟩` from `cyc_even M g hg i hi.ne' h`. Establish `: Subsingleton (M.rho.invariants ⧸ (LinearMap.range M.rho.norm).comap M.rho.invariants.subtype)`. Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`. Introduce and unpack `⟨u, hu⟩ -`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨w, hw⟩` from `hN u hu`. Conclude with `⟨w, by rw [norm_apply', hw]; rfl⟩`. Conclude with `e.injective.subsingleton`. Take `⟨e⟩` from `cyc_odd M g hg i h`. Establish `: Subsingleton (LinearMap.ker M.rho.norm ⧸ (LinearMap.range (M.rho g - LinearMap.id)).comap (LinearMap.ker M.rho.norm).subtype)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`. Introduce and unpack `⟨u, hu⟩ -`. Take `⟨w, hw⟩` from `hD u (by rw [← norm_apply']; exact hu)`. Conclude with `⟨w, hw⟩`. Conclude with `e.injective.subsingleton`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cyc_subsingleton (M : TRep R C) (g : C) (hg : ∀ x, x ∈ Subgroup.zpowers g)
     (hN : ∀ u, (∀ c, M.rho c u = u) → ∃ w, ∑ c, M.rho c w = u)
@@ -97,17 +97,17 @@ variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p
 variable {p K}
 
 /- English proof (translation)
-Establish `hL` using `finiteDimensional_Kn p K hK hn`. Establish `hKL : K ≤ Kn p K n` using `le_sup_left`. Use `discreteTopology_GalLK (K := K) hL` as an intermediate fact. Establish `hg` using `mem_zpowers_frobLK_Kn hK hn`. Establish `h1 : Subsingleton ((layer p K (Kn p K n)).H 1)` using `quotient_multiplicative_h1_subsingleton p K _ _ _ (InflationRestrictionInvariants.invariants_isInvRep _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : ∀ g x, (layerUIncl p K (Kn p K n)).u ((layerU p K (Kn p K n)).rho g x) = (layer p K (Kn p K n)).rho g ((layerUIncl p K (Kn p K n)).u x)` using `(layerUIncl p K (Kn p K n)).equiv`. Take `⟨w, hw⟩` from `exists_sub_eq_of_cyclic_of_h1_subsingleton (layer p K (Kn p K n)) _ hg h1 ((layerUIncl p K (Kn p K n)).u u) (by`. Simplify using `only [← hI]`. Rewrite using `[← map_sum, hu, map_zero])`. Take `⟨π, hπ⟩` from `vOn_surjective p K hK 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hπL : π.1 ∈ multOf p (Kn p K n)` using `hKL π.2`. Set `π' : (layer p K (Kn p K n)).V` to `toLayer p ⟨π.1, hπL⟩`. Establish `hπ' : vLayerMap p K (Kn p K n) π' = 1`. Rewrite using `[vLayerMap_of_mem p hL hKL π' π.2, eLK_Kn p hK hn]`. Use `show ((1 : ℕ) : ℤ) * vOn p K π = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hπ]`. Simplify using the standard rewrite rules. Establish `hfix : ∀ g, (layer p K (Kn p K n)).rho g π' = π'` using `(layer_invariant_iff π').2 π.2`. Establish `he : 0 < eK p (Kn p K n)` using `eK_pos p _ hL`. Establish `h0 : vLayerMap p K (Kn p K n) (w - vLayerMap p K (Kn p K n) w • π') = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_zsmul, hπ']`. Simplify using the standard rewrite rules. Take `⟨w', hw'⟩` from `(vLayerMap_eq_zero_iff p he hKL _).1 h0`. Use `⟨w', layerUIncl_injective p ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hI, hw', map_sub, map_zsmul, hfix, ← hw]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_frob_sub_eq_of_sum_eq_zero_layerU (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n)
     [Fintype (GalLK p K (Kn p K n))] (u : (layerU p K (Kn p K n)).V)
@@ -142,15 +142,15 @@ theorem exists_frob_sub_eq_of_sum_eq_zero_layerU (hK : FiniteDimensional ℚ_[p]
   abel
 
 /- English proof (translation)
-Establish `hL` using `finiteDimensional_Kn p K hK hn`. Establish `hKL : K ≤ Kn p K n` using `le_sup_left`. Establish `hg` using `mem_zpowers_frobLK_Kn hK hn`. Take `⟨hfin, h1⟩` from `herbrand_layerU hK hL hKL _ hg`. Establish `: Subsingleton (Herbrand.H1 (layerU p K (Kn p K n)).rho (frobLK p K (Kn p K n)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective y`. Rewrite using `[Herbrand.mk_eq_mk_iff]`. Establish `hxy : ∑ g, (layerU p K (Kn p K n)).rho g ((x : (layerU p K (Kn p K n)).V) - y) = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Herbrand.nHom_apply, map_sub]`. Rewrite using `[show Herbrand.nHom (layerU p K (Kn p K n)).rho x = 0 from x.2, show Herbrand.nHom (layerU p K (Kn p K n)).rho y = 0 from y.2, sub_zero]`. Take `⟨w, hw⟩` from `exists_frob_sub_eq_of_sum_eq_zero_layerU hK hn _ hxy`. Conclude with `⟨w, hw⟩`. Rewrite `h1` using `[Herbrand.h_eq_card_H0hat]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Nat.card (Herbrand.TateZerothCohomology (layerU p K (Kn p K n)).rho (frobLK p K (Kn p K n))) = 1`. Conclude with `h1` after adjusting the coercions. Use `hfin.1` as an intermediate fact. Establish `h3` using `(Nat.card_eq_one_iff_unique.1 h2).1`. Establish `hk : u ∈ (Herbrand.dHom (layerU p K (Kn p K n)).rho (frobLK p K (Kn p K n))).ker` using `(Herbrand.mem_ker_dHom_iff _ _ hg u).2 hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(Herbrand.mk_eq_zero_iff (N := Herbrand.nHom (layerU p K (Kn p K n)).rho) ⟨u, hk⟩).1 (Subsingleton.elim _ _)`. Take `⟨w, hw⟩` from `h4`. Conclude with `⟨w, by rw [← Herbrand.nHom_apply]; exact hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem layerU_Kn_norm_surjective (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n)
     [Fintype (GalLK p K (Kn p K n))] (u : (layerU p K (Kn p K n)).V)
@@ -184,7 +184,7 @@ theorem layerU_Kn_norm_surjective (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (
   exact ⟨w, by rw [← Herbrand.nHom_apply]; exact hw⟩
 
 /- English proof (translation)
-Establish `hL` using `finiteDimensional_Kn p K hK hn`. Use `discreteTopology_GalLK (K := K) hL` as an intermediate fact. Use `finite_GalLK (K := K) hL` as an intermediate fact. Set `` to `Fintype.ofFinite (GalLK p K (Kn p K n))`. Conclude with `cyc_subsingleton _ _ (mem_zpowers_frobLK_Kn hK hn) (layerU_Kn_norm_surjective hK hn) (exists_frob_sub_eq_of_sum_eq_zero_layerU hK hn) i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem layerU_Kn_H_subsingleton (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) (i : ℕ) (hi : 0 < i) :
     Subsingleton ((layerU p K (Kn p K n)).H i) := by
@@ -196,21 +196,19 @@ theorem layerU_Kn_H_subsingleton (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (h
     (exists_frob_sub_eq_of_sum_eq_zero_layerU hK hn) i hi
 
 /- English proof (translation)
-Take `⟨n, hn, hU⟩` from `exists_Kn_of_isOpen hK (N.comap (QuotientGroup.mk' (subG p K (MaximalUnramifiedExtension p K)))) (hN.preimage continuous_quot_mk) (fun σ hσ => by show (QuotientGroup.mk σ : GalLK p K (MaximalUnramifiedExtension p K)) ∈ N`. Rewrite using `[(QuotientGroup.eq_one_iff σ).2 hσ]`. Conclude with `N.one_mem)`. Establish `hU' : ∀ σ : GK p K, (QuotientGroup.mk σ : GalLK p K (MaximalUnramifiedExtension p K)) ∈ N ↔ σ ∈ subG p K (Kn p K n)` using `fun σ => by rw [← hU]; rfl`. Establish `hL` using `finiteDimensional_Kn p K hK hn`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `discreteTopology_GalLK (K := K) hL` as an intermediate fact. Use `QuotientGroup.discreteTopology hN` as an intermediate fact. Establish `: DiscreteTopology (InflationRestrictionInvariants.invQ (layerU p K (MaximalUnramifiedExtension p K)) N).V` using `(InflationRestrictionInvariants.invariants_isInvRep (layerU p K (MaximalUnramifiedExtension p K)) N).2.1.discreteTopology`. Set `θ : GalLK p K (Kn p K n) →* GalLK p K (MaximalUnramifiedExtension p K) ⧸ N` to `QuotientGroup.lift (subG p K (Kn p K n)) ((QuotientGroup.mk' N).comp (QuotientGroup.mk' (subG p K (MaximalUnramifiedExtension p K)))) (fun σ hσ => (QuotientGroup.eq_one_iff _).2 ((hU' σ).2 hσ))`. Establish `hθ : Bijective θ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_one]`. Introduce `g hg`. Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H σ => exact (QuotientGroup.eq_one_iff σ).2 ((hU' σ).1 ((QuotientGroup.eq_one_iff _).1 hg))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H g`. Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H σ => exact ⟨QuotientGroup.mk σ, rfl⟩`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Introduce a local definition for the expression.
 
-Set `u : (InflationRestrictionInvariants.invQ (layerU p K (MaximalUnramifiedExtension p K)) N).V →+ (layerU p K (Kn p K n)).V` to `{ toFun := fun x => ⟨x.1.1, fun σ => congrArg Subtype.val (x.2 ⟨QuotientGroup.mk σ.1, (hU' σ.1).2 σ.2⟩)⟩ map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hu : Bijective u`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Conclude with `Subtype.ext (Subtype.ext (congrArg (fun z : (layerU p K (Kn p K n)).V => z.1) hxy))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Use `⟨⟨⟨z.1, fun σ => z.2 ⟨σ.1, subG_anti (Kn_le_Kur hn) σ.2⟩⟩, fun g => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `g`. Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H σ => exact Subtype.ext (z.2 ⟨σ, (hU' σ).1 hg⟩)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Introduce a local definition for the expression. Proceed by induction.
 
-Set `R : Pair (InflationRestrictionInvariants.invQ (layerU p K (MaximalUnramifiedExtension p K)) N) (layerU p K (Kn p K n))` to `{ φ := θ u := mkLin (A := InflationRestrictionInvariants.invQ (layerU p K (MaximalUnramifiedExtension p K)) N) (B := layerU p K (Kn p K n)) u φ_cont := continuous_of_discreteTopology u_cont := continuous_of_discreteTopology equiv := fun g m => by`. Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H σ => rfl }`. Establish `hb` using `pair_H_bijective R ⟨continuous_of_discreteTopology, fun _ _ => isOpen_discrete _, hθ⟩ ⟨continuous_of_discreteTopology, fun _ _ => isOpen_discrete _, hu⟩ i`. Use `layerU_Kn_H_subsingleton hK hn i hi` as an intermediate fact.
-
-Conclude with `hb.1.subsingleton`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem layerU_Kur_level (hK : FiniteDimensional ℚ_[p] K) (N : Subgroup (GalLK p K (MaximalUnramifiedExtension p K))) [N.Normal]
     (hN : IsOpen (N : Set (GalLK p K (MaximalUnramifiedExtension p K)))) (i : ℕ) (hi : 0 < i) :
@@ -269,9 +267,9 @@ theorem layerU_Kur_level (hK : FiniteDimensional ℚ_[p] K) (N : Subgroup (GalLK
   exact hb.1.subsingleton
 
 /- English proof (translation)
-Establish `h0 : ∀ x : (layerU p K (MaximalUnramifiedExtension p K)).H i, x = 0` using `fun x => by`. Take `⟨⟨N, hNn, hNo, h⟩, -⟩` from `finiteLevel_holds ℤ (GalLK p K (MaximalUnramifiedExtension p K)) (layerU p K (MaximalUnramifiedExtension p K)) i x`. Take `⟨y, rfl⟩` from `h _ _ (InflationRestrictionInvariants.invariants_isInvRep (layerU p K (MaximalUnramifiedExtension p K)) N)`. Use `layerU_Kur_level hK N hNo i hi` as an intermediate fact. Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun x y => by rw [h0 x, h0 y]⟩`.
+Supply the required witnesses or components.
 -/
 theorem layerU_Kur_H_subsingleton (hK : FiniteDimensional ℚ_[p] K) (i : ℕ) (hi : 0 < i) :
     Subsingleton ((layerU p K (MaximalUnramifiedExtension p K)).H i) := by

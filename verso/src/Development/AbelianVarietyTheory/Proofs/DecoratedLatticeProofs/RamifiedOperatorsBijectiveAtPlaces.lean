@@ -21,7 +21,7 @@ variable {G : Type} [Group G]
 def act (c : G →₀ ℂ) (F : G → ℂ) : G → ℂ := c.sum fun g x => x • rTrans g F
 
 /- English proof (translation)
-Simplify using `[act, Finsupp.sum, Finset.sum_apply, rTrans]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_apply (c : G →₀ ℂ) (F : G → ℂ) (y : G) : act c F y = c.sum fun g x => x * F (y * g) := by
   simp [act, Finsupp.sum, Finset.sum_apply, rTrans]
@@ -29,9 +29,9 @@ theorem act_apply (c : G →₀ ℂ) (F : G → ℂ) (y : G) : act c F y = c.sum
 def cmul (c d : G →₀ ℂ) : G →₀ ℂ := c.sum fun g x => d.sum fun h y => Finsupp.single (g * h) (x * y)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[act_apply, act_apply, cmul, Finsupp.sum_sum_index (fun _ => by simp) (fun _ _ _ => by simp [add_mul])]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_sum_index (fun _ => by simp) (fun _ _ _ => by simp [add_mul]), act_apply, Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun h _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.sum_single_index (by simp)]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_cmul (c d : G →₀ ℂ) (F : G → ℂ) : act (cmul c d) F = act c (act d F) := by
   funext y
@@ -43,20 +43,20 @@ theorem act_cmul (c d : G →₀ ℂ) (F : G → ℂ) : act (cmul c d) F = act c
   simp [mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y; rw [act_apply, Finsupp.sum_single_index (by simp)]; simp`.
+Apply function extensionality and compare values at an arbitrary argument.
 -/
 theorem act_single_one (F : G → ℂ) : act (Finsupp.single 1 1) F = F := by
   funext y; rw [act_apply, Finsupp.sum_single_index (by simp)]; simp
 
 /- English proof (translation)
-Rewrite using `[act, Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by simp [add_smul])]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mapDomain {H : Type} (f : H → G) (c : H →₀ ℂ) (F : G → ℂ) :
     act (Finsupp.mapDomain f c) F = c.sum fun h x => x • rTrans (f h) F := by
   rw [act, Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by simp [add_smul])]
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨a, ha, hga⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum (Finsupp.mem_support_iff.2 hg))`. Take `⟨b, hb, hgb⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hga)`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hgb)]`. Conclude with `S.mul_mem (hc a (Finsupp.mem_support_iff.1 ha)) (hd b (Finsupp.mem_support_iff.1 hb))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmul_mem {S : Subgroup G} {c d : G →₀ ℂ} (hc : ∀ g, c g ≠ 0 → g ∈ S) (hd : ∀ g, d g ≠ 0 → g ∈ S) :
     ∀ g, cmul c d g ≠ 0 → g ∈ S := by
@@ -68,7 +68,7 @@ theorem cmul_mem {S : Subgroup G} {c d : G →₀ ℂ} (hc : ∀ g, c g ≠ 0 �
   exact S.mul_mem (hc a (Finsupp.mem_support_iff.1 ha)) (hd b (Finsupp.mem_support_iff.1 hb))
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨h, -, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support (Finsupp.mem_support_iff.2 hg))`. Conclude with `hf h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mapDomain_mem {H : Type} {S : Subgroup G} (f : H → G) (hf : ∀ h, f h ∈ S) (c : H →₀ ℂ) :
     ∀ g, Finsupp.mapDomain f c g ≠ 0 → g ∈ S := by
@@ -93,9 +93,7 @@ open GlobalTheory.FinPl
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[act_apply, act_apply]`. Conclude with `Finsupp.sum_congr fun h _ => by rw [mul_assoc, hF.1 γ hγ]`. Establish `: act c F = fun y => c.sum fun g x => x * F (y * g)` using `funext (act_apply c F)`. Rewrite using `[this]`.
-
-Conclude with `continuous_finsetSum _ fun h _ => continuous_const.mul (hF.2.comp (continuous_id.mul continuous_const))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isContAut_act {V : HSp D} (c : GA D V →₀ ℂ) {F : GA D V → ℂ} (hF : IsContAut V F) : IsContAut V (act c F) := by
   refine ⟨fun γ hγ g => ?_, ?_⟩
@@ -116,18 +114,18 @@ Both sides reduce to the same expression.
 theorem rep_eq (β : Frame p S n) (g : GL n k) (F : GA D S → ℂ) : β.rep g F = rTrans (β.gl g) F := rfl
 
 /- English proof (translation)
-Rewrite using `[act_mapDomain]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_rep_eq (β : Frame p S n) (c : GL n k →₀ ℂ) (F : GA D S → ℂ) :
     (c.sum fun g a => a • β.rep g F) = act (Finsupp.mapDomain β.gl c) F := by
   rw [act_mapDomain]; rfl
 
 /- English proof (translation)
-Take `⟨φ, ⟨heq, hram, hcont⟩, rfl⟩` from `hφ`. Use `⟨fun Q => actL c (φ Q), ⟨?_, ?_, fun Q => isContAut_act c (hcont Q)⟩, rfl⟩` and prove the remaining obligations. Introduce `g Q show act c (φ (g • Q)) = β.rep g (act c (φ Q))`. Rewrite using `[heq g Q]`. Use function extensionality and compare the values at `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[rep_eq, rep_eq, act_apply]`. Use `show _ = act c (φ Q) (y * β.gl g)`. Rewrite using `[act_apply]`. Use `Finsupp.sum_congr fun x hx => ?_` and prove the remaining obligations. Simplify using `only [rTrans]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hc x (Finsupp.mem_support_iff.1 hx) g, mul_assoc]`. Set `_` to `Fintype.ofFinite 𝓀[k]ˣ`. Use `(mem_Mram _).2 fun Q => ?_` and prove the remaining obligations. Establish `h0` using `(mem_Mram φ).1 hram Q`. Rewrite using `[← map_sum, h0, map_zero]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramAt_act (β : Frame p S n) (P : Pair k n) (c : GA D S →₀ ℂ)
     (hc : ∀ x, c x ≠ 0 → ∀ g, x * β.gl g = β.gl g * x) {φ₀ : GA D S → ℂ} (hφ : RamAt β P φ₀) :
@@ -160,9 +158,9 @@ open GlobalTheory.FinPl
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [congGrp, MonoidHom.mem_ker, MonoidHom.comp_apply] at hg ⊢`. Establish `key : ∀ x : GL (Fin V.rank) (AE D), Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk J) x = Matrix.GeneralLinearGroup.map (Ideal.Quotient.factor h) (Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk I) x)`. Introduce `x`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[Ideal.Quotient.factor_mk]`. Rewrite using `[key, hg, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem congGrp_mono (V : HSp D) {I J : Ideal (AE D)} (h : I ≤ J) : congGrp V I ≤ congGrp V J := by
   intro g hg
@@ -173,7 +171,7 @@ theorem congGrp_mono (V : HSp D) {I J : Ideal (AE D)} (h : I ≤ J) : congGrp V 
   rw [key, hg, map_one]
 
 /- English proof (translation)
-Introduce `a ha`. Simplify using `only [idAt, Ideal.mem_inf, Submodule.mem_iInf] at ha ⊢`. Conclude with `⟨ha.1, fun w => ha.2 ⟨w.1, fun hw => w.2 (h _ hw)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem idAt_mono {P P' : Pl D → Prop} (h : ∀ v, P v → P' v) : idAt D P ≤ idAt D P' := by
   intro a ha
@@ -181,7 +179,7 @@ theorem idAt_mono {P P' : Pl D → Prop} (h : ∀ v, P v → P' v) : idAt D P �
   exact ⟨ha.1, fun w => ha.2 ⟨w.1, fun hw => w.2 (h _ hw)⟩⟩
 
 /- English proof (translation)
-Introduce `a ha`. Simplify using `only [idAt, idOff, Ideal.mem_inf, Submodule.mem_iInf] at ha ⊢`. Introduce `u`. Establish `hu : u.1 = w` using `u.2`. Conclude with `ha.2 ⟨u.1, fun e => h (e.symm.trans hu)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idAt_le_idOff {v w : Pl D} (h : v ≠ w) : idAt D (· = v) ≤ idOff D (· = w) := by
   intro a ha
@@ -191,7 +189,7 @@ theorem idAt_le_idOff {v w : Pl D} (h : v ≠ w) : idAt D (· = v) ≤ idOff D (
   exact ha.2 ⟨u.1, fun e => h (e.symm.trans hu)⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = w)).2 V |>.2.1 x hx y (congGrp_mono V (idAt_le_idOff h) hy)`.
+A detailed English derivation is pending.
 -/
 theorem grpAt_comm (V : HSp D) {v w : Pl D} (h : v ≠ w) {x y : GA D V} (hx : x ∈ grpAt V (· = w))
     (hy : y ∈ grpAt V (· = v)) : x * y = y * x :=
@@ -207,7 +205,7 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   {p : ι → SplitPt D k} {n : Type} [Fintype n] [DecidableEq n] {A S : HSp D}
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.splitPlaceHermitianFrame_properties D k p₀ A n β).1 _).2 ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gl_mem {p₀ : SplitPt D k} (β : Frame p₀ A n) (g : GL n k) : β.gl g ∈ grpAt A (· = p₀.v) :=
   ((GlobalTheory.T.splitPlaceHermitianFrame_properties D k p₀ A n β).1 _).2 ⟨g, rfl⟩
@@ -219,13 +217,11 @@ theorem sAll_cons (a : PairDat p A S n) (q : Unif k) (χ : ι → AddChar 𝓀[k
     a.sAll q χ ε (i :: l) = sOp (a.α i) (a.P i) q (χ i) (ε i) ∘ a.sAll q χ ε l := rfl
 
 /- English proof (translation)
-Take `⟨hbij, -, c, c', hc, hc'⟩` from `GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k (p i) n q χ hχ _ rfl ε A (a.α i) (a.P i)`. Establish `hC` using `mapDomain_mem _ (gl_mem (a.α i)) c`. Establish `hC'` using `mapDomain_mem _ (gl_mem (a.α i)) c'`. Establish `hT : ∀ φ, sOp (a.α i) (a.P i) q (resChar χ hχ q) ε φ = act (Finsupp.mapDomain (a.α i).gl c) φ` using `fun φ => (hc φ).trans (sum_rep_eq _ _ _)`. Establish `other : ∀ C₀ : GA D A →₀ ℂ, (∀ g, C₀ g ≠ 0 → g ∈ grpAt A (· = (p i).v)) → ∀ j, j ≠ i → ∀ φ, RamAt (a.α j) (a.P j) φ → RamAt (a.α j) (a.P j) (act C₀ φ)` using `fun C₀ hC₀ j hj φ hφ => ramAt_act _ _ C₀ (fun x hx g => grpAt_comm A (fun e => hj (hinj e)) (hC₀ x hx) (gl_mem _ g)) hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨_, _, hC, hC', hT, fun φ hφ => ?_⟩, fun φ hφ => ⟨?_, fun j => ?_⟩, hbij.injOn.mono fun φ hφ => hφ.2 i⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hc' φ (hφ.2 i)`. Rewrite `h1`, `h2` using `[sum_rep_eq]`. Use `⟨⟨isContAut_act _ hφ.1, fun j => ?_⟩, h1⟩` and prove the remaining obligations. Break down `eq_or_ne j i with rfl | hj` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h2`. Conclude with `other _ hC' j hj φ (hφ.2 j)`. Rewrite using `[hT]`. Conclude with `isContAut_act _ hφ.1`. Break down `eq_or_ne j i with rfl | hj` into its components or cases.
-
-Conclude with `hbij.mapsTo (hφ.2 j)`. Rewrite using `[hT]`. Conclude with `other _ hC j hj φ (hφ.2 j)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place (a : PairDat p A S n) (hinj : Function.Injective fun i => (p i).v) (q : Unif k)
     (χ : AddChar k Circle) (hχ : HasConductor χ 1) (ε : 𝓀[k]ˣ) (i : ι) :
@@ -261,15 +257,15 @@ namespace GlobalTheory.FinPl
 open AllBij in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p q χ hχ ε n _ _ A S a hinj I`. Establish `hsub : ∀ i, grpAt A (· = (p i).v) ≤ grpAt A fun v => ∃ i, v = (p i).v` using `fun i => congGrp_mono A (idAt_mono fun v hv => ⟨i, hv⟩)`. Establish `key : ∀ I : List ι, Set.MapsTo (a.sAll q (fun i => resChar (χ i) (hχ i) q) ε I) {φ | a.Ram φ} {φ | a.Ram φ} ∧ Set.InjOn (a.sAll q (fun i => resChar (χ i) (hχ i) q) ε I) {φ | a.Ram φ} ∧ ∃ c c' : GA D A →₀ ℂ, (∀ g, c g ≠ 0 → g ∈ grpAt A fun v => ∃ i, v = (p i).v) ∧ (∀ g, c' g ≠ 0 → …`. Introduce `I`. Proceed by induction on `I with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil`. Establish `h1 : ∀ g, (Finsupp.single (1 : GA D A) (1 : ℂ)) g ≠ 0 → g ∈ grpAt A fun v => ∃ i, v = (p i).v` using `fun g h => by rw [(Finsupp.single_apply_ne_zero.1 h).1]; exact Subgroup.one_mem _`. Use `⟨fun φ h => h, fun φ _ ψ _ h => h, _, _, h1, h1, fun φ => (act_single_one φ).symm, fun φ h => ?_⟩` and prove the remaining obligations. Rewrite using `[act_single_one]`. Conclude with `⟨h, rfl⟩`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `cons i l ih`. Take `⟨⟨C, C', hC, hC', hT, hinv⟩, maps, inj⟩` from `place a hinj q (χ i) (hχ i) (ε i) i`. Take `⟨mapsl, injl, c, c', hc, hc', hl, hinvl⟩` from `ih`. Rewrite using `[sAll_cons]`. Use `⟨maps.comp mapsl, inj.comp injl mapsl, cmul C c, cmul c' C', cmul_mem (fun g h => hsub i (hC g h)) hc, cmul_mem hc' (fun g h => hsub i (hC' g h)), fun φ => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[act_cmul, ← hl, Function.comp_apply, hT]`. Rewrite using `[act_cmul]`. Take `⟨h1, h2⟩` from `hinv φ hφ`. Take `⟨h3, h4⟩` from `hinvl _ h1`. Use `⟨h3, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.comp_apply, h4, h2]`. Take `⟨maps, inj, c, c', hc, hc', hT, hinv⟩` from `key I`. Conclude with `⟨⟨maps, inj, fun φ hφ => ⟨act c' φ, (hinv φ hφ).1, (hinv φ hφ).2⟩⟩, c, c', fun g h => h.elim (hc g) (hc' g), hT, hinv⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem allBijective_all : ∀ D : D7, AllBijective D := by
   intro D k _ _ _ _ ι p q χ hχ ε n _ _ A S a hinj I

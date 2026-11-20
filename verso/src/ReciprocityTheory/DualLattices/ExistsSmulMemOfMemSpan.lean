@@ -10,7 +10,7 @@ open Module
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Conclude with `Bl.SecondBlockLemmaM.goal1 (C := C) S hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_mem_span [IsDomain R] [IsFractionRing R C]
     {V : Type} [AddCommGroup V] [Module C V] [Module R V] [IsScalarTower R C V]
@@ -19,9 +19,9 @@ theorem exists_smul_mem_of_mem_span [IsDomain R] [IsFractionRing R C]
   exact Bl.SecondBlockLemmaM.goal1 (C := C) S hx
 
 /- English proof (translation)
-Establish `: Module.Flat R P`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff x).1 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h a x (nonZeroDivisors.ne_zero a.2) ha`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+A detailed English derivation is pending.
 -/
 theorem free_of_finite_torsionFree [IsDomain R] [ValuationRing R] (P : Type) [AddCommGroup P]
     [Module R P] [Module.Finite R P] (h : ∀ (r : R) (x : P), r ≠ 0 → r • x = 0 → x = 0) :
@@ -35,26 +35,26 @@ theorem free_of_finite_torsionFree [IsDomain R] [ValuationRing R] (P : Type) [Ad
   exact Module.free_of_flat_of_isLocalRing
 
 /- English proof (translation)
-Introduce `h0`. Conclude with `hr ((IsFractionRing.injective R C) (by simpa using h0))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem algebraMap_ne_zero [IsFractionRing R C] {r : R} (hr : r ≠ 0) : algebraMap R C r ≠ 0 := by
   intro h0
   exact hr ((IsFractionRing.injective R C) (by simpa using h0))
 
 /- English proof (translation)
-Establish `: Module.Finite R M` using `Module.Finite.iff_fg.2 hfg`. Establish `: Module.Free R M` using `free_of_finite_torsionFree M (by`. Introduce and unpack `r ⟨x, hx⟩ hr h`. Establish `h' : (r • x : X → C) = 0` using `by simpa using congrArg Subtype.val h`. Rewrite `h'` using `[← algebraMap_smul C r x]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Subtype.ext ((smul_eq_zero.1 h').resolve_left (algebraMap_ne_zero hr)))`. Set `b` to `Module.Free.chooseBasis R M`. Set `v : Module.Free.ChooseBasisIndex R M → X → C` to `fun i => (b i : X → C)`. Establish `hR : LinearIndependent R v` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype _)`. Establish `hC : LinearIndependent C v` using `(LinearIndependent.iff_fractionRing R C).1 hR`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspR : Submodule.span R (Set.range v) = M`. Establish `: Set.range v = M.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspC : Submodule.span C (Set.range v) = ⊤`. Rewrite using `[← Submodule.span_span_of_tower R, hspR, hsp]`. Set `bC` to `Basis.mk hC (by rw [hspC])`. Establish `hcard : Fintype.card X = Fintype.card (Module.Free.ChooseBasisIndex R M)`. Rewrite using `[← Module.finrank_fintype_fun_eq_card (R := C), Module.finrank_eq_card_basis bC]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : X ≃ Module.Free.ChooseBasisIndex R M` to `Fintype.equivOfCardEq hcard`. Use `⟨fun x j => v (e j) x, ?_, ?_⟩` and prove the remaining obligations. Establish `hli : LinearIndependent C (fun j x => v (e j) x)` using `hC.comp e e.injective`. Establish `hu` using `(Matrix.linearIndependent_cols_iff_isUnit (A := (fun x j => v (e j) x : Matrix X X C))).1 (by convert hli using 1; rfl)`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: Set.range (fun j x => v (e j) x) = Set.range v`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨e j, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨i, rfl⟩; exact ⟨e.symm i, by simp⟩`. Rewrite using `[this, hspR]`.
+A detailed English derivation is pending.
 -/
 theorem isLat_of_fg [IsDomain R] [ValuationRing R] [IsFractionRing R C]
     {X : Type} [Fintype X] [DecidableEq X] (M : Submodule R (X → C)) (hfg : M.FG)
@@ -91,7 +91,7 @@ theorem isLat_of_fg [IsDomain R] [ValuationRing R] [IsFractionRing R C]
     rw [this, hspR]
 
 /- English proof (translation)
-Take `⟨B, -, rfl⟩` from `h`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fg_of_isLat {X : Type} [Fintype X] [DecidableEq X] {M : Submodule R (X → C)}
     (h : IsLat R M) : M.FG := by
@@ -99,9 +99,9 @@ theorem fg_of_isLat {X : Type} [Fintype X] [DecidableEq X] {M : Submodule R (X �
   exact Submodule.fg_span (Set.finite_range _)
 
 /- English proof (translation)
-Take `⟨B, hB, rfl⟩` from `h`. Rewrite using `[Submodule.span_span_of_tower]`. Establish `hli : LinearIndependent C (fun j x => B x j)`. Use `(Matrix.linearIndependent_cols_iff_isUnit (A := B)).2 ((Matrix.isUnit_iff_isUnit_det B).2 hB)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Both sides reduce to the same expression. Conclude with `hli.span_eq_top_of_card_eq_finrank' (by simp)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem span_top_of_isLat {X : Type} [Fintype X] [DecidableEq X] {M : Submodule R (X → C)}
     (h : IsLat R M) : Submodule.span C (M : Set (X → C)) = ⊤ := by
@@ -113,31 +113,29 @@ theorem span_top_of_isLat {X : Type} [Fintype X] [DecidableEq X] {M : Submodule 
   exact hli.span_eq_top_of_card_eq_finrank' (by simp)
 
 /- English proof (translation)
-Set `P : Submodule R A` to `(W.restrictScalars R).comap A.subtype`. Establish `: Module.Finite R A` using `Module.Finite.iff_fg.2 hfg`. Establish `: Module.Free R (A ⧸ P)` using `free_of_finite_torsionFree _ (by`. Introduce `r x hr hx`. Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective P x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← map_smul, ← LinearMap.mem_ker, Submodule.ker_mkQ]`. Rewrite using `[← LinearMap.mem_ker, Submodule.ker_mkQ]`. Establish `hx' : ((r • a : A) : X → C) ∈ W` using `hx`. Use `show (a : X → C) ∈ W`. Establish `: (a : X → C) = (algebraMap R C r)⁻¹ • ((r • a : A) : X → C)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.coe_smul, ← algebraMap_smul C r (a : X → C), smul_smul, inv_mul_cancel₀ (algebraMap_ne_zero hr), one_smul]`. Rewrite using `[this]`. Conclude with `W.smul_mem _ hx')`. Take `⟨s, hs⟩` from `Module.projective_lifting_property P.mkQ LinearMap.id (Submodule.mkQ_surjective P)`. Establish `hs' : ∀ y, P.mkQ (s y) = y` using `fun y => LinearMap.congr_fun hs y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `S : Submodule R (X → C)` to `LinearMap.range (A.subtype ∘ₗ s)`. Set `W' : Submodule C (X → C)` to `Submodule.span C (S : Set (X → C))`. Establish `hdec : ∀ a : A, ((a - s (P.mkQ a) : A) : X → C) ∈ W`. Introduce `a`. Establish `h2 : P.mkQ (a - s (P.mkQ a)) = 0` using `by rw [map_sub, hs', sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← LinearMap.mem_ker, Submodule.ker_mkQ]`. Conclude with `h2`. Establish `hSW' : ∀ a : A, ((s (P.mkQ a) : A) : X → C) ∈ W'` using `fun a => Submodule.subset_span ⟨P.mkQ a, rfl⟩`. Establish `hcompl : IsCompl W W'`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxW hxW'`. Take `⟨r, hr, hrx⟩` from `exists_smul_mem_of_mem_span S hxW'`. Take `⟨y, hy⟩` from `hrx`. Establish `hyW : ((s y : A) : X → C) ∈ W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((s y : A) : X → C) = r • x` using `hy`. Rewrite using `[this, ← algebraMap_smul C r x]`. Conclude with `W.smul_mem _ hxW`. Establish `hy0 : y = 0`. Rewrite using `[← hs' y, ← LinearMap.mem_ker, Submodule.ker_mkQ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hyW`. Establish `: r • x = 0` using `by rw [← hy]; simp [hy0]`. Rewrite `this` using `[← algebraMap_smul C r x]`. Conclude with `(smul_eq_zero.1 this).resolve_left (algebraMap_ne_zero hr)`. Rewrite using `[codisjoint_iff, eq_top_iff, ← hsp, Submodule.span_le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `f hf`. Establish `: f = ((⟨f, hf⟩ - s (P.mkQ ⟨f, hf⟩) : A) : X → C) + ((s (P.mkQ ⟨f, hf⟩) : A) : X → C)`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (hdec _) (hSW' _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : IsCompl (LinearMap.range W.subtype) W'` using `by rw [Submodule.range_subtype]; exact hcompl`. Set `E : (X → C) →ₗ[C] (X → C)` to `W.subtype ∘ₗ LinearMap.linearProjOfIsCompl W' W.subtype W.injective_subtype hc`. Establish `hEW : ∀ f ∈ W, E f = f`. Introduce `f hf`. Establish `: E (W.subtype ⟨f, hf⟩) = W.subtype ⟨f, hf⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [E, LinearMap.comp_apply, LinearMap.linearProjOfIsCompl_apply_left]`. Simplify using `using this`. Establish `hEW' : ∀ f ∈ W', E f = 0`. Introduce `f hf`. Simplify using `only [E, LinearMap.comp_apply, LinearMap.linearProjOfIsCompl_apply_right' W' W.subtype W.injective_subtype hc f hf, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨E, ?_, hEW⟩` and prove the remaining obligations. Introduce `f hf`. Establish `hsplit : f = ((⟨f, hf⟩ - s (P.mkQ ⟨f, hf⟩) : A) : X → C) + ((s (P.mkQ ⟨f, hf⟩) : A) : X → C)`. Simplify using the standard rewrite rules. Establish `: E f = ((⟨f, hf⟩ - s (P.mkQ ⟨f, hf⟩) : A) : X → C)` using `by conv_lhs => rw [hsplit]`.
-
-Rewrite using `[map_add, hEW _ (hdec _), hEW' _ (hSW' _), add_zero]`. Rewrite using `[this]`. Conclude with `⟨Subtype.prop _, hdec _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_proj [IsDomain R] [ValuationRing R] [IsFractionRing R C]
     {X : Type} [Fintype X] (A : Submodule R (X → C)) (hfg : A.FG)

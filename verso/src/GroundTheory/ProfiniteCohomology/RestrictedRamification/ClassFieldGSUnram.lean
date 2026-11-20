@@ -19,7 +19,7 @@ variable {K : Type*} [Field K] [NumberField K] (S : Set (HeightOneSpectrum (𝓞
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[map_prod]`. Use `split_ifs with hv`. Rewrite using `[Finset.prod_eq_single v (fun u _ hu ↦ finiteProj_finiteEmbedding_of_ne (Ne.symm hu) _) (fun h ↦ absurd hv h), finiteProj_finiteEmbedding]`. Conclude with `Finset.prod_eq_one fun u hu ↦ finiteProj_finiteEmbedding_of_ne (by rintro rfl; exact hv hu) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteProj_prod_finiteEmbedding (T : Finset (HeightOneSpectrum (𝓞 K)))
     (b : ∀ u : HeightOneSpectrum (𝓞 K), (u.adicCompletion K)ˣ) (v : HeightOneSpectrum (𝓞 K)) :
@@ -31,7 +31,7 @@ theorem finiteProj_prod_finiteEmbedding (T : Finset (HeightOneSpectrum (𝓞 K))
   · exact Finset.prod_eq_one fun u hu ↦ finiteProj_finiteEmbedding_of_ne (by rintro rfl; exact hv hu) _
 
 /- English proof (translation)
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one fun u _ ↦ infiniteProj_finiteEmbedding w u _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infiniteProj_prod_finiteEmbedding (T : Finset (HeightOneSpectrum (𝓞 K)))
     (b : ∀ u : HeightOneSpectrum (𝓞 K), (u.adicCompletion K)ˣ) (w : InfinitePlace K) :
@@ -45,7 +45,7 @@ variable (L : Type*) [Field L] [NumberField L] [Algebra K L] [IsGalois K L]
   [IsMulCommutative (L ≃ₐ[K] L)]
 
 /- English proof (translation)
-Take `⟨w⟩` from `nonempty_placesOver L v`. Rewrite using `[Modulus.exponent_conductor, localConductorExponent_eq_zero_iff L v w.1]`. Conclude with `h w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exponent_conductor_eq_zero {v : HeightOneSpectrum (𝓞 K)}
     (h : ∀ w : PlacesOver L v, w.1.asIdeal.ramificationIdx (𝓞 K) = 1) :
@@ -55,9 +55,9 @@ theorem exponent_conductor_eq_zero {v : HeightOneSpectrum (𝓞 K)}
   exact h w
 
 /- English proof (translation)
-Use `le_trans (fun x hx ↦ ?_) ((Modulus.congruenceSubgroup_le_ker_ideleSymbol_iff (L := L) _).2 (Modulus.dvd_refl' _))` and prove the remaining obligations. Take `⟨hx, hpos⟩` from `mem_unitsOutsidePos.1 hx`. Take `⟨hS, hout⟩` from `mem_unitsOutside.1 hx`. Use `(Modulus.mem_congruenceSubgroup _).2 ⟨fun v ↦ ?_, fun w _ ↦ hpos w⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hS v hv]`. Conclude with `one_mem _`. Rewrite using `[exponent_conductor_eq_zero L (h v hv)]`. Conclude with `hout v hv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsOutsidePos_le_ker_ideleSymbol
     (h : ∀ v ∉ S, ∀ w : PlacesOver L v, w.1.asIdeal.ramificationIdx (𝓞 K) = 1) :
@@ -80,7 +80,7 @@ section Field
 variable {Ω : Type*} [Field Ω] [Algebra K Ω]
 
 /- English proof (translation)
-Use `NumberField.of_module_finite K E` as an intermediate fact. Conclude with `Algebra.IsUnramifiedIn.ramificationIdx_eq_one (hE v hv) w.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ramificationIdx_eq_one_of_isUnramifiedOutside {E : IntermediateField K Ω} [FiniteDimensional K E]
     (hE : IsUnramifiedOutside S E) {v : HeightOneSpectrum (𝓞 K)} (hv : v ∉ S) (w : PlacesOver E v) :
@@ -89,9 +89,9 @@ theorem ramificationIdx_eq_one_of_isUnramifiedOutside {E : IntermediateField K �
   exact Algebra.IsUnramifiedIn.ramificationIdx_eq_one (hE v hv) w.2
 
 /- English proof (translation)
-Use `NumberField.of_module_finite K E` as an intermediate fact. Introduce `v hv`. Rewrite using `[Algebra.isUnramifiedIn_iff_forall_ramificationIdx_eq_one]`. Introduce `P _ hP`. Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h v hv ⟨⟨P, inferInstance, hP0⟩, hP⟩`.
+A detailed English derivation is pending.
 -/
 theorem isUnramifiedOutside_of_ramificationIdx_eq_one {E : IntermediateField K Ω} [FiniteDimensional K E]
     (h : ∀ v ∉ S, ∀ w : PlacesOver E v, w.1.asIdeal.ramificationIdx (𝓞 K) = 1) :
@@ -104,7 +104,7 @@ theorem isUnramifiedOutside_of_ramificationIdx_eq_one {E : IntermediateField K �
   exact h v hv ⟨⟨P, inferInstance, hP0⟩, hP⟩
 
 /- English proof (translation)
-The claim follows from `unitsOutsidePos_le_ker_ideleSymbol S E fun _ hv w ↦ ramificationIdx_eq_one_of_isUnramifiedOutside S hE hv w`.
+A detailed English derivation is pending.
 -/
 theorem unitsOutsidePos_le_ker_ideleSymbol_of_isUnramifiedOutside (E : IntermediateField K Ω)
     [FiniteDimensional K E] [IsAbelianGalois K E] (hE : IsUnramifiedOutside S E) :
@@ -115,19 +115,15 @@ theorem unitsOutsidePos_le_ker_ideleSymbol_of_isUnramifiedOutside (E : Intermedi
 end Field
 
 /- English proof (translation)
-Establish `hk : ∀ v : HeightOneSpectrum (𝓞 K), ∃ k : ℕ, (unitsLevel (K` using `K) v k : Set (v.adicCompletion K)ˣ) ⊆ ((powMonoidHom n : (v.adicCompletion K)ˣ →* (v.adicCompletion K)ˣ).range : Set (v.adicCompletion K)ˣ) := fun v ↦ by`. Take `⟨k, -, hk⟩` from `exists_unitsLevel_subset v ((isOpen_range_powMonoidHom_adicCompletion v hn).mem_nhds (one_mem _))`. Conclude with `⟨k, hk⟩`. Use `choose k hk using hk`. Set `a : HeightOneSpectrum (𝓞 K) → ℕ` to `fun v ↦ if v ∈ S then k v else 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha : (support a).Finite` using `hS.subset fun v hv ↦ by`. Assume the negation of the conclusion as `h`. Conclude with `hv (if_neg h)`. Set `𝔪 : Modulus K` to `⟨∏ᶠ w, w.asIdeal ^ a w, finprod_asIdeal_pow_ne_bot a, Set.univ⟩`. Establish `hexp : ∀ v, 𝔪.exponent v = a v` using `fun v ↦ multiplicity_finprod_asIdeal_pow_eq ha v`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨𝔪, fun v hv ↦ by rw [hexp]; exact if_neg hv, fun x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨hf, hr⟩` from `(Modulus.mem_congruenceSubgroup _).1 hx`. Use `set T := hS.toFinset`. Use `set p : IdeleGroup K := ∏ u ∈ T, finiteEmbedding u (finiteProj u x) with hp`. Establish `hpP : p ∈ (powMonoidHom n : IdeleGroup K →* IdeleGroup K).range`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Subgroup.prod_mem _ fun u hu ↦ ?_` and prove the remaining obligations. Establish `hu' : u ∈ S` using `hS.mem_toFinset.1 hu`. Establish `hmem` using `hf u`. Rewrite `hmem` using `[hexp u, show a u = k u from if_pos hu']`. Take `⟨z, hz⟩` from `hk u hmem`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨finiteEmbedding u z, by rw [powMonoidHom_apply, ← map_pow, ← powMonoidHom_apply, hz]⟩`. Establish `hrest : p⁻¹ * x ∈ unitsOutsidePos S`. Use `mem_unitsOutsidePos.2 ⟨mem_unitsOutside.2 ⟨fun v hv ↦ ?_, fun v hv ↦ ?_⟩, fun w ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hp, finiteProj_prod_finiteEmbedding, if_pos (hS.mem_toFinset.2 hv), inv_mul_cancel]`. Rewrite using `[map_mul, map_inv, hp, finiteProj_prod_finiteEmbedding, if_neg (fun h ↦ hv (hS.mem_toFinset.1 h)), inv_one, one_mul]`.
-
-Conclude with `unitsLevel_antitone v (Nat.zero_le _) (hf v)`. Rewrite using `[map_mul, map_inv, hp, infiniteProj_prod_finiteEmbedding, inv_one, one_mul]`. Conclude with `hr w (Set.mem_univ _)`. Establish `: x = p * (p⁻¹ * x)` using `by group`. Rewrite using `[this]`.
-
-Conclude with `Subgroup.mul_mem_sup hpP hrest`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_modulus_congruenceSubgroup_le (hS : S.Finite) {n : ℕ} (hn : n ≠ 0) :
     ∃ 𝔪 : Modulus K, (∀ v ∉ S, 𝔪.exponent v = 0) ∧
@@ -172,9 +168,9 @@ theorem exists_modulus_congruenceSubgroup_le (hS : S.Finite) {n : ℕ} (hn : n �
 variable {S}
 
 /- English proof (translation)
-Take `⟨𝔪, h0, hle⟩` from `exists_modulus_congruenceSubgroup_le S hS hn`. Use `⟨𝔪, h0, Subgroup.map_le_iff_le_comap.2 (hle.trans (sup_le ?_ fun x hx ↦ hU x hx))⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Express the relevant statement in the definitionally equal form `IdeleClassGroup.mk K (y ^ n) ∈ N`. Rewrite using `[map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpow _`.
+A detailed English derivation is pending.
 -/
 theorem exists_modulus_map_congruenceSubgroup_le (hS : S.Finite) {n : ℕ} (hn : n ≠ 0)
     (N : Subgroup (IdeleClassGroup K)) (hpow : ∀ c : IdeleClassGroup K, c ^ n ∈ N)
@@ -189,7 +185,7 @@ theorem exists_modulus_map_congruenceSubgroup_le (hS : S.Finite) {n : ℕ} (hn :
   exact hpow _
 
 /- English proof (translation)
-Take `⟨𝔪, -, hle⟩` from `exists_modulus_map_congruenceSubgroup_le hS hn N hpow hU`. Conclude with `Subgroup.isOpen_mono hle 𝔪.isOpen_map_congruenceSubgroup`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isOpen_of_pow_mem_of_unitsOutsidePos (hS : S.Finite) {n : ℕ} (hn : n ≠ 0)
     (N : Subgroup (IdeleClassGroup K)) (hpow : ∀ c : IdeleClassGroup K, c ^ n ∈ N)
@@ -199,7 +195,7 @@ theorem isOpen_of_pow_mem_of_unitsOutsidePos (hS : S.Finite) {n : ℕ} (hn : n �
   exact Subgroup.isOpen_mono hle 𝔪.isOpen_map_congruenceSubgroup
 
 /- English proof (translation)
-Take `⟨𝔪, -, hle⟩` from `exists_modulus_map_congruenceSubgroup_le hS hn N hpow hU`. Use `𝔪.finiteIndex_map_congruenceSubgroup` as an intermediate fact. Conclude with `Subgroup.finiteIndex_of_le hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteIndex_of_pow_mem_of_unitsOutsidePos (hS : S.Finite) {n : ℕ} (hn : n ≠ 0)
     (N : Subgroup (IdeleClassGroup K)) (hpow : ∀ c : IdeleClassGroup K, c ^ n ∈ N)
@@ -210,9 +206,9 @@ theorem finiteIndex_of_pow_mem_of_unitsOutsidePos (hS : S.Finite) {n : ℕ} (hn 
   exact Subgroup.finiteIndex_of_le hle
 
 /- English proof (translation)
-Take `⟨𝔪, h0, hle⟩` from `exists_modulus_map_congruenceSubgroup_le hS hn _ hpow hU`. Establish `hdvd` using `(Modulus.map_congruenceSubgroup_le_range_ideleClassNorm_iff (L := E) 𝔪).1 hle`. Establish `hexp` using `(Modulus.ideal_dvd_ideal_iff.1 (Modulus.dvd_iff.1 hdvd).1)`. Use `isUnramifiedOutside_of_ramificationIdx_eq_one S fun v hv w ↦ ?_` and prove the remaining obligations. Establish `h1 : (Modulus.conductor K E).exponent v = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hexp v` as an intermediate fact. Rewrite `this` using `[h0 v hv]`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[Modulus.exponent_conductor]`. Conclude with `(localConductorExponent_eq_zero_iff E v w.1).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnramifiedOutside_of_range_ideleClassNorm {Ω : Type*} [Field Ω] [Algebra K Ω] (hS : S.Finite)
     {n : ℕ} (hn : n ≠ 0) (E : IntermediateField K Ω) [FiniteDimensional K E] [IsAbelianGalois K E]

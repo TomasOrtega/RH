@@ -13,7 +13,7 @@ section
 variable {X X' : Type} [TopologicalSpace X] [TopologicalSpace X'] {f g : X → ℂ}
 
 /- English proof (translation)
-Take `⟨a, C, hC⟩` from `h`. Take `⟨b, C', hC'⟩` from `h'`. Conclude with `⟨a.mul b, C * C', fun x => (norm_mul_le _ _).trans (mul_le_mul (hC x) (hC' x) (norm_nonneg _) ((norm_nonneg _).trans (hC x)))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem BC.mul (h : BC f) (h' : BC g) : BC fun x => f x * g x := by
   obtain ⟨a, C, hC⟩ := h
@@ -22,17 +22,17 @@ theorem BC.mul (h : BC f) (h' : BC g) : BC fun x => f x * g x := by
     (mul_le_mul (hC x) (hC' x) (norm_nonneg _) ((norm_nonneg _).trans (hC x)))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.star, h.2.imp fun _ h x => (norm_star _).trans_le (h x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem BC.star (h : BC f) : BC fun x => star (f x) := ⟨h.1.star, h.2.imp fun _ h x => (norm_star _).trans_le (h x)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp hu, h.2.imp fun _ h _ => h _⟩`.
+Supply the required witnesses or components.
 -/
 theorem BC.comp (h : BC f) {u : X' → X} (hu : Continuous u) : BC fun x => f (u x) := ⟨h.1.comp hu, h.2.imp fun _ h _ => h _⟩
 
 /- English proof (translation)
-The claim follows from `.of_bound h.1.aestronglyMeasurable _ (.of_forall h.2.choose_spec)`.
+A detailed English derivation is pending.
 -/
 theorem BC.int [MeasurableSpace X] [OpensMeasurableSpace X] (h : BC f) (μ : Measure X) [IsFiniteMeasure μ] : Integrable f μ :=
   .of_bound h.1.aestronglyMeasurable _ (.of_forall h.2.choose_spec)
@@ -44,9 +44,9 @@ variable {G H : Type} [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G] [S
   (ν : Measure G) [IsFiniteMeasure ν] (ρ : Measure H) [IsFiniteMeasure ρ] {φ : G → ℂ}
 
 /- English proof (translation)
-Simplify using `only [← integral_mul_const]`. Rewrite using `[integral_integral_swap (f := fun (y : G × G) g => θ (g, y.1) * star (θ (g, y.2)) * (φ y.2 * star (φ y.1))) (BC.int (((hθ.comp (u := fun y : (G × G) × H => (y.2, y.1.1)) (by fun_prop)).mul (hθ.comp (u := fun y : (G × G) × H => (y.2, y.1.2)) (by fun_prop)).star).mul ((hφ.comp (by …`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [integral_mul_const]`. Rewrite using `[mul_comm, Complex.star_def, ← integral_conj, ← integral_prod_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem at_value {θ : H × G → ℂ} (hθ : BC θ) (hφ : BC φ) :
     ∫ y, (∫ g, θ (g, y.1) * star (θ (g, y.2)) ∂ρ) * (φ y.2 * star (φ y.1)) ∂ν.prod ν =
@@ -64,7 +64,7 @@ theorem at_value {θ : H × G → ℂ} (hθ : BC θ) (hφ : BC φ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ (BC.int (hk.mul ((hφ.comp continuous_snd).mul (hφ.comp continuous_fst).star)) _)]`. Simplify using `only [← mul_assoc, integral_mul_const, h]`. Simplify using `only [← integral_mul_const, ← integral_const_mul, mul_assoc]`. Take `⟨c, C, hC⟩` from `(hφ.comp (u := fun y : G × G => y.1 * y.2) (by fun_prop)).mul (hφ.comp continuous_fst).star`. Conclude with `integral_integral_swap (f := fun h g => w g * (φ (h * g) * star (φ h))) ((hw.comp_snd ν).mul_bdd c.aestronglyMeasurable (.of_forall hC))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem far_right [Group G] [ContinuousMul G] (μ : Measure G) [SFinite μ] {k : G × G → ℂ} {w : G → ℂ} (hk : BC k) (hφ : BC φ)
     (hw : Integrable w μ) (h : ∀ h, ∫ h', k (h, h') * φ h' ∂ν = ∫ g, w g * φ (h * g) ∂μ) :
@@ -77,7 +77,7 @@ theorem far_right [Group G] [ContinuousMul G] (μ : Measure G) [SFinite μ] {k :
     ((hw.comp_snd ν).mul_bdd c.aestronglyMeasurable (.of_forall hC))
 
 /- English proof (translation)
-Establish `h1 : t < ((t + 1 : ℝ) : ℂ).re` using `by simp`. Use `(hg.analyticOnNhd hU).eqOn_of_preconnected_of_eventuallyEq (hg'.analyticOnNhd hU) hc (h _ h1).1 ?_ hs` and prove the remaining obligations. Use `filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds h1] with z hz using (h z hz).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ident {U : Set ℂ} (hU : IsOpen U) (hc : IsPreconnected U) {g g' : ℂ → ℂ} (hg : DifferentiableOn ℂ g U)
     (hg' : DifferentiableOn ℂ g' U) {t : ℝ} (h : ∀ s : ℂ, t < s.re → s ∈ U ∧ g s = g' s) {s : ℂ} (hs : s ∈ U) : g s = g' s := by

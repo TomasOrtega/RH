@@ -189,14 +189,14 @@ Both sides reduce to the same expression.
 theorem hStd_apply (x y : Sp E n) : hStd E n x y = ∑ i, star (x i) * y i := rfl
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Simplify using `[hStd_apply, mul_comm, starRingEnd_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hStd_isSymm : (hStd E n).IsSymm := by
   refine ⟨fun x y => ?_⟩
   simp [hStd_apply, mul_comm, starRingEnd_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`. Conclude with `⟨s, hs, hx⟩`. Introduce and unpack `⟨s, hs, hx⟩`. Conclude with `⟨s, hs, hx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_locP {W : Type*} [AddCommGroup W] [Module (𝓞 E) W] (P : HeightOneSpectrum (𝓞 E))
     (L : Submodule (𝓞 E) W) (x : W) :
@@ -208,16 +208,16 @@ theorem mem_locP {W : Type*} [AddCommGroup W] [Module (𝓞 E) W] (P : HeightOne
     exact ⟨s, hs, hx⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `(mem_locP P L x).2 ⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_locP {W : Type*} [AddCommGroup W] [Module (𝓞 E) W] (P : HeightOneSpectrum (𝓞 E))
     (L : Submodule (𝓞 E) W) : L ≤ localization₂ P.asIdeal L := fun x hx =>
   (mem_locP P L x).2 ⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hx⟩
 
 /- English proof (translation)
-Unfold `gmap`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `⟨g.symm x, h, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_gmap (g : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) (x : Sp E n) :
     x ∈ gmap g L ↔ g.symm x ∈ L := by
@@ -230,13 +230,13 @@ theorem mem_gmap (g : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n))
     exact ⟨g.symm x, h, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul E s x, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem equiv_osmul (g : Sp E n ≃ₗ[E] Sp E n) (s : 𝓞 E) (x : Sp E n) : g (s • x) = s • g x := by
   rw [← algebraMap_smul E s x, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Simplify using `only [mem_locP, mem_gmap, equiv_osmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_localization_gmap (P : HeightOneSpectrum (𝓞 E)) (g : Sp E n ≃ₗ[E] Sp E n)
     (L : Submodule (𝓞 E) (Sp E n)) (x : Sp E n) :
@@ -244,9 +244,9 @@ theorem mem_localization_gmap (P : HeightOneSpectrum (𝓞 E)) (g : Sp E n ≃�
   simp only [mem_locP, mem_gmap, equiv_osmul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `hL.fg.map _`. Establish `h1 : ((gmap g L : Submodule (𝓞 E) (Sp E n)) : Set (Sp E n)) = (g : Sp E n →ₗ[E] Sp E n) '' L`. Use extensionality with `x`. Simplify using `[gmap]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+A detailed English derivation is pending.
 -/
 theorem gmap_lattice (g : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n))
     (hL : Submodule.IsLattice E L) : Submodule.IsLattice E (gmap g L) := by
@@ -258,7 +258,7 @@ theorem gmap_lattice (g : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E
     rw [h1, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Unfold `dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_dual (L : Submodule (𝓞 E) (Sp E n)) (x : Sp E n) :
     x ∈ dual (hStd E n) L ↔ ∀ y ∈ L, hStd E n y x ∈ (1 : Submodule (𝓞 E) E) := by
@@ -266,11 +266,11 @@ theorem mem_dual (L : Submodule (𝓞 E) (Sp E n)) (x : Sp E n) :
   simp only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_gmap, mem_dual, mem_dual]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Use `H (g y) (by rw [mem_gmap]; simpa using hy)` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hg y (g.symm x)]`. Simplify using `using this`. Introduce `H y hy`. Use `H (g.symm y) ((mem_gmap g L y).1 hy)` as an intermediate fact. Rewrite `this` using `[← hg (g.symm y) (g.symm x)]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dual_gmap (g : Sp E n ≃ₗ[E] Sp E n) (hg : g ∈ UF E n) (L : Submodule (𝓞 E) (Sp E n)) :
     dual (hStd E n) (gmap g L) = gmap g (dual (hStd E n) L) := by
@@ -287,7 +287,7 @@ theorem dual_gmap (g : Sp E n ≃ₗ[E] Sp E n) (hg : g ∈ UF E n) (L : Submodu
     simpa using this
 
 /- English proof (translation)
-The claim follows from `gmap_lattice ga d.N hd.lat uni := by change dual (hStd E n) (gmap ga d.N) = gmap ga d.N rw [dual_gmap ga hga, hd.uni] f_add P x hx y hy := by change d.f P (ga.symm (x + y)) = _ rw [map_add] exact hd.f_add P _ ((mem_localization_gmap _ _ _ _).1 hx) _ ((mem_localization_gmap _ _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem Deco.Ok.act {d : Deco E n ST SG} (hd : d.Ok) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : ga ∈ UF E n)
     (h : GLG E n SG) : (d.act ga h).Ok where
@@ -339,7 +339,7 @@ theorem Deco.Ok.act {d : Deco E n ST SG} (hd : d.Ok) {ga : Sp E n ≃ₗ[E] Sp E
     exact ⟨ga.symm x, h3, by simp⟩
 
 /- English proof (translation)
-The claim follows from `hd.lat uni := hd.uni f_add P x hx y hy := by change (c P).1 * d.f P (x + y) = (c P).1 * d.f P x + (c P).1 * d.f P y rw [hd.f_add P x hx y hy, mul_add] f_smul P a x hx := by change (c P).1 * d.f P (a • x) = _ * ((c P).1 * d.f P x) rw [hd.f_smul P a x hx, mul_left_comm] f_off P x h …`.
+A detailed English derivation is pending.
 -/
 theorem Deco.Ok.dia {d : Deco E n ST SG} (hd : d.Ok) (c : DiaG E ST) : (d.dia c).Ok where
   lat := hd.lat
@@ -365,9 +365,9 @@ theorem Deco.Ok.dia {d : Deco E n ST SG} (hd : d.Ok) (c : DiaG E ST) : (d.dia c)
   be_ker := hd.be_ker
 
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `d.N.map _ = d.N`. Conclude with `Submodule.map_id d.N`. Both sides reduce to the same expression. Use function extensionality and compare the values at `w x`.
+Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _).mulVec (d.be w x) = _`. Rewrite using `[Matrix.one_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem Deco.act_one (d : Deco E n ST SG) : d.act 1 1 = d := by
   ext1
@@ -379,9 +379,9 @@ theorem Deco.act_one (d : Deco E n ST SG) : d.act 1 1 = d := by
     rw [Matrix.one_mulVec]
 
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `d.N.map _ = (d.N.map _).map _`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w x`. Express the relevant statement in the definitionally equal form `((h w).1 * (h' w).1).mulVec _ = (h w).1.mulVec ((h' w).1.mulVec _)`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Deco.act_mul (d : Deco E n ST SG) (ga ga' : Sp E n ≃ₗ[E] Sp E n) (h h' : GLG E n SG) :
     d.act (ga * ga') (h * h') = (d.act ga' h').act ga h := by
@@ -412,9 +412,9 @@ def DecoSet.dia1 (P : ST) (c : (𝓞 E ⧸ P.1.asIdeal)ˣ) (d : DecoSet E n ST S
   open Classical in d.dia (Pi.mulSingle P c)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`. Both sides reduce to the same expression. Use function extensionality and compare the values at `P x`. Express the relevant statement in the definitionally equal form `(1 : 𝓞 E ⧸ P.1.asIdeal) * _ = _`.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DecoSet.dia_one (d : DecoSet E n ST SG) : d.dia 1 = d := by
   apply Subtype.ext
@@ -426,9 +426,9 @@ theorem DecoSet.dia_one (d : DecoSet E n ST SG) : d.dia 1 = d := by
   · rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `ext1`. Both sides reduce to the same expression. Use function extensionality and compare the values at `P x`. Express the relevant statement in the definitionally equal form `((c P).1 * (c' P).1) * _ = (c P).1 * ((c' P).1 * _)`.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DecoSet.dia_mul (c c' : DiaG E ST) (d : DecoSet E n ST SG) :
     d.dia (c * c') = (d.dia c').dia c := by
@@ -456,14 +456,14 @@ def IntAt (P : HeightOneSpectrum (𝓞 E)) (a : E) : Prop :=
   ∃ r s : 𝓞 E, s ∉ P.asIdeal ∧ algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mk_ne_zero {P : HeightOneSpectrum (𝓞 E)} {s : 𝓞 E} (hs : s ∉ P.asIdeal) :
     Ideal.Quotient.mk P.asIdeal s ≠ 0 := by
   rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Introduce `h` and use `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_notMem (P : HeightOneSpectrum (𝓞 E)) : (1 : 𝓞 E) ∉ P.asIdeal :=
   fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)
@@ -472,11 +472,11 @@ instance (P : HeightOneSpectrum (𝓞 E)) : IsDomain (𝓞 E ⧸ P.asIdeal) :=
   Ideal.Quotient.isDomain _
 
 /- English proof (translation)
-Use `P.isMaximal` as an intermediate fact. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv (mk_ne_zero hs)`. Establish `hex : ∃ c : 𝓞 E ⧸ P.asIdeal, ∃ r s : 𝓞 E, s ∉ P.asIdeal ∧ algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r ∧ Ideal.Quotient.mk P.asIdeal s * c = Ideal.Quotient.mk P.asIdeal r` using `⟨b * Ideal.Quotient.mk P.asIdeal r, r, s, hs, h, by rw [← mul_assoc, hb, one_mul]⟩`. Unfold `redP`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r', s', hs', h', hc⟩` from `hex.choose_spec`. Establish `e : s * r' = s' * r`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (s * r') = algebraMap (𝓞 E) E (s' * r)`. Simplify using `only [map_mul, map_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h', ← h]`. Expand and normalize the polynomial expressions, which then agree. Apply `mul_left_cancel₀ (mk_ne_zero hs')` to reduce the goal to its premises. Rewrite using `[mul_left_comm, hc, ← map_mul, ← map_mul, e]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem reduction_spec (P : HeightOneSpectrum (𝓞 E)) {a : E} {r s : 𝓞 E} (hs : s ∉ P.asIdeal)
     (h : algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r) :
@@ -500,7 +500,7 @@ theorem reduction_spec (P : HeightOneSpectrum (𝓞 E)) {a : E} {r s : 𝓞 E} (
   rw [mul_left_comm, hc, ← map_mul, ← map_mul, e]
 
 /- English proof (translation)
-The claim follows from `mul_left_cancel₀ (mk_ne_zero hs) ((reduction_spec P hs h).trans hc.symm)`.
+A detailed English derivation is pending.
 -/
 theorem redP_eq (P : HeightOneSpectrum (𝓞 E)) {a : E} {r s : 𝓞 E} (hs : s ∉ P.asIdeal)
     (h : algebraMap (𝓞 E) E s * a = algebraMap (𝓞 E) E r) {c : 𝓞 E ⧸ P.asIdeal}
@@ -508,14 +508,14 @@ theorem redP_eq (P : HeightOneSpectrum (𝓞 E)) {a : E} {r s : 𝓞 E} (hs : s 
   mul_left_cancel₀ (mk_ne_zero hs) ((reduction_spec P hs h).trans hc.symm)
 
 /- English proof (translation)
-The claim follows from `redP_eq P (one_notMem P) (r := r) (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem reduction_coe (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
     redP P (algebraMap (𝓞 E) E r) = Ideal.Quotient.mk P.asIdeal r :=
   redP_eq P (one_notMem P) (r := r) (by simp) (by simp)
 
 /- English proof (translation)
-Unfold `redP`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨c, r, s, hs, h', -⟩`. Conclude with `h ⟨r, s, hs, h'⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem reduction_eq_zero_of_not_integral (P : HeightOneSpectrum (𝓞 E)) {a : E} (h : ¬ IntAt P a) : redP P a = 0 := by
   classical
@@ -525,13 +525,13 @@ theorem reduction_eq_zero_of_not_integral (P : HeightOneSpectrum (𝓞 E)) {a : 
   exact h ⟨r, s, hs, h'⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨r, 1, one_notMem P, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IntAt.coe (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) : IntAt P (algebraMap (𝓞 E) E r) :=
   ⟨r, 1, one_notMem P, by simp⟩
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Take `⟨r', s', hs', h'⟩` from `hb`. Use `⟨s' * r + s * r', s * s', fun hm => (P.isPrime.mem_or_mem hm).elim hs hs', ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_add]`. Rewrite using `[← h, ← h']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -545,7 +545,7 @@ theorem IntAt.add {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (h
   ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Take `⟨r', s', hs', h'⟩` from `hb`. Use `⟨r * r', s * s', fun hm => (P.isPrime.mem_or_mem hm).elim hs hs', ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_add]`. Rewrite using `[← h, ← h']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -559,9 +559,9 @@ theorem IntAt.mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (h
   ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Take `⟨r', s', hs', h'⟩` from `hb`. Use `redP_eq P (r := s' * r + s * r') (s := s * s') (fun hm => (P.isPrime.mem_or_mem hm).elim hs hs') ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_add]`. Rewrite using `[← h, ← h']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_mul, map_mul, map_mul, ← reduction_spec P hs h, ← reduction_spec P hs' h']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem reduction_add {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) :
     redP P (a + b) = redP P a + redP P b := by
@@ -576,9 +576,9 @@ theorem reduction_add {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a
     ring
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `ha`. Take `⟨r', s', hs', h'⟩` from `hb`. Use `redP_eq P (r := r * r') (s := s * s') (fun hm => (P.isPrime.mem_or_mem hm).elim hs hs') ?_ ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_add]`. Rewrite using `[← h, ← h']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, ← reduction_spec P hs h, ← reduction_spec P hs' h']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem reduction_mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) :
     redP P (a * b) = redP P a * redP P b := by
@@ -593,7 +593,7 @@ theorem reduction_mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a
     ring
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, reduction_mul (IntAt.coe P c) ha]`. Use `congr 1`. Conclude with `reduction_coe P c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem redP_osmul {P : HeightOneSpectrum (𝓞 E)} (c : 𝓞 E) {a : E} (ha : IntAt P a) :
     redP P (c • a) = Ideal.Quotient.mk P.asIdeal c * redP P a := by
@@ -609,15 +609,15 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdLat (x : Sp E n) : x ∈ stdLat E n ↔ ∀ i, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = x i := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
 
 /- English proof (translation)
-Rewrite using `[mem_stdLat]`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `⟨r, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [h]⟩`.
+Supply the required witnesses or components.
 -/
 theorem single_mem_stdLat (i : Fin n) (r : 𝓞 E) : (Pi.single i (algebraMap (𝓞 E) E r) : Sp E n) ∈ stdLat E n := by
   rw [mem_stdLat]
@@ -628,11 +628,11 @@ theorem single_mem_stdLat (i : Fin n) (r : 𝓞 E) : (Pi.single i (algebraMap (�
   · exact ⟨0, by simp [h]⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_stdLat]`. Use `choose r hr using hx`. Establish `: x = ∑ i, r i • (Pi.single i (1 : E) : Sp E n)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, hr]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `using single_mem_stdLat (E := E) i 1`.
+A detailed English derivation is pending.
 -/
 theorem stdLat_eq_span :
     stdLat E n = Submodule.span (𝓞 E) (Set.range fun i : Fin n => (Pi.single i (1 : E) : Sp E n)) := by
@@ -650,9 +650,9 @@ theorem stdLat_eq_span :
     simpa using single_mem_stdLat (E := E) i 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[stdLat_eq_span]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `using single_mem_stdLat (E := E) i 1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stdLat_lattice : Submodule.IsLattice E (stdLat E n) := by
   constructor
@@ -664,13 +664,13 @@ theorem stdLat_lattice : Submodule.IsLattice E (stdLat E n) := by
     simpa using single_mem_stdLat (E := E) i 1
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_one.2 ⟨RingOfIntegers.mapRingHom (starRingEnd E) r, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem star_coe_mem_one (r : 𝓞 E) : star (algebraMap (𝓞 E) E r) ∈ (1 : Submodule (𝓞 E) E) :=
   Submodule.mem_one.2 ⟨RingOfIntegers.mapRingHom (starRingEnd E) r, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[hStd_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hStd_single_left (i : Fin n) (x : Sp E n) : hStd E n (Pi.single i 1) x = x i := by
   rw [hStd_apply, Finset.sum_eq_single i]
@@ -680,13 +680,13 @@ theorem hStd_single_left (i : Fin n) (x : Sp E n) : hStd E n (Pi.single i 1) x =
   · simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `dual (hStd E n) (stdLat E n) = stdLat E n`. Use extensionality with `x`. Rewrite using `[mem_dual]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_stdLat]`. Introduce `i`. Use `H (Pi.single i 1) (by simpa using single_mem_stdLat (E := E) i 1)` as an intermediate fact. Rewrite `this` using `[hStd_single_left]`. Conclude with `Submodule.mem_one.1 this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx y hy`. Rewrite `hx`, `hy` using `[mem_stdLat]`. Rewrite using `[hStd_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hx i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r', hr'⟩` from `hy i`. Rewrite using `[← hr, ← hr', mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (star_coe_mem_one r')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdLat_unimodular : IsUnimodular (hStd E n) (stdLat E n) := by
   change dual (hStd E n) (stdLat E n) = stdLat E n
@@ -709,11 +709,11 @@ theorem stdLat_unimodular : IsUnimodular (hStd E n) (stdLat E n) := by
     exact Submodule.smul_mem _ _ (star_coe_mem_one r')
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Take `⟨s, hs, h⟩` from `(mem_locP P _ x).1 hx`. Take `⟨r, hr⟩` from `(mem_stdLat _).1 h i`. Conclude with `⟨r, s, hs, by rw [hr, Pi.smul_apply, Algebra.smul_def]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `H`. Establish `: x = ∑ i, (Pi.single i (x i) : Sp E n)` using `(Finset.univ_sum_single x).symm`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨r, s, hs, h⟩` from `H i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(mem_locP P _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e : s • (Pi.single i (x i) : Sp E n) = Pi.single i (algebraMap (𝓞 E) E r)`. Rewrite using `[← Pi.single_smul, Algebra.smul_def, ← h]`. Rewrite using `[e]`. Conclude with `single_mem_stdLat i r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localization_standardLattice (P : HeightOneSpectrum (𝓞 E)) (x : Sp E n) :
     x ∈ localization₂ P.asIdeal (stdLat E n) ↔ ∀ i, IntAt P (x i) := by
@@ -734,7 +734,7 @@ theorem mem_localization_standardLattice (P : HeightOneSpectrum (𝓞 E)) (x : S
     exact single_mem_stdLat i r
 
 /- English proof (translation)
-The claim follows from `stdLat_lattice uni := stdLat_unimodular f_add P x hx y hy := by replace hx : x ∈ localization₂ P.1.asIdeal (stdLat E n) := hx replace hy : y ∈ localization₂ P.1.asIdeal (stdLat E n) := hy have hxy : x + y ∈ localization₂ P.1.asIdeal (stdLat E n) := Submodule.add_mem _ hx hy simp …`.
+A detailed English derivation is pending.
 -/
 theorem Deco.base_ok [NeZero n] : (Deco.base E n ST SG).Ok where
   lat := stdLat_lattice
@@ -813,17 +813,15 @@ variable (E n ST SG) in
 def DecoSet.base [NeZero n] : DecoSet E n ST SG := ⟨Deco.base E n ST SG, Deco.base_ok⟩
 
 /- English proof (translation)
-Use `ext1`. Conclude with `hN`. Use function extensionality and compare the values at `P x`. Distinguish the cases in `hx : x ∈ d.at P.1`. Establish `hx' : x ∈ d'.at P.1`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Deco.at, ← hN]`. Conclude with `hx`. Take `⟨s, hs, h⟩` from `(mem_locP _ _ _).1 hx`. Apply `mul_left_cancel₀ (mk_ne_zero hs)` to reduce the goal to its premises. Rewrite using `[← hd.f_smul P s x hx, ← hd'.f_smul P s x hx', hf P _ h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x ∉ d'.at P.1`. Rewrite using `[Deco.at, ← hN]`. Conclude with `hx`. Rewrite using `[hd.f_off P x hx, hd'.f_off P x hx']`. Use function extensionality and compare the values at `w x`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hx : x ∈ d.at w.1`. Establish `hx' : x ∈ d'.at w.1`. Rewrite using `[Deco.at, ← hN]`. Conclude with `hx`. Take `⟨s, hs, h⟩` from `(mem_locP _ _ _).1 hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hbe w _ h`. Rewrite `e` using `[hd.be_smul w s x hx, hd'.be_smul w s x hx']`. Use function extensionality and compare the values at `i`. Conclude with `mul_left_cancel₀ (mk_ne_zero hs) (congrFun e i)`. Establish `hx' : x ∉ d'.at w.1`.
-
-Rewrite using `[Deco.at, ← hN]`. Conclude with `hx`. Rewrite using `[hd.be_off w x hx, hd'.be_off w x hx']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Deco.Ok.ext_on {d d' : Deco E n ST SG} (hd : d.Ok) (hd' : d'.Ok) (hN : d.N = d'.N)
     (hf : ∀ (P : ST), ∀ x ∈ d.N, d.f P x = d'.f P x)

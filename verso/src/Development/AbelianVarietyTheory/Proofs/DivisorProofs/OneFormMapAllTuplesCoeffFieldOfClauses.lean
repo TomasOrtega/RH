@@ -25,17 +25,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hrow` using `hph h0`. Take `⟨w⟩` from `id hW`. Establish `hT` using `w.laws`. Establish `hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i` using `(O i).hV`. Establish `hn : (κ i).n = (Vc D i).rank` using `(w.kap i (D.eTau.symm 1)).2.2.trans (D.sp.V_rank ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (O i).Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀)` using `hO.2`. Take `⟨gramR, c0R, c0L, hFT, hc⟩` from `hP.lift.c0`. Take `⟨lam, z₀, hlam, hU⟩` from `GlobalTheory.T.adelicLift_eq_factor_mul_geometricClassSum D G Pl0 T0 A T R F κ v₀ hC h1 h2 hW hpb hio i (O i).lev gramR c0R c0L hFT`. Take `⟨O₀, hF₀, hP₀⟩` from `hex`. Take `⟨O₁, e₁, hP₁, hlev₁, hc₁⟩` from `GlobalTheory.LiftSpanClauses.exists_retie_core O₀ hC (show O₀.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀) from hP₀) (O i).lev hP.lift.lev hP.act.1 hFT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hF₁ : O₁.c'.F = D.what₂.embLL.toRatAlgHom.fieldRange` using `e₁ ▸ hF₀`. Establish `hle₁ : D.what₂.embLL.toRatAlgHom.fieldRange ≤ O₁.c'.F` using `hF₁.ge`. Take `⟨c0, hr, hx⟩` from `hP.cxi`. Take `⟨c1, hr₁, hx₁⟩` from `hP₁.cxi`. Establish `hid` using `hU _ _ (O i) hO.1.ge hP rfl hc c0 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hid₁` using `hU _ _ O₁ hle₁ hP₁ hlev₁ hc₁ c1 hx₁`. Establish `hE₁` using `GlobalTheory.LiftSpanClauses.clsEx_of_core D G Pl0 T0 A T R κ v₀ hC.lev hC.fam hW hpb i _ _ O₁ hle₁ hP₁`. Establish `n0` using `ne_zero_of_root hr`. Establish `n1` using `ne_zero_of_root hr₁`. Distinguish the cases in `hz : ∀ y, liftQ R i (v₀ i (sg0 D A)) A.μ0 y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨O₁, hF₁, hP₁, oneMapOf_of_ptIdent hT hV hn hP hrow hle₁ hP₁ hlev₁ hE₁ hsp hlam n0 n1 hid hid₁ (Or.inr hz)⟩`. Take `⟨y, hy⟩` from `not_forall.1 hz`. Establish `hu` using `const_ratio_mem hT hV hn hO.1 hP hrow hle₁ hP₁ hlev₁ hE₁ hlam n1 hid hid₁ hy`. Establish `e : ((⟨c0 / c1, hu⟩ : O₁.c'.F) : ℂ) * c1 = c0` using `div_mul_cancel₀ _ n1`. Establish `hx₂` using `xiConst_scaleXi O₁ ⟨c0 / c1, hu⟩ hx₁`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP₂` using `pins_scaleXi O₁ ⟨c0 / c1, hu⟩ (fun h => div_ne_zero n0 n1 (congrArg Subtype.val h)) hx₁ (e.symm ▸ hr) hP₁`. Rewrite `hx₂` using `[e]`. Conclude with `⟨scaleXi O₁ ⟨c0 / c1, hu⟩, hF₁, hP₂, oneMapOf_of_ptIdent (O' := scaleXi O₁ ⟨c0 / c1, hu⟩) hT hV hn hP hrow hle₁ hP₂ hlev₁ (GlobalTheory.LiftSpanClauses.clsEx_of_core D G Pl0 T0 A T R κ v₀ hC.lev hC.fam hW hpb i _ _ (scaleXi O₁ ⟨c0 / c1, hu⟩) hle₁ hP₂) hsp hlam n0 n0 hid (hU _ _ ( …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem oneMapOverL_of_clauses (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type)
     (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)

@@ -7,11 +7,11 @@ set_option autoImplicit false
 namespace GlobalTheory.NilThicken
 
 /- English proof (translation)
-Use `set J : Ideal B := Ideal.map a.hom (RingHom.ker c.hom)`. Set `π : B ⟶ CommRingCat.of (B ⧸ J)` to `CommRingCat.ofHom (Ideal.Quotient.mk J)`. Set `e` to `RingHom.quotientKerEquivOfSurjective hc`. Set `σ : C ⟶ CommRingCat.of (B ⧸ J)` to `CommRingCat.ofHom ((Ideal.quotientMap J a.hom (Ideal.le_comap_map)).comp e.symm.toRingHom)`. Establish `w : a ≫ π = c ≫ σ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Establish `hx : e.symm (c.hom x) = Ideal.Quotient.mk _ x`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `[π, σ, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `h1 : (b ≫ h.desc π σ w).hom x = π.hom x` using `by rw [h.inl_desc]`. Rewrite `h1` using `[CommRingCat.comp_apply, (RingHom.mem_ker).mp hx, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_inl_le_map_ker_of_isPushout {A B C D : CommRingCat.{0}} {a : A ⟶ B} {c : A ⟶ C}
     {b : B ⟶ D} {d : C ⟶ D} (h : IsPushout a c b d) (hc : Function.Surjective c.hom) :
@@ -32,21 +32,21 @@ theorem ker_inl_le_map_ker_of_isPushout {A B C D : CommRingCat.{0}} {a : A ⟶ B
   exact Ideal.Quotient.eq_zero_iff_mem.mp h1.symm
 
 /- English proof (translation)
-Introduce `R₁ R₀ g Y₁ Y₀ p₁ p₀ i hpb hg hnil U hU`. Establish `P` using `GlobalTheory.AffBaseChange.isPushout_appLE_of_isPullback_of_isAffine Y₁ Y₀ (Spec R₁) (Spec R₀) i p₀ p₁ (Spec.map g) hpb inferInstance inferInstance U hU`. Establish `hnat` using `Scheme.ΓSpecIso_naturality g`. Use `set c := (Spec.map g).appTop`. Establish `hcker : RingHom.ker c.hom = Ideal.comap (Scheme.ΓSpecIso R₁).hom.hom (RingHom.ker g.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [RingHom.mem_ker, Ideal.mem_comap]`. Use `congrArg (fun φ => φ.hom x) hnat` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[h0, map_zero]`. Introduce `h0`. Establish `hinj` using `((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso R₀).hom)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hinj (by rw [h0, map_zero])`. Establish `hcs : Function.Surjective c.hom`. Introduce `y`. Take `⟨r, hr⟩` from `hg ((Scheme.ΓSpecIso R₀).hom y)`. Take `⟨x, hx⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso R₁).hom).2 r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨x, ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ => φ.hom x) hnat` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this`. Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso R₀).hom).1` to reduce the goal to its premises. Rewrite using `[this, hx, hr]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn⟩` from `hnil`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hle` using `ker_inl_le_map_ker_of_isPushout P hcs`. Establish `hJ : (Ideal.map (p₁.appLE ⊤ U (fun _ _ => trivial)).hom (RingHom.ker c.hom)) ^ n = ⊥`. Rewrite using `[← Ideal.map_pow, hcker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : (Ideal.comap (Scheme.ΓSpecIso R₁).hom.hom (RingHom.ker g.hom)) ^ n = ⊥`. Apply `le_bot_iff.mp` to reduce the goal to its premises. Use `(Ideal.le_comap_pow _ n).trans ?_` and prove the remaining obligations. Rewrite using `[show RingHom.ker g.hom ^ n = ⊥ from hn]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`. Rewrite using `[Ideal.mem_bot]`. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso R₁).hom).1 (by rw [hx, map_zero])`. Rewrite using `[h2, Ideal.map_bot]`. Conclude with `le_bot_iff.mp ((Ideal.pow_right_mono hle n).trans hJ.le)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNilpotent_ker_app :
     ∀ (R₁ R₀ : CommRingCat.{0}) (g : R₁ ⟶ R₀) (Y₁ Y₀ : Scheme.{0}) (p₁ : Y₁ ⟶ Spec R₁)

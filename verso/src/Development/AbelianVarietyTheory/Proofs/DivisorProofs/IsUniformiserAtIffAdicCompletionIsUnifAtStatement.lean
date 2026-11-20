@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.LatVal Neutral
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.UnifVal.isUniformiserAt_iff_isUnifAt | exact GlobalTheory.UnifVal.isUniformiserAt_iff_isUnifAt | (intros; apply GlobalTheory.UnifVal.isUniformiserAt_iff_isUnifAt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.isUniformiserAt_iff_adicCompletion_isUnifAt : ∀ {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ), IsUniformiserAt K v (x : v.adicCompletion K) ↔ Formalism.L2.Host.IsUnifAt v x := by
   first | exact @GlobalTheory.UnifVal.isUniformiserAt_iff_isUnifAt | exact GlobalTheory.UnifVal.isUniformiserAt_iff_isUnifAt | (intros; apply GlobalTheory.UnifVal.isUniformiserAt_iff_isUnifAt <;> assumption)

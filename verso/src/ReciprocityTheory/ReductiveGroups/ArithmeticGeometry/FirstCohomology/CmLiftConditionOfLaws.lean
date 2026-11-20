@@ -7,7 +7,7 @@ set_option autoImplicit false
 namespace ReciprocityTheory.ChartRestriction.G.H1
 
 /- English proof (translation)
-The claim follows from `cmLiftCondition_of_torsion hL h1c hTW hU (canonLiftFix_of_laws hL) dimSplit`.
+A detailed English derivation is pending.
 -/
 theorem cmLiftCondition_of_laws (hL : ReciprocityTheory.ChartRestriction.G.Out.Laws) (h1c : ReciprocityTheory.ChartRestriction.G.DVR.PositiveValuationMaximalIdeal)
     (hTW : ReciprocityTheory.ChartRestriction.G.DVR.TWStatement) (hU : ReciprocityTheory.ChartRestriction.G.DVR.UUStatement) : OneCStatement :=

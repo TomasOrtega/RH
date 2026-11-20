@@ -4,19 +4,19 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S B _ _ φ hφ p q _`. Set `ψ` to `Localization.localRingHom (q.comap φ) q φ rfl`. Set `f` to `(Ideal.Quotient.mk (p.map (algebraMap B (Localization.AtPrime q)))).comp ψ`. Establish `hψ : Function.Surjective ψ`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨b, t⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl z`. Take `⟨a, rfl⟩` from `hφ b`. Take `⟨t₀, ht₀⟩` from `hφ (t : B)`. Establish `ht₀' : t₀ ∈ (q.comap φ).primeCompl` using `by show t₀ ∉ q.comap φ`. Rewrite using `[Ideal.mem_comap, ht₀]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `t.2`. Use `⟨IsLocalization.mk' (Localization.AtPrime (q.comap φ)) a ⟨t₀, ht₀'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Localization.localRingHom_mk']`. Use `congr 1`. Conclude with `Subtype.ext ht₀`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Function.Surjective f` using `Ideal.Quotient.mk_surjective.comp hψ`. Establish `hker : RingHom.ker f = (p.comap φ).map (algebraMap S (Localization.AtPrime (q.comap φ)))`. Use extensionality with `x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (q.comap φ).primeCompl x`. Simplify using `only [RingHom.mem_ker, f, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, ψ, Localization.localRingHom_mk']`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[IsLocalization.mk'_mem_map_algebraMap_iff, IsLocalization.mk'_mem_map_algebraMap_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hta⟩`. Take `⟨t₀, rfl⟩` from `hφ t`. Use `⟨t₀, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show t₀ ∉ q.comap φ`. Simplify `ht` using `[Ideal.mem_comap]`. Simplify `hta` using `[Ideal.mem_comap, map_mul]`. Introduce and unpack `⟨t₀, ht, hta⟩`. Use `⟨φ t₀, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Use `show φ t₀ ∉ q`. Simplify `ht` using `[Ideal.mem_comap]`. Simplify `hta` using `[Ideal.mem_comap, map_mul]`. Conclude with `⟨(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hf)⟩`.
+A detailed English derivation is pending.
 -/
 theorem localization_quotient_comap_equiv :
     ∀ (S B : Type) [CommRing S] [CommRing B] (φ : S →+* B), Function.Surjective φ →

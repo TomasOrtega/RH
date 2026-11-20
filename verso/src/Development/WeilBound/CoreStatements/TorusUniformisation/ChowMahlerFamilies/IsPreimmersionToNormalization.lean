@@ -16,9 +16,9 @@ open scoped CategoryTheory.Obj
 namespace PositivityTheory.Xgn.StratumOpenCover
 
 /- English proof (translation)
-Establish `hB : IsField B` using `MulEquiv.isField (Field.toIsField L) e.symm.toMulEquiv`. Set `: Field B` to `hB.toField`. Establish `: Algebra.IsAlgebraic A B` using `e.isAlgebraic`. Establish `: IsFractionRing (integralClosure A B) B` using `integralClosure.isFractionRing_of_algebraic (A := A) (L := B) fun x hx => by`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Simplify using `using hx`. Conclude with `IsPreimmersion.of_isLocalization (R := integralClosure A B) (S := B) (nonZeroDivisors _)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPreimmersion_val (A B : Type) [CommRing A] [IsDomain A] [CommRing B] [Algebra A B]
     (L : Type) [Field L] [Algebra A L] [Algebra.IsAlgebraic A L]
@@ -35,25 +35,23 @@ theorem isPreimmersion_val (A B : Type) [CommRing A] [IsDomain A] [CommRing B] [
   exact IsPreimmersion.of_isLocalization (R := integralClosure A B) (S := B) (nonZeroDivisors _)
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint Z)) isOpen_univ`. Use `set f := Spec.map φ ≫ Z.fromSpecStalk (genericPoint Z) with hf`. Establish `htop : f ⁻¹ᵁ U = ⊤`. Use `top_le_iff.mp fun x _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f x ∈ U`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, Scheme.Hom.comp_apply]`. Establish `: Z.fromSpecStalk (genericPoint Z) (Spec.map φ x) ∈ Set.range (Z.fromSpecStalk (genericPoint Z))` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `this.mem_open U.isOpen hxU`. Set `` to `(f.app U).hom.toAlgebra`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : CommRingCat.of L ⟶ Γ(Spec (.of L), f ⁻¹ᵁ U)` to `(Scheme.ΓSpecIso (.of L)).inv ≫ (Spec (.of L)).presheaf.map (homOfLE le_top).op`. Establish `: IsIso (homOfLE (le_top : f ⁻¹ᵁ U ≤ ⊤))` using `⟨homOfLE htop.ge, rfl, rfl⟩`. Establish `hψ : IsIso ψ` using `inferInstance`. Establish `happ : f.app U = Z.presheaf.germ U _ hxU ≫ φ ≫ ψ`. Simplify using `only [f, ψ, Scheme.Hom.comp_app, Scheme.fromSpecStalk_app hxU, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Scheme.Hom.naturality, Scheme.ΓSpecIso_inv_naturality_assoc φ]`. Both sides reduce to the same expression. Establish `: Nonempty U` using `⟨⟨_, hxU⟩⟩`. Set `: Algebra Z.functionField L` to `φ.hom.toAlgebra`. Set `: Algebra Γ(Z, U) L` to `(Z.presheaf.germ U _ hxU ≫ φ).hom.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower Γ(Z, U) Z.functionField L` using `.of_algebraMap_eq fun _ => rfl`. Establish `: IsFractionRing Γ(Z, U) Z.functionField` using `functionField_isFractionRing_of_isAffineOpen Z U hU`. Establish `: Module.Finite Z.functionField L` using `hφ`. Establish `: Algebra.IsAlgebraic Γ(Z, U) L` using `(IsFractionRing.comap_isAlgebraic_iff (K := Z.functionField)).mpr inferInstance`. Establish `hinj : Function.Injective (algebraMap Γ(Z, U) L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[IsScalarTower.algebraMap_eq Γ(Z, U) Z.functionField L]`. Conclude with `(algebraMap Z.functionField L).injective.comp (IsFractionRing.injective _ _)`. Set `e : L ≃ₐ[Γ(Z, U)] Γ(Spec (.of L), f ⁻¹ᵁ U)` to `{ (asIso ψ).commRingCatIsoToRingEquiv with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `((Z.presheaf.germ U _ hxU ≫ φ) ≫ ψ).hom a = (f.app U).hom a`. Rewrite using `[happ, Category.assoc] }`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `isPreimmersion_val Γ(Z, U) Γ(Spec (.of L), f ⁻¹ᵁ U) L hinj e`. Establish `h2` using `f.ι_toNormalization ⟨U, hU⟩`. Establish `hW : IsAffineOpen (f ⁻¹ᵁ U)` using `htop ▸ isAffineOpen_top _`. Establish `h3 : IsIso (f ⁻¹ᵁ U).toSpecΓ`. Rewrite using `[← hW.isoSpec_hom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `h4 : IsIso (f ⁻¹ᵁ U).ι`. Rewrite using `[htop]`. Conclude with `inferInstanceAs (IsIso (Spec (.of L)).topIso.hom)`. Establish `h5 : IsPreimmersion ((f ⁻¹ᵁ U).ι ≫ f.toNormalization)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h2]`. Establish `h7 : IsOpenImmersion (f.normalizationOpenCover.f ⟨U, hU⟩)` using `f.normalizationOpenCover.map_prop _`. Establish `h8 : IsPreimmersion (f.normalizationOpenCover.f ⟨U, hU⟩)` using `(fun {X Y : Scheme.{0}} (g : X ⟶ Y) (_ : IsOpenImmersion g) => (inferInstance : IsPreimmersion g)) _ h7`. Conclude with `@IsPreimmersion.comp _ _ _ _ _ inferInstance (@IsPreimmersion.comp _ _ _ _ _ h1 h8)`. Establish `h6 : IsPreimmersion (inv (f ⁻¹ᵁ U).ι ≫ (f ⁻¹ᵁ U).ι ≫ f.toNormalization)` using `inferInstance`.
-
-Rewrite `h6` using `[IsIso.inv_hom_id_assoc]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isPreimmersion_toNormalization (Z : Scheme.{0}) [IsIntegral Z] {L : Type} [Field L]
     (φ : Z.presheaf.stalk (genericPoint Z) ⟶ .of L) (hφ : φ.hom.Finite) :
@@ -113,17 +111,15 @@ theorem isPreimmersion_toNormalization (Z : Scheme.{0}) [IsIntegral Z] {L : Type
 end PositivityTheory.Xgn.StratumOpenCover
 
 /- English proof (translation)
-Introduce `Z _ s _ _ L _ z hz L' _ _ _`. Take `⟨e, rfl⟩` from `hz`. Take `⟨χ, hχ⟩` from `Spec.map_surjective e.hom`. Establish `: IsIso (Spec.map χ)` using `hχ ▸ inferInstance`. Establish `hχ' : IsIso χ` using `(isIso_SpecMap_iff).mp this |> (ConcreteCategory.isIso_iff_bijective χ).mpr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : Z.presheaf.stalk (genericPoint Z) ⟶ .of L'` to `χ ≫ CommRingCat.ofHom (algebraMap L L')`. Establish `hφ : φ.hom.Finite` using `RingHom.Finite.comp (RingHom.finite_algebraMap.mpr inferInstance) (.of_surjective _ (ConcreteCategory.bijective_of_isIso χ).2)`. Establish `hf : spMap (algebraMap L L') ≫ e.hom ≫ Z.fromSpecStalk (genericPoint Z) = Spec.map φ ≫ Z.fromSpecStalk (genericPoint Z)`. Rewrite using `[← hχ, Spec.map_comp, Category.assoc]`. Rewrite using `[hf]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: CharZero L'`. Take `⟨ρ, -⟩` from `Spec.map_surjective (Spec.map φ ≫ Z.fromSpecStalk (genericPoint Z) ≫ s)`. Conclude with `charZero_of_injective_ringHom (R := ℚ) ρ.hom.injective`. Establish `hfin` using `GlobalTheory.isFinite_fromNormalization_SpecMap_fromSpecStalk s (genericPoint Z) φ hφ.finiteType.essFiniteType`. Establish `hpre` using `PositivityTheory.Xgn.StratumOpenCover.isPreimmersion_toNormalization Z φ hφ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdom : IsDominant (Spec.map φ ≫ Z.fromSpecStalk (genericPoint Z))`. Use `⟨?_⟩` and prove the remaining obligations. Establish `hx : (Spec.map φ ≫ Z.fromSpecStalk (genericPoint Z)) (IsLocalRing.closedPoint L') = genericPoint Z`. Establish `: Z.fromSpecStalk (genericPoint Z) (Spec.map φ (IsLocalRing.closedPoint L')) ∈ Set.range (Z.fromSpecStalk (genericPoint Z))` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Specializes.antisymm this (genericPoint_specializes _)).eq`. Use `Dense.mono (Set.singleton_subset_iff.mpr ⟨_, hx⟩) ?_` and prove the remaining obligations. Conclude with `dense_iff_closure_eq.mpr (genericPoint_spec Z)`. Use `set f := Spec.map φ ≫ Z.fromSpecStalk (genericPoint Z)`. Establish `: IsDominant (f.toNormalization ≫ f.fromNormalization)`.
-
-Rewrite using `[Scheme.Hom.toNormalization_fromNormalization]`. Conclude with `hdom`. Establish `: IsDominant f.fromNormalization` using `.of_comp f.toNormalization _`. Use `⟨f.normalization, inferInstance, f.fromNormalization, f.toNormalization, hfin, inferInstance, GlobalTheory.IsNormalScheme.pred _, GlobalTheory.IsGenericPointHom.of_isPreimmersion _, Scheme.Hom.toNormalization_fromNormalization _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.stratum_finite_normal_cover : ∀ (Z : Scheme.{0}) [IsIntegral Z] (s : Z ⟶ Sp ℚ) [LocallyOfFiniteType s] [QuasiCompact s] (L : Type) [Field L] (z : Sp L ⟶ Z), GlobalTheory.IsGenericPointHom z → ∀ (L' : Type) [Field L'] [Algebra L L'] [FiniteDimensional L L'], ∃ (Z' : Scheme.{0}) (_ : IsIntegral Z') (π : Z' ⟶ Z) (j : Sp L' ⟶ Z'), IsFinite π ∧ Surjective π ∧ IsNormalScheme Z' ∧ GlobalTheory.IsGenericPointHom j ∧ j ≫ π = spMap (algebraMap L L') ≫ z := by
   intro Z _ s _ _ L _ z hz L' _ _ _

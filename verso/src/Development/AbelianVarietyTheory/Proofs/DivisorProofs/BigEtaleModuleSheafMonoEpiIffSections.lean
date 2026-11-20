@@ -12,7 +12,7 @@ instance wEqLBMonoEpi (R : Type) [CommRing R] :
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use extensionality with `U a`. Conclude with `h (unop U) a`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sec_ext {F G : Shv R} (φ ψ : F ⟶ G) (h : ∀ U (a : Sec F U), Sec.map φ a = Sec.map ψ a) : φ = ψ := by
   apply Sheaf.hom_ext
@@ -20,11 +20,9 @@ theorem sec_ext {F G : Shv R} (φ ψ : F ⟶ G) (h : ∀ U (a : Sec F U), Sec.ma
   exact h (unop U) a
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h U`. Establish `: Mono φ.hom` using `inferInstanceAs (Mono ((sheafToPresheaf _ _).map φ))`. Establish `: Mono (φ.hom.app (op U))` using `inferInstance`. Conclude with `(ModuleCat.mono_iff_injective _).1 this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `: Mono φ.hom`. Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `U`. Conclude with `(ModuleCat.mono_iff_injective _).2 (h (unop U))`.
-
-Conclude with `(sheafToPresheaf _ _).mono_of_mono_map this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mono_iff_inj {F G : Shv R} (φ : F ⟶ G) :
     Mono φ ↔ ∀ U, Function.Injective (Sec.map φ (U := U)) := by
@@ -41,11 +39,11 @@ theorem mono_iff_inj {F G : Shv R} (φ : F ⟶ G) :
     exact (sheafToPresheaf _ _).mono_of_mono_map this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h U a ha`. Establish `: a = 0` using `h U (by rw [ha]; exact (map_zero _).symm)`. Substitute `this` using the available equality. Conclude with `⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => map_zero _⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 
-Introduce `h U`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨S, hS, hP⟩` from `h U a ha`. Establish `hF : Presieve.IsSheaf Scheme.etaleTopology (F.obj ⋙ forget _)` using `(isSheaf_iff_isSheaf_of_type _ _).1 ((sheafCompose Scheme.etaleTopology (forget (ModuleCat.{1} (ULift.{1} R)))).obj F).cond`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hF S hS).isSeparatedFor.ext fun V g hg => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.res g a = Sec.res g (0 : Sec F U)`. Rewrite using `[hP V g hg]`. Conclude with `(map_zero _).symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_iff_loc {F G : Shv R} (φ : F ⟶ G) :
     (∀ U, Function.Injective (Sec.map φ (U := U))) ↔
@@ -67,11 +65,11 @@ theorem inj_iff_loc {F G : Shv R} (φ : F ⟶ G) :
     exact (map_zero _).symm
 
 /- English proof (translation)
-Rewrite using `[← Sheaf.isLocallySurjective_iff_epi']`. Prove the components needed by the constructor for the conclusion. Introduce `h U b`. Conclude with `⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology φ.hom b, fun V g hg => hg⟩`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `U b`. Take `⟨S, hS, hP⟩` from `h U b`. Use `Scheme.etaleTopology.superset_covering ?_ hS` and prove the remaining obligations. Introduce `V g hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hP V g hg`.
+A detailed English derivation is pending.
 -/
 theorem epi_iff_loc {F G : Shv R} (φ : F ⟶ G) :
     Epi φ ↔ ∀ U (b : Sec G U), Loc U fun V g => ∃ a : Sec F V, Sec.map φ a = Sec.res g b := by
@@ -91,7 +89,7 @@ end GlobalTheory.EtC.MonoEpi
 
 open GlobalTheory.EtC.MonoEpi in
 /- English proof (translation)
-Introduce `R _ F G φ`. Conclude with `⟨mono_iff_inj φ, (mono_iff_inj φ).trans (inj_iff_loc φ), epi_iff_loc φ, fun ψ h => sec_ext φ ψ h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.EtC.mono_epi_sections : ∀ (R : Type) [CommRing R] {F G : Shv R} (φ : F ⟶ G), (Mono φ ↔ ∀ U, Function.Injective (Sec.map φ (U := U))) ∧ (Mono φ ↔ ∀ U (a : Sec F U), Sec.map φ a = 0 → Loc U fun _ g => Sec.res g a = 0) ∧ (Epi φ ↔ ∀ U (b : Sec G U), Loc U fun V g => ∃ a : Sec F V, Sec.map φ a = Sec.res g b) ∧ (∀ ψ : F ⟶ G, (∀ U (a : Sec F U), Sec.map φ a = Sec.map ψ a) → φ = ψ) := by
   intro R _ F G φ

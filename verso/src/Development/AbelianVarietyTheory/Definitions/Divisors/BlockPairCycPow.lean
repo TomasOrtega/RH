@@ -14,19 +14,17 @@ namespace GlobalTheory.ExpFrame.Inhab
 variable (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hc : Continuous (cyc E Ω l)` using `(Continuous.units_map ((algebraMap ℚ_[l] (PadicAlgCl l)).comp PadicInt.Coe.ringHom).toMonoidHom ((continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp (continuous_subtype_val : Continuous fun z : ℤ_[l] => (z : ℚ_[l])))).comp (continuous_cycZ E Ω l)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Continuous (cyc E Ω l ^ m)` using `hc.pow m`. Use `(Continuous.units_map _ ?_).comp h1` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => by fin_cases i; fin_cases j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using continuous_id'`. Introduce and unpack `P AI ⟨T⟩ w A - O _ _ _ Bw -`. Take `⟨hc, hm⟩` from `GlobalTheory.HTW.Rec.Model.cycPowSum_crys_mult T Bw.Kw Bw.LL (fun _ : Fin 1 => -(m : ℤ))`. Establish `hd` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI T Bw.Kw Bw.LL _ _ hc).1`. Establish `hM : IsModel Bw ((rk1 (cyc E Ω l ^ m)).comp (Dec (F` using `E) A).subtype) Bw.LL (powModel P Bw m) := by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨le_rfl, MonoidHom.ext fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.Survey.CrystallineCharacterRatio.chi_eq_cyc P Bw.j (g : G E Ω) (Bw.e g : GQ l) (Bw.e_comm g)`. Use extensionality with `a c`. Use `fin_cases a`. Use `fin_cases c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[powModel, rk1, mapRep, cycLL, P.PD_χ, e, cyc_eq_map_cycZ, Matrix.diagonal_pow]`. Rewrite using `[Matrix.diagonal_map (map_zero _), Matrix.diagonal_pow, Matrix.diagonal_apply_eq, Pi.pow_apply]`. Both sides reduce to the same expression. Establish `hC : Bw.IsCrysE P Bw.LL (powModel P Bw m)`. Rewrite using `[LocBridge.IsCrysE, repE_powModel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc`. Establish `hD : Bw.IsdRE P Bw.LL (powModel P Bw m)`. Rewrite using `[LocBridge.IsdRE, repE_powModel]`. Establish `h2 : Module.finrank ↥Bw.LL.1 ↥(Formalism.WeaklyAdmissibleFiltrations.DdR (P.PD Bw.Kw) (matRep (GlobalTheory.HTW.Rec.Model.cycPowSum P Bw.Kw Bw.LL (fun _ : Fin 1 => -(m : ℤ))))) = Module.finrank ℚ_[l] ↥Bw.Kw.1 * Module.finrank ↥Bw.LL.1 (Fin 1 → ↥Bw.LL.1)` using `hd`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, _, hM, hC⟩, fun τ LL' τ' hτ => ?_⟩` and prove the remaining obligations. Set `τ₂ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥Bw.LL.1` to `(LL'.1.val.comp τ').codRestrict Bw.LL.1.toSubalgebra fun x => Bw.LL_split _ x`. Use `⟨Bw.LL, _, hM, hD, τ₂, fun x => hτ x, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[LocBridge.multE, repE_powModel, hm τ₂ n]`. Simplify using `only [List.ofFn_succ, List.ofFn_zero, Multiset.count_singleton, List.count_cons, List.count_nil]`.
-
-Distinguish the cases in `h : n = -(m : ℤ)`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crysWith_cyc_pow (m : ℕ) : CrysWith (rk1 (cyc E Ω l ^ m)) fun _ => {-(m : ℤ)} := by
   have hc : Continuous (cyc E Ω l) :=
@@ -70,9 +68,9 @@ theorem crysWith_cyc_pow (m : ℕ) : CrysWith (rk1 (cyc E Ω l ^ m)) fun _ => {-
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Use `⟨rk1 (cyc E Ω l ^ m), 0, 1, fun _ => cyc E Ω l ^ m, rfl, ?_, continuous_const, fun s => ?_, fun σ k => ?_⟩` and prove the remaining obligations. Simplify using `using crysWith_cyc_pow E Ω l m`. Simplify using `using crysWith_cyc_pow E Ω l m`. Establish `e : ((rk1 (cyc E Ω l ^ m) σ).val).charpoly = Polynomial.X - Polynomial.C (((cyc E Ω l ^ m) σ : (Qbar l)ˣ) : Qbar l)`. Rewrite using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rk1, Matrix.diagonal_pow]`. Rewrite using `[e]`. Simplify using `[Matrix.charpoly]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockPair_cyc_pow (m : ℕ) : BlockPair E Ω l 1 1 (fun _ _ => -(m : ℤ)) fun _ => -(m : ℤ) := by
   refine ⟨rk1 (cyc E Ω l ^ m), 0, 1, fun _ => cyc E Ω l ^ m, rfl, ?_, continuous_const, fun s => ?_, fun σ k => ?_⟩

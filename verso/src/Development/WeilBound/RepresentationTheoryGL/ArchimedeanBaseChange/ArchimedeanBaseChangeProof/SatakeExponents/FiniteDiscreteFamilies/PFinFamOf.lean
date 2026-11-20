@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.F.F5
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.FinFamAssembly.finFamOf`.
+A detailed English derivation is pending.
 -/
 theorem finFamOf_holds : FinFamOf := GlobalTheory.CompanionTheory.FinFamAssembly.finFamOf
 

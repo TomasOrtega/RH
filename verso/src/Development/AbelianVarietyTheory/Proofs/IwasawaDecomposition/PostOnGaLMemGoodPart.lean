@@ -26,15 +26,13 @@ open Formalism.IndefR.Lev
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `hc`. Establish `hle : D.host.conj • w.asIdeal ≤ w'.asIdeal`. Introduce `y hy`. Rewrite `hy` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Take `⟨z, hz, hzv⟩` from `hc _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : z = y` using `RingOfIntegers.ext ((hzv.trans (bridge_star_holds D.R D.host _)).trans (D.host.conj.apply_symm_apply (y : D.host.E)))`. Conclude with `e ▸ hz`. Take `⟨v, hv, -⟩` from `GlobalTheory.Mem.Chr.existsUnique_conjPl D.host.conj.toRingEquiv w`. Establish `hv'` using `(GlobalTheory.Mem.Chr.conjPl_iff_smul D.host.conj w v).1 hv`. Establish `hvw : v = w'` using `HeightOneSpectrum.ext (v.isMaximal.eq_of_le w'.isPrime.ne_top (hv' ▸ hle))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hvw` using the available equality. Take `⟨ho, hiff⟩` from `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) w (P.overP hw)).2.2.2 (P.pb k) (P.pb_over k) v hv`. Establish `hk : k = k'`. Assume the negation of the conclusion as `hne`. Apply the tactic sequence `have hg : D.host.g k ≠ D.host.g k' := by fin_cases k <;> fin_cases k'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd rfl hne`. Conclude with `D.host.g_ne`. Conclude with `D.host.g_ne.symm`. Conclude with `absurd rfl hne`. Take `⟨s, t, hst⟩ : IsCoprime ((D.host.g k : ℕ) : 𝓞 D.host.E) ((D.host.g k' : ℕ) : 𝓞 D.host.E)` from `Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime k) (D.host.g_prime k')).2 hg)`.
-
-Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hst]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ ho) (v.asIdeal.mul_mem_left _ (P.overP hw'))`. Substitute `hk` using the available equality. Conclude with `hiff.1 hw hw'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem not_isConjPl {D : D7} (P : Formalism.L2.Host.PiBar D.host) {k k' : Fin 2} {w w' : HeightOneSpectrum (𝓞 D.host.E)}
     (hw : P.Div k w) (hw' : P.Div k' w') : ¬ Lev.IsConjPl w w' := by
@@ -69,7 +67,7 @@ theorem not_isConjPl {D : D7} (P : Formalism.L2.Host.PiBar D.host) {k k' : Fin 2
   exact hiff.1 hw hw'
 
 /- English proof (translation)
-Use `conv_rhs => rw [← hz]`. Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conv_of_idem {H : Type} [Group H] [Fintype H] (z : MonoidAlgebra ℂ H) (hz : z * z = z) (g : H) :
     ∑ a, z.coeff a * z.coeff (a⁻¹ * g) = z.coeff g := by
@@ -83,14 +81,14 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : 
   {L : LevDat D.host.E ℂ V.rank} {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun X hX => ⟨hX.aut, hX.cusp, fun v k hk g => (h k hk).2 ▸ hX.lev v k (h k hk).1 g, hX.equiv, hX.cont⟩`.
+A detailed English derivation is pending.
 -/
 theorem mult_mono {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ} (h : ∀ k ∈ J', k ∈ J ∧ χ k = χ' k) :
     Mult θ M J χ ≤ Mult θ M J' χ' :=
   Submodule.span_mono fun X hX => ⟨hX.aut, hX.cusp, fun v k hk g => (h k hk).2 ▸ hX.lev v k (h k hk).1 g, hX.equiv, hX.cont⟩
 
 /- English proof (translation)
-Establish `e : postOn M (gaL V β L eG c) X = ∑ g, c g • postOn M (actL V β L (eG g)) X`. Use extensionality with `v h`. Simplify using `[gaL, postOn_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (GlobalTheory.FlagAction.finiteGroupAction_preserves_principalFlagMultiplicity θ M hθ β L (eG g) X hX _ fun _ => rfl)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem postOn_gaL_mem (hθ : IsInfFam θ) (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ) {X : MMap M}
     (hX : X ∈ Mult θ M (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L))) :
@@ -103,11 +101,11 @@ theorem postOn_gaL_mem (hθ : IsInfFam θ) (eG : G ≃* G0 L.Pg L.r) (c : G → 
     (GlobalTheory.FlagAction.finiteGroupAction_preserves_principalFlagMultiplicity θ M hθ β L (eG g) X hX _ fun _ => rfl)
 
 /- English proof (translation)
-Use `letI : Fintype (G0 L.Pg L.r) := Fintype.ofEquiv G eG.toEquiv`. Establish `e : ∀ F, gaL V β L eG c F = ∑ g, c (eG.symm g) • actG0 V β L g F` using `fun F => by`. Unfold `gaL`. Rewrite using `[LinearMap.sum_apply]`. Use `Fintype.sum_equiv eG.toEquiv _ _ fun g => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show c g • actG0 V β L (eG g) F = c (eG.symm (eG g)) • actG0 V β L (eG g) F`. Rewrite using `[MulEquiv.symm_apply_apply]`. Rewrite using `[e, e]`. Use `GlobalTheory.FlagAction.convIdempotent_act V β L hL (fun g => c (eG.symm g)) (fun g => ?_) F hF` and prove the remaining obligations. Rewrite using `[← hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv eG.symm.toEquiv _ _ fun a => ?_` and prove the remaining obligations. Use `show c (eG.symm a) * c (eG.symm (a⁻¹ * g)) = c (eG.symm a) * c ((eG.symm a)⁻¹ * eG.symm g)`. Rewrite using `[map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaL_gaL (hL : LiftsExist V β L) (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ) (hc : ∀ g, ∑ a, c a * c (a⁻¹ * g) = c g)
     {F : GA D V → ℂ} (hF : HasType V β (flag1L L) F) : gaL V β L eG c (gaL V β L eG c F) = gaL V β L eG c F := by
@@ -126,7 +124,7 @@ theorem gaL_gaL (hL : LiftsExist V β L) (eG : G ≃* G0 L.Pg L.r) (c : G → �
   rw [map_mul, map_inv]
 
 /- English proof (translation)
-Use `⟨postOn_gaL_mem hθ eG c hX, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `ext1 v`. Conclude with `gaL_gaL hL eG c hc (GlobalTheory.hasType_of_mem_mult θ M β _ X hX v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem postOn_gaL_mem_goodPart (hθ : IsInfFam θ) (hL : LiftsExist V β L) (eG : G ≃* G0 L.Pg L.r) (c : G → ℂ)
     (hc : ∀ g, ∑ a, c a * c (a⁻¹ * g) = c g) {X : MMap M}
@@ -146,7 +144,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`. Use `GlobalTheory.T.parahoricLevel_liftsExist _ _ _ _ _ hc (fun PP hP PP' hP' => ?_) (Finset.disjoint_empty_right _)` and prove the remaining obligations. Take `⟨k, hk⟩` from `(h.Pg PP).1 hP`. Take `⟨k', hk'⟩` from `(h.Pg PP').1 (hP'.resolve_right (Finset.notMem_empty _))`. Conclude with `not_isConjPl R.C.P hk hk'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem liftsExist_rows (h : R.toLevCh.Is A.μ0) : LiftsExist (Yc D 0) (R.βY 0) (R.dat0 R.triv) := by
   obtain ⟨c, hc⟩ := h.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)
@@ -156,9 +154,9 @@ theorem liftsExist_rows (h : R.toLevCh.Is A.μ0) : LiftsExist (Yc D 0) (R.βY 0)
   exact not_isConjPl R.C.P hk hk'
 
 /- English proof (translation)
-Take `⟨eR, _, _, h, _⟩` from `hr`. Use `letI : Fintype (G0g D.nd) := Fintype.ofEquiv G eR.toEquiv`. Unfold `RealDat.eC`. Simplify using `only [h]`. Rewrite using `[← conv_of_idem _ (GlobalTheory.GoodLatCompare.goodSeriesIdempotent_central_idempotent D).2 (eR g)]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv eR.toEquiv _ _ fun a => ?_` and prove the remaining obligations. Use `show _ = D.ntypes.e0.coeff (eR a) * D.ntypes.e0.coeff ((eR a)⁻¹ * eR g)`. Rewrite using `[map_mul, map_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eC_conv (hr : R.grp_record) (g : G) :
     ∑ a, RealDat.eC (A := A) D.what₂.embLL a * RealDat.eC (A := A) D.what₂.embLL (a⁻¹ * g) =
@@ -173,17 +171,17 @@ theorem eC_conv (hr : R.grp_record) (g : G) :
   rw [map_mul, map_inv]
 
 /- English proof (translation)
-The claim follows from `(Lift.thetaDn (R.CC t) (R.ioY t) (D.R.m - 1) (R.ioX t ((R.cX.toMap R.prX ∘ₗ (R.HX t).e).rangeRestrict x))).2`.
+A detailed English derivation is pending.
 -/
 theorem thDn_mem_CC (t : T) (x : (R.HX t).H) : R.thDn t x ∈ R.CC t 0 :=
   (Lift.thetaDn (R.CC t) (R.ioY t) (D.R.m - 1) (R.ioX t ((R.cX.toMap R.prX ∘ₗ (R.HX t).e).rangeRestrict x))).2
 
 /- English proof (translation)
-Establish `hr : (Yc D 0).rank = D.R.r`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Simplify using `[Ranks.rankY]`. Establish `e0` using `GlobalTheory.levG_twist_trivial_of_rank_eq (Yc D 0) (R.βY 0) D.R.r D.R.t (r_le_Y 0) hr R.Pg (R.Q t) R.triv R.chi (R.xiR t)`. Establish `e1` using `e0.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `e0.2`. Establish `h1 : R.thDn t x ∈ MultT R.θ (R.MY 0) (levS _ (R.βY 0) (R.datYt t 0 R.triv)) (levChi _ (R.βY 0) (R.datYt t 0 R.triv))` using `thDn_mem_CC R t x`. Establish `h2` using `(mem_multT R.θ (R.MY 0) _ _ _).1 h1`. Establish `e1' : levG (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv) = levG (Yc D 0) (R.βY 0) (R.dat0 R.triv)` using `e1`. Establish `e2' : ∀ k ∈ levG (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv), levChi (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv) k = levChi (Yc D 0) (R.βY 0) (R.dat0 R.triv) k` using `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ k ∈ levS (Yc D 0) (R.βY 0) (R.dat0 R.triv), k ∈ levS (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv) ∧ levChi (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv) k = levChi (Yc D 0) (R.βY 0) (R.dat0 R.triv) k` using `fun k hk => by`. Establish `hk' : k ∈ levG (Yc D 0) (R.βY 0) (R.datYt t 0 R.triv)` using `by rw [e1']; exact hk`. Conclude with `⟨hk', e2' k hk'⟩`. Conclude with `mult_mono h3 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thDn_mem (t : T) (x : (R.HX t).H) :
     PiTensorProduct.lift.symm (R.thDn t x) ∈
@@ -208,7 +206,7 @@ theorem thDn_mem (t : T) (x : (R.HX t).H) :
   exact mult_mono h3 h2
 
 /- English proof (translation)
-The claim follows from `postOn_gaL_mem_goodPart (L := R.dat0 R.triv) hθ (liftsExist_rows R h) R.eG _ (eC_conv R hr) (thDn_mem R t x)`.
+A detailed English derivation is pending.
 -/
 theorem proj_thDn_mem (h : R.toLevCh.Is A.μ0) (hθ : R.models_inf) (hr : R.grp_record) (t : T) (x : (R.HX t).H) :
     postOn (R.MY 0) R.e0 (PiTensorProduct.lift.symm (R.thDn t x)) ∈ R.EEat R.triv :=
@@ -217,7 +215,7 @@ theorem proj_thDn_mem (h : R.toLevCh.Is A.μ0) (hθ : R.models_inf) (hr : R.grp_
 end Real
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R h _ hM hr`. Establish `key : ∀ t, ∃ y : (R.HX t).H →ₗ[ℂ] R.HE.H, ∀ x, R.HE.e (y x) = postOn (R.MY 0) R.e0 (PiTensorProduct.lift.symm (R.thDn t x))` using `fun t => GlobalTheory.HilbertModel.exists_lift hM.HE (postOn (R.MY 0) R.e0 ∘ₗ (PiTensorProduct.lift.symm : (SmT (R.MY 0) →ₗ[ℂ] (GA D (Yc D 0) → ℂ)) ≃ₗ[ℂ] MMap (R.MY 0)).toLinearMap ∘ₗ R.thDn t) (proj_thDn_mem R h hM.inf hr t)`. Use `choose Th hTh using key`. Conclude with `⟨Th, hTh⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chain_Th : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → R.grp_record → ∃ Th, ({ R with Th := Th } : RealDat D A Ks).chain_Th := by
   intro D G _ _ Pl0 T A Ks _ _ _ R h _ hM hr

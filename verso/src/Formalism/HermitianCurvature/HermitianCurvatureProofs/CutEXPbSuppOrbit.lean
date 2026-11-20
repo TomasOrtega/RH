@@ -22,13 +22,11 @@ variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Apply `h` to reduce the goal to its premises. Unfold `PBQ.pbF`. Rewrite using `[← integral_zero (PBQ.XP k p ρ) (Wq →L[ℂ] Wp)]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBQ.ae_goodP (p := p) Bj] with x hx`. Use `show PBQ.pbI Bj B0 e H g0 x = 0`. Unfold `PBQ.pbI`. Establish `hK : PBG.Kr B0 H (D.castM e (PBQ.sP Bj x) * g0) = 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `PBG.Kr`. Rewrite using `[← integral_zero (Mt k n × Mt k n) (Wq →L[ℂ] Wp)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBG.ae_inR B0] with ξ hξ`. Use `show _ = 0`.
-
-Rewrite using `[hno x hx ξ hξ, ContinuousLinearMap.zero_comp, smul_zero]`. Rewrite using `[hK, ContinuousLinearMap.comp_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orbit (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (H : B.Mat k n → (Wq →L[ℂ] Wp)) (g0 : B.Mat k n) (h : PBQ.pbF Bj B0 e H g0 ≠ 0) :
@@ -53,7 +51,7 @@ theorem exists_orbit (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n
   rw [hK, ContinuousLinearMap.comp_zero, smul_zero]
 
 /- English proof (translation)
-Unfold `B.gN`. Rewrite using `[Complex.norm_def]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_entry_le_gN (g : B.Mat k n) (i j : Fin (2 * n + k + 1)) : ‖g i j‖ ≤ B.gN g := by
   unfold B.gN
@@ -67,17 +65,17 @@ theorem norm_entry_le_gN (g : B.Mat k n) (i j : Fin (2 * n + k + 1)) : ‖g i j�
           (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using `only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl] at hg ⊢`. Rewrite `hz` using `[Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]`. Establish `hm : U.mMap k p ρ Z μ ∈ B.GV k (p + ρ)` using `(Formalism.FourierDecayAlt.P.slice_membership k p ρ).1 Z μ hZ hμ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (PartialBesselProperness.sP_GV Bj x) hm) hξ.2.1) hξ.1.1`. Use `⟨G.upper (fun q : G.UT p => (Matrix.of ξ.2 : B.Mat k (p + ρ)) ⟨q.1.1.val, by omega⟩ ⟨q.1.2.val, by omega⟩), LeftFubiniLemmas.upper_isUpUni _, fun a b => ?_⟩` and prove the remaining obligations. Establish `hZh : U.Zh k p ρ g = Z * G.upper (fun q : G.UT p => (Matrix.of ξ.2 : B.Mat k (p + ρ)) ⟨q.1.1.val, by omega⟩ ⟨q.1.2.val, by omega⟩)`. Establish `e0` using `Formalism.FourierDecayAlt.P.hat_z_on_slice k p ρ 0 0 Z μ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e0` using `[LeftFubiniLemmas.rn_zero, inv_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[hg, PBQ.zh_mul_UW _ _ _ hξ.1, LeftFubiniLemmas.zh_mul_N _ _ hξ.2, PBQ.zh_sP_mul, e0, PBQ.nblk_upper _ hξ.2]`. Rewrite using `[← hZh]`. Conclude with `norm_entry_le_gN g _ _`. Take `⟨h, hh, m, hmN, hs⟩` from `PartialBesselProperness.leftFactor_mem Bj x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hh` using `[← hz]`. Establish `hhu : IsUnit h.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh.1`. Establish `hmu : IsUnit m.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hmN.1`. Use `set pp : B.SS k (p + ρ) := ((Matrix.of.symm h⁻¹, Matrix.of.symm m⁻¹), ξ) with hpp`. Establish `hin : B0.inSS pp` using `⟨Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh, Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hmN, hξ.1, hξ.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsg : B.sgs pp (U.mMap k p ρ Z μ) = g`. Rewrite using `[hg, hs]`. Simplify using `only [B.sgs, hpp]`. Express the relevant statement in the definitionally equal form `(h⁻¹)⁻¹ * (m⁻¹)⁻¹ * U.mMap k p ρ Z μ * Matrix.of ξ.2 * Matrix.of ξ.1 = _`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hhu, Matrix.nonsing_inv_nonsing_inv _ hmu]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun l => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsg]`. Conclude with `Formalism.FourierDecayAlt.P.BigCellZetaMinors.dmin_sgs B0 hin _ l`. Rewrite using `[← hsg]`. Conclude with `Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs B0 hin _`.
+A detailed English derivation is pending.
 -/
 theorem orbit_gen (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (hz : B0.z = D.castV e (liftVec k p ρ Bj.z))
@@ -123,7 +121,7 @@ theorem orbit_gen (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp
 end gen
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx5.castM_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem gf_castM {k a b : ℕ} (e : a = b) (z z' : Fin (2 * b + k + 1) → ℂ) (g : B.Mat k a) :
     Gf k b z z' (D.castM e g) = Gf k a (D.castV e.symm z) (D.castV e.symm z') g := by
@@ -131,7 +129,7 @@ theorem gf_castM {k a b : ℕ} (e : a = b) (z z' : Fin (2 * b + k + 1) → ℂ) 
   rw [Formalism.FourierDecayAlt.P.JCTx5.castM_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl, Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castV_castV' {k a b c : ℕ} (h1 : a = b) (h2 : b = c) (v : Fin (2 * a + k + 1) → ℂ) :
     D.castV h2 (D.castV h1 v) = D.castV (h1.trans h2) v := by
@@ -141,7 +139,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `D.LevTower.base`. Rewrite using `[← p.T.z_lev P.r le_rfl, ← p.T.z'_lev P.r le_rfl, castV_castV', castV_castV']`. Conclude with `⟨Formalism.FourierDecayAlt.P.JCTx6.Link2.lowV_liftVec rfl _ _, Formalism.FourierDecayAlt.P.JCTx6.Link2.lowV_liftVec rfl _ _⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lowV_top {P : M.Par} (p : KB.Pl P Wp Wq) (e : P.r + (P.r - P.r) = P.r) :
     U.lowV P.k P.r (P.r - P.r) (D.castV e.symm p.T.base.z) = (p.T.bs P.r).z ∧
@@ -151,13 +149,13 @@ theorem lowV_top {P : M.Par} (p : KB.Pl P Wp Wq) (e : P.r + (P.r - P.r) = P.r) :
   exact ⟨Formalism.FourierDecayAlt.P.JCTx6.Link2.lowV_liftVec rfl _ _, Formalism.FourierDecayAlt.P.JCTx6.Link2.lowV_liftVec rfl _ _⟩
 
 /- English proof (translation)
-Establish `e : P.r + (P.r - P.r) = P.r` using `by omega`. Establish `hμGV : μ ∈ B.GV P.k (P.r - P.r)` using `hμ.1`. Unfold `CutEX.pbTop PBQ.pbT at h`. Take `⟨x, hx, ξ, hξ, hG⟩` from `exists_orbit _ _ _ _ _ h`. Establish `hz : p.T.base.z = D.castV e (liftVec P.k P.r (P.r - P.r) (p.T.bs P.r).z)` using `(p.T.z_lev P.r le_rfl).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hGV, ⟨u, hu, hb⟩, hD, hGf⟩` from `orbit_gen (p.T.bs P.r) p.T.base e hz Z μ hZ hμGV x hx ξ hξ _ rfl`. Use `⟨_, hGV, hG, u, hu, hb, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hD]`. Rewrite using `[Formalism.FourierDecayAlt.P.PBI.dmin_castM e _ _ _ P.r (by omega) (by omega), Formalism.FourierDecayAlt.P.hat_z_minimum_degree P.k P.r (P.r - P.r)]`. Establish `e0` using `Formalism.FourierDecayAlt.P.hat_z_on_slice P.k P.r (P.r - P.r) 0 0 Z μ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e0` using `[Formalism.FourierDecayAlt.P.LeftFubiniLemmas.rn_zero, inv_one, Matrix.one_mul, Matrix.mul_one]`. Unfold `U.DjU`. Rewrite using `[e0]`. Rewrite using `[hGf, gf_castM e]`. Establish `hz0` using `Formalism.FourierDecayAlt.P.PBH.inWb_castV e.symm p.T.base.z_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz0'` using `Formalism.FourierDecayAlt.P.PBH.inWb_castV e.symm p.T.base.z'_mem`. Establish `hG0` using `Formalism.FourierDecayAlt.P.level_function_slice P.k P.r (P.r - P.r) _ _ hz0 hz0' 0 0 Z μ`. Rewrite `hG0` using `[Formalism.FourierDecayAlt.P.LeftFubiniLemmas.rn_zero, inv_one, Matrix.one_mul, Matrix.mul_one]`. Take `⟨hl1, hl2⟩` from `lowV_top p e`. Rewrite using `[hG0, hl1, hl2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbit_point {P : M.Par} (p : KB.Pl P Wp Wq) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (Z : Matrix (Fin P.r) (Fin P.r) ℂ) (μ : B.Mat P.k (P.r - P.r)) (hZ : Z.det ≠ 0)

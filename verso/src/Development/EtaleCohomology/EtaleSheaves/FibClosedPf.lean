@@ -21,7 +21,7 @@ def FibStalk : Prop := Hyp → HZero → AICAcyc → ∀ (q : ℕ) (i : ℤ) (A 
       ((pullback p (cpt A)).fromSpecStalk s) (fm c p) (𝟙 _) (𝟙 _) (by simp) (by simp))) (tw q i)
 
 /- English proof (translation)
-Introduce `H q i A _ _ hq Z S c p _ _ _ _ _ hZs hSs hB`. Take `⟨_, _⟩` from `hQ A c p`. Take `⟨_, _⟩` from `qcqs_of (pullback.snd p (cpt A))`. Establish `hu : IsUnit (q : Γ(pullback p (cpt A), ⊤))` using `unit_of hq (pullback.fst p (cpt A) ≫ p)`. Conclude with `hZ H q (fm c p) (𝟙 _) hu i (hS H h0 hA q i A hq c p hZs hSs hB)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FibClosed_of (hZ : ZLG) (h0 : HZero) (hA : AICAcyc) (hQ : FibQCQS) (hS : FibStalk) : FibClosed := by
   intro H q i A _ _ hq Z S c p _ _ _ _ _ hZs hSs hB
@@ -31,9 +31,9 @@ theorem FibClosed_of (hZ : ZLG) (h0 : HZero) (hA : AICAcyc) (hQ : FibQCQS) (hS :
   exact hZ H q (fm c p) (𝟙 _) hu i (hS H h0 hA q i A hq c p hZs hSs hB)
 
 /- English proof (translation)
-Use `IsPullback.of_right (h₁₂ := pullback.snd p (cpt A)) (h₂₂ := p) ?_ (pullback.lift_fst _ _ _) (IsPullback.of_hasPullback p (cpt A)).flip` and prove the remaining obligations. Establish `e : fm c p ≫ pullback.snd p (cpt A) = pullback.snd (c ≫ p) (cpt A)`. Unfold `fm`. Rewrite using `[pullback.map]`. Use `erw [pullback.lift_snd]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `(IsPullback.of_hasPullback (c ≫ p) (cpt A)).flip`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fm_isPullback {A : Type} [CommRing A] [IsLocalRing A] {Z S : Scheme.{0}} (c : Z ⟶ S) (p : S ⟶ Spec (CommRingCat.of A)) :
     IsPullback (fm c p) (pullback.fst (c ≫ p) (cpt A)) (pullback.fst p (cpt A)) c := by
@@ -45,7 +45,7 @@ theorem fm_isPullback {A : Type} [CommRing A] [IsLocalRing A] {Z S : Scheme.{0}}
   exact (IsPullback.of_hasPullback (c ≫ p) (cpt A)).flip
 
 /- English proof (translation)
-Introduce `A _ _ Z S c p _ _`. Conclude with `⟨MorphismProperty.of_isPullback (P := @QuasiCompact) (fm_isPullback c p).flip ‹_›, MorphismProperty.of_isPullback (P := @QuasiSeparated) (fm_isPullback c p).flip ‹_›⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem fibQCQS : FibQCQS := by
   intro A _ _ Z S c p _ _

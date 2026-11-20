@@ -13,13 +13,13 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw p _ _ P ev hadd hact htow hone`. Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `h1 : ∀ a k, ev (p ^ k) a ^ p ^ k = 1` using `fun a k => by`. Use `htow 1 (p ^ k) one_pos (pow_pos hp k) a` as an intermediate fact. Rewrite `this` using `[Nat.one_mul, hone]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : ∀ a k, ev (p ^ (k + 1)) a ^ p = ev (p ^ k) a` using `fun a k => by`. Rewrite using `[pow_succ]`. Conclude with `htow (p ^ k) p (pow_pos hp k) hp a`. Set `f : Dw.La → P.T` to `fun a => Tate.mk (fun k => ev (p ^ k) a) fun k => ⟨h1 a k, h2 a k⟩`. Use `⟨{ toFun := f, map_zero' := ?_, map_add' := ?_ }, fun a k => rfl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Tate.ext fun n => ?_` and prove the remaining obligations. Use `hadd (p ^ n) 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Express the relevant statement in the definitionally equal form `ev (p ^ n) 0 = 1`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Conclude with `Tate.ext fun n => hadd (p ^ n) a b`. Introduce `o a`. Conclude with `Tate.ext fun n => hact (p ^ n) o a`.
+A detailed English derivation is pending.
 -/
 theorem tateLift_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p)

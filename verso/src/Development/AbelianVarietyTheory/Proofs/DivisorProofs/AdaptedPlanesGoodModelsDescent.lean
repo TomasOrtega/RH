@@ -17,23 +17,23 @@ namespace GlobalTheory.ArchSchA
 open GlobalTheory.ArchSchB.Iso in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ M M₁ H H' hB hX hW hH hH' l hl l' hl'`. Take `⟨y, c, z, -, -, -, hz1, rfl⟩` from `hl`. Take `⟨y', c', z', -, -, -, hz1', rfl⟩` from `hl'`. Establish `hinv : ∀ t, σ (σ t) = t` using `fun t => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`. Establish `hflipX : ∀ u v, form σ X.J u v = 0 → form σ X.J v u = 0` using `fun u v h => by`. Rewrite using `[form_herm hinv hX.herm, h, map_zero]`. Establish `hflipW : ∀ u v, form σ W.J u v = 0 → form σ W.J v u = 0` using `fun u v h => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.ArchSch.OrthPlane.form_swap hinv hW.skew, h, map_zero, neg_zero]`. Establish `h0 : ∀ {p q : Type}, incM F (0 : Matrix p q E) = 0` using `fun {p q} => by ext; simp [incM]`. Establish `hXX : (incM F (Matrix.replicateCol Unit H.x))ᵀ * incM F X.J * (incM F (Matrix.replicateCol Unit H.x)).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_xx hH, h0]`. Establish `hXI : (incM F (Matrix.replicateCol Unit H.x))ᵀ * incM F X.J * (incM F H.ι).map (cA σ) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[incM_gram, gram_xι hH hflipX, h0]`. Establish `hIX : (incM F H.ι)ᵀ * incM F X.J * (incM F (Matrix.replicateCol Unit H.x)).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_ιx hH, h0]`. Establish `hWW : (incM F (Matrix.replicateCol Unit H'.x))ᵀ * incM F W.J * (incM F (Matrix.replicateCol Unit H'.x)).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_xx hH', h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hWI : (incM F (Matrix.replicateCol Unit H'.x))ᵀ * incM F W.J * (incM F H'.ι).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_xι hH' hflipW, h0]`. Establish `hIW : (incM F H'.ι)ᵀ * incM F W.J * (incM F (Matrix.replicateCol Unit H'.x)).map (cA σ) = 0`. Rewrite using `[incM_gram, gram_ιx hH', h0]`. Establish `hGX : (incM F H.ι)ᵀ * incM F X.J * (incM F H.ι).map (cA σ) = incM F X₁.J`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[incM_gram, hH.gram]`. Establish `hGW : (incM F H'.ι)ᵀ * incM F W.J * (incM F H'.ι).map (cA σ) = incM F W₁.J`. Rewrite using `[incM_gram, hH'.gram]`. Establish `hA : ∀ y : Fin n → AE F E, Matrix.vecMulVec y (incV F H'.x) = (1 : Matrix (Fin n) (Fin n) (AE F E)) * Matrix.replicateCol Unit y * (incM F (Matrix.replicateCol Unit H'.x))ᵀ`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.one_mul, Matrix.vecMulVec_eq Unit]`. Use `congr 1`. Establish `hC : ∀ c : Fin d₁ → AE F E, Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ c) = incM F (Matrix.replicateCol Unit H.x) * Matrix.replicateRow Unit c * (incM F H'.ι)ᵀ`. Introduce `c`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, incM, incV, Matrix.replicateCol_apply, Matrix.replicateRow_apply, Finset.mul_sum, mul_comm, mul_left_comm]`. Establish `key : symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (Matrix.vecMulVec y (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ c) + incM F H.ι * z * (incM F H'.ι)ᵀ) (Matrix.vecMulVec y' (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ c') + incM F H.ι * z' * (incM F H …`. Simplify using `only [lagL_dar_add_left M.co, lagL_dar_add_right M.co]`. Rewrite using `[hA y, hA y', hC c, hC c']`. Rewrite using `[symp_change_zero_right _ _ _ _ _ _ _ _ _ _ hWW, symp_change_zero_right _ _ _ _ _ _ _ _ _ _ hWI, symp_change_zero_right _ _ _ _ _ _ _ _ _ _ hWI, symp_change_zero_right _ _ _ _ _ _ _ _ _ _ hIW, symp_change_zero_left _ _ _ _ _ _ _ _ _ _ hXX, symp_change_zero_left _ _ _ _ _ _ _ _ _ …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zero_add, add_zero]`. Rewrite using `[← sub_eq_zero, ← GlobalTheory.ArchSch.trace_evI_darboux M.co, key, GlobalTheory.ArchSch.trace_evI_darboux M₁.co, hz1, hz1']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lagSetA_isotropic : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (M : Model σ X W) (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H' : Plane E d d₁),
     B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → H.IsAdapted σ B X X₁ j₀ j₁ → H'.IsAdapted σ B W W₁ i₀ i₁ →

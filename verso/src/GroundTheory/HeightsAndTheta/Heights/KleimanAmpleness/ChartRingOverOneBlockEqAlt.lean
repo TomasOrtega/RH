@@ -27,9 +27,9 @@ variable {κ : Type} [Fintype κ]
 omit [Fintype κ] in
 
 /- English proof (translation)
-Unfold `chartRingOver`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨⟩, a⟩, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨⟨(), a⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem chartRingOver_oneBlock_eq (x : κ → Ω) (c : Unit → κ) :
     chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) c = Algebra.adjoin F (Set.range fun i => x i / x (c ())) := by
@@ -45,9 +45,9 @@ theorem chartRingOver_oneBlock_eq (x : κ → Ω) (c : Unit → κ) :
 omit [Fintype κ] in
 
 /- English proof (translation)
-Unfold `secOver`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Finset.univ_unique, Finset.prod_singleton, Subalgebra.mem_toSubmodule, chartRingOver_oneBlock_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h j hj`. Conclude with `h (fun _ => j) (fun _ => hj)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h c hc`. Conclude with `h (c ()) (hc ())`.
+A detailed English derivation is pending.
 -/
 theorem mem_secOver_oneBlock (x : κ → Ω) (n : ℤ) (t : Ω) :
     t ∈ secOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => n) ↔
@@ -64,11 +64,11 @@ theorem mem_secOver_oneBlock (x : κ → Ω) (n : ℤ) (t : Ω) :
 omit [Fintype κ] in
 
 /- English proof (translation)
-Use extensionality with `t`. Rewrite using `[mem_secOver_oneBlock, mem_secOver_oneBlock]`. Establish `hr : ∀ j', Set.range (fun i' => x (σ i') / x (σ j')) = Set.range (fun i => x i / x (σ j'))` using `fun j' => σ.surjective.range_comp (fun i => x i / x (σ j'))`. Simplify using `only [Function.comp_apply]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h j hj`. Take `⟨j', rfl⟩` from `σ.surjective j`. Use `h j' hj` as an intermediate fact. Rewrite `this` using `[hr]`. Then use the resulting hypothesis. Introduce `h j' hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hr]`. Conclude with `h (σ j') hj'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secOver_oneBlock_comp {κ' : Type} (σ : κ' ≃ κ) (x : κ → Ω) (n : ℤ) :
     secOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (x ∘ σ)) (fun _ => n) = secOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => n) := by
@@ -89,7 +89,7 @@ theorem secOver_oneBlock_comp {κ' : Type} (σ : κ' ≃ κ) (x : κ → Ω) (n 
 omit [Fintype κ] in
 
 /- English proof (translation)
-Rewrite using `[FieldNumbers.CutRegular.relDim_eq_natCast_iff, Fintype.card_unit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relDim_oneBlock_eq_iff (P : Ideal (MvPolynomial (Σ _ : Unit, κ) F)) (e : ℕ) :
     FieldNumbers.relDim P = ((e : ℕ) : WithBot (WithTop ℤ)) ↔
@@ -103,13 +103,13 @@ section FirstTyping
 variable {F : Type} [Field F] {Ω : Type} [Field Ω] [Algebra F Ω] {N : ℕ}
 
 /- English proof (translation)
-Use extensionality with `t`. Rewrite using `[mem_secs_iff, mem_secOver_oneBlock]`. Use `forall_congr' fun j => forall_congr' fun hj => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t ∈ Kleiman.twistMod F x n (Kleiman.singleChart hj) ↔ _`. Rewrite using `[Kleiman.twistMod_eq_span n _ (Finset.mem_singleton_self j), Submodule.mem_span_singleton]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : Kleiman.chartRing F x (Kleiman.singleChart hj) = Algebra.adjoin F (Set.range fun i => x i / x j)` using `(chartRingOver_oneBlock x (fun _ => j) hj).symm.trans (chartRingOver_oneBlock_eq x (fun _ => j))`. Rewrite using `[← hA]`. Establish `hxn : x j ^ n ≠ 0` using `zpow_ne_zero n hj`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Kleiman.chartRing_smul_def, zpow_neg, mul_assoc, mul_inv_cancel₀ hxn, mul_one]`. Conclude with `a.2`. Introduce `h`. Use `⟨⟨_, h⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Kleiman.chartRing_smul_def]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show t * x j ^ (-n) * x j ^ n = t`. Rewrite using `[zpow_neg]`. Conclude with `inv_mul_cancel_right₀ hxn t`.
+A detailed English derivation is pending.
 -/
 theorem twistSys_secs_eq_secOver (x : Fin (N + 1) → Ω) (n : ℤ) :
     (Kleiman.twistSys F x n).secs = secOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => n) := by
@@ -135,9 +135,9 @@ theorem twistSys_secs_eq_secOver (x : Fin (N + 1) → Ω) (n : ℤ) :
     exact inv_mul_cancel_right₀ hxn t
 
 /- English proof (translation)
-Establish `hc : ((MvPolynomial.uniqueAlgEquiv Ω Unit).toAlgHom.restrictScalars F).comp (mConeMapOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x)) = (Kleiman.cone (S` using `F) x).comp (Kleiman.oneBlock (S := F) (N := N)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[mConeMapOver, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, Kleiman.cone, Kleiman.oneBlock, ReciprocityTheory.ChartRestriction.G.Geo.coneMap]`. Use extensionality with `f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[mIdealOver, RingHom.mem_ker, Kleiman.primeOfOne, Ideal.mem_comap, Kleiman.primeOf_eq, RingHom.mem_ker]`. Establish `h` using `congrArg (fun φ => φ f) hc`. Simplify using `only [AlgHom.comp_apply, AlgHom.restrictScalars_apply] at h`. Rewrite using `[← h]`. Conclude with `(map_eq_zero_iff _ (MvPolynomial.uniqueAlgEquiv Ω Unit).injective).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mIdealOver_oneBlock (x : Fin (N + 1) → Ω) :
     mIdealOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) = Kleiman.primeOfOne (S := F) x := by
@@ -154,9 +154,9 @@ theorem mIdealOver_oneBlock (x : Fin (N + 1) → Ω) :
   exact (map_eq_zero_iff _ (MvPolynomial.uniqueAlgEquiv Ω Unit).injective).symm
 
 /- English proof (translation)
-Establish `hX : ∀ i, (X i : Kleiman.Poly F N) ∈ Kleiman.primeOf (S` using `F) x ↔ x i = 0 := fun i => by`. Rewrite using `[Kleiman.mem_primeOf_of_isHomogeneous x (isHomogeneous_X F i), aeval_X]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨i, hi⟩` from `h.relevant`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨i, fun hx => hi ((hX i).mpr hx)⟩, h.dim⟩`. Introduce and unpack `⟨⟨i, hi⟩, hdim⟩`. Conclude with `⟨inferInstance, fun p hp d => Kleiman.homogeneousComponent_mem_primeOf x hp d, le_rfl, ⟨i, fun h => hi ((hX i).mp h)⟩, hdim⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isSubvar_primeOf_iff (x : Fin (N + 1) → Ω) (e : ℕ) :
     Kleiman.IsSubvar x (Kleiman.primeOf (S := F) x) e ↔
@@ -172,7 +172,7 @@ theorem isSubvar_primeOf_iff (x : Fin (N + 1) → Ω) (e : ℕ) :
       ⟨i, fun h => hi ((hX i).mp h)⟩, hdim⟩
 
 /- English proof (translation)
-Rewrite using `[isSubvar_primeOf_iff, relDim_oneBlock_eq_iff, mIdealOver_oneBlock, HilbertPositive.ringKrullDim_primeOfOne]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isSubvar_iff_relDim (x : Fin (N + 1) → Ω) (e : ℕ) :
     Kleiman.IsSubvar x (Kleiman.primeOf (S := F) x) e ↔

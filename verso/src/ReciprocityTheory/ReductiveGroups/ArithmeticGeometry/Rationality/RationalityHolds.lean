@@ -8,89 +8,77 @@ open TensorProduct
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `K Ω V _ _ _ _ _ U _ W FF hWle hdef hkill hdet`. Establish `hEfd : FiniteDimensional Ω (baseSpan Ω U)` using `finiteDimensional_baseSpan Ω U`. Use `set E := baseSpan Ω U with hEdef`. Set `FF' : Set (Module.Dual Ω E)` to `(fun c => c ∘ₗ E.subtype) '' FF`. Take `⟨s', hs'FF, hs'W⟩` from `finiteDetect_holds Ω E (W.comap E.subtype) FF' (by rintro _ ⟨c, hc, rfl⟩ x hx; exact hkill c hc hx) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨c, hc, hcx⟩` from `hdet x x.2 hx`. Conclude with `⟨_, ⟨c, hc, rfl⟩, hcx⟩)`. Establish `hpre : ∀ c' ∈ s', ∃ c ∈ FF, c ∘ₗ E.subtype = c'` using `fun c' hc' => hs'FF hc'`. Use `choose! pre hpreFF hpreEq using hpre`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR2 : ∀ y (hy : y ∈ E), y ∈ W ↔ ∀ c' ∈ s', pre c' y = 0`. Introduce `y hy`. Rewrite using `[show y ∈ W ↔ (⟨y, hy⟩ : E) ∈ W.comap E.subtype from Iff.rfl, ← hs'W]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Use `forall₂_congr fun c' hc' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← hpreEq c' hc']`. Both sides reduce to the same expression. Establish `hfld : ∀ c' ∈ s', ∃ K' : IntermediateField K Ω, FiniteDimensional K K' ∧ DefinedOver (pre c') K'` using `fun c' hc' => hdef _ (hpreFF c' hc')`. Use `choose! fld hfldfin hflddef using hfld`. Set `K₁ : IntermediateField K Ω` to `⨆ c' : s', fld c'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ c' : s', FiniteDimensional K (fld c')` using `fun c' => hfldfin c' c'.2`. Establish `hK₁fin : FiniteDimensional K K₁` using `IntermediateField.finiteDimensional_iSup_of_finite`. Establish `hdefK₁ : ∀ c' ∈ s', DefinedOver (pre c') K₁` using `fun c' hc' => (hflddef c' hc').mono (le_iSup (fun c'' : s' => fld c'') ⟨c', hc'⟩)`. Establish `hrat : ∀ c' ∈ s', ∃ φ : Module.Dual K₁ (K₁ ⊗[K] V), ∀ x, algebraMap K₁ Ω (φ x) = pre c' (inclT K₁ V x)` using `fun c' hc' => exists_ratFun (hdefK₁ c' hc')`. Use `choose! Φ hΦ using hrat`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDfd : FiniteDimensional K₁ (baseSpan K₁ U)` using `finiteDimensional_baseSpan K₁ U`. Use `set D := baseSpan K₁ U with hDdef`. Set `φ : s' → Module.Dual K₁ D` to `fun c' => Φ c' ∘ₗ D.subtype`. Take `⟨t, htsub, htspan, htli⟩` from `exists_linearIndependent K₁ (Set.range φ)`. Establish `htfin : t.Finite` using `(Set.finite_range φ).subset htsub`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Fintype t` using `htfin.fintype`. Use `set ρ := Fintype.card t with hρ`. Set `eT` to `Fintype.equivFin t`. Establish `hsel : ∀ i : Fin ρ, ∃ c' : s', φ c' = (eT.symm i : Module.Dual K₁ D)` using `fun i => htsub (eT.symm i).2`. Use `choose sel hsel using hsel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Set `cc : Fin ρ → Module.Dual Ω (Ω ⊗[K] V)` to `fun i => pre (sel i)`. Set `ph : Fin ρ → Module.Dual K₁ D` to `fun i => (eT.symm i : Module.Dual K₁ D)`. Establish `hph_li : LinearIndependent K₁ ph` using `htli.comp eT.symm eT.symm.injective`. Establish `hph_span : Submodule.span K₁ (Set.range ph) = Submodule.span K₁ (Set.range φ)`. Rewrite using `[← htspan]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(eT.symm i).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hf; exact ⟨eT ⟨f, hf⟩, by simp [ph]⟩`. Establish `hph_cc : ∀ i (x : D), algebraMap K₁ Ω (ph i x) = cc i (inclT K₁ V x)`. Introduce `i x`. Use `show algebraMap K₁ Ω ((eT.symm i : Module.Dual K₁ D) x) = _`. Rewrite using `[← hsel i]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hΦ _ (sel i).2 x`. Establish `hR1 : ∀ x : D, (∀ i, ph i x = 0) → ∀ c' ∈ s', pre c' (inclT K₁ V x) = 0`. Introduce `x hx c' hc'`. Establish `hmem : φ ⟨c', hc'⟩ ∈ Submodule.span K₁ (Set.range ph)` using `hph_span ▸ Submodule.subset_span ⟨_, rfl⟩`. Establish `hker : Submodule.span K₁ (Set.range ph) ≤ LinearMap.ker (Module.Dual.eval K₁ D x)` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; simp [hx i])`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : φ ⟨c', hc'⟩ x = 0` using `by simpa using hker hmem`. Rewrite using `[← hΦ c' hc' x]`. Simplify using `only [φ, LinearMap.comp_apply, Submodule.subtype_apply] at h0`. Simplify using `[h0]`. Establish `hdescmem : ∀ x : K₁ ⊗[K] V, x ∈ descend K₁ W ↔ ∃ hx : x ∈ D, ∀ i, ph i ⟨x, hx⟩ = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[show x ∈ descend K₁ W ↔ inclT K₁ V x ∈ W from Iff.rfl]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hxE : inclT K₁ V x ∈ E` using `hWle hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨mem_baseSpan_of_inclT K₁ U x hxE, fun i => ?_⟩` and prove the remaining obligations. Apply `(algebraMap K₁ Ω).injective` to reduce the goal to its premises. Rewrite using `[hph_cc, map_zero]`. Conclude with `((hR2 _ hxE).mp hx) _ (sel i).2`. Introduce and unpack `⟨hxD, hi⟩`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hR2 _ (inclT_mem_baseSpan K₁ U x hxD)).mpr (hR1 ⟨x, hxD⟩ hi)`. Set `Φ1 : D →ₗ[K₁] (Fin ρ → K₁)` to `LinearMap.pi ph`. Establish `hkerΦ1 : LinearMap.ker Φ1 = (Submodule.span K₁ (Set.range ph)).dualCoannihilator`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_dualCoannihilator]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx f hf`. Establish `hker : Submodule.span K₁ (Set.range ph) ≤ LinearMap.ker (Module.Dual.eval K₁ D x)` using `Submodule.span_le.mpr (by`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify `congrFun hx i)` using `[Φ1]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using hker hf`. Introduce `h`. Use function extensionality and compare the values at `i`. Simplify `h (ph i) (Submodule.subset_span ⟨i, rfl⟩)` using `[Φ1]`. Establish `hfinD : Module.finrank K₁ D = Module.finrank K U` using `finrank_baseSpan K₁ U`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinE : Module.finrank Ω E = Module.finrank K U` using `finrank_baseSpan Ω U`. Establish `hker_rank : Module.finrank K₁ (LinearMap.ker Φ1) + ρ = Module.finrank K U`. Establish `h1` using `Subspace.finrank_add_finrank_dualCoannihilator_eq (Submodule.span K₁ (Set.range ph))`. Rewrite `h1` using `[finrank_span_eq_card hph_li, Fintype.card_fin, ← hkerΦ1, hfinD]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦ1surj : LinearMap.range Φ1 = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker Φ1`. Rewrite `*` using `[Module.finrank_fin_fun, hfinD]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hd : ∀ j : Fin ρ, ∃ d : D, Φ1 d = Pi.single j 1` using `fun j => by`. Establish `: Pi.single j 1 ∈ LinearMap.range Φ1` using `hΦ1surj ▸ Submodule.mem_top`. Conclude with `this`. Use `choose d hd using hd`. Establish `hphd : ∀ i j, ph i (d j) = if i = j then 1 else 0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `i j`. Use `congrFun (hd j) i` as an intermediate fact. Simplify using `only [Φ1, LinearMap.pi_apply] at this`. Rewrite using `[this, Pi.single_apply]`. Establish `hdesc_map : descend K₁ W = (LinearMap.ker Φ1).map D.subtype`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Rewrite using `[hdescmem, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hi⟩`. Conclude with `⟨⟨x, hx⟩, LinearMap.mem_ker.mpr (funext fun i => by simpa [Φ1] using hi i), rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨y.2, fun i => ?_⟩` and prove the remaining obligations. Use `congrFun (LinearMap.mem_ker.mp hy) i` as an intermediate fact. Simplify `this` using `[Φ1]`. Establish `hfin_desc : Module.finrank K₁ (descend K₁ W) = Module.finrank K₁ (LinearMap.ker Φ1)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdesc_map, Submodule.finrank_map_subtype_eq]`. Establish `hdesc_inf : descend K₁ W = D ⊓ ⨅ i, LinearMap.ker ((cc i).restrictScalars K₁ ∘ₗ inclT K₁ V)`. Use extensionality with `x`. Rewrite using `[hdescmem]`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.restrictScalars_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hi⟩`. Use `⟨hx, fun i => ?_⟩` and prove the remaining obligations. Use `hph_cc i ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[hi i, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `this.symm`. Introduce and unpack `⟨hx, hi⟩`. Use `⟨hx, fun i => ?_⟩` and prove the remaining obligations. Apply `(algebraMap K₁ Ω).injective` to reduce the goal to its premises. Rewrite using `[hph_cc, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hi i`. Use `set S := Submodule.span Ω (inclT K₁ V '' (descend K₁ W : Set (K₁ ⊗[K] V))) with hSdef`. Establish `hSW : S ≤ W` using `Submodule.span_le.mpr (by rintro _ ⟨x, hx, rfl⟩; exact hx)`. Set `dd : Fin ρ → Ω ⊗[K] V` to `fun j => inclT K₁ V (d j)`. Set `Qm : (Ω ⊗[K] V) →ₗ[Ω] (Ω ⊗[K] V)` to `LinearMap.id - ∑ j, (cc j).smulRight (dd j)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQm_apply : ∀ y, Qm y = y - ∑ j, cc j y • dd j`. Introduce `y`. Simplify using `only [Qm, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.sum_apply, LinearMap.smulRight_apply]`. Establish `hQm : ∀ y ∈ E, Qm y ∈ S`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : E ≤ S.comap Qm`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `hxD : ((1 : K₁) ⊗ₜ[K] u) ∈ D` using `Submodule.subset_span ⟨u, hu, rfl⟩`. Use `set x : D := ⟨(1 : K₁) ⊗ₜ[K] u, hxD⟩ with hxdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : inclT K₁ V (x : K₁ ⊗[K] V) = (1 : Ω) ⊗ₜ[K] u`. Simplify using `[x, inclT_tmul']`. Set `m : D` to `x - ∑ j, ph j x • d j`. Establish `hm : ∀ i, ph i m = 0`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [m, map_sub, map_sum, map_smul, smul_eq_mul, hphd, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`. Establish `hmdesc : (m : K₁ ⊗[K] V) ∈ descend K₁ W` using `(hdescmem _).mpr ⟨m.2, hm⟩`. Establish `hval : inclT K₁ V (m : K₁ ⊗[K] V) = Qm ((1 : Ω) ⊗ₜ[K] u)`. Rewrite using `[hQm_apply]`. Simplify using `only [m, Submodule.coe_sub, Submodule.coe_sum, Submodule.coe_smul, map_sub, map_sum, map_smul]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hx1]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hx1, ← hph_cc j x, algebraMap_smul]`. Use `show Qm ((1 : Ω) ⊗ₜ[K] u) ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hval]`. Conclude with `Submodule.subset_span ⟨_, hmdesc, rfl⟩`. Conclude with `hle hy`. Establish `hWS : W ≤ S`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h` using `hQm y (hWle hy)`. Establish `h0 : ∀ j, cc j y = 0` using `fun j => LinearMap.mem_ker.mp (hkill _ (hpreFF _ (sel j).2) hy)`. Rewrite `h` using `[hQm_apply, Finset.sum_eq_zero (fun j _ => by rw [h0 j, zero_smul]), sub_zero]`. Then use the resulting hypothesis. Establish `hSeq : S = W` using `le_antisymm hSW hWS`. Establish `hdfd : FiniteDimensional K₁ (descend K₁ W)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hdesc_map]`. Use `infer_instance`. Establish `hle1 : Module.finrank Ω W ≤ Module.finrank K₁ (descend K₁ W)`. Set `bd` to `Module.finBasis K₁ (descend K₁ W)`. Set `gen : Fin (Module.finrank K₁ (descend K₁ W)) → Ω ⊗[K] V` to `fun k => inclT K₁ V (bd k : K₁ ⊗[K] V)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsub : S ≤ Submodule.span Ω (Set.range gen)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hrep : x = ∑ k, bd.repr ⟨x, hx⟩ k • (bd k : K₁ ⊗[K] V)`. Use `congrArg Subtype.val (bd.sum_repr ⟨x, hx⟩)` as an intermediate fact.
-
-Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`. Conclude with `this.symm`. Rewrite using `[hrep, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, ← algebraMap_smul Ω]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `: FiniteDimensional Ω (Submodule.span Ω (Set.range gen))` using `FiniteDimensional.span_of_finite Ω (Set.finite_range _)`. Combine the equalities or inequalities in the displayed calculation. Establish `hle2 : Module.finrank Ω E ≤ Module.finrank Ω W + ρ`.
-
-Establish `hsub : E ≤ W ⊔ Submodule.span Ω (Set.range dd)`. Introduce `y hy`. Establish `h1 : Qm y ∈ W` using `hSW (hQm y hy)`. Establish `h2 : ∑ j, cc j y • dd j ∈ Submodule.span Ω (Set.range dd)` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hy' : y = Qm y + ∑ j, cc j y • dd j` using `by rw [hQm_apply]; abel`.
-
-Rewrite using `[hy']`. Conclude with `Submodule.add_mem_sup h1 h2`. Establish `: FiniteDimensional Ω (Submodule.span Ω (Set.range dd))` using `FiniteDimensional.span_of_finite Ω (Set.finite_range _)`. Establish `: FiniteDimensional Ω W` using `Submodule.finiteDimensional_of_le hWle`. Establish `h3 : Module.finrank Ω (Submodule.span Ω (Set.range dd)) ≤ ρ`.
-
-Conclude with `(finrank_range_le_card dd).trans (Fintype.card_fin ρ).le`. Combine the equalities or inequalities in the displayed calculation. Use `⟨K₁, hK₁fin, ρ, cc, fun i => ⟨hpreFF _ (sel i).2, hdefK₁ _ (sel i).2⟩, hdesc_inf, hSeq, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hle2` using `[hfinE]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[hfin_desc]`. Conclude with `hker_rank`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rationality_holds : RationalityStatement := by
   intro K Ω V _ _ _ _ _ U _ W FF hWle hdef hkill hdet

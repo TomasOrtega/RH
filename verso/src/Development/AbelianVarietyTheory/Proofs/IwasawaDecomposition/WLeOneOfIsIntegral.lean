@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo
 
 /- English proof (translation)
-Rewrite using `[← e.mem_O]`. Establish `h : IsIntegral e.O x` using `hx.tower_top`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := e.O) (K := AlgebraicClosure F)).1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ext.w_le_one_of_isIntegral {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} (e : Ext v)
     {x : AlgebraicClosure F} (hx : IsIntegral ℤ x) : e.w x ≤ 1 := by
@@ -20,13 +20,13 @@ theorem Ext.w_le_one_of_isIntegral {F : Type} [Field F] [NumberField F] {v : Hei
   exact y.2
 
 /- English proof (translation)
-Establish `hQ : IsAlgebraic ℚ a` using `(Algebra.IsAlgebraic.trans ℚ F (AlgebraicClosure F)).isAlgebraic a`. Establish `hZ : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ _).2 hQ`. Take `⟨d, hd, hi⟩` from `hZ.exists_integral_multiple`. Establish `hd' : (Ideal.span {(d : 𝓞 F)}) ≠ 0`. Simplify using `using hd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(Ideal.finite_factors hd').subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨e, he⟩`. Simplify using `only [Set.mem_setOf_eq, Ideal.dvd_span_singleton]`. Assume the negation of the conclusion as `hv`. Establish `h1 : NumberField.HeightOneSpectrum.adicAbv F v ((d : 𝓞 F) : F) = 1` using `(v.adicAbv_coe_eq_one_iff (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) _).2 hv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2` using `e.w_le_one_of_isIntegral hi`. Establish `h3 : e.w (d : AlgebraicClosure F) = 1`. Rewrite using `[← h1, ← e.w_alg]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[zsmul_eq_mul, map_mul, h3, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd he (not_lt.2 h2)`.
+A detailed English derivation is pending.
 -/
 theorem finite_ext_one_lt (F : Type) [Field F] [NumberField F] (a : AlgebraicClosure F) :
     {v : HeightOneSpectrum (𝓞 F) | ∃ e : Ext v, 1 < e.w a}.Finite := by
@@ -50,9 +50,9 @@ theorem finite_ext_one_lt (F : Type) [Field F] [NumberField F] (a : AlgebraicClo
   exact absurd he (not_lt.2 h2)
 
 /- English proof (translation)
-Use `((finite_ext_one_lt F a).union (finite_ext_one_lt F a⁻¹)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨e, he⟩`. Break down `lt_or_gt_of_ne he with h | h` into its components or cases. Use `Or.inr ⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(one_lt_inv₀ (e.w.pos ha)).2 h`. Conclude with `Or.inl ⟨e, h⟩`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem finite_ext_ne_one (F : Type) [Field F] [NumberField F] (a : AlgebraicClosure F) (ha : a ≠ 0) :
     {v : HeightOneSpectrum (𝓞 F) | ∃ e : Ext v, e.w a ≠ 1}.Finite := by

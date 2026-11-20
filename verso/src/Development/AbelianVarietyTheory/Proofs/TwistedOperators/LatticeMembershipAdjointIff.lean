@@ -24,9 +24,9 @@ namespace GlobalTheory.LastGen
 open GlobalTheory.SeeSaw GlobalTheory.SeeSaw.LastPrim
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Establish `hell : ∀ i : Fin ρ, cA D (ell D ρ i) = if i = ⟨ρ - 1, by omega⟩ then 1 else 0`. Introduce `i`. Simplify using `only [ell, Fin.ext_iff]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | omega | simp`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [HypDec.incAdj_apply, HypDec.incY_apply, yZero, zEll, adj_smul, adj_neg, GlobalTheory.FinPl.colMul, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.smul_apply, Matrix.neg_apply, adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul, …`. Rewrite using `[Finset.sum_congr rfl fun l _ => by`. Rewrite using `[Finset.sum_eq_single (⟨ρ - 1, by omega⟩ : Fin ρ) (fun i _ hi => by simp [hi]) (fun h => absurd (Finset.mem_univ _) h)]]`. Simplify using `only [if_true, mul_one, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -51,23 +51,21 @@ theorem incAdj_yZero_mulVec_gen {D : D7} {S A L T T₀ : HSp D} (o : OrthDec S A
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ S A L T T₀ o ζ ρ d M LW LW₀ 𝔟 𝔠 v hM hLW hmono hline hc hb0 hid hρ a ha`. Take `⟨h1, h2, h3, h4, -, h6, -⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.LocFrame.cmHost_imaginaryGenerator_ne_zero`. Establish `hci : 𝔠⁻¹ ≠ 0` using `inv_ne_zero hc`. Establish `hb : 𝔟 ((⟨ρ - 1, by omega⟩ : Fin ρ) : ℕ) ≠ 0` using `hb0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0` using `colMul_jY_mem_latA_iff D ψ hψ T T₀ ρ d LW (𝔟 (ρ - 1)) v ⟨ρ - 1, by omega⟩ hb (GlobalTheory.T.dualIsotropicLine_mem_completion_iff D ψ hψ T T₀ ρ d LW LW₀ 𝔟 v hLW hmono ⟨ρ - 1, by omega⟩ hb)`. Establish `hL : ∀ t ∈ idAt D (· = v), GlobalTheory.FinPl.colMul d.jY ⟨ρ - 1, by omega⟩ t ∈ latA T LW (· = v) ↔ cA D t ∈ idV (FractionalIdeal.spanSingleton _ D.host.xi0⁻¹ * 𝔠⁻¹) v` using `fun t ht => (hL0 t ht).trans (hid _)`. Establish `e3 : incA D (D.host.xi0⁻¹)⁻¹ * incA D (star D.host.xi0⁻¹) = -1`. Rewrite using `[← map_mul, inv_inv, star_inv₀, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, inv_neg, mul_neg, mul_inv_cancel₀ hξ, map_neg, map_one]`. Establish `key : ∀ y ∈ latV S M (· = v), (Matrix.mulVec (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from d.incAdj S (a • yZero S ρ (vecB o ζ))) y ∈ latA T LW (· = v) ↔ a * cA D (∑ l, (∑ m, cA D (ratV (vecB o ζ) m) * gA S m l) * y l) ∈ idV 𝔠⁻¹ v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hzi : (∑ l, (∑ m, cA D (ratV (vecB o ζ) m) * gA S m l) * y l) ∈ idAt D (· = v)` using `sum_mem fun l _ => Ideal.mul_mem_left _ _ (latV_entry_mem' hy l)`. Rewrite using `[incAdj_yZero_mulVec_gen o ζ d hρ a y, hL _ (Ideal.mul_mem_left _ _ hzi), map_mul, map_mul, GlobalTheory.SeeSaw.cA_cA, GlobalTheory.DualPairCheck.cA_incA, h3 _ _ (inv_ne_zero hξ)]`. Establish `e4 : incA D (D.host.xi0⁻¹)⁻¹ * (incA D (star D.host.xi0⁻¹) * a * cA D (∑ l, (∑ m, cA D (ratV (vecB o ζ) m) * gA S m l) * y l)) = -(a * cA D (∑ l, (∑ m, cA D (ratV (vecB o ζ) m) * gA S m l) * y l))`. Rewrite using `[← mul_assoc, ← mul_assoc, e3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4, neg_mem_iff]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ ha)⟩⟩`. Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S T M LW hM hLW]`. Prove the components needed by the constructor for the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨-, hu⟩`. Take `⟨g, hg, g', -, hgg, hiff⟩` from `h6 𝔠⁻¹ hci`. Take `⟨y, hy, hyg⟩` from `GlobalTheory.T.hermitianPairing_onto_inverseIdeal_at_place D ψ hψ S A L o ζ M 𝔠 v hM hline hc g hg`. Establish `h7` using `((hiff _).1 ((key y hy).1 (hu y hy))).2`. Rewrite `h7` using `[hyg]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hgg a ha]`. Establish `e6 : g' * g * a = g' * (a * g)` using `by rw [mul_assoc, mul_comm g a]`. Rewrite using `[e6]`. Conclude with `h7`. Introduce `haI`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcA : cA D a ∈ idAt D (· = v)`. Use `(h4 0 a).1 (by rw [zpow_zero]; exact (h1 a).2 haI)` as an intermediate fact. Rewrite `this` using `[zpow_zero]`. Conclude with `((h1 _).1 this).1`. Use `⟨fun k l => ?_, fun y hy => (key y hy).2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e5` using `congrFun (incAdj_yZero_mulVec_gen o ζ d hρ a (Pi.single l 1)) k`. Rewrite `e5` using `[Matrix.mulVec_single_one]`. Use `(congrArg (· ∈ idAt D (· = v)) e5).mpr ?_` and prove the remaining obligations. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hcA))`. Establish `hmul` using `(h2 𝔠⁻¹ 𝔠⁻¹ hci hci a ha).2 (by rw [mul_inv_cancel₀ hci]; exact (h1 a).2 haI)`.
-
-Conclude with `hmul _ (GlobalTheory.T.lineVector_pairing_mem_inverseIdealCompletion D ψ hψ S A L o ζ M 𝔠 v hM hline hc y hy)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem incAdj_yZero_mem_latO_iff_gen : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A L T T₀ : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (ρ : ℕ) (d : HypDec T T₀ ρ) (M : Lat S) (LW : Lat T) (LW₀ : Lat T₀) (𝔟 : ℕ → GlobalTheory.SeeSaw.FI D) (𝔠 : GlobalTheory.SeeSaw.FI D) (v : GlobalTheory.FinPl.Pl D), IsSelfDualC S M → IsSelfDualC T LW → GlobalTheory.SeeSaw.MonoId d LW LW₀ 𝔟 v → GlobalTheory.SeeSaw.LineId o ζ M 𝔠 v → 𝔠 ≠ 0 → 𝔟 (ρ - 1) ≠ 0 → (∀ s, s ∈ GlobalTheory.SeeSaw.idV ((D.host.AAbar : GlobalTheory.SeeSaw.FI D) * (𝔟 (ρ - 1))⁻¹) v ↔ s ∈ GlobalTheory.SeeSaw.idV (FractionalIdeal.spanSingleton _ D.host.xi0⁻¹ * 𝔠⁻¹) v) → 0 < ρ → ∀ a ∈ idAt D (· = v), d.incAdj S (a • yZero S ρ (vecB o ζ)) ∈ latO S T (M : Set _) (LW : Set _) (· = v) ↔ a ∈ intAt D (· = v) := by
   intro D ψ hψ S A L T T₀ o ζ ρ d M LW LW₀ 𝔟 𝔠 v hM hLW hmono hline hc hb0 hid hρ a ha
@@ -124,9 +122,9 @@ end GlobalTheory.LastGen
 namespace GlobalTheory.AscFin
 
 /- English proof (translation)
-Introduce `D hoff T L μ0 hL sc G W M hM F hF ρ h v hv hρ a ha`. Establish `I` using `GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hoff T L μ0 hL sc G W M hM F hF`. Establish `hψ : IsStdChar D W.ψ (-1)` using `W.ψ_std`. Establish `hsdJ` using `(G.isV (X := .grid (2 * ρ + 1) 0) (by simp [Node.InRange]; omega) (by simp)).sd`. Take `⟨hb0, hc0, hid⟩` from `GlobalTheory.T.staircase_ideals_completion_eq_of_modulus_unit G.pl sc ρ v hρ (GlobalTheory.T.modulus_ideal_off_S0_trivial G.pl sc v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.LastGen.incAdj_yZero_mem_latO_iff_gen D W.ψ hψ _ _ _ _ _ (F.oB ρ h) (F.ζ (ρ + 1)) ρ (F.dJ ρ h) (lat0 F ρ h) (G.Λ (.grid (2 * ρ + 1) 0)) (G.Λ (.core (2 * ρ + 1))) (fun i => FractionalIdeal.spanSingleton _ ((-D.host.xi0) ^ (i + 1))⁻¹ * (G.pl.stA sc ^ (2 * ρ - i) * (G.p …`.
+A detailed English derivation is pending.
 -/
 theorem incAdj_yBF_mem_latO_iff : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0, 0 < ρ → ∀ a ∈ idAt D (· = v), (F.dJ ρ h).incAdj (F.V₀ ρ) (a • yBF F ρ h) ∈ latO (F.V₀ ρ) _ (lat0 F ρ h : Set _) (G.Λ (.grid (2 * ρ + 1) 0) : Set _) (· = v) ↔ a ∈ intAt D (· = v) := by
   intro D hoff T L μ0 hL sc G W M hM F hF ρ h v hv hρ a ha

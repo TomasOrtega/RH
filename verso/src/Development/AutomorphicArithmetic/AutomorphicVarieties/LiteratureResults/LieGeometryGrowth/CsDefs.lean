@@ -15,36 +15,36 @@ variable {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommG
 def Sz (k : ℕ) (f : V → F) (p : V) (b : ℝ) : Prop := ∀ i ≤ k, ‖iteratedFDeriv ℝ i f p‖ ≤ b
 
 /- English proof (translation)
-Introduce `i hi` and use `(h i hi).trans hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sz.mono {k : ℕ} {f : V → F} {p : V} {b c : ℝ} (h : Sz k f p b) (hb : b ≤ c) : Sz k f p c :=
   fun i hi => (h i hi).trans hb
 
 /- English proof (translation)
-Introduce `i hi` and use `h i (hi.trans hl)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sz.of_le {k l : ℕ} {f : V → F} {p : V} {b : ℝ} (h : Sz k f p b) (hl : l ≤ k) : Sz l f p b :=
   fun i hi => h i (hi.trans hl)
 
 /- English proof (translation)
-Simplify using `using h 0 (Nat.zero_le k)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Sz.norm_le {k : ℕ} {f : V → F} {p : V} {b : ℝ} (h : Sz k f p b) : ‖f p‖ ≤ b := by
   simpa using h 0 (Nat.zero_le k)
 
 /- English proof (translation)
-The claim follows from `(norm_nonneg _).trans h.norm_le`.
+A detailed English derivation is pending.
 -/
 theorem Sz.nonneg {k : ℕ} {f : V → F} {p : V} {b : ℝ} (h : Sz k f p b) : 0 ≤ b := (norm_nonneg _).trans h.norm_le
 
 /- English proof (translation)
-Introduce `i hi` and use `by rw [← (e.iteratedFDeriv ℝ i).eq_of_nhds]; exact h i hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Sz.congr {k : ℕ} {f g : V → F} {p : V} {b : ℝ} (h : Sz k f p b) (e : f =ᶠ[𝓝 p] g) : Sz k g p b :=
   fun i hi => by rw [← (e.iteratedFDeriv ℝ i).eq_of_nhds]; exact h i hi
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∑ i ∈ Finset.range (k + 1), ‖iteratedFDeriv ℝ i f p‖, fun i hi => Finset.single_le_sum (f := fun i => ‖iteratedFDeriv ℝ i f p‖) (fun _ _ => norm_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hi))⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sz (k : ℕ) (f : V → F) (p : V) : ∃ b, Sz k f p b :=
   ⟨∑ i ∈ Finset.range (k + 1), ‖iteratedFDeriv ℝ i f p‖, fun i hi =>
@@ -84,7 +84,7 @@ def IsFun (Φ : S → V → ℝ) : Prop :=
     ∀ s (t : ℝ), 0 < t → ∀ p ∈ G.Y, Φ s (t • p) = Φ s p
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => contDiffOn_const, fun _ _ _ _ => rfl, fun _ _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFun_zero : IsFun G 0 := ⟨fun _ => contDiffOn_const, fun _ _ _ _ => rfl, fun _ _ _ _ _ => rfl⟩
 
@@ -97,7 +97,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 def pt (g : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)) : GA E a := infGL E a g * finGL E a x
 
 /- English proof (translation)
-Rewrite using `[pt, pt, map_mul, mul_assoc, infGL_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_mul (g h : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)) : pt (g * h) x = pt g x * infGL E a h := by
   rw [pt, pt, map_mul, mul_assoc, infGL_comm, mul_assoc]
@@ -123,20 +123,20 @@ def Dec (f lam : GA E a → ℝ) (f₀ : ℝ) (k : ℕ) (A B M : ℝ) {q : ℕ} 
   ∀ g x, f₀ ≤ f (pt g x) → Sz k (Tw U Ξ w g x) (hOne E a) (M * Real.exp (B * |lam (pt g x)| - A * f (pt g x)))
 
 /- English proof (translation)
-Introduce `g x hg` and use `h g x (hf.trans hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Dec.mono {f lam : GA E a → ℝ} {f₀ f₁ : ℝ} {k : ℕ} {A B M : ℝ} {q : ℕ} {w : Fm U Ξ q}
     (h : Dec U Ξ f lam f₀ k A B M w) (hf : f₀ ≤ f₁) : Dec U Ξ f lam f₁ k A B M w := fun g x hg => h g x (hf.trans hg)
 
 /- English proof (translation)
-Introduce `g x hg` and use `(h g x hg).mono (mul_le_mul_of_nonneg_right hM (Real.exp_pos _).le)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Dec.of_le {f lam : GA E a → ℝ} {f₀ : ℝ} {k : ℕ} {A B M M' : ℝ} {q : ℕ} {w : Fm U Ξ q}
     (h : Dec U Ξ f lam f₀ k A B M w) (hM : M ≤ M') : Dec U Ξ f lam f₀ k A B M' w :=
   fun g x hg => (h g x hg).mono (mul_le_mul_of_nonneg_right hM (Real.exp_pos _).le)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use extensionality with `v j`. Simplify using `[Tw, tp_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Tw_one {q : ℕ} (w : Fm U Ξ q) (x : GL (Fin a) (Af E)) : Tw U Ξ w 1 x = w (x : GL (Fin a) (Af E) ⧸ U) := by
   funext p
@@ -144,7 +144,7 @@ theorem Tw_one {q : ℕ} (w : Fm U Ξ q) (x : GL (Fin a) (Af E)) : Tw U Ξ w 1 x
   simp [Tw, tp_apply]
 
 /- English proof (translation)
-Establish `e : ∀ p : HV E a, sand (g * h) (sand h⁻¹ p) = sand g p` using `fun p => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel_right]`. Use function extensionality and compare the values at `p`. Use `ContinuousAlternatingMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [Tw, tp_apply, e, mulVecL_apply, Matrix.mulVec_mulVec, ← map_mul, _root_.mul_inv_rev, mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem Tw_eq {q : ℕ} (w : Fm U Ξ q) (g h : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)) :
     Tw U Ξ w g x = tp (sand h⁻¹) (mulVecL (Ξ.mat h)) (Tw U Ξ w (g * h) x) := by

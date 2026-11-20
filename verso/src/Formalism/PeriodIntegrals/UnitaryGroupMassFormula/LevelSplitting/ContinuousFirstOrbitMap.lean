@@ -9,9 +9,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (0 : X)`. Establish `h0 : ν K ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hKn).ne'`. Establish `hinf : ν K ≠ ⊤` using `hK.measure_lt_top.ne`. Use extensionality with `s hs`. Establish `h1` using `congrArg (fun m => m (K ×ˢ s)) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Measure.prod_prod] at h1`. Conclude with `(ENNReal.mul_right_inj h0 hinf).1 h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cancel_prod {X Y : Type} [TopologicalSpace X] [AddGroup X] [IsTopologicalAddGroup X]
     [LocallyCompactSpace X] [MeasurableSpace X] [BorelSpace X] [MeasurableSpace Y]
@@ -30,7 +30,7 @@ section Top
 variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_induced_dom`. Consider the case `exact IsModuleTopology.continuous_of_linearMap (crd (F := F) (E := E) R).toLinearMap`. Consider the case `fun_prop`. Consider the case `(delta crd; exact LinearMap.continuous_of_finiteDimensional _)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_crd (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     [IsTopologicalRing R] : Continuous (crd (F := F) (E := E) R) := by
@@ -41,7 +41,7 @@ theorem continuous_crd (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R
   | (delta crd; exact LinearMap.continuous_of_finiteDimensional _)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_induced_rng.2 (by simpa [Function.comp_def] using continuous_id)`. Consider the case `exact IsModuleTopology.continuous_of_linearMap (crd (F := F) (E := E) R).symm.toLinearMap`. Consider the case `fun_prop`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_crd_symm (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     [IsTopologicalRing R] : Continuous (crd (F := F) (E := E) R).symm := by
@@ -54,11 +54,11 @@ variable (R1 R2 : Type) [CommRing R1] [Algebra F R1] [CommRing R2] [Algebra F R2
   [TopologicalSpace R1] [IsTopologicalRing R1] [TopologicalSpace R2] [IsTopologicalRing R2]
 
 /- English proof (translation)
-Establish `key : ∀ x, p1 (F` using `F) (E := E) R1 R2 x = (crd (F := F) (E := E) R1).symm (fun i => (crd (F := F) (E := E) (R1 × R2) x i).1) := by`. Introduce `x`. Apply `(crd (F := F) (E := E) R1).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Simplify using `[crd, p1, Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, Prod.fst_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[show p1 (F := F) (E := E) R1 R2 = fun x => (crd (F := F) (E := E) R1).symm (fun i => (crd (F := F) (E := E) (R1 × R2) x i).1) from funext key]`. Conclude with `(continuous_crd_symm R1).comp (continuous_pi fun i => continuous_fst.comp ((continuous_apply i).comp (continuous_crd (R1 × R2))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_first_orbit_map : Continuous (p1 (F := F) (E := E) R1 R2) := by
   have key : ∀ x, p1 (F := F) (E := E) R1 R2 x =
@@ -78,11 +78,11 @@ theorem continuous_first_orbit_map : Continuous (p1 (F := F) (E := E) R1 R2) := 
     (continuous_pi fun i => continuous_fst.comp ((continuous_apply i).comp (continuous_crd (R1 × R2))))
 
 /- English proof (translation)
-Establish `key : ∀ x, p2 (F` using `F) (E := E) R1 R2 x = (crd (F := F) (E := E) R2).symm (fun i => (crd (F := F) (E := E) (R1 × R2) x i).2) := by`. Introduce `x`. Apply `(crd (F := F) (E := E) R2).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Simplify using `[crd, p2, Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, Prod.snd_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[show p2 (F := F) (E := E) R1 R2 = fun x => (crd (F := F) (E := E) R2).symm (fun i => (crd (F := F) (E := E) (R1 × R2) x i).2) from funext key]`. Conclude with `(continuous_crd_symm R2).comp (continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp (continuous_crd (R1 × R2))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_p2 : Continuous (p2 (F := F) (E := E) R1 R2) := by
   have key : ∀ x, p2 (F := F) (E := E) R1 R2 x =
@@ -102,7 +102,7 @@ theorem continuous_p2 : Continuous (p2 (F := F) (E := E) R1 R2) := by
     (continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp (continuous_crd (R1 × R2))))
 
 /- English proof (translation)
-Use `delta qq`. Conclude with `(continuous_crd_symm (R1 × R2)).comp (continuous_pi fun k => (((continuous_apply k).comp (continuous_crd R1)).comp continuous_fst).prodMk (((continuous_apply k).comp (continuous_crd R2)).comp continuous_snd))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_qq :
     Continuous (fun y : (R1 ⊗[F] E) × (R2 ⊗[F] E) => qq R1 R2 y.1 y.2) := by
@@ -114,7 +114,7 @@ theorem continuous_qq :
 variable {M : ℕ}
 
 /- English proof (translation)
-Use `show Continuous (fun x : Fin M → (R1 × R2) ⊗[F] E => (fun i => p1 (F := F) (E := E) R1 R2 (x i), fun i => p2 (F := F) (E := E) R1 R2 (x i)))`. Conclude with `(continuous_pi fun i => (continuous_first_orbit_map R1 R2).comp (continuous_apply i)).prodMk (continuous_pi fun i => (continuous_p2 R1 R2).comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_psiE : Continuous (psiE (F := F) (E := E) (M := M) R1 R2) := by
   show Continuous (fun x : Fin M → (R1 × R2) ⊗[F] E =>
@@ -125,7 +125,7 @@ theorem continuous_psiE : Continuous (psiE (F := F) (E := E) (M := M) R1 R2) := 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h1 : Continuous (fun y : (Fin M → R1 ⊗[F] E) × (Fin M → R2 ⊗[F] E) => (y.1 i, y.2 i))` using `((continuous_apply i).comp continuous_fst).prodMk ((continuous_apply i).comp continuous_snd)`. Establish `h2` using `(continuous_qq R1 R2).comp h1`. Simplify `h2` using `only [Function.comp_def]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_qqv :
     Continuous (fun y : (Fin M → R1 ⊗[F] E) × (Fin M → R2 ⊗[F] E) => fun i => qq R1 R2 (y.1 i) (y.2 i)) := by
@@ -137,7 +137,7 @@ theorem continuous_qqv :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Use `show Continuous (fun y : (Fin M → R1 ⊗[F] E) × (Fin M → R2 ⊗[F] E) => fun i => qq R1 R2 (y.1 i) (y.2 i))`. Conclude with `continuous_qqv R1 R2`.
+A detailed English derivation is pending.
 -/
 theorem continuous_psiE_symm : Continuous (psiE (F := F) (E := E) (M := M) R1 R2).symm := by
   show Continuous (fun y : (Fin M → R1 ⊗[F] E) × (Fin M → R2 ⊗[F] E) =>
@@ -145,7 +145,7 @@ theorem continuous_psiE_symm : Continuous (psiE (F := F) (E := E) (M := M) R1 R2
   exact continuous_qqv R1 R2
 
 /- English proof (translation)
-Use `first`. Consider the case `exact IsModuleTopology.continuous_of_linearMap ((lin R σ J g).restrictScalars R)`. Consider the case `exact Continuous.matrix_mulVec continuous_const continuous_id`. Consider the case `(delta lin; fun_prop)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_lin (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     [IsTopologicalRing R] (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (g : HA R σ J) :
@@ -168,15 +168,15 @@ variable (R1 R2 : Type) [CommRing R1] [Algebra F R1] [CommRing R2] [Algebra F R2
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Set `ν1 : Measure (Fin M → R1 ⊗[F] E)` to `Measure.addHaar`. Set `e` to `psiE (F := F) (E := E) (M := M) R1 R2`. Establish `hc : Continuous e` using `continuous_psiE R1 R2`. Establish `hcs : Continuous e.symm` using `continuous_psiE_symm R1 R2`. Set `P0 : Measure ((Fin M → R1 ⊗[F] E) × (Fin M → R2 ⊗[F] E))` to `ν1.prod μ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: P0.IsAddHaarMeasure` using `inferInstance`. Set `P : Measure (Fin M → (R1 × R2) ⊗[F] E)` to `P0.map e.symm`. Establish `: P.IsAddHaarMeasure` using `e.symm.isAddHaarMeasure_map P0 hcs hc`. Establish `hP` using `hV (lift R1 R2 σ J g) P inferInstance`. Establish `hl1` using `continuous_lin (R1 × R2) σ J (lift R1 R2 σ J g)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2` using `continuous_lin R2 σ J g`. Establish `hPe : P.map e = P0`. Rewrite using `[Measure.map_map hc.measurable hcs.measurable]`. Establish `: (e ∘ e.symm) = id` using `funext e.apply_symm_apply`. Rewrite using `[this, Measure.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : P0.map (Prod.map id (lin R2 σ J g)) = P0`. Establish `h1 : (Prod.map id (lin R2 σ J g)) ∘ e = e ∘ (lin (R1 × R2) σ J (lift R1 R2 σ J g))`. Use function extensionality and compare the values at `x`. Conclude with `(psi_lin R1 R2 σ J g x).symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[← Measure.map_prod_map ν1 μ measurable_id hl2.measurable, Measure.map_id]`. Conclude with `(cancel_prod ν1 _ _ key).symm ▸ rfl`.
+A detailed English derivation is pending.
 -/
 theorem pres_snd
     (hV : ∀ (g : HA (R1 × R2) σ J) (ν : Measure (Fin M → (R1 × R2) ⊗[F] E)),

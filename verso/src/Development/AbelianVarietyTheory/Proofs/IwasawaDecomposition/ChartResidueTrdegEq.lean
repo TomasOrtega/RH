@@ -20,9 +20,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Use extensionality with `x`. Break down `V.mem_or_inv_mem x with hx | hx` into its components or cases. Conclude with `congrArg (fun g : V →+* K => g ⟨x, hx⟩) h`. Use `congrArg (fun g : V →+* K => g ⟨x⁻¹, hx⟩) h` as an intermediate fact. Simplify using `only [RingHom.coe_comp, Function.comp_apply, ValuationSubring.coe_subtype, map_inv₀] at this`.
-
-Conclude with `inv_injective this`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ringHom_ext_of_valuationSubring {F K : Type} [Field F] [Field K] (V : ValuationSubring F) {g₁ g₂ : F →+* K}
     (h : g₁.comp V.subtype = g₂.comp V.subtype) : g₁ = g₂ := by
@@ -34,7 +32,7 @@ theorem ringHom_ext_of_valuationSubring {F K : Type} [Field F] [Field K] (V : Va
     exact inv_injective this
 
 /- English proof (translation)
-Establish `h'` using `congrArg (· ≫ (Y Z.i).s) h`. Simplify using `only [Category.assoc, Z.π_s, Z.alg_s] at h'`. Use `ringHom_ext_of_valuationSubring (Z.i.c.V W) ?_` and prove the remaining obligations. Use `Spec.map_injective (by simpa only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp] using h')` as an intermediate fact. Simplify `congrArg CommRingCat.Hom.hom this` using `[RingHom.comp_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem alg_eq (Z : Mdl Y i₀) (a : Fin Z.m) {K : Type} [Field K] {ψ ψ' : Γ(Z.X, (Z.U a).1) →+* K}
     (h : spMap ψ ≫ Z.chart a ≫ Z.π = spMap ψ' ≫ Z.chart a ≫ Z.π) : ψ.comp (Z.alg a) = ψ'.comp (Z.alg a) := by
@@ -52,13 +50,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Establish `hr : Set.range w ⊆ Set.range (Z.chart a)`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `q' : Sp K` using `Classical.choice inferInstance`. Establish `hq : q = (spMap L.subtype) q'` using `Subsingleton.elim _ _`. Use `⟨(spMap ψ) q', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hq, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, h]`. Use `haveI : IsOpenImmersion (Z.chart a) := by`. Conclude with `(Z.U a).2.isOpenImmersion_fromSpec`. Take `⟨ψL, hψL⟩` from `GlobalTheory.LocM.Diag.exists_spMap (IsOpenImmersion.lift (Z.chart a) w hr)`. Establish `e : spMap L.subtype ≫ spMap ψL ≫ Z.chart a = spMap ψ ≫ Z.chart a`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hψL, IsOpenImmersion.lift_fac, h]`. Rewrite `e` using `[← Category.assoc, cancel_mono]`. Establish `e' : L.subtype.comp ψL = ψ`. Use `Spec.map_injective (by simpa only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp] using e)` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
-
-Rewrite using `[← e']`. Conclude with `(ψL r).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_factor (Z : Mdl Y i₀) (a : Fin Z.m) {K : Type} [Field K] (L : Subfield K) (ψ : Γ(Z.X, (Z.U a).1) →+* K)
     (w : Sp L ⟶ Z.X) (h : spMap L.subtype ≫ w = spMap ψ ≫ Z.chart a) (r : Γ(Z.X, (Z.U a).1)) : ψ r ∈ L := by
@@ -88,23 +84,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Establish `hg : ψ.comp (Z.alg a) = L₀.subtype.comp (ψ₁.comp (Z.alg a))` using `alg_eq Z a hψ`. Establish `hsp : spMap ψ ≫ Z.chart a ≫ Z.π = spMap L₀.subtype ≫ spMap ψ₁ ≫ Z.chart a ≫ Z.π`. Rewrite using `[hψ]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Establish `hv : ∀ (R : Type) [Field R] (g : L₀ →+* R), IsFrame (Y Z.i).t (g.comp (ψ₁.comp (Z.alg a))) (spMap g ≫ spMap ψ₁ ≫ Z.chart a ≫ Z.π) (((Z.fr a).bc ψ₁).bc g)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `R _ g`. Establish `h` using `GlobalTheory.LocM.Diag.frame_at Z a (g.comp ψ₁)`. Establish `e1 : spMap (g.comp ψ₁) ≫ Z.chart a ≫ Z.π = spMap g ≫ spMap ψ₁ ≫ Z.chart a ≫ Z.π`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Establish `e2 : ((Z.fr a).bc ψ₁).bc g = (Z.fr a).bc (g.comp ψ₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ i`. Simplify using `only [Vecs.bc, spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Apply the tactic sequence `rw [show (dualMap g).comp (dualMap ψ₁) = dualMap (g.comp ψ₁) from RingHom.ext fun x => by ext <;> simp [dualMap]]`. Rewrite `h` using `[e1]`. Rewrite using `[e2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hu` using `GlobalTheory.LocM.Diag.frame_at Z a ψ`. Rewrite `hu` using `[hg, hsp]`. Take `⟨L, hL, cf, hLc, uL, huL, huLbc, hsf⟩` from `GlobalTheory.T.frame_descends_subfield (Y Z.i).t Z.ty L₀ (ψ₁.comp (Z.alg a)) (spMap ψ₁ ≫ Z.chart a ≫ Z.π) ((Z.fr a).bc ψ₁) ((Z.fr a).bc ψ) hv hu`. Use `⟨cf, fun r => hLc ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `set ψL₁ : Γ(Z.X, (Z.U a).1) →+* L := (Subfield.inclusion hL).comp ψ₁ with hψL₁`. Take `⟨yL, hyj, hys⟩` from `GlobalTheory.LocM.CommonMod.exists_lift_chart Z (rfl : spMap ψL₁ ≫ Z.chart a = _)`. Establish `hspL : spMap (Subfield.inclusion hL) ≫ spMap ψ₁ ≫ Z.chart a ≫ Z.π = yL ≫ (Y Z.i).j`. Rewrite using `[hyj, hψL₁]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `huL` using `[hspL]`. Take `⟨wL, ⟨hwπ, hwf⟩, -⟩` from `Z.bij L (ψL₁.comp (Z.alg a)) yL hys uL huL`. Establish `h1` using `GlobalTheory.LocM.FJ.flagAt_bcField Z L.subtype hwf`. Establish `h2 : Z.FlagAt (spMap ψ ≫ Z.chart a) (uL.bc L.subtype)`. Use `⟨a, ψ, rfl, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hsp, hg]`. Conclude with `huLbc`. Rewrite using `[Category.assoc, hsp]`. Conclude with `hsf`. Establish `heq : (spMap L.subtype ≫ wL) ≫ Z.π = (spMap ψ ≫ Z.chart a) ≫ Z.π`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hyj]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `_ = spMap (L₀.subtype.comp ψ₁) ≫ Z.chart a ≫ Z.π := rfl`. Use `_ = (spMap ψ ≫ Z.chart a) ≫ Z.π := by rw [Category.assoc, hψ]`.
-
-Establish `e` using `GlobalTheory.LocM.FJ.eq_of_flagAt _ _ _ _ _ _ _ _ Z K _ _ _ heq h1 h2`. Conclude with `mem_of_factor Z a L ψ wL e r`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen (Z : Mdl Y i₀) (a : Fin Z.m) {K : Type} [Field K] (L₀ : Subfield K)
     (ψ : Γ(Z.X, (Z.U a).1) →+* K) (ψ₁ : Γ(Z.X, (Z.U a).1) →+* L₀)
@@ -158,15 +152,13 @@ end GlobalTheory.LocM.FibTrdeg
 namespace GlobalTheory.LocM.FibTrdeg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z _ a x`. Use `set f := Z.chart a ≫ Z.π with hf`. Use `haveI : LocallyOfFiniteType f := by have := Z.smooth a; infer_instance`. Take `⟨φ, hφ, hgen⟩` from `GlobalTheory.T.residue_field_generated_spec x`. Set `K'` to `AlgebraicClosure ((Sp Γ(Z.X, (Z.U a).1)).residueField x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `σ` to `algebraMap ((Sp Γ(Z.X, (Z.U a).1)).residueField x) K'`. Set `ρ` to `(f.residueFieldMap x).hom`. Take `⟨ψ₁, hψ₁, halg⟩` from `GlobalTheory.T.exists_geometric_point_algebraic f x K' (σ.comp ρ)`. Use `letI := (σ.comp ρ).toAlgebra`. Set `L₀ : Subfield K'` to `(algebraicClosure ((Y Z.i).X.residueField (f x)) K').toSubfield`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmem : ∀ r, ψ₁ r ∈ L₀` using `fun r => mem_algebraicClosure_iff.2 (halg r)`. Set `ψ₁' : Γ(Z.X, (Z.U a).1) →+* L₀` to `ψ₁.codRestrict L₀ hmem`. Establish `hψ : spMap (σ.comp φ) ≫ Z.chart a ≫ Z.π = spMap (L₀.subtype.comp ψ₁') ≫ Z.chart a ≫ Z.π`. Establish `e1 : L₀.subtype.comp ψ₁' = ψ₁` using `rfl`. Rewrite using `[e1, ← hf, hψ₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `_ = spMap σ ≫ (Sp Γ(Z.X, (Z.U a).1)).fromSpecResidueField x ≫ f := by rw [hφ]`. Use `_ = spMap σ ≫ Spec.map (f.residueFieldMap x) ≫ (Y Z.i).X.fromSpecResidueField (f x) := by`. Rewrite using `[Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`.
-
-Use `_ = spMap (σ.comp ρ) ≫ (Y Z.i).X.fromSpecResidueField (f x) := by`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, ρ, CommRingCat.ofHom_hom]`. Take `⟨cf, hcf⟩` from `exists_gen Z a L₀ (σ.comp φ) ψ₁' hψ`. Conclude with `GlobalTheory.T.trdeg_le_generators ρ σ φ hgen L₀ (fun z hz => mem_algebraicClosure_iff.1 hz) cf hcf`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trdeg_residueField_le : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}

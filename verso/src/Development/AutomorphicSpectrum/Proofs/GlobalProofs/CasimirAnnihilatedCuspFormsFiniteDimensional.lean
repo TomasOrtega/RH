@@ -26,7 +26,7 @@ def quad (hθ : IsInfFam θ) {τ : D.what₂.Tau} {n₁ n₂ : ℕ} {X : Fin n�
   ∑ a, der hθ τ (hX a) * der hθ τ (hX a) - ∑ b, der hθ τ (hY b) * der hθ τ (hY b)
 
 /- English proof (translation)
-Simplify using `[quad, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quad_apply (hθ : IsInfFam θ) {τ : D.what₂.Tau} {n₁ n₂ : ℕ} {X : Fin n₁ → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {Y : Fin n₂ → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : ∀ a, X a ∈ lieAt V τ) (hY : ∀ b, Y b ∈ lieAt V τ)
@@ -35,7 +35,7 @@ theorem quad_apply (hθ : IsInfFam θ) {τ : D.what₂.Tau} {n₁ n₂ : ℕ} {X
   simp [quad, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `h1 : ∀ a x y, ⟪ι (P a (P a x)), ι y⟫_ℂ = ⟪ι x, ι (P a (P a y))⟫_ℂ` using `fun a x y => by`. Rewrite using `[hP, hP, neg_neg]`. Establish `h2 : ∀ b x y, ⟪ι (Q b (Q b x)), ι y⟫_ℂ = ⟪ι x, ι (Q b (Q b y))⟫_ℂ` using `fun b x y => by`. Rewrite using `[hQ, hQ, neg_neg]`. Simplify using `only [LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply, map_sub, map_sum, inner_sub_left, inner_sub_right, sum_inner, inner_sum, h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symm_of_skew {M H : Type} [AddCommGroup M] [Module ℂ M] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ι : M →ₗ[ℂ] H) {n₁ n₂ : ℕ} (P : Fin n₁ → Module.End ℂ M) (Q : Fin n₂ → Module.End ℂ M)
@@ -50,7 +50,7 @@ theorem symm_of_skew {M H : Type} [AddCommGroup M] [Module ℂ M] [NormedAddComm
     inner_sub_right, sum_inner, inner_sum, h1, h2]
 
 /- English proof (translation)
-The claim follows from `symm_of_skew (io μ hθ) (fun a => der hθ τ (hX a)) (fun b => der hθ τ (hY b)) (fun a x y => GlobalTheory.T.derivative_skew_adjoint_cusp_forms D θ hθ V μ τ _ (hX a) x y) (fun b x y => GlobalTheory.T.derivative_skew_adjoint_cusp_forms D θ hθ V μ τ _ (hY b) x y) φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem quad_symm (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {τ : D.what₂.Tau} {n₁ n₂ : ℕ}
     {X : Fin n₁ → Matrix (Fin V.rank) (Fin V.rank) ℂ} {Y : Fin n₂ → Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -60,15 +60,15 @@ theorem quad_symm (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ)
     (fun a x y => GlobalTheory.T.derivative_skew_adjoint_cusp_forms D θ hθ V μ τ _ (hX a) x y) (fun b x y => GlobalTheory.T.derivative_skew_adjoint_cusp_forms D θ hθ V μ τ _ (hY b) x y) φ ψ
 
 /- English proof (translation)
-Use `choose κ hκ0 hκ using hK`. Take `⟨Λ, hΛ0, hΛ⟩` from `hT`. Use `set B : ℝ := Λ + ∑ b, κ b ^ 2 with hB`. Establish `hB0 : 0 ≤ B` using `add_nonneg hΛ0 (Finset.sum_nonneg fun b _ => sq_nonneg _)`. Use `⟨Real.sqrt B, Real.sqrt_nonneg _, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun w => ⟪io μ hθ φ, io μ hθ w⟫_ℂ) (quad_apply hθ hX hY φ)`. Simplify using `only [map_sub, map_sum, inner_sub_right, inner_sum, inner_der_der] at h2`. Establish `h3` using `congrArg Complex.re h2`. Simplify using `only [Complex.sub_re, Complex.re_sum, Complex.neg_re, Complex.ofReal_re, Finset.sum_neg_distrib, sub_neg_eq_add, Complex.add_re] at h3`. Establish `h4 : ‖io μ hθ (der hθ τ (hX a) φ)‖ ^ 2 ≤ ∑ x, ‖io μ hθ (der hθ τ (hX x) φ)‖ ^ 2` using `Finset.single_le_sum (f := fun x => ‖io μ hθ (der hθ τ (hX x) φ)‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ a)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : ∑ b, ‖io μ hθ (der hθ τ (hY b) φ)‖ ^ 2 ≤ (∑ b, κ b ^ 2) * ‖io μ hθ φ‖ ^ 2`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hκ b φ hφ) 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : -(⟪io μ hθ φ, io μ hθ (quad hθ hX hY φ)⟫_ℂ).re ≤ Λ * ‖io μ hθ φ‖ ^ 2`. Establish `e1` using `(neg_le_abs _).trans ((Complex.abs_re_le_norm _).trans (norm_inner_le_norm (𝕜 := ℂ) (io μ hθ φ) (io μ hθ (quad hθ hX hY φ))))`. Establish `e2` using `mul_le_mul_of_nonneg_left (hΛ φ hφ) (norm_nonneg (io μ hθ φ))`. Use the polynomial consequences of the given equalities and inequalities. Establish `h7 : ‖io μ hθ (der hθ τ (hX a) φ)‖ ^ 2 ≤ B * ‖io μ hθ φ‖ ^ 2`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hB, add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h8` using `Real.sqrt_le_sqrt h7`. Rewrite `h8` using `[Real.sqrt_sq (norm_nonneg _), Real.sqrt_mul hB0, Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem bd_of_quad (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {τ : D.what₂.Tau}
     (E : Set (Mc θ V)) {n₁ n₂ : ℕ} {X : Fin n₁ → Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -108,15 +108,15 @@ def opOf {M : Type} [AddCommGroup M] [Module ℂ M] (C : Module.End ℂ M) (L : 
   L.foldr (fun a T => (C - a • 1) * T) 1
 
 /- English proof (translation)
-Set `S : Module.End ℂ M` to `Complex.I • C`. Set `m : Polynomial ℂ` to `(L.map fun a => Polynomial.X - Polynomial.C (Complex.I * a)).prod`. Establish `hm : m ≠ 0` using `List.prod_ne_zero (by`. Simplify using `only [List.mem_map, not_exists, not_and]`. Conclude with `fun a _ => Polynomial.X_sub_C_ne_zero _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hS : ∀ x y, ⟪ι (S x), ι y⟫_ℂ = -⟪ι x, ι (S y)⟫_ℂ` using `fun x y => by`. Simplify using `only [S, LinearMap.smul_apply, map_smul, inner_smul_left, inner_smul_right, hC]`. Simplify using the standard rewrite rules. Establish `hmS : ∀ L' : List ℂ, Polynomial.aeval S ((L'.map fun a => Polynomial.X - Polynomial.C (Complex.I * a)).prod) = Complex.I ^ L'.length • opOf C L'`. Introduce `L'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `L' with`. Consider the case `nil => simp [opOf]`. Consider the case `cons a l ih`. Establish `e : opOf C (a :: l) = (C - a • 1) * opOf C l` using `rfl`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, ih, e, List.length_cons, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Polynomial.aeval S (Polynomial.X - Polynomial.C (Complex.I * a)) = Complex.I • (C - a • 1)`. Simplify using `only [map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, S, smul_sub, smul_smul]`. Rewrite using `[e2, smul_mul_smul_comm, mul_comm]`. Establish `hκ0 : 0 ≤ ∑ r ∈ m.roots.toFinset, ‖r‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `⟨_, hκ0, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GlobalTheory.T.skew_operator_bounded_by_polynomial_roots M H ι hι S hS m hm _ hκ0 (fun r hr => Finset.single_le_sum (f := fun r : ℂ => ‖r‖) (fun _ _ => norm_nonneg _) (Multiset.mem_toFinset.2 hr)) x (by`. Rewrite using `[hmS L, LinearMap.smul_apply, hx, smul_zero])`. Simplify `h` using `[S, norm_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bd_of_opOf {M H : Type} [AddCommGroup M] [Module ℂ M] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ι : M →ₗ[ℂ] H) (hι : Function.Injective ι) (C : Module.End ℂ M)
@@ -151,7 +151,7 @@ theorem bd_of_opOf {M H : Type} [AddCommGroup M] [Module ℂ M] [NormedAddCommGr
   simpa [S, norm_smul] using h
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.foldr_cons, ih, hC]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem foldr_gelf (τ : D.what₂.Tau) (C : Module.End ℂ (Mc θ V)) (hC : ∀ φ : Mc θ V, gelf θ V τ 1 φ.1 = (C φ).1)
     (L : List ℂ) (φ : Mc θ V) :
@@ -163,7 +163,7 @@ theorem foldr_gelf (τ : D.what₂.Tau) (C : Module.End ℂ (Mc θ V)) (hC : ∀
     rfl
 
 /- English proof (translation)
-Take `⟨n₁, n₂, X, y, hX, hy, -, hq⟩` from `GlobalTheory.T.lie_algebra_spanned_by_compact_and_frame D θ hθ V τ e P hP hg`. Establish `hYl : ∀ b, P⁻¹ * y b * P ∈ lieAt V τ` using `fun b => lie_conj hP hg (hy b)`. Use `⟨quad hθ hX hYl, fun φ => ?_, fun μ _ φ ψ => quad_symm μ hθ hX hYl φ ψ⟩` and prove the remaining obligations. Rewrite using `[hq φ.1 (smooth_of_mem φ), quad_apply]`. Simplify using `[Submodule.coe_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_gelfOp (hθ : IsInfFam θ) {τ : D.what₂.Tau} {e : Fin V.rank → Bool}
     {P : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) (hg : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ) :
@@ -177,11 +177,11 @@ theorem exists_gelfOp (hθ : IsInfFam θ) {τ : D.what₂.Tau} {e : Fin V.rank �
   simp [Submodule.coe_sum]
 
 /- English proof (translation)
-Take `⟨n₁, n₂, X, y, hX, hy, hspan, hq⟩` from `GlobalTheory.T.lie_algebra_spanned_by_compact_and_frame D θ hθ V τ e P hP hg`. Establish `hYl : ∀ b, P⁻¹ * y b * P ∈ lieAt V τ` using `fun b => lie_conj hP hg (hy b)`. Establish `bK : ∀ b, Bd μ hθ E (der hθ τ (hYl b))` using `fun b => (bd_ktype μ hθ hP ρ hρ (hy b) (hYl b)).mono fun φ hφ => hE φ hφ`. Establish `hCq : C = quad hθ hX hYl` using `LinearMap.ext fun φ => Subtype.ext (by`. Rewrite using `[← hC, hq φ.1 (smooth_of_mem φ), quad_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Submodule.coe_sum])`. Establish `bX` using `bd_of_quad μ hθ E hX hYl (hCq ▸ hb) bK`. Take `⟨_, b'⟩` from `bd_span μ hθ E (Set.range X ∪ Set.range fun b => P⁻¹ * y b * P) (by`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Conclude with `⟨hX a, bX a⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨hYl b, bK b⟩) (hspan Z hZ)`. Conclude with `b'`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bd_der (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {τ : D.what₂.Tau} {e : Fin V.rank → Bool}
     {P : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) (hg : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ)
@@ -204,17 +204,15 @@ theorem bd_der (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {�
   exact b'
 
 /- English proof (translation)
-Introduce `D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ A`. Take `⟨μ, -, hμ, -⟩` from `PositivityTheory.MatrixIdentityOffBase.exists_meas V`. Use `haveI := hμ`. Use `haveI := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V μ hμ`. Establish `hop` using `fun τ => exists_gelfOp (θ := θ) (V := V) (τ := τ) hθ (hfr τ).1 (hfr τ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose C hCg hCs using hop`. Set `E : Submodule ℂ (Mc θ V)` to `{ carrier := {φ | (∀ u ∈ U, u ∈ GfC V → ∀ g, φ.1 (g * u) = φ.1 g) ∧ (∀ τ, HasTypeAt θ V τ (ε τ) (fr τ) (ρ τ) φ.1) ∧ ∀ τ, opOf (C τ) (A τ) φ = 0} add_mem' := by`. Introduce `f g hf hg`. Use `⟨fun u hu hu' x => ?_, fun τ x => ?_, fun τ => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, Pi.add_apply, hf.1 u hu hu' x, hg.1 u hu hu' x]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(coeffSpan (ρ τ)).add_mem (hf.2.1 τ x) (hg.2.1 τ x)`. Rewrite using `[map_add, hf.2.2, hg.2.2, add_zero]`. Use the proof step `zero_mem' := ⟨fun _ _ _ _ => rfl, fun τ x => (coeffSpan (ρ τ)).zero_mem, fun τ => map_zero _⟩`. Use the proof step `smul_mem' := by`. Introduce `a f hf`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun u hu hu' x => ?_, fun τ x => ?_, fun τ => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, hf.1 u hu hu' x]`. Conclude with `(coeffSpan (ρ τ)).smul_mem a (hf.2.1 τ x)`. Rewrite using `[map_smul, hf.2.2, smul_zero] }`. Establish `hgr : ∀ (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hZ : Z ∈ lieAt V τ), Bd μ hθ (E : Set (Mc θ V)) (der hθ τ hZ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `τ Z hZ`. Take `⟨κ, hκ0, hκ⟩` from `bd_of_opOf (io μ hθ) (io_injective μ hθ) (C τ) (hCs τ μ) (A τ)`. Conclude with `bd_der μ hθ (hfr τ).1 (hfr τ).2 (ρ τ) (hρ τ) (E : Set (Mc θ V)) (fun φ hφ => hφ.2.1 τ) (C τ) (hCg τ) ⟨κ, hκ0, fun φ hφ => hκ φ (hφ.2.2 τ)⟩ Z hZ`. Take `⟨B, hB0, hB⟩` from `bd_inf μ hθ (E : Set (Mc θ V)) hgr`. Establish `hfE : FiniteDimensional ℂ E` using `finite_of_bound μ hθ U hU E (fun φ hφ => hφ.1) hB0 hB`.
-
-Use `Submodule.finiteDimensional_of_le (S₂ := E.map (Mc θ V).subtype) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨h1, h2, h3, h4, h5⟩`. Use `⟨⟨x, mem_Mc_iff.2 ⟨h1, h4⟩⟩, ⟨h2, h3, fun τ => Subtype.ext ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← foldr_gelf τ (C τ) (hCg τ) (A τ)]`. Conclude with `h5 τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_polyGelf : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)), (∀ τ, IsContRep (ρ τ)) → ∀ A : D.what₂.Tau → List ℂ, FiniteDimensional ℂ (Submodule.span ℂ {φ : GA D V → ℂ | IsAutFunSm θ V φ ∧ (∀ u ∈ U, u ∈ GfC V → ∀ g, φ (g * u) = φ g) ∧ (∀ τ, HasTypeAt θ V τ (ε τ) (fr τ) (ρ τ) φ) ∧ IsCuspFun V φ ∧ ∀ τ, (A τ).foldr (fun a f => gelf θ V τ 1 f - a • f) φ = 0}) := by
   intro D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ A

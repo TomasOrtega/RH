@@ -10,27 +10,23 @@ set_option maxHeartbeats 1600000
 open Polynomial in
 
 /- English proof (translation)
-Use `haveI := hQ`. Establish `hBK : ∀ x : K, x ∈ B ↔ IsIntegral A x`. Introduce `x`. Rewrite using `[hB, Subalgebra.mem_restrictScalars, mem_integralClosure_iff]`. Establish `hmem : ∀ a : A, algebraMap F K (a : F) ∈ B` using `fun a => (hBK _).2 (isIntegral_algebraMap (R := A) (A := K) (x := a))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ι : A →+* B` to `((algebraMap F K).comp A.val.toRingHom).codRestrict B hmem`. Establish `hι : ∀ a : A, ((ι a : B) : K) = algebraMap F K (a : F)` using `fun a => rfl`. Set `g : A →+* B ⧸ Q` to `(Ideal.Quotient.mk Q).comp ι`. Establish `hg : ∀ a : A, g a = 0 ↔ a ∈ Ideal.span {t}`. Introduce `a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_span_singleton, ← htQ a (ι a) (hι a)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`. Set `f : A ⧸ Ideal.span {t} →+* B ⧸ Q` to `Ideal.Quotient.lift (Ideal.span {t}) g (fun a ha => (hg a).2 ha)`. Establish `hf : ∀ a : A, f (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk Q (ι a)` using `fun a => rfl`. Establish `hinj : Function.Injective f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ((hg a).1 hx)`. Use `letI : Algebra (A ⧸ Ideal.span {t}) (B ⧸ Q) := f.toAlgebra`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsScalarTower k (A ⧸ Ideal.span {t}) (B ⧸ Q) := by`. Use `IsScalarTower.of_algebraMap_eq fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q (algebraMap k B c) = f (Ideal.Quotient.mk _ (algebraMap k A c))`. Rewrite using `[hf]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hι]`. Express the relevant statement in the definitionally equal form `algebraMap k K c = algebraMap F K (algebraMap k F c)`. Conclude with `IsScalarTower.algebraMap_apply k F K c`. Use `haveI : FaithfulSMul (A ⧸ Ideal.span {t}) (B ⧸ Q) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : NoZeroDivisors (A ⧸ Ideal.span {t}) := hinj.noZeroDivisors f (map_zero f) (map_mul f)`. Use `haveI : Nontrivial (A ⧸ Ideal.span {t}) := f.domain_nontrivial`. Use `haveI : Algebra.IsIntegral (A ⧸ Ideal.span {t}) (B ⧸ Q) := by`. Prove the components needed by the constructor for the conclusion. Introduce `z`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨p, hpm, hp⟩` from `(hBK _).1 b.2`. Use `⟨p.map (Ideal.Quotient.mk _), hpm.map _, ?_⟩` and prove the remaining obligations. Establish `h0 : p.eval₂ ι b = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Polynomial.hom_eval₂ p ι B.val.toRingHom b` as an intermediate fact. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Subalgebra.coe_val] at this`. Rewrite using `[this]`. Conclude with `hp`. Rewrite using `[RingHom.algebraMap_toAlgebra, Polynomial.eval₂_map]`.
-
-Establish `hfg : f.comp (Ideal.Quotient.mk (Ideal.span {t})) = (Ideal.Quotient.mk Q).comp ι` using `RingHom.ext fun a => hf a`. Rewrite using `[hfg, ← Polynomial.hom_eval₂, h0, map_zero]`. Establish `key` using `hy.algebraMap_comp (A := B ⧸ Q)`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
-
-Simplify using `only [Function.comp_apply, RingHom.algebraMap_toAlgebra, hf]`. Use `congr 1`. Conclude with `Subtype.ext ((hy' j).trans (hι (y j)).symm)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isTranscendenceBasis_quotient_integralClosure
     (k F K : Type) [Field k] [Field F] [Field K] [Algebra k F] [Algebra k K] [Algebra F K]

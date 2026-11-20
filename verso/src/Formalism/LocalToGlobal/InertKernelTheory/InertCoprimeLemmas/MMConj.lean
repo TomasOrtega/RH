@@ -9,17 +9,17 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
 namespace MMConj
 
 /- English proof (translation)
-Introduce `hy`. Establish `hleg : legendreSym p (-(d : ℤ)) = -1` using `by rw [jacobiSym.legendreSym.to_jacobiSym]; exact hj`. Establish `hns : ¬ IsSquare (((-(d : ℤ)) : ℤ) : ZMod p)` using `(legendreSym.eq_neg_one_iff (p := p)).1 hleg`. Establish `hnd : ¬ p ∣ d`. Introduce `hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hns` to reduce the goal to its premises. Establish `h0 : ((d : ℕ) : ZMod p) = 0` using `(ZMod.natCast_eq_zero_iff d p).2 hd`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[h0]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hdn : ‖(d : ℚ_[p])‖ = 1`. Establish `h1 : ‖(d : ℚ_[p])‖ ≤ 1` using `by exact_mod_cast Padic.norm_int_le_one (p := p) (d : ℤ)`. Establish `h2 : ¬ ‖(d : ℚ_[p])‖ < 1` using `by rw [Padic.norm_natCast_lt_one_iff]; exact hnd`. Combine the linear relations using `[not_lt.1 h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hy1 : ‖y‖ ≤ 1`. Establish `h3 : ‖y‖ ^ 2 = 1` using `by rw [← norm_pow, hy, norm_neg, hdn]`. Use polynomial arithmetic with `[norm_nonneg y]`. Use `set z : ℤ_[p] := ⟨y, hy1⟩ with hz`. Establish `hz2 : z ^ 2 = -(d : ℤ_[p])`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hz, PadicInt.coe_neg, PadicInt.coe_natCast]`. Conclude with `hy`. Apply `hns` to reduce the goal to its premises. Use `⟨PadicInt.toZMod z, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `congrArg (PadicInt.toZMod (p := p)) hz2`. Rewrite `h4` using `[map_pow, map_neg, map_natCast]`. Use `push_cast`. Rewrite using `[← h4]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem not_sq_padic (d p : ℕ) [Fact p.Prime] (hj : jacobiSym (-(d : ℤ)) p = -1) (y : ℚ_[p]) :
     y ^ 2 ≠ -(d : ℚ_[p]) := by
@@ -55,9 +55,9 @@ theorem not_sq_padic (d p : ℕ) [Fact p.Prime] (hj : jacobiSym (-(d : ℤ)) p =
   ring
 
 /- English proof (translation)
-Establish `hirr : Irreducible (Polynomial.X ^ 2 - Polynomial.C (-(d : ℚ_[p])))` using `X_pow_sub_C_irreducible_of_prime Nat.prime_two (fun b hb => not_sq_padic d p hj b hb)`. Establish `hmon : (Polynomial.X ^ 2 - Polynomial.C (-(d : ℚ_[p]))).Monic` using `Polynomial.monic_X_pow_sub_C _ two_ne_zero`. Establish `h1` using `minpoly.eq_of_irreducible_of_monic (x := β) hirr (by simp [hβ]) hmon`. Establish `h2` using `minpoly.eq_of_irreducible_of_monic (x := -β) hirr (by simp [hβ]) hmon`. Take `⟨τ, hτ⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := ℚ_[p]) (E := PadicAlgCl p)).1 (h2.symm.trans h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨τ, hτ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_aut_neg (d p : ℕ) [Fact p.Prime] (hj : jacobiSym (-(d : ℤ)) p = -1) (β : PadicAlgCl p)
     (hβ : β ^ 2 = -(d : PadicAlgCl p)) : ∃ τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p, τ β = -β := by
@@ -71,7 +71,7 @@ theorem exists_aut_neg (d p : ℕ) [Fact p.Prime] (hj : jacobiSym (-(d : ℤ)) p
   exact ⟨τ, hτ⟩
 
 /- English proof (translation)
-Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]`. Conclude with `(spectralNorm_eq_of_equiv τ x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aut_norm {p : ℕ} [Fact p.Prime] (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (x : PadicAlgCl p) :
     ‖τ x‖ = ‖x‖ := by
@@ -79,7 +79,7 @@ theorem aut_norm {p : ℕ} [Fact p.Prime] (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] Pad
   exact (spectralNorm_eq_of_equiv τ x).symm
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHomClass.isometry_of_norm ((τ : PadicAlgCl p ≃+* PadicAlgCl p) : PadicAlgCl p →+* PadicAlgCl p) (fun x => aut_norm τ x)).continuous`.
+A detailed English derivation is pending.
 -/
 theorem aut_cont {p : ℕ} [Fact p.Prime] (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) :
     Continuous ((τ : PadicAlgCl p ≃+* PadicAlgCl p) : PadicAlgCl p →+* PadicAlgCl p) :=
@@ -90,14 +90,14 @@ def extC {p : ℕ} [Fact p.Prime] (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl 
   UniformSpace.Completion.mapRingHom ((τ : PadicAlgCl p ≃+* PadicAlgCl p) : PadicAlgCl p →+* PadicAlgCl p) (aut_cont τ)
 
 /- English proof (translation)
-The claim follows from `UniformSpace.Completion.mapRingHom_coe _ _`.
+A detailed English derivation is pending.
 -/
 theorem extC_coe {p : ℕ} [Fact p.Prime] (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (x : PadicAlgCl p) :
     extC τ (x : ℂ_[p]) = ((τ x : PadicAlgCl p) : ℂ_[p]) :=
   UniformSpace.Completion.mapRingHom_coe _ _
 
 /- English proof (translation)
-Use `UniformSpace.Completion.induction_on y ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_eq (continuous_norm.comp UniformSpace.Completion.continuous_map) continuous_norm`. Introduce `a`. Rewrite using `[extC_coe, PadicComplex.norm_extends, PadicComplex.norm_extends, aut_norm]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extC_norm {p : ℕ} [Fact p.Prime] (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (y : ℂ_[p]) :
     ‖extC τ y‖ = ‖y‖ := by
@@ -107,7 +107,7 @@ theorem extC_norm {p : ℕ} [Fact p.Prime] (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] Pa
     rw [extC_coe, PadicComplex.norm_extends, PadicComplex.norm_extends, aut_norm]
 
 /- English proof (translation)
-Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom D.host.φ₀.toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi0_algebraic (D : D7) (x : D.host.E) : D.host.φ₀ x ∈ Qbar := by
   rw [mem_algebraicClosure_iff]
@@ -118,19 +118,19 @@ end MMConj
 open MMConj in
 
 /- English proof (translation)
-Introduce `D p _ _ hj lam`. Set `L : D.host.E →+* ℂ_[p]` to `lam.comp (D.host.φ₀.codRestrict Qbar.toSubring (fun z => phi0_algebraic D z))`. Establish `hL : ∀ x, L x = lamC lam (D.host.φ₀ x)`. Introduce `x`. Simplify using `only [lamC, dif_pos (phi0_algebraic D x)]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `set b : D.host.E := D.host.sqd with hbdef`. Establish `hb2 : b ^ 2 = -(D.host.d : D.host.E)` using `Formalism.BasicNotions.Examples₂.bE_sq D.host`. Establish `hcb : D.host.conj b = -b` using `Formalism.BasicNotions.Examples₂.conj_bE D.host`. Take `⟨β, hβ⟩ : ∃ β : PadicAlgCl p, β ^ 2 = -(D.host.d : PadicAlgCl p)` from `IsAlgClosed.exists_pow_nat_eq _ two_pos`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `exists_aut_neg D.host.d p hj β hβ`. Use `⟨extC τ, ?_, extC_norm τ⟩` and prove the remaining obligations. Establish `e1 : L b ^ 2 = -(D.host.d : ℂ_[p])` using `by rw [← map_pow, hb2, map_neg, map_natCast]`. Establish `e2 : (β : ℂ_[p]) ^ 2 = -(D.host.d : ℂ_[p])`. Rewrite using `[PadicComplex.coe_eq, ← map_pow, hβ, map_neg, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLb : L b = (β : ℂ_[p]) ∨ L b = -(β : ℂ_[p])` using `sq_eq_sq_iff_eq_or_eq_neg.1 (e1.trans e2.symm)`. Establish `hσβ : extC τ (β : ℂ_[p]) = -(β : ℂ_[p])`. Rewrite using `[extC_coe, hτ, PadicComplex.coe_eq, PadicComplex.coe_eq, map_neg]`. Establish `hσLb : extC τ (L b) = L (D.host.conj b)`. Rewrite using `[hcb, map_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hLb with h | h` into its components or cases. Rewrite using `[h, hσβ]`. Rewrite using `[h, map_neg, hσβ, neg_neg]`. Set `f : D.host.E →ₐ[ℚ] ℂ_[p]` to `((extC τ).comp L).toRatAlgHom`. Set `g : D.host.E →ₐ[ℚ] ℂ_[p]` to `(L.comp (D.host.conj : D.host.E →+* D.host.E)).toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfg : b ∈ AlgHom.equalizer f g` using `hσLb`. Establish `hK : (D.host.K).toSubalgebra ≤ AlgHom.equalizer f g`. Establish `hK' : D.host.K = IntermediateField.adjoin ℚ {b}` using `rfl`. Rewrite using `[hK', IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic b)]`. Conclude with `Algebra.adjoin_le (Set.singleton_subset_iff.2 hfg)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[← hL, ← hL]`. Conclude with `hK x.2`.
+A detailed English derivation is pending.
 -/
 theorem conjugation_extension_inert : ConjExt := by
   intro D p _ _ hj lam

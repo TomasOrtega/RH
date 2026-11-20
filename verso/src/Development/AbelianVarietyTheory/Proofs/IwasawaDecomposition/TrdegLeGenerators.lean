@@ -6,23 +6,21 @@ open Cardinal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra k K := ρ.toAlgebra`. Use `letI : Algebra k K' := (σ.comp ρ).toAlgebra`. Set `S` to `Algebra.adjoin k (Set.range cf)`. Set `E` to `IntermediateField.adjoin k (Set.range cf)`. Establish `hS : Algebra.trdeg k S ≤ d`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : MvPolynomial (Fin d) k →ₐ[k] S` to `(MvPolynomial.aeval cf).codRestrict S (fun p => by show _ ∈ Algebra.adjoin k (Set.range cf)`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval k cf]`. Conclude with `⟨p, rfl⟩)`. Establish `hg : Function.Surjective g`. Introduce and unpack `⟨y, hy⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hy' : y ∈ (MvPolynomial.aeval (R` using `k) cf).range := by`. Rewrite using `[← Algebra.adjoin_range_eq_range_aeval k cf]`. Conclude with `hy`. Take `⟨p, hp⟩` from `hy'`. Conclude with `⟨p, Subtype.ext hp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1` using `lift_trdeg_le_of_surjective g hg`. Simplify `h1` using `[MvPolynomial.trdeg_of_isDomain]`. Establish `hE : Algebra.trdeg k E ≤ d` using `by haveI : FaithfulSMul k S := (faithfulSMul_iff_algebraMap_injective k S).mpr (algebraMap k S).injective`. Establish `h` using `trdeg_add_eq k S (A := E)`. Rewrite `h` using `[trdeg_eq_zero (R := S) (A := E), add_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `hS`. Set `F` to `IntermediateField.adjoin E (L₀ : Set K')`. Establish `hint : ∀ z ∈ (L₀ : Set K'), IsIntegral E z` using `fun z hz => (IsAlgebraic.tower_top E (hL z hz)).isIntegral`. Use `haveI : Algebra.IsAlgebraic E F := IntermediateField.isAlgebraic_adjoin hint`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hF : Algebra.trdeg k F = Algebra.trdeg k E` using `by haveI : FaithfulSMul E F := (faithfulSMul_iff_algebraMap_injective E F).mpr (algebraMap E F).injective`. Establish `h` using `trdeg_add_eq k E (A := F)`. Rewrite `h` using `[trdeg_eq_zero (R := E) (A := F), add_zero]`. Conclude with `h.symm`. Establish `hcl : Subfield.closure ((L₀ : Set K') ∪ Set.range cf) ≤ F.toSubfield`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Subfield.closure_le]`. Use `Set.union_subset (fun z hz => IntermediateField.subset_adjoin E _ hz) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `F.algebraMap_mem (⟨cf i, IntermediateField.subset_adjoin k _ ⟨i, rfl⟩⟩ : E)`. Establish `hmem : ∀ x : K, σ x ∈ F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : Subfield.closure (Set.range φ) ≤ F.toSubfield.comap σ`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `_ ⟨r, rfl⟩`. Conclude with `hcl (hcf r)`. Introduce `x`.
-
-Establish `hx : x ∈ Subfield.closure (Set.range φ)` using `by rw [hφ]; exact Subfield.mem_top x`. Conclude with `hle hx`. Set `f : K →ₐ[k] F` to `{ toRingHom := σ.codRestrict F hmem commutes' := fun r => Subtype.ext rfl }`. Establish `hf : Function.Injective f` using `fun x y hxy => σ.injective (congrArg Subtype.val hxy)`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem trdeg_le_of_map_mem_closure_algebraic_union
     {k K K' A : Type} [Field k] [Field K] [Field K'] [CommRing A] (ρ : k →+* K) (σ : K →+* K')

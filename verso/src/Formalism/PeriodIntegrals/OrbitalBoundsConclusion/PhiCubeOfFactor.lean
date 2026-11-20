@@ -2,6 +2,6 @@ import Formalism.PeriodIntegrals.PhiCubeOfFactor
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ExponentialFactorIdentity.ExpMvEq
 
 /- English proof (translation)
-The claim follows from `PI.PhiCubeOfFactor.Wk.main`.
+A detailed English derivation is pending.
 -/
 theorem phiCubeOfFactor : PI.PhiCubeOfFactor.Lemma := PI.PhiCubeOfFactor.Wk.main

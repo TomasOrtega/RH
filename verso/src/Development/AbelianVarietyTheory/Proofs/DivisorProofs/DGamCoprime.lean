@@ -10,11 +10,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Numb
 namespace GlobalTheory.DGamCoprime
 
 /- English proof (translation)
-Establish `h1 : R.f ≤ R.k` using `R.f_le_k`. Establish `h2` using `R.two_le_m`. Establish `h3` using `R.rank_add_five_le`. Establish `h4 : R.k ≤ R.r` using `by unfold Ranks.r; omega`. Establish `h5 : R.k + 1 ≤ R.t` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Ranks.N`. Establish `e : 2 * R.f * (R.k + R.m * (R.t + 1)) = 2 * (R.f * R.k) + 2 * ((R.f * R.m) * (R.t + 1))` using `by ring`. Establish `a1 : R.f * R.k ≤ R.k * R.k` using `Nat.mul_le_mul_right _ h1`. Establish `a2 : (R.f * R.m) * (R.t + 1) ≤ R.k * (R.t + 1)` using `Nat.mul_le_mul_right _ h`. Establish `a3 : R.k * (R.k + 1) ≤ R.k * R.t` using `Nat.mul_le_mul_left _ h5`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4 : R.t * R.k ≤ R.t * R.r` using `Nat.mul_le_mul_left _ h4`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem two_f_N_le (R : Ranks) (h : R.f * R.m ≤ R.k) : 2 * R.f * R.N R.m ≤ 4 * R.t * R.r := by
   have h1 : R.f ≤ R.k := R.f_le_k
@@ -34,21 +34,21 @@ theorem two_f_N_le (R : Ranks) (h : R.f * R.m ≤ R.k) : 2 * R.f * R.N R.m ≤ 4
 variable {D : D7} (L : SizeData₂ D)
 
 /- English proof (translation)
-The claim follows from `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`.
+A detailed English derivation is pending.
 -/
 theorem one_le_L : 1 ≤ L.sc.L := Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le
 
 /- English proof (translation)
-The claim follows from `Real.one_le_exp (by linarith [one_le_L L])`.
+A detailed English derivation is pending.
 -/
 theorem one_le_b : 1 ≤ L.sc.b := Real.one_le_exp (by linarith [one_le_L L])
 
 /- English proof (translation)
-Establish `h1` using `h.1`. Establish `hx` using `L.sc.one_lt_alt.le`. Establish `he` using `L.sc.eps_pos`. Establish `a1 : 1 ≤ L.sc.x ^ szTh L` using `Real.one_le_rpow hx (by unfold szTh; positivity)`. Establish `a2 : 1 ≤ L.sc.x ^ L.sc.eps` using `Real.one_le_rpow hx he.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `one_le_L L`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (le_trans (by norm_num) D.R.two_le_m)`. Establish `a4 : (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 5` using `le_self_pow₀ hm (by norm_num)`. Establish `hf : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `key : (1 : ℝ) * D.R.m * D.R.f * 1 * 1 ≤ L.sc.x ^ szTh L * (D.R.m : ℝ) ^ 5 * D.R.f * L.sc.L * L.sc.x ^ L.sc.eps` using `by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((D.R.f * D.R.m : ℕ) : ℝ) ≤ D.R.k` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem f_mul_m_le (h : SizeKRel L) : D.R.f * D.R.m ≤ D.R.k := by
   have h1 := h.1
@@ -67,11 +67,11 @@ theorem f_mul_m_le (h : SizeKRel L) : D.R.f * D.R.m ≤ D.R.k := by
   exact_mod_cast this
 
 /- English proof (translation)
-Unfold `SizeCond at h`. Establish `hd' : (1 : ℝ) ≤ D.host.d` using `by exact_mod_cast hd`. Establish `hq' : (1 : ℝ) ≤ D.host.q` using `by exact_mod_cast hq`. Establish `ht : (1 : ℝ) ≤ D.R.t`. Use `D.R.three_m_lt_t` as an intermediate fact.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(show 1 ≤ D.R.t by omega)` after adjusting the coercions. Establish `c1 : (D.host.q : ℝ) ≤ szCond L`. Unfold `szCond`. Combine the equalities or inequalities in the displayed calculation. Establish `c2 : szCond L ≤ szCond L ^ 36` using `le_self_pow₀ (hq'.trans c1) (by norm_num)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3 : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 150` using `one_le_pow₀ ht`. Establish `c4 : 0 ≤ szCond L ^ 36` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem q_le_sqrt_b (h : SizeCond L) (hd : 0 < D.host.d) (hq : 0 < D.host.q) :
     (D.host.q : ℝ) ≤ Real.sqrt L.sc.b := by
@@ -91,15 +91,15 @@ theorem q_le_sqrt_b (h : SizeCond L) (hd : 0 < D.host.d) (hq : 0 < D.host.q) :
   nlinarith
 
 /- English proof (translation)
-Take `⟨-, -, -, hK, -, hC, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hG, -⟩` from `hS`. Establish `h0` using `two_f_N_le D.R (f_mul_m_le L hK)`. Take `⟨hq, hd⟩` from `D.host.qd_big`. Establish `hq' : 2 * D.R.f * D.R.N D.R.m + 1 < D.host.q` using `by omega`. Establish `hd' : 2 * D.R.f * D.R.N D.R.m + 1 < D.host.d` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `q_le_sqrt_b L hC (by omega) (by omega)`. Establish `hb` using `one_le_b L`. Establish `hsb : Real.sqrt L.sc.b ≤ L.sc.b`. Rewrite using `[Real.sqrt_le_left (by linarith)]; nlinarith`. Establish `hqb : (D.host.q : ℝ) ≤ L.sc.b` using `hs.trans hsb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun u => ?_, fun a => ?_, hq', hd'⟩` and prove the remaining obligations. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `h1 : L.sc.b ^ (1 : ℝ) ≤ L.sc.b ^ ((D.R.m : ℝ) / 2)` using `Real.rpow_le_rpow_of_exponent_le hb (by linarith)`. Rewrite `h1` using `[Real.rpow_one]`. Establish `: (D.host.q : ℝ) ≤ ((D.mem u).A.T : ℝ)` using `hqb.trans (h1.trans (hT u))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: D.host.q ≤ (D.mem u).A.T` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(show 1 ≤ D.R.k by omega)` after adjusting the coercions.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : L.sc.b ≤ (D.R.k : ℝ) * L.sc.b` using `by nlinarith`. Establish `h2 : (D.R.k : ℝ) * L.sc.b ≤ ((D.R.k : ℝ) * L.sc.b) ^ 8` using `le_self_pow₀ (hb.trans h1) (by norm_num)`. Establish `: (D.host.q : ℝ) ≤ (D.host.g a : ℝ)` using `hqb.trans (h1.trans (h2.trans (hG a a).1))`. Establish `: D.host.q ≤ D.host.g a` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem primes_gt (hS : SizesAt L) (hT : L.TuGe) :
     (∀ u, 2 * D.R.f * D.R.N D.R.m + 1 < (D.mem u).A.T) ∧

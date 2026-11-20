@@ -11,13 +11,13 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.WildSetSQ
 
 /- English proof (translation)
-Establish `key : ∀ M : ℕ, ((χ σ : Oˣ) : O) - 1 ∈ IsLocalRing.maximalIdeal O ^ M`. Introduce `M`. Set `H : Subgroup (G E Ω)` to `((Units.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ M)).toMonoidHom).comp χ).ker`. Establish `hH : ∀ g, g ∈ H ↔ ((χ g : Oˣ) : O) - 1 ∈ IsLocalRing.maximalIdeal O ^ M`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Ideal.Quotient.eq, map_one, MonoidHom.mem_ker, Units.ext_iff]`. Both sides reduce to the same expression. Establish `ho : IsOpen (H : Set (G E Ω))`. Establish `e : (H : Set (G E Ω)) = (fun g => ((χ g : Oˣ) : O) - 1) ⁻¹' ((IsLocalRing.maximalIdeal O ^ M : Ideal O) : Set O)`. Use extensionality with `g`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hH g`. Rewrite using `[e]`. Conclude with `((isAdic_iff.1 had).1 M).preimage (hχ.sub continuous_const)`. Use `(hH σ).1 (GlobalTheory.WildKill.mem_of_wild A H ho σ m hm hσ ?_)` and prove the remaining obligations. Rewrite using `[hH, map_pow, h, Units.val_one, sub_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Rewrite using `[Units.ext_iff, Units.val_one, ← sub_eq_zero]`. Establish `h2` using `Ideal.mem_iInf.2 key`. Rewrite `h2` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal O).ne_top]`. Simplify using `using h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem char_eq_one_of_wild {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [TopologicalSpace O]
@@ -49,7 +49,7 @@ theorem char_eq_one_of_wild {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
   simpa using h2
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, g = n + 1` from `⟨g - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coprime_pred (g : ℕ) (hg : 1 ≤ g) : (g - 1).Coprime g := by
   obtain ⟨n, rfl⟩ : ∃ n, g = n + 1 := ⟨g - 1, by omega⟩
@@ -61,13 +61,13 @@ end GlobalTheory.WildSetSQ
 namespace GlobalTheory.WildSetSQ
 
 /- English proof (translation)
-Establish `hvl : v ∉ placesOver D.host.E (D.nd.l i)` using `D.nd.SQ_l i v (Or.inl hS)`. Establish `hvQ : v ∉ D.nd.Q i` using `Finset.disjoint_left.1 (D.nd.SQ_disj i) hS`. Establish `hpl` using `D.nd.plOm.2 v`. Establish `hI : σ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 v) := GlobalTheory.TameGenPowers.wild_mem_Ine hσ`. Establish `hψ : D.ntw.psiL i σ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hvQ ((D.ntw.psiL_ram i v _ hpl).1 ⟨σ, hI, h⟩)`. Establish `hl : D.ntw.l (D.ntw.twOf i) = D.nd.l i` using `D.ntw.twOf_l i`. Establish `ht` using `D.ntw.twistCharacterFamily_tame (D.ntw.twOf i) (D.nd.j i) (D.ntw.twSide i) k v hk (by rw [hl]; exact hvl) _ hpl σ hI`. Establish `hpow : D.nd.chi i 1 σ ^ (D.host.g k - 1) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.ntw.chi_tw i, MonoidHom.mul_apply, hψ, mul_one, MonoidHom.comp_apply, ← map_pow, ht, map_one]`. Use `D.nd.trO i` as an intermediate fact. Establish `hgv : (D.nd.plOm.1 v).valuation ((D.host.g k : ℕ) : D.nd.Om) < 1`. Establish `h1 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal` using `hk`. Establish `h2` using `(hpl _).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`. Conclude with `char_eq_one_of_wild (D.nd.plOm.1 v) (D.nd.O_adic i) (D.nd.chi i 1) (D.nd.chi_cont i 1) σ hσ _ (GlobalTheory.WildKill.not_lt_one_of_coprime _ (coprime_pred _ (D.host.g_prime k).one_lt.le) hgv) hpow`.
+A detailed English derivation is pending.
 -/
 theorem chi_wild_over_g (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)) (hS : v ∈ D.nd.S i)
     (k : Fin 2) (hk : v ∈ placesOver D.host.E (D.host.g k)) (σ : GE D.nd)
@@ -92,13 +92,13 @@ theorem chi_wild_over_g (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.h
     (GlobalTheory.WildKill.not_lt_one_of_coprime _ (coprime_pred _ (D.host.g_prime k).one_lt.le) hgv) hpow
 
 /- English proof (translation)
-Take `⟨ha, -⟩` from `h32 i hHG r hr v hv (D.nd.SQ_l i v hv)`. Take `⟨-, Pm, hPm⟩` from `ha hcase x`. Establish `h1` using `hPm σ (GlobalTheory.TameGenPowers.wild_mem_Ine hσ)`. Establish `hc : chi1 D.nd i σ = 1` using `by show ((D.nd.chi i 1 σ : (D.nd.O i)ˣ) : D.nd.O i) = 1`. Rewrite using `[hχ, Units.val_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hc, map_one]`. Establish `hd : (Matrix.diagonal fun k : Fin D.R.nV => if (k : ℕ) < D.R.r then (1 : Kf D.nd i) else 1) = 1`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hd]`. Establish `h2 : Pm⁻¹ * mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x) σ * Pm = 1` using `Units.ext h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x) σ = 1`. Use `congrArg (fun g => Pm * g * Pm⁻¹) h2` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hinj : Function.Injective (algebraMap (D.nd.O i) (Kf D.nd i))` using `IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i))`. Establish `e : ((r x σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map (algebraMap (D.nd.O i) (Kf D.nd i)) = ((mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x) σ : GL _ _) : Matrix _ _ (Kf D.nd i))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((r x σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map (algebraMap (D.nd.O i) (Kf D.nd i)) = ((1 : GL (Fin D.R.nV) (D.nd.O i)) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map (algebraMap (D.nd.O i) (Kf D.nd i))`. Rewrite using `[e, h3, Units.val_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Units.ext (Matrix.map_injective hinj h4)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_wild_diag (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (h32 : SumRepresentations.ConclusionG5 D) (hHG : HG D.nd D.naut i) (hr : GoodR D.nd i r) (v : HeightOneSpectrum (𝓞 D.host.E))
@@ -135,11 +135,11 @@ theorem r_wild_diag (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (
   exact Units.ext (Matrix.map_injective hinj h4)
 
 /- English proof (translation)
-Take `⟨P, -, hP⟩` from `hL x`. Establish `hI : σ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 v) := GlobalTheory.TameGenPowers.wild_mem_Ine hσ`. Establish `hcont` using `SumRepresentations.contQ_of_continuous D.nd D.naut i (r x) (hr x).1`. Establish `hinj : Function.Injective (iotaO D.nd D.naut i)` using `((D.naut.iotaQC i).injective.comp (D.naut.iotaQ i).injective).comp (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)))`. Establish `hine : D.naut.inePol (D.naut.locV i P v) σ = (((r x σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).charpoly).map (iotaO D.nd D.naut i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← D.naut.inePol_tw (D.naut.locV i P v) ((1 - (D.R.nV : ℝ)) / 2) _ hI, ← hP, ← D.naut.wdOf_ine i _ v hvl hcont _ hI]`. Establish `: ((mapRep (iotaOQ D.nd D.naut i) (r x) σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i))) = ((r x σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map (iotaOQ D.nd D.naut i)` using `rfl`. Rewrite using `[this, Matrix.charpoly_map, Polynomial.map_map]`. Both sides reduce to the same expression. Rewrite `hine` using `[hIne P σ hσ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : ((r x σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).charpoly = (Polynomial.X - 1) ^ D.R.nV`. Apply `Polynomial.map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[← hine, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_one]`. Conclude with `GlobalTheory.WildUnipotent.main D i _ (r x) (hr x).1 v hvl σ hσ hc`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_wild_over_g (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hr : GoodR D.nd i r) (v : HeightOneSpectrum (𝓞 D.host.E)) (hvl : v ∉ placesOver D.host.E (D.nd.l i))
@@ -175,15 +175,15 @@ end GlobalTheory.WildSetSQ
 namespace GlobalTheory.WildSetSQ
 
 /- English proof (translation)
-Introduce `D i r h32 hHG hr hadm hjc hLG`. Use `⟨fun v hv => ⟨(hadm v hv).1, fun g hg => ?_⟩, fun q hq => (hadm q (Or.inr hq)).2.2.1 hq⟩` and prove the remaining obligations. Establish `hvl : v ∉ placesOver D.host.E (D.nd.l i)` using `D.nd.SQ_l i v hv`. Distinguish the cases in `hA : v ∈ D.nd.Q i ∨ v ∈ placesOver D.host.E D.host.pde ∨ (D.nd.l i = D.host.pde ∧ v ∈ placesOver D.host.E D.host.pde')`. Establish `hjv : v ∈ D.nd.Q i ∨ (v ∈ D.nd.S i ∧ (v ∈ placesOver D.host.E D.host.pde ∨ (D.nd.l i = D.host.pde ∧ v ∈ placesOver D.host.E D.host.pde')))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Break down `hA with h | h` into its components or cases. Conclude with `Or.inl h`. Break down `hv with hS | hQ` into its components or cases. Conclude with `Or.inr ⟨hS, h⟩`. Conclude with `Or.inl hQ`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative.
 
-Establish `hχ : D.nd.chi i 1 g = 1` using `hjc.1 v hjv g hg`. Conclude with `⟨fun x => r_wild_diag D i r h32 hHG hr v hv hA g hg hχ x, hχ⟩`. Establish `hS : v ∈ D.nd.S i` using `hv.resolve_right fun h => hA (Or.inl h)`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, v ∈ placesOver D.host.E (D.host.g k) := by`. Take `⟨h1, -⟩` from `(D.nd.S_def i v).1 hS`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `h1 with h | h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Use `exfalso split_ifs at h with he`. Conclude with `hA (Or.inr (Or.inr ⟨he, h⟩))`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hA (Or.inr (Or.inl h))`. Take `⟨hL, hIne⟩` from `hLG v hS ⟨k, hk⟩`. Conclude with `⟨fun x => r_wild_over_g D i r hr v hvl hL hIne g hg x, chi_wild_over_g D i v hS k hk g hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), SumRepresentations.ConclusionG5 D → HG D.nd D.naut i → GoodR D.nd i r → TruncatedSeriesCountingIdentities.TameGeneratorConditions (D := D) i → TameCharacterConditions D i → (∀ w ∈ D.nd.S i, (∃ k, w ∈ placesOver D.host.E (D.host.g k)) → (∀ x, ∃ P, D.naut.ptV i P = some x ∧ D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) (r x)) w = D.naut.lpTw (D.naut.locV i P w) ((1 - (D.R.nV : ℝ)) / 2)) ∧ ∀ P : D.naut.AV i, ∀ σ ∈ wildSet D.nd (D.nd.plOm.1 w), D.naut.inePol (D.naut.locV i P w) σ = (Polynomial.X - 1) ^ D.R.nV) → PairedCharacterCondition.SetSQ i r := by
   intro D i r h32 hHG hr hadm hjc hLG

@@ -5,9 +5,9 @@ namespace Formalism.LogVandermondeBounds.StandardLattice
 open Finset
 
 /- English proof (translation)
-Introduce `i j hij hjN`. Proceed by induction on `j with`. Consider the case `zero => omega`. Consider the case `succ j ih`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hij with h' | h'` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `lt_trans (h j (by omega)) (ih h' (by omega))`. Substitute `h'` using the available equality. Conclude with `h i hjN`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma anti_of_step (f : ℕ → ℝ) (N : ℕ) (h : ∀ i, i + 1 < N → f (i + 1) < f i) :
     ∀ i j, i < j → j < N → f j < f i := by
@@ -20,9 +20,9 @@ lemma anti_of_step (f : ℕ → ℝ) (N : ℕ) (h : ∀ i, i + 1 < N → f (i + 
     · subst h'; exact h i hjN
 
 /- English proof (translation)
-Introduce `i j hij hjN`. Proceed by induction on `j with`. Consider the case `zero => omega`. Consider the case `succ j ih`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hij with h' | h'` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `h j (by omega)`. Establish `h2` using `ih h' (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Substitute `h'` using the available equality. Conclude with `h i hjN`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma gap_of_step (f : ℕ → ℝ) (N : ℕ) (h : ∀ i, i + 1 < N → 1 ≤ f (i + 1) - f i) :
     ∀ i j, i < j → j < N → 1 ≤ f j - f i := by
@@ -37,9 +37,9 @@ lemma gap_of_step (f : ℕ → ℝ) (N : ℕ) (h : ∀ i, i + 1 < N → 1 ≤ f 
     · subst h'; exact h i hjN
 
 /- English proof (translation)
-Unfold `vandN`. Apply `prod_pos` to reduce the goal to its premises. Introduce `i hi`. Apply `prod_pos` to reduce the goal to its premises. Introduce `j hj`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[mem_range]`. Rewrite `hj` using `[mem_Ico]`. Conclude with `sub_pos.2 (h i j (by omega) (by omega))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma vandN_pos (x : ℕ → ℝ) (N : ℕ) (h : ∀ i j, i < j → j < N → x j < x i) : 0 < vandN x N := by
   unfold vandN
@@ -52,9 +52,9 @@ lemma vandN_pos (x : ℕ → ℝ) (N : ℕ) (h : ∀ i j, i < j → j < N → x 
   exact sub_pos.2 (h i j (by omega) (by omega))
 
 /- English proof (translation)
-Unfold `vandN`. Apply `prod_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Apply `prod_congr rfl` to reduce the goal to its premises. Introduce `j hj`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[mem_range]`. Rewrite `hj` using `[mem_Ico]`. Rewrite using `[h i hi, h j (by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma vandN_congr (x y : ℕ → ℝ) (N : ℕ) (h : ∀ i, i < N → x i = y i) : vandN x N = vandN y N := by
   unfold vandN
@@ -67,9 +67,9 @@ lemma vandN_congr (x y : ℕ → ℝ) (N : ℕ) (h : ∀ i, i < N → x i = y i)
   rw [h i hi, h j (by omega)]
 
 /- English proof (translation)
-Unfold `vandN`. Rewrite using `[prod_range_succ, Ico_self, prod_empty, mul_one, ← prod_mul_distrib]`. Apply `prod_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[mem_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[prod_Ico_succ_top (by omega : i + 1 ≤ N)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma vandN_succ_right (x : ℕ → ℝ) (N : ℕ) :
     vandN x (N + 1) = vandN x N * ∏ i ∈ range N, (x i - x N) := by
@@ -81,9 +81,9 @@ lemma vandN_succ_right (x : ℕ → ℝ) (N : ℕ) :
   rw [prod_Ico_succ_top (by omega : i + 1 ≤ N)]
 
 /- English proof (translation)
-Unfold `vandN`. Rewrite using `[prod_range_succ', mul_comm, zero_add]`. Use `congr 1`. Apply `prod_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← prod_Ico_add' (fun j => x (i + 1) - x j) (i + 1) N 1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma vandN_succ_left (x : ℕ → ℝ) (N : ℕ) :
     vandN x (N + 1) = (∏ j ∈ Ico 1 (N + 1), (x 0 - x j)) * vandN (fun i => x (i + 1)) N := by
@@ -95,19 +95,19 @@ lemma vandN_succ_left (x : ℕ → ℝ) (N : ℕ) :
   rw [← prod_Ico_add' (fun j => x (i + 1) - x j) (i + 1) N 1]
 
 /- English proof (translation)
-Establish `hr : ∀ i, i < k - 1 → rowPar k v b i = v i` using `fun i hi => by simp [rowPar, hi]`. Establish `hr2 : ∀ i, rowPar k v b (k - 1 + i) = - b i` using `fun i => by simp [rowPar]`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_`. Simplify using `only [range_zero, prod_empty, mul_one, add_zero]`. Conclude with `le_of_eq (vandN_congr _ _ _ (fun i hi => (hr i hi).symm))`. Consider the case `succ m ih`. Introduce `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ih'` using `ih (by omega)`. Establish `hbm : 0 < b m` using `hbpos m (by omega)`. Rewrite using `[show k - 1 + (m + 1) = (k - 1 + m) + 1 by omega, vandN_succ_right, prod_range_succ]`. Establish `hA : b m ^ (k - 1) ≤ ∏ i ∈ range (k - 1), (rowPar k v b i - rowPar k v b (k - 1 + m))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `prod_le_prod (fun i _ => hbm.le)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[mem_range]`. Rewrite using `[hr i hi, hr2 m]`. Combine the linear relations using `[hv i hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hB : (1 : ℝ) ≤ ∏ i ∈ range m, (rowPar k v b (k - 1 + i) - rowPar k v b (k - 1 + m))`. Combine the equalities or inequalities in the displayed calculation. Apply `prod_le_prod (fun i _ => zero_le_one)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[mem_range]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr2 i, hr2 m]`. Combine the linear relations using `[hgap i m hi (by omega)]`. Establish `hF : b m ^ (k - 1) ≤ ∏ i ∈ range (k - 1 + m), (rowPar k v b i - rowPar k v b (k - 1 + m))`. Rewrite using `[prod_range_add]`. Establish `hA0 : 0 ≤ ∏ i ∈ range (k - 1), (rowPar k v b i - rowPar k v b (k - 1 + m))` using `le_trans (pow_nonneg hbm.le _) hA`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hL0 : 0 ≤ vandN v (k - 1) * ∏ j ∈ range m, b j ^ (k - 1)` using `mul_nonneg hV.le (prod_nonneg fun j hj => pow_nonneg (hbpos j (by rw [mem_range] at hj; omega)).le _)`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul ih' hF (pow_nonneg hbm.le _) (le_trans hL0 ih')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma vandN_mul_prod_pow_le_vandN_rowPar (k M : ℕ) (v b : ℕ → ℝ)
     (hv : ∀ i, i < k - 1 → 0 ≤ v i) (hbpos : ∀ j, j < M → 0 < b j)
@@ -155,35 +155,33 @@ private lemma vandN_mul_prod_pow_le_vandN_rowPar (k M : ℕ) (v b : ℕ → ℝ)
     exact mul_le_mul ih' hF (pow_nonneg hbm.le _) (le_trans hL0 ih')
 
 /- English proof (translation)
-Establish `hvsplit : vandN v (p + 1) = (∏ i ∈ range p, ∏ j ∈ Ico (i + 1) p, (v i - v (j + 1))) * ∏ i ∈ range p, (v i - v (i + 1))`. Unfold `vandN`. Rewrite using `[prod_range_succ, Ico_self, prod_empty, mul_one, ← prod_mul_distrib]`. Use `prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Rewrite `hi` using `[mem_range]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[prod_eq_prod_Ico_succ_bot (by omega : i + 1 < p + 1), ← prod_Ico_add' (fun j => v i - v j) (i + 1) p 1, mul_comm]`. Establish `hD0 : 0 ≤ D` using `le_trans (by linarith [hu 0 1 (by omega) (by omega)]) (hD 0 1 (by omega) (by omega))`. Rewrite using `[hvsplit, show p + 2 = (p + 1) + 1 from rfl, vandN_succ_left, vandN_succ_right]`. Use `beta_reduce`. Establish `hP0 : ∏ j ∈ Ico 1 (p + 1 + 1), (u 0 - u j) ≤ D ^ (p + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hj` using `[mem_Ico]`. Combine the linear relations using `[hu 0 j (by omega) (by omega)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Rewrite `hj` using `[mem_Ico]`. Conclude with `hD 0 j (by omega) (by omega)`. Use `_ = D ^ (p + 1) := by simp`. Establish `hC0 : 0 ≤ ∏ i ∈ range p, (u (i + 1) - u (p + 1))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `prod_nonneg` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[mem_range]`. Combine the linear relations using `[hu (i + 1) (p + 1) (by omega) (by omega)]`. Establish `hC : ∏ i ∈ range p, (u (i + 1) - u (p + 1)) ≤ D ^ p`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[mem_range]`. Combine the linear relations using `[hu (i + 1) (p + 1) (by omega) (by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i hi`. Rewrite `hi` using `[mem_range]`. Conclude with `hD (i + 1) (p + 1) (by omega) (by omega)`. Use `_ = D ^ p := by simp`. Establish `hV0 : 0 ≤ ∏ i ∈ range p, ∏ j ∈ Ico (i + 1) p, (u (i + 1) - u (j + 1))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `prod_nonneg` to reduce the goal to its premises. Introduce `i hi`. Apply `prod_nonneg` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hi` using `[mem_range]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hj` using `[mem_Ico]`. Combine the linear relations using `[hu (i + 1) (j + 1) (by omega) (by omega)]`. Establish `hW0 : 0 ≤ ∏ i ∈ range p, ∏ j ∈ Ico (i + 1) p, (v i - v (j + 1))`. Apply `prod_nonneg` to reduce the goal to its premises. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `prod_nonneg` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hi` using `[mem_range]`. Rewrite `hj` using `[mem_Ico]`. Combine the linear relations using `[(hint i (by omega)).2, (hint (j + 1) (by omega)).1, hu (i + 1) (j + 1) (by omega) (by omega)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVW : ∏ i ∈ range p, ∏ j ∈ Ico (i + 1) p, (u (i + 1) - u (j + 1)) ≤ ∏ i ∈ range p, ∏ j ∈ Ico (i + 1) p, (v i - v (j + 1))`. Apply `prod_le_prod` to reduce the goal to its premises. Introduce `i hi`. Apply `prod_nonneg` to reduce the goal to its premises. Introduce `j hj`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hi` using `[mem_range]`. Rewrite `hj` using `[mem_Ico]`. Combine the linear relations using `[hu (i + 1) (j + 1) (by omega) (by omega)]`. Introduce `i hi`. Apply `prod_le_prod` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Rewrite `hi` using `[mem_range]`. Rewrite `hj` using `[mem_Ico]`. Combine the linear relations using `[hu (i + 1) (j + 1) (by omega) (by omega)]`. Introduce `j hj`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hi` using `[mem_range]`. Rewrite `hj` using `[mem_Ico]`. Combine the linear relations using `[(hint i (by omega)).2, (hint (j + 1) (by omega)).1]`. Establish `hAdj : (1 : ℝ) ≤ ∏ i ∈ range p, (v i - v (i + 1))`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `prod_le_prod (fun i _ => zero_le_one)` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[mem_range]`. Conclude with `hst i (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma vandN_le_pow_mul_pow_mul_vandN_of_interlace (p : ℕ) (u v : ℕ → ℝ) (D : ℝ)
     (hu : ∀ i j, i < j → j < p + 2 → u j < u i)
@@ -279,37 +277,35 @@ private lemma vandN_le_pow_mul_pow_mul_vandN_of_interlace (p : ℕ) (u v : ℕ �
         (mul_nonneg (pow_nonneg hD0 _) (pow_nonneg hD0 _))
 
 /- English proof (translation)
-Introduce `ε x hε hx k m Δ u v b w hk hm hΔ hP`. Take `⟨hv, hvstep, hint, hb0u, hcase, hw, hbstep, hkb, hwB⟩` from `hP`. Take `⟨p, rfl⟩ : ∃ p, k = p + 2` from `⟨k - 2, by omega⟩`. Take `⟨q, rfl⟩ : ∃ q, m = q + 1` from `⟨m - 1, by omega⟩`. Establish `e1 : p + 2 - 1 = p + 1` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : p + 2 - 2 = p` using `by omega`. Establish `e3 : q + 1 - 1 = q` using `by omega`. Simplify using `only [e1, e2, e3] at hv hvstep hint hb0u hcase hwB ⊢`. Move the coercions through the operations in `at hv hcase hkb ⊢`. Establish `hx0 : 0 < x` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hB1 : 1 ≤ Real.exp (x ^ ε)` using `Real.one_le_exp (Real.rpow_nonneg hx0.le _)`. Establish `haB : Real.exp (x ^ ε) ≤ x * Real.exp (x ^ ε)` using `le_mul_of_one_le_left (by linarith) hx`. Establish `ha1 : 1 ≤ x * Real.exp (x ^ ε)` using `le_trans hB1 haB`. Establish `hbgap : ∀ i j, i < j → j < q + 1 → 1 ≤ b j - b i` using `gap_of_step b (q + 1) (fun i hi => (hbstep i hi).2)`. Establish `hK0 : 0 < ((p : ℝ) + 2) * (4 * Δ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : 0 < b 0` using `(div_pos_iff_of_pos_right hx0).1 (lt_of_lt_of_le hK0 hkb)`. Establish `hbpos : ∀ j, j < q + 1 → 0 < b j`. Introduce `j hj`. Break down `Nat.eq_zero_or_pos j with h | h` into its components or cases. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Conclude with `hb0`. Combine the linear relations using `[hbgap 0 j h hj]`. Establish `hu : ∀ i j, i < j → j < p + 2 → u j < u i` using `anti_of_step u (p + 2) (fun i hi => by`. Use `hint i (by omega)` as an intermediate fact. Combine the linear relations using `[this.1, this.2])`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hvdec : ∀ i j, i < j → j < p + 1 → v j < v i` using `anti_of_step v (p + 1) (fun i hi => by`. Use `hvstep i hi` as an intermediate fact. Use the proof step `linarith)`. Establish `hVv : 0 < vandN v (p + 1)` using `vandN_pos v _ hvdec`. Establish `hVu : 0 < vandN u (p + 2)` using `vandN_pos u _ hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hbq : b 0 ≤ b q`. Break down `Nat.eq_zero_or_pos q with h | h` into its components or cases. Rewrite using `[h]`. Combine the linear relations using `[hbgap 0 q h (by omega)]`. Establish `hD8 : u 0 - u (p + 1) ≤ 8 * (x * Real.exp (x ^ ε))`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `hcase with ⟨h1, h2⟩ | ⟨h1, h2, h3⟩` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwq` using `(hw q (by omega)).1`. Establish `hdiv : b 0 / x ≤ b 0` using `div_le_self hb0.le hx`. Establish `hv0` using `(hv 0 (by omega)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hvp` using `(hv p (by omega)).1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDpair : ∀ i j, i < j → j ≤ p + 1 → u i - u j ≤ 8 * (x * Real.exp (x ^ ε))`. Introduce `i j hij hj`. Establish `h1 : u i ≤ u 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos i with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `(hu 0 i h (by omega)).le`. Establish `h2 : u (p + 1) ≤ u j`. Break down `Nat.lt_or_ge j (p + 1) with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `(hu j (p + 1) h (by omega)).le`. Rewrite using `[show j = p + 1 by omega]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `huv` using `vandN_le_pow_mul_pow_mul_vandN_of_interlace p u v _ hu hint (fun i hi => by linarith [hvstep i hi]) hDpair`. Establish `hrow` using `vandN_mul_prod_pow_le_vandN_rowPar (p + 2) (q + 1) v b (by simpa only [e1] using fun i hi => (hv i hi).1) hbpos hbgap (by simpa only [e1] using hVv) (q + 1) le_rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [e1] at hrow`. Establish `hP : 0 < ∏ j ∈ range (q + 1), b j ^ (p + 1)` using `prod_pos fun j hj => pow_pos (hbpos j (mem_range.1 hj)) _`. Establish `hrow0 : 0 < vandN (rowPar (p + 2) v b) (p + 1 + (q + 1))` using `lt_of_lt_of_le (mul_pos hVv hP) hrow`. Use `⟨hVu, hrow0, ?_⟩` and prove the remaining obligations. Establish `h8 : 0 < 8 * (x * Real.exp (x ^ ε))` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hlr : Real.log (vandN v (p + 1)) + (p + 1) * ∑ j ∈ range (q + 1), Real.log (b j) ≤ Real.log (vandN (rowPar (p + 2) v b) (p + 1 + (q + 1)))`. Use `Real.log_le_log (mul_pos hVv hP) hrow` as an intermediate fact. Rewrite `this` using `[Real.log_mul hVv.ne' hP.ne', Real.log_prod (fun j hj => (pow_pos (hbpos j (mem_range.1 hj)) _).ne')]`. Simplify using `only [Real.log_pow] at this`. Rewrite `this` using `[← mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlu : Real.log (vandN u (p + 2)) ≤ (p + 1) * Real.log (8 * (x * Real.exp (x ^ ε))) + p * Real.log (8 * (x * Real.exp (x ^ ε))) + Real.log (vandN v (p + 1))`. Use `Real.log_le_log hVu huv` as an intermediate fact. Rewrite `this` using `[Real.log_mul (by positivity) hVv.ne', Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl8 : 0 ≤ Real.log (8 * (x * Real.exp (x ^ ε)))` using `Real.log_nonneg (by linarith)`. Establish `hlk : 0 ≤ Real.log ((p : ℝ) + 2)` using `Real.log_nonneg (by linarith [(p.cast_nonneg : (0 : ℝ) ≤ p)])`. Establish `hpk : 0 ≤ ((p : ℝ) + 2) * (1 + Real.log ((p : ℝ) + 2))` using `mul_nonneg (by positivity) (by linarith)`.
-
-Use polynomial arithmetic with `[hl8, hlk, hpk, (p.cast_nonneg : (0 : ℝ) ≤ p)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem VandPlace_holds : VandPlace := by
   intro ε x hε hx k m Δ u v b w hk hm hΔ hP

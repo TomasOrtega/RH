@@ -23,9 +23,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
 def res (ψ : S →+* T) (hx : spMap ψ ≫ x = x') (v : TanM x t.G) : TanM x' t.G := tanOf (isTan_map ψ hx (isTan_tv v))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `tan_ext ?_` and prove the remaining obligations. Use `show spMap (dualMap χ) ≫ spMap (dualMap ψ) ≫ _ = spMap (dualMap (χ.comp ψ)) ≫ _`. Rewrite using `[← Category.assoc, spMap_comp_spMap]`. Use `congr 2`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `exact RingHom.ext fun a => by ext <;> simp [dualMap]`.
+A detailed English derivation is pending.
 -/
 theorem res_res (ψ : S →+* T) (hx : spMap ψ ≫ x = x') (χ : T →+* U) (hx' : spMap χ ≫ x' = x'') {ω : S →+* U}
     (e : χ.comp ψ = ω) (hx'' : spMap ω ≫ x = x'') (v : TanM x t.G) :
@@ -38,9 +38,9 @@ theorem res_res (ψ : S →+* T) (hx : spMap ψ ≫ x = x') (χ : T →+* U) (hx
   exact RingHom.ext fun a => by ext <;> simp [dualMap]
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Set `ρ : overAt (spMap ψ ≫ x) (DualNumber T) ⟶ overAt x (DualNumber S)` to `Over.homMk (spMap (dualMap ψ)) (by show spMap _ ≫ spMap _ ≫ x = spMap _ ≫ spMap _ ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap, PullbackSections.dualMap_comp_alg])`. Set `f : TanM x t.G →+ TanM (spMap ψ ≫ x) t.G` to `AddMonoidHom.mk' (res ψ rfl) fun a b => tanM_ext (MonObj.comp_mul ρ (tv a) (tv b))`. Use `(map_sum f _ _).trans (Finset.sum_congr rfl fun k _ => tan_ext ?_)` and prove the remaining obligations.
+Substitute using the available equality. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (tv (n k)).left) (FrCov.eps_dual ψ (a k))).trans (Category.assoc _ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem res_sum (ψ : S →+* T) (hx : spMap ψ ≫ x = x') {κ : Type} [Fintype κ] (a : κ → S) (n : κ → TanM x t.G) :
     res ψ hx (∑ k, a k • n k) = ∑ k, ψ (a k) • res ψ hx (n k) := by
@@ -57,11 +57,11 @@ theorem res_sum (ψ : S →+* T) (hx : spMap ψ ≫ x = x') {κ : Type} [Fintype
 def IsBasis {m : ℕ} (v : Fin m → TanM x t.G) : Prop := ∀ n : TanM x t.G, ∃! a : Fin m → S, n = ∑ k, a k • v k
 
 /- English proof (translation)
-Establish `hs : ∀ a : Fin m → S, tv (∑ i, a i • v i) = combT x (fun i => tv (v i)) a` using `fun a => by classical`. Unfold `combT`. Proceed by induction on `(Finset.univ : Finset (Fin m)) using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, tv_add, ih]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Both sides reduce to the same expression. Establish `key : ∀ a p n, pushHom h (epsR S) p = tv n → (IsLieComb a u p ↔ n = ∑ k, a k • v k)` using `fun a p n hp => by`. Rewrite using `[isLieComb_iff h, hp]`. Simplify using `only [e]`. Conclude with `⟨fun q => tanM_ext (q.trans (hs a).symm), fun q => (congrArg tv q).trans (hs a)⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `⟨fun hu n => ?_, fun hv => ⟨fun i => (isTangent_iff h _).2 (by rw [e]; exact tv_mem _), fun p hp => ?_⟩⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `push_surj h (tv n)`. Simplify `hu.2 p ((isTangent_iff h p).2 (by rw [hp]; exact tv_mem n))` using `only [key _ p n hp]`. Simplify `hv (mkT _ ((isTangent_iff h p).1 hp))` using `only [key _ p (mkT _ ((isTangent_iff h p).1 hp)) rfl]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isBasis_iff {m : ℕ} {G' : Over (Sp S)} [GrpObj G'] [IsCommMonObj G'] {Φ : G'.left ⟶ t.G.left}
     (h : IsGrpPullback G' t.G x Φ) {u : Fin m → (epsR S ⟶ G')} {v : Fin m → TanM x t.G}
@@ -82,13 +82,11 @@ theorem isBasis_iff {m : ℕ} {G' : Over (Sp S)} [GrpObj G'] [IsCommMonObj G'] {
   · simpa only [key _ p (mkT _ ((isTangent_iff h p).1 hp)) rfl] using hv (mkT _ ((isTangent_iff h p).1 hp))
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `h₀` using `isGrpPullback_pullback t.G x`. Establish `h` using `isGrpPullback_pullback t.G (spMap ψ ≫ x)`. Use `choose u hu using fun i => push_surj h₀ (tv (v i))`. Use `choose u' hu' using fun i => push_surj h (tv (LieLocFrame.res ψ rfl (v i)))`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t.semi.smooth` as an intermediate fact. Establish `: Smooth ((Over.pullback x).obj t.G).hom` using `show Smooth (pullback.snd _ _) from inferInstance`. Use `(isBasis_iff h hu').1 (Chart.frameLieBCR _ ((isBasis_iff h₀ hu).2 hv) ψ (Chart.isGrpPullback_factor x (spMap ψ) h) (fun a b v hv => push_inj h (by` and prove the remaining obligations. Use `smT_add _ _ ((isTangent_iff h v).1 ((Chart.isTan_iff _).1 hv)) a b` as an intermediate fact. Rewrite `this` using `[← push_scK h, ← push_scK h, ← push_scK h, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)) (fun i => (isTangent_iff h _).2 (by rw [hu']; exact tv_mem _)) fun i => ?_)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, Category.assoc]`. Conclude with `(congrArg (fun q => q.left) (hu' i)).trans (congrArg (_ ≫ ·) (congrArg (fun q => q.left) (hu i)).symm)`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, Over.w (u' i), Category.assoc]`.
-
-Use `Eq.trans ?_ (congrArg (_ ≫ ·) (Over.w (u i)).symm)` and prove the remaining obligations. Conclude with `(spMap_comp_spMap _ _).trans ((congrArg spMap (PullbackSections.dualMap_comp_alg _).symm).trans (spMap_comp_spMap _ _).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsBasis.res {m : ℕ} {v : Fin m → TanM x t.G} (hv : IsBasis v) (ψ : S →+* T) (hx : spMap ψ ≫ x = x') :
     IsBasis fun i => res ψ hx (v i) := by
@@ -115,17 +113,17 @@ theorem IsBasis.res {m : ℕ} {v : Fin m → TanM x t.G} (hv : IsBasis v) (ψ : 
 variable (t) in
 
 /- English proof (translation)
-Use `t.semi.smooth` as an intermediate fact. Take `⟨n, s, hs, hC⟩` from `Chart.exists_cover ((Over.pullback x).obj t.G)`. Use `RingHom.ker_isPrime φ₀` as an intermediate fact. Take `⟨k, hk⟩` from `Chart.exists_away_not_mem s hs (RingHom.ker φ₀)`. Take `⟨C⟩` from `hC k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h` using `(isGrpPullback_pullback _ (Chart.fB S (Localization.Away (s k)))).comp (isGrpPullback_pullback t.G x)`. Establish `: Smooth (Chart.Gs ((Over.pullback x).obj t.G) (s k)).hom` using `MorphismProperty.of_isPullback (P := @Smooth) h.1 ‹_›`. Establish `hk' : IsUnit (φ₀ (s k))` using `isUnit_iff_ne_zero.2 hk`. Set `φ₁ : Localization.Away (s k) →+* K` to `IsLocalization.Away.lift (s k) hk'`. Use `RingHom.ker_isPrime φ₁` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨g, hg, m, v, hv⟩` from `Chart.exists_lieBasis_away C (RingHom.ker φ₁)`. Establish `h'` using `(isGrpPullback_pullback _ (Chart.fB (Localization.Away (s k)) (Localization.Away g))).comp h`. Establish `hb` using `(isBasis_iff (v := fun i => mkT _ ((isTangent_iff h' _).1 (hv.1 i))) h' fun _ => rfl).1 hv`. Take `⟨N, a, ha⟩` from `IsLocalization.Away.surj (s k) g`. Use `⟨s k * a, ?_, fun T _ φ x' hu hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg φ₁ ha`. Rewrite `e` using `[map_mul, map_pow, IsLocalization.Away.lift_eq, IsLocalization.Away.lift_eq]`. Rewrite using `[map_mul, ← e]`. Conclude with `mul_ne_zero hk (mul_ne_zero hg (pow_ne_zero _ hk))`. Rewrite `hu` using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ₁ : Localization.Away (s k) →+* T` to `IsLocalization.Away.lift (s k) (isUnit_of_mul_isUnit_left hu)`. Establish `hg' : IsUnit (ψ₁ g)`. Establish `e` using `congrArg ψ₁ ha`. Rewrite `e` using `[map_mul, IsLocalization.Away.lift_eq]`. Conclude with `isUnit_of_mul_isUnit_left (e ▸ isUnit_of_mul_isUnit_right hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `ψ₂ : Localization.Away g →+* T` to `IsLocalization.Away.lift g hg'`. Use `⟨m, _, hb.res ψ₂ ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[spMap_comp_spMap, IsLocalization.Away.lift_comp, spMap_comp_spMap, IsLocalization.Away.lift_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isBasis_near (x : Sp S ⟶ X) {K : Type} [Field K] (φ₀ : S →+* K) :
     ∃ g : S, φ₀ g ≠ 0 ∧ ∀ (T : Type) [CommRing T] (φ : S →+* T) (x' : Sp T ⟶ X), IsUnit (φ g) → spMap φ ≫ x = x' →
@@ -172,7 +170,7 @@ open GlobalTheory.AllWt (Psi)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ f) (V.2.map_fromSpec O.2 (homOfLE h).op)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_res_chart {X Z : Scheme.{0}} (f : Z ⟶ X) {V O : Z.affineOpens} (h : O.1 ≤ V.1) :
     spMap (resG Z h) ≫ LogKS.chart V ≫ f = LogKS.chart O ≫ f := by
@@ -180,7 +178,7 @@ theorem spMap_res_chart {X Z : Scheme.{0}} (f : Z ⟶ X) {V O : Z.affineOpens} (
   exact congrArg (· ≫ f) (V.2.map_fromSpec O.2 (homOfLE h).op)
 
 /- English proof (translation)
-The claim follows from `res_res (resG Z h) (spMap_res_chart f h) (evHom hO) (by rw [← Category.assoc, spMap_evHom]) (ω := evHom hV) (RingHom.ext fun a => (ev_eq hO _).symm.trans ((ev_res h hO a).trans (ev_eq hV a))) (by rw [← Category.assoc, spMap_evHom]) v`.
+A detailed English derivation is pending.
 -/
 theorem valAt_res {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X Z : Scheme.{0}} {t : SAB H X}
     (f : Z ⟶ X) {k : Type} [CommRing k] {p : Z ⟶ Sp k} {σ : k →+* ℂ} {V O : Z.affineOpens} (h : O.1 ≤ V.1)
@@ -191,15 +189,15 @@ theorem valAt_res {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
     (by rw [← Category.assoc, spMap_evHom]) v
 
 /- English proof (translation)
-Introduce `E _ _ _ H X Z t f k _ p σ y₀`. Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Z) (U := ⊤) (x := y₀.1 (IsLocalRing.closedPoint ℂ)) trivial`. Establish `h₀ : y₀ ∈ ptsIn p σ U` using `mem_ptsIn.2 hyU`. Take `⟨g, hg, hb⟩` from `exists_isBasis_near t (LogKS.chart ⟨U, hU⟩ ≫ f) (evHom h₀)`. Set `V : Z.affineOpens` to `⟨Z.basicOpen g, hU.basicOpen g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hVU : V.1 ≤ U` using `Z.basicOpen_le g`. Take `⟨n, v, hv⟩` from `hb Γ(Z, V.1) (resG Z hVU) (LogKS.chart V ≫ f) (Z.toRingedSpace.isUnit_res_basicOpen g) (spMap_res_chart f (V := ⟨U, hU⟩) hVU)`. Use `⟨V, n, v, (mem_ptsIn_basicOpen h₀ g).2 (by rwa [ev_eq h₀]), fun y hy => ?_, fun W w y₁ hy₁ => ?_⟩` and prove the remaining obligations. Establish `hy' : IsBasis fun i => LieMet.valAt f (v i) hy` using `hv.res (evHom hy) (by rw [← Category.assoc, spMap_evHom])`. Use `⟨Fintype.linearIndependent_iff.2 fun a ha => congrFun ((hy' 0).unique (y₁ := a) (y₂ := 0) ha.symm (by simp)), top_unique fun w _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, -⟩` from `hy' w`. Conclude with `ha ▸ Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨O, hO, hyO, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := Z) (U := V.1 ⊓ W.1) (x := y₁.1 (IsLocalRing.closedPoint ℂ)) ⟨mem_ptsIn.1 hy₁.1, mem_ptsIn.1 hy₁.2⟩`. Establish `hOV : O ≤ V.1` using `fun z hz => (hle hz).1`. Establish `hOW : O ≤ W.1` using `fun z hz => (hle hz).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, -⟩` from `hv.res _ (spMap_res_chart f (O := ⟨O, hO⟩) hOV) (res _ (spMap_res_chart f (O := ⟨O, hO⟩) hOW) w)`. Use `⟨O, a, mem_ptsIn.2 hyO, fun y hyO' hy hy' => ?_⟩` and prove the remaining obligations. Rewrite using `[← valAt_res f (O := ⟨O, hO⟩) hOW w hyO' hy', ha]`. Use `(res_sum (evHom hyO') (by rw [← Category.assoc, spMap_evHom (V := ⟨O, hO⟩)]) a _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[ev_eq hyO', ← valAt_res f (O := ⟨O, hO⟩) hOV (v i) hyO' hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_local_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X Z : Scheme.{0}) (t : SAB H X) (f : Z ⟶ X) (k : Type) [CommRing k] (p : Z ⟶ Sp k) (σ : k →+* ℂ) (y₀ : CxPts p σ), ∃ (V : Z.affineOpens) (n : ℕ) (v : Fin n → TanM (LogKS.chart V ≫ f) t.G), y₀ ∈ ptsIn p σ V.1 ∧ (∀ (y : CxPts p σ) (hy : y ∈ ptsIn p σ V.1), LinearIndependent ℂ (fun i => valAt f (v i) hy) ∧ Submodule.span ℂ (Set.range fun i => valAt f (v i) hy) = ⊤) ∧ ∀ (W : Z.affineOpens) (w : TanM (LogKS.chart W ≫ f) t.G), ∀ y₁ ∈ ptsIn p σ V.1 ∩ ptsIn p σ W.1, ∃ (O : Z.Opens) (a : Fin n → Γ(Z, O)), y₁ ∈ ptsIn p σ O ∧ ∀ y ∈ ptsIn p σ O, ∀ (hy : y ∈ ptsIn p σ V.1) (hy' : y ∈ ptsIn p σ W.1), valAt f w hy' = ∑ i, ev p σ O (a i) y • valAt f (v i) hy := by
   intro E _ _ _ H X Z t f k _ p σ y₀

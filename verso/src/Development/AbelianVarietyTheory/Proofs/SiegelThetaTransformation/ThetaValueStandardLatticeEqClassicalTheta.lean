@@ -35,9 +35,9 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 open ReciprocityTheory.ChartRestriction.G.PullbackSections (mD mD_coe lD_eq) in
 
 /- English proof (translation)
-Unfold `I2.polyDeriv`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hL : (((Finsupp.toMultiset m).toList.map u : List V) : Multiset V) = (Finsupp.toMultiset m).map u`. Rewrite using `[← Multiset.map_coe, Multiset.coe_toList]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hL, mD_coe hθ, lD_eq θ x _ (n := Multiset.card (Finsupp.toMultiset m)) (by rw [List.length_map, Multiset.length_toList])]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[List.get_eq_getElem]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem polyDeriv_eq_mD {θ : V → ℂ} {x : V} (hθ : ContDiffAt ℂ ω θ x) {T₁ : Type} (P : MvPolynomial T₁ ℂ)
     (u : T₁ → V) :
@@ -55,7 +55,7 @@ theorem polyDeriv_eq_mD {θ : V → ℂ} {x : V} (hθ : ContDiffAt ℂ ω θ x) 
   simp [List.get_eq_getElem]
 
 /- English proof (translation)
-Rewrite using `[polyDeriv_eq_mD hθ, polyDeriv_eq_mD hθ, MvPolynomial.support_rename_of_injective hρ, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hρ h)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_rename_mapDomain ρ hρ, ← Finsupp.toMultiset_map, Multiset.map_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_rename {θ : V → ℂ} {x : V} (hθ : ContDiffAt ℂ ω θ x) {T₁ κ : Type} (ρ : T₁ → κ)
     (hρ : Function.Injective ρ) (P : MvPolynomial T₁ ℂ) (v : κ → V) :
@@ -66,11 +66,11 @@ theorem polyDeriv_rename {θ : V → ℂ} {x : V} (hθ : ContDiffAt ℂ ω θ x)
   rw [MvPolynomial.coeff_rename_mapDomain ρ hρ, ← Finsupp.toMultiset_map, Multiset.map_map]
 
 /- English proof (translation)
-Unfold `I2.polyDeriv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Set `g : V ≃L[ℂ] V` to `ContinuousLinearEquiv.smulLeft (R₁ := ℂ) (Units.mk0 t ht)`. Establish `hg : ∀ z, g z = t • z` using `fun _ => rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `ContinuousLinearEquiv.iteratedFDerivWithin_comp_right g G (s := Set.univ) uniqueDiffOn_univ (x := 0) (Set.mem_univ _) (Multiset.card (Finsupp.toMultiset m))`. Simplify using `only [Set.preimage_univ, iteratedFDerivWithin_univ, map_zero] at h`. Establish `e : (fun z => G (t • z)) = G ∘ g` using `rfl`. Rewrite using `[e, h, ContinuousMultilinearMap.compContinuousLinearMap_apply]`. Simplify using `only [ContinuousLinearEquiv.coe_coe, hg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ContinuousMultilinearMap.map_smul_univ, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← hd m hm, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem polyDeriv_scale {T₁ : Type} (Q : MvPolynomial T₁ ℂ) (u : T₁ → V) (G : V → ℂ) (t : ℂ) (ht : t ≠ 0) (d : ℕ)
     (hd : ∀ m ∈ Q.support, Multiset.card (Finsupp.toMultiset m) = d) :
@@ -93,9 +93,9 @@ theorem polyDeriv_scale {T₁ : Type} (Q : MvPolynomial T₁ ℂ) (u : T₁ → 
 end Deriv
 
 /- English proof (translation)
-Establish `h : ∀ m ∈ P.support, (m.sum fun _ e => e) = ∑ σ : T, ∑ i : Fin (r σ), a σ i`. Introduce `m hm`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hP m hm σ i`. Introduce `m hm`. Rewrite using `[Finsupp.card_toMultiset]`. Use `le_antisymm (MvPolynomial.le_totalDegree hm) (Finset.sup_le fun m' hm' => ?_)` and prove the remaining obligations. Conclude with `((h m' hm').trans (h m hm).symm).le`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_eq_totalDegree {T k : Type} [Fintype T] [Field k] {r : T → ℕ} {n : ℕ} {a : T → ℕ → ℕ}
     {P : MvPolynomial (Letter T r n) k} (hP : RowDeg r n k a P) :
@@ -114,11 +114,9 @@ theorem card_eq_totalDegree {T k : Type} [Fintype T] [Field k] {r : T → ℕ} {
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {r : ℕ}
 
 /- English proof (translation)
-Establish `hM : (l.M : E) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Establish `h1 : t • a ∈ (l.Mb * Mfr l) • (⊤ : Submodule (𝓞 E) Dw.La)`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem_smul ht ha`. Rewrite `h1` using `[show l.Mb * Mfr l = Ideal.span {(l.M : 𝓞 E)} from l.prod, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, -, hb⟩` from `h1`. Establish `h2 : t • ((l.M : E)⁻¹ • mk a) = mk b`. Rewrite using `[smul_comm, ← map_smul, ← hb, Nat.cast_smul_eq_nsmul, map_nsmul, ← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ hM, one_smul]`. Establish `h3 : t • Y = t • (Y - ((l.M : E)⁻¹) • mk a) + mk b` using `by rw [smul_sub, h2, sub_add_cancel]`. Rewrite using `[h3]`.
-
-Conclude with `L.add_mem (L.smul_mem t hY) (hm b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_rep (l : Geo.Tor.Level H) (L : Lt E r) (mk : Dw.La →ₗ[𝓞 E] (Fin r → E))
     (hm : ∀ a, mk a ∈ L) (Y : Fin r → E) (a : Dw.La) (ha : a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La))
@@ -138,7 +136,7 @@ theorem smul_mem_of_rep (l : Geo.Tor.Level H) (L : Lt E r) (mk : Dw.La →ₗ[�
   exact L.add_mem (L.smul_mem t hY) (hm b)
 
 /- English proof (translation)
-Establish `h` using `Ideal.mem_span_singleton_self (l.M : 𝓞 E)`. Rewrite `h` using `[← l.prod]`. Conclude with `Ideal.mul_le_left h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_mem (l : Geo.Tor.Level H) : (l.M : 𝓞 E) ∈ l.Mb :=
   by
@@ -147,19 +145,17 @@ theorem level_mem (l : Geo.Tor.Level H) : (l.M : 𝓞 E) ∈ l.Mb :=
   exact Ideal.mul_le_left h
 
 /- English proof (translation)
-Establish `hM : (l.M : E) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Establish `key : ∀ (N N' : ℕ), (N : E) ≠ 0 → N * N' = 2 * l.M → ∀ I : Ideal (𝓞 E), l.Mb ⊔ I = ⊤ → ∀ K : Ideal (𝓞 E), K * I ≤ l.Mb * Ideal.span {(N : 𝓞 E)} → ∀ s ∈ K, s • ((N : E)⁻¹ • Y) ∈ L`. Introduce `N N' hN hNN I hI K hK`. Set `J : Ideal (𝓞 E)` to `L.comap (LinearMap.toSpanSingleton (𝓞 E) _ ((N : E)⁻¹ • Y))`. Establish `hJ1 : l.Mb ^ j ≤ J`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `s hs`. Take `⟨u, hu, e⟩` from `hj s hs`. Use `show s • ((N : E)⁻¹ • Y) ∈ L`. Rewrite using `[smul_comm, e, ← hNN, mul_smul, ← Nat.cast_smul_eq_nsmul E N, smul_smul, inv_mul_cancel₀ hN, one_smul]`. Conclude with `nsmul_mem hu _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hJ2 : l.Mb * Ideal.span {(N : 𝓞 E)} ≤ J`. Use `Ideal.mul_le.2 fun s hs t ht => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 ht`. Use `show (s * (w * (N : 𝓞 E))) • ((N : E)⁻¹ • Y) ∈ L`. Rewrite using `[← _root_.mul_assoc, mul_smul, Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E N, smul_smul, mul_inv_cancel₀ hN, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h1 _ (l.Mb.mul_mem_right w hs)`. Establish `hc : l.Mb ^ j ⊔ I = ⊤` using `Ideal.pow_sup_eq_top hI`. Establish `: K ≤ J`. Combine the equalities or inequalities in the displayed calculation. Conclude with `fun s hs => this hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨key l.M 2 hM (mul_comm _ _) _ l.coprime _ (by rw [← l.prod, pow_two, _root_.mul_assoc]), ?_⟩` and prove the remaining obligations. Establish `h2 : l.Mb ⊔ Ideal.span {((2 : ℕ) : 𝓞 E)} = ⊤`. Take `⟨k, hk⟩` from `l.odd`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : (1 : 𝓞 E) = (l.M : 𝓞 E) + (-(k : 𝓞 E)) * ((2 : ℕ) : 𝓞 E)` using `by rw [hk]; push_cast; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (level_mem l) (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`. Establish `h3` using `key 2 l.M (by norm_num) rfl _ h2 l.Mb le_rfl _ (level_mem l)`. Use `⟨_, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, smul_smul, smul_smul, smul_smul]`.
-
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem root_laws (l : Geo.Tor.Level H) (L : Lt E r) (Y : Fin r → E) (h1 : ∀ t ∈ l.Mb, t • Y ∈ L) (j : ℕ)
     (hj : ∀ s ∈ l.Mb ^ j, ∃ u ∈ L, s • Y = (2 * l.M) • u) :
@@ -211,20 +207,20 @@ variable {g : ℕ} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} [Algeb
   {L : Lt E r} {y : FrPt Xo c ℂ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[pv, per_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pv_add (u v : Fin r → E) : pv X idx x (u + v) = pv X idx x u + pv X idx x v := by
   funext j
   simp [pv, per_add]
 
 /- English proof (translation)
-The claim follows from `(A.ex_ker _).2 ⟨v, hv, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ex_pv_mem (A : AnFib X bas idx e x L y) {v : Fin r → E} (hv : v ∈ L) : A.ex (pv X idx x v) = 1 :=
   (A.ex_ker _).2 ⟨v, hv, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, zero_smul, ex_pv_mem A L.zero_mem]`. Consider the case `succ k ih => rw [pow_succ, ih, succ_nsmul, pv_add, A.ex_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ex_pv_pow (A : AnFib X bas idx e x L y) (v : Fin r → E) (k : ℕ) :
     A.ex (pv X idx x v) ^ k = A.ex (pv X idx x (k • v)) := by
@@ -233,7 +229,7 @@ theorem ex_pv_pow (A : AnFib X bas idx e x L y) (v : Fin r → E) (k : ℕ) :
   | succ k ih => rw [pow_succ, ih, succ_nsmul, pv_add, A.ex_add]
 
 /- English proof (translation)
-Rewrite using `[← A.ex_lin]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(per_smul X x (s : E) v (idx j)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ex_pv_act (A : AnFib X bas idx e x L y) (v : Fin r → E) (s : 𝓞 E) :
     A.ex (pv X idx x v) ≫ Xo.univ.t.act.act s = A.ex (pv X idx x (s • v)) := by
@@ -243,7 +239,7 @@ theorem ex_pv_act (A : AnFib X bas idx e x L y) (v : Fin r → E) (s : 𝓞 E) :
   exact (per_smul X x (s : E) v (idx j)).symm
 
 /- English proof (translation)
-Establish `: Xo.univ.eta a = Xo.univ.eta b`. Rewrite using `[← sub_add_cancel a b, Xo.univ.eta_add, Xo.univ.eta_ker _ h, _root_.one_mul]`. Rewrite using `[levPt, levPt, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem levPt_congr {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) {a b : Dw.La}
     (h : a - b ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) : levPt Xo x0 a = levPt Xo x0 b := by
@@ -260,21 +256,19 @@ namespace GlobalTheory.Dict
 open ThVal in
 
 /- English proof (translation)
-Introduce `hci E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A hs hx hL q0 n hr eL _ hn hdir _ nab hnab θ v κ hθ hv hκ mk hmk hA xs Y hY a P hP v0 hv0`. Establish `hlaws : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hM : (l.M : E) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Establish `hMc : (l.M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Establish `hMY : ∀ b, (l.M : E) • ((l.M : E)⁻¹ • Y b) = Y b` using `fun b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hM, one_smul]`. Establish `hroot : ∀ b, (∀ s ∈ l.Mb ^ 2, s • ((l.M : E)⁻¹ • Y b) ∈ L) ∧ ∃ u ∈ L, (l.M ^ 2 : ℕ) • ((l.M : E)⁻¹ • Y b) = (2 : ℕ) • u` using `fun b => by`. Take `⟨⟨a', ha', -, hYa⟩, j, hj⟩` from `hY b`. Conclude with `root_laws l L (Y b) (smul_mem_of_rep l L mk hmk.mem (Y b) a' ha' hYa) j hj`. Establish `hpow : ∀ b, A.ex (pv X idx x ((l.M : E)⁻¹ • Y b)) ^ l.M = levPt Xo y.x (xs b)` using `fun b => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a', ha', hax, hYa⟩, -⟩` from `hY b`. Rewrite using `[ex_pv_pow, ← Nat.cast_smul_eq_nsmul E, hMY, ← levPt_congr y.x hax, hA a' ha', ← sub_add_cancel (Y b) ((l.M : E)⁻¹ • mk a'), pv_add, A.ex_add, ex_pv_mem A hYa, _root_.one_mul]`. Establish `hF : ∀ b, ∃ F, IsVtOver Xo.univ.t.G Xo.univ.t.PP l.M (fun t' => t' = A.ex (pv X idx x ((l.M : E)⁻¹ • Y b))) y.s (levPt Xo y.x (xs b)) F` using `fun b => by`. Use `(GlobalTheory.exists_isVtOver_and_existsUnique_isUUOver hlaws E H Dw l Xo l.M l.odd _ y.s).1 _ _ _ (hpow b) ?_ rfl` and prove the remaining obligations. Take `⟨u, hu, hu'⟩` from `(hroot b).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ex_pv_pow, hu']`. Conclude with `ex_pv_mem A (nsmul_mem hu 2)`. Use `choose F hF using hF`. Establish `hval : ThValAt Xo c nab y xs P (thExpr Xo c nab y P F)`. Use `⟨ℂ, inferInstance, inferInstance, AlgHom.id _ _, y, F, RingHom.FaithfullyFlat.of_bijective Function.bijective_id, GlobalTheory.FramedBaseChange.refl y, fun b => ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t', α₀, α, s₁, U, h1, h2, h3⟩` from `hF b`. Use `⟨t', α₀, α, s₁, U, h1, fun s hs => ?_, h3⟩` and prove the remaining obligations. Rewrite using `[h2, ex_pv_act]`. Conclude with `ex_pv_mem A ((hroot b).1 s hs)`. Establish `huniq` using `(GlobalTheory.thValTot_of_chartIndep hlaws hci E H Dw l Xo c nab hnab ℂ y a n xs P hP).unique hv0 hval`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hread : ∀ b, A.Reads ((l.M : ℤ) ^ 2) (F b) (fun z => fock X bas idx x 1 (pv X idx x (Y b)) θ ((l.M : ℂ) • z))` using `fun b => by`. Use `(GlobalTheory.T.sections_read_as_translates_at_scaled_point E H Dw l Xo c r g X bas idx e x L y A hs hx hL l.M l.odd θ hθ).2 _ (hroot b).2 _ _ (hF b)` as an intermediate fact. Rewrite `this` using `[hMY]`. Then use the resulting hypothesis. Establish `hnv` using `GlobalTheory.T.harmonicConnectionValue_eq_polynomial_derivative hci E H Dw l Xo c r g X bas idx e x L y A hs hx hL nab hnab n l.M a P hP.1 F _ hread`. Establish `hfock` using `(GlobalTheory.Dict.fock_laws E r X g bas idx n hs hn x hx 1 θ).2.2.2.2 (fun _ => θ) κ v hv.1 hκ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsb : IsSB (heisG X bas Y v)` using `(GlobalTheory.SW.heisS_laws _ _ _ _ v hv.1).1`. Establish `han` using `(GlobalTheory.SW.theta_holomorphic_weight E r X g q0 hr bas idx n hs hn (fun _ _ => 0) (fun _ _ => 0) _ hsb 0 (zero_mem _)).2.2.2 x hx`. Establish `hcd` using `han.contDiff (n := ⊤)`. Establish `hfun : (fun z : Fin n → Fin g → ℂ => ∏ b, fock X bas idx x 1 (pv X idx x (Y b)) θ ((l.M : ℂ) • z b)) = fun z => (κ • thA X bas idx (heisG X bas Y v) x) ((l.M : ℂ) • z)` using `funext fun z => hfock ((l.M : ℂ) • z)`. Establish `hdeg : ∀ m ∈ (MvPolynomial.map (algebraMap c.F ℂ) P).support, Multiset.card (Finsupp.toMultiset m) = P.totalDegree` using `fun m hm => card_eq_totalDegree hP.1.2.2 m (MvPolynomial.support_map_subset _ _ hm)`.
-
-Rewrite using `[huniq, thExpr, hnv, hfun, polyDeriv_scale _ _ _ _ hMc _ hdeg, I2.polyDeriv_smul_fun _ _ (hcd.of_le le_top), thP, polyDeriv_rename hcd.contDiffAt _ eL.injective, show letterDir X hr idx ∘ eL = _ from funext hdir, map_inv₀, map_pow, map_natCast, ← _root_.mul_assoc, inv_mul_cancel₀ …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thVal_eq_thP : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y), IsSympl X bas → x ∈ X.dom → SelfD X L → ∀ (q0 n : ℕ) (hr : X.p0 + q0 = r) (eL : LtN Dw n ≃ Harm.Var X.Ψ q0 X.p0 (Fin n)), r = Dw.p + Dw.q → Even n → (∀ ℓ, letterDir X hr idx (eL ℓ) = Pi.single ℓ.2.2 (Pi.single (e.symm ⟨ℓ.1, ℓ.2.1⟩) 1)) → ∀ [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (θ : (Fin g → ℂ) → ℂ) (v : TF n g) (κ : ℂ), A.Reads 1 y.s θ → IsVac X bas (H.w0 : E) (tens (stdL E n) L) v → (∀ z : Fin n → Fin g → ℂ, ∏ b, θ (z b) = κ * thA X bas idx v x z) → ∀ mk : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark l L mk → A.Marked mk → ∀ (xs : Fin n → Dw.La) (Y : Matrix (Fin n) (Fin r) E), (∀ b, (∃ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La), a - xs b ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La) ∧ Y b - ((l.M : E)⁻¹) • mk a ∈ L) ∧ ∃ j : ℕ, ∀ s ∈ l.Mb ^ j, ∃ u ∈ L, s • Y b = (2 * l.M) • u) → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmA c a n → ∀ v0 : ℂ, ThValAt Xo c nab y xs P v0 → v0 = κ * thP X hr bas idx (heisG X bas Y v) (MvPolynomial.rename eL (MvPolynomial.map (algebraMap c.F ℂ) P)) x := by
   intro hci E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A hs hx hL q0 n hr eL _ hn hdir _ nab hnab θ v κ hθ hv hκ

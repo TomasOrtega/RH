@@ -13,7 +13,7 @@ section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `hc : Continuous fun h : Fˣ => (((modulus (h : F) : ℝ)) : ℂ)` using `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val))`. Simplify using `only [mp]`. Use `hc.cpow continuous_const fun h => ?_` and prove the remaining obligations. Establish `h0 : (0 : ℝ) < (modulus (h : F) : ℝ)` using `by exact_mod_cast modulus_pos h.ne_zero`. Conclude with `Complex.ofReal_mem_slitPlane.2 h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mp (s : ℂ) : Continuous fun h : Fˣ => mp h s := by
   have hc : Continuous fun h : Fˣ => (((modulus (h : F) : ℝ)) : ℂ) :=
@@ -25,9 +25,9 @@ theorem continuous_mp (s : ℂ) : Continuous fun h : Fˣ => mp h s := by
   exact Complex.ofReal_mem_slitPlane.2 h0
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Establish `h1 : (((modulus (a : F) : ℝ)) : ℂ) ≠ 0` using `by exact_mod_cast h0.ne'`. Establish `hc : Continuous fun s : ℂ => mp a s`. Simplify using `only [mp]`. Conclude with `continuous_id.const_cpow (Or.inl h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hδ' : Filter.Tendsto (fun n => ((δ n : ℝ) : ℂ)) Filter.atTop (nhds ((0 : ℝ) : ℂ))` using `(Complex.continuous_ofReal.tendsto 0).comp hδ`. Use `(hc.tendsto ((0 : ℝ) : ℂ)).comp hδ'` as an intermediate fact. Simplify `this` using `[mp, Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_mp (a : Fˣ) {δ : ℕ → ℝ} (hδ : Filter.Tendsto δ Filter.atTop (nhds 0)) :
     Filter.Tendsto (fun n => mp a (δ n)) Filter.atTop (nhds 1) := by
@@ -42,11 +42,11 @@ theorem tendsto_mp (a : Fˣ) {δ : ℕ → ℝ} (hδ : Filter.Tendsto δ Filter.
   simpa [mp, Function.comp_def] using this
 
 /- English proof (translation)
-Establish `hQ : 0 < Q` using `hm.trans_le h1`. Establish `hl1 : Real.log m ≤ Real.log Q` using `Real.log_le_log hm h1`. Establish `hl2 : -Real.log m ≤ Real.log Q`. Rewrite using `[← Real.log_inv]`. Conclude with `Real.log_le_log (inv_pos.2 hm) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ1 : 0 ≤ Real.log Q` using `by linarith`. Establish `habs : |Real.log m| ≤ Real.log Q` using `abs_le.2 ⟨by linarith, hl1⟩`. Rewrite using `[← Real.rpow_neg hm.le, Real.rpow_def_of_pos hm]`. Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = Q := Real.exp_log hQ`.
+A detailed English derivation is pending.
 -/
 theorem inv_rpow_le {m Q δ : ℝ} (hm : 0 < m) (h1 : m ≤ Q) (h2 : m⁻¹ ≤ Q) (hδ : |δ| ≤ 1) :
     (m ^ δ)⁻¹ ≤ Q := by
@@ -72,41 +72,33 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, ψ x ≠ 1 := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Conclude with `hψ1 (DFunLike.ext _ _ fun a => (hall a).trans (AddChar.one_apply a).symm)`. Establish `hx₀0 : x₀ ≠ 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `rfl`. Conclude with `hx₀ (AddChar.map_zero_eq_one ψ)`. Take `⟨N, M, -, hN, hM⟩` from `GodementSectionLocal.exists_invariant_of_mem_schwartzBruhat2 hΦ`. Take `⟨C, hC⟩ : ∃ C, ∀ x, ‖Φ x‖ ≤ C` from `hΦ.2.exists_bound_of_continuous hΦ.1.continuous`. Use `set B : ℤ := N - ord x₀ with hB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set S : Set Fˣ := ⋃ k ∈ Set.Ico M B, ordShell F k with hS`. Establish `hSm : MeasurableSet S` using `(Set.finite_Ico M B).measurableSet_biUnion fun k _ => measurableSet_ordShell k`. Establish `hSf : multHaar F S ≠ ⊤` using `(measure_biUnion_lt_top (Set.finite_Ico M B) fun k _ => by`. Rewrite using `[multHaar_ordShell]`. Conclude with `ENNReal.one_lt_top).ne`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : ∀ h : Fˣ, h ∈ S ↔ M ≤ ord (h : F) ∧ ord (h : F) < B`. Introduce `h`. Simplify using `[hS, mem_ordShell]`. Use `set I : Fˣ → ℂ := fun h => ∫ x, Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) ∂μ with hIdef`. Establish `hzero : ∀ h : Fˣ, h ∉ S → I h = 0`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `h hh`. Rewrite `hh` using `[hmem, not_and_or, not_le, not_lt]`. Break down `hh with hh | hh` into its components or cases. Conclude with `GlobalTheory.CompanionTheory.WhitLin.inner_eq_zero_of_lt μ hM h hh`. Use `GlobalTheory.CompanionTheory.WhitLin.inner_eq_zero μ hN hx₀ h ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mem_valBall_iff_le_ord (mul_ne_zero h.ne_zero hx₀0), ord_mul h.ne_zero hx₀0]`. Use linear arithmetic over natural numbers and integers. Establish `hI : StronglyMeasurable I`. Use `StronglyMeasurable.integral_prod_right (f := fun (h : Fˣ) (x : F) => Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ)) ?_` and prove the remaining obligations. Use `Continuous.stronglyMeasurable ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(hΦ.1.continuous.comp GlobalTheory.CompanionTheory.WhitLin.continuous_line).mul ((GlobalTheory.CompanionTheory.WhitLin.continuous_circle hψ).comp continuous_snd)`. Establish `hq : (1 : ℝ) ≤ residueCard F` using `by exact_mod_cast one_lt_residueCard.le`. Use `set q : ℝ := (residueCard F : ℝ) with hqdef`. Use `set Q : ℝ := max (q ^ (-M)) (q ^ B) with hQ`. Use `set V : ℝ := C * μ.real (valBall F (M - B)) with hV`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmp1 : ∀ h : Fˣ, mp h 1 = ((modulus (h : F) : ℝ) : ℂ)` using `fun h => by simp [mp]`. Establish `hcont : ∀ n, Continuous fun h : Fˣ => ((ν' n h : ℂˣ) : ℂ)`. Introduce `n`. Simplify using `only [hν']`. Conclude with `(Units.continuous_val.comp hν.1).mul (continuous_mp _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hval : ∀ a : Fˣ, Filter.Tendsto (fun n => ((ν' n a : ℂˣ) : ℂ)) Filter.atTop (nhds ((ν a : ℂˣ) : ℂ))`. Introduce `a`. Simplify using `only [hν']`. Simplify using `using (tendsto_mp a hδ).const_mul ((ν a : ℂˣ) : ℂ)`. Use `tendsto_integral_filter_of_dominated_convergence (S.indicator fun _ => Q * Q * (q ^ (-M) * V)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.Eventually.of_forall fun n => ?_` and prove the remaining obligations. Establish `hc1 : Continuous fun h : Fˣ => (((ν' n h)⁻¹ * (ν' n)⁻¹ h : ℂˣ) : ℂ)`. Simplify using `only [MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val]`. Use `(hcont n).inv₀ fun h => Units.ne_zero _` as an intermediate fact. Conclude with `this.mul this`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hc1.mul (continuous_mp 1)).stronglyMeasurable.mul hI).aestronglyMeasurable`. Establish `hev : ∀ᶠ n in Filter.atTop, |δ n| ≤ 1`. Establish `h0 : Filter.Tendsto (fun n => |δ n|) Filter.atTop (nhds 0)` using `by simpa using hδ.abs`. Conclude with `h0.eventually (ge_mem_nhds (by norm_num : (0 : ℝ) < 1))`. Use `filter_upwards [hev] with n hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Filter.Eventually.of_forall fun h => ?_` and prove the remaining obligations. Distinguish the cases in `hh : h ∈ S`. Rewrite using `[Set.indicator_of_mem hh]`. Take `⟨hl, hu⟩` from `(hmem h).1 hh`. Establish `hm0 : (0 : ℝ) < (modulus (h : F) : ℝ)` using `by exact_mod_cast modulus_pos h.ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmod : (modulus (h : F) : ℝ) = q ^ (-ord (h : F))`. Rewrite using `[modulus_of_ne_zero h.ne_zero]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hm1 : (modulus (h : F) : ℝ) ≤ Q` using `le_max_of_le_left (by rw [hmod]; exact zpow_le_zpow_right₀ hq (by omega))`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hm2 : (modulus (h : F) : ℝ)⁻¹ ≤ Q` using `le_max_of_le_right (by`. Rewrite using `[hmod, ← _root_.zpow_neg, neg_neg]; exact zpow_le_zpow_right₀ hq (by omega))`. Establish `hnv : ‖((ν' n h : ℂˣ) : ℂ)‖ = (modulus (h : F) : ℝ) ^ δ n`. Rewrite using `[hν', norm_mul, hν.2, one_mul, GlobalTheory.CompanionTheory.DampedWhittakerGauge.norm_mp]`. Establish `hb` using `inv_rpow_le hm0 hm1 hm2 hn`.
-
-Establish `n1 : ‖(((ν' n h)⁻¹ * (ν' n)⁻¹ h : ℂˣ) : ℂ)‖ ≤ Q * Q`. Simplify using `only [MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, norm_mul, norm_inv, hnv]`. Conclude with `mul_le_mul hb hb (by positivity) ((by positivity : (0 : ℝ) ≤ _).trans hb)`. Establish `n2 : ‖mp h 1‖ ≤ q ^ (-M)`. Rewrite using `[hmp1, Complex.norm_real, Real.norm_of_nonneg hm0.le, hmod]`.
-
-Conclude with `zpow_le_zpow_right₀ hq (by omega)`. Establish `n3 : ‖I h‖ ≤ V` using `GlobalTheory.CompanionTheory.WhitLin.norm_inner_le μ hM hC h hu`. Establish `hq0 : (0 : ℝ) ≤ q ^ (-M)` using `by positivity`. Rewrite using `[norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Set.indicator_of_notMem hh] show ‖_ * I h‖ ≤ 0`. Simplify using `[hzero h hh]`. Conclude with `(integrable_indicator_iff hSm).2 (integrableOn_const hSf)`. Use `Filter.Eventually.of_forall fun h => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val]`.
-
-Establish `hi` using `(hval h).inv₀ (Units.ne_zero _)`. Conclude with `((hi.mul hi).mul_const _).mul_const _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_outer {Φ : (Fin 2 → F) → ℂ} (hΦ : Φ ∈ GodementSectionLocal.schwartzBruhat2 F)
     {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (μ : Measure F) [μ.IsAddHaarMeasure]
@@ -216,9 +208,9 @@ theorem tendsto_outer {Φ : (Fin 2 → F) → ℂ} (hΦ : Φ ∈ GodementSection
 end GlobalTheory.CompanionTheory.DampedWhittakerLimit
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ ν hν ν' δ hν' hδ φ₀ hφ₀ g`. Take `⟨hc, h1, -⟩` from `hψ`. Establish `hout` using `GlobalTheory.CompanionTheory.DampedWhittakerLimit.tendsto_outer (GlobalTheory.CompanionTheory.WhitLin.rt_mem hφ₀ g) hc h1 (selfDualMeasure ψ) hν hν' hδ`. Establish `hpre : Filter.Tendsto (fun n => (((ν' n)⁻¹ (GeneralLinearGroup.det g) : ℂˣ) : ℂ) * mp (GeneralLinearGroup.det g) (1 / 2)) Filter.atTop (nhds (((ν⁻¹ (GeneralLinearGroup.det g) : ℂˣ) : ℂ) * mp (GeneralLinearGroup.det g) (1 / 2)))`. Use `Filter.Tendsto.mul_const _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, hν']`. Establish `h2` using `(GlobalTheory.CompanionTheory.DampedWhittakerLimit.tendsto_mp (GeneralLinearGroup.det g) hδ).const_mul ((ν (GeneralLinearGroup.det g) : ℂˣ) : ℂ)`. Rewrite `h2` using `[mul_one]`. Conclude with `h2.inv₀ (Units.ne_zero _)`. Conclude with `hpre.mul hout`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.DampedWhittakerLimit.damped_whittaker_tendsto : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ →

@@ -23,13 +23,13 @@ namespace GlobalTheory.PairVacLine
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `γ hγ r hr`. Distinguish the cases in `h0 : φ₁ = 0`. Substitute `h0` using the available equality. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, tens]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hr' : Rest (evFin F v) φ r` using `GlobalTheory.RestCofactor.rest_of_rest v φ₁ φ r h0 hφ hr`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hγ' : γ * (mat k⁻¹)ᵀ ∈ latAtV X W v` using `GlobalTheory.VacTransport.mul_transpose_mem X W v _ (fun z hz => (hk.2 z hz).2) hγ`. Establish `hback : actAB (cA σ) ((1 : UA σ X.J), k) (γ * (mat k⁻¹)ᵀ) = γ`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) * (γ * (mat k⁻¹)ᵀ) * (mat k)ᵀ = γ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : mat k * mat k⁻¹ = 1` using `Units.mul_inv k.1`. Rewrite using `[Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.mul_one]`. Establish `hsy` using `GlobalTheory.VacTransport.symp_mul_transpose (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) (mat k⁻¹) (k⁻¹).2 γ γ`. Establish `h1` using `hS.impl (1, k) (γ * (mat k⁻¹)ᵀ) _ hr'.2`. Rewrite `h1` using `[hback, hfix _ hγ' r hr', hsy, GlobalTheory.VacTransport.tens_smul, map_smul, hact r hr']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1, GlobalTheory.VacTransport.tens_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transport_right {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') (v : Pl F)
@@ -60,15 +60,15 @@ theorem transport_right {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E 
   rw [← h1, GlobalTheory.VacTransport.tens_smul]
 
 /- English proof (translation)
-Use `set Λ := latAtV X W v with hΛ`. Use `set co := M.co with hco`. Establish `hAt : ∀ γ ∈ Λ, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`. Set `χ : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) → ℂ` to `fun l => if h : ∃ γ ∈ Λ, GlobalTheory.LatVac.locCo co v γ = l then B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) h.choose h.choose) else 0`. Establish `loc : ∀ f : (Fin n × Fin d → Fv F v) → ℂ, f ∈ SB _ → (∀ γ ∈ Λ, Acts (evFin F v) (co.rho B.ψ γ) f (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) γ γ) • f)) → ∀ l ∈ Λ.map (GlobalTheory.LatVac.locCo co v), ∀ ξ, GlobalTheory.LatVac.psiAt B.ψ v (ξ ⬝ᵥ l.2 + (2 : Fv F v)⁻¹ * (l.1 ⬝ᵥ l.2)) * f (ξ + l.1) = χ l * f ξ := by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f hf hA l hl ξ`. Establish `h : ∃ γ ∈ Λ, GlobalTheory.LatVac.locCo co v γ = l` using `AddSubgroup.mem_map.mp hl`. Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.RestComplement.exists_rest_ne_zero v f hf`. Establish `key` using `GlobalTheory.LatVac.heis_at_local_identity v co B.ψ h.choose f _ (hAt _ h.choose_spec.1) (hA _ h.choose_spec.1) r hr x₀ hx₀ ξ`. Simplify using `only [χ, dif_pos h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[h.choose_spec.2]`. Conclude with `key`. Establish `hfill : ∀ η : Fin n × Fin d → Fv F v, (∀ b : Fin n × Fin d → Fv F v, ((0 : Fin n × Fin d → Fv F v), b) ∈ Λ.map (GlobalTheory.LatVac.locCo co v) → GlobalTheory.LatVac.psiAt B.ψ v (η ⬝ᵥ b) = 1) → ∃ y, (η, y) ∈ Λ.map (GlobalTheory.LatVac.locCo co v)`. Introduce `η hη`. Use `⟨0, (hG.lat _).2 fun i => ⟨?_, by simpa using zero_mem (v.adicCompletionIntegers F)⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hG.psi (η i)).1 fun y hy => ?_` and prove the remaining obligations. Establish `hb : ((0 : Fin n × Fin d → Fv F v), Pi.single i y) ∈ Λ.map (GlobalTheory.LatVac.locCo co v)`. Use `(hG.lat _).2 fun j => ⟨by simpa using zero_mem (v.adicCompletionIntegers F), ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hy`. Simplify `zero_mem (v.adicCompletionIntegers F)` using `[Pi.single_apply, hj]`. Use `hη _ hb` as an intermediate fact. Rewrite `this` using `[dotProduct_single, GlobalTheory.LatVac.psiAt_apply]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.heisenbergEigen_proportional (GlobalTheory.LatVac.psiAt B.ψ v) (Λ.map (GlobalTheory.LatVac.locCo co v)) χ φ₀ φ (loc φ₀ hφSB hφ) (loc φ hψSB hψ') hφ0 hfill`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem line_of_good {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX : Chr F E} (v : Pl F) (hG : GlobalTheory.PairVac.GoodPlace B M χX v) (θ : 𝓞 E)
@@ -119,9 +119,9 @@ theorem line_of_good {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} 
 end GlobalTheory.PairVacLine
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v hG g hg`. Take `⟨hSB, hne, θ, -, hfix⟩` from `hP.good.vac v`. Take `⟨φ₁, hφ₁SB, hact⟩` from `GlobalTheory.ThK.LocalOps.acts_exists hP v (1, g) (GlobalTheory.InertSph.one_mem_KAt σ X v).1 hg.1 (M.vac v) hSB`. Establish `hfix₁` using `GlobalTheory.PairVacLine.transport_right hP v g hg θ (M.vac v) hSB φ₁ hfix hact`. Take `⟨c, hc⟩` from `GlobalTheory.PairVacLine.line_of_good v hG θ (M.vac v) hSB hne hfix φ₁ hφ₁SB hfix₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, hc ▸ hact⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.PairVacLine.stab_vac_line : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)

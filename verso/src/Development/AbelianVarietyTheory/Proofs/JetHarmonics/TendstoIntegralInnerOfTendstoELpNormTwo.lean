@@ -5,11 +5,11 @@ open MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ μ E _ _ v v' u u' hv hv' hu hu' h h'`. Establish `key : ∀ (f g : X → E) (hf : MemLp f 2 μ) (hg : MemLp g 2 μ), ∫ x, inner ℂ (f x) (g x) ∂μ = inner ℂ (hf.toLp f) (hg.toLp g)`. Introduce `f g hf hg`. Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`. Establish `h1 : Tendsto (fun n => (hv n).toLp (v n)) atTop (𝓝 (hu.toLp u))` using `(Lp.tendsto_Lp_iff_tendsto_eLpNorm'' v hv u hu).2 h`. Establish `h2 : Tendsto (fun n => (hv' n).toLp (v' n)) atTop (𝓝 (hu'.toLp u'))` using `(Lp.tendsto_Lp_iff_tendsto_eLpNorm'' v' hv' u' hu').2 h'`. Rewrite using `[key u' u hu' hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[fun n => key (v' n) (v n) (hv' n) (hv n)]`. Conclude with `h2.inner h1`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_integral_inner_of_tendsto_eLpNorm_two :
     ∀ (X : Type) [MeasurableSpace X] (μ : Measure X) (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℂ E] (v v' : ℕ → X → E) (u u' : X → E), (∀ n, MemLp (v n) 2 μ) → (∀ n, MemLp (v' n) 2 μ) → MemLp u 2 μ → MemLp u' 2 μ → Tendsto (fun n => eLpNorm (v n - u) 2 μ) atTop (𝓝 0) → Tendsto (fun n => eLpNorm (v' n - u') 2 μ) atTop (𝓝 0) → Tendsto (fun n => ∫ x, inner ℂ (v' n x) (v n x) ∂μ) atTop (𝓝 (∫ x, inner ℂ (u' x) (u x) ∂μ)) := by

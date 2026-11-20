@@ -15,19 +15,19 @@ universe u w
 namespace VeryAmpleHilbert
 
 /- English proof (translation)
-Establish `hdeg : ∀ m ∈ Q.support, m 0 + m 1 ≤ e` using `fun m hm => by`. Use `MvPolynomial.le_totalDegree hm` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fin.sum_univ_two]`. Use linear arithmetic over natural numbers and integers. Use `⟨∑ m ∈ Q.support, Polynomial.C (Q.coeff m * c ^ m 1) * Polynomial.X ^ m 0, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun m hm => ?_` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_X_pow_le _ _).trans ?_` and prove the remaining obligations. Use `hdeg m hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Polynomial.finsetSum_coeff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single (Finsupp.single 0 e)]`. Simplify using the standard rewrite rules. Introduce `m hm hne`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hme`. Apply `hne` to reduce the goal to its premises. Use `hdeg m hm` as an intermediate fact. Use extensionality with `i`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hme]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce `h`. Rewrite using `[MvPolynomial.notMem_support_iff.mp h]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a`. Rewrite using `[Polynomial.eval_finsetSum, MvPolynomial.eval_eq']`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_slice (Q : MvPolynomial (Fin 2) ℚ) (e : ℕ) (hQ : Q.totalDegree ≤ e) (c : ℚ) :
     ∃ p : Polynomial ℚ, p.natDegree ≤ e ∧ p.coeff e = Q.coeff (Finsupp.single 0 e) ∧
@@ -66,9 +66,9 @@ theorem exists_slice (Q : MvPolynomial (Fin 2) ℚ) (e : ℕ) (hQ : Q.totalDegre
     ring
 
 /- English proof (translation)
-Break down `hp.lt_or_eq with h | h` into its components or cases. Rewrite using `[Polynomial.fwdDiff_iter_eq_zero_of_degree_lt h, Polynomial.coeff_eq_zero_of_natDegree_lt h]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality. Rewrite using `[Polynomial.fwdDiff_iter_degree_eq_factorial]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, Pi.natCast_apply, smul_eq_mul]`. Rewrite using `[Polynomial.leadingCoeff, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fwdDiff_iter_eval (p : Polynomial ℚ) (e : ℕ) (hp : p.natDegree ≤ e) (y : ℚ) :
     (fwdDiff 1)^[e] p.eval y = e.factorial * p.coeff e := by
@@ -81,7 +81,7 @@ theorem fwdDiff_iter_eval (p : Polynomial ℚ) (e : ℕ) (hp : p.natDegree ≤ e
     rw [Polynomial.leadingCoeff, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[fwdDiff_iter_eq_sum_shift, ← Finset.powerset_univ, Finset.sum_powerset_apply_card (fun m => (-1 : ℚ) ^ (e - m) * f m), Finset.card_univ, Fintype.card_fin]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `[zsmul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_subsets_eq_fwdDiff (e : ℕ) (f : ℚ → ℚ) :
     ∑ T : Finset (Fin e), (-1 : ℚ) ^ (e - T.card) * f T.card = (fwdDiff 1)^[e] f 0 := by
@@ -94,9 +94,9 @@ theorem sum_subsets_eq_fwdDiff (e : ℕ) (f : ℚ → ℚ) :
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Proceed by induction on `l generalizing m with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.foldl_cons, List.length_cons]`. Express the relevant statement in the definitionally equal form `l.foldl _ (Q.pow (m + 1)) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ih]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem foldl_twist_const (Q : SubSystem k x Ω) {n : ℕ} (l : List (Fin n)) (m : ℕ) :
     l.foldl (fun F _ => F.twist Q) (Q.pow m) = Q.pow (m + l.length) := by
@@ -110,9 +110,9 @@ theorem foldl_twist_const (Q : SubSystem k x Ω) {n : ℕ} (l : List (Fin n)) (m
     omega
 
 /- English proof (translation)
-Establish `h` using `foldl_twist_const Q ((List.finRange n).filter (· ∈ T)) 0`. Rewrite `h` using `[zero_add]`. Unfold `tensorSub`. Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← List.toFinset_card_of_nodup ((List.nodup_finRange n).filter _)]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tensorSub_const (Q : SubSystem k x Ω) {n : ℕ} (T : Finset (Fin n)) :
     tensorSub (fun _ : Fin n => Q) T = Q.pow T.card := by
@@ -131,17 +131,15 @@ end VeryAmpleHilbert
 open VeryAmpleHilbert in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x e Nb hZ hN`. Take `⟨hfin, Q, c₀, hdeg, hQ, hQ0⟩` from `hS k Ω N x e Nb hZ hN`. Establish `hpow : ∀ n : ℕ, twistMul Nb.toSubSystem n 0 = Nb.toSubSystem.pow n` using `fun n => SubSystem.twist_twistSys_zero _`. Use `⟨fun n => hpow n ▸ hfin n 0, ?_⟩` and prove the remaining obligations. Take `⟨P, hPdeg, hPe, hPev⟩` from `exists_slice Q e hdeg 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨P, hPdeg, ?_, ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hZ.relevant`. Establish `hxj : x j ≠ 0` using `fun h0 => hj ((mem_primeOf_of_isHomogeneous x (MvPolynomial.isHomogeneous_X k j)).mpr (by rw [MvPolynomial.aeval_X, h0]))`. Establish `hsum : ∀ c : ℕ, c₀ ≤ c → (interSum (primeOf (S` using `k) x) (fun _ : Fin e => Nb.toSubSystem) c : ℚ) = e.factorial * Q.coeff (Finsupp.single 0 e) := by`. Introduce `c hc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hpd, hpe, hpv⟩` from `exists_slice Q e hdeg c`. Rewrite using `[← hpe, ← fwdDiff_iter_eval p e hpd 0, funext hpv, ← sum_subsets_eq_fwdDiff, interSum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[tensorSub_const, SectionsOverLocalization.restrLen_primeOf_eq_finrank x hxj, Int.cast_natCast]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h` using `hQ T.card c hc`. Rewrite `h` using `[Int.cast_natCast]`. Conclude with `h`. Use `set z := interSum (primeOf (S := k) x) (fun _ : Fin e => Nb.toSubSystem) c₀.toNat`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ c : ℕ, c₀.toNat ≤ c → interSum (primeOf (S` using `k) x) (fun _ : Fin e => Nb.toSubSystem) c = z := fun c hc => by`. Establish `h1` using `hsum c (by omega)`. Rewrite `h1` using `[← hsum c₀.toNat (by omega)]`. Conclude with `h1` after adjusting the coercions. Establish `hlim : interNum (primeOf (S` using `k) x) (fun _ : Fin e => Nb.toSubSystem) = z := (tendsto_const_nhds.congr' (eventually_atTop.mpr ⟨c₀.toNat, fun c hc => (hz c hc).symm⟩)).limUnder_eq`.
-
-Rewrite using `[hlim, hsum c₀.toNat (by omega), hPe, mul_comm]`. Use `filter_upwards [hQ0] with n hn`. Rewrite using `[hn, hPev]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VeryAmpleHilbert.proof (hS : VeryAmpleSnapper.Statement.{u, w}) : VeryAmpleHilbert.Statement.{u, w} := by
   intro k _ Ω _ _ N x e Nb hZ hN

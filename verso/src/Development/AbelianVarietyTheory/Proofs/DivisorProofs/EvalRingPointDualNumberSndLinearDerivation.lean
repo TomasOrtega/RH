@@ -8,14 +8,14 @@ noncomputable section
 namespace GlobalTheory.DualEval
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `evalPt_spMap_comp φ G' O h0 hx f`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem evalPt_of_eq {R R' : Type} [CommRing R] [CommRing R'] {X : Scheme.{0}} (φ : R →+* R')
     (G' : Sp R ⟶ X) (x : Sp R' ⟶ X) (O : X.Opens) (h0 : ⊤ ≤ G' ⁻¹ᵁ O) (hx : ⊤ ≤ x ⁻¹ᵁ O)
@@ -24,7 +24,7 @@ theorem evalPt_of_eq {R R' : Type} [CommRing R] [CommRing R'] {X : Scheme.{0}} (
   exact evalPt_spMap_comp φ G' O h0 hx f
 
 /- English proof (translation)
-Establish `e1 : u.fst * t.fst = s.fst` using `by rw [← e]; rfl`. Establish `e2 : u.fst * t.snd + u.snd * t.fst = s.snd` using `by rw [← e, DualNumber.snd_mul]`. Establish `hu : u.fst = s.fst / t.fst` using `by rw [eq_div_iff ht, e1]`. Rewrite using `[eq_div_iff ht, ← e2, hu]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem snd_of_mul_eq {K : Type} [Field K] (u t s : DualNumber K) (ht : t.fst ≠ 0)
     (e : u * t = s) : u.snd = (s.snd - s.fst / t.fst * t.snd) / t.fst := by
@@ -45,7 +45,7 @@ section Lift
 variable {S K : Type} [CommRing S] [Field K] (ψ : S →+* K)
 
 /- English proof (translation)
-Use `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ?_` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `Ne.isUnit fun h0 => y.2 (by simpa [RingHom.mem_ker] using h0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_lifts (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ s)
     (y : (RingHom.ker ψ).primeCompl) : IsUnit (φ y) := by
@@ -58,14 +58,14 @@ def liftAt (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ s) :
   IsLocalization.lift (M := (RingHom.ker ψ).primeCompl) (isUnit_of_lifts ψ φ hφ)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_comp _`.
+A detailed English derivation is pending.
 -/
 theorem liftAt_comp (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ s) :
     (liftAt ψ φ hφ).comp (algebraMap S (Localization.AtPrime (RingHom.ker ψ))) = φ :=
   IsLocalization.lift_comp _
 
 /- English proof (translation)
-Use `congrArg (liftAt ψ φ hφ) (IsLocalization.mk'_spec (Localization.AtPrime (RingHom.ker ψ)) s t)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Unfold `liftAt at this ⊢`. Rewrite `this` using `[IsLocalization.lift_eq, IsLocalization.lift_eq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftAt_mk'_mul (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ s) (s : S)
     (t : (RingHom.ker ψ).primeCompl) :
@@ -78,13 +78,13 @@ theorem liftAt_mk'_mul (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ
   exact this
 
 /- English proof (translation)
-Introduce `h0` and use `t.2 (by simpa [RingHom.mem_ker] using h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem psi_ne_zero (t : (RingHom.ker ψ).primeCompl) : ψ t ≠ 0 := fun h0 =>
   t.2 (by simpa [RingHom.mem_ker] using h0)
 
 /- English proof (translation)
-Use `snd_of_mul_eq _ _ _ (by rw [hφ]; exact psi_ne_zero ψ t) (liftAt_mk'_mul ψ φ hφ s t)` as an intermediate fact. Rewrite `this` using `[hφ, hφ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftAt_mk'_snd (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ s) (s : S)
     (t : (RingHom.ker ψ).primeCompl) :
@@ -95,11 +95,11 @@ theorem liftAt_mk'_snd (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ
   exact this
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨⟨s, t⟩, rfl⟩` from `IsLocalization.mk'_surjective (RingHom.ker ψ).primeCompl x`. Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff]`. Introduce `hs`. Establish `e1 : (liftAt ψ φ hφ (IsLocalization.mk' (Localization.AtPrime (RingHom.ker ψ)) s t)).fst * ψ t = ψ s`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hφ, ← hφ, ← liftAt_mk'_mul ψ φ hφ s t]`. Both sides reduce to the same expression. Establish `hs0 : ψ s = 0` using `by simpa [RingHom.mem_ker] using hs`. Rewrite `e1` using `[hs0]`. Establish `hne : (liftAt ψ φ hφ (IsLocalization.mk' (Localization.AtPrime (RingHom.ker ψ)) s t)).fst ≠ 0` using `hx.ne_zero`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hne ((mul_eq_zero.1 e1).resolve_right (psi_ne_zero ψ t))`.
+A detailed English derivation is pending.
 -/
 theorem liftAt_isLocalHom (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ s) :
     IsLocalHom ((TrivSqZeroExt.fstHom K K K).toRingHom.comp (liftAt ψ φ hφ)) := by
@@ -120,17 +120,15 @@ theorem liftAt_isLocalHom (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst =
 end Lift
 
 /- English proof (translation)
-Set `L` to `Localization.AtPrime (RingHom.ker ψ)`. Set `alg : S →+* L` to `algebraMap S L`. Set `fstR : DualNumber K →+* K` to `(TrivSqZeroExt.fstHom K K K).toRingHom`. Set `G' : Sp L ⟶ X` to `spMap alg ≫ G`. Use `haveI := liftAt_isLocalHom ψ θ h2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : IsLocalRing.closedPoint L ∈ G' ⁻¹ᵁ O`. Rewrite using `[← IsLocalRing.comap_closedPoint (fstR.comp (liftAt ψ θ h2))]`. Establish `hmor : spMap (fstR.comp (liftAt ψ θ h2)) ≫ G' = spMap fstR ≫ spMap θ ≫ G`. Rewrite using `[← Category.assoc, ← Category.assoc, ← spMap_comp_ring, ← spMap_comp_ring, RingHom.comp_assoc, liftAt_comp]`. Set `pt : Sp K` to `IsLocalRing.closedPoint K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : (spMap (fstR.comp (liftAt ψ θ h2)) ≫ G') pt ∈ O`. Rewrite using `[hmor]`. Conclude with `h (Set.mem_univ ((spMap fstR) pt))`. Conclude with `key`. Establish `h0 : ⊤ ≤ G' ⁻¹ᵁ O` using `((IsLocalRing.closed_point_mem_iff (U := G' ⁻¹ᵁ O)).1 hm).ge`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hval : ∀ (φ : S →+* DualNumber K) (hφ : ∀ s, (φ s).fst = ψ s) (hx : ⊤ ≤ (spMap φ ≫ G) ⁻¹ᵁ O), evalPt (spMap φ ≫ G) O hx f = liftAt ψ φ hφ (evalPt G' O h0 f)`. Introduce `φ hφ hx`. Use `evalPt_of_eq _ G' _ O h0 hx ?_ f` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← spMap_comp_ring, liftAt_comp]`. Take `⟨⟨s, t⟩, hst⟩` from `IsLocalization.mk'_surjective (RingHom.ker ψ).primeCompl (evalPt G' O h0 f)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∀ a, (evalPt (spMap (θc a) ≫ G) O (h' a) f).snd = (((θc a) s).snd - ψ s / ψ t * ((θc a) t).snd) / ψ t` using `fun a => by`. Rewrite using `[hval (θc a) (h1 a) (h' a), ← hst, liftAt_mk'_snd]`. Rewrite using `[hval θ h2 h, ← hst, liftAt_mk'_snd]`. Repeatedly rewrite using `[hA, h3, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evalPt_snd_sum {X : Scheme.{0}} {S K : Type} [CommRing S] [Field K] (G : Sp S ⟶ X)
     (ψ : S →+* K) {ι : Type} [Fintype ι] (θc : ι → (S →+* DualNumber K)) (θ : S →+* DualNumber K)

@@ -13,43 +13,43 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
 /- English proof (translation)
-Introduce `hH _` and use `jacExGood_of_N (jacExGoodN_of_hpkEx_of_pFrame_of_haarCorr hH pFrame_holds hHC zBig bigMem_holds hW secWb_holds)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem transEx_holds (hHC : HaarCorr) (hW : CoordW) : TransEx := fun hH _ =>
   jacExGood_of_N (jacExGoodN_of_hpkEx_of_pFrame_of_haarCorr hH pFrame_holds hHC zBig bigMem_holds hW secWb_holds)
 
 /- English proof (translation)
-The claim follows from `jacLoc_of_ex h1 hR (degRed_holds hR (transEx_holds hHC hW hpkEx_holds hR))`.
+A detailed English derivation is pending.
 -/
 theorem local_jacobian_of_double_coset (h1 : DiagDCLoc) (hR : RightInvS) (hHC : HaarCorr) (hW : CoordW) : JacLoc :=
   jacLoc_of_ex h1 hR (degRed_holds hR (transEx_holds hHC hW hpkEx_holds hR))
 
 /- English proof (translation)
-The claim follows from `local_jacobian_of_double_coset Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.DiagDCLoc_holds hR hHC hW`.
+A detailed English derivation is pending.
 -/
 theorem jacLoc_of_rightInv_haarCorr (hR : RightInvS) (hHC : HaarCorr) (hW : CoordW) : JacLoc :=
   local_jacobian_of_double_coset Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.DiagDCLoc_holds hR hHC hW
 
 /- English proof (translation)
-The claim follows from `jacLoc_of_rightInv_haarCorr hR (haarCorr_of hSC) hW`.
+A detailed English derivation is pending.
 -/
 theorem jacLoc_of_rightInv_setCorr (hR : RightInvS) (hSC : SetCorr) (hW : CoordW) : JacLoc :=
   jacLoc_of_rightInv_haarCorr hR (haarCorr_of hSC) hW
 
 /- English proof (translation)
-The claim follows from `jacLoc_of_rightInv_setCorr (rightInvS_of hSC (haarCorr_of hSC)) hSC hW`.
+A detailed English derivation is pending.
 -/
 theorem jacLoc_of_setCorr' (hSC : SetCorr) (hW : CoordW) : JacLoc :=
   jacLoc_of_rightInv_setCorr (rightInvS_of hSC (haarCorr_of hSC)) hSC hW
 
 /- English proof (translation)
-The claim follows from `jacLoc_of_setCorr' hSC coordW_holds`.
+A detailed English derivation is pending.
 -/
 theorem jacLoc_of_setCorr (hSC : SetCorr) : JacLoc :=
   jacLoc_of_setCorr' hSC coordW_holds
 
 /- English proof (translation)
-The claim follows from `jacLoc_of_setCorr setCorr_holds`.
+A detailed English derivation is pending.
 -/
 theorem jacLoc_holds : JacLoc :=
   jacLoc_of_setCorr setCorr_holds

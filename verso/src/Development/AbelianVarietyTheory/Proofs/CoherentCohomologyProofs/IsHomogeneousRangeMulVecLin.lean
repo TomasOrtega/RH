@@ -6,9 +6,9 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n v hv`. Use `mem_grPi.2 fun l => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, grShift_apply]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `grSMul_mem (polyGrading ι R) (h l j) (mem_grPi.1 hv j)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[smul_eq_mul, show n + -e j + (e j - d l) = n + -d l by ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isGradedMap_mulVecLin {ι : Type} {R : Type*} [CommRing R] {κ μ : Type*} [Fintype μ]
     {d : κ → ℤ} {e : μ → ℤ} {Φ : Matrix κ μ (MvPolynomial ι R)}
@@ -22,7 +22,7 @@ theorem isGradedMap_mulVecLin {ι : Type} {R : Type*} [CommRing R] {κ μ : Type
   rwa [smul_eq_mul, show n + -e j + (e j - d l) = n + -d l by ring] at this
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ h` and use `(isGradedMap_mulVecLin h).isHomogeneous_range`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_range_mulVecLin :
     ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (a b : ℕ) (d : Fin a → ℤ)

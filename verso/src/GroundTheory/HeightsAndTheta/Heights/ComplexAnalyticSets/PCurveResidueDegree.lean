@@ -9,35 +9,31 @@ open MvPolynomial ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Introduce `n I q _ hdim P`. Use `P.isMaximal` as an intermediate fact. Set `_ : Field (curveNormalisation I q ⧸ P.asIdeal)` to `Ideal.Quotient.field _`. Establish `hO : Nontrivial (curveLocalRing I q)`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Rewrite `hdim` using `[ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `absurd hdim (by decide)`. Establish `hIq : ∀ g ∈ I, eval q g = 0`. Introduce `g hg`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hgq`. Establish `hu` using `isUnit_algebraMap_curveLocalRing I q g hgq`. Establish `h0 : algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) g = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hg)`. Rewrite `hu` using `[h0]`. Conclude with `not_isUnit_zero hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `evL : Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)) →+* ℂ` to `IsLocalization.lift (M := (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl) (g := eval q) (fun s ↦ isUnit_iff_ne_zero.2 fun h ↦ s.2 (RingHom.mem_ker.2 h))`. Establish `hJ : ∀ a ∈ I.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)))), evL a = 0`. Introduce `a ha`. Establish `hle : I.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)))) ≤ RingHom.ker evL`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g hg`. Simplify using `[evL, IsLocalization.lift_eq, hIq g hg]`. Conclude with `hle ha`. Set `ε : curveLocalRing I q →+* ℂ` to `Ideal.Quotient.lift _ evL hJ`. Set `K` to `curveNormalisation I q ⧸ P.asIdeal`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `π : curveLocalRing I q →+* K` to `algebraMap (curveLocalRing I q) K`. Set `ι : ℂ →+* K` to `π.comp ((algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q)).comp C)`. Establish `: Algebra.IsIntegral (curveLocalRing I q) (curveNormalisation I q)` using `inferInstanceAs (Algebra.IsIntegral (curveLocalRing I q) ↥(integralClosure (curveLocalRing I q) (FractionRing (curveLocalRing I q))))`. Establish `hmax : (P.asIdeal.comap (algebraMap (curveLocalRing I q) (curveNormalisation I q))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal P.asIdeal`. Establish `hmax'` using `Ideal.comap_isMaximal_of_surjective (Ideal.Quotient.mk (I.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)))))) Ideal.Quotient.mk_surjective (K := P.asIdeal.comap (algebraMap (curveLocalRing I q) (curveNormalisati …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hloc` using `IsLocalRing.eq_maximalIdeal hmax'`. Establish `hker : ∀ a ∈ RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ), π (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) a) = 0`. Introduce `a ha`. Rewrite `ha` using `[← Localization.AtPrime.under_maximalIdeal (I := RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)), Ideal.under, Ideal.mem_comap, ← hloc]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ha`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomp : π = ι.comp ε`. Use `Ideal.Quotient.ringHom_ext ?_` and prove the remaining obligations. Use `IsLocalization.ringHom_ext (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl ?_` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun c ↦ ?_) (fun i ↦ ?_)` and prove the remaining obligations. Use `show π (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) (C c)) = ι (ε (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) (C c)))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `he : ε (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) (C c)) = c` using `by show evL (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ))) (C c)) = c`. Simplify using `[evL, IsLocalization.lift_eq]`. Rewrite using `[he]`. Both sides reduce to the same expression. Establish `h1 : (X i - C (q i) : MvPolynomial (Fin n) ℂ) ∈ RingHom.ker (eval q)` using `by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hker _ h1`. Rewrite `h2` using `[map_sub, map_sub, sub_eq_zero]`. Use `show π (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) (X i)) = ι (ε (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) (X i)))`. Establish `he : ε (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) (X i)) = q i` using `by show evL (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ))) (X i)) = q i`. Simplify using `[evL, IsLocalization.lift_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he]`. Conclude with `h2`. Establish `hint : ι.IsIntegral`. Introduce `z`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb : IsIntegral (curveLocalRing I q) b` using `Algebra.IsIntegral.isIntegral b`. Take `⟨p, hp, he⟩` from `hb.map (Ideal.Quotient.mkₐ (curveLocalRing I q) P.asIdeal)`. Use `⟨p.map ε, hp.map ε, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, ← hcomp]`. Conclude with `he`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective ι` using `(IsAlgClosed.ringHom_bijective_of_isIntegral ι hint).2`. Establish `hπ : Function.Surjective π` using `fun y ↦ by`. Take `⟨c, hc⟩` from `hsurj y`. Conclude with `⟨_, hc⟩`. Rewrite using `[Module.length_eq_one_iff, isSimpleModule_iff_toSpanSingleton_surjective]`.
-
-Use `⟨inferInstance, fun x hx y ↦ ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hπ (y * x⁻¹)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `π r * x = y`.
-
-Rewrite using `[hr, mul_assoc, inv_mul_cancel₀ hx, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CurveResidueDegree.proof : CurveResidueDegree.Statement := by
   intro n I q _ hdim P

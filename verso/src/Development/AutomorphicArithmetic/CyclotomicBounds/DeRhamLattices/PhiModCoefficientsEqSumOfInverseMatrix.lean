@@ -11,7 +11,7 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 
 /- English proof (translation)
-Establish `: (Y *ᵥ m) i = ((∑ j, ⟨Y i j, hY i j⟩ * ⟨m j, hm j⟩ : RpiE O K l e) : K⟦X⟧)`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[this, hat_coe, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hat_of_mem l e (hY i j), hat_of_mem l e (hm j)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hat_mulVec' {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] {l e : ℕ} [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [CompleteSpace K]
@@ -25,13 +25,13 @@ private theorem hat_mulVec' {O K : Type} [CommRing O] [NormedField K] [IsUltrame
   rw [map_mul, hat_of_mem l e (hY i j), hat_of_mem l e (hm j)]
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P n s m c h j`. Use function extensionality and compare the values at `τ`. Apply `algebraMap_AhatE_injective l e` to reduce the goal to its premises. Rewrite using `[h τ j, Finset.sum_apply, map_sum]`. Simplify using `only [GlobalTheory.BKGal.JumpDR.hsum, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hc (i : ι) : (coordL P (invL l (S O K e)) (m k) i τ : K⟦X⟧) ∈ Rpi O K l e` using `invL_S_le_Rpi l e (coordL P (invL l (S O K e)) (m k) i τ).2`. Establish `hm (i : ι) : (m k).1 τ i ∈ RpiE O K l e`. Use `congrFun (mx_mulVec_coordL P (invL l (S O K e)) (m k) τ) i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `Subalgebra.sum_mem _ fun i' _ => mul_mem (invE_A_le_RpiE l e (P.mx_mem τ i i')) (le_away _ _ (hc i'))`. Establish `h1 : (coordL P (invL l (S O K e)) (m k) j τ : K⟦X⟧) = (P.mxInv τ *ᵥ (m k).1 τ) j` using `rfl`. Rewrite using `[Pi.mul_apply, map_mul, GlobalTheory.GalStep.hatR_of_mem (hc j), ← hat_coe_Rpi]`. Express the relevant statement in the definitionally equal form `_ = _ * hat O l e (coordL P (invL l (S O K e)) (m k) j τ : K⟦X⟧)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hat_mulVec' (fun i i' => invE_A_le_RpiE l e (P.mxInv_mem τ i i')) hm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.phiMod_coefficients_eq_sum_of_inverse_matrix :
     ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (n : ℕ) (s : Fin n → ZMod a → Ahat O K l e) (m : Fin n → P.MMl) (c : ZMod a → ι → Ahat O K l e),

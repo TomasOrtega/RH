@@ -26,7 +26,7 @@ local notation "𝒪♭" => PreTilt (normInteger K) p
 local notation "K♭" => Tilt K NormedField.valuation (normInteger K) normInteger_integers p
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[incl_coeff, WittVector.frobeniusEquiv_coeff, WittVector.frobeniusEquiv_coeff, incl_coeff, map_pow]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem incl_frobeniusEquiv (x : AInf K p) :
     incl K p (WittVector.frobeniusEquiv p 𝒪♭ x) = WittVector.frobeniusEquiv p K♭ (incl K p x) := by
@@ -35,7 +35,7 @@ theorem incl_frobeniusEquiv (x : AInf K p) :
     map_pow]
 
 /- English proof (translation)
-Apply `(WittVector.frobeniusEquiv p K♭).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, ← incl_frobeniusEquiv, RingEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem incl_frobeniusEquiv_symm (x : AInf K p) :
     incl K p ((WittVector.frobeniusEquiv p 𝒪♭).symm x) =
@@ -83,14 +83,14 @@ Both sides reduce to the same expression.
 @[simp] theorem frob_u : (frob K p).u = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `(incl_frobeniusEquiv x).symm`.
+A detailed English derivation is pending.
 -/
 theorem frob_φ_incl (x : AInf K p) :
     (frob K p).φ (incl K p x) = incl K p (WittVector.frobeniusEquiv p 𝒪♭ x) :=
   (incl_frobeniusEquiv x).symm
 
 /- English proof (translation)
-The claim follows from `RingHom.ext frob_φ_incl`.
+A detailed English derivation is pending.
 -/
 theorem frob_φ_comp_incl :
     ((frob K p).φ : WittVector p K♭ →+* WittVector p K♭).comp (incl K p) =
@@ -98,13 +98,11 @@ theorem frob_φ_comp_incl :
   RingHom.ext frob_φ_incl
 
 /- English proof (translation)
-Use `set T := teichLift K p`. Use `set F := frob K p`. Establish `hred : ∀ y, T.red (F.φ.toRingHom y) = frobenius K♭ p (T.red y)` using `fun y => by`. Rewrite using `[frobenius_def]`. Use `F.red_φ y` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[frob_a, pow_one]`. Conclude with `this`. Establish `hπ : F.φ.toRingHom T.π = T.π * 1` using `F.φ_π`. Establish `h1` using `T.map_partialSum F.φ.toRingHom (frobenius K♭ p) hred hπ x (n + 1)`. Establish `h2` using `T.map_sub_map_partialSum_mem F.φ.toRingHom hπ x (n + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(T.coeff_eq_of_mem (a := fun m => frobenius K♭ p (T.coeff x m)) ?_ n le_rfl).trans (by rw [frobenius_def])` and prove the remaining obligations. Establish `e : T.finSum (fun m => frobenius K♭ p (T.coeff x m)) (n + 1) = F.φ.toRingHom (T.partialSum x (n + 1))`. Rewrite using `[h1]`. Simplify using `[TeichLift.finSum]`. Rewrite using `[e]`.
-
-Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_frob (x : WittVector p K♭) (n : ℕ) :
     (teichLift K p).coeff ((frob K p).φ x) n = (teichLift K p).coeff x n ^ p := by
@@ -126,7 +124,7 @@ theorem coeff_frob (x : WittVector p K♭) (n : ℕ) :
   rw [e]; exact h2
 
 /- English proof (translation)
-Unfold `TeichLift.zcoeff`. Use `split_ifs`. Conclude with `coeff_frob x _`. Conclude with `(zero_pow hp.out.ne_zero).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zcoeff_frob (x : WittVector p K♭) (k : ℤ) :
     (teichLift K p).zcoeff ((frob K p).φ x) k = (teichLift K p).zcoeff x k ^ p := by
@@ -136,9 +134,9 @@ theorem zcoeff_frob (x : WittVector p K♭) (k : ℤ) :
   · exact (zero_pow hp.out.ne_zero).symm
 
 /- English proof (translation)
-Take `⟨N, x, hx⟩` from `IsLocalization.Away.surj (teichLift K p).π b`. Establish `h' : (frob K p).toB b * algebraMap _ (teichLift K p).B (teichLift K p).π ^ N = algebraMap _ (teichLift K p).B ((frob K p).φ x)`. Use `congrArg (frob K p).toB hx` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, TeichLift.TeichFrob.toB_algebraMap, TeichLift.TeichFrob.toB_algebraMap, (frob K p).φ_π, frob_u, mul_one]`. Then use the resulting hypothesis. Rewrite using `[(teichLift K p).coeffB_eq h', (teichLift K p).coeffB_eq hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zcoeff_frob x _`.
+A detailed English derivation is pending.
 -/
 theorem coeffB_frob_toB (b : (teichLift K p).B) (k : ℤ) :
     (teichLift K p).coeffB ((frob K p).toB b) k = (teichLift K p).coeffB b k ^ p := by
@@ -191,7 +189,7 @@ Both sides reduce to the same expression.
 theorem galIso_g (σ : Gal(PadicAlgCl p/K)) (c : Cb p) : (galIso σ).g c = σ • c := rfl
 
 /- English proof (translation)
-Take `⟨ψ₁, g₁, _, _, _⟩` from `G₁`. Take `⟨ψ₂, g₂, _, _, _⟩` from `G₂`. Take `rfl : ψ₁ = ψ₂` from `RingEquiv.ext hψ`. Take `rfl : g₁ = g₂` from `RingEquiv.ext hg`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem TeichIso_eq {T : TeichLift p (Cb p) (WC p)} {G₁ G₂ : T.TeichIso}
     (hψ : ∀ x, G₁.ψ x = G₂.ψ x) (hg : ∀ c, G₁.g c = G₂.g c) : G₁ = G₂ := by
@@ -202,33 +200,33 @@ theorem TeichIso_eq {T : TeichLift p (Cb p) (WC p)} {G₁ G₂ : T.TeichIso}
   rfl
 
 /- English proof (translation)
-The claim follows from `TeichIso_eq (fun x => galW_mul σ τ x) (fun c => galTilt_mul σ τ c)`.
+A detailed English derivation is pending.
 -/
 theorem galIso_mul (σ τ : Gal(PadicAlgCl p/K)) : galIso (σ * τ) = (galIso σ).comp (galIso τ) :=
   TeichIso_eq (fun x => galW_mul σ τ x) (fun c => galTilt_mul σ τ c)
 
 /- English proof (translation)
-The claim follows from `TeichIso_eq (fun x => galW_one x) (fun c => galTilt_one c)`.
+A detailed English derivation is pending.
 -/
 theorem galIso_one : galIso (1 : Gal(PadicAlgCl p/K)) = TeichLift.TeichIso.refl :=
   TeichIso_eq (fun x => galW_one x) (fun c => galTilt_one c)
 
 /- English proof (translation)
-The claim follows from `gal_smul_frobeniusEquiv σ x`.
+A detailed English derivation is pending.
 -/
 theorem galIso_frob (σ : Gal(PadicAlgCl p/K)) (x : WC p) :
     (galIso σ).ψ ((frob ℂ_[p] p).φ x) = (frob ℂ_[p] p).φ ((galIso σ).ψ x) :=
   gal_smul_frobeniusEquiv σ x
 
 /- English proof (translation)
-The claim follows from `(toWC_gal_smul σ x).symm`.
+A detailed English derivation is pending.
 -/
 theorem galIso_incl (σ : Gal(PadicAlgCl p/K)) (x : AInf ℂ_[p] p) :
     (galIso σ).ψ (incl ℂ_[p] p x) = incl ℂ_[p] p (σ • x) :=
   (toWC_gal_smul σ x).symm
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨σ • y, (galIso_incl σ y).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem galIso_mem_int (σ : Gal(PadicAlgCl p/K)) {x : WC p} (hx : x ∈ (teichLift ℂ_[p] p).int) :
     (galIso σ).ψ x ∈ (teichLift ℂ_[p] p).int := by
@@ -236,21 +234,21 @@ theorem galIso_mem_int (σ : Gal(PadicAlgCl p/K)) {x : WC p} (hx : x ∈ (teichL
   exact ⟨σ • y, (galIso_incl σ y).symm⟩
 
 /- English proof (translation)
-Rewrite using `[galIso_mul, TeichLift.TeichIso.tildeMap_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galIso_tildeMap_mul (σ τ : Gal(PadicAlgCl p/K)) (x : (teichLift ℂ_[p] p).RobbaTilde) :
     (galIso (σ * τ)).tildeMap x = (galIso σ).tildeMap ((galIso τ).tildeMap x) := by
   rw [galIso_mul, TeichLift.TeichIso.tildeMap_comp]
 
 /- English proof (translation)
-Rewrite using `[galIso_one, TeichLift.TeichIso.tildeMap_refl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galIso_tildeMap_one (x : (teichLift ℂ_[p] p).RobbaTilde) :
     (galIso (1 : Gal(PadicAlgCl p/K))).tildeMap x = x := by
   rw [galIso_one, TeichLift.TeichIso.tildeMap_refl]
 
 /- English proof (translation)
-The claim follows from `(galIso σ).tildeMap_tildeFrob (frob ℂ_[p] p) (galIso_frob σ) x`.
+A detailed English derivation is pending.
 -/
 theorem galIso_tildeMap_tildeFrob (σ : Gal(PadicAlgCl p/K)) (x : (teichLift ℂ_[p] p).RobbaTilde) :
     (galIso σ).tildeMap ((frob ℂ_[p] p).tildeFrob x) =
@@ -278,27 +276,27 @@ variable (p) in
 def wittFpbarToWC : W̄ →+* WC p := (incl ℂ_[p] p).comp wittToAInf
 
 /- English proof (translation)
-The claim follows from `incl_injective.comp wittToAInf_injective`.
+A detailed English derivation is pending.
 -/
 theorem wittFpbarToWC_injective : Function.Injective (wittFpbarToWC p) :=
   incl_injective.comp wittToAInf_injective
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem wittFpbarToWC_mem_int (w : W̄) : wittFpbarToWC p w ∈ (𝓣).int := ⟨_, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[wittFpbarToWC, RingHom.comp_apply, incl_coeff, wittToAInf, WittVector.map_coeff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wittFpbarToWC_coeff (w : W̄) (n : ℕ) :
     (wittFpbarToWC p w).coeff n = algebraMap 𝒪♭ (Cb p) (fpbarToPreTilt (w.coeff n)) := by
   rw [wittFpbarToWC, RingHom.comp_apply, incl_coeff, wittToAInf, WittVector.map_coeff]
 
 /- English proof (translation)
-Rewrite using `[teichLift_red, wittFpbarToWC_coeff]`. Introduce `h`. Apply `hw` to reduce the goal to its premises. Apply `fpbarToPreTilt_injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `algebraMap_preTilt_injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_wittFpbarToWC_ne_zero {w : W̄} (hw : w.coeff 0 ≠ 0) :
     (𝓣).red (wittFpbarToWC p w) ≠ 0 := by
@@ -312,7 +310,7 @@ theorem red_wittFpbarToWC_ne_zero {w : W̄} (hw : w.coeff 0 ≠ 0) :
   exact h
 
 /- English proof (translation)
-Use `red_wittFpbarToWC_ne_zero fun h => ?_` and prove the remaining obligations. Use `congrArg (fun w : W̄ => w.coeff 0) (u.mul_inv)` as an intermediate fact. Simplify using `only [WittVector.mul_coeff_zero, h, zero_mul, WittVector.one_coeff_zero] at this`. Conclude with `zero_ne_one this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem red_wittFpbarToWC_unit_ne_zero (u : W̄ˣ) : (𝓣).red (wittFpbarToWC p u) ≠ 0 := by
   refine red_wittFpbarToWC_ne_zero fun h => ?_
@@ -321,7 +319,7 @@ theorem red_wittFpbarToWC_unit_ne_zero (u : W̄ˣ) : (𝓣).red (wittFpbarToWC p
   exact zero_ne_one this
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[frob_φ_apply, WittVector.frobeniusEquiv_coeff, wittFpbarToWC_coeff, wittFpbarToWC_coeff, WittVector.coeff_frobenius_charP, map_pow, map_pow]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem wittFpbarToWC_frobenius (w : W̄) :
     wittFpbarToWC p (WittVector.frobenius w) = (frob ℂ_[p] p).φ (wittFpbarToWC p w) := by
@@ -330,11 +328,11 @@ theorem wittFpbarToWC_frobenius (w : W̄) :
     WittVector.coeff_frobenius_charP, map_pow, map_pow]
 
 /- English proof (translation)
-Take `⟨a, s, -, rfl⟩` from `IsFractionRing.div_surjective (A := W̄) x`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `hs : s ≠ 0` using `by rintro rfl; simp at hx`. Take `⟨m, ua, rfl⟩` from `WittVector.exists_eq_pow_p_mul' a ha`. Take `⟨k, us, rfl⟩` from `WittVector.exists_eq_pow_p_mul' s hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(m : ℤ) - k, ua * us⁻¹, ?_⟩` and prove the remaining obligations. Establish `hp0 : algebraMap W̄ (WFrac p) p ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective W̄ (WFrac p))).2 (WittVector.irreducible p).ne_zero`. Establish `hus : algebraMap W̄ (WFrac p) (us : W̄) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective W̄ (WFrac p))).2 us.ne_zero`. Rewrite using `[zpow_sub₀ hp0, zpow_natCast, zpow_natCast, Units.val_mul, map_mul, map_mul, map_mul, map_pow, map_pow]`. Establish `: algebraMap W̄ (WFrac p) ((us⁻¹ : W̄ˣ) : W̄) = (algebraMap W̄ (WFrac p) (us : W̄))⁻¹` using `map_units_inv _ us`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_eq_zpow_mul (x : WFrac p) (hx : x ≠ 0) :
     ∃ (n : ℤ) (u : W̄ˣ), x = (algebraMap W̄ (WFrac p) p) ^ n * algebraMap W̄ (WFrac p) u := by
@@ -356,9 +354,9 @@ theorem exists_eq_zpow_mul (x : WFrac p) (hx : x ≠ 0) :
   field_simp
 
 /- English proof (translation)
-Take `⟨m, u, hu⟩` from `WittVector.exists_eq_pow_p_mul' (y : W̄) (nonZeroDivisors.coe_ne_zero y)`. Establish `hf : (algebraMap (WC p) (𝓣).B).comp (wittFpbarToWC p) (p : W̄) = algebraMap (WC p) (𝓣).B (𝓣).π`. Rewrite using `[RingHom.comp_apply, map_natCast]`. Both sides reduce to the same expression. Rewrite using `[hu, map_mul, map_pow, hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsUnit.mul (IsUnit.pow _ (IsLocalization.Away.algebraMap_isUnit (𝓣).π)) (u.isUnit.map _)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_wittFpbar_to_B (y : nonZeroDivisors W̄) :
     IsUnit ((algebraMap (WC p) (𝓣).B).comp (wittFpbarToWC p) y) := by
@@ -375,29 +373,29 @@ def wittFpbarToB : WFrac p →+* (𝓣).B :=
   IsLocalization.lift (M := nonZeroDivisors W̄) (isUnit_wittFpbar_to_B (p := p))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ w`.
+A detailed English derivation is pending.
 -/
 theorem wittFpbarToB_algebraMap (w : W̄) :
     wittFpbarToB p (algebraMap W̄ (WFrac p) w) = algebraMap (WC p) (𝓣).B (wittFpbarToWC p w) :=
   IsLocalization.lift_eq _ w
 
 /- English proof (translation)
-Rewrite using `[wittFpbarToB_algebraMap, map_natCast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wittFpbarToB_p : wittFpbarToB p (algebraMap W̄ (WFrac p) p) = (𝓣).πB := by
   rw [wittFpbarToB_algebraMap, map_natCast]; rfl
 
 /- English proof (translation)
-Use `(𝓣).nontrivial_B` as an intermediate fact. Conclude with `(wittFpbarToB p).injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wittFpbarToB_injective : Function.Injective (wittFpbarToB p) := by
   have := (𝓣).nontrivial_B
   exact (wittFpbarToB p).injective
 
 /- English proof (translation)
-Take `⟨n, u, rfl⟩` from `exists_eq_zpow_mul x hx`. Use `⟨n, u, ?_⟩` and prove the remaining obligations. Establish `hP : IsUnit (algebraMap W̄ (WFrac p) p)` using `((map_ne_zero_iff _ (IsFractionRing.injective W̄ (WFrac p))).2 (WittVector.irreducible p).ne_zero).isUnit`. Establish `e1 : (algebraMap W̄ (WFrac p) p) ^ n = ((hP.unit ^ n : (WFrac p)ˣ) : WFrac p)`. Rewrite using `[Units.val_zpow_eq_zpow_val, IsUnit.unit_spec]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Units.map (wittFpbarToB p : WFrac p →* (𝓣).B) hP.unit = (𝓣).piB`. Use `ext`. Rewrite using `[Units.coe_map, IsUnit.unit_spec, MonoidHom.coe_coe, wittFpbarToB_p, TeichLift.piB_val]`. Rewrite using `[map_mul, e1, wittFpbarToB_algebraMap, ← e2, ← map_zpow, Units.coe_map, MonoidHom.coe_coe]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_wittFpbarToB_eq (x : WFrac p) (hx : x ≠ 0) :
     ∃ (n : ℤ) (u : W̄ˣ), wittFpbarToB p x = (((𝓣).piB ^ n : ((𝓣).B)ˣ) : (𝓣).B) *
@@ -426,11 +424,11 @@ local notation "𝓣" => teichLift ℂ_[p] p
 local notation "W̄" => WittVector p (Fpbar p)
 
 /- English proof (translation)
-Establish `hpow : ∀ (b : (𝓣).B), (𝓣).ConvAll b → ∀ k : ℕ, (𝓣).ConvAll (b ^ k)`. Introduce `b hb k`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Simplify using `using (TeichLift.convAll_π_pow (T := 𝓣) 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih => rw [pow_succ]`. Conclude with `ih.mul hb`. Break down `n with k | k` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast, Units.val_pow_eq_pow_val, TeichLift.piB_val]`. Conclude with `TeichLift.convAll_π_pow k`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zpow_negSucc, ← inv_pow, Units.val_pow_eq_pow_val]`. Establish `: (((𝓣).piB⁻¹ : ((𝓣).B)ˣ) : (𝓣).B) = IsLocalization.Away.invSelf (𝓣).π` using `Units.inv_eq_of_mul_eq_one_right (by rw [TeichLift.piB_val]; exact IsLocalization.Away.mul_invSelf _)`. Rewrite using `[this]`. Conclude with `hpow _ TeichLift.convAll_invSelf _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convAll_piB_zpow (n : ℤ) : (𝓣).ConvAll ((((𝓣).piB ^ n : ((𝓣).B)ˣ)) : (𝓣).B) := by
   have hpow : ∀ (b : (𝓣).B), (𝓣).ConvAll b → ∀ k : ℕ, (𝓣).ConvAll (b ^ k) := by
@@ -448,9 +446,9 @@ theorem convAll_piB_zpow (n : ℤ) : (𝓣).ConvAll ((((𝓣).piB ^ n : ((𝓣).
     exact hpow _ TeichLift.convAll_invSelf _
 
 /- English proof (translation)
-Establish `hP : IsUnit (algebraMap W̄ (WFrac p) p)` using `((map_ne_zero_iff _ (IsFractionRing.injective W̄ (WFrac p))).2 (WittVector.irreducible p).ne_zero).isUnit`. Establish `e1 : (algebraMap W̄ (WFrac p) p) ^ n = ((hP.unit ^ n : (WFrac p)ˣ) : WFrac p)`. Rewrite using `[Units.val_zpow_eq_zpow_val, IsUnit.unit_spec]`. Establish `e2 : Units.map (wittFpbarToB p : WFrac p →* (𝓣).B) hP.unit = (𝓣).piB`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Units.coe_map, IsUnit.unit_spec, MonoidHom.coe_coe, wittFpbarToB_p, TeichLift.piB_val]`. Rewrite using `[map_mul, e1, wittFpbarToB_algebraMap, ← e2, ← map_zpow, Units.coe_map, MonoidHom.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem wittFpbarToB_zpow_mul (n : ℤ) (w : W̄) :
     wittFpbarToB p ((algebraMap W̄ (WFrac p) p) ^ n * algebraMap W̄ (WFrac p) w) =
@@ -466,9 +464,7 @@ theorem wittFpbarToB_zpow_mul (n : ℤ) (w : W̄) :
   rw [map_mul, e1, wittFpbarToB_algebraMap, ← e2, ← map_zpow, Units.coe_map, MonoidHom.coe_coe]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, map_zero]`. Conclude with `TeichLift.convAll_zero`. Take `⟨n, u, rfl⟩` from `exists_eq_zpow_mul x hx`. Rewrite using `[wittFpbarToB_zpow_mul]`.
-
-Conclude with `(convAll_piB_zpow n).mul (TeichLift.convAll_algebraMap_of_mem_int (wittFpbarToWC_mem_int (u : W̄)))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convAll_wittFpbarToB (x : WFrac p) : (𝓣).ConvAll (wittFpbarToB p x) := by
   by_cases hx : x = 0
@@ -479,7 +475,7 @@ theorem convAll_wittFpbarToB (x : WFrac p) : (𝓣).ConvAll (wittFpbarToB p x) :
     (TeichLift.convAll_algebraMap_of_mem_int (wittFpbarToWC_mem_int (u : W̄)))
 
 /- English proof (translation)
-The claim follows from `(𝓣).Econ_le_Edag ⟨1 / 2, by norm_num, by norm_num⟩ (convAll_wittFpbarToB x _ (by norm_num) (by norm_num))`.
+A detailed English derivation is pending.
 -/
 theorem wittFpbarToB_mem_Edag (x : WFrac p) : wittFpbarToB p x ∈ (𝓣).Edag :=
   (𝓣).Econ_le_Edag ⟨1 / 2, by norm_num, by norm_num⟩ (convAll_wittFpbarToB x _ (by norm_num) (by norm_num))
@@ -500,26 +496,26 @@ theorem wittFpbarToTilde_apply (x : WFrac p) :
     wittFpbarToTilde p x = (𝓣).edagToTilde ⟨wittFpbarToB p x, wittFpbarToB_mem_Edag x⟩ := rfl
 
 /- English proof (translation)
-The claim follows from `(𝓣).edagToTilde_apply _`.
+A detailed English derivation is pending.
 -/
 theorem wittFpbarToTilde_eq_tildeOf (x : WFrac p) :
     wittFpbarToTilde p x = (𝓣).tildeOf (wittFpbarToB p x) (convAll_wittFpbarToB x) :=
   (𝓣).edagToTilde_apply _
 
 /- English proof (translation)
-The claim follows from `(𝓣).edagToTilde_injective.comp fun _ _ h => wittFpbarToB_injective (congrArg Subtype.val h)`.
+A detailed English derivation is pending.
 -/
 theorem wittFpbarToTilde_injective : Function.Injective (wittFpbarToTilde p) :=
   (𝓣).edagToTilde_injective.comp fun _ _ h => wittFpbarToB_injective (congrArg Subtype.val h)
 
 /- English proof (translation)
-The claim follows from `(IsUnit.mk0 x hx).map _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_wittFpbarToTilde {x : WFrac p} (hx : x ≠ 0) : IsUnit (wittFpbarToTilde p x) :=
   (IsUnit.mk0 x hx).map _
 
 /- English proof (translation)
-Rewrite using `[(𝓣).tildeOrd_eq (b := wittFpbarToEdag p _) (by rw [IsUnit.unit_spec]; rfl)]`. Use `show (𝓣).ordB (wittFpbarToB p _) = n`. Rewrite using `[wittFpbarToB_zpow_mul]`. Conclude with `(𝓣).ordB_piB_zpow_mul n (red_wittFpbarToWC_unit_ne_zero u)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tildeOrd_wittFpbarToTilde (n : ℤ) (u : W̄ˣ)
     (h : IsUnit (wittFpbarToTilde p ((algebraMap W̄ (WFrac p) p) ^ n * algebraMap W̄ (WFrac p) u))) :
@@ -530,7 +526,7 @@ theorem tildeOrd_wittFpbarToTilde (n : ℤ) (u : W̄ˣ)
   exact (𝓣).ordB_piB_zpow_mul n (red_wittFpbarToWC_unit_ne_zero u)
 
 /- English proof (translation)
-Use `Ne.isUnit ((map_ne_zero_iff _ (IsFractionRing.injective W̄ (WFrac p))).2 fun h => ?_)` and prove the remaining obligations. Apply `nonZeroDivisors.coe_ne_zero y` to reduce the goal to its premises. Apply `(WittVector.frobeniusEquiv p (Fpbar p)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_frobenius_fractionField (y : nonZeroDivisors W̄) :
     IsUnit ((algebraMap W̄ (WFrac p)).comp WittVector.frobenius (y : W̄)) := by
@@ -546,14 +542,14 @@ def frobFrac : WFrac p →+* WFrac p :=
   IsLocalization.lift (M := nonZeroDivisors W̄) (isUnit_frobenius_fractionField (p := p))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ w`.
+A detailed English derivation is pending.
 -/
 theorem frobFrac_algebraMap (w : W̄) :
     frobFrac p (algebraMap W̄ (WFrac p) w) = algebraMap W̄ (WFrac p) (WittVector.frobenius w) :=
   IsLocalization.lift_eq _ w
 
 /- English proof (translation)
-Establish `: (wittFpbarToB p).comp (frobFrac p) = ((frob ℂ_[p] p).toB : (𝓣).B →+* (𝓣).B).comp (wittFpbarToB p)` using `IsLocalization.ringHom_ext (nonZeroDivisors W̄) (RingHom.ext fun w => by`. Simplify using `only [RingHom.comp_apply, frobFrac_algebraMap, wittFpbarToB_algebraMap, RingEquiv.coe_toRingHom, TeichLift.TeichFrob.toB_algebraMap, wittFpbarToWC_frobenius])`. Conclude with `RingHom.congr_fun this x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wittFpbarToB_frobFrac (x : WFrac p) :
     wittFpbarToB p (frobFrac p x) = (frob ℂ_[p] p).toB (wittFpbarToB p x) := by
@@ -565,7 +561,7 @@ theorem wittFpbarToB_frobFrac (x : WFrac p) :
   exact RingHom.congr_fun this x
 
 /- English proof (translation)
-Rewrite using `[wittFpbarToTilde_apply, TeichLift.TeichFrob.tildeFrob_edagToTilde, wittFpbarToTilde_apply]`. Use `congr 1`. Conclude with `Subtype.ext (wittFpbarToB_frobFrac x).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tildeFrob_wittFpbarToTilde (x : WFrac p) :
     (frob ℂ_[p] p).tildeFrob (wittFpbarToTilde p x) = wittFpbarToTilde p (frobFrac p x) := by
@@ -574,14 +570,14 @@ theorem tildeFrob_wittFpbarToTilde (x : WFrac p) :
   exact Subtype.ext (wittFpbarToB_frobFrac x).symm
 
 /- English proof (translation)
-The claim follows from `(WittVector.map_injective _ (ZMod.castHom (dvd_refl p) (Fpbar p)).injective).comp (WittVector.equiv p).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem padicIntToWittFpbar_injective : Function.Injective (padicIntToWittFpbar (p := p)) :=
   (WittVector.map_injective _ (ZMod.castHom (dvd_refl p) (Fpbar p)).injective).comp
     (WittVector.equiv p).symm.injective
 
 /- English proof (translation)
-The claim follows from `Ne.isUnit ((map_ne_zero_iff _ (IsFractionRing.injective W̄ (WFrac p))).2 ((map_ne_zero_iff _ padicIntToWittFpbar_injective).2 (nonZeroDivisors.coe_ne_zero y)))`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_padicInt_to_wittFraction (y : nonZeroDivisors ℤ_[p]) :
     IsUnit ((algebraMap W̄ (WFrac p)).comp padicIntToWittFpbar (y : ℤ_[p])) :=
@@ -594,14 +590,14 @@ def padicToWFrac : ℚ_[p] →+* WFrac p :=
   IsLocalization.lift (M := nonZeroDivisors ℤ_[p]) (S := ℚ_[p]) (isUnit_padicInt_to_wittFraction (p := p))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ z`.
+A detailed English derivation is pending.
 -/
 theorem padicToWFrac_padicInt (z : ℤ_[p]) :
     padicToWFrac p (algebraMap ℤ_[p] ℚ_[p] z) = algebraMap W̄ (WFrac p) (padicIntToWittFpbar z) :=
   IsLocalization.lift_eq _ z
 
 /- English proof (translation)
-Establish `: (frobFrac p).comp (padicToWFrac p) = padicToWFrac p` using `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[p]) (RingHom.ext fun z => by show frobFrac p (padicToWFrac p (algebraMap ℤ_[p] ℚ_[p] z)) = padicToWFrac p (algebraMap ℤ_[p] ℚ_[p] z)`. Rewrite using `[padicToWFrac_padicInt, frobFrac_algebraMap, frobenius_padicIntToWittFpbar])`. Conclude with `RingHom.congr_fun this q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobFrac_padicToWFrac (q : ℚ_[p]) : frobFrac p (padicToWFrac p q) = padicToWFrac p q := by
   have : (frobFrac p).comp (padicToWFrac p) = padicToWFrac p :=
@@ -616,7 +612,7 @@ variable (p) in
 def padicToTilde : ℚ_[p] →+* (𝓣).RobbaTilde := (wittFpbarToTilde p).comp (padicToWFrac p)
 
 /- English proof (translation)
-Rewrite using `[padicToTilde, RingHom.comp_apply, tildeFrob_wittFpbarToTilde, frobFrac_padicToWFrac]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tildeFrob_padicToTilde (q : ℚ_[p]) :
     (frob ℂ_[p] p).tildeFrob (padicToTilde p q) = padicToTilde p q := by
@@ -635,13 +631,13 @@ local notation "W̄" => WittVector p (Fpbar p)
 local notation "𝒪♭" => PreTilt (normInteger ℂ_[p]) p
 
 /- English proof (translation)
-Use `set P : (ZMod p)[X] := X ^ p - X with hP`. Establish `hdeg : P.natDegree = p`. Apply the tactic sequence `rw [hP, natDegree_sub_eq_left_of_natDegree_lt] <;> simp [hp.out.one_lt]`. Establish `hroots : P.roots = Finset.univ.val`. Establish `h` using `FiniteField.roots_X_pow_card_sub_X (ZMod p)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[ZMod.card]`. Then use the resulting hypothesis. Establish `hcard : Multiset.card P.roots = P.natDegree`. Rewrite using `[hroots, hdeg, Finset.card_val, Finset.card_univ, ZMod.card]`. Establish `hmap` using `roots_map_of_injective_of_card_eq_natDegree (ZMod.castHom (dvd_refl p) E).injective hcard`. Establish `hne : (X ^ p - X : E[X]) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `congrArg natDegree h` as an intermediate fact. Rewrite `this` using `[natDegree_sub_eq_left_of_natDegree_lt (by simp [hp.out.one_lt]), natDegree_X_pow, natDegree_zero]`. Conclude with `hp.out.ne_zero this`. Establish `hmem : a ∈ (P.map (ZMod.castHom (dvd_refl p) E)).roots`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show P.map (ZMod.castHom (dvd_refl p) E) = X ^ p - X by simp [hP], mem_roots hne]`. Simplify using `[ha]`. Rewrite `hmem` using `[← hmap, Multiset.mem_map]`. Take `⟨b, -, hb⟩` from `hmem`. Conclude with `⟨b, hb⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_zmod_of_pow_eq_self_field {E : Type*} [Field E] [CharP E p] {a : E} (ha : a ^ p = a) :
     ∃ b : ZMod p, ZMod.castHom (dvd_refl p) E b = a := by
@@ -670,9 +666,9 @@ theorem exists_zmod_of_pow_eq_self_field {E : Type*} [Field E] [CharP E p] {a : 
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-Establish `hc : ∀ n, ∃ b : ZMod p, ZMod.castHom (dvd_refl p) (Cb p) b = u.coeff n` using `fun n => exists_zmod_of_pow_eq_self_field (by rw [← WittVector.frobeniusEquiv_coeff, ← frob_φ_apply, hu])`. Use `choose b hb using hc`. Use `⟨WittVector.equiv p (WittVector.mk p b), ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[wittFpbarToWC_coeff, ← hb n]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [padicIntToWittFpbar, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply, WittVector.map_coeff]`. Conclude with `RingHom.congr_fun (RingHom.ext_zmod ((algebraMap 𝒪♭ (Cb p)).comp (fpbarToPreTilt.comp (ZMod.castHom (dvd_refl p) (Fpbar p)))) (ZMod.castHom (dvd_refl p) (Cb p))) (b n)`.
+A detailed English derivation is pending.
 -/
 theorem exists_padicInt_of_frob_eq {u : WC p} (hu : (frob ℂ_[p] p).φ u = u) :
     ∃ z : ℤ_[p], wittFpbarToWC p (padicIntToWittFpbar z) = u := by
@@ -688,17 +684,17 @@ theorem exists_padicInt_of_frob_eq {u : WC p} (hu : (frob ℂ_[p] p).φ u = u) :
     (fpbarToPreTilt.comp (ZMod.castHom (dvd_refl p) (Fpbar p)))) (ZMod.castHom (dvd_refl p) (Cb p))) (b n)
 
 /- English proof (translation)
-Rewrite using `[Units.val_zpow_eq_zpow_val, TeichLift.piB_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_piB_zpow (n : ℤ) : (((𝓣).piB ^ n : ((𝓣).B)ˣ) : (𝓣).B) = (𝓣).πB ^ n := by
   rw [Units.val_zpow_eq_zpow_val, TeichLift.piB_val]
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, fun ⟨q, hq⟩ => hq ▸ tildeFrob_padicToTilde q⟩` and prove the remaining obligations. Distinguish the cases in `hx0 : x = 0`. Conclude with `⟨0, by rw [hx0, map_zero]⟩`. Establish `hzφ : (frob ℂ_[p] p).φ ((𝓣).π * 1) = (𝓣).π * 1`. Rewrite using `[mul_one, (frob ℂ_[p] p).φ_π, frob_u, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, u, -, -, hφu, h, rfl⟩` from `(frob ℂ_[p] p).exists_eq_zpow_mul_of_fixed (by rw [frob_a]; exact one_pos) (one_mem _) (by rw [map_one, norm_one]) hzφ hx0 hx`. Take `⟨z, rfl⟩` from `exists_padicInt_of_frob_eq hφu`. Use `⟨(p : ℚ_[p]) ^ c * algebraMap ℤ_[p] ℚ_[p] z, ?_⟩` and prove the remaining obligations. Rewrite using `[padicToTilde, RingHom.comp_apply, wittFpbarToTilde_eq_tildeOf]`. Apply `(𝓣).tildeOf_congr` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, map_zpow₀, map_natCast, padicToWFrac_padicInt, ← map_natCast (algebraMap W̄ (WFrac p)), wittFpbarToB_zpow_mul, val_piB_zpow, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tildeFrob_eq_self_iff (x : (𝓣).RobbaTilde) :
     (frob ℂ_[p] p).tildeFrob x = x ↔ ∃ q : ℚ_[p], x = padicToTilde p q := by
@@ -717,7 +713,7 @@ theorem tildeFrob_eq_self_iff (x : (𝓣).RobbaTilde) :
     wittFpbarToB_zpow_mul, val_piB_zpow, map_one, mul_one]
 
 /- English proof (translation)
-The claim follows from `wittFpbarToTilde_injective.comp (padicToWFrac p).injective`.
+A detailed English derivation is pending.
 -/
 theorem padicToTilde_injective : Function.Injective (padicToTilde p) :=
   wittFpbarToTilde_injective.comp (padicToWFrac p).injective

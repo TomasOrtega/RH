@@ -19,7 +19,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.ClosedWeil
 
 /- English proof (translation)
-Use `haveI : Module.Finite k φ.range := Module.Finite.of_surjective φ.rangeRestrict.toLinearMap φ.rangeRestrict_surjective`. Set `e : k ≃ₐ[k] φ.range` to `AlgEquiv.ofBijective (Algebra.ofId k φ.range) IsAlgClosed.algebraMap_bijective_of_isIntegral`. Use `⟨(e.symm : φ.range →ₐ[k] k).comp φ.rangeRestrict, AlgHom.ext fun a => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply (φ.rangeRestrict a))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_comp_ofId {k A K : Type} [Field k] [IsAlgClosed k] [CommRing A] [Algebra k A] [Module.Finite k A]
     [Field K] [Algebra k K] (φ : A →ₐ[k] K) : ∃ ψ : A →ₐ[k] k, (Algebra.ofId k K).comp ψ = φ := by
@@ -32,7 +32,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G) (I : GeomTate Dw t)
 
 /- English proof (translation)
-Take `⟨ψ, rfl⟩` from `exists_comp_ofId φ`. Take `⟨a, ha⟩` from `(I.onto (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) (selfIso.inv ≫ spOver ψ ≫ tw.y n)).1 (by`. Rewrite using `[← MonObj.comp_pow, (tw.exists_iff n _).1 ⟨ψ, rfl⟩, MonObj.comp_one])`. Use `⟨a, congrArg _ (tw.inj n k _ _ ?_)⟩` and prove the remaining obligations. Rewrite using `[tau_pt, latPt_y, ha, Iso.hom_inv_id_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lattice [IsAlgClosed k] (n : ℕ) (K : Type) [Field K] [Algebra k K] (φ : GG.A n →ₐ[k] K) :
     ∃ a : Dw.La, tatePt (tau tw I a) n K = φ := by
@@ -43,7 +43,7 @@ theorem exists_lattice [IsAlgClosed k] (n : ℕ) (K : Type) [Field K] [Algebra k
   rw [tau_pt, latPt_y, ha, Iso.hom_inv_id_assoc]
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← latPt_y tw I, ← Category.assoc, spOver_comp]`. Conclude with `(tw.lift_y n x.1 x.2).symm.trans (congrArg (spOver · ≫ tw.y n) h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_ev (n : ℕ) (K : Type) [Field K] [Algebra k K] (x : Tors t.G (p ^ n) K) (a : Dw.La)
     (h : (TorsionMap.ofTower tw).pt n K x = tatePt (tau tw I a) n K) :
@@ -52,11 +52,11 @@ theorem eq_ev (n : ℕ) (K : Type) [Field K] [Algebra k K] (x : Tors t.G (p ^ n)
   exact (tw.lift_y n x.1 x.2).symm.trans (congrArg (spOver · ≫ tw.y n) h)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw k _ _ _ t p _ GG tw I hp φ hφ n K _ _ _ x x' y u hx' hu`. Take `⟨a, ha⟩` from `exists_lattice tw I n K ((TorsionMap.ofTower tw).pt n K x)`. Establish `h₁` using `GlobalTheory.CommPairing.weilIs_pull GlobalTheory.globalFns_holds (HeckePoint.isAbelianScheme_of_proper t hp) t.PP.isLB (spOver (Algebra.ofId k K) ≫ selfIso.hom) (I.isom (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) a y)`. Establish `hu' : u = Units.map (algebraMap k K).toMonoidHom (I.ζ (p ^ n) ^ Dw.EF a y)`. Use `Units.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hu, ← ha]`. Conclude with `congrArg (algebraMap k K) ((muRoot_pairing _ _ n).symm.trans (hφ a y n))`. Establish `hl : (spOver (Algebra.ofId k K) ≫ selfIso.hom).left = spMap (algebraMap k K)` using `Category.comp_id _`. Establish `e' : ∀ v : kˣ, Units.map (spOver (Algebra.ofId k K) ≫ selfIso.hom).left.appTop.hom.toMonoidHom (unitOn v) = unitOn (Units.map (algebraMap k K).toMonoidHom v)` using `fun v => by`. Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext (congrArg (fun q => q.hom v.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap k K)))).symm`. Rewrite using `[eq_ev tw I n K x a ha.symm, eq_ev tw I n K x' y hx', hu', ← e']`. Conclude with `h₁`.
+A detailed English derivation is pending.
 -/
 theorem weilIs_of_pairing : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G) (I : GeomTate Dw t), IsProper t.G.hom → ∀ φ : GG ⟶ GG.dual, (∀ (x y : Dw.La) (n : ℕ), muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k φ (tau tw I y))) n = ((I.ζ (p ^ n) ^ Dw.EF x y : kˣ) : k)) → ∀ (n : ℕ) (K : Type) [Field K] [IsAlgClosed K] [Algebra k K] (x x' : Tors t.G (p ^ n) K) (y : Dw.La) (u : Kˣ), (TorsionMap.ofTower tw).pt n K x' = tatePt (tau tw I y) n K → (u : K) = (TorsionMap.ofTower tw).pt n K x (charElem (tateMap GG GG.dual k φ (tau tw I y)) n) → Out.WeilIs t.G t.PP.L ((p ^ n : ℕ) : ℤ) x.1 x'.1 (unitOn u) := by
   intro E _ _ _ H Dw k _ _ _ t p _ GG tw I hp φ hφ n K _ _ _ x x' y u hx' hu

@@ -8,13 +8,13 @@ namespace GlobalTheory.NoFixOne
 open MvPolynomial Formalism.BasicNotions.TH
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add g h hg hh => simp only [map_add, hg, hh, Finset.sum_add_distrib, add_mul]`. Consider the case `mul_X g n hg`. Establish `e : ∀ l, pderiv l (g * X n) = g * (Pi.single l (1 : MvPolynomial σ ℂ) : σ → MvPolynomial σ ℂ) n + X n * pderiv l g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `l`. Rewrite using `[Derivation.leibniz, pderiv_X, smul_eq_mul, smul_eq_mul]`. Rewrite using `[map_mul, aeval_X, Polynomial.derivative_mul, hg]`. Repeatedly rewrite using `[e, map_add, map_mul, aeval_X, add_mul, Finset.sum_add_distrib]`. Rewrite using `[add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_eq_single n]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Simplify using `[Pi.single_apply, Ne.symm hl]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chain {σ : Type} [Fintype σ] [DecidableEq σ] (p : σ → Polynomial ℂ) (f : MvPolynomial σ ℂ) :
     Polynomial.derivative (MvPolynomial.aeval p f) =
@@ -36,13 +36,13 @@ theorem chain {σ : Type} [Fintype σ] [DecidableEq σ] (p : σ → Polynomial �
     · rw [Finset.sum_mul]; apply Finset.sum_congr rfl; intro l _; ring
 
 /- English proof (translation)
-Use extensionality with `j`. Establish `hc` using `congrArg (fun q => Polynomial.coeff q j) h`. Simplify using `only [Polynomial.coeff_neg, Polynomial.coeff_C_mul] at hc`. Break down `j with _ | n` into its components or cases. Rewrite `hc` using `[Polynomial.coeff_X_mul_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: N ≠ 0` using `fun h0 => by simp [h0] at hN`. Simplify using `only [Polynomial.coeff_zero]`. Establish `: N * ψ.coeff 0 = 0` using `by linear_combination hc`. Conclude with `(mul_eq_zero.mp this).resolve_left ‹N ≠ 0›`. Rewrite `hc` using `[Polynomial.coeff_X_mul, Polynomial.coeff_derivative]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : N + ((n : ℂ) + 1) ≠ 0`. Introduce `h0`. Use `congrArg Complex.re h0` as an intermediate fact. Simplify using `at this`. Establish `: (0:ℝ) ≤ n` using `n.cast_nonneg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Polynomial.coeff_zero]`. Establish `: (N + ((n : ℂ) + 1)) * ψ.coeff (n + 1) = 0` using `by push_cast at hc; linear_combination hc`. Conclude with `(mul_eq_zero.mp this).resolve_left hne`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ode (ψ : Polynomial ℂ) (N : ℂ) (hN : 0 < N.re)
     (h : Polynomial.X * Polynomial.derivative ψ = -(Polynomial.C N * ψ)) : ψ = 0 := by
@@ -67,7 +67,7 @@ theorem ode (ψ : Polynomial ℂ) (N : ℂ) (hN : 0 < N.re)
     exact (mul_eq_zero.mp this).resolve_left hne
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Simplify using `[Jm, Formalism.UG.Jpq, Matrix.mul_apply, Matrix.fromBlocks, Matrix.one_apply, Fintype.sum_sum_type]`. Use `hY (Sum.inl a) (Sum.inr b) (by simp [sameBlock]); simp [this]` as an intermediate fact. Use `hY (Sum.inr a) (Sum.inl b) (by simp [sameBlock]); simp [this]` as an intermediate fact.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 -/
 theorem jm_comm {P Q : ℕ} (Y : Mat P Q) (hY : IsKC Y) : Jm P Q * Y = Y * Jm P Q := by
   ext a b
@@ -77,14 +77,14 @@ theorem jm_comm {P Q : ℕ} (Y : Mat P Q) (hY : IsKC Y) : Jm P Q * Y = Y * Jm P 
   · have := hY (Sum.inr a) (Sum.inl b) (by simp [sameBlock]); simp [this]
 
 /- English proof (translation)
-Use `show Aᴴ * Jm P Q + Jm P Q * A = 0`. Rewrite using `[hs, jm_comm A hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upq_of {P Q : ℕ} (A : Mat P Q) (hA : IsKC A) (hs : Aᴴ = -A) : A ∈ upq P Q := by
   show Aᴴ * Jm P Q + Jm P Q * A = 0
   rw [hs, jm_comm A hA]; simp
 
 /- English proof (translation)
-Introduce `a b hab`. Simplify using `only [Matrix.conjTranspose_apply]`. Apply the tactic sequence `rw [hY b a (by rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock])]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kc_conj {P Q : ℕ} (Y : Mat P Q) (hY : IsKC Y) : IsKC Yᴴ := by
   intro a b hab
@@ -92,21 +92,19 @@ theorem kc_conj {P Q : ℕ} (Y : Mat P Q) (hY : IsKC Y) : IsKC Yᴴ := by
   rw [hY b a (by rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock])]; simp
 
 /- English proof (translation)
-Use `set A : Mat P Q := (1/2 : ℂ) • (Y - Yᴴ) with hAdef`. Use `set B : Mat P Q := (1/(2*Complex.I)) • (Y + Yᴴ) with hBdef`. Establish `hYAB : Y = A + Complex.I • B`. Rewrite using `[hAdef, hBdef, smul_smul]`. Establish `: Complex.I * (1 / (2 * Complex.I)) = 1/2` using `by field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[this, ← smul_add]`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hcY` using `kc_conj Y hY`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `sw : ∀ a b : Ix P Q, ¬ sameBlock a b → ¬ sameBlock b a`. Apply the tactic sequence `intro a b; rcases a with a | a <;> rcases b with b | b <;> simp [sameBlock]`. Establish `hA1 : IsKC A` using `by intro a b hab; simp [hAdef, hY a b hab, hY b a (sw a b hab)]`. Establish `hB1 : IsKC B` using `by intro a b hab; simp [hBdef, hY a b hab, hY b a (sw a b hab)]`. Establish `hA2 : Aᴴ = -A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hAdef, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose]`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hB2 : Bᴴ = -B`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hBdef, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose]`. Establish `: star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Simplify using `[Complex.ext_iff, div_eq_mul_inv]`. Rewrite using `[this]`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hA` using `h A hA1 (upq_of A hA1 hA2)`. Establish `hB` using `h B hB1 (upq_of B hB1 hB2)`. Use `clear_value A B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `clear hAdef hBdef`. Rewrite using `[hYAB, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, Matrix.trace_add, Matrix.trace_smul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [smul_eq_mul]`. Use `module`.
-
-Use `_ = 0 := by rw [hA, hB, smul_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ext_kc {P Q R S : ℕ} (c : ℂ) (f : Pol P Q R S)
     (h : ∀ Y : Mat P Q, IsKC Y → Y ∈ upq P Q → fockAct1 P Q R S Y f + (c * Y.trace) • f = 0)
@@ -149,20 +147,20 @@ def dl (v : Fin Q → ℂ) (w : Fin R → ℂ) : Ix P Q × Ix R S → ℂ
   | _ => 0
 
 /- English proof (translation)
-Introduce `a b hab`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock, Yv]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Yv_kc (v u : Fin Q → ℂ) : IsKC (Yv (P := P) v u) := by
   intro a b hab
   rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock, Yv]
 
 /- English proof (translation)
-Simplify using `[Yv, Matrix.trace, Fintype.sum_sum_type, Matrix.fromBlocks, Matrix.vecMulVec_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Yv_trace (v u : Fin Q → ℂ) : (Yv (P := P) v u).trace = ∑ a, v a * u a := by
   simp [Yv, Matrix.trace, Fintype.sum_sum_type, Matrix.fromBlocks, Matrix.vecMulVec_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Yv, Eab, Matrix.sum_apply, Matrix.single_apply, Matrix.vecMulVec_apply, ite_and, Finset.sum_ite_eq']`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem Yv_eq (v u : Fin Q → ℂ) :
     Yv (P := P) v u = ∑ a, ∑ b, (v a * u b) • Eab (Sum.inr a : Ix P Q) (Sum.inr b) := by
@@ -171,9 +169,9 @@ theorem Yv_eq (v u : Fin Q → ℂ) :
     simp [Yv, Eab, Matrix.sum_apply, Matrix.single_apply, Matrix.vecMulVec_apply, ite_and, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite using `[omE, LinearMap.add_apply, Module.End.mul_apply]`. Simplify using `only [raiB, lowB, linePos, if_true, LinearMap.mulLeft_apply, Derivation.coeFn_coe]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omE_pp (a b : Fin Q) (x : Fin S) (g : Pol P Q R S) :
     omE ((Sum.inr a : Ix P Q), (Sum.inr x : Ix R S)) (Sum.inr b, Sum.inr x) g =
@@ -185,9 +183,9 @@ theorem omE_pp (a b : Fin Q) (x : Fin S) (g : Pol P Q R S) :
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[omE, LinearMap.add_apply, Module.End.mul_apply]`. Simplify using `only [raiB, lowB, linePos, Bool.false_eq_true, if_false, LinearMap.neg_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, Derivation.leibniz, pderiv_X, smul_eq_mul]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `module`. Establish `hl : ((Sum.inr b : Ix P Q), (Sum.inl x : Ix R S)) ≠ (Sum.inr a, Sum.inl x)` using `by simp [Ne.symm h]`. Simplify using `[h, Pi.single_apply, hl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omE_mm (a b : Fin Q) (x : Fin R) (g : Pol P Q R S) :
     omE ((Sum.inr a : Ix P Q), (Sum.inl x : Ix R S)) (Sum.inr b, Sum.inl x) g =
@@ -201,9 +199,9 @@ theorem omE_mm (a b : Fin Q) (x : Fin R) (g : Pol P Q R S) :
     simp [h, Pi.single_apply, hl]
 
 /- English proof (translation)
-Rewrite using `[fockAct1_Eab, LinearMap.sum_apply, Fintype.sum_sum_type]`. Simplify using `only [omE_pp, omE_mm, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ]`. Distinguish the cases in `h : a = b`. Simplify using `only [h, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `module`. Simplify using `only [h, if_false]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_Eab (a b : Fin Q) (g : Pol P Q R S) :
     fockAct1 P Q R S (Eab (Sum.inr a : Ix P Q) (Sum.inr b)) g =
@@ -219,15 +217,15 @@ theorem act_Eab (a b : Fin Q) (g : Pol P Q R S) :
   · simp only [h, if_false]; module
 
 /- English proof (translation)
-Rewrite using `[Yv_eq]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, act_Eab, smul_add, smul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Use `congr 1`. Use `congr 1`. Simplify using `only [Finset.smul_sum, Finset.sum_mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin S)))]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin S)))]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.smul_sum, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := (Finset.univ : Finset (Fin R)))]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin R)))]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mul_smul_comm, mul_comm (u b)]`. Rewrite using `[Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `only [if_true, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem act_Yv (v u : Fin Q → ℂ) (g : Pol P Q R S) :
     fockAct1 P Q R S (Yv v u) g =
@@ -262,14 +260,14 @@ def path (pt : Ix P Q × Ix R S → ℂ) (v : Fin Q → ℂ) (w : Fin R → ℂ)
   fun l => Polynomial.C (pt l) - (1 - Polynomial.X) * Polynomial.C (dl v w l)
 
 /- English proof (translation)
-Simplify using `[path, Polynomial.derivative_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem path_deriv (pt : Ix P Q × Ix R S → ℂ) (v : Fin Q → ℂ) (w : Fin R → ℂ) (l : Ix P Q × Ix R S) :
     Polynomial.derivative (path pt v w l) = Polynomial.C (dl v w l) := by
   simp [path, Polynomial.derivative_mul]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add g h hg hh => simp only [map_add, Polynomial.eval_add, hg, hh]`. Consider the case `mul_X g n hg => rw [map_mul, map_mul, Polynomial.eval_mul, hg]`. Simplify using `[path]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem path_eval (pt : Ix P Q × Ix R S → ℂ) (v : Fin Q → ℂ) (w : Fin R → ℂ) (g : Pol P Q R S) :
     Polynomial.eval 1 (aeval (path pt v w) g) = MvPolynomial.eval pt g := by
@@ -279,19 +277,19 @@ theorem path_eval (pt : Ix P Q × Ix R S → ℂ) (v : Fin Q → ℂ) (w : Fin R
   | mul_X g n hg => rw [map_mul, map_mul, Polynomial.eval_mul, hg]; simp [path]
 
 /- English proof (translation)
-Use `set w : Fin R → ℂ := fun x => ∑ b, u b * pt (Sum.inr b, Sum.inl x) with hw`. Establish `h1 : ∀ x : Fin S, aeval (path pt v w) (∑ a, v a • (X (Sum.inr a, Sum.inr x) : Pol P Q R S)) = 0`. Introduce `x`. Simplify using `only [map_sum, map_smul, aeval_X, path, dl, map_zero, mul_zero, sub_zero, Polynomial.smul_C, smul_eq_mul]`. Rewrite using `[← map_sum, hv, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ x : Fin R, aeval (path pt v w) (∑ b, u b • (X (Sum.inr b, Sum.inl x) : Pol P Q R S)) = Polynomial.X * Polynomial.C (w x)`. Introduce `x`. Simplify using `only [map_sum, map_smul, aeval_X, path, dl, smul_sub, Finset.sum_sub_distrib, Polynomial.smul_eq_C_mul]`. Establish `e1 : ∑ b, Polynomial.C (u b) * Polynomial.C (pt (Sum.inr b, Sum.inl x)) = Polynomial.C (w x)`. Simplify using `only [hw, map_sum, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ∑ b, Polynomial.C (u b) * ((1 - Polynomial.X) * Polynomial.C (v b * w x)) = (1 - Polynomial.X) * Polynomial.C (w x)`. Establish `: Polynomial.C (w x) = Polynomial.C ((∑ a, v a * u a) * w x)` using `by rw [huv, one_mul]`. Rewrite using `[this, Finset.sum_mul, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[act_Yv, huv, mul_one, map_add, map_sub, map_sum, map_sum, chain, map_smul, Polynomial.smul_eq_C_mul]`. Simplify using `only [map_mul, h1, h2, zero_mul, Finset.sum_const_zero, path_deriv]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type, Fintype.sum_sum_type]`. Simplify using `only [Fintype.sum_sum_type, dl, map_zero, mul_zero, Finset.sum_const_zero, add_zero, zero_add, map_sum, map_smul, Polynomial.smul_eq_C_mul]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Establish `: ∀ x : Fin R, Polynomial.X * Polynomial.C (w x) * ∑ a, Polynomial.C (v a) * aeval (path pt v w) (pderiv ((Sum.inr a : Ix P Q), (Sum.inl x : Ix R S)) g) = Polynomial.X * ∑ a, aeval (path pt v w) (pderiv ((Sum.inr a : Ix P Q), (Sum.inl x : Ix R S)) g) * Polynomial.C (v a * w x)`. Introduce `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, Finset.mul_sum]`. Use `congrArg (fun t => Polynomial.X * t) (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem comp (pt : Ix P Q × Ix R S → ℂ) (v u : Fin Q → ℂ) (g : Pol P Q R S)
     (hv : ∀ x : Fin S, ∑ a, v a * pt (Sum.inr a, Sum.inr x) = 0) (huv : ∑ a, v a * u a = 1) :
@@ -337,9 +335,9 @@ theorem comp (pt : Ix P Q × Ix R S → ℂ) (v u : Fin Q → ℂ) (g : Pol P Q 
   ring
 
 /- English proof (translation)
-Establish `hk : LinearMap.ker (Matrix.vecMulLinear (Matrix.of Z)) ≠ ⊥`. Apply `LinearMap.ker_ne_bot_of_finrank_lt` to reduce the goal to its premises. Simplify using `using hSQ`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hk`. Use `⟨v, hv0, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (LinearMap.mem_ker.mp hv) x` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_ker (hSQ : S < Q) (Z : Fin Q → Fin S → ℂ) :
     ∃ v : Fin Q → ℂ, v ≠ 0 ∧ ∀ x, ∑ a, v a * Z a x = 0 := by
@@ -354,19 +352,19 @@ theorem exists_ker (hSQ : S < Q) (Z : Fin Q → Fin S → ℂ) :
 end Comp
 
 /- English proof (translation)
-Introduce `P Q R S c f hSQ hc h`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `pt`. Take `⟨v, hv0, hv⟩` from `exists_ker hSQ (fun a x => pt (Sum.inr a, Sum.inr x))`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hv0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hi' : v i ≠ 0` using `hi`. Use `set u : Fin Q → ℂ := Pi.single i (v i)⁻¹ with hu`. Establish `huv : ∑ a, v a * u a = 1`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[hu, hi']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[hu, hb]`. Simplify using the standard rewrite rules. Establish `hY` using `ext_kc c f h (Yv v u) (Yv_kc v u)`. Rewrite `hY` using `[Yv_trace, huv, mul_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc'` using `comp pt v u f hv huv`. Use `set w : Fin R → ℂ := fun x => ∑ b, u b * pt (Sum.inr b, Sum.inl x) with hw`. Establish `h2` using `congrArg (aeval (path pt v w)) hY`. Rewrite `h2` using `[map_add, map_zero, hc', map_smul, Polynomial.smul_eq_C_mul]`. Establish `hψ : aeval (path pt v w) f = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ode _ ((((R : ℂ) - S) / 2) - c)` to reduce the goal to its premises. Establish `: ((((R : ℂ) - S) / 2) - c).re = ((R : ℝ) - S) / 2 - c.re` using `by simp`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : Polynomial.C ((((R : ℂ) - S) / 2) - c) = -Polynomial.C (((S : ℂ) - R) / 2) - Polynomial.C c`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← map_neg, ← map_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Take the linear combination `-h2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← path_eval pt v w f, hψ]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem no_fixed_fock_polynomial : ∀ (P Q R S : ℕ) (c : ℂ) (f : Formalism.BasicNotions.TH.Pol P Q R S), S < Q → c.re < ((R : ℝ) - S) / 2 →
     (∀ Y : Formalism.BasicNotions.TH.Mat P Q, Formalism.BasicNotions.TH.IsKC Y → Y ∈ Formalism.BasicNotions.TH.upq P Q →

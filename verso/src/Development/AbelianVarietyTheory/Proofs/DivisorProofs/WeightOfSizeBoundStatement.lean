@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.SizeAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigTop.Fun.wt_tie | exact GlobalTheory.BigTop.Fun.wt_tie | (intros; apply GlobalTheory.BigTop.Fun.wt_tie <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weight_of_size_bound : GlobalTheory.BigTop.Fun.SizeAt → GlobalTheory.BigTop.Fun.Wt @GlobalTheory.BigTop.Fun.Comparison₂ := by
   first | exact @GlobalTheory.BigTop.Fun.wt_tie | exact GlobalTheory.BigTop.Fun.wt_tie | (intros; apply GlobalTheory.BigTop.Fun.wt_tie <;> assumption)

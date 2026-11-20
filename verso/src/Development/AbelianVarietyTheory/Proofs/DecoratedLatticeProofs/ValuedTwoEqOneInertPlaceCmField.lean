@@ -19,9 +19,9 @@ open GlobalTheory.InertFrameLoc
 namespace GlobalTheory.InertTwo
 
 /- English proof (translation)
-Introduce `D v w hi`. Establish `hu : w.under (𝓞 D.host.F) = v` using `(GlobalTheory.LFun.InertChart.under_eq_iff hi w).2 rfl`. Establish `hc : Formalism.DivisionValues.conjPl w = w` using `GlobalTheory.WeilAtPlace.conjPl_eq_of_inert hi hu`. Establish `h : ((2 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `fun h2 => GlobalTheory.CoreThree.conj_ne_of_two w h2 hc`. Rewrite using `[← map_ofNat (algebraMap D.host.E (w.adicCompletion D.host.E)) 2, GlobalTheory.Idele.valued_algebraMap, ← map_ofNat (algebraMap (𝓞 D.host.E) D.host.E) 2, HeightOneSpectrum.valuation_of_algebraMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 h`.
+A detailed English derivation is pending.
 -/
 theorem valued_two_eq_one : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), IsInertAt D.host.F D.host.E v w → Valued.v (2 : w.adicCompletion D.host.E) = 1 := by
   intro D v w hi

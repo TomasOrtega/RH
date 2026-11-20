@@ -20,17 +20,15 @@ noncomputable section
 namespace GlobalTheory.ZM.BuildAdd
 
 /- English proof (translation)
-Establish `w₁ : (fst Z Z).left ≫ Z.hom = (Z ⊗ Z).hom` using `Over.w _`. Establish `w₂ : (snd Z Z).left ≫ Z.hom = (Z ⊗ Z).hom` using `Over.w _`. Establish `v₁ : (fst A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `v₂ : (snd A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `h₁` using `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `h.2`. Use `⟨⟨by rw [← w₁, reassoc_of% h₁, hA.w, reassoc_of% v₁]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => pullback.lift (hA.lift (s.fst ≫ (fst Z Z).left) s.snd (by rw [Category.assoc, w₁, s.condition])) (hA.lift (s.fst ≫ (snd Z Z).left) s.snd (by rw [Category.assoc, w₂, s.condition])) (by rw [ …` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst Z Z).left = _ ≫ (fst Z Z).left`. Rewrite using `[Category.assoc, h₁, ← Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· ≫ φ) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Express the relevant statement in the definitionally equal form `_ ≫ (snd Z Z).left = _ ≫ (snd Z Z).left`. Rewrite using `[Category.assoc, h₂, ← Category.assoc]`. Conclude with `(congrArg (· ≫ φ) (pullback.lift_snd _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Rewrite using `[← v₁, ← Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (· ≫ A.hom) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_snd _ _ _ _)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (pullback.lift_fst _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (fst A A).left = _`. Apply `hA.hom_ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₁]`. Rewrite using `[IsPullback.lift_snd, Category.assoc, v₁, h2]`. Use `Eq.trans ?_ (pullback.lift_snd _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (snd A A).left = _`. Apply `hA.hom_ext` to reduce the goal to its premises.
-
-Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]`. Rewrite using `[IsPullback.lift_snd, Category.assoc, v₂, h2]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_square {S S' : Scheme.{0}} {A : Over S'} {Z : Over S} {φ : A.left ⟶ Z.left} {x : S' ⟶ S}
     (hA : IsPullback φ A.hom Z.hom x) (φ₂ : (A ⊗ A).left ⟶ (Z ⊗ Z).left)
@@ -69,7 +67,7 @@ theorem isPullback_square {S S' : Scheme.{0}} {A : Over S'} {Z : Over S} {φ : A
       · rw [IsPullback.lift_snd, Category.assoc, v₂, h2]
 
 /- English proof (translation)
-Establish `v₁ : (fst A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `v₂ : (snd A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Conclude with `⟨pullback.lift ((fst A A).left ≫ φ) ((snd A A).left ≫ φ) (by rw [Category.assoc, Category.assoc, w, reassoc_of% v₁, reassoc_of% v₂]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isSquare {S S' : Scheme.{0}} {A : Over S'} {Z : Over S} {φ : A.left ⟶ Z.left} {x : S' ⟶ S}
     (w : φ ≫ Z.hom = A.hom ≫ x) : ∃ φ₂ : (A ⊗ A).left ⟶ (Z ⊗ Z).left, ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsSquare φ φ₂ := by
@@ -80,13 +78,11 @@ theorem exists_isSquare {S S' : Scheme.{0}} {A : Over S'} {Z : Over S} {φ : A.l
     pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
 
 /- English proof (translation)
-Use extensionality with `F`. Simplify using `only [graphIdeal, Ideal.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `H T iT β y v₁ v₂ ⟨k₀, k₁, k₂⟩`. Use `H T iT β (y ≫ inv e) v₁ v₂ ⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs, Category.assoc, IsIso.inv_hom_id_assoc, k₀]`. Rewrite using `[h₁, Category.assoc, IsIso.inv_hom_id_assoc]`. Conclude with `k₁`. Rewrite using `[h₂, Category.assoc, IsIso.inv_hom_id_assoc]`. Conclude with `k₂`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `H T iT β y v₁ v₂ ⟨k₀, k₁, k₂⟩`. Use `H T iT β (y ≫ e) v₁ v₂ ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, k₀]`. Rewrite using `[Category.assoc, ← h₁]`. Conclude with `k₁`.
-
-Rewrite using `[Category.assoc, ← h₂]`. Conclude with `k₂`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphIdeal_eq {R σ₁ σ₂ : Type} [CommRing R] {Y Y' X₁ X₂ X₁' X₂' : Scheme.{0}} (e : Y' ⟶ Y) [IsIso e]
     (s : Y ⟶ Sp R) (s' : Y' ⟶ Sp R) (hs : e ≫ s = s')
@@ -118,15 +114,15 @@ instance isIso_snd_base {S : Scheme.{0}} (A : Over S) : IsIso (snd (Over.mk (�
     · simp, by simp⟩
 
 /- English proof (translation)
-Use `set r := snd (Over.mk (𝟙 (Sp K))) A with hr`. Set `q : (Over.mk (𝟙 (Sp K)) ⊗ A) ⊗ (Over.mk (𝟙 (Sp K)) ⊗ A) ⟶ A ⊗ A` to `r ⊗ₘ r`. Establish `: IsIso q` using `inferInstanceAs (IsIso (r ⊗ₘ r))`. Establish `: IsIso q.left` using `inferInstanceAs (IsIso ((Over.forget _).map q))`. Establish `q₁ : q.left ≫ (fst A A).left = (fst (Over.mk (𝟙 (Sp K)) ⊗ A) (Over.mk (𝟙 (Sp K)) ⊗ A)).left ≫ r.left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Simplify using `[q]`. Establish `q₂ : q.left ≫ (snd A A).left = (snd (Over.mk (𝟙 (Sp K)) ⊗ A) (Over.mk (𝟙 (Sp K)) ⊗ A)).left ≫ r.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Simplify using `[q]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `s₁` using `hsq.1`. Establish `s₂` using `hsq.2`. Take `⟨t₂, ht₂⟩` from `(GlobalTheory.T.sectionCoordinates_pull_iso_nonzeroLocus _ M₂ _ th₂ hM₂).1 _ (q.left ≫ e ≫ pullback.fst _ _)`. Use `⟨_, t₂, pull_isLB hM₂ _, fun T _ y v₁ v₂ k₁ k₂ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht₂]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k₁`, `k₂` using `[hσ]`. Apply `hseg` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, s₁, reassoc_of% q₁]`. Simplify `k₁` using `only [Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, s₂, reassoc_of% q₂]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `k₂` using `only [Category.assoc]`. Use `graphIdeal_eq (q.left ≫ e) _ _ ?_ _ _ _ _ _ _ _ _ _ _ _ _ (fun T _ y v => ?_) (fun T _ y v => ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, he, Over.w]`. Rewrite using `[ht₂, Category.comp_id, Category.assoc]`. Rewrite using `[hσ, Category.assoc, Category.assoc, hf, ← Over.comp_left_assoc, ← Over.comp_left_assoc, hr, lift_snd, Hom.mul_def, lift_fst_comp_snd_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graph_transport {R K D : Type} [CommRing R] [Field K] (x : R →+* K) (Z : Over (Sp R)) (M : LB Z.left)
     (th : D → M.Sec) (M₂ : LB (Z ⊗ Z).left) (th₂ : D × D → M₂.Sec) (hM₂ : M₂.IsLB)
@@ -172,25 +168,23 @@ theorem graph_transport {R K D : Type} [CommRing R] [Field K] (x : R →+* K) (Z
         Hom.mul_def, lift_fst_comp_snd_comp]
 
 /- English proof (translation)
-Introduce `L1 L2 g J _ Mat κ n hn ho`. Take `⟨j₀, hj₀⟩` from `GlobalTheory.T.additionGraph_thetaObject_cutOut_bounded_degree L1 L2 g J Mat κ n hn ho`. Use `⟨j₀, fun j hj o _ b R _ _ _ β v Z I M th sc p hVD ⟨hP, hS, _, hp⟩ hfib => ?_⟩` and prove the remaining obligations. Take `⟨Q, d, hQ⟩` from `hj₀ j hj o b`. Establish `: NeZero ((n ^ j) ^ 2)` using `⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨I₂, M₂, th₂, hP₂, hseg⟩` from `GlobalTheory.SegreCoord.exists_segre_coordinates R _ I Z M th hP`. Establish `hsm : Smooth Z.hom` using `SmoothOfRelativeDimension.smooth g _`. Establish `hsm₂ : Smooth (Z ⊗ Z).hom`. Rewrite using `[← Over.w (fst Z Z)]`. Establish `: Smooth (fst Z Z).left` using `inferInstanceAs (Smooth (pullback.fst Z.hom Z.hom))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Set `G : ∀ (K : Type) [Field K] (x : R →+* K), (pullback (Z ⊗ Z).hom (spMap x) ⟶ Z.left) → Prop` to `fun K _ x f => IsAlgClosed K ∧ ∃ (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap β)) (φ : t'.A.left ⟶ Z.left), (IsPullback φ t'.A.hom Z.hom (spMap x) ∧ (∃ σ, t'.Emb (n ^ 2) (Over.mk (𝟙 _)) σ ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ (Over.mk (𝟙 (Sp K)) ⊗ t'.A).left) (w : Ix g ((n ^ …`. Establish `hG : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap β)) (φ : t'.A.left ⟶ Z.left), (IsPullback φ t'.A.hom Z.hom (spMap x) ∧ (∃ σ, t'.Emb (n ^ 2) (Over.mk (𝟙 _)) σ ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ (Over.mk (𝟙 (Sp K)) ⊗ t' …`. Introduce `K _ hK x t' φ hF φ₂ h₂`. Establish `hpb` using `isPullback_square hF.1 φ₂ h₂`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hpb.isoPullback.hom, hpb.isoPullback.inv ≫ (μ[t'.A]).left ≫ φ, ⟨hK, t', φ, hF, hpb.isoPullback.hom, inferInstance, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsPullback.isoPullback_hom_fst]`. Conclude with `h₂`. Conclude with `IsPullback.isoPullback_hom_snd _`. Conclude with `Iso.hom_inv_id_assoc _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPullback.isoPullback_hom_fst _`. Conclude with `Iso.hom_inv_id_assoc _ _`. Take `⟨F, hF⟩` from `GlobalTheory.T.exists_family_morphism_from_veryDense_graphs R _ _ (Ix g ((n ^ j) ^ 2) × Ix g ((n ^ j) ^ 2)) (Z ⊗ Z) Z I₂ I M₂ M th₂ th (fun h i => p h.1 i.1 * p h.2 i.2) (fun h => p (h.1 + h.2)) Q d G hP₂ hP (GlobalTheory.ZM.projRep_projective_ample R _ I₂ _ M₂ th₂ hP₂).2.1 (Glob …`. Introduce and unpack `K _ x f ⟨hK, t', φ, ⟨hpb, ⟨σ, hE, hσ⟩, -, hl⟩, e, hi, hsq, he, hf⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← cancel_epi e, reassoc_of% hf, reassoc_of% he, hpb.w, Over.w_assoc]`. Take `⟨N₂, t₂, hN₂, hs₂, hgr⟩` from `graph_transport x Z M th M₂ th₂ hP₂.1 hseg t'.A φ _ σ hσ e hsq he f hf`. Rewrite using `[← hgr]`. Establish `hc : spMap x ≫ spMap β = spMap (x.comp β)`. Rewrite using `[← Spec.map_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Both sides reduce to the same expression. Establish `hpt : ∀ h, SecCoord _ σ (lift (𝟙 (Over.mk (𝟙 (Sp K)))) (t'.lab h ^ n ^ j)).left (fun i => x (p h i))`. Introduce `h`. Rewrite using `[hσ, ← Over.comp_left_assoc, lift_snd, hl]`. Conclude with `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique _ M _ th R _ _ hP.1 (hp h)).1 K x`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul]`. Use `clear hgr hf he hsq hi e hl hσ hpb φ`. Generalize the expression as in `spMap x ≫ spMap β = s at *`. Substitute `hc` using the available equality. Conclude with `hQ K (x.comp β) t' σ (fun h i => x (p h i)) N₂ t₂ hN₂ hE hs₂ hpt) (by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `q r hq hr`. Take `⟨P, ⟨K, iK, hK, x, t', hx, hsh, hth⟩, hP'⟩` from `hVD q r hq hr`. Take `⟨φ, hφ⟩` from `hfib K x t' hsh hth`. Take `⟨φ₂, h₂⟩` from `exists_isSquare hφ.1.w`. Take `⟨e, f, hf, -⟩` from `hG K x t' φ hφ φ₂ h₂`.
-
-Conclude with `⟨P, ⟨K, iK, x, f, hx, hf⟩, hP'⟩)`. Use `⟨F, fun K _ _ x t' φ hφ φ₂ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨e, f, hf, e₁, e₂⟩` from `hG K x t' φ hφ φ₂ h₂`. Rewrite using `[← e₂, hF K x f hf, reassoc_of% e₁]`.
+A detailed English derivation is pending.
 -/
 theorem exists_add : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (v : Ix g ((n ^ j) ^ 2) → R) (Z : Over (Sp R)) (I : Ideal (MvPolynomial (Ix g ((n ^ j) ^ 2)) R)) (M : LB Z.left) (th : Ix g ((n ^ j) ^ 2) → M.Sec) (sc : Ix g ((n ^ j) ^ 2) → (Out.baseOver (Sp R) ⟶ Z)) (p : Ix g ((n ^ j) ^ 2) → Ix g ((n ^ j) ^ 2) → R), VeryDense (objPrimes b Mat κ β v) → (ProjRep I Z.hom M th ∧ SmoothOfRelativeDimension g Z.hom ∧ GeometricallyConnected Z.hom ∧ (∀ h, SecCoord M th (sc h).left (p h))) → (∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap β)), t'.Shape Mat κ → t'.HasTh (𝟙 _) (fun a => x (v a)) → ∃ φ : t'.A.left ⟶ Z.left, (IsPullback φ t'.A.hom Z.hom (spMap x) ∧ (∃ σ, t'.Emb (n ^ 2) (Over.mk (𝟙 _)) σ ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ (Over.mk (𝟙 (Sp K)) ⊗ t'.A).left) (w : Ix g ((n ^ j) ^ 2) → T), SecCoord _ σ y w ↔ SecCoord M th (y ≫ (snd (Over.mk (𝟙 (Sp K))) t'.A).left ≫ φ) w) ∧ LBIso (lbPow t'.L ((n ^ 2) ^ 2)) (M.pull φ) ∧ ∀ h, (t'.lab h ^ n ^ j).left ≫ φ = spMap x ≫ (sc h).left)) → ∃ m : Z ⊗ Z ⟶ Z, (∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap β)) (φ : t'.A.left ⟶ Z.left), (IsPullback φ t'.A.hom Z.hom (spMap x) ∧ (∃ σ, t'.Emb (n ^ 2) (Over.mk (𝟙 _)) σ ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ (Over.mk (𝟙 (Sp K)) ⊗ t'.A).left) (w : Ix g ((n ^ j) ^ 2) → T), SecCoord _ σ y w ↔ SecCoord M th (y ≫ (snd (Over.mk (𝟙 (Sp K))) t'.A).left ≫ φ) w) ∧ LBIso (lbPow t'.L ((n ^ 2) ^ 2)) (M.pull φ) ∧ ∀ h, (t'.lab h ^ n ^ j).left ≫ φ = spMap x ≫ (sc h).left) → ∀ φ₂ : (t'.A ⊗ t'.A).left ⟶ (Z ⊗ Z).left, IsSquare φ φ₂ → φ₂ ≫ m.left = (μ[t'.A]).left ≫ φ) := by
   intro L1 L2 g J _ Mat κ n hn ho

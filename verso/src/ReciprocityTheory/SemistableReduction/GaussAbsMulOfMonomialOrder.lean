@@ -10,9 +10,9 @@ section Gauss
 variable {K : Type*} [Field K] [NumberField K] {σ : Type*}
 
 /- English proof (translation)
-Unfold `gaussAbs`. Distinguish the cases in `hs : s ∈ f.support`. Establish `h` using `Finset.le_sup (f := fun s => (w (f.coeff s)).toNNReal) hs`. Establish `h2 : ((w (f.coeff s)).toNNReal : ℝ) ≤ _` using `NNReal.coe_le_coe.2 h`. Rewrite `h2` using `[Real.coe_toNNReal _ (apply_nonneg w _)]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[MvPolynomial.notMem_support_iff.1 hs, map_zero]`. Conclude with `NNReal.coe_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_le_gauss_abs (w : FinitePlace K) (f : MvPolynomial σ K) (s : σ →₀ ℕ) :
     w (f.coeff s) ≤ gaussAbs w f := by
@@ -25,7 +25,7 @@ theorem coeff_le_gauss_abs (w : FinitePlace K) (f : MvPolynomial σ K) (s : σ �
     exact NNReal.coe_nonneg _
 
 /- English proof (translation)
-Unfold `gaussAbs`. Establish `h1 : (f.support.sup fun s => (w (f.coeff s)).toNNReal) ≤ M.toNNReal` using `Finset.sup_le fun s _ => Real.toNNReal_le_toNNReal (h s)`. Establish `h2` using `NNReal.coe_le_coe.2 h1`. Rewrite `h2` using `[Real.coe_toNNReal _ hM]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gauss_abs_le_of_coeff_le (w : FinitePlace K) (f : MvPolynomial σ K) {M : ℝ} (hM : 0 ≤ M)
     (h : ∀ s, w (f.coeff s) ≤ M) : gaussAbs w f ≤ M := by
@@ -36,7 +36,7 @@ theorem gauss_abs_le_of_coeff_le (w : FinitePlace K) (f : MvPolynomial σ K) {M 
   rwa [Real.coe_toNNReal _ hM] at h2
 
 /- English proof (translation)
-Take `⟨s, hs, hsup⟩` from `Finset.exists_mem_eq_sup f.support (MvPolynomial.support_nonempty.2 hf) (fun s => (w (f.coeff s)).toNNReal)`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Unfold `gaussAbs`. Rewrite using `[hsup, Real.coe_toNNReal _ (apply_nonneg w _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gauss_abs_attained_at_coeff (w : FinitePlace K) (f : MvPolynomial σ K) (hf : f ≠ 0) :
     ∃ s ∈ f.support, gaussAbs w f = w (f.coeff s) := by
@@ -47,7 +47,7 @@ theorem gauss_abs_attained_at_coeff (w : FinitePlace K) (f : MvPolynomial σ K) 
   rw [hsup, Real.coe_toNNReal _ (apply_nonneg w _)]
 
 /- English proof (translation)
-Take `⟨s, hs, h⟩` from `gauss_abs_attained_at_coeff w f hf`. Rewrite using `[h]`. Conclude with `FinitePlace.pos_iff.2 (MvPolynomial.mem_support_iff.1 hs)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_abs_pos_of_ne_zero (w : FinitePlace K) (f : MvPolynomial σ K) (hf : f ≠ 0) :
     0 < gaussAbs w f := by
@@ -56,16 +56,16 @@ theorem gauss_abs_pos_of_ne_zero (w : FinitePlace K) (f : MvPolynomial σ K) (hf
   exact FinitePlace.pos_iff.2 (MvPolynomial.mem_support_iff.1 hs)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_left_extra.goal1 .. | (apply Bl.general_b_fact_left_extra.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_extra.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finite_place_sum_le {ι : Type*} (w : FinitePlace K) (t : Finset ι) (a : ι → K) {M : ℝ}
     (hM : 0 ≤ M) (h : ∀ i ∈ t, w (a i) ≤ M) : w (∑ i ∈ t, a i) ≤ M := by
   first | exact Bl.general_b_fact_left_extra.goal1 .. | (apply Bl.general_b_fact_left_extra.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_extra.goal1 <;> assumption)
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using hM`. Consider the case `insert j t hj ih`. Rewrite using `[Finset.sum_insert hj]`. Use `(FinitePlace.add_le w _ _).trans_lt (max_lt (h j (Finset.mem_insert_self j t)) ?_)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`.
+A detailed English derivation is pending.
 -/
 theorem finite_place_sum_lt {ι : Type*} (w : FinitePlace K) (t : Finset ι) (a : ι → K) {M : ℝ}
     (hM : 0 < M) (h : ∀ i ∈ t, w (a i) < M) : w (∑ i ∈ t, a i) < M := by
@@ -78,9 +78,9 @@ theorem finite_place_sum_lt {ι : Type*} (w : FinitePlace K) (t : Finset ι) (a 
     exact ih fun i hi => h i (Finset.mem_insert_of_mem hi)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(FinitePlace.add_le w x y).trans (max_le le_rfl h.le)`. Establish `h1 : w x ≤ max (w (x + y)) (w (-y))`. Use `FinitePlace.add_le w (x + y) (-y)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_neg_eq_map]`. Break down `le_max_iff.1 h1 with h2 | h2` into its components or cases. Conclude with `h2`. Conclude with `absurd h2 (not_le.2 h)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem finite_place_add_eq_of_lt (w : FinitePlace K) (x y : K) (h : w y < w x) : w (x + y) = w x := by
   apply le_antisymm
@@ -94,31 +94,27 @@ theorem finite_place_add_eq_of_lt (w : FinitePlace K) (x y : K) (h : w y < w x) 
     · exact absurd h2 (not_le.2 h)
 
 /- English proof (translation)
-Establish `hGf` using `gauss_abs_pos_of_ne_zero w f hf`. Establish `hGg` using `gauss_abs_pos_of_ne_zero w g hg`. Apply `le_antisymm` to reduce the goal to its premises. Use `gauss_abs_le_of_coeff_le w _ (mul_nonneg hGf.le hGg.le) fun u => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `finite_place_sum_le w _ _ (mul_nonneg hGf.le hGg.le) fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_mul (coeff_le_gauss_abs w f _) (coeff_le_gauss_abs w g _) (apply_nonneg w _) hGf.le`. Use `set Sf := f.support.filter (fun s => w (f.coeff s) = gaussAbs w f)`. Use `set Sg := g.support.filter (fun s => w (g.coeff s) = gaussAbs w g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hSf : Sf.Nonempty`. Take `⟨s, hs, h⟩` from `gauss_abs_attained_at_coeff w f hf`. Conclude with `⟨s, Finset.mem_filter.2 ⟨hs, h.symm⟩⟩`. Establish `hSg : Sg.Nonempty`. Take `⟨s, hs, h⟩` from `gauss_abs_attained_at_coeff w g hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, Finset.mem_filter.2 ⟨hs, h.symm⟩⟩`. Take `⟨s0, hs0, hs0max⟩` from `Finset.exists_max_image Sf (fun s => m.toSyn s) hSf`. Take `⟨t0, ht0, ht0max⟩` from `Finset.exists_max_image Sg (fun s => m.toSyn s) hSg`. Establish `hfs0 : w (f.coeff s0) = gaussAbs w f` using `(Finset.mem_filter.1 hs0).2`. Establish `hgt0 : w (g.coeff t0) = gaussAbs w g` using `(Finset.mem_filter.1 ht0).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbigf : ∀ s, m.toSyn s0 < m.toSyn s → w (f.coeff s) < gaussAbs w f`. Introduce `s hs`. Use `lt_of_le_of_ne (coeff_le_gauss_abs w f s) fun heq => ?_` and prove the remaining obligations. Establish `hmem : s ∈ Sf`. Use `Finset.mem_filter.2 ⟨MvPolynomial.mem_support_iff.2 fun h0 => ?_, heq⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `heq` using `[h0, map_zero]`. Conclude with `hGf.ne heq`. Conclude with `absurd (hs0max s hmem) (not_le.2 hs)`. Establish `hbigg : ∀ t, m.toSyn t0 < m.toSyn t → w (g.coeff t) < gaussAbs w g`. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne (coeff_le_gauss_abs w g t) fun heq => ?_` and prove the remaining obligations. Establish `hmem : t ∈ Sg`. Use `Finset.mem_filter.2 ⟨MvPolynomial.mem_support_iff.2 fun h0 => ?_, heq⟩` and prove the remaining obligations. Rewrite `heq` using `[h0, map_zero]`. Conclude with `hGg.ne heq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (ht0max t hmem) (not_le.2 ht)`. Establish `hmemu : (s0, t0) ∈ Finset.HasAntidiagonal.antidiagonal (s0 + t0)` using `Finset.HasAntidiagonal.mem_antidiagonal.2 rfl`. Establish `hrest : w (∑ x ∈ (Finset.HasAntidiagonal.antidiagonal (s0 + t0)).erase (s0, t0), f.coeff x.1 * g.coeff x.2) < gaussAbs w f * gaussAbs w g`. Use `finite_place_sum_lt w _ _ (mul_pos hGf hGg) fun x hx => ?_` and prove the remaining obligations. Take `⟨hxne, hxmem⟩` from `Finset.mem_erase.1 hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsum : x.1 + x.2 = s0 + t0` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hxmem`. Establish `hsyn : m.toSyn x.1 + m.toSyn x.2 = m.toSyn s0 + m.toSyn t0`. Rewrite using `[← map_add, ← map_add, hsum]`. Rewrite using `[map_mul]`. Break down `lt_trichotomy (m.toSyn x.1) (m.toSyn s0) with h1 | h1 | h1` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : m.toSyn t0 < m.toSyn x.2`. Assume the negation of the conclusion as `h2`. Use `add_lt_add_of_lt_of_le h1 (not_lt.1 h2)` as an intermediate fact. Rewrite `this` using `[hsyn]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. It suffices to derive a contradiction. Establish `e1 : x.1 = s0` using `m.toSyn.injective h1`. Establish `e2 : x.2 = t0`. Rewrite `hsum` using `[e1]`.
-
-Conclude with `add_left_cancel hsum`. Conclude with `hxne (Prod.ext e1 e2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hcoeff : w ((f * g).coeff (s0 + t0)) = gaussAbs w f * gaussAbs w g`. Rewrite using `[MvPolynomial.coeff_mul, ← Finset.add_sum_erase _ _ hmemu]`.
-
-Rewrite using `[finite_place_add_eq_of_lt w _ _ (by rwa [map_mul, hfs0, hgt0]), map_mul, hfs0, hgt0]`. Rewrite using `[← hcoeff]`. Conclude with `coeff_le_gauss_abs w _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_abs_mul_of_monomial_order (m : MonomialOrder σ) (w : FinitePlace K)
     (f g : MvPolynomial σ K) (hf : f ≠ 0) (hg : g ≠ 0) :
@@ -195,7 +191,7 @@ theorem gauss_abs_mul_of_monomial_order (m : MonomialOrder σ) (w : FinitePlace 
     exact coeff_le_gauss_abs w _ _
 
 /- English proof (translation)
-Set `_ : LinearOrder σ` to `LinearOrder.lift' (Fintype.equivFin σ) (Fintype.equivFin σ).injective`. Establish `: WellFoundedGT σ` using `Finite.to_wellFoundedGT`. Conclude with `gauss_abs_mul_of_monomial_order MonomialOrder.lex w f g hf hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gauss_abs_mul [Fintype σ] (w : FinitePlace K)
     (f g : MvPolynomial σ K) (hf : f ≠ 0) (hg : g ≠ 0) :

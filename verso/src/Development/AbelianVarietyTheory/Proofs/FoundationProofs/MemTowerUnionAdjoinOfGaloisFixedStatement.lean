@@ -6,7 +6,7 @@ open GlobalTheory.AlmostEt GlobalTheory.K5
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.K5.mem_towerAlg_of_fixed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FMemTowerUnionAdjoinOfGaloisFixed.lean&line=50#L50)
 -/

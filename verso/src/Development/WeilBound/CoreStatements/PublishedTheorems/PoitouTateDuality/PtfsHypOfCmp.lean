@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace PositivityTheory.Lit1.PTN
 
 /- English proof (translation)
-Introduce `K _ _ l _ r hl hr ζ hζ inv hinv S hS' Av hAv μ hμ M _ _ _ _ _ ρ hρ`. Conclude with `⟨nineTermExact_of_nineCmp S Av μ _ ρ hρ (hN K l r hl hr ζ hζ inv hinv S hS' Av hAv μ hμ M ρ hρ), shaDual_of_perfectPair S Av μ ρ (hS K l r hl hr ζ hζ inv hinv S hS' Av hAv μ hμ M ρ hρ).1 (hS K l r hl hr ζ hζ inv hinv S hS' Av hAv μ hμ M ρ hρ).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ptfsHyp_of_cmp (hN : NineCmpFS) (hS : ShaCmpFS) : PositivityTheory.PTN.PtfsHyp := by
   intro K _ _ l _ r hl hr ζ hζ inv hinv S hS' Av hAv μ hμ M _ _ _ _ _ ρ hρ

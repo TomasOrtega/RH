@@ -13,7 +13,7 @@ open scoped ENNReal Classical
 namespace GlobalTheory.TiesOnObj
 
 /- English proof (translation)
-Introduce `h2 hH D O hC hf A T H h`. Conclude with `⟨GlobalTheory.T.height_degree_of_hypotheses h2 hH D O hC hf A T H h, fun B hB u s hu hs => ⟨GlobalTheory.T.geometric_degree_as_integral h2 hH D O hC hf A T H h B hB u s hu hs, fun hd hsm => ⟨GlobalTheory.T.arithmetic_self_intersection_formula h2 hH D O hC hf A T H h B hB u s hu h …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ties_onObj : Hypotheses2 → HypothesesH → OnObj fun _ _ A T _ _ => TieDeg T ∧ TieM T A ∧ TieAr A := by
   intro h2 hH D O hC hf A T H h

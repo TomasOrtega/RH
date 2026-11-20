@@ -17,19 +17,17 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Lie : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[], 0, by simp, fun w _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sobCont_zero : Sobolev₂ Lie σ 0 :=
   ⟨[], 0, by simp, fun w _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨S₁, C₁, hS₁, hb₁⟩` from `h₁`. Take `⟨S₂, C₂, hS₂, hb₂⟩` from `h₂`. Use `⟨S₁ ++ S₂, max C₁ 0 + max C₂ 0, fun l hl X hX => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hl with hl | hl` into its components or cases. Conclude with `hS₁ l hl X hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hS₂ l hl X hX`. Establish `n₁ : 0 ≤ (S₁.map fun l => ‖l.foldr (dRep σ) w‖).sum` using `List.sum_nonneg fun x hx => by`. Take `⟨l, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _`. Establish `n₂ : 0 ≤ (S₂.map fun l => ‖l.foldr (dRep σ) w‖).sum` using `List.sum_nonneg fun x hx => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _`. Establish `e₁ : C₁ * (S₁.map fun l => ‖l.foldr (dRep σ) w‖).sum ≤ max C₁ 0 * (S₁.map fun l => ‖l.foldr (dRep σ) w‖).sum` using `mul_le_mul_of_nonneg_right (le_max_left _ _) n₁`. Establish `e₂ : C₂ * (S₂.map fun l => ‖l.foldr (dRep σ) w‖).sum ≤ max C₂ 0 * (S₂.map fun l => ‖l.foldr (dRep σ) w‖).sum` using `mul_le_mul_of_nonneg_right (le_max_left _ _) n₂`. Establish `m₁ : 0 ≤ max C₁ 0` using `le_max_right _ _`.
-
-Establish `m₂ : 0 ≤ max C₂ 0` using `le_max_right _ _`. Rewrite using `[List.map_append, List.sum_append, LinearMap.add_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sobCont_add {ℓ₁ ℓ₂ : H →ₗ[ℂ] ℂ} (h₁ : Sobolev₂ Lie σ ℓ₁) (h₂ : Sobolev₂ Lie σ ℓ₂) :
     Sobolev₂ Lie σ (ℓ₁ + ℓ₂) := by
@@ -65,7 +63,7 @@ theorem sobCont_add {ℓ₁ ℓ₂ : H →ₗ[ℂ] ℂ} (h₁ : Sobolev₂ Lie �
           (S₂.map fun l => ‖l.foldr (dRep σ) w‖).sum) := by nlinarith
 
 /- English proof (translation)
-Take `⟨S, C, hS, hb⟩` from `h`. Use `⟨S, ‖c‖ * C, hS, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb w hw) (norm_nonneg c)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobCont_smul {ℓ : H →ₗ[ℂ] ℂ} (c : ℂ) (h : Sobolev₂ Lie σ ℓ) : Sobolev₂ Lie σ (c • ℓ) := by
   obtain ⟨S, C, hS, hb⟩ := h
@@ -85,11 +83,11 @@ def ContAt {V : HSp D} {S : D.what₂.Tau → SPar} (M : Mult.DSModel V S) (T : 
 
 open Classical in
 /- English proof (translation)
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact hT.cont`. Consider the case `zero`. Introduce `τ v x`. Conclude with `⟨0, sobCont_zero, fun w => by simp⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `add T₁ T₂ _ _ h₁ h₂`. Introduce `τ v x`. Take `⟨ℓ₁, hc₁, he₁⟩` from `h₁ τ v x`. Take `⟨ℓ₂, hc₂, he₂⟩` from `h₂ τ v x`. Conclude with `⟨ℓ₁ + ℓ₂, sobCont_add hc₁ hc₂, fun w => by simp [he₁, he₂]⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c T _ h`. Introduce `τ v x`. Take `⟨ℓ, hc, he⟩` from `h τ v x`. Conclude with `⟨c • ℓ, sobCont_smul c hc, fun w => by simp [he]⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem contAt_of_mem {V : HSp D} {S : D.what₂.Tau → SPar} {M : Mult.DSModel V S}
     {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {J : Set (GA D V)} {χ : GA D V → ℂ}
@@ -111,21 +109,19 @@ theorem contAt_of_mem {V : HSp D} {S : D.what₂.Tau → SPar} {M : Mult.DSModel
 
 open Classical in
 /- English proof (translation)
-Introduce `V S M θ J χ Kf Sinf Ds _ _ _ _ T hdense hspan u hu hvan`. Rewrite `hu` using `[Mult.mem_multT]`. Establish `hcont : ContAt M (PiTensorProduct.lift.symm u)` using `contAt_of_mem hu`. Establish `hsub : Submodule.span ℂ {x | ∃ φ w, T φ w = x} ≤ LinearMap.ker u`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨φ, w, rfl⟩`. Conclude with `hvan φ w`. Establish `hvK : ∀ v : ∀ τ, M.sm τ, (∀ τ, v τ ∈ Kf τ) → u (PiTensorProduct.tprod ℂ v) = 0` using `fun v hv => hsub (hspan v hv)`. Establish `hTe : ∀ v, PiTensorProduct.lift.symm u v = u (PiTensorProduct.tprod ℂ v)` using `fun v => by simp`. Establish `main : ∀ s : Finset D.what₂.Tau, ∀ v : ∀ τ, M.sm τ, (∀ τ ∉ s, v τ ∈ Kf τ) → PiTensorProduct.lift.symm u v = 0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `v hv`. Rewrite using `[hTe]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hvK v fun τ => hv τ (Finset.notMem_empty τ)`. Consider the case `insert τ s hτ ih`. Introduce `v hv`. Use function extensionality and compare the values at `x`. Take `⟨ℓ, hℓ, hℓv⟩` from `hcont τ v x`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ w ∈ Kf τ, ℓ (w : M.H τ) = 0`. Introduce `w hw`. Rewrite using `[hℓv w, ih (Function.update v τ w) ?_, Pi.zero_apply]`. Introduce `ρ hρ`. Distinguish the cases in `h : ρ = τ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `h` using the available equality. Simplify using `using hw`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hv ρ (by simp [Finset.mem_insert, h, hρ])`. Establish `h1` using `hdense τ ℓ hℓ h0 (v τ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hℓv (v τ), Function.update_eq_self]`. Conclude with `h1`. Establish `hall : ∀ v, u (PiTensorProduct.tprod ℂ v) = 0` using `fun v => by`. Rewrite using `[← hTe]`. Conclude with `main Finset.univ v fun τ h => absurd (Finset.mem_univ τ) h`.
-
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[hall]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ioUniqueAt_holds (D : D7) : IoUniqueAt D := by
   intro V S M θ J χ Kf Sinf Ds _ _ _ _ T hdense hspan u hu hvan

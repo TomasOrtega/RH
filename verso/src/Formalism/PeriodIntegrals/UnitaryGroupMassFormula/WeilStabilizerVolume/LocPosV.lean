@@ -13,25 +13,23 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct ENNReal
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v μv hμ νv hν fibV hfib`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t1, t2, t3, t4, t5, t6, t7⟩` from `(tensAll_holds F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet).2 v`. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: LocallyCompactSpace (HermR (Fv F v) σ a)` using `t4.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology (HermR (Fv F v) σ a)`. Establish `: SecondCountableTopology (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Fv F v ⊗[F] E))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `Topology.IsInducing.subtypeVal.secondCountableTopology`. Set `b` to `Module.finBasis F E`. Use `set X1 := ratTup (F := F) (Fv F v) X0 with hX1`. Use `set T := hermOf (Fv F v) σ (gramE σ J X0) hT with hTdef`. Establish `hgT : gramH (Fv F v) σ hσ J hJ.1 X1 = T` using `Subtype.ext (gramR_ratTup (Fv F v) σ J X0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hX1U : LinearIndependent (Fv F v ⊗[F] E) X1` using `linIndep_of_isUnit_det (Fv F v) σ J X1 (by rw [gramR_ratTup]; exact isUnit_det_hermOf (Fv F v) σ _ hT hdet)`. Take `⟨N, hN, hd⟩` from `gramFilt_of (dxOpen_of secGram_holds) F E σ hσ M J hJ.1 hJ.2 a ha1 (by omega) v _ b X1 hX1U`. Take `⟨Λ0, hB, hΛ0o, hΛ0c, hsub⟩` from `isCOBasis_latSub b v a M N hN`. Take `⟨Λ, H, D, h0, hΛo, hΛc, hΛa, hHo, hHc, hHb, hD, hyp⟩` from `hd X1 (by rw [sub_self]; exact mem_of_mem_nhds hN) Λ0 hB hsub`. Set `Nb : Set (HermR (Fv F v) σ a)` to `{S | IsUnit (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)).det}`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNb : Nb ∈ 𝓝 T` using `(isOpen_unitHerm (Fv F v) (isOpen_units_Fv F v) σ a).mem_nhds (isUnit_det_hermOf (Fv F v) σ _ hT hdet)`. Establish `hval` using `fibCos μv νv (gramR (Fv F v) σ J) Subtype.val Subtype.val_injective (gramH (Fv F v) σ hσ J hJ.1) (continuous_gramH (Fv F v) σ hσ J hJ.1) (fun _ => rfl) _ Set.univ fibV hfib T Filter.univ_mem Nb hNb (fun X hX => linIndep_of_isUnit_det (Fv F v) σ J X hX) Λ H hΛo hΛc hΛa hHo hHc hHb …`. Establish `hΛ0pos : μv (Λ 0 : Set (Fin a → Fin M → Fv F v ⊗[F] E)) ≠ 0` using `((hΛo 0).measure_pos μv ⟨0, zero_mem _⟩).ne'`. Establish `hΛ0fin : μv (Λ 0 : Set (Fin a → Fin M → Fv F v ⊗[F] E)) ≠ ⊤` using `((hΛc 0).measure_lt_top).ne`. Establish `hH0pos : νv (H 0 : Set (HermR (Fv F v) σ a)) ≠ 0` using `((hHo 0).measure_pos νv ⟨0, zero_mem _⟩).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH0fin : νv (H 0 : Set (HermR (Fv F v) σ a)) ≠ ⊤` using `((hHc 0).measure_lt_top).ne`. Establish `hQo : IsOpen {x | x - X1 ∈ Λ 0}` using `(hΛo 0).preimage (continuous_id.sub continuous_const)`. Establish `hQcl : IsClosed {x | x - X1 ∈ Λ 0}` using `(AddSubgroup.isClosed_of_isOpen _ (hΛo 0)).preimage (continuous_id.sub continuous_const)`. Establish `hQc : IsCompact {x | x - X1 ∈ Λ 0}`. Establish `e : {x | x - X1 ∈ Λ 0} = (fun w => w + X1) '' (Λ 0 : Set (Fin a → Fin M → Fv F v ⊗[F] E))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `z`. Simplify using `only [mem_ofPred_eq, mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `⟨z - X1, hz, by abel⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`. Rewrite using `[e]`. Conclude with `(hΛc 0).image (continuous_id.add continuous_const)`. Use `⟨{x | x - X1 ∈ Λ 0}.indicator 1, ⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) ⟨hQcl, hQo⟩).isLocallyConstant, HasCompactSupport.intro' hQc hQcl fun Y hY => Set.indicator_of_notMem hY _⟩, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hval]`. Establish `hr : 0 < (μv (Λ 0 : Set (Fin a → Fin M → Fv F v ⊗[F] E)) / νv (H 0 : Set (HermR (Fv F v) σ a))).toReal` using `ENNReal.toReal_pos (ENNReal.div_pos_iff.2 ⟨hΛ0pos, hH0fin⟩).ne' (ENNReal.div_ne_top hΛ0fin hH0pos)`. Conclude with `hr.ne'` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locPos_holds : LocPos := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ v μv hμ νv hν fibV hfib

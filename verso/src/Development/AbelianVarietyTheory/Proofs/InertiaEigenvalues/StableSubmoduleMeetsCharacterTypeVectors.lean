@@ -6,7 +6,7 @@ noncomputable section
 namespace GlobalTheory.MeetsTypeVec
 
 /- English proof (translation)
-Rewrite using `[MonoidAlgebra.lift_apply, Finsupp.sum, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun g _ => by`. Rewrite using `[LinearMap.smul_apply]`. Conclude with `W.smul_mem _ (hW g x hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_apply_mem {K G V : Type} [Field K] [Group G] [AddCommGroup V] [Module K V]
     (φ : G →* Module.End K V) (W : Submodule K V) (hW : ∀ g x, x ∈ W → φ g x ∈ W)
@@ -17,9 +17,9 @@ theorem lift_apply_mem {K G V : Type} [Field K] [Group G] [AddCommGroup V] [Modu
     rw [LinearMap.smul_apply]; exact W.smul_mem _ (hW g x hx)
 
 /- English proof (translation)
-Establish `hφ : ∀ u : U, φ u' (φ u y) = φ ((u' * u : U) : G) y`. Introduce `u`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Simplify using `only [pU, map_sum, MonoidAlgebra.lift_single, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, Finset.smul_sum, hφ]`. Use `Fintype.sum_equiv (Equiv.mulLeft u') _ _ fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_mulLeft, smul_smul]`. Use `congr 1`. Simplify using `only [map_mul, mul_inv_rev, Units.val_mul, Units.val_inv_eq_inv_val]`. Establish `h1 : ((ψ u' : Kˣ) : K) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem proj_eigen {K G V : Type} [Field K] [Group G] [AddCommGroup V] [Module K V]
     (φ : G →* Module.End K V) (U : Subgroup G) [Fintype U] (ψ : U →* Kˣ) (y : V) (u' : U) :
@@ -37,13 +37,13 @@ theorem proj_eigen {K G V : Type} [Field K] [Group G] [AddCommGroup V] [Module K
   field_simp
 
 /- English proof (translation)
-Introduce `K G V _ _ _ _ _ ρ U _ ψ e b he W hW0 hWs hWe`. Use `set φ : G →* Module.End K V := LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp ρ with hφdef`. Establish `hφ : ∀ g x, φ g x = ρ g x` using `fun _ _ => rfl`. Establish `hWs' : ∀ g x, x ∈ W → φ g x ∈ W` using `fun g x hx => by rw [hφ]; exact hWs g x hx`. Take `⟨x, hxW, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : x = ∑ g : G, φ g (MonoidAlgebra.lift K (Module.End K V) G φ (pU U (fun u => (((ψ u)⁻¹ : Kˣ) : K))) (MonoidAlgebra.lift K (Module.End K V) G φ (b g) x))` using `by conv_lhs => rw [← hWe x hxW, he]`. Simplify using `only [map_sum, map_mul, MonoidAlgebra.lift_single, one_smul, LinearMap.sum_apply, Module.End.mul_apply]`. Introduce `hbot`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[hsum]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun g _ => ?_` and prove the remaining obligations. Establish `hmem : MonoidAlgebra.lift K (Module.End K V) G φ (pU U (fun u => (((ψ u)⁻¹ : Kˣ) : K))) (MonoidAlgebra.lift K (Module.End K V) G φ (b g) x) ∈ W ⊓ (⨅ u : U, LinearMap.ker ((ρ u).toLinearMap - (((ψ u : Kˣ) : K)) • LinearMap.id))`. Use `⟨lift_apply_mem φ W hWs' _ (lift_apply_mem φ W hWs' _ hxW), ?_⟩` and prove the remaining obligations. Use `Submodule.mem_iInf _ |>.2 fun u => LinearMap.mem_ker.2 ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearEquiv.coe_coe, ← hφ, proj_eigen, sub_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[hbot]`. Rewrite using `[(Submodule.mem_bot K).1 hmem, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meets : ∀ {K G V : Type} [Field K] [Group G] [Fintype G] [AddCommGroup V] [Module K V] (ρ : G →* (V ≃ₗ[K] V)) (U : Subgroup G) [Fintype U] (ψ : U →* Kˣ) (e : MonoidAlgebra K G) (b : G → MonoidAlgebra K G), e = ∑ g : G, MonoidAlgebra.single g (1 : K) * pU U (fun u => (((ψ u)⁻¹ : Kˣ) : K)) * b g → ∀ (W : Submodule K V), W ≠ ⊥ → (∀ g x, x ∈ W → ρ g x ∈ W) → (∀ x ∈ W, MonoidAlgebra.lift K (Module.End K V) G (LinearEquiv.automorphismGroup.toLinearMapMonoidHom.comp ρ) e x = x) → W ⊓ (⨅ u : U, LinearMap.ker ((ρ u).toLinearMap - (((ψ u : Kˣ) : K)) • LinearMap.id)) ≠ ⊥ := by
   intro K G V _ _ _ _ _ ρ U _ ψ e b he W hW0 hWs hWe

@@ -15,9 +15,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG Q : 
 def DecoSet.SameOn (B : Finset (HeightOneSpectrum (𝓞 E))) (d d' : DecoSet E n ST SG) : Prop := ∀ P ∈ B, d'.1.at P = d.1.at P
 
 /- English proof (translation)
-Introduce `P hP`. Establish `e : localization₂ P.asIdeal d'.1.N = localization₂ P.asIdeal d.1.N` using `h P hP`. Rewrite using `[DecoSet.smul_val, DecoSet.smul_val]`. Use extensionality with `x`. Use `show x ∈ localization₂ P.asIdeal (gmap a.1.1 d'.1.N) ↔ x ∈ localization₂ P.asIdeal (gmap a.1.1 d.1.N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_localization_gmap, mem_localization_gmap, e]`.
+A detailed English derivation is pending.
 -/
 theorem DecoSet.SameOn.smul {B : Finset (HeightOneSpectrum (𝓞 E))} {d d' : DecoSet E n ST SG} (h : DecoSet.SameOn B d d')
     (a : UF E n × GLG E n SG) : DecoSet.SameOn B (a • d) (a • d') := by
@@ -29,7 +29,7 @@ theorem DecoSet.SameOn.smul {B : Finset (HeightOneSpectrum (𝓞 E))} {d d' : De
   rw [mem_localization_gmap, mem_localization_gmap, e]
 
 /- English proof (translation)
-Establish `h2` using `h.smul a⁻¹`. Simplify `h2` using `only [inv_smul_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem DecoSet.SameOn.of_smul {B : Finset (HeightOneSpectrum (𝓞 E))} {d d' : DecoSet E n ST SG} (a : UF E n × GLG E n SG)
     (h : DecoSet.SameOn B (a • d) (a • d')) : DecoSet.SameOn B d d' := by
@@ -45,25 +45,25 @@ def DecoF.mv (p : DecoF E n ST SG Q) (d' : DecoSet E n ST SG) : DecoF E n ST SG 
   if h : DecoSet.SameOn Q p.deco d' then p.repl d' h else p
 
 /- English proof (translation)
-Unfold `DecoF.mv`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem DecoF.mv_pos {p : DecoF E n ST SG Q} {d' : DecoSet E n ST SG} (h : DecoSet.SameOn Q p.deco d') : p.mv d' = p.repl d' h := by
   unfold DecoF.mv; rw [dif_pos h]
 
 /- English proof (translation)
-Unfold `DecoF.mv`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem DecoF.mv_neg {p : DecoF E n ST SG Q} {d' : DecoSet E n ST SG} (h : ¬ DecoSet.SameOn Q p.deco d') : p.mv d' = p := by
   unfold DecoF.mv; rw [dif_neg h]
 
 /- English proof (translation)
-Rewrite using `[DecoF.mv_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem DecoF.mv_deco {p : DecoF E n ST SG Q} {d' : DecoSet E n ST SG} (h : DecoSet.SameOn Q p.deco d') : (p.mv d').deco = d' := by
   rw [DecoF.mv_pos h]; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `unfold DecoF.mv; split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem DecoF.mv_fr (p : DecoF E n ST SG Q) (d' : DecoSet E n ST SG) (P : Q) : (p.mv d').fr P = p.fr P := by
   unfold DecoF.mv; split_ifs <;> rfl
@@ -74,11 +74,11 @@ Both sides reduce to the same expression.
 theorem DecoF.smul_deco (g : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ST SG Q) : (g • p).deco = (g.1, g.2.1) • p.deco := rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : DecoSet.SameOn Q p.deco d'`. Establish `h' : DecoSet.SameOn Q (g • p).deco ((g.1, g.2.1) • d')`. Rewrite using `[DecoF.smul_deco]`. Conclude with `h.smul _`. Rewrite using `[DecoF.mv_pos h', DecoF.mv_pos h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `(DecoF.smul_deco g (p.repl d' h)).symm`. Both sides reduce to the same expression. Establish `h' : ¬ DecoSet.SameOn Q (g • p).deco ((g.1, g.2.1) • d')`.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[DecoF.smul_deco]`. Conclude with `fun hh => h (DecoSet.SameOn.of_smul _ hh)`. Rewrite using `[DecoF.mv_neg h', DecoF.mv_neg h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DecoF.mv_smul (g : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ST SG Q) (d' : DecoSet E n ST SG) :
     (g • p).mv ((g.1, g.2.1) • d') = g • p.mv d' := by
@@ -94,15 +94,13 @@ theorem DecoF.mv_smul (g : UF E n × GLG E n SG × GLQ E n Q) (p : DecoF E n ST 
     rw [DecoF.mv_neg h', DecoF.mv_neg h]
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem DecoSet.sameOn_diagonalTwist (B : Finset (HeightOneSpectrum (𝓞 E))) (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) (d : DecoSet E n ST SG) :
     DecoSet.SameOn B d (d.dia1 P a) := fun _ _ => rfl
 
 /- English proof (translation)
-Introduce `P' hP'`. Unfold `DecoSet.up`. Use `split_ifs with hok`. Use `show localization₂ P'.asIdeal (upN P.1.asIdeal d.1.N x) = localization₂ P'.asIdeal d.1.N`. Conclude with `((upN_spec d.2.lat d.2.uni P.1 hne hx).2.2.1 P' (hB P' hP').1 (hB P' hP').2).localization_eq`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DecoSet.sameOn_up {B : Finset (HeightOneSpectrum (𝓞 E))} (d : DecoSet E n ST SG) (P : ST) (hne : conjPrime₂ P.1 ≠ P.1)
     (hB : ∀ P' ∈ B, P' ≠ P.1 ∧ P' ≠ conjPrime₂ P.1) (q : 𝓞 E) {x : Sp E n} (hx : x ∈ d.1.N) : DecoSet.SameOn B d (d.up P q x) := by
@@ -114,9 +112,7 @@ theorem DecoSet.sameOn_up {B : Finset (HeightOneSpectrum (𝓞 E))} (d : DecoSet
   · rfl
 
 /- English proof (translation)
-Introduce `P' hP'`. Unfold `DecoSet.dn`. Use `split_ifs with hok`. Use `show localization₂ P'.asIdeal (d.1.dnN P) = localization₂ P'.asIdeal d.1.N`. Conclude with `((d.2.dnN_spec P hne).2.2.1 P' (hB P' hP').1 (hB P' hP').2).localization_eq`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DecoSet.sameOn_dn {B : Finset (HeightOneSpectrum (𝓞 E))} (d : DecoSet E n ST SG) (P : ST) (hne : conjPrime₂ P.1 ≠ P.1)
     (hB : ∀ P' ∈ B, P' ≠ P.1 ∧ P' ≠ conjPrime₂ P.1) (f' : Sp E n → 𝓞 E ⧸ P.1.asIdeal) : DecoSet.SameOn B d (d.dn P f') := by
@@ -140,7 +136,7 @@ Both sides reduce to the same expression.
 theorem DecoF.decoratedFrame_diagonalTwist_frame (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) (p : DecoF E n ST SG Q) (P' : Q) : (p.dia1 P a).fr P' = p.fr P' := rfl
 
 /- English proof (translation)
-Rewrite using `[DecoF.mv_pos (DecoSet.sameOn_diagonalTwist Q P a p.deco)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem DecoF.decoratedFrame_diagonalTwist_eq_move (P : ST) (a : (𝓞 E ⧸ P.1.asIdeal)ˣ) (p : DecoF E n ST SG Q) : p.dia1 P a = p.mv (p.deco.dia1 P a) := by
   rw [DecoF.mv_pos (DecoSet.sameOn_diagonalTwist Q P a p.deco)]; rfl
@@ -156,27 +152,27 @@ def DecoF.upL (p : DecoF E n ST SG Q) (P : ST) (q : 𝓞 E) (x : p.deco.lv P) : 
 def DecoF.dnL (p : DecoF E n ST SG Q) (P : ST) (g : Module.Dual (𝓞 E ⧸ P.1.asIdeal) (p.deco.lk P)) : DecoF E n ST SG Q := p.mv (p.deco.dnL P g)
 
 /- English proof (translation)
-Conclude with `DecoF.mv_deco (DecoSet.sameOn_up p.deco P hne hQ q (x := modP.rep x) (Quotient.out x).2)`.
+A detailed English derivation is pending.
 -/
 theorem DecoF.upL_deco (p : DecoF E n ST SG Q) (P : ST) (hne : conjPrime₂ P.1 ≠ P.1) (hQ : ∀ P' ∈ Q, P' ≠ P.1 ∧ P' ≠ conjPrime₂ P.1) (q : 𝓞 E)
     (x : p.deco.lv P) : (p.upL P q x).deco = p.deco.upL P q x := by
   exact DecoF.mv_deco (DecoSet.sameOn_up p.deco P hne hQ q (x := modP.rep x) (Quotient.out x).2)
 
 /- English proof (translation)
-Conclude with `DecoF.mv_deco (DecoSet.sameOn_dn p.deco P hne hQ _)`.
+A detailed English derivation is pending.
 -/
 theorem DecoF.dnL_deco (p : DecoF E n ST SG Q) (P : ST) (hne : conjPrime₂ P.1 ≠ P.1) (hQ : ∀ P' ∈ Q, P' ≠ P.1 ∧ P' ≠ conjPrime₂ P.1)
     (g : Module.Dual (𝓞 E ⧸ P.1.asIdeal) (p.deco.lk P)) : (p.dnL P g).deco = p.deco.dnL P g := by
   exact DecoF.mv_deco (DecoSet.sameOn_dn p.deco P hne hQ _)
 
 /- English proof (translation)
-Conclude with `DecoF.mv_fr p _ P'`.
+A detailed English derivation is pending.
 -/
 theorem DecoF.upL_fr (p : DecoF E n ST SG Q) (P : ST) (q : 𝓞 E) (x : p.deco.lv P) (P' : Q) : (p.upL P q x).fr P' = p.fr P' := by
   exact DecoF.mv_fr p _ P'
 
 /- English proof (translation)
-Conclude with `DecoF.mv_fr p _ P'`.
+A detailed English derivation is pending.
 -/
 theorem DecoF.dnL_fr (p : DecoF E n ST SG Q) (P : ST) (g : Module.Dual (𝓞 E ⧸ P.1.asIdeal) (p.deco.lk P)) (P' : Q) :
     (p.dnL P g).fr P' = p.fr P' := by
@@ -190,7 +186,7 @@ variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → He
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Unfold `locLat`. Conclude with `iInf_congr fun P => by rw [h P.1 P.2]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem locLat_sameAt {E : Type} [Field E] [NumberField E] {n : ℕ} (SB : Finset (HeightOneSpectrum (𝓞 E))) {N N' : Submodule (𝓞 E) (Sp E n)}
     (h : ∀ P ∈ SB, localization₂ P.asIdeal N' = localization₂ P.asIdeal N) (e : SB → ℤ) : locLat SB N' e = locLat SB N e := by
@@ -198,7 +194,7 @@ theorem locLat_sameAt {E : Type} [Field E] [NumberField E] {n : ℕ} (SB : Finse
   exact iInf_congr fun P => by rw [h P.1 P.2]
 
 /- English proof (translation)
-Unfold `ybSet`. Rewrite using `[locLat_sameAt _ h, locLat_sameAt _ h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ybSet_sameAt {n : ℕ} {N N' : Submodule (𝓞 X.E) (Sp X.E n)} (h : ∀ P ∈ rowSG Pr sel mu, localization₂ P.asIdeal N' = localization₂ P.asIdeal N) :
     ybSet sel mu cst N' = ybSet sel mu cst N := by

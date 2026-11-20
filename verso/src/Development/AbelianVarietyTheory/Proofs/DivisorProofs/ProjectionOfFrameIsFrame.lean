@@ -8,17 +8,15 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.VB
 
 /- English proof (translation)
-Use `isFrame_iff.2 fun V h => ?_` and prove the remaining obligations. Take `⟨hli, hsp⟩` from `isFrame_iff.1 hs V h`. Prove the components needed by the constructor for the conclusion. Use `LinearIndependent.of_comp (GlobalTheory.QCoh.appLinear i V) ?_` and prove the remaining obligations. Establish `e : (GlobalTheory.QCoh.appLinear i V) ∘ (fun k => Twist.resM F₁ h (q.app U (s (σ k)))) = (fun j => Twist.resM F h (s j)) ∘ σ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Conclude with `(Twist.app_resM i h _).trans (congrArg _ (h₁ k))`. Rewrite using `[e]`. Conclude with `hli.comp σ hσ`. Introduce `x _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : GlobalTheory.QCoh.appLinear q V (i.app V x) = x`. Use `(GlobalTheory.QCoh.app_app i q V x).trans ?_` and prove the remaining obligations. Rewrite using `[hiq]`. Both sides reduce to the same expression. Establish `hle : Submodule.span Γ(X, V) (Set.range fun j => Twist.resM F h (s j)) ≤ (Submodule.span Γ(X, V) (Set.range fun k => Twist.resM F₁ h (q.app U (s (σ k))))).comap (GlobalTheory.QCoh.appLinear q V)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Express the relevant statement in the definitionally equal form `q.app V (Twist.resM F h (s j)) ∈ Submodule.span Γ(X, V) _`. Rewrite using `[Twist.app_resM]`. Distinguish the cases in `hj : j ∈ Set.range σ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩` from `hj`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite using `[h₀ j hj, map_zero]`. Conclude with `zero_mem _`. Rewrite using `[← hx]`.
-
-Conclude with `hle (hsp Submodule.mem_top)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFrame.of_retract {X : Scheme.{0}} {F F₁ : X.Modules} (i : F₁ ⟶ F) (q : F ⟶ F₁)
     (hiq : i ≫ q = 𝟙 F₁) {r r' : ℕ} (σ : Fin r' → Fin r) (hσ : Function.Injective σ)

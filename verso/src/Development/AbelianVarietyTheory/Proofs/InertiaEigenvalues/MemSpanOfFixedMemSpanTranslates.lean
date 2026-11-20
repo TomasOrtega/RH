@@ -13,9 +13,9 @@ def avg (ρ : Representation ℂ G V) (K : Subgroup G) (H : Subgroup K) (v : V) 
   ∑ᶠ κ : K ⧸ H, ρ ((κ.out : K) : G) v
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, e⟩`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply] at e`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `hk` using `[mul_assoc]`. Introduce `h`. Conclude with `⟨_, h, by simp [mul_assoc]⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_conj {g : G} {t : K} :
     t ∈ (K.map (MulAut.conj g).toMonoidHom).subgroupOf K ↔ g⁻¹ * (t : G) * g ∈ K := by
@@ -28,7 +28,7 @@ theorem mem_conj {g : G} {t : K} :
     exact ⟨_, h, by simp [mul_assoc]⟩
 
 /- English proof (translation)
-Establish `hm` using `QuotientGroup.eq.1 hab`. Establish `: (b : G) = a * ((a⁻¹ * b : K) : G)` using `by simp`. Rewrite using `[this, map_mul, Module.End.mul_apply, hv _ hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_eq {H : Subgroup K} {v : V} (hv : ∀ h ∈ H, ρ ((h : K) : G) v = v) {a b : K} (hab : (a : K ⧸ H) = b) :
     ρ (a : G) v = ρ (b : G) v := by

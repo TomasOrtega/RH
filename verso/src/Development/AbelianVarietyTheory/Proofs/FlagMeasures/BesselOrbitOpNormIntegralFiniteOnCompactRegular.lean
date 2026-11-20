@@ -10,7 +10,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgInf.OrbNorm
 
 /- English proof (translation)
-Unfold `opn`. Establish `h : Continuous (fun g : Matrix (Fin n) (Fin n) ℂ => Matrix.toEuclideanCLM (𝕜` using `ℂ) (n := Fin n) g) := LinearMap.continuous_of_finiteDimensional ((Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin n)).toAlgEquiv.toLinearEquiv.toLinearMap)`. Conclude with `continuous_norm.comp h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_opn {n : ℕ} : Continuous (opn : Matrix (Fin n) (Fin n) ℂ → ℝ) := by
   unfold opn
@@ -20,13 +20,11 @@ theorem continuous_opn {n : ℕ} : Continuous (opn : Matrix (Fin n) (Fin n) ℂ 
   exact continuous_norm.comp h
 
 /- English proof (translation)
-Break down `(opn_nonneg g).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `h0 : g = 0`. Establish `h1 : Matrix.toEuclideanCLM (𝕜` using `ℂ) (n := Fin (2 * r + k + 1)) g = 0 := by`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_eq_zero]`. Conclude with `h.symm`. Simplify using `using h1`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Rewrite `hg'` using `[h0]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : Hpk k r = 0` using `by simpa using hg'.symm`. Establish `hr : r < 2 * r + k + 1` using `by omega`. Establish `hent : Hpk k r ⟨r, hr⟩ ⟨r, hr⟩ = 0` using `by rw [hH]; rfl`. Simplify using `only [Hpk] at hent`. Use `split_ifs at hent`.
-
-Apply the tactic sequence `all_goals first`. Consider the case `exact absurd ⟨le_refl r, Nat.le_add_right r k, trivial⟩ ‹¬(r ≤ r ∧ r ≤ r + k ∧ True)›`. Consider the case `norm_num at hent`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem opn_pos {k r : ℕ} {g : Mat k r} (hg : g ∈ GG k r) : 0 < opn g := by
   rcases (opn_nonneg g).lt_or_eq with h | h
@@ -48,7 +46,7 @@ theorem opn_pos {k r : ℕ} {g : Mat k r} (hg : g ∈ GG k r) : 0 < opn g := by
     | norm_num at hent
 
 /- English proof (translation)
-Establish `hm : Measurable (fun x : Mt k r => opn (Matrix.of x) ^ (-A))` using `((continuous_opn.comp (continuous_id : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)))).measurable).pow_const _`. Use `⟨hm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun x => Real.rpow_nonneg (opn_nonneg _) _)]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_of_normInt {k r : ℕ} {μ : Measure (Mt k r)} {A : ℝ} (h : normInt μ A < ⊤) :
     Integrable (fun x : Mt k r => opn (Matrix.of x) ^ (-A)) μ := by
@@ -59,13 +57,13 @@ theorem integrable_of_normInt {k r : ℕ} {μ : Measure (Mt k r)} {A : ℝ} (h :
   exact h
 
 /- English proof (translation)
-Establish `hy : 0 < x ^ M`. Establish `h1 : 0 < max a a'` using `lt_max_of_lt_left ha`. Conclude with `pos_of_mul_pos_right (lt_of_lt_of_le h1 h) hC.le`. Establish `hCy : 0 < C0 * x ^ M` using `mul_pos hC hy`. Establish `hx' : x ^ (-(2 * M * A)) = (x ^ M) ^ (-(2 * A))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (C0 * x ^ M) ^ (-A) ≤ a ^ (-A)` using `Real.rpow_le_rpow_of_nonpos ha (le_trans (le_max_left _ _) h) (by linarith)`. Establish `h2 : (C0 * x ^ M) ^ (-A) ≤ a' ^ (-A)` using `Real.rpow_le_rpow_of_nonpos ha' (le_trans (le_max_right _ _) h) (by linarith)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : C0 ^ (2 * A) * ((C0 * x ^ M) ^ (-A) * (C0 * x ^ M) ^ (-A)) = (x ^ M) ^ (-(2 * A))`. Rewrite using `[← Real.rpow_add hCy, Real.mul_rpow hC.le hy.le, ← mul_assoc, ← Real.rpow_add hC]`. Establish `e1 : 2 * A + (-A + -A) = 0` using `by ring`. Establish `e2 : -A + -A = -(2 * A)` using `by ring`. Rewrite using `[e1, e2, Real.rpow_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx', ← key]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul h1 h2 (Real.rpow_nonneg hCy.le _) (Real.rpow_nonneg ha.le _)) (Real.rpow_nonneg hC.le _)`.
+A detailed English derivation is pending.
 -/
 theorem rpow_le {a a' x C0 A : ℝ} {M : ℕ} (ha : 0 < a) (ha' : 0 < a') (hx : 0 ≤ x) (hC : 0 < C0)
     (hA : 0 ≤ A) (h : max a a' ≤ C0 * x ^ M) :
@@ -92,23 +90,21 @@ theorem rpow_le {a a' x C0 A : ℝ} {M : ℕ} (ha : 0 < a) (ha' : 0 < a') (hx : 
     (Real.rpow_nonneg hC.le _)
 
 /- English proof (translation)
-Introduce `k r z z' μS μS' b C hz hz' hT hT' hS hS' hb hC hCr`. Take `⟨C0, hC0, hbd⟩` from `GlobalTheory.T.besselRegularDoubleCoset_polynomial_properness k r z z' C hz hz' hT hT' hC hCr`. Take `⟨-, -, -, hSS, -⟩` from `GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT`. Take `⟨-, -, -, hSS', -⟩` from `GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z' hz' hT'`. Use `set M : ℕ := 2 * (r ^ 2 + r + 1) with hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM0 : 0 < M` using `by rw [hM]; positivity`. Establish `hMr : (0 : ℝ) < M` using `by exact_mod_cast hM0`. Establish `hMpos : (0 : ℝ) < 2 * (M : ℝ)` using `by linarith`. Use `set A : ℝ := b / (2 * (M : ℝ)) with hA`. Establish `hA2 : 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 < A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[hA, lt_div_iff₀ hMpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA0 : 0 ≤ A` using `le_of_lt (lt_of_le_of_lt (by positivity) hA2)`. Establish `hbA : b = 2 * (M : ℝ) * A`. Rewrite using `[hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hi` using `integrable_of_normInt (GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r (Sset k r z) μS A hSS hS hA2)`. Establish `hi'` using `integrable_of_normInt (GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r (Sset k r z') μS' A hSS' hS' hA2)`. Establish `: SigmaFinite μS` using `hS.1`. Establish `: SigmaFinite μS'` using `hS'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : Mt k r × Mt k r → ℝ` to `fun p => C0 ^ (2 * A) * (opn (Matrix.of p.1) ^ (-A) * opn (Matrix.of p.2) ^ (-A))`. Establish `hF : Integrable F (μS.prod μS')` using `(hi.mul_prod hi').const_mul _`. Establish `hbound : ∀ γ ∈ C, ∀ p : Mt k r × Mt k r, Matrix.of p.1 ∈ Sset k r z → Matrix.of p.2 ∈ Sset k r z' → opn (Matrix.of (act2 γ p)) ^ (-b) ≤ F p`. Introduce `γ hγ p h1 h2`. Establish `hg1` using `opn_pos (hSS.1 h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2` using `opn_pos (hSS'.1 h2)`. Establish `hmax` using `hbd γ hγ _ h1 _ h2`. Rewrite using `[hbA]`. Conclude with `rpow_le hg1 hg2 (opn_nonneg _) (by linarith) hA0 hmax`. Use `⟨fun γ hγ => ?_, F, hF, hbound⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ∀ᵐ p ∂(μS.prod μS'), Matrix.of p.1 ∈ Sset k r z`. Rewrite using `[ae_iff]`. Use `measure_mono_null (t := {x : Mt k r | Matrix.of x ∉ Sset k r z} ×ˢ Set.univ) (fun p hp => ⟨hp, trivial⟩) ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hS.2.2.1, zero_mul]`. Establish `e2 : ∀ᵐ p ∂(μS.prod μS'), Matrix.of p.2 ∈ Sset k r z'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ae_iff]`. Use `measure_mono_null (t := Set.univ ×ˢ {x : Mt k r | Matrix.of x ∉ Sset k r z'}) (fun p hp => ⟨trivial, hp⟩) ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hS'.2.2.1, mul_zero]`. Combine the equalities or inequalities in the displayed calculation. Unfold `orbNormInt`.
-
-Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [e1, e2] with p h1 h2`. Conclude with `ENNReal.ofReal_le_ofReal (hbound γ hγ p h1 h2)`. Use `_ < ⊤ := hF.lintegral_lt_top`.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem orbNormInt_lt_top : ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (μS μS' : Measure (Mt k r)) (b : ℝ) (C : Set (Mat k r)), inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsHaarOn (Sset k r z) μS → IsHaarOn (Sset k r z') μS' → 2 * ((2 * (r ^ 2 + r + 1) : ℕ) : ℝ) * (2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2) < b → IsCompact C → C ⊆ Greg k r z z' → (∀ γ ∈ C, orbNormInt μS μS' b γ < ⊤) ∧ ∃ F : Mt k r × Mt k r → ℝ, Integrable F (μS.prod μS') ∧ ∀ γ ∈ C, ∀ p : Mt k r × Mt k r, Matrix.of p.1 ∈ Sset k r z → Matrix.of p.2 ∈ Sset k r z' → opn (Matrix.of (act2 γ p)) ^ (-b) ≤ F p := by
   intro k r z z' μS μS' b C hz hz' hT hT' hS hS' hb hC hCr

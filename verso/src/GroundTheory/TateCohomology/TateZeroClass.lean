@@ -14,7 +14,7 @@ noncomputable def tateZeroClass (M : Rep.{u} k G) : M.ρ.invariants →ₗ[k] ta
   ((tateCohomologyZeroIso k G).app M).inv.hom ∘ₗ (normRangeInvariants M).mkQ
 
 /- English proof (translation)
-The claim follows from `tateCohomologyZeroIso_inv_mk M z x hx`.
+A detailed English derivation is pending.
 -/
 lemma tateZeroClass_eq_homologyπ (M : Rep.{u} k G) (z : (tateComplex M).cycles 0)
     (x : M.ρ.invariants) (hx : (cochainsIso₀ M).inv.hom x = ((tateComplex M).iCycles 0).hom z) :
@@ -22,7 +22,7 @@ lemma tateZeroClass_eq_homologyπ (M : Rep.{u} k G) (z : (tateComplex M).cycles 
   tateCohomologyZeroIso_inv_mk M z x hx
 
 /- English proof (translation)
-Introduce `y`. Take `⟨q, hq⟩` from `((ModuleCat.epi_iff_surjective ((tateCohomologyZeroIso k G).app M).inv).1 inferInstance) y`. Take `⟨x, rfl⟩` from `(normRangeInvariants M).mkQ_surjective q`. Conclude with `⟨x, hq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma tateZeroClass_surjective (M : Rep.{u} k G) : Function.Surjective (tateZeroClass M) := by
   intro y
@@ -32,9 +32,9 @@ lemma tateZeroClass_surjective (M : Rep.{u} k G) : Function.Surjective (tateZero
   exact ⟨x, hq⟩
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_tateComplex_cycles_zero M x`. Rewrite using `[tateZeroClass_eq_homologyπ M z x hz.symm]`. Establish `e1` using `congr(($(HomologicalComplex.homologyπ_naturality f 0)).hom z)`. Establish `e2` using `congr(($(HomologicalComplex.cyclesMap_i f 0)).hom z)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at e1 e2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Use `(tateZeroClass_eq_homologyπ N _ y ?_).symm` and prove the remaining obligations. Rewrite using `[e2, hz, h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma homologyMap_tateZeroClass {H : Type u} [Group H] [Fintype H] {M : Rep.{u} k G}
     {N : Rep.{u} k H} (f : tateComplex M ⟶ tateComplex N) (x : M.ρ.invariants)
@@ -51,7 +51,7 @@ lemma homologyMap_tateZeroClass {H : Type u} [Group H] [Fintype H] {M : Rep.{u} 
   rw [e2, hz, h]
 
 /- English proof (translation)
-The claim follows from `homologyMap_tateZeroClass (tateComplex.map φ) x _ (funext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 lemma tateCohomologyFunctor_map_tateZeroClass {M N : Rep.{u} k G} (φ : M ⟶ N)
     (x : M.ρ.invariants) :

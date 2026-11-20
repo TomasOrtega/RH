@@ -17,7 +17,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DetLine.frame_transfer E H D l Xo c O β Y U τ R h.choose x).1 v w h.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem exists_bar (Y : Model Xo c β) (U : Set (Xo.XF c)) (τ : E →+* ℂ) {R : Type} [CommRing R]
     {x : Sp R ⟶ Xo.XF c} {v : Fin D.p → (epsAt (x ≫ toX Xo c) ⟶ Xo.univ.t.G)}
@@ -33,15 +33,13 @@ def restrictRule (Y : Model Xo c β) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (σb
     else 0
 
 /- English proof (translation)
-Establish `hex : ∃ j, FrU Xo c U τ j x v w` using `⟨j, h⟩`. Take `⟨hb0, hv0, hw0⟩` from `(exists_bar Y U τ hex).choose_spec.choose_spec`. Establish `e : restrictRule Y U τ σb R x v w = σb R (x ≫ Y.jQ) (exists_bar Y U τ hex).choose (exists_bar Y U τ hex).choose_spec.choose`. Unfold `restrictRule`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hx : x ≫ Y.jQ = spMap (RingHom.id R) ≫ (x ≫ Y.jQ)`. Rewrite using `[DetExtendZero.spMap_id, Category.id_comp]`. Establish `hx' : x = spMap (RingHom.id R) ≫ x` using `by rw [DetExtendZero.spMap_id, Category.id_comp]`. Establish `cv : ∀ i, FramedFlatCoordinates.IsCombination ((x ≫ Y.jQ) ≫ genι Y) ((1 : Matrix (Fin D.p) (Fin D.p) R) i) (fun k => spMap (Chart.dualMapR (RingHom.id R)) ≫ (vb k).left) ((exists_bar Y U τ hex).choose i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Use `(GlobalTheory.DetLine.isCombination_iff_of_sameVecs E H D l Xo c O β Y R R (RingHom.id R) x x D.p v vb v _ hx' hv hv0 _ i).mp ?_` and prove the remaining obligations. Simplify using `only [DetExtendZero.dual_id, Category.id_comp]`. Conclude with `DetExtendZero.comb_one (fun k => (h.2.2.1.1 k).1) i`. Establish `cw : ∀ i, FramedFlatCoordinates.IsCombination ((x ≫ Y.jQ) ≫ genι Y) ((1 : Matrix (Fin D.q) (Fin D.q) R) i) (fun k => spMap (Chart.dualMapR (RingHom.id R)) ≫ (wb k).left) ((exists_bar Y U τ hex).choose_spec.choose i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `(GlobalTheory.DetLine.isCombination_iff_of_sameVecs E H D l Xo c O β Y R R (RingHom.id R) x x D.q w wb w _ hx' hw hw0 _ i).mp ?_` and prove the remaining obligations. Simplify using `only [DetExtendZero.dual_id, Category.id_comp]`. Conclude with `DetExtendZero.comb_one (fun k => (h.2.2.2.1 k).1) i`. Establish `key` using `sec_chg hσb hb hb0 (g := RingHom.id R) (M := 1) (N := 1) ⟨hx, cv, cw⟩`.
-
-Simplify using `using key.symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem restrictRule_eq (Y : Model Xo c β) (U : Set (Xo.XF c)) (τ : E →+* ℂ) {σb : RuleY Y}
     (hσb : SecY Y (compactOf Y U) τ σb) {R : Type} [CommRing R] {j : c.F →+* R} {x : Sp R ⟶ Xo.XF c}
@@ -76,11 +74,11 @@ theorem restrictRule_eq (Y : Model Xo c β) (U : Set (Xo.XF c)) (τ : E →+* �
   simpa using key.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y U τ σb hσb`. Use `⟨restrictRule Y U τ σb, isSection_of_chg ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `R R' _ _ g j j' x v w x' v' w' M N h h' hc`. Take `⟨vb, wb, hb, hv, hw⟩` from `(GlobalTheory.DetLine.frame_transfer E H D l Xo c O β Y U τ R j x).1 v w h`. Take `⟨vb', wb', hb', hv', hw'⟩` from `(GlobalTheory.DetLine.frame_transfer E H D l Xo c O β Y U τ R' j' x').1 v' w' h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[restrictRule_eq Y U τ hσb h hb hv hw, restrictRule_eq Y U τ hσb h' hb' hv' hw']`. Use `sec_chg hσb hb hb' ⟨by rw [hc.1, Category.assoc], fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.DetLine.isCombination_iff_of_sameVecs E H D l Xo c O β Y R R' g x x' D.p v vb v' vb' hc.1 hv hv' _ i).mp (hc.2.1 i)`. Conclude with `(GlobalTheory.DetLine.isCombination_iff_of_sameVecs E H D l Xo c O β Y R R' g x x' D.q w wb w' wb' hc.1 hw hw' _ i).mp (hc.2.2 i)`. Introduce `R _ j x v w vb wb h hb hv hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(restrictRule_eq Y U τ hσb h hb hv hw).symm`. Introduce `hnz R _ j x v w h`. Take `⟨vb, wb, hb, hv, hw⟩` from `(GlobalTheory.DetLine.frame_transfer E H D l Xo c O β Y U τ R j x).1 v w h`. Rewrite using `[restrictRule_eq Y U τ hσb h hb hv hw]`. Conclude with `hnz R j _ vb wb hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_restriction : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (σb : RuleY Y), SecY Y (compactOf Y U) τ σb → ∃ σ : RuleU Xo c, SecU Xo c U τ σ ∧ Restricts Y U τ σb σ ∧ (NzY Y (compactOf Y U) τ σb → NzU Xo c U τ σ) := by
   intro E _ _ _ H D l Xo c O _ β Y U τ σb hσb

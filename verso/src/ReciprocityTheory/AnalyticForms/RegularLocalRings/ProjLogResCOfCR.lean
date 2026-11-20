@@ -12,7 +12,7 @@ def GFLogStC : Prop :=
     ∀ B : TopologicalSpace.Closeds X, Sing X ⊆ B → interior (B : Set X) = ∅ → LogResStC X B
 
 /- English proof (translation)
-Introduce `X _ _ a b c B d e` and use `h X a b c B d e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gfLogStC_of_CR (h : GFLogStCR.{0}) : GFLogStC := fun X _ _ a b c B d e => h X a b c B d e
 
@@ -26,7 +26,7 @@ def ProjLogResC : Prop :=
     (∀ q ∈ P.minimalPrimes, IsRelevant q → ¬ D ≤ q) → FinalTheorems.LogResStC (projX P hP) (projB P D hP)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ P _ hP hD hrad hsing hmin` and use `hC (projX P hP) ⟨toSpecC hP, inferInstance⟩ (qe_projX hP hQ) (isReduced_projX hP hrad) (fFinRes_projX hP) _ (sing_subset_projB hP hD hQ hsing) (interior_projB hP hD hmin)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem projLogResC_of_C (hC : FinalTheorems.GFLogStC) (hQ : FinalTheorems.FinTypeQE) : ProjLogResC :=
   fun _ _ _ _ _ P _ hP hD hrad hsing hmin =>
@@ -34,7 +34,7 @@ theorem projLogResC_of_C (hC : FinalTheorems.GFLogStC) (hQ : FinalTheorems.FinTy
       (sing_subset_projB hP hD hQ hsing) (interior_projB hP hD hmin)
 
 /- English proof (translation)
-The claim follows from `projLogResC_of_C (FinalTheorems.gfLogStC_of_CR hC) hQ`.
+A detailed English derivation is pending.
 -/
 theorem projLogResC_of_CR (hC : FinalTheorems.GFLogStCR.{0}) (hQ : FinalTheorems.FinTypeQE) : ProjLogResC :=
   projLogResC_of_C (FinalTheorems.gfLogStC_of_CR hC) hQ

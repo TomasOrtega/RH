@@ -9,7 +9,7 @@ namespace PI.QnHermHaar
 open Formalism.REAL Formalism.FourierDecayAlt.Q
 
 /- English proof (translation)
-Simplify using `only [chatA]`. Rewrite using `[Finset.sum_eq_single l (fun b _ hb => by simp [Pi.single_eq_of_ne hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chatAβ {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (w : ℂ) (a : Fin m → ℂ)
     (l : Fin m) : chatA E w a (Pi.single l 1) =
@@ -19,7 +19,7 @@ theorem chatAβ {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fi
   simp
 
 /- English proof (translation)
-Simplify using `only [chatA]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single p (fun b _ hb => by simp [Pi.single_eq_of_ne hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chatAa {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (w : ℂ) (β : Fin m → ℂ)
     (p : Fin m) : chatA E w (Pi.single p 1) β =
@@ -30,7 +30,7 @@ theorem chatAa {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin
   simp
 
 /- English proof (translation)
-Use `show -∑ i : Fin m, ∑ j : Fin m, ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * x j) • (Yb i * qminor E (skip1 i) (skip1 j) (u - 1)) = _`. Simplify using `only [chatAβ, Finset.mul_sum, mul_smul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_entry_zero_one {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (Y Yb : Fin m → A)
     (x xb : Fin m → ℂ) (u : ℂ) :
@@ -40,7 +40,7 @@ theorem transfer_entry_zero_one {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (
   simp only [chatAβ, Finset.mul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Use `show -∑ i : Fin m, ∑ j : Fin m, ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * xb i) • (Y j * qminor E (skip1 i) (skip1 j) u) = _`. Simplify using `only [chatAa, Finset.mul_sum, mul_smul_comm]`. Conclude with `congrArg Neg.neg Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_entry_one_zero {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (Y Yb : Fin m → A)
     (x xb : Fin m → ℂ) (u : ℂ) :
@@ -51,7 +51,7 @@ theorem transfer_entry_one_zero {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (
   exact congrArg Neg.neg Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [chatAβ]`. Simplify using `only [chatA, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chatAlinβ {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (w : ℂ)
     (a β : Fin m → ℂ) : chatA E w a β = ∑ l, β l • chatA E w a (Pi.single l 1) := by
@@ -62,7 +62,7 @@ theorem chatAlinβ {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m →
   ring
 
 /- English proof (translation)
-Simplify using `only [chatAa]`. Simplify using `only [chatA, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -76,7 +76,7 @@ theorem chatAlina {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → 
   ring
 
 /- English proof (translation)
-Use `first`. Consider the case `(show ∑ j, (Pi.single l (1 : ℂ) : Fin m → ℂ) j * P j l' = P l l'`. Simplify using `[Pi.single_apply])`. Consider the case `simp [Matrix.vecMul, Pi.single_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem vecMulSingle {m : ℕ} (P : Matrix (Fin m) (Fin m) ℂ) (l l' : Fin m) :
     (Pi.single l (1 : ℂ) ᵥ* P) l' = P l l' := by
@@ -86,7 +86,7 @@ theorem vecMulSingle {m : ℕ} (P : Matrix (Fin m) (Fin m) ℂ) (l l' : Fin m) :
     | simp [Matrix.vecMul, Pi.single_apply]
 
 /- English proof (translation)
-Use `first`. Consider the case `(show ∑ j, Q p' j * (Pi.single p (1 : ℂ) : Fin m → ℂ) j = Q p' p`. Simplify using `[Pi.single_apply])`. Consider the case `simp [Matrix.mulVec, Pi.single_apply]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulVecSingle {m : ℕ} (Q : Matrix (Fin m) (Fin m) ℂ) (p p' : Fin m) :
     (Q *ᵥ Pi.single p (1 : ℂ)) p' = Q p' p := by
@@ -96,7 +96,7 @@ theorem mulVecSingle {m : ℕ} (Q : Matrix (Fin m) (Fin m) ℂ) (p p' : Fin m) :
     | simp [Matrix.mulVec, Pi.single_apply]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem pull1 {A : Type*} [AddCommMonoid A] {m : ℕ} (g : Fin m → Fin m → Fin m → A) :
     ∑ a, ∑ b, ∑ c, g a b c = ∑ c, ∑ a, ∑ b, g a b c := by
@@ -105,7 +105,7 @@ theorem pull1 {A : Type*} [AddCommMonoid A] {m : ℕ} (g : Fin m → Fin m → F
     _ = ∑ c, ∑ a, ∑ b, g a b c := Finset.sum_comm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem pull6 {A : Type*} [AddCommMonoid A] {m : ℕ} (f : Fin m → Fin m → Fin m → Fin m → Fin m → Fin m → A) :
     ∑ l, ∑ p, ∑ i, ∑ i', ∑ j, ∑ j', f l p i i' j j' = ∑ i, ∑ i', ∑ j, ∑ j', ∑ l, ∑ p, f l p i i' j j' := by
@@ -120,7 +120,7 @@ theorem pull6 {A : Type*} [AddCommMonoid A] {m : ℕ} (f : Fin m → Fin m → F
           Finset.sum_congr rfl fun j _ => pull1 _
 
 /- English proof (translation)
-Simplify using `[Pi.single_apply, sub_smul, Finset.sum_sub_distrib, ite_smul]`. Simplify using `only [Algebra.smul_def, Algebra.commutes]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sumSingle {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (W : Fin m → A) (c : Fin m → ℂ) (i i' : Fin m) :
     W i * algebraMap ℂ A (c i') - W i' * algebraMap ℂ A (c i) =
@@ -129,7 +129,7 @@ theorem sumSingle {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (W : Fin m → 
   simp only [Algebra.smul_def, Algebra.commutes]
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Apply the tactic sequence `try (first | rfl | exact Finset.sum_comm)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_mul_sum_mul_eq_sum_sum {A : Type*} [Ring A] {m : ℕ} (f g : Fin m → A) (q : A) :
     (∑ l, f l) * (∑ p, g p) * q = ∑ l, ∑ p, f l * g p * q := by
@@ -137,11 +137,11 @@ private theorem sum_mul_sum_mul_eq_sum_sum {A : Type*} [Ring A] {m : ℕ} (f g :
   try (first | rfl | exact Finset.sum_comm)
 
 /- English proof (translation)
-Simplify using `only [chat2A, Finset.mul_sum, mul_ite, mul_zero]`. Use `(pull6 _).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun i' _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i < i' ∧ j < j'`. Simplify using `only [if_pos h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[sumSingle W β' i i', sumSingle V a' j j', sum_mul_sum_mul_eq_sum_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg h, Finset.sum_const_zero]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem general_second_minor_expansion {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (W V : Fin m → A) (w : ℂ)
     (a' β' : Fin m → ℂ) :
@@ -169,7 +169,7 @@ theorem general_second_minor_expansion {A : Type*} [Ring A] [Algebra ℂ A] {m :
   · simp only [if_neg h, Finset.sum_const_zero]
 
 /- English proof (translation)
-Rewrite using `[general_second_minor_expansion E Yb Y (u - 1) x xb]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_entry_one_one {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (Y Yb : Fin m → A)
     (x xb : Fin m → ℂ) (u : ℂ) :
@@ -178,7 +178,7 @@ theorem transfer_entry_one_one {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E
   try rfl
 
 /- English proof (translation)
-Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Apply the tactic sequence `try (first | rfl | exact Finset.sum_comm)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mul_sum_mul_sum_eq_sum_sum {m : ℕ} (a : ℂ) (f g : Fin m → ℂ) :
     a * (∑ l, f l) * (∑ p, g p) = ∑ l, ∑ p, a * f l * g p := by
@@ -186,7 +186,7 @@ private theorem mul_sum_mul_sum_eq_sum_sum {m : ℕ} (a : ℂ) (f g : Fin m → 
   try (first | rfl | exact Finset.sum_comm)
 
 /- English proof (translation)
-Simplify using `[Pi.single_apply, mul_sub, Finset.sum_sub_distrib, ite_mul, mul_ite]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sub_mul_eq_sum_single_sub_mul {m : ℕ} (β c : Fin m → ℂ) (i i' : Fin m) :
     β i * c i' - β i' * c i =
@@ -194,9 +194,9 @@ private theorem sub_mul_eq_sum_single_sub_mul {m : ℕ} (β c : Fin m → ℂ) (
   simp [Pi.single_apply, mul_sub, Finset.sum_sub_distrib, ite_mul, mul_ite]
 
 /- English proof (translation)
-Simplify using `only [chat2A, Finset.smul_sum, smul_ite, smul_zero, smul_smul]`. Use `Eq.trans ?_ (pull6 _).symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun i' _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i < i' ∧ j < j'`. Simplify using `only [if_pos h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[sub_mul_eq_sum_single_sub_mul β β' i i', sub_mul_eq_sum_single_sub_mul a a' j j', mul_sum_mul_sum_eq_sum_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun p _ => by ring`. Simplify using `only [if_neg h, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chat2Alin {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (w : ℂ)
     (a a' β β' : Fin m → ℂ) :
@@ -214,26 +214,24 @@ theorem chat2Alin {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → 
   · simp only [if_neg h, Finset.sum_const_zero]
 
 /- English proof (translation)
-The claim follows from `(pull1 _).trans (Finset.sum_congr rfl fun _ _ => pull1 _)`.
+A detailed English derivation is pending.
 -/
 private theorem measurePreserving_swap4 {A : Type*} [AddCommMonoid A] {m : ℕ} (g : Fin m → Fin m → Fin m → Fin m → A) :
     ∑ a, ∑ b, ∑ c, ∑ d, g a b c d = ∑ c, ∑ d, ∑ a, ∑ b, g a b c d :=
   (pull1 _).trans (Finset.sum_congr rfl fun _ _ => pull1 _)
 
 /- English proof (translation)
-Establish `h00 : tA E Y Yb x xb u 0 0 = tA (Econj E P Q) (vecC Q Y) (covC P Yb) (Q *ᵥ x) (xb ᵥ* P) u 0 0` using `(hCC A m E P Q hGl hQP hPQ u 0 0 0 0).1.symm`. Establish `h01 : tA E Y Yb x xb u 0 1 = tA (Econj E P Q) (vecC Q Y) (covC P Yb) (Q *ᵥ x) (xb ᵥ* P) u 0 1`. Establish `key : ∀ l', chatA E (u - 1) x (Pi.single l' 1) = ∑ l, P l' l • chatA (Econj E P Q) (u - 1) (Q *ᵥ x) (Pi.single l 1)`. Introduce `l'`. Rewrite using `[← (hCC A m E P Q hGl hQP hPQ (u - 1) x x (Pi.single l' 1) (Pi.single l' 1)).2.1, chatAlinβ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try simp only [vecMulSingle]`. Rewrite using `[transfer_entry_zero_one, transfer_entry_zero_one]`. Use `congr 1`. Simplify using `only [key, covC, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : tA E Y Yb x xb u 1 0 = tA (Econj E P Q) (vecC Q Y) (covC P Yb) (Q *ᵥ x) (xb ᵥ* P) u 1 0`. Establish `key : ∀ p', chatA E u (Pi.single p' 1) xb = ∑ p, Q p p' • chatA (Econj E P Q) u (Pi.single p 1) (xb ᵥ* P)`. Introduce `p'`. Rewrite using `[← (hCC A m E P Q hGl hQP hPQ u (Pi.single p' 1) (Pi.single p' 1) xb xb).2.1, chatAlina]`. Apply the tactic sequence `try simp only [mulVecSingle]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[transfer_entry_one_zero, transfer_entry_one_zero]`. Use `congr 1`. Simplify using `only [key, vecC, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc]`. Conclude with `Finset.sum_comm`. Establish `h11 : tA E Y Yb x xb u 1 1 = tA (Econj E P Q) (vecC Q Y) (covC P Yb) (Q *ᵥ x) (xb ᵥ* P) u 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ l' p', chat2A E (u - 1) (Pi.single p' 1) x (Pi.single l' 1) xb = ∑ l, ∑ p, (P l' l * Q p p') • chat2A (Econj E P Q) (u - 1) (Pi.single p 1) (Q *ᵥ x) (Pi.single l 1) (xb ᵥ* P)`. Introduce `l' p'`. Rewrite using `[← (hCC A m E P Q hGl hQP hPQ (u - 1) (Pi.single p' 1) x (Pi.single l' 1) xb).2.2, chat2Alin]`. Apply the tactic sequence `try simp only [vecMulSingle, mulVecSingle]`. Rewrite using `[transfer_entry_one_one, transfer_entry_one_one]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `only [key, covC, vecC, Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [smul_mul_assoc]`. Simplify using `only [mul_smul_comm, smul_mul_assoc, smul_smul]`. Use `(measurePreserving_swap4 _).trans ?_` and prove the remaining obligations.
-
-Use `first`. Consider the case `rfl`. Consider the case `exact Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun p _ => Finset.sum_comm`. Apply the tactic sequence `fin_cases p <;> fin_cases q`. Use `exacts [h00, h01, h10, h11]`.
+Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tATrans (hCC : ContractionsCovariant) {A : Type} [Ring A] [Algebra ℂ A] {m : ℕ}
     (E : Fin m → Fin m → A) (Y Yb : Fin m → A) (x xb : Fin m → ℂ) (P Q : Matrix (Fin m) (Fin m) ℂ)

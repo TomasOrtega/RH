@@ -19,21 +19,15 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `p _ D R _ b g c k N hc hk hN hNp hEF hg hck S s o`. Establish `hk0 : 0 < k` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hk; exact (Fact.out : p.Prime).one_lt.ne' hk)`. Establish `hN0 : 0 < N` using `by omega`. Take `⟨hfin, hfree⟩` from `GlobalTheory.UPel.HT.Hecke.heckeSub_finite_free p D R b g k N hk0 hN0 hk hNp S s o`. Take `⟨A', _, _, ψ, hA', hψ, hgal⟩` from `GlobalTheory.TranslQuotient.exists_quotient S o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) (heckeSub o g N) o.ab (pull_isLB o.isLB _) o.ample hfin hfree`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hepi : Epi ψ`. Use `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover hgal` as an intermediate fact. Conclude with `(Over.forget S).epi_of_epi_map this`. Establish `kill : ∀ h ∈ heckeSub o g N, h ≫ ψ = 1` using `fun h hh => comp_eq_one_of_transl ψ h (hgal.inv ⟨h, hh⟩)`. Establish `stab : ∀ c' : D.O, ∀ h ∈ heckeSub o g N, h ≫ o.act.act c' ∈ heckeSub o g N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `c' _ ⟨x, rfl⟩`. Use `⟨c' • x, ?_⟩` and prove the remaining obligations. Rewrite using `[← o.eta_lin, map_smul, smul_comm]`. Use `choose actf hactf using fun c' : D.O => GlobalTheory.UPel.HT.Hecke.exists_desc_endo S o.A A' (heckeSub o g N) ψ hψ hgal (o.act.act c') (o.act.hom c') (stab c')`. Set `act' : OActN D.O A'` to `{ act := actf hom := fun c' => (hactf c').1 one := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi ψ, (hactf 1).2, o.act.one, Category.id_comp, Category.comp_id]`. Use `mul := fun b' c' => by`. Rewrite using `[← cancel_epi ψ, (hactf _).2, o.act.mul, Category.assoc, ← (hactf b').2, ← Category.assoc, ← (hactf c').2, Category.assoc]`. Use `add := fun b' c' => by`. Rewrite using `[← cancel_epi ψ, (hactf _).2, o.act.add, mul_comp, comp_mul, (hactf _).2, (hactf _).2] }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomp : ∀ c' : D.O, o.act.act c' ≫ ψ = ψ ≫ act'.act c'` using `fun c' => ((hactf c').2).symm`. Take `⟨P', hP', r1, r2, hsym, hamp, hker, hros, hpull⟩` from `GlobalTheory.T.exists_hecke_translate_polarisation_bundle p D R b g c k N hc hk hN hNp hEF hg hck S s o A' act' ψ hA' hψ hgal hcomp`. Take `⟨hlie, hlieR⟩` from `GlobalTheory.UPel.HT.EtaleLie.lie_of_etale p D R b (N * k) S s o A' act' ψ _ _ hA' hψ hgal hcomp`. Establish `hgeom` using `GlobalTheory.T.exists_tateSimilitude_hecke_translate_geometric p D R b g c k N hc hk hN hNp hEF hg hck S s o A' act' ψ hA' hψ hgal hcomp P' hP' r1 r2 hpull`. Set `o' : Obj b N s` to `{ A := A' ab := hA' act := act' P := P' isLB := hP' rig₁ := r1 rig₂ := r2`.
-
-Use symmetry as in `:= hsym`. Use `ample := hamp`. Use `kerP := hker`. Use `rosati := hros`. Use `lie := hlie`.
-
-Use `lieRank := hlieR`. Use `eta := fun x => o.eta (g x) ≫ ψ`. Use `eta_add := fun x y => by rw [map_add, o.eta_add, mul_comp]`. Use `eta_lin := fun c' x => by show o.eta (g (c' • x)) ≫ ψ = (o.eta (g x) ≫ ψ) ≫ act'.act c'`. Rewrite using `[map_smul, o.eta_lin, Category.assoc, hcomp, Category.assoc]`.
-
-Use `eta_ker := fun x => by rw [map_nsmul]; exact kill _ (mem_heckeSub o g N x)`. Use `geom := hgeom }`. Conclude with `⟨o', ψ, hψ, hcomp, fun x => rfl, hgal, ⟨hpull⟩, hck⟩`.
+Introduce a local definition for the expression. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isHecke : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (g : D.La →ₗ[D.O] D.La) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → (∀ x y, D.EF (g x) (g y) = c * D.EF x y) → (∀ x, ∃ y, g y = k • x) → c ∣ k ^ 2 → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k) s), ∃ (o' : Obj b N s) (ψ : o.A ⟶ o'.A), IsHecke g c k N o o' ψ := by
   intro p _ D R _ b g c k N hc hk hN hNp hEF hg hck S s o

@@ -20,7 +20,7 @@ section Coinv
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨u, φ.toIntertwiningMap v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, ← φ.toIntertwiningMap.isIntertwining]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twKer_le_comap {π : Representation ℂ G V} {σ : Representation ℂ G W} (φ : π.Equiv σ)
     (U : Subgroup G) (θ : U →* ℂˣ) :
@@ -63,7 +63,7 @@ def piTensorTwoEquiv' (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Rep
     exact (extTensor_tmul π₁ π₂ ((leviTwo k (Fin r) (Fin t)).symm g) (x false) (x true)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LocGL.parIndEquiv (two (stdSum (rfl : r + t = r + t))) (piTensorTwoEquiv' π₁ π₂)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_prod2_equiv (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Representation ℂ (GL (Fin t) k) W) :
     Nonempty ((prod2 (k := k) rfl π₁ π₂).Equiv (prod₂ π₁ π₂)) :=

@@ -14,7 +14,7 @@ open GlobalTheory.IwLevel
 namespace GlobalTheory.TangentStalk
 
 /- English proof (translation)
-The claim follows from `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective g (fun c => ⟨j c, RingHom.congr_fun hg c⟩))`.
+A detailed English derivation is pending.
 -/
 theorem ker_eq_maximalIdeal {k R : Type} [Field k] [CommRing R] [IsLocalRing R] (j : k →+* R)
     (g : R →+* k) (hg : g.comp j = RingHom.id k) : RingHom.ker g = IsLocalRing.maximalIdeal R :=
@@ -22,9 +22,9 @@ theorem ker_eq_maximalIdeal {k R : Type} [Field k] [CommRing R] [IsLocalRing R] 
     (fun c => ⟨j c, RingHom.congr_fun hg c⟩))
 
 /- English proof (translation)
-Use extensionality with `a`. Establish `hm : a - j (g₁ a) ∈ RingHom.ker g₂`. Rewrite using `[ker_eq_maximalIdeal j g₂ h₂, ← ker_eq_maximalIdeal j g₁ h₁, RingHom.mem_ker, map_sub, show g₁ (j (g₁ a)) = g₁ a from RingHom.congr_fun h₁ (g₁ a), sub_self]`. Rewrite `hm` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[hm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(RingHom.congr_fun h₂ (g₁ a)).symm`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_eq_of_comp_eq_id {k R : Type} [Field k] [CommRing R] [IsLocalRing R] (j : k →+* R)
     (g₁ g₂ : R →+* k) (h₁ : g₁.comp j = RingHom.id k) (h₂ : g₂.comp j = RingHom.id k) : g₁ = g₂ := by
@@ -37,23 +37,21 @@ theorem ringHom_eq_of_comp_eq_id {k R : Type} [Field k] [CommRing R] [IsLocalRin
   exact (RingHom.congr_fun h₂ (g₁ a)).symm
 
 /- English proof (translation)
-Introduce `k _ A _ x₀ hx`. Take `⟨pt, rfl⟩` from `hx`. Establish `hpt : pt = IsLocalRing.closedPoint k` using `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Substitute `hpt` using the available equality. Set `s : Sp k ⟶ A.left` to `(η[A]).left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression.
 
-Establish `hsA : s ≫ A.hom = 𝟙 _` using `(η[A]).w.trans rfl`. Establish `hr : Spec.map (Scheme.stalkClosedPointTo s) ≫ A.left.fromSpecStalk _ = s` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk s`. Establish `hJ` using `Spec.map_preimage (A.left.fromSpecStalk (s.base (IsLocalRing.closedPoint k)) ≫ A.hom)`. Use `set r := Scheme.stalkClosedPointTo s with hrdef`. Use `set J := Spec.preimage (A.left.fromSpecStalk (s.base (IsLocalRing.closedPoint k)) ≫ A.hom) with hJdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hrJ : J ≫ r = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hJ, ← Category.assoc, hr, hsA, Spec.map_id]`. Establish `hcomp : r.hom.comp J.hom = RingHom.id k` using `congrArg CommRingCat.Hom.hom hrJ`. Establish `hfst : ∀ ψ : A.left.presheaf.stalk (s.base (IsLocalRing.closedPoint k)) →+* DualNumber k, ψ.comp J.hom = algebraMap k (DualNumber k) → ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ψ).comp J.hom = RingHom.id k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `ψ hψ`. Rewrite using `[RingHom.comp_assoc, hψ]`. Use extensionality with `c`. Simplify using the standard rewrite rules. Use `⟨J.hom, fun a => ⟨r.hom a, ?_⟩, fun ψ hψ => ?_, fun ψ₁ ψ₂ h₁ h₂ h => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ker_eq_maximalIdeal J.hom r.hom hcomp, RingHom.mem_ker, map_sub, show r.hom (J.hom (r.hom a)) = r.hom a from RingHom.congr_fun hcomp _, sub_self]`. Use `⟨Over.homMk (Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk _) ?_, ?_, rfl⟩` and prove the remaining obligations. Use `show Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk _ ≫ A.hom = Spec.map (CommRingCat.ofHom (algebraMap k (DualNumber k)))`. Rewrite using `[← hJ, ← Spec.map_comp, ← hψ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `show Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom) ≫ Spec.map (CommRingCat.ofHom ψ) ≫ A.left.fromSpecStalk _ = s`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← hr]`. Use `congr 2`. Use `ext1`. Conclude with `ringHom_eq_of_comp_eq_id J.hom _ _ (hfst ψ hψ) hcomp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hloc : ∀ ψ : A.left.presheaf.stalk (s.base (IsLocalRing.closedPoint k)) →+* DualNumber k, ψ.comp J.hom = algebraMap k (DualNumber k) → IsLocalHom ψ`. Introduce `ψ hψ`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Establish `hm : a ∈ IsLocalRing.maximalIdeal _` using `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 hna)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hm` using `[← ker_eq_maximalIdeal J.hom _ (hfst ψ hψ), RingHom.mem_ker]`. Establish `hu` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.1 ha`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, TrivSqZeroExt.fstHom_apply] at hm`. Rewrite `hu` using `[hm]`. Conclude with `not_isUnit_zero hu`.
-
-Establish `e1` using `hloc ψ₁ h₁`. Establish `e2` using `hloc ψ₂ h₂`. Establish `hinj` using `(SpecToEquivOfLocalRing A.left (CommRingCat.of (DualNumber k))).symm.injective (a₁ := ⟨_, CommRingCat.ofHom ψ₁, e1⟩) (a₂ := ⟨_, CommRingCat.ofHom ψ₂, e2⟩) h`. Use `eq_of_heq (Sigma.mk.inj_iff.mp hinj).2` as an intermediate fact. Conclude with `congrArg (fun f => f.1.hom) this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tangent_eq_stalk_dual : ∀ (k : Type) [Field k] (A : Over (Sp k)) [GrpObj A] (x₀ : A.left), x₀ ∈ Set.range (η[A]).left.base →
     ∃ jk : k →+* A.left.presheaf.stalk x₀,

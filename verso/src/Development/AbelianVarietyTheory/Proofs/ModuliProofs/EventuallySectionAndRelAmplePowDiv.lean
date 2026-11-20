@@ -22,11 +22,11 @@ open GlobalTheory.CechPic GlobalTheory.AbLaw
 variable {X : Scheme.{0}} {M N : LB X}
 
 /- English proof (translation)
-Take `⟨d, hd, m, s, hs⟩` from `hM.exists_veryAmpleBy f`. Establish `hH` using `isLB_lbPow hM.isLB d`. Establish `hD : ∀ i, (LB.div (lbPow M i) N).IsLB` using `fun i => LB.isLB_div (isLB_lbPow hM.isLB i) hN`. Use `choose t₀ ht₀ using fun i => TwistGen.twist_generated R X f _ m s hH hs _ (hD i)`. Use `Filter.eventually_atTop.2 ⟨d * (Finset.range d).sup fun i => (t₀ i).toNat, fun t ht => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₁ : (t₀ (t % d)).toNat ≤ t / d` using `(Finset.le_sup (f := fun i => (t₀ i).toNat) (Finset.mem_range.2 (Nat.mod_lt t hd))).trans ((Nat.le_div_iff_mul_le hd).2 (by rwa [Nat.mul_comm]))`. Take `⟨n, u, hu⟩` from `ht₀ (t % d) (t / d : ℕ) (Int.toNat_le.1 h₁)`. Establish `hG : IsGenerated (tw (LB.div (lbPow M (t % d)) N) (lbPow M d) (t / d : ℕ))` using `⟨_, u, hu⟩`. Use `hG.of_lbIso (hD t) ((cls_eq_iff (hD t) hG.isLB).1 ?_)` and prove the remaining obligations. Establish `e : cls _ hG.isLB = cls _ (hD (t % d)) - cls _ (isLB_pw hH (-((t / d : ℕ) : ℤ)))` using `cls_div (hD _) (isLB_pw hH _) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, AmpleStabFinite.cls_pw hH, cls_div (isLB_lbPow hM.isLB t) hN, cls_div (isLB_lbPow hM.isLB _) hN, cls_lbPow hM.isLB, cls_lbPow hM.isLB, cls_lbPow hM.isLB]`. Generalize the expression as in `cls M hM.isLB = a`. Generalize the expression as in `cls N hN = b`. Use `conv_lhs => rw [← Nat.mod_add_div t d]`. Use `module`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. A detailed English derivation is pending.
 -/
 theorem eventually_isGenerated {R : Type} [CommRing R] (f : X ⟶ Sp R) [IsProper f] (hM : IsAmpleLB M)
     (hN : N.IsLB) : ∀ᶠ t : ℕ in Filter.atTop, IsGenerated (LB.div (lbPow M t) N) := by
@@ -51,9 +51,9 @@ theorem eventually_isGenerated {R : Type} [CommRing R] (f : X ⟶ Sp R) [IsPrope
   module
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Filter.eventually_atTop.1 (eventually_isGenerated f hM hN)`. Use `Filter.eventually_atTop.2 ⟨a + 1, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, t = k + 1` from `⟨t - 1, by omega⟩`. Establish `hG` using `ha k (by omega)`. Establish `h₀` using `LB.isLB_div (isLB_lbPow hM.isLB (k + 1)) hN`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `LB.isLB_div h₀ hM.isLB`. Use `hM.tensor_isGenerated hG h₀ ((cls_eq_zero_iff (LB.isLB_div h₁ hG.isLB)).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_div h₁ hG.isLB, cls_div h₀ hM.isLB, cls_div (isLB_lbPow hM.isLB _) hN, cls_div (isLB_lbPow hM.isLB _) hN, cls_lbPow hM.isLB, cls_lbPow hM.isLB]`. Use `module`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_isAmpleLB {R : Type} [CommRing R] (f : X ⟶ Sp R) [IsProper f] (hM : IsAmpleLB M)
     (hN : N.IsLB) : ∀ᶠ t : ℕ in Filter.atTop, IsAmpleLB (LB.div (lbPow M t) N) := by
@@ -69,7 +69,7 @@ theorem eventually_isAmpleLB {R : Type} [CommRing R] (f : X ⟶ Sp R) [IsProper 
   module
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h.exists_mem (Classical.arbitrary X)`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hs`. Use `⟨s, j, fun e => ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[e, Scheme.basicOpen_zero]`. Conclude with `hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_ne_zero [Nonempty X] {L : LB X} (h : IsGenerated L) : ∃ s : L.Sec, ∃ j, s.f j ≠ 0 := by
   obtain ⟨s, hs⟩ := h.exists_mem (Classical.arbitrary X)
@@ -79,9 +79,9 @@ theorem exists_sec_ne_zero [Nonempty X] {L : LB X} (h : IsGenerated L) : ∃ s :
   exact hj
 
 /- English proof (translation)
-Introduce `K _ _ P M N hM hN h`. Use `P.isAb.proper` as an intermediate fact. Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Establish `hA` using `isAmpleLB_of_relAmple_of_isAffine P.A hM h`. Use `filter_upwards [eventually_isGenerated P.A.hom hA hN, eventually_isAmpleLB P.A.hom hA hN] with t h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨exists_sec_ne_zero h₁, (relAmple_iff_isAmpleLB_of_isAffine P.A h₂.isLB).2 h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem eventually_sec_and_relAmple : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (M N : LB P.A.left), M.IsLB → N.IsLB → Out.RelAmple P.A M → ∀ᶠ t : ℕ in Filter.atTop, (∃ s : (LB.div (lbPow M t) N).Sec, ∃ j, s.f j ≠ 0) ∧ Out.RelAmple P.A (LB.div (lbPow M t) N) := by
   intro K _ _ P M N hM hN h

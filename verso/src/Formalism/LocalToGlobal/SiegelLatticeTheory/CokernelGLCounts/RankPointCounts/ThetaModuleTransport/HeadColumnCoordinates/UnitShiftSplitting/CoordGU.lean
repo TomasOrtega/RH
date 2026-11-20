@@ -16,9 +16,9 @@ variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M 
 variable {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[gramC_eq H f f' T T' hF hF', Matrix.det_transpose]`. Take `⟨s, hs, hdet⟩` from `gram_det H f f' T T' hF hF' hD1`. Establish `hsu : IsUnit s` using `⟨⟨s, s, hs, hs⟩, rfl⟩`. Establish `: (H.gram (Sum.elim f f')).det = H.Gdet f f' T T' * s`. Rewrite using `[← hdet, mul_assoc, hs, mul_one]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hGd.mul hsu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_gramCU {f f' : Fin (r + 1) → V} {T T' : F}
     (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T')
@@ -33,17 +33,17 @@ theorem unit_gramCU {f f' : Fin (r + 1) → V} {T T' : F}
   exact hGd.mul hsu
 
 /- English proof (translation)
-Use `set qi := algebraMap F E ((g.q : F)⁻¹) with hqi`. Set `B : Matrix (Ix r) (Ix r) E` to `Matrix.fromBlocks 1 0 (-qi • (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E)) (qi • (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E))`. Establish `hfam : H.MMfam t = fun i => ∑ j, B i j • Sum.elim t.f t.f' j`. Rewrite using `[mmfam_some H hs]`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `i with a | a` into its components or cases. Simplify using `[B, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[B, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg, add_comm, neg_smul]`. Both sides reduce to the same expression. Establish `hqu : IsUnit qi`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨qi, algebraMap F E (g.q : F), qi_mul_q g, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `qi_mul_q g`. Establish `hB : IsUnit B.det`. Simplify using `only [B]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, one_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `hqu.pow _`. Establish `hV : gramH H (Sum.elim t.f t.f') = gramC (M.L.cj : E →+* E) (H.Zhat t.f t.f') (algebraMap F E t.T) (algebraMap F E t.T')`. Rewrite using `[gramC_eq H _ _ _ _ hF hF']`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hG` using `unit_gramCU H hF hF' hD1 hGd`. Rewrite using `[hfam, gramH_comb, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hV]`. Establish `hBc : IsUnit (B.map M.L.cj).det`. Establish `: (B.map M.L.cj).det = M.L.cj B.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (B.map M.L.cj) = (M.L.cj : E →+* E).mapMatrix B from rfl, ← RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hB.map _`. Conclude with `(hB.mul hG).mul hBc`.
+A detailed English derivation is pending.
 -/
 theorem unit_gramHU {g : SplitG M.L} (hs : M.split = some g) {t : Term V M r}
     (hF : Formalism.MainNotions.ThinScalesBound.FrameK H t.f t.T) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H t.f' t.T')
@@ -86,16 +86,16 @@ theorem gdet_eq (f f' : Fin (r + 1) → V) (T T' : F) :
       algebraMap F E (T * T') * (H.Dl f f' r * M.L.cj (H.Dl f f' r)) := rfl
 
 /- English proof (translation)
-Rewrite using `[gdet_eq, gdet_eq, dl_swap_full, dl_swap_r, M.L.cj_cj, M.L.cj_cj, mul_comm T' T]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gdet_swap (f f' : Fin (r + 1) → V) (T T' : F) : H.Gdet f' f T' T = H.Gdet f f' T T' := by
   rw [gdet_eq, gdet_eq, dl_swap_full, dl_swap_r, M.L.cj_cj, M.L.cj_cj, mul_comm T' T]
   ring
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u₁, u₁', u₁'', hu₁, hu₁', -, rfl⟩ _ ⟨u₂, u₂', u₂'', hu₂, hu₂', -, rfl⟩ hc hc'`. Simplify using `only [PcG, PcG', coordW_mk, Prod.mk.injEq] at hc hc'`. Establish `hν` using `nu_eq H t₁.f t₁.f' f₂ f₂' t₁.T' hg₁.2.2.1 hg₂.2.2.1 hg₁.2.2.2.1 hg₂.2.2.2.1 hrel`. Establish `hrel' : H.Dl t₁.f' t₁.f r * H.Dl f₂' f₂ (r + 1) = H.Dl f₂' f₂ r * H.Dl t₁.f' t₁.f (r + 1)`. Rewrite using `[dl_swap_r H t₁.f t₁.f', dl_swap_full H f₂ f₂', dl_swap_r H f₂ f₂', dl_swap_full H t₁.f t₁.f', ← map_mul, ← map_mul, hrel]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hν'` using `nu_eq H t₁.f' t₁.f f₂' f₂ t₁.T hg₁.2.1 hg₂.2.1 (unit_swap H _ _ hg₁.2.2.2.1) (unit_swap H _ _ hg₂.2.2.2.1) hrel'`. Prove the components needed by the constructor for the conclusion. Conclude with `mkW_transport H hg₁.2.1 hg₁.2.2.1 hg₂.2.1 hg₂.2.2.1 hg₁.2.2.2.1 hg₂.2.2.2.1 (by rw [← gdet_eq]; exact hG₁) (by rw [← gdet_eq]; exact hG₂) hν φ hz ho ⟨u₁, hu₁⟩ (mem_span_of_sharpG H hg₁ u₁) ⟨u₂, hu₂⟩ (mem_span_of_sharpG H hg₂ u₂) hc.1 hc.2`. Conclude with `mkW_transport H hg₁.2.2.1 hg₁.2.1 hg₂.2.2.1 hg₂.2.1 (unit_swap H _ _ hg₁.2.2.2.1) (unit_swap H _ _ hg₂.2.2.2.1) (by rw [← gdet_eq, gdet_swap]; exact hG₁) (by rw [← gdet_eq, gdet_swap]; exact hG₂) hν' φ' hz' ho' ⟨u₁', hu₁'⟩ (by rw [span_swap]; exact mem_span_of_sharpG H hg₁ u₁') ⟨ …`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem gamR_sepU {g : SplitG M.L} {t₁ : Term V M r} {f₂ f₂' : Fin (r + 1) → V}
     (hg₁ : GoodG H g t₁) (hg₂ : GoodG H g (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r))
@@ -134,27 +134,25 @@ theorem gamR_sepU {g : SplitG M.L} {t₁ : Term V M r} {f₂ f₂' : Fin (r + 1)
 end Parts
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hs r n V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD hU2 hR`. Establish `hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T` using `⟨hyp.1.1.2.1.2.1, hyp.1.1.2.1.2.2.1⟩`. Establish `hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T'` using `⟨hyp.1.1.2.2.1.2.1, hyp.1.1.2.2.1.2.2.1⟩`. Establish `hT : t₁.T ∈ 𝒪[F]` using `hyp.1.1.2.1.2.2.2.1`. Establish `hrel : H.Dl t₁.f t₁.f' r * H.Dl f₂ f₂' (r + 1) = H.Dl f₂ f₂' r * H.Dl t₁.f t₁.f' (r + 1)` using `hyp.2.2.2.1.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG₁ : IsUnit (H.Gdet t₁.f t₁.f' t₁.T t₁.T')`. Establish `hG : H.Gdet t₁.f t₁.f' t₁.T t₁.T' ≠ 0` using `hyp.1.1.2.2.2.2.1`. Apply `isUnit_of_cj_fixed g _ hG` to reduce the goal to its premises. Rewrite using `[gdet_eq]`. Simplify using `only [map_sub, map_mul, M.L.cj_cj, M.L.cj.commutes]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hG₂ : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T')`. Establish `key` using `gdet_rel (M := M) (H.Dl t₁.f t₁.f' (r + 1)) (H.Dl t₁.f t₁.f' r) (H.Dl f₂ f₂' (r + 1)) (H.Dl f₂ f₂' r) (algebraMap F E (t₁.T * t₁.T')) hrel`. Establish `hB : IsUnit (H.Dl f₂ f₂' (r + 1) * M.L.cj (H.Dl f₂ f₂' (r + 1)))` using `hU2.mul (hU2.map M.L.cj)`. Establish `: IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T' * (H.Dl t₁.f t₁.f' (r + 1) * M.L.cj (H.Dl t₁.f t₁.f' (r + 1))))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gdet_eq, key]; exact hB.mul (by rw [← gdet_eq]; exact hG₁)`. Conclude with `isUnit_of_mul_isUnit_left this`. Establish `hg₁ : GoodG H g t₁` using `⟨hs, hF₁, hF₁', dl_succ_unit hyp, unit_gramHU H hs hF₁ hF₁' (dl_succ_unit hyp) hG₁⟩`. Establish `hg₂ : GoodG H g (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r)` using `⟨hs, hyp.2.1, hyp.2.2.1, hU2, unit_gramHU H hs hyp.2.1 hyp.2.2.1 hU2 hG₂⟩`. Establish `hTT` using `(hyp.1.1.2.2.2.2.2 g hs).2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `hyp.2.2.2.1`. Establish `hmm : MMInt H (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r)` using `mmInt_G H hg₂ hT hTT hR`. Establish `eZ` using `sends_one H φ _ _ (z_mem H t₁.f t₁.T hF₁) (z_mem H f₂ t₁.T hyp.2.1) hyp.2.2.2.2.1`. Establish `eZ'` using `sends_one H φ' _ _ (z_mem H t₁.f' t₁.T' hF₁') (z_mem H f₂' t₁.T' hyp.2.2.1) hyp.2.2.2.2.2`. Establish `eO` using `sends_omP H φ hg₁.2.2.2.1 hU2 hI.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eO'` using `sends_omP' H φ' hg₁.2.2.2.1 hU2 hI.2.2.2.2.1`. Establish `hGam` using `fun θ : DDt H t₁ ≃ₗ[M.L.O] DDt H (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) => graph_transport4 (PsiG H hg₁).toEquiv (PsiG H hg₂).toEquiv θ.toEquiv φ φ' (PcG H hg₁) (PcG H hg₂) (PcG' H hg₁) (PcG' H hg₂) (GamR H t₁ (algebraMap F E (g.q : F))) (GamR H _ (algebraMap F E (g.q : F))) _ …`. Establish `key : ∀ θ : DDt H t₁ ≃ₗ[M.L.O] DDt H (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r), θ ∈ Theta H t₁ ⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ φ φ' ↔ (PsiG H hg₁).symm.trans (θ.trans (PsiG H hg₂)) ∈ ThetaGC M.L.O (M.L.cj : E →+* E) (algebraMap F E (g.q : F)) (algebraMap F E ((g.q : F)⁻¹)) (H.Zhat t₁.f …`. Introduce `θ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, _, hD', _, hG⟩`. Conclude with `⟨(isomD_iffG H hg₁ hg₂ θ).1 hD', (hGam θ).1 (hG g hs)⟩`. Introduce and unpack `⟨hD', hG⟩`. Use `⟨hU2, hmm, (isomD_iffG H hg₁ hg₂ θ).2 hD', fun h => ?_, fun g' hg' => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hs]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h`. Rewrite `hg'` using `[hs]`. Consider the cases of `hg'`. Conclude with `(hGam θ).2 hG`. Use `Nat.card_congr { toFun := fun θ => ⟨(PsiG H hg₁).symm.trans (θ.1.trans (PsiG H hg₂)), (key θ.1).1 θ.2⟩ invFun := fun θc => ⟨(PsiG H hg₁).trans (θc.1.trans (PsiG H hg₂).symm), (key _).2 (by` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `θc.2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Use the proof step `simp)⟩`. Use `left_inv := fun θ => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `x`. Simplify using the standard rewrite rules. Use `right_inv := fun θc => by`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `}`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coordGU_holds : CoordGU := by
   intro F _ _ _ E _ _ _ _ M g hs r n V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD hU2 hR

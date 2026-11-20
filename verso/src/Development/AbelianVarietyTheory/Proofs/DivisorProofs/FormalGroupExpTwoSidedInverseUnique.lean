@@ -9,7 +9,7 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FGDepth
 
 /- English proof (translation)
-Introduce `C _ _ v d G`. Take `⟨h1, h2, h3⟩` from `expOf_spec G`. Conclude with `⟨h1, h3, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem expOf_twoSided_unique : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ))
     (d : ℕ) (G : LogFGL v d), IsExp G (expOf G) ∧ (∀ a, subst G.lg (expOf G a) = X a) ∧

@@ -7,14 +7,14 @@ open UpperTheory.V.KL
 namespace PositivityTheory.KB
 
 /- English proof (translation)
-The claim follows from `| 0 => rfl | t + 1 => congrArg (l * ·) (lev_zk l n t)`.
+A detailed English derivation is pending.
 -/
 theorem lev_zk (l n : ℕ) : ∀ t, UpperTheory.V.ZK.lev l n t = lev l n t
   | 0 => rfl
   | t + 1 => congrArg (l * ·) (lev_zk l n t)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq h`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem step_heq (R : Type) [CommRing R] {l : ℕ} (hl : 0 < l) (m c : ℕ) {a b : ℕ} (e : a = b)
     (u : grpH (GL (Fin a) R) m) (v : grpH (GL (Fin b) R) m) (h : HEq u v) :
@@ -26,7 +26,7 @@ private theorem step_heq (R : Type) [CommRing R] {l : ℕ} (hl : 0 < l) (m c : �
   rfl
 
 /- English proof (translation)
-The claim follows from `| 0 => HEq.rfl | t + 1 => step_heq R hl m (l ^ (t + 2)) (lev_zk l n t) _ _ (zSeq_zk R hl x t)`.
+A detailed English derivation is pending.
 -/
 theorem zSeq_zk (R : Type) [CommRing R] {l : ℕ} (hl : 0 < l) {n m : ℕ} (x : grpH (GL (Fin n) R) m) :
     ∀ t, HEq (UpperTheory.V.ZK.zSeq R hl x t) (zSeq R hl x t)
@@ -34,7 +34,7 @@ theorem zSeq_zk (R : Type) [CommRing R] {l : ℕ} (hl : 0 < l) {n m : ℕ} (x : 
   | t + 1 => step_heq R hl m (l ^ (t + 2)) (lev_zk l n t) _ _ (zSeq_zk R hl x t)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : f = g` from `funext fun x => eq_of_heq (h x)`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem rank_heq (R : Type) [CommRing R] (m : ℕ) {X : Type} {a b : ℕ} (e : a = b)
     (f : X → grpH (GL (Fin a) R) m) (g : X → grpH (GL (Fin b) R) m) (h : ∀ x, HEq (f x) (g x)) :
@@ -44,7 +44,7 @@ private theorem rank_heq (R : Type) [CommRing R] (m : ℕ) {X : Type} {a b : ℕ
   rfl
 
 /- English proof (translation)
-Introduce `L _ _ hL k hk hr l hl n hn` and use `(rank_heq _ _ (lev_zk l n k) _ _ fun x => zSeq_zk _ hl x k).le.trans (bStarOdd L hL k hk hr l hl n hn)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bOdd_zk : UpperTheory.V.ZK.BOdd := fun L _ _ hL k hk hr l hl n hn =>
   (rank_heq _ _ (lev_zk l n k) _ _ fun x => zSeq_zk _ hl x k).le.trans (bStarOdd L hL k hk hr l hl n hn)

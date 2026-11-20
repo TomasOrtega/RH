@@ -23,7 +23,7 @@ abbrev cochX (E : Spc) (F : Shv R) : CochainComplex AddCommGrpCat.{1} ℕ :=
   (AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{1}).obj (cochC R E F)
 
 /- English proof (translation)
-Establish `hd : (cochX R E F).d m (m + 1) = AlgebraicTopology.AlternatingCofaceMapComplex.objD (cochC R E F) m` using `CochainComplex.of_d (fun n => (cochC R E F).obj ⦋n⦌) (AlgebraicTopology.AlternatingCofaceMapComplex.objD (cochC R E F)) m`. Rewrite using `[hd]`. Set `φ : ((cochC R E F).obj ⦋m⦌ ⟶ (cochC R E F).obj ⦋m + 1⦌) →+ (cochC R E F).obj ⦋m + 1⦌` to `AddMonoidHom.mk' (fun f => f x) (fun f g => rfl)`. Express the relevant statement in the definitionally equal form `φ (AlgebraicTopology.AlternatingCofaceMapComplex.objD _ m) = _`. Simplify using `only [AlgebraicTopology.AlternatingCofaceMapComplex.objD, map_sum, map_zsmul, cobd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -39,19 +39,19 @@ theorem cochX_d_apply (E : Spc) (F : Shv R) (m : ℕ) (x : (cochX R E F).X m) :
   rfl
 
 /- English proof (translation)
-Take `⟨hex, hadd, huniq, -, -⟩` from `GlobalTheory.T.simplicialCochain_classes_basic_properties R F E n`. Set `X` to `cochX R E F`. Set `S` to `X.sc' i n (n + 1)`. Establish `hg : ∀ x : S.X₂, S.g.hom x = 0 ↔ cobd (E` using `E) (n := n) (show (free R).obj (E.obj (op ⦋n⦌)) ⟶ F from x) = 0 := by`. Introduce `x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `cochX_d_apply R E F n x`. Express the relevant statement in the definitionally equal form `(cochX R E F).d n (n+1) x = 0 ↔ _`. Rewrite using `[h]`. Conclude with `Iff.rfl`. Establish `hex' : ∀ x : AddMonoidHom.ker S.g.hom, ∃ c : H R E F n, IsCls (E` using `E) (n := n) (show (free R).obj (E.obj (op ⦋n⦌)) ⟶ F from x.1) c := fun x => hex _ ((hg x.1).1 (AddMonoidHom.mem_ker.mp x.2))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact.
 
-Set `Φ : AddMonoidHom.ker S.g.hom →+ H R E F n` to `AddMonoidHom.mk' (fun x => Classical.choose (hex' x)) (fun a b => huniq _ _ _ (Classical.choose_spec (hex' (a + b))) (hadd _ _ _ _ (Classical.choose_spec (hex' a)) (Classical.choose_spec (hex' b))))`. Establish `hΦ : ∀ x, IsCls (E` using `E) (n := n) (show (free R).obj (E.obj (op ⦋n⦌)) ⟶ F from x.1) (Φ x) := fun x => Classical.choose_spec (hex' x)`. Establish `hsurjΦ : Function.Surjective Φ`. Introduce `c`. Take `⟨s, hs, hc⟩` from `hsurj c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨s, AddMonoidHom.mem_ker.mpr ((hg s).2 hs)⟩, ?_⟩` and prove the remaining obligations. Conclude with `huniq _ _ _ (hΦ _) hc`. Establish `hker : AddMonoidHom.range S.abToCycles = Φ.ker`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_range, AddMonoidHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx` using `(hg x.1).1 (AddMonoidHom.mem_ker.mp x.2)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `h1` using `(hrange _ hx).2 ⟨y, rfl⟩`. Conclude with `huniq _ _ _ (hΦ _) h1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `hΦ x`. Rewrite `h1` using `[h0]`. Take `⟨y, hy⟩` from `(hrange _ hx).1 h1`. Conclude with `⟨y, Subtype.ext hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_⟩` and prove the remaining obligations. Use `(QuotientAddGroup.quotientKerEquivOfSurjective Φ hsurjΦ).symm.trans ?_` and prove the remaining obligations. Use `(QuotientAddGroup.quotientAddEquivOfEq hker.symm).trans ?_` and prove the remaining obligations. Conclude with `((X.homologyIsoSc' i n (n + 1) hi (CochainComplex.next ℕ n)) ≪≫ S.abHomologyIso).symm.addCommGroupIsoToAddEquiv`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem etaleCohomology_simplicialCochain_representation_step (F : Shv R) (E : Spc) (n i : ℕ) (hi : (ComplexShape.up ℕ).prev n = i)
     (hsurj : ∀ x : H R E F n, ∃ s : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F, cobd s = 0 ∧ IsCls s x)
@@ -100,9 +100,9 @@ theorem etaleCohomology_simplicialCochain_representation_step (F : Shv R) (E : S
   exact ((X.homologyIsoSc' i n (n + 1) hi (CochainComplex.next ℕ n)) ≪≫ S.abHomologyIso).symm.addCommGroupIsoToAddEquiv
 
 /- English proof (translation)
-Take `⟨hex, hadd, huniq, -, -⟩` from `GlobalTheory.T.simplicialCochain_classes_basic_properties R F E n`. Take `⟨c, hc⟩` from `hex 0 (by simp [cobd])`. Establish `h2` using `hadd _ _ _ _ hc hc`. Rewrite `h2` using `[add_zero]`. Establish `h3 : c = c + c` using `huniq _ _ _ hc h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc0 : c = 0`. Use `congrArg (fun z => z - c) h3` as an intermediate fact. Simplify using `using this.symm`. Rewrite `hc` using `[hc0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isCls_zero (F : Shv R) (E : Spc) (n : ℕ) :
     IsCls (E := E) (n := n) (0 : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F) 0 := by
@@ -117,21 +117,19 @@ theorem isCls_zero (F : Shv R) (E : Spc) (n : ℕ) :
   rwa [hc0] at hc
 
 /- English proof (translation)
-Establish `hsurj` using `GlobalTheory.T.exists_simplicialCochain_representing_class_acyclicLevels R F E n (fun k m hm _ y => hA k m hm y)`. Break down `n with _ | m` into its components or cases. Use `etaleCohomology_simplicialCochain_representation_step R F E 0 0 (CochainComplex.prev_nat_zero) hsurj ?_` and prove the remaining obligations. Take `⟨hinj0, -⟩` from `GlobalTheory.T.leray_simplicialCocycle_coboundary_of_acyclicLevels R F E 0 (fun k m hm _ y => hA k m hm y)`. Introduce `x _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : (cochX R E F).d 0 0 = 0` using `(cochX R E F).shape 0 0 (by change ¬ (0 + 1 = 0); omega)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hinj0 _ h).symm`. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[hd]`. Conclude with `isCls_zero R F E 0`. Use `etaleCohomology_simplicialCochain_representation_step R F E (m + 1) m (CochainComplex.prev_nat_succ m) hsurj ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, hinjS⟩` from `GlobalTheory.T.leray_simplicialCocycle_coboundary_of_acyclicLevels R F E m (fun k m hm _ y => hA k m hm y)`. Introduce `x _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨t, ht⟩` from `hinjS _ h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨t, (cochX_d_apply R E F m t).trans ht⟩`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨-, -, -, hcb, -⟩` from `GlobalTheory.T.simplicialCochain_classes_basic_properties R F E m`. Take `⟨hex, -, -, -, -⟩` from `GlobalTheory.T.simplicialCochain_classes_basic_properties R F E (m + 1)`. Establish `hcc : cobd (E` using `E) (n := m + 1) (cobd (E := E) (n := m) (show (free R).obj (E.obj (op ⦋m⦌)) ⟶ F from y)) = 0 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ((cochX R E F).d m (m + 1) ≫ (cochX R E F).d (m + 1) (m + 2)) y = 0`. Rewrite using `[HomologicalComplex.d_comp_d]`. Both sides reduce to the same expression. Rewrite `h` using `[ConcreteCategory.comp_apply]`. Establish `h1` using `cochX_d_apply R E F (m + 1) ((cochX R E F).d m (m + 1) y)`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `cochX_d_apply R E F m y`. Rewrite using `[← h2, ← h1]`. Conclude with `h`. Take `⟨c, hc⟩` from `hex _ hcc`. Establish `hc0` using `hcb _ c hc`.
-
-Rewrite using `[cochX_d_apply]`. Rewrite `hc` using `[hc0]`. Conclude with `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bridge (F : Shv R) (E : Spc)
     (hA : ∀ k m : ℕ, 0 < m → ∀ y : H R (disc.obj (E.obj (op ⦋k⦌))) F m, y = 0) (n : ℕ) :
@@ -178,7 +176,7 @@ section Cech
 variable {Y X : Scheme.{0}} (f : Y ⟶ X)
 
 /- English proof (translation)
-Substitute `hx hy` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cechPt_congr (k : ℕ) {U : Scheme.{0}} {x x' : U ⟶ X} {y y' : Fin (k + 1) → (U ⟶ Y)}
     (h : ∀ i, y i ≫ f = x) (h' : ∀ i, y' i ≫ f = x') (hx : x = x') (hy : y = y') :
@@ -186,11 +184,11 @@ theorem cechPt_congr (k : ℕ) {U : Scheme.{0}} {x x' : U ⟶ X} {y y' : Fin (k 
   subst hx hy; rfl
 
 /- English proof (translation)
-Establish `key : yoneda.map g ≫ WidePullback.lift (arrows` using `fun _ : Fin (k + 1) => yoneda.map f) (yoneda.map x) (fun i => yoneda.map (y i)) (fun i => by rw [← yoneda.map_comp, h i]) = WidePullback.lift (arrows := fun _ : Fin (k + 1) => yoneda.map f) (yoneda.map (g ≫ x)) (fun i => yoneda.map (g ≫ y i)) (fun i => by rw [← yoneda.map_comp, C …`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[Category.assoc]`. Use `erw [WidePullback.lift_π, WidePullback.lift_π]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Category.assoc] erw [WidePullback.lift_base, WidePullback.lift_base]`. Simplify using the standard rewrite rules. Use `congrArg (fun φ => φ.app (op V) (𝟙 V)) key` as an intermediate fact. Simplify using `only [FunctorToTypes.comp] at this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `cechPt`. Establish `hn` using `ConcreteCategory.congr_hom ((WidePullback.lift (arrows := fun _ : Fin (k + 1) => yoneda.map f) (yoneda.map x) (fun i => yoneda.map (y i)) (fun i => by rw [← yoneda.map_comp, h i])).naturality g.op) (𝟙 U)`. Use `hn.symm.trans (Eq.trans ?_ this)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechPt_map (k : ℕ) {U V : Scheme.{0}} (g : V ⟶ U) (x : U ⟶ X) (y : Fin (k + 1) → (U ⟶ Y))
     (h : ∀ i, y i ≫ f = x) :
@@ -217,9 +215,9 @@ theorem cechPt_map (k : ℕ) {U V : Scheme.{0}} (g : V ⟶ U) (x : U ⟶ X) (y :
   simp
 
 /- English proof (translation)
-Establish `key : WidePullback.lift (arrows` using `fun _ : Fin (m + 2) => yoneda.map f) (yoneda.map x) (fun j => yoneda.map (y j)) (fun j => by rw [← yoneda.map_comp, h j]) ≫ (cech f).δ i = WidePullback.lift (arrows := fun _ : Fin (m + 1) => yoneda.map f) (yoneda.map x) (fun j => yoneda.map (y (i.succAbove j))) (fun j => by rw [← …`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j erw [Category.assoc, WidePullback.lift_π, WidePullback.lift_π, WidePullback.lift_π]`. Both sides reduce to the same expression. Use `erw [Category.assoc, WidePullback.lift_base, WidePullback.lift_base, WidePullback.lift_base]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Use `congrArg (fun φ => φ.app (op U) (𝟙 U)) key` as an intermediate fact. Simplify using `only [FunctorToTypes.comp] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechPt_δ (m : ℕ) (i : Fin (m + 2)) {U : Scheme.{0}} (x : U ⟶ X) (y : Fin (m + 2) → (U ⟶ Y))
     (h : ∀ j, y j ≫ f = x) :
@@ -250,9 +248,9 @@ def galPt (k : ℕ) (σ : Fin (k + 1) → (Ω ≃ₐ[K] Ω)) : Sx (cech (fK K Ω
     (fun i => by rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]; congr 2; exact RingHom.ext fun x => (σ i).commutes x)
 
 /- English proof (translation)
-Rewrite using `[galPt, cechPt_map]`. Apply `cechPt_congr` to reduce the goal to its premises. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun x => τ.commutes x`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem galPt_mul (k : ℕ) (τ : Ω ≃ₐ[K] Ω) (σ : Fin (k + 1) → (Ω ≃ₐ[K] Ω)) :
     ((cech (fK K Ω)).obj (op ⦋k⦌)).map (Spec.map (CommRingCat.ofHom (τ : Ω →+* Ω))).op (galPt K Ω k σ) =
@@ -265,7 +263,7 @@ theorem galPt_mul (k : ℕ) (τ : Ω ≃ₐ[K] Ω) (σ : Fin (k + 1) → (Ω ≃
     rfl
 
 /- English proof (translation)
-Rewrite using `[galPt, cechPt_δ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem galPt_face (m : ℕ) (i : Fin (m + 2)) (σ : Fin (m + 2) → (Ω ≃ₐ[K] Ω)) :
     ((cech (fK K Ω)).δ i).app (op (Spec (CommRingCat.of Ω))) (galPt K Ω (m + 1) σ) =
@@ -301,19 +299,19 @@ theorem galE_apply (m : ℕ) (s : (cochC R (cech (fK K Ω)) F).obj ⦋m⦌) (σ 
 end Gal
 
 /- English proof (translation)
-Introduce `R _ F hF K Ω _ _ _ _ M _ e he n`. Establish `hρ : ∀ (τ : Ω ≃ₐ[K] Ω) (v : Sec F (Spec (CommRingCat.of Ω))), M.ρ τ (e.symm v) = e.symm (Sec.res (Spec.map (CommRingCat.ofHom (τ : Ω →+* Ω))) v)`. Introduce `τ v`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : ∀ m, Function.Injective (galE K Ω R F M e m)`. Introduce `m a b hab`. Apply `(GlobalTheory.T.galoisDescent_freeSheaf_cechLevel_sepClosure R F hF K Ω m).1` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Use `congrFun hab σ` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[galE_apply, galE_apply]`. Conclude with `e.symm.injective this`. Establish `himg : ∀ m (φ : (Fin (m + 1) → (Ω ≃ₐ[K] Ω)) → M), (∃ c, galE K Ω R F M e m c = φ) ↔ IsLocallyConstant φ ∧ ∀ (τ : Ω ≃ₐ[K] Ω) (σ : Fin (m + 1) → (Ω ≃ₐ[K] Ω)), φ (fun i => τ * σ i) = M.ρ τ (φ σ)`. Introduce `m φ`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.T.galoisDescent_freeSheaf_cechLevel_sepClosure R F hF K Ω m).2.1 c).comp e.symm`. Introduce `τ σ`. Rewrite using `[galE_apply, galE_apply, hρ, ← galPt_mul, (GlobalTheory.T.freeEtaleModuleSheaf_hom_equiv_natural_sections R ((cech (fK K Ω)).obj (op ⦋m⦌)) F).2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨hlc, heq⟩`. Take `⟨s, hs⟩` from `(GlobalTheory.T.galoisDescent_freeSheaf_cechLevel_sepClosure R F hF K Ω m).2.2 (fun σ => e (φ σ)) (hlc.comp e) (by`. Introduce `τ σ`. Rewrite using `[heq, he])`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `σ`. Conclude with `(congrArg e.symm (hs σ)).trans (e.symm_apply_apply _)`. Establish `hface : ∀ m (i : Fin (m + 2)) (c : (cochC R (cech (fK K Ω)) F).obj ⦋m⦌) (σ : Fin (m + 2) → (Ω ≃ₐ[K] Ω)), galE K Ω R F M e (m + 1) ((cochC R (cech (fK K Ω)) F).δ i c) σ = galE K Ω R F M e m c (σ ∘ i.succAbove)`. Introduce `m i c σ`. Establish `h4` using `(GlobalTheory.T.freeEtaleModuleSheaf_hom_equiv_natural_sections R ((cech (fK K Ω)).obj (op ⦋m⦌)) F).2.2.2.1 _ ((cech (fK K Ω)).δ i) c (Spec (CommRingCat.of Ω)) (galPt K Ω (m + 1) σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[galE_apply, galE_apply, ← galPt_face, ← h4]`. Both sides reduce to the same expression. Take `⟨b⟩` from `bridge R F (cech (fK K Ω)) (fun k m hm y => GlobalTheory.T.cohomology_cech_level_eq_zero_of_pos R F hF K Ω k m hm y) n`. Take `⟨c⟩` from `GlobalTheory.T.homogeneousCochains_homology_addEquiv_alt R (Ω ≃ₐ[K] Ω) M (cochC R (cech (fK K Ω)) F) (galE K Ω R F M e) hinj himg hface n`. Conclude with `⟨(AddEquiv.ofBijective (pull R (cechAug (fK K Ω)) F n) (GlobalTheory.T.etaleCechAugmentation_sepClosure_isEquivalence R F hF K Ω n)).trans (b.trans c)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cohomology_field_addEquiv_galois : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (M : Rep.{0} R (Ω ≃ₐ[K] Ω)) [GroundTheory.ProfCoh.IsDiscreteRep M] (e : M ≃+ Sec F (Spec (CommRingCat.of Ω))), (∀ (σ : Ω ≃ₐ[K] Ω) (m : M), e (M.ρ σ m) = Sec.res (Spec.map (CommRingCat.ofHom (σ : Ω →+* Ω))) (e m)) → ∀ n : ℕ, Nonempty (H R (sp K) F n ≃+ GroundTheory.ProfCoh.cohomology M n) := by
   intro R _ F hF K Ω _ _ _ _ M _ e he n
@@ -358,7 +356,7 @@ theorem cohomology_field_addEquiv_galois : ∀ (R : Type) [CommRing R] (F : Shv 
   exact ⟨(AddEquiv.ofBijective (pull R (cechAug (fK K Ω)) F n) (GlobalTheory.T.etaleCechAugmentation_sepClosure_isEquivalence R F hF K Ω n)).trans (b.trans c)⟩
 
 /- English proof (translation)
-The claim follows from `cohomology_field_addEquiv_galois`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (M : Rep.{0} R (Ω ≃ₐ[K] Ω)) [GroundTheory.ProfCoh.IsDiscreteRep M] (e : M ≃+ Sec F (Spec (CommRingCat.of Ω))), (∀ (σ : Ω ≃ₐ[K] Ω) (m : M), e (M.ρ σ m) = Sec.res (Spec.map (CommRingCat.ofHom (σ : Ω →+* Ω))) (e m)) → ∀ n : ℕ, Nonempty (H R (sp K) F n ≃+ GroundTheory.ProfCoh.cohomology M n) := cohomology_field_addEquiv_galois
 

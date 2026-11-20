@@ -20,29 +20,25 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
 
 /- English proof (translation)
-Use `set U : Subgroup (GL (Fin n) F) := stabilizerOf π ξ ⊓ integralGL F n with hU`. Establish `hUo : IsOpen (U : Set (GL (Fin n) F))`. Rewrite using `[hU, Subgroup.coe_inf]`. Conclude with `(mem_smoothVectors.1 hξ).inter (isOpen_integralGL F n)`. Establish `hUc : IsCompact (U : Set (GL (Fin n) F))` using `(isCompact_integralGL F n).of_isClosed_subset (Subgroup.isClosed_of_isOpen U hUo) (by rw [hU, Subgroup.coe_inf]; exact inter_subset_right)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W : Set (GL (Fin n) F) := (g₀ * ·) '' (U : Set (GL (Fin n) F)) with hW`. Establish `hWo : IsOpen W` using `(Homeomorph.mulLeft g₀).isOpenMap _ hUo`. Establish `hWc : IsCompact W` using `hUc.image (continuous_const_mul g₀)`. Establish `hWm : MeasurableSet W` using `hWo.measurableSet`. Establish `hg₀ : g₀ ∈ W` using `⟨1, U.one_mem, mul_one g₀⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval` using `Measures.isOpenEmbedding_val F n`. Use `set S : Set (Matrix (Fin n) (Fin n) F) := Units.val '' W with hS`. Establish `hSo : IsOpen S` using `hval.isOpenMap _ hWo`. Establish `hSc : IsCompact S` using `hWc.image Units.continuous_val`. Establish `hmemS : ∀ g : GL (Fin n) F, (g : Matrix (Fin n) (Fin n) F) ∈ S ↔ g ∈ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, he⟩`. Rewrite using `[← Units.ext he]` and apply the resulting hypothesis. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨g, h, rfl⟩`. Use `set Φ : Matrix (Fin n) (Fin n) F → ℂ := S.indicator fun _ ↦ (1 : ℂ) with hΦ`. Use `set c : ℂ := Parabolic.matrixCoeff π ξ ℓ g₀ with hc`. Establish `hfW : ∀ g ∈ W, Parabolic.matrixCoeff π ξ ℓ g = c`. Introduce and unpack `g ⟨u, hu, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu1 : π u ξ = ξ` using `mem_stabilizerOf.1 (Subgroup.mem_inf.1 hu).1`. Simplify using `only [hc, Parabolic.matrixCoeff, map_mul, Module.End.mul_apply, hu1]`. Establish `hdW : ∀ g ∈ W, ∀ s, detPow g s = detPow g₀ s`. Introduce and unpack `g ⟨u, hu, rfl⟩ s`. Rewrite using `[detPow_mul, detPow_of_mem_integralGL (Subgroup.mem_inf.1 hu).2, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfun' : ∀ (s : ℂ) (g : GL (Fin n) F), Φ g * Parabolic.matrixCoeff π ξ ℓ g * detPow g s = W.indicator (fun _ ↦ c * detPow g₀ s) g`. Introduce `s g`. Distinguish the cases in `hg : g ∈ W`. Rewrite using `[hΦ, indicator_of_mem ((hmemS g).2 hg), indicator_of_mem hg, one_mul, hfW g hg, hdW g hg]`. Rewrite using `[hΦ, indicator_of_notMem (fun h ↦ hg ((hmemS g).1 h)), indicator_of_notMem hg, zero_mul, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : ∀ s : ℂ, (fun g : GL (Fin n) F ↦ Φ g * Parabolic.matrixCoeff π ξ ℓ g * detPow g s) = W.indicator fun _ ↦ c * detPow g₀ s` using `fun s ↦ funext (hfun' s)`. Establish `hdne : ∀ s, detPow g₀ s ≠ 0` using `fun s ↦ by`. Rewrite using `[detPow_eq_qs_zpow]`. Conclude with `zpow_ne_zero _ (qs_ne_zero s)`. Establish `hWpos : 0 < μ.real W` using `ENNReal.toReal_pos (hWo.measure_pos μ ⟨g₀, hg₀⟩).ne' hWc.measure_lt_top.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Φ, ⟨?_, ?_⟩, (μ.real W : ℂ) * c, mul_ne_zero (by exact_mod_cast hWpos.ne') h0, fun s ↦ ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `X`. Distinguish the cases in `hX : X ∈ S`. Conclude with `⟨S, hSo, hX, fun Y hY ↦ by rw [hΦ, indicator_of_mem hY, indicator_of_mem hX]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Sᶜ, hSc.isClosed.isOpen_compl, hX, fun Y hY ↦ by`. Rewrite using `[hΦ, indicator_of_notMem hY, indicator_of_notMem hX]⟩`. Conclude with `HasCompactSupport.intro hSc fun x hx ↦ indicator_of_notMem hx _`. Rewrite using `[hfun]`. Conclude with `(integrableOn_const hWc.measure_lt_top.ne).integrable_indicator hWm`.
-
-Repeatedly rewrite using `[hfun', enorm_indicator_eq_indicator_enorm]`. Rewrite using `[lintegral_indicator_const hWm]`. Conclude with `mul_ne_zero (enorm_ne_zero.2 (mul_ne_zero h0 (hdne _))) (hWo.measure_pos μ ⟨g₀, hg₀⟩).ne'`. Rewrite using `[zetaIntegral]`. Rewrite using `[hfun, integral_indicator_const _ hWm, Complex.real_smul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_localBump (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] {V : Type*} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin n) F) V) {ξ : V} (hξ : ξ ∈ smoothVectors π)
@@ -123,11 +119,9 @@ section Arch
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩ w hw`. Establish `h` using `congrFun u.mul_inv w`. Express the relevant statement in the definitionally equal form `(u : InfiniteAdeleRing K) w * (↑u⁻¹ : InfiniteAdeleRing K) w = 1 at h`. Rewrite `h` using `[hw, zero_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h`. Introduce `h`. Use `⟨⟨x, fun w ↦ (x w)⁻¹, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `mul_inv_cancel₀ (h w)`.
-
-Use function extensionality and compare the values at `w`. Conclude with `inv_mul_cancel₀ (h w)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isUnit_infiniteAdeleRing_iff {x : InfiniteAdeleRing K} :
     IsUnit x ↔ ∀ w : InfinitePlace K, x w ≠ 0 := by
@@ -147,7 +141,7 @@ theorem isUnit_infiniteAdeleRing_iff {x : InfiniteAdeleRing K} :
 def infInv (x : InfiniteAdeleRing K) : InfiniteAdeleRing K := fun w ↦ (x w)⁻¹
 
 /- English proof (translation)
-Establish `h1 : Ring.inverse x * x = 1` using `Ring.inverse_mul_cancel x hx`. Use function extensionality and compare the values at `w`. Establish `h2` using `congrFun h1 w`. Conclude with `eq_inv_of_mul_eq_one_left h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringInverse_eq_infInv {x : InfiniteAdeleRing K} (hx : IsUnit x) : Ring.inverse x = infInv x := by
   have h1 : Ring.inverse x * x = 1 := Ring.inverse_mul_cancel x hx
@@ -158,13 +152,13 @@ theorem ringInverse_eq_infInv {x : InfiniteAdeleRing K} (hx : IsUnit x) : Ring.i
 variable (K n) in
 
 /- English proof (translation)
-Establish `hdet : Continuous fun A : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K) ↦ A.det` using `Continuous.matrix_det (continuous_id (X := Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)))`. Use `⟨Units.isEmbedding_val_mk' (f := fun A ↦ infInv A.det • A.adjugate) ?_ fun u ↦ ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ContinuousOn (fun A : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K) ↦ ((fun w ↦ (A.det w)⁻¹ : ∀ w : InfinitePlace K, w.Completion))) {A | IsUnit A}`. Use `continuousOn_pi.2 fun w ↦ ?_` and prove the remaining obligations. Conclude with `((continuous_apply (A := fun v : InfinitePlace K ↦ v.Completion) w).comp hdet).continuousOn.inv₀ fun A hA ↦ isUnit_infiniteAdeleRing_iff.1 ((Matrix.isUnit_iff_isUnit_det A).1 hA) w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : Continuous fun A : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K) ↦ A.adjugate` using `Continuous.matrix_adjugate (continuous_id (X := Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)))`. Conclude with `ContinuousOn.smul (M := InfiniteAdeleRing K) h1 h2.continuousOn`. Establish `hu : IsUnit (u : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 u.isUnit show infInv (u : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)).det • (u : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)).adjugate = ↑u⁻¹`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, ringInverse_eq_infInv hu]`. Establish `: Set.range (Units.val : AdelicGLn.InfiniteAdelicGL K n → Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) = ⋂ w : InfinitePlace K, (fun A : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K) ↦ A.det w) ⁻¹' {0}ᶜ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `A`. Simplify using `only [Set.mem_range, Set.mem_iInter, Set.mem_preimage, Set.mem_compl_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `isUnit_infiniteAdeleRing_iff.1 ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `⟨((Matrix.isUnit_iff_isUnit_det A).2 (isUnit_infiniteAdeleRing_iff.2 h)).unit, rfl⟩`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun w ↦ isOpen_compl_singleton.preimage ((continuous_apply w).comp hdet)`.
+A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_val_infiniteAdelicGL :
     IsOpenEmbedding (Units.val : AdelicGLn.InfiniteAdelicGL K n → Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) := by
@@ -221,7 +215,7 @@ theorem archSchwartz_eq (φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ))
     (x : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) : archSchwartz φ x = φ (archEntries K n x) := rfl
 
 /- English proof (translation)
-Establish `hu : IsUnit (x : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 x.isUnit`. Conclude with `Finset.prod_pos fun w _ ↦ pow_pos (norm_pos_iff.2 (isUnit_infiniteAdeleRing_iff.1 hu w)) _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem archAbsDet_pos (x : AdelicGLn.InfiniteAdelicGL K n) : 0 < archAbsDet x := by
   have hu : IsUnit (x : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)).det :=
@@ -229,7 +223,7 @@ theorem archAbsDet_pos (x : AdelicGLn.InfiniteAdelicGL K n) : 0 < archAbsDet x :
   exact Finset.prod_pos fun w _ ↦ pow_pos (norm_pos_iff.2 (isUnit_infiniteAdeleRing_iff.1 hu w)) _
 
 /- English proof (translation)
-The claim follows from `(Continuous.matrix_det (continuous_id (X := Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)))).comp Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_det_infiniteAdelicGL :
     Continuous fun x : AdelicGLn.InfiniteAdelicGL K n ↦ (x : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)).det :=
@@ -237,7 +231,7 @@ theorem continuous_det_infiniteAdelicGL :
     Units.continuous_val
 
 /- English proof (translation)
-Use `continuous_finsetProd _ fun w _ ↦ ?_` and prove the remaining obligations. Establish `h : Continuous fun x : AdelicGLn.InfiniteAdelicGL K n ↦ (x : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)).det w` using `(continuous_apply (A := fun v : InfinitePlace K ↦ v.Completion) w).comp continuous_det_infiniteAdelicGL`. Conclude with `(continuous_norm.comp h).pow _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_archAbsDet : Continuous (archAbsDet (K := K) (n := n)) := by
   refine continuous_finsetProd _ fun w _ ↦ ?_
@@ -247,67 +241,57 @@ theorem continuous_archAbsDet : Continuous (archAbsDet (K := K) (n := n)) := by
   exact (continuous_norm.comp h).pow _
 
 /- English proof (translation)
-The claim follows from `(Complex.continuous_ofReal.comp continuous_archAbsDet).cpow continuous_const fun x ↦ Complex.ofReal_mem_slitPlane.2 (archAbsDet_pos x)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archDetPow (s : ℂ) : Continuous fun x : AdelicGLn.InfiniteAdelicGL K n ↦ archDetPow x s :=
   (Complex.continuous_ofReal.comp continuous_archAbsDet).cpow continuous_const fun x ↦
     Complex.ofReal_mem_slitPlane.2 (archAbsDet_pos x)
 
 /- English proof (translation)
-Rewrite using `[archDetPow, Ne, Complex.cpow_eq_zero_iff]`. Conclude with `fun h ↦ (archAbsDet_pos x).ne' (by exact_mod_cast h.1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem archDetPow_ne_zero (x : AdelicGLn.InfiniteAdelicGL K n) (s : ℂ) : archDetPow x s ≠ 0 := by
   rw [archDetPow, Ne, Complex.cpow_eq_zero_iff]
   exact fun h ↦ (archAbsDet_pos x).ne' (by exact_mod_cast h.1)
 
 /- English proof (translation)
-Use `set J : AdelicGLn.InfiniteAdelicGL K n → (Fin n × Fin n → mixedSpace K) := fun x ↦ archEntries K n (x : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) with hJdef`. Establish `hJ : IsOpenEmbedding J` using `(archEntries K n).isOpenEmbedding.comp (isOpenEmbedding_val_infiniteAdelicGL K n)`. Use `set c₀ : ℂ := f x₀ with hc₀`. Use `set W : Set (AdelicGLn.InfiniteAdelicGL K n) := {x | 0 < (starRingEnd ℂ c₀ * f x).re} with hWdef`. Establish `hWo : IsOpen W` using `isOpen_lt continuous_const (Complex.continuous_re.comp (continuous_const.mul hf))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc₀re : 0 < (starRingEnd ℂ c₀ * c₀).re`. Rewrite using `[Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`. Conclude with `pow_pos (norm_pos_iff.2 h0) 2`. Establish `hx₀W : x₀ ∈ W` using `hc₀re`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 (hJ.isOpenMap W hWo) (J x₀) ⟨x₀, hx₀W, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : ContDiffBump (J x₀)` to `⟨ε / 4, ε / 2, by positivity, by linarith⟩`. Establish `hψc : HasCompactSupport fun y ↦ (ψ y : ℂ)` using `ψ.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `hψd : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun y ↦ (ψ y : ℂ)` using `Complex.ofRealCLM.contDiff.comp ψ.contDiff`. Use `set φ : 𝓢(Fin n × Fin n → mixedSpace K, ℂ) := hψc.toSchwartzMap hψd with hφdef`. Establish `hsub : closedBall (J x₀) (ε / 2) ⊆ J '' W` using `fun y hy ↦ hball (closedBall_subset_ball (by linarith) hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hKc : IsCompact (J ⁻¹' closedBall (J x₀) (ε / 2))`. Rewrite using `[hJ.isEmbedding.isCompact_iff, image_preimage_eq_of_subset (hsub.trans (image_subset_range _ _))]`. Conclude with `isCompact_closedBall _ _`. Establish `hψzero : ∀ x, x ∉ J ⁻¹' closedBall (J x₀) (ε / 2) → ψ (J x) = 0`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `: J x ∈ Function.support ψ` using `h`. Rewrite `this` using `[ψ.support_eq]`. Conclude with `hx (ball_subset_closedBall this)`. Establish `hψW : ∀ x, ψ (J x) ≠ 0 → x ∈ W`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `: J x ∈ Function.support ψ` using `hx`. Rewrite `this` using `[ψ.support_eq]`. Take `⟨y, hy, hyx⟩` from `hball (ball_subset_ball (show ψ.rOut ≤ ε from by show ε / 2 ≤ ε; linarith) this)`. Rewrite using `[← hJ.injective hyx]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcontψ : Continuous fun x ↦ (ψ (J x) : ℂ)` using `Complex.continuous_ofReal.comp (ψ.continuous.comp hJ.continuous)`. Establish `hint_eq : ∀ s x, archIntegrand φ f s x = (ψ (J x) : ℂ) * f x * archDetPow x (s + ((n : ℂ) - 1) / 2)` using `fun s x ↦ rfl`. Establish `hcont : ∀ s, Continuous (archIntegrand φ f s)` using `fun s ↦ by`. Establish `: archIntegrand φ f s = fun x ↦ (ψ (J x) : ℂ) * f x * archDetPow x (s + ((n : ℂ) - 1) / 2)`. Use function extensionality and compare the values at `(hint_eq s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(hcontψ.mul hf).mul (continuous_archDetPow _)`. Establish `hcs : ∀ s, HasCompactSupport (archIntegrand φ f s)` using `fun s ↦ HasCompactSupport.intro hKc fun x hx ↦ by`. Rewrite using `[hint_eq, hψzero x hx, Complex.ofReal_zero, zero_mul, zero_mul]`. Establish `hInt : ∀ s, Integrable (archIntegrand φ f s) μ` using `fun s ↦ (hcont s).integrable_of_hasCompactSupport (hcs s)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψ₀ : ψ (J x₀) = 1` using `ψ.one_of_mem_closedBall (mem_closedBall_self (by positivity))`. Establish `hne₀ : ∀ s, archIntegrand φ f s x₀ ≠ 0` using `fun s ↦ by`. Rewrite using `[hint_eq, hψ₀, Complex.ofReal_one, one_mul]`. Conclude with `mul_ne_zero h0 (archDetPow_ne_zero _ _)`. Use `⟨φ, hInt, fun s hzero ↦ ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hae` using `(lintegral_eq_zero_iff' (hcont s).enorm.aemeasurable).1 hzero`. Establish `hae' : archIntegrand φ f s =ᵐ[μ] 0` using `hae.mono fun x hx ↦ enorm_eq_zero.1 hx`. Use `(Continuous.ae_eq_iff_eq μ (hcont s) continuous_const).1 hae'` as an intermediate fact. Conclude with `hne₀ s (congrFun this x₀)`. Introduce `s₀`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set c' : ℂ := ((n : ℂ) - 1) / 2 with hc'`. Use `set σ : ℝ := (s₀ + c').re with hσ`. Use `set A : AdelicGLn.InfiniteAdelicGL K n → ℝ := archAbsDet with hAdef`. Establish `hA : ∀ x, 0 < A x` using `archAbsDet_pos`. Establish `hAc : Continuous A` using `continuous_archAbsDet`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set g : AdelicGLn.InfiniteAdelicGL K n → ℂ := fun x ↦ (ψ (J x) : ℂ) * f x with hg`. Establish `hgc : Continuous g` using `hcontψ.mul hf`. Use `set F' : ℂ → AdelicGLn.InfiniteAdelicGL K n → ℂ := fun s x ↦ g x * ((A x : ℂ) ^ (s + c') * Complex.log (A x)) with hF'`. Use `set bound : AdelicGLn.InfiniteAdelicGL K n → ℝ := fun x ↦ ‖g x‖ * (A x ^ (σ - 1) + A x ^ (σ + 1)) * |Real.log (A x)| with hbound`. Establish `hderiv : ∀ x, ∀ s ∈ ball s₀ 1, HasDerivAt (fun s ↦ archIntegrand φ f s x) (F' s x) s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Introduce `x s _`. Establish `h1 : HasDerivAt (fun s : ℂ ↦ (A x : ℂ) ^ (s + c')) ((A x : ℂ) ^ (s + c') * Complex.log (A x) * 1) s` using `((hasDerivAt_id s).add_const c').const_cpow (Or.inl (by exact_mod_cast (hA x).ne'))`. Establish `h2` using `h1.const_mul (g x)`. Simplify using `only [mul_one] at h2`. Conclude with `h2`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbd : ∀ x, ∀ s ∈ ball s₀ 1, ‖F' s x‖ ≤ bound x`. Introduce `x s hs`. Establish `hre : |s.re - s₀.re| < 1`. Rewrite using `[← Complex.sub_re]`. Conclude with `(Complex.abs_re_le_norm _).trans_lt (by rwa [mem_ball, dist_eq_norm] at hs)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm1 : ‖(A x : ℂ) ^ (s + c')‖ = A x ^ (s + c').re` using `Complex.norm_cpow_eq_rpow_re_of_pos (hA x) _`. Establish `hnorm2 : ‖Complex.log (A x : ℂ)‖ = |Real.log (A x)|`. Rewrite using `[← Complex.ofReal_log (hA x).le, Complex.norm_real, Real.norm_eq_abs]`. Establish `hexp : (s + c').re = s.re + c'.re` using `Complex.add_re _ _`. Establish `hσ' : σ = s₀.re + c'.re` using `Complex.add_re _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrpow : A x ^ (s + c').re ≤ A x ^ (σ - 1) + A x ^ (σ + 1)`. Rewrite `hre` using `[abs_lt]`. Distinguish the cases in `h1 : 1 ≤ A x`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hF', hbound, norm_mul, hnorm1, hnorm2]`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hrpow (abs_nonneg _)) (norm_nonneg _)`. Establish `hboundc : Continuous bound` using `((continuous_norm.comp hgc).mul ((hAc.rpow_const fun x ↦ Or.inl (hA x).ne').add (hAc.rpow_const fun x ↦ Or.inl (hA x).ne'))).mul (hAc.log fun x ↦ (hA x).ne').abs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbint : Integrable bound μ`. Use `hboundc.integrable_of_hasCompactSupport (HasCompactSupport.intro hKc fun x hx ↦ ?_)` and prove the remaining obligations. Simplify using `only [hbound, hg, hψzero x hx, Complex.ofReal_zero, zero_mul, norm_zero]`. Establish `hF'c : Continuous (F' s₀)` using `hgc.mul ((continuous_archDetPow (s₀ + c')).mul ((Complex.continuous_ofReal.comp hAc).clog fun x ↦ Complex.ofReal_mem_slitPlane.2 (hA x)))`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun s x ↦ archIntegrand φ f s x) (x₀ := s₀) (ball_mem_nhds s₀ one_pos) (Filter.Eventually.of_forall fun s ↦ (hcont s).aestronglyMeasurable) (hInt s₀) (F' := F') hF'c.aestronglyMeasurable (ae_of_all _ fun x s hs ↦ hbd …`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key.2.differentiableAt`. Use `⟨-(((n : ℂ) - 1) / 2), fun hz ↦ ?_⟩` and prove the remaining obligations. Establish `hint1 : ∀ x, archIntegrand φ f (-(((n : ℂ) - 1) / 2)) x = (ψ (J x) : ℂ) * f x` using `fun x ↦ by`. Rewrite using `[hint_eq, neg_add_cancel, archDetPow, Complex.cpow_zero, mul_one]`. Use `set r : AdelicGLn.InfiniteAdelicGL K n → ℝ := fun x ↦ ψ (J x) * (starRingEnd ℂ c₀ * f x).re with hr`.
-
-Establish `hr_eq : ∀ x, (starRingEnd ℂ c₀ * archIntegrand φ f (-(((n : ℂ) - 1) / 2)) x).re = r x` using `fun x ↦ by`. Rewrite using `[hint1, mul_left_comm, Complex.re_ofReal_mul]`. Establish `hrc : Continuous r` using `(ψ.continuous.comp hJ.continuous).mul (Complex.continuous_re.comp (continuous_const.mul hf))`. Establish `hr0 : 0 ≤ r` using `fun x ↦ by`. Distinguish the cases in `hx : ψ (J x) = 0`.
-
-Simplify using `only [hr, hx, zero_mul, Pi.zero_apply, le_refl]`. Conclude with `mul_nonneg ψ.nonneg (hψW x hx).le`. Establish `hrint : Integrable r μ`. Use `hrc.integrable_of_hasCompactSupport (HasCompactSupport.intro hKc fun x hx ↦ ?_)` and prove the remaining obligations. Simplify using `only [hr, hψzero x hx, zero_mul]`.
-
-Establish `hpos : 0 < ∫ x, r x ∂μ`. Rewrite using `[integral_pos_iff_support_of_nonneg hr0 hrint]`. Use `hrc.isOpen_support.measure_pos μ ⟨x₀, ?_⟩` and prove the remaining obligations. Use `show r x₀ ≠ 0`. Simplify using `only [hr, hψ₀, one_mul]`.
-
-Conclude with `hc₀re.ne'`. Establish `hre` using `integral_re ((hInt (-(((n : ℂ) - 1) / 2))).const_mul (starRingEnd ℂ c₀))`. Simplify using `only [RCLike.re_to_complex] at hre`. Establish `heq : ∫ x, r x ∂μ = (starRingEnd ℂ c₀ * archZeta μ φ f (-(((n : ℂ) - 1) / 2))).re`. Rewrite using `[archZeta, ← integral_const_mul, ← hre]`.
-
-Conclude with `integral_congr_ae (ae_of_all _ fun x ↦ (hr_eq x).symm)`. Rewrite `heq` using `[hz, mul_zero, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_archBump (μ : Measure (AdelicGLn.InfiniteAdelicGL K n)) [μ.IsHaarMeasure]
     {f : AdelicGLn.InfiniteAdelicGL K n → ℂ} (hf : Continuous f) {x₀ : AdelicGLn.InfiniteAdelicGL K n}

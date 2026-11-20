@@ -11,11 +11,11 @@ open GlobalTheory.AdelicU (evFin splitPrime)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ϖ hϖ a ν z C φ g₀ g₁ hφ`. Use `letI : MeasurableSpace (GL (Fin a) k) := Units.instMeasurableSpace`. Use `haveI : BorelSpace (GL (Fin a) k) := GlobalTheory.SplitFlip.borel_GL`. Establish `hSm : MeasurableSet {g : GL (Fin a) k | g₀ * g * g₁ ∈ GlobalTheory.SplitWeil.KO k (Fin a)}` using `(GlobalTheory.PureMatch.ShellVolume.isOpen_translate g₀ g₁).measurableSet`. Establish `hvol` using `GlobalTheory.PureMatch.ShellVolume.finsum_vol_shell_inter_translate k a ϖ g₀ g₁ hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hshell : ∀ m : {m : Fin a → ℤ // Antitone m}, GlobalTheory.SplitFlip.shell (GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin a))) ϖ ν z φ m.1 = (GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin a))).real (GlobalTheory.SplitFlip.shellSet ϖ m.1 ∩ {g …`. Introduce `m`. Rewrite using `[GlobalTheory.SplitFlip.shell]`. Repeatedly rewrite using `[hφ]`. Establish `e1` using `MeasureTheory.setIntegral_indicator (μ := GlobalTheory.SplitFlip.haarVol (GlobalTheory.SplitWeil.KO k (Fin a))) (s := GlobalTheory.SplitFlip.shellSet ϖ m.1) (f := fun _ => C) hSm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, MeasureTheory.setIntegral_const]`. Rewrite using `[GlobalTheory.SplitFlip.shellSum]`. Repeatedly rewrite using `[hshell]`. Rewrite using `[← finsum_smul, hvol, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.shellSum_eq_const_of_twist_eq_indicator_double_coset :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ →

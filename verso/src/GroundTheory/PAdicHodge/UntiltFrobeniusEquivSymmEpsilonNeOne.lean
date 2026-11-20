@@ -41,13 +41,13 @@ def muBdR (ε : PreTilt (normInteger ℂ_[p]) p) : BDeRhamPlus (normInteger ℂ_
   wittToBDeRhamPlus 𝒪 p (AInf.mu ε)
 
 /- English proof (translation)
-Rewrite using `[muBdR, AInf.mu, map_sub, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem muBdR_eq (ε : 𝒪♭) : muBdR p ε = wittToBDeRhamPlus 𝒪 p (teichmuller p ε) - 1 := by
   rw [muBdR, AInf.mu, map_sub, map_one]
 
 /- English proof (translation)
-Rewrite using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker, muBdR, IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus, AInf.fontaineTheta_mu hε]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem muBdR_mem {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) : muBdR p ε ∈ 𝔪 := by
   rw [IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker, muBdR,
@@ -59,7 +59,7 @@ def fontaineT (ε : PreTilt (normInteger ℂ_[p]) p) (hε : PreTilt.untilt ε = 
   logOnePlus 𝔪 (muBdR p ε) (muBdR_mem hε)
 
 /- English proof (translation)
-The claim follows from `logOnePlus_sub_sum_mem _ n`.
+A detailed English derivation is pending.
 -/
 theorem fontaineT_sub_sum_mem {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (n : ℕ) :
     fontaineT ε hε - ∑ i ∈ Finset.Ico 1 n, algebraMap ℚ 𝔹 ((-1) ^ (i + 1) / i) * muBdR p ε ^ i ∈
@@ -67,7 +67,7 @@ theorem fontaineT_sub_sum_mem {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (n : 
   logOnePlus_sub_sum_mem _ n
 
 /- English proof (translation)
-The claim follows from `tendsto_seriesEval _ _`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_fontaineT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) :
     @Filter.Tendsto ℕ 𝔹
@@ -77,15 +77,15 @@ theorem tendsto_fontaineT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) :
   tendsto_seriesEval _ _
 
 /- English proof (translation)
-The claim follows from `logOnePlus_mem _`.
+A detailed English derivation is pending.
 -/
 theorem fontaineT_mem {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) : fontaineT ε hε ∈ 𝔪 :=
   logOnePlus_mem _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1 : u ∈ 𝔪` using `(IsLocalRing.mem_maximalIdeal u).2 h`. Establish `h2 : (1 : 𝔹) ∈ 𝔪`. Use `sub_mem h1 hu` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal 𝔹).ne_top ((Ideal.eq_top_iff_one _).2 h2)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_sub_one_mem {u : 𝔹} (hu : u - 1 ∈ 𝔪) : IsUnit u := by
   by_contra h
@@ -96,11 +96,11 @@ theorem isUnit_of_sub_one_mem {u : 𝔹} (hu : u - 1 ∈ 𝔪) : IsUnit u := by
   exact (IsLocalRing.maximalIdeal.isMaximal 𝔹).ne_top ((Ideal.eq_top_iff_one _).2 h2)
 
 /- English proof (translation)
-Establish `hξ` using `AInf.ker_fontaineTheta_eq_span_xi hε hζ`. Establish `h1` using `IsPerfectoidField.maximalIdeal_bDeRhamPlus_eq_span hξ`. Establish `hv : IsUnit (wittToBDeRhamPlus 𝒪 p ((WittVector.frobeniusEquiv p 𝒪♭).symm (AInf.mu ε)))`. Assume the negation of the conclusion as `h`. Establish `h2` using `(IsLocalRing.mem_maximalIdeal _).2 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h2` using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker, IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus]`. Establish `h3` using `AInf.fontaineTheta_frobeniusEquiv_symm_pow_mu ε 1`. Rewrite `h3` using `[pow_one, pow_one]`. Rewrite `h2` using `[h3]`. Conclude with `hζ (sub_eq_zero.1 (Subtype.ext h2))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu1, ht⟩` from `logOnePlus_eq_mul (muBdR_mem hε)`. Establish `hu` using `isUnit_of_sub_one_mem hu1`. Establish `hμ : muBdR p ε = wittToBDeRhamPlus 𝒪 p (AInf.xi ε) * wittToBDeRhamPlus 𝒪 p ((WittVector.frobeniusEquiv p 𝒪♭).symm (AInf.mu ε))`. Rewrite using `[muBdR, ← map_mul, ← AInf.mu_eq_xi_mul]`. Rewrite using `[fontaineT, ht, hμ, mul_assoc, Ideal.span_singleton_mul_right_unit (hv.mul hu), h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_eq_span_fontaineT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt (φi ε) ≠ 1) : 𝔪 = span {fontaineT ε hε} := by
@@ -123,7 +123,7 @@ theorem maximalIdeal_eq_span_fontaineT {ε : 𝒪♭} (hε : PreTilt.untilt ε =
   rw [fontaineT, ht, hμ, mul_assoc, Ideal.span_singleton_mul_right_unit (hv.mul hu), h1]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `maximalIdeal_eq_span_fontaineT hε hζ`. Rewrite `h1` using `[h, Ideal.span_singleton_eq_bot.2 rfl]`. Conclude with `IsDiscreteValuationRing.not_a_field 𝔹 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fontaineT_ne_zero {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt (φi ε) ≠ 1) : fontaineT ε hε ≠ 0 := by
@@ -133,7 +133,7 @@ theorem fontaineT_ne_zero {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
   exact IsDiscreteValuationRing.not_a_field 𝔹 h1
 
 /- English proof (translation)
-Use `haveI : NeZero p := ⟨(Fact.out : p.Prime).ne_zero⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot ℂ_[p] p`.
+A detailed English derivation is pending.
 -/
 theorem exists_isPrimitiveRoot_p : ∃ ζ : ℂ_[p], IsPrimitiveRoot ζ p := by
   haveI : NeZero p := ⟨(Fact.out : p.Prime).ne_zero⟩
@@ -147,7 +147,7 @@ def rootSeq : ℕ → ℂ_[p]
   | (n + 2) => (IsAlgClosed.exists_pow_nat_eq (rootSeq (n + 1)) (Fact.out : p.Prime).pos).choose
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Conclude with `(exists_isPrimitiveRoot_p (p := p)).choose_spec.pow_eq_one`. Conclude with `(IsAlgClosed.exists_pow_nat_eq (rootSeq p (n + 1)) (Fact.out : p.Prime).pos).choose_spec`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem rootSeq_succ_pow (n : ℕ) : rootSeq p (n + 1) ^ p = rootSeq p n := by
   rcases n with _ | n
@@ -155,7 +155,7 @@ theorem rootSeq_succ_pow (n : ℕ) : rootSeq p (n + 1) ^ p = rootSeq p n := by
   · exact (IsAlgClosed.exists_pow_nat_eq (rootSeq p (n + 1)) (Fact.out : p.Prime).pos).choose_spec
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [rootSeq]`. Consider the case `succ n ih => rw [pow_succ, pow_mul', rootSeq_succ_pow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem rootSeq_pow (n : ℕ) : rootSeq p n ^ p ^ n = 1 := by
   induction n with
@@ -163,13 +163,13 @@ theorem rootSeq_pow (n : ℕ) : rootSeq p n ^ p ^ n = 1 := by
   | succ n ih => rw [pow_succ, pow_mul', rootSeq_succ_pow, ih]
 
 /- English proof (translation)
-The claim follows from `(exists_isPrimitiveRoot_p (p := p)).choose_spec.ne_one (Fact.out : p.Prime).one_lt`.
+A detailed English derivation is pending.
 -/
 theorem rootSeq_one_ne_one : rootSeq p 1 ≠ 1 :=
   (exists_isPrimitiveRoot_p (p := p)).choose_spec.ne_one (Fact.out : p.Prime).one_lt
 
 /- English proof (translation)
-Establish `h` using `congrArg norm (rootSeq_pow (p := p) n)`. Rewrite `h` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_rootSeq (n : ℕ) : ‖rootSeq p n‖ = 1 := by
   have h := congrArg norm (rootSeq_pow (p := p) n)
@@ -182,7 +182,7 @@ def rootSeqInt (n : ℕ) : normInteger ℂ_[p] :=
   ⟨rootSeq p n, mem_normInteger.2 (norm_rootSeq n).le⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [rootSeqInt, rootSeq_succ_pow])`.
+A detailed English derivation is pending.
 -/
 theorem rootSeqInt_succ_pow (n : ℕ) : rootSeqInt p (n + 1) ^ p = rootSeqInt p n :=
   Subtype.ext (by simp [rootSeqInt, rootSeq_succ_pow])
@@ -193,14 +193,14 @@ def epsilon : PreTilt (normInteger ℂ_[p]) p :=
   IsPerfectoidField.ofCompatible p (rootSeqInt p) rootSeqInt_succ_pow
 
 /- English proof (translation)
-Rewrite using `[epsilon, IsPerfectoidField.untilt_ofCompatible]`. Conclude with `Subtype.ext (by simp [rootSeqInt, rootSeq])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untilt_epsilon : PreTilt.untilt (epsilon p) = 1 := by
   rw [epsilon, IsPerfectoidField.untilt_ofCompatible]
   exact Subtype.ext (by simp [rootSeqInt, rootSeq])
 
 /- English proof (translation)
-Rewrite using `[epsilon, AInf.frobeniusEquiv_symm_ofCompatible, IsPerfectoidField.untilt_ofCompatible]`. Introduce `h`. Conclude with `rootSeq_one_ne_one (congrArg Subtype.val h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem untilt_frobeniusEquiv_symm_epsilon_ne_one : PreTilt.untilt (φi (epsilon p)) ≠ 1 := by
   rw [epsilon, AInf.frobeniusEquiv_symm_ofCompatible, IsPerfectoidField.untilt_ofCompatible]
@@ -212,13 +212,13 @@ variable (p) in
 def tBdR : BDeRhamPlus (normInteger ℂ_[p]) p := fontaineT (epsilon p) untilt_epsilon
 
 /- English proof (translation)
-The claim follows from `maximalIdeal_eq_span_fontaineT untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one`.
+A detailed English derivation is pending.
 -/
 theorem maximalIdeal_eq_span_tBdR : 𝔪 = span {tBdR p} :=
   maximalIdeal_eq_span_fontaineT untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one
 
 /- English proof (translation)
-Conclude with `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 maximalIdeal_eq_span_tBdR`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_tBdR : Irreducible (tBdR p) := by
   exact (IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 maximalIdeal_eq_span_tBdR

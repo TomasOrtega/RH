@@ -15,7 +15,7 @@ section LogL
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Use `first`. Consider the case `exact hasStrictFDerivAt_exp_zero`. Consider the case `exact hasStrictFDerivAt_exp_zero (𝕂 := ℂ)`. Consider the case `(rw [ContinuousLinearEquiv.coe_refl]; exact hasStrictFDerivAt_exp_zero)`. Consider the case `(rw [ContinuousLinearEquiv.coe_refl]; exact hasStrictFDerivAt_exp_zero (𝕂 := ℂ))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma lcA_exp_strict :
     HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)
@@ -28,9 +28,9 @@ lemma lcA_exp_strict :
   | (rw [ContinuousLinearEquiv.coe_refl]; exact hasStrictFDerivAt_exp_zero (𝕂 := ℂ))
 
 /- English proof (translation)
-Establish `hf` using `lcA_exp_strict (n := n)`. Use `⟨hf.localInverse _ _ _, ?_, ?_, hf.eventually_left_inverse⟩` and prove the remaining obligations. Establish `h1` using `hf.localInverse_continuousAt.tendsto`. Establish `h2` using `hf.localInverse_apply_image`. Rewrite `h1`, `h2` using `[NormedSpace.exp_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Establish `h` using `hf.eventually_right_inverse`. Rewrite `h` using `[NormedSpace.exp_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma exists_local_matrix_log : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ,
     Tendsto ℓ (𝓝 1) (𝓝 0) ∧ (∀ᶠ k in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), NormedSpace.exp (ℓ k) = k) ∧
@@ -45,7 +45,7 @@ lemma exists_local_matrix_log : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix 
     rwa [NormedSpace.exp_zero] at h
 
 /- English proof (translation)
-Use `first`. Consider the case `exact NormedSpace.exp_continuous`. Consider the case `exact NormedSpace.exp_continuous (𝕂 := ℂ)`. Consider the case `exact exp_continuous`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma continuous_matrix_exp_alt :
     Continuous (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) := by
@@ -57,7 +57,7 @@ lemma continuous_matrix_exp_alt :
 end LogL
 
 /- English proof (translation)
-Use `first`. Consider the case `exact exists_local_matrix_log`. Consider the case `exact exists_local_matrix_log (n := n)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma lcA_exists_log : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ,
     Tendsto ℓ (𝓝 1) (𝓝 0) ∧ (∀ᶠ k in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), NormedSpace.exp (ℓ k) = k) ∧
@@ -67,25 +67,21 @@ lemma lcA_exists_log : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (
   | exact exists_local_matrix_log (n := n)
 
 /- English proof (translation)
-Take `⟨L, hL1, hL2, hL3⟩` from `lcA_exists_log (n := n)`. Use `⟨L, hL1, ?_⟩` and prove the remaining obligations. Establish `hJJ : Jm ε * Jm ε = 1`. Rewrite using `[Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hJinv : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv hJJ`. Establish `hJu : IsUnit (Jm ε)` using `⟨⟨Jm ε, Jm ε, hJJ, hJJ⟩, rfl⟩`. Establish `hA : Tendsto (fun k => (L k)ᴴ) (𝓝 1) (𝓝 0)`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hL1.star`. Rewrite `h` using `[star_zero]`. Conclude with `h`. Establish `hB : Tendsto (fun k => -(L k)) (𝓝 1) (𝓝 0)`. Establish `h` using `hL1.neg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[neg_zero]`. Conclude with `h`. Establish `hC : Tendsto (fun k => Jm ε * L k * Jm ε) (𝓝 1) (𝓝 0)`. Establish `h` using `(hL1.const_mul (Jm ε)).mul_const (Jm ε)`. Rewrite `h` using `[mul_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Use `filter_upwards [hL2, hA.eventually hL3, hB.eventually hL3, hC.eventually hL3] with k h2 hA' hB' hC' hk`. Establish `hk' : k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ k * Jm ε = Jm ε * k` using `hk`. Establish `hkk : kᴴ * k = 1`. Establish `h` using `hk'.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Matrix.mem_unitaryGroup_iff']`. Conclude with `h`. Establish `e1 : NormedSpace.exp ((L k)ᴴ) = kᴴ` using `by rw [Matrix.exp_conjTranspose, h2]`. Establish `e2 : NormedSpace.exp (-(L k)) = kᴴ`. Rewrite using `[Matrix.exp_neg, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Matrix.inv_eq_left_inv hkk`. Establish `hstar : (L k)ᴴ = -(L k)`. Rewrite using `[← hA', e1, ← e2, hB']`. Establish `e3 : NormedSpace.exp (Jm ε * L k * Jm ε) = NormedSpace.exp (L k)`. Establish `h` using `Matrix.exp_conj (Jm ε) (L k) hJu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h` using `[hJinv]`. Rewrite using `[h, h2, mul_assoc, hk'.2, ← mul_assoc, hJJ, one_mul]`. Establish `e4 : Jm ε * L k * Jm ε = L k`. Rewrite using `[← hC', e3, h2]`. Establish `hcomm : L k * Jm ε = Jm ε * L k`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨?_, hcomm⟩, h2⟩` and prove the remaining obligations. Use `show (L k)ᴴ * Jm ε + Jm ε * L k = 0`. Rewrite using `[hstar, neg_mul, ← hcomm]`. Use `first`.
-
-Consider the case `exact neg_add_cancel _`. Consider the case `simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma lcA_exists_klog (ε : Fin n → Bool) : ∃ ℓ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ,
     Tendsto ℓ (𝓝 1) (𝓝 0) ∧ ∀ᶠ k in 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ),
@@ -141,9 +137,9 @@ lemma lcA_exists_klog (ε : Fin n → Bool) : ∃ ℓ : Matrix (Fin n) (Fin n) �
 
 open scoped Matrix.Norms.L2Operator in
 /- English proof (translation)
-Establish `h : ContinuousOn (fun g : Matrix (Fin n) (Fin n) ℂ => CFC.log (gᴴ * g)) {g | inUJ ε g}`. Use `CFC.continuousOn_log.comp (by fun_prop) ?_` and prove the remaining obligations. Introduce `g hg`. Take `⟨hsa, hu, -⟩` from `PolarDecomposition.polar_isSelfAdjoint_isUnit_spectrum_pos hg`. Conclude with `⟨hsa, hu⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h.const_smul (1 / 2 : ℝ)`.
+A detailed English derivation is pending.
 -/
 lemma lcA_polarL_continuousOn (ε : Fin n → Bool) :
     ContinuousOn (PolarDecomposition.polar_L (n := n)) {g | inUJ ε g} := by

@@ -15,9 +15,9 @@ set_option autoImplicit false
 namespace GlobalTheory.LogPair
 
 /- English proof (translation)
-Introduce `R _ X f d s L σ h`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension d)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `choose C hC using h.chart`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension d) (fun x => (C x).U) ?_ fun x => ?_` and prove the remaining obligations. Rewrite using `[← top_le_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x -`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨x, hC x⟩`. Conclude with `GlobalTheory.ChartSmooth.smooth_of_etale f (C x).affine (C x).t (C x).etale`.
+A detailed English derivation is pending.
 -/
 theorem smooth_of_relSnc :
     ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) (d : ℕ) (s : ℕ) (L : Fin s → LB X)

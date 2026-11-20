@@ -10,7 +10,7 @@ namespace GlobalTheory.NilCov
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Rewrite using `[ipL_apply]`. Simplify using `only [Formalism.REAL.hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hs_eq_ipL (X : Matrix (Fin n) (Fin n) ℂ) : hs X = ipL X X := by
   rw [ipL_apply]
@@ -20,15 +20,15 @@ private theorem hs_eq_ipL (X : Matrix (Fin n) (Fin n) ℂ) : hs X = ipL X X := b
   rw [Complex.star_def, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 private theorem hs_nonneg' (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hs X :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
 
 /- English proof (translation)
-Establish `key : ∀ i j, ‖∑ k, A i k * B k j‖ ^ 2 ≤ (∑ k, ‖A i k‖ ^ 2) * ∑ k, ‖B k j‖ ^ 2`. Introduce `i j`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_sum_le _ _).trans (le_of_eq (by simp only [norm_mul]))`. Use `_ ≤ (∑ k, ‖A i k‖ ^ 2) * ∑ k, ‖B k j‖ ^ 2 := Finset.sum_mul_sq_le_sq_mul_sq _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Formalism.REAL.hs, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => (Finset.mul_sum _ _ _).symm`. Use `_ = (∑ i, ∑ k, ‖A i k‖ ^ 2) * ∑ k, ∑ j, ‖B k j‖ ^ 2 := by congr 1; exact Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hs_mul_le (A B : Matrix (Fin n) (Fin n) ℂ) : hs (A * B) ≤ hs A * hs B := by
 
@@ -48,13 +48,13 @@ private theorem hs_mul_le (A B : Matrix (Fin n) (Fin n) ℂ) : hs (A * B) ≤ hs
     _ = (∑ i, ∑ k, ‖A i k‖ ^ 2) * ∑ k, ∑ j, ‖B k j‖ ^ 2 := by congr 1; exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.hs, Matrix.neg_apply, norm_neg]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hs_neg' (X : Matrix (Fin n) (Fin n) ℂ) : hs (-X) = hs X := by
   simp only [Formalism.REAL.hs, Matrix.neg_apply, norm_neg]
 
 /- English proof (translation)
-Establish `hsign : ∀ a, ‖(if ε a then (1 : ℂ) else -1)‖ = 1`. Apply the tactic sequence `intro a; split_ifs <;> simp`. Simplify using `only [Formalism.REAL.hs, Formalism.REAL.Jm, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply, norm_mul, norm_star, hsign, one_mul, mul_one]`. Conclude with `Finset.sum_comm`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem hs_inv_eq (X : Matrix (Fin n) (Fin n) ℂ) : hs (Jm ε * Xᴴ * Jm ε) = hs X := by
 
@@ -65,7 +65,7 @@ private theorem hs_inv_eq (X : Matrix (Fin n) (Fin n) ℂ) : hs (Jm ε * Xᴴ * 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [Formalism.REAL.hs, Matrix.sub_apply, Matrix.add_apply, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `parallelogram_law_with_norm ℝ (X i j) (Y i j)`. Rewrite using `[sq, sq, sq, sq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem hs_sub_add_hs_add_eq_parallelogram (X Y : Matrix (Fin n) (Fin n) ℂ) :
     hs (X - Y) + hs (X + Y) = 2 * hs X + 2 * hs Y := by
@@ -76,15 +76,13 @@ private theorem hs_sub_add_hs_add_eq_parallelogram (X Y : Matrix (Fin n) (Fin n)
   linarith
 
 /- English proof (translation)
-Use `set X := uMat g - 1 with hXdef`. Use `set Y := Jm ε * Xᴴ * Jm ε with hYdef`. Establish `hc : ∀ i, ipL (E i) (X - Y) = 2 * ((X * (E i)ᴴ).trace).re`. Introduce `i`. Rewrite using `[ipL_sub_inv (hG i) X, ipL_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : X - Y = ∑ i, ipL (E i) (X - Y) • E i` using `eq_sum_of_mem_span hE hsp`. Establish `hD : hs (X - Y) = 4 * ∑ i, ((X * (E i)ᴴ).trace).re ^ 2`. Establish `h1 : ipL (X - Y) (X - Y) = ∑ i, ipL (E i) (X - Y) * ipL (E i) (X - Y)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, smul_eq_mul]`. Use `_ = ∑ i, ipL (E i) (X - Y) * ipL (E i) (X - Y) := Finset.sum_congr rfl fun i _ => by rw [ipL_comm (E i) (X - Y)]`. Rewrite using `[hs_eq_ipL, h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hc i]; ring`. Establish `hS : hs (X + Y) ≤ hs X ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hYX : X + Y = -(Y * X)` using `add_inv_eq g`. Establish `hYn : hs Y = hs X` using `hs_inv_eq X`. Rewrite using `[hYX, hs_neg', sq]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpara` using `hs_sub_add_hs_add_eq_parallelogram X Y`.
-
-Establish `hYn : hs Y = hs X` using `hs_inv_eq X`. Establish `hnn : 0 ≤ hs (X + Y)` using `hs_nonneg' _`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sum_coord_sq_le_hs_and_hs_le (n d : ℕ) (ε : Fin n → Bool) (E : Fin d → Matrix (Fin n) (Fin n) ℂ)
     (hE : ∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0) (hG : ∀ i, inG ε (E i)) (g : UJ ε)

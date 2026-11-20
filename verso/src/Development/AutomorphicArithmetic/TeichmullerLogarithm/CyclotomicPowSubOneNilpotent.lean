@@ -8,7 +8,7 @@ universe u
 namespace UpperTheory.RingBr
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Establish `h0 : (Polynomial.X - 1 : Polynomial (ZMod p)) ≠ 0`. Simplify using `using Polynomial.X_sub_C_ne_zero (1 : ZMod p)`. Apply `mul_right_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[geom_sum_mul, ← pow_succ, Nat.sub_add_cancel hp.one_le, sub_pow_char, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem geom_sum_eq_pow_poly (p : ℕ) [Fact p.Prime] :
     (∑ i ∈ Finset.range p, (Polynomial.X : Polynomial (ZMod p)) ^ i)
@@ -20,11 +20,11 @@ private theorem geom_sum_eq_pow_poly (p : ℕ) [Fact p.Prime] :
   rw [geom_sum_mul, ← pow_succ, Nat.sub_add_cancel hp.one_le, sub_pow_char, one_pow]
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Break down `subsingleton_or_nontrivial B with hs | hn` into its components or cases. Conclude with `Subsingleton.elim _ _`. Use `haveI : CharP B p := (CharP.charP_iff_prime_eq_zero hp).2 hB`. Establish `h1 : z ^ p - 1 = (z - 1) ^ p` using `by rw [sub_pow_char, one_pow]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h1]`. Break down `h with h | h` into its components or cases. Rewrite using `[h, zero_pow]`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra (ZMod p) B := ZMod.algebra B p`. Establish `h2` using `congrArg (Polynomial.aeval z) (geom_sum_eq_pow_poly p)`. Simplify using `only [map_sum, map_pow, map_sub, map_one, Polynomial.aeval_X] at h2`. Rewrite `h` using `[h2]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, h]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cyclotomic_pow_sub_one_nilpotent {B : Type*} [CommRing B] (p : ℕ) [Fact p.Prime] (hB : (p : B) = 0)
     (z : B) (h : (z - 1) ^ p = 0 ∨ (∑ i ∈ Finset.range p, z ^ i) ^ p = 0) :
@@ -46,7 +46,7 @@ private theorem cyclotomic_pow_sub_one_nilpotent {B : Type*} [CommRing B] (p : �
     rw [← pow_mul, mul_comm, pow_mul, h]
 
 /- English proof (translation)
-Simplify using `only [← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, map_pow, map_sub, map_one, map_sum] at h ⊢`. Use `cyclotomic_pow_sub_one_nilpotent p ?_ _ h` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk (span {(p : A)})), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dvd_prod_shift_sub_prod {A : Type*} [CommRing A] (p : ℕ) [Fact p.Prime] (z : A)
     (h : (p : A) ∣ (z - 1) ^ p ∨ (p : A) ∣ (∑ i ∈ Finset.range p, z ^ i) ^ p) :
@@ -61,7 +61,7 @@ variable {p : ℕ} [Fact p.Prime]
 variable {R : Type u} [CommRing R] [Fact ¬IsUnit (p : R)] [IsAdicComplete (span {(p : R)}) R]
 
 /- English proof (translation)
-Establish `h` using `AcrisZero.factorial_dvd_pow_of_mem_pdIdeal (AcrisZero.algebraMap_mem_pdIdeal x hx) p`. Establish `h2` using `map_dvd (algebraMap (AcrisZero p R) (Acris p R)) h`. Rewrite `h2` using `[map_natCast, map_pow, ← IsScalarTower.algebraMap_apply]`. Conclude with `(Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)).trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem p_dvd_pow_of_theta (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
     (p : Acris p R) ∣ (algebraMap (Ainf p R) (Acris p R) x) ^ p := by
@@ -71,11 +71,11 @@ private theorem p_dvd_pow_of_theta (x : Ainf p R) (hx : Ainf.theta p R x = 0) :
   exact (Nat.cast_dvd_cast (Nat.dvd_factorial (Fact.out : p.Prime).pos le_rfl)).trans h2
 
 /- English proof (translation)
-Take `⟨y, hy⟩ : ∃ y : Tilt p R, y ^ p = η.1` from `⟨(frobeniusEquiv (Tilt p R) p).symm η.1, frobeniusEquiv_symm_pow_p _ _ _⟩`. Establish `hη : PreTilt.untilt η.1 = 1` using `η.2`. Establish `hθ : Ainf.theta p R (Ainf.teich p y) ^ p = 1`. Rewrite using `[← map_pow, ← map_pow, hy, Ainf.theta_teich, hη]`. Rewrite using `[← hy, map_pow, map_sub, map_pow, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `dvd_prod_shift_sub_prod` to reduce the goal to its premises. Establish `hm` using `geom_sum_mul (Ainf.theta p R (Ainf.teich p y)) p`. Rewrite `hm` using `[hθ, sub_self]`. Break down `mul_eq_zero.1 hm with h | h` into its components or cases. Use `right`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `p_dvd_pow_of_theta (∑ i ∈ Finset.range p, Ainf.teich p y ^ i) (by simpa only [map_sum, map_pow] using h)` as an intermediate fact. Simplify `this` using `only [map_sum, map_pow]`. Use `left`. Use `p_dvd_pow_of_theta (Ainf.teich p y - 1) (by simpa only [map_sub, map_one] using h)` as an intermediate fact. Simplify `this` using `only [map_sub, map_one]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem p_dvd_mu_pow [IsDomain R] (η : tateModule p R) :
     (p : Acris p R) ∣ (algebraMap (Ainf p R) (Acris p R) (Ainf.teich p η.1 - 1)) ^ (p - 1) := by

@@ -6,13 +6,13 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hI y hy`. Substitute `hI` using the available equality. Use `set K := RingHom.ker (algebraMap P T)`. Set `f : (P ⧸ K) →ₗ[P] T` to `(Ideal.Quotient.liftₐ K (Algebra.ofId P T) (fun a ha => RingHom.mem_ker.mp ha)).toLinearMap`. Establish `hf : Function.Injective f`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite using `[Ideal.Quotient.eq, RingHom.mem_ker, map_sub, sub_eq_zero]`. Simplify `hab` using `[f]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hinj` using `Module.Flat.rTensor_preserves_injective_linearMap (M := L) f hf`. Establish `h0 : (1 : P ⧸ K) ⊗ₜ[P] y = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[LinearMap.rTensor_tmul, map_zero]`. Simplify `hy` using `[f]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (TensorProduct.quotTensorEquivQuotSMul L K) h0`. Rewrite `h1` using `[map_zero, TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Submodule.Quotient.mk_eq_zero]`. Rewrite `h1` using `[Ideal.smul_top_eq_map]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_one_tmul_eq_zero_mem_map (P T L : Type) [CommRing P] [CommRing T] [CommRing L] [Algebra P T] [Algebra P L] [Module.Flat P L] (I : Ideal P) :
     RingHom.ker (algebraMap P T) = I → ∀ y : L, (1 : T) ⊗ₜ[P] y = 0 → y ∈ I.map (algebraMap P L) := by

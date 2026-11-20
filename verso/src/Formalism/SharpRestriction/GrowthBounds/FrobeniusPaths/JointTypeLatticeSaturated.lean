@@ -12,25 +12,25 @@ section Low
 variable {R σ : Type*} [CommRing R] (w : σ → ℕ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `m hm`. Assume the negation of the conclusion as `hlt`. Rewrite `hm` using `[mem_support_iff, coeff_mul]`. Apply `hm` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨x, y⟩ hxy`. Rewrite `hxy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only at hxy ⊢`. Distinguish the cases in `hx : x ∈ f.support`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y ∈ g.support`. It suffices to derive a contradiction. Apply `hlt` to reduce the goal to its premises. Rewrite using `[← hxy, map_add]`. Conclude with `add_le_add (hf x hx) (hg y hy)`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[notMem_support_iff.1 hy, mul_zero]`. Rewrite using `[notMem_support_iff.1 hx, zero_mul]`. Use extensionality with `m`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_mul, coeff_mul]`. Use `split_ifs with hm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce and unpack `⟨x, y⟩ hxy`. Rewrite `hxy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only at hxy ⊢`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_weightedHomogeneousComponent]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ f.support`. Distinguish the cases in `hy : y ∈ g.support`. Establish `h1` using `hf x hx`. Establish `h2` using `hg y hy`. Establish `h3 : Finsupp.weight w x + Finsupp.weight w y = a + b` using `by rw [← map_add, hxy, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (by omega), if_pos (by omega)]`. Rewrite using `[notMem_support_iff.1 hy]`. Simplify using the standard rewrite rules. Rewrite using `[notMem_support_iff.1 hx]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨x, y⟩ hxy`. Rewrite `hxy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only at hxy ⊢`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[coeff_weightedHomogeneousComponent, coeff_weightedHomogeneousComponent]`. Distinguish the cases in `h1 : Finsupp.weight w x = a`. Distinguish the cases in `h2 : Finsupp.weight w y = b`. It suffices to derive a contradiction. Apply `hm` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxy, map_add, h1, h2]`. Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma low_mul {f g : MvPolynomial σ R} {a b : ℕ} (hf : ∀ m ∈ f.support, a ≤ Finsupp.weight w m)
     (hg : ∀ m ∈ g.support, b ≤ Finsupp.weight w m) :
@@ -83,9 +83,9 @@ lemma low_mul {f g : MvPolynomial σ R} {a b : ℕ} (hf : ∀ m ∈ f.support, a
       · rw [if_neg h1, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨fun m _ => by simp, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, Finset.prod_empty]`. Conclude with `weightedHomogeneousComponent_of_mem (isWeightedHomogeneous_one R w) |>.trans (by simp)`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Establish `ih'` using `ih fun c hc => hf c (Finset.mem_insert_of_mem hc)`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, Finset.prod_insert ha]`. Use `low_mul w (hf a (Finset.mem_insert_self a s)) ih'.1` as an intermediate fact. Conclude with `⟨this.1, by rw [this.2, ih'.2]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma low_prod {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ R) (o : ι → ℕ)
     (hf : ∀ c ∈ s, ∀ m ∈ (f c).support, o c ≤ Finsupp.weight w m) :
@@ -107,13 +107,13 @@ lemma low_prod {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ R) (o : 
 end Low
 
 /- English proof (translation)
-Establish `hb : ∀ (i : Fin (N + 1)) (m : Fin n), |mu i m| ≤ ∑ i, ∑ m, |mu i m|`. Introduce `i m`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [colRange, Finset.mem_Icc, not_and_or, not_le] at hc`. Unfold `colH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Break down `hc with hc | hc` into its components or cases. Establish `: ∀ (i : Fin (N + 1)), (univ.filter fun m => c ≤ mu i m) = univ` using `fun i => by`. Apply `Finset.filter_true_of_mem` to reduce the goal to its premises. Introduce `m _`. Use `hb i m` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `neg_abs_le (mu i m)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, this]`. Establish `: ∀ (i : Fin (N + 1)), (univ.filter fun m => c ≤ mu i m) = ∅` using `fun i => by`. Apply `Finset.filter_false_of_mem` to reduce the goal to its premises.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `m _`. Use `hb i m` as an intermediate fact. Use `le_abs_self (mu i m)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 lemma colH_const_of_notMem {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) (c : ℤ) (hc : c ∉ colRange mu)
     (i j : Fin (N + 1)) : colH (mu i) c = colH (mu j) c := by
@@ -141,9 +141,9 @@ lemma colH_const_of_notMem {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) (c :
     rw [this, this]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[Kcol]`. Use `split_ifs with h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[colH_const_of_notMem mu c hc ⟨j, by omega⟩ ⟨j + 1, by omega⟩, ih]`. Simplify using `[colStep]`. Conclude with `ih`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma kcol_of_notMem (R : Type*) [CommRing R] {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) (c : ℤ)
     (hc : c ∉ colRange mu) (j : ℕ) : Kcol R mu c j = extOne := by
@@ -157,11 +157,11 @@ lemma kcol_of_notMem (R : Type*) [CommRing R] {N n : ℕ} (mu : Fin (N + 1) → 
     · exact ih
 
 /- English proof (translation)
-Establish `h : ∑ i, ∑ m, |joinPT nu ka i m| = ∑ i, ∑ m, |nu i m| + ∑ i, ∑ m, |ka i m|`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Fin.sum_univ_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[joinPT]`. Establish `h1 : 0 ≤ ∑ i, ∑ m, |nu i m|` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `h2 : 0 ≤ ∑ i, ∑ m, |ka i m|` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Prove the components needed by the constructor for the conclusion. Introduce `c hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [colRange, Finset.mem_Icc] at hc ⊢`. Apply the tactic sequence `rw [h]; constructor <;> omega`. Introduce `c hc`. Simplify using `only [colRange, Finset.mem_Icc] at hc ⊢`. Apply the tactic sequence `rw [h]; constructor <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma colRange_pl_subset {N r K : ℕ} (nu : Fin (N + 1) → Fin r → ℤ) (ka : Fin (N + 1) → Fin K → ℤ) :
     colRange nu ⊆ colRange (joinPT nu ka) ∧ colRange ka ⊆ colRange (joinPT nu ka) := by
@@ -182,7 +182,7 @@ lemma colRange_pl_subset {N r K : ℕ} (nu : Fin (N + 1) → Fin r → ℤ) (ka 
     rw [h]; constructor <;> omega
 
 /- English proof (translation)
-Unfold `Psi`. Apply `Finset.prod_subset hs` to reduce the goal to its premises. Introduce `c _ hc`. Rewrite using `[kcol_of_notMem R mu c hc, hI c hc]`. Simplify using `[extOne]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma psi_eq_prod_superset (R : Type*) [CommRing R] {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ)
     (I : ℤ → Finset (Fin n)) (hI : ∀ c, c ∉ colRange mu → I c = ∅) (s : Finset ℤ) (hs : colRange mu ⊆ s) :
@@ -194,25 +194,25 @@ lemma psi_eq_prod_superset (R : Type*) [CommRing R] {N n : ℕ} (mu : Fin (N + 1
   simp [extOne]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i a`. Simplify using `[plPart, joinPT]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma plPart_join {N r K : ℕ} (nu : Fin (N + 1) → Fin r → ℤ) (ka : Fin (N + 1) → Fin K → ℤ) :
     plPart (joinPT nu ka) = nu := by
   funext i a; simp [plPart, joinPT]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i a`. Simplify using `[tanPart, joinPT]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma tanPart_join {N r K : ℕ} (nu : Fin (N + 1) → Fin r → ℤ) (ka : Fin (N + 1) → Fin K → ℤ) :
     tanPart (joinPT nu ka) = ka := by
   funext i a; simp [tanPart, joinPT]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [joinI, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨x, hx, hxa⟩ | ⟨x, _, hxa⟩)`. Rewrite using `[← Fin.castAdd_injective r K hxa]` and apply the resulting hypothesis.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-It suffices to derive a contradiction. Use `congrArg Fin.val hxa` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Or.inl ⟨a, h, rfl⟩`.
+Prove the first alternative.
 -/
 lemma joinI_pl {r K : ℕ} (I' : ℤ → Finset (Fin r)) (I'' : ℤ → Finset (Fin K)) (c : ℤ) :
     (univ.filter fun a => Fin.castAdd K a ∈ joinI I' I'' c) = I' c := by
@@ -228,11 +228,11 @@ lemma joinI_pl {r K : ℕ} (I' : ℤ → Finset (Fin r)) (I'' : ℤ → Finset (
   · intro h; exact Or.inl ⟨a, h, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [joinI, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨x, _, hxa⟩ | ⟨x, hx, hxa⟩)`. It suffices to derive a contradiction.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. It suffices to derive a contradiction.
 
-Use `congrArg Fin.val hxa` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Fin.natAdd_injective K r hxa]` and apply the resulting hypothesis. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Or.inr ⟨a, h, rfl⟩`.
+Prove the second alternative.
 -/
 lemma joinI_tan {r K : ℕ} (I' : ℤ → Finset (Fin r)) (I'' : ℤ → Finset (Fin K)) (c : ℤ) :
     (univ.filter fun b => Fin.natAdd r b ∈ joinI I' I'' c) = I'' c := by
@@ -248,7 +248,7 @@ lemma joinI_tan {r K : ℕ} (I' : ℤ → Finset (Fin r)) (I'' : ℤ → Finset 
   · intro h; exact Or.inr ⟨a, h, rfl⟩
 
 /- English proof (translation)
-Unfold `plTanCol PsiPl PsiTan`. Rewrite using `[Finset.prod_mul_distrib, plPart_join, tanPart_join, psi_eq_prod_superset R nu I' h1.1 _ (colRange_pl_subset nu ka).1, psi_eq_prod_superset R ka I'' h2.1 _ (colRange_pl_subset nu ka).2, map_prod, map_prod]`. Simplify using `only [joinI_pl, joinI_tan]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma prod_plTan (R : Type*) [CommRing R] {N r K : ℕ} (nu : Fin (N + 1) → Fin r → ℤ) (ka : Fin (N + 1) → Fin K → ℤ)
     (I' : ℤ → Finset (Fin r)) (I'' : ℤ → Finset (Fin K)) (h1 : IsSt nu I') (h2 : IsSt ka I'') :
@@ -261,9 +261,9 @@ lemma prod_plTan (R : Type*) [CommRing R] {N r K : ℕ} (nu : Fin (N + 1) → Fi
   simp only [joinI_pl, joinI_tan]
 
 /- English proof (translation)
-Take `⟨P, hPmu⟩` from `hP`. Establish `hb` using `fun c J => hB2 p O S N r K LL B om hK h1 h2 P c J`. Rewrite `hb` using `[hPmu]`. Use `⟨joinI I' I'', ?_⟩` and prove the remaining obligations. Use `low_prod (symWt (r := r) (K := K) LL om) (colRange (joinPT nu ka)) (fun c => Kcol O (joinPT nu ka) c N (joinI I' I'' c)) (fun c => oc om (joinPT nu ka) c) (fun c _ => (hb c _).1)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨this.1, ?_⟩` and prove the remaining obligations. Unfold `Psi`. Rewrite using `[this.2, ← prod_plTan O nu ka I' I'' hI' hI'']`. Conclude with `Finset.prod_congr rfl fun c _ => (hb c _).2`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem joint_type_lower_bound (D : Formalism.BasicNotions.D7) (hB2 : PathWeightComponents D)
     (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (S : UniformizedDVR p O)
@@ -291,11 +291,11 @@ theorem joint_type_lower_bound (D : Formalism.BasicNotions.D7) (hB2 : PathWeight
   exact Finset.prod_congr rfl fun c _ => (hb c _).2
 
 /- English proof (translation)
-Rewrite `hf` using `[← Finsupp.range_linearCombination]`. Take `⟨l, rfl⟩` from `hf`. Rewrite `haf`, the goal using `[Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l', hl', h⟩` from `haf`. Establish `h2 : l' = a • l` using `hv (by rw [h, map_smul])`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨l, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hl'`, the goal using `[Finsupp.mem_supported]`. Introduce `i hi`. Apply `hl'` to reduce the goal to its premises. Rewrite using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_coe, Finsupp.mem_support_iff, Finsupp.smul_apply, smul_eq_mul] at hi ⊢`. Conclude with `mul_ne_zero ha hi`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sat_of_subbasis {O M ι : Type*} [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M] (v : ι → M)
     (hv : LinearIndependent O v) (s : Set ι) (f : M) (a : O) (ha : a ≠ 0)
@@ -315,7 +315,7 @@ lemma sat_of_subbasis {O M ι : Type*} [CommRing O] [IsDomain O] [AddCommGroup M
   exact mul_ne_zero ha hi
 
 /- English proof (translation)
-Unfold `Pol at h ⊢`. Rewrite `h`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Rewrite `h` using `[MvPolynomial.support_smul_eq ha]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma pol_of_smul {O : Type*} [CommRing O] [IsDomain O] {ι : Type*} {n : ℕ} (d : ι → ℕ)
     (f : MvPolynomial (ι × Fin n) O) (a : O) (ha : a ≠ 0) (h : a • f ∈ Pol O n d) : f ∈ Pol O n d := by
@@ -332,7 +332,7 @@ def pvec (O : Type) [CommRing O] {N : ℕ} (r K : ℕ) (LL : Letters (Fin N)) (B
   PsiPl (K := K) O x.1.1.1 x.1.1.2 * PsiTan (r := r) O x.1.2.1 x.1.2.2
 
 /- English proof (translation)
-Take `⟨b', b'', h1, h2, h3, _⟩` from `(prvB1_of_D7 D N r K LL B hK nu ka).1 h`. Conclude with `⟨b', b'', h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma pairPath_of_path (D : Formalism.BasicNotions.D7) {N r K : ℕ} [NeZero r] [NeZero K] (LL : Letters (Fin N)) (B : Fin N → ℕ)
     (hK : N + r ≤ K) (nu : Fin (N + 1) → Fin r → ℤ) (ka : Fin (N + 1) → Fin K → ℤ)
@@ -341,9 +341,9 @@ lemma pairPath_of_path (D : Formalism.BasicNotions.D7) {N r K : ℕ} [NeZero r] 
   exact ⟨b', b'', h1, h2, h3⟩
 
 /- English proof (translation)
-Unfold `XXZ`. Use `congr 1`. Use extensionality with `G`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, I', I'', h1, h2, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨((q.1, I'), (q.2, I'')), pairPath_of_path D LL B hK _ _ (hPP q hq), h1, h2⟩, hq, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, hx, x.1.1.2, x.1.2.2, x.2.2.1, x.2.2.2, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma xxz_eq (D : Formalism.BasicNotions.D7) (O : Type) [CommRing O] {N r K : ℕ} [NeZero r] [NeZero K] (LL : Letters (Fin N))
     (B : Fin N → ℕ) (hK : N + r ≤ K) (PP : Set ((Fin (N + 1) → Fin r → ℤ) × (Fin (N + 1) → Fin K → ℤ)))
@@ -359,9 +359,9 @@ lemma xxz_eq (D : Formalism.BasicNotions.D7) (O : Type) [CommRing O] {N r K : �
     exact ⟨_, hx, x.1.1.2, x.1.2.2, x.2.2.1, x.2.2.2, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `G`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, _, _, _, x.2.1, x.2.2.1, x.2.2.2, rfl⟩`. Introduce and unpack `⟨nu, ka, I', I'', h1, h2, h3, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨((nu, I'), (ka, I'')), h1, h2, h3⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma range_pvec (O : Type) [CommRing O] {N r K : ℕ} (LL : Letters (Fin N)) (B : Fin N → ℕ) :
     Set.range (pvec O r K LL B) = {G | ∃ (nu : Fin (N + 1) → Fin r → ℤ) (ka : Fin (N + 1) → Fin K → ℤ)
@@ -375,9 +375,9 @@ lemma range_pvec (O : Type) [CommRing O] {N r K : ℕ} (LL : Letters (Fin N)) (B
     exact ⟨⟨((nu, I'), (ka, I'')), h1, h2, h3⟩, rfl⟩
 
 /- English proof (translation)
-Use `haveI : CharZero O := Formalism.MainNotions.G.GLWeightTheory.dvr_charZero_of_prime S hp.out`. Take `⟨⟨hli, hsp⟩, _⟩` from `h16 O N r K LL B`. Rewrite `hsp` using `[← range_pvec]`. Introduce `f a ha haf`. Rewrite `haf`, the goal using `[xxz_eq D O LL B hK PP hPP]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sat_of_subbasis (pvec O r K LL B) hli _ f a ha ?_ haf` and prove the remaining obligations. Rewrite using `[hsp]`. Apply `pol_of_smul B f a ha` to reduce the goal to its premises. Rewrite using `[← hsp]`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _) haf`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem joint_type_lattice_saturated (D : Formalism.BasicNotions.D7) (h16 : PairedPathIndependence D)
     (p : ℕ) [hp : Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (S : UniformizedDVR p O)
@@ -406,7 +406,7 @@ def IntegralJointTypeSum (_D : Formalism.BasicNotions.D7) : Prop :=
           ⨆ q ∈ PP, jointType (KK O) LL q.1 q.2})
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ S N r K _ _ LL B om hK h1 h2 PP hPP`. Use `⟨joint_type_lattice_saturated D h16 p O S N r K LL B hK PP hPP, ?_, hc p O S N r K LL B hK PP⟩` and prove the remaining obligations. Introduce `q hq I' I'' hI' hI''`. Conclude with `joint_type_lower_bound D hB2 p O S N r K LL B om hK h1 h2 q.1 q.2 (hPP q hq) I' I'' hI' hI''`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lemma_B3 (D : Formalism.BasicNotions.D7) (h16 : PairedPathIndependence D) (hB2 : PathWeightComponents D) (hc : IntegralJointTypeSum D) : ConclusionB3 D := by
   intro p _ O _ _ _ S N r K _ _ LL B om hK h1 h2 PP hPP

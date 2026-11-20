@@ -13,11 +13,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π hreg h0 hne`. Establish `hreg'` using `hreg`. Use `choose m hm _ using hreg'`. Establish `hs : IsStable (span W M π)` using `UpperTheory.ConvolutionTheory.R2.stable F E D W M π`. Establish `hc : ∀ Φ ∈ span W M π, IsCuspForm Φ` using `fun Φ hΦ => ⟨UpperTheory.ConvolutionTheory.R2.aut F E D W M π hreg Φ hΦ, (UpperTheory.ConvolutionTheory.R2.cusp F E D W M π h0 Φ hΦ).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : span W M π ≤ UpperTheory.V.Cj.S.CI 2 fun τ => m (InfinitePlace.mk (τ.comp (algebraMap F E)))` using `fun Φ hΦ => UpperTheory.V.Cj.S.mem_CI.2 ⟨hc Φ hΦ, fun τ u => UpperTheory.ConvolutionTheory.R2.cap F E D W M π τ _ (hm _) u Φ hΦ⟩`. Establish `key` using `UpperTheory.V.TR.SS.le_sSup_minimal (act (E := E) (a := 2)) (span W M π) hs fun U hU hsU => by`. Take `⟨C, -, c2, c3, c4⟩` from `UpperTheory.V.Cj.S.ciCompl (UpperTheory.V.Cj.S.ciBasic UpperTheory.V.Cj.S.capAct) E 2 one_le_two _ U (hU.trans hle) hsU`. Use `⟨C ⊓ span W M π, inf_le_right, fun o x hx => ⟨c2 o x hx.1, hs o x hx.2⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← inf_assoc, c3, bot_inf_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sup_inf_assoc_of_le _ hU, c4, inf_eq_right.2 hle]`. Assume the negation of the conclusion as `hno`. Use `hne (le_bot_iff.1 (key.trans (sSup_le ?_)))` and prove the remaining obligations. Introduce and unpack `V ⟨h1, h2, h3, h4⟩`. Conclude with `(hno ⟨⟨V, fun φ hφ => hc φ (h1 hφ), h2, h3, h4⟩, h1⟩).elim`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.irr :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Irr W M π := by

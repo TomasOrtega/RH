@@ -12,35 +12,33 @@ universe u
 open AlgebraicGeometry CategoryTheory Limits in
 
 /- English proof (translation)
-Establish `hw : ∀ {a b : I} (g : a ⟶ b) (x : c.pt), D.map g (c.π.app a x) = c.π.app b x`. Introduce `a b g x`. Rewrite using `[← c.w g]`. Both sides reduce to the same expression. Establish `hpw : ∀ {a b : I} (g : a ⟶ b) (W : (D.obj b).Opens), c.π.app a ⁻¹ᵁ (D.map g ⁻¹ᵁ W) = c.π.app b ⁻¹ᵁ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `a b g W`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `D.map g (c.π.app a x) ∈ W ↔ c.π.app b x ∈ W`. Rewrite using `[hw]`. Establish `hpre : ∀ {a b : I} (g : a ⟶ b) (W : (D.obj b).Opens), IsCompact (W : Set (D.obj b)) → IsCompact ((D.map g ⁻¹ᵁ W : (D.obj a).Opens) : Set (D.obj a))` using `fun g W hW => QuasiCompact.isCompact_preimage (f := D.map g) _ W.isOpen hW`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := Scheme.compactSpace_of_isLimit D c hc`. Set `C : c.pt.Opens` to `⟨_, H.isOpen_compl⟩`. Establish `hCmem : ∀ x, x ∈ C ↔ (c.π.app i x ∈ O → c.π.app i x ∈ O')`. Introduce `x`. Express the relevant statement in the definitionally equal form `x ∉ c.π.app i ⁻¹' ((O : Set (D.obj i)) \ O') ↔ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_diff, SetLike.mem_coe, not_and, not_not]`. Set `K : Set c.pt` to `((c.π.app i ⁻¹ᵁ O : c.pt.Opens) : Set c.pt)ᶜ`. Establish `hK : IsCompact K` using `IsClosed.isCompact (X := c.pt) (c.π.app i ⁻¹ᵁ O).isOpen.isClosed_compl`. Set `P : c.pt.Opens → Prop` to `fun A => (∃ (k : I) (_ : k ⟶ i) (W : (D.obj k).Opens), IsCompact (W : Set (D.obj k)) ∧ c.π.app k ⁻¹ᵁ W = A) ∧ A ≤ C`. Set `ι` to `{A : c.pt.Opens // P A}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Nonempty ι := ⟨⟨⊥, ⟨i, 𝟙 i, ⊥, by simp, by ext x; simp⟩, bot_le⟩⟩`. Establish `hdir : Directed (· ⊆ ·) (fun A : ι => (A.1 : Set c.pt))`. Introduce and unpack `⟨A₁, ⟨k₁, f₁, W₁, hW₁, rfl⟩, hA₁⟩ ⟨A₂, ⟨k₂, f₂, W₂, hW₂, rfl⟩, hA₂⟩`. Set `l₁` to `IsCofiltered.minToLeft k₁ k₂`. Set `l₂` to `IsCofiltered.minToRight k₁ k₂`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : c.π.app _ ⁻¹ᵁ (D.map l₁ ⁻¹ᵁ W₁ ⊔ D.map l₂ ⁻¹ᵁ W₂) = c.π.app k₁ ⁻¹ᵁ W₁ ⊔ c.π.app k₂ ⁻¹ᵁ W₂`. Rewrite using `[Scheme.Hom.preimage_sup, hpw, hpw]`. Use `⟨⟨c.π.app k₁ ⁻¹ᵁ W₁ ⊔ c.π.app k₂ ⁻¹ᵁ W₂, ⟨_, l₁ ≫ f₁, _, (hpre _ _ hW₁).union (hpre _ _ hW₂), he⟩, sup_le hA₁ hA₂⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun x hx => Or.inl hx`. Conclude with `fun x hx => Or.inr hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Prove the first alternative. Fix the arbitrary inputs and assume any hypotheses. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `isBasis_preimage_isAffineOpen D c hc`. Establish `hcov : K ⊆ ⋃ A : ι, (A.1 : Set c.pt)`. Introduce `x hx`. Establish `hxC : x ∈ C` using `(hCmem x).2 fun h => absurd h hx`. Take `⟨U', ⟨j, V, hV, rfl⟩, hxU', hU'C⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 hB hxC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `m` to `IsCofiltered.min j i`. Use `Set.mem_iUnion.2 ⟨⟨c.π.app m ⁻¹ᵁ (D.map (IsCofiltered.minToLeft j i) ⁻¹ᵁ V), ⟨m, IsCofiltered.minToRight j i, _, hpre _ _ hV.isCompact, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hpw]`. Conclude with `hU'C`. Express the relevant statement in the definitionally equal form `x ∈ c.π.app m ⁻¹ᵁ (D.map (IsCofiltered.minToLeft j i) ⁻¹ᵁ V)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hpw]`. Conclude with `hxU'`. Take `⟨⟨_, ⟨k, f, W, hW, rfl⟩, hWC⟩, hKW⟩` from `hK.elim_directed_cover _ (fun A => A.1.isOpen) hcov hdir`. Establish `h₁ : c.π.app k ⁻¹ᵁ (W ⊔ D.map f ⁻¹ᵁ O) = ⊤`. Rewrite using `[Scheme.Hom.preimage_sup, hpw, eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 
-Introduce `x _`. Distinguish the cases in `hx : c.π.app i x ∈ O`. Conclude with `Or.inr hx`. Conclude with `Or.inl (hKW hx)`. Take `⟨l, g, hg⟩` from `exists_map_eq_top D c hc _ h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hcpt : IsCompact ((D.map g ⁻¹ᵁ (W ⊓ D.map f ⁻¹ᵁ O) : (D.obj l).Opens) : Set (D.obj l))` using `hpre _ _ (QuasiSeparatedSpace.inter_isCompact _ _ W.isOpen hW (D.map f ⁻¹ᵁ O).isOpen (hpre _ _ hO))`. Establish `h₂ : c.π.app l ⁻¹ᵁ (D.map g ⁻¹ᵁ (W ⊓ D.map f ⁻¹ᵁ O)) ≤ c.π.app l ⁻¹ᵁ (D.map g ⁻¹ᵁ (D.map f ⁻¹ᵁ O'))`. Rewrite using `[hpw, hpw, hpw, Scheme.Hom.preimage_inf, hpw]`. Introduce and unpack `x ⟨hxW, hxO⟩`. Conclude with `(hCmem x).1 (hWC hxW) hxO`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨m, h, hh⟩` from `exists_map_preimage_le_map_preimage D c hc hcpt h₂`. Use `⟨m, h ≫ g ≫ f, ?_⟩` and prove the remaining obligations. Establish `ht : ∀ y : D.obj m, D.map g (D.map h y) ∈ W ∨ D.map f (D.map g (D.map h y)) ∈ O`. Introduce `y`. Establish `: D.map h y ∈ D.map g ⁻¹ᵁ (W ⊔ D.map f ⁻¹ᵁ O)` using `by rw [hg]; trivial`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hle : ∀ y : D.obj m, D.map g (D.map h y) ∈ W → D.map f (D.map g (D.map h y)) ∈ O → D.map f (D.map g (D.map h y)) ∈ O'`. Introduce `y hy₁ hy₂`. Establish `: y ∈ D.map h ⁻¹ᵁ (D.map g ⁻¹ᵁ (W ⊓ D.map f ⁻¹ᵁ O))` using `by simpa using ⟨hy₁, hy₂⟩`. Simplify using `using hh this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hset : D.map (h ≫ g ≫ f) ⁻¹' ((O : Set (D.obj i)) \ O') = ((D.map (h ≫ g) ⁻¹ᵁ W ⊔ D.map (h ≫ g ≫ f) ⁻¹ᵁ O' : (D.obj m).Opens) : Set (D.obj m))ᶜ`. Use extensionality with `y`. Simplify using `only [Functor.map_comp, Set.mem_preimage, Set.mem_diff, SetLike.mem_coe, Set.mem_compl_iff, Scheme.Hom.preimage_sup, TopologicalSpace.Opens.coe_sup, Set.mem_union, Scheme.Hom.comp_apply]`. Establish `h1` using `ht y`. Establish `h2` using `hle y`.
-
-The claim follows by propositional logic. Rewrite using `[hset]`. Conclude with `(TopologicalSpace.Opens.isOpen _).isClosed_compl`.
+The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpreadSep.exists_isClosed_preimage_diff {I : Type u} [Category.{u} I] (D : I ⥤ Scheme.{u}) (c : Cone D)
     (hc : IsLimit c) [IsCofiltered I] [∀ {i j} (f : i ⟶ j), IsAffineHom (D.map f)]
@@ -136,7 +134,7 @@ theorem _root_.GlobalTheory.SpreadSep.exists_isClosed_preimage_diff {I : Type u}
 
 open AlgebraicGeometry CategoryTheory Limits in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => (pullback.diagonal f).isClosedEmbedding.isClosed_range, fun h => ⟨IsClosedImmersion.of_isPreimmersion _ h⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isSeparated_iff_isClosed_range_diagonal {Y Z : Scheme.{0}} (f : Y ⟶ Z) :
     IsSeparated f ↔ IsClosed (Set.range (pullback.diagonal f)) :=
@@ -145,17 +143,17 @@ private theorem isSeparated_iff_isClosed_range_diagonal {Y Z : Scheme.{0}} (f : 
 
 open AlgebraicGeometry CategoryTheory Limits in
 /- English proof (translation)
-Establish `hr : Set.range (a.hom ≫ g ≫ e.inv) = e.hom ⁻¹' Set.range g`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `⟨a.hom x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `g (a.hom x) = (e.inv ≫ e.hom) (g (a.hom x))`. Rewrite using `[e.inv_hom_id]`. Both sides reduce to the same expression. Introduce and unpack `⟨y, hy⟩`. Use `⟨a.inv y, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `e.inv (g ((a.inv ≫ a.hom) y)) = z`. Rewrite using `[a.inv_hom_id]`. Express the relevant statement in the definitionally equal form `e.inv (g y) = z`. Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `(e.hom ≫ e.inv) z = z`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e.hom_inv_id]`. Both sides reduce to the same expression. Rewrite using `[hr]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `h.preimage e.inv.continuous`. Use `h' using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `y ∈ Set.range g ↔ (e.inv ≫ e.hom) y ∈ Set.range g`. Rewrite using `[e.inv_hom_id]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `h`. Conclude with `h.preimage e.hom.continuous`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isClosed_range_iso_comp_comp_iso_inv_iff {A B C D : Scheme.{0}} (a : A ≅ B) (g : B ⟶ C)
     (e : D ≅ C) : IsClosed (Set.range (a.hom ≫ g ≫ e.inv)) ↔ IsClosed (Set.range g) := by
@@ -190,13 +188,13 @@ private theorem isClosed_range_iso_comp_comp_iso_inv_iff {A B C D : Scheme.{0}} 
 
 open AlgebraicGeometry CategoryTheory Limits in
 /- English proof (translation)
-Rewrite using `[← pullbackSymmetry_hom_comp_fst, MorphismProperty.cancel_left_of_respectsIso @IsSeparated, isSeparated_iff_isClosed_range_diagonal, diagonal_pullback_fst]`. Simplify using `only [Over.pullback_map_left, Over.homMk_left, Over.mk_hom]`. Rewrite using `[isClosed_range_iso_comp_comp_iso_inv_iff]`. Establish `hL` using `IsPullback.of_right (h₁₁ := pullback.lift (pullback.fst p (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k R)) ≫ pullback.diagonal p) (pullback.snd p (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k R))) (by simp [pullback.condition …`. Use `(IsPullback.of_hasPullback p (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k R))).flip using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `pullback.lift_snd _ _ _`. Use the proof step `simp) (pullback.lift_fst _ _ _)`. Use the proof step `(IsPullback.of_hasPullback (pullback.snd p p ≫ p) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k R))).flip`. Establish `hr : Set.range (pullback.lift (pullback.fst p (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k R)) ≫ pullback.diagonal p) (pullback.snd p (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k R))) (by simp [pullback.condition])) = pullba …`. Rewrite using `[← Scheme.Pullback.range_fst, ← hL.isoPullback_hom_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hL.isoPullback.inv y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((hL.isoPullback.inv ≫ hL.isoPullback.hom) ≫ pullback.fst _ _) y = _`. Rewrite using `[Iso.inv_hom_id, Category.id_comp]`. Rewrite using `[hr]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isSeparated_pullback_snd_spMap_iff_isClosed_preimage (k R : Type) [CommRing k] [CommRing R] [Algebra k R]
     (X : Scheme.{0}) (p : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k) :
@@ -237,27 +235,21 @@ private theorem isSeparated_pullback_snd_spMap_iff_isClosed_preimage (k R : Type
 open AlgebraicGeometry CategoryTheory Limits in
 
 /- English proof (translation)
-Use `haveI := h₁`. Use `haveI := h₂`. Set `pB : pullback p p ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k` to `pullback.snd p p ≫ p`. Use `haveI : IsLocallyNoetherian (pullback p p) := LocallyOfFiniteType.isLocallyNoetherian pB`. Use `haveI : CompactSpace ↥(_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k) := by unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp; infer_instance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompactSpace ↥(pullback p p) := QuasiCompact.compactSpace_of_compactSpace pB`. Use `haveI : QuasiSeparated pB := inferInstance`. Use `haveI : AlgebraicGeometry.IsNoetherian (pullback p p) := {}`. Set `D` to `_root_.GlobalTheory.Spread.bcDiagram pB V`. Set `c` to `_root_.GlobalTheory.Spread.bcCone pB V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `_root_.GlobalTheory.Spread.isLimitBcCone pB V`. Use `haveI : ∀ {i j : (Finset V)ᵒᵖ} (f : i ⟶ j), IsAffineHom (D.map f) := fun f => _root_.GlobalTheory.Spread.instIsAffineHomMapOppositeFinsetSchemeBcDiagram pB V f`. Use `haveI : ∀ i, CompactSpace (D.obj i) := _root_.GlobalTheory.Spread.instCompactSpaceCarrierCarrierCommRingCatObjOppositeFinsetSchemeBcDiagramOfQuasiCompact pB V`. Use `haveI : ∀ i, QuasiSeparatedSpace (D.obj i) := _root_.GlobalTheory.Spread.instQuasiSeparatedSpaceCarrierCarrierCommRingCatObjOppositeFinsetSchemeBcDiagramOfQuasiSeparated pB V`. Establish `hπ : ∀ (j : (Finset V)ᵒᵖ) (x : c.pt), pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k (Algebra.adjoin k (↑(Opposite.unop j) : Set V)))) (c.π.app j x) = pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `j x`. Establish `e : c.π.app j ≫ pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k (Algebra.adjoin k (↑(Opposite.unop j) : Set V)))) = pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k V))`. Simplify using `only [c, _root_.GlobalTheory.Spread.bcCone]`. Conclude with `_root_.GlobalTheory.Spread.bcMap_fst _ _`. Rewrite using `[← e]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `try rfl`. Establish `hmap : ∀ {j j' : (Finset V)ᵒᵖ} (f : j ⟶ j') (x : D.obj j), pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k (Algebra.adjoin k (↑(Opposite.unop j') : Set V)))) (D.map f x) = pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.To …`. Introduce `j j' f x`. Establish `e : D.map f ≫ pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k (Algebra.adjoin k (↑(Opposite.unop j') : Set V)))) = pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k (Algebra.adjoin k (↑(Opposite.unop …`. Simplify using `only [D, _root_.GlobalTheory.Spread.bcDiagram]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `_root_.GlobalTheory.Spread.bcMap_fst _ _`. Rewrite using `[← e]`. Apply the tactic sequence `try rfl`. Set `i₀ : (Finset V)ᵒᵖ` to `Opposite.op ∅`. Set `f₀` to `pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k (Algebra.adjoin k (↑(Opposite.unop i₀) : Set V))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨U, Z, hU, hZ, hT⟩` from `(pullback.diagonal p).isLocallyClosed_range`. Set `O : (D.obj i₀).Opens` to `f₀ ⁻¹ᵁ ⟨U, hU⟩`. Set `O' : (D.obj i₀).Opens` to `f₀ ⁻¹ᵁ ⟨Zᶜ, hZ.isOpen_compl⟩`. Establish `hcpt : ∀ W : (pullback p p).Opens, IsCompact ((f₀ ⁻¹ᵁ W : (D.obj i₀).Opens) : Set (D.obj i₀))` using `fun W => QuasiCompact.isCompact_preimage (f := f₀) _ W.isOpen (TopologicalSpace.NoetherianSpace.isCompact _)`. Establish `hset : ∀ y : D.obj i₀, y ∈ (O : Set (D.obj i₀)) \ O' ↔ f₀ y ∈ Set.range (pullback.diagonal p)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `y`. Rewrite using `[hT]`. Express the relevant statement in the definitionally equal form `(f₀ y ∈ U ∧ ¬ f₀ y ∈ Zᶜ) ↔ _`. Simplify using the standard rewrite rules. Establish `H : IsClosed (c.π.app i₀ ⁻¹' ((O : Set (D.obj i₀)) \ O'))`.
-
-Establish `h'` using `(isSeparated_pullback_snd_spMap_iff_isClosed_preimage k V X p).1 h`. Establish `hs : c.π.app i₀ ⁻¹' ((O : Set (D.obj i₀)) \ O') = pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k V)) ⁻¹' Set.range (pullback.diagonal p)`. Use extensionality with `x`. Conclude with `(hset (c.π.app i₀ x)).trans (Iff.of_eq (congrArg (· ∈ Set.range (pullback.diagonal p)) (hπ i₀ x)))`. Rewrite using `[hs]`.
-
-Conclude with `h'`. Take `⟨j, f, hj⟩` from `_root_.GlobalTheory.SpreadSep.exists_isClosed_preimage_diff D c hc O O' (hcpt _) (hcpt _) H`. Use `⟨Algebra.adjoin k (↑(Opposite.unop j) : Set V), Subalgebra.fg_adjoin_finset _, ?_⟩` and prove the remaining obligations. Rewrite using `[isSeparated_pullback_snd_spMap_iff_isClosed_preimage]`. Establish `hs : D.map f ⁻¹' ((O : Set (D.obj i₀)) \ O') = pullback.fst pB (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap k (Algebra.adjoin k (↑(Opposite.unop j) : Set V)))) ⁻¹' Set.range (pullback.diagonal p)`.
-
-Use extensionality with `x`. Conclude with `(hset (D.map f x)).trans (Iff.of_eq (congrArg (· ∈ Set.range (pullback.diagonal p)) (hmap f x)))`. Rewrite `hj` using `[hs]`. Conclude with `hj`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SpreadSep.exists_fg_isSeparated (k V : Type) [CommRing k] [IsNoetherianRing k] [CommRing V]
     [Algebra k V] (X : Scheme.{0}) (p : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k) (h₁ : LocallyOfFiniteType p) (h₂ : QuasiCompact p)

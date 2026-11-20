@@ -18,7 +18,7 @@ open MeasureTheory GlobalTheory.DiagForm IsDedekindDomain
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `: MeasurableAdd (mixedEmbedding.mixedSpace F)` using `inferInstance`. Establish `: SigmaFinite (volume : Measure (mixedEmbedding.mixedSpace F))` using `inferInstance`. Establish `: (volume : Measure (κ → mixedEmbedding.mixedSpace F)).IsAddHaarMeasure` using `Measure.instIsAddHaarMeasureForallVolumeOfMeasurableAddOfSigmaFinite`. Establish `: (Measure.map (eI F κ) (volume : Measure (Vi F κ))).IsAddHaarMeasure` using `(eI F κ).isAddHaarMeasure_map volume`. Conclude with `⟨_, (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', Measure.isAddLeftInvariant_eq_smul _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem map_eI_eq : ∃ k : NNReal, k ≠ 0 ∧
     Measure.map (eI F κ) (volume : Measure (Vi F κ)) = k • (volume : Measure (κ → mixedEmbedding.mixedSpace F)) := by
@@ -32,9 +32,9 @@ theorem map_eI_eq : ∃ k : NNReal, k ≠ 0 ∧
     Measure.isAddLeftInvariant_eq_smul _ _⟩
 
 /- English proof (translation)
-Rewrite using `[SchwartzMap.integralCLM_apply]`. Establish `e : ∀ u, compD F κ f u = (fun x : κ → mixedEmbedding.mixedSpace F => f (Sum.elim x x)) (eI F κ u)` using `fun u => rfl`. Simplify using `only [e]`. Establish `h1` using `integral_map_equiv (μ := (volume : Measure (Vi F κ))) (eI F κ).toHomeomorph.toMeasurableEquiv (fun x : κ → mixedEmbedding.mixedSpace F => f (Sum.elim x x))`. Express the relevant statement in the definitionally equal form `∫ y, f (Sum.elim y y) ∂(Measure.map (eI F κ) volume) = ∫ x, f (Sum.elim (eI F κ x) (eI F κ x)) at h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[hk, integral_smul_nnreal_measure]`. Rewrite using `[← h1, NNReal.smul_def, Complex.real_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_compD {k : NNReal}
     (hk : Measure.map (eI F κ) (volume : Measure (Vi F κ)) = k • (volume : Measure (κ → mixedEmbedding.mixedSpace F)))
@@ -52,13 +52,13 @@ theorem integral_compD {k : NNReal}
   rw [← h1, NNReal.smul_def, Complex.real_smul]
 
 /- English proof (translation)
-Take `⟨hO, hK⟩` from `PI.IntAdCpctOpenWork.main F`. Use `set O := {x : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F}`. Establish `h0 : (0 : FiniteAdeleRing (𝓞 F) F) ∈ O` using `fun v => (v.adicCompletionIntegers F).zero_mem`. Use `set U : Set (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) := Set.univ.pi fun _ => O`. Establish `hUo : IsOpen U` using `isOpen_set_pi Set.finite_univ fun _ _ => hO`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUc : IsCompact U` using `isCompact_univ_pi fun _ => hK`. Use `set g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ := U.indicator fun _ => 1`. Establish `hg : g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)` using `⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) ⟨hUc.isClosed, hUo⟩).isLocallyConstant, HasCompactSupport.intro hUc fun z hz => Set.indicator_of_notMem hz _⟩`. Use `set V : Set (Vf F κ) := Set.univ.pi fun _ => O`. Establish `hVo : IsOpen V` using `isOpen_set_pi Set.finite_univ fun _ _ => hO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hVc : IsCompact V` using `isCompact_univ_pi fun _ => hK`. Establish `hgV : (fun v : Vf F κ => g (Sum.elim v v)) = V.indicator fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `v`. Simplify using `only [g, U, V, Set.indicator_apply, Set.mem_univ_pi, Sum.forall, Sum.elim_inl, Sum.elim_inr, and_self]`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hgV, integral_indicator_const _ hVo.measurableSet]`. Establish `hpos : 0 < (Measure.addHaar : Measure (Vf F κ)) V` using `hVo.measure_pos _ ⟨0, fun i _ => h0⟩`. Establish `hfin : (Measure.addHaar : Measure (Vf F κ)) V < ⊤` using `hVc.measure_lt_top`. Establish `: 0 < (Measure.addHaar : Measure (Vf F κ)).real V` using `ENNReal.toReal_pos hpos.ne' hfin.ne`. Simplify using `using this.ne'`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_SB_ne : ∃ g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F),
     (∫ v : Vf F κ, g (Sum.elim v v) ∂Measure.addHaar) ≠ 0 := by
@@ -92,15 +92,15 @@ namespace GlobalTheory.RealLift
 open MeasureTheory GlobalTheory.DiagForm GlobalTheory.DiagLagrNorm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ ψ JA JB d dd _ hdd`. Take `⟨k, hk0, hk⟩` from `map_eI_eq (F := F) (κ := κ)`. Take `⟨g, hg, hc⟩` from `exists_SB_ne (F := F) (κ := κ)`. Use `set c : ℂ := (∫ v : Vf F κ, g (Sum.elim v v) ∂Measure.addHaar) * (k : ℂ) with hcdef`. Establish `hk' : (k : ℂ) ≠ 0` using `by exact_mod_cast hk0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0` using `mul_ne_zero hc hk'`. Use `⟨c⁻¹ • lDiag F κ, ?_, ?_, g, hg, ?_⟩` and prove the remaining obligations. Introduce `g' hg'`. Take `⟨T, hT⟩` from `lDiag_adm (F := F) (κ := κ) g' hg'`. Conclude with `⟨c⁻¹ • T, fun f => by simp [hT f]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z φ hφ`. Establish `hz : z * (diagCols β : Matrix (β ⊕ β) β (AE F E))ᵀ = Matrix.fromCols z z`. Rewrite using `[diagCols, Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.mul_fromCols, Matrix.mul_one]`. Establish `hr : dd.rho ψ (z * (diagCols β : Matrix (β ⊕ β) β (AE F E))ᵀ) φ = schr ψ (Sum.elim (d.e z).1 (d.e z).1, Sum.elim (d.e z).2 (-(d.e z).2)) φ`. Rewrite using `[hz, Darboux.rho, hdd z z]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[hr, lDiag_schr ψ _ _ hφ]`. Introduce `f`. Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[lDiag_pureA f hg, integral_compD hk, smul_eq_mul, hcdef]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem diagLagr_invForm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type)
     [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (ψ : AddChar (AF F) ℂ) (JA : Matrix α α (AE F E))

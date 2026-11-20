@@ -9,13 +9,13 @@ open GlobalTheory.ConvSer Filter Topology
 namespace GlobalTheory.ConvSer
 
 /- English proof (translation)
-Rewrite using `[NormedAddGroup.tendsto_nhds_zero]`. Introduce `ε hε`. Establish `h1 : Tendsto (fun b => C * ‖d b‖) cofinite (𝓝 0)`. Simplify using `using (tendsto_zero_iff_norm_tendsto_zero.1 hd).const_mul C`. Establish `h2 : {b | ¬ C * ‖d b‖ < ε}.Finite` using `eventually_cofinite.1 (h1.eventually (gt_mem_nhds hε))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3 : ∀ b, {a | ¬ ‖c a b * d b‖ < ε}.Finite`. Introduce `b`. Establish `: Tendsto (fun a => c a b * d b) cofinite (𝓝 0)`. Simplify using `using (hc b).mul_const (d b)`. Conclude with `eventually_cofinite.1 (NormedAddGroup.tendsto_nhds_zero.1 this ε hε)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eventually_cofinite]`. Use `(h2.biUnion (t := fun b => (fun a => (a, b)) '' {a | ¬ ‖c a b * d b‖ < ε}) (fun b _ => (h3 b).image _)).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ hp`. Simplify using `only [Set.mem_ofPred_eq] at hp`. Simplify using `only [Set.mem_iUnion]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, ?_, a, hp, rfl⟩` and prove the remaining obligations. Introduce `hlt`. Apply `hp` to reduce the goal to its premises. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_mul_of_nonneg_right (hC a b) (norm_nonneg _)) hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_cofinite_double {K α β : Type*} [NormedField K] (c : α → β → K) (d : β → K)
     (C : ℝ) (hC : ∀ a b, ‖c a b‖ ≤ C) (hc : ∀ b, Tendsto (fun a => c a b) cofinite (𝓝 0))
@@ -45,11 +45,11 @@ theorem tendsto_cofinite_double {K α β : Type*} [NormedField K] (c : α → β
   exact lt_of_le_of_lt (mul_le_mul_of_nonneg_right (hC a b) (norm_nonneg _)) hlt
 
 /- English proof (translation)
-Take `⟨hI, hB, hP, hC, -⟩` from `GlobalTheory.BddAlg.bdd_alg K σ`. Use `set c := MvPowerSeries.constantCoeff u with hc`. Establish `hCi : Intg (MvPowerSeries.C c : MvPowerSeries σ K)` using `(hC c).2.1 hu.2.le`. Establish `h1 : Intg (u - MvPowerSeries.C c)` using `(hI _ _ hu.1 hCi).2.1`. Establish `hb1 : Bdd (u - MvPowerSeries.C c)` using `(hP _ 0).2.2 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbu : Bdd u` using `(hP _ 0).2.2 hu.1`. Establish `h2 : Small (csub t (u - MvPowerSeries.C c))` using `(GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ t _ ht hb1).2.2.2 h1 (by simp [hc])`. Take `⟨hR, hRC, -⟩` from `GlobalTheory.T.mvPowerSeriesConvergentSubst_isRingHom_on_bounded K σ τ t ht`. Establish `h3 : csub t u = csub t (u - MvPowerSeries.C c) + MvPowerSeries.C c`. Rewrite using `[(hR _ _ hbu (hC c).1).2.1, hRC]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨(GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ t _ ht hbu).2.2.1 hu.1, ?_⟩` and prove the remaining obligations. Rewrite using `[h3, map_add, MvPowerSeries.constantCoeff_C]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h2.2 hu.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_csub_of_small (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     (σ τ : Type) [Fintype σ] (t : σ → MvPowerSeries τ K) (ht : ∀ i, Small (t i))
@@ -70,21 +70,19 @@ theorem small_csub_of_small (K : Type) [NormedField K] [IsUltrametricDist K] [Co
   exact lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h2.2 hu.2)
 
 /- English proof (translation)
-Introduce `K _ _ _ ρ σ τ _ _ s t S hs ht hS`. Establish `hst : ∀ j, Small (csub t (s j))` using `fun j => small_csub_of_small K σ τ t ht _ (hs j)`. Use `⟨hst, ?_⟩` and prove the remaining obligations. Take `⟨hI, hB, hP, hC, -, hF, -⟩` from `GlobalTheory.BddAlg.bdd_alg K σ`. Take `⟨-, -, -, hRP, hRF, -⟩` from `GlobalTheory.T.mvPowerSeriesConvergentSubst_isRingHom_on_bounded K σ τ t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ ν : ρ →₀ ℕ, Intg (∏ j, s j ^ ν j)` using `fun ν => ((hF ρ Finset.univ _).1 fun j _ => (hP _ _).1 (hs j).1).1`. Establish `hbd : ∀ ν : ρ →₀ ℕ, Bdd (∏ j, s j ^ ν j)` using `fun ν => (hP _ 0).2.2 (hint ν)`. Establish `hprod : ∀ ν : ρ →₀ ℕ, csub t (∏ j, s j ^ ν j) = ∏ j, csub t (s j) ^ ν j`. Introduce `ν`. Rewrite using `[hRF ρ Finset.univ _ fun j _ => (hP _ 0).2.2 ((hP _ _).1 (hs j).1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun j _ => hRP _ _ ((hP _ 0).2.2 (hs j).1)`. Use extensionality with `μ`. Take `⟨C, hCS⟩` from `id hS`. Set `c : (ρ →₀ ℕ) → (σ →₀ ℕ) → K` to `fun ν l => MvPowerSeries.coeff ν S * MvPowerSeries.coeff l (∏ j, s j ^ ν j)`. Set `d : (σ →₀ ℕ) → K` to `fun l => MvPowerSeries.coeff μ (∏ i, t i ^ l i)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcs : ∀ l, HasSum (fun ν => c ν l) (MvPowerSeries.coeff l (csub s S))` using `(GlobalTheory.ConvSer.csub_hasSum_and_bounds K ρ σ s S hs hS).1`. Establish `hd : Tendsto d cofinite (𝓝 0)`. Set `U : MvPowerSeries σ K` to `fun _ => 1`. Establish `hU : ∀ l, MvPowerSeries.coeff l U = 1` using `fun _ => rfl`. Use `((GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ t U ht ⟨1, fun l => by simp [hU]⟩).1 μ).summable.tendsto_cofinite_zero` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [hU, one_mul]`. Establish `hsum : Summable (fun p : (ρ →₀ ℕ) × (σ →₀ ℕ) => c p.1 p.2 * d p.2)`. Apply `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero` to reduce the goal to its premises. Use `tendsto_cofinite_double c d C ?_ (fun l => (hcs l).summable.tendsto_cofinite_zero) hd` and prove the remaining obligations. Introduce `ν l`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [c, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hint ν l)).trans (hCS ν)`. Establish `hA : HasSum (fun ν : ρ →₀ ℕ => MvPowerSeries.coeff ν S * MvPowerSeries.coeff μ (∏ j, csub t (s j) ^ ν j)) (∑' p : (ρ →₀ ℕ) × (σ →₀ ℕ), c p.1 p.2 * d p.2)`. Use `hsum.hasSum.prod_fiberwise fun ν => ?_` and prove the remaining obligations. Rewrite using `[← hprod]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `((GlobalTheory.ConvSer.csub_hasSum_and_bounds K σ τ t _ ht (hbd ν)).1 μ).mul_left (MvPowerSeries.coeff ν S)` as an intermediate fact. Simplify `this` using `only [c, d, mul_assoc]`. Establish `hB' : HasSum (fun l : σ →₀ ℕ => MvPowerSeries.coeff l (csub s S) * d l) (∑' p : (ρ →₀ ℕ) × (σ →₀ ℕ), c p.1 p.2 * d p.2)`. Use `((Equiv.prodComm _ _).hasSum_iff.2 hsum.hasSum).prod_fiberwise fun l => ?_` and prove the remaining obligations. Conclude with `(hcs l).mul_right (d l)`.
-
-Conclude with `hB'.tsum_eq.trans hA.tsum_eq.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem csub_assoc : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     (ρ σ τ : Type) [Fintype ρ] [Fintype σ] (s : ρ → MvPowerSeries σ K)

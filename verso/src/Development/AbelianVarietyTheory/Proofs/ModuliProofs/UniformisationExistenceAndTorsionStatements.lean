@@ -18,9 +18,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Take `⟨L, L2, L3, L4, L5, -⟩` from `GlobalTheory.T.all_six_abelian_scheme_laws_hold`. Use `⟨GlobalTheory.ZH.thmU_of_allSet L GlobalTheory.homExtension_semiAbelian_dvr ?_, GlobalTheory.T.uniformisation_torsion_eq_of_laws L L2 L3 L4 L5⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.exists_degenerationData_uniformisation_of_torsionCount (GlobalTheory.T.card_torsion_points_abelianVariety L.globalFns L.rigidity) L L2`. Introduce `V _ _ _ A G _ _ s`. Take `⟨D, U, -, hg, -⟩` from `h V A G s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨D, U, hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem thmU_and_uTors : GlobalTheory.ZH.ThmUSt ∧ GlobalTheory.ZH.UTorsSt := by
   obtain ⟨L, L2, L3, L4, L5, -⟩ := GlobalTheory.T.all_six_abelian_scheme_laws_hold

@@ -14,27 +14,25 @@ namespace GlobalTheory.SqTower.TopGridExists
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.Doubling GlobalTheory.SqTower.TopExists in
 /- English proof (translation)
-Introduce `_`. Use `⟨0, fun _ _ _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ hL G W i j => ?_⟩⟩` and prove the remaining obligations. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Establish `a` using `node_isV G hL (X := .grid (i + 1) (j + 1)) ⟨by omega, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a'` using `node_isV G hL (X := .grid i j) ⟨by omega, by omega⟩`. Establish `b` using `node_isV G hL (X := .grid i (j + 1)) ⟨by omega, by omega⟩`. Establish `b'` using `node_isV G hL (X := .grid (i + 1) j) ⟨by omega, by omega⟩`. Establish `ng : ∀ {X : LSp D} {ν q : ℕ}, X.IsV ν q → NegIdx X.sp q` using `fun h => GlobalTheory.Grid.Vertex.negIdx_of_sig _ _ h.sigOK fun τ => by rw [h.sig, h.rank]`. Establish `ho : ∀ (x : (G.V (.grid i (j + 1))).V) (y : (G.V (.grid (i + 1) j)).V), (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))).hD (LinearMap.inl D.host.E _ _ x) (LinearMap.inr D.host.E _ _ y) = 0` using `fun x y => by simp [HSpace.hD, orthSum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsig` using `sigOK_hsum b.sigOK b'.sigOK`. Establish `hsd` using `GlobalTheory.Twist.OrthSum.selfDual_hsum b.sd b'.sd`. Establish `hneg` using `negIdx_of_orth rfl _ _ (isIsomEmb_inl _ _) (isIsomEmb_inr _ _) ho (ng b) (ng b')`. Take `⟨FA, hFA⟩` from `exists_isGridFr W (X := .grid (i + 1) (j + 1)) ⟨by omega, by omega⟩`. Take `⟨FA', hFA'⟩` from `exists_isGridFr W (X := .grid i j) ⟨by omega, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨FV, hFV⟩` from `exists_isGridFr W (X := .grid i (j + 1)) ⟨by omega, by omega⟩`. Take `⟨FV', hFV'⟩` from `exists_isGridFr W (X := .grid (i + 1) j) ⟨by omega, by omega⟩`. Take `⟨rA, eA, sA, hA⟩` from `exists_rig_of_frame FA _ a.sd`. Take `⟨rA', eA', sA', hA'⟩` from `exists_rig_of_frame FA' _ a'.sd`. Take `⟨rW, eW, sW, hW⟩` from `exists_rig_of_frame (frSum FV FV') _ hsd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrk : (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))).rank = rankV D (i + 1) (j + 1) + rankV D i j`. Establish `h0 : (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))).rank = (G.V (.grid i (j + 1))).rank + (G.V (.grid (i + 1) j)).rank` using `rfl`. Establish `h1 : (G.V (.grid i (j + 1))).rank = rankV D i (j + 1)` using `b.rank`. Establish `h2 : (G.V (.grid (i + 1) j)).rank = rankV D (i + 1) j` using `b'.rank`. Rewrite using `[h0, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rankV]`. Expand and normalize the polynomial expressions, which then agree. Establish `htg : ∀ (AV : Fr (G.V (.grid i (j + 1)))) (AV₁ : Fr (G.V (.grid (i + 1) j))), IsGridFr W _ AV → IsGridFr W _ AV₁ → rW.s = (frSum AV AV₁).cart` using `fun AV AV₁ h h₁ => by`. Rewrite using `[sW]`. Use function extensionality and compare the values at `τ`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[GlobalTheory.SquareAlg.cart_frSum, GlobalTheory.SquareAlg.cart_frSum, (h τ).2, (h₁ τ).2, (hFV τ).2, (hFV' τ).2]`. Establish `ch` using `chars G hL W i j`. Establish `hψ` using `W.ψ_std`. Establish `hθ` using `W.θ_is`. Establish `hη` using `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rA1 : (G.V (.grid (i + 1) (j + 1))).rank = rankV D (i + 1) (j + 1)` using `a.rank`. Establish `rA2 : (G.V (.grid i j)).rank = rankV D i j` using `a'.rank`. Use `choose ω hω using fun t => GlobalTheory.ConstRatio.exists_isWeil hψ hη true (G.V (.grid (i + 1) (j + 1))) (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))) (ch t).2.1 (ch t).2.2.2.1 (by rw [rA1]; exact (ch t).2.2.2.2.2.1) (by rw [hrk]; exact (ch t).2.2.2.2.2.2.2)`. Use `choose ω' hω' using fun t => GlobalTheory.ConstRatio.exists_isWeil hψ hη false (G.V (.grid i j)) (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))) (ch t).1 (ch t).2.2.1 (by rw [rA2]; exact (ch t).2.2.2.2.1) (by rw [hrk]; exact (ch t).2.2.2.2.2.2.1)`. Establish `hneg' : IsSelfDualC (neg (G.V (.grid (i + 1) (j + 1)))) rA.Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨hA.1.1, fun y => (hA.1.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩` and prove the remaining obligations. Simplify using `[neg_gram, hc]`. Simplify using `[neg_gram] at hc ⊢`. Conclude with `neg_eq_iff_eq_neg.2 hc`. Take `⟨vac, hv⟩` from `GlobalTheory.VacuumO.vacExists D W.ψ W.θ hψ hθ (neg (G.V (.grid (i + 1) (j + 1)))) (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))) (fun τ => -rA.s τ) rW.s (sigOK_sgn true a.sigOK) hsig (fun τ => isCartanInv_sgn true _ τ (hA.2.2 τ).1) (fun τ => (hW.2.2 τ).1) rA.Λ rW.Λ hneg' …`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨vac', hv'⟩` from `GlobalTheory.VacuumO.vacExists D W.ψ W.θ hψ hθ (G.V (.grid i j)) (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))) rA'.s rW.s a'.sigOK hsig (fun τ => (hA'.2.2 τ).1) (fun τ => (hW.2.2 τ).1) rA'.Λ rW.Λ hA'.1 hW.1`. Use `choose e he using idem_exists G hL W`. Use `choose c hc using fun t w => GlobalTheory.ConstRatio.exists_expAt (nuH G t i j) w`. Establish `hI : ∀ t, (∏ w ∈ locPl G t, w.asIdeal ^ c t w) ≠ ⊥` using `fun t => Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`. Use `choose f hf _ using fun t => GlobalTheory.T.first_standard_pair_member_has_theta_function D W.ψ W.θ _ (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))) rA rW _ _ _ _ _ hA hW (ch t).2.2.1 (he t) (hI t) hv`.
-
-Use `choose f' hf' _ using fun t => GlobalTheory.T.exists_thetaFunction_standardPairSecond D W.ψ W.θ _ (hsum (G.V (.grid i (j + 1))) (G.V (.grid (i + 1) j))) rA' rW _ _ _ _ (G.V (.grid (i + 1) (j + 1))).rank _ hA' hW (ch t).2.2.1 (he t) (hI t) hv'`. Take `⟨m, fd, hm⟩` from `GlobalTheory.ConstRatio.exists_meas (G.V (.grid (i + 1) (j + 1)))`. Take `⟨m', fd', hm'⟩` from `GlobalTheory.ConstRatio.exists_meas (G.V (.grid i j))`. Use `⟨⟨rA, rA', rW, ω, ω', vac, vac', e, c, f, f', m, fd, m', fd'⟩, ⟨eA, eA', eW, sA.trans (funext fun τ => (hFA τ).2), sA'.trans (funext fun τ => (hFA' τ).2), htg⟩, le_rfl, le_rfl, by rw [rA1], by rw [rA2], ng a, ng a', hneg, ⟨by rw [hrk, rA1, rA2], hA, hA', hW, hω, hω', hv, hv', he, …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem square_tower_grid_exists : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m), ∃ X : TriG G i j, TopGrid W i j X ∧ IsStageC W i j (pp D j) (qq D j) X := by
@@ -115,7 +113,7 @@ open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SqTower.TopGridExists.square_tower_grid_exists | exact _root_.GlobalTheory.SqTower.TopGridExists.square_tower_grid_exists | (intros; apply _root_.GlobalTheory.SqTower.TopGridExists.square_tower_grid_exists <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_grid_of_square_tower : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m), ∃ X : TriG G i j, TopGrid W i j X ∧ IsStageC W i j (pp D j) (qq D j) X := by

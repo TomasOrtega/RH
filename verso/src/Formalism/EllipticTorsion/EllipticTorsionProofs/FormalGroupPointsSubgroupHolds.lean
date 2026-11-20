@@ -12,20 +12,20 @@ open WeierstrassCurve Polynomial
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Conclude with `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 lemma add_le {a b : K} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a + b‖ ≤ c := by
   exact (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `add_le ha (by rwa [norm_neg])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sub_le {a b : K} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a - b‖ ≤ c := by
   rw [sub_eq_add_neg]
   exact add_le ha (by rwa [norm_neg])
 
 /- English proof (translation)
-Establish `h1 : ‖a‖ ≤ max ‖a - b‖ ‖b‖`. Simplify using `using IsUltrametricDist.norm_add_le_max (a - b) b`. Break down `le_max_iff.mp h1 with h2 | h2` into its components or cases. Conclude with `h2`. Conclude with `absurd h2 (not_le.mpr h)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma le_sub_of_lt {a b : K} (h : ‖b‖ < ‖a‖) : ‖a‖ ≤ ‖a - b‖ := by
   have h1 : ‖a‖ ≤ max ‖a - b‖ ‖b‖ := by
@@ -35,20 +35,20 @@ lemma le_sub_of_lt {a b : K} (h : ‖b‖ < ‖a‖) : ‖a‖ ≤ ‖a - b‖ :
   · exact absurd h2 (not_le.mpr h)
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ha hb (norm_nonneg _) ((norm_nonneg _).trans ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mul_le {a b : K} {c d : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ d) : ‖a * b‖ ≤ c * d := by
   rw [norm_mul]
   exact mul_le_mul ha hb (norm_nonneg _) ((norm_nonneg _).trans ha)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Establish `h' : y ^ 2 + W.a₁ * x * y + W.a₃ * y = x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆` using `(WeierstrassCurve.Affine.equation_iff _ _).mp h`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`. Establish `hR : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : ‖x ^ 2‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hx`. Establish `hx3 : ‖x ^ 3‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hx`. Use `add_le (add_le (add_le hx3 ?_) ?_) h6` and prove the remaining obligations. Simplify using `using mul_le h2 hx2`. Simplify using `using mul_le h4 hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hT : ‖W.a₁ * x * y + W.a₃ * y‖ ≤ ‖y‖`. Use `add_le ?_ ?_` and prove the remaining obligations. Simplify using `using mul_le (mul_le h1 hx) (le_refl ‖y‖)`. Simplify using `using mul_le h3 (le_refl ‖y‖)`. Establish `hlt : ‖-(W.a₁ * x * y + W.a₃ * y)‖ < ‖y ^ 2‖`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_neg, norm_pow]`. Use the polynomial consequences of the given equalities and inequalities. Establish `key` using `le_sub_of_lt hlt`. Rewrite `key` using `[sub_neg_eq_add, ← add_assoc, h', norm_pow]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma y_int (W : WeierstrassCurve K)
     (hW : IntegralModel W) {x y : K} (h : W.toAffine.Equation x y) (hx : ‖x‖ ≤ 1) : ‖y‖ ≤ 1 := by
@@ -74,17 +74,15 @@ lemma y_int (W : WeierstrassCurve K)
   nlinarith
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Establish `h' : y ^ 2 + W.a₁ * x * y + W.a₃ * y = x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆` using `(WeierstrassCurve.Affine.equation_iff _ _).mp h`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`. Establish `hx0 : (0 : ℝ) < ‖x‖` using `by linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : ‖x‖ ^ 2 < ‖x‖ ^ 3`. Use polynomial arithmetic with `[mul_pos (mul_pos hx0 hx0) (by linarith : (0 : ℝ) < ‖x‖ - 1)]`. Establish `hx1 : ‖x‖ ≤ ‖x‖ ^ 3`. Use polynomial arithmetic with `[mul_pos hx0 (by linarith : (0 : ℝ) < ‖x‖ - 1)]`. Establish `hxy : ‖x‖ < ‖y‖`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_le_mul hc hc (norm_nonneg y) hx0.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hR : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ ≤ ‖x‖ ^ 3`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `add_le (add_le (add_le (le_of_eq (norm_pow _ _)) ?_) ?_) ?_` and prove the remaining obligations. Conclude with `(mul_le h2 (le_of_eq (norm_pow x 2))).trans (by linarith)`. Conclude with `(mul_le h4 (le_refl ‖x‖)).trans (by linarith)`. Conclude with `h6.trans (one_le_pow₀ hx.le)`. Establish `hT : ‖W.a₁ * x * y + W.a₃ * y‖ ≤ ‖x‖ * ‖y‖`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `add_le ?_ ?_` and prove the remaining obligations. Simplify using `using mul_le (mul_le h1 (le_refl ‖x‖)) (le_refl ‖y‖)`. Conclude with `(mul_le h3 (le_refl ‖y‖)).trans (by nlinarith [norm_nonneg y])`. Establish `hlt : ‖-(W.a₁ * x * y + W.a₃ * y)‖ < ‖y ^ 2‖`. Rewrite using `[norm_neg, norm_pow]`.
-
-Use polynomial arithmetic with `[norm_nonneg y]`. Establish `key` using `le_sub_of_lt hlt`. Rewrite `key` using `[sub_neg_eq_add, ← add_assoc, h', norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma y_sq_le (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
     (h : W.toAffine.Equation x y) (hx : 1 < ‖x‖) : ‖y‖ ^ 2 ≤ ‖x‖ ^ 3 := by
@@ -119,37 +117,33 @@ lemma y_sq_le (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
   linarith
 
 /- English proof (translation)
-Use `set ℓ := W.toAffine.slope x₁ x₂ y₁ y₂ with hℓ`. Use `set x₃ := W.toAffine.addX x₁ x₂ ℓ with hx₃`. Use `set y₃ := W.toAffine.negAddY x₁ x₂ y₁ ℓ with hy₃`. Assume the negation of the conclusion as `hC`. Use `push Not at hC`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₃ : W.toAffine.Equation x₃ y₃` using `Affine.equation_negAdd h₁ h₂ hxy`. Establish `hy3 : ‖y₃‖ ≤ 1` using `y_int W hW h₃ hC`. Establish `hpoly` using `Affine.addPolynomial_slope h₁ h₂ hxy`. Rewrite `hpoly` using `[← hℓ]`. Establish `hev` using `congrArg (Polynomial.eval (x₃ + 1)) hpoly`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Affine.addPolynomial, Affine.linePolynomial, Affine.polynomial] at hev`. Simplify using `at hev`. Establish `hx3def : x₃ = ℓ ^ 2 + W.toAffine.a₁ * ℓ - W.toAffine.a₂ - x₁ - x₂` using `by simp [hx₃]`. Rewrite `hev` using `[← hx3def]`. Take `⟨a1, a2, a3, a4, a6⟩` from `hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy3def : y₃ = ℓ * (x₃ - x₁) + y₁` using `by simp [hy₃, hx₃]`. Establish `hx0 : 0 ≤ ‖x₁‖` using `norm_nonneg _`. Establish `hℓ0 : 0 ≤ ‖ℓ‖` using `norm_nonneg _`. Establish `hsq` using `y_sq_le W ⟨a1, a2, a3, a4, a6⟩ h₁ hx₁`. Establish `hd : ‖x₁‖ ≤ ‖x₁ - x₃‖` using `le_sub_of_lt (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlin : ‖ℓ‖ * ‖x₁‖ ≤ max ‖y₁‖ 1`. Establish `e : ℓ * (x₁ - x₃) = y₁ - y₃` using `by rw [hy3def]; ring`. Establish `: ‖ℓ * (x₁ - x₃)‖ ≤ max ‖y₁‖ 1`. Rewrite using `[e]`. Conclude with `sub_le (le_max_left _ _) (hy3.trans (le_max_right _ _))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `this` using `[norm_mul]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hℓsq : ‖ℓ‖ ^ 2 ≤ ‖x₁‖`. Establish `hm : (max ‖y₁‖ 1) ^ 2 ≤ ‖x₁‖ ^ 3`. Break down `le_total ‖y₁‖ 1 with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[max_eq_right h, one_pow]`. Conclude with `one_le_pow₀ hx₁.le`. Rewrite using `[max_eq_left h]`. Conclude with `hsq`. Establish `: (‖ℓ‖ * ‖x₁‖) ^ 2 ≤ ‖x₁‖ ^ 3` using `(pow_le_pow_left₀ (by positivity) hlin 2).trans hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hx1p : 0 < ‖x₁‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use `set M := max 1 ‖ℓ‖ with hM`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`. Establish `hMℓ : ‖ℓ‖ ≤ M` using `le_max_right _ _`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMsq : M ^ 2 ≤ ‖x₁‖`. Break down `le_total 1 ‖ℓ‖ with h | h` into its components or cases. Rewrite using `[hM, max_eq_right h]`. Conclude with `hℓsq`. Rewrite using `[hM, max_eq_left h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `ht : ‖x₃ + 1‖ ≤ 1` using `add_le hC (by simp)`. Establish `hu : ‖ℓ * (x₃ + 1 - x₁) + y₁‖ ≤ M`. Establish `e : ℓ * (x₃ + 1 - x₁) + y₁ = y₃ + ℓ` using `by rw [hy3def]; ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_le (hy3.trans hM1) hMℓ`. Establish `hM2 : M ≤ M ^ 2` using `by nlinarith`. Establish `hLHS : ‖(ℓ * (x₃ + 1 - x₁) + y₁) ^ 2 + W.a₁ * (x₃ + 1) * (ℓ * (x₃ + 1 - x₁) + y₁) + W.a₃ * (ℓ * (x₃ + 1 - x₁) + y₁) - ((x₃ + 1) ^ 3 + W.a₂ * (x₃ + 1) ^ 2 + W.a₄ * (x₃ + 1) + W.a₆)‖ ≤ ‖x₁‖`. Establish `ht2 : ‖(x₃ + 1) ^ 2‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ht`. Establish `ht3 : ‖(x₃ + 1) ^ 3‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hc : ‖(x₃ + 1) ^ 3 + W.a₂ * (x₃ + 1) ^ 2 + W.a₄ * (x₃ + 1) + W.a₆‖ ≤ 1`. Use `add_le (add_le (add_le ht3 ?_) ?_) a6` and prove the remaining obligations. Simplify using `using mul_le a2 ht2`. Simplify using `using mul_le a4 ht`. Use `sub_le (add_le (add_le ?_ ?_) ?_) (hc.trans (by nlinarith))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_pow]`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) hu 2).trans hMsq`. Use `mul_le (mul_le a1 ht) hu` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le a3 hu` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hRHS : ‖x₁‖ * ‖x₂‖ ≤ ‖(x₃ + 1 - x₁) * (x₃ + 1 - x₂) * (x₃ + 1 - x₃)‖`. Establish `e1 : ‖x₁‖ ≤ ‖x₃ + 1 - x₁‖`. Rewrite using `[norm_sub_rev]; exact le_sub_of_lt (by linarith)`. Establish `e2 : ‖x₂‖ ≤ ‖x₃ + 1 - x₂‖`.
-
-Rewrite using `[norm_sub_rev]; exact le_sub_of_lt (by linarith)`. Establish `e3 : x₃ + 1 - x₃ = 1` using `by ring`. Rewrite using `[e3, mul_one, norm_mul]`. Conclude with `mul_le_mul e1 e2 (norm_nonneg _) (norm_nonneg _)`. Establish `heq : (ℓ * (x₃ + 1 - x₁) + y₁) ^ 2 + W.a₁ * (x₃ + 1) * (ℓ * (x₃ + 1 - x₁) + y₁) + W.a₃ * (ℓ * (x₃ + 1 - x₁) + y₁) - ((x₃ + 1) ^ 3 + W.a₂ * (x₃ + 1) ^ 2 + W.a₄ * (x₃ + 1) + W.a₆) = -((x₃ + 1 - x₁) * (x₃ + 1 - x₂) * (x₃ + 1 - x₃))`.
-
-Take the linear combination `hev`. Rewrite `hLHS` using `[heq, norm_neg]`. Use `hRHS.trans hLHS` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma addX_norm [DecidableEq K] (W : WeierstrassCurve K) (hW : IntegralModel W)
     {x₁ x₂ y₁ y₂ : K} (h₁ : W.toAffine.Equation x₁ y₁) (h₂ : W.toAffine.Equation x₂ y₂)
@@ -245,13 +239,11 @@ open WeierstrassCurve
 
 open Classical in
 /- English proof (translation)
-Introduce `K _ _ W hW _ P Q hP hQ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `P with _ | @⟨x₁, y₁, h₁⟩` into its components or cases. Rewrite using `[show (Affine.Point.zero : W.toAffine.Point) = 0 from rfl, zero_add]`. Conclude with `hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Q with _ | @⟨x₂, y₂, h₂⟩` into its components or cases. Rewrite using `[show (Affine.Point.zero : W.toAffine.Point) = 0 from rfl, add_zero]`. Conclude with `hP`. Distinguish the cases in `hxy : x₁ = x₂ ∧ y₁ = W.toAffine.negY x₂ y₂`. Rewrite using `[Affine.Point.add_of_Y_eq hxy.1 hxy.2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite using `[Affine.Point.add_some hxy]`. Conclude with `FormalGroupPointsSubgroup.addX_norm W hW h₁.1 h₂.1 hxy hP hQ`. Break down `P with _ | @⟨x, y, h⟩` into its components or cases. Discharge the goal by the elementary cases of `trivial`.
-
-Simplify `hP` using `[InFormalGroupPoints]`.
+Separate the alternatives or extract the components of the hypothesis. Check the elementary cases of the proposition. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem formal_group_points_subgroup_holds : Formalism.ELL.FormalGroupPointsSubgroup' := by
   intro K _ _ W hW _ P Q hP hQ

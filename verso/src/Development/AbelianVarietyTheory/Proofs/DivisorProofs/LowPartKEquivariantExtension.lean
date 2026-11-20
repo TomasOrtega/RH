@@ -27,9 +27,9 @@ open GlobalTheory.RealLift GlobalTheory.RealLift.Main Formalism.BasicNotions.TH 
 namespace GlobalTheory.DegKeep
 
 /- English proof (translation)
-Introduce and unpack `⟨x, y⟩`. Take `⟨N, fN, hx, sN⟩` from `h x`. Take `⟨N', fN', hy, sN'⟩` from `h y`. Use `⟨N.map (LinearMap.inl ℂ V V) ⊔ N'.map (LinearMap.inr ℂ V V), inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.prod_eq_sup_map]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hx, hy⟩`. Rewrite using `[← LinearMap.prod_eq_sup_map]`. Introduce and unpack `⟨a, b⟩ ⟨ha, hb⟩`. Conclude with `⟨sN a ha, sN' b hb⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem locFin_prod {V : Type} [AddCommGroup V] [Module ℂ V] {L : Module.End ℂ V} (h : LocFin L) :
     LocFin (L.prodMap L : Module.End ℂ (V × V)) := by
@@ -43,11 +43,11 @@ theorem locFin_prod {V : Type} [AddCommGroup V] [Module ℂ V] {L : Module.End �
     exact ⟨sN a ha, sN' b hb⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨x, y⟩ l`. Establish `hp : ∀ n : ℕ, ((c • (L.prodMap L : Module.End ℂ (V × V))) ^ n) (x, y) = (((c • L) ^ n) x, ((c • L) ^ n) y)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rfl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ', pow_succ', Module.End.mul_apply, ih]`. Simplify using the standard rewrite rules. Establish `h1` using `(h x (l ∘ₗ LinearMap.inl ℂ V V)).add (h y (l ∘ₗ LinearMap.inr ℂ V V))`. Simplify using `only [LinearMap.comp_apply, ← mul_add, ← map_add, LinearMap.inl_apply, LinearMap.inr_apply, Prod.mk_add_mk, add_zero, zero_add] at h1`. Simplify using `only [hp]`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem isExp_prod {V : Type} [AddCommGroup V] [Module ℂ V] {L U : Module.End ℂ V} (c : ℂ) (h : IsExp (c • L) U) :
     IsExp (c • (L.prodMap L : Module.End ℂ (V × V))) (U.prodMap U) := by
@@ -68,7 +68,7 @@ def graphOf {V Z : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup Z] [Modul
   LinearMap.eqLocus (A ∘ₗ q ∘ₗ LinearMap.fst ℂ V V) (q ∘ₗ LinearMap.snd ℂ V V)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_graphOf {V Z : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup Z] [Module ℂ Z] {q : V →ₗ[ℂ] Z} {A : Z →ₗ[ℂ] Z}
     {T T' : V} : (T, T') ∈ graphOf q A ↔ A (q T) = q T' := Iff.rfl
@@ -83,25 +83,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `set L0 : Module.End ℂ (Tens F P Q R S) := atPl (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w (fockAct2 P Q R S Y + (c w * Y.trace) • 1) with hL0`. Use `set Ys : ℝ → InfinitePlace F → Mat R S := fun s w' => if w' = w then (s : ℂ) • Y else 0 with hYsdef`. Establish `hYsKC : ∀ s w', IsKC (Ys s w')`. Introduce `s w'`. Distinguish the cases in `h : w' = w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hYsdef, if_pos h]`. Conclude with `GlobalTheory.FockKStab.isKC_smul hY _`. Simplify using `only [hYsdef, if_neg h]`. Conclude with `GlobalTheory.FockKStab.isKC_zero R S`. Establish `hYsU : ∀ s w', Ys s w' ∈ upq R S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `s w'`. Apply `GlobalTheory.FockKStab.mem_upq (hYsKC s w')` to reduce the goal to its premises. Distinguish the cases in `h : w' = w`. Simplify using `[hYsdef, h, Matrix.conjTranspose_smul, hYs]`. Simplify using `[hYsdef, h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∀ s : ℝ, sumPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) (fun w' => fockAct2 P Q R S (Ys s w') + (c w' * (Ys s w').trace) • 1) = (s : ℂ) • L0 := by`. Introduce `s`. Unfold `sumPl`. Rewrite using `[Finset.sum_eq_single w]`. Rewrite using `[hL0, ← atPl_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Simplify using `only [hYsdef, if_pos rfl, map_smul, Matrix.trace_smul, smul_add, smul_smul, smul_eq_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Introduce `w' _ hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hYsdef, hw', atPl_zero]`. Simplify using the standard rewrite rules. Establish `hloc : ∀ s : ℝ, LocFin (sumPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) (fun w' => fockAct2 P Q R S (Ys s w') + (c w' * (Ys s w').trace) • 1)) := fun s => i_locfin _ _ _ (fun w' => locFin_fock2 P Q R S _ (hYsKC s w') _)`. Establish `hexp : ∀ s : ℝ, ∃ U : Module.End ℂ (Tens F P Q R S × Tens F P Q R S), IsExp ((s : ℂ) • (L0.prodMap L0 : Module.End ℂ (Tens F P Q R S × Tens F P Q R S))) U ∧ U (T, T') ∈ N`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hgen⟩` from `i_lineex F E σ (Fin d) R S B.emb (incM F W.J) Complex.I C hcm hC (Ys s) (hYsU s)`. Take `⟨U, hU, hSA⟩` from `i_expact F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) (hloc s) (fun t l hl => hadm _ l hl) (fun T => hact γ hγ (Ys s) hgen T)`. Use `⟨U.prodMap U, isExp_prod _ (hsum s ▸ hU), ?_⟩` and prove the remaining obligations. Establish `h1` using `(i_actslaws F _ (Φ T) (Φ (U T)) (Φ (U T))).2.1 _ (map_zero _) (hSA T)`. Establish `h1'` using `(i_actslaws F _ (Φ T') (Φ (U T')) (Φ (U T'))).2.1 _ (map_zero _) (hSA T')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : γ (Multiplicative.ofAdd 1) ∈ KInf σ W B.emb`. Use `⟨hγ.2 _, fun w' => ?_⟩` and prove the remaining obligations. Take `⟨A', hA'⟩` from `(hC w').2`. Conclude with `GlobalTheory.FockKStab.commute_of_frame hA' (GlobalTheory.FockKStab.frame_inv (hC w') hA') (hgen 1 w') (hθ w') (Commute.exp_left (Commute.smul_left (GlobalTheory.FockKStab.commute_jm (hYsKC s w')) _))`. Conclude with `hN _ hk _ _ h1 h1'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hL0loc : LocFin L0`. Use `hloc 1` as an intermediate fact. Rewrite `this` using `[hsum 1, Complex.ofReal_one, one_smul]`. Then use the resulting hypothesis. Establish `hmem` using `GlobalTheory.FockKStab.mem_of_exp _ (locFin_prod hL0loc) N (T, T') hexp`. Establish `e : ∀ T, L0 T = actAt (fockAct2 P Q R S) w Y T + (c w * Y.trace) • T` using `fun T => by`.
-
-Simplify using `[hL0, atPl_add, atPl_smul, atPl_one, actAt_apply]`. Establish `h2` using `N.sub_mem hmem (N.smul_mem (c w * Y.trace) hT)`. Rewrite `h2` using `[LinearMap.prodMap_apply, e, e]`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pair_skew (hcm : IsCMExt F E σ)
     (hC : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w))
@@ -163,13 +161,13 @@ theorem pair_skew (hcm : IsCMExt F E σ)
   simpa using h2
 
 /- English proof (translation)
-Establish `key` using `pair_skew hcm hC hθ hact hadm N T T' hT hN w`. Take `⟨Y1, hY1⟩ : ∃ Y1 : Mat R S, Y1 = (1 / 2 : ℂ) • (Z - Zᴴ)` from `⟨_, rfl⟩`. Take `⟨Y2, hY2⟩ : ∃ Y2 : Mat R S, Y2 = (1 / (2 * Complex.I)) • (Z + Zᴴ)` from `⟨_, rfl⟩`. Establish `hZ' : Z = Y1 + Complex.I • Y2`. Rewrite using `[hY1, hY2, smul_smul, show Complex.I * (1 / (2 * Complex.I)) = 1 / 2 by field_simp, ← smul_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show Z - Zᴴ + (Z + Zᴴ) = (2 : ℂ) • Z by rw [two_smul]; abel, smul_smul]; norm_num`. Establish `hZh : IsKC Zᴴ` using `GlobalTheory.FockKStab.isKC_conjTranspose hZ`. Establish `k1 : IsKC Y1` using `hY1 ▸ GlobalTheory.FockKStab.isKC_smul (by`. Rewrite using `[sub_eq_add_neg]; exact GlobalTheory.FockKStab.isKC_add hZ (by simpa using GlobalTheory.FockKStab.isKC_smul hZh (-1))) _`. Establish `k2 : IsKC Y2` using `hY2 ▸ GlobalTheory.FockKStab.isKC_smul (GlobalTheory.FockKStab.isKC_add hZ hZh) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `s1 : Y1ᴴ = -Y1`. Rewrite using `[hY1, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[show star (1 / 2 : ℂ) = 1 / 2 by simp, ← smul_neg, neg_sub]`. Establish `s2 : Y2ᴴ = -Y2`. Rewrite using `[hY2, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) by simp, neg_smul, add_comm]`. Use `N.add_mem (key Y1 k1 s1) (N.smul_mem Complex.I (key Y2 k2 s2))` as an intermediate fact. Rewrite using `[hZ', map_add, map_smul]`. Conclude with `this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_stable (hcm : IsCMExt F E σ)
     (hC : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w))
@@ -203,17 +201,17 @@ theorem pair_stable (hcm : IsCMExt F E σ)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `key : ∀ Y ∈ upq P Q, p (Φ (actAt (fockAct1 P Q R S) w Y T)) + (c w * Y.trace) • p (Φ T) = 0`. Introduce `Y hY`. Use `set Ys : InfinitePlace F → Mat P Q := fun w' => if w' = w then Y else 0 with hYsdef`. Establish `hYsU : ∀ w', Ys w' ∈ upq P Q`. Introduce `w'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : w' = w`. Simplify `hY` using `[hYsdef, h]`. Simplify `zero_mem_upq P Q` using `[hYsdef, h]`. Take `⟨γ, hγ, hgen⟩` from `i_lineex F E σ (Fin n) P Q B.emb (incM F X.J) 1 A hcm hA Ys hYsU`. Establish `hsum : sumPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) (fun w' => fockAct1 P Q R S (Ys w') + (c w' * (Ys w').trace) • 1) = actAt (fockAct1 P Q R S) w Y + (c w * Y.trace) • 1 := by`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `sumPl`. Rewrite using `[Finset.sum_eq_single w]`. Simplify using `[hYsdef, atPl_add, atPl_smul, atPl_one, actAt_apply]`. Introduce `w' _ hw'`. Simplify using `[hYsdef, hw', atPl_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hsd` using `hact γ hγ Ys hgen T`. Establish `h1` using `(i_actslaws F _ (Φ T) _ (Φ T)).1 _ (fun t => map_zero _) hsd`. Establish `h2` using `hp.lie γ hγ (Φ T) (hr ▸ LinearMap.mem_range_self Φ T) _ h1`. Rewrite `h2` using `[hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`. Take `⟨Y1, h1, Y2, h2, e⟩` from `GlobalTheory.TensIrr.upq_decomp Y`. Establish `ht : Y1.trace + Complex.I * Y2.trace = 0`. Use `GlobalTheory.HarmLift.trace_PC hY` as an intermediate fact. Rewrite `this` using `[e, Matrix.trace_add, Matrix.trace_smul, smul_eq_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `k1` using `key Y1 h1`. Establish `k2` using `key Y2 h2`. Rewrite using `[e, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_add, map_smul, map_smul, eq_neg_of_add_eq_zero_left k1, eq_neg_of_add_eq_zero_left k2, smul_neg, smul_smul, ← neg_add, ← add_smul, show c w * Y1.trace + Complex.I * (c w * Y2.trace) = c w * (Y1.trace + …`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kill_noncompact {M : Model σ X W} {A : InfinitePlace F → Matrix (Fin n) (Formalism.BasicNotions.TH.Ix P Q) ℂ} (hcm : IsCMExt F E σ)
     (hA : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w))
@@ -258,23 +256,21 @@ end Pair
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM S hS`. Take `⟨hb, hg, hc, hw, hw'⟩` from `hM.triple`. Use `choose A hA hAθ using fun w => i_frameex _ _ _ _ _ (hg.hV.sig w) (hg.hV.cartan w)`. Use `choose C hC hCθ using fun w => i_frameex _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fr : Framed B.emb (incM F G.V.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Establish `hvl` using `i_vacline i_derex`. Establish `hfe` using `i_fockex i_derex`. Establish `hsec` using `i_liesecond hKP.base i_derex hfe hvl (i_liescalar hKP.base i_derex hvl)`. Establish `hfst` using `i_liefirst hsec`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `i_polrange i_actslaws i_derex hvl F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hw`. Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hb.cm hb.std fr hΦ hwp.1 hc.expβ`. Take `⟨d, hd, hB1⟩` from `hwp.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW1` using `hfst F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co d 1 Complex.I A C Φ _ _ _ hb.cm hb.std fr hΦ hd hB1 (hasExp_div B.emb hc.expβ hc.expα)`. Establish `hadm` using `fun g => (hwp.isUSplitting).adm g`. Establish `L1` using `GlobalTheory.T.archimedean_theta_polynomial_lift_exists i_actslaws i_derex hvl F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hpol : ∀ T, Φ T ∈ G.M.Pol B.ψ B.emb` using `fun T => hr ▸ LinearMap.mem_range_self Φ T`. Establish `hq : Function.Surjective (R.p ∘ₗ Φ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_comp, hr]`. Conclude with `hM.real.quot.onto`. Establish `elow : lowPartInf B G.M R.p = (degLE (InfinitePlace F) _ _ _ _ (lowDegInf B G.M R.p)).map (R.p ∘ₗ Φ)`. Rewrite using `[lowPartInf, L1, Submodule.map_comp]`. Establish `main` using `map_mem_degLE (R.p ∘ₗ Φ) hq (fun w Y hY T => kill_noncompact hb.cm hA1 hW1 hr hM.real.quot w Y hY T) (fun w Y hY T hT => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `pair_stable hb.cm hC1 hCθ hW2 hadm ((LinearMap.ker (R.p ∘ₗ Φ)).prod ⊤) T T ⟨hT, trivial⟩ (fun k hk T₁ _ h _ => ⟨?_, trivial⟩) w Y hY` as an intermediate fact. Conclude with `this.1`. Establish `h0 : Acts (evI F) (om' (1, k)) (0 : SInf F (Fin a' × Fin (a + a'))) (0 : SInf F (Fin a' × Fin (a + a')))`. Introduce `r _`. Establish `: tens (evI F) (0 : SInf F (Fin a' × Fin (a + a'))) r = 0` using `by funext x; simp [tens]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[this, map_zero]`. Use `hM.real.cpt k hk _ (hpol T) 0 (Submodule.zero_mem _) _ 0 h h0 (by rw [map_zero]; exact hT)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this)`. Use the proof step `(lowDegInf B G.M R.p) S (fun w Y hY T hT T' e => by`.
-
-Use `pair_stable hb.cm hC1 hCθ hW2 hadm (graphOf (R.p ∘ₗ Φ) S) T T' (mem_graphOf.2 e) (fun k hk T₁ T₁' h h' => mem_graphOf.2 (hS k hk _ (hpol T) _ h (elow ▸ ⟨T, hT, rfl⟩) _ (hpol T') _ h' e)) w Y hY` as an intermediate fact. Conclude with `mem_graphOf.1 this)`. Rewrite using `[elow]`. Introduce and unpack `_ ⟨T, hT, rfl⟩`. Conclude with `main T hT`.
+A detailed English derivation is pending.
 -/
 theorem map_lowPartInf_mem : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
@@ -331,7 +327,7 @@ theorem map_lowPartInf_mem : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] 
   exact main T hT
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM j S hS _ x hx`. Conclude with `Submodule.map_mono (fockDeg_mono G.M B.ψ B.emb (Nat.le_add_right _ _)) (map_lowPartInf_mem hKP F E σ B a a' G X om om' R Rf hM S hS x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_mem_fockDeg_of_lie : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

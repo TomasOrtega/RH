@@ -7,14 +7,14 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.TheoremPCompactOfSt
 namespace Formalism.FourierDecayAlt.P.CutSE
 
 /- English proof (translation)
-The claim follows from `stepExp0_of_open hO hS (decayPair2_of_smooth hS) (decayPair3_of wave_outgoing_orbital (clsDecayJ_of hR)) (decayPair4_of wave_outgoing_orbital (clsDecayJ_of hR) site_multiplication_orbital)`.
+A detailed English derivation is pending.
 -/
 theorem stepExp0_of_leaves (hO : OneLetterDens) (hS : DensSmoothCls) (hR : RadDecay) : Formalism.FourierDecayAlt.P5.HerD.StepExp0 :=
   stepExp0_of_open hO hS (decayPair2_of_smooth hS) (decayPair3_of wave_outgoing_orbital (clsDecayJ_of hR))
     (decayPair4_of wave_outgoing_orbital (clsDecayJ_of hR) site_multiplication_orbital)
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P5.HerD.thmPActualCpt_of_stepExp0 (stepExp0_of_leaves hO hS hR)`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualCpt_of_leaves (hO : OneLetterDens) (hS : DensSmoothCls) (hR : RadDecay) :
     Formalism.FourierDecayAlt.P5.ThmPActualCpt :=

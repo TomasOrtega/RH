@@ -14,7 +14,7 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mum.TensTor.exists_components_of_unimodular` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsComponentTupleTensorTorsionUnimodular.lean&line=41#L41)
 -/

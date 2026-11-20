@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.UMin
 
 /- English proof (translation)
-Introduce `o R _ _ n β v ⟨j, hj⟩`. Establish `hv : Ideal.span (Set.range v) = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨j, rfl⟩) hj`. Use `⟨GlobalTheory.ProjSpace.pt β v hv, GlobalTheory.ProjSpace.pt_str β v hv, ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.ZM.ProjCoord.secCoord_iff (Equiv.refl _) (𝟙 _) β (GlobalTheory.ProjSpace.pt β v hv) (by rw [Category.comp_id, GlobalTheory.ProjSpace.pt_str]) v).2 ⟨hv, Category.comp_id _⟩`. Establish `h2` using `(GlobalTheory.ZM.RepBC.secCoord_pull (GlobalTheory.ProjSpace.O1 o n) (GlobalTheory.ProjSpace.coord o n) (𝟙 _) _ v).1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_pCrd_of_isUnit : ∀ (o R : Type) [CommRing o] [CommRing R] (n : ℕ) (β : o →+* R) (v : Fin (n + 1) → R),
     (∃ j, IsUnit (v j)) → ∃ ξ : Sp R ⟶ PSpace o n, ξ ≫ PSpace.str o n = spMap β ∧ PCrd ξ v := by

@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.MemberCount
 
 /- English proof (translation)
-Establish `h4` using `Formalism.MainNotions.StandardLattice.HarishChandraReduction.rankFormula_of_classNumber D Lv (GlobalTheory.ColClassNumber.classNumber_all D Lv)`. Establish `hr` using `h4 (GlobalTheory.first_type_prime_large_of_record D) (Formalism.MainNotions.Ext.Lw.splitsF_g_all D) u (Formalism.MainNotions.Ext.Lw.splitsF_T_all D u) (Formalism.MainNotions.Ext.Lw.mu0Tie_of_sym C u)`. Establish `hfin : Module.finrank ℂ (D.s.Cu u) = Module.finrank ℂ (D.mem u).A.Mu0` using `(D.s_Cu u).finrank_eq`. Unfold `GlobalTheory.Core.Rk.RankMu GlobalTheory.Core.Rk.d0`. Rewrite using `[hfin, hDu u]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr`.
+A detailed English derivation is pending.
 -/
 theorem rankMu_of_cols (D : D7) (Lv : LevelData D) (C : Formalism.L2.Forms.ColsTiedSym D) (hDu : StandardLattice.FactDuStar D)
     (u : D.what₂.Word) : GlobalTheory.Core.Rk.RankMu D u := by
@@ -30,14 +30,14 @@ theorem rankMu_of_cols (D : D7) (Lv : LevelData D) (C : Formalism.L2.Forms.ColsT
   exact hr
 
 /- English proof (translation)
-The claim follows from `rankMu_of_cols D O.ex.lev b.R.T.toTiedDataS.cols O.ex.duStar_def u`.
+A detailed English derivation is pending.
 -/
 theorem rankMu_of_bundle {D : D7} {O : Obj D} {c : ℝ} (b : GlobalTheory.Fc.Bundle D O c) (u : D.what₂.Word) :
     GlobalTheory.Core.Rk.RankMu D u :=
   rankMu_of_cols D O.ex.lev b.R.T.toTiedDataS.cols O.ex.duStar_def u
 
 /- English proof (translation)
-Introduce `_ _` and use `RowE.of_all fun _ _ _ _ b _ _ _ u => rankMu_of_bundle b u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem member_rankMu : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D _ _ _ => ∀ u, GlobalTheory.Core.Rk.RankMu D u) :=

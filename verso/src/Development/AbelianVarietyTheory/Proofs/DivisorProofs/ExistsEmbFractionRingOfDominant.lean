@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.ZH.RatModel
 
 /- English proof (translation)
-Use `(PrimeSpectrum.le_iff_specializes (R := V) _ _).1 ?_` and prove the remaining obligations. Use `show Ideal.comap (algebraMap V (FractionRing V)) p.asIdeal ≤ w.asIdeal`. Establish `hp : p.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ p.asIdeal (PrimeSpectrum.isPrime p)`. Rewrite using `[hp]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : algebraMap V (FractionRing V) x = 0` using `Ideal.mem_bot.1 (Ideal.mem_comap.1 hx)`. Rewrite using `[(injective_iff_map_eq_zero _).1 (IsFractionRing.injective V (FractionRing V)) x hx']`. Conclude with `w.asIdeal.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_fractionRing_specializes (V : Type) [CommRing V] [IsDomain V] (w : Sp V) (p : Sp (FractionRing V)) :
     (spMap (algebraMap V (FractionRing V))) p ⤳ w := by
@@ -26,25 +26,23 @@ theorem spMap_fractionRing_specializes (V : Type) [CommRing V] [IsDomain V] (w :
   exact w.asIdeal.zero_mem
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M V _ _ _ ξ ⟨w, hw⟩`. Use `set z := ξ (IsLocalRing.closedPoint V) with hzdef`. Set `g0 : M.O z →+* V` to `(Scheme.stalkClosedPointTo (R := CommRingCat.of V) ξ).hom.comp (M.stalkEquiv z).symm.toRingHom`. Establish `hg0 : ∀ (U : M.Z.Opens) (f : Γ(M.Z, U)) (hz : z ∈ U), g0 ⟨valF M.pt U f, RatModel.valF_mem_O hz f⟩ = valR ξ U f`. Introduce `U f hz`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : ⊤ ≤ ξ ⁻¹ᵁ U` using `(GlobalTheory.Points.le_preimage_iff ξ U).2 hz`. Establish `e1 : (M.stalkEquiv z).symm ⟨valF M.pt U f, RatModel.valF_mem_O hz f⟩ = M.Z.presheaf.germ U z hz f`. Rewrite using `[RingEquiv.symm_apply_eq, RatModel.stalkEquiv_germ]`. Establish `e2` using `congrArg (fun φ => φ.hom f) (GlobalTheory.Points.germ_stalkClosedPointTo_eq_valMap ξ U h)`. Express the relevant statement in the definitionally equal form `(Scheme.stalkClosedPointTo (R := CommRingCat.of V) ξ).hom ((M.stalkEquiv z).symm ⟨valF M.pt U f, RatModel.valF_mem_O hz f⟩) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Rewrite using `[GlobalTheory.Points.valR_eq ξ U h]`. Conclude with `e2`. Establish `hinj0 : Function.Injective g0`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨x, hx⟩ h0`. Take `⟨U, f, hz, rfl⟩` from `RatModel.mem_O.1 hx`. Rewrite `h0` using `[hg0 U f hz]`. Establish `hU : (U : Set M.Z).Nonempty` using `⟨z, hz⟩`. Distinguish the cases in `hf : f = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Substitute `hf` using the available equality. Apply `Subtype.ext` to reduce the goal to its premises. Use `show valF M.pt U 0 = 0`. Rewrite using `[← M.res_apply U hU, map_zero]`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : M.Z.basicOpen f ≠ ⊥` using `fun hb => hf ((basicOpen_eq_bot_iff f).1 hb)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ((M.Z.basicOpen f : M.Z.Opens) : Set M.Z).Nonempty := by`. Rewrite using `[Set.nonempty_iff_ne_empty]`. Conclude with `fun h => hb (SetLike.coe_injective h)`. Establish `hgen : genericPoint M.Z ∈ M.Z.basicOpen f` using `(genericPoint_specializes y).mem_open (M.Z.basicOpen f).isOpen hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `eta : Sp (FractionRing V) ⟶ M.Z` to `spMap (algebraMap V (FractionRing V)) ≫ ξ`. Establish `heta : ⊤ ≤ eta ⁻¹ᵁ M.Z.basicOpen f`. Introduce `p _`. Establish `hs : eta p ⤳ genericPoint M.Z`. Rewrite using `[← hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(spMap_fractionRing_specializes V w p).map ξ.continuous`. Conclude with `hs.mem_open (M.Z.basicOpen f).isOpen hgen`. Establish `hetaU : ⊤ ≤ eta ⁻¹ᵁ U` using `heta.trans (eta.preimage_mono (M.Z.basicOpen_le f))`. Establish `hu` using `(GlobalTheory.Points.le_preimage_basicOpen_iff eta hetaU f).1 heta`. Rewrite `hu` using `[GlobalTheory.Points.valR_spMap_comp _ ξ U ((GlobalTheory.Points.le_preimage_iff ξ U).2 hz), h0, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_isUnit_zero hu`. Set `g : M.O z →+* FractionRing V` to `(algebraMap V (FractionRing V)).comp g0`. Establish `hinj : Function.Injective g` using `(IsFractionRing.injective V (FractionRing V)).comp hinj0`. Use `⟨IsFractionRing.lift hinj, fun U f hz => ?_⟩` and prove the remaining obligations. Establish `e : valF M.pt U f = algebraMap (M.O z) Ω ⟨valF M.pt U f, RatModel.valF_mem_O hz f⟩` using `rfl`.
-
-Rewrite using `[e, IsFractionRing.lift_algebraMap]`. Use `show algebraMap V (FractionRing V) (g0 _) = _`. Rewrite using `[hg0 U f hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb_fractionRing_of_dominant : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ξ : Sp V ⟶ M.Z), (∃ w, ξ w = genericPoint M.Z) → ∃ emb : Ω →+* FractionRing V, ∀ (U : M.Z.Opens) (f : Γ(M.Z, U)), ξ (IsLocalRing.closedPoint V) ∈ U → emb (valF M.pt U f) = algebraMap V (FractionRing V) (valR ξ U f) := by
   intro o Ω _ _ _ M V _ _ _ ξ ⟨w, hw⟩

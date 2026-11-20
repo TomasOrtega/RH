@@ -10,45 +10,43 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TC
 
 /- English proof (translation)
-Establish `hform1 : ∀ x y : Fin n → E, hform σ (1 : Matrix (Fin n) (Fin n) E) x y = ∑ i, σ (x i) * y i`. Introduce `x y`. Unfold `hform`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hσO : ∀ r : 𝓞 E, σ (r : E) ∈ (algebraMap (𝓞 E) E).range` using `fun r => ⟨⟨σ (r : E), map_isIntegral_int σ (RingOfIntegers.isIntegral_coe r)⟩, rfl⟩`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Use `(hM x).2 fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, -⟩` from `(hL x).1 hx j`. Conclude with `⟨r, hr.symm⟩`. Rewrite using `[Submodule.ideal_span_singleton_smul]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [DistribSMul.toLinearMap_apply]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Use `(hM _).2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j.1 + 1 = n`. Establish `hx : Pi.single j (π : E) ∈ Lb`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `(hL _).2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `⟨π, by simp, fun _ => dvd_rfl⟩`. Conclude with `⟨0, by simp [h], fun _ => dvd_zero _⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `hy _ hx` as an intermediate fact. Rewrite `this` using `[hform1, Finset.sum_eq_single j (by intro b _ hb; simp [hb]) (by simp)]`. Simplify `this` using `[Algebra.smul_def, hpb]`. Establish `hx : Pi.single j (1 : E) ∈ Lb`. Use `(hL _).2 fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `⟨1, by simp, fun hi => absurd hi hj⟩`. Conclude with `⟨0, by simp [h], fun _ => dvd_zero _⟩`. Use `hy _ hx` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `this` using `[hform1, Finset.sum_eq_single j (by intro b _ hb; simp [hb]) (by simp)]`. Simplify using `only [Pi.single_eq_same, map_one, one_mul] at this`. Take `⟨r, hr⟩` from `this`. Conclude with `⟨pb * r, by simp [Algebra.smul_def, hr]⟩`. Consider the case `zero => simp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add y z _ _ h1 h2 => rw [smul_add]`. Conclude with `M.add_mem h1 h2`. Consider the case `smul c y _ h => rw [smul_comm]`. Conclude with `M.smul_mem c h`. Introduce `x hx`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `(le_sup_left : Lb ≤ _) ((hL x).2 fun j => j.elim0)`. Establish `hxi` using `(hM x).1 hx`. Set `l : Fin n` to `⟨n - 1, by omega⟩`. Establish `hl : l.1 + 1 = n` using `by simp [l]; omega`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hπ : π ≠ 0`. Introduce and unpack `rfl`. Establish `hle : Submodule.span E (Lb : Set (Fin n → E)) ≤ LinearMap.ker (LinearMap.proj (R` using `E) (φ := fun _ : Fin n => E) l) := by`. Use `Submodule.span_le.2 fun z hz => ?_` and prove the remaining obligations. Take `⟨r, hr, hd⟩` from `(hL z).1 hz l`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: r = 0` using `zero_dvd_iff.1 (hd hl)`. Simplify using `[hr, this]`. Rewrite `hle` using `[hspan]`. Use `hle (Submodule.mem_top (x := Pi.single l (1 : E)))` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpb0 : (pb : E) ≠ 0`. Rewrite using `[hpb]`. Introduce `h`. Conclude with `hπ (by simpa using (map_eq_zero σ).1 h)`. Take `⟨t, ht⟩` from `hxi l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy : Pi.single l (x l / (pb : E)) ∈ dualSet σ (1 : Matrix (Fin n) (Fin n) E) Lb`. Introduce `z hz`. Rewrite using `[hform1, Finset.sum_eq_single l (by intro b _ hb; simp [hb]) (by simp)]`. Take `⟨r, hr, hd⟩` from `(hL z).1 hz l`. Take `⟨s, rfl⟩` from `hd hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw⟩` from `hσO s`. Use `⟨w * t, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hw, ht, hr, Pi.single_eq_same]`. Simplify using `only [map_mul, ← hpb]`. Rewrite using `[← ht]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Clear the denominators using the available nonvanishing facts. Establish `hx' : Function.update x l 0 ∈ Lb`. Use `(hL _).2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = l`. Substitute `h` using the available equality.
+Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨0, by simp, fun _ => dvd_zero _⟩`. Take `⟨r, hr⟩` from `hxi j`. Use `⟨r, by simp [h, hr], fun hj => absurd (Fin.ext (by simp [l]; omega)) h⟩` and prove the remaining obligations. Establish `hx'' : Pi.single l (x l) ∈ Ideal.span {pb} • Submodule.span (𝓞 E) (dualSet σ (1 : Matrix (Fin n) (Fin n) E) Lb)`. Rewrite using `[Submodule.ideal_span_singleton_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨_, Submodule.subset_span hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = l`. Substitute `h` using the available equality. Simplify using `[Algebra.smul_def, mul_div_cancel₀ _ hpb0]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Use `Submodule.mem_sup.2 ⟨_, hx', _, hx'', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = l`. Substitute `h` using the available equality.
-
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem base_sup_dual_eq {E : Type} [Field E] [NumberField E] (σ : E →+* E) {n : ℕ}
     (Lb M : Submodule (𝓞 E) (Fin n → E)) (π pb : 𝓞 E) (hpb : (pb : E) = σ (π : E))
@@ -160,25 +158,23 @@ namespace GlobalTheory.Mem.Col2.TC
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z H F A hS hH hT u pb hpb`. Take `⟨-, -, -, hN⟩` from `GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords I hI hP l Z`. Take `⟨hgram, hl0, -⟩` from `hN 0 (Nat.zero_le _)`. Establish `hgram0 : (I.rec7 l Z).sp.gram0 = 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (congrFun hgram (Fin.cast (rank_eq_first_level (I.rec7 l Z).R) a)) (Fin.cast (rank_eq_first_level (I.rec7 l Z).R) b)` as an intermediate fact. Establish `e : (Fin.cast (rank_eq_first_level (I.rec7 l Z).R) a = Fin.cast (rank_eq_first_level (I.rec7 l Z).R) b) ↔ a = b` using `by simp [Fin.ext_iff]`. Simplify using `only [Matrix.one_apply, e] at this`. Rewrite using `[Matrix.one_apply]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgram0]`. Take `⟨k, hk⟩` from `(hS u).1.ends 0 (Nat.zero_le _) (Or.inl rfl)`. Establish `hLb` using `(hH.car0 u).Lb_eq`. Establish `hπ : (A u).piU = X.piT u` using `(hT.piU u).symm.trans (hS u).1.piU`. Use `base_sup_dual_eq _ _ _ (X.piT u) pb ?_ (H.lev0 u).Lb_span ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun t : 𝓞 B.host.E => (t : B.host.E)) hπ`. Conclude with `hpb.trans ((congrArg (I.rec7 l Z).host.conj e).trans (Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj (I.rec7 l Z) _).symm)`. Introduce `x`. Establish `e1 : x ∈ (H.lev0 u).Lb ↔ reV (rank_eq_first_level (I.rec7 l Z).R) _ x ∈ ((F u).cls 0 (Nat.zero_le _) (Or.inl rfl)).lev.Lb`. Rewrite using `[hLb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨x, h, rfl⟩`. Introduce and unpack `⟨y, hy, e⟩`. Establish `: y = x` using `(reV (rank_eq_first_level (I.rec7 l Z).R) _).injective e`. Conclude with `this ▸ hy`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `e1.trans ((hk.lb () _).trans ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h j`. Take `⟨r, hr, hd⟩` from `h (Fin.cast (rank_eq_first_level (I.rec7 l Z).R) j)`. Conclude with `⟨r, hr, fun hj => hd (hj.trans (rank_eq_first_level _))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h j`. Take `⟨r, hr, hd⟩` from `h (Fin.cast (rank_eq_first_level (I.rec7 l Z).R).symm j)`. Conclude with `⟨r, hr, fun hj => hd (hj.trans (rank_eq_first_level _).symm)⟩`. Introduce `x`. Establish `e1 : (fun j => x (Fin.cast (rank_eq_first_level (I.rec7 l Z).R).symm j)) ∈ selfDualLatticeCoords (I.rec7 l Z) 0 (Nat.zero_le _) ↔ x ∈ (I.rec7 l Z).sp.crdLat0 ((I.rec7 l Z).sp.X 0).L0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, e⟩`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Conclude with `congrFun e (Fin.cast (rank_eq_first_level (I.rec7 l Z).R) a)`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨v, hv, e⟩`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Conclude with `congrFun e (Fin.cast (rank_eq_first_level (I.rec7 l Z).R).symm j)`. Use `e1.symm.trans ((hl0 _).trans ?_)` and prove the remaining obligations.
-
-Conclude with `⟨fun h j => h (Fin.cast (rank_eq_first_level (I.rec7 l Z).R) j), fun h j => h (Fin.cast (rank_eq_first_level (I.rec7 l Z).R).symm j)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem base_step_zero_tied : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)) (A : ∀ u, Formalism.L2.Herm.AtT (I.rec7 l Z) u (H.vT u) (H.Fv u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → CarT H F A → ∀ u (pb : 𝓞 (I.rec7 l Z).host.E), (pb : (I.rec7 l Z).host.E) = (I.rec7 l Z).host.conj ((A u).piU : (I.rec7 l Z).host.E) → (H.lev0 u).Lb ⊔ Ideal.span {pb} • Submodule.span (𝓞 (I.rec7 l Z).host.E) (dualSet ((I.rec7 l Z).sp.cm.sig : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (I.rec7 l Z).sp.gram0 (H.lev0 u).Lb) = (I.rec7 l Z).sp.crdLat0 ((I.rec7 l Z).sp.X 0).L0 := by
   intro B X I hI hP l Z H F A hS hH hT u pb hpb

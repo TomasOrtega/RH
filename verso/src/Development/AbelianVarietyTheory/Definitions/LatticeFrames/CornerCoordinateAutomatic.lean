@@ -13,12 +13,12 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
 /- English proof (translation)
-The claim follows from `Or.inl P.tied.div.tup.mu0`.
+Prove the first alternative.
 -/
 theorem used_base (P : RowSideFamily ex) : Formalism.IndefR.RecTie.Used0 D (P.I.tup P.A3.A.μ0) := Or.inl P.tied.div.tup.mu0
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[eq_of_heq hS]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem mu_eq_of_heq (P : RowSideFamily ex) {Zs : DefSub P.A3.fam3.amb3} (h : Zs = P.Zs)
     (S : IndefData (P.A3.side3 P.P0 P.ψ0 Zs)) (hS : HEq S P.S0) : S.μ = P.S0.μ := by
@@ -26,9 +26,9 @@ theorem mu_eq_of_heq (P : RowSideFamily ex) {Zs : DefSub P.A3.fam3.amb3} (h : Zs
   rw [eq_of_heq hS]
 
 /- English proof (translation)
-Break down `W.Q.charW.tup.mu_used t with h | ⟨w, h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `used_base W.P`. Use `right`. Establish `e : W.Q.Rl.mu = W.P.S0.μ` using `mu_eq_of_heq W.P W.Q.zs _ W.Q.s0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨D.plEq.symm w, ?_⟩` and prove the remaining obligations. Rewrite using `[W.P.tied.div.tup.muAt, Equiv.apply_symm_apply, ← h, e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem used_all (W : RealPack ex) (t : W.P.T) : Formalism.IndefR.RecTie.Used0 D (W.P.I.tup t) := by
   rcases W.Q.charW.tup.mu_used t with h | ⟨w, h⟩
@@ -40,27 +40,27 @@ theorem used_all (W : RealPack ex) (t : W.P.T) : Formalism.IndefR.RecTie.Used0 D
     rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h u t x F => h u t (used_all W t) x F, fun h u t _ x F => h u t x F⟩`.
+Supply the required witnesses or components.
 -/
 theorem dcPtG_iff (W : RealPack ex) : DcPtG W.P ↔ RowsHoldDcPt3 W.P :=
   ⟨fun h u t x F => h u t (used_all W t) x F, fun h u t _ x F => h u t x F⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, (dcPtG_iff W).1 h.2.2.1, h.2.2.2⟩, fun h => ⟨h.1, W.S.lev, (dcPtG_iff W).2 h.2.1, h.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypAt_iff (W : RealPack ex) : HypAt W ↔
     Nonempty (Formalism.L2.SG.JoinSI.JoinSI W.R W.S W.Q) ∧ RowsHoldDcPt3 W.P ∧ W.Q.Rl.Char3 W.Q.F ∧ FramesOKg2 W.Q.Rl :=
   ⟨fun h => ⟨h.1, (dcPtG_iff W).1 h.2.2.1, h.2.2.2⟩, fun h => ⟨h.1, W.S.lev, (dcPtG_iff W).2 h.2.1, h.2.2⟩⟩
 
 /- English proof (translation)
-The claim follows from `(hypAt_iff W).2 ⟨hJ, hP, RealDat3.characterisation_of_weak W.Q.charW hE, W.Q.frames hF⟩`.
+A detailed English derivation is pending.
 -/
 theorem hypAt_of (W : RealPack ex) (hJ : Nonempty (Formalism.L2.SG.JoinSI.JoinSI W.R W.S W.Q)) (hP : RowsHoldDcPt3 W.P)
     (hE : W.Q.Rl.toRealDat.ExAt) (hF : W.Q.FramesEx) : HypAt W :=
   (hypAt_iff W).2 ⟨hJ, hP, RealDat3.characterisation_of_weak W.Q.charW hE, W.Q.frames hF⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, h u _ (used_base P) x F⟩`.
+Supply the required witnesses or components.
 -/
 theorem period_rational {P : RowSideFamily ex} (h : DcPtG P) (u : D.what₂.Word) (x : Fin (P.Dc.a (P.I.wU u)) → D.what₂.LL)
     (F : Fin ((P.A3.side3 P.Ps P.ψs P.Zs).nV P.A3.A.μ0) → D.what₂.LL) :
@@ -69,13 +69,13 @@ theorem period_rational {P : RowSideFamily ex} (h : DcPtG P) (u : D.what₂.Word
   ⟨_, h u _ (used_base P) x F⟩
 
 /- English proof (translation)
-The claim follows from `Formalism.IndefR.Cx.definite_coordinates_in_good_part _ true`.
+A detailed English derivation is pending.
 -/
 theorem cornerCoordinate_automatic (W : RealPack ex) : (cxW W).CoordinatesInGoodPart W.Q.F.cr W.Q.F.cv true :=
   Formalism.IndefR.Cx.definite_coordinates_in_good_part _ true
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.2.2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem tiesRest_of_cxTies (W : RealPack ex)
     (h : CxTies (cxW W) W.Q.F.cr W.Q.F.cv (W.Q.F.eV (cxW W).zs)) : TiesRest W :=

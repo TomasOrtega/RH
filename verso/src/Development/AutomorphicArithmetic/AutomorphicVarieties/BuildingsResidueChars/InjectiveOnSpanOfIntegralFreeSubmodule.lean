@@ -3,23 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 open UpperTheory.V.Hi
 
 /- English proof (translation)
-Introduce `O Ω V α _ _ _ _ _ _ _ _ m ψ S hinj hfree hrange hker F hF hψF`. Use `haveI := hfree`. Set `b` to `Module.Free.chooseBasis O S`. Establish `hex : ∀ i g j, ∃ r : O, algebraMap O Ω r = ψ (b i : V) g j` using `fun i g j => RingHom.mem_range.1 (hrange _ (b i).2 g j)`. Use `choose v hv using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvli : LinearIndependent O v`. Rewrite using `[linearIndependent_iff']`. Introduce `s c hsum i hi`. Establish `hx : ψ ((∑ k ∈ s, c k • b k : S) : V) = 0`. Use function extensionality and compare the values at `g j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0` using `congrFun (congrFun hsum g) j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h0`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, Finset.sum_apply, Pi.zero_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul Ω (c k) (b k : V), map_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, hv]`. Use `_ = 0 := by rw [← map_sum, h0, map_zero]`. Establish `hx0 : (∑ k ∈ s, c k • b k : S) = 0` using `Subtype.ext (hker _ (Submodule.coe_mem _) hx)`. Conclude with `linearIndependent_iff'.1 b.linearIndependent s c hx0 i hi`. Establish `hw : LinearIndependent Ω (fun i => ψ (b i : V))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `UpperTheory.V.Hi.fnIndep O Ω α _ hinj m v hvli`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i g j`. Conclude with `(hv i g j).symm`. Establish `hS : Submodule.span O (Set.range (fun i => (b i : V))) = S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Set.range (fun i => (b i : V)) = S.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h2, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hsub : (S : Set V) ⊆ Submodule.span Ω (Set.range (fun i => (b i : V)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Establish `hx' : x ∈ Submodule.span O (Set.range (fun i => (b i : V)))`. Rewrite using `[hS]`. Conclude with `hx`. Conclude with `Submodule.span_le_restrictScalars O Ω _ hx'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hF'` using `Submodule.span_le.2 hsub hF`. Take `⟨c, rfl⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 hF'`. Establish `hc : c = 0`. Use `linearIndependent_iff.1 hw c ?_` and prove the remaining obligations. Rewrite using `[Finsupp.linearCombination_apply]`.
-
-Simplify `hψF` using `only [Finsupp.sum, map_sum, map_smul]`. Rewrite using `[hc, Finsupp.sum_zero_index]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.injective_on_span_of_integral_free_submodule :
     ∀ (O Ω V α : Type) [CommRing O] [IsDomain O] [Field Ω] [Algebra O Ω] [AddCommGroup V] [Module Ω V] [Module O V] [IsScalarTower O Ω V] (m : ℕ) (ψ : V →ₗ[Ω] (α → Fin m → Ω)) (S : Submodule O V), Function.Injective (algebraMap O Ω) → Module.Free O S → (∀ F ∈ S, ∀ g i, ψ F g i ∈ (algebraMap O Ω).range) → (∀ F ∈ S, ψ F = 0 → F = 0) → ∀ F ∈ Submodule.span Ω (S : Set V), ψ F = 0 → F = 0 := by

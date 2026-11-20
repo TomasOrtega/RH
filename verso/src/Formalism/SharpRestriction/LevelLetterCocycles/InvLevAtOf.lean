@@ -22,7 +22,7 @@ local notation "ιE" => algebraMap (LetA O n) W.EE
 local notation "aev" => Polynomial.aeval (AlgHom.toLinearMap (W.γE W.gam) : Module.End O W.EE)
 
 /- English proof (translation)
-Unfold `numI`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_range.2 hs), Function.update_self]`. Rewrite using `[Finset.prod_eq_one fun t ht => by`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase ht)]`. Rewrite using `[show (-((H t : ℕ) : ℤ)).toNat = 0 by omega, pow_zero], mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem numI_upd (H : ℕ → ℕ) (e s : ℕ) (hs : s < e) (x : ℤ) :
     numI W e (Function.update (fun t => -((H t : ℕ) : ℤ)) s x) = ps W s ^ x.toNat := by
@@ -33,7 +33,7 @@ theorem numI_upd (H : ℕ → ℕ) (e s : ℕ) (hs : s < e) (x : ℤ) :
     rw [show (-((H t : ℕ) : ℤ)).toNat = 0 by omega, pow_zero], mul_one]
 
 /- English proof (translation)
-Unfold `denI`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_range.2 hs), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase ht), neg_neg, Int.toNat_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem denI_upd (H : ℕ → ℕ) (e s : ℕ) (hs : s < e) (x : ℤ) :
     denI W e (Function.update (fun t => -((H t : ℕ) : ℤ)) s x) =
@@ -45,9 +45,9 @@ theorem denI_upd (H : ℕ → ℕ) (e s : ℕ) (hs : s < e) (x : ℤ) :
   rw [Function.update_of_ne (Finset.ne_of_mem_erase ht), neg_neg, Int.toNat_natCast]
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on with`. Consider the case `C c => intro z _`. Simplify using `[Polynomial.aeval_C, Module.algebraMap_end_apply]`. Consider the case `add p q hp hq => intro z hz`. Rewrite using `[map_add, LinearMap.add_apply, hp z hz, hq z hz, Polynomial.eval_add, add_smul]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `monomial k c ih`. Introduce `z hz`. Rewrite using `[pow_succ, ← mul_assoc, Polynomial.aeval_mul, Module.End.mul_apply, Polynomial.aeval_X, AlgHom.toLinearMap_apply, hz, ih z hz]`. Simplify using the standard rewrite rules.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aev_fixed (P : Polynomial O) : ∀ z : W.EE, W.γE W.gam z = z → aev P z = P.eval 1 • z := by
   induction P using Polynomial.induction_on with
@@ -61,7 +61,7 @@ theorem aev_fixed (P : Polynomial O) : ∀ z : W.EE, W.γE W.gam z = z → aev P
     simp
 
 /- English proof (translation)
-Rewrite using `[map_mul, W.γE_ext, AlgHom.commutes]`. Use `congr 2`. Conclude with `Formalism.MainNotions.UnusedSlot80.KL.γA_letE W W.gam a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem γE_const (a : ZMod n) (x : O) :
     W.γE W.gam (ιE (letE a) * algebraMap O W.EE x) = ιE (letE a) * algebraMap O W.EE x := by
@@ -70,7 +70,7 @@ theorem γE_const (a : ZMod n) (x : O) :
   exact Formalism.MainNotions.UnusedSlot80.KL.γA_letE W W.gam a
 
 /- English proof (translation)
-Simplify using `[lE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lE_eq (κ : ℕ) : lE W κ = algebraMap O W.EE (((PD.p : ℕ) : O) ^ κ) := by
   simp [lE]
@@ -83,53 +83,47 @@ def InvLevAt (s : ℕ) : Prop :=
       (lE W κ * f - algebraMap (LetA O n) W.EE (letE a) * algebraMap O W.EE x)
 
 /- English proof (translation)
-Introduce `hCA h5 a T e hs f hf hγ` and use `h hCA h5 a s T e hs f hf hγ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem invLevAt_of (h : CutU.InvLevCore W) (s : ℕ) : InvLevAt W s :=
   fun hCA h5 a T e hs f hf hγ => h hCA h5 a s T e hs f hf hγ
 
 /- English proof (translation)
-Use `set α0 : ℕ → ℤ := fun t => -((H t : ℕ) : ℤ) with hα0`. Use `set JS : Finset ℤ := Finset.Ico (-(M : ℤ)) M with hJS`. Use `set Fp : ℤ → Polynomial O := fun i => Polynomial.X ^ (PD.p ^ ell) - Polynomial.C (((W.χΓ W.gam) ^ (i * (PD.p : ℤ) ^ ell) : Oˣ) : O) with hFp`. Use `set Sg : Polynomial O := ∑ k ∈ Finset.range (PD.p ^ ell), Polynomial.X ^ k with hSg`. Establish `hPP : PPO W ell JS = (∏ i ∈ JS.erase 0, Fp i) * Sg` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨-, hK⟩` from `hKL hCA ell JS`. Distinguish the cases in `hH0 : H s = 0`. Use `⟨0, 0, ?_⟩` and prove the remaining obligations. Establish `e : Function.update α0 s ((H s : ℕ) : ℤ) = α0`. Rewrite using `[Function.update_eq_self_iff, hα0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hH0]`. Rewrite using `[e, map_zero, mul_zero, sub_zero, lE, pow_zero, one_mul]`. Conclude with `inId_aeval W hS _ y hy`. Establish `hH1 : 1 ≤ H s` using `Nat.one_le_iff_ne_zero.mpr hH0`. Use `set Sm : Finset ℤ := Finset.Ico (-((H s : ℕ) : ℤ)) 0 with hSm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `set Sp : Finset ℤ := Finset.Ico 1 ((H s : ℕ) : ℤ) with hSp`. Establish `hMs` using `hM s hs`. Establish `hsub : Sm ∪ Sp ⊆ JS.erase 0`. Introduce `i hi`. Simplify using `only [Finset.mem_union, Finset.mem_Ico, hSm, hSp] at hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Finset.mem_erase, Finset.mem_Ico, hJS]`. Use linear arithmetic over natural numbers and integers. Establish `hdisj : Disjoint Sm Sp`. Rewrite using `[Finset.disjoint_left]`. Introduce `i h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.mem_Ico, hSm, hSp] at h1 h2`. Use linear arithmetic over natural numbers and integers. Use `set Rest : Finset ℤ := JS.erase 0 \ (Sm ∪ Sp)`. Establish `hPP' : PPO W ell JS = (∏ i ∈ Sp, Fp i) * (Sg * ((∏ i ∈ Sm, Fp i) * ∏ i ∈ Rest, Fp i))`. Rewrite using `[hPP, ← Finset.prod_sdiff hsub, Finset.prod_union hdisj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set y₁ := aev (∏ i ∈ Rest, Fp i) y with hy₁`. Establish `hy₁m : InId W a ell α0 y₁` using `inId_aeval W hS _ y hy`. Take `⟨κ₁, h₁⟩` from `(hK a α0 s hs y₁ hy₁m).2.2 (H s)`. Establish `e1 : α0 s + ((H s : ℕ) : ℤ) = 0` using `by simp [hα0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1' : Finset.Ico (α0 s) (α0 s + ((H s : ℕ) : ℤ)) = Sm` using `by rw [e1]`. Rewrite `h₁` using `[e1', e1]`. Use `set y₂ := lE W κ₁ * aev (∏ i ∈ Sm, Fp i) y₁ with hy₂`. Use `set α1 := Function.update α0 s 0 with hα1`. Use `set Gg := aev Sg y₂ with hGg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hGm : InId W a ell α1 Gg` using `inId_aeval W hS _ y₂ h₁`. Take `⟨κ₂, h₂⟩` from `(hK a α1 s hs y₂ h₁).2.2 1`. Establish `e2 : α1 s = 0` using `by rw [hα1, Function.update_self]`. Establish `hF0 : (∏ i ∈ Finset.Ico (α1 s) (α1 s + ((1 : ℕ) : ℤ)), Fp i) = Polynomial.X ^ (PD.p ^ ell) - 1`. Establish `hI : Finset.Ico (0 : ℤ) (0 + ((1 : ℕ) : ℤ)) = {0}` using `by ext i; simp; omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2, hI, Finset.prod_singleton]`. Simplify using `[hFp]`. Rewrite `h₂` using `[hF0, e2]`. Establish `hupd1 : Function.update α1 s (0 + ((1 : ℕ) : ℤ)) = Function.update α0 s 1`. Rewrite using `[hα1, Function.update_idem]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Rewrite `h₂` using `[hupd1]`. Establish `hγG : W.γE W.gam Gg - Gg = aev (Polynomial.X ^ (PD.p ^ ell) - 1 : Polynomial O) y₂`. Rewrite using `[← mul_geom_sum, aeval_mul_apply, ← hSg, ← hGg, map_sub, LinearMap.sub_apply, Polynomial.aeval_X, map_one, AlgHom.toLinearMap_apply, Module.End.one_apply]`. Rewrite `h₂` using `[← hγG]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : s ∉ (Finset.range ell).erase s` using `by simp`. Establish `hGfr : InFr W a 1 (∏ t ∈ (Finset.range ell).erase s, ps W t ^ H t) Gg`. Use `hGm` as an intermediate fact. Unfold `InId at this`. Establish `en` using `numI_upd W H ell s hs 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ed` using `denI_upd W H ell s hs 0`. Simplify using `only [numI, denI] at en ed`. Rewrite `en`, `ed` using `[← hα0, ← hα1]`. Rewrite `this` using `[en, ed]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hγfr : InFr W a (ps W s) (∏ t ∈ (Finset.range ell).erase s, ps W t ^ H t) (lE W κ₂ * (W.γE W.gam Gg - Gg))`. Use `h₂` as an intermediate fact. Unfold `InId at this`. Establish `en` using `numI_upd W H ell s hs 1`. Establish `ed` using `denI_upd W H ell s hs 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [numI, denI] at en ed`. Rewrite `en`, `ed` using `[← hα0]`. Rewrite `this` using `[en, ed]`. Simplify using `using this`. Take `⟨κ₃, x, hx⟩` from `hInv hCA h5 a _ H hT Gg hGfr ⟨κ₂, hγfr⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `set Z := lE W κ₃ * Gg - ιE (letE a) * algebraMap O W.EE x with hZ`. Use `set α2 := Function.update α0 s 1 with hα2`. Establish `hZm : InId W a ell α2 Z`. Unfold `InId`. Establish `en` using `numI_upd W H ell s hs 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ed` using `denI_upd W H ell s hs 1`. Simplify using `only [numI, denI] at en ed`. Rewrite `en`, `ed` using `[← hα0, ← hα2]`. Rewrite using `[en, ed]`. Simplify using `using hx`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨κ₄, h₄⟩` from `(hK a α2 s hs Z hZm).2.2 (H s - 1)`. Establish `e4 : α2 s + ((H s - 1 : ℕ) : ℤ) = ((H s : ℕ) : ℤ)`. Rewrite using `[hα2, Function.update_self]`. Move the coercions through the operations in `[Nat.cast_sub hH1]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `e4' : Finset.Ico (α2 s) (α2 s + ((H s - 1 : ℕ) : ℤ)) = Sp`. Rewrite using `[e4, hα2, Function.update_self]`. Rewrite `h₄` using `[e4', e4, hα2, Function.update_idem]`. Use `⟨κ₄ + κ₃ + κ₁, ((PD.p : ℕ) : O) ^ κ₄ * (Polynomial.eval 1 (∏ i ∈ Sp, Fp i)) * x, ?_⟩` and prove the remaining obligations. Use `h₄ using 1` and compare the differences between its conclusion and the goal.
-
-Establish `hfix` using `aev_fixed W (∏ i ∈ Sp, Fp i) _ (γE_const W a x)`. Establish `hmain : aev (∏ i ∈ Sp, Fp i) Gg = lE W κ₁ * PPγ W ell JS y`. Rewrite using `[PPγ, hPP', aeval_mul_apply, aeval_mul_apply, aeval_mul_apply, ← hy₁, ← aeval_lE, ← aeval_lE, ← hy₂]`. Rewrite using `[hZ, map_sub, aeval_lE, hmain, hfix, Algebra.smul_def, lE_eq, lE_eq, lE_eq, lE_eq]`. Simplify using `only [map_mul, map_pow, pow_add]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lev_const (hKL : KillerLevCore W) (hS : PsStable W)
     (hCA : Formalism.MainNotions.LiftingTheory.CaseA W) (h5 : 5 ≤ PD.p) (a : ZMod n) (ell : ℕ) (H : ℕ → ℕ) (M : ℕ)

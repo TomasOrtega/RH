@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.BorelChar
 
 /- English proof (translation)
-Establish `h1 : ∏ j : Fin r, (if p0 ≤ (j : ℕ) then f j else 1) = ∏ j ∈ Finset.range r, (if p0 ≤ j then f j else 1)` using `Fin.prod_univ_eq_prod_range (fun j => if p0 ≤ j then f j else 1) r`. Establish `h2 : ∏ i : Fin m, f (p0 + i) = ∏ i ∈ Finset.range m, f (p0 + i)` using `Fin.prod_univ_eq_prod_range (fun i => f (p0 + i)) m`. Rewrite using `[h1, h2, ← hm, Finset.prod_range_add, Finset.prod_eq_one (s := Finset.range p0), one_mul]`. Conclude with `Finset.prod_congr rfl (fun i _ => by simp)`. Introduce `j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_range] at hj`. Conclude with `if_neg (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem prod_shift_eq_prod_ite (m p0 r : ℕ) (hm : p0 + m = r) (f : ℕ → ℂ) :
     ∏ i : Fin m, f (p0 + i) = ∏ j : Fin r, (if p0 ≤ (j : ℕ) then f j else 1) := by
@@ -29,9 +29,9 @@ theorem prod_shift_eq_prod_ite (m p0 r : ℕ) (hm : p0 + m = r) (f : ℕ → ℂ
     exact if_neg (by omega)
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Establish `h1 : ∏ j : Fin r, (if (j : ℕ) < m then f j else 1) = ∏ j ∈ Finset.range r, (if j < m then f j else 1)` using `Fin.prod_univ_eq_prod_range (fun j => if j < m then f j else 1) r`. Establish `h2 : ∏ i : Fin m, f (m - 1 - i) = ∏ i ∈ Finset.range m, f (m - 1 - i)` using `Fin.prod_univ_eq_prod_range (fun i => f (m - 1 - i)) m`. Establish `h3 : r = m + (r - m)` using `by omega`. Rewrite using `[h1, h2, Finset.prod_range_reflect f m, h3, Finset.prod_range_add]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ∏ x ∈ Finset.range (r - m), (if m + x < m then f (m + x) else 1) = 1` using `Finset.prod_eq_one (fun j _ => if_neg (by omega))`. Rewrite using `[h4, mul_one]`. Conclude with `Finset.prod_congr rfl (fun j hj => (if_pos (Finset.mem_range.1 hj)).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_reflect_eq_prod_ite (m p0 r : ℕ) (hm : m = p0) (hp : p0 ≤ r) (f : ℕ → ℂ) :
     ∏ i : Fin m, f (p0 - 1 - i) = ∏ j : Fin r, (if (j : ℕ) < p0 then f j else 1) := by
@@ -52,14 +52,14 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[conjEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjEmb_conjEmb_generic_regularity (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ := by
   ext x
   simp [conjEmb]
 
 /- English proof (translation)
-Introduce `τ₁ τ₂ h`. Use extensionality with `a`. Use `congrArg (fun f : E →+* ℂ => f a) h` as an intermediate fact. Conclude with `congrArg Subtype.val (σ.injective this)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relabel_injective (c : Coeff l) (σ : c.F →+* ℂ) : Function.Injective (relab (E := E) c σ) := by
   intro τ₁ τ₂ h
@@ -68,11 +68,11 @@ theorem relabel_injective (c : Coeff l) (σ : c.F →+* ℂ) : Function.Injectiv
   exact congrArg Subtype.val (σ.injective this)
 
 /- English proof (translation)
-Establish `h1 : ∏ τ, G τ = ∏ τ'', G (Function.invFun R τ'')` using `Fintype.prod_bijective R hR _ _ (fun τ => by rw [Function.leftInverse_invFun hR.1 τ])`. Rewrite using `[h1, ← Finset.prod_mul_prod_compl X.Ψ, Finset.prod_mul_distrib]`. Use `congr 1`. Conclude with `(Finset.prod_coe_sort X.Ψ (fun τ'' => G (Function.invFun R τ''))).symm`. Rewrite using `[Finset.prod_coe_sort X.Ψ (fun τ' => G (Function.invFun R (conjEmb τ')))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_nbij' conjEmb conjEmb (fun τ h => ?_) (fun τ h => ?_) (fun τ _ => conjEmb_conjEmb_generic_regularity τ) (fun τ _ => conjEmb_conjEmb_generic_regularity τ) (fun τ _ => by rw [conjEmb_conjEmb_generic_regularity])` and prove the remaining obligations. Establish `h' : τ ∉ X.Ψ` using `by simpa using h`. Use `(not_congr (X.cmType τ)).1 h'` as an intermediate fact. Rewrite using `[conjEmb_eq']`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(X.cmType τ).1 h` as an intermediate fact. Rewrite using `[conjEmb_eq']`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem prod_split_conjugate_embeddings {R : (E →+* ℂ) → (E →+* ℂ)} (hR : Function.Bijective R) (X : Data E r)
     (G : (E →+* ℂ) → ℂ) :
@@ -95,7 +95,7 @@ theorem prod_split_conjugate_embeddings {R : (E →+* ℂ) → (E →+* ℂ)} (h
       simpa using this
 
 /- English proof (translation)
-Unfold `bdiag`. Rewrite using `[dif_pos h, dif_pos hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem borel_diagonal_positive (X : Data E r) (b : Frame X.Ψ r) (τ' : E →+* ℂ) (h : τ' ∈ X.Ψ) (i : ℕ)
     (hi : X.p0 + i < r) : bdiag X b τ' i = b ⟨τ', h⟩ ⟨X.p0 + i, hi⟩ ⟨X.p0 + i, hi⟩ := by
@@ -103,9 +103,9 @@ theorem borel_diagonal_positive (X : Data E r) (b : Frame X.Ψ r) (τ' : E →+*
   rw [dif_pos h, dif_pos hi]
 
 /- English proof (translation)
-Establish `hn : conjEmb τ' ∉ X.Ψ`. Rewrite using `[conjEmb_eq']`. Conclude with `(X.cmType τ').1 h`. Establish `hc : conjEmb (conjEmb τ') ∈ X.Ψ`. Rewrite using `[conjEmb_conjEmb_generic_regularity]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `h`. Unfold `bdiag`. Rewrite using `[dif_neg hn, dif_pos hc, dif_pos hi]`. Establish `: (⟨conjEmb (conjEmb τ'), hc⟩ : X.Ψ) = ⟨τ', h⟩` using `Subtype.ext (conjEmb_conjEmb_generic_regularity τ')`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem borel_diagonal_negative (X : Data E r) (b : Frame X.Ψ r) (τ' : E →+* ℂ) (h : τ' ∈ X.Ψ) (i : ℕ)
     (hi : X.p0 - 1 - i < r) :
@@ -124,31 +124,31 @@ theorem borel_diagonal_negative (X : Data E r) (b : Frame X.Ψ r) (τ' : E →+*
 variable {Dw : Datum H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ}
 
 /- English proof (translation)
-Establish `hn2 : n / 2 = m` using `by omega`. Establish `hinj` using `relabel_injective (E := E) c σ`. Establish `hbij : Function.Bijective (relab (E` using `E) c σ) := ⟨hinj, Finite.injective_iff_surjective.1 hinj⟩`. Establish `hRinv : ∀ τ', relab c σ (Function.invFun (relab c σ) τ') = τ'` using `Function.rightInverse_invFun hbij.2`. Establish `hp0r : (U.X k).p0 ≤ r` using `(U.X k).p0_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : ∀ τ, relab c σ τ ∈ (U.X k).Ψ → (U.X k).p0 + Dw.mult τ = r`. Introduce `τ h`. Establish `h1 : τ (H.rt : E) = H.rt0` using `(relab_rt_iff c σ hσ τ).1 (((hU.2.1 k).2 _).1 h)`. Establish `hm : Dw.mult τ = Dw.p` using `by unfold Datum.mult; rw [if_pos h1]`. Establish `h2` using `hU.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hU.2.1 k).1, hm]`. Use linear arithmetic over natural numbers and integers. Establish `hneg : ∀ τ, relab c σ τ ∉ (U.X k).Ψ → Dw.mult τ = (U.X k).p0`. Introduce `τ h`. Establish `h1 : ¬ τ (H.rt : E) = H.rt0` using `fun h1 => h (((hU.2.1 k).2 _).2 ((relab_rt_iff c σ hσ τ).2 h1))`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : Dw.mult τ = Dw.q` using `by unfold Datum.mult; rw [if_neg h1]`. Rewrite using `[(hU.2.1 k).1, hm]`. Rewrite using `[prod_split_conjugate_embeddings hbij (U.X k)]`. Establish `hfac : ∀ τ' : (U.X k).Ψ, ∏ j : Fin r, b τ' j j ^ laU U a n k τ' j = (∏ j : Fin r, b τ' j j ^ (if (U.X k).p0 ≤ (j : ℕ) then (1 : ℤ) else -1)) ^ m * ((∏ i : Fin (Dw.mult (Function.invFun (relab c σ) τ'.1)), bdiag (U.X k) b (relab c σ (Function.invFun (relab c σ) τ'.1)) i ^ a (Funct …`. Introduce `τ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hτ1` using `hRinv τ'.1`. Establish `hτ2` using `hRinv (conjEmb τ'.1)`. Establish `hm1 : (U.X k).p0 + Dw.mult (Function.invFun (relab c σ) τ'.1) = r` using `hpos _ (by rw [hτ1]; exact τ'.2)`. Establish `hm2 : Dw.mult (Function.invFun (relab c σ) (conjEmb τ'.1)) = (U.X k).p0` using `hneg _ (by rw [hτ2, conjEmb_eq']; exact ((U.X k).cmType τ'.1).1 τ'.2)`. Establish `hsplit : ∀ j : Fin r, b τ' j j ^ laU U a n k τ' j = (b τ' j j ^ (if (U.X k).p0 ≤ (j : ℕ) then (1 : ℤ) else -1)) ^ m * ((if (U.X k).p0 ≤ (j : ℕ) then b τ' j j ^ a (Function.invFun (relab c σ) τ'.1, (j : ℕ) - (U.X k).p0) else 1) * (if (j : ℕ) < (U.X k).p0 then (b τ' j j)⁻¹ ^ a (Fun …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Establish `hb0` using `bor_diag_ne (U.X k) hb τ' j`. Establish `hlaU : laU U a n k τ' j = if (U.X k).p0 ≤ (j : ℕ) then (a (Function.invFun (relab c σ) τ'.1, (j : ℕ) - (U.X k).p0) : ℤ) + ((n / 2 : ℕ) : ℤ) else -(a (Function.invFun (relab c σ) (conjEmb τ'.1), (U.X k).p0 - 1 - (j : ℕ)) : ℤ) - ((n / 2 : ℕ) : ℤ)`. Both sides reduce to the same expression. Rewrite using `[hlaU]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : (U.X k).p0 ≤ (j : ℕ)`. Rewrite using `[if_pos hj, if_pos hj, if_pos hj, if_neg (by omega)]`. Simplify using `only [hn2, zpow_add₀ hb0, zpow_natCast, zpow_one, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hj, if_neg hj, if_neg hj, if_pos (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hn2, sub_eq_add_neg, zpow_add₀ hb0, zpow_neg, zpow_natCast, zpow_one, inv_pow, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl (fun j _ => hsplit j), Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_mul_distrib]`. Use `congr 2`. Rewrite using `[hτ1]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `[j.isLt]`. Use `_ = ∏ i : Fin (Dw.mult (Function.invFun (relab c σ) τ'.1)), (fun j' : ℕ => if h : j' < r then b τ' ⟨j', h⟩ ⟨j', h⟩ ^ a (Function.invFun (relab c σ) τ'.1, j' - (U.X k).p0) else 1) ((U.X k).p0 + i) := (prod_shift_eq_prod_ite _ _ _ hm1 (fun j' : ℕ => if h : j' < r then b τ' ⟨j', h⟩ …`. Use `_ = ∏ i : Fin (Dw.mult (Function.invFun (relab c σ) τ'.1)), bdiag (U.X k) b τ'.1 i ^ a (Function.invFun (relab c σ) τ'.1, i) := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `hi : (U.X k).p0 + (i : ℕ) < r` using `by have := i.isLt; omega`. Rewrite using `[borel_diagonal_positive _ _ _ τ'.2 _ hi]`. Simplify using `[hi]`. Rewrite using `[hτ2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `[j.isLt]`. Use `_ = ∏ i : Fin (Dw.mult (Function.invFun (relab c σ) (conjEmb τ'.1))), (fun j' : ℕ => if h : j' < r then (b τ' ⟨j', h⟩ ⟨j', h⟩)⁻¹ ^ a (Function.invFun (relab c σ) (conjEmb τ'.1), (U.X k).p0 - 1 - j') else 1) ((U.X k).p0 - 1 - i) := (prod_reflect_eq_prod_ite _ _ _ hm2 hp0r (fun j' …`. Use `_ = ∏ i : Fin (Dw.mult (Function.invFun (relab c σ) (conjEmb τ'.1))), bdiag (U.X k) b (conjEmb τ'.1) i ^ a (Function.invFun (relab c σ) (conjEmb τ'.1), i) := by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `hi0` using `i.isLt`. Establish `hi : (U.X k).p0 - 1 - (i : ℕ) < r` using `by omega`. Establish `hii : (U.X k).p0 - 1 - ((U.X k).p0 - 1 - (i : ℕ)) = i` using `by omega`. Rewrite using `[borel_diagonal_negative _ _ _ τ'.2 _ hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[hi, hii]`. Rewrite using `[show bchar (laU U a n k) b = ∏ τ' : (U.X k).Ψ, ∏ j : Fin r, b τ' j j ^ laU U a n k τ' j from rfl]`. Rewrite using `[Finset.prod_congr rfl (fun τ' _ => hfac τ')]`. Use `conv_lhs => rw [Finset.prod_mul_distrib, Finset.prod_pow]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem bchar_laU_eq (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp)
     (b : Frame (U.X k).Ψ r) (hb : b ∈ Bor (U.X k).Ψ r) (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (hm : n = m + m) :

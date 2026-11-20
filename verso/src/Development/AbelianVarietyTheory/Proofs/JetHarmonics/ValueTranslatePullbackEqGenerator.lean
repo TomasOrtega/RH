@@ -20,11 +20,11 @@ open IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c nab hN hT T io y C hTr P hTor hAlg ϖ hϖ Q hQ F _ _ _ _ _ _ v hv n D' A' G' _ _ pD pA pG U' PU _ oD' hxe hoD α hα hMb θ θα _hNu hTh hPull p w ζ x t₀ t σ' h hw hζ hFin hQk hx hPhi hSm hExp hGerm a Ppol hPpol`. Take `⟨xx, u, hu, hval⟩` from `GlobalTheory.PtTie.harmonicValue_translate E H Dw l Xo c nab hN T io y C hTr P hTor hAlg ϖ hϖ Q hQ F v hv n D' A' G' pD pA pG U' PU oD' hxe hoD α l.M rfl hα hMb θ θα hTh hPull p w ζ x t₀ t (1 * l.M) rfl σ' h hw hζ hFin hQk hPhi hSm hExp hGerm hx`. Unfold `ThValTot at hT`. Set `f : Rul Xo c` to `fun p yy => (hT p.R yy a n xx Ppol hPpol).exists.choose`. Establish `hrule : IsThRule Xo c nab xx Ppol f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Unfold `IsThRule`. Introduce `p yy`. Conclude with `(hT p.R yy a n xx Ppol hPpol).exists.choose_spec`. Establish `hmem : f ∈ thGen Xo c nab a n`. Simplify using `only [thGen.eq_1, Set.mem_setOf_eq]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨xx, Ppol, hPpol, hrule⟩`. Use `⟨f, hmem, u, le_of_eq hu.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hval a Ppol hPpol f hrule]`. Simplify using `only [GlobalTheory.PtTie.nrm, map_mul, map_prod, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem value_translate_pullback_eq_generator : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),
  letI := H.starRing

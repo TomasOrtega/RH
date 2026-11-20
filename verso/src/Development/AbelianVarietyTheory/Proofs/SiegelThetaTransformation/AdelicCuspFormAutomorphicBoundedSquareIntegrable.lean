@@ -14,31 +14,27 @@ open scoped TensorProduct Topology
 namespace GlobalTheory.AdelicCusp
 
 /- English proof (translation)
-Take `⟨hQ, hK, -, hdom, -, -⟩` from `hd`. Take `⟨hmul, hnorm, hQ1, hunit⟩` from `hmu`. Establish `key : ∀ g g' : GA D V, ∀ γ' ∈ (X (dict g).1).Γ, dict g' = ⟨(dict g).1, lact γ' (dict g).2⟩ → c (dict g').1 * P (dict g').1 (dict g').2 = c (dict g).1 * P (dict g).1 (dict g).2`. Introduce `g g' γ' hγ' he`. Rewrite using `[he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show c (dict g).1 * P (dict g).1 (lact γ' (dict g).2) = _`. Rewrite using `[hΓ _ γ' hγ' _ (hdom g)]`. Establish `hφ' : ∀ g, φ g = s * mu g * (c (dict g).1 * P (dict g).1 (dict g).2)` using `fun g => by`. Rewrite using `[hφ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hL : ∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g`. Introduce `γ hγ g`. Take `⟨γ', hγ', he⟩` from `hQ γ hγ g`. Rewrite using `[hφ', hφ', key g _ γ' hγ' he, hmul, hQ1 γ hγ, one_mul]`. Establish `hR : ∀ k ∈ Kf, ∀ g, φ (g * k) = mu k * φ g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk g`. Take `⟨γ', hγ', he⟩` from `hK k hk g`. Rewrite using `[hφ', hφ', key g _ γ' hγ' he, hmul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hC : Continuous φ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Take `⟨N, hN, k, x, hxc, hx⟩` from `hloc g₀`. Establish `hloc' : ∀ g ∈ N, c (dict g).1 * P (dict g).1 (dict g).2 = c k * P k (x g)`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hxd, γ, hγ, he⟩` from `hx g hg`. Rewrite using `[he]`. Use `show c k * P k (lact γ (x g)) = _`. Rewrite using `[hΓ k γ hγ (x g) hxd]`. Establish `hcont : ContinuousOn (fun g => s * mu g * (c k * P k (x g))) N` using `(continuousOn_const.mul hmc.continuousOn).mul (continuousOn_const.mul ((hPc k).comp hxc fun g hg => (hx g hg).1))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : (fun g => s * mu g * (c k * P k (x g))) =ᶠ[𝓝 g₀] φ` using `by filter_upwards [hN] with g hg`. Rewrite using `[hφ', hloc' g hg]`. Conclude with `(hcont.continuousAt hN).congr heq`. Establish `hB : ∀ g, ‖φ g‖ ≤ ‖s‖ * (supE X la P).toReal`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hw : (X (dict g).1).pnorm (la (dict g).1) (P (dict g).1) (dict g).2 = ‖P (dict g).1 (dict g).2‖`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm`. Simplify using `[hunit g]`. Establish `hle : ENNReal.ofReal ((X (dict g).1).pnorm (la (dict g).1) (P (dict g).1) (dict g).2) ≤ supE X la P`. Unfold `Formalism.L2.Pj.supE`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_iSup_of_le ⟨(dict g).1, ⟨(dict g).2, hdom g⟩⟩ le_rfl`. Establish `hP : ‖P (dict g).1 (dict g).2‖ ≤ (supE X la P).toReal`. Rewrite using `[← hw]`. Conclude with `(ENNReal.ofReal_le_iff_le_toReal hfin).mp hle`. Rewrite using `[hφ, norm_mul, norm_mul, norm_mul, hc (dict g).1, hnorm g, one_mul, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left hP (norm_nonneg s)`. Use `⟨hL, hR, hC, ⟨_, hB⟩, ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ g, onQ V φ (autMk V g) = φ g`. Introduce `g`. Use `show φ (Quotient.out (autMk V g)) = φ g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Quotient.exact (Quotient.out_eq (autMk V g))`. Establish `h2 : g * (Quotient.out (autMk V g))⁻¹ ∈ GQ V` using `QuotientGroup.rightRel_apply.mp h1`. Establish `h3` using `hL _ h2 (Quotient.out (autMk V g))`. Rewrite `h3` using `[inv_mul_cancel_right]`. Conclude with `h3.symm`.
-
-Establish `hmeas : Measurable (onQ V φ)`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Rewrite using `[measurable_from_quotient]`. Establish `: onQ V φ ∘ Quotient.mk'' = φ` using `funext hinv`. Rewrite using `[this]`.
-
-Conclude with `hC.measurable`. Use `MemLp.of_bound hmeas.aestronglyMeasurable (‖s‖ * (supE X la P).toReal) (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Use `show ‖φ (Quotient.out q)‖ ≤ _`. Conclude with `hB _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adel_muPin_automorphic {D : D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
     {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k, Frame (X k).Ψ r} {Kf : Subgroup (GA D V)}
@@ -126,19 +122,19 @@ theorem adel_muPin_automorphic {D : D7} {E : Type} [Field E] [NumberField E] [Is
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T h j hj σ hσ a n hD f hf`. Take `⟨th, hr, hth, hd⟩` from `h.dictU j hj σ hσ`. Establish `hU` using `h.unf j hj σ hσ`. Establish `hLK` using `h.levelK j hj σ hσ`. Establish `hK : T.Kf j σ ≤ GfC (T.V j σ)` using `fun k hk => ((hLK k).mp hk).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < D.host.g 0 * D.host.g 1` using `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Establish `hN : ∀ g₀ : GA D (T.V j σ), {g : GA D (T.V j σ) | ∃ k ∈ T.Kf j σ, ∃ h ∈ GinfC (T.V j σ), g = g₀ * k * h} ∈ 𝓝 g₀` using `fun g₀ => LevelOpen.level_mem_nhds D (T.V j σ) (D.host.g 0 * D.host.g 1) (T.Kf j σ) hpos hLK g₀`. Establish `hloc` using `GlobalTheory.DictLocTest.locClause_of_unif_places hd hK hN (fun k τ => ⟨τ.1, hth k τ⟩)`. Establish `hmem : rdU (T.U j σ) f ∈ holSub (T.U j σ).X (laU (T.U j σ) a n)`. Establish `h1` using `(Submodule.mem_inf.mp hf).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Submodule.mem_iInf]`. Establish `h2` using `h1 σ`. Rewrite `h2` using `[Submodule.mem_iInf]`. Conclude with `h2 hσ`. Establish `hΓ : ∀ P ∈ holSub (T.U j σ).X (laU (T.U j σ) a n), ∀ k, ∀ γ ∈ ((T.U j σ).X k).Γ, ∀ x ∈ ((T.U j σ).X k).dom, P k (lact γ x) = P k x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Unfold `Formalism.L2.Pj.holSub at hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem Q hQ`. Introduce `k γ hγ x hx`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hQ' : IsHolCusp (T.U j σ).X (laU (T.U j σ) a n) Q` using `hQ`. Unfold `Formalism.L2.Pj.IsHolCusp at hQ'`. Take `⟨⟨⟨-, -, hsec⟩, -⟩, -⟩` from `hQ' k`. Rewrite using `[hsec γ hγ x hx, h.chiTriv j hj σ hσ a n hD k γ hγ, one_mul]`. Consider the case `zero => intro k γ hγ x hx`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Consider the case `add Q R _ _ hQ hR`. Introduce `k γ hγ x hx`. Simplify using `only [Pi.add_apply, hQ k γ hγ x hx, hR k γ hγ x hx]`. Consider the case `smul t Q _ hQ`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k γ hγ x hx`. Simplify using `only [Pi.smul_apply, hQ k γ hγ x hx]`. Use `adel_muPin_automorphic (hd := hd) (hloc := hloc) (hmu := h.muUnit j hj σ hσ) (hmc := h.muCont j hj σ hσ) (hc := h.cUnit j hj σ hσ) (s := (lieFac (T.Q.Dw j) (xiR D) a : ℂ)) (la := laU (T.U j σ) a n) (P := rdU (T.U j σ) f) (hPc := fun k => rdC_continuousOn hU hD ⟨f, hf⟩ k) (hΓ := h …` and prove the remaining obligations. Introduce `g`. Simplify using `only [Formalism.L2.Pj.CoreJ.phiJ, Pi.smul_apply, smul_eq_mul, Formalism.L2.Pj.adel_muPin]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiJ_automorphic : ∀ (D : D7) (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ) (hσ : GoodEmb T.Q.c σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hD : Dom a n), ∀ f ∈ T.cuspA j a n, (∀ γ ∈ GQ (T.V j σ), ∀ g, T.phiJ j σ a f (γ * g) = T.phiJ j σ a f g) ∧ (∀ k ∈ T.Kf j σ, ∀ g, T.phiJ j σ a f (g * k) = T.mu j σ k * T.phiJ j σ a f g) ∧ Continuous (T.phiJ j σ a f) ∧ (∃ C : ℝ, ∀ g, ‖T.phiJ j σ a f g‖ ≤ C) ∧ MemLp (onQ (T.V j σ) (T.phiJ j σ a f)) 2 (muQ1 (T.V j σ)) := by
   intro D T h j hj σ hσ a n hD f hf

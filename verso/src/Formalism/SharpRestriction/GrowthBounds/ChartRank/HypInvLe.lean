@@ -20,13 +20,13 @@ variable {LL K C Y WK V : Type} [Field LL] [Field K] [Field C] (e : LL →+* K)
   [AddCommGroup Y] [Module LL Y] [AddCommGroup WK] [Module K WK] [AddCommGroup V] [Module C V]
 
 /- English proof (translation)
-Establish `hr : Module.rank LL Y ≤ (finrank C V : Cardinal)`. Use `rank_le fun s hs => ?_` and prove the remaining obligations. Establish `h` using `hind s.card (fun j => ((s.equivFin.symm j : s) : Y)) (hs.comp _ s.equivFin.symm.injective)`. Simplify using `using h.fintype_card_le_finrank`. Establish `: FiniteDimensional LL Y` using `Module.rank_lt_aleph0_iff.1 (lt_of_le_of_lt hr Cardinal.natCast_lt_aleph0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis LL Y`. Establish `hsp : Submodule.span K (Set.range φK) ≤ Submodule.span K (Set.range fun j => φK (b j))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[← b.sum_repr y, map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hK]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hle` using `hN.trans hsp`. Establish `: FiniteDimensional K (Submodule.span K (Set.range fun j => φK (b j)))` using `FiniteDimensional.span_of_finite K (Set.finite_range _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional K N` using `Submodule.finiteDimensional_of_le hle`. Use `⟨this, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hind _ (fun j => b j) b.linearIndependent`. Simplify using `using h.fintype_card_le_finrank`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_le_transfer (φK : Y →+ WK) (hK : ∀ (a : LL) y, φK (a • y) = e a • φK y)
     (φC : Y →+ V) [FiniteDimensional C V]
@@ -65,28 +65,28 @@ section RatPts
 variable {LL Kf : Type} [Field LL] [Field Kf] (e : LL →+* Kf)
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapE_smul {σ : Type} (r : LL) (Q : MvPolynomial σ LL) :
     MvPolynomial.map e (r • Q) = e r • MvPolynomial.map e Q := by
   rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]
 
 /- English proof (translation)
-Set `φ : MvPolynomial σ LL × MvPolynomial τ LL →+ MvPolynomial σ Kf × MvPolynomial τ Kf` to `AddMonoidHom.prodMap (MvPolynomial.map e).toAddMonoidHom (MvPolynomial.map e).toAddMonoidHom`. Set `ev : (σ →₀ ℕ) ⊕ (τ →₀ ℕ) → (MvPolynomial σ Kf × MvPolynomial τ Kf) →ₗ[Kf] Kf` to `Sum.elim (fun m => (MvPolynomial.lcoeff Kf m).comp (LinearMap.fst Kf _ _)) (fun m => (MvPolynomial.lcoeff Kf m).comp (LinearMap.snd Kf _ _))`. Establish `hsep : ∀ F, (∀ t, ev t F = 0) → F = 0`. Introduce `F h`. Use `Prod.ext (MvPolynomial.ext _ _ fun m => ?_) (MvPolynomial.ext _ _ fun m => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h (Sum.inl m)` using `[ev]`. Simplify `h (Sum.inr m)` using `[ev]`. Establish `hsm : ∀ (a : LL) x, φ (a • x) = e a • φ x` using `fun a x => Prod.ext (mapE_smul e a x.1) (mapE_smul e a x.2)`. Establish `hval : ∀ x, IsRat e ev (φ x)`. Introduce and unpack `x (m | m)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨MvPolynomial.coeff m x.1, by simp [ev, φ, MvPolynomial.coeff_map]⟩`. Conclude with `⟨MvPolynomial.coeff m x.2, by simp [ev, φ, MvPolynomial.coeff_map]⟩`. Set `S : Set ((MvPolynomial σ Kf × MvPolynomial τ Kf) →ₗ[Kf] (MvPolynomial σ Kf × MvPolynomial τ Kf))` to `{Tm | ∃ T ∈ Ts, Tm = LinearMap.id + (LinearMap.inr Kf _ _).comp (T.comp (LinearMap.fst Kf _ _))}`. Establish `hS : ∀ Tm ∈ S, ∀ x, ∃ y, φ y = Tm (φ x)`. Introduce and unpack `Tm ⟨T, hT', rfl⟩ x`.
+Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨Q', hQ'⟩` from `hT T hT' x.1`. Apply the tactic sequence `refine ⟨(x.1, x.2 + Q'), Prod.ext ?_ ?_⟩ <;> simp [φ, hQ']`. Establish `key : ∀ p : MvPolynomial σ Kf, (p, (0 : MvPolynomial τ Kf)) ∈ Submodule.span Kf (Set.range φ)`. Introduce `p`. Use `MvPolynomial.induction_on' p (fun m c => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (MvPolynomial.monomial m c, (0 : MvPolynomial τ Kf)) = c • φ (MvPolynomial.monomial m 1, 0)`. Simplify using `[φ, MvPolynomial.smul_monomial]`. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Establish `h2 : (p + q, (0 : MvPolynomial τ Kf)) = (p, 0) + (q, 0)` using `by simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `Submodule.add_mem _ hp hq`. Establish `hinv : ∀ Tm ∈ S, Tm (ξ, 0) = (ξ, 0)`. Introduce and unpack `Tm ⟨T, hT', rfl⟩`. Simplify using `[hξ T hT']`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `span_inv e ev φ hsep hsm hval S hS (key ξ) hinv`. Establish `h'` using `Submodule.mem_map_of_mem (f := LinearMap.fst Kf (MvPolynomial σ Kf) (MvPolynomial τ Kf)) h`. Rewrite `h'` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h'` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨x.1, fun T hT' => ?_, rfl⟩` and prove the remaining obligations. Use `congrArg Prod.snd (hx _ ⟨T, hT', rfl⟩)` as an intermediate fact. Simplify `this` using `[φ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ker_desc {σ τ : Type} (Ts : Set (MvPolynomial σ Kf →ₗ[Kf] MvPolynomial τ Kf))
     (hT : ∀ T ∈ Ts, ∀ Q : MvPolynomial σ LL, ∃ Q' : MvPolynomial τ LL, MvPolynomial.map e Q' = T (MvPolynomial.map e Q))
@@ -137,7 +137,7 @@ theorem ker_desc {σ τ : Type} (Ts : Set (MvPolynomial σ Kf →ₗ[Kf] MvPolyn
   simpa [φ] using this
 
 /- English proof (translation)
-Use extensionality with `d`. Simplify using `only [MvPolynomial.coeff_map, MvPolynomial.coeff_weightedHomogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem whc_map {σ M : Type} [AddCommMonoid M] [DecidableEq M] (w : σ → M) (n : M) (Q : MvPolynomial σ LL) :
     MvPolynomial.map e (MvPolynomial.weightedHomogeneousComponent w n Q) =
@@ -147,11 +147,9 @@ theorem whc_map {σ M : Type} [AddCommMonoid M] [DecidableEq M] (w : σ → M) (
   split_ifs <;> simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `d`. Rewrite using `[MvPolynomial.coeff_weightedHomogeneousComponent]`. Use `split_ifs with hd`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Assume the negation of the conclusion as `hc`. Conclude with `hd (h (Ne.symm hc))`. Introduce `h d hd`. Rewrite `hd` using `[← h, MvPolynomial.coeff_weightedHomogeneousComponent]`.
-
-Assume the negation of the conclusion as `hc`. Conclude with `hd (if_neg hc)`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isWH_iff {σ M R : Type} [CommSemiring R] [AddCommMonoid M] [DecidableEq M] (w : σ → M) (n : M) (f : MvPolynomial σ R) :
     MvPolynomial.IsWeightedHomogeneous w f n ↔ MvPolynomial.weightedHomogeneousComponent w n f = f := by
@@ -169,11 +167,9 @@ theorem isWH_iff {σ M R : Type} [CommSemiring R] [AddCommMonoid M] [DecidableEq
     exact hd (if_neg hc)
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on`. Name the introduced variables `a`. Simplify using `[Formalism.GradedWeylDivisibility.colAddGen]`. Name the introduced variables `p q hp hq`. Simplify using `only [map_add, hp, hq]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Name the introduced variables `p v hp`. Simplify using `only [map_mul]`. Rewrite using `[hp, MvPolynomial.map_X]`. Use `congr 1`. Simplify using `only [Formalism.GradedWeylDivisibility.colAddGen, MvPolynomial.aeval_X]`.
-
-Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colAddGen_map {r n : ℕ} (l j : Fin n) (Q : MvPolynomial (Fin r × Fin n) LL) :
     MvPolynomial.map e (Formalism.GradedWeylDivisibility.colAddGen LL l j Q) = Formalism.GradedWeylDivisibility.colAddGen Kf l j (MvPolynomial.map e Q) := by
@@ -190,17 +186,17 @@ theorem colAddGen_map {r n : ℕ} (l j : Fin n) (Q : MvPolynomial (Fin r × Fin 
     split_ifs <;> simp
 
 /- English proof (translation)
-Set `Ts : Set (MvPolynomial (Fin r × Fin n) Kf →ₗ[Kf] MvPolynomial (Option (Fin r × Fin n)) Kf)` to `{T | T = (MvPolynomial.rename some).toLinearMap.comp (LinearMap.id - MvPolynomial.weightedHomogeneousComponent (Formalism.GradedWeylDivisibility.colW r n) ν)} ∪ {T | ∃ l j : Fin n, l < j ∧ T = (Formalism.GradedWeylDivisibility.colAddGen Kf l j).toLinearMap - (MvPolynomial.rename …`. Establish `hiff : ∀ f, f ∈ Formalism.GradedWeylDivisibility.dualWeyl Kf r n ν ↔ ∀ T ∈ Ts, T f = 0`. Introduce `f`. Rewrite using `[Formalism.GradedWeylDivisibility.mem_dualWeyl_iff, isWH_iff]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩ T (hT | ⟨l, j, hlj, hT⟩)`. Rewrite using `[hT]`. Simplify using `[h1]`. Rewrite using `[hT]`. Simplify using `[h2 l j hlj]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `⟨?_, fun l j hlj => ?_⟩` and prove the remaining obligations. Use `h _ (Or.inl rfl)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply, AlgHom.toLinearMap_apply] at this`. Establish `h0` using `MvPolynomial.rename_injective some (Option.some_injective _) (this.trans (map_zero _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(sub_eq_zero.1 h0).symm`. Use `h _ (Or.inr ⟨l, j, hlj, rfl⟩)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Establish `hT : ∀ T ∈ Ts, ∀ Q : MvPolynomial (Fin r × Fin n) LL, ∃ Q' : MvPolynomial (Option (Fin r × Fin n)) LL, MvPolynomial.map e Q' = T (MvPolynomial.map e Q)`. Apply the tactic sequence `rintro T (hT | ⟨l, j, hlj, hT⟩) Q <;> rw [hT]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Conclude with `⟨MvPolynomial.rename some (Q - MvPolynomial.weightedHomogeneousComponent (Formalism.GradedWeylDivisibility.colW r n) ν Q), by`. Simplify using `[MvPolynomial.map_rename, whc_map]⟩`. Conclude with `⟨Formalism.GradedWeylDivisibility.colAddGen LL l j Q - MvPolynomial.rename some Q, by`. Simplify using `[MvPolynomial.map_rename, colAddGen_map]⟩`. Introduce `ξ hξ`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_mono ?_ (ker_desc e Ts hT ((hiff ξ).1 hξ))` and prove the remaining obligations. Introduce and unpack `_ ⟨Q, hQ, rfl⟩`. Conclude with `⟨Q, (hiff _).2 hQ, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dualWeyl_desc {r n : ℕ} (ν : Fin n → ℕ) :
     Formalism.GradedWeylDivisibility.dualWeyl Kf r n ν ≤
@@ -239,15 +235,15 @@ theorem dualWeyl_desc {r n : ℕ} (ν : Fin n → ℕ) :
   exact ⟨Q, (hiff _).2 hQ, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Set `A : S → Set (MvPolynomial τ Kf)` to `fun s => {y | ∃ Q : MvPolynomial (σ s) LL, MvPolynomial.map e Q ∈ Ms s ∧ y = MvPolynomial.rename (f s) (MvPolynomial.map e Q)}`. Establish `hx : ∀ s ∈ Finset.univ, MvPolynomial.rename (f s) (F s) ∈ Submodule.span Kf (A s)`. Introduce `s _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Submodule.mem_map_of_mem (f := (MvPolynomial.rename (R := Kf) (f s)).toLinearMap) (hM s (hF s))`. Rewrite `h1` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨Q, hQ, rfl⟩, rfl⟩`. Conclude with `⟨Q, hQ, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `h` using `prod_mem_span Finset.univ A _ hx`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `choose Q hQ hQe using fun s => ha s (Finset.mem_univ s)`. Use `⟨∏ s, MvPolynomial.rename (f s) (Q s), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.map e (∏ s, MvPolynomial.rename (f s) (Q s)) ∈ Submodule.span Kf {Z | ∃ F : ∀ s, MvPolynomial (σ s) Kf, (∀ s, F s ∈ Ms s) ∧ Z = ∏ s, MvPolynomial.rename (f s) (F s)}`. Rewrite using `[map_prod]`. Use `Submodule.subset_span ⟨fun s => MvPolynomial.map e (Q s), hQ, ?_⟩` and prove the remaining obligations. Simplify using `[MvPolynomial.map_rename]`. Rewrite using `[map_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hQe s, MvPolynomial.map_rename]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_desc {S : Type} [Fintype S] {σ : S → Type} {τ : Type} (f : ∀ s, σ s → τ)
     (Ms : ∀ s, Submodule Kf (MvPolynomial (σ s) Kf))
@@ -281,9 +277,7 @@ theorem prod_desc {S : Type} [Fintype S] {σ : S → Type} {τ : Type} (f : ∀ 
     rw [hQe s, MvPolynomial.map_rename]
 
 /- English proof (translation)
-Establish `hM : ∀ s : Fin n', (if Antitone (lamAt lam0 s) then Formalism.GradedWeylDivisibility.dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt lam0 s)) else ⊥) ≤ Submodule.span Kf (MvPolynomial.map e '' {Q | MvPolynomial.map e Q ∈ (if Antitone (lamAt lam0 s) then Formalism.GradedWeylDivisibility. …`. Introduce `s`. Use `split_ifs`. Conclude with `dualWeyl_desc e _`. Conclude with `bot_le`.
-
-Conclude with `prod_desc e (σ := fun _ => Fin (m + 1) × Fin (m + 1)) (fun s v => (s, v)) _ hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vsp_desc {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) :
     Vsp Kf lam0 ≤ Submodule.span Kf (MvPolynomial.map e '' {Q | MvPolynomial.map e Q ∈ Vsp Kf lam0}) := by
@@ -306,7 +300,7 @@ abbrev YR (H : GAtP p) (LL : Type) [Field LL] : Type :=
   MvPolynomial (Σ v : Fin H.P.nV, Fin (H.P.n' v) × (Fin (H.P.m + 1) × Fin (H.P.m + 1))) LL
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_e (r : LL) (Q : YR H LL) : MvPolynomial.map e (r • Q) = e r • MvPolynomial.map e Q := by
   rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]
@@ -335,7 +329,7 @@ def ActRat (a : H.comp) (L : H.P.Tup) : Prop :=
       MvPolynomial.map e Q' = ((H.lev a).χ γ : H.O) • (H.lev a).actX γ (MvPolynomial.map e Q)
 
 /- English proof (translation)
-The claim follows from `prod_desc e (σ := fun v => Fin (H.P.n' v) × (Fin (H.P.m + 1) × Fin (H.P.m + 1))) (fun v x => (⟨v, x⟩ : Σ v : Fin H.P.nV, Fin (H.P.n' v) × (Fin (H.P.m + 1) × Fin (H.P.m + 1)))) (fun v => Vsp H.Kf (H.P.lam0 v)) (fun v => vsp_desc e (H.P.lam0 v))`.
+A detailed English derivation is pending.
 -/
 theorem spanRat_holds : SpanRat H e :=
   prod_desc e (σ := fun v => Fin (H.P.n' v) × (Fin (H.P.m + 1) × Fin (H.P.m + 1)))
@@ -343,28 +337,24 @@ theorem spanRat_holds : SpanRat H e :=
     (fun v => Vsp H.Kf (H.P.lam0 v)) (fun v => vsp_desc e (H.P.lam0 v))
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 fun z hz => Formalism.MainNotions.FormalGroupSystem.Pf.vt_HtupW_le H.P L hL z hz`.
+A detailed English derivation is pending.
 -/
 theorem span_HtupW_le {L : H.P.Tup} (hL : H.P.IsLatTup L) :
     Submodule.span H.Kf (H.P.HtupW L : Set H.P.Xsp) ≤ H.P.Vtup :=
   Submodule.span_le.2 fun z hz => Formalism.MainNotions.FormalGroupSystem.Pf.vt_HtupW_le H.P L hL z hz
 
 /- English proof (translation)
-Introduce `ξ hξ`. Set `Vr : Submodule LL (YR H LL)` to `{ carrier := {Q | MvPolynomial.map e Q ∈ H.P.Vtup} add_mem' := fun {Q Q'} h h' => by`. Simplify using `only [Set.mem_ofPred_eq, map_add] at h h' ⊢`. Conclude with `Submodule.add_mem _ h h'`. Use the proof step `zero_mem' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_ofPred_eq, map_zero]`. Conclude with `Submodule.zero_mem _`. Use the proof step `smul_mem' := fun r Q h => by`. Simplify using `only [Set.mem_ofPred_eq] at h ⊢`. Rewrite using `[map_smul_e]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ h }`. Set `φ : Vr →+ H.P.Xsp` to `(MvPolynomial.map e).toAddMonoidHom.comp Vr.subtype.toAddMonoidHom`. Set `Sx : Set (H.P.Xsp →ₗ[H.Kf] H.P.Xsp)` to `{Tm | ∃ γ : (H.lev a).Γ, (H.lev a).smul γ L = L ∧ Tm = algebraMap H.O H.Kf ((H.lev a).χ γ : H.O) • (H.lev a).actX γ}`. Establish `hsm : ∀ (r : LL) (x : Vr), φ (r • x) = e r • φ x` using `fun r x => map_smul_e H e r x.1`. Establish `hval : ∀ x : Vr, IsRat e (evX H) (φ x)` using `fun x m => ⟨MvPolynomial.coeff m x.1, by simp [φ, evX, MvPolynomial.lcoeff_apply, MvPolynomial.coeff_map]⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hT : ∀ Tm ∈ Sx, ∀ x : Vr, ∃ y : Vr, φ y = Tm (φ x)`. Introduce and unpack `Tm ⟨γ, hγ, rfl⟩ x`. Take `⟨Q', hQ', e'⟩` from `h2 γ hγ x.1 x.2`. Use `⟨⟨Q', hQ'⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, LinearMap.smul_apply, algebraMap_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `e'`. Establish `hξs : ξ ∈ Submodule.span H.Kf (Set.range φ)`. Use `Submodule.span_mono ?_ (h1 (span_HtupW_le H hL hξ.1))` and prove the remaining obligations. Introduce and unpack `_ ⟨Q, hQ, rfl⟩`. Conclude with `⟨⟨Q, hQ⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hinv : ∀ Tm ∈ Sx, Tm ξ = ξ`. Introduce and unpack `Tm ⟨γ, hγ, rfl⟩`. Simplify using `only [LinearMap.smul_apply, algebraMap_smul]`. Conclude with `hξ.2 γ hγ`. Establish `h` using `span_inv e (evX H) φ (evX_sep H) hsm hval Sx hT hξs hinv`.
-
-Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨x.1, ⟨x.2, fun γ hγ => ?_⟩, rfl⟩` and prove the remaining obligations. Use `hx _ ⟨γ, hγ, rfl⟩` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, algebraMap_smul] at this`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_le_span {a : H.comp} {L : H.P.Tup} (hL : H.P.IsLatTup L) (h1 : SpanRat H e) (h2 : ActRat H e a L) :
     InvK H a L ≤ Submodule.span H.Kf (MvPolynomial.map e '' (YInv H e a L : Set (YR H LL))) := by
@@ -417,7 +407,7 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
   {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P} {p : ℕ} {i : ℕ} {hi : i ≤ D.R.m} {G : GAtP p}
 
 /- English proof (translation)
-Take `⟨g, -, -, -, hg, -⟩` from `hok c`. Introduce `v`. Conclude with `⟨(g v : Matrix _ _ _), (Matrix.isUnit_iff_isUnit_det _).1 (g v).isUnit, hg v⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isLatTup_of_repOk {S : StepIn M i hi G} {β : S.Ch} {rep : {c // S.chOf c = β} → S.cmpt β × (Hc S β).P.Tup}
     (hok : RepOk S β rep) (c : {c // S.chOf c = β}) : (Hc S β).P.IsLatTup (rep c).2 := by
@@ -429,9 +419,9 @@ def ActRatOf (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : Prop :=
   BlockRationalityField → (∀ β, S.Core e β) → KAat.ChX S → ∀ β rep, RepOk S β rep → ∀ c, ActRat (Hc S β) e (rep c).1 (rep c).2
 
 /- English proof (translation)
-Introduce `γ _ Q hQ`. Take `⟨κ, hκ⟩` from `(H.toHyp hS).away a γ`. Take `⟨r, -, hr⟩` from `H.chi a γ κ hκ`. Establish `hχ : algebraMap G.O G.Kf (((Hc S β).lev a).χ γ : G.O) = e r⁻¹`. Rewrite using `[map_inv₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_inv_of_mul_eq_one_left hr`. Use `⟨r⁻¹ • natActR (Hc S β).P D.what₂.LL (blkLL (S.loc β) (sigD D) (tEL D) S.pos ((S.loc β).gamI a γ)) Q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mapE_smul, map_natActR]`. Conclude with `Submodule.smul_mem _ _ (natActR_VtupR (Hc S β).P G.Kf _ _ hQ)`. Rewrite using `[mapE_smul, ← actX_map (S.loc β) (tEL D) S.pos e H.actB H.pos_emb a γ Q, ← hχ, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actRat_of_core {S : StepIn M i hi G} {e : D.what₂.LL →+* G.Kf} {β : S.Ch} (H : S.Core e β) (hS : BlockRationalityField)
     (a : S.cmpt β) (L : (Hc S β).P.Tup) : ActRat (Hc S β) e a L := by
@@ -447,7 +437,7 @@ theorem actRat_of_core {S : StepIn M i hi G} {e : D.what₂.LL →+* G.Kf} {β :
   · rw [mapE_smul, ← actX_map (S.loc β) (tEL D) S.pos e H.actB H.pos_emb a γ Q, ← hχ, algebraMap_smul]
 
 /- English proof (translation)
-Introduce `hS H _ β rep _ c` and use `actRat_of_core (H β) hS (rep c).1 (rep c).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem actRatOf_holds (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : ActRatOf S e :=
   fun hS H _ β rep _ c => actRat_of_core (H β) hS (rep c).1 (rep c).2
@@ -458,11 +448,11 @@ def ValLiftOf (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : Prop :=
       ∀ (k : ℕ) (Q : Fin k → YInv (Hc S β) e (rep c).1 (rep c).2), LinearIndependent D.what₂.LL Q → LinearIndependent ℂ (Φ ∘ Q)
 
 /- English proof (translation)
-Introduce `hS H X β rep hok c`. Establish `h2` using `hR hS H X β rep hok c`. Take `⟨Φ, hΦ⟩` from `hV hS H X β rep hok c`. Establish `: FiniteDimensional ℂ (FiBc S β c)`. Use `finDim_FiB S β (c.2 ▸ chOf_mem S c.1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Module.Finite.map _ _`. Set `Yc` to `YInv (Hc S β) e (rep c).1 (rep c).2`. Use `finrank_le_transfer e ((MvPolynomial.map e).toAddMonoidHom.comp Yc.subtype.toAddMonoidHom) (fun r Q => map_smul_e (Hc S β) e r Q.1) Φ hΦ _ ?_` and prove the remaining obligations. Use `(inv_le_span (Hc S β) e (isLatTup_of_repOk hok c) (spanRat_holds (Hc S β) e) h2).trans (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨Q, hQ, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨Q, hQ⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem invLeOf_of (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hR : ActRatOf S e) (hV : ValLiftOf S e) : InvLeOf S e := by
   intro hS H X β rep hok c
@@ -479,7 +469,7 @@ theorem invLeOf_of (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hR : Act
   exact ⟨⟨Q, hQ⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `invLeOf_of S e (actRatOf_holds S e) hV`.
+A detailed English derivation is pending.
 -/
 theorem invLeOf_of_lift (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hV : ValLiftOf S e) : InvLeOf S e :=
   invLeOf_of S e (actRatOf_holds S e) hV
@@ -499,7 +489,7 @@ def CmpLiftOf (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : Prop :=
       ∀ (k : ℕ) (Q : Fin k → YInv (Hc S β) e (rep c).1 (rep c).2), LinearIndependent D.what₂.LL Q → LinearIndependent ℂ (Φ ∘ Q)
 
 /- English proof (translation)
-Introduce `hS H X β rep hok c`. Take `⟨Φ, hΦ, hind⟩` from `h2 hS H X β rep hok c`. Use `⟨(Φ.codRestrict (FiBc S β c).toAddSubgroup fun Q => h1 β c _ (hΦ Q)), fun k Q hQ => ?_⟩` and prove the remaining obligations. Conclude with `LinearIndependent.of_comp (FiBc S β c).subtype (hind k Q hQ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valLiftOf_of (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (h1 : FormsOnClassOf S) (h2 : CmpLiftOf S e) :
     ValLiftOf S e := by
@@ -509,14 +499,14 @@ theorem valLiftOf_of (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (h1 : F
   exact LinearIndependent.of_comp (FiBc S β c).subtype (hind k Q hQ)
 
 /- English proof (translation)
-The claim follows from `invLeOf_of_lift S e (valLiftOf_of S e h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem invLeOf_of_two (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (h1 : FormsOnClassOf S) (h2 : CmpLiftOf S e) :
     InvLeOf S e :=
   invLeOf_of_lift S e (valLiftOf_of S e h1 h2)
 
 /- English proof (translation)
-The claim follows from `chartRankGe_of S e H hS X (invLeOf_of_lift S e hV)`.
+A detailed English derivation is pending.
 -/
 theorem chartRankGe_of_lift [IsFractionRing G.O G.Kf] (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β)
     (hS : BlockRationalityField) (X : KAat.ChX S) (hV : ValLiftOf S e) : ChartRankGe S :=
@@ -530,7 +520,7 @@ variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w 
   {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
 
 /- English proof (translation)
-The claim follows from `cmpJHyp_of_ge c Gt hS core ok twUnit valIntN iwF hfin fun j hj => by have : IsFractionRing (gatJ Lv (j + 1)).O (gatJ Lv (j + 1)).Kf := ((D.gat u w h).P.setting (plc Gt u w h)).frac_O exact chartRankGe_of_lift _ _ (core j hj) hS (X j hj) (hV j hj)`.
+A detailed English derivation is pending.
 -/
 theorem cmpJHyp_of_lift (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies D) (hS : BlockRationalityField)
     (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)
@@ -542,7 +532,7 @@ theorem cmpJHyp_of_lift (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies
     exact chartRankGe_of_lift _ _ (core j hj) hS (X j hj) (hV j hj)
 
 /- English proof (translation)
-The claim follows from `cmpJHyp_of_lift c Gt hS core ok twUnit valIntN iwF hfin X fun j hj => valLiftOf_of _ _ (h1 j hj) (h2 j hj)`.
+A detailed English derivation is pending.
 -/
 theorem cmpJHyp_of_two (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies D) (hS : BlockRationalityField)
     (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)

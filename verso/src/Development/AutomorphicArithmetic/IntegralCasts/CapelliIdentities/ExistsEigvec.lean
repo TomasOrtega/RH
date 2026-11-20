@@ -4,27 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing Polynomial
 
 /- English proof (translation)
-Establish `hd : X.map (residue R) = diagonal fun b => residue R (X b b)`. Use extensionality with `b c`. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[diagonal_apply_ne _ h, map_apply, residue_eq_zero_iff]`. Conclude with `hm b c h`. Establish `hne : ∀ b, b ≠ a → residue R (X a a) - residue R (X b b) ≠ 0` using `fun b hb => by`. Rewrite using `[← map_sub]`. Conclude with `((hu a b hb.symm).map (residue R)).ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (∏ b ∈ Finset.univ.erase a, (residue R (X a a) - residue R (X b b))) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b hb => hne b (Finset.ne_of_mem_erase hb)`. Establish `hc : X.charpoly.map (residue R) = (Polynomial.X - C (residue R (X a a))) * ∏ b ∈ Finset.univ.erase a, (Polynomial.X - C (residue R (X b b)))`. Rewrite using `[← Matrix.charpoly_map, hd, Matrix.charpoly_diagonal, Finset.mul_prod_erase Finset.univ (fun b => Polynomial.X - C (residue R (X b b))) (Finset.mem_univ a)]`. Take `⟨l, hl, hla⟩` from `HenselianRing.is_henselian (I := maximalIdeal R) X.charpoly X.charpoly_monic (X a a) (by`. Rewrite using `[← residue_eq_zero_iff, ← eval₂_hom, ← eval_map, hc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Use the proof step `(by`. Express the relevant statement in the definitionally equal form `IsUnit (residue R _)`. Rewrite using `[← eval₂_hom, ← eval_map, ← derivative_map, hc, isUnit_iff_ne_zero]`. Simplify `hP)` using `[eval_prod]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hla' : residue R l = residue R (X a a)`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `hla`. Use `set M : Matrix (Fin 3) (Fin 3) R := scalar (Fin 3) l - X with hM`. Establish `hdet : M.det = 0` using `by rw [hM, ← Matrix.eval_charpoly]; exact hl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hMd : M.map (residue R) = diagonal fun b => residue R (X a a) - residue R (X b b)`. Use extensionality with `b c`. Use `congrFun (congrFun hd b) c` as an intermediate fact. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hM, hla']`. Rewrite `this`, the goal using `[diagonal_apply_ne _ h]`. Simplify `this` using `[hM, diagonal_apply_ne _ h]`. Establish `hadj : ∀ b, residue R (M.adjugate b a) = (diagonal fun i => ∏ j ∈ Finset.univ.erase i, (residue R (X a a) - residue R (X j j))) b a` using `fun b => by`. Use `(residue R).map_adjugate M` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `this` using `[RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hMd, adjugate_diagonal]`. Conclude with `congrFun (congrFun this b) a`. Establish `hun : IsUnit (M.adjugate a a)`. Rewrite using `[← residue_ne_zero_iff_isUnit, hadj, diagonal_apply_eq]`. Conclude with `hP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu'⟩` from `hun`. Establish `hker : M *ᵥ (fun b => M.adjugate b a) = 0`. Use extensionality with `b`. Use `congrFun (congrFun (mul_adjugate M) b) a` as an intermediate fact. Rewrite `this` using `[hdet, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `this`. Use `⟨l, (↑u⁻¹ : R) • fun b => M.adjugate b a, ?_, fun b hb => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[← hu']`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Rewrite using `[← residue_eq_zero_iff, hadj, diagonal_apply_ne _ hb]`.
-
-Rewrite `hker` using `[hM, sub_mulVec, sub_eq_zero]`. Rewrite using `[mulVec_smul, ← hker, smul_comm l]`. Use `congr 1`. Use extensionality with `b`. Simplify using `[mulVec_diagonal, hM]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Qf19.exists_eigvec {R : Type} [CommRing R] [IsLocalRing R]
     [IsAdicComplete (maximalIdeal R) R] (X : Matrix (Fin 3) (Fin 3) R)
@@ -88,21 +86,19 @@ private theorem UpperTheory.Reformulated.B.Qf19.exists_eigvec {R : Type} [CommRi
     simp [mulVec_diagonal, hM]
 
 /- English proof (translation)
-Introduce `R _ _ _ X hu hm`. Use `choose l v h1 h2 h3 using UpperTheory.Reformulated.B.Qf19.exists_eigvec X hu hm`. Use `set H : Matrix (Fin 3) (Fin 3) R := Matrix.of fun b a => v a b with hH`. Establish `hhat : ∀ a b, (H - 1) a b ∈ maximalIdeal R` using `fun a b => by`. Distinguish the cases in `h : a = b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[hH, h1]`. Simplify `h2 b a h` using `[hH, one_apply_ne h]`. Establish `hmap : (residue R).mapMatrix H = 1`. Use extensionality with `a b`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(residue_eq_zero_iff _).2 (hhat a b)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[RingHom.mapMatrix_apply, map_apply, this]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[one_apply_ne h]`. Establish `hdet : IsUnit H.det`. Rewrite using `[← residue_ne_zero_iff_isUnit, RingHom.map_det, hmap]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `(Matrix.isUnit_iff_isUnit_det H).2 hdet`. Establish `hXH : X * H = H * diagonal l`. Use extensionality with `b a`. Use `congrFun (h3 a) b` as an intermediate fact. Rewrite using `[mul_diagonal, mul_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Use `⟨h, ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Rewrite using `[hh]`. Conclude with `hhat a b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hh]`. Conclude with `h1 a`. Establish `: ((h⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) * X * h = diagonal l`. Rewrite using `[Matrix.mul_assoc, hh, hXH, ← hh, ← Matrix.mul_assoc]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[this]`. Conclude with `isDiag_diagonal l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf19.exists_canon :
     ∀ {R : Type} [inst : CommRing R] [inst_1 : IsLocalRing R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R]

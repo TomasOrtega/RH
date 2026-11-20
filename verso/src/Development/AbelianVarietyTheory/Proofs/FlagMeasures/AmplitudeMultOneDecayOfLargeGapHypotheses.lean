@@ -13,9 +13,9 @@ namespace GlobalTheory.Amp.LocalInputsGap
 open GlobalTheory.Amp.LocalInputs
 
 /- English proof (translation)
-Introduce `B B' h1 h'`. Rewrite `h1`, `h'` using `[GlobalTheory.BesselMultOne.psi_eq_psiGen]`. Take `⟨a, b, hab, e⟩` from `hU k r ε lam h H σ z (fun _ => c) u Wp π hk hg hh hl hσ hz hT (fun _ => hc) hπ B B' (GlobalTheory.BesselMultOne.isBesselMapSm_of h1) (GlobalTheory.BesselMultOne.isBesselMapSm_of h')`. Break down `hab with ha | hb` into its components or cases. Use `⟨-(a⁻¹ * b), Or.inl fun v hv => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : a • B v = -(b • B' v)` using `eq_neg_of_add_eq_zero_left (e v hv)`. Rewrite using `[neg_smul, mul_smul, ← smul_neg, ← h3, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Use `⟨-(b⁻¹ * a), Or.inr fun v hv => ?_⟩` and prove the remaining obligations. Establish `h3 : b • B' v = -(a • B v)` using `eq_neg_of_add_eq_zero_right (e v hv)`. Rewrite using `[neg_smul, mul_smul, ← smul_neg, ← h3, smul_smul, inv_mul_cancel₀ hb, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem multOne_of_uniqGap (hU : GlobalTheory.GapIn.UniqGap) {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
@@ -37,11 +37,9 @@ theorem multOne_of_uniqGap (hU : GlobalTheory.GapIn.UniqGap) {k r : ℕ} {H Wp :
     rw [neg_smul, mul_smul, ← smul_neg, ← h3, smul_smul, inv_mul_cancel₀ hb, one_smul]
 
 /- English proof (translation)
-Use `set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hn`. Establish `hn2 : 2 ≤ n`. Establish `: (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `: (0 : ℝ) ≤ r` using `by positivity`. Rewrite using `[hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h16 : (120 : ℝ) ≤ n ^ 16` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hn2 16)`. Establish `: n ^ 19 = n ^ 16 * n ^ 3` using `by ring`. Rewrite using `[this]`.
-
-Use `gcongr`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gap_small_le {k r : ℕ} (hk : 1 ≤ k) :
     120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 19 := by
@@ -55,19 +53,17 @@ theorem gap_small_le {k r : ℕ} (hk : 1 ≤ k) :
   rw [this]; gcongr
 
 /- English proof (translation)
-Introduce `hH Cg cb Cu cT CT C0`. Establish `hU : GlobalTheory.GapIn.UniqGap` using `hH.2.1`. Establish `hD : Formalism.FourierDecayAlt.ThreeDimData.DecLow` using `hH.1.1.1`. Use `⟨0, fun D large₂ C' Cl hB hZ τ w w' θ W hTT hW A hA => ?_⟩` and prove the remaining obligations. Take `⟨c1, c2, z1, z2, t1, t2, -⟩` from `hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hl, hds, -, -, -, -, ⟨P, hP, hv⟩, -⟩` from `hA`. Take `⟨⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv1, -, hgap, -, -, -, hCl⟩, -, -⟩` from `hZ`. Establish `hT1 : 0 < Tz D.R.k D.R.rS W.z`. Rewrite using `[t1]`. Unfold `Tr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hTT.1.pos` after adjusting the coercions. Establish `hT2 : 0 < Tz D.R.k D.R.rS W.z'`. Rewrite using `[t2]`. Unfold `Tr`. Conclude with `hTT.2.1.pos` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) ≠ 0`. Establish `g0 : (0 : ℝ) < D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).pos`. Establish `g1 : (0 : ℝ) < D.host.g 1` using `by exact_mod_cast (D.host.g_prime 1).pos`. Establish `hka : 0 < D.host.ka` using `div_pos Real.pi_pos (by linarith)`. Conclude with `Complex.ofReal_ne_zero.2 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hL : 1 ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hmf : (D.R.m : ℝ) ≤ D.R.f` using `by exact_mod_cast D.R.m_le_f`. Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hf5 : (D.R.m : ℝ) ≤ (D.R.f : ℝ) ^ 5` using `hmf.trans (le_self_pow₀ (by linarith) (by norm_num))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hge : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L`. Rewrite using `[dimS_eq]`. Combine the equalities or inequalities in the displayed calculation. Establish `hg` using `gap_of_nodes D τ _ hl.1 fun j h1 h2 => hge.trans (hgap τ j h1 h2)`. Establish `hh` using `gap_small_le (r := D.R.rS) hk`.
-
-Use `⟨multOne_of_uniqGap hU hk hg hh hl hds z1 hT1 hc c1, multOne_of_uniqGap hU hk hg hh hl hds z2 hT2 hc c2, ?_⟩` and prove the remaining obligations. Use `(decay_span (by positivity) (urep_of_ds hds) (decay_low hD hk hl hds hg hP)).mono ?_` and prove the remaining obligations. Conclude with `Submodule.span_mono fun v ⟨g, hg, e⟩ => ⟨g, hg, _, hv, e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locIn_of_hypGap : GlobalTheory.GapIn.Hyp → ∀ Cg cb Cu cT CT C0 : ℝ, ∃ m₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), Big D large₂ Cl m₀ → LocIn D large₂ C' Cl Cg cb Cu cT CT C0 := by
   intro hH Cg cb Cu cT CT C0

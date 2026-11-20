@@ -5,7 +5,7 @@ open MeasureTheory
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.norm_iteratedDeriv_sq_le_of_gaussian_growth` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIteratedDerivativeGaussianBound.lean&line=7#L7)
 -/

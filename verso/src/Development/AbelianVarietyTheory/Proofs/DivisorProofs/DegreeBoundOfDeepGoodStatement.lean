@@ -26,7 +26,7 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CovTop.DegProof.deg | exact GlobalTheory.CovTop.DegProof.deg | (intros; apply GlobalTheory.CovTop.DegProof.deg <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.degree_bound_of_deep_good : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg := by
   first | exact @GlobalTheory.CovTop.DegProof.deg | exact GlobalTheory.CovTop.DegProof.deg | (intros; apply GlobalTheory.CovTop.DegProof.deg <;> assumption)

@@ -13,23 +13,23 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `c k h d hk hh hcd`. Establish `hhk : 0 < h ^ k` using `pow_pos hh k`. Use `set a : ℚ := (c : ℚ) * ((k : ℚ) / h) ^ k with ha`. Establish `had : a < d`. Rewrite using `[ha, div_pow, ← mul_div_assoc, div_lt_iff₀ hhk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨(a + d) / 2, by linarith, ?_⟩` and prove the remaining obligations. Introduce `l₀`. Establish `hlim : Tendsto (fun l : ℕ => (c : ℚ) * ((k : ℚ) / h + (k : ℚ) / (l : ℚ)) ^ k) atTop (nhds ((c : ℚ) * ((k : ℚ) / h + 0) ^ k))` using `((tendsto_const_nhds.add (tendsto_const_div_atTop_nhds_zero_nat (k : ℚ))).pow k).const_mul _`. Rewrite `hlim` using `[add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hev1 : ∀ᶠ l : ℕ in atTop, (c : ℚ) * ((k : ℚ) / h + (k : ℚ) / (l : ℚ)) ^ k < (a + d) / 2` using `hlim.eventually (gt_mem_nhds (by rw [← ha]; linarith))`. Establish `hev2 : ∀ᶠ l : ℕ in atTop, h < (l : ℚ)` using `tendsto_natCast_atTop_atTop.eventually (eventually_gt_atTop h)`. Take `⟨l, hl1, hl2, hl0⟩` from `(hev1.and (hev2.and (eventually_ge_atTop l₀))).exists`. Establish `hlpos : (0 : ℚ) < l` using `lt_trans hh hl2`. Use `set x : ℚ := (k : ℚ) * l / h with hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx0 : 0 ≤ x` using `by positivity`. Use `⟨l, ⌊x⌋₊ + 1, hl0, by omega, ?_, hl2, ?_⟩` and prove the remaining obligations. Use `Nat.lt_floor_add_one x` as an intermediate fact. Use `push_cast`. Rewrite `this` using `[hx, div_lt_iff₀ hh]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfl : ((⌊x⌋₊ : ℕ) : ℚ) ≤ x` using `Nat.floor_le hx0`. Establish `hcast : (((⌊x⌋₊ + 1 + k - 1 : ℕ)) : ℚ) = (⌊x⌋₊ : ℚ) + k`. Establish `: ⌊x⌋₊ + 1 + k - 1 = ⌊x⌋₊ + k` using `by omega`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hch : (((⌊x⌋₊ + 1 + k - 1).choose k : ℕ) : ℚ) ≤ (((⌊x⌋₊ + 1 + k - 1 : ℕ)) : ℚ) ^ k / k.factorial` using `Nat.choose_le_pow_div k _`. Establish `hfact : (0 : ℚ) < k.factorial` using `by exact_mod_cast Nat.factorial_pos k`. Establish `hbase : (((⌊x⌋₊ + 1 + k - 1 : ℕ)) : ℚ) ≤ (l : ℚ) * ((k : ℚ) / h + (k : ℚ) / (l : ℚ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcast, mul_add, hx]`. Establish `e1 : (l : ℚ) * ((k : ℚ) / h) = (k : ℚ) * l / h` using `by ring`. Establish `e2 : (l : ℚ) * ((k : ℚ) / l) = k` using `by field_simp`. Rewrite using `[e1, e2]`. Combine the linear relations using `[hfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (((⌊x⌋₊ + 1 + k - 1 : ℕ)) : ℚ) ^ k ≤ ((l : ℚ) * ((k : ℚ) / h + (k : ℚ) / (l : ℚ))) ^ k` using `pow_le_pow_left₀ (by positivity) hbase k`. Establish `hlk : (0 : ℚ) < (l : ℚ) ^ k` using `pow_pos hlpos k`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`.
+Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ < (a + d) / 2 * (l : ℚ) ^ k / k.factorial := by`. Apply `div_lt_div_of_pos_right _ hfact` to reduce the goal to its premises. Conclude with `mul_lt_mul_of_pos_right hl1 hlk`.
+A detailed English derivation is pending.
 -/
 theorem elementary_binom_bound : ∀ (c k : ℕ) (h d : ℚ), 1 ≤ k → 0 < h → (c : ℚ) * (k : ℚ) ^ k < h ^ k * d →
   ∃ q : ℚ, q < d ∧ ∀ l₀ : ℕ, ∃ l M : ℕ, l₀ ≤ l ∧ 1 ≤ M ∧ (k : ℚ) * l < h * M ∧ h < l ∧

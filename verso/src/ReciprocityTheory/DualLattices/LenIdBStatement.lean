@@ -37,7 +37,7 @@ abbrev yModE (Ht Bt : Matrix (Fin g) (Ix g) R) (εT : Fin m → Matrix (Ix g) (I
   LinearMap.range (Matrix.mulVecLin (εL i)) ⧸ (sxE Ht Bt εT εL π i).comap (inclE εL i (π i))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 private theorem fromRows_mulVec_comp_inl (Ht Bt : Matrix (Fin g) (Ix g) R) (w : Ix g → R) :
     (fromRows Ht Bt *ᵥ w) ∘ Sum.inl = Ht *ᵥ w := by
@@ -45,7 +45,7 @@ private theorem fromRows_mulVec_comp_inl (Ht Bt : Matrix (Fin g) (Ix g) R) (w : 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 private theorem fromRows_mulVec_comp_inr (Ht Bt : Matrix (Fin g) (Ix g) R) (w : Ix g → R) :
     (fromRows Ht Bt *ᵥ w) ∘ Sum.inr = Bt *ᵥ w := by
@@ -69,7 +69,7 @@ private theorem coe_projE_eq_comp_inl (εL : Fin m → Matrix (Fin g) (Fin g) R)
       (q : Fin g ⊕ Fin g → R) ∘ Sum.inl := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 private theorem projE_inclE_eq_zero (εL : Fin m → Matrix (Fin g) (Fin g) R) (i j : Fin m)
     (x : LinearMap.range (Matrix.mulVecLin (εL i))) :
@@ -79,9 +79,9 @@ private theorem projE_inclE_eq_zero (εL : Fin m → Matrix (Fin g) (Fin g) R) (
   rfl
 
 /- English proof (translation)
-Introduce `q hq`. Take `⟨w, hw, hwq⟩` from `Submodule.mem_map.mp (Submodule.mem_comap.mp hq)`. Use `Submodule.mem_comap.mpr (Submodule.mem_comap.mpr (Submodule.mem_map.mpr ⟨w, hw, ?_⟩))` and prove the remaining obligations. Rewrite using `[Submodule.subtype_apply, coe_projE_eq_comp_inl, Matrix.mulVecLin_apply, ← fromRows_mulVec_comp_inl Ht Bt w]`. Rewrite `hwq` using `[Submodule.subtype_apply, Matrix.mulVecLin_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hwq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sxE_le_comap_projE (Ht Bt : Matrix (Fin g) (Ix g) R)
     (εT : Fin m → Matrix (Ix g) (Ix g) R)
@@ -97,25 +97,23 @@ private theorem sxE_le_comap_projE (Ht Bt : Matrix (Fin g) (Ix g) R)
   rw [hwq]
 
 /- English proof (translation)
-Use `hasLen_ext hS2 (Submodule.mapQ ((sxE Ht Bt εT εL π i).comap (inclE εL i (π i))) (sxE Ht Bt εT εL π i) (inclE εL i (π i)) le_rfl) (Submodule.mapQ (sxE Ht Bt εT εL π i) (((LinearMap.range (Matrix.mulVecLin (εT i))).map (Matrix.mulVecLin Ht)).comap (LinearMap.range (Matrix.mulVecLin …` and prove the remaining obligations. Introduce `a b hab`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite `hab` using `[Submodule.mapQ_apply, Submodule.mapQ_apply, Submodule.Quotient.eq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, map_sub]`. Conclude with `hab`. Introduce `z`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Use `⟨Submodule.Quotient.mk ⟨Sum.elim (z : Fin g → R) (0 : Fin g → R), by` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (Sum.elim (z : Fin g → R) (0 : Fin g → R)) ∘ Sum.inl ∈ LinearMap.range (Matrix.mulVecLin (εL (π i))ᵀ)`. Conclude with `z.2`. Use `show (Sum.elim (z : Fin g → R) (0 : Fin g → R)) ∘ Sum.inr ∈ LinearMap.range (Matrix.mulVecLin (εL i))`. Conclude with `⟨0, by funext k; simp⟩⟩, ?_⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mapQ_apply]`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext rfl)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨a, rfl⟩` from `LinearMap.mem_range.mp hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Rewrite using `[LinearMap.mem_ker, Submodule.mapQ_apply, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, projE_inclE_eq_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x hx`. Take `⟨q, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx` using `[LinearMap.mem_ker, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨w, hw, hwq⟩` from `Submodule.mem_map.mp (Submodule.mem_comap.mp hx)`. Take `⟨u, rfl⟩` from `LinearMap.mem_range.mp hw`. Rewrite `hwq` using `[Submodule.subtype_apply, coe_projE_eq_comp_inl, Matrix.mulVecLin_apply, Matrix.mulVecLin_apply]`. Establish `hB' : Bt *ᵥ (εT i *ᵥ u) ∈ LinearMap.range (Matrix.mulVecLin (εL i))` using `⟨Bt *ᵥ u, by rw [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hBt]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq2 : (q : Fin g ⊕ Fin g → R) ∘ Sum.inr ∈ LinearMap.range (Matrix.mulVecLin (εL i))` using `q.2.2`. Establish `hr : (q : Fin g ⊕ Fin g → R) ∘ Sum.inr - Bt *ᵥ (εT i *ᵥ u) ∈ LinearMap.range (Matrix.mulVecLin (εL i))` using `Submodule.sub_mem _ hq2 hB'`. Use `LinearMap.mem_range.mpr ⟨Submodule.Quotient.mk ⟨_, hr⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mapQ_apply, eq_comm, Submodule.Quotient.eq]`. Use `Submodule.mem_comap.mpr (Submodule.mem_map.mpr ⟨(εT i).mulVecLin u, ⟨u, rfl⟩, ?_⟩)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.subtype_apply, Submodule.coe_sub, coe_inclE_eq_elim_zero, Matrix.mulVecLin_apply, Matrix.mulVecLin_apply]`. Use function extensionality and compare the values at `k`. Break down `k with k | k` into its components or cases. Establish `hF` using `congrFun (fromRows_mulVec_comp_inl Ht Bt (εT i *ᵥ u)) k`. Establish `hk` using `congrFun hwq k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply] at hF hk`. Rewrite using `[Pi.sub_apply, hF, Sum.elim_inl, Pi.zero_apply, sub_zero]`. Conclude with `hk`. Establish `hF` using `congrFun (fromRows_mulVec_comp_inr Ht Bt (εT i *ᵥ u)) k`. Simplify using `only [Function.comp_apply] at hF`.
-
-Rewrite using `[Pi.sub_apply, hF, Sum.elim_inr]`. Use `show _ = _ - (((q : Fin g ⊕ Fin g → R) ∘ Sum.inr - Bt *ᵥ (εT i *ᵥ u)) k)`. Rewrite using `[Pi.sub_apply, Function.comp_apply, sub_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem xModE_len {C : Type} [Field C] {v : Valuation C NNReal} [Algebra R C]
     (hS2 : ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (X : Matrix κ κ R),
@@ -203,7 +201,7 @@ def LenIdBStatement : Prop :=
       ∃ y : NNReal, HasLen v R (yModE Ht Bt εT εL π i) y ∧ y * c₁ = v (algebraMap R C cp) ^ d
 
 /- English proof (translation)
-Introduce `C _ v R _ _ hv g m Ht Bt E cp hcp hE hform εT εL π hπ hεT hsumT hεL hsumL hHt hBt hεE i d hd c₁ c₂ hc₁ hc₂`. Take `⟨y, hy, hyc⟩` from `hB C v R hv g m Ht Bt E cp hcp hE hform εT εL π hπ hεT hsumT hεL hsumL hHt hBt hεE i d hd c₁ hc₁`. Use `⟨y * c₂, xModE_len (hS2 C v R hv) Ht Bt εT εL π i (hHt i) (hBt i) hy hc₂, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_right_comm, hyc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lenId_of
     (hS2 : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C],

@@ -6,19 +6,17 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ σ T hT`. Set `C : Set Gal(L/K)` to `{τ | IsConj σ τ}`. Establish `hCc : ∀ a ∈ C, ∀ τ : Gal(L/K), τ * a * τ⁻¹ ∈ C`. Introduce `a ha τ`. Conclude with `IsConj.trans ha (isConj_iff.mpr ⟨τ, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD` using `GroundTheory.Global.hasDirichletDensity_setOf_exists_arithFrobAt_mem (K := K) (L := L) C hCc`. Establish `hpos : (0 : ℝ) < (Nat.card C : ℝ) / Nat.card Gal(L/K)`. Establish `: Nonempty C` using `⟨⟨σ, IsConj.refl σ⟩⟩`. Apply `div_pos` to reduce the goal to its premises. Conclude with `Nat.card_pos` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.card_pos` after adjusting the coercions. Establish `key : ∀ S : Set (HeightOneSpectrum (𝓞 K)), Set.HasDirichletDensity S ((Nat.card C : ℝ) / Nat.card Gal(L/K)) → (S \ T).Nonempty`. Introduce `S hS`. Use `Set.Infinite.nonempty (Set.Infinite.diff ?_ hT)` and prove the remaining obligations. Introduce `hfin`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `GroundTheory.Global.hasDirichletDensity_zero_of_finite hfin`. Conclude with `hpos.ne' (tendsto_nhds_unique hS h0)`. Take `⟨v, ⟨hram, w, hwv, hfw⟩, hvT⟩` from `key _ hD`. Take `⟨c, hc⟩` from `isConj_iff.mp hfw`. Establish `hne : c⁻¹ • w.asIdeal ≠ ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Apply `w.ne_bot` to reduce the goal to its premises. Use `congrArg (fun I : Ideal (𝓞 L) => c • I) h` as an intermediate fact. Simplify using `using this`. Set `w' : HeightOneSpectrum (𝓞 L)` to `⟨c⁻¹ • w.asIdeal, Ideal.IsPrime.smul c⁻¹, hne⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw'v : w'.asIdeal.LiesOver v.asIdeal` using `Ideal.LiesOver.smul c⁻¹`. Use `⟨v, hvT, w', hw'v, (hram w' hw'v), ?_⟩` and prove the remaining obligations. Establish `hF` using `(IsArithFrobAt.arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal).conj c⁻¹`. Rewrite `hF` using `[← hc]`. Establish `e : c⁻¹ * (c * σ * c⁻¹) * c⁻¹⁻¹ = σ` using `by group`.
-
-Rewrite `hF` using `[e]`. Conclude with `hF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.cheb :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L] (σ : Gal(L/K)) (T : Set (HeightOneSpectrum (𝓞 K))), T.Finite → ∃ v ∉ T, ∃ w : HeightOneSpectrum (𝓞 L), w.asIdeal.LiesOver v.asIdeal ∧ w.asIdeal.ramificationIdx (𝓞 K) = 1 ∧ IsArithFrobAt (𝓞 K) σ w.asIdeal := by

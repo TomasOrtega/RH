@@ -15,7 +15,7 @@ variable {K : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 K.1))} {ℓ : �
   (M : Rep.{0} (ZMod ℓ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Module.Finite (ZMod ℓ) M]
 
 /- English proof (translation)
-Use `haveI : NeZero ℓ := ⟨(Fact.out : ℓ.Prime).ne_zero⟩`. Conclude with `Module.finite_of_finite (ZMod ℓ)`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_moduleFinite : Finite M := by
   haveI : NeZero ℓ := ⟨(Fact.out : ℓ.Prime).ne_zero⟩
@@ -24,9 +24,9 @@ theorem finite_of_moduleFinite : Finite M := by
 variable [Finite M]
 
 /- English proof (translation)
-Establish `hℓ : ℓ.Prime` using `Fact.out`. Use `haveI : NeZero ℓ := ⟨hℓ.ne_zero⟩`. Establish `hcardM : Nat.card (intRep M) = ℓ ^ Module.finrank (ZMod ℓ) M` using `natCard_eq_pow_finrank_zmod ℓ M`. Establish `hSM : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card (intRep M) : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[hcardM, Nat.cast_pow]`. Assume the negation of the conclusion as `h`. Conclude with `hℓS v h (v.isPrime.mem_of_pow_mem _ hv)`. Conclude with `finite_cohomology_gs K S (intRep M) hSM 2 le_rfl`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem finite_cohomology_two_int [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     Finite (cohomology (intRep M) 2) := by
@@ -41,7 +41,7 @@ theorem finite_cohomology_two_int [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) 
   exact finite_cohomology_gs K S (intRep M) hSM 2 le_rfl
 
 /- English proof (translation)
-Use `haveI := finite_cohomology_two_int M hℓS`. Use `haveI : Finite (cohomology M 2) := Finite.of_equiv _ (cohomologyIntEquiv M 2).symm.toEquiv`. Rewrite using `[← Nat.card_congr (cohomologyIntEquiv M 2).toEquiv]`. Conclude with `natCard_eq_pow_finrank_zmod ℓ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_H2_integral_module [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     Nat.card (cohomology (intRep M) 2) = ℓ ^ Module.finrank (ZMod ℓ) (cohomology M 2) := by
@@ -51,7 +51,7 @@ theorem card_H2_integral_module [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 
   exact natCard_eq_pow_finrank_zmod ℓ _
 
 /- English proof (translation)
-Use `haveI : NeZero ℓ := ⟨(Fact.out : ℓ.Prime).ne_zero⟩`. Use `haveI : Finite (dualRep (gsRootsZMod S ℓ) M) := Module.finite_of_finite (ZMod ℓ)`. Use `(Nat.card_congr (H0Iso (dualRep (gsRoots S ℓ) (intRep M))).toLinearEquiv.toEquiv).trans ?_` and prove the remaining obligations. Conclude with `(natCard_invariants_eq_of_addEquiv (dualRep (gsRoots S ℓ) (intRep M)).ρ (dualRep (gsRootsZMod S ℓ) M).ρ (dualIntEquiv (gsRoots S ℓ) (nsmul_galRootsOfUnity_eq_zero ℓ) M) (fun h f => dualIntEquiv_comm _ _ M h f)).trans (natCard_eq_pow_finrank_zmod ℓ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_H0_dual_module :
     Nat.card (cohomology (dualRep (gsRoots S ℓ) (intRep M)) 0) =
@@ -65,7 +65,7 @@ theorem card_H0_dual_module :
     (fun h f => dualIntEquiv_comm _ _ M h f)).trans (natCard_eq_pow_finrank_zmod ℓ _)
 
 /- English proof (translation)
-Use `haveI : NeZero ℓ := ⟨(Fact.out : ℓ.Prime).ne_zero⟩`. Use `haveI : Finite (dualRep (gsRootsZMod S ℓ) M) := Module.finite_of_finite (ZMod ℓ)`. Use `(Nat.card_congr (H0Iso (Rep.res (gsFinFamily S ιs v).toMonoidHom (dualRep (gsRoots S ℓ) (intRep M)))).toLinearEquiv.toEquiv).trans ?_` and prove the remaining obligations. Conclude with `(natCard_invariants_eq_of_addEquiv (Rep.res (gsFinFamily S ιs v).toMonoidHom (dualRep (gsRoots S ℓ) (intRep M))).ρ ((dualRep (gsRootsZMod S ℓ) M).ρ.comp (gsFinFamily S ιs v).toMonoidHom) (dualIntEquiv (gsRoots S ℓ) (nsmul_galRootsOfUnity_eq_zero ℓ) M) (fun h f => dualIntEquiv_com …`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_H0_dual_local
     (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) (v : S) :
@@ -83,9 +83,7 @@ theorem card_H0_dual_local
     (fun h f => dualIntEquiv_comm _ _ M _ f)).trans (natCard_eq_pow_finrank_zmod ℓ _)
 
 /- English proof (translation)
-Use `haveI := finite_cohomology_two_int M hℓS`. Use `haveI : Finite (cohomology M 2) := Finite.of_equiv _ (cohomologyIntEquiv M 2).symm.toEquiv`. Establish `e : (shaSubmodule (gsFinFamily S ιs) M 2) ≃ (ptSha (gsFinFamily S ιs) (intRep M) 2)` using `(cohomologyIntEquiv M 2).toEquiv.subtypeEquiv fun x => by`. Rewrite using `[mem_ptSha_iff_mem_shaSubmodule]`. Conclude with `(mem_shaSubmodule_cohomologyAddEquivOfEquiv_iff _ (intRepEquiv M) (fun _ _ => rfl) 2 x).symm`.
-
-Conclude with `(Nat.card_congr e).symm.trans (natCard_eq_pow_finrank_zmod ℓ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_sha_int [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) :

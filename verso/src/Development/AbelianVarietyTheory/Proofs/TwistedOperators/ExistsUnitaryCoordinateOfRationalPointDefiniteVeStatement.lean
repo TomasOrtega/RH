@@ -21,7 +21,7 @@ open GlobalTheory.RatMoveJets
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.RatMoveJets.exists_unitary_ratCoord | exact GlobalTheory.RatMoveJets.exists_unitary_ratCoord | (intros; apply GlobalTheory.RatMoveJets.exists_unitary_ratCoord <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_unitaryCoordinate_of_rationalPoint_definiteVertex : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {W : G.Weil}
     (S : GridChoice W Set.univ) (X : Node), DefNode D.R.m X → ∀ r : FinPt G X, GlobalTheory.MovedKappaEx.RatFin (G.V X) r →

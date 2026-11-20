@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GaussianTailBound
 open NumberField Complex ReciprocityTheory.ChartRestriction.G.I2
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.characters_of_nearestPlane_of_short_integers | exact GlobalTheory.characters_of_nearestPlane_of_short_integers | (intros; apply GlobalTheory.characters_of_nearestPlane_of_short_integers <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cmCharacters_of_nearestPlane_of_short_integers : Ext.NearestPlane → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∃ ω : Fin (Module.finrank ℚ E) → 𝓞 E, LinearIndependent ℚ (fun j => (ω j : E)) ∧ ∀ j (τ : E →+* ℂ), ‖τ (ω j : E)‖ ≤ omStar (E := E)) → CharStatement := by
   first | exact @GlobalTheory.characters_of_nearestPlane_of_short_integers | exact GlobalTheory.characters_of_nearestPlane_of_short_integers | (intros; apply GlobalTheory.characters_of_nearestPlane_of_short_integers <;> assumption)

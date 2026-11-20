@@ -3,7 +3,7 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.P6.r24a
 
 /- English proof (translation)
-Simplify using `only [map_smul, ContinuousLinearMap.smul_apply, Complex.smul_re, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quadratic_form_smul_re {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (Q : V →L[ℝ] V →L[ℝ] ℂ) (c : ℝ) (x : V) :
@@ -12,7 +12,7 @@ theorem quadratic_form_smul_re {V : Type} [NormedAddCommGroup V] [NormedSpace �
   ring
 
 /- English proof (translation)
-Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_norm_smul_mem_sphere {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (x : V) (hx : x ≠ 0) : ‖x‖⁻¹ • x ∈ Metric.sphere (0 : V) 1 := by
@@ -20,17 +20,17 @@ theorem inv_norm_smul_mem_sphere {V : Type} [NormedAddCommGroup V] [NormedSpace 
   rw [mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']
 
 /- English proof (translation)
-Introduce `V _ _ _ Q hQ`. Establish `hcont : Continuous fun x : V => (Q x x).re` using `Complex.continuous_re.comp (Q.continuous.clm_apply continuous_id)`. Distinguish the cases in `hne : (Metric.sphere (0 : V) 1).Nonempty`. Take `⟨x0, hx0, hmin⟩` from `(isCompact_sphere (0 : V) 1).exists_isMinOn hne hcont.continuousOn`. Establish `hx0ne : x0 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hx0` using `[h, mem_sphere_zero_iff_norm, norm_zero]`. Conclude with `zero_ne_one hx0`. Use `⟨(Q x0 x0).re, hQ x0 hx0ne, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Take `⟨y, hyd⟩ : ∃ y : V, y = ‖x‖⁻¹ • x` from `⟨_, rfl⟩`. Establish `hy : y ∈ Metric.sphere (0 : V) 1` using `hyd ▸ inv_norm_smul_mem_sphere x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (Q x0 x0).re ≤ (Q y y).re` using `hmin hy`. Establish `h2 : ‖x‖ • y = x`. Rewrite using `[hyd, smul_smul, mul_inv_cancel₀ hn.ne', one_smul]`. Establish `h3 : (Q x x).re = ‖x‖ ^ 2 * (Q y y).re`. Use `quadratic_form_smul_re Q ‖x‖ y` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h2]`. Conclude with `this`. Rewrite using `[h3, mul_comm (‖x‖ ^ 2)]`. Conclude with `mul_le_mul_of_nonneg_right h1 (by positivity)`. Use `⟨1, one_pos, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Establish `hx : x = 0`. Assume the negation of the conclusion as `hx`. Conclude with `hne ⟨_, inv_norm_smul_mem_sphere x hx⟩`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.Sw.Glob.GCSchH.coercive_of_pos :
     ∀ {V : Type} [inst : NormedAddCommGroup V] [inst_1 : NormedSpace ℝ V] [FiniteDimensional ℝ V] (Q : V →L[ℝ] V →L[ℝ] ℂ), (∀ (x : V), x ≠ OfNat.ofNat (nat_lit 0) → OfNat.ofNat (nat_lit 0) < (DFunLike.coe (DFunLike.coe Q x) x).re) → ∃ (κ : ℝ), OfNat.ofNat (nat_lit 0) < κ ∧ ∀ (x : V), κ * ‖x‖ ^ OfNat.ofNat (nat_lit 2) ≤ (DFunLike.coe (DFunLike.coe Q x) x).re := by

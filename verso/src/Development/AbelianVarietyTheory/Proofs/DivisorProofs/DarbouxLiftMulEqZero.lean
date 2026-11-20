@@ -22,7 +22,7 @@ theorem darbouxLift_snd (F : Type) [Field F] [NumberField F] (ξ : mixedEmbeddin
     (liftA F ξ).2 = 0 := rfl
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (liftA F ξ).1 = ξ`. Rewrite using `[darbouxLift_fst]`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem darbouxLift_evI (F : Type) [Field F] [NumberField F] (ξ : mixedEmbedding.mixedSpace F) :
     evI F (liftA F ξ) = ξ := by
@@ -30,9 +30,9 @@ theorem darbouxLift_evI (F : Type) [Field F] [NumberField F] (ξ : mixedEmbeddin
   rw [darbouxLift_fst]; exact RingEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Establish `h1 : u.1 = 0`. Establish `: InfiniteAdeleRing.ringEquiv_mixedSpace F u.1 = 0` using `hu`. Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).1 this`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * (liftA F ξ).1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, zero_mul]`. Use `show u.2 * (liftA F ξ).2 = 0`. Rewrite using `[darbouxLift_snd, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem darbouxLift_mul_eq_zero (F : Type) [Field F] [NumberField F] (u : AF F) (hu : evI F u = 0)
     (ξ : mixedEmbedding.mixedSpace F) : u * liftA F ξ = 0 := by
@@ -46,11 +46,11 @@ theorem darbouxLift_mul_eq_zero (F : Type) [Field F] [NumberField F] (u : AF F) 
     rw [darbouxLift_snd, mul_zero]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ V _ _ B d p q`. Use `⟨d.e.symm (fun i => liftA F (p i), fun i => liftA F (q i)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[← LinearEquiv.map_smul]`. Establish `: u • ((fun i => liftA F (p i), fun i => liftA F (q i)) : (κ → AF F) × (κ → AF F)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext i <;> simp only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply] <;> exact darbouxLift_mul_eq_zero F u hu _`. Rewrite using `[this, map_zero]`. Use function extensionality and compare the values at `i`. Simplify using `only [LinearEquiv.apply_symm_apply, arch]`. Conclude with `darbouxLift_evI F (p i)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [LinearEquiv.apply_symm_apply, arch]`. Conclude with `darbouxLift_evI F (q i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_darboux_lift : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [Module (AF F) V]
     {B : V → V → AF F} (d : Darboux B κ) (p q : κ → mixedEmbedding.mixedSpace F),

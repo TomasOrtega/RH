@@ -11,7 +11,7 @@ open ReciprocityTheory.AnForm.A
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[Measure.real, volume_pi_closedBall x hr]`. Simplify using `only [Complex.volume_closedBall, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[ENNReal.toReal_pow, ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_ofReal hr]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volume_real_closedBall_polydisc {D : ℕ} (x : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r) :
     volume.real (closedBall x r) = (Real.pi * r ^ 2) ^ D := by
@@ -21,31 +21,27 @@ theorem volume_real_closedBall_polydisc {D : ℕ} (x : Fin D → ℂ) {r : ℝ} 
   simp [mul_comm]
 
 /- English proof (translation)
-Introduce `D ρ b U u z t hU hu ht hzU hb`. Use `set M2 := polyMax u z (2 * t)`. Use `set M4 := polyMax u z (t / 4)`. Take `⟨-, -, hatt, -⟩` from `h1 D U u z (2 * t) hU hu (by positivity) hzU`. Take `⟨x, hx, hux⟩` from `hatt (t / 4) (by positivity) (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[mem_closedBall]`. Use `set B := closedBall x (3 / 2 * t) with hBdef`. Establish `hBz : B ⊆ closedBall z (2 * t)` using `closedBall_subset_closedBall' (by linarith)`. Establish `hzB : closedBall z t ⊆ B` using `closedBall_subset_closedBall' (by rw [dist_comm]; linarith)`. Take `⟨hint, hmean⟩` from `h0 D U u x (3 / 2 * t) hU hu (by positivity) (hBz.trans hzU)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hint`, `hmean` using `[← hBdef]`. Establish `hle2 : ∀ p ∈ B, u p ≤ M2` using `fun p hp => le_polyMax hu.1 hzU (hBz hp)`. Establish `hb0 : 0 ≤ b` using `(ρ.nonneg 0).trans (hb 0)`. Establish `hV : volume.real B = (Real.pi * (3 / 2 * t) ^ 2) ^ D` using `volume_real_closedBall_polydisc x (by positivity)`. Establish `hVpos : 0 < volume.real B` using `by rw [hV]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcint : IntegrableOn (fun _ => M2) B` using `integrableOn_const measure_closedBall_lt_top.ne`. Establish `hIB : ∫ p in B, (M2 - u p) ≤ volume.real B * (M2 - M4)`. Rewrite using `[integral_sub hcint hint, setIntegral_const, smul_eq_mul]`. Rewrite `hmean` using `[setAverage_eq, smul_eq_mul]`. Establish `h` using `mul_le_mul_of_nonneg_left hmean hVpos.le`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[← mul_assoc, mul_inv_cancel₀ hVpos.ne', one_mul]`. Rewrite using `[show M4 = u x from hux.symm]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set g : (Fin D → ℂ) → ℝ := B.indicator (fun p => M2 - u p) with hgdef`. Establish `hg0 : ∀ q, 0 ≤ g q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `q`. Distinguish the cases in `hq : q ∈ B`. Rewrite using `[hgdef, indicator_of_mem hq]`. Conclude with `sub_nonneg.2 (hle2 q hq)`. Rewrite using `[hgdef, indicator_of_notMem hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgint : Integrable g` using `(integrable_indicator_iff measurableSet_closedBall).2 (hcint.sub hint)`. Establish `hBind : Integrable (B.indicator u)` using `(integrable_indicator_iff measurableSet_closedBall).2 hint`. Use `set c : ℝ := (t ^ (2 * D))⁻¹ * b with hcdef`. Establish `hc0 : 0 ≤ c` using `by positivity`. Establish `hsc : ∀ y, ρ.scaled t y ≤ c` using `fun y => mul_le_mul_of_nonneg_left (hb _) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : ∫ y, (ρ.scaled t y * M2 - ρ.scaled t y * B.indicator u (z - y)) ≤ ∫ y, c * g (z - y)`. Use `integral_mono (((integrable_scaled ρ ht).mul_const M2).sub (integrable_kC ρ ht hBind z)) ((hgint.comp_sub_left z).const_mul c) fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : ρ.scaled t y = 0`. Simplify using `only [hy, zero_mul, sub_zero]`. Conclude with `mul_nonneg hc0 (hg0 _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : z - y ∈ B` using `hzB (mem_ball_sub ρ ht hy z)`. Simplify using `only [hgdef, indicator_of_mem hm]`. Rewrite using `[← mul_sub]`. Conclude with `mul_le_mul_of_nonneg_right (hsc y) (sub_nonneg.2 (hle2 _ hm))`. Establish `hLHS : ∫ y, (ρ.scaled t y * M2 - ρ.scaled t y * B.indicator u (z - y)) = M2 - molli ρ t u z`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_sub ((integrable_scaled ρ ht).mul_const M2) (integrable_kC ρ ht hBind z), integral_mul_const, integral_scaled ρ ht, one_mul, molli_eq_C ρ ht hzB (φ := u)]`. Establish `hRHS : ∫ y, c * g (z - y) = c * ∫ p in B, (M2 - u p)`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Use `(Measure.measurePreserving_sub_left volume z).integral_comp (Homeomorph.subLeft z).measurableEmbedding g` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, hgdef, integral_indicator measurableSet_closedBall]`. Establish `hcV : c * volume.real B = Real.pi ^ D * (3 / 2 : ℝ) ^ (2 * D) * b`. Rewrite using `[hV, hcdef]`. Establish `ht' : t ^ (2 * D) ≠ 0` using `by positivity`. Rewrite using `[mul_pow, ← pow_mul, mul_pow, pow_mul (3 / 2 : ℝ) 2 D]`.
-
-Clear the denominators using the available nonvanishing facts. Establish `hfin` using `mul_le_mul_of_nonneg_left hIB hc0`. Establish `e : c * (volume.real B * (M2 - M4)) = Real.pi ^ D * (3 / 2 : ℝ) ^ (2 * D) * b * (M2 - M4)`. Rewrite using `[← hcV]`. Expand and normalize the polynomial expressions, which then agree.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem MollifiedLowerBound.proof (h0 : SubMeanPolydiscStatement)
     (h1 : PolyMaxLogConvexStatement) : MollifiedLowerBound.Statement := by
@@ -124,7 +120,7 @@ theorem MollifiedLowerBound.proof (h0 : SubMeanPolydiscStatement)
   linarith
 
 /- English proof (translation)
-The claim follows from `MollifiedLowerBound.proof subMeanPolydisc_thm polyMaxLogConvex_thm`.
+A detailed English derivation is pending.
 -/
 theorem MollifiedLowerBound.closed : MollifiedLowerBound.Statement :=
   MollifiedLowerBound.proof subMeanPolydisc_thm polyMaxLogConvex_thm

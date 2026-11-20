@@ -22,7 +22,7 @@ abbrev pRep (ν β : kˣ →* ℂˣ) (a b : ℕ) : Representation ℂ (GL (Fin (
   prod₂ (detRep (Fin a) (ν * β)) (detRep (Fin b) β)
 
 /- English proof (translation)
-Rewrite using `[indSp_eq_indScal]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem indSp_mul (ν β : kˣ →* ℂˣ) (a b : ℕ) : indSp a b (ν * β) β = indScal ν β a b := by
   rw [indSp_eq_indScal]
@@ -31,11 +31,11 @@ theorem indSp_mul (ν β : kˣ →* ℂˣ) (a b : ℕ) : indSp a b (ν * β) β 
   simp
 
 /- English proof (translation)
-Rewrite using `[indSp_mul]`. Use `⟨mem_smoothPart_of_nhds ?_, fun p x => ?_⟩` and prove the remaining obligations. Establish `ho : IsOpen {g | pRep ν β a b g F = F}` using `isSmooth_prod₂ _ _ F`. Use `Filter.mem_of_superset (ho.mem_nhds (by simp)) fun g hg => funext fun x => ?_` and prove the remaining obligations. Establish `hg' : pRep ν β a b g F = F` using `hg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show TensorProduct.lid ℂ ℂ (F.1.1 (x * g)) = TensorProduct.lid ℂ ℂ (F.1.1 x)`. Conclude with `congrArg (fun G : PSp ν β a b => TensorProduct.lid ℂ ℂ (G.1.1 x)) hg'`. Establish `h` using `F.1.2 p x show TensorProduct.lid ℂ ℂ (F.1.1 (p * x)) = ofChar _ p (TensorProduct.lid ℂ ℂ (F.1.1 x))`. Rewrite using `[h]`. Take `⟨c, hc⟩` from `(TensorProduct.lid ℂ ℂ).symm.surjective (F.1.1 x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hc]`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, twist_apply, MonoidHom.coe_coe]`. Simplify using `[parChar, detRep, ofChar_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem val_mem (ν β : kˣ →* ℂˣ) (a b : ℕ) (F : PSp ν β a b) : indScalVal ν β a b F ∈ indSp a b (ν * β) β := by
   rw [indSp_mul]
@@ -80,19 +80,19 @@ def part3 (a b : ℕ) : (Σ i : Fin 3, Fin (blk3 (a + b) i)) ≃ Fin (a + (b + 2
   (sum3 (a + b)).symm.trans (JacLine.blk3 a b)
 
 /- English proof (translation)
-The claim follows from `congrArg (JacLine.blk3 a b) ((sum3 (a + b)).symm_apply_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem jacquet_line_block_inl (a b : ℕ) (i : Fin 1) : JacLine.blk3 a b (Sum.inl i) = part3 a b ⟨0, i⟩ :=
   congrArg (JacLine.blk3 a b) ((sum3 (a + b)).symm_apply_apply _).symm
 
 /- English proof (translation)
-The claim follows from `congrArg (JacLine.blk3 a b) ((sum3 (a + b)).symm_apply_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem jacquet_line_block_inr_inl (a b : ℕ) (i : Fin (a + b)) : JacLine.blk3 a b (Sum.inr (Sum.inl i)) = part3 a b ⟨1, i⟩ :=
   congrArg (JacLine.blk3 a b) ((sum3 (a + b)).symm_apply_apply _).symm
 
 /- English proof (translation)
-The claim follows from `congrArg (JacLine.blk3 a b) ((sum3 (a + b)).symm_apply_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem jacquet_line_block_inr_inr (a b : ℕ) (i : Fin 1) : JacLine.blk3 a b (Sum.inr (Sum.inr i)) = part3 a b ⟨2, i⟩ :=
   congrArg (JacLine.blk3 a b) ((sum3 (a + b)).symm_apply_apply _).symm
@@ -100,11 +100,9 @@ theorem jacquet_line_block_inr_inr (a b : ℕ) (i : Fin 1) : JacLine.blk3 a b (S
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_unipRad.1 hu`. Establish `h3` using `mem_parab_iff.1 h1`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> rw [submatrix_apply]`. Conclude with `(congrArg₂ u.val (jacquet_line_block_inl a b i) (jacquet_line_block_inl a b j)).trans (h2 0 i j)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `(congrArg₂ u.val (jacquet_line_block_inr_inl a b i) (jacquet_line_block_inl a b j)).trans (h3 1 0 i j (by decide))`. Conclude with `(congrArg₂ u.val (jacquet_line_block_inr_inl a b i) (jacquet_line_block_inr_inl a b j)).trans (h2 1 i j)`. Both sides reduce to the same expression. Conclude with `(congrArg₂ u.val (jacquet_line_block_inr_inr a b i) (jacquet_line_block_inl a b j)).trans (h3 2 0 i j (by decide))`.
-
-Conclude with `(congrArg₂ u.val (jacquet_line_block_inr_inr a b i) (jacquet_line_block_inr_inl a b j)).trans (h3 2 1 i j (by decide))`. Conclude with `(congrArg₂ u.val (jacquet_line_block_inr_inr a b i) (jacquet_line_block_inr_inr a b j)).trans (h2 2 i j)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unip_shape {a b : ℕ} {u : GL (Fin (a + (b + 2))) k} (hu : u ∈ unipRad k (part3 a b)) :
     u.val.submatrix (JacLine.blk3 a b) (JacLine.blk3 a b) =
@@ -127,11 +125,7 @@ theorem unip_shape {a b : ℕ} {u : GL (Fin (a + (b + 2))) k} (hu : u ∈ unipRa
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Establish `hd : ∀ (g : GL (Fin 1) k) (i j : Fin 1), g.val i j = ((GeneralLinearGroup.det g : kˣ) : k)` using `fun g i j => by`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using the standard rewrite rules. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp only [submatrix_apply, jacquet_line_block_inl, jacquet_line_block_inr_inl, jacquet_line_block_inr_inr]`. Conclude with `(leviEmb_apply_same k _ l 0 i j).trans (hd (l 0) i j)`.
-
-Conclude with `leviEmb_apply_ne k _ l (by decide) _ _`. Conclude with `leviEmb_apply_ne k _ l (by decide) _ _`. Conclude with `leviEmb_apply_ne k _ l (by decide) _ _`. Conclude with `leviEmb_apply_same k _ l 1 i j`. Conclude with `leviEmb_apply_ne k _ l (by decide) _ _`.
-
-Conclude with `leviEmb_apply_ne k _ l (by decide) _ _`. Conclude with `leviEmb_apply_ne k _ l (by decide) _ _`. Conclude with `(leviEmb_apply_same k _ l 2 i j).trans (hd (l 2) i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem levi_shape {a b : ℕ} (l : Levi k (fun i : Fin 3 => Fin (blk3 (a + b) i))) :
     (leviEmb k (part3 a b) l).val.submatrix (JacLine.blk3 a b) (JacLine.blk3 a b) =
@@ -166,16 +160,16 @@ theorem frob_apply (φ : indSp a (b + 2) α β →ₗ[ℂ] indSp a b α β) (x :
     frob π E E₁ φ x h = E₁.symm (φ (E (π h x))) := rfl
 
 /- English proof (translation)
-Rewrite using `[frob_apply, map_one, Module.End.one_apply, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_one (φ : indSp a (b + 2) α β →ₗ[ℂ] indSp a b α β) (f : indSp a (b + 2) α β) :
     φ f = E₁ (frob π E E₁ φ (E.symm f) 1) := by
   rw [frob_apply, map_one, Module.End.one_apply, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[frob_apply, frob_apply, map_mul, Module.End.mul_apply] unip u hu x h := by`. Rewrite using `[frob_apply, frob_apply, map_mul, Module.End.mul_apply, hφ.1 u _ _ (unip_shape hu) (E (π h x)) (E (π u (π h x))) fun y => hE u y _]`. Use `levi l x h := by`. Rewrite using `[frob_apply, frob_apply, map_mul π, Module.End.mul_apply, LinearEquiv.symm_apply_eq, map_smul]`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ.2 _ _ _ _ (levi_shape l) (E (π h x)) (E (π (leviEmb k (part3 a b) l) (π h x))) (fun y => hE _ y _) y, Submodule.coe_smul, Pi.smul_apply, Units.val_mul, smul_eq_mul]`. Establish `h1` using `hE₁ (l 1) y (E₁.symm (φ (E (π h x))))`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Conclude with `congrArg _ h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGLIndMap_frob
     (hE : ∀ g x F, (E (π g F) : GL (Fin (a + (b + 2))) k → ℂ) x = (E F : GL (Fin (a + (b + 2))) k → ℂ) (x * g))
@@ -199,11 +193,11 @@ theorem isGLIndMap_frob
 end Frob
 
 /- English proof (translation)
-Introduce `H k _ _ _ _ a b α β hα hβ hab`. Take `⟨ν, rfl⟩ : ∃ ν : kˣ →* ℂˣ, α = ν * β` from `⟨α * β⁻¹, by ext x; simp⟩`. Introduce `φ φ' hφ hφ'`. Establish `h₁` using `GlobalTheory.Published.BernsteinUnitaryProductIrreducible.detRep_hyp a (χ := ν * β) hα.1 hα.2`. Establish `h₂` using `GlobalTheory.Published.BernsteinUnitaryProductIrreducible.detRep_hyp b (χ := β) hβ.1 hβ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hirr : (pRep ν β a b).IsIrreducible` using `H.base.bernsteinUnitaryProductIrreducible k a b ℂ ℂ _ _ h₁.1 h₁.2.1 h₁.2.2 h₂.1 h₂.2.1 h₂.2.2`. Establish `key` using `GlobalTheory.T.unitary_char_induced_jacquet H k a (b + 2) (a + b) (by omega) hab (ν * β) β hα.1 hβ.1 hα.2 hβ.2 _ _ (pRep ν β a (b + 2)) (pRep ν β a b) (isSmooth_prod₂ _ _) ⟨Representation.Equiv.refl _⟩ hirr (part3 a b) (β * absPow k ((a : ℂ) / 2)) (β * absPow k (-(a : ℂ) / 2)) _ …`. Use `key.imp (fun h => LinearMap.ext fun f => ?_) fun ⟨c, h⟩ => ⟨c, LinearMap.ext fun f => ?_⟩` and prove the remaining obligations. Use `(frob_one (pRep ν β a (b + 2)) (scalEquiv ν β a (b + 2)) (scalEquiv ν β a b) φ f).trans ?_` and prove the remaining obligations. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Use `(frob_one (pRep ν β a (b + 2)) (scalEquiv ν β a (b + 2)) (scalEquiv ν β a b) φ' f).trans ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(map_smul _ c _).trans (congrArg (c • ·) (frob_one (pRep ν β a (b + 2)) (scalEquiv ν β a (b + 2)) (scalEquiv ν β a b) φ f).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacMap_line : GlobalTheory.ThK.KP → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a b : ℕ) (α β : kˣ →* ℂˣ), GlobalTheory.KSplit.IsSmU α → GlobalTheory.KSplit.IsSmU β → b + 2 < a →

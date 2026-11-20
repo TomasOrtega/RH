@@ -16,7 +16,7 @@ def DifferentLatIndex.Statement : Prop :=
         ((familyIndex I v : ℝ) / |(discr Em : ℝ)| ^ ρ) ^ ((Module.finrank ℚ K : ℝ) / Module.finrank ℚ Em)
 
 /- English proof (translation)
-The claim follows from `Gauss.isoFam_nz`.
+A detailed English derivation is pending.
 -/
 example : IsNzFamily Gauss.isoLine 1 Gauss.isoFam := Gauss.isoFam_nz
 

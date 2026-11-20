@@ -16,19 +16,19 @@ namespace GlobalTheory.CompanionTheory.TChartProof
 open Matrix
 
 /- English proof (translation)
-Simplify using `only [mat, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_mul' {D : D7} {n : ℕ} (g h : G D n) : mat (g * h) = mat g * mat h := by
   simp only [mat, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [mat, map_one, Units.val_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_one' {D : D7} {n : ℕ} : mat (1 : G D n) = 1 := by
   simp only [mat, map_one, Units.val_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blkA, Matrix.mul_apply, Fin.sum_univ_add, hY, mul_zero, Finset.sum_const_zero, add_zero, toBlocks₁₁, Matrix.of_apply, submatrix_apply, finSumFinEquiv_apply_left]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blkA_mul_of_lowerLeft {R : Type} [CommRing R] {n : ℕ} (X Y : Matrix (Fin (n + n)) (Fin (n + n)) R)
     (hY : ∀ i j : Fin n, Y (Fin.natAdd n i) (Fin.castAdd n j) = 0) : blkA (X * Y) = blkA X * blkA Y := by
@@ -37,16 +37,16 @@ theorem blkA_mul_of_lowerLeft {R : Type} [CommRing R] {n : ℕ} (X Y : Matrix (F
     toBlocks₁₁, Matrix.of_apply, submatrix_apply, finSumFinEquiv_apply_left]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[blkA, toBlocks₁₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blkA_one' {R : Type} [CommRing R] {n : ℕ} : blkA (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = 1 := by
   ext i j
   simp [blkA, toBlocks₁₁, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hg' : g⁻¹ ∈ P D n` using `inv_mem hg`. Establish `e₁ : blkA (mat g) * blkA (mat g⁻¹) = 1`. Rewrite using `[← blkA_mul_of_lowerLeft _ _ (chart_lowerLeft_zero hg'), ← mat_mul', mul_inv_cancel, mat_one', blkA_one']`. Establish `e₂ : blkA (mat g⁻¹) * blkA (mat g) = 1`. Rewrite using `[← blkA_mul_of_lowerLeft _ _ (chart_lowerLeft_zero hg), ← mat_mul', inv_mul_cancel, mat_one', blkA_one']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨_, _, e₁, e₂⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_gl_blkA {D : D7} {n : ℕ} {g : G D n} (hg : g ∈ P D n) :
     ∃ a : GL (Fin n) (AE D), blkA (mat g) = a.1 := by
@@ -58,15 +58,13 @@ theorem exists_gl_blkA {D : D7} {n : ℕ} {g : G D n} (hg : g ∈ P D n) :
   exact ⟨⟨_, _, e₁, e₂⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `hDict hDI hStd D χ V a hMaj`. Take `⟨m0, hm0, hp0⟩` from `GlobalTheory.T.exists_siegel_parabolic_conj_doubled_compact D`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_standardUnitaryChart_doubledSpace D V m0 hm0`. Take `⟨p, hp⟩` from `hp0 V a hMaj κ hκ`. Take `⟨hc, hc'⟩` from `GlobalTheory.T.continuous_standardUnitaryChart_and_symm D V m0 hm0 κ hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, h1, h2, h3, h4⟩` from `hStd hDict hDI D χ V.rank`. Establish `hG` using `GlobalTheory.T.standardUnitaryChart_mem_rational_iff D V m0 hm0 κ hκ`. Establish `hP` using `GlobalTheory.T.mem_doublingSiegelParabolic_iff_chart_mem_siegelUnn D V m0 hm0 κ hκ`. Set `κt : GA D (dblSp V) ≃ₜ* G D V.rank` to `{ κ with continuous_toFun := hc, continuous_invFun := hc' }`. Establish `hκt : ∀ g, κt g = κ g` using `fun _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨κt.trans Ψ, p, fun g => ?_, fun g => ?_, fun k => ?_, fun q => ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(hG g).trans (h1 (κ g))`. Conclude with `(hP g).trans (h2 (κ g))`. Conclude with `(hp k).trans (h3 _)`. Take `⟨b, hb⟩` from `exists_gl_blkA ((hP q).1 q.2)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁` using `GlobalTheory.T.standardUnitaryChart_siegelLeviDet_eq D V m0 hm0 κ hκ q b hb`. Establish `e₂` using `h4 (κ q) b hb`. Rewrite using `[e₁]`. Conclude with `e₂`. Establish `e` using `(hDict D.host.F D.host.E).2.2.2.2 x show Real.log _ = _`.
-
-Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tChart : TChart := by
   intro hDict hDI hStd D χ V a hMaj

@@ -10,21 +10,21 @@ namespace GlobalTheory.SeedFil
 open Module Formalism.MainNotions.N
 
 /- English proof (translation)
-Introduce `l _ P AI TT K V _ _ _ ρ hC a y hy`. Set `LL : FinExt l` to `⟨⊥, inferInstance⟩`. Set `e : ↥LL.1 ≃ₐ[ℚ_[l]] ℚ_[l]` to `IntermediateField.botEquiv ℚ_[l] (Om l)`. Use `letI iM : Module ↥LL.1 V := Module.compHom V (e : ↥LL.1 →+* ℚ_[l])`. Use `haveI : IsScalarTower ℚ_[l] ↥LL.1 V := ⟨fun c x v => by show e (c • x) • v = c • (e x • v)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `e.toLinearEquiv.map_smul c x`. Simplify using `only [AlgEquiv.toLinearEquiv_apply] at h1`. Rewrite using `[h1, smul_eq_mul, mul_smul]⟩`. Use `haveI : FiniteDimensional ↥LL.1 V := Module.Finite.of_restrictScalars_finite ℚ_[l] _ V`. Set `ρ' : Representation ↥LL.1 ↥(GK K) V` to `{ toFun := fun g => { toFun := ρ g map_add' := fun u w => (ρ g).map_add u w map_smul' := fun c v => (ρ g).map_smul (e c) v } map_one' := by ext v; simp map_mul' := fun g h => by ext v; simp; rfl }`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : finrank ↥LL.1 V = finrank ℚ_[l] V`. Rewrite using `[← Module.finrank_mul_finrank ℚ_[l] ↥LL.1 V, IntermediateField.finrank_bot, one_mul]`. Establish `hB : ∀ g x, actVB (P.PD K) ρ' g x = actVB (P.PD K) ρ g x` using `fun g x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `tmul v w => simp [actVB]`. Both sides reduce to the same expression. Consider the case `add u w hu hw => simp only [map_add, hu, hw]`. Establish `hR : ∀ g x, actVdR (P.PD K) ρ' g x = actVdR (P.PD K) ρ g x` using `fun g x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul v w => simp [actVdR]`. Both sides reduce to the same expression. Consider the case `add u w hu hw => simp only [map_add, hu, hw]`. Establish `hD : ∀ x, x ∈ DdR (P.PD K) ρ' ↔ x ∈ DdR (P.PD K) ρ` using `fun x => by`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, hR]`. Establish `hDc : (Dcris (P.PD K) ρ').restrictScalars ℚ_[l] = Dcris (P.PD K) ρ`. Use extensionality with `x`. Simplify using `only [Submodule.restrictScalars_mem, Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, hB]`. Establish `hCr : finrank ↥LL.1 ↥(Dcris (P.PD K) ρ') = finrank ℚ_[l] ↥(Dcris (P.PD K) ρ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hDc, LinearEquiv.finrank_eq ((Submodule.restrictScalarsEquiv ℚ_[l] ↥LL.1 _ (Dcris (P.PD K) ρ')).restrictScalars ℚ_[l]), ← Module.finrank_mul_finrank ℚ_[l] ↥LL.1 ↥(Dcris (P.PD K) ρ'), IntermediateField.finrank_bot, one_mul]`. Establish `hC' : IsCrys (P.PD K) ρ'`. Unfold `IsCrys at hC ⊢`. Rewrite using `[hCr, hV]`. Conclude with `hC`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hDR` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI TT K LL V ρ' hC').1`. Take `⟨m, k, b, d, h, hy'⟩` from `GlobalTheory.DRFil.deRham_filtered l P AI TT K LL V ρ' hDR a y hy`. Conclude with `⟨m, k, b, d, fun i => ⟨(hD _).1 (h i).1, (h i).2.1, (h i).2.2⟩, hy'⟩`.
+A detailed English derivation is pending.
 -/
 theorem crys_filtered : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), IsCrys (P.PD K) ρ → ∀ (a : ℤ), ∀ y ∈ FilV (P.PD K) (LL := ℚ_[l]) (V := V) a, ∃ (m : ℕ) (k : Fin m → ℤ) (b : Fin m → P.R.BdR) (d : Fin m → V ⊗[ℚ_[l]] P.R.BdR), (∀ i, d i ∈ DdR (P.PD K) ρ ∧ d i ∈ FilV (P.PD K) (LL := ℚ_[l]) (V := V) (k i) ∧ b i ∈ (P.PD K).Fil (a - k i)) ∧ y = ∑ i, AlgebraTensorModule.map (LinearMap.id : V →ₗ[ℚ_[l]] V) (LinearMap.mulLeft ℚ_[l] (b i)) (d i) := by
   intro l _ P AI TT K V _ _ _ ρ hC a y hy

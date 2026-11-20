@@ -4,7 +4,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.S
 namespace Formalism.MainNotions.S.Pv.BetaCut
 
 /- English proof (translation)
-The claim follows from `PI.BICNZ.betaInfCoefNZ_proof_of PI.WBL.NIS.schurH`.
+A detailed English derivation is pending.
 -/
 theorem betaInfCoef_ne_zero : BetaInfCoefNZ := PI.BICNZ.betaInfCoefNZ_proof_of PI.WBL.NIS.schurH
 

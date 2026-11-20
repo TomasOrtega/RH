@@ -25,14 +25,14 @@ def xiMon (K : Type) [CommRing K] (N r t : ℕ) (β : Fin r → ℕ) : MvPolynom
   monomial (xiExp N r t β) 1
 
 /- English proof (translation)
-Introduce `c c' h`. Simplify `h` using `[xiVar]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xiVar_inj (N r t : ℕ) : Function.Injective (xiVar N r t) := by
   intro c c' h
   simpa [xiVar] using h
 
 /- English proof (translation)
-Simplify using `only [xiExp, Finsupp.finset_sum_apply, Finsupp.single_apply, (xiVar_inj N r t).eq_iff]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem xiExp_xi (N r t : ℕ) (β : Fin r → ℕ) (c : Fin r) : xiExp N r t β (xiVar N r t c) = β c := by
   classical
@@ -40,7 +40,7 @@ theorem xiExp_xi (N r t : ℕ) (β : Fin r → ℕ) (c : Fin r) : xiExp N r t β
   simp
 
 /- English proof (translation)
-Simplify using `only [xiExp, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Conclude with `Finset.sum_eq_zero fun c _ => if_neg fun h => hv c h.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xiExp_other (N r t : ℕ) (β : Fin r → ℕ) (v : BVar N r t) (hv : ∀ c, v ≠ xiVar N r t c) :
     xiExp N r t β v = 0 := by
@@ -49,9 +49,9 @@ theorem xiExp_other (N r t : ℕ) (β : Fin r → ℕ) (v : BVar N r t) (hv : �
   exact Finset.sum_eq_zero fun c _ => if_neg fun h => hv c h.symm
 
 /- English proof (translation)
-Use extensionality with `v`. Distinguish the cases in `hv : ∃ c, v = xiVar N r t c`. Take `⟨c, rfl⟩` from `hv`. Rewrite using `[xiExp_xi]`. Rewrite using `[xiExp_other _ _ _ _ _ (fun c hc => hv ⟨c, hc⟩)]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hv (h v (Finsupp.mem_support_iff.2 h0))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_xiExp (N r t : ℕ) (μ : BVar N r t →₀ ℕ) (h : ∀ v ∈ μ.support, ∃ c, v = xiVar N r t c) :
     μ = xiExp N r t fun c => μ (xiVar N r t c) := by
@@ -81,7 +81,7 @@ def Lv : Finset ((Fin D.T.t → ℕ) × ℕ) :=
     Finset.range (D.B + 1)).filter fun x => D.LevelOK x.1 x.2
 
 /- English proof (translation)
-Simplify using `only [Lv, Finset.mem_filter, Finset.mem_product, Fintype.mem_piFinset, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`. Conclude with `⟨⟨fun i => Nat.lt_succ_of_le (h.1 i).1, Nat.lt_succ_of_le (le_trans h.2 (min_le_right _ _))⟩, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_Lv (x : (Fin D.T.t → ℕ) × ℕ) : x ∈ Lv D ↔ D.LevelOK x.1 x.2 := by
   classical
@@ -107,14 +107,14 @@ def Ltot : (∀ i : ↥(IF (r := r) D), ↥(Yx (O := O) D i.1)) →ₗ[KK O] MvP
   LinearMap.lsum (KK O) _ (KK O) fun i => ell D i.1.1 i.1.2 ∘ₗ (Yx (O := O) D i.1).subtype
 
 /- English proof (translation)
-Simplify using `[Ltot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ltot_apply (v : ∀ i : ↥(IF (r := r) D), ↥(Yx (O := O) D i.1)) :
     Ltot D v = ∑ i, ell D i.1.1 i.1.2 (v i : MvPolynomial (Fin N × Fin r) (KK O)) := by
   simp [Ltot]
 
 /- English proof (translation)
-Use `⟨LinearMap.single (KK O) (fun j : ↥(IF (r := r) D) => ↥(Yx (O := O) D j.1)) i ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Ltot_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[LinearMap.single_apply, Pi.single_eq_of_ne hj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -129,9 +129,9 @@ theorem ell_mem_range (i : ↥(IF (r := r) D)) (y : MvPolynomial (Fin N × Fin r
   · simp
 
 /- English proof (translation)
-Proceed by induction on `k generalizing n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[List.Nat.antidiagonalTuple, List.length_flatMap]`. Simplify using `only [List.length_map, ih, List.Nat.antidiagonal, List.map_map, Function.comp_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : ((List.range (n + 1)).map fun i => (n - i + k).choose k).sum = ∑ j ∈ Finset.range (n + 1), (n - j + k).choose k` using `rfl`. Rewrite using `[e]`. Establish `h` using `Finset.sum_range_reflect (fun j => (j + k).choose k) (n + 1)`. Simplify using `only [add_tsub_cancel_right] at h`. Rewrite using `[h, Nat.sum_range_add_choose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Put the polynomial expressions in normal form.
 -/
@@ -151,7 +151,7 @@ private theorem list_antidiagonal_tuple_length_eq_choose (k n : ℕ) :
     ring_nf
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hr`. Use `show (List.Nat.antidiagonalTuple (k + 1) b).length = _`. Rewrite using `[list_antidiagonal_tuple_length_eq_choose, sdXi]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_xi (r b : ℕ) (hr : r ≠ 0) : (Finset.Nat.antidiagonalTuple r b).card = sdXi r b := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hr
@@ -160,9 +160,9 @@ theorem card_xi (r b : ℕ) (hr : r ≠ 0) : (Finset.Nat.antidiagonalTuple r b).
   simp
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_pi_fintype]`. Rewrite using `[Finset.sum_coe_sort (IF (r := r) D) (fun i => Module.finrank (KK O) (Yx (O := O) D i))]`. Unfold `IF`. Rewrite using `[Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `∑ _s ∈ Finset.Nat.antidiagonalTuple r (D.B - x.2), Module.finrank (KK O) (Yjt (KK O) (r := r) (D.lettersAt x.1 x.2) D.T.J D.T.thr) = _`. Rewrite using `[Finset.sum_const, smul_eq_mul, mul_comm, card_xi _ _ (NeZero.ne r)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_dom : Module.finrank (KK O) (∀ i : ↥(IF (r := r) D), ↥(Yx (O := O) D i.1)) =
     ∑ x ∈ Lv D, Module.finrank (KK O) (Yjt (KK O) (r := r) (D.lettersAt x.1 x.2) D.T.J D.T.thr) *
@@ -177,13 +177,11 @@ theorem finrank_dom : Module.finrank (KK O) (∀ i : ↥(IF (r := r) D), ↥(Yx 
   rw [Finset.sum_const, smul_eq_mul, mul_comm, card_xi _ _ (NeZero.ne r)]
 
 /- English proof (translation)
-Rewrite using `[XiPolZ, Submodule.mem_inf, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Establish `hm' : m = xiExp N r D.T.t β` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hm)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hm'` using the available equality. Use `⟨fun v hv => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne push_neg at hne`. Conclude with `(Finsupp.mem_support_iff.mp hv) (xiExp_other N r D.T.t β v hne)`. Simplify using `only [xiExp_xi, hβ]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GLWeightTheory.mem_integral_poly_iff_coeff]`. Introduce `m`. Rewrite using `[xiMon, MvPolynomial.coeff_monomial]`. Use `split_ifs`. Conclude with `⟨1, by simp⟩`.
-
-Conclude with `⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem xiMon_mem (b : ℕ) (β : Fin r → ℕ) (hβ : ∑ c, β c = b) : xiMon (KK O) N r D.T.t β ∈ XiPolZ O N r D.T.t b := by
   rw [XiPolZ, Submodule.mem_inf, Submodule.restrictScalars_mem]
@@ -206,13 +204,13 @@ theorem xiMon_mem (b : ℕ) (β : Fin r → ℕ) (hβ : ∑ c, β c = b) : xiMon
     · exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Take `⟨y, hy, g, hg, rfl⟩` from `hz`. Establish `hyK : y ∈ Yjt (KK O) (r` using `r) (D.lettersAt j jp) D.T.J D.T.thr := (Submodule.mem_inf.mp hy).1`. Establish `hgS` using `(Submodule.mem_inf.mp hg).1`. Rewrite `hgS` using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[g.as_sum, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Take `⟨hsupp, hsum⟩` from `hgS hm`. Establish `hmono : monomial m (coeff m g) = coeff m g • xiMon (KK O) N r D.T.t (fun c => m (xiVar N r D.T.t c))`. Rewrite using `[xiMon, ← eq_xiExp N r D.T.t m hsupp, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hmono, mul_smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hi : (⟨(j, jp), fun c => m (xiVar N r D.T.t c)⟩ : Σ _ : (Fin D.T.t → ℕ) × ℕ, Fin r → ℕ) ∈ IF (r` using `r) D := by`. Rewrite using `[IF, Finset.mem_sigma, mem_Lv, Finset.Nat.mem_antidiagonalTuple]`. Conclude with `⟨hlev, hsum⟩`. Establish `h2` using `ell_mem_range D ⟨_, hi⟩ y hyK`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h2` using `[ell_apply]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [pre]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem mem_gens_span_le_range_of_levelOK (j : Fin D.T.t → ℕ) (jp : ℕ) (hlev : D.LevelOK j jp)
     (z : MvPolynomial (BVar N r D.T.t) (KK O)) (hz : z ∈ BlockData.gens O D (r := r) j jp) :
@@ -241,9 +239,9 @@ private theorem mem_gens_span_le_range_of_levelOK (j : Fin D.T.t → ℕ) (jp : 
   ring
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Establish `key : D.SSZ O (r` using `r) ≤ (LinearMap.range (Ltot (O := O) D)).restrictScalars O := by`. Unfold `BlockData.SSZ`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`. Take `⟨j, jp, hlev, hz⟩` from `hz`. Conclude with `mem_gens_span_le_range_of_levelOK D j jp hlev z hz`. Conclude with `key hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_le_range : Submodule.span (KK O) ((D.SSZ O (r := r) :
     Submodule O (MvPolynomial (BVar N r D.T.t) (KK O))) : Set (MvPolynomial (BVar N r D.T.t) (KK O))) ≤
@@ -260,15 +258,15 @@ theorem span_le_range : Submodule.span (KK O) ((D.SSZ O (r := r) :
   exact key hx
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) y.coeffs`. Establish `ha0 : algebraMap O (KK O) (b : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Establish `hi : i.1 ∈ IF (r` using `r) D := i.2`. Unfold `IF at hi`. Rewrite `hi` using `[Finset.mem_sigma, mem_Lv, Finset.Nat.mem_antidiagonalTuple]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyK : algebraMap O (KK O) (b : O) • y ∈ Yjt (KK O) (r` using `r) (D.lettersAt i.1.1.1 i.1.1.2) D.T.J D.T.thr := Submodule.smul_mem _ _ hy`. Establish `hyI : algebraMap O (KK O) (b : O) • y ∈ IntPol O (Fin N × Fin r)`. Rewrite using `[GLWeightTheory.mem_integral_poly_iff_coeff]`. Introduce `m`. Distinguish the cases in `hm : m ∈ y.support`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨o, ho⟩` from `hb (coeff m y) (MvPolynomial.coeff_mem_coeffs m (MvPolynomial.mem_support_iff.mp hm))`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, MvPolynomial.coeff_smul, smul_eq_mul, Algebra.smul_def]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, MvPolynomial.notMem_support_iff.mp hm, smul_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ell D i.1.1 i.1.2 (algebraMap O (KK O) (b : O) • y) ∈ D.SSZ O (r` using `r) := by`. Apply `Submodule.subset_span` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`. Use `⟨i.1.1.1, i.1.1.2, hi.1, _, Submodule.mem_inf.mpr ⟨hyK, hyI⟩, xiMon (KK O) N r D.T.t i.1.2, xiMon_mem D _ _ hi.2, ?_⟩` and prove the remaining obligations. Rewrite using `[ell_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pre]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `Submodule.smul_mem (Submodule.span (KK O) ((D.SSZ O (r := r) : Submodule O (MvPolynomial (BVar N r D.T.t) (KK O))) : Set (MvPolynomial (BVar N r D.T.t) (KK O)))) (algebraMap O (KK O) (b : O))⁻¹ (Submodule.subset_span hmem)`. Rewrite `h2` using `[map_smul, inv_smul_smul₀ ha0]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem IF_range_le_span (i : ↥(IF (r := r) D)) (y : MvPolynomial (Fin N × Fin r) (KK O))
     (hy : y ∈ Yx (O := O) D i.1) :
@@ -305,7 +303,7 @@ private theorem IF_range_le_span (i : ↥(IF (r := r) D)) (y : MvPolynomial (Fin
   rwa [map_smul, inv_smul_smul₀ ha0] at h2
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Ltot_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => IF_range_le_span D i (v i).1 (v i).2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_le_span : LinearMap.range (Ltot (O := O) D) ≤ Submodule.span (KK O) ((D.SSZ O (r := r) :
     Submodule O (MvPolynomial (BVar N r D.T.t) (KK O))) : Set (MvPolynomial (BVar N r D.T.t) (KK O))) := by
@@ -315,9 +313,9 @@ theorem range_le_span : LinearMap.range (Ltot (O := O) D) ≤ Submodule.span (KK
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_support_subset (s := Lv D)]`. Conclude with `Finset.sum_congr rfl fun x hx => if_pos ((mem_Lv D x).1 hx)`. Introduce `x hx`. Rewrite `hx` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, mem_Lv]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg h)`.
+A detailed English derivation is pending.
 -/
 theorem finsum_lv (f : (Fin D.T.t → ℕ) × ℕ → ℕ) :
     (∑ᶠ x : (Fin D.T.t → ℕ) × ℕ, if D.LevelOK x.1 x.2 then f x else 0) = ∑ x ∈ Lv D, f x := by
@@ -330,7 +328,7 @@ theorem finsum_lv (f : (Fin D.T.t → ℕ) × ℕ → ℕ) :
     exact hx (if_neg h)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (span_le_range D) (range_le_span D)`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_range : Submodule.span (KK O) ((D.SSZ O (r := r) :
     Submodule O (MvPolynomial (BVar N r D.T.t) (KK O))) : Set (MvPolynomial (BVar N r D.T.t) (KK O))) =
@@ -343,7 +341,7 @@ def RestInj : Prop :=
     Function.Injective (Ltot (O := O) (r := r) D)
 
 /- English proof (translation)
-Introduce `O _ _ _ N r _ D`. Rewrite using `[finsum_lv, span_eq_range, ← finrank_dom]`. Conclude with `LinearMap.finrank_range_of_inj (h O N r D)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockRankAt_of (h : RestInj) : BlockRankAt := by
   intro O _ _ _ N r _ D

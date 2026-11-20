@@ -14,7 +14,7 @@ namespace GlobalTheory.HTGlue
 variable {k : Type} [Field k] {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_surjective ((Algebra.linearMap k (TrivSqZeroExt k (Fin d → k))).coprod (TrivSqZeroExt.inrHom k (Fin d → k))) (fun x => ⟨(x.fst, x.snd), by ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]⟩)`.
+A detailed English derivation is pending.
 -/
 theorem finite_tsze (k : Type) [Field k] (d : ℕ) : Module.Finite k (TrivSqZeroExt k (Fin d → k)) :=
   Module.Finite.of_surjective
@@ -22,13 +22,13 @@ theorem finite_tsze (k : Type) [Field k] (d : ℕ) : Module.Finite k (TrivSqZero
     (fun x => ⟨(x.fst, x.snd), by ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]⟩)
 
 /- English proof (translation)
-The claim follows from `haveI := finite_tsze k d; IsArtinianRing.of_finite k _`.
+A detailed English derivation is pending.
 -/
 theorem isArtinianRing_tsze (k : Type) [Field k] (d : ℕ) : IsArtinianRing (TrivSqZeroExt k (Fin d → k)) :=
   haveI := finite_tsze k d; IsArtinianRing.of_finite k _
 
 /- English proof (translation)
-Establish `hm` using `GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k V A₀ hA (GlobalTheory.FODef.sqZero k V) (GlobalTheory.FODef.constMorV k V A₀)`. Set `eqv` to `LinearEquiv.ofBijective _ hm`. Use `⟨(LinearMap.liftBaseChange (TrivSqZeroExt k V) l) ∘ₗ eqv.symm.toLinearMap, fun c => ?_⟩` and prove the remaining obligations. Establish `: (GlobalTheory.FODef.constMorV k V A₀).pull c = eqv (1 ⊗ₜ c)` using `(one_smul (TrivSqZeroExt k V) ((GlobalTheory.FODef.constMorV k V A₀).pull c)).symm`. Rewrite using `[this, LinearMap.comp_apply, LinearEquiv.coe_coe, eqv.symm_apply_apply, LinearMap.liftBaseChange_tmul, one_smul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_coords (V : Type) [AddCommGroup V] [Module k V] [Module kᵐᵒᵖ V] [IsCentralScalar k V]
     (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀) (l : primDR A₀ →ₗ[k] TrivSqZeroExt k V) :
@@ -72,7 +72,7 @@ def glueFil (A₀ : Over (Sp k)) [GrpObj A₀] (f : Fin d → (HdR A₀ →ₗ[k
       ring
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_coords (Fin d → k) A₀ hA ((Algebra.linearMap k (TrivSqZeroExt k (Fin d → k))) ∘ₗ x + (TrivSqZeroExt.inrHom k (Fin d → k)) ∘ₗ LinearMap.pi fun j => f j x)`. Use `⟨e, ⟨x, hx, 0, fun _ => zero_mem _, fun c => ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [he c]; ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[he c]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_mem_glueFil (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
     (f : Fin d → (HdR A₀ →ₗ[k] HdR A₀)) {x : HdR A₀} (hx : x ∈ Fil A₀) :

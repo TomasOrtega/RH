@@ -6,7 +6,7 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open IsLocalRing
 
 /- English proof (translation)
-The claim follows from `DiscreteValuationPoint.exists_dvr_point_flat_algebra hsp e he`.
+A detailed English derivation is pending.
 -/
 theorem av_point {O B : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CharZero O]

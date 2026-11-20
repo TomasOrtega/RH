@@ -43,7 +43,7 @@ abbrev pW (ε : Fin n → Bool) (t : Fin n × Fin n × Bool) : Prop :=
   ε t.1 = ε t.2.1 ∧ (t.2.1 < t.1 ∨ (t.1 = t.2.1 ∧ t.2.2 = false))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨⟨i, j, s⟩, h⟩`. Apply the tactic sequence `cases s <;> simp [crd, emb, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma crd_emb (p : Fin n × Fin n × Bool → Prop) [DecidablePred p] (v : {t // p t} → ℝ) :
     crd p (emb p v) = v := by
@@ -51,13 +51,13 @@ lemma crd_emb (p : Fin n × Fin n × Bool → Prop) [DecidablePred p] (v : {t //
   cases s <;> simp [crd, emb, h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h1` using `congrFun (congrFun h i) j`. Prove the components needed by the constructor for the conclusion. Introduce `hp`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h1]`. Simplify using `[emb, hp]`. Introduce `hp`. Rewrite using `[← h1]`. Simplify using `[emb, hp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use extensionality with `i j`. Apply `Complex.ext` to reduce the goal to its premises. Distinguish the cases in `hp : p (i, j, false)`. Simplify using `[emb, crd, hp]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[emb, hp, (h i j).1 hp]`. Distinguish the cases in `hp : p (i, j, true)`. Simplify using `[emb, crd, hp]`. Simplify using `[emb, hp, (h i j).2 hp]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma emb_crd_iff (p : Fin n × Fin n × Bool → Prop) [DecidablePred p] (x : Matrix (Fin n) (Fin n) ℂ) :
     emb p (crd p x) = x ↔ ∀ i j, (¬ p (i, j, false) → (x i j).re = 0) ∧ (¬ p (i, j, true) → (x i j).im = 0) := by
@@ -80,11 +80,11 @@ lemma emb_crd_iff (p : Fin n × Fin n × Bool → Prop) [DecidablePred p] (x : M
       · simp [emb, hp, (h i j).2 hp]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Establish `h1` using `congrFun (congrFun h i) j`. Rewrite `h1` using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `cases hi : ε i <;> cases hj : ε j <;> simp [hi, hj] at h1 hij`. Take the linear combination `(1 / 2 : ℂ) * h1`. Take the linear combination `(-1 / 2 : ℂ) * h1`. Introduce `h`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hij : ε i = ε j`. Rewrite using `[hij, mul_comm]`. Rewrite using `[h i j hij]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma comm_J_iff (ε : Fin n → Bool) (x : Matrix (Fin n) (Fin n) ℂ) :
     x * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * x ↔ ∀ i j, ε i ≠ ε j → x i j = 0 := by
@@ -104,9 +104,9 @@ lemma comm_J_iff (ε : Fin n → Bool) (x : Matrix (Fin n) (Fin n) ℂ) :
     · rw [h i j hij]; simp
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : i < k`. Rewrite using `[ha i k hk, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb k j (lt_of_le_of_lt (not_lt.1 hk) hij), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma isLo_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsLo a) (hb : IsLo b) : IsLo (a * b) := by
   intro i j hij
@@ -117,7 +117,7 @@ lemma isLo_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsLo a) (hb : IsLo b) : 
   · rw [hb k j (lt_of_le_of_lt (not_lt.1 hk) hij), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hb k i h, mul_zero]`. Rewrite using `[ha i k h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma isLo_mul_diag {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsLo a) (hb : IsLo b) (i : Fin n) :
     (a * b) i i = a i i * b i i := by
@@ -128,7 +128,7 @@ lemma isLo_mul_diag {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsLo a) (hb : IsLo 
   · rw [ha i k h, zero_mul]
 
 /- English proof (translation)
-Establish `hb : Matrix.BlockTriangular (a : Matrix (Fin n) (Fin n) ℂ) (OrderDual.toDual : Fin n → (Fin n)ᵒᵈ)` using `fun i j h => ha i j h`. Use `letI : Invertible (a : Matrix (Fin n) (Fin n) ℂ) := a.invertible`. Establish `h2` using `Matrix.blockTriangular_inv_of_blockTriangular hb`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `fun i j h => h2 h`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma isLo_inv {a : (Matrix (Fin n) (Fin n) ℂ)ˣ} (ha : IsLo (a : Matrix (Fin n) (Fin n) ℂ)) :
     IsLo ((a⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) := by
@@ -169,9 +169,9 @@ def BC (ε : Fin n → Bool) : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ where
     exact inv_pos.2 (hg.2.2 l)
 
 /- English proof (translation)
-Use `Units.isEmbedding_val_mk' (f := fun x => x⁻¹) ?_ (fun u => (Matrix.coe_units_inv u).symm)` and prove the remaining obligations. Introduce `x hx`. Use `(continuousAt_matrix_inv x ?_).continuousWithinAt` and prove the remaining obligations. Establish `h : x.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det x).1 hx).ne_zero`. Use `NormedRing.inverse_continuousAt (Units.mk0 _ h)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma isEmbedding_val : Topology.IsEmbedding
     (Units.val : (Matrix (Fin n) (Fin n) ℂ)ˣ → Matrix (Fin n) (Fin n) ℂ) := by

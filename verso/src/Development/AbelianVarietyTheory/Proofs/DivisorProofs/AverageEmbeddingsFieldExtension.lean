@@ -15,7 +15,7 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := τ.toAlgebra`. Use `haveI : FiniteDimensional K K' := Module.Finite.of_restrictScalars_finite ℚ K K'`. Establish `e : {σ : K' →+* ℂ // σ.comp (algebraMap K K') = τ} ≃ (K' →ₐ[K] ℂ)` using `{ toFun := fun σ => { σ.1 with commutes' := fun x => congrArg (fun g : K →+* ℂ => g x) σ.2 } invFun := fun φ => ⟨φ.toRingHom, by ext x; exact φ.commutes x⟩ left_inv := fun σ => by ext; rfl right_inv := fun φ => by ext; rfl }`. Rewrite using `[Nat.card_congr e]`. Conclude with `AlgHom.natCard_of_splits K K' ℂ (fun _ => IsAlgClosed.splits _)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embeddings_restrict_fiber_card (K K' : Type) [Field K] [NumberField K] [Field K']
     [NumberField K'] [Algebra K K'] (τ : K →+* ℂ) :
@@ -31,7 +31,7 @@ theorem embeddings_restrict_fiber_card (K K' : Type) [Field K] [NumberField K] [
   exact AlgHom.natCard_of_splits K K' ℂ (fun _ => IsAlgClosed.splits _)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ : K' →+* ℂ => σ.comp (algebraMap K K')) (fun σ => f (σ.comp (algebraMap K K'))), Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => f τ) (fun σ hσ => by rw [(Finset.mem_filter.mp hσ).2]), Finset.sum_const, nsmul_eq_mul]`. Use `congr 1`. Rewrite using `[← embeddings_restrict_fiber_card K K' τ, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_embeddings_comp_restrict (K K' : Type) [Field K] [NumberField K] [Field K']
     [NumberField K'] [Algebra K K'] (f : (K →+* ℂ) → ℝ) :
@@ -47,9 +47,9 @@ theorem sum_embeddings_comp_restrict (K K' : Type) [Field K] [NumberField K] [Fi
   rw [← embeddings_restrict_fiber_card K K' τ, Nat.card_eq_fintype_card, Fintype.card_subtype]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional K K' := Module.Finite.of_restrictScalars_finite ℚ K K'`. Rewrite using `[sum_embeddings_comp_restrict, ← Module.finrank_mul_finrank ℚ K K']`. Establish `h1 : (Module.finrank K K' : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `h2 : (Module.finrank ℚ K : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem mean_embeddings_comp_restrict (K K' : Type) [Field K] [NumberField K] [Field K']
     [NumberField K'] [Algebra K K'] (f : (K →+* ℂ) → ℝ) :

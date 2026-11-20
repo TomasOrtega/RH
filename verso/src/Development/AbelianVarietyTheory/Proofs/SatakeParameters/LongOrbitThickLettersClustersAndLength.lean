@@ -9,9 +9,9 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R H τ φ j h4 hj hjL`. Establish `hpos : 0 < orderOf φ` using `orderOf_pos φ`. Establish `hdvd : orderOf φ.2 ∣ orderOf φ` using `orderOf_snd_dvd_orderOf`. Establish `hle : orderOf φ.2 ≤ orderOf φ` using `Nat.le_of_dvd hpos hdvd`. Establish `hw` using `GlobalTheory.T.atMostTwoThick_in_window_long_orbit H τ φ h4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.T.cyclicWord_markedClusters_of_atMostTwoInWindow _ H.Lw j hj (by omega) (by omega) hw, by omega⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem long_clusters : ∀ {R : Ranks} (H : Host R) (τ φ : R.GG) (j : ℕ), 4 * H.Lw < orderOf φ.2 → 1 ≤ j →
     2 * j + 2 ≤ H.Lw →

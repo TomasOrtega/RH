@@ -161,14 +161,14 @@ def SumAt : Prop :=
 def RecTied (D : D7) (L : SizeData₂ D) : Prop := GlobalTheory.FinalJoin2.FieldSmall D L ∧ GlobalTheory.GLq.ESerTie D
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.FinalJoin2.FO_eq_coeff p.T.Q p.fw.laws.pins.2.2.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem core_eq_FO : p.T.Q.c.F = FO D := (GlobalTheory.FinalJoin2.FO_eq_coeff p.T.Q p.fw.laws.pins.2.2.1).symm
 
 /- English proof (translation)
-Use `letI : NumberField (FO D) := NumberField.mk`. Set `e : FO D ≃+* p.T.Q.c.F` to `(IntermediateField.equivOfEq (core_eq_FO p).symm).toRingEquiv`. Establish `h1 : Module.finrank ℚ (FO D) = Module.finrank ℚ p.T.Q.c.F` using `(LinearEquiv.ofBijective e.toRingHom.toRatAlgHom.toLinearMap e.bijective).finrank_eq`. Establish `h2 : NumberField.discr (FO D) = NumberField.discr p.T.Q.c.F` using `NumberField.discr_eq_discr_of_ringEquiv _ e`. Take `⟨a, b⟩` from `h.1`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `fieldSz`. Rewrite using `[← h1, ← h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem RecTied.core_size (h : RecTied D L) : fieldSz p.T.Q.c.F ≤ 2 * Formalism.MainNotions.WeightAlgebra.PO D L := by
   letI : NumberField (FO D) := NumberField.mk
@@ -182,11 +182,11 @@ theorem RecTied.core_size (h : RecTied D L) : fieldSz p.T.Q.c.F ≤ 2 * Formalis
   linarith
 
 /- English proof (translation)
-Establish `hn : 1 ≤ D.R.ord` using `D.R.ord_pos`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast (by unfold Ranks.f Ranks.n; omega : 1 ≤ D.R.f)`. Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : 1 ≤ D.R.r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.WeightAlgebra.PO zBase`. Generalize the expression as in `(D.R.f : ℝ) = f at *`. Generalize the expression as in `(D.R.r : ℝ) = r at *`. Generalize the expression as in `L.sc.L = l at *`. Establish `a1 : f * r ^ 2 * l * 2 ≤ f * r ^ 2 * l * (f * l)` using `mul_le_mul_of_nonneg_left (by nlinarith) (by positivity)`.
+Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `a2 : f ^ 2 * l * 2 ≤ f ^ 2 * l * (r ^ 2 * l)` using `mul_le_mul_of_nonneg_left (by nlinarith [mul_le_mul hr hr zero_le_one (by linarith)]) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem two_PO_le (D : D7) (L : SizeData₂ D) (hL : 2 ≤ L.sc.L) : 2 * Formalism.MainNotions.WeightAlgebra.PO D L ≤ 217 * zBase L ^ 2 := by
   have hn : 1 ≤ D.R.ord := D.R.ord_pos
@@ -205,13 +205,13 @@ theorem two_PO_le (D : D7) (L : SizeData₂ D) (hL : 2 ≤ L.sc.L) : 2 * Formali
   nlinarith
 
 /- English proof (translation)
-The claim follows from `(h.core_size p).trans (two_PO_le D L hL)`.
+A detailed English derivation is pending.
 -/
 theorem RecTied.core_size_le (h : RecTied D L) (hL : 2 ≤ L.sc.L) : fieldSz p.T.Q.c.F ≤ 217 * zBase L ^ 2 :=
   (h.core_size p).trans (two_PO_le D L hL)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.1, fun h => ⟨h, h.unit, h.modelW⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem goodCov_iff : GoodCov p i Y ↔ Y.GoodL L.sc.L (391 * zBase L ^ 2) :=
   ⟨fun h => h.1, fun h => ⟨h, h.unit, h.modelW⟩⟩
@@ -222,14 +222,14 @@ def EvTied {eps : ℝ} (Fm : FamP eps) (Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (ι :
   ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x → ∀ (ι : Fm.Ix x) (p : Pt Fm x hx ι), RowsT p → Q x hx ι p
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => ⟨fun h x hx hle ι p a b => h x hx hle ι p ⟨a, b⟩, fun h x hx hle ι p a => h x hx hle ι p a.1 a.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem evTied_iff {eps : ℝ} (Fm : FamP eps) (Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x), Pt Fm x hx ι → Prop) :
     EvTied Fm Q ↔ EvPt Fm fun x hx ι p => RecTied (Fm.D x ι) (Fm.L x ι) → Q x hx ι p :=
   exists_congr fun _ => ⟨fun h x hx hle ι p a b => h x hx hle ι p ⟨a, b⟩, fun h x hx hle ι p a => h x hx hle ι p a.1 a.2⟩
 
 /- English proof (translation)
-Take `⟨a, h⟩` from `h`. Take `⟨b, h'⟩` from `h'`. Conclude with `⟨max a b, fun x hx hle ι p hp => ⟨h x hx ((le_max_left _ _).trans hle) ι p hp, h' x hx ((le_max_right _ _).trans hle) ι p hp⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem EvTied.and {eps : ℝ} {Fm : FamP eps} {Q Q' : ∀ (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x), Pt Fm x hx ι → Prop}
     (h : EvTied Fm Q) (h' : EvTied Fm Q') : EvTied Fm fun x hx ι p => Q x hx ι p ∧ Q' x hx ι p := by
@@ -306,7 +306,7 @@ def CovolX : Prop := Closed FamHyp fun Fm CH =>
   ∃ C0 : ℝ, 0 ≤ C0 ∧ EvTied Fm fun _ _ _ p => ∀ C, C0 ≤ C → (p.S false).L3 (p.N C CH)
 
 /- English proof (translation)
-The claim follows from `Closed.imp (Closed.and h ht) fun _ _ _ ⟨⟨C0, h0, a, h⟩, b, h'⟩ => ⟨C0, h0, max a b, fun x hx hle ι p hp => h x hx ((le_max_left _ _).trans hle) ι p ⟨hp, h' x hx ((le_max_right _ _).trans hle) ι p hp⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem CovolX.covol (h : CovolX)
     (ht : Closed FamHyp fun Fm _ => EvPt Fm fun x _ ι _ => RecTied (Fm.D x ι) (Fm.L x ι)) : Covol :=
@@ -314,13 +314,13 @@ theorem CovolX.covol (h : CovolX)
     h x hx ((le_max_left _ _).trans hle) ι p ⟨hp, h' x hx ((le_max_right _ _).trans hle) ι p hp⟩⟩
 
 /- English proof (translation)
-The claim follows from `Closed.imp h fun _ _ _ ⟨C, h0, a, h⟩ => ⟨C, h0, a, fun x hx hle ι p hp i _ => h x hx hle ι p hp i⟩`.
+A detailed English derivation is pending.
 -/
 example (h : Low) : LowDef :=
   Closed.imp h fun _ _ _ ⟨C, h0, a, h⟩ => ⟨C, h0, a, fun x hx hle ι p hp i _ => h x hx hle ι p hp i⟩
 
 /- English proof (translation)
-Introduce `h'` and use `absurd ((Real.log_natCast_nonneg _).trans h'.1.1) (not_le.2 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : Formalism.MainNotions.WeightAlgebra.PO D L < 0) : ¬ RecTied D L := fun h' =>
   absurd ((Real.log_natCast_nonneg _).trans h'.1.1) (not_le.2 h)

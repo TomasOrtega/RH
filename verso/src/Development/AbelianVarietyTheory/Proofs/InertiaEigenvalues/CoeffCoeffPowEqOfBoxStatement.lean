@@ -5,7 +5,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.coeff_coeff_pow_eq_of_box` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FCoeffCoeffPowEqOfBox.lean&line=9#L9)
 -/

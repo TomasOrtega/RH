@@ -11,19 +11,19 @@ variable {TT : ℝ} {α : ℂ → ℂ}
 def An (TT : ℝ) : Set ℂ := {ζ | TT < Complex.normSq ζ}
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const Complex.continuous_normSq`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_An (TT : ℝ) : IsOpen (An TT) :=
   isOpen_lt continuous_const Complex.continuous_normSq
 
 /- English proof (translation)
-Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem exp_mem_An {w : ℂ} (hw : w ∈ Hh TT) : Complex.exp w ∈ An TT := by
   exact hw
 
 /- English proof (translation)
-Establish `h : HasFDerivAt Complex.exp ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (Complex.exp w)).restrictScalars ℝ) w` using `(Complex.hasDerivAt_exp w).hasFDerivAt.restrictScalars ℝ`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hasFDerivAt_exp_real (w : ℂ) :
     HasFDerivAt Complex.exp ((ContinuousLinearMap.mul ℝ ℂ) (Complex.exp w)) w := by
@@ -35,7 +35,7 @@ theorem hasFDerivAt_exp_real (w : ℂ) :
   simp [mul_comm]
 
 /- English proof (translation)
-Establish `he` using `hasFDerivAt_exp_real w`. Establish `hmem : Complex.exp w ∈ An TT` using `exp_mem_An hw`. Apply the tactic sequence `have hdα : DifferentiableAt ℝ α (Complex.exp w) := (hα.contDiffAt ((isOpen_An TT).mem_nhds hmem)).differentiableAt (by first | simp | exact le_top)`. Establish `hc : HasFDerivAt (fun z => α (Complex.exp z)) ((fderiv ℝ α (Complex.exp w)).comp ((ContinuousLinearMap.mul ℝ ℂ) (Complex.exp w))) w` using `hdα.hasFDerivAt.comp w he`. Conclude with `hc.mul he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_bet (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) {w : ℂ} (hw : w ∈ Hh TT) :
     HasFDerivAt (bet α)
@@ -52,15 +52,15 @@ theorem hasFDerivAt_bet (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) 
   exact hc.mul he
 
 /- English proof (translation)
-Rewrite using `[(hasFDerivAt_bet hα hw).fderiv]`. Unfold `wZ wZb`. Take `⟨L, hL⟩ : ∃ L, L = fderiv ℝ α (Complex.exp w)` from `⟨_, rfl⟩`. Rewrite using `[← hL]`. Establish `hL' : ∀ u : ℂ, 2 * L u = (u + (starRingEnd ℂ) u) * L 1 + Complex.I * ((starRingEnd ℂ) u - u) * L Complex.I`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u`. Establish `hre : L u = (u.re : ℂ) * L 1 + (u.im : ℂ) * L Complex.I`. Establish `hu : u.re • (1 : ℂ) + u.im • Complex.I = u`. Rewrite using `[Complex.real_smul, Complex.real_smul, mul_one, Complex.re_add_im]`. Use `conv_lhs => rw [← hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_smul, map_smul, Complex.real_smul, Complex.real_smul]`. Establish `h1` using `Complex.add_conj u`. Establish `h2` using `Complex.sub_conj u`. Move the coercions through the operations in `at h1 h2`. Rewrite using `[hre]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(L 1)) * h1 + (Complex.I * L Complex.I) * h2 + (2 * (u.im : ℂ) * L Complex.I) * Complex.I_sq`. Establish `key` using `hL' (Complex.exp w * v)`. Establish `hcj : (starRingEnd ℂ) (Complex.exp w * v) = (starRingEnd ℂ) (Complex.exp w) * (starRingEnd ℂ) v` using `map_mul (starRingEnd ℂ) _ _`. Rewrite `key` using `[hcj]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.mul_apply', smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(Complex.exp w / 2) * key`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_bet_apply (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) {w : ℂ} (hw : w ∈ Hh TT) (v : ℂ) :
     fderiv ℝ (bet α) w v = (α (Complex.exp w) * Complex.exp w + wZ α (Complex.exp w) * Complex.exp w ^ 2) * v +
@@ -91,7 +91,7 @@ theorem fderiv_bet_apply (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞)
   linear_combination (Complex.exp w / 2) * key
 
 /- English proof (translation)
-Simplify using `only [Complex.mul_im, Complex.mul_re, Complex.add_im, Complex.add_re, Complex.conj_re, Complex.conj_im, hb]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sym_alg (A b ζ h k : ℂ) (hb : b.re = 0) :
     ((A * h + b * ζ * (starRingEnd ℂ) ζ * (starRingEnd ℂ) h) * k).im =
@@ -101,7 +101,7 @@ theorem sym_alg (A b ζ h k : ℂ) (hb : b.re = 0) :
   ring
 
 /- English proof (translation)
-Establish `he : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Complex.exp (Hh TT)` using `Complex.contDiff_exp.contDiffOn`. Conclude with `(hα.comp he (fun w hw => exp_mem_An hw)).mul he`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_bet (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (bet α) (Hh TT) := by
@@ -110,14 +110,14 @@ theorem contDiffOn_bet (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) �
   exact (hα.comp he (fun w hw => exp_mem_An hw)).mul he
 
 /- English proof (translation)
-The claim follows from `omL.contDiff.comp_contDiffOn (contDiffOn_bet hα)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_om (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (om α) (Hh TT) :=
   omL.contDiff.comp_contDiffOn (contDiffOn_bet hα)
 
 /- English proof (translation)
-Establish `hb` using `hasFDerivAt_bet hα hw`. Establish `hom : HasFDerivAt (om α) (omL.comp (fderiv ℝ (bet α) w)) w` using `omL.hasFDerivAt.comp w hb.differentiableAt.hasFDerivAt`. Rewrite using `[hom.fderiv]`. Simplify using `[omL, two_smul, two_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_om_apply (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) {w : ℂ} (hw : w ∈ Hh TT) (h k : ℂ) :
     fderiv ℝ (om α) w h k = 2 * (fderiv ℝ (bet α) w h * k).im := by
@@ -128,7 +128,7 @@ theorem fderiv_om_apply (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) 
   simp [omL, two_smul, two_mul]
 
 /- English proof (translation)
-Introduce `p hp h k`. Rewrite using `[fderiv_om_apply hα hp, fderiv_om_apply hα hp, fderiv_bet_apply hα hp, fderiv_bet_apply hα hp, sym_alg _ _ _ h k (hcurv _ (exp_mem_An hp))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_sym (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT))
     (hcurv : ∀ ζ : ℂ, TT < Complex.normSq ζ → (wZb α ζ).re = 0) :
@@ -140,7 +140,7 @@ theorem om_sym (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT
 def x0 (TT : ℝ) : ℂ := (Real.log (TT + 1) : ℂ)
 
 /- English proof (translation)
-Use `show TT < Complex.normSq (Complex.exp (x0 TT))`. Unfold `x0`. Rewrite using `[← Complex.ofReal_exp, Complex.normSq_ofReal, Real.exp_log (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem base_point_mem_half_plane (hTT : 0 ≤ TT) : x0 TT ∈ Hh TT := by
   show TT < Complex.normSq (Complex.exp (x0 TT))
@@ -151,7 +151,7 @@ theorem base_point_mem_half_plane (hTT : 0 ≤ TT) : x0 TT ∈ Hh TT := by
 def th (TT : ℝ) (α : ℂ → ℂ) (w : ℂ) : ℝ := prim (om α) (x0 TT) w
 
 /- English proof (translation)
-The claim follows from `hasFDerivAt_prim (isOpen_Hh TT) (convex_Hh TT) (base_point_mem_half_plane hTT) ((contDiffOn_om hα).of_le (by simp)) (om_sym hα hcurv) hw`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_th (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT))
     (hcurv : ∀ ζ : ℂ, TT < Complex.normSq ζ → (wZb α ζ).re = 0) {w : ℂ} (hw : w ∈ Hh TT) :
@@ -160,7 +160,7 @@ theorem hasFDerivAt_th (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : 
     (om_sym hα hcurv) hw
 
 /- English proof (translation)
-Establish `hHo : IsOpen (Hh TT)` using `isOpen_lt continuous_const (Complex.continuous_normSq.comp Complex.continuous_exp)`. Rewrite using `[contDiffOn_infty_iff_fderiv_of_isOpen hHo]`. Use `⟨fun y hy => (hasFDerivAt_th hTT hα hcurv hy).differentiableAt.differentiableWithinAt, ?_⟩` and prove the remaining obligations. Conclude with `(contDiffOn_om hα).congr (fun y hy => (hasFDerivAt_th hTT hα hcurv hy).fderiv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffOn_th (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT))
     (hcurv : ∀ ζ : ℂ, TT < Complex.normSq ζ → (wZb α ζ).re = 0) :

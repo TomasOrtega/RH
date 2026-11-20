@@ -10,7 +10,7 @@ open Matrix
 noncomputable section
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `[GroundTheory.Heights₂.Heights.unitPolydisc, Metric.mem_ball, dist_zero_right, pi_norm_lt_iff one_pos]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem unitPolydisc_eq_ball (n : ℕ) :
     GroundTheory.Heights₂.Heights.unitPolydisc n = Metric.ball (0 : Fin n → ℂ) 1 := by
@@ -19,7 +19,7 @@ theorem unitPolydisc_eq_ball (n : ℕ) :
     pi_norm_lt_iff one_pos]
 
 /- English proof (translation)
-Simplify using `only [GroundTheory.Heights₂.Heights.cuspTime, GroundTheory.Heights₂.Heights.cuspCoord, lwP₂, one_div]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cuspTime_eq_logWeight {n a : ℕ} (h : a ≤ n) (z : Fin n → ℂ) (j : Fin a) :
     GroundTheory.Heights₂.Heights.cuspTime h z j = lwP₂ (z (Fin.castLE h j)) := by
@@ -33,7 +33,7 @@ theorem puncturedChart_eq_punctured {n a : ℕ} (h : a ≤ n) (U : Set (Fin n �
     GroundTheory.Heights₂.Heights.puncturedChart h U = punctured h U := rfl
 
 /- English proof (translation)
-Simplify using `only [GroundTheory.Heights₂.Heights.chartImag, chartY, imPart, cuspTime_eq_logWeight]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartImag_eq_chartY {n a g : ℕ} (h : a ≤ n)
     (τ0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℝ)
@@ -41,7 +41,7 @@ theorem chartImag_eq_chartY {n a g : ℕ} (h : a ≤ n)
   simp only [GroundTheory.Heights₂.Heights.chartImag, chartY, imPart, cuspTime_eq_logWeight]
 
 /- English proof (translation)
-Simplify using `only [GroundTheory.Heights₂.Heights.chartRadius, GroundTheory.Heights₂.Heights.cuspCoord, chartR, one_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartRadius_eq_chartR {n a : ℕ} (h : a ≤ n) (z : Fin n → ℂ) :
     GroundTheory.Heights₂.Heights.chartRadius h z = chartR h z := by
@@ -168,19 +168,19 @@ Both sides reduce to the same expression.
 theorem Ustar_ofBundled : (ofBundled D).Ustar = D.Ustar := rfl
 
 /- English proof (translation)
-The claim follows from `(chartImag_eq_chartY _ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem Y_ofBundled (z : Fin D.n → ℂ) : (ofBundled D).Y z = D.Y z :=
   (chartImag_eq_chartY _ _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `(chartRadius_eq_chartR _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem r_ofBundled (z : Fin D.n → ℂ) : (ofBundled D).r z = D.radius z :=
   (chartRadius_eq_chartR _ _).symm
 
 /- English proof (translation)
-Use `show gramLogDet ((ofBundled D).Y p.1) (D.f p) = GroundTheory.Heights₂.Heights.logDetGram (D.Y p.1) (D.f p)`. Rewrite using `[Y_ofBundled]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem u_ofBundled (p : (Fin D.n → ℂ) × (Fin D.m → ℂ)) : (ofBundled D).u p = D.u p := by
   show gramLogDet ((ofBundled D).Y p.1) (D.f p) =
@@ -255,17 +255,17 @@ Both sides reduce to the same expression.
 theorem bundle_Ustar : D.bundle.Ustar = D.Ustar := rfl
 
 /- English proof (translation)
-The claim follows from `chartImag_eq_chartY _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bundle_Y (z : Fin n → ℂ) : D.bundle.Y z = D.Y z := chartImag_eq_chartY _ _ _ _
 
 /- English proof (translation)
-The claim follows from `chartRadius_eq_chartR _ _`.
+A detailed English derivation is pending.
 -/
 theorem bundle_radius (z : Fin n → ℂ) : D.bundle.radius z = D.r z := chartRadius_eq_chartR _ _
 
 /- English proof (translation)
-Use `show GroundTheory.Heights₂.Heights.logDetGram (D.bundle.Y p.1) (D.f p) = gramLogDet (D.Y p.1) (D.f p)`. Rewrite using `[bundle_Y]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bundle_u (p : (Fin n → ℂ) × (Fin m → ℂ)) : D.bundle.u p = D.u p := by
   show GroundTheory.Heights₂.Heights.logDetGram (D.bundle.Y p.1) (D.f p) = gramLogDet (D.Y p.1) (D.f p)
@@ -285,7 +285,7 @@ theorem ofBundled_bundle : ofBundled D.bundle = D := rfl
 end bundle
 
 /- English proof (translation)
-Consider the cases of `D`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem bundle_ofBundled (D : GroundTheory.Heights₂.Heights.PeriodChartData) : (ofBundled D).bundle = D := by
   cases D
@@ -302,7 +302,7 @@ end PeriodChartData
 namespace ToricBlock
 
 /- English proof (translation)
-The claim follows from `T.r_le B_support := T.support sum_posDef := T.pos`.
+A detailed English derivation is pending.
 -/
 theorem ofBundled {D : GroundTheory.Heights₂.Heights.PeriodChartData} (T : GroundTheory.Heights₂.Heights.ToricBlock D) :
     ToricBlock (PeriodChartData.ofBundled D) T.r where
@@ -331,7 +331,7 @@ def equiv (D : GroundTheory.Heights₂.Heights.PeriodChartData) :
   right_inv T := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨toBundled (D := E.bundle) h, rfl⟩, by rintro ⟨T, rfl⟩; exact ofBundled T⟩`.
+Supply the required witnesses or components.
 -/
 theorem iff_bundle {n a g m k : ℕ} (E : PeriodChartData n a g m k) (r : ℕ) :
     ToricBlock E r ↔ ∃ T : GroundTheory.Heights₂.Heights.ToricBlock E.bundle, T.r = r :=
@@ -396,13 +396,13 @@ theorem gramLogDet_ofSiegelFamily {N g k : ℕ} (S : GroundTheory.Heights₂.Hei
 end PshData
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem intVecC_zero {g : ℕ} : GroundTheory.Heights₂.Heights.intVecC (0 : Fin g → ℤ) = 0 := by
   ext k; simp [GroundTheory.Heights₂.Heights.intVecC]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem intVecC_add {g : ℕ} (a b : Fin g → ℤ) :
     GroundTheory.Heights₂.Heights.intVecC (a + b) =
@@ -410,14 +410,14 @@ theorem intVecC_add {g : ℕ} (a b : Fin g → ℤ) :
   ext k; simp [GroundTheory.Heights₂.Heights.intVecC]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem intVecC_smul {g : ℕ} (c : ℤ) (a : Fin g → ℤ) :
     GroundTheory.Heights₂.Heights.intVecC (c • a) = c • GroundTheory.Heights₂.Heights.intVecC a := by
   ext k; simp [GroundTheory.Heights₂.Heights.intVecC]
 
 /- English proof (translation)
-Use extensionality with `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `[GroundTheory.Heights₂.Heights.intVecC]`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem intVecC_single {g : ℕ} (j : Fin g) :
     GroundTheory.Heights₂.Heights.intVecC (Pi.single j 1) = (Pi.single j (1 : ℂ) : Fin g → ℂ) := by
@@ -427,7 +427,7 @@ theorem intVecC_single {g : ℕ} (j : Fin g) :
   · simp [GroundTheory.Heights₂.Heights.intVecC, h]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC, Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem intVecC_eq_sum {g : ℕ} (a : Fin g → ℤ) :
     GroundTheory.Heights₂.Heights.intVecC a = ∑ j, a j • (Pi.single j (1 : ℂ) : Fin g → ℂ) := by
@@ -435,15 +435,15 @@ theorem intVecC_eq_sum {g : ℕ} (a : Fin g → ℤ) :
   simp [GroundTheory.Heights₂.Heights.intVecC, Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, n, rfl⟩`. Rewrite using `[SetLike.mem_coe, intVecC_eq_sum, intVecC_eq_sum, Matrix.mulVec_sum]`. Use `add_mem (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl ⟨j, rfl⟩))) (Submodule.sum_mem _ fun j _ => ?_)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr ⟨j, rfl⟩))`. Introduce `hw`. Rewrite `hw` using `[SetLike.mem_coe, periodLattice]`. Proceed by induction on `hw using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Break down `hx with ⟨j, rfl⟩ | ⟨j, rfl⟩` into its components or cases. Conclude with `⟨Pi.single j 1, 0, by rw [intVecC_single, intVecC_zero, mulVec_zero, add_zero]⟩`. Conclude with `⟨0, Pi.single j 1, by rw [intVecC_single, intVecC_zero, zero_add]⟩`. Consider the case `zero => exact ⟨0, 0, by rw [intVecC_zero, mulVec_zero, add_zero]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, n, rfl⟩` from `hx`. Take `⟨a', n', rfl⟩` from `hy`. Conclude with `⟨a + a', n + n', by rw [intVecC_add, intVecC_add, mulVec_add]; abel⟩`. Consider the case `smul c x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, n, rfl⟩` from `hx`. Conclude with `⟨c • a, c • n, by rw [intVecC_smul, intVecC_smul, mulVec_smul, smul_add]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem periodLattice_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) :
     GroundTheory.Heights₂.Heights.periodLattice τ = (periodLattice τ : Set (Fin g → ℂ)) := by
@@ -472,17 +472,17 @@ theorem periodLattice_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) :
       exact ⟨c • a, c • n, by rw [intVecC_smul, intVecC_smul, mulVec_smul, smul_add]⟩
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite using `[intVecC_eq_sum, SetLike.mem_coe]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hk : k.val < r`. Take `⟨j, rfl⟩ : ∃ j : Fin r, Fin.castLE hr j = k` from `⟨⟨k, hk⟩, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[ha k (not_lt.mp hk), zero_smul]`. Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hw`. Rewrite `hw` using `[SetLike.mem_coe, firstBlock]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Pi.single (Fin.castLE hr j) 1, fun k hk => Pi.single_eq_of_ne ?_ _, (intVecC_single _).symm⟩` and prove the remaining obligations. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castLE] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, fun _ _ => rfl, intVecC_zero.symm⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨a', ha', rfl⟩` from `hy`. Conclude with `⟨a + a', fun k hk => by simp [ha k hk, ha' k hk], (intVecC_add a a').symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨c • a, fun k hk => by simp [ha k hk], (intVecC_smul c a).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem leadingLattice_eq_firstBlock {g r : ℕ} (hr : r ≤ g) :
     GroundTheory.Heights₂.Heights.leadingLattice g r = (firstBlock hr : Set (Fin g → ℂ)) := by
@@ -530,19 +530,19 @@ theorem realIPForm_apply {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (v w : Fin g
     realIPForm Y v w = realIP Y v w := rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `rfl : q = k := by`. Establish `h1` using `finrank_span_eq_card hb`. Rewrite `h1` using `[hspan, finrank_span_eq_card hv]`. Simplify using `using h1.symm`. Establish `hc : ∀ i, ∃ c : Fin q → ℤ, ∑ j, c j • v j = b i` using `fun i => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (hspan ▸ Submodule.subset_span ⟨i, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hd : ∀ j, ∃ d : Fin q → ℤ, ∑ i, d i • b i = v j` using `fun j => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (hspan.symm ▸ Submodule.subset_span ⟨j, rfl⟩)`. Use `choose c hc using hc`. Use `choose d hd using hd`. Establish `hdc : Matrix.of d * Matrix.of c = 1`. Use extensionality with `j l`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `Fintype.linearIndependent_iffₛ.mp hv (fun l => (Matrix.of d * Matrix.of c) j l) (fun l => (1 : Matrix (Fin q) (Fin q) ℤ) j l) ?_ l` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.smul_sum, hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ l, (1 : Matrix (Fin q) (Fin q) ℤ) j l • v l := by`. Rewrite using `[hd j]`. Simplify using `[Matrix.one_apply]`. Establish `hunit : IsUnit (Matrix.of c).det`. Use `congrArg Matrix.det hdc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `this` using `[Matrix.det_mul, Matrix.det_one, mul_comm]`. Conclude with `IsUnit.of_mul_eq_one _ this`. Establish `hsq : (((Matrix.of c).det : ℤ) : ℝ) ^ 2 = 1`. Apply the tactic sequence `rcases Int.isUnit_iff.mp hunit with h | h <;> simp [h]`. Establish `hdet : ((Matrix.of c).map (Int.cast : ℤ → ℝ)).det = (((Matrix.of c).det : ℤ) : ℝ)` using `((Int.castRingHom ℝ).map_det _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hG : (Matrix.of fun i j => realIP Y (b i) (b j)) = (Matrix.of c).map (Int.cast : ℤ → ℝ) * (Matrix.of fun i j => realIP Y (v i) (v j)) * ((Matrix.of c).map (Int.cast : ℤ → ℝ))ᵀ`. Use extensionality with `i l`. Rewrite using `[Matrix.of_apply, ← hc i, ← hc l]`. Use `show realIPForm Y (∑ j, c i j • v j) (∑ j, c l j • v j) = _`. Simplify using `only [map_sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [map_zsmul, LinearMap.smul_apply]`. Simplify using `only [zsmul_eq_mul, realIPForm_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Matrix.transpose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Rewrite using `[hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdet]`. Take the linear combination `(Matrix.of fun i j => realIP Y (v i) (v j)).det * hsq`.
+A detailed English derivation is pending.
 -/
 theorem gram_det_eq_of_span_eq {g q k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ)
     (v : Fin k → Fin g → ℂ) (hv : LinearIndependent ℤ v) (b : Fin q → Fin g → ℂ)
@@ -594,9 +594,9 @@ theorem gram_det_eq_of_span_eq {g q k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ)
   linear_combination (Matrix.of fun i j => realIP Y (v i) (v j)).det * hsq
 
 /- English proof (translation)
-Unfold `gramCovol`. Establish `hS : {x : ℝ | ∃ (q : ℕ) (b : Fin q → Fin g → ℂ), LinearIndependent ℤ b ∧ Submodule.span ℤ (Set.range b) = Submodule.span ℤ (Set.range v) ∧ x = Real.sqrt (Matrix.of (fun i j => realIP Y (b i) (b j))).det} = {GroundTheory.Heights₂.Heights.covolume Y v}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, b, hb, hs, rfl⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Set.mem_singleton_iff, gram_det_eq_of_span_eq Y v hv b hb hs]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨k, v, hv, rfl, rfl⟩`. Rewrite using `[hS, csInf_singleton]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem covolume_eq_gramCovol {g k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (v : Fin k → Fin g → ℂ)
     (hv : LinearIndependent ℤ v) :
@@ -616,9 +616,9 @@ theorem covolume_eq_gramCovol {g k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (v : 
   rw [hS, csInf_singleton]
 
 /- English proof (translation)
-Establish `h` using `(Pi.basisFun ℂ (Fin g)).linearIndependent.comp _ (Fin.castLE_injective hr)`. Establish `h' : LinearIndependent ℂ (fun j : Fin r => (Pi.single (Fin.castLE hr j) (1 : ℂ) : Fin g → ℂ))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `h'.restrict_scalars' ℤ`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_leading {g r : ℕ} (hr : r ≤ g) :
     LinearIndependent ℤ (fun j : Fin r => (Pi.single (Fin.castLE hr j) (1 : ℂ) : Fin g → ℂ)) := by
@@ -631,7 +631,7 @@ theorem linearIndependent_leading {g r : ℕ} (hr : r ≤ g) :
   exact h'.restrict_scalars' ℤ
 
 /- English proof (translation)
-The claim follows from `covolume_eq_gramCovol Y _ (linearIndependent_leading hr)`.
+A detailed English derivation is pending.
 -/
 theorem covolume_leading_eq_gramCovol_firstBlock {g r : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ)
     (hr : r ≤ g) :

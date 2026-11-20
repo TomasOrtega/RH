@@ -10,23 +10,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `G R _ _ gb N Ω _ _ σ o I k _ _ x`. Take `⟨f, rfl⟩ : ∃ f : Ω →+* k, x = spMap f` from `⟨(Spec.preimage x).hom, by simp [spMap]⟩`. Take `⟨g, rfl⟩ : ∃ g : R →+* Ω, σ = spMap g` from `⟨(Spec.preimage σ).hom, by simp [spMap]⟩`. Establish `hcomp : spMap f ≫ spMap g = spMap (f.comp g)`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨J, -⟩` from `o.geom k (spMap f) (f.comp g) hcomp`. Use `haveI := G.finLa`. Set `h : Over.mk (spMap f) ⟶ Over.mk (𝟙 (Sp Ω))` to `Over.homMk (spMap f) (by simp)`. Use `haveI : Epi h := by haveI : Epi h.left := (GlobalTheory.UPel.GeometricLevelExistence.epi_spMap_field f : _)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Over.epi_of_epi_left h`. Establish `hadd : ∀ n a b, h ≫ I.ev n (a + b) = (h ≫ I.ev n a) * (h ≫ I.ev n b)`. Introduce `n a b`. Rewrite using `[I.add, MonObj.comp_mul]`. Establish `hker : ∀ n, 0 < n → ∀ a, h ≫ I.ev n a = 1 ↔ ∃ b, a = n • b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `n hn a`. Rewrite using `[← I.ker n hn a]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `(cancel_epi h).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, MonObj.comp_one]`. Introduce `e`. Rewrite using `[e, MonObj.comp_one]`. Establish `htors : ∀ n, 0 < n → ∀ a, (h ≫ I.ev n a) ^ n = 1`. Introduce `n hn a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MonObj.comp_pow, (I.onto n hn _).2 ⟨a, rfl⟩, MonObj.comp_one]`. Use `⟨{ ζ := fun n => Units.map (f : Ω →* k) (I.ζ n) ζ_prim := fun n hn => (I.ζ_prim n hn).map_of_injective (Units.map_injective f.injective) ζ_pow := fun n m hn hm => by rw [← map_pow, I.ζ_pow n m hn hm] ev := fun n y => h ≫ I.ev n y add := hadd lin := fun n b a => by show h ≫ I.ev n …` and prove the remaining obligations. Rewrite using `[I.lin, Category.assoc]`. Use `ker := hker`. Use `onto := fun n hn q => by`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hq`. Take `⟨c, rfl⟩` from `(J.onto n hn q).1 hq`. Take `⟨a, ha⟩` from `GlobalTheory.UPel.GeometricLevelExistence.exists_eq_of_count n hn (fun a => h ≫ I.ev n a) (J.ev n) (hadd n) (J.add n) (hker n hn) (J.ker n hn) (fun a => (J.onto n hn _).1 (htors n hn a) |>.imp fun c hc => hc.symm) c`. Conclude with `⟨a, ha⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `htors n hn a`. Use `tower := fun n m hn hm a => by show (h ≫ I.ev (n * m) a) ^ m = h ≫ I.ev n a`. Rewrite using `[← MonObj.comp_pow, I.tower n m hn hm]`. Use `isom := fun n hn a b => by`.
-
-Establish `hw` using `GlobalTheory.CommPairing.weilIs_pull GlobalTheory.globalFns_holds o.ab (pull_isLB o.isLB _) h (I.isom n hn a b)`. Use `hw using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← map_zpow]`. Conclude with `(GlobalTheory.UPel.GeometricLevelExistence.unitOn_pull_spMap f _).symm }, fun n hn y => rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.O.tExt :
     UpperTheory.Gal.FiniteEtaleModels.O.TExt := by

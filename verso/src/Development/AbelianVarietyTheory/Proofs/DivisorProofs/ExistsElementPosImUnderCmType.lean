@@ -11,9 +11,9 @@ namespace GlobalTheory.CMTypeImPos
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DenseEmbeddingProduct.denseRange_embedding_pi`. Consider the case `exact _root_.GlobalTheory.DenseEmbeddingProduct.denseRange_embedding_pi`. Consider the case `(apply _root_.GlobalTheory.DenseEmbeddingProduct.denseRange_embedding_pi <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DenseEmbeddingProduct.denseRange_embedding_pi <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DenseEmbeddingProduct.denseRange_embedding_pi <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DenseEmbeddingProduct.denseRange_embedding_pi ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem denseRange_embeddings : DenseRange fun (x : E) (w : InfinitePlace E) => w.embedding x := by
   first
@@ -25,23 +25,21 @@ theorem denseRange_embeddings : DenseRange fun (x : E) (w : InfinitePlace E) => 
   | (intros; exact _root_.GlobalTheory.DenseEmbeddingProduct.denseRange_embedding_pi ..)
 
 /- English proof (translation)
-Set `f : I → (InfinitePlace E → ℂ) → ℝ` to `fun i z => if (InfinitePlace.mk (φ i)).embedding = φ i then (z (InfinitePlace.mk (φ i))).im else -(z (InfinitePlace.mk (φ i))).im`. Establish `hfc : ∀ i, Continuous (f i)`. Introduce `i`. Distinguish the cases in `h : (InfinitePlace.mk (φ i)).embedding = φ i`. Simplify using `only [f, h, if_true]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.continuous_im.comp (continuous_apply _)`. Simplify using `only [f, h, if_false]`. Conclude with `(Complex.continuous_im.comp (continuous_apply _)).neg`. Set `U : Set (InfinitePlace E → ℂ)` to `{z | ∀ i, 0 < f i z}`. Establish `hU : IsOpen U`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: U = ⋂ i, {z | 0 < f i z}` using `by ext z; simp [U]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_lt continuous_const (hfc i)`. Set `y : InfinitePlace E → ℂ` to `fun w => if ∃ j, w.embedding = φ j then Complex.I else -Complex.I`. Establish `hy : y ∈ U`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `i`. Establish `hnr : ¬ ComplexEmbedding.IsReal (φ i)` using `InfinitePlace.isComplex_mk_iff.1 (IsTotallyComplex.isComplex _)`. Break down `InfinitePlace.embedding_mk_eq (φ i) with h | h` into its components or cases. Establish `hex : ∃ j, (InfinitePlace.mk (φ i)).embedding = φ j` using `⟨i, h⟩`. Simplify using `[f, y, h, hex]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hne : (InfinitePlace.mk (φ i)).embedding ≠ φ i`. Rewrite using `[h]`. Conclude with `fun h' => hnr (ComplexEmbedding.isReal_iff.2 h')`. Establish `hex : ¬ ∃ j, (InfinitePlace.mk (φ i)).embedding = φ j`. Introduce and unpack `⟨j, hj⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, _, hk⟩` from `hφ (InfinitePlace.mk (φ i)).embedding`. Establish `hi : i = k` using `hk i (Or.inr h)`. Establish `hj' : j = k` using `hk j (Or.inl hj)`. Substitute `hi` using the available equality. Substitute `hj'` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hne hj`. Simplify using `[f, y, hne, hex]`. Take `⟨θ, hθ⟩` from `denseRange_embeddings.exists_mem_open hU ⟨y, hy⟩`. Use `⟨θ, fun i => ?_⟩` and prove the remaining obligations. Use `hθ i` as an intermediate fact.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `InfinitePlace.embedding_mk_eq (φ i) with h | h` into its components or cases. Simplify `this` using `[f, h]`. Distinguish the cases in `h' : (InfinitePlace.mk (φ i)).embedding = φ i`. Simplify `this` using `[f, h']`. Simplify using `only [f, h', if_false] at this`.
-
-Rewrite `this` using `[h, ComplexEmbedding.conjugate_coe_eq, Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_im_pos (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I]
     (φ : I → E →+* ℂ) (hφ : IsCMType φ) : ∃ θ : E, ∀ i, 0 < (φ i θ).im := by
@@ -95,7 +93,7 @@ theorem exists_im_pos (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Ty
 end GlobalTheory.CMTypeImPos
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CMTypeImPos.exists_im_pos`.
+A detailed English derivation is pending.
 -/
 example : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),
     IsCMType φ → ∃ θ : E, ∀ i, 0 < (φ i θ).im := GlobalTheory.CMTypeImPos.exists_im_pos

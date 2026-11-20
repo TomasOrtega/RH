@@ -15,23 +15,23 @@ namespace GlobalTheory.DualWeylType
 open GlobalTheory.ConjugateType
 
 /- English proof (translation)
-Introduce `k n h lam H _ _ _ σ lamH hσ hK hrho`. Take `⟨hσ', hK'⟩` from `GlobalTheory.ConjTwist.conj_twist_isKTypeOf k _ 0 H σ hσ hK`. Take `⟨E, iE1, iE2, iE3, π, J, hJ, hπ, hπK, hπJ⟩` from `exists_conjugate_type k _ H _ hσ' hK'`. Establish `hJσ : ∀ g u, π g (J u) = J (σ g u)`. Introduce `g u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hπJ]`. Simplify using `only [zpow_zero, one_smul, map_star_star]`. Establish `hlow : Formalism.QuantumDeterminants.lowK (allPos k) (fun i => -lamH (Fin.rev i)) = fun a => ((0 : ℤ) : ℝ) - Formalism.QuantumDeterminants.lowK (allPos k) lamH (Fin.rev a)`. Rewrite using `[GlobalTheory.ConjTypeW.lowK_neg_rev]`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Establish `hnt : Nontrivial E`. Take `⟨-, -, -, ⟨v, -, hv0, -⟩, -⟩` from `hπK`. Conclude with `⟨⟨v, 0, hv0⟩⟩`. Establish `hHC : IsHCTypeU k (fun i => -lamH (Fin.rev i)) π` using `⟨hnt, iE3, hπ, by rw [hlow]; exact hπK⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨jE, hmem, hsurj, hfock, heq⟩` from `GlobalTheory.WeylConjType.exists_conj_weyl k n h lam _ hrho E π hHC`. Set `j : H →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ` to `{ toFun := fun ξ => jE (J ξ) map_add' := fun x y => by rw [map_add, map_add] map_smul' := fun c x => by`. Rewrite using `[map_smulₛₗ, map_smulₛₗ, RingHom.id_apply, Complex.conj_conj] }`. Establish `hj : ∀ ξ, j ξ = jE (J ξ)` using `fun _ => rfl`. Set `Φ : H →ₗ[ℂ] ConjSp E` to `{ toFun := fun ξ => ConjSp.mk (J ξ) map_add' := fun x y => by rw [map_add]; rfl map_smul' := fun c x => by show ConjSp.mk (J (c • x)) = c • ConjSp.mk (J x)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e` using `(ConjSp.mkL E).map_smulₛₗ (starRingEnd ℂ c) (J x)`. Rewrite `e` using `[Complex.conj_conj]`. Rewrite using `[map_smulₛₗ]`. Conclude with `e }`. Establish `hΦ : Function.Bijective Φ` using `hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Ψ : H ≃ₗ[ℂ] ConjSp E` to `LinearEquiv.ofBijective Φ hΦ`. Set `f` to `stdOrthonormalBasis ℂ (ConjSp E)`. Use `⟨j, _, f.toBasis.map Ψ.symm, fun ξ => hmem _, fun p hp => ?_, fun a a' => ?_, fun g hg ξ => ?_⟩` and prove the remaining obligations. Take `⟨η, rfl⟩` from `hsurj p hp`. Take `⟨ξ, rfl⟩` from `hJ.2 η`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ξ, rfl⟩`. Establish `hb : ∀ a, J ((f.toBasis.map Ψ.symm) a) = ConjSp.out (f a)`. Introduce `a`. Rewrite using `[Module.Basis.map_apply, OrthonormalBasis.coe_toBasis]`. Use `Ψ.apply_symm_apply (f a)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[hj, hj, hfock, hb, hb]`. Use `show ⟪f a', f a⟫_ℂ = _`. Rewrite using `[orthonormal_iff_ite.1 f.orthonormal]`. Break down `eq_or_ne a a' with rfl | hA` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hA.symm, if_neg hA]`. Rewrite using `[hj, hj, ← hJσ, heq g hg]`.
+A detailed English derivation is pending.
 -/
 theorem dual_weyl_type : ∀ (k n : ℕ) (h : k = n) (lam : DomWeight n) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (σ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)) (lamH : Fin k → ℝ), IsURepOn (UJset (allPos k)) σ → IsKTypeOf (allPos k) σ (Formalism.QuantumDeterminants.lowK (allPos k) lamH) ⊤ → (∀ i : Fin k, -lamH (Fin.rev i) = (lam.w (Fin.cast h i) : ℝ) + ((rhoVec k i : ℚ) : ℝ)) → ∃ (j : H →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ) (d : ℕ) (b : Module.Basis (Fin d) ℂ H), (∀ ξ, j ξ ∈ delSq ℂ n lam) ∧ (∀ p ∈ delSq ℂ n lam, ∃ ξ, j ξ = p) ∧ (∀ a a', normFock lam (j (b a)) (j (b a')) = if a = a' then 1 else 0) ∧ ∀ g ∈ Matrix.unitaryGroup (Fin n) ℂ, ∀ ξ, j (σ (g.submatrix (Fin.cast h) (Fin.cast h)) ξ) = (g.det ^ (-lam.detShift)) • Formalism.GradedWeylDivisibility.rowAct ℂ gᴴ (j ξ) := by
   intro k n h lam H _ _ _ σ lamH hσ hK hrho

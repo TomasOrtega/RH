@@ -6,9 +6,9 @@ open Formalism.MainNotions.N GlobalTheory.Cong GlobalTheory.PsChar
 namespace GlobalTheory.Cong
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simpa using continuous_const`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p j hp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, MvPolynomial.aeval_X, Function.comp_apply]`. Conclude with `hp.mul (hf.comp (continuous_apply j))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_aeval_comp {Γ k : Type} [TopologicalSpace Γ] [CommRing k] [TopologicalSpace k]
     [IsTopologicalRing k] (f : Γ → k) (hf : Continuous f) (P : MvPolynomial Γ ℤ) :
@@ -21,21 +21,19 @@ theorem continuous_aeval_comp {Γ k : Type} [TopologicalSpace Γ] [CommRing k] [
     exact hp.mul (hf.comp (continuous_apply j))
 
 /- English proof (translation)
-Introduce `l _ Γ _ _ _ _ a J x hx T hT C hC h ε hε`. Take `⟨s, c, hs, hP⟩` from `h ε hε`. Establish `hch : ∀ η ∈ s, ∃ ρ ∈ C, (fun j => trc ρ (x j)) = η` using `fun η hη => hs hη`. Use `choose! ρ hρC hρη using hch`. Establish `inj : Set.InjOn (fun η => trc (ρ η)) (s : Set (J → PadicAlgCl l))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `η₁ h₁ η₂ h₂ e`. Rewrite using `[← hρη η₁ h₁, ← hρη η₂ h₂]`. Simplify using `only at e`. Rewrite using `[e]`. Use `⟨s.image (fun η => trc (ρ η)), fun σ => c (fun j => σ (x j)), ?_, fun P => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ hσ`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hσ`. Take `⟨η, hη, rfl⟩` from `hσ`. Conclude with `⟨ρ η, hρC η hη, rfl⟩`. Rewrite using `[Finset.sum_image inj]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ η ∈ s, c (fun j => trc (ρ η) (x j)) = c η` using `fun η hη => by rw [hρη η hη]`. Rewrite using `[Finset.sum_congr rfl (fun η hη => by rw [show (fun σ : Γ → PadicAlgCl l => c fun j => σ (x j)) (trc (ρ η)) = c η from hc η hη])]`. Establish `htr : ∀ η ∈ s, Continuous (trc (ρ η))` using `fun η hη => (Units.continuous_val.comp (hC _ (hρC η hη))).matrix_trace`. Set `F : (Γ → Γ) → PadicAlgCl l` to `fun u => MvPolynomial.aeval (T ∘ u) P - ∑ η ∈ s, c η * MvPolynomial.aeval (trc (ρ η) ∘ u) P`. Establish `hF : Continuous F`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuous_aeval_comp T hT P).sub (continuous_finset_sum _ fun η hη => ?_)` and prove the remaining obligations. Conclude with `continuous_const.mul (continuous_aeval_comp _ (htr η hη) P)`. Establish `key : ‖F id‖ ≤ ε`. Use `(DenseRange.piMap (fun _ : Γ => hx)).induction_on (p := fun u => ‖F u‖ ≤ ε) id (isClosed_le (continuous_norm.comp hF) continuous_const) fun v => ?_` and prove the remaining obligations. Establish `e1 : MvPolynomial.aeval (T ∘ Pi.map (fun _ : Γ => x) v) P = MvPolynomial.aeval (fun j => T (x j)) (MvPolynomial.rename v P)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[MvPolynomial.aeval_rename]`. Both sides reduce to the same expression. Establish `e2 : ∀ η ∈ s, MvPolynomial.aeval (trc (ρ η) ∘ Pi.map (fun _ : Γ => x) v) P = MvPolynomial.aeval η (MvPolynomial.rename v P)` using `fun η hη => by`. Establish `e3 : trc (ρ η) ∘ Pi.map (fun _ : Γ => x) v = η ∘ v`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply, Pi.map_apply]`. Conclude with `congrFun (hρη η hη) (v i)`. Rewrite using `[MvPolynomial.aeval_rename, e3]`. Use `hP (MvPolynomial.rename v P)` as an intermediate fact. Simplify using `only [F]`.
-
-Rewrite using `[e1, Finset.sum_congr rfl (fun η hη => by rw [e2 η hη])]`. Conclude with `this`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyApprox_of_denseRange : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] (a : ℕ) (J : Type) (x : J → Γ), DenseRange x → ∀ (T : Γ → PadicAlgCl l), Continuous T →

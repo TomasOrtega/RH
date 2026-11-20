@@ -15,11 +15,11 @@ variable {n : ℕ}
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `hp : ∀ m : ℕ, Y ^ m * H = H * Z ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, ← pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1 : HasSum (fun m : ℕ => ((m ! : ℂ)⁻¹ • Y ^ m) * H) (NormedSpace.exp Y * H)` using `by open scoped Matrix.Norms.Operator in`. Conclude with `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) Y).mul_right H`. Establish `h2 : HasSum (fun m : ℕ => H * ((m ! : ℂ)⁻¹ • Z ^ m)) (H * NormedSpace.exp Z)` using `by open scoped Matrix.Norms.Operator in`. Conclude with `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) Z).mul_left H`. Establish `e : (fun m : ℕ => ((m ! : ℂ)⁻¹ • Y ^ m) * H) = fun m : ℕ => H * ((m ! : ℂ)⁻¹ • Z ^ m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `m`. Rewrite using `[Matrix.smul_mul, hp, Matrix.mul_smul]`. Rewrite `h1` using `[e]`. Conclude with `h1.unique h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_intertwine (Y Z H : Matrix (Fin n) (Fin n) ℂ) (h : Y * H = H * Z) :
     NormedSpace.exp Y * H = H * NormedSpace.exp Z := by
@@ -42,7 +42,7 @@ theorem exp_intertwine (Y Z H : Matrix (Fin n) (Fin n) ℂ) (h : Y * H = H * Z) 
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `show (NormedSpace.exp Y)ᴴ * H * NormedSpace.exp Y = H`. Establish `h1 : Yᴴ * H = H * (-Y)`. Rewrite using `[Matrix.mul_neg]`. Conclude with `eq_neg_of_add_eq_zero_left hY`. Rewrite using `[← Matrix.exp_conjTranspose, exp_intertwine _ _ _ h1, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem_UH (H Y : Matrix (Fin n) (Fin n) ℂ) (hY : Yᴴ * H + H * Y = 0) :
     NormedSpace.exp Y ∈ Formalism.QuantumDeterminants.UH H := by
@@ -54,9 +54,7 @@ theorem exp_mem_UH (H Y : Matrix (Fin n) (Fin n) ℂ) (hY : Yᴴ * H + H * Y = 0
     NormedSpace.exp_zero, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `ha' : aᴴ * H * a = H` using `ha`. Establish `hb' : bᴴ * H * b = H` using `hb`. Use `show (a * b)ᴴ * H * (a * b) = H`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = H := by rw [ha', hb']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UH_mul (H a b : Matrix (Fin n) (Fin n) ℂ) (ha : a ∈ Formalism.QuantumDeterminants.UH H) (hb : b ∈ Formalism.QuantumDeterminants.UH H) :
     a * b ∈ Formalism.QuantumDeterminants.UH H := by
@@ -68,7 +66,7 @@ theorem UH_mul (H a b : Matrix (Fin n) (Fin n) ℂ) (ha : a ∈ Formalism.Quantu
     _ = H := by rw [ha', hb']
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_smul (H X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ * H + H * X = 0) (c : ℝ) :
     ((c : ℂ) • X)ᴴ * H + H * ((c : ℂ) • X) = 0 := by
@@ -78,7 +76,7 @@ theorem lie_smul (H X : Matrix (Fin n) (Fin n) ℂ) (hX : Xᴴ * H + H * X = 0) 
 end expo
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun (congrFun h ⟨r, by omega⟩) ⟨r, by omega⟩` as an intermediate fact. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Matrix.zero_apply] at this`. Rewrite `this` using `[if_neg (by simp), if_neg (by simp), if_pos (by simp)]`. Apply the tactic sequence `split_ifs at this <;> norm_num at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_ne_zero (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r ≠ 0 := by
   intro h
@@ -89,13 +87,13 @@ theorem Hpk_ne_zero (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r ≠ 0 :=
 
 open scoped Matrix.Norms.Frobenius in
 /- English proof (translation)
-Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `e : B.gN g = ‖g‖`. Rewrite using `[Matrix.frobenius_norm_def]`. Unfold `B.gN`. Rewrite using `[Real.sqrt_eq_rpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.sq_norm]`. Use `norm_cast`. Establish `hH : 0 < ‖Formalism.QuantumDeterminants.Hpk k r‖` using `norm_pos_iff.2 (Hpk_ne_zero k r)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Establish `h1 : ‖Formalism.QuantumDeterminants.Hpk k r‖ ≤ ‖g‖ ^ 2 * ‖Formalism.QuantumDeterminants.Hpk k r‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 1 ≤ ‖g‖ ^ 2`. Assume the negation of the conclusion as `hc`. Use `replace hc := lt_of_not_ge hc`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `mul_lt_mul_of_pos_right hc hH` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e]`. Use polynomial arithmetic with `[norm_nonneg g]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem one_le_gN {k r : ℕ} (g : B.Mat k r) (hg : g ∈ B.GV k r) : 1 ≤ B.gN g := by
   have hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r := hg
@@ -123,13 +121,13 @@ theorem one_le_gN {k r : ℕ} (g : B.Mat k r) (hg : g ∈ B.GV k r) : 1 ≤ B.gN
   nlinarith [norm_nonneg g]
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le one_pos (one_le_gN g hg)`.
+A detailed English derivation is pending.
 -/
 theorem gN_pos {k r : ℕ} (g : B.Mat k r) (hg : g ∈ B.GV k r) : 0 < B.gN g :=
   lt_of_lt_of_le one_pos (one_le_gN g hg)
 
 /- English proof (translation)
-Establish `h : ‖g i j‖ ^ 2 ≤ ∑ i, ∑ j, Complex.normSq (g i j)`. Rewrite using `[Complex.sq_norm]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(le_abs_self _).trans (Real.abs_le_sqrt h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem entry_le_gN {k r : ℕ} (g : B.Mat k r) (i j : Fin (2 * r + k + 1)) : ‖g i j‖ ≤ B.gN g := by
   have h : ‖g i j‖ ^ 2 ≤ ∑ i, ∑ j, Complex.normSq (g i j) := by

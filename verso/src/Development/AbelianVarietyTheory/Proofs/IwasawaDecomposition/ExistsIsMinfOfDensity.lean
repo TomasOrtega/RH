@@ -8,9 +8,9 @@ open scoped ENNReal NNReal
 namespace GlobalTheory.MinfMeasure
 
 /- English proof (translation)
-Establish `hm0 : minfDensity (p + q) ≠ 0` using `ENNReal.inv_ne_zero.2 (ENNReal.pow_ne_top (by simp))`. Establish `hmt : minfDensity (p + q) ≠ ⊤` using `ENNReal.inv_ne_top.2 (pow_ne_zero _ two_ne_zero)`. Establish `hne0 : minfDensity (p + q) / c ≠ 0` using `ENNReal.div_ne_zero.2 ⟨hm0, ht⟩`. Establish `hnet : minfDensity (p + q) / c ≠ ⊤` using `ENNReal.div_ne_top hmt h0`. Use `lift minfDensity (p + q) / c to ℝ≥0 using hnet with t htc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t • μ, Measure.IsHaarMeasure.nnreal_smul μ (by exact_mod_cast hne0), ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.CompactDualUnique.omegaDensity_smul t hc`. Rewrite `h` using `[htc, ENNReal.div_mul_cancel h0 ht]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isMinf_of_density {p q : ℕ} (μ : Measure (UpqT p q)) (hμ : μ.IsHaarMeasure) (c : ℝ≥0∞)
     (h0 : c ≠ 0) (ht : c ≠ ⊤) (hc : OmegaDensity μ c) : ∃ m : Measure (UpqT p q), Lev.IsMinf m := by
@@ -24,7 +24,7 @@ theorem exists_isMinf_of_density {p q : ℕ} (μ : Measure (UpqT p q)) (hμ : μ
   rwa [htc, ENNReal.div_mul_cancel h0 ht] at h
 
 /- English proof (translation)
-Take `⟨cd⟩` from `h`. Take `⟨c, h0, ht, hc, -⟩` from `cd.trick p q`. Conclude with `exists_isMinf_of_density _ (cd.haar p q) c h0 ht hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isMinf_of_cd (h : Nonempty CDHaar) (p q : ℕ) : ∃ m : Measure (UpqT p q), Lev.IsMinf m := by
   obtain ⟨cd⟩ := h

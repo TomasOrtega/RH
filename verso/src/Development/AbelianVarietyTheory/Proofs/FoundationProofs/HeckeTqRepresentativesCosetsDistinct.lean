@@ -8,21 +8,21 @@ open GlobalTheory.HeckeFamilyMatrices
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `q σ g i i' hq h`. Establish `hq1 : (1 : ℤ) < q` using `by exact_mod_cast hq.one_lt`. Establish `hdet : (mat g).det = 1` using `g.2`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Establish `e00` using `congrArg (· 0 0) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e01` using `congrArg (· 0 1) h`. Establish `e10` using `congrArg (· 1 0) h`. Establish `e11` using `congrArg (· 1 1) h`. Simplify using `only [tqFam] at e00 e01 e10 e11`. Establish `hi` using `i.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi'` using `i'.isLt`. Apply the tactic sequence `by_cases h1 : (i : ℕ) < q <;> by_cases h2 : (i' : ℕ) < q <;>`. Simplify using `only [h1, h2, if_true, if_false, dg, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const] at e00 e01 e10 e11`. Apply `Fin.ext` to reduce the goal to its premises. Establish `hg00 : (mat g) 0 0 = 1` using `by linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `e01` using `[hg00]`. Establish `hii : (0:ℤ) ≤ (i : ℕ)` using `by positivity`. Establish `hii' : (0:ℤ) ≤ (i' : ℕ)` using `by positivity`. Establish `hlt : ((i : ℕ) : ℤ) < q` using `by exact_mod_cast h1`. Establish `hlt' : ((i' : ℕ) : ℤ) < q` using `by exact_mod_cast h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `lt_trichotomy ((mat g) 0 1) 0 with hn | hz | hp` into its components or cases. It suffices to derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hz] at e01; exact_mod_cast (by linarith : ((i : ℕ) : ℤ) = (i' : ℕ))`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction.
 
-Use the polynomial consequences of the given equalities and inequalities. It suffices to derive a contradiction. Establish `hd : (q : ℤ) ∣ 1` using `⟨mat g 0 0 * mat σ 0 0 + mat g 0 1 * mat σ 1 0, by linear_combination e00⟩`. Use `Int.eq_one_of_dvd_one (by positivity) hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use the polynomial consequences of the given equalities and inequalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-It suffices to derive a contradiction. Establish `hd : (q : ℤ) ∣ 1`. Rewrite using `[← hdet]`. Conclude with `Dvd.dvd.sub (Dvd.dvd.mul_right ⟨mat σ 0 0, by linear_combination -e00⟩ _) (Dvd.dvd.mul_left ⟨mat σ 1 0, by linear_combination -e10⟩ _)`. Use `Int.eq_one_of_dvd_one (by positivity) hd` as an intermediate fact.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Apply `Fin.ext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem tqFam_cosets_distinct : ∀ (q : ℕ) (σ g : SL(2, ℤ)) (i i' : Fin (q + 1)), q.Prime →
     tqFam q σ i = mat g * tqFam q σ i' → i = i' := by

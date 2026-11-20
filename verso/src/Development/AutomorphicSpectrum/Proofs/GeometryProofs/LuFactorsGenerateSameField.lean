@@ -5,27 +5,23 @@ namespace GlobalTheory.CompanionTheory.LuFields
 open Matrix
 
 /- English proof (translation)
-Establish `hC' : ∀ i k, ∑ l, v i l * w l k ∈ F` using `fun i k => by`. Use `hC i k` as an intermediate fact. Rewrite `this` using `[h, Matrix.mul_apply]`. Then use the resulting hypothesis. Establish `key : ∀ m : ℕ, ∀ i k : Fin n, ((i : ℕ) < m ∨ (k : ℕ) < m) → v i k ∈ F ∧ w i k ∈ F`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => intro i k hik; exact absurd hik (by omega)`. Consider the case `succ m ih`. Establish `hw : ∀ i k : Fin n, (i : ℕ) = m → i ≤ k → w i k ∈ F`. Introduce `i k hi hik`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum` using `hC' i k`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i), hv1, one_mul]`. Establish `hrest : ∑ l ∈ Finset.univ.erase i, v i l * w l k ∈ F`. Use `sum_mem fun l hl => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hl) with hlt | hgt` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hl' : (l : ℕ) < m` using `by have := Fin.lt_def.1 hlt; omega`. Conclude with `F.mul_mem (ih i l (Or.inr hl')).1 (ih l k (Or.inl hl')).2`. Rewrite using `[hv0 i l hgt, zero_mul]`. Conclude with `F.zero_mem`. Simplify using `using F.sub_mem hsum hrest`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : ∀ i k : Fin n, (k : ℕ) = m → k < i → v i k ∈ F`. Introduce `i k hk hki`. Establish `hwk : w k k ∈ F` using `hw k k hk le_rfl`. Establish `hsum` using `hC' i k`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ k)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrest : ∑ l ∈ Finset.univ.erase k, v i l * w l k ∈ F`. Use `sum_mem fun l hl => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hl) with hlt | hgt` into its components or cases. Establish `hl' : (l : ℕ) < m` using `by have := Fin.lt_def.1 hlt; omega`. Conclude with `F.mul_mem (ih i l (Or.inr hl')).1 (ih l k (Or.inl hl')).2`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw0 l k hgt, mul_zero]`. Conclude with `F.zero_mem`. Establish `h1 : v i k * w k k ∈ F` using `by simpa using F.sub_mem hsum hrest`. Establish `h2` using `F.mul_mem h1 (F.inv_mem hwk)`. Rewrite `h2` using `[mul_assoc, mul_inv_cancel₀ (hwd k), mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `i k hik`. Distinguish the cases in `h' : (i : ℕ) < m ∨ (k : ℕ) < m`. Conclude with `ih i k h'`. Use `push_neg at h'`. Break down `le_or_gt i k with hle | hlt` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : (i : ℕ) = m` using `by have := Fin.le_def.1 hle; omega`. Use `⟨?_, hw i k hi hle⟩` and prove the remaining obligations. Break down `eq_or_lt_of_le hle with heq | hlt'` into its components or cases. Rewrite using `[heq, hv1]`. Conclude with `F.one_mem`.
-
-Rewrite using `[hv0 i k hlt']`. Conclude with `F.zero_mem`. Establish `hk : (k : ℕ) = m` using `by have := Fin.lt_def.1 hlt; omega`. Use `⟨hv i k hk hlt, ?_⟩` and prove the remaining obligations. Rewrite using `[hw0 i k hlt]`.
-
-Conclude with `F.zero_mem`. Conclude with `⟨fun i k => (key (i + 1) i k (Or.inl (Nat.lt_succ_self _))).1, fun i k => (key (i + 1) i k (Or.inl (Nat.lt_succ_self _))).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem entries_mem_of_eq_mul {K L : Type} [Field K] [Field L] [Algebra K L] {n : ℕ}
     (F : IntermediateField K L) (C v w : Matrix (Fin n) (Fin n) L) (hC : ∀ i k, C i k ∈ F)
@@ -87,25 +83,21 @@ theorem entries_mem_of_eq_mul {K L : Type} [Field K] [Field L] [Algebra K L] {n 
     fun i k => (key (i + 1) i k (Or.inl (Nat.lt_succ_self _))).2⟩
 
 /- English proof (translation)
-Establish `hwT : w.BlockTriangular id`. Introduce `l k hkl`. Conclude with `hw0 l k hkl`. Establish `hdetw : w.det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular hwT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => hwd k`. Use `Matrix.invertibleOfIsUnitDet w (isUnit_iff_ne_zero.2 hdetw)` as an intermediate fact. Establish `hwiT : w⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hwT`. Establish `hwwi : w * w⁻¹ = 1` using `Matrix.mul_nonsing_inv w (isUnit_iff_ne_zero.2 hdetw)`. Establish `hwid : ∀ k, w⁻¹ k k ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk`. Establish `e` using `congrFun (congrFun hwwi k) k`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single k, hk, mul_zero, Matrix.one_apply_eq]`. Conclude with `zero_ne_one e`. Introduce `l _ hlk`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_gt_of_ne hlk with hlt | hgt` into its components or cases. Rewrite using `[hw0 k l hlt, zero_mul]`. Rewrite using `[hwiT hgt, mul_zero]`. Introduce `hk'`. Conclude with `absurd (Finset.mem_univ k) hk'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBA : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A (isUnit_iff_ne_zero.2 hA)`. Establish `hBAm : A⁻¹.map (algebraMap K L) * A.map (algebraMap K L) = 1`. Rewrite using `[← Matrix.map_mul, hBA, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hC' : A⁻¹.map (algebraMap K L) * v = u * w⁻¹`. Establish `hu : u = A⁻¹.map (algebraMap K L) * v * w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, ← h, ← Matrix.mul_assoc, hBAm, Matrix.one_mul]`. Rewrite using `[hu, Matrix.mul_assoc, hwwi, Matrix.mul_one]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hC : ∀ i k, (A⁻¹.map (algebraMap K L) * v) i k ∈ IntermediateField.adjoin K (Set.range fun p : Fin n × Fin n => v p.1 p.2)`. Introduce `i k`. Rewrite using `[Matrix.mul_apply]`. Use `sum_mem fun l _ => IntermediateField.mul_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `IntermediateField.algebraMap_mem _ _`. Conclude with `IntermediateField.subset_adjoin K _ ⟨(l, k), rfl⟩`. Conclude with `(entries_mem_of_eq_mul _ _ u w⁻¹ hC hu1 hu0 (fun l k hkl => hwiT hkl) hwid hC').1 p.1 p.2`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, rfl⟩`.
-
-Establish `hC : ∀ i k, (A.map (algebraMap K L) * u) i k ∈ IntermediateField.adjoin K (Set.range fun p : Fin n × Fin n => u p.1 p.2)`. Introduce `i k`. Rewrite using `[Matrix.mul_apply]`. Use `sum_mem fun l _ => IntermediateField.mul_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply]`.
-
-Conclude with `IntermediateField.algebraMap_mem _ _`. Conclude with `IntermediateField.subset_adjoin K _ ⟨(l, k), rfl⟩`. Conclude with `(entries_mem_of_eq_mul _ _ v w hC hv1 hv0 hw0 hwd h).1 p.1 p.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_entries_eq (K L : Type) [Field K] [Field L] [Algebra K L] (n : ℕ)
     (A : Matrix (Fin n) (Fin n) K) (u v w : Matrix (Fin n) (Fin n) L) (hA : A.det ≠ 0)

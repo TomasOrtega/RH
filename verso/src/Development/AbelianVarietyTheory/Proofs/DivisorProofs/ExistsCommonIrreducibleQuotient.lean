@@ -18,7 +18,7 @@ section General
 variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_hwSub' (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q → ℚ) (v : V) :
     v ∈ hwSub act μ ↔ (∀ a, act (Eab a a) v - ((μ a : ℚ) : ℂ) • v = 0) ∧
@@ -27,7 +27,7 @@ theorem mem_hwSub' (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q →
     LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]
 
 /- English proof (translation)
-Introduce `c d h`. Rewrite using `[Eab, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Apply the tactic sequence `cases a <;> simp [sameBlock] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isKC_diag' (a : Ix p q) : IsKC (Eab a a) := by
   intro c d h
@@ -36,7 +36,7 @@ theorem isKC_diag' (a : Ix p q) : IsKC (Eab a a) := by
   cases a <;> simp [sameBlock] at h
 
 /- English proof (translation)
-Introduce `c d h`. Rewrite using `[Eab, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Apply the tactic sequence `cases a <;> cases b <;> simp_all [sameBlock, posC]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isKC_pos' {a b : Ix p q} (hab : posC a b) : IsKC (Eab a b) := by
   intro c d h
@@ -45,7 +45,7 @@ theorem isKC_pos' {a b : Ix p q} (hab : posC a b) : IsKC (Eab a b) := by
   cases a <;> cases b <;> simp_all [sameBlock, posC]
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_hwSub']`. Use `⟨fun c => ?_, fun c d h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, ← map_smul, ← map_sub, hv.1 c, map_zero]`. Rewrite using `[← hg, hv.2 c d h, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_hw {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[ℂ] Module.End ℂ V'}
     (g : V →ₗ[ℂ] V') (hg : ∀ Z v, g (a Z v) = b Z (g v)) {μ : Ix p q → ℚ} {v : V}
@@ -56,9 +56,7 @@ theorem map_hw {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[�
   · rw [← hg, hv.2 c d h, map_zero]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_hwSub']`. Use `⟨fun c => hinj ?_, fun c d hcd => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hg, map_zero]`. Conclude with `h.1 c`. Rewrite using `[hg, map_zero]`.
-
-Conclude with `h.2 c d hcd`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hw_of_inj {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[ℂ] Module.End ℂ V'}
     (g : V →ₗ[ℂ] V') (hg : ∀ Z v, g (a Z v) = b Z (g v)) (hinj : Function.Injective g)
@@ -69,9 +67,9 @@ theorem hw_of_inj {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ
   · rw [hg, map_zero]; exact h.2 c d hcd
 
 /- English proof (translation)
-Use `Submodule.iSup_induction _ (motive := fun v => g v ∈ _) hx ?_ (by simp) ?_` and prove the remaining obligations. Introduce `μ y hy`. Use `Submodule.mem_iSup_of_mem μ ?_` and prove the remaining obligations. Simplify using `only [wtSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hy ⊢`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hg, ← map_smul, ← map_sub, hy c, map_zero]`. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_wts {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[ℂ] Module.End ℂ V'}
     (g : V →ₗ[ℂ] V') (hg : ∀ Z v, g (a Z v) = b Z (g v)) {x : V}
@@ -87,9 +85,9 @@ theorem map_wts {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[�
     rw [map_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Establish `hx' : x ∈ B`. Rewrite using `[eq_neg_of_add_eq_zero_left hxy]`. Conclude with `B.neg_mem hy`. Establish `h0 : x = 0`. Establish `: x ∈ A ⊓ B` using `⟨hx, hx'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Rewrite `hxy` using `[h0, zero_add]`. Conclude with `hxy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_add {A B : Submodule ℂ V} (h : A ⊓ B = ⊥) {x y : V} (hx : x ∈ A) (hy : y ∈ B)
     (hxy : x + y = 0) : x = 0 ∧ y = 0 := by
@@ -102,13 +100,13 @@ theorem eq_zero_of_add {A B : Submodule ℂ V} (h : A ⊓ B = ⊥) {x y : V} (hx
   rw [h0, zero_add] at hxy; exact hxy
 
 /- English proof (translation)
-Rewrite `h` using `[mem_hwSub']`. Rewrite using `[mem_hwSub', mem_hwSub']`. Take `⟨h1, h2⟩` from `h`. Establish `e1 : ∀ c, (a (Eab c c) y - ((μ c : ℚ) : ℂ) • y) = 0 ∧ (a (Eab c c) z - ((μ c : ℚ) : ℂ) • z) = 0`. Introduce `c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `eq_zero_of_add hAB (A.sub_mem (hA _ (isKC_diag' c) y hy) (A.smul_mem _ hy)) (B.sub_mem (hB _ (isKC_diag' c) z hz) (B.smul_mem _ hz)) ?_` and prove the remaining obligations. Use `h1 c` as an intermediate fact. Rewrite `this` using `[map_add, smul_add]`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e2 : ∀ c d, posC c d → a (Eab c d) y = 0 ∧ a (Eab c d) z = 0`. Introduce `c d hcd`. Use `eq_zero_of_add hAB (hA _ (isKC_pos' hcd) y hy) (hB _ (isKC_pos' hcd) z hz) ?_` and prove the remaining obligations. Rewrite using `[← map_add]`. Conclude with `h2 c d hcd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨fun c => (e1 c).1, fun c d hcd => (e2 c d hcd).1⟩, ⟨fun c => (e1 c).2, fun c d hcd => (e2 c d hcd).2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem split_hw {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {A B : Submodule ℂ V}
     (hA : KStable a A) (hB : KStable a B) (hAB : A ⊓ B = ⊥) {μ : Ix p q → ℚ} {y z : V}
@@ -132,11 +130,11 @@ theorem split_hw {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {A B : Submodule ℂ
     ⟨fun c => (e1 c).2, fun c d hcd => (e2 c d hcd).2⟩⟩
 
 /- English proof (translation)
-Take `⟨C, sC, hUC, hUCW⟩` from `GlobalTheory.BlockReps.exists_compl hL sW (fun v _ => hwts v) (U ⊓ W) inf_le_right (GlobalTheory.BlockReps.stable_inf sU sW)`. Establish `hCW : C ≤ W` using `by rw [← hUCW]; exact le_sup_right`. Establish `hdisj : U ⊓ C = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hxU, hxC⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `: x ∈ (U ⊓ W) ⊓ C` using `⟨⟨hxU, hCW hxC⟩, hxC⟩`. Rewrite `this` using `[hUC]`. Then use the resulting hypothesis. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 hv`. Establish `hw' : w ∈ (U ⊓ W) ⊔ C` using `by rw [hUCW]; exact hw`. Take `⟨w1, hw1, c, hc, rfl⟩` from `Submodule.mem_sup.1 hw'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsum : (u + w1) + c = u + (w1 + c)` using `add_assoc _ _ _`. Rewrite `h` using `[← hsum]`. Take `⟨h1, h2⟩` from `split_hw sU sC hdisj (U.add_mem hu hw1.1) hc h`. Conclude with `⟨u + w1, U.add_mem hu hw1.1, c, hCW hc, h1, h2, hsum⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hw_sup {a : Mat p q →ₗ[ℂ] Module.End ℂ V} (hL : IsKLieAct a)
     (hwts : ∀ v, v ∈ ⨆ μ : Ix p q → ℚ, wtSub a μ) {μ : Ix p q → ℚ} {U W : Submodule ℂ V}
@@ -158,15 +156,13 @@ theorem hw_sup {a : Mat p q →ₗ[ℂ] Module.End ℂ V} (hL : IsKLieAct a)
   exact ⟨u + w1, U.add_mem hu hw1.1, c, hCW hc, h1, h2, hsum⟩
 
 /- English proof (translation)
-Establish `sK : KStable a (W ⊓ LinearMap.ker g)` using `GlobalTheory.BlockReps.stable_inf sW (fun Z _ y hy => by`. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hg, hy, map_zero])`. Take `⟨C, sC, hKC, hKCW⟩` from `GlobalTheory.BlockReps.exists_compl hL sW (fun v _ => hwts v) (W ⊓ LinearMap.ker g) inf_le_left sK`. Establish `hw' : w ∈ (W ⊓ LinearMap.ker g) ⊔ C` using `by rw [hKCW]; exact hw`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk, c, hc, rfl⟩` from `Submodule.mem_sup.1 hw'`. Establish `hgc : g c = g (k + c)` using `by rw [map_add, LinearMap.mem_ker.1 hk.2, zero_add]`. Establish `hCW : C ≤ W` using `by rw [← hKCW]; exact le_sup_right`. Establish `inj : ∀ x ∈ C, g x = 0 → x = 0`. Introduce `x hx hgx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: x ∈ (W ⊓ LinearMap.ker g) ⊓ C` using `⟨⟨hCW hx, hgx⟩, hx⟩`. Rewrite `this` using `[hKC]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Use `⟨c, ?_, hgc⟩` and prove the remaining obligations. Rewrite `h` using `[← hgc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h`, the goal using `[mem_hwSub']`. Use `⟨fun i => inj _ (C.sub_mem (sC _ (isKC_diag' i) c hc) (C.smul_mem _ hc)) ?_, fun i j hij => inj _ (sC _ (isKC_pos' hij) c hc) ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hg]`. Conclude with `h.1 i`. Rewrite using `[hg]`.
-
-Conclude with `h.2 i j hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hw_lift {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[ℂ] Module.End ℂ V'}
     (hL : IsKLieAct a) (hwts : ∀ v, v ∈ ⨆ μ : Ix p q → ℚ, wtSub a μ)
@@ -194,7 +190,7 @@ theorem hw_lift {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[�
   · rw [hg]; exact h.2 i j hij
 
 /- English proof (translation)
-Use `⟨(LinearMap.ker f).liftQ g h ∘ₗ (f.quotKerEquivOfSurjective hf).symm.toLinearMap, fun x => ?_⟩` and prove the remaining obligations. Establish `e : (f.quotKerEquivOfSurjective hf).symm (f x) = Submodule.Quotient.mk x`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem exists_factor {A B C : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B]
     [AddCommGroup C] [Module ℂ C] (f : A →ₗ[ℂ] B) (hf : Function.Surjective f) (g : A →ₗ[ℂ] C)
@@ -206,20 +202,20 @@ theorem exists_factor {A B C : Type} [AddCommGroup A] [Module ℂ A] [AddCommGro
   simp [e]
 
 /- English proof (translation)
-Introduce `Z y hy` and use `Submodule.mem_sInf.2 fun _ hN => hN.2 Z y (Submodule.mem_sInf.1 hy _ hN)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genSub_stab (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (S : Set V) :
     ∀ Z, ∀ y ∈ genSub act S, act Z y ∈ genSub act S := fun Z y hy =>
   Submodule.mem_sInf.2 fun _ hN => hN.2 Z y (Submodule.mem_sInf.1 hy _ hN)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun _ hN => hN.1 rfl`.
+A detailed English derivation is pending.
 -/
 theorem subset_gen (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (x : V) : x ∈ genSub act {x} :=
   Submodule.mem_sInf.2 fun _ hN => hN.1 rfl
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨Set.singleton_subset_iff.2 hx, hU⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_le (act : Mat p q →ₗ[ℂ] Module.End ℂ V) {x : V} {U : Submodule ℂ V} (hx : x ∈ U)
     (hU : ∀ Z, ∀ y ∈ U, act Z y ∈ U) : genSub act {x} ≤ U :=
@@ -338,9 +334,9 @@ def maxSub (X : GKMod p q) (x0 : X.V) : Submodule ℂ X.V :=
   sSup {U | (∀ Z, ∀ y ∈ U, X.act Z y ∈ U) ∧ x0 ∉ U}
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hone w hw`. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. It suffices to derive a contradiction. Apply `hU` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `U.smul_mem c⁻¹ hwU` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem zero_of_line {X : GKMod p q} {x0 : X.V} {Λ : Ix p q → ℚ}
     (hone : ∀ w ∈ hwSub X.act Λ, ∃ c : ℂ, w = c • x0) {U : Submodule ℂ X.V} (hU : x0 ∉ U)
@@ -353,7 +349,7 @@ theorem zero_of_line {X : GKMod p q} {x0 : X.V} {Λ : Ix p q → ℚ}
     rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at this
 
 /- English proof (translation)
-Introduce `Z y hy`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hA Z a ha) (hB Z b hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_sup {X : GKMod p q} {A B : Submodule ℂ X.V} (hA : ∀ Z, ∀ y ∈ A, X.act Z y ∈ A)
     (hB : ∀ Z, ∀ y ∈ B, X.act Z y ∈ B) : ∀ Z, ∀ y ∈ A ⊔ B, X.act Z y ∈ A ⊔ B := by
@@ -362,11 +358,11 @@ theorem stab_sup {X : GKMod p q} {A B : Submodule ℂ X.V} (hA : ∀ Z, ∀ y �
   rw [map_add]; exact Submodule.add_mem_sup (hA Z a ha) (hB Z b hb)
 
 /- English proof (translation)
-Introduce `hmem`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hmem`. Take `⟨W, hW, hzW, hWs⟩` from `X.kfin z`. Use `haveI := hW`. Use `haveI : FiniteDimensional ℂ ↥(W ⊓ B) := Submodule.finiteDimensional_of_le inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sB : KStable X.act B` using `fun Z _ w hw => hB Z w hw`. Establish `sA : KStable X.act A` using `fun Z _ w hw => hA Z w hw`. Establish `hm : x0 ∈ A ⊔ (W ⊓ B)` using `by rw [← hyz]; exact Submodule.add_mem_sup hy ⟨hzW, hz⟩`. Take `⟨y', hy', z', hz', h1, h2, h3⟩` from `hw_sup (a := X.act) (fun Y Z _ _ => X.lie Y Z) X.wts sA (GlobalTheory.BlockReps.stable_inf hWs sB) hm hx0.2`. Establish `e1` using `zero_of_line hone hxA h1 hy'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2` using `zero_of_line hone hxB h2 hz'.2`. Apply `hx0.1` to reduce the goal to its premises. Rewrite using `[← h3, e1, e2, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_sup {X : GKMod p q} {x0 : X.V} {Λ : Ix p q → ℚ} (hx0 : IsHW X.act Λ x0)
     (hone : ∀ w ∈ hwSub X.act Λ, ∃ c : ℂ, w = c • x0) {A B : Submodule ℂ X.V}
@@ -388,9 +384,9 @@ theorem notMem_sup {X : GKMod p q} {x0 : X.V} {Λ : Ix p q → ℚ} (hx0 : IsHW 
   rw [← h3, e1, e2, add_zero]
 
 /- English proof (translation)
-Establish `hne : ({U | (∀ Z, ∀ y ∈ U, X.act Z y ∈ U) ∧ x0 ∉ U} : Set (Submodule ℂ X.V)).Nonempty` using `⟨⊥, fun Z y hy => by rw [Submodule.mem_bot] at hy ⊢; rw [hy, map_zero], fun h => hx0.1 ((Submodule.mem_bot ℂ).1 h)⟩`. Establish `hdir : DirectedOn (· ≤ ·) ({U | (∀ Z, ∀ y ∈ U, X.act Z y ∈ U) ∧ x0 ∉ U} : Set (Submodule ℂ X.V))`. Introduce and unpack `A ⟨hA, hxA⟩ B ⟨hB, hxB⟩`. Conclude with `⟨A ⊔ B, ⟨stab_sup hA hB, notMem_sup hx0 hone hA hB hxA hxB⟩, le_sup_left, le_sup_right⟩`. Use `⟨fun Z y hy => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, hyU⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 hy`. Conclude with `le_sSup hU (hU.1 Z y hyU)`. Take `⟨U, hU, hyU⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 h`. Conclude with `hU.2 hyU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem max_spec {X : GKMod p q} {x0 : X.V} {Λ : Ix p q → ℚ} (hx0 : IsHW X.act Λ x0)
     (hone : ∀ w ∈ hwSub X.act Λ, ∃ c : ℂ, w = c • x0) :
@@ -409,9 +405,7 @@ theorem max_spec {X : GKMod p q} {x0 : X.V} {Λ : Ix p q → ℚ} (hx0 : IsHW X.
     exact hU.2 hyU
 
 /- English proof (translation)
-Distinguish the cases in `h : x0 ∈ U`. Use `right`. Rewrite using `[eq_top_iff, ← hgen]`. Conclude with `gen_le _ h hU`. Use `left`.
-
-Conclude with `le_sSup ⟨hU, h⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_max_or_top {X : GKMod p q} {x0 : X.V} (hgen : genSub X.act {x0} = ⊤)
     {U : Submodule ℂ X.V} (hU : ∀ Z, ∀ y ∈ U, X.act Z y ∈ U) : U ≤ maxSub X x0 ∨ U = ⊤ := by
@@ -424,13 +418,13 @@ def qmap (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ U, X.act
     X.V →ₗ[ℂ] (quotMod X U hU).V := U.mkQ
 
 /- English proof (translation)
-The claim follows from `U.mkQ_surjective`.
+A detailed English derivation is pending.
 -/
 theorem qmap_surj (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ U, X.act Z y ∈ U) :
     Function.Surjective (qmap X U hU) := U.mkQ_surjective
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero U`.
+A detailed English derivation is pending.
 -/
 theorem qmap_eq_zero {X : GKMod p q} {U : Submodule ℂ X.V} {hU : ∀ Z, ∀ y ∈ U, X.act Z y ∈ U}
     {x : X.V} : qmap X U hU x = 0 ↔ x ∈ U := Submodule.Quotient.mk_eq_zero U
@@ -442,9 +436,9 @@ theorem qmap_act (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ 
     (Z : Mat p q) (x : X.V) : qmap X U hU (X.act Z x) = (quotMod X U hU).act Z (qmap X U hU x) := rfl
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `exists_factor f hf (qmap X U hU) (fun x hx => qmap_eq_zero.2 (hker hx))`. Use `⟨π, fun n => ?_, fun Z y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `qmap_surj X U hU n`. Conclude with `⟨f x, hπ x⟩`. Take `⟨x, rfl⟩` from `hf y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hfe, hπ, hπ, qmap_act]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_of_ker {X Y : GKMod p q} (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ U, X.act Z y ∈ U)
     (f : X.V →ₗ[ℂ] Y.V) (hf : Function.Surjective f) (hfe : ∀ Z x, f (X.act Z x) = Y.act Z (f x))
@@ -466,7 +460,7 @@ def incl (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ U, X.act
     (subMod X U hU).V →ₗ[ℂ] X.V := U.subtype
 
 /- English proof (translation)
-The claim follows from `U.injective_subtype`.
+A detailed English derivation is pending.
 -/
 theorem incl_inj (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ U, X.act Z y ∈ U) :
     Function.Injective (incl X U hU) := U.injective_subtype
@@ -479,7 +473,7 @@ theorem incl_act (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨y, hy⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem incl_range (X : GKMod p q) (U : Submodule ℂ X.V) (hU : ∀ Z, ∀ y ∈ U, X.act Z y ∈ U)
     {y : X.V} (hy : y ∈ U) : ∃ x, incl X U hU x = y := ⟨⟨y, hy⟩, rfl⟩
@@ -497,15 +491,15 @@ theorem snd_act₂ (M M' : GKMod p q) (Z : Mat p q) (x : (prodMod M M').V) :
     sndP M M' ((prodMod M M').act Z x) = M'.act Z (sndP M M' x) := rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fst_snd (M M' : GKMod p q) {x : (prodMod M M').V} (h1 : fstP M M' x = 0)
     (h2 : sndP M M' x = 0) : x = 0 := Prod.ext h1 h2
 
 /- English proof (translation)
-Rewrite `hv`, `hv'`, the goal using `[mem_hwSub']`. Use `⟨fun a => ?_, fun a b h => ?_⟩` and prove the remaining obligations. Use `show ((M.act (Eab a a) v - ((Λ a : ℚ) : ℂ) • v, M'.act (Eab a a) v' - ((Λ a : ℚ) : ℂ) • v') : M.V × M'.V) = 0`. Rewrite using `[hv.1 a, hv'.1 a]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show ((M.act (Eab a b) v, M'.act (Eab a b) v') : M.V × M'.V) = 0`. Rewrite using `[hv.2 a b h, hv'.2 a b h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pairP_mem_highestWeight (M M' : GKMod p q) {Λ : Ix p q → ℚ} {v : M.V} {v' : M'.V}
     (hv : v ∈ hwSub M.act Λ) (hv' : v' ∈ hwSub M'.act Λ) :
@@ -524,7 +518,7 @@ Both sides reduce to the same expression.
 theorem snd_pair₂ (M M' : GKMod p q) (x : M.V) (x' : M'.V) : sndP M M' (pairP M M' x x') = x' := rfl
 
 /- English proof (translation)
-Establish `: LinearMap.range f = ⊤`. Rewrite using `[eq_top_iff, ← hgen]`. Conclude with `gen_le _ (LinearMap.mem_range.2 ⟨x0, rfl⟩) (by rintro Z _ ⟨x, rfl⟩; exact ⟨X.act Z x, hfe Z x⟩)`. Conclude with `LinearMap.range_eq_top.1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_of_gen {X Y : GKMod p q} (f : X.V →ₗ[ℂ] Y.V) (hfe : ∀ Z x, f (X.act Z x) = Y.act Z (f x))
     {x0 : X.V} (hgen : genSub Y.act {f x0} = ⊤) : Function.Surjective f := by
@@ -535,45 +529,39 @@ theorem surj_of_gen {X Y : GKMod p q} (f : X.V →ₗ[ℂ] Y.V) (hfe : ∀ Z x, 
   exact LinearMap.range_eq_top.1 this
 
 /- English proof (translation)
-Introduce `hMO R S M M' Λ ⟨v, hv, hvg⟩ ⟨v', hv', hvg'⟩ hM hM'`. Set `P` to `prodMod M M'`. Set `D : Submodule ℂ P.V` to `genSub P.act {pairP M M' v v'}`. Establish `hDs : ∀ Z, ∀ y ∈ D, P.act Z y ∈ D` using `genSub_stab P.act _`. Set `X` to `subMod P D hDs`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `i` to `incl P D hDs`. Take `⟨d0, hd0i⟩` from `incl_range P D hDs (subset_gen P.act (pairP M M' v v'))`. Set `p1 : X.V →ₗ[ℂ] M.V` to `fstP M M' ∘ₗ i`. Set `p2 : X.V →ₗ[ℂ] M'.V` to `sndP M M' ∘ₗ i`. Establish `hp1 : ∀ Z x, p1 (X.act Z x) = M.act Z (p1 x)` using `fun _ _ => rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hp2 : ∀ Z x, p2 (X.act Z x) = M'.act Z (p2 x)` using `fun _ _ => rfl`. Establish `hp1d : p1 d0 = v` using `by show fstP M M' (i d0) = v; rw [hd0i]; rfl`. Establish `hp2d : p2 d0 = v'` using `by show sndP M M' (i d0) = v'; rw [hd0i]; rfl`. Establish `hL : IsKLieAct X.act` using `fun Y Z _ _ => X.lie Y Z`. Establish `hd0 : IsHW X.act Λ d0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun h => hv.1 ?_, hw_of_inj i (incl_act P D hDs) (incl_inj P D hDs) ?_⟩` and prove the remaining obligations. Rewrite using `[← hp1d, h, map_zero]`. Rewrite using `[hd0i]`. Conclude with `pairP_mem_highestWeight M M' hv.2 hv'.2`. Establish `hgen : genSub X.act {d0} = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `d _`. Establish `hle : D ≤ (genSub X.act {d0}).map i`. Use `gen_le _ ⟨d0, subset_gen _ _, hd0i⟩ ?_` and prove the remaining obligations. Introduce `Z y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `Submodule.mem_map.2 ⟨X.act Z s, genSub_stab _ _ Z s hs, incl_act P D hDs Z s⟩`. Take `⟨s, hs, hsd⟩` from `Submodule.mem_map.1 (hle d.2)`. Establish `: s = d` using `incl_inj P D hDs hsd`. Rewrite `hs` using `[this]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hst : GlobalTheory.RealLift.Steep X Λ`. Introduce `a b hab w hw`. Distinguish the cases in `h1 : p1 w = 0`. Establish `h2 : p2 w ≠ 0`. Introduce `h2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hw.1` to reduce the goal to its premises. Conclude with `incl_inj P D hDs (by rw [map_zero]; exact eq_zero_of_fst_snd M M' h1 h2)`. Conclude with `hM' a b hab _ ⟨h2, map_hw p2 hp2 hw.2⟩`. Conclude with `hM a b hab _ ⟨h1, map_hw p1 hp1 hw.2⟩`. Establish `hone` using `hMO R S X Λ d0 hd0 hgen hst`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hmaxs, hmax0⟩` from `max_spec hd0 hone`. Set `N` to `quotMod X (maxSub X d0) hmaxs`. Set `mk` to `qmap X (maxSub X d0) hmaxs`. Establish `hmk : ∀ Z x, mk (X.act Z x) = N.act Z (mk x)` using `qmap_act X (maxSub X d0) hmaxs`. Establish `hker : ∀ {Y : GKMod R S} (f : X.V →ₗ[ℂ] Y.V), (∀ Z x, f (X.act Z x) = Y.act Z (f x)) → f d0 ≠ 0 → LinearMap.ker f ≤ maxSub X d0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Introduce `Y f hf hf0`. Break down `le_max_or_top hgen (U := LinearMap.ker f) (fun Z y hy => by` into its components or cases. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf, hy, map_zero]) with h | h`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-It suffices to derive a contradiction. Establish `: d0 ∈ LinearMap.ker f` using `by rw [h]; exact Submodule.mem_top`. Conclude with `hf0 this`. Take `⟨π, hπ⟩` from `quot_of_ker (maxSub X d0) hmaxs p1 (surj_of_gen p1 hp1 (x0 := d0) (by rw [hp1d]; exact hvg)) hp1 (hker p1 hp1 (by rw [hp1d]; exact hv.1))`. Take `⟨π', hπ'⟩` from `quot_of_ker (maxSub X d0) hmaxs p2 (surj_of_gen p2 hp2 (x0 := d0) (by rw [hp2d]; exact hvg')) hp2 (hker p2 hp2 (by rw [hp2d]; exact hv'.1))`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn0 : mk d0 ≠ 0` using `fun h => hmax0 (qmap_eq_zero.1 h)`. Use `⟨N, π, π', hπ, hπ', ⟨nontrivial_of_ne (mk d0) 0 hn0, fun L hL' => ?_⟩, fun T hT => ?_⟩` and prove the remaining obligations. Break down `le_max_or_top hgen (U := L.comap mk) (fun Z y hy => by` into its components or cases. Rewrite `hy`, the goal using `[Submodule.mem_comap]`. Rewrite using `[hmk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hL' Z _ hy) with h | h`. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `n hn`. Take `⟨d, rfl⟩` from `qmap_surj X (maxSub X d0) hmaxs n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mem_bot]`. Conclude with `qmap_eq_zero.2 (h hn)`. Use `right`. Rewrite using `[eq_top_iff]`. Introduce `n _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, rfl⟩` from `qmap_surj X (maxSub X d0) hmaxs n`. Establish `: d ∈ L.comap mk` using `by rw [h]; exact Submodule.mem_top`. Conclude with `this`. Establish `hTe : ∀ Z y, T (N.act Z y) = N.act Z (T y)` using `fun Z y => LinearMap.congr_fun (hT Z) y`. Establish `hn0w : mk d0 ∈ hwSub N.act Λ` using `map_hw mk hmk hd0.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hTn : T (mk d0) ∈ hwSub N.act Λ` using `map_hw T hTe hn0w`. Take `⟨d1, hd1⟩` from `qmap_surj X (maxSub X d0) hmaxs (T (mk d0))`. Take `⟨W, hW, hd1W, hWs⟩` from `X.kfin d1`. Use `haveI := hW`. Take `⟨u, hu, hgu⟩` from `hw_lift hL X.wts mk hmk hWs hd1W (by show mk d1 ∈ hwSub N.act Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show mk d1 = T (mk d0) from hd1]`. Conclude with `hTn)`. Take `⟨c, rfl⟩` from `hone u hu`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hTc : T (mk d0) = c • mk d0`.
-
-Rewrite using `[← show mk d1 = T (mk d0) from hd1, ← hgu, map_smul]`. Establish `hK : genSub X.act {d0} ≤ (LinearMap.ker (T - c • LinearMap.id)).comap mk`. Use `gen_le _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hTc, sub_self]`. Introduce `Z y hy`.
-
-Rewrite `hy`, the goal using `[Submodule.mem_comap, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[hmk, hTe, ← map_smul, ← map_sub, hy, map_zero]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `n`. Take `⟨d, rfl⟩` from `qmap_surj X (maxSub X d0) hmaxs n`.
-
-Use `hK (by rw [hgen]; exact Submodule.mem_top : d ∈ genSub X.act {d0})` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem common_quotient : GlobalTheory.RealLift.MultOne → ∀ (R S : ℕ) (M M' : Formalism.BasicNotions.TH.GKMod R S)
     (Λ : Formalism.BasicNotions.TH.Ix R S → ℚ), GlobalTheory.RealLift.GenBy M Λ → GlobalTheory.RealLift.GenBy M' Λ →

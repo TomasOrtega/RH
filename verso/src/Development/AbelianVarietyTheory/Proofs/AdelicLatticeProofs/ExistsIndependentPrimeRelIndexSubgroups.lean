@@ -6,13 +6,11 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `set c : E ⧸ K.subgroupOf E := QuotientGroup.mk (⟨x, hxE⟩ : E) with hc`. Establish `ho : orderOf c = p`. Apply `orderOf_eq_prime` to reduce the goal to its premises. Rewrite using `[hc, ← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hxp`. Rewrite using `[hc, Ne, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]`. Conclude with `hxK`. Establish `hall : ∀ y : E ⧸ K.subgroupOf E, y ∈ Submonoid.powers c`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective y`. Take `⟨k, hk⟩` from `hgen y y.2`. Use `⟨k, ?_⟩` and prove the remaining obligations. Simplify using `only [hc]`. Rewrite using `[← QuotientGroup.mk_pow, eq_comm, QuotientGroup.eq_iff_div_mem, Subgroup.mem_subgroupOf]`.
-
-Simplify using `using hk`. Rewrite using `[Subgroup.relIndex, Subgroup.index, ← ho]`. Conclude with `(orderOf_eq_card_of_forall_mem_powers hall).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_prime_of_generated {G : Type} [CommGroup G] {p : ℕ} (hp : p.Prime)
     (E K : Subgroup G) (x : G) (hxE : x ∈ E) (hxK : x ∉ K) (hxp : x ^ p ∈ K)
@@ -37,25 +35,23 @@ theorem relIndex_eq_prime_of_generated {G : Type} [CommGroup G] {p : ℕ} (hp : 
   exact (orderOf_eq_card_of_forall_mem_powers hall).symm
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨∅, rfl, by simp, by simp, ⊤, by simp, by simp⟩` and prove the remaining obligations. Consider the case `succ k ih`. Take `⟨T, hT, hg, hA, D, hD, hDi⟩` from `ih (by omega)`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hx : ∃ x ∈ U, x ∈ D ∧ x ∉ H`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `heq : D ⊓ U = H ⊓ U`. Use extensionality with `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`. Conclude with `⟨hcon x b a, b⟩`. Introduce and unpack `⟨a, b⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨(hD x).2 fun i hi => h1 i (hg i hi) ⟨b, a⟩, b⟩`. Establish `h4 : D.relIndex U = H.relIndex U`. Rewrite using `[← Subgroup.inf_relIndex_right D U, heq, Subgroup.inf_relIndex_right]`. Rewrite `h4` using `[hDi, hH]`. Use `Nat.pow_right_injective hp.two_le h4` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨x, hxU, hxD, hxH⟩` from `hx`. Take `⟨j, hj, hxj⟩` from `h3 x hxU hxH`. Establish `hjT : j ∉ T` using `fun h => hxj ((hD x).1 hxD j h)`. Use `⟨insert j T, by rw [Finset.card_insert_of_notMem hjT, hT], ?_, ?_, K j ⊓ D, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hj`. Conclude with `hg i hi`. Introduce `i hi`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Use `⟨x, hxU, hxj, fun l hl hli => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hl with rfl | hl` into its components or cases. Conclude with `absurd rfl hli`. Conclude with `(hD x).1 hxD l hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨u, huU, hui, hu⟩` from `hA i hi`. Take `⟨n, hn⟩` from `h2' j hj x hxU hxj u huU`. Use `⟨u / x ^ n, U.div_mem huU (U.pow_mem hxU n), ?_, fun l hl hli => ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hui` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `(K i).mul_mem h ((K i).pow_mem ((hD x).1 hxD i hi) n)` as an intermediate fact. Simplify using `using this`. Break down `Finset.mem_insert.1 hl with rfl | hl` into its components or cases. Conclude with `hn`. Conclude with `(K l).div_mem (hu l hl hli) ((K l).pow_mem ((hD x).1 hxD l hl) n)`.
-
-Introduce `y`. Simplify using `only [Subgroup.mem_inf, hD, Finset.forall_mem_insert]`. Establish `h5 : (K j).relIndex (D ⊓ U) = p` using `relIndex_eq_prime_of_generated hp (D ⊓ U) (K j) x ⟨hxD, hxU⟩ hxj (h2 j hj x hxU) (fun y hy => h2' j hj x hxU hxj y hy.2)`. Rewrite using `[← Subgroup.relIndex_inf_mul_relIndex, h5, hDi, pow_succ, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_independent_prime_relIndex_subgroups (p : ℕ) (G ι : Type) [CommGroup G] [DecidableEq ι]
     (U H : Subgroup G) (K : ι → Subgroup G) (good : ι → Prop) (m : ℕ) (hp : p.Prime)
@@ -119,7 +115,7 @@ theorem exists_independent_prime_relIndex_subgroups (p : ℕ) (G ι : Type) [Com
       rw [← Subgroup.relIndex_inf_mul_relIndex, h5, hDi, pow_succ, mul_comm]
 
 /- English proof (translation)
-Introduce `p G ι _ _ U H K good m hp hH h1 h2 h2' h3`. Take `⟨T, a, b, c, -⟩` from `exists_independent_prime_relIndex_subgroups p G ι U H K good m hp hH h1 h2 h2' h3 m le_rfl`. Conclude with `⟨T, a, b, c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_indep_prime_index : ∀ (p : ℕ) (G ι : Type) [CommGroup G] [DecidableEq ι] (U H : Subgroup G) (K : ι → Subgroup G) (good : ι → Prop) (m : ℕ), p.Prime → H.relIndex U = p ^ m → (∀ i, good i → U ⊓ H ≤ K i) → (∀ i, good i → ∀ x ∈ U, x ^ p ∈ K i) → (∀ i, good i → ∀ x ∈ U, x ∉ K i → ∀ y ∈ U, ∃ k : ℕ, y / x ^ k ∈ K i) → (∀ x ∈ U, x ∉ H → ∃ i, good i ∧ x ∉ K i) → ∃ T : Finset ι, T.card = m ∧ (∀ i ∈ T, good i) ∧ ∀ i ∈ T, ∃ u ∈ U, u ∉ K i ∧ ∀ j ∈ T, j ≠ i → u ∈ K j := by
   intro p G ι _ _ U H K good m hp hH h1 h2 h2' h3

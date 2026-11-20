@@ -13,43 +13,39 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Establish `hs` using `split_integral_local F E v sp hdiag`. Establish `hint : ∀ r ∈ intV E v, (sp r).1 ∈ v.adicCompletionIntegers F` using `fun r hr => ((hs r).1 hr).1`. Establish `hOE : ∀ c : 𝓞 E, inclE (F` using `F) (v.adicCompletion F) (c : E) ∈ intV E v := by`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ((c : E) ⊗ₜ[F] (1 : v.adicCompletion F)) ∈ PI.SplitIntLoc.tensInt (v.adicCompletion F) (PI.SplitIntLoc.intOE E) (v.adicCompletionIntegers F).toSubring` using `Subring.subset_closure (Or.inl ⟨⟨(c : E), c, rfl⟩, rfl⟩)`. Conclude with `hc`. Establish `hv : Valued.v ((g : v.adicCompletion F)) < 1`. Establish `h1 : v.intValuation (g : 𝓞 F) < 1` using `(v.intValuation_lt_one_iff_mem _).2 hg`. Establish `h2 : ((g : v.adicCompletion F)) = algebraMap (𝓞 F) (v.adicCompletion F) (g : 𝓞 F)` using `(map_natCast _ g).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Use `lt_of_eq_of_lt (v.valuedAdicCompletion_eq_valuation (g : 𝓞 F)) ?_` and prove the remaining obligations. Rewrite using `[v.valuation_of_algebraMap]`. Conclude with `h1`. Take `⟨hfin, hspan⟩` from `hL`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨G, hG⟩` from `Module.Finite.iff_fg.1 hfin`. Establish `hgen : ∀ x ∈ L, (fun i => inclE (F` using `F) (v.adicCompletion F) (x i)) ∈ loc v L := fun x hx => Submodule.subset_span ⟨x, hx, rfl⟩`. Use `set M : Submodule (v.adicCompletionIntegers F) (v.adicCompletion F) := Submodule.span _ (Set.range fun p : G × Fin n => (sp (inclE (F := F) (v.adicCompletion F) ((p.1 : Fin n → E) p.2))).1) with hMdef`. Establish `hMx : ∀ x ∈ L, ∀ i, (sp (inclE (F` using `F) (v.adicCompletion F) (x i))).1 ∈ M := by`. Introduce `x hx i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite `hx` using `[← hG]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem s hsG => exact Submodule.subset_span ⟨(⟨s, hsG⟩, i), rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simpa using M.add_mem ha hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `smul c a _ ha`. Establish `hc` using `hint _ (hOE c)`. Establish `e : (sp (inclE (F` using `F) (v.adicCompletion F) ((c • a) i))).1 = (⟨_, hc⟩ : v.adicCompletionIntegers F) • (sp (inclE (F := F) (v.adicCompletion F) (a i))).1 := by`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul, map_mul, Prod.fst_mul, Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `M.smul_mem _ ha`. Establish `hM : ∀ y ∈ loc v L, ∀ i, (sp (y i)).1 ∈ M`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `mem x hx`. Take `⟨x, hxL, rfl⟩` from `hx`. Conclude with `hMx x hxL`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `add a b _ _ ha hb => intro i`. Simplify using `using M.add_mem (ha i) (hb i)`. Consider the case `smul r a _ ha`. Introduce `i`. Establish `hr` using `hint _ r.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (sp ((r • a) i)).1 = (⟨_, hr⟩ : v.adicCompletionIntegers F) • (sp (a i)).1`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul, Prod.fst_mul, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `M.smul_mem _ (ha i)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : M ≤ Ideal.span {((g : v.adicCompletionIntegers F))} • M`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨⟨s, hsG⟩, i⟩, rfl⟩`. Establish `hsL : s ∈ L` using `hG ▸ Submodule.subset_span hsG`. Take `⟨z, hz, hyz⟩` from `h _ (hgen s hsL)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (sp (inclE (F` using `F) (v.adicCompletion F) (s i))).1 = (g : v.adicCompletionIntegers F) • (sp (z i)).1 := by`. Establish `hi : inclE (F` using `F) (v.adicCompletion F) (s i) = ((g : E ⊗[F] v.adicCompletion F) • z) i := congrFun hyz i`. Rewrite using `[hi, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, Prod.fst_mul, Algebra.smul_def]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(sp (inclE (F := F) (v.adicCompletion F) (s i))).1 ∈ ((Ideal.span {((g : v.adicCompletionIntegers F))} • M : Submodule _ _) : Set (v.adicCompletion F))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) (hM z hz i)`. Establish `hjac : Ideal.span {((g : v.adicCompletionIntegers F))} ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hunit`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `hunit.exists_left_inv`. Establish `hb' : (b : v.adicCompletion F) * (g : v.adicCompletion F) = 1`. Use `congrArg Subtype.val hb` as an intermediate fact. Simplify using `using this`. Establish `hbv : Valued.v (b : v.adicCompletion F) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 F) (K := F) (v := v)).1 b.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlt : Valued.v ((b : v.adicCompletion F) * (g : v.adicCompletion F)) < 1`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' hbv).trans_lt hv`. Rewrite `hlt` using `[hb', map_one]`. Conclude with `lt_irrefl _ hlt`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : ∃ s ∈ G, ∃ i, s i ≠ 0`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and, ne_eq, not_not] at hcon`. Establish `hL0 : L = ⊥`. Rewrite using `[← hG, Submodule.span_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs`. Use function extensionality and compare the values at `i`. Conclude with `hcon s hs i`. Establish `h1 : (fun _ : Fin n => (1 : E)) ∈ Submodule.span E (L : Set (Fin n → E))` using `hspan ▸ Submodule.mem_top`. Rewrite `h1` using `[hL0, Submodule.bot_coe, Submodule.span_zero_singleton, Submodule.mem_bot]`.
-
-Conclude with `one_ne_zero (congrFun h1 ⟨0, hn⟩)`. Take `⟨s, hsG, i, hsi⟩` from `hne`. Establish `hu : IsUnit (sp (inclE (F` using `F) (v.adicCompletion F) (s i))) := ((isUnit_iff_ne_zero.2 hsi).map (inclE (F := F) (v.adicCompletion F))).map sp`. Establish `ha : (sp (inclE (F` using `F) (v.adicCompletion F) (s i))).1 ≠ 0 := (hu.map (RingHom.fst (v.adicCompletion F) (v.adicCompletion F))).ne_zero`. Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ M (Submodule.fg_span (Set.finite_range _)) hle hjac`.
-
-Establish `hmem : (sp (inclE (F` using `F) (v.adicCompletion F) (s i))).1 ∈ M := Submodule.subset_span ⟨(⟨s, hsG⟩, i), rfl⟩`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Conclude with `ha hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_forall_loc_eq_natCast_smul (v : HeightOneSpectrum (𝓞 F))
     (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)
@@ -164,19 +160,19 @@ theorem not_forall_loc_eq_natCast_smul (v : HeightOneSpectrum (𝓞 F))
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n v sp hsw hdiag g hg L hL hn e he heo hfull`. Establish `hse : sp (sigR σ (v.adicCompletion F) e) = ((sp e).2, (sp e).1)`. Rewrite using `[hsw]`. Both sides reduce to the same expression. Establish `hidem : sp e * sp e = sp e` using `by rw [← map_mul, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `horth : sp e * ((sp e).2, (sp e).1) = 0` using `by rw [← hse, ← map_mul, heo, map_zero]`. Establish `ha : (sp e).1 * (sp e).1 = (sp e).1` using `congrArg Prod.fst hidem`. Establish `hb : (sp e).2 * (sp e).2 = (sp e).2` using `congrArg Prod.snd hidem`. Establish `hab : (sp e).1 * (sp e).2 = 0` using `congrArg Prod.fst horth`. Establish `ha' : (sp e).1 = 0 ∨ (sp e).1 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (sp e).1 * ((sp e).1 - 1) = 0` using `by rw [mul_sub, mul_one, ha, sub_self]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (sub_eq_zero.1 h)`. Establish `hb' : (sp e).2 = 0 ∨ (sp e).2 = 1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Establish `h0 : (sp e).2 * ((sp e).2 - 1) = 0` using `by rw [mul_sub, mul_one, hb, sub_self]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (sub_eq_zero.1 h)`. Apply the tactic sequence `rcases ha' with ha0 | ha1 <;> rcases hb' with hb0 | hb1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Apply the first step, then apply the next step to every resulting obligation.
 
-It suffices to derive a contradiction. Establish `he0 : e = 0` using `sp.injective (by rw [map_zero]; exact Prod.ext ha0 hb0)`. Apply `not_forall_loc_eq_natCast_smul v sp hdiag g hg L hL hn` to reduce the goal to its premises. Introduce `y hy`. Take `⟨z, hz, hyz⟩` from `hfull y hy`.
+It suffices to derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite `hyz` using `[he0, map_zero, sub_zero, sub_zero, one_smul]`. Conclude with `hyz`. Conclude with `Or.inr (Prod.ext ha0 hb1)`. Conclude with `Or.inl (Prod.ext ha1 hb0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. Prove the first alternative. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Rewrite `hab` using `[ha1, hb1, one_mul]`. Conclude with `one_ne_zero hab`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_idempotent_cases :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F), (∀ x, sp (sigR σ (v.adicCompletion F) x) = swapR _ (sp x)) → (∀ a : v.adicCompletion F, sp ((1 : E) ⊗ₜ[F] a) = (a, a)) → ∀ (g : ℕ), (g : 𝓞 F) ∈ v.asIdeal → ∀ (L : Submodule (𝓞 E) (Fin n → E)), IsLat L → 0 < n → ∀ e : E ⊗[F] v.adicCompletion F, e * e = e → e * sigR σ (v.adicCompletion F) e = 0 → (∀ y ∈ loc v L, ∃ z ∈ loc v L, (1 - e - sigR σ (v.adicCompletion F) e) • y = (g : E ⊗[F] v.adicCompletion F) • z) → sp e = (1, 0) ∨ sp e = (0, 1) := by

@@ -11,9 +11,9 @@ open scoped ENNReal NNReal Classical
 namespace GlobalTheory.CompanionTheory.BasePsi
 
 /- English proof (translation)
-Introduce `F _ _ G a hc hs`. Establish `h1 : (a : AF F).1 * ((a⁻¹ : (AF F)ˣ) : AF F).1 = 1` using `congrArg Prod.fst (a.mul_inv)`. Establish `h2 : ((a⁻¹ : (AF F)ˣ) : AF F).1 * (a : AF F).1 = 1` using `congrArg Prod.fst (a.inv_mul)`. Set `m : Ainf F ≃ₜ Ainf F` to `{ toFun := fun x => (a : AF F).1 * x invFun := fun x => ((a⁻¹ : (AF F)ˣ) : AF F).1 * x left_inv := fun x => by simp only [← mul_assoc, h2, one_mul] right_inv := fun x => by simp only [← mul_assoc, h1, one_mul] continuous_toFun := continuous_const.mul continuous_id continuous_invF …`. Set `e : (Unit → Ainf F) ≃ₜ Ainf F` to `(Homeomorph.funUnique Unit (Ainf F)).trans m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `he : phiA G a = G ∘ e`. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `⟨hc.comp e.continuous, hs.comp_homeomorph e⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem phiA_test : ∀ (F : Type) [Field F] [NumberField F] (G : Ainf F → ℝ) (a : (AF F)ˣ), Continuous G → HasCompactSupport G →
     Continuous (phiA G a) ∧ HasCompactSupport (phiA G a) := by

@@ -53,53 +53,49 @@ end GramSpaceAlt
 open GramSpaceAlt
 
 /- English proof (translation)
-Introduce `E _ _ cj hcj hcm w₀ hw₀ Y _ _ _ _ β hpos`. Take `⟨v, hv, hvb⟩` from `phiCMinima_holds E cj hcj hcm w₀ hw₀ Y β hpos`. Take `⟨ι, hι, b0, hG⟩` from `hpos`. Set `_` to `hι`. Use `set B : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ := (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) with hBdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set G : Matrix ι ι ℝ := Matrix.of fun i j => B (b0 i) (b0 j) with hGdef`. Set `cd : InnerProductSpace.Core ℝ (GramSp ι)` to `gramCore G hG`. Set `_ : NormedAddCommGroup (GramSp ι)` to `@InnerProductSpace.Core.toNormedAddCommGroup ℝ _ _ _ _ cd`. Set `_ : InnerProductSpace ℝ (GramSp ι)` to `InnerProductSpace.ofCore cd.toCore`. Set `ψ0 : Y →ₗ[ℤ] (ι → ℝ)` to `{ toFun := fun y i => (b0.repr y i : ℝ) map_add' := fun y z => by funext i; simp map_smul' := fun c y => by funext i; simp }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : Y →ₗ[ℤ] GramSp ι` to `((toG ι).toLinearMap.restrictScalars ℤ).comp ψ0`. Establish `hψ_apply : ∀ y, (toG ι).symm (ψ y) = ψ0 y` using `fun y => rfl`. Establish `key : ∀ y z, B y z = ∑ i, ∑ j, (b0.repr y i : ℝ) * ((b0.repr z j : ℝ) * B (b0 i) (b0 j))`. Introduce `y z`. Rewrite using `[← LinearMap.sum_repr_mul_repr_mul b0 b0 (B := B) y z, Finsupp.sum_fintype _ _ (by simp)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [zsmul_eq_mul]`. Establish `hin : ∀ y z, inner ℝ (ψ y) (ψ z) = B y z`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y z`. Rewrite using `[key]`. Express the relevant statement in the definitionally equal form `dotProduct (ψ0 y) (G *ᵥ ψ0 z) = _`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [ψ0, LinearMap.coe_mk, AddHom.coe_mk, hGdef, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnorm : ∀ y, ‖ψ y‖ ^ 2 = B y y` using `fun y => by`. Rewrite using `[← real_inner_self_eq_norm_sq, hin]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψX : ∀ y, ψ y ∈ Submodule.span ℤ (Set.range (gBasis ι))`. Introduce `y`. Rewrite using `[(gBasis ι).mem_span_iff_repr_mem ℤ]`. Introduce `i`. Use `⟨b0.repr y i, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [gBasis, Basis.map_repr, LinearEquiv.trans_apply, Pi.basisFun_repr, algebraMap_int_eq, eq_intCast]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective ψ`. Introduce `y z h`. Apply `b0.ext_elem` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `h2` using `congrArg (fun x => ((toG ι).symm x) i) h`. Simplify using `only [hψ_apply, ψ0, LinearMap.coe_mk, AddHom.coe_mk] at h2`. Conclude with `h2` after adjusting the coercions. Establish `hsurj : ∀ x ∈ Submodule.span ℤ (Set.range (gBasis ι)), ∃ y, ψ y = x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `h` using `((gBasis ι).mem_span_iff_repr_mem ℤ x).1 hx`. Use `choose c hc using h`. Use `⟨b0.equivFun.symm c, ?_⟩` and prove the remaining obligations. Apply `(toG ι).symm.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hψ_apply]`. Simplify using `only [ψ0, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[show b0.repr (b0.equivFun.symm c) i = c i from by`. Rewrite using `[← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `hc i` as an intermediate fact. Simplify using `only [gBasis, Basis.map_repr, LinearEquiv.trans_apply, Pi.basisFun_repr, algebraMap_int_eq, eq_intCast] at this`. Conclude with `this`. Set `eX : Y ≃ₗ[ℤ] Submodule.span ℤ (Set.range (gBasis ι))` to `LinearEquiv.ofBijective (ψ.codRestrict _ hψX) ⟨fun y z h => hinj (congrArg Subtype.val h), fun x => by`. Take `⟨y, hy⟩` from `hsurj x x.2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨y, Subtype.ext hy⟩⟩`. Establish `heX : ∀ x, ψ (eX.symm x) = (x : GramSp ι)` using `fun x => congrArg Subtype.val (eX.apply_symm_apply x)`. Establish `hdY : finrank ℤ Y = Fintype.card ι` using `finrank_eq_card_basis b0`. Establish `hdV : finrank ℝ (GramSp ι) = Fintype.card ι` using `finrank_eq_card_basis (gBasis ι)`. Establish `hd : finrank ℤ Y = finrank ℝ (GramSp ι)` using `hdY.trans hdV.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdR : ((finrank ℝ (GramSp ι) : ℕ) : ℝ) = ((finrank ℤ Y : ℕ) : ℝ)` using `by rw [hd]`. Establish `hvR : LinearIndependent ℝ fun i => ψ (v i)`. Set `e : ι ≃ Fin (finrank ℤ Y)` to `Fintype.equivFinOfCardEq hdY.symm`. Set `Mz : Matrix (Fin (finrank ℤ Y)) (Fin (finrank ℤ Y)) ℤ` to `Matrix.of fun a i => b0.repr (v i) (e.symm a)`. Establish `hMz : Mz.det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hc0` to reduce the goal to its premises. Establish `hsum : ∑ i, c i • v i = 0`. Apply `b0.ext_elem` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `h1` using `congrFun hc (e k)`. Simplify using `only [Mz, mulVec, dotProduct, Matrix.of_apply, Equiv.symm_apply_apply, Pi.zero_apply] at h1`. Simplify using `only [map_sum, map_zsmul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Rewrite using `[← h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hv c hsum i`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hdet : ((Int.castRingHom ℝ).mapMatrix Mz).det = 0`. Use `Matrix.exists_mulVec_eq_zero_iff.1 ⟨g, fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hi (congrFun h i)`. Use function extensionality and compare the values at `a`. Establish `h1` using `congrArg (fun x => ((toG ι).symm x) (e.symm a)) hg`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hψ_apply, map_zero, Pi.zero_apply, ψ0, LinearMap.coe_mk, AddHom.coe_mk] at h1`. Simplify using `only [mulVec, dotProduct, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Mz, eq_intCast, Pi.zero_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite `hdet` using `[← RingHom.map_det, eq_intCast, Int.cast_eq_zero]`. Conclude with `hMz hdet`. Set `vX : Fin (finrank ℝ (GramSp ι)) → GramSp ι` to `fun i => ψ (v (Fin.cast hd.symm i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hvX : LinearIndependent ℝ vX` using `hvR.comp _ (Fin.cast_injective _)`. Take `⟨b, hb1, hb2⟩` from `ReciprocityTheory.ChartRestriction.G.H1.reducedBasis_holds (GramSp ι) (Submodule.span ℤ (Set.range (gBasis ι))) ((|(NumberField.discr E : ℝ)| ^ ((2 : ℝ) / Module.finrank ℚ E)) / (2 * Module.finrank ℚ E) * (Module.finrank ℤ Y : ℝ) ^ 2 * phiC cj β) vX hvX (fun i => hψX _) (fun i => …`. Use `⟨(b.map eX.symm).reindex (finCongr hd.symm), fun j => ?_, fun j z => ?_⟩` and prove the remaining obligations. Establish `hbj : ψ (((b.map eX.symm).reindex (finCongr hd.symm)) j) = (b (Fin.cast hd j) : GramSp ι)`. Rewrite using `[Basis.reindex_apply, Basis.map_apply, heX]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← hnorm, hbj]`. Establish `h1` using `hb1 (Fin.cast hd j)`. Rewrite `h1` using `[hdR]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hbj : ψ (((b.map eX.symm).reindex (finCongr hd.symm)) j) = (b (Fin.cast hd j) : GramSp ι)`. Rewrite using `[Basis.reindex_apply, Basis.map_apply, heX]`. Both sides reduce to the same expression. Rewrite using `[← hin, hbj, ← hnorm]`. Establish `h2` using `hb2 (Fin.cast hd j) (ψ z) (hψX z)`.
-
-Rewrite `h2` using `[hdR]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem gram_form_phi_holds : GramFormPhiStatement := by
   classical

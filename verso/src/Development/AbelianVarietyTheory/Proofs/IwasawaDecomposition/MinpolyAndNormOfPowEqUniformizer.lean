@@ -7,7 +7,7 @@ namespace GlobalTheory.TameEis
 open Polynomial
 
 /- English proof (translation)
-Establish `h : normV v = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h' => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h')`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h' => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -20,21 +20,19 @@ theorem two_le_normV (E : Type) [Field E] [NumberField E] (v : HeightOneSpectrum
   omega
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ v ϖ hmem hnot π hπ`. Establish `hq` using `two_le_normV E v`. Use `set n := normV v - 1 with hn`. Establish `hn1 : 0 < n` using `by omega`. Establish `hmon : (X ^ n - C ϖ : (𝓞 E)[X]).Monic` using `monic_X_pow_sub_C ϖ hn1.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (X ^ n - C ϖ : (𝓞 E)[X]).natDegree = n` using `natDegree_X_pow_sub_C`. Establish `hEis : (X ^ n - C ϖ : (𝓞 E)[X]).IsEisensteinAt v.asIdeal`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmon.leadingCoeff]`. Conclude with `fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Rewrite `hm` using `[hdeg]`. Rewrite using `[coeff_sub, coeff_X_pow, coeff_C, if_neg hm.ne]`. Distinguish the cases in `h0 : m = 0`. Substitute `h0` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using v.asIdeal.neg_mem_iff.2 hmem`. Simplify using `[h0]`. Rewrite using `[coeff_sub, coeff_X_pow, coeff_C, if_neg hn1.ne, if_pos rfl, zero_sub]`. Rewrite using `[Ideal.neg_mem_iff]` and apply the resulting hypothesis. Establish `hirr : Irreducible (X ^ n - C ϖ : (𝓞 E)[X])` using `hEis.irreducible v.isPrime hmon.isPrimitive (by rw [hdeg]; exact hn1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : (X ^ n - C ϖ : (𝓞 E)[X]).map (algebraMap (𝓞 E) E) = X ^ n - C (ϖ : E)`. Simplify using `[Polynomial.map_sub]`. Establish `hirrE : Irreducible (X ^ n - C (ϖ : E))`. Rewrite using `[← hmap]`. Conclude with `(hmon.irreducible_iff_irreducible_map_fraction_map (K := E)).1 hirr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmonE : (X ^ n - C (ϖ : E)).Monic` using `monic_X_pow_sub_C _ hn1.ne'`. Establish `hroot : aeval π (X ^ n - C (ϖ : E)) = 0`. Simplify using `[hπ]`. Establish `hmin : minpoly E π = X ^ n - C (ϖ : E)` using `(minpoly.eq_of_irreducible_of_monic hirrE hroot hmonE).symm`. Use `⟨hmin, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : IsIntegral E π` using `⟨_, hmonE, hroot⟩`. Rewrite using `[← IntermediateField.adjoin.powerBasis_gen hx, Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly, IntermediateField.adjoin.powerBasis_gen hx, IntermediateField.minpoly_gen, IntermediateField.adjoin.powerBasis_dim, hmin, natDegree_X_pow_sub_C]`. Rewrite using `[coeff_sub, coeff_X_pow, coeff_C, if_neg hn1.ne, if_pos rfl, zero_sub]`. Establish `: normV v = n + 1` using `by omega`. Rewrite using `[this, pow_succ]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem minpoly_and_norm_of_pow_eq_uniformizer : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (v : HeightOneSpectrum (𝓞 E)) (ϖ : 𝓞 E),
     ϖ ∈ v.asIdeal → ϖ ∉ v.asIdeal ^ 2 → ∀ π : Ω, π ^ (normV v - 1) = algebraMap E Ω (ϖ : E) →

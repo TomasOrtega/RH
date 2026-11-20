@@ -4,25 +4,23 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 /- English proof (translation)
-Introduce `hIC hLC E _ _ _ n π w hw`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨B, σ, ⟨-, f, hf0, hfV, hf⟩, hB⟩`. Establish `hker : LinearMap.ker f = ⊥`. Use `(((GlobalTheory.CuspRep.isIrreducible_iff σ.ρ).1 σ.irred).2 (LinearMap.ker f) (fun g v hv => ?_)).resolve_right fun h => hf0 (LinearMap.ker_eq_top.1 h)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Establish `h1` using `hf ⟨(locF hw g).1, locF_mem hw g⟩ v`. Simplify using `only [MonoidHom.comp_apply, Subgroup.subtype_apply, cLoc_locF] at h1`. Rewrite using `[h1, hv, map_zero]`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hB.1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfix` using `GlobalTheory.LGrp.mem_fixed.1 hv`. Establish `hφ0 : f v ≠ 0` using `fun h => hv0 (LinearMap.ker_eq_bot.1 hker (h.trans (map_zero f).symm))`. Establish `key : ∀ x ∈ locU n w, cLoc w x ∈ GlobalTheory.LFun.KGL w n → RU E n x (f v) = f v`. Introduce `x hx hk`. Establish `h1` using `hf ⟨x, hx⟩ v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [MonoidHom.comp_apply, Subgroup.subtype_apply] at h1`. Rewrite using `[← h1, hfix _ hk]`. Take `⟨-, -, -, -, hcc, hloc⟩` from `hLC E n w hw`. Use `⟨⟨f v, hfV v, hφ0, fun x hx h => ?_⟩, ⟨f v, hfV v, hφ0, fun x hx h => ?_⟩⟩` and prove the remaining obligations. Simplify using `using key x hx h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hx` using `[hloc]`. Establish `h2` using `hIC E n (ofU ⟨x, (Subgroup.mem_inf.1 hx).1⟩) (cj w) (by rw [sim_ofU]; exact one_mem _) (by rw [comp_ofU]; exact h)`. Rewrite `h2` using `[hcc, comp_ofU]`. Simplify using `using key x hx h2`. Introduce and unpack `J χ ⟨φ, hφ, h0, hact⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Establish `hlev` using `(π.isAut.aut φ hφ).level`. Establish `hc : Continuous fun k : J => (locF hw k.1 : finU E n)`. Establish `h1 : Continuous fun k : GLw n w => (locF hw k : finU E n)` using `Continuous.subtype_mk (continuous_subtype_val.comp (locE hw).symm.continuous) _`. Conclude with `h1.comp continuous_subtype_val`. Establish `hset : {k : J | χ k = 1} = (fun k : J => (locF hw k.1 : finU E n)) ⁻¹' {k : finU E n | RU E n k φ = φ}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Establish `hk : cLoc w (locF hw k.1).1 ∈ J` using `by rw [cLoc_locF]; exact k.2`. Establish `h1` using `hact (locF hw k.1).1 (locF_mem hw k.1) hk`. Establish `h2 : (⟨cLoc w (locF hw k.1).1, hk⟩ : J) = k` using `Subtype.ext (cLoc_locF hw k.1)`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `h`. Establish `h3 : ((χ k : ℂˣ) : ℂ) = 1` using `smul_left_injective ℂ h0 (by simpa using h)`. Conclude with `Units.ext h3`. Rewrite using `[hset]`.
-
-Conclude with `hlev.preimage hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pSphType_of :
     UpperTheory.Gal.CertificateRingHomMap.IntConj → UpperTheory.Gal.CertificateRingHomMap.LocComm → UpperTheory.Gal.CertificateRingHomMap.SphType := by

@@ -16,9 +16,9 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hP`. Consider the case `succ k ih`. Establish `h` using `(siegelSpaceAlgebra_holds r X (la + k • L) L 0).2.1 (P * Q ^ k) ih Q hQ`. Rewrite using `[pow_succ, ← mul_assoc, succ_nsmul, ← add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem ss_mul_pow {r : ℕ} (X : Data E r) {la L : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ}
     (hP : P ∈ X.SS la) (hQ : X.IsBddSec L Q) (k : ℕ) : P * Q ^ k ∈ X.SS (la + k • L) := by

@@ -13,29 +13,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ κ _ L hLo hLc K hK`. Establish `hcont : ∀ k : κ → FiniteAdeleRing (𝓞 F) F, Continuous fun w : κ → FiniteAdeleRing (𝓞 F) F => w - k` using `fun k => continuous_id.sub continuous_const`. Establish `hmk : ∀ a b : κ → FiniteAdeleRing (𝓞 F) F, (QuotientAddGroup.mk a : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ L) = QuotientAddGroup.mk b ↔ a - b ∈ L`. Introduce `a b`. Rewrite using `[QuotientAddGroup.eq, ← neg_mem_iff, neg_add, neg_neg, ← sub_eq_add_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : (QuotientAddGroup.mk '' K : Set ((κ → FiniteAdeleRing (𝓞 F) F) ⧸ L)).Finite`. Take `⟨t, -, hcov⟩` from `hK.elim_nhds_subcover (fun k => {w | w - k ∈ L}) (fun k _ => (hLo.preimage (hcont k)).mem_nhds (by simp))`. Use `(t.finite_toSet.image QuotientAddGroup.mk).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Take `⟨k, hk, hwk⟩` from `Set.mem_iUnion₂.mp (hcov hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, hk, ((hmk w k).2 hwk).symm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨m, e, he, hS⟩ : ∃ (m : ℕ) (e : Fin m → (κ → FiniteAdeleRing (𝓞 F) F) ⧸ L), Function.Injective e ∧ ∀ q, q ∈ (QuotientAddGroup.mk '' K : Set ((κ → FiniteAdeleRing (𝓞 F) F) ⧸ L)) ↔ ∃ i, e i = q := by`. Use `⟨hfin.toFinset.card, fun i => (hfin.toFinset.equivFin.symm i).1, Subtype.val_injective.comp hfin.toFinset.equivFin.symm.injective, fun q => ⟨fun hq => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨hfin.toFinset.equivFin ⟨q, hfin.mem_toFinset.2 hq⟩, by simp⟩`. Introduce and unpack `⟨i, rfl⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `hfin.mem_toFinset.1 (hfin.toFinset.equivFin.symm i).2`. Use `choose y hy using fun i => QuotientAddGroup.mk_surjective (e i)`. Use `⟨m, fun i w => if (QuotientAddGroup.mk w : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ L) = e i then 1 else 0, y, fun i => ?_, fun i j => ?_, ?_⟩` and prove the remaining obligations. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ⟨{w | w - x ∈ L}, hLo.preimage (hcont x), by simp, fun x' hx' => ?_⟩, HasCompactSupport.intro' (K := {w | w - y i ∈ L}) ((Homeomorph.subRight (y i)).isCompact_preimage.2 hLc) ((AddSubgroup.isClosed_of_isOpen L hLo).preimage (hcont …` and prove the remaining obligations. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[(hmk x' x).2 hx']`. Simplify using `only`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hw ((hmk w (y i)).1 (h.trans (hy i).symm))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only`. Rewrite using `[hy j]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (fun h' => h (he h').symm), if_neg h]`. Introduce `Ψ hΨ hper hsupp choose f hf using fun i => GlobalTheory.WeilCont.exists_slice F hΨ (y i)`. Use `⟨f, funext fun z => ?_⟩` and prove the remaining obligations. Take `⟨x, w, rfl⟩ : ∃ x w, z = GlobalTheory.WeilCont.adeleJoin F x w` from `⟨fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (z i).1, fun i => (z i).2,`. Use function extensionality and compare the values at `fun i => Prod.ext (by simp only [GlobalTheory.WeilCont.adeleJoin, RingEquiv.symm_apply_apply]) rfl⟩`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.sum_apply, GlobalTheory.WeilCont.pureA_adeleJoin, ← hf]`. Distinguish the cases in `hw : (QuotientAddGroup.mk w : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ L) ∈ QuotientAddGroup.mk '' K`. Take `⟨i0, hi0⟩` from `(hS _).1 hw`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[if_pos hi0.symm, mul_one, hf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hL : w - y i0 ∈ L` using `(hmk w (y i0)).1 (hi0.symm.trans (hy i0).symm)`. Rewrite using `[← hper _ hL (GlobalTheory.WeilCont.adeleJoin F x (y i0))]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.WeilCont.adeleJoin, Pi.add_apply, Pi.sub_apply, Pi.zero_apply, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Prod.ext (add_zero _).symm (add_sub_cancel _ _).symm`. Introduce `j _ hj`. Rewrite using `[if_neg (fun h => hj (he (h.symm.trans hi0.symm))), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Ψ (GlobalTheory.WeilCont.adeleJoin F x w) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hw ⟨w, hsupp _ h, rfl⟩`. Rewrite using `[h0]`. Use `(Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations.
-
-Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Conclude with `hw (h ▸ (hS _).2 ⟨i, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilCont.schA_periodic_finite_cosets : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (L : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)), IsOpen (L : Set (κ → FiniteAdeleRing (𝓞 F) F)) →

@@ -7,16 +7,16 @@ set_option autoImplicit false
 namespace GlobalTheory.FlagChi
 
 /- English proof (translation)
-The claim follows from `RingHom.mem_range.symm`.
+A detailed English derivation is pending.
 -/
 theorem regAt_iff_mem_range {Z : Scheme.{0}} [IsIntegral Z] (x : Z) (f : Z.functionField) :
     RegAt x f ↔ f ∈ (algebraMap (Z.presheaf.stalk x) Z.functionField).range :=
   RingHom.mem_range.symm
 
 /- English proof (translation)
-Use `choose m hm using hM`. Establish `e : M = (Matrix.of m).map (algebraMap (Z.presheaf.stalk x) Z.functionField)`. Use extensionality with `a b`. Conclude with `(hm a b).symm`. Establish `hadj : ∀ a b, RegAt x (M.adjugate a b)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Rewrite using `[e, ← RingHom.mapMatrix_apply, ← RingHom.map_adjugate]`. Conclude with `⟨_, rfl⟩`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Conclude with `hd.inv.regAt.mul (hadj i j)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_inv_entry {Z : Scheme.{0}} [IsIntegral Z] {N : ℕ} (x : Z)
     (M : Matrix (Fin N) (Fin N) Z.functionField) (hM : ∀ a b, RegAt x (M a b))
@@ -32,23 +32,19 @@ theorem regAt_inv_entry {Z : Scheme.{0}} [IsIntegral Z] {N : ℕ} (x : Z)
   exact hd.inv.regAt.mul (hadj i j)
 
 /- English proof (translation)
-Introduce `Z _ N A l L r _ hB x v hv hreg c hc`. Take `⟨B, hBt, hMreg, hMdet, hBl⟩` from `hB x`. Use `set M := A * B with hMdef`. Establish `hdetM : M.det ≠ 0` using `hMdet.ne_zero`. Establish `hdetA : A.det ≠ 0` using `fun h => hdetM (by rw [hMdef, Matrix.det_mul, h, zero_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdetB : B.det ≠ 0` using `fun h => hdetM (by rw [hMdef, Matrix.det_mul, h, mul_zero])`. Use `haveI : Invertible B := Matrix.invertibleOfIsUnitDet B (isUnit_iff_ne_zero.2 hdetB)`. Use `haveI : Invertible A := Matrix.invertibleOfIsUnitDet A (isUnit_iff_ne_zero.2 hdetA)`. Use `set w := M⁻¹ *ᵥ v with hw`. Use `set a := A⁻¹ *ᵥ v with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMinv : M⁻¹ = B⁻¹ * A⁻¹` using `Matrix.mul_inv_rev A B`. Establish `haw : a = B *ᵥ w`. Rewrite using `[hw, hMinv, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Matrix.mul_inv_of_invertible, Matrix.one_mul]`. Establish `hwa : w = B⁻¹ *ᵥ a` using `by rw [hw, hMinv, ha, Matrix.mulVec_mulVec]`. Establish `hwreg : ∀ k, RegAt x (w k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hw, regAt_iff_mem_range]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Subring.sum_mem _ fun j _ => Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `exact (regAt_iff_mem_range _ _).1 (regAt_inv_entry x M hMreg hMdet k j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(regAt_iff_mem_range _ _).1 (hreg j)`. Establish `hBinv : (B⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hBt`. Establish `hwz : ∀ k : Fin N, l < k → w k = 0`. Introduce `k hk`. Rewrite using `[hwa]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `lt_or_ge j k with hjk | hjk` into its components or cases. Rewrite using `[hBinv hjk, zero_mul]`. Establish `: (l : ℕ) + 1 ≤ (j : ℕ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `lt_of_lt_of_le hk hjk` as an intermediate fact. Conclude with `this`. Rewrite using `[show a j = 0 from hv j this, mul_zero]`. Establish `hal : a l = B l l * w l`. Rewrite using `[haw]`.
-
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_eq_single l (fun k _ hkl => ?_) (fun h => (h (Finset.mem_univ _)).elim)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hkl with hk | hk` into its components or cases. Rewrite using `[hBt hk, zero_mul]`. Rewrite using `[hwz k hk, mul_zero]`.
-
-Use `show RegAt x (a l * r c)`. Rewrite using `[hal, mul_right_comm]`. Conclude with `(hBl c hc).regAt.mul (hwreg l)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_regular :
     ∀ (Z : Scheme.{0}) [IsIntegral Z] (N : ℕ) (A : Matrix (Fin N) (Fin N) Z.functionField) (l : Fin N) (L : LB Z) (r : L.ι → Z.functionFieldˣ), IsUnit A.det → (∀ z : Z, ∃ B : Matrix (Fin N) (Fin N) Z.functionField, B.BlockTriangular id ∧ (∀ a b, RegAt z ((A * B) a b)) ∧ UnitAt z (A * B).det ∧ ∀ c, z ∈ L.U c → UnitAt z (B l l * r c)) → ∀ (x : Z) (v : Fin N → Z.functionField), v ∈ stepSub A⁻¹ ((l : ℕ) + 1) → (∀ a, RegAt x (v a)) → ∀ c, x ∈ L.U c → RegAt x ((A⁻¹ *ᵥ v) l * r c) := by

@@ -20,11 +20,11 @@ namespace GlobalTheory.BKLim.BetaBd
 variable {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} {N d : ℕ} {ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]}
 
 /- English proof (translation)
-Use `⟨fun p q => ?_, fun g p q => ?_⟩` and prove the remaining obligations. Establish `: ((l : bk.S) ^ j • β - (l : bk.S) ^ (k + j) • (1 : Matrix (Fin d) (Fin d) bk.S)) p q = (l : bk.S) ^ j * (β - (l : bk.S) ^ k • (1 : Matrix (Fin d) (Fin d) bk.S)) p q`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_mul_of_dvd_right (hβ.1 p q) _`. Establish `h2 : ((l : bk.S) ^ j • β).map bk.ev = (l : Ainf l) ^ j • β.map bk.ev`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, map_natCast]`. Establish `h1 : (((l : bk.S) ^ j • β).map bk.ev).map (Per.σA (g : GQ l)) = (l : Ainf l) ^ j • (β.map bk.ev).map (Per.σA (g : GQ l))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, map_natCast]`. Rewrite using `[h1, h2, Matrix.mul_smul, ← smul_sub, Matrix.smul_apply, smul_eq_mul]`. Conclude with `dvd_mul_of_dvd_right (hβ.2 g p q) _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBeta_scale {bk : BK K} (F : Frame bk N d ρ) {m k : ℕ} {β : Matrix (Fin d) (Fin d) bk.S}
     (hβ : F.IsBeta m k β) (j : ℕ) : F.IsBeta m (k + j) ((l : bk.S) ^ j • β) := by
@@ -46,31 +46,29 @@ end GlobalTheory.BKLim.BetaBd
 open GlobalTheory.BKLim.BetaBd in
 
 /- English proof (translation)
-Introduce `l _ K bk m`. Take `⟨g, z, ⟨w, hw, hzw⟩, hz⟩` from `GlobalTheory.T.exists_galois_elem_cyclotomic_period_not_root_of_unity l K bk`. Establish `hu : ∀ i, 1 ≤ i → Per.θ l w ^ i - 1 ≠ 0`. Introduce `i hi h`. Apply `hz i hi` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : ((Per.θ l w : OC l) : ℂ_[l]) ^ i = 1`. Use `congrArg (fun t : OC l => (t : ℂ_[l])) (sub_eq_zero.1 h)` as an intermediate fact. Simplify using `using this`. Rewrite `hzw` using `[(thetaD_props l).2.2.2.1 w]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `choose a ha using fun i : {i : ℕ // 1 ≤ i} => exists_dvd_bound _ (hu i.1 i.2)`. Set `A : ℕ → ℕ` to `fun i => if h : 1 ≤ i then a ⟨i, h⟩ else 0`. Set `S : ℕ → ℕ` to `fun i => ∑ j ∈ Finset.range i, A j`. Establish `hSs : ∀ i, S (i + 1) = S i + A i` using `fun i => Finset.sum_range_succ _ _`. Establish `hSm : ∀ i j, i ≤ j → S i ≤ S j` using `fun i j h => Finset.sum_le_sum_of_subset (Finset.range_mono h)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S m, fun N d ρ F k β hβ => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Conclude with `⟨(l : bk.S) ^ S 0 • 1, fun p q => by simp, fun g p q => by simp⟩`. Distinguish the cases in `hk : k < S m`. Use `⟨(l : bk.S) ^ (S m - k) • β, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `isBeta_scale F hβ (S m - k)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' hk.le]`. Then use the resulting hypothesis. Use `push_neg at hk`. Establish `key : ∀ i, 1 ≤ i → i ≤ m → ∃ γ : Matrix (Fin d) (Fin d) bk.S, ∀ p q, bk.E ^ i ∣ (β - (l : bk.S) ^ (k - S i) • γ) p q`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i with`. Consider the case `zero => intro h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ i ih`. Introduce `_ him`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Nat.eq_zero_or_pos i with rfl | hi0` into its components or cases. Use `⟨(l : bk.S) ^ S 1 • 1, fun p q => ?_⟩` and prove the remaining obligations. Establish `hS : S 1 ≤ k` using `le_trans (hSm 1 m him) hk`. Rewrite using `[smul_smul, ← pow_add, Nat.sub_add_cancel hS, pow_one]`. Conclude with `hβ.1 p q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨γ, hγ⟩` from `ih hi0 (by omega)`. Take `⟨δ, hδ1, hδ2⟩` from `GlobalTheory.T.breuilKisin_beta_next_coeff_theta_mem l K bk N d ρ F g w hw m k β hβ i (k - S i) him γ hγ`. Establish `hAi : A i = a ⟨i, hi0⟩` using `dif_pos hi0`. Establish `hS1 : S (i + 1) ≤ k` using `le_trans (hSm _ _ him) hk`. Establish `hle : a ⟨i, hi0⟩ ≤ k - S i` using `by rw [hSs] at hS1; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hexp : k - S i - a ⟨i, hi0⟩ = k - S (i + 1)` using `by rw [hSs, hAi]; omega`. Establish `hlift : ∀ p q, ∃ s' t : bk.S, δ p q = (l : bk.S) ^ (k - S (i + 1)) * s' + bk.E * t`. Introduce `p q`. Take `⟨y, hy⟩` from `hδ2 p q`. Take `⟨y', hy'⟩` from `ha ⟨i, hi0⟩ _ y _ hy hle`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hy'` using `[hexp]`. Conclude with `GlobalTheory.T.exists_primePow_dvd_mod_eisenstein_of_theta l K bk _ _ y' hy'`. Use `choose δ' t ht using hlift`. Use `⟨(l : bk.S) ^ A i • γ + bk.E ^ i • Matrix.of δ', fun p q => ?_⟩` and prove the remaining obligations. Establish `hpow : (l : bk.S) ^ (k - S (i + 1)) * (l : bk.S) ^ A i = (l : bk.S) ^ (k - S i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Rewrite `hS1`, the goal using `[hSs]`. Use linear arithmetic over natural numbers and integers. Establish `e : (β - (l : bk.S) ^ (k - S (i + 1)) • ((l : bk.S) ^ A i • γ + bk.E ^ i • Matrix.of δ')) p q = (β - (l : bk.S) ^ (k - S i) • γ - bk.E ^ i • δ) p q + bk.E ^ (i + 1) * t p q`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]`. Take the linear combination `(bk.E ^ i) * ht p q - γ p q * hpow`. Rewrite using `[e]`. Conclude with `dvd_add (hδ1 p q) (dvd_mul_right _ _)`. Take `⟨γ, hγ⟩` from `key m hm le_rfl`.
-
-Use `⟨γ, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.breuilKisin_isBeta_sub_of_lpow_smul l K bk N d ρ F m k (k - S m) β γ hβ hm (Nat.sub_le k (S m)) hγ` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self hk]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BKLim.beta_bdd_denominators : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (m : ℕ), ∃ c : ℕ, ∀ (N d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (F : Frame bk N d ρ) (k : ℕ) (β : Matrix (Fin d) (Fin d) (bk.S)), F.IsBeta m k β → ∃ β', F.IsBeta m c β' := by
   intro l _ K bk m

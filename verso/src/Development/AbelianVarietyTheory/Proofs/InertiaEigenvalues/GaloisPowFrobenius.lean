@@ -15,23 +15,23 @@ namespace GlobalTheory.FrobAction
 open GlobalTheory.BKReal
 
 /- English proof (translation)
-Introduce `l hl a _ g`. Take `⟨z, ω, hω, hz, -⟩` from `exists_gen l a`. Establish `h1` using `one_lt_pow_l l a`. Establish `hmem : ∀ y : Fq l a, Per.σF g (Fq.val l a y) ∈ resSub l a` using `fun y => by`. Rewrite using `[mem_resSub, ← map_pow, ← map_pow, Fq.pow_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : Fq l a →+* Fq l a` to `((Per.σF g).comp (Fq.val l a)).codRestrict (resSub l a) hmem`. Establish `hφ : ∀ y, Fq.val l a (φ y) = Per.σF g (Fq.val l a y)` using `fun _ => rfl`. Use `letI : Algebra (ZMod l) (Fq l a) := ZMod.algebra _ _`. Use `haveI : Fintype (Fq l a) := Fintype.ofFinite _`. Set `ψ : Fq l a →ₐ[ZMod l] Fq l a` to `{ φ with commutes' := fun r => by haveI : NeZero l := ⟨hl.out.ne_zero⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `ZMod.natCast_zmod_surjective r`. Simplify using `only [RingHom.toMonoidHom_eq_coe, OneHom.toFun_eq_coe, MonoidHom.toOneHom_coe, MonoidHom.coe_coe, map_natCast] }`. Establish `hb : Function.Bijective ψ` using `Finite.injective_iff_bijective.1 ψ.toRingHom.injective`. Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow (ZMod l) (Fq l a)).2 (AlgEquiv.ofBijective ψ hb)`. Establish `hfr : ∀ (k : ℕ) (y : Fq l a), (FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod l) (Fq l a) ^ k) y = y ^ l ^ k` using `fun k y => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, FiniteField.frobeniusAlgEquivOfAlgebraic_apply, ZMod.card, ← pow_mul, ← pow_succ]`. Establish `hφz : φ z = z ^ l ^ (n : ℕ)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun e : Fq l a ≃ₐ[ZMod l] Fq l a => e z) hn` as an intermediate fact. Simplify using `only [hfr] at this`. Conclude with `this.symm`. Establish `hrank : Module.finrank (ZMod l) (Fq l a) = a`. Establish `h2` using `Module.card_eq_pow_finrank (K := ZMod l) (V := Fq l a)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[ZMod.card, ← Nat.card_eq_fintype_card, card_Fq]`. Conclude with `(Nat.pow_right_injective hl.out.two_le h2).symm`. Establish `key : ∀ y : OCb l, ((PreTilt.untilt (Per.σF g y) : Per.OC l) : ℂ_[l]) = Per.σC g ((PreTilt.untilt y : Per.OC l) : ℂ_[l])` using `fun y => by`. Rewrite using `[GlobalTheory.RingBasics.untilt_σF]`. Conclude with `GlobalTheory.RingIface.sigO_coe l g _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hu` using `GlobalTheory.MemLoc.IsTiltOf.untilt_eq hz`. Establish `hgω : g ω = ω ^ l ^ (n : ℕ)`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Establish `h3` using `key (Fq.val l a z)`. Rewrite `h3` using `[← hφ, hφz, map_pow, map_pow, SubmonoidClass.coe_pow, hu, GlobalTheory.RingBasics.σC_coe]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Conclude with `h3.symm`. Use `⟨((n : ℕ) : ZMod a), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hval : (((n : ℕ) : ZMod a)).val = n` using `ZMod.val_natCast_of_lt (lt_of_lt_of_eq n.2 hrank)`. Rewrite using `[hval]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Rewrite using `[map_zero, zero_pow (pow_pos hl.out.pos _).ne']`. Establish `h4 : x ^ (l ^ a - 1) = 1` using `mul_right_cancel₀ hx0 (by rw [← pow_succ, Nat.sub_add_cancel h1.le, hx, one_mul]) haveI : NeZero (l ^ a - 1) := ⟨by omega⟩`. Take `⟨k, -, rfl⟩` from `hω.eq_pow_of_pow_eq_one h4`. Rewrite using `[map_pow, hgω, ← pow_mul, ← pow_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem galois_pow_frobenius : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (g : GQ l),
     ∃ m : ZMod a, ∀ x : Om l, x ^ l ^ a = x → g x = x ^ l ^ m.val := by
@@ -94,7 +94,7 @@ theorem galois_pow_frobenius : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a]
 end GlobalTheory.FrobAction
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FrobAction.galois_pow_frobenius`.
+A detailed English derivation is pending.
 -/
 example : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (g : GQ l), ∃ m : ZMod a, ∀ x : Om l, x ^ l ^ a = x → g x = x ^ l ^ m.val :=
   GlobalTheory.FrobAction.galois_pow_frobenius

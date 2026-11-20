@@ -8,7 +8,7 @@ open Formalism.BasicNotions
 namespace Formalism.L2.Theta
 
 /- English proof (translation)
-Introduce `W P Q hs hsig μ hμ 𝓕 h𝓕`. Conclude with `((h.volTie W P Q hs hsig).2 μ hμ).2 𝓕 h𝓕`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem VolTieG.hermVolTied {D : D7} (h : VolTieG D) : Formalism.L2.Herm.VolumeCompatible D := by
   intro W P Q hs hsig μ hμ 𝓕 h𝓕

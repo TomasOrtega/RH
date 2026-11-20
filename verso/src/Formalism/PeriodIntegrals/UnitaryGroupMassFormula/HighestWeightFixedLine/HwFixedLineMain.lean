@@ -17,9 +17,9 @@ def spec (τ : ι) (y : ι × Fin n × Fin n → ℂ) : Pol ℂ ι n →ₐ[ℂ]
   aeval fun v => if v.1 = τ then X v.2 else C (y v)
 
 /- English proof (translation)
-Establish `h : (aeval z).comp (spec τ y) = aeval (fun v : ι × Fin n × Fin n => if v.1 = τ then z v.2 else y v)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Apply the tactic sequence `by_cases hv : v.1 = τ <;> simp [spec, hv]`. Use `congrArg (fun φ => φ P) h` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify `this` using `[MvPolynomial.coe_aeval_eq_eval]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eval_spec (τ : ι) (y : ι × Fin n × Fin n → ℂ) (z : Fin n × Fin n → ℂ) (P : Pol ℂ ι n) :
     eval z (spec τ y P) = eval (fun v => if v.1 = τ then z v.2 else y v) P := by
@@ -32,13 +32,13 @@ theorem eval_spec (τ : ι) (y : ι × Fin n × Fin n → ℂ) (z : Fin n × Fin
   simpa [MvPolynomial.coe_aeval_eq_eval] using this
 
 /- English proof (translation)
-Unfold `spec Formalism.GradedWeylDivisibility.blockEmb`. Rewrite using `[aeval_rename]`. Use `split_ifs with h`. Substitute `h` using the available equality. Establish `: ((fun v : ι × Fin n × Fin n => if v.1 = σ then X v.2 else C (y v)) ∘ fun v => (σ, v)) = X`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[this, aeval_X_left_apply]`. Establish `: ((fun v : ι × Fin n × Fin n => if v.1 = τ then X v.2 else C (y v)) ∘ fun v => (σ, v)) = fun w => C (y (σ, w))`. Use function extensionality and compare the values at `w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[this]`. Establish `hh : (aeval fun w : Fin n × Fin n => (C (y (σ, w)) : MvPolynomial (Fin n × Fin n) ℂ)) = (Algebra.ofId ℂ (MvPolynomial (Fin n × Fin n) ℂ)).comp (aeval fun w => y (σ, w))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[MvPolynomial.algebraMap_eq]`. Rewrite using `[hh, AlgHom.comp_apply]`. Simplify using `[MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spec_blockEmb (τ σ : ι) (y : ι × Fin n × Fin n → ℂ) (F : MvPolynomial (Fin n × Fin n) ℂ) :
     spec τ y (Formalism.GradedWeylDivisibility.blockEmb ℂ σ F) = if σ = τ then F else C (eval (fun w => y (σ, w)) F) := by
@@ -62,9 +62,9 @@ theorem spec_blockEmb (τ σ : ι) (y : ι × Fin n × Fin n → ℂ) (F : MvPol
     simp [MvPolynomial.algebraMap_eq]
 
 /- English proof (translation)
-Use `⟨∏ σ ∈ Finset.univ.erase τ, eval (fun w => y (σ, w)) (f σ), ?_⟩` and prove the remaining obligations. Unfold `ten`. Rewrite using `[map_prod, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ τ), spec_blockEmb, if_pos rfl]`. Establish `: ∏ σ ∈ Finset.univ.erase τ, spec τ y (Formalism.GradedWeylDivisibility.blockEmb ℂ σ (f σ)) = C (∏ σ ∈ Finset.univ.erase τ, eval (fun w => y (σ, w)) (f σ))`. Rewrite using `[map_prod]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[spec_blockEmb, if_neg (Finset.ne_of_mem_erase hσ)]`. Rewrite using `[this, MvPolynomial.smul_eq_C_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_ten (τ : ι) (y : ι × Fin n × Fin n → ℂ) (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
     ∃ c : ℂ, spec τ y (ten f) = c • f τ := by
@@ -79,9 +79,9 @@ theorem spec_ten (τ : ι) (y : ι × Fin n × Fin n → ℂ) (f : ι → MvPoly
   rw [this, MvPolynomial.smul_eq_C_mul, mul_comm]
 
 /- English proof (translation)
-Establish `: VV ℂ lam ≤ (nablaSq ℂ n (lam τ)).comap (spec τ y).toLinearMap`. Unfold `VV Formalism.GradedWeylDivisibility.tensorLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `P ⟨F, hF, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, AlgHom.toLinearMap_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `spec τ y (ten F) ∈ _`. Take `⟨c, hc⟩` from `spec_ten τ y F`. Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ (hF τ)`. Conclude with `this v.2`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_mem (lam : ι → DomWeight n) (τ : ι) (y : ι × Fin n × Fin n → ℂ) (v : VV ℂ lam) :
     spec τ y v.1 ∈ nablaSq ℂ n (lam τ) := by
@@ -97,9 +97,9 @@ theorem spec_mem (lam : ι → DomWeight n) (τ : ι) (y : ι × Fin n × Fin n 
   exact this v.2
 
 /- English proof (translation)
-Establish `h : (spec τ y).comp (Formalism.GradedWeylDivisibility.blockAct ℂ G) = (Formalism.GradedWeylDivisibility.rowAct ℂ (G τ)).comp (spec τ y)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨σ, a, s⟩`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[spec, Formalism.GradedWeylDivisibility.blockAct, Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.algebraMap_eq]`. Simplify using `[spec, Formalism.GradedWeylDivisibility.blockAct, Formalism.GradedWeylDivisibility.rowAct, hσ, hG σ hσ, Matrix.one_apply, MvPolynomial.algebraMap_eq]`. Conclude with `congrArg (fun φ => φ P) h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spec_blockAct (τ : ι) (y : ι × Fin n × Fin n → ℂ) (G : ι → Matrix (Fin n) (Fin n) ℂ)
     (hG : ∀ σ, σ ≠ τ → G σ = 1) (P : Pol ℂ ι n) :
@@ -120,7 +120,7 @@ section Assembly
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `detTwK`. Use `Finset.prod_eq_one fun σ _ => ?_` and prove the remaining obligations. Unfold `detPow`. Rewrite using `[PI.WGB.det_unitri_A n (g σ) (hg σ).1 (hg σ).2]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detTwK_uni (lam : ι → DomWeight n) (g : ι → GL (Fin n) ℂ) (hg : MtwUni g) : detTwK lam g = 1 := by
   unfold detTwK
@@ -136,13 +136,13 @@ theorem rhoK_val (lam : ι → DomWeight n) (g : ι → GL (Fin n) ℂ) (v : VV 
     ((rhoK lam g v : VV ℂ lam) : Pol ℂ ι n) = detTwK lam g • trAct g v.1 := rfl
 
 /- English proof (translation)
-Apply `(highest_weight_irreducible n (lam τ)).2.2 _ (spec_mem lam τ y v)` to reduce the goal to its premises. Introduce `h hl hd`. Set `g : ι → GL (Fin n) ℂ` to `Function.update 1 τ h`. Establish `hg : MtwUni g`. Introduce `σ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Simplify using `only [g, Function.update_self]`. Conclude with `⟨hl, hd⟩`. Simplify using `only [g, Function.update_of_ne hσ, Pi.one_apply, Units.val_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun i j hij => Matrix.one_apply_ne (ne_of_lt hij).symm, fun i => Matrix.one_apply_eq i⟩`. Establish `h1` using `congrArg Subtype.val (hv g hg)`. Rewrite `h1` using `[rhoK_val, detTwK_uni lam g hg, one_smul]`. Unfold `sqAct`. Rewrite using `[detPow, PI.WGB.det_unitri_A n h hl hd, one_zpow, Units.val_one, one_smul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← h1]`. Unfold `trAct`. Rewrite using `[spec_blockAct τ y _ (fun σ hσ => by simp [g, Function.update_of_ne hσ])]`. Simplify using `[g]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spec_fixed [DecidableEq ι] (lam : ι → DomWeight n) (v : VV ℂ lam)
     (hv : ∀ g : ι → GL (Fin n) ℂ, MtwUni g → rhoK lam g v = v) (τ : ι) (y : ι × Fin n × Fin n → ℂ) :
@@ -168,21 +168,19 @@ theorem spec_fixed [DecidableEq ι] (lam : ι → DomWeight n) (v : VV ℂ lam)
   simp [g]
 
 /- English proof (translation)
-Establish `hS : ∀ S : Finset ι, ∀ x : ι × Fin n × Fin n → ℂ, (∀ v : ι × Fin n × Fin n, v.1 ∉ S → x v = p v.1 v.2) → eval x Q = 0`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: x = fun v => p v.1 v.2` using `funext fun v => hx v (by simp)`. Rewrite using `[this, h0]`. Consider the case `insert τ S hτ ih`. Introduce `x hx`. Take `⟨c, hc⟩` from `hQ τ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : eval (fun w => x (τ, w)) (spec τ x Q) = eval x Q`. Rewrite using `[eval_spec]`. Apply `congrArg (fun z => eval z Q)` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `split_ifs with h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, w⟩` from `v`. Simplify using `only at h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : eval (p τ) (spec τ x Q) = 0`. Rewrite using `[eval_spec]`. Apply `ih` to reduce the goal to its premises. Introduce `v hv`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `hx v (by simp [Finset.mem_insert, h, hv])`. Rewrite `h1`, `h2` using `[hc, MvPolynomial.smul_eval]`. Establish `hc0 : c = 0`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Conclude with `absurd h (hp τ)`. Rewrite using `[← h1, hc0, zero_mul]`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
-
-Rewrite using `[map_zero]`. Conclude with `hS Finset.univ x (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_of [DecidableEq ι] (e : ι → MvPolynomial (Fin n × Fin n) ℂ) (p : ι → Fin n × Fin n → ℂ)
     (hp : ∀ τ, eval (p τ) (e τ) ≠ 0) (Q : Pol ℂ ι n)
@@ -227,19 +225,19 @@ theorem vanish_of [DecidableEq ι] (e : ι → MvPolynomial (Fin n × Fin n) ℂ
   exact hS Finset.univ x (by simp)
 
 /- English proof (translation)
-Introduce `ι _ n lam v hv`. Set `e : ι → MvPolynomial (Fin n × Fin n) ℂ` to `fun τ => extremal ℂ n (lam τ)`. Establish `hne : ∀ τ, ∃ z, eval z (e τ) ≠ 0`. Introduce `τ`. Assume the negation of the conclusion as `hc0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hc : ∀ z, eval z (e τ) = 0` using `fun z => by`. Assume the negation of the conclusion as `h`. Conclude with `hc0 ⟨z, h⟩`. Conclude with `Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl (lam τ).natW (MvPolynomial.funext fun z => by simpa [e, extremal] using hc z)`. Use `choose p hp using hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hten : eval (fun v => p v.1 v.2) (ten e) = ∏ τ, eval (p τ) (e τ)`. Unfold `ten`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Unfold `Formalism.GradedWeylDivisibility.blockEmb`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[eval_rename]`. Both sides reduce to the same expression. Establish `hten0 : eval (fun v => p v.1 v.2) (ten e) ≠ 0`. Rewrite using `[hten]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun τ _ => hp τ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `c : ℂ` to `eval (fun v => p v.1 v.2) v.1 / eval (fun v => p v.1 v.2) (ten e)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hQ : v.1 - c • ten e = 0`. Apply `vanish_of e p hp` to reduce the goal to its premises. Introduce `τ y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c1, h1⟩` from `spec_fixed lam v hv τ y`. Take `⟨c2, h2⟩` from `spec_ten τ y e`. Use `⟨c1 - c * c2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, h1, h2, smul_smul, sub_smul]`. Rewrite using `[map_sub, MvPolynomial.smul_eval]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [c]`. Rewrite using `[div_mul_cancel₀ _ hten0, sub_self]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul]`. Conclude with `sub_eq_zero.mp hQ`.
+A detailed English derivation is pending.
 -/
 theorem hwFixedLine_main : HwFixedLine := by
   intro ι _ n lam v hv

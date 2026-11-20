@@ -12,20 +12,20 @@ open ReciprocityTheory.ChartRestriction.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hyp]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hyp_map (τ : E →+* ℂ) : (hyp : Matrix (Fin 2) (Fin 2) E).map τ = !![0, 1; 1, 0] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [hyp]
 
 /- English proof (translation)
-Rewrite using `[hyp_map]`. Establish `hP : (!![1, 1; 1, -1] : Matrix (Fin 2) (Fin 2) ℂ).det ≠ 0`. Rewrite using `[Matrix.det_fin_two_of]`. Evaluate the numerical expressions. Establish `hD : (!![1, 1; 1, -1] : Matrix (Fin 2) (Fin 2) ℂ)ᵀ * !![0, 1; 1, 0] * (!![1, 1; 1, -1] : Matrix (Fin 2) (Fin 2) ℂ).map (starRingEnd ℂ) = diagonal ![2, -2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal] <;> norm_num`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[posIndex_eq_card_of_congr_diagonal hP hD, Finset.card_eq_one]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp`. Rewrite using `[negIndex_eq_card_of_congr_diagonal hP hD, Finset.card_eq_one]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `k`. Apply the tactic sequence `fin_cases k <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem index_hyp (τ : E →+* ℂ) :
     posIndex ((hyp : Matrix (Fin 2) (Fin 2) E).map τ) = 1 ∧ negIndex ((hyp : Matrix (Fin 2) (Fin 2) E).map τ) = 1 := by
@@ -49,7 +49,7 @@ theorem index_hyp (τ : E →+* ℂ) :
     fin_cases k <;> simp
 
 /- English proof (translation)
-Simplify using `only [hf]`. Rewrite using `[fromBlocks_mulVec]`. Simplify using `[dotProduct, Fintype.sum_sum_type, Function.comp_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hf_blocks {m : ℕ} (G2 : Matrix (Fin m) (Fin m) E) (u u' : Fin 2 ⊕ Fin m → E) :
     hf (fromBlocks hyp 0 0 G2) u u' = hf hyp (u ∘ Sum.inl) (u' ∘ Sum.inl) + hf G2 (u ∘ Sum.inr) (u' ∘ Sum.inr) := by
@@ -58,15 +58,15 @@ theorem hf_blocks {m : ℕ} (G2 : Matrix (Fin m) (Fin m) E) (u u' : Fin 2 ⊕ Fi
   simp [dotProduct, Fintype.sum_sum_type, Function.comp_def]
 
 /- English proof (translation)
-Establish `hQ : (P.map τ).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ).2 hP`. Establish `hmap : (P.map τ)ᵀ * G.map τ * (P.map τ).map (starRingEnd ℂ) = ((fromBlocks hyp 0 0 G2).submatrix e.symm e.symm).map τ`. Rewrite using `[← hPG, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[emb_cc]`. Establish `hH1 : ((hyp : Matrix (Fin 2) (Fin 2) E).map τ).IsHermitian`. Rewrite using `[hyp_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Establish `hH2 : (G2.map τ).IsHermitian`. Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← starRingEnd_apply, ← emb_cc, hG2]`. Establish `hblk : ((fromBlocks hyp 0 0 G2).submatrix e.symm e.symm).map τ = (fromBlocks ((hyp : Matrix (Fin 2) (Fin 2) E).map τ) 0 0 (G2.map τ)).submatrix e.symm e.symm`. Rewrite using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨h1, h2⟩` from `index_hyp (E := E) τ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← posIndex_congr (G.map τ) hQ, hmap, hblk, posIndex_submatrix_equiv, posIndex_fromBlocks hH1 hH2, h1]`. Rewrite using `[← negIndex_congr (G.map τ) hQ, hmap, hblk, negIndex_submatrix_equiv, negIndex_fromBlocks hH1 hH2, h2]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem posIndex_negIndex_eq_one_add_of_hyperbolic_split {n : Type} [Fintype n] [DecidableEq n] {m : ℕ} {G : Matrix n n E}
     {G2 : Matrix (Fin m) (Fin m) E} {P : Matrix n n E} (e : Fin 2 ⊕ Fin m ≃ n) (hP : P.det ≠ 0)
@@ -106,7 +106,7 @@ private theorem posIndex_negIndex_eq_one_add_of_hyperbolic_split {n : Type} [Fin
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `| 0` and use `by intro G _ _ _ _ refine ⟨⊥, by simp, ?_⟩ intro x hx y hy rw [Submodule.mem_bot] at hx subst hx simp [hf] | k + 1 => by rename_i n _ _ intro G hG hdet hcard hidx have h3 : 3 ≤ Fintype.card n := by omega obtain ⟨z, hz, hzz⟩ := iso_gen G hG hdet h3 (fun τ => ⟨le_trans (Nat.le_add_ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main_iso : ∀ (k : ℕ) {n : Type} [Fintype n] [DecidableEq n] (G : Matrix n n E),
     (∀ a b, FD.cc (G a b) = G b a) → G.det ≠ 0 → 2 * k < Fintype.card n →

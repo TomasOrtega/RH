@@ -30,7 +30,7 @@ def toResidueInteger : 𝓞 F →+* 𝒪[u.adicCompletion F] ⧸ 𝓂[u.adicComp
   (Ideal.Quotient.mk _).comp (ringOfIntegersToInteger u)
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[RingHom.mem_ker, toResidueInteger, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, mem_maximalIdeal_iff_valued_lt_one, coe_ringOfIntegersToInteger]`. Use `erw [valuedAdicCompletion_eq_valuation' u]`. Conclude with `valuation_lt_one_iff_mem u r`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_toResidueInteger : RingHom.ker (toResidueInteger u) = u.asIdeal := by
   ext r
@@ -40,9 +40,9 @@ theorem ker_toResidueInteger : RingHom.ker (toResidueInteger u) = u.asIdeal := b
   exact valuation_lt_one_iff_mem u r
 
 /- English proof (translation)
-Introduce `z`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Establish `hy : (y : u.adicCompletion F) ∈ u.adicCompletionIntegers F` using `(mem_valuationInteger_iff u _).1 y.2`. Establish `hn : {z : u.adicCompletion F | Valued.v.restrict (z - y) < ((1 : (MonoidWithZeroHom.ValueGroup₀ (.ofClass (Valued.v : Valuation (u.adicCompletion F) ℤᵐ⁰)))ˣ) : _)} ∈ nhds (y : u.adicCompletion F)` using `Valued.mem_nhds.2 ⟨1, subset_rfl⟩`. Take `⟨_, hz, r, rfl⟩` from `mem_closure_iff_nhds.1 (adicCompletionIntegers_subset_closure_ringOfIntegers u hy) _ hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨r, (Ideal.Quotient.eq.2 ?_)⟩` and prove the remaining obligations. Rewrite using `[mem_maximalIdeal_iff_valued_lt_one]`. Express the relevant statement in the definitionally equal form `Valued.v ((ringOfIntegersToInteger u r : u.adicCompletion F) - (y : u.adicCompletion F)) < 1`. Rewrite using `[coe_ringOfIntegersToInteger]`. Simplify `hz` using `[Valuation.restrict_lt_one_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toResidueInteger_surjective : Function.Surjective (toResidueInteger u) := by
   intro z
@@ -85,7 +85,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GroundTheory.LocalField.coe_algebraMap_integer, coe_ringOfIntegersToInteger, coe_ringOfIntegersToInteger, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply K L (w.adicCompletion L)]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_ringOfIntegersToInteger (r : 𝓞 K) :
     algebraMap 𝒪[v.adicCompletion K] 𝒪[w.adicCompletion L] (ringOfIntegersToInteger v r) =
@@ -97,9 +97,9 @@ theorem algebraMap_ringOfIntegersToInteger (r : 𝓞 K) :
   rfl
 
 /- English proof (translation)
-Use `w.isMaximal` as an intermediate fact. Use `v.isMaximal` as an intermediate fact. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal 𝓂[v.adicCompletion K] 𝓂[w.adicCompletion L], Ideal.inertiaDeg_eq_of_isMaximal v.asIdeal w.asIdeal]`. Use `(Algebra.finrank_eq_of_equiv_equiv (residueEquivInteger v) (residueEquivInteger w) ?_).symm` and prove the remaining obligations. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, residueEquivInteger_mk]`. Rewrite using `[Ideal.Quotient.algebraMap_mk_of_liesOver, Ideal.Quotient.algebraMap_mk_of_liesOver, residueEquivInteger_mk, algebraMap_ringOfIntegersToInteger]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inertiaDeg_integer :
     𝓂[w.adicCompletion L].inertiaDeg 𝒪[v.adicCompletion K] = w.asIdeal.inertiaDeg (𝓞 K) := by
@@ -117,7 +117,7 @@ theorem inertiaDeg_integer :
     residueEquivInteger_mk, algebraMap_ringOfIntegersToInteger]
 
 /- English proof (translation)
-Rewrite using `[← ramificationIdx_mul_inertiaDeg_integer v w, ramificationIdx_integer v w, inertiaDeg_integer v w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_adicCompletion :
     Module.finrank (v.adicCompletion K) (w.adicCompletion L) =
@@ -135,7 +135,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]
 
 /- English proof (translation)
-The claim follows from `finrank_adicCompletion v w`.
+A detailed English derivation is pending.
 -/
 example : Module.finrank (v.adicCompletion K) (w.adicCompletion L) =
     w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K) :=

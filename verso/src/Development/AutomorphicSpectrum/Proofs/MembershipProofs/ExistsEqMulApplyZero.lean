@@ -8,9 +8,9 @@ open scoped ComplexConjugate NNReal
 namespace GlobalTheory.CompanionTheory.WeilCoinv
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `AddChar.ne_one_iff.mp hψ`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Establish `hi' : x i ≠ 0` using `hi`. Use `⟨Pi.single i (t / x i), ?_⟩` and prove the remaining obligations. Establish `hxt : x i * (t / x i) = t` using `by field_simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[dotProduct_single, hxt]`. Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dotProduct_ne_one {k : Type} [Field k] {κ : Type} [Fintype κ] {ψ : AddChar k ℂ} (hψ : ψ ≠ 1)
     {x : κ → k} (hx : x ≠ 0) : ∃ y : κ → k, ψ (x ⬝ᵥ y) ≠ 1 := by
@@ -24,49 +24,47 @@ theorem exists_dotProduct_ne_one {k : Type} [Field k] {κ : Type} [Fintype κ] {
   exact ht
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ κ _ ψ hψc hψ l hl`. Use `haveI : NonarchimedeanAddGroup k := GlobalTheory.WeilM.nonarch_field k`. Use `haveI : NonarchimedeanAddGroup (κ → k) := GlobalTheory.WeilM.nonarch_pi k κ`. Establish `hψlc : IsLocallyConstant ψ` using `GlobalTheory.WeilM.isLocallyConstant_addChar ψ hψc`. Establish `hχ : ∀ y : κ → k, IsLocallyConstant (fun x : κ → k => ψ (x ⬝ᵥ y))` using `fun y => hψlc.comp_continuous (continuous_id.dotProduct continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ t : Finset (κ → k), ∀ φ ∈ SB (κ → k), (∀ x, φ x ≠ 0 → ∃ y ∈ t, ψ (x ⬝ᵥ y) ≠ 1) → l φ = 0`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `φ _ h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hz : φ = 0` using `funext fun x => by`. Assume the negation of the conclusion as `hx`. Take `⟨y, hy, -⟩` from `h x hx`. Simplify using `at hy`. Rewrite using `[hz, map_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `@insert y t hyt ih`. Introduce `φ hφ h`. Take `⟨hφl, hφc⟩` from `hφ`. Take `⟨φ₁, hφ₁⟩ : ∃ f : (κ → k) → ℂ, f = fun x => if ψ (x ⬝ᵥ y) = 1 then φ x else 0` from `⟨_, rfl⟩`. Take `⟨g, hg⟩ : ∃ f : (κ → k) → ℂ, f = fun x => if ψ (x ⬝ᵥ y) = 1 then 0 else φ x / (ψ (x ⬝ᵥ y) - 1)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ₁SB : φ₁ ∈ SB (κ → k)`. Use `⟨?_, hφc.mono ?_⟩` and prove the remaining obligations. Rewrite using `[hφ₁]`. Conclude with `(hχ y).comp₂ hφl (fun a b => if a = 1 then b else 0)`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hx`, the goal using `[Function.mem_support]`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `[hφ₁, h0]`. Establish `hgSB : g ∈ SB (κ → k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, hφc.mono ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `(hχ y).comp₂ hφl (fun a b => if a = 1 then 0 else b / (a - 1))`. Introduce `x hx`. Rewrite `hx`, the goal using `[Function.mem_support]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `[hg, h0]`. Establish `hsch : schr ψ ((0 : κ → k), y) g = fun x => ψ (x ⬝ᵥ y) * g x`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[GlobalTheory.WeilM.schr]`. Establish `hdiff : φ = φ₁ + (schr ψ ((0 : κ → k), y) g - g)`. Rewrite using `[hsch]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.sub_apply, hφ₁, hg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `split_ifs with h1`. Simplify using the standard rewrite rules. Establish `hne : ψ (x ⬝ᵥ y) - 1 ≠ 0` using `sub_ne_zero.mpr h1`. Rewrite using `[zero_add, ← sub_one_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hdiff, map_add, map_sub, hl y g hgSB, sub_self, add_zero]`. Use `ih φ₁ hφ₁SB ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx1 : ψ (x ⬝ᵥ y) = 1`. Assume the negation of the conclusion as `hne`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Simplify using `[hφ₁, hne]`. Establish `hx2 : φ x ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `[hφ₁, h0]`. Take `⟨y', hy', hy'ne⟩` from `h x hx2`. Break down `Finset.mem_insert.mp hy' with rfl | hy't` into its components or cases. Conclude with `absurd hx1 hy'ne`. Conclude with `⟨y', hy't, hy'ne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vanish : ∀ φ ∈ SB (κ → k), φ 0 = 0 → l φ = 0`. Introduce `φ hφ h0`. Take `⟨hφl, hφc⟩` from `hφ`. Establish `hsupp : IsClosed (Function.support φ)` using `(hφl.isOpen_fiber 0).isClosed_compl`. Establish `hK : IsCompact (Function.support φ)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hc` using `hφc.isCompact`. Rewrite `hc` using `[tsupport, hsupp.closure_eq]`. Then use the resulting hypothesis. Establish `hcov : Function.support φ ⊆ ⋃ y : κ → k, {x | ψ (x ⬝ᵥ y) ≠ 1}`. Introduce `x hx`. Establish `hx0 : x ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hx h0`. Take `⟨y, hy⟩` from `exists_dotProduct_ne_one hψ hx0`. Conclude with `Set.mem_iUnion.mpr ⟨y, hy⟩`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun y : κ → k => {x | ψ (x ⬝ᵥ y) ≠ 1}) (fun y => ((hχ y).isClosed_fiber 1).isOpen_compl) hcov`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `key t φ ⟨hφl, hφc⟩ ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hxt` using `ht hx`. Simplify using `only [Set.mem_iUnion] at hxt`. Take `⟨y, hy, hxy⟩` from `hxt`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨y, hy, hxy⟩`. Take `⟨C, hC, hC0⟩` from `exists_compact_mem_nhds (0 : κ → k)`. Take `⟨O, hO⟩` from `NonarchimedeanAddGroup.is_nonarchimedean C hC0`. Establish `hOc : IsCompact (O : Set (κ → k))` using `hC.of_isClosed_subset O.isClosed hO`. Establish `hO0 : (0 : κ → k) ∈ O` using `O.zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨φ₀, hφ₀d⟩ : ∃ f : (κ → k) → ℂ, f = fun x => if x ∈ O then 1 else 0` from `⟨_, rfl⟩`. Establish `hφ₀ : φ₀ ∈ SB (κ → k)`. Use `⟨?_, HasCompactSupport.intro' hOc O.isClosed fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hx : x ∈ O`. Use `⟨O, O.isOpen, hx, fun x' hx' => ?_⟩` and prove the remaining obligations. Establish `hx'' : x' ∈ O` using `hx'`. Simplify using `[hφ₀d, hx, hx'']`. Use `⟨(O : Set (κ → k))ᶜ, O.isClosed.isOpen_compl, hx, fun x' hx' => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx'' : x' ∉ O` using `hx'`. Simplify using `[hφ₀d, hx, hx'']`. Establish `hx' : x ∉ O` using `hx`. Simplify using `[hφ₀d, hx']`. Use `⟨l φ₀, fun φ hφ => ?_⟩` and prove the remaining obligations.
-
-Establish `h1 : φ - φ 0 • φ₀ ∈ SB (κ → k)` using `Submodule.sub_mem _ hφ (Submodule.smul_mem _ _ hφ₀)`. Establish `h2 : (φ - φ 0 • φ₀) 0 = 0` using `by simp [hφ₀d, hO0]`. Establish `h3` using `vanish _ h1 h2`. Rewrite `h3` using `[map_sub, map_smul, smul_eq_mul, sub_eq_zero]`. Rewrite using `[h3, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul_apply_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [Invertible (2 : k)] (κ : Type) [Fintype κ] (ψ : AddChar k ℂ),

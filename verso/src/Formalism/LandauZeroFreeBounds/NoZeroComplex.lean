@@ -15,37 +15,37 @@ import Formalism.ZeroFreeRegion.FinalZFR
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-The claim follows from `localZeroSumBoundOfBounds localZeroExpansionWithMultiplicity lfunction_polynomial_growth inverseBound`.
+A detailed English derivation is pending.
 -/
 theorem localZeros : LocalZeros :=
   localZeroSumBoundOfBounds localZeroExpansionWithMultiplicity lfunction_polynomial_growth inverseBound
 
 /- English proof (translation)
-The claim follows from `zeroFreeNonRealCharOfBounds localZeros l_log_deriv_right negLogDerivPositivity`.
+A detailed English derivation is pending.
 -/
 theorem noZeroComplex : NoZeroComplex :=
   zeroFreeNonRealCharOfBounds localZeros l_log_deriv_right negLogDerivPositivity
 
 /- English proof (translation)
-The claim follows from `realCharZeroFreeLargeHeightOfBounds localZeros l_log_deriv_right negLogDerivPositivity trivial_log_deriv_bound`.
+A detailed English derivation is pending.
 -/
 theorem realLargeT : RealLargeT :=
   realCharZeroFreeLargeHeightOfBounds localZeros l_log_deriv_right negLogDerivPositivity trivial_log_deriv_bound
 
 /- English proof (translation)
-The claim follows from `realCharZeroSmallHeightOfBounds localZeros l_log_deriv_right negLogDerivPositivity realCharConj`.
+A detailed English derivation is pending.
 -/
 theorem realSmallT : RealSmallT :=
   realCharZeroSmallHeightOfBounds localZeros l_log_deriv_right negLogDerivPositivity realCharConj
 
 /- English proof (translation)
-The claim follows from `twoRealCharNoCommonZeroOfBounds localZeros l_log_deriv_right negLogDerivPositivity`.
+A detailed English derivation is pending.
 -/
 theorem twoReal : TwoReal :=
   twoRealCharNoCommonZeroOfBounds localZeros l_log_deriv_right negLogDerivPositivity
 
 /- English proof (translation)
-The claim follows from `zeroFreeRegionExceptionalZeroOfBounds Formalism.ZF.zeroFreeRegion trivialCharZerosOfZeta noZeroComplex realLargeT realSmallT twoReal`.
+A detailed English derivation is pending.
 -/
 theorem zFRDirichlet : ZFRDirichlet :=
   zeroFreeRegionExceptionalZeroOfBounds Formalism.ZF.zeroFreeRegion trivialCharZerosOfZeta noZeroComplex realLargeT realSmallT twoReal

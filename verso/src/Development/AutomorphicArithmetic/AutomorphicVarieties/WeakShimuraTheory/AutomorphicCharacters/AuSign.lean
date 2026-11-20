@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `Ω _ _ _ C _ μ c c' hc hc'`. Take `⟨j, hj⟩` from `hc`. Take `⟨j', hj'⟩` from `hc'`. Use `letI : Algebra Ω ℂ := j.toAlgebra`. Use `haveI : IsScalarTower ℚ Ω ℂ := IsScalarTower.of_algebraMap_eq fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Simplify using the standard rewrite rules.
 
-Simplify using `[RingHom.algebraMap_toAlgebra]`. Set `σ : Ω ≃ₐ[ℚ] Ω` to `AlgHom.restrictNormal' j'.toRatAlgHom Ω`. Establish `hσ : ∀ x, j (σ x) = j' x` using `fun x => by`. Establish `h` using `AlgHom.restrictNormal_commutes j'.toRatAlgHom Ω x`. Simplify using `only [RingHom.algebraMap_toAlgebra, Algebra.algebraMap_self, RingHom.id_apply, RingHom.toRatAlgHom_apply] at h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h`. Establish `key : σ * c' = c * σ`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Use `show j (σ (c' x)) = j (c (σ x))`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hσ, hj', hj, hσ]`. Establish `h2` using `congrArg μ key`. Rewrite `h2` using `[map_mul, map_mul, mul_comm (μ c) (μ σ)]`. Conclude with `(mul_left_cancel h2).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.auSign :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {C : Type} [CommGroup C] (μ : G ℚ Ω →* C) (c c' : G ℚ Ω), Af.IsConjEl c → Af.IsConjEl c' → μ c = μ c' := by

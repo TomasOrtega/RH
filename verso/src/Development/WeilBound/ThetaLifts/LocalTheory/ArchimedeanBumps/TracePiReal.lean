@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open GlobalTheory.Doubling
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ 1) = 1`. Rewrite using `[map_one, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_fst : (realAd F 1).1 = 1 := by
   change (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ 1) = 1
@@ -30,16 +30,16 @@ Both sides reduce to the same expression.
 theorem eps_snd : (realAd F 1).2 = 0 := rfl
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff`.
+A detailed English derivation is pending.
 -/
 theorem evI_eq_zero {u : AF F} : evI F u = 0 ↔ u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h (1 - realAd F 1) (evI_eq_zero.2 (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `(1 : Ainf F) - (realAd F 1).1 = 0`. Rewrite using `[eps_fst, sub_self]))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[sub_smul, one_smul]`. Conclude with `(sub_eq_zero.1 this).symm`. Introduce `h u hu`. Rewrite using `[← h, smul_smul]`. Establish `: u * realAd F 1 = 0` using `Prod.ext (by`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `u.1 * (realAd F 1).1 = 0`. Rewrite using `[evI_eq_zero.1 hu, zero_mul]) (mul_zero u.2)`. Rewrite using `[this, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_iff {M : Type} [AddCommGroup M] [Module (AF F) M] {z : M} : At (evI F) z ↔ realAd F 1 • z = z := by
   constructor
@@ -57,9 +57,9 @@ theorem at_iff {M : Type} [AddCommGroup M] [Module (AF F) M] {z : M} : At (evI F
     rw [this, zero_smul]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Establish `: compInf F E w (algebraMap (AF F) (AE F E) (realAd F 1)) = 1`. Express the relevant statement in the definitionally equal form `((realAd F 1).1 w) ⊗ₜ[F] (1 : E) = 1`. Rewrite using `[eps_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compInf_eps (w : InfinitePlace F) (x : AE F E) : compInf F E w (realAd F 1 • x) = compInf F E w x := by
   rw [Algebra.smul_def, map_mul]
@@ -69,7 +69,7 @@ theorem compInf_eps (w : InfinitePlace F) (x : AE F E) : compInf F E w (realAd F
   rw [this, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`. Establish `: compFin F E v (algebraMap (AF F) (AE F E) (realAd F 1)) = 0`. Express the relevant statement in the definitionally equal form `evFin F v (realAd F 1) ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[show evFin F v (realAd F 1) = 0 from map_zero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v), TensorProduct.zero_tmul]`. Rewrite using `[this, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem compFin_eps (v : Pl F) (x : AE F E) : compFin F E v (realAd F 1 • x) = 0 := by
   rw [Algebra.smul_def, map_mul]
@@ -81,19 +81,19 @@ theorem compFin_eps (v : Pl F) (x : AE F E) : compFin F E v (realAd F 1 • x) =
 instance topRingAF : IsTopologicalRing (AF F) := inferInstanceAs (IsTopologicalRing (Ainf F × Af F))
 
 /- English proof (translation)
-The claim follows from `at_iff.2 (adele_ext (fun w => compInf_eps w x) fun v => by rw [compFin_eps, h])`.
+A detailed English derivation is pending.
 -/
 theorem at_of_fin {x : AE F E} (h : ∀ v, compFin F E v x = 0) : At (evI F) x :=
   at_iff.2 (adele_ext (fun w => compInf_eps w x) fun v => by rw [compFin_eps, h])
 
 /- English proof (translation)
-Rewrite using `[← at_iff.1 h, compFin_eps]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_of_at {x : AE F E} (h : At (evI F) x) (v : Pl F) : compFin F E v x = 0 := by
   rw [← at_iff.1 h, compFin_eps]
 
 /- English proof (translation)
-The claim follows from `adele_ext (fun w => (infEmb_bijective h (τ w)).1 (e w)) hf`.
+A detailed English derivation is pending.
 -/
 theorem ext_at (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {x y : AE F E}
     (hf : ∀ v, compFin F E v x = compFin F E v y) (e : ∀ w, piInf (τ w) x = piInf (τ w) y) : x = y :=
@@ -103,16 +103,16 @@ def lft (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (c : In
   ∑ w, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (inInf w) (inInf_mul w) ((RingEquiv.ofBijective _ (infEmb_bijective h (τ w))).symm (c w))
 
 /- English proof (translation)
-Rewrite using `[lft, map_sum]`. Conclude with `Finset.sum_eq_zero fun w _ => GlobalTheory.AutFunCompare.map_tensNU_zero (evFin F v) _ _ (fun _ => map_zero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_lft (h : IsCMExt F E σ) (τ) (c) (v : Pl F) : compFin F E v (lft h τ c) = 0 := by
   rw [lft, map_sum]
   exact Finset.sum_eq_zero fun w _ => GlobalTheory.AutFunCompare.map_tensNU_zero (evFin F v) _ _ (fun _ => map_zero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)) _
 
 /- English proof (translation)
-Rewrite using `[lft, map_sum, Finset.sum_eq_single w]`. Use `GlobalTheory.AutFunCompare.map_tensNU_self (E := E) (evInf F w) (inInf w) (inInf_mul w) (fun a => Pi.single_eq_same w a) ((RingEquiv.ofBijective _ (infEmb_bijective h (τ w))).symm (c w))` as an intermediate fact. Conclude with `(congrArg (infEmb (τ w)) this).trans ((RingEquiv.ofBijective _ (infEmb_bijective h (τ w))).apply_symm_apply _)`. Introduce `u _ hu`. Use `GlobalTheory.AutFunCompare.map_tensNU_zero (E := E) (evInf F w) (inInf u) (inInf_mul u) (fun a => Pi.single_eq_of_ne hu.symm a) ((RingEquiv.ofBijective _ (infEmb_bijective h (τ u))).symm (c u))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(congrArg (infEmb (τ w)) this).trans (map_zero _)`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem pi_lft (h : IsCMExt F E σ) (τ) (c) (w : InfinitePlace F) : piInf (τ w) (lft h τ c) = c w := by
   classical
@@ -127,7 +127,7 @@ theorem pi_lft (h : IsCMExt F E σ) (τ) (c) (w : InfinitePlace F) : piInf (τ w
   · simp
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Use `continuous_finset_sum _ fun w _ => ?_` and prove the remaining obligations. Establish `hc : Continuous (inInf (F` using `F) w) := (continuous_single w).prodMk continuous_const`. Conclude with `(GlobalTheory.AutFunCompare.continuous_tensNU (R' := AF F) (inInf w) (inInf_mul w) hc).comp ((GlobalTheory.AdelicU.Frames.continuous_infEmb_symm h (τ w)).comp (continuous_apply w))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_lft (h : IsCMExt F E σ) (τ) : Continuous (lft h τ) := by
   haveI := isTopologicalRing_tens (F := F) (E := E) (R := AF F)
@@ -138,14 +138,14 @@ theorem cont_lft (h : IsCMExt F E σ) (τ) : Continuous (lft h τ) := by
     ((GlobalTheory.AdelicU.Frames.continuous_infEmb_symm h (τ w)).comp (continuous_apply w))
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Orb.continuous_infEmb τ).comp (GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (evInf F w).toLinearMap (map_mul (evInf F w)) ((continuous_apply w).comp continuous_fst))`.
+A detailed English derivation is pending.
 -/
 theorem cont_pi {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf (F := F) (E := E) τ) :=
   (GlobalTheory.Orb.continuous_infEmb τ).comp (GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (evInf F w).toLinearMap (map_mul (evInf F w))
     ((continuous_apply w).comp continuous_fst))
 
 /- English proof (translation)
-The claim follows from `congrArg (infEmb τ) (compInf_eps w x)`.
+A detailed English derivation is pending.
 -/
 theorem pi_eps {w : InfinitePlace F} (τ : EmbOver E w) (x : AE F E) : piInf τ (realAd F 1 • x) = piInf τ x :=
   congrArg (infEmb τ) (compInf_eps w x)
@@ -157,7 +157,7 @@ theorem pi_tmul {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (x : E) :
     piInf τ (a ⊗ₜ[F] x) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) * τ.1 x := rfl
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w) a, Complex.conj_ofReal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_real (h : IsCMExt F E σ) (w : InfinitePlace F) (a : w.Completion) :
     starRingEnd ℂ (InfinitePlace.Completion.extensionEmbedding w a) = InfinitePlace.Completion.extensionEmbedding w a := by
@@ -165,9 +165,9 @@ theorem emb_real (h : IsCMExt F E σ) (w : InfinitePlace F) (a : w.Completion) :
   rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w) a, Complex.conj_ofReal]
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c x`. Express the relevant statement in the definitionally equal form `piInf τ (c ⊗ₜ[F] σ x) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[pi_tmul, pi_tmul, map_mul, emb_real h, h.2.2.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pi_conj (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (a : AE F E) :
     piInf τ (cA σ a) = starRingEnd ℂ (piInf τ a) := by
@@ -179,9 +179,9 @@ theorem pi_conj (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (a
     rw [pi_tmul, pi_tmul, map_mul, emb_real h, h.2.2.2]; rfl
 
 /- English proof (translation)
-Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩`. Set `s` to `AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)`. Establish `hs : (1 : E ≃ₐ[F] E) ≠ s` using `fun e => by`. Use `h.2.1` as an intermediate fact. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun y => (h.2.2.2 τ y).symm.trans (congrArg τ (AlgEquiv.congr_fun e y).symm))))`. Establish `hu : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, s}` using `(Finset.eq_univ_of_card _ (by`. Rewrite using `[Finset.card_pair hs, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, h.2.2.1])).symm`. Rewrite using `[trace_eq_sum_automorphisms, hu, Finset.sum_pair hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trace_E (h : IsCMExt F E σ) (x : E) : algebraMap F E (Algebra.trace F E x) = x + σ x := by
   classical
@@ -200,7 +200,7 @@ theorem trace_E (h : IsCMExt F E σ) (x : E) : algebraMap F E (Algebra.trace F E
   rfl
 
 /- English proof (translation)
-Establish `e : (a ⊗ₜ[F] x : AE F E) = a • ((1 : AF F) ⊗ₜ[F] x)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, smul_eq_mul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_tmul (a : AF F) (x : E) :
     Algebra.trace (AF F) (AE F E) (a ⊗ₜ[F] x) = a * algebraMap F (AF F) (Algebra.trace F E x) := by
@@ -208,9 +208,9 @@ theorem trace_tmul (a : AF F) (x : E) :
   rw [e, map_smul, smul_eq_mul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Rewrite using `[← Complex.add_conj, ← pi_conj h]`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, add_zero]`. Conclude with `map_zero _`. Consider the case `add x y hx hy`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add (piInf τ), map_add (cA σ), map_add (piInf τ), add_add_add_comm, ← hx, ← hy, ← map_add, map_add (Algebra.trace (AF F) (AE F E))]`. Both sides reduce to the same expression. Consider the case `tmul c x`. Express the relevant statement in the definitionally equal form `_ = _ + piInf τ (c ⊗ₜ[F] σ x)`. Rewrite using `[← map_add, ← TensorProduct.tmul_add, ← trace_E h, trace_tmul, Algebra.algebraMap_eq_smul_one (A := E), TensorProduct.tmul_smul, TensorProduct.smul_tmul', pi_tmul, map_one, mul_one, Algebra.smul_def, mul_comm]`.
+Both sides reduce to the same expression. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_trace (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (a : AE F E) :
     InfinitePlace.Completion.extensionEmbedding w ((Algebra.trace (AF F) (AE F E) a).1 w) = ((2 * (piInf τ a).re : ℝ) : ℂ) := by
@@ -226,7 +226,7 @@ theorem emb_trace (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) 
       TensorProduct.tmul_smul, TensorProduct.smul_tmul', pi_tmul, map_one, mul_one, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basisFun ℝ ι)]`. Simplify using `[Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_pi_real {ι : Type} [Fintype ι] (y : ι → ℝ) : Algebra.trace ℝ (ι → ℝ) y = ∑ i, y i := by
   classical
@@ -235,9 +235,7 @@ theorem trace_pi_real {ι : Type} [Fintype ι] (y : ι → ℝ) : Algebra.trace 
 
 open Classical in
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Use `haveI : IsEmpty {w : InfinitePlace F // w.IsComplex} := ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.2 w.2 (IsTotallyReal.isReal w.1)⟩`. Rewrite using `[Algebra.trace_prod_apply, Subsingleton.elim (evI F t).2 0, map_zero, add_zero, trace_pi_real, ← (Equiv.subtypeUnivEquiv fun w : InfinitePlace F => IsTotallyReal.isReal w).sum_comp]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `(InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply w.2 (t.1 w)).trans (hr w)` as an intermediate fact.
-
-Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trace_mixed (h : IsCMExt F E σ) (t : AF F) (r : InfinitePlace F → ℝ)
     (hr : ∀ w, InfinitePlace.Completion.extensionEmbedding w (t.1 w) = r w) :
@@ -252,7 +250,7 @@ theorem trace_mixed (h : IsCMExt F E σ) (t : AF F) (r : InfinitePlace F → ℝ
   exact_mod_cast this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h v => Units.ext (by have := fin_of_at h v rw [map_sub, map_one] at this exact sub_eq_zero.1 this), fun h => at_of_fin fun v => by rw [map_sub, map_one] exact sub_eq_zero.2 (congrArg Units.val (h v))⟩`.
+Supply the required witnesses or components.
 -/
 theorem at_unit_iff {l : (AE F E)ˣ} : At (evI F) ((l : AE F E) - 1) ↔ ∀ v, unitFin F E v l = 1 :=
   ⟨fun h v => Units.ext (by
@@ -263,7 +261,7 @@ theorem at_unit_iff {l : (AE F E)ˣ} : At (evI F) ((l : AE F E) - 1) ↔ ∀ v, 
     exact sub_eq_zero.2 (congrArg Units.val (h v))⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩` and prove the remaining obligations. Establish `: idAt E (evI F) ≤ ⨅ v, (unitFin F E v).ker` using `(Subgroup.closure_le _).2 fun l hl => Subgroup.mem_iInf.2 (at_unit_iff.1 hl)`. Conclude with `at_unit_iff.2 (Subgroup.mem_iInf.1 (this h))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_idAt {l : (AE F E)ˣ} : l ∈ idAt E (evI F) ↔ At (evI F) ((l : AE F E) - 1) := by
   refine ⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩
@@ -275,19 +273,19 @@ def uv (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (c : Inf
   1 + lft h τ (c - 1)
 
 /- English proof (translation)
-Rewrite using `[uv, map_add, map_one, fin_lft, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_uv (h : IsCMExt F E σ) (τ) (c) (v : Pl F) : compFin F E v (uv h τ c) = 1 := by
   rw [uv, map_add, map_one, fin_lft, add_zero]
 
 /- English proof (translation)
-Rewrite using `[uv, map_add, map_one, pi_lft]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pi_uv (h : IsCMExt F E σ) (τ) (c) (w : InfinitePlace F) : piInf (τ w) (uv h τ c) = c w := by
   rw [uv, map_add, map_one, pi_lft]; simp
 
 /- English proof (translation)
-The claim follows from `ext_at h τ (fun v => by rw [map_mul, fin_uv, fin_uv, one_mul, map_one]) fun w => by rw [map_mul, pi_uv, pi_uv, e, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem uv_mul (h : IsCMExt F E σ) (τ) {c c' : InfinitePlace F → ℂ} (e : ∀ w, c w * c' w = 1) : uv h τ c * uv h τ c' = 1 :=
   ext_at h τ (fun v => by rw [map_mul, fin_uv, fin_uv, one_mul, map_one]) fun w => by rw [map_mul, pi_uv, pi_uv, e, map_one]
@@ -298,7 +296,7 @@ def un (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (c : {c 
     mem_idAt.2 (at_unit_iff.2 fun v => Units.ext (fin_uv h τ _ v))⟩
 
 /- English proof (translation)
-Use `haveI := isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Establish `hu : Continuous (uv h τ)` using `continuous_const.add ((cont_lft h τ).comp (continuous_id.sub continuous_const))`. Establish `h2 : Continuous fun c : {c : InfinitePlace F → ℂ // ∀ w, c w ≠ 0} => uv h τ fun w => (c.1 w)⁻¹` using `hu.comp (continuous_pi fun w => ((continuous_apply w).comp continuous_subtype_val).inv₀ fun c => c.2 w)`. Establish `h3 : Continuous fun c => (un h τ c).1` using `Units.continuous_iff.2 ⟨hu.comp continuous_subtype_val, h2⟩`. Conclude with `h3.subtype_mk _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_un (h : IsCMExt F E σ) (τ) : Continuous (un h τ) := by
   haveI := isTopologicalRing_tens (F := F) (E := E) (R := AF F)
@@ -309,14 +307,14 @@ theorem cont_un (h : IsCMExt F E σ) (τ) : Continuous (un h τ) := by
   exact h3.subtype_mk _
 
 /- English proof (translation)
-The claim follows from `(l.isUnit.map _).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem pi_ne {w : InfinitePlace F} (τ : EmbOver E w) (l : (AE F E)ˣ) : piInf τ (l : AE F E) ≠ 0 := (l.isUnit.map _).ne_zero
 
 /- English proof (translation)
-Set `e : idAt E (evI F) ≃ₜ {c : InfinitePlace F → ℂ // ∀ w, c w ≠ 0}` to `{ toFun := fun l => ⟨fun w => piInf (τ w) (l.1 : AE F E), fun w => pi_ne _ _⟩ invFun := un h τ left_inv := fun l => Subtype.ext (Units.ext (ext_at h τ (fun v => (fin_uv h τ _ v).trans (congrArg Units.val (at_unit_iff.1 (mem_idAt.1 l.2) v)).symm) fun w => pi_uv h τ _ w)) right_inv …`. Establish `ho : IsOpen {c : InfinitePlace F → ℂ | ∀ w, c w ≠ 0}`. Rewrite using `[Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun w => isOpen_ne_fun (continuous_apply w) continuous_const`. Use `⟨ho.isOpenEmbedding_subtypeVal.comp e.isOpenEmbedding, Set.ext fun c => ⟨?_, fun hc => ⟨un h τ ⟨c, hc⟩, ?_⟩⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨l, rfl⟩ w`. Conclude with `pi_ne _ _`. Conclude with `funext fun w => pi_uv h τ _ w`.
+A detailed English derivation is pending.
 -/
 theorem openEmb (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     IsOpenEmbedding (fun (l : idAt E (evI F)) w => piInf (τ w) (l.1 : AE F E)) ∧
@@ -338,7 +336,7 @@ theorem openEmb (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
   · exact funext fun w => pi_uv h τ _ w
 
 /- English proof (translation)
-The claim follows from `at_of_fin (fin_lft _ _ c) pi := pi_lft _ _ inv a ha := ext_at hB.cm B.emb (fun v => by rw [fin_lft, fin_of_at ha]) (pi_lft _ _ _) part a := ⟨at_of_fin fun v => compFin_eps v a, fun w => pi_eps _ a⟩ conj a w := pi_conj hB.cm _ a incl x w := by change piInf (B.emb w) ((1 : AF F) ⊗ₜ …`.
+A detailed English derivation is pending.
 -/
 theorem isLift_lft (B : Base F E) (hB : B.IsGood σ) : IsLift σ B (lft hB.cm B.emb) where
   supp c := at_of_fin (fin_lft _ _ c)
@@ -368,7 +366,7 @@ theorem isLift_lft (B : Base F E) (hB : B.IsGood σ) : IsLift σ B (lft hB.cm B.
     exact haar_units _ (openEmb hB.cm B.emb).1 (openEmb hB.cm B.emb).2 (fun a b => funext fun w => map_mul (piInf (B.emb w)) _ _) x
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ B hB` and use `⟨_, isLift_lft B hB⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem archDict_of : ArchDict := fun _ _ _ _ _ _ _ _ B hB => ⟨_, isLift_lft B hB⟩
 

@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models
 /- English proof (citation)
-Apply `GlobalTheory.QuotTriple.exists_sab_of_quotient` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsSemiAbelianTripleOfFiniteQuotient.lean&line=109#L109)
 -/

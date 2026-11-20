@@ -13,9 +13,9 @@ variable {ι : Type} [Fintype ι] {V : ι → Type} [∀ v, NormedAddCommGroup (
   {Vπ : Type} [NormedAddCommGroup Vπ] [InnerProductSpace ℂ Vπ] {tens : (∀ v, V v) → Vπ}
 
 /- English proof (translation)
-Establish `h` using `hi x x`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K]`. Establish `h2 : ‖tens x‖ ^ 2 = (∏ v, ‖x v‖) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.sqrt_sq (norm_nonneg (tens x)), h2, Real.sqrt_sq (Finset.prod_nonneg fun v _ => norm_nonneg (x v))]`.
+A detailed English derivation is pending.
 -/
 theorem norm_tens (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) (x : ∀ v, V v) :
     ‖tens x‖ = ∏ v, ‖x v‖ := by
@@ -28,7 +28,7 @@ theorem norm_tens (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v�
     Real.sqrt_sq (Finset.prod_nonneg fun v _ => norm_nonneg (x v))]
 
 /- English proof (translation)
-Establish `e` using `inner_self_eq_norm_sq (𝕜 := ℂ) (tens x - tens y)`. Rewrite using `[← e, inner_sub_left, inner_sub_right, inner_sub_right, hi, hi, hi, hi]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sub_tens_sq (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) (x y : ∀ v, V v) :
     ‖tens x - tens y‖ ^ 2 = RCLike.re ((∏ v, ⟪x v, x v⟫_ℂ) - (∏ v, ⟪x v, y v⟫_ℂ) - (∏ v, ⟪y v, x v⟫_ℂ) +
@@ -39,13 +39,11 @@ theorem norm_sub_tens_sq (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v
   ring
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `p : ∀ v, Continuous fun y : (∀ v, V v) => y v` using `fun v => _root_.continuous_apply v`. Establish `hF : Continuous fun y : (∀ v, V v) => RCLike.re ((∏ v, ⟪y v, y v⟫_ℂ) - (∏ v, ⟪y v, x v⟫_ℂ) - (∏ v, ⟪x v, y v⟫_ℂ) + (∏ v, ⟪x v, x v⟫_ℂ))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `RCLike.continuous_re.comp (Continuous.add (Continuous.sub (Continuous.sub ?_ ?_) ?_) continuous_const)` and prove the remaining obligations. Conclude with `continuous_finset_prod _ fun v _ => (p v).inner (p v)`. Conclude with `continuous_finset_prod _ fun v _ => (p v).inner continuous_const`. Conclude with `continuous_finset_prod _ fun v _ => continuous_const.inner (p v)`. Establish `h2 : Filter.Tendsto (fun y => ‖tens y - tens x‖ ^ 2) (nhds x) (nhds 0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun y => ‖tens y - tens x‖ ^ 2) = fun y : (∀ v, V v) => RCLike.re ((∏ v, ⟪y v, y v⟫_ℂ) - (∏ v, ⟪y v, x v⟫_ℂ) - (∏ v, ⟪x v, y v⟫_ℂ) + (∏ v, ⟪x v, x v⟫_ℂ))`. Use function extensionality and compare the values at `fun y => norm_sub_tens_sq hi y x`. Rewrite using `[e]`. Use `hF.tendsto x using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
-
-Establish `h3` using `h2.sqrt`. Simplify using `only [Real.sqrt_sq_eq_abs, abs_norm, Real.sqrt_zero] at h3`. Conclude with `h3`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_tens [∀ v, FiniteDimensional ℂ (V v)] (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) :
     Continuous tens := by
@@ -73,7 +71,7 @@ theorem continuous_tens [∀ v, FiniteDimensional ℂ (V v)] (hi : ∀ x y, ⟪t
   exact h3
 
 /- English proof (translation)
-Establish `key : ⟪tens (fun v => c v • x v) - (∏ v, c v) • tens x, tens (fun v => c v • x v) - (∏ v, c v) • tens x⟫_ℂ = 0`. Simplify using `only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, hi, Finset.prod_mul_distrib, map_prod]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.mp (inner_self_eq_zero.mp key)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tens_smul (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) (c : ι → ℂ) (x : ∀ v, V v) :
     tens (fun v => c v • x v) = (∏ v, c v) • tens x := by
@@ -85,7 +83,7 @@ theorem tens_smul (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v�
   exact sub_eq_zero.mp (inner_self_eq_zero.mp key)
 
 /- English proof (translation)
-Rewrite using `[hi, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v)]`. Simplify using `only [Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hw), Function.update_of_ne (Finset.ne_of_mem_erase hw)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_tens_update [DecidableEq ι] (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) (ξ : ∀ v, V v)
     (v : ι) (a b : V v) :
@@ -98,11 +96,11 @@ theorem inner_tens_update [DecidableEq ι] (hi : ∀ x y, ⟪tens x, tens y⟫_�
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hw), Function.update_of_ne (Finset.ne_of_mem_erase hw)]
 
 /- English proof (translation)
-Establish `hP : ∏ w ∈ Finset.univ.erase v, ⟪ξ w, ξ w⟫_ℂ ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `w hw`. Conclude with `inner_self_ne_zero.mpr (hne w (Finset.ne_of_mem_erase hw))`. Establish `e : ∀ p q : V v, ⟪tens (Function.update ξ v p), tens (Function.update ξ v q)⟫_ℂ = ⟪p, q⟫_ℂ * ∏ w ∈ Finset.univ.erase v, ⟪ξ w, ξ w⟫_ℂ` using `fun p q => inner_tens_update hi ξ v p q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ⟪tens (Function.update ξ v a) - tens (Function.update ξ v b), tens (Function.update ξ v a) - tens (Function.update ξ v b)⟫_ℂ = 0`. Rewrite using `[h, sub_self, inner_zero_left]`. Rewrite `h0` using `[inner_sub_left, inner_sub_right, inner_sub_right, e, e, e, e]`. Establish `key : ⟪a - b, a - b⟫_ℂ * ∏ w ∈ Finset.univ.erase v, ⟪ξ w, ξ w⟫_ℂ = 0`. Rewrite using `[inner_sub_left, inner_sub_right, inner_sub_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h0`. Conclude with `sub_eq_zero.mp (inner_self_eq_zero.mp ((mul_eq_zero.mp key).resolve_right hP))`.
+A detailed English derivation is pending.
 -/
 theorem tens_update_inj [DecidableEq ι] (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ = ∏ v, ⟪x v, y v⟫_ℂ) (ξ : ∀ v, V v)
     (v : ι) (hne : ∀ w, w ≠ v → ξ w ≠ 0) (a b : V v)
@@ -126,21 +124,19 @@ theorem tens_update_inj [DecidableEq ι] (hi : ∀ x y, ⟪tens x, tens y⟫_ℂ
 end Tens
 
 /- English proof (translation)
-Introduce `ι _ X _ μ _ V _ _ _ Vπ _ _ _ tens hi hspan G hG`. Establish `hcoord : ∀ w : Vπ, Integrable (fun y : ∀ v, X v => ⟪w, tens fun v => G v (y v)⟫_ℂ) (Measure.pi μ)`. Introduce `w`. Establish `hw : w ∈ Submodule.span ℂ (Set.range tens)` using `by rw [hspan]; exact Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨z, rfl⟩` from `hx`. Repeatedly rewrite using `[hi]`. Conclude with `Integrable.fintype_prod_dep (fun v => (hG v).const_inner (z v))`. Consider the case `zero`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [inner_zero_left]`. Conclude with `integrable_zero _ _ _`. Consider the case `add x y _ _ hx hy`. Simplify using `only [inner_add_left]`. Conclude with `hx.add hy`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `smul a x _ hx`. Simplify using `only [inner_smul_left]`. Conclude with `hx.const_mul _`. Establish `hFint : Integrable (fun y : ∀ v, X v => tens fun v => G v (y v)) (Measure.pi μ)`. Establish `e : (fun y : ∀ v, X v => tens fun v => G v (y v)) = fun y => ∑ i, ⟪stdOrthonormalBasis ℂ Vπ i, tens fun v => G v (y v)⟫_ℂ • stdOrthonormalBasis ℂ Vπ i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `fun y => ((stdOrthonormalBasis ℂ Vπ).sum_repr' _).symm`. Rewrite using `[e]`. Conclude with `integrable_finset_sum _ fun i _ => (hcoord _).smul_const _`. Use `⟨hFint, ?_⟩` and prove the remaining obligations. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : w ∈ Submodule.span ℂ (Set.range tens)` using `by rw [hspan]; exact Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, rfl⟩` from `hx`. Rewrite using `[← integral_inner hFint]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Repeatedly rewrite using `[hi]`. Use `(integral_fintype_prod_eq_prod (fun v t => ⟪z v, G v t⟫_ℂ)).trans ?_` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun v _ => integral_inner (hG v) (z v)`. Consider the case `zero => simp only [inner_zero_left]`. Consider the case `add x y _ _ hx hy => rw [inner_add_left, inner_add_left, hx, hy]`.
-
-Consider the case `smul a x _ hx => rw [inner_smul_left, inner_smul_left, hx]`.
+A detailed English derivation is pending.
 -/
 theorem integrable_and_integral_pi_apply :
   ∀ (ι : Type) [Fintype ι] (X : ι → Type) [∀ v, MeasurableSpace (X v)] (μ : ∀ v, Measure (X v))

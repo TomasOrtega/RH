@@ -22,13 +22,13 @@ def omEq (a : ℕ) : CrystallineSemistableComparison.Onto.Om K (CrystallineSemis
 abbrev resTop (a : ℕ) := CH.Mor.restrict (G q a) (inU q ⊤).ι
 
 /- English proof (translation)
-The claim follows from `(topRes_pf K _ (G q a) (inU q ⊤) ⊥ (fun T => inTop q T) n).1`.
+A detailed English derivation is pending.
 -/
 theorem resTop_pullC_bij (a n : ℕ) : Function.Bijective ((resTop q a).pullC n) :=
   (topRes_pf K _ (G q a) (inU q ⊤) ⊥ (fun T => inTop q T) n).1
 
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.P.mapH_bij _ (fun m => resTop_pullC_bij q a m) n`.
+A detailed English derivation is pending.
 -/
 theorem resTop_bij (a n : ℕ) : Function.Bijective ((resTop q a).pull n) :=
   CrystallineSemistableComparison.P.mapH_bij _ (fun m => resTop_pullC_bij q a m) n
@@ -41,11 +41,11 @@ def LiftsT.toTop (Λ : LiftsT q) : Lifts q ⊤ where
   hv T g := Λ.hv T.obj g
 
 /- English proof (translation)
-Introduce `Λ`. Take `⟨f, hf, hc, hz⟩` from `h (LiftsT.toTop q Λ)`. Take `⟨z, rfl⟩` from `(resTop_pullC_bij q a a).2 f`. Establish `hd : CH.d (G q a) a z = 0`. Apply `(resTop_pullC_bij q a (a + 1)).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero, ← CH.Mor.d_pullC]`. Conclude with `hf`. Establish `hcz : (resTopEquiv q a) ((CH.cx (G q a)).cls z hd) = c`. Rewrite using `[hc]`. Conclude with `CrystallineSemistableComparison.P.mapH_cls (resTop q a).hom a z hd _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨z, hd, ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcz, LinearEquiv.symm_apply_apply]`. Conclude with `hz (t ⋙ (inU q ⊤).lift (𝟭 _) (fun T => inTop q T))`.
+A detailed English derivation is pending.
 -/
 theorem isFormT_of_isForm {a : ℕ} (g₀ : Γ(X, ⊤)) (g : Fin a → Γ(X, ⊤)) (c : HV q ⊤ a a)
     (h : IsForm q ⊤ (a := a) g₀ g c) : IsFormT q g₀ g ((resTopEquiv q a).symm c) := by
@@ -66,7 +66,7 @@ theorem isFormT_of_isForm {a : ℕ} (g₀ : Γ(X, ⊤)) (g : Fin a → Γ(X, ⊤
 end
 
 /- English proof (translation)
-Introduce `K _ X q a ⟨e, he, hb⟩`. Use `⟨((resTopEquiv q a).trans (LinearEquiv.ofBijective e hb).symm).trans (omEq q a), fun g₀ g => ?_⟩` and prove the remaining obligations. Conclude with `isFormT_of_isForm q g₀ g _ (he g₀ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (a : ℕ),
     (∃ e : CrystallineSemistableComparison.Onto.Om K (CrystallineSemistableComparison.Onto.Sec q ⊤) a →ₗ[K] CrystallineSemistableComparison.Onto.HV q ⊤ a a, CrystallineSemistableComparison.Onto.IsOm q ⊤ a e ∧ Function.Bijective e) →

@@ -13,11 +13,11 @@ namespace GlobalTheory.Mem.Col2.ChiFacLaw
 open GlobalTheory.PeriodTransport GlobalTheory.IdealTransport
 
 /- English proof (translation)
-Unfold `TaylorLogMetric.detId`. Rewrite using `[Submodule.span_mul_span, Set.singleton_mul]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨A, hA, rfl⟩`. Use `⟨(G' * A).det, ⟨_, fun v hv => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `h' _ (hA v hv)`. Use `show G.det * (G' * A).det = A.det`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Matrix.det_mul, ← Matrix.mul_assoc, hu, Matrix.one_mul]`. Introduce and unpack `⟨_, ⟨A, hA, rfl⟩, rfl⟩`. Use `⟨G * A, fun v hv => ?_, (Matrix.det_mul _ _).symm⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `h _ (hA v hv)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detId_image (D : D7) {n : ℕ} (L₀ L L' : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (G G' : Matrix (Fin n) (Fin n) D.host.E) (hu : G * G' = 1)
@@ -40,11 +40,11 @@ theorem detId_image (D : D7) {n : ℕ} (L₀ L L' : Submodule (𝓞 D.host.E) (F
     exact h _ (hA v hv)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Establish `hst : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Rewrite `hz` using `[← hst]`. Establish `key : ∀ w x : D.host.E, x ∈ Submodule.span (𝓞 D.host.E) {w} → star x ∈ Submodule.span (𝓞 D.host.E) {star w}`. Introduce `w x hx`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Use `Submodule.mem_span_singleton.2 ⟨⟨star (r : D.host.E), r.2.map (starRingEnd D.host.E).toIntAlgHom⟩, ?_⟩` and prove the remaining obligations. Conclude with `(star_mul' (r : D.host.E) w).symm`. Use `⟨Submodule.span (𝓞 D.host.E) {star z}, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hst]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => by simpa using key _ _ h, fun h => by simpa using key _ _ h⟩`. Rewrite using `[Submodule.span_mul_span, Set.singleton_mul_singleton, hz, Submodule.one_eq_span]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_one_span (D : D7) (z : D.host.E) (hz : z * D.host.conj z = 1) :
     TaylorLogMetric.N1 D (Submodule.span (𝓞 D.host.E) {z}) := by
@@ -62,13 +62,13 @@ theorem norm_one_span (D : D7) (z : D.host.E) (hz : z * D.host.conj z = 1) :
   · rw [Submodule.span_mul_span, Set.singleton_mul_singleton, hz, Submodule.one_eq_span]
 
 /- English proof (translation)
-Use `set M : Matrix (Fin n) (Fin n) E := LinearMap.toMatrix' (γ.1 : Sp E n →ₗ[E] Sp E n) with hM`. Establish `hd : ((LinearEquiv.det γ.1 : Eˣ) : E) = M.det`. Rewrite using `[LinearEquiv.coe_det, hM, LinearMap.det_toMatrix']`. Establish `hu : M.conjTranspose * M = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h` using `γ.2 (Pi.single i 1) (Pi.single j 1)`. Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply] at h`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, hM, LinearMap.toMatrix'_apply, LinearEquiv.coe_coe]`. Use `h.trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, hij, Ne.symm hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, ← Matrix.det_conjTranspose, ← Matrix.det_mul, hu, Matrix.det_one]`.
+A detailed English derivation is pending.
 -/
 theorem star_det_mul {E : Type} [Field E] [StarRing E] {n : ℕ} (γ : UF E n) :
     star ((LinearEquiv.det γ.1 : Eˣ) : E) * ((LinearEquiv.det γ.1 : Eˣ) : E) = 1 := by
@@ -97,9 +97,9 @@ theorem matT_eq {E E' : Type} [Field E] [NumberField E] [Field E'] [NumberField 
 variable {D : D7} {X : Fields} (s : Seam D X)
 
 /- English proof (translation)
-Establish `hd : s.iE ((LinearEquiv.det g : X.Eˣ) : X.E) = (matT s.iE n n g.toLinearMap).det`. Rewrite using `[matT_eq, ← RingHom.map_det, LinearMap.det_toMatrix', LinearEquiv.coe_det]`. Both sides reduce to the same expression. Rewrite using `[hd]`. Use `detId_image D L₀ _ _ _ (matT s.iE n n g.symm.toLinearMap) ?_ ((matT_carries s.iE N (gmap g N) _).2 fun y hy => ⟨y, hy, rfl⟩) ((matT_carries s.iE (gmap g N) N _).2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[matT_eq, matT_eq, ← map_mul, ← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `using hy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem detId_lat_gmap {n : ℕ} (L₀ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (g : Sp X.E n ≃ₗ[X.E] Sp X.E n)
     (N : Submodule (𝓞 X.E) (Sp X.E n)) :
@@ -117,9 +117,9 @@ theorem detId_lat_gmap {n : ℕ} (L₀ : Submodule (𝓞 D.host.E) (Fin n → D.
     simpa using hy
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Establish `hst : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Establish `h1 : star (s.iE ((LinearEquiv.det γ.1 : X.Eˣ) : X.E)) * s.iE ((LinearEquiv.det γ.1 : X.Eˣ) : X.E) = 1`. Rewrite using `[hst, ← hs.2, ← map_mul, star_det_mul, map_one]`. Set `z : unitary D.host.E` to `⟨s.iE ((LinearEquiv.det γ.1 : X.Eˣ) : X.E), h1, by rw [mul_comm]; exact h1⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hL` using `sd_lat s hs hN`. Rewrite using `[detId_lat_gmap, hχ.1 _ _ (norm_one_span D z.1 (by rw [← hst, mul_comm]; exact h1)) (GlobalTheory.RelDetIdeal.detId_normOne_mul D n _ _ _ (GlobalTheory.ThetaMove.Moved.sd_stdL D n) hL hL).1, hχ.2 z, Finset.prod_inv_distrib, ← s.iT.prod_comp]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun τ _ => (hs.1 τ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chi_lat_gmap (hs : s.Ok) {χ : TaylorLogMetric.IdE D → ℂ} (hχ : TaylorLogMetric.IsChi D χ) {n : ℕ} (γ : UF X.E n)
     {N : Submodule (𝓞 X.E) (Sp X.E n)} (hN : IsSdLat N) :
@@ -138,7 +138,7 @@ theorem chi_lat_gmap (hs : s.Ok) {χ : TaylorLogMetric.IdE D → ℂ} (hχ : Tay
   exact Finset.prod_congr rfl fun τ _ => (hs.1 τ _).symm
 
 /- English proof (translation)
-Introduce `D X s cc δ B χ cD a b hs hχ γ γ' N N' hN hN'`. Express the relevant statement in the definitionally equal form `Base.chiFac χ a b (s.lat (gmap γ.1 N)) (s.lat (gmap γ'.1 N')) = (∏ τ, X.embC s.σ₀ τ _) ^ _ * (∏ τ, X.embC s.σ₀ τ _) ^ _ * Base.chiFac χ a b (s.lat N) (s.lat N')`. Unfold `Base.chiFac`. Rewrite using `[chi_lat_gmap s hs hχ γ hN, chi_lat_gmap s hs hχ γ' hN', mul_zpow, mul_zpow, inv_zpow', inv_zpow', neg_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chiLaw_ambOf : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (a b : ℕ), s.Ok → TaylorLogMetric.IsChi D χ → (ambOf s B χ cD).ChiLaw a b := by
   intro D X s cc δ B χ cD a b hs hχ γ γ' N N' hN hN'

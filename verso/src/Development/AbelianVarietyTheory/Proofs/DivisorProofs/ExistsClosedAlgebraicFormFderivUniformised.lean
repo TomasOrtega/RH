@@ -18,7 +18,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v ↦ ?_` and prove the remaining obligations. Use `conv_lhs => rw [pi_eq_sum_univ' v]`. Simplify using `[map_sum, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clm_eq_sum_single_smul_proj {g : ℕ} (f : (Fin g → ℂ) →L[ℂ] ℂ) :
     f = ∑ a, f (Pi.single a 1) • (ContinuousLinearMap.proj a : (Fin g → ℂ) →L[ℂ] ℂ) := by
@@ -27,11 +27,11 @@ theorem clm_eq_sum_single_smul_proj {g : ℕ} (f : (Fin g → ℂ) →L[ℂ] ℂ
   simp [map_sum, mul_comm]
 
 /- English proof (translation)
-Establish `hn : s ∈ 𝓝 z` using `hs.mem_nhds hz`. Establish `h1 : ∀ᶠ y in 𝓝 z, HasFDerivAt h (fderiv ℂ h y) y` using `by filter_upwards [hn] with y hy using (hh.differentiableAt (hs.mem_nhds hy)).hasFDerivAt`. Establish `h2 : fderiv ℂ h =ᶠ[𝓝 z] fun y ↦ ∑ c, k c y • (ContinuousLinearMap.proj c : (Fin g → ℂ) →L[ℂ] ℂ)` using `by filter_upwards [hn] with y hy`. Rewrite using `[clm_eq_sum_single_smul_proj (fderiv ℂ h y)]`. Conclude with `Finset.sum_congr rfl fun c _ ↦ by rw [e c y hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : DifferentiableAt ℂ (fderiv ℂ h) z`. Use `DifferentiableAt.congr_of_eventuallyEq ?_ h2` and prove the remaining obligations. Conclude with `DifferentiableAt.fun_sum fun c _ ↦ ((hk c).differentiableAt hn).smul_const _`. Establish `h4 : ∀ c v, fderiv ℂ (k c) z v = fderiv ℂ (fderiv ℂ h) z v (Pi.single c 1)`. Introduce `c v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : k c =ᶠ[𝓝 z] fun y ↦ fderiv ℂ h y (Pi.single c 1)` using `by filter_upwards [hn] with y hy using (e c y hy).symm`. Rewrite using `[h5.fderiv_eq, fderiv_clm_apply h3 (differentiableAt_const _)]`. Simplify using the standard rewrite rules. Rewrite using `[h4, h4]`. Conclude with `second_derivative_symmetric_of_eventually h1 h3.hasFDerivAt _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_partial_symm {g : ℕ} {s : Set (Fin g → ℂ)} (hs : IsOpen s) {h : (Fin g → ℂ) → ℂ}
     (hh : DifferentiableOn ℂ h s) {k : Fin g → (Fin g → ℂ) → ℂ} (hk : ∀ a, DifferentiableOn ℂ (k a) s)
@@ -58,13 +58,13 @@ theorem fderiv_partial_symm {g : ℕ} {s : Set (Fin g → ℂ)} (hs : IsOpen s) 
   exact second_derivative_symmetric_of_eventually h1 h3.hasFDerivAt _ _
 
 /- English proof (translation)
-Take `⟨hop, hdiff, -, -, -, -, -, -, -, halg, -, -⟩` from `GlobalTheory.T.uniformisation_preimage_value_rules A g L u`. Take `⟨d, ω, hcomm, hd, hdual, hspan, hev⟩` from `GlobalTheory.T.kaehler_differentials_free_coordinate_forms_abelian A g L u hA U`. Use `choose k₀ hk₀ using hr`. Set `k : Fin g → Sec (str A) U.1` to `k₀`. Establish `hk : ∀ a, ∀ z ∈ pre u.ex U.1, fderiv ℂ h z (Pi.single a 1) = val u.ex U.1 (k a) z` using `hk₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ a, k a • ω a, GlobalTheory.T.deRhamDerivative_eq_zero_of_symmetric_frame _ g d ω hcomm hdual hspan k fun a b ↦ ?_, fun z hz ↦ ?_⟩` and prove the remaining obligations. Establish `h0 : d a (k b) - d b (k a) = 0`. Use `GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA U.1 _ fun z hz ↦ ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `halg U.1 z hz`. Establish `h1` using `he (d a (k b) - d b (k a))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_sub, ← he (d a (k b)), ← he (d b (k a)), hd a _ z hz, hd b _ z hz, fderiv_partial_symm (hop U.1) hh (fun c ↦ hdiff U.1 (k c)) hk a b hz, sub_self]`. Conclude with `h1`. Conclude with `sub_eq_zero.mp h0`. Rewrite using `[clm_eq_sum_single_smul_proj (fderiv ℂ h z), clm_eq_sum_single_smul_proj (evForm u.ex U.1 z _)]`. Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (d a).liftKaehlerDifferential (∑ c, k c • ω c) = k a`. Simplify using `[map_sum, hdual]`. Rewrite using `[hev a _ z hz, h1, hk a z hz]`.
+A detailed English derivation is pending.
 -/
 theorem exists_closed_form_fderiv_eq (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g)
     (hA : IsAbelianScheme A) (U : A.left.affineOpens) (h : (Fin g → ℂ) → ℂ) (hh : DifferentiableOn ℂ h (pre u.ex U.1))

@@ -26,14 +26,14 @@ noncomputable def galSpecHom (τ : Ω ≃ₐ[K] Ω) :
     exact τ.commutes c)
 
 /- English proof (translation)
-Use `ext1`. Conclude with `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem galSpecHom_one : galSpecHom (1 : Ω ≃ₐ[K] Ω) = 𝟙 _ := by
   ext1
   exact Spec.map_id _
 
 /- English proof (translation)
-Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem galSpecHom_mul (τ τ' : Ω ≃ₐ[K] Ω) :
     galSpecHom (τ * τ') = galSpecHom τ ≫ galSpecHom τ' := by
@@ -71,9 +71,9 @@ theorem galPointAct_left (A : Over (Sp K)) [MonObj A] (τ : Ω ≃ₐ[K] Ω)
     (galPointAct A τ x).left = spMap τ.toRingEquiv.toRingHom ≫ x.left := rfl
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[galPointAct_left, galPointAct_left, ← hy, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `c`. Conclude with `h c c.2`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem galPointAct_eq_of_agree (A : Over (Sp K)) [MonObj A] (L : IntermediateField K Ω)
     (τ τ' : Ω ≃ₐ[K] Ω) (h : ∀ c ∈ L, τ c = τ' c) (x : Over.mk (spMap (algebraMap K Ω)) ⟶ A)
@@ -89,7 +89,7 @@ theorem galPointAct_eq_of_agree (A : Over (Sp K)) [MonObj A] (L : IntermediateFi
   exact h c c.2
 
 /- English proof (translation)
-Use `AlgEquiv.restrictNormal_commutes τ L ⟨c, hc⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `((τ.restrictNormal L ⟨c, hc⟩ : L) : Ω) = τ c at this`. Rewrite using `[← this]`. Conclude with `Subtype.prop _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algEquiv_mem_of_normal (L : IntermediateField K Ω) [Normal K L] (τ : Ω ≃ₐ[K] Ω)
     {c : Ω} (hc : c ∈ L) : τ c ∈ L := by
@@ -99,13 +99,13 @@ theorem algEquiv_mem_of_normal (L : IntermediateField K Ω) [Normal K L] (τ : �
   exact Subtype.prop _
 
 /- English proof (translation)
-Establish `h1 : ∀ (a : ℕ), ∀ c ∈ L, φ ((σ ^ a) c) = (σ ^ (q * a)) (φ c)`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro c _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ a ih`. Introduce `c hc`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, h _ (algEquiv_mem_of_normal L _ hc), ih c hc, ← AlgEquiv.mul_apply, ← pow_add, Nat.mul_succ, Nat.add_comm]`. Proceed by induction on `N with`. Consider the case `zero => intro c _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ N ih`. Introduce `c hc`. Use `ih c hc` as an intermediate fact. Simplify using `only [AlgEquiv.mul_apply] at this`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_succ' φ, pow_succ' q]`. Simplify using `only [AlgEquiv.mul_apply]`. Rewrite using `[this, h1 _ _ (algEquiv_mem_of_normal L _ hc)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_tame_relation (L : IntermediateField K Ω) [Normal K L] (σ φ : Ω ≃ₐ[K] Ω) (q : ℕ)
     (h : ∀ c ∈ L, φ (σ c) = (σ ^ q) (φ c)) (N : ℕ) :
@@ -131,21 +131,19 @@ theorem pow_tame_relation (L : IntermediateField K Ω) [Normal K L] (σ φ : Ω 
 end
 
 /- English proof (translation)
-Introduce `K _ _ P Ω _ _ _ l q hl hrat σ φ K' _ j hζ hL`. Take `⟨-, ⟨e, he, hgal⟩, hfield⟩` from `GlobalTheory.T.torsion_points_polarised_abelianVariety_galois K P Ω l hl`. Establish `hφ : ∀ (m N : ℕ) (ζ : Ω), ζ ^ l ^ m = 1 → (φ ^ N) ζ = ζ ^ q ^ N`. Introduce `m N ζ h`. Proceed by induction on `N with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, map_pow, (hζ m ζ h).2, ← pow_mul, pow_succ']`. Use `⟨e, galPointAct P.A, fun τ x => rfl, he, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `N n x y hx hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `hgal σ n x y _ _ hx hy (galPointAct_left _ σ x) (galPointAct_left _ σ y)`. Take `⟨-, h3⟩` from `hgal (φ ^ N) n x y _ _ hx hy (galPointAct_left _ _ x) (galPointAct_left _ _ y)`. Use `⟨Units.ext ?_, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[h2, (hζ n _ h1).1]`. Rewrite using `[h3, hφ n N _ h1, Units.val_pow_eq_pow_val]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `N n x hx`. Take `⟨L, hfin, hnorm, hp, hpts⟩` from `hfield hrat n`. Take `⟨y, hy⟩` from `hpts x hx`. Use `galPointAct_eq_of_agree P.A L _ _ (pow_tame_relation L σ φ q (fun c hc => (hL L hfin hnorm hp c hc).1) N) x y hy` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_pow (galPointAct P.A) σ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← MulAut.mul_apply, this, MulAut.mul_apply]`. Generalize the expression as in `galPointAct P.A (φ ^ N) x = z`. Generalize the expression as in `q ^ N = k`. Proceed by induction on `k with`. Consider the case `zero => rfl`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [pow_succ', MulAut.mul_apply, ih, Function.iterate_succ_apply']`. Introduce `n x hx hfix`. Take `⟨L, hfin, hnorm, hp, hpts⟩` from `hfield hrat n`. Take `⟨E, hE1, hE2, -⟩` from `exists_fieldOfValues P.A.left Ω x.left`. Establish `hEL` using `(hE2 L (algebraMap L Ω)).2 (hpts x hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hσ` using `(hE1 σ.toRingEquiv.toRingHom (RingHom.id Ω)).1 (by`. Rewrite using `[← galPointAct_left, hfix]`. Conclude with `(Category.id_comp _).symm.trans (congrArg (· ≫ x.left) (Spec.map_id _).symm))`. Use `(hE2 K' j).1 fun c hc => ?_` and prove the remaining obligations. Take `⟨d, rfl⟩` from `hEL hc`.
-
-Conclude with `(hL L hfin hnorm hp _ d.2).2 (hσ _ hc)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem galois_action_torsion_points : ∀ (K : Type) [Field K] [CharZero K] (P : Out.PolAV (Sp K)) (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (l q : ℕ), l.Prime → (∀ (τ : Ω ≃ₐ[K] Ω) (x : (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A)), x ^ l = 1 → spMap τ.toRingEquiv.toRingHom ≫ x.left = x.left) → ∀ (σ φ : Ω ≃ₐ[K] Ω) (K' : Type) [Field K'] (j : K' →+* Ω), (∀ (m : ℕ) (ζ : Ω), ζ ^ l ^ m = 1 → σ ζ = ζ ∧ φ ζ = ζ ^ q) → (∀ L : IntermediateField K Ω, FiniteDimensional K L → Normal K L → IsPGroup l (L ≃ₐ[K] L) → ∀ x ∈ L, φ (σ x) = (σ ^ q) (φ x) ∧ (σ x = x → x ∈ j.fieldRange)) → ∃ (e : ℕ → (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) → (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A) → Ωˣ) (act : (Ω ≃ₐ[K] Ω) →* MulAut (Over.mk (spMap (algebraMap K Ω)) ⟶ P.A)), (∀ τ x, (act τ x).left = spMap τ.toRingEquiv.toRingHom ≫ x.left) ∧ ((∀ n x x' y, x ^ l ^ n = 1 → x' ^ l ^ n = 1 → y ^ l ^ n = 1 → e n (x * x') y = e n x y * e n x' y ∧ e n y x = (e n x y)⁻¹) ∧ (∀ n x y, x ^ l ^ (n + 1) = 1 → y ^ l ^ n = 1 → e (n + 1) x y = e n (x ^ l) y) ∧ (∀ n x, x ^ l ^ n = 1 → (∀ y, y ^ l ^ n = 1 → e n x y = 1) → x = 1)) ∧ (∀ N n x y, x ^ l ^ n = 1 → y ^ l ^ n = 1 → e n (act σ x) (act σ y) = e n x y ∧ e n (act (φ ^ N) x) (act (φ ^ N) y) = e n x y ^ (q ^ N)) ∧ (∀ N n x, x ^ l ^ n = 1 → act (φ ^ N) (act σ x) = (act σ)^[q ^ N] (act (φ ^ N) x)) ∧ ∀ n x, x ^ l ^ n = 1 → act σ x = x → ∃ y : Sp K' ⟶ P.A.left, spMap j ≫ y = x.left := by
   intro K _ _ P Ω _ _ _ l q hl hrat σ φ K' _ j hζ hL

@@ -12,7 +12,7 @@ noncomputable section
 namespace ChowFormDimLe
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h0` using `hI.isHomog g hg 0`. Rewrite `h0` using `[homogeneousComponent_zero]`. Conclude with `hI.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h0 ((Ne.isUnit h).map C))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_zero_eq_zero_of_mem {F : Type} [Field F] {n : ℕ} {I : Ideal (MvPolynomial (Fin n) F)}
     (hI : IsProjPrime I) {g : MvPolynomial (Fin n) F} (hg : g ∈ I) : coeff 0 g = 0 := by
@@ -22,11 +22,11 @@ theorem coeff_zero_eq_zero_of_mem {F : Type} [Field F] {n : ℕ} {I : Ideal (MvP
   exact hI.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h0 ((Ne.isUnit h).map C))
 
 /- English proof (translation)
-Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Fin n) (R := F) (S := K)`. Establish `: Module.Flat (MvPolynomial (Fin n) F) (MvPolynomial (Fin n) K)` using `Module.Flat.isBaseChange F (MvPolynomial (Fin n) F) K (MvPolynomial (Fin n) K) (Algebra.IsPushout.out (R := F) (S := MvPolynomial (Fin n) F) (R' := K) (S' := MvPolynomial (Fin n) K))`. Use `set Q : Ideal (MvPolynomial (Fin n) K) := RingHom.ker (eval (0 : Fin n → K))`. Establish `: Q.IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨C c, eval_C c⟩)`. Establish `hle : I ≤ Q.under (MvPolynomial (Fin n) F)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[Ideal.under, Ideal.mem_comap, MvPolynomial.algebraMap_def, RingHom.mem_ker, eval_map, eval₂_zero_apply, constantCoeff_eq, hI g hg, map_zero]`. Take `⟨P, hPQ, hP, hPI⟩` from `Ideal.exists_ideal_le_liesOver_of_le Q hle`. Use `⟨P, hP, hPQ, ?_⟩` and prove the remaining obligations. Rewrite using `[P.over_def I]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_liesOver {F : Type} [Field F] (K : Type) [Field K] [Algebra F K] {n : ℕ}
     (I : Ideal (MvPolynomial (Fin n) F)) [I.IsPrime] (hI : ∀ g ∈ I, coeff 0 g = 0) :
@@ -50,7 +50,7 @@ theorem exists_prime_liesOver {F : Type} [Field F] (K : Type) [Field K] [Algebra
   rfl
 
 /- English proof (translation)
-Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Fin n) (R := F) (S := K)`. Establish `: P.LiesOver I` using `⟨hPI.symm⟩`. Conclude with `GroundTheory.Arith.Toric.ringKrullDim_eq_of_isIntegral (FaithfulSMul.algebraMap_injective (MvPolynomial (Fin n) F ⧸ I) (MvPolynomial (Fin n) K ⧸ P))`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_of_comap {F : Type} [Field F] (K : Type) [Field K] [Algebra F K]
     [Algebra.IsAlgebraic F K] {n : ℕ} (I : Ideal (MvPolynomial (Fin n) F))
@@ -62,29 +62,27 @@ theorem ringKrullDim_eq_of_comap {F : Type} [Field F] (K : Type) [Field K] [Alge
     (FaithfulSMul.algebraMap_injective (MvPolynomial (Fin n) F ⧸ I) (MvPolynomial (Fin n) K ⧸ P))
 
 /- English proof (translation)
-Use `set Q : Ideal (MvPolynomial (Fin n) K) := RingHom.ker (eval (0 : Fin n → K)) with hQdef`. Establish `: Q.IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨C c, eval_C c⟩)`. Set `mk` to `Ideal.Quotient.mk P`. Set `ℓ : Fin k → MvPolynomial (Fin n) K` to `fun i => ∑ j, C (u (i, j)) * X j`. Establish `hℓQ : ∀ i, ℓ i ∈ Q`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Simplify using `[Q, ℓ, RingHom.mem_ker]`. Use `set Mb : Ideal (MvPolynomial (Fin n) K ⧸ P) := Q.map mk`. Establish `: Mb.IsMaximal` using `Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hPQ)`. Set `s : Finset (MvPolynomial (Fin n) K ⧸ P)` to `Finset.univ.image (fun i => mk (ℓ i))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsM : Ideal.span (s : Set (MvPolynomial (Fin n) K ⧸ P)) ≤ Mb`. Rewrite using `[Ideal.span_le]`. Introduce `y hy`. Simplify using `only [s, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at hy`. Take `⟨i, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_map_of_mem _ (hℓQ i)`. Take `⟨q, hqmin, hqM⟩` from `Ideal.exists_minimalPrimes_le hsM`. Establish `: q.IsPrime` using `hqmin.1.1`. Establish `hqht : q.height ≤ k`. Use `(Ideal.height_le_card_of_mem_minimalPrimes_span_finset hqmin).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.card_image_le.trans (by simp)` after adjusting the coercions. Establish `hMht : (Mb.height : WithBot ℕ∞) = ringKrullDim (MvPolynomial (Fin n) K ⧸ P)`. Establish `h` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient K Mb`. Establish `hF : IsField ((MvPolynomial (Fin n) K ⧸ P) ⧸ Mb)` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient Mb).mp inferInstance`. Establish `h0 : ringKrullDim ((MvPolynomial (Fin n) K ⧸ P) ⧸ Mb) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h00` using `ringKrullDim_eq_zero_of_isField (F := (MvPolynomial (Fin n) K ⧸ P) ⧸ Mb) hF`. Use `h00 using 2` and compare the differences between its conclusion and the goal. Rewrite `h` using `[h0, add_zero]`. Then use the resulting hypothesis. Establish `hqne : q ≠ Mb`. Introduce `hq`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hqht` using `[hq]`. Establish `h1 : ((Mb.height : ℕ∞) : WithBot ℕ∞) ≤ ((k : ℕ∞) : WithBot ℕ∞)` using `by exact_mod_cast hqht`. Rewrite `h1` using `[hMht]`. Conclude with `absurd h1 (not_le.mpr (by exact_mod_cast hdim))`. Use `set Q' := q.comap mk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `: Q'.IsPrime` using `Ideal.comap_isPrime mk q`. Establish `hQQ' : ¬ Q ≤ Q'`. Introduce `h`. Apply `hqne` to reduce the goal to its premises. Use `le_antisymm hqM ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hnull` using `MvPolynomial.IsPrime.vanishingIdeal_zeroLocus (K := K) Q'`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hx0⟩ : ∃ x ∈ zeroLocus K Q', x ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and, not_not] at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hQQ'` to reduce the goal to its premises. Introduce `g hg`. Rewrite using `[← hnull, mem_vanishingIdeal_iff]`. Introduce `x hx`. Rewrite using `[hcon x hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hg` using `[Q, RingHom.mem_ker]`. Use `⟨x, hx0, fun g hg => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hgQ' : g ∈ Q'` using `by show mk g ∈ q`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr hg]`. Conclude with `q.zero_mem`.
-
-Simplify using `using (mem_zeroLocus_iff.mp hx) g hgQ'`. Establish `hmem : ℓ i ∈ Q'` using `by show mk (ℓ i) ∈ q`. Conclude with `hqmin.1.2 (Ideal.subset_span (by simp [s]))`. Simplify `(mem_zeroLocus_iff.mp hx) _ hmem` using `[ℓ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_common_zero {K : Type} [Field K] [IsAlgClosed K] {n k : ℕ}
     (P : Ideal (MvPolynomial (Fin n) K)) [P.IsPrime] (hPQ : P ≤ RingHom.ker (eval (0 : Fin n → K)))
@@ -159,15 +157,15 @@ theorem exists_ne_zero_common_zero {K : Type} [Field K] [IsAlgClosed K] {n k : �
     simpa [ℓ] using (mem_zeroLocus_iff.mp hx) _ hmem
 
 /- English proof (translation)
-Introduce `F _ n k I f hI hf`. Assume the negation of the conclusion as `hdim`. Rewrite `hdim` using `[not_le]`. Use `hI.isPrime` as an intermediate fact. Take `⟨P, hP, hPQ, hPI⟩` from `exists_prime_liesOver (AlgebraicClosure F) I (fun g hg => coeff_zero_eq_zero_of_mem hI hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdimP : (k : WithBot ℕ∞) < ringKrullDim (MvPolynomial (Fin n) (AlgebraicClosure F) ⧸ P)`. Rewrite using `[ringKrullDim_eq_of_comap (AlgebraicClosure F) I P hPI]`. Conclude with `hdim` after adjusting the coercions. Establish `hall : ∀ u : Fin k × Fin n → AlgebraicClosure F, u ∈ incidence I k`. Introduce `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx0, hxP, hxu⟩` from `exists_ne_zero_common_zero P hPQ hdimP u`. Use `⟨x, hx0, fun g hg => ?_, hxu⟩` and prove the remaining obligations. Establish `hgP : MvPolynomial.map (algebraMap F (AlgebraicClosure F)) g ∈ P`. Rewrite `hg` using `[← hPI]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hxP _ hgP` as an intermediate fact. Rewrite `this` using `[eval_map, ← aeval_def]`. Then use the resulting hypothesis. Apply `hf.1` to reduce the goal to its premises. Apply `map_injective (algebraMap F (AlgebraicClosure F)) (algebraMap F (AlgebraicClosure F)).injective` to reduce the goal to its premises. Apply `MvPolynomial.funext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Rewrite using `[eval_map, ← aeval_def, ((hf.2 f).mpr dvd_rfl) u (hall u), map_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem proof : ChowFormDimLe.Statement := by
   intro F _ n k I f hI hf

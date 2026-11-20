@@ -16,7 +16,7 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Conclude with `Submodule.mul_mem_mul hq hy`. Use `Submodule.mul_le.mpr fun q hq y hy => Submodule.subset_span ⟨q, hq, y, hy, rfl⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem twist_sub_eq_mul (F Q : SubSystem S x Ω) (I : Chart x) :
     (F.twist Q).sub I = Q.sub I * F.sub I := by
@@ -30,7 +30,7 @@ def ChartInvertible {I : Chart x} (P : Submodule (chartRing S x I) Ω) : Prop :=
   ∃ Q' : Submodule (chartRing S x I) Ω, P * Q' = 1
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `h`. Take `⟨Q', hQ'⟩` from `h'`. Conclude with `⟨Q * Q', by rw [mul_mul_mul_comm, hQ, hQ', one_mul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ChartInvertible.mul {I : Chart x} {P P' : Submodule (chartRing S x I) Ω}
     (h : ChartInvertible P) (h' : ChartInvertible P') : ChartInvertible (P * P') := by
@@ -39,16 +39,16 @@ theorem ChartInvertible.mul {I : Chart x} {P P' : Submodule (chartRing S x I) Ω
   exact ⟨Q * Q', by rw [mul_mul_mul_comm, hQ, hQ', one_mul]⟩
 
 /- English proof (translation)
-The claim follows from `(twistBundle S x c).invertible I`.
+A detailed English derivation is pending.
 -/
 theorem chartInvertible_twistSys (c : ℤ) (I : Chart x) :
     ChartInvertible ((twistSys S x c).sub I) :=
   (twistBundle S x c).invertible I
 
 /- English proof (translation)
-Establish `hpow : ∀ n : ℕ, ChartInvertible ((M.toSubSystem.pow n).sub I)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact chartInvertible_twistSys 0 I`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `ChartInvertible (((M.toSubSystem.pow n).twist M.toSubSystem).sub I)`. Rewrite using `[twist_sub_eq_mul]`. Conclude with `ChartInvertible.mul (M.invertible I) ih`. Rewrite using `[twistMul, twist_sub_eq_mul]`. Conclude with `ChartInvertible.mul (chartInvertible_twistSys m I) (hpow p)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartInvertible_twistMul (M : LineBundle S x) (p : ℕ) (m : ℤ) (I : Chart x) :
     ChartInvertible ((twistMul M.toSubSystem p m).sub I) := by
@@ -64,11 +64,9 @@ theorem chartInvertible_twistMul (M : LineBundle S x) (p : ℕ) (m : ℤ) (I : C
   exact ChartInvertible.mul (chartInvertible_twistSys m I) (hpow p)
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun o _ => aeval x G * o ∈ twistMod S x (a + b) I) ?_ ?_ ?_ ?_ ho` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, e', hs, hf, hse, hc, rfl⟩`. Use `Submodule.subset_span ⟨G * f, s, e, b + e', hs, hG.mul hf, hse, by push_cast; omega, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_div_assoc]`. Rewrite using `[mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Introduce `y z _ _ hy hz`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Introduce `r z _ hz`.
-
-Rewrite using `[chartRing_smul_def, mul_left_comm, ← chartRing_smul_def]`. Conclude with `Submodule.smul_mem _ r hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mul_mem_twistMod {I : Chart x} {G : Poly S N} {b : ℕ} (hG : G.IsHomogeneous b) {a : ℤ}
     {o : Ω} (ho : o ∈ twistMod S x a I) : aeval x G * o ∈ twistMod S x (a + b) I := by
@@ -84,15 +82,15 @@ theorem aeval_mul_mem_twistMod {I : Chart x} {G : Poly S N} {b : ℕ} (hG : G.Is
     exact Submodule.smul_mem _ r hz
 
 /- English proof (translation)
-Take `⟨Q', hQ'⟩` from `hP`. Establish `hq : ∃ q ∈ Q', q ≠ 0`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and, not_not] at hcon`. Establish `hbot : Q' = ⊥` using `(Submodule.eq_bot_iff _).mpr hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (1 : Ω) ∈ (1 : Submodule (chartRing S x I) Ω)` using `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Rewrite `h1` using `[← hQ', hbot, Submodule.mul_bot, Submodule.mem_bot]`. Conclude with `one_ne_zero h1`. Take `⟨q, hqQ, hq0⟩` from `hq`. Take `⟨b, hb⟩` from `Submodule.mem_one.mp (hQ' ▸ Submodule.mul_mem_mul hσ hqQ : σ * q ∈ (1 : Submodule (chartRing S x I) Ω))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, s, e, hs, hg, hse, hbg⟩` from `b.2`. Establish `hs0` using `eval_ne_zero_of_mem_monos I hs`. Establish `hb' : (b : Ω) = σ * q` using `hb`. Establish `hgx : aeval x g = σ * q * aeval x s`. Rewrite using `[← hb', hbg, div_mul_cancel₀ _ hs0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, e, hg, by rw [hgx]; exact mul_ne_zero (mul_ne_zero hσ0 hq0) hs0, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.mem_one.mp (hQ' ▸ Submodule.mul_mem_mul hδ hqQ : δ * q ∈ (1 : Submodule (chartRing S x I) Ω))`. Take `⟨h, t, e', ht, hh, hte, hah⟩` from `a.2`. Establish `ha' : aeval x h / aeval x t = δ * q` using `by rw [← hah]; exact ha`. Use `⟨aeval x (s * h) / aeval x t, Submodule.subset_span ⟨s * h, t, e', e + e', ht, hse.mul hh, hte, by push_cast; ring, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mul_div_assoc, ha', hgx]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_form_chart {I : Chart x} {P : Submodule (chartRing S x I) Ω} (hP : ChartInvertible P)
     {σ : Ω} (hσ : σ ∈ P) (hσ0 : σ ≠ 0) : ∃ (g : Poly S N) (e : ℕ), g.IsHomogeneous e ∧
@@ -126,13 +124,13 @@ theorem exists_form_chart {I : Chart x} {P : Submodule (chartRing S x I) Ω} (hP
 end JProper
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x T`. Establish `hloc : ∀ I : Chart x, ∃ (g : Poly k N) (e : ℕ), g.IsHomogeneous e ∧ aeval x g ≠ 0 ∧ ∀ δ ∈ T.D.sub I, ∃ o ∈ twistMod k x (e : ℤ) I, aeval x g * δ = T.si * o` using `fun I => exists_form_chart (chartInvertible_twistMul T.M T.p (T.m - T.c₁) I) ((Submodule.mem_iInf _).mp T.si_mem I) T.si_ne`. Use `choose g e hg hg0 hgD using hloc`. Use `⟨∏ I, g I, ∑ I, e I, Ideal.subset_span ⟨∑ I, e I, IsHomogeneous.prod _ _ _ fun I _ => hg I, fun I δ hδ => ?_⟩, IsHomogeneous.prod _ _ _ fun I _ => hg I, ?_⟩` and prove the remaining obligations. Take `⟨o, ho, hδo⟩` from `hgD I δ hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrest : (∏ J ∈ Finset.univ.erase I, g J).IsHomogeneous (∑ J ∈ Finset.univ.erase I, e J)` using `IsHomogeneous.prod _ _ _ fun J _ => hg J`. Use `⟨aeval x (∏ J ∈ Finset.univ.erase I, g J) * o, ?_, ?_⟩` and prove the remaining obligations. Establish `hm` using `aeval_mul_mem_twistMod hrest ho`. Establish `hdeg : ((e I : ℕ) : ℤ) + ((∑ J ∈ Finset.univ.erase I, e J : ℕ) : ℤ) = ((∑ J, e J : ℕ) : ℤ)`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ I)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[hdeg]`. Then use the resulting hypothesis. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ I), map_mul, mul_comm (aeval x (g I)), mul_assoc, hδo]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_primeOf_of_isHomogeneous x (IsHomogeneous.prod _ _ _ fun I _ => hg I), map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun I _ => hg0 I`.
+A detailed English derivation is pending.
 -/
 theorem StepData.JProper.proof : StepData.JProper.Statement.{u, w} := by
   classical

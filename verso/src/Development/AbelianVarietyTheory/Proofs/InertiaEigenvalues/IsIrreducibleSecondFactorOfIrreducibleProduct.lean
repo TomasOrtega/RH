@@ -14,27 +14,25 @@ noncomputable section
 namespace GlobalTheory.SmGL.ProdIrr
 
 /- English proof (translation)
-Take `⟨N, hN, hNS⟩` from `(mem_nhds_subtype _ _ _).1 ((hσ u).mem_nhds (show σ 1 u = u by simp))`. Take `⟨K, hKo, hKN⟩` from `hG N (by simpa using hN)`. Establish `hfix : ∀ p : P, (p : G) ∈ K → σ p u = u` using `fun p hp => hNS (hKN _ hp)`. Establish `wd : ∀ (p p' : P) (c c' : G), c ∈ K → c' ∈ K → (p : G) * c = p' * c' → σ p u = σ p' u`. Introduce `p p' c c' hc hc' h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : ((p'⁻¹ * p : P) : G) ∈ K`. Establish `: ((p'⁻¹ * p : P) : G) = c' * c⁻¹`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, ← h, mul_inv_cancel_right]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem hc' (inv_mem hc)`. Establish `h2` using `hfix _ hm`. Rewrite `h2` using `[map_mul, Module.End.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `_ = σ p' u := by rw [h2]`. Set `F : G → W` to `fun g => if h : ∃ p : P, ∃ c ∈ K, g = (p : G) * c then σ h.choose u else 0`. Establish `hF : ∀ (p : P) (c : G), c ∈ K → F ((p : G) * c) = σ p u`. Introduce `p c hc`. Establish `h : ∃ p' : P, ∃ c' ∈ K, (p : G) * c = (p' : G) * c'` using `⟨p, c, hc, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [F, dif_pos h]`. Take `⟨c', hc', e⟩` from `h.choose_spec`. Conclude with `wd _ _ _ _ hc' hc e.symm`. Establish `hF0 : ∀ g, (¬ ∃ p : P, ∃ c ∈ K, g = (p : G) * c) → F g = 0` using `fun g h => by`. Simplify using `only [F, dif_neg h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hmem : F ∈ indSpace P σ`. Introduce `h g`. Distinguish the cases in `hg : ∃ p : P, ∃ c ∈ K, g = (p : G) * c`. Take `⟨p, c, hc, rfl⟩` from `hg`. Rewrite using `[← mul_assoc, show (h : G) * p = ((h * p : P) : G) from rfl, hF _ _ hc, hF _ _ hc, map_mul, Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `: ¬ ∃ p : P, ∃ c ∈ K, (h : G) * g = (p : G) * c`. Introduce and unpack `⟨p, c, hc, e⟩`. Conclude with `hg ⟨h⁻¹ * p, c, hc, by rw [Subgroup.coe_mul, mul_assoc, ← e]; simp⟩`. Rewrite using `[hF0 _ hg, hF0 _ this, map_zero]`. Use `⟨⟨⟨F, hmem⟩, mem_smoothPart_of_nhds (Filter.mem_of_superset (hKo.mem_nhds K.one_mem) fun c hc => ?_)⟩, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x show F (x * c) = F x`. Distinguish the cases in `hx : ∃ p : P, ∃ c' ∈ K, x = (p : G) * c'`. Take `⟨p, c', hc', rfl⟩` from `hx`. Rewrite using `[mul_assoc, hF _ _ (mul_mem hc' hc), hF _ _ hc']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ¬ ∃ p : P, ∃ c' ∈ K, x * c = (p : G) * c'`. Introduce and unpack `⟨p, c', hc', e⟩`. Conclude with `hx ⟨p, c' * c⁻¹, mul_mem hc' (inv_mem hc), by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩`. Rewrite using `[hF0 _ hx, hF0 _ this]`. Use `show F 1 = u`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Use `hF 1 1 K.one_mem` as an intermediate fact. Simplify using `using this`. Introduce `g show F g = 0 ∨ ∃ p, F g = σ p u`. Distinguish the cases in `hg : ∃ p : P, ∃ c ∈ K, g = (p : G) * c`. Take `⟨p, c, hc, rfl⟩` from `hg`.
-
-Conclude with `Or.inr ⟨p, hF _ _ hc⟩`. Conclude with `Or.inl (hF0 _ hg)`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem exists_mem_ind_apply_one {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup W] [Module ℂ W]
@@ -103,11 +101,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use `continuous_pi fun a => Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_def, leviProj_apply]`. Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_elem _ _`. Establish `: (fun p : parab k e => (((leviProj k e p a)⁻¹ : GL (m a) k) : Matrix (m a) (m a) k)) = fun p => ((leviProj k e p⁻¹ a : GL (m a) k) : Matrix (m a) (m a) k)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [leviProj_apply]`. Conclude with `((Units.continuous_val.comp continuous_subtype_val).comp continuous_inv).matrix_elem _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_leviProj (e : (Σ a, m a) ≃ n) : Continuous (leviProj k e) := by
   refine continuous_pi fun a => Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -123,7 +121,7 @@ theorem continuous_leviProj (e : (Σ a, m a) ≃ n) : Continuous (leviProj k e) 
     exact ((Units.continuous_val.comp continuous_subtype_val).comp continuous_inv).matrix_elem _ _
 
 /- English proof (translation)
-Introduce `N hN`. Take `⟨γ, hγ, h⟩` from `GlobalTheory.CentralExponent.exists_cong_subset hN`. Conclude with `⟨_, GlobalTheory.CentralExponent.isOpen_cong γ hγ, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_openSubgroup_GL :
     ∀ N ∈ 𝓝 (1 : GL n k), ∃ K : Subgroup (GL n k), IsOpen (K : Set (GL n k)) ∧ ∀ g ∈ K, g ∈ N := by
@@ -132,7 +130,7 @@ theorem exists_openSubgroup_GL :
   exact ⟨_, GlobalTheory.CentralExponent.isOpen_cong γ hγ, h⟩
 
 /- English proof (translation)
-Take `⟨f, h1, h2⟩` from `exists_mem_ind_apply_one exists_openSubgroup_GL (parab k e) _ (isSmooth_comp (isSmooth_twist hρ (isSmoothChar_deltaHalf k)) _ (continuous_leviProj e)) u`. Conclude with `⟨f, h1, fun g => (h2 g).imp id fun ⟨p, hp⟩ => ⟨leviProj k e p, _, hp⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_indSp_apply_one {W : Type} [AddCommGroup W] [Module ℂ W] (e : (Σ a, m a) ≃ n)
     (ρ : Representation ℂ (Levi k m) W) (hρ : IsSmooth ρ) (u : W) :
@@ -148,33 +146,29 @@ end GlobalTheory.SmGL.ProdIrr
 namespace GlobalTheory.SmGL.ProdIrr
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r t V W U _ _ _ _ _ _ σ₀ τ π hσs hσi hτs hπi ⟨Φ⟩`. Establish `hI : (prod₂ σ₀ τ).IsIrreducible` using `(MultiIrr.isIrreducible_iff_of_equiv Φ).1 hπi`. Take `⟨hV, -⟩` from `(isIrreducible_iff σ₀).1 hσi`. Take `⟨hX, hIirr⟩` from `(isIrreducible_iff _).1 hI`. Take `⟨x₀, hx₀⟩` from `exists_ne (0 : V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ V, φ x₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx₀ ((Module.forall_dual_apply_eq_zero_iff ℂ x₀).1 h)`. Set `L : V ⊗[ℂ] W →ₗ[ℂ] W` to `(TensorProduct.lid ℂ W).toLinearMap ∘ₗ LinearMap.rTensor W φ`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hL : ∀ x w, L (x ⊗ₜ w) = φ x • w` using `fun x w => by simp [L]`. Set `ρ'` to `(extTensor σ₀ τ).comp (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom`. Establish `hρ' : IsSmooth ρ'` using `isSmooth_comp (isSmooth_extTensor hσs hτs) _ (show Continuous fun g : Levi k (Two (Fin r) (Fin t)) => (g false, g true) from (continuous_apply false).prodMk (continuous_apply true))`. Establish `hW : Nontrivial W`. Assume the negation of the conclusion as `hW`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hW` using `[not_nontrivial_iff_subsingleton]`. Establish `h0 : ∀ z : V ⊗[ℂ] W, z = 0` using `fun z => z.induction_on rfl (fun x w => by rw [Subsingleton.elim w 0, TensorProduct.tmul_zero]) (fun a b ha hb => by rw [ha, hb, add_zero])`. Take `⟨f₁, f₂, hne⟩` from `hX`. Conclude with `hne (Subtype.ext (Subtype.ext (funext fun x => (h0 _).trans (h0 _).symm)))`. Rewrite using `[isIrreducible_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `⟨hW, fun S hS => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hS0 : S = ⊥`. Conclude with `Or.inl hS0`. Use `right`. Take `⟨s, hsS, hs0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Set `R : Submodule ℂ (V ⊗[ℂ] W)` to `LinearMap.range (LinearMap.lTensor V S.subtype)`. Establish `hR : ∀ l, ∀ y ∈ R, ρ' l y ∈ R`. Introduce and unpack `l _ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul x w`. Conclude with `⟨σ₀ ((leviTwo k (Fin r) (Fin t)).symm l).1 x ⊗ₜ ⟨τ ((leviTwo k (Fin r) (Fin t)).symm l).2 w, hS _ _ w.2⟩, by simp [ρ']⟩`. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem ha hb`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hLR : ∀ y ∈ R, L y ∈ S`. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x w => rw [LinearMap.lTensor_tmul, hL]`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `S.smul_mem _ w.2`. Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `add_mem ha hb`. Set `Y : Submodule ℂ (IndSp (two (stdSum (rfl : r + t = r + t))) ρ')` to `{ carrier := {f | ∀ g, f.1.1 g ∈ R} add_mem' := fun ha hb g => add_mem (ha g) (hb g) zero_mem' := fun g => zero_mem R smul_mem' := fun c f hf g => R.smul_mem c (hf g) }`. Establish `hYs : ∀ g, ∀ f ∈ Y, prod₂ σ₀ τ g f ∈ Y` using `fun g f hf x => hf (x * g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemY : ∀ (u : V ⊗[ℂ] W), u ∈ R → ∃ f ∈ Y, f.1.1 1 = u`. Introduce `u hu`. Take `⟨f, h1, h2⟩` from `exists_indSp_apply_one (two (stdSum (rfl : r + t = r + t))) ρ' hρ' u`. Use `⟨f, fun g => ?_, h1⟩` and prove the remaining obligations. Break down `h2 g with h | ⟨l, c, h⟩` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `zero_mem R`. Rewrite using `[h]`. Conclude with `R.smul_mem c (hR l u hu)`. Establish `hYtop : Y = ⊤`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hIirr Y hYs).resolve_left fun hY => ?_` and prove the remaining obligations. Take `⟨f, hf, h1⟩` from `hmemY (x₀ ⊗ₜ s) ⟨x₀ ⊗ₜ ⟨s, hsS⟩, rfl⟩`. Rewrite `hf` using `[hY, Submodule.mem_bot]`. Establish `: L (x₀ ⊗ₜ s) = 0` using `by rw [← h1, hf]; rfl`. Rewrite `this` using `[hL]`.
-
-Conclude with `smul_ne_zero hφ hs0 this`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Take `⟨f, h1, -⟩` from `exists_indSp_apply_one (two (stdSum (rfl : r + t = r + t))) ρ' hρ' (x₀ ⊗ₜ v)`. Establish `hf : f ∈ Y` using `hYtop ▸ Submodule.mem_top`. Establish `h2` using `hLR _ (h1 ▸ hf 1)`.
-
-Rewrite `h2` using `[hL]`. Conclude with `(S.smul_mem_iff hφ).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_prod₂ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (r t : ℕ) (V W U : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup U] [Module ℂ U]

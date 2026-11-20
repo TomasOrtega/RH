@@ -15,7 +15,7 @@ namespace GlobalTheory.TamCnt.PlaceComp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {M : ℕ}
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.ext _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem af_ext {a b : Af F} (h : ∀ w, evalV F w a = evalV F w b) : a = b :=
   RestrictedProduct.ext _ _ h
@@ -38,7 +38,7 @@ abbrev piV (v : HeightOneSpectrum (𝓞 F)) : Af F ⊗[F] E →ₐ[F] Fv F v ⊗
   Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `[sTen, singleLin, Algebra.TensorProduct.map_tmul, StrongApprox.evalV_single_same]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem piV_sTen (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E) : piV v (sTen v x) = x := by
   induction x using TensorProduct.induction_on with
@@ -48,7 +48,7 @@ theorem piV_sTen (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v ⊗[F] E) : piV v 
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `w` and use `by by_cases hw : w = v · subst hw; rw [StrongApprox.evalV_single_same]; exact ha · rw [StrongApprox.evalV_single_ne hw]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem singleV_mem_intAf (v : HeightOneSpectrum (𝓞 F)) {a : Fv F v} (ha : a ∈ v.adicCompletionIntegers F) :
     singleV F v a ∈ intAf F := fun w => by
@@ -57,13 +57,11 @@ theorem singleV_mem_intAf (v : HeightOneSpectrum (𝓞 F)) {a : Fv F v} (ha : a 
   · rw [StrongApprox.evalV_single_ne hw]; exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨evalV F v a, ha v, x, hx, by funext i; simp⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : (fun i => piV v ((0 : Fin M → Af F ⊗[F] E) i)) = 0` using `by funext i; simp`. Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `e : (fun i => piV v ((x + y) i)) = (fun i => piV v (x i)) + fun i => piV v (y i)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx`.
-
-Establish `e : (fun i => piV v ((-x) i)) = -fun i => piV v (x i)` using `by funext i; simp`. Rewrite using `[e]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piV_mem_compLat (v : HeightOneSpectrum (𝓞 F)) (L : Set (Fin M → E)) {z : Fin M → Af F ⊗[F] E}
     (hz : z ∈ latHat F E L) : (fun i => piV v (z i)) ∈ compLat v L := by
@@ -83,13 +81,13 @@ theorem piV_mem_compLat (v : HeightOneSpectrum (𝓞 F)) (L : Set (Fin M → E))
     rw [e]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨singleV F v a, singleV_mem_intAf v ha, x, hx, by`. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[sTen, singleLin]⟩`. Consider the case `zero`. Establish `e : (fun i => sTen v ((0 : Fin M → Fv F v ⊗[F] E) i)) = 0` using `by funext i; simp`. Rewrite using `[e]`. Conclude with `zero_mem _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy`. Establish `e : (fun i => sTen v ((x + y) i)) = (fun i => sTen v (x i)) + fun i => sTen v (y i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx`. Establish `e : (fun i => sTen v ((-x) i)) = -fun i => sTen v (x i)` using `by funext i; simp`. Rewrite using `[e]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sTen_mem_latHat (v : HeightOneSpectrum (𝓞 F)) (L : Set (Fin M → E)) {y : Fin M → Fv F v ⊗[F] E}
     (hy : y ∈ compLat v L) : (fun i => sTen v (y i)) ∈ latHat F E L := by
@@ -110,9 +108,9 @@ theorem sTen_mem_latHat (v : HeightOneSpectrum (𝓞 F)) (L : Set (Fin M → E))
     rw [e]; exact neg_mem hx
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec (piV (E := E) v).toRingHom m (fun j => sTen v (y j)) i` as an intermediate fact. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite using `[this]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Simplify using `[piV_sTen]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem map_mulVec_eq (v : HeightOneSpectrum (𝓞 F)) (m : Matrix (Fin M) (Fin M) (Af F ⊗[F] E))
     (y : Fin M → Fv F v ⊗[F] E) :
@@ -126,7 +124,7 @@ theorem map_mulVec_eq (v : HeightOneSpectrum (𝓞 F)) (m : Matrix (Fin M) (Fin 
   simp [piV_sTen]
 
 /- English proof (translation)
-Rewrite using `[map_mulVec_eq]`. Conclude with `piV_mem_compLat v L' (hm _ (sTen_mem_latHat v L hy))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mulVec_mem (v : HeightOneSpectrum (𝓞 F)) (L L' : Set (Fin M → E))
     (m : Matrix (Fin M) (Fin M) (Af F ⊗[F] E)) (hm : ∀ z ∈ latHat F E L, m *ᵥ z ∈ latHat F E L')
@@ -141,7 +139,7 @@ namespace GlobalTheory.TamCnt.PlaceComp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {M : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [compV, sigR, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compV_sigR (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : AF F ⊗[F] E) :
     compV v (sigR (AF F) σ x) = sigR (Fv F v) σ (compV v x) := by
@@ -151,7 +149,7 @@ theorem compV_sigR (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : AF
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]
 
 /- English proof (translation)
-Simplify using `[compV, inclR, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem compV_inclR (v : HeightOneSpectrum (𝓞 F)) (x : E) :
     compV v (inclR (AF F) x) = inclR (F := F) (Fv F v) x := by
@@ -164,19 +162,17 @@ namespace GlobalTheory.TamCnt
 open PlaceComp in
 
 /- English proof (translation)
-Use `set A : Matrix (Fin M) (Fin M) (AF F ⊗[F] E) := ((HA.mat (AF F) σ J h.1 : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) with hA`. Use `set c : AF F ⊗[F] E →+* Fv F v ⊗[F] E := (compV (E := E) v).toRingHom with hc`. Establish `hval' : ((locHom σ J v h : GL (Fin M) (Fv F v ⊗[F] E)) : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) = A.map c` using `rfl`. Establish `hval` using `locHom_val σ J v h`. Establish `fwd : ∀ g : GlobalTheory.Published.SUAdelic σ J, g ∈ congG σ J Λ v k → ∀ y ∈ compLat v (Λ : Set (Fin M → E)), ((locHom σ J v g : GL (Fin M) (Fv F v ⊗[F] E)) : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) *ᵥ y ∈ compLat v (Λ : Set (Fin M → E))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg y hy`. Rewrite using `[locHom_val]`. Conclude with `map_mulVec_mem v _ _ _ (fun z hz => (hg.1 z).1 hz) hy`. Use `⟨?_, ?_, fun y => ⟨fwd h hh y, fun hy => ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hm : Formalism.UG.cT (sigR (AF F) σ) A * JR (AF F) J * A = JR (AF F) J` using `(show HR (AF F) σ J from h.1).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show Formalism.UG.cT (sigR (Fv F v) σ) _ * JR (Fv F v) J * _ = JR (Fv F v) J`. Rewrite using `[hval']`. Establish `key` using `congrArg (fun X => X.map c) hm`. Simplify using `only [Matrix.map_mul] at key`. Establish `e1 : (Formalism.UG.cT (sigR (AF F) σ) A).map c = Formalism.UG.cT (sigR (Fv F v) σ) (A.map c)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, hc, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Conclude with `compV_sigR σ v _`. Establish `e2 : (JR (AF F) J).map c = JR (Fv F v) J`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [JR, Matrix.map_apply, hc, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Conclude with `compV_inclR v _`. Rewrite `key` using `[e1, e2]`. Conclude with `key`. Rewrite using `[hval', ← RingHom.mapMatrix_apply, ← RingHom.map_det, StrongApprox.mem_SUAdelic.1 h.2, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `fwd h⁻¹ (inv_mem hh) _ hy`. Rewrite `h2` using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `e : ((locHom σ J v h : GL (Fin M) (Fv F v ⊗[F] E)) : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) - 1 = (finMat σ J h.1 - 1).map (piV v)`. Rewrite using `[hval]`. Express the relevant statement in the definitionally equal form `_ = (piV (E := E) v).toRingHom.mapMatrix (finMat σ J h.1 - 1)`.
-
-Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `map_mulVec_mem v _ _ _ hh.2 hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locHom_mem_locCong (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (Λ : Submodule (𝓞 E) (Fin M → E))

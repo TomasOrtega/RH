@@ -13,29 +13,27 @@ namespace UpperTheory
 end UpperTheory
 
 /- English proof (translation)
-Introduce `F K _ _ _ _ _ _ d x hx hft`. Establish `hmem : ∀ c : rA ℂ x {0}, algebraMap F K (c : F) ∈ rB ℂ K x {0}`. Introduce `c`. Use `show algebraMap F K (c : F) ∈ (integralClosure (rA ℂ x {0}) K).restrictScalars ℂ`. Rewrite using `[Subalgebra.mem_restrictScalars, mem_integralClosure_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `isIntegral_algebraMap (x := c)`. Set `ι : rA ℂ x {0} →ₐ[ℂ] rB ℂ K x {0}` to `((IsScalarTower.toAlgHom ℂ F K).comp (rA ℂ x {0}).val).codRestrict _ hmem`. Establish `key : ∀ e1 e2 : fib ℂ K x, ∀ c : rA ℂ x {0}, e1.1 (ι c) = e2.1 (ι c)`. Introduce `e1 e2 c`. Take `⟨c, hc⟩` from `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hc using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, j, rfl⟩` from `hy`. Rewrite `hi` using `[Finset.mem_singleton]`. Substitute `hi` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨j', rfl⟩` into its components or cases. Establish `h3 : ∀ (e : fib ℂ K x) (h : x 0 / x 0 ∈ rA ℂ x {0}), e.1 (ι ⟨x 0 / x 0, h⟩) = 1`. Introduce `e h`. Establish `h1 : (⟨x 0 / x 0, h⟩ : rA ℂ x {0}) = 1` using `Subtype.ext (div_self (hx.ne 0))`. Rewrite using `[h1, map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `(h3 e1 _).trans (h3 e2 _).symm`. Conclude with `(e1.2 j').trans (e2.2 j').symm`. Consider the case `algebraMap r => show e1.1 (ι (algebraMap ℂ (rA ℂ x {0}) r)) = e2.1 (ι (algebraMap ℂ (rA ℂ x {0}) r))`. Simplify using `only [AlgHom.commutes]`. Consider the case `add y z hy hz ihy ihz => show e1.1 (ι (⟨y, hy⟩ + ⟨z, hz⟩)) = e2.1 (ι (⟨y, hy⟩ + ⟨z, hz⟩))`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [map_add, ihy, ihz]`. Consider the case `mul y z hy hz ihy ihz => show e1.1 (ι (⟨y, hy⟩ * ⟨z, hz⟩)) = e2.1 (ι (⟨y, hy⟩ * ⟨z, hz⟩))`. Simplify using `only [map_mul, ihy, ihz]`. Break down `isEmpty_or_nonempty (fib ℂ K x) with hE | hE` into its components or cases. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨e0⟩` from `hE`. Take `⟨s, hs⟩` from `hft.out`. Set `ψ : rA ℂ x {0} →+* ℂ` to `(e0.1.comp ι).toRingHom`. Establish `hint : ∀ b : rB ℂ K x {0}, IsIntegral (rA ℂ x {0}) (b : K)` using `fun b => b.2`. Set `R : rB ℂ K x {0} → Finset ℂ` to `fun b => (((hint b).choose).map ψ).roots.toFinset`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hR : ∀ (e : fib ℂ K x) (b : rB ℂ K x {0}), e.1 b ∈ R b`. Introduce `e b`. Take `⟨hm, hp⟩` from `(hint b).choose_spec`. Establish `h0 : Polynomial.eval₂ (ι : rA ℂ x {0} →+* rB ℂ K x {0}) b (hint b).choose = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Polynomial.hom_eval₂ (hint b).choose (ι : rA ℂ x {0} →+* rB ℂ K x {0}) (rB ℂ K x {0}).val.toRingHom b` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_zero]`. Conclude with `hp`. Establish `h1` using `Polynomial.hom_eval₂ (hint b).choose (ι : rA ℂ x {0} →+* rB ℂ K x {0}) e.1.toRingHom b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[h0, map_zero]`. Establish `h2 : e.1.toRingHom.comp (ι : rA ℂ x {0} →+* rB ℂ K x {0}) = ψ` using `RingHom.ext fun c => key e e0 c`. Rewrite `h1` using `[h2]`. Establish `hne : ((hint b).choose.map ψ) ≠ 0` using `(hm.map ψ).ne_zero`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hne, Polynomial.IsRoot, Polynomial.eval_map]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1.symm`. Set `Φ : fib ℂ K x → ((t : s) → (R t : Set ℂ))` to `fun e t => ⟨e.1 t, hR e t⟩`. Apply `Finite.of_injective Φ` to reduce the goal to its premises. Introduce `e1 e2 h`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Apply `AlgHom.ext_of_adjoin_eq_top hs` to reduce the goal to its premises. Introduce `t ht`. Use `congrFun h ⟨t, ht⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finite_fiber_of_finiteType_parameter_ring :
     ∀ (F K : Type) [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K]

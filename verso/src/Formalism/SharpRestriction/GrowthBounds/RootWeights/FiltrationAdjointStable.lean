@@ -14,9 +14,9 @@ section
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Establish `e : ν + ((k + 1 : ℕ) : ℤ) • rootW a b = (ν + (k : ℤ) • rootW a b) + rootW a b`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[add_smul, one_smul, add_assoc]`. Rewrite using `[e, pow_succ']`. Conclude with `hs a b _ _ ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_apply_mem_weightSp_add_smul_rootW {E : GLOps n K V} (hs : OperatorsShiftWeightsByRoots E) (a b : Fin n) (k : ℕ)
     (ν : Fin n → ℤ) (x : V) (hx : x ∈ weightSp E ν) :
@@ -31,11 +31,11 @@ private theorem pow_apply_mem_weightSp_add_smul_rootW {E : GLOps n K V} (hs : Op
     exact hs a b _ _ ih
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, (divPowE E b a k * divPowE E a b k) x ∈ weightSp E ν`. Introduce `k`. Establish `h1` using `pow_apply_mem_weightSp_add_smul_rootW hs a b k ν x hx`. Establish `h2` using `pow_apply_mem_weightSp_add_smul_rootW hs b a k _ _ h1`. Establish `e : ν + (k : ℤ) • rootW a b + (k : ℤ) • rootW b a = ν`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `c`. Simplify using `only [rootW, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Use `show divPowE E b a k (divPowE E a b k x) ∈ weightSp E ν`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [divPowE, LinearMap.smul_apply, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ h2)`. Simplify using `only [ppFac, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (key k)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projector_factor_preserves_weight {E : GLOps n K V} (hs : OperatorsShiftWeightsByRoots E) (mu ν : Fin n → ℤ) (a b : Fin n) (T : ℕ) (x : V)
     (hx : x ∈ weightSp E ν) : ppFac E mu a b T x ∈ weightSp E ν := by
@@ -55,7 +55,7 @@ theorem projector_factor_preserves_weight {E : GLOps n K V} (hs : OperatorsShift
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (key k)
 
 /- English proof (translation)
-Proceed by induction on `ord with`. Consider the case `nil => simpa [pp] using hx`. Consider the case `cons ab ord ih`. Simplify using `only [pp, List.map_cons, List.prod_cons] at ih ⊢`. Conclude with `projector_factor_preserves_weight hs mu ν ab.1 ab.2 T _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extremal_projector_preserves_weight {E : GLOps n K V} (hs : OperatorsShiftWeightsByRoots E) (mu ν : Fin n → ℤ) (ord : List (Fin n × Fin n)) (T : ℕ)
     (x : V) (hx : x ∈ weightSp E ν) : pp E mu ord T x ∈ weightSp E ν := by
@@ -66,9 +66,9 @@ theorem extremal_projector_preserves_weight {E : GLOps n K V} (hs : OperatorsShi
     exact projector_factor_preserves_weight hs mu ν ab.1 ab.2 T _ ih
 
 /- English proof (translation)
-Consider the cases of `k with`. Consider the case `zero => exact absurd rfl hk`. Consider the case `succ j`. Establish `hm : ∀ (f g : Module.End K V) (y : V), (f * g) y = f (g y)` using `fun _ _ _ => rfl`. Simplify using `only [divPowE, LinearMap.smul_apply]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_succ, hm, h, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem divided_power_kills_kernel (E : GLOps n K V) (a b : Fin n) (k : ℕ) (hk : k ≠ 0) (x : V) (h : E a b x = 0) :
     divPowE E a b k x = 0 := by
@@ -80,9 +80,9 @@ theorem divided_power_kills_kernel (E : GLOps n K V) (a b : Fin n) (k : ℕ) (hk
     rw [pow_succ, hm, h, map_zero, smul_zero]
 
 /- English proof (translation)
-Establish `hz : ∀ k : ℕ, (divPowE E b a (k + 1) * divPowE E a b (k + 1)) x = 0`. Introduce `k`. Use `show divPowE E b a (k + 1) (divPowE E a b (k + 1) x) = 0`. Rewrite using `[divided_power_kills_kernel E a b (k + 1) (Nat.succ_ne_zero k) x h, map_zero]`. Simplify using `only [ppFac, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_range_succ']`. Simplify using `only [hz, smul_zero, Finset.sum_const_zero, zero_add]`. Simplify using `[divPowE]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projector_factor_fixes_kernel (E : GLOps n K V) (mu : Fin n → ℤ) (a b : Fin n) (T : ℕ) (x : V) (h : E a b x = 0) :
     ppFac E mu a b T x = x := by
@@ -96,9 +96,9 @@ theorem projector_factor_fixes_kernel (E : GLOps n K V) (mu : Fin n → ℤ) (a 
   simp [divPowE]
 
 /- English proof (translation)
-Establish `hm : ∀ (f g : Module.End K V) (y : V), (f * g) y = f (g y)` using `fun _ _ _ => rfl`. Proceed by induction on `ord with`. Consider the case `nil => simp [pp]`. Consider the case `cons ab ord ih`. Establish `ih'` using `ih (fun ab' hab' => h ab' (by simp [hab']))`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [pp, List.map_cons, List.prod_cons] at ih' ⊢`. Rewrite using `[hm, ih']`. Conclude with `projector_factor_fixes_kernel E mu ab.1 ab.2 T x (h ab (by simp))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extremal_projector_fixes_hwv (E : GLOps n K V) (mu : Fin n → ℤ) (ord : List (Fin n × Fin n)) (T : ℕ) (x : V)
     (h : ∀ ab ∈ ord, E ab.1 ab.2 x = 0) : pp E mu ord T x = x := by
@@ -112,7 +112,7 @@ theorem extremal_projector_fixes_hwv (E : GLOps n K V) (mu : Fin n → ℤ) (ord
     exact projector_factor_fixes_kernel E mu ab.1 ab.2 T x (h ab (by simp))
 
 /- English proof (translation)
-Unfold `nMinus`. Conclude with `Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem b (Submodule.mem_iSup_of_mem hab (LinearMap.mem_range_self _ _)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lowering_operator_mem_nMinus (E : GLOps n K V) {a b : Fin n} (hab : b < a) (w : V) : E a b w ∈ nMinus E := by
   unfold nMinus
@@ -120,11 +120,11 @@ theorem lowering_operator_mem_nMinus (E : GLOps n K V) {a b : Fin n} (hab : b < 
     (Submodule.mem_iSup_of_mem hab (LinearMap.mem_range_self _ _)))
 
 /- English proof (translation)
-Establish `hm : ∀ (f g : Module.End K V) (y : V), (f * g) y = f (g y)` using `fun _ _ _ => rfl`. Establish `hterm : ∀ i : ℕ, (divPowE E b a (i + 1) * divPowE E a b (i + 1)) x ∈ nMinus E`. Introduce `i`. Rewrite using `[hm]`. Simplify using `only [divPowE, LinearMap.smul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[pow_succ' (E b a) i, hm]`. Conclude with `lowering_operator_mem_nMinus E hab _`. Establish `fin : ∀ y z : V, y ∈ nMinus E → z = x → y + z - x ∈ nMinus E`. Introduce `y z hy hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `hz` using the available equality. Simplify using `using hy`. Simplify using `only [ppFac, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[Finset.sum_range_succ']`. Conclude with `fin _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hterm i)) (by simp [divPowE])`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projector_factor_sub_mem_nMinus (E : GLOps n K V) (mu : Fin n → ℤ) {a b : Fin n} (hab : a < b) (T : ℕ) (x : V) :
     ppFac E mu a b T x - x ∈ nMinus E := by
@@ -145,11 +145,11 @@ theorem projector_factor_sub_mem_nMinus (E : GLOps n K V) (mu : Fin n → ℤ) {
   exact fin _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hterm i)) (by simp [divPowE])
 
 /- English proof (translation)
-Proceed by induction on `ord with`. Consider the case `nil => simp [pp]`. Consider the case `cons ab ord ih`. Establish `ih'` using `ih (fun ab' hab' => h ab' (by simp [hab']))`. Establish `hab : ab.1 < ab.2` using `h ab (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pp, List.map_cons, List.prod_cons] at ih' ⊢`. Establish `key : ∀ y : V, ppFac E mu ab.1 ab.2 T y - y ∈ nMinus E → y - x ∈ nMinus E → ppFac E mu ab.1 ab.2 T y - x ∈ nMinus E`. Introduce `y h1 h2`. Establish `h3` using `Submodule.add_mem _ h1 h2`. Rewrite `h3` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `key _ (projector_factor_sub_mem_nMinus E mu hab T _) ih'`.
+A detailed English derivation is pending.
 -/
 theorem extremal_projector_sub_mem_nMinus (E : GLOps n K V) (mu : Fin n → ℤ) (ord : List (Fin n × Fin n)) (T : ℕ) (x : V)
     (h : ∀ ab ∈ ord, ab.1 < ab.2) : pp E mu ord T x - x ∈ nMinus E := by
@@ -167,13 +167,13 @@ theorem extremal_projector_sub_mem_nMinus (E : GLOps n K V) (mu : Fin n → ℤ)
     exact key _ (projector_factor_sub_mem_nMinus E mu hab T _) ih'
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a b hab`. Conclude with `h a b (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ d ih`. Introduce `a b hab`. Establish `hb` using `b.isLt`. Establish `hc : a.val + d + 1 < n` using `by omega`. Take `⟨c, hcv⟩ : ∃ c : Fin n, c.val = a.val + d + 1` from `⟨⟨a.val + d + 1, hc⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : E a c y = 0` using `ih a c hcv.symm`. Establish `h2 : E c b y = 0` using `h c b (by omega)`. Establish `hba : b ≠ a`. Introduce `e`. Rewrite `hab` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcomm : E a c (E c b y) - E c b (E a c y) = ((if c = c then E a b else 0) - (if b = a then E c c else 0)) y` using `LinearMap.congr_fun (hE.1 a c c b) y`. Rewrite `hcomm` using `[h1, h2, map_zero, map_zero, sub_zero, if_pos rfl, if_neg hba, sub_zero]`. Conclude with `hcomm.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simple_raising_kill_all_raising {E : GLOps n K V} (hE : IsGLRep E) (y : V)
     (h : ∀ a b : Fin n, a.val + 1 = b.val → E a b y = 0) :
@@ -203,15 +203,15 @@ theorem simple_raising_kill_all_raising {E : GLOps n K V} (hE : IsGLRep E) (y : 
 end
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hXst : IsStableUnderOperators E (isoSub E mu)` using `fun a b x hx => isotypic_stable_under_gl_operator E mu a b x hx`. Establish `hXle : isoSub E mu ≤ cr_WS E (weightsBelow mu)`. Use `le_trans (Submodule.span_mono ?_) (isotypic_component_le_lower_weights E hE.1 ⊤ mu)` and prove the remaining obligations. Introduce and unpack `x ⟨u, hu, v, hv, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u, hu, v, Submodule.mem_top, hv, rfl⟩`. Establish `hyX : y ∈ isoSub E mu` using `Submodule.subset_span ⟨1, Submonoid.one_mem _, y, ⟨hne, hy, hr⟩, rfl⟩`. Take `⟨X', hc, hX'⟩` from `cr_compl E hE.1 hE.2.2 (isoSub E mu) hXst`. Establish `hle : nMinus E ≤ (cr_WS E (cr_Low mu) ⊓ isoSub E mu) ⊔ X'`. Unfold `nMinus`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `iSup_le fun a => iSup_le fun b => iSup_le fun hab => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hw : w ∈ isoSub E mu ⊔ X'` using `by rw [hc.sup_eq_top]; exact Submodule.mem_top`. Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem_sup ⟨cr_lower E hE.1 mu a b hab (hXle hp), hXst a b p hp⟩ (hX' a b q hq)`. Take `⟨s, hs, x', hx', hsum⟩` from `Submodule.mem_sup.1 (hle hn)`. Establish `hx'X : x' ∈ isoSub E mu`. Establish `h` using `(isoSub E mu).sub_mem hyX hs.2`. Rewrite `h` using `[← hsum, add_sub_cancel_left]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hx0 : x' = 0` using `Submodule.disjoint_def.1 hc.disjoint x' hx'X hx'`. Rewrite `hsum` using `[hx0, add_zero]`. Establish `hmem` using `cr_WS_mem E (hsum ▸ hs.1) hy hne`. Establish `h0` using `hmem.2`. Simplify using `[weightHeight'] at h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hwv_mem_nMinus_eq_zero (D : Formalism.BasicNotions.D7) {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] {n : ℕ} (E : GLOps n K V) (hE : IsGLRep E) (mu : Fin n → ℤ) (y : V)
@@ -251,13 +251,13 @@ def SimpleRaisingKillsExtremalProjector : Prop :=
         ∀ x ∈ weightSp E mu, ∀ a b : Fin n, a.val + 1 = b.val → E a b (pp E mu ord T x) = 0
 
 /- English proof (translation)
-Establish `h1y : ∀ y : V, (1 : Module.End K V) y = y` using `fun _ => rfl`. Introduce `a b ν x hx`. Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, h1y, sub_eq_zero] at hx ⊢`. Introduce `c`. Establish `claim : ((if c = a then E c b else 0) - (if b = c then E a c else 0)) x = ((rootW a b c : ℤ) : K) • E a b x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases h1 : c = a <;> by_cases h2 : b = c`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[rootW]`. Substitute `h1` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[rootW, h2, Ne.symm h2]`. Substitute `h2` using the available equality. Simplify using `[rootW, h1]`. Simplify using `[rootW, h1, h2, Ne.symm h1, Ne.symm h2]`. Establish `hc : E c c (E a b x) - E a b (E c c x) = ((if c = a then E c b else 0) - (if b = c then E a c else 0)) x` using `LinearMap.congr_fun (hE.1 c c a b) x`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hc` using `[hx c, map_smul, claim, sub_eq_iff_eq_add]`. Rewrite using `[hc, Pi.add_apply, Int.cast_add, add_smul]`. Conclude with `add_comm _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem operatorsShiftWeightsByRoots_of_isGLRep {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (hE : IsGLRep E) : OperatorsShiftWeightsByRoots E := by
@@ -281,13 +281,13 @@ private theorem operatorsShiftWeightsByRoots_of_isGLRep {n : ℕ} {K V : Type*} 
   exact add_comm _ _
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ n E hE mu hmu ord hord T hT`. Establish `hs : OperatorsShiftWeightsByRoots E` using `operatorsShiftWeightsByRoots_of_isGLRep E hE`. Establish `hlt : ∀ ab ∈ ord, ab.1 < ab.2`. Unfold `NormalOrder at hord`. Conclude with `hord.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hwt : ∀ x ∈ weightSp E mu, pp E mu ord T x ∈ weightSp E mu` using `fun x hx => extremal_projector_preserves_weight hs mu mu ord T x hx`. Use `⟨hwt, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx hn`. Establish `hsimple : ∀ a b : Fin n, a.val + 1 = b.val → E a b (pp E mu ord T x) = 0` using `h K V n E hE mu hmu ord hord T hT x hx`. Establish `hall : ∀ a b : Fin n, a < b → E a b (pp E mu ord T x) = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `hab' : a.val < b.val` using `hab`. Conclude with `simple_raising_kill_all_raising hE _ hsimple (b.val - a.val - 1) a b (by omega)`. Establish `hyn : pp E mu ord T x ∈ nMinus E`. Establish `h2` using `Submodule.add_mem _ (extremal_projector_sub_mem_nMinus E mu ord T x hlt) hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `hwv_mem_nMinus_eq_zero D E hE mu _ (hwt x hx) hall hyn`. Introduce `x hx hr`. Conclude with `extremal_projector_fixes_hwv E mu ord T x (fun ab hab => hr ab.1 ab.2 (hlt ab hab))`.
+A detailed English derivation is pending.
 -/
 theorem sizes_bound_of_log_estimates (D : Formalism.BasicNotions.D7) (h : SimpleRaisingKillsExtremalProjector) : adm5 D := by
   intro K V _ _ _ _ _ n E hE mu hmu ord hord T hT

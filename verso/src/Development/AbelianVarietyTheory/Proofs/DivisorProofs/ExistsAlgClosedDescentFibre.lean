@@ -21,9 +21,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.BdDim.SiegSpec
 
 /- English proof (translation)
-Establish `hb : ∀ x : (⊥ : Subfield K), algebraMap K L x ∈ (⊥ : Subfield L)` using `fun x => (show (⊥ : Subfield K) ≤ (⊥ : Subfield L).comap (algebraMap K L) from bot_le) x.2`. Set `e : (⊥ : Subfield K) →+* (⊥ : Subfield L)` to `((algebraMap K L).comp (Subfield.subtype _)).codRestrict _ hb`. Use `letI := e.toAlgebra`. Use `haveI : IsScalarTower (⊥ : Subfield K) (⊥ : Subfield L) L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : FaithfulSMul (⊥ : Subfield K) (⊥ : Subfield L) := (faithfulSMul_iff_algebraMap_injective _ _).2 e.injective`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `trdeg_add_eq (⊥ : Subfield K) (⊥ : Subfield L) (A := L)`. Establish `h₂` using `trdeg_add_eq (⊥ : Subfield K) K (A := L)`. Rewrite `h₂` using `[trdeg_eq_zero (R := K) (A := L), add_zero]`. Conclude with `le_trans (le_trans (self_le_add_left _ _) (h₁.trans h₂.symm).le) h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trLe_of_isAlgebraic {K L : Type} [Field K] [Field L] [Algebra K L] [Algebra.IsAlgebraic K L] {n : ℕ}
     (h : TrLe K n) : TrLe L n := by
@@ -39,9 +39,9 @@ theorem trLe_of_isAlgebraic {K L : Type} [Field K] [Field L] [Algebra K L] [Alge
   exact le_trans (le_trans (self_le_add_left _ _) (h₁.trans h₂.symm).le) h
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic (⊥ : Subfield (⊥ : Subfield k)) (⊥ : Subfield k)` using `⟨fun x => by`. Establish `: (⊥ : Subfield k) ≤ (⊥ : Subfield (⊥ : Subfield k)).map (Subfield.subtype _)` using `bot_le`. Take `⟨y, hy, hxy⟩` from `this x.2`. Take `rfl : y = x` from `Subtype.ext hxy`. Conclude with `isAlgebraic_algebraMap (⟨y, hy⟩ : (⊥ : Subfield (⊥ : Subfield k)))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[TrLe, trdeg_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem trLe_bot (k : Type) [Field k] (n : ℕ) : TrLe (⊥ : Subfield k) n := by
   have : Algebra.IsAlgebraic (⊥ : Subfield (⊥ : Subfield k)) (⊥ : Subfield k) := ⟨fun x => by
@@ -52,7 +52,7 @@ theorem trLe_bot (k : Type) [Field k] (n : ℕ) : TrLe (⊥ : Subfield k) n := b
   simp [TrLe, trdeg_eq_zero]
 
 /- English proof (translation)
-Use `letI := c.toAlgebra`. Set `l : AlgebraicClosure κ →ₐ[κ] k` to `IsAlgClosed.lift`. Conclude with `⟨AlgebraicClosure κ, inferInstance, inferInstance, algebraMap _ _, l.toRingHom, trLe_of_isAlgebraic h, RingHom.ext fun x => l.commutes x⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_closure {κ k : Type} [Field κ] [Field k] [IsAlgClosed k] (c : κ →+* k) {n : ℕ} (h : TrLe κ n) :
     ∃ (k₀ : Type) (_ : Field k₀) (_ : IsAlgClosed k₀) (c₀ : κ →+* k₀) (ι₀ : k₀ →+* k), TrLe k₀ n ∧ ι₀.comp c₀ = c := by
@@ -62,7 +62,7 @@ theorem exists_closure {κ k : Type} [Field κ] [Field k] [IsAlgClosed k] (c : �
     RingHom.ext fun x => l.commutes x⟩
 
 /- English proof (translation)
-Take `rfl : p = closedPoint K` from `Subsingleton.elim _ _`. Conclude with `TrLe.of_ringHom (Scheme.descResidueField (Scheme.stalkClosedPointTo y)).hom h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trLe_residueField {X : Scheme.{0}} {K : Type} [Field K] (y : Sp K ⟶ X) {n : ℕ} (h : TrLe K n) (p : Sp K) :
     TrLe (X.residueField (y p)) n := by
@@ -70,7 +70,7 @@ theorem trLe_residueField {X : Scheme.{0}} {K : Type} [Field K] (y : Sp K ⟶ X)
   exact TrLe.of_ringHom (Scheme.descResidueField (Scheme.stalkClosedPointTo y)).hom h
 
 /- English proof (translation)
-Take `⟨k₀, _, _, c₀, ι₀, h₀, e⟩` from `exists_closure (Scheme.descResidueField (Scheme.stalkClosedPointTo y)).hom h`. Use `⟨k₀, inferInstance, inferInstance, ι₀, spMap c₀ ≫ X.fromSpecResidueField _, h₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, spMap_comp_spMap, e]`. Conclude with `Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k X y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor {X : Scheme.{0}} {k : Type} [Field k] [IsAlgClosed k] (y : Sp k ⟶ X) {n : ℕ}
     (h : TrLe (X.residueField (y (closedPoint k))) n) :
@@ -81,9 +81,9 @@ theorem exists_factor {X : Scheme.{0}} {k : Type} [Field k] [IsAlgClosed k] (y :
   exact Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k X y
 
 /- English proof (translation)
-Establish `h : IsUnit ((2 : V) * 3 + -5)`. Establish `: (2 : V) * 3 + -5 = 1` using `by norm_num`. Rewrite using `[this]`. Conclude with `isUnit_one`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨3, le_rfl, by decide, by simpa using isUnit_of_mul_isUnit_right h⟩`. Conclude with `⟨5, by norm_num, by decide, by simpa using h.neg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_level (V : Type) [CommRing V] [IsLocalRing V] : ∃ m : ℕ, 3 ≤ m ∧ Odd m ∧ IsUnit (m : V) := by
   have h : IsUnit ((2 : V) * 3 + -5) := by
@@ -94,19 +94,17 @@ theorem exists_level (V : Type) [CommRing V] [IsLocalRing V] : ∃ m : ℕ, 3 �
   · exact ⟨5, by norm_num, by decide, by simpa using h.neg⟩
 
 /- English proof (translation)
-Introduce `hS T P σ K _ _ ι P₀ P₁ φ φ₀ n k _ _ r hσ hK hφ hφ₀`. Break down `Nat.eq_zero_or_pos P.g with hg | hg` into its components or cases. Establish `hP : IsIso P.A.hom` using `GlobalTheory.ZM.Model.isIso_of_dim_zero P.A P.isAb (hg ▸ P.smoothDim)`. Take `⟨k₀, _, _, -, ι₀, h₀, -⟩` from `exists_closure (Subfield.subtype (⊥ : Subfield k)) (trLe_bot k n)`. Conclude with `⟨k₀, inferInstance, inferInstance, ι₀, (Out.Inh.zeroPolAV _).A, inferInstance, h₀, (Out.Inh.zeroPolAV _).isAb, (Out.Inh.zeroPolAV _).A, inferInstance, _, _, RankZero.isGrpPullback_zero (RankZero.isIso_unit _) hP _, RankZero.isGrpPullback_zero (RankZero.isIso_unit _) (RankZero.isI …`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨m, hm, ho, hu⟩` from `exists_level T.V`. Take `⟨_, -, hF⟩` from `hS P.g hg`. Take `⟨F, -⟩` from `hF m hm ho`. Take `⟨V, _, _, ψ, σ', r', y, P', χ, α, α₂, hσ', rfl, rfl, hχ, hα, hα₂, hΛ⟩` from `GlobalTheory.T.exists_domain_lift_polarized_variety P.g m F T P σ k r hm ho hu rfl hσ`. Take `⟨β, -, hβ⟩` from `EllComp.exists_isPolFibre_lift hχ hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨β₂, hβ₂⟩` from `SiegPull.exists_isSquare hβ.2.1.1.w`. Use `haveI := P'.isAb.comm`. Use `haveI := P₁.isAb.comm`. Establish `hΛ₁ : LBIso (abelian₂ P₁.A P₁.L) (F.univ.P.pull (β₂ ≫ α₂))` using `LBIso.trans (DVR.linComb_isLB _ P₁.isLB _ _) (pull_isLB (DVR.linComb_isLB _ P'.isLB _ _) _) (pull_isLB F.univ.isLB _) (SiegPull.lbIso_lam_pull hβ.2.1 hβ.2.2.symm hβ₂) (SiegPull.lbIso_pull_comp hΛ β₂)`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.T.exists_fibre_point_polarized P.g m F (spMap σ' ≫ y) P₁ (β ≫ α) (β₂ ≫ α₂) K ι P₀ φ₀ hm ho (hβ.2.1.comp hα) (SiegPull.isSquare_comp hβ₂ hα₂) hΛ₁ hφ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁ : TrLe (F.X.residueField (y (spMap σ' (closedPoint ℂ)))) n`. Use `trLe_residueField y₀ hK (spMap ι (closedPoint ℂ))` as an intermediate fact. Establish `e : y₀ (spMap ι (closedPoint ℂ)) = y (spMap σ' (closedPoint ℂ))` using `congrArg (fun f : Sp ℂ ⟶ F.X => f (closedPoint ℂ)) hy₀`. Conclude with `e ▸ this`. Establish `hs : spMap σ' (closedPoint ℂ) ⤳ spMap r' (closedPoint k)` using `by show PrimeSpectrum.comap σ' (closedPoint ℂ) ⤳ PrimeSpectrum.comap r' (closedPoint k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← PrimeSpectrum.le_iff_specializes]`. Introduce `a ha`. Establish `h0 : σ' a ∈ maximalIdeal ℂ` using `ha`. Rewrite `h0` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot, map_eq_zero_iff _ hσ']`. Substitute `h0` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Establish `h₂` using `GlobalTheory.T.transcendence_bound_specializes F.X _ _ n (hs.map y.continuous) h₁`. Take `⟨k₀, _, _, ι₀, z, h₀, hz⟩` from `exists_factor (spMap r' ≫ y) h₂`. Establish `hB` using `isGrpPullback_pullback F.univ.A z`. Establish `hA` using `isGrpPullback_pullback ((Over.pullback z).obj F.univ.A) (spMap ι₀)`.
-
-Establish `hA'` using `isGrpPullback_pullback P'.A (spMap r')`. Take `⟨e, he, -⟩` from `grpPullback_iso ((hA.comp hB).congr hz rfl) (hA'.comp hα)`. Conclude with `⟨k₀, inferInstance, inferInstance, ι₀, _, _, h₀, PolPull.isAbelianScheme_of_isGrpPullback F.univ.ab hB, _, _, _, _, (((isGrpPullback_of_iso e).comp hA').comp hχ.2.1).congr (by rw [Category.id_comp, spMap_comp_spMap]) rfl, hA⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_small_fibre : GlobalTheory.Published.SiegelToroidalIntegral → ∀ (T : Formalism.L2.Pj.CDVR) (P : Out.PolAV (Sp T.V)) (σ : T.V →+* ℂ) (K : Type) [Field K] [IsAlgClosed K] (ι : K →+* ℂ) (P₀ : Out.PolAV (Sp K)) (P₁ : Out.PolAV (Sp ℂ)) (φ : P₁.A.left ⟶ P.A.left) (φ₀ : P₁.A.left ⟶ P₀.A.left) (n : ℕ) (k : Type) [Field k] [IsAlgClosed k] (r : T.V →+* k), Function.Injective σ → TrLe K n → IsPolFibre σ P P₁ φ → IsPolFibre ι P₀ P₁ φ₀ → ∃ (k₀ : Type) (_ : Field k₀) (_ : IsAlgClosed k₀) (ι₀ : k₀ →+* k) (B : Over (Sp k₀)) (_ : GrpObj B), TrLe k₀ n ∧ IsAbelianScheme B ∧ SameFibre P.A (spMap r) B (spMap ι₀) := by
   intro hS T P σ K _ _ ι P₀ P₁ φ φ₀ n k _ _ r hσ hK hφ hφ₀

@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.CycAwayCover
 
 /- English proof (translation)
-Use `isUnit_iff_exists_inv.2 ⟨⟨(M : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (by simpa using mul_inv_cancel₀ (Nat.cast_ne_zero.2 hM : (M : ℂ) ≠ 0))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_cycAway {M : ℕ} (hM : M ≠ 0) : IsUnit (M : cycAway M) := by
   refine isUnit_iff_exists_inv.2 ⟨⟨(M : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩, ?_⟩
@@ -26,7 +26,7 @@ def awayToCyc (M : ℕ) (hM : M ≠ 0) : Localization.Away (M : ℤ) →+* cycAw
     (by simpa using isUnit_natCast_cycAway hM)
 
 /- English proof (translation)
-Establish `hle : Submonoid.powers (M : ℤ) ≤ nonZeroDivisors ℤ` using `powers_le_nonZeroDivisors_of_noZeroDivisors (by exact_mod_cast hM)`. Rewrite using `[awayToCyc, IsLocalization.Away.lift, IsLocalization.lift_injective_iff]`. Introduce `x y`. Rewrite using `[(IsLocalization.injective (Localization.Away (M : ℤ)) hle).eq_iff, (Int.castRingHom (cycAway M)).injective_int.eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem awayToCyc_injective {M : ℕ} (hM : M ≠ 0) : Function.Injective (awayToCyc M hM) := by
   have hle : Submonoid.powers (M : ℤ) ≤ nonZeroDivisors ℤ :=
@@ -37,21 +37,19 @@ theorem awayToCyc_injective {M : ℕ} (hM : M ≠ 0) : Function.Injective (awayT
     (Int.castRingHom (cycAway M)).injective_int.eq_iff]
 
 /- English proof (translation)
-Use `letI := (awayToCyc M hM).toAlgebra`. Establish `hv : ∀ hx, (⟨(M : ℂ)⁻¹, hx⟩ : cycAway M) = algebraMap (Localization.Away (M : ℤ)) (cycAway M) (IsLocalization.Away.invSelf (M : ℤ))`. Introduce `hx`. Establish `h1 : (M : cycAway M) * ⟨(M : ℂ)⁻¹, hx⟩ = 1` using `Subtype.ext (by simpa using mul_inv_cancel₀ (Nat.cast_ne_zero.2 hM : (M : ℂ) ≠ 0))`. Establish `h2 : (M : cycAway M) * algebraMap (Localization.Away (M : ℤ)) (cycAway M) (IsLocalization.Away.invSelf (M : ℤ)) = 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (algebraMap (Localization.Away (M : ℤ)) (cycAway M)) (IsLocalization.Away.mul_invSelf (S := Localization.Away (M : ℤ)) (M : ℤ))` as an intermediate fact. Simplify using `using this`. Conclude with `(isUnit_natCast_cycAway hM).mul_left_cancel (h1.trans h2.symm)`. Establish `hint : Algebra.IsIntegral (Localization.Away (M : ℤ)) (cycAway M)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx⟩`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `⟨Polynomial.X ^ M - Polynomial.C 1, Polynomial.monic_X_pow_sub_C _ hM, by`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, map_one, Polynomial.eval₂_one]`. Conclude with `sub_eq_zero.2 (GlobalTheory.SiegelTor.zetaAway_pow_self hM)⟩`. Use `(isIntegral_algebraMap (R := Localization.Away (M : ℤ)) (x := IsLocalization.Away.invSelf (M : ℤ)) : IsIntegral _ (algebraMap (Localization.Away (M : ℤ)) (cycAway M) _)) using 1` and compare the differences between its conclusion and the goal. Conclude with `hv _`. Consider the case `zero => exact isIntegral_zero`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `one => exact isIntegral_one`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `neg x _ hx => exact hx.neg`. Consider the case `mul x y _ _ hx hy => exact hx.mul hy`. Use `haveI : Algebra.FiniteType (Localization.Away (M : ℤ)) (cycAway M) := by`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Use `⟨⟨{zetaAway M}, eq_top_iff.2 ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩ -`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_singleton_self _))`. Use `Subalgebra.algebraMap_mem (Algebra.adjoin (Localization.Away (M : ℤ)) ((({zetaAway M} : Finset (cycAway M)) : Set (cycAway M)))) (IsLocalization.Away.invSelf (M : ℤ)) using 1` and compare the differences between its conclusion and the goal. Conclude with `hv _`. Consider the case `zero => exact Subalgebra.zero_mem _`. Consider the case `one => exact Subalgebra.one_mem _`.
-
-Consider the case `add x y _ _ hx hy => exact Subalgebra.add_mem _ hx hy`. Consider the case `neg x _ hx => exact Subalgebra.neg_mem _ hx`. Consider the case `mul x y _ _ hx hy => exact Subalgebra.mul_mem _ hx hy`. Conclude with `(Algebra.IsIntegral.finite : Module.Finite (Localization.Away (M : ℤ)) (cycAway M))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finite_awayToCyc {M : ℕ} (hM : M ≠ 0) : (awayToCyc M hM).Finite := by
   letI := (awayToCyc M hM).toAlgebra
@@ -99,9 +97,7 @@ theorem finite_awayToCyc {M : ℕ} (hM : M ≠ 0) : (awayToCyc M hM).Finite := b
   exact (Algebra.IsIntegral.finite : Module.Finite (Localization.Away (M : ℤ)) (cycAway M))
 
 /- English proof (translation)
-Use `letI := (awayToCyc M hM).toAlgebra`. Establish `hle : Submonoid.powers (M : ℤ) ≤ nonZeroDivisors ℤ` using `powers_le_nonZeroDivisors_of_noZeroDivisors (by exact_mod_cast hM)`. Use `haveI : IsDomain (Localization.Away (M : ℤ)) := IsLocalization.isDomain_localization hle`. Use `haveI : IsDedekindDomain (Localization.Away (M : ℤ)) := IsLocalization.isDedekindDomain ℤ hle (Localization.Away (M : ℤ))`. Use `haveI : Module.Finite (Localization.Away (M : ℤ)) (cycAway M) := finite_awayToCyc hM`.
-
-Use `haveI : FaithfulSMul (Localization.Away (M : ℤ)) (cycAway M) := (faithfulSMul_iff_algebraMap_injective _ _).2 (awayToCyc_injective hM)`. Use `haveI : Module.Flat (Localization.Away (M : ℤ)) (cycAway M) := inferInstance`. Use `haveI : Algebra.FinitePresentation (Localization.Away (M : ℤ)) (cycAway M) := Algebra.FinitePresentation.of_finiteType.1 inferInstance`. Use `haveI := formallyUnramified_cycAway hM (Localization.Away (M : ℤ))`. Conclude with `(Algebra.Etale.of_formallyUnramified_of_flat : Algebra.Etale (Localization.Away (M : ℤ)) (cycAway M))`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_awayToCyc {M : ℕ} (hM : M ≠ 0) : (awayToCyc M hM).Etale := by
   letI := (awayToCyc M hM).toAlgebra
@@ -120,11 +116,11 @@ theorem etale_awayToCyc {M : ℕ} (hM : M ≠ 0) : (awayToCyc M hM).Etale := by
   exact (Algebra.Etale.of_formallyUnramified_of_flat : Algebra.Etale (Localization.Away (M : ℤ)) (cycAway M))
 
 /- English proof (translation)
-Introduce `M S hM hS`. Establish `hM0 : M ≠ 0` using `hM.ne'`. Establish `hSu : IsUnit ((Int.castRingHom Γ(S, ⊤)) (M : ℤ))` using `by simpa using hS`. Set `φ : S ⟶ Sp (Localization.Away (M : ℤ))` to `S.toSpecΓ ≫ spMap (IsLocalization.Away.lift (S := Localization.Away (M : ℤ)) (M : ℤ) hSu)`. Set `S' : Over S` to `Over.mk (pullback.fst φ (spMap (awayToCyc M hM0)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsFinite (spMap (awayToCyc M hM0)) := (IsFinite.SpecMap_iff _).2 (finite_awayToCyc hM0)`. Use `haveI : Etale (spMap (awayToCyc M hM0)) := HasRingHomProperty.Spec_iff.2 (etale_awayToCyc hM0)`. Use `⟨S', pullback.snd φ (spMap (awayToCyc M hM0)), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(inferInstance : IsFinite (pullback.fst φ (spMap (awayToCyc M hM0))))`. Conclude with `(inferInstance : Etale (pullback.fst φ (spMap (awayToCyc M hM0))))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `T f t₁ haveI : IsOpenImmersion (spMap (algebraMap ℤ (Localization.Away (M : ℤ)))) := inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap ℤ (Localization.Away (M : ℤ))))))`. Establish `e : f ≫ φ = t₁ ≫ spMap (awayToCyc M hM0)` using `(cancel_mono (spMap (algebraMap ℤ (Localization.Away (M : ℤ))))).1 (specZIsTerminal.hom_ext _ _)`. Use `⟨pullback.lift f t₁ e, ⟨pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨h1, h2⟩`. Conclude with `pullback.hom_ext (h1.trans (pullback.lift_fst _ _ e).symm) (h2.trans (pullback.lift_snd _ _ e).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_cycAway_cover : ∀ (M : ℕ) (S : Scheme.{0}), 0 < M → IsUnit (M : Γ(S, ⊤)) → ∃ (S' : Over S) (t₀ : S'.left ⟶ Sp (cycAway M)), IsFinite S'.hom ∧ Etale S'.hom ∧ ∀ (T : Scheme.{0}) (f : T ⟶ S) (t₁ : T ⟶ Sp (cycAway M)), ∃! g : T ⟶ S'.left, g ≫ S'.hom = f ∧ g ≫ t₀ = t₁ := by
   intro M S hM hS

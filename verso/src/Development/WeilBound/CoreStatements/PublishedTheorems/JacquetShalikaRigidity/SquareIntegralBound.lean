@@ -14,7 +14,7 @@ namespace PositivityTheory.AdelicQuotientData
 namespace SquareIntegralBound
 
 /- English proof (translation)
-Break down `le_total a b with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem sqle (a b : ℝ≥0∞) : a * b ≤ a ^ 2 + b ^ 2 := by
   rcases le_total a b with h | h
@@ -26,11 +26,9 @@ theorem sqle (a b : ℝ≥0∞) : a * b ≤ a ^ 2 + b ^ 2 := by
       _ ≤ a ^ 2 + b ^ 2 := le_self_add
 
 /- English proof (translation)
-Use `⟨hF.mul (Complex.continuous_conj.comp_aestronglyMeasurable hG), ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ‖conj (G x)‖ₑ = ‖G x‖ₑ`. Rewrite using `[← ofReal_norm, ← ofReal_norm, Complex.norm_conj]`. Rewrite using `[this]`. Conclude with `sqle _ _`. Use `_ = ∫⁻ x, ‖F x‖ₑ ^ 2 ∂ν + ∫⁻ x, ‖G x‖ₑ ^ 2 ∂ν := lintegral_add_left' (hF.enorm.pow_const 2) _`.
-
-Use `_ < ∞ := ENNReal.add_lt_top.2 ⟨hF2, hG2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMul {X : Type} [MeasurableSpace X] {ν : Measure X} {F G : X → ℂ}
     (hF : AEStronglyMeasurable F ν) (hG : AEStronglyMeasurable G ν)
@@ -48,15 +46,15 @@ theorem intMul {X : Type} [MeasurableSpace X] {ν : Measure X} {F G : X → ℂ}
     _ < ∞ := ENNReal.add_lt_top.2 ⟨hF2, hG2⟩
 
 /- English proof (translation)
-Use `set K := max (max C1 C2) 0 with hKdef`. Establish `hK0 : 0 ≤ K` using `le_max_right _ _`. Establish `hC1 : C1 ≤ K` using `le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `hC2 : C2 ≤ K` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `hBs : 0 ≤ B * D ^ s` using `mul_nonneg hB (Real.rpow_nonneg hD.le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_one]`. Break down `le_or_gt D 1 with hD1 | hD1` into its components or cases. Establish `hmin : min D D⁻¹ = D` using `min_eq_left (le_trans hD1 (one_le_inv₀ hD |>.mpr hD1))`. Rewrite using `[hmin]`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `e : D ^ s * D ^ (-1 : ℝ) = D ^ (s - 1)` using `by rw [← Real.rpow_add hD]; ring_nf`. Establish `hP0 : 0 ≤ D ^ (s - 1)` using `Real.rpow_nonneg hD.le _`. Establish `hPD : D ^ (s - 1) ≤ D`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmin : min D D⁻¹ = D⁻¹` using `min_eq_right (le_trans (inv_le_one_of_one_le₀ hD1.le) hD1.le)`. Rewrite using `[hmin]`. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : D ^ s * D ^ (-(N : ℝ)) = D ^ (s - N)` using `by rw [← Real.rpow_add hD]; ring_nf`. Establish `hP0 : 0 ≤ D ^ (s - N)` using `Real.rpow_nonneg hD.le _`. Establish `hPD : D ^ (s - N) ≤ D⁻¹`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bnd (D B C1 C2 s : ℝ) (N : ℕ) (hD : 0 < D) (hB : 0 ≤ B) (hs : 2 ≤ s) (hN : s + 1 ≤ N) (T : ℝ≥0∞)
     (h1 : T ≤ ENNReal.ofReal (C1 * D ^ (-1 : ℝ))) (h2 : T ≤ ENNReal.ofReal (C2 * D ^ (-(N : ℝ)))) :
@@ -105,57 +103,57 @@ end SquareIntegralBound
 
 open SquareIntegralBound in
 /- English proof (translation)
-Introduce `hD0 hN0 hP2 hU0 hU2 hV1 hG4 E _ _ _ k μ _ hk β hβ ψ hψ S m α α' u f φ hd`. Take `⟨β₁, hβ₁, hU0a, hU0b⟩` from `hU0 E k μ hk β hβ`. Take `⟨β', hβ', hU2'⟩` from `hU2 E k μ ψ hψ (k - 1) (by omega) β₁ hβ₁`. Take `⟨hDpos, hDmul, hDcont, hDrat, hDU, -⟩` from `hD0 E k`. Take `⟨-, -, -, -, hPchi, hGoodPre, hLu, hLmir, hLcont, hLsupp⟩` from `hP2 E k ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hfC⟩` from `hd.supp`. Take `⟨a, ε, Cf, hε, hsq⟩` from `hd.sq`. Take `⟨Φ₀, hΦ1, -, hΦc, hΦI⟩` from `exists_continuous_one_zero_of_isCompact hC isClosed_empty (Set.disjoint_empty C)`. Take `⟨-, -, hV1c⟩` from `hV1 E k μ hk β hβ`. Establish `hk1 : k - 1 < k` using `by omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDu : ∀ u g : GA E k, UU 0 u → Dt (u * g) = Dt g` using `fun u g hu => by`. Rewrite using `[hDmul, hDU 0 u hu, one_mul]`. Establish `hDr : ∀ γ (g : GA E k), Dt (ratGL E k γ * g) = Dt g` using `fun γ g => by`. Rewrite using `[hDmul, hDrat, one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨Bφ, hBφ⟩ : ∃ B, ∀ g, ‖φ g‖ ≤ B := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hd.dec 0`. Establish `hne : (fun _ => (1 : E) : Fin k → E) ≠ 0` using `fun h => by`. Use `congrFun h ⟨0, hk⟩` as an intermediate fact. Simplify using `at this`. Conclude with `⟨B, fun g => by simpa using hB g _ hne⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hBφ0 : 0 ≤ Bφ` using `(norm_nonneg _).trans (hBφ 1)`. Use `⟨β', a / 2 + 1, hβ', fun z hz => ?_⟩` and prove the remaining obligations. Use `set χ₁ : GA E k → ℂ := fun g => ((Dt g ^ (a / 2) : ℝ) : ℂ) with hχ₁`. Use `set χ₂ : GA E k → ℂ := fun g => conj ((Dt g : ℂ) ^ (z - ((a / 2 : ℝ) : ℂ))) * (Φ₀ (lastRow g) : ℂ) with hχ₂`. Establish `hχ₁c : Continuous χ₁` using `Complex.continuous_ofReal.comp (hDcont.rpow_const fun g => Or.inl (hDpos g).ne')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hχ₂c : Continuous χ₂`. Use `(Complex.continuous_conj.comp ?_).mul (Complex.continuous_ofReal.comp (Φ₀.continuous.comp hLcont))` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp hDcont).cpow continuous_const fun g => Complex.ofReal_mem_slitPlane.2 (hDpos g)`. Establish `hχ₁u : ∀ u, UU 0 u → ∀ g, χ₁ (u * g) = χ₁ g` using `fun u hu g => by simp only [hχ₁, hDu u g hu]`. Establish `hχ₁m : ∀ γ, IsMir (k - 1) γ → ∀ g, χ₁ (ratGL E k γ * g) = χ₁ g` using `fun γ _ g => by simp only [hχ₁, hDr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hχ₂u : ∀ u, UU 0 u → ∀ g, χ₂ (u * g) = χ₂ g` using `fun u hu g => by simp only [hχ₂, hDu u g hu, hLu u g hu]`. Establish `hχ₂m : ∀ γ, IsMir (k - 1) γ → ∀ g, χ₂ (ratGL E k γ * g) = χ₂ g` using `fun γ hγ g => by`. Simplify `hγ)]` using `only [hχ₂, hDr, hLmir γ g (by simpa`. Take `⟨hpre1, hwf, -⟩` from `hPchi (k - 1) hk1 f χ₁ hd.pre hχ₁c hχ₁u hχ₁m`. Take `⟨hpre2, hwφ, hgood2⟩` from `hPchi (k - 1) hk1 φ χ₂ (hGoodPre _ _ hd.good) hχ₂c hχ₂u hχ₂m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgood2` using `hgood2 hd.good`. Establish `hK : ∀ g, lastRow g ∈ C → χ₁ g * conj (χ₂ g) = (Dt g : ℂ) ^ z` using `fun g hg => by`. Establish `h1 : Φ₀ (lastRow g) = 1` using `hΦ1 hg`. Simplify using `only [hχ₁, hχ₂, map_mul, Complex.conj_conj, Complex.conj_ofReal, h1, Complex.ofReal_one, mul_one]`. Rewrite using `[Complex.ofReal_cpow (hDpos g).le, ← Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (hDpos g).ne')]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hW : ∀ g, whit ψ (k - 1) (fun g => χ₁ g * f g) g * conj (whit ψ (k - 1) (fun g => χ₂ g * φ g) g) = PW ψ f φ g * (Dt g : ℂ) ^ z` using `fun g => by`. Rewrite using `[hwf, hwφ]`. Distinguish the cases in `h0 : whit ψ (k - 1) f g = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[PW, h0]`. Rewrite using `[PW, ← hK g (hLsupp (k - 1) hk1 f C hfC g h0), map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hF : ∀ g, χ₁ g * f g * conj (χ₂ g * φ g) = f g * conj (φ g) * (Dt g : ℂ) ^ z` using `fun g => by`. Distinguish the cases in `h0 : f g = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[h0]`. Rewrite using `[← hK g (hfC g h0), map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL2f : ∫⁻ g, ‖χ₁ g * f g‖ₑ ^ 2 ∂μ.withDensity β₁ < ∞`. Rewrite using `[hU0a (fun g => ‖χ₁ g * f g‖ₑ ^ 2) (hpre1.cont.measurable.enorm.pow_const 2) (fun γ hγ g => congrArg (fun w : ℂ => ‖w‖ₑ ^ 2) (hpre1.left γ hγ g))]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lt_of_le_of_lt (lintegral_mono fun g => ?_) (((hV1c ε hε).const_mul Cf).lintegral_lt_top)` and prove the remaining obligations. Establish `hterm : ∀ x, ‖χ₁ x * f x‖ₑ ^ 2 = ENNReal.ofReal (Dt x ^ a) * ‖f x‖ₑ ^ 2` using `fun x => by`. Rewrite using `[enorm_mul, mul_pow]`. Use `congr 1`. Rewrite using `[hχ₁]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Simplify using `only`. Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (hDpos x).le _), ← ENNReal.ofReal_pow (Real.rpow_nonneg (hDpos x).le _), ← Real.rpow_mul_natCast (hDpos x).le]`. Evaluate the numerical expressions. Simplify using `only [hterm, hDr, ENNReal.tsum_mul_left]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg (hDpos g).le _)]`. Use `congr 1`. Establish `hp` using `Real.rpow_pos_of_pos (hDpos g) a`. Rewrite using `[Real.rpow_neg (hDpos g).le]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL2φ : ∫⁻ g, ‖χ₂ g * φ g‖ₑ ^ 2 ∂μ.withDensity β₁ < ∞`. Take `⟨-, hG4b⟩` from `hG4 E k hk φ hd.dec`. Take `⟨s, hs⟩ : ∃ s, s = 2 * z.re - a` from `⟨_, rfl⟩`. Establish `hs2 : 2 ≤ s` using `by linarith`. Take `⟨N, hN⟩ : ∃ N : ℕ, N = ⌈s⌉₊ + 1` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hNs : s + 1 ≤ (N : ℝ)` using `by rw [hN]; push_cast; linarith [Nat.le_ceil s]`. Take `⟨C1, hC1⟩` from `hG4b _ hΦc.isCompact k le_rfl`. Take `⟨C2, hC2⟩` from `hG4b _ hΦc.isCompact (k * N) (Nat.le_mul_of_pos_right k (by omega))`. Establish `hkR : (k : ℝ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Establish `e1 : -((k : ℕ) : ℝ) / k = -1` using `by field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : -(((k * N : ℕ)) : ℝ) / k = -(N : ℝ)` using `by push_cast; field_simp`. Rewrite `hC1` using `[e1]`. Rewrite `hC2` using `[e2]`. Rewrite using `[hU0a (fun g => ‖χ₂ g * φ g‖ₑ ^ 2) (hpre2.cont.measurable.enorm.pow_const 2) (fun γ hγ g => congrArg (fun w : ℂ => ‖w‖ₑ ^ 2) (hpre2.left γ hγ g))]`. Use `lt_of_le_of_lt (lintegral_mono fun g => ?_) (((hV1c 1 one_pos).const_mul (Bφ * max (max C1 C2) 0)).lintegral_lt_top)` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (SquareIntegralBound.bnd (Dt g) Bφ C1 C2 s N (hDpos g) hBφ0 hs2 hNs _ (hC1 g) (hC2 g))` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_right, ← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun ξ => ?_` and prove the remaining obligations. Establish `hφ : ∀ γ g, φ (ratGL E k γ * g) = φ g` using `hd.inv`. Rewrite using `[hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hDx : Dt (ratGL E k (gam ξ) * g) = Dt g` using `hDr _ _`. Distinguish the cases in `hx : lastRow (ratGL E k (gam ξ) * g) ∈ tsupport Φ₀`. Rewrite using `[Set.indicator_of_mem hx, one_mul]`. Rewrite using `[← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (mul_nonneg hBφ0 (Real.rpow_nonneg (hDpos g).le _))]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hχn : ‖χ₂ (ratGL E k (gam ξ) * g)‖ ≤ Dt g ^ (z.re - a / 2)`. Rewrite using `[hχ₂]`. Simplify using `only`. Rewrite using `[norm_mul, Complex.norm_conj, Complex.norm_cpow_eq_rpow_re_of_pos (hDpos _), Complex.norm_real, hDx]`. Simplify using `only [Complex.sub_re, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hΦI (lastRow (ratGL E k (gam ξ) * g))`. Rewrite using `[Real.norm_of_nonneg h0.1]`. Conclude with `mul_le_of_le_one_right (Real.rpow_nonneg (hDpos g).le _) h0.2`. Establish `hsq' : Dt g ^ s = (Dt g ^ (z.re - a / 2)) ^ 2`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (hDpos g).le]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Rewrite using `[hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_mul, mul_pow, hsq']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hφg` using `hBφ g`. Establish `h3 : ‖χ₂ (ratGL E k (gam ξ) * g)‖ ^ 2 ≤ (Dt g ^ (z.re - a / 2)) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hχn 2`. Establish `h4 : 0 ≤ (Dt g ^ (z.re - a / 2)) ^ 2` using `by positivity`. Use polynomial arithmetic with `[norm_nonneg (φ g), mul_le_mul_of_nonneg_right h3 (sq_nonneg ‖φ g‖), mul_le_mul_of_nonneg_left hφg (mul_nonneg h4 (norm_nonneg (φ g)))]`. Establish `: Φ₀ (lastRow (ratGL E k (gam ξ) * g)) = 0` using `image_eq_zero_of_notMem_tsupport hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hχ₂, this]`. Take `⟨hint, heq⟩` from `hU2' _ _ hpre1 hgood2 hL2f hL2φ`. Establish `hmeas : Measurable fun g => χ₁ g * f g * conj (χ₂ g * φ g)` using `(hpre1.cont.mul (Complex.continuous_conj.comp hpre2.cont)).measurable`. Establish `hinv : ∀ γ, IsMir (k - 1) γ → ∀ g, (fun g => χ₁ g * f g * conj (χ₂ g * φ g)) (ratGL E k γ * g) = (fun g => χ₁ g * f g * conj (χ₂ g * φ g)) g` using `fun γ hγ g => by`. Establish `h1` using `hpre1.left γ hγ g`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hpre2.left γ hγ g`. Simplify using `only at h1 h2 ⊢`. Rewrite using `[h1, h2]`. Establish `hintF : Integrable (fun g => χ₁ g * f g * conj (χ₂ g * φ g)) (μ.withDensity β₁)` using `intMul hpre1.cont.aestronglyMeasurable hpre2.cont.aestronglyMeasurable hL2f hL2φ`. Establish `hsum : ∀ g, sumF (fun g => χ₁ g * f g * conj (χ₂ g * φ g)) g = sumF f g * conj (φ g) * (Dt g : ℂ) ^ z` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : ∀ γ g, φ (ratGL E k γ * g) = φ g` using `hd.inv`. Simplify using `only [sumF, hF]`. Simplify using `only [hφ, hDr, tsum_mul_right]`. Use `⟨hint.congr (Filter.Eventually.of_forall hW), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem moderate_growth_of : D0 → N0 → P2 → U0 → U2 → V1 → ThetaDecaying → M0 := by
   intro hD0 hN0 hP2 hU0 hU2 hV1 hG4 E _ _ _ k μ _ hk β hβ ψ hψ S m α α' u f φ hd

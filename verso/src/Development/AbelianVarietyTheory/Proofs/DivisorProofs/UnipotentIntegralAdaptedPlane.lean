@@ -22,7 +22,7 @@ namespace GlobalTheory.CtLocFac
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Apply the tactic sequence `have e : ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k) := by ext <;> simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_mul_right {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (h k : UA σ W.J) : M.I om Φ (h * k) = M.I om (om (1, k) Φ) h := by
@@ -33,7 +33,7 @@ theorem I_mul_right {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X 
   rw [e, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Unfold `theta thetaSum`. Rewrite using `[map_add]`. Conclude with `(summable_of_mem_schA F (hpres _ _ h₁)).tsum_add (summable_of_mem_schA F (hpres _ _ h₂))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_add {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W)
     (hpres : ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), om x Φ ∈ schA F (Fin n × Fin d))
@@ -44,7 +44,7 @@ theorem theta_add {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W)
   exact (summable_of_mem_schA F (hpres _ _ h₁)).tsum_add (summable_of_mem_schA F (hpres _ _ h₂))
 
 /- English proof (translation)
-Unfold `theta thetaSum`. Rewrite using `[map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (c : ℂ)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (g : UA σ X.J) (h : UA σ W.J) : theta om (c • Φ) g h = c * theta om Φ g h := by
@@ -54,7 +54,7 @@ theorem theta_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W)
   exact tsum_mul_left
 
 /- English proof (translation)
-Unfold `Model.I`. Simplify using `only [theta_add om hpres h₁ h₂]`. Conclude with `integral_add (hconv Φ₁ h₁ h) (hconv Φ₂ h₂ h)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_add {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W)
     (hpres : ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), om x Φ ∈ schA F (Fin n × Fin d))
@@ -66,7 +66,7 @@ theorem I_add {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om
   exact integral_add (hconv Φ₁ h₁ h) (hconv Φ₂ h₂ h)
 
 /- English proof (translation)
-Unfold `Model.I`. Simplify using `only [theta_smul]`. Conclude with `integral_const_mul c _`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (c : ℂ)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (h : UA σ W.J) : M.I om (c • Φ) h = c * M.I om Φ h := by
@@ -75,14 +75,14 @@ theorem I_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (o
   exact integral_const_mul c _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.add_apply, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_add {R κ : Type} (ev : AF F → R) (φ₁ φ₂ : (κ → R) → ℂ) (r : (κ → AF F) → ℂ) :
     tens ev (φ₁ + φ₂) r = tens ev φ₁ r + tens ev φ₂ r := by
   funext x; simp only [tens, Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_smul' {R κ : Type} (ev : AF F → R) (c : ℂ) (φ : (κ → R) → ℂ) (r : (κ → AF F) → ℂ) :
     tens ev (c • φ) r = c • tens ev φ r := by
@@ -93,41 +93,35 @@ end GlobalTheory.CtLocFac
 open GlobalTheory.CtLocFac in
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH Φ hΦ μ 𝓕 hμ h𝓕 h1 v g`. Establish `hV : IsPair B G.M X.β (X.β / X.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q)` using `{ base := hT.base, herm := hT.geo.hV, skew := hT.geo.hW, good := hT.geo.hM, hX := hT.chars.heckeβ, hW := GlobalTheory.ThKRatInv.isHecke_div hT.chars.heckeβ hT.chars.heckeα, resX := hT.chars.resβ, resW := GlobalTheory.ThKRatInv.resEtaPow_div hT.chars.resβ hT.chars.resα, weil := hT …`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hT.weil`. Establish `hpres : ∀ x, ∀ Ψ ∈ schA F (Fin a × Fin (a + a')), om x Ψ ∈ schA F (Fin a × Fin (a + a'))` using `fun x Ψ hΨ => hwp.isUSplitting.pres x Ψ hΨ`. Establish `hineq : a + a' + 2 * min (a - G.p) G.p < 2 * a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hT.geo.eBig`. Establish `e2` using `hT.geo.lt`. Establish `e3 : min (a - G.p) G.p ≤ G.p` using `min_le_right _ _`. Use linear arithmetic over natural numbers and integers. Establish `hconv : ∀ Ψ ∈ schA F (Fin a × Fin (a + a')), G.M.Conv om Ψ` using `fun Ψ hΨ => ((GlobalTheory.T.weil_convergence_of_kernel hK F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hV (Or.inl hineq)).1 Ψ hΨ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hInt` using `GlobalTheory.T.unipotent_fundamental_domain_constant_term hK F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH μ 𝓕 hμ h𝓕 h1`. Establish `hInvV` using `GlobalTheory.T.theta_integral_invariant_first_group hK F E σ B a a' G X om om' hT`. Establish `hInvN` using `GlobalTheory.T.unipotent_constant_term_theta hK F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH μ 𝓕 hμ h𝓕 h1`. Establish `hΨ : om (1, g) Φ ∈ schA F (Fin a × Fin (a + a'))` using `hpres _ _ (GlobalTheory.ThKRatInv.polData_le_schA B G.M hT.geo.hM hΦ)`. Take `⟨T, m, f, φ, hSB, hstd, hsum⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F _ (om (1, g) Φ) hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hev : ∀ i, ∀ᶠ w in Filter.cofinite, φ i w = Set.indicator {x | ∀ j, x j ∈ w.adicCompletionIntegers F} 1` using `fun i => (T.finite_toSet.eventually_cofinite_notMem).mono fun w hw => hstd i w hw`. Use `choose r hr1 hr2 using fun i => GlobalTheory.PureFactor.exists_rest_factor v (f i) (φ i) (hev i)`. Establish `hRest : ∀ i, ∀ φ' ∈ SB (Fin a × Fin (a + a') → Fv F v), Rest (evFin F v) φ' (r i)` using `fun i φ' hφ' => ⟨hr1 i, by`. Rewrite using `[hr2 i]`. Use `GlobalTheory.TensUniq.pure_mem_schA (f i) _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually _ v φ' (hev i))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφ'`. Rewrite using `[Function.update_of_ne hw]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hSB i w⟩`. Establish `hdec : om (1, g) Φ = ∑ i, tens (evFin F v) (φ i v) (r i)`. Rewrite using `[hsum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hr2 i, Function.update_eq_self]`. Set `Tct : ((Fin a × Fin (a + a') → AF F) → ℂ) → ℂ` to `fun Ψ => GlobalTheory.CtTyp.ctf H' μ 𝓕 (G.M.I om Ψ) 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hTadd : ∀ Ψ₁ ∈ schA F (Fin a × Fin (a + a')), ∀ Ψ₂ ∈ schA F (Fin a × Fin (a + a')), Tct (Ψ₁ + Ψ₂) = Tct Ψ₁ + Tct Ψ₂`. Introduce `Ψ₁ h₁ Ψ₂ h₂`. Simplify using `only [Tct, GlobalTheory.CtTyp.ctf]`. Simplify using `only [I_add G.M om hpres hconv h₁ h₂]`. Conclude with `integral_add (hInt Ψ₁ h₁ 1) (hInt Ψ₂ h₂ 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hTsmul : ∀ (c : ℂ) Ψ, Tct (c • Ψ) = c * Tct Ψ`. Introduce `c Ψ`. Simplify using `only [Tct, GlobalTheory.CtTyp.ctf, I_smul]`. Conclude with `integral_const_mul c _`. Establish `hT0 : Tct 0 = 0` using `by simpa using hTsmul 0 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `Lsub : Fin m → (SB (Fin a × Fin (a + a') → Fv F v)) →ₗ[ℂ] ℂ` to `fun i => { toFun := fun φ' => Tct (tens (evFin F v) φ'.1 (r i)) map_add' := fun x y => by`. Simplify using `only [Submodule.coe_add]`. Rewrite using `[tens_add, hTadd _ (hRest i _ x.2).2 _ (hRest i _ y.2).2]`. Use the proof step `map_smul' := fun c x => by`. Simplify using `only [SetLike.val_smul, RingHom.id_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tens_smul', hTsmul] }`. Use `choose ℓ hℓe using fun i => LinearMap.exists_extend (Lsub i)`. Establish `hℓ : ∀ i, ∀ φ' (h : φ' ∈ SB (Fin a × Fin (a + a') → Fv F v)), ℓ i φ' = Tct (tens (evFin F v) φ' (r i))` using `fun i φ' h => LinearMap.congr_fun (hℓe i) ⟨φ', h⟩`. Use `⟨m, fun i => φ i v, ℓ, fun i => hSB i v, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g', hg', φ₀, hφ₀, φ₁, hφ₁, hact, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, hℓ i φ₁ hφ₁, hℓ i φ₀ hφ₀, ← hact (r i) (hRest i φ₀ hφ₀)]`. Establish `e : G.M.I om (om (g', 1) (tens (evFin F v) φ₀ (r i))) = G.M.I om (tens (evFin F v) φ₀ (r i))`. Use function extensionality and compare the values at `fun h => hInvV _ (hRest i φ₀ hφ₀).2 g' h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Tct, e, sub_self]`. Introduce `i u hu _ φ₀ hφ₀ φ₁ hφ₁ hact`. Rewrite using `[hℓ i φ₁ hφ₁, hℓ i φ₀ hφ₀, ← hact (r i) (hRest i φ₀ hφ₀)]`. Simplify using `only [Tct, GlobalTheory.CtTyp.ctf, mul_one]`. Rewrite using `[← hInvN _ (hRest i φ₀ hφ₀).2 u hu]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `(I_mul_right G.M om _ x.1 u).symm`. Introduce `mm hm`. Establish `h1V : (1 : UA σ G.V.J) ∈ UAt σ G.V (evFin F v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u _`. Use `show u • (mat (1 : UA σ G.V.J) - 1) = 0`. Rewrite using `[show mat (1 : UA σ G.V.J) = 1 from rfl, sub_self, smul_zero]`. Establish `hloc` using `fun i => ((GlobalTheory.T.theta_action_exists hK.base) F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hV v).1 1 h1V mm hm (φ i v) (hSB i v)`. Use `choose ψ₁ hψ₁ _ using hloc`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ψ₁, fun i => hψ₁ i, ?_⟩` and prove the remaining obligations. Establish `hmv : om (1, mm) (om (1, g) Φ) = ∑ i, tens (evFin F v) (ψ₁ i) (r i)`. Rewrite using `[hdec, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (hψ₁ i).2 (r i) (hRest i _ (hSB i v))`. Establish `hmem : ∀ i, tens (evFin F v) (ψ₁ i) (r i) ∈ schA F (Fin a × Fin (a + a'))` using `fun i => (hRest i _ (hψ₁ i).1).2`.
-
-Establish `hsumT : ∀ s : Finset (Fin m), Tct (∑ i ∈ s, tens (evFin F v) (ψ₁ i) (r i)) = ∑ i ∈ s, Tct (tens (evFin F v) (ψ₁ i) (r i))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hT0]`. Consider the case `insert j s hj ih`.
-
-Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, hTadd _ (hmem j) _ (Submodule.sum_mem _ fun i _ => hmem i), ih]`. Rewrite using `[Finset.sum_congr rfl fun i _ => hℓ i (ψ₁ i) (hψ₁ i).1, ← hsumT Finset.univ, ← hmv]`. Simplify using `only [Tct, GlobalTheory.CtTyp.ctf, mul_one]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Apply the tactic sequence `rw [I_mul_right, show ((1, mm * g) : UA σ G.V.J × UA σ G.W.J) = (1, mm) * (1, g) by ext <;> simp, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CtLocFac.fac : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ Φ ∈ PolData B G.M, ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ (v : Pl F) (g : UA σ G.W.J), ∃ (n : ℕ) (ψ : Fin n → (Fin a × Fin (a + a') → Fv F v) → ℂ) (ℓ : Fin n → ((Fin a × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] ℂ), (∀ j, ψ j ∈ SB (Fin a × Fin (a + a') → Fv F v)) ∧ (∀ j, augAt om v ≤ LinearMap.ker (ℓ j)) ∧ (∀ j, ∀ u ∈ unip σ G.W H', u ∈ UAt σ G.W (evFin F v) → ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, u)) φ φ₁ → ℓ j φ₁ = ℓ j φ) ∧ ∀ m ∈ UAt σ G.W (evFin F v), ∃ ψ₁ : Fin n → (Fin a × Fin (a + a') → Fv F v) → ℂ, (∀ j, ψ₁ j ∈ SB (Fin a × Fin (a + a') → Fv F v) ∧ Acts (evFin F v) (om (1, m)) (ψ j) (ψ₁ j)) ∧ GlobalTheory.CtTyp.ctf H' μ 𝓕 (G.M.I om Φ) (m * g) = ∑ j, ℓ j (ψ₁ j) := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH Φ hΦ μ 𝓕 hμ h𝓕 h1 v g

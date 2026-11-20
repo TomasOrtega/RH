@@ -17,7 +17,7 @@ namespace GlobalTheory.TensorSquareIntegral
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ v in Filter.cofinite, φ v = GlobalTheory.RatWeilOp.ind κ v ∧ ∀ i, evFin F v (x i) ∈ v.adicCompletionIntegers F` using `hφ.and (Filter.eventually_all.2 fun i => (x i).2.2.mono fun _ hv => hv)`. Use `(Filter.eventually_cofinite.1 hev).subset fun v hv hP => hv ?_` and prove the remaining obligations. Use `show φ v _ = 1`. Rewrite using `[hP.1]`. Conclude with `Set.indicator_of_mem (show (fun i => evFin F v (x i)) ∈ {z : κ → Fv F v | ∀ i, z i ∈ v.adicCompletionIntegers F} from hP.2) 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulSupport_finite (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (hφ : ∀ᶠ v in Filter.cofinite, φ v = GlobalTheory.RatWeilOp.ind κ v)
     (x : κ → AF F) : (Function.mulSupport fun v : Pl F => φ v (fun i => evFin F v (x i))).Finite := by
@@ -30,9 +30,9 @@ theorem mulSupport_finite (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (hφ : �
     from hP.2) 1
 
 /- English proof (translation)
-Establish `h1` using `mulSupport_finite φ hφ x`. Establish `h2` using `mulSupport_finite φ' hφ' x`. Establish `h3 : (Function.mulSupport fun v : Pl F => conj (φ' v (fun i => evFin F v (x i)))).Finite`. Use `h2.subset fun v hv h => hv ?_` and prove the remaining obligations. Simplify using `only [Function.mem_mulSupport, ne_eq, not_not] at h ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, map_one]`. Establish `hc : conj (∏ᶠ v, φ' v (fun i => evFin F v (x i))) = ∏ᶠ v, conj (φ' v (fun i => evFin F v (x i)))` using `MonoidHom.map_finprod (starRingEnd ℂ).toMonoidHom h2`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, map_mul, hc, finprod_mul_distrib h1 h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pure_mul_conj (f f' : SInf F κ) (φ φ' : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (hφ : ∀ᶠ v in Filter.cofinite, φ v = GlobalTheory.RatWeilOp.ind κ v) (hφ' : ∀ᶠ v in Filter.cofinite, φ' v = GlobalTheory.RatWeilOp.ind κ v)
@@ -51,14 +51,14 @@ theorem pure_mul_conj (f f' : SInf F κ) (φ φ' : ∀ v : Pl F, (κ → Fv F v)
   ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hφ.1.mul (hφ'.1.comp _), hφ.2.mul_right⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_conj_mem_SB {X : Type} [TopologicalSpace X] {φ φ' : X → ℂ} (hφ : φ ∈ SB X) (hφ' : φ' ∈ SB X) :
     (fun t => φ t * conj (φ' t)) ∈ SB X :=
   ⟨hφ.1.mul (hφ'.1.comp _), hφ.2.mul_right⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Distinguish the cases in `h : t ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}`. Simplify using `[GlobalTheory.RatWeilOp.ind, Set.indicator_of_mem h]`. Simplify using `[GlobalTheory.RatWeilOp.ind, Set.indicator_of_notMem h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ind_mul_conj (v : Pl F) : (fun t => GlobalTheory.RatWeilOp.ind κ v t * conj (GlobalTheory.RatWeilOp.ind κ v t)) = GlobalTheory.RatWeilOp.ind κ v := by
   funext t
@@ -77,9 +77,9 @@ open scoped Classical
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `e : ∀ x, g x * conj (g x) = ((‖g x‖ ^ 2 : ℝ) : ℂ)` using `fun x => by rw [Complex.mul_conj']; push_cast; rfl`. Establish `hi : Integrable (fun x => ‖g x‖ ^ 2) μ`. Use `hg.norm.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [e x, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `abs_of_nonneg (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall e), integral_complex_ofReal, Complex.ofReal_re, ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall fun x => by positivity)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_sq_eq {X : Type} [MeasurableSpace X] {μ : Measure X} {g : X → ℂ}
     (hg : Integrable (fun x => g x * conj (g x)) μ) :
@@ -96,7 +96,7 @@ theorem lintegral_sq_eq {X : Type} [MeasurableSpace X] {μ : Measure X} {g : X �
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
 /- English proof (translation)
-The claim follows from `(f.integrable (μ := μi)).mul_bdd ((Complex.continuous_conj.comp f'.continuous).aestronglyMeasurable) (Filter.Eventually.of_forall fun z => by rw [Complex.norm_conj] exact f'.norm_le_seminorm ℝ z)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_conj [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)] [BorelSpace (κ → mixedEmbedding.mixedSpace F)]
     (μi : Measure (κ → mixedEmbedding.mixedSpace F)) [μi.IsAddHaarMeasure] (f f' : SInf F κ) :
@@ -107,9 +107,9 @@ theorem integrable_mul_conj [MeasurableSpace (κ → mixedEmbedding.mixedSpace F
       exact f'.norm_le_seminorm ℝ z)
 
 /- English proof (translation)
-Rewrite using `[ind_mul_conj]`. Establish `hs : MeasurableSet {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}`. Establish `: {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} = Set.pi Set.univ (fun _ => (v.adicCompletionIntegers F : Set (Fv F v)))` using `by ext x; simp`. Rewrite using `[this]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v).measurableSet`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ∫ t, Set.indicator {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} (fun _ => (1 : ℂ)) t ∂ν = 1`. Rewrite using `[integral_indicator_const _ hs, Measure.real, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_ind (v : Pl F) [MeasurableSpace (κ → Fv F v)] [BorelSpace (κ → Fv F v)] (ν : Measure (κ → Fv F v))
     (h1 : ν {x | ∀ i, x i ∈ v.adicCompletionIntegers F} = 1) :
@@ -125,11 +125,9 @@ theorem integral_ind (v : Pl F) [MeasurableSpace (κ → Fv F v)] [BorelSpace (�
   simp
 
 /- English proof (translation)
-Establish `hfam : GlobalTheory.RatWeilOp.IsFam (fun v t => φ v t * conj (φ' v t))`. Use `⟨fun v => mul_conj_mem_SB (hφ.1 v) (hφ'.1 v), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hφ.2, hφ'.2] with v h1 h2`. Rewrite using `[h1, h2]`. Conclude with `ind_mul_conj v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfc : Continuous (fun z => f z * conj (f' z))` using `f.continuous.mul (Complex.continuous_conj.comp f'.continuous)`. Take `⟨h1, h2⟩` from `hpure _ _ hfc (integrable_mul_conj μi f f') hfam`. Establish `e` using `funext (pure_mul_conj f f' φ φ' hφ.2 hφ'.2)`. Use `beta_reduce at h1 h2`. Rewrite using `[e]`.
-
-Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integral_pure_mul_conj [MeasurableSpace (κ → AF F)] [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)]
     [BorelSpace (κ → mixedEmbedding.mixedSpace F)] [∀ v : Pl F, MeasurableSpace (κ → Fv F v)]
@@ -165,43 +163,35 @@ namespace GlobalTheory.TensorSquareIntegral
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ κ _ e vac vac₁ ei ev hvSB hvac hvac₁ hevv hevSB he hinf hloc μ hμ`. Use `letI mA : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `letI mI : MeasurableSpace (κ → mixedEmbedding.mixedSpace F) := borel _`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI mV : ∀ v : Pl F, MeasurableSpace (κ → Fv F v) := fun _ => borel _`. Use `haveI bV : ∀ v : Pl F, BorelSpace (κ → Fv F v) := fun _ => ⟨rfl⟩`. Use `haveI := hμ`. Take `⟨μi, hμi⟩ : ∃ μ : Measure (κ → mixedEmbedding.mixedSpace F), μ.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Choose the witnesses or unpack the hypotheses as in `⟨μv, hμv, hμv1⟩ : ∃ μv : ∀ v : Pl F, Measure (κ → Fv F v), (∀ v, (μv v).IsAddHaarMeasure) ∧ ∀ v, μv v {x | ∀ i, x i ∈ v.adicCompletionIntegers F} = 1 := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Set `K : ∀ v : Pl F, TopologicalSpace.PositiveCompacts (κ → Fv F v)` to `fun v => ⟨⟨Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v)), isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v⟩, by show (interior (Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Se …`. Rewrite using `[(isOpen_set_pi Set.finite_univ fun _ _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v).interior_eq]`. Conclude with `⟨0, fun i _ => (v.adicCompletionIntegers F).zero_mem⟩⟩`. Use `⟨fun v => Measure.addHaarMeasure (K v), fun v => inferInstance, fun v => ?_⟩` and prove the remaining obligations. Establish `e : {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} = (K v : Set (κ → Fv F v))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use extensionality with `x`. Simplify using `[K]`. Rewrite using `[e]`. Conclude with `Measure.addHaarMeasure_self`. Use `haveI := hμv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨c₀, -, hpure⟩` from `GlobalTheory.T.integral_adelic_pureTensor_eq_product_local F κ μ μi μv hμv1`. Take `⟨cI, hcI0, hcI⟩` from `hinf`. Use `choose C hC0 hC using hloc`. Establish `hS : ∀ᶠ v in Filter.cofinite, vac v = GlobalTheory.RatWeilOp.ind κ v ∧ vac₁ v = GlobalTheory.RatWeilOp.ind κ v` using `hvac.and hvac₁`. Use `set S₀ := (Filter.eventually_cofinite.1 hS).toFinset with hS₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hout : ∀ v ∉ S₀, vac v = GlobalTheory.RatWeilOp.ind κ v ∧ vac₁ v = GlobalTheory.RatWeilOp.ind κ v`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (by simpa [hS₀] using h)`. Establish `hind1 : ∀ v, ∫ t, GlobalTheory.RatWeilOp.ind κ v t * conj (GlobalTheory.RatWeilOp.ind κ v t) ∂(μv v) = 1` using `fun v => integral_ind v (μv v) (hμv1 v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hC1 : ∀ v ∉ S₀, C v = 1`. Introduce `v hv`. Take `⟨h1, h2⟩` from `hout v hv`. Establish `key` using `hC v (μv v) (hμv v) (vac v) (hvSB v) (vac v) (hvSB v)`. Rewrite `key` using `[hevv v, h2, h1, hind1 v, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key.symm` after adjusting the coercions. Use `set K : ℝ := cI * ∏ v ∈ S₀, C v with hK`. Establish `hK0 : 0 ≤ K` using `mul_nonneg hcI0 (Finset.prod_nonneg fun v _ => hC0 v)`. Establish `hsupC : Function.mulSupport (fun v => (C v : ℂ)) ⊆ (S₀ : Set (Pl F))`. Introduce `v hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (by simp [hC1 v h])`. Establish `hprodC : ∀ a : Pl F → ℂ, (Function.mulSupport a).Finite → ∏ᶠ v, ((C v : ℂ) * a v) = (∏ v ∈ S₀, (C v : ℂ)) * ∏ᶠ v, a v`. Introduce `a ha`. Rewrite using `[finprod_mul_distrib ((S₀.finite_toSet).subset hsupC) ha, finprod_eq_prod_of_mulSupport_subset _ hsupC]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfam : ∀ φ : ∀ v : Pl F, (κ → Fv F v) → ℂ, (∀ v, φ v ∈ SB (κ → Fv F v)) → (∀ᶠ v in Filter.cofinite, φ v = vac v) → GlobalTheory.RatWeilOp.IsFam φ ∧ GlobalTheory.RatWeilOp.IsFam (fun v => ev v (φ v))`. Introduce `φ hSB hφ`. Use `⟨⟨hSB, ?_⟩, ⟨fun v => hevSB v _ (hSB v), ?_⟩⟩` and prove the remaining obligations. Use `filter_upwards [hφ, hvac] with v h1 h2`. Rewrite using `[h1, h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Use `filter_upwards [hφ, hvac₁] with v h1 h2`. Rewrite using `[h1, hevv, h2]`. Both sides reduce to the same expression. Establish `hcross : ∀ (f f' : SInf F κ) (φ φ' : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB (κ → Fv F v)) → (∀ᶠ v in Filter.cofinite, φ v = vac v) → (∀ v, φ' v ∈ SB (κ → Fv F v)) → (∀ᶠ v in Filter.cofinite, φ' v = vac v) → Integrable (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilT …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f f' φ φ' hs hφ hs' hφ'`. Take `⟨a1, a2⟩` from `hfam φ hs hφ`. Take `⟨b1, b2⟩` from `hfam φ' hs' hφ'`. Take `⟨i1, e1⟩` from `integral_pure_mul_conj μ μi μv c₀ hpure f f' φ φ' a1 b1`. Take `⟨i2, e2⟩` from `integral_pure_mul_conj μ μi μv c₀ hpure (ei f) (ei f') _ _ a2 b2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨i1, i2, ?_⟩` and prove the remaining obligations. Establish `hloc' : ∀ v, ∫ t, ev v (φ v) t * conj (ev v (φ' v) t) ∂(μv v) = (C v : ℂ) * ∫ t, φ v t * conj (φ' v t) ∂(μv v)` using `fun v => hC v (μv v) (hμv v) (φ v) (hs v) (φ' v) (hs' v)`. Establish `hfin : (Function.mulSupport fun v => ∫ t, φ v t * conj (φ' v t) ∂(μv v)).Finite`. Use `(Filter.eventually_cofinite.1 ((hφ.and hφ').and hvac)).subset fun v hv h => hv ?_` and prove the remaining obligations. Use `show ∫ t, φ v t * conj (φ' v t) ∂(μv v) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h.1.1, h.1.2, h.2]`. Conclude with `hind1 v`. Rewrite using `[e2, e1, finprod_congr hloc', hprodC _ hfin, hcI μi hμi f f', hK]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨ENNReal.ofReal K, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨T, m, f, φ, hSB, hT, rfl⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F κ Φ hΦ`. Establish `hvacφ : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = vac v` using `fun i => by filter_upwards [hvac, T.finite_toSet.eventually_cofinite_notMem] with v h1 h2`. Rewrite using `[hT i v h2, h1]`. Establish `heΦ : e (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f i)) (fun v => ev v (φ i v))`.
-
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => he _ _ (hSB i) (hvacφ i)`. Rewrite using `[heΦ]`. Establish `hexp : ∀ (g : Fin m → (κ → AF F) → ℂ) (x : κ → AF F), (∑ i, g i) x * conj ((∑ i, g i) x) = ∑ i, ∑ j, g i x * conj (g j x)`. Introduce `g x`.
-
-Simplify using `only [Finset.sum_apply, map_sum, Finset.sum_mul_sum]`. Establish `hint1 : ∀ i j, Integrable (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i) x * conj (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f j) (φ j) x)) μ` using `fun i j => (hcross (f i) (f j) (φ i) (φ j) (hSB i) (hvacφ i) (hSB j) (hvacφ j)).1`. Establish `hint2 : ∀ i j, Integrable (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f i)) (fun v => ev v (φ i v)) x * conj (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f j)) (fun v => ev v (φ j v)) x)) μ` using `fun i j => (hcross (f i) (f j) (φ i) (φ j) (hSB i) (hvacφ i) (hSB j) (hvacφ j)).2.1`. Establish `hI1 : Integrable (fun x => (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x * conj ((∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) x)) μ` using `(integrable_finset_sum _ fun i _ => integrable_finset_sum _ fun j _ => hint1 i j).congr (Filter.Eventually.of_forall fun x => (hexp _ x).symm)`. Establish `hI2 : Integrable (fun x => (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f i)) (fun v => ev v (φ i v))) x * conj ((∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f i)) (fun v => ev v (φ i v))) x)) μ` using `(integrable_finset_sum _ fun i _ => integrable_finset_sum _ fun j _ => hint2 i j).congr (Filter.Eventually.of_forall fun x => (hexp _ x).symm)`.
-
-Rewrite using `[lintegral_sq_eq hI1, lintegral_sq_eq hI2, integral_congr_ae (Filter.Eventually.of_forall (hexp _)), integral_congr_ae (Filter.Eventually.of_forall (hexp _)), integral_finset_sum _ fun i _ => integrable_finset_sum _ fun j _ => hint1 i j, integral_finset_sum _ fun i _ => integrabl …`. Establish `hsum : ∀ i, ∫ x, ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f i)) (fun v => ev v (φ i v)) x * conj (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei (f j)) (fun v => ev v (φ j v)) x) ∂μ = (K : ℂ) * ∫ x, ∑ j, GlobalTheory.IndefiniteRow …`. Introduce `i`. Rewrite using `[integral_finset_sum _ fun j _ => hint2 i j, integral_finset_sum _ fun j _ => hint1 i j, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (hcross (f i) (f j) (φ i) (φ j) (hSB i) (hvacφ i) (hSB j) (hvacφ j)).2.2`.
-
-Rewrite using `[Finset.sum_congr rfl fun i _ => hsum i, ← Finset.mul_sum, Complex.re_ofReal_mul, ENNReal.ofReal_mul hK0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const_tensor : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ) (vac vac₁ : ∀ v : Pl F, (κ → Fv F v) → ℂ)

@@ -15,11 +15,11 @@ section Generic
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `hscale : cT s (u : Matrix n n A) * (c • J) * (u : Matrix n n A) = c • (cT s (u : Matrix n n A) * J * (u : Matrix n n A))`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : cT s (u : Matrix n n A) * (c • J) * (u : Matrix n n A) = c • J` using `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[hscale]`. Express the relevant statement in the definitionally equal form `cT s (u : Matrix n n A) * J * (u : Matrix n n A) = J`. Establish `h2` using `congrArg (fun B : Matrix n n A => d • B) h'`. Simplify `h2` using `only [smul_smul, hdc, one_smul]`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : cT s (u : Matrix n n A) * J * (u : Matrix n n A) = J` using `h`. Express the relevant statement in the definitionally equal form `cT s (u : Matrix n n A) * (c • J) * (u : Matrix n n A) = c • J`. Rewrite using `[hscale, h']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_UJ_smul_iff (s : A →+* A) (J : Matrix n n A) (c d : A) (hdc : d * c = 1) (u : GL n A) :
     u ∈ UJ s (c • J) ↔ u ∈ UJ s J := by
@@ -39,7 +39,7 @@ theorem mem_UJ_smul_iff (s : A →+* A) (J : Matrix n n A) (c d : A) (hdc : d * 
     rw [hscale, h']
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.SW.HIsom.conj_mem_UJ s J G u ?_` and prove the remaining obligations. Rewrite using `[hG]`. Conclude with `(mem_UJ_smul_iff s J c d hdc u).2 hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem (s : A →+* A) (J : Matrix n n A) (G : GL n A) (c d : A) (hdc : d * c = 1)
     (hG : cT s (G : Matrix n n A) * J * (G : Matrix n n A) = c • J) (u : GL n A) (hu : u ∈ UJ s J) :
@@ -49,7 +49,7 @@ theorem conj_mem (s : A →+* A) (J : Matrix n n A) (G : GL n A) (c d : A) (hdc 
   exact (mem_UJ_smul_iff s J c d hdc u).2 hu
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CompanionTheory.SW.HIsom.conj_inv_mem_UJ s J G u hu`. Rewrite `h` using `[hG]`. Conclude with `(mem_UJ_smul_iff s J c d hdc _).1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_inv_mem (s : A →+* A) (J : Matrix n n A) (G : GL n A) (c d : A) (hdc : d * c = 1)
     (hG : cT s (G : Matrix n n A) * J * (G : Matrix n n A) = c • J) (u : GL n A) (hu : u ∈ UJ s J) :
@@ -65,7 +65,7 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_smul (R : Type) [CommRing R] [Algebra F R] {M : ℕ} (c : E)
     (J : Matrix (Fin M) (Fin M) E) :
@@ -74,7 +74,7 @@ theorem JR_smul (R : Type) [CommRing R] [Algebra F R] {M : ℕ} (c : E)
   simp [JR, Matrix.map_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gramE, hE, hform, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramE_smul (σ : E →ₐ[F] E) {M n : ℕ} (c : E) (J : Matrix (Fin M) (Fin M) E)
     (X : Fin n → Fin M → E) : gramE σ (c • J) X = c • gramE σ J X := by
@@ -113,15 +113,13 @@ def gramEquiv (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (g
 end Alg
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `haveI : IsTopologicalRing (R ⊗[F] E) := GlobalTheory.CompanionTheory.SW.HIsom.isTopologicalRing_tens F E R`. Use `set G : GL (Fin M) (R ⊗[F] E) := bc (inclR R) g with hG`. Establish `hdcE : algebraMap F E l⁻¹ * algebraMap F E l = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hl, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdcR : inclR (F` using `F) R (algebraMap F E l⁻¹) * inclR (F := F) R (algebraMap F E l) = 1 := by`. Rewrite using `[← map_mul, hdcE, map_one]`. Establish `hGR : cT (sigR R σ) (G : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * (G : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = inclR (F` using `F) R (algebraMap F E l) • JR R J := by`. Rewrite using `[← GlobalTheory.CompanionTheory.SW.HIsom.JR_conj R σ J g, hg, JR_smul]`. Establish `h₁ : ∀ u ∈ HR R σ J, G * u * G⁻¹ ∈ HR R σ J` using `fun u hu => conj_mem (sigR R σ) (JR R J) G _ _ hdcR hGR u hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h₂ : ∀ u ∈ HR R σ J, G⁻¹ * u * G ∈ HR R σ J` using `fun u hu => conj_inv_mem (sigR R σ) (JR R J) G _ _ hdcR hGR u hu`. Use `⟨GlobalTheory.CompanionTheory.SW.HIsom.conjHomeo _ _ G h₁ h₂, fun u => rfl, fun u => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G * HA.mat R σ J u * G⁻¹ ∈ HFin R σ J ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hwu⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨g⁻¹ * w * g, conj_inv_mem (σ : E →+* E) J g _ _ hdcE hg w hw, ?_⟩` and prove the remaining obligations. Establish `: bc (inclR R) w = G * HA.mat R σ J u * G⁻¹` using `hwu`. Simplify using `only [map_mul, map_inv, this, ← hG]`. Use `group`. Introduce and unpack `⟨w, hw, hwu⟩`.
-
-Use `⟨g * w * g⁻¹, conj_mem (σ : E →+* E) J g _ _ hdcE hg w hw, ?_⟩` and prove the remaining obligations. Establish `: bc (inclR R) w = HA.mat R σ J u` using `hwu`. Simplify using `only [map_mul, map_inv, this, ← hG]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitaryConj (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (g : GL (Fin M) E)
@@ -164,17 +162,17 @@ section Theta
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨tg, -, -, -, bs, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (AF F)`. Use `haveI := tg`. Use `haveI := bs`. Use `haveI : BorelSpace (Fin n → Fin M → AF F ⊗[F] E) := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)).2.2.2.2.2.2.2.1 n M`. Use `set G : GL (Fin M) (AF F ⊗[F] E) := bc (inclR (AF F)) g with hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmG` using `SWIsom.measurable_actTup (n := n) σ hCM (AF F) G`. Establish `hmf : ∀ Y : Fin n → Fin M → AF F ⊗[F] E, Measurable fun h : HA (AF F) σ J => actW (AF F) σ J h⁻¹ Y` using `fun Y => ((hact n).1.comp (continuous_inv.prodMk continuous_const)).measurable`. Establish `hmass : (μ.map He.symm) (He ⁻¹' 𝓕) = μ 𝓕`. Rewrite using `[He.symm.map_apply]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hrest : ((μ.map He.symm).restrict (He ⁻¹' 𝓕)).map He = μ.restrict 𝓕`. Rewrite using `[← He.restrict_map, Measure.map_map He.measurable He.symm.measurable]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Unfold `thetaMeas`. Rewrite using `[Measure.map_smul, hmass]`. Use `congr 1`. Rewrite using `[Measure.map_sum hmG.aemeasurable, ← SWIsom.sum_reindex (gramEquiv σ J g c hc hg T)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `X`. Rewrite using `[Measure.map_map hmG (hmf _)]`. Establish `hcomp : (actTup (AF F) G ∘ fun h => actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) = (fun h => actW (AF F) σ J h⁻¹ (ratTup (AF F) ((gramEquiv σ J g c hc hg T X : _) : Fin n → Fin M → E))) ∘ He`. Use function extensionality and compare the values at `h`. Use `SWIsom.act_conj (AF F) σ G He hmat h (ratTup (AF F) (X : Fin n → Fin M → E))` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp]`. Rewrite using `[this, ← SWIsom.ratTup_ratAct]`. Both sides reduce to the same expression. Rewrite using `[hcomp, ← Measure.map_map (hmf _) He.measurable, hrest]`.
+A detailed English derivation is pending.
 -/
 theorem theta_map (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : IsHermND σ J) (g : GL (Fin M) E) (c : E) (hc : c ≠ 0)
@@ -225,15 +223,13 @@ theorem theta_map (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M n : ℕ} (J : M
 end Theta
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ μ 𝓕 hμ h𝓕 γ l hl hγ`. Take `⟨⟨i1, i2, i3⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨e, hmat, hrat⟩` from `unitaryConj F E σ hCM M J γ l hl hγ (AF F)`. Take `⟨tg, -, -, -, bs, -⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (AF F)`. Use `haveI := tg`. Use `haveI := bs`. Use `haveI : μ.IsHaarMeasure := hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `He` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hμ' : IsHaarH F E σ M J (μ.map He.symm)` using `ContinuousMulEquiv.isHaarMeasure_map μ e.symm`. Establish `hmm : (μ.map He.symm).map He = μ`. Rewrite using `[Measure.map_map He.measurable He.symm.measurable]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : Measure.QuasiMeasurePreserving e (μ.map He.symm) μ` using `(MeasurePreserving.mk He.measurable hmm).quasiMeasurePreserving`. Establish `h𝓕' : IsFDH F E σ M J (μ.map He.symm) (He ⁻¹' 𝓕)` using `SWIsom.isFD_pull σ e.toMulEquiv hrat hq h𝓕`. Establish `hc : algebraMap F E l ≠ 0`. Simplify using `using hl`. Use `⟨_, _, hμ', h𝓕', ?_⟩` and prove the remaining obligations.
-
-Introduce `n T T' hT'`. Substitute `hT'` using the available equality. Conclude with `theta_map σ hCM J hJ γ _ hc hγ He hmat μ 𝓕 T`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem theta_simil : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ → IsFDH F E σ M J μ 𝓕 → ∀ (γ : GL (Fin M) E) (l : F), l ≠ 0 → cT (σ : E →+* E) (γ : Matrix (Fin M) (Fin M) E) * J * (γ : Matrix (Fin M) (Fin M) E) = (algebraMap F E l) • J → ∃ (μ' : Measure (HA (AF F) σ J)) (𝓕' : Set (HA (AF F) σ J)), IsHaarH F E σ M J μ' ∧ IsFDH F E σ M J μ' 𝓕' ∧ ∀ (n : ℕ) (T T' : Matrix (Fin n) (Fin n) E), T' = (algebraMap F E l) • T → (thetaMeas σ J μ' 𝓕' {X | gramE σ J X = T}).map (actTup (AF F) (bc (inclR (AF F)) γ)) = thetaMeas σ J μ 𝓕 {X | gramE σ J X = T'} := by
   intro F E _ _ _ _ _ σ hCM M J hJ μ 𝓕 hμ h𝓕 γ l hl hγ

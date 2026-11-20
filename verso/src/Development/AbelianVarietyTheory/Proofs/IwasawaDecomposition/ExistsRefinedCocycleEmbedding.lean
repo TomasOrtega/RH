@@ -16,9 +16,9 @@ namespace GlobalTheory.DRFlag
 variable {Z : Scheme.{0}}
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Take `⟨n₀, y, hy⟩` from `exists_eq_pow_mul_of_isAffineOpen Z U hU f x`. Use `⟨n₀, fun n hn => ⟨f ^ (n - n₀) * y, fun S _ z h h' => ?_⟩⟩` and prove the remaining obligations. Establish `e : resG Z (Z.basicOpen_le f) y = resG Z (Z.basicOpen_le f) f ^ n₀ * x` using `hy`. Establish `e'` using `congrArg (ev z _ h') e`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e'` using `[map_mul, map_pow, ev_res z _ h' h, ev_res z _ h' h]`. Rewrite using `[map_mul, map_pow, e', ← mul_assoc, ← pow_add, Nat.sub_add_cancel hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ev_eq_pow_mul {U W : Z.Opens} (hU : IsAffineOpen U) (f : Γ(Z, U)) (hW : Z.basicOpen f = W)
     (x : Γ(Z, W)) : ∃ n₀ : ℕ, ∀ n, n₀ ≤ n → ∃ y : Γ(Z, U), ∀ (S : Type) [CommRing S] (z : Sp S ⟶ Z)
@@ -32,9 +32,9 @@ theorem exists_ev_eq_pow_mul {U W : Z.Opens} (hU : IsAffineOpen U) (f : Γ(Z, U)
   rw [map_mul, map_pow, e', ← mul_assoc, ← pow_add, Nat.sub_add_cancel hn]
 
 /- English proof (translation)
-Establish `e : resG Z (Z.basicOpen_le f) (x - y) = 0` using `ext_ev fun S _ z hz => by`. Establish `h` using `le_preimage_mono (Z.basicOpen_le f) hz`. Rewrite using `[ev_res z _ hz h, map_sub, map_zero, H S z h hz, sub_self]`. Take `⟨n₀, hn₀⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen Z hU (x - y) f e`. Use `⟨n₀, fun n hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero, ← mul_sub, ← Nat.sub_add_cancel hn, pow_add, mul_assoc, hn₀, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_mul_eq_of_ev {U : Z.Opens} (hU : IsAffineOpen U) (f x y : Γ(Z, U))
     (H : ∀ (S : Type) [CommRing S] (z : Sp S ⟶ Z) (h : ⊤ ≤ z ⁻¹ᵁ U), ⊤ ≤ z ⁻¹ᵁ Z.basicOpen f →
@@ -47,25 +47,23 @@ theorem exists_pow_mul_eq_of_ev {U : Z.Opens} (hU : IsAffineOpen U) (f x y : Γ(
   rw [← sub_eq_zero, ← mul_sub, ← Nat.sub_add_cancel hn, pow_add, mul_assoc, hn₀, mul_zero]
 
 /- English proof (translation)
-Use `Fintype.ofFinite C.A` as an intermediate fact. Use `choose m₀ hm₀ using fun p : Σ g : C.A, Σ d : C.A, Fin (C.n g) × Fin (C.n d) => exists_ev_eq_pow_mul (C.aff p.2.1) (r p.2.1 p.1) ((hb _ _).trans (inf_comm _ _)) (C.T p.1 p.2.1 p.2.2.1 p.2.2.2)`. Take `⟨m, hmm⟩ : ∃ m, ∀ p, m₀ p ≤ m` from `⟨Finset.univ.sup m₀, fun p => Finset.le_sup (Finset.mem_univ p)⟩`. Use `choose Y₀ hY₀ using fun p => hm₀ p m (hmm p)`. Take `⟨Y, hY⟩ : ∃ Y : ∀ g d : C.A, Matrix (Fin (C.n g)) (Fin (C.n d)) Γ(Z, C.B d), ∀ g d (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hg : ⊤ ≤ z ⁻¹ᵁ C.B g) (hd : ⊤ ≤ z ⁻¹ᵁ C.B d), (Y g d).map (ev z _ hd) = ev z _ hd (r d g) ^ m • C.tr g d z hg hd` from `⟨fun g d => Matrix.of fun i j => Y₀ ⟨g, d, i, j⟩, fun g d S _ z hg hd => Matrix.ext fun i j => hY₀ ⟨g, d, i, j⟩ S z hd (le_preimage_inf hg hd)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY1 : ∀ g, Y g g = 1` using `fun g => Matrix.ext fun i j => ext_ev fun S _ z hz => by`. Establish `e` using `hY g g S z hz hz`. Rewrite `e` using `[hs, map_one, one_pow, one_smul, C.tr_self]`. Conclude with `(congrFun (congrFun e i) j).trans (congrFun (congrFun (Matrix.map_one _ (map_zero (ev z _ hz)) (map_one _)) i) j).symm`. Establish `key : ∀ g d e, ∀ i j, ∃ n₀ : ℕ, ∀ n, n₀ ≤ n → ∀ (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hd : ⊤ ≤ z ⁻¹ᵁ C.B d) (he : ⊤ ≤ z ⁻¹ᵁ C.B e), ev z _ hd (r d g) ^ n * ((Y g d).map (ev z _ hd) * C.tr d e z hd he) i j = ev z _ hd (r d g) ^ n * (ev z _ hd (r d e) ^ m * ev z _ he (Y g e i j))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g d e i j`. Establish `ha : IsAffineOpen (C.B d ⊓ C.B e)` using `hb d e ▸ (C.aff d).basicOpen (r d e)`. Establish `e₁ : ∀ (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hd : ⊤ ≤ z ⁻¹ᵁ C.B d) (he : ⊤ ≤ z ⁻¹ᵁ C.B e), ev z _ (le_preimage_inf hd he) (((Y g d).map (resG Z (inf_le_left : C.B d ⊓ C.B e ≤ C.B d)) * C.T d e) i j) = ((Y g d).map (ev z _ hd) * C.tr d e z hd he) i j` using `fun S _ z hd he => by`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_mul, Matrix.map_apply, ev_res z _ _ hd]`. Both sides reduce to the same expression. Establish `e₂ : ∀ (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hd : ⊤ ≤ z ⁻¹ᵁ C.B d) (he : ⊤ ≤ z ⁻¹ᵁ C.B e), ev z _ (le_preimage_inf hd he) (resG Z inf_le_left (r d e) ^ m * resG Z inf_le_right (Y g e i j)) = ev z _ hd (r d e) ^ m * ev z _ he (Y g e i j)` using `fun S _ z hd he => by`. Rewrite using `[map_mul, map_pow, ev_res z _ _ hd, ev_res z _ _ he]`. Take `⟨n₀, hn₀⟩` from `exists_pow_mul_eq_of_ev ha (resG Z inf_le_left (r d g)) (((Y g d).map (resG Z (inf_le_left : C.B d ⊓ C.B e ≤ C.B d)) * C.T d e) i j) (resG Z inf_le_left (r d e) ^ m * resG Z inf_le_right (Y g e i j)) fun S _ z h h' => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `le_preimage_mono inf_le_left h`. Establish `he` using `le_preimage_mono inf_le_right h`. Establish `hle : Z.basicOpen (resG Z (inf_le_left : C.B d ⊓ C.B e ≤ C.B d) (r d g)) ≤ C.B g` using `(Z.basicOpen_res (r d g) (homOfLE inf_le_left).op).le.trans (inf_le_right.trans ((hb d g).le.trans inf_le_right))`. Establish `hg` using `le_preimage_mono hle h'`. Use `(e₁ S z hd he).trans (Eq.trans ?_ (e₂ S z hd he).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₃ : ev z _ he (Y g e i j) = ev z _ he (r e g) ^ m * C.tr g e z hg he i j` using `congrFun (congrFun (hY g e S z hg he) i) j`. Rewrite using `[hY g d S z hg hd, Matrix.smul_mul, C.tr_mul, e₃, ← mul_assoc, ← mul_pow, hm]`. Both sides reduce to the same expression. Use `⟨n₀, fun n hn S _ z hd he => ?_⟩` and prove the remaining obligations. Establish `e₄` using `congrArg (ev z _ (le_preimage_inf hd he)) (hn₀ n hn)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite `e₄` using `[map_mul, e₁ S z hd he, map_mul, e₂ S z hd he, map_pow, ev_res z _ _ hd]`. Then use the resulting hypothesis. Use `choose n₀ hn₀ using fun p : Σ g : C.A, Σ _ : C.A, Σ e : C.A, Fin (C.n g) × Fin (C.n e) => key p.1 p.2.1 p.2.2.1 p.2.2.2.1 p.2.2.2.2`. Take `⟨n, hn⟩ : ∃ n, ∀ p, n₀ p ≤ n` from `⟨Finset.univ.sup n₀, fun p => Finset.le_sup (Finset.mem_univ p)⟩`. Set `q : Option (Σ g : C.A, Fin (C.n g)) ≃ Fin (Fintype.card (Σ g : C.A, Fin (C.n g)) + 1)` to `Fintype.equivFinOfCardEq Fintype.card_option`. Set `A : ∀ d, Option (Σ g : C.A, Fin (C.n g)) → Fin (C.n d) → Γ(Z, C.B d)` to `fun d o j => o.elim 0 fun p => r d p.1 ^ n * Y p.1 d p.2 j`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, ⟨⟨fun d => Matrix.of fun k j => A d (q.symm k) j, fun d => ⟨Matrix.of fun i k => if k = q (some ⟨d, i⟩) then 1 else 0, Matrix.ext fun i j => ?_⟩, fun d e S _ z hd he => ?_⟩⟩⟩` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, A, hs, hY1]`. Establish `hu : IsUnit (ev z _ hd (r d e))` using `IsUnit.of_mul_eq_one _ ((hm d e d S z hd he).trans (by rw [hs, map_one]))`. Use `⟨hu.unit ^ (m + n), Matrix.ext fun k j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, Units.val_pow_eq_pow_val, IsUnit.unit_spec, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Break down `q.symm k with _ | ⟨g, i⟩` into its components or cases. Simplify using `[A]`. Establish `e₅` using `hn₀ ⟨g, d, e, i, j⟩ n (hn _) S z hd he`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Finset.mul_sum, ← mul_assoc] at e₅`. Simplify using `only [A, Option.elim_some, map_mul, map_pow]`.
-
-Rewrite using `[e₅, ← hm d e g S z hd he]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Coc.exists_emb_of_ratio (C : Coc Z) [Finite C.A] (r : ∀ d : C.A, C.A → Γ(Z, C.B d))
     (hb : ∀ d g, Z.basicOpen (r d g) = C.B d ⊓ C.B g) (hs : ∀ d, r d d = 1)
@@ -145,13 +143,11 @@ theorem Coc.exists_emb_of_ratio (C : Coc Z) [Finite C.A] (r : ∀ d : C.A, C.A �
       ring
 
 /- English proof (translation)
-Introduce `O _ _ Z s hZ C`. Take `⟨L, hL⟩` from `exists_isAmpleLB_of_isProjOver hZ`. Use `hL.compactSpace` as an intermediate fact. Use `choose a ha using C.cover`. Use `choose n hn t hx hle haff using fun x => hL.exists_affine_le (ha x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F, hF⟩` from `(isCompact_univ (X := Z)).elim_finite_subcover (fun x => (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (t x) : Set Z)) (fun x => (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (t x)).isOpen) fun x _ => Set.mem_iUnion.2 ⟨x, hx x⟩`. Establish `hd : ∀ g : F, ∃ u : (lbPow L (∏ x ∈ F, n x)).Sec, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u = ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (t g.1)` using `fun g => by`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem n g.2`. Establish `hk0 : 1 ≤ k` using `Nat.pos_of_ne_zero fun h => (Finset.prod_pos fun x _ => hn x).ne' (by rw [hk, h, mul_zero])`. Conclude with `⟨secCast hk.symm (secPow (t g.1) k), (nonzeroLocus_secCast _ _).trans (nonzeroLocus_secPow _ hk0)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose u hu using hd`. Establish `cover : ∀ x : Z, ∃ g, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (u g)` using `fun x => by`. Take `⟨y, hy, h⟩` from `Set.mem_iUnion₂.1 (hF (Set.mem_univ x))`. Conclude with `⟨⟨y, hy⟩, (hu ⟨y, hy⟩).ge h⟩`. Use `⟨F, fun g => a g.1, fun g => ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (u g), fun g => (congrArg IsAffineOpen (hu g)).mpr (haff g.1), cover, fun g => (hu g).le.trans (hle g.1), ?_⟩` and prove the remaining obligations.
-
-Use `@Coc.exists_emb_of_ratio Z _ (inferInstanceAs (Finite F)) (fun d g => ProjSpace.secRatio (u d) (u g)) (fun d g => ProjSpace.basicOpen_secRatio _ _) (fun d => ProjSpace.secRatio_self _) fun d e g S _ z hd he => ?_` and prove the remaining obligations. Establish `h` using `congrArg (ev z _ (le_preimage_inf hd he)) (ProjSpace.secRatio_mul_secRatio (u d) (u e) (u g) inf_le_left inf_le_right)`. Conclude with `((congrArg₂ (· * ·) (ev_res z _ _ hd _) (ev_res z _ _ he _)).symm.trans ((map_mul _ _ _).symm.trans h)).trans (ev_res z _ _ hd _)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Coc.exists_refine_emb : ∀ (O : Type) [CommRing O] [IsNoetherianRing O] (Z : Scheme.{0}) (s : Z ⟶ Sp O),
     IsProjOver s → ∀ C : Coc Z, ∃ (Γ : Type) (a : Γ → C.A) (D : Γ → Z.Opens) (aff : ∀ g, IsAffineOpen (D g))

@@ -34,7 +34,7 @@ section Abstract
 variable {H X : Type} [Group H] [TopologicalSpace H] [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Use `haveI : IsSimpleModule (MonoidAlgebra ℂ H) U.toRepresentation.asModule := (Representation.irreducible_iff_isSimpleModule_asModule _).1 hU`. Conclude with `IsSimpleModule.congr (GlobalTheory.RepCount.subEquiv U).symm`.
+A detailed English derivation is pending.
 -/
 theorem simple_asSubmodule {ρ : Representation ℂ H X} (U : Subrepresentation ρ) (hU : U.toRepresentation.IsIrreducible) :
     IsSimpleModule (MonoidAlgebra ℂ H) U.asSubmodule := by
@@ -43,9 +43,7 @@ theorem simple_asSubmodule {ρ : Representation ℂ H X} (U : Subrepresentation 
   exact IsSimpleModule.congr (GlobalTheory.RepCount.subEquiv U).symm
 
 /- English proof (translation)
-Set `F` to `f.intertwiningMap_of_isIntertwiningMap σ ρ hf`. Establish `hi : Function.Injective f`. Break down `Representation.IsIrreducible.injective_or_eq_zero F with hi | hz` into its components or cases. Conclude with `hi`. Conclude with `absurd (LinearMap.ext fun s => DFunLike.congr_fun hz s) h0`.
-
-Conclude with `⟨F.range, rfl, hi, LinearEquiv.ofInjective f hi, fun s => rfl, fun g s => Subtype.ext (hf g s)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sub_equiv {W : Type} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ H W} {ρ : Representation ℂ H X}
     (h1 : σ.IsIrreducible) {f : W →ₗ[ℂ] X} (hf : ∀ g s, f (σ g s) = ρ g (f s)) (h0 : f ≠ 0) :
@@ -59,11 +57,9 @@ theorem exists_sub_equiv {W : Type} [AddCommGroup W] [Module ℂ W] {σ : Repres
   exact ⟨F.range, rfl, hi, LinearEquiv.ofInjective f hi, fun s => rfl, fun g s => Subtype.ext (hf g s)⟩
 
 /- English proof (translation)
-Set `ev : homInto σ ρ C →ₗ[ℂ] ↥(C ⊓ fixed ρ K)` to `{ toFun := fun f => ⟨(f : W →ₗ[ℂ] X) x, f.2.1 x, GlobalTheory.CuspDec.mem_fixed.2 fun k hk => by rw [← f.2.2, hx k hk]⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hinj : Function.Injective ev`. Use `(injective_iff_map_eq_zero ev).2 fun f hf => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨U, -, hi, -⟩` from `exists_sub_equiv h1 f.2.2 (fun h => hne (Subtype.ext h))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (f : W →ₗ[ℂ] X) x = (f : W →ₗ[ℂ] X) 0`. Rewrite using `[map_zero]`. Conclude with `congrArg Subtype.val hf`. Conclude with `hx0 (hi h0)`. Use `haveI := FiniteDimensional.of_injective ev hinj`.
-
-Conclude with `Module.rank_lt_aleph0 ℂ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_homInto_lt {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ H W) (ρ : Representation ℂ H X)
     (C : Submodule ℂ X) (K : Subgroup H) (hA : FiniteDimensional ℂ ↥(C ⊓ fixed ρ K)) (h1 : σ.IsIrreducible)
@@ -84,29 +80,25 @@ theorem rank_homInto_lt {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Represe
   exact Module.rank_lt_aleph0 ℂ _
 
 /- English proof (translation)
-Set `S : Set (Subrepresentation ρ)` to `{U | U.toSubmodule ≤ C ∧ U.toRepresentation.IsIrreducible ∧ IsAdmissible U.toRepresentation ∧ U.toSubmodule ⊓ fixed ρ K ≠ ⊥}`. Set `comp : Subrepresentation ρ → Submodule (MonoidAlgebra ℂ H) ρ.asModule` to `fun U => isotypicComponent (MonoidAlgebra ℂ H) ρ.asModule U.asSubmodule`. Set `T : Set (Submodule (MonoidAlgebra ℂ H) ρ.asModule)` to `comp '' S`. Establish `hT : sSupIndep T` using `(sSupIndep_isotypicComponents (MonoidAlgebra ℂ H) ρ.asModule).mono (by`. Introduce and unpack `_ ⟨U, hU, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨U.asSubmodule, simple_asSubmodule U hU.2.1, rfl⟩)`. Establish `hy : ∀ c : T, ∃ y : ↥(C ⊓ fixed ρ K), y ≠ 0 ∧ ρ.asModuleEquiv.symm (y : X) ∈ (c : Submodule (MonoidAlgebra ℂ H) ρ.asModule)`. Introduce and unpack `⟨_, U, hU, rfl⟩`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 hU.2.2.2`. Conclude with `⟨⟨y, hU.1 hy.1, hy.2⟩, fun h => hy0 (congrArg Subtype.val h), U.asSubmodule.le_isotypicComponent hy.1⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose y hy0 hyc using hy`. Establish `hsm : ∀ (c : T) (a : ℂ), ρ.asModuleEquiv.symm ((a • y c : ↥(C ⊓ fixed ρ K)) : X) ∈ (c : Submodule (MonoidAlgebra ℂ H) ρ.asModule)` using `fun c a => by`. Rewrite using `[Submodule.coe_smul, map_smul]`. Conclude with `Submodule.smul_of_tower_mem _ a (hyc c)`. Establish `hli : LinearIndependent ℂ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hs i hi`. Establish `hx : ρ.asModuleEquiv.symm ((g i • y i : ↥(C ⊓ fixed ρ K)) : X) ∈ (i : Submodule (MonoidAlgebra ℂ H) ρ.asModule) ⊓ sSup (T \ {(i : Submodule (MonoidAlgebra ℂ H) ρ.asModule)})`. Use `⟨hsm i (g i), ?_⟩` and prove the remaining obligations. Establish `he : (g i • y i : ↥(C ⊓ fixed ρ K)) = - ∑ j ∈ s.erase i, g j • y j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_neg_iff_add_eq_zero, Finset.add_sum_erase s (fun j => g j • y j) hi, hs]`. Rewrite using `[he, Submodule.coe_neg, Submodule.coe_sum, map_neg, map_sum]`. Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun j hj => ?_)` and prove the remaining obligations. Use `(le_sSup (show (j : Submodule (MonoidAlgebra ℂ H) ρ.asModule) ∈ T \ {(i : Submodule (MonoidAlgebra ℂ H) ρ.asModule)} from ⟨j.2, fun h => Finset.ne_of_mem_erase hj (Subtype.ext h)⟩) : (j : Submodule (MonoidAlgebra ℂ H) ρ.asModule) ≤ _) (hsm j (g j))` and prove the remaining obligations. Rewrite `hx` using `[(hT i.2).eq_bot, Submodule.mem_bot, LinearEquiv.map_eq_zero_iff, Submodule.coe_eq_zero, smul_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hx.resolve_right (hy0 i)`. Use `haveI : Finite T := hli.finite`. Use `haveI := Fintype.ofFinite T`. Set `e` to `Fintype.equivFin T`. Establish `hrep : ∀ c : T, ∃ U ∈ S, comp U = c` using `fun c => c.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `choose U hUS hUc using hrep`. Use `⟨Fintype.card T, fun i => ↥(U (e.symm i)).toSubmodule, fun i => inferInstance, fun i => inferInstance, fun i => (U (e.symm i)).toRepresentation, ⟨fun i => (hUS _).2.1, fun i => (hUS _).2.2.1, fun i j hij => ⟨fun φ => hij ?_⟩⟩, ?_⟩` and prove the remaining obligations. Take `⟨ψ⟩` from `(GlobalTheory.CuspFactor.nonempty_equiv_iff _ _).1 ⟨φ⟩`. Establish `h3` using `((GlobalTheory.RepCount.subEquiv _).symm.trans (ψ.trans (GlobalTheory.RepCount.subEquiv _))).isotypicComponent_eq (M := ρ.asModule)`. Conclude with `e.symm.injective (Subtype.ext ((hUc _).symm.trans (h3.trans (hUc _))))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `W _ _ σ h1 h2 hne ⟨x, hx0, hx⟩`. Take `⟨f, hf, hf0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Take `⟨V, hV, hi, ev, hev, heq⟩` from `exists_sub_equiv h1 hf.2 hf0`. Use `haveI : IsSimpleModule (MonoidAlgebra ℂ H) σ.asModule := (Representation.irreducible_iff_isSimpleModule_asModule _).1 h1`. Set `ψ : σ.asModule ≃ₗ[MonoidAlgebra ℂ H] V.toRepresentation.asModule` to `LinearEquiv.ofBijective (GlobalTheory.RepCount.modMap ev.toLinearMap heq) ev.bijective`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hVirr : V.toRepresentation.IsIrreducible` using `(Representation.irreducible_iff_isSimpleModule_asModule _).2 (IsSimpleModule.congr ψ.symm)`. Establish `hVS : V ∈ S`. Use `⟨?_, hVirr, GlobalTheory.RepCount.isAdmissible_of_injective ev.symm.toLinearMap (fun g s => ?_) ev.symm.injective h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hV]`. Introduce and unpack `_ ⟨s, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hf.1 s`. Rewrite using `[LinearEquiv.coe_toLinearMap, LinearEquiv.symm_apply_eq, heq, LinearEquiv.apply_symm_apply]`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨f x, ⟨hV ▸ ⟨x, rfl⟩, GlobalTheory.CuspDec.mem_fixed.2 fun k hk => by rw [← hf.2, hx k hk]⟩, fun h => hx0 (hi ?_)⟩` and prove the remaining obligations. Rewrite using `[h, map_zero]`.
-
-Use `⟨e ⟨comp V, V, hVS, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Nonempty (σ.Equiv (U (e.symm (e ⟨comp V, V, hVS, rfl⟩))).toRepresentation)`. Generalize the expression as in `hc : e.symm (e ⟨comp V, V, hVS, rfl⟩) = c`. Rewrite `hc` using `[Equiv.symm_apply_apply]`. Use `haveI := simple_asSubmodule V hVirr`.
-
-Use `haveI := simple_asSubmodule (U c) (hUS c).2.1`. Establish `hle : (U c).asSubmodule ≤ comp V` using `((U c).asSubmodule.le_isotypicComponent).trans_eq ((hUc c).trans (congrArg Subtype.val hc).symm)`. Take `⟨χ⟩` from `isIsotypicOfType_submodule_iff.mp (IsIsotypicOfType.isotypicComponent (MonoidAlgebra ℂ H) ρ.asModule V.asSubmodule) _ hle`. Conclude with `(GlobalTheory.CuspFactor.nonempty_equiv_iff _ _).2 ⟨(ψ.trans (GlobalTheory.RepCount.subEquiv V)).trans (χ.symm.trans (GlobalTheory.RepCount.subEquiv _).symm)⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_classes (ρ : Representation ℂ H X) (C : Submodule ℂ X) (K : Subgroup H)
     (hA : FiniteDimensional ℂ ↥(C ⊓ fixed ρ K)) :
@@ -194,13 +186,11 @@ theorem finite_classes (ρ : Representation ℂ H X) (C : Submodule ℂ X) (K : 
 end Abstract
 
 /- English proof (translation)
-Introduce `hQ hP hDM D V S M μ _ _`. Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Establish `hm : ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), IsAdmissible σ → mCuspDS μ σ M = Module.rank ℂ (homInto σ (finRep M) (allMaps θ M))` using `fun W _ _ σ h => (GlobalTheory.T.cuspidalMultiplicity_eq_discreteSeriesModel_maps hQ hP hDM D θ hθ V S M μ W σ h.1).symm`. Use `⟨fun W _ _ σ h1 h2 => ?_, fun K hK => ?_⟩` and prove the remaining obligations. Use `haveI := GlobalTheory.CuspFactor.nontrivial_of_irr σ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx0⟩` from `exists_ne (0 : W)`. Set `St : Subgroup (GfC V)` to `{ carrier := {g | σ g x = x} mul_mem' := fun {a b} ha hb => by show σ (a * b) x = x`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {a} ha => by show σ a⁻¹ x = x conv_lhs => rw [← ha]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `}`. Rewrite using `[hm W σ h2]`. Conclude with `rank_homInto_lt σ (finRep M) (allMaps θ M) St (GlobalTheory.CuspDec.finiteDimensional_fixed hP hθ St (h2.1 x)) h1 hx0 (fun k hk => hk)`. Take `⟨n, Ws, i1, i2, σs, hs, hcov⟩` from `finite_classes (finRep M) (allMaps θ M) K (GlobalTheory.CuspDec.finiteDimensional_fixed hP hθ K hK)`. Use `⟨n, Ws, i1, i2, σs, hs, fun W _ _ σ h1 h2 hm0 hx => hcov W σ h1 h2 (fun h => hm0 ?_) hx⟩` and prove the remaining obligations.
-
-Rewrite using `[hm W σ h2, h, rank_bot]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specFin : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DixmierMalliavinFactorisation →
     SpecFin := by

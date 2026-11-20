@@ -8,7 +8,7 @@ namespace GlobalTheory.TrueGeo.ExtOfEmb
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `h1 : IsIntegral (NormedField.valuation (K` using `ℂ_[p])).integer x := hx.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))).mem_of_integral h1`. Establish `h3 : ‖x‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral_int {x : ℂ_[p]} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   have h1 : IsIntegral (NormedField.valuation (K := ℂ_[p])).integer x := hx.tower_top
@@ -17,7 +17,7 @@ theorem norm_le_one_of_isIntegral_int {x : ℂ_[p]} (hx : IsIntegral ℤ x) : �
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' p (p : ℚ_[p])`. Establish `h2 : ‖(p : ℚ_[p])‖ < 1` using `Padic.norm_p_lt_one`. Rewrite `h2` using `[← h]`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   have h := PadicComplex.norm_extends' p (p : ℚ_[p])
@@ -30,7 +30,7 @@ section Field
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral_int (by convert map_isIntegral_int φ (RingOfIntegers.isIntegral_coe y) exact Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_int_le (φ : F →+* ℂ_[p]) (y : 𝓞 F) : ‖φ (y : F)‖ ≤ 1 :=
   norm_le_one_of_isIntegral_int (by
@@ -55,16 +55,16 @@ def smallIdeal (φ : F →+* ℂ_[p]) : Ideal (𝓞 F) where
     nlinarith [norm_nonneg (φ (c : F)), norm_nonneg (φ (a : F))]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_smallIdeal (φ : F →+* ℂ_[p]) (y : 𝓞 F) : y ∈ smallIdeal φ ↔ ‖φ (y : F)‖ < 1 := Iff.rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_smallIdeal]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Rewrite `hab` using `[mem_smallIdeal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_smallIdeal, mem_smallIdeal]`. Establish `: φ ((a * b : 𝓞 F) : F) = φ (a : F) * φ (b : F)` using `by simp`. Rewrite `hab` using `[this, norm_mul]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hcon.1, hcon.2]`.
+A detailed English derivation is pending.
 -/
 theorem smallIdeal_isPrime (φ : F →+* ℂ_[p]) : (smallIdeal φ).IsPrime := by
   refine ⟨?_, ?_⟩
@@ -80,7 +80,7 @@ theorem smallIdeal_isPrime (φ : F →+* ℂ_[p]) : (smallIdeal φ).IsPrime := b
     nlinarith [hcon.1, hcon.2]
 
 /- English proof (translation)
-Rewrite using `[mem_smallIdeal]`. Simplify using `using norm_p_lt_one (p := p)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_mem_smallIdeal (φ : F →+* ℂ_[p]) : (p : 𝓞 F) ∈ smallIdeal φ := by
   rw [mem_smallIdeal]
@@ -104,19 +104,17 @@ Both sides reduce to the same expression.
 theorem normAbv_apply (φ : F →+* ℂ_[p]) (x : F) : normAbv φ x = ‖φ x‖ := rfl
 
 /- English proof (translation)
-Use `set v := place φ`. Establish `hb` using `NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v`. Use `show (v.adicAbv hb).IsEquiv (normAbv φ)`. Establish `hφ : ∀ x : 𝓞 F, ‖φ (x : F)‖ ≤ 1 ∧ (‖φ (x : F)‖ < 1 ↔ x ∈ v.asIdeal)` using `fun x => ⟨norm_int_le φ x, Iff.rfl⟩`. Establish `hd : ∀ d : 𝓞 F, d ∉ v.asIdeal → ‖φ (algebraMap (𝓞 F) F d)‖ = 1` using `fun d hd => le_antisymm (hφ d).1 (not_lt.1 fun h => hd ((hφ d).2.1 h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal` using `natCast_mem_smallIdeal φ`. Establish `hl0 : algebraMap (𝓞 F) F ((p : ℕ) : 𝓞 F) ≠ 0`. Rewrite using `[map_natCast]`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Use `AbsoluteValue.isEquiv_of_lt_one_imp ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨algebraMap (𝓞 F) F ((p : ℕ) : 𝓞 F), hl0, ((v.adicAbv_coe_lt_one_iff (K := F) hb _).2 hl).ne⟩`. Introduce `x hx`. Take `⟨n, d, h | h⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_or_mul_eq (R := 𝓞 F) (K := F) v x`. Establish `hdv : (d : 𝓞 F) ∉ v.asIdeal` using `d.2`. Establish `hAd` using `(v.adicAbv_coe_eq_one_iff (K := F) hb (d : 𝓞 F)).2 hdv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAn : v.adicAbv hb (algebraMap (𝓞 F) F n) < 1`. Rewrite using `[← h, map_mul, hAd, mul_one]`. Conclude with `hx`. Establish `hn : n ∈ v.asIdeal` using `(v.adicAbv_coe_lt_one_iff (K := F) hb n).1 hAn`. Establish `h1 : ‖φ (algebraMap (𝓞 F) F n)‖ < 1` using `(hφ n).2.2 hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hd d hdv`. Rewrite using `[normAbv_apply]`. Establish `h3 : ‖φ x‖ * ‖φ (algebraMap (𝓞 F) F d)‖ = ‖φ (algebraMap (𝓞 F) F n)‖`. Rewrite using `[← norm_mul, ← map_mul, h]`. Rewrite `h3` using `[h2, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `h1`. It suffices to derive a contradiction. Establish `hAd` using `(v.adicAbv_coe_eq_one_iff (K := F) hb (d : 𝓞 F)).2 d.2`. Establish `hAn` using `v.adicAbv_coe_le_one (K := F) hb n`.
-
-Establish `h4 : v.adicAbv hb x * v.adicAbv hb (algebraMap (𝓞 F) F n) = 1`. Rewrite using `[← map_mul, h, hAd]`. Establish `h5` using `mul_lt_one_of_nonneg_of_lt_one_left (AbsoluteValue.nonneg _ _) hx hAn`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isEquiv (φ : F →+* ℂ_[p]) :
     (NumberField.HeightOneSpectrum.adicAbv F (place φ)).IsEquiv (normAbv φ) := by
@@ -201,16 +199,16 @@ def ball (ι : K →+* ℂ_[p]) : ValuationSubring K where
     · exact .inr (inv_le_one_of_one_le₀ h)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ball (ι : K →+* ℂ_[p]) (z : K) : z ∈ ball ι ↔ ‖ι z‖ ≤ 1 := Iff.rfl
 
 end Closure
 
 /- English proof (translation)
-Introduce `F _ _ p _ ι`. Set `φ : F →+* ℂ_[p]` to `ι.comp (algebraMap F _)`. Take `⟨c, hc, hce⟩` from `AbsoluteValue.isEquiv_iff_exists_rpow_eq.1 (isEquiv φ).symm`. Use `⟨place φ, ⟨powAbv ι c hc, fun a => ?_, ball ι, fun x => ?_⟩, natCast_mem_smallIdeal φ, fun a => Iff.rfl⟩` and prove the remaining obligations. Rewrite using `[powAbv_apply, ← congrFun hce a, normAbv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[mem_ball, powAbv_apply, ← Real.rpow_le_rpow_iff (norm_nonneg _) zero_le_one hc, Real.one_rpow]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ext : ∀ (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime]
     (ι : AlgebraicClosure F →+* ℂ_[p]), ∃ (v : HeightOneSpectrum (𝓞 F)) (e : Ext v),

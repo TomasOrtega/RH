@@ -30,9 +30,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D D' : DegData R I}
   {w : LB.Iso (U'.LG.L.pull (pullback.fst G'.hom (jK R))) (U.LG.L.pull (Φ.hom.left ≫ pullback.fst G.hom (jK R)))}
 
 /- English proof (translation)
-Set `ψ : A'.A ≅ A.A` to `U'.gen.symm ≪≫ Φ ≪≫ U.gen`. Establish `hψ : Φ.hom ≫ U.gen.hom = U'.gen.hom ≫ ψ.hom` using `by simp [ψ]`. Use `U.gen_hom` as an intermediate fact. Use `U'.gen_hom` as an intermediate fact. Establish `hm : IsMonHom ψ.hom` using `hL.rigidity _ _ _ A'.isAb A.isAb _ (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← IsMonHom.one_hom U'.gen.hom, Category.assoc, ← hψ, ← Category.assoc, hw.one hL hR hI hG hG' hj hE, IsMonHom.one_hom])`. Establish `e : Φ.hom = U'.gen.hom ≫ ψ.hom ≫ U.gen.inv` using `by simp [ψ]`. Rewrite using `[e]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_generic (hL : Laws) (hR : AdmBase R I) (hI : I ≠ ⊤) (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
     (hj : GlobalTheory.GenericIso.LevelIso U.toUnifPre U'.toUnifPre hD j)
@@ -54,9 +54,9 @@ end GlobalTheory.DataDetNormal
 namespace GlobalTheory.DataDetNormal
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.semiAbelianHomExtension_holds`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `h.fractionField R (FractionRing R) G' G hG' hG Φ.hom`. Take `⟨F₁, ⟨hF₁, hF₁'⟩, -⟩` from `h.fractionField R (FractionRing R) G G' hG hG' Φ.inv`. Take `⟨E₁, -, u₁⟩` from `h.fractionField R (FractionRing R) G' G' hG' hG' (𝟙 _)`. Take `⟨E₂, -, u₂⟩` from `h.fractionField R (FractionRing R) G G hG hG (𝟙 _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `c₁ : F ≫ F₁ = 𝟙 G'` using `(u₁ _ ⟨inferInstance, by rw [Functor.map_comp, hF', hF₁', Iso.hom_inv_id]⟩).trans (u₁ _ ⟨inferInstance, (Over.pullback _).map_id _⟩).symm`. Establish `c₂ : F₁ ≫ F = 𝟙 G` using `(u₂ _ ⟨inferInstance, by rw [Functor.map_comp, hF', hF₁', Iso.inv_hom_id]⟩).trans (u₂ _ ⟨inferInstance, (Over.pullback _).map_id _⟩).symm`. Conclude with `⟨⟨F, F₁, c₁, c₂⟩, hF, hF'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_iso_extending {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
     {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [GrpObj G'] (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
@@ -81,19 +81,17 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D D' : DegData R I}
   {w : LB.Iso (U'.LG.L.pull (pullback.fst G'.hom (jK R))) (U.LG.L.pull (Φ.hom.left ≫ pullback.fst G.hom (jK R)))}
 
 /- English proof (translation)
-Use `hR.1` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG'.smooth` as an intermediate fact. Use `GlobalTheory.schemeTheoreticallyDominant_fractionField R (FractionRing R)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eψ : Φ.hom.left ≫ pullback.fst G.hom (jK R) = pullback.fst G'.hom (jK R) ≫ ψ.left`. Rewrite using `[← hψ]`. Conclude with `pullback.lift_fst _ _ _`. Establish `hx0 : ∀ x : G'.left, I ≤ (G'.hom x).asIdeal → x ∈ Set.range (fstG I 0 G').left` using `fun x hx => by show x ∈ Set.range (pullback.fst G'.hom (thick R I 0))`. Rewrite using `[Scheme.Pullback.range_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.FormalExt.range_thick I 0 _).2 hx`. Use `GlobalTheory.FormalExt.hom_ext_of_flat_family _ _ fun y => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hx0 ((fstG I e G').left y) ((GlobalTheory.FormalExt.range_thick I e _).1 (by`. Establish `: (fstG I e G').left y ∈ Set.range (pullback.fst G'.hom (thick R I e))` using `⟨y, rfl⟩`. Rewrite `this` using `[Scheme.Pullback.range_fst]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `this))`. Take `⟨jL, hjL⟩ : ∃ i, (fstG I 0 G).left ((j 0).hom.left x) ∈ U.LG.L.U i` from `TopologicalSpace.Opens.mem_iSup.1 (U.LG.isLB.cover.ge trivial)`. Take `⟨jL', hjL'⟩ : ∃ i, (fstG I 0 G').left x ∈ U'.LG.L.U i` from `TopologicalSpace.Opens.mem_iSup.1 (U'.LG.isLB.cover.ge trivial)`. Take `⟨B, _, _, g', g, hB, -, hg'f, hxr, h₁, h₂, h₃, h₄, h₅⟩` from `GlobalTheory.CompletedPoint.exists_completed_point I G G' (fun e => (j e).hom) (fun e => (hj e).2.1) x _ _ hjL hjL'`. Establish `hpt : ∀ {Z : Scheme.{0}} (ρ : Z ⟶ Spec (CommRingCat.of B)) (r : Z ⟶ ((Over.pullback (jK R)).obj G').left), r ≫ pullback.fst G'.hom (jK R) = ρ ≫ g' → r ≫ Φ.hom.left ≫ pullback.fst G.hom (jK R) = ρ ≫ g` using `fun ρ r hr => hw.point hL hR hG hG' hE hB h₁ h₂ h₃ h₄ h₅ ρ r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg : g' ≫ ψ.left = g`. Set `a : Over.mk (g' ≫ G'.hom) ⟶ G` to `Over.homMk (g' ≫ ψ.left) (by simp)`. Set `b : Over.mk (g' ≫ G'.hom) ⟶ G` to `Over.homMk g (h₂.trans h₁.symm)`. Establish `: IsSchemeTheoreticallyDominant (pullback.fst G'.hom (jK R))` using `inferInstance`. Establish `: IsSchemeTheoreticallyDominant (pullback.fst g' (pullback.fst G'.hom (jK R)))` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.over_ext_of_schemeTheoreticallyDominant (a := a) (b := b) (pullback.fst g' (pullback.fst G'.hom (jK R))) (by` as an intermediate fact. Use `hpt _ (pullback.snd g' (pullback.fst G'.hom (jK R))) pullback.condition.symm` as an intermediate fact. Rewrite `this` using `[eψ]`. Conclude with `(pullback.condition_assoc _).trans this)`. Conclude with `congr(($this).left)`.
-
-Use `⟨_, pullback.snd g' (fstG I e G').left, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_snd] show (fstG I e G').left y ∈ Set.range g'`. Rewrite using `[← hx]`. Conclude with `hxr`. Rewrite using `[h₅ e _ _ _ pullback.condition.symm, ← pullback.condition_assoc, hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thick_compat (hL : Laws) (hR : AdmBase R I) (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
     (hj : GlobalTheory.GenericIso.LevelIso U.toUnifPre U'.toUnifPre hD j)
@@ -146,17 +144,17 @@ theorem thick_compat (hL : Laws) (hR : AdmBase R I) (hG : IsSemiAbelian G) (hG' 
 end GlobalTheory.DataDetNormal
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A G _ _ hG U D' A' G' _ _ hG' U' hD`. Establish `hL` using `GlobalTheory.firstFiveLaws.1`. Establish `hI : maximalIdeal R ≠ ⊤` using `(maximalIdeal.isMaximal R).ne_top`. Use `hR.1` as an intermediate fact. Use `hR.2.2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `GlobalTheory.GenericIso.exists_levelIso U.toUnifPre U'.toUnifPre hD hL.globalFns`. Establish `hE` using `hj.enough hL.globalFns U.expand U'.expand`. Take `⟨Φ, w, hw⟩` from `GlobalTheory.GenericIso.exists_genericRel hL R _ hR D D' A A' G G' hG hG' U U' hD j hj hE`. Establish `hΦ : IsMonHom Φ.hom` using `GlobalTheory.DataDetNormal.isMonHom_generic hL hR hI hG hG' hj hE hw`. Take `⟨ψ, hψm, hψK⟩` from `GlobalTheory.DataDetNormal.exists_iso_extending hG hG' Φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hth` using `GlobalTheory.DataDetNormal.thick_compat hL hR hG hG' hj hE hw ψ.hom hψK`. Take `⟨wL, hwL, H⟩` from `GlobalTheory.T.exists_bundleIso_extending_generic_completeLocalNormal R hR D D' A A' G G' hG hG' U U' hD j hj Φ w hw ψ hψm hψK hth`. Establish `hs` using `Geo.Tor.specOf_id R`. Take `⟨bc, mbc, hbc⟩` from `grpPullback_iso ((isGrpPullback_of_iso ψ).congr hs.symm rfl) (isGrpPullback_pullback G (specOf (RingHom.id R)))`. Establish `hbc' : bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = ψ.hom.left` using `hbc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he₀ : eSec G' ≫ ψ.hom.left = eSec G` using `congrArg Over.Hom.left hψm.one_hom`. Establish `he : eSec G' ≫ bc.hom.left ≫ pullback.fst G.hom (specOf (RingHom.id R)) = specOf (RingHom.id R) ≫ eSec G` using `(congrArg (_ ≫ ·) hbc').trans (he₀.trans ((congrArg (· ≫ _) hs).trans (Category.id_comp _)).symm)`. Establish `hr` using `GlobalTheory.pmaps_rig_of_thick_compat hI U.toUnifPre U'.toUnifPre hD (fun e => (j e).hom) (fun e => (hj e).1) he₀ wL hwL H`. Establish `hP : IsPullUnif (RingHom.id R) hD bc U U'` using `(isPullUnif_iff_stalks R R _ _ _ D D' hD A A' G G' bc U U').2 ⟨pullCongr hbc'.symm wL, (isGen_iff _).2 (pgen_pullCongr _ ((isGen_iff _).1 hwL)), he, ?_, fun e => ⟨(j e).hom.left, (hth e).symm.trans (congrArg (_ ≫ ·) hbc'.symm), (hj e).2.2, fun Z r z jM jM' jL jL' h₁ h₂ h₃ h₄ => ? …`. Take `⟨φ, h1, h2, h3⟩` from `GlobalTheory.UT.exists_genericFibre_iso_of_model_iso R _ D D' A A' G G' U.toUnifPre U'.toUnifPre ψ hψm ⟨wL, hwL⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ψ, bc, φ, hψm, mbc, hbc', hP, h1, h2, h3⟩`. Use `(Geo.Tor.maps_iff _ _ (fun _ => eSec G) _ U'.LG.rig U.LG.rig (specOf (RingHom.id R)) _ (rigPull_le _ _ he U.LG.L) (fun _ => rfl)).2 (pmaps_pullCongr _ ?_)` and prove the remaining obligations. Conclude with `(congrArg (PMaps wL (K := PUnit) (fun _ => eSec G') (fun _ => eSec G) (fun _ => 1) U'.LG.rig U.LG.rig) hs).mpr hr`. Rewrite using `[gw_pullCongr]`. Use `H e Z r z jM jM' jL jL' h₁ h₂ ?_ h₄` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₃` using `[hbc']`. Conclude with `(congrArg (fun g => g (r z) ∈ U.LG.L.U jL) (hth e)).mp h₃`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.unif_determined_by_data_normal : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, GlobalTheory.UT.Cl.Determined U := by
   intro R _ _ _ hR D A G _ _ hG U D' A' G' _ _ hG' U' hD

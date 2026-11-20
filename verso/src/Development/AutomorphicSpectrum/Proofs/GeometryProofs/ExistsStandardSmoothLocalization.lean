@@ -17,9 +17,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 omit [CharZero Ω] in
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Function.update_of_ne hb, div_self (hc b)]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ k) h`.
+A detailed English derivation is pending.
 -/
 theorem segre_update_ratio [DecidableEq K] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (k : K) (i : ι k) :
@@ -32,9 +32,9 @@ theorem segre_update_ratio [DecidableEq K] (y : (Σ k, ι k) → Ω) (c : ∀ k,
     exact absurd (Finset.mem_univ k) h
 
 /- English proof (translation)
-Rewrite using `[← CoordArithOfFnField.ratioField_eq y (E c₀) hc]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `only [← Finset.prod_div_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `prod_mem fun k _ => IntermediateField.subset_adjoin _ _ ⟨⟨k, E j k⟩, rfl⟩`. Rewrite using `[GroundTheory.Heights₂.Heights.CoordinateConeArithVar.ratioField, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Use `IntermediateField.subset_adjoin _ _ ⟨E.symm (Function.update (E c₀) k i), ?_⟩` and prove the remaining obligations. Simplify using `using segre_update_ratio y (E c₀) hc k i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem adjoin_segre_eq (y : (Σ k, ι k) → Ω) {N : ℕ} (E : Fin (N + 1) ≃ ((k : K) → ι k)) (c₀ : Fin (N + 1))
     (hc : ∀ k, y ⟨k, E c₀ k⟩ ≠ 0) :
@@ -53,11 +53,11 @@ theorem adjoin_segre_eq (y : (Σ k, ι k) → Ω) {N : ℕ} (E : Fin (N + 1) ≃
     simpa using segre_update_ratio y (E c₀) hc k i
 
 /- English proof (translation)
-Take `⟨_, _, _, hdim⟩` from `hA`. Rewrite `hdim` using `[CoordArithOfFnField.dim_eq y c hc]`. Establish `h1 : (Algebra.trdeg ℤ (blockFnField y)).toENat = e`. Generalize the expression as in `(Algebra.trdeg ℤ (blockFnField y)).toENat = n at hdim ⊢`. Proceed by induction on `n using ENat.recTopCoe with`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `top`. It suffices to derive a contradiction. Simplify using `only [top_add] at hdim`. Normalize the coercions in `at hdim`. Consider the case `coe n`.
+Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. Treat this case separately.
 
-Normalize the coercions in `at hdim ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[Cardinal.toENat_eq_natCast]`. Establish `: Algebra.IsAlgebraic ℤ ℚ` using `IsLocalization.isAlgebraic _ (nonZeroDivisors ℤ)`. Rewrite using `[← h1, ← trdeg_add_eq ℤ ℚ (A := blockFnField y), trdeg_eq_zero (R := ℤ) (A := ℚ), zero_add]`.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_blockFnField {y : (Σ k, ι k) → Ω} {e : ℕ} (hA : IsArithVar (mCoordIdeal y) (e + 1))
     (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) : Algebra.trdeg ℚ (blockFnField y) = e := by
@@ -80,7 +80,7 @@ theorem trdeg_blockFnField {y : (Σ k, ι k) → Ω} {e : ℕ} (hA : IsArithVar 
 open scoped IntermediateField.algebraAdjoinAdjoin in
 
 /- English proof (translation)
-Establish `hfin : Algebra.FiniteType ℚ (Algebra.adjoin ℚ S)` using `(Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨S, hS, rfl⟩)`. Establish `h2 : Algebra.trdeg ℚ (Algebra.adjoin ℚ S) = e`. Rewrite using `[← h]`. Conclude with `(GroundTheory.Arith.Abelian.Jacobian.trdeg_eq_of_isFractionRing (k := ℚ) (A := Algebra.adjoin ℚ S) (IntermediateField.adjoin ℚ S)).symm`. Conclude with `GlobalTheory.AffinePoints.exists_ne_zero_isStandardSmoothOfRelativeDimension (GlobalTheory.ringKrullDim_eq_of_trdeg_eq ℚ _ h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_away_of_trdeg (S : Set Ω) (hS : S.Finite) {e : ℕ}
     (h : Algebra.trdeg ℚ (IntermediateField.adjoin ℚ S) = e) :
@@ -96,7 +96,7 @@ theorem exists_away_of_trdeg (S : Set Ω) (hS : S.Finite) {e : ℕ}
     (GlobalTheory.ringKrullDim_eq_of_trdeg_eq ℚ _ h2)
 
 /- English proof (translation)
-Use `exists_away_of_trdeg _ (Set.finite_range _) ?_` and prove the remaining obligations. Rewrite using `[adjoin_segre_eq y E c₀ hc]`. Conclude with `trdeg_blockFnField hA (E c₀) hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_away_standardSmooth (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (ι : K → Type)
     [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω) (e : ℕ) (hA : IsArithVar (mCoordIdeal y) (e + 1)) (N : ℕ)

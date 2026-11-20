@@ -20,7 +20,7 @@ section General
 variable {G : Type} [Group G] {X : Type} [MulAction Gᵐᵒᵖ X]
 
 /- English proof (translation)
-Establish `h1 : (b⁻¹ * a) • j = j` using `by rw [mul_smul, h, inv_smul_smul]`. Conclude with `(inv_mul_eq_one.mp (hfree _ _ h1)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_smul_eq_of_free (hfree : ∀ (x : Gᵐᵒᵖ) (j : X), x • j = j → x = 1) {a b : Gᵐᵒᵖ} {j : X}
     (h : a • j = b • j) : a = b := by
@@ -28,19 +28,17 @@ theorem eq_of_smul_eq_of_free (hfree : ∀ (x : Gᵐᵒᵖ) (j : X), x • j = j
   exact (inv_mul_eq_one.mp (hfree _ _ h1)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨x, hx⟩ => ⟨x⁻¹, by rw [← hx, inv_smul_smul]⟩, fun ⟨x, hx⟩ => ⟨x⁻¹, by rw [← hx, inv_smul_smul]⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_smul_comm (i j : X) : (∃ x : Gᵐᵒᵖ, x • j = i) ↔ ∃ x : Gᵐᵒᵖ, x • i = j :=
   ⟨fun ⟨x, hx⟩ => ⟨x⁻¹, by rw [← hx, inv_smul_smul]⟩, fun ⟨x, hx⟩ => ⟨x⁻¹, by rw [← hx, inv_smul_smul]⟩⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ x : Gᵐᵒᵖ, x • j = i`. Rewrite using `[if_pos h]`. Establish `hdij` using `hd i j h`. Rewrite using `[Finset.sum_eq_single (d i j)]`. Rewrite using `[if_pos hdij]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `hbj`. Conclude with `hb (MulOpposite.op_injective (eq_of_smul_eq_of_free hfree (hbj.trans hdij.symm)))`. Introduce `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hx`.
-
-Conclude with `h ⟨_, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_orbit [Fintype G] (hfree : ∀ (x : Gᵐᵒᵖ) (j : X), x • j = j → x = 1) (d : X → X → G)
     (hd : ∀ i j, (∃ x : Gᵐᵒᵖ, x • j = i) → MulOpposite.op (d i j) • j = i) (f : G → ℂ) (i j : X) :
@@ -70,9 +68,9 @@ section Prod
 variable {ι : Type} [Fintype ι] {Fq : ι → Type} [∀ v, Field (Fq v)] [∀ v, Fintype (Fq v)] {k : ℕ}
 
 /- English proof (translation)
-Unfold `gam`. Simplify using `only [map_mul, map_inv₀, map_natCast, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← psiNat_inv]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem gam_inv_eq_conj {F : Type} [Field F] [Fintype F] {k : ℕ} (ψ₀ : AddChar F ℂ)
     (x : GL (Fin k) F) : gam ψ₀ x⁻¹ = conj (gam ψ₀ x) := by
@@ -85,7 +83,7 @@ private theorem gam_inv_eq_conj {F : Type} [Field F] [Fintype F] {k : ℕ} (ψ�
   group
 
 /- English proof (translation)
-Unfold `gamProd`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.inv_apply, gam_inv_eq_conj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamProd_inv (ψ : ∀ v, AddChar (Fq v) ℂ) (x : ∀ v, GL (Fin k) (Fq v)) :
     gamProd ψ x⁻¹ = conj (gamProd ψ x) := by
@@ -95,7 +93,7 @@ theorem gamProd_inv (ψ : ∀ v, AddChar (Fq v) ℂ) (x : ∀ v, GL (Fin k) (Fq 
   rw [Pi.inv_apply, gam_inv_eq_conj]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.toMatrix'_apply]`. Simplify using `[totOp, permRep, LinearMap.funLeft, Finset.sum_apply, Pi.single_apply, mul_ite]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toMatrix'_totOp_apply (ψ : ∀ v, AddChar (Fq v) ℂ) (X : Type) [Fintype X]
     [MulAction (∀ v, GL (Fin k) (Fq v))ᵐᵒᵖ X] (i j : X) :
@@ -107,13 +105,11 @@ theorem toMatrix'_totOp_apply (ψ : ∀ v, AddChar (Fq v) ℂ) (X : Type) [Finty
 end Prod
 
 /- English proof (translation)
-Introduce `ι _ Fq _ _ k ψ X _ _`. Use `Matrix.IsHermitian.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[toMatrix'_totOp_apply, toMatrix'_totOp_apply, star_sum]`. Use `Fintype.sum_equiv (Equiv.inv _) _ _ fun x => ?_` and prove the remaining obligations. Establish `hiff : MulOpposite.op x • j = i ↔ MulOpposite.op x⁻¹ • i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MulOpposite.op_inv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h, inv_smul_smul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h, smul_inv_smul]`. Simplify using `only [Equiv.inv_apply]`. Use `split_ifs with h1 h2 h2`. Rewrite using `[gamProd_inv]`. Both sides reduce to the same expression.
-
-Conclude with `absurd (hiff.mp h1) h2`. Conclude with `absurd (hiff.mpr h2) h1`. Conclude with `star_zero _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem totally_hermitian_form : TotHerm := by
   intro ι _ Fq _ _ k ψ X _ _
@@ -136,13 +132,11 @@ theorem totally_hermitian_form : TotHerm := by
   · exact star_zero _
 
 /- English proof (translation)
-Introduce `ι _ Fq _ _ k ψ X _ _ hfree d hd`. Prove the components needed by the constructor for the conclusion. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, toMatrix'_totOp_apply, sum_orbit hfree d hd, exists_smul_comm (G := ∀ v, GL (Fin k) (Fq v)) i j]`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hd j i h`. Establish `h3` using `hd i j ((exists_smul_comm (G := ∀ v, GL (Fin k) (Fq v)) i j).mpr h)`. Establish `hdd : d j i = (d i j)⁻¹`. Apply `MulOpposite.op_injective` to reduce the goal to its premises. Apply `eq_of_smul_eq_of_free hfree (j := i)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, MulOpposite.op_inv]`. Conclude with `eq_inv_smul_iff.mpr h3`. Rewrite using `[hdd, gamProd_inv]`. Both sides reduce to the same expression. Use extensionality with `i j`.
-
-Rewrite using `[Matrix.of_apply, Matrix.transpose_apply, toMatrix'_totOp_apply, sum_orbit hfree d hd]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matrix_coefficient_equation : MatrixEq := by
   intro ι _ Fq _ _ k ψ X _ _ hfree d hd

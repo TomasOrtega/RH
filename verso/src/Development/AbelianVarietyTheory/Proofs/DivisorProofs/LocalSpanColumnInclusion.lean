@@ -19,7 +19,7 @@ open Matrix
 namespace GlobalTheory.UnipEmb.PlaceSpan
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [add_mul, map_add, map_add, hx, hy, add_mul]`. Consider the case `tmul b e'`. Simplify using `[GlobalTheory.UnipEmb.locInc, inclR, Algebra.TensorProduct.tmul_mul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem locInc_mul_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v ⊗[F] E) (e : E) :
@@ -31,19 +31,17 @@ theorem locInc_mul_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
     simp [GlobalTheory.UnipEmb.locInc, inclR, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h v τ n r X I u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Establish `e : (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ (fun k => τ (X k i)) k)) = GlobalTheory.UnipEmb.locInc F E v (splitIdem h τ) • (adMat F X)ᵀ i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Establish `: splitIncl h τ (fun k => τ (X k i)) k = splitIdem h τ * inclR (Fv F v) (X k i)`. Rewrite using `[splitIdem_mul, splitProj_inclR]`. Both sides reduce to the same expression. Rewrite using `[this, locInc_mul_inclR]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[adMat]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Consider the case `zero`. Establish `e : (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ (0 : Fin n → Fv F v) k)) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `[splitIncl]`. Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ (x + y) k)) = (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ x k)) + (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ y k))`. Use function extensionality and compare the values at `k`. Simplify using `[splitIncl, add_smul]`. Rewrite using `[e]`. Conclude with `add_mem hx hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `smul c x _ hx`. Establish `e : (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ (c • x) k)) = GlobalTheory.UnipEmb.locInc F E v (c ⊗ₜ[F] (1 : E)) • (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ x k))`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul, splitIncl]`. Rewrite using `[← map_mul, mul_smul, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locInc_splitIncl_mem_colSpan : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n r : ℕ}

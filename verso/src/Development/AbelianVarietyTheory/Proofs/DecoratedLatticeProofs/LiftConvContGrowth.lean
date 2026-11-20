@@ -20,23 +20,21 @@ open scoped ComplexOrder ENNReal NNReal ContDiff Topology
 namespace GlobalTheory.Unf.LiftRapid
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hω v G f hG hf`. Establish `hν` using `v.haar`. Establish `h𝓕` using `v.fund`. Establish `: BorelSpace (GA D T)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (GA D S)` using `(GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsFiniteMeasure (v.μ.restrict v.𝓕)` using `isFiniteMeasure_restrict.2 (GlobalTheory.Chain.LiftReg.vol_ne_top hν h𝓕)`. Take `⟨C, A, hC⟩` from `GlobalTheory.T.weilOperator_thetaFun_sup_moderate_growth D ψ S T χS χT om hω f hf`. Take `⟨B, hB⟩` from `hG.decay A`. Establish `hk : ∀ g h, ‖om (g, h) f 0‖ ≤ C * height S g ^ A * height T h ^ A` using `fun g h => by`. Rewrite using `[mul_assoc, ← mul_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hC g h 0`. Establish `hleft` using `fun g => GlobalTheory.Chain.LiftConv.thetaKO_left hω hf g`. Establish `hcont` using `fun g => GlobalTheory.Chain.LiftConv.thetaKO_continuous hω hf g`. Establish `hint : ∀ g, IntegrableOn (fun h => om (g, h) f 0 * G h) v.𝓕 v.μ` using `fun g => hG.integrableOn_modGrowth_mul hν h𝓕 ⟨C * height S g ^ A, A, hk g⟩ (hleft g) (hcont g).measurable.aestronglyMeasurable`. Establish `hbd : ∀ g h, ‖om (g, h) f 0 * G h‖ ≤ C * 2 ^ A * B * height S g ^ A` using `fun g h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_le_quotHeight_pow (f := fun h => thetaKO om g h f) (hleft g) (hk g) h`. Establish `hC0 : 0 ≤ C * height S g ^ A * 2 ^ A` using `(mul_nonneg (nonneg_of_growth (hk g)) (by positivity))`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hm : ∀ g, AEStronglyMeasurable (fun h => om (g, h) f 0 * G h) (v.μ.restrict v.𝓕)` using `fun g => ((hcont g).mul hG.continuous).measurable.aestronglyMeasurable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (liftS om v.μ v.𝓕 G f)`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Establish `hcb : Continuous fun g => C * 2 ^ A * B * height S g ^ A` using `continuous_const.mul ((continuous_height S).pow A)`. Establish `hev` using `hcb.continuousAt.eventually_lt (continuousAt_const (y := C * 2 ^ A * B * height S g₀ ^ A + 1)) (lt_add_one _)`. Conclude with `continuousAt_of_dominated (bound := fun _ => C * 2 ^ A * B * height S g₀ ^ A + 1) (.of_forall hm) (hev.mono fun g hg => .of_forall fun h => (hbd g h).trans hg.le) (integrable_const _) (.of_forall fun h => (((hω.om_cont f hf 0).comp (Continuous.prodMk_left h)).mul continuous_const …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ∀ γ ∈ GQ S, ∀ g, liftS om v.μ v.𝓕 G f (γ * g) = liftS om v.μ v.𝓕 G f g` using `fun γ hγ g => by`. Establish `e : ∀ h, om (γ * g, h) f 0 = om (g, h) f 0` using `fun h => by`. Establish `e' : ((γ * g, h) : GA D S × GA D T) = (γ, 1) * (g, h)` using `by simp`. Rewrite using `[e', map_mul, Module.End.mul_apply]`. Conclude with `hω.om_aut γ hγ 1 (one_mem _) _ (hω.om_pres _ _ hf)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [liftS_apply, e]`. Establish `heq : ∀ g₀ h₀, liftS om v.μ v.𝓕 (rTrans h₀ G) (om (g₀, h₀) f) = rTrans g₀ (liftS om v.μ v.𝓕 G f)` using `fun g₀ h₀ => GlobalTheory.Chain.LiftReg.lift_om hω hν h𝓕 hf hG.1 g₀ h₀`. Use `⟨hint, ⟨hl, ?_, hc⟩, ⟨hl, hc⟩, ⟨C * 2 ^ A * B * (v.μ.restrict v.𝓕).real Set.univ, A, fun g => ?_⟩, heq⟩` and prove the remaining obligations. Take `⟨U, U', hU, -, e⟩` from `GlobalTheory.Mem.ThetaLevel.exists_level D ψ hω.std S T om (GlobalTheory.Ker.isWeak_of_datum hω) hω.om_cont f hf`. Use `⟨U, hU, fun k h1 h2 g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (heq k 1) g` as an intermediate fact. Rewrite `this` using `[e k h1 h2 1 (one_mem _) (one_mem _), show rTrans 1 G = G from funext fun h => congrArg G (mul_one h)]`. Conclude with `this.symm`. Rewrite using `[liftS_apply]`. Use `(norm_integral_le_of_norm_le_const (.of_forall fun h => hbd g h)).trans_eq ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lift_conv_cont_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (v : Vol T) (G : GA D T → ℂ) (f : WO S T → ℂ), RapidDec T G → IsThetaFunO ψ S T f → (∀ g, IntegrableOn (fun h => om (g, h) f 0 * G h) v.𝓕 v.μ) ∧ IsAutFun S (liftS om v.μ v.𝓕 G f) ∧ IsContAut S (liftS om v.μ v.𝓕 G f) ∧ ModGrowth S (liftS om v.μ v.𝓕 G f) ∧ ∀ g₀ h₀, liftS om v.μ v.𝓕 (rTrans h₀ G) (om (g₀, h₀) f) = rTrans g₀ (liftS om v.μ v.𝓕 G f) := by
   intro D ψ S T χS χT om hω v G f hG hf

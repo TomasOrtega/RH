@@ -11,20 +11,20 @@ noncomputable section
 namespace GlobalTheory.LatUniq
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_mem_ints_iff {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (k : F) :
     (k : v.adicCompletion F) ∈ v.adicCompletionIntegers F ↔ v.valuation F k ≤ 1 := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.EvAdm.mem_scaledInt]`. Establish `key : ∀ (i : κ) (v : HeightOneSpectrum (𝓞 F)), (algebraMap F (v.adicCompletion F) a)⁻¹ * (algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) v = ((a⁻¹ * ξ i : F) : v.adicCompletion F)`. Introduce `i v`. Establish `h1 : (algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) v = algebraMap F (v.adicCompletion F) (ξ i)` using `rfl`. Rewrite using `[h1, ← map_inv₀, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `hv : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F (a⁻¹ * ξ i) ≤ 1` using `fun v => by`. Use `h i v` as an intermediate fact.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[key]`. Conclude with `(coe_mem_ints_iff v _).mp this`. Take `⟨z, hz⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F _ hv`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `hz' : ((z : 𝓞 F) : F) = a⁻¹ * ξ i` using `hz`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz', ← mul_assoc, mul_inv_cancel₀ ha, one_mul]`. Introduce `h i v`. Take `⟨z, hz⟩` from `h i`. Rewrite using `[key, hz, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Conclude with `(coe_mem_ints_iff v _).mpr (HeightOneSpectrum.valuation_le_one v z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_scaledInt_iff {F : Type} [Field F] [NumberField F] {κ : Type} {a : F} (ha : a ≠ 0) (ξ : κ → F) :
     (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ GlobalTheory.EvAdm.scaledInt F κ a ↔
@@ -57,19 +57,19 @@ end GlobalTheory.LatUniq
 namespace GlobalTheory.LatUniq
 
 /- English proof (translation)
-Set `Φ : (Fin n → ℝ) ≃L[ℝ] E` to `B.equivFun.symm.toContinuousLinearEquiv`. Establish `hΦ : ∀ t, Φ t = ∑ l, t l • B l` using `fun t => B.equivFun_symm_apply t`. Establish `hΦs : ∀ y l, Φ.symm y l = B.repr y l` using `fun y l => rfl`. Set `C : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] SchwartzMap E ℂ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ Φ.symm`. Establish `hC : ∀ g y, C g y = g (Φ.symm y)` using `fun g y => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `t1 : ∀ k : Fin n → ℤ, ∀ g g' : SchwartzMap (Fin n → ℝ) ℂ, (∀ x, g' x = g (x + fun i => (k i : ℝ))) → (T.comp C) g' = (T.comp C) g`. Introduce `k g g' hg`. Use `show T (C g') = T (C g)`. Apply `h1 k` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC, hC, hg]`. Use `congr 1`. Rewrite using `[ContinuousLinearEquiv.map_add, ← hΦ]`. Simplify using the standard rewrite rules. Establish `t2 : ∀ m : Fin n → ℤ, ∀ g g' : SchwartzMap (Fin n → ℝ) ℂ, (∀ x, g' x = Complex.exp (2 * Real.pi * Complex.I * ((∑ i, (m i : ℝ) * x i : ℝ) : ℂ)) * g x) → (T.comp C) g' = (T.comp C) g`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m g g' hg`. Use `show T (C g') = T (C g)`. Apply `h2 m` to reduce the goal to its premises. Introduce `y`. Rewrite using `[hC, hC, hg]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hΦs]`. Take `⟨c, hc⟩` from `GlobalTheory.T.periodic_tempered_dist_poisson n (T.comp C) t1 t2`. Use `⟨c, fun f => ?_⟩` and prove the remaining obligations. Establish `hf : C (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ Φ f) = f`. Use extensionality with `y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hC]`. Simplify using the standard rewrite rules. Use `hc (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ Φ f)` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.comp_apply, hf]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Simplify using `[hΦ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {n : ℕ}
     (B : Module.Basis (Fin n) ℝ E) (T : SchwartzMap E ℂ →L[ℂ] ℂ)
@@ -139,9 +139,9 @@ def realBasis (a : F) (ha : a ≠ 0) : Module.Basis (Fin (nn κ F)) ℝ (κ → 
   (Pi.basis fun _ : κ => (mixedEmbedding.latticeBasis F).map (mulA a ha)).reindex (Fintype.equivFin (Idx κ F))
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `(Fintype.equivFin (Idx κ F)).surjective l`. Simplify using `only [realBasis, intBasis, Module.Basis.reindex_apply, Equiv.symm_apply_apply, Pi.basis_apply, Module.Basis.map_apply]`. Distinguish the cases in `h : i = p.1`. Substitute `h` using the available equality. Simplify using `[mulA, mixedEmbedding.latticeBasis_apply, integralBasis_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem realBasis_apply (a : F) (ha : a ≠ 0) (l : Fin (nn κ F)) (i : κ) :
     realBasis κ a ha l i = mixedEmbedding F (a * ((intBasis κ F l i : 𝓞 F) : F)) := by
@@ -154,7 +154,7 @@ theorem realBasis_apply (a : F) (ha : a ≠ 0) (l : Fin (nn κ F)) (i : κ) :
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, realBasis_apply, Finset.mul_sum, mul_smul_comm, Int.cast_smul_eq_zsmul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Conclude with `mul_left_comm _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_realBasis (a : F) (ha : a ≠ 0) (k : Fin (nn κ F) → ℤ) :
     ∑ l, (k l : ℝ) • realBasis κ a ha l =
@@ -169,15 +169,15 @@ def dualVec (a : F) (m : Fin (nn κ F) → ℤ) : κ → F := fun i =>
     (Algebra.traceForm ℚ F).dualBasis (traceForm_nondegenerate ℚ F) (integralBasis F) j
 
 /- English proof (translation)
-Take `⟨⟨i₀, j₀⟩, rfl⟩` from `(Fintype.equivFin (Idx κ F)).surjective l`. Establish `hZ : ∀ i, intBasis κ F (Fintype.equivFin (Idx κ F) ⟨i₀, j₀⟩) i = Pi.single (M` using `fun _ : κ => 𝓞 F) i₀ (RingOfIntegers.basis F j₀) i := by`. Introduce `i`. Simplify using `only [intBasis, Module.Basis.reindex_apply, Equiv.symm_apply_apply, Pi.basis_apply]`. Rewrite using `[Finset.sum_eq_single i₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ, Pi.single_eq_same]`. Simplify using `only [dualVec]`. Establish `e1 : a * ((RingOfIntegers.basis F j₀ : 𝓞 F) : F) * (a⁻¹ * ∑ j, (-(m (Fintype.equivFin (Idx κ F) ⟨i₀, j⟩)) : ℚ) • (Algebra.traceForm ℚ F).dualBasis (traceForm_nondegenerate ℚ F) (integralBasis F) j) = ∑ j, (-(m (Fintype.equivFin (Idx κ F) ⟨i₀, j⟩)) : ℚ) • ((Algebra.traceForm ℚ F). …`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, map_sum]`. Establish `hd : ∀ j, Algebra.trace ℚ F ((Algebra.traceForm ℚ F).dualBasis (traceForm_nondegenerate ℚ F) (integralBasis F) j * ((RingOfIntegers.basis F j₀ : 𝓞 F) : F)) = if j₀ = j then 1 else 0`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Algebra.traceForm ℚ F).apply_dualBasis_left (traceForm_nondegenerate ℚ F) (integralBasis F) j j₀` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply, integralBasis_apply]`. Conclude with `this`. Simplify using `only [map_smul, hd, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Introduce `i _ hi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ, Pi.single_eq_of_ne hi]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_dualVec (a : F) (ha : a ≠ 0) (m : Fin (nn κ F) → ℤ) (l : Fin (nn κ F)) :
     Algebra.trace ℚ F (∑ i, (a * ((intBasis κ F l i : 𝓞 F) : F)) * dualVec κ a m i) = -(m l : ℚ) := by
@@ -218,11 +218,11 @@ namespace GlobalTheory.LatUniq
 variable {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ]
 
 /- English proof (translation)
-Establish `hl : ∀ l, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, realBasis κ a ha l i * mixedEmbedding F (dualVec κ a m i)) = -(m l : ℝ)`. Introduce `l`. Establish `e : ∑ i, realBasis κ a ha l i * mixedEmbedding F (dualVec κ a m i) = mixedEmbedding F (∑ i, (a * ((intBasis κ F l i : 𝓞 F) : F)) * dualVec κ a m i)`. Simplify using `only [realBasis_apply, map_sum, map_mul]`. Rewrite using `[e, GlobalTheory.PsiNontriv.trace_mixedEmbedding, trace_dualVec κ a ha m l]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Use `conv_rhs => rw [← (realBasis κ a ha).sum_repr x]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Finset.sum_mul, smul_mul_assoc]`. Rewrite using `[Finset.sum_comm, map_sum, ← Finset.sum_neg_distrib]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, map_smul, smul_eq_mul, hl]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem char_identity (a : F) (ha : a ≠ 0) (m : Fin (nn κ F) → ℤ) (x : κ → mixedEmbedding.mixedSpace F) :
     ∑ l, (m l : ℝ) * (realBasis κ a ha).repr x l =
@@ -244,27 +244,27 @@ theorem char_identity (a : F) (ha : a ≠ 0) (m : Fin (nn κ F) → ℤ) (x : κ
   ring
 
 /- English proof (translation)
-Introduce `F _ _ κ _ a ha T hT hC`. Establish `h1 : ∀ k : Fin (nn κ F) → ℤ, ∀ f f' : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, (∀ x, f' x = f (x + ∑ l, (k l : ℝ) • realBasis κ a ha l)) → T f' = T f`. Introduce `k f f' hf`. Use `hT (fun i => a * (((∑ l, k l • intBasis κ F l) i : 𝓞 F) : F)) ((mem_scaledInt_iff ha _).mpr fun i => ⟨_, rfl⟩) f f' fun x => ?_` and prove the remaining obligations. Rewrite using `[hf, sum_realBasis]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ m : Fin (nn κ F) → ℤ, ∀ f f' : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, (∀ x, f' x = Complex.exp (2 * Real.pi * Complex.I * ((∑ l, (m l : ℝ) * (realBasis κ a ha).repr x l : ℝ) : ℂ)) * f x) → T f' = T f`. Introduce `m f f' hf`. Use `hC (dualVec κ a m) ?_ f f' fun x => ?_` and prove the remaining obligations. Introduce `ξ hξ choose z hz using (mem_scaledInt_iff ha ξ).mp hξ`. Use `⟨∑ l, (intBasis κ F).repr z l * (-(m l)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzs` using `(intBasis κ F).sum_repr z`. Establish `hξ' : ξ = fun i => a * (((∑ l, (intBasis κ F).repr z l • intBasis κ F l) i : 𝓞 F) : F)`. Use function extensionality and compare the values at `i`. Rewrite using `[hzs, hz i]`. Rewrite using `[hξ']`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∑ i, a * (((∑ l, (intBasis κ F).repr z l • intBasis κ F l) i : 𝓞 F) : F) * dualVec κ a m i = ∑ l, (intBasis κ F).repr z l • ∑ i, (a * ((intBasis κ F l i : 𝓞 F) : F)) * dualVec κ a m i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_sum, map_zsmul, Finset.mul_sum, Finset.sum_mul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, trace_dualVec κ a ha m l, zsmul_eq_mul]`. Rewrite using `[hf, char_identity]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Put the polynomial expressions in normal form. Take `⟨c, hc⟩` from `transfer (realBasis κ a ha) T h1 h2`. Use `⟨c, fun f => ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc f]`. Use `congr 1`. Rewrite using `[← tsum_subtype]`. Set `S : Set (κ → F)` to `{ξ : κ → F | (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ GlobalTheory.EvAdm.scaledInt F κ a}`. Set `θ : (Fin (nn κ F) → ℤ) → S` to `fun k => ⟨fun i => a * (((∑ l, k l • intBasis κ F l) i : 𝓞 F) : F), (mem_scaledInt_iff ha _).mpr fun i => ⟨_, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hsum : ∀ k : Fin (nn κ F) → ℤ, ∑ l, k l • intBasis κ F l = (intBasis κ F).equivFun.symm k` using `fun k => ((intBasis κ F).equivFun_symm_apply k).symm`. Establish `hθ : Function.Bijective θ`. Prove the components needed by the constructor for the conclusion. Introduce `k k' hkk`. Establish `h0 : ∀ i, a * (((∑ l, k l • intBasis κ F l) i : 𝓞 F) : F) = a * (((∑ l, k' l • intBasis κ F l) i : 𝓞 F) : F)` using `fun i => congrFun (congrArg Subtype.val hkk) i`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h3 : ∑ l, k l • intBasis κ F l = ∑ l, k' l • intBasis κ F l`. Use function extensionality and compare the values at `i`. Conclude with `RingOfIntegers.coe_injective (mul_left_cancel₀ ha (h0 i))`. Rewrite `h3` using `[hsum, hsum]`. Conclude with `(intBasis κ F).equivFun.symm.injective h3`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨ξ, hξ⟩ choose z hz using (mem_scaledInt_iff ha ξ).mp hξ`. Use `⟨(intBasis κ F).equivFun z, Subtype.ext ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show a * (((∑ l, _ • intBasis κ F l) i : 𝓞 F) : F) = ξ i`. Rewrite using `[hsum, LinearEquiv.symm_apply_apply, hz i]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (Equiv.ofBijective θ hθ).tsum_eq]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[sum_realBasis]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main_lat : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ T : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] ℂ,

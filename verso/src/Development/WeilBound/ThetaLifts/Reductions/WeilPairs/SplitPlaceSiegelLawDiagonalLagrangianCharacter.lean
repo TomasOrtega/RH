@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.SplitLagrF
 
 /- English proof (translation)
-Establish `h1 : ‖(u : ℂ)‖ = 1` using `Circle.norm_coe u`. Rewrite `h1` using `[h, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht]`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[h, h1, Circle.coe_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem circle_eq_one_of_pos {u : Circle} {t : ℝ} (ht : 0 < t) (h : (u : ℂ) = t) : u = 1 := by
   have h1 : ‖(u : ℂ)‖ = 1 := Circle.norm_coe u
@@ -24,14 +24,14 @@ theorem circle_eq_one_of_pos {u : Circle} {t : ℝ} (ht : 0 < t) (h : (u : ℂ) 
   simp
 
 /- English proof (translation)
-Unfold `mtF`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mtF_one' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : mtF σ J 1 = 1 := by
   unfold mtF; rw [map_one]; rfl
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[mtF_one', sub_self, Matrix.zero_apply, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem suppAtF_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (e : AF F ⊗[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : SuppAtF σ e J 1 := by
@@ -39,7 +39,7 @@ theorem suppAtF_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rw [mtF_one', sub_self, Matrix.zero_apply, mul_zero]
 
 /- English proof (translation)
-Use `show ((1 : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = e * (mtF σ J 1).det + (1 - e)`. Rewrite using `[mtF_one', Matrix.det_one, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isDetAtF_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (e : AF F ⊗[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : IsDetAtF σ e J 1 1 := by
@@ -47,7 +47,7 @@ theorem isDetAtF_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [mtF_one', Matrix.det_one, Units.val_one]; ring
 
 /- English proof (translation)
-Establish `h : (adeleClass F).modu x * (adeleClass F).modu x⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `h0 : (adeleClass F).modu x ≠ 0` using `left_ne_zero_of_mul_eq_one h`. Conclude with `lt_of_le_of_ne (NNReal.coe_nonneg _) (by exact_mod_cast h0.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modu_pos {F : Type} [Field F] [NumberField F] (x : (AF F)ˣ) : 0 < ((adeleClass F).modu x : ℝ) := by
   have h : (adeleClass F).modu x * (adeleClass F).modu x⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
@@ -58,19 +58,19 @@ end GlobalTheory.SplitLagrF
 
 open GlobalTheory.SplitLagrF in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd α hlaw f₀ hf₀ hne e he t ht`. Take `⟨h, hhC, hsupp, ⟨M, hM, hMy⟩, x, hx, hχx⟩` from `exists_levi F E σ B hB nT JT hT e he t ht`. Take `⟨ℓ, hinv, ⟨f, hf, hℓf⟩, hcmp⟩` from `exists_form F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 e he f₀ hf₀ hne`. Take `⟨R, hR, hRk⟩` from `hcmp M hM`. Take `⟨r, hr, hsp⟩` from `hωd.om_split e he 1 h (suppAtF_one σ e JS) hsupp 1 x (isDetAtF_one σ e JS) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set m : ℝ := (((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det t)) : ℝ) ^ ((Fintype.card (Fin nS) : ℝ) / 2) : ℝ) with hm_def`. Establish `hm : 0 < m` using `Real.rpow_pos_of_pos (modu_pos _) _`. Establish `h1` using `hsp ℓ hinv f hf`. Establish `h2 : ℓ (ωd (1, h) f) = (R : ℂ) * ((α t : ℂ) * (m : ℂ)) * ℓ f`. Use `hRk f (ωd (1, h) f) _ hf (hωd.om_pres _ f hf) (fun y _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hth : IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (aC F E nT * (M * y)) f)` using `GlobalTheory.HeisThetaF.isThetaFunOF_heisOF F E σ B hB nS (nT + nT) JS _ ξ₀ _ f hf`. Establish `hh` using `hωd.om_heis 1 h (aC F E nT * (M * y)) f hf`. Establish `hact : actOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) 1 h (aC F E nT * (M * y)) = aC F E nT * y`. Unfold `actOF`. Rewrite using `[← hMy nS y, ← Matrix.mul_assoc, ← GlobalTheory.WeilPartsF.mtF_mul, mul_inv_cancel, inv_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mtF_one', Matrix.one_mul, Matrix.mul_one]`. Unfold `prof`. Rewrite using `[← hact, ← hh]`. Conclude with `hlaw h t hhC _ hth`. Establish `h3 : (R : ℂ) * ((α t : ℂ) * (m : ℂ)) = (r : ℂ) * (χS x : ℂ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h2.symm.trans h1` as an intermediate fact. Simplify using `only [splitFacOF, MonoidHom.one_apply, inv_one, one_mul] at this`. Conclude with `mul_right_cancel₀ hℓf this`. Establish `hu : α t * (χS x)⁻¹ = 1`. Apply `circle_eq_one_of_pos (t := r / (R * m)) (div_pos hr (mul_pos hR hm))` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : ((χS x : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `hR0 : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Rewrite using `[Circle.coe_mul, Circle.coe_inv]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `h3`. Rewrite using `[← hχx χS nS hωd.resS]`. Conclude with `mul_inv_eq_one.mp hu`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKW.lagrangian_integral_parseval : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

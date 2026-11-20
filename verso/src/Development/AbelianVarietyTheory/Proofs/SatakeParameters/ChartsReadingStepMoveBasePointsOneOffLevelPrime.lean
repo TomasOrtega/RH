@@ -21,11 +21,11 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨g, hg, fun v hv => absurd hv (Finset.notMem_empty v), fun _ _ => rfl⟩`. Consider the case `insert w S hw ih`. Take `⟨g', hg', h1, h2⟩` from `ih`. Establish `key : ∀ v, v ≠ w → bc (prV (E` using `E) v) (afsplitU w 1 g') = bc (prV (E := E) v) g' := fun v hne => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[afsplit_coe_bc_prV, afsplit_coe_bc_prV, afsplitU_coe, afsplitC_prV_ne w v hne]`. Use `⟨afsplitU w 1 g', afsplitU_mem w σ J 1 g' (one_mem _) hg', fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Conclude with `afsplit_right1 v 1 g'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key v (fun e => hw (e ▸ hv)), h1 v hv]`. Rewrite using `[key v (fun e => hv (e ▸ Finset.mem_insert_self _ _)), h2 v (fun h => hv (Finset.mem_insert_of_mem h))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_one_on (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hg : g ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
@@ -46,7 +46,7 @@ theorem exists_one_on (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n)
     · rw [key v (fun e => hv (e ▸ Finset.mem_insert_self _ _)), h2 v (fun h => hv (Finset.mem_insert_of_mem h))]
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((T : ℕ) : 𝓞 F)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hT` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_over {T : ℕ} (hT : T ≠ 0) : {v : HeightOneSpectrum (𝓞 F) | ((T : ℕ) : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have h0 : Ideal.span {((T : ℕ) : 𝓞 F)} ≠ ⊥ := by
@@ -55,9 +55,9 @@ theorem finite_over {T : ℕ} (hT : T ≠ 0) : {v : HeightOneSpectrum (𝓞 F) |
   exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 hv
 
 /- English proof (translation)
-Establish `hS` using `finite_over (F := F) hT`. Take `⟨g, hg, h1, h2⟩` from `exists_one_on σ J hS.toFinset k hkU`. Use `⟨⟨g, (GlobalTheory.TwU.mem_basePts_iff S g).2 ⟨hg, fun v => ?_, fun v hv => h1 v (hS.mem_toFinset.2 hv)⟩⟩, fun v hv => h2 v fun h => hv (hS.mem_toFinset.1 h)⟩` and prove the remaining obligations. Distinguish the cases in `hv : (T : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[h1 v (hS.mem_toFinset.2 hv)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Rewrite using `[h2 v fun h => hv (hS.mem_toFinset.1 h)]`. Conclude with `hkV v hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basePt {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
     (S : Formalism.L2.Forms.StepLevel F E σ J T f bad) (hT : T ≠ 0) (k : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -76,9 +76,9 @@ theorem exists_basePt {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n)
     exact hkV v hv
 
 /- English proof (translation)
-Establish `hs : Formalism.L2.Col.stdLat E n = LinearMap.range ((Algebra.linearMap (𝓞 E) E).compLeft (Fin n))`. Use extensionality with `x`. Rewrite using `[Formalism.L2.Col.mem_stdLat, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose r hr using h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨r, funext hr⟩`. Introduce and unpack `⟨r, rfl⟩ i`. Conclude with `⟨r i, rfl⟩`. Rewrite using `[hs]`. Use `infer_instance`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdLat_finite [StarRing E] (n : ℕ) : Module.Finite (𝓞 E) (Formalism.L2.Col.stdLat E n) := by
   have hs : Formalism.L2.Col.stdLat E n = LinearMap.range ((Algebra.linearMap (𝓞 E) E).compLeft (Fin n)) := by
@@ -94,7 +94,7 @@ theorem stdLat_finite [StarRing E] (n : ℕ) : Module.Finite (𝓞 E) (Formalism
   infer_instance
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[GlobalTheory.LatticeStabLocal.mem_stabGL_adele_iff]`. Introduce `v`. Apply the tactic sequence `rcases hh v with e | e <;> rw [e]`. Conclude with `hg v`. Conclude with `one_mem _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem mem_stab_of_local {n : ℕ} (N : Submodule (𝓞 E) (Fin n → E)) [Module.Finite (𝓞 E) N]
     (g h : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -108,9 +108,9 @@ theorem mem_stab_of_local {n : ℕ} (N : Submodule (𝓞 E) (Fin n → E)) [Modu
   · exact one_mem _
 
 /- English proof (translation)
-Use `haveI := stdLat_finite (E := E) n`. Establish `hs : (k⁻¹ : GL (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))) ∈ stabGL (latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) (Formalism.L2.Col.stdLat E n)) := hl`. Establish `key : (k'⁻¹ * k)⁻¹ ∈ stabGL (latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) (Formalism.L2.Col.stdLat E n)) := by`. Use `mem_stab_of_local _ _ _ hs fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : (T : 𝓞 F) ∈ v.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[map_inv, map_inv, map_mul, map_inv, hone v hv, inv_one, one_mul]`. Use `right`. Rewrite using `[map_inv, map_mul, map_inv, hk' v hv, inv_mul_cancel, inv_one]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carries_move [StarRing E] {n : ℕ} (T : ℕ) (k k' : GL (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F)))
     (hk' : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∉ v.asIdeal → bc (prV (E := E) v) k' = bc (prV (E := E) v) k)
@@ -131,7 +131,7 @@ theorem carries_move [StarRing E] {n : ℕ} (T : ℕ) (k k' : GL (Fin n) (Tensor
   exact key
 
 /- English proof (translation)
-Apply `GlobalTheory.Mem.Col2.ChTwRead.adAt_congr_prV` to reduce the goal to its premises. Establish `h2 : bc (prV (E` using `E) (P.under (𝓞 F))) ((k'⁻¹ * k)⁻¹) = bc (prV (E := E) (P.under (𝓞 F))) k⁻¹ := by`. Rewrite using `[map_inv, map_mul, map_inv, h, inv_one, one_mul, map_inv]`. Conclude with `congrArg (fun g : GL (Fin n) (TensorProduct F E ((P.under (𝓞 F)).adicCompletion F)) => g.1 r j) h2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adAt_move [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (k k' : GL (Fin n) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F)))
     (h : bc (prV (E := E) (P.under (𝓞 F))) k' = 1) (r j : Fin n) :
@@ -156,7 +156,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Substitute `hJ` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_UPts_one {F E : Type} [Field F] [CommRing E] [Algebra F E] {n : ℕ} {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E}
     (hJ : J = 1) {R : Type} [CommRing R] [Algebra F R] {g : GL (Fin n) (TensorProduct F E R)} (h : g ∈ UPts σ J R) : g ∈ UPts σ 1 R := by
@@ -164,7 +164,7 @@ theorem mem_UPts_one {F E : Type} [Field F] [CommRing E] [Algebra F E] {n : ℕ}
   exact h
 
 /- English proof (translation)
-Take `⟨p, hp, hN⟩` from `h`. Use `⟨p, ⟨mul_mem (inv_mem hU) hp.uni, ?_, fun P => absurd P.2 (Finset.notMem_empty _), fun P => absurd P.2 (Finset.notMem_empty _), fun P => absurd P.2 (Finset.notMem_empty _)⟩, hN⟩` and prove the remaining obligations. Establish `hl` using `hp.lat`. Rewrite `hl`, the goal using `[hN]`. Conclude with `GlobalTheory.TwU.MoveOff.carries_move T k k' hk' hone hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_move {B : Base} {n : ℕ} (T : ℕ) (k k' : GA B n)
     (hk' : ∀ v : HeightOneSpectrum (𝓞 B.host.F), (T : 𝓞 B.host.F) ∉ v.asIdeal →
@@ -181,9 +181,9 @@ theorem std_move {B : Base} {n : ℕ} (T : ℕ) (k k' : GA B n)
   exact GlobalTheory.TwU.MoveOff.carries_move T k k' hk' hone hl
 
 /- English proof (translation)
-Establish `hTP : (B.T u : 𝓞 B.host.F) ∈ (P.1.under (𝓞 B.host.F)).asIdeal`. Establish `h1` using `(rls_vT_iff (GlobalTheory.Mem.FieldsLaws.fields_ok B) hPr u P.1).1 P.2`. Establish `h2 : (((B.primes X).T u : ℕ) : 𝓞 B.fields.E) ∈ P.1.asIdeal`. Rewrite using `[← hPr.piT_norm u]`. Conclude with `P.1.asIdeal.mul_mem_right _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap (𝓞 B.host.F) (𝓞 B.host.E) (B.T u : 𝓞 B.host.F) ∈ P.1.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `h2`. Rewrite using `[GlobalTheory.TwU.MoveOff.adAt_move P.1 k k' (hone _ hTP) r j]`. Conclude with `h P r j hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kT_move {B : Base} {X : PreX B.toPre} (hPr : (B.primes X).Ok) (u : B.Word) {n : ℕ} (k k' : GA B n)
     (hone : ∀ v : HeightOneSpectrum (𝓞 B.host.F), (B.T u : 𝓞 B.host.F) ∈ v.asIdeal → bc (prV (E := B.host.E) v) k' = 1)
@@ -204,7 +204,7 @@ theorem kT_move {B : Base} {X : PreX B.toPre} (hPr : (B.primes X).Ok) (u : B.Wor
   exact h P r j hr
 
 /- English proof (translation)
-The claim follows from `R.key onto := R.onto lb := R.lb k_std := hstd k_off := fun β v hv _ _ => hoff β v hv k_T := hT pt := fun c => by have e : y c * k' (chOf c) * ((k' (chOf c))⁻¹ * k (chOf c)) = y c * k (chOf c) := by group rw [e] exact R.pt c lev := fun c x q hq => by have e : y c * k' (chOf c) * x …`.
+A detailed English derivation is pending.
 -/
 theorem reads_move {B : Base} {X : PreX B.toPre} (I : TC B X) {u : B.Word} {a : I.ι} {i : ℕ} {Ch : Type}
     {chOf : (I.stp u a i).Cl → Ch} {Lb : Ch → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)} {U : Ch → Subgroup (GA B (B.R.N i))}
@@ -259,23 +259,19 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a i hi bad Ch chOf K hK`. Take `⟨k, R⟩` from `hK`. Establish `hPr` using `l.pr`. Establish `hX` using `GlobalTheory.Mem.FieldsLaws.fields_ok B`. Use `haveI : NeZero (B.R.N i) := ⟨(B.R.N_pos i).ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgr : gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 i hi).1`. Establish `hB` using `basePi_of_ok hX hPr u`. Establish `hLb : ∀ β, (K β).lev.Lb = baseLb B.fields.E (B.R.N i) ((B.primes X).vT u)` using `fun β => by`. Use extensionality with `x`. Conclude with `(R.lb β x).trans (GlobalTheory.Mem.Col2.Reside.mem_baseLb hPr u _ x).symm`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : B.T u ≠ 0` using `(hPr.T_prime u).ne_zero`. Establish `k3 : ∀ β (P : (B.primes X).vT u) (r j : Fin (B.R.N i)), r.1 + 1 = B.R.N i → HasRes P.1 (adAt B.host.F P.1 (((k β)⁻¹ : GA B (B.R.N i)).1 r j)) (if j = r then ((diaT (Pr` using `B.primes X) u P : (𝓞 B.fields.E ⧸ P.1.asIdeal)ˣ) : 𝓞 B.fields.E ⧸ P.1.asIdeal) else 0) := fun β P r j hr => by`. Establish `hu : IsUnit (Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO ((B.primes X).piT u)))`. Establish `h0 : Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO ((B.primes X).piT u)) ≠ 0` using `fun h0 => hB.conj_notMem P.2 (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Conclude with `@Ne.isUnit (Res P.1) _ _ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((diaT (Pr` using `B.primes X) u P : (𝓞 B.fields.E ⧸ P.1.asIdeal)ˣ) : 𝓞 B.fields.E ⧸ P.1.asIdeal) = Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO (X.piT u)) := by`. Unfold `diaT`. Rewrite using `[dif_pos hu]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `R.k_T β P r j hr`. Establish `hkf` using `fun β => GlobalTheory.T.admissibleBasePoint_unitary_normalisesLevel B.sp.cm (B.R.N i) hB (k β) (diaT (Pr := B.primes X) u) (R.k_std β) (k3 β)`. Establish `hk' : ∀ β, ∃ k' : basePts (K β).lev, ∀ v : HeightOneSpectrum (𝓞 B.host.F), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal → bc (prV (E` using `B.host.E) v) k'.1 = bc (prV (E := B.host.E) v) (k β) := fun β => by`. Take `⟨hkU, hkV, -, -⟩` from `hkf β`. Use `GlobalTheory.TwU.MoveOff.exists_basePt (K β).lev hT0 (k β) ?_ fun v _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hgr]`. Conclude with `hkU`. Rewrite using `[hLb β, hgr]`. Conclude with `hkV v`. Use `choose k' hk' using hk'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `kk : Ch → GA B (B.R.N i)` to `fun β => (k' β).1`. Establish `hk'' : ∀ β (v : HeightOneSpectrum (𝓞 B.host.F)), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal → bc (prV (E` using `B.host.E) v) (kk β) = bc (prV (E := B.host.E) v) (k β) := hk'`. Establish `hone : ∀ β (v : HeightOneSpectrum (𝓞 B.host.F)), (B.T u : 𝓞 B.host.F) ∈ v.asIdeal → bc (prV (E` using `B.host.E) v) (kk β) = 1 := fun β v hv => ((mem_basePts_iff _ _).1 (k' β).2).2.2 v hv`. Establish `hU' : ∀ β, kk β ∈ Formalism.L2.Herm.UstdAf B.sp.cm (B.R.N i)` using `fun β => by`. Establish `h : kk β ∈ UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)` using `((mem_basePts_iff _ _).1 (k' β).2).1`.
-
-Establish `h2` using `mem_UPts_one hgr h`. Conclude with `h2`. Establish `hoff : ∀ β (v : HeightOneSpectrum (𝓞 B.host.F)), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal → bc (prV (E` using `B.host.E) v) ((kk β)⁻¹ * k β) = 1 := fun β v hv => by`. Rewrite using `[map_mul, map_inv, hk'' β v hv, inv_mul_cancel]`. Establish `hR` using `reads_move I R kk (fun β => (moveChart (K β) (k' β)).lev.U) (fun β => (moveChart (K β) (k' β)).lev.chi) (fun β x => Iff.rfl) (fun β x => rfl) (fun β => std_move (B.T u) (k β) _ (hk'' β) (hone β) (hU' β) (R.k_std β)) hoff (fun β => kT_move hPr u (k β) _ (hone β) (R.k_T β))`.
-
-Conclude with `⟨k', ⟨_, hR, hoff⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem readsMove_holds : ReadsMove := by
   intro B X I hI hP l Z u a i hi bad Ch chOf K hK

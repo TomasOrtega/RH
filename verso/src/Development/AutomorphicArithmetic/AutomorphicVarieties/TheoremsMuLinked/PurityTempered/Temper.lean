@@ -7,11 +7,11 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hP F Ω _ _ _ _ _ _ n hn π hreg ⟨χ, hpol⟩ w A h rc hrc σ hσ`. Choose the witnesses or unpack the hypotheses as in `⟨l, hlp, hl⟩ : ∃ l : ℕ, l.Prime ∧ ((l : ℕ) : 𝓞 F) ∉ w.asIdeal := by`. Distinguish the cases in `h2 : ((2 : ℕ) : 𝓞 F) ∈ w.asIdeal`. Use `⟨3, Nat.prime_three, fun h3 => w.isPrime.ne_top ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((3 : ℕ) : 𝓞 F) - ((2 : ℕ) : 𝓞 F) = 1` using `by push_cast; ring`. Rewrite using `[← e]`. Conclude with `w.asIdeal.sub_mem h3 h2`. Conclude with `⟨2, Nat.prime_two, h2⟩`. Establish `: Fact l.Prime` using `⟨hlp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ι⟩ : Nonempty (Qbar l ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Take `⟨r, wt, HT, H⟩` from `hP.litN.aut.gal F Ω l ι n hn π χ hreg hpol`. Take `⟨x, hx, ht⟩` from `H.pure w hl A h`. Conclude with `⟨(wt : ℝ) / 2, IsWDOf.unique hl hx (H.away w hl A h rc hrc σ hσ) ▸ ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.temper :
     Af.Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (n : ℕ), 1 ≤ n → ∀ (π : CuspSub F n), (CG.mk π).IsRegAlg → (∃ χ, GlobalTheory.ContraPair.PolarizedPair π χ) → ∀ (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion F) → WD h), IsRec h rc → ∀ σ, π.IsLocComp w σ → ∃ t : ℝ, ((rc (algNorm σ)).lpTw t).tempered := by

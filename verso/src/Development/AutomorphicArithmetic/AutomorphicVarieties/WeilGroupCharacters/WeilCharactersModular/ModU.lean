@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.W
 
 /- English proof (translation)
-Take `⟨hc, hf, hlm, -, -, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `⟨hc, hf, (CharP.charP_iff_prime_eq_zero hl.out).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (IsLocalRing.residue c.O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hlm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : Pa.IsCoef l c.O := by
   obtain ⟨hc, hf, hlm, -, -, -⟩ := UpperTheory.V.abelian₂.dvr_finite l c.O

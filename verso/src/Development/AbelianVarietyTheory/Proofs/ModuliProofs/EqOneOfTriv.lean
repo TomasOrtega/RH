@@ -18,9 +18,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.GoodPol
 
 /- English proof (translation)
-Establish `e` using `mul_geom_sum z n`. Rewrite `e` using `[hz, sub_self]`. Use `sub_eq_zero.1 ((mul_eq_zero.1 e).resolve_right fun h0 => ?_)` and prove the remaining obligations. Establish `e'` using `congrArg (IsLocalRing.residue O) h0`. Simplify using `only [map_sum, map_pow, h, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, _root_.mul_one, map_zero] at e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hn.map (IsLocalRing.residue O)).ne_zero ((map_natCast _ n).trans e')`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_eq_one {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {n : ℕ} (hn : IsUnit (n : O))
     {z : O} (hz : z ^ n = 1) (h : IsLocalRing.residue O z = 1) : z = 1 := by
@@ -33,9 +33,9 @@ theorem eq_one_of_pow_eq_one {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O
   exact (hn.map (IsLocalRing.residue O)).ne_zero ((map_natCast _ n).trans e')
 
 /- English proof (translation)
-Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of O)).commRingCatIsoToRingEquiv`. Establish `hn' : IsUnit (n : O)` using `by simpa using hn.map e`. Establish `h₁ : e z.val = 1`. Use `eq_one_of_pow_eq_one hn' ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hz, Units.val_one, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h₂` using `congrArg (fun q => q.hom z.val) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (IsLocalRing.residue O)))`. Establish `h₃ : (spMap (IsLocalRing.residue O)).appTop.hom z.val = 1` using `congrArg Units.val h`. Conclude with `h₂.symm.trans ((congrArg (Scheme.ΓSpecIso _).hom.hom h₃).trans (map_one _))`. Conclude with `Units.ext (e.injective (h₁.trans (map_one e).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unit_eq_one {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {n : ℕ} (hn : IsUnit (n : Γ(Sp O, ⊤)))
     {z : Γ(Sp O, ⊤)ˣ} (hz : z ^ n = 1)
@@ -52,23 +52,23 @@ theorem unit_eq_one {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {n : �
   exact Units.ext (e.injective (h₁.trans (map_one e).symm))
 
 /- English proof (translation)
-Substitute `hpk` using the available equality. Use `hA.proper` as an intermediate fact. Set `ρK : Over.mk (spMap (algebraMap O K) ≫ p) ⟶ Over.mk p` to `Over.homMk (spMap (algebraMap O K)) rfl`. Set `ρk : Over.mk (spMap (IsLocalRing.residue O) ≫ p) ⟶ Over.mk p` to `Over.homMk (spMap (IsLocalRing.residue O)) rfl`. Establish `inj : ∀ y y' : Over.mk p ⟶ A, ρK ≫ y = ρK ≫ y' → y = y'` using `fun y y' e => over_points_ext_of_injective S A O K _ (IsFractionRing.injective O K) p y y' (congrArg (fun q => q.left) e)`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hnO : IsUnit (n : Γ(Sp O, ⊤))` using `by simpa using hn.map p.appTop.hom`. Establish `hnK : (n : K) ≠ 0`. Establish `h₁ : IsUnit (n : O)`. Simplify using `using hnO.map (Scheme.ΓSpecIso (CommRingCat.of O)).commRingCatIsoToRingEquiv`. Simplify using `using (h₁.map (algebraMap O K)).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Choose the witnesses or unpack the hypotheses as in `⟨X, hX, hXx⟩ : ∃ X : Over.mk p ⟶ A, X ^ n = 1 ∧ ρk ≫ X = x := by`. Take `⟨-, -, het⟩` from `GrpTangent.finiteEtale_mulN_torsion A (hG := hA) hn`. Take `⟨z, hz, -⟩` from `LatticeTorsion.existsUnique_torsion A n x hx`. Take `⟨y, hy, hy'⟩` from `(valuationRing_henselian_and_lift_of_isAlgClosed O K).2.2 _ (pullback.snd (torsion A n).hom p) inferInstance (pullback.lift z.left (spMap (IsLocalRing.residue O)) (Over.w z)) (pullback.lift_snd _ _ _)`. Set `w : Over.mk p ⟶ torsion A n` to `Over.homMk (y ≫ pullback.fst _ _) (by show (y ≫ _) ≫ _ = p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy, Category.id_comp])`. Establish `hw : ρk ≫ w = z` using `Over.OverMorphism.ext (by show spMap (IsLocalRing.residue O) ≫ y ≫ _ = _`. Rewrite using `[← Category.assoc, hy', pullback.lift_fst])`. Use `⟨w ≫ torsion.ι A n, ?_, by rw [← Category.assoc, hw, hz]⟩` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, LatticeTorsion.torsionι_pow_eq_one, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : ValuativeCriterion.Existence A.hom`. Establish `h : UniversallyClosed A.hom` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`. Take `⟨-, hfin, het, hsurj⟩` from `abelianScheme_id_pow_finite_etale_surjective S A n hA hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hXK : (ρK ≫ X) ^ n = 1` using `by rw [← MonObj.comp_pow, hX, MonObj.comp_one]`. Establish `key : ρK ≫ X = 1`. Use `hgen _ (CubNondeg.main hL S A hA L c K _ n hnK hfin inferInstance hsurj _ hXK fun y hy => ?_)` and prove the remaining obligations. Take `⟨l, hl₁, hl₂⟩` from `(hE { R := O, K := K, commSq := ⟨Over.w y⟩, .. }).exists_lift`. Set `Y : Over.mk p ⟶ A` to `Over.homMk l hl₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hYy : ρK ≫ Y = y` using `Over.OverMorphism.ext hl₁`. Establish `hY : Y ^ n = 1` using `inj _ _ (by rw [MonObj.comp_pow, hYy, hy, MonObj.comp_one])`. Take `⟨ex, -, pow, pull, -⟩` from `cubWeil_basic S A L c n (Over.mk p)`. Take `⟨ζ, hζ, -⟩` from `ex X Y hX hY`. Establish `hYk : (ρk ≫ Y) ^ n = 1` using `by rw [← MonObj.comp_pow, hY, MonObj.comp_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `pull _ ρk X Y ζ hζ`. Rewrite `h₁` using `[hXx]`. Establish `h₂` using `KerPair.cubWeil_of_gen hL.globalFns S A hA L c n _ x (ρk ≫ Y) hx hYk ht`. Establish `h₃` using `((cubWeil_basic S A L c n _).1 x (ρk ≫ Y) hx hYk).unique h₁ h₂`. Establish `h₄ : ζ = 1` using `unit_eq_one hnO (pow X Y ζ hζ).2 h₃`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₅` using `pull _ ρK X Y ζ hζ`. Rewrite `h₅` using `[h₄, map_one, hYy]`. Then use the resulting hypothesis. Rewrite using `[← hXx, inj X 1 (key.trans (MonObj.comp_one _).symm), MonObj.comp_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_triv (hL : Out.Laws) {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) {L : RigLB A} (c : CubicalStr A L) (O K : Type) [CommRing O] [IsDomain O]

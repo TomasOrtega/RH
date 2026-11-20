@@ -50,19 +50,19 @@ def jF [IsTotallyReal F] (M : Model σ X W) (τ : ∀ w : InfinitePlace F, EmbOv
   crd M (liftN τ ξ (cx X W ε (vals τ (pt M x))))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThK.EvAt0.PolEv.at_symm M x.1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem at_pt (M : Model σ X W) (x) : At (evI F) (pt M x) := GlobalTheory.ThK.EvAt0.PolEv.at_symm M x.1 x.2
 
 /- English proof (translation)
-Simplify using `only [crd, pt, LinearEquiv.apply_symm_apply]`. Rewrite using `[GlobalTheory.ThK.EvAt0.PolEv.arc_liftA, GlobalTheory.ThK.EvAt0.PolEv.arc_liftA]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_pt (M : Model σ X W) (x) : crd M (pt M x) = x := by
   simp only [crd, pt, LinearEquiv.apply_symm_apply]
   rw [GlobalTheory.ThK.EvAt0.PolEv.arc_liftA, GlobalTheory.ThK.EvAt0.PolEv.arc_liftA]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F c.1) = c.1`. Conclude with `RingEquiv.symm_apply_apply _ _`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem liftA_evI {c : AF F} (h : c.2 = 0) : liftA (evI F c) = c := by
   refine Prod.ext ?_ ?_
@@ -71,7 +71,7 @@ theorem liftA_evI {c : AF F} (h : c.2 = 0) : liftA (evI F c) = c := by
   · rw [h]; rfl
 
 /- English proof (translation)
-Establish `k : ∀ r : AF F, evI F r = 0 → r • M.co.e u = 0` using `fun r hr => by rw [← map_smul, hu r hr, map_zero]`. Conclude with `⟨fun r hr => by simpa using congrArg Prod.fst (k r hr), fun r hr => by simpa using congrArg Prod.snd (k r hr)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem at_coords (M : Model σ X W) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) :
     At (evI F) (M.co.e u).1 ∧ At (evI F) (M.co.e u).2 := by
@@ -79,9 +79,7 @@ theorem at_coords (M : Model σ X W) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu :
   exact ⟨fun r hr => by simpa using congrArg Prod.fst (k r hr), fun r hr => by simpa using congrArg Prod.snd (k r hr)⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `at_coords M hu`. Apply `M.co.e.injective` to reduce the goal to its premises. Simplify using `only [pt, crd, LinearEquiv.apply_symm_apply]`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Conclude with `liftA_evI (GlobalTheory.RealLift.fin_eq_zero_of_at h1 i)`.
-
-Conclude with `liftA_evI (GlobalTheory.RealLift.fin_eq_zero_of_at h2 i)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pt_crd (M : Model σ X W) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) : pt M (crd M u) = u := by
   obtain ⟨h1, h2⟩ := at_coords M hu
@@ -92,7 +90,7 @@ theorem pt_crd (M : Model σ X W) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At
   · exact liftA_evI (GlobalTheory.RealLift.fin_eq_zero_of_at h2 i)
 
 /- English proof (translation)
-Introduce `r hr` and use `by have := congrFun (congrFun (hu r hr) i) j simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_entry {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (i : Fin n) (j : Fin d) :
     At (evI F) (u i j) := fun r hr => by
@@ -100,9 +98,9 @@ theorem at_entry {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (i : 
   simpa using this
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `sub_eq_zero.1 (GlobalTheory.RealLift.OneParam.eq_zero_of_at hcm τ (fun r hr => ?_) fun v => ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [smul_sub, at_entry hu i j r hr, at_entry hu' i j r hr, sub_zero]`. Use `congrFun (congrFun (congrFun h v) i) j` as an intermediate fact. Simplify using `only [vals, Matrix.map_apply] at this`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, this, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uniq (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {u u' : Matrix (Fin n) (Fin d) (AE F E)}
     (hu : At (evI F) u) (hu' : At (evI F) u') (h : vals τ u = vals τ u') : u = u' := by
@@ -114,7 +112,7 @@ theorem uniq (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) 
     rw [map_sub, this, sub_self]
 
 /- English proof (translation)
-Introduce `r hr` and use `by ext i j simp only [liftN, Matrix.smul_apply, Matrix.of_apply, Matrix.zero_apply] exact GlobalTheory.RealLift.OneParam.at_liftC τ ξ _ r hr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_liftN [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (ξ : E)
     (m : InfinitePlace F → Matrix (Fin n) (Fin d) ℂ) : At (evI F) (liftN τ ξ m) := fun r hr => by
@@ -123,7 +121,7 @@ theorem at_liftN [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (
   exact GlobalTheory.RealLift.OneParam.at_liftC τ ξ _ r hr
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Conclude with `GlobalTheory.RealLift.OneParam.piInf_liftC τ hξ _ v`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem vals_liftN [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) {ξ : E} (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0)
     (m : InfinitePlace F → Matrix (Fin n) (Fin d) ℂ) : vals τ (liftN τ ξ m) = m := by
@@ -132,39 +130,39 @@ theorem vals_liftN [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w)
   exact GlobalTheory.RealLift.OneParam.piInf_liftC τ hξ _ v
 
 /- English proof (translation)
-Introduce `r hr` and use `by rw [smul_add, hu r hr, hu' r hr, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_add {u u' : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (hu' : At (evI F) u') :
     At (evI F) (u + u') := fun r hr => by rw [smul_add, hu r hr, hu' r hr, add_zero]
 
 /- English proof (translation)
-Introduce `r hr` and use `by rw [smul_neg, hu r hr, neg_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_neg {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) : At (evI F) (-u) := fun r hr => by
   rw [smul_neg, hu r hr, neg_zero]
 
 /- English proof (translation)
-Introduce `r hr` and use `by rw [smul_smul, mul_comm, ← smul_smul, hu r hr, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_smul {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evI F) u) (s : AF F) : At (evI F) (s • u) :=
   fun r hr => by rw [smul_smul, mul_comm, ← smul_smul, hu r hr, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Simplify using `[vals]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vals_add (τ : ∀ w : InfinitePlace F, EmbOver E w) (u u' : Matrix (Fin n) (Fin d) (AE F E)) :
     vals τ (u + u') = vals τ u + vals τ u' := by
   funext v; ext i j; simp [vals]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Simplify using `[vals]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vals_neg (τ : ∀ w : InfinitePlace F, EmbOver E w) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     vals τ (-u) = -vals τ u := by
   funext v; ext i j; simp [vals]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Simplify using `[vals, Algebra.smul_def, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vals_smul (τ : ∀ w : InfinitePlace F, EmbOver E w) (r : AF F) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     vals τ (r • u) = fun v => piInf (τ v) (algebraMap (AF F) (AE F E) r) • vals τ u v := by
@@ -172,25 +170,25 @@ theorem vals_smul (τ : ∀ w : InfinitePlace F, EmbOver E w) (r : AF F) (u : Ma
   simp [vals, Algebra.smul_def, map_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[cx, Matrix.mul_add, Matrix.add_mul, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cx_add (ε : InfinitePlace F → ℤˣ) (m m' : InfinitePlace F → Matrix (Fin n) (Fin d) ℂ) :
     cx X W ε (m + m') = cx X W ε m + cx X W ε m' := by
   funext v; simp [cx, Matrix.mul_add, Matrix.add_mul, smul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [cx]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cx_smul (ε : InfinitePlace F → ℤˣ) (c : InfinitePlace F → ℂ) (m : InfinitePlace F → Matrix (Fin n) (Fin d) ℂ) :
     cx X W ε (fun v => c v • m v) = fun v => c v • cx X W ε m v := by
   funext v; simp only [cx]; rw [Matrix.mul_smul, Matrix.smul_mul, smul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Establish `he : ((ε v : ℤ) : ℂ) * ((ε v : ℤ) : ℂ) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Establish `hWt : (W.θ v)ᵀ * (W.θ v)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hW v, Matrix.transpose_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [cx, Matrix.mul_smul, Matrix.smul_mul, smul_smul]`. Establish `e : X.θ v * (X.θ v * m v * (W.θ v)ᵀ) * (W.θ v)ᵀ = m v`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hX v, Matrix.one_mul, Matrix.mul_assoc, hWt, Matrix.mul_one]`. Rewrite using `[e, Pi.neg_apply]`. Establish `: ((ε v : ℤ) : ℂ) * Complex.I * (((ε v : ℤ) : ℂ) * Complex.I) = -1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(Complex.I ^ 2) * he + Complex.I_sq`. Rewrite using `[this, neg_one_smul]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem cx_cx (ε : InfinitePlace F → ℤˣ) (hX : ∀ v, X.θ v * X.θ v = 1) (hW : ∀ v, W.θ v * W.θ v = 1)
     (m : InfinitePlace F → Matrix (Fin n) (Fin d) ℂ) : cx X W ε (cx X W ε m) = -m := by
@@ -207,7 +205,7 @@ theorem cx_cx (ε : InfinitePlace F → ℤˣ) (hX : ∀ v, X.θ v * X.θ v = 1)
   rw [this, neg_one_smul]
 
 /- English proof (translation)
-Simplify using `only [liftA]`. Rewrite using `[map_add, map_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem liftA_add (a b : mixedEmbedding.mixedSpace F) : liftA (F := F) (a + b) = liftA a + liftA b := by
   simp only [liftA]
@@ -215,19 +213,19 @@ theorem liftA_add (a b : mixedEmbedding.mixedSpace F) : liftA (F := F) (a + b) =
   rfl
 
 /- English proof (translation)
-The claim follows from `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem evI_add (a b : AF F) : evI F (a + b) = evI F a + evI F b :=
   map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
 /- English proof (translation)
-The claim follows from `map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1`.
+A detailed English derivation is pending.
 -/
 theorem evI_neg (a : AF F) : evI F (-a) = -evI F a :=
   map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • a)`. Rewrite using `[← map_mul, Algebra.smul_def]`. Use `show (0 : Af F) * 0 = 0`. Conclude with `mul_zero _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realAd_mul_liftA (t : ℝ) (a : mixedEmbedding.mixedSpace F) : realAd F t * liftA a = liftA (t • a) := by
   refine Prod.ext ?_ ?_
@@ -238,7 +236,7 @@ theorem realAd_mul_liftA (t : ℝ) (a : mixedEmbedding.mixedSpace F) : realAd F 
     exact mul_zero _
 
 /- English proof (translation)
-Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((realAd F t).1 * c.1) = _`. Rewrite using `[map_mul]`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t)) * _ = _`. Rewrite using `[RingEquiv.apply_symm_apply, ← Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evI_realAd_mul (t : ℝ) (c : AF F) : evI F (realAd F t * c) = t • evI F c := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F ((realAd F t).1 * c.1) = _
@@ -248,7 +246,7 @@ theorem evI_realAd_mul (t : ℝ) (c : AF F) : evI F (realAd F t * c) = t • evI
   rfl
 
 /- English proof (translation)
-Simplify using `only [pt]`. Rewrite using `[← map_add]`. Use `congr 1`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [liftA_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pt_add (M : Model σ X W) (x y) : pt M (x + y) = pt M x + pt M y := by
   simp only [pt]
@@ -257,7 +255,7 @@ theorem pt_add (M : Model σ X W) (x y) : pt M (x + y) = pt M x + pt M y := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [liftA_add]
 
 /- English proof (translation)
-Simplify using `only [pt]`. Rewrite using `[← map_smul]`. Use `congr 1`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [realAd_mul_liftA]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pt_smul (M : Model σ X W) (t : ℝ) (x) : pt M (t • x) = realAd F t • pt M x := by
   simp only [pt]
@@ -266,7 +264,7 @@ theorem pt_smul (M : Model σ X W) (t : ℝ) (x) : pt M (t • x) = realAd F t �
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [realAd_mul_liftA]
 
 /- English proof (translation)
-Simplify using `only [crd, map_add]`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;>`. Conclude with `evI_add _ _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem crd_add (M : Model σ X W) (u u' : Matrix (Fin n) (Fin d) (AE F E)) : crd M (u + u') = crd M u + crd M u' := by
   simp only [crd, map_add]
@@ -274,7 +272,7 @@ theorem crd_add (M : Model σ X W) (u u' : Matrix (Fin n) (Fin d) (AE F E)) : cr
   · exact evI_add _ _
 
 /- English proof (translation)
-Simplify using `only [crd, map_neg]`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;>`. Conclude with `evI_neg _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem crd_neg (M : Model σ X W) (u : Matrix (Fin n) (Fin d) (AE F E)) : crd M (-u) = -crd M u := by
   simp only [crd, map_neg]
@@ -282,7 +280,7 @@ theorem crd_neg (M : Model σ X W) (u : Matrix (Fin n) (Fin d) (AE F E)) : crd M
   · exact evI_neg _
 
 /- English proof (translation)
-Simplify using `only [crd, map_smul]`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;>`. Use `show evI F (realAd F t * _) = t • evI F _`. Conclude with `evI_realAd_mul t _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem crd_smul (M : Model σ X W) (t : ℝ) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     crd M (realAd F t • u) = t • crd M u := by
@@ -301,7 +299,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d} [IsTotallyReal F]
 
 /- English proof (translation)
-Apply `uniq hcm τ (at_liftN τ ξ _) (at_add (at_liftN τ ξ _) (at_liftN τ ξ _))` to reduce the goal to its premises. Rewrite using `[vals_add, vals_liftN τ hξ, vals_liftN τ hξ, vals_liftN τ hξ, pt_add, vals_add, cx_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem img_add (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : InfinitePlace F, EmbOver E w) {ξ : E}
     (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0) (ε : InfinitePlace F → ℤˣ) (x y) :
@@ -311,7 +309,7 @@ theorem img_add (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : Infinite
   rw [vals_add, vals_liftN τ hξ, vals_liftN τ hξ, vals_liftN τ hξ, pt_add, vals_add, cx_add]
 
 /- English proof (translation)
-Apply `uniq hcm τ (at_liftN τ ξ _) (at_smul (at_liftN τ ξ _) _)` to reduce the goal to its premises. Rewrite using `[vals_smul, vals_liftN τ hξ, vals_liftN τ hξ, pt_smul, vals_smul, cx_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem img_smul (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : InfinitePlace F, EmbOver E w) {ξ : E}
     (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0) (ε : InfinitePlace F → ℤˣ) (t : ℝ) (x) :
@@ -320,7 +318,7 @@ theorem img_smul (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : Infinit
   rw [vals_smul, vals_liftN τ hξ, vals_liftN τ hξ, pt_smul, vals_smul, cx_smul]
 
 /- English proof (translation)
-Simplify using `only [jF]`. Rewrite using `[img_add hcm M τ hξ ε, crd_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jF_add (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : InfinitePlace F, EmbOver E w) {ξ : E}
     (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0) (ε : InfinitePlace F → ℤˣ) (x y) :
@@ -329,7 +327,7 @@ theorem jF_add (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : InfiniteP
   rw [img_add hcm M τ hξ ε, crd_add]
 
 /- English proof (translation)
-Simplify using `only [jF]`. Rewrite using `[img_smul hcm M τ hξ ε, crd_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem jF_smul (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : InfinitePlace F, EmbOver E w) {ξ : E}
     (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0) (ε : InfinitePlace F → ℤˣ) (t : ℝ) (x) :
@@ -338,9 +336,9 @@ theorem jF_smul (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : Infinite
   rw [img_smul hcm M τ hξ ε, crd_smul]
 
 /- English proof (translation)
-Establish `e : liftN τ ξ (cx X W ε (vals τ (pt M (jF M τ ξ ε x)))) = -pt M x`. Apply `uniq hcm τ (at_liftN τ ξ _) (at_neg (at_pt M x))` to reduce the goal to its premises. Rewrite using `[vals_liftN τ hξ]`. Use `show cx X W ε (vals τ (pt M (crd M (liftN τ ξ (cx X W ε (vals τ (pt M x))))))) = _`. Rewrite using `[pt_crd M (at_liftN τ ξ _), vals_liftN τ hξ, cx_cx ε hX hW, vals_neg]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show crd M (liftN τ ξ (cx X W ε (vals τ (pt M (jF M τ ξ ε x))))) = -x`. Rewrite using `[e, crd_neg, crd_pt]`.
+A detailed English derivation is pending.
 -/
 theorem jF_jF (hcm : IsCMExt F E σ) (M : Model σ X W) (τ : ∀ w : InfinitePlace F, EmbOver E w) {ξ : E}
     (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0) (ε : InfinitePlace F → ℤˣ) (hX : ∀ v, X.θ v * X.θ v = 1)
@@ -358,11 +356,11 @@ end GlobalTheory.FockPair
 open GlobalTheory.FockPair GlobalTheory.ThK.EvAt0.PolD in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n d X W M ψ χX χW om hψ _ _ _ _ _ _ _ _ _ τ hX hW f₀ hf₀`. Use `haveI := hcm.1`. Take `⟨ξ, hξ⟩` from `GlobalTheory.RealLift.OneParam.exists_moved hcm`. Establish `hξ' : ∀ w, ((τ w).1 ξ).im ≠ 0` using `fun w => GlobalTheory.RealLift.OneParam.im_ne_zero hcm hξ (τ w).1`. Take `⟨ε, hε⟩` from `(GlobalTheory.ThK.EvAt0.PolEv.isGauss_iff hψ M τ f₀).1 hf₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨LinearMap.mk (AddHom.mk (jF M τ ξ ε) (jF_add hcm M τ hξ' ε)) (fun t x => (jF_smul hcm M τ hξ' ε t x).trans (by rw [RingHom.id_apply])), fun x => jF_jF hcm M τ hξ' ε (fun v => (hX v).1) (fun v => (hW v).1) x, fun w x => ?_⟩` and prove the remaining obligations. Establish `e` using `hε (pt M w) (liftN τ ξ (cx X W ε (vals τ (pt M w)))) (at_pt M w) (at_liftN τ ξ _) (fun v => congrFun (vals_liftN τ hξ' (cx X W ε (vals τ (pt M w)))) v)`. Express the relevant statement in the definitionally equal form `dOp (jF M τ ξ ε w).1 (jF M τ ξ ε w).2 f₀ = Complex.I • dOp (crd M (pt M w)).1 (crd M (pt M w)).2 f₀ at e`. Rewrite `e` using `[crd_pt]`. Establish `e2` using `congrArg (fun g : SInf F (Fin n × Fin d) => g x) e`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, dOp_apply, lin] at e2`. Use `show GlobalTheory.GaussLine.dHeis _ (jF M τ ξ ε w) _ x = _`. Simplify using `only [GlobalTheory.GaussLine.dHeis, GlobalTheory.GaussLine.pairInf_apply]`. Conclude with `e2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FockPair.exists_fock_cx : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

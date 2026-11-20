@@ -6,11 +6,11 @@ import Mathlib.Analysis.Complex.Polynomial.Basic
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `h1 : χ ^ χ.ker.index = 1`. Use extensionality with `x`. Establish `: x ^ χ.ker.index ∈ χ.ker` using `Subgroup.pow_index_mem _ _`. Rewrite `this` using `[MonoidHom.mem_ker, map_pow]`. Simplify using `[MonoidHom.pow_apply, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : Nat.card Q ∣ χ.ker.index` using `h ▸ orderOf_dvd_of_pow_eq_one h1`. Establish `h3 : χ.ker.index = Nat.card Q` using `Nat.dvd_antisymm (Subgroup.index_dvd_card _) h2`. Establish `h4` using `Subgroup.card_mul_index χ.ker`. Rewrite `h4` using `[h3]`. Establish `h5 : Nat.card χ.ker = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : 0 < Nat.card Q` using `Nat.card_pos`. Conclude with `Nat.eq_of_mul_eq_mul_right hp (by rw [h4, one_mul])`. Conclude with `Subgroup.card_eq_one.1 h5`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ker_eq_bot_of_orderOf {Q : Type} [CommGroup Q] [Finite Q] (χ : Q →* ℂˣ)
     (h : orderOf χ = Nat.card Q) : χ.ker = ⊥ := by
@@ -30,13 +30,11 @@ private theorem ker_eq_bot_of_orderOf {Q : Type} [CommGroup Q] [Finite Q] (χ : 
 
 open Classical in
 /- English proof (translation)
-Use `haveI : NeZero (Monoid.exponent (Γ ⧸ H)) := ⟨Monoid.exponent_ne_zero_of_finite⟩`. Take `⟨e⟩` from `CommGroup.monoidHom_mulEquiv_of_hasEnoughRootsOfUnity (Γ ⧸ H) ℂ`. Use `haveI : Finite ((Γ ⧸ H) →* ℂˣ) := Finite.of_equiv _ e.symm.toEquiv`. Use `letI : Fintype ((Γ ⧸ H) →* ℂˣ) := Fintype.ofFinite _`. Use `haveI : IsCyclic ((Γ ⧸ H) →* ℂˣ) := isCyclic_of_surjective e.symm e.symm.surjective`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : Fintype.card ((Γ ⧸ H) →* ℂˣ) = H.index`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr e.toEquiv]`. Both sides reduce to the same expression. Rewrite using `[← IsCyclic.card_orderOf_eq_totient (α := (Γ ⧸ H) →* ℂˣ) (d := H.index) (hc ▸ dvd_rfl)]`. Use `Finset.card_le_card_of_injOn (fun χ => χ.comp (QuotientGroup.mk' H)) ?_ ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `χ hχ`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hχ ⊢`. Use `ker_eq_bot_of_orderOf χ hχ` as an intermediate fact. Rewrite using `[← MonoidHom.comap_ker, this, MonoidHom.comap_bot, QuotientGroup.ker_mk']`. Introduce `a _ b _ hab`.
-
-Conclude with `QuotientGroup.monoidHom_ext _ hab`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem totient_le_card_ker {Γ : Type} [CommGroup Γ] [Finite Γ] [Fintype (Γ →* ℂˣ)] (H : Subgroup Γ)
     (hH : IsCyclic (Γ ⧸ H)) :
@@ -58,9 +56,7 @@ private theorem totient_le_card_ker {Γ : Type} [CommGroup Γ] [Finite Γ] [Fint
     exact QuotientGroup.monoidHom_ext _ hab
 
 /- English proof (translation)
-Introduce `Γ _ _ T hT`. Use `haveI : NeZero (Monoid.exponent Γ) := ⟨Monoid.exponent_ne_zero_of_finite⟩`. Take `⟨e⟩` from `CommGroup.monoidHom_mulEquiv_of_hasEnoughRootsOfUnity Γ ℂ`. Use `haveI : Finite (Γ →* ℂˣ) := Finite.of_equiv _ e.symm.toEquiv`. Use `letI : Fintype (Γ →* ℂˣ) := Fintype.ofFinite _`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.orbSum :
     ∀ (Γ : Type) [CommGroup Γ] [Finite Γ] (T : Finset (Subgroup Γ)), (∀ H ∈ T, IsCyclic (Γ ⧸ H)) → ∑ H ∈ T, Nat.totient H.index ≤ Nat.card Γ := by

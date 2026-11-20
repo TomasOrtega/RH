@@ -13,7 +13,7 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Use `letI : Algebra Γ(Y, U) (Y.presheaf.stalk y) := Y.presheaf.algebra_section_stalk (⟨y, hy⟩ : U)`. Use `haveI : IsLocalization.AtPrime (Y.presheaf.stalk y) (hU.primeIdealOf ⟨y, hy⟩).asIdeal := hU.isLocalization_stalk ⟨y, hy⟩`. Conclude with `frobLift_localization p (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl F₀ hp2 hF₀`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem frobLift_stalk (p : ℕ) [Fact p.Prime] {Y : Scheme.{0}} (U : Y.Opens) (hU : IsAffineOpen U)
     (F₀ : Γ(Y, U) →+* Γ(Y, U)) (hp2 : (p : Γ(Y, U)) ^ 2 = 0) (hF₀ : ∀ z, ∃ w, F₀ z = z ^ p + p * w)
@@ -27,7 +27,7 @@ theorem frobLift_stalk (p : ℕ) [Fact p.Prime] {Y : Scheme.{0}} (U : Y.Opens) (
   exact frobLift_localization p (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl F₀ hp2 hF₀
 
 /- English proof (translation)
-Use `letI : Algebra Γ(Y, U) (Y.presheaf.stalk y) := Y.presheaf.algebra_section_stalk (⟨y, hy⟩ : U)`. Use `haveI : IsLocalization.AtPrime (Y.presheaf.stalk y) (hU.primeIdealOf ⟨y, hy⟩).asIdeal := hU.isLocalization_stalk ⟨y, hy⟩`. Conclude with `IsLocalization.ringHom_ext (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl (RingHom.ext h)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem stalk_ringHom_ext {Y : Scheme.{0}} (U : Y.Opens) (hU : IsAffineOpen U) (y : Y) (hy : y ∈ U)
     {C : Type} [CommRing C] (f f' : Y.presheaf.stalk y →+* C)
@@ -38,15 +38,15 @@ theorem stalk_ringHom_ext {Y : Scheme.{0}} (U : Y.Opens) (hU : IsAffineOpen U) (
   exact IsLocalization.ringHom_ext (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl (RingHom.ext h)
 
 /- English proof (translation)
-Introduce `p _ Y g U n t hU ht η hη`. Take `⟨F₀, hF₀, hFt⟩` from `frob_lift_etale_chart p _ ht`. Establish `hp2 : (p : Γ(Y, U)) ^ 2 = 0`. Establish `h` using `map_natCast (cstOn g U) (p ^ 2)`. Rewrite `h` using `[ZMod.natCast_self, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Nat.cast_pow, ← h]`. Take `⟨F, hFg, hF⟩` from `frobLift_stalk p U hU F₀ hp2 hF₀ η hη`. Use `⟨F, hF, fun l => ?_, fun y hy h z hz => ?_⟩` and prove the remaining obligations. Use `hFt l` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hFg, this, map_pow]`. Take `⟨F', hFg', hF'⟩` from `frobLift_stalk p U hU F₀ hp2 hF₀ y hy`. Establish `hs : ∀ b, (Y.presheaf.stalkSpecializes h).hom ((Y.presheaf.germ U y hy).hom b) = (Y.presheaf.germ U η hη).hom b` using `fun b => congrArg (fun k => k.hom b) (Y.presheaf.germ_stalkSpecializes hy h)`. Establish `hc : F.comp (Y.presheaf.stalkSpecializes h).hom = (Y.presheaf.stalkSpecializes h).hom.comp F'`. Apply `stalk_ringHom_ext U hU y hy` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, hs, hFg, hFg', hs]`. Take `⟨a, rfl⟩` from `hz`. Take `⟨w, hw⟩` from `hF' a`. Use `⟨_, ⟨w, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (· a) hc` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[this, hw, map_add, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frobLift_stalk_of_etCoord :
     ∀ (p : ℕ) [Fact p.Prime] {Y : Scheme.{0}} (g : Y ⟶ Sp (ZMod (p ^ 2))) (U : Y.Opens) {n : ℕ} (t : Fin n → Γ(Y, U)), IsAffineOpen U → IsEtCoord g U t → ∀ (η : Y) (hη : η ∈ U), ∃ F : Y.presheaf.stalk η →+* Y.presheaf.stalk η, (∀ z, ∃ w, F z = z ^ p + p * w) ∧ (∀ l, F ((Y.presheaf.germ U η hη).hom (t l)) = (Y.presheaf.germ U η hη).hom (t l) ^ p) ∧ ∀ (y : Y), y ∈ U → ∀ (h : η ⤳ y), ∀ z ∈ stalkIm h, ∃ w ∈ stalkIm h, F z = z ^ p + p * w := by

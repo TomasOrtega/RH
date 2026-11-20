@@ -32,14 +32,14 @@ Both sides reduce to the same expression.
 theorem emb_apply (c : ↥L.1) : emb P σ L c = algebraMap (Om l) P.R.BdR (σ (c : Om l)) := rfl
 
 /- English proof (translation)
-Simplify using `[phiS, emb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phiS_tmul (c : ↥L.1) (b : P.R.BdR) :
     phiS P σ L (c ⊗ₜ b) = algebraMap (Om l) P.R.BdR (σ (c : Om l)) * b := by
   simp [phiS, emb]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[PhiS, phiS_tmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem PhiS_tmul (v : Fin a → ↥L.1) (b : P.R.BdR) :
     PhiS P σ L a (v ⊗ₜ b) = fun i => algebraMap (Om l) P.R.BdR (σ (v i : Om l)) * b := by
@@ -47,7 +47,7 @@ theorem PhiS_tmul (v : Fin a → ↥L.1) (b : P.R.BdR) :
   simp [PhiS, phiS_tmul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[PhiS]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem PhiS_add (x y : (Fin a → ↥L.1) ⊗[ℚ_[l]] P.R.BdR) :
     PhiS P σ L a (x + y) = PhiS P σ L a x + PhiS P σ L a y := by
@@ -55,14 +55,14 @@ theorem PhiS_add (x y : (Fin a → ↥L.1) ⊗[ℚ_[l]] P.R.BdR) :
   simp [PhiS]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[PhiS]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem PhiS_zero : PhiS P σ L a 0 = 0 := by
   funext i
   simp [PhiS]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [PhiS_zero]`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, PhiS_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem PhiS_sum {ι : Type} (s : Finset ι) (x : ι → (Fin a → ↥L.1) ⊗[ℚ_[l]] P.R.BdR) :
     PhiS P σ L a (∑ i ∈ s, x i) = ∑ i ∈ s, PhiS P σ L a (x i) := by
@@ -72,7 +72,7 @@ theorem PhiS_sum {ι : Type} (s : Finset ι) (x : ι → (Fin a → ↥L.1) ⊗[
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, PhiS_add, ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [PhiS]`. Rewrite using `[GlobalTheory.DRFil.ext_sm, GlobalTheory.DRFil.sm_self, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem PhiS_sm (r : ↥L.1 ⊗[ℚ_[l]] P.R.BdR) (x : (Fin a → ↥L.1) ⊗[ℚ_[l]] P.R.BdR) :
     PhiS P σ L a (GlobalTheory.DRFil.sm ℚ_[l] P.R.BdR ↥L.1 (Fin a → ↥L.1) r x) = fun i => phiS P σ L r * PhiS P σ L a x i := by
@@ -81,7 +81,7 @@ theorem PhiS_sm (r : ↥L.1 ⊗[ℚ_[l]] P.R.BdR) (x : (Fin a → ↥L.1) ⊗[�
   rw [GlobalTheory.DRFil.ext_sm, GlobalTheory.DRFil.sm_self, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.DRFil.sm_one_tmul, PhiS_sm, phiS_tmul]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem PhiS_mulR (b : P.R.BdR) (x : (Fin a → ↥L.1) ⊗[ℚ_[l]] P.R.BdR) :
     PhiS P σ L a (GlobalTheory.DRFil.mulR ℚ_[l] P.R.BdR ↥L.1 (Fin a → ↥L.1) b x) = fun i => b * PhiS P σ L a x i := by

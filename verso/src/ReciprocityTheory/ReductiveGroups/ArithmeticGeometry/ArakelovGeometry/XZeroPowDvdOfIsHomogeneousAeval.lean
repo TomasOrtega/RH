@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 variable {Ω : Type*} [Field Ω] [CharZero Ω] {κ : Type*} {D : ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← MvPolynomial.sum_homogeneousComponent q]`. Rewrite using `[Finset.mul_sum, map_sum, Finset.sum_eq_single b]`. Rewrite using `[MvPolynomial.homogeneousComponent_of_mem ((MvPolynomial.mem_homogeneousSubmodule _ _).mpr (hp.mul (MvPolynomial.homogeneousComponent_isHomogeneous b q))), if_pos rfl]`. Introduce `k _ hk`. Rewrite using `[MvPolynomial.homogeneousComponent_of_mem ((MvPolynomial.mem_homogeneousSubmodule _ _).mpr (hp.mul (MvPolynomial.homogeneousComponent_isHomogeneous k q))), if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hb`. Rewrite using `[MvPolynomial.homogeneousComponent_eq_zero b q (by simp at hb; omega), mul_zero, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hc_mul_homog {σ : Type*} {p : MvPolynomial σ ℤ} {a : ℕ} (hp : p.IsHomogeneous a)
     (q : MvPolynomial σ ℤ) (b : ℕ) :
@@ -29,7 +29,7 @@ theorem hc_mul_homog {σ : Type*} {p : MvPolynomial σ ℤ} {a : ℕ} (hp : p.Is
     rw [MvPolynomial.homogeneousComponent_eq_zero b q (by simp at hb; omega), mul_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[p.as_sum]`. Use `Finset.dvd_sum fun d hd => ?_` and prove the remaining obligations. Establish `hle : Finsupp.single i m ≤ d` using `Finsupp.single_le_iff.mpr (h d hd)`. Conclude with `⟨MvPolynomial.monomial (d - Finsupp.single i m) (MvPolynomial.coeff d p), by`. Rewrite using `[MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, one_mul, add_tsub_cancel_of_le hle]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem X_pow_dvd_of_le_degrees {σ : Type*} (i : σ) (m : ℕ) (p : MvPolynomial σ ℤ)
     (h : ∀ d ∈ p.support, m ≤ d i) : MvPolynomial.X i ^ m ∣ p := by
@@ -41,9 +41,9 @@ private theorem X_pow_dvd_of_le_degrees {σ : Type*} (i : σ) (m : ℕ) (p : MvP
     rw [MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, one_mul, add_tsub_cancel_of_le hle]⟩
 
 /- English proof (translation)
-Apply `X_pow_dvd_of_le_degrees` to reduce the goal to its premises. Introduce `d hd`. Establish `hdeg : d.degree = M`. Assume the negation of the conclusion as `hne`. Conclude with `(MvPolynomial.mem_support_iff.mp hd) (hH.coeff_eq_zero hne)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdeg` using `[Finsupp.degree_eq_sum, Fin.sum_univ_one]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem X_pow_dvd_homogeneous_one_var {H : MvPolynomial (Fin (0 + 1)) ℤ} {M m : ℕ} (hH : H.IsHomogeneous M)
     (hm : m ≤ M) : MvPolynomial.X 0 ^ m ∣ H := by
@@ -56,9 +56,9 @@ theorem X_pow_dvd_homogeneous_one_var {H : MvPolynomial (Fin (0 + 1)) ℤ} {M m 
   omega
 
 /- English proof (translation)
-Introduce `h0`. Establish `hmem : (MvPolynomial.X i : MvPolynomial (Fin (D + 1)) ℤ) ∈ coordIdeal ℤ y`. Rewrite using `[coordIdeal, RingHom.mem_ker]`. Simplify using `[coneMap, h0]`. Rewrite `hmem` using `[hfree, Ideal.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `MvPolynomial.X_ne_zero i hmem`.
+A detailed English derivation is pending.
 -/
 private theorem coord_ne_zero_of_coordIdeal_eq_bot (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = ⊥) (i : Fin (D + 1)) :
     y i ≠ 0 := by
@@ -70,11 +70,9 @@ private theorem coord_ne_zero_of_coordIdeal_eq_bot (y : Fin (D + 1) → Ω) (hfr
   exact MvPolynomial.X_ne_zero i hmem
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum]`. Use `conv_rhs => rw [P.as_sum]`. Simplify using `only [map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : d.degree = n`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `(MvPolynomial.mem_support_iff.mp hd) (hP.coeff_eq_zero hne)`. Rewrite using `[← hdeg, Finsupp.degree_eq_sum]`. Simplify using `only [coneMap, MvPolynomial.aeval_monomial]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`.
-
-Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, ← map_pow, ← map_prod, map_mul, eq_intCast, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem coneMap_of_isHomogeneous_arakelov_geometry {n : ℕ} (y : Fin (D + 1) → Ω) (P : MvPolynomial (Fin (D + 1)) ℤ)
     (hP : P.IsHomogeneous n) :
@@ -95,15 +93,13 @@ private theorem coneMap_of_isHomogeneous_arakelov_geometry {n : ℕ} (y : Fin (D
   ring
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos D with rfl | hD` into its components or cases. Conclude with `X_pow_dvd_homogeneous_one_var (hH 0) (by omega)`. Establish `hl1 : (⟨1, by omega⟩ : Fin (D + 1)) ≠ 0` using `by simp [Fin.ext_iff]`. Establish `hPh : (MvPolynomial.X ⟨1, by omega⟩ ^ m * H 0 - MvPolynomial.X 0 ^ m * H ⟨1, by omega⟩ : MvPolynomial (Fin (D + 1)) ℤ).IsHomogeneous (m + (m + n))` using `((MvPolynomial.isHomogeneous_X_pow _ _).mul (hH 0)).sub ((MvPolynomial.isHomogeneous_X_pow _ _).mul (hH _))`. Establish `hPy : MvPolynomial.aeval y (MvPolynomial.X ⟨1, by omega⟩ ^ m * H 0 - MvPolynomial.X 0 ^ m * H ⟨1, by omega⟩ : MvPolynomial (Fin (D + 1)) ℤ) = 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_mul, map_pow, MvPolynomial.aeval_X, ← hu]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP0 : (MvPolynomial.X ⟨1, by omega⟩ ^ m * H 0 - MvPolynomial.X 0 ^ m * H ⟨1, by omega⟩ : MvPolynomial (Fin (D + 1)) ℤ) = 0`. Establish `hmem : (MvPolynomial.X ⟨1, by omega⟩ ^ m * H 0 - MvPolynomial.X 0 ^ m * H ⟨1, by omega⟩ : MvPolynomial (Fin (D + 1)) ℤ) ∈ coordIdeal ℤ y`. Apply the tactic sequence `rw [coordIdeal, RingHom.mem_ker, coneMap_of_isHomogeneous_arakelov_geometry y _ hPh, hPy]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `hmem` using `[hfree, Ideal.mem_bot]`. Conclude with `hmem`. Establish `hPeq` using `sub_eq_zero.mp hP0`. Apply `X_pow_dvd_of_le_degrees` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `d hd`. Establish `h1 : MvPolynomial.coeff (d + Finsupp.single ⟨1, by omega⟩ m) (MvPolynomial.X 0 ^ m * H ⟨1, by omega⟩) ≠ 0`. Rewrite using `[← hPeq, MvPolynomial.X_pow_eq_monomial, MvPolynomial.coeff_monomial_mul', if_pos le_add_self, add_tsub_cancel_right, one_mul]`. Conclude with `MvPolynomial.mem_support_iff.mp hd`. Rewrite `h1` using `[MvPolynomial.X_pow_eq_monomial, MvPolynomial.coeff_monomial_mul']`.
-
-Use `split_ifs at h1 with hle`. Use `Finsupp.single_le_iff.mp hle` as an intermediate fact. Simplify `this` using `[Finsupp.single_apply, Ne.symm hl1]`. Conclude with `absurd rfl h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem X_zero_pow_dvd_of_isHomogeneous_aeval (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = ⊥) (u : Ω) (n m : ℕ)
     (H : Fin (D + 1) → MvPolynomial (Fin (D + 1)) ℤ) (hH : ∀ l, (H l).IsHomogeneous (m + n))
@@ -140,9 +136,9 @@ theorem X_zero_pow_dvd_of_isHomogeneous_aeval (y : Fin (D + 1) → Ω) (hfree : 
   · exact absurd rfl h1
 
 /- English proof (translation)
-Establish `hy0 : y 0 ≠ 0` using `coord_ne_zero_of_coordIdeal_eq_bot y hfree 0`. Take `⟨G, hG⟩` from `X_zero_pow_dvd_of_isHomogeneous_aeval y hfree u n m H hH hu`. Establish `hG' : MvPolynomial.X 0 ^ m * MvPolynomial.homogeneousComponent n G = H 0`. Rewrite using `[← hc_mul_homog (MvPolynomial.isHomogeneous_X_pow (0 : Fin (D + 1)) m) G n, ← hG, MvPolynomial.homogeneousComponent_of_mem ((MvPolynomial.mem_homogeneousSubmodule _ _).mpr (hH 0)), if_pos rfl]`. Use `Submodule.mem_map.mpr ⟨MvPolynomial.homogeneousComponent n G, (MvPolynomial.mem_homogeneousSubmodule _ _).mpr (MvPolynomial.homogeneousComponent_isHomogeneous n G), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show MvPolynomial.aeval y (MvPolynomial.homogeneousComponent n G) = u`. Establish `h2` using `hu 0`. Rewrite `h2` using `[← hG', map_mul, map_pow, MvPolynomial.aeval_X]`. Conclude with `(mul_left_cancel₀ (pow_ne_zero m hy0) h2).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sec_of_charts (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = ⊥) (u : Ω) (n m : ℕ)
     (H : Fin (D + 1) → MvPolynomial (Fin (D + 1)) ℤ) (hH : ∀ l, (H l).IsHomogeneous (m + n))
@@ -160,9 +156,9 @@ theorem mem_sec_of_charts (y : Fin (D + 1) → Ω) (hfree : coordIdeal ℤ y = �
   exact (mul_left_cancel₀ (pow_ne_zero m hy0) h2).symm
 
 /- English proof (translation)
-Establish `hc : (x (e 0) / x (e l)) ^ n ∈ fnField (x ∘ e)` using `pow_mem (div_mem_fnField (x ∘ e) 0 l) n`. Establish `heq : (⟨s / x (e l) ^ n, sec_div_mem x (e l) hs⟩ : IntermediateField.extendScalars (fnField_comp_le' x e)) = (⟨(x (e 0) / x (e l)) ^ n, hc⟩ : fnField (x ∘ e)) • ⟨s / x (e 0) ^ n, sec_div_mem x (e 0) hs⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show s / x (e l) ^ n = (x (e 0) / x (e l)) ^ n * (s / x (e 0) ^ n)`. Rewrite using `[div_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[heq, LinearMap.map_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trace_chart_eq [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (h0 : x (e 0) ≠ 0)
     (l : Fin (D + 1)) (hl : x (e l) ≠ 0) (n : ℕ) {s : Ω} (hs : s ∈ sec ℤ x n) :
@@ -182,7 +178,7 @@ theorem trace_chart_eq [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (h0
   rfl
 
 /- English proof (translation)
-Rewrite `ha` using `[chartRing, Algebra.adjoin_range_eq_range_aeval]`. Take `⟨g, rfl⟩` from `ha`. Use `⟨g, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `induction g using MvPolynomial.induction_on <;> simp_all [chartGen]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chart_elem (x : κ → Ω) (e : Fin (D + 1) → κ) (l : Fin (D + 1)) (a : fnField (x ∘ e))
     (ha : a ∈ chartRing x e l) :
@@ -193,15 +189,15 @@ theorem chart_elem (x : κ → Ω) (e : Fin (D + 1) → κ) (l : Fin (D + 1)) (a
   induction g using MvPolynomial.induction_on <;> simp_all [chartGen]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `chart_elem x e l a ha`. Rewrite using `[hg]`. Use `clear hg`. Proceed by induction on `g using MvPolynomial.induction_on`. Name the introduced variables `c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨0, fun N _ => ⟨MvPolynomial.C c * MvPolynomial.X l ^ N, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `using (MvPolynomial.isHomogeneous_C (Fin (D + 1)) c).mul (MvPolynomial.isHomogeneous_X_pow l N)`. Simplify using `[mul_comm]`. Name the introduced variables `p q hp hq`. Take `⟨N1, h1⟩` from `hp`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨N2, h2⟩` from `hq`. Use `⟨max N1 N2, fun N hN => ?_⟩` and prove the remaining obligations. Take `⟨H1, hH1, e1⟩` from `h1 N (le_of_max_le_left hN)`. Take `⟨H2, hH2, e2⟩` from `h2 N (le_of_max_le_right hN)`. Conclude with `⟨H1 + H2, hH1.add hH2, by rw [map_add, mul_add, e1, e2, map_add]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Name the introduced variables `p k hp`. Take `⟨N1, h1⟩` from `hp`. Use `⟨N1 + 1, fun N hN => ?_⟩` and prove the remaining obligations. Take `⟨N', rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`. Take `⟨H, hH, e1⟩` from `h1 N' (by omega)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨H * MvPolynomial.X k.1, hH.mul (MvPolynomial.isHomogeneous_X ℤ k.1), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.aeval_X, map_mul, MvPolynomial.aeval_X, ← e1]`. Simplify using `only [Function.comp]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem homog_of_chart (x : κ → Ω) (e : Fin (D + 1) → κ) (l : Fin (D + 1)) (a : fnField (x ∘ e))
     (ha : a ∈ chartRing x e l) (hl : x (e l) ≠ 0) :
@@ -234,9 +230,9 @@ theorem homog_of_chart (x : κ → Ω) (e : Fin (D + 1) → κ) (l : Fin (D + 1)
     ring
 
 /- English proof (translation)
-Establish `hne : ∀ j, x (e j) ≠ 0` using `fun j => coord_ne_zero_of_coordIdeal_eq_bot (x ∘ e) h.free j`. Use `choose N0 hN0 using fun j => homog_of_chart x e j _ (trace_mem_chart x e h j n hs) (hne j)`. Use `choose H hHh hHe using fun j => hN0 j (Finset.univ.sup N0 + n) (le_trans (Finset.le_sup (Finset.mem_univ j)) (Nat.le_add_right _ _))`. Use `mem_sec_of_charts (x ∘ e) h.free _ n (Finset.univ.sup N0) H hHh (fun j => ?_)` and prove the remaining obligations. Rewrite using `[← hHe j, trace_chart_eq x e (hne 0) j (hne j) n hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply]`. Establish `hj` using `hne j`. Rewrite using `[div_pow, pow_add]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem trace_mem_sec [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsProjFrame x e) (n : ℕ)
     {s : Ω} (hs : s ∈ sec ℤ x n) :
@@ -255,9 +251,9 @@ theorem trace_mem_sec [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (h :
   field_simp
 
 /- English proof (translation)
-Establish `hx0 : x (e 0) ≠ 0` using `coord_ne_zero_of_coordIdeal_eq_bot (x ∘ e) h.free 0`. Establish `ht` using `eq_zero_of_trace x e h ε hε hli ⟨s / x (e 0) ^ n, sec_div_mem x (e 0) hs⟩ (fun l => by`. Establish `e1 : (⟨s / x (e 0) ^ n, sec_div_mem x (e 0) hs⟩ : IntermediateField.extendScalars (fnField_comp_le' x e)) * ⟨ε l / x (e 0) ^ k, sec_div_mem x (e 0) (hε l)⟩ = ⟨s * ε l / x (e 0) ^ (n + k), sec_div_mem x (e 0) (mul_mem_sec x hs (hε l))⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show s / x (e 0) ^ n * (ε l / x (e 0) ^ k) = s * ε l / x (e 0) ^ (n + k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, div_mul_div_comm]`. Rewrite using `[e1]`. Conclude with `Subtype.ext (h0 l))`. Establish `h2` using `congrArg Subtype.val ht`. Simplify `h2` using `[hx0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace' [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsRatProjFrame x e)
     {k : ℕ} (ε : Fin (projDeg x e) → Ω) (hε : ∀ l, ε l ∈ sec ℤ x k)

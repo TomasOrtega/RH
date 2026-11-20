@@ -12,7 +12,7 @@ noncomputable section
 namespace StackedGraphHorizontal
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`. Rewrite using `[mul_add, show s * (r * g) = r * (s * g) by ring]`. Conclude with `I.add_mem (I.mul_mem_left s hy) (I.mul_mem_left r hsg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_of_mem_sup {A : Type*} [CommRing A] {I : Ideal A} {g s : A} (hsg : s * g ∈ I) :
     ∀ x ∈ I ⊔ Ideal.span {g}, s * x ∈ I := by
@@ -23,15 +23,15 @@ theorem mul_mem_of_mem_sup {A : Type*} [CommRing A] {I : Ideal A} {g s : A} (hsg
   exact I.add_mem (I.mul_mem_left s hy) (I.mul_mem_left r hsg)
 
 /- English proof (translation)
-Set `π : (A ⧸ I) →ₗ[A] (A ⧸ J)` to `Submodule.factor hIJ`. Set `φ` to `IsLocalizedModule.map W.primeCompl (LocalizedModule.mkLinearMap W.primeCompl (A ⧸ I)) (LocalizedModule.mkLinearMap W.primeCompl (A ⧸ J)) π`. Establish `hπ : Function.Surjective π`. Introduce `y`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective J y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Submodule.mkQ I x, Submodule.factor_mk hIJ x⟩`. Establish `hsurj : Function.Surjective φ` using `IsLocalizedModule.map_surjective _ _ _ π hπ`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h m t`. Take `⟨r, rfl⟩` from `Submodule.mkQ_surjective I m`. Establish `hy' : LocalizedModule.mk (π (Submodule.mkQ I r)) t = 0`. Rewrite using `[← hy]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalizedModule.map_LocalizedModules W.primeCompl π _ t).symm`. Rewrite `hy'`, the goal using `[← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `hy'`. Use `⟨⟨s, hs⟩ * u, ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[one_smul, smul_zero, smul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[Submodule.factor_mk, Submodule.mkQ_apply, Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Establish `hI : s * (u * r) ∈ I` using `hsJ _ hu`. Rewrite using `[Submodule.mkQ_apply, Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Simplify `hI` using `[mul_assoc]`. Conclude with `(LinearEquiv.extendScalarsOfIsLocalization W.primeCompl (Localization.AtPrime W) (LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩)).length_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem length_localized_eq {A : Type*} [CommRing A] {I J W : Ideal A} [W.IsPrime] (hIJ : I ≤ J)
     {s : A} (hs : s ∉ W) (hsJ : ∀ x ∈ J, s * x ∈ I) :
@@ -68,7 +68,7 @@ theorem length_localized_eq {A : Type*} [CommRing A] {I J W : Ideal A} [W.IsPrim
     (LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩)).length_eq
 
 /- English proof (translation)
-Distinguish the cases in `hW : W.IsPrime`. Rewrite using `[multAt, multAt, dif_pos hW, dif_pos hW]`. Conclude with `congrArg ENat.toNat (length_localized_eq hIJ hs hsJ)`. Rewrite using `[multAt, multAt, dif_neg hW, dif_neg hW]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multAt_eq_of_mul_mem {K' : Type} [Fintype K'] {ι : K' → Type} [∀ k, Fintype (ι k)]
     {I J W : Ideal (MRing ι)} (hIJ : I ≤ J) {s : MRing ι} (hs : s ∉ W) (hsJ : ∀ x ∈ J, s * x ∈ I) :
@@ -79,7 +79,7 @@ theorem multAt_eq_of_mul_mem {K' : Type} [Fintype K'] {ι : K' → Type} [∀ k,
   · rw [multAt, multAt, dif_neg hW, dif_neg hW]
 
 /- English proof (translation)
-Use `sup_le (le_sup_left.trans hle) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `(hQ.mem_or_mem (hle hsg)).resolve_left hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_le_of_mul_mem {A : Type*} [CommRing A] {I Q : Ideal A} (hQ : Q.IsPrime) {f g s : A} (hs : s ∉ Q)
     (hsg : s * g ∈ I ⊔ Ideal.span {f}) (hle : I ⊔ Ideal.span {f} ≤ Q) : I ⊔ Ideal.span {g} ≤ Q := by
@@ -88,7 +88,7 @@ theorem sup_le_of_mul_mem {A : Type*} [CommRing A] {I Q : Ideal A} (hQ : Q.IsPri
   exact (hQ.mem_or_mem (hle hsg)).resolve_left hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨hW.1.1, sup_le_of_mul_mem hW.1.1 hs hsg hW.1.2⟩, fun _ hQ hQW => hW.2 ⟨hQ.1, sup_le_of_mul_mem hQ.1 (fun h => hs' (hQW h)) hsf hQ.2⟩ hQW⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_minimalPrimes_of_mul_mem {A : Type*} [CommRing A] {I W : Ideal A} {f g s s' : A} (hs : s ∉ W)
     (hs' : s' ∉ W) (hsg : s * g ∈ I ⊔ Ideal.span {f}) (hsf : s' * f ∈ I ⊔ Ideal.span {g})
@@ -99,7 +99,7 @@ theorem mem_minimalPrimes_of_mul_mem {A : Type*} [CommRing A] {I W : Ideal A} {f
 variable {T : Type} [Fintype T] [DecidableEq T]
 
 /- English proof (translation)
-Establish `h` using `TopDualSimpleStacked.minor_mem P a l t`. Establish `e : (C (a l) * graphFirst l) * graphSecond t = graphSecond l * (C (a t) * graphFirst t) - (graphSecond l * (C (a t) * graphFirst t) - graphSecond t * (C (a l) * graphFirst l))` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))) (Ideal.mem_sup_left h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_sup_first (P : Ideal (MRing (dualBlocks T))) (a : T → ℤ) (l t : T) :
     (C (a l) * graphFirst l) * graphSecond t ∈
@@ -112,7 +112,7 @@ theorem mul_mem_sup_first (P : Ideal (MRing (dualBlocks T))) (a : T → ℤ) (l 
     (Ideal.mem_sup_left h)
 
 /- English proof (translation)
-Establish `h` using `TopDualSimpleStacked.minor_mem P a l t`. Establish `e : graphSecond l * (C (a t) * graphFirst t) = (graphSecond l * (C (a t) * graphFirst t) - graphSecond t * (C (a l) * graphFirst l)) + (C (a l) * graphFirst l) * graphSecond t` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left h) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_sup_second (P : Ideal (MRing (dualBlocks T))) (a : T → ℤ) (l t : T) :
     graphSecond l * (C (a t) * graphFirst t) ∈
@@ -126,11 +126,11 @@ theorem mul_mem_sup_second (P : Ideal (MRing (dualBlocks T))) (a : T → ℤ) (l
     (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))
 
 /- English proof (translation)
-Establish `hC : ∀ c : ℤ, c ≠ 0 → (C c : MRing (stackedBlocks T)) ∉ W`. Introduce `c hc h`. Establish `h' : c ∈ W.comap (C : ℤ →+* MRing (stackedBlocks T))` using `h`. Rewrite `h'` using `[hhor]`. Conclude with `hc h'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hm` using `hΓ (TopDualSimpleStacked.minor_mem P a l j)`. Establish `h2 : graphSecond l * (C (a j) * graphFirst j) ∈ W`. Use `W.add_mem hm (W.mul_mem_left (graphSecond j) h)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hW.mem_or_mem h2 with h3 | h3` into its components or cases. Conclude with `hl h3`. Break down `hW.mem_or_mem h3 with h4 | h4` into its components or cases. Conclude with `hC _ (ha j) h4`. Conclude with `hj h4`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem C_mul_first_not_mem {P : Ideal (MRing (dualBlocks T))} {a : T → ℤ} (ha : ∀ t, a t ≠ 0)
     {W : Ideal (MRing (stackedBlocks T))} (hW : W.IsPrime) (hhor : IsHorizontal W)
@@ -157,13 +157,13 @@ end StackedGraphHorizontal
 open StackedGraphHorizontal in
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b b' a _ hab t W hhor`. Establish `ha : ∀ t, a t ≠ 0`. Introduce `t h0`. Apply `b.ne_zero t` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hab t, h0, zero_smul]`. Both sides reduce to the same expression. Establish `key : W.IsPrime → stackedGraph b' a ≤ W → IsRelevant W → ∃ s s' : MRing (stackedBlocks T), s ∉ W ∧ s' ∉ W ∧ s * (C (a t) * graphFirst (T` using `T) t) ∈ stackedGraph b' a ⊔ Ideal.span {graphSecond (T := T) t} ∧ s' * graphSecond (T := T) t ∈ stackedGraph b' a ⊔ Ideal.span {C (a t) * graphFirst (T := T) t} := by`. Introduce `hW hΓ hrel`. Take `⟨j, hj⟩` from `hrel (Sum.inl ())`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `hrel (Sum.inr ())`. Conclude with `⟨graphSecond (T := T) l, C (a l) * graphFirst (T := T) l, hl, C_mul_first_not_mem ha hW hhor hΓ hj hl, mul_mem_sup_second _ a l t, mul_mem_sup_first _ a l t⟩`. Use `⟨⟨fun hW => ?_, fun hW => ?_⟩, fun hW => ?_⟩` and prove the remaining obligations. Take `⟨s, s', hs, hs', hsg, hsf⟩` from `key hW.1.1.1 (le_sup_left.trans hW.1.1.2) hW.2`. Conclude with `⟨mem_minimalPrimes_of_mul_mem hs hs' hsg hsf hW.1, hW.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨s, s', hs, hs', hsg, hsf⟩` from `key hW.1.1.1 (le_sup_left.trans hW.1.1.2) hW.2`. Conclude with `⟨mem_minimalPrimes_of_mul_mem hs' hs hsf hsg hW.1, hW.2⟩`. Take `⟨s, s', hs, hs', hsg, hsf⟩` from `key hW.1.1.1 (le_sup_left.trans hW.1.1.2) hW.2`. Rewrite using `[multAt_eq_of_mul_mem le_sup_left hs (mul_mem_of_mem_sup hsg), multAt_eq_of_mul_mem (le_sup_left : stackedGraph b' a ⊔ Ideal.span {C (a t) * graphFirst (T := T) t} ≤ _) hs' (mul_mem_of_mem_sup hsf), sup_right_comm]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem DualStackedGraphHorizontal.proof : DualStackedGraphHorizontal.Statement := by
   intro K _ _ i F F' T _ _ b b' a _ hab t W hhor

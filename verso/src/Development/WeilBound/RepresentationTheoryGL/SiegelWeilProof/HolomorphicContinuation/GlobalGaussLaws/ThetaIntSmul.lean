@@ -17,9 +17,9 @@ namespace PositivityTheory.Rg.Sw.Glob.IInvH
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Establish `e1 : star ((1 : ℂ) / 2) = 1 / 2` using `by simp`. Use extensionality with `i j`. Simplify using `only [IsUe, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply, zRe, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Matrix.single_apply, star_mul', star_sub, e1]`. Apply the tactic sequence `by_cases h1 : a = i <;> by_cases h2 : b = j <;> by_cases h3 : b = i <;> by_cases h4 : a = j <;>`. Apply the tactic sequence `simp only [h1, h2, h3, h4, and_true, true_and, and_false, false_and, if_true, if_false, mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add, mul_one, star_one, star_zero, star_neg, neg_zero, star_mul', sgn_star] <;>`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `(try subst_vars) <;> unfold sgn <;> split_ifs <;>`. Apply the tactic sequence `first | (exfalso; tauto) | (simp only [star_one, star_zero]; ring) | norm_num | (simp only [star_one, star_zero]; norm_num)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isUe_zRe (ε : Fin m → Bool) (a b : Fin m) : IsUe ε (zRe ε a b) := by
   have e1 : star ((1 : ℂ) / 2) = 1 / 2 := by simp
@@ -33,9 +33,9 @@ theorem isUe_zRe (ε : Fin m → Bool) (a b : Fin m) : IsUe ε (zRe ε a b) := b
     first | (exfalso; tauto) | (simp only [star_one, star_zero]; ring) | norm_num | (simp only [star_one, star_zero]; norm_num)
 
 /- English proof (translation)
-Establish `e2 : star (-(Complex.I / 2)) = Complex.I / 2`. Apply the tactic sequence `apply Complex.ext <;> simp <;> norm_num`. Use extensionality with `i j`. Simplify using `only [IsUe, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply, zIm, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, Matrix.single_apply, star_mul', star_add, e2]`. Apply the tactic sequence `by_cases h1 : a = i <;> by_cases h2 : b = j <;> by_cases h3 : b = i <;> by_cases h4 : a = j <;>`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [h1, h2, h3, h4, and_true, true_and, and_false, false_and, if_true, if_false, mul_zero, zero_mul, sub_zero, zero_sub, add_zero, zero_add, mul_one, star_one, star_zero, star_neg, neg_zero, star_mul', sgn_star] <;>`. Apply the tactic sequence `(try subst_vars) <;> unfold sgn <;> split_ifs <;>`. Apply the tactic sequence `first | (exfalso; tauto) | (simp only [star_one, star_zero]; ring) | ring | (simp only [star_one, star_zero]; norm_num)`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isUe_zIm (ε : Fin m → Bool) (a b : Fin m) : IsUe ε (zIm ε a b) := by
   have e2 : star (-(Complex.I / 2)) = Complex.I / 2 := by
@@ -50,7 +50,7 @@ theorem isUe_zIm (ε : Fin m → Bool) (a b : Fin m) : IsUe ε (zIm ε a b) := b
     first | (exfalso; tauto) | (simp only [star_one, star_zero]; ring) | ring | (simp only [star_one, star_zero]; norm_num)
 
 /- English proof (translation)
-Establish `h : theta ω Φ g = theta ω (ω g Φ) 1`. Use function extensionality and compare the values at `h`. Simplify using `only [theta, map_one, Module.End.one_apply]`. Simplify using `only [thetaInt, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem thetaInt_at {θ : InfFam D} {V : HSp D} (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (ν : Measure (GA D V))
     (Φ : schwartzA θ V.rank n) (g : G D n) : thetaInt ω ν Φ g = thetaInt ω ν (ω g Φ) 1 := by
@@ -60,9 +60,7 @@ theorem thetaInt_at {θ : InfFam D} {V : HSp D} (ω : G D n →* Module.End ℂ 
   simp only [thetaInt, h]
 
 /- English proof (translation)
-Establish `h : theta ω (r • Φ) g = fun h => r * theta ω Φ g h`. Use function extensionality and compare the values at `h`. Simplify using `only [theta, map_smul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`. Simplify using `only [thetaInt, h, GlobalTheory.AutomorphicL2Unitary.descend, MeasureTheory.average_eq, integral_const_mul]`.
-
-Conclude with `(mul_smul_comm _ _ _).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaInt_smul {θ : InfFam D} {V : HSp D} (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (ν : Measure (GA D V))
     (r : ℂ) (Φ : schwartzA θ V.rank n) (g : G D n) : thetaInt ω ν (r • Φ) g = r * thetaInt ω ν Φ g := by
@@ -74,14 +72,14 @@ theorem thetaInt_smul {θ : InfFam D} {V : HSp D} (ω : G D n →* Module.End �
   exact (mul_smul_comm _ _ _).symm
 
 /- English proof (translation)
-Unfold `phiS`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiS_of_mem {θ : InfFam D} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (c : ℝ) (Ψ : Mx D m n → ℂ)
     (P : PX m n) (h : tens θ τ fr (fP c P) Ψ ∈ schwartzA θ m n) : phiS θ τ fr c Ψ P = ⟨_, h⟩ := by
   unfold phiS; rw [dif_pos h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, fP, evX, map_add, MvPolynomial.smul_eval, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_add_smul {θ : InfFam D} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (c : ℝ) (Ψ : Mx D m n → ℂ)
     (A B : PX m n) (r : ℂ) :
@@ -96,17 +94,17 @@ namespace PositivityTheory.Rg.Sw.Glob
 
 open IInvH in
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hx Ψ hΨ g a b P`. Establish `hmem` using `fun Q => hT D n V θ l s τ ε fr hx.hθ (lNZ D ψ θ l hx.hψ hx.hθ hx.hl) hx.hs hx.hfr Ψ hΨ Q`. Establish `hstd : ∀ Φ : schwartzA θ V.rank n, Φ.1 ∈ fockA θ V n l s → PositivityTheory.PfSWUS.Std D n V ψ χ θ μ ω H l s ν Φ` using `fun Φ hΦ => ⟨hx.hψ, hx.hχ, hx.hη, hx.hθ, hx.hμ, hx.hω, hx.hH, hx.hl, hx.hs, hx.hν, hΦ⟩`. Establish `h0 : ∀ X, IsUe ε X → ∀ Q, thF ω ν τ fr (cLoc l τ) Ψ (vfX (cLoc l τ) X Q) g = 0`. Introduce `X hX Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `thF`. Rewrite using `[thetaInt_at]`. Conclude with `hO D n V ψ χ θ μ ω H l s ν τ ε fr ι hx X hX (ω g (phiS θ τ fr (cLoc l τ) Ψ Q)) (ω g (phiS θ τ fr (cLoc l τ) Ψ (vfX (cLoc l τ) X Q))) (fun x => hC D n V ψ χ θ μ ω H l s ν τ ε fr ι hx Ψ hΨ X hX Q g x)`. Rewrite using `[hOp_eq]`. Use `set A := vfX (cLoc l τ) (zRe ε a b) P`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := vfX (cLoc l τ) (zIm ε a b) P`. Establish `hA` using `phiS_of_mem τ fr (cLoc l τ) Ψ A (hmem A).1`. Establish `hB` using `phiS_of_mem τ fr (cLoc l τ) Ψ B (hmem B).1`. Establish `hAB` using `phiS_of_mem τ fr (cLoc l τ) Ψ (A + Complex.I • B) (hmem (A + Complex.I • B)).1`. Establish `hsum : phiS θ τ fr (cLoc l τ) Ψ (A + Complex.I • B) = phiS θ τ fr (cLoc l τ) Ψ A + Complex.I • phiS θ τ fr (cLoc l τ) Ψ B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hA, hB, hAB]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, Submodule.coe_smul]`. Conclude with `tens_add_smul τ fr (cLoc l τ) Ψ A B Complex.I`. Establish `hfA : (phiS θ τ fr (cLoc l τ) Ψ A).1 ∈ fockA θ V n l s` using `by rw [hA]; exact (hmem A).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hfB : (Complex.I • phiS θ τ fr (cLoc l τ) Ψ B).1 ∈ fockA θ V n l s`. Rewrite using `[hB, Submodule.coe_smul]`. Conclude with `(fockA θ V n l s).smul_mem _ (hmem B).2`. Unfold `thF`. Rewrite using `[hsum, hL D n V ψ χ θ μ ω H l s ν _ _ (hstd _ hfA) (hstd _ hfB) hx.hr g, thetaInt_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1` using `h0 _ (isUe_zRe ε a b) P`. Establish `e2` using `h0 _ (isUe_zIm ε a b) P`. Unfold `thF at e1 e2`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gIinv_of (hT : TensMem) (hL : ThLin) (hC : LieComm) (hO : DerivOne) : GIinv := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hx Ψ hΨ g a b P

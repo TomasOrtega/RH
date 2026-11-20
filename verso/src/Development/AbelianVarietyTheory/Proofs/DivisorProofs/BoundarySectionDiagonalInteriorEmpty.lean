@@ -16,15 +16,13 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.SncZero
 
 /- English proof (translation)
-Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce `x hx`. Take `⟨ψ, -, hxs, hsub, σ, -, -, u, -, hu, hform⟩` from `hn x`. Establish `hopen : IsOpen (ψ '' (interior {y | s y y = 0} ∩ ψ.source))` using `ψ.isOpen_image_of_subset_source (isOpen_interior.inter ψ.open_source) Set.inter_subset_right`. Establish `hdense : Dense (Set.pi Set.univ (fun _ : Fin e => ({0}ᶜ : Set ℂ)))` using `dense_pi Set.univ (fun _ _ => dense_compl_singleton (0 : ℂ))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, ⟨y, ⟨hyi, hys⟩, rfl⟩, hz⟩` from `hdense.inter_open_nonempty _ hopen ⟨ψ x, x, ⟨hx, hxs⟩, rfl⟩`. Establish `hy0 : s y y = 0` using `interior_subset (s := {y | s y y = 0}) hyi`. Establish `hnorm` using `hs.2 x y y ⟨hsub hys, L.mem_U y⟩`. Rewrite `hnorm` using `[hy0, norm_zero, zero_mul]`. Establish `hxy : s x y = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 hnorm with h | h` into its components or cases. Conclude with `norm_eq_zero.1 h`. Conclude with `absurd h (Real.exp_pos _).ne'`. Rewrite `hxy` using `[hform y hys]`. Break down `mul_eq_zero.1 hxy with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hu y hys h`. Take `⟨k, -, hk⟩` from `Finset.prod_eq_zero_iff.1 h`. Break down `hσ : σ k with _ | j` into its components or cases. Rewrite `hk` using `[hσ]`. Conclude with `one_ne_zero hk`.
-
-Rewrite `hk` using `[hσ]`. Conclude with `hz j (Set.mem_univ j) (eq_zero_of_pow_eq_zero (n := mu k) hk)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interior_zero_eq_empty_of_isSNC {e : ℕ} {X : Type} [TopologicalSpace X]
     (At : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) {r : ℕ} (mu : Fin r → ℕ)
@@ -57,7 +55,7 @@ theorem interior_zero_eq_empty_of_isSNC {e : ℕ} {X : Type} [TopologicalSpace X
       exact hz j (Set.mem_univ j) (eq_zero_of_pow_eq_zero (n := mu k) hk)
 
 /- English proof (translation)
-Introduce `e X _ At m L sg Dd h i`. Conclude with `interior_zero_eq_empty_of_isSNC At (L i) (sg i) _ Dd (h i).2.1 (h i).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem interior_zero_boundary : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (At : FinHolAtlas e X) (m : ℕ) (L : Fin m → LocPot X) (sg : Fin m → X → X → ℂ) (Dd : Fin m → Set X), GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.IsBoundary At L sg Dd → ∀ i, interior {y | sg i y y = 0} = ∅ := by
   intro e X _ At m L sg Dd h i

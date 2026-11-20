@@ -19,7 +19,7 @@ variable {K : Type*} [NormedField K] [CompleteSpace K] {O : Type*} [CommRing O]
 omit [CompleteSpace K] in
 include hi ht in
 /- English proof (translation)
-Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun n => ?_) (summable_geometric_of_lt_one (norm_nonneg t) ht)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) (hi _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_norm_term (f : O⟦X⟧) :
     Summable fun n : ℕ => ‖i (PowerSeries.coeff n f) * t ^ n‖ := by
@@ -32,14 +32,14 @@ noncomputable def discEval : O⟦X⟧ →+* K :=
   GlobalTheory.BoundedPowerSeriesDisc.evalDisc i hi t ht
 
 /- English proof (translation)
-The claim follows from `(summable_norm_term i hi ht f).of_norm.hasSum`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_discEval (f : O⟦X⟧) :
     HasSum (fun n : ℕ => i (PowerSeries.coeff n f) * t ^ n) (discEval i hi ht f) :=
   (summable_norm_term i hi ht f).of_norm.hasSum
 
 /- English proof (translation)
-Use `(hasSum_discEval i hi ht _).unique ?_` and prove the remaining obligations. Use `hasSum_single 0 fun n hn => ?_ using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Simplify using `[PowerSeries.coeff_C, hn]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem discEval_C (a : O) : discEval i hi ht (PowerSeries.C a) = i a := by
   refine (hasSum_discEval i hi ht _).unique ?_
@@ -48,7 +48,7 @@ Use `(hasSum_discEval i hi ht _).unique ?_` and prove the remaining obligations.
   · simp [PowerSeries.coeff_C, hn]
 
 /- English proof (translation)
-Use `(hasSum_discEval i hi ht _).unique ?_` and prove the remaining obligations. Use `hasSum_single 1 fun n hn => ?_ using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Simplify using `[PowerSeries.coeff_X, hn]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem discEval_X : discEval i hi ht PowerSeries.X = t := by
   refine (hasSum_discEval i hi ht _).unique ?_
@@ -57,7 +57,7 @@ Use `(hasSum_discEval i hi ht _).unique ?_` and prove the remaining obligations.
   · simp [PowerSeries.coeff_X, hn]
 
 /- English proof (translation)
-Rewrite using `[← (hasSum_discEval i hi ht f).tsum_eq]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le fun n => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (hi _) (by positivity) (pow_le_one₀ (norm_nonneg _) ht.le)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_discEval_le_one [IsUltrametricDist K] (f : O⟦X⟧) : ‖discEval i hi ht f‖ ≤ 1 := by
   rw [← (hasSum_discEval i hi ht f).tsum_eq]
@@ -66,7 +66,7 @@ theorem norm_discEval_le_one [IsUltrametricDist K] (f : O⟦X⟧) : ‖discEval 
   exact mul_le_one₀ (hi _) (by positivity) (pow_le_one₀ (norm_nonneg _) ht.le)
 
 /- English proof (translation)
-Establish `h` using `congrArg (discEval i hi ht) (PowerSeries.eq_X_mul_shift_add_const f)`. Rewrite `h` using `[map_add, map_mul, discEval_X, discEval_C]`. Rewrite using `[h, add_sub_cancel_right, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (norm_discEval_le_one i hi ht _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_discEval_sub_le [IsUltrametricDist K] (f : O⟦X⟧) :
     ‖discEval i hi ht f - i (PowerSeries.constantCoeff f)‖ ≤ ‖t‖ := by
@@ -76,7 +76,7 @@ theorem norm_discEval_sub_le [IsUltrametricDist K] (f : O⟦X⟧) :
   exact mul_le_of_le_one_right (norm_nonneg _) (norm_discEval_le_one i hi ht _)
 
 /- English proof (translation)
-The claim follows from `hB.mem_of_tendsto (hasSum_discEval i hi ht f) (Eventually.of_forall fun _ => B.sum_mem fun _ _ => B.mul_mem (hiB _) (B.pow_mem htB _))`.
+A detailed English derivation is pending.
 -/
 theorem discEval_mem {B : Subring K} (hB : IsClosed (B : Set K)) (hiB : ∀ x, i x ∈ B)
     (htB : t ∈ B) (f : O⟦X⟧) : discEval i hi ht f ∈ B :=
@@ -104,7 +104,7 @@ noncomputable def laurent : A →+* K⸨X⸩ :=
       exact mul_ne_zero (by simpa using hπ) PowerSeries.X_ne_zero)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ f`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem laurent_algebraMap (f : O⟦X⟧) :
     laurent π A i hπ (algebraMap O⟦X⟧ A f) = HahnSeries.ofPowerSeries ℤ K (PowerSeries.map i f) :=
@@ -113,11 +113,11 @@ The claim follows from `IsLocalization.Away.lift_eq _ _ f`.
 variable {π A}
 
 /- English proof (translation)
-Establish `h1` using `congrArg (laurent π A i hπ) h`. Rewrite `h1` using `[map_mul, laurent_algebraMap, laurent_algebraMap]`. Establish `h2 : HahnSeries.ofPowerSeries ℤ K (PowerSeries.map i (PowerSeries.C π ^ a * PowerSeries.X ^ b)) = HahnSeries.single (b : ℤ) (i π ^ a)`. Rewrite using `[map_mul, map_pow, map_pow, PowerSeries.map_C, PowerSeries.map_X, ← map_pow PowerSeries.C, map_mul, HahnSeries.ofPowerSeries_C, HahnSeries.ofPowerSeries_X_pow, HahnSeries.C_apply, HahnSeries.single_mul_single]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrArg (fun g : K⸨X⸩ => g.coeff (n + b)) h1`. Simplify using `only [h2, HahnSeries.coeff_mul_single_add] at h3`. Rewrite `h3` using `[PowerSeries.coeff_coe, PowerSeries.coeff_map]`. Establish `h4 : i π ^ a ≠ 0` using `pow_ne_zero _ hπ`. Use `split_ifs at h3 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h3).resolve_right h4`. Rewrite using `[← h3, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem coeff_laurent {f : A} {a b : ℕ} {f₀ : O⟦X⟧}
     (h : f * algebraMap O⟦X⟧ A (PowerSeries.C π ^ a * PowerSeries.X ^ b) = algebraMap O⟦X⟧ A f₀)
@@ -143,7 +143,7 @@ theorem coeff_laurent {f : A} {a b : ℕ} {f₀ : O⟦X⟧}
 end Laurent
 
 /- English proof (translation)
-Take `⟨k, f₀, h⟩` from `IsLocalization.Away.surj (PowerSeries.C π * PowerSeries.X : O⟦X⟧) f`. Conclude with `⟨k, k, f₀, by rw [← mul_pow, map_pow, h]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mul_eq (f : A) : ∃ (a b : ℕ) (f₀ : O⟦X⟧),
     f * algebraMap O⟦X⟧ A (PowerSeries.C π ^ a * PowerSeries.X ^ b) = algebraMap O⟦X⟧ A f₀ := by
@@ -161,7 +161,7 @@ noncomputable def discEvalAway : A →+* K :=
     exact mul_ne_zero hπ ht0)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ f`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem discEvalAway_algebraMap (f : O⟦X⟧) :
     discEvalAway π A i hi hπ ht0 ht (algebraMap O⟦X⟧ A f) = discEval i hi ht f :=
@@ -170,7 +170,7 @@ The claim follows from `IsLocalization.Away.lift_eq _ _ f`.
 variable {π A}
 
 /- English proof (translation)
-Establish `h1` using `congrArg (discEvalAway π A i hi hπ ht0 ht) h`. Simplify using `only [map_mul, discEvalAway_algebraMap, map_pow, discEval_C, discEval_X] at h1`. Rewrite using `[← h1, inv_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem discEvalAway_eq {f : A} {a b : ℕ} {f₀ : O⟦X⟧}
     (h : f * algebraMap O⟦X⟧ A (PowerSeries.C π ^ a * PowerSeries.X ^ b) = algebraMap O⟦X⟧ A f₀) :
@@ -181,9 +181,9 @@ theorem discEvalAway_eq {f : A} {a b : ℕ} {f₀ : O⟦X⟧}
   field_simp
 
 /- English proof (translation)
-Take `⟨a, b, f₀, h⟩` from `exists_mul_eq π A f`. Establish `hinj : Function.Injective fun k : ℕ => (k : ℤ) - b` using `fun k l hkl => by simpa using hkl`. Rewrite using `[← hinj.hasSum_iff, discEvalAway_eq i hi hπ ht0 ht h]`. Use `Eq.mpr (congrArg (HasSum · _) (funext fun k => ?_)) ((hasSum_discEval i hi ht f₀).mul_left ((i π)⁻¹ ^ a * t⁻¹ ^ b))` and prove the remaining obligations. Rewrite using `[Function.comp_apply, coeff_laurent i hπ h, sub_add_cancel, if_neg (by omega), Int.natAbs_natCast, zpow_sub₀ ht0, zpow_natCast, zpow_natCast, inv_pow t]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `n hn`. Rewrite using `[coeff_laurent i hπ h, if_pos, zero_mul]`. Assume the negation of the conclusion as `h0`. Conclude with `hn ⟨(n + b).toNat, by simp only; omega⟩`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem hasSum_laurent (f : A) :
     HasSum (fun n : ℤ => (laurent π A i hπ f).coeff n * t ^ n)
@@ -204,14 +204,14 @@ theorem hasSum_laurent (f : A) :
 include hi ht0 ht in
 
 /- English proof (translation)
-Simplify using `using (hasSum_laurent i hi hπ ht0 ht f).summable.tendsto_cofinite_zero.norm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_norm_laurent_term (f : A) :
     Tendsto (fun n : ℤ => ‖(laurent π A i hπ f).coeff n * t ^ n‖) cofinite (𝓝 0) := by
   simpa using (hasSum_laurent i hi hπ ht0 ht f).summable.tendsto_cofinite_zero.norm
 
 /- English proof (translation)
-Take `⟨a, b, f₀, h⟩` from `exists_mul_eq π A f`. Rewrite using `[discEvalAway_eq i hi hπ ht0 ht h]`. Conclude with `B.mul_mem (B.mul_mem (B.pow_mem (B.inv_mem (hiB π)) a) (B.pow_mem (B.inv_mem htB) b)) (discEval_mem i hi ht (B := B.toSubring) hB hiB htB f₀)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discEvalAway_mem {B : Subfield K} (hB : IsClosed (B : Set K)) (hiB : ∀ x, i x ∈ B)
     (htB : t ∈ B) (f : A) : discEvalAway π A i hi hπ ht0 ht f ∈ B := by
@@ -234,7 +234,7 @@ noncomputable def coeffPoly (m : ℤ) (G : MvPolynomial σ K⸨X⸩) : MvPolynom
   ∑ μ ∈ G.support, monomial μ ((coeff μ G).coeff m)
 
 /- English proof (translation)
-Simplify using `only [coeffPoly, coeff_sum, coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Simplify using `[notMem_support_iff.1 h]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem coeff_coeffPoly (m : ℤ) (G : MvPolynomial σ K⸨X⸩) (μ : σ →₀ ℕ) :
     coeff μ (coeffPoly m G) = (coeff μ G).coeff m := by
@@ -245,7 +245,7 @@ Simplify using `only [coeffPoly, coeff_sum, coeff_monomial, Finset.sum_ite_eq']`
   · simp [notMem_support_iff.1 h]
 
 /- English proof (translation)
-Use extensionality with `μ`. Simplify using `[coeff_sum, HahnSeries.coeff_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coeffPoly_sum {α : Type*} (m : ℤ) (s : Finset α) (G : α → MvPolynomial σ K⸨X⸩) :
     coeffPoly m (∑ a ∈ s, G a) = ∑ a ∈ s, coeffPoly m (G a) := by
@@ -253,7 +253,7 @@ theorem coeffPoly_sum {α : Type*} (m : ℤ) (s : Finset α) (G : α → MvPolyn
   simp [coeff_sum, HahnSeries.coeff_sum]
 
 /- English proof (translation)
-Use extensionality with `μ`. Rewrite using `[coeff_coeffPoly, coeff_C_mul, coeff_C_mul, coeff_map, HahnSeries.C_apply, HahnSeries.coeff_mul_single_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffPoly_C_mul_map (m : ℤ) (c : K⸨X⸩) (Q : MvPolynomial σ K) :
     coeffPoly m (C c * map (HahnSeries.C : K →+* K⸨X⸩) Q) = C (c.coeff m) * Q := by
@@ -262,7 +262,7 @@ theorem coeffPoly_C_mul_map (m : ℤ) (c : K⸨X⸩) (Q : MvPolynomial σ K) :
     HahnSeries.coeff_mul_single_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [G.as_sum]`. Rewrite using `[map_sum, coeffPoly_sum, coeffPoly, map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[bind₁_monomial, bind₁_monomial, ← coeffPoly_C_mul_map, map_prod]`. Simplify using `only [map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeffPoly_bind₁ (m : ℤ) (g : σ → MvPolynomial τ K) (G : MvPolynomial σ K⸨X⸩) :
     coeffPoly m (bind₁ (fun k => map (HahnSeries.C : K →+* K⸨X⸩) (g k)) G) =
@@ -274,16 +274,16 @@ theorem coeffPoly_bind₁ (m : ℤ) (g : σ → MvPolynomial τ K) (G : MvPolyno
   simp only [map_pow]
 
 /- English proof (translation)
-Introduce `μ hμ` and use `hG fun h => hμ (by rw [coeff_coeffPoly, h, HahnSeries.coeff_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_coeffPoly (m : ℤ) {G : MvPolynomial σ K⸨X⸩} {d : ℕ}
     (hG : G.IsHomogeneous d) : (coeffPoly m G).IsHomogeneous d := fun μ hμ =>
   hG fun h => hμ (by rw [coeff_coeffPoly, h, HahnSeries.coeff_zero])
 
 /- English proof (translation)
-Use `⟨G.support.sup fun μ => (-(coeff μ G).order).toNat, fun m hm => ?_⟩` and prove the remaining obligations. Use extensionality with `μ`. Rewrite using `[coeff_coeffPoly, coeff_zero]`. Distinguish the cases in `h : μ ∈ G.support`. Use `Finset.le_sup (f := fun μ => (-(coeff μ G).order).toNat) h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `HahnSeries.coeff_eq_zero_of_lt_order (by omega)`. Simplify using `[notMem_support_iff.1 h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coeffPoly_eq_zero (G : MvPolynomial σ K⸨X⸩) :
     ∃ b : ℕ, ∀ m : ℤ, m < -(b : ℤ) → coeffPoly m G = 0 := by
@@ -306,11 +306,11 @@ variable {O : Type*} [CommRing O] {π : O}
   [IsLocalization.Away (PowerSeries.C π * PowerSeries.X : O⟦X⟧) A]
 
 /- English proof (translation)
-Establish `h : ∀ m : ℤ, coeffPoly m (map (laurent π A i hπ) F) = ∑ μ ∈ F.support, monomial μ ((laurent π A i hπ (coeff μ F)).coeff m)` using `fun m => by classical`. Use extensionality with `μ`. Simplify using `only [coeff_coeffPoly, coeff_map, coeff_sum, coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `[notMem_support_iff.1 h]`. Rewrite using `[eval₂_eq]`. Use `Eq.mpr (congrArg (HasSum · _) (funext fun m => ?_)) (hasSum_sum fun μ (_ : μ ∈ F.support) => (hasSum_laurent i hi hπ ht0 ht (coeff μ F)).mul_right (∏ k ∈ μ.support, x k ^ μ k))` and prove the remaining obligations. Rewrite using `[h, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_monomial, Finsupp.prod]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasSum_coeffPoly {K : Type*} [NormedField K] [CompleteSpace K] (i : O →+* K)
     (hi : ∀ x, ‖i x‖ ≤ 1) (hπ : i π ≠ 0) {t : K} (ht0 : t ≠ 0) (ht : ‖t‖ < 1) {σ : Type*}
@@ -335,11 +335,11 @@ theorem hasSum_coeffPoly {K : Type*} [NormedField K] [CompleteSpace K] (i : O �
   ring
 
 /- English proof (translation)
-Use `open ReciprocityTheory.ChartRestriction.G.FreeQuotientRank.BasisChangePf in`. Establish `hmain : CB (bind₁ g P) (c ^ d)` using `by conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `cb_sum _ _ (pow_nonneg hc d) fun ν hν => ?_` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg : ∑ k ∈ ν.support, ν k = d`. Use `hP (mem_support_iff.1 hν)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Establish `h1` using `cb_C_mul (coeff ν P) (cb_prod ν.support _ (fun k => c ^ ν k) (fun k => pow_nonneg hc _) (fun k _ => cb_pow hc (hg k) (ν k)))`. Rewrite `h1` using `[Finset.prod_pow_eq_pow_sum, hdeg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun μ' => (h1 μ').trans (mul_le_of_le_one_left (pow_nonneg hc d) (hP1 ν))`. Conclude with `hmain μ`.
+A detailed English derivation is pending.
 -/
 theorem norm_coeff_bind₁_le {K : Type*} [NormedField K] [IsUltrametricDist K] {σ τ : Type*}
     {P : MvPolynomial σ K} {d : ℕ} (hP : P.IsHomogeneous d) (hP1 : ∀ μ, ‖coeff μ P‖ ≤ 1)
@@ -363,9 +363,9 @@ theorem norm_coeff_bind₁_le {K : Type*} [NormedField K] [IsUltrametricDist K] 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Establish `h : map (Int.castRingHom K) (detProdPoly ℤ n) = detProdPoly K n`. Rewrite using `[detProdPoly, detProdPoly, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j : 2`. Simplify using the standard rewrite rules. Rewrite using `[← h, coeff_map]`. Conclude with `IsUltrametricDist.norm_intCast_le_one K _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_coeff_detProdPoly_le {ι : Type*} [Fintype ι] (n : ι → Type*) [∀ s, Fintype (n s)]
     [∀ s, DecidableEq (n s)] (μ : EntryIndex n n →₀ ℕ) : ‖coeff μ (detProdPoly K n)‖ ≤ 1 := by
@@ -380,11 +380,11 @@ theorem norm_coeff_detProdPoly_le {ι : Type*} [Fintype ι] (n : ι → Type*) [
   exact IsUltrametricDist.norm_intCast_le_one K _
 
 /- English proof (translation)
-Use `by_contra! h`. Establish `h1 : eval (entries fun s => (1 : Matrix (n s) (n s) K)) (detProdPoly K n) = 1`. Simplify using `[eval_detProdPoly]`. Establish `h2 : ‖eval (entries fun s => (1 : Matrix (n s) (n s) K)) (detProdPoly K n)‖ < 1`. Rewrite using `[eval_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `norm_lt_of_hasSum one_pos (Finset.hasSum _ _) fun μ => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, norm_mul]`. Use `(mul_le_of_le_one_right (norm_nonneg _) ?_).trans_lt ((norm_coeff_detProdPoly_le n _).lt_of_ne (h _))` and prove the remaining obligations. Rewrite using `[norm_prod]`. Use `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_pow]`. Use `pow_le_one₀ (norm_nonneg _) ?_` and prove the remaining obligations. Simplify using `only [entries, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[h1] at h2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_norm_coeff_detProdPoly {ι : Type*} [Fintype ι] (n : ι → Type*) [∀ s, Fintype (n s)]
     [∀ s, DecidableEq (n s)] : ∃ μ, ‖coeff μ (detProdPoly K n)‖ = 1 := by
@@ -408,9 +408,9 @@ theorem exists_norm_coeff_detProdPoly {ι : Type*} [Fintype ι] (n : ι → Type
 variable [CompleteSpace K]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_coeffPoly_eq_zero (map (laurent π A i hπ) F)`. Use `ReciprocityTheory.ChartRestriction.G.FreeQuotientRank.finCore_holds K K₀ hres S hS hdense hrot σ δ hδ hδ1 _ b hb (fun t htS x hx hxδ => ?_) m` and prove the remaining obligations. Establish `ht0` using `norm_pos_iff.1 (hS t htS).1`. Establish `h` using `hasSum_coeffPoly i hi hπ ht0 (hS t htS).2 F x`. Use `⟨by simpa using h.summable.tendsto_cofinite_zero.norm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h.tsum_eq]`. Conclude with `hF t htS ht0 _ x hx hxδ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffPoly_integral_of_admissible (K₀ : Subfield K)
     (hres : ReciprocityTheory.MultiplicativeHeights.ResidueFieldInfiniteOn (K₀ : Set K)) (S : Set K)
@@ -438,7 +438,7 @@ end Core
 section Padic
 
 /- English proof (translation)
-Set `ε : B ≃+* e.range` to `RingEquiv.ofBijective e.rangeRestrict ⟨fun a b hab => he (congrArg Subtype.val hab), e.rangeRestrict_surjective⟩`. Conclude with `⟨ε.symm.toRingHom.comp (φ.codRestrict e.range h), fun a => congrArg Subtype.val (ε.apply_symm_apply ⟨φ a, h a⟩)⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_comp_eq_of_mem_range {R B K : Type*} [CommRing R] [CommRing B] [CommRing K]
     (e : B →+* K) (he : Function.Injective e) (φ : R →+* K) (h : ∀ a, φ a ∈ e.range) :
@@ -449,11 +449,11 @@ theorem exists_comp_eq_of_mem_range {R B K : Type*} [CommRing R] [CommRing B] [C
     congrArg Subtype.val (ε.apply_symm_apply ⟨φ a, h a⟩)⟩
 
 /- English proof (translation)
-Introduce `s`. Use `by_contra! h`. Use `infinite_residueField_of_isAlgClosed (C := C)` as an intermediate fact. Use `choose l hl using fun a => residue_surjective (R := (NormedField.valuation (K := C)).valuationSubring) a`. Use `choose y hy hy1 using fun a => h (e (l a)) ⟨l a, rfl⟩ (by rw [he]; exact (mem_normValuationSubring_iff _).1 (l a).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, hab, h1⟩` from `Finite.exists_ne_map_eq_of_infinite fun a => (⟨y a, hy a⟩ : s)`. Establish `h2 : y a = y b` using `congrArg Subtype.val h1`. Use `hab ?_` and prove the remaining obligations. Rewrite using `[← hl a, ← hl b, ← sub_eq_zero, ← map_sub, residue_normValuationSubring_eq_zero_iff, ← he]`. Establish `: e ((l a - l b : (NormedField.valuation (K` using `C)).valuationSubring) : C) = (e (l a) - y a) + -(e (l b) - y b) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hy1 a) (by rw [norm_neg]; exact hy1 b))`.
+A detailed English derivation is pending.
 -/
 theorem residueFieldInfiniteOn_fieldRange {C K : Type*} [NormedField C] [IsUltrametricDist C]
     [IsAlgClosed C] [NormedField K] [IsUltrametricDist K] (e : C →+* K) (he : ∀ x, ‖e x‖ = ‖x‖) :
@@ -478,9 +478,9 @@ theorem residueFieldInfiniteOn_fieldRange {C K : Type*} [NormedField C] [IsUltra
     (max_lt (hy1 a) (by rw [norm_neg]; exact hy1 b))
 
 /- English proof (translation)
-Take `⟨x, hx, hx1⟩` from `exists_lt_norm_lt_one_of_isAlgClosed (C := C) (max 0 (1 - ε)) (max_lt one_pos (by linarith))`. Rewrite `hx` using `[max_lt_iff]`. Take `⟨n, hn, hn'⟩` from `exists_nat_pow_near_of_lt_one h0 h1.le hx.1 hx1`. Establish `h2 : ‖x‖ ^ n ≤ 1` using `pow_le_one₀ hx.1.le hx1.le`. Use `⟨x ^ (n + 1), by rw [norm_pow]; exact pow_pos hx.1 _, by rw [norm_pow]; linarith, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_pow, abs_lt]`. Rewrite `hn`, the goal using `[pow_succ]`. Apply the tactic sequence `constructor <;> nlinarith`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_abs_norm_sub_lt {C : Type*} [NontriviallyNormedField C] [IsAlgClosed C] {r ε : ℝ}
     (h0 : 0 < r) (h1 : r < 1) (hε : 0 < ε) : ∃ x : C, 0 < ‖x‖ ∧ ‖x‖ < 1 ∧ |‖x‖ - r| < ε := by
@@ -501,14 +501,14 @@ noncomputable def algField : Subfield ℂ_[p] := (algebraMap (PadicAlgCl p) ℂ_
 def algDisc : Set ℂ_[p] := {t | t ∈ algField p ∧ 0 < ‖t‖ ∧ ‖t‖ < 1}
 
 /- English proof (translation)
-The claim follows from `residueFieldInfiniteOn_fieldRange _ (PadicComplex.norm_extends p)`.
+A detailed English derivation is pending.
 -/
 theorem residueFieldInfiniteOn_algField :
     ReciprocityTheory.MultiplicativeHeights.ResidueFieldInfiniteOn (algField p : Set ℂ_[p]) :=
   residueFieldInfiniteOn_fieldRange _ (PadicComplex.norm_extends p)
 
 /- English proof (translation)
-Take `⟨x, hx0, hx1, hx⟩` from `exists_abs_norm_sub_lt (C := PadicAlgCl p) h0 h1 hε`. Rewrite `hx0`, `hx1`, `hx` using `[← PadicComplex.norm_extends]`. Conclude with `⟨x, ⟨⟨x, rfl⟩, hx0, hx1⟩, hx⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem algDisc_dense (r : ℝ) (h0 : 0 < r) (h1 : r < 1) (ε : ℝ) (hε : 0 < ε) :
     ∃ t ∈ algDisc p, |‖t‖ - r| < ε := by
@@ -517,7 +517,7 @@ theorem algDisc_dense (r : ℝ) (h0 : 0 < r) (h1 : r < 1) (ε : ℝ) (hε : 0 < 
   exact ⟨x, ⟨⟨x, rfl⟩, hx0, hx1⟩, hx⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_mem ht.1 hτ, by rw [norm_mul, hτ1, mul_one]; exact ht.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem_algDisc (t : ℂ_[p]) (ht : t ∈ algDisc p) (τ : ℂ_[p]) (hτ : τ ∈ algField p)
     (hτ1 : ‖τ‖ = 1) : t * τ ∈ algDisc p :=
@@ -526,9 +526,7 @@ theorem mul_mem_algDisc (t : ℂ_[p]) (ht : t ∈ algDisc p) (τ : ℂ_[p]) (hτ
 variable {p}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℚ_[p]) y).algebraMap`. Introduce `hx`. Establish `h : IsIntegral (PadicAlgCl p) x` using `hx.tower_top`.
-
-Conclude with `minpoly.mem_range_of_degree_eq_one _ _ (IsAlgClosed.degree_eq_one_of_irreducible _ (minpoly.irreducible h))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_algField_iff {x : ℂ_[p]} : x ∈ algField p ↔ IsIntegral ℚ_[p] x := by
   constructor
@@ -540,13 +538,13 @@ theorem mem_algField_iff {x : ℂ_[p]} : x ∈ algField p ↔ IsIntegral ℚ_[p]
       (IsAlgClosed.degree_eq_one_of_irreducible _ (minpoly.irreducible h))
 
 /- English proof (translation)
-Set `h : ℤ_[p] →+* ℂ_[p]` to `(algebraMap ℚ_[p] ℂ_[p]).comp PadicInt.Coe.ringHom`. Establish `hh : ∀ z, ‖h z‖ ≤ 1` using `fun z => by`. Express the relevant statement in the definitionally equal form `‖algebraMap ℚ_[p] ℂ_[p] z‖ ≤ 1`. Rewrite using `[norm_algebraMap']`. Conclude with `z.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : ‖(p : ℂ_[p])‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Establish `key : ∀ n : ℕ, ‖g z - h z‖ ≤ ‖(p : ℂ_[p])‖ ^ n` using `fun n => by`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : z = y * p ^ n + (z.appr n : ℕ)` using `by rw [hy]; ring`. Establish `: g z - h z = (g y + -h y) * p ^ n` using `by conv_lhs => rw [hz]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_mul, norm_pow]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_le_of_le_one_left (by positivity) ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hg y) (by rw [norm_neg]; exact hh y)))` and prove the remaining obligations. Use `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hp) key` as an intermediate fact. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 this)`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_padicInt_eq (g : ℤ_[p] →+* ℂ_[p]) (hg : ∀ z, ‖g z‖ ≤ 1) (z : ℤ_[p]) :
     g z = algebraMap ℚ_[p] ℂ_[p] z := by
@@ -593,30 +591,30 @@ Both sides reduce to the same expression.
 theorem intEmb_apply (x : integralClosure ℤ_[p] L) : intEmb L x = fieldEmb L x := rfl
 
 /- English proof (translation)
-The claim follows from `(fieldEmb L).injective.comp Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem intEmb_injective : Function.Injective (intEmb L) :=
   (fieldEmb L).injective.comp Subtype.val_injective
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem fieldEmb_mem_algField (x : L) : fieldEmb L x ∈ algField p := ⟨x, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[mem_integralClosure_padicInt_iff, fieldEmb_apply, PadicComplex.norm_extends]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_integralClosure_iff_norm (x : L) : x ∈ integralClosure ℤ_[p] L ↔ ‖fieldEmb L x‖ ≤ 1 := by
   rw [mem_integralClosure_padicInt_iff, fieldEmb_apply, PadicComplex.norm_extends]
 
 /- English proof (translation)
-The claim follows from `(mem_integralClosure_iff_norm L x).1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_intEmb_le_one (x : integralClosure ℤ_[p] L) : ‖intEmb L x‖ ≤ 1 :=
   (mem_integralClosure_iff_norm L x).1 x.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨⟨y, rfl⟩, norm_intEmb_le_one L y⟩`. Introduce and unpack `⟨⟨y, rfl⟩, hy⟩`. Conclude with `⟨⟨y, (mem_integralClosure_iff_norm L y).2 hy⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_range_intEmb_iff (x : ℂ_[p]) :
     x ∈ (intEmb L).range ↔ x ∈ (fieldEmb L).fieldRange ∧ ‖x‖ ≤ 1 := by
@@ -629,32 +627,32 @@ theorem mem_range_intEmb_iff (x : ℂ_[p]) :
 variable [FiniteDimensional ℚ_[p] L]
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal_integralClosure_iff, intEmb_apply, fieldEmb_apply, PadicComplex.norm_extends]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_maximalIdeal_iff_norm (x : integralClosure ℤ_[p] L) :
     x ∈ maximalIdeal (integralClosure ℤ_[p] L) ↔ ‖intEmb L x‖ < 1 := by
   rw [mem_maximalIdeal_integralClosure_iff, intEmb_apply, fieldEmb_apply, PadicComplex.norm_extends]
 
 /- English proof (translation)
-Rewrite using `[← notMem_maximalIdeal, mem_maximalIdeal_iff_norm, not_lt]`. Conclude with `⟨fun h => le_antisymm (norm_intEmb_le_one L x) h, fun h => h.ge⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnit_iff_norm (x : integralClosure ℤ_[p] L) : IsUnit x ↔ ‖intEmb L x‖ = 1 := by
   rw [← notMem_maximalIdeal, mem_maximalIdeal_iff_norm, not_lt]
   exact ⟨fun h => le_antisymm (norm_intEmb_le_one L x) h, fun h => h.ge⟩
 
 /- English proof (translation)
-The claim follows from `(LinearMap.range ((IsScalarTower.toAlgHom ℚ_[p] (PadicAlgCl p) ℂ_[p]).comp L.val).toLinearMap).closed_of_finiteDimensional`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_fieldRange : IsClosed ((fieldEmb L).fieldRange : Set ℂ_[p]) :=
   (LinearMap.range ((IsScalarTower.toAlgHom ℚ_[p] (PadicAlgCl p) ℂ_[p]).comp
     L.val).toLinearMap).closed_of_finiteDimensional
 
 /- English proof (translation)
-Use `set S := integralClosure ℤ_[p] L`. Use `set J := (maximalIdeal ℤ_[p]).map (algebraMap ℤ_[p] S)`. Establish `: IsAdicComplete J S` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra (R := ℤ_[p]) S`. Establish `hJ : J ≤ maximalIdeal S` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.map_maximalIdeal_le_maximal (R := ℤ_[p]) S _ inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, maximalIdeal S ^ e ≤ J := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Ideal.exists_pow_le_of_le_radical_of_fg (fun b hb => ?_) (IsNoetherian.noetherian _)` and prove the remaining obligations. Take `⟨N, -, hN⟩` from `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.exists_pow_mem_map_maximalIdeal (R := ℤ_[p]) S b fun n hn => eq_maximalIdeal hn ▸ hb`. Conclude with `⟨N, hN⟩`. Establish `he' : ∀ n, maximalIdeal S ^ ((e + 1) * n) ≤ J ^ n` using `fun n => by`. Rewrite using `[pow_mul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.pow_right_mono ((Ideal.pow_le_pow_right e.le_succ).trans he) n`. Establish `: IsPrecomplete (maximalIdeal S) S` using `⟨fun u hu => by`. Take `⟨l, hl⟩` from `IsPrecomplete.prec' (I := J) (fun n => u ((e + 1) * n)) fun {m n} hmn => (hu (Nat.mul_le_mul_left _ hmn)).mono (Submodule.smul_mono_left (he' m))`. Conclude with `⟨l, fun n => (hu (Nat.le_mul_of_pos_left n e.succ_pos)).trans ((hl n).mono (Submodule.smul_mono_left (Ideal.pow_right_mono hJ n)))⟩⟩`. Conclude with `⟨⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_integralClosure :
     IsAdicComplete (maximalIdeal (integralClosure ℤ_[p] L)) (integralClosure ℤ_[p] L) := by
@@ -679,7 +677,7 @@ theorem isAdicComplete_integralClosure :
   exact ⟨⟩
 
 /- English proof (translation)
-Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful ℤ_[p] ℚ_[p] L` as an intermediate fact. Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_isLocalHom ℤ_[p] L` as an intermediate fact. Establish `: Finite (ResidueField ℤ_[p])` using `Finite.of_equiv _ (PadicInt.residueField).symm.toEquiv`. Conclude with `Module.finite_of_finite (ResidueField ℤ_[p])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_residueField_integralClosure :
     Finite (ResidueField (integralClosure ℤ_[p] L)) := by
@@ -697,7 +695,7 @@ variable {O : Type*} [CommRing O] [Algebra ℤ_[p] O] (i : O →+* ℂ_[p]) (hi 
 include hi in
 
 /- English proof (translation)
-The claim follows from `ringHom_padicInt_eq (i.comp (algebraMap ℤ_[p] O)) (fun _ => hi _) z`.
+A detailed English derivation is pending.
 -/
 theorem map_algebraMap_padicInt (z : ℤ_[p]) :
     i (algebraMap ℤ_[p] O z) = algebraMap ℚ_[p] ℂ_[p] z :=
@@ -711,7 +709,7 @@ variable [Module.Finite ℤ_[p] O]
 include hi
 
 /- English proof (translation)
-Take `⟨q, hq, hqx⟩ : IsIntegral ℤ_[p] x` from `Algebra.IsIntegral.isIntegral x`. Use `mem_algField_iff.2 ⟨q.map (algebraMap ℤ_[p] ℚ_[p]), hq.map _, ?_⟩` and prove the remaining obligations. Establish `h : (algebraMap ℚ_[p] ℂ_[p]).comp (algebraMap ℤ_[p] ℚ_[p]) = i.comp (algebraMap ℤ_[p] O)` using `RingHom.ext fun z => (map_algebraMap_padicInt i hi z).symm`. Rewrite using `[Polynomial.eval₂_map, h, ← Polynomial.hom_eval₂, hqx, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem_algField (x : O) : i x ∈ algField p := by
   obtain ⟨q, hq, hqx⟩ : IsIntegral ℤ_[p] x := Algebra.IsIntegral.isIntegral x
@@ -721,13 +719,11 @@ theorem map_mem_algField (x : O) : i x ∈ algField p := by
   rw [Polynomial.eval₂_map, h, ← Polynomial.hom_eval₂, hqx, map_zero]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Subfield.closure_le.2 fun x hx => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨y, hy⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `algebraMap (PadicAlgCl p) ℂ_[p] y ∈ _`. Proceed by induction on `hy using IntermediateField.adjoin_induction with`. Consider the case `mem y hy => exact Subfield.subset_closure hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Consider the case `algebraMap z`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := ℤ_[p]) z`. Rewrite using `[← IsScalarTower.algebraMap_apply, map_div₀]`. Conclude with `div_mem (Subfield.subset_closure (Or.inl ⟨_, map_algebraMap_padicInt i hi a⟩)) (Subfield.subset_closure (Or.inl ⟨_, map_algebraMap_padicInt i hi b⟩))`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hy hz`. Consider the case `inv y _ hy => rw [map_inv₀]`. Conclude with `inv_mem hy`. Consider the case `mul y z _ _ hy hz => rw [map_mul]`. Conclude with `mul_mem hy hz`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : x ∈ algField p := by`. Break down `hx with ⟨a, rfl⟩ | hx` into its components or cases. Use `exacts [map_mem_algField i hi a, hT hx]`. Conclude with `⟨⟨y, IntermediateField.subset_adjoin _ _ hx⟩, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fieldRange_genField {T : Set ℂ_[p]} (hT : T ⊆ algField p) :
     (fieldEmb (genField i T)).fieldRange = Subfield.closure (Set.range i ∪ T) := by
@@ -750,7 +746,7 @@ theorem fieldRange_genField {T : Set ℂ_[p]} (hT : T ⊆ algField p) :
     exact ⟨⟨y, IntermediateField.subset_adjoin _ _ hx⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[fieldRange_genField i hi hT]`. Conclude with `Subfield.subset_closure (Or.inl ⟨x, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_genField {T : Set ℂ_[p]} (hT : T ⊆ algField p) (x : O) :
     i x ∈ (fieldEmb (genField i T)).fieldRange := by
@@ -758,7 +754,7 @@ theorem map_mem_genField {T : Set ℂ_[p]} (hT : T ⊆ algField p) (x : O) :
   exact Subfield.subset_closure (Or.inl ⟨x, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[fieldRange_genField i hi hT]`. Conclude with `Subfield.subset_closure (Or.inr hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_genField_of_mem {T : Set ℂ_[p]} (hT : T ⊆ algField p) {x : ℂ_[p]} (hx : x ∈ T) :
     x ∈ (fieldEmb (genField i T)).fieldRange := by
@@ -766,17 +762,13 @@ theorem mem_genField_of_mem {T : Set ℂ_[p]} (hT : T ⊆ algField p) {x : ℂ_[
   exact Subfield.subset_closure (Or.inr hx)
 
 /- English proof (translation)
-Establish `hinj` using `(algebraMap (PadicAlgCl p) ℂ_[p]).injective`. Take `⟨i₀, hi₀⟩` from `exists_comp_eq_of_mem_range _ hinj i (map_mem_algField i hi)`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ_[p]) (M := O)`. Use `set U : Set (PadicAlgCl p) := i₀ '' s ∪ algebraMap (PadicAlgCl p) ℂ_[p] ⁻¹' T`. Establish `: Finite U` using `((s.finite_toSet.image _).union (hT.preimage hinj.injOn)).to_subtype`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℚ_[p] (IntermediateField.adjoin ℚ_[p] U)` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `hmem : ∀ b, i₀ b ∈ IntermediateField.adjoin ℚ_[p] U` using `fun b => by`. Establish `hb : b ∈ Submodule.span ℤ_[p] (s : Set O)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin _ _ (Or.inl ⟨x, hx, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: i₀ (algebraMap ℤ_[p] O a) = algebraMap ℚ_[p] (PadicAlgCl p) a` using `hinj (by`. Rewrite using `[hi₀, map_algebraMap_padicInt i hi, ← IsScalarTower.algebraMap_apply])`. Rewrite using `[Algebra.smul_def, map_mul, this]`. Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) hx`. Establish `hle : genField i T ≤ IntermediateField.adjoin ℚ_[p] U`.
-
-Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `y (⟨a, ha⟩ | hy)`. Rewrite using `[← hinj ((hi₀ a).trans ha)]`. Conclude with `hmem a`. Conclude with `IntermediateField.subset_adjoin _ _ (Or.inr hy)`.
-
-Conclude with `FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion_injective hle)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_genField {T : Set ℂ_[p]} (hT : T.Finite) :
     FiniteDimensional ℚ_[p] (genField i T) := by
@@ -812,9 +804,7 @@ variable (L : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[
 omit [Module.Finite ℤ_[p] O] in
 
 /- English proof (translation)
-Establish `h : j.comp (algebraMap ℤ_[p] O) = algebraMap ℤ_[p] (integralClosure ℤ_[p] L)` using `RingHom.ext fun z => intEmb_injective L (by`. Rewrite using `[RingHom.comp_apply, hj, map_algebraMap_padicInt i hi]`. Conclude with `(map_algebraMap_padicInt (intEmb L) (norm_intEmb_le_one L) z).symm)`. Use `RingHom.Finite.of_comp_finite (f := algebraMap ℤ_[p] O) ?_` and prove the remaining obligations. Rewrite using `[h, RingHom.finite_algebraMap]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_intEmb_eq {j : O →+* integralClosure ℤ_[p] L} (hj : ∀ a, intEmb L (j a) = i a) :
     j.Finite := by
@@ -828,7 +818,7 @@ theorem finite_of_intEmb_eq {j : O →+* integralClosure ℤ_[p] L} (hj : ∀ a,
 
 omit [Module.Finite ℤ_[p] O] in
 /- English proof (translation)
-The claim follows from `RingHom.IsIntegral.isLocalHom (finite_of_intEmb_eq i hi L hj).to_isIntegral fun a b h => hinj (by rw [← hj, ← hj, h])`.
+A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_intEmb_eq (hinj : Function.Injective i)
     {j : O →+* integralClosure ℤ_[p] L} (hj : ∀ a, intEmb L (j a) = i a) : IsLocalHom j :=
@@ -836,7 +826,7 @@ theorem isLocalHom_of_intEmb_eq (hinj : Function.Injective i)
     fun a b h => hinj (by rw [← hj, ← hj, h])
 
 /- English proof (translation)
-Use `finiteDimensional_genField i hi Set.finite_empty` as an intermediate fact. Take `⟨j, hj⟩` from `exists_comp_eq_of_mem_range _ (intEmb_injective (genField i ∅)) i fun a => (mem_range_intEmb_iff _ _).2 ⟨map_mem_genField i hi (Set.empty_subset _) a, hi a⟩`. Use `isLocalHom_of_intEmb_eq i hi _ hinj hj` as an intermediate fact. Rewrite using `[← hj, ← isUnit_iff_norm, isUnit_map_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_map_eq_one_iff (hinj : Function.Injective i) (x : O) : ‖i x‖ = 1 ↔ IsUnit x := by
   have := finiteDimensional_genField i hi Set.finite_empty
@@ -848,7 +838,7 @@ theorem norm_map_eq_one_iff (hinj : Function.Injective i) (x : O) : ‖i x‖ = 
 omit [Module.Finite ℤ_[p] O] [Algebra ℤ_[p] O] in
 
 /- English proof (translation)
-The claim follows from `exists_comp_eq_of_mem_range _ (intEmb_injective L) _ fun f => (mem_range_intEmb_iff L _).2 ⟨discEval_mem i hi ht (B := (fieldEmb L).fieldRange.toSubring) (isClosed_fieldRange L) hiL htL f, norm_discEval_le_one i hi ht f⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_intEmb_eq_discEval (hiL : ∀ x, i x ∈ (fieldEmb L).fieldRange) {t : ℂ_[p]}
     (htL : t ∈ (fieldEmb L).fieldRange) (ht : ‖t‖ < 1) :
@@ -860,9 +850,9 @@ theorem exists_intEmb_eq_discEval (hiL : ∀ x, i x ∈ (fieldEmb L).fieldRange)
 omit [Module.Finite ℤ_[p] O] in
 
 /- English proof (translation)
-Establish `hj : ∀ a, intEmb L (ev.comp PowerSeries.C a) = i a` using `fun a => by simp [hev]`. Use `isLocalHom_of_intEmb_eq i hi L hinj hj` as an intermediate fact. Use `⟨fun f hf => PowerSeries.isUnit_iff_constantCoeff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← isUnit_map_iff (ev.comp PowerSeries.C), isUnit_iff_norm, hj]`. Rewrite `hf` using `[isUnit_iff_norm, hev]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_antisymm (hi _) (not_lt.1 fun h => hf.not_lt ?_)` and prove the remaining obligations. Rewrite using `[← sub_add_cancel (discEval i hi ht f) (i (PowerSeries.constantCoeff f))]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ((norm_discEval_sub_le i hi ht f).trans_lt ht) h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_intEmb_eq_discEval (hinj : Function.Injective i) {t : ℂ_[p]} (ht : ‖t‖ < 1)
     {ev : O⟦X⟧ →+* integralClosure ℤ_[p] L} (hev : ∀ f, intEmb L (ev f) = discEval i hi ht f) :
@@ -880,7 +870,7 @@ theorem isLocalHom_of_intEmb_eq_discEval (hinj : Function.Injective i) {t : ℂ_
 end Finite
 
 /- English proof (translation)
-Take `⟨L, _, g, hg⟩` from `exists_injective_algHom_integralClosure O hp`. Conclude with `⟨(intEmb L).comp g, (intEmb_injective L).comp hg, fun x => norm_intEmb_le_one L _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_injective_norm_le_one (O : Type*) [CommRing O] [IsDomain O] [Algebra ℤ_[p] O]
     [Module.Finite ℤ_[p] O] (hp : (p : O) ≠ 0) :
@@ -902,7 +892,7 @@ def IsDiscPoint (L : IntermediateField ℚ_[p] (PadicAlgCl p)) {t : ℂ_[p]} (ht
 variable {i hi hπ A} in
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun f => (fieldEmb L).injective (by rw [RingHom.comp_apply, h.2, discEvalAway_algebraMap, ← h.1] rfl)`.
+A detailed English derivation is pending.
 -/
 theorem IsDiscPoint.comp_algebraMap {L : IntermediateField ℚ_[p] (PadicAlgCl p)} {t : ℂ_[p]}
     {ht0 : t ≠ 0} {ht : ‖t‖ < 1} {ev : O⟦X⟧ →+* integralClosure ℤ_[p] L} {evA : A →+* L}
@@ -913,7 +903,7 @@ theorem IsDiscPoint.comp_algebraMap {L : IntermediateField ℚ_[p] (PadicAlgCl p
     rfl)
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `exists_intEmb_eq_discEval i hi L hiL htL ht`. Take `⟨evA, hevA⟩` from `exists_comp_eq_of_mem_range _ (fieldEmb L).injective (discEvalAway π A i hi hπ ht0 ht) fun f => discEvalAway_mem i hi hπ ht0 ht (isClosed_fieldRange L) hiL htL f`. Conclude with `⟨ev, evA, hev, hevA⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isDiscPoint (L : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] L]
     (hiL : ∀ x, i x ∈ (fieldEmb L).fieldRange) {t : ℂ_[p]} (htL : t ∈ (fieldEmb L).fieldRange)
@@ -943,9 +933,9 @@ def algInt : Subring ℂ_[p] where
   neg_mem' ha := ⟨neg_mem ha.1, by rw [norm_neg]; exact ha.2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, hy⟩` from `h.exists_right_inv`. Establish `h1 : ‖(x : ℂ_[p])‖ * ‖(y : ℂ_[p])‖ = 1`. Rewrite using `[← norm_mul, ← Subring.coe_mul, hy, Subring.coe_one, norm_one]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm x.2.2 (h1.ge.trans (mul_le_of_le_one_right (norm_nonneg _) y.2.2))`. Introduce `h`. Establish `h0 : (x : ℂ_[p]) ≠ 0` using `norm_pos_iff.1 (h ▸ one_pos)`. Conclude with `IsUnit.of_mul_eq_one ⟨(x : ℂ_[p])⁻¹, inv_mem x.2.1, by rw [norm_inv, h, inv_one]⟩ (Subtype.ext (mul_inv_cancel₀ h0))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_algInt_iff (x : algInt p) : IsUnit x ↔ ‖(x : ℂ_[p])‖ = 1 := by
   constructor
@@ -977,17 +967,15 @@ def IntegralOnFrames (F : MvPolynomial (EntryIndex n n) A) : Prop :=
         (algebraMap (integralClosure ℤ_[p] L) L)) F ∈ integralClosure ℤ_[p] L
 
 /- English proof (translation)
-Establish `key : ∀ (L : IntermediateField ℚ_[p] (PadicAlgCl p)) (t : ℂ_[p]) (ht0 : t ≠ 0) (ht : ‖t‖ < 1) (ev : O⟦X⟧ →+* integralClosure ℤ_[p] L) (evA : A →+* L), IsDiscPoint i hi hπ A L ht0 ht ev evA → ∀ y : EntryIndex n n → L, fieldEmb L (eval₂ evA y F) = eval₂ (discEvalAway π A i hi hπ ht …`. Introduce `L t ht0 ht ev evA h y`. Rewrite using `[eval₂_comp_left, show (fieldEmb L).comp evA = _ from RingHom.ext h.2]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hF L _ t ht0 ht ev evA h g`. Set `e : integralClosure ℤ_[p] L →+* algInt p` to `(intEmb L).codRestrict _ fun x => ⟨fieldEmb_mem_algField L x, norm_intEmb_le_one L x⟩`. Establish `htK : t ∈ algField p`. Rewrite using `[← discEval_X i hi ht, ← h.1]`. Conclude with `fieldEmb_mem_algField L _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_integralClosure_iff_norm, key L t ht0 ht ev evA h]`. Conclude with `hF t htK ht0 ht fun s => Matrix.GeneralLinearGroup.map e (g s)`. Introduce `hF t htK ht0 ht g set x := entries fun s => (g s : Matrix (n s) (n s) (algInt p)).map (algInt p).subtype`. Establish `hT : insert t (Set.range x) ⊆ algField p` using `Set.insert_subset htK (by rintro _ ⟨k, rfl⟩; exact ((g k.1).1 k.2.1 k.2.2).2.1)`. Use `finiteDimensional_genField i hi ((Set.finite_range x).insert t)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set L := genField i (insert t (Set.range x))`. Take `⟨ev, evA, h⟩` from `exists_isDiscPoint i hi hπ A L (map_mem_genField i hi hT) (mem_genField_of_mem i hi hT (Set.mem_insert _ _)) ht0 ht`. Use `choose y hy using fun k => (mem_range_intEmb_iff L (x k)).2 ⟨mem_genField_of_mem i hi hT (Set.mem_insert_of_mem _ ⟨k, rfl⟩), ((g k.1).1 k.2.1 k.2.2).2.2⟩`. Establish `hu : ∀ s, IsUnit (ofEntries y s)` using `fun s => by`. Establish `h1 : (intEmb L).mapMatrix (ofEntries y s) = (algInt p).subtype.mapMatrix (g s : Matrix (n s) (n s) (algInt p))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `a b`. Conclude with `hy ⟨s, a, b⟩`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_norm, RingHom.map_det, h1, ← RingHom.map_det]`. Conclude with `(isUnit_algInt_iff _).1 ((Matrix.isUnit_iff_isUnit_det _).1 (g s).isUnit)`. Establish `h2` using `hF L t ht0 ht ev evA h fun s => (hu s).unit`.
-
-Rewrite `h2` using `[mem_integralClosure_iff_norm, key L t ht0 ht ev evA h]`. Establish `h3 : x = fun k => intEmb L (y k)` using `funext fun k => (hy k).symm`. Rewrite using `[h3]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundedOnFrames_iff_integralOnFrames [Algebra ℤ_[p] O] [Module.Finite ℤ_[p] O]
     (F : MvPolynomial (EntryIndex n n) A) :
@@ -1035,9 +1023,9 @@ theorem boundedOnFrames_iff_integralOnFrames [Algebra ℤ_[p] O] [Module.Finite 
 variable {i hi hπ} {F : MvPolynomial (EntryIndex n n) A}
 
 /- English proof (translation)
-Use `coeffPoly_integral_of_admissible (algField p) (residueFieldInfiniteOn_algField p) (algDisc p) (fun _ ht => ht.2) (algDisc_dense p) (mul_mem_algDisc p) i hi hπ (detProdPoly ℂ_[p] n) (norm_coeff_detProdPoly_le n) (exists_norm_coeff_detProdPoly n) F (fun t htS ht0 ht x hx hxδ => ?_) …` and prove the remaining obligations. Set `y : EntryIndex n n → algInt p` to `fun k => ⟨x k, hx k⟩`. Establish `h1 : IsUnit (∏ s, (ofEntries y s).det)`. Rewrite using `[isUnit_algInt_iff, ← hxδ, eval_detProdPoly, ← Subring.coe_subtype, map_prod]`. Simplify using `only [RingHom.map_det]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[IsUnit.prod_univ_iff]`. Conclude with `hF t htS.1 ht0 ht fun s => ((Matrix.isUnit_iff_isUnit_det _).2 (h1 s)).unit`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BoundedOnFrames.coeffPoly_integral (hF : BoundedOnFrames i hi hπ F) (m : ℤ) :
     (∀ μ, ‖coeff μ (coeffPoly m (map (laurent π A i hπ) F))‖ ≤ 1) ∧
@@ -1055,7 +1043,7 @@ theorem BoundedOnFrames.coeffPoly_integral (hF : BoundedOnFrames i hi hπ F) (m 
   exact hF t htS.1 ht0 ht fun s => ((Matrix.isUnit_iff_isUnit_det _).2 (h1 s)).unit
 
 /- English proof (translation)
-Rewrite using `[← coeff_coeffPoly, coeffPoly_bind₁]`. Conclude with `⟨DiscEval.norm_coeff_bind₁_le (isHomogeneous_coeffPoly m (hd.map _)) (hF.coeffPoly_integral m).1 hc hg μ, fun hm => by simp [(hF.coeffPoly_integral m).2 hm]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem BoundedOnFrames.norm_coeff_bind₁_le (hF : BoundedOnFrames i hi hπ F) {d : ℕ}
     (hd : F.IsHomogeneous d) {τ : Type*} {g : EntryIndex n n → MvPolynomial τ ℂ_[p]} {c : ℝ}
@@ -1069,7 +1057,7 @@ theorem BoundedOnFrames.norm_coeff_bind₁_le (hF : BoundedOnFrames i hi hπ F) 
     (hF.coeffPoly_integral m).1 hc hg μ, fun hm => by simp [(hF.coeffPoly_integral m).2 hm]⟩
 
 /- English proof (translation)
-Establish `h : (fun k => ∑ l, C (HahnSeries.C (B k l)) * X l : EntryIndex n n → MvPolynomial (EntryIndex n n) ℂ_[p]⸨X⸩) = fun k => map HahnSeries.C (∑ l, C (B k l) * X l)`. Use function extensionality and compare the values at `k`. Simplify using `only [map_sum, map_mul, map_C, map_X]`. Rewrite using `[h, ← coeff_coeffPoly, coeffPoly_bind₁]`. Conclude with `⟨ReciprocityTheory.ChartRestriction.G.FreeQuotientRank.basisChange_holds _ _ _ d (isHomogeneous_coeffPoly m (hd.map _)) (hF.coeffPoly_integral m).1 B c hc hB μ, fun hm => by simp [(hF.coeffPoly_integral m).2 hm]⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem BoundedOnFrames.norm_coeff_linear_le (hF : BoundedOnFrames i hi hπ F) {d : ℕ}
     (hd : F.IsHomogeneous d) {B : EntryIndex n n → EntryIndex n n → ℂ_[p]} {c : ℝ}
@@ -1088,9 +1076,9 @@ theorem BoundedOnFrames.norm_coeff_linear_le (hF : BoundedOnFrames i hi hπ F) {
     (hF.coeffPoly_integral m).1 B c hc hB μ, fun hm => by simp [(hF.coeffPoly_integral m).2 hm]⟩
 
 /- English proof (translation)
-Establish `h : (fun k => ∑ j, C (HahnSeries.C (w k.1 k.2.1 j)) * X ⟨k.1, j, k.2.2⟩ : EntryIndex n n → MvPolynomial (EntryIndex κ n) ℂ_[p]⸨X⸩) = fun k => map HahnSeries.C (∑ j, C (w k.1 k.2.1 j) * X ⟨k.1, j, k.2.2⟩)`. Use function extensionality and compare the values at `k`. Simplify using `only [map_sum, map_mul, map_C, map_X]`. Rewrite using `[h]`. Use `hF.norm_coeff_bind₁_le hd hc (fun k ν => ?_) μ m` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul, coeff_X]`. Apply the tactic sequence `split_ifs <;> simp [hw, hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem BoundedOnFrames.norm_coeff_mul_le (hF : BoundedOnFrames i hi hπ F) {d : ℕ}
     (hd : F.IsHomogeneous d) {κ : ι → Type*} [∀ s, Fintype (κ s)]
@@ -1114,9 +1102,9 @@ theorem BoundedOnFrames.norm_coeff_mul_le (hF : BoundedOnFrames i hi hπ F) {d :
   split_ifs <;> simp [hw, hc]
 
 /- English proof (translation)
-Introduce `t _ ht0 ht g`. Rewrite using `[eval₂_map, eval₂_eq]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, RingHom.comp_apply, discEvalAway_algebraMap, norm_prod]`. Use `mul_le_one₀ (norm_discEval_le_one i hi ht _) (Finset.prod_nonneg fun _ _ => norm_nonneg _) (Finset.prod_le_one (fun _ _ => norm_nonneg _) fun k _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) ((g k.1).1 k.2.1 k.2.2).2.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundedOnFrames_map (F₀ : MvPolynomial (EntryIndex n n) O⟦X⟧) :
     BoundedOnFrames i hi hπ (map (algebraMap O⟦X⟧ A) F₀) := by
@@ -1137,7 +1125,7 @@ end Padic
 open MvPolynomial in
 
 /- English proof (translation)
-Use `⟨⟨residueFieldInfiniteOn_algField p, fun _ ht => ht.2, algDisc_dense p, mul_mem_algDisc p⟩, fun O _ _ _ i hi hinj π hπ A _ _ _ => ⟨fun t ht0 ht => ⟨fun f => ⟨hasSum_discEval i hi ht f, discEvalAway_algebraMap π A i hi hπ ht0 ht f⟩, fun T hT hTK htT => ⟨fieldRange_genField i hi hT …` and prove the remaining obligations. Use `finiteDimensional_genField i hi hT` as an intermediate fact. Take `⟨ev, evA, h⟩` from `exists_isDiscPoint i hi hπ A (genField i T) (map_mem_genField i hi hTK) (mem_genField_of_mem i hi hTK htT) ht0 ht`. Establish `hj : ∀ a, intEmb _ (ev.comp PowerSeries.C a) = i a` using `fun a => by simp [h.1]`. Conclude with `⟨this, inferInstance, isAdicComplete_integralClosure _, finite_residueField_integralClosure _, inferInstance, ev, evA, h.1, h.2, h.comp_algebraMap, isLocalHom_of_intEmb_eq_discEval i hi _ hinj ht h.1, finite_of_intEmb_eq i hi _ hj, isLocalHom_of_intEmb_eq i hi _ hinj hj⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem main (p : ℕ) [Fact p.Prime] :
     (ReciprocityTheory.MultiplicativeHeights.ResidueFieldInfiniteOn (algField p : Set ℂ_[p]) ∧
@@ -1203,7 +1191,7 @@ theorem main (p : ℕ) [Fact p.Prime] :
     isLocalHom_of_intEmb_eq i hi _ hinj hj⟩
 
 /- English proof (translation)
-Establish `hp : Irreducible (p : ℤ_[p])` using `PadicInt.irreducible_p`. Take `⟨i, hinj, hi⟩` from `exists_injective_norm_le_one (p := p) ℤ_[p] hp.ne_zero`. Conclude with `⟨i, hi, hinj, (map_ne_zero_iff i hinj).2 hp.ne_zero, (hi p).lt_of_ne fun h => hp.not_isUnit ((norm_map_eq_one_iff i hi hinj p).1 h), boundedOnFrames_map _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] :
     ∃ (i : ℤ_[p] →+* ℂ_[p]) (hi : ∀ x, ‖i x‖ ≤ 1) (_ : Function.Injective i) (hπ : i p ≠ 0),

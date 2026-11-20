@@ -12,31 +12,31 @@ section
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S] {r : ℕ}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ (hM i k) (hN k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kMat_mul {st : Start A} {M N : SlopeTestRemainingChoices S A} (hM : kMat st M) (hN : kMat st N) : kMat st (M * N) := fun i j => by
   rw [Matrix.mul_apply]; exact Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ (hM i k) (hN k j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.sub_apply]; exact Subalgebra.sub_mem _ (hM i j) (hN i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kMat_sub {st : Start A} {M N : SlopeTestRemainingChoices S A} (hM : kMat st M) (hN : kMat st N) : kMat st (M - N) := fun i j => by
   rw [Matrix.sub_apply]; exact Subalgebra.sub_mem _ (hM i j) (hN i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.neg_apply]; exact Subalgebra.neg_mem _ (hM i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kMat_neg {st : Start A} {M : SlopeTestRemainingChoices S A} (hM : kMat st M) : kMat st (-M) := fun i j => by
   rw [Matrix.neg_apply]; exact Subalgebra.neg_mem _ (hM i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply]; exact Subalgebra.smul_mem _ (hM i j) c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kMat_smul {st : Start A} (c : ℂ) {M : SlopeTestRemainingChoices S A} (hM : kMat st M) : kMat st (c • M) := fun i j => by
   rw [Matrix.smul_apply]; exact Subalgebra.smul_mem _ (hM i j) c
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.one_apply]; split_ifs · exact Subalgebra.one_mem _ · exact Subalgebra.zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kMat_one {st : Start A} : kMat st (1 : SlopeTestRemainingChoices S A) := fun i j => by
   rw [Matrix.one_apply]; split_ifs
@@ -44,12 +44,12 @@ theorem kMat_one {st : Start A} : kMat st (1 : SlopeTestRemainingChoices S A) :=
   · exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Introduce `_ _` and use `Subalgebra.zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kMat_zero {st : Start A} : kMat st (0 : SlopeTestRemainingChoices S A) := fun _ _ => Subalgebra.zero_mem _
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [io, Matrix.scalar_apply, Matrix.diagonal_apply] split_ifs · exact ha · exact Subalgebra.zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kMat_io {st : Start A} {a : A} (ha : a ∈ kAlg st) : kMat st (io a : SlopeTestRemainingChoices S A) := fun i j => by
   simp only [io, Matrix.scalar_apply, Matrix.diagonal_apply]
@@ -58,7 +58,7 @@ theorem kMat_io {st : Start A} {a : A} (ha : a ∈ kAlg st) : kMat st (io a : Sl
   · exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Introduce `x y` and use `by simp only [eU, Matrix.of_apply] split_ifs · exact Subalgebra.one_mem _ · exact Subalgebra.zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem kMat_eU {st : Start A} (a : S) (i j : Fin 2) : kMat st (eU a i j : SlopeTestRemainingChoices S A) := fun x y => by
   simp only [eU, Matrix.of_apply]
@@ -67,9 +67,9 @@ theorem kMat_eU {st : Start A} (a : S) (i j : Fin 2) : kMat st (eU a i j : Slope
   · exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Introduce `x y`. Unfold `ins`. Rewrite using `[Matrix.sum_apply]`. Use `Subalgebra.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.sum_mem _ fun j _ => kMat_mul (kMat_eU a i j) (hM i j) x y`.
+A detailed English derivation is pending.
 -/
 theorem kMat_ins {st : Start A} (a : S) {M : M2 (SlopeTestRemainingChoices S A)} (hM : ∀ i j, kMat st (M i j)) : kMat st (ins a M) := by
   intro x y
@@ -80,26 +80,26 @@ theorem kMat_ins {st : Start A} (a : S) {M : M2 (SlopeTestRemainingChoices S A)}
   exact Subalgebra.sum_mem _ fun j _ => kMat_mul (kMat_eU a i j) (hM i j) x y
 
 /- English proof (translation)
-Apply the tactic sequence `intro i j; fin_cases i <;> fin_cases j <;> simpa`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kMat_of {st : Start A} {a b c d : SlopeTestRemainingChoices S A} (ha : kMat st a) (hb : kMat st b) (hc : kMat st c)
     (hd : kMat st d) : ∀ i j, kMat st ((!![a, b; c, d] : M2 (SlopeTestRemainingChoices S A)) i j) := by
   intro i j; fin_cases i <;> fin_cases j <;> simpa
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (Or.inl ⟨Y, hY, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem x_mem (st : Start A) {Y : ℂ} (hY : star Y = Y) : st.x Y ∈ kAlg st :=
   Algebra.subset_adjoin (Or.inl ⟨Y, hY, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (Or.inr ⟨Y, hY, hr, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem xi_mem (st : Start A) {Y : ℂ} (hY : Y ∈ st.inv) (hr : star Y = Y) : st.xi Y ∈ kAlg st :=
   Algebra.subset_adjoin (Or.inr ⟨Y, hY, hr, rfl⟩)
 
 /- English proof (translation)
-Take `⟨u, v⟩` from `h.x_xi Y hY`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 theorem xi_comm {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) {Y : ℂ} (hY : Y ∈ st.inv) {g : A}
     (hg : Commute (st.x Y) g) : Commute (st.xi Y) g := by
@@ -109,9 +109,9 @@ theorem xi_comm {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) {Y : 
     _ = g * st.xi Y := by rw [← mul_assoc, v, one_mul]
 
 /- English proof (translation)
-Establish `hle : kAlg st ≤ Subalgebra.centralizer ℂ {g}`. Unfold `kAlg`. Rewrite using `[Algebra.adjoin_le_iff]`. Apply the tactic sequence `rintro b (⟨Y, -, rfl⟩ | ⟨Y, hY, -, rfl⟩) <;> rw [SetLike.mem_coe, Subalgebra.mem_centralizer_iff] <;>`. Apply the tactic sequence `intro m hm <;> rw [Set.mem_singleton_iff.mp hm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(hg Y).eq.symm`. Conclude with `(xi_comm h hY (hg Y)).eq.symm`. Use `hle ha` as an intermediate fact. Rewrite `this` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(this g rfl).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kAlg_comm {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) {g : A}
     (hg : ∀ Y, Commute (st.x Y) g) {a : A} (ha : a ∈ kAlg st) : Commute a g := by
@@ -127,7 +127,7 @@ theorem kAlg_comm {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) {g 
   exact (this g rfl).symm
 
 /- English proof (translation)
-Use `show Matrix.scalar (Ix S) s * M = M * Matrix.scalar (Ix S) s`. Use extensionality with `i j`. Simplify using `only [Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Conclude with `(h i j).eq`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem io_comm {s : A} {M : SlopeTestRemainingChoices S A} (h : ∀ i j, Commute s (M i j)) : Commute (io s : SlopeTestRemainingChoices S A) M := by
   show Matrix.scalar (Ix S) s * M = M * Matrix.scalar (Ix S) s
@@ -136,14 +136,14 @@ theorem io_comm {s : A} {M : SlopeTestRemainingChoices S A} (h : ∀ i j, Commut
   exact (h i j).eq
 
 /- English proof (translation)
-The claim follows from `(io_comm fun i j => (kAlg_comm h hs (hM i j)).symm).symm`.
+A detailed English derivation is pending.
 -/
 theorem kMat_comm_io {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) {s : A}
     (hs : ∀ Y, Commute (st.x Y) s) {M : SlopeTestRemainingChoices S A} (hM : kMat st M) : Commute M (io s) :=
   (io_comm fun i j => (kAlg_comm h hs (hM i j)).symm).symm
 
 /- English proof (translation)
-The claim follows from `io_comm fun x y => by simp only [eU, Matrix.of_apply] split_ifs · exact Commute.one_right s · exact Commute.zero_right s`.
+A detailed English derivation is pending.
 -/
 theorem eU_comm_io (a : S) (i j : Fin 2) (s : A) : Commute (io s : SlopeTestRemainingChoices S A) (eU a i j) :=
   io_comm fun x y => by
@@ -153,7 +153,7 @@ theorem eU_comm_io (a : S) (i j : Fin 2) (s : A) : Commute (io s : SlopeTestRema
     · exact Commute.zero_right s
 
 /- English proof (translation)
-The claim follows from `kMat_comm_io h (fun Y => ((h.x_fn Y _ (by simp [zfns])).mul_right (h.x_fn Y _ (by simp [zfns]))).mul_right (h.x_fn Y _ (by simp [zfns]))) hM`.
+A detailed English derivation is pending.
 -/
 theorem comm_kap {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) {M : SlopeTestRemainingChoices S A} (hM : kMat st M) :
     Commute M (kapL L) :=
@@ -161,14 +161,14 @@ theorem comm_kap {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) {M :
     (h.x_fn Y _ (by simp [zfns]))) hM
 
 /- English proof (translation)
-The claim follows from `kMat_comm_io h (fun Y => (h.x_fn Y _ (by simp [zfns])).smul_right L.TT) hM`.
+A detailed English derivation is pending.
 -/
 theorem comm_tz {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) {M : SlopeTestRemainingChoices S A} (hM : kMat st M) :
     Commute M (tz L) :=
   kMat_comm_io h (fun Y => (h.x_fn Y _ (by simp [zfns])).smul_right L.TT) hM
 
 /- English proof (translation)
-The claim follows from `kMat_comm_io h (fun Y' => by unfold LevelData.l0 exact ((h.x_nab Y').neg_right).sub_right ((show Commute (st.x Y') (algebraMap ℂ A (Y + 1 / 2)) from (Algebra.commutes _ _).symm).mul_right ((h.x_fn Y' _ (by simp [zfns])).mul_right (h.x_fn Y' _ (by simp [zfns]))))) hM`.
+A detailed English derivation is pending.
 -/
 theorem commute_level_zero_element {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) (Y : ℂ) {M : SlopeTestRemainingChoices S A} (hM : kMat st M) :
     Commute M (io (L.l0 Y)) :=
@@ -179,30 +179,28 @@ theorem commute_level_zero_element {L : LevelData A r} {st : Start A} (h : IsLev
       ((h.x_fn Y' _ (by simp [zfns])).mul_right (h.x_fn Y' _ (by simp [zfns]))))) hM
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Or.inl ⟨α, β, γ, h1, h2, h3, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dSpan_gen {st : Start A} {X φ τ α β γ : SlopeTestRemainingChoices S A} (h1 : kMat st α) (h2 : kMat st β) (h3 : kMat st γ) :
     α * (X * β - β * X) * γ ∈ dSpan st X φ τ :=
   Submodule.subset_span (Or.inl ⟨α, β, γ, h1, h2, h3, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Or.inr ⟨γ, h, Or.inl rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dSpan_phi {st : Start A} {X φ τ γ : SlopeTestRemainingChoices S A} (h : kMat st γ) : φ * γ ∈ dSpan st X φ τ :=
   Submodule.subset_span (Or.inr ⟨γ, h, Or.inl rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Or.inr ⟨γ, h, Or.inr rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem dSpan_phitau {st : Start A} {X φ τ γ : SlopeTestRemainingChoices S A} (h : kMat st γ) : φ * τ * γ ∈ dSpan st X φ τ :=
   Submodule.subset_span (Or.inr ⟨γ, h, Or.inr rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨α, β, γ, h1, h2, h3, rfl⟩ | ⟨γ, h, rfl | rfl⟩` into its components or cases. Rewrite using `[mul_assoc]`. Conclude with `dSpan_gen h1 h2 (kMat_mul h3 hγ)`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Conclude with `dSpan_phi (kMat_mul h hγ)`. Rewrite using `[mul_assoc]`. Conclude with `dSpan_phitau (kMat_mul h hγ)`. Consider the case `zero => rw [zero_mul]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dSpan_mul_right {st : Start A} {X φ τ M γ' : SlopeTestRemainingChoices S A} (hM : M ∈ dSpan st X φ τ) (hγ : kMat st γ') :
     M * γ' ∈ dSpan st X φ τ := by
@@ -217,11 +215,9 @@ theorem dSpan_mul_right {st : Start A} {X φ τ M γ' : SlopeTestRemainingChoice
   | smul c x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨α, β, γ, h1, h2, h3, rfl⟩ | ⟨γ, h, rfl | rfl⟩` into its components or cases. Rewrite using `[← mul_assoc, ← mul_assoc]`. Conclude with `dSpan_gen (kMat_mul hα h1) h2 h3`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ.left_comm γ]`. Conclude with `dSpan_phi (kMat_mul hα h)`. Rewrite using `[(hφ.mul_right hτ).left_comm γ]`. Conclude with `dSpan_phitau (kMat_mul hα h)`. Consider the case `zero => rw [mul_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dSpan_mul_left {st : Start A} {X φ τ M α' : SlopeTestRemainingChoices S A} (hM : M ∈ dSpan st X φ τ) (hα : kMat st α')
     (hφ : Commute α' φ) (hτ : Commute α' τ) : α' * M ∈ dSpan st X φ τ := by
@@ -237,32 +233,32 @@ theorem dSpan_mul_left {st : Start A} {X φ τ M α' : SlopeTestRemainingChoices
   | smul c x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Simplify using `[ins, Fin.sum_univ_two, add_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ins_up (a : S) (m00 m01 m11 : SlopeTestRemainingChoices S A) :
     ins a (!![m00, m01; 0, m11] : M2 (SlopeTestRemainingChoices S A)) = eU a 0 0 * m00 + eU a 0 1 * m01 + eU a 1 1 * m11 := by
   simp [ins, Fin.sum_univ_two, add_assoc]
 
 /- English proof (translation)
-Simplify using `[ins, Fin.sum_univ_two, add_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ins_low (a : S) (m00 m10 m11 : SlopeTestRemainingChoices S A) :
     ins a (!![m00, 0; m10, m11] : M2 (SlopeTestRemainingChoices S A)) = eU a 0 0 * m00 + eU a 1 0 * m10 + eU a 1 1 * m11 := by
   simp [ins, Fin.sum_univ_two, add_assoc]
 
 /- English proof (translation)
-Use `(Formalism.FourierDecayAlt.P.position_insertion_diagonal_compat ℂ A S a 1).1` as an intermediate fact. Simplify `this` using `[ins, Fin.sum_univ_two]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eU_sum (a : S) : (eU a 0 0 : SlopeTestRemainingChoices S A) + eU a 1 1 = 1 := by
   have := (Formalism.FourierDecayAlt.P.position_insertion_diagonal_compat ℂ A S a 1).1
   simpa [ins, Fin.sum_univ_two] using this
 
 /- English proof (translation)
-Establish `hΔ : xi * (lz * x - x * lz) + xi * (l0m + K * E - lz) * x - (l0m + K * E - lz) = K * (xi * E * x) - K * E`. Establish `h2 : xi * (l0m + K * E - lz) * x = l0m * (xi * x) + K * (xi * E * x) - xi * lz * x`. Rewrite using `[mul_sub, mul_add, ← mul_assoc xi K, hk, hl]`. Use `noncomm_ring`. Rewrite using `[h2, hxi, mul_sub, ← mul_assoc xi x, hxi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Rewrite using `[hΔ]`. Establish `e : K * E = (e00 + e11) * (K * E)` using `by rw [h01, one_mul]`. Establish `h3 : K * (e00 * (E - (xi * E * x - E) + T) + e01 * m01 + e11 * (xi * E * x)) = e00 * (K * (E - (xi * E * x - E) + T)) + K * (e01 * m01) + e11 * (K * (xi * E * x))`. Rewrite using `[mul_add, mul_add, ← mul_assoc K e00, k0, ← mul_assoc K e11, k3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[h3, mul_assoc K T e00, t0, ← mul_assoc K e00, k0]`. Rewrite using `[show e11 = 1 - e00 by rw [← h01]; abel]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plus_id {R : Type*} [Ring R] (e00 e01 e11 K T l0m E x xi lz m01 : R) (h01 : e00 + e11 = 1)
     (k0 : K * e00 = e00 * K) (k1 : K * e01 = e01 * K) (k3 : K * e11 = e11 * K) (t0 : T * e00 = e00 * T)
@@ -285,7 +281,7 @@ theorem plus_id {R : Type*} [Ring R] (e00 e01 e11 K T l0m E x xi lz m01 : R) (h0
   noncomm_ring
 
 /- English proof (translation)
-Establish `e : K * E = (e00 + e11) * (K * E)` using `by rw [h01, one_mul]`. Rewrite using `[mul_add, mul_add, ← mul_assoc K e00, k0, ← mul_assoc K e11, k3, mul_assoc K T e11, t3, ← mul_assoc K e11, k3]`. Rewrite using `[show e11 = 1 - e00 by rw [← h01]; abel]`. Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minus_id {R : Type*} [Ring R] (e00 e10 e11 K T l0m E lz m10 : R) (h01 : e00 + e11 = 1)
     (k0 : K * e00 = e00 * K) (k3 : K * e11 = e11 * K) (t3 : T * e11 = e11 * T) :
@@ -297,11 +293,11 @@ theorem minus_id {R : Type*} [Ring R] (e00 e10 e11 K T l0m E lz m10 : R) (h01 : 
   noncomm_ring
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨fun Y hY => kMat_io (x_mem st hY), fun Y hY hr => kMat_io (xi_mem st hY hr)⟩`. Consider the case `cons l w ih`. Take `⟨h1, h2⟩` from `ih`. Establish `hd : ∀ c : ℂ, ∀ i j, kMat st ((!![c • (1 : SlopeTestRemainingChoices S A), 0; 0, 1] : M2 (SlopeTestRemainingChoices S A)) i j)` using `fun c => kMat_of (kMat_smul c kMat_one) kMat_zero kMat_zero kMat_one`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hp : l.plus`. Establish `e : ofWord L st (l :: w) = (ofWord L st w).plus L l.intersection_update_fsHerm_neg_one l.pt` using `by simp [ofWord, hp]`. Rewrite using `[e]`. Conclude with `⟨fun Y hY => kMat_mul (h1 Y hY) (kMat_ins _ (hd _)), fun Y hY hr => kMat_mul (h2 Y hY hr) (kMat_ins _ (hd _))⟩`. Establish `e : ofWord L st (l :: w) = (ofWord L st w).minus L l.intersection_update_fsHerm_neg_one l.pt` using `by simp [ofWord, hp]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `⟨fun Y hY => kMat_mul (h1 Y hY) (kMat_ins _ (hd _)), fun Y hY hr => kMat_mul (h2 Y hY hr) (kMat_ins _ (hd _))⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem x_kMat (L : LevelData A r) (st : Start A) (w : List (Letter ℂ S)) :
     (∀ Y : ℂ, star Y = Y → kMat st ((ofWord L st w).x Y)) ∧
@@ -321,33 +317,31 @@ theorem x_kMat (L : LevelData A r) (st : Start A) (w : List (Letter ℂ S)) :
       exact ⟨fun Y hY => kMat_mul (h1 Y hY) (kMat_ins _ (hd _)), fun Y hY hr => kMat_mul (h2 Y hY hr) (kMat_ins _ (hd _))⟩
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Use `⟨kMat_one, kMat_one, fun Y _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[show ofWord L st ([] : List (Letter ℂ S)) = st.frame from rfl, sub_self]`. Conclude with `zero_mem _`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cons l w ih`. Establish `hA0` using `hA`. Take `⟨hnd, hre, hpt, hpw⟩` from `hA`. Establish `hnd' : l.intersection_update_fsHerm_neg_one ∉ w.map Letter.intersection_update_fsHerm_neg_one ∧ (w.map Letter.intersection_update_fsHerm_neg_one).Nodup` using `List.nodup_cons.mp (by simpa only [List.map_cons] using hnd)`. Establish `hpw'` using `List.pairwise_cons.mp hpw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAw : admitted st w` using `⟨hnd'.2, fun l' h => hre l' (by simp [h]), fun l' h => hpt l' (by simp [h]), hpw'.2⟩`. Take `⟨ihc, ihci, ihl⟩` from `ih hAw`. Establish `hfr : IsFrame L (ofWord L st w)` using `Formalism.FourierDecayAlt.P.frame_of_admissible_word A S r L st w hL hst hAw`. Take `⟨p0, p1, pm1, -, -⟩` from `hpt l (by simp)`. Establish `hd` using `hpw'.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m0 : l.pt ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ p0 (fun l' hl' => ⟨fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combin …`. Establish `m1 : l.pt + 1 ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ p1 (fun l' hl' => ⟨fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' (-2) (by norm_num) (by push_cast; linear_com …`. Establish `mm1 : l.pt - 1 ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ pm1 (fun l' hl' => ⟨fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 2 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combinat …`. Establish `hr : star l.pt = l.pt` using `hre l (by simp)`. Establish `hr1 : star (l.pt + 1) = l.pt + 1` using `by rw [star_add, hr, star_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrm : star (l.pt - 1) = l.pt - 1` using `by rw [star_sub, hr, star_one]`. Take `⟨hx, hxi⟩` from `x_kMat L st w`. Establish `hrec` using `Formalism.FourierDecayAlt.P.admissible_rec_of_admissible A S r L st (l :: w) hA0`. Establish `h01` using `eU_sum (A := A) l.intersection_update_fsHerm_neg_one`. Establish `kE : ∀ i j, kapL L * (eU l.intersection_update_fsHerm_neg_one i j : SlopeTestRemainingChoices S A) = eU l.intersection_update_fsHerm_neg_one i j * kapL L` using `fun i j => (eU_comm_io _ _ _ _).eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tE : ∀ i j, tz L * (eU l.intersection_update_fsHerm_neg_one i j : SlopeTestRemainingChoices S A) = eU l.intersection_update_fsHerm_neg_one i j * tz L` using `fun i j => (eU_comm_io _ _ _ _).eq`. Distinguish the cases in `hp : l.plus`. Establish `e : ofWord L st (l :: w) = (ofWord L st w).plus L l.intersection_update_fsHerm_neg_one l.pt` using `by simp [ofWord, hp]`. Rewrite using `[e]`. Use `⟨?_, ?_, fun Y hY hY1 => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `kMat_mul ihc (kMat_ins _ (kMat_of (kMat_smul _ (hxi _ p1 hr1)) kMat_zero kMat_zero (hx _ hr)))`. Conclude with `kMat_mul ihci (kMat_ins _ (kMat_of (kMat_smul _ (hx _ hr1)) kMat_zero kMat_zero (hxi _ p0 hr)))`. Take `⟨hYf, hne0, -⟩` from `hY`. Take `⟨hY1f, -⟩` from `hY1`. Establish `ec` using `Formalism.FourierDecayAlt.P.ee_conjugation A S r L (ofWord L st w) Y l.pt hfr hYf hY1f m0 m1 (fun h => hne0 (by rw [h, sub_self]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDD : (ofWord L st w).DD Y l.pt = (ofWord L st w).xi l.pt * (ofWord L st w).ee Y * (ofWord L st w).x l.pt - (ofWord L st w).ee Y`. Use `sub_eq_iff_eq_add.mp ec` as an intermediate fact. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Establish `hl' : ((ofWord L st w).plus L l.intersection_update_fsHerm_neg_one l.pt).l L Y = io (L.l0 Y) + kapL L * ins l.intersection_update_fsHerm_neg_one !![(ofWord L st w).ee Y - (ofWord L st w).DD Y l.pt + tz L, -((Y - l.pt)⁻¹ • 1); 0, (ofWord L st w).xi l.pt * (ofWord L st w).ee Y * (o …` using `rfl`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxk` using `hx _ hr`. Establish `hxik` using `hxi _ p0 hr`. Rewrite using `[hl', ins_up, hDD, plus_id _ _ _ _ _ _ _ _ _ _ _ h01 (kE 0 0) (kE 0 1) (kE 1 1) (tE 0 0) (hfr.x_xi _ m0).2 (commute_level_zero_element hst Y hxik).eq (comm_kap hst hxik).eq]`. Establish `hδ` using `ihl Y hYf hY1f`. Use `add_mem hδ (add_mem (add_mem (dSpan_phitau (kMat_eU _ _ _)) (dSpan_phi (kMat_mul (kMat_eU _ _ _) (kMat_neg (kMat_smul _ kMat_one))))) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `dSpan_mul_left ?_ (kMat_sub (kMat_eU _ _ _) (kMat_eU _ _ _)) (comm_kap hst (kMat_sub (kMat_eU _ _ _) (kMat_eU _ _ _))) (comm_tz hst (kMat_sub (kMat_eU _ _ _) (kMat_eU _ _ _)))` and prove the remaining obligations. Use `sub_mem (add_mem ?_ (dSpan_mul_right (dSpan_mul_left hδ hxik (comm_kap hst hxik) (comm_tz hst hxik)) hxk)) hδ` and prove the remaining obligations. Use `dSpan_gen (X := (st.frame : FrameData S A).l L Y) (φ := kapL L) (τ := tz L) hxik hxk kMat_one` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `e : ofWord L st (l :: w) = (ofWord L st w).minus L l.intersection_update_fsHerm_neg_one l.pt` using `by simp [ofWord, hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `⟨?_, ?_, fun Y hY hY1 => ?_⟩` and prove the remaining obligations. Conclude with `kMat_mul ihc (kMat_ins _ (kMat_of (kMat_smul _ (hxi _ pm1 hrm)) kMat_zero kMat_zero (hx _ hr)))`. Conclude with `kMat_mul ihci (kMat_ins _ (kMat_of (kMat_smul _ (hx _ hrm)) kMat_zero kMat_zero (hxi _ p0 hr)))`. Establish `hq : (ofWord L st w).q (l.pt - 1) ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hrec.2.2.2.2.2` as an intermediate fact. Simplify using `only [hp, if_false, Bool.false_eq_true] at this`. Conclude with `this.2`. Establish `hfree` using `Formalism.FourierDecayAlt.P.frame_free_of_new_position A S r L st w l.intersection_update_fsHerm_neg_one hnd'.1`. Apply the tactic sequence `have ml := Formalism.FourierDecayAlt.P.minus_letter_last_entry A S r L (ofWord L st w) l.intersection_update_fsHerm_neg_one l.pt ⟨hL, hfr, hfree, hr, m0, m1, mm1, hq⟩ Y hY hY1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hYf, -⟩` from `hY`. Take `⟨hY1f, -⟩` from `hY1`. Establish `hl' : ((ofWord L st w).minus L l.intersection_update_fsHerm_neg_one l.pt).l L Y = io (L.l0 Y) + kapL L * ((ofWord L st w).minus L l.intersection_update_fsHerm_neg_one l.pt).ee Y` using `rfl`. Rewrite using `[hl', ml, ins_low, minus_id _ _ _ _ _ _ _ _ _ h01 (kE 0 0) (kE 1 1) (tE 1 1)]`. Establish `hδ` using `ihl Y hYf hY1f`.
-
-Use `add_mem hδ (add_mem (dSpan_phi (kMat_mul (kMat_eU _ _ _) (kMat_neg (kMat_smul _ (kMat_mul (hxi _ p0 hr) (hxi _ pm1 hrm)))))) (dSpan_phitau (kMat_eU _ _ _)))` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem main (L : LevelData A r) (st : Start A) (hL : IsStarLevel L) (hst : IsLevelStart L st)
     (w : List (Letter ℂ S)) (hA : admitted st w) :
@@ -449,7 +443,7 @@ end Formalism.FourierDecayAlt.P.TLA.L1
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `A S _ _ _ _ _ _ r L st w hL hst hA`. Conclude with `TLA.L1.main L st hL hst w hA`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem l_shape : Formalism.FourierDecayAlt.TL.LShape := by
   intro A S _ _ _ _ _ _ r L st w hL hst hA

@@ -22,15 +22,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ReadingSpan
 
 /- English proof (translation)
-Introduce `τ k`. Rewrite using `[(h i τ).1 k, show (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ (inR i).1 (inR i).2 _]`. Establish `hi` using `i.2`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hp : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + i` using `by simp only [Ranks.sigW]; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk2` using `k.2`. Establish `h3` using `Formalism.L2.NTheta.lamAt_add_add_le (D.hc τ) (D.R.k + i - 1 - k) k (by simp only [Ranks.r]; omega)`. Establish `h4 : Formalism.L2.NTheta.lamAt (D.hc τ) (k + (D.R.k + i - 1 - k)) = -(D.hc τ).b i`. Unfold `Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Conclude with `Fin.ext (by simp only; omega)`. Establish `h5` using `(D.hc τ).gap_be i`. Establish `h6 : ((D.R.k + i - 1 - k : ℕ) : ℚ) = ((D.R.sigW ((i : ℕ) + 1)).1 : ℚ) - (k + 1)`. Rewrite using `[show D.R.k + i - 1 - k = (D.R.sigW ((i : ℕ) + 1)).1 - (k + 1) by omega, Nat.cast_sub hk2]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite `h3` using `[h4, h6]`. Simplify using `only [aPl, if_pos k.2]`. Rewrite using `[Int.le_toNat (Int.floor_nonneg.2 (by linarith)), Int.le_floor]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lastPos_of_kapIs {D : D7} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} (h : KapIs κ) (i : Fin D.R.m) :
     ∀ τ k, 1 ≤ (κ i).aP τ k := by
@@ -58,7 +58,7 @@ theorem lastPos_of_kapIs {D : D7} {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D (
   linarith
 
 /- English proof (translation)
-Establish `b` using `Module.finBasis ℂ H'`. Establish `h : Submodule.span ℂ (Set.range fun k => e.symm.toLinearMap (b k)) = ⊤`. Rewrite using `[← span_range_eq_basis b e.symm.toLinearMap, show Set.range e.symm.toLinearMap = Set.univ from Set.range_eq_univ.2 e.symm.surjective, Submodule.span_univ]`. Rewrite using `[← finrank_top, ← h]`. Conclude with `(finrank_range_le_card _).trans (Fintype.card_fin _).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_of_antilinear {H H' : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup H'] [Module ℂ H']
     [FiniteDimensional ℂ H'] (e : H ≃ₗ⋆[ℂ] H') : Module.finrank ℂ H ≤ Module.finrank ℂ H' := by
@@ -69,7 +69,7 @@ theorem finrank_le_of_antilinear {H H' : Type} [AddCommGroup H] [Module ℂ H] [
   exact (finrank_range_le_card _).trans (Fintype.card_fin _).le
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Establish `hl : ((lieFac (T.Q.Dw j) (xiR D) a : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (lieFac_pos _ _ _).ne'`. Conclude with `(inv_smul_smul₀ hl _).symm`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adel_rdU_eq {D : D7} (T : CoreJ D) {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : HSp D} (hV : T.V j σ = W)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) :
@@ -82,11 +82,11 @@ theorem adel_rdU_eq {D : D7} (T : CoreJ D) {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hs, -, w, hw⟩` from `GlobalTheory.HolDict.holShape_of_good D G Pl0 T0 A T R κ v₀ ht i σ hσ`. Establish `hg` using `GlobalTheory.T.coreDictionary_good_at_good_embedding D G Pl0 T0 A T R κ v₀ hL hM ht hp i σ hσ hV w hw`. Establish `hx : (R.HW i σ).e x ∈ R.Wall i σ` using `(hM.HW i σ).2.1 ▸ LinearMap.mem_range_self _ x`. Take `⟨h1, h2⟩` from `GlobalTheory.T.holomorphic_cusp_form_of_extremal_vector_multiplicity hP D R.θ _ _ (R.MW i σ) w (v₀ i σ) hM.inf hs hw (ht.hv₀ i σ).1 _ _ _ hx`. Rewrite `h1` using `[show levChi _ (R.βW i) (R.datWp i R.triv) = fun _ => 1 from funext (GlobalTheory.ConjEval.levChi_principal R i)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨P, hP0, hPb, hP⟩` from `GlobalTheory.T.exists_boundedSection_of_boundedHolomorphicForm D R.θ _ _ _ w _ _ _ _ _ _ _ _ _ hs hg _ h1`. Establish `hc` using `GlobalTheory.T.isHolomorphicCuspForm_of_adelic_constantTerms_zero D R.θ _ _ _ w _ _ _ _ _ _ _ _ _ hs hg P hPb (hP.symm ▸ h2)`. Establish `hτ : D.what₂.Tau` using `D.eTau.symm ⟨1, Subgroup.one_mem _⟩`. Establish `hmem` using `GlobalTheory.OntoCore.holSub0_le_span_cuspA D T ht.laws _ (inR i) (κ i) (fun τ k _ => lastPos_of_kapIs ht.kap i τ k) ((ht.kap i hτ).2.2.symm ▸ hn) _ hσ ⟨holCusp_mem_holSub _ _ hc, hP0⟩`. Establish `h3` using `Submodule.mem_map_of_mem (f := adel (Wc D i) (castDict hV (T.dict ((i : ℕ) + 1) (res T σ))) (muPin (Wc D i) (castDict hV (T.dict ((i : ℕ) + 1) (res T σ))) (castDict hV (T.mu ((i : ℕ) + 1) (res T σ))) (T.cE ((i : ℕ) + 1) (res T σ)))) hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[hP, Submodule.map_span]`. Use `Submodule.span_le.2 ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Rewrite using `[adel_rdU_eq T hV (wtA (κ i)) f]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨f, hf⟩, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evAt_mem_span (hP : GlobalTheory.Published.CuspRapidDecay)
     {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
@@ -118,7 +118,7 @@ theorem evAt_mem_span (hP : GlobalTheory.Published.CuspRapidDecay)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hP D G _ _ Pl0 T0 A T _ R κ v₀ hL hM ht hp hJ hB hI hn`. Use `jUnif_of T R κ v₀ ht.laws hJ hB hI (GlobalTheory.PhiIndep.phiC_indep D T κ ht.laws) (evAt_mem_span hP T R κ v₀ hL hM ht hp hn) fun i σ hσ => ?_` and prove the remaining obligations. Take `⟨e⟩` from `(GlobalTheory.T.hilbertModel_conjugation_antilinear_bijection D G Pl0 T0 A T R κ v₀ hM ht).1 i σ hσ`. Conclude with `finrank_le_of_antilinear e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jUnif : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsModels → TieIn T R κ v₀ → T.pb = R.C.P.pb → JEvExists T R κ v₀ → JEvBar T R κ → EvInj T R v₀ → 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → JUnif T R κ v₀ := by
   intro hP D G _ _ Pl0 T0 A T _ R κ v₀ hL hM ht hp hJ hB hI hn

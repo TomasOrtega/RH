@@ -24,13 +24,11 @@ noncomputable section
 namespace GlobalTheory.RowEx.BotField
 
 /- English proof (translation)
-Take `⟨H, K, M₀, hM₀, hH, hv⟩` from `hab`. Take `⟨Ω, hΩ, halg⟩` from `hc`. Set `S : Set ℂ` to `Set.range fun x : T × H × K => v x.1 x.2.1 x.2.2 / Ω`. Use `haveI : Finite S := Set.finite_range _ |>.to_subtype`. Establish `hS : ∀ z ∈ S, IsIntegral ℚ z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨⟨t, h, k⟩, rfl⟩`. Conclude with `(halg t h (hH h h.2) k).isIntegral`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ S) := IntermediateField.finiteDimensional_adjoin hS`. Use `⟨M₀ ⊔ IntermediateField.adjoin ℚ S, inferInstance, Ω, hΩ, fun t h hh k => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `hv t h hh k`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Finset.sum_div]`. Use `sum_mem fun h' hh' => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `sum_mem fun k' hk' => ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`.
-
-Use `mul_mem ((le_sup_left : M₀ ≤ _) (hc h' k')) ((le_sup_right : IntermediateField.adjoin ℚ S ≤ _) ?_)` and prove the remaining obligations. Conclude with `IntermediateField.subset_adjoin ℚ S ⟨⟨t, ⟨h', hh'⟩, ⟨k', hk'⟩⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem field_of_gens {T Hh κ : Type} [Finite T] (v : T → Hh → κ → ℂ) (good : Set Hh)
     (hab : ∃ (H : Finset Hh) (K : Finset κ) (M₀ : IntermediateField ℚ ℂ), FiniteDimensional ℚ M₀ ∧ (∀ h ∈ H, h ∈ good) ∧
@@ -56,7 +54,7 @@ theorem field_of_gens {T Hh κ : Type} [Finite T] (v : T → Hh → κ → ℂ) 
   exact IntermediateField.subset_adjoin ℚ S ⟨⟨t, ⟨h', hh'⟩, ⟨k', hk'⟩⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨M₁, h₁, Ω, hΩ, e₁⟩` from `field_of_gens (fun t h k => X.I W.ψ W.θ t (MvPolynomial.monomial k 1) h) (GfC WW : Set (GA D WW)) (GlobalTheory.T.bottom_triangle_algebraicity_finite_data hP hI hL hX) (GlobalTheory.T.bottom_triangle_period_algebraic hP hI hL hX)`. Take `⟨M₂, h₂, Ω', hΩ', e₂⟩` from `field_of_gens (fun t h k => X.I' W.ψ W.θ t (MvPolynomial.monomial k 1) h) (GfC WW : Set (GA D WW)) (GlobalTheory.T.bottom_triangle_dual_algebraicity_finite_data hP hI hL hX) (GlobalTheory.T.bottom_triangle_dual_period_algebraic hP hI hL hX)`. Use `⟨M₁ ⊔ M₂, inferInstance, Ω, Ω', hΩ, hΩ', fun t h hh => ⟨fun k _ => ?_, fun k _ => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨⟨_, (le_sup_left : M₁ ≤ _) (e₁ t h hh k)⟩, rfl⟩`. Conclude with `⟨⟨_, (le_sup_right : M₂ ≤ _) (e₂ t h hh k)⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem sumsIn_bottom (hP : GlobalTheory.FunPr.Hypotheses₂) (hI : ∀ D, GlobalTheory.NormSum.Inp D) {D : D7} {T : Type} [Finite T] {L : LevCh D T}
     {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}
@@ -71,7 +69,7 @@ theorem sumsIn_bottom (hP : GlobalTheory.FunPr.Hypotheses₂) (hI : ∀ D, Globa
   · exact ⟨⟨_, (le_sup_right : M₂ ≤ _) (e₂ t h hh k)⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨Ω, Ω', h0, h0', H⟩` from `h`. Conclude with `⟨Ω, Ω', h0, h0', fun t g hg => ⟨fun k hk => hσ ((H t g hg).1 k hk), fun k hk => hσ ((H t g hg).2 k hk)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sumsIn_mono {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {A A' WW : HSp D}
     {X : Tri T A A' WW} {K K' : Type} [Field K] [Field K'] {σ : K →+* ℂ} {σ' : K' →+* ℂ} (h : SumsIn W σ X)
@@ -82,13 +80,11 @@ theorem sumsIn_mono {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridD
 end GlobalTheory.RowEx.BotField
 
 /- English proof (translation)
-Introduce `hP hI`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ => ?_⟩⟩` and prove the remaining obligations. Use `haveI : Finite T := hS.fin`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `hex : ∀ ij : Fin D.R.m × Fin D.R.m, ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ ∃ (A₁ A₂ WW : HSp D) (X : Tri T A₁ A₂ WW), IsBottomTri ch.W ij.1 ij.2 X ∧ SumsIn ch.W (algebraMap M ℂ) X`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ij`. Take `⟨A₁, A₂, WW, X, hX⟩` from `exists_bottomTri hL ch.G ch.W ij.1 ij.2`. Take `⟨M, hM, hs⟩` from `GlobalTheory.RowEx.BotField.sumsIn_bottom hP hI hL hX`. Conclude with `⟨M, hM, A₁, A₂, WW, X, hX, hs⟩`. Use `choose M hM hB using hex`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI := hM`. Use `⟨⨆ ij, M ij, IntermediateField.finiteDimensional_iSup_of_finite, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨A₁, A₂, WW, X, hX, hs⟩` from `hB (i, j)`. Use `⟨A₁, A₂, WW, X, hX, GlobalTheory.RowEx.BotField.sumsIn_mono hs ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`.
-
-Conclude with `⟨⟨z, (le_iSup M (i, j) : M (i, j) ≤ _) z.2⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowEx.nfBot_holds : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → NFBot := by
   intro hP hI

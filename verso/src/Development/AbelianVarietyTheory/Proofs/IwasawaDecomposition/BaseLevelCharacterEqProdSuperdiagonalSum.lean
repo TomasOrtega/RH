@@ -19,11 +19,11 @@ section Gen
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨a, c, hc, hac, hmem⟩` from `Formalism.IndefR.NX.xiRed_isXiRes D kv`. Establish `h1` using `Formalism.L2.Col.reduction_spec (D.naut.plGw kv.1 kv.2) (a := D.host.xi0) (r := a) (s := c) hc (by`. Express the relevant statement in the definitionally equal form `(c : D.host.E) * D.host.xi0 = (a : D.host.E)`. Rewrite using `[hac, mul_comm])`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Ideal.Quotient.mk (D.naut.plGw kv.1 kv.2).asIdeal (((NX.xiRed D kv).val : ℕ) : 𝓞 D.host.E) * Ideal.Quotient.mk (D.naut.plGw kv.1 kv.2).asIdeal c = Ideal.Quotient.mk (D.naut.plGw kv.1 kv.2).asIdeal a`. Rewrite using `[← map_mul, Ideal.Quotient.eq]`. Conclude with `hmem`. Establish `hc0 : Ideal.Quotient.mk (D.naut.plGw kv.1 kv.2).asIdeal c ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h3 : Formalism.L2.Col.redP (D.naut.plGw kv.1 kv.2) D.host.xi0 = Ideal.Quotient.mk (D.naut.plGw kv.1 kv.2).asIdeal (((NX.xiRed D kv).val : ℕ) : 𝓞 D.host.E)`. Apply `mul_left_cancel₀ hc0` to reduce the goal to its premises. Rewrite using `[h1, ← h2, mul_comm]`. Use `show res (Formalism.L2.Col.redP _ D.host.xi0) = _`. Rewrite using `[h3, map_natCast, map_natCast, ZMod.natCast_zmod_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_xiBar (kv : Σ k : Fin 2, D.nd.PlG k) {PP : Pl D.host.E} (e : PP = D.naut.plGw kv.1 kv.2)
     (res : kP PP ≃+* ZMod (D.host.g kv.1)) : res (xiBar D PP) = NX.xiRed D kv := by
@@ -46,7 +46,7 @@ theorem res_xiBar (kv : Σ k : Fin 2, D.nd.PlG k) {PP : Pl D.host.E} (e : PP = D
   rw [h3, map_natCast, map_natCast, ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.DIV.P0, LevelP.ofLocal]`. Use `erw [MonoidHom.finset_prod_apply, Units.coe_prod]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem baseLevelCharacter_eq_prod_superdiagonalSum {Pg : Finset (Pl D.host.E)} {r : ℕ} (ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) D.what₂.LL)
     (y : (Formalism.L2.DIV.P0 Pg r ψ).H) :
@@ -57,11 +57,11 @@ theorem baseLevelCharacter_eq_prod_superdiagonalSum {Pg : Finset (Pl D.host.E)} 
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.NX.supSum edgeSum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : (b : ℕ) = a + 1`. Establish `h' : supEdge a b` using `h`. Rewrite using `[if_pos h, if_pos h']`. Both sides reduce to the same expression. Establish `h' : ¬ supEdge a b` using `h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[if_neg h, if_neg h', map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem supSum_map {κ : Type} [CommRing κ] {n : ℕ} (e : κ →+* ZMod n) {r : ℕ} (g : GL (Fin r) κ) :
     Formalism.L2.NX.supSum r ((Matrix.GeneralLinearGroup.map e g : GL (Fin r) (ZMod n)) : Matrix (Fin r) (Fin r) (ZMod n)) =
@@ -83,16 +83,16 @@ def thOf (ζ : Fin 2 → ↥D.LL0) (hp : ∀ k, ζ k ^ D.host.g k = 1) (k : Fin 
   ((AddChar.zmodChar (D.host.g k) (hp k)).toMonoidHom.toHomUnits)⁻¹
 
 /- English proof (translation)
-Simplify using `[thOf, MonoidHom.inv_apply, AddChar.toMonoidHom_apply, AddChar.zmodChar_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem thOf_val (ζ : Fin 2 → ↥D.LL0) (hp : ∀ k, ζ k ^ D.host.g k = 1) (k : Fin 2) (z : ZMod (D.host.g k)) :
     (((thOf ζ hp k (Multiplicative.ofAdd z) : (↥D.LL0)ˣ) : ↥D.LL0) : D.what₂.LL) = ((ζ k : D.what₂.LL) ^ z.val)⁻¹ := by
   simp [thOf, MonoidHom.inv_apply, AddChar.toMonoidHom_apply, AddChar.zmodChar_apply]
 
 /- English proof (translation)
-Establish `hg : (D.host.g k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (D.host.g_prime k).ne_zero`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Establish `e1 : ((ζ k ^ D.host.g k : ↥D.LL0) : D.what₂.LL) = (ζ k : D.what₂.LL) ^ D.host.g k` using `rfl`. Rewrite using `[e1, map_pow, hζ, ← Complex.exp_nat_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((D.host.g k : ℕ) : ℂ) * (2 * Real.pi * Complex.I / (D.host.g k : ℂ)) = 2 * Real.pi * Complex.I`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2, Complex.exp_two_pi_mul_I]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_of_emb (ζ : Fin 2 → ↥D.LL0)
     (hζ : ∀ k, D.what₂.embLL (ζ k : D.what₂.LL) = Complex.exp (2 * Real.pi * Complex.I / (D.host.g k : ℂ))) (k : Fin 2) :
@@ -108,23 +108,23 @@ theorem pow_of_emb (ζ : Fin 2 → ↥D.LL0)
   simp
 
 /- English proof (translation)
-Establish `hp` using `pow_of_emb ζ hζ`. Take `⟨Pg, pl, res, ψ, eC, hT, hW⟩` from `h`. Use `⟨thOf ζ hp, fun k hk => ?_, fun g => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hg1 : 1 < D.host.g k` using `(D.host.g_prime k).one_lt`. Establish `: Fact (1 < D.host.g k)` using `⟨hg1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun f : Multiplicative (ZMod (D.host.g k)) →* (↥D.LL0)ˣ => (((f (Multiplicative.ofAdd 1) : (↥D.LL0)ˣ) : ↥D.LL0) : D.what₂.LL)) hk`. Simplify using `only [thOf_val, ZMod.val_one, pow_one, MonoidHom.one_apply, Units.val_one] at e`. Establish `e' : (ζ k : D.what₂.LL) = 1`. Use `congrArg (·⁻¹) e` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e2` using `congrArg D.what₂.embLL e'`. Rewrite `e2` using `[hζ, map_one]`. Conclude with `((Complex.isPrimitiveRoot_exp (D.host.g k) (D.host.g_prime k).ne_zero).ne_one hg1) e2`. Rewrite using `[hT.p0, mem_U]`. Express the relevant statement in the definitionally equal form `(∀ PP ∈ Set.univ, eC g PP ∈ unip _ _) ↔ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_univ, forall_true_left]`. Rewrite using `[pl.surjective.forall]`. Use `forall_congr' fun kv => ?_` and prove the remaining obligations. Rewrite using `[hT.comp g kv]`. Establish `e : ∀ a b : Fin D.R.r, (Matrix.GeneralLinearGroup.map (res kv).toRingHom (eC g (pl kv))).val a b = res kv ((eC g (pl kv)).val a b)` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, EmbeddingLike.map_eq_zero_iff, EmbeddingLike.map_eq_one_iff]`. Conclude with `⟨fun h => ⟨fun a b hab => h.1 hab, h.2⟩, fun h => ⟨fun a b hab => h.1 a b hab, h.2⟩⟩`. Establish `hu0 : eC u ∈ (Formalism.L2.DIV.P0 Pg D.R.r ψ).H` using `(hT.p0 u).1 u.2`. Rewrite using `[hT.chi0 u hu0, Units.val_inv_eq_inv_val, baseLevelCharacter_eq_prod_superdiagonalSum]`. Establish `hfac : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ψ (pl kv).1 (edgeSum supEdge (eC u (pl kv))) = (ζ kv.1 : D.what₂.LL) ^ (NX.xiRed D kv * Formalism.L2.NX.supSum D.R.r (((eG u : G0g D.nd) kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))). …`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `kv`. Establish `hres : res kv (xiBar D (pl kv).1 * edgeSum supEdge (eC u (pl kv))) = NX.xiRed D kv * Formalism.L2.NX.supSum D.R.r (((eG u : G0g D.nd) kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))`. Rewrite using `[map_mul, res_xiBar kv (hT.place kv), hT.comp u kv, supSum_map]`. Both sides reduce to the same expression. Rewrite using `[← hres]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : xiBar D (pl kv).1 * edgeSum supEdge (eC u (pl kv)) = (((res kv (xiBar D (pl kv).1 * edgeSum supEdge (eC u (pl kv)))).val : ℤ) : kP (pl kv).1)`. Apply `(res kv).injective` to reduce the goal to its premises. Rewrite using `[map_intCast, Int.cast_natCast, ZMod.natCast_zmod_val]`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[hW kv _ _ hb, map_pow, hζ, ← Complex.exp_nat_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `lhs : (((psiUOf D.nd (NX.xiRed D) (thOf ζ hp) ⟨_, hu⟩ : (↥D.LL0)ˣ) : ↥D.LL0) : D.what₂.LL) = ∏ kv : (Σ k : Fin 2, D.nd.PlG k), ((ζ kv.1 : D.what₂.LL) ^ (NX.xiRed D kv * Formalism.L2.NX.supSum D.R.r (((eG u : G0g D.nd) kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R. …`. Rewrite using `[psiUOf_apply, Units.coe_prod, IntermediateField.coe_prod]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun kv _ => thOf_val ζ hp kv.1 _`. Rewrite using `[lhs, ← Fintype.prod_equiv pl (fun kv => ψ (pl kv).1 (edgeSum supEdge (eC u (pl kv)))) _ (fun _ => rfl), Finset.prod_inv_distrib]`. Conclude with `congrArg _ (Finset.prod_congr rfl fun kv _ => (hfac kv).symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_theta {G : Type} [Group G] {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ}
     {eG : G ≃* G0g D.nd} (h : PsiPPTie D P0 ψ0 Ps ψs eG) (ζ : Fin 2 → ↥D.LL0)
@@ -197,11 +197,11 @@ section State
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 
 /- English proof (translation)
-Apply the tactic sequence `have hmem : (w.st x.o.Z).B.host.g k * ((w.st x.o.Z).B.host.g k - 1) ∈ [(w.st x.o.Z).B.restRowsFiniteGroupCard, (w.st x.o.Z).B.host.g 0 * ((w.st x.o.Z).B.host.g 0 - 1), (w.st x.o.Z).B.host.g 1 * ((w.st x.o.Z).B.host.g 1 - 1), 3 ^ 4, 5 ^ 4] := by fin_cases k <;> simp`. Take `⟨z, hz, hz'⟩` from `(w.st x.o.Z).B.roots_Ks _ hmem`. Establish `hg1 : 1 < (Dof x).host.g k` using `((Dof x).host.g_prime k).one_lt`. Use `⟨⟨z ^ ((Dof x).host.g k - 1), (w.st x.o.Z).B.Ks_le (pow_mem hz _)⟩, ?_⟩` and prove the remaining obligations. Use `show (w.st x.o.Z).B.embLL (z ^ ((Dof x).host.g k - 1)) = _`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, hz', ← Complex.exp_nat_mul]`. Use `congr 1`. Establish `hc : (((Dof x).host.g k - 1 : ℕ) : ℂ) = ((Dof x).host.g k : ℂ) - 1`. Rewrite using `[Nat.cast_sub hg1.le, Nat.cast_one]`. Establish `hg0 : ((Dof x).host.g k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1' : ((Dof x).host.g k : ℂ) - 1 ≠ 0`. Rewrite using `[← hc]; exact Nat.cast_ne_zero.2 (by omega)`. Express the relevant statement in the definitionally equal form `(((Dof x).host.g k - 1 : ℕ) : ℂ) * (2 * Real.pi * Complex.I / (((Dof x).host.g k * ((Dof x).host.g k - 1) : ℕ) : ℂ)) = _`. Rewrite using `[Nat.cast_mul, hc]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem roots_g (x : St P) (k : Fin 2) : ∃ ζ : ↥(Dof x).LL0,
     (Dof x).what₂.embLL (ζ : (Dof x).what₂.LL) = Complex.exp (2 * Real.pi * Complex.I / ((Dof x).host.g k : ℂ)) := by
@@ -227,9 +227,9 @@ theorem roots_g (x : St P) (k : Fin 2) : ∃ ζ : ↥(Dof x).LL0,
 end State
 
 /- English proof (translation)
-Introduce `hL`. Use `StepW.of_all fun K B f T w _ _ _ P x _ => ?_` and prove the remaining obligations. Establish `hζ` using `fun k => roots_g x k`. Use `choose ζ hζ using hζ`. Take `⟨θ, hne, hlvl, hpsi⟩` from `exists_theta x.m.z.pins.keep.psi ζ hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨θ, hne, hlvl, hpsi⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x → ∃ θ : ∀ kk : Fin 2, Multiplicative (ZMod ((Dof x).host.g kk)) →* (↥(Dof x).LL0)ˣ, (∀ kk, θ kk ≠ 1) ∧ LvlPsi x.m.z.R x.m.z.F x.m.z.cG θ := by
   intro hL

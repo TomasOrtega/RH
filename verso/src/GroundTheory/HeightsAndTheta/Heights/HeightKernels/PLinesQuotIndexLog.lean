@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights
 open NumberField Matrix
 
 /- English proof (translation)
-Introduce `K _ _ n m k a B b c τ ha hBl hBr hτ hli`. Establish `hsplit` using `h1 K n m k a B b c τ ha hBl hBr hτ hli`. Establish `hlow` using `h2 K n m k a B τ ha hBr hτ`. Establish `hpos : 0 < ∏ j, idealIndex (a (τ j))` using `Finset.prod_pos fun j _ => h3 K (a (τ j)) (ha (τ j))`. Establish `hdet` using `(h5 K n m k B b c hBl hli).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : Algebra.norm ℚ (B.toMatrix (Sum.elim b c)).toBlocks₂₂.det ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hdet`. Establish `hpf` using `h4 K _ hdet`. Establish `hGpos` using `lt_of_lt_of_le hpos hlow`. Establish `hNabs : |((Algebra.norm ℚ (B.toMatrix (Sum.elim b c)).toBlocks₂₂.det : ℚ) : ℝ)| ≠ 0` using `abs_ne_zero.mpr (Rat.cast_ne_zero.mpr hN)`. Rewrite using `[hsplit, Real.log_mul hGpos.ne' hNabs, hpf, ← Real.log_prod fun j _ => (h3 K (a (τ j)) (ha (τ j))).ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_le_add (Real.log_le_log hpos hlow) le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem LinesQuotIndexLog.proof (h1 : LinesQuotIndexSplit.Statement)
     (h2 : LinesProjIndexLower.Statement) (h3 : LinesIdealIndexPos.Statement)

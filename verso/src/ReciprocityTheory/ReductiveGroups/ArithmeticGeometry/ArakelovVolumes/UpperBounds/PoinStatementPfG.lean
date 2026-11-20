@@ -13,9 +13,9 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `(starRingEnd ℂ).map_det A`. Establish `h2` using `(starRingEnd ℂ).map_adjugate A`. Simplify using `only [RingHom.mapMatrix_apply] at h1 h2`. Rewrite using `[Matrix.inv_def, Matrix.inv_def, ← h1, ← h2]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Ring.inverse_eq_inv', map_inv₀]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_conj_inv {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ) :
     (A.map (starRingEnd ℂ))⁻¹ = A⁻¹.map (starRingEnd ℂ) := by
@@ -27,7 +27,7 @@ theorem map_conj_inv {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ
   simp [Ring.inverse_eq_inv', map_inv₀]
 
 /- English proof (translation)
-Establish `h : ((↑(γ⁻¹) : Matrix (Fin r) (Fin r) E).map τ) * ((γ : Matrix (Fin r) (Fin r) E).map τ) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul]`. Conclude with `Matrix.map_one _ (map_zero τ) (map_one τ)`. Conclude with `(Matrix.inv_eq_left_inv h).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_units_inv (τ : E →+* ℂ) (γ : GL (Fin r) E) :
     ((↑(γ⁻¹) : Matrix (Fin r) (Fin r) E).map τ) = ((γ : Matrix (Fin r) (Fin r) E).map τ)⁻¹ := by
@@ -37,7 +37,7 @@ theorem map_units_inv (τ : E →+* ℂ) (γ : GL (Fin r) E) :
   exact (Matrix.inv_eq_left_inv h).symm
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gram_eq_lemma (X : Data E r) (τ : X.Ψ) (M : Matrix (Fin r) (Fin r) ℂ) :
     gram τ.1 X.Gm M = M.transpose * Matrix.map X.Gm τ.1 * M.map (starRingEnd ℂ) := by
@@ -47,7 +47,7 @@ private theorem gram_eq_lemma (X : Data E r) (τ : X.Ψ) (M : Matrix (Fin r) (Fi
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `congrArg Matrix.det (hy τ)`. Rewrite `h` using `[gram_eq_lemma, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, Matrix.det_diagonal]`. Apply the tactic sequence `exact (Finset.prod_ne_zero_iff.mpr fun a _ => by unfold sgn; split_ifs <;> norm_num) h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem det_mat_ne_zero_of_isOrth_data (X : Data E r) {y : Frame X.Ψ r} (hy : IsOrth X y) (τ : X.Ψ) :
     (mat y τ).det ≠ 0 := by
@@ -58,9 +58,9 @@ private theorem det_mat_ne_zero_of_isOrth_data (X : Data E r) {y : Frame X.Ψ r}
   exact (Finset.prod_ne_zero_iff.mpr fun a _ => by unfold sgn; split_ifs <;> norm_num) h.symm
 
 /- English proof (translation)
-Establish `h0 : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (det_mat_ne_zero_of_isOrth_data X hx0 τ)`. Establish `h1 : IsUnit (mat x τ).det` using `isUnit_iff_ne_zero.mpr (det_mat_ne_zero_of_isOrth_data X hx τ)`. Use `show (mat x0 τ)⁻¹ * ((↑γb : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) * ((mat x0 τ)⁻¹ * ((↑γa : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ))⁻¹ = (mat x0 τ)⁻¹ * ((↑(γb * γa⁻¹) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x0 τ)`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ h0, Units.val_mul, Matrix.map_mul, map_units_inv]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ h1]`.
+A detailed English derivation is pending.
 -/
 theorem gM_lact_mul (X : Data E r) {x0 x : Frame X.Ψ r} (hx0 : IsOrth X x0) (hx : IsOrth X x)
     (γa γb : GL (Fin r) E) (τ : X.Ψ) :
@@ -76,7 +76,7 @@ theorem gM_lact_mul (X : Data E r) {x0 x : Frame X.Ψ r} (hx0 : IsOrth X x0) (hx
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ h1]
 
 /- English proof (translation)
-Unfold `Mq`. Rewrite using `[Matrix.inv_submatrix_equiv, Matrix.submatrix_mul_equiv, map_conj_inv, ← Matrix.map_mul, gM_lact_mul X hx0 hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mq_div (X : Data E r) {x0 x : Frame X.Ψ r} (hx0 : IsOrth X x0) (hx : IsOrth X x)
     (γa γb : GL (Fin r) E) (τ : X.Ψ) :
@@ -86,17 +86,15 @@ theorem Mq_div (X : Data E r) {x0 x : Frame X.Ψ r} (hx0 : IsOrth X x0) (hx : Is
     gM_lact_mul X hx0 hx]
 
 /- English proof (translation)
-Take `⟨c, hc, hsep⟩` from `sep X hx0 hPD`. Use `set f := Fintype.card X.Ψ with hf`. Use `set eΨ : Fin f ≃ X.Ψ := (Fintype.equivFin X.Ψ).symm with heΨ`. Establish `hs' : 2 * (f : ℝ) * (((r - X.p0 + X.p0 : ℕ) : ℝ)) ^ 2 < s`. Rewrite using `[Nat.sub_add_cancel X.p0_le, hf, Fintype.card_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hs`. Take `⟨C, hC, hbd⟩` from `sumBd_sum (p := r - X.p0) (q := X.p0) (f := f) hs' hc`. Use `⟨C, hC, fun x hx => ?_⟩` and prove the remaining obligations. Use `set xx : X.Γ → Fin f → Matrix (Fin (r - X.p0) ⊕ Fin X.p0) (Fin (r - X.p0) ⊕ Fin X.p0) ℂ := fun γ k => Mq X x0 (lact γ.1 x) (eΨ k) with hxx`. Establish `hU : ∀ a k, IsUpq (xx a k)` using `fun a k => Mq_isUpq X hx0 (PairUnfoldPf.isOrth_lact X a.2 hx) _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ a b : X.Γ, a ≠ b → ∃ k i j, c ≤ ‖(xx b k * (xx a k)⁻¹) i j - (1 : Matrix (Fin (r - X.p0) ⊕ Fin X.p0) (Fin (r - X.p0) ⊕ Fin X.p0) ℂ) i j‖`. Introduce `a b hab`. Establish `hδ : b.1 * a.1⁻¹ ∈ X.Γ` using `X.Γ.mul_mem b.2 (X.Γ.inv_mem a.2)`. Establish `hne : b.1 * a.1⁻¹ ≠ 1` using `fun h => hab (Subtype.ext (mul_inv_eq_one.1 h).symm)`. Take `⟨τ, i', j', hij⟩` from `hsep _ hδ hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `⟨eΨ.symm τ, (eS X).symm i', (eS X).symm j', ?_⟩` and prove the remaining obligations. Simplify using `only [hxx, Equiv.apply_symm_apply]`. Rewrite using `[Mq_div X hx0 hx]`. Unfold `Mq`. Rewrite using `[Matrix.submatrix_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (1 : Matrix (Fin (r - X.p0) ⊕ Fin X.p0) (Fin (r - X.p0) ⊕ Fin X.p0) ℂ) ((eS X).symm i') ((eS X).symm j') = starRingEnd ℂ ((1 : Matrix (Fin r) (Fin r) ℂ) i' j')`. Simplify using `[Matrix.one_apply, apply_ite]`. Rewrite using `[h1, ← map_sub, Complex.norm_conj]`. Conclude with `hij`. Establish `hsum` using `hbd X.Γ xx hU hS`.
-
-Use `le_trans (le_of_eq (tsum_congr fun γ => ?_)) hsum` and prove the remaining obligations. Rewrite using `[kaY_orth X hx0 (PairUnfoldPf.isOrth_lact X γ.2 hx) s]`. Use `congr 1`. Conclude with `(Fintype.prod_equiv eΨ _ _ (fun k => rfl)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem kaSum (X : Data E r) {x0 : Frame X.Ψ r} (hx0 : IsOrth X x0) (hPD : PropDisc X) {s : ℝ}
     (hs : 2 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < s) :
@@ -150,9 +148,9 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact ENNReal.inner_le_Lp_mul_Lq s u v .two_two`. Consider the case `exact ENNReal.inner_le_Lp_mul_Lq s u v Real.HolderConjugate.two_two`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Use `_ ≤ _ := by gcongr`. Conclude with `ENNReal.sum_le_tsum s`. Conclude with `ENNReal.sum_le_tsum s`.
+A detailed English derivation is pending.
 -/
 theorem cs_tsum {ι : Type*} (u v : ι → ℝ≥0∞) :
     ∑' i, u i * v i ≤ (∑' i, u i ^ (2 : ℝ)) ^ (1 / 2 : ℝ) * (∑' i, v i ^ (2 : ℝ)) ^ (1 / 2 : ℝ) := by
@@ -169,13 +167,13 @@ theorem cs_tsum {ι : Type*} (u v : ι → ℝ≥0∞) :
         · exact ENNReal.sum_le_tsum s
 
 /- English proof (translation)
-Establish `hh : ∀ S : ℝ≥0∞, (S ^ (1 / 2 : ℝ)) ^ 2 = S` using `fun S => by`. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions. Establish `hsq : ∀ i, (k i ^ (1 / 2 : ℝ)) ^ (2 : ℝ) = k i` using `fun i => by`. Rewrite using `[← ENNReal.rpow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Establish `hne0 : ∀ i, k i ^ (1 / 2 : ℝ) ≠ 0` using `fun i => (ENNReal.rpow_pos (pos_iff_ne_zero.2 (hk0 i)) (hkt i)).ne'`. Establish `hneT : ∀ i, k i ^ (1 / 2 : ℝ) ≠ ⊤` using `fun i => ENNReal.rpow_ne_top_of_nonneg (by norm_num) (hkt i)`. Establish `hu : ∀ i, a i = (a i / k i ^ (1 / 2 : ℝ)) * k i ^ (1 / 2 : ℝ)` using `fun i => (ENNReal.div_mul_cancel (hne0 i) (hneT i)).symm`. Establish `hu2 : ∀ i, (a i / k i ^ (1 / 2 : ℝ)) ^ (2 : ℝ) = a i ^ 2 / k i` using `fun i => by`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.div_rpow_of_nonneg _ _ (by norm_num), hsq, ENNReal.rpow_two]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_congr fun i => hu i]`. Use `_ ≤ ((∑' i, (a i / k i ^ (1 / 2 : ℝ)) ^ (2 : ℝ)) ^ (1 / 2 : ℝ) * (∑' i, (k i ^ (1 / 2 : ℝ)) ^ (2 : ℝ)) ^ (1 / 2 : ℝ)) ^ 2 := by gcongr`. Conclude with `cs_tsum _ _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (∑' i, a i ^ 2 / k i) * ∑' i, k i := by`. Simplify using `only [hu2, hsq]`. Rewrite using `[mul_pow, hh, hh]`.
+A detailed English derivation is pending.
 -/
 theorem cs_sq {ι : Type*} (a k : ι → ℝ≥0∞) (hk0 : ∀ i, k i ≠ 0) (hkt : ∀ i, k i ≠ ⊤) :
     (∑' i, a i) ^ 2 ≤ (∑' i, a i ^ 2 / k i) * ∑' i, k i := by
@@ -204,7 +202,7 @@ theorem cs_sq {ι : Type*} (a k : ι → ℝ≥0∞) (hk0 : ∀ i, k i ≠ 0) (h
         rw [mul_pow, hh, hh]
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [mat, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_mat (X : Data E r) (τ : X.Ψ) : Continuous fun y : Frame X.Ψ r => mat y τ := by
   refine continuous_matrix fun i j => ?_
@@ -212,9 +210,9 @@ theorem cont_mat (X : Data E r) (τ : X.Ψ) : Continuous fun y : Frame X.Ψ r =>
   fun_prop
 
 /- English proof (translation)
-Unfold `dmin lminor gram`. Use `Continuous.matrix_det (Continuous.matrix_submatrix ?_ _ _)` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Unfold `hermC col mat`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem cont_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun y : Frame X.Ψ r => dmin X.Gm y τ i := by
@@ -226,7 +224,7 @@ theorem cont_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
   fun_prop
 
 /- English proof (translation)
-Unfold `lminor gM`. Conclude with `Continuous.matrix_det (Continuous.matrix_submatrix (continuous_const.matrix_mul (cont_mat X τ)) _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_lminor_gM (X : Data E r) (x0 : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun y : Frame X.Ψ r => lminor (gM X x0 y τ) i := by
@@ -234,7 +232,7 @@ theorem cont_lminor_gM (X : Data E r) (x0 : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (
   exact Continuous.matrix_det (Continuous.matrix_submatrix (continuous_const.matrix_mul (cont_mat X τ)) _ _)
 
 /- English proof (translation)
-Unfold `kaY rhY`. Use `Real.measurable_exp.comp (measurable_const.mul (Finset.measurable_sum _ fun τ _ => ?_).neg)` and prove the remaining obligations. Conclude with `((cont_dmin X τ _).measurable.norm.log).sub (measurable_const.mul (cont_lminor_gM X x0 τ _).measurable.norm.log)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem meas_kaY (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) : Measurable (kaY X x0 bb) := by
   unfold kaY rhY
@@ -243,29 +241,27 @@ theorem meas_kaY (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) : Measurable (kaY
     (measurable_const.mul (cont_lminor_gM X x0 τ _).measurable.norm.log)
 
 /- English proof (translation)
-Introduce `r X x0 la W bb F P H FF hFF`. Take `⟨hx0, hPD, hW, -, hbb, -, hA, hP, hPF⟩` from `H`. Take `⟨D⟩` from `ExtFPf.luData_of lu_holds X x0 hx0`. Establish `hs : 2 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb`. Establish `: 0 ≤ 2 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨C1, hC1, hsum⟩` from `kaSum X hx0 hPD hs`. Establish `hsumY : ∀ y ∈ X.dom, ∑' γ : X.Γ, ENNReal.ofReal (kaY X x0 bb (lact γ.1 y)) ≤ C1`. Introduce `y hy`. Establish `hb` using `FrameDegreeData.bOf_mem X hy`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ho : IsOrth X (rmul y (FrameDegreeData.bOf X y))` using `FrameDegreeData.ortho_bOf X hy`. Use `le_trans (le_of_eq (tsum_congr fun γ => ?_)) (hsum _ ho)` and prove the remaining obligations. Rewrite using `[lact_rmul' γ.1 y (FrameDegreeData.bOf X y), kaY_rmul X hx0 ((PairUnfoldPf.lact_mem_dom_iff X γ.2 y).2 hy) hb]`. Use `set Pd := X.dom.indicator P with hPd`. Establish `hPdm : Measurable Pd` using `PairUnfoldPf.meas_indC X hP.1.continuousOn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ψ : Frame X.Ψ r → ℝ≥0∞ := fun y => ‖Pd y‖ₑ ^ 2 * W y / ENNReal.ofReal (kaY X x0 bb y) with hψ`. Establish `hψm : Measurable ψ` using `((hPdm.enorm.pow_const 2).mul hW.1).div (meas_kaY X x0 bb).ennreal_ofReal`. Establish `hψB : ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, ψ (rmul y b) = ψ y`. Introduce `y hy b hb`. Establish `hyb : rmul y b ∈ X.dom` using `rmulDom X hb hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hψ, hPd, Set.indicator_of_mem hyb, Set.indicator_of_mem hy, hP.2 y hy b hb, hW.2.1 y hy b hb, kaY_rmul X hx0 hy hb]`. Establish `hpos : 0 < ‖bchar la b‖ ^ 2` using `pow_pos (norm_pos_iff.2 (bchar_ne X la hb)) 2`. Establish `h0 : ENNReal.ofReal (‖bchar la b‖ ^ 2) ≠ 0` using `(ENNReal.ofReal_pos.2 hpos).ne'`. Establish `ht : ENNReal.ofReal (‖bchar la b‖ ^ 2) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hc : ‖bchar la b‖ₑ ^ 2 = ENNReal.ofReal (‖bchar la b‖ ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Rewrite using `[enorm_mul, mul_pow, hc]`. Use `congr 1`. Rewrite using `[ENNReal.div_eq_inv_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpt : ∀ z ∈ FF, ENNReal.ofReal (‖poin X la P (cpt X x0 z)‖ ^ 2) * W (cpt X x0 z) ≤ C1 * ∑' γ : X.Γ, ψ (lact γ.1 (cpt X x0 z))`. Introduce `z hz`. Establish `hy : cpt X x0 z ∈ X.dom` using `hFF.2.1 hz`. Establish `hk0 : ∀ γ : X.Γ, ENNReal.ofReal (kaY X x0 bb (lact γ.1 (cpt X x0 z))) ≠ 0` using `fun γ => (ENNReal.ofReal_pos.2 (kaY_pos _ _ _ _)).ne'`. Establish `hkt : ∀ γ : X.Γ, ENNReal.ofReal (kaY X x0 bb (lact γ.1 (cpt X x0 z))) ≠ ⊤` using `fun _ => ENNReal.ofReal_ne_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcs` using `cs_sq (fun γ : X.Γ => ‖P (lact γ.1 (cpt X x0 z))‖ₑ) (fun γ => ENNReal.ofReal (kaY X x0 bb (lact γ.1 (cpt X x0 z)))) hk0 hkt`. Establish `h1 : ENNReal.ofReal (‖poin X la P (cpt X x0 z)‖ ^ 2) ≤ (∑' γ : X.Γ, ‖P (lact γ.1 (cpt X x0 z))‖ₑ) ^ 2`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _)]`. Conclude with `pow_le_pow_left₀ zero_le (enorm_poin_le X la P _) 2`. Establish `h2 : ∀ γ : X.Γ, ‖P (lact γ.1 (cpt X x0 z))‖ₑ ^ 2 / ENNReal.ofReal (kaY X x0 bb (lact γ.1 (cpt X x0 z))) * W (cpt X x0 z) = ψ (lact γ.1 (cpt X x0 z))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `γ`. Establish `hγy : lact γ.1 (cpt X x0 z) ∈ X.dom` using `(PairUnfoldPf.lact_mem_dom_iff X γ.2 _).2 hy`. Simplify using `only [hψ, hPd, Set.indicator_of_mem hγy, hW.2.2 γ.1 γ.2 _ hy]`. Rewrite using `[ENNReal.mul_div_right_comm]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← tsum_congr h2, ENNReal.tsum_mul_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmeasγ : ∀ γ : X.Γ, AEMeasurable (fun z => ψ (lact γ.1 (cpt X x0 z))) ((muF X x0).restrict FF)` using `fun γ => (hψm.comp ((PairUnfoldPf.lact_cont X γ.1).comp (PairUnfoldPf.cpt_cont X x0)).measurable).aemeasurable`. Establish `hunf` using `PairUnfoldPf.lunfold D FF measInv_holds hx0 hFF ψ hψm hψB`. Establish `hrhs : ∫⁻ z, ψ (cpt X x0 z) ∂muF X x0 = ∫⁻ z, ENNReal.ofReal (‖F z‖ ^ 2 / kaF X x0 bb z) * W (cpt X x0 z) ∂muF X x0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ExtFPf.ae_OmF] with z hz`. Establish `hyd : cpt X x0 z ∈ X.dom` using `hz`. Simplify using `only [hψ, hPd, Set.indicator_of_mem hyd, hPF z hz, kaY_cpt X hx0]`. Rewrite using `[ENNReal.ofReal_div_of_pos (by unfold kaF; exact Real.exp_pos _), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm, ENNReal.mul_div_right_comm]`.
-
-Unfold `InFF`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ hC1.ne, lintegral_tsum hmeasγ]`. Use `_ = C1 * ∫⁻ z, ψ (cpt X x0 z) ∂muF X x0 := by rw [hunf]`. Use `_ < ⊤ := ENNReal.mul_lt_top hC1 (by rw [hrhs]; exact hA)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ff_holds : FFStatement (E := E) := by
   intro r X x0 la W bb F P H FF hFF

@@ -21,11 +21,7 @@ open GlobalTheory.ThKSoDecay GlobalTheory.ThKSoCont
 namespace GlobalTheory.OuterFin
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
-
-Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`.
-
-Conclude with `⟨inferInstance, Units.isClosedEmbedding_embedProduct.locallyCompactSpace, Units.isEmbedding_embedProduct.secondCountableTopology⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ideles_lcsc (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     IsTopologicalGroup (AE F E)ˣ ∧ LocallyCompactSpace (AE F E)ˣ ∧ SecondCountableTopology (AE F E)ˣ := by
@@ -43,7 +39,7 @@ theorem ideles_lcsc (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
     Units.isEmbedding_embedProduct.secondCountableTopology⟩
 
 /- English proof (translation)
-The claim follows from `((hc.comp_snd μ₁).comp_snd ν).2.mono' (Eventually.of_forall hf)`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteIntegral_of_bound {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
     (ν : Measure α) (μ₁ : Measure β) (μ₂ : Measure γ) [IsFiniteMeasure ν] [IsFiniteMeasure μ₁] [SFinite μ₂]

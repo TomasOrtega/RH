@@ -18,23 +18,21 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `D hLOC hBK hFont hPDR i r hr Xs w hw hdeg n e hPot hLift k M hSub`. Establish `hM : Continuous fun g => M g` using `hSub.1`. Establish `hc : ∀ x, Continuous fun g => Br.loc D.nbr i w hw (rTwO D.nd i r x) g` using `fun x => GlobalTheory.PotDual.continuous_loc D i w hw _ (FamCont.stepCont D i r hr x).1`. Unfold `LocBoundP`. Establish `hcut : cutCoc i w hw r Xs M = ⋃₀ {A | ∃ (a : ℕ) (x : Fin a → D.nd.X i) (_ : ∀ j, x j ∈ Xs) (E : Fin a → Fin D.R.nV → KK D.nd i) (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i)) (_ : Y.FG) (hst : ∀ γ : GE D.nd, ∀ y ∈ Y, (fun j => (mapM (toK D.nd i) (rTwO D.nd i r (x j)) …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use extensionality with `c`. Rewrite using `[LocDirect.mem_cutCoc, Set.mem_sUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, x, hx, E, Y, hY, hst, hE, hc⟩`. Conclude with `⟨_, ⟨a, x, hx, E, Y, hY, hst, hE, rfl⟩, hc⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨a, x, hx, E, Y, hY, hst, hE, rfl⟩, hc⟩`. Conclude with `⟨a, x, hx, E, Y, hY, hst, hE, hc⟩`. Rewrite using `[hcut]`. Apply `GlobalTheory.T.lenMod_span_sUnion_le_of_directed'` to reduce the goal to its premises. Introduce and unpack `_ ⟨a₁, x₁, hx₁, E₁, Y₁, hY₁, hst₁, hE₁, rfl⟩ _ ⟨a₂, x₂, hx₂, E₂, Y₂, hY₂, hst₂, hE₂, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Take `⟨a, x, hx, E, Y, hY, hst, hE, h1, h2⟩` from `GlobalTheory.T.exists_merged_module_pushouts_contain_both D i w hw r Xs M a₁ x₁ hx₁ E₁ Y₁ hY₁ hst₁ hE₁ a₂ x₂ hx₂ E₂ Y₂ hY₂ hst₂ hE₂`. Conclude with `⟨_, ⟨a, x, hx, E, Y, hY, hst, hE, rfl⟩, h1, h2⟩`. Introduce and unpack `_ ⟨a, x, hx, E, Y, hY, hst, hE, rfl⟩`. Set `U` to `LocDirect.ModuleGaloisRepresentation i w hw M hM`. Set `X` to `LocDirect.Xgrep i w hw r x (fun j => hc (x j)) Y hst`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨K', hK', hcrys⟩` from `GlobalTheory.T.tensorLocalField_isCrystalline_over_familyField D hFont i r hr Xs w hw n hPot M hSub hM`. Establish `hUdR : IsDR (Br.PD D.loc D.nbr i w hw) U.ρ` using `hPDR (D.nd.l i) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL hK' U hcrys`. Take `⟨U', LT', PU, hdual, hrank⟩` from `GlobalTheory.T.crystalline_over_extension D hFont hBK hPDR i w hw hdeg M hM K' hK' hcrys`. Take `⟨X', PX, hX⟩` from `GlobalTheory.T.exists_tateDual_localGaloisRep_atPlace D i w hw X`. Establish `hLA` using `GlobalTheory.T.liftAll_of_blochKatoLiftingFamilyAtPlace D i w hw r hr Xs e hLift M hSub hM a x hx (fun j => hc (x j)) Y hst`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsub` using `GlobalTheory.T.pushouts_mem_span_localSelmerPushouts D hFont i r hr Xs w hw n hPot M hM a x hx (fun j => hc (x j)) E Y hY hst hE`. Take `⟨m, k', hm, hk', hle⟩` from `hLOC.2 (D.nd.l i) (D.nbr i w hw).Kw (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw) (goodO_ringOfIntegers _ _) X X U X' U' 1 PX PU (Br.locLat D.nbr i w hw M) LT' e ⟨⟨LinearEquiv.refl _ _, fun g v => by simp⟩, hUdR, hX, hdual, Or.inl hLA⟩`. Establish `hmono` using `GlobalTheory.T.lenMod_mono_left' _ _ (HfD (Br.PD D.loc D.nbr i w hw) (Br.locLat D.nbr i w hw M)) (Submodule.span_le.2 hsub)`. Establish `hT : finrank (Br.OLL D.nbr i w hw) ↥(Br.locLat D.nbr i w hw M).T = k`. Establish `hinj` using `stdG_inj (O := Br.OLL D.nbr i w hw) (LL := Br.LL D.nbr i w hw) Subtype.val_injective k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show finrank _ ↥(stdG (Br.OLL D.nbr i w hw) (Br.LL D.nbr i w hw) k) = k`. Conclude with `(LinearEquiv.ofInjective _ hinj).finrank_eq.symm.trans (Module.finrank_fin_fun _)`. Establish `h2 : m ≤ 2 * k * e * k'`. Use `hle.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hrank`. Conclude with `hT.le`. Use `_ = 2 * k * e * k' := by ring`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show lenOl (Br.PD D.loc D.nbr i w hw) (O := Br.OLL D.nbr i w hw) = (k' : ℕ∞) from hk']`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : StepLocDirect := by
   intro D hLOC hBK hFont hPDR i r hr Xs w hw hdeg n e hPot hLift k M hSub

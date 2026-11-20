@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLtO
 namespace UpperTheory.V.Lib.Small
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.S1.mem_of_coeff I e s hs f hf`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_coeff {O σ ι : Type} [CommRing O] (I : Ideal (MvPowerSeries σ O)) (e : ι → σ) (s : Finset ι)
     (hs : ∀ i ∈ s, MvPowerSeries.X (e i) ∈ I) (f : MvPowerSeries σ O)
@@ -16,7 +16,7 @@ theorem mem_of_coeff {O σ ι : Type} [CommRing O] (I : Ideal (MvPowerSeries σ 
   _root_.UpperTheory.Reformulated.B.S1.mem_of_coeff I e s hs f hf
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.S2.eigen_mem T μ hμ Y hY s x hx h`.
+A detailed English derivation is pending.
 -/
 theorem eigen_mem {k M ι : Type} [Field k] [AddCommGroup M] [Module k M] (T : Module.End k M) (μ : ι → k)
     (hμ : Function.Injective μ) (Y : Submodule k M) (hY : ∀ y ∈ Y, T y ∈ Y) (s : Finset ι) (x : ι → M)
@@ -24,7 +24,7 @@ theorem eigen_mem {k M ι : Type} [Field k] [AddCommGroup M] [Module k M] (T : M
   _root_.UpperTheory.Reformulated.B.S2.eigen_mem T μ hμ Y hY s x hx h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.S3.single_mem W d hd hW v hv i hi`.
+A detailed English derivation is pending.
 -/
 theorem single_mem {k : Type} [Field k] {n : ℕ} (W : Submodule k (Fin n → k)) (d : Fin n → k) (hd : Function.Injective d)
     (hW : ∀ v ∈ W, (Matrix.diagonal d).mulVec v ∈ W) (v : Fin n → k) (hv : v ∈ W) (i : Fin n) (hi : v i ≠ 0) :
@@ -32,20 +32,20 @@ theorem single_mem {k : Type} [Field k] {n : ℕ} (W : Submodule k (Fin n → k)
   _root_.UpperTheory.Reformulated.B.S3.single_mem W d hd hW v hv i hi
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.S4.isIntegral_of_norm_le hz`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_norm_le {l : ℕ} [Fact l.Prime] {z : PadicAlgCl l} (hz : ‖z‖ ≤ 1) : IsIntegral ℤ_[l] z :=
   _root_.UpperTheory.Reformulated.B.S4.isIntegral_of_norm_le hz
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.NormLtOne.norm_lt_one y a ha`.
+A detailed English derivation is pending.
 -/
 theorem norm_lt_one {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ_[l] R]
     (y : R →ₐ[ℤ_[l]] PadicAlgCl l) (a : R) (ha : a ∈ IsLocalRing.maximalIdeal R) : ‖y a‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.NormLtOne.norm_lt_one y a ha
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.NormLtOne.norm_lt_one y a ha`.
+A detailed English derivation is pending.
 -/
 theorem norm_lt_one' {l : ℕ} [Fact l.Prime] {O R : Type} [CommRing O] [Algebra ℤ_[l] O]
     [Algebra O (PadicAlgCl l)] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] [CommRing R] [IsLocalRing R] [Algebra O R]

@@ -11,11 +11,11 @@ open PowerSeries GlobalTheory.Honda Formalism.L2.Th1.CM
 namespace GlobalTheory.Honda
 
 /- English proof (translation)
-Introduce `K _ _ _ _ l σ hU hR f e hI w hw hσw hw1 hht`. Take `⟨c, hc1, hc⟩` from `GlobalTheory.T.exists_hondaType_evenFrobeniusPowers K l σ hU f e hI w hw hσw hw1`. Establish `hc0 : ‖c 0‖ = 1` using `GlobalTheory.T.height_two_hondaType_first_coeff_norm_eq_one K l σ hU f e hI c hc1 hc hht`. Establish `hq : 2 ≤ l ^ 2`. Establish `h2 : 2 ≤ l` using `hU.1.two_le`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hτ : ∀ x, ‖(σ ^ 2) x‖ = ‖x‖`. Introduce `x`. Rewrite using `[pow_two, RingHom.mul_def, RingHom.comp_apply, hU.2.2.2.2.1, hU.2.2.2.2.1]`. Take `⟨c', hc'1, hc'⟩` from `GlobalTheory.T.hondaType_reduction_to_one_term K l (l ^ 2) (σ ^ 2) hq hU.2.2.1 hτ f hI.1.1 c hc1 hc0 hc`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε1, hε⟩` from `GlobalTheory.T.exists_unit_solution_twisted_frobenius_square K l σ hU hR c' hc'1`. Conclude with `⟨ε, hε1, GlobalTheory.T.honda_functional_equation_one_term_type K l σ hU f e hI.1 c' ε hε1 hε hc'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem heightTwo_unitTwist : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] [CompleteSpace K]
     (l : ℕ) (σ : K →+* K), Unr K l σ → ResAlg K → ∀ (f e : K⟦X⟧), IntLog f e → ∀ w : K,

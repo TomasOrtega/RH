@@ -19,13 +19,13 @@ open scoped TensorProduct
 namespace GlobalTheory.FormTies
 
 /- English proof (translation)
-Set `Φ : X.Forms →ₐ[𝓞 B.KO] X.Forms` to `Ψ.restrictScalars _`. It suffices to establish `key : (X.Theta Sc ka wL wF T).map Φ.toLinearMap ≤ X.Theta Sc ka wL wF T from fun x hx => key ⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `∀ F ∈ X.thAll wL, ∃ F' ∈ X.thAll wL, Φ (X.inc wL F) = X.inc wL F' at hL`. Express the relevant statement in the definitionally equal form `∀ w, (w = wF ∨ w = X.wF0 wL wF ∨ w = ka) → ∀ F ∈ X.shortTh w, ∃ F' ∈ X.shortTh w, Φ (X.inc w F) = X.inc w F' at hS`. Establish `hsm : ∀ (s : 𝓞 B.KO) w (F : B.Cusp j w), X.inc w (s • F) = s • X.inc w F` using `fun s w F => ((X.inc w).restrictScalars (𝓞 B.KO)).map_smul s F`.
+Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hsc : ∀ (s : 𝓞 B.KO) w (N : Submodule (𝓞 B.KO) (B.Cusp j w)), (∀ F ∈ N, ∃ F' ∈ N, Φ (X.inc w F) = X.inc w F') → ∀ F ∈ X.scaled s w N, ∃ F' ∈ X.scaled s w N, Φ (X.inc w F) = X.inc w F'`. Introduce and unpack `s w N hN _ ⟨F, hF, rfl⟩`. Take `⟨F', hF', e⟩` from `hN F hF`. Use `⟨_, ⟨F', hF', rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, hsm, map_smul, e]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hemb : ∀ w (N : Submodule (𝓞 B.KO) (B.Cusp j w)), (∀ F ∈ N, ∃ F' ∈ N, Φ (X.inc w F) = X.inc w F') → (X.emb w N).map Φ.toLinearMap ≤ X.emb w N`. Introduce and unpack `w N hN _ ⟨_, ⟨F, hF, rfl⟩, rfl⟩`. Take `⟨F', hF', e⟩` from `hN F hF`. Conclude with `⟨F', hF', e.symm⟩`. Establish `h1 : (X.emb wL (X.WWc Sc.sW wL)).map Φ.toLinearMap ≤ X.emb wL (X.WWc Sc.sW wL)` using `hemb _ _ (hsc _ _ _ hL)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h2 : ∀ s w, (w = wF ∨ w = X.wF0 wL wF ∨ w = ka) → (X.emb w (X.Thc s w)).map Φ.toLinearMap ≤ X.emb w (X.Thc s w)` using `fun s w hw => hemb _ _ (hsc _ _ _ (hsc _ _ _ (hS w hw)))`. Unfold `WeightAlgebra.PJ.Theta`. Rewrite using `[Submodule.map_sup, Submodule.map_sup, Submodule.map_mul, Submodule.map_mul, Submodule.map_pow, Submodule.map_pow]`. Use `sup_le_sup (sup_le_sup (mul_le_mul' (pow_le_pow_left' h1 _) (h2 _ _ (Or.inl rfl))) (mul_le_mul' (pow_le_pow_left' h1 _) (h2 _ _ (Or.inr (Or.inl rfl))))) (h2 _ _ (Or.inr (Or.inr rfl)))` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem theta_stable_of_algHom {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j)
     (Ψ : X.Forms →ₐ[B.KO] X.Forms) (Sc : WeightAlgebra.Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
@@ -62,11 +62,9 @@ theorem theta_stable_of_algHom {D : D7} {B : WeightFamilies.Prov D} {P : ModuliI
     (mul_le_mul' (pow_le_pow_left' h1 _) (h2 _ _ (Or.inr (Or.inl rfl))))) (h2 _ _ (Or.inr (Or.inr rfl)))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `F'.1 ∈ Submodule.span (𝓞 K) s`. Rewrite using `[e]`. Establish `hle : (Submodule.span (𝓞 K) s).map (ψ.restrictScalars (𝓞 K)) ≤ Submodule.span (𝓞 K) s`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨u, f', hf', e'⟩` from `hs f hf`. Establish `e'' : ψ f = u • f'` using `e'.trans (algebraMap_smul K u f')`. Express the relevant statement in the definitionally equal form `ψ f ∈ Submodule.span (𝓞 K) s`. Rewrite using `[e'']`. Conclude with `Submodule.smul_mem _ u (Submodule.subset_span hf')`.
-
-Conclude with `hle ⟨F.1, hF, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_spanIn {D : D7} {K : Type} [Field K] [NumberField K] {R : ℕ → Type} [∀ j, CommRing (R j)]
     [∀ j, Algebra K (R j)] [∀ j, Algebra (𝓞 K) (R j)] [∀ j, IsScalarTower (𝓞 K) K (R j)]
@@ -97,15 +95,13 @@ noncomputable def actLevAlg {D : D7} (T : Top D) (j : ℕ)
   AlgHom.ofLinearMap (actLev (Xo := T.Q.Xo j) T.Q.c (levFull (T.Q.Dw j) T.Q.l) γ) rfl (fun _ _ => rfl)
 
 /- English proof (translation)
-Introduce `hC D T h j hj hfull hxi Sc ka wL wF Tn _ hn _ hr P ℓ act hact g F hF`. Set `ψ` to `actLevAlg T.toTop j (ℓ g)`. Set `Φ0 : AddMonoidAlgebra (T.R j) (Deg D j) →ₐ[T.Q.c.F] AddMonoidAlgebra (T.R j) (Deg D j)` to `AddMonoidAlgebra.mapAlgHom (Deg D j) ψ`. Set `Φ : @AlgHom _ _ _ _ _ _ (recPJ h j hj).aF (recPJ h j hj).aF` to `Φ0`. Establish `hΦ : ∀ w (F F' : (recB h.toLawsCore).Cusp j w), F'.1 = ψ F.1 → Φ ((recPJ h j hj).inc w F) = (recPJ h j hj).inc w F'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `w F F' e`. Express the relevant statement in the definitionally equal form `Φ0 (AddMonoidAlgebra.single (deg w) F.1) = AddMonoidAlgebra.single (deg w) F'.1`. Rewrite using `[e]`. Conclude with `AddMonoidAlgebra.mapAlgHom_single _ _ _`. Establish `hspan : ∀ w (s : Set (T.R j)), (∀ f ∈ s, ∃ (u : 𝓞 T.Q.c.F) (f' : T.R j), f' ∈ s ∧ ψ f = (u : T.Q.c.F) • f') → ∀ F ∈ spanIn T.C j w s, ∃ F' ∈ spanIn T.C j w s, Φ ((recPJ h j hj).inc w F) = (recPJ h j hj).inc w F'`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w s hs F hF`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_levelChangeAction_on_cuspForms D T.toTop h j hj w P ℓ`. Conclude with `⟨a g F, map_mem_spanIn T.C j w s ψ.toLinearMap hs F _ (ha g F) hF, hΦ w F _ (ha g F)⟩`. Establish `hone : ∀ x : T.R j, x = ((1 : 𝓞 T.Q.c.F) : T.Q.c.F) • x` using `fun x => coe_one_smul_eq (R := T.R) j x`. Establish `key` using `theta_stable_of_algHom (recPJ h j hj) Φ Sc ka wL wF Tn (hspan wL (T.th j wL) fun f hf => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hnab⟩` from `h.nabPin j hj`. Conclude with `⟨1, ψ f, GlobalTheory.T.levelAction_mem_thetaSeries hC D T.toTop h j hj wL (ℓ g) f hf (GlobalTheory.thetaRule_mem_sec GlobalTheory.abelianSchemeLaws_all.1 hC _ _ _ _ _ _ _ hnab _ _ f hf), hone _⟩)`. Use the proof step `(fun w hw => hspan w (T.toTop.sh j w) fun f hf => GlobalTheory.T.levelAction_shortThetaSeries_rootOfUnity_mul hC D T hfull j hj hxi w (by`. Break down `hw with rfl | rfl | rfl` into its components or cases. Conclude with `hr`.
-
-Conclude with `hr.trans (Nat.le_add_right _ _)`. Rewrite using `[hn]`. Conclude with `hr.trans (Nat.le_add_right _ _)) (ℓ g) f hf)`. Rewrite using `[← hΦ ka F (act g F) (hact g F)]`. Conclude with `key _ hF`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levAct_theta : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Full D) (h : LawsP T.toTop) (j : ℕ) (hj : InR D j), LawsFull T → (∀ γ₀ ∈ Formalism.L2.Theta.GQ (T.V j T.σ₀), T.xi (Matrix.GeneralLinearGroup.det (Formalism.L2.Theta.finHom (T.V j T.σ₀) γ₀)) = 1) → ∀ (Sc : WeightAlgebra.Scal (recB h.toLawsCore)) (ka wL wF : WeightFamilies.Wt D j) (Tn : ℕ), WeightAlgebra.IsF' ka wL wF Tn wF.n → ka.n = wF.n + Tn * wL.n → WeightFamilies.dimY D j ≤ Tn → D.R.r ≤ wF.n → ∀ (P : Type) (ℓ : P → (LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l)) (act : P → (recB h.toLawsCore).Cusp j ka → (recB h.toLawsCore).Cusp j ka), IsLevAct T.toTop h j ka ℓ act → ∀ g F, (recPJ h j hj).inc ka F ∈ (recPJ h j hj).Theta Sc ka wL wF Tn → (recPJ h j hj).inc ka (act g F) ∈ (recPJ h j hj).Theta Sc ka wL wF Tn := by
   intro hC D T h j hj hfull hxi Sc ka wL wF Tn _ hn _ hr P ℓ act hact g F hF

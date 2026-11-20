@@ -7,9 +7,9 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Introduce `f q _ ξ hξ hq hq2 hqf`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Establish `hcop : q.Coprime f` using `(Nat.Prime.coprime_iff_not_dvd hq).mpr hqf`. Take `⟨hp, hne, -⟩` from `Formalism.HermitianLattices.ThinSetIntegral.twist_is_primitive_character.2 f ξ q hξ hq2 hcop`. Use `⟨tw ξ q, hp, hne, fun n => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.HermitianLattices.ZeroFreeRegionGL2.twist_evaluation_formula f ξ q n]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twist_prim :
     ∀ (f q : ℕ) [NeZero f] (ξ : DirichletCharacter ℂ f), ξ.IsPrimitive → q.Prime → q ≠ 2 → ¬ q ∣ f →

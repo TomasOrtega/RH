@@ -7,15 +7,15 @@ open NumberField
 namespace GlobalTheory.NonzeroIntegerSmulMem
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (L : Set (Formalism.BasicNotions.HSpace.V S))`. Rewrite using `[hL.span_eq_top]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨r, hr, hrL⟩` from `hy`. Take `⟨t, ht, htL⟩` from `hz`. Use `⟨r * t, mul_ne_zero hr ht, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (r * t) • (y + z) = t • (r • y) + r • (t • z)`. Rewrite using `[smul_add, mul_smul, mul_smul, smul_comm r t y]`. Rewrite using `[e]`. Conclude with `L.add_mem (L.smul_mem t hrL) (L.smul_mem r htL)`. Consider the case `smul a y _ hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hrL⟩` from `hy`. Take `⟨⟨n, d⟩, hnd⟩` from `IsLocalization.surj (nonZeroDivisors (RingOfIntegers E)) a`. Use `⟨r * (d : RingOfIntegers E), mul_ne_zero hr (nonZeroDivisors.coe_ne_zero d), ?_⟩` and prove the remaining obligations. Establish `e1 : (d : RingOfIntegers E) • a = algebraMap (RingOfIntegers E) E n`. Rewrite using `[Algebra.smul_def, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnd`. Establish `e : (r * (d : RingOfIntegers E)) • (a • y) = n • (r • y)`. Rewrite using `[mul_smul, ← smul_assoc (d : RingOfIntegers E) a y, e1, algebraMap_smul E n y, smul_comm r n y]`. Rewrite using `[e]`. Conclude with `L.smul_mem n hrL`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_smul_mem {E : Type} [Field E] [NumberField E] [StarRing E]
     {S : Formalism.BasicNotions.HSpace E} (L : Submodule (RingOfIntegers E) (Formalism.BasicNotions.HSpace.V S))

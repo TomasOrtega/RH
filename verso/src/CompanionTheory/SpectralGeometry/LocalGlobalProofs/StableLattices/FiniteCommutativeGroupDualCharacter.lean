@@ -31,11 +31,11 @@ def pair (a : D → R) (β : Du k D → R) : R :=
 variable [Algebra k R]
 
 /- English proof (translation)
-Establish `h : ∑ i, counit (R` using `k) (Module.finBasis k D i) • (toConv ((Module.finBasis k D).coord i) : Du k D) = 1 := by`. Apply `ofConv_injective` to reduce the goal to its premises. Use `(Module.finBasis k D).sum_dual_apply_smul_coord (counit (R := k) (A := D))` as an intermediate fact. Rewrite using `[LinearMap.convOne_def]`. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `d`. Simplify using the standard rewrite rules. Use extensionality with `d`. Simplify using the standard rewrite rules. Unfold `pair`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[← map_one β, ← h, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_counit [IsCocomm k D] (β : Du k D →ₐ[k] R) :
     pair (fun d => algebraMap k R (counit (R := k) d)) β = 1 := by
@@ -52,23 +52,23 @@ theorem pair_counit [IsCocomm k D] (β : Du k D →ₐ[k] R) :
   rw [map_smul, Algebra.smul_def]
 
 /- English proof (translation)
-Use `set b := Module.finBasis k D with hb`. Set `cc : _ → Du k D` to `fun i => toConv (b.coord i)`. Establish `hexp : ∀ (f : D →ₗ[k] R) (d : D), f d = ∑ j, b.coord j d • f (b j)`. Introduce `f d`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `key1 : ∀ x : D ⊗[k] D, ψ x = ∑ j, ∑ l, (LinearMap.mul' k k (TensorProduct.map (b.coord j) (b.coord l) x)) • (a (b j) * a' (b l))`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u v`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ, hexp a u, hexp a' v, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [TensorProduct.map_tmul, LinearMap.mul'_apply, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, add_smul, Finset.sum_add_distrib, hx, hy]`. Establish `key2 : ∀ j l, β (cc j) * β (cc l) = ∑ i, (LinearMap.mul' k k (TensorProduct.map (b.coord j) (b.coord l) (comul (R` using `k) (b i)))) • β (cc i) := by`. Introduce `j l`. Rewrite using `[← map_mul]`. Establish `h` using `b.sum_dual_apply_smul_coord (cc j * cc l).ofConv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : cc j * cc l = ∑ i, (cc j * cc l).ofConv (b i) • cc i`. Apply `ofConv_injective` to reduce the goal to its premises. Use `h.symm.trans ?_` and prove the remaining obligations. Use extensionality with `d`. Simplify using `[cc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h', map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`. Unfold `pair`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hb]`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [hc, key1, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `key2 j l` as an intermediate fact. Simplify using `only [cc] at this`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [← this]; ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pair_mul [IsCocomm k D] (a a' : D →ₗ[k] R) (β : Du k D →ₐ[k] R) (ψ : D ⊗[k] D →+ R)
     (hψ : ∀ x y, ψ (x ⊗ₜ y) = a x * a' y) (c : D → R) (hc : ∀ d, c d = ψ (comul (R := k) d)) :
@@ -131,7 +131,7 @@ def fnR {X : Scheme.{0}} {A : Type} [CommRing A] (x : X ⟶ Spec (.of A)) : A �
   ((Scheme.ΓSpecIso (.of A)).inv ≫ x.appTop).hom
 
 /- English proof (translation)
-Rewrite using `[fnR, fnR, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fnR_comp {X Y : Scheme.{0}} {A : Type} [CommRing A] (f : Y ⟶ X) (x : X ⟶ Spec (.of A)) (a : A) :
     fnR (f ≫ x) a = f.appTop (fnR x a) := by
@@ -139,7 +139,7 @@ theorem fnR_comp {X Y : Scheme.{0}} {A : Type} [CommRing A] (f : Y ⟶ X) (x : X
   rfl
 
 /- English proof (translation)
-Establish `h` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ)`. Establish `h2` using `congr($h a)`. Simplify using `only [fnR, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at h2 ⊢`. Simplify using `only [CommRingCat.hom_ofHom] at h2`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fnR_specMap {X : Scheme.{0}} {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
     (x : X ⟶ Spec (.of B)) (a : A) :
@@ -155,7 +155,7 @@ variable {k : Type} [Field k]
 @[reducible] def wAlg (W : Over (Sp k)) : Algebra k Γ(W.left, ⊤) := (fnR W.hom).toAlgebra
 
 /- English proof (translation)
-Establish `h : x.left ≫ Spec.map (CommRingCat.ofHom (algebraMap k A)) = W.hom` using `Over.w x`. Conclude with `(fnR_specMap (algebraMap k A) x.left c).symm.trans (congrArg (fun y => fnR y c) h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fnR_algebraMap {W : Over (Sp k)} {A : Type} [CommRing A] [Algebra k A]
     (x : W ⟶ (Spec (.of A)).asOver (Spec (.of k))) (c : k) :
@@ -175,15 +175,13 @@ def ptr {W : Over (Sp k)} {A : Type} [CommRing A] [Algebra k A]
 variable {D : Type} [CommRing D] [HopfAlgebra k D]
 
 /- English proof (translation)
-Set `L : W.left ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap k D))) (Spec.map (CommRingCat.ofHom (algebraMap k D)))` to `(lift x y).left`. Set `M : W.left ⟶ Spec (.of (D ⊗[k] D))` to `L ≫ (pullbackSpecIso k D D).hom`. Establish `hf : L ≫ pullback.fst _ _ = x.left`. Use `congrArg Over.Hom.left (lift_fst x y)` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Over.fst_left]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hs : L ≫ pullback.snd _ _ = y.left`. Use `congrArg Over.Hom.left (lift_snd x y)` as an intermediate fact. Rewrite `this` using `[Over.comp_left, Over.snd_left]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : M ≫ Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom) = x.left` using `(Category.assoc _ _ _).trans ((congrArg (fun z => L ≫ z) (pullbackSpecIso_hom_fst k D D)).trans hf)`. Establish `h2 : M ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : D →ₐ[k] D ⊗[k] D).toRingHom) = y.left` using `(Category.assoc _ _ _).trans ((congrArg (fun z => L ≫ z) (pullbackSpecIso_hom_snd k D D)).trans hs)`. Use `⟨(fnR M).toAddMonoidHom, fun u v => ?_, fun d => ?_⟩` and prove the remaining obligations. Establish `e : u ⊗ₜ[k] v = Algebra.TensorProduct.includeLeftRingHom u * (Algebra.TensorProduct.includeRight : D →ₐ[k] D ⊗[k] D).toRingHom v` using `by simp show fnR M _ = _`. Rewrite using `[e, map_mul, ← fnR_specMap, ← fnR_specMap, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hμ : (x * y).left = M ≫ Spec.map (CommRingCat.ofHom (Bialgebra.comulAlgHom k D).toRingHom)`. Rewrite using `[Hom.mul_def, Over.comp_left, mul_spec_asOver_spec_left (R := .of k) (A := .of D)]`. Simplify using `only [M, L]`. Both sides reduce to the same expression. Rewrite using `[hμ, fnR_specMap]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fn_mul {W : Over (Sp k)} (x y : W ⟶ (Spec (.of D)).asOver (Spec (.of k))) :
     ∃ ψ : D ⊗[k] D →+ Γ(W.left, ⊤), (∀ u v, ψ (u ⊗ₜ v) = fnR x.left u * fnR y.left v) ∧
@@ -216,7 +214,7 @@ theorem fn_mul {W : Over (Sp k)} (x y : W ⟶ (Spec (.of D)).asOver (Spec (.of k
     rfl
 
 /- English proof (translation)
-Establish `h : (1 : W ⟶ (Spec (.of D)).asOver (Spec (.of k))).left = W.hom ≫ Spec.map (CommRingCat.ofHom (Bialgebra.counitAlgHom k D).toRingHom)`. Rewrite using `[Hom.one_def, Over.comp_left, one_spec_asOver_spec_left (R := .of k) (A := .of D)]`. Both sides reduce to the same expression. Rewrite using `[h, fnR_specMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fn_one {W : Over (Sp k)} (d : D) :
     fnR (1 : W ⟶ (Spec (.of D)).asOver (Spec (.of k))).left d = fnR W.hom (counit (R := k) d) := by
@@ -248,7 +246,7 @@ def P {W : Over (Sp k)} (x : W ⟶ GD k D) (t : W ⟶ TE k D) : Γ(W.left, ⊤) 
   pair (fnR x.left) (fnR t.left)
 
 /- English proof (translation)
-Take `⟨ψ, h1, h2⟩` from `fn_mul x y`. Use `letI := wAlg W`. Conclude with `pair_mul (ptr x).toLinearMap (ptr y).toLinearMap (ptr t) ψ h1 _ h2`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem twoPow_mul_twoPow {W : Over (Sp k)} (x y : W ⟶ GD k D) (t : W ⟶ TE k D) :
     P (x * y) t = P x t * P y t := by
@@ -257,9 +255,9 @@ theorem twoPow_mul_twoPow {W : Over (Sp k)} (x y : W ⟶ GD k D) (t : W ⟶ TE k
   exact pair_mul (ptr x).toLinearMap (ptr y).toLinearMap (ptr t) ψ h1 _ h2
 
 /- English proof (translation)
-Use `letI := wAlg W`. Establish `h : (fnR (1 : W ⟶ GD k D).left : D → Γ(W.left, ⊤)) = fun d => algebraMap k Γ(W.left, ⊤) (counit (R` using `k) d) := by`. Use function extensionality and compare the values at `d`. Conclude with `fn_one d`. Unfold `P`.
+Equip the data with the indicated structure. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `pair_counit (ptr t)`.
+A detailed English derivation is pending.
 -/
 theorem P_one {W : Over (Sp k)} (t : W ⟶ TE k D) : P (1 : W ⟶ GD k D) t = 1 := by
   letI := wAlg W
@@ -272,7 +270,7 @@ theorem P_one {W : Over (Sp k)} (t : W ⟶ TE k D) : P (1 : W ⟶ GD k D) t = 1 
   exact pair_counit (ptr t)
 
 /- English proof (translation)
-Simplify using `only [P, pair, map_sum, map_mul, Over.comp_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (fnR_comp f.left x.left _).symm (fnR_comp f.left t.left _).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullback_comp₂ {W W' : Over (Sp k)} (f : W' ⟶ W) (x : W ⟶ GD k D) (t : W ⟶ TE k D) :
     f.left.appTop (P x t) = P (f ≫ x) (f ≫ t) := by

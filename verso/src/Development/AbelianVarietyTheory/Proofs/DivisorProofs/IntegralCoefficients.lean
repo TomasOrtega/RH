@@ -5,17 +5,15 @@ namespace GlobalTheory.NonzeroDeterminantIntegrality
 open Matrix
 
 /- English proof (translation)
-Establish `hspan : Submodule.span K (Set.range v) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Establish `hexp : ∀ x : Λ → K, φ x = ∑ l, φ (Pi.single l 1) * x l`. Introduce `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [pi_eq_sum_univ' x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Establish `hc` using `h (fun l => φ (Pi.single l 1)) (fun i => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hexp]`. Conclude with `hle (Submodule.subset_span ⟨i, rfl⟩))`. Apply `hφ` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[hexp]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Use `congrFun hc l` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Rewrite using `[this, zero_mul]`. Take `⟨κ, a, -, hsp, hli⟩` from `exists_linearIndependent' K v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b : Module.Basis κ K (Λ → K)` to `Module.Basis.mk hli (by rw [hsp, hspan])`. Set `e : Λ ≃ κ` to `(Pi.basisFun K Λ).indexEquiv b`. Use `⟨fun l => a (e l), ?_⟩` and prove the remaining obligations. Establish `hli' : LinearIndependent K (Matrix.of fun x l => v (a (e x)) l).row` using `hli.comp e e.injective`. Use `Matrix.linearIndependent_rows_iff_isUnit.mp hli'` as an intermediate fact.
-
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp this).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_det_ne_zero {K I Λ : Type} [Field K] [Fintype Λ] [DecidableEq Λ] (v : I → Λ → K)
     (h : ∀ c : Λ → K, (∀ i, ∑ l, c l * v i l = 0) → c = 0) :
@@ -49,17 +47,17 @@ theorem exists_det_ne_zero {K I Λ : Type} [Field K] [Fintype Λ] [DecidableEq �
   exact ((Matrix.isUnit_iff_isUnit_det _).mp this).ne_zero
 
 /- English proof (translation)
-Introduce `W _ _ K₀ K₁ _ _ i₀ i₁ hinj hunit I Λ _ u hu w z hz`. Take `⟨f, hf⟩` from `exists_det_ne_zero (fun i l => i₁ (u i l)) hu`. Set `M : Matrix Λ Λ W` to `Matrix.of fun a l => u (f a) l`. Establish `hdet : IsUnit M.det`. Apply `hunit` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[RingHom.map_det]`. Conclude with `hf`. Set `z₀ : Λ → W` to `M⁻¹ *ᵥ (fun a => w (f a))`. Establish `hM : M *ᵥ z₀ = fun a => w (f a)`. Simplify using `only [z₀]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hdet₀ : IsUnit (i₀.mapMatrix M).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `hdet.map i₀`. Establish `key : (fun l => i₀ (z₀ l)) = z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).mpr hdet₀)` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h1` using `congrArg i₀ (congrFun hM a)`. Rewrite `h1` using `[hz]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul] at h1 ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨z₀, fun l => congrFun key l, fun i => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[hz, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← congrFun key l]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_coefficients : ∀ (W : Type) [CommRing W] [IsDomain W] (K₀ K₁ : Type) [Field K₀] [Field K₁]
     (i₀ : W →+* K₀) (i₁ : W →+* K₁), Function.Injective i₀ → (∀ a : W, i₁ a ≠ 0 → IsUnit a) →

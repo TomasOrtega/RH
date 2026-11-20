@@ -10,11 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.St
 
 /- English proof (translation)
-Introduce `D X u F Tr hK hσ hL T`. Establish `hW : WittX X u Tr.wt` using `⟨Tr.wt_isom, Tr.wt_e, Tr.wt_f, Tr.weight_z⟩`. Establish `hA : IsAdeleIso X Tr.ιA` using `⟨Tr.ιA_rat, Tr.ιA_int⟩`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.frameAction_mulEquiv_finiteAdelic_unitary D X u Tr.wt Tr.ιA hW hA hσ`. Take `⟨-, hΓ, hsT⟩` from `GlobalTheory.T.transport_rational_points_stabiliser_frame D X u Tr.wt Tr.ιA hW hA Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hψ, -, hφ, -, -⟩` from `cols_sharp_dictionary D X u hK`. Establish `key` using `GlobalTheory.adForms_of_equivariant D.host.F D.host.E (Formalism.L2.Forms.sigD D) (D.R.N 0) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) _ _ _ F.cls0.lev (Gam X u) (Hinf X u) (Hfin X u) (iotaI X u) (iotaF X u) (Ku X u hK) (psiK X u hK) Φ Tr.h0 D.what₂.Tau (Formalism.L2.Forms.em …`. Rewrite using `[Formalism.L2.Forms.Mu0_iff F.val0]`. Use `⟨_, key, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc : Φ.symm (F.cls0.y c * Tr.h0⁻¹) = Tr.hc c` using `Φ.symm_apply_eq.2 ((hΦ (Tr.hc c) _).1 (Tr.hc_rep c)).symm`. Simplify using `only [Formalism.L2.Forms.res, LinearMap.funLeft_apply, hc]`. Use `show Tr.J (shP X u T.1 (Tr.hc c)) z = Tr.J (shP X u T.1 (Tr.hc c)) (F.val0.eY (F.val0.eY.symm z))`. Rewrite using `[Equiv.apply_symm_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colDictInto_of_levelMatch : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (F : Formalism.L2.Forms.Forms0 D u) (Tr : Transport X u F) (hK : X.LevelSubgroupCharacter), (∀ a, Tr.ιA (sigA X.B.I a) = Formalism.UG.sigR (Formalism.L2.Forms.sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (Tr.ιA a)) → LevelMatch X Tr hK → ColDictInto X Tr hK := by
   intro D X u F Tr hK hσ hL T

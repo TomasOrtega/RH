@@ -27,11 +27,11 @@ private def reObj {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {gb : GBa
       exact ⟨I', fun y => by rw [hI' N hpos y]; exact hI (g N y)⟩ }
 
 /- English proof (translation)
-Introduce `q _ D R R' _ _ _ b gb N N₀ c hN hpos X X₁ s s₁ o u f n g hg hg0`. Establish `hN0 : 0 < N₀` using `Nat.pos_of_ne_zero (by rintro rfl; simp [hN] at hpos)`. Establish `hc : 0 < c` using `Nat.pos_of_ne_zero (by rintro rfl; simp [hN] at hpos)`. Establish `key : ∀ y : D.La, u.eta (g N y) = u.eta y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz⟩ : ∃ z : D.La, g (N₀ * c) y = g N₀ y + N₀ • z` from `hg.tow N₀ c hN0 hc y`. Take `⟨z', hz'⟩` from `hg0 y`. Substitute `hN` using the available equality. Rewrite using `[hz, hz', u.eta_add, u.eta_add, u.eta_ker, u.eta_ker, _root_.mul_one, _root_.mul_one]`. Use `⟨reObj o g hg hpos, ⟨n.φ, n.φ₂, n.cart, n.sq, n.act, n.pol, fun y => ?_⟩, fun y => rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Over.Hom.left (o.eta (g N (c • y))) ≫ n.φ = f ≫ Over.Hom.left (u.eta y)`. Rewrite using `[map_nsmul, n.eta, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oResim : OResim := by
   intro q _ D R R' _ _ _ b gb N N₀ c hN hpos X X₁ s s₁ o u f n g hg hg0

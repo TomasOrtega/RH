@@ -17,7 +17,7 @@ lemma gen_relMap_apply {a b : Type*} [Fintype a] [Fintype b] (X : Matrix a b O) 
     relMap O (KO O) X v i = ∑ j, X i j • v j := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, gen_relMap_apply, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma gen_relMap_mul {a b c : Type*} [Fintype a] [Fintype b] [Fintype c]
     (X : Matrix a b O) (Y : Matrix b c O) :
@@ -28,7 +28,7 @@ lemma gen_relMap_mul {a b c : Type*} [Fintype a] [Fintype b] [Fintype c]
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[gen_relMap_apply, Matrix.one_apply, ite_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma gen_relMap_one {a : Type*} [Fintype a] [DecidableEq a] (v : a → KO O) :
     relMap O (KO O) (1 : Matrix a a O) v = v := by
@@ -36,29 +36,25 @@ lemma gen_relMap_one {a : Type*} [Fintype a] [DecidableEq a] (v : a → KO O) :
   simp [gen_relMap_apply, Matrix.one_apply, ite_smul]
 
 /- English proof (translation)
-Take `⟨n, snf⟩` from `(LinearMap.range (Matrix.mulVecLin A)).smithNormalForm (Pi.basisFun O M)`. Use `set U : Matrix M M O := (Pi.basisFun O M).toMatrix snf.bM with hUdef`. Use `set W : Matrix M M O := snf.bM.toMatrix (Pi.basisFun O M) with hWdef`. Establish `hWU : W * U = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip _ _`. Establish `hUW : U * W = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n ≤ Fintype.card G`. Establish `h1` using `Module.finrank_eq_card_basis snf.bN`. Establish `h2` using `LinearMap.finrank_range_le (Matrix.mulVecLin A)`. Rewrite `h2` using `[h1, Module.finrank_fintype_fun_eq_card, Fintype.card_fin]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : Fin n ↪ G` to `(Fin.castLEEmb hn).trans (Fintype.equivFin G).symm.toEmbedding`. Use `⟨n, U, snf.f, e, ?_, ?_⟩` and prove the remaining obligations. Use `⟨Matrix.of fun i l => ∑ p, if e p = i then W (snf.f p) l else 0, ?_⟩` and prove the remaining obligations. Establish `hZ : (Matrix.of fun p q => ((Matrix.of fun i l => ∑ p, if e p = i then W (snf.f p) l else 0) * U) (e p) (snf.f q)) = 1`. Use extensionality with `p q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, Matrix.mul_apply, e.injective.eq_iff, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← Matrix.mul_apply, hWU]`. Simplify using `[Matrix.one_apply, snf.f.injective.eq_iff]`. Rewrite using `[hZ, Matrix.det_one]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `C' hC set Y : Matrix M G O := W * A with hYdef`. Establish `hAY : A = U * Y` using `by rw [hYdef, ← Matrix.mul_assoc, hUW, Matrix.one_mul]`. Establish `hY : ∀ k, k ∉ Set.range snf.f → ∀ j, Y k j = 0`. Introduce `k hk j`. Establish `hmem : (fun l => A l j) ∈ LinearMap.range (Matrix.mulVecLin A)` using `⟨Pi.single j 1, by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `l`. Use the proof step `simp⟩`. Establish `h0` using `snf.repr_eq_zero_of_notMem_range ⟨_, hmem⟩ hk`. Rewrite `h0` using `[← Module.Basis.toMatrix_mulVec_repr (Pi.basisFun O M)]`. Simplify `h0` using `[hYdef, Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Use `set y := relMap O (KO O) Y v with hydef`. Establish `hy0 : ∀ k, k ∉ Set.range snf.f → y k = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `k hk`. Simplify using `[hydef, gen_relMap_apply, hY k hk]`. Establish `hv' : relMap O (KO O) (C' * U) y = 0`. Rewrite using `[hydef, ← LinearMap.comp_apply, ← gen_relMap_mul, Matrix.mul_assoc, ← hAY]`. Conclude with `hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Z : Matrix (Fin n) (Fin n) O := Matrix.of fun p q => (C' * U) (e p) (snf.f q) with hZdef`. Establish `hz : relMap O (KO O) Z (y ∘ snf.f) = 0`. Use function extensionality and compare the values at `p`. Use `congrFun hv' (e p)` as an intermediate fact. Rewrite `this` using `[gen_relMap_apply, Pi.zero_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gen_relMap_apply, Pi.zero_apply]`. Conclude with `(Fintype.sum_of_injective snf.f snf.f.injective _ _ (fun k hk => by simp [hy0 k hk]) (fun q => rfl)).trans this`. Establish `hyf : y ∘ snf.f = 0`. Rewrite using `[← gen_relMap_one (y ∘ snf.f), ← Matrix.nonsing_inv_mul Z hC, gen_relMap_mul, LinearMap.comp_apply, hz, map_zero]`. Establish `hy : y = 0`.
-
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k ∈ Set.range snf.f`. Take `⟨q, rfl⟩` from `hk`. Conclude with `congrFun hyf q`. Conclude with `hy0 k hk`.
-
-Rewrite using `[hAY, gen_relMap_mul, LinearMap.comp_apply, ← hydef, hy, map_zero]`. Introduce `v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[gen_relMap_mul, LinearMap.comp_apply, hv, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gen_key {M G : Type} [Fintype M] [DecidableEq M] [Fintype G] [DecidableEq G]
     (A : Matrix M G O) : ∃ (n : ℕ) (U : Matrix M M O) (f : Fin n ↪ M) (e : Fin n ↪ G),
@@ -135,7 +131,7 @@ lemma gen_key {M G : Type} [Fintype M] [DecidableEq M] [Fintype G] [DecidableEq 
 end GenKey
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [bigMat, bigRect, Matrix.mul_apply, map_sum, map_mul, Matrix.sum_apply, Fintype.sum_prod_type]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma gen_bigMat_mul {R O : Type*} [Ring R] [CommRing O] [Algebra O R] {m g d : Type*}
     [Fintype m] [Fintype d] [DecidableEq d] (ρ : R →ₐ[O] Matrix d d O) (C : Matrix g m R) (P : Matrix m g R) :
@@ -145,29 +141,25 @@ lemma gen_bigMat_mul {R O : Type*} [Ring R] [CommRing O] [Algebra O R] {m g d : 
     Fintype.sum_prod_type]
 
 /- English proof (translation)
-Introduce `R O _ _ _ _ _ _ m g s _ _ _ _ d _ _ ρ hρ P`. Establish `hk` using `fun w => gen_key (O := O) (bigRect (ρ w) P)`. Use `choose n U f e hC0 hgood using hk`. Use `choose C0 hC0 using hC0`. Set `res` to `IsLocalRing.residue O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `r : ∀ w, d w → d w → R` to `fun w a b => Function.surjInv (hρ w) (Matrix.single a b 1)`. Set `c : (Σ w : s, g × m × d w × d w) → Matrix g m R` to `fun j => Matrix.single j.2.1 j.2.2.1 (r j.1 j.2.2.2.1 j.2.2.2.2)`. Set `L : ∀ w, Matrix (g × d w) (m × d w) (MvPolynomial (Σ w : s, g × m × d w × d w) (IsLocalRing.ResidueField O))` to `fun w p q => ∑ j, MvPolynomial.X j * MvPolynomial.C (res (ρ w (c j p.1 q.1) p.2 q.2))`. Set `Q : s → MvPolynomial (Σ w : s, g × m × d w × d w) (IsLocalRing.ResidueField O)` to `fun w => (Matrix.of fun p q => ∑ l, L w (e w p) l * MvPolynomial.C (res (U w l (f w q)))).det`. Establish `hevalQ : ∀ w (t : (Σ w : s, g × m × d w × d w) → O), MvPolynomial.eval (fun j => res (t j)) (Q w) = res (Matrix.of fun p q => (bigRect (ρ w) (∑ j, t j • c j) * U w) (e w p) (f w q)).det`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w t`. Simplify using `only [Q]`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[L, Matrix.mul_apply, bigRect, Matrix.sum_apply, map_sum]`. Establish `hsum : ∀ w (φ : g × m × d w × d w → O), bigRect (ρ w) (∑ j : (Σ w : s, g × m × d w × d w), (Pi.single (M` using `fun w => g × m × d w × d w → O) w φ j.1 j.2) • c j) = fun p q => φ (p.1, q.1, p.2, q.2) := by`. Introduce `w φ`. Use function extensionality and compare the values at `p q`. Simplify using `only [bigRect, Matrix.sum_apply, Matrix.smul_apply, map_sum, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_sigma]`. Rewrite using `[Fintype.sum_eq_single w (fun x hx => by simp [Pi.single_eq_of_ne hx])]`. Simplify using `only [Pi.single_eq_same]`. Rewrite using `[Fintype.sum_eq_single (p.1, q.1, p.2, q.2)]`. Simplify using `[c, r, Function.surjInv_eq (hρ w)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨i', k', a', b'⟩ hy`. Simplify using `only [c, r, Matrix.single_apply]`. Use `split_ifs with h1`. Take `⟨rfl, rfl⟩` from `h1`. Rewrite using `[Function.surjInv_eq (hρ w), Matrix.single_apply, if_neg, smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hy rfl`. Simplify using the standard rewrite rules. Establish `hQne : ∀ w, Q w ≠ 0`. Introduce `w hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set t0 : (Σ w : s, g × m × d w × d w) → O := fun j => Pi.single (M := fun w => g × m × d w × d w → O) w (fun x => C0 w (x.1, x.2.2.1) (x.2.1, x.2.2.2)) j.1 j.2 with ht0`. Establish `h1` using `hevalQ w t0`. Rewrite `h1` using `[hQ, map_zero]`. Establish `h2 : bigRect (ρ w) (∑ j, t0 j • c j) = C0 w`. Rewrite using `[ht0, hsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2]`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 (hC0 w) h1.symm`. Establish `hprod : (∏ w, Q w) ≠ 0` using `Finset.prod_ne_zero_iff.2 (fun w _ => hQne w)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, MvPolynomial.eval x (∏ w, Q w) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [not_exists, not_not] at hcon`. Conclude with `hprod (MvPolynomial.funext fun x => by rw [hcon x, map_zero])`. Rewrite `hx` using `[map_prod]`. Establish `hxw : ∀ w, MvPolynomial.eval x (Q w) ≠ 0` using `fun w => (Finset.prod_ne_zero_iff.1 hx) w (Finset.mem_univ w)`. Set `t : (Σ w : s, g × m × d w × d w) → O` to `fun j => Function.surjInv (IsLocalRing.residue_surjective (R := O)) (x j)`.
-
-Establish `htx : (fun j => res (t j)) = x` using `funext fun j => Function.surjInv_eq _ _`. Use `⟨∑ j, t j • c j, fun w => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (Matrix.of fun p q => (bigRect (ρ w) (∑ j, t j • c j) * U w) (e w p) (f w q)).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, ← hevalQ w t, htx]`. Conclude with `hxw w`.
-
-Use `show Module.length O (LinearMap.ker (relMap O (KO O) (bigMat (ρ w) (_ * P)))) = _`. Rewrite using `[gen_bigMat_mul, hgood w _ hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generic : StatGeneric := by
   intro R O _ _ _ _ _ _ m g s _ _ _ _ d _ _ ρ hρ P

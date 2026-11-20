@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FinActS
 
 /- English proof (translation)
-Establish `hu : (Set.univ : Set (α ⊕ β)) = Set.range Sum.inl ∪ Set.range Sum.inr`. Apply the tactic sequence `ext i; cases i <;> simp`. Establish `e₁ : (Set.range (Sum.inl : α → α ⊕ β) ∩ Function.mulSupport f).Finite`. Use `(h₁.image Sum.inl).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x, rfl⟩, hx⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, rfl⟩`. Establish `e₂ : (Set.range (Sum.inr : β → α ⊕ β) ∩ Function.mulSupport f).Finite`. Use `(h₂.image Sum.inr).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x, rfl⟩, hx⟩`. Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hd : Disjoint (Set.range (Sum.inl : α → α ⊕ β)) (Set.range (Sum.inr : β → α ⊕ β))` using `Set.disjoint_left.2 (by rintro _ ⟨x, rfl⟩ ⟨y, hy⟩; cases hy)`. Rewrite using `[← finprod_mem_univ, hu, finprod_mem_union' hd e₁ e₂, finprod_mem_range Sum.inl_injective, finprod_mem_range Sum.inr_injective]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finprod_sum_split {α β M : Type*} [CommMonoid M] (f : α ⊕ β → M)
     (h₁ : (Function.mulSupport fun x => f (Sum.inl x)).Finite)
@@ -44,19 +44,17 @@ theorem finprod_sum_split {α β M : Type*} [CommMonoid M] (f : α ⊕ β → M)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Use `set g₁ : Pl E → ℂ := fun w => φ₁ w (atW w y) with hg₁`. Use `set g₂ : Pl E → ℂ := fun w => if IsSplitAt w then φ₂ w (atW w (thP E a b y)) else 1 with hg₂`. Establish `o₁ : ∀ᶠ w in cofinite, g₁ w = 1` using `by filter_upwards [GlobalTheory.CompanionTheory.FinTestTw.eventually_eq_indicator h₁, (GlobalTheory.CompanionTheory.FinTestTw.isRestrW a b).eventually_mem y] with w e m`. Establish `m' : atW w y ∈ (K2 a b w : Set (GLw a w × GLw b w))` using `m`. Simplify using `only [hg₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Set.indicator_of_mem m']`. Simplify using the standard rewrite rules. Establish `o₂ : ∀ᶠ w in cofinite, φ₂ w (atW w (thP E a b y)) = 1` using `by filter_upwards [GlobalTheory.CompanionTheory.FinTestTw.eventually_eq_indicator h₂, (GlobalTheory.CompanionTheory.FinTestTw.isRestrW a b).eventually_mem (thP E a b y)] with w e m`. Establish `m' : atW w (thP E a b y) ∈ (K2 a b w : Set (GLw a w × GLw b w))` using `m`. Rewrite using `[e, Set.indicator_of_mem m']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `f₁ : (Function.mulSupport g₁).Finite` using `eventually_cofinite.1 o₁`. Establish `f₂' : (Function.mulSupport fun w => φ₂ w (atW w (thP E a b y))).Finite` using `eventually_cofinite.1 o₂`. Establish `f₂ : (Function.mulSupport g₂).Finite`. Use `f₂'.subset fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hs : IsSplitAt w`. Simplify `hw` using `[hg₂, hs, Function.mem_mulSupport]`. Conclude with `absurd (by simp [hg₂, hs]) hw`. Establish `l₁ : (Function.mulSupport fun x : {w // w ∈ S} => g₁ x.1).Finite` using `(f₁.preimage Subtype.val_injective.injOn).subset fun x hx => hx`. Establish `l₂ : (Function.mulSupport fun x : {w // w ∈ S ∧ IsSplitAt w} => φ₂ x.1 (atW x.1 (thP E a b y))).Finite` using `(f₂'.preimage Subtype.val_injective.injOn).subset fun x hx => hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∏ᶠ i : Slot S, sf φ₁ φ₂ i (i.cp a b y) = (∏ᶠ x : {w // w ∈ S}, g₁ x.1) * ∏ᶠ x : {w // w ∈ S ∧ IsSplitAt w}, φ₂ x.1 (atW x.1 (thP E a b y))` using `finprod_sum_split (fun i : Slot S => sf φ₁ φ₂ i (i.cp a b y)) l₁ l₂`. Establish `c₁ : ∏ᶠ x : {w // w ∈ S}, g₁ x.1 = ∏ᶠ w ∈ S, g₁ w` using `finprod_subtype_eq_finprod_cond (f := g₁) (fun w => w ∈ S)`. Establish `c₂ : ∏ᶠ x : {w // w ∈ S ∧ IsSplitAt w}, φ₂ x.1 (atW x.1 (thP E a b y)) = ∏ᶠ w ∈ S, g₂ w`. Establish `e₀ : ∏ᶠ x : {w // w ∈ S ∧ IsSplitAt w}, φ₂ x.1 (atW x.1 (thP E a b y)) = ∏ᶠ x : {w // w ∈ S ∧ IsSplitAt w}, g₂ x.1` using `finprod_congr fun x => by simp [hg₂, x.2.2]`. Rewrite using `[e₀, finprod_subtype_eq_finprod_cond (f := g₂) (fun w => w ∈ S ∧ IsSplitAt w)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `finprod_mem_inter_mulSupport_eq' g₂ {w | w ∈ S ∧ IsSplitAt w} S fun w hw => ?_` and prove the remaining obligations. Establish `hsp : IsSplitAt w`. Assume the negation of the conclusion as `hn`. Conclude with `hw (by simp [hg₂, hn])`. Conclude with `⟨fun h => h.1, fun h => ⟨h, hsp⟩⟩`.
-
-Rewrite using `[hs, c₁, c₂]`. Conclude with `finprod_mem_mul_distrib' (f₁.subset Set.inter_subset_right) (f₂.subset Set.inter_subset_right)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finFn_eq_finprod_factor {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E, LF a b w} (h₁ : IsTestP φ₁) (h₂ : IsTestP φ₂)
     (y : Hf E a b) : finFn S φ₁ φ₂ y = ∏ᶠ i : Slot S, sf φ₁ φ₂ i (i.cp a b y) := by

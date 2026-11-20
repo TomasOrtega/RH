@@ -8,7 +8,7 @@ import Formalism.MonomialMeanResidues.MonomialMeanProofs.SpanEqTopAndRankOfLinea
 namespace Formalism.HermiteSiegelSlopes
 
 /- English proof (translation)
-The claim follows from `base_change_slope`.
+A detailed English derivation is pending.
 -/
 theorem baseChange : BaseChange := base_change_slope
 

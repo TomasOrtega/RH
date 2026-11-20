@@ -5,27 +5,25 @@ open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.GenCoef
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset (Fin N × Fin N), ∀ c : Matrix (Fin N) (Fin N) R, (∀ a b, a ≤ b → c a b = 0) → (∀ a b, (a, b) ∉ S → c a b = 0) → 1 + c ∈ Submonoid.closure {M | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r}`. Introduce `S`. Proceed by induction on `S using Finset.induction_on_max_value (fun p : Fin N × Fin N => p.2) with`. Consider the case `empty`. Introduce `c _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: c = 0`. Use extensionality with `a b`. Simplify using `using h a b (by simp)`. Rewrite using `[this, add_zero]`. Conclude with `Submonoid.one_mem _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert p S hp hmax ih`. Introduce `c hc hS`. Take `⟨a, b⟩` from `p`. Distinguish the cases in `hab : a ≤ b`. Use `ih c hc fun i j hij => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : (i, j) = (a, b)`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj h`. Conclude with `hc _ _ hab`. Conclude with `hS i j (by simp only [Finset.mem_insert, not_or]; exact ⟨h, hij⟩)`. Establish `hba : b < a` using `lt_of_not_ge hab set c' : Matrix (Fin N) (Fin N) R := c - Matrix.single a b (c a b) with hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : ∀ i j, (i, j) ∉ S → c' i j = 0`. Introduce `i j hij`. Distinguish the cases in `h : (i, j) = (a, b)`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj h`. Simplify using `[hc']`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : c i j = 0` using `hS i j (by simp only [Finset.mem_insert, not_or]; exact ⟨h, hij⟩)`. Establish `h' : ¬ (a = i ∧ b = j)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h rfl`. Simplify using `[hc', h0, Matrix.single_apply, h']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h1 : ∀ i j, i ≤ j → c' i j = 0`. Introduce `i j hij`. Establish `h' : ¬ (a = i ∧ b = j)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hab hij`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hc', hc i j hij, Matrix.single_apply, h']`. Establish `h3 : c' * Matrix.single a b (c a b) = 0`. Use extensionality with `i j`. Establish `hz : c' i a = 0`. Apply `h2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `hmem`. Conclude with `absurd (hmax _ hmem) (not_le.mpr hba)`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Distinguish the cases in `he : a = e`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Substitute `he` using the available equality. Simplify using `[hz]`. Simplify using `[Matrix.single_apply, he]`. Establish `h4 : 1 + c = (1 + c') * Matrix.transvection a b (c a b)`. Rewrite using `[Matrix.transvection, add_mul, one_mul, mul_add, mul_one, h3, add_zero, hc']`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[h4]`. Conclude with `Submonoid.mul_mem _ (ih c' h1 h2) (Submonoid.subset_closure ⟨a, b, _, hba.ne', rfl⟩)`. Conclude with `key Finset.univ c hc (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_strictLower_mem_closure_transvection (R : Type) [CommRing R] (N : ℕ)
     (c : Matrix (Fin N) (Fin N) R) (hc : ∀ a b, a ≤ b → c a b = 0) :

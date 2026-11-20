@@ -8,9 +8,9 @@ open MvPolynomial
 namespace GlobalTheory.CompactHowe
 
 /- English proof (translation)
-Establish `key : (substF h g).comp (substF h' g') = substF (h * h') (g * g')`. Use `algHom_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, substF_X, substF_X]`. Simplify using `only [map_sum, map_mul, substF_X, algHom_C, algebraMap_eq, Pi.mul_apply, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm' (s := Finset.univ) (t := fun _ => Finset.univ) (t' := Finset.univ) (s' := fun _ => Finset.univ) (by simp)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Finset.sum_product', Finset.univ_product_univ]`. Use `Fintype.sum_equiv ⟨fun x => (x.2.2.1, x.2.2.2, x.1, x.2.1), fun y => (y.2.2.1, y.2.2.2, y.1, y.2.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun x => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_fn_mk]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun f => f P) key`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem substF_mul {ι : Type} {N n : ℕ} (h h' : ι → Matrix (Fin N) (Fin N) ℂ) (g g' : ι → Matrix (Fin n) (Fin n) ℂ)
     (P : MvPolynomial (ι × Fin N × Fin n) ℂ) :

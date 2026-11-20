@@ -25,23 +25,21 @@ variable {R : Type} [CommRing R] {X Y : Scheme.{0}} {f : X ⟶ Sp R} (e : Y ⟶ 
   {d : ℕ} [SmoothOfRelativeDimension d f]
 
 /- English proof (translation)
-Simplify using `[spMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_spMap_id (f : X ⟶ Sp R) : e ≫ f = (e ≫ f) ≫ spMap (RingHom.id R) := by
   simp [spMap]
 
 /- English proof (translation)
-Establish `hle : e ''ᵁ W ≤ U`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `h hy`. Establish `h' : W ≤ e ⁻¹ᵁ (e ''ᵁ W)` using `(e.preimage_image_eq W).ge`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hω' : IsFrame (resForm hle ω)` using `hω.res (hW.image_of_isOpenImmersion e) hle`. Establish `key : pullForm (comp_spMap_id e f) h ω = pullForm (comp_spMap_id e f) h' (resForm hle ω)`. Rewrite using `[pullForm_resForm]`. Rewrite using `[key]`. Establish `hiso : IsIso (e.appLE (e ''ᵁ W) W h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e.appLE (e ''ᵁ W) W h' = (e.appIso W).hom`. Rewrite using `[Scheme.Hom.appIso_hom, Scheme.Hom.appLE]`. Both sides reduce to the same expression. Rewrite using `[this]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `sq` using `appLE_comp_algX (comp_spMap_id e f) h'`. Use `haveI : IsIso (CommRingCat.ofHom (e.appLE (e ''ᵁ W) W h').hom) := by`. Simplify using `using hiso`. Use `haveI : IsIso (CommRingCat.ofHom (RingHom.id R)) := by`. Rewrite using `[CommRingCat.ofHom_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use `infer_instance`. Establish `H : IsPushout (CommRingCat.ofHom (algX f (e ''ᵁ W))) (CommRingCat.ofHom (RingHom.id R)) (CommRingCat.ofHom (e.appLE (e ''ᵁ W) W h').hom) (CommRingCat.ofHom (algX (e ≫ f) W))`. Use `IsPushout.of_vert_isIso ⟨?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `RingHom.congr_fun sq x`.
-
-Conclude with `⟨hW, hω'.gen.formMapSq (RingHom.id R) (e.appLE (e ''ᵁ W) W h').hom sq H⟩`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_pullForm_openImm {U : X.Opens} {ω : FormsOn f d U} (hω : IsFrame ω)
     {W : Y.Opens} (hW : IsAffineOpen W) (h : W ≤ e ⁻¹ᵁ U) :
@@ -81,7 +79,7 @@ def oBundle (e : Y ⟶ X) (K : CanonLB f d) : LB Y :=
   ZH.UFib.refinePull K.bundle e (fun a : OIdx e K => a.2.1) (fun a => a.1) (fun a => a.2.2.2)
 
 /- English proof (translation)
-Simplify using `only [oBundle, ZH.UFib.refinePull, res, pullU, Units.coe_map, MonoidHom.coe_coe]`. Use `erw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply]`. Simplify using `only [Scheme.Hom.appLE, Category.assoc, resG]`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem resG_oBundle_g (K : CanonLB f d) (a b : OIdx e K)
     {W : Y.Opens} (h : W ≤ (oBundle e K).U a ⊓ (oBundle e K).U b) :
@@ -96,7 +94,7 @@ theorem resG_oBundle_g (K : CanonLB f d) (a b : OIdx e K)
   rfl
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun y _ => by obtain ⟨i, hi⟩ := exists_chart K.isLB (e y) obtain ⟨W, hW, hy, hsub⟩ := exists_isAffineOpen_mem_and_subset (x := y) (U := e ⁻¹ᵁ K.bundle.U i) hi exact Opens.mem_iSup.2 ⟨⟨i, W, hW, fun z hz => hsub hz⟩, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem iSup_oIdx (K : CanonLB f d) : ⨆ a : OIdx e K, a.2.1 = ⊤ :=
   eq_top_iff.2 fun y _ => by
@@ -113,7 +111,7 @@ def oChartPull (K : CanonLB f d) : ChartPull (oBundle e K) K.bundle e where
 variable [SmoothOfRelativeDimension d (e ≫ f)]
 
 /- English proof (translation)
-Establish `hfa` using `isFrame_pullForm_openImm e (K.isFrame a.1) a.2.2.1 a.2.2.2`. Establish `h₁` using `(K.isFrame a.1).coeff_pullForm (comp_spMap_id e f) a.2.2.2 hfa inf_le_left ha h (resForm inf_le_right (K.om b.1))`. Rewrite `h₁` using `[pullForm_resForm]`. Rewrite using `[g_eq_ratio, resForm_pullForm]`. Conclude with `(hfa.coeff_smul_resForm hW ha _).symm.trans (congrArg (· • _) h₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resForm_pullForm_om (K : CanonLB f d) (a b : OIdx e K) {W : Y.Opens} (hW : IsAffineOpen W)
     (ha : W ≤ a.2.1) (hb : W ≤ b.2.1) (h : W ≤ e ⁻¹ᵁ (K.bundle.U a.1 ⊓ K.bundle.U b.1)) :
@@ -143,7 +141,7 @@ def openImm (K : CanonLB f d) : CanonLB (e ≫ f) d where
 end CanonLB
 
 /- English proof (translation)
-Introduce `R _ X Y f e _ d _ _ K K'`. Establish `hp : (K.bundle.pull e).IsLB` using `Semi.LB.isLB_linComb K.isLB _ _`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem cls_canonLB_openImmersion : ∀ (R : Type) [CommRing R] (X Y : Scheme.{0}) (f : X ⟶ Sp R)
     (e : Y ⟶ X) [IsOpenImmersion e] (d : ℕ) [SmoothOfRelativeDimension d f]

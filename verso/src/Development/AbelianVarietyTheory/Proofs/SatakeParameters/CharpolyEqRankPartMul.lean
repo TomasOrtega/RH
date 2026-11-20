@@ -12,7 +12,7 @@ def CoeffCont {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace
   ∀ k, Continuous fun g => (F g).coeff k
 
 /- English proof (translation)
-Introduce `k`. Simplify using `only [Pi.mul_apply, coeff_mul]`. Conclude with `continuous_finset_sum _ fun x _ => (h x.1).mul (h' x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CoeffCont.mul {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] {F F' : Γ → K[X]} (h : CoeffCont F) (h' : CoeffCont F') :
@@ -22,15 +22,15 @@ theorem CoeffCont.mul {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [Topologi
   exact continuous_finset_sum _ fun x _ => (h x.1).mul (h' x.2)
 
 /- English proof (translation)
-Introduce `_` and use `continuous_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffCont_one {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K] :
     CoeffCont (1 : Γ → K[X]) := fun _ => continuous_const
 
 /- English proof (translation)
-Introduce `k`. Break down `k with _ | _ | k` into its components or cases. Simplify using `only [coeff_sub, coeff_X_zero, coeff_C_zero, zero_sub]`. Conclude with `ha.neg`. Simplify using `using continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [coeff_sub, coeff_X, coeff_C]`. Simplify using `using continuous_const`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeffCont_X_sub_C {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] {a : Γ → K} (ha : Continuous a) :
@@ -44,7 +44,7 @@ theorem coeffCont_X_sub_C {Γ K : Type} [TopologicalSpace Γ] [CommRing K] [Topo
     simpa using continuous_const
 
 /- English proof (translation)
-Establish `: (fun g => ∏ c ∈ s, F c g) = ∏ c ∈ s, F c`. Use function extensionality and compare the values at `g`. Simplify using `[Finset.prod_apply]`. Rewrite using `[this]`. Conclude with `Finset.prod_induction _ (fun G => CoeffCont G) (fun _ _ ha hb => ha.mul hb) coeffCont_one h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffCont_prod {Γ K ι : Type} [TopologicalSpace Γ] [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] (s : Finset ι) (F : ι → Γ → K[X]) (h : ∀ c ∈ s, CoeffCont (F c)) :

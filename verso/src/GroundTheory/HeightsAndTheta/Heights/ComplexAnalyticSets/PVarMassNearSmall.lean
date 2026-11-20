@@ -19,7 +19,7 @@ namespace VarMassNearSmall
 variable {n d : ℕ}
 
 /- English proof (translation)
-The claim follows from `|sheetSum J A F y| ≤ sheetSum J A G y := by classical unfold sheetSum rw [finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x _ => ?_) split_ifs with h · exact hFG x _ · simp`.
+A detailed English derivation is pending.
 -/
 theorem abs_sheetSum_le (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     {F G : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ} (hFG : ∀ x s, |F x s| ≤ G x s)
@@ -34,11 +34,11 @@ theorem abs_sheetSum_le (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin 
   · simp
 
 /- English proof (translation)
-Set `E : ((Σ _ : Fin d, Fin 2) → ℝ) ≃L[ℝ] (Fin d → ℂ)` to `(Pi.basis (fun _ : Fin d => Complex.basisOneI)).equivFun.symm.toContinuousLinearEquiv`. Establish `hcard : Fintype.card (Σ _ : Fin d, Fin 2) = 2 * d`. Simplify using `[Fintype.card_sigma, mul_comm]`. Establish `hT : volume (E ⁻¹' S) = 0`. Rewrite using `[← hausdorffMeasure_pi_real, hcard]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `E.symm.lipschitz.hausdorffMeasure_image_le (d := ((2 * d : ℕ) : ℝ)) (by positivity) S`. Rewrite `h` using `[hS, mul_zero, nonpos_iff_eq_zero, ContinuousLinearEquiv.image_symm_eq_preimage]`. Conclude with `h`. Establish `: (Measure.map E volume).IsAddHaarMeasure` using `E.isAddHaarMeasure_map volume`. Establish `hac : (volume : Measure (Fin d → ℂ)) ≪ Measure.map E volume` using `Measure.absolutelyContinuous_isAddHaarMeasure _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hac` to reduce the goal to its premises. Conclude with `(E.toHomeomorph.toMeasurableEquiv.map_apply S).trans hT`.
+A detailed English derivation is pending.
 -/
 theorem volume_eq_zero_of_hausdorff {S : Set (Fin d → ℂ)} (hS : μH[((2 * d : ℕ) : ℝ)] S = 0) :
     volume S = 0 := by
@@ -58,11 +58,11 @@ theorem volume_eq_zero_of_hausdorff {S : Set (Fin d → ℂ)} (hS : μH[((2 * d 
   exact (E.toHomeomorph.toMeasurableEquiv.map_apply S).trans hT
 
 /- English proof (translation)
-Establish `hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ (W ⊔ I)) < d` using `(ringKrullDim_le_of_surjective _ (Ideal.Quotient.factor_surjective le_sup_right)).trans_lt hI`. Establish `h0` using `NullSmaller.proof n d (W ⊔ I) hdim`. Set `L : EuclideanSpace ℂ (Fin n) →L[ℂ] (Fin d → ℂ)` to `(Matrix.mulVecLin A).toContinuousLinearMap.comp (EuclideanSpace.equiv (Fin n) ℂ).toContinuousLinearMap`. Establish `hsub : A.mulVec '' (zeroSet W ∩ zeroSet I) ⊆ L '' zeroSetEuc (W ⊔ I)`. Introduce and unpack `_ ⟨x, ⟨hxW, hxI⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨(EuclideanSpace.equiv (Fin n) ℂ).symm x, fun q hq => ?_, by simp only [L, ContinuousLinearMap.comp_apply]; rfl⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hq`. Establish `hx : (fun i => ((EuclideanSpace.equiv (Fin n) ℂ).symm x) i) = x` using `rfl`. Rewrite using `[hx, map_add, hxW a ha, hxI b hb, add_zero]`. Use `volume_eq_zero_of_hausdorff (le_antisymm ?_ bot_le)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem volume_image_eq_zero (W I : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (hI : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ I) < d) :
@@ -89,33 +89,29 @@ end VarMassNearSmall
 open VarMassNearSmall in
 
 /- English proof (translation)
-Introduce `n d W I φ f hW hdim hφ hI hf hfc δ hδ`. Distinguish the cases in `hA : ∃ A : Matrix (Fin d) (Fin n) ℂ, IsFiniteProjection W A`. Use `swap`. Use `⟨Set.univ, isOpen_univ, Set.subset_univ _, fun χ _ _ _ => ?_⟩` and prove the remaining obligations. Unfold `varInt`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hA, abs_zero]`. Conclude with `hδ.le`. Use `set A := hA.choose with hAdef`. Establish `hAf : IsFiniteProjection W A` using `hA.choose_spec`. Establish `hvar : ∀ g, varInt W d g φ = ∫ y, chartDens W A g φ y` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `varInt chartInt`. Rewrite using `[dif_pos hA]`. Establish `hfin : ∀ y, (fibre W A y).Finite` using `fun y => (FibreBound.proof n d W A hW hdim hAf y).2.1`. Establish `hS : IsClosed (zeroSet I)` using `SheetSumMeasurable.isClosed_zeroSet I`. Use `set U : ℕ → Set (Fin n → ℂ) := fun k => Metric.thickening (1 / ((k : ℝ) + 1)) (zeroSet I) with hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set F : ℕ → (Fin d → ℂ) → ℝ := fun k => chartAbsDens W A ((U k).indicator fun x => |f x|) φ with hF`. Use `set G := chartAbsDens W A (fun x => |f x|) φ with hG`. Establish `hGi : Integrable G` using `hCMC n d W A _ φ hW hdim hAf (continuous_abs.comp hf).continuousOn hφ (Or.inl (hfc.comp_left abs_zero))`. Establish `hFm : ∀ k, Measurable (F k)` using `fun k => (SheetSumMeasurable.proof n d W A _ φ hW hdim hAf ((continuous_abs.comp hf).measurable.indicator Metric.isOpen_thickening.measurableSet) hφ).2`. Establish `hFG : ∀ k y, ‖F k y‖ ≤ G y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `k y`. Rewrite using `[Real.norm_eq_abs]`. Use `abs_sheetSum_le W A (fun x s => ?_) (hfin y)` and prove the remaining obligations. Rewrite using `[abs_abs, abs_mul, abs_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (abs_nonneg _)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ U k`. Simplify using `[Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem hx, abs_zero]`. Conclude with `abs_nonneg _`. Establish `hlim : ∀ᵐ y, Tendsto (fun k => F k y) atTop (𝓝 0)` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 (volume_image_eq_zero W I A hI)] with y hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : ∀ x ∈ fibre W A y, ∀ᶠ k in atTop, x ∉ U k`. Introduce `x hxf`. Establish `hxS : x ∉ zeroSet I` using `fun h => hy ⟨x, ⟨hxf.1, h⟩, hxf.2⟩`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hS.isOpen_compl x hxS`. Take `⟨K, hK⟩` from `exists_nat_one_div_lt hε`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation.
 
-Use `filter_upwards [eventually_ge_atTop K] with k hk hxU`. Take `⟨z, hz, hdist⟩` from `Metric.mem_thickening_iff.1 hxU`. Establish `hKk : (K : ℝ) + 1 ≤ (k : ℝ) + 1`. Establish `: (K : ℝ) ≤ k` using `by exact_mod_cast hk`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hle : 1 / ((k : ℝ) + 1) ≤ 1 / ((K : ℝ) + 1)` using `one_div_le_one_div_of_le (by positivity) hKk`. Conclude with `hball (show dist z x < ε by rw [dist_comm]; linarith) hz`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [(eventually_all_finite (hfin y)).2 hx] with k hk`. Use `symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show sheetSum W A _ y = 0`. Unfold `sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`. Use `Finset.sum_eq_zero fun x hxm => ?_` and prove the remaining obligations. Rewrite `hxm` using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `split_ifs <;> simp [Set.indicator_of_notMem (hk x hxm)]`. Establish `hT` using `tendsto_integral_of_dominated_convergence G (fun k => (hFm k).aestronglyMeasurable) hGi (fun k => Eventually.of_forall (hFG k)) hlim`. Simplify using `only [integral_zero] at hT`. Take `⟨k, hk⟩` from `((tendsto_order.1 hT).2 δ hδ).exists`. Use `⟨U k, Metric.isOpen_thickening, Metric.self_subset_thickening (by positivity) _, fun χ hχ hχ1 hχU => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hFi : Integrable (F k)` using `hGi.mono' (hFm k).aestronglyMeasurable (Eventually.of_forall (hFG k))`. Establish `hpt : ∀ y, ‖chartDens W A (fun x => χ x * f x) φ y‖ ≤ F k y`. Introduce `y`. Rewrite using `[Real.norm_eq_abs]`. Use `abs_sheetSum_le W A (fun x s => ?_) (hfin y)` and prove the remaining obligations.
-
-Distinguish the cases in `hx : x ∈ U k`. Rewrite using `[Set.indicator_of_mem hx, abs_mul, abs_mul, abs_mul, abs_abs]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_of_le_one_left (abs_nonneg _) (hχ1 x)) (abs_nonneg _)`. Establish `h0 : χ x = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx (hχU h)`. Simplify using `only [h0, zero_mul, abs_zero]`.
-
-Check the signs of the components of the expression. Establish `h1` using `norm_integral_le_of_norm_le hFi (Eventually.of_forall hpt)`. Rewrite `h1` using `[Real.norm_eq_abs, ← hvar]`. Conclude with `h1.trans hk.le`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VarMassNearSmall.proof (hCMC : ChartMassCompact.Statement) : VarMassNearSmall.Statement := by
   classical

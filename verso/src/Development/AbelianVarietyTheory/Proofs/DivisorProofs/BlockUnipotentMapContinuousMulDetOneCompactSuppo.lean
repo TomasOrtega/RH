@@ -6,27 +6,25 @@ open MeasureTheory Matrix GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel Globa
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N a b e u hu`. Establish `hmul : ∀ X Y, u (X + Y) = u X * u Y`. Introduce `X Y`. Use `ext1`. Rewrite using `[Units.val_mul, hu, hu, hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.reindex_apply, Equiv.symm_symm]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 1`. Simplify using `only [Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.of_add_of]`. Rewrite using `[add_comm X Y]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : u 0 = 1`. Use `hmul 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.mp this.symm)`. Establish `hinv : ∀ X, (u X)⁻¹ = u (-X)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X`. Use `(eq_inv_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Rewrite using `[← hmul, neg_add_cancel, h0]`. Apply the tactic sequence `have hentry : ∀ X p q, (u X : Matrix (Fin N) (Fin N) k) (e.symm (Sum.inl p)) (e.symm (Sum.inr q)) = X p q := by`. Introduce `X p q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu]`. Simplify using `[Matrix.reindex_apply]`. Establish `hval : Continuous (fun X => (u X : Matrix (Fin N) (Fin N) k))`. Establish `: (fun X => (u X : Matrix (Fin N) (Fin N) k)) = fun X => Matrix.reindex e.symm e.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1)` using `funext hu`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Continuous.matrix_reindex ?_ _ _` and prove the remaining obligations. Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_id continuous_const continuous_const`. Establish `hcont : Continuous u`. Rewrite using `[Units.continuous_iff]`. Use `⟨hval, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hinv]`. Conclude with `hval.comp continuous_neg`. Use `⟨hcont, hmul, ?_, ?_⟩` and prove the remaining obligations. Introduce `X`. Rewrite using `[hu, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Introduce `f hf g h set C : Set (GL (Fin N) k) := (fun y => h * (g⁻¹ * y) * h⁻¹) '' tsupport f with hC`. Establish `hCc : IsCompact C` using `hf.isCompact.image (by fun_prop)`. Set `E : Fin a → Fin b → GL (Fin N) k → k` to `fun p q y => (y : Matrix (Fin N) (Fin N) k) (e.symm (Sum.inl p)) (e.symm (Sum.inr q))`. Establish `hE : ∀ p q, Continuous (E p q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `p q`. Conclude with `(continuous_apply_apply _ _).comp (Units.continuous_val (M := Matrix (Fin N) (Fin N) k))`. Use `HasCompactSupport.intro (K := Set.pi Set.univ (fun p => Set.pi Set.univ (fun q => E p q '' C))) ?_ ?_` and prove the remaining obligations. Conclude with `isCompact_univ_pi (fun p => isCompact_univ_pi (fun q => hCc.image (hE p q)))`. Introduce `X hX`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Assume the negation of the conclusion as `hne`. Apply `hX` to reduce the goal to its premises. Establish `hs : g * (h⁻¹ * u X * h) ∈ tsupport f` using `subset_tsupport _ hne`. Establish `huC : u X ∈ C` using `⟨_, hs, by simp [mul_assoc]⟩`. Introduce `p _ q _`.
-
-Apply the tactic sequence `exact ⟨u X, huC, hentry X p q⟩`.
+A detailed English derivation is pending.
 -/
 theorem blockUnipotent_props : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N a b : ℕ) (e : Fin N ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b → k) → GL (Fin N) k), (∀ X, (u X : Matrix (Fin N) (Fin N) k) = Matrix.reindex e.symm e.symm (Matrix.fromBlocks 1 (Matrix.of X) 0 1)) → Continuous u ∧ (∀ X Y, u (X + Y) = u X * u Y) ∧ (∀ X, (u X : Matrix (Fin N) (Fin N) k).det = 1) ∧ ∀ f : GL (Fin N) k → ℂ, HasCompactSupport f → ∀ g h : GL (Fin N) k, HasCompactSupport (fun X => f (g * (h⁻¹ * u X * h))) := by
   intro k _ _ _ _ N a b e u hu

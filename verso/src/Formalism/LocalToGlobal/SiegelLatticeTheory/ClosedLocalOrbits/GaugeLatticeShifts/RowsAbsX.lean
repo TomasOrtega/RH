@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Gen
 
 /- English proof (translation)
-Use `summable_of_sum_le hF0 (c := ∑' t, g t) (fun S => ?_)` and prove the remaining obligations. Establish `hind : ∀ p, ∑' t : {t // A p t}, g t = ∑' t, Set.indicator {t | A p t} g t` using `fun p => tsum_subtype {t | A p t} g`. Combine the equalities or inequalities in the displayed calculation. Use `Summable.tsum_le_tsum (fun t => ?_) (summable_sum fun p _ => hg.indicator _) hg` and prove the remaining obligations. Distinguish the cases in `h : ∃ p ∈ S, A p t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨p, hp, hpt⟩` from `h`. Rewrite using `[Finset.sum_eq_single p]`. Conclude with `(Set.indicator_of_mem (show t ∈ {t | A p t} from hpt) g).le`. Introduce `q _ hq`. Conclude with `Set.indicator_of_notMem (fun hqt => hq (hA q p t hqt hpt)) g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd hp h`. Simplify using `only [not_exists, not_and] at h`. Conclude with `(Finset.sum_eq_zero fun p hp => Set.indicator_of_notMem (show t ∉ {t | A p t} from h p hp) g).le.trans (hg0 t)`.
+A detailed English derivation is pending.
 -/
 theorem summable_of_fibre_bound {P T : Type*} (A : P → T → Prop)
     (hA : ∀ p p' t, A p t → A p' t → p = p') (g : T → ℝ) (hg0 : ∀ t, 0 ≤ g t) (hg : Summable g)
@@ -46,7 +46,7 @@ theorem summable_of_fibre_bound {P T : Type*} (A : P → T → Prop)
             Set.indicator_of_notMem (show t ∉ {t | A p t} from h p hp) g).le.trans (hg0 t)
 
 /- English proof (translation)
-The claim follows from `| _, [], [], _ => rfl | _, [], _ :: _, h => by simp [DataInst.signAux] at h | _, _ :: _, [], h => by simp [DataInst.signAux] at h | b, (s, t) :: xs, (s', t') :: ys, h => by simp only [DataInst.signAux, List.cons.injEq, Prod.mk.injEq] at h obtain ⟨⟨rfl, ht⟩, hr⟩ := h have hu : IsU …`.
+A detailed English derivation is pending.
 -/
 theorem sign_list_injective {K : Type} [Ring K] (r : ℕ) :
     ∀ (b : ℕ) (x y : TB.Pt K), DataInst.signAux r b x = DataInst.signAux r b y → x = y
@@ -60,11 +60,9 @@ theorem sign_list_injective {K : Type} [Ring K] (r : ℕ) :
     rw [hu.mul_left_cancel ht, sign_list_injective r (b + s) xs ys hr]
 
 /- English proof (translation)
-Unfold `DataInst.ptOfList at hx hy`. Distinguish the cases in `h1 : Formalism.L2.S.IsPtL (DataInst.signPt D.R.rS x) i`. Distinguish the cases in `h2 : Formalism.L2.S.IsPtL (DataInst.signPt D.R.rS y) i`. Rewrite `hx` using `[dif_pos h1]`. Rewrite `hy` using `[dif_pos h2]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he` using `(Option.some.inj hx).trans (Option.some.inj hy).symm`. Establish `hv` using `congrArg Subtype.val ((Formalism.L2.S.ptEquiv D.host.E i).symm.injective he)`. Conclude with `sign_list_injective D.R.rS 1 x y hv`. Rewrite `hy` using `[dif_neg h2]`. Conclude with `absurd hy (by simp)`.
-
-Rewrite `hx` using `[dif_neg h1]`. Conclude with `absurd hx (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptOfList_inj {D : Formalism.BasicNotions.D7} {i : ℕ} {x y : TB.Pt D.host.E} {w : Point D.host.E i}
     (hx : DataInst.ptOfList (D := D) i x = some w) (hy : DataInst.ptOfList (D := D) i y = some w) : x = y := by
@@ -115,7 +113,7 @@ section Main
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun Λ => |PairVal.massRow D (X.Fu u) (Y.what₂ u) Λ|) (fun _ _ => abs_nonneg _) t.mem)`.
+A detailed English derivation is pending.
 -/
 theorem massTerm_le (t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u)) :
     PairVal.massTerm t ≤ ∑ Λ ∈ Y.what₂ u, |PairVal.massRow D (X.Fu u) (Y.what₂ u) Λ| := by

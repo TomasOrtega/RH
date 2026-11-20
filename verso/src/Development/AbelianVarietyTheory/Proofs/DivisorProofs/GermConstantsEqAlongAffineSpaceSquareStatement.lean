@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.Out
 open GlobalTheory.HomFixMat GlobalTheory.HomFixUniv
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.FormsLocus.germ_cstT_eq_germ_ringOf_C) | (exact GlobalTheory.FormsLocus.germ_cstT_eq_germ_ringOf_C) | (intros; apply GlobalTheory.FormsLocus.germ_cstT_eq_germ_ringOf_C <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.germ_constants_eq_along_affineSpace_square : ∀ (Rg : Type) [CommRing Rg] (A₀ T X : Scheme.{0}) (f : A₀ ⟶ Sp Rg) (n : ℕ) (g : T ⟶ Sp (MvPolynomial (Fin n) Rg)) (φ : X ⟶ A₀) (p : X ⟶ T), φ ≫ f = p ≫ g ≫ affπ Rg n → ∀ (z : X) (r : Rg), gs φ z ⊤ (GlobalTheory.FormsLocus.cstT f r) = gs p z ⊤ (GlobalTheory.FormsLocus.ringOf g (MvPolynomial.C r)) := by
   first | (exact @GlobalTheory.FormsLocus.germ_cstT_eq_germ_ringOf_C) | (exact GlobalTheory.FormsLocus.germ_cstT_eq_germ_ringOf_C) | (intros; apply GlobalTheory.FormsLocus.germ_cstT_eq_germ_ringOf_C <;> assumption)

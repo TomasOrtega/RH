@@ -6,23 +6,21 @@ noncomputable section
 namespace PositivityTheory.ThKF
 
 /- English proof (translation)
-Establish `on : ∀ {Q P : Type} [AddCommGroup Q] [Module ℂ Q] [AddCommGroup P] [Module ℂ P] {S : Submodule ℂ Q} {p : Q →ₗ[ℂ] P}, S.map p = ⊤ → ∀ y, ∃ x : S, p x = y` using `fun {Q P} _ _ _ _ S p h y => by`. Take `⟨x, hx, e⟩ : y ∈ S.map p` from `h ▸ Submodule.mem_top`. Conclude with `⟨⟨x, hx⟩, e⟩`. Take `⟨s, hs, hs'⟩` from `exists_section p S`. Take `⟨t, ht, ht'⟩` from `exists_section p₂' S'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `he : ∀ x ∈ S, p₂ (s (p x)) = p₂ x` using `fun x hx => by`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `k _ (sub_mem (hs _) hx) (by rw [map_sub, hs' x hx, sub_self])`. Establish `hd : ∀ x ∈ S', p' (t (p₂' x)) = p' x` using `fun x hx => by`. Rewrite using `[← sub_eq_zero, ← map_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(k' _ (sub_mem (ht _) hx)).2 (by rw [map_sub, ht' x hx, sub_self])`. Set `ρ : ι → Module.End ℂ P` to `fun i => p ∘ₗ A i ∘ₗ s.codRestrict S hs`. Establish `hρ : ∀ i (x : S), ρ i (p x) = p (A i x)` using `fun i x => by`. Take `⟨x', hx'⟩` from `on o' (p x)`. Rewrite using `[eq i x x' hx'.symm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `eq i ⟨s (p x), hs _⟩ x' ((hs' x x.2).trans hx'.symm)`. Set `U : Module.End ℂ P` to `p' ∘ₗ t ∘ₗ p₂ ∘ₗ s`. Establish `hU : ∀ (x : S) (x' : S'), p₂ x = p₂' x' → U (p x) = p' x'` using `fun x x' h => by`. Express the relevant statement in the definitionally equal form `p' (t (p₂ (s (p x)))) = _`. Rewrite using `[he x x.2, h, hd x' x'.2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `rkP : Module.rank ℂ P ≤ Cardinal.aleph0` using `(LinearMap.rank_le_of_surjective (p.domRestrict S) fun y => on o y).trans rk`. Take `⟨c, hc⟩` from `GlobalTheory.dixmier_commutant_scalar ι P ρ rkP (fun N hN => irr N fun i x hx => hρ i x ▸ hN i _ hx) U fun i => LinearMap.ext fun y => by`. Take `⟨x, rfl⟩` from `on o y`. Take `⟨x', hx'⟩` from `on o₂' (p₂ x)`. Take `⟨x₃, h₃⟩` from `on o (p' x')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hρ, hU x x' hx'.symm, ← h₃, hρ, eq i x₃ x' h₃]`. Conclude with `hU ⟨_, hA i x⟩ ⟨_, hA' i x'⟩ (eq₂ i x x' hx'.symm)`. Establish `main : ∀ (x : S) (x' : S'), p x = p' x' → p₂ x = c • p₂' x'` using `fun x x' h => by`. Take `⟨y, hy⟩` from `on o₂' (p₂ x)`. Establish `h1` using `hU x y hy.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hc, LinearMap.smul_apply, Module.End.one_apply, h]`. Establish `h2` using `(k' _ (sub_mem y.2 (S'.smul_mem c x'.2))).1 (by rw [map_sub, map_smul, h1, sub_self])`. Rewrite `h2` using `[map_sub, map_smul, sub_eq_zero]`. Rewrite using `[← hy, h2]`. Use `⟨p₂ ∘ₗ s, c, fun h0 => ?_, he, fun x' hx' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : P₂)`. Take `⟨x, rfl⟩` from `on o₂ y`. Take `⟨x', hx'⟩` from `on o' (p x)`. Conclude with `hy (by rw [main x x' hx'.symm, h0, zero_smul])`. Take `⟨x, hx⟩` from `on o (p' x')`.
-
-Rewrite using `[← hx]`. Conclude with `(he x x.2).trans (main x ⟨x', hx'⟩ hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schur_match {Q Q' P P₂ ι : Type} [AddCommGroup Q] [Module ℂ Q] [AddCommGroup Q'] [Module ℂ Q'] [AddCommGroup P]
     [Module ℂ P] [AddCommGroup P₂] [Module ℂ P₂] [Nontrivial P₂] (S : Submodule ℂ Q) (S' : Submodule ℂ Q')
@@ -82,9 +80,9 @@ theorem schur_match {Q Q' P P₂ ι : Type} [AddCommGroup Q] [Module ℂ Q] [Add
     exact (he x x.2).trans (main x ⟨x', hx'⟩ hx)
 
 /- English proof (translation)
-Establish `hb` using `TopologicalSpace.isBasis_countableBasis Y`. Use `((Set.countable_setOf_finite_subset (TopologicalSpace.countable_countableBasis Y)).image fun s => ⋃₀ s).mono ?_` and prove the remaining obligations. Introduce and unpack `K ⟨h1, h2⟩`. Take `⟨S, hS, rfl⟩` from `hb.open_eq_sUnion h2`. Take `⟨t, ht, hf, hc⟩` from `h1.elim_finite_subcover_image (b := S) (c := id) (fun u hu => hb.isOpen (hS hu)) (by rw [Set.sUnion_eq_biUnion]; rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨t, ⟨hf, ht.trans hS⟩, Set.Subset.antisymm (Set.sUnion_mono ht) ?_⟩` and prove the remaining obligations. Use `show ⋃₀ S ⊆ ⋃₀ t`. Rewrite using `[Set.sUnion_eq_biUnion (s := t)]`. Conclude with `hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_compactOpen (Y : Type) [TopologicalSpace Y] [SecondCountableTopology Y] :
     {K : Set Y | IsCompact K ∧ IsOpen K}.Countable := by
@@ -99,17 +97,15 @@ theorem countable_compactOpen (Y : Type) [TopologicalSpace Y] [SecondCountableTo
   rw [Set.sUnion_eq_biUnion (s := t)]; exact hc
 
 /- English proof (translation)
-Set `I : Set (Y → ℂ)` to `(fun K => Set.indicator K 1) '' {K : Set Y | IsCompact K ∧ IsOpen K}`. Establish `hle : GlobalTheory.WeilM.SB Y ≤ Submodule.span ℂ I`. Introduce and unpack `f ⟨h1, h2⟩`. Establish `hs : IsCompact (Function.support f)` using `h2.of_isClosed_subset (h1.isClopen_fiber 0).compl.isClosed (subset_tsupport f)`. Establish `fin : (f '' Function.support f).Finite`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hs.elim_finite_subcover (fun c : ℂ => f ⁻¹' {c}) (fun c => (h1.isClopen_fiber c).isOpen) fun x _ => Set.mem_iUnion.2 ⟨f x, rfl⟩`. Use `t.finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨c, hc, e⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Rewrite using `[show f x = c from e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Establish `e : f = ∑ c ∈ fin.toFinset, c • Set.indicator (f ⁻¹' {c}) 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Set.indicator_apply, Set.mem_preimage, Set.mem_singleton_iff, Pi.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Set.Finite.mem_toFinset]`. Use `split_ifs with h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Both sides reduce to the same expression. Assume the negation of the conclusion as `h0`. Conclude with `h ⟨x, h0, rfl⟩`. Rewrite using `[e]`. Use `sum_mem fun c hc => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨?_, (h1.isClopen_fiber c).isOpen⟩, rfl⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, rfl⟩` from `(Set.Finite.mem_toFinset _).1 hc`. Conclude with `hs.of_isClosed_subset (h1.isClopen_fiber _).isClosed fun y hy => by`. Rewrite using `[Function.mem_support, show f y = f x from hy]`. Conclude with `hx`. Use `(Submodule.rank_mono hle).trans ((rank_span_le I).trans ?_)` and prove the remaining obligations.
-
-Conclude with `Cardinal.le_aleph0_iff_set_countable.2 ((countable_compactOpen Y).image _)`.
+A detailed English derivation is pending.
 -/
 theorem rank_SB (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] :
     Module.rank ℂ (GlobalTheory.WeilM.SB Y) ≤ Cardinal.aleph0 := by

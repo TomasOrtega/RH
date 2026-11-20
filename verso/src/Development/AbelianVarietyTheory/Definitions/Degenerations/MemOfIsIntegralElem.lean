@@ -25,7 +25,7 @@ namespace GlobalTheory.Ex
 section Valued
 
 /- English proof (translation)
-Take `⟨p, hp, h⟩` from `hx`. Establish `: IsIntegral S x` using `⟨p.map (j.codRestrict S.toSubring hj), hp.map _, by rw [Polynomial.eval₂_map]; exact h⟩`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 this`. Conclude with `y.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegralElem {R C : Type} [CommRing R] [Field C] (S : ValuationSubring C) (j : R →+* C) (hj : ∀ r, j r ∈ S)
     {x : C} (hx : j.IsIntegralElem x) : x ∈ S := by
@@ -38,15 +38,13 @@ variable {O' : Type} [CommRing O'] [IsDomain O'] {R₁ : Type} [CommRing R₁] (
   (i : R₁ →+* K)
 
 /- English proof (translation)
-Introduce `h`. Set `V` to `PowerSeries (FractionRing O')`. Take `⟨C, _, _, _, _, _, h1, h2⟩` from `GlobalTheory.exists_complete_isAlgClosed_of_isDiscreteValuationRing V (FractionRing V) (a := PowerSeries.X) PowerSeries.X_ne_zero (fun e => not_isUnit_zero (PowerSeries.constantCoeff_X (R := FractionRing O') ▸ e.map PowerSeries.constantCoeff)) (r := 1 / 2) (by norm_num) (by norm_ …`. Set `j₀ : V →+* C` to `(algebraMap (FractionRing V) C).comp (algebraMap V _)`. Set `j : PowerSeries O' →+* C` to `j₀.comp (PowerSeries.map (algebraMap O' (FractionRing O')))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hj : Function.Injective j` using `((algebraMap (FractionRing V) C).injective.comp (IsFractionRing.injective V _)).comp (PowerSeries.map_injective _ (IsFractionRing.injective O' _))`. Use `letI : Algebra (PowerSeries O') K := (i.comp g).toAlgebra`. Use `letI : Algebra (PowerSeries O') C := j.toAlgebra`. Use `haveI : FaithfulSMul (PowerSeries O') K := (faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Use `haveI : FaithfulSMul (PowerSeries O') C := (faithfulSMul_iff_algebraMap_injective _ _).2 hj`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic (PowerSeries O') K := ⟨halg⟩`. Set `gam : K →ₐ[PowerSeries O'] C` to `IsAlgClosed.lift`. Establish `hc : ∀ f, gam.toRingHom (i (g f)) = j f` using `fun f => gam.commutes f`. Use `letI : Algebra (FractionRing O') C := (j₀.comp PowerSeries.C).toAlgebra`. Establish `hX : j PowerSeries.X = j₀ PowerSeries.X` using `congrArg j₀ (PowerSeries.map_X _)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `h C gam.toRingHom (Units.mk0 (j PowerSeries.X) fun e => PowerSeries.X_ne_zero (hj (e.trans (map_zero j).symm))) (fun x => (congrArg j₀ (PowerSeries.map_C _ x).symm).trans (hc _).symm) (fun r => ?_) (hc _).symm ?_` and prove the remaining obligations. Use `mem_normIntegers_iff.1 (mem_of_isIntegralElem _ j (fun f => mem_normIntegers_iff.2 ((h1 _).2 ⟨_, rfl⟩)) ?_)` and prove the remaining obligations. Take `⟨p, hp, e⟩` from `hg r`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Use `congrArg (gam.toRingHom.comp i) e` as an intermediate fact.
-
-Rewrite `this` using `[map_zero, Polynomial.hom_eval₂, show (gam.toRingHom.comp i).comp g = j from RingHom.ext hc]`. Then use the resulting hypothesis. Rewrite using `[Units.val_mk0, hX]`. Conclude with `h2.trans_lt (by norm_num)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_allC_false (hi : Function.Injective (i.comp g))
     (halg : ∀ x : K, ∃ p : Polynomial (PowerSeries O'), p ≠ 0 ∧ p.eval₂ (i.comp g) x = 0) (hg : g.IsIntegral) :
@@ -80,7 +78,7 @@ theorem not_allC_false (hi : Function.Injective (i.comp g))
     exact h2.trans_lt (by norm_num)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Ex.not_allC_false (RingHom.id _) i hi.inj hi.alg (RingHom.isIntegral_of_surjective _ Function.surjective_id)`.
+A detailed English derivation is pending.
 -/
 theorem SerBase.not_allC_false {K : Type} [Field K] [Algebra (FractionRing O') K] {i : PowerSeries O' →+* K} (hi : SerBase i) :
     ¬ AllC (RingHom.id _) i fun _ _ => False :=
@@ -91,9 +89,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {y₁ : Sp (FractionRing R₁) ⟶ Xo.XF c}
 
 /- English proof (translation)
-Use `letI := g.toAlgebra`. Use `haveI : Module.Finite (PowerSeries O') R₁ := h.2.1`. Use `haveI : FaithfulSMul (PowerSeries O') R₁ := (faithfulSMul_iff_algebraMap_injective _ _).2 h.1`. Use `haveI := IsLocalization.isAlgebraic (FractionRing R₁) (nonZeroDivisors R₁)`. Use `haveI := Algebra.IsAlgebraic.trans (PowerSeries O') R₁ (FractionRing R₁)`.
-
-Conclude with `GlobalTheory.Ex.not_allC_false g _ ((IsFractionRing.injective R₁ _).comp h.1) (fun x => Algebra.IsAlgebraic.isAlgebraic (R := PowerSeries O') x) h.2.1.to_isIntegral`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem ArcPt.not_allC_false (h : ArcPt Y b g y₁) : ¬ AllC g (algebraMap R₁ (FractionRing R₁)) fun _ _ => False := by
   letI := g.toAlgebra
@@ -105,7 +101,7 @@ theorem ArcPt.not_allC_false (h : ArcPt Y b g y₁) : ¬ AllC g (algebraMap R₁
     (fun x => Algebra.IsAlgebraic.isAlgebraic (R := PowerSeries O') x) h.2.1.to_isIntegral
 
 /- English proof (translation)
-Introduce `h` and use `PowerSeries.X_ne_zero (h.1.1 (PowerSeries.constantCoeff_X.trans (map_zero _).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {a : ArcIn D l β O' b} (y : Sp (FractionRing O') ⟶ Xo.XF c) : ¬ RealAt Y a (PowerSeries.constantCoeff (R := O')) y :=
   fun h => PowerSeries.X_ne_zero (h.1.1 (PowerSeries.constantCoeff_X.trans (map_zero _).symm))
@@ -116,13 +112,13 @@ section Series
 variable {k K X : Type} [CommRing k] [Field K] (i : PowerSeries k →+* K)
 
 /- English proof (translation)
-Set `T : X → K` to `fun z => ω z * R ^ (e z % n)`. Establish `hT : (Set.range T).Finite`. Use `((((Polynomial.nthRoots N (1 : K)).finite_toSet).prod (Set.finite_Iio n)).image fun p : K × ℕ => p.1 * R ^ p.2).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨(ω z, e z % n), ⟨(Polynomial.mem_nthRoots hN).2 (hω z), Nat.mod_lt _ hn⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hd : ∀ t, {z | e z / n = t}.Finite` using `fun t => (he ((t + 1) * n)).subset fun z hz => ((Nat.div_lt_iff_lt_mul hn).1 (Nat.lt_succ_of_le (le_of_eq hz))).le`. Establish `hp : ∀ (S : ValuationSubring K) (x : K) (m : ℕ), 0 < m → x ^ m ∈ S → x ∈ S` using `fun S x m hm h => by`. Rewrite `h`, the goal using `[← S.valuation_le_one_iff]`. Rewrite `h` using `[map_pow, pow_le_one_iff hm.ne']`. Then use the resulting hypothesis. Use `⟨∑ t ∈ hT.toFinset, t * i (PowerSeries.mk fun m => ∑ᶠ (z : X) (_ : e z / n = m), if T z = t then 1 else 0), fun S hS => sum_mem fun t ht => mul_mem ?_ (hS _), fun C _ _ _ gam h1 h2 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `hT.mem_toFinset.1 ht`. Conclude with `mul_mem (hp S _ N hN (hω z ▸ S.one_mem)) (pow_mem (hp S _ n hn (hR ▸ hS _)) _)`. Use `hasSum_sum fun t (_ : t ∈ hT.toFinset) => (hasSum_map_powerSeries_mk_finsum k C X (gam.comp i) h1 h2 (fun z => e z / n) hd fun z => if T z = t then 1 else 0).mul_left (gam t)` as an intermediate fact. Rewrite using `[map_sum]`. Simplify using `only [map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (HasSum · _) (funext fun z => ?_)).mp this` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (T z) (fun t _ ht => by simp [ht.symm]) fun h => (h (hT.mem_toFinset.2 ⟨z, rfl⟩)).elim]`. Simplify using `only [if_true, map_one, _root_.one_mul, RingHom.comp_apply, ← hR, T, map_mul, map_pow, ← pow_mul, _root_.mul_assoc, ← pow_add, Nat.mod_add_div]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sum (R : K) {n : ℕ} (hn : 0 < n) (hR : R ^ n = i PowerSeries.X) {N : ℕ} (hN : 0 < N) (ω : X → K)
     (hω : ∀ z, ω z ^ N = 1) (e : X → ℕ) (he : ∀ t, {z | e z ≤ t}.Finite) :
@@ -170,18 +166,18 @@ def splitBe (k : Type) [CommRing k] [IsDomain k] (F : Type) [Field F] [Algebra (
   dvd (y z : 𝓞 E) := ⟨trForm H y z, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(Int.mul_ediv_cancel' ((dvd_mul_right 2 (l.M' : ℤ)).trans ⟨trForm H y y, rfl⟩)).symm`.
+A detailed English derivation is pending.
 -/
 theorem two_halfSq (y : 𝓞 E) : arcForm l y y = 2 * halfSq l y :=
   (Int.mul_ediv_cancel' ((dvd_mul_right 2 (l.M' : ℤ)).trans ⟨trForm H y y, rfl⟩)).symm
 
 /- English proof (translation)
-The claim follows from `congrArg ((2 * l.M' : ℤ) * ·) (trForm_symm H y z)`.
+A detailed English derivation is pending.
 -/
 theorem arcForm_symm (y z : 𝓞 E) : arcForm l y z = arcForm l z y := congrArg ((2 * l.M' : ℤ) * ·) (trForm_symm H y z)
 
 /- English proof (translation)
-Establish `h` using `two_halfSq l (y + m • z)`. Simplify using `only [map_add, LinearMap.add_apply, map_nsmul, LinearMap.smul_apply, arcForm_symm l z y, two_halfSq l y, two_halfSq l z] at h`. Simplify using `only [nsmul_eq_mul (α := ℤ)] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem halfSq_add (y z : 𝓞 E) (m : ℕ) :
     halfSq l (y + m • z) = halfSq l y + m * arcForm l y z + m ^ 2 * halfSq l z := by
@@ -192,7 +188,7 @@ theorem halfSq_add (y z : 𝓞 E) (m : ℕ) :
   linarith
 
 /- English proof (translation)
-Establish `h : 0 < arcForm l y y` using `mul_pos (mul_pos two_pos (Int.natCast_pos.2 (LevelExist.M'_pos l))) (trForm_pos H hy)`. Rewrite `h` using `[two_halfSq]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem halfSq_pos {y : 𝓞 E} (hy : y ≠ 0) : 0 < halfSq l y := by
   have h : 0 < arcForm l y y := mul_pos (mul_pos two_pos (Int.natCast_pos.2 (LevelExist.M'_pos l))) (trForm_pos H hy)
@@ -200,18 +196,18 @@ theorem halfSq_pos {y : 𝓞 E} (hy : y ≠ 0) : 0 < halfSq l y := by
   omega
 
 /- English proof (translation)
-Simplify using `[halfSq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem halfSq_zero : halfSq l 0 = 0 := by simp [halfSq]
 
 /- English proof (translation)
-The claim follows from `(eq_or_ne y 0).elim (fun e => by rw [e, halfSq_zero]) fun h => (halfSq_pos l h).le`.
+A detailed English derivation is pending.
 -/
 theorem halfSq_nonneg (y : 𝓞 E) : 0 ≤ halfSq l y :=
   (eq_or_ne y 0).elim (fun e => by rw [e, halfSq_zero]) fun h => (halfSq_pos l h).le
 
 /- English proof (translation)
-Use `((finite_form_le (arcForm l) (arcForm_symm l) (fun z hz => ?_) (2 * t)).preimage (f := fun χ => y + m • χ) fun a _ b _ e => nsmul_right_injective hm.ne' (add_left_cancel e)).subset fun χ h => ?_` and prove the remaining obligations. Rewrite using `[two_halfSq]`. Conclude with `mul_pos two_pos (halfSq_pos l hz)`. Conclude with `(two_halfSq l _).trans_le (mul_le_mul_of_nonneg_left h zero_le_two)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_halfSq (y : 𝓞 E) {m : ℕ} (hm : 0 < m) (t : ℤ) : {χ : 𝓞 E | halfSq l (y + m • χ) ≤ t}.Finite := by
   refine ((finite_form_le (arcForm l) (arcForm_symm l) (fun z hz => ?_) (2 * t)).preimage (f := fun χ => y + m • χ)
@@ -253,7 +249,7 @@ omit ζ hp hc hζ in
 variable (F) in
 
 /- English proof (translation)
-Use `haveI := c.fin`. Take `⟨ζ, hp, hc, hζ⟩` from `exists_roots c.F F (((algebraMap (FractionRing k) F).comp (algebraMap k _)).comp bF)`. Conclude with `⟨toricLift c k bF β ζ hp hc hζ, inferInstanceAs (Nontrivial (𝓞 E))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift : ∃ A : Lift ((arcIn c k bF).restrict β) F, Nontrivial A.N.X := by
   haveI := c.fin
@@ -275,9 +271,9 @@ def thTerm {F : Type} [Field F] (ζ r : Fˣ) (m : ℕ) (x : HypLattice H) (χ : 
 include hp hr in
 
 /- English proof (translation)
-Break down `m.eq_zero_or_pos with rfl | hm` into its components or cases. Conclude with `⟨0, fun h => absurd h (lt_irrefl _)⟩`. Establish `hm2` using `pow_pos hm 2`. Take `⟨v, h₁, h₂⟩` from `exists_sum i (r (m ^ 2)) hm2 (hr _ hm2) hm2 (fun χ : 𝓞 E => (ζ (m ^ 2) ^ (m * toDual H x.2 χ - ((m ^ 2 - 1) / 2 : ℕ) * toDual H x.2 x.1) : Kˣ)) (fun χ => by rw [← Units.val_pow_eq_pow_val, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, (hp _ hm2).pow_eq_one, one_zp …`. Use `⟨v, fun _ => ⟨h₁, fun C _ _ _ gam a b => (congrArg (HasSum · _) (funext fun χ => ?_)).mp (h₂ C gam a b)⟩⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[thTerm, ← map_zpow, Units.val_mul, ← Int.toNat_of_nonneg (halfSq_nonneg l (x.1 + m • χ)), zpow_natCast, Int.toNat_natCast, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_theta (m : ℕ) (x : HypLattice H) : ∃ v : K, 0 < m →
     (∀ S : ValuationSubring K, (∀ r, i r ∈ S) → v ∈ S) ∧
@@ -300,17 +296,17 @@ theorem exists_theta (m : ℕ) (x : HypLattice H) : ∃ v : K, 0 < m →
 include hp hr in
 
 /- English proof (translation)
-Distinguish the cases in `h : 0 < m ∧ 0 < j`. Use `swap`. Conclude with `⟨0, fun a b => absurd ⟨a, b⟩ h⟩`. Take `⟨hm, hj⟩` from `h`. Establish `hm2` using `pow_pos hm 2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : 𝓞 E → ℤ` to `fun χ => halfSq l (m ^ 2 • z.1) + m ^ 2 * arcForm l z.1 (x.1 + m • χ) + j * halfSq l (x.1 + m • χ)`. Establish `he : ∀ χ, halfSq l (x.1 + m ^ 2 • z.1 + m • χ) ≤ e χ` using `fun χ => by`. Establish `a` using `halfSq_add l (x.1 + m • χ) z.1 (m ^ 2)`. Establish `b` using `halfSq_add l 0 z.1 (m ^ 2)`. Rewrite `b` using `[zero_add, halfSq_zero, map_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_right_comm, a, arcForm_symm l (x.1 + m • χ)]`. Establish `c` using `mul_le_mul_of_nonneg_right (show (1 : ℤ) ≤ j by exact_mod_cast hj) (halfSq_nonneg l (x.1 + m • χ))`. Simplify using `only [e, b]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨w, -, h₂⟩` from `exists_sum i (r (m ^ 2 * j)) (mul_pos hm2 hj) (hr _ (mul_pos hm2 hj)) (mul_pos hm2 hj) (fun χ : 𝓞 E => (ζ j ^ (toDual H z.2 x.1 + m * toDual H z.2 χ) * ζ (m ^ 2) ^ (m * toDual H x.2 χ - ((m ^ 2 - 1) / 2 : ℕ) * toDual H x.2 x.1) : Kˣ)) (fun χ => by`. Establish `a : ∀ {t : Kˣ} {n : ℕ} (_ : t ^ n = 1) (s : ℤ), (t ^ s) ^ n = 1` using `fun {t n} h s => by`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, h, one_zpow]`. Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, pow_mul', pow_mul, a (hp _ hj).pow_eq_one, a (hp _ hm2).pow_eq_one]`. Use the proof step `simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use the proof step `(fun χ => (e χ).toNat) fun t => (finite_halfSq l _ hm t).subset fun χ h => (he χ).trans (Int.toNat_le.1 h)`. Use `⟨w, fun _ _ C _ _ _ gam a b => (congrArg (HasSum · _) (funext fun χ => ?_)).mp (h₂ C gam a b)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Units.map gam.toMonoidHom _ : Cˣ).val * (Units.map gam.toMonoidHom (r (m ^ 2 * j)) : Cˣ).val ^ _ = _`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, Int.toNat_of_nonneg ((halfSq_nonneg l _).trans (he χ)), thTerm, ← hc _ j hm2 hj, ← hc j _ hj hm2, mul_comm j]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [map_mul, map_zpow, map_pow, ofMul_mul, ofMul_pow, ofMul_zpow, e, map_add, map_nsmul]`. Simplify using `only [nsmul_eq_mul (α := ℤ)]`. Apply the tactic sequence `match_scalars <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_coord (hc : ∀ n m, 0 < n → 0 < m → r (n * m) ^ m = r n) (m j : ℕ) (z x : HypLattice H) : ∃ w : K,
     0 < m → 0 < j → ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] (gam : K →+* C),
@@ -364,9 +360,9 @@ section Settings
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨_, _, _⟩` from `h`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨C, _, _, _, _, _, h1, h2⟩` from `GlobalTheory.exists_complete_isAlgClosed_of_isDiscreteValuationRing W (FractionRing W) hp.ne_zero (hp.maximalIdeal_eq ▸ Ideal.mem_span_singleton_self p) (r := 1 / 2) (by norm_num) (by norm_num)`. Use `⟨C, _, ‹_›, ‹_›, ‹_›, charZero_of_injective_ringHom (algebraMap (FractionRing W) C).injective, _, fun r => (h1 _).2 ⟨r, rfl⟩, fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton.1 (hp.maximalIdeal_eq ▸ hr)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(h1 _).2 ⟨s, rfl⟩` as an intermediate fact. Rewrite using `[map_mul, map_mul, norm_mul, h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_cExt (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (h : CDV W) :
     ∃ (C : Type) (_ : NontriviallyNormedField C) (_ : IsUltrametricDist C) (_ : CompleteSpace C) (_ : IsAlgClosed C)
@@ -395,7 +391,7 @@ section Tate
 variable {R : Type} [CommRing R] [IsDomain R] (q : (FractionRing R)ˣ) (F : Type) [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Simplify using `only [polar, ← zpow_neg, ← zpow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem polar_sq (a a' b : ℤ) : polar (fun n : ℤ => q ^ n ^ 2) (a + a') b =
     polar (fun n : ℤ => q ^ n ^ 2) a b * polar (fun n : ℤ => q ^ n ^ 2) a' b := by

@@ -17,33 +17,31 @@ def SameServed (K : G.Consts) (A A' : GAll) (p : ℕ) : Prop :=
     GC.Sv A.X K A.a A.b p t0 = GC.Sv A'.X K A'.a A'.b p t0'
 
 /- English proof (translation)
-Take `⟨⟨R, ⟨TT, T2, u0, cls⟩, hPf⟩, ⟨sc, Sc, η⟩, ⟨bs, h1, h2, off, h3, h4, h5, kapI, ep⟩, a, b⟩` from `A`. Take `⟨⟨R', ⟨TT', T2', u0', cls'⟩, hPf'⟩, ⟨sc', Sc', η'⟩, ⟨bs', h1', h2', off', h3', h4', h5', kapI', ep'⟩, a', b'⟩` from `A'`. Simplify using `only at hR`. Substitute `hR` using the available equality. Simplify using `only at hTT hcls hhP hsc hSc heta hbs hoff hkap hep ha hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `eTT : TT = TT'` using `Finset.image_injective (Formalism.HC.Frame.A.val_injective _) hTT`. Establish `ehP : hPf = hPf'` using `funext fun p => Formalism.HC.Frame.A.val_injective _ (hhP p)`. Establish `ebs : bs = bs'` using `funext fun h => funext fun t => Formalism.HC.Frame.A.val_injective _ (hbs h t h t rfl rfl)`. Establish `ea : a = a'` using `funext fun t => ha t t rfl`. Establish `eb : b = b'` using `funext fun t => hb t t rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `eTT hcls ehP hsc hSc heta ebs hkap hep ea eb` using the available equality. Establish `hoff' : ∀ j t, off j (false, t) = off' j (false, t)` using `fun j t => hoff j t t rfl`. Set `D1 : GC.GD` to `⟨R, ⟨TT, T2, u0, cls⟩, hPf⟩`. Set `D2 : GC.GD` to `⟨R, ⟨TT, T2', u0', cls⟩, hPf⟩`. Set `X1 : GC.Inst D1 ⟨sc, Sc, η⟩` to `⟨bs, h1, h2, off, h3, h4, h5, kapI, ep⟩`.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `X2 : GC.Inst D2 ⟨sc, Sc, η⟩` to `⟨bs, h1', h2', off', h3', h4', h5', kapI, ep⟩`. Establish `eVV : GC.VV X1 K a b p = GC.VV X2 K a b p` using `rfl`. Establish `eSig : GC.Sig X1 K a b p = GC.Sig X2 K a b p` using `rfl`. Establish `eTau : GC.tauP X1 K a b p = GC.tauP X2 K a b p` using `rfl`. Establish `eKap : ∀ t0, GC.kapv X1 K a b p t0 = GC.kapv X2 K a b p t0` using `fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eSv : cls p = PrimeClass.inertClass → ∀ t0, GC.Sv X1 K a b p t0 = GC.Sv X2 K a b p t0`. Introduce `hc0 t0`. Establish `hp1 : ∀ s e, GC.partner D1 p s e = (false, s + e • hPf p)`. Introduce `s e`. Use `show (decide (cls p = PrimeClass.signal ∧ Odd e), s + e • hPf p) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hc0]`. Establish `hp2 : ∀ s e, GC.partner D2 p s e = (false, s + e • hPf p)`. Introduce `s e`. Use `show (decide (cls p = PrimeClass.signal ∧ Odd e), s + e • hPf p) = _`. Simplify using `[hc0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfG : ∀ j s, GC.fillG X1 b j (false, s) = GC.fillG X2 b j (false, s)`. Introduce `j s`. Use `show (_ + off j (false, s)) - _ = (_ + off' j (false, s)) - _`. Rewrite using `[hoff']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hcap : ∀ j s e, GC.capU X1 b p j s e = GC.capU X2 b p j s e`. Introduce `j s e`. Unfold `GC.capU`. Rewrite using `[hp1, hp2, hfG]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Unfold `GC.Sv GC.gU GC.g0 GC.Pr`. Simplify using `only [hcap, hfG]`. Both sides reduce to the same expression. Establish `hC0 : (GC.VV X1 K a b p).Nonempty → cls p = PrimeClass.inertClass`. Introduce `hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Assume the negation of the conclusion as `hn`. Establish `: GC.VV X1 K a b p = ∅`. Unfold `GC.VV`. Rewrite using `[if_neg]`. Introduce and unpack `⟨hc, _⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `hn hc.2.2.1`. Rewrite `hne` using `[this]`. Conclude with `Finset.not_nonempty_empty hne`. Use `⟨congrArg (Finset.image Formalism.HC.Frame.A.val) eVV, eSig, eTau, ?_, ?_⟩` and prove the remaining obligations. Use `show GC.ioP X1 K a b p = GC.ioP X2 K a b p`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Distinguish the cases in `hne : (GC.VV X1 K a b p).Nonempty`. Establish `hne2 : (GC.VV X2 K a b p).Nonempty` using `hne`. Unfold `GC.ioP`. Rewrite using `[dif_pos hne, dif_pos hne2, eSig]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Finset.sup'_congr hne rfl fun t0 _ => eSv (hC0 hne) t0`. Establish `hne2 : ¬ (GC.VV X2 K a b p).Nonempty` using `hne`. Unfold `GC.ioP`. Rewrite using `[dif_neg hne, dif_neg hne2]`. Use `show ∀ t0 ∈ GC.VV X1 K a b p, ∀ t0' : GC.HH D2, t0.val = t0'.val → GC.kapv X1 K a b p t0 = GC.kapv X2 K a b p t0' ∧ GC.Sv X1 K a b p t0 = GC.Sv X2 K a b p t0'`.
-
-Introduce `t0 ht0 t0' htt`. Establish `: t0 = t0'` using `Formalism.HC.Frame.A.val_injective _ htt`. Substitute `this` using the available equality. Conclude with `⟨eKap t0, eSv (hC0 ⟨t0, ht0⟩) t0⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sameServed (K : G.Consts) (A A' : GAll) (hR : A.D.R = A'.D.R)
     (hTT : A.D.host.TT.image Formalism.HC.Frame.A.val = A'.D.host.TT.image Formalism.HC.Frame.A.val)
@@ -130,11 +128,11 @@ theorem sameServed (K : G.Consts) (A A' : GAll) (hR : A.D.R = A'.D.R)
 variable {eps : ℝ} (Fm : FamP eps)
 
 /- English proof (translation)
-Introduce `i i' a b u0 u0' hr hr' p`. Establish `hTT : (Fm.D x i).host.TT.image Formalism.HC.Frame.A.val = (Fm.D x i').host.TT.image Formalism.HC.Frame.A.val` using `(Fm.TT_eq x i).trans (Fm.TT_eq x i').symm`. Establish `hR` using `Fm.R_eq x i i'`. Establish `hsc : (Fm.L x i).sc = (Fm.L x i').sc`. Establish `e1 : (Fm.L x i).sc.x = (Fm.L x i').sc.x` using `by rw [Fm.L_x x i hx, Fm.L_x x i' hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (Fm.L x i).sc.eps = (Fm.L x i').sc.eps` using `by rw [Fm.L_eps x i, Fm.L_eps x i']`. Establish `e3 : (Fm.L x i).sc.J = (Fm.L x i').sc.J` using `(Fm.L_J x i).trans (Fm.L_J x i').symm`. Consider the cases of `h1 : (Fm.L x i).sc`. Consider the cases of `h2 : (Fm.L x i').sc`. Rewrite `e1`, `e2`, `e3` using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at e1 e2 e3`. Substitute `e1 e2 e3` using the available equality. Both sides reduce to the same expression. Conclude with `sameServed Fm.GK (allOf (Fm.Gx x i)) (allOf (Fm.Gx x i')) hR hTT (host_cls_eq (Fm.q_eq x i i') (Fm.d_eq x i i') (Fm.QS_eq x i i')) (Fm.hP_eq x i i') hsc (Fm.Sc_shared x i i') (Fm.eta_eq x i i') (Fm.bs_eq x i i') (Fm.off_eq x i i') (Fm.kapI_eq x i i') (Fm.ep_eq x i i') (fun t t' h …`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem served_orbit_counts_agree (x : ℝ) (hx : Fm.x1 < x) : Formalism.MainNotions.LocalQuadraticParts.AmbientMetricLowerBound Fm x := by
   intro i i' a b u0 u0' hr hr' p
@@ -161,7 +159,7 @@ theorem served_orbit_counts_agree (x : ℝ) (hx : Fm.x1 < x) : Formalism.MainNot
       (fun s s' hs => by rw [(hr.2 s).2, (hr'.2 s').2, hs]) t t' ht) p
 
 /- English proof (translation)
-Introduce `x hx` and use `served_orbit_counts_agree Fm x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem family_served_orbit_counts_agree : Formalism.MainNotions.LocalQuadraticParts.BaseIndependenceFamily Fm := fun x hx => served_orbit_counts_agree Fm x hx
 

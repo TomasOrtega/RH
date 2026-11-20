@@ -11,7 +11,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 namespace GlobalTheory.CompanionTheory.AdmSix
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FundCont.fundamentalExactSequence_continuity_all_theories`.
+A detailed English derivation is pending.
 -/
 theorem adm6_all : ∀ D : D7, LocalSituation.adm6 D := GlobalTheory.FundCont.fundamentalExactSequence_continuity_all_theories
 

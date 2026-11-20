@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.Hk3
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hC`. Establish `h` using `GlobalTheory.SplitHeckeCore.hecke_okH_comm R.toRealDat F.lv2 hC.base.lev hC.base.fam hC.base.models`. Conclude with `⟨fun t => (h.1 t).1, fun j t => (h.2 j t).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hecke_operators_rational_adjoint_closed_of_weak_char : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → (∀ t, (A3.A.fam.R t).OkH) ∧ ∀ j t, (A3.A.fam.L j t).OkH := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hC

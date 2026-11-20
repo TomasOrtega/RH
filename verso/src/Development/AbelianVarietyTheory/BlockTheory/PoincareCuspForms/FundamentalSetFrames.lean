@@ -21,7 +21,7 @@ def pairing (X : Data E r) (h0 : 0 < X.p0) (h1 : X.p0 < r) (la : Wt X.Ψ r) (τ 
   la τ ⟨r - 1, by omega⟩ - la τ ⟨0, by omega⟩
 
 /- English proof (translation)
-Establish `: ((r - 1 : ℕ) : ℤ) = (r : ℤ) - 1` using `by omega`. Simplify using `only [pairing, kapW, this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairing_kapW (X : Data E r) (h0 : 0 < X.p0) (h1 : X.p0 < r) (τ : X.Ψ) :
     pairing X h0 h1 (kapW X) τ = 2 * (r : ℤ) - 2 := by
@@ -36,13 +36,13 @@ def IsInvWeight (X : Data E r) (u : Frame X.Ψ r → EReal) : Prop :=
   ∃ C : ℝ, ∀ x ∈ X.dom, u x ≤ (C : EReal)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨measurable_const, fun _ _ _ _ _ _ => rfl, c, fun _ _ => le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInvWeight_const (X : Data E r) (c : ℝ) : IsInvWeight X fun _ => (c : EReal) :=
   ⟨measurable_const, fun _ _ _ _ _ _ => rfl, c, fun _ _ => le_rfl⟩
 
 /- English proof (translation)
-Unfold `dmin lminor`. Use `Continuous.matrix_det (continuous_matrix fun a b => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, gram, Matrix.of_apply, hermC, col, mat]`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
@@ -52,13 +52,13 @@ theorem continuous_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
   fun_prop
 
 /- English proof (translation)
-Take `⟨hsec, C, hC⟩` from `hs`. Use `⟨?_, fun γ hγ x hx b hb => by simp only [hinv γ hγ x hx b hb], (|C| + 1) ^ 2, fun x hx => ?_⟩` and prove the remaining obligations. Use `ENNReal.measurable_log.comp (ENNReal.measurable_ofReal.comp (Measurable.pow_const ?_ 2))` and prove the remaining obligations. Unfold `Data.pnorm`. Use `Measurable.mul (hsec.1.continuousOn.restrict.measurable.norm) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `refine Measurable.pow_const (Measurable.norm (Measurable.div ?_ ?_)) _ <;>`. Conclude with `((continuous_dmin X τ _).comp continuous_subtype_val).measurable`. Establish `h0 : 0 ≤ X.pnorm L s x`. Unfold `Data.pnorm`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `h1 : X.pnorm L s x ^ 2 ≤ (|C| + 1) ^ 2`. Use `hC x hx` as an intermediate fact. Use `le_abs_self C` as an intermediate fact. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 0 < (|C| + 1) ^ 2` using `by positivity`. Use `(ENNReal.log_monotone (ENNReal.ofReal_le_ofReal h1)).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.log_ofReal_of_pos h2]`. Conclude with `EReal.coe_le_coe_iff.2 ((Real.log_le_sub_one_of_pos h2).trans (by linarith))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInvWeight_log_norm (X : Data E r) (L : Wt X.Ψ r) (s : Frame X.Ψ r → ℂ)
     (hs : X.IsBddSec L s)
@@ -106,7 +106,7 @@ def ATilde (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (la : Wt X.Ψ r) (u : F
   {F | DifferentiableOn ℂ F (OmF X x0) ∧ normSq X x0 bb la u F < ⊤}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨differentiableOn_const 0, by simp [normSq, wsq]⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_ATilde (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) (la : Wt X.Ψ r)
     (u : Frame X.Ψ r → EReal) : (fun _ => 0) ∈ ATilde X x0 bb la u :=
@@ -188,7 +188,7 @@ def PoincareCuspidalStatement (E : Type) [Field E] [NumberField E] [IsCMField E]
   PoincareStatement (E := E) ∧ CuspidalStatement (E := E)
 
 /- English proof (translation)
-Take `⟨-, hb', hs, -⟩` from `(h.1 r X x0 hx0 bb hb la).2.2 u hu F hF P hP`. Conclude with `⟨h.2 r X la hg hp _ hb', hs FF hFF⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem poin_mem_ASpace (h : PoincareCuspidalStatement E) (X : Data E r) (x0 : Frame X.Ψ r)
     (hx0 : IsOrth X x0) (bb : ℝ) (hb : 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb) (la : Wt X.Ψ r)

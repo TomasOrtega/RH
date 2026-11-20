@@ -13,7 +13,7 @@ noncomputable def UpperTheory.Reformulated.B.OmegaConstruction.red :
       Z.map (⇑(Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ m)) : O → O ⧸ IsLocalRing.maximalIdeal O ^ m)
 
 /- English proof (translation)
-Introduce `O _ _ n m A B`. Use extensionality with `i j`. Conclude with `map_sub (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ m)) (A i j) (B i j)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.OmegaConstruction.red_sub :
     ∀ {O : Type} [inst : CommRing O] [inst_1 : IsLocalRing O] {n : ℕ} (m : ℕ) (A B : Matrix (Fin n) (Fin n) O),

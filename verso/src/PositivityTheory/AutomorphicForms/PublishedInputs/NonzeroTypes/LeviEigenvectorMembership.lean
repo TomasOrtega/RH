@@ -12,7 +12,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : ℕ} (G : Grp k n)
 
 /- English proof (translation)
-Use `⟨fun hgh => ?_, fun hh => hmul g hg h hh⟩` and prove the remaining obligations. Use `hmul _ (hinv g hg) _ hgh` as an intermediate fact. Simplify `this` using `[← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_left_iff (hmul : ∀ g ∈ G.JSet, ∀ h ∈ G.JSet, g * h ∈ G.JSet) (hinv : ∀ g ∈ G.JSet, g⁻¹ ∈ G.JSet)
     {g : GL (Fin n) k} (hg : g ∈ G.JSet) (h : GL (Fin n) k) : g * h ∈ G.JSet ↔ h ∈ G.JSet := by
@@ -21,7 +21,7 @@ theorem mem_left_iff (hmul : ∀ g ∈ G.JSet, ∀ h ∈ G.JSet, g * h ∈ G.JSe
   simpa [← mul_assoc] using this
 
 /- English proof (translation)
-Use `⟨fun hgh => ?_, fun hg => hmul g hg h hh⟩` and prove the remaining obligations. Use `hmul _ hgh _ (hinv h hh)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_right_iff (hmul : ∀ g ∈ G.JSet, ∀ h ∈ G.JSet, g * h ∈ G.JSet) (hinv : ∀ g ∈ G.JSet, g⁻¹ ∈ G.JSet)
     {h : GL (Fin n) k} (hh : h ∈ G.JSet) (g : GL (Fin n) k) : g * h ∈ G.JSet ↔ g ∈ G.JSet := by
@@ -30,15 +30,15 @@ theorem mem_right_iff (hmul : ∀ g ∈ G.JSet, ∀ h ∈ G.JSet, g * h ∈ G.JS
   simpa [mul_assoc] using this
 
 /- English proof (translation)
-Establish `hmul` using `hJmul hcb hccB`. Establish `hinv` using `hJinv hcb hccB`. Establish `hlam` using `hlM hcb hΔU hΔM hccB`. Take `⟨hl1, -, hlK⟩` from `hlB hccB`. Establish `hKJ : KC k n G.lev ⊆ G.JSet` using `(hKC hccB G.lev).2.2.2.2 le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hright : ∀ (g j : ↥(KO k (Fin n))), (j : GL (Fin n) k) ∈ G.JSet → G.v0 (g * j) = G.lam j * G.v0 g`. Introduce `g j hj`. Simplify using `only [Grp.v0, Subgroup.coe_mul, mem_right_iff G hmul hinv hj]`. Use `split_ifs with hg`. Rewrite using `[hlam _ hg _ hj, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨⟨fun p hp g => ?_, fun g u hu => ?_⟩, ?_, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hpJ : (p : GL (Fin n) k) ∈ G.JSet` using `hJone.2 hp`. Simplify using `only [Grp.v0, Subgroup.coe_mul, mem_left_iff G hmul hinv hpJ]`. Use `split_ifs with hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hlam _ hpJ _ hg]`. Simplify using the standard rewrite rules. Rewrite using `[hright g u (hKJ hu), hlK _ hu, one_mul]`. Introduce `h0`. Use `congrFun h0 1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Grp.v0, OneMemClass.coe_one, if_pos hJone.1, hl1, Pi.zero_apply] at this`. Conclude with `one_ne_zero this`. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← hright g j hj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem levi_eigenvector_of_conditions (hcb : CompactConductorBasicProp (k := k)) (hccB : CompactConductorBoundProp G) (hΔU : ModulusOnUnitsProp G) (hΔM : ModulusMultiplicativeProp G)
     (hJone : JacquetOneProp G) (hJmul : JacquetMultiplicativeProp G) (hJinv : JacquetInverseProp G) (hlM : LambdaMultiplicativeProp G)
@@ -78,7 +78,7 @@ end UpperTheory.TNZ.Grp.LeviEigenvectorMembership
 namespace UpperTheory.TNZ.Grp
 
 /- English proof (translation)
-Introduce `hcb hccB hΔU hΔM hJone hJmul hJinv hlM hlB hKC` and use `LeviEigenvectorMembership.levi_eigenvector_of_conditions G hcb hccB hΔU hΔM hJone hJmul hJinv hlM hlB hKC`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leviEigenvector_holds {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (G : Grp k n) : NonzeroLeviEigenvectorExists G :=

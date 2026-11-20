@@ -33,7 +33,7 @@ def deltaLocus {A B : Type} [CommRing A] [CommRing B] (D : Delta l A) (D' : Delt
 
 open CategoryTheory in
 /- English proof (translation)
-Establish `hw : CommRingCat.ofHom f ≫ CommRingCat.ofHom u = CommRingCat.ofHom g ≫ CommRingCat.ofHom v`. Rewrite using `[← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, huv]`. Conclude with `⟨(hP.desc (W := CommRingCat.of W) _ _ hw).hom, congrArg CommRingCat.Hom.hom (hP.inl_desc (W := CommRingCat.of W) _ _ hw), congrArg CommRingCat.Hom.hom (hP.inr_desc (W := CommRingCat.of W) _ _ hw)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private lemma exists_ringHom_of_isPushout {A X Y P W : Type} [CommRing A] [CommRing X]
     [CommRing Y] [CommRing P] [CommRing W] {f : A →+* X} {g : A →+* Y} {i : X →+* P}
@@ -50,7 +50,7 @@ private lemma exists_ringHom_of_isPushout {A X Y P W : Type} [CommRing A] [CommR
 
 open CategoryTheory in
 /- English proof (translation)
-Establish `h` using `hP.hom_ext (W := CommRingCat.of W) (k := CommRingCat.ofHom u) (l := CommRingCat.ofHom v) (by rw [← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hi]) (by rw [← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hj])`. Conclude with `congrArg CommRingCat.Hom.hom h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma ringHom_eq_of_isPushout_of_comp_eq {A X Y P W : Type} [CommRing A] [CommRing X] [CommRing Y]
     [CommRing P] [CommRing W] {f : A →+* X} {g : A →+* Y} {i : X →+* P} {j : Y →+* P}
@@ -64,7 +64,7 @@ private lemma ringHom_eq_of_isPushout_of_comp_eq {A X Y P W : Type} [CommRing A]
 
 open CategoryTheory in
 /- English proof (translation)
-Use `Ideal.Quotient.ringHom_ext ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, _root_.GlobalTheory.BSP.qmap_mk]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma factorPow_comp_qmap_eq_qmap_comp_factorPow {l : ℕ} {R : Type} [CommRing R]
     {P P' : _root_.GlobalTheory.Prism.Obj l R} (f : _root_.GlobalTheory.Prism.Hom P P') {m n : ℕ} (hle : m ≤ n) :
@@ -79,7 +79,7 @@ private lemma factorPow_comp_qmap_eq_qmap_comp_factorPow {l : ℕ} {R : Type} [C
 
 open CategoryTheory in
 /- English proof (translation)
-Rewrite using `[IsHausdorff.eq_iff_smodEq (I := I)]`. Introduce `n`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← Ideal.Quotient.eq]`. Conclude with `hxy n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eq_of_forall_mk_pow_eq_of_isHausdorff {A : Type} [CommRing A] (I : Ideal A) [IsHausdorff I A]
     {x y : A} (hxy : ∀ n, Ideal.Quotient.mk (I ^ n) x = Ideal.Quotient.mk (I ^ n) y) :
@@ -91,11 +91,11 @@ private lemma eq_of_forall_mk_pow_eq_of_isHausdorff {A : Type} [CommRing A] (I :
 
 open CategoryTheory in
 /- English proof (translation)
-Establish `hcomm : i.comp f = j.comp g` using `congrArg CommRingCat.Hom.hom hP.w`. Take `⟨r, hr1, hr2⟩` from `exists_ringHom_of_isPushout hP (i.codRestrict T hi) (j.codRestrict T hj) (by`. Use extensionality with `z`. Conclude with `RingHom.congr_fun hcomm z)`. Establish `hid : T.subtype.comp r = RingHom.id P`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ringHom_eq_of_isPushout_of_comp_eq hP ?_ ?_` and prove the remaining obligations. Use extensionality with `x show ((r (i x) : T) : P) = i x`. Rewrite using `[← RingHom.comp_apply, hr1]`. Both sides reduce to the same expression. Use extensionality with `y show ((r (j y) : T) : P) = j y`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_apply, hr2]`. Both sides reduce to the same expression. Establish `hp : T.subtype (r p) = p` using `RingHom.congr_fun hid p`. Rewrite using `[← hp]`. Conclude with `(r p).2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mem_subring_of_isPushout_of_maps_mem {A X Y P : Type} [CommRing A] [CommRing X] [CommRing Y]
     [CommRing P] {f : A →+* X} {g : A →+* Y} {i : X →+* P} {j : Y →+* P}
@@ -124,41 +124,37 @@ private lemma mem_subring_of_isPushout_of_maps_mem {A X Y P : Type} [CommRing A]
 open CategoryTheory in
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (_root_.GlobalTheory.BSP.adI Q) Q.A := Q.complete`. Establish `hex : ∀ m, ∃ ψ : C'.A ⧸ _root_.GlobalTheory.BSP.adI C' ^ m →+* Q.A ⧸ _root_.GlobalTheory.BSP.adI Q ^ m, ψ.comp (_root_.GlobalTheory.BSP.qmap k' m) = _root_.GlobalTheory.BSP.qmap a m ∧ ψ.comp (_root_.GlobalTheory.BSP.qmap h' m) = _root_.GlobalTheory.BSP.qmap b m` using `fun m => exists_ringHom_of_isPushout (H.po m) _ _ (by`. Rewrite using `[← _root_.GlobalTheory.BSP.qmap_comp, ← _root_.GlobalTheory.BSP.qmap_comp, hab])`. Use `choose ψ hψa hψb using hex`. Establish `hψa' : ∀ m x, ψ m (Ideal.Quotient.mk _ (k'.f x)) = Ideal.Quotient.mk _ (a.f x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m x`. Establish `hx` using `RingHom.congr_fun (hψa m) (Ideal.Quotient.mk _ x)`. Simplify `hx` using `[_root_.GlobalTheory.BSP.qmap_mk]`. Establish `hψb' : ∀ m y, ψ m (Ideal.Quotient.mk _ (h'.f y)) = Ideal.Quotient.mk _ (b.f y)`. Introduce `m y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hy` using `RingHom.congr_fun (hψb m) (Ideal.Quotient.mk _ y)`. Simplify `hy` using `[_root_.GlobalTheory.BSP.qmap_mk]`. Establish `hcompat : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow (_root_.GlobalTheory.BSP.adI Q) hle).comp ((ψ n).comp (Ideal.Quotient.mk _)) = (ψ m).comp (Ideal.Quotient.mk _)`. Introduce `m n hle`. Establish `key : (Ideal.Quotient.factorPow (_root_.GlobalTheory.BSP.adI Q) hle).comp (ψ n) = (ψ m).comp (Ideal.Quotient.factorPow (_root_.GlobalTheory.BSP.adI C') hle)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ringHom_eq_of_isPushout_of_comp_eq (H.po n) ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hψa, RingHom.comp_assoc, factorPow_comp_qmap_eq_qmap_comp_factorPow, factorPow_comp_qmap_eq_qmap_comp_factorPow, ← RingHom.comp_assoc, hψa]`. Rewrite using `[RingHom.comp_assoc, hψb, RingHom.comp_assoc, factorPow_comp_qmap_eq_qmap_comp_factorPow, factorPow_comp_qmap_eq_qmap_comp_factorPow, ← RingHom.comp_assoc, hψb]`. Rewrite using `[← RingHom.comp_assoc, key, RingHom.comp_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c0, hc0⟩ : ∃ c0 : C'.A →+* Q.A, ∀ n x, Ideal.Quotient.mk (_root_.GlobalTheory.BSP.adI Q ^ n) (c0 x) = ψ n (Ideal.Quotient.mk _ x)` from `⟨_, fun n x => IsAdicComplete.mk_liftRingHom _ _ hcompat n x⟩`. Establish `hmap : ∀ n z, z ∈ _root_.GlobalTheory.BSP.adI C' ^ n → c0 z ∈ _root_.GlobalTheory.BSP.adI Q ^ n`. Introduce `n z hz`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hc0, Ideal.Quotient.eq_zero_iff_mem.mpr hz, map_zero]`. Establish `hk : ∀ x, c0 (k'.f x) = a.f x` using `fun x => eq_of_forall_mk_pow_eq_of_isHausdorff (_root_.GlobalTheory.BSP.adI Q) fun n => by rw [hc0, hψa']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : ∀ y, c0 (h'.f y) = b.f y` using `fun y => eq_of_forall_mk_pow_eq_of_isHausdorff (_root_.GlobalTheory.BSP.adI Q) fun n => by rw [hc0, hψb']`. Establish `hδ : ∀ x, c0 (C'.D.δ x) = Q.D.δ (c0 x)`. Introduce `x`. Establish `hS : ∀ n, ∃ s ∈ _root_.GlobalTheory.BSP.PoUniv.deltaLocus C'.D Q.D c0, x - s ∈ _root_.GlobalTheory.BSP.adI C' ^ n`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT` using `mem_subring_of_isPushout_of_maps_mem (H.po n) ((_root_.GlobalTheory.BSP.PoUniv.deltaLocus C'.D Q.D c0).map (Ideal.Quotient.mk (_root_.GlobalTheory.BSP.adI C' ^ n))) (fun y => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[_root_.GlobalTheory.BSP.qmap_mk]`. Use `Subring.mem_map.mpr ⟨_, ?_, rfl⟩` and prove the remaining obligations. Use `show c0 (C'.D.δ (k'.f y)) = Q.D.δ (c0 (k'.f y))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← k'.f_δ, hk, hk, a.f_δ])`. Use the proof step `(fun y => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[_root_.GlobalTheory.BSP.qmap_mk]`. Use `Subring.mem_map.mpr ⟨_, ?_, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show c0 (C'.D.δ (h'.f y)) = Q.D.δ (c0 (h'.f y))`. Rewrite using `[← h'.f_δ, hh, hh, b.f_δ])`. Use the proof step `(Ideal.Quotient.mk _ x)`. Take `⟨s, hs, hsx⟩` from `Subring.mem_map.mp hT`. Conclude with `⟨s, hs, Ideal.Quotient.eq.mp hsx.symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sub_eq_zero.mp (eq_of_forall_mk_pow_eq_of_isHausdorff (_root_.GlobalTheory.BSP.adI Q) fun n => ?_)` and prove the remaining obligations. Rewrite using `[map_zero, Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨s, hs, hxs⟩` from `hS (n + 1)`. Establish `hs' : c0 (C'.D.δ s) = Q.D.δ (c0 s)` using `hs`. Establish `hlC : (l : C'.A) ∈ _root_.GlobalTheory.BSP.adI C'` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlQ : (l : Q.A) ∈ _root_.GlobalTheory.BSP.adI Q` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Establish `h1` using `_root_.GlobalTheory.BSP.delta_add_sub_mem_pow l C'.A C'.D _ hlC n s (x - s) hxs`. Establish `h2` using `_root_.GlobalTheory.BSP.delta_add_sub_mem_pow l Q.A Q.D _ hlQ n (c0 s) (c0 (x - s)) (hmap _ _ hxs)`. Rewrite `h1` using `[add_sub_cancel]`. Rewrite `h2` using `[← map_add, add_sub_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3` using `hmap n _ h1`. Rewrite `h3` using `[map_sub, hs']`. Establish `h4` using `Ideal.sub_mem _ h3 h2`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : ∀ z ∈ C'.I, c0 z ∈ Q.I`. Introduce `z hz`. Establish `hcb : c0.comp h'.f = b.f` using `RingHom.ext hh`. Establish `hz' : z ∈ Ideal.map h'.f B'.I`. Rewrite using `[_root_.GlobalTheory.Prism.Rigid.map_I_eq l R B' C' h']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hz`. Establish `hmem` using `Ideal.mem_map_of_mem c0 hz'`. Rewrite `hmem` using `[Ideal.map_map, hcb, _root_.GlobalTheory.Prism.Rigid.map_I_eq l R B' Q b]`. Then use the resulting hypothesis. Establish `hstr : ∀ (r : R) (z : C'.A), Ideal.Quotient.mk C'.I z = C'.str r → Ideal.Quotient.mk Q.I (c0 z) = Q.str r`. Introduce `r z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (B'.str r)`. Establish `h1` using `h'.f_str r y hy`. Establish `h2` using `b.f_str r y hy`. Rewrite using `[← h2, ← hh, Ideal.Quotient.eq, ← map_sub]`. Use `hI _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Ideal.Quotient.eq, hz, h1]`. Set `c : _root_.GlobalTheory.Prism.Hom C' Q` to `⟨c0, hδ, hI, hstr⟩`. Establish `hcomm : c.comp k' = a ∧ c.comp h' = b` using `⟨_root_.GlobalTheory.Prism.Hom.ext' (RingHom.ext hk), _root_.GlobalTheory.Prism.Hom.ext' (RingHom.ext hh)⟩`. Use `⟨c, hcomm, fun c' hc' => ?_⟩` and prove the remaining obligations. Use `_root_.GlobalTheory.Prism.Hom.ext' (RingHom.ext fun x => eq_of_forall_mk_pow_eq_of_isHausdorff (_root_.GlobalTheory.BSP.adI Q) fun n => ?_)` and prove the remaining obligations.
-
-Establish `hq : _root_.GlobalTheory.BSP.qmap c' n = _root_.GlobalTheory.BSP.qmap c n`. Use `ringHom_eq_of_isPushout_of_comp_eq (H.po n) ?_ ?_` and prove the remaining obligations. Rewrite using `[← _root_.GlobalTheory.BSP.qmap_comp, ← _root_.GlobalTheory.BSP.qmap_comp, hc'.1, hcomm.1]`. Rewrite using `[← _root_.GlobalTheory.BSP.qmap_comp, ← _root_.GlobalTheory.BSP.qmap_comp, hc'.2, hcomm.2]`. Establish `hx` using `RingHom.congr_fun hq (Ideal.Quotient.mk _ x)`.
-
-Simplify `hx` using `only [_root_.GlobalTheory.BSP.qmap_mk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BSP.PoUniv.isPO_univ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R]
     (B C B' C' : _root_.GlobalTheory.Prism.Obj l R) (h : _root_.GlobalTheory.Prism.Hom B C)

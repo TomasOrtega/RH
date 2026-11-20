@@ -8,9 +8,9 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ G`. Use `⟨fun r γ δ z hr h => ?_, fun γ => ?_⟩` and prove the remaining obligations. Unfold `IsNrm at h ⊢`. Establish `e` using `(GlobalTheory.T.twistedNormProductIterate_twistedConj (sigG G r) r δ z⁻¹).1`. Establish `hit` using `(GlobalTheory.T.hermitianTripleFrobeniusTwist_order_fixed_points p G r hr).1 z⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[inv_inv]`. Rewrite using `[← map_inv, e, h, hit]`. Use `group`. Unfold `IsNrm nrmG`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nrm_exact : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), (∀ (r : ℕ) (γ : Gp G) (δ z : Gr G r), 0 < r →
     IsNrm G r γ δ z → IsNrm G r γ (z * δ * (sigG G r z)⁻¹) 1) ∧ ∀ γ : Gp G, IsNrm G 1 γ (inclG G 1 γ) 1 := by

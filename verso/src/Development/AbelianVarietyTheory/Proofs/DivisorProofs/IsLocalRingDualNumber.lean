@@ -21,7 +21,7 @@ instance isLocalRing_dualNumber (R : Type) [CommRing R] [IsLocalRing R] : IsLoca
 variable {R : Type} [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G]
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_left (X : Over (Sp R)) : (1 : X ⟶ G).left = X.hom ≫ (η[G]).left := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
@@ -29,11 +29,11 @@ theorem one_left (X : Over (Sp R)) : (1 : X ⟶ G).left = X.hom ≫ (η[G]).left
 variable [IsCommMonObj G]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun w => w.left) (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem v)`. Simplify using `only [smT_left, one_left] at h`. Establish `hl0 : IsLocalHom (epsMul (0 : R))` using `⟨fun a ha => (TrivSqZeroExt.isUnit_iff_isUnit_fst).2 (by`. Simplify `(TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha)⟩` using `[epsMul]`. Establish `hl1 : IsLocalHom (algebraMap R (DualNumber R))` using `⟨fun a ha => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `(TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha⟩` using `[TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e0 : (spMap (epsMul (0 : R))) (IsLocalRing.closedPoint (DualNumber R)) = IsLocalRing.closedPoint (DualNumber R)` using `Spec_closedPoint (f := CommRingCat.ofHom (epsMul (0 : R)))`. Establish `e1 : (spMap (algebraMap R (DualNumber R))) (IsLocalRing.closedPoint (DualNumber R)) = IsLocalRing.closedPoint R` using `Spec_closedPoint (f := CommRingCat.ofHom (algebraMap R (DualNumber R)))`. Establish `h2` using `congrArg (fun φ => φ (IsLocalRing.closedPoint (DualNumber R))) h`. Establish `h3 : (tv v).left (IsLocalRing.closedPoint (DualNumber R)) = (tv v).left ((spMap (epsMul (0 : R))) (IsLocalRing.closedPoint (DualNumber R)))` using `(congrArg (fun y => (tv v).left y) e0).symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Use `h2.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun y => (η[G]).left y) e1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tv_closedPoint (v : TanM (𝟙 (Sp R)) G) :
     (tv v).left (IsLocalRing.closedPoint (DualNumber R)) = origin G := by
@@ -64,7 +64,7 @@ def tanDer (v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (origin G)) : R
   else 0
 
 /- English proof (translation)
-Rewrite using `[tanDer, dif_pos (tv_closedPoint G v)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tanDer_eq (v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (origin G)) :
     tanDer G v f = (((G.left.presheaf.stalkCongr (Inseparable.of_eq (tv_closedPoint G v).symm)).hom ≫

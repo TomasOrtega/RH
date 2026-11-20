@@ -23,17 +23,17 @@ open GlobalTheory.LiftRows
 namespace GlobalTheory.GoodSplitFam
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hW e P hG hP`. Take `⟨hC, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW e`. Take `⟨hQ0, -, -, hfam⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R.toRealDat F.lv2 hC.lev`. Establish `hSb : R.Sb = R.Pg` using `hW.allPl`. Establish `hci : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal = (Formalism.DivisionValues.conjPl P).asIdeal := GlobalTheory.InertValLab.conjIdeal_eq_conjPl P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : Formalism.IndefR.Bridge.SplitOff P (R.Sb : Set (Pl D.host.E))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hci]`. Introduce `h`. Conclude with `hP (HeightOneSpectrum.ext h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Establish `hm' : P ∈ R.Pg` using `by rw [← hSb]; exact hm`. Conclude with `(hG P (Or.inl hm')).1 rfl`. Introduce `Q hQ h`. Rewrite `h` using `[hci]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ' : Q ∈ R.Pg` using `by rw [← hSb]; exact hQ`. Establish `hQe : Q = Formalism.DivisionValues.conjPl P` using `HeightOneSpectrum.ext h`. Apply `(hG Q (Or.inl hQ')).2` to reduce the goal to its premises. Rewrite using `[GlobalTheory.GoodPrimes.isConjPl_iff, hQe, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Take `⟨P0, hP0⟩` from `hC.fam.pl_onto P hsplit`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨gramR, c0R, c0L, htie⟩` from `hC.fam.tie`. Establish `hok : P0 ∈ A3.A.ok A3.A.μ0`. Rewrite using `[htie.ok, hQ0, hP0]`. Simplify using `using hsplit`. Use `⟨P0, hok, hP0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hfam hC.fam A3.A.μ0 P0 hok).2.2]`. Introduce `h0`. Conclude with `(R.pl P0).ne_bot (Ideal.absNorm_eq_zero_iff.mp h0)`.
+A detailed English derivation is pending.
 -/
 theorem good_split_pl : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → R.toRealDat.ExAt → ∀ P, GlobalTheory.Hk3.Good R.toRealDat A3.A.μ0 P → Formalism.DivisionValues.conjPl P ≠ P → ∃ P0 ∈ A3.A.ok A3.A.μ0, R.pl P0 = P ∧ A3.A.q P0 ≠ 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hW e P hG hP

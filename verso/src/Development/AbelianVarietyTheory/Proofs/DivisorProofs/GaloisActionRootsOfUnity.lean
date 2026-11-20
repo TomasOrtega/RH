@@ -13,13 +13,13 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g k hk`. Establish `hk0 : k ≠ 0` using `hk.ne'`. Use `haveI : NeZero k := ⟨hk0⟩`. Use `set ζ : ℂ := Complex.exp (2 * Real.pi * Complex.I / k) with hζ`. Establish `hprim : IsPrimitiveRoot ζ k` using `Complex.isPrimitiveRoot_exp k hk0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg : IsPrimitiveRoot (g ζ) k` using `hprim.map_of_injective g.injective`. Take `⟨i, -, hi⟩` from `hprim.eq_pow_of_pow_eq_one hg.pow_eq_one`. Establish `hcop : i.Coprime k` using `(hprim.pow_iff_coprime hk i).1 (hi ▸ hg)`. Use `⟨(i : ℤ), Nat.isCoprime_iff_coprime.2 hcop, fun n => ?_⟩` and prove the remaining obligations. Establish `key : ∀ m : ℤ, Complex.exp (2 * Real.pi * Complex.I * m / k) = ζ ^ m`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[hζ, ← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← key]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cyclotomic_character_of_ringEquiv : ∀ (g : ℂ ≃+* ℂ) (k : ℕ), 0 < k → ∃ a : ℤ, IsCoprime a (k : ℤ) ∧
     ∀ n : ℤ, g (Complex.exp (2 * Real.pi * Complex.I * n / k)) = Complex.exp (2 * Real.pi * Complex.I * (a * n) / k) := by

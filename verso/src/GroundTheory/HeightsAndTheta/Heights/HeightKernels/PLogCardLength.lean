@@ -22,7 +22,7 @@ def FinLoc (N : Type) [AddCommGroup N] [Module R N] : Prop :=
 variable {R}
 
 /- English proof (translation)
-Rewrite using `[term, finsum_eq_if, if_pos hm, locLen, dif_pos hm.isPrime]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma term_eq (N : Type) [AddCommGroup N] [Module R N] (m : Ideal R) [hm : m.IsMaximal] :
     term R N m = ((Module.length (Localization.AtPrime m)
@@ -31,7 +31,7 @@ lemma term_eq (N : Type) [AddCommGroup N] [Module R N] (m : Ideal R) [hm : m.IsM
   rw [term, finsum_eq_if, if_pos hm, locLen, dif_pos hm.isPrime]
 
 /- English proof (translation)
-Rewrite using `[term, finsum_eq_if, if_neg hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma term_of_not (N : Type) [AddCommGroup N] [Module R N] (m : Ideal R) (hm : ¬ m.IsMaximal) :
     term R N m = 0 := by
@@ -39,7 +39,7 @@ lemma term_of_not (N : Type) [AddCommGroup N] [Module R N] (m : Ideal R) (hm : �
   rw [term, finsum_eq_if, if_neg hm]
 
 /- English proof (translation)
-The claim follows from `Module.length_eq_add_of_exact ((IsLocalizedModule.map m.primeCompl (LocalizedModule.mkLinearMap m.primeCompl N₀) (LocalizedModule.mkLinearMap m.primeCompl N₁) f).extendScalarsOfIsLocalization m.primeCompl (Localization.AtPrime m)) ((IsLocalizedModule.map m.primeCompl (LocalizedMo …`.
+A detailed English derivation is pending.
 -/
 lemma length_loc_add {N₀ N₁ N₂ : Type} [AddCommGroup N₀] [AddCommGroup N₁] [AddCommGroup N₂]
     [Module R N₀] [Module R N₁] [Module R N₂] (f : N₀ →ₗ[R] N₁) (g : N₁ →ₗ[R] N₂)
@@ -59,19 +59,17 @@ lemma length_loc_add {N₀ N₁ N₂ : Type} [AddCommGroup N₀] [AddCommGroup N
     (LocalizedModule.map_exact m.primeCompl f g H)
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Establish `hsurj : Function.Surjective (LocalizedModule.mkLinearMap m.primeCompl M)`. Introduce `y`. Use `LocalizedModule.induction_on (fun x s => ?_) y` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨t, i, hi, hts⟩` from `hI.exists_inv (Ideal.mem_primeCompl_iff.mp s.2)`. Use `⟨t • x, ?_⟩` and prove the remaining obligations. Rewrite using `[LocalizedModule.mkLinearMap_apply, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `hx : ((s : R) * t) • x = x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (s : R) * t = 1 - i by linear_combination hts, sub_smul, one_smul, hkill i hi x, sub_zero]`. Simplify using `only [one_smul, Submonoid.smul_def, smul_smul, hx]`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.restrictScalars_top]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Module.length_top`. Use `_ ≤ Module.length R M := Module.length_le_of_surjective _ hsurj`. Use `_ = 1 := Module.length_eq_one R M`. Establish `: Nontrivial (LocalizedModule m.primeCompl M)`. Rewrite using `[← not_subsingleton_iff_nontrivial, LocalizedModule.subsingleton_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `push Not`. Use `IsSimpleModule.nontrivial R M` as an intermediate fact. Take `⟨x, hx⟩` from `exists_ne (0 : M)`. Use `⟨x, fun r hr hrx => hx ?_⟩` and prove the remaining obligations. Take `⟨t, i, hi, hts⟩` from `hI.exists_inv (Ideal.mem_primeCompl_iff.mp hr)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `Order.one_le_iff_pos.mpr Module.length_pos`. Rewrite using `[Module.length_eq_zero_iff, LocalizedModule.subsingleton_iff]`. Establish `hle : ¬ I ≤ m` using `fun hle => h (hI.eq_of_le hm.ne_top hle).symm`. Take `⟨a, haI, ham⟩` from `SetLike.not_le_iff_exists.mp hle`.
-
-Conclude with `fun x => ⟨a, Ideal.mem_primeCompl_iff.mpr ham, hkill a haI x⟩`.
+A detailed English derivation is pending.
 -/
 lemma length_loc_simple (M : Type) [AddCommGroup M] [Module R M] [IsSimpleModule R M]
     (I : Ideal R) (hI : I.IsMaximal) (hkill : ∀ a ∈ I, ∀ x : M, a • x = 0)
@@ -119,9 +117,9 @@ lemma length_loc_simple (M : Type) [AddCommGroup M] [Module R M] [IsSimpleModule
     exact fun x => ⟨a, Ideal.mem_primeCompl_iff.mpr ham, hkill a haI x⟩
 
 /- English proof (translation)
-Distinguish the cases in `hm : m.IsMaximal`. Rewrite using `[term_eq, length_loc_simple M I hI hkill m] split_ifs with h`. Substitute `h` using the available equality. Simplify using `[hcard]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[term_of_not M m hm, if_neg (fun (h : m = I) => hm (h ▸ hI))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma term_simple (M : Type) [AddCommGroup M] [Module R M] [IsSimpleModule R M]
     (I : Ideal R) (hI : I.IsMaximal) (hkill : ∀ a ∈ I, ∀ x : M, a • x = 0)
@@ -135,27 +133,25 @@ lemma term_simple (M : Type) [AddCommGroup M] [Module R M] [IsSimpleModule R M]
   · rw [term_of_not M m hm, if_neg (fun (h : m = I) => hm (h ▸ hI))]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `N _ _ _ hn`. Break down `subsingleton_or_nontrivial N with hN | hN` into its components or cases. Establish `h0 : ∀ (m : Ideal R) [m.IsPrime], Module.length (Localization.AtPrime m) (LocalizedModule m.primeCompl N) = 0` using `fun m _ => Module.length_eq_zero`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `ht : ∀ m, term R N m = 0`. Introduce `m`. Distinguish the cases in `hm : m.IsMaximal`. Rewrite using `[term_eq, h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `term_of_not N m hm`. Use `⟨fun m _ => by rw [h0]; exact ENat.zero_ne_top, by rw [show term R N = 0 from funext ht, Function.support_zero]; exact Set.finite_empty, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.card_of_subsingleton (0 : N)]`. Simplify using `[ht]`. Use `isArtinian_of_finite (R := R) (M := N)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `IsAtomic.exists_atom (Submodule R N)`. Rewrite `hS` using `[← isSimpleModule_iff_isAtom]`. Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hS`. Establish `hkill : ∀ a ∈ I, ∀ x : S, a • x = 0`. Introduce `a ha x`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (e x)`. Rewrite using `[map_smul, ← hr, map_zero, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `I.mul_mem_right r ha`. Establish `hcS : Nat.card S = Nat.card (R ⧸ I)` using `Nat.card_congr e.toEquiv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (N ⧸ S)` using `Finite.of_surjective _ S.mkQ_surjective`. Establish `hcard : Nat.card N = Nat.card S * Nat.card (N ⧸ S)` using `S.card_eq_card_quotient_mul_card`. Use `IsSimpleModule.nontrivial R S` as an intermediate fact. Establish `hS1 : 1 < Nat.card S` using `Finite.one_lt_card`. Establish `hQpos : 0 < Nat.card (N ⧸ S)` using `Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : Nat.card (N ⧸ S) < n`. Rewrite using `[← hn, hcard]`. Conclude with `lt_mul_of_one_lt_left hQpos hS1`. Take `⟨hQf, hQs, hQl⟩` from `ih _ hlt (N ⧸ S) rfl`. Establish `hadd : ∀ (m : Ideal R) [m.IsPrime], Module.length (Localization.AtPrime m) (LocalizedModule m.primeCompl N) = Module.length (Localization.AtPrime m) (LocalizedModule m.primeCompl S) + Module.length (Localization.AtPrime m) (LocalizedModule m.primeCompl (N ⧸ S))` using `fun m _ => length_loc_add S.subtype S.mkQ S.injective_subtype S.mkQ_surjective (LinearMap.exact_subtype_mkQ S) m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSt` using `term_simple S I hI hkill hcS`. Establish `hterm : ∀ m, term R N m = term R S m + term R (N ⧸ S) m`. Introduce `m`. Distinguish the cases in `hm : m.IsMaximal`. Establish `hQm` using `hQf m`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite `*` using `[term_eq, term_eq, term_eq, hadd, length_loc_simple S I hI hkill m]`. Apply the tactic sequence `split_ifs <;> simp [ENat.toNat_add _ hQm]; ring`. Rewrite using `[term_of_not N m hm, term_of_not S m hm, term_of_not _ m hm, add_zero]`. Establish `hSs : (Function.support (term R S)).Finite`. Use `(Set.finite_singleton I).subset fun m hm => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Assume the negation of the conclusion as `h`. Conclude with `hm (by rw [hSt, if_neg (by simpa using h)])`. Use `⟨fun m _ => ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [hadd, length_loc_simple S I hI hkill m] split_ifs <;> simpa using hQf m`. Conclude with `(hSs.union hQs).subset (by`.
-
-Rewrite using `[show term R N = fun m => term R S m + term R (N ⧸ S) m from funext hterm]`. Conclude with `Function.support_add _ _)`. Rewrite using `[show term R N = fun m => term R S m + term R (N ⧸ S) m from funext hterm, finsum_add_distrib hSs hQs, ← hQl, finsum_eq_single _ I (fun m hm => by rw [hSt, if_neg hm]), hSt, if_pos rfl, hcard, Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (n : ℕ) : ∀ (N : Type) [AddCommGroup N] [Module R N] [Finite N], Nat.card N = n →
     FinLoc R N ∧ (Function.support (term R N)).Finite ∧
@@ -230,7 +226,7 @@ end logCardLength
 open logCardLength in
 
 /- English proof (translation)
-Introduce `R _ N _ _ _`. Conclude with `(main (Nat.card N) N rfl).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LogCardLength.proof : LogCardLength.Statement := by
   intro R _ N _ _ _

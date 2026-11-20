@@ -85,7 +85,7 @@ structure AdmBoundsB (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm 
   a15 : ArcLiftingSetup.adm15 D
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun l _ K s LL g => (h.1.1 l K s LL g).2.1, fun l _ K s LL g => (h.1.1 l K s LL g).2.2.1, fun l _ K s LL g => (h.1.1 l K s LL g).2.2.2.1, fun l _ K s LL g => (h.1.1 l K s LL g).2.2.2.2.1, fun l _ K s LL g => (h.1.1 l K s LL g).2.2.2.2.2.2.2.2.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2. …`.
+Supply the required witnesses or components.
 -/
 theorem admBoundsB_of_adm {D : D7} {HW : HWOf D.loc} {F : FonOf D.loc D.locA HW} {Cm : CmpOf D.loc D.locA HW F}
     {CR CA CB CK Ckap : ℝ} (h : ArcLiftingSetup.admitted D HW F Cm CR CA CB CK Ckap) : AdmBoundsB D HW F Cm CR CA CB CK :=

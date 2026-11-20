@@ -10,28 +10,28 @@ def sgn {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : ℝ := if ε a then 1 else
 def fi {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : ℝ := if ε a then 0 else 1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold Jm sgn; congr 1; funext a; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_eq {n : ℕ} (ε : Fin n → Bool) :
     Jm ε = Matrix.diagonal (fun a => ((sgn ε a : ℝ) : ℂ)) := by
   unfold Jm sgn; congr 1; funext a; split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 lemma star_mul_self' (z : ℂ) : star z * z = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
   rw [Complex.star_def, Complex.conj_mul']; push_cast; rfl
 
 /- English proof (translation)
-Rewrite using `[mul_comm, star_mul_self']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mul_star_self' (z : ℂ) : z * star z = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
   rw [mul_comm, star_mul_self']
 
 /- English proof (translation)
-Establish `hb` using `congrFun (congrFun h b) b`. Rewrite `hb` using `[Jm_eq, Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at hb`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hb]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, star_mul_self']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma col_sum {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
     (h : Mᴴ * Jm ε * M = Jm ε) (b : Fin n) :
@@ -46,9 +46,9 @@ lemma col_sum {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
   rw [mul_right_comm, star_mul_self']; push_cast; ring
 
 /- English proof (translation)
-Establish `ha` using `congrFun (congrFun h a) a`. Rewrite `ha` using `[Jm_eq, Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at ha`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← ha]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, mul_star_self']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma row_sum {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
     (h : M * Jm ε * Mᴴ = Jm ε) (a : Fin n) :
@@ -63,9 +63,9 @@ lemma row_sum {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
   rw [mul_right_comm, mul_star_self']; push_cast; ring
 
 /- English proof (translation)
-Establish `hJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `h1 : (Jm ε * Mᴴ * Jm ε) * M = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Mᴴ, h, hJ]`. Establish `h2 : M * (Jm ε * Mᴴ * Jm ε) = 1` using `mul_eq_one_comm.mp h1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc, hJ, Matrix.mul_one]`. Use `_ = Jm ε := by rw [h2, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma other_side {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
     (h : Mᴴ * Jm ε * M = Jm ε) : M * Jm ε * Mᴴ = Jm ε := by
@@ -78,11 +78,11 @@ lemma other_side {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ
     _ = Jm ε := by rw [h2, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : ∑ b, fi ε b * (∑ a, sgn ε a * ‖M a b‖ ^ 2) = ∑ b, fi ε b * sgn ε b`. Simplify using `only [col_sum ε M h]`. Establish `h2 : ∑ a, fi ε a * (∑ b, sgn ε b * ‖M a b‖ ^ 2) = ∑ a, fi ε a * sgn ε a`. Simplify using `only [row_sum ε M (other_side ε M h)]`. Simplify using `only [Finset.mul_sum] at h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[Finset.sum_comm]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[show (∑ a, ∑ b, fi ε b * sgn ε a * ‖M a b‖ ^ 2) = ∑ a, ∑ b, fi ε b * (sgn ε a * ‖M a b‖ ^ 2) by`. Simplify using `only [mul_assoc],`. Use `show (∑ a, ∑ b, fi ε a * sgn ε b * ‖M a b‖ ^ 2) = ∑ a, ∑ b, fi ε a * (sgn ε b * ‖M a b‖ ^ 2) by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc], h1, h2, sub_self]`.
+A detailed English derivation is pending.
 -/
 lemma key {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
     (h : Mᴴ * Jm ε * M = Jm ε) :
@@ -100,11 +100,11 @@ lemma key {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
       simp only [mul_assoc], h1, h2, sub_self]
 
 /- English proof (translation)
-Establish `hk` using `key ε M h`. Establish `hs : ∑ a, ∑ b, (fi ε b * sgn ε a - fi ε a * sgn ε b) * ‖M a b‖ ^ 2 = - ∑ a, ∑ b, (if ε a = false ∧ ε b = true then ‖M a b‖ ^ 2 else 0)`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [fi, sgn, ha, hb, hTF a b]`. Rewrite `hk` using `[hs, neg_eq_zero]`. Introduce `a b ha hb`. Apply the tactic sequence `have h0 := (Finset.sum_eq_zero_iff_of_nonneg (fun a _ => Finset.sum_nonneg fun b _ => by split_ifs <;> positivity)).mp hk a (Finset.mem_univ _)`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have h1 := (Finset.sum_eq_zero_iff_of_nonneg (fun b _ => by split_ifs <;> positivity)).mp h0 b (Finset.mem_univ _)`. Simplify using `only [ha, hb, and_self, if_true] at h1`. Simplify using `using h1`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma offdiag_zero {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
     (h : Mᴴ * Jm ε * M = Jm ε) (hTF : ∀ a b, ε a = true → ε b = false → M a b = 0) :
@@ -127,7 +127,7 @@ lemma offdiag_zero {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) �
   simpa using h1
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Jm_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [sgn, ha, hb, hTF a b, hFT a b]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma comm_of {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ)
     (hTF : ∀ a b, ε a = true → ε b = false → M a b = 0)
@@ -141,17 +141,17 @@ end GlobalTheory.OffDiagK
 open GlobalTheory.OffDiagK in
 
 /- English proof (translation)
-Introduce `n ε g`. Establish `hg : (toM g)ᴴ * Jm ε * toM g = Jm ε` using `g.2`. Rewrite using `[Formalism.REAL.mem_KG, Fintype.sum_eq_zero_iff_of_nonneg (fun _ => by positivity)]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTF : ∀ a b, ε a = true → ε b = false → toM g a b = 0`. Introduce `a b ha hb`. Use `congrFun h0 ⟨(a, b), ha, hb⟩` as an intermediate fact. Simplify using `using this`. Establish `hFT` using `offdiag_zero ε _ hg hTF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc` using `comm_of ε _ hTF hFT`. Use `⟨?_, hc⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Establish `hJ` using `Formalism.REAL.Jm_mul_self ε`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hJ, Matrix.mul_one, Matrix.star_eq_conjTranspose]`. Use `_ = 1 := by rw [hc, ← Matrix.mul_assoc, hg, hJ]`. Introduce and unpack `⟨_, hc⟩`. Use function extensionality and compare the values at `z`. Take `⟨⟨a, b⟩, ha, hb⟩` from `z`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at ha hb`. Establish `e` using `congrFun (congrFun hc a) b`. Rewrite `e` using `[Jm_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [sgn, ha, hb] at e`. Move the coercions through the operations in `at e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `h0 : toM g a b = 0` using `by linear_combination (-1/2 : ℂ) * e`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.offDiag_zero_iff_mem_K : ∀ (n : ℕ) (ε : Fin n → Bool) (g : UJ ε),
     ∑ z : {z : Fin n × Fin n // ε z.1 = true ∧ ε z.2 = false}, ‖(toM g) z.1.1 z.1.2‖ ^ 2 = 0 ↔ g ∈ KG ε := by

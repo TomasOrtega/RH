@@ -43,13 +43,13 @@ def FamilyKeeps (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (WL 
     ∀ x : WL ((i : ℕ) + 1), e i x ∈ (R.FW i).WK → e i (hL ((i : ℕ) + 1) k P x) ∈ (R.FW i).WK
 
 /- English proof (translation)
-Establish `hc : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal = (GlobalTheory.SplitOffPlaces.conjSpec P).asIdeal := by`. Rewrite using `[Formalism.L2.Col.conjIdeal_eq]`. Both sides reduce to the same expression. Rewrite using `[hc]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, h⟩ he`. Use `h (Formalism.L2.Col.cO D.host.E x) (bridge_star_holds D.R D.host _) ?_` and prove the remaining obligations. Rewrite `hx` using `[← he]`. Conclude with `hx`. Introduce `hne`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `hne (P.isMaximal.eq_of_le (GlobalTheory.SplitOffPlaces.conjSpec P).isPrime.ne_top fun x hx => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hx'`. Use `h ⟨x, hx, fun y hy hyP => hx' ?_⟩` and prove the remaining obligations. Establish `: y = Formalism.L2.Col.cO D.host.E x` using `RingOfIntegers.ext (hy.trans (bridge_star_holds D.R D.host _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hyP` using `[this]`. Conclude with `hyP`.
+A detailed English derivation is pending.
 -/
 theorem isSplitPl_iff (P : PlE D.host) :
     IsSplitPl D.host P ↔ Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal ≠ P.asIdeal := by
@@ -71,9 +71,7 @@ theorem isSplitPl_iff (P : PlE D.host) :
     exact hyP
 
 /- English proof (translation)
-Take `⟨i', hi⟩` from `h`. Introduce `hm`. Rewrite `hm` using `[Nat.cast_mul]`. Break down `P.isPrime.mem_or_mem hm with h | h` into its components or cases. Conclude with `hi (D.ntw.placesOver_subset_exceptional i' 0 h)`.
-
-Conclude with `hi (D.ntw.placesOver_subset_exceptional i' 1 h)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem level_notMem {P : PlE D.host} (h : ∃ i', P ∉ D.ntw.S0 i') :
     ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
@@ -85,14 +83,14 @@ theorem level_notMem {P : PlE D.host} (h : ∃ i', P ∉ D.ntw.S0 i') :
   · exact hi (D.ntw.placesOver_subset_exceptional i' 1 h)
 
 /- English proof (translation)
-Rewrite using `[heckeScalar, zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, inv_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scalar_eq (i : Fin D.R.m) (P : PlE D.host) (k : ℕ) :
     (((R.C.mu0 i).val P : ℂˣ) : ℂ)⁻¹ ^ k * (((Nat.card (kP P) : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹ = heckeScalar R i P k := by
   rw [heckeScalar, zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, inv_pow]
 
 /- English proof (translation)
-Use `⟨fun j => match j with` and prove the remaining obligations. Consider the case `0 => fun _ _ => 0`. Consider the case `n + 1 => fun k P => if h : n < D.R.m then (e ⟨n, h⟩).symm.conj (t ⟨n, h⟩ k P) else 0, fun i k P => ?_⟩`. Simplify using `only [dif_pos i.2]`. Conclude with `(e i).conj.apply_symm_apply (t i k P)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_family (t : ∀ i : Fin D.R.m, ℕ → PlE D.host → Module.End D.what₂.LL (Fin (R.nW i) → D.what₂.LL)) :
     ∃ hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (WL j),

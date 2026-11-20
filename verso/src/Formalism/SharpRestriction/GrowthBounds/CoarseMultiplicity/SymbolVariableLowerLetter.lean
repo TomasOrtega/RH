@@ -8,11 +8,11 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G MvPolynomial
 
 /- English proof (translation)
-Establish `e : aeval (fun v => (X (f v) : MvPolynomial τ K) ^ lev v) u = ∑ μ ∈ u.support, aeval (fun v => (X (f v) : MvPolynomial τ K) ^ lev v) (monomial μ (u.coeff μ))` using `by conv_lhs => rw [← support_sum_monomial_coeff u]`. Rewrite using `[map_sum]`. Rewrite using `[e]`. Use `IsWeightedHomogeneous.sum _ _ _ fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, MvPolynomial.algebraMap_eq, Finsupp.prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : Finsupp.weight (fun v => lev v * ω (f v)) μ = n` using `h (mem_support_iff.1 hμ)`. Establish `h1` using `IsWeightedHomogeneous.prod μ.support (fun v => ((X (f v) : MvPolynomial τ K) ^ lev v) ^ μ v) _ (fun v _ => ((isWeightedHomogeneous_X K ω (f v)).pow (lev v)).pow (μ v))`. Establish `h2` using `(isWeightedHomogeneous_C ω (u.coeff μ)).mul h1`. Use `wh_congr h2 ?_` and prove the remaining obligations. Rewrite using `[zero_add, ← hw, Finsupp.weight_apply, Finsupp.sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wh_aeval {K : Type} [CommRing K] {σ τ : Type} (ω : τ → ℕ) (f : σ → τ) (lev : σ → ℕ) (u : MvPolynomial σ K) (n : ℕ)
     (h : IsWeightedHomogeneous (fun v => lev v * ω (f v)) u n) :
@@ -33,15 +33,15 @@ theorem wh_aeval {K : Type} [CommRing K] {σ τ : Type} (ω : τ → ℕ) (f : �
   simp only [smul_eq_mul]
 
 /- English proof (translation)
-Set `F : ℕ → ℕ` to `fun k => if h : k < 2 * s + 1 then f ⟨k, h⟩ else 0`. Establish `e1 : ∑ a, f a = ∑ k ∈ Finset.range (2 * s + 1), F k`. Rewrite using `[Finset.sum_range]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [F]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos a.2]`. Establish `e2 : ∀ n, ∑ k ∈ Finset.range (2 * n + 1), F k = ∑ i ∈ Finset.range n, (F (2 * i) + F (2 * i + 1)) + F (2 * n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `h2 : 2 * (n + 1) = 2 * n + 1 + 1` using `by ring`. Rewrite using `[h2, Finset.sum_range_succ, Finset.sum_range_succ, ih, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2 s, Finset.sum_range]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact. Simplify using `only [F]`. Rewrite using `[dif_pos (by omega), dif_pos (by omega)]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [F]`. Rewrite using `[dif_pos (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_chain {s : ℕ} (f : Fin (2 * s + 1) → ℕ) :
     ∑ a, f a = ∑ i : Fin s, (f ⟨2 * i.val, by omega⟩ + f ⟨2 * i.val + 1, by omega⟩) + f ⟨2 * s, by omega⟩ := by
@@ -69,11 +69,11 @@ theorem sum_chain {s : ℕ} (f : Fin (2 * s + 1) → ℕ) :
     rw [dif_pos (by omega)]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_nbij (fun l => uTop S l) ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `l _`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, Nat.le_add_right _ _⟩`. Introduce `l _ l' _ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Establish `h' : S.sigma + l.val = S.sigma + l'.val` using `congrArg Fin.val h`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Establish `hi'` using `(Finset.mem_filter.1 (Finset.mem_coe.1 hi)).2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Conclude with `⟨⟨i.val - S.sigma, by unfold SegData.t; omega⟩, Finset.mem_coe.2 (Finset.mem_univ _), Fin.ext (by show S.sigma + (i.val - S.sigma) = i.val; omega)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_uTop {s : ℕ} (S : SegData s) (g : Fin s → ℕ) :
     ∑ l : Fin S.t, g (uTop S l) = ∑ i : Fin s, if S.sigma ≤ i.val then g i else 0 := by
@@ -96,7 +96,7 @@ section Sym
 variable (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT))
 
 /- English proof (translation)
-Simplify using `only [symVar]`. Rewrite using `[dif_pos (show ((Fin.castSucc l : Fin _) : ℕ) < _ from l.2)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sv_Z (l : Fin (X.seg C0 CE1 CE2 j).t) (β : Bool) :
     symVar C0 CE1 CE2 X j (Sum.inr (Fin.castSucc l, β)) = ((topOdd X j (uTop (X.seg C0 CE1 CE2 j) l), !β), 0) := by
@@ -105,7 +105,7 @@ theorem sv_Z (l : Fin (X.seg C0 CE1 CE2 j).t) (β : Bool) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [symLev]`. Rewrite using `[dif_pos (show ((Fin.castSucc l : Fin _) : ℕ) < _ from l.2)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sl_Z (l : Fin (X.seg C0 CE1 CE2 j).t) (β : Bool) :
     symLev X.p C0 CE1 CE2 X j (Sum.inr (Fin.castSucc l, β)) =
@@ -115,7 +115,7 @@ theorem sl_Z (l : Fin (X.seg C0 CE1 CE2 j).t) (β : Bool) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [symVar]`. Rewrite using `[dif_neg (hnc := by show ¬ ((Fin.last (X.seg C0 CE1 CE2 j).t : Fin _) : ℕ) < _; exact lt_irrefl _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symbol_variable_last (β : Bool) :
     symVar C0 CE1 CE2 X j (Sum.inr (Fin.last _, β)) = ((topEnd X j, !β), 0) := by
@@ -123,16 +123,16 @@ theorem symbol_variable_last (β : Bool) :
   rw [dif_neg (hnc := by show ¬ ((Fin.last (X.seg C0 CE1 CE2 j).t : Fin _) : ℕ) < _; exact lt_irrefl _)]
 
 /- English proof (translation)
-Simplify using `only [symLev]`. Rewrite using `[dif_neg (hnc := by show ¬ ((Fin.last (X.seg C0 CE1 CE2 j).t : Fin _) : ℕ) < _; exact lt_irrefl _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem symbol_level_last (β : Bool) : symLev X.p C0 CE1 CE2 X j (Sum.inr (Fin.last _, β)) = 1 := by
   simp only [symLev]
   rw [dif_neg (hnc := by show ¬ ((Fin.last (X.seg C0 CE1 CE2 j).t : Fin _) : ℕ) < _; exact lt_irrefl _)]
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Simplify using `only [symVar]`. Rewrite using `[dif_pos (hc := by show 2 * i.val < 2 * segS X.TT j; omega)]`. Establish `e1 : (⟨(2 * i.val) / 2, by omega⟩ : Fin (segS X.TT j)) = i` using `Fin.ext (by show 2 * i.val / 2 = i.val; omega)`. Establish `e2 : decide ((2 * i.val) % 2 = 0) = true` using `by simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ((topOdd X j ⟨(2 * i.val) / 2, _⟩, decide ((2 * i.val) % 2 = 0)), c.succ) = _`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symbol_variable_lower_letter (i : Fin (segS X.TT j)) (c : Fin X.m) :
     symVar C0 CE1 CE2 X j (Sum.inl (Fin.castSucc (⟨2 * i.val, by omega⟩ : Fin (2 * segS X.TT j + 1)), c)) =
@@ -146,9 +146,9 @@ theorem symbol_variable_lower_letter (i : Fin (segS X.TT j)) (c : Fin X.m) :
   rw [e1, e2]
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Simplify using `only [symLev]`. Rewrite using `[dif_pos (hc := by show 2 * i.val < 2 * segS X.TT j; omega)]`. Establish `e1 : (⟨(2 * i.val) / 2, by omega⟩ : Fin (segS X.TT j)) = i` using `Fin.ext (by show 2 * i.val / 2 = i.val; omega)`. Use `show (X.seg C0 CE1 CE2 j).P X.p ⟨(2 * i.val) / 2, _⟩ = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`.
+A detailed English derivation is pending.
 -/
 theorem symbol_level_lower_letter (i : Fin (segS X.TT j)) (c : Fin X.m) :
     symLev X.p C0 CE1 CE2 X j (Sum.inl (Fin.castSucc (⟨2 * i.val, by omega⟩ : Fin (2 * segS X.TT j + 1)), c)) =
@@ -161,9 +161,9 @@ theorem symbol_level_lower_letter (i : Fin (segS X.TT j)) (c : Fin X.m) :
   rw [e1]
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Simplify using `only [symVar]`. Rewrite using `[dif_pos (hc := by show 2 * i.val + 1 < 2 * segS X.TT j; omega)]`. Establish `e1 : (⟨(2 * i.val + 1) / 2, by omega⟩ : Fin (segS X.TT j)) = i` using `Fin.ext (by show (2 * i.val + 1) / 2 = i.val; omega)`. Establish `e2 : decide ((2 * i.val + 1) % 2 = 0) = false`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[decide_eq_false_iff_not]`. Use linear arithmetic over natural numbers and integers. Use `show ((topOdd X j ⟨(2 * i.val + 1) / 2, _⟩, decide ((2 * i.val + 1) % 2 = 0)), c.succ) = _`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sv_E (i : Fin (segS X.TT j)) (c : Fin X.m) :
     symVar C0 CE1 CE2 X j (Sum.inl (Fin.castSucc (⟨2 * i.val + 1, by omega⟩ : Fin (2 * segS X.TT j + 1)), c)) =
@@ -180,9 +180,9 @@ theorem sv_E (i : Fin (segS X.TT j)) (c : Fin X.m) :
   rw [e1, e2]
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Simplify using `only [symLev]`. Rewrite using `[dif_pos (hc := by show 2 * i.val + 1 < 2 * segS X.TT j; omega)]`. Establish `e1 : (⟨(2 * i.val + 1) / 2, by omega⟩ : Fin (segS X.TT j)) = i` using `Fin.ext (by show (2 * i.val + 1) / 2 = i.val; omega)`. Use `show (X.seg C0 CE1 CE2 j).P X.p ⟨(2 * i.val + 1) / 2, _⟩ = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`.
+A detailed English derivation is pending.
 -/
 theorem sl_E (i : Fin (segS X.TT j)) (c : Fin X.m) :
     symLev X.p C0 CE1 CE2 X j (Sum.inl (Fin.castSucc (⟨2 * i.val + 1, by omega⟩ : Fin (2 * segS X.TT j + 1)), c)) =
@@ -196,7 +196,7 @@ theorem sl_E (i : Fin (segS X.TT j)) (c : Fin X.m) :
   rw [e1]
 
 /- English proof (translation)
-Simplify using `only [symVar]`. Rewrite using `[dif_neg (hnc := by show ¬ 2 * segS X.TT j < 2 * segS X.TT j; exact lt_irrefl _)]`. Use `show ((topEnd X j, decide (2 * segS X.TT j = 2 * segS X.TT j)), c.succ) = _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sv_U (c : Fin X.m) :
     symVar C0 CE1 CE2 X j (Sum.inl (Fin.castSucc (⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1)), c)) =
@@ -207,7 +207,7 @@ theorem sv_U (c : Fin X.m) :
   simp
 
 /- English proof (translation)
-Simplify using `only [symLev]`. Rewrite using `[dif_neg (hnc := by show ¬ 2 * segS X.TT j < 2 * segS X.TT j; exact lt_irrefl _)]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sl_U (c : Fin X.m) :
     symLev X.p C0 CE1 CE2 X j (Sum.inl (Fin.castSucc (⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1)), c)) = 1 := by
@@ -215,7 +215,7 @@ theorem sl_U (c : Fin X.m) :
   rw [dif_neg (hnc := by show ¬ 2 * segS X.TT j < 2 * segS X.TT j; exact lt_irrefl _)]
 
 /- English proof (translation)
-Simplify using `only [symVar]`. Rewrite using `[dif_neg (hnc := by show ¬ 2 * segS X.TT j + 1 < 2 * segS X.TT j; omega)]`. Use `show ((topEnd X j, decide (2 * segS X.TT j + 1 = 2 * segS X.TT j)), c.succ) = _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sv_xi (c : Fin X.m) :
     symVar C0 CE1 CE2 X j (Sum.inl (Fin.last (2 * segS X.TT j + 1), c)) = ((topEnd X j, false), c.succ) := by
@@ -225,7 +225,7 @@ theorem sv_xi (c : Fin X.m) :
   simp
 
 /- English proof (translation)
-Simplify using `only [symLev]`. Rewrite using `[dif_neg (hnc := by show ¬ 2 * segS X.TT j + 1 < 2 * segS X.TT j; omega)]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sl_xi (c : Fin X.m) :
     symLev X.p C0 CE1 CE2 X j (Sum.inl (Fin.last (2 * segS X.TT j + 1), c)) = 1 := by

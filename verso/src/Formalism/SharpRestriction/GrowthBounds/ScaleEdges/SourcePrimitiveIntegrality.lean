@@ -19,19 +19,17 @@ def IsTrueTheta {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDis
     thF hS m vec (fun x => la_tw ι σ x.val h) F.1
 
 /- English proof (translation)
-Use `open Formalism.L2.G.Model in`. Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Establish `hw` using `w_ne hS`. Establish `hm : 1 ≤ m` using `by omega`. Establish `hlam` using `flat_lam vec d lam0 hfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : VS Kf m vec d = Vsp Kf lam0`. Unfold `VS Vsp`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[hlam s, if_pos (letterWt_anti _ _ _)]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Θ0, hΘ0⟩` from `gen_equiv hS m hm vec d (fun x => la_tw ι σ x.val h) (fun x => la_tw_det _ _ _ _ hh)`. Set `Θ : ↥((Pol (KK O) (ι` to `Fin n') (m + 1) d).restrictScalars O) ≃ₗ[O] ↥(Vsp Kf lam0) := Θ0.trans ((LinearEquiv.ofEq _ _ hV).restrictScalars O)`. Establish `hΘ : ∀ F, ((Θ F : ↥(Vsp Kf lam0)) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = thF hS m vec (fun x => la_tw ι σ x.val h) F.1` using `fun F => hΘ0 F`. Establish `hH : ∀ Λ : Fin n' → Submodule O (Fin (m + 1) → Kf), Hten O lam0 Λ = tensorLat O Kf (fun x => H0 O m (letterWt m (d x) (vec x)) (Λ x))`. Introduce `Λ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Hten`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[hlam s]`. Use `⟨Θ, ⟨?_, ?_⟩, hΘ⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F`. Rewrite using `[gen_A hS m hm vec d (fun x => la_tw ι σ x.val h) (fun x => la_tw_det _ _ _ _ hh) F.1 F.2, ← hΘ F, ← tensor_lattice_twist_eq hS m vec d (fun x => x) h hh, ← hH]`. Both sides reduce to the same expression. Introduce `g hg e he F i`. Establish `h1 : InWjRg p n' O w r (flatLetters vec) g F.1 i ↔ ∃ y ∈ tensorLat O Kf (fun s : Fin n' => nablaLTw O Kf m (letterWt m (d s) (vec s)) (Mx ι σ w φ r (fun x : Fin n' => x) h g s)), thF hS m vec (fun x => la_tw ι σ x.val h) F.1 = (algebraMap O Kf w ^ ((i : ℤ) - (Avec vec d : ℤ))) • …` using `gen_R hS φ hφ m hm r (flatLetters vec) (fun x => x) (fun _ => rfl) d h hh g hg F.1 F.2 i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← hΘ F, ← tens_Le hS φ m r vec d (fun x => x) h hh g hg e he, ← hH]`. Establish `h2` using `mem_scale2 (O := O) (Vsp Kf lam0) (Hten O lam0 fun s => LeAt p ι σ w s.val e) (algebraMap O Kf w ^ (i : ℤ)) (algebraMap O Kf w ^ (-Ar r lam0)) (zpow_ne_zero _ hw) (zpow_ne_zero _ hw) (Θ F)`. Establish `e1 : algebraMap O Kf w ^ (i : ℤ) * algebraMap O Kf w ^ (-Ar r lam0) = algebraMap O Kf w ^ ((i : ℤ) - (Avec vec d : ℤ))`. Rewrite using `[← zpow_add₀ hw, ← sub_eq_add_neg, flat_Ar r hr1 hr2 vec d lam0 hfl]`. Rewrite `h2` using `[e1]`.
-
-Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_exists (p n' : ℕ) [Fact p.Prime] (W Qq O Kf : Type) [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
@@ -202,11 +200,11 @@ def RemainingInputsAfter (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' C
     ∃ Ct0 CD1 C₁ : ℝ, 0 < Ct0 ∧ 0 < CD1 ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → TestStep C Ct0 CD1 CLa
 
 /- English proof (translation)
-Introduce `s`. Distinguish the cases in `hs : Even s.val`. Simplify using `[lamAt, vecE, flW, hs]`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = Fin.last m`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `[lamAt, vecE, flW, hs, Pi.single_apply]`. Establish `hr : i.rev ≠ 0`. Introduce `h0`. Apply `hi` to reduce the goal to its premises.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Fin.rev_rev i, h0, Fin.rev_zero]`. Simplify using `[lamAt, vecE, flW, hs, Pi.single_apply, hi, hr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma isFlat_flW_lemma {n' m : ℕ} (d : Fin n' → ℕ) : IsFlat (m := m) (vecE n') d (flW d) := by
   intro s
@@ -223,13 +221,13 @@ private lemma isFlat_flW_lemma {n' m : ℕ} (d : Fin n' → ℕ) : IsFlat (m := 
       simp [lamAt, vecE, flW, hs, Pi.single_apply, hi, hr]
 
 /- English proof (translation)
-Unfold `RestCloudY`. Introduce `hA h14a h14b`. Take `⟨C₁a, hC₁a, hPa⟩` from `h6a hA`. Take `⟨Ct0, CD1, C₁b, hCt0, hCD1, hC₁b, hPb⟩` from `h6b hA h14a h14b`. Use `⟨Ct0, CD1, max C₁a C₁b, hCt0, hCD1, lt_max_of_lt_left hC₁a, fun C hC => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPrim` using `hPa C (le_trans (le_max_left _ _) hC)`. Establish `hTest` using `hPb C (le_trans (le_max_right _ _) hC)`. Unfold `CloudStepY`. Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet hHyps φ hφ K _ _ hk hrk F hF E' hE' nb B hB hLI hT e he het hm g hmdet hg heb`. Introduce `FsB hFsB`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr1 : 1 ≤ r` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne r)`. Establish `hr2 : r < m + 1`. Use `NeZero.ne K` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨Θ, hΘ1, hΘ2⟩` from `theta_exists p n' W Qq O Kf ι σ j w hSet.1 φ hφ m r (vecE n') (dT TT lam0) (flW (dT TT lam0)) hr1 hr2 (isFlat_flW_lemma (dT TT lam0)) hm hmdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨n2, sh, hsh, hn2, hprim⟩` from `hPrim p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet hHyps φ hφ K hk hrk F hF E' hE' nb B hB hLI hT e he het hm g hmdet hg heb FsB hFsB Θ hΘ2`. Take `⟨tT, D1, htT, hD1, htest⟩` from `hTest p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet hHyps φ hφ K hk hrk F hF E' hE' nb B hB hLI hT e he het hm g hmdet hg heb FsB hFsB Θ hΘ2`. Unfold `CloudAtY`. Conclude with `⟨Θ, hΘ1, n2, tT, D1, sh, htT, hD1, hsh, hn2, fun S hS c hc => htest n2 sh hsh S hS c (hprim S hS c hc)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem restCloudY_of (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ)
     (h6a : SourcePrimitiveIntegrality D CLa Ck Crk Cdeg) (h6b : RemainingInputsAfter D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18) :

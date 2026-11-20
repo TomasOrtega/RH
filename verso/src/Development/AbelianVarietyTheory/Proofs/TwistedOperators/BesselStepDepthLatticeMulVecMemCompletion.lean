@@ -25,7 +25,7 @@ namespace GlobalTheory.ShiftRowMul
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.latV GlobalTheory.FinPl.latMul at *`. Use `AddSubgroup.closure_mono ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, -, a, ha, x, hx, rfl⟩`. Conclude with `⟨α, hα, fun _ h => (h trivial).elim, a, ha, x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latV_at_le_all {S : HSp D} {Λ : Lat S} {v : GlobalTheory.FinPl.Pl D} {y : Fin S.rank → AE D}
     (hy : y ∈ latV S Λ (· = v)) : y ∈ latV S Λ (fun _ => True) := by
@@ -35,13 +35,11 @@ theorem latV_at_le_all {S : HSp D} {Λ : Lat S} {v : GlobalTheory.FinPl.Pl D} {y
   exact ⟨α, hα, fun _ h => (h trivial).elim, a, ha, x, hx, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, y, hy, rfl⟩` from `hx`. Establish `h1 : c * t ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[← inv_mul_cancel₀ hI]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FractionalIdeal.mul_mem_mul hc ht`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Rewrite using `[smul_smul, ← hr, algebraMap_smul]`. Conclude with `Λ.smul_mem r hy`. Consider the case `zero => rw [smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x x' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`. Consider the case `smul r x _ h`. Rewrite using `[← algebraMap_smul D.host.E r x, smul_smul, mul_comm, ← smul_smul, algebraMap_smul]`.
-
-Conclude with `Λ.smul_mem r h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_idLat {n : ℕ} {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hI : I ≠ 0)
     {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {c : D.host.E} (hc : c ∈ I⁻¹) {x : Fin n → D.host.E}
@@ -61,19 +59,15 @@ theorem smul_mem_of_idLat {n : ℕ} {I : FractionalIdeal (𝓞 D.host.E)⁰ D.ho
     exact Λ.smul_mem r h
 
 /- English proof (translation)
-Establish `hAA : D.host.AA ≠ 0` using `GlobalTheory.HostAAPartition.host_AA_ne_zero D`. Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem s hs`. Take `⟨β, hβ, hβv, b, hb, rfl⟩` from `hs`. Distinguish the cases in `hI : I = 0`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hI` using the available equality. Rewrite `hb` using `[_root_.inv_zero, mul_zero, FractionalIdeal.mem_zero_iff]`. Substitute `hb` using the available equality. Rewrite using `[TensorProduct.tmul_zero, zero_smul]`. Conclude with `zero_mem _`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hα, -, a, ha, x, hx, rfl⟩` from `hz`. Establish `hba : b * a ∈ I⁻¹`. Use `FractionalIdeal.mul_mem_mul hb ha` as an intermediate fact.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[mul_comm D.host.AA⁻¹, mul_assoc, inv_mul_cancel₀ hAA, mul_one]`. Then use the resulting hypothesis. Use `AddSubgroup.subset_closure ⟨β * α, GlobalTheory.FinPl.LatMem.intAf_mul' hβ hα, fun w hw => by rw [map_mul, hβv w hw, zero_mul], 1, rfl, (b * a) • x, smul_mem_of_idLat hI hba hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, GlobalTheory.FinPlLoc.pairA_mul, one_mul, mul_assoc]`. Consider the case `zero => rw [smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add z z' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`. Consider the case `neg z _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
-
-Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add s s' _ _ h h' => rw [add_smul]`. Conclude with `add_mem h h'`. Consider the case `neg s _ h => rw [neg_smul]`.
-
-Conclude with `neg_mem h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_latV {S : HSp D} {Λ : Lat S} {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} {v : GlobalTheory.FinPl.Pl D}
     {s : AE D} (hs : s ∈ GlobalTheory.SeeSaw.idV (D.host.AA⁻¹ * I⁻¹) v) {z : Fin S.rank → AE D}
@@ -107,9 +101,9 @@ theorem smul_mem_latV {S : HSp D} {Λ : Lat S} {I : FractionalIdeal (𝓞 D.host
 end GlobalTheory.ShiftRowMul
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W Mv hMv F hF ρ h M hM v y hy s hs`. Establish `hBig : M ∈ latBig G (2 * ρ + 1)` using `GlobalTheory.T.depthLatticeGridRow_le_selfDualHomLatticeShift D hq T L μ0 hL sc G W Mv hMv (2 * ρ + 1) (by omega) (by omega) hM`. Establish `hS : IsSelfDualC (G.V (.grid (2 * ρ + 1 + 1) 0)) (G.Λ (.grid (2 * ρ + 1 + 1) 0))` using `(G.isV (X := .grid (2 * ρ + 1 + 1) 0) ⟨by omega, by omega⟩ (fun j h => by injection h with h1 h2; omega)).sd`. Establish `hT` using `((GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hq T L μ0 hL sc G W Mv hMv F hF).1 (2 * ρ + 1) (by omega)).2.2.2`. Establish `hmap` using `((GlobalTheory.FinPl.LatMem.mem_latO_iff D _ _ _ _ hS hT (fun _ => True) M).1 hBig).2 y (GlobalTheory.ShiftRowMul.latV_at_le_all hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.ShiftRowMul.smul_mem_latV hs hmap`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.shiftRow_smul_mulVec_mem : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m) (M : WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0))), M ∈ latRow G (2 * ρ + 1) → ∀ v : GlobalTheory.FinPl.Pl D, ∀ y ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v), ∀ s ∈ GlobalTheory.SeeSaw.idV (D.host.AA⁻¹ * (shiftId G)⁻¹) v, s • (M *ᵥ y) ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) := by
   intro D hq T L μ0 hL sc G W Mv hMv F hF ρ h M hM v y hy s hs

@@ -5,17 +5,15 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ μ _ M K nr fr c a b e hM hK hK0 hnr hc ha hb he hpt hna hfb hce`. Establish `hsplit : ∫ x, K x ∂μ = ∫ x in M, K x ∂μ + ∫ x in Mᶜ, K x ∂μ` using `(integral_add_compl hM hK).symm`. Establish `hmeas : (μ Set.univ).toReal = (μ M).toReal + (μ Mᶜ).toReal`. Rewrite using `[← measure_add_measure_compl hM, ENNReal.toReal_add (measure_ne_top _ _) (measure_ne_top _ _)]`. Establish `hintM : ∫ x in M, (K x - c) ∂μ = ∫ x in M, K x ∂μ - c * (μ M).toReal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_sub hK.integrableOn (integrable_const c), setIntegral_const, smul_eq_mul, measureReal_def, mul_comm]`. Establish `h1 : |∫ x in M, (K x - c) ∂μ| ≤ a + b`. Establish `hle : ∫⁻ x in M, ENNReal.ofReal ‖K x - c‖ ∂μ ≤ ENNReal.ofReal (a + b)`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `filter_upwards [ae_restrict_mem hM] with x hx`. Simplify `hpt x hx` using `[Real.norm_eq_abs]`. Use `_ = ∫⁻ x in M, nr x ∂μ + ∫⁻ x in M, fr x ∂μ := lintegral_add_left hnr _`. Use `_ ≤ ENNReal.ofReal a + ENNReal.ofReal b := add_le_add hna hfb`. Use `_ = ENNReal.ofReal (a + b) := (ENNReal.ofReal_add ha hb).symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn` using `norm_integral_le_lintegral_norm (μ := μ.restrict M) (fun x => K x - c)`. Rewrite `hn` using `[Real.norm_eq_abs]`. Conclude with `hn.trans (ENNReal.toReal_le_of_le_ofReal (add_nonneg ha hb) hle)`. Establish `h2 : ∫ x in Mᶜ, K x ∂μ ≤ e`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hK0) hK.integrableOn.aestronglyMeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `ENNReal.toReal_le_of_le_ofReal he hce`. Establish `h3 : 0 ≤ ∫ x in Mᶜ, K x ∂μ` using `integral_nonneg fun x => hK0 x`. Establish `h4 : 0 ≤ c * (μ Mᶜ).toReal` using `mul_nonneg hc ENNReal.toReal_nonneg`. Establish `key : ∫ x, K x ∂μ - c * (μ Set.univ).toReal = ∫ x in M, (K x - c) ∂μ + (∫ x in Mᶜ, K x ∂μ - c * (μ Mᶜ).toReal)`. Rewrite using `[hsplit, hmeas, hintM]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Use `_ = a + b + c * (μ Mᶜ).toReal + e := by ring`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem abs_integral_sub_const_mul_le_of_split :
     ∀ (X : Type) [MeasurableSpace X] (μ : Measure X) [IsFiniteMeasure μ] (M : Set X) (K : X → ℝ) (nr fr : X → ENNReal) (c a b e : ℝ), MeasurableSet M → Integrable K μ → (∀ x, 0 ≤ K x) → Measurable nr → 0 ≤ c → 0 ≤ a → 0 ≤ b → 0 ≤ e → (∀ x ∈ M, ENNReal.ofReal |K x - c| ≤ nr x + fr x) → ∫⁻ x in M, nr x ∂μ ≤ ENNReal.ofReal a → ∫⁻ x in M, fr x ∂μ ≤ ENNReal.ofReal b → ∫⁻ x in Mᶜ, ENNReal.ofReal (K x) ∂μ ≤ ENNReal.ofReal e → |∫ x, K x ∂μ - c * (μ Set.univ).toReal| ≤ a + b + c * (μ Mᶜ).toReal + e := by

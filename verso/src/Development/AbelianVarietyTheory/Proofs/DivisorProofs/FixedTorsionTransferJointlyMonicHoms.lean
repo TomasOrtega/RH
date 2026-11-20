@@ -10,7 +10,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.TorsionTransfer
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Over.OverMorphism.ext hx]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_left_congr {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h : a = b)
     (x : Over.mk a ⟶ G) (x' : Over.mk b ⟶ G) (hx : x.left = x'.left) (m : ℕ) :
@@ -19,23 +19,21 @@ theorem pow_left_congr {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S
   rw [Over.OverMorphism.ext hx]
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ io F _ _ _ hF G _ H _ r hr hmono σ hσ m hfix x hx`. Establish `hT : spMap σ.toRingHom ≫ (TF (R` using `W) F).hom = (TF (R := W) F).hom := by show Spec.map _ ≫ Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Simplify using `only [← Spec.map_comp]`. Use `congr 1`. Use extensionality with `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `hσ w`. Establish `hV : (TF (R` using `W) F).hom ≫ spMap io = (TF (R := V) F).hom := by show (Spec.map _ ≫ Spec.map _) ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Simplify using `only [← Spec.map_comp]`. Use `congr 1`. Use extensionality with `v`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hF v`. Establish `hpb` using `isGrpPullback_pullback G (spMap io)`. Set `x' : TF (R` to `W) F ⟶ H := Over.homMk (spMap σ.toRingHom ≫ x.left) (by`. Rewrite using `[Category.assoc, Over.w x]`. Conclude with `hT)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ k, x' ≫ r k = x ≫ r k`. Introduce `k`. Establish `hk` using `hr k`. Set `z` to `x ≫ r k`. Establish `hs : z.left ≫ pullback.snd G.hom (spMap io) = (TF (R` using `W) F).hom := Over.w z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `y : TF (R` to `V) F ⟶ G := Over.homMk (z.left ≫ pullback.fst G.hom (spMap io)) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs]`. Conclude with `hV)`. Set `ρ : (TF (R` to `W) F ⟶ H) →* (TF (R := W) F ⟶ (Over.pullback (spMap io)).obj G) := MonoidHom.mk' (fun u => u ≫ r k) fun u v => MonObj.mul_comp u v (r k)`. Establish `hzm : z ^ m = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e` using `map_pow ρ x m`. Rewrite `e` using `[hx, map_one]`. Conclude with `e.symm`. Establish `hym : y ^ m = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `pow_left_congr hV.symm y (pushHom hpb _ z) rfl m`. Rewrite `e1` using `[← map_pow, hzm, map_one]`. Establish `e0` using `pow_left_congr hV.symm y (pushHom hpb _ z) rfl 0`. Simplify using `only [pow_zero] at e0`. Rewrite using `[e1, e0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfy` using `hfix y hym`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (spMap σ.toRingHom ≫ x.left) ≫ (r k).left = x.left ≫ (r k).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`.
-
-Conclude with `hfy`. Rewrite using `[Category.assoc, Category.assoc]`. Express the relevant statement in the definitionally equal form `spMap σ.toRingHom ≫ z.left ≫ _ = z.left ≫ _`. Rewrite using `[hs, hT]`. Conclude with `congrArg (fun u => u.left) (hmono _ x' x key)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_of_jointlyMonic : ∀ (V W : Type) [CommRing V] [IsDomain V] [CommRing W] [IsDomain W] (io : V →+* W) (F : Type) [Field F] [Algebra (FractionRing V) F] [Algebra (FractionRing W) F], (∀ v, algebraMap (FractionRing W) F (algebraMap W _ (io v)) = algebraMap (FractionRing V) F (algebraMap V _ v)) → ∀ (G : Over (Sp V)) [GrpObj G] (H : Over (Sp W)) [GrpObj H] (r : Fin 8 → (H ⟶ (Over.pullback (spMap io)).obj G)), (∀ k, IsMonHom (r k)) → (∀ (T : Over (Sp W)) (x y : T ⟶ H), (∀ k, x ≫ r k = y ≫ r k) → x = y) → ∀ σ : F ≃+* F, (∀ w : W, σ (algebraMap (FractionRing W) F (algebraMap W _ w)) = algebraMap (FractionRing W) F (algebraMap W _ w)) → ∀ m : ℕ, (∀ y : TF (R := V) F ⟶ G, y ^ m = 1 → spMap σ.toRingHom ≫ y.left = y.left) → ∀ x : TF (R := W) F ⟶ H, x ^ m = 1 → spMap σ.toRingHom ≫ x.left = x.left := by
   intro V W _ _ _ _ io F _ _ _ hF G _ H _ r hr hmono σ hσ m hfix x hx

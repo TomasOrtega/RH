@@ -17,7 +17,7 @@ def cupflip_aw_leibniz : Prop :=
       δ k (k + 1) γ = γ₁ + n.negOnePow • γ₂
 
 /- English proof (translation)
-Simplify using `[ev]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_zero_cochain {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
@@ -25,7 +25,7 @@ theorem ev_zero_cochain {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (
   simp [ev]
 
 /- English proof (translation)
-Introduce `N w h U x`. Simplify using `[ev_zero_cochain]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isAW_zero_left {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ}
     (hk : n + m = k) (β : Cochain ((chains R).obj E) J m) : μ.IsAW hk 0 β 0 := by
@@ -33,7 +33,7 @@ theorem isAW_zero_left {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) 
   simp [ev_zero_cochain]
 
 /- English proof (translation)
-Introduce `N w h U x`. Simplify using `[ev_zero_cochain]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isAW_zero_right {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ}
     (hk : n + m = k) (α : Cochain ((chains R).obj E) I n) : μ.IsAW hk α 0 0 := by
@@ -41,11 +41,11 @@ theorem isAW_zero_right {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K)
   simp [ev_zero_cochain]
 
 /- English proof (translation)
-Introduce `R _ I J K μ E n m k hk α β`. Take `⟨γ, hγ⟩` from `hc R μ E hk α.1 β.1`. Establish `hα : δ n (n + 1) α.1 = 0` using `Cocycle.δ_eq_zero α (n + 1)`. Establish `hβ : δ m (m + 1) β.1 = 0` using `Cocycle.δ_eq_zero β (m + 1)`. Establish `h1 : μ.IsAW (by omega) (δ n (n + 1) α.1) β.1 (0 : Cochain ((chains R).obj E) K (k + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hα]`. Conclude with `isAW_zero_left μ _ β.1`. Establish `h2 : μ.IsAW (by omega) α.1 (δ m (m + 1) β.1) (0 : Cochain ((chains R).obj E) K (k + 1))`. Rewrite using `[hβ]`. Conclude with `isAW_zero_right μ _ α.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hδ : δ k (k + 1) γ = 0`. Rewrite using `[hl R μ hk α.1 β.1 γ 0 0 hγ h1 h2]`. Simplify using the standard rewrite rules. Conclude with `⟨Cocycle.mk γ (k + 1) rfl hδ, hγ⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cupflip_aw_exists_of (hc : cupflip_aw_cochain) (hl : cupflip_aw_leibniz) : cupflip_aw_exists := by
   intro R _ I J K μ E n m k hk α β

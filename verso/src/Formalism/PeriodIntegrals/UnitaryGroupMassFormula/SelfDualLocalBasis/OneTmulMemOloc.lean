@@ -28,7 +28,7 @@ theorem inclE_apply (R : Type) [CommRing R] [Algebra F R] (e : E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[inclE_apply, inclE_apply, sigR_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_inclE (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] (e : E) :
     sigR σ R (inclE R e) = inclE R (σ e) := by
@@ -37,7 +37,7 @@ theorem sigR_inclE (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] (e
 variable [NumberField F] [NumberField E]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `he`. Use `⟨⟨σ x, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hx : IsIntegral ℤ (x : E)` using `NumberField.RingOfIntegers.isIntegral_coe x`. Conclude with `(mem_integralClosure_iff ℤ E).2 (hx.map (σ : E →+* E).toIntAlgHom)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intOE_map (σ : E →ₐ[F] E) {e : E} (he : e ∈ intOE E) : σ e ∈ intOE E := by
   obtain ⟨x, rfl⟩ := he
@@ -46,7 +46,7 @@ theorem intOE_map (σ : E →ₐ[F] E) {e : E} (he : e ∈ intOE E) : σ e ∈ i
   exact (mem_integralClosure_iff ℤ E).2 (hx.map (σ : E →+* E).toIntAlgHom)
 
 /- English proof (translation)
-Rewrite using `[inclE_apply]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclE_mem_Oloc (v : HeightOneSpectrum (𝓞 F)) {e : E} (he : e ∈ intOE E) :
     inclE (F := F) (v.adicCompletion F) e ∈ Oloc F E v := by
@@ -54,18 +54,16 @@ theorem inclE_mem_Oloc (v : HeightOneSpectrum (𝓞 F)) {e : E} (he : e ∈ intO
   exact Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)
 
 /- English proof (translation)
-Conclude with `Subring.subset_closure (Or.inr ⟨⟨b, hb⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_mem_Oloc (v : HeightOneSpectrum (𝓞 F)) {b : v.adicCompletion F}
     (hb : b ∈ v.adicCompletionIntegers F) : (1 : E) ⊗ₜ[F] b ∈ Oloc F E v := by
   exact Subring.subset_closure (Or.inr ⟨⟨b, hb⟩, rfl⟩)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ v c hc`. Establish `key : Oloc F E v ≤ (Oloc F E v).comap (sigR σ (v.adicCompletion F))`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨x, hx⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Use `show sigR σ _ (x ⊗ₜ[F] 1) ∈ Oloc F E v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sigR_tmul, ← inclE_apply]`. Conclude with `inclE_mem_Oloc v (intOE_map σ hx)`. Use `show sigR σ _ ((1 : E) ⊗ₜ[F] y) ∈ Oloc F E v`. Rewrite using `[sigR_tmul, map_one]`. Conclude with `one_tmul_mem_Oloc v hy`.
-
-Conclude with `key hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigInt : SigInt := by
   intro F E _ _ _ _ _ σ v c hc
@@ -81,17 +79,15 @@ theorem sigInt : SigInt := by
   exact key hc
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v s hs`. Establish `hs0 : (s : F) ≠ 0`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `: s = 0` using `by exact_mod_cast h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `v.asIdeal.zero_mem`. Use `set a : v.adicCompletion F := algebraMap F (v.adicCompletion F) (s : F) with ha`. Establish `ha0 : a ≠ 0`. Rewrite using `[ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero _).2 hs0`. Establish `hval : Valued.v a = 1`. Establish `h1 : v.valuation F (algebraMap (𝓞 F) F s) = 1`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Use `le_antisymm (v.intValuation_le_one s) (not_lt.1 fun h => hs ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `exact (v.intValuation_lt_one_iff_mem s).1 h`. Consider the case `exact (Ideal.dvd_span_singleton).1 ((v.intValuation_lt_one_iff_dvd s).1 h)`. Rewrite using `[ha, ← h1]`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (algebraMap (𝓞 F) F s)`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation v (algebraMap (𝓞 F) F s)`. Consider the case `rfl`. Establish `hmem : a⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]`.
-
-Use `⟨(1 : E) ⊗ₜ[F] a⁻¹, one_tmul_mem_Oloc v hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[inclE_apply, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.smul_def, mul_one, ← ha, mul_inv_cancel₀ ha0]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem unitLoc : UnitLoc := by
   intro F E _ _ _ _ _ v s hs

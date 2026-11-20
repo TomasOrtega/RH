@@ -20,11 +20,11 @@ open GlobalTheory.AbDual GlobalTheory.CechPic
 namespace GlobalTheory.BirigidLift
 
 /- English proof (translation)
-Introduce `HG HD R R₀ _ _ I κ hκ π hπ hI g A₀ _ A _ i h hA hg l hl L hL aL P₀ Q₀ S₀ hP₀ hQ₀ hS₀ eQ₀ P Q S hP hQ hS tP₁ tP₂ tQ₁ tQ₂ tS₁ tS₂ eP eQ eS`. Establish `hd : (LB.div S P).IsLB` using `LB.isLB_div hS hP`. Establish `triv : ∀ (a b : A ⟶ A), HasGen (S.pull (lift a b).left) → HasGen (P.pull (lift a b).left) → GlobalTheory.AbLaw.Triv (ev (LB.div S P) a b)`. Introduce `a b t₁ t₂`. Rewrite using `[triv_ev_iff hd, evc, cls_div hS hP hd, map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `z₁` using `(cls_eq_zero_iff (pull_isLB hS (lift a b).left)).2 t₁`. Establish `z₂` using `(cls_eq_zero_iff (pull_isLB hP (lift a b).left)).2 t₂`. Rewrite `z₁` using `[cls_pull hS]`. Rewrite `z₂` using `[cls_pull hP]`. Rewrite using `[z₁, z₂, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `red : LBIso ((LB.div S P).pull l) Q₀`. Use `(cls_eq_iff (pull_isLB hd l) hQ₀).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hd, cls_div hS hP hd, map_sub, ← cls_pull hS l (pull_isLB hS l), ← cls_pull hP l (pull_isLB hP l), (cls_eq_iff (pull_isLB hS l) hS₀).2 eS, (cls_eq_iff (pull_isLB hP l) hP₀).2 eP, (cls_eq_iff hQ₀ (LB.isLB_div hS₀ hP₀)).2 eQ₀, cls_div hS₀ hP₀]`. Conclude with `lift_unique HG HD.1 hκ hπ hI hA hg hA hg h h hl.1 hl.2 hL aL hL aL hQ₀ hQ tQ₁ tQ₂ eQ hd (triv _ _ tS₁ tP₁) (triv _ _ tS₂ tP₂) red`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_div : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (κ : DividedPowers I), IsNilDP κ →

@@ -24,7 +24,7 @@ open GlobalTheory.TorusExt
 variable {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Establish `h : IsDominant (jFK (R` using `R) F ≫ jK R) := GC.isDominant_jFR (V := R) F`. Take `⟨y', hy'⟩` from `(jFK (R := R) F ≫ jK R).denseRange.exists_mem_open V.isOpen ⟨p, hp⟩`. Establish `: Subsingleton (Spec (CommRingCat.of F))` using `inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Rewrite using `[Subsingleton.elim y y']` and apply the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_nonempty (y : Spec (CommRingCat.of F)) {V : (Spec (CommRingCat.of R)).Opens}
     {p : Spec (CommRingCat.of R)} (hp : p ∈ V) : (jFK (R := R) F ≫ jK R) y ∈ V := by
@@ -34,9 +34,9 @@ theorem mem_of_nonempty (y : Spec (CommRingCat.of F)) {V : (Spec (CommRingCat.of
   rwa [Subsingleton.elim y y']
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Establish `: Nonempty V` using `⟨⟨p, hp⟩⟩`. Establish `hne : (Spec (CommRingCat.of R)).basicOpen a ≠ ⊥` using `fun e => ha ((basicOpen_eq_bot_iff a).1 e)`. Choose the witnesses or unpack the hypotheses as in `⟨p', hp'⟩ : ∃ p', p' ∈ (Spec (CommRingCat.of R)).basicOpen a := by`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne (eq_bot_iff.2 fun z hz => (hc ⟨z, hz⟩).elim)`. Establish `hm : y ∈ (jFK (R` using `R) F ≫ jK R) ⁻¹ᵁ (Spec (CommRingCat.of R)).basicOpen a := mem_of_nonempty y hp'`. Rewrite `hm` using `[Scheme.preimage_basicOpen, Scheme.mem_basicOpen _ _ y (mem_of_nonempty y hp)]`. Rewrite `h` using `[gs_eq _ y V (mem_of_nonempty y hp)]`. Conclude with `hm.ne_zero h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_gs (y : Spec (CommRingCat.of F)) {V : (Spec (CommRingCat.of R)).Opens}
     {p : Spec (CommRingCat.of R)} (hp : p ∈ V) (a : Γ(Spec (CommRingCat.of R), V))
@@ -53,9 +53,9 @@ theorem eq_zero_of_gs (y : Spec (CommRingCat.of F)) {V : (Spec (CommRingCat.of R
   exact hm.ne_zero h
 
 /- English proof (translation)
-Establish `key : I.map (DegPre.toOpen V) ≤ (maximalIdeal ((Spec (CommRingCat.of R)).presheaf.stalk p)).comap ((Spec (CommRingCat.of R)).presheaf.germ V p hp).hom`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha hu`. Establish `e : ((Spec (CommRingCat.of R)).presheaf.germ V p hp).hom (DegPre.toOpen V a) = ((Spec (CommRingCat.of R)).presheaf.germ ⊤ p trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)` using `TopCat.Presheaf.germ_res_apply _ _ p hp _`. Establish `hu' : IsUnit (((Spec (CommRingCat.of R)).presheaf.germ V p hp).hom (DegPre.toOpen V a))` using `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu'` using `[e]`. Establish `hm` using `(Scheme.mem_basicOpen (Spec (CommRingCat.of R)) (U := ⊤) _ p trivial).2 hu'`. Rewrite `hm` using `[show (Spec (CommRingCat.of R)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) = _ from basicOpen_eq_of_affine (R := CommRingCat.of R) a]`. Conclude with `hm (hI ha)`. Conclude with `key hr`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isUnit_germ {I : Ideal R} {V : (Spec (CommRingCat.of R)).Opens} {p : Spec (CommRingCat.of R)} (hp : p ∈ V)
     (hI : I ≤ p.asIdeal) {r : Γ(Spec (CommRingCat.of R), V)} (hr : r ∈ I.map (DegPre.toOpen V)) :
@@ -76,11 +76,11 @@ theorem not_isUnit_germ {I : Ideal R} {V : (Spec (CommRingCat.of R)).Opens} {p :
   exact key hr
 
 /- English proof (translation)
-Establish `hx : D.xK χ = jK R ≫ eSec D.P.A`. Rewrite using `[← hc]`. Simplify using `[DegPre.xK, ptK]`. Establish `le' : jK R ⁻¹ᵁ V ≤ LB.wchart D.P.L (K` using `PUnit) (fun _ => D.xK χ) (fun _ => j) := fun x hxV => Set.mem_iInter.2 fun k => by`. Rewrite using `[hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle hxV`. Take `⟨r, hr, hψ⟩` from `hχ (fun _ => j) V hV (by rw [hc]; exact hle) le'`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `e` using `val_of (D.psi χ) (jFK (R := R) F) y J (fun _ => j) (fun _ => by`. Rewrite using `[← hj]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg J ((congrArg (jFK (R := R) F ≫ ·) hx).trans (Category.assoc _ _ _).symm))`. Use `(congrArg Units.val e).trans ?_` and prove the remaining obligations. Use `(gs_unit _ y _ (le' hy) _).symm.trans ((gs_res _ y le' hy _).symm.trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (gs (jFK (R := R) F) y _) hψ.symm).trans (gs_pull _ (jK R) y V hy _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_val_psi (D : DegPre R) {I : Ideal R} {χ : D.X} (hχ : D.PsiIn χ I) (hc : (D.c χ).left = eSec D.P.A)
     (j : D.P.L.ι) {V : (Spec (CommRingCat.of R)).Opens} (hV : IsAffineOpen V) (hle : V ≤ eSec D.P.A ⁻¹ᵁ D.P.L.U j)
@@ -101,7 +101,7 @@ theorem exists_val_psi (D : DegPre R) {I : Ideal R} {χ : D.X} (hχ : D.PsiIn χ
   exact (congrArg (gs (jFK (R := R) F) y _) hψ.symm).trans (gs_pull _ (jK R) y V hy _)
 
 /- English proof (translation)
-The claim follows from `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`.
+A detailed English derivation is pending.
 -/
 theorem val_tau (D : DegPre R) (a b : D.X) {y : Spec (CommRingCat.of F)} {J} (hJ : Good D.P.L y J) :
     val (D.tau a b) (jFK (R := R) F) y J = val (D.psi (a + b)) (jFK (R := R) F) y J *
@@ -111,7 +111,7 @@ theorem val_tau (D : DegPre R) (a b : D.X) {y : Spec (CommRingCat.of F)} {J} (hJ
     (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))
 
 /- English proof (translation)
-The claim follows from `GC.vpt_ext F D.P (Over.w (D.c χ)) (Over.w η[D.P.A]) (congrArg CommaMorphism.left h)`.
+A detailed English derivation is pending.
 -/
 theorem c_left_eq (D : DegPre R) {χ : D.X} (h : cP D (TF (R := R) F) χ = 1) : (D.c χ).left = eSec D.P.A :=
   GC.vpt_ext F D.P (Over.w (D.c χ)) (Over.w η[D.P.A]) (congrArg CommaMorphism.left h)
@@ -119,23 +119,21 @@ theorem c_left_eq (D : DegPre R) {χ : D.X} (h : cP D (TF (R := R) F) χ = 1) : 
 attribute [local instance] gtGroup
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Establish `hL` using `D.toPre.P.isLB`. Establish `c₁ : (D.toPre.c z).left = eSec D.toPre.P.A` using `c_left_eq (F := F) _ (by rw [← iota_b D.tau_bimult, h, zero_b])`. Establish `c₂ : (D.toPre.c (-z)).left = eSec D.toPre.P.A` using `c_left_eq (F := F) _ (by rw [← iota_b D.tau_bimult, map_neg, h, neg_zero, zero_b])`. Take `⟨m, hm, hIm⟩` from `I.exists_le_maximal hI`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `p : Spec (CommRingCat.of R)` to `(⟨m, hm.isPrime⟩ : PrimeSpectrum R)`. Take `⟨j, hj⟩` from `exists_chart hL (eSec D.toPre.P.A p)`. Choose the witnesses or unpack the hypotheses as in `⟨V, hV, hp, hle⟩ : ∃ V : (Spec (CommRingCat.of R)).Opens, IsAffineOpen V ∧ p ∈ V ∧ V ≤ eSec D.toPre.P.A ⁻¹ᵁ D.toPre.P.L.U j := by`. Take `⟨_, ⟨V, hV, rfl⟩, hp, hle⟩` from `(Spec (CommRingCat.of R)).isBasis_affineOpens.exists_subset_of_mem_open (show p ∈ ((eSec D.toPre.P.A ⁻¹ᵁ D.toPre.P.L.U j : (Spec (CommRingCat.of R)).Opens) : Set _) from hj) (eSec D.toPre.P.A ⁻¹ᵁ D.toPre.P.L.U j).isOpen`. Conclude with `⟨V, hV, hp, hle⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `y : Spec (CommRingCat.of F)` to `(⊥ : PrimeSpectrum F)`. Establish `hy` using `mem_of_nonempty (R := R) y hp`. Take `⟨J, hJ, hJj⟩` from `exists_good D.toPre.P.L hL y (K := PUnit) (fun _ => (jFK (R := R) F ≫ jK R) ≫ eSec D.toPre.P.A) (fun _ => j) (fun _ _ _ => rfl) (fun _ => hle hy)`. Take `⟨r, hr, e₁⟩` from `exists_val_psi D.toPre (D.psi_pos z hz) c₁ j hV hle y hy J (hJj PUnit.unit)`. Take `⟨r', -, e₂⟩` from `exists_val_psi D.toPre (D.psi_pos (-z) (neg_ne_zero.2 hz)) c₂ j hV hle y hy J (hJj PUnit.unit)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `τ : ∀ χ, val (D.toPre.tau z χ) (jFK (R` using `R) F) y J = 1 := fun χ => by`. Establish `e` using `iota_val (F := F) D.tau_bimult z χ (y := y) hJ`. Rewrite `e` using `[h, zero_val χ hJ]`. Conclude with `e.symm`. Establish `hle' : V ≤ LB.wchart D.toPre.P.L (K` using `PUnit) (fun _ => eSec D.toPre.P.A) (fun _ => j) := fun x hx => Set.mem_iInter.2 fun _ => hle hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, e₃⟩ : ∃ u : Γ(Spec (CommRingCat.of R), V), (val D.toPre.rigK (jFK (R` from `R) F) y J).val = gs (jFK (R := R) F ≫ jK R) y V u := by`. Use `⟨((Spec (CommRingCat.of R)).presheaf.map (homOfLE hle').op).hom (D.toPre.rig.s (fun _ => j)).val, ?_⟩` and prove the remaining obligations. Establish `a₁ : val D.toPre.rigK (jFK (R` using `R) F) y J = val (L := D.toPre.P.L) (φ := fun _ : PUnit => eSec D.toPre.P.A) (ε := fun _ => 1) D.toPre.rig (jFK (R := R) F ≫ jK R) y J := val_pull hJ _ _ _`. Rewrite using `[a₁, val_of _ _ y J (fun _ => j) (fun _ => hJj PUnit.unit)]`. Conclude with `(gs_unit _ y _ (hle' hy) _).symm.trans (gs_res _ y hle' hy _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₀` using `τ 0`. Establish `t₁` using `τ (-z)`. Rewrite `t₀` using `[val_tau _ _ _ hJ, add_zero]`. Rewrite `t₁` using `[val_tau _ _ _ hJ, add_neg_cancel]`. Establish `t : val (D.toPre.psi z) (jFK (R` using `R) F) y J * (val (D.toPre.psi (-z)) (jFK (R := R) F) y J * (val D.toPre.rigK (jFK (R := R) F) y J * val D.toPre.rigK (jFK (R := R) F) y J)) = 1 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₀` using `congrArg Additive.ofMul t₀`. Establish `a₁` using `congrArg Additive.ofMul t₁`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at a₀ a₁ ⊢`. Take the linear combination `(norm := abel) -a₀ - a₁`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t'` using `congrArg Units.val t`. Rewrite `t'` using `[Units.val_mul, Units.val_mul, Units.val_mul, e₁, e₂, e₃, ← gs_mul _ y V hy, ← gs_mul _ y V hy, ← gs_mul _ y V hy, Units.val_one]`. Establish `one : r * (r' * (u * u)) - 1 = 0` using `eq_zero_of_gs y hp _ (by`. Rewrite `t'`, the goal using `[gs_eq _ y V hy]`. Rewrite using `[map_sub, map_sub, map_one, map_one, t', sub_self])`.
-
-Conclude with `not_isUnit_germ hp hIm hr ((IsUnit.of_mul_eq_one _ (sub_eq_zero.1 one)).map _)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_iota {I : Ideal R} (hI : I ≠ ⊤) (D : DegData R I) (z : D.toPre.X)
     (h : iota D.tau_bimult F z = 0) : z = 0 := by
@@ -192,9 +190,9 @@ theorem eq_zero_of_iota {I : Ideal R} (hI : I ≠ ⊤) (D : DegData R I) (z : D.
   exact not_isUnit_germ hp hIm hr ((IsUnit.of_mul_eq_one _ (sub_eq_zero.1 one)).map _)
 
 /- English proof (translation)
-Introduce `_ R _ _ _ I hA D F _ _ _ y y' g h h'`. Establish `hI : I ≠ ⊤`. Introduce and unpack `rfl`. Use `hA.2.2.2` as an intermediate fact. Conclude with `not_subsingleton R (IsHausdorff.subsingleton (R := R) (M := R) inferInstance)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h`, `h'` using `[isIota_iff_eq D.tau_bimult]`. Conclude with `sub_eq_zero.1 (eq_zero_of_iota (F := F) hI D _ (by rw [map_sub, ← h, ← h', sub_self]))`.
+A detailed English derivation is pending.
 -/
 theorem main : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (y y' : D.toPre.X) (g : GtPtF D.toPre F), GtPtF.IsIota y g → GtPtF.IsIota y' g → y = y' := by
   intro _ R _ _ _ I hA D F _ _ _ y y' g h h'

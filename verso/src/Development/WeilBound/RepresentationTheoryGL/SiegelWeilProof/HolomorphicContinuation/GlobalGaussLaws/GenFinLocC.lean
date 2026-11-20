@@ -9,29 +9,29 @@ namespace PositivityTheory.Rg.Sw.Glob.GenFinLocAH
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Rewrite using `[det_transpose, det_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_cT (σ : R →+* R) (a : Matrix (Fin n) (Fin n) R) : (Formalism.UG.cT σ a).det = σ a.det := by
   unfold Formalism.UG.cT; rw [det_transpose, det_map]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (σ : R →+* R) (hσ : ∀ x, σ (σ x) = x) {m p : Type} (a : Matrix m p R) :
     Formalism.UG.cT σ (Formalism.UG.cT σ a) = a := by
   ext i j; simp [Formalism.UG.cT, hσ]
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Rewrite using `[map_nonsing_inv σ a ha, transpose_nonsing_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_inv (σ : R →+* R) (a : Matrix (Fin n) (Fin n) R) (ha : IsUnit a.det) :
     Formalism.UG.cT σ a⁻¹ = (Formalism.UG.cT σ a)⁻¹ := by
   unfold Formalism.UG.cT; rw [map_nonsing_inv σ a ha, transpose_nonsing_inv]
 
 /- English proof (translation)
-Establish `hca : IsUnit (Formalism.UG.cT σ a).det` using `by rw [det_cT]; exact ha.map σ`. Apply `bf_injective` to reduce the goal to its premises. Unfold `J2`. Rewrite using `[bf_mul, bf_mul, bf_cT, block_matrix_to_fromBlocks, block_matrix_to_fromBlocks, cT_fromBlocks, fromBlocks_multiply, fromBlocks_multiply]`. Rewrite using `[cT_inv σ _ hca, cT_cT σ hσ]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : Formalism.UG.cT σ (0 : Matrix (Fin n) (Fin n) R) = 0` using `by ext; simp [Formalism.UG.cT]`. Simplify using `only [hc0, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, mul_nonsing_inv _ hca, nonsing_inv_mul _ ha, neg_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem uni_levi (σ : R →+* R) (hσ : ∀ x, σ (σ x) = x) (a : Matrix (Fin n) (Fin n) R) (ha : IsUnit a.det) :
     Uni σ (GlobalTheory.StdUnn.blk4 a 0 0 (Formalism.UG.cT σ a)⁻¹) := by
@@ -45,23 +45,23 @@ theorem uni_levi (σ : R →+* R) (hσ : ∀ x, σ (σ x) = x) (a : Matrix (Fin 
     zero_add, mul_nonsing_inv _ hca, nonsing_inv_mul _ ha, neg_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold eI; rw [diagonal_mul_diagonal]; congr 1; funext i; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eI_mul_eI (I : Finset (Fin n)) : (eI I : Matrix (Fin n) (Fin n) R) * eI I = eI I := by
   unfold eI; rw [diagonal_mul_diagonal]; congr 1; funext i; split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT`. Rewrite using `[eI_map, eI, diagonal_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_eI (σ : R →+* R) (I : Finset (Fin n)) : Formalism.UG.cT σ (eI I : Matrix (Fin n) (Fin n) R) = eI I := by
   unfold Formalism.UG.cT; rw [eI_map, eI, diagonal_transpose]
 
 /- English proof (translation)
-Apply `bf_injective` to reduce the goal to its premises. Unfold `J2 wIm`. Rewrite using `[bf_mul, bf_mul, bf_cT, block_matrix_to_fromBlocks, block_matrix_to_fromBlocks, cT_fromBlocks, fromBlocks_multiply, fromBlocks_multiply]`. Establish `h1 : Formalism.UG.cT σ (1 - eI I : Matrix (Fin n) (Fin n) R) = 1 - eI I`. Unfold `Formalism.UG.cT`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.map_sub _ (map_sub σ), Matrix.map_one _ (map_zero σ) (map_one σ), eI_map, transpose_sub, transpose_one, eI, diagonal_transpose]`. Establish `h2 : Formalism.UG.cT σ (-eI I : Matrix (Fin n) (Fin n) R) = -eI I`. Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.map_neg _ (map_neg σ), eI_map, transpose_neg, eI, diagonal_transpose]`. Rewrite using `[h1, h2, cT_eI]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hE` using `eI_mul_eI (R := R) I`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, neg_neg, Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, hE] <;> abel_nf`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uni_wIm (σ : R →+* R) (I : Finset (Fin n)) : Uni σ (wIm I : Matrix (Fin (n + n)) (Fin (n + n)) R) := by
   apply bf_injective

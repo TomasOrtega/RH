@@ -5,13 +5,13 @@ open CategoryTheory AlgebraicGeometry
 namespace LateralTheory.E.LeafChartAwayPf
 
 /- English proof (translation)
-Introduce `X Y B _ j _ I g hj`. Set `f` to `Spec.map (CommRingCat.ofHom (algebraMap B (Localization.Away g)))`. Establish `hf : ∀ y : Spec (CommRingCat.of (Localization.Away g)), f y = PrimeSpectrum.comap (algebraMap B (Localization.Away g)) y` using `fun _ => rfl`. Use `⟨f ≫ j, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨f y', rfl⟩`. Introduce `y hy`. Establish `hmem : (show PrimeSpectrum B from y) ∈ Set.range (PrimeSpectrum.comap (algebraMap B (Localization.Away g)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away g) g]`. Conclude with `hy`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `hmem`. Use `⟨y', ?_⟩` and prove the remaining obligations. Use `show j (f y') = j y`. Conclude with `congrArg j ((hf y').trans hy')`. Introduce `y'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `j (f y') ∈ Y ↔ _`. Rewrite using `[hj, hf, Ideal.map_le_iff_le_comap]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem LeafChartAway_of : LateralTheory.E.LeafChartPf.LeafChartAway := by
   intro X Y B _ j _ I g hj

@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 namespace GlobalTheory.Mem.WeilExists
 
 /- English proof (translation)
-Introduce `h D` and use `weilEx_of (GlobalTheory.Mem.WeilTransport.weilCoreEx_of_datum D fun ψ hψ S T χS χT h1 h2 h3 h4 => h D ψ S T χS χT hψ h1 h2 h3 h4) (GlobalTheory.T.weilRepresentationRules_hold D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weilEx_of_weilRepresentation : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ D : D7, WeilEx D := fun h D =>
   weilEx_of

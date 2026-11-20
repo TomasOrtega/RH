@@ -6,21 +6,19 @@ namespace Formalism.FourierDecayAlt.TL
 open Matrix Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.Fr
 
 /- English proof (translation)
-Introduce `hstep hlet A S _ _ _ _ _ _ r n L st Lf w hA hL hn`. Proceed by induction on `w with`. Consider the case `nil`. Introduce `_ e`. Establish `h1 : ((ofWord L st ([] : List (Letter ℂ S))).F * bTA L ([] : List (Letter ℂ S))) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[ofWord, bTA, bT, Start.frame]`. Rewrite using `[h1, Matrix.one_apply]`. Use `split_ifs`. Simplify using `using hL.one`. Conclude with `hL.zero _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `cons l w ih`. Introduce `hw e`. Establish `hw' : admitted st w`. Take `⟨h1, h2, h3, h4⟩` from `hw`. Use `⟨?_, fun l' hl' => h2 l' (List.mem_cons_of_mem _ hl'), fun l' hl' => h3 l' (List.mem_cons_of_mem _ hl'), h4.of_cons⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [List.map_cons, List.nodup_cons] at h1`. Conclude with `h1.2`. Rewrite using `[hstep A S r L st l w hA hw e, Matrix.mul_apply]`. Use `Finset.sum_induction _ (Lf _ _) (fun a b ha hb => hL.add ha hb) (hL.zero _ _) ?_` and prove the remaining obligations. Introduce `f _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcoef : Lf n (9 * (r + 1) * n) ((∑ i : Fin 2, eU l.intersection_update_fsHerm_neg_one i 0 * letterCol L st l w i : SlopeTestRemainingChoices S A) e f)`. Rewrite using `[Matrix.sum_apply]`. Use `Finset.sum_induction _ (Lf _ _) (fun a b ha hb => hL.add ha hb) (hL.zero _ _) ?_` and prove the remaining obligations. Introduce `i _`. Rewrite using `[Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_induction _ (Lf _ _) (fun a b ha hb => hL.add ha hb) (hL.zero _ _) ?_` and prove the remaining obligations. Introduce `g _`. Simplify using `only [eU, Matrix.of_apply]`. Use `split_ifs`. Rewrite using `[one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hlet A S r n L st Lf l w hA hL hn hw i g f`. Rewrite using `[zero_mul]`. Conclude with `hL.zero _ _`. Use `hL.mono ?_ ?_ (hL.mul hcoef (ih hw' f))` and prove the remaining obligations. Simplify using `only [List.length_cons]`.
-
-Conclude with `le_of_eq (by ring)`. Simplify using `only [List.length_cons]`. Conclude with `le_of_eq (by ring)`.
+A detailed English derivation is pending.
 -/
 theorem wordLiftOfParts : WordLiftOfParts := by
   intro hstep hlet A S _ _ _ _ _ _ r n L st Lf w hA hL hn
@@ -66,7 +64,7 @@ theorem wordLiftOfParts : WordLiftOfParts := by
 end Formalism.FourierDecayAlt.TL
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Or.inl ⟨α, β, γ, h1, h2, h3, by rw [Matrix.mul_assoc]; rfl⟩)`.
+A detailed English derivation is pending.
 -/
 example {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [DecidableEq S] (st : Formalism.FourierDecayAlt.Fr.Start A)
     (X φ τ α β γ : Formalism.FourierDecayAlt.Wd.SlopeTestRemainingChoices S A) (h1 : Formalism.FourierDecayAlt.TL.kMat st α) (h2 : Formalism.FourierDecayAlt.TL.kMat st β) (h3 : Formalism.FourierDecayAlt.TL.kMat st γ) :

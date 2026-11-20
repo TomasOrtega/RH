@@ -15,7 +15,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use `⟨?_, fun u v hu hv hl g hg => h2 u v hu hv (by omega) g hg⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hg, hf, he⟩` from `h1 g₀ hg₀`. Conclude with `⟨U, f', hU, hg, hf.of_le (by exact_mod_cast (by norm_num : (4 : ℕ) ≤ 5)), he⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ccle_five_four {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {F : Mat k r → E} {c : ℝ}
     (h : CCle A 5 F c) : CCle A 4 F c := by
@@ -26,7 +26,7 @@ theorem ccle_five_four {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A
   exact ⟨U, f', hU, hg, hf.of_le (by exact_mod_cast (by norm_num : (4 : ℕ) ≤ 5)), he⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, ccle_five_four hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inCC_five_four {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {F : Mat k r → E}
     (h : InCC A 5 F) : InCC A 4 F := by
@@ -34,7 +34,7 @@ theorem inCC_five_four {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A
   exact ⟨c, ccle_five_four hc⟩
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.B.lam Formalism.QuantumDeterminants.ell`. Use `Complex.continuous_re.comp (continuous_const.mul (continuous_finset_sum _ fun a _ => ?_))` and prove the remaining obligations. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply] fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_lam (z : Fin (2 * r + k + 1) → ℂ) :
     Continuous fun n : Mt k r => lam k r z (Matrix.of n) := by
@@ -46,7 +46,7 @@ theorem continuous_lam (z : Fin (2 * r + k + 1) → ℂ) :
     fun_prop
 
 /- English proof (translation)
-Establish `h1` using `continuous_lam (k := k) (r := r) D.z`. Establish `h2` using `continuous_lam (k := k) (r := r) D.z'`. Unfold `Formalism.FourierDecayAlt.B.xiTau`. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ?_))` and prove the remaining obligations. Conclude with `((continuous_fst.comp continuous_fst).mul (h1.comp (continuous_snd.comp (continuous_fst.comp continuous_snd)))).sub ((continuous_snd.comp continuous_fst).mul (h2.comp (continuous_snd.comp (continuous_snd.comp continuous_snd))))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_xiTau_prod (D : RealPlaceData k r Wp Wq) :
     Continuous fun x : (ℝ × ℝ) × SS k r => xiTau D x.1 x.2 := by
@@ -60,7 +60,7 @@ theorem continuous_xiTau_prod (D : RealPlaceData k r Wp Wq) :
       (h2.comp (continuous_snd.comp (continuous_snd.comp continuous_snd))))
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.B.xiTau`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_xiTau (D : RealPlaceData k r Wp Wq) (τ : ℝ × ℝ) (p : SS k r) : ‖xiTau D τ p‖ = 1 := by
   unfold Formalism.FourierDecayAlt.B.xiTau
@@ -68,7 +68,7 @@ theorem norm_xiTau (D : RealPlaceData k r Wp Wq) (τ : ℝ × ℝ) (p : SS k r) 
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-Use `continuous_of_dominated (bound := fun p => ‖P p‖) (fun τ => ?_) (fun τ => ?_) hP.norm ?_` and prove the remaining obligations. Conclude with `((continuous_xiTau_prod D).comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable.mul hP.aestronglyMeasurable`. Conclude with `Filter.Eventually.of_forall fun p => by simp only [norm_mul, norm_xiTau, one_mul, le_refl]`. Conclude with `Filter.Eventually.of_forall fun p => ((continuous_xiTau_prod D).comp (continuous_id.prodMk continuous_const)).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_cf (D : RealPlaceData k r Wp Wq) {P : SS k r → ℂ} (hP : Integrable P D.μSS) :
     Continuous fun τ : ℝ × ℝ => ∫ p, xiTau D τ p * P p ∂D.μSS := by
@@ -80,12 +80,12 @@ theorem continuous_cf (D : RealPlaceData k r Wp Wq) {P : SS k r → ℂ} (hP : I
       ((continuous_xiTau_prod D).comp (continuous_id.prodMk continuous_const)).mul continuous_const
 
 /- English proof (translation)
-The claim follows from `(hw.1.continuous.integrable_of_hasCompactSupport hw.2.1).ofReal`.
+A detailed English derivation is pending.
 -/
 theorem integrable_test {w : ℝ → ℝ} (hw : IsTest w) : Integrable (fun x => (w x : ℂ)) volume := (hw.1.continuous.integrable_of_hasCompactSupport hw.2.1).ofReal
 
 /- English proof (translation)
-Establish `h` using `MeasureTheory.Integrable.mul_prod (integrable_test h₁) (integrable_test h₂)`. Rewrite using `[Measure.volume_eq_prod]`. Use `push_cast`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem integrable_test2 {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) :
     Integrable (fun τ : ℝ × ℝ => ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ)) volume := by
@@ -95,9 +95,9 @@ theorem integrable_test2 {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : 
   exact h
 
 /- English proof (translation)
-Establish `e : ∀ τ : ℝ × ℝ, ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ) * Complex.exp (Complex.I * ((τ.1 * a - τ.2 * b : ℝ) : ℂ)) = ((w₁ τ.1 : ℂ) * Complex.exp (Complex.I * ((τ.1 * a : ℝ) : ℂ))) * ((w₂ τ.2 : ℂ) * Complex.exp (Complex.I * ((τ.2 * -b : ℝ) : ℂ)))`. Introduce `τ`. Use `push_cast`. Rewrite using `[show Complex.I * ((τ.1 : ℂ) * a - τ.2 * b) = Complex.I * (τ.1 * a) + Complex.I * (τ.2 * -b) by ring, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Measure.volume_eq_prod, integral_congr_ae (Filter.Eventually.of_forall e)]`. Conclude with `MeasureTheory.integral_prod_mul (fun x : ℝ => (w₁ x : ℂ) * Complex.exp (Complex.I * ((x * a : ℝ) : ℂ))) (fun y : ℝ => (w₂ y : ℂ) * Complex.exp (Complex.I * ((y * -b : ℝ) : ℂ)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_om (w₁ w₂ : ℝ → ℝ) (a b : ℝ) :
     ∫ τ : ℝ × ℝ, ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ) *
@@ -117,7 +117,7 @@ theorem inner_om (w₁ w₂ : ℝ → ℝ) (a b : ℝ) :
     (fun y : ℝ => (w₂ y : ℂ) * Complex.exp (Complex.I * ((y * -b : ℝ) : ℂ)))
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sigmaFinite_haarOn {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) :
     SigmaFinite μ := by
@@ -125,7 +125,7 @@ theorem sigmaFinite_haarOn {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHa
   infer_instance
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_haarOn D.haarW`. Use `haveI := sigmaFinite_haarOn D.haarN`. Use `haveI := sigmaFinite_haarOn D.haarW'`. Unfold `RealPlaceData.μSS`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_SS (D : RealPlaceData k r Wp Wq) : SigmaFinite D.μSS := by
   haveI := sigmaFinite_haarOn D.haarW
@@ -135,11 +135,9 @@ theorem sigmaFinite_SS (D : RealPlaceData k r Wp Wq) : SigmaFinite D.μSS := by
   infer_instance
 
 /- English proof (translation)
-Use `haveI := sigmaFinite_SS D`. Establish `hint : Integrable (fun x : (ℝ × ℝ) × SS k r => ((w₁ x.1.1 * w₂ x.1.2 : ℝ) : ℂ) * (xiTau D x.1 x.2 * P x.2)) (volume.prod D.μSS)`. Use `(MeasureTheory.Integrable.mul_prod (integrable_test2 h₁ h₂) hP).mono ?_ ?_` and prove the remaining obligations. Use `haveI : OpensMeasurableSpace ((ℝ × ℝ) × SS k r) := Prod.opensMeasurableSpace`. Conclude with `(integrable_test2 h₁ h₂).aestronglyMeasurable.comp_fst.mul ((continuous_xiTau_prod D).aestronglyMeasurable.mul hP.aestronglyMeasurable.comp_snd)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Filter.Eventually.of_forall fun x => by simp only [norm_mul, norm_xiTau, one_mul, le_refl]`. Repeatedly rewrite using `[← integral_const_mul]`. Rewrite using `[integral_integral_swap (f := fun τ p => ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ) * (xiTau D τ p * P p)) hint]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Establish `e : ∀ τ : ℝ × ℝ, ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ) * (xiTau D τ p * P p) = (((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ) * Complex.exp (Complex.I * ((τ.1 * lam k r D.z (Matrix.of p.1.2) - τ.2 * lam k r D.z' (Matrix.of p.2.2) : ℝ) : ℂ))) * P p` using `fun τ => by unfold Formalism.FourierDecayAlt.B.xiTau; ring`.
-
-Simplify using `only [e]`. Rewrite using `[integral_mul_const, inner_om]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fubini_cf (D : RealPlaceData k r Wp Wq) {P : SS k r → ℂ} (hP : Integrable P D.μSS)
     {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) :
@@ -164,16 +162,16 @@ theorem fubini_cf (D : RealPlaceData k r Wp Wq) {P : SS k r → ℂ} (hP : Integ
   rw [integral_mul_const, inner_om]
 
 /- English proof (translation)
-The claim follows from `isOpen_Ioi.prod isOpen_Ioi`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Quad : IsOpen Quad := isOpen_Ioi.prod isOpen_Ioi
 
 /- English proof (translation)
-Establish `hK : IsCompact (tsupport w₁ ×ˢ tsupport w₂)` using `h₁.2.1.prod h₂.2.1`. Establish `hKQ : tsupport w₁ ×ˢ tsupport w₂ ⊆ Quad` using `Set.prod_mono h₁.2.2 h₂.2.2`. Establish `hc : ContinuousOn (fun τ : ℝ × ℝ => ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ) * f τ) (tsupport w₁ ×ˢ tsupport w₂)`. Use `ContinuousOn.mul ?_ (hf.mono hKQ)` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp ((h₁.1.continuous.comp continuous_fst).mul (h₂.1.continuous.comp continuous_snd))).continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `MeasureTheory.IntegrableOn.integrable_of_forall_notMem_eq_zero (hc.integrableOn_compact (μ := volume) hK) ?_` and prove the remaining obligations. Introduce `τ hτ`. Rewrite `hτ` using `[Set.mem_prod, not_and_or]`. Break down `hτ with h | h` into its components or cases. Simplify using `[image_eq_zero_of_notMem_tsupport h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[image_eq_zero_of_notMem_tsupport h]`.
+A detailed English derivation is pending.
 -/
 theorem integrable_test_mul {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂ : IsTest w₂) {f : ℝ × ℝ → ℂ}
     (hf : ContinuousOn f Quad) : Integrable (fun τ : ℝ × ℝ => ((w₁ τ.1 * w₂ τ.2 : ℝ) : ℂ) * f τ) volume := by
@@ -193,13 +191,11 @@ theorem integrable_test_mul {w₁ w₂ : ℝ → ℝ} (h₁ : IsTest w₁) (h₂
   · simp [image_eq_zero_of_notMem_tsupport h]
 
 /- English proof (translation)
-Take `⟨-, hcont, -⟩` from `hRB`. Establish `hc1 : ContinuousOn (fun τ => betaInfTau D τ F F') Quad` using `hcont F F' hF hF'`. Establish `hc2 : ContinuousOn (fun τ : ℝ × ℝ => ∫ p, xiTau D τ p * Ph D F F' p ∂D.μSS) Quad` using `(continuous_cf D hP).continuousOn`. Establish `hae` using `hAe (fun _ => 0) (fun τ => betaInfTau D τ F F' - ∫ p, xiTau D τ p * Ph D F F' p ∂D.μSS) aemeasurable_const (hc1.sub hc2) (fun w₁ w₂ h₁ h₂ _ _ => by`. Use `⟨by simp, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_zero, MeasureTheory.lintegral_zero, ENNReal.toReal_zero, Complex.ofReal_zero]`. Repeatedly rewrite using `[mul_sub]`. Rewrite using `[integral_sub (integrable_test_mul h₁ h₂ hc1) (integrable_test_mul h₁ h₂ hc2), (hRA F F' hF hF' w₁ w₂ h₁ h₂).2, fubini_cf D hP h₁ h₂, sub_self])`. Establish `h0 : (fun τ => betaInfTau D τ F F' - ∫ p, xiTau D τ p * Ph D F F' p ∂D.μSS) =ᵐ[volume.restrict Quad] fun _ => 0` using `by filter_upwards [hae] with τ hτ`. Simplify using `using hτ.2.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `heq` using `Measure.eqOn_open_of_ae_eq h0 isOpen_Quad (hc1.sub hc2) continuousOn_const`. Establish `h11 : ((1 : ℝ), (1 : ℝ)) ∈ Quad`. Unfold `Quad`. Conclude with `⟨by norm_num, by norm_num⟩`. Use `show betaInfTau D (1, 1) F F' = _`.
-
-Conclude with `sub_eq_zero.mp (heq h11)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem betaInf_eq_of (D : RealPlaceData k r Wp Wq) [FiniteDimensional ℂ Wq] (A : ℝ) (hAe : AeFromTests)
     (hRB : RegBound D A) (hRA : RegAverage D A) {F F' : Mat k r → (Wq →L[ℂ] Wp)}

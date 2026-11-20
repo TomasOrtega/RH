@@ -12,13 +12,13 @@ open UpperTheory.Gal.Int.Div (CrysAt PhiKilled HTRichEx JumpsOcc VBase)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Simplify using `[unrPol, rootPol]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem unrPol_neg_one (S : Multiset ℂ) : unrPol S (-1) = rootPol S := by
   simp [unrPol, rootPol]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι dd ρ w a B _ hK P AI hT A h O _ _ _ Bw hj`. Take `⟨hc, g, hg, m, hd⟩` from `hK P AI hT A h O Bw hj`. Use `⟨hc, g, hg, m, ?_⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.Gal.TP.Sub.satPol_holds E Ω A w h a B g, hg, unrPol_neg_one]`. Conclude with `hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.phiOf :
     UpperTheory.Gal.Int.Geo.PhiOf := by

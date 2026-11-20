@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r}
 
 /- English proof (translation)
-Rewrite using `[← h, ← Real.rpow_natCast, ← Real.rpow_mul hn.le, ← Real.rpow_intCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rpow_of_sq {n d : ℝ} (hn : 0 < n) (h : n ^ 2 = d) (a : ℤ) : d ^ (-(a : ℝ) / 2) = n ^ (-a) := by
   rw [← h, ← Real.rpow_natCast, ← Real.rpow_mul hn.le, ← Real.rpow_intCast]
@@ -24,17 +24,17 @@ theorem rpow_of_sq {n d : ℝ} (hn : 0 < n) (h : n ^ 2 = d) (a : ℤ) : d ^ (-(a
   ring
 
 /- English proof (translation)
-Take `⟨x₀, t, ho, hb, hn⟩` from `GF.move hσ hU x`. Take `⟨f, hf, -⟩` from `GF.letters hσ hU k`. Take `⟨hbij, -, hconj, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Use `⟨x₀, t, ho, hb, fun a => ?_⟩` and prove the remaining obligations. Unfold `Data.pnorm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[norm_one, one_mul, ← Fintype.prod_prod_type']`. Use `(Fintype.prod_equiv f _ _ fun s => ?_).symm` and prove the remaining obligations. Establish `hpos : 0 < ‖toC (t (some s) : CAt σ)‖` using `norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) (t (some s)))`. Establish `hinv : Function.invFun (relab c σ) (relab c σ s.1) = s.1` using `Function.leftInverse_invFun hbij.1 _`. Break down `hf s with ⟨a1, a2, a3⟩ | ⟨a1, a2, a3, a4⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `(hn s (f s).1 (f s).2).1 a2 a3`. Establish `h2 : laZ U a k (f s).1 (f s).2 = a (s.1, s.2)`. Unfold `laZ`. Rewrite using `[if_pos (by omega), a2, hinv, a3, Nat.add_sub_cancel_left]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(rpow_of_sq hpos h1 _).symm`. Establish `e1 : conjEmb (f s).1.1 = relab c σ s.1`. Rewrite using `[a2]`. Conclude with `ComplexEmbedding.involutive_conjugate E _`. Establish `h1` using `(hn s (f s).1 (f s).2).2 e1 (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2 : laZ U a k (f s).1 (f s).2 = -a (s.1, s.2)`. Unfold `laZ`. Rewrite using `[if_neg (by omega), e1, hinv, a3]`. Use `congr 3`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Establish `h3` using `(inv_pow _ 2).trans ((congrArg (·⁻¹) h1).trans (inv_inv _))`. Rewrite using `[rpow_of_sq (inv_pos.2 hpos) h3, neg_neg, inv_zpow, zpow_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem move_pnorm (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} (x : (U.X k).dom) :
     ∃ (x₀ : (U.X k).dom) (t : Ix Dw → (CAt σ)ˣ), (U.X k).IsOrtho x₀.1 ∧ FrBor t (U.un k x₀) (U.un k x) ∧
@@ -69,9 +69,9 @@ theorem move_pnorm (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} (x : (U.X k)
     rw [rpow_of_sq (inv_pos.2 hpos) h3, neg_neg, inv_zpow, zpow_neg]
 
 /- English proof (translation)
-Establish `hp : 0 < Real.pi * (2 * x)` using `mul_pos Real.pi_pos (by linarith)`. Establish `e : ∀ s : Σ τ, Fin (Dw.mult τ), Real.sqrt (Real.pi * (2 * x)) ^ (-a (s.1, s.2)) = Real.exp (-(a (s.1, s.2) : ℝ) / 2 * Real.log (2 * Real.pi * x))` using `fun s => by`. Rewrite using `[← rpow_of_sq (Real.sqrt_pos.2 hp) (Real.sq_sqrt hp.le), Real.rpow_def_of_pos hp, mul_comm]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e]`. Rewrite using `[← Real.exp_sum, lieFacZ, ← Finset.sum_mul, ← Finset.sum_div, Finset.sum_neg_distrib, Fintype.sum_sigma, neg_div]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieFacZ_eq (Dw : Datum H) {x : ℝ} (hx : 0 < x) (a : WZ E) :
     lieFacZ Dw x a = ∏ s : Σ τ, Fin (Dw.mult τ), Real.sqrt (Real.pi * (2 * x)) ^ (-a (s.1, s.2)) := by
@@ -85,7 +85,7 @@ theorem lieFacZ_eq (Dw : Datum H) {x : ℝ} (hx : 0 < x) (a : WZ E) :
   rw [← Real.exp_sum, lieFacZ, ← Finset.sum_mul, ← Finset.sum_div, Finset.sum_neg_distrib, Fintype.sum_sigma, neg_div]
 
 /- English proof (translation)
-The claim follows from `(Fintype.prod_bijective _ ((FinRd.labelSig_bijective Dw).comp (FinRd.rootIdx_bijective Dw)) _ _ fun _ => rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_root {M : Type} [CommMonoid M] (F : (Σ τ, Fin (Dw.mult τ)) → M) :
     ∏ s, F s = ∏ ρ : RootIx Dw, F (FinRd.labelSig Dw (HodgeCpt.rootIdx Dw ρ)) :=

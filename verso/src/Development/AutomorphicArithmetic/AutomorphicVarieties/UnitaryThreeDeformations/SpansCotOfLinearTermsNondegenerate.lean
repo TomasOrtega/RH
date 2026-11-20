@@ -4,31 +4,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia.Abs
 
 /- English proof (translation)
-Set `ι : O →+* FractionRing O` to `algebraMap O (FractionRing O)`. Establish `hinj : Function.Injective ι` using `IsFractionRing.injective O (FractionRing O)`. Set `V : Submodule (FractionRing O) (σ → FractionRing O)` to `Submodule.span (FractionRing O) (Set.range fun k => fun i => ι (v k i))`. Establish `hmem : (fun i => ι (w i)) ∈ V`. Assume the negation of the conclusion as `hw'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨f, hfw, hfV⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hw' inferInstance`. Set `e : σ → FractionRing O` to `fun i => if p i then f (fun j => if i = j then 1 else 0) else 0`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) Finset.univ e`. Use `choose d hd using fun i => hb i (Finset.mem_univ i)`. Establish `hd0 : d = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h d` to reduce the goal to its premises. Introduce `i hi`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hd i, map_zero]`. Simplify using `[e, hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Apply `hinj` to reduce the goal to its premises. Establish `hvk : f (fun i => ι (v k i)) = 0`. Establish `h1 : (fun i => ι (v k i)) ∈ V` using `Submodule.subset_span ⟨k, rfl⟩`. Establish `h2` using `Submodule.mem_map_of_mem (f := f) h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hfV]`. Conclude with `(Submodule.mem_bot _).mp h2`. Rewrite `hvk` using `[LinearMap.pi_apply_eq_sum_univ]`. Rewrite using `[map_zero, map_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hd i, mul_smul_comm]`. Use `_ = (b : O) • ∑ i, ι (v k i) • f (fun j => if i = j then 1 else 0) := by`. Rewrite using `[← Finset.smul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : p i`. Simplify using `[e, hi, smul_eq_mul]`. Simplify using `[e, hi, hv k i hi]`. Use `_ = 0 := by rw [hvk, smul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ i, e i = 0`. Introduce `i`. Establish `h1 : (b : O) • e i = 0`. Rewrite using `[← hd i, hd0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[Algebra.smul_def]`. Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. It suffices to derive a contradiction. Conclude with `nonZeroDivisors.coe_ne_zero b (hinj (by rw [map_zero]; exact h2))`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hfw` to reduce the goal to its premises. Rewrite using `[LinearMap.pi_apply_eq_sum_univ]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : p i`. Establish `h3` using `he i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [e, hi, if_true] at h3`. Rewrite using `[h3, smul_zero]`. Rewrite using `[hw i hi, map_zero, zero_smul]`. Rewrite `hmem` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) Finset.univ c`. Use `choose a ha using fun k => hb k (Finset.mem_univ k)`. Use `⟨b, nonZeroDivisors.coe_ne_zero b, a, fun i => hinj ?_⟩` and prove the remaining obligations. Establish `hi` using `congrFun hc i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hi`.
-
-Rewrite using `[map_mul, map_sum, ← hi, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ha k, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem span_of_ann {O : Type} [CommRing O] [IsDomain O] {σ : Type} [Fintype σ] (p : σ → Prop)
     {κ : Type} [Fintype κ] (v : κ → σ → O) (hv : ∀ k i, ¬ p i → v k i = 0)
@@ -103,26 +101,24 @@ private theorem span_of_ann {O : Type} [CommRing O] [IsDomain O] {σ : Type} [Fi
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Finsupp.weight_apply, Finsupp.sum_single_index] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem weight_single_one {σ : Type} (wt : σ → ℤ) (i : σ) :
     Finsupp.weight wt (Finsupp.single i 1) = wt i := by
   rw [Finsupp.weight_apply, Finsupp.sum_single_index] <;> simp
 
 /- English proof (translation)
-Introduce `O _ _ σ _ wt j κ _ F hF hx hd`. Use `haveI := Fintype.ofFinite κ`. Establish `hco : ∀ f ∈ Fgr O wt j, ∀ i, ¬ (wt i = j) → coeff (Finsupp.single i 1) (ser f) = 0`. Introduce `f hf i hi`. Rewrite `hf` using `[mem_Fgr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hf (Finsupp.single i 1) (by rw [weight_single_one]; exact hi)`. Unfold `SpansCot`. Introduce `q hq`. Unfold `cotLat at hq`. Take `⟨g, ⟨hgj, hg0⟩, rfl⟩` from `Submodule.mem_map.mp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg0' : x0 O wt g = 0` using `hg0`. Take `⟨c, hc, a, ha⟩` from `span_of_ann (fun i => wt i = j) (fun k i => coeff (Finsupp.single i 1) (ser (F k))) (fun k i hi => hco _ (hF k) i hi) hd (fun i => coeff (Finsupp.single i 1) (ser g)) (fun i hi => hco _ hgj i hi)`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hsat : c • g - ∑ k, a k • F k ∈ satSq (x0 O wt)`. Rewrite using `[mem_satSq_iff_constantCoeff_and_linearCoeff_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← weightedSeriesOrigin_apply]`. Simplify using `[map_sub, map_sum, map_smul, hg0', hx]`. Introduce `i`. Establish `hser : ser (c • g - ∑ k, a k • F k) = c • ser g - ∑ k, a k • ser (F k)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ser]`. Rewrite using `[hser, map_sub, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Conclude with `sub_eq_zero.mpr (ha i)`. Establish `heq : (satSq (x0 O wt)).mkQ (c • g) = (satSq (x0 O wt)).mkQ (∑ k, a k • F k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `hsat`. Unfold `cotSpan`. Rewrite using `[← map_smul, heq, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.spansCot_of_linear_terms_nondegenerate :
     ∀ (O : Type) [CommRing O] [IsDomain O] (σ : Type) [Fintype σ] (wt : σ → ℤ) (j : ℤ) (κ : Type) [Finite κ] (F : κ → FA O wt),

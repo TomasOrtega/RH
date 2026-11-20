@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Col2.DisjProof
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u`. Establish `hPr` using `(GlobalTheory.BasePrimes.primes_ok B X).1`. Establish `hT0 : (B.primes X).piT u ≠ 0` using `fun h => by`. Use `hPr.piT_norm u` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hPr.T_prime u).ne_zero (Nat.cast_eq_zero.1 this.symm)`. Conclude with `Finset.disjoint_left.2 fun P h1 h2 => Formalism.L2.Col.piT_notMem_vGs hPr u ⟨P, h2⟩ ((Formalism.L2.Col.mem_divs hT0 P).1 h1)`.
+A detailed English derivation is pending.
 -/
 theorem vT_disjoint_vGs : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ u : B.Word, Disjoint ((B.primes X).vT u) (B.primes X).vGs := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u

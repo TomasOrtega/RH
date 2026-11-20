@@ -4,9 +4,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : E.comp (MvPolynomial.coeToMvPowerSeries.algHom B) = MvPolynomial.aeval z`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[MvPolynomial.coeToMvPowerSeries.algHom_apply, hE.1 i]`. Use `congrArg (fun φ => φ P) h` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `this` using `[MvPolynomial.coeToMvPowerSeries.algHom_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eval_coe_polynomial_of_isEval {p : ℕ} {B : Type} [CommRing B] {σ : Type}
     (z : σ → B) (E : MvPowerSeries σ B →ₐ[B] B) (hE : IsEval p z E) (P : MvPolynomial σ B) :
@@ -19,15 +19,15 @@ theorem eval_coe_polynomial_of_isEval {p : ℕ} {B : Type} [CommRing B] {σ : Ty
   simpa [MvPolynomial.coeToMvPowerSeries.algHom_apply] using this
 
 /- English proof (translation)
-Introduce `p _ B O Q _ _ _ _ θ _ σ _ _ z _ E hE s m`. Take `⟨N, hN⟩` from `hE.2 m`. Use `⟨N, fun N' hN' => ?_⟩` and prove the remaining obligations. Use `set n : σ →₀ ℕ := Finsupp.equivFunOnFinite.symm fun _ => N'`. Establish `hdiv : (p : B) ^ m ∣ E (s - (trunc' B n s : MvPowerSeries σ B))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hN` to reduce the goal to its premises. Introduce `α hα`. Establish `hle : α ≤ n`. Introduce `i`. Establish `h1 : α i ≤ α.degree` using `by classical`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.degree]`. Distinguish the cases in `hi : i ∈ α.support`. Conclude with `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hi`. Simplify using `[Finsupp.notMem_support_iff.1 hi]`. Use `show α i ≤ N'`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[map_sub, MvPolynomial.coeff_coe, coeff_trunc', if_pos hle, sub_self]`. Take `⟨b, hb⟩` from `hdiv`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[map_sub, eval_coe_polynomial_of_isEval z E hE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : algebraMap B Q (MvPolynomial.eval z (trunc' B n s)) = MvPolynomial.eval₂ (algebraMap B Q) (fun i => algebraMap B Q (z i)) (trunc' B n s)`. Rewrite using `[MvPolynomial.eval, MvPolynomial.coe_eval₂Hom]`. Conclude with `MvPolynomial.eval₂_comp_left _ _ _ _`. Rewrite using `[trunc'_map, MvPolynomial.eval_map, ← key, ← map_sub, hb]`.
+A detailed English derivation is pending.
 -/
 theorem hasVal_map_of_isEval : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (z : σ → B), (∀ i, ∃ N : ℕ, (p : B) ∣ z i ^ N) → ∀ E : MvPowerSeries σ B →ₐ[B] B, IsEval p z E → ∀ s : MvPowerSeries σ B, HasVal p z (map (algebraMap B Q) s) (algebraMap B Q (E s)) := by
   intro p _ B O Q _ _ _ _ θ _ σ _ _ z _ E hE s m

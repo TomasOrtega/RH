@@ -60,7 +60,7 @@ def TestFnConstTermVanish : Prop :=
 def ParabolicAndConstTerm : Prop := ParabolicAtSplitPlaces ∧ TestFnConstTermVanish
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ i j : Fin 2, _) ↔ _`. Simplify using `[Fin.forall_fin_two]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 example (k : Type) [Field k] (g : GL (Fin 2) k) :
     g ∈ stdParabolic k 2 1 ↔ (g : Matrix (Fin 2) (Fin 2) k) 1 0 = 0 := by
@@ -68,7 +68,7 @@ example (k : Type) [Field k] (g : GL (Fin 2) k) :
   simp [Fin.forall_fin_two]
 
 /- English proof (translation)
-Introduce `u hu i j hj hi` and use `by by_contra h have := hu i j (by rwa [Matrix.one_apply_ne (by rintro rfl; omega)]) omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (k : Type) [Field k] (r a : ℕ) : GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical k r a ⊆ stdParabolic k r a := fun u hu i j hj hi => by
   by_contra h
@@ -76,12 +76,12 @@ example (k : Type) [Field k] (r a : ℕ) : GlobalTheory.IndefiniteRowSideFullHec
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Measure.haar, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 example {D : D7} {V : HSp D} (𝔉 : IsoFlag V) : ∃ ν : Measure (NA 𝔉), ν.IsHaarMeasure := ⟨Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `funext fun x => by obtain ⟨h1, h2⟩ := h Measure.haar x 1 have hc' : Continuous fun n : NA 𝔉 => φ (x * n * 1) := hc.comp (by fun_prop) rw [integral_complex_ofReal, Complex.ofReal_eq_zero, integral_eq_zero_iff_of_nonneg (f := fun n : NA 𝔉 => φ (x * n * 1)) (fun n => h0 _) (by simpa …`.
+A detailed English derivation is pending.
 -/
 example {D : D7} {V : HSp D} (𝔉 : IsoFlag V) {φ : GA D V → ℝ} (hc : Continuous φ) (h0 : 0 ≤ φ)
     (h : UnipIntegralsVanish 𝔉 fun g => (φ g : ℂ)) : φ = 0 := funext fun x => by

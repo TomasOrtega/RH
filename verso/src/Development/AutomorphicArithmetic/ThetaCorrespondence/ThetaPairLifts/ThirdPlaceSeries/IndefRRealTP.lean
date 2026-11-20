@@ -20,7 +20,7 @@ variable {Rc : _root_.Formalism.L2.RecTAlt ex} {P : RowSideFamily ex} {Dcf : ∀
   {S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
   (R : _root_.Formalism.IndefR.IndefiniteRealisation Rc P Dcf Spf Zscf S Ks)
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨R0, eq_of_heq hS⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem _root_.Formalism.IndefR.IndefiniteRealisation.rows_transport {Z Z' : DefSub P.A3.fam3.amb3} (h : Z = Z') (R0 : IndefRows (P.A3.side3 P.P0 P.ψ0 Z))
     (S : IndefData (P.A3.side3 P.P0 P.ψ0 Z')) (hS : HEq R0.toIndefData S) :
@@ -28,7 +28,7 @@ theorem _root_.Formalism.IndefR.IndefiniteRealisation.rows_transport {Z Z' : Def
   subst h
   exact ⟨R0, eq_of_heq hS⟩
 /- English proof (translation)
-Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hOk hsep R.charW hP`. Use `⟨R.zs ▸ hR.stable, R.zs ▸ hR.inBlock, ?_, ⟨s, hOk⟩, hsep⟩` and prove the remaining obligations. Conclude with `_root_.Formalism.IndefR.IndefiniteRealisation.rows_transport R.zs (primRows3 hOk hsep R.Rl R.F R.charW hP) P.S0 (by`. Rewrite using `[primRows3_data]`. Conclude with `R.s0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.IndefR.IndefiniteRealisation.rowsHold0 {s : ℕ} (hOk : P.A3.fam3.Ok3 s) (hsep : P.A3.fam3.TypesSep3) (hP : PrimRows3 R.Rl R.F) :
     RowsHold0_3 P := by

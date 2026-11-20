@@ -14,14 +14,14 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.DegAsm.WeightInf
 
 /- English proof (translation)
-Unfold `GlobalTheory.HL.invVol`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem invVol_nn {G : Type} [Group G] (A B : Subgroup G) : 0 ≤ GlobalTheory.HL.invVol A B := by
   unfold GlobalTheory.HL.invVol
   positivity
 
 /- English proof (translation)
-Unfold `GlobalTheory.HL.invVol`. Establish `h1'` using `Nat.pos_of_ne_zero h1`. Establish `h2'` using `Nat.pos_of_ne_zero h2`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem invVol_pos' {G : Type} [Group G] (A B : Subgroup G) (h1 : A.relIndex B ≠ 0) (h2 : B.relIndex A ≠ 0) :
     0 < GlobalTheory.HL.invVol A B := by
@@ -31,17 +31,15 @@ theorem invVol_pos' {G : Type} [Group G] (A B : Subgroup G) (h1 : A.relIndex B �
   positivity
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `N g Λ hg hT`. Establish `hnil` using `(GlobalTheory.UnipStab.common_unipotent_stabiliser K V H hK r N).2.2.2.2`. Establish `href` using `(GlobalTheory.DegCnt.InnerLat.main K V H hK r N g Λ hg hT).2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ : Submodule.IsLattice K Λ` using `((isUnimod_iff H Λ).1 hT.1.1).1`. Establish `h1` using `GlobalTheory.DegCnt.Unimod.invVol_smul K V N.R (2 * r + 1) hnil Λ _ hΛ href`. Establish `h2` using `GlobalTheory.DegCnt.Unimod.invVol_smul K V N.R (2 * r + 1) hnil _ Λ href hΛ`. Use `⟨invVol_pos' _ _ h2.1 h1.1, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h3` using `(GlobalTheory.DegCnt.StabInv.main K V H hK r N g Λ hg hT s hs).2.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `NF.om`. Rewrite using `[h3]`. Conclude with `h1.2 s hs`. Introduce `F F' 𝔡 Λ`. Establish `hnn : ∀ x ∈ ((fun N : NF H r => N.om Λ) '' {N | Adapt F F' 𝔡 N}), (0 : ℝ) ≤ x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨N, -, rfl⟩`. Conclude with `invVol_nn _ _`. Use `⟨Real.sInf_nonneg hnn, fun N hN => csInf_le ⟨0, hnn⟩ ⟨N, hN, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a c hc ⟨N₀, hN₀⟩ h`. Break down `hc.eq_or_lt with rfl | hc` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h N₀ hN₀`. Rewrite using `[← div_le_iff₀' hc]`. Use `le_csInf ⟨_, N₀, hN₀, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨N, hN, rfl⟩`. Rewrite using `[div_le_iff₀' hc]`.
-
-Conclude with `h N hN`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), (∀ (N : NF H r) (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → 0 < N.om Λ ∧ ∀ s ∈ N.R, N.om (s • Λ) = N.om Λ) ∧ ∀ (F F' : FlagD H r) (𝔡 : Ideal (𝓞 K)) (Λ : Submodule (𝓞 K) V), 0 ≤ omI F F' 𝔡 Λ ∧ (∀ N : NF H r, Adapt F F' 𝔡 N → omI F F' 𝔡 Λ ≤ N.om Λ) ∧ ∀ a c : ℝ, 0 ≤ c → (∃ N : NF H r, Adapt F F' 𝔡 N) → (∀ N : NF H r, Adapt F F' 𝔡 N → a ≤ c * N.om Λ) → a ≤ c * omI F F' 𝔡 Λ := by
   intro K V _ _ _ _ _ _ _ _ H hK r

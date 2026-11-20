@@ -32,17 +32,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨κ, hx, hxi, -⟩` from `xKappaOfNF Formalism.FourierDecayAlt.P.normal_form_actual kappaFibrePos Wp Wq P z z' π π' X μ L st l0 hD`. Establish `hT : 0 ≤ Tz P.k P.r z * Tz P.k P.r z'` using `Formalism.FourierDecayAlt.P.Qx5.place_alt_alt hD.1`. Take `⟨-, -, hAL, hQQ, -, -, -, hst⟩` from `hD`. Establish `hF : ∀ i j, Q.mkP (X.fn i) (X.fn j) ∈ ParameterFamilyAlgebra.goodAlg z z' π π'` using `fun i j => ParameterFamilyAlgebra.good_mkP (hfn P.k P.r z z' Wp Wq π π' hT X i) (hfn P.k P.r z z' Wp Wq π π' hT X j)`. Establish `hz : ∀ g ∈ zfns L, g ∈ ParameterFamilyAlgebra.goodAlg z z' π π'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, -, -, h1, h2, h3, h4, h5, h6, -⟩` from `hAL`. Introduce `g hg`. Simplify using `only [zfns, Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Break down `hg with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF _ _`. Rewrite using `[h2]`. Conclude with `hF _ _`. Rewrite using `[h3]`. Conclude with `hF _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Conclude with `hF _ _`. Rewrite using `[h5]`. Conclude with `hF _ _`. Rewrite using `[h6]`.
-
-Conclude with `hF _ _`. Establish `hQ : ∀ Y : ℂ, star Y = Y → ∀ i j, st.QQ Y i j ∈ ParameterFamilyAlgebra.goodAlg z z' π π'`. Introduce `Y _ i j`. Rewrite using `[hQQ Y, Matrix.smul_apply]`. Use `(ParameterFamilyAlgebra.goodAlg z z' π π').smul_mem ?_ _` and prove the remaining obligations.
-
-Conclude with `ParameterFamilyAlgebra.good_mkP (ht P.k P.r z z' Wp Wq π π' hOm hS X Y i j) (ht P.k P.r z z' Wp Wq π π' hOm hS X _ j i)`. Conclude with `HerA.gens_of _ L st hst κ _ hx hxi hz hQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gens_good (hfn : GoodFnLeaf) (ht : GoodTLeaf) (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ)
     (π : Mx P.k P.r → (Wp →L[ℂ] Wp)) (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π')
@@ -75,15 +71,13 @@ theorem gens_good (hfn : GoodFnLeaf) (ht : GoodTLeaf) (P : M.Par) (z z' : Fin (2
   exact HerA.gens_of _ L st hst κ _ hx hxi hz hQ
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p X μ L st hD w hA Par _ _ _ _ _ U₀ hU₀ hUpos Ψ Ψf hR hF`. Establish `hr0 : ∀ l : Fin (JC.parLev P P.r).r, False` using `fun l => by`. Use `l.isLt` as an intermediate fact. Simplify using `only [JC.parLev, Nat.sub_self] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hOm : ∀ c : Fin (JC.parLev P P.r).r → ℂ, c ∈ OmX (JC.parLev P P.r).r` using `fun c l => (hr0 l).elim`. Establish `hS : ∀ c c' : Fin (JC.parLev P P.r).r → ℂ, c = c'` using `fun c c' => funext fun l => (hr0 l).elim`. Establish `hg` using `gens_good hfn ht (JC.parLev P P.r) _ _ _ _ X μ L st p.l0 hD hOm hS`. Establish `hent : ∀ e e', ParameterFamilyAlgebra.Good _ _ _ _ ((Fr.ofWord L st (D.positionted w)).F e e').1` using `fun e e' => ((HerA.frameAlg L st hD.2.2.2.2.2.2.1 hD.2.2.2.2.2.2.2 hg (D.positionted w) hA e e').1).1`. Establish `key` using `fun e b => hent e b Par U₀ hU₀ hUpos (fun Z => Ψ Z b) (fun Z y => Ψf Z b y) (fun Z c y hy => hR Z b c y hy) (hF b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Φ hΦR hΦF hΦS hΦW using key`. Use `⟨fun Z e y => ∑ b, Φ e b Z y, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z e c y hy`. Simplify using `only [P5.act, Submodule.coe_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => hΦR e b Z c y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Conclude with `ParameterFamilyAlgebra.parFam_sum _ fun b _ => hΦF e b`. Introduce `K hK e q hq hG hqK`. Conclude with `Finset.sum_eq_zero fun b _ => hΦS e b K (fun q' hG' hq' => hK b q' hG' hq') q hq hG hqK`. Introduce `ν _ Kp hKp hν Ψi y V hV hyV hyG hKV hi e c`.
-
-Simplify using `only [P5.act, Submodule.coe_sum, Finset.sum_apply]`. Rewrite using `[integral_finsetSum _ (fun b _ => ParameterFamilyAlgebra.parFam_integrable (hΦF e b) hKp hν hyG (fun Z hZ => hKV ⟨hZ, hyV⟩))]`. Conclude with `Finset.sum_congr rfl fun b _ => hΦW e b ν Kp hKp hν (Ψi b) y V hV hyV hyG hKV (fun c' y' hy' hG' => hi b c' y' hy' hG') c`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameParam_of (hfn : GoodFnLeaf) (ht : GoodTLeaf) : PBI.FrameParam := by
   intro Wp Wq _ _ _ _ _ _ P p X μ L st hD w hA Par _ _ _ _ _ U₀ hU₀ hUpos Ψ Ψf hR hF

@@ -23,9 +23,9 @@ namespace GlobalTheory.CompanionTheory.Ar.SlopeNorm
 open GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Establish `hb : b ∈ Submodule.span ℂ W` using `hW ▸ Submodule.mem_top`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero`. Establish `e₁` using `c₁.smul_left 0 a 0`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e₂` using `c₂.smul_left 0 a 0`. Simplify using `only [smul_zero, map_zero, zero_mul] at e₁ e₂`. Rewrite using `[e₁, e₂]`. Consider the case `add x y _ _ hx hy => rw [c₁.add_left, c₂.add_left, hx, hy]`. Consider the case `smul r x _ hx => rw [c₁.smul_left, c₂.smul_left, hx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 -/
 theorem core_left {V : Type} [AddCommGroup V] [Module ℂ V] (c₁ c₂ : InnerProductSpace.Core ℂ V) (W : Set V)
     (hW : Submodule.span ℂ W = ⊤) (a : V) (h : ∀ b ∈ W, c₁.inner b a = c₂.inner b a) (b : V) :
@@ -42,7 +42,7 @@ theorem core_left {V : Type} [AddCommGroup V] [Module ℂ V] (c₁ c₂ : InnerP
   | smul r x _ hx => rw [c₁.smul_left, c₂.smul_left, hx]
 
 /- English proof (translation)
-Use `core_left c₁ c₂ W hW b (fun x hx => ?_) a` and prove the remaining obligations. Establish `e` using `core_left c₁ c₂ W hW x (fun y hy => h y hy x hx) b`. Rewrite using `[← c₁.conj_inner_symm, ← c₂.conj_inner_symm, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem core_eq {V : Type} [AddCommGroup V] [Module ℂ V] (c₁ c₂ : InnerProductSpace.Core ℂ V) (W : Set V)
     (hW : Submodule.span ℂ W = ⊤) (h : ∀ a ∈ W, ∀ b ∈ W, c₁.inner a b = c₂.inner a b) (a b : V) :
@@ -54,9 +54,9 @@ theorem core_eq {V : Type} [AddCommGroup V] [Module ℂ V] (c₁ c₂ : InnerPro
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Use `(Submodule.eq_top_iff'.2 fun x => ?_)` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `tmul c e`. Establish `hc : c ⊗ₜ[𝓞 L] e = ((ComplexAt.ofComplex σ).symm c : ℂ) • ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] e)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul', ComplexAt.complex_smul_def]`. Simplify using the standard rewrite rules. Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨e, rfl⟩)`. Consider the case `add a b ha hb => exact Submodule.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_tmul (σ : L →+* ℂ) (V : Type) [AddCommGroup V] [Module (𝓞 L) V] :
     Submodule.span ℂ (Set.range fun e : V => (1 : ComplexAt σ) ⊗ₜ[𝓞 L] e) = ⊤ := by
@@ -72,7 +72,7 @@ theorem span_tmul (σ : L →+* ℂ) (V : Type) [AddCommGroup V] [Module (𝓞 L
   | add a b ha hb => exact Submodule.add_mem _ ha hb
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spComp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (d : A →+* B) (c : B →+* C) :
     spMap c ≫ spMap d = spMap (c.comp d) := by
@@ -84,7 +84,7 @@ def lf {S : Scheme.{0}} {G : Over S} {R : Type} [CommRing R] {x : Sp R ⟶ S} (v
   v.left
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨M, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [CommRing R] {x x' : Sp R ⟶ S}
     (h : x = x') {V : Type} [AddCommGroup V] [Module R V] (M : LieModel G x V) :
@@ -93,7 +93,7 @@ theorem exists_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [Co
   exact ⟨M, fun _ => rfl⟩
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Conclude with `(LiePull.lieModel_pullback S S' G G' f φ h R x' V).1 M`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_lift {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {R : Type} [CommRing R] (x' : Sp R ⟶ S') {b : Sp R ⟶ S}
@@ -103,7 +103,7 @@ theorem exists_lift {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [
   exact (LiePull.lieModel_pullback S S' G G' f φ h R x' V).1 M
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LiePull.tanPts h x' v, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {R : Type} [CommRing R] (x' : Sp R ⟶ S')
@@ -111,7 +111,7 @@ theorem exists_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [
   ⟨LiePull.tanPts h x' v, rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : v = v'` from `Over.OverMorphism.ext hv`. Take `rfl : w = w'` from `Over.OverMorphism.ext hw`. Conclude with `hc`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hodge_congr {S : Scheme.{0}} {G : Over S} [GrpObj G] (Lb : LB G.left) {z z' : Sp ℂ ⟶ S} (h : z = z')
     {v w : epsAt z ⟶ G} {v' w' : epsAt z' ⟶ G} (hv : lf v = lf v') (hw : lf w = lf w') {c : ℂ}
@@ -122,7 +122,7 @@ theorem hodge_congr {S : Scheme.{0}} {G : Over S} [GrpObj G] (Lb : LB G.left) {z
   exact hc
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : v = v'` from `Over.OverMorphism.ext hv`. Take `rfl : w = w'` from `Over.OverMorphism.ext hw`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem ip_congr {S : Scheme.{0}} {G : Over S}
     (ip : ∀ z : Sp ℂ ⟶ S, (epsAt z ⟶ G) → (epsAt z ⟶ G) → ℂ) {z z' : Sp ℂ ⟶ S} (h : z = z')
@@ -138,23 +138,21 @@ end GlobalTheory.CompanionTheory.Ar.SlopeNorm
 open GroundTheory.Heights₂.Heights GlobalTheory.CompanionTheory.Ar.SlopeNorm GlobalTheory.CompanionTheory.Ar.LiePull in
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t L₁ L _ _ _ e₂ z₁ z hz P₁ P₂ mK2 mB2 c1 c2 t' tK m' mP w hw hw' Ω _ ξ Li _ _ M₀ K J y h K₀ hQ B B' MB MB' hB hB' f hf σ x`. Use `haveI : Smooth t.G.hom := t.semi.smooth`. Use `haveI : Smooth t'.G.hom := t'.semi.smooth`. Take `⟨Pσ, mKσ, mBσ, d1, d2⟩` from `GlobalTheory.T.abelian_part_base_change E H X t L₁ ℂ z₁ P₁ (σ.comp e₂)`. Take `⟨Mσ, hMσ⟩` from `GlobalTheory.T.lie_model_complex_base_change X t.G L z B.carrier MB σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Mσ', hMσ'⟩` from `GlobalTheory.T.lie_model_complex_base_change (Sp (𝓞 L)) t'.G L (𝟙 _) B'.carrier MB' σ`. Establish `hb : spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z = spMap (σ.comp e₂) ≫ z₁`. Rewrite using `[← spComp (algebraMap (𝓞 L) L) σ, ← spComp e₂ σ, Category.assoc, Category.assoc, hz]`. Establish `hb' : spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _ = spMap σ ≫ spMap (algebraMap (𝓞 L) L)`. Rewrite using `[Category.comp_id, spComp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb2 : spMap σ ≫ spMap e₂ = 𝟙 _ ≫ spMap (σ.comp e₂)`. Rewrite using `[Category.id_comp, spComp]`. Take `⟨core₁, hcore₁⟩` from `h.herm _ (Fibre σ B.carrier) Mσ`. Establish `h1 : ∀ a b, (B.metric.form σ).inner a b = h.ip _ (Mσ.pt a) (Mσ.pt b)`. Introduce `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcore₁]`. Use `core_eq _ _ _ (span_tmul σ _) ?_ a b` and prove the remaining obligations. Introduce and unpack `_ ⟨e, rfl⟩ _ ⟨e', rfl⟩`. Rewrite using `[hcore₁]`. Conclude with `hB σ e e' _ _ (hMσ e) (hMσ e')`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Mz, hMz⟩` from `exists_transport hb' Mσ'`. Establish `h2 : ∀ a b, HodgeIP t'.G t'.PP.L (spMap σ ≫ spMap (algebraMap (𝓞 L) L)) (Mz.pt a) (Mz.pt b) ((B'.metric.form σ).inner a b)`. Use `GlobalTheory.T.hodge_inner_product_on_span E H (Sp L) (Sp (𝓞 L)) tK t' (spMap (algebraMap (𝓞 L) L)) m' (spMap σ) (Fibre σ B'.carrier) Mz (B'.metric.form σ) (Set.range fun e => (1 : ComplexAt σ) ⊗ₜ[𝓞 L] e) ⟨0, TensorProduct.tmul_zero _ _⟩ (span_tmul σ _) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, rfl⟩ _ ⟨e', rfl⟩`. Conclude with `hodge_congr t'.PP.L hb' (hMz _).symm (hMz _).symm (hB' σ e e' _ _ (hMσ' e) (hMσ' e'))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Mc, hMc⟩` from `exists_transport hb Mσ`. Take `⟨Mv, hMv⟩` from `exists_lift Pσ.m.cart (𝟙 _) (by rw [Category.id_comp]; exact hb.symm) Mσ`. Take `⟨Mu, hMu⟩` from `exists_lift m'.cart (spMap σ) hb'.symm Mσ'`. Establish `hv₀ : lf (Mv.pt x) ≫ Pσ.m.φ = lf (Mc.pt x)` using `(hMv x).trans (hMc x).symm`. Establish `h3` using `GlobalTheory.T.abelian_part_maps_compatible_left E H X t L₁ L e₂ z₁ z hz P₁ P₂ mK2 mB2 c1 c2 t' tK m' mP w hw hw' B.carrier B'.carrier MB MB' f hf σ Pσ mKσ mBσ d1 d2 Mσ hMσ Mσ' hMσ' x (Mv.pt x) (Mu.pt (f.lTensor (ComplexAt σ) x)) (hMv x) (hMu _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hUz : lf (Mu.pt (f.lTensor (ComplexAt σ) x)) ≫ m'.φ = lf (Mz.pt (f.lTensor (ComplexAt σ) x))` using `(hMu _).trans (hMz _).symm`. Establish `a1` using `((GlobalTheory.T.hodge_inner_product_pullback_unique E H (Sp L) (Sp (𝓞 L)) tK t' (spMap (algebraMap (𝓞 L) L)) m' (spMap σ) (Mu.pt (f.lTensor (ComplexAt σ) x)) (Mu.pt (f.lTensor (ComplexAt σ) x)) (Mz.pt (f.lTensor (ComplexAt σ) x)) (Mz.pt (f.lTensor (ComplexAt σ) x)) hUz hUz).1 _) …`. Take `⟨U, hU⟩` from `exists_push mP.cart (spMap σ) (Mu.pt (f.lTensor (ComplexAt σ) x))`. Take `⟨Vv, hV⟩` from `exists_push mBσ.cart (𝟙 _) (Mv.pt x ≫ Pσ.τ.q ≫ Pσ.e.hom)`. Establish `a2` using `((GlobalTheory.T.hodge_inner_product_pullback_unique E H (Sp L) (Sp L₁) tK P₁.tB (spMap e₂) mP (spMap σ) (Mu.pt (f.lTensor (ComplexAt σ) x)) (Mu.pt (f.lTensor (ComplexAt σ) x)) U U hU hU).1 _).1 a1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUV : lf U = lf Vv` using `hU.symm.trans (Eq.trans h3 hV)`. Establish `a3` using `((GlobalTheory.T.hodge_inner_product_pullback_unique E H (Sp ℂ) (Sp L₁) Pσ.tB P₁.tB (spMap (σ.comp e₂)) mBσ (𝟙 _) (Mv.pt x ≫ Pσ.τ.q ≫ Pσ.e.hom) (Mv.pt x ≫ Pσ.τ.q ≫ Pσ.e.hom) Vv Vv hV hV).1 _).2 (hodge_congr P₁.tB.PP.L hb2 hUV hUV a2)`. Establish `h5` using `hQ (spMap (σ.comp e₂) ≫ z₁) Pσ (Mv.pt x) (Mc.pt x) _ (Mv.tan x) hv₀ a3`. Establish `h6 : h.ip _ (Mc.pt x) (Mc.pt x) = (B.metric.form σ).inner x x`. Rewrite using `[h1]`.
-
-Conclude with `ip_congr h.ip hb.symm (hMc x) (hMc x)`. Rewrite `h5` using `[h6]`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.SlopeNorm.sqAt_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (L₁ L : Type) [Field L₁] [Field L] [NumberField L] (e₂ : L₁ →+* L) (z₁ : Sp L₁ ⟶ X) (z : Sp (𝓞 L) ⟶ X) (hz : spMap (algebraMap (𝓞 L) L) ≫ z = spMap e₂ ≫ z₁) (P₁ : AbPart t z₁) (P₂ : AbPart t (spMap e₂ ≫ z₁)) (mK2 : SABMap P₂.tK P₁.tK (spMap e₂)) (mB2 : SABMap P₂.tB P₁.tB (spMap e₂)) (c1 : mK2.φ ≫ P₁.m.φ = P₂.m.φ) (c2 : mK2.φ ≫ (P₁.τ.q ≫ P₁.e.hom).left = (P₂.τ.q ≫ P₂.e.hom).left ≫ mB2.φ) (t' : SAB H (Sp (𝓞 L))) (tK : SAB H (Sp L)) (m' : SABMap tK t' (spMap (algebraMap (𝓞 L) L))) (mP : SABMap tK P₁.tB (spMap e₂)) (w : P₂.tB.G.left ⟶ tK.G.left) (hw : w ≫ mP.φ = mB2.φ) (hw' : w ≫ tK.G.hom = P₂.tB.G.hom) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M₀ : LieModel t.G ξ Li) (K : Type) (J : K → Type) (y : (Σ k, J k) → Ω) (h : LieMetric M₀ y) (K₀ : ℝ) (hQ : ∀ (zc : Sp ℂ ⟶ X) (P : AbPart t zc) (v : epsAt (𝟙 (Sp ℂ)) ⟶ P.tK.G) (v₀ : epsAt zc ⟶ t.G) (c : ℂ), IsTanAt _ _ v → v.left ≫ P.m.φ = v₀.left → HodgeIP P.tB.G P.tB.PP.L (𝟙 _) (v ≫ P.τ.q ≫ P.e.hom) (v ≫ P.τ.q ≫ P.e.hom) c → c.re ≤ K₀ * (h.ip zc v₀ v₀).re) (B B' : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel t.G z B.carrier) (MB' : LieModel t'.G (𝟙 _) B'.carrier) (hB : IsFibre (fun z v w c => c = h.ip z v w) z B MB) (hB' : IsFibre (HodgeIP t'.G t'.PP.L) (𝟙 _) B' MB') (f : B.carrier →ₗ[𝓞 L] B'.carrier) (hf : ∀ (e : B.carrier) (v : epsAt (𝟙 (Sp L)) ⟶ P₂.tK.G), MB.Lifts (algebraMap (𝓞 L) L) P₂.m.φ e v → MB'.Lifts (algebraMap (𝓞 L) L) (P₂.e.hom.left ≫ w ≫ m'.φ) (f e) (v ≫ P₂.τ.q)) (σ : L →+* ℂ) (x : GroundTheory.Heights₂.Heights.Fibre σ B.carrier), sqAt B' σ (f.lTensor (GroundTheory.Heights₂.Heights.ComplexAt σ) x) ≤ K₀ * sqAt B σ x := by
   intro E _ _ _ H X t L₁ L _ _ _ e₂ z₁ z hz P₁ P₂ mK2 mB2 c1 c2 t' tK m' mP w hw hw' Ω _ ξ Li _ _ M₀ K J y h K₀ hQ

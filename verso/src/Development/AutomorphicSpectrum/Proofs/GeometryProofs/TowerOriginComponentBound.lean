@@ -31,7 +31,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Plug.RdEx
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -39,7 +39,7 @@ theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite using `[spMap_comp']`. Use `congr 1`. Use `RingHom.ext fun t => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Formalism.L2.Pj.dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spMap_dual_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (Formalism.L2.Pj.dualMap g) ≫ spMap (Formalism.L2.Pj.dualMap f) = spMap (Formalism.L2.Pj.dualMap (g.comp f)) := by
@@ -51,35 +51,33 @@ theorem spMap_dual_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y SS RM Sys Fx Or Fr h Z hcomp hgt hWD`. Use `letI := Small.cstAlg Or`. Take `⟨ψ, hψ1, hψ2⟩` from `GlobalTheory.CompanionTheory.Ar.KapEquiv.exists_kap_equiv E H Dw l Xo c Y SS RM Sys Fx Or Z hcomp`. Take `⟨hyx, y₀, hy₀, hcomb⟩` from `isGenFr_genFr h Z`. Set `χ : kap Z →ₐ[c.F] RM.Ω` to `{ Or.𝔐.fn.comp ψ.toRingHom with commutes' := hψ2 }`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨y₂, hy₂⟩` from `GlobalTheory.FrameNorm.exists_frMap_along χ y₀`. Take `⟨hpt₂, hlie⟩` from `GlobalTheory.T.root_origin_component_iso_relay E H Dw l Xo c Y SS RM Sys Fx Or Z ψ hψ1 y₀ hy₀ χ y₂ rfl hy₂`. Use `choose e he hi hev using hlie`. Use `letI fa := Or.𝔐.fn.toAlgebra`. Take `⟨v, Tm, hv1, hv0, hvi, hvd, hb, hT0, hTd⟩` from `GlobalTheory.T.generic_flag_triangular_relay Or.𝔐.Ω₀ RM.Ω Or.Fl.Li₀ Or.𝔐.Li Or.Fl.j (CMType H ⊕ CMType H) (labelRk Dw) Or.Fl.V₀ Or.Fl.b Or.Fl.deg Or.Fl.generic e he hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hTi, hTr, hTv⟩` from `GlobalTheory.T.flag_variables_alg_indep E H Dw Or.𝔐.Ω₀ RM.Ω v hvi`. Take `⟨φ, hφC, hφX, hφd⟩` from `GlobalTheory.T.polynomial_field_extension_degree (kap Z) Or.𝔐.Ω₀ RM.Ω (FlagVar Dw) ψ T hTi`. Establish `hφk : ∀ a : kap Z, φ (algebraMap (kap Z) (Om Z) a) = Or.𝔐.fn (ψ a)` using `fun a => hφC a`. Establish `hφcst : ∀ a : c.F, φ (algebraMap c.F (Om Z) a) = Or.𝔐.cst a` using `fun a => by`. Rewrite using `[← hψ2 a, ← hφk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `φa : Om Z →ₐ[c.F] RM.Ω` to `{ φ with commutes' := hφcst }`. Take `⟨y', hy'⟩` from `GlobalTheory.FrameNorm.exists_frMap_along φa (genFr h Z)`. Establish `hφχ : φ.comp (algebraMap (kap Z) (Om Z)) = χ.toRingHom` using `RingHom.ext hφk`. Establish `hxx : y'.x = y₂.x`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy'.1, hy₂.1, hyx, hy₀]`. Use `show spMap φ ≫ spMap _ ≫ _ = spMap χ.toRingHom ≫ _`. Rewrite using `[← Category.assoc, spMap_comp', hφχ]`. Establish `hptF : Small.ptF y' = Small.ptF y₂` using `pullback.hom_ext (by rw [Small.ptF_fst, Small.ptF_fst, hxx]) (by rw [Small.ptF_snd, Small.ptF_snd])`. Establish `hpt' : Small.ptY Y y' = Or.𝔐.ξ ≫ Or.𝔐.f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hpt₂, Small.ptY, Small.ptY, hptF]`. Establish `hcoef : ∀ (s : CMType H ⊕ CMType H) (k m : Fin (labelRk Dw s)), φ (genCoef Z (Small.labelC s) (Small.labelFin Dw s k) (Small.labelFin Dw s m)) = v s m k`. Introduce `s k m`. Unfold `genCoef`. Use `split_ifs with h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Use `hφX ⟨Small.labelC s, ⟨(Small.labelFin Dw s k, Small.labelFin Dw s m), h1⟩⟩` as an intermediate fact. Use `this.trans ((hTv s _ _ h1).trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Establish `: k = m` using `Fin.ext (show (k : ℕ) = m from congrArg (fun x : Fin (Dw.mult (Small.labelC s)) => (x : ℕ)) h2)`. Substitute `this` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_one, hv1]`. Establish `: m < k`. Establish `h3 : ¬ (k : ℕ) < m` using `h1`. Establish `h4 : (k : ℕ) ≠ m` using `fun e' => h2 (Fin.ext e')`. Conclude with `Fin.lt_def.2 (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_zero, hv0 s m k this]`. Establish `hc : ∀ (s : CMType H ⊕ CMType H) (k : Fin (labelRk Dw s)), IsCombAt y₂.x (y₂.u (Small.labelC s)) (fun j => φ (genCoef Z (Small.labelC s) (Small.labelFin Dw s k) j)) (y'.u (Small.labelC s) (Small.labelFin Dw s k))`. Introduce `s k`. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isCombAt_bc (ψ := φ) (x0 := (genFr h Z).x) (x0' := y'.x) hy'.1 (hcomb (Small.labelC s) (Small.labelFin Dw s k))`. Establish `h2 : ∀ j, spMap (Formalism.L2.Pj.dualMap φ) ≫ spMap (Formalism.L2.Pj.dualMap (algebraMap (kap Z) (Om Z))) ≫ y₀.u (Small.labelC s) j = y₂.u (Small.labelC s) j` using `fun j => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hy₂.2.1, ← Category.assoc, spMap_dual_comp', hφχ]`. Establish `h3 : y'.u (Small.labelC s) (Small.labelFin Dw s k) = spMap (Formalism.L2.Pj.dualMap φ) ≫ (genFr h Z).u (Small.labelC s) (Small.labelFin Dw s k)` using `hy'.2.1 _ _`. Rewrite using `[h3, ← hxx]`. Simplify `h1` using `only [h2]`. Set `Wv : ∀ s, Fin (labelRk Dw s) → Or.𝔐.Li` to `fun s m => ∑ k, v s k m • Or.Fl.j (e s k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hW : ∀ s k, (Or.𝔐.M.pt (Wv s k)).left ≫ Or.𝔐.m.φ = Small.tanY Y y' (Small.labelC s) (Small.labelFin Dw s k)`. Introduce `s k`. Use `GlobalTheory.T.root_origin_constant_algebra_points E H Dw l Xo c Y SS RM Sys Fx Or y₂ y' hpt₂ hxx s (fun m => Or.Fl.j (e s m)) (hev s) _ k (hc s k)` as an intermediate fact. Simplify `this` using `only [hcoef]`. Take `⟨t, hbor⟩` from `GlobalTheory.T.root_origin_generic_frame_constants E H Dw l Xo c Y SS RM Sys Fx Or Fr y' hpt' Wv Tm hW hb hT0 hTd`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨φ, hφcst, t, fun a f hf => ?_, ?_⟩, y', hy', hbor⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CompanionTheory.Ar.Rec.FieldPt.evR_frBor_secZ_field E H Dw l Xo c a f RM.Ω t y' Fr.y₀ hf hbor`. Take `⟨p, ψ₁, z, hz⟩` from `hgt`. Establish `key : ∀ {S : Type} [CommRing S] [Algebra c.F S] (w : FrPt Xo c S) (ψ' : p.R →ₐ[c.F] S), FrMap ψ' z w → evR Xo c f w = ψ' (f p z)`. Introduce `S _ _ w ψ' hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hft : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) w := ⟨p, ψ', z, hw⟩`. Use `show evalAt _ _ f w = _`. Unfold `evalAt`. Rewrite using `[dif_pos hft]`. Conclude with `hWD f hf.1 S _ p _ ψ' _ z w hft.choose_spec.choose_spec.choose_spec hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : evC h Z f = ψ₁ (f p z)` using `key _ _ hz`. Establish `h3 : evR Xo c f y' = φ (evC h Z f)`. Rewrite using `[key y' (φa.comp ψ₁) (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans ψ₁ φa hz hy'), h2]`. Both sides reduce to the same expression. Use `show evR Xo c f Fr.y₀ = _`.
-
-Rewrite using `[h1, h3]`. Establish `h1` using `hφd`. Rewrite `h1` using `[hTr, hvd]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (h : GenFrEx Xo c) (Z : Comp Xo c), GlobalTheory.CompanionTheory.Ar.genPt Fx.ξf = Y.j (Formalism.L2.Pj.genPt Z) → FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (genFr h Z) → EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) → ∃ Rd : Reading Fr h Z, GeoRead Rd := by
   intro E _ _ _ H Dw l Xo c Y SS RM Sys Fx Or Fr h Z hcomp hgt hWD
@@ -171,7 +169,7 @@ end GlobalTheory.CompanionTheory.Ar.Plug.RdEx
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U h e hl Y T o κ hκ B Z`. Take `⟨Fr⟩` from `GlobalTheory.CompanionTheory.Ar.GenEx.genFrame_exists E H Dw l Xo c Y (o.S B) (T.M B (κ Z)) (o.Sys (κ Z)) (o.Fx (κ Z)) (o.Or B (κ Z))`. Take `⟨Rd, hR⟩` from `RdEx.core E H Dw l Xo c Y (o.S B) (T.M B (κ Z)) (o.Sys (κ Z)) (o.Fx (κ Z)) (o.Or B (κ Z)) Fr h Z (hκ Z) (hl.genT Z) hl.evalWD`. Conclude with `⟨Fr, Rd, hR⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_geoRead : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : TowerOrigin Y T) (κ : Comp Xo c ≃ T.Comp), CompOf o κ → ∀ (B : ℕ) (Z : Comp Xo c), ∃ (Fr : Small.GenFrame (o.Or B (κ Z))) (Rd : Reading Fr h Z), GeoRead Rd := by
   intro E _ _ _ H Dw l Xo c r U h e hl Y T o κ hκ B Z

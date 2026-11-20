@@ -13,11 +13,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Establish `key : ∀ (j : Fin 6) (f : ℂ → ℂ), (∀ g, Q.fnVal P.k P.r Bs.z Bs.z' j g = f (Q.zetaL P.k P.r Bs.z Bs.z' (Fin.last P.r) g)) → ((X.fn j Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = NF.mulZ P.k P.r Bs.z Bs.z' f (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp))`. Introduce `j f hf`. Use function extensionality and compare the values at `c g`. Unfold `NF.mulZ`. Distinguish the cases in `hx : (c, g) ∈ Q.DomR P.k P.r Bs.z Bs.z'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hx]`. Establish `h1` using `X.fn_apply j Φ (c, g) hx`. Simplify using `only at h1`. Rewrite using `[h1, hf]`. Simplify using `only [Set.indicator, hx, if_false]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨h0, -, -⟩` from `(X.fn j Φ).2`. Conclude with `h0 (c, g) hx`. Conclude with `⟨key 0 id (fun _ => rfl), key 2 (starRingEnd ℂ) (fun _ => rfl)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gcl_fn_mulZ {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π')
     (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
@@ -45,7 +45,7 @@ theorem gcl_fn_mulZ {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} (X : Q.Actu
 end fin
 
 /- English proof (translation)
-Establish `hmem : (fun q : MA.Qp P.r P.TT => f q.1.2) ∈ MA.smSub P.r P.TT` using `by show ContDiffOn ℝ _ (MA.ext _) (MA.Qset P.r P.TT)`. Use `(hf.comp contDiff_snd.contDiffOn (fun x hx => hx.2)).congr (fun x hx => ?_)` and prove the remaining obligations. Simplify using `[MA.ext, hx]`. Simplify using `only [fnZ, MA.toSm, dif_pos hmem]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem fnZ_apply_eq_snd (P : M.Par) (f : ℂ → ℂ)
     (hf : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f (Ann P)) (q : MA.Qp P.r P.TT) :
@@ -57,29 +57,25 @@ private theorem fnZ_apply_eq_snd (P : M.Par) (f : ℂ → ℂ)
   simp only [fnZ, MA.toSm, dif_pos hmem]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk hN hNs`. Establish `hTT : 0 ≤ P.TT` using `torus_parameter Wp Wq P Bs X d hH`. Establish `hact` using `hH.2.2.2.1`. Establish `hR` using `hH.2.2.2.2.2.1`. Establish `hζ1 : d.L.ζ.1 = X.fn 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hact.2.2.2.2.2.2.1]`. Both sides reduce to the same expression. Establish `hζb1 : d.L.ζb.1 = X.fn 2`. Rewrite using `[hact.2.2.2.2.2.2.2.2.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hmulζ : ∀ Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', ((d.L.ζ.1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = NF.mulZ P.k P.r Bs.z Bs.z' id (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp))`. Introduce `Φ`. Rewrite using `[hζ1]`. Conclude with `(gcl_fn_mulZ X Φ).1`. Establish `hmulζb : ∀ Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', ((d.L.ζb.1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = NF.mulZ P.k P.r Bs.z Bs.z' (starRingEnd ℂ) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Φ`. Rewrite using `[hζb1]`. Conclude with `(gcl_fn_mulZ X Φ).2`. Establish `hΨζ : ∀ Φ Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', (Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = NF.mulZ P.k P.r Bs.z Bs.z' id (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) → Ψ = d.L.ζ.1 Φ` using `fun Φ Ψ h => Subtype.ext (h.trans (hmulζ Φ).symm)`. Establish `hΨζb : ∀ Φ Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', (Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = NF.mulZ P.k P.r Bs.z Bs.z' (starRingEnd ℂ) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) → Ψ = d.L.ζb.1 Φ` using `fun Φ Ψ h => Subtype.ext (h.trans (hmulζb Φ).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : d.L.nab.1 * d.L.ζ.1 = d.L.ζ.1 * d.L.nab.1 + 1` using `congrArg Prod.fst d.L.nab_ζ`. Establish `c2 : d.L.nab.1 * d.L.ζb.1 = d.L.ζb.1 * d.L.nab.1` using `congrArg Prod.fst d.L.nab_ζb`. Establish `c3 : d.L.nabs.1 * d.L.ζ.1 = d.L.ζ.1 * d.L.nabs.1` using `congrArg Prod.fst d.L.nabs_ζ`. Establish `c4 : d.L.nabs.1 * d.L.ζb.1 = d.L.ζb.1 * d.L.nabs.1 - 1` using `congrArg Prod.fst d.L.nabs_ζb`. Establish `hκ1 : ∀ (f : M.Ty P → ℂ) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), d.L.nab.1 ((d.κ f).1 Φ) = (d.κ f).1 (d.L.nab.1 Φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f Φ`. Establish `h` using `(hR.2.1 f d.L.nab (Or.inr (Or.inl rfl))).eq`. Establish `h1 : (d.κ f).1 * d.L.nab.1 = d.L.nab.1 * (d.κ f).1` using `congrArg Prod.fst h`. Conclude with `(LinearMap.congr_fun h1 Φ).symm`. Establish `hκ2 : ∀ (f : M.Ty P → ℂ) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), d.L.nabs.1 ((d.κ f).1 Φ) = (d.κ f).1 (d.L.nabs.1 Φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f Φ`. Establish `h` using `(hR.2.1 f d.L.nabs (Or.inr (Or.inr rfl))).eq`. Establish `h1 : (d.κ f).1 * d.L.nabs.1 = d.L.nabs.1 * (d.κ f).1` using `congrArg Prod.fst h`. Conclude with `(LinearMap.congr_fun h1 Φ).symm`. Take `⟨A, hAs, hA⟩` from `gcl_core P Bs X d hH e he hk d.L.nab.1 hN 1 0 (fun Φ Ψ h => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΨζ Φ Ψ h, show d.L.nab.1 (d.L.ζ.1 Φ) = d.L.ζ.1 (d.L.nab.1 Φ) + Φ from LinearMap.congr_fun c1 Φ, Submodule.coe_add, hmulζ, one_smul])`. Use the proof step `(fun Φ Ψ h => by`. Rewrite using `[hΨζb Φ Ψ h, show d.L.nab.1 (d.L.ζb.1 Φ) = d.L.ζb.1 (d.L.nab.1 Φ) from LinearMap.congr_fun c2 Φ, hmulζb, zero_smul, add_zero])`. Use `hκ1`. Take `⟨B, hBs, hB⟩` from `gcl_core P Bs X d hH e he hk d.L.nabs.1 hNs 0 (-1) (fun Φ Ψ h => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΨζ Φ Ψ h, show d.L.nabs.1 (d.L.ζ.1 Φ) = d.L.ζ.1 (d.L.nabs.1 Φ) from LinearMap.congr_fun c3 Φ, hmulζ, zero_smul, add_zero])`. Use the proof step `(fun Φ Ψ h => by`. Rewrite using `[hΨζb Φ Ψ h, show d.L.nabs.1 (d.L.ζb.1 Φ) = d.L.ζb.1 (d.L.nabs.1 Φ) - Φ from LinearMap.congr_fun c4 Φ, Submodule.coe_sub, hmulζb, neg_one_smul, sub_eq_add_neg])`. Use `hκ2`. Use `⟨A, B, fun ρ => ⟨hAs ρ, hBs ρ⟩, fun Φ ρ => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Rewrite using `[hA Φ ρ q]`. Simplify using `only [Subalgebra.coe_add, Subalgebra.coe_mul, Pi.add_apply, Pi.mul_apply]`. Rewrite using `[dzQ_apply P hTT, fnZ_apply_eq_snd P (A ρ) (hAs ρ)]`.
-
-Expand and normalize the polynomial expressions, which then agree. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Rewrite using `[hB Φ ρ q]`. Simplify using `only [Subalgebra.coe_add, Subalgebra.coe_mul, Subalgebra.coe_neg, Pi.add_apply, Pi.mul_apply, Pi.neg_apply]`.
-
-Rewrite using `[dzbQ_apply P hTT, fnZ_apply_eq_snd P (B ρ) (hBs ρ)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem local_frame_holds : GTCLFrame := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk hN hNs

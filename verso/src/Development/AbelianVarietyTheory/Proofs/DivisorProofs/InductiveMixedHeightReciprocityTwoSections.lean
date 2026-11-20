@@ -15,9 +15,9 @@ namespace GlobalTheory.MixHt
 set_option autoImplicit false
 
 /- English proof (translation)
-Establish `hg : genericPoint (clo z) ∈ nonzeroLocus (secPull t (cloι z))`. Rewrite using `[GlobalTheory.nonzeroLocus_secPull]`. Use `show cloι z (genericPoint (clo z)) ∈ nonzeroLocus t`. Rewrite using `[cloι_genericPoint]`. Conclude with `hzt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : topologicalKrullDim (clo z) = ((e + 1 : ℕ) : WithBot ℕ∞)` using `((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hA (e + 1) hdim).2 z (genericPoint (clo z)) hz).1`. Establish `h` using `hT.recur (clo z) (cloι z ≫ q) (cloι z) rfl e le_rfl hd N L (N.restr (cloι z)) (fun a => (L a).restr (cloι z)) (HermLB.Isometric.refl _) (fun _ => HermLB.Isometric.refl _) _ (isRatSec_ratOfSec _ hg)`. Rewrite `h` using `[cloι_genericPoint]`. Rewrite using `[h, resCyc, resArch, dif_pos hg, dif_pos hg]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mixRecVal_cons_eq_resCyc_sub_resArch {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y]
     [IsLocallyNoetherian Y] {q : Y ⟶ Sp k} (hA : IsAmb q) {e : ℕ} (hdim : topologicalKrullDim Y = (e + 1 + 1 : ℕ))
@@ -43,7 +43,7 @@ end GlobalTheory.MixHt
 namespace GlobalTheory.MixHt
 
 /- English proof (translation)
-The claim follows from `D.finite_support_mult.subset fun z hz => by simp only [Function.mem_support] at hz ⊢ intro h simp [h] at hz`.
+A detailed English derivation is pending.
 -/
 theorem finite_support_mult_mul {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y] [CompactSpace Y]
     (D : CartierDiv Y) (g : Y → ℝ) : (Function.support fun z => (D.mult z : ℝ) * g z).Finite :=
@@ -53,13 +53,13 @@ theorem finite_support_mult_mul {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoethe
     simp [h] at hz
 
 /- English proof (translation)
-Introduce `hAR k _ Y _ _ q hA e hdim T hT M N L s t hs ht hcov`. Establish `: IsNoetherian Y` using `hA.isNoetherian`. Establish `key (A B : HermLB q) (a : A.B.Sec) (b : B.B.Sec) (ha : genericPoint Y ∈ nonzeroLocus a) (hab : ∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus a ∨ z ∈ nonzeroLocus b) (z : Y) : ((divOfSec A.isLB a ha).mult z : ℝ) * T (e + 1) (Fin.cons B L) z = ((divOfSec A.isLB a ha).mult z : ℝ) …`. Distinguish the cases in `h0 : (divOfSec A.isLB a ha).mult z = 0`. Simplify using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hz` using `CartierDiv.coheight_eq_one_of_mult_ne_zero h0`. Establish `hza : z ∉ nonzeroLocus a` using `fun h => (notMem_supp_divOfSec.2 h) (CartierDiv.mem_supp_of_mult_ne_zero h0)`. Rewrite using `[mixRecVal_cons_eq_resCyc_sub_resArch hA hdim hT B L b hz ((hab z hz).resolve_left hza), mul_sub]`. Establish `hL : recVal (T (e + 1) (Fin.cons N L)) (Fin.cons N L : Fin (e + 1) → HermLB q) M (isRatSec_ratOfSec s hs) = (∑ᶠ z, ((divOfSec M.isLB s hs).mult z : ℝ) * resCyc N.isLB t (T e L) z - ∑ᶠ z, ((divOfSec M.isLB s hs).mult z : ℝ) * resArch L N t z) - mixArch (Fin.cons N L : Fin (e + 1) …`. Rewrite using `[recVal, finsum_congr (key M N s t hs hcov), finsum_sub_distrib (finite_support_mult_mul _ _) (finite_support_mult_mul _ _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR : recVal (T (e + 1) (Fin.cons M L)) (Fin.cons M L : Fin (e + 1) → HermLB q) N (isRatSec_ratOfSec t ht) = (∑ᶠ z, ((divOfSec N.isLB t ht).mult z : ℝ) * resCyc M.isLB s (T e L) z - ∑ᶠ z, ((divOfSec N.isLB t ht).mult z : ℝ) * resArch L M s z) - mixArch (Fin.cons M L : Fin (e + 1) …`. Rewrite using `[recVal, finsum_congr (key N M t s ht fun z hz => (hcov z hz).symm), finsum_sub_distrib (finite_support_mult_mul _ _) (finite_support_mult_mul _ _)]`. Establish `hC` using `GlobalTheory.T.iteratedWeilDivisorSum_symm_no_common_divisor k Y q hA M.B N.B M.isLB N.isLB s t hs ht hcov (T e L)`. Rewrite using `[hL, hR, hC]`. Break down `GlobalTheory.T.projArithAmbient_vertical_or_arithmeticVariety k Y q hA (e + 1 + 1) hdim with ⟨l, _, _, hno⟩ | ⟨e', he', hav⟩` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `z₀` using `GlobalTheory.T.mixedArch_restricted_eq_zero_of_no_complexPoints k Y q hno`. Rewrite using `[(z₀ (e + 1) (Fin.cons N L) M).1, (z₀ (e + 1) (Fin.cons M L) N).1]`. Simplify using `only [(z₀ e L N).2, (z₀ e L M).2, mul_zero, finsum_zero]`. Take `rfl : e' = e + 1` from `by omega`. Establish `hA'` using `hAR k Y q e hav M N L s t hs ht hcov`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

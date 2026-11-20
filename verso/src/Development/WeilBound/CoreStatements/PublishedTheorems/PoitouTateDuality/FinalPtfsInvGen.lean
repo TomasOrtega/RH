@@ -16,15 +16,15 @@ attribute [local instance 2000] Rep.hV2
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Establish `hN0 : 0 < l ^ r` using `pow_pos (Fact.out : l.Prime).pos r`. Establish `hU` using `exists_uniformizer_ord' (↥Kf.1) (v : HeightOneSpectrum (𝓞 Kf.1))`. Take `⟨ϖ, hϖv, hϖ2, hord⟩` from `hU`. Establish `hϖ0 : (ϖ : ↥Kf.1) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hϖ2` to reduce the goal to its premises. Establish `h' : ϖ = 0` using `RingOfIntegers.coe_eq_zero_iff.1 h`. Rewrite using `[h']`. Conclude with `Submodule.zero_mem _`. Establish `hy0 : ∃ y : AlgebraicClosure ℚ, y ^ (l ^ r) = algebraMap (↥Kf.1) (AlgebraicClosure ℚ) (ϖ : ↥Kf.1)` using `IsAlgClosed.exists_pow_nat_eq _ hN0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hy0`. Establish `hK` using `exists_kummer' (↥Kf.1) A ζ hζ (ϖ : ↥Kf.1) hϖ0 y hy`. Take `⟨κ, hκ, hκc, hκcoc⟩` from `hK`. Establish `hC` using `exists_chi' Kf (v : HeightOneSpectrum (𝓞 Kf.1)) A hA ⟨l ^ r, hN0⟩ (ιs v) ev hev`. Take `⟨χ, hχadd, hχIne, hχFrob, hχc, hχev⟩ : ∃ χ : Dec (F` from `Kf.1) A → ZMod (l ^ r), (∀ g h, χ (g * h) = χ g + χ h) ∧ (∀ g : Dec (F := Kf.1) A, (g : G Kf.1 (AlgebraicClosure ℚ)) ∈ Ine (F := Kf.1) A → χ g = 0) ∧ (∀ g : Dec (F := Kf.1) A, IsFrob (F := Kf.1) A (normV (v : HeightOneSpectrum (𝓞 Kf.1))) (g : G Kf.1 (AlgebraicClosure ℚ)) → χ g = …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF` using `found_side' Kf S hr hS ζ hζ ιs v A hA ev hev ϖ hord y hy κ hκ χ hχev`. Take `⟨x0, hx0, hinv0⟩` from `hF`. Establish `hcont : Continuous (fun p : Dec (F` using `Kf.1) A × Dec (F := Kf.1) A => κ p.1 * χ p.2) := (continuous_of_discreteTopology (f := fun q : ZMod (l ^ r) × ZMod (l ^ r) => q.1 * q.2)).comp ((hκc.comp continuous_fst).prodMk (hχc.comp continuous_snd))`. Set `z0 : Z2 (muLoc Kf.1 l r A)` to `⟨fun p => κ p.1 * χ p.2, hcont, fun g h k => by show ((cycMod Kf.1 (AlgebraicClosure ℚ) l r (g : G Kf.1 (AlgebraicClosure ℚ)) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * (κ h * χ k) - κ (g * h) * χ k + κ g * χ (h * k) - κ g * χ h = 0`. Rewrite using `[hκcoc, hχadd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `ring⟩`. Use `⟨z0, x0, hx0, ?_, hinv0⟩` and prove the remaining obligations. Conclude with `(hinv A v.1 hA).2 ϖ y κ χ z0 hϖv hϖ2 hy hκ hχadd hχIne hχFrob (fun g h => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem invMatch_gen' (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Set (HeightOneSpectrum (𝓞 Kf.1))) [Fintype S] {l r : ℕ} [Fact l.Prime] (hr : 0 < r)

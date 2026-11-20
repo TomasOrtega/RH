@@ -13,7 +13,7 @@ namespace GlobalTheory.SmGL.RowOneCell
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[colRep, MonoidHom.comp_apply]`. Conclude with `CellFirstDet.extTensor_detRep_apply _ _ _ w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colRep_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (j : Bool) (g : Levi k fun i => Fin (sz u v i j))
     (w : ℂ ⊗[ℂ] ℂ) :
@@ -26,9 +26,9 @@ def cellScal (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (x : ∀ j, Levi k fun i
   ∏ j, χ₁ (GeneralLinearGroup.det (x j false)) * colChar v χ₂ j (GeneralLinearGroup.det (x j true))
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add a b ha hb => rw [map_add, ha, hb, smul_add]`. Consider the case `smul_tprod c f`. Rewrite using `[map_smul, smul_comm, piTensor_tprod, cellScal, Units.coe_prod, ← MultilinearMap.map_smul_univ]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Conclude with `colRep_apply χ₁ χ₂ u v j (x j) (f j)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem piTensor_colRep_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (x : ∀ j, Levi k fun i => Fin (sz u v i j))
     (y : ⨂[ℂ] _ : Bool, ℂ ⊗[ℂ] ℂ) :
@@ -42,7 +42,7 @@ theorem piTensor_colRep_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (x : �
     exact colRep_apply χ₁ χ₂ u v j (x j) (f j)
 
 /- English proof (translation)
-The claim follows from `CellFirstDet.extTensor_detRep_apply χ₁ χ₂ _ w`.
+A detailed English derivation is pending.
 -/
 theorem rowRep_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (g : Levi k (Two (Fin u) (Fin (v + 1)))) (w : ℂ ⊗[ℂ] ℂ) :
     (extTensor (detRep (Fin u) χ₁) (detRep (Fin (v + 1)) χ₂)).comp
@@ -51,7 +51,7 @@ theorem rowRep_apply (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (g : Levi k (Two
   CellFirstDet.extTensor_detRep_apply χ₁ χ₂ _ w
 
 /- English proof (translation)
-Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, w, rfl⟩`. Establish `h : ∀ i, GeneralLinearGroup.det ((n : Levi k (Two (Fin u) (Fin (v + 1)))) i) = 1` using `fun i => det_eq_one_of_mem_unipRad k (n.2 i trivial)`. Rewrite using `[rowRep_apply, h, h]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem twKer_rowRep (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) :
     twKer ((extTensor (detRep (Fin u) χ₁) (detRep (Fin (v + 1)) χ₂)).comp
@@ -64,13 +64,13 @@ theorem twKer_rowRep (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) :
   simp
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Rewrite using `[MonoidHom.comp_apply, relJac_mk, rowRep_apply, Submodule.Quotient.mk_smul, smul_smul, ← Units.val_mul]`. Use `congr 2`. Establish `hs : ∀ i j, swapBlocks k (fun i j => Fin (sz u v i j)) x i j = x j i` using `fun _ _ => rfl`. Establish `hdet : ∀ i, GeneralLinearGroup.det (relEmb k (rowPart u v) (swapBlocks k (fun i j => Fin (sz u v i j)) x) i) = GeneralLinearGroup.det (x true i) * GeneralLinearGroup.det (x false i)` using `fun i => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[relEmb_apply, det_leviEmb, Fintype.prod_bool]`. Both sides reduce to the same expression. Establish `h0 : GeneralLinearGroup.det (x false false) = 1` using `CellFirstDet.det_eq_one_of_card rfl _`. Establish `hr0 : deltaHalf k (fun j => Fin (sz u v false j)) (swapBlocks k (fun i j => Fin (sz u v i j)) x false) = 1` using `OneBlockCell.deltaHalf_eq_one_of_single (n := fun j => sz u v false j) true (fun j hj => by cases j; rfl; exact absurd rfl hj) _`. Establish `hm : modExp (fun j => Fin (sz u v true j)) false = v ∧ modExp (fun j => Fin (sz u v true j)) true = -1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `CellFirstDet.modExp_bool (fun j => Fin (sz u v true j))`. Conclude with `⟨h1.trans (by rw [Fintype.card_fin]; rfl), h2.trans (by rw [Fintype.card_fin]; rfl)⟩`. Rewrite using `[relDeltaHalf_apply, Fintype.prod_bool, hr0, deltaHalf_apply, Fintype.prod_bool, hm.1, hm.2, hdet, hdet, h0]`. Simplify using `only [cellScal, Fintype.prod_bool, h0, hs, colChar, cond_true, cond_false]`. Generalize the expression as in `GeneralLinearGroup.det (x false true) = A`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `GeneralLinearGroup.det (x true false) = B`. Generalize the expression as in `GeneralLinearGroup.det (x true true) = C`. Simplify using `only [MonoidHom.mul_apply, map_mul, mul_one, one_mul, map_one, Int.cast_neg, Int.cast_natCast, Int.cast_one, neg_div, absPow_neg, MonoidHom.inv_apply]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, _root_.mul_inv_rev, inv_inv, Units.val_one]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -119,7 +119,7 @@ def cellLineEquiv (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) :
       (PiTensorProduct.congr fun _ => (TensorProduct.lid ℂ ℂ).symm)))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ χ₁ χ₂ u v`. Use `⟨.mk (cellLineEquiv χ₁ χ₂ u v) fun x => LinearMap.ext fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[rowJac_apply, piTensor_colRep_apply, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowJac_swap_equiv : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ),

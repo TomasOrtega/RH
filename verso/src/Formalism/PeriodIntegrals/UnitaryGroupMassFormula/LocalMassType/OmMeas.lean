@@ -42,23 +42,21 @@ def OmMeas : Prop :=
         {c | k⁻¹ * c * κ⁻¹ ∈ K1 σ J v Λ g P})
 
 /- English proof (translation)
-Use `set X0r := ratTup (F := F) (Fv F v) X0 with hX0r`. Use `set A := (fun c : HA (Fv F v) σ J => c • X0r) '' C with hAdef`. Set `s : TupV (E` to `E) v n a → HA (Fv F v) σ J := fun Y => if hY : Y ∈ A then hY.choose else if h' : ∃ g : HA (Fv F v) σ J, g • X0r = Y then h'.choose else 1`. Establish `hs : ∀ Y, (∃ g : HA (Fv F v) σ J, g • X0r = Y) → s Y • X0r = Y`. Introduce `Y hY`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hA : Y ∈ A`. Simplify using `only [s, dif_pos hA]`. Conclude with `hA.choose_spec.2`. Simplify using `only [s, dif_neg hA, dif_pos hY]`. Conclude with `hY.choose_spec`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Measurable (C.indicator (1 : HA (Fv F v) σ J → ENNReal))` using `measurable_one.indicator hCm`. Establish `key` using `hc.2 _ hf s hs`. Establish `hL : ∫⁻ g, C.indicator (1 : HA (Fv F v) σ J → ENNReal) g ∂μG = μG C` using `lintegral_indicator_one hCm`. Establish `hpt : ∀ Y, (∃ g : HA (Fv F v) σ J, g • X0r = Y) → ∫⁻ h', C.indicator (1 : HA (Fv F v) σ J → ENNReal) (s Y * (h' : HA (Fv F v) σ J)) ∂μ' = A.indicator (fun _ => μ' D) Y`. Introduce `Y hY`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hA : Y ∈ A`. Rewrite using `[Set.indicator_of_mem hA]`. Establish `hk : hA.choose ∈ C` using `hA.choose_spec.1`. Establish `hsY : s Y = hA.choose` using `by simp only [s, dif_pos hA]`. Rewrite using `[← lintegral_indicator_one hDm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Use function extensionality and compare the values at `h'`. Rewrite using `[hsY]`. Distinguish the cases in `hh : h' ∈ D`. Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem ((hCD _ hk h').2 hh)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem (fun hm => hh ((hCD _ hk h').1 hm))]`. Rewrite using `[Set.indicator_of_notMem hA]`. Establish `hz : ∀ h' : stabT (Fv F v) σ J X0, C.indicator (1 : HA (Fv F v) σ J → ENNReal) (s Y * (h' : HA (Fv F v) σ J)) = 0`. Introduce `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.indicator_of_notMem]`. Introduce `hmem`. Apply `hA` to reduce the goal to its premises. Use `⟨s Y * (h' : HA (Fv F v) σ J), hmem, ?_⟩` and prove the remaining obligations. Establish `hst : (h' : HA (Fv F v) σ J) • X0r = X0r` using `h'.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (s Y * (h' : HA (Fv F v) σ J)) • X0r = Y`. Rewrite using `[mul_smul, hst, hs Y hY]`. Simplify using `[hz]`. Establish `hae : ∀ᵐ Y ∂ν, ∃ g : HA (Fv F v) σ J, g • X0r = Y` using `ae_iff.mpr hc.1`. Establish `hR' : ∫⁻ Y, ∫⁻ h', C.indicator (1 : HA (Fv F v) σ J → ENNReal) (s Y * (h' : HA (Fv F v) σ J)) ∂μ' ∂ν = ∫⁻ Y, A.indicator (fun _ => μ' D) Y ∂ν`.
-
-Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with Y hY`. Conclude with `hpt Y hY`. Rewrite `key` using `[hL, hR', lintegral_indicator_const hAm]`. Rewrite using `[key, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F)) {a : ℕ}
@@ -119,45 +117,35 @@ theorem weil_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   rw [key, mul_comm]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J ψ v r g P P' Λ T T' κ μG μS0 μS0' hStd hP hP' hSD hUn hg hgv hN hEta hκ hκc hμG hμS0 hC hμS0' hC' hPr hPr' hL ha ha'`. Establish `hH : OmHyp σ J ψ v g P P' Λ T T' κ μG μS0 μS0'` using `⟨hStd, hP, hP', hSD, hUn, hg, hgv, hN, hEta, hκ, hκc, hμG, hμS0, hC, hμS0', hC', hPr, hPr', hL, ha, ha'⟩`. Take `⟨hOmm, hKm, hK1m, hAm, hBm⟩` from `hM σ J ψ v g P P' Λ T T' κ μG μS0 μS0' hH`. Use `hO σ J ψ v hStd (TFl σ J v P')` as an intermediate fact. Use `set K := Formalism.L2.SG.TypedSets.Kv σ J Λ v with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K1s := K1 σ J v Λ g P with hK1def`. Use `set X0r := ratTup (F := F) (Fv F v) (F0 P) with hX0r`. Use `set X0r' := ratTup (F := F) (Fv F v) (F0 P') with hX0r'`. Use `set ν := omAt σ J ψ v (TFl σ J v P) with hν`. Use `set ν' := omAt σ J ψ v (TFl σ J v P') with hν'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set a := μS0 (stabilizerCompact σ J v Λ P) with hadef`. Use `set a' := μS0' (stabilizerCompact σ J v Λ P') with ha'def`. Establish `hcg : CongL (Λ` using `Λ) g X0r (κ • X0r') := hκc`. Establish `hS0Km : MeasurableSet (stabilizerCompact σ J v Λ P)` using `measurable_subtype_coe hKm`. Establish `hS0Km' : MeasurableSet (stabilizerCompact σ J v Λ P')` using `measurable_subtype_coe hKm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hWK : ν ((fun c : HA (Fv F v) σ J => c • X0r) '' K) * a = μG K`. Use `weil_gen σ J v (F0 P) μG μS0 ν hC K hKm (stabilizerCompact σ J v Λ P) hS0Km ?_ hAm` and prove the remaining obligations. Introduce `c hc h`. Use `show c * (h : HA (Fv F v) σ J) ∈ K ↔ (h : HA (Fv F v) σ J) ∈ K`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Use `kv_mul' (kv_inv' hc) hm` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel, one_mul]`. Then use the resulting hypothesis. Conclude with `kv_mul' hc`. Establish `hWC : ∀ k : HA (Fv F v) σ J, ν' ((fun c : HA (Fv F v) σ J => c • X0r') '' {c | k⁻¹ * c * κ⁻¹ ∈ K1s}) * a' = μG K1s`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Establish `hCm : MeasurableSet {c : HA (Fv F v) σ J | k⁻¹ * c * κ⁻¹ ∈ K1s}` using `hK1m.preimage ((measurable_const_mul k⁻¹).mul_const κ⁻¹)`. Use `(weil_gen σ J v (F0 P') μG μS0' ν' hC' _ hCm (stabilizerCompact σ J v Λ P') hS0Km' ?_ (hBm k)).trans ?_` and prove the remaining obligations. Use `swap`. Use `show μG ((fun c => k⁻¹ * c) ⁻¹' ((fun c => c * κ⁻¹) ⁻¹' K1s)) = μG K1s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[measure_preimage_mul]`. Conclude with `hRK σ J ψ v Λ μG hStd hSD hUn hEta hL hμG κ⁻¹ (kv_inv' hκ) K1s hK1m`. Introduce `c hc h show k⁻¹ * (c * (h : HA (Fv F v) σ J)) * κ⁻¹ ∈ K1s ↔ (h : HA (Fv F v) σ J) ∈ K`. Rewrite using `[show k⁻¹ * (c * (h : HA (Fv F v) σ J)) * κ⁻¹ = (k⁻¹ * c * κ⁻¹) * (κ * (h : HA (Fv F v) σ J) * κ⁻¹) by group, congruence_mul_mem_iff hc]`. Conclude with `conj_mem_congruence_iff hκ hcg h.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `ha0' : a' ≠ 0 ∧ a' ≠ ⊤` using `⟨fun h => ha' (by rw [h]; rfl), fun h => ha' (by rw [h]; rfl)⟩`. Establish `hWC' : ∀ k : HA (Fv F v) σ J, ν' ((fun c : HA (Fv F v) σ J => c • X0r') '' {c | k⁻¹ * c * κ⁻¹ ∈ K1s}) = μG K1s / a'`. Introduce `k`. Rewrite using `[ENNReal.eq_div_iff ha0'.1 ha0'.2, mul_comm]`. Conclude with `hWC k`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hae' : ∀ᵐ Y ∂ν', ∃ g2 : HA (Fv F v) σ J, g2 • X0r' = Y` using `ae_iff.mpr hC'.1`. Establish `hae : ∀ᵐ Y ∂ν, ∃ g1 : HA (Fv F v) σ J, g1 • X0r = Y` using `ae_iff.mpr hC.1`. Establish `hslice : ∀ x, (∃ g1 : HA (Fv F v) σ J, g1 • X0r = x) → ν' (Prod.mk x ⁻¹' OmTyp v Λ g r) = ((fun c : HA (Fv F v) σ J => c • X0r) '' K).indicator (fun _ => μG K1s / a') x`. Introduce `x ⟨g1, hg1⟩`. Distinguish the cases in `hx : x ∈ (fun c : HA (Fv F v) σ J => c • X0r) '' K`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hx]`. Take `⟨k, hk, hkx⟩` from `hx`. Rewrite using `[← hWC' k]`. Apply `measure_congr` to reduce the goal to its premises. Rewrite using `[Filter.eventuallyEq_set]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `filter_upwards [hae'] with x' hx'`. Take `⟨g2, hg2⟩` from `hx'`. Simplify using `only [Set.mem_preimage, Set.mem_image, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hp2, hcong⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp2` using `[← hg2]`. Take `⟨k', hk', hk'x⟩` from `hW σ J ψ v P' Λ T' hStd hP' hSD hUn hEta hPr' hL g2 hp2`. Use `⟨k', ⟨kv_mul' (kv_mul' (kv_inv' hk) hk') (kv_inv' hκ), ?_⟩, hk'x.trans hg2⟩` and prove the remaining obligations. Establish `hc1 : CongL (Λ` using `Λ) g x x' := hcong`. Establish `h1` using `congL_smul (kv_inv' hk) hc1`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← hkx, inv_smul_smul]`. Establish `h2` using `congL_smul (kv_mul' (kv_mul' (kv_inv' hk) hk') (kv_inv' hκ)) hcg`. Rewrite using `[show (k⁻¹ * k' * κ⁻¹) • κ • X0r' = k⁻¹ • x' by`. Rewrite `h2` using `[← mul_smul, show k⁻¹ * k' * κ⁻¹ * κ = k⁻¹ * k' by group, mul_smul, hk'x, hg2]]`. Conclude with `congL_trans h1 (congL_symm h2)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨c, homogComponent_comm_first_action, rfl⟩`. Establish `hk1` using `(mem_congruence_subgroup_iff).1 homogComponent_comm_first_action`. Establish `hcK : c ∈ K`. Use `kv_mul' (kv_mul' hk hk1.1) hκ` as an intermediate fact. Rewrite `this` using `[show k * (k⁻¹ * c * κ⁻¹) * κ = c by group]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hkx, locF_smul]`. Conclude with `prim_smul hk hPr`. Rewrite using `[locF_smul]`. Conclude with `prim_smul hcK hPr'`.
-
-Use `show CongL (Λ := Λ) g x (c • X0r')`. Rewrite using `[← hkx, show c = k * ((k⁻¹ * c * κ⁻¹) * κ) by group, mul_smul]`. Apply `congL_smul hk` to reduce the goal to its premises. Rewrite using `[mul_smul]`. Conclude with `congL_trans hk1.2 (congL_smul hk1.1 hcg)`.
-
-Rewrite using `[Set.indicator_of_notMem hx]`. Use `measure_empty (μ := ν')` and compare the differences between its conclusion and the goal. Use extensionality with `x'`. Simplify using `only [Set.mem_preimage, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨hp1, _, _⟩`.
-
-Rewrite `hp1` using `[← hg1]`. Take `⟨k, hk, hkx⟩` from `hW σ J ψ v P Λ T hStd hP hSD hUn hEta hPr hL g1 hp1`. Conclude with `hx ⟨k, hk, hkx.trans hg1⟩`. Establish `hprod : (ν.prod ν') (OmTyp v Λ g r) = μG K1s / a' * ν ((fun c : HA (Fv F v) σ J => c • X0r) '' K)`. Rewrite using `[Measure.prod_apply hOmm, ← lintegral_indicator_const hAm]`.
-
-Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with x hx`. Conclude with `hslice x hx`. Unfold `Mv`. Rewrite using `[hprod, ← ENNReal.toReal_mul, ← ENNReal.toReal_mul, ← ENNReal.toReal_mul]`.
-
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem stepOm_ofK (hW : StepW) (hM : OmMeas) (hRK : RightK) (hO : LocMassOrdW.OmSF) :
     StepOm := by

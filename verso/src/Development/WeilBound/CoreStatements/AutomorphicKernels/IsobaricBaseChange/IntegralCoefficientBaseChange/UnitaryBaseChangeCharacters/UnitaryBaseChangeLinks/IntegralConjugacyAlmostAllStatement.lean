@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.IntUniq.main | (intros; apply GlobalTheory.IntUniq.main <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integral_conjugacy_almost_all : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (P : E[X]), P ∈ Ell E n → ∀ᶠ w in (cofinite : Filter (Pl E)), ∀ y y' : UL n w, y ∈ KL n w → y' ∈ KL n w → y.1.val.charpoly = atPl w P → y'.1.val.charpoly = atPl w P → ∃ g : UL n w, y' = g⁻¹ * y * g := by
   first | exact @GlobalTheory.IntUniq.main | (intros; apply GlobalTheory.IntUniq.main <;> assumption)

@@ -14,7 +14,7 @@ variable {D : D7} {X : Formalism.L2.Herm.Herm0 D}
   {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : CmpIn D X}
 
 /- English proof (translation)
-Establish `h1 : Module.finrank ℂ ((D.fm u).Fi 0) = Fintype.card ((D.fm u).lat 0).ι`. Rewrite using `[← ((D.fm u).emb_basis 0).2]`. Conclude with `finrank_span_eq_card ((D.fm u).emb_basis 0).1`. Establish `h2 : Module.finrank ℂ ((D.fm u).Fi 0) = Module.finrank ℂ (D.mem u).A.Mu0` using `congrArg (fun S : Submodule ℂ ((D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) => Module.finrank ℂ S) (D.fm u).Fi_zero`. Conclude with `h1.symm.trans (h2.trans (D.gat_d u w hg).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_eq_d (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
@@ -32,11 +32,9 @@ def cmpLin (H : CmpCore T Gt I) (u : D.what₂.Word) (w : D.what₂.places.Pl)
   cmpL (e := I.embW u w hg) (H.ex u w hg) (valUniq_of (embT_conj D) (evInj_rec Gt I u w hg) (ptEx_rec X T u w hg I.B))
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)`. Rewrite using `[((D.fm u).lat_good 0).2.2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `(cmpRec_lat_pf H hloc u w hg y).2 (Submodule.subset_span hy)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [map_add]`.
-
-Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y _ h1 => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ h1`.
+Reduce the claim to the hypotheses of an applicable result. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cmpLin_mem_span (H : CmpCore T Gt I) (hloc : ValIntRec T Gt I) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (x : ((D.fm u).lat 0).V) :
@@ -54,9 +52,9 @@ theorem cmpLin_mem_span (H : CmpCore T Gt I) (hloc : ValIntRec T Gt I) (u : D.wh
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `u w hg F hF hrat`. Use `hfrac u w hg` as an intermediate fact. Use `hfin u w hg` as an intermediate fact. Establish `hli : LinearIndependent (D.gat u w hg).Kf fun a => cmpLin H u w hg (((D.fm u).lat 0).b a)` using `cmpC_li (e := I.embW u w hg) (embT_conj D) (H.ex u w hg) (valUniq_of (embT_conj D) (evInj_rec Gt I u w hg) (ptEx_rec X T u w hg I.B)) (ptAll_rec X T u (H.same u) w hg I.B) (embFr_inj T u) ((D.fm u).lat 0).b ((D.fm u).lat 0).b.linearIndependent`. Establish `h1 : F ∈ Submodule.span (D.gat u w hg).Kf (Set.range fun a => cmpLin H u w hg (((D.fm u).lat 0).b a))` using `mem_span_of_card (D.gat u w hg).M _ hli (fun a => cmpLin_mem_span H hloc u w hg _) (card_eq_d D u w hg) F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : F ∈ Submodule.span (D.gat u w hg).Kf (Set.range (cmpLin H u w hg).toAddMonoidHom)`. Use `Submodule.span_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨_, rfl⟩`. Conclude with `rat_mem (I.embW u w hg) (evG (D.gat u w hg)) (cmpLin H u w hg).toAddMonoidHom (evG_sep _) (fun a x => (cmpLin H u w hg).map_smulₛₗ a x) (fun x => (ratFn_iff _ _ _).1 (cmpC_rat x)) h2 ((ratFn_iff _ _ _).1 hrat)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surjRat_pf (H : CmpCore T Gt I) (hloc : ValIntRec T Gt I)
     (hfrac : ∀ u w hg, IsFractionRing (D.gat u w hg).O (D.gat u w hg).Kf)

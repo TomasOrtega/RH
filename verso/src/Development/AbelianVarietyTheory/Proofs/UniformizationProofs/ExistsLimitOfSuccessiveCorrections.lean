@@ -3,25 +3,23 @@ import Mathlib
 namespace GlobalTheory.Unif
 
 /- English proof (translation)
-Introduce `e x hx`. Establish `hanti : Antitone K` using `antitone_nat_of_succ_le hK`. Establish `hmem : ∀ (n : ℕ) (z : M), z ∈ (Ideal.span {a} ^ n • ⊤ : Submodule R M) ↔ ∃ y : M, z = a ^ n • y`. Introduce `n z`. Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, h⟩`. Conclude with `⟨y, h.symm⟩`. Introduce and unpack `⟨y, h⟩`. Conclude with `⟨y, trivial, h.symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `choose y hy using hs`. Set `s : (n : ℕ) → K (e + n)` to `fun n => Nat.rec (motive := fun n => K (e + n)) ⟨x, hx⟩ (fun n z => ⟨z.1 - a ^ (e + n + 1) • y (e + n) z.1 z.2, hy _ _ _⟩) n`. Establish `hs0 : (s 0 : M) = x` using `rfl`. Establish `hsn : ∀ n, (s (n + 1) : M) = s n - a ^ (e + n + 1) • y (e + n) (s n).1 (s n).2` using `fun n => rfl`. Establish `hd : ∀ m n, m ≤ n → ∃ z : M, (s m : M) - s n = a ^ (e + m + 1) • z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => exact ⟨0, by simp⟩`. Consider the case `succ n hmn ih`. Take `⟨z, hz⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Use `⟨z + a ^ k • y (e + (m + k)) (s (m + k)).1 (s (m + k)).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hsn, smul_add, ← hz, smul_smul, ← pow_add, show e + m + 1 + k = e + (m + k) + 1 by ring]`. Normalize the expressions using the abelian group laws. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := Ideal.span {a}) (M := M) inferInstance (f := fun n => (s n : M)) (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn`. Take `⟨z, hz⟩` from `hd m n hmn`. Rewrite using `[SModEq.sub_mem, hmem]`. Use `⟨a ^ (e + 1) • z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, smul_smul, ← pow_add, show m + (e + 1) = e + m + 1 by ring])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : ∀ m, ∃ z : M, (s m : M) - L = a ^ (e + m + 1) • z`. Introduce `m`. Take `⟨z, hz⟩` from `hd m (e + m + 1) (by omega)`. Establish `h` using `hL (e + m + 1)`. Rewrite `h` using `[SModEq.sub_mem, hmem]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `h`. Use `⟨z + w, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← hz, ← hw]`. Normalize the expressions using the abelian group laws. Take `⟨z, hz⟩` from `hl 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, z, fun m => ?_, hz⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hl m`. Establish `hLe : L = (s m : M) - a ^ (e + m + 1) • w` using `by rw [← hw]; abel`. Apply `hanti (show m ≤ e + m by omega)` to reduce the goal to its premises. Rewrite using `[hLe]`.
-
-Conclude with `Submodule.sub_mem _ (s m).2 (ha _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_limit_of_successive_corrections (R : Type) [CommRing R] (a : R) (M : Type)
     [AddCommGroup M] [Module R M] [IsPrecomplete (Ideal.span {a}) M] (K : ℕ → Submodule R M)

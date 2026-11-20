@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ π hπ G`. Establish `hfib : ∀ b : B, (Finset.univ.filter (fun a : A => π a = b)).card = (Finset.univ.filter (fun a : A => π a = 0)).card` using `fun b => AddMonoidHom.card_fiber_eq_of_mem_range π (hπ b) (hπ 0)`. Use `set k : ℕ := (Finset.univ.filter (fun a : A => π a = 0)).card with hk`. Establish `key : ∀ H : B → ℂ, ∑ a : A, H (π a) = (k : ℂ) * ∑ b : B, H b`. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_fiberwise' Finset.univ (fun a : A => π a) H, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, hfib b, nsmul_eq_mul]`. Establish `h1 : (Fintype.card A : ℂ) = (k : ℂ) * (Fintype.card B : ℂ)`. Simplify using `using key (fun _ => 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key G, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Rd1.sum_comp_surj :
     ∀ {A B : Type} [inst : AddCommGroup A] [inst_1 : AddCommGroup B]

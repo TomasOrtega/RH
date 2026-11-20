@@ -17,35 +17,35 @@ def GoodG (g : SplitG M.L) (t : Term V M r) : Prop :=
     IsUnit (H.Dl t.f t.f' (r + 1)) ∧ IsUnit (gramH H (H.MMfam t)).det
 
 /- English proof (translation)
-Introduce `h`. Conclude with `g.q_irr.ne_zero (by exact_mod_cast h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem q_ne (g : SplitG M.L) : (g.q : F) ≠ 0 := by
   intro h
   exact g.q_irr.ne_zero (by exact_mod_cast h)
 
 /- English proof (translation)
-Rewrite using `[← map_mul, inv_mul_cancel₀ (q_ne g), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qi_mul_q (g : SplitG M.L) :
     algebraMap F E ((g.q : F)⁻¹) * algebraMap F E (g.q : F) = 1 := by
   rw [← map_mul, inv_mul_cancel₀ (q_ne g), map_one]
 
 /- English proof (translation)
-The claim follows from `M.L.cj.commutes a`.
+A detailed English derivation is pending.
 -/
 theorem cj_alg (a : F) : M.L.cj (algebraMap F E a) = algebraMap F E a := M.L.cj.commutes a
 
 /- English proof (translation)
-Simplify using `only [HermSp.MMfam, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mmfam_some {g : SplitG M.L} (hs : M.split = some g) (t : Term V M r) :
     H.MMfam t = Sum.elim t.f (fun a => algebraMap F E ((g.q : F)⁻¹) • (t.f' a - t.f a)) := by
   simp only [HermSp.MMfam, hs]
 
 /- English proof (translation)
-Establish `h1 : H.h (y - y') x = H.h y x - H.h y' x`. Establish `h2` using `H.h_add_left (y - y') y' x`. Rewrite `h2` using `[sub_add_cancel]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[H.h_herm (y - y') x, h1, map_sub, ← H.h_herm, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_sub_right (x y y' : V) : H.h x (y - y') = H.h x y - H.h x y' := by
   have h1 : H.h (y - y') x = H.h y x - H.h y' x := by
@@ -56,23 +56,21 @@ theorem h_sub_right (x y y' : V) : H.h x (y - y') = H.h x y - H.h x y' := by
   rw [H.h_herm (y - y') x, h1, map_sub, ← H.h_herm, ← H.h_herm]
 
 /- English proof (translation)
-Take `⟨hs, hF, hF', -, -⟩` from `hg`. Establish `hff : ∀ a b, H.h (t.f a) (t.f b) = cor r a b (-algebraMap F E t.T)`. Introduce `a b`. Unfold `cor`. Use `split_ifs with h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.1, h.2]`. Conclude with `hF.2`. Conclude with `hF.1 a b (by tauto)`. Establish `hf'f' : ∀ a b, H.h (t.f' a) (t.f' b) = cor r a b (-algebraMap F E t.T')`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `cor`. Use `split_ifs with h`. Rewrite using `[h.1, h.2]`. Conclude with `hF'.2`. Conclude with `hF'.1 a b (by tauto)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZ : ∀ a b, H.Zhat t.f t.f' a b = H.h (t.f' b) (t.f a)` using `fun a b => rfl`. Establish `hZc : ∀ a b, (M.L.cj : E →+* E) (H.Zhat t.f t.f' a b) = H.h (t.f a) (t.f' b)` using `fun a b => by show M.L.cj (H.Zhat t.f t.f' a b) = _`. Rewrite using `[hZ, ← H.h_herm]`. Establish `hsr : ∀ (c : E) (x y : V), H.h x (c • y) = M.L.cj c * H.h x y` using `fun c x y => by`. Rewrite using `[H.h_herm, H.h_smul_left, map_mul, ← H.h_herm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hsl : ∀ (x y z : V), H.h (x - y) z = H.h x z - H.h y z` using `fun x y z => by`. Establish `h2` using `H.h_add_left (x - y) y z`. Rewrite `h2` using `[sub_add_cancel]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mmfam_some H hs]`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Simplify using `only [gramH, Matrix.of_apply, Sum.elim_inl, gramG, Matrix.fromBlocks_apply₁₁]`. Conclude with `hff a b`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [gramH, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr, gramG, Matrix.fromBlocks_apply₁₂]`. Rewrite using `[hsr, cj_alg, h_sub_right, hff, hZc]`. Unfold `cor`. Apply the tactic sequence `split_ifs <;> ring`. Simplify using `only [gramH, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr, gramG, Matrix.fromBlocks_apply₂₁]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[H.h_smul_left, hsl, hff, hZ]`. Unfold `cor`. Apply the tactic sequence `split_ifs <;> ring`. Simplify using `only [gramH, Matrix.of_apply, Sum.elim_inr, gramG, Matrix.fromBlocks_apply₂₂]`. Rewrite using `[H.h_smul_left, hsr, cj_alg, hsl, h_sub_right, h_sub_right, hf'f', hff, hZc, hZ]`.
-
-Unfold `cor`. Apply the tactic sequence `split_ifs <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem gramH_eqG {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) :
     gramH H (H.MMfam t) = gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) (H.Zhat t.f t.f')
@@ -122,13 +120,13 @@ theorem gramH_eqG {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) :
     split_ifs <;> ring
 
 /- English proof (translation)
-Establish `hsl : ∀ (s : Finset ι) (f : ι → V) (y : V), H.h (∑ i ∈ s, f i) y = ∑ i ∈ s, H.h (f i) y`. Introduce `s f y`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0` using `H.h_smul_left 0 0 y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `using h0`. Consider the case `@insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, ih]`. Establish `hsr : ∀ (x : V) (s : Finset ι) (f : ι → V), H.h x (∑ i ∈ s, f i) = ∑ i ∈ s, H.h x (f i)`. Introduce `x s f`. Rewrite using `[H.h_herm (∑ i ∈ s, f i) x, hsl, map_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[← H.h_herm]`. Establish `hsmr : ∀ (a : E) (x y : V), H.h x (a • y) = M.L.cj a * H.h x y`. Introduce `a x y`. Rewrite using `[H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm]`. Use extensionality with `i k`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [gramH, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hsl, H.h_smul_left, hsr, hsmr, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun l _ => by ring))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramH_comb {ι : Type} [Fintype ι] (B : Matrix ι ι E) (v : ι → V) :
     gramH H (fun i => ∑ j, B i j • v j) = B * gramH H v * (B.map M.L.cj).transpose := by
@@ -154,17 +152,17 @@ theorem gramH_comb {ι : Type} [Fintype ι] (B : Matrix ι ι E) (v : ι → V) 
   exact Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun l _ => by ring))
 
 /- English proof (translation)
-Use `set qi := algebraMap F E ((g.q : F)⁻¹) with hqi`. Set `B : Matrix (Ix r) (Ix r) E` to `Matrix.fromBlocks 1 0 (-qi • (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E)) (qi • (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E))`. Establish `hfam : H.MMfam t = fun i => ∑ j, B i j • Sum.elim t.f t.f' j`. Rewrite using `[mmfam_some H hs]`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `i with a | a` into its components or cases. Simplify using `[B, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[B, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg, add_comm, neg_smul]`. Both sides reduce to the same expression. Establish `hqu : IsUnit qi`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨qi, algebraMap F E (g.q : F), qi_mul_q g, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `qi_mul_q g`. Establish `hB : IsUnit B.det`. Simplify using `only [B]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, one_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `hqu.pow _`. Establish `hV : gramH H (Sum.elim t.f t.f') = gramC (M.L.cj : E →+* E) (H.Zhat t.f t.f') (algebraMap F E t.T) (algebraMap F E t.T')`. Rewrite using `[gramC_eq H _ _ _ _ hF hF']`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hG` using `unit_gramC H _ _ _ _ hF hF' hD1 hD0`. Rewrite using `[hfam, gramH_comb, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hV]`. Establish `hBc : IsUnit (B.map M.L.cj).det`. Establish `: (B.map M.L.cj).det = M.L.cj B.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (B.map M.L.cj) = (M.L.cj : E →+* E).mapMatrix B from rfl, ← RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hB.map _`. Conclude with `(hB.mul hG).mul hBc`.
+A detailed English derivation is pending.
 -/
 theorem unit_gramH_of {g : SplitG M.L} (hs : M.split = some g) {t : Term V M r}
     (hF : Formalism.MainNotions.ThinScalesBound.FrameK H t.f t.T) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H t.f' t.T')
@@ -200,15 +198,15 @@ theorem unit_gramH_of {g : SplitG M.L} (hs : M.split = some g) {t : Term V M r}
   exact (hB.mul hG).mul hBc
 
 /- English proof (translation)
-The claim follows from `hg.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem unit_gramHG {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) :
     IsUnit (gramH H (H.MMfam t)).det := hg.2.2.2.2
 
 /- English proof (translation)
-Establish `e : ∀ i j, H.h (H.MMfam t i) (H.MMfam t j) = gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) (H.Zhat t.f t.f') (algebraMap F E t.T) (algebraMap F E t.T') i j`. Introduce `i j`. Rewrite using `[← gramH_eqG H hg]`. Both sides reduce to the same expression. Use extensionality with `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, fun j => by rw [hc j]; simp only [e]⟩`. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, fun j => by rw [hc j]; simp only [e]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem relSub_eqG {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) :
     relSub H t = relG M.L.O (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) (H.Zhat t.f t.f')
@@ -237,7 +235,7 @@ theorem PsiG_mk {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u : ↥(MM
     PsiG H hg (ddMk H t u) = Submodule.Quotient.mk (sharpEquiv H t (unit_gramHG H hg) u) := rfl
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, PsiG_mk, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem PsiG_symm_mk {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (Y : Ix r → M.L.O) :
     (PsiG H hg).symm (Submodule.Quotient.mk Y) =
@@ -245,7 +243,7 @@ theorem PsiG_symm_mk {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (Y : I
   rw [LinearEquiv.symm_apply_eq, PsiG_mk, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[h_eq_form H (H.MMfam t) (unit_gramHG H hg) u w ((mem_MMsharp_iff H t u).1 u.2).1]`. Unfold `formG`. Rewrite using `[← gramH_eqG H hg]`. Simplify using `only [sharpEquiv_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem h_eq_formG {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u w : ↥(MMsharp H t)) :
     H.h u w = formG M.L.O (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) (H.Zhat t.f t.f')
@@ -258,7 +256,7 @@ theorem h_eq_formG {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u w : �
   rfl
 
 /- English proof (translation)
-Rewrite using `[sharpEquiv_apply, mmfam_some H hg.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sharpG_inl {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u : ↥(MMsharp H t))
     (a : Fin (r + 1)) : (sharpEquiv H t (unit_gramHG H hg) u (Sum.inl a) : E) = H.h u (t.f a) := by
@@ -266,7 +264,7 @@ theorem sharpG_inl {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u : ↥
   rfl
 
 /- English proof (translation)
-Rewrite using `[sharpEquiv_apply, mmfam_some H hg.1]`. Simplify using `only [Sum.elim_inr]`. Rewrite using `[H.h_herm, H.h_smul_left, map_mul, ← H.h_herm, cj_alg, h_sub_right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sharpG_inr {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u : ↥(MMsharp H t))
     (a : Fin (r + 1)) : (sharpEquiv H t (unit_gramHG H hg) u (Sum.inr a) : E) =
@@ -276,7 +274,7 @@ theorem sharpG_inr {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u : ↥
   rw [H.h_herm, H.h_smul_left, map_mul, ← H.h_herm, cj_alg, h_sub_right]
 
 /- English proof (translation)
-Rewrite using `[sharpG_inl H hg, sharpG_inr H hg, ← mul_assoc, mul_comm (algebraMap F E (g.q : F)), qi_mul_q g, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sharpG_f' {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u : ↥(MMsharp H t))
     (a : Fin (r + 1)) : H.h u (t.f' a) = (sharpEquiv H t (unit_gramHG H hg) u (Sum.inl a) : E) +
@@ -285,9 +283,9 @@ theorem sharpG_f' {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u : ↥(
   ring
 
 /- English proof (translation)
-Establish `h1` using `((mem_MMsharp_iff H t u).1 u.2).1`. Rewrite `h1` using `[mmfam_some H hg.1]`. Use `Submodule.span_le.2 ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Break down `i with a | a` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Submodule.subset_span ⟨Sum.inl a, rfl⟩`. Simplify using `only [Sum.elim_inr]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span ⟨Sum.inr a, rfl⟩) (Submodule.subset_span ⟨Sum.inl a, rfl⟩))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_span_of_sharpG {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (u : ↥(MMsharp H t)) :
     (u : V) ∈ Submodule.span E (Set.range (Sum.elim t.f t.f')) := by

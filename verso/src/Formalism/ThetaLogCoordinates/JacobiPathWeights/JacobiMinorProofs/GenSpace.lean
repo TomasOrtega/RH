@@ -20,7 +20,7 @@ def slcFun (θ : A →ₗ[k] B) (P : MvPolynomial σ A) : MvPolynomial σ B :=
   ∑ e ∈ P.support, monomial e (θ (coeff e P))
 
 /- English proof (translation)
-Simplify using `only [slcFun, coeff_sum, coeff_monomial, Finset.sum_ite_eq', mem_support_iff]`. Use `split_ifs with h`. Both sides reduce to the same expression. Use `push Not at h`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_slcFun (θ : A →ₗ[k] B) (P : MvPolynomial σ A) (e : σ →₀ ℕ) :
     coeff e (slcFun θ P) = θ (coeff e P) := by
@@ -41,13 +41,13 @@ def slc (θ : A →ₗ[k] B) : MvPolynomial σ A →ₗ[k] MvPolynomial σ B whe
     simp [coeff_slcFun]
 
 /- English proof (translation)
-The claim follows from `coeff_slcFun θ P e`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem coeff_slc (θ : A →ₗ[k] B) (P : MvPolynomial σ A) (e : σ →₀ ℕ) :
     coeff e (slc θ P) = θ (coeff e P) := coeff_slcFun θ P e
 
 /- English proof (translation)
-Use extensionality with `e`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem slc_comp (θ₁ : B →ₗ[k] D) (θ₂ : A →ₗ[k] B) (P : MvPolynomial σ A) :
     slc θ₁ (slc θ₂ P) = slc (θ₁ ∘ₗ θ₂) P := by
@@ -55,7 +55,7 @@ theorem slc_comp (θ₁ : B →ₗ[k] D) (θ₂ : A →ₗ[k] B) (P : MvPolynomi
   simp
 
 /- English proof (translation)
-Use extensionality with `e`. Simplify using `[coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem slc_algHom (θ : A →ₐ[k] B) (P : MvPolynomial σ A) :
     slc θ.toLinearMap P = map (θ : A →+* B) P := by
@@ -63,7 +63,7 @@ theorem slc_algHom (θ : A →ₐ[k] B) (P : MvPolynomial σ A) :
   simp [coeff_map]
 
 /- English proof (translation)
-Use extensionality with `e`. Simplify using `only [coeff_slc, coeff_smul, coeff_map, smul_eq_mul]`. Rewrite using `[mul_comm a, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem slc_smul_map (ℓ : A →ₗ[k] k) (a : A) (f : MvPolynomial σ k) :
     slc ℓ (a • map (algebraMap k A) f) = ℓ a • f := by
@@ -72,7 +72,7 @@ theorem slc_smul_map (ℓ : A →ₗ[k] k) (a : A) (f : MvPolynomial σ k) :
   rw [mul_comm a, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `e'`. Simplify using `only [coeff_slc, coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem slc_monomial (θ : A →ₗ[k] B) (e : σ →₀ ℕ) (a : A) :
     slc θ (monomial e a) = monomial e (θ a) := by
@@ -93,20 +93,20 @@ def slMap (P : MvPolynomial σ A) : (A →ₗ[k] k) →ₗ[k] MvPolynomial σ k 
 def slSpace (P : MvPolynomial σ A) : Submodule k (MvPolynomial σ k) := LinearMap.range (slMap (k := k) P)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_slSpace {P : MvPolynomial σ A} {f : MvPolynomial σ k} :
     f ∈ slSpace (k := k) P ↔ ∃ ℓ : A →ₗ[k] k, slc ℓ P = f := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ℓ, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem slc_mem_slSpace (P : MvPolynomial σ A) (ℓ : A →ₗ[k] k) : slc ℓ P ∈ slSpace (k := k) P := ⟨ℓ, rfl⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective θ.toLinearMap (LinearMap.ker_eq_bot.mpr hθ)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨ℓ, rfl⟩`. Use `⟨ℓ ∘ₗ θ.toLinearMap, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `slc _ _ = slc _ _`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← slc_algHom, slc_comp]`. Introduce and unpack `_ ⟨ℓ, rfl⟩`. Use `⟨ℓ ∘ₗ r, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `slc _ _ = slc _ _`. Rewrite using `[← slc_algHom, slc_comp, LinearMap.comp_assoc, hr, LinearMap.comp_id]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem slSpace_map (θ : A →ₐ[k] B) (hθ : Function.Injective θ) (P : MvPolynomial σ A) :
     slSpace (k := k) (map (θ : A →+* B) P) = slSpace (k := k) P := by
@@ -122,21 +122,19 @@ theorem slSpace_map (θ : A →ₐ[k] B) (hθ : Function.Injective θ) (P : MvPo
     rw [← slc_algHom, slc_comp, LinearMap.comp_assoc, hr, LinearMap.comp_id]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hP`. Introduce and unpack `_ ⟨ℓ, rfl⟩`. Express the relevant statement in the definitionally equal form `slc ℓ P ∈ N`. Proceed by induction on `hP using Submodule.span_induction generalizing ℓ with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`. Use `slc_smul_map ℓ 1 f` as an intermediate fact. Rewrite `this` using `[one_smul]`. Rewrite using `[this]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.smul_mem _ hf`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `N.add_mem (hx ℓ) (hy ℓ)`. Consider the case `smul a x _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: slc ℓ (a • x) = slc (ℓ ∘ₗ LinearMap.mulLeft k a) x`. Use extensionality with `e`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hx _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `h`. Set `b` to `Module.Basis.ofVectorSpace k A`. Set `I` to `P.support.biUnion fun e => (b.repr (coeff e P)).support`. Establish `key : P = ∑ i ∈ I, (b i) • map (algebraMap k A) (slc (b.coord i) P)`. Use extensionality with `e`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[coeff_sum]`. Simplify using `only [coeff_smul, coeff_map, coeff_slc, smul_eq_mul, Module.Basis.coord_apply]`. Establish `hsub : (b.repr (coeff e P)).support ⊆ I`. Distinguish the cases in `he : e ∈ P.support`. Conclude with `Finset.subset_biUnion_of_mem (fun e => (b.repr (coeff e P)).support) he`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[notMem_support_iff.mp he]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [← b.linearCombination_repr (coeff e P), Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ hsub (fun i a => a • b i) (fun i _ => zero_smul _ _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`.
-
-Rewrite using `[key]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `⟨_, h (slc_mem_slSpace P _), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_span_iff (N : Submodule k (MvPolynomial σ k)) (P : MvPolynomial σ A) :
     P ∈ Submodule.span A ((fun f => map (algebraMap k A) f) '' (N : Set (MvPolynomial σ k))) ↔
@@ -189,7 +187,7 @@ variable {ι ζ : Type*} {n : ℕ} (isVec : ι → Bool) (S : Set ι) [Decidable
 variable {A B : Type*} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Simplify using `[sharpHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sharp_C (g gi : Matrix (Fin n) (Fin n) A) (c : A) :
     sharpHom (ζ := ζ) isVec S g gi (C c) = C c := by
@@ -198,21 +196,21 @@ theorem sharp_C (g gi : Matrix (Fin n) (Fin n) A) (c : A) :
 variable {isVec S}
 
 /- English proof (translation)
-Simplify using `[sharpHom, h1, h3, Matrix.vecMul, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sharp_vec {i : ι} (h1 : i ∈ S) (h3 : isVec i = true) (g gi : Matrix (Fin n) (Fin n) A) (a : Fin n) :
     sharpHom (ζ := ζ) isVec S g gi (X (Sum.inl (i, a))) = ∑ b, X (Sum.inl (i, b)) * C (g b a) := by
   simp [sharpHom, h1, h3, Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Simplify using `[sharpHom, h1, h3, Matrix.vecMul, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sharp_covec {i : ι} (h1 : i ∈ S) (h3 : isVec i = false) (g gi : Matrix (Fin n) (Fin n) A) (a : Fin n) :
     sharpHom (ζ := ζ) isVec S g gi (X (Sum.inl (i, a))) = ∑ b, X (Sum.inl (i, b)) * C (gi a b) := by
   simp [sharpHom, h1, h3, Matrix.vecMul, dotProduct]
 
 /- English proof (translation)
-Simplify using `[sharpHom, h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sharp_out {i : ι} (h1 : i ∉ S) (g gi : Matrix (Fin n) (Fin n) A) (a : Fin n) :
     sharpHom (ζ := ζ) isVec S g gi (X (Sum.inl (i, a))) = X (Sum.inl (i, a)) := by
@@ -221,18 +219,18 @@ theorem sharp_out {i : ι} (h1 : i ∉ S) (g gi : Matrix (Fin n) (Fin n) A) (a :
 variable (isVec S)
 
 /- English proof (translation)
-Simplify using `[sharpHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sharp_further (g gi : Matrix (Fin n) (Fin n) A) (z : ζ) :
     sharpHom (ι := ι) isVec S g gi (X (Sum.inr z)) = X (Sum.inr z) := by
   simp [sharpHom]
 
 /- English proof (translation)
-It suffices to establish `hh : (map θ).comp (sharpHom (ζ` using `ζ) isVec S g gi).toRingHom = (sharpHom (ζ := ζ) isVec S (g.map θ) (gi.map θ)).toRingHom.comp (map θ) from DFunLike.congr_fun hh P`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules. Introduce and unpack `(⟨i, a⟩ | z)`.
+Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `h1 : i ∈ S`. Consider the cases of `h3 : isVec i`. Simplify using `[sharp_covec h1 h3]`. Simplify using `[sharp_vec h1 h3]`. Simplify using `[sharp_out h1]`.
+Consider separately whether the proposition holds or fails. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[sharp_further]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sharp_nat (θ : A →+* B) (g gi : Matrix (Fin n) (Fin n) A) (P : MvPolynomial (LVar ι ζ n) A) :
     map θ (sharpHom isVec S g gi P) = sharpHom isVec S (g.map θ) (gi.map θ) (map θ P) := by
@@ -251,11 +249,11 @@ theorem sharp_nat (θ : A →+* B) (g gi : Matrix (Fin n) (Fin n) A) (P : MvPoly
     · simp [sharp_further]
 
 /- English proof (translation)
-It suffices to establish `hh : (sharpHom (ζ` using `ζ) isVec S x xi).comp (sharpHom isVec S y yi) = sharpHom isVec S (x * y) (yi * xi) from DFunLike.congr_fun hh P`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `(⟨i, a⟩ | z)`. Distinguish the cases in `h1 : i ∈ S`. Consider the cases of `h3 : isVec i`.
+Reduce the argument to an intermediate assertion. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [AlgHom.comp_apply, sharp_covec h1 h3, map_sum, map_mul, sharp_C, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [AlgHom.comp_apply, sharp_vec h1 h3, map_sum, map_mul, sharp_C, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `[sharp_out h1]`. Simplify using `[sharp_further]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sharp_comp (x xi y yi : Matrix (Fin n) (Fin n) A) (P : MvPolynomial (LVar ι ζ n) A) :
     sharpHom isVec S x xi (sharpHom isVec S y yi P) = sharpHom isVec S (x * y) (yi * xi) P := by
@@ -283,7 +281,7 @@ end Sharp
 section Universal
 
 /- English proof (translation)
-Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hm]`. Conclude with `Matrix.map_one f (map_zero f) (map_one f)`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_nonsing_inv {A B : Type*} [CommRing A] [CommRing B] {n : ℕ} (f : A →+* B)
     (m : Matrix (Fin n) (Fin n) A) (hm : IsUnit m.det) : (m⁻¹).map f = (m.map f)⁻¹ := by
@@ -302,7 +300,7 @@ def uMat : Matrix (Fin n) (Fin n) (UR k n) :=
   (Matrix.mvPolynomialX (Fin n) (Fin n) k).map (algebraMap (MvPolynomial (Fin n × Fin n) k) (UR k n))
 
 /- English proof (translation)
-Establish `: (uMat k n).det = algebraMap (MvPolynomial (Fin n × Fin n) k) (UR k n) (uDet k n)`. Conclude with `(RingHom.map_det (algebraMap (MvPolynomial (Fin n × Fin n) k) (UR k n)) (Matrix.mvPolynomialX (Fin n) (Fin n) k)).symm`. Rewrite using `[this]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uMat_det : IsUnit (uMat k n).det := by
   have : (uMat k n).det = algebraMap (MvPolynomial (Fin n × Fin n) k) (UR k n) (uDet k n) := by
@@ -315,7 +313,7 @@ variable {k n}
 variable {B : Type*} [CommRing B] [Algebra k B]
 
 /- English proof (translation)
-Unfold `uDet`. Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Conclude with `Matrix.mvPolynomialX_mapMatrix_aeval k g₀`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eval_uDet (g₀ : Matrix (Fin n) (Fin n) B) :
     aeval (fun p : Fin n × Fin n => g₀ p.1 p.2) (uDet k n) = g₀.det := by
@@ -334,7 +332,7 @@ def uAlg (k : Type*) [Field k] {n : ℕ} {B : Type*} [CommRing B] [Algebra k B]
       exact h.pow m)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem uAlg_algebraMap (g₀ : Matrix (Fin n) (Fin n) B) (h : IsUnit g₀.det)
     (x : MvPolynomial (Fin n × Fin n) k) :
@@ -342,7 +340,7 @@ theorem uAlg_algebraMap (g₀ : Matrix (Fin n) (Fin n) B) (h : IsUnit g₀.det)
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[uMat, uAlg_algebraMap, Matrix.mvPolynomialX]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem uAlg_uMat (g₀ : Matrix (Fin n) (Fin n) B) (h : IsUnit g₀.det) :
     (uMat k n).map (uAlg k g₀ h : UR k n →+* B) = g₀ := by
@@ -350,16 +348,16 @@ theorem uAlg_uMat (g₀ : Matrix (Fin n) (Fin n) B) (h : IsUnit g₀.det) :
   simp [uMat, uAlg_algebraMap, Matrix.mvPolynomialX]
 
 /- English proof (translation)
-Rewrite using `[map_nonsing_inv _ _ (uMat_det k n), uAlg_uMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uAlg_uInv (g₀ : Matrix (Fin n) (Fin n) B) (h : IsUnit g₀.det) :
     ((uMat k n)⁻¹).map (uAlg k g₀ h : UR k n →+* B) = g₀⁻¹ := by
   rw [map_nonsing_inv _ _ (uMat_det k n), uAlg_uMat]
 
 /- English proof (translation)
-Establish `: Function.Injective (uAlg k g₀ h : UR k n →+* B)`. Rewrite using `[IsLocalization.injective_iff_map_algebraMap_eq (Submonoid.powers (uDet k n))]`. Introduce `x y`. Simplify using `only [RingHom.coe_coe]`. Rewrite using `[uAlg_algebraMap, uAlg_algebraMap, hinj.eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(IsLocalization.injective (UR k n) (M := Submonoid.powers (uDet k n)) ?_).eq_iff` and prove the remaining obligations. Conclude with `powers_le_nonZeroDivisors_of_noZeroDivisors (Matrix.det_mvPolynomialX_ne_zero _ k)`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem uAlg_injective (g₀ : Matrix (Fin n) (Fin n) B) (h : IsUnit g₀.det)
     (hinj : Function.Injective (aeval (R := k) (fun p : Fin n × Fin n => g₀ p.1 p.2))) :
@@ -379,16 +377,16 @@ Both sides reduce to the same expression.
 theorem algebraMap_gen : algebraMap k (GenField k n) = genφ k n := rfl
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_ne_zero.mpr (genMat_det_ne k n)`.
+A detailed English derivation is pending.
 -/
 theorem genMat_isUnit : IsUnit (genMat k n).det := isUnit_iff_ne_zero.mpr (genMat_det_ne k n)
 
 /- English proof (translation)
-Apply `uAlg_injective` to reduce the goal to its premises. Establish `: (aeval (R` using `k) (fun p : Fin n × Fin n => genMat k n p.1 p.2) : _ →+* GenField k n) = algebraMap (MvPolynomial (Fin n × Fin n) k) (GenField k n) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[algebraMap_gen]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `[genMat]`. Introduce `x y hxy`. Establish `h1` using `DFunLike.congr_fun this x`. Establish `h2` using `DFunLike.congr_fun this y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [RingHom.coe_coe] at h1 h2`. Rewrite `hxy` using `[h1, h2]`. Conclude with `IsFractionRing.injective _ (GenField k n) hxy`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uAlg_gen_injective : Function.Injective (uAlg k (genMat k n) genMat_isUnit) := by
   apply uAlg_injective
@@ -416,7 +414,7 @@ def rho (G : MvPolynomial (LVar ι ζ n) k) : MvPolynomial (LVar ι ζ n) (UR k 
   sharpHom isVec S (uMat k n) (uMat k n)⁻¹ (map (algebraMap k (UR k n)) G)
 
 /- English proof (translation)
-Rewrite using `[rho, sharp_nat, uAlg_uMat, uAlg_uInv, MvPolynomial.map_map, AlgHom.comp_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_eq {B : Type*} [CommRing B] [Algebra k B] (g₀ : Matrix (Fin n) (Fin n) B) (h : IsUnit g₀.det)
     (G : MvPolynomial (LVar ι ζ n) k) :
@@ -424,7 +422,7 @@ theorem act_eq {B : Type*} [CommRing B] [Algebra k B] (g₀ : Matrix (Fin n) (Fi
   rw [rho, sharp_nat, uAlg_uMat, uAlg_uInv, MvPolynomial.map_map, AlgHom.comp_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[← act_eq, Matrix.mul_inv_rev, ← map_nonsing_inv _ _ (uMat_det k n), ← sharp_comp, rho, sharp_nat, MvPolynomial.map_map, AlgHom.comp_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sharp_map_rho {B : Type*} [CommRing B] [Algebra k B] (c : UR k n →ₐ[k] B)
     (x : Matrix (Fin n) (Fin n) B) (hxy : IsUnit (x * (uMat k n).map (c : UR k n →+* B)).det)
@@ -435,7 +433,7 @@ theorem sharp_map_rho {B : Type*} [CommRing B] [Algebra k B] (c : UR k n →ₐ[
     AlgHom.comp_algebraMap]
 
 /- English proof (translation)
-The claim follows from `act_eq isVec S (genMat k n) genMat_isUnit G`.
+A detailed English derivation is pending.
 -/
 theorem genPoint_eq (G : MvPolynomial (LVar ι ζ n) k) :
     genPoint isVec S G =
@@ -443,7 +441,7 @@ theorem genPoint_eq (G : MvPolynomial (LVar ι ζ n) k) :
   act_eq isVec S (genMat k n) genMat_isUnit G
 
 /- English proof (translation)
-Use `(mem_span_iff (A := GenField k n) N (genPoint isVec S G)).trans ?_` and prove the remaining obligations. Rewrite using `[genPoint_eq, slSpace_map _ uAlg_gen_injective]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem carries_iff (G : MvPolynomial (LVar ι ζ n) k) (N : Submodule k (MvPolynomial (LVar ι ζ n) k)) :
     Carries isVec S G N ↔ slSpace (k := k) (rho isVec S G) ≤ N := by
@@ -451,7 +449,7 @@ theorem carries_iff (G : MvPolynomial (LVar ι ζ n) k) (N : Submodule k (MvPoly
   rw [genPoint_eq, slSpace_map _ uAlg_gen_injective]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sInf_le ((carries_iff isVec S G _).mpr le_rfl)`. Conclude with `le_sInf fun N hN => (carries_iff isVec S G N).mp hN`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem genSpace_eq (G : MvPolynomial (LVar ι ζ n) k) :
     genSpace isVec S G = slSpace (k := k) (rho isVec S G) := by
@@ -460,7 +458,7 @@ theorem genSpace_eq (G : MvPolynomial (LVar ι ζ n) k) :
   · exact le_sInf fun N hN => (carries_iff isVec S G N).mp hN
 
 /- English proof (translation)
-Rewrite using `[genSpace_eq]`. Conclude with `mem_slSpace`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_genSpace {G f : MvPolynomial (LVar ι ζ n) k} :
     f ∈ genSpace isVec S G ↔ ∃ ℓ : UR k n →ₗ[k] k, slc ℓ (rho isVec S G) = f := by
@@ -483,7 +481,7 @@ def wV : LVar ι ζ n → (Fin n → ℤ)
 abbrev wt (e : LVar ι ζ n →₀ ℕ) : Fin n → ℤ := Finsupp.weight (wV isVec S) e
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hw]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem weight_pi_apply {σ : Type*} (W : σ → Fin n → ℤ) (e : σ →₀ ℕ) (m : Fin n) (w : σ → ℤ)
     (hw : ∀ x, W x m = w x) : Finsupp.weight W e m = Finsupp.weight w e := by
@@ -492,13 +490,13 @@ theorem weight_pi_apply {σ : Type*} (W : σ → Fin n → ℤ) (e : σ →₀ �
   rw [Pi.smul_apply, hw]
 
 /- English proof (translation)
-The claim follows from `weight_pi_apply _ e m w hw`.
+A detailed English derivation is pending.
 -/
 theorem wt_apply (e : LVar ι ζ n →₀ ℕ) (m : Fin n) (w : LVar ι ζ n → ℤ) (hw : ∀ x, wV isVec S x m = w x) :
     wt isVec S e m = Finsupp.weight w e := weight_pi_apply _ e m w hw
 
 /- English proof (translation)
-The claim follows from `| Sum.inl (i, a) => if i ∈ S ∧ a = m then (if isVec i then (1 : ℤ) else -1) else 0 | Sum.inr _ => 0 := by rcases x with ⟨i, a⟩ | z · by_cases h1 : i ∈ S · by_cases h2 : a = m · subst h2 cases h3 : isVec i <;> simp [wV, h1, h3] · cases h3 : isVec i <;> simp [wV, h1, h2, h3, Ne.sym …`.
+A detailed English derivation is pending.
 -/
 theorem wV_apply (m : Fin n) (x : LVar ι ζ n) :
     wV isVec S x m = match x with
@@ -514,9 +512,7 @@ theorem wV_apply (m : Fin n) (x : LVar ι ζ n) :
   · simp [wV]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h d hd`. Use function extensionality and compare the values at `m`. Conclude with `(wt_apply isVec S d m _ (wV_apply isVec S m)).trans (h m hd)`. Introduce `h m d hd`.
-
-Conclude with `(wt_apply isVec S d m _ (wV_apply isVec S m)).symm.trans (congrFun (h hd) m)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasWeight_iff {k : Type*} [Field k] (f : MvPolynomial (LVar ι ζ n) k) (ν : Fin n → ℤ) :
     HasWeight isVec S f ν ↔ IsWeightedHomogeneous (wV isVec S) f ν := by
@@ -538,7 +534,7 @@ def dti (n : ℕ) : Matrix (Fin n) (Fin n) (TR A n) :=
   Matrix.diagonal fun a => AddMonoidAlgebra.single (Pi.single a (-1)) 1
 
 /- English proof (translation)
-Rewrite using `[dt, dti, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[AddMonoidAlgebra.single_mul_single, ← Pi.single_add, mul_one, AddMonoidAlgebra.one_def]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dt_mul_dti : dt A n * dti A n = 1 := by
   rw [dt, dti, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -548,23 +544,23 @@ theorem dt_mul_dti : dt A n * dti A n = 1 := by
   simp
 
 /- English proof (translation)
-The claim follows from `(Matrix.inv_eq_right_inv (dt_mul_dti A)).symm`.
+A detailed English derivation is pending.
 -/
 theorem dti_eq : dti A n = (dt A n)⁻¹ := (Matrix.inv_eq_right_inv (dt_mul_dti A)).symm
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_right_inverse (dt_mul_dti A)`.
+A detailed English derivation is pending.
 -/
 theorem dt_det : IsUnit (dt A n).det := Matrix.isUnit_det_of_right_inverse (dt_mul_dti A)
 
 variable {A}
 
 /- English proof (translation)
-Break down `x with ⟨i, a⟩ | z` into its components or cases. Distinguish the cases in `h1 : i ∈ S`. Consider the cases of `h3 : isVec i`. Rewrite using `[sharp_covec h1 h3]`. Simplify using `[dti, Matrix.diagonal_apply, wV, h1, h3, mul_comm, apply_ite C]`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sharp_vec h1 h3]`. Simplify using `[dt, Matrix.diagonal_apply, wV, h1, h3, mul_comm, apply_ite C]`. Rewrite using `[sharp_out h1]`. Simplify using `[wV, h1, ← AddMonoidAlgebra.one_def]`. Rewrite using `[sharp_further]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[wV, ← AddMonoidAlgebra.one_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem torus_X (x : LVar ι ζ n) :
     sharpHom isVec S (dt A n) (dti A n) (X x) = C (AddMonoidAlgebra.single (wV isVec S x) 1) * X x := by
@@ -582,7 +578,7 @@ theorem torus_X (x : LVar ι ζ n) :
     simp [wV, ← AddMonoidAlgebra.one_def]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [AddMonoidAlgebra.one_def]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, AddMonoidAlgebra.single_mul_single, mul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_single {κ M : Type*} [AddCommMonoid M] (s : Finset κ) (f : κ → M) :
     ∏ x ∈ s, (AddMonoidAlgebra.single (f x) (1 : A) : AddMonoidAlgebra A M) =
@@ -594,7 +590,7 @@ theorem prod_single {κ M : Type*} [AddCommMonoid M] (s : Finset κ) (f : κ →
     rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, AddMonoidAlgebra.single_mul_single, mul_one]
 
 /- English proof (translation)
-Rewrite using `[monomial_eq, monomial_eq (a := AddMonoidAlgebra.single (wt isVec S e) a), map_mul, sharp_C, Finsupp.prod, map_prod]`. Simplify using `only [map_pow, torus_X, mul_pow, Finset.prod_mul_distrib, ← C_pow, AddMonoidAlgebra.single_pow, one_pow]`. Rewrite using `[← map_prod C, prod_single, ← mul_assoc, ← C_mul, AddMonoidAlgebra.single_mul_single, zero_add, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem torus_monomial (e : LVar ι ζ n →₀ ℕ) (a : A) :
     sharpHom isVec S (dt A n) (dti A n) (monomial e (AddMonoidAlgebra.single 0 a)) =
@@ -613,11 +609,11 @@ def cf (ν : Fin n → ℤ) : TR A n →ₗ[k] A where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial e a`. Establish `: algebraMap A (TR A n) a = AddMonoidAlgebra.single 0 a` using `rfl`. Rewrite using `[map_monomial, this, torus_monomial, slc_monomial]`. Use extensionality with `d`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[coeff_weightedHomogeneousComponent, coeff_monomial, coeff_monomial]`. Distinguish the cases in `hd : e = d`. Substitute `hd` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Express the relevant statement in the definitionally equal form `(AddMonoidAlgebra.single (wt isVec S e) a).coeff ν = _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Simplify using `[hd]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem torus_slice (Q : MvPolynomial (LVar ι ζ n) A) (ν : Fin n → ℤ) :
     slc (cf (k := k) ν) (sharpHom isVec S (dt A n) (dti A n) (map (algebraMap A (TR A n)) Q)) =
@@ -638,7 +634,7 @@ theorem torus_slice (Q : MvPolynomial (LVar ι ζ n) A) (ν : Fin n → ℤ) :
   | add p q hp hq => simp only [map_add, hp, hq]
 
 /- English proof (translation)
-Use extensionality with `d`. Simplify using `only [coeff_weightedHomogeneousComponent, coeff_slc]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem whc_slc (ℓ : A →ₗ[k] k) (P : MvPolynomial (LVar ι ζ n) A) (ν : Fin n → ℤ) :
     weightedHomogeneousComponent (wV isVec S) ν (slc ℓ P) =
@@ -658,7 +654,7 @@ def cT (k : Type*) [Field k] (n : ℕ) : UR k n →ₐ[k] TR (UR k n) n :=
   IsScalarTower.toAlgHom k (UR k n) (TR (UR k n) n)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_mul]`. Use `(dt_det _).mul ?_` and prove the remaining obligations. Establish `: ((uMat k n).map (cT k n : UR k n →+* TR (UR k n) n)).det = (cT k n : UR k n →+* TR (UR k n) n) (uMat k n).det` using `(RingHom.map_det _ _).symm`. Rewrite using `[this]`. Conclude with `(uMat_det k n).map _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cT_det : IsUnit (dt (UR k n) n * (uMat k n).map (cT k n : UR k n →+* TR (UR k n) n)).det := by
   rw [Matrix.det_mul]
@@ -672,7 +668,7 @@ def prF (k : Type*) [Field k] (n : ℕ) (ν : Fin n → ℤ) : UR k n →ₗ[k] 
   cf ν ∘ₗ (uAlg k _ (cT_det (k := k) (n := n))).toLinearMap
 
 /- English proof (translation)
-Rewrite using `[← torus_slice (k := k) isVec S, dti_eq]`. Use `sharp_map_rho isVec S (cT k n) (dt _ n) cT_det G` as an intermediate fact. Express the relevant statement in the definitionally equal form `slc _ (sharpHom isVec S _ _ (map (cT k n : UR k n →+* TR (UR k n) n) _)) = _`. Rewrite using `[this, ← slc_algHom, slc_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem whc_rho (G : MvPolynomial (LVar ι ζ n) k) (ν : Fin n → ℤ) :
     weightedHomogeneousComponent (wV isVec S) ν (rho isVec S G) = slc (prF k n ν) (rho isVec S G) := by
@@ -683,7 +679,7 @@ theorem whc_rho (G : MvPolynomial (LVar ι ζ n) k) (ν : Fin n → ℤ) :
   rfl
 
 /- English proof (translation)
-Take `⟨ℓ, rfl⟩` from `(mem_genSpace isVec S).mp hf`. Rewrite using `[whc_slc, whc_rho, slc_comp]`. Conclude with `(mem_genSpace isVec S).mpr ⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whc_mem {G f : MvPolynomial (LVar ι ζ n) k} (hf : f ∈ genSpace isVec S G) (ν : Fin n → ℤ) :
     weightedHomogeneousComponent (wV isVec S) ν f ∈ genSpace isVec S G := by
@@ -692,13 +688,13 @@ theorem whc_mem {G f : MvPolynomial (LVar ι ζ n) k} (hf : f ∈ genSpace isVec
   exact (mem_genSpace isVec S).mpr ⟨_, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, hne, hw⟩`. Take `⟨ℓ, rfl⟩` from `(mem_genSpace isVec S).mp hf`. Take `⟨e, he⟩` from `MvPolynomial.ne_zero_iff.mp hne`. Use `⟨e, ?_, (hasWeight_iff isVec S _ _).mp hw he⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_support_iff]`. Introduce `h0`. Rewrite `he` using `[coeff_slc, h0, map_zero]`. Conclude with `he rfl`. Introduce and unpack `⟨e, he, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `he` using `[mem_support_iff]`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ⟩ : ∃ ℓ : UR k n →ₗ[k] k, ℓ (coeff e (rho isVec S G)) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `he ((Module.forall_dual_apply_eq_zero_iff k _).mp hc)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨weightedHomogeneousComponent (wV isVec S) (wt isVec S e) (slc ℓ (rho isVec S G)), whc_mem isVec S ((mem_genSpace isVec S).mpr ⟨ℓ, rfl⟩) _, ?_, (hasWeight_iff isVec S _ _).mpr (weightedHomogeneousComponent_isWeightedHomogeneous _ _)⟩` and prove the remaining obligations. Use `MvPolynomial.ne_zero_iff.mpr ⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent, if_pos rfl, coeff_slc]`. Conclude with `hℓ`.
+A detailed English derivation is pending.
 -/
 theorem isWeightOf_iff (G : MvPolynomial (LVar ι ζ n) k) (ν : Fin n → ℤ) :
     IsWeightOf isVec S (genSpace isVec S G) ν ↔ ∃ e ∈ (rho isVec S G).support, wt isVec S e = ν := by
@@ -742,7 +738,7 @@ def ant (k : Type*) [Field k] (n : ℕ) : UR k n →ₐ[k] UR k n :=
   uAlg k (uMat k n)⁻¹ (Matrix.isUnit_nonsing_inv_det _ (uMat_det k n))
 
 /- English proof (translation)
-Rewrite using `[ant, ← act_eq, Matrix.nonsing_inv_nonsing_inv _ (uMat_det k n)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ant_rho (G : MvPolynomial (LVar ι ζ n) k) :
     map (ant k n : UR k n →+* UR k n) (rho isVec S G) =
@@ -750,7 +746,7 @@ theorem map_ant_rho (G : MvPolynomial (LVar ι ζ n) k) :
   rw [ant, ← act_eq, Matrix.nonsing_inv_nonsing_inv _ (uMat_det k n)]
 
 /- English proof (translation)
-Rewrite using `[map_ant_rho, sharp_nat, ant, uAlg_uInv, uAlg_uMat, Matrix.nonsing_inv_nonsing_inv _ (uMat_det k n), MvPolynomial.map_map, AlgHom.comp_algebraMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_ant_ant (G : MvPolynomial (LVar ι ζ n) k) :
     map (ant k n : UR k n →+* UR k n) (map (ant k n : UR k n →+* UR k n) (rho isVec S G)) = rho isVec S G := by
@@ -759,7 +755,7 @@ theorem map_ant_ant (G : MvPolynomial (LVar ι ζ n) k) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_ant_rho, sharp_nat, uAlg_uInv, uAlg_uMat, MvPolynomial.map_map, AlgHom.comp_algebraMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genH_eq (G : MvPolynomial (LVar ι ζ n) k) :
     genH isVec S G = map (uAlg k (genMat k n) genMat_isUnit : UR k n →+* GenField k n)
@@ -768,11 +764,11 @@ theorem genH_eq (G : MvPolynomial (LVar ι ζ n) k) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_support_iff, mem_support_iff, genH_eq, coeff_map, coeff_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h h0`. Rewrite `h` using `[h0, map_zero, map_zero]`. Conclude with `h rfl`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h h0`. Apply `h` to reduce the goal to its premises. Establish `h1 : (ant k n : UR k n →+* UR k n) (coeff e (rho isVec S G)) = 0`. Apply `uAlg_gen_injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `h2` using `congrArg (coeff e) (map_ant_ant isVec S G)`. Rewrite `h2` using `[coeff_map, coeff_map, h1, map_zero]`. Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genH_support (G : MvPolynomial (LVar ι ζ n) k) (e : LVar ι ζ n →₀ ℕ) :
     e ∈ (genH isVec S G).support ↔ e ∈ (rho isVec S G).support := by
@@ -792,11 +788,11 @@ theorem genH_support (G : MvPolynomial (LVar ι ζ n) k) (e : LVar ι ζ n →�
     exact h2.symm
 
 /- English proof (translation)
-Rewrite using `[wV_apply]`. Break down `x with ⟨i, a⟩ | z` into its components or cases. Establish `hc : (if last then a.val + 1 = n else a.val = 0) ↔ a = m`. Consider the cases of `last`. Simplify using `only [Bool.false_eq_true, if_false] at hm ⊢`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.ext_iff, hm]`. Simplify using `only [if_true] at hm ⊢`. Rewrite using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `by_cases h1 : i ∈ S <;> by_cases h2 : a = m <;> simp [wtX, h1, h2, hc, hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[wtX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wV_eq_wtX (last : Bool) (m : Fin n) (hm : if last then m.val + 1 = n else m.val = 0) (x : LVar ι ζ n) :
     wV isVec S x m = wtX isVec S last x := by
@@ -813,7 +809,7 @@ theorem wV_eq_wtX (last : Bool) (m : Fin n) (hm : if last then m.val + 1 = n els
   · simp [wtX]
 
 /- English proof (translation)
-Rewrite using `[wt_apply isVec S e m _ (wV_eq_wtX isVec S last m hm), Finsupp.weight_apply, wExp, Finsupp.sum]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wExp_eq_wt (last : Bool) (m : Fin n) (hm : if last then m.val + 1 = n else m.val = 0)
     (e : LVar ι ζ n →₀ ℕ) : wExp isVec S last e = wt isVec S e m := by
@@ -821,9 +817,9 @@ theorem wExp_eq_wt (last : Bool) (m : Fin n) (hm : if last then m.val + 1 = n el
   simp
 
 /- English proof (translation)
-Rewrite using `[gen_mem_supp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he, hj⟩`. Conclude with `⟨wt isVec S e, (isWeightOf_iff isVec S G _).mpr ⟨e, (genH_support isVec S G e).mp he, rfl⟩, (wExp_eq_wt isVec S last m hm e).symm.trans hj⟩`. Introduce and unpack `⟨ν, hν, hj⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨e, he, rfl⟩` from `(isWeightOf_iff isVec S G _).mp hν`. Conclude with `⟨e, (genH_support isVec S G e).mpr he, (wExp_eq_wt isVec S last m hm e).trans hj⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_supp_iff (last : Bool) (m : Fin n) (hm : if last then m.val + 1 = n else m.val = 0)
     (G : MvPolynomial (LVar ι ζ n) k) (j : ℤ) :

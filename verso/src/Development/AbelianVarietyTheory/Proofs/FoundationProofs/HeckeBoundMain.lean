@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hq0 : (0 : ℝ) < q` using `by linarith`. Use `set x : ℝ := (q : ℝ) ^ ((k : ℝ) / 2) with hx`. Use `set y : ℝ := (q : ℝ) ^ ((k : ℝ) / 2 - 1) with hy`. Establish `hk' : (3 : ℝ) ≤ k` using `by exact_mod_cast hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : 1 < x` using `Real.one_lt_rpow hq1 (by linarith)`. Establish `hy1 : 1 < y` using `Real.one_lt_rpow hq1 (by linarith)`. Establish `hxy : x * y = (q : ℝ) ^ (k - 1)`. Rewrite using `[hx, hy, ← Real.rpow_add hq0, ← Real.rpow_natCast]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use polynomial arithmetic with `[mul_pos (sub_pos.mpr hx1) (sub_pos.mpr hy1)]`.
+Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem hecke_bound_lt (k q : ℕ) (hk : 3 ≤ k) (hq : 2 ≤ q) :
     (q : ℝ) ^ ((k : ℝ) / 2) + (q : ℝ) ^ ((k : ℝ) / 2 - 1) < 1 + (q : ℝ) ^ (k - 1) := by
@@ -34,9 +34,9 @@ theorem hecke_bound_lt (k q : ℕ) (hk : 3 ≤ k) (hq : 2 ≤ q) :
   nlinarith [mul_pos (sub_pos.mpr hx1) (sub_pos.mpr hy1)]
 
 /- English proof (translation)
-Establish `hb` using `GlobalTheory.HeckeBd.norm_a_le k g q hq hqM`. Use `⟨hb, fun h => ?_⟩` and prove the remaining obligations. Establish `hlt` using `hecke_bound_lt k q hk hq.two_le`. Establish `hn : ‖(1 : ℂ) + (q : ℂ) ^ (k - 1)‖ = 1 + (q : ℝ) ^ (k - 1)`. Establish `: (1 : ℂ) + (q : ℂ) ^ (k - 1) = (((1 : ℝ) + (q : ℝ) ^ (k - 1) : ℝ) : ℂ)` using `by push_cast; ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Rewrite `hb` using `[h, hn]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hecke_bound_ne (k : ℕ) (g : UpperTheory.V.Af.Newform k) (q : ℕ) (hk : 3 ≤ k) (hq : q.Prime)
     (hqM : ¬ q ∣ g.M) :
@@ -52,7 +52,7 @@ theorem hecke_bound_ne (k : ℕ) (g : UpperTheory.V.Af.Newform k) (q : ℕ) (hk 
   linarith
 
 /- English proof (translation)
-Introduce `k g q hk hq hqM` and use `hecke_bound_ne k g q hk hq hqM`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hecke_bound_main : ∀ (k : ℕ) (g : UpperTheory.V.Af.Newform k) (q : ℕ), 3 ≤ k → q.Prime → ¬ q ∣ g.M →
     ‖g.a q‖ ≤ (q : ℝ) ^ ((k : ℝ) / 2) + (q : ℝ) ^ ((k : ℝ) / 2 - 1) ∧ g.a q ≠ 1 + (q : ℂ) ^ (k - 1) :=

@@ -16,9 +16,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {G : ChGlob X R.m} {m2 : ℕ} {u : Pr.Word}
 
 /- English proof (translation)
-Establish `hm : m2 + 1 + 1 = R.m` using `hL.hm.symm`. Rewrite `hx` using `[← xiOver_eq_XiTop _ _ _ _ _ _ _ _ _ _ hm]`. Unfold `xiOver at hx`. Use `GlobalTheory.GO.mem_divLat_of_loc _ _ (left_ne_zero_of_mul hx) fun Q s l => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.GO.locTop_den hL.hm hL.cst_ok (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) Q (Finset.mem_univ _)) s (Fin.cast (congrArg R.N hm) l)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h` using `[castSp, LinearMap.funLeft_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem top_supp (hL : L.Ok Ch sel mu cst G m2) (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1))))
     (p' : ChPt (R := R) sel mu u (m2 + 1 + 1)) (x : HomE X.E (R.N (m2 + 1)) (R.N (m2 + 1 + 1)))
@@ -34,9 +34,9 @@ theorem top_supp (hL : L.Ok Ch sel mu cst G m2) (p : ChPt (R := R) sel mu u (m2 
 
 open Classical in
 /- English proof (translation)
-Establish `hm : m2 + 1 + 1 = R.m` using `hL.hm.symm`. Take `⟨h1, h2⟩` from `GlobalTheory.GO.loc_of_mem_mulLat hPr _ _ x hy`. Rewrite using `[← xiOver_eq_XiTop _ _ _ _ _ _ _ _ _ _ hm]`. Unfold `xiOver`. Use `congrArg₂ (· * ·) h1 (Finset.prod_congr rfl fun Q _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.inFr_add, LinearMap.comp_add]`. Use `GlobalTheory.GO.locTop_add hL.hm hL.cst_ok (hL.depthQ Q) _ (fun s l => ?_) (hY Q)` and prove the remaining obligations. Simplify `h2 Q s (Fin.cast (congrArg R.N hm).symm l)` using `[castSp, LinearMap.funLeft_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem top_add (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1))))
     (p' : ChPt (R := R) sel mu u (m2 + 1 + 1))
@@ -54,7 +54,7 @@ theorem top_add (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) (p : ChPt (R := R) 
   simpa [castSp, LinearMap.funLeft_apply] using h2 Q s (Fin.cast (congrArg R.N hm).symm l)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GO.mem_divLat_of_loc _ _ (left_ne_zero_of_mul hx) fun Q => hL.xiSupp i hi al be Q _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) Q (Finset.mem_univ _))`.
+A detailed English derivation is pending.
 -/
 theorem entry_supp (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al : L.β i) (be : L.β (i + 1))
     (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1)) (x : HomE X.E (R.N i) (R.N (i + 1)))
@@ -64,7 +64,7 @@ theorem entry_supp (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al : 
     hL.xiSupp i hi al be Q _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) Q (Finset.mem_univ _))
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.GO.loc_of_mem_mulLat hPr _ _ x hy`. Conclude with `congrArg₂ (· * ·) h1 (Finset.prod_congr rfl fun Q _ => (congrArg _ (GlobalTheory.inFr_add _ _ x y)).trans (hL.xiInv i hi al be Q _ _ (h2 Q)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem entry_add (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al : L.β i) (be : L.β (i + 1))
     (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1)) (x y : HomE X.E (R.N i) (R.N (i + 1)))
@@ -75,7 +75,7 @@ theorem entry_add (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i
     (congrArg _ (GlobalTheory.inFr_add _ _ x y)).trans (hL.xiInv i hi al be Q _ _ (h2 Q)))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GO.mem_divLat_of_loc _ _ (left_ne_zero_of_mul hx) fun Q => hL.psiSuppX al Q _ _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) Q (Finset.mem_univ _))`.
+A detailed English derivation is pending.
 -/
 theorem cpl_supp (hL : L.Ok Ch sel mu cst G m2) (al : L.β m2) (p₀ : ChPt (R := R) sel mu u m2)
     (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (x : HomE X.E (R.N m2) (R.N (m2 + 1)))
@@ -85,7 +85,7 @@ theorem cpl_supp (hL : L.Ok Ch sel mu cst G m2) (al : L.β m2) (p₀ : ChPt (R :
     hL.psiSuppX al Q _ _ (Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hx) Q (Finset.mem_univ _))
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.GO.loc_of_mem_mulLat hPr _ _ x hy`. Conclude with `congrArg₂ (· * ·) h1 (Finset.prod_congr rfl fun Q _ => (congrArg (fun t => PsiAt Ch sel mu cst m2 Q _ t _) (GlobalTheory.inFr_add _ _ x y)).trans (hL.psiInvX al Q _ _ _ (h2 Q)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cpl_add (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) (al : L.β m2) (p₀ : ChPt (R := R) sel mu u m2)
     (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (x y : HomE X.E (R.N m2) (R.N (m2 + 1)))
@@ -98,7 +98,7 @@ theorem cpl_add (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) (al : L.β m2) (p�
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finiteDatum_invariance_support_transport_frames s cc S N N' f f' cA cB hA hB Ξ hAA h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem transport {D : D7} {X : Fields} (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (S : Finset (HeightOneSpectrum (𝓞 X.E)))
     {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b))
@@ -116,7 +116,7 @@ theorem transport {D : D7} {X : Fields} (s : Seam D X) (cc : Ideal (𝓞 D.host.
   GlobalTheory.T.finiteDatum_invariance_support_transport_frames s cc S N N' f f' cA cB hA hB Ξ hAA h1 h2
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_vector_sameCouplingCoset_all_bad_primes sel mu cst fr y0`.
+A detailed English derivation is pending.
 -/
 theorem cosetNonempty {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
     (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) {n : ℕ} (fr : rowSG Pr sel mu → (Sp X.E n ≃ₗ[X.E] Sp X.E n))
@@ -125,7 +125,7 @@ theorem cosetNonempty {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (�
 
 open Classical in
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.intAt_qOf_pow_mul_y0_of_adTie A dtU a H β x Q l`.
+A detailed English derivation is pending.
 -/
 theorem couplingBaseVector_bound_kernelChain {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC}
     {ex : Extra D L hT Gi Gl Kc Y cX} {t : KerEntTied ex} {u : D.what₂.Word} {μ : D.what₂.Tup} {St : ChainCharts D u μ}
@@ -136,13 +136,13 @@ theorem couplingBaseVector_bound_kernelChain {D : D7} {L : SizeData₂ D} {hT : 
 
 open Classical in
 /- English proof (translation)
-Establish `hy0 : ∀ P, y0At A (t.m2 + 1) hi β P = A.y0 β P` using `fun P => by simp [y0At]`. Take `⟨y, hy⟩` from `cosetNonempty t.sel (t.tup μ) (t.cst μ) (fun P => frsF t.sel (t.tup μ) p P) (fun P => A.y0 β P)`. Establish `hne : repY (cosetOf A (t.m2 + 1) hi β p) ∈ cosetOf A (t.m2 + 1) hi β p`. Unfold `repY`. Conclude with `Classical.epsilon_spec (p := fun y => y ∈ cosetOf A (t.m2 + 1) hi β p) ⟨y, fun P => by rw [hy0]; exact hy P⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h1` using `hne Q l`. Rewrite `h1` using `[hy0]`. Establish `h2` using `couplingBaseVector_bound_kernelChain A dtU a H β x Q l`. Generalize the expression as in `(frsF t.sel (t.tup μ) p Q).symm (repY (cosetOf A (t.m2 + 1) hi β p)) = v at h1 ⊢`. Rewrite `h1` using `[Pi.sub_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq` using `GlobalTheory.TopInv.qOf_ne (E := t.X.E) Q.1`. Use `split_ifs at h1 h2 ⊢ with hQ`. Establish `e : (qOf Q.1 : t.X.E) ^ 1 * v l = (qOf Q.1 : t.X.E) * (((qOf Q.1 : t.X.E) ^ 0)⁻¹ * (v l - A.y0 β Q l)) + (qOf Q.1 : t.X.E) ^ 1 * A.y0 β Q l` using `by ring`. Rewrite using `[e]`. Conclude with `((GlobalTheory.TopStep.intAt_nat _).mul h1).add h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (qOf Q.1 : t.X.E) ^ (t.cst μ).M * v l = (qOf Q.1 : t.X.E) ^ (t.cst μ).M * (qOf Q.1 : t.X.E) ^ (t.cst μ).M * (((qOf Q.1 : t.X.E) ^ (t.cst μ).M)⁻¹ * (v l - A.y0 β Q l)) + (qOf Q.1 : t.X.E) ^ (t.cst μ).M * A.y0 β Q l`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(((GlobalTheory.TopStep.intAt_pow (GlobalTheory.TopStep.intAt_nat _) _).mul (GlobalTheory.TopStep.intAt_pow (GlobalTheory.TopStep.intAt_nat _) _)).mul h1).add h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetBound {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC}
     {ex : Extra D L hT Gi Gl Kc Y cX} {t : KerEntTied ex} {u : D.what₂.Word} {μ : D.what₂.Tup} {St : ChainCharts D u μ}
@@ -176,19 +176,15 @@ theorem cosetBound {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hT hPt i hi β β' x x'`. Take `⟨hSS, hlev, -⟩` from `t.rd_chain u μ`. Establish `hL` using `t.idx_ok μ`. Establish `hPr` using `t.pr_ok`. Establish `hp` using `(hPt i (Nat.le_of_succ_le hi) β x).choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp'` using `(hPt (i + 1) hi β' x').choose_spec`. Establish `hxi : xiAd A a i hi β β' x x' = fun z => t.seam.σ₀ (xiPt A i hi β β' (hPt i (Nat.le_of_succ_le hi) β x).choose (hPt (i + 1) hi β' x').choose (seamHom t.seam (inFr (toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (Formalism.L2.Forms.gramN D i (Nat.le_of_succ_le hi)) (A.crd i (Nat.le …`. Use function extensionality and compare the values at `fun z => dif_pos ⟨⟨_, hp⟩, ⟨_, hp'⟩⟩`. Generalize the expression as in `(hPt i (Nat.le_of_succ_le hi) β x).choose = p at hp hxi`. Generalize the expression as in `(hPt (i + 1) hi β' x').choose = p' at hp' hxi`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hS : ssRec t u μ = (Sall t.sel (t.tup μ) (t.word u)).map (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv t.seam.iE)).toEmbedding`. Unfold `ssRec`. Rewrite using `[hSS]`. Rewrite using `[hxi, hS, hlev, latK_eq_map _ (A.crd i (Nat.le_of_succ_le hi)), latK_eq_map _ (A.crd (i + 1) hi), ← hp.lat, ← hp'.lat]`. Unfold `levC`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `transport t.seam t.cc _ _ _ _ _ _ _ GlobalTheory.GO.twDen_pos (GlobalTheory.GO.twMod_pos (hPr.T_prime _).pos) _ (fun P hP => hT.aa P hP) ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Unfold `xiPt at hz`. Use `split_ifs at hz with h1 h2`. Conclude with `entry_supp hL h1 _ _ _ _ z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `h2` using the available equality. Conclude with `cpl_supp hL _ _ _ _ z hz`. Take `rfl : i = t.m2 + 1` from `by have := m_eq t μ; omega`. Conclude with `top_supp hL _ _ _ z hz`. Introduce `z y hy`.
-
-Unfold `xiPt`. Use `split_ifs with h1 h2`. Conclude with `entry_add hPr hL h1 _ _ _ _ z y hy`. Substitute `h2` using the available equality. Conclude with `cpl_add hPr hL _ _ _ _ z y hy`.
-
-Take `rfl : i = t.m2 + 1` from `by have := m_eq t μ; omega`. Conclude with `top_add hPr hL _ _ _ (fun Q l => cosetBound A dtU a hT _ β x _ Q l) z y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sizeLaw_of_tie' : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => PtEx A a → SizeLaw A a) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hT hPt i hi β β' x x'
@@ -232,7 +228,7 @@ theorem sizeLaw_of_tie' : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dt
 end GlobalTheory.TwV.EntrySupportBounds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TwV.EntrySupportBounds.sizeLaw_of_tie'`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.sizeLaw_of_tie : GlobalTheory.TwV.UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => GlobalTheory.TwV.PtEx A a → GlobalTheory.TwV.SizeLaw A a) :=
   GlobalTheory.TwV.EntrySupportBounds.sizeLaw_of_tie'

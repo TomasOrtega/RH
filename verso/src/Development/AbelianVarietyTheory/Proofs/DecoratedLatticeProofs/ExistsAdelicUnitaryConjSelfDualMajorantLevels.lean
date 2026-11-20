@@ -23,11 +23,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, fun v _ => map_one _, fun w => map_one _⟩`. Consider the case `insert u S hu ih`. Take `⟨g, h1, h2, h3⟩` from `ih`. Use `⟨emb σ J u (x u) * g, fun v hv => ?_, fun v hv => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Distinguish the cases in `e : v = u`. Substitute `e` using the available equality. Rewrite using `[proj_emb_self, h2 v hu, mul_one]`. Rewrite using `[proj_emb_ne σ J e, one_mul, h1 v ((Finset.mem_insert.1 hv).resolve_left e)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hv` using `[Finset.mem_insert, not_or]`. Rewrite using `[map_mul, proj_emb_ne σ J hv.1, one_mul, h2 v hv.2]`. Rewrite using `[map_mul, projArch_emb, one_mul, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_proj_eq (x : ∀ v, GLoc σ J v) (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ g : GAd σ J, (∀ v ∈ S, proj σ J v g = x v) ∧ (∀ v ∉ S, proj σ J v g = 1) ∧ ∀ w, projArch σ J w g = 1 := by
@@ -49,11 +49,11 @@ theorem exists_proj_eq (x : ∀ v, GLoc σ J v) (S : Finset (HeightOneSpectrum (
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp, fun v _ => map_one _, fun w => map_one _⟩`. Consider the case `insert u S hu ih`. Take `⟨g, h1, h2, h3⟩` from `ih`. Use `⟨embArch σ J u (x u) * g, fun v hv => ?_, fun v hv => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Distinguish the cases in `e : v = u`. Substitute `e` using the available equality. Rewrite using `[projArch_embArch_self, h2 v hu, mul_one]`. Rewrite using `[projArch_embArch_ne σ J e, one_mul, h1 v ((Finset.mem_insert.1 hv).resolve_left e)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hv` using `[Finset.mem_insert, not_or]`. Rewrite using `[map_mul, projArch_embArch_ne σ J hv.1, one_mul, h2 v hv.2]`. Rewrite using `[map_mul, proj_embArch, one_mul, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_projArch_eq (x : ∀ w, GArch σ J w) (S : Finset (InfinitePlace F)) :
     ∃ g : GAd σ J, (∀ w ∈ S, projArch σ J w g = x w) ∧ (∀ w ∉ S, projArch σ J w g = 1) ∧ ∀ v, proj σ J v g = 1 := by
@@ -73,13 +73,11 @@ theorem exists_projArch_eq (x : ∀ w, GArch σ J w) (S : Finset (InfinitePlace 
     · rw [map_mul, proj_embArch, one_mul, h3]
 
 /- English proof (translation)
-Use `choose x hx using hf`. Use `choose y hy using hi`. Establish `hS` using `Filter.eventually_cofinite.1 (eventually_latLoc_eq F L L')`. Take `⟨g, g1, g2, g3⟩` from `exists_proj_eq σ J x hS.toFinset`. Take `⟨h, h1, -, h3⟩` from `exists_projArch_eq σ J y Finset.univ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g * h, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_levelAll, mem_levelAll]`. Use `and_congr (forall_congr' fun v => ?_) (forall_congr' fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, map_mul, h3, mul_one]`. Distinguish the cases in `hv : v ∈ hS.toFinset`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[g1 v hv]`. Conclude with `hx v _`. Establish `e : latLoc F L v = latLoc F L' v` using `by simpa using hv`. Rewrite using `[g2 v hv, inv_one, one_mul, mul_one, mem_stabLoc, mem_stabLoc, e]`. Rewrite using `[map_mul, map_mul, map_inv, map_mul, g3, one_mul, h1 w (Finset.mem_univ w)]`.
-
-Conclude with `hy w _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_of_local {L L' : Submodule (𝓞 E) (Fin n → E)} (hL : Submodule.IsLattice E L)
     (hL' : Submodule.IsLattice E L') (a a' : GL (Fin n) (AF F ⊗[F] E))
@@ -109,9 +107,9 @@ theorem exists_conj_of_local {L L' : Submodule (𝓞 E) (Fin n → E)} (hL : Sub
 end Glue
 
 /- English proof (translation)
-Introduce `D T L L' a a' h h'`. Establish `hc` using `isCMExt_host D`. Establish `hJ` using `isHermND_gram T`. Establish `hf` using `fun v => GlobalTheory.T.exists_conj_stabilizers_selfDual_lattices_unramified D.host.F D.host.E D.sp.cm.sig hc (GlobalTheory.HeckeAdjoint.unramified_host D) T.rank T.gram hJ L L' h.lat h'.lat v (h.dual v) (h'.dual v)`. Establish `hi` using `fun w => GlobalTheory.T.archimedean_majorant_stabilisers_conjugate D.host.F D.host.E D.sp.cm.sig hc T.rank T.gram hJ a a' h.maj h'.maj w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `exists_conj_of_local D.sp.cm.sig T.gram h.lat h'.lat a a' hf hi`. Conclude with `⟨g, fun k => hg k⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_conj : ∀ (D : D7) (T : HSp D) (L L' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (a a' : GL (Fin T.rank) (AE D)), IsLevel T L a → IsLevel T L' a' → ∃ g : GA D T, ∀ k : GA D T, k ∈ lev T L' a' ↔ g⁻¹ * k * g ∈ lev T L a := by
   intro D T L L' a a' h h'

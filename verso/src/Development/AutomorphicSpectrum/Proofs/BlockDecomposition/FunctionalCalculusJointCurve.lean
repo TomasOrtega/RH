@@ -26,9 +26,7 @@ section Frame
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Establish `hu : IsUnit x.det` using `isUnit_iff_ne_zero.2 hx`. Establish `e : ξ = ∑ p, eps p (x⁻¹ * ξ) • (x * bs p)`. Establish `: x * (x⁻¹ * ξ) = ξ`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Use `conv_lhs => rw [← this, ← sum_eps (x⁻¹ * ξ), Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun p _ => mul_smul_comm _ _ _`. Use `conv_lhs => rw [e, map_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => map_smul _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_frame (f : Mat n → V) {x : Mat n} (hx : x ∈ GLs n) (ξ : Mat n) :
     fderiv ℝ f x ξ = ∑ p, eps p (x⁻¹ * ξ) • fderiv ℝ f x (x * bs p) := by
@@ -42,7 +40,7 @@ theorem fderiv_frame (f : Mat n → V) {x : Mat n} (hx : x ∈ GLs n) (ξ : Mat 
   exact Finset.sum_congr rfl fun p _ => map_smul _ _ _
 
 /- English proof (translation)
-The claim follows from `(contDiff_eps p).comp_contDiffOn ((GlobalTheory.CompanionTheory.SobGL.Expand.contDiff_mul_right ξ).comp_contDiffOn GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_coeff (p : Bool × Fin n × Fin n) (ξ : Mat n) :
     ContDiffOn ℝ ∞ (fun x : Mat n => eps p (x⁻¹ * ξ)) (GLs n) :=
@@ -50,20 +48,18 @@ theorem contDiffOn_coeff (p : Bool × Fin n × Fin n) (ξ : Mat n) :
     ((GlobalTheory.CompanionTheory.SobGL.Expand.contDiff_mul_right ξ).comp_contDiffOn GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv)
 
 /- English proof (translation)
-The claim follows from `(contDiffOn_coeff p ξ).comp contDiff_snd.contDiffOn fun _ hz => hz.2`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_coeff' (p : Bool × Fin n × Fin n) (ξ : Mat n) :
     ContDiffOn ℝ ∞ (fun z : ℝ × Mat n => eps p (z.2⁻¹ * ξ)) (Set.univ ×ˢ GLs n) :=
   (contDiffOn_coeff p ξ).comp contDiff_snd.contDiffOn fun _ hz => hz.2
 
 /- English proof (translation)
-Establish `hn : (Set.univ ×ˢ GLs n : Set (ℝ × Mat n)) ∈ nhds ((t, x) : ℝ × Mat n)` using `isOpen_dom.mem_nhds ⟨trivial, hx⟩`. Establish `c1 : ContinuousOn (Function.uncurry fun (t : ℝ) (x : Mat n) => (1 : ℝ →L[ℝ] ℝ).smulRight (h₀ t x)) (Set.univ ×ˢ GLs n)`. Rewrite using `[continuousOn_clm_apply]`. Introduce `y`. Use `ContinuousOn.congr (f := fun z : ℝ × Mat n => y • Function.uncurry h₀ z) ((continuousOn_const (c := y)).smul c₀) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨s, w⟩ -`. Simplify using `[Function.uncurry_def]`. Establish `c2 : ContinuousOn (Function.uncurry fun (t : ℝ) (x : Mat n) => fderiv ℝ (h t) x) (Set.univ ×ˢ GLs n)`. Use `continuousOn_clm_apply.2 fun ξ => ?_` and prove the remaining obligations. Establish `h1 : ContinuousOn (fun z : ℝ × Mat n => ∑ p, eps p (z.2⁻¹ * ξ) • hp p z.1 z.2) (Set.univ ×ˢ GLs n)` using `continuousOn_finset_sum _ fun p _ => (contDiffOn_coeff' p ξ).continuousOn.smul (cp p)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1.congr ?_` and prove the remaining obligations. Introduce and unpack `⟨s, y⟩ ⟨-, hy⟩`. Establish `hy' : y ∈ GLs n` using `hy`. Conclude with `(fderiv_frame (h s) hy' ξ).trans (Finset.sum_congr rfl fun p _ => by rw [hf p s y hy'])`. Establish `key` using `hasStrictFDerivAt_uncurry_coprod (𝕜 := ℝ) (u := ((t, x) : ℝ × Mat n)) (f := h) (f₁ := fun t x => (1 : ℝ →L[ℝ] ℝ).smulRight (h₀ t x)) (f₂ := fun t x => fderiv ℝ (h t) x) ?_ ?_ (c1.continuousAt hn) (c2.continuousAt hn)`.
-
-Conclude with `key.hasFDerivAt`. Use `filter_upwards [hn] with v hv`. Conclude with `(ht v.1 v.2 hv.2).hasFDerivAt`. Use `filter_upwards [hn] with v hv`. Conclude with `((hd v.1 v.2 hv.2).differentiableAt (GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs.mem_nhds hv.2)).hasFDerivAt`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_uncurry {h h₀ : ℝ → Mat n → V} {hp : (Bool × Fin n × Fin n) → ℝ → Mat n → V}
     (c₀ : ContinuousOn (Function.uncurry h₀) (Set.univ ×ˢ GLs n))
@@ -104,15 +100,13 @@ theorem hasFDerivAt_uncurry {h h₀ : ℝ → Mat n → V} {hp : (Bool × Fin n 
     exact ((hd v.1 v.2 hv.2).differentiableAt (GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs.mem_nhds hv.2)).hasFDerivAt
 
 /- English proof (translation)
-Introduce `h hh`. Take `⟨h₀, h₀F, ht⟩` from `hdt h hh`. Use `choose hp hpF hf using hfr h hh`. Establish `hD : ∀ z ∈ (Set.univ ×ˢ GLs n : Set (ℝ × Mat n)), HasFDerivAt (Function.uncurry h) (((1 : ℝ →L[ℝ] ℝ).smulRight (h₀ z.1 z.2)).coprod (fderiv ℝ (h z.1) z.2)) z` using `fun z hz => hasFDerivAt_uncurry (hc _ h₀F) (fun p => hc _ (hpF p)) ht (hd h hh) hf hz.2`. Establish `e : ((k + 1 : ℕ) : WithTop ℕ∞) = (k : WithTop ℕ∞) + 1` using `by norm_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, contDiffOn_succ_iff_fderiv_of_isOpen isOpen_dom]`. Use `⟨fun z hz => (hD z hz).differentiableAt.differentiableWithinAt, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiffOn_clm_apply]`. Introduce and unpack `⟨τ, ξ⟩`. Establish `h1 : ContDiffOn ℝ k (fun z : ℝ × Mat n => τ • h₀ z.1 z.2 + ∑ p, eps p (z.2⁻¹ * ξ) • hp p z.1 z.2) (Set.univ ×ˢ GLs n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiffOn.add (contDiffOn_const.smul (ih _ h₀F)) (ContDiffOn.sum fun p _ => ?_)` and prove the remaining obligations. Conclude with `((contDiffOn_coeff' p ξ).of_le (by exact_mod_cast le_top)).smul (ih _ (hpF p))`. Use `h1.congr ?_` and prove the remaining obligations. Introduce and unpack `⟨s, y⟩ hz`. Establish `e1 : fderiv ℝ (Function.uncurry h) (s, y) = _` using `(hD _ hz).fderiv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(congrArg (fun L => L (τ, ξ)) e1).trans ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.coprod_apply, ContinuousLinearMap.smulRight_apply]`. Rewrite using `[fderiv_frame _ hz.2]`. Simplify using `only [ContinuousLinearMap.one_apply]`. Use `congr 1`.
-
-Conclude with `Finset.sum_congr rfl fun p _ => by rw [hf p s y hz.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem contDiffOn_step (F : Set (ℝ → Mat n → V))
     (hc : ∀ h ∈ F, ContinuousOn (Function.uncurry h) (Set.univ ×ˢ GLs n))
@@ -147,9 +141,9 @@ theorem contDiffOn_step (F : Set (ℝ → Mat n → V))
   exact Finset.sum_congr rfl fun p _ => by rw [hf p s y hz.2]
 
 /- English proof (translation)
-Introduce `h hh`. Rewrite using `[contDiffOn_infty]`. Introduce `k`. Proceed by induction on `k generalizing h with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h0 : ContDiffOn ℝ 0 (Function.uncurry h) (Set.univ ×ˢ GLs n)` using `contDiffOn_zero.2 (hc h hh)`. Simplify using `using h0`. Consider the case `succ k ih => exact contDiffOn_step F hc hdt hd hfr k (fun h hh => ih h hh) h hh`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem contDiffOn_uncurry_of_frame (F : Set (ℝ → Mat n → V))
     (hc : ∀ h ∈ F, ContinuousOn (Function.uncurry h) (Set.univ ×ˢ GLs n))
@@ -167,7 +161,7 @@ theorem contDiffOn_uncurry_of_frame (F : Set (ℝ → Mat n → V))
   | succ k ih => exact contDiffOn_step F hc hdt hd hfr k (fun h hh => ih h hh) h hh
 
 /- English proof (translation)
-Proceed by induction on `w' with`. Consider the case `nil => rfl`. Consider the case `cons p w' ih => show Rd (bs p) (Rw w' (Rw w f)) = Rd (bs p) (Rw (w' ++ w) f)`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rw_append (w w' : List (Bool × Fin n × Fin n)) (f : Mat n → V) :
     Rw w' (Rw w f) = Rw (w' ++ w) f := by
@@ -178,7 +172,7 @@ theorem Rw_append (w w' : List (Bool × Fin n × Fin n)) (f : Mat n → V) :
     rw [ih]
 
 /- English proof (translation)
-Apply the tactic sequence `have h := rwLin n V V (Fin 2) ![a • ContinuousLinearMap.id ℝ V, ContinuousLinearMap.id ℝ V] ![f, f'] (by intro i; fin_cases i <;> simpa) w x hx`. Simplify `h` using `[Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Rw_comb (a : ℂ) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) (w : List (Bool × Fin n × Fin n)) {x : Mat n} (hx : x ∈ GLs n) :
@@ -195,13 +189,13 @@ variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsH
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem cls_of {K : Mat n → V} (h : MemLp (fun y : G n => K y.val) 2 μ) : cls μ K = h.toLp _ :=
   dif_pos h
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ ∫ y : G n, ‖K y.val‖ ^ 2 ∂μ` using `integral_nonneg fun y => by positivity`. Rewrite using `[cls_of h, Lp.norm_toLp, h.eLpNorm_eq_integral_rpow_norm (by norm_num) (by norm_num)]`. Simplify using `only [ENNReal.toReal_ofNat, Real.rpow_two]`. Rewrite using `[ENNReal.toReal_ofReal (by positivity), ← Real.rpow_natCast, ← Real.rpow_mul h0]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem norm_cls_sq {K : Mat n → V} (h : MemLp (fun y : G n => K y.val) 2 μ) :
     ‖cls μ K‖ ^ 2 = ∫ y : G n, ‖K y.val‖ ^ 2 ∂μ := by
@@ -212,9 +206,9 @@ theorem norm_cls_sq {K : Mat n → V} (h : MemLp (fun y : G n => K y.val) 2 μ) 
   norm_num
 
 /- English proof (translation)
-Establish `hm : ∀ w, MemLp (fun y : G n => a • Rw w f y.val + Rw w f' y.val) 2 μ` using `fun w => ((hf.2 w).const_smul a).add (hf'.2 w)`. Establish `he : ∀ w (y : G n), Rw w (fun y => a • f y + f' y) y.val = a • Rw w f y.val + Rw w f' y.val` using `fun w y => Rw_comb a hf.1 hf'.1 w (GlobalTheory.CompanionTheory.RCalc.ByParts.val_mem_GLs y)`. Establish `hF : ∀ w, MemLp (fun y : G n => Rw w (fun y => a • f y + f' y) y.val) 2 μ` using `fun w => by`. Simplify `hm w` using `only [he]`. Use `⟨⟨(hf.1.const_smul a).add hf'.1, hF⟩, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cls_of (hF w), cls_of (hf.2 w), cls_of (hf'.2 w), ← MemLp.toLp_const_smul, ← MemLp.toLp_add]`. Conclude with `MemLp.toLp_congr _ _ (ae_of_all _ (he w))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sob_comb (a : ℂ) {f f' : Mat n → V} (hf : Sob μ f) (hf' : Sob μ f') :
     Sob μ (fun y => a • f y + f' y) ∧
@@ -231,13 +225,13 @@ theorem sob_comb (a : ℂ) {f f' : Mat n → V} (hf : Sob μ f) (hf' : Sob μ f'
   exact MemLp.toLp_congr _ _ (ae_of_all _ (he w))
 
 /- English proof (translation)
-Establish `c1` using `sob_comb (-1) h₂ h₁`. Establish `c2` using `sob_comb (-(a : ℂ)) h₃ c1.1`. Establish `h` using `hb _ c2.1 x hx`. Establish `e1 : f₁ x - f₂ x - a • f₃ x = -(a : ℂ) • f₃ x + ((-1 : ℂ) • f₂ x + f₁ x)`. Simplify using `only [neg_smul, one_smul, Complex.coe_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Use `h.trans_eq ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsm : ∀ v : Lp V 2 μ, (a : ℂ) • v = a • v` using `fun v => by`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_smul (a : ℂ) v, Lp.coeFn_smul a v] with y h1 h2`. Rewrite using `[h1, h2]`. Simplify using `[Pi.smul_apply, Complex.coe_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c2.2 w, c1.2 w]`. Use `congr 1`. Simplify using `only [neg_smul, one_smul, hsm]`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem bound3 {S : Finset (List (Bool × Fin n × Fin n))} {C : ℝ}
     (hb : ∀ f : Mat n → V, Sob μ f → ∀ x ∈ GLs n, ‖f x‖ ≤ C * ∑ w ∈ S, ‖cls μ (Rw w f)‖)
@@ -268,15 +262,15 @@ theorem bound3 {S : Finset (List (Bool × Fin n × Fin n))} {C : ℝ}
 end Sob
 
 /- English proof (translation)
-Take `⟨S, r, C, h⟩` from `hS n μ`. Use `⟨S, Real.sqrt |C|, fun V _ _ _ f hf x hx => ?_⟩` and prove the remaining obligations. Establish `h0` using `h V f hf.1 x hx`. Establish `hw : ∀ w ∈ S, ∫ y in {y : G n | lg y.val ≤ r}, ‖Rw w f (x * y.val)‖ ^ 2 ∂μ ≤ ‖cls μ (Rw w f)‖ ^ 2`. Introduce `w _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set K := Rw w f with hK`. Establish `hm : MemLp (fun y : G n => K y.val) 2 μ` using `hf.2 w`. Establish `hφ : Integrable (fun y : G n => ‖K y.val‖ ^ 2) μ` using `(memLp_two_iff_integrable_sq_norm hm.1).1 hm`. Establish `hψ : Integrable (fun y : G n => ‖K (x * y.val)‖ ^ 2) μ` using `hφ.comp_mul_left (GlobalTheory.CompanionTheory.RCalc.ByParts.toG hx)`. Establish `e1 : ∫ y : G n, ‖K (x * y.val)‖ ^ 2 ∂μ = ∫ y : G n, ‖K y.val‖ ^ 2 ∂μ` using `integral_mul_left_eq_self (fun y : G n => ‖K y.val‖ ^ 2) (GlobalTheory.CompanionTheory.RCalc.ByParts.toG hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_cls_sq hm, ← e1]`. Conclude with `setIntegral_le_integral hψ (Filter.Eventually.of_forall fun y => by positivity)`. Establish `hI : ∀ w ∈ S, 0 ≤ ∫ y in {y : G n | lg y.val ≤ r}, ‖Rw w f (x * y.val)‖ ^ 2 ∂μ` using `fun w _ => integral_nonneg fun y => by positivity`. Establish `ha : ∀ w ∈ S, 0 ≤ ‖cls μ (Rw w f)‖` using `fun w _ => norm_nonneg _`. Establish `hsq : ∑ w ∈ S, ‖cls μ (Rw w f)‖ ^ 2 ≤ (∑ w ∈ S, ‖cls μ (Rw w f)‖) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sq (∑ w ∈ S, ‖cls μ (Rw w f)‖), Finset.sum_mul]`. Use `Finset.sum_le_sum fun w hw' => ?_` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.single_le_sum ha hw') (ha w hw')`. Establish `h1 : ‖f x‖ ^ 2 ≤ |C| * (∑ w ∈ S, ‖cls μ (Rw w f)‖) ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Real.le_sqrt_of_sq_le h1`. Rewrite `h2` using `[Real.sqrt_mul (abs_nonneg C), Real.sqrt_sq (Finset.sum_nonneg ha)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem sup_bound (hS : SobG) (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
     [μ.IsHaarMeasure] :
@@ -317,27 +311,23 @@ theorem sup_bound (hS : SobG) (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n
   rwa [Real.sqrt_mul (abs_nonneg C), Real.sqrt_sq (Finset.sum_nonneg ha)] at h2
 
 /- English proof (translation)
-Introduce `n _ _ μ _ V _ _ _ U _ _ hS hSob hD`. Take `⟨S, C, hb'⟩` from `sup_bound hS n μ`. Establish `hb` using `hb' V`. Establish `hs : ∀ j t w, Sob μ (Rw w (U j t))` using `fun j t w => ⟨word_smooth (hSob j t).1 w, fun w' => by rw [Rw_append]; exact (hSob j t).2 _⟩`. Establish `hdt : ∀ j w t, ∀ x ∈ GLs n, HasDerivAt (fun s => Rw w (U j s) x) (Rw w (U (j + 1) t) x) t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j w t x hx`. Rewrite using `[hasDerivAt_iff_isLittleO]`. Establish `ho : (fun s : ℝ => C * ∑ w' ∈ S, ‖cls μ (Rw w' (Rw w (U j s))) - cls μ (Rw w' (Rw w (U j t))) - (s - t) • cls μ (Rw w' (Rw w (U (j + 1) t)))‖) =o[𝓝 t] fun s => s - t`. Use `IsLittleO.const_mul_left (IsLittleO.fun_sum fun w' _ => ?_) C` and prove the remaining obligations. Establish `h1` using `hasDerivAt_iff_isLittleO.1 (hD j (w' ++ w) t)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h1.norm_left` using `only [Rw_append]`. Use `IsBigO.trans_isLittleO (IsBigO.of_bound 1 (Eventually.of_forall fun s => ?_)) ho` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `(bound3 hb (hs j s w) (hs j t w) (hs (j + 1) t w) (s - t) hx).trans (le_abs_self _)`. Establish `hcont : ∀ j w, ContinuousOn (Function.uncurry fun t x => Rw w (U j t) x) (Set.univ ×ˢ GLs n)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `j w ⟨t, x⟩ ⟨-, hx⟩`. Establish `hx' : x ∈ GLs n` using `hx`. Use `set E : ℝ → ℝ := fun s => C * ∑ w' ∈ S, ‖cls μ (Rw w' (Rw w (U j s))) - cls μ (Rw w' (Rw w (U j t))) - (0 : ℝ) • cls μ (Rw w' (Rw w (U j t)))‖ with hE`. Establish `hE0 : Tendsto E (𝓝 t) (𝓝 0)`. Establish `e0 : (C * ∑ w' ∈ S, (0 : ℝ)) = 0` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e0]`. Use `Tendsto.const_mul C (tendsto_finset_sum _ fun w' _ => ?_)` and prove the remaining obligations. Establish `h1` using `(hD j (w' ++ w) t).continuousAt.tendsto`. Establish `h2` using `tendsto_iff_norm_sub_tendsto_zero.1 h1`. Simplify `h2` using `only [zero_smul, sub_zero, Rw_append]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : Tendsto (fun z : ℝ × Mat n => ‖Rw w (U j t) z.2 - Rw w (U j t) x‖) (𝓝 (t, x)) (𝓝 0)`. Establish `h1 : ContinuousAt (Rw w (U j t)) x` using `(word_smooth (hSob j t).1 w).continuousOn.continuousAt (GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs.mem_nhds hx')`. Establish `h2 : Tendsto (fun z : ℝ × Mat n => z.2) (𝓝 (t, x)) (𝓝 x)` using `continuous_snd.continuousAt`. Conclude with `tendsto_iff_norm_sub_tendsto_zero.1 (h1.tendsto.comp h2)`. Establish `hup : Tendsto (fun z : ℝ × Mat n => E z.1 + ‖Rw w (U j t) z.2 - Rw w (U j t) x‖) (𝓝[Set.univ ×ˢ GLs n] (t, x)) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Establish `h2 : Tendsto (fun z : ℝ × Mat n => z.1) (𝓝 (t, x)) (𝓝 t)` using `continuous_fst.continuousAt`. Simplify using `using ((hE0.comp h2).add hy).mono_left nhdsWithin_le_nhds`. Unfold `ContinuousWithinAt`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) ?_ hup` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [self_mem_nhdsWithin] with z hz`. Establish `b` using `bound3 hb (hs j z.1 w) (hs j t w) (hs j t w) 0 hz.2`. Rewrite `b` using `[zero_smul, sub_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Function.uncurry_def]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Use `_ ≤ _ := (norm_add_le _ _).trans (add_le_add_left b _)`. Use `⟨?_, fun j t x hx => hdt j [] t x hx⟩` and prove the remaining obligations. Use `contDiffOn_uncurry_of_frame {h | ∃ j w, h = fun t => Rw w (U j t)} ?_ ?_ ?_ ?_ (U 0) ⟨0, [], rfl⟩` and prove the remaining obligations. Introduce and unpack `h ⟨j, w, rfl⟩`. Conclude with `hcont j w`.
-
-Introduce and unpack `h ⟨j, w, rfl⟩`. Conclude with `⟨_, ⟨j + 1, w, rfl⟩, hdt j w⟩`. Introduce and unpack `h ⟨j, w, rfl⟩ t x hx`. Conclude with `(GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth (word_smooth (hSob j t).1 w) hx).differentiableWithinAt`. Introduce and unpack `h ⟨j, w, rfl⟩ p`.
-
-Conclude with `⟨_, ⟨j, p :: w, rfl⟩, fun t x _ => rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem curveJoint : CurveJoint := by
   intro n _ _ μ _ V _ _ _ U _ _ hS hSob hD

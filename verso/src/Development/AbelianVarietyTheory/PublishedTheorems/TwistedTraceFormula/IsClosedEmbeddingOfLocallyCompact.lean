@@ -25,11 +25,11 @@ end Published
 namespace SmoothFactor
 
 /- English proof (translation)
-Use `⟨h, isClosed_of_closure_subset fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : H)`. Rewrite `hK1` using `[h.nhds_eq_comap]`. Take `⟨U', hU', hUK⟩` from `hK1`. Take `⟨U, hUU, hU, h1⟩` from `mem_nhds_iff.1 hU'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x ∈ φ.range.topologicalClosure` using `hx`. Establish `hi : x⁻¹ ∈ closure (range φ)` using `φ.range.topologicalClosure.inv_mem hx'`. Take `⟨_, hs, s, rfl⟩` from `mem_closure_iff.1 hi _ (hU.preimage (continuous_mul_const x)) (by simpa using h1)`. Establish `h2 : φ s * x ∈ closure (range φ)` using `φ.range.topologicalClosure.mul_mem (φ.range.le_topologicalClosure ⟨s, rfl⟩) hx'`. Establish `h3 : U ∩ range φ ⊆ φ '' K`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨hy, y, rfl⟩`. Conclude with `⟨y, hUK (hUU hy), rfl⟩`. Take `⟨k, -, e⟩` from `closure_minimal h3 (hK.image h.continuous).isClosed (hU.inter_closure ⟨hs, h2⟩)`. Conclude with `⟨s⁻¹ * k, by rw [map_mul, map_inv, e, inv_mul_cancel_left]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isClosedEmbedding_of_locallyCompact {H G : Type*} [Group H] [TopologicalSpace H] [LocallyCompactSpace H]
     [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] {φ : H →* G} (h : Topology.IsEmbedding φ) :
@@ -51,7 +51,7 @@ theorem isClosedEmbedding_of_locallyCompact {H G : Type*} [Group H] [Topological
   exact ⟨s⁻¹ * k, by rw [map_mul, map_inv, e, inv_mul_cancel_left]⟩
 
 /- English proof (translation)
-Establish `hc : Continuous ι` using `h.continuous`. Establish `h1 : Continuous (ι.toHomUnits : H → GL n ℂ)` using `Units.continuous_iff.2 ⟨hc, hc.comp continuous_inv⟩`. Conclude with `isClosedEmbedding_of_locallyCompact (Topology.IsEmbedding.of_comp h1 Units.continuous_val h)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_toHomUnits {H n : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [LocallyCompactSpace H] [Fintype n] [DecidableEq n] {ι : H →* Matrix n n ℂ}
@@ -64,7 +64,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Set `τ : EmbOver E w` to `Classical.arbitrary _`. Rewrite `hf`, the goal using `[ccArch_eq h τ]`. Conclude with `hDM _ _ _ (isClosedEmbedding_toHomUnits (isEmbedding_archMat J h τ)) μ V hV f hf`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_conv_ccArch (hDM : Published.DixmierMalliavinFactorisation) (h : IsCMExt F E σ) (w : InfinitePlace F)
     (μ : Measure (GArch σ J w)) [μ.IsHaarMeasure] {V : Set (GArch σ J w)} (hV : V ∈ 𝓝 1) {f : GArch σ J w → ℂ}
@@ -87,9 +87,7 @@ open Classical in
 variable (σ) in
 
 /- English proof (translation)
-Use `le_antisymm (ccSmooth_le (p := fun y w τ i j => y (i, ⟨w, τ⟩) (j, ⟨w, τ⟩)) (by fun_prop) fun g => ?_) (ccSmooth_le (p := fun y a b => if a.2 = b.2 then y a.2.1 a.2.2 a.1 b.1 else 0) ?_ fun _ => rfl)` and prove the remaining obligations. Use function extensionality and compare the values at `w τ i j`. Conclude with `(Matrix.blockDiagonal_apply_eq (fun t : Σ w : InfinitePlace F, EmbOver E w => archMat σ J t.2 (projInfArch σ J t.1 g)) i j ⟨w, τ⟩).symm`. Use `contDiff_pi.2 fun a => contDiff_pi.2 fun b => ?_ split_ifs` and prove the remaining obligations. Conclude with `contDiff_pi.1 (contDiff_pi.1 (contDiff_pi.1 (contDiff_pi.1 contDiff_id _) _) _) _`.
-
-Conclude with `contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ccInf_eq : CcInf σ J = CcMat (infMat σ J) := by
   refine le_antisymm (ccSmooth_le (p := fun y w τ i j => y (i, ⟨w, τ⟩) (j, ⟨w, τ⟩)) (by fun_prop) fun g => ?_)
@@ -105,9 +103,9 @@ theorem ccInf_eq : CcInf σ J = CcMat (infMat σ J) := by
 open Classical in
 
 /- English proof (translation)
-Set `τ : ∀ w : InfinitePlace F, EmbOver E w` to `fun _ => Classical.arbitrary _`. Establish `h1` using `(Topology.IsEmbedding.piMap fun w => isEmbedding_archMat J h (τ w)).comp (infContEquivPi σ J).toHomeomorph.isEmbedding`. Establish `h2 : Continuous (matCoord (infMat σ J))` using `Continuous.matrix_blockDiagonal (continuous_pi fun t : Σ w : InfinitePlace F, EmbOver E w => (continuous_archMat σ J t.2).comp (continuous_projInfArch σ J t.1))`. Use `Topology.IsEmbedding.of_comp (g := fun y w i j => y (i, ⟨w, τ w⟩) (j, ⟨w, τ w⟩)) h2 (by fun_prop) ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `g w i j`. Conclude with `Matrix.blockDiagonal_apply_eq (fun t : Σ w : InfinitePlace F, EmbOver E w => archMat σ J t.2 (projInfArch σ J t.1 g)) i j ⟨w, τ w⟩`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isEmbedding_infMat (h : IsCMExt F E σ) : Topology.IsEmbedding (matCoord (infMat σ J)) := by
   let τ : ∀ w : InfinitePlace F, EmbOver E w := fun _ => Classical.arbitrary _
@@ -123,7 +121,7 @@ theorem isEmbedding_infMat (h : IsCMExt F E σ) : Topology.IsEmbedding (matCoord
       archMat σ J t.2 (projInfArch σ J t.1 g)) i j ⟨w, τ w⟩
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[ccInf_eq]`. Conclude with `hDM _ _ _ (isClosedEmbedding_toHomUnits (isEmbedding_infMat J h)) μ V hV f hf`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_conv_ccInf (hDM : Published.DixmierMalliavinFactorisation) (h : IsCMExt F E σ)
     (μ : Measure (GInf σ J)) [μ.IsHaarMeasure] {V : Set (GInf σ J)} (hV : V ∈ 𝓝 1) {f : GInf σ J → ℂ}
@@ -136,7 +134,7 @@ theorem exists_sum_conv_ccInf (hDM : Published.DixmierMalliavinFactorisation) (h
   exact hDM _ _ _ (isClosedEmbedding_toHomUnits (isEmbedding_infMat J h)) μ V hV f hf
 
 /- English proof (translation)
-Take `⟨φ, h1, h2, -, h3⟩` from `exists_bump (isEmbedding_infMat J h).isInducing hV`. Use `⟨inferInstance, fun x => (φ x : ℂ), (ccInf_eq σ J).ge h1, by simp [h2], subset_trans (closure_mono fun x hx => ?_) h3⟩` and prove the remaining obligations. Simplify using `using hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 example (h : IsCMExt F E σ) {V : Set (GInf σ J)} (hV : V ∈ 𝓝 1) :
     (Measure.haar : Measure (GInf σ J)).IsHaarMeasure ∧ ∃ f ∈ CcInf σ J, f 1 = 1 ∧ tsupport f ⊆ V := by

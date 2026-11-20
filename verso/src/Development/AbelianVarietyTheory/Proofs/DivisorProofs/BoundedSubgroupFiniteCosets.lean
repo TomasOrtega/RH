@@ -7,13 +7,11 @@ open scoped Classical
 namespace GlobalTheory.LKLoc
 
 /- English proof (translation)
-Establish `key : ((a⁻¹ * b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1 + ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((b : Matrix (Fin n) (Fin n) L) - (a : Matrix (Fin n) (Fin n) L))`. Rewrite using `[Units.val_mul, Matrix.mul_sub, Units.inv_mul]`. Normalize the expressions using the abelian group laws. Establish `hs : ‖(((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((b : Matrix (Fin n) (Fin n) L) - (a : Matrix (Fin n) (Fin n) L))) i j‖ ≤ 1`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (ha i k) (by simpa using hab k j) (norm_nonneg _) hC`. Use `_ = n * C * ε := by simp [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `_ ≤ 1 := hε`. Establish `h1 : ‖(1 : Matrix (Fin n) (Fin n) L) i j‖ ≤ 1`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Express the relevant statement in the definitionally equal form `‖(( ((a⁻¹ * b : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j : L) : PadicAlgCl p)‖ ≤ 1`. Rewrite using `[key, Matrix.add_apply, IntermediateField.coe_add]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 hs)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mul_entry_mem_intK (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (PadicAlgCl p)) (n : ℕ)
     (a b : GL (Fin n) L) (C ε : ℝ) (hC : 0 ≤ C)
@@ -44,27 +42,23 @@ theorem inv_mul_entry_mem_intK (p : ℕ) [Fact p.Prime] (L : IntermediateField �
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 hs)
 
 /- English proof (translation)
-Introduce `p _ L hL n B c hB`. Use `haveI : ProperSpace L := FiniteDimensional.proper ℚ_[p] L`. Use `set C := max c 0 with hCdef`. Establish `hC : 0 ≤ C` using `le_max_right _ _`. Use `set ε : ℝ := 1 / (2 * (n * C + 1)) with hεdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hε : 0 < ε` using `by positivity`. Set `f : GL (Fin n) L → (Fin n → Fin n → L)` to `fun z i j => (z : Matrix (Fin n) (Fin n) L) i j`. Set `S : Set (Fin n → Fin n → L)` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : L) C`. Establish `hS : IsCompact S` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Take `⟨t, ht, hcov⟩` from `Metric.totallyBounded_iff.1 hS.totallyBounded ε hε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Set `g : (Fin n → Fin n → L) → GL (Fin n) L` to `fun y => if h : ∃ z ∈ B, dist (f z) y < ε then h.choose else 1`. Establish `hgB : ∀ y, g y ∈ B` using `fun y => by`. Distinguish the cases in `h : ∃ z ∈ B, dist (f z) y < ε`. Simplify using `only [g, dif_pos h]`. Conclude with `h.choose_spec.1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g, dif_neg h]`. Conclude with `B.one_mem`. Establish `hbd : ∀ z ∈ B, ∀ i j, ‖(z : Matrix (Fin n) (Fin n) L) i j‖ ≤ C` using `fun z hz i j => (hB z hz i j).trans (le_max_left _ _)`. Establish `hnC : (n : ℝ) * C * (2 * ε) ≤ 1`. Rewrite using `[hεdef]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : (0 : ℝ) < n * C + 1` using `by positivity`. Rewrite using `[show (n : ℝ) * C * (2 * (1 / (2 * (n * C + 1)))) = n * C / (n * C + 1) by field_simp]`. Rewrite using `[div_le_one h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨ht.toFinset.image g, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `s hs`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hs`. Conclude with `hgB y`. Introduce `z hz`. Establish `hzS : f z ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [S, Set.mem_pi, Set.mem_univ, true_implies, Metric.mem_closedBall, dist_zero_right]`. Introduce `i j`. Conclude with `hbd z hz i j`. Take `⟨y, hy, hzy⟩` from `Set.mem_iUnion₂.1 (hcov hzS)`. Establish `hex : ∃ z ∈ B, dist (f z) y < ε` using `⟨z, hz, hzy⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgy : g y ∈ B ∧ dist (f (g y)) y < ε`. Simplify using `only [g, dif_pos hex]`. Conclude with `hex.choose_spec`. Use `⟨g y, Finset.mem_image.2 ⟨y, ht.mem_toFinset.2 hy, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨hwB, hwy⟩` from `hgy`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set w := g y`. Establish `hd : dist (f z) (f w) ≤ 2 * ε`. Use `dist_triangle_right (f z) (f w) y` as an intermediate fact. Use `Metric.mem_ball.1 hzy` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hent : ∀ i j, ‖(z : Matrix (Fin n) (Fin n) L) i j - (w : Matrix (Fin n) (Fin n) L) i j‖ ≤ 2 * ε` using `fun i j => by`. Rewrite using `[← dist_eq_norm]`. Conclude with `((dist_le_pi_dist (f z i) (f w i) j).trans (dist_le_pi_dist (f z) (f w) i)).trans hd`. Rewrite using `[KintK, GlobalTheory.LKRes.mem_range_map_subtype_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
-
-Conclude with `inv_mul_entry_mem_intK p L n w z C (2 * ε) hC (hbd _ (B.inv_mem hwB)) hent hnC i j`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Conclude with `inv_mul_entry_mem_intK p L n z w C (2 * ε) hC (hbd _ (B.inv_mem hz)) (fun i j => by rw [norm_sub_rev]; exact hent i j) hnC i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_inv_mul_mem_KintK : ∀ (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (PadicAlgCl p)),
     FiniteDimensional ℚ_[p] L →

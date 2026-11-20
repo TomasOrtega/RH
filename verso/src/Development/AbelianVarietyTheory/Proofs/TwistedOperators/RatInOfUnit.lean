@@ -23,7 +23,7 @@ def RatIn (f : T → ℂ) : Prop := ∀ t, f t ≠ 0 ∧ ∃ y : Lˣ, σ y = f t
 variable {σ t₀}
 
 /- English proof (translation)
-Introduce `t`. Take `⟨hf0, y, hy⟩` from `hf t`. Take `⟨hg0, z, hz⟩` from `hg t`. Use `⟨mul_ne_zero hf0 hg0, y * z, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hy, hz, mul_div_mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem RatIn.mul {f g : T → ℂ} (hf : RatIn σ t₀ f) (hg : RatIn σ t₀ g) : RatIn σ t₀ fun t => f t * g t := by
   intro t
@@ -33,7 +33,7 @@ theorem RatIn.mul {f g : T → ℂ} (hf : RatIn σ t₀ f) (hg : RatIn σ t₀ g
   rw [Units.val_mul, map_mul, hy, hz, mul_div_mul_comm]
 
 /- English proof (translation)
-Introduce `t`. Take `⟨hf0, y, hy⟩` from `hf t`. Use `⟨inv_ne_zero hf0, y⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, hy, inv_div, inv_div_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem RatIn.inv {f : T → ℂ} (hf : RatIn σ t₀ f) : RatIn σ t₀ fun t => (f t)⁻¹ := by
   intro t
@@ -42,14 +42,14 @@ theorem RatIn.inv {f : T → ℂ} (hf : RatIn σ t₀ f) : RatIn σ t₀ fun t =
   rw [map_units_inv, hy, inv_div, inv_div_inv]
 
 /- English proof (translation)
-Introduce `_`. Conclude with `⟨h, 1, by rw [Units.val_one, map_one, div_self h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ratIn_const {κ : ℂ} (h : κ ≠ 0) : RatIn σ t₀ fun _ => κ := by
   intro _
   exact ⟨h, 1, by rw [Units.val_one, map_one, div_self h]⟩
 
 /- English proof (translation)
-Introduce `t`. Take `⟨y, hy⟩` from `h t`. Take `⟨y₀, hy₀⟩` from `h t₀`. Use `⟨hy ▸ (map_ne_zero σ).2 y.ne_zero, y * y₀⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, map_units_inv, hy, hy₀, div_eq_mul_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratIn_of_unit {f : T → ℂ} (h : ∀ t, ∃ y : Lˣ, σ y = f t) : RatIn σ t₀ f := by
   intro t
@@ -59,7 +59,7 @@ theorem ratIn_of_unit {f : T → ℂ} (h : ∀ t, ∃ y : Lˣ, σ y = f t) : Rat
   rw [Units.val_mul, map_mul, map_units_inv, hy, hy₀, div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `e : f = fun t => g t * (u t)⁻¹` using `funext fun t => by rw [← h t, mul_inv_cancel_right₀ (hu t).1]`. Rewrite using `[e]`. Conclude with `hg.mul hu.inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RatIn.of_mul {f g u : T → ℂ} (hg : RatIn σ t₀ g) (hu : RatIn σ t₀ u) (h : ∀ t, f t * u t = g t) : RatIn σ t₀ f := by
 
@@ -68,9 +68,9 @@ theorem RatIn.of_mul {f g u : T → ℂ} (hg : RatIn σ t₀ g) (hu : RatIn σ t
   exact hg.mul hu.inv
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `only [Finset.prod_empty]`. Conclude with `ratIn_const one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a s ha ih h`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem ratIn_prod {ι : Type} (s : Finset ι) {f : ι → T → ℂ} (h : ∀ i ∈ s, RatIn σ t₀ (f i)) :
     RatIn σ t₀ fun t => ∏ i ∈ s, f i t := by
@@ -105,11 +105,11 @@ def Factor (lam : T → ℂ) : Prop :=
 variable {X ψ θ}
 
 /- English proof (translation)
-Unfold `Factor at h`. Take `⟨hlam, Pi, p, p', J, hp, hJ, hint, hI, hI', P', hP', hint'⟩` from `h`. Take `⟨P, hPP⟩` from `hp (p' P')`. Unfold `Tri.IsConst`. Use `⟨⟨Classical.arbitrary T, hlam _⟩, P, P', fun t => ⟨fun h => ⟨hint t P h, hint' t h⟩, ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hcon push_neg at hcon`. Apply `hP'` to reduce the goal to its premises. Apply `hJ t` to reduce the goal to its premises. Rewrite using `[map_zero, ← hI' t P' (hint' t)]`. Use function extensionality and compare the values at `h`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hcon h`. Rewrite using `[hI t P, hI' t P' (hint' t), hPP]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Factor.isConst [Nonempty T] {lam : T → ℂ} (h : Factor X ψ θ lam) : X.IsConst ψ θ lam := by
   unfold Factor at h
@@ -129,15 +129,15 @@ theorem Factor.isConst [Nonempty T] {lam : T → ℂ} (h : Factor X ψ θ lam) :
     rfl
 
 /- English proof (translation)
-Unfold `Factor at h`. Unfold `Tri.IsConst at hc`. Take `⟨hlam, Pi, p, p', J, -, hJ, -, hI, hI', -⟩` from `h`. Take `⟨⟨t₁, ht₁⟩, P, P', hc⟩` from `hc`. Establish `key : ∀ t, lam t • p P = c t • p' P'`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t`. Take `⟨hi, -, heq⟩` from `hc t`. Apply `hJ t` to reduce the goal to its premises. Rewrite using `[map_smul, map_smul, ← hI t P, ← hI' t P' (fun h => (hi h).2)]`. Use function extensionality and compare the values at `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `heq h`. Establish `hne : p' P' ≠ 0`. Introduce `h0`. Take `⟨hi, ⟨h₁, hh₁⟩, -⟩` from `hc t₁`. Apply `hh₁` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI' t₁ P' (fun h => (hi h).2), h0, map_zero]`. Both sides reduce to the same expression. Establish `hq : ∀ t, p P = ((lam t)⁻¹ * c t) • p' P'`. Introduce `t`. Rewrite using `[← smul_smul, ← key t, inv_smul_smul₀ (hlam t)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(lam t₁)⁻¹ * c t₁, mul_ne_zero (inv_ne_zero (hlam t₁)) ht₁, fun t => ?_⟩` and prove the remaining obligations. Establish `e` using `smul_left_injective ℂ hne ((hq t).symm.trans (hq t₁))`. Rewrite using `[← e]`. Clear denominators, using `[hlam t]` for the nonvanishing conditions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem Factor.eq_mul {lam c : T → ℂ} (h : Factor X ψ θ lam) (hc : X.IsConst ψ θ c) : ∃ κ : ℂ, κ ≠ 0 ∧ ∀ t, c t = κ * lam t := by
   unfold Factor at h
@@ -185,11 +185,11 @@ def IsStage (G : GridPre R) (i j : Fin D.R.m) (p q : ℕ) {A A' WW : HSp D} (X :
     X.Is R.ψ R.θ (alpha R i j) (beta G i j) (nuH G i j) (places G)
 
 /- English proof (translation)
-Take `⟨hp, hq, hA, hA', -⟩` from `h`. Establish `hs : sLen D = D.R.r + 6` using `rfl`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hN : bigN D = D.R.k + D.R.m * (D.R.t + sLen D + 1)` using `rfl`. Establish `hm` using `Nat.mul_le_mul_right (D.R.t + sLen D + 1) D.R.two_le_m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Take `⟨c, hc⟩` from `D.R.t_odd`. Establish `h5` using `D.R.rank_add_five_le`. Simplify using `only [rkV, add_mul, one_mul] at hA hA'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine ⟨(D.R.t + sLen D) / 2 + p + (D.R.m - j) / 2 - q - (D.R.m - (j + 1)) / 2, ?_, ?_, ?_⟩ <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsStage.exists_half {G : GridPre R} {i j : Fin D.R.m} {p q : ℕ} {A A' WW : HSp D} {X : Tri T A A' WW}
     (h : IsStage G i j p q X) : ∃ e : ℕ, A.rank = A'.rank + 2 * e ∧ 2 ≤ e ∧ e ≤ bigN D := by

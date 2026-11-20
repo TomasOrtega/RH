@@ -12,9 +12,9 @@ namespace GlobalTheory.KJRealOnb
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hP : G.PosDef` using `by simpa using hG.2.2`. Establish `hGd : G.det ≠ 0` using `hP.det_pos.ne'`. Use `⟨hGd, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨p, ε, hε, h1, -⟩` from `hB`. Establish `h2` using `congrArg Matrix.det h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_diagonal]`. Use `(Finset.prod_ne_zero_iff.2 fun a _ => ?_) h2.symm` and prove the remaining obligations. Apply the tactic sequence `rcases hε a with ⟨h, -⟩ | ⟨h, -⟩ <;> simp [h]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_ne_zero_of_onb {k : ℕ} {G B : Matrix (Fin k) (Fin k) ℂ} (hG : IsCartanInv G 1)
     (hB : ∃ p, IsONBasis G 1 B p) : G.det ≠ 0 ∧ B.det ≠ 0 := by
@@ -28,7 +28,7 @@ theorem det_ne_zero_of_onb {k : ℕ} {G B : Matrix (Fin k) (Fin k) ℂ} (hG : Is
   rcases hε a with ⟨h, -⟩ | ⟨h, -⟩ <;> simp [h]
 
 /- English proof (translation)
-Unfold `inB`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, Matrix.mul_nonsing_inv _ (Ne.isUnit hB), Matrix.det_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_inB (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (g : GA D V)
     (τ : D.what₂.Tau) (hB : (B τ).det ≠ 0) : (inB θ V B g τ).det = (compAt θ τ (mt V g)).det := by
@@ -36,7 +36,7 @@ theorem det_inB (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V
   rw [Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, Matrix.mul_nonsing_inv _ (Ne.isUnit hB), Matrix.det_one, one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Unfold `inB`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (Ne.isUnit (hB τ)), Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_mul_inB (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (g : GA D V)
     (hB : ∀ τ, (B τ).det ≠ 0) : (fun τ => compAt θ τ (mt V g) * B τ) = fun τ => B τ * inB θ V B g τ := by
@@ -51,23 +51,23 @@ namespace GlobalTheory.KJReal
 open GlobalTheory.KJRealOnb in
 
 /- English proof (translation)
-Introduce `D ψ θ S T x y μ om hθ hx hy hxs hys eS eT hom e he f hf hv k hk k' hk' P`. Take `⟨mS, hmS⟩` from `eS`. Take `⟨mT, hmT⟩` from `eT`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Establish `hψ` using `hom.std`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `cS : ∀ τ, IsCartanInv (gramAt D S τ) 1` using `fun τ => by have h := hx.cart τ; rw [hxs] at h; exact h`. Establish `cT : ∀ τ, IsCartanInv (gramAt D T τ) 1` using `fun τ => by have h := hy.cart τ; rw [hys] at h; exact h`. Establish `dS : ∀ τ, (gramAt D S τ).det ≠ 0 ∧ (x.B τ).det ≠ 0` using `fun τ => det_ne_zero_of_onb (cS τ) (by have h := hx.onb τ; rw [hxs] at h; exact h)`. Establish `dT : ∀ τ, (gramAt D T τ).det ≠ 0 ∧ (y.B τ).det ≠ 0` using `fun τ => det_ne_zero_of_onb (cT τ) (by have h := hy.onb τ; rw [hys] at h; exact h)`. Take `⟨xr, hxr, hxv⟩` from `GlobalTheory.OneMapRef.RealMove.exists_root hθ S (fun τ => (dS τ).1) k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨yr, hyr, hyv⟩` from `GlobalTheory.OneMapRef.RealMove.exists_root hθ T (fun τ => (dT τ).1) k' hk'`. Establish `hvac` using `GlobalTheory.WeilVacChar.vacuum_character D ψ hψ S T θ hθ μ μ om η hη hom (fun _ => 1) (fun _ => 1) cS cT k hk k' hk' (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) xr yr hxr hyr f hf hv`. Establish `expT : ∀ τ, HasInfExp D (μ * (η ^ T.rank)⁻¹) τ ((e τ - mT : ℤ) : ℚ)` using `fun τ => by`. Establish `h1` using `GlobalTheory.OneMapRef.RealMove.hasInfExp_twist (he τ) (hη.2.2.2 τ) T.rank`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[hmT]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `expS : ∀ τ, HasInfExp D (μ * (η ^ S.rank)⁻¹) τ ((e τ - mS : ℤ) : ℚ)` using `fun τ => by`. Establish `h1` using `GlobalTheory.OneMapRef.RealMove.hasInfExp_twist (he τ) (hη.2.2.2 τ) S.rank`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hmS]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `vx` using `hxv _ (fun τ => e τ - mT) expT`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `vy` using `hyv _ (fun τ => e τ - mS) expS`. Establish `hmain` using `(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T μ μ om hom hθ (fun _ => 1) (fun _ => 1) x.B (fun τ => compAt θ τ (mt S k) * x.B τ) (fun _ => 1) (fun _ => 1) y.B (fun τ => compAt θ τ (mt T k') * y.B τ) k k' (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => by rw [Mat …`. Rewrite using `[hxs, hys, hmain, hvac, GlobalTheory.FiniteFock.pureTensorO_smul, comp_eq_mul_inB θ S x.B k (fun τ => (dS τ).2), comp_eq_mul_inB θ T y.B k' (fun τ => (dT τ).2), GlobalTheory.FockBaseChange.pureTensorO_subst D ψ θ S T hψ hθ x.B (inB θ S x.B k) y.B (inB θ T y.B k') f hf P]`. Use `congr 1`. Rewrite using `[Circle.coe_mul, Circle.coe_inv, vx, vy, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `inv` using `congrArg Matrix.det (GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := θ) τ k)`. Rewrite `inv` using `[Matrix.det_mul, Matrix.det_one]`. Establish `g0` using `left_ne_zero_of_mul_eq_one inv`. Establish `inv'` using `congrArg Matrix.det (GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := θ) τ k')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `inv'` using `[Matrix.det_mul, Matrix.det_one]`. Establish `g0'` using `left_ne_zero_of_mul_eq_one inv'`. Rewrite using `[GlobalTheory.KJReal.detPlus_one_one, eq_inv_of_mul_eq_one_right inv, det_inB θ S x.B k τ (dS τ).2, det_inB θ T y.B k' τ (dT τ).2]`. Establish `a1 : -e τ - (T.rank : ℤ) / 2 = -e τ - mT` using `by omega`. Establish `a2 : e τ + (S.rank : ℤ) / 2 = e τ + mS` using `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[a1, a2]`. Conclude with `GlobalTheory.KJReal.exp_identity _ _ g0 g0' (e τ) mS mT S.rank T.rank (by rw [hmS]; push_cast; ring) (by rw [hmT]; push_cast; ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_pureTensorO_onb : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (x : DefSp S) (y : DefSp T) (μ : (AE D)ˣ →* Circle) (om : Om S T), IsInfFam θ → x.Is → y.Is → x.s = (fun _ => 1) → y.s = (fun _ => 1) → Even S.rank → Even T.rank → IsWeilDatumO ψ S T μ μ om → ∀ e : D.what₂.Tau → ℤ, (∀ τ, HasInfExp D μ τ (e τ)) → ∀ f, IsThetaFunO ψ S T f → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO 1 1) f) → ∀ k ∈ GinfC S, ∀ k' ∈ GinfC T, ∀ P, om (k, k') (pureTensorO ψ θ S T x.s y.s x.B y.B f P) = (∏ τ, (inB θ S x.B k τ).det ^ (-e τ - T.rank / 2 : ℤ) * (inB θ T y.B k' τ).det ^ (e τ + S.rank / 2 : ℤ)) • pureTensorO ψ θ S T x.s y.s x.B y.B f (mvZ (fun τ => (inB θ S x.B k τ)⁻¹) (inB θ T y.B k') P) := by
   intro D ψ θ S T x y μ om hθ hx hy hxs hys eS eT hom e he f hf hv k hk k' hk' P

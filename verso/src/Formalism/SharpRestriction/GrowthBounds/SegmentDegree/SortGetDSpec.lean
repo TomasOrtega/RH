@@ -7,15 +7,15 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf.TE
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
 /- English proof (translation)
-Establish `hlen : (s.sort (· ≤ ·)).length = s.card` using `Finset.length_sort _`. Establish `hk : (s.sort (· ≤ ·)).length - r < s.card` using `by omega`. Use `set f := s.orderEmbOfFin rfl with hf`. Establish `hget : (s.sort (· ≤ ·)).getD ((s.sort (· ≤ ·)).length - r) 0 = f ⟨(s.sort (· ≤ ·)).length - r, hk⟩`. Rewrite using `[hf, Finset.orderEmbOfFin_apply, List.getD_eq_getElem]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.getElem_fin]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hget]`. Use `⟨Finset.orderEmbOfFin_mem s rfl _, ?_⟩` and prove the remaining obligations. Establish `hset : s.filter (f ⟨(s.sort (· ≤ ·)).length - r, hk⟩ ≤ ·) = (Finset.univ.filter (fun i : Fin s.card => (s.sort (· ≤ ·)).length - r ≤ i.val ∧ i.val < s.card)).map f.toEmbedding`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `only [Finset.mem_filter, Finset.mem_map, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hle⟩`. Establish `hr : y ∈ Set.range f` using `by rw [hf, Finset.range_orderEmbOfFin]; exact hy`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hr`. Conclude with `⟨i, ⟨f.le_iff_le.1 hle, i.isLt⟩, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨Finset.orderEmbOfFin_mem s rfl i, f.le_iff_le.2 hi.1⟩`. Rewrite using `[hset, Finset.card_map, card_fin_range _ _ _ le_rfl]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem sort_getD_spec (s : Finset ℤ) (r : ℕ) (hr : 0 < r) (hrs : r ≤ s.card) :
     (s.sort (· ≤ ·)).getD ((s.sort (· ≤ ·)).length - r) 0 ∈ s ∧
@@ -47,19 +47,17 @@ theorem sort_getD_spec (s : Finset ℤ) (r : ℕ) (hr : 0 < r) (hrs : r ≤ s.ca
 variable {n' r : ℕ} [NeZero n'] [NeZero r] {F : Frames n' r} {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Use `set E := segE F j i with hE`. Establish `hmono : StrictMono (segE F j)` using `fun a b hab => by`. Simplify using `only [segE]`. Conclude with `Subtype.coe_lt_coe.2 (((F.letters j).orderIsoOfFin rfl).strictMono hab)`. Establish `hsurj : ∀ x ∈ F.letters j, ∃ k, segE F j k = x` using `fun x hx => ⟨((F.letters j).orderIsoOfFin rfl).symm ⟨x, hx⟩, by simp [segE]⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlow : ∀ i' < r, F.fr (j - 1) i' < E`. Introduce `i' hi'`. Take `⟨k, hk⟩` from `hsurj _ (frp_mem hV j i' hi')`. Establish `hki` using `idx_w hV k i' hi' hk`. Rewrite using `[← hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Apply `hmono` to reduce the goal to its premises. Use `show k.val < i.val`. Use linear arithmetic over natural numbers and integers. Establish `hcard : r ≤ ((F.letters j).filter fun z => Even z ∧ z < E).card`. Establish `hsub : (Finset.range r).image (F.fr (j - 1)) ⊆ (F.letters j).filter fun z => Even z ∧ z < E`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Simplify using `only [Finset.mem_image, Finset.mem_range] at hx`. Take `⟨i', hi', rfl⟩` from `hx`. Simplify using `only [Finset.mem_filter]`. Conclude with `⟨frp_mem hV j i' hi', (hV.2.2.2.2.1 (j - 1) i' hi').2, hlow i' hi'⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Set.InjOn (F.fr (j - 1)) (Finset.range r)` using `fun a ha b hb h => fr_inj hV _ a b (Finset.mem_range.1 ha) (Finset.mem_range.1 hb) h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_image_of_injOn hinj, Finset.card_range]`. Use `_ ≤ _ := Finset.card_le_card hsub`. Take `⟨hm, hc⟩` from `sort_getD_spec ((F.letters j).filter fun z => Even z ∧ z < E) r (Nat.pos_of_ne_zero (NeZero.ne r)) hcard`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hold : F.oldest j E = (((F.letters j).filter fun z => Even z ∧ z < E).sort (· ≤ ·)).getD ((((F.letters j).filter fun z => Even z ∧ z < E).sort (· ≤ ·)).length - r) 0` using `rfl`. Rewrite using `[hold]`. Simplify using `only [Finset.mem_filter] at hm`. Use `⟨hm.1, hm.2.1, hm.2.2, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[Finset.filter_filter]`.
-
-Use `Eq.trans ?_ hc` and prove the remaining obligations. Conclude with `congrArg Finset.card (Finset.filter_congr (fun z _ => by tauto))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem oldest_spec (hV : F.Valid L₁ N₁) (j : ℤ) (i : Fin (segN F j)) (hi : r ≤ i.val) :
     F.oldest j (segE F j i) ∈ F.letters j ∧ Even (F.oldest j (segE F j i)) ∧ F.oldest j (segE F j i) < segE F j i ∧
@@ -103,19 +101,17 @@ theorem oldest_spec (hV : F.Valid L₁ N₁) (j : ℤ) (i : Fin (segN F j)) (hi 
   exact congrArg Finset.card (Finset.filter_congr (fun z _ => by tauto))
 
 /- English proof (translation)
-Establish `hmono : StrictMono (segE F j)` using `fun a b hab => by`. Simplify using `only [segE]`. Conclude with `Subtype.coe_lt_coe.2 (((F.letters j).orderIsoOfFin rfl).strictMono hab)`. Establish `hsurj : ∀ x ∈ F.letters j, ∃ k, segE F j k = x` using `fun x hx => ⟨((F.letters j).orderIsoOfFin rfl).symm ⟨x, hx⟩, by simp [segE]⟩`. Establish `hmem : ∀ l, segE F j l ∈ F.letters j` using `fun l => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [segE]`. Conclude with `Subtype.mem _`. Establish `hex : ∀ i : Fin (segN F j), ∃ k, r ≤ i.val → segE F j k = F.oldest j (segE F j i)`. Introduce `i`. Distinguish the cases in `h : r ≤ i.val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k, hk⟩` from `hsurj _ (oldest_spec hV j i h).1`. Conclude with `⟨k, fun _ => hk⟩`. Conclude with `⟨i, fun h' => absurd h' h⟩`. Use `choose g hg using hex`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `i hi`. Establish `hk` using `hg i hi`. Take `⟨-, hev, hlt, hc⟩` from `oldest_spec hV j i hi`. Use `⟨hk, hmono.lt_iff_lt.1 (by rw [hk]; exact hlt), by simp [segLL, LZ, hk, hev], ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[← hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `Eq.trans ?_ hc` and prove the remaining obligations. Establish `hset : (F.letters j).filter (fun z => segE F j (g i) ≤ z ∧ z < segE F j i ∧ Even z) = (Finset.univ.filter fun l : Fin (segN F j) => g i ≤ l ∧ l < i ∧ (segLL F j).vec l = true).map ⟨segE F j, hmono.injective⟩`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_map, Finset.mem_univ, true_and, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hz, h1, h2, h3⟩`. Take `⟨l, rfl⟩` from `hsurj z hz`. Conclude with `⟨l, ⟨hmono.le_iff_le.1 h1, hmono.lt_iff_lt.1 h2, by simp [segLL, LZ, h3]⟩, rfl⟩`. Introduce and unpack `⟨l, ⟨h1, h2, h3⟩, rfl⟩`. Conclude with `⟨hmem l, hmono.le_iff_le.2 h1, hmono.lt_iff_lt.2 h2, by simpa [segLL, LZ] using h3⟩`.
-
-Rewrite using `[hset, Finset.card_map]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_od (hV : F.Valid L₁ N₁) (j : ℤ) : ∃ od : Fin (segN F j) → Fin (segN F j), ∀ i, r ≤ i.val →
     segE F j (od i) = F.oldest j (segE F j i) ∧ od i < i ∧ (segLL F j).vec (od i) = true ∧

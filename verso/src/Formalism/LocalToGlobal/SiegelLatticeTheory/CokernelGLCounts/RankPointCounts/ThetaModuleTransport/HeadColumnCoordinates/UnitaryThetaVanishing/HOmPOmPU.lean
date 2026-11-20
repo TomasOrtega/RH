@@ -15,11 +15,11 @@ variable {r : ℕ}
 def kapU (f f' : Fin (r + 1) → V) : E := Ring.inverse (H.Dl f f' (r + 1)) * H.Dl f f' r
 
 /- English proof (translation)
-Unfold `HermSp.om'`. Rewrite using `[h_sum_smul_left]`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single (Fin.last r)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF'.2, adj_last]`. Introduce `c _ hc`. Rewrite using `[hF'.1 c (Fin.last r) (Or.inl hc), mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hb]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[hF'.1 c b (Or.inr hb), mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_om'_f'U (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (b : Fin (r + 1)) :
     H.h (H.om' f f') (f' b) = if b = Fin.last r then H.Dl f f' r * -algebraMap F E T' else 0 := by
@@ -38,9 +38,9 @@ theorem h_om'_f'U (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotio
     rw [hF'.1 c b (Or.inr hb), mul_zero]
 
 /- English proof (translation)
-Establish `e` using `h_sum_smul_left (H := H) (fun c => (H.Zhat f f').adjugate c (Fin.last r)) f' (H.om' f f')`. Express the relevant statement in the definitionally equal form `H.h (∑ c, (H.Zhat f f').adjugate c (Fin.last r) • f' c) (H.om' f f') = _`. Rewrite using `[e, Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[H.h_herm, h_om'_f'U H f f' T' hF', if_pos rfl, adj_last, map_mul, map_neg, AlgEquiv.commutes]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `c _ hc`. Rewrite using `[H.h_herm, h_om'_f'U H f f' T' hF', if_neg hc, map_zero, mul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem h_om'_om'U (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') :
     H.h (H.om' f f') (H.om' f f') = M.L.cj (H.Dl f f' r) * (H.Dl f f' r * -algebraMap F E T') := by
@@ -54,13 +54,13 @@ theorem h_om'_om'U (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNoti
   · simp
 
 /- English proof (translation)
-Rewrite using `[H.h_herm, H.h_smul_left, map_mul, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hermSp_h_smul_right_eq_cj_mul' (x y : V) (a : E) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [H.h_herm, H.h_smul_left, map_mul, ← H.h_herm]
 
 /- English proof (translation)
-Unfold `omP kapU`. Rewrite using `[H.h_smul_left, hermSp_h_smul_right_eq_cj_mul', h_om'_om'U H f f' T' hF', map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem h_omP_omPU (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') :
     H.h (omP H f f') (omP H f f') = -(algebraMap F E T') * (kapU H f f' * M.L.cj (kapU H f f')) := by
@@ -69,9 +69,9 @@ theorem h_omP_omPU (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNoti
   ring
 
 /- English proof (translation)
-Rewrite using `[h_omP_omPU H f f' T' hF']`. Unfold `kapU HermSp.Gdet HermSp.normE`. Establish `hinv : Ring.inverse (H.Dl f f' (r + 1)) * H.Dl f f' (r + 1) = 1` using `Ring.inverse_mul_cancel _ hD`. Establish `hinv' : M.L.cj (Ring.inverse (H.Dl f f' (r + 1))) * M.L.cj (H.Dl f f' (r + 1)) = 1`. Rewrite using `[← map_mul, hinv, map_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul (algebraMap F E)]`. Take the linear combination `(-(algebraMap F E T) * algebraMap F E T' * H.Dl f f' r * M.L.cj (H.Dl f f' r) * M.L.cj (Ring.inverse (H.Dl f f' (r + 1))) * M.L.cj (H.Dl f f' (r + 1))) * hinv + (-(algebraMap F E T) * algebraMap F E T' * H.Dl f f' r * M.L.cj (H.Dl f f' r)) * hinv'`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eta_mul (f f' : Fin (r + 1) → V) (T T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T')
     (hD : IsUnit (H.Dl f f' (r + 1))) :
@@ -88,7 +88,7 @@ theorem eta_mul (f f' : Fin (r + 1) → V) (T T' : F) (hF' : Formalism.MainNotio
     (-(algebraMap F E T) * algebraMap F E T' * H.Dl f f' r * M.L.cj (H.Dl f f' r)) * hinv'
 
 /- English proof (translation)
-The claim follows from `isUnit_of_mul_isUnit_left (by rw [eta_mul H f f' T T' hF' hD]; exact hG)`.
+A detailed English derivation is pending.
 -/
 theorem eta_unit (f f' : Fin (r + 1) → V) (T T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T')
     (hD : IsUnit (H.Dl f f' (r + 1))) (hG : IsUnit (H.Gdet f f' T T')) :
@@ -96,27 +96,25 @@ theorem eta_unit (f f' : Fin (r + 1) → V) (T T' : F) (hF' : Formalism.MainNoti
   isUnit_of_mul_isUnit_left (by rw [eta_mul H f f' T T' hF' hD]; exact hG)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hv`. Rewrite `h1`, `h2`, the goal using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h1 h2 ⊢`. Establish `hu : IsUnit (H.Zhat f f').det` using `by rw [← dl_full]; exact hD`. Establish `hZ : (H.Zhat f f').mulVec (fun b => c (Sum.inr b)) = Pi.single (Fin.last r) (algebraMap F E T * c (Sum.inl (Fin.last r)))`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Use `h1 a` as an intermediate fact. Rewrite `this` using `[H.h_add_left, h_sum_left, h_sum_left]`. Simplify using `only [h_frame H f T hF] at this`. Rewrite `this` using `[Finset.sum_eq_single (Fin.last r) (fun b _ hb => by simp [hb]) (by simp)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (H.Zhat f f').mulVec (fun b => c (Sum.inr b)) a = ∑ b, c (Sum.inr b) * H.h (f' b) (f a)`. Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Rewrite using `[e]`. Distinguish the cases in `ha : a = Fin.last r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Simplify using `only [and_self, if_true] at this`. Rewrite using `[Pi.single_eq_same]`. Take the linear combination `this`. Simplify using `only [ha, false_and, if_false, mul_zero, zero_add] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne ha]`. Conclude with `this`. Establish `hc'eq : (fun b => c (Sum.inr b)) = (H.Zhat f f')⁻¹.mulVec (Pi.single (Fin.last r) (algebraMap F E T * c (Sum.inl (Fin.last r))))`. Rewrite using `[← hZ, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`. Establish `hcl' : c (Sum.inr (Fin.last r)) = kapU H f f' * (algebraMap F E T * c (Sum.inl (Fin.last r)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun hc'eq (Fin.last r)` as an intermediate fact. Establish `hs : Pi.single (Fin.last r) (algebraMap F E T * c (Sum.inl (Fin.last r))) = (algebraMap F E T * c (Sum.inl (Fin.last r))) • Pi.single (Fin.last r) (1 : E)`. Use extensionality with `i`. Apply the tactic sequence `by_cases hi : i = Fin.last r <;> simp [hi]`. Rewrite `this` using `[hs, Matrix.mulVec_smul, Matrix.mulVec_single_one, Pi.smul_apply, Matrix.col_apply, smul_eq_mul, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, adj_last, ← dl_full]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[kapU]`. Conclude with `this.trans (by ring)`. Establish `hl : c (Sum.inl (Fin.last r)) = 0`. Rewrite `h2` using `[h_add_right, h_sum_right, h_sum_right]`. Simplify using `only [h_om'_f, h_om'_f'U H f f' T' hF'] at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[Finset.sum_eq_single (Fin.last r) (fun b _ hb => by rw [if_neg hb, mul_zero]) (by simp), Finset.sum_eq_single (Fin.last r) (fun b _ hb => by rw [if_neg hb, mul_zero]) (by simp), if_pos rfl, if_pos rfl, ← dl_full, hcl', kapU, map_mul, map_mul, map_mul, AlgEquiv.commutes]`. Establish `h3 : M.L.cj (H.Dl f f' (r + 1)) * M.L.cj (Ring.inverse (H.Dl f f' (r + 1))) = 1`. Rewrite using `[← map_mul, Ring.mul_inverse_cancel _ hD, map_one]`. Establish `hmul : M.L.cj (c (Sum.inl (Fin.last r))) * H.Gdet f f' T T' = 0`. Unfold `HermSp.Gdet HermSp.normE`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[(algebraMap F E).map_mul]`. Take the linear combination `(M.L.cj (H.Dl f f' (r + 1))) * h2 + (algebraMap F E T * algebraMap F E T' * H.Dl f f' r * M.L.cj (H.Dl f f' r) * M.L.cj (c (Sum.inl (Fin.last r)))) * h3`. Establish `h4` using `hG.mul_left_eq_zero.1 hmul`. Use `congrArg M.L.cj h4` as an intermediate fact. Rewrite `this` using `[M.L.cj_cj, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp'' : ∀ b, c (Sum.inr b) = 0`. Introduce `b`. Use `congrFun hc'eq b` as an intermediate fact. Rewrite `this` using `[hl, mul_zero, Pi.single_zero, Matrix.mulVec_zero]`. Conclude with `this`.
-
-Simplify using `only [hp'', zero_smul, Finset.sum_const_zero, add_zero]`. Rewrite using `[Fin.sum_univ_castSucc, hl, zero_smul, add_zero]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_X_ofU (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (hD : IsUnit (H.Dl f f' (r + 1))) (hG : IsUnit (H.Gdet f f' T T'))

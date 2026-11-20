@@ -13,11 +13,11 @@ open PositivityTheory.RgBcC.Fc
 local notation "sg(" y ")" => (((y : ℝ) : ℂ) ^ (1 / 2 : ℂ))
 
 /- English proof (translation)
-Break down `le_total 0 y with hy | hy` into its components or cases. Establish `h1 : max y 0 = y` using `max_eq_left hy`. Establish `h2 : max (-y) 0 = 0` using `max_eq_right (by linarith)`. Rewrite using `[h1, h2, Real.sqrt_zero, Real.sqrt_eq_rpow, Complex.ofReal_cpow hy]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : max y 0 = 0` using `max_eq_right hy`. Establish `h2 : max (-y) 0 = -y` using `max_eq_left (by linarith)`. Establish `hy' : 0 ≤ -y` using `by linarith`. Rewrite using `[h1, h2, Real.sqrt_zero, Complex.ofReal_cpow_of_nonpos hy, Real.sqrt_eq_rpow, Complex.ofReal_cpow hy']`. Establish `: Complex.exp (Real.pi * Complex.I * (1 / 2)) = Complex.I`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Real.pi : ℂ) * Complex.I * (1 / 2) = ((Real.pi / 2 : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sg_eq (y : ℝ) :
     sg(y) = (Real.sqrt (max y 0) : ℂ) + (Real.sqrt (max (-y) 0) : ℂ) * Complex.I := by
@@ -40,7 +40,7 @@ lemma sg_eq (y : ℝ) :
     simp
 
 /- English proof (translation)
-Establish `: (fun y : ℝ => sg(y)) = fun y : ℝ => (Real.sqrt (max y 0) : ℂ) + (Real.sqrt (max (-y) 0) : ℂ) * Complex.I` using `funext sg_eq`. Rewrite using `[this]`. Use `fun_prop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sg_continuous : Continuous fun y : ℝ => sg(y) := by
   have : (fun y : ℝ => sg(y)) = fun y : ℝ =>
@@ -49,13 +49,13 @@ lemma sg_continuous : Continuous fun y : ℝ => sg(y) := by
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[sg_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sg_re (y : ℝ) : (sg(y)).re = Real.sqrt (max y 0) := by
   rw [sg_eq]; simp
 
 /- English proof (translation)
-Establish `h : (sg(y)) ^ 2 = (y : ℂ)`. Use `Complex.cpow_nat_inv_pow (y : ℂ) (n := 2) (by norm_num)` as an intermediate fact. Simplify using `using this`. Rewrite using `[← norm_pow, h, Complex.norm_real, Real.norm_eq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 lemma sg_norm_sq (y : ℝ) : ‖sg(y)‖ ^ 2 = |y| := by
   have h : (sg(y)) ^ 2 = (y : ℂ) := by
@@ -64,13 +64,13 @@ lemma sg_norm_sq (y : ℝ) : ‖sg(y)‖ ^ 2 = |y| := by
   rw [← norm_pow, h, Complex.norm_real, Real.norm_eq_abs]
 
 /- English proof (translation)
-Rewrite using `[← sg_norm_sq y, Real.sqrt_sq (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sg_norm (y : ℝ) : ‖sg(y)‖ = Real.sqrt |y| := by
   rw [← sg_norm_sq y, Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Break down `le_total a 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_left₀ (pow_nonneg ha 4)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma pow_le_one_add (a : ℝ) (ha : 0 ≤ a) {k N : ℕ} (hk : k ≤ 4 * N) :
     a ^ k ≤ (1 + a ^ 4) ^ N := by
@@ -83,7 +83,7 @@ lemma pow_le_one_add (a : ℝ) (ha : 0 ≤ a) {k N : ℕ} (hk : k ≤ 4 * N) :
         apply pow_le_pow_left₀ (pow_nonneg ha 4); linarith
 
 /- English proof (translation)
-Establish `h` using `pow_le_one_add ‖sg(y)‖ (norm_nonneg _) hk`. Establish `h4 : ‖sg(y)‖ ^ 4 = y ^ 2`. Establish `: ‖sg(y)‖ ^ 4 = (‖sg(y)‖ ^ 2) ^ 2` using `by ring`. Rewrite using `[this, sg_norm_sq, sq_abs]`. Rewrite `h` using `[h4]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma sg_pow_le (y : ℝ) {k N : ℕ} (hk : k ≤ 4 * N) : ‖sg(y)‖ ^ k ≤ (1 + y ^ 2) ^ N := by
   have h := pow_le_one_add ‖sg(y)‖ (norm_nonneg _) hk
@@ -93,31 +93,31 @@ lemma sg_pow_le (y : ℝ) {k N : ℕ} (hk : k ≤ 4 * N) : ‖sg(y)‖ ^ k ≤ (
   rwa [h4] at h
 
 /- English proof (translation)
-The claim follows from `le_max_left _ _`.
+A detailed English derivation is pending.
 -/
 lemma cut_nonneg (c y : ℝ) : 0 ≤ cut c y := le_max_left _ _
 
 /- English proof (translation)
-The claim follows from `max_le zero_le_one (min_le_left _ _)`.
+A detailed English derivation is pending.
 -/
 lemma cut_le_one (c y : ℝ) : cut c y ≤ 1 := max_le zero_le_one (min_le_left _ _)
 
 /- English proof (translation)
-The claim follows from `max_eq_left ((min_le_right _ _).trans (by linarith))`.
+A detailed English derivation is pending.
 -/
 lemma cut_eq_zero {c y : ℝ} (h : c + 1 ≤ y) : cut c y = 0 :=
   max_eq_left ((min_le_right _ _).trans (by linarith))
 
 /- English proof (translation)
-Unfold `cut`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cut_continuous (c : ℝ) : Continuous (cut c) := by
   unfold cut; fun_prop
 
 /- English proof (translation)
-Establish `h : Complex.cosh w = (Complex.exp w + Complex.exp (-w)) / 2`. Rewrite using `[← Complex.two_cosh]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, norm_div, Complex.norm_ofNat]`. Establish `h1` using `norm_add_le (Complex.exp w) (Complex.exp (-w))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Complex.norm_exp, Complex.norm_exp, Complex.neg_re]`. Establish `h2 : Real.exp w.re ≤ Real.exp |w.re|` using `Real.exp_le_exp.2 (le_abs_self _)`. Establish `h3 : Real.exp (-w.re) ≤ Real.exp |w.re|` using `Real.exp_le_exp.2 (neg_le_abs _)`. Combine the linear relations using `[h1, h2, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma norm_cosh_le (w : ℂ) : ‖Complex.cosh w‖ ≤ Real.exp |w.re| := by
   have h : Complex.cosh w = (Complex.exp w + Complex.exp (-w)) / 2 := by
@@ -130,9 +130,9 @@ lemma norm_cosh_le (w : ℂ) : ‖Complex.cosh w‖ ≤ Real.exp |w.re| := by
   linarith [h1, h2, h3]
 
 /- English proof (translation)
-Establish `h : Complex.sinh w = (Complex.exp w - Complex.exp (-w)) / 2`. Rewrite using `[← Complex.two_sinh]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, norm_div, Complex.norm_ofNat]`. Establish `h1` using `norm_sub_le (Complex.exp w) (Complex.exp (-w))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Complex.norm_exp, Complex.norm_exp, Complex.neg_re]`. Establish `h2 : Real.exp w.re ≤ Real.exp |w.re|` using `Real.exp_le_exp.2 (le_abs_self _)`. Establish `h3 : Real.exp (-w.re) ≤ Real.exp |w.re|` using `Real.exp_le_exp.2 (neg_le_abs _)`. Combine the linear relations using `[h1, h2, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma norm_sinh_le (w : ℂ) : ‖Complex.sinh w‖ ≤ Real.exp |w.re| := by
   have h : Complex.sinh w = (Complex.exp w - Complex.exp (-w)) / 2 := by
@@ -145,9 +145,7 @@ lemma norm_sinh_le (w : ℂ) : ‖Complex.sinh w‖ ≤ Real.exp |w.re| := by
   linarith [h1, h2, h3]
 
 /- English proof (translation)
-Establish `hre : |((t : ℂ) * sg(y)).re| = |t| * Real.sqrt (max y 0)`. Rewrite using `[Complex.re_ofReal_mul, sg_re, abs_mul, abs_of_nonneg (Real.sqrt_nonneg _)]`. Rewrite using `[← hre]`. Use `split_ifs`. Conclude with `norm_cosh_le _`.
-
-Conclude with `norm_sinh_le _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hyp_le (j : ℕ) (t y : ℝ) :
     ‖(if Even j then Complex.cosh else Complex.sinh) ((t : ℂ) * sg(y))‖ ≤
@@ -160,7 +158,7 @@ lemma hyp_le (j : ℕ) (t y : ℝ) :
   · exact norm_sinh_le _
 
 /- English proof (translation)
-Unfold `wv chj`. Rewrite using `[norm_mul, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, mul_assoc]`. Use `hyp_le j t y` as an intermediate fact. Use `gcongr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma norm_wv_le (c : ℝ) (N j : ℕ) (t y : ℝ) :
     ‖wv c N j t y‖ ≤ |cut c y * ((1 + y ^ 2) ^ N)⁻¹| * ‖sg(y)‖ ^ j *
@@ -171,7 +169,7 @@ lemma norm_wv_le (c : ℝ) (N j : ℕ) (t y : ℝ) :
   gcongr
 
 /- English proof (translation)
-The claim follows from `|cut c y * ((1 + y ^ 2) ^ N)⁻¹| * ‖sg(y)‖ ^ k * Real.exp (|t| * Real.sqrt (max y 0)) ≤ Real.exp (|t| * Real.sqrt (max (c + 1) 0)) := by rcases le_or_gt (c + 1) y with h | h · rw [cut_eq_zero h] simp only [zero_mul, abs_zero] positivity · have hP : 0 < (1 + y ^ 2) ^ N := by positi …`.
+A detailed English derivation is pending.
 -/
 lemma base_le (c : ℝ) {N k : ℕ} (hk : k ≤ 4 * N) (t y : ℝ) :
     |cut c y * ((1 + y ^ 2) ^ N)⁻¹| * ‖sg(y)‖ ^ k * Real.exp (|t| * Real.sqrt (max y 0)) ≤
@@ -198,18 +196,18 @@ lemma base_le (c : ℝ) {N k : ℕ} (hk : k ≤ 4 * N) (t y : ℝ) :
       _ = _ := one_mul _
 
 /- English proof (translation)
-The claim follows from `(norm_wv_le c N j t y).trans (base_le c hj t y)`.
+A detailed English derivation is pending.
 -/
 lemma wv_bound (c : ℝ) {N j : ℕ} (hj : j ≤ 4 * N) (t y : ℝ) :
     ‖wv c N j t y‖ ≤ Real.exp (|t| * Real.sqrt (max (c + 1) 0)) :=
   (norm_wv_le c N j t y).trans (base_le c hj t y)
 
 /- English proof (translation)
-Use `set B := Real.exp (|t| * Real.sqrt (max (c + 1) 0)) with hB`. Establish `h0 : ‖wv c N j t y‖ ≤ B` using `wv_bound c (by omega) t y`. Establish `h1 : ‖wv c N j t y‖ * ‖sg(y)‖ ≤ B`. Use `le_trans ?_ (base_le c hj t y)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (norm_wv_le c N j t y) (norm_nonneg (sg(y)))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[sg_norm]`. Establish `hp : 0 < 1 + Real.sqrt |y|` using `by positivity`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hp]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 lemma wv_decay (c : ℝ) {N j : ℕ} (hj : j + 1 ≤ 4 * N) (t y : ℝ) :
     ‖wv c N j t y‖ ≤ 2 * Real.exp (|t| * Real.sqrt (max (c + 1) 0)) * (1 + Real.sqrt |y|)⁻¹ := by
@@ -226,9 +224,9 @@ lemma wv_decay (c : ℝ) {N j : ℕ} (hj : j + 1 ≤ 4 * N) (t y : ℝ) :
   nlinarith
 
 /- English proof (translation)
-Establish `hW : Continuous fun y : ℝ => cut c y * ((1 + y ^ 2) ^ N)⁻¹`. Use `(cut_continuous c).mul (Continuous.inv₀ (by fun_prop) fun y => ?_)` and prove the remaining obligations. Check the signs of the components of the expression. Establish `hs` using `sg_continuous`. Establish `hH : Continuous fun y : ℝ => (if Even j then Complex.cosh else Complex.sinh) ((t : ℂ) * sg(y))` using `by split_ifs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.continuous_cosh.comp (continuous_const.mul hs)`. Conclude with `Complex.continuous_sinh.comp (continuous_const.mul hs)`. Unfold `wv chj`. Conclude with `(Complex.continuous_ofReal.comp hW).mul ((hs.pow j).mul hH)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma wv_continuous (c : ℝ) (N j : ℕ) (t : ℝ) : Continuous (wv c N j t) := by
   have hW : Continuous fun y : ℝ => cut c y * ((1 + y ^ 2) ^ N)⁻¹ := by
@@ -244,7 +242,7 @@ lemma wv_continuous (c : ℝ) (N j : ℕ) (t : ℝ) : Continuous (wv c N j t) :=
   exact (Complex.continuous_ofReal.comp hW).mul ((hs.pow j).mul hH)
 
 /- English proof (translation)
-Use `squeeze_zero_norm (fun y => wv_decay c hj t y) ?_` and prove the remaining obligations. Establish `h1 : Tendsto (fun y : ℝ => 1 + Real.sqrt |y|) (cocompact ℝ) atTop`. Use `tendsto_atTop_add_const_left _ _ (Real.tendsto_sqrt_atTop.comp ?_)` and prove the remaining obligations. Conclude with `tendsto_norm_cocompact_atTop (E := ℝ)`. Simplify using `using (tendsto_inv_atTop_zero.comp h1).const_mul (2 * Real.exp (|t| * Real.sqrt (max (c + 1) 0)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma wv_tendsto (c : ℝ) {N j : ℕ} (hj : j + 1 ≤ 4 * N) (t : ℝ) :
     Tendsto (wv c N j t) (cocompact ℝ) (𝓝 0) := by
@@ -256,15 +254,13 @@ lemma wv_tendsto (c : ℝ) {N j : ℕ} (hj : j + 1 ≤ 4 * N) (t : ℝ) :
     (2 * Real.exp (|t| * Real.sqrt (max (c + 1) 0)))
 
 /- English proof (translation)
-Simplify using `only [chj]`. Generalize the expression as in `sg(y) = s`. Distinguish the cases in `hj : Even j`. Establish `h1 : ¬ Even (j + 1)` using `by simpa [Nat.even_add_one] using hj`. Simplify using `only [if_pos hj, if_neg h1]`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : HasDerivAt (fun z : ℂ => Complex.cosh (z * s)) (Complex.sinh ((t : ℂ) * s) * s) (t : ℂ)`. Establish `h0 : HasDerivAt (fun z : ℂ => z * s) s (t : ℂ)`. Simplify using `using (hasDerivAt_id (t : ℂ)).mul_const s`. Conclude with `(Complex.hasDerivAt_cosh ((t : ℂ) * s)).comp (t : ℂ) h0`. Establish `h3` using `(h2.comp_ofReal).const_mul (s ^ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : s ^ (j + 1) * Complex.sinh ((t : ℂ) * s) = s ^ j * (Complex.sinh ((t : ℂ) * s) * s)` using `by ring`. Rewrite using `[e]`. Conclude with `h3`. Establish `h1 : Even (j + 1)` using `by simpa [Nat.even_add_one] using hj`. Simplify using `only [if_neg hj, if_pos h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : HasDerivAt (fun z : ℂ => Complex.sinh (z * s)) (Complex.cosh ((t : ℂ) * s) * s) (t : ℂ)`. Establish `h0 : HasDerivAt (fun z : ℂ => z * s) s (t : ℂ)`. Simplify using `using (hasDerivAt_id (t : ℂ)).mul_const s`. Conclude with `(Complex.hasDerivAt_sinh ((t : ℂ) * s)).comp (t : ℂ) h0`. Establish `h3` using `(h2.comp_ofReal).const_mul (s ^ j)`.
-
-Establish `e : s ^ (j + 1) * Complex.cosh ((t : ℂ) * s) = s ^ j * (Complex.cosh ((t : ℂ) * s) * s)` using `by ring`. Rewrite using `[e]`. Conclude with `h3`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma chj_hasDerivAt (j : ℕ) (t y : ℝ) :
     HasDerivAt (fun τ : ℝ => chj j τ y) (chj (j + 1) t y) t := by
@@ -297,28 +293,26 @@ lemma chj_hasDerivAt (j : ℕ) (t y : ℝ) :
     exact h3
 
 /- English proof (translation)
-The claim follows from `(chj_hasDerivAt j t y).const_mul _`.
+A detailed English derivation is pending.
 -/
 lemma wv_hasDerivAt (c : ℝ) (N j : ℕ) (t y : ℝ) :
     HasDerivAt (fun τ : ℝ => wv c N j τ y) (wv c N (j + 1) t y) t :=
   (chj_hasDerivAt j t y).const_mul _
 
 /- English proof (translation)
-Use `set M := Real.exp ((|t| + 1) * Real.sqrt (max (c + 1) 0)) with hM`. Establish `hb : ∀ τ ∈ Set.Icc (t - 1) (t + 1), ‖wv c N (j + 1 + 1) τ y‖ ≤ M`. Introduce `τ hτ`. Use `(wv_bound c hj τ y).trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ (Real.sqrt_nonneg _)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : |τ - t| ≤ 1` using `abs_le.2 ⟨by linarith [hτ.1], by linarith [hτ.2]⟩`. Establish `h2 : |τ| ≤ |t| + |τ - t|`. Use `abs_add_le t (τ - t)` as an intermediate fact. Simplify using `using this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ht : t ∈ Set.Icc (t - 1) (t + 1)` using `⟨by linarith, by linarith⟩`. Establish `h1 : ∀ τ ∈ Set.Icc (t - 1) (t + 1), ‖wv c N (j + 1) τ y - wv c N (j + 1) t y‖ ≤ M * |τ - t|`. Introduce `τ hτ`. Use `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun τ => wv c N (j + 1) τ y) (f' := fun τ => wv c N (j + 1 + 1) τ y) (fun x _ => (wv_hasDerivAt c N (j + 1) x y).hasDerivWithinAt) hb (convex_Icc _ _) ht hτ` as an intermediate fact. Simplify `this` using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set A := wv c N (j + 1) t y with hA`. Establish `hψ : ∀ τ : ℝ, HasDerivAt (fun τ : ℝ => wv c N j τ y - (τ : ℂ) * A) (wv c N (j + 1) τ y - A) τ`. Introduce `τ`. Establish `h2 : HasDerivAt (fun τ : ℝ => (τ : ℂ) * A) A τ`. Use `((hasDerivAt_id τ).ofReal_comp).mul_const A` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `(wv_hasDerivAt c N j τ y).sub h2`. Establish `hb2 : ∀ τ ∈ Set.uIcc t (t + h), ‖wv c N (j + 1) τ y - A‖ ≤ M * |h|`. Introduce `τ hτ`. Establish `h3 : |τ - t| ≤ |h|`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Set.abs_sub_left_of_mem_uIcc hτ` as an intermediate fact. Simplify using `using this`. Establish `h4 : |τ - t| ≤ 1` using `h3.trans hh`. Establish `h5` using `abs_le.1 h4`. Use `(h1 τ ⟨by linarith [h5.1], by linarith [h5.2]⟩).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left h3 (Real.exp_pos _).le`. Use `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun τ : ℝ => wv c N j τ y - (τ : ℂ) * A) (f' := fun τ => wv c N (j + 1) τ y - A) (fun x _ => (hψ x).hasDerivWithinAt) hb2 (convex_uIcc _ _) (Set.left_mem_uIcc) (Set.right_mem_uIcc)` as an intermediate fact. Establish `e1 : wv c N j (t + h) y - wv c N j t y - (h : ℂ) * A = (wv c N j (t + h) y - ((t + h : ℝ) : ℂ) * A) - (wv c N j t y - (t : ℂ) * A)` using `by push_cast; ring`. Rewrite using `[e1]`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Establish `e2 : t + h - t = h` using `by ring`. Rewrite using `[e2, Real.norm_eq_abs, mul_assoc, abs_mul_abs_self]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma wv_taylor (c : ℝ) {N j : ℕ} (hj : j + 2 ≤ 4 * N) (t h y : ℝ) (hh : |h| ≤ 1) :
     ‖wv c N j (t + h) y - wv c N j t y - (h : ℂ) * wv c N (j + 1) t y‖ ≤
@@ -372,7 +366,7 @@ lemma wv_taylor (c : ℝ) {N j : ℕ} (hj : j + 2 ≤ 4 * N) (t h y : ℝ) (hh :
   ring
 
 /- English proof (translation)
-Unfold `toC0`. Rewrite using `[dif_pos (⟨h1, h2⟩ : Continuous f ∧ Tendsto f (cocompact ℝ) (𝓝 0))]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma coe_toC0 {f : ℝ → ℂ} (h1 : Continuous f) (h2 : Tendsto f (cocompact ℝ) (𝓝 0)) :
     ⇑(toC0 f) = f := by
@@ -381,13 +375,13 @@ lemma coe_toC0 {f : ℝ → ℂ} (h1 : Continuous f) (h2 : Tendsto f (cocompact 
   rfl
 
 /- English proof (translation)
-Introduce `c N j hj t`. Establish `hC : ∀ {k : ℕ}, k + 1 ≤ 4 * N → ∀ τ : ℝ, ⇑(toC0 (wv c N k τ)) = wv c N k τ` using `fun hk τ => coe_toC0 (wv_continuous c N _ τ) (wv_tendsto c hk τ)`. Use `⟨⟨wv_continuous c N j t, wv_tendsto c (by omega) t⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hasDerivAt_iff_isLittleO_nhds_zero]`. Establish `hO : (fun h : ℝ => toC0 (wv c N j (t + h)) - toC0 (wv c N j t) - h • toC0 (wv c N (j + 1) t)) =O[𝓝 0] fun h : ℝ => h ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsBigO.of_bound (Real.exp ((|t| + 1) * Real.sqrt (max (c + 1) 0))) ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds (0 : ℝ) one_pos] with h hh`. Establish `hh1 : |h| ≤ 1`. Establish `: |h| < 1` using `by simpa [Real.norm_eq_abs] using hh`. Conclude with `this.le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ZeroAtInftyContinuousMap.norm_toBCF_eq_norm, Real.norm_eq_abs, abs_of_nonneg (sq_nonneg h)]`. Use `(BoundedContinuousFunction.norm_le (by positivity)).2 fun y => ?_` and prove the remaining obligations. Establish `e : (toC0 (wv c N j (t + h)) - toC0 (wv c N j t) - h • toC0 (wv c N (j + 1) t)).toBCF y = wv c N j (t + h) y - wv c N j t y - (h : ℂ) * wv c N (j + 1) t y` using `by show (toC0 (wv c N j (t + h)) - toC0 (wv c N j t) - h • toC0 (wv c N (j + 1) t) : C₀(ℝ, ℂ)) y = _`. Simplify using `only [ZeroAtInftyContinuousMap.coe_sub, ZeroAtInftyContinuousMap.coe_smul, Pi.sub_apply, Pi.smul_apply, hC (k := j) (by omega), hC (k := j + 1) (by omega), Complex.real_smul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `wv_taylor c hj t h y hh1`. Use `hO.trans_isLittleO ?_` and prove the remaining obligations. Simplify using `using isLittleO_pow_id (𝕜 := ℝ) one_lt_two`.
+A detailed English derivation is pending.
 -/
 theorem fcurve : Fcurve := by
   intro c N j hj t

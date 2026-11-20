@@ -21,11 +21,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {rc : IrrGL (w.adicCompletion E) → WD h}
 /- English proof (translation)
-Establish `hsph : IsSpherical (ParLaws.toRep σ).ρ`. Use `hS.1` as an intermediate fact. Unfold `IsSpherical IsSphericalFor`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : (rc (cls (ParLaws.toRep σ))).unr` using `(_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_unramified_iff_spherical H _).2 hsph`. Take `⟨α, hα⟩` from `_root_.UpperTheory.One.M.exists_hasSatake_of_unr_alt H hu`. Establish `e : S = Finset.univ.val.map α` using `hS.unique (GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries E w n _ σ.ρ α hα)`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_eq_diagonal_inv_of_has_satake H hα, WD.frobEig_diag, e, Multiset.map_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hasSatGL_rec_alt (H : _root_.UpperTheory.Zero.LLC.IsRecT h rc) {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (S : Multiset ℂˣ)
     (hS : GlobalTheory.LFun.HasSatGL w σ.ρ S) :
@@ -47,15 +47,15 @@ section Record
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
   (T : GlobalTheory.RowTie.WDTie N A) (hL : _root_.UpperTheory.Zero.LLC.RecTExists)
 /- English proof (translation)
-The claim follows from `(T.e w).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem equiv_transported_reciprocity_eq_local_reciprocity (w : PlE H) {n : ℕ} (σ : LocIrr w n) :
     T.e w (_root_.GlobalTheory.FormDict.recT_alt T hL w n σ) = _root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (N.plOm.2 w) (cls (ParLaws.toRep σ)) :=
   (T.e w).apply_symm_apply _
 /- English proof (translation)
-Introduce `w c n d hd σ σ' e`. Apply `(T.e w).injective` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity, e_lpSumList, _root_.UpperTheory.One.M.locProd_eqG_alt (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (N.plOm.2 w)) hd σ σ' e, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(_root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity T hL w (σ i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem transported_reciprocity_prod : RecProd (_root_.GlobalTheory.FormDict.recT_alt T hL) := by
   intro w c n d hd σ σ' e
@@ -65,7 +65,7 @@ theorem transported_reciprocity_prod : RecProd (_root_.GlobalTheory.FormDict.rec
   funext i
   exact (_root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity T hL w (σ i)).symm
 /- English proof (translation)
-Introduce `w n σ S hS`. Take `⟨h1, h2⟩` from `_root_.GlobalTheory.FormDict.RecTLaws.hasSatGL_rec_alt (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (N.plOm.2 w)) σ S hS`. Establish `hu : A.unr (_root_.GlobalTheory.FormDict.recT_alt T hL w n σ)` using `(T.unr w _).2 (by rw [_root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity]; exact h1)`. Conclude with `⟨hu, (T.frobEig w _ hu).trans (by rw [_root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity]; exact h2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem transported_reciprocity_satake : RecSatake (_root_.GlobalTheory.FormDict.recT_alt T hL) := by
   intro w n σ S hS
@@ -73,9 +73,9 @@ theorem transported_reciprocity_satake : RecSatake (_root_.GlobalTheory.FormDict
   have hu : A.unr (_root_.GlobalTheory.FormDict.recT_alt T hL w n σ) := (T.unr w _).2 (by rw [_root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity]; exact h1)
   exact ⟨hu, (T.frobEig w _ hu).trans (by rw [_root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity]; exact h2)⟩
 /- English proof (translation)
-Introduce `w a d n hd P σ σ' hP hu hq`. Establish `hg : IsGeneric σ.ρ` using `GlobalTheory.CuspRep.Generic.isGeneric_of_isLocComp H.E a P w σ hP`. Apply `(T.e w).injective` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity, e_lpSumList, _root_.GlobalTheory.T.local_langlands_speh_product' _ _ _ w _ _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (N.plOm.2 w)) hTZ hSC a d n hd σ σ' hu hg hq, List.map_m …`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `List.map_congr_left fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, T.tw, _root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem transported_reciprocity_speh_of_generic_unitary_dual (hTZ : GlobalTheory.Published.GenericUnitaryDualGL) (hSC : GlobalTheory.Published.StandardCosocleGL) :
     RecSpeh (_root_.GlobalTheory.FormDict.recT_alt T hL) := by
@@ -89,7 +89,7 @@ theorem transported_reciprocity_speh_of_generic_unitary_dual (hTZ : GlobalTheory
   simp only [Function.comp_apply, T.tw, _root_.GlobalTheory.FormDict.RecTLaws.equiv_transported_reciprocity_eq_local_reciprocity]
 end Record
 /- English proof (translation)
-Introduce `hTZ hSC hL _ _ _ _ _ T` and use `⟨_root_.GlobalTheory.FormDict.RecTLaws.transported_reciprocity_prod T hL, _root_.GlobalTheory.FormDict.RecTLaws.transported_reciprocity_speh_of_generic_unitary_dual T hL hTZ hSC, _root_.GlobalTheory.FormDict.RecTLaws.transported_reciprocity_satake T hL⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem transported_reciprocity_prod_and_speh_and_satake : GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL →
     ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)

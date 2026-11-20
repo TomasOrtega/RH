@@ -10,17 +10,17 @@ variable {G H : Type*} [Group G] [TopologicalSpace G] [NormedAddCommGroup H] [In
   (hWi : π.IsInvariant W)
 
 /- English proof (translation)
-Establish `hVc : IsClosed (V : Set W)` using `(completeSpace_coe_iff_isComplete.1 ‹CompleteSpace V›).isClosed`. Establish `hemb : Topology.IsClosedEmbedding ((↑) : W → H)` using `hWc.isClosedEmbedding_subtypeVal`. Use `⟨Submodule.map_subtype_le _ _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hemb.isClosedMap _ hVc`. Simplify `h` using `[Submodule.map_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `g _ ⟨w, hw, rfl⟩`. Conclude with `⟨π.restrict W hWi g w, hinv g w hw, rfl⟩`. Use `haveI := hirr.1`. Take `⟨w, hw0⟩` from `exists_ne (0 : V)`. Introduce `hb`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : ((w : W) : H) ∈ V.map W.subtype` using `⟨w.1, w.2, rfl⟩`. Rewrite `hm` using `[hb, Submodule.mem_bot]`. Conclude with `hw0 (Subtype.ext (Subtype.ext hm))`. Introduce `V' hle hcl hinv'`. Establish `hYc : IsClosed (((V'.comap W.subtype).comap V.subtype : Submodule ℂ V) : Set V)` using `hcl.preimage (continuous_subtype_val.comp continuous_subtype_val)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hYi : ((π.restrict W hWi).restrict V hinv).IsInvariant ((V'.comap W.subtype).comap V.subtype)` using `fun g v hv => hinv' g _ hv`. Break down `hirr.2 _ hYc hYi with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw, rfl⟩` from `hle hx`. Establish `hm : (⟨w, hw⟩ : V) ∈ (V'.comap W.subtype).comap V.subtype` using `hx`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Establish `h0 : w = 0` using `congrArg Subtype.val hm`. Simplify using `[h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `right`. Use `le_antisymm hle ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hm : (⟨w, hw⟩ : V) ∈ (V'.comap W.subtype).comap V.subtype` using `h ▸ Submodule.mem_top`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 private theorem isSummandOf_map (hWc : IsClosed (W : Set H))
     (V : Submodule ℂ W) [CompleteSpace V] (hinv : (π.restrict W hWi).IsInvariant V)
@@ -61,11 +61,11 @@ private theorem isSummandOf_map (hWc : IsClosed (W : Set H))
       exact hm
 
 /- English proof (translation)
-Establish `hmain : ∀ V : s, IsSummandOf π W ((V : Submodule ℂ W).map W.subtype)` using `fun V => isSummandOf_map π W hWi hWc V.1 (hinv V) (hirr V)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.topologicalClosure_minimal _ (iSup_le fun V => V.2.le) hWc`. Use `set S : Submodule ℂ H := ⨆ V : {V // IsSummandOf π W V}, V.1 with hS`. Establish `hcl : IsClosed ((S.topologicalClosure.comap W.subtype : Submodule ℂ W) : Set W)` using `S.isClosed_topologicalClosure.preimage continuous_subtype_val`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : (⨆ V : s, LinearMap.range ((V : Submodule ℂ W).subtypeₗᵢ).toLinearMap) ≤ S.topologicalClosure.comap W.subtype`. Use `iSup_le fun V => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `S.le_topologicalClosure (le_iSup (fun V : {V // IsSummandOf π W V} => V.1) ⟨_, hmain V⟩ ⟨w.1, w.2, rfl⟩)`. Establish `htop : (⊤ : Submodule ℂ W) ≤ S.topologicalClosure.comap W.subtype`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `Submodule.topologicalClosure_minimal _ hle hcl`. Rewrite `h` using `[← hH.OrthogonalFamily.range_linearIsometry, LinearMap.range_eq_top.2 hH.surjective_isometry]`. Conclude with `h`. Introduce `x hx`. Conclude with `htop (Submodule.mem_top : (⟨x, hx⟩ : W) ∈ ⊤)`.
+A detailed English derivation is pending.
 -/
 private theorem closure_iSup_summands (hWc : IsClosed (W : Set H))
     (s : Set (Submodule ℂ W)) [∀ V : s, CompleteSpace (V : Submodule ℂ W)]
@@ -97,7 +97,7 @@ private theorem closure_iSup_summands (hWc : IsClosed (W : Set H))
 end Generic
 
 /- English proof (translation)
-Introduce `K _ _ n μ _`. Take `⟨s, hc, hinv, hH, hirr⟩` from `exists_isHilbertSum_isIrreducible_cuspidal μ`. Use `haveI := hc`. Conclude with `closure_iSup_summands (rightRegularRep (rationalGLOne K n) μ) (cuspidalL2 μ) (isInvariant_cuspidalL2 μ) (isClosed_cuspidalL2 μ) s hinv hH hirr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.summandsSpan :
     UpperTheory.ConvolutionTheory.C.SummandsSpan := by

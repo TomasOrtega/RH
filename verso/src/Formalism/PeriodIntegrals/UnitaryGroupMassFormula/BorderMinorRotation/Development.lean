@@ -46,7 +46,7 @@ def BFCross : Prop :=
             else 0
 
 /- English proof (translation)
-Establish `h` using `hE e e c d`. Rewrite `h` using `[if_neg h1, if_neg h2, sub_zero, sub_eq_zero]`. Rewrite using `[Formalism.REAL.Tm, if_pos rfl, add_mul, mul_add, Algebra.commutes, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tm_comm_E {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E)
     (u : ℂ) (e c d : Fin n) (h1 : e ≠ c) (h2 : d ≠ e) : Tm E u e e * E c d = E c d * Tm E u e e := by
@@ -55,9 +55,9 @@ theorem tm_comm_E {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → 
   rw [Formalism.REAL.Tm, if_pos rfl, add_mul, mul_add, Algebra.commutes, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Fin.succAbove_last]`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [PI.bE]`. Consider the case `succ j => first`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [PI.bE, PI.bS, ← Fin.succ_castSucc]`. Consider the case `simp [PI.bE, PI.bS, Fin.cons_snoc_eq_snoc_cons]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem bL_last {n m : ℕ} (e es : Fin n) (v : Fin m → Fin n) :
     bE e (bS v es) ∘ (Fin.last (m + 1)).succAbove = bE e v := by
@@ -71,28 +71,26 @@ theorem bL_last {n m : ℕ} (e es : Fin n) (v : Fin m → Fin n) :
     | simp [PI.bE, PI.bS, Fin.cons_snoc_eq_snoc_cons]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← mul_assoc, (Int.cast_commute z s).symm.eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_intCast_mul_eq_intCast_mul_mul {A : Type*} [Ring A] (s x : A) (z : ℤ) :
     s * ((z : A) * x) = (z : A) * (s * x) := by
   rw [← mul_assoc, ← mul_assoc, (Int.cast_commute z s).symm.eq]
 
 /- English proof (translation)
-Unfold `PI.ExpFirstCol at hFC`. Unfold `PI.BorderS at hS`. Unfold `BFMid at hM`. Unfold `PI.BorderFull`. Introduce `A _ _ n m E e es v hE hv u`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv2 : Function.Injective v ∧ e ≠ es ∧ (∀ j, v j ≠ e) ∧ ∀ j, v j ≠ es` using `hv`. Take `⟨_, hne, hve, _⟩` from `hv2`. Establish `hmid` using `hM A n m E e es v hE hv u`. Establish `hs : PI.bE e (PI.bS v es) ∘ Fin.succ = PI.bS v es`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[PI.bE]`. Establish `h0v : PI.bE e (PI.bS v es) 0 = e` using `by simp [PI.bE]`. Establish `hLv : PI.bE e (PI.bS v es) (Fin.last m).succ = es` using `by simp [PI.bE, PI.bS]`. Establish `hL : PI.bE e (PI.bS v es) ∘ ((Fin.last m).succ).succAbove = PI.bE e v`. Rewrite using `[Fin.succ_last]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bL_last e es v`. Establish `hgen : Formalism.REAL.Tm E u es e = E es e`. Simplify using `[Formalism.REAL.Tm, hne.symm]`. Establish `hu : u - 1 - (m : ℂ) = u - (m : ℂ) - 1` using `by ring`. Establish `hT2 : Formalism.REAL.Tm E u e e * ∑ w : Fin m, ∑ x : Fin m, (((-1 : ℤ) ^ ((w : ℕ) + (x : ℕ)) : ℤ) : A) * (E es (v x) * Formalism.REAL.qminor E (v ∘ PI.skip1 w) (v ∘ PI.skip1 x) (u - 1) * E (v w) es) = ∑ w : Fin m, ∑ x : Fin m, (((-1 : ℤ) ^ ((w : ℕ) + (x : ℕ)) : ℤ) : A) * (E es (v …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_intCast_mul_eq_intCast_mul_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← mul_assoc, ← mul_assoc, tm_comm_E E hE u e es (v x) hne (hve x)]`. Rewrite using `[hFC A n (m + 1) E (PI.bE e (PI.bS v es)) (PI.bE e (PI.bS v es)) u, Fin.sum_univ_succ, Fin.sum_univ_castSucc]`. Use `first`. Consider the case `simp only [hmid]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `rw [Finset.sum_congr rfl (fun w _ => hmid w)]`. Rewrite using `[Fin.succAbove_zero, hs, h0v, hL, hLv, hgen]`. Simplify using `only [Fin.val_zero, pow_zero, Int.cast_one, one_mul, Fin.val_succ, Fin.val_last]`. Rewrite using `[hS A n m E e es v hE hv (u - 1), hu, mul_sub (Formalism.REAL.Tm E u e e), hT2, ← mul_assoc (Formalism.REAL.Tm E u e e) (Formalism.REAL.qminor E v v (u - 1))]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_neg_distrib]`.
-
-Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem borderFull_of (hFC : ExpFirstCol) (hS : BorderS) (hM : BFMid) : BorderFull := by
   unfold PI.ExpFirstCol at hFC

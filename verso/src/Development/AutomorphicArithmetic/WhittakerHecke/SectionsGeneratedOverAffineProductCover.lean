@@ -8,33 +8,27 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace MvPolyn
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Introduce `S Z P W _ p q π f h α β U D hU hD hUc hDc V hV eV hgen`. Use `set L : W ⟶ pullback p q := pullback.lift π f h with hL`. Set `Wt : α × β → (pullback p q).Opens` to `fun i => pullback.fst p q ⁻¹ᵁ U i.1 ⊓ pullback.snd p q ⁻¹ᵁ D i.2`. Establish `hcov : iSup Wt = ⊤`. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x -`. Establish `hx1 : pullback.fst p q x ∈ iSup U` using `by rw [hUc]; trivial`. Establish `hx2 : pullback.snd p q x ∈ iSup D` using `by rw [hDc]; trivial`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx1`. Take `⟨b, hb⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨(a, b), ⟨ha, hb⟩⟩`. Establish `hWt : ∀ i, IsAffineOpen (Wt i)`. Introduce `i`. Use `haveI : IsAffine (U i.1) := hU i.1`. Use `haveI : IsAffine (D i.2) := hD i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `m` to `pullback.map ((U i.1).ι ≫ p) ((D i.2).ι ≫ q) p q (U i.1).ι (D i.2).ι (𝟙 S) (by simp) (by simp)`. Establish `hm : m.opensRange = Wt i` using `by ext1`. Rewrite using `[Scheme.Hom.coe_opensRange, Scheme.Pullback.range_map, Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Both sides reduce to the same expression. Rewrite using `[← hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAffineOpen_opensRange m`. Establish `hpre : ∀ i, L ⁻¹ᵁ Wt i = V i.1 i.2`. Introduce `i`. Rewrite using `[eV, Scheme.Hom.preimage_inf, ← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, hL, pullback.lift_fst, pullback.lift_snd]`. Rewrite using `[IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := @IsClosedImmersion) Wt hcov]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, b⟩`. Establish `aux : ∀ (Vo : W.Opens) (h1 : Vo ≤ π ⁻¹ᵁ U a) (h2 : Vo ≤ f ⁻¹ᵁ D b), Vo = V a b → ∀ s : Γ(W, Vo), s ∈ Subring.closure (Set.range (π.appLE (U a) Vo h1).hom ∪ Set.range (f.appLE (D b) Vo h2).hom)`. Introduce and unpack `Vo h1 h2 rfl s`. Conclude with `hgen a b s`. Establish `e1 : L ⁻¹ᵁ Wt (a, b) ≤ π ⁻¹ᵁ U a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hpre (a, b)]`. Conclude with `(eV a b).le.trans inf_le_left`. Establish `e2 : L ⁻¹ᵁ Wt (a, b) ≤ f ⁻¹ᵁ D b`. Rewrite using `[hpre (a, b)]`. Conclude with `(eV a b).le.trans inf_le_right`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsurj : Function.Surjective (L.app (Wt (a, b)))`. Introduce `y`. Establish `hy` using `aux _ e1 e2 (hpre (a, b)) y`. Establish `hle : Set.range (π.appLE (U a) _ e1).hom ∪ Set.range (f.appLE (D b) _ e2).hom ⊆ ((L.app (Wt (a, b))).hom.range : Set _)`. Introduce and unpack `_ (⟨x, rfl⟩ | ⟨x, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(pullback.fst p q).appLE (U a) (Wt (a, b)) inf_le_left x, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`. Simplify using `only [hL, pullback.lift_fst]`. Use `⟨(pullback.snd p q).appLE (D b) (Wt (a, b)) inf_le_right x, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hL, pullback.lift_snd]`. Conclude with `(Subring.closure_le.mpr hle) hy`. Use `haveI : IsAffine (Wt (a, b)) := hWt (a, b)`. Establish `hA : IsAffineOpen (L ⁻¹ᵁ Wt (a, b))` using `by rw [hpre (a, b)]; exact hV a b`. Use `haveI : IsAffine (L ⁻¹ᵁ Wt (a, b)) := hA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `IsClosedImmersion.of_surjective_of_isAffine` to reduce the goal to its premises. Rewrite using `[morphismRestrict_appTop]`. Establish `hs2 : Function.Surjective (L.app ((Wt (a, b)).ι ''ᵁ ⊤))`. Rewrite using `[Scheme.Opens.ι_image_top]`. Conclude with `hsurj`.
-
-Establish `comp_surj : ∀ {A B C : CommRingCat} (u : A ⟶ B) (v : B ⟶ C) [IsIso v], Function.Surjective u → Function.Surjective (u ≫ v)`. Introduce `A B C u v _ hu y`. Take `⟨z, rfl⟩` from `(ConcreteCategory.bijective_of_isIso v).2 y`. Take `⟨w, rfl⟩` from `hu z`. Conclude with `⟨w, by simp⟩`.
-
-Establish `isoE : ∀ {A B : W.Opens} (e : A = B), IsIso (W.presheaf.map (eqToHom e).op)`. Introduce `A B e`. Substitute `e` using the available equality. Rewrite using `[eqToHom_refl, op_id, W.presheaf.map_id]`. Use `infer_instance`.
-
-Use `@comp_surj _ _ _ _ _ (isoE _) hs2` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.sections_generated_over_affine_product_cover :
     ∀ {S Z P W : Scheme.{0}} [IsAffine S] (p : Z ⟶ S) (q : P ⟶ S) (π : W ⟶ Z) (f : W ⟶ P)

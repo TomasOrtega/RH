@@ -29,15 +29,13 @@ theorem conjClassesEquivOrbits_mk {Γ : Type} [Group Γ] (γ : Γ) :
       Quotient.mk (MulAction.orbitRel Γ (ConjSelf Γ)) (of γ) := rfl
 
 /- English proof (translation)
-Use `set e := conjClassesEquivOrbits Γ`. Establish `key` using `GlobalTheory.T.finsum_orbitRel_fibred_equivariant (H := Γ) (X := Y × ConjSelf Γ) (B := ConjSelf Γ) (E := Y) Prod.snd (fun _ _ => rfl) (fun b => Subgroup.centralizer {val b}) (fun b => by rw [stabilizer_eq_centralizer]) (fun b y => (y, b)) (fun b y y' h => congrArg Prod.fst h) (fu …`. Establish `: h • b = b`. Rewrite using `[← MulAction.mem_stabilizer_iff, stabilizer_eq_centralizer]`. Conclude with `hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (h • y, b) = (h • y, h • b)`. Rewrite using `[this])`. Use the proof step `(fun q => of (Quotient.out (e.symm q)))`. Use the proof step `(fun q => by show Quotient.mk _ (of (Quotient.out (e.symm q))) = q`. Establish `hout : ∀ c : ConjClasses Γ, (Quotient.mk (IsConj.setoid Γ) (Quotient.out c) : ConjClasses Γ) = c` using `fun c => Quotient.out_eq c`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← conjClassesEquivOrbits_mk, hout, Equiv.apply_symm_apply])`. Use the proof step `(fun o => pairTerm F (Quotient.out o))`. Use the proof step `(GlobalTheory.T.finite_support_stabilizerWeightedPairTerm F hF hsupp hfin)`. Unfold `pairSum`. Rewrite using `[key, ← finsum_comp_equiv e]`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr (fun c => ?_)` and prove the remaining obligations. Establish `hc : e.symm (e c) = c` using `e.symm_apply_apply c`. Generalize the expression as in `e.symm (e c) = c' at hc ⊢`. Substitute `hc` using the available equality. Simplify using `only [val_of]`.
-
-Use `finsum_congr (fun o => ?_)` and prove the remaining obligations. Rewrite using `[pairTerm_out F hF]`. Unfold `pairTerm`. Rewrite using `[stabilizer_pair]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finsum_conjClasses_centralizer_orbits {Γ Y : Type} [Group Γ] [MulAction Γ Y] (F : Y → Γ → ℂ)
     (hF : ∀ (η : Γ) (y : Y) (γ : Γ), F (η • y) (η * γ * η⁻¹) = F y γ)

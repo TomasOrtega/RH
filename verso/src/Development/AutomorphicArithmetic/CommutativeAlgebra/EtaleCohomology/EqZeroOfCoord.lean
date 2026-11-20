@@ -9,11 +9,11 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison TensorProduct
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace F V`. Apply `(TensorProduct.equivFinsuppOfBasisLeft b).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `i`. Establish `key : ∀ w : V ⊗[F] C, (TensorProduct.equivFinsuppOfBasisLeft b w) i = TensorProduct.lid F C (LinearMap.rTensor C (b.coord i) w)`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Introduce `w`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[key, h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem UpperTheory.Ru.crystallineComparison.eq_zero_of_coord {F V C : Type*} [Field F] [AddCommGroup V] [Module F V]
     [AddCommGroup C] [Module F C] (w : V ⊗[F] C)
@@ -34,13 +34,13 @@ private theorem UpperTheory.Ru.crystallineComparison.eq_zero_of_coord {F V C : T
   rfl
 
 /- English proof (translation)
-Introduce `l _ K B₀ ι hι hc hq G Amp hF hE hL e e' hB hP hcomp M hM j κ _ v c u hu`. Take `⟨a⟩` from `hL.ch M hM`. Establish `h0 : (per l K).t ^ u • ∑ k, (show (per l K).A from c k) • e'.e a j (v k) = 0`. Express the relevant statement in the definitionally equal form `((UpperTheory.Ru.crystallineComparison.tA l ^ u • ∑ k, c k • (show (M.MS j).lim from e'.e a j (v k)) : (M.MS j).lim)) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `n`. Use `hu n` as an intermediate fact. Simplify using `only [UpperTheory.Ru.crystallineComparison.evE] at this`. Simplify `this` using `[Submodule.coe_smul, Submodule.coe_sum, Finset.sum_apply, hcomp]`. Establish `h1` using `UpperTheory.Ru.crystallineComparison.injAbs l K (per l K) G (dat Amp) hF hE hL e' hB hP M hM a j κ v c u h0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `UpperTheory.Ru.crystallineComparison.eq_zero_of_coord` to reduce the goal to its premises. Introduce `f`. Apply `hι` to reduce the goal to its premises. Establish `h2` using `h1 f`. Simplify using `only [UpperTheory.Ru.crystallineComparison.vec, map_sum, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, pow_zero, mul_one, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Algebra.smul_def, map_mul, hq, hc]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.injOf :
     UpperTheory.Ru.crystallineComparison.InjOf := by

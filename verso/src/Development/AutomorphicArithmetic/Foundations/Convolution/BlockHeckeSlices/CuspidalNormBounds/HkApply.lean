@@ -13,13 +13,13 @@ namespace UpperTheory.ConvolutionTheory.BW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Tj_mem_hecke (exists_isUnifV w).choose_spec j`.
+A detailed English derivation is pending.
 -/
 private theorem tj_mem (w : Pl E) (j : ℕ) :
     Tj ℂ n (Ov E w) (exists_isUnifV w).choose j ∈ Hecke ℂ (KGL w n) := Tj_mem_hecke (exists_isUnifV w).choose_spec j
 
 /- English proof (translation)
-Unfold `hk`. Rewrite using `[LinearMap.smul_apply]`. Use `congr 1`. Establish `hf : (Function.support fun c : GL (Fin n) (w.adicCompletion E) ⧸ KGL w n => Tj ℂ n (Ov E w) (exists_isUnifV w).choose j c.out • rw n w c.out).Finite` using `(Formalism.UG.P.finite_support_cosets (Final.GLintComm E w n) (tj_mem w j).2).subset fun c hc h0 => hc (by simp [h0])`. Conclude with `(LinearMap.applyₗ (R := ℂ) φ).toAddMonoidHom.map_finsum hf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hk_apply (w : Pl E) (j : ℕ) (φ : Sm E n) :
     hk n w j φ = (qc w ^ (((j : ℂ) * ((n : ℂ) - j)) / 2))⁻¹ •
@@ -33,7 +33,7 @@ private theorem hk_apply (w : Pl E) (j : ℕ) (φ : Sm E n) :
   exact (LinearMap.applyₗ (R := ℂ) φ).toAddMonoidHom.map_finsum hf
 
 /- English proof (translation)
-Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hk_apply, hk_apply, map_smul, map_heckeVec (Final.GLintComm E w n) (tj_mem w j) (ρ' := rw n w) A fun g y => LinearMap.congr_fun (hA g).eq y]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hk_comm (w : Pl E) (j : ℕ) (A : Module.End ℂ (Sm E n)) (hA : ∀ g, Commute A (rw n w g)) :
     Commute A (hk n w j) := by
@@ -42,11 +42,9 @@ private theorem hk_comm (w : Pl E) (j : ℕ) (A : Module.End ℂ (Sm E n)) (hA :
     map_heckeVec (Final.GLintComm E w n) (tj_mem w j) (ρ' := rw n w) A fun g y => LinearMap.congr_fun (hA g).eq y]
 
 /- English proof (translation)
-Set `P` to `(Subalgebra.centralizer ℂ {rt E n (finGL E n k)}).comap (uC E n)`. Establish `h1 : ∀ X, ιC E n X ∈ P` using `fun X => by`. Rewrite using `[Subalgebra.mem_comap, uC_ιC]`. Introduce and unpack `_ rfl`. Conclude with `(lie_rt_fin _ _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h : Algebra.adjoin ℂ {x : UC E n | ∃ τ i j, x = genC τ i j} ≤ P` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨τ, i, j, rfl⟩`. Rewrite using `[genC, UpperTheory.V.AlgRepEndIrreducible.eL]`. Conclude with `P.smul_mem (P.sub_mem (h1 _) (P.smul_mem (h1 _) _)) _)`. Establish `hu : u ∈ P` using `h (adjoin_genC (E := E) (a := n) ▸ Algebra.mem_top)`.
-
-Conclude with `(hu _ rfl).symm`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem uC_fin (u : UC E n) (k : GL (Fin n) (Af E)) : Commute (uC E n u) (rt E n (finGL E n k)) := by
   let P := (Subalgebra.centralizer ℂ {rt E n (finGL E n k)}).comap (uC E n)
@@ -64,7 +62,7 @@ private theorem uC_fin (u : UC E n) (k : GL (Fin n) (Af E)) : Commute (uC E n u)
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `h : ∀ O : Subring (w.adicCompletion E), O = (ValuativeRel.valuation (w.adicCompletion E)).integer → GLnLocal.integralGL (w.adicCompletion E) n = GLint (Fin n) O`. Introduce and unpack `_ rfl`. Both sides reduce to the same expression. Conclude with `h _ (Subring.ext fun x => (GroundTheory.Global.mem_valuationInteger_iff w x).symm)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem kgl_eq (w : Pl E) : GLnLocal.integralGL (w.adicCompletion E) n = KGL w n := by
   have h : ∀ O : Subring (w.adicCompletion E), O = (ValuativeRel.valuation (w.adicCompletion E)).integer →
@@ -74,13 +72,11 @@ private theorem kgl_eq (w : Pl E) : GLnLocal.integralGL (w.adicCompletion E) n =
   exact h _ (Subring.ext fun x => (GroundTheory.Global.mem_valuationInteger_iff w x).symm)
 
 /- English proof (translation)
-Use `set kf := GeneralLinearGroup.map (pFin E) (k : GA E n) with hkf`. Use `set kw := GeneralLinearGroup.map (pLoc E w) kf with hkw`. Establish `hmem : kw ∈ KGL w n`. Rewrite using `[← kgl_eq]`. Establish `e : kw = Reduction.finAt w (k : GA E n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Use extensionality with `i j : 2`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `k.2.2 w`. Use `set u := kf * (locGL E n w kw)⁻¹ with hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu1 : GeneralLinearGroup.map (pLoc E w) u = 1`. Rewrite using `[hu, map_mul, map_inv, pLoc_locGL, mul_inv_cancel]`. Use `⟨infGL E n (GeneralLinearGroup.map (pInf E) (k : GA E n)) * finGL E n u, fun g => ?_, kw, hmem, ?_⟩` and prove the remaining obligations. Use `Commute.map (f := rt E n) (y := finGL E n (locGL E n w g)) (Commute.mul_left (infGL_comm _ _) ?_)` and prove the remaining obligations. Conclude with `Commute.map (LocUniq.comm_locGL w hu1 g) (finGL E n)`.
-
-Express the relevant statement in the definitionally equal form `_ = _ * rt E n (finGL E n (locGL E n w kw))`. Rewrite using `[← map_mul, mul_assoc, ← map_mul, hu, inv_mul_cancel_right, infGL_mul_finGL]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem split_k (w : Pl E) (k : KA E n) : ∃ k' : GA E n, (∀ g, Commute (rt E n k') (rw n w g)) ∧
     ∃ kw ∈ KGL w n, rt E n k = rt E n k' * rw n w kw := by
@@ -103,14 +99,14 @@ private theorem split_k (w : Pl E) (k : KA E n) : ∃ k' : GA E n, (∀ g, Commu
     rw [← map_mul, mul_assoc, ← map_mul, hu, inv_mul_cancel_right, infGL_mul_finGL]
 
 /- English proof (translation)
-The claim follows from `Commute.map (LocUniq.comm_locGL w (pLoc_locGL_of_ne e g) k) (finRep E n)`.
+A detailed English derivation is pending.
 -/
 private theorem rw_comm {w w' : Pl E} (e : w ≠ w') (g : GL (Fin n) (w'.adicCompletion E))
     (k : GL (Fin n) (w.adicCompletion E)) : Commute (rw n w' g) (rw n w k) :=
   Commute.map (LocUniq.comm_locGL w (pLoc_locGL_of_ne e g) k) (finRep E n)
 
 /- English proof (translation)
-Introduce `k hk'` and use `by rw [hk_apply, map_smul, GlobalTheory.LGrp.mem_fixed.1 (SatCompare.heckeVec_mem_fixed (Final.GLintComm E w n) (tj_mem w j) (GlobalTheory.LGrp.mem_fixed.2 h)) k hk']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem hk_fixed (w : Pl E) (j : ℕ) {φ : Sm E n} (h : ∀ k ∈ KGL w n, rw n w k φ = φ) :
     ∀ k ∈ KGL w n, rw n w k (hk n w j φ) = hk n w j φ := fun k hk' => by
@@ -118,9 +114,9 @@ private theorem hk_fixed (w : Pl E) (j : ℕ) {φ : Sm E n} (h : ∀ k ∈ KGL w
     (SatCompare.heckeVec_mem_fixed (Final.GLintComm E w n) (tj_mem w j) (GlobalTheory.LGrp.mem_fixed.2 h)) k hk']
 
 /- English proof (translation)
-Establish `e : Tj ℂ n (Ov E w) (exists_isUnifV w).choose 0 = dosetInd ℂ (KGL w n) 1`. Establish `d : diagJ n (exists_isUnifV w).choose 0 = 1` using `by simp [diagJ]`. Unfold `Tj dosetInd`. Use `congr 1`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [d, Set.mem_setOf_eq, DoubleCoset.mem_doubleCoset, mul_one, SetLike.mem_coe, ← Units.val_mul, Units.val_inj]`. Rewrite using `[hk_apply, e, SatCompare.heckeVec_one (Final.GLintComm E w n) (GlobalTheory.LGrp.mem_fixed.2 h)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hk_zero (w : Pl E) {φ : Sm E n} (h : ∀ k ∈ KGL w n, rw n w k φ = φ) : hk n w 0 φ = φ := by
   have e : Tj ℂ n (Ov E w) (exists_isUnifV w).choose 0 = dosetInd ℂ (KGL w n) 1 := by
@@ -136,13 +132,13 @@ end UpperTheory.ConvolutionTheory.BW
 
 open UpperTheory.ConvolutionTheory.BW in
 /- English proof (translation)
-Introduce `E _ _ _ n w j`. Use `⟨hk_apply w j, fun u => hk_comm w j _ fun g => uC_fin u _, fun y => hk_comm w j _ fun g => ?_, fun S φ hw hφ => ⟨fun w' hw' k hk' => ?_, hk_zero w (hφ w hw), fun k => ⟨fun w' hw' x hx => ?_, ?_⟩, fun w' hw' j' => ?_⟩⟩` and prove the remaining obligations. Conclude with `Commute.map (f := rt E n) (y := finGL E n (locGL E n w g)) (infGL_comm _ _)`. Distinguish the cases in `e : w = w'`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk_fixed w j (hφ w hw) k hk'`. Rewrite using `[← Module.End.mul_apply, (hk_comm w j _ (rw_comm e k)).eq, Module.End.mul_apply, hφ w' hw' k hk']`. Take `⟨k', h1, kw, h2, h3⟩` from `split_k w' k`. Rewrite using `[h3, Module.End.mul_apply, hφ w' hw' kw h2, ← Module.End.mul_apply, ← (h1 x).eq, Module.End.mul_apply, hφ w' hw' x hx]`. Take `⟨k', h1, kw, h2, h3⟩` from `split_k w k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h3, Module.End.mul_apply, Module.End.mul_apply, hφ w hw kw h2, hk_fixed w j (hφ w hw) kw h2, ← Module.End.mul_apply, (hk_comm w j _ h1).eq, Module.End.mul_apply]`. Distinguish the cases in `e : w = w'`. Substitute `e` using the available equality. Establish `hK` using `Final.GLintComm E w n`. Establish `hf` using `GlobalTheory.LGrp.mem_fixed.2 (hφ w hw)`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hk_apply, SatCompare.heckeVec_smul hK (tj_mem w _)]`. Rewrite using `[← SatCompare.heckeVec_conv hK (tj_mem w _) (tj_mem w _) hf, ← SatCompare.heckeVec_conv hK (tj_mem w _) (tj_mem w _) hf, Final.HeckeCommGL E w n ℂ _ (tj_mem w j) _ (tj_mem w j'), smul_comm]`. Conclude with `LinearMap.congr_fun (hk_comm w' j' _ fun g => (hk_comm w j _ (rw_comm e g)).symm).eq φ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.hkOps :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.HkOps E := by

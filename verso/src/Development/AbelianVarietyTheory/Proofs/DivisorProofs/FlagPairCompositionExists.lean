@@ -13,7 +13,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 namespace GlobalTheory.Vert.Model.FlagPair
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨P.transport ((Scheme.Modules.pullbackComp g f).app E) ((Scheme.Modules.pullbackComp g f).app E') (GenIso.pull_pull_hom' hf hg hfg φ), Q.transport ((Scheme.Modules.pullbackComp g f).app E') ((Scheme.Modules.pullbackComp g f).app E'') (GenIso.pull_pull_hom' hf hg hfg φ'), congrArg …`.
+Supply the required witnesses or components.
 -/
 theorem exists_chain_pull_comp' {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {Z Z₁ Z₂ : Model O} {f : Z₁.X ⟶ Z.X} {g : Z₂.X ⟶ Z₁.X}
@@ -29,7 +29,7 @@ theorem exists_chain_pull_comp' {O : Type} [CommRing O] [IsDomain O] [IsDiscrete
     congrArg (fun fl => GlobalTheory.Vert.Flag.ofIso fl ((Scheme.Modules.pullbackComp g f).app E')) hQ⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ f g _ _ _ φ φ' N P Q hQ` and use `exists_chain_pull_comp' f.comp_str g.comp_str (g.comp f).comp_str φ φ' N P Q hQ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_chain_pull_comp : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z Z₁ Z₂ : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom Z₁ Z) (g : GlobalTheory.Vert.Model.Hom Z₂ Z₁) (E E' E'' : Z.X.Modules) (φ : Z.GenIso E E') (φ' : Z.GenIso E' E'') (N : ℕ) (P : GlobalTheory.Vert.Model.FlagPair ((φ.pull f.comp_str).pull g.comp_str) N) (Q : GlobalTheory.Vert.Model.FlagPair ((φ'.pull f.comp_str).pull g.comp_str) N), Q.fl = P.fl' → ∃ (P₁ : GlobalTheory.Vert.Model.FlagPair (φ.pull (g.comp f).comp_str) N) (Q₁ : GlobalTheory.Vert.Model.FlagPair (φ'.pull (g.comp f).comp_str) N), Q₁.fl = P₁.fl' :=
   fun _ _ _ _ _ _ _ f g _ _ _ φ φ' N P Q hQ =>

@@ -16,27 +16,27 @@ namespace PositivityTheory.HtPt.Ah
 open GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Hypotheses₂.ResKSide.resK_of_resolution_principalisation h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem resK (h₁ : GlobalTheory.CompanionTheory.Hypotheses₂.ResolutionCharZero) (h₂ : GlobalTheory.CompanionTheory.Hypotheses₂.PrincipalisationCharZero) :
     ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement :=
   GlobalTheory.CompanionTheory.Hypotheses₂.ResKSide.resK_of_resolution_principalisation h₁ h₂
 
 /- English proof (translation)
-The claim follows from `Pub.arithIntersectionSystem_of_poincareLelong_resK (Tw.Main.poincareLelong_of_inv (resK h₁ h₂) hPL) (resK h₁ h₂)`.
+A detailed English derivation is pending.
 -/
 theorem ais (h₁ : GlobalTheory.CompanionTheory.Hypotheses₂.ResolutionCharZero) (h₂ : GlobalTheory.CompanionTheory.Hypotheses₂.PrincipalisationCharZero)
     (hPL : GlobalTheory.CompanionTheory.Hypotheses₂.PoincareLelongInv) : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement :=
   Pub.arithIntersectionSystem_of_poincareLelong_resK (Tw.Main.poincareLelong_of_inv (resK h₁ h₂) hPL) (resK h₁ h₂)
 
 /- English proof (translation)
-The claim follows from `GR.QuotSide.quotientByFiniteFlat_of_freeQuotient GlobalTheory.CompanionTheory.Hypotheses₂.FreeQuotientScheme_holds`.
+A detailed English derivation is pending.
 -/
 theorem quot : GR.QuotientByFiniteFlatStatement :=
   GR.QuotSide.quotientByFiniteFlat_of_freeQuotient GlobalTheory.CompanionTheory.Hypotheses₂.FreeQuotientScheme_holds
 
 /- English proof (translation)
-The claim follows from `Plug.deepStR_of_hodgeTate (ais h₁ h₂ hPL) hHS hBig (resK h₁ h₂) GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension (GlobalTheory.CompanionTheory.Relay.hodge_tate_of_fargues_exact hF) GlobalTheory.CompanionTheory.Gaga.gagaSections quot hZ hN`.
+A detailed English derivation is pending.
 -/
 theorem deep_slim (h₁ : GlobalTheory.CompanionTheory.Hypotheses₂.ResolutionCharZero) (h₂ : GlobalTheory.CompanionTheory.Hypotheses₂.PrincipalisationCharZero)
     (hPL : GlobalTheory.CompanionTheory.Hypotheses₂.PoincareLelongInv) (hHS : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement)

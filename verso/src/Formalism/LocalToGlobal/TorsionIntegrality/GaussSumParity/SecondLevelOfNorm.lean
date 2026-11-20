@@ -5,23 +5,23 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLoga
 namespace Formalism.L2.Th1.D
 
 /- English proof (translation)
-The claim follows from `chain_nonvacuous`.
+A detailed English derivation is pending.
 -/
 theorem chainNonVacuous : ChainNonVacuous := chain_nonvacuous
 /- English proof (translation)
-The claim follows from `second_level_of_norm_holds`.
+A detailed English derivation is pending.
 -/
 theorem second_level_of_norm : SecondLevelOfNorm := second_level_of_norm_holds
 /- English proof (translation)
-The claim follows from `split_phi`.
+A detailed English derivation is pending.
 -/
 theorem splitPh : SplitPh := split_phi
 /- English proof (translation)
-The claim follows from `norm_units_alt`.
+A detailed English derivation is pending.
 -/
 theorem normUnits : NormUnits := norm_units_alt
 /- English proof (translation)
-The claim follows from `fixed_linear`.
+A detailed English derivation is pending.
 -/
 theorem fixedLinear : FixedLinear := fixed_linear
 

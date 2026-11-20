@@ -10,11 +10,11 @@ open Matrix
 namespace GlobalTheory.LeviBlockExponent
 
 /- English proof (translation)
-Establish `hx : (x : ℕ) = 0`. Establish `h1 : blockSizes₂ n i ⟨i, by omega⟩ = 1` using `by simp [blockSizes₂]`. Use `x.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [blockIndex, Equiv.trans_apply, finCongr_apply, Fin.val_cast, finSigmaFinEquiv_apply, hx, add_zero]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => 1)]`. Simplify using the standard rewrite rules. Introduce `j _`. Use `j.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [blockSizes₂, Fin.val_castLE]`. Conclude with `if_pos (le_of_lt this)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockIndex_self {n i : ℕ} (hi : i + 1 ≤ n) (x : Fin (blockSizes₂ n i ⟨i, by omega⟩)) :
     blockIndex hi ⟨⟨i, by omega⟩, x⟩ = (⟨i, by omega⟩ : Fin n) := by
@@ -32,13 +32,13 @@ theorem blockIndex_self {n i : ℕ} (hi : i + 1 ≤ n) (x : Fin (blockSizes₂ n
     exact if_pos (le_of_lt this)
 
 /- English proof (translation)
-Establish `h1 : blockSizes₂ n i ⟨i, by omega⟩ = 1` using `by simp [blockSizes₂]`. Establish `hs : Subsingleton (Fin (blockSizes₂ n i ⟨i, by omega⟩))` using `by rw [h1]; infer_instance`. Establish `x : Fin (blockSizes₂ n i ⟨i, by omega⟩)` using `⟨0, by omega⟩`. Rewrite using `[← blockIndex_self hi x]`. Use extensionality with `p q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨⟨b, y⟩, rfl⟩` from `(blockIndex hi).surjective p`. Take `⟨⟨b', y'⟩, rfl⟩` from `(blockIndex hi).surjective q`. Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Rewrite using `[leviEmb_apply_same]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hba : b = ⟨i, by omega⟩`. Substitute `hba` using the available equality. Rewrite using `[Subsingleton.elim y x, Subsingleton.elim y' x]`. Simplify using `[blockScalar₂, Matrix.GeneralLinearGroup.scalar]`. Establish `: blockIndex hi ⟨b, y⟩ ≠ blockIndex hi ⟨⟨i, by omega⟩, x⟩` using `fun h' => hba (congrArg Sigma.fst ((blockIndex hi).injective h'))`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[blockScalar₂, Pi.mulSingle_eq_of_ne hba, Function.update_of_ne this, diagonal_apply, one_apply]`. Rewrite using `[leviEmb_apply_ne k _ _ hb, diagonal_apply_ne]`. Conclude with `fun h' => hb (congrArg Sigma.fst ((blockIndex hi).injective h'))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem leviEmb_positionElt_eq_diagonal (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n i : ℕ) (hi : i + 1 ≤ n) (ϖ : kˣ) :

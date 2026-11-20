@@ -15,7 +15,7 @@ variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p
 variable {p K}
 
 /- English proof (translation)
-The claim follows from `rfl p_id := rfl emb := (Topology.IsOpenEmbedding.of_continuous_injective_isOpenMap continuous_of_discreteTopology (layerUIncl_injective p) fun _ _ => isOpen_discrete _).isEmbedding exact := fun y => by have h0 := ker_vLayer p he h rw [← LinearMap.mem_ker, h0] rfl sec := ⟨Function …`.
+A detailed English derivation is pending.
 -/
 theorem admissible_valuation_layer {L : IntermediateField ℚ_[p] (PadicAlgCl p)} (he : 0 < eK p L) (h : K ≤ L)
     [(subG p K L).Normal] : admitted (layerUIncl p K L) (vLayer p K L) where
@@ -30,19 +30,19 @@ theorem admissible_valuation_layer {L : IntermediateField ℚ_[p] (PadicAlgCl p)
   sec := ⟨Function.surjInv (vLayer_surjective p he h), continuous_of_discreteTopology, Function.surjInv_eq _⟩
 
 /- English proof (translation)
-Rewrite using `[eK_Kn p hK hn]`. Conclude with `eK_pos p K hK`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eK_Kn_pos (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) : 0 < eK p (Kn p K n) := by
   rw [eK_Kn p hK hn]; exact eK_pos p K hK
 
 /- English proof (translation)
-Rewrite using `[eK_Kur p hK]`. Conclude with `eK_pos p K hK`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eK_Kur_pos (hK : FiniteDimensional ℚ_[p] K) : 0 < eK p (MaximalUnramifiedExtension p K) := by
   rw [eK_Kur p hK]; exact eK_pos p K hK
 
 /- English proof (translation)
-The claim follows from `bijective_H_of_adm (admissible_valuation_layer (eK_Kn_pos hK hn) le_sup_left) 2 (layerU_Kn_H_subsingleton hK hn 2 two_pos) (layerU_Kn_H_subsingleton hK hn 3 three_pos)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_unramified_layer_h2_bijective (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     Bijective ((vLayer p K (Kn p K n)).hom.H 2) :=
@@ -50,7 +50,7 @@ theorem valuation_unramified_layer_h2_bijective (hK : FiniteDimensional ℚ_[p] 
     (layerU_Kn_H_subsingleton hK hn 2 two_pos) (layerU_Kn_H_subsingleton hK hn 3 three_pos)
 
 /- English proof (translation)
-The claim follows from `bijective_H_of_adm (admissible_valuation_layer (eK_Kur_pos hK) le_Kur) 2 (layerU_Kur_H_subsingleton hK 2 two_pos) (layerU_Kur_H_subsingleton hK 3 three_pos)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_unramified_closure_h2_bijective (hK : FiniteDimensional ℚ_[p] K) :
     Bijective ((vLayer p K (MaximalUnramifiedExtension p K)).hom.H 2) :=
@@ -58,7 +58,7 @@ theorem valuation_unramified_closure_h2_bijective (hK : FiniteDimensional ℚ_[p
     (layerU_Kur_H_subsingleton hK 2 two_pos) (layerU_Kur_H_subsingleton hK 3 three_pos)
 
 /- English proof (translation)
-Establish `hL` using `finiteDimensional_Kn p K hK hn`. Use `discreteTopology_GalLK (K := K) hL` as an intermediate fact. Use `finite_GalLK (K := K) hL` as an intermediate fact. Rewrite using `[Nat.card_congr (Equiv.ofBijective _ (valuation_unramified_layer_h2_bijective hK hn)), card_h2_trivial_int_cyclic _ (frobLK p K (Kn p K n)) (mem_zpowers_frobLK_Kn hK hn), card_GalLK, degLK_Kn hK hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_h2_unramified_layer (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     Nat.card ((layer p K (Kn p K n)).H 2) = n := by
@@ -69,7 +69,7 @@ theorem card_h2_unramified_layer (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (h
     card_h2_trivial_int_cyclic _ (frobLK p K (Kn p K n)) (mem_zpowers_frobLK_Kn hK hn), card_GalLK, degLK_Kn hK hn]
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[vLayerMap_spec p le_Kur, eK_Kur p hK, hπ, Int.cast_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem vLayerMap_Kur_eq_one (hK : FiniteDimensional ℚ_[p] K) (π : (urT p K).V)
     (hπ : (eK p K : ℝ) * vbar p π.1 = 1) : vLayerMap p K (MaximalUnramifiedExtension p K) π = 1 := by
@@ -77,9 +77,9 @@ theorem vLayerMap_Kur_eq_one (hK : FiniteDimensional ℚ_[p] K) (π : (urT p K).
   rw [vLayerMap_spec p le_Kur, eK_Kur p hK, hπ, Int.cast_one]
 
 /- English proof (translation)
-Rewrite using `[Cx.Hom.H_cls]`. Apply `Cx.cls_congr` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show vLayerMap p K (MaximalUnramifiedExtension p K) (z.1 fun i => g i) = y.1 g`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hym, hzm, map_zsmul, vLayerMap_Kur_eq_one hK π hπ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vLayer_Kur_cls (hK : FiniteDimensional ℚ_[p] K) (π : (urT p K).V)
     (hπ : (eK p K : ℝ) * vbar p π.1 = 1) (m : (Fin 2 → GalLK p K (MaximalUnramifiedExtension p K)) → ℤ)
@@ -97,11 +97,9 @@ theorem vLayer_Kur_cls (hK : FiniteDimensional ℚ_[p] K) (π : (urT p K).V)
   simp
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_h2_int_equiv_rat_mod_int (GalLK p K (MaximalUnramifiedExtension p K)) (frobLK p K (MaximalUnramifiedExtension p K)) (isZHat_GalKur hK)`. Use `⟨(AddEquiv.ofBijective ((vLayer p K (MaximalUnramifiedExtension p K)).hom.H 2).toAddMonoidHom (valuation_unramified_closure_h2_bijective hK)).trans e, ?_, ?_⟩` and prove the remaining obligations. Introduce `π t m z hz _ hπ ht hm hzm`. Establish `s` using `admissibility_holds ℤ _ _ _ _ _ _ (admissible_int_rat_sequence (GalLK p K (MaximalUnramifiedExtension p K)))`. Take `⟨⟨δ, h1, -⟩, -⟩` from `lES_holds ℤ _ _ _ _ _ s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, y, hy, e1, e2, e3⟩` from `conn_cls_of_lift δ h1 t ht m hm`. Use `show e ((vLayer p K (MaximalUnramifiedExtension p K)).hom.H 2 ((urT p K).coch.cls 2 z hz)) = _`. Rewrite using `[vLayer_Kur_cls hK π hπ m z hz hzm y hy e2]`. Conclude with `(congrArg e e3.symm).trans ((he δ h1 x hx).trans (e1 _))`. Introduce `δ hδ c x hx h show e ((vLayer p K (MaximalUnramifiedExtension p K)).hom.H 2 c) = _`.
-
-Conclude with `(congrArg e h).trans (he δ hδ x hx)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_invariant_of_connecting_map (hK : FiniteDimensional ℚ_[p] K) :
     ∃ f : (urT p K).H 2 ≃+ QZ, IsInv p K f.toAddMonoidHom ∧
@@ -125,7 +123,7 @@ theorem exists_invariant_of_connecting_map (hK : FiniteDimensional ℚ_[p] K) :
     exact (congrArg e h).trans (he δ hδ x hx)
 
 /- English proof (translation)
-Take `⟨f, hf, -⟩` from `exists_invariant_of_connecting_map hK`. Conclude with `⟨f, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isInv (hK : FiniteDimensional ℚ_[p] K) :
     ∃ f : (urT p K).H 2 ≃+ QZ, IsInv p K f.toAddMonoidHom := by
@@ -133,7 +131,7 @@ theorem exists_isInv (hK : FiniteDimensional ℚ_[p] K) :
   exact ⟨f, hf⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `vOn_surjective p K hK 1`. Establish `h1` using `vOn_spec p K x`. Rewrite `h1` using `[hx, Int.cast_one]`. Establish `hx' : x.1 ∈ multOf p (MaximalUnramifiedExtension p K)` using `le_Kur (K := K) x.2`. Conclude with `⟨toLayer p ⟨x.1, hx'⟩, x.2, h1.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_uniformiser_Kur (hK : FiniteDimensional ℚ_[p] K) :
     ∃ π : (urT p K).V, π.1 ∈ multOf p K ∧ (eK p K : ℝ) * vbar p π.1 = 1 := by
@@ -144,15 +142,13 @@ theorem exists_uniformiser_Kur (hK : FiniteDimensional ℚ_[p] K) :
   exact ⟨toLayer p ⟨x.1, hx'⟩, x.2, h1.symm⟩
 
 /- English proof (translation)
-Take `⟨π, hπK, hπ⟩` from `exists_uniformiser_Kur hK`. Take `⟨t, m, y, hy, ht, hm, hym, hc⟩` from `exists_cocycle_form ((vLayer p K (MaximalUnramifiedExtension p K)).hom.H 2 c)`. Establish `hinv` using `(layer_invariant_iff π).2 hπK`. Establish `hyc : Continuous y.1` using `y.2`. Establish `hzc : Continuous fun g : Fin 2 → GalLK p K (MaximalUnramifiedExtension p K) => m g • π`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Continuous fun k : (trivRep (GalLK p K (MaximalUnramifiedExtension p K)) ℤ).V => (show ℤ from k) • π` using `continuous_of_discreteTopology`. Rewrite using `[← hym]`. Conclude with `h0.comp hyc`. Set `z : (urT p K).coch.X 2` to `⟨fun g => m g • π, hzc⟩`. Establish `hz : (urT p K).coch.d 2 z = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LowDeg.coch_d_eq_zero` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `h0` using `congrFun (LowDeg.dn_eq_zero _ hy) g`. Rewrite `h0` using `[LowDeg.dn_two_apply, hym]`. Establish `h1 : m ![g 1, g 2] - m ![g 0 * g 1, g 2] + m ![g 0, g 1 * g 2] - m ![g 0, g 1] = 0` using `h0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LowDeg.dn_two_apply]`. Use `show (urT p K).rho (g 0) (m ![g 1, g 2] • π) - m ![g 0 * g 1, g 2] • π + m ![g 0, g 1 * g 2] • π - m ![g 0, g 1] • π = 0`. Rewrite using `[map_zsmul, hinv, ← sub_smul, ← add_smul, ← sub_smul, h1, zero_smul]`. Use `⟨π, t, m, z, hz, hπK, hπ, ht, hm, fun _ => rfl, ?_⟩` and prove the remaining obligations. Apply `(valuation_unramified_closure_h2_bijective hK).1` to reduce the goal to its premises.
-
-Rewrite using `[hc, vLayer_Kur_cls hK π hπ m z hz (fun _ => rfl) y hy hym]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_std_cocycle (hK : FiniteDimensional ℚ_[p] K) (c : (urT p K).H 2) :
     ∃ (π : (urT p K).V) (t : GalLK p K (MaximalUnramifiedExtension p K) → ℚ) (m : (Fin 2 → GalLK p K (MaximalUnramifiedExtension p K)) → ℤ)
@@ -185,7 +181,7 @@ theorem exists_std_cocycle (hK : FiniteDimensional ℚ_[p] K) (c : (urT p K).H 2
   rw [hc, vLayer_Kur_cls hK π hπ m z hz (fun _ => rfl) y hy hym]
 
 /- English proof (translation)
-Use extensionality with `c`. Take `⟨π, t, m, z, hz, h1, h2, h3, h4, h5, rfl⟩` from `exists_std_cocycle hK c`. Rewrite using `[hf π t m z hz h1 h2 h3 h4 h5, hg π t m z hz h1 h2 h3 h4 h5]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsInv.unique (hK : FiniteDimensional ℚ_[p] K) {f g : (urT p K).H 2 →+ QZ} (hf : IsInv p K f)
     (hg : IsInv p K g) : f = g := by
@@ -194,7 +190,7 @@ theorem IsInv.unique (hK : FiniteDimensional ℚ_[p] K) {f g : (urT p K).H 2 →
   rw [hf π t m z hz h1 h2 h3 h4 h5, hg π t m z hz h1 h2 h3 h4 h5]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_isInv hK`. Establish `h : ∃ f, IsInv p K f` using `⟨_, hf⟩`. Unfold `invUr`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInv_invUr (hK : FiniteDimensional ℚ_[p] K) : IsInv p K (invUr p K) := by
   obtain ⟨f, hf⟩ := exists_isInv hK
@@ -204,7 +200,7 @@ theorem isInv_invUr (hK : FiniteDimensional ℚ_[p] K) : IsInv p K (invUr p K) :
   exact h.choose_spec
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_isInv hK`. Rewrite using `[IsInv.unique hK (isInv_invUr hK) hf]`. Conclude with `f.bijective`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invUr_bijective (hK : FiniteDimensional ℚ_[p] K) : Bijective (invUr p K) := by
   obtain ⟨f, hf⟩ := exists_isInv hK
@@ -212,7 +208,7 @@ theorem invUr_bijective (hK : FiniteDimensional ℚ_[p] K) : Bijective (invUr p 
   exact f.bijective
 
 /- English proof (translation)
-Take `⟨f, hf, hf'⟩` from `exists_invariant_of_connecting_map hK`. Rewrite using `[IsInv.unique hK (isInv_invUr hK) hf]`. Conclude with `hf' δ hδ c x hx h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invUr_eq (hK : FiniteDimensional ℚ_[p] K) (δ)
     (hδ : Cx.IsConn (trivMap (GalLK p K (MaximalUnramifiedExtension p K)) (Int.castAddHom ℚ)).hom
@@ -231,7 +227,7 @@ theorem layerInfl_u_val {L L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : L
     [(subG p K L').Normal] (x : (layer p K L).V) : ((layerInfl (K := K) h).u x).1 = x.1 := rfl
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[vLayerMap_spec p (hL.trans h), vLayerMap_spec p hL, he, layerInfl_u_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem vLayerMap_layerInfl {L L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL : K ≤ L) (h : L ≤ L')
     [(subG p K L).Normal] [(subG p K L').Normal] (he : eK p L' = eK p L) (x : (layer p K L).V) :
@@ -240,7 +236,7 @@ theorem vLayerMap_layerInfl {L L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h
   rw [vLayerMap_spec p (hL.trans h), vLayerMap_spec p hL, he, layerInfl_u_val]
 
 /- English proof (translation)
-Introduce `g`. Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H σ => exact ⟨QuotientGroup.mk σ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 -/
 theorem layerInfl_φ_surjective {L L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : L ≤ L')
     [(subG p K L).Normal] [(subG p K L').Normal] : Surjective (layerInfl (K := K) h).φ := by
@@ -249,9 +245,9 @@ theorem layerInfl_φ_surjective {L L' : IntermediateField ℚ_[p] (PadicAlgCl p)
   | H σ => exact ⟨QuotientGroup.mk σ, rfl⟩
 
 /- English proof (translation)
-Take `⟨x, hx, rfl⟩` from `Cx.exists_cls c`. Rewrite using `[Cx.Hom.H_cls, Cx.Hom.H_cls, Cx.Hom.H_cls, Cx.Hom.H_cls]`. Apply `Cx.cls_congr` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `vLayerMap_layerInfl hL h he _`.
+A detailed English derivation is pending.
 -/
 theorem vLayer_layerInfl_H {L L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL : K ≤ L) (h : L ≤ L')
     [(subG p K L).Normal] [(subG p K L').Normal] (he : eK p L' = eK p L) (i : ℕ) (c : (layer p K L).H i) :
@@ -266,7 +262,7 @@ theorem vLayer_layerInfl_H {L L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL
   exact vLayerMap_layerInfl hL h he _
 
 /- English proof (translation)
-Introduce `a b hab`. Apply `hv` to reduce the goal to its premises. Apply `trivial_inflation_h2_int_injective _ (layerInfl (K := K) h).φ_cont (layerInfl_φ_surjective h)` to reduce the goal to its premises. Rewrite using `[← vLayer_layerInfl_H hL h he, ← vLayer_layerInfl_H hL h he, hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inflation_h2_injective_of_same_ramification {L L' : IntermediateField ℚ_[p] (PadicAlgCl p)} (hL : K ≤ L) (h : L ≤ L')
     [(subG p K L).Normal] [(subG p K L').Normal] (he : eK p L' = eK p L)
@@ -277,7 +273,7 @@ theorem inflation_h2_injective_of_same_ramification {L L' : IntermediateField �
   rw [← vLayer_layerInfl_H hL h he, ← vLayer_layerInfl_H hL h he, hab]
 
 /- English proof (translation)
-The claim follows from `inflation_h2_injective_of_same_ramification (L := Kn p K n) le_sup_left (Kn_le_Kur hn) ((eK_Kur p hK).trans (eK_Kn p hK hn).symm) (valuation_unramified_layer_h2_bijective hK hn).1`.
+A detailed English derivation is pending.
 -/
 theorem inflation_unramified_layer_h2_injective (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     Injective ((layerInfl (K := K) (L := Kn p K n) (L' := MaximalUnramifiedExtension p K) (Kn_le_Kur hn)).hom.H 2) :=
@@ -285,13 +281,13 @@ theorem inflation_unramified_layer_h2_injective (hK : FiniteDimensional ℚ_[p] 
     (valuation_unramified_layer_h2_bijective hK hn).1
 
 /- English proof (translation)
-Establish `hsub : Set.range ((layerInfl (K` using `K) (L := Kn p K n) (L' := MaximalUnramifiedExtension p K) (Kn_le_Kur hn)).hom.H 2) ⊆ {x : (urT p K).H 2 | n • x = 0} := by`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `show n • _ = 0`. Establish `h0 : n • y = 0`. Establish `h1` using `card_nsmul_eq_zero' (x := y)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[card_h2_unramified_layer hK hn]`. Then use the resulting hypothesis. Rewrite using `[← map_nsmul, h0, map_zero]`. Take `⟨f, -⟩` from `exists_isInv hK`. Establish `hT : Nat.card {x : (urT p K).H 2 | n • x = 0} = n`. Use `(Nat.card_congr (Equiv.subtypeEquiv f.toEquiv fun a => ?_)).trans (card_QZ_torsion n hn)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show n • a = 0 ↔ n • f a = 0`. Rewrite using `[← map_nsmul, map_eq_zero_iff f f.injective]`. Establish `hfin : ({x : (urT p K).H 2 | n • x = 0} : Set _).Finite` using `Nat.finite_of_card_ne_zero (by rw [hT]; exact hn.ne')`. Establish `hS : Nat.card (Set.range ((layerInfl (K` using `K) (L := Kn p K n) (L' := MaximalUnramifiedExtension p K) (Kn_le_Kur hn)).hom.H 2)) = n := by`. Rewrite using `[Nat.card_range_of_injective (inflation_unramified_layer_h2_injective hK hn), card_h2_unramified_layer hK hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq` using `Set.eq_of_subset_of_ncard_le hsub (by rw [← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq, hT, hS]) hfin`. Use `show x ∈ Set.range _ ↔ _`. Rewrite using `[heq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_range_layerInfl_Kn_iff (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) (x : (urT p K).H 2) :
     x ∈ LinearMap.range ((layerInfl (K := K) (L := Kn p K n) (L' := MaximalUnramifiedExtension p K) (Kn_le_Kur hn)).hom.H 2) ↔ n • x = 0 := by

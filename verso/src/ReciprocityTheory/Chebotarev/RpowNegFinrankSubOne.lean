@@ -7,7 +7,7 @@ open scoped Classical
 namespace ReciprocityTheory.Cheb
 
 /- English proof (translation)
-Rewrite using `[div_pow, inv_div, div_pow, mul_pow, pow_succ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem core_const_eq {A B c d t : ℝ} (n : ℕ) (hc : 0 < c) (ht : 0 < t) :
     (A * (4 * (2 * B / (c * t))) + 2 * (d * (2 * B / (c * t)))) * (((c * t) / 2) ^ n)⁻¹ =
@@ -17,7 +17,7 @@ theorem core_const_eq {A B c d t : ℝ} (n : ℕ) (hc : 0 < c) (ht : 0 < t) :
   ring
 
 /- English proof (translation)
-Rewrite using `[show -(n : ℝ) - 1 = -((n + 1 : ℕ) : ℝ) by push_cast; ring, Real.rpow_neg ht, Real.rpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rpow_neg_finrank_sub_one (t : ℝ) (ht : 0 ≤ t) (n : ℕ) :
     t ^ (-(n : ℝ) - 1) = (t ^ (n + 1))⁻¹ := by
@@ -26,30 +26,28 @@ theorem rpow_neg_finrank_sub_one (t : ℝ) (ht : 0 ≤ t) (n : ℕ) :
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[Gs_eq_real, hx, zero_mul, Complex.ofReal_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Gs_of_uphi_eq_zero {l : ℕ} (χ : DirichletCharacter ℂ l) (s : ℝ) {x : mixedSpace E}
     (hx : uphi x = 0) : Gs χ s x = 0 := by
   rw [Gs_eq_real, hx, zero_mul, Complex.ofReal_zero, mul_zero]
 
 /- English proof (translation)
-Take `⟨c₀, hc₀, -, hsupp⟩` from `exists_support_bound (E := E)`. Take `⟨A, hA, hAb⟩` from `exists_ucoord_bound (E := E)`. Use `set B' := max B 1 with hB'`. Establish `hB'1 : 1 ≤ B'` using `le_max_right _ _`. Establish `hB'0 : 0 < B'` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set n := Module.finrank ℚ E with hn`. Use `set R₁ := (2 * B' + 2) / c₀ with hR₁`. Establish `hR₁0 : 0 < R₁` using `div_pos (by linarith) hc₀`. Use `set K := (8 * A * B' + 4 * (n : ℝ) * B') / c₀ * (2 / c₀) ^ n with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `core : ∀ s ∈ Set.Icc (1 : ℝ) 2, ∀ y k : mixedSpace E, uphi y ≠ 0 → ‖k‖ ≤ B' → R₁ ≤ ‖y‖ → ‖Gs χ s (y + k) - Gs χ s y‖ ≤ K * (‖y‖ ^ (n + 1))⁻¹`. Introduce `s hs y k hyu hk hy`. Establish `hy0 : 0 < ‖y‖` using `lt_of_lt_of_le hR₁0 hy`. Establish `hcy : 2 * B' + 2 ≤ c₀ * ‖y‖`. Rewrite `hy` using `[hR₁, div_le_iff₀ hc₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `norm_Gs_add_sub_le_core χ hs hA hAb hB'0 hk (a := c₀ * ‖y‖) (by linarith) (by linarith) (hsupp y hyu).1`. Rewrite `h` using `[core_const_eq n hc₀ hy0]`. Then use the resulting hypothesis. Use `⟨2 * R₁ + 2 * B', K * 2 ^ (n + 1), fun s hs x h hh hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : 0 < ‖x‖` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hhB : ‖h‖ ≤ B'` using `hh.trans (le_max_left _ _)`. Rewrite using `[rpow_neg_finrank_sub_one _ (norm_nonneg _) n]`. Establish `hpow : 0 < ‖x‖ ^ (n + 1)` using `pow_pos hx0 _`. Distinguish the cases in `h1 : uphi x ≠ 0`. Use `(core s hs x h h1 hhB (by linarith)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ 2 ^ (n + 1)` using `one_le_pow₀ (by norm_num)`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h2 : uphi (x + h) ≠ 0`. Establish `hy : ‖x‖ / 2 ≤ ‖x + h‖`. Use `norm_sub_norm_le x (-h)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[sub_neg_eq_add, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc` using `core s hs (x + h) (-h) h2 (by rwa [norm_neg]) (by linarith)`. Rewrite `hc` using `[add_neg_cancel_right, norm_sub_rev]`. Use `hc.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hxy : (‖x + h‖ ^ (n + 1))⁻¹ ≤ 2 ^ (n + 1) * (‖x‖ ^ (n + 1))⁻¹`. Establish `e : (2 : ℝ) ^ (n + 1) * (‖x‖ ^ (n + 1))⁻¹ = ((‖x‖ / 2) ^ (n + 1))⁻¹`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
-
-Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) hy _)`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at h1 h2`. Rewrite using `[Gs_of_uphi_eq_zero χ s h1, Gs_of_uphi_eq_zero χ s h2, sub_zero, norm_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem gs_diff_bound {l : ℕ} (χ : DirichletCharacter ℂ l) (B : ℝ) :
     ∃ R₀ C : ℝ, ∀ s ∈ Set.Icc (1 : ℝ) 2, ∀ x h : mixedSpace E, ‖h‖ ≤ B → R₀ ≤ ‖x‖ →

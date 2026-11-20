@@ -14,23 +14,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.Inert
 
 /- English proof (translation)
-Introduce `E _ _ _ n w hw b ϖ q hb hϖ hU σ ha hfix`. Establish `hUL : UL n w = UJ (cj w) 1` using `GlobalTheory.CompanionTheory.UnitaryWitt.UL_eq_of_not_split hw n`. Set `a` to `GlobalTheory.UnitaryBC.SatEx.toAnti b hb.2`. Establish `hac` using `GlobalTheory.UnitaryBC.SatEx.continuous_toAnti b hb.2`. Set `p : UL n w ≃* GU (cj w) n` to `(MulEquiv.subgroupCongr hUL).trans a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hp : ∀ x, (p x).1 = b⁻¹ * x.1 * b` using `fun x => rfl`. Establish `hpc : Continuous p` using `hac.1.comp (continuous_subtype_val.subtype_mk _)`. Establish `hpsc : Continuous p.symm` using `(continuous_subtype_val.comp hac.2).subtype_mk _`. Set `hh : UL n w ≃ₜ GU (cj w) n` to `{ toEquiv := p.toEquiv, continuous_toFun := hpc, continuous_invFun := hpsc }`. Set `σ' : SmIrr (GU (cj w) n)` to `{ V := σ.V ρ := σ.ρ.comp p.symm.toMonoidHom smooth := fun v => (σ.smooth v).preimage hpsc irred := GlobalTheory.ConjPairLoc.irred_comp _ _ p.symm.surjective σ.irred }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hfx : ∀ (K : Subgroup (GU (cj w) n)) (v : σ.V), v ∈ fixed σ'.ρ K ↔ v ∈ fixed σ.ρ (K.comap p.toMonoidHom)`. Introduce `K v`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : σ.ρ (p.symm (p k)) v = v` using `GlobalTheory.LGrp.mem_fixed.1 h (p k) hk`. Rewrite `h1` using `[p.symm_apply_apply]`. Then use the resulting hypothesis. Introduce `h`. Use `GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_` and prove the remaining obligations. Establish `hk' : p.symm k ∈ K.comap p.toMonoidHom`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.mem_comap]`. Simplify using `using hk`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 h (p.symm k) hk'`. Establish `ha' : IsAdmissible σ'.ρ`. Use `⟨σ'.smooth, fun K ho hc => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : fixed σ'.ρ K = fixed σ.ρ (K.comap p.toMonoidHom)` using `Submodule.ext (hfx K)`. Rewrite using `[e]`. Conclude with `ha.2 _ (ho.preimage hpc) (hh.isCompact_preimage.2 hc)`. Establish `hs' : GlobalTheory.LGrp.IsSpherical σ'.ρ (KU (cj w) n)`. Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 hfix`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Submodule.ne_bot_iff _).2 ⟨v, (hfx _ v).2 (GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_), h0⟩` and prove the remaining obligations. Establish `hk1 : (p k).1 ∈ GlobalTheory.LFun.KGL w n` using `(Subgroup.mem_subgroupOf.1 (Subgroup.mem_comap.1 hk)).2`. Establish `e : k.1 = b * (p k).1 * b⁻¹` using `by rw [hp]; group`. Establish `hk2 : k.1 ∈ GlobalTheory.LFun.KGL w n`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `mul_mem (mul_mem hb.1 hk1) (inv_mem hb.1)`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 hv k (Subgroup.mem_subgroupOf.2 hk2)`. Take `⟨α, hα⟩` from `GlobalTheory.LFun.ExSatU.exists_hasSatU E w (ϖ : w.adicCompletion E) (cj w) q n hU σ'.V σ'.ρ σ'.irred ha' hs'`. Establish `hcomp : σ'.ρ.comp p.toMonoidHom = σ.ρ`. Use extensionality with `g v`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `show σ.ρ (p.symm (p g)) v = σ.ρ g v`. Rewrite using `[p.symm_apply_apply]`. Use `⟨α, p, σ', hp, hα, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `⟨Representation.Equiv.refl _⟩`.
+A detailed English derivation is pending.
 -/
 theorem satEx : SatEx := by
   intro E _ _ _ n w hw b ϖ q hb hϖ hU σ ha hfix

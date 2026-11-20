@@ -25,13 +25,13 @@ variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   {n : ℕ} {v : Fin n → (epsR R ⟶ G)}
 
 /- English proof (translation)
-The claim follows from `isLieComb_iff_lieExp c w`.
+A detailed English derivation is pending.
 -/
 theorem isLieComb_iff_tanExp (c : Fin n → R) (w : epsR R ⟶ G) :
     IsLieComb c v w ↔ w = tanExp v c := isLieComb_iff_lieExp c w
 
 /- English proof (translation)
-The claim follows from `(isTan_iff _).1 (isTanOver_tanExp hv c)`.
+A detailed English derivation is pending.
 -/
 theorem isTangent_tanExp (hv : ∀ i, IsTangent (v i)) (c : Fin n → R) : IsTangent (tanExp v c) :=
   (isTan_iff _).1 (isTanOver_tanExp hv c)
@@ -46,9 +46,9 @@ def combHom (hv : ∀ i, IsTangent (v i)) :
     exact lieExp_congr _ (fun i => TrivSqZeroExt.inr_add _ _ _) _ _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = (combHom hv (∑ i, c i • M i)).toMul`. Rewrite using `[map_sum, toMul_sum, tanExp, lieExp]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(comp_lieExp v _ _ _).trans ?_` and prove the remaining obligations. Conclude with `lieExp_congr _ (fun j => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[epsTo, dualTo_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.inl_mul_inr, mul_comm, smul_smul]) _ _`.
+A detailed English derivation is pending.
 -/
 theorem tanExp_tanExp (hv : ∀ i, IsTangent (v i)) {m : ℕ} (M : Fin m → Fin n → R)
     (c : Fin m → R) : tanExp (fun i => tanExp v (M i)) c = tanExp v (∑ i, c i • M i) := by
@@ -61,9 +61,9 @@ theorem tanExp_tanExp (hv : ∀ i, IsTangent (v i)) {m : ℕ} (M : Fin m → Fin
       mul_comm, smul_smul]) _ _
 
 /- English proof (translation)
-Rewrite using `[tanExp, lieExp, Finset.prod_eq_single i]`. Establish `: ∀ h, epsTo R (inr ((Pi.single i (1 : R) : Fin n → R) i) : DualNumber R) h = AlgHom.id R _` using `fun h => DualNumber.algHom_ext (by`. Rewrite using `[epsTo_eps, Pi.single_eq_same]`. Use the proof step `rfl)`. Rewrite using `[this, spMap_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Category.id_comp _`. Introduce `j _ hj`. Conclude with `epsTo_zero_comp ((isTan_iff _).2 (hv j)) _ (by simp [Pi.single_eq_of_ne hj]) _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tanExp_single (hv : ∀ i, IsTangent (v i)) (i : Fin n) :
     tanExp v (Pi.single i (1 : R)) = v i := by
@@ -78,15 +78,15 @@ theorem tanExp_single (hv : ∀ i, IsTangent (v i)) (i : Fin n) :
   · simp
 
 /- English proof (translation)
-Establish `key : ∀ c : Fin n → R, tanExp (fun i => tanExp v (M i)) c = tanExp v (Matrix.vecMul c M)` using `fun c => by`. Rewrite using `[Matrix.vecMul_eq_sum]`. Conclude with `tanExp_tanExp hv.1 (fun i => M i) c`. Take `⟨hinj, -⟩` from `isLieBasisOver_self hv`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Matrix.vecMul_surjective_iff_isUnit.1 fun d => ?_` and prove the remaining obligations. Take `⟨c, hc, -⟩` from `h.2 _ (isTangent_tanExp hv.1 d)`. Rewrite `hc` using `[isLieComb_iff_tanExp, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨c, (hinj _ _ hc).symm⟩`. Introduce `h`. Use `⟨fun i => isTangent_tanExp hv.1 _, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, -⟩` from `hv.2 w hw`. Take `⟨c, hc⟩` from `Matrix.vecMul_surjective_iff_isUnit.2 h d`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc' : Matrix.vecMul c M = d` using `hc`. Rewrite `hd` using `[isLieComb_iff_tanExp]`. Use `⟨c, ?_, fun c' h' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLieComb _ _ _`. Rewrite using `[isLieComb_iff_tanExp, key, hc', hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsLieComb _ _ _ at h'`. Rewrite `h'` using `[isLieComb_iff_tanExp, key, hd, ← hc']`. Conclude with `Matrix.vecMul_injective_of_isUnit h (hinj _ _ h').symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLieBasis_iff_isUnit_det (hv : IsLieBasis v) (M : Matrix (Fin n) (Fin n) R) :
     IsLieBasis (fun i => tanExp v (M i)) ↔ IsUnit M.det := by
@@ -116,9 +116,9 @@ theorem isLieBasis_iff_isUnit_det (hv : IsLieBasis v) (M : Matrix (Fin n) (Fin n
       exact Matrix.vecMul_injective_of_isUnit h (hinj _ _ h').symm
 
 /- English proof (translation)
-Use `⟨fun c => ⟨tanExp v c, (isLieComb_iff_tanExp _ _).2 rfl, fun w hw => (isLieComb_iff_tanExp _ _).1 hw⟩, fun c w hw => ?_, fun m M v' c w hM hw => ?_, fun i => (isLieComb_iff_tanExp _ _).2 (tanExp_single hv i).symm, fun M v' hb hM => ?_⟩` and prove the remaining obligations. Rewrite using `[(isLieComb_iff_tanExp _ _).1 hw]`. Conclude with `isTangent_tanExp hv c`. Choose the witnesses or unpack the hypotheses as in `rfl : v' = fun i => tanExp v (M i) :=`. Use function extensionality and compare the values at `fun i => (isLieComb_iff_tanExp _ _).1 (hM i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hw`, the goal using `[isLieComb_iff_tanExp]`. Rewrite using `[hw, tanExp_tanExp hv]`. Choose the witnesses or unpack the hypotheses as in `rfl : v' = fun i => tanExp v (M i) :=`. Use function extensionality and compare the values at `fun i => (isLieComb_iff_tanExp _ _).1 (hM i)`. Conclude with `isLieBasis_iff_isUnit_det hb M`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lieComb_algebra (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (n : ℕ) (v : Fin n → (epsR R ⟶ G)) (hv : ∀ i, IsTangent (v i)) :

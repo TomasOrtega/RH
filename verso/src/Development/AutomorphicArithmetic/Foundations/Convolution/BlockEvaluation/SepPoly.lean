@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.BlockEvaluation
 open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter Topology UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Ci
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Establish `hp : (s.map fun a => Polynomial.X - Polynomial.C a).prod = (t.map fun a => Polynomial.X - Polynomial.C a).prod`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, Multiset.prod_X_sub_X_eq_sum_esymm, hs, ht]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j < n + 1` using `Finset.mem_range.mp hj`. Establish `: s.esymm j = t.esymm j`. Break down `j with _ | j` into its components or cases. Simplify using `[Multiset.esymm]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc ⟨j, by omega⟩`. Rewrite using `[this]`. Rewrite using `[← Polynomial.roots_multiset_prod_X_sub_C s, hp, Polynomial.roots_multiset_prod_X_sub_C]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_esymm_ne {s t : Multiset ℂ} {n : ℕ} (hs : s.card = n) (ht : t.card = n) (h : s ≠ t) :
     ∃ k : Fin n, s.esymm (k + 1) ≠ t.esymm (k + 1) := by
@@ -26,19 +26,19 @@ private theorem exists_esymm_ne {s t : Multiset ℂ} {n : ℕ} (hs : s.card = n)
   rw [← Polynomial.roots_multiset_prod_X_sub_C s, hp, Polynomial.roots_multiset_prod_X_sub_C]
 
 /- English proof (translation)
-Distinguish the cases in `hΛ : Λ = Λ'`. Establish `: ∃ w, w ∉ S ∧ t w ≠ t' w`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h ⟨hΛ, hc⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hne⟩` from `this`. Take `⟨k, hk⟩` from `exists_esymm_ne (h2 w hw) (h4 w hw) hne`. Use `⟨X (w, k) - C (C ((t' w).esymm (k + 1))), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Use `vars_sub_subset _ hy` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[vars_C, vars_X, Finset.union_empty, Finset.mem_singleton]`. Rewrite using `[this]`. Conclude with `hw`. Introduce `x _`. Simplify `hk` using `[val, hval, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Simplify using `[val, hval]`. Take `⟨τ, hne⟩` from `Function.ne_iff.mp hΛ`. Take `⟨k, hk⟩` from `exists_esymm_ne (h1 τ) (h3 τ) hne`. Use `⟨C (X (some (τ, k)) - C ((Λ' τ).esymm (k + 1)) * X none), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite `hy` using `[vars_C]`. Conclude with `absurd hy (Finset.notMem_empty _)`. Introduce `x hx`. Establish `hx' : (x : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : val x Λ t (C (X (some (τ, k)) - C ((Λ' τ).esymm (k + 1)) * X none) : PR K n) = x * ((Λ τ).esymm (k + 1) - (Λ' τ).esymm (k + 1))`. Rewrite using `[val, eval₂Hom_C]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `mul_ne_zero hx' (sub_ne_zero.mpr hk)`. Introduce `x`. Rewrite using `[val, eval₂Hom_C]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem one_factor (K : Type) [Field K] [NumberField K] (n : ℕ) (S : Set (Pl K))
     (Λ : (K →+* ℂ) → Multiset ℂ) (t : Pl K → Multiset ℂ) (Λ' : (K →+* ℂ) → Multiset ℂ) (t' : Pl K → Multiset ℂ)
@@ -83,15 +83,11 @@ private theorem one_factor (K : Type) [Field K] [NumberField K] (n : ℕ) (S : S
       ring
 
 /- English proof (translation)
-Introduce `K _ _ n S Λ t I _ Λ' t' h1 h2 h3 h4 h`. Use `choose P hP1 hP2 hP3 using fun i => one_factor K n S Λ t (Λ' i) (t' i) h1 h2 (h3 i) (h4 i) (h i)`. Use `set Q : PR K n := ∏ i, P i with hQ`. Use `⟨Q, Q.vars.image Prod.fst, max Q.totalDegree (Q.support.sup fun β => (Q.coeff β).totalDegree), ?_, ⟨?_, le_max_left _ _, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hw`. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.mp (vars_prod P hy)`. Conclude with `hP1 i y hi`. Introduce `y hy`. Conclude with `Finset.mem_image_of_mem _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β`. Distinguish the cases in `hβ : β ∈ Q.support`. Conclude with `le_max_of_le_right (Finset.le_sup (f := fun β => (Q.coeff β).totalDegree) hβ)`. Rewrite using `[notMem_support_iff.mp hβ, totalDegree_zero]`. Conclude with `Nat.zero_le _`.
-
-Introduce `x hx`. Rewrite using `[hQ, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hP2 i x hx`. Introduce `i x`. Rewrite using `[hQ, map_prod]`.
-
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (hP3 i x)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Ci.sepPoly :
     SepPoly := by

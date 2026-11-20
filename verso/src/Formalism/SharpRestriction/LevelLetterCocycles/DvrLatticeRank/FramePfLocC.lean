@@ -13,22 +13,22 @@ section Ser
 variable {LL V : Type} [Field LL] [AddCommGroup V] [Module LL V]
 
 /- English proof (translation)
-Simplify using `only [serC]`. Rewrite using `[if_neg (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_serC_neg (f : PowerSeries LL) (d : V) (i : ℤ) (hi : i < 0) : serC f d i = 0 := by
   simp only [serC]
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Break down `lt_or_ge i 0 with hi | hi` into its components or cases. Rewrite using `[framepf_serC_neg _ _ _ hi]`. Simplify using `only [serMul]`. Establish `h0 : ∀ j : ℕ, PowerSeries.coeff j g • serC f d (i - j) = 0` using `fun j => by`. Rewrite using `[framepf_serC_neg _ _ _ (by omega), smul_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h0]`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hi`. Simplify using `only [serMul]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (n + 1)) (by`. Introduce `j hj`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hj` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hjn`. Conclude with `hj (by rw [framepf_serC_neg _ _ _ (by omega), smul_zero]))]`. Establish `h1 : ∀ j ∈ Finset.range (n + 1), PowerSeries.coeff j g • serC f d ((n : ℤ) - j) = (PowerSeries.coeff j g * PowerSeries.coeff (n - j) f) • d`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Rewrite `hj` using `[Finset.mem_range]`. Simplify using `only [serC]`. Rewrite using `[if_pos (by omega), show ((n : ℤ) - j).toNat = n - j by omega, smul_smul]`. Rewrite using `[Finset.sum_congr rfl h1, ← Finset.sum_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [serC]`. Rewrite using `[if_pos hi, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem framepf_serMul_serC (g f : PowerSeries LL) (d : V) (i : ℤ) :
     serMul g (serC f d) i = serC (g * f) d i := by
@@ -58,7 +58,7 @@ theorem framepf_serMul_serC (g f : PowerSeries LL) (d : V) (i : ℤ) :
     simp
 
 /- English proof (translation)
-Simplify using `only [serMul]`. Use `finsum_congr (fun j => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : j < m`. Rewrite using `[hg j hj, zero_smul, zero_smul]`. Rewrite using `[h (i - j) (by omega)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_serMul_congr (g : PowerSeries LL) (m : ℕ) (hg : ∀ j < m, PowerSeries.coeff j g = 0)
     (f f' : ℤ → V) (R : ℤ) (h : ∀ i < R, f i = f' i) (i : ℤ) (hi : i < R + m) :
@@ -70,17 +70,17 @@ theorem framepf_serMul_congr (g : PowerSeries LL) (m : ℕ) (hg : ∀ j < m, Pow
   · rw [h (i - j) (by omega)]
 
 /- English proof (translation)
-Simplify using `[serMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem framepf_serMul_zero (g : PowerSeries LL) (i : ℤ) : serMul g (fun _ => (0 : V)) i = 0 := by
   simp [serMul]
 
 /- English proof (translation)
-Simplify using `only [serMul, Finset.smul_sum]`. Rewrite using `[finsum_sum_comm]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[← framepf_serMul_serC]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `t _`. Use `(Set.finite_Iio (i.toNat + 1)).subset ?_` and prove the remaining obligations. Introduce `j hj`. Rewrite `hj` using `[Function.mem_support]`. Rewrite using `[Set.mem_Iio]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hjn`. Conclude with `hj (by rw [framepf_serC_neg _ _ _ (by omega), smul_zero])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem framepf_serMul_sum {ι : Type} [Fintype ι] (g : PowerSeries LL) (f : ι → PowerSeries LL)
     (d : ι → V) (i : ℤ) :
@@ -99,19 +99,19 @@ theorem framepf_serMul_sum {ι : Type} [Fintype ι] (g : PowerSeries LL) (f : ι
     exact hj (by rw [framepf_serC_neg _ _ _ (by omega), smul_zero])
 
 /- English proof (translation)
-Establish `key : ∀ t : ℕ, ∀ k : ℤ, k < R → k < m₀ + t → f k = f' k`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `k _ hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf k (by omega), hf' k (by omega)]`. Consider the case `succ t ih`. Introduce `k hkR hk`. Break down `lt_or_ge k (m₀ + t) with hk' | hk'` into its components or cases. Conclude with `ih k hkR hk'`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_ge k m₀ with hk0 | hk0` into its components or cases. Rewrite using `[hf k hk0, hf' k hk0]`. Establish `hs` using `h (k + m) (by omega)`. Simplify using `only [serMul] at hs`. Establish `hsupp : ∀ F : ℤ → V, (∀ x < m₀, F x = 0) → (Function.support fun j : ℕ => PowerSeries.coeff j g • F (k + m - j)) ⊆ ↑(Finset.range ((k + m - m₀).toNat + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF j hj`. Rewrite `hj` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hjn`. Conclude with `hj (by rw [hF _ (by omega), smul_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs` using `[finsum_eq_sum_of_support_subset _ (hsupp f hf), finsum_eq_sum_of_support_subset _ (hsupp f' hf')]`. Establish `hmem : m ∈ Finset.range ((k + m - m₀).toNat + 1)`. Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Rewrite `hs` using `[← Finset.add_sum_erase _ _ hmem, ← Finset.add_sum_erase _ _ hmem]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrest : ∑ j ∈ (Finset.range ((k + m - m₀).toNat + 1)).erase m, PowerSeries.coeff j g • f (k + m - j) = ∑ j ∈ (Finset.range ((k + m - m₀).toNat + 1)).erase m, PowerSeries.coeff j g • f' (k + m - j)`. Use `Finset.sum_congr rfl (fun j hj => ?_)` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_erase]`. Break down `lt_or_gt_of_ne hj.1 with hjm | hjm` into its components or cases. Rewrite using `[hg j hjm, zero_smul, zero_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ih (k + m - j) (by omega) (by omega)]`. Rewrite `hs` using `[hrest, add_left_inj]`. Simplify using `only [add_sub_cancel_right] at hs`. Conclude with `smul_right_injective V hgm hs`. Conclude with `key ((i - m₀).toNat + 1) i hi (by omega)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem framepf_serMul_cancel (g : PowerSeries LL) (m : ℕ) (hg : ∀ j < m, PowerSeries.coeff j g = 0)
     (hgm : PowerSeries.coeff m g ≠ 0) (f f' : ℤ → V) (m₀ : ℤ) (hf : ∀ k < m₀, f k = 0)
@@ -179,11 +179,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 include Ct in
 /- English proof (translation)
-Establish `h1` using `Ct.levN_eq T i 1 x r`. Rewrite `h1` using `[hneg x r hr]`. Establish `hinj : Function.Injective (ιV PD (LL` using `LL) (V := T.V)) := by`. Establish `h2` using `Module.Flat.lTensor_preserves_injective_linearMap (M := T.V) (PD.ι.toLinearMap.restrictScalars Qp) PD.ι_inj`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [ιV, AlgebraTensorModule.map_tmul, LinearMap.lTensor_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `hinj (by rw [← h1, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem framepf_levB_neg (i : ZMod n)
     (hneg : ∀ (x : ↥(W.N T)) (k : ℤ), k < 0 → W.levN T i 1 x k = 0) (x : ↥(W.N T)) (r : ℤ)
@@ -202,7 +202,7 @@ theorem framepf_levB_neg (i : ZMod n)
   exact hinj (by rw [← h1, map_zero])
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_Qpow_mem {p : W.DD T} {m₀ m : ℕ} (h : W.Q ^ m₀ • p ∈ W.N T) (hm : m₀ ≤ m) :
     W.Q ^ m • p ∈ W.N T := by
@@ -213,19 +213,19 @@ theorem framepf_Qpow_mem {p : W.DD T} {m₀ m : ℕ} (h : W.Q ^ m₀ • p ∈ W
 include Ct in
 
 /- English proof (translation)
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, hz, rfl⟩` from `hx`. Take `⟨k, hk⟩` from `W.N_φ T z hz`. Use `⟨k, fun m hm => ⟨framepf_Qpow_mem T hk hm, fun i hi => ?_⟩⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ : ∀ j < m, PowerSeries.coeff j (W.lev c ζ (W.Q ^ m)) = 0` using `fun j hj => by`. Rewrite using `[map_pow]`. Conclude with `framepf_coeff_pow_lt _ hQ0 _ _ hj`. Rewrite using `[Ct.levN_eq, framepf_levB_phi Ct T hc c ζ ⟨1, by simpa using hζ⟩ hζ.pow_eq_one ⟨z, hz⟩ m 0 (framepf_Qpow_mem T hk hm) hQ (framepf_levB_neg Ct T (c - 1) hneg _) (fun r h1 h2 => by omega) i (by omega)]`. Unfold `serC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h0`. Rewrite using `[hQ _ (by omega), zero_smul, map_zero]`. Rewrite using `[map_zero]`. Consider the case `zero`. Use `⟨0, fun m _ => ⟨by simp, fun i _ => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨W.Q ^ m • (0 : W.DD T), by simp⟩ : ↥(W.N T)) = 0` using `Subtype.ext (by simp)`. Rewrite using `[this, map_zero, Pi.zero_apply]`. Consider the case `add x y _ _ hx hy`. Take `⟨m₁, h₁⟩` from `hx`. Take `⟨m₂, h₂⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨max m₁ m₂, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨a₁, b₁⟩` from `h₁ m (le_of_max_le_left hm)`. Take `⟨a₂, b₂⟩` from `h₂ m (le_of_max_le_right hm)`. Establish `hN : W.Q ^ m • (x + y) ∈ W.N T` using `by rw [smul_add]; exact (W.N T).add_mem a₁ a₂`. Use `⟨hN, fun i hi => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨_, hN⟩ : ↥(W.N T)) = ⟨_, a₁⟩ + ⟨_, a₂⟩` using `Subtype.ext (smul_add _ _ _)`. Rewrite using `[this, map_add, Pi.add_apply, b₁ i hi, b₂ i hi, add_zero]`. Consider the case `smul s x _ hx`. Take `⟨m₁, h₁⟩` from `hx`. Use `⟨m₁, fun m hm => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a₁, b₁⟩` from `h₁ m hm`. Establish `hN : W.Q ^ m • (s • x) ∈ W.N T` using `by rw [smul_comm]; exact (W.N T).smul_mem _ a₁`. Use `⟨hN, fun i hi => ?_⟩` and prove the remaining obligations. Establish `: (⟨_, hN⟩ : ↥(W.N T)) = s • ⟨_, a₁⟩` using `Subtype.ext (smul_comm _ _ _)`. Rewrite using `[this, ModelFPf.levN_eq_serMul, framepf_serMul_congr _ 0 (fun j hj => by omega) _ (fun _ => 0) m b₁ i (by omega), framepf_serMul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_span_vanish (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p)
     (hQ0 : PowerSeries.constantCoeff (W.lev c ζ W.Q) = 0)
@@ -273,13 +273,13 @@ theorem framepf_span_vanish (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL) (hζ : 
 include Ct in
 
 /- English proof (translation)
-Take `⟨m₀, hm₀⟩` from `framepf_span_vanish Ct T hc c ζ hζ hQ0 hneg hp`. Use `choose e he using fun j => W.N_φ T (h j : W.DD T) (h j).2`. Use `set d : ℕ := m₀ + ∑ j, e j with hd`. Take `⟨hpN, hp0⟩` from `hm₀ (d + k) (by omega)`. Establish `hj : ∀ j, W.Q ^ (d + k) • W.φD T (h j : W.DD T) ∈ W.N T` using `fun j => framepf_Qpow_mem T (he j) (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.single_le_sum (f := e) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)` as an intermediate fact. Use the proof step `omega)`. Establish `heq : W.Q ^ d • (⟨_, hk⟩ : ↥(W.N T)) = ∑ j, ((letE c : LetA O n) * a j) • (⟨_, hj j⟩ : ↥(W.N T)) + g • ⟨_, hpN⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, Submodule.coe_add, Submodule.coe_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_smul, ← pow_add, hu, smul_add, Finset.smul_sum, smul_comm _ g]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => smul_comm _ _ _`. Take `⟨m₁, hm₁⟩` from `W.levN_supp T c ζ ⟨_, hk⟩`. Use `framepf_serMul_cancel (W.lev c ζ (W.Q ^ d)) d (fun j hj => by rw [map_pow]; exact framepf_coeff_pow_lt _ hQ0 _ _ hj) (by rw [map_pow, framepf_coeff_pow_self _ hQ0]; exact pow_ne_zero _ hQ1) (W.levN T c ζ ⟨_, hk⟩) (fun i => ∑ j, serC (W.lev c ζ (W.Q ^ k) * W.lev c ζ (a j)) (valAt …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← ModelFPf.levN_eq_serMul, heq, map_add, map_sum, Pi.add_apply, Finset.sum_apply, framepf_serMul_sum, ModelFPf.levN_eq_serMul W T c ζ g, framepf_serMul_congr _ R hg _ (fun _ => 0) ((d + k : ℕ) : ℤ) hp0 r (by push_cast; omega), framepf_serMul_zero, add_zero]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ModelFPf.levN_eq_serMul, framepf_serMul_congr _ 0 (fun j hj => by omega) _ (serC (W.lev c ζ (W.Q ^ (d + k))) (valAt W T c ζ (h j : W.DD T))) (((d + k : ℕ) : ℤ) + R) (fun s hs => framepf_levN_phi Ct T hc c ζ ⟨1, by simpa using hζ⟩ hζ.pow_eq_one hQ0 hQ1 (h j) (d + k) R (hj j) (fra …`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem framepf_loc_core (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p)
     (hQ0 : PowerSeries.constantCoeff (W.lev c ζ W.Q) = 0)
@@ -333,11 +333,11 @@ theorem framepf_loc_core (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL) (hζ : IsP
 include Ct in
 
 /- English proof (translation)
-Establish `hv : ∀ x : ↥(W.N T), valAt W T c ζ (x : W.DD T) = ιV PD (LL` using `LL) (V := T.V) (φVB PD (LL := LL) (V := T.V) (Ct.levB T (c - 1) 1 x 0)) := fun x => framepf_valAt Ct T hc c ζ ⟨1, by simpa using hζ⟩ hζ.pow_eq_one hQ0 hQ1 x (framepf_levB_neg Ct T (c - 1) hneg _) (W.N_φ T x x.2)`. Establish `e' : h = N • z + π' • w`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: ((N • z + π' • w : ↥(W.N T)) : W.DD T) = N • (z : W.DD T) + π' • (w : W.DD T)` using `rfl`. Rewrite using `[this, ← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `h0 : Ct.levB T (c - 1) 1 (π' • w) 0 = 0`. Apply `framepf_ιV_inj (PD := PD) T` to reduce the goal to its premises. Rewrite using `[← Ct.levN_eq, map_zero, ModelFPf.levN_eq_serMul, framepf_serMul_congr _ 1 (fun j hj => by`. Take `rfl : j = 0` from `by omega`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hπ]) _ (fun _ => 0) 0 (hneg w) 0 (by omega),`. Use the proof step `framepf_serMul_zero]`. Rewrite using `[hv, hv, e', map_add, Pi.add_apply, h0, add_zero, map_nsmul, Pi.smul_apply, map_nsmul, map_nsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_valAt_mod (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p)
     (hQ0 : PowerSeries.constantCoeff (W.lev c ζ W.Q) = 0)
@@ -365,7 +365,7 @@ theorem framepf_valAt_mod (hc : IsCrys PD T.ρ) (c : ZMod n) (ζ : LL) (hζ : Is
   rw [hv, hv, e', map_add, Pi.add_apply, h0, add_zero, map_nsmul, Pi.smul_apply, map_nsmul, map_nsmul]
 
 /- English proof (translation)
-Take `⟨E, hE1, -, hE⟩` from `W.lev_π i 1 ⟨0, by rw [pow_zero]; exact IsPrimitiveRoot.one⟩`. Simplify `congrArg PowerSeries.constantCoeff hE` using `[hE1]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem framepf_lev_π_one (i : ZMod n) : PowerSeries.constantCoeff (W.lev i 1 letπ) = 0 := by
   obtain ⟨E, hE1, -, hE⟩ := W.lev_π i 1 ⟨0, by rw [pow_zero]; exact IsPrimitiveRoot.one⟩
@@ -374,27 +374,25 @@ theorem framepf_lev_π_one (i : ZMod n) : PowerSeries.constantCoeff (W.lev i 1 l
 include Ct in
 
 /- English proof (translation)
-Take `⟨hQ0, hQ1⟩` from `framepf_Q_at W hs c ζ hζ`. Take `⟨hz, hrep⟩` from `hrep`. Take `⟨p, hp, hpe⟩` from `hxy`. Establish `hpe' : (π' ^ M * Eπ ^ (3 * h')) • p = Ψ x - y` using `hpe`. Establish `hπ1 : PowerSeries.constantCoeff (W.lev (c - 1) 1 π') = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hπ, map_mul, map_pow, map_mul, map_pow, framepf_lev_π_one, zero_pow (by omega), mul_zero]`. Establish `hE0 : PowerSeries.constantCoeff (W.lev c ζ Eπ) = 0`. Establish `h0` using `hQ0`. Rewrite `h0` using `[framepf_Q_eq_q W hs, hq, map_mul, map_mul]`. Conclude with `(mul_eq_zero.1 h0).resolve_left ((hw'.map (W.lev c ζ)).map PowerSeries.constantCoeff).ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsm : ∀ (b : LetA O n) (t : LA W T π' c), Ψ (smulLA W T π' c b t) = b • Ψ t`. Introduce `b t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e ℓ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: smulLA W T π' c b (e ⊗ₜ ℓ) = (algebraMap (LetA O n) W.EE b * e) ⊗ₜ ℓ` using `rfl`. Rewrite using `[this, hΨ, hΨ, mul_smul, algebraMap_smul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, smul_add]`. Establish `hΛ : Eπ ^ h' • Ψ x = ∑ j, ((letE c : LetA O n) * a j) • W.φD T (hh (mkL W T π' c (z j) (hz j)))`. Rewrite using `[← hsm, hrep, map_sum]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by rw [hΨ, algebraMap_smul]`. Establish `hmid : ∀ ℓ (r : ℤ), 1 ≤ r → r < (4 * h' : ℕ) → Ct.levB T (c - 1) 1 ⟨hh ℓ, hN ℓ⟩ r = 0`. Introduce `ℓ r h1 h2`. Take `⟨⟨t, ht, hte⟩, -⟩` from `(mem_PiNS W T π' M _).1 (hγ ℓ)`. Use `framepf_levB_zero Ct T hc (c - 1) hv hχ (π' ^ M) (4 * h') (fun j hj => ?_) ⟨hh ℓ, hN ℓ⟩ ⟨t, ht⟩ hte.symm (hneg _) r h1 h2` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `PowerSeries.X_dvd_iff.2 (framepf_lev_π_one (W := W) (c - 1))`. Establish `: W.lev (c - 1) 1 (π' ^ M) = PowerSeries.X ^ (s' * M) * (W.lev (c - 1) 1 w ^ M * f ^ (s' * M))`. Rewrite using `[hπ, map_pow, map_mul, map_pow, hf]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `framepf_loc_core Ct T hc c ζ hζ hQ0 hQ1 hneg (4 * h') (fun j => (a j : LetA O n)) (fun j => ⟨_, hN (mkL W T π' c (z j) (hz j))⟩) (fun j => hmid _) (-(π' ^ M * Eπ ^ (4 * h'))) (fun j hj => by`. Take `⟨f, hf⟩` from `PowerSeries.X_dvd_iff.2 hE0`. Establish `: W.lev c ζ (-(π' ^ M * Eπ ^ (4 * h'))) = PowerSeries.X ^ (4 * h') * (-(W.lev c ζ π' ^ M * f ^ (4 * h')))`. Rewrite using `[map_neg, map_mul, map_pow, map_pow, hf]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[this, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]) p`. Use the proof step `(Submodule.span_mono (Set.image_mono fun _ hx => Formalism.MainNotions.LiftingTheory.wmap_Nl_le W T (c - 1) hx) hp.1.1)`. Use the proof step `(Eπ ^ h' • y) (by`. Rewrite using `[← hΛ, show y = Ψ x - (π' ^ M * Eπ ^ (3 * h')) • p by rw [hpe']; abel, smul_sub, smul_smul, neg_smul, sub_eq_add_neg]`. Use `congr 3`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `ring) k hk i (by push_cast; omega)`. Rewrite using `[key]`. Unfold `expS`. Rewrite using `[framepf_serMul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Take `⟨⟨t, ht, hte⟩, -⟩` from `(mem_PiNS W T π' 1 _).1 (hmod (z j) (hz j))`. Establish `hval` using `framepf_valAt_mod Ct T hc c ζ hζ hQ0 hQ1 hneg π' hπ1 (PD.p ^ σ) ⟨_, hN (mkL W T π' c (z j) (hz j))⟩ ⟨z j, ((mem_NcS W T (c - 1) _).1 (hz j)).1⟩ ⟨t, ht⟩ (by`. Rewrite `hte` using `[pow_one]`. Rewrite using `[hte, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul])`. Simplify using `only at hval ⊢`.
-
-Rewrite using `[hval]`. Unfold `serC`. Use `split_ifs`. Rewrite using `[smul_comm]`. Rewrite using `[smul_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_locC (hc : IsCrys PD T.ρ) (hs : W.s = 1) (c : ZMod n) (ζ : LL)
     (hζ : IsPrimitiveRoot ζ PD.p)

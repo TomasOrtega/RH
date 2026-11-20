@@ -12,9 +12,9 @@ namespace RootFieldNumerics
 namespace Ii
 
 /- English proof (translation)
-Unfold `IsSmoothHerm at hA`. Establish `hne : ∀ z ∈ {z : (k : K) × ι k → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}, A.h z ≠ 0` using `fun z hz => (A.pos z hz).ne'`. Break down `Int.eq_nat_or_neg n with ⟨m, rfl | rfl⟩` into its components or cases. Simplify using `using hA.pow m`. Simplify using `only [zpow_neg, zpow_natCast]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `(hA.pow m).inv (fun z hz => pow_ne_zero _ (hne z hz))`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_zpow_h {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A : HermLine ι)
     (hA : IsSmoothHerm A) (n : ℤ) :
@@ -31,7 +31,7 @@ end Ii
 
 open Ii in
 /- English proof (translation)
-Introduce `K _ ι _ J _ ℓ n`. Use `⟨fun h => ?_, fun h z => ?_, ?_⟩` and prove the remaining obligations. Conclude with `contDiffOn_prod fun j _ => contDiffOn_zpow_h (ℓ j) (h j) (n j)`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [h j z]`. Conclude with `contDiffOn_const`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem combLine_smooth_conj_invariant : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (J : Type) [Fintype J] (ℓ : J → HermLine ι) (n : J → ℤ), ((∀ j, IsSmoothHerm (ℓ j)) → IsSmoothHerm (combLine ℓ n)) ∧ ((∀ j, IsConjInvariantH (ℓ j)) → IsConjInvariantH (combLine ℓ n)) ∧ IsSmoothHerm (trivLine ι) := by
   intro K _ ι _ J _ ℓ n

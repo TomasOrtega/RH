@@ -21,7 +21,7 @@ open GlobalTheory.UT
 namespace GlobalTheory.UT
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem exists_twist_iff {S : Scheme.{0}} {A T : Over S} [GrpObj A] (L : LB A.left) (ψ : T ⊗ A ⟶ T ⊗ A)
     (m : T ⊗ A ⟶ A) (hm : ψ ≫ snd T A = m) (n : ℤ) {W : Type} (g : W → Prop)
@@ -34,11 +34,11 @@ theorem exists_twist_iff {S : Scheme.{0}} {A T : Over S} [GrpObj A] (L : LB A.le
   rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `H1.exists_const A.L A.isLB (fst (TFK (R := R) F) A.A).left (BoxTheta.surj_fst hG A.isAb _) (LB.mulGen A.L ![(snd (TFK (R := R) F) A.A).left, (translPt A.A x).left] ![n, -n] _ _ β (LB.invGen A.L ![(snd (TFK (R := R) F) A.A).left, (translPt A.A x).left] ![n, -n] α)) (DVR.mulGen_isG …`. Simplify using `[Fintype.prod_sum_type, Fin.prod_univ_two])`. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 a`. Use `⟨c, ?_, fun t u u' hu hu' => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `z : (TFK (R` to `R) F).left := (default : PrimeSpectrum F)`. Use `choose J hJ using fun χ : (TFK (R := R) F).left ⟶ A.A.left => exists_chart A.isLB (χ z)`. Use `Units.ne_zero _ ((ha _ (lift (𝟙 _) x).left z J hJ).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (map_zero _)).trans (FieldBaseChange.gs_zero' _ z ⊤ trivial)`. Use `FieldBaseChange.SecOver.ext _ _ fun j => sec_ext_val A.isLB (fun y J hJ => ?_) j` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `(congrArg Units.val ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _)))).symm.trans (ha _ (𝟙 _) y J hJ)`. Use `(BoxTheta.act_val _ t u' hu' (𝟙 _) y hJ).trans (Eq.trans ?_ (FieldBaseChange.sval_smul' hJ (𝟙 _) c u).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) e (BoxTheta.act_val _ t u hu (𝟙 _) y hJ).symm)` and prove the remaining obligations. Conclude with `(congrArg (fun v : ((TFK (R := R) F ⊗ A.A).left.presheaf.stalk y)ˣ => v.val * _) (inv_mul_cancel_right _ _).symm).trans ((congrArg (· * _) (Units.val_mul _ _)).trans (_root_.mul_assoc _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_smul_of_pt_eq (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomain R]
     (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [Algebra (FractionRing R) F] (n : ℤ)
@@ -68,15 +68,15 @@ theorem exists_smul_of_pt_eq (hG : GlobalFnsSt) {R : Type} [CommRing R] [IsDomai
       (inv_mul_cancel_right _ _).symm).trans ((congrArg (· * _) (Units.val_mul _ _)).trans (_root_.mul_assoc _ _ _))
 
 /- English proof (translation)
-Introduce `hL R _ _ _ I _ D A G _ _ _ U F _ _ _ N hN p x`. Establish `hG` using `hL.1.globalFns`. Establish `key` using `fun w₀ : W0 U.toUnifPre => exists_twist_iff A.L (translT A.A x) (translPt A.A x) (lift_snd _ _) (N : ℤ) (W := Frm D.toPre F N p.g.b) (fun w => w.IsGen) (fun w Q => ∀ (t t' : SecA A F N) s s', U.toUnifPre.ExpandsF F N w₀ t s → U.toUnifPre.ExpandsF F N w₀ t' s' → Q t t' → PhiRel D. …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, H⟩ w₀ hw₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨α, w, hα, hw, h⟩` from `(key w₀).1 (H w₀ hw₀)`. Use `⟨(hL.1.kerPow _ A N hN _ x).1 fun _ => ⟨⊤, trivial, exists_isGen_pull _ α hα _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, β, hβ⟩ rfl`. Take `⟨c, hc, hcs⟩` from `exists_smul_of_pt_eq hG A F (N : ℤ) _ α β hα hβ`. Take `⟨w', hw', hΦ⟩` from `ProdTorsion.exists_phiRel_smul hG p w hw c hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `GlobalTheory.exists_linearEquiv_expandsF hG U F hN w₀ hw₀`. Use `⟨w', hw', fun t t' s s' hs hs' ht => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `VVRank.exists_isTwistPull A.A (hm := (lift_snd _ _ : translT A.A y ≫ _ = _)) A.isLB hα t`. Establish `e₁` using `hΦ _ _ (h t u s _ hs ((he u _).2 rfl) hu)`. Establish `e₂ : s' = c • e u` using `((he _ _).1 hs').symm.trans ((congrArg e (hcs t u t' hu ht)).trans (e.map_smul c u))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e₂ ▸ e₁`. Introduce `H`. Use `⟨lift_fst _ _, fun w₀ hw₀ => (key w₀).2 ?_⟩` and prove the remaining obligations. Use `haveI : Subsingleton (TFK (R := R) F).left := inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Use `haveI : Nonempty (TFK (R := R) F).left := inferInstanceAs (Nonempty (PrimeSpectrum F))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨θ, rfl⟩` from `BoxTheta.exists_theta hL.1.kerPow A hN x (H w₀ hw₀).1`. Take `⟨w, hw, h⟩` from `(H w₀ hw₀).2 θ rfl`. Conclude with `⟨θ.φ, w, θ.isGen, hw, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem indAt_translT_iff : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (N : ℕ), 1 ≤ N → ∀ (p : QkPt D.toPre F N) (x : TFK (R := R) F ⟶ A.A), IndAt U.toUnifPre F N p (translT A.A x) ↔ QkToAkU U.toUnifPre F N p x := by
   intro hL R _ _ _ I _ D A G _ _ _ U F _ _ _ N hN p x

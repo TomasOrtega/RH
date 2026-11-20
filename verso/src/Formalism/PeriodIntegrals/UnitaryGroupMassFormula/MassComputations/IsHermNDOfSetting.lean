@@ -12,31 +12,29 @@ open scoped TensorProduct
 namespace MassDataMassesW
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc.totReal, hc.cmUnram.1, hc.deg2, fun τ x => hc.cmUnram.2.1 τ x⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCMExt_of_cmData {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) : IsCMExt F E hc.sig :=
   ⟨hc.totReal, hc.cmUnram.1, hc.deg2, fun τ x => hc.cmUnram.2.1 τ x⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => congrFun (congrFun X.B.I.J_herm i) j, X.B.I.J_det⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHermND_of_setting {D : D7} (X : HidaSetting D) : IsHermND X.B.I.cm.sig X.B.I.J :=
   ⟨fun i j => congrFun (congrFun X.B.I.J_herm i) j, X.B.I.J_det⟩
 
 /- English proof (translation)
-The claim follows from `((PI.VolSemiDirect.W.discHA_of PI.VolSemiDirect.W.Lc.tensor_adele_topology_holds) X.B.I.F X.B.I.E X.B.I.cm.sig (isCMExt_of_cmData X.B.I.cm) X.B.I.n X.B.I.J (isHermND_of_setting X)).2`.
+A detailed English derivation is pending.
 -/
 theorem discHF_setting {D : D7} (X : HidaSetting D) : DiscreteTopology (HFinIn (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) :=
   ((PI.VolSemiDirect.W.discHA_of PI.VolSemiDirect.W.Lc.tensor_adele_topology_holds) X.B.I.F X.B.I.E X.B.I.cm.sig
     (isCMExt_of_cmData X.B.I.cm) X.B.I.n X.B.I.J (isHermND_of_setting X)).2
 
 /- English proof (translation)
-Introduce `D X u`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := Module.finite_of_finrank_pos (by rw [X.B.I.cm.deg2]; norm_num)`. Use `haveI i1 : SecondCountableTopology (HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J) := inferInstance`. Use `haveI i2 := discHF_setting X`. Use `haveI i3 : SecondCountableTopology (Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : ratOf (K` to `Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) → HFinIn (AF X.B.I.F) X.B.I.cm.sig X.B.I.J := fun x => ⟨((x : Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J), Subgroup.mem_comap.1 x.2⟩`. Establish `hf : Continuous f` using `((continuous_subtype_val.comp continuous_subtype_val : Continuous fun x : ratOf (K := Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) => ((x : Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (AF X.B.I.F) X.B.I.cm.sig X.B.I.J))).subtype_mk _`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `e` using `congrArg Subtype.val hxy`.
-
-Conclude with `Subtype.ext (Subtype.ext e)`. Use `haveI : DiscreteTopology (ratOf (K := Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u))) := DiscreteTopology.of_continuous_injective hf hinj`. Take `⟨𝓕, -, h𝓕⟩` from `PI.VolSemiDirect.W.exists_fd (G := Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) (ratOf (K := Hsub (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)))`. Conclude with `⟨𝓕, h𝓕 _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fdExistsH_holds : FDExistsH := by
   intro D X u

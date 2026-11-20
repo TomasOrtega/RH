@@ -14,25 +14,23 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `n r _ _ S U K G₀ G₁ ρ c hU hK hKU hsmall hG₀ hG₁ hconn hcurv hρ hρK`. Take `⟨C, hC0, hCb⟩` from `exists_bound_smooth_data U K G₀ ρ hU hK hKU hG₀ hρ`. Use `set c' : ℝ := |c| + C + C * (|c| + C) with hc'`. Establish `hposition : ∀ v ∈ offHyp S U, v ∈ K → ∀ j : Fin n, ∀ i a b p q, ‖intersection_update_fsHerm_neg_one (curvAt G₁ v) (cutForm ρ G₀ G₁ v) (curvAt G₀ v) j i a b p q‖ * (poinWt S v a * poinWt S v b) ≤ c'`. Introduce `v hv hvK j i a b p q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hdb, hcn, hcv⟩` from `hCb v hvK`. Establish `hw01` using `(GlobalTheory.T.poincareCoordinateLength_mem_Icc_and_pos S v (hsmall v hv.1)).1`. Establish `hwa` using `hw01 a`. Establish `hwb` using `hw01 b`. Establish `hab : poinWt S v a * poinWt S v b ≤ 1` using `mul_le_one₀ hwa.2 hwb.1 hwb.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab0 : 0 ≤ poinWt S v a * poinWt S v b` using `mul_nonneg hwa.1 hwb.1`. Establish `hca : 0 ≤ |c|` using `abs_nonneg c`. Establish `hCc : 0 ≤ C * (|c| + C)` using `mul_nonneg hC0 (add_nonneg hca hC0)`. Unfold `intersection_update_fsHerm_neg_one`. Use `split_ifs with h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hcurv v hv a b p q` as an intermediate fact. Simplify using `only [curvAt]`. Combine the linear relations using `[le_abs_self c]`. Simplify using `only [cutForm, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, norm_mul]`. Establish `e1` using `hconn v hv a p q`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hcn a p q`. Establish `e3` using `hdb b`. Establish `hxy` using `norm_sub_le (conn G₁ v (coordVec a) p q) (conn G₀ v (coordVec a) p q)`. Establish `hD0` using `norm_nonneg (dbar (fun x => (ρ x : ℂ)) v (coordVec b))`. Establish `hN0` using `norm_nonneg (conn G₁ v (coordVec a) p q - conn G₀ v (coordVec a) p q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwab : poinWt S v a * poinWt S v b ≤ poinWt S v a` using `mul_le_of_le_one_right hwa.1 hwb.2`. Establish `hY : ‖conn G₀ v (coordVec a) p q‖ * poinWt S v a ≤ C` using `(mul_le_mul e2 hwa.2 hwa.1 hC0).trans (by rw [mul_one])`. Establish `hS : (‖conn G₁ v (coordVec a) p q - conn G₀ v (coordVec a) p q‖) * poinWt S v a ≤ |c| + C`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hcv a b p q` as an intermediate fact. Simplify using `only [curvAt]`. Establish `: ‖curv G₀ v (coordVec a) (coordVec b) p q‖ * (poinWt S v a * poinWt S v b) ≤ C` using `(mul_le_mul this hab hab0 hC0).trans (by rw [mul_one])`. Combine the linear equalities and inequalities to obtain the conclusion. Use `GlobalTheory.T.integrableOn_offCoordinateHyperplanes_of_poincareBound S U K (corrC ρ G₀ G₁) ((n : ℝ) * ((Fintype.card r : ℝ) ^ n * (n.factorial : ℝ) ^ 2 * |c'| ^ n)) hU hK hKU hsmall ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `hvU` using `hv.1`. Establish `hρv : ContDiffAt ℝ 1 ρ v` using `(hρ.contDiffAt (hU.mem_nhds hvU)).of_le (WithTop.coe_le_coe.2 le_top)`. Conclude with `(GlobalTheory.T.continuousAt_transgressionTopCoeffComplex hρv ((hG₀ v hvU).1.of_le (WithTop.coe_le_coe.2 le_top)) (hG₀ v hvU).2 ((hG₁ v hv).1.of_le (WithTop.coe_le_coe.2 le_top)) (hG₁ v hv).2).continuousWithinAt`. Introduce `v hv hvK`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `GlobalTheory.T.transgressionTopCoeffComplex_eq_zero_of_cutoff_zero` to reduce the goal to its premises. Establish `: U \ K ∈ 𝓝 v` using `(hU.sdiff hK.isClosed).mem_nhds ⟨hv.1, hvK⟩`. Use `filter_upwards [this] with x hx`. Conclude with `hρK x hx.1 hx.2`. Introduce `v hv hvK`.
-
-Establish `hwpos : ∀ a, 0 < poinWt S v a` using `(GlobalTheory.T.poincareCoordinateLength_mem_Icc_and_pos S v (hsmall v hv.1)).2 hv.2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrableOn_corrC : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (S : Finset (Fin n)) (U K : Set (V n)) (G₀ G₁ : V n → Matrix r r ℂ) (ρ : V n → ℝ) (c : ℝ), IsOpen U → IsCompact K → K ⊆ U → (∀ v ∈ U, ∀ a ∈ S, ‖v a‖ ≤ 1 / 2) → (∀ v ∈ U, MContDiffAt ∞ G₀ v ∧ IsUnit (G₀ v).det) → (∀ v ∈ offHyp S U, MContDiffAt ∞ G₁ v ∧ IsUnit (G₁ v).det) → (∀ v ∈ offHyp S U, ∀ a i j, ‖conn G₁ v (coordVec a) i j‖ * poinWt S v a ≤ c) → (∀ v ∈ offHyp S U, ∀ a b i j, ‖curv G₁ v (coordVec a) (coordVec b) i j‖ * (poinWt S v a * poinWt S v b) ≤ c) → ContDiffOn ℝ ∞ ρ U → (∀ v ∈ U, v ∉ K → ρ v = 0) → IntegrableOn (corrC ρ G₀ G₁) (offHyp S U) := by
   intro n r _ _ S U K G₀ G₁ ρ c hU hK hKU hsmall hG₀ hG₁ hconn hcurv hρ hρK

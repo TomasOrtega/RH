@@ -14,11 +14,11 @@ namespace GlobalTheory.LinExactAt
 open GlobalTheory.SplitLinAt GlobalTheory.SplitLinear
 
 /- English proof (translation)
-Take `⟨hsS, hsT, hV, hΨ, hth⟩` from `hO`. Establish `he : IsSplitIdem D p.e` using `p.split`. Establish `hec : IsSplitIdem D (cA D p.e)` using `GlobalTheory.SplitScalar.isSplitIdem_conj he`. Establish `hA : ∀ u ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (fun _ => True), IsHalf p.e u → u ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = p.v)` using `fun u hu hh => latHalf D k p S T LS LT u hu (Or.inl hh)`. Establish `hle` using `latO_le (S := S) (T := T) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = p.v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ u ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (fun _ => True), IsHalf p.e u ∨ IsHalf (cA D p.e) u → heisO ψ S T u f₀ = f₀` using `fun u hu hh => hh.elim (fun h1 => hV.2.2 p.e he u (latHalf D k p S T LS LT u hu hh) h1) fun h1 => hV.2.2 _ hec u (latHalf D k p S T LS LT u hu hh) h1`. Use `⟨hsS, hsT, hV, sbSubst hΨ g h _, hth.1, fun Tm hTm => ?_⟩` and prove the remaining obligations. Establish `hTm'` using `(placeModel_congr hA hle).1 hTm`. Establish `hSB` using `(sbHalf_congr hA hle).1 (sbHalf D k p S T n n' α β LS LT hsS hsT Ψ hΨ)`. Rewrite using `[hth.2 Tm hTm, lawAt D ψ S T χS χT om LS LT p.e f₀ Tm hW hsS hsT he hV.1 hfix hTm' (α.gl g) (β.gl h) (α.gl_supp g) (β.gl_supp h) _ _ (detFrame α g) (detFrame β h) _ hSB, ← map_smul, fac_lam]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[Pi.smul_apply, smul_eq_mul, extFunAct D k p S T n n' α β Ψ g h t, ← extFun_smul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem linFirst (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T)
@@ -49,7 +49,7 @@ theorem linFirst (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   rw [Pi.smul_apply, smul_eq_mul, extFunAct D k p S T n n' α β Ψ g h t, ← extFun_smul]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[idl_val, p.idele_val]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem idl_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (a : kˣ) : idl p a = p.idele a := by
@@ -62,13 +62,13 @@ end GlobalTheory.LinExactAt
 namespace GlobalTheory.LinExactAt
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeLeft_injective (S := AF D.host.F) (algebraMap D.host.F D.host.E).injective`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_inj (D : D7) : Function.Injective (algebraMap (AF D.host.F) (AE D)) :=
   Algebra.TensorProduct.includeLeft_injective (S := AF D.host.F) (algebraMap D.host.F D.host.E).injective
 
 /- English proof (translation)
-Establish `h1 : (1 - E + s) * (1 - C + t) = 1 - E - C + s + t`. Take the linear combination `(1 - t - s + s * t) * hc + (E - s) * hcs + (C - C * t) * hs`. Establish `h2 : (1 - E - C + s + t) * (1 - (E + C)) = 1 - (E + C)`. Take the linear combination `he + hcc + (2 - s - t) * hc + (C - 1) * hs + (E - 1) * hcs`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_calc {R : Type} [CommRing R] (E C s t : R) (he : E * E = E) (hcc : C * C = C) (hc : E * C = 0)
     (hs : E * s = s) (hcs : C * t = t) : (1 - E + s) * (1 - C + t) * (1 - (E + C)) = 1 - (E + C) := by
@@ -79,11 +79,11 @@ theorem idem_calc {R : Type} [CommRing R] (E C s t : R) (he : E * E = E) (hcc : 
   rw [h1, h2]
 
 /- English proof (translation)
-Apply `algebraMap_inj D` to reduce the goal to its premises. Rewrite using `[map_mul, GlobalTheory.SplitDetCharacter.algebraMap_norm, map_sub, map_one, ← hε, p.idele_val]`. Establish `he : p.e * p.e = p.e` using `p.split.1`. Establish `hc : p.e * cA D p.e = 0` using `p.split.2.1`. Establish `hcc : cA D p.e * cA D p.e = cA D p.e` using `by rw [← map_mul, he]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : p.e * p.sec a = p.sec a` using `by rw [← p.sec_pr, p.pr_sec]`. Establish `hcs : cA D p.e * cA D (p.sec a) = cA D (p.sec a)` using `by rw [← map_mul, hs]`. Establish `hx : cA D (1 - p.e + p.sec a) = 1 - cA D p.e + cA D (p.sec a)`. Rewrite using `[map_add, map_sub, map_one]`. Rewrite using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `idem_calc _ _ _ _ he hcc hc hs hcs`.
+A detailed English derivation is pending.
 -/
 theorem norm_idele_mul {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (a : kˣ) (ε : AF D.host.F) (hε : p.e + cA D p.e = algebraMap (AF D.host.F) (AE D) ε) :
@@ -101,9 +101,9 @@ theorem norm_idele_mul {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topologic
   exact idem_calc _ _ _ _ he hcc hc hs hcs
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p a w hw`. Take `⟨ε, ⟨α, rfl, -, hα⟩, hsum⟩` from `p.above`. Establish `h` using `congrArg (fun y => evalV D.host.F w (sndA D.host.F y)) (norm_idele_mul p a _ hsum)`. Simplify using `only [map_mul, map_sub, map_one] at h`. Establish `h0 : evalV D.host.F w (sndA D.host.F (pairA D.host.F 0 α)) = 0` using `hα w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[h0, sub_zero, mul_one]`. Conclude with `Units.ext h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (a : kˣ) (w : Pl D), w ≠ p.v → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.normV D w (p.idele a) = 1 := by
@@ -120,9 +120,9 @@ end GlobalTheory.LinExactAt
 namespace GlobalTheory.LinExactAt
 
 /- English proof (translation)
-Establish `hs : p.e * p.sec a = p.sec a` using `by rw [← p.sec_pr, p.pr_sec]`. Establish `key : evalV D.host.F p.v (sndA D.host.F (Algebra.norm (AF D.host.F) (p.idele a : AE D))) = π (p.sec a)`. Rewrite using `[← halg, GlobalTheory.SplitDetCharacter.algebraMap_norm, map_mul, p.idele_val]`. Establish `hcs : cA D (p.sec a) = cA D p.e * cA D (p.sec a)` using `by rw [← map_mul, hs]`. Rewrite using `[map_add, map_sub, map_one, map_add, map_sub, map_one, map_add, map_sub, map_one, πe, hcs, map_mul, πce, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `key`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_idele_chart {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (π : AE D →+* Fv D.host.F p.v)
@@ -140,17 +140,17 @@ theorem norm_idele_chart {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topolog
 open GlobalTheory.SplitHecke
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p`. Take `⟨v', π, hsurj, hker, halg, hint⟩` from `GlobalTheory.SplitChart.exists_chart p.e p.split`. Establish `he : p.e * p.e = p.e` using `p.split.1`. Establish `hce : p.e * cA D p.e = 0` using `p.split.2.1`. Establish `hs : ∀ a, p.e * p.sec a = p.sec a` using `fun a => by rw [← p.sec_pr, p.pr_sec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `πe : π p.e = 1`. Take `⟨c, hc⟩` from `hsurj 1`. Establish `h0 : π (p.e * c - c) = 0` using `(hker _).2 (by rw [mul_sub, ← mul_assoc, he, sub_self])`. Rewrite `h0` using `[map_sub, map_mul, hc, mul_one, sub_eq_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `πce : π (cA D p.e) = 0` using `(hker _).2 hce`. Establish `hv : v' = p.v`. Take `⟨ε, ⟨α, rfl, h1, hα⟩, hsum⟩` from `p.above`. Assume the negation of the conclusion as `hne`. Establish `h2` using `halg (pairA D.host.F 0 α)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hsum, map_add, πe, πce, add_zero]`. Establish `h3 : evalV D.host.F v' (sndA D.host.F (pairA D.host.F 0 α)) = 0` using `hα v' hne`. Rewrite `h2` using `[h3]`. Conclude with `one_ne_zero h2`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : k →+* Fv D.host.F p.v` to `{ toFun := fun a => π (p.sec a) map_one' := by rw [SplitPt.sec_one, πe] map_mul' := fun a b => by rw [SplitPt.sec_mul, map_mul] map_zero' := by rw [map_zero, map_zero] map_add' := fun a b => by rw [map_add, map_add] }`. Establish `hsurjf : Function.Surjective f` using `fun b => by`. Take `⟨c, rfl⟩` from `hsurj b`. Use `⟨p.pr c, ?_⟩` and prove the remaining obligations. Use `show π (p.sec (p.pr c)) = π c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[p.sec_pr, map_mul, πe, one_mul]`. Use `⟨RingEquiv.ofBijective f ⟨f.injective, hsurjf⟩, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show Valued.v (π (p.sec a)) ≤ 1 ↔ a ∈ 𝒪[k]`. Rewrite using `[p.int_iff, ← IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, ← isInt_Ov, ← hint, hs]`. Conclude with `norm_idele_chart p π halg πe πce a`.
+A detailed English derivation is pending.
 -/
 theorem chartAt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k), ∃ φ : k ≃+* Fv D.host.F p.v, (∀ a, Valued.v (φ a) ≤ 1 ↔ a ∈ 𝒪[k]) ∧
@@ -196,9 +196,9 @@ end GlobalTheory.LinExactAt
 namespace GlobalTheory.LinExactAt
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p q`. Take `⟨φ, hφ, hn⟩` from `chartAt D k p`. Establish `h1` using `GlobalTheory.T.valued_v_map_irreducible_eq_ofAdd_neg_one D.host.F p.v k φ hφ q.1 q.2`. Establish `h2` using `GlobalTheory.T.card_residueField_of_ringEquiv_adicCompletion D.host.F p.v k φ hφ`. Apply the tactic sequence `have h3 : (((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))).log = -1 := by first | rfl | simp [WithZero.log] | exact WithZero.log_coe _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV, hn, GlobalTheory.LatPair.Unif.unit, Units.val_mk0, h1, resCard, h2, h3, zpow_neg_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absAt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (q : GlobalTheory.LatPair.Unif k),
@@ -214,7 +214,7 @@ theorem absAt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalS
 open GlobalTheory.SplitLinAt GlobalTheory.SplitLinear
 
 /- English proof (translation)
-Rewrite using `[idl_eq, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin, finprod_eq_single _ p.v, absAt D k p q]`. Introduce `w hw`. Rewrite using `[normOff D k p _ w hw, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem absFin_unif {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (q : GlobalTheory.LatPair.Unif k) :
@@ -225,7 +225,7 @@ theorem absFin_unif {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalS
   simp
 
 /- English proof (translation)
-Rewrite using `[lam_val, absFin_unif, idl_eq, Real.inv_rpow (Nat.cast_nonneg _), ← Real.rpow_neg (Nat.cast_nonneg _), mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_unif {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (q : GlobalTheory.LatPair.Unif k) (χ : (AE D)ˣ →* Circle) (r : ℝ) :
@@ -238,7 +238,7 @@ namespace GlobalTheory.LinExactAt
 open GlobalTheory.SplitLinAt GlobalTheory.SplitLinear
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p q ψ S T χS χT om hW`. Use `⟨lam p χT⁻¹ ((T.rank : ℝ) / 2), lam p χS (-(S.rank : ℝ) / 2), fun h => lamUnram D k p _ _ (unram_inv h), fun h => lamUnram D k p _ _ h, ?_, ?_, fun n n' _ _ _ _ α β LS LT f₀ Ψ f hO g h => linFirst D k p ψ S T χS χT om hW n n' α β LS LT f₀ Ψ f hO g h⟩` and prove the remaining obligations. Rewrite using `[lam_unif, MonoidHom.inv_apply, chrPow, zpow_neg, zpow_one, neg_div]`. Rewrite using `[lam_unif, chrPow, zpow_one, neg_div, neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem linExact : ∀ D : D7, GlobalTheory.FinPl.LinExact D := by
   intro D k _ _ _ _ p q ψ S T χS χT om hW

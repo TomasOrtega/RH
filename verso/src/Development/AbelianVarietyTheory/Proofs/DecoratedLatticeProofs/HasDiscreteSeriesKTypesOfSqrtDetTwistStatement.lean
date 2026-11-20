@@ -10,7 +10,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.IsotypicSignedParameters (SignedPar
 open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTypeOf IsDS IsSqIntOn UJset)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CoverDS.TwistTypes.hasTypes_of_twist` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FHasDiscreteSeriesKTypesOfSqrtDetTwist.lean&line=90#L90)
 -/

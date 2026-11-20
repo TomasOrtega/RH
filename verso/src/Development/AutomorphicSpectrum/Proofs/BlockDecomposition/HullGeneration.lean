@@ -10,11 +10,9 @@ open PositivityTheory.Rg.BcB.E PositivityTheory.Rg.BcB.SpectralAccumulation
 namespace GlobalTheory.CompanionTheory.EGlue
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => exact ⟨fun _ _ _ => rfl, fun _ => W.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Use `⟨fun u hu g => ?_, fun g => W.add_mem (hx.2 g) (hy.2 g)⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `show x.1 (g * finGL E N u) + y.1 (g * finGL E N u) = x.1 g + y.1 g`. Rewrite using `[hx.1 u hu g, hy.1 u hu g]`. Consider the case `smul c x _ hx`. Use `⟨fun u hu g => ?_, fun g => W.smul_mem c (hx.2 g)⟩` and prove the remaining obligations. Use `show c • x.1 (g * finGL E N u) = c • x.1 g`.
-
-Rewrite using `[hx.1 u hu g]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeB_of_mem_span {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
     {K : Subgroup (GL (Fin N) (Af E))} {W : Submodule ℂ (Kinf E N → ℂ)} {S : Set (Sm E N)}
@@ -32,11 +30,9 @@ theorem typeB_of_mem_span {E : Type} [Field E] [NumberField E] [IsCMField E] {N 
     rw [hx.1 u hu g]
 
 /- English proof (translation)
-Introduce `E _ _ _ N K W S hS hfd`. Establish `hst : IsStable (hull S)` using `fun o φ hφ => Submodule.mem_sInf.2 fun U hU => hU.2 o φ (Submodule.mem_sInf.1 hφ U hU)`. Use `⟨hst, ?_⟩` and prove the remaining obligations. Establish `hsub : S ⊆ hull S` using `fun φ hφ => Submodule.mem_sInf.2 fun U hU => hU.1 hφ`. Take `⟨t, ht⟩` from `(Submodule.fg_iff_finiteDimensional _).2 hfd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htS : ∀ φ ∈ t, φ ∈ Submodule.span ℂ S` using `fun φ hφ => ht ▸ Submodule.subset_span hφ`. Use `⟨t, fun φ hφ => typeB_of_mem_span hS (htS φ hφ), fun φ hφ => ?_, fun U' hU' htU => ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le.2 hsub) (htS φ hφ)`. Use `sInf_le ⟨?_, hU'⟩` and prove the remaining obligations. Establish `h : Submodule.span ℂ S ≤ U'` using `ht ▸ Submodule.span_le.2 htU`.
-
-Conclude with `Submodule.subset_span.trans h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hullGen : HullGen := by
   intro E _ _ _ N K W S hS hfd

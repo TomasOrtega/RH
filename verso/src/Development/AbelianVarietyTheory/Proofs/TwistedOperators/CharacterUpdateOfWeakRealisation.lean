@@ -44,7 +44,7 @@ def toCx3One (R : RealDat3 D A3 Ks) (F : Face3 D A3) : CxData A3.fam3.amb3 where
   err0 := R.err0
 
 /- English proof (translation)
-Unfold `RealDat3.toCx3 toCx3One`. Use `congr 1`. Use function extensionality and compare the values at `i t`. Simplify using `only [hph, one_smul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem toCx3_eq_one (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hph : ∀ i, R.phs i = 1) : R.toCx3 F = toCx3One R F := by
   unfold RealDat3.toCx3 toCx3One

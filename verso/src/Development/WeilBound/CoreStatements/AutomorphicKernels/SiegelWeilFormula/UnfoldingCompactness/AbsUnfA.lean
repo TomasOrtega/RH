@@ -14,11 +14,9 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
 omit [SecondCountableTopology V] in
 
 /- English proof (translation)
-Rewrite using `[h𝓖.setLIntegral_eq_tsum' S C]`. Establish `hsub : 𝓖 ⊆ ⋃ ν : Λ, (ν +ᵥ C) ∩ 𝓖`. Introduce `β hβ`. Take `⟨ν, hν⟩` from `hcov β`. Use `Set.mem_iUnion.2 ⟨-ν, ?_, hβ⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, neg_neg, AddSubgroup.vadd_def, vadd_eq_add, add_comm]`. Conclude with `hν`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun ν => lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.vadd_def, vadd_eq_add, add_comm]`.
-
-Conclude with `(hS (-ν) x).symm`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_fd_le (h𝓖 : IsAddFundamentalDomain Λ 𝓖 lam) (S : V → ℝ≥0∞)
     (hS : ∀ (ν : Λ) β, S (β + ν) = S β) {C : Set V} (hcov : ∀ β, ∃ ν : Λ, β + (ν : V) ∈ C) :
@@ -40,11 +38,11 @@ theorem lintegral_fd_le (h𝓖 : IsAddFundamentalDomain Λ 𝓖 lam) (S : V → 
 omit [SecondCountableTopology V] in
 
 /- English proof (translation)
-Establish `h1 : IsAddFundamentalDomain Λ ((-β₀) +ᵥ 𝓖) lam` using `h𝓖.vadd_of_comm (-β₀)`. Establish `h2 : ∫ β in 𝓖, g β ∂lam = ∫ x in (-β₀) +ᵥ 𝓖, g (β₀ +ᵥ x) ∂lam`. Rewrite using `[← (measurePreserving_vadd β₀ lam).setIntegral_image_emb (measurableEmbedding_const_vadd β₀)]`. Use `congr 1`. Rewrite using `[Set.image_vadd, vadd_vadd, add_neg_cancel, zero_vadd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ∫ x in (-β₀) +ᵥ 𝓖, g (β₀ +ᵥ x) ∂lam = c * ∫ β in 𝓖, g β ∂lam`. Establish `e : (fun x => g (β₀ +ᵥ x)) = fun x => c * g x` using `funext fun x => by`. Rewrite using `[vadd_eq_add, add_comm, hβ₀]`. Rewrite using `[e, h1.setIntegral_eq h𝓖 (fun ν x => by rw [AddSubgroup.vadd_def, vadd_eq_add, add_comm, hg]), integral_const_mul]`. Establish `h4 : (1 - c) * ∫ β in 𝓖, g β ∂lam = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, one_mul, ← h3, ← h2, sub_self]`. Conclude with `(mul_eq_zero.1 h4).resolve_left (sub_ne_zero.2 (Ne.symm hc))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_fd_eq_zero (h𝓖 : IsAddFundamentalDomain Λ 𝓖 lam) (g : V → ℂ)
     (hg : ∀ (ν : Λ) β, g (β + ν) = g β) (β₀ : V) (c : ℂ) (hc : c ≠ 1) (hβ₀ : ∀ β, g (β + β₀) = c * g β) :

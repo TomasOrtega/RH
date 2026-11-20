@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.LieProj
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 R _ X`. Establish `hd` using `X.dim`. Use `haveI : Smooth X.A.hom := hd.smooth`. Use `finite_projective_of_localBasis (M := GlobalTheory.Serre.Lie X.rm) (Module.finrank ℚ F) fun p => ?_` and prove the remaining obligations. Take `⟨r, hr, ⟨C⟩, v, hv⟩` from `exists_chart_lieBasis X.A _ hd p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Take `⟨a', -⟩` from `GlobalTheory.OActPull.exists_oAct_of_isGrpPullback X.rm (isGrpPullback_pullback X.A (ReciprocityTheory.ChartRestriction.G.Chart.fB R (Localization.Away r)))`. Take `⟨e⟩` from `GlobalTheory.LieAway.lie_away X.A X.rm r a' ⟨C⟩`. Conclude with `⟨(GlobalTheory.Serre.Lie.basis a' hv).map e.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lie_finite_projective_rank : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R]
     (X : Obj F 𝔠 (Sp R)),

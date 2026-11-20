@@ -28,7 +28,7 @@ section General
 variable {X Z : Scheme.{0}} (h : X ⟶ Z)
 
 /- English proof (translation)
-The claim follows from `(CechPic.cls_eq_iff _ (LB.isLB_pull L.isLB h)).2 (LBIso.chartPull (h := h) (A := L.lb) (B := L.lb) ⟨fun i => i, fun _ => le_rfl, fun y i j hi hj => by refine Eq.trans (congrArg _ (Units.ext ?_)) ((gm_pull (𝟙 X) h y (L.U i ⊓ L.U j) ⟨hi, hj⟩ (L.g i j)).trans (by rw [Category.id_com …`.
+A detailed English derivation is pending.
 -/
 theorem cls_pullLB (L : FinLB Z) : (pullLB h L).cls = CechPic.pull h L.cls :=
   (CechPic.cls_eq_iff _ (LB.isLB_pull L.isLB h)).2 (LBIso.chartPull (h := h) (A := L.lb) (B := L.lb)
@@ -44,7 +44,7 @@ def pullFn (U : Z.Opens) (L : FinLB Z) (ρ : ∀ k, Γ(Z, U ⊓ L.U k)ˣ) (k : (
   (h.appLE (U ⊓ L.U k) (h ⁻¹ᵁ U ⊓ (pullLB h L).lb.U k) le_rfl).hom (ρ k).val
 
 /- English proof (translation)
-The claim follows from `(valF_restrict e hw _).trans (valF_appLE h _ _ (hw.trans (w.preimage_mono e)) _)`.
+A detailed English derivation is pending.
 -/
 theorem valF_pullFn {U : Z.Opens} {L : FinLB Z} (ρ : ∀ k, Γ(Z, U ⊓ L.U k)ˣ) (k : (pullLB h L).lb.ι) {T : X.Opens}
     (e : T ≤ h ⁻¹ᵁ U ⊓ (pullLB h L).lb.U k) {F : Type} [Field F] {w : Sp F ⟶ X} (hw : ⊤ ≤ w ⁻¹ᵁ T) :
@@ -52,7 +52,7 @@ theorem valF_pullFn {U : Z.Opens} {L : FinLB Z} (ρ : ∀ k, Γ(Z, U ⊓ L.U k)�
   (valF_restrict e hw _).trans (valF_appLE h _ _ (hw.trans (w.preimage_mono e)) _)
 
 /- English proof (translation)
-Introduce `k k' T e e' e''` and use `section_ext _ _ fun F _ w hw => by rw [valF_mul hw, valF_pullFn h ρ k e hw, valF_pullFn h ρ k' e' hw, H F (w ≫ h) k k' fun q hq => ⟨(e (hw hq)).1, e'' (hw hq)⟩] exact congrArg (· * _) ((valF_restrict e'' hw _).trans (valF_appLE h _ _ (hw.trans (w.preimage_mono e'')) _)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isGenOn_pullFn [IsReduced X] {U : Z.Opens} {L : FinLB Z} {ρ : ∀ k, Γ(Z, U ⊓ L.U k)ˣ}
     (H : ∀ (F : Type) [Field F] (w : Sp F ⟶ Z) k k', ⊤ ≤ w ⁻¹ᵁ (U ⊓ (L.U k ⊓ L.U k')) →
@@ -63,13 +63,13 @@ theorem isGenOn_pullFn [IsReduced X] {U : Z.Opens} {L : FinLB Z} {ρ : ∀ k, Γ
   exact congrArg (· * _) ((valF_restrict e'' hw _).trans (valF_appLE h _ _ (hw.trans (w.preimage_mono e'')) _)).symm
 
 /- English proof (translation)
-Establish `h₁ : IsUnit (Matrix.of (coef d he hs))`. Consider the cases of `d`. Use `(he.basis inf_le_left).invertibleToMatrix (hs.basis (inf_le_right : V ⊓ V' ≤ V'))` as an intermediate fact. Use `isUnit_of_invertible ((he.basis inf_le_left).toMatrix (hs.basis (inf_le_right : V ⊓ V' ≤ V'))) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `l i`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Rewrite using `[Module.Basis.toMatrix_apply, hs.basis_apply]`. Both sides reduce to the same expression. Use `(hs.basis inf_le_right).invertibleToMatrix (he.basis (inf_le_left : V ⊓ V' ≤ V))` as an intermediate fact. Rewrite using `[← Matrix.isUnit_transpose]`. Use `isUnit_of_invertible ((hs.basis inf_le_right).toMatrix (he.basis (inf_le_left : V ⊓ V' ≤ V))) using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `l i`. Rewrite using `[Module.Basis.toMatrix_apply, he.basis_apply]`. Both sides reduce to the same expression. Establish `h₂` using `h₁.map (((Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom.comp (w.appLE _ ⊤ hw).hom).mapMatrix)`. Use `h₂ using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `l i`. Conclude with `dif_pos hw`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isUnit_coef {F : X.Modules} {r : ℕ} (d : Bool) {V V' : X.Opens} {e : Fin r → Γ(F, V)} {s : Fin r → Γ(F, V')}
     (he : VB.IsFrame e) (hs : VB.IsFrame s) {k : Type} [Field k] {w : Sp k ⟶ X} (hw : ⊤ ≤ w ⁻¹ᵁ (V ⊓ V')) :
@@ -93,7 +93,7 @@ theorem isUnit_coef {F : X.Modules} {r : ℕ} (d : Bool) {V V' : X.Opens} {e : F
   exact dif_pos hw
 
 /- English proof (translation)
-Establish `ho : IsOpen (⋂ i, (U i : Set X))` using `isOpen_iInter_of_finite fun i => (U i).isOpen`. Take `⟨V, e, -, h₁, h₂, h₃⟩` from `hF.exists_affine (V := ⟨_, ho⟩) (Set.mem_iInter.2 hU)`. Conclude with `⟨V, e, h₃, h₁, fun i q hq => Set.mem_iInter.1 (h₂ hq) i⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frame_le {F : X.Modules} {r : ℕ} (hF : IsVB F r) {x : X} {n : ℕ} {U : Fin n → X.Opens} (hU : ∀ i, x ∈ U i) :
     ∃ (V : X.Opens) (e : Fin r → Γ(F, V)), VB.IsFrame e ∧ x ∈ V ∧ ∀ i, V ≤ U i := by
@@ -108,7 +108,7 @@ section Base
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B B₁ : Vert.Model O}
 
 /- English proof (translation)
-Establish `hc : IsClosed (B.str '' closure {x})` using `B.str.isClosedMap _ isClosed_closure`. Take `⟨x₀, hx, e⟩ : closedPoint O ∈ B.str '' closure {x}` from `(IsLocalRing.specializes_closedPoint (B.str x)).mem_closed hc ⟨x, subset_closure rfl, rfl⟩`. Conclude with `⟨x₀, specializes_iff_mem_closure.2 hx, fun hq => hq e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_special (x : B.X) : ∃ x₀ : B.X, x ⤳ x₀ ∧ x₀ ∉ B.gen := by
   have hc : IsClosed (B.str '' closure {x}) := B.str.isClosedMap _ isClosed_closure
@@ -117,7 +117,7 @@ theorem exists_special (x : B.X) : ∃ x₀ : B.X, x ⤳ x₀ ∧ x₀ ∉ B.gen
   exact ⟨x₀, specializes_iff_mem_closure.2 hx, fun hq => hq e⟩
 
 /- English proof (translation)
-Rewrite using `[VertDiv.eqn, VertDiv.eqn, LB.appLE_resG]`. Conclude with `(LB.resG_resG _ _ _).trans (LB.resG_appLE f (LB.pull_inf_le f _ j) _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqn_pull {f : B₁.X ⟶ B.X} (hf : f ≫ B.str = B₁.str) (P : VertDiv B) (j : (P.pull hf).M.ι) {W : B₁.X.Opens}
     (h : W ≤ B₁.gen ⊓ (P.pull hf).M.U j) {V : B.X.Opens} (hV : V ≤ B.gen ⊓ P.M.U (j ⟨⟩)) (e : W ≤ f ⁻¹ᵁ V) :
@@ -126,9 +126,9 @@ theorem eqn_pull {f : B₁.X ⟶ B.X} (hf : f ≫ B.str = B₁.str) (P : VertDiv
   exact (LB.resG_resG _ _ _).trans (LB.resG_appLE f (LB.pull_inf_le f _ j) _ _)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨k, hk⟩` from `LB.mem_of_cover L.isLB ((f.f ≫ Z.compι c) x)`. Take `⟨k', hk'⟩` from `LB.mem_of_cover L'.isLB ((f.f ≫ Z.compι c) x)`. Use `⟨fun _ _ => (k, k'), k, k', mem_pull.2 (mem_pull.2 ⟨hk, hk'⟩), hk, hk', fun T h₁ h₂ h₃ => section_ext _ _ fun F _ w hw => ?_⟩` and prove the remaining obligations. Establish `g₁ : T ≤ f.f ⁻¹ᵁ ((Z.comp c).gen ⊓ ((u.pair L.isLB L'.isLB).pull (Z.compι_str c)).M.U fun _ => (k, k'))` using `fun q hq => ⟨(Vert.Model.preimage_gen f.comp_str).ge (h₁ hq).1, mem_pull.1 (h₁ hq).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `g₂ : (Z.comp c).gen ⊓ ((u.pair L.isLB L'.isLB).pull (Z.compι_str c)).M.U (fun _ => (k, k')) ≤ Z.compι c ⁻¹ᵁ (Z.gen ⊓ (L.U k ⊓ L'.U k'))` using `fun q hq => ⟨(NModel.preimage_gen (Z.compι_str c)).ge hq.1, mem_pull.1 hq.2⟩`. Rewrite using `[valF_mul hw, valF_pullFn (f.f ≫ Z.compι c) ρ k h₂ hw, valF_pullFn (f.f ≫ Z.compι c) ρ' k' h₃ hw, eqn_pull f.comp_str _ _ h₁ le_rfl g₁, valF_appLE _ _ _ hw, NModel.VPair.eqn_pull (u.pair L.isLB L'.isLB) (Z.compι_str c) (fun _ => (k, k')) le_rfl le_rfl g₂, valF_appLE (x := w ≫ f.f …`. Conclude with `congrArg (fun a => valF _ _ a * _) (LB.resG_self _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRatio_pull {Z : NModel O} (c : Z.Comp) (f : Vert.Model.Hom B (Z.comp c)) {U : Z.X.Opens} {L L' : FinLB Z.X}
     (u : Z.GenIso L.lb L'.lb) (ρ : ∀ k, Γ(Z.X, U ⊓ L.U k)ˣ) (ρ' : ∀ k, Γ(Z.X, U ⊓ L'.U k)ˣ)
@@ -161,9 +161,9 @@ section Lattices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Take `⟨U, rfl⟩` from `exists_tan hu`. Establish `key (cf : Fin r → C) : (∃ w ∈ Λ, IsCombAtG t x (fun k => (tv (U (σ k))).left) cf w) ↔ ∀ l, ‖∑ j, cf j * N.submatrix id σ l j‖ ≤ 1`. Establish `e` using `h (fun k => cf (σ.symm k)) _ ((comb_iff U _ _).2 rfl)`. Rewrite `e` using `[← σ.sum_comp]`. Simplify using `only [comb_iff (fun k => U (σ k)), exists_eq_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply] at e`. Use `e.trans (forall_congr' fun l => ?_)` and prove the remaining obligations. Rewrite using `[← σ.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, Matrix.submatrix_apply, id]`. Simplify using `only [grNorm, matNorm, key]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem grNorm_eq_matNorm {X : Scheme.{0}} {t : SAB H X} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     {x : Sp C ⟶ X} {Λ : Set (Sp (DualNumber C) ⟶ t.G.left)} {r : ℕ} {u : Fin r → (Sp (DualNumber C) ⟶ t.G.left)}
@@ -188,11 +188,11 @@ variable {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : Valua
 include hp hW
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_fromSpec (Z.U a).2 (spMap (intO ↥C.S).subtype ≫ w ≫ h) ha`. Use `replace hφ : spMap φ ≫ Z.chart a = spMap (intO ↥C.S).subtype ≫ w ≫ h := hφ`. Take `⟨Q, hQ⟩` from `ModelPt.exists_ptC E H Dw Xo p W Y i₀ hp hW Z C (w ≫ h) (range_opn Z hφ)`. Set `y : Z.Pt` to `⟨C, Q, w ≫ h, hQ⟩`. Establish `hV' : ⊤ ≤ (spMap (intO ↥C.S).subtype ≫ w) ⁻¹ᵁ V` using `fun q _ => hV (Set.mem_univ (spMap (intO ↥C.S).subtype q))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n` using `(M (σ i)).norm y a k φ hφ fun q hq => hk (hV hq)`. Rewrite `n` using `[hN _ _ _ _ _ b i, grNorm_eq_matNorm (u := fun i => (Z.fr a).bc φ (x i).1 (x i).2) (N := (Matrix.of (coef d he (hF.frame a))).map (valF (spMap (intO ↥C.S).subtype ≫ w) _)) (fun i => ((chart_frame Z (w := y.gen) hφ).1 _ _).1) (hF.norm y w rfl a φ hφ V e he hV) σ i]`. Establish `pos` using `GlobalTheory.T.matrix_row_norm_pos_of_unit _ r _ ((Matrix.isUnit_submatrix_equiv (Equiv.refl _) σ).2 (isUnit_coef d he (hF.frame a) (w := spMap (intO ↥C.S).subtype ≫ w) fun q hq => ⟨hV' hq, ha hq⟩)) i`. Rewrite `pos` using `[Equiv.coe_refl]`. Establish `r0` using `norm_pos_iff.2 (GenId.val_ne_zero (M (σ i)) (w := y.gen) (a := a) (i := k) ha fun q hq => hk (hV' hq))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `n` using `[← Real.log_mul r0.ne' pos.ne', Real.log_eq_zero]`. Rewrite using `[Category.assoc]`. Conclude with `(n.resolve_left (mul_pos r0 pos).ne').resolve_right (by linarith [mul_pos r0 pos])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_matNorm {X : Scheme.{0}} {h : X ⟶ Z.X} {r : ℕ} {x : Fin r → Letter Dw} {d b : Bool} {F : X.Modules}
     {s : ∀ a : Fin Z.m, Fin r → Γ(F, h ⁻¹ᵁ (Z.U a).1)} (hF : IsLat Z h x d b F s)
@@ -228,13 +228,13 @@ variable [IsDiscreteValuationRing (Z.i.c.V W)] {B : Vert.Model (Z.i.c.V W)} (hB 
 include hB ha hvb
 
 /- English proof (translation)
-Use `(exists_special q).elim fun q₀ ⟨hq, hq₀⟩ => ?_` and prove the remaining obligations. Establish `hk : ∃ k : ∀ i, Fin (M i).L.n, ∀ i, q₀ ∈ h ⁻¹ᵁ (M i).L.U (k i)` using `Classical.skolem.1 fun i => LB.mem_of_cover (M i).L.isLB (h q₀)`. Use `hk.elim fun k hk => ?_` and prove the remaining obligations. Use `(exists_frame_le hvb hk).elim fun V ⟨e, he, hqV, hVk⟩ => ?_` and prove the remaining obligations. Use `Fact.mk hp` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `charP_residueField_of_mem_nonunits Z.i.c hp hW` as an intermediate fact. Establish `c₁ : (p : Z.i.c.V W) ∈ maximalIdeal (Z.i.c.V W)` using `natCast_mem_maximalIdeal _ p`. Establish `c₂ : Cardinal.mk (Z.i.c.V W) ≤ Cardinal.continuum` using `(Cardinal.mk_subtype_le _).trans ((Cardinal.mk_subtype_le _).trans Cardinal.mk_complex.le)`. Establish `key` using `GlobalTheory.T.matrix_integrality_from_complete_points p hp (Z.i.c.V W) c₁ c₂ B hB (h ⁻¹ᵁ (Z.U a).1) V q₀ ha hqV hq₀ r (Matrix.of fun l j => coef d he (hF.frame a) l (σ j)) fun j => resG B.X (le_inf inf_le_right (inf_le_left.trans (hVk (σ j)))) (pullFn h (Z.U a).1 (M (σ j)).L ((M …`. Use `(key fun C w hw hw' i => ?_).elim fun V' ⟨hV, P, h₁, h₂, h₃⟩ => ⟨V, V', hV, e, he, k, fun i => hV.trans (hVk i), P, hq.mem_open V'.isOpen h₁, h₂, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw₁ : ⊤ ≤ (spMap (intO ↥C.S).subtype ≫ w) ⁻¹ᵁ (V ⊓ h ⁻¹ᵁ (Z.U a).1)` using `fun q hq => ⟨hw (Set.mem_univ (spMap (intO ↥C.S).subtype q)), hw' hq⟩`. Establish `e₁` using `valF_pullFn h ((M (σ i)).r a) (k (σ i)) (le_inf inf_le_right (inf_le_left.trans (hVk (σ i)))) hw₁`. Establish `e₂` using `norm_mul_matNorm hp hW hF M σ hN a he C w hw hw' i _ (hVk _)`. Rewrite `e₂` using `[← e₁]`. Conclude with `e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₄` using `h₃ j`. Rewrite `h₄` using `[LB.resG_resG]`. Conclude with `h₄`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_triangular {d : Bool} (hF : IsLat Z h x d b F s) (σ : Fin r ≃ Fin r)
     (hN : StepNorms Dw p (fun i => st (σ i)) fun i => x (σ i)) (q : B.X) :
@@ -273,7 +273,7 @@ theorem exists_triangular {d : Bool} (hF : IsLat Z h x d b F s) (σ : Fin r ≃ 
     exact h₄
 
 /- English proof (translation)
-Introduce `q` and use `by obtain ⟨V, V', hV, e, he, k, hk, P, h₁, h₂, h₃⟩ := exists_triangular hp hW hB M ha hvb hF (Equiv.refl _) hN q obtain ⟨e', a₁, a₂, a₃⟩ := GlobalTheory.T.triangular_matrix_chain_points B.X _ V V' hV F r _ (hF.frame a) e he P _ h₂ h₃ exact ⟨V', e', k, hk, h₁, a₁, a₂, a₃⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tri_lie (hF : IsLat Z h x false b F s) (hN : StepNorms Dw p st x) :
     Tri (hF.frame a) (fun i => (pullLB h (M i).L).lb) fun i => pullFn h (Z.U a).1 (M i).L ((M i).r a) := fun q => by
@@ -282,7 +282,7 @@ theorem tri_lie (hF : IsLat Z h x false b F s) (hN : StepNorms Dw p st x) :
   exact ⟨V', e', k, hk, h₁, a₁, a₂, a₃⟩
 
 /- English proof (translation)
-Introduce `q` and use `by obtain ⟨V, V', hV, e, he, k, hk, P, h₁, h₂, h₃⟩ := exists_triangular hp hW hB M ha hvb hF Fin.revPerm hN q obtain ⟨e', a₁, a₂, a₃⟩ := GlobalTheory.T.triangular_reversed_chain_points B.X _ V V' hV F r _ (hF.frame a) e he P _ h₂ h₃ refine ⟨V', e', k, hk, h₁, a₁, a₂, fun i => ?_⟩ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tri_dual (hF : IsLat Z h x true b F s) (hN : StepNorms Dw p (fun i => st i.rev) fun i => x i.rev) :
     Tri (hF.frame a) (fun i => (pullLB h (M i).L.dual).lb) fun i => pullFn h (Z.U a).1 (M i).L.dual fun k => ((M i).r a k)⁻¹ :=
@@ -309,9 +309,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {i₀ : Idx H p} {Z : LocM.Mdl Y i₀} [IsDiscreteValuationRing (Z.i.c.V W)]
 
 /- English proof (translation)
-Take `⟨y, hy, hy'⟩` from `Z.dense.inter_open_nonempty _ c.opens.isOpen c.2.1.1`. Rewrite `hy'` using `[← Z.cover]`. Take `⟨a, ha⟩` from `Set.mem_iUnion.1 hy'`. Use `f.surjective` as an intermediate fact. Take `⟨q, hq⟩` from `f.f.surjective (⟨y, hy⟩ : c.opens.toScheme)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨a, VB.genericPoint_mem (x := q) ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(nmodel Z).compι c (f.f q) ∈ (Z.U a).1`. Rewrite using `[hq]`. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart (c : (nmodel Z).Comp) {B : Vert.Model (Z.i.c.V W)} (f : Vert.Model.Hom B ((nmodel Z).comp c)) :
     ∃ a, genericPoint B.X ∈ (f.f ≫ (nmodel Z).compι c) ⁻¹ᵁ (Z.U a).1 := by
@@ -326,7 +326,7 @@ theorem exists_chart (c : (nmodel Z).Comp) {B : Vert.Model (Z.i.c.V W)} (f : Ver
   exact ha
 
 /- English proof (translation)
-Rewrite using `[FinLB.c1_eq, picSymPull_c1Pic, picSymPull_c1Pic, ← CechPic.pull_comp, ← firstChernPic_class, e]`. Conclude with `congrArg firstChernPic (cls_pullLB _ L).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstChernClassTateTwist_pullback (c : (nmodel Z).Comp) {B : Vert.Model (Z.i.c.V W)} (f : Vert.Model.Hom B ((nmodel Z).comp c))
     (L : FinLB Z.X) {N : LB B.X} (hN : N.IsLB)

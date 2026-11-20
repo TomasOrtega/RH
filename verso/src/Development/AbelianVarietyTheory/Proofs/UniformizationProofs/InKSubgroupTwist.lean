@@ -26,9 +26,9 @@ section General
 variable {X Y B : Scheme.{0}} {N N' : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Take `⟨t', ht'⟩` from `h'`. Use `⟨⟨fun p => res (inf_le_left : M.U p.1 ⊓ M'.U p.2 ≤ _) (t.s p.1) * (res (inf_le_right : M.U p.1 ⊓ M'.U p.2 ≤ _) (t'.s p.2))⁻¹⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `v : ∀ p : M.ι × M'.ι, y ∈ M.U p.1 ⊓ M'.U p.2 → gm (𝟙 Y) y (M.U p.1 ⊓ M'.U p.2) (res (inf_le_left : M.U p.1 ⊓ M'.U p.2 ≤ _) (t.s p.1) * (res (inf_le_right : M.U p.1 ⊓ M'.U p.2 ≤ _) (t'.s p.2))⁻¹) = gm (𝟙 Y) y _ (t.s p.1) * (gm (𝟙 Y) y _ (t'.s p.2))⁻¹` using `fun p hp => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ y _ hp _) ((map_inv _ _).trans (congrArg (·⁻¹) (gm_res _ y _ hp _))))`. Establish `tr : ∀ {A : LB Y} {a : LB.Gen A}, a.IsGen → ∀ i j, y ∈ A.U i ⊓ A.U j → gm (𝟙 Y) y _ (a.s i) = gm (𝟙 Y) y _ (A.g i j) * gm (𝟙 Y) y _ (a.s j)` using `fun ha i j hm => (gm_res _ y _ hm _).symm.trans ((congrArg (gm (𝟙 Y) y _) (ha i j)).trans ((map_mul _ _ _).trans (congrArg _ (gm_res _ y _ hm _))))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((gm_res _ y _ hy _).trans (v p hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div M' M (𝟙 Y) y p q hy) ((gm_res _ y _ hy _).trans (v q hy.2)))).symm)` and prove the remaining obligations. Rewrite using `[tr ht p.1 q.1 ⟨hy.1.1, hy.2.1⟩, tr ht' p.2 q.2 ⟨hy.1.2, hy.2.2⟩, mul_inv, _root_.mul_mul_mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_div_of_gen {M M' : LB Y} (h : ∃ t : LB.Gen M, t.IsGen) (h' : ∃ t : LB.Gen M', t.IsGen) :
     ∃ t : LB.Gen (LB.div M M'), t.IsGen := by
@@ -51,9 +51,9 @@ theorem gen_div_of_gen {M M' : LB Y} (h : ∃ t : LB.Gen M, t.IsGen) (h' : ∃ t
   rw [tr ht p.1 q.1 ⟨hy.1.1, hy.2.1⟩, tr ht' p.2 q.2 ⟨hy.1.2, hy.2.2⟩, mul_inv, _root_.mul_mul_mul_comm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq⟩`. Take `⟨u', hu'⟩` from `h'`. Take `⟨u, hu, -⟩` from `DescendedPrincipal.exists_gen_mul_div hN hN' u' hu' q hq`. Conclude with `⟨u, hu⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h`. Take `⟨w, hw⟩` from `gen_div_of_gen h h'`. Conclude with `gen_chartPull (DescendedPrincipal.chartPullDiv N N' φ ε) w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasGen_div_iff (hN : N.IsLB) (hN' : N'.IsLB) (h' : HasGen N' φ ε) :
     HasGen (LB.div N N') φ ε ↔ HasGen N φ ε := by
@@ -67,7 +67,7 @@ theorem hasGen_div_iff (hN : N.IsLB) (hN' : N'.IsLB) (h' : HasGen N' φ ε) :
     exact gen_chartPull (DescendedPrincipal.chartPullDiv N N' φ ε) w hw
 
 /- English proof (translation)
-Establish `shrink : ∀ {A : LB X} {V W : B.Opens}, W ≤ V → HasGen A (fun k => (π ⁻¹ᵁ V).ι ≫ φ k) ε → HasGen A (fun k => (π ⁻¹ᵁ W).ι ≫ φ k) ε` using `fun {A V W} hle t => t.pull (Y.homOfLE (show π ⁻¹ᵁ W ≤ π ⁻¹ᵁ V from fun _ h => hle h)) (fun k => by rw [← Category.assoc, Scheme.homOfLE_ι])`. Apply the tactic sequence `constructor <;> intro H p <;> obtain ⟨V, hV, t⟩ := H p <;> obtain ⟨V', hV', t'⟩ := h' p`. Conclude with `⟨V ⊓ V', ⟨hV, hV'⟩, (hasGen_div_iff hN hN' (shrink inf_le_right t')).1 (shrink inf_le_left t)⟩`. Conclude with `⟨V ⊓ V', ⟨hV, hV'⟩, (hasGen_div_iff hN hN' (shrink inf_le_right t')).2 (shrink inf_le_left t)⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem locGen_div_iff (hN : N.IsLB) (hN' : N'.IsLB) {π : Y ⟶ B} (h' : LocGen N' π φ ε) :
     LocGen (LB.div N N') π φ ε ↔ LocGen N π φ ε := by
@@ -84,18 +84,16 @@ end General
 variable {S : Scheme.{0}} {B : Over S} [GrpObj B] {T : Over S}
 
 /- English proof (translation)
-The claim follows from `(inK_iff_locGen x).trans ((locGen_div_iff hL hO ((inK_iff_locGen x).1 hx)).trans (inK_iff_locGen x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem inK_div_iff {L O : LB B.left} (hL : L.IsLB) (hO : O.IsLB) {x : T ⟶ B} (hx : InK B O x) :
     InK B (LB.div L O) x ↔ InK B L x :=
   (inK_iff_locGen x).trans ((locGen_div_iff hL hO ((inK_iff_locGen x).1 hx)).trans (inK_iff_locGen x).symm)
 
 /- English proof (translation)
-Establish `H₀ : HasGen O (PrimCocycle.lamφ B) PrimCocycle.lamε` using `hu`. Establish `H₁ : LocGen O (fst T B).left (fun I => (lift (fst T B ≫ x) (snd T B)).left ≫ PrimCocycle.lamφ B I) PrimCocycle.lamε` using `fun _ => ⟨⊤, trivial, H₀.pull (((fst T B).left ⁻¹ᵁ ⊤).ι ≫ (lift (fst T B ≫ x) (snd T B)).left) fun _ => Category.assoc _ _ _⟩`. Establish `H₂` using `BoxKernel.locGen_base hO (fst T B).left (K := Fin 2) ![x.left, (1 : T ⟶ B).left] ![-1, 1]`. Use `(inK_iff_locGen x).2 (H₁.comb hO H₂ fun U _ h => ?_)` and prove the remaining obligations. Rewrite using `[PrimCocycle.prod_lam (fst T B ≫ x) (snd T B) h, Fin.prod_univ_two, Fin.prod_univ_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : (fst T B).left ≫ (1 : T ⟶ B).left = (1 : T ⊗ B ⟶ B).left` using `congrArg (fun q : T ⊗ B ⟶ B => q.left) (MonObj.comp_one (fst T B))`. Use `show h (translPt B x).left * (h ((fst T B).left ≫ x.left))⁻¹ * (h (snd T B).left)⁻¹ * h (1 : T ⊗ B ⟶ B).left * (h ((fst T B).left ≫ x.left) ^ (-1 : ℤ) * h ((fst T B).left ≫ (1 : T ⟶ B).left) ^ (1 : ℤ))⁻¹ = h (translPt B x).left ^ (1 : ℤ) * h (snd T B).left ^ (-1 : ℤ)`. Rewrite using `[e₁]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`.
-
-Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inK_of_lam [IsCommMonObj B] {O : LB B.left} (hO : O.IsLB) (hu : ∃ u : LB.Gen (abelian₂ B O), u.IsGen)
     (x : T ⟶ B) : InK B O x := by

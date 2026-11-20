@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SpanRepMatrixE
 open Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.SplitField
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SplitField.endSpanned_of_isIrrSub_of_isAlgClosed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FEndSpannedOfIsIrrSubOfIsAlgClosed.lean&line=8#L8)
 -/

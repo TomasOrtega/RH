@@ -17,7 +17,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {T₁ T₂ : Type} [CommGroup T₁
   {i₁ : Γ₁.G.left ⟶ G.left} {i₂ : Γ₂.G.left ⟶ G.left}
 
 /- English proof (translation)
-Set `g : Over.mk (Γ₁.G.hom ≫ x) ⟶ G` to `Over.homMk i₁ h₁.isOver`. Establish `hg : g ^ N = 1` using `(h₁.kernel Γ₁.G g).2 ⟨𝟙 _, by simp [g]⟩`. Take `⟨y, hy⟩` from `(h₂.kernel Γ₁.G g).1 hg`. Conclude with `⟨y, hy⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hom (h₁ : Γ₁.IsTorsionAlong G x N i₁) (h₂ : Γ₂.IsTorsionAlong G x N i₂) :
     ∃ ψ : Γ₁.G ⟶ Γ₂.G, ψ.left ≫ i₂ = i₁ := by
@@ -27,9 +27,9 @@ theorem exists_hom (h₁ : Γ₁.IsTorsionAlong G x N i₁) (h₂ : Γ₂.IsTors
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Establish `w : ∀ u : Y ⟶ Γ₁.G, (u.left ≫ i₁) ≫ G.hom = (Over.mk (Y.hom ≫ x)).hom` using `fun u => by`. Use `Over.w u` as an intermediate fact. Simplify using `only [Category.assoc, h₁.isOver, Over.mk_hom]`. Rewrite using `[← Category.assoc, this]`. Set `y₀ : Over.mk (Y.hom ≫ x) ⟶ G` to `Over.homMk (y.left ≫ i₁) (w y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `z₀ : Over.mk (Y.hom ≫ x) ⟶ G` to `Over.homMk (z.left ≫ i₁) (w z)`. Establish `e₁` using `h₁.mul Y y z y₀ z₀ rfl rfl`. Establish `e₂` using `h₂.mul Y (y ≫ ψ) (z ≫ ψ) y₀ z₀ (by simp [y₀, hψ]) (by simp [z₀, hψ])`. Apply `h₂.inj` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hψ, ← e₁, e₂]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_mul (h₁ : Γ₁.IsTorsionAlong G x N i₁) (h₂ : Γ₂.IsTorsionAlong G x N i₂) (ψ : Γ₁.G ⟶ Γ₂.G)
     (hψ : ψ.left ≫ i₂ = i₁) {Y : Over (Spec (CommRingCat.of R))} (y z : Y ⟶ Γ₁.G) :
@@ -46,9 +46,9 @@ theorem hom_mul (h₁ : Γ₁.IsTorsionAlong G x N i₁) (h₂ : Γ₂.IsTorsion
   rw [Over.comp_left, Category.assoc, hψ, ← e₁, e₂]
 
 /- English proof (translation)
-Take `⟨t', ht⟩` from `BT.QFGroup.exists_eq_comp_pt R T₂ Γ₂ (FractionRing R) (RingHom.id _) ((Γ₁.pt t).left ≫ ψ.left) (by`. Rewrite using `[Category.assoc, Over.w ψ, Over.w (Γ₁.pt t), RingHom.id_comp]`. Use the proof step `rfl)`. Use `⟨t', Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, ht]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: CommRingCat.ofHom (RingHom.id (FractionRing R)) = 𝟙 _` using `rfl`. Rewrite using `[this, Spec.map_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pt (ψ : Γ₁.G ⟶ Γ₂.G) (t : T₁) : ∃ t', Γ₁.pt t ≫ ψ = Γ₂.pt t' := by
   obtain ⟨t', ht⟩ := BT.QFGroup.exists_eq_comp_pt R T₂ Γ₂ (FractionRing R) (RingHom.id _)
@@ -61,14 +61,14 @@ theorem exists_pt (ψ : Γ₁.G ⟶ Γ₂.G) (t : T₁) : ∃ t', Γ₁.pt t ≫
   rw [this, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Introduce `a b h` and use `by let o : Spec (CommRingCat.of (FractionRing R)) := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R)) exact Γ.pt_inj a b o o (by rw [h])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pt_injective (Γ : BT.QFGroup R T₁) : Function.Injective Γ.pt := fun a b h => by
   let o : Spec (CommRingCat.of (FractionRing R)) := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R))
   exact Γ.pt_inj a b o o (by rw [h])
 
 /- English proof (translation)
-Unfold `BT.valAt`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem valAt_comp {B : Type} [CommRing B] {X Y : Scheme.{0}} (y : Spec (CommRingCat.of B) ⟶ Y) (g : Y ⟶ X)
     (s : Γ(X, ⊤)) : BT.valAt (y ≫ g) ⊤ le_top s = BT.valAt y ⊤ le_top (g.appTop s) := by
@@ -76,15 +76,15 @@ theorem valAt_comp {B : Type} [CommRing B] {X Y : Scheme.{0}} (y : Spec (CommRin
   congr 1
 
 /- English proof (translation)
-Introduce `R _ _ T₁ T₂ _ _ Γ₁ Γ₂ S G _ x N i₁ i₂ h₁ h₂`. Take `⟨ψ, hψ⟩` from `exists_hom h₁ h₂`. Take `⟨ψ', hψ'⟩` from `exists_hom h₂ h₁`. Establish `c₁ : ψ ≫ ψ' = 𝟙 _` using `h₁.inj _ _ _ (by simp [hψ, hψ'])`. Establish `c₂ : ψ' ≫ ψ = 𝟙 _` using `h₂.inj _ _ _ (by simp [hψ, hψ'])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose f hf using exists_pt (Γ₁ := Γ₁) (Γ₂ := Γ₂) ψ`. Use `choose f' hf' using exists_pt (Γ₁ := Γ₂) (Γ₂ := Γ₁) ψ'`. Establish `fmul : ∀ a c, f (a * c) = f a * f c` using `fun a c => pt_injective Γ₂ (by`. Rewrite using `[← hf, map_mul, map_mul, hom_mul h₁ h₂ ψ hψ, hf, hf])`. Set `b : T₁ ≃* T₂` to `{ toFun := f invFun := f' left_inv := fun t => pt_injective Γ₁ (by rw [← hf', ← hf, Category.assoc, c₁, Category.comp_id]) right_inv := fun t => pt_injective Γ₂ (by rw [← hf, ← hf', Category.assoc, c₂, Category.comp_id]) map_mul' := fmul }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Introduce and unpack `L _ _ M χ w ⟨s, hs, hv⟩`. Use `⟨ψ'.left.appTop s, fun t => ?_, fun e => ?_⟩` and prove the remaining obligations. Establish `e₁ : (Γ₂.pt t).left ≫ ψ'.left = (Γ₁.pt (f' t)).left` using `congrArg (fun z => z.left) (hf' t)`. Use `(valAt_comp _ _ s).symm.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e₁]`. Conclude with `hs (f' t)`. Take `⟨v, v₁, v₂, v₃⟩` from `hv e`. Establish `e₁ : ψ.left ≫ ψ'.left = 𝟙 _` using `congrArg (fun z => z.left) c₁`. Use `⟨v ≫ ψ.left, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, Over.w ψ, v₁]`. Rewrite using `[Category.assoc, hψ, v₂]`. Use `(valAt_comp _ _ s).symm.trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, e₁, Category.comp_id]`. Conclude with `v₃`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mulEquiv_isHT : ∀ (R : Type) [CommRing R] [IsDomain R] (T₁ T₂ : Type) [CommGroup T₁] [CommGroup T₂] (Γ₁ : BT.QFGroup R T₁) (Γ₂ : BT.QFGroup R T₂) (S : Scheme.{0}) (G : Over S) [GrpObj G] (x : Sp R ⟶ S) (N : ℕ) (i₁ : Γ₁.G.left ⟶ G.left) (i₂ : Γ₂.G.left ⟶ G.left), Γ₁.IsTorsionAlong G x N i₁ → Γ₂.IsTorsionAlong G x N i₂ → ∃ b : T₁ ≃* T₂, ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (χ : T₁ →* Rˣ) (w : Module.Dual R L), Γ₁.IsHT i₁ M N χ w → Γ₂.IsHT i₂ M N (χ.comp b.symm.toMonoidHom) w := by
   intro R _ _ T₁ T₂ _ _ Γ₁ Γ₂ S G _ x N i₁ i₂ h₁ h₂

@@ -11,9 +11,9 @@ open Filter Topology
 namespace GlobalTheory.EvenTheta
 
 /- English proof (translation)
-Use `choose g hg hF using h`. Use `⟨fun w => g w w, fun w => ?_, fun z => (hF z).self_of_nhds⟩` and prove the remaining obligations. Use `(hg w).differentiableAt.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(hg w).eventually_analyticAt, (hF w).eventually_nhds] with z h1 h2`. Use `tendsto_nhds_unique_of_frequently_eq (hg z).continuousAt h1.continuousAt ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : ∃ᶠ y in 𝓝 z, S y ≠ 0` using `mem_closure_iff_frequently.1 (hS z)`. Use `(h3.and_eventually (h2.and (hF z))).mono fun y hy => ?_` and prove the remaining obligations. Conclude with `mul_left_cancel₀ hy.1 (hy.2.2.symm.trans hy.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem exists_entire_of_locally_dvd {F S : ℂ → ℂ} (hS : Dense {z | S z ≠ 0})
     (h : ∀ w, ∃ g : ℂ → ℂ, AnalyticAt ℂ g w ∧ ∀ᶠ z in 𝓝 w, F z = S z * g z) :
@@ -28,7 +28,7 @@ theorem exists_entire_of_locally_dvd {F S : ℂ → ℂ} (hS : Dense {z | S z �
   exact mul_left_cancel₀ hy.1 (hy.2.2.symm.trans hy.2.1)
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.OddTheta.exists_periodPair Λ h`. Rewrite using `[GlobalTheory.OddTheta.sgStar_eq L Λ hL]`. Use `⟨_, ?_, GlobalTheory.canonicalSigma_add L ((hL ω).1 hω)⟩` and prove the remaining obligations. Unfold `GlobalTheory.latticeForm`. Use `fun_prop`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem IsLat.exists_sg_add {Λ : AddSubgroup ℂ} (h : IsLat Λ) {ω : ℂ} (hω : ω ∈ Λ) :
     ∃ c : ℂ → ℂ, Differentiable ℂ c ∧ ∀ z, sgStar Λ (z + ω) = c z * sgStar Λ z := by
@@ -39,25 +39,23 @@ theorem IsLat.exists_sg_add {Λ : AddSubgroup ℂ} (h : IsLat Λ) {ω : ℂ} (h�
   fun_prop
 
 /- English proof (translation)
-Introduce `Λ hΛ k F hF he h0 hlaw`. Establish `hσ` using `hΛ.differentiable`. Establish `hσc` using `hσ.continuous`. Establish `hFc` using `hF.continuous`. Establish `hne : ∀ z ∉ Λ, sgStar Λ z ≠ 0` using `fun z hz => (hΛ.sg_eq_zero z).not.2 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h, hh, eh⟩` from `GlobalTheory.exists_eq_add_sq_mul_of_even (hF.analyticAt 0) he`. Establish `hu : AnalyticAt ℂ (dslope (sgStar Λ) 0) 0` using `(differentiableOn_univ.1 ((Complex.differentiableOn_dslope univ_mem).2 hσ.differentiableOn)).analyticAt 0`. Establish `hu0 : dslope (sgStar Λ) 0 0 ≠ 0`. Rewrite using `[dslope_same, (GlobalTheory.OddTheta.sgStar_laws Λ hΛ).1.2.1]`. Conclude with `one_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eu : ∀ z, sgStar Λ z = z * dslope (sgStar Λ) 0 z` using `fun z => by`. Use `sub_smul_dslope (sgStar Λ) 0 z` as an intermediate fact. Rewrite `this` using `[(hΛ.sg_eq_zero 0).2 Λ.zero_mem]`. Simplify using `using this.symm`. Take `⟨G, hG, eG⟩` from `exists_entire_of_locally_dvd (F := F) (S := fun z => sgStar Λ z ^ 2) (hΛ.dense_compl.mono fun z hz => pow_ne_zero 2 (hne z hz)) fun w => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w ∈ Λ`. Take `⟨c, hc, ec⟩` from `hΛ.exists_sg_add hw`. Establish `hcc` using `hc.continuous`. Establish `eF : ∀ z, F (z + w) = c z ^ (2 * (k + 1)) * F z` using `fun z => by`. Use `congrFun (Continuous.ext_on hΛ.dense_compl (f := fun z => F (z + w)) (g := fun z => c z ^ (2 * (k + 1)) * F z) (by fun_prop) (by fun_prop) fun z hz => ?_) z` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_right_cancel₀ (pow_ne_zero (2 * (k + 1)) (hne z hz)) ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hlaw w hw, ec]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : AnalyticAt ℂ (fun y : ℂ => y - w) w` using `by fun_prop`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha : AnalyticAt ℂ (fun z => c z ^ (2 * k) * h z / dslope (sgStar Λ) 0 z ^ 2) 0` using `(((hc.analyticAt 0).pow _).mul hh).div (hu.pow 2) (pow_ne_zero 2 hu0)`. Use `⟨_, ha.comp_of_eq hs (sub_self w), ?_⟩` and prove the remaining obligations. Use `filter_upwards [(hu.comp_of_eq hs (sub_self w)).continuousAt.eventually_ne (y := 0) (by simpa using hu0)] with y hy`. Take `⟨z, rfl⟩ : ∃ z, y = z + w` from `⟨y - w, by ring⟩`. Simplify using `only [Function.comp, add_sub_cancel_right] at hy ⊢`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[eF, ec, eh, h0, eu z]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun z => F z / sgStar Λ z ^ 2, (hF.analyticAt w).div ((hσ.analyticAt w).pow 2) (pow_ne_zero 2 (hne w hw)), ?_⟩ filter_upwards [hσc.continuousAt.eventually_ne (hne w hw)] with y hy` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGc` using `hG.continuous`. Use `⟨G, hG, fun z => ?_, eG, fun ω hω z => ?_⟩` and prove the remaining obligations. Use `congrFun (Continuous.ext_on hΛ.dense_compl (f := fun z => G (-z)) (by fun_prop) hGc fun z hz => ?_) z` and prove the remaining obligations. Use `mul_left_cancel₀ (pow_ne_zero 2 (hne z hz)) ?_` and prove the remaining obligations. Establish `h1` using `eG (-z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[he, hΛ.sg_neg, neg_sq]`. Conclude with `h1.symm.trans (eG z)`. Use `congrFun (Continuous.ext_on hΛ.dense_compl (f := fun z => G (z + ω) * sgStar Λ z ^ (2 * k)) (g := fun z => G z * sgStar Λ (z + ω) ^ (2 * k)) (by fun_prop) (by fun_prop) fun z hz => ?_) z` and prove the remaining obligations. Establish `hz' : z + ω ∉ Λ` using `fun h' => hz (by simpa using Λ.sub_mem h' hω)`. Use `mul_left_cancel₀ (mul_ne_zero (pow_ne_zero 2 (hne z hz)) (pow_ne_zero 2 (hne _ hz'))) ?_` and prove the remaining obligations.
-
-Establish `h1` using `hlaw ω hω z`. Rewrite `h1` using `[eG z, eG (z + ω)]`. Use `beta_reduce at h1 ⊢`. Take the linear combination `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_eq_sg_sq_mul : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∀ (k : ℕ) (F : ℂ → ℂ), Differentiable ℂ F → (∀ z, F (-z) = F z) → F 0 = 0 → (∀ ω ∈ Λ, ∀ z, F (z + ω) * sgStar Λ z ^ (2 * (k + 1)) = F z * sgStar Λ (z + ω) ^ (2 * (k + 1))) → ∃ G : ℂ → ℂ, Differentiable ℂ G ∧ (∀ z, G (-z) = G z) ∧ (∀ z, F z = sgStar Λ z ^ 2 * G z) ∧ ∀ ω ∈ Λ, ∀ z, G (z + ω) * sgStar Λ z ^ (2 * k) = G z * sgStar Λ (z + ω) ^ (2 * k) := by
   intro Λ hΛ k F hF he h0 hlaw

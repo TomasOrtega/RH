@@ -11,7 +11,7 @@ namespace GlobalTheory.PMon
 open Matrix
 
 /- English proof (translation)
-Simplify using `only [mulVec, dotProduct, Fintype.sum_prod_type, map_apply, blockDiagonal_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[apply_ite f]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem blockDiagonal_map_mulVec {R S : Type*} [CommSemiring R] [CommSemiring S] {n : Type} [Fintype n]
     [DecidableEq n] {r : ℕ} (D : Fin r → Matrix n n R) (f : R →+* S) (w : n × Fin r → S) (i : n) (k : Fin r) :
@@ -21,7 +21,7 @@ theorem blockDiagonal_map_mulVec {R S : Type*} [CommSemiring R] [CommSemiring S]
   simp [apply_ite f]
 
 /- English proof (translation)
-Simplify using `only [ks, RingHom.comp_apply]`. Rewrite using `[Polynomial.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ks_algebraMap_q {l : ℕ} [Fact l.Prime] (P : LocPrime l) (q : ℚ_[l]) :
     algebraMap ℚ_[l] (Bst P) q = ks P (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q) := by
@@ -29,17 +29,15 @@ theorem ks_algebraMap_q {l : ℕ} [Fact l.Prime] (P : LocPrime l) (q : ℚ_[l]) 
   rw [Polynomial.algebraMap_apply, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Introduce `l _ P n _ _ K r hr σ ρ₀ p c c₀ β hK hconj hpc hβ`. Use `set M : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l) := (p : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l))`. Use `⟨fun i => (M.map (ks P) *ᵥ β) (i, ⟨0, hr⟩), fun g => ?_⟩` and prove the remaining obligations. Establish `hD : M.map (ks P) *ᵥ (fun x => actSt P (g : GQ l) (β x)) = fun x => actSt P (g : GQ l) ((M.map (ks P) *ᵥ β) x)`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[act_ks P g (hK x j)]`. Establish `hC : M.map (ks P) * (ρ₀ g : Matrix (n × Fin r) (n × Fin r) ℚ_[l]).map (algebraMap ℚ_[l] (Bst P)) = (Matrix.blockDiagonal (fun m : Fin r => (σ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l m))).map (ks P) * M.map (ks P)`. Establish `e : (ρ₀ g : Matrix (n × Fin r) (n × Fin r) ℚ_[l]).map (algebraMap ℚ_[l] (Bst P)) = ((ρ₀ g : Matrix (n × Fin r) (n × Fin r) ℚ_[l]).map (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l))).map (ks P)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `ks_algebraMap_q P q`. Rewrite using `[e, ← Matrix.map_mul, hconj g, Matrix.map_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : (fun x : n × Fin r => ks P (fr l x.2 (c g x.1))) = M.map (ks P) *ᵥ (fun x => algebraMap ℚ_[l] (Bst P) (c₀ g x))`. Use function extensionality and compare the values at `x`. Establish `e : (ks P) ∘ (fun x => algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (c₀ g x)) = fun x => algebraMap ℚ_[l] (Bst P) (c₀ g x)`. Use function extensionality and compare the values at `y`. Conclude with `(ks_algebraMap_q P _).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← congrFun (hpc g) x, RingHom.map_mulVec, e]`. Establish `hv : (fun x : n × Fin r => ks P (fr l x.2 (c g x.1))) = (Matrix.blockDiagonal (fun m : Fin r => (σ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l m))).map (ks P) *ᵥ (fun x => actSt P (g : GQ l) ((M.map (ks P) *ᵥ β) x)) - M.map (ks P) *ᵥ β`. Rewrite using `[h1, hβ g, Matrix.mulVec_sub, Matrix.mulVec_mulVec, hC, ← Matrix.mulVec_mulVec, hD]`. Use function extensionality and compare the values at `i`. Establish `h` using `congrFun hv (i, ⟨0, hr⟩)`.
-
-Rewrite `h` using `[Pi.sub_apply, blockDiagonal_map_mulVec]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coboundary_block_zero : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ), 0 < r →
     ∀ (σ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) (ρ₀ : ↥(GK K) →* GL (n × Fin r) ℚ_[l]) (p : GL (n × Fin r) ↥(MaximalUnramifiedExtension l))

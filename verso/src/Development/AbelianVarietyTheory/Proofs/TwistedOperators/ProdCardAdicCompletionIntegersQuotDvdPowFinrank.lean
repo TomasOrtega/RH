@@ -24,13 +24,11 @@ open GlobalTheory.RowEx
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ s k hk`. Use `set I : Ideal (𝓞 F) := Ideal.span {(k : 𝓞 F)} with hIdef`. Establish `hI : I ≠ 0`. Rewrite using `[hIdef, Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hk.ne'` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmap : ∀ v : HeightOneSpectrum (𝓞 F), I.map (algebraMap (𝓞 F) (v.adicCompletionIntegers F)) = Ideal.span {(k : v.adicCompletionIntegers F)}`. Introduce `v`. Rewrite using `[hIdef, Ideal.map_span, Set.image_singleton, map_natCast]`. Take `⟨hfin, hprod⟩` from `GlobalTheory.LocalDifferentProduct.finprod_card_quot_map hI`. Simplify using `only [hmap] at hfin hprod`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : Ideal.absNorm I = k ^ Module.finrank ℚ F`. Rewrite using `[hIdef, Ideal.absNorm_span_singleton]`. Establish `e : (k : 𝓞 F) = algebraMap ℤ (𝓞 F) (k : ℤ)` using `by simp`. Rewrite using `[e, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, Int.natAbs_pow]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← hnorm, ← hprod, finprod_eq_prod_of_mulSupport_subset (s := s ∪ hfin.toFinset) _ (by intro x hx; simp [hx])]`. Conclude with `Finset.prod_dvd_prod_of_subset _ _ _ Finset.subset_union_left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_card_quot_natCast_dvd_pow_finrank : ∀ (F : Type) [Field F] [NumberField F] (s : Finset (HeightOneSpectrum (𝓞 F))) (k : ℕ), 0 < k → ∏ v ∈ s, Nat.card (v.adicCompletionIntegers F ⧸ Ideal.span {(k : v.adicCompletionIntegers F)}) ∣ k ^ Module.finrank ℚ F := by
   intro F _ _ s k hk

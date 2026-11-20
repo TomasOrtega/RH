@@ -11,27 +11,23 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `p : Ideal P` to `𝔫.comap (algebraMap P B)`. Establish `hp : p.IsPrime` using `Ideal.comap_isPrime _ _`. Set `M : Submonoid B` to `Algebra.algebraMapSubmonoid B p.primeCompl`. Establish `hMle : M ≤ 𝔫.primeCompl`. Introduce and unpack `_ ⟨s, hs, rfl⟩ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hs (Ideal.mem_comap.mpr h)`. Establish `hM0 : M ≤ nonZeroDivisors B`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero fun h0 => hs ?_` and prove the remaining obligations. Use `show algebraMap P B s ∈ 𝔫`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Conclude with `𝔫.zero_mem`. Establish `: IsDomain (Localization M)` using `IsLocalization.isDomain_localization hM0`. Set `algCA : Algebra (Localization M) A` to `IsLocalization.localizationAlgebraOfSubmonoidLe (Localization M) A M 𝔫.primeCompl hMle`. Establish `: IsScalarTower B (Localization M) A` using `IsLocalization.localization_isScalarTower_of_submonoid_le (Localization M) A M 𝔫.primeCompl hMle`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `𝔪 : Ideal (Localization M)` to `(maximalIdeal A).comap (algebraMap (Localization M) A)`. Establish `h𝔪 : 𝔪.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hNA : IsLocalization (𝔫.primeCompl.map (algebraMap B (Localization M))) A` using `IsLocalization.isLocalization_of_submonoid_le (Localization M) A M 𝔫.primeCompl hMle`. Establish `hunitB : ∀ b : B, IsUnit (algebraMap B A b) ↔ b ∈ 𝔫.primeCompl` using `fun b => IsLocalization.AtPrime.isUnit_to_map_iff A 𝔫 b`. Establish `hA : IsLocalization.AtPrime A 𝔪`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `IsLocalization.isLocalization_of_is_exists_mul_mem (S := A) (M := 𝔫.primeCompl.map (algebraMap B (Localization M))) (N := 𝔪.primeCompl) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩ h`. Establish `hu : IsUnit (algebraMap B A b)` using `(hunitB b).mpr hb`. Rewrite `hu` using `[IsScalarTower.algebraMap_apply B (Localization M) A]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp (Ideal.mem_comap.mp h) hu`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx⟩`. Take `⟨b, s, rfl⟩` from `IsLocalization.exists_mk'_eq M x`. Establish `key : algebraMap B A b = algebraMap B A s * algebraMap (Localization M) A (IsLocalization.mk' (Localization M) b s)`. Rewrite using `[IsScalarTower.algebraMap_apply B (Localization M) A b, IsScalarTower.algebraMap_apply B (Localization M) A s, ← map_mul, IsLocalization.mk'_spec']`. Use `⟨algebraMap B (Localization M) s, b, ?_, (IsLocalization.mk'_spec' _ _ _).symm⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : IsUnit (algebraMap B A s)` using `(hunitB s).mpr (hMle s.2)`. Establish `hx' : IsUnit (algebraMap (Localization M) A (IsLocalization.mk' (Localization M) b s))`. Assume the negation of the conclusion as `hn`. Conclude with `hx (Ideal.mem_comap.mpr ((IsLocalRing.mem_maximalIdeal _).mpr hn))`. Use `(hunitB b).mp ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite using `[key]`. Conclude with `hs.mul hx'`. Establish `hcomapB : 𝔪.comap (algebraMap B (Localization M)) = 𝔫`. Rewrite using `[Ideal.comap_comap, ← IsScalarTower.algebraMap_eq]`. Conclude with `IsLocalization.AtPrime.under_maximalIdeal A 𝔫`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨p, hp, Localization M, inferInstance, inferInstance, inferInstance, inferInstance, algCA, 𝔪, h𝔪, ?_, hA, ?_⟩` and prove the remaining obligations. Conclude with `localizationAlgebra_injective (S := B) (M := p.primeCompl) (Localization.AtPrime p) (Localization M) hinj`. Set `Q : Ideal (Localization.AtPrime p)` to `𝔪.comap (algebraMap (Localization.AtPrime p) (Localization M))`. Establish `hQ : Q.comap (algebraMap P (Localization.AtPrime p)) = p` using `by show (𝔪.comap _).comap _ = p`. Rewrite using `[Ideal.comap_comap, ← IsScalarTower.algebraMap_eq, IsScalarTower.algebraMap_eq P B (Localization M), ← Ideal.comap_comap, hcomapB]`.
-
-Establish `h1 : Q = p.map (algebraMap P (Localization.AtPrime p))`. Establish `h2` using `IsLocalization.map_under p.primeCompl (Localization.AtPrime p) Q`. Rewrite `h2` using `[Ideal.under_def, hQ]`. Conclude with `h2.symm`. Use `show Q = _`.
-
-Rewrite using `[h1]`. Conclude with `Localization.AtPrime.map_eq_maximalIdeal`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_over_localization_atPrime_below (P B A : Type) [CommRing P] [CommRing B]
     [IsDomain B] [Algebra P B] [Module.Finite P B] [CommRing A] [IsLocalRing A] [Algebra B A]
@@ -109,15 +105,15 @@ theorem exists_finite_over_localization_atPrime_below (P B A : Type) [CommRing P
     exact Localization.AtPrime.map_eq_maximalIdeal
 
 /- English proof (translation)
-Introduce `A _ _ _ _ _ _`. Take `⟨r, B, _, _, _, _, _, _, 𝔫, _, hinj, hloc⟩` from `GlobalTheory.T.injective_and_isLocalization_of_finite_over_mvPolynomial A`. Take `⟨p, _, C, _, _, _, _, _, 𝔪, _, hinjC, hlocC, hcomap⟩` from `exists_finite_over_localization_atPrime_below (MvPolynomial (Fin r) ℤ) B A 𝔫 hinj`. Establish `hTreg : IsRegularLocalRing (Localization.AtPrime p)` using `inferInstance`. Take `⟨_, _⟩` from `GlobalTheory.T.regular_local_ring_normal_domain (Localization.AtPrime p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.isRegularLocalRing_adicCompletion' (Localization.AtPrime p)` as an intermediate fact. Take `⟨_, _⟩` from `GlobalTheory.T.regular_local_ring_normal_domain (AdicCompletion (maximalIdeal (Localization.AtPrime p)) (Localization.AtPrime p))`. Establish `: CharZero (Localization.AtPrime p)` using `charZero_of_injective_algebraMap (R := MvPolynomial (Fin r) ℤ) (IsLocalization.injective (M := p.primeCompl) (S := Localization.AtPrime p) p.primeCompl_le_nonZeroDivisors)`. Establish `hTU : Function.Injective (algebraMap (Localization.AtPrime p) (AdicCompletion (maximalIdeal (Localization.AtPrime p)) (Localization.AtPrime p)))`. Introduce `x y h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `AdicCompletion.of_injective (maximalIdeal (Localization.AtPrime p)) (Localization.AtPrime p) h`. Take `⟨d, hd0, hd⟩` from `GlobalTheory.T.exists_ne_zero_mul_integral_eq_tensor (Localization.AtPrime p) (AdicCompletion (maximalIdeal (Localization.AtPrime p)) (Localization.AtPrime p)) C hTU hinjC`. Take `⟨S', _, e, he⟩` from `GlobalTheory.T.exists_ringEquiv_adicCompletion_localization_prod (Localization.AtPrime p) C A 𝔪 hcomap`. Establish `key` using `GlobalTheory.T.exists_mul_fst_eq_of_integral_of_conductor (AdicCompletion (maximalIdeal A) A) S' _ e _ hd`. Establish `hed : (e (algebraMap (Localization.AtPrime p) _ d)).1 = algebraMap A (AdicCompletion (maximalIdeal A) A) (algebraMap C A (algebraMap _ C d))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply', he]`. Use `⟨algebraMap C A (algebraMap _ C d), ?_, fun c hc => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hd0` to reduce the goal to its premises. Apply `hinjC` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsLocalization.injective (M := 𝔪.primeCompl) (S := A) 𝔪.primeCompl_le_nonZeroDivisors` to reduce the goal to its premises. Rewrite using `[h0, map_zero, map_zero]`. Take `⟨s, hs⟩` from `key c hc`. Conclude with `⟨s, by rw [hs, hed]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conductor_adicCompletion_of_essFiniteType : ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsIntegrallyClosed A] [CharZero A] [Algebra.EssFiniteType ℤ A], ∃ x : A, x ≠ 0 ∧ ∀ c : FractionRing (AdicCompletion (maximalIdeal A) A), IsIntegral (AdicCompletion (maximalIdeal A) A) c → ∃ s : AdicCompletion (maximalIdeal A) A, algebraMap _ (FractionRing (AdicCompletion (maximalIdeal A) A)) s = algebraMap _ (FractionRing (AdicCompletion (maximalIdeal A) A)) (algebraMap A (AdicCompletion (maximalIdeal A) A) x) * c := by
   intro A _ _ _ _ _ _

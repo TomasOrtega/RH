@@ -6,11 +6,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Establish `hprime : (RingHom.ker β).IsPrime` using `RingHom.ker_isPrime β`. Establish `hp : ((p : ℕ) : O) ∈ RingHom.ker β`. Rewrite using `[RingHom.mem_ker, map_natCast]`. Conclude with `CharP.cast_eq_zero k p`. Establish `hne : RingHom.ker β ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hp` using `[h, Ideal.mem_bot]`. Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast hp)`. Establish `hmax : (RingHom.ker β).IsMaximal` using `IsPrime.to_maximal_ideal hne`. Establish `heq : RingHom.ker β = IsLocalRing.maximalIdeal O` using `IsLocalRing.eq_maximalIdeal hmax`.
-
-Rewrite `hx` using `[← heq]`. Conclude with `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma map_eq_zero_of_mem_max {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [CharZero O] {k : Type} [Field k] [CharP k p] (β : O →+* k) {x : O}
@@ -29,11 +27,9 @@ private lemma map_eq_zero_of_mem_max {p : ℕ} [Fact p.Prime] {O : Type} [CommRi
   exact hx
 
 /- English proof (translation)
-Use `letI : Field (𝓞 F ⧸ J) := Ideal.Quotient.field J`. Establish `hpr : p.Prime` using `Fact.out`. Use `haveI : CharP (𝓞 F ⧸ J) p := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hpr]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk J), Ideal.Quotient.eq_zero_iff_mem]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `hp`. Use `haveI : Finite (𝓞 F ⧸ J) := Ideal.finiteQuotientOfFreeOfNeBot J hne`. Use `letI : Algebra (ZMod p) (𝓞 F ⧸ J) := ZMod.algebra _ p`. Use `letI : Algebra (ZMod p) k := ZMod.algebra _ p`. Use `haveI : Module.Finite (ZMod p) (𝓞 F ⧸ J) := Module.Finite.of_finite`.
-
-Use `haveI : Algebra.IsAlgebraic (ZMod p) (𝓞 F ⧸ J) := Algebra.IsAlgebraic.of_finite _ _`. Set `ψ : (𝓞 F ⧸ J) →ₐ[ZMod p] k` to `IsAlgClosed.lift`. Use `⟨(ψ : (𝓞 F ⧸ J) →+* k).comp (Ideal.Quotient.mk J), ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.ker_comp_of_injective _ (ψ : (𝓞 F ⧸ J) →+* k).injective, Ideal.mk_ker]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_map_ker {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [NumberField F]
     (J : Ideal (𝓞 F)) (hJ : J.IsMaximal) (hp : (p : 𝓞 F) ∈ J) (hne : J ≠ ⊥)
@@ -56,35 +52,31 @@ private lemma exists_map_ker {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [Numb
   rw [RingHom.ker_comp_of_injective _ (ψ : (𝓞 F ⧸ J) →+* k).injective, Ideal.mk_ker]
 
 /- English proof (translation)
-Introduce `p _ D O _ _ _ _ b r w hw hpO ha hUw htw 𝔞 h𝔞w`. Establish `hpr : p.Prime` using `Fact.out`. Establish `i0 : Fin D.a` using `⟨0, by omega⟩`. Establish `hρ : ∀ (k : Type) [Field k] [CharP k p] (β : O →+* k), β b.ρ = (r : k)`. Introduce `k _ _ β`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : b.t i0 (D.ω - (r : 𝓞 D.F)) ∈ IsLocalRing.maximalIdeal O` using `htw i0 _ (hUw (sub_mem_uIdeal D r))`. Establish `h0` using `map_eq_zero_of_mem_max (p := p) β hm`. Rewrite `h0` using `[map_sub, map_intCast, map_sub, map_intCast, b.t_ω, sub_eq_zero]`. Conclude with `h0`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨hne, hall⟩` from `h`. Establish `hrad : uIdeal D r ≤ 𝔞.radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `P ⟨hP𝔞, hPprime⟩`. Establish `hPne : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hne (le_bot_iff.mp hP𝔞)`. Establish `hPmax : P.IsMaximal` using `Ideal.IsPrime.isMaximal hPprime hPne`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, hpP, _, hφ⟩` from `hall P hPmax hP𝔞`. Use `haveI : CharP (IsLocalRing.ResidueField O) p := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hpr, ← map_natCast (IsLocalRing.residue O)]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).mpr hpO`. Use `haveI : CharP (AlgebraicClosure (IsLocalRing.ResidueField O)) p := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[CharP.charP_iff_prime_eq_zero hpr, ← map_natCast (algebraMap (IsLocalRing.ResidueField O) (AlgebraicClosure _)), CharP.cast_eq_zero, map_zero]`. Take `⟨φ, hker⟩` from `exists_map_ker (p := p) P hPmax hpP hPne (AlgebraicClosure (IsLocalRing.ResidueField O))`. Set `β : O →+* AlgebraicClosure (IsLocalRing.ResidueField O)` to `(algebraMap _ _).comp (IsLocalRing.residue O)`. Establish `h1` using `hφ (AlgebraicClosure (IsLocalRing.ResidueField O)) β φ hker`. Rewrite `h1` using `[hρ _ β]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub : D.ω - (r : 𝓞 D.F) ∈ P`. Rewrite using `[← hker, RingHom.mem_ker, map_sub, map_intCast, h1, sub_self]`. Unfold `uIdeal`. Rewrite using `[Ideal.span_le]`. Introduce `x hx`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hx with rfl | rfl` into its components or cases. Conclude with `hpP`. Conclude with `hsub`. Conclude with `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Introduce and unpack `⟨e, he⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpe : ((p : ℕ) : 𝓞 D.F) ^ e ∈ uIdeal D r ^ e` using `Ideal.pow_mem_pow (p_mem_uIdeal D r) e`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `he` using `[h]`. Establish `h0` using `he hpe`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[Ideal.mem_bot]`. Establish `h00 : ((p : ℕ) : 𝓞 D.F) = 0` using `eq_zero_of_pow_eq_zero h0`. Conclude with `hpr.ne_zero (by exact_mod_cast h00)`. Introduce `w' hw' h𝔞w' haveI := hw'.isPrime`. Establish `hUw' : uIdeal D r ≤ w'` using `Ideal.IsPrime.le_of_pow_le (he.trans h𝔞w')`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : w' ≠ w`. Introduce and unpack `rfl`. Conclude with `hw'.ne_top (top_le_iff.mp (h𝔞w ▸ sup_le h𝔞w' le_rfl))`. Use `⟨hw', hUw' (p_mem_uIdeal D r), ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hspan`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hspan`. Establish `hMeq : M = IsLocalRing.maximalIdeal O` using `IsLocalRing.eq_maximalIdeal hM`. Establish `hKtop : RingHom.ker ((IsLocalRing.residue O).comp (b.t i)) ≠ ⊤` using `RingHom.ker_ne_top _`. Establish `hwK : w ≤ RingHom.ker ((IsLocalRing.residue O).comp (b.t i))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff]`. Conclude with `htw i x hx`. Establish `hw'K : w' ≤ RingHom.ker ((IsLocalRing.residue O).comp (b.t i))`. Introduce `x hx`.
-
-Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, ← hMeq]`. Conclude with `hle (Ideal.subset_span ⟨x, hx, rfl⟩)`. Conclude with `hne ((hw'.eq_of_le hKtop hw'K).trans (hw.eq_of_le hKtop hwK).symm)`. Introduce `k _ _ β φ hφ`. Rewrite using `[hρ k β]`.
-
-Establish `h2 : φ (D.ω - (r : 𝓞 D.F)) = 0`. Rewrite using `[← RingHom.mem_ker, hφ]`. Conclude with `hUw' (sub_mem_uIdeal D r)`. Rewrite `h2` using `[map_sub, map_intCast, sub_eq_zero]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.placeOf_holds :
     PlaceOf := by

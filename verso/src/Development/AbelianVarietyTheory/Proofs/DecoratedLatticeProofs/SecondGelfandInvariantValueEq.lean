@@ -13,7 +13,7 @@ open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTy
 namespace GlobalTheory.GelfandTwo
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.rhoStd, Formalism.BasicNotions.TH.rhoSq]`. Use `push_cast`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (((n : ℂ) - 1) / 2 - (i : ℂ)) * (((n : ℂ) - 1) / 2 - (i : ℂ))) n]`. Conclude with `Finset.sum_congr rfl fun i _ => (sq _).symm`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_rhoStd_sq (n : ℕ) :
     ∑ a : Fin n, (Formalism.QuantumDeterminants.rhoStd n a : ℂ) * (Formalism.QuantumDeterminants.rhoStd n a : ℂ) = ((Formalism.BasicNotions.TH.rhoSq n : ℚ) : ℂ) := by
@@ -23,7 +23,7 @@ theorem sum_rhoStd_sq (n : ℕ) :
   exact Finset.sum_congr rfl fun i _ => (sq _).symm
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CasimirEigen.gelfVal_two_eq, sum_rhoStd_sq]`. Simplify using `only [sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gelfVal_two (n : ℕ) (lam : Fin n → ℂ) :
     GlobalTheory.Dec.gelfVal lam 2 = ∑ a, lam a ^ 2 - ((Formalism.BasicNotions.TH.rhoSq n : ℚ) : ℂ) := by
@@ -31,7 +31,7 @@ theorem gelfVal_two (n : ℕ) (lam : Fin n → ℂ) :
   simp only [sq]
 
 /- English proof (translation)
-The claim follows from `gelfVal_two`.
+A detailed English derivation is pending.
 -/
 example : ∀ (n : ℕ) (lam : Fin n → ℂ), GlobalTheory.Dec.gelfVal lam 2 = ∑ a, lam a ^ 2 - ((rhoSq n : ℚ) : ℂ) := gelfVal_two
 

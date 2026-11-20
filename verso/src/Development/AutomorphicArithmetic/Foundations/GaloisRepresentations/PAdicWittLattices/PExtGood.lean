@@ -5,9 +5,9 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `htr B R _ T L _ _ hG`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `Z W p r c hc G _ _ a hgal`. Establish `hinj` using `hG.inj p r c hc G a hgal`. Use `show Function.Injective (LinearMap.baseChange L (T.pull c hc))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hinj`. Introduce `Z Y p q s _ _ hs`. Take `⟨tr, htr'⟩` from `hG.tr p q s hs`. Conclude with `⟨tr.baseChange L, htr T L p q s tr htr'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pExtGood :
     (∀ {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{u} B R) (L : Type) [Field L] [Algebra R L] {Z Y : Scheme.{0}} (p : Z ⟶ B) (q : Y ⟶ B) (s : Y ⟶ Z) (tr : T.H q →ₗ[R] T.H p), T.IsTr p q s tr → (T.ext L).IsTr p q s (tr.baseChange L)) → ExtGood.{u} := by

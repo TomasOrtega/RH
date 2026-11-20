@@ -6,7 +6,7 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _` and use `classNumber_le_sqrt_discr_mul_pow K`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem classNumber_le_minkowski_count :
     ∀ (K : Type) [Field K] [NumberField K], (classNumber K : ℝ) ≤

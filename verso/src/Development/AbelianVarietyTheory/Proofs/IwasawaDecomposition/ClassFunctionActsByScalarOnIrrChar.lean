@@ -7,25 +7,25 @@ open Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hψ'` using `hψ`. Take `⟨n, ρ, hρ, rfl⟩` from `hψ`. Establish `hcard : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Use `letI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero hcard`. Establish `h1` using `Representation.card_inv_mul_sum_char_mul_char_eq_finrank ρ ρ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `horth` using `Formalism.L2.Col.gx_orth (G := G) (k := ℂ) hψ' hψ'`. Rewrite `horth` using `[if_pos rfl]`. Rewrite `h1` using `[horth]`. Establish `hfr : finrank ℂ (ρ.IntertwiningMap ρ) = 1` using `by exact_mod_cast h1.symm`. Establish `hnt : Nontrivial (Fin n → ℂ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Take `⟨a, b, hab⟩` from `hρ.exists_pair_ne`. Apply `hab` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Subsingleton.elim _ _`. Set `idI : ρ.IntertwiningMap ρ` to `⟨LinearMap.id, fun g => by rw [LinearMap.id_comp, LinearMap.comp_id]⟩`. Establish `hid0 : idI ≠ 0`. Take `⟨v, hv⟩` from `exists_ne (0 : Fin n → ℂ)`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun φ : ρ.IntertwiningMap ρ => φ.toLinearMap v) h` as an intermediate fact. Conclude with `hv this`. Set `T : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)` to `∑ g : G, e.coeff g • ρ g`. Establish `hTI : ∀ h, T ∘ₗ ρ h = ρ h ∘ₗ T`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `show T * ρ h = ρ h * T`. Simplify using `only [T, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, ← map_mul]`. Use `Fintype.sum_equiv (MulAut.conj h⁻¹).toEquiv _ _ (fun g => ?_)` and prove the remaining obligations. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, inv_inv]`. Rewrite using `[show h⁻¹ * g * h = h⁻¹ * g * h⁻¹⁻¹ by rw [inv_inv], he]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `congr 2`. Use `group`. Set `TI : ρ.IntertwiningMap ρ` to `⟨T, hTI⟩`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' idI hid0).mp hfr TI`. Establish `hT : T = c • LinearMap.id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `congrArg (fun φ : ρ.IntertwiningMap ρ => φ.toLinearMap v) hc` as an intermediate fact. Simplify `this.symm` using `[idI, TI]`. Establish `htr : ∀ y : G, ∑ g, e.coeff g * ρ.character (g * y) = c * ρ.character y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : T * ρ y = c • ρ y` using `by rw [hT, smul_mul_assoc]; exact congrArg _ (LinearMap.id_comp _)`. Establish `h3` using `congrArg (LinearMap.trace ℂ (Fin n → ℂ)) h2`. Simplify using `only [T, Finset.sum_mul, smul_mul_assoc, ← map_mul, map_sum, map_smul, smul_eq_mul] at h3`. Simplify `h3` using `only [Representation.character]`. Establish `hx` using `htr x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1'` using `htr 1`. Simplify using `only [mul_one] at h1'`. Rewrite using `[hx, h1']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem classFun_char_scalar {G : Type} [Group G] [Fintype G] (e : MonoidAlgebra ℂ G)
     (he : ∀ x y : G, e.coeff (y * x * y⁻¹) = e.coeff x) (ψ : G → ℂ)

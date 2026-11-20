@@ -23,7 +23,7 @@ namespace PositivityTheory.ThKW.ParsevalPolarization
 open GlobalTheory.ThetaTransform
 
 /- English proof (translation)
-Simplify using `only [Complex.sq_norm, Complex.normSq_apply]`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem polar_pt (z w : ℂ) : z * starRingEnd ℂ w =
     (((‖z + 1 * w‖ ^ 2 - ‖z + (-1) * w‖ ^ 2 : ℝ) : ℂ) +
@@ -32,9 +32,9 @@ theorem polar_pt (z w : ℂ) : z * starRingEnd ℂ w =
   apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring
 
 /- English proof (translation)
-Establish `key : ∀ {Z : Type} [MeasurableSpace Z] (ρ : Measure Z) (k₁ k₂ : Z → ℂ), (∀ a : ℂ, Integrable (fun x => ‖k₁ x + a * k₂ x‖ ^ 2) ρ) → ∫ x, k₁ x * starRingEnd ℂ (k₂ x) ∂ρ = (((∫ x, ‖k₁ x + 1 * k₂ x‖ ^ 2 ∂ρ) - ∫ x, ‖k₁ x + (-1) * k₂ x‖ ^ 2 ∂ρ : ℝ) + Complex.I * (((∫ x, ‖k₁ x + Complex …`. Introduce `Z _ ρ k₁ k₂ hk`. Repeatedly rewrite using `[polar_pt (k₁ _) (k₂ _)]`. Rewrite using `[integral_div, integral_add, integral_const_mul, integral_complex_ofReal, integral_complex_ofReal, integral_sub (hk 1) (hk (-1)), integral_sub (hk Complex.I) (hk (-Complex.I))]`. Conclude with `((hk 1).sub (hk (-1))).ofReal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(((hk Complex.I).sub (hk (-Complex.I))).ofReal).const_mul _`. Rewrite using `[key ν g₁ g₂ hg, key μ f₁ f₂ hf, h 1, h (-1), h Complex.I, h (-Complex.I)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem polar {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] (μ : Measure X) (ν : Measure Y)
     (f₁ f₂ : X → ℂ) (g₁ g₂ : Y → ℂ) (c : ℝ)
@@ -59,7 +59,7 @@ theorem polar {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] (μ : Measure
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [thV, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -71,29 +71,27 @@ theorem thV_smul {F : Type} [Field F] [NumberField F] [Invertible (2 : AF F)] (�
   congr 1; funext ξ; ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB N`. Use `letI mA : MeasurableSpace (Fin N → AF F) := borel _`. Use `letI mV : MeasurableSpace (VA F N) := borel _`. Introduce `ν hν 𝓕 h𝓕`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (Fin N → AF F) := ⟨rfl⟩`. Establish `hR : IsTotallyReal F` using `hB.cm.1`. Establish `hψ : IsCharAF F B.ψ` using `(GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).1`. Set `μ : Measure (Fin N → AF F)` to `Measure.addHaar`. Establish `hμ : μ.IsAddHaarMeasure` using `inferInstance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨𝓕₁, h𝓕₁, h0, htop⟩` from `GlobalTheory.T.exists_fundDomain_rationalPointsAdeleTuple_finite_pos F (Fin N) μ hμ`. Take `⟨c₁, hc0, hctop, hc⟩` from `GlobalTheory.T.lintegral_rationalPair_fundDomain_eq_iterated F (Fin N) μ hμ ν hν 𝓕 h𝓕 𝓕₁ h𝓕₁`. Use `set K : ENNReal := c₁ * μ 𝓕₁ with hK`. Establish `hK0 : K ≠ 0` using `mul_ne_zero hc0 h0`. Establish `hKt : K ≠ ⊤` using `ENNReal.mul_ne_top hctop htop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpar : ∀ Φ ∈ schA F (Fin N), ∫⁻ w in 𝓕, ‖thV B.ψ Φ w‖ₑ ^ 2 ∂ν = K * ∫⁻ x, ‖Φ x‖ₑ ^ 2 ∂μ`. Introduce `Φ hΦ`. Establish `hm` using `GlobalTheory.T.measurable_theta_sum_of_schrodinger F B.ψ hψ (Fin N) Φ hΦ`. Establish `hG : @Measurable _ _ (borel _) _ (fun w : (Fin N → AF F) × (Fin N → AF F) => ‖GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr B.ψ w Φ)‖ₑ ^ 2)` using `Measurable.pow_const (measurable_enorm.comp hm) 2`. Use `show ∫⁻ w in 𝓕, ‖GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr B.ψ w Φ)‖ₑ ^ 2 ∂ν = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc _ hG (fun γ hγ w => by`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, GlobalTheory.T.norm_adelicThetaSum_schroedinger_rationalPair_invariant F B.ψ hψ (Fin N) Φ γ hγ w])]`. Repeatedly rewrite using `[GlobalTheory.T.lintegral_adelicThetaSum_sq_parseval_second_variable F B.ψ hψ (Fin N) μ hμ 𝓕₁ h𝓕₁ htop Φ hΦ]`. Rewrite using `[lintegral_const_mul' _ _ htop, GlobalTheory.T.parseval_fundamental_domain_theta F (Fin N) μ hμ 𝓕₁ h𝓕₁ Φ hΦ, hK, mul_assoc]`. Establish `henorm : ∀ z : ℂ, ‖‖z‖ ^ 2‖ₑ = ‖z‖ₑ ^ 2` using `fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Real.enorm_eq_ofReal (by positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Establish `hΦint : ∀ Φ ∈ schA F (Fin N), Integrable (fun x => ‖Φ x‖ ^ 2) μ` using `fun Φ hΦ => (GlobalTheory.WeilM.schA_memLp_two F (Fin N) μ hμ Φ hΦ).integrable_norm_pow two_ne_zero`. Establish `hthint : ∀ Φ ∈ schA F (Fin N), Integrable (fun w => ‖thV B.ψ Φ w‖ ^ 2) (ν.restrict 𝓕)`. Introduce `Φ hΦ`. Establish `hm` using `GlobalTheory.T.measurable_theta_sum_of_schrodinger F B.ψ hψ (Fin N) Φ hΦ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((hm.norm.pow_const 2).aestronglyMeasurable), ?_⟩` and prove the remaining obligations. Use `show ∫⁻ w in 𝓕, ‖‖thV B.ψ Φ w‖ ^ 2‖ₑ ∂ν < ⊤`. Repeatedly rewrite using `[henorm]`. Rewrite using `[hpar Φ hΦ]`. Use `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hKt) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hΦint Φ hΦ).2` as an intermediate fact. Unfold `HasFiniteIntegral at this`. Rewrite `this` using `[henorm]`. Conclude with `this`. Establish `hreal : ∀ Φ ∈ schA F (Fin N), ∫ w in 𝓕, ‖thV B.ψ Φ w‖ ^ 2 ∂ν = K.toReal * ∫ x, ‖Φ x‖ ^ 2 ∂μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `Φ hΦ`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun _ => sq_nonneg _) (hthint Φ hΦ).aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun _ => sq_nonneg _) (hΦint Φ hΦ).aestronglyMeasurable]`. Establish `e1 : ∀ z : ℂ, ENNReal.ofReal (‖z‖ ^ 2) = ‖z‖ₑ ^ 2` using `fun z => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Repeatedly rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpar Φ hΦ, ENNReal.toReal_mul]`. Use `⟨μ, K.toReal, hμ, ENNReal.toReal_pos hK0 hKt, fun Φ₁ hΦ₁ Φ₂ hΦ₂ => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ a : ℂ, Φ₁ + a • Φ₂ ∈ schA F (Fin N)` using `fun a => add_mem hΦ₁ (Submodule.smul_mem _ a hΦ₂)`. Establish `hth : ∀ a : ℂ, thV B.ψ (Φ₁ + a • Φ₂) = fun w => thV B.ψ Φ₁ w + a * thV B.ψ Φ₂ w`. Introduce `a`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[thV_add hR hψ (GlobalTheory.T.adelicRapidDecay_of_mem_adelicSchwartzSpace F N Φ₁ hΦ₁) (GlobalTheory.SchwartzDecay.decay_smul a (GlobalTheory.T.adelicRapidDecay_of_mem_adelicSchwartzSpace F N Φ₂ hΦ₂)), thV_smul]`. Both sides reduce to the same expression. Establish `hfn : ∀ a : ℂ, (Φ₁ + a • Φ₂) = fun x => Φ₁ x + a * Φ₂ x` using `fun a => rfl`. Use `polar μ (ν.restrict 𝓕) Φ₁ Φ₂ (thV B.ψ Φ₁) (thV B.ψ Φ₂) K.toReal (fun a => ?_) (fun a => ?_) (fun a => ?_)` and prove the remaining obligations. Use `hΦint _ (hmem a)` as an intermediate fact.
-
-Rewrite `this` using `[hfn a]`. Then use the resulting hypothesis. Use `hthint _ (hmem a)` as an intermediate fact. Rewrite `this` using `[hth a]`. Then use the resulting hypothesis. Use `hreal _ (hmem a)` as an intermediate fact. Rewrite `this` using `[hth a, hfn a]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem parseval_adelic_pair_fundamental : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E}, B.IsGood σ → ∀ (N : ℕ),

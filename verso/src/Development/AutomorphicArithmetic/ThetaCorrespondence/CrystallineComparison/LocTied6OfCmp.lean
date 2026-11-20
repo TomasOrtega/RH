@@ -42,7 +42,7 @@ def toCompanionTheory {eB : Per.Bcris l ≃+* Per6.Bcris l} {eD : Per.BdR l ≃+
   · rw [RingEquiv.trans_apply, T.ιA a, h.aB a]
 
 /- English proof (translation)
-Introduce and unpack `⟨T⟩`. Take `⟨eB, eD, eP, h⟩` from `hC`. Conclude with `⟨toCompanionTheory h T⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locTied6_of_cmp (hC : Cmp l) (P : LocPrime l) (AI : LocAinf l P) :
     Nonempty (LocTied l P AI) → Nonempty (LocTied6 l P AI) := by

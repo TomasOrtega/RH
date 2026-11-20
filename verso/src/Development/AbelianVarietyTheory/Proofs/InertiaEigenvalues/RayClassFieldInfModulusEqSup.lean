@@ -20,11 +20,11 @@ set_option autoImplicit false in
 open NumberField IsDedekindDomain in
 variable {K : Type} [Field K] [NumberField K] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.NT.heckeIdeal`. Use `finprod_congr fun 𝔭 => ?_` and prove the remaining obligations. Distinguish the cases in `hc : (Associates.mk 𝔭.asIdeal).count (Associates.mk I).factors = 0`. Simplify using `[hc]`. Establish `hdvd : 𝔭.asIdeal ∣ I` using `(Associates.count_ne_zero_iff_dvd hI0 𝔭.irreducible).1 hc`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnd : ¬ 𝔭.asIdeal ∣ 𝔪`. Introduce `h`. Rewrite `hdvd`, `h` using `[Ideal.dvd_iff_le]`. Conclude with `𝔭.isPrime.ne_top (top_unique ((Ideal.isCoprime_iff_sup_eq.1 hI).ge.trans (sup_le hdvd h)))`. Take `⟨σ, hσ⟩` from `_root_.GlobalTheory.NT.exists_isFrob M 𝔭`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu` using `hM 𝔭 hnd`. Rewrite using `[_root_.GlobalTheory.NT.heckeVal_of_unramIn M _ hu hσ, _root_.GlobalTheory.NT.heckeVal_of_unramIn L χ (_root_.GlobalTheory.RayMaximal.unramIn_of_tower hu) (_root_.GlobalTheory.RayMaximal.isFrob_restrictNormal hσ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem heckeIdeal_comp_restrictNormalHom {L M : Type} [Field L]
     [NumberField L] [Field M] [NumberField M] [Algebra K L] [Algebra K M] [Algebra L M]
@@ -53,9 +53,9 @@ set_option autoImplicit false in
 open NumberField IsDedekindDomain in
 variable {K : Type} [Field K] [NumberField K] in
 /- English proof (translation)
-Introduce `h`. Establish `h'` using `h.map (Algebra.norm ℤ)`. Rewrite `h'` using `[show ((q : ℕ) : 𝓞 F) = algebraMap ℤ (𝓞 F) (q : ℤ) by simp, Algebra.norm_algebraMap]`. Establish `hn : Module.finrank ℤ (𝓞 F) ≠ 0` using `Module.finrank_pos.ne'`. Rewrite `h'` using `[isUnit_pow_iff hn, Int.isUnit_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hq.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem not_isUnit_natCast_of_prime' {F : Type} [Field F] [NumberField F] {q : ℕ}
     (hq : q.Prime) : ¬ IsUnit ((q : 𝓞 F)) := by
@@ -71,7 +71,7 @@ set_option autoImplicit false in
 open NumberField IsDedekindDomain in
 variable {K : Type} [Field K] [NumberField K] in
 /- English proof (translation)
-Rewrite `h`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `top_unique (h.ge.trans (sup_le_sup_left hJ _))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCoprime_of_le_right {R : Type} [CommRing R] {I J J' : Ideal R}
     (h : IsCoprime I J) (hJ : J ≤ J') : IsCoprime I J' := by
@@ -82,7 +82,7 @@ set_option autoImplicit false in
 open NumberField IsDedekindDomain in
 variable {K : Type} [Field K] [NumberField K] in
 /- English proof (translation)
-Take `⟨i, hi, j, hj, hij⟩` from `Ideal.isCoprime_iff_exists.1 h`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.1 hi`. Establish `: z = c * (y * z) + z * j` using `by linear_combination (-z) * hij`. Rewrite using `[this]`. Conclude with `J.add_mem (J.mul_mem_left _ hyz) (J.mul_mem_left _ hj)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_mul_mem_of_isCoprime_span {R : Type} [CommRing R] {J : Ideal R} {y z : R}
     (h : IsCoprime (Ideal.span {y}) J) (hyz : y * z ∈ J) : z ∈ J := by
@@ -96,39 +96,35 @@ set_option autoImplicit false in
 open NumberField IsDedekindDomain in
 variable {K : Type} [Field K] [NumberField K] in
 /- English proof (translation)
-Take `⟨hα0, hβ0, hαc, hβc, hd, hpos⟩` from `h₁`. Take `⟨hα0', hβ0', hαc', hβc', hd', hpos'⟩` from `h₂`. Establish `hqtop : Ideal.span {(q : 𝓞 K)} ≠ ⊤` using `fun h => not_isUnit_natCast_of_prime' hq (Ideal.span_singleton_eq_top.1 h)`. Establish `hspan : Ideal.span {α * β'} = Ideal.span {α' * β}`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton, ← e₁, ← e₂]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨u, hu'⟩` from `Ideal.span_singleton_eq_span_singleton.1 hspan`. Establish `key : α * β' = α' * β`. Break down `hu u with rfl | rfl` into its components or cases. Simplify using `using hu'`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-It suffices to derive a contradiction. Establish `hneg : α' * β = -(α * β')` using `by rw [← hu']; simp`. Establish `h2mem : 2 * α * β' ∈ Ideal.span {(q : 𝓞 K)}`. Establish `: 2 * α * β' = β' * (α - β) - β * (α' - β')` using `by linear_combination hneg`. Rewrite using `[this]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ (ha hd)) (Ideal.mul_mem_left _ _ (hb hd'))`. Establish `h2 : IsCoprime (Ideal.span {(2 : 𝓞 K)}) (Ideal.span {(q : 𝓞 K)})`. Rewrite using `[Ideal.isCoprime_span_singleton_iff]`. Establish `hz : IsCoprime ((2 : ℕ) : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes Nat.prime_two hq).2 (Ne.symm hq2))`. Simplify using `using hz.map (Int.castRingHom (𝓞 K))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : IsCoprime (Ideal.span {2 * α * β'}) (Ideal.span {(q : 𝓞 K)})`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton]`. Conclude with `(h2.mul_left (isCoprime_of_le_right hαc ha)).mul_left (isCoprime_of_le_right hβc' hb)`. Apply `hqtop` to reduce the goal to its premises. Rewrite `hc` using `[Ideal.isCoprime_iff_sup_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hc` using `[sup_eq_right.2 ((Ideal.span_singleton_le_iff_mem _).2 h2mem)]`. Then use the resulting hypothesis. Establish `hdb : α - β ∈ 𝔟`. Use `mem_of_mul_mem_of_isCoprime_span hβc' ?_` and prove the remaining obligations. Establish `: β' * (α - β) = β * (α' - β')` using `by linear_combination key`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `𝔟.mul_mem_left _ hd'`. Establish `hda : α' - β' ∈ 𝔞`. Use `mem_of_mul_mem_of_isCoprime_span hβc ?_` and prove the remaining obligations. Establish `: β * (α' - β') = β' * (α - β)` using `by linear_combination -key`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `𝔞.mul_mem_left _ hd`. Take `⟨i, hi, a₀, ha₀, hia⟩` from `Ideal.isCoprime_iff_exists.1 hβc`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton.1 hi`. Take `⟨i', hi', b₀, hb₀, hib⟩` from `Ideal.isCoprime_iff_exists.1 hβc'`. Take `⟨r', rfl⟩` from `Ideal.mem_span_singleton.1 hi'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set δ : 𝓞 K := β * r + a₀ * (β' * r') with hδdef`. Use `set γ : 𝓞 K := α * r + a₀ * (α' * r') with hγdef`. Establish `hδ1 : δ - 1 ∈ 𝔞 ⊓ 𝔟`. Establish `: δ - 1 = -(a₀ * b₀)` using `by linear_combination hia + a₀ * hib`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.neg_mem_iff _).2 ⟨𝔞.mul_mem_right _ ha₀, 𝔟.mul_mem_left _ hb₀⟩`. Establish `hγδ : γ - δ ∈ 𝔞 ⊓ 𝔟`. Establish `: γ - δ = r * (α - β) + a₀ * r' * (α' - β')` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ ⟨hd, hdb⟩) (Ideal.mul_mem_left _ _ ⟨hda, hd'⟩)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hγ1 : γ - 1 ∈ 𝔞 ⊓ 𝔟`. Establish `: γ - 1 = (γ - δ) + (δ - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ hγδ hδ1`. Establish `hne : ∀ x : 𝓞 K, x - 1 ∈ 𝔞 ⊓ 𝔟 → x ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `x hx rfl`. Apply `hqtop` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1` using `hx.1`. Rewrite `h1` using `[zero_sub]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `ha ((Ideal.neg_mem_iff _).1 h1)`. Establish `hδ0` using `hne δ hδ1`. Establish `hγ0` using `hne γ hγ1`. Establish `hmul : γ * β = α * δ`. Simplify using `only [hγdef, hδdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(-(a₀ * r')) * key`. Use `⟨γ, δ, ⟨hγ0, hδ0, _root_.GlobalTheory.Mem.RayNo.isCoprime_span hγ1, _root_.GlobalTheory.Mem.RayNo.isCoprime_span hδ1, hγδ, fun φ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hφ : φ (γ : K) * φ (β : K) = φ (α : K) * φ (δ : K)`. Use `congrArg (fun z : 𝓞 K => φ (z : K)) hmul` as an intermediate fact. Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hδφ : φ (δ : K) ≠ 0` using `(map_ne_zero φ).2 (by exact_mod_cast hδ0)`. Establish `hβφ : φ (β : K) ≠ 0` using `(map_ne_zero φ).2 (by exact_mod_cast hβ0)`. Establish `hδ2 : 0 < φ (δ : K) ^ 2` using `lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hδφ))`. Establish `hβ2 : 0 < φ (β : K) ^ 2` using `lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hβφ))`. Establish `h1 : 0 < (φ (γ : K) * φ (δ : K)) * φ (β : K) ^ 2`.
-
-Rewrite using `[show (φ (γ : K) * φ (δ : K)) * φ (β : K) ^ 2 = (φ (α : K) * φ (β : K)) * φ (δ : K) ^ 2 by`. Take the linear combination `(φ (δ : K) * φ (β : K)) * hφ]`. Conclude with `mul_pos (hpos φ) hδ2`. Use the polynomial consequences of the given equalities and inequalities. Establish `hβI : Ideal.span {β} ≠ 0`.
-
-Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hβ0`. Apply `mul_right_cancel₀ hβI` to reduce the goal to its premises. Rewrite using `[mul_assoc, mul_comm (Ideal.span {δ}), ← mul_assoc, e₁, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton, hmul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_rayPair_inf_of_rayPair (hu : ∀ u : (𝓞 K)ˣ, u = 1 ∨ u = -1)
     {𝔞 𝔟 : Ideal (𝓞 K)} {q : ℕ} (hq : q.Prime) (hq2 : q ≠ 2)
@@ -231,25 +227,23 @@ open NumberField IsDedekindDomain in
 variable {K : Type} [Field K] [NumberField K] in
 
 /- English proof (translation)
-Introduce `K H H₁ H₂ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hu 𝔞 𝔟 _ _ q hq hq2 haq hbq hH hH₁ hH₂ f₁ f₂`. Use `letI : Algebra H₁ H := f₁.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K H₁ H := IsScalarTower.of_algebraMap_eq fun x => (f₁.commutes x).symm`. Use `letI : Algebra H₂ H := f₂.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K H₂ H := IsScalarTower.of_algebraMap_eq fun x => (f₂.commutes x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hres : ∀ {E : Type} [Field E] [Algebra K E] [Algebra E H] [IsScalarTower K E H] [Normal K E] (f : E →ₐ[K] H), (∀ y, algebraMap E H y = f y) → ∀ σ : Gal(H/K), (∀ x ∈ f.fieldRange, σ x = x) → AlgEquiv.restrictNormalHom E σ = 1`. Introduce `E _ _ _ _ _ f hf σ hσ`. Use extensionality with `y`. Rewrite using `[AlgEquiv.one_apply]`. Apply `f.injective` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `AlgEquiv.restrictNormal_commutes σ E y`. Rewrite `h` using `[hf, hf]`. Express the relevant statement in the definitionally equal form `f (σ.restrictNormal E y) = f y`. Rewrite using `[h]`. Conclude with `hσ _ ⟨y, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfix : ∀ σ : Gal(H/K), (∀ x ∈ f₁.fieldRange ⊔ f₂.fieldRange, σ x = x) → σ = 1`. Introduce `σ hσ`. Establish `r₁` using `hres f₁ (fun _ => rfl) σ fun x hx => hσ x (le_sup_left (a := f₁.fieldRange) hx)`. Establish `r₂` using `hres f₂ (fun _ => rfl) σ fun x hx => hσ x (le_sup_right (b := f₂.fieldRange) hx)`. Take `⟨I, hI0, hIc, hχ⟩` from `_root_.GlobalTheory.FieldSize.RayDegree.exists_ideal hH σ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `_root_.GlobalTheory.FieldSize.IsRay at hH hH₁ hH₂`. Establish `hIa : IsCoprime I 𝔞`. Rewrite `hIc`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `top_unique (hIc.ge.trans (sup_le_sup_left inf_le_left _))`. Establish `hIb : IsCoprime I 𝔟`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hIc`, the goal using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `top_unique (hIc.ge.trans (sup_le_sup_left inf_le_right _))`. Establish `t₁ : ∀ χ : Gal(H₁/K) →* ℂˣ, _root_.GlobalTheory.NT.heckeIdeal H₁ χ I = 1`. Introduce `χ`. Rewrite using `[← heckeIdeal_comp_restrictNormalHom hH.1 χ hI0 hIc, hχ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[r₁]`. Establish `t₂ : ∀ χ : Gal(H₂/K) →* ℂˣ, _root_.GlobalTheory.NT.heckeIdeal H₂ χ I = 1`. Introduce `χ`. Rewrite using `[← heckeIdeal_comp_restrictNormalHom hH.1 χ hI0 hIc, hχ]`. Simplify using `[r₂]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨α, β, hp₁, he₁⟩` from `(hH₁.2.2 I hI0 hIa).1 t₁`. Take `⟨α', β', hp₂, he₂⟩` from `(hH₂.2.2 I hI0 hIb).1 t₂`. Take `⟨γ, δ, hp, he⟩` from `exists_rayPair_inf_of_rayPair hu hq hq2 haq hbq hp₁ he₁ hp₂ he₂`. Establish `hall` using `(hH.2.2 I hI0 hIc).2 ⟨γ, δ, hp, he⟩`. Apply `_root_.GlobalTheory.RayMaximal.eq_of_forall_char` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `χ`. Establish `h` using `hall χ`. Rewrite `h` using `[hχ χ]`. Rewrite using `[map_one]`. Conclude with `Units.val_eq_one.1 h`.
-
-Establish `hbot : (f₁.fieldRange ⊔ f₂.fieldRange).fixingSubgroup = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `σ hσ`. Conclude with `hfix σ fun x hx => hσ ⟨x, hx⟩`. Rewrite using `[← IsGalois.fixedField_fixingSubgroup (f₁.fieldRange ⊔ f₂.fieldRange), hbot, IntermediateField.fixedField_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RayCompositum.fieldRange_sup_eq_top : ∀ {K H H₁ H₂ : Type} [Field K] [NumberField K] [Field H] [NumberField H]
     [Algebra K H] [IsAbelianGalois K H] [Field H₁] [NumberField H₁] [Algebra K H₁] [IsAbelianGalois K H₁]

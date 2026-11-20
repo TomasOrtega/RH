@@ -14,7 +14,7 @@ open PartialDerivEval LogEx OActLog OActSg
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_smul]`. Simplify using `only [tyS, PowerSeries.coeff_mk, smul_eq_mul, Finset.mul_sum, mul_ite, mul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tyS_smul (l : ℕ) (c : C) (a : ℕ → C) : tyS l (fun s => c * a s) = c • tyS l a := by
   ext n
@@ -24,7 +24,7 @@ theorem tyS_smul (l : ℕ) (c : C) (a : ℕ → C) : tyS l (fun s => c * a s) = 
 variable {dd : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `μ`. Use `show MvPowerSeries.coeff _ (f - g) = MvPowerSeries.coeff _ f - MvPowerSeries.coeff _ g`. Conclude with `map_sub _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem uncurry_sub (f g : PS C 1 dd) : un1 (f - g) = un1 f - un1 g := by
   funext μ
@@ -32,7 +32,7 @@ theorem uncurry_sub (f g : PS C 1 dd) : un1 (f - g) = un1 f - un1 g := by
   exact map_sub _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `μ`. Use `show MvPowerSeries.coeff _ (MvPowerSeries.C c * f) = MvPowerSeries.coeff μ (MvPowerSeries.C c * un1 f)`. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_C_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem uncurry_C_mul (c : C) (f : PS C 1 dd) : un1 (MvPowerSeries.C c * f) = MvPowerSeries.C c * un1 f := by
   funext μ
@@ -41,9 +41,9 @@ theorem uncurry_C_mul (c : C) (f : PS C 1 dd) : un1 (MvPowerSeries.C c * f) = Mv
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `μ`. Use `show MvPowerSeries.coeff _ (∑ j, MvPowerSeries.C (c j) * f j) = MvPowerSeries.coeff μ (∑ j, MvPowerSeries.C (c j) * un1 (f j))`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_C_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem uncurry_linear_combination (c : Fin dd → C) (f : Fin dd → PS C 1 dd) :
     un1 (∑ j, MvPowerSeries.C (c j) * f j) = ∑ j, MvPowerSeries.C (c j) * un1 (f j) := by
@@ -56,14 +56,14 @@ theorem uncurry_linear_combination (c : Fin dd → C) (f : Fin dd → PS C 1 dd)
   rfl
 
 /- English proof (translation)
-Introduce `_` and use `hf _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integralSeries_uncurry_one {V : VF C} {f : PS C 1 dd} (hf : IntS V f) : IntS V (un1 f) := fun _ => hf _
 
 variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O]
 
 /- English proof (translation)
-Unfold `FBChart.sgP`. Rewrite using `[mul_neg, Finset.mul_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sgP_smul (Y : FBChart C V O dd) (c : C) (v : Fin dd → C) :
     Y.sgP (c • v) = MvPowerSeries.C c * Y.sgP v := by
@@ -72,7 +72,7 @@ theorem sgP_smul (Y : FBChart C V O dd) (c : C) (v : Fin dd → C) :
   simp only [Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Use `fin_cases g`. Simplify using `[p.em_conj]`. Simplify using `[p.em_conj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem em_flip {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {Y : FBChart C V O dd} (p : PairData Y d I)
     (g : Fin 2) (a : ZMod d) (α : O) : p.em (1 - g) a (star α) = p.em g a α := by
@@ -81,41 +81,37 @@ theorem em_flip {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {Y : FBCha
   · simp [p.em_conj]
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p g α x hx`. Take `⟨γ, lam, hγ, hlam, hlg, hsg⟩` from `hx`. Use `set φ : Pt C 1 dd := Y.B.A.act α with hφdef`. Use `set ψ : Pt C 1 dd := Y.B.A.act (star α) with hψdef`. Establish `hφ0 : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0` using `Y.B.A.const α`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ0 : ∀ j, MvPowerSeries.constantCoeff (γ j) = 0` using `fun j => (hγ j).1`. Establish `hγI : ∀ j, IntS V (γ j)` using `fun j => intS_ps.2 (hγ j).2`. Establish `hSγ : MvPowerSeries.HasSubst γ` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hγ0`. Establish `hφu0 : ∀ j, MvPowerSeries.constantCoeff (un1 (φ j)) = 0` using `fun j => by rw [constantCoeff_uncurry, hφ0 j]`. Use `set γ' : Fin dd → PowerSeries C := fun j => alongCv γ (un1 (φ j)) with hγ'def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ'0 : ∀ j, MvPowerSeries.constantCoeff (γ' j) = 0` using `fun j => constantCoeff_subst_zero hγ0 (hφu0 j)`. Establish `hγ'cv : IsCv V γ'` using `fun j => ⟨hγ'0 j, intS_ps.1 (IntS.subst hγ0 hγI (integralSeries_uncurry_one (Y.intAct α j)))⟩`. Establish `hcomp : ∀ f : PS C 1 dd, alongCv γ' (un1 f) = alongCv γ (un1 (ev (n` using `1) ![φ] f)) := by`. Introduce `f`. Unfold `alongCv`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hγ'def]`. Unfold `alongCv`. Rewrite using `[← MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hφu0) hSγ]`. Use `congr 1`. Rewrite using `[subst_singlePointUncurry hφu0, eval_single_eq_subst, subst_oneVariableUncurry_eq_subst (b := fun p : Fin 1 × Fin dd => φ p.2) (fun p => hφ0 p.2)]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hsubC : ∀ (c : C) (f : MvPowerSeries (Fin dd) C), alongCv γ (MvPowerSeries.C c * f) = c • alongCv γ f`. Introduce `c f`. Unfold `alongCv`. Rewrite using `[← MvPowerSeries.smul_eq_C_mul, ← MvPowerSeries.coe_substAlgHom hSγ, map_smul]`. Establish `hsub : ∀ f f' : MvPowerSeries (Fin dd) C, alongCv γ (f - f') = alongCv γ f - alongCv γ f'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `f f'`. Unfold `alongCv`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hSγ, map_sub]`. Establish `hsum : ∀ (c : Fin dd → C) (f : Fin dd → MvPowerSeries (Fin dd) C), alongCv γ (∑ j, MvPowerSeries.C (c j) * f j) = ∑ j, c j • alongCv γ (f j)`. Introduce `c f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : alongCv γ (∑ j, MvPowerSeries.C (c j) * f j) = ∑ j, alongCv γ (MvPowerSeries.C (c j) * f j)`. Unfold `alongCv`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hSγ, map_sum]`. Rewrite using `[e]`. Conclude with `Finset.sum_congr rfl fun j _ => hsubC (c j) (f j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hsg0 : ∀ w, MvPowerSeries.constantCoeff (Y.sgP w) = 0` using `fun w => by`. Establish `h` using `(Y.raw p).constantCoeff_sg (Y.raw_axis0 p) w`. Rewrite `h` using `[Y.raw_sg p, constantCoeff_uncurry]`. Then use the resulting hypothesis. Use `set Dq : JJ I g → PS C 1 dd := fun q => ev (n := 1) ![φ] (Y.sgP ((Y.raw p).u (1 - g) q)) - Y.sgP (linAct ψ ((Y.raw p).u (1 - g) q)) with hDq`. Establish `hDcc : ∀ q, MvPowerSeries.constantCoeff (alongCv γ (un1 (Dq q))) = 0` using `fun q => constantCoeff_subst_zero hγ0 (by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[constantCoeff_uncurry, hDq]`. Simplify using `only`. Rewrite using `[map_sub, constantCoeff_ev (z0_1 φ hφ0), hsg0, hsg0, sub_zero])`. Establish `hDint : ∀ q, IntS V (alongCv γ (un1 (Dq q)))` using `fun q => IntS.subst hγ0 hγI (integralSeries_uncurry_one (sg_act Y α _ (p.u_int (1 - g) q)))`. Establish `hlin_v : ∀ q, linAct ψ ((Y.raw p).u (1 - g) q) = p.em g ((Y.raw p).ty (1 - g) q) α • (Y.raw p).u (1 - g) q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Establish `h` using `p.u_eig (1 - g) q (star α)`. Rewrite `h` using `[em_flip]`. Conclude with `h`. Establish `hE : ∀ q, alongCv γ' ((Y.raw p).sg ((Y.raw p).u (1 - g) q)) = p.em g ((Y.raw p).ty (1 - g) q) α • alongCv γ ((Y.raw p).sg ((Y.raw p).u (1 - g) q)) + alongCv γ (un1 (Dq q))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[hDq]`. Simplify using `only`. Rewrite using `[Y.raw_sg p, hcomp, uncurry_sub, hsub, hlin_v, sgP_smul, uncurry_C_mul, hsubC]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set lam' : JJ I g → PowerSeries C := fun q => p.em g ((Y.raw p).ty (1 - g) q) α • lam q + alongCv γ (un1 (Dq q)) with hlam'def`. Establish `hlam'cv : IsCv V lam'`. Introduce `q`. Use `⟨?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hlam'def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, map_add, PowerSeries.coeff_smul, PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_zero_eq_constantCoeff_apply, (hlam q).1]`. Rewrite using `[show PowerSeries.constantCoeff (alongCv γ (un1 (Dq q))) = 0 from hDcc q]`. Simplify using the standard rewrite rules. Rewrite using `[hlam'def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[map_add, PowerSeries.coeff_smul, smul_eq_mul]`. Conclude with `((p.em_int g _ α).mul_int ((hlam q).2 n)).add (intS_ps.1 (hDint q) n)`. Use `⟨γ', lam', hγ'cv, hlam'cv, fun i => ?_, fun q => ?_⟩` and prove the remaining obligations. Simplify using `only [tyS_smul, RawChart.tyC, Sum.elim_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : ∀ c, ∑ j, linM φ i j * (Y.raw p).u g c j = p.em g ((Y.raw p).ty g c) α * (Y.raw p).u g c i` using `fun c => congrFun (p.u_eig g c α) i`. Rewrite using `[show (Y.raw p).lg i = un1 (Y.lg i) from rfl, hcomp, show ev (n := 1) ![φ] (Y.lg i) = comp1 Y.lg φ i from rfl, log_endo Y.B.G Y.lg Y.lg_lin Y.lg_add φ hφ0 (Y.B.A.hom α) i, uncurry_linear_combination, hsum]`. Simplify using `only [show ∀ j, un1 (Y.lg j) = (Y.raw p).lg j from fun j => rfl, hlg, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_smul, hu c, mul_comm]`. Simplify using `only [tyS_smul, RawChart.tyC, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[hsg q, hE q, hlam'def]`. Simplify using `only`. Rewrite using `[smul_add, smul_sub, Finset.smul_sum]`.
-
-Establish `hs : ∀ c : I g, p.em g ((Y.raw p).ty (1 - g) q) α • (if (Y.raw p).ty g c = (Y.raw p).ty (1 - g) q then (Y.raw p).sg1 ((Y.raw p).u g c) ((Y.raw p).u (1 - g) q) • tyS V.l (fun s => x s (Sum.inl c)) else 0) = if (Y.raw p).ty g c = (Y.raw p).ty (1 - g) q then (Y.raw p).sg1 ((Y.raw p) …`. Introduce `c`. Use `split_ifs with h`. Rewrite using `[h, smul_comm]`. Rewrite using `[smul_zero]`.
-
-Rewrite using `[Finset.sum_congr rfl fun c _ => hs c]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem oActTySt_holds : OActTySt := by
   intro C _ _ V O _ _ dd Y d _ I _ p g α x hx

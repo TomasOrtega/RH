@@ -11,9 +11,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨p, hp, hx⟩` from `x.2`. Conclude with `⟨p, hp, by`. Use `congrArg (IntermediateField.inclusion hLL) hx` as an intermediate fact. Rewrite `this` using `[map_zero]`. Rewrite using `[← this, Polynomial.eval₂_eq_sum_range, Polynomial.eval₂_eq_sum_range, map_sum]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Use the proof step `rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OL_le {LL LL' : FinExt l} (hLL : LL.1 ≤ LL'.1) (x : ↥(OL LL)) :
     IntermediateField.inclusion hLL (x : ↥LL.1) ∈ OL LL' := by
@@ -34,15 +34,15 @@ def jO {LL LL' : FinExt l} (hLL : LL.1 ≤ LL'.1) : ↥(OL LL) →+* ↥(OL LL')
   map_add' a b := by ext; simp
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (LL : FinExt l) : IsTopologicalRing ↥LL.1 := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (LL : FinExt l) : IsDomain ↥(OL LL) := inferInstance
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI : IsIntegralClosure ↥(OL LL) ℤ_[l] ↥LL.1 := integralClosure.isIntegralClosure ℤ_[l] ↥LL.1`. Conclude with `IsIntegralClosure.isFractionRing_of_finite_extension ℤ_[l] ℚ_[l] ↥LL.1 ↥(OL LL)`.
+A detailed English derivation is pending.
 -/
 theorem isFrac_OL (LL : FinExt l) : IsFractionRing ↥(OL LL) ↥LL.1 := by
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2

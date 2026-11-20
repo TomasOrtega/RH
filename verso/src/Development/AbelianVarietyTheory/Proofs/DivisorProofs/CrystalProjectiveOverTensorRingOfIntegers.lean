@@ -22,23 +22,21 @@ noncomputable section
 namespace GlobalTheory.HTSummand
 
 /- English proof (translation)
-Introduce `F _ _ C C₀ _ _ _ _ π hπ hsq A₀ _ _ hA O _ _ a`. Use `haveI : Nontrivial C₀ := by`. Use `⟨⟨0, 1, fun h ↦ ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (1 : C) ∈ RingHom.ker π` using `by rw [RingHom.mem_ker, map_one]; exact h.symm`. Establish `h2 : (1 : C) ∈ RingHom.ker π ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_two]`. Simplify using `using Ideal.mul_mem_mul h1 h1`. Rewrite `h2` using `[hsq]`. Conclude with `one_ne_zero ((Submodule.mem_bot C).1 h2)`. Use `haveI : IsLocalRing C₀ := IsLocalRing.of_surjective' π hπ`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨red, hfin, hproj, hsurj, hker, -, hequiv, -⟩` from `GlobalTheory.T.exists_crystal_reduction_squareZero_artinian C C₀ π hπ hsq A₀ hA O a`. Set `a' : OAct (𝓞 F) A₀` to `{ act := fun x ↦ a.act (algebraMap (𝓞 F) O x) hom := fun x ↦ a.hom _ one := by rw [map_one]; exact a.one mul := fun x y ↦ by rw [mul_comm, map_mul, a.mul] add := fun x y ↦ by rw [map_add, a.add] }`. Take `⟨f, fsurj, fker, fequiv⟩` from `GlobalTheory.T.deRhamHomology_closedFibre_surjective_kernel C₀ A₀ hA (𝓞 F) a'`. Establish `hB` using `GlobalTheory.isAbelianScheme_pullback_obj (spMap (algebraMap C₀ (IsLocalRing.ResidueField C₀))) A₀ hA`. Establish `hP` using `GlobalTheory.T.firstDeRhamHomology_projective_over_tensor_integers F (IsLocalRing.ResidueField C₀) _ hB (OAct.pullback _ A₀ a')`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `σ : C →+* IsLocalRing.ResidueField C₀` to `(algebraMap C₀ (IsLocalRing.ResidueField C₀)).comp π`. Establish `hσ : Function.Surjective σ` using `IsLocalRing.residue_surjective.comp hπ`. Use `haveI : RingHomCompTriple π (algebraMap C₀ (IsLocalRing.ResidueField C₀)) σ := ⟨rfl⟩`. Establish `hle : RingHom.ker π ≤ RingHom.ker σ` using `fun b hb ↦ by`. Rewrite `hb`, the goal using `[RingHom.mem_ker]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show algebraMap C₀ (IsLocalRing.ResidueField C₀) (π b) = 0`. Rewrite using `[hb, map_zero]`. Use `GlobalTheory.T.projective_tensor_of_fibre_projective' C (IsLocalRing.ResidueField C₀) (𝓞 F) σ hσ _ _ ((GlobalTheory.HTSummand.crysAct (divided₂ hsq) (spMap π) a).comp (algebraMap (𝓞 F) O)) (act (dp0 (IsLocalRing.ResidueField C₀)) (𝟙 _) (OAct.pullback _ A₀ a')) (f.comp red) hfin h …` and prove the remaining obligations. Introduce `h hh`. Establish `h1 : red h ∈ IsLocalRing.maximalIdeal C₀ • (⊤ : Submodule C₀ (HdR A₀))` using `fker _ hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ∀ y ∈ IsLocalRing.maximalIdeal C₀ • (⊤ : Submodule C₀ (HdR A₀)), ∃ x ∈ RingHom.ker σ • (⊤ : Submodule C (Crys (divided₂ hsq) (spMap π) A₀)), red x = y`. Introduce `y hy`. Use `Submodule.smul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `c hc y _`. Take `⟨b, rfl⟩` from `hπ c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨x, rfl⟩` from `hsurj y`. Use `⟨b • x, Submodule.smul_mem_smul ?_ Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker] show algebraMap C₀ (IsLocalRing.ResidueField C₀) (π b) = 0`. Rewrite using `[IsLocalRing.ResidueField.algebraMap_eq]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 hc`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `LinearMap.map_smulₛₗ red b x`. Introduce and unpack `y y' ⟨x, hx, rfl⟩ ⟨x', hx', rfl⟩`. Conclude with `⟨x + x', add_mem hx hx', map_add _ _ _⟩`. Take `⟨x, hx, hxe⟩` from `h2 _ h1`. Establish `h3 : h - x ∈ RingHom.ker π • (⊤ : Submodule C (Crys (divided₂ hsq) (spMap π) A₀))` using `hker _ (by rw [map_sub, hxe, sub_self])`.
-
-Establish `h4` using `Submodule.smul_mono_left hle h3`. Simplify using `using add_mem h4 hx`. Introduce `x h show f (red (GlobalTheory.HTSummand.crysAct (divided₂ hsq) (spMap π) a (algebraMap (𝓞 F) O x) h)) = _`. Rewrite using `[hequiv]`. Conclude with `fequiv x (red h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crys_projective : ∀ (F : Type) [Field F] [NumberField F] (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → ∀ (hsq : RingHom.ker π ^ 2 = 0) (A₀ : Over (Sp C₀)) [GrpObj A₀] [IsCommMonObj A₀], IsAbelianScheme A₀ → ∀ (O : Type) [Ring O] [Algebra (𝓞 F) O] (a : GlobalTheory.UPel.HT.OActN O A₀), letI := GlobalTheory.HTSummand.tensorModOf ((GlobalTheory.HTSummand.crysAct (divided₂ hsq) (spMap π) a).comp (algebraMap (𝓞 F) O)); Module.Projective (C ⊗[ℤ] 𝓞 F) (Crys (divided₂ hsq) (spMap π) A₀) := by
   intro F _ _ C C₀ _ _ _ _ π hπ hsq A₀ _ _ hA O _ _ a

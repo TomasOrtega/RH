@@ -17,28 +17,22 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwLevPow
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ConjExt.locK_pow χ a v _`.
+A detailed English derivation is pending.
 -/
 theorem val_pow {E : Type} [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) (a : ℕ) (v) :
     (χ ^ a).val v = χ.val v ^ a :=
   GlobalTheory.ConjExt.locK_pow χ a v _
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC χ xi Q xiR h a b hab`. Establish `hQ0 : ∀ PP, PP ∉ R.Q A.μ0` using `fun PP hPP => ((hC.lev.Q_ram A.μ0 PP).2 (Or.inl hPP)) (by rw [hC.lev.xi_base]; intro x _; rfl)`. Use `{ xi := GlobalTheory.ConjExt.chrEq_pow h.xi a xi_fin := ?_ xi_triv := GlobalTheory.ConjExt.trivOn_pow h.xi_triv a xi_tame := fun v x h1 h2 => by` and prove the remaining obligations. Rewrite using `[GlobalTheory.ConjExt.loc_pow, h.xi_tame v x h1 h2, one_pow]`. Use `Q_pl := h.Q_pl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Q_off := h.Q_off`. Use `Q_de := h.Q_de`. Use `Q_ram := fun PP => Iff.trans (not_congr ⟨fun hu => hab ▸ GlobalTheory.ConjExt.unrAt_pow hu b, fun hu => GlobalTheory.ConjExt.unrAt_pow hu a⟩) (h.Q_ram PP)`. Use `xiR := fun PP hP c k u h1 h2 => by show (xiR PP ^ a) u = (χ ^ a).locK PP k`. Rewrite using `[GlobalTheory.ConjExt.locK_pow, MonoidHom.pow_apply, h.xiR PP hP c k u h1 h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `roots := h.roots`. Use `muVal := ?_`. Use `half := h.half`. Use `guard := h.guard }`. Take `⟨n, hn, ho⟩` from `h.xi_fin`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Use `show (χ ^ a) ^ n = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, show χ ^ n = 1 from ho, one_pow]`. Introduce `i P hP`. Take `⟨x, hx⟩` from `h.muVal i P hP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hP0 : Bridge.SplitOff (R.pl P) ((R.Sb : Set (Pl D.host.E)) ∪ (R.Q A.μ0 : Set (Pl D.host.E)))`. Use `⟨hP.1, fun hm => ?_, fun Q' hQ' => ?_⟩` and prove the remaining obligations. Break down `hm with hm | hm` into its components or cases. Conclude with `hP.2.1 (Or.inl hm)`. Conclude with `hQ0 _ hm`.
-
-Break down `hQ' with hQ' | hQ'` into its components or cases. Conclude with `hP.2.2 Q' (Or.inl hQ')`. Conclude with `absurd hQ' (hQ0 _)`. Take `⟨g, c0R, c0L, ht⟩` from `hC.fam.tie`. Establish `hy` using `hC.fam.muVal i A.μ0 P ((ht.ok A.μ0 P).2 hP0)`.
-
-Rewrite `hy` using `[hC.lev.xi_base, mul_one]`. Use `set y : D.what₂.LLˣ := A.muVal i A.μ0 P`. Use `⟨y * (y⁻¹ * x) ^ a, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, Units.val_mul, map_mul, map_pow, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hx, hy, Formalism.L2.Host.HChar.val_mul, Formalism.L2.Host.HChar.val_mul, val_pow]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`.
-
-Rewrite using `[inv_mul_cancel_left₀ (Units.ne_zero _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twLev_pow : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F →
     ∀ (χ : Formalism.L2.Host.HChar D.host.E) (xi : (AE D)ˣ →* Circle) (Q : Finset (Pl D.host.E)) (xiR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ),

@@ -12,17 +12,17 @@ open scoped Matrix Classical
 namespace GlobalTheory.DefPt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U ξ hD Z P`. Use `⟨fun τ s => ?_, fun τ h => ?_⟩` and prove the remaining obligations. Take `⟨b, hb0, hb⟩` from `GlobalTheory.T.exists_flatSectionValue_eq_mul_det_inv E H Dw l Xo c r U ξ hD Z P τ s`. Establish `h2` using `GlobalTheory.T.flatSection_valuation_at_finitePlace_eq_sub_det E H Dw l Xo c r U ξ hD Z P τ s b hb0 hb`. Establish `h3` using `GlobalTheory.T.constantNorm_flatSection_eq_norm_div_norm_det E H Dw l Xo c r U ξ hD Z P τ s b hb0 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ σ, 0 < ‖(P.X σ τ.1).det‖` using `fun σ => norm_pos_iff.2 ((P.arch σ).2.1 τ.1)`. Establish `hfB : (Function.support fun w => (vAdd w (P.B w τ.1).det : ℝ)).Finite`. Establish `e : (fun w => (vAdd w (P.B w τ.1).det : ℝ)) = (fun w => (vAdd w b : ℝ)) - s.rho_vw`. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.sub_apply, h2 w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `((finite_vAdd hb0).union s.finite_rho).subset (Function.support_sub _ _)`. Establish `hm` using `lineDeg_mul (r := fun σ => ‖(P.X σ τ.1).det‖) (r' := s.cInf) hX s.cInf_pos hfB s.finite_rho`. Establish `e1 : ((fun σ => ‖(P.X σ τ.1).det‖) * s.cInf) = fun σ : c.F →+* ℂ => ‖σ b‖`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `σ`. Rewrite using `[Pi.mul_apply, h3 σ]`. Clear denominators, using `[(hX σ).ne']` for the nonvanishing conditions. Establish `e2 : ((fun w => (vAdd w (P.B w τ.1).det : ℝ)) + s.rho_vw) = fun w => (vAdd w b : ℝ)`. Use function extensionality and compare the values at `w`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.add_apply, h2 w]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[e1, e2, lineDeg_num hb0]`. Establish `: P.degLie τ.1 + s.deg = 0`. Rewrite using `[hm]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq : Dw.q = 0` using `hD.q`. Simplify using `only [Datum.mult, if_neg h, hq]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degLie_eq_neg_deg_flat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ), DefCase U ξ → ∀ (Z : Comp Xo c) (P : PtData Z), (∀ (τ : Psi H) (s : FlatSec U ξ Z τ), P.degLie τ.1 = -s.deg) ∧ ∀ τ : E →+* ℂ, τ (H.rt : E) ≠ H.rt0 → Dw.mult τ = 0 := by
   intro E _ _ _ H Dw l Xo c r U ξ hD Z P

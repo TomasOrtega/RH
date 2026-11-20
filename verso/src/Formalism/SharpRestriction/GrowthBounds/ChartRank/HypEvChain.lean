@@ -15,7 +15,7 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
   {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P} {p : ℕ} {i : ℕ} {hi : i ≤ D.R.m} {G : GAtP p}
 
 /- English proof (translation)
-Introduce `Q hQ`. Conclude with `Formalism.L2.G.EvLe.evC_le (Hc S β).P (S.loc β).rk S.pos (gramC (gramN D i hi) (embT D)) (atInfGL (embT D) (S.loc β).B⁻¹) (M.lam i) hw Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evValLe_of_wt (S : StepIn M i hi G) (β : S.Ch) (hw : WtTie (Hc S β).P (S.loc β).rk S.pos (M.lam i)) :
     EvValLe S β := by
@@ -24,7 +24,7 @@ theorem evValLe_of_wt (S : StepIn M i hi G) (β : S.Ch) (hw : WtTie (Hc S β).P 
     (atInfGL (embT D) (S.loc β).B⁻¹) (M.lam i) hw Q hQ
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.EvLe.evValC_le (Hc S β).P (S.loc β).rk S.pos _ _ (M.lam i) hw`.
+A detailed English derivation is pending.
 -/
 theorem evValCAt_le (S : StepIn M i hi G) (β : S.Ch) (hw : WtTie (Hc S β).P (S.loc β).rk S.pos (M.lam i)) :
     (VtupR (Hc S β).P ℂ).map (evC (Hc S β).P (S.loc β).rk S.pos (gramC (gramN D i hi) (embT D))
@@ -32,20 +32,20 @@ theorem evValCAt_le (S : StepIn M i hi G) (β : S.Ch) (hw : WtTie (Hc S β).P (S
   Formalism.L2.G.EvLe.evValC_le (Hc S β).P (S.loc β).rk S.pos _ _ (M.lam i) hw
 
 /- English proof (translation)
-Introduce `hS H X`. Conclude with `cmpLiftOf_of_evVal S e (fun β => evValLe_of_wt S β (H β).wt) hS H X`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cmpLiftOf_holds (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : CmpLiftOf S e := by
   intro hS H X
   exact cmpLiftOf_of_evVal S e (fun β => evValLe_of_wt S β (H β).wt) hS H X
 
 /- English proof (translation)
-The claim follows from `invLeOf_of_cmp S e (cmpLiftOf_holds S e)`.
+A detailed English derivation is pending.
 -/
 theorem invLeOf_holds (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : InvLeOf S e :=
   invLeOf_of_cmp S e (cmpLiftOf_holds S e)
 
 /- English proof (translation)
-The claim follows from `chartRankGe_of_cmp S e H hS X (cmpLiftOf_holds S e)`.
+A detailed English derivation is pending.
 -/
 theorem chartRankGe_of_ties [IsFractionRing G.O G.Kf] (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (H : ∀ β, S.Core e β)
     (hS : BlockRationalityField) (X : KAat.ChX S) : ChartRankGe S :=
@@ -59,7 +59,7 @@ variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w 
   {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
 
 /- English proof (translation)
-The claim follows from `cmpJHyp_of_evVal c Gt hS core ok twUnit valIntN iwF hfin X fun j hj β => evValLe_of_wt _ β (core j hj β).wt`.
+A detailed English derivation is pending.
 -/
 theorem cmpJHyp_of_ties (c : LatCmp D) {I : CmpJIn Tw u μ w h Lv} (Gt : GatTies D) (hS : BlockRationalityField)
     (core : ∀ j hj β, (I.at' j hj).st.Core (c.embW u w h) β) (ok : ∀ j hj, (I.at' j hj).st.okW w)

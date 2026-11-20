@@ -16,16 +16,16 @@ variable {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Compa
   [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+A detailed English derivation is pending.
 -/
 lemma integrable_of_cont (ν : Measure K) [ν.IsHaarMeasure] {f : K → ℂ} (hf : Continuous f) :
     Integrable f ν :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
 /- English proof (translation)
-Set `Φ : Module.Dual ℂ (Module.Dual ℂ E)` to `{ toFun := fun ℓ => ∫ k, ℓ (a k) ∂ν map_add' := fun ℓ ℓ' => by`. Simplify using `using integral_add (integrable_of_cont ν (ha ℓ)) (integrable_of_cont ν (ha ℓ'))`. Use the proof step `map_smul' := fun c ℓ => by`. Simplify using `using integral_const_mul c (fun k => ℓ (a k)) }`. Use `⟨(Module.evalEquiv ℂ E).symm Φ, fun ℓ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(Module.evalEquiv ℂ E).apply_symm_apply Φ`. Establish `h2` using `congrArg (fun F : Module.Dual ℂ (Module.Dual ℂ E) => F ℓ) h`. Simplify `h2` using `[Module.evalEquiv_apply, Φ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma exists_weak_integral (ν : Measure K) [ν.IsHaarMeasure]
     {E : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E] (a : K → E)
@@ -43,11 +43,11 @@ lemma exists_weak_integral (ν : Measure K) [ν.IsHaarMeasure]
   simpa [Module.evalEquiv_apply, Φ] using h2
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_weak_integral ν (E := A) (fun k => h k • (⟨a k, haA k⟩ : A)) (by`. Introduce `ℓ`. Take `⟨ℓ', hℓ'⟩` from `LinearMap.exists_extend ℓ`. Establish `: ∀ k, ℓ (h k • (⟨a k, haA k⟩ : A)) = h k * ℓ' (a k)`. Introduce `k`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_smul, smul_eq_mul, ← hℓ']`. Both sides reduce to the same expression. Simplify using `only [this]`. Conclude with `hh.mul (ha ℓ'))`. Use `⟨v, v.2, fun ℓ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hv (ℓ.domRestrict A)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma exists_weak_integral_sub (ν : Measure K) [ν.IsHaarMeasure]
     {M : Type} [AddCommGroup M] [Module ℂ M] (A : Submodule ℂ M) [FiniteDimensional ℂ A]
@@ -68,23 +68,21 @@ lemma exists_weak_integral_sub (ν : Measure K) [ν.IsHaarMeasure]
   simpa using this
 
 /- English proof (translation)
-Establish `hex : ∀ τ : V →ₗ[ℂ] ℂ, ∃ T : V, ∀ σ : V →ₗ[ℂ] ℂ, σ T = ∫ k, (starRingEnd ℂ) (τ (b k)) * σ (b k) ∂ν` using `fun τ => exists_weak_integral ν (fun k => (starRingEnd ℂ) (τ (b k)) • b k) (by`. Introduce `ℓ`. Simplify using `only [map_smul, smul_eq_mul]`. Conclude with `(Complex.continuous_conj.comp (hb τ)).mul (hb ℓ)) |>.imp fun T hT σ => by`. Simplify using `using hT σ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `S : Submodule ℂ V` to `{ carrier := {T | ∃ τ : V →ₗ[ℂ] ℂ, ∀ σ : V →ₗ[ℂ] ℂ, σ T = ∫ k, (starRingEnd ℂ) (τ (b k)) * σ (b k) ∂ν} add_mem' := by`. Introduce and unpack `T T' ⟨τ, hτ⟩ ⟨τ', hτ'⟩`. Use `⟨τ + τ', fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hτ, hτ', ← integral_add]`. Simplify using `[add_mul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `integrable_of_cont ν ((Complex.continuous_conj.comp (hb τ)).mul (hb σ))`. Conclude with `integrable_of_cont ν ((Complex.continuous_conj.comp (hb τ')).mul (hb σ))`. Use the proof step `zero_mem' := ⟨0, fun σ => by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c T ⟨τ, hτ⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `⟨(starRingEnd ℂ) c • τ, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hτ, smul_eq_mul, ← integral_const_mul]`. Simplify using `[mul_assoc] }`. Distinguish the cases in `hu : b 1 ∈ S`. Take `⟨τ, hτ⟩` from `hu`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨τ, hτ⟩`. It suffices to derive a contradiction. Take `⟨l, hl1, hl2⟩` from `Submodule.exists_le_ker_of_notMem hu`. Take `⟨T, hT⟩` from `hex l`. Establish `hTS : T ∈ S` using `⟨l, hT⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : l T = 0` using `hl2 hTS`. Establish `hnn : ∀ k, (starRingEnd ℂ) (l (b k)) * l (b k) = ((‖l (b k)‖ ^ 2 : ℝ) : ℂ)`. Introduce `k`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hi : ∫ k, ‖l (b k)‖ ^ 2 ∂ν = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hT l` as an intermediate fact. Rewrite `this` using `[hz]`. Simplify using `only [hnn] at this`. Rewrite `this` using `[integral_complex_ofReal]`. Conclude with `this.symm` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : Continuous fun k => ‖l (b k)‖ ^ 2` using `((hb l).norm).pow 2`. Establish `hint : Integrable (fun k => ‖l (b k)‖ ^ 2) ν` using `hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun k => by positivity) hint).1 hi`. Establish `hall : (fun k => ‖l (b k)‖ ^ 2) = fun _ => (0 : ℝ)` using `(Continuous.ae_eq_iff_eq ν hc continuous_const).1 hae`. Use `congrFun hall 1` as an intermediate fact.
-
-Simplify using `at this`. Conclude with `hl1 this`.
+A detailed English derivation is pending.
 -/
 lemma exists_repr_point (ν : Measure K) [ν.IsHaarMeasure]
     {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (b : K → V)
@@ -150,15 +148,13 @@ variable {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Compa
   [MeasurableSpace K] [BorelSpace K]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ A`. Set `c : ((Fin (Module.finrank ℂ A)) → A) →ₗ[ℂ] ℂ` to `η ∘ₗ (b.constr ℂ).toLinearMap`. Establish `key : ∀ k, η (r k) = ∑ i, (c ∘ₗ LinearMap.single ℂ (fun _ : Fin (Module.finrank ℂ A) => (A : Type)) i) (r k (b i))`. Introduce `k`. Establish `h1 : r k = b.constr ℂ (fun i => r k (b i))` using `(b.constr_self ℂ (r k)).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (fun i => r k (b i)) = ∑ i, Pi.single i (r k (b i))` using `(Finset.univ_sum_single _).symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [c, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← h1]`. Use `_ = _ := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, map_sum]`. Simplify using `[LinearMap.single_apply]`. Simplify using `only [key]`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Take `⟨ℓ', hℓ'⟩` from `LinearMap.exists_extend (c ∘ₗ LinearMap.single ℂ (fun _ : Fin (Module.finrank ℂ A) => (A : Type)) i)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: ∀ k, (c ∘ₗ LinearMap.single ℂ (fun _ : Fin (Module.finrank ℂ A) => (A : Type)) i) (r k (b i)) = ℓ' (r k (b i) : M)`. Introduce `k`. Rewrite using `[← hℓ']`. Both sides reduce to the same expression. Simplify using `only [this]`.
-
-Conclude with `hr ℓ' (b i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma end_coeff_continuous {M : Type} [AddCommGroup M] [Module ℂ M]
     (A : Submodule ℂ M) [FiniteDimensional ℂ A] (r : K → A →ₗ[ℂ] A)
@@ -189,55 +185,49 @@ lemma end_coeff_continuous {M : Type} [AddCommGroup M] [Module ℂ M]
   exact hr ℓ' (b i)
 
 /- English proof (translation)
-Introduce `K M H X _ _ _ _ _ _ ν _ _ _ _ _ ρ ι U U' ev h1 h2 hU hU' hadm x hx`. Take `⟨A, hAfd, hxA, hAU, hAst, hAc⟩` from `hU x hx`. Use `haveI := hAfd`. Set `ρA : K → A →ₗ[ℂ] A` to `fun k => (ρ k).restrict (hAst k)`. Establish `hρA : ∀ k (a : A), ((ρA k a : A) : M) = ρ k a` using `fun k a => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρAmul : ∀ k k', ρA (k * k') = ρA k ∘ₗ ρA k'`. Introduce `k k'`. Use extensionality with `a`. Simplify using `[hρA, map_mul, Module.End.mul_apply]`. Establish `hρA1 : ρA 1 = LinearMap.id`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `[hρA]`. Establish `hcont : ∀ η : (A →ₗ[ℂ] A) →ₗ[ℂ] ℂ, Continuous fun k => η (ρA k)` using `end_coeff_continuous A ρA (fun ℓ a => by`. Simplify `hAc ℓ a a.2)` using `[hρA]`. Establish `hinv : ∀ η : (A →ₗ[ℂ] A) →ₗ[ℂ] ℂ, Continuous fun k => η (ρA k⁻¹)` using `fun η => (hcont η).comp continuous_inv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `exists_repr_point ν (fun k => ρA k⁻¹) hinv`. Establish `hτ' : ∀ σ : (A →ₗ[ℂ] A) →ₗ[ℂ] ℂ, σ LinearMap.id = ∫ k, (starRingEnd ℂ) (τ (ρA k⁻¹)) * σ (ρA k⁻¹) ∂ν`. Introduce `σ`. Use `hτ σ` as an intermediate fact. Simplify `this` using `[hρA1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `g : K → ℂ` to `fun k => τ (ρA k⁻¹)`. Establish `hg : Continuous g` using `hinv τ`. Establish `hcg : Continuous fun k => (starRingEnd ℂ) (g k)` using `Complex.continuous_conj.comp hg`. Establish `K1 : ∀ ℓ : M →ₗ[ℂ] ℂ, ∀ w ∈ A, ℓ w = ∫ k, (starRingEnd ℂ) (g k) * ℓ (ρ k⁻¹ w) ∂ν`. Introduce `ℓ w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `σ : (A →ₗ[ℂ] A) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => ℓ (φ ⟨w, hw⟩ : M) map_add' := fun φ ψ => by simp map_smul' := fun c φ => by simp }`. Conclude with `hτ' σ`. Establish `hst' : ∀ k, ∀ z ∈ U', ρ k z ∈ U'`. Introduce `k z hz`. Take `⟨B, _, hzB, hBU, hBst, _⟩` from `hU' z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hBU (hBst k z hzB)`. Set `Φ : ((A →ₗ[ℂ] A) →ₗ[ℂ] ℂ) →ₗ[ℂ] (K → ℂ)` to `{ toFun := fun η k => η (ρA k) map_add' := fun η η' => rfl map_smul' := fun c η => rfl }`. Set `Wf : Submodule ℂ (K → ℂ)` to `LinearMap.range Φ`. Use `haveI hWf : FiniteDimensional ℂ Wf := inferInstance`. Set `S : Set M` to `{x | x ∈ U' ∧ ∀ t, (fun k => ev t (ρ k x)) ∈ Wf}`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `D : Submodule ℂ M` to `Submodule.span ℂ S`. Use `haveI hDfd : FiniteDimensional ℂ D := hadm Wf hWf`. Establish `hDU : D ≤ U'` using `Submodule.span_le.2 fun _ h => h.1`. Establish `Z : ∀ z ∈ U', ∃ z₁ ∈ S, ∀ ℓ : M →ₗ[ℂ] ℂ, ℓ z₁ = ∫ k, g k * ℓ (ρ k z) ∂ν`. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨B, hBfd, hzB, hBU, hBst, hBc⟩` from `hU' z hz`. Use `haveI := hBfd`. Take `⟨z₁, hz₁B, hz₁⟩` from `exists_weak_integral_sub ν B (fun k => ρ k z) (fun k => hBst k z hzB) g hg (fun ℓ => hBc ℓ z hzB)`. Use `⟨z₁, ⟨hBU hz₁B, fun t => ?_⟩, hz₁⟩` and prove the remaining obligations. Set `f : K → ℂ` to `fun k => ev t (ρ k z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Continuous f` using `hBc (ev t) z hzB`. Establish `hcomp : ∀ φ : A →ₗ[ℂ] A, Continuous fun k => τ (ρA k⁻¹ ∘ₗ φ)`. Introduce `φ`. Set `σ : (A →ₗ[ℂ] A) →ₗ[ℂ] ℂ` to `{ toFun := fun ψ => τ (ψ ∘ₗ φ) map_add' := fun ψ ψ' => by rw [LinearMap.add_comp, map_add] map_smul' := fun c ψ => by rw [LinearMap.smul_comp, map_smul]; rfl }`. Conclude with `hinv σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `η : (A →ₗ[ℂ] A) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => ∫ k, τ (ρA k⁻¹ ∘ₗ φ) * f k ∂ν map_add' := fun φ ψ => by`. Establish `i1 : Integrable (fun k => τ (ρA k⁻¹ ∘ₗ φ) * f k) ν` using `integrable_of_cont ν ((hcomp φ).mul hf)`. Establish `i2 : Integrable (fun k => τ (ρA k⁻¹ ∘ₗ ψ) * f k) ν` using `integrable_of_cont ν ((hcomp ψ).mul hf)`. Rewrite using `[← integral_add i1 i2]`. Simplify using `[LinearMap.comp_add, add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c φ => by`. Rewrite using `[RingHom.id_apply, smul_eq_mul, ← integral_const_mul]`. Simplify using `[LinearMap.comp_smul, mul_assoc] }`. Use `⟨η, funext fun k₀ => ?_⟩` and prove the remaining obligations. Use `show ∫ k, τ (ρA k⁻¹ ∘ₗ ρA k₀) * f k ∂ν = ev t (ρ k₀ z₁)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ev t (ρ k₀ z₁) = ∫ k, g k * f (k₀ * k) ∂ν`. Use `hz₁ ((ev t) ∘ₗ (ρ k₀))` as an intermediate fact. Simplify `this` using `[f, map_mul, Module.End.mul_apply]`. Rewrite using `[e1, ← integral_mul_left_eq_self (fun k => τ (ρA k⁻¹ ∘ₗ ρA k₀) * f k) k₀]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show τ (ρA (k₀ * k)⁻¹ ∘ₗ ρA k₀) * f (k₀ * k) = g k * f (k₀ * k)`. Establish `: ρA (k₀ * k)⁻¹ ∘ₗ ρA k₀ = ρA k⁻¹`. Rewrite using `[← hρAmul]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `I1 : ∀ (z z₁ : M), (∀ ℓ : M →ₗ[ℂ] ℂ, ℓ z₁ = ∫ k, g k * ℓ (ρ k z) ∂ν) → ∀ w : M, ⟪ι z₁, ι w⟫_ℂ = ∫ k, (starRingEnd ℂ) (g k) * ⟪ι (ρ k z), ι w⟫_ℂ ∂ν`. Introduce `z z₁ hz₁ w`. Use `hz₁ ((innerₛₗ ℂ (ι w)) ∘ₗ ι)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, innerₛₗ_apply_apply] at this`. Rewrite using `[← inner_conj_symm, this, ← integral_conj]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `[inner_conj_symm]`. Set `P : Submodule ℂ H` to `D.map ι`. Use `haveI : FiniteDimensional ℂ P := inferInstance`. Use `haveI : CompleteSpace P := FiniteDimensional.complete ℂ P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t₀, ht₀D, ht₀⟩ : ∃ t₀ ∈ D, ι t₀ = P.starProjection (ι x) := by`. Establish `: P.starProjection (ι x) ∈ P`. Rewrite using `[Submodule.starProjection_apply]`. Conclude with `(P.orthogonalProjection (ι x)).2`. Take `⟨t, ht, e⟩` from `Submodule.mem_map.1 this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨t, ht, e⟩`. Establish `hproj : ∀ d ∈ D, ⟪ι d, ι x⟫_ℂ = ⟪ι d, ι t₀⟫_ℂ`. Introduce `d hd`. Establish `hP : ι d ∈ P` using `Submodule.mem_map_of_mem hd`. Use `Submodule.inner_right_of_mem_orthogonal hP (P.sub_starProjection_mem_orthogonal (ι x))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht₀]`. Rewrite using `[← sub_eq_zero, ← inner_sub_right]`. Conclude with `this`. Establish `ht₀U : t₀ ∈ U'` using `hDU ht₀D`. Take `⟨B, hBfd, htB, hBU, hBst, hBc⟩` from `hU' t₀ ht₀U`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := hBfd`. Take `⟨y, hyB, hy⟩` from `exists_weak_integral_sub ν B (fun k => ρ k⁻¹ t₀) (fun k => hBst k⁻¹ t₀ htB) (fun k => (starRingEnd ℂ) (g k)) hcg (fun ℓ => (hBc ℓ t₀ htB).comp continuous_inv)`. Use `⟨y, hBU hyB, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨z₁, hz₁S, hz₁⟩` from `Z z hz`. Establish `hcancel : ∀ k, ρ k⁻¹ (ρ k z) = z`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `a1 : ⟪ι z₁, ι x⟫_ℂ = ⟪ι z, ι x⟫_ℂ`. Rewrite using `[I1 z z₁ hz₁ x]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `K1 ((innerₛₗ ℂ (ι z)) ∘ₗ ι) x hxA` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, innerₛₗ_apply_apply] at this`. Rewrite using `[this]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Establish `e` using `h1 k⁻¹ (ρ k z) (hst' k z hz) x hx`.
-
-Rewrite `e` using `[hcancel]`. Simplify using `only [e]`. Establish `a2 : ⟪ι z₁, ι t₀⟫_ℂ = ⟪ι z, ι y⟫_ℂ`. Rewrite using `[I1 z z₁ hz₁ t₀]`. Use `hy ((innerₛₗ ℂ (ι z)) ∘ₗ ι)` as an intermediate fact.
-
-Simplify using `only [LinearMap.comp_apply, innerₛₗ_apply_apply] at this`. Rewrite using `[this]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Establish `e` using `h2 k⁻¹ (ρ k z) (hst' k z hz) t₀ ht₀U`. Rewrite `e` using `[hcancel]`.
-
-Simplify using `only [e]`. Establish `hz₁D : z₁ ∈ D` using `Submodule.subset_span hz₁S`. Rewrite using `[← a1, hproj z₁ hz₁D, a2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem representing_vector : ∀ {K M H X : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [ν.IsHaarMeasure] [AddCommGroup M] [Module ℂ M] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ρ : Representation ℂ K M) (ι : M →ₗ[ℂ] H) (U U' : Submodule ℂ M) (ev : X → M →ₗ[ℂ] ℂ),
   (∀ k, ∀ x ∈ U', ∀ y ∈ U, ⟪ι (ρ k x), ι (ρ k y)⟫_ℂ = ⟪ι x, ι y⟫_ℂ) →

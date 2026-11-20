@@ -23,7 +23,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 namespace SectionInjectivityEquivalence
 
 /- English proof (translation)
-Rewrite using `[← funFieldEquiv_mkF, Ne, map_eq_zero_iff _ (funFieldEquiv P).injective]`. Conclude with `fun h ↦ hf ((P.mkF_eq_zero_iff f).mp h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem val_ne_zero {P : ArithVariety n} {f : MvPolynomial (Coord n) ℤ} (hf : f ∉ P.ideal) :
     val P f ≠ 0 := by
@@ -31,14 +31,14 @@ theorem val_ne_zero {P : ArithVariety n} {f : MvPolynomial (Coord n) ℤ} (hf : 
   exact fun h ↦ hf ((P.mkF_eq_zero_iff f).mp h)
 
 /- English proof (translation)
-The claim follows from `div_ne_zero (val_ne_zero he) (val_ne_zero e.den_not_mem)`.
+A detailed English derivation is pending.
 -/
 theorem sectionVal_ne_zero {P : ArithVariety n} {a : ι → ℤ} (e : IntegralSection P a)
     (he : e.num ∉ P.ideal) : sectionVal e ≠ 0 :=
   div_ne_zero (val_ne_zero he) (val_ne_zero e.den_not_mem)
 
 /- English proof (translation)
-Rewrite using `[toFun_eq_symm_sectionVal, Ne, map_eq_zero_iff _ (funFieldEquiv P).symm.injective]`. Conclude with `sectionVal_ne_zero e he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFun_ne_zero {P : ArithVariety n} {a : ι → ℤ} (e : IntegralSection P a)
     (he : e.num ∉ P.ideal) : e.toFun ≠ 0 := by
@@ -46,7 +46,7 @@ theorem toFun_ne_zero {P : ArithVariety n} {a : ι → ℤ} (e : IntegralSection
   exact sectionVal_ne_zero e he
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hs`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem supNormLE_cast {P : ArithVariety n} {A B : HermLine n} (h : A = B) (s : IntegralSection P A.deg)
     {C : ℝ} (hs : s.SupNormLE A C) : (s.cast (congrArg HermLine.deg h)).SupNormLE B C := by
@@ -54,9 +54,9 @@ theorem supNormLE_cast {P : ArithVariety n} {A B : HermLine n} (h : A = B) (s : 
   exact hs
 
 /- English proof (translation)
-Establish `h` using `P.chart_homogeneous c hc hf`. Establish `hpow : P.chartPow c (fun k ↦ (δ k : ℤ)) = ∏ k, P.mkF (X ⟨k, c k⟩) ^ δ k`. Simplify using `only [ArithVariety.chartPow, zpow_natCast]`. Establish `hne : ∏ k, P.mkF (X ⟨k, c k⟩) ^ δ k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ fun h0 ↦ hc k ((P.mkF_eq_zero_iff _).mp h0)`. Rewrite using `[hpow, ← h, mul_div_cancel_left₀ _ hne]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `MvPolynomial.eval₂_mem (fun i _ ↦ intCast_mem _ _) fun v ↦ ?_` and prove the remaining obligations. Conclude with `Subring.subset_closure ⟨v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mkF_div_chartPow_mem {P : ArithVariety n} {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     {f : MvPolynomial (Coord n) ℤ} {δ : ι → ℕ} (hf : IsWeightedHomogeneous (coordDeg n) f δ) :
@@ -71,7 +71,7 @@ theorem mkF_div_chartPow_mem {P : ArithVariety n} {c : (k : ι) → Fin (n k + 1
   exact Subring.subset_closure ⟨v, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [ArithVariety.chartPow, Pi.add_apply, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Conclude with `zpow_add₀ (fun h0 ↦ hc k ((P.mkF_eq_zero_iff _).mp h0)) _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chartPow_add (P : ArithVariety n) {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     (u v : ι → ℤ) : P.chartPow c (u + v) = P.chartPow c u * P.chartPow c v := by
@@ -80,13 +80,13 @@ theorem chartPow_add (P : ArithVariety n) {c : (k : ι) → Fin (n k + 1)} (hc :
   exact zpow_add₀ (fun h0 ↦ hc k ((P.mkF_eq_zero_iff _).mp h0)) _ _
 
 /- English proof (translation)
-Introduce `c hc`. Establish `hlive : P.IsLive c` using `fun k hk ↦ hc k (by show val P (X ⟨k, c k⟩) = 0`. Rewrite using `[← funFieldEquiv_mkF, (P.mkF_eq_zero_iff _).mpr hk, map_zero])`. Take `⟨d, ε, ⟨δ, hε, hδ⟩, hmem⟩` from `σ.regular c hlive`. Establish `hmk` using `SectionSmall.mkF_eq_of_mem σ hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX : P.mkF (chartMonomial c d) = P.chartPow c (fun k ↦ (d k : ℤ))`. Simplify using `only [chartMonomial, map_prod, map_pow, ArithVariety.chartPow, zpow_natCast]`. Establish `hXne : P.chartPow c (fun k ↦ (d k : ℤ)) ≠ 0`. Unfold `ArithVariety.chartPow`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ fun h1 ↦ hlive k ((P.mkF_eq_zero_iff _).mp h1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hδ' : (fun k ↦ (δ k : ℤ)) = b + fun k ↦ (d k : ℤ)` using `funext fun k ↦ hδ k`. Establish `key : σ.toFun / P.chartPow c b = P.mkF ε / P.chartPow c (fun k ↦ (δ k : ℤ))`. Rewrite using `[hδ', chartPow_add P hlive, hmk, hX, mul_div_mul_right _ _ hXne]`. Establish `hm` using `mkF_div_chartPow_mem hlive hε`. Rewrite `hm` using `[← key, ← funFieldEquiv_mem_chartRing_iff, funFieldEquiv_div_chartPow, funFieldEquiv_toFun]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb' : -b = fun k ↦ -((τ : ℤ) * a k)` using `funext fun k ↦ by rw [Pi.neg_apply, hb k]`. Rewrite `hm` using `[hb']`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sectionVal_mem_chartLat {P : ArithVariety n} {b : ι → ℤ} (σ : IntegralSection P b) (τ : ℕ)
     (a : ι → ℤ) (hb : ∀ k, b k = (τ : ℤ) * a k) : sectionVal σ ∈ chartLat (genPt P) a τ := by
@@ -111,11 +111,9 @@ theorem sectionVal_mem_chartLat {P : ArithVariety n} {b : ι → ℤ} (σ : Inte
   exact hm
 
 /- English proof (translation)
-Establish `hZ : ∀ (R : Type) [Ring R] [Algebra ℤ R], algebraMap ℤ R = Int.castRingHom R` using `fun _ _ _ ↦ RingHom.ext_int _ _`. Use `show funFieldEquiv P (eval₂ (algebraMap ℤ P.FunField) (fun j : Fin (D.m + 1) ↦ (funFieldEquiv P).symm (D.x j)) F) = eval₂ (algebraMap ℤ (FunField P)) D.x F`. Rewrite using `[hZ, hZ]`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval₂_C, eval₂_C]`. Conclude with `map_intCast (funFieldEquiv P) r`. Consider the case `add p q hp hq => simp only [eval₂_add, map_add, hp, hq]`. Consider the case `mul_X p j hp`. Simplify using `only [eval₂_mul, eval₂_X, map_mul, hp]`.
-
-Conclude with `congrArg _ (RingEquiv.apply_symm_apply _ _)`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem funFieldEquiv_aeval {P : ArithVariety n} (D : AddBlockData P) (F : MvPolynomial (Fin (D.m + 1)) ℤ) :
     funFieldEquiv P (aeval (AddBlockData.toObjects D).elt F) = aeval D.x F := by
@@ -134,29 +132,27 @@ theorem funFieldEquiv_aeval {P : ArithVariety n} (D : AddBlockData P) (F : MvPol
     exact congrArg _ (RingEquiv.apply_symm_apply _ _)
 
 /- English proof (translation)
-Introduce `ι _ _ n P M k q a C hkq ha e he0 heC D hD G Γ m`. Establish `hsv : sectionVal e ≠ 0` using `sectionVal_ne_zero e he0`. Use `⟨fun s₁ _ s₂ _ h ↦ mul_right_cancel₀ (pow_ne_zero _ hsv) h, fun s hs ↦ ?_⟩` and prove the remaining obligations. Take `⟨F, hF, rfl, hbd⟩` from `hs`. Use `set N := twistPow M (q - k) a C with hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set D₁ := AddBlockData.toObjects D`. Take `⟨sF, hsF⟩` from `(hS ι n P D₁).1 m F hF`. Establish `hsmall` using `(hS ι n P D₁).2 N hD.symm G.d G.g G.isFormSystem Γ.r Γ.f Γ.δ Γ.isHomogGenerators m F hF`. Establish `hpts : D₁.extPoints = conePoints D.ext ℂ` using `AddBlockEq.addBlockEquiv_symm_conePoints D`. Establish `hbd₁ : ∀ w ∈ D₁.extPoints, ‖eval₂ (Int.castRingHom ℂ) (D₁.newPart w) F‖ ≤ D₁.plusMetric N G.d G.g Γ.f Γ.δ w ^ m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `w hw`. Rewrite `hw` using `[hpts]`. Conclude with `hbd w hw`. Use `set t := a * m with ht`. Use `set L := ((M.pow (q - k)).mul (HermLine.standard n)).pow t with hL`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `hdeg : m • D₁.deg = L.deg` using `by show m • D.deg = _`. Rewrite using `[hD, twistPow_deg]`. Use function extensionality and compare the values at `b`. Simplify using `only [hL, HermLine.pow, HermLine.mul, Pi.smul_apply, Pi.add_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply, ht]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set sA := sF.cast hdeg`. Establish `hsA : sA.SupNormLE L (-(t * C))`. Introduce `z hz c d' ε hform hzc`. Establish `hmk : P.mkF ε = sF.toFun * P.mkF (chartMonomial c d')` using `SectionSmall.mkF_eq_of_mem sF hform.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmk` using `[hsF]`. Establish `hb` using `(hsmall ε (chartMonomial c d') hmk).2 hbd₁ z hz`. Establish `hμ` using `norm_pos_iff.mpr (GroundTheory.Heights₂.Heights.SectionInjectivity.evalCone_chartMonomial_ne_zero hzc d')`. Establish `hLz` using `L.metric_pos z hz.1`. Establish `hNm : N.metric z ^ m = Real.exp (-(t * C)) * L.metric z`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hN, twistPow_metric, mul_pow, ← Real.exp_nat_mul, hL, hermLine_pow_metric, hermLine_pow_metric, ← pow_mul, ht]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[div_le_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set e' := e.cast (congrArg HermLine.deg (powDivStd_eq M k)) with he'_def`. Establish `he' : e'.SupNormLE ((M.pow k).mul (HermLine.standard n).inv) C` using `supNormLE_cast (powDivStd_eq M k) e heC`. Establish `he'0 : e'.toFun ≠ 0` using `toFun_ne_zero e' he0`. Take `⟨s', hs'val, hs'sup⟩` from `(hA ι n P M k q hkq e' C he'0 he' t).1 sA hsA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : funFieldEquiv P sA.toFun = aeval D.x F` using `by show funFieldEquiv P sF.toFun = _`. Rewrite using `[hsF]`. Conclude with `funFieldEquiv_aeval D F`. Establish `h2 : funFieldEquiv P e'.toFun = sectionVal e` using `funFieldEquiv_toFun e`. Establish `hx : aeval D.x F * sectionVal e ^ t = sectionVal s'`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← funFieldEquiv_toFun s', hs'val, map_mul, map_pow, h1, h2]`. Rewrite using `[hx]`. Use `⟨sectionVal_mem_chartLat s' (a * q * m) M.deg fun b ↦ ?_, ?_⟩` and prove the remaining obligations. Use `show ((q * t) • M.deg) b = _`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, ht]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `g f dg df _ _ _ hval z hz`. Establish `hmk : P.mkF g = s'.toFun * P.mkF f`. Apply `(funFieldEquiv P).injective` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, funFieldEquiv_mkF, funFieldEquiv_mkF, funFieldEquiv_toFun]`. Conclude with `hval`. Establish `h` using `(SectionSmall.proof ι n P (M.pow (q * t)) s').1 0 hs'sup g f hmk z hz`. Rewrite `h` using `[Real.exp_zero, one_mul, hermLine_pow_metric]`. Rewrite `h` using `[show q * t = a * q * m by rw [ht]; ring]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem localChange_of_vectorSpace (hA : GroundTheory.Heights₂.Heights.SectionInjectivity.Statement)
     (hS : GroundTheory.Heights₂.Heights.SmallSections.Statement) : SectionInjectivity.Statement := by
@@ -232,14 +228,14 @@ theorem localChange_of_vectorSpace (hA : GroundTheory.Heights₂.Heights.Section
 end SectionInjectivityEquivalence
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hA ↦ SectionInjectivityEquivalence.localChange_of_vectorSpace hA hS, fun _ ↦ GroundTheory.Heights₂.Heights.SectionInjectivity.proof⟩`.
+Supply the required witnesses or components.
 -/
 theorem SectionInjectivity.equiv_of (hS : GroundTheory.Heights₂.Heights.SmallSections.Statement) :
     GroundTheory.Heights₂.Heights.SectionInjectivity.Statement ↔ SectionInjectivity.Statement :=
   ⟨fun hA ↦ SectionInjectivityEquivalence.localChange_of_vectorSpace hA hS, fun _ ↦ GroundTheory.Heights₂.Heights.SectionInjectivity.proof⟩
 
 /- English proof (translation)
-The claim follows from `SectionInjectivity.equiv_of (GroundTheory.Heights₂.Heights.SmallSections.proof GroundTheory.Heights₂.Heights.ChartFormsAlt.proof)`.
+A detailed English derivation is pending.
 -/
 theorem SectionInjectivity.equiv : GroundTheory.Heights₂.Heights.SectionInjectivity.Statement ↔ SectionInjectivity.Statement :=
   SectionInjectivity.equiv_of (GroundTheory.Heights₂.Heights.SmallSections.proof GroundTheory.Heights₂.Heights.ChartFormsAlt.proof)

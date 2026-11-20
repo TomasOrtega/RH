@@ -24,29 +24,25 @@ noncomputable section
 namespace GlobalTheory.XiIntSteps
 
 /- English proof (translation)
-Set `B₀` to `Module.finBasis F C`. Use `choose κ hκ0 hκ using fun i => hbd (B₀ i : V) (B₀ i).2`. Set `B` to `B₀.unitsSMul fun i => Units.mk0 (κ i) (hκ0 i)`. Establish `hB : ∀ i, ((B i : C) : V) = κ i • (B₀ i : V)` using `fun i => by`. Simplify using `[B, Module.Basis.unitsSMul_apply, Units.smul_def]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `e : (Fin (Module.finrank F C) → F) →ₗ[F] V` to `C.subtype ∘ₗ (B.equivFun.symm : _ →ₗ[F] C)`. Establish `heC : ∀ x, e x ∈ C` using `fun x => (B.equivFun.symm x).2`. Establish `he1 : ∀ f : C, e (B.equivFun f) = f` using `fun f => by simp [e]`. Establish `heinj : Function.Injective e` using `Subtype.val_injective.comp B.equivFun.symm.injective`. Establish `hsingle : ∀ i, e (Pi.single i 1) = κ i • (B₀ i : V)` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hB, ← he1 (B i)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Module.Basis.equivFun_apply, Pi.single_apply, Finsupp.single_apply, eq_comm]`. Set `S : Set (Fin (Module.finrank F C) → F)` to `{x | Int (e x)}`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 F)) (fun ki : Fin M × Fin (Module.finrank F C) => B.equivFun ⟨g ki.1, hg ki.1⟩ ki.2)`. Establish `hvle : ∀ s : 𝓞 F, p.valuation F (algebraMap (𝓞 F) F s) ≤ 1` using `fun s => by`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `p.intValuation_le_one s`. Take `⟨m, b, hbM, hbsp, hbli⟩` from `GlobalTheory.T.exists_basis_bounded_module_valuationRing_pi p _ S (by show Int (e 0); rw [map_zero]; exact h0) (fun x hx y hy => by show Int (e (x + y)); rw [map_add]; exact hadd _ _ hx hy) (fun a ha x hx => by show Int (e (a • x)); rw [map_smul]; exact hsmul _ _ ha hx) (fun i => …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨o, ho, hxo⟩` from `hgen (e x) (heC x) hx`. Establish `hx' : x = ∑ k, o k • B.equivFun ⟨g k, hg k⟩` using `heinj (by`. Rewrite using `[hxo, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_smul, he1])`. Rewrite using `[hx', Finset.sum_apply, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hd (k, i)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_left_comm, map_mul, ← Algebra.smul_def]`. Use `mul_le_one' (ho k) ?_` and prove the remaining obligations. Rewrite using `[← hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hvle r⟩`. Use `⟨m, fun k => e (b k), fun k => ⟨heC _, hbM k⟩, fun f hf => ?_, fun c hc k => ?_⟩` and prove the remaining obligations. Establish `hxsp : B.equivFun ⟨f, hf⟩ ∈ Submodule.span F (Set.range b)`. Rewrite using `[← Finset.univ_sum_single (B.equivFun ⟨f, hf⟩)]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Pi.single i (B.equivFun ⟨f, hf⟩ i) = B.equivFun ⟨f, hf⟩ i • (Pi.single i (1 : F) : Fin _ → F)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[this]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨a, -, ha⟩` from `hbsp (Pi.single i 1) (by show Int (e _); rw [hsingle]; exact hκ i)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ha]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 hxsp`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `he1 ⟨f, hf⟩` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[← hc, map_sum]`. Conclude with `this.symm.trans (Finset.sum_congr rfl fun k _ => map_smul _ _ _)`. Establish `hy : (∑ k, c k • b k) ∈ S` using `by show Int (e _)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => map_smul _ _ _`. Take `⟨a, ha, hya⟩` from `hbsp _ hy`. Establish `hz : ∑ k, (c k - a k) • b k = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hya, sub_self]`.
-
-Rewrite using `[sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hbli _ hz k)]`. Conclude with `ha k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_basis {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F)) {V : Type} [AddCommGroup V]
     [Module F V] (C : Submodule F V) [FiniteDimensional F C] (Int : V → Prop) (h0 : Int 0)
@@ -118,29 +114,27 @@ theorem exists_local_basis {F : Type} [Field F] [NumberField F] (p : HeightOneSp
     exact ha k
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.T.relative_different_order_bounded_absolute_ramification l e hl`. Use `⟨c, ?_⟩` and prove the remaining obligations. Introduce `D T hL j hj w hlast hD hspan hK C hU hP la p hp0 hl1 hl2 φ hφ hφK`. Use `letI : Algebra T.Q.c.F C.d.c₂.F := C.inc.toAlgebra`. Establish `hp : la.asIdeal.under (𝓞 T.Q.c.F) = p.asIdeal`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[← hp0]`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hσ` using `T.toCore.good_σ₀`. Establish `hlp : ((l : ℕ) : 𝓞 T.Q.c.F) ∈ p.asIdeal`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hp0, Ideal.mem_comap, map_natCast]`. Conclude with `hl1`. Establish `hgood : T.Q.l.GoodAt l` using `Formalism.L2.Pj.goodAt_of_two_primes hL.pins.2.1.1 (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne l hl`. Establish `hfd` using `hL.cuspFD _ hj _ _ hD`. Take `⟨M, g, hg, hgen⟩` from `GlobalTheory.SupFinite.supSet_finitelyGenerated _ _ _ _ (T.Q.Xo j) T.Q.c _ (T.U j) (hL.unf _ hj) p l hl hlp hgood (wtA w) w.n hD hfd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hval` using `GlobalTheory.TowVal.bddAll_one_iff_valSet_nonneg _ _ _ _ (T.Q.Xo j) T.Q.c p`. Take `⟨m, β, hβ, hspanβ, hprim⟩` from `exists_local_basis p (cusp (T.Q.Xo j) T.Q.c (T.U j) (wtA w) w.n) (GlobalTheory.GoodPts.BddAll (T.Q.Xo j) T.Q.c p 1) ((hval 0).2 (by rintro _ ⟨y, rfl⟩; rw [vAtV_zero]; exact le_top)) (fun f g => GlobalTheory.GoodPtsModel.bddAll_add) (fun a f ha hf => by`. Distinguish the cases in `h0 : a = 0`. Substitute `h0` using the available equality. Rewrite using `[zero_smul]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hval 0).2 (by rintro _ ⟨y, rfl⟩; rw [vAtV_zero]; exact le_top)`. Establish `hv : (0 : ℤ) ≤ vLa p a`. Establish `hne : p.valuation T.Q.c.F a ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Use `(WithZero.log_le_log hne one_ne_zero).2 ha` as an intermediate fact. Simplify using `only [WithZero.log_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [vLa]`. Use linear arithmetic over natural numbers and integers. Conclude with `(GlobalTheory.GoodPtsModel.smul_mem_supSet (W := ⊤) hv ⟨trivial, hf⟩).2)`. Use the proof step `(fun f hf => by`. Take `⟨κ, h1, h2⟩` from `GlobalTheory.T.cuspidal_section_bounded_nonzero_multiple _ _ _ _ (T.Q.Xo j) T.Q.c _ (T.U j) (hL.unf _ hj) p l hl hlp hgood (wtA w) w.n f hD hf`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨κ, h1, (GlobalTheory.GoodPtsModel.bddAll_iff_smul _ _).1 h2⟩)`. Use `g (fun i => (hg i).1) (fun f hf hb => hgen f ⟨hf, hb⟩)`. Establish `hβs : ∀ k, β k ∈ sec (T.Q.Xo j) T.Q.c (wtA w) w.n ∧ rdU (T.U j T.σ₀) (β k) ∈ holSub0 (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n)` using `fun k => ⟨cusp_le_sec _ _ _ _ _ (hβ k).1, ReciprocityTheory.ChartRestriction.G.PullbackSections.rdC_mem_holSub0 T.good_σ₀ (wtA w) w.n ⟨β k, (hβ k).1⟩⟩`. Take `⟨m', x, ψ, hψ, hφe⟩` from `GlobalTheory.T.holomorphic_sections_span_restriction D T hL j hj T.σ₀ hσ C hU _ _ hD hP hspan hK φ (C.intForms_subset _ _ _ hφ) hφK`. Establish `hcc' : ∀ i, ∃ cc : Fin m → T.Q.c.F, ψ i = ∑ k, T.σ₀ (cc k) • T.phiJ j T.σ₀ (wtA w) (β k)` using `fun i => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨f, hf, hfe⟩` from `hψ i`. Take `⟨cc, hcc⟩` from `hspanβ f (GlobalTheory.T.mem_cuspForms_allEmbeddings_of_inclusion_reading D T hL j hj w hlast f hf.1 hf.2)`. Use `⟨cc, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfe, hcc]`. Simplify using `only [CoreJ.phiJ, map_sum, map_smulₛₗ, map_smul, Finset.smul_sum]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`. Use `choose cc hcc using hcc'`. Establish `hσ₂ : ∀ z, C.σ₂ (C.inc z) = T.σ₀ z` using `fun z => congrArg (fun f => f z) hU.2.2.1`. Set `y : Fin m → C.d.c₂.F` to `fun k => ∑ i, x i * C.inc (cc i k)`. Establish `hsum : φ = ∑ k, C.σ₂ (y k) • T.phiJ j T.σ₀ (wtA w) (β k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hφe]`. Simplify using `only [y, hcc, Finset.smul_sum, smul_smul, map_sum, Finset.sum_smul, map_mul, hσ₂]`. Conclude with `Finset.sum_comm`. Establish `hφ' : (∑ k, C.σ₂ (y k) • T.phiJ j T.σ₀ (wtA w) (β k)) ∈ C.intForms (wtA w) w.n {la}` using `hsum ▸ hφ`. Take `⟨N, hN⟩` from `GlobalTheory.T.traceCombination_coverForm_integral_over_prime D T hL j hj T.σ₀ hσ _ _ hD hspan hK C hU hP la p hp m β hβs (fun k => (hval _).1 (hβ k).2) y hφ'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdiff : ∀ k, ∀ d ∈ differentIdeal (𝓞 T.Q.c.F) (𝓞 C.d.c₂.F), la.valuation C.d.c₂.F (y k * (d : C.d.c₂.F)) ≤ 1` using `fun k => GlobalTheory.T.valuation_mul_le_one_of_trace_approxIdempotent_integral T.Q.c.F C.d.c₂.F la p hp (y k) ⟨N, fun b hb => hprim (fun k => Algebra.trace T.Q.c.F C.d.c₂.F ((b : C.d.c₂.F) * y k)) ((hval _).2 (hN b hb)) k⟩`. Establish `hcd` using `hc T.Q.c.F C.d.c₂.F p la hp hl1 hl2`. Use `⟨m, fun k => (l : C.d.c₂.F) ^ c * y k, fun k => T.phiJ j T.σ₀ (wtA w) (β k), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun k => GlobalTheory.T.valuation_prime_pow_mul_le_one_of_not_dvd_different l c T.Q.c.F C.d.c₂.F la hl1 hcd (y k) (hdiff k)`. Use `fun k => ⟨β k, ⟨(hβs k).1, (hβs k).2, fun q hq => ?_⟩, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[Set.mem_singleton_iff.1 hq]`. Conclude with `(hval _).1 (hβ k).2`. Rewrite using `[hsum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intForm_descent_below (l e : ℕ) (hl : l.Prime) : ∃ c₀ : ℕ, ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j →
     ∀ w : WeightFamilies.Wt D j, w.LastPos → Dom (wtA w) w.n →

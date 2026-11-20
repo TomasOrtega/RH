@@ -9,9 +9,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic
 namespace GlobalTheory.ShellCosets
 
 /- English proof (translation)
-Use extensionality with `h`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Use `K.mul_mem (K.mul_mem h2 (K.inv_mem h1)) hh` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Introduce `hh`. Use `K.mul_mem (K.mul_mem h1 (K.inv_mem h2)) hh` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem piece_eq_of_mem {G : Type*} [Group G] (K : Subgroup G) {c c' g : G}
     (h1 : c⁻¹ * g ∈ K) (h2 : c'⁻¹ * g ∈ K) :
@@ -27,33 +27,29 @@ theorem piece_eq_of_mem {G : Type*} [Group G] (K : Subgroup G) {c c' g : G}
     simpa [mul_assoc] using this
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ϖ a n`. Use `set d : GL (Fin a) k := diagGL (fun i => ϖ ^ n i) with hd`. Use `set K := KO k (Fin a) with hK`. Use `set P : GL (Fin a) k → Set (GL (Fin a) k) := fun x => {g | (x * d)⁻¹ * g ∈ K} with hP`. Establish `hPo : ∀ x, IsOpen (P x)` using `fun x => (GlobalTheory.SplitFlip.isOpen_KO (k := k) (n := Fin a)).preimage (continuous_mul_left _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : ∀ x ∈ K, P x ⊆ shellSet ϖ n`. Introduce `x hx g hg`. Rewrite using `[mem_shellSet]`. Conclude with `⟨x, hx, _, hg, by rw [← hd]; group⟩`. Establish `himg : shellSet ϖ n = (fun p : GL (Fin a) k × GL (Fin a) k => p.1 * d * p.2) '' ((K : Set _) ×ˢ (K : Set _))`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `g`. Rewrite using `[mem_shellSet]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨(x, y), ⟨hx, hy⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨x, y⟩, ⟨hx, hy⟩, rfl⟩`. Conclude with `⟨x, hx, y, hy, rfl⟩`. Establish `hcomp : IsCompact (shellSet ϖ n)`. Rewrite using `[himg]`. Conclude with `(GlobalTheory.SplitFlip.isCompact_KO.prod GlobalTheory.SplitFlip.isCompact_KO).image (by fun_prop)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcov : shellSet ϖ n ⊆ ⋃ x : K, P x`. Introduce `g hg`. Take `⟨x, hx, y, hy, rfl⟩` from `mem_shellSet.mp hg`. Use `Set.mem_iUnion.mpr ⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Use `show (x * d)⁻¹ * (x * (diagGL fun i => ϖ ^ n i) * y) ∈ K`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hd]`. Use `hy using 1` and compare the differences between its conclusion and the goal. Use `group`. Take `⟨s, hs⟩` from `hcomp.elim_finite_subcover (fun x : K => P x) (fun x => hPo x) hcov`. Set `s' : Finset (GL (Fin a) k)` to `s.image Subtype.val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs'K : ∀ x ∈ s', x ∈ K`. Introduce `x hx`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `y.2`. Set `r : Set (GL (Fin a) k) → GL (Fin a) k` to `Function.invFunOn P (s' : Set _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `t : Finset (GL (Fin a) k)` to `(s'.image P).image r`. Establish `hr : ∀ x ∈ s', r (P x) ∈ s' ∧ P (r (P x)) = P x` using `fun x hx => ⟨Function.invFunOn_mem ⟨x, hx, rfl⟩, Function.invFunOn_eq ⟨x, hx, rfl⟩⟩`. Establish `ht : ∀ y ∈ t, ∃ x ∈ s', y = r (P x)`. Introduce `y hy`. Take `⟨Q, hQ, rfl⟩` from `Finset.mem_image.mp hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hQ`. Conclude with `⟨x, hx, rfl⟩`. Use `⟨t, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `ht y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs'K _ (hr x hx).1`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `g hg`. Take `⟨x, hxs, hgx⟩` from `Set.mem_iUnion₂.mp (hs hg)`. Establish `hx' : (x : GL (Fin a) k) ∈ s'` using `Finset.mem_image_of_mem _ hxs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Set.mem_iUnion₂.mpr ⟨r (P x), Finset.mem_image_of_mem _ (Finset.mem_image_of_mem _ hx'), ?_⟩` and prove the remaining obligations. Use `show g ∈ P (r (P x))`. Rewrite using `[(hr _ hx').2]`. Conclude with `hgx`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨y, hy, hgy⟩` from `Set.mem_iUnion₂.mp hg`. Take `⟨x, hx, rfl⟩` from `ht y hy`. Conclude with `hsub _ (hs'K _ (hr x hx).1) hgy`. Introduce `y hy y' hy' hne`. Take `⟨x, hx, rfl⟩` from `ht y hy`.
-
-Take `⟨x', hx', rfl⟩` from `ht y' hy'`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `g hg hg'`. Apply `hne` to reduce the goal to its premises. Use `piece_eq_of_mem K hg hg'` as an intermediate fact.
-
-Express the relevant statement in the definitionally equal form `P (r (P x)) = P (r (P x')) at this`. Rewrite `this` using `[(hr x hx).2, (hr x' hx').2]`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shell_cosets : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ϖ : kˣ) (a : ℕ) (n : Fin a → ℤ), ∃ t : Finset (GL (Fin a) k), (∀ x ∈ t, x ∈ KO k (Fin a)) ∧

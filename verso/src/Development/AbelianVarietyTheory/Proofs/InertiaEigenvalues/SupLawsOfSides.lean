@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwInputs
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.T.twistedFormSupLattice_full_groupStable_of_eq_rational D X.Γ X.Pl0 X.I0 X.T X.A3 X.core.Q.c.F X.R X.cG Y.S Y.YS Y.sup X.integral`. Take `⟨h3, h4⟩` from `GlobalTheory.T.hecke_preserves_supLattice_and_commutes_typeGroup D X E Y h`. Conclude with `⟨h1, h2, h3, h4, GlobalTheory.T.splitPlaceHeckeCommute_of_twistSeriesSideData D X E Y⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem supLaws_of_sides (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E)
     (h : ∀ j, GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls.HkSupAt X.core X.R.toRealDat j) :

@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R O B σ _ _ _ _ _ _ ω x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul o b`. Use `⟨fun s => ω.repr o s • b, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← ω.sum_repr o]`. Rewrite using `[TensorProduct.sum_tmul]`. Conclude with `Finset.sum_congr rfl fun s _ => TensorProduct.smul_tmul _ _ _`. Consider the case `add x₁ x₂ h₁ h₂`. Take `⟨y₁, rfl⟩` from `h₁`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y₂, rfl⟩` from `h₂`. Use `⟨y₁ + y₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun s _ => (TensorProduct.tmul_add _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj2.exists_sum_tmul :
     ∀ {R O B σ : Type} [inst : CommRing R]

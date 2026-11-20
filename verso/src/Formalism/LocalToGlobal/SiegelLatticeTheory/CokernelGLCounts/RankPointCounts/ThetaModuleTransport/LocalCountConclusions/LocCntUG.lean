@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.LocalCountModules
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.locCntUG_holds`.
+A detailed English derivation is pending.
 -/
 theorem localCountUnitGlobal_holds : Formalism.L2.SG.LocalCountModules.LocCntUG.LocCntUG := Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.locCntUG_holds
 

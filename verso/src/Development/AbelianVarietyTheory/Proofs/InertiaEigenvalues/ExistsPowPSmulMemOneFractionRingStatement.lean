@@ -6,7 +6,7 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 open Formalism.NG (KO)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.padicCoeff_exists_pow_smul_mem_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsPowPSmulMemOneFractionRing.lean&line=8#L8)
 -/

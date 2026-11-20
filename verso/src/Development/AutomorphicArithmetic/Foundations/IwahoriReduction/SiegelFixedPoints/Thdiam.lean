@@ -10,11 +10,11 @@ open scoped MatrixGroups Matrix
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.KZ GlobalTheory.Ord2 GlobalTheory.K4
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ hl2 hj A j hOver hjA N _ hN c d e gm hc hd hcc hdc he hrow hN10 pr α hAdm`. Take `⟨c₁, κ₀, hκ, H⟩` from `UpperTheory.Kd.L.thcocd Ω ε X l hl2 hj A j hOver hjA N hN c d e gm hc hd hcc hdc he hrow hN10 pr α hAdm`. Use `⟨c₁, κ₀, hκ, ?_⟩` and prove the remaining obligations. Introduce `x m n c₀ hm hmn bB hB y δ`. Take `⟨g, hgA, hg⟩` from `H x (δ : ZMod N).val (ZMod.val_coe_unit_coprime δ) m n c₀ hm hmn bB hB y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨g, hgA, ?_⟩` and prove the remaining obligations. Introduce `s hs hcyc φ hφ tt htt β t hβy hβ1 hlt i`. Establish `key` using `hg s hs hcyc φ hφ tt htt β t hβy hβ1 hlt i`. Establish `hinv : (((δ : ZMod N).val : ZMod N))⁻¹ = ((δ⁻¹ : (ZMod N)ˣ) : ZMod N)`. Rewrite using `[ZMod.natCast_zmod_val, ZMod.inv_coe_unit]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hinv]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.L.thdiam :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime], l ≠ 2 →

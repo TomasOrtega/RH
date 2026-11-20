@@ -8,37 +8,33 @@ noncomputable section
 namespace GlobalTheory.DualUnit
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `set I : Ideal R := Ideal.span {(N : R)} with hI`. Establish `memI : ∀ x, x ∈ I ↔ ∃ b : R, x = N • b`. Introduce `x`. Rewrite using `[hI, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩; exact ⟨a, by rw [nsmul_eq_mul, mul_comm]⟩`. Introduce and unpack `⟨b, rfl⟩; exact ⟨b, by rw [nsmul_eq_mul, mul_comm]⟩`. Establish `hTI : ∀ (T : R →+ ℤ) x, x ∈ I → (N : ℤ) ∣ T x`. Introduce `T x hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `(memI x).1 hx`. Rewrite using `[map_nsmul, nsmul_eq_mul]`. Conclude with `dvd_mul_right _ _`. Set `tq : (R →+ ℤ) → (R ⧸ I →+ ZMod N)` to `fun T => QuotientAddGroup.lift I.toAddSubgroup ((Int.castAddHom (ZMod N)).comp T) (fun x hx => by show ((T x : ℤ) : ZMod N) = 0`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (hTI T x hx))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `htq : ∀ T x, tq T (Ideal.Quotient.mk I x) = (T x : ZMod N)` using `fun T x => rfl`. Establish `hπ : Function.Surjective (Ideal.Quotient.mk I)` using `Ideal.Quotient.mk_surjective`. Set `Φ : R ⧸ I → (R ⧸ I →+ ZMod N)` to `fun q => (tq T₁).comp (AddMonoidHom.mulLeft q)`. Establish `hΦ : ∀ x d, Φ (Ideal.Quotient.mk I x) (Ideal.Quotient.mk I d) = (T₁ (x * d) : ZMod N)`. Introduce `x d`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Φ, AddMonoidHom.comp_apply, AddMonoidHom.coe_mulLeft, ← map_mul, htq]`. Establish `hinj : Function.Injective Φ`. Introduce `q q' h`. Take `⟨x, rfl⟩` from `hπ q`. Take `⟨x', rfl⟩` from `hπ q'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem, memI]`. Apply `p₁` to reduce the goal to its premises. Introduce `d`. Establish `h1` using `DFunLike.congr_fun h (Ideal.Quotient.mk I d)`. Rewrite `h1` using `[hΦ, hΦ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, map_sub]`. Conclude with `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 h1.symm`. Use `haveI : Finite (R ⧸ I →+ ZMod N) := Finite.of_injective _ DFunLike.coe_injective`. Establish `hcard : Nat.card (R ⧸ I →+ ZMod N) ≤ Nat.card (R ⧸ I)`. Use `Fintype.ofFinite (R ⧸ I)` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hF : Function.Injective (fun φ : R ⧸ I →+ ZMod N => (ZMod.stdAddChar (N` using `N)).compAddMonoidHom φ) := fun φ ψ h => by`. Use extensionality with `m`. Conclude with `ZMod.injective_stdAddChar (DFunLike.congr_fun h m)`. Establish `h` using `Nat.card_le_card_of_injective _ hF`. Rewrite `h` using `[Nat.card_eq_fintype_card (α := AddChar (R ⧸ I) ℂ), AddChar.card_eq, ← Nat.card_eq_fintype_card]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbij` using `hinj.bijective_of_nat_card_le hcard`. Take `⟨m, hm⟩` from `hbij.2 (tq T₂)`. Take `⟨μ, rfl⟩` from `hπ m`. Establish `hμ : ∀ c, (N : ℤ) ∣ T₁ (μ * c) - T₂ c`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h1` using `DFunLike.congr_fun hm (Ideal.Quotient.mk I c)`. Rewrite `h1` using `[hΦ, htq]`. Conclude with `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 h1.symm`. Establish `hmulinj : Function.Injective (fun q : R ⧸ I => Ideal.Quotient.mk I μ * q)`. Introduce `q q' h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `hπ q`. Take `⟨x', rfl⟩` from `hπ q'`. Simplify using `only at h`. Rewrite `h` using `[← map_mul, ← map_mul, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem, memI]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Apply `p₂` to reduce the goal to its premises. Introduce `d`. Establish `h1` using `hμ ((x - x') * d)`. Establish `h2 : (N : ℤ) ∣ T₁ (μ * ((x - x') * d))`. Rewrite using `[← mul_assoc, mul_sub]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hTI T₁ _ (I.mul_mem_right d h)`. Establish `h3` using `dvd_sub h2 h1`. Rewrite `h3` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Take `⟨q, hq⟩` from `(Finite.injective_iff_surjective.1 hmulinj) 1`. Take `⟨ν, rfl⟩` from `hπ q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨μ, ν, ?_, ?_, hμ⟩` and prove the remaining obligations. Rewrite using `[← memI, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_one]`. Conclude with `sub_eq_zero.2 hq`. Apply `p₁` to reduce the goal to its premises. Introduce `c`.
-
-Establish `e1 : T₁ (bar μ * c) = - T₁ (μ * bar c)`. Rewrite using `[← s₁, map_mul bar, hbar]`. Establish `hX` using `hμ (bar c)`. Establish `hY` using `hμ c`. Establish `e2` using `s₂ c`.
-
-Establish `e3 : T₁ ((bar μ - μ) * c) = -(T₁ (μ * bar c) - T₂ (bar c)) - (T₁ (μ * c) - T₂ c)`. Rewrite using `[sub_mul, map_sub, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Conclude with `(dvd_neg.2 hX).sub hY`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_perfect {R : Type} [CommRing R] (bar : R ≃+* R) (hbar : ∀ a, bar (bar a) = a)
     (N : ℕ) (hN : 0 < N) [Finite (R ⧸ Ideal.span {(N : R)})] (T₁ T₂ : R →+ ℤ)
@@ -134,9 +130,9 @@ theorem exists_unit_of_perfect {R : Type} [CommRing R] (bar : R ≃+* R) (hbar :
     exact (dvd_neg.2 hX).sub hY
 
 /- English proof (translation)
-Introduce `E _ _ _ H N hN T₁ T₂ s₁ s₂ p₁ p₂`. Establish `hbar : ∀ a, H.bar (H.bar a) = a` using `fun a => by`. Establish `h1` using `H.bar_eq (H.bar a)`. Establish `h2` using `H.bar_eq a`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h1, h2, IsCMField.complexConj_apply_apply]`. Use `haveI : Finite (𝓞 E ⧸ Ideal.span {((N : ℕ) : 𝓞 E)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hN.ne')`. Conclude with `exists_unit_of_perfect H.bar hbar N hN T₁ T₂ s₁ s₂ p₁ p₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_unit : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (N : ℕ), 0 < N →
     ∀ T₁ T₂ : 𝓞 E →+ ℤ, (∀ c, T₁ (H.bar c) = - T₁ c) → (∀ c, T₂ (H.bar c) = - T₂ c) →

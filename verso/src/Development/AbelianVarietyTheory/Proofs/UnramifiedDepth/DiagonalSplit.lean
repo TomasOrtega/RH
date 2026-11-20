@@ -14,7 +14,7 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 namespace GlobalTheory.RowVal.MapSumDiagonal
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [P0, f0]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `⟨Padd _ _ (ha i) ih.1, by rw [fadd _ _ (ha i) ih.1, ih.2]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem map_sum_of_pred {R Q α : Type} [AddCommMonoid R] [AddCommMonoid Q] (P : R → Prop) (f : R → Q)
     (P0 : P 0) (Padd : ∀ a b, P a → P b → P (a + b)) (f0 : f 0 = 0)
@@ -28,11 +28,11 @@ theorem map_sum_of_pred {R Q α : Type} [AddCommMonoid R] [AddCommMonoid Q] (P :
     exact ⟨Padd _ _ (ha i) ih.1, by rw [fadd _ _ (ha i) ih.1, ih.2]⟩
 
 /- English proof (translation)
-Establish `hWπ : ∀ o g, P (W * π o g)` using `fun o g => Pmul _ _ hW (hπ o g)`. Establish `e1 : (∑ o, ∑ g, π o g) = ∑ p : Orb × Fin 2, π p.1 p.2` using `by rw [Fintype.sum_prod_type]`. Establish `hB : P (∑ p : Orb × Fin 2, W * π p.1 p.2)` using `(map_sum_of_pred P (fun _ => (0 : Q)) P0 Padd rfl (by simp) _ _ (fun p : Orb × Fin 2 => hWπ p.1 p.2)).1`. Rewrite using `[e1, Finset.mul_sum]`. Rewrite using `[(map_sum_of_pred P (fun a => h a (∑ p : Orb × Fin 2, W * π p.1 p.2)) P0 Padd (h0 _).2 (fun a b ha hb => hl a b _ ha hb hB) Finset.univ (fun p : Orb × Fin 2 => π p.1 p.2) (fun p => hπ p.1 p.2)).2, Fintype.sum_prod_type]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations. Establish `e2 : ∀ g, h (π o g) (∑ p : Orb × Fin 2, W * π p.1 p.2) = h (π o g) (W * π o (1 - g))`. Introduce `g`. Rewrite using `[(map_sum_of_pred P (fun a => h (π o g) a) P0 Padd (h0 _).1 (fun a b ha hb => hr a b _ ha hb (hπ o g)) Finset.univ (fun p : Orb × Fin 2 => W * π p.1 p.2) (fun p => hWπ p.1 p.2)).2]`. Use `Finset.sum_eq_single (o, 1 - g) ?_ (by simp)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p _ hp`. Apply `horth` to reduce the goal to its premises. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hp (Prod.ext h1.symm h2)`. Rewrite using `[Fin.sum_univ_two, e2, e2, sub_zero, sub_self, ← hs _ _ (hπ o 1) (hWπ o 0), hadj _ _ (hπ o 0) (hπ o 1), ← hr _ _ _ (hWπ o 1) (Pmul _ _ hW' (hπ o 1)) (hπ o 0), ← add_mul, hWW, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_abstract {R Q Orb : Type} [Ring R] [AddCommGroup Q] [Fintype Orb] (P : R → Prop) (h : R → R → Q)
     (P0 : P 0) (Padd : ∀ a b, P a → P b → P (a + b)) (Pmul : ∀ a b, P a → P b → P (a * b))
@@ -68,15 +68,11 @@ theorem split_abstract {R Q Orb : Type} [Ring R] [AddCommGroup Q] [Fintype Orb] 
     hadj _ _ (hπ o 0) (hπ o 1), ← hr _ _ _ (hWπ o 1) (Pmul _ _ hW' (hπ o 1)) (hπ o 0), ← add_mul, hWW, one_mul]
 
 /- English proof (translation)
-Introduce `C _ _ V d I _ κ _ _ X hR Orb _ π W W' hπ hE hWW horth`. Take `⟨P0, Padd, Pmul, h0, hadd, hs, hadj⟩` from `GlobalTheory.RowVal.EndCalc.end_calc C V d I κ X hR`. Set `q` to `QuotientAddGroup.mk' (logInt V κ)`. Establish `hq : ∀ a, q a = 0 ↔ a ∈ logInt V κ` using `fun a => QuotientAddGroup.eq_zero_iff a`. Establish `key` using `split_abstract (IntEnd X V) (fun a b => q (hEnd X a b)) P0 Padd Pmul (fun a => ⟨by simp only [(h0 a).1, map_zero], by simp only [(h0 a).2, map_zero]⟩) (fun a a' b ha ha' hb => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hq _).2 (hadd a a' b ha ha' hb).1` as an intermediate fact. Rewrite `this` using `[map_sub, map_add, sub_eq_zero]`. Conclude with `this.symm)`. Use the proof step `(fun a a' b ha ha' hb => by`. Use `(hq _).2 (hadd a a' b ha ha' hb).2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, map_add, sub_eq_zero]`. Conclude with `this.symm)`. Use the proof step `(fun a b ha hb => by`. Use `(hq _).2 (hs a b ha hb)` as an intermediate fact. Rewrite using `[map_sub, sub_eq_zero] at this)` and apply the resulting hypothesis.
-
-Use `W W' hE.1 hE.2.1`. Use the proof step `(fun a b ha hb => by`. Use `(hq _).2 (hadj W W' a b hE ha hb)` as an intermediate fact. Rewrite using `[map_sub, sub_eq_zero] at this)` and apply the resulting hypothesis. Use `hWW π hπ (fun o g o' g' hn => (hq _).2 (horth o g o' g' hn))`.
-
-Rewrite using `[← hq, map_sub, map_sum, sub_eq_zero]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagonal_split : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (d : ℕ) (I : Fin 2 → Type) [∀ g, Fintype (I g)] (κ : Type) [Fintype κ] [DecidableEq κ] (X : RawChart C d I κ), RLaw X V → ∀ (Orb : Type) [Fintype Orb] (π : Orb → Fin 2 → Matrix κ κ C) (W W' : Matrix κ κ C), (∀ o g, IntEnd X V (π o g)) → IsEnd X V W W' → W + W' = 1 → (∀ o g o' g', ¬ (o = o' ∧ g' = 1 - g) → hEnd X (π o g) (W * π o' g') ∈ logInt V κ) → (∑ o, hEnd X (π o 0) (π o 1)) - hEnd X (∑ o, ∑ g, π o g) (W * ∑ o, ∑ g, π o g) ∈ logInt V κ := by
   intro C _ _ V d I _ κ _ _ X hR Orb _ π W W' hπ hE hWW horth

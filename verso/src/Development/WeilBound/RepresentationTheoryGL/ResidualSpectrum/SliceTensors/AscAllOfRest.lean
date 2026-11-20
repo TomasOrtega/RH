@@ -18,7 +18,7 @@ import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.Exponential
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-The claim follows from `ascAll_of (dich_of dict_holds finTr_holds killPoly_holds) (expFin_of dict_holds finTr_holds) expNeg_holds hS (chord_of expTw_holds sqIntCrit_holds) (proj_of hP sliceTens_holds hI) infInd2_holds hT (stages_of hI)`.
+A detailed English derivation is pending.
 -/
 theorem ascAll_of_rest (hS : Slice) (hP : Pr) (hI : IndMap) (hT : StringStep) : AscAll :=
   ascAll_of (dich_of dict_holds finTr_holds killPoly_holds) (expFin_of dict_holds finTr_holds) expNeg_holds hS

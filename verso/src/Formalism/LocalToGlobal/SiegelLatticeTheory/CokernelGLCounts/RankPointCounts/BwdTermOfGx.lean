@@ -12,7 +12,7 @@ variable {D : Formalism.BasicNotions.D7} {Zd : LocDat D} {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (NumberField.RingOfIntegers D.host.E) (VS D).V)}
 
 /- English proof (translation)
-The claim follows from `bwdTerm'_of' (btOK_holds Zd) hGX`.
+A detailed English derivation is pending.
 -/
 theorem bwdTerm'_of_gx (hGX : GenXiRev Zd u' F0) : BwdTerm' Zd u u' F0 what₂ :=
   bwdTerm'_of' (btOK_holds Zd) hGX

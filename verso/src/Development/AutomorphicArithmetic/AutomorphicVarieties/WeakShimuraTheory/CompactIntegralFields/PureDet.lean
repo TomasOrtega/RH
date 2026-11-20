@@ -9,9 +9,9 @@ private def eAB : Fin 2 ⊕ Fin 2 ≃ Fin 4 where
   right_inv := by decide
 
 /- English proof (translation)
-Establish `e : Matrix.reindex eAB.symm eAB.symm X = Matrix.fromBlocks (X.submatrix ixA ixA) (X.submatrix ixA ixB) 0 (X.submatrix ixB ixB)`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Conclude with `h (ixB i) (ixA j) (by revert i j; decide)`. Both sides reduce to the same expression. Rewrite using `[← Matrix.charpoly_reindex eAB.symm, e, Matrix.charpoly_fromBlocks_zero₂₁]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cp_block {K : Type} [Field K] (X : M4 K) (h : IsBlock X) :
     X.charpoly = (X.submatrix ixA ixA).charpoly * (X.submatrix ixB ixB).charpoly := by
@@ -26,9 +26,9 @@ private theorem cp_block {K : Type} [Field K] (X : M4 K) (h : IsBlock X) :
   rw [← Matrix.charpoly_reindex eAB.symm, e, Matrix.charpoly_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Establish `hc : A.charpoly.roots.card = 2`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, Matrix.charpoly_natDegree_eq_dim]`. Simplify using the standard rewrite rules. Take `⟨a, b, hab⟩` from `Multiset.card_eq_two.1 hc`. Use `⟨a, by simp [hab], b, by simp [hab], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_eq_prod_roots_charpoly, hab]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem det_two {K : Type} [Field K] [IsAlgClosed K] (A : Matrix (Fin 2) (Fin 2) K) :
     ∃ a ∈ A.charpoly.roots, ∃ b ∈ A.charpoly.roots, A.det = a * b := by
@@ -39,9 +39,9 @@ private theorem det_two {K : Type} [Field K] [IsAlgClosed K] (A : Matrix (Fin 2)
   rw [Matrix.det_eq_prod_roots_charpoly, hab]; simp
 
 /- English proof (translation)
-Introduce `K _ _ ι X hX h`. Establish `hr : X.charpoly.roots = (X.submatrix ixA ixA).charpoly.roots + (X.submatrix ixB ixB).charpoly.roots`. Rewrite using `[cp_block X hX, roots_mul (mul_ne_zero (Matrix.charpoly_monic _).ne_zero (Matrix.charpoly_monic _).ne_zero)]`. Take `⟨a, ha, b, hb, hA⟩` from `det_two (X.submatrix ixA ixA)`. Take `⟨c, hc, d, hd, hB⟩` from `det_two (X.submatrix ixB ixB)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[hr]`. Rewrite using `[hA, hB, map_mul, map_mul, norm_mul, norm_mul, h a (Multiset.mem_add.2 (Or.inl ha)) c (Multiset.mem_add.2 (Or.inr hc)), h b (Multiset.mem_add.2 (Or.inl hb)) d (Multiset.mem_add.2 (Or.inr hd))]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Ws.pureDet :
     ∀ {K : Type} [Field K] [IsAlgClosed K] (ι : K →+* ℂ) (X : M4 K), IsBlock X →

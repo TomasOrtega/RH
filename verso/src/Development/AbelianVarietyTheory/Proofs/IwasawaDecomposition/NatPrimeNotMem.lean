@@ -12,38 +12,32 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.TwistPlaces
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.NatCastNotMemPrime.natCast_notMem_of_prime_ne P hp hl hne hpP`.
+A detailed English derivation is pending.
 -/
 theorem natPrime_not_mem {A : Type} [CommRing A] (P : Ideal A) [hP : P.IsPrime] {p l : ℕ} (hp : p.Prime) (hl : l.Prime)
     (hne : l ≠ p) (hpP : (p : A) ∈ P) : (l : A) ∉ P :=
   _root_.GlobalTheory.NatCastNotMemPrime.natCast_notMem_of_prime_ne P hp hl hne hpP
 
 /- English proof (translation)
-Introduce `X px I hI a hU`. Establish `htw` using `(GlobalTheory.Mem.ReadTwist.isTwist_of_reads X.B.R X.B.host _ X.B.embLL I.S (I.tup a) (I.xi a) (hI.xi_reads a)).1`. Establish `key` using `fun PP (hPP : PP ∈ I.Q a) => htw.2.2.2 PP (hU PP hPP)`. Establish `hstar : ∀ x : X.B.host.E, star x = X.B.host.conj x` using `bridge_star_holds X.B.R X.B.host`. Establish `off : ∀ PP ∈ I.Q a, ∀ l : ℕ, l.Prime → l ∈ I.S → ((l : ℕ) : 𝓞 X.B.host.E) ∉ PP.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `PP hPP l hl hS`. Take `⟨-, hp, -, hpS⟩` from `key PP hPP`. Conclude with `natPrime_not_mem PP.asIdeal hp hl (fun e => hpS (e ▸ hS)) (Ideal.absNorm_mem PP.asIdeal)`. Use `⟨fun PP hPP => ⟨?_, fun PP' hPP' hc => ?_⟩, fun PP hPP => ⟨?_, fun u => ?_⟩⟩` and prove the remaining obligations. Take `⟨-, hp, hsq, hpS⟩` from `key PP hPP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Ideal.absNorm PP.asIdeal, hp, ?_, hsq, fun i e => hpS (e ▸ hI.g_mem i)⟩` and prove the remaining obligations. Use `show Nat.card (𝓞 X.B.host.E ⧸ PP.asIdeal) = Ideal.absNorm PP.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Take `⟨v, -, rfl, -⟩` from `I.exists_of_mem_Q hPP`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v', -, rfl, -⟩` from `I.exists_of_mem_Q hPP'`. Establish `hle : v.asIdeal ≤ v'.asIdeal`. Introduce `c hc'`. Establish `h1 : algebraMap (𝓞 X.B.host.F) (𝓞 X.B.host.E) c ∈ (I.sel v).asIdeal`. Use `hI.sel_ok v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hc'` using `[← this]`. Conclude with `hc'`. Take `⟨c', h2, h3⟩` from `hc _ h1`. Establish `h4 : c' = algebraMap (𝓞 X.B.host.F) (𝓞 X.B.host.E) c`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h3]`. Use `show star (algebraMap X.B.host.F X.B.host.E (c : X.B.host.F)) = algebraMap X.B.host.F X.B.host.E (c : X.B.host.F)`. Rewrite using `[hstar, ← X.B.conjF_eq, AlgHom.commutes]`. Rewrite `h2` using `[h4]`. Rewrite using `[← hI.sel_ok v']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h2`. Establish `hv : v = v'` using `HeightOneSpectrum.ext (v.isMaximal.eq_of_le v'.isPrime.ne_top hle)`. Substitute `hv` using the available equality. Take `⟨⟨x, hx, hy⟩, -⟩` from `key _ hPP`. Take `⟨c', h2, h3⟩` from `hc x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hy c' (h3.trans (hstar _)) h2`. Establish `hp2 : ((X.B.host.QS : ℕ) : 𝓞 X.B.host.E) ∉ PP.asIdeal` using `fun h => by`. Rewrite `h` using `[← Nat.prod_primeFactorsList X.B.host.QS_pos.ne', Nat.cast_list_prod]`. Use `PP.isPrime` as an intermediate fact. Take `⟨a, ha, h'⟩` from `(Ideal.IsPrime.multiset_prod_mem_iff_exists_mem PP.isPrime ((X.B.host.QS.primeFactorsList.map Nat.cast : List (𝓞 X.B.host.E)) : Multiset _)).1 (by simpa using h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l, hl, rfl⟩` from `List.mem_map.1 (Multiset.mem_coe.1 ha)`. Conclude with `off PP hPP l (Nat.prime_of_mem_primeFactorsList hl) (hI.mem_of_dvd_QS (Nat.prime_of_mem_primeFactorsList hl) (Nat.dvd_of_mem_primeFactorsList hl)) h'`. Establish `hq : ((X.B.host.q : ℕ) : 𝓞 X.B.host.E) ∉ PP.asIdeal` using `off PP hPP _ X.B.host.hyp.1 hI.two_q_d_mem.2.1`. Establish `hd : ((X.B.host.d : ℕ) : 𝓞 X.B.host.E) ∉ PP.asIdeal` using `off PP hPP _ X.B.host.hyp.2.1 hI.two_q_d_mem.2.2`. Establish `hT : ((X.B.T X.B.u₀ : ℕ) : 𝓞 X.B.host.E) ∉ PP.asIdeal` using `off PP hPP _ (X.B.T_prime X.B.u₀) (hI.T_mem X.B.u₀)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hsp : X.toD7.sp.T = X.B.T X.B.u₀` using `X.B.sp_T`. Rewrite using `[hsp]`. Use `show ((X.B.host.QS * X.B.host.q * X.B.host.d * X.B.T X.B.u₀ : ℕ) : 𝓞 X.B.host.E) ∉ PP.asIdeal`. Establish `hPr` using `PP.isPrime`. Use `push_cast`.
-
-Introduce `h`. Break down `hPr.mem_or_mem h with h | h` into its components or cases. Break down `hPr.mem_or_mem h with h | h` into its components or cases. Break down `hPr.mem_or_mem h with h | h` into its components or cases. Conclude with `hp2 (by exact_mod_cast h)`.
-
-Conclude with `hq h`. Conclude with `hd h`. Conclude with `hT h`. Establish `hA : (X.toD7.mem u).A.T = X.B.T u` using `X.C.A_T u`. Rewrite using `[hA]`.
-
-Conclude with `off PP hPP _ (X.B.T_prime u) (hI.T_mem u)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twistPlaces : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px), I.Ok → ∀ a : I.ι,
     (∀ PP ∈ I.Q a, ¬ (I.xi a).UnrAt PP) → Formalism.IndefR.Lev.IsTwistPlaces (D := X.toD7) X.toD7.host.g (I.Q a) ∧

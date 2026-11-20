@@ -66,9 +66,9 @@ def coindTensorLeft :
       rw [map_mul, Module.End.mul_apply])⟩
 
 /- English proof (translation)
-Use extensionality with `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f b`. Express the relevant statement in the definitionally equal form `f.1 1 ⊗ₜ[k] B.ρ 1 b = f.1 1 ⊗ₜ[k] b`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_one, Module.End.one_apply]`. Consider the case `add z z' hz hz' => rw [map_add, map_add, hz, hz']`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem coindTensorRight_comp_coindEvalOne :
     (Rep.resFunctor U.subtype).map (coindTensorRight U A B) ≫
@@ -88,9 +88,9 @@ variable [U.FiniteIndex]
 attribute [local instance] Subgroup.fintypeQuotientOfFiniteIndex
 
 /- English proof (translation)
-Use extensionality with `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f b`. Express the relevant statement in the definitionally equal form `(coindTrace U (A ⊗ B)).hom ((coindTensorRight U A B).hom (f ⊗ₜ[k] b)) = (coindTrace U A).hom f ⊗ₜ[k] b`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[coindTrace_hom_apply, coindTrace_hom_apply, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A ⊗ B).ρ c.out (f.1 c.out⁻¹ ⊗ₜ[k] B.ρ c.out⁻¹ b) = A.ρ c.out (f.1 c.out⁻¹) ⊗ₜ[k] b`. Rewrite using `[GroundTheory.GroupCoh.tensor_ρ_tmul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Consider the case `add z z' hz hz' => rw [map_add, map_add, hz, hz']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem coindTensorRight_comp_coindTrace :
     coindTensorRight U A B ≫ coindTrace U (A ⊗ B) = coindTrace U A ▷ B := by
@@ -117,7 +117,7 @@ variable {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (φ 
   (hφ : Continuous φ) {p : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `w using cohomology_induction_on with | h w => ?_`. Rewrite using `[cohomologyMap_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cyclesMap]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -135,7 +135,7 @@ theorem cohomologyMapAlong_cohomologyMap {A A' : Rep.{u} k G} {B : Rep.{u} k H} 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `w using cohomology_induction_on with | h w => ?_`. Rewrite using `[cohomologyMapAlong_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -163,14 +163,14 @@ instance isDiscreteRep_coind_res_tensor_right :
   isDiscreteRep_tensor _ _
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (IsIso.inv_hom_id (shapiroMap U C m)) w`.
+A detailed English derivation is pending.
 -/
 theorem shapiroMap_inv_apply {C : Rep.{u} k (U : Subgroup G)} [IsDiscreteRep C] (m : ℕ)
     (w : cohomology C m) : shapiroMap U C m (inv (shapiroMap U C m) w) = w :=
   ConcreteCategory.congr_hom (IsIso.inv_hom_id (shapiroMap U C m)) w
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (IsIso.hom_inv_id (shapiroMap U C m)) w`.
+A detailed English derivation is pending.
 -/
 theorem inv_shapiroMap_apply {C : Rep.{u} k (U : Subgroup G)} [IsDiscreteRep C] (m : ℕ)
     (w : cohomology (Rep.coind (U : Subgroup G).subtype C) m) :
@@ -178,7 +178,7 @@ theorem inv_shapiroMap_apply {C : Rep.{u} k (U : Subgroup G)} [IsDiscreteRep C] 
   ConcreteCategory.congr_hom (IsIso.hom_inv_id (shapiroMap U C m)) w
 
 /- English proof (translation)
-Rewrite using `[cohomologyCores, ConcreteCategory.comp_apply, inv_shapiroMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyCores_shapiroMap (A : Rep.{u} k G) [IsDiscreteRep A]
     (w : cohomology (Rep.coind (U : Subgroup G).subtype (Rep.res (U : Subgroup G).subtype A)) p) :
@@ -187,7 +187,7 @@ theorem cohomologyCores_shapiroMap (A : Rep.{u} k G) [IsDiscreteRep A]
   rw [cohomologyCores, ConcreteCategory.comp_apply, inv_shapiroMap_apply]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩ : ∃ z, shapiroMap U (Rep.res (U : Subgroup G).subtype A) p z = x` from `⟨_, shapiroMap_inv_apply U p x⟩`. Establish `hkey : cohomologyMap (resTensorIso (U : Subgroup G).subtype A B).inv n (cup h (shapiroMap U (Rep.res (U : Subgroup G).subtype A) p z) (cohomologyRes B U q y)) = shapiroMap U (Rep.res (U : Subgroup G).subtype (A ⊗ B)) n (cohomologyMap (coindTensorRight (U : Subgroup G) A B) n (cup …`. Rewrite using `[shapiroMap_eq, shapiroMap_eq, cohomologyRes_eq, ← cohomologyMapAlong_resTensorHom_cup, cohomologyMap_cohomologyMapAlong, cohomologyMapAlong_cohomologyMap, coindTensorRight_comp_coindEvalOne]`. Rewrite using `[hkey, cohomologyCores_shapiroMap, cohomologyCores_shapiroMap, ← ConcreteCategory.comp_apply, ← cohomologyMap_comp, coindTensorRight_comp_coindTrace, cohomologyMap_whiskerRight_cup]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyCores_cup_cohomologyRes (h : p + q = n)
     (x : cohomology (Rep.res (U : Subgroup G).subtype A) p) (y : cohomology B q) :

@@ -34,11 +34,11 @@ def DnIncInt0 (T : Forms0 D u) : Prop :=
     ∀ h, ValSc T w ((D.fm u).dn 0 v c g) h → ValBc T w v c ((D.fm u).dnT 0 v c g h)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `B _`. Use `⟨0, (Formalism.L2.Forms.IntSpan D w ((D.fm u).lam 0)).zero_mem, fun z => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `insert i s hi ih`. Introduce `B hB`. Rewrite using `[Finset.sum_insert hi]`. Take `⟨P, hP, hPe⟩` from `hh i (Finset.mem_insert_self _ _) B hB`. Take `⟨Q, hQ, hQe⟩` from `ih (fun j hj => hh j (Finset.mem_insert_of_mem hj)) B hB`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨P + Q, AddSubgroup.add_mem _ hP hQ, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, hPe z, hQe z, map_add, Pi.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem valSc_sum (T : Forms0 D u) (w : D.what₂.places.Pl) (c : (D.mem u).C.cls 0) {ι : Type} (s : Finset ι)
     (h : ι → (D.mem u).C.Y 0 → ℂ) (hh : ∀ i ∈ s, ValSc T w c (h i)) : ValSc T w c (∑ i ∈ s, h i) := by
@@ -57,11 +57,11 @@ theorem valSc_sum (T : Forms0 D u) (w : D.what₂.places.Pl) (c : (D.mem u).C.cl
     rw [Pi.add_apply, hPe z, hQe z, map_add, Pi.add_apply]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `B B' _ _`. Use `⟨0, (Formalism.L2.Forms.IntSpan D w ((D.fm u).lam 0)).zero_mem, fun z => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `insert i s hi ih`. Introduce `B B' hB hB'`. Rewrite using `[Finset.sum_insert hi]`. Take `⟨P, hP, hPe⟩` from `hh i (Finset.mem_insert_self _ _) B B' hB hB'`. Take `⟨Q, hQ, hQe⟩` from `ih (fun j hj => hh j (Finset.mem_insert_of_mem hj)) B B' hB hB'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨P + Q, AddSubgroup.add_mem _ hP hQ, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, hPe z, hQe z, map_add, Pi.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem valBc_sum (T : Forms0 D u) (w : D.what₂.places.Pl) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) {ι : Type}
     (s : Finset ι) (h : ι → (D.mem u).C.Y 0 → ℂ) (hh : ∀ i ∈ s, ValBc T w v c (h i)) :
@@ -81,7 +81,7 @@ theorem valBc_sum (T : Forms0 D u) (w : D.what₂.places.Pl) (v : (D.mem u).A.vT
     rw [Pi.add_apply, hPe z, hQe z, map_add, Pi.add_apply]
 
 /- English proof (translation)
-Simplify using `only [Formalism.BasicNotions.LT.Uop, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem uop_apply (v : (D.mem u).A.vT) (φ : Fn D u 0) (c : (D.mem u).C.cls 0) :
     Uop D u 0 v φ c = ∑ x ∈ Finset.univ.filter (fun x : (D.fm u).lv 0 v c => (D.fm u).fv 0 v c x = 1),
@@ -90,7 +90,7 @@ theorem uop_apply (v : (D.mem u).A.vT) (φ : Fn D u 0) (c : (D.mem u).C.cls 0) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [Dop, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dop_apply (v : (D.mem u).A.vT) (φ : Fn D u 0) (c : (D.mem u).C.cls 0) :
     Dop D u 0 v φ c = ∑ g ∈ Finset.univ.filter
@@ -100,11 +100,9 @@ theorem dop_apply (v : (D.mem u).A.vT) (φ : Fn D u 0) (c : (D.mem u).C.cls 0) :
   rfl
 
 /- English proof (translation)
-Introduce `w hw hs v x hx c B hB`. Establish `hsum : ValSc T w c (∑ y ∈ Finset.univ.filter (fun y : (D.fm u).lv 0 v c => (D.fm u).fv 0 v c y = 1), (D.fm u).upT 0 v c y ((D.fm u).emb 0 x ((D.fm u).up 0 v c y)))`. Use `valSc_sum T w c _ _ fun y hy => ?_` and prove the remaining obligations. Establish `hy1 : (D.fm u).fv 0 v c y = 1` using `(Finset.mem_filter.1 hy).2`. Use `hI w hw hs v c y hy1 _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B₁ B₁' hB₁ hB₁'`. Conclude with `hx _ B₁ B₁' hB₁ hB₁'`. Take `⟨P, hP, hPe⟩` from `hsum B hB`. Use `⟨P, hP, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[uop_apply]`.
-
-Conclude with `hPe z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upValInt0_of (T : Forms0 D u) (hI : UpIncInt0 T) : UpValInt0 T := by
   intro w hw hs v x hx c B hB
@@ -121,11 +119,9 @@ theorem upValInt0_of (T : Forms0 D u) (hI : UpIncInt0 T) : UpValInt0 T := by
   exact hPe z
 
 /- English proof (translation)
-Introduce `w hw hs v x hx c B B' hB hB'`. Establish `hsum : ValBc T w v c (∑ g ∈ Finset.univ.filter (fun g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => g ((D.fm u).te 0 v c) = 1), (D.fm u).dnT 0 v c g ((D.fm u).emb 0 x ((D.fm u).dn 0 v c g)))`. Use `valBc_sum T w v c _ _ fun g hg => ?_` and prove the remaining obligations. Establish `hg1 : g ((D.fm u).te 0 v c) = 1` using `(Finset.mem_filter.1 hg).2`. Use `hI w hw hs v c g hg1 _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B₁ hB₁`. Conclude with `hx _ B₁ hB₁`. Take `⟨P, hP, hPe⟩` from `hsum B B' hB hB'`. Use `⟨P, hP, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[dop_apply]`.
-
-Conclude with `hPe z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dnValInt0_of (T : Forms0 D u) (hI : DnIncInt0 T) : DnValInt0 T := by
   intro w hw hs v x hx c B B' hB hB'
@@ -143,7 +139,7 @@ theorem dnValInt0_of (T : Forms0 D u) (hI : DnIncInt0 T) : DnValInt0 T := by
   exact hPe z
 
 /- English proof (translation)
-The claim follows from `integrality_at_forms_of_values hR (fun D u T hC hA hS => upValInt0_of T (hU D u T hC hA hS)) (fun D u T hC hA hS => dnValInt0_of T (hD D u T hC hA hS)) D u`.
+A detailed English derivation is pending.
 -/
 theorem integrality_at_forms_of_increments
     (hR : ∀ (D : D7) (u : D.what₂.Word) (T : Forms0 D u), LocalLatticeBases.ChiFin0 T → admS D u → HidaSetting D u → HeckeRationalLevelZero D u)

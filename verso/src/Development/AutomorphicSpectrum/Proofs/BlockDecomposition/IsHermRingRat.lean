@@ -90,7 +90,7 @@ def stabLat {v : HeightOneSpectrum (𝓞 F)} (Λ : Submodule (intLoc F E v) (Fin
     simp
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stabLat {v : HeightOneSpectrum (𝓞 F)} {Λ : Submodule (intLoc F E v) (Fin n → Fv F v ⊗[F] E)}
     {g : GLoc σ J v} : g ∈ stabLat σ J Λ ↔ ∀ y, y ∈ Λ ↔ (matHom _ σ J g).1 *ᵥ y ∈ Λ := Iff.rfl

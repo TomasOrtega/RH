@@ -115,20 +115,20 @@ def LatTo {V' : Type} [CommRing V'] [IsDomain V'] [IsLocalRing V'] {ev' : X₁.M
   ∃ K : L ≃+ L', (∀ a mu, K (hL a mu) = hL' a (K mu)) ∧ ∀ a mu, 𝔪.YY a mu → 𝔪'.YY a (K mu)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AddEquiv.refl _, fun _ _ => rfl, fun _ _ h => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem LatTo.refl : 𝔪.LatTo 𝔪 := ⟨AddEquiv.refl _, fun _ _ => rfl, fun _ _ h => h⟩
 
 omit 𝔪 in
 
 /- English proof (translation)
-Establish `sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁` using `fun w => by`. Establish `: X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Set `yV : X₁.S.R →+* V` to `(RatModel.valLoc (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) z₁ (sp _)).comp (Subalgebra.inclusion hz).toRingHom`. Set `P` to `StrictPull.polPull X₁.ρ.P (spMap yV)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI := P.isAb.comm`. Take `⟨D, A, U, ψ, hX, hψ, hL', hE⟩` from `Sep.exists_unif_good hV P`. Establish `r : LBIso P.L (X₁.ρ.P.L.pull (pullback.fst X₁.ρ.P.A.hom (spMap yV)))` using `PolBaseChange.lbIso_refl P.isLB`. Take `⟨wl, hwl⟩` from `LBIso.trans A.isLB (pull_isLB P.isLB _) (pull_isLB X₁.ρ.P.isLB _) hL' (lbIso_pull_comp r ψ)`. Use `haveI := hV.2.2.2`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r₀, hr₀, -, -, hu⟩` from `(PsiCoordLocal.main V D hV.2.1 0).1`. Use `⟨{ cn := hV loc := hev reg := fun a ha => RatModel.O_le_of_specializes (sp _) (hz ha) yK := (algebraMap V (FractionRing V)).comp yV yK_eq := fun a => (RatModel.val_spMap_comp (M := X₁.M) (algebraMap V (FractionRing V)) _ (sp _) ⟨a.1, hz a.2⟩).symm D := D e₈ := ⟨⟨fun _ => 0, fun _ …` and prove the remaining obligations. Use `hact a` as an intermediate fact. Take `⟨E, h⟩` from `hE ((Over.pullback (spMap yV)).map (act a)) (inferInstanceAs (IsMonHom ((Over.pullback (spMap yV)).map (act a))))`. Use `⟨E, ?_, fun _ => Subsingleton.elim _ _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h).trans ((Category.assoc _ _ _).trans ((congrArg (ψ ≫ ·) (pullback.lift_fst _ _ _)).trans (Category.assoc _ _ _).symm)))`. Rewrite using `[_root_.mul_one]`. Conclude with `hr₀`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_of_regular (hact : IsAct X₁ act) (hz : X₁.S.R ≤ X₁.M.O z₁) (hV : IsCN V)
     (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (hev : IsLocalHom ev) (L : Type) [AddCommGroup L] [Subsingleton L]
@@ -177,7 +177,7 @@ theorem nonempty_of_regular (hact : IsAct X₁ act) (hz : X₁.S.R ≤ X₁.M.O 
 end GMem
 
 /- English proof (translation)
-Use `⟨_, (Scheme.stalkClosedPointTo (R := CommRingCat.of X₁.Ω₁) X₁.M.pt).hom, GMem.nonempty_of_regular h ?_ ⟨inferInstance, inferInstance, ?_, X₁.ar.char⟩ _ inferInstance _ _⟩` and prove the remaining obligations. Conclude with `le_top.trans ((congrArg X₁.M.O (X₁.M.pt_apply _)).trans X₁.M.O_genericPoint).ge`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot] infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gMem (X₁ : GSet) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (h : IsAct X₁ act) :
     ∃ (z₁ : X₁.M.Z) (ev : X₁.M.Z.presheaf.stalk z₁ →+* X₁.Ω₁),
@@ -277,7 +277,7 @@ def Tower.self (X₁ : GSet) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (h : Is
   gl_lam _ _ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hev, fun _ _ e => congrArg ev (X₁.M.stalkHom_injective z₁ e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Tower.self_ext {X₁ : GSet} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (h : IsAct X₁ act) {z₁ : X₁.M.Z} {V : Type} [CommRing V]
     (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (hev : IsLocalHom ev) :
@@ -285,9 +285,9 @@ theorem Tower.self_ext {X₁ : GSet} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
   ⟨hev, fun _ _ e => congrArg ev (X₁.M.stalkHom_injective z₁ e)⟩
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos T.d with h | h` into its components or cases. Establish `h1` using `T.lev`. Rewrite `h1` using `[h, mul_zero]`. Use `T.X₂.S.r_pos` as an intermediate fact. Use `T.X₂.S.N_ge` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < T.X₂.S.r * T.X₂.S.N` using `Nat.mul_pos (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem Tower.d_pos {X₁ : GSet} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (T : Tower X₁ act) : 0 < T.d := by
   rcases Nat.eq_zero_or_pos T.d with h | h
@@ -340,14 +340,14 @@ def ofUMem {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) 
   psi := 𝔪.psi
 
 /- English proof (translation)
-Introduce `a` and use `h.isMonHom (k a)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAct_ofSetup {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     (h : GlobalTheory.Poinc.Sep.IsAct X₁ act) (k : I → Matrix (Fin 8) (Fin 8) ℤ) : IsAct (ofSetup X₁) (fun a => act (k a)) :=
   fun a => h.isMonHom (k a)
 
 /- English proof (translation)
-The claim follows from `let ⟨act, h, z₁, ev, ⟨𝔪⟩⟩ := exists_uMem X₁ ⟨act, h, fun _ k => isAct_ofSetup h k, z₁, ev, ⟨ofUMem 𝔪⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gMem_ofSetup (X₁ : Setup F W i) : ∃ act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A),
     GlobalTheory.Poinc.Sep.IsAct X₁ act ∧ (∀ (I : Type) (k : I → Matrix (Fin 8) (Fin 8) ℤ), IsAct (ofSetup X₁) (fun a => act (k a))) ∧
@@ -389,7 +389,7 @@ def ofTower {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.
   gl_lam := 𝔗.gl_lam
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem ofTower_ext {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     (k : I → Matrix (Fin 8) (Fin 8) ℤ) (𝔗 : GlobalTheory.Poinc.Sep.Tower X₁ act) {z₁ : X₁.M.Z} {z₂ : 𝔗.X₂.M.Z} {V V' : Type}
@@ -398,7 +398,7 @@ theorem ofTower_ext {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (
     (ofTower k 𝔗).Ext (z₁ := z₁) (z₂ := z₂) ev io ev₂ ↔ 𝔗.Ext ev io ev₂ := Iff.rfl
 
 /- English proof (translation)
-Introduce `N₀` and use `let ⟨𝔗, h𝔗⟩ := h N₀ ⟨ofTower k 𝔗, h𝔗⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem deep_ofSetup {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     (k : I → Matrix (Fin 8) (Fin 8) ℤ) (h : ∀ N₀ : ℕ, ∃ 𝔗 : GlobalTheory.Poinc.Sep.Tower X₁ act, N₀ ≤ 𝔗.X₂.S.r * 𝔗.X₂.S.N) :
@@ -424,7 +424,7 @@ def ULink (C : UCompact Xo c) (X₁ : GSet) (act : 𝓞 E → (X₁.ρ.P.A ⟶ X
   X₁.M.pt ≫ π = spMap (ratHull X₁.S.R).val.toRingHom ≫ u ≫ C.i
 
 /- English proof (translation)
-The claim follows from `let ⟨_, ⟨G, i, α, β, h₁, h₂, h₃, _⟩, _⟩ := h ⟨G, i, α, β, h₁, h₂, h₃⟩`.
+A detailed English derivation is pending.
 -/
 theorem ULink.uOver {C : UCompact Xo c} {X₁ : GSet} {act : 𝓞 E → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     {u : Sp (ratHull X₁.S.R) ⟶ Xo.XF c} {π : X₁.M.Z ⟶ C.Z} (h : ULink C X₁ act u π) :
@@ -448,19 +448,19 @@ abbrev IsMemberP (N₁ : ℕ) {φ : InvFun (𝓞 E)} {V : Type} [CommRing V] [Is
   GlobalTheory.USep.IsMemberP ζ Φ N₁ Cm ξ y ρ e h
 
 /- English proof (translation)
-Introduce `T ev h₁ h₂ _` and use `h T ev h₁ h₂`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasTraitsOn_of_hasTraitsP (h : GlobalTheory.USep.HasTraitsP ζ Φ) (U : M.Opens) : HasTraitsOn ζ Φ U :=
   fun T ev h₁ h₂ _ => h T ev h₁ h₂
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h T ev h₁ h₂ => h T ev h₁ h₂ (Set.subset_univ _), fun h => hasTraitsOn_of_hasTraitsP ζ Φ h ⊤⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasTraitsOn_top : HasTraitsOn ζ Φ ⊤ ↔ GlobalTheory.USep.HasTraitsP ζ Φ :=
   ⟨fun h T ev h₁ h₂ => h T ev h₁ h₂ (Set.subset_univ _), fun h => hasTraitsOn_of_hasTraitsP ζ Φ h ⊤⟩
 
 /- English proof (translation)
-Introduce `T ev h₁ h₂ _` and use `h T ev h₁ h₂`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasTraitsOn_of_hasTraits {N₁ : ℕ} {Ψ : VSys (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) !![(1 : ℤ)] N₁ (M.presheaf.stalk z₁)}
     (h : GlobalTheory.USep.HasTraits ζ Ψ) (U : M.Opens) : HasTraitsOn ζ Ψ.pre U := fun T ev h₁ h₂ _ => h T ev h₁ h₂

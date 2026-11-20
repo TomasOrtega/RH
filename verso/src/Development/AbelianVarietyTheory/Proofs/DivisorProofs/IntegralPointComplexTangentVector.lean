@@ -23,17 +23,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.IntFrameSat
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `D hD`. Take `⟨n, Dv, hDt, hst⟩` from `GlobalTheory.LieLocBasis.exists_lie_basis_stable E H X t T.V xV`. Establish `hid : spMap (algebraMap T.V T.V) = 𝟙 _` using `Spec.map_id _`. Establish `hdid : spMap (dualMap (algebraMap T.V T.V)) = 𝟙 _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: dualMap (algebraMap T.V T.V) = RingHom.id _`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Apply the tactic sequence `ext <;> simp [dualMap]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_id _`. Establish `h1` using `hst T.V (algebraMap T.V T.V) (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv D).left (by rw [hid, Category.id_comp]; exact isTan_tv D)`. Simplify using `only [hid, hdid, Category.id_comp] at h1`. Take `⟨a, ha, -⟩` from `h1`. Set `d : Fin n → ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM xV t.G` to `fun e => tanOf (hDt e)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hDs : D = ∑ e, a e • d e` using `(GlobalTheory.LieMet.isComb_iff d a D).1 ha`. Establish `h0 : (0 : ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM (spMap (algebraMap T.V T.Fr) ≫ xV) t.G) = ∑ e, algebraMap T.V T.Fr (a e) • GlobalTheory.FlagMod.tanPull (algebraMap T.V T.Fr) rfl (d e)`. Rewrite using `[← hD, hDs, map_sum]`. Simplify using `only [map_smulₛₗ]`. Take `⟨b, -, hb⟩` from `hst T.Fr (algebraMap T.V T.Fr) (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (0 : ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM (spMap (algebraMap T.V T.Fr) ≫ xV) t.G)).left (isTan_tv _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc1` using `hb (fun e => algebraMap T.V T.Fr (a e)) ((GlobalTheory.LieMet.isComb_iff (fun e => GlobalTheory.FlagMod.tanPull (algebraMap T.V T.Fr) rfl (d e)) _ _).2 h0)`. Establish `hc2` using `hb 0 ((GlobalTheory.LieMet.isComb_iff (fun e => GlobalTheory.FlagMod.tanPull (algebraMap T.V T.Fr) rfl (d e)) _ _).2 (by simp))`. Establish `ha0 : a = 0`. Use function extensionality and compare the values at `e`. Use `congrFun (hc1.trans hc2.symm) e` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsFractionRing.injective T.V T.Fr (by simpa using this)`. Rewrite using `[hDs, ha0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tanPull_frac_injective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) (T : CDVR) (xV : Sp T.V ⟶ X) :
@@ -79,31 +79,31 @@ namespace GlobalTheory.IntFrameSat
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z T io y xV`. Use `letI := io.toAlgebra`. Introduce `hxV τ`. Take `⟨G, t', m1, m2, ⟨ub, htan, heig, hbas, hu⟩, -⟩` from `y.2.2`. Take `⟨ψ, ρ, h1, h2, h3⟩` from `GlobalTheory.exists_sabMap_model_of_integral_frPt Z T io y.1 xV hxV G t' m1 m2`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmono : Mono (spMap (algebraMap T.V T.Fr))`. Establish `: Epi (CommRingCat.ofHom (algebraMap T.V T.Fr))` using `IsLocalization.epi (nonZeroDivisors T.V) T.Fr`. Conclude with `Scheme.Spec.map_mono (CommRingCat.ofHom _).op`. Establish `hbase : spMap (dualMap (algebraMap T.V T.Fr)) ≫ (epsOver T.V T.V).hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ spMap (algebraMap T.V T.Fr)` using `by show spMap (dualMap (algebraMap T.V T.Fr)) ≫ spMap ((algebraMap T.V (DualNumber T.V)).comp (algebraMap T.V T.V)) = _`. Rewrite using `[GlobalTheory.ShFam.OpenReg.spMap_comp, GlobalTheory.ShFam.OpenReg.spMap_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `ext x <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hw : ∀ i, ∃ w : Sp (DualNumber T.Fr) ⟶ Z.oF.t.G.left, w ≫ Z.oF.t.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ AllWt.ptF y.1 ∧ w ≫ Z.m0.toSABMap.φ = y.1.u τ i ∧ w ≫ Z.m.φ = spMap (dualMap (algebraMap T.V T.Fr)) ≫ ((ub τ i).left ≫ ψ.φ)`. Introduce `i`. Take `⟨u', hu1, hu2⟩` from `hu τ i`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hut : u' ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))`. Apply `(cancel_mono (spMap (algebraMap T.V T.Fr))).1` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu2, Category.assoc, Over.w (ub τ i), hbase]`. Use `⟨u' ≫ ρ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h2, ← Category.assoc, hut]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Category.assoc, h1, hu1]`. Rewrite using `[Category.assoc, h3, ← Category.assoc, hu2, Category.assoc]`. Set `f` to `GlobalTheory.ShFam.EigFrame.ofFrPt Z y.1 hxV.symm`. Establish `hfv : ∀ i, f.v τ i = spMap (dualMap (algebraMap T.V T.Fr)) ≫ ((ub τ i).left ≫ ψ.φ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Take `⟨w0, hw0t, hw0a, hw0b⟩` from `GlobalTheory.ShFam.EigFrame.ofFrPt_v Z y.1 hxV.symm τ i`. Take `⟨w, hwa, hwb, hwc⟩` from `hw i`. Establish `: w0 = w`. Apply `Z.m0.toSABMap.cart.1.hom_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw0a, hwb]`. Rewrite using `[hw0t.1, hwa]`. Rewrite using `[← hw0b, this, hwc]`. Use `⟨fun i => (ub τ i).left ≫ ψ.φ, fun i => ?_, hw, ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `GlobalTheory.T.exists_modelTangent_of_pullback_tangent xV G ψ (ub τ i) (htan τ i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv'` using `isTan_tv v`. Rewrite `hv'` using `[hv]`. Conclude with `hv'`. Introduce `cf u hu0 hc`. Establish `hinj` using `tanPull_frac_injective Z.t T xV`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨ub', hub', hsp⟩` from `GlobalTheory.IntFrameDiag.integralFrame_transport T io xV _ rfl hinj G ψ τ (ub τ) (htan τ) (hbas τ)`. Set `U : TanM xV Z.t.G` to `tanOf hu0`. Establish `hvec : ∀ i, GlobalTheory.FlagMod.tanPull (G` using `Z.t.G) (algebraMap T.V T.Fr) rfl (ub' i) = f.vec τ i := by`. Introduce `i`. Apply `tan_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.FlagMod.tanPull_left, hub' i]`. Conclude with `(hfv i).symm`. Establish `hU : GlobalTheory.FlagMod.tanPull (G` using `Z.t.G) (algebraMap T.V T.Fr) rfl U = ∑ i, cf i • f.vec τ i := by`. Use `(GlobalTheory.LieMet.isComb_iff (f.vec τ) cf _).1 ?_` and prove the remaining obligations. Establish `e1 : (fun i => (tv (f.vec τ i)).left) = fun i => spMap (dualMap (algebraMap T.V T.Fr)) ≫ ((ub τ i).left ≫ ψ.φ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `hfv`. Rewrite using `[e1]`. Conclude with `hc`. Establish `hmem : GlobalTheory.FlagMod.tanPull (G` using `Z.t.G) (algebraMap T.V T.Fr) rfl U ∈ GlobalTheory.FlagMod.eigLie c (spMap (algebraMap T.V T.Fr) ≫ xV) τ := by`. Rewrite using `[hU]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `fun a => f.act_vec τ i a`. Take `⟨a, ha⟩` from `hsp U hmem`. Establish `h2' : GlobalTheory.FlagMod.tanPull (G` using `Z.t.G) (algebraMap T.V T.Fr) rfl U = ∑ i, algebraMap T.V T.Fr (a i) • f.vec τ i := by`. Rewrite using `[← ha, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Simplify using `only [map_smulₛₗ, hvec]`. Establish `hli` using `Fintype.linearIndependent_iff.1 (f.linearIndependent_vec τ) (fun i => cf i - algebraMap T.V T.Fr (a i)) (by simp only [sub_smul, Finset.sum_sub_distrib, ← hU, ← h2', sub_self])`. Introduce `i`. Conclude with `⟨a i, (sub_eq_zero.1 (hli i)).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem intFrame_model_sat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (xV : Sp T.V ⟶ Z.X), letI := io.toAlgebra; spMap (algebraMap T.V T.Fr) ≫ xV = AllWt.ptF y.1 ≫ Z.jQ ≫ genι Z → ∀ τ : E →+* ℂ, ∃ v : Fin (Dw.mult τ) → (Sp (DualNumber T.V) ⟶ Z.t.G.left), (∀ i, IsTanAtG Z.t xV (v i)) ∧ (∀ i, ∃ w : Sp (DualNumber T.Fr) ⟶ Z.oF.t.G.left, w ≫ Z.oF.t.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ AllWt.ptF y.1 ∧ w ≫ Z.m0.toSABMap.φ = y.1.u τ i ∧ w ≫ Z.m.φ = spMap (dualMap (algebraMap T.V T.Fr)) ≫ v i) ∧ ∀ (cf : Fin (Dw.mult τ) → T.Fr) (u : Sp (DualNumber T.V) ⟶ Z.t.G.left), IsTanAtG Z.t xV u → IsCombAtG Z.t (spMap (algebraMap T.V T.Fr) ≫ xV) (fun i => spMap (dualMap (algebraMap T.V T.Fr)) ≫ v i) cf (spMap (dualMap (algebraMap T.V T.Fr)) ≫ u) → ∀ i, ∃ a : T.V, algebraMap T.V T.Fr a = cf i := by
   intro E _ _ _ H Dw l Xo c O _ β Z T io y xV

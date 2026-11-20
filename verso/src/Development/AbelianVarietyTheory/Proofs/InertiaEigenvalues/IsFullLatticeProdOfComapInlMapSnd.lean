@@ -6,23 +6,21 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Take `⟨f₁, s₁⟩` from `h₁`. Take `⟨f₂, s₂⟩` from `h₂`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_of_fg_inf_ker (LinearMap.snd K.O B₁.A B₂.A) f₂ ?_` and prove the remaining obligations. Establish `: M ⊓ LinearMap.ker (LinearMap.snd K.O B₁.A B₂.A) = (M.comap (LinearMap.inl K.O B₁.A B₂.A)).map (LinearMap.inl K.O B₁.A B₂.A)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `⟨a, b⟩`. Simplify using `only [Submodule.mem_inf, LinearMap.mem_ker, LinearMap.snd_apply, Submodule.mem_map, Submodule.mem_comap, LinearMap.inl_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hM, rfl⟩`. Conclude with `⟨a, hM, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨c, hc, he⟩`. Rewrite `he` using `[Prod.mk.injEq]`. Take `⟨rfl, rfl⟩` from `he`. Conclude with `⟨hc, rfl⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f₁.map _`. Use `set S := Submodule.span K.E (M : Set (B₁.A × B₂.A)) with hS`. Establish `hinl : ∀ a : B₁.A, ((a, 0) : B₁.A × B₂.A) ∈ S`. Introduce `a`. Establish `ha : a ∈ Submodule.span K.E ((M.comap (LinearMap.inl K.O B₁.A B₂.A) : Submodule K.O B₁.A) : Set B₁.A)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[s₁]`. Discharge the goal by the elementary cases of `trivial`. Establish `hle : (Submodule.span K.E ((M.comap (LinearMap.inl K.O B₁.A B₂.A) : Submodule K.O B₁.A) : Set B₁.A)).map (LinearMap.inl K.E B₁.A B₂.A) ≤ S`. Rewrite using `[Submodule.map_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `hc`. Conclude with `hle ⟨a, ha, rfl⟩`. Establish `hsnd : S.map (LinearMap.snd K.E B₁.A B₂.A) = ⊤`. Rewrite using `[hS, Submodule.map_span, ← s₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨a, b⟩ -`. Establish `hb : b ∈ S.map (LinearMap.snd K.E B₁.A B₂.A)` using `by rw [hsnd]; trivial`. Take `⟨y, hy, hyb⟩` from `hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `: ((a, b) : B₁.A × B₂.A) = y + (a - y.1, 0)`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `[← hyb]`. Rewrite using `[this]`.
-
-Conclude with `S.add_mem hy (hinl _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_of_comap_inl_of_map_snd (K : UQ) (B₁ B₂ : InvAlg K) (M : Submodule K.O (B₁.A × B₂.A))
     (h₁ : IsLat K.O K.E (M.comap (LinearMap.inl K.O B₁.A B₂.A)))

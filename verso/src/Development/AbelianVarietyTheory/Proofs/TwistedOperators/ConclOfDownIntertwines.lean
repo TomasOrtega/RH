@@ -31,11 +31,11 @@ variable {E H : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDi
 omit [FiniteDimensional ℂ E] [FiniteDimensional ℂ H] in
 
 /- English proof (translation)
-Establish `h' : ∀ z, ((‖u z‖ : ℝ) : ℂ) ^ 2 = (n : ℂ) * ((‖z‖ : ℝ) : ℂ) ^ 2` using `fun z => by exact_mod_cast h z`. Establish `e1` using `inner_eq_sum_norm_sq_div_four (𝕜 := ℂ) (u x) (u y)`. Establish `e2` using `inner_eq_sum_norm_sq_div_four (𝕜 := ℂ) x y`. Rewrite `e1` using `[← map_smul, ← map_add, ← map_add, ← map_sub, ← map_sub]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `h' (x + y)`. Establish `h2` using `h' (x - y)`. Establish `h3` using `h' (x - (RCLike.I : ℂ) • y)`. Establish `h4` using `h' (x + (RCLike.I : ℂ) • y)`. Simplify using `only [Complex.coe_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_of_normSq (u : E →ₗ[ℂ] H) (n : ℝ) (h : ∀ x, ‖u x‖ ^ 2 = n * ‖x‖ ^ 2) (x y : E) :
     ⟪u x, u y⟫_ℂ = (n : ℂ) * ⟪x, y⟫_ℂ := by
@@ -53,13 +53,13 @@ theorem inner_of_normSq (u : E →ₗ[ℂ] H) (n : ℝ) (h : ∀ x, ‖u x‖ ^ 
   ring
 
 /- English proof (translation)
-Establish `hne : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Take `⟨z, hz, hzw⟩` from `hy`. Establish `key : ∀ u ∈ V, ⟪u, z⟫_ℂ = ⟪ι u, y⟫_ℂ` using `fun u hu => by`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← inner_of_normSq uA _ nA, ← inner_of_normSq uE _ nE, hzw, hι u hu, LinearMap.adjoint_inner_right]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hQ : z ∈ V ⊓ (V ⊓ LinearMap.ker ι)ᗮ`. Use `⟨hz, (Submodule.mem_orthogonal _ _).2 fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[key u hu.1, LinearMap.mem_ker.1 hu.2, inner_zero_left]`. Establish `hb : LinearMap.adjoint (ι.domRestrict (V ⊓ (V ⊓ LinearMap.ker ι)ᗮ)) y = ⟨z, hQ⟩`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.adjoint_inner_right, Submodule.coe_inner]`. Conclude with `(key u u.2.1).symm`. Establish `hinj : Function.Injective uE` using `(injective_iff_map_eq_zero uE).2 fun y hy => by`. Use `nE y` as an intermediate fact. Rewrite `this` using `[hy, norm_zero, zero_pow two_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 ((mul_eq_zero.1 this.symm).resolve_left hn.ne'))`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[LinearMap.comp_apply, hb, map_smul, ← ha, ← hzw]`. Conclude with `hι z hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_adjoint_transport {E' H' : Type} [NormedAddCommGroup E'] [InnerProductSpace ℂ E'] [FiniteDimensional ℂ E']
     [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [FiniteDimensional ℂ H'] (Θ : E →ₗ[ℂ] H) (ι : E' →ₗ[ℂ] H')

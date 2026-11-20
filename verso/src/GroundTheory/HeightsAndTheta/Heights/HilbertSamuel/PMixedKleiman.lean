@@ -9,15 +9,13 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => exact MixedKleiman.atDim_zero`. Consider the case `succ n ih`. Establish `ih' : MixedKleiman.AtDim (n + 1 - 1)` using `by simpa using ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hLow : MixedKleiman.LowAt (n + 1)` using `hL (n + 1) ih'`. Introduce `K _ ι _ P P0 M A a II hII h1 hP h0 hsM hnM hcM hhM haA hsA hmA hcA j hj`. Break down `lt_or_eq_of_le hj with hj | rfl` into its components or cases. Conclude with `hLow K ι P P0 M A a II hII h1 hP h0 hsM hnM hcM hhM haA hsA hmA hcA j hj`. Establish `hlist : (fun i : Fin (n + 1) => if (i : ℕ) < n + 1 then M else A) = fun _ => M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun i => if_pos i.isLt`. Rewrite using `[hlist]`. Break down `Nat.lt_or_ge n 1 with hn | hn` into its components or cases. Take `rfl : n = 0` from `by omega`. Establish `hW` using `hhM P hP le_rfl`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun _ : Fin 1 => M) = ![M]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Simplify `hW` using `[e]`.
-
-Conclude with `hT (n + 1) (by omega) ih' hLow K ι P P0 M II hII h1 hP h0 hsM hnM hcM hhM`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem MixedKleiman.atDim_of_steps (hL : MixedKleimanLow.Statement) (hT : MixedKleimanTop.Statement) :
     ∀ d, MixedKleiman.AtDim d := by
@@ -44,7 +42,7 @@ theorem MixedKleiman.atDim_of_steps (hL : MixedKleimanLow.Statement) (hT : Mixed
       · exact hT (n + 1) (by omega) ih' hLow K ι P P0 M II hII h1 hP h0 hsM hnM hcM hhM
 
 /- English proof (translation)
-Introduce `K _ ι _ P P0 d M A a II hII h1 hP h0 hsM hnM hcM hhM haA hsA hmA hcA j hj`. Conclude with `MixedKleiman.atDim_of_steps hL hT d K ι P P0 M A a II hII h1 hP h0 hsM hnM hcM hhM haA hsA hmA hcA j hj`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MixedKleiman.proof (hL : MixedKleimanLow.Statement) (hT : MixedKleimanTop.Statement) :
     MixedKleiman.Statement := by

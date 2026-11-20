@@ -11,20 +11,20 @@ noncomputable section
 namespace GlobalTheory.FullRankCoinv.UnitMinor
 
 /- English proof (translation)
-Rewrite using `[← Matrix.cramer_apply, Matrix.cramer_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_one_updateCol_eq {K : Type} [Field K] {n : ℕ} (i : Fin n) (c : Fin n → K) :
     ((1 : Matrix (Fin n) (Fin n) K).updateCol i c).det = c i := by
   rw [← Matrix.cramer_apply, Matrix.cramer_one]; rfl
 
 /- English proof (translation)
-Take `⟨κ, a, ha, hspan, hli⟩` from `exists_linearIndependent' K (fun j => Yᵀ j)`. Establish `htop : Submodule.span K (Set.range (fun j => Yᵀ j)) = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Module.finrank_fin_fun]`. Rewrite `hY` using `[Matrix.rank_eq_finrank_span_cols]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hY`. Establish `hsp : ⊤ ≤ Submodule.span K (Set.range ((fun j => Yᵀ j) ∘ a))` using `by rw [hspan, htop]`. Set `b` to `Module.Basis.mk hli hsp`. Set `e : κ ≃ Fin n` to `b.indexEquiv (Pi.basisFun K (Fin n))`. Set `f : Fin n ↪ Fin d` to `e.symm.toEmbedding.trans ⟨a, ha⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `hli' : LinearIndependent K (fun i => (Y.submatrix id f)ᵀ i)`. Establish `: (fun i => (Y.submatrix id f)ᵀ i) = ((fun j => Yᵀ j) ∘ a) ∘ e.symm`. Use function extensionality and compare the values at `i r`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hli.comp _ e.symm.injective`. Establish `hu` using `Matrix.linearIndependent_cols_iff_isUnit.mp hli'`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_minor_det_ne_zero {K : Type} [Field K] {n d : ℕ} (Y : Matrix (Fin n) (Fin d) K)
     (hY : Y.rank = n) : ∃ f : Fin n ↪ Fin d, (Y.submatrix id f).det ≠ 0 := by
@@ -46,7 +46,7 @@ theorem exists_minor_det_ne_zero {K : Type} [Field K] {n d : ℕ} (Y : Matrix (F
   exact ((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero
 
 /- English proof (translation)
-Use extensionality with `r s`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem submatrix_mul_left {K : Type} [Field K] {n d : ℕ} (B : Matrix (Fin n) (Fin n) K)
     (Y : Matrix (Fin n) (Fin d) K) (g : Fin n ↪ Fin d) :
@@ -54,21 +54,19 @@ theorem submatrix_mul_left {K : Type} [Field K] {n d : ℕ} (B : Matrix (Fin n) 
   ext r s; simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Take `⟨f0, hf0⟩` from `exists_minor_det_ne_zero Y hY`. Use `haveI : Nonempty (Fin n ↪ Fin d) := ⟨f0⟩`. Take `⟨f, hf⟩` from `Finite.exists_max (fun g : Fin n ↪ Fin d => valuation k (Y.submatrix id g).det)`. Establish `hAdet : (Y.submatrix id f).det ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hf f0`. Simplify using `only [h0, map_zero] at h1`. Conclude with `hf0 ((map_eq_zero _).mp (le_antisymm h1 zero_le'))`. Establish `hAu : IsUnit (Y.submatrix id f).det` using `isUnit_iff_ne_zero.mpr hAdet`. Set `E : GL (Fin n) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (Y.submatrix id f)⁻¹ (by rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']; exact inv_ne_zero hAdet)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEv : E.val = (Y.submatrix id f)⁻¹` using `rfl`. Use `set Z := E.val * Y with hZ`. Establish `hZf : Z.submatrix id f = 1`. Rewrite using `[hZ, submatrix_mul_left, hEv, Matrix.nonsing_inv_mul _ hAu]`. Establish `hZg : ∀ g : Fin n ↪ Fin d, valuation k (Z.submatrix id g).det ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Rewrite using `[hZ, submatrix_mul_left, hEv, Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', map_mul, map_inv₀, inv_mul_le_one₀ (zero_lt_iff.mpr (by simpa using hAdet))]`. Conclude with `hf g`. Use `⟨E, fun i j => ?_, f, by rw [hZf, Matrix.det_one, map_one]⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show valuation k (Z i j) ≤ 1`. Distinguish the cases in `hj : ∃ i', f i' = j`. Take `⟨i', rfl⟩` from `hj`. Use `congrFun (congrFun hZf i) i'` as an intermediate fact. Simplify using `only [Matrix.submatrix_apply, id] at this`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[this, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `push_neg at hj`. Establish `hsub : Z.submatrix id (f.setValue i j) = (1 : Matrix (Fin n) (Fin n) k).updateCol i (fun r => Z r j)`. Use extensionality with `r s`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hs : s = i`. Substitute `hs` using the available equality. Simplify using `[Function.Embedding.setValue_eq]`. Rewrite using `[Matrix.updateCol_ne hs]`. Establish `h2 : f.setValue i j s = f s`.
-
-Simplify using `[Function.Embedding.setValue, hs, hj s]`. Simplify using `only [Matrix.submatrix_apply, id, h2]`. Conclude with `congrFun (congrFun hZf r) s`. Use `hZg (f.setValue i j)` as an intermediate fact. Rewrite `this` using `[hsub, det_one_updateCol_eq]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_GL_mul_mem_unitMinorSet (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n d : ℕ) (Y : Matrix (Fin n) (Fin d) k) (hY : Y.rank = n) :

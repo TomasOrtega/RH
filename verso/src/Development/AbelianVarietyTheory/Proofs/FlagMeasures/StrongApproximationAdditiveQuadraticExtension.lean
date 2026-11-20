@@ -14,20 +14,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-The claim follows from `(PlacesInt.mem_int_iff T _).2 (p.valuation_le_one a)`.
+A detailed English derivation is pending.
 -/
 theorem int_of (T : LocAt F E sig p) (a : 𝓞 F) :
     valuation T.Fp (T.ιF (algebraMap (𝓞 F) F a)) ≤ 1 :=
   (PlacesInt.mem_int_iff T _).2 (p.valuation_le_one a)
 
 /- English proof (translation)
-Use `haveI := T.lf`. Establish `hw0 : valuation T.Fp w ≠ 0` using `by simpa using hw`. Establish `hn : {z : T.Fp | valuation T.Fp (z - w) < valuation T.Fp w} ∈ nhds w` using `IsValuativeTopology.mem_nhds_iff'.2 ⟨Units.mk0 _ hw0, fun z hz => hz⟩`. Take `⟨k, hk⟩` from `T.dense.mem_nhds hn`. Establish `hk' : valuation T.Fp (T.ιF k - w) < valuation T.Fp w` using `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkv : valuation T.Fp (T.ιF k) = valuation T.Fp w`. Establish `e : T.ιF k = w + (T.ιF k - w)` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_left _ hk']`. Take `⟨a, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) k`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsK : algebraMap (𝓞 F) F s ≠ 0` using `by simpa using hs0`. Use `⟨a, fun ha => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hkv` using `[ha, map_zero, zero_div, map_zero, map_zero]`. Conclude with `hw0 hkv.symm`. Establish `e : T.ιF (algebraMap (𝓞 F) F a) = T.ιF (algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F s) * T.ιF (algebraMap (𝓞 F) F s)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, div_mul_cancel₀ _ hsK]`. Rewrite using `[e, Valuation.map_mul, hkv]`. Conclude with `mul_le_of_le_one_right' (int_of T s)`.
+A detailed English derivation is pending.
 -/
 theorem small_local (T : LocAt F E sig p) (w : T.Fp) (hw : w ≠ 0) :
     ∃ a : 𝓞 F, a ≠ 0 ∧ valuation T.Fp (T.ιF (algebraMap (𝓞 F) F a)) ≤ valuation T.Fp w := by
@@ -53,9 +53,9 @@ theorem small_local (T : LocAt F E sig p) (w : T.Fp) (hw : w ≠ 0) :
     exact mul_le_of_le_one_right' (int_of T s)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert q S hq ih`. Take `⟨h, hh, hS⟩` from `ih (fun p hp => hw p (Finset.mem_insert_of_mem hp))`. Take `⟨a, ha, ha'⟩` from `small_local (A.loc q) (w q) (hw q (Finset.mem_insert_self q S))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨h * a, mul_ne_zero hh ha, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, Valuation.map_mul]`. Break down `Finset.mem_insert.mp hp with rfl | hp` into its components or cases. Conclude with `(mul_le_of_le_one_left' (int_of _ h)).trans ha'`. Conclude with `(mul_le_of_le_one_right' (int_of _ a)).trans (hS p hp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem small (A : Places F E sig) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (w : ∀ p, (A.loc p).Fp) (hw : ∀ p ∈ S, w p ≠ 0) :
@@ -73,15 +73,13 @@ theorem small (A : Places F E sig) (S : Finset (HeightOneSpectrum (𝓞 F)))
     · exact (mul_le_of_le_one_right' (int_of _ a)).trans (hS p hp)
 
 /- English proof (translation)
-Use `haveI := T.lf`. Establish `hhK : algebraMap (𝓞 F) F h ≠ 0` using `by simpa using hh`. Establish `hh0 : valuation T.Fp (T.ιF (algebraMap (𝓞 F) F h)) ≠ 0` using `by simpa using hhK`. Establish `hn : {x : T.Fp | valuation T.Fp (x - z) < valuation T.Fp (T.ιF (algebraMap (𝓞 F) F h))} ∈ nhds z` using `IsValuativeTopology.mem_nhds_iff'.2 ⟨Units.mk0 _ hh0, fun x hx => hx⟩`. Take `⟨k, hk⟩` from `T.dense.mem_nhds hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk' : valuation T.Fp (T.ιF k - z) < valuation T.Fp (T.ιF (algebraMap (𝓞 F) F h))` using `hk`. Establish `hk1 : p.valuation F k ≤ 1`. Rewrite using `[← PlacesInt.mem_int_iff T]`. Establish `e : T.ιF k = (T.ιF k - z) + z` using `by ring`. Use `show valuation T.Fp (T.ιF k) ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(valuation T.Fp).map_add_le (hk'.le.trans (int_of T h)) hz`. Establish `hpv : p.valuation F (algebraMap (𝓞 F) F h) ≠ 0` using `by simpa using hhK`. Take `⟨a, ha⟩` from `p.exists_valuation_sub_lt_of_integer hk1 (Units.mk0 _ hpv)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha' : valuation T.Fp (T.ιF (algebraMap (𝓞 F) F a - k)) ≤ valuation T.Fp (T.ιF (algebraMap (𝓞 F) F h))` using `(PlacesInt.val_le_iff T _ _).2 ha.le`. Establish `e : z - T.ιF (algebraMap (𝓞 F) F a) = -(T.ιF k - z) - T.ιF (algebraMap (𝓞 F) F a - k)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Use `((valuation T.Fp).map_sub _ _).trans (max_le ?_ ha')` and prove the remaining obligations. Rewrite using `[Valuation.map_neg]`. Conclude with `hk'.le`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approx_local (T : LocAt F E sig p) (z : T.Fp) (hz : valuation T.Fp z ≤ 1) (h : 𝓞 F) (hh : h ≠ 0) :
     ∃ a : 𝓞 F, valuation T.Fp (z - T.ιF (algebraMap (𝓞 F) F a)) ≤
@@ -119,15 +117,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {sig : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hT : {p : HeightOneSpectrum (𝓞 F) | p.asIdeal ∣ Ideal.span {h}}.Finite` using `Ideal.finite_factors (by rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact hh)`. Use `choose a0 ha0 using fun p => approx_local (A.loc p) (z p) (hz p) h hh`. Take `⟨a, ha⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := hT.toFinset) (fun p => p.asIdeal) (fun p => multiplicity p.asIdeal (Ideal.span {h})) (fun p _ => p.prime) (fun p _ q _ hpq e => hpq (HeightOneSpectrum.ext e)) (fun p => a0 p.1)`. Use `⟨a, fun p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ hT.toFinset`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h1` using `ha p hp`. Rewrite `h1` using `[← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.intValuation_eq_exp_neg_multiplicity p hh, ← HeightOneSpectrum.valuation_of_algebraMap (K := F), ← HeightOneSpectrum.valuation_of_algebraMap (K := F)]`. Establish `h2` using `(PlacesInt.val_le_iff (A.loc p) _ _).2 h1`. Establish `e : z p - (A.loc p).ιF (algebraMap (𝓞 F) F a) = (z p - (A.loc p).ιF (algebraMap (𝓞 F) F (a0 p))) - (A.loc p).ιF (algebraMap (𝓞 F) F (a - a0 p))`. Rewrite using `[map_sub, map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `((valuation (A.loc p).Fp).map_sub _ _).trans (max_le (ha0 p) h2)`. Establish `h1 : p.intValuation h = 1`. Rewrite using `[HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mem_primeCompl_iff.mpr fun hmem => hp ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Ideal.dvd_span_singleton.mpr hmem`. Establish `h2 : p.valuation F (algebraMap (𝓞 F) F 1) ≤ p.valuation F (algebraMap (𝓞 F) F h)`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, h1, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `(PlacesInt.val_le_iff (A.loc p) _ _).2 h2`. Rewrite `h3` using `[map_one, map_one, map_one]`. Use `le_trans ?_ h3` and prove the remaining obligations. Conclude with `((valuation (A.loc p).Fp).map_sub _ _).trans (max_le (hz p) (int_of _ a))`.
+A detailed English derivation is pending.
 -/
 theorem approx (A : Places F E sig) (z : ∀ p, (A.loc p).Fp) (hz : ∀ p, valuation (A.loc p).Fp (z p) ≤ 1)
     (h : 𝓞 F) (hh : h ≠ 0) :
@@ -163,29 +161,25 @@ theorem approx (A : Places F E sig) (z : ∀ p, (A.loc p).Fp) (hz : ∀ p, valua
     exact ((valuation (A.loc p).Fp).map_sub _ _).trans (max_le (hz p) (int_of _ a))
 
 /- English proof (translation)
-Take `⟨r, hr, hr'⟩` from `small A hy.toFinset (fun p => (y p)⁻¹) (fun p hp => by`. Establish `hp' : y p ∉ 𝒪[(A.loc p).Fp]` using `hy.mem_toFinset.mp hp`. Conclude with `inv_ne_zero fun h0 => hp' (h0 ▸ zero_mem _))`. Establish `hrK : algebraMap (𝓞 F) F r ≠ 0` using `by simpa using hr`. Establish `hz : ∀ p, valuation (A.loc p).Fp ((A.loc p).ιF (algebraMap (𝓞 F) F r) * y p) ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Rewrite using `[Valuation.map_mul]`. Distinguish the cases in `hp : y p ∈ 𝒪[(A.loc p).Fp]`. Conclude with `mul_le_one' (int_of _ r) hp`. Establish `h1` using `hr' p (hy.mem_toFinset.mpr hp)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : y p ≠ 0` using `fun h0 => hp (h0 ▸ zero_mem _)`. Establish `hy1 : valuation (A.loc p).Fp (y p) ≠ 0` using `by simpa using hy0`. Rewrite `h1` using `[map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Establish `hr0 : {p : HeightOneSpectrum (𝓞 F) | p.valuation F (algebraMap (𝓞 F) F r) < 1}.Finite`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(HeightOneSpectrum.Support.finite (𝓞 F) (algebraMap (𝓞 F) F r)⁻¹).subset fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.valuation F (algebraMap (𝓞 F) F r) < 1` using `hp`. Use `show 1 < p.valuation F (algebraMap (𝓞 F) F r)⁻¹`. Rewrite using `[map_inv₀]`. Conclude with `one_lt_inv_iff₀.2 ⟨zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hrK), hp'⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h, hh, hh'⟩` from `small A (hc.union hr0).toFinset (fun p => (A.loc p).ιF (algebraMap (𝓞 F) F r) * c p) (fun p _ => mul_ne_zero (by simpa using hrK) (c p).ne_zero)`. Take `⟨a, ha⟩` from `approx A _ hz h hh`. Use `⟨algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F r, fun p => ?_⟩` and prove the remaining obligations. Use `set v := valuation (A.loc p).Fp`. Establish `hrp : (A.loc p).ιF (algebraMap (𝓞 F) F r) ≠ 0` using `by simpa using hrK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hvr : v ((A.loc p).ιF (algebraMap (𝓞 F) F r)) ≠ 0` using `by simpa using hrp`. Establish `hcv : v (c p : (A.loc p).Fp) ≠ 0` using `by simpa using (c p).ne_zero`. Establish `key : v ((A.loc p).ιF (algebraMap (𝓞 F) F h)) ≤ v ((A.loc p).ιF (algebraMap (𝓞 F) F r) * c p)`. Distinguish the cases in `hp : p ∈ (hc.union hr0).toFinset`. Conclude with `hh' p hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hp` using `[Set.Finite.mem_toFinset, Set.mem_union, not_or]`. Take `⟨u, hu⟩` from `not_not.mp hp.1`. Establish `hu1 : v (c p : (A.loc p).Fp) = 1`. Rewrite using `[← hu]`. Conclude with `(Valuation.integer.integers v).one_of_isUnit u.isUnit`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr1 : v ((A.loc p).ιF (algebraMap (𝓞 F) F r)) = 1`. Use `le_antisymm (int_of _ r) ?_` and prove the remaining obligations. Use `(PlacesInt.val_le_iff (A.loc p) 1 (algebraMap (𝓞 F) F r)).2 (not_lt.mp hp.2 |>.trans_eq' (by simp))` as an intermediate fact. Simplify using `using this`. Rewrite using `[Valuation.map_mul, hu1, hr1, mul_one]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `int_of _ h`. Use `set d := (A.loc p).ιF (algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F r) - y p`. Establish `hd : d = -((A.loc p).ιF (algebraMap (𝓞 F) F r) * y p - (A.loc p).ιF (algebraMap (𝓞 F) F a)) * ((A.loc p).ιF (algebraMap (𝓞 F) F r))⁻¹`. Simplify using `only [d, map_div₀]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdv : v d ≤ v (c p : (A.loc p).Fp)`. Rewrite using `[hd, Valuation.map_mul, Valuation.map_neg, map_inv₀]`. Use `(ha p).trans key` as an intermediate fact. Rewrite `this` using `[Valuation.map_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨(c p : (A.loc p).Fp)⁻¹ * d, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show v ((c p : (A.loc p).Fp)⁻¹ * d) ≤ 1`. Rewrite using `[Valuation.map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `show d = c p * ((c p : (A.loc p).Fp)⁻¹ * d)`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ (c p).ne_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approxF (A : Places F E sig) (c : ∀ p, ((A.loc p).Fp)ˣ)
     (hc : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c p}.Finite)
@@ -264,14 +258,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {sig : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `⟨⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_place (F : Type) [Field F] [NumberField F] : Nonempty (HeightOneSpectrum (𝓞 F)) := by
   obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 F)
   exact ⟨⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩⟩
 
 /- English proof (translation)
-Take `⟨p⟩` from `exists_place F`. Use `haveI := PlacesInt.nontrivial_Ep (A.loc p)`. Apply `(A.loc p).ιE.injective` to reduce the goal to its premises. Rewrite using `[← (A.loc p).cj_ιE, ← (A.loc p).cj_ιE, ← A.L_cj, (A.L p).cj_cj]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_sig (A : Places F E sig) (y : E) : sig (sig y) = y := by
   obtain ⟨p⟩ := exists_place F
@@ -280,13 +274,13 @@ theorem sig_sig (A : Places F E sig) (y : E) : sig (sig y) = y := by
   rw [← (A.loc p).cj_ιE, ← (A.loc p).cj_ιE, ← A.L_cj, (A.L p).cj_cj]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨p⟩` from `exists_place F`. Establish `h2 : ∀ z, (A.loc p).cj z = z`. Introduce `z`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : z ∈ Submodule.span (A.loc p).Fp (Set.range (A.loc p).ιE)`. Rewrite using `[(A.loc p).span]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨y, rfl⟩ := hz`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(A.loc p).cj_ιE, hne]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb]`. Consider the case `smul c a _ ha => rw [map_smul, ha]`. Establish `h3 : Function.Surjective (Algebra.linearMap (A.loc p).Fp (A.loc p).Ep)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Conclude with `((A.L p).cj_fix z).1 (by rw [A.L_cj]; exact h2 z)`. Establish `h4` using `LinearMap.finrank_le_finrank_of_surjective h3`. Rewrite `h4` using `[(A.loc p).rank, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sig_ne (A : Places F E sig) : ∃ e : E, sig e ≠ e := by
   by_contra hne
@@ -309,13 +303,13 @@ theorem sig_ne (A : Places F E sig) : ∃ e : E, sig e ≠ e := by
   omega
 
 /- English proof (translation)
-Establish `hint : ∀ o : 𝓞 E, IsIntegral ℤ (sig (o : E))` using `fun o => (o.isIntegral_coe).map (sig.toRingHom.toIntAlgHom)`. It suffices to establish `h : ∃ o : 𝓞 E, sig (o : E) ≠ o by`. Take `⟨o, ho⟩` from `h`. Use `⟨o - ⟨sig o, hint o⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sig ((o : E) - sig o) = -((o : E) - sig o)`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_sub, sig_sig A]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(o : E) - sig o ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `fun h => ho h.symm`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨e, he⟩` from `sig_ne A`. Take `⟨a, s, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) e`. Apply `he` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀]`. Conclude with `congrArg₂ (· / ·) (hne a) (hne s)`.
+A detailed English derivation is pending.
 -/
 theorem exists_d (A : Places F E sig) : ∃ d : 𝓞 E, sig (d : E) = -(d : E) ∧ (d : E) ≠ 0 := by
   have hint : ∀ o : 𝓞 E, IsIntegral ℤ (sig (o : E)) := fun o =>
@@ -337,7 +331,7 @@ theorem exists_d (A : Places F E sig) : ∃ d : 𝓞 E, sig (d : E) = -(d : E) �
   exact congrArg₂ (· / ·) (hne a) (hne s)
 
 /- English proof (translation)
-Use `haveI := PlacesInt.nontrivial_Ep (A.loc p)`. Rewrite `h` using `[(A.L p).O_def]`. Establish `h2 : IsIntegral 𝒪[(A.loc p).Fp] w` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[(A.loc p).Fp] (A.loc p).Fp (A.loc p).Ep) (algebraMap (A.loc p).Fp (A.loc p).Ep).injective).1 h`. Conclude with `Valuation.Integers.mem_of_integral (Valuation.integer.integers (valuation (A.loc p).Fp)) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_int_of_O (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (w : (A.loc p).Fp)
     (h : algebraMap (A.loc p).Fp (A.loc p).Ep w ∈ (A.L p).O) : w ∈ 𝒪[(A.loc p).Fp] := by
@@ -349,7 +343,7 @@ theorem mem_int_of_O (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (w : 
   exact Valuation.Integers.mem_of_integral (Valuation.integer.integers (valuation (A.loc p).Fp)) h2
 
 /- English proof (translation)
-Rewrite using `[(A.L p).O_def]`. Conclude with `(isIntegral_algebraMap (x := o)).algebraMap`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem O_of_int (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (o : 𝒪[(A.loc p).Fp]) :
     algebraMap (A.loc p).Fp (A.loc p).Ep (o : (A.loc p).Fp) ∈ (A.L p).O := by
@@ -357,7 +351,7 @@ theorem O_of_int (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (o : 𝒪
   exact (isIntegral_algebraMap (x := o)).algebraMap
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[(A.L p).O_def]`. Conclude with `h.map ((A.L p).cj.toAlgHom.restrictScalars 𝒪[(A.loc p).Fp])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_mem (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (y : (A.loc p).Ep)
     (h : y ∈ (A.L p).O) : (A.L p).cj y ∈ (A.L p).O := by
@@ -372,15 +366,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {sig : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `cjE : ∀ x, (A.L p).cj ((A.loc p).ιE x) = (A.loc p).ιE (sig x)`. Introduce `x`. Rewrite using `[A.L_cj]`. Conclude with `(A.loc p).cj_ιE x`. Take `⟨u, hu⟩` from `((A.L p).cj_fix (y + (A.L p).cj y)).1 (by rw [map_add, (A.L p).cj_cj, add_comm])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `((A.L p).cj_fix ((y - (A.L p).cj y) * (A.loc p).ιE d⁻¹)).1 (by`. Rewrite using `[map_mul, map_sub, (A.L p).cj_cj, cjE, map_inv₀, hd, inv_neg, map_neg]`. Use the proof step `ring)`. Establish `hh : algebraMap (A.loc p).Fp (A.loc p).Ep ((A.loc p).ιF 2⁻¹) = (A.loc p).ιE (algebraMap F E 2⁻¹)` using `((A.loc p).compat _).symm`. Establish `e1 : (A.loc p).ιE d⁻¹ * (A.loc p).ιE d = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, inv_mul_cancel₀ hd0, map_one]`. Establish `e2 : (A.loc p).ιE (algebraMap F E 2⁻¹) * 2 = 1`. Establish `: algebraMap F E 2⁻¹ * 2 = 1`. Rewrite using `[map_inv₀, map_ofNat]`. Conclude with `inv_mul_cancel₀ two_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_ofNat (A.loc p).ιE 2, ← map_mul, this, map_one]`. Use `⟨u * (A.loc p).ιF 2⁻¹, w * (A.loc p).ιF 2⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hu, hw, hh]`. Take the linear combination `(-((A.loc p).ιE (algebraMap F E 2⁻¹) * (y - (A.L p).cj y))) * e1 + (-y) * e2`. Rewrite using `[map_mul, hu, hh, mul_comm]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hy hdi h2i`. Establish `hcy` using `cj_mem A p y hy`. Use `⟨mul_mem (mem_int_of_O A p u (hu ▸ add_mem hy hcy)) h2i, mul_mem (mem_int_of_O A p w (hw ▸ mul_mem (sub_mem hy hcy) hdi)) h2i⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem decomp (A : Places F E sig) (d : E) (hd : sig d = -d) (hd0 : d ≠ 0) (p : HeightOneSpectrum (𝓞 F))
     (y : (A.loc p).Ep) : ∃ a b : (A.loc p).Fp,
@@ -411,7 +405,7 @@ theorem decomp (A : Places F E sig) (d : E) (hd : sig d = -d) (hd0 : d ≠ 0) (p
       mul_mem (mem_int_of_O A p w (hw ▸ mul_mem (sub_mem hy hcy) hdi)) h2i⟩
 
 /- English proof (translation)
-Use `(HeightOneSpectrum.Support.finite (𝓞 F) (2⁻¹ : F)).subset fun p hp => ?_` and prove the remaining obligations. Establish `hp' : ¬ (A.loc p).ιF 2⁻¹ ∈ 𝒪[(A.loc p).Fp]` using `hp`. Rewrite `hp'` using `[PlacesInt.mem_int_iff, not_le]`. Conclude with `hp'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_two (A : Places F E sig) :
     {p : HeightOneSpectrum (𝓞 F) | (A.loc p).ιF 2⁻¹ ∉ 𝒪[(A.loc p).Fp]}.Finite := by
@@ -421,13 +415,13 @@ theorem fin_two (A : Places F E sig) :
   exact hp'
 
 /- English proof (translation)
-Take `⟨d, hd, hd0⟩` from `exists_d A`. Establish `hdO : ∀ p, (A.loc p).ιE (d : E) ∈ (A.L p).O` using `(PlacesInt.integers_local A).1 _ |>.2 ⟨d, rfl⟩`. Establish `hdi` using `(PlacesInt.integers_local A).2.1 (d : E)⁻¹`. Use `choose a b hab _ hint using fun p => decomp A d hd hd0 p (y p)`. Establish `hbad : ∀ p, p ∉ {p | y p ∉ (A.L p).O} ∪ {p | (A.loc p).ιE (d : E)⁻¹ ∉ (A.L p).O} ∪ {p : HeightOneSpectrum (𝓞 F) | (A.loc p).ιF 2⁻¹ ∉ 𝒪[(A.loc p).Fp]} → a p ∈ 𝒪[(A.loc p).Fp] ∧ b p ∈ 𝒪[(A.loc p).Fp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hp`. Conclude with `hint p hp.1.1 hp.1.2 hp.2`. Establish `hfin` using `(hy.union hdi).union (fin_two A)`. Take `⟨α, hα⟩` from `approxF A c hc a (hfin.subset fun p hp => by_contra fun h => hp (hbad p h).1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β, hβ⟩` from `approxF A c hc b (hfin.subset fun p hp => by_contra fun h => hp (hbad p h).2)`. Use `⟨algebraMap F E α + algebraMap F E β * d, fun p => ?_⟩` and prove the remaining obligations. Take `⟨o1, ho1⟩` from `hα p`. Take `⟨o2, ho2⟩` from `hβ p`. Use `⟨algebraMap _ _ (o1 : (A.loc p).Fp) + algebraMap _ _ (o2 : (A.loc p).Fp) * (A.loc p).ιE d, add_mem (O_of_int A p o1) (mul_mem (O_of_int A p o2) (hdO p)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (algebraMap (A.loc p).Fp (A.loc p).Ep) ho1`. Establish `e2` using `congrArg (algebraMap (A.loc p).Fp (A.loc p).Ep) ho2`. Rewrite `e1`, `e2` using `[map_sub, map_mul]`. Rewrite using `[map_add, map_mul, (A.loc p).compat, (A.loc p).compat]`. Take the linear combination `e1 + (A.loc p).ιE d * e2 - hab p`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem approxE (A : Places F E sig) (c : ∀ p, ((A.loc p).Fp)ˣ)
     (hc : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c p}.Finite)
@@ -458,15 +452,15 @@ theorem approxE (A : Places F E sig) (c : ∀ p, ((A.loc p).Fp)ˣ)
   linear_combination e1 + (A.loc p).ιE d * e2 - hab p
 
 /- English proof (translation)
-Take `⟨d, hd, hd0⟩` from `exists_d A`. Establish `hdO : ∀ p, (A.loc p).ιE (d : E) ∈ (A.L p).O` using `(PlacesInt.integers_local A).1 _ |>.2 ⟨d, rfl⟩`. Establish `hdi` using `(PlacesInt.integers_local A).2.1 (d : E)⁻¹`. Establish `ht : sig t = t`. Take `⟨p⟩` from `exists_place F`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := PlacesInt.nontrivial_Ep (A.loc p)`. Apply `(A.loc p).ιE.injective` to reduce the goal to its premises. Rewrite using `[← (A.loc p).cj_ιE, ← A.L_cj, ← hyt p, map_add, (A.L p).cj_cj, add_comm]`. Use `choose a b hab hA hint using fun p => decomp A d hd hd0 p (y p)`. Establish `hbad : ∀ p, p ∉ {p | y p ∉ (A.L p).O} ∪ {p | (A.loc p).ιE (d : E)⁻¹ ∉ (A.L p).O} ∪ {p : HeightOneSpectrum (𝓞 F) | (A.loc p).ιF 2⁻¹ ∉ 𝒪[(A.loc p).Fp]} → a p ∈ 𝒪[(A.loc p).Fp] ∧ b p ∈ 𝒪[(A.loc p).Fp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p hp`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hp`. Conclude with `hint p hp.1.1 hp.1.2 hp.2`. Establish `hfin` using `(hy.union hdi).union (fin_two A)`. Take `⟨β, hβ⟩` from `approxF A c hc b (hfin.subset fun p hp => by_contra fun h => hp (hbad p h).2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨algebraMap F E 2⁻¹ * t + algebraMap F E β * d, ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, AlgHom.commutes, AlgHom.commutes, ht, hd, map_inv₀, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨o2, ho2⟩` from `hβ p`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨algebraMap _ _ (o2 : (A.loc p).Fp) * (A.loc p).ιE d, mul_mem (O_of_int A p o2) (hdO p), ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg (algebraMap (A.loc p).Fp (A.loc p).Ep) ho2`. Rewrite `e2` using `[map_sub, map_mul]`. Rewrite using `[map_add, map_mul, map_mul, (A.loc p).compat β]`. Take the linear combination `(A.loc p).ιE d * e2 - hab p - hA p - (A.loc p).ιE (algebraMap F E 2⁻¹) * hyt p`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem approxTr (A : Places F E sig) (c : ∀ p, ((A.loc p).Fp)ˣ)
     (hc : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c p}.Finite)
@@ -503,7 +497,7 @@ theorem approxTr (A : Places F E sig) (c : ∀ p, ((A.loc p).Fp)ˣ)
   linear_combination (A.loc p).ιE d * e2 - hab p - hA p - (A.loc p).ιE (algebraMap F E 2⁻¹) * hyt p
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A c hc`. Conclude with `⟨fun y hy => approxF A c hc y hy, fun y hy => approxE A c hc y hy, fun t y hy hyt => approxTr A c hc t y hy hyt⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem strong_approx_additive : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ c : ∀ p, ((A.loc p).Fp)ˣ, {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c p}.Finite → (∀ y : ∀ p, (A.loc p).Fp, {p | y p ∉ 𝒪[(A.loc p).Fp]}.Finite → ∃ x : F, ∀ p, ∃ o : 𝒪[(A.loc p).Fp], (A.loc p).ιF x - y p = c p * o) ∧ (∀ y : ∀ p, (A.loc p).Ep, {p | y p ∉ (A.L p).O}.Finite → ∃ x : E, ∀ p, ∃ o ∈ (A.L p).O, (A.loc p).ιE x - y p = algebraMap (A.loc p).Fp (A.loc p).Ep (c p) * o) ∧ ∀ (t : E) (y : ∀ p, (A.loc p).Ep), {p | y p ∉ (A.L p).O}.Finite → (∀ p, y p + (A.L p).cj (y p) = (A.loc p).ιE t) → ∃ x : E, x + sig x = t ∧ ∀ p, ∃ o ∈ (A.L p).O, (A.loc p).ιE x - y p = algebraMap (A.loc p).Fp (A.loc p).Ep (c p) * o := by
   intro F E _ _ _ _ _ sig A c hc

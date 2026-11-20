@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Establish `hex : Function.Exact (LinearMap.ker g).subtype g.rangeRestrict`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨x, ?_⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Subtype.val hx` as an intermediate fact. Simplify `this` using `[LinearMap.mem_ker]`. Introduce and unpack `⟨y, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using y.2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Module.length_eq_add_of_exact (LinearMap.ker g).subtype g.rangeRestrict (Submodule.subtype_injective _) g.surjective_rangeRestrict hex]`. Use `gcongr`. Set `φ : LinearMap.ker g →ₗ[R] LinearMap.range f` to `(j.comp (LinearMap.ker g).subtype).codRestrict (LinearMap.range f) (fun x => h x x.2)`. Establish `hφ : Function.Injective φ`. Introduce `a b hab`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `hj` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hab`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Module.length_le_of_injective (LinearMap.range g).subtype (Submodule.subtype_injective _)`.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem length_addMonoidHom_le_of_card_eq {R A B C X : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C] [AddCommGroup X] [Module R X]
@@ -43,17 +43,15 @@ private theorem length_addMonoidHom_le_of_card_eq {R A B C X : Type} [CommRing R
   · exact Module.length_le_of_injective (LinearMap.range g).subtype (Submodule.subtype_injective _)
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ U' U _ h 𝒟 h𝒟 ι _ D hD hcov`. Establish `hinv : ∀ x : selEig ρ U' h𝒟 U 1, ((x : LocSel ρ U' 𝒟) : H1U ρ U') ∈ invariantsUnderSubgroupH1 ρ U U'`. Introduce `x`. Rewrite using `[Representation.mem_invariants]`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(mem_eig.mp x.2) u` as an intermediate fact. Simplify `congrArg Subtype.val this` using `[selRep, Representation.subrepresentation]`. Set `j : selEig ρ U' h𝒟 U 1 →ₗ[R] H1U ρ U'` to `(LocSel ρ U' 𝒟).subtype.comp (selEig ρ U' h𝒟 U 1).subtype`. Set `g : selEig ρ U' h𝒟 U 1 →ₗ[R] resCoker ρ h` to `(Submodule.mkQ _).comp (LinearMap.codRestrict (invariantsUnderSubgroupH1 ρ U U') j hinv)`. Set `A` to `Submodule.comap (resU ρ h) (LocSel ρ U' 𝒟)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hj : Function.Injective j`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hker : ∀ x, g x = 0 → j x ∈ LinearMap.range ((resU ρ h).comp A.subtype)`. Introduce `x hx`. Establish `hx'` using `(Submodule.Quotient.mk_eq_zero _).mp hx`. Take `⟨y, hy⟩` from `hx'`. Use `⟨⟨y, ?_⟩, hy⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show resU ρ h y ∈ LocSel ρ U' 𝒟`. Rewrite using `[hy]`. Conclude with `(x : LocSel ρ U' 𝒟).2`. Use `le_trans (length_addMonoidHom_le_of_card_eq ((resU ρ h).comp A.subtype) j hj g hker) ?_` and prove the remaining obligations. Use `gcongr`.
-
-Conclude with `selLocal R G M ρ U' U h 𝒟 ι D hD hcov`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.selDown :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

@@ -18,7 +18,7 @@ namespace GlobalTheory.RatRow
 variable {D : D7} {N N' : ℕ}
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Establish `h : ∀ y, D.host.φ₀ (D.host.conj y) = (starRingEnd ℂ) (D.host.φ₀ y)` using `fun y => D.host.conjE_apply _ y`. Rewrite using `[h, h, Complex.conj_conj]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_conj (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   apply D.host.φ₀.injective
@@ -27,23 +27,23 @@ theorem conj_conj (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   rw [h, h, Complex.conj_conj]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[adj, conj_conj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem adj_adj {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) : adj D (adj D M) = M := by
   refine Matrix.ext fun i j => ?_
   simp [adj, conj_conj]
 
 /- English proof (translation)
-Take `⟨Lt, h1, h2, -⟩` from `exists_lattice_of_adelic_point D N`. Rewrite using `[← h2]`. Conclude with `(h1 _).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_one (D : D7) (N : ℕ) : Moves D ((1 : GA D N) : GL (Fin N) (AE D)) (stdL D N) := by
   obtain ⟨Lt, h1, h2, -⟩ := exists_lattice_of_adelic_point D N
   rw [← h2]; exact (h1 _).1
 
 /- English proof (translation)
-Take `⟨Lt, h1, -⟩` from `exists_lattice_of_adelic_point D N`. Establish `: L = Lt g`. Use extensionality with `x`. Rewrite using `[h x, (h1 g).1 x]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h1 g).2`.
+A detailed English derivation is pending.
 -/
 theorem sd_of_moves {g : GA D N} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     (h : Moves D (g : GL (Fin N) (AE D)) L) : SD D L := by
@@ -53,14 +53,14 @@ theorem sd_of_moves {g : GA D N} {L : Submodule (𝓞 D.host.E) (Fin N → D.hos
   rw [this]; exact (h1 g).2
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨_, _, sd_of_moves h, sd_of_moves h', rfl⟩`.
+Prove the second alternative.
 -/
 theorem klat (T : Tor D) {g : GA D N} {g' : GA D N'} {L₁ L₁'}
     (h : Moves D (g : GL (Fin N) (AE D)) L₁) (h' : Moves D (g' : GL (Fin N') (AE D)) L₁') :
     KLat D T (La D T L₁ L₁') := Or.inr ⟨_, _, sd_of_moves h, sd_of_moves h', rfl⟩
 
 /- English proof (translation)
-Unfold `IsRat`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isRat_one (D : D7) (N : ℕ) : IsRat D ((1 : GA D N) : GL (Fin N) (AE D)) 1 := by
   unfold IsRat
@@ -68,7 +68,7 @@ theorem isRat_one (D : D7) (N : ℕ) : IsRat D ((1 : GA D N) : GL (Fin N) (AE D)
   rfl
 
 /- English proof (translation)
-Rewrite using `[Hf_mulV, mulV_mulV, h', h, mulV_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hf_unitary (T : Tor D) {M' : Matrix (Fin N') (Fin N') D.host.E} {M : Matrix (Fin N) (Fin N) D.host.E}
     (h' : adj D M' * M' = 1) (h : M * adj D M = 1) (z w : VC D N N') :
@@ -76,14 +76,14 @@ theorem hf_unitary (T : Tor D) {M' : Matrix (Fin N') (Fin N') D.host.E} {M : Mat
   rw [Hf_mulV, mulV_mulV, h', h, mulV_one]
 
 /- English proof (translation)
-Simplify using `only [mulV_mulV, Matrix.mul_one, Matrix.one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulV_comm (M' : Matrix (Fin N') (Fin N') D.host.E) (M : Matrix (Fin N) (Fin N) D.host.E) (z : VC D N N') :
     mulV D M' 1 (mulV D 1 M z) = mulV D 1 M (mulV D M' 1 z) := by
   simp only [mulV_mulV, Matrix.mul_one, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[mulV_apply, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.diagonal_map (map_zero _), Matrix.diagonal_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulV_scalar (a : D.host.E) (z : VC D N N') (τ : D.what₂.Tau) (i : Fin N') (j : Fin N) :
     mulV D (Matrix.diagonal fun _ => a) 1 z τ i j = embT D τ a * z τ i j := by
@@ -97,7 +97,7 @@ def halfM (D : D7) (n : ℕ) : Matrix (Fin n) (Fin n) D.host.E :=
   Matrix.diagonal fun i => if i < i.rev then 1 else 0
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i.rev (fun k _ hk => by simp [revM, hk]) (by simp)]`. Simplify using `[revM, Matrix.one_apply, eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem revM_mul_self (n : ℕ) : revM D n * revM D n = 1 := by
   refine Matrix.ext fun i j => ?_
@@ -105,7 +105,7 @@ theorem revM_mul_self (n : ℕ) : revM D n * revM D n = 1 := by
   simp [revM, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `: i = j.rev ↔ j = i.rev`. Apply the tactic sequence `constructor <;> rintro rfl <;> simp`. Simplify using `only [adj, revM, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, this]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adj_revM (n : ℕ) : adj D (revM D n) = revM D n := by
   refine Matrix.ext fun i j => ?_
@@ -115,7 +115,7 @@ theorem adj_revM (n : ℕ) : adj D (revM D n) = revM D n := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[halfM, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem halfM_mul_self (n : ℕ) : halfM D n * halfM D n = halfM D n := by
   rw [halfM, Matrix.diagonal_mul_diagonal]
@@ -124,7 +124,7 @@ theorem halfM_mul_self (n : ℕ) : halfM D n * halfM D n = halfM D n := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[adj, halfM, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem adj_halfM (n : ℕ) : adj D (halfM D n) = halfM D n := by
   rw [adj, halfM, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]
@@ -133,11 +133,11 @@ theorem adj_halfM (n : ℕ) : adj D (halfM D n) = halfM D n := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hn`. Simplify using `only [halfM, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.sub_apply, revM, Matrix.of_apply]`. Distinguish the cases in `h : j = i.rev`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hi` using `i.2`. Distinguish the cases in `h1 : i < i.rev`. Establish `h2 : ¬ i.rev < i` using `not_lt.2 h1.le`. Simplify using `[h1, h2]`. Establish `h2 : i.rev < i`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `*` using `[Fin.lt_def, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Simplify using `[h1, h2]`. Simplify using `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem revM_mul_halfM {n : ℕ} (hn : Even n) : revM D n * halfM D n = revM D n - halfM D n * revM D n := by
   refine Matrix.ext fun i j => ?_
@@ -156,7 +156,7 @@ theorem revM_mul_halfM {n : ℕ} (hn : Even n) : revM D n * halfM D n = revM D n
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hd i`. Conclude with `isIntegral_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_diagonal {n : ℕ} {d : Fin n → D.host.E} (hd : ∀ i, IsIntegral ℤ (d i)) (i j : Fin n) :
     IsIntegral ℤ (Matrix.diagonal d i j) := by
@@ -166,27 +166,27 @@ theorem integral_diagonal {n : ℕ} {d : Fin n → D.host.E} (hd : ∀ i, IsInte
   · exact isIntegral_zero
 
 /- English proof (translation)
-The claim follows from `integral_diagonal (fun _ => isIntegral_one) i j`.
+A detailed English derivation is pending.
 -/
 theorem integral_one {n : ℕ} (i j : Fin n) : IsIntegral ℤ ((1 : Matrix (Fin n) (Fin n) D.host.E) i j) :=
   integral_diagonal (fun _ => isIntegral_one) i j
 
 /- English proof (translation)
-Rewrite using `[adj, Matrix.det_transpose]`. Conclude with `((D.host.conj : D.host.E →+* D.host.E).map_det M).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_adj {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) : (adj D M).det = D.host.conj M.det := by
   rw [adj, Matrix.det_transpose]
   exact ((D.host.conj : D.host.E →+* D.host.E).map_det M).symm
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[adj, Matrix.one_apply, eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem adj_one_sub {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) : adj D (1 - M) = 1 - adj D M := by
   refine Matrix.ext fun i j => ?_
   simp [adj, Matrix.one_apply, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[← det_adj, adj_one_sub, ← Matrix.det_mul, Matrix.mul_sub, h, Matrix.mul_one, ← neg_sub, Matrix.det_neg, Fintype.card_fin, hN.neg_one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_mul_conj (hN : Even N) {γ : Matrix (Fin N) (Fin N) D.host.E} (h : γ * adj D γ = 1) :
     γ.det * D.host.conj (1 - γ).det = (1 - γ).det := by
@@ -194,9 +194,9 @@ theorem det_mul_conj (hN : Even N) {γ : Matrix (Fin N) (Fin N) D.host.E} (h : �
     Fintype.card_fin, hN.neg_one_pow, one_mul]
 
 /- English proof (translation)
-Establish `hg : g ≠ 0` using `by rintro rfl; exact hw (by simpa using h.symm)`. Establish `h1 : ((‖w ^ (k + k)‖ : ℝ) : ℂ) = (w * (starRingEnd ℂ) w) ^ k`. Rewrite using `[Complex.mul_conj', norm_pow, ← two_mul, pow_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[h1, zpow_neg, zpow_natCast, div_eq_iff (pow_ne_zero _ hw), eq_inv_mul_iff_mul_eq₀ (pow_ne_zero _ hg), ← mul_pow, mul_left_comm, h, mul_pow, pow_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phase {g w : ℂ} (hw : w ≠ 0) (h : g * (starRingEnd ℂ) w = w) (k : ℕ) :
     ((‖w ^ (k + k)‖ : ℝ) : ℂ) / w ^ (k + k) = g ^ (-(k : ℤ)) := by
@@ -207,31 +207,27 @@ theorem phase {g w : ℂ} (hw : w ≠ 0) (h : g * (starRingEnd ℂ) w = w) (k : 
     mul_left_comm, h, mul_pow, pow_add]
 
 /- English proof (translation)
-Introduce `D cc δ hc N N' hN hN' th hth γA γ L₁ hr hdet hm`. Establish `hu : γ * adj D γ = 1` using `(mem_ratG_intG D N).2.2.2.1 γA γ hr`. Establish `hu' : adj D γ * γ = 1` using `mul_eq_one_comm.1 hu`. Take `⟨hint, hden, hmov⟩` from `GlobalTheory.T.rationalMatrixMul_thetaLattices D cc δ hc N N'`. Set `u : VC D N N' ≃ₗ[ℂ] VC D N N'` to `LinearEquiv.ofLinear (mulV D 1 (adj D γ)) (mulV D 1 γ) (LinearMap.ext fun z => by simp [mulV_mulV, hu, mulV_one]) (LinearMap.ext fun z => by simp [mulV_mulV, hu', mulV_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `ua : ∀ z, u z = mulV D 1 (adj D γ) z` using `fun _ => rfl`. Establish `us : ∀ z, u.symm z = mulV D 1 γ z` using `fun _ => rfl`. Establish `hid : LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N') = mulV D 1 (1 - γ)` using `LinearMap.ext fun z => by rw [mulV_sub_right, mulV_one]; rfl`. Establish `hd : LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N')) = ∏ τ, embT D τ (1 - γ).det ^ N'`. Rewrite using `[hid, GlobalTheory.T.det_rationalMatrixTwoSidedMul_eq_prod_embeddings]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hw : ∀ τ, embT D τ (1 - γ).det ≠ 0` using `fun τ => (map_ne_zero _).2 hdet`. Establish `key` using `GlobalTheory.T.unitaryThetaConstant_eq_inverseDeterminantPhase D cc δ hc N N' (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L₁ (stdL D N')) (klat _ (moves_one D N) (moves_one D N')) (klat _ hm (moves_one D N')) u (hf_unitary _ (by rw [adj_one, Matrix.one_mul]) (by rw [adj_adj, h …`. Rewrite using `[pull_eq, adj_one]`. Use `key.trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Take `⟨k, rfl⟩` from `hN'`. Rewrite using `[hd, norm_prod, Complex.ofReal_prod, ← Finset.prod_div_distrib, show (k + k) / 2 = k by omega]`. Use `Finset.prod_congr rfl fun τ _ => phase (hw τ) ?_ k` and prove the remaining obligations. Rewrite using `[← embT_conj, ← map_mul, det_mul_conj hN hu]`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m₁, h₁, g₁⟩` from `hden 1 (1 - γ)⁻¹`. Take `⟨m₂, h₂, g₂⟩` from `hden 1 ((1 - γ)⁻¹ * γ)`. Establish `e : ∀ x : VC D N N', u.symm ((m₁ * m₂) • mulV D 1 (1 - γ)⁻¹ x) = (m₁ * m₂) • mulV D 1 ((1 - γ)⁻¹ * γ) x`. Introduce `x`. Rewrite using `[map_nsmul, us, mulV_mulV, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m₁ * m₂, Nat.mul_pos h₁ h₂, fun x hx => ⟨(m₁ * m₂) • mulV D 1 (1 - γ)⁻¹ x, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem (g₁ x hx) _`. Rewrite using `[e, mul_smul]`. Conclude with `nsmul_mem (g₂ x hx) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 - γ)⁻¹ - (1 - γ)⁻¹ * γ = 1`. Use `Matrix.nonsing_inv_mul (1 - γ) (Ne.isUnit hdet)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, Matrix.mul_one]`. Then use the resulting hypothesis. Rewrite using `[e, ← smul_sub, ← mulV_sub_right, h1, mulV_one]`. Use `fun x hx => ⟨hint _ _ (integral_diagonal fun i => ?_) integral_one x hx, hint _ _ (fun i j => ?_) integral_one x hx⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Rewrite using `[revM, Matrix.of_apply] split_ifs`. Conclude with `isIntegral_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isIntegral_zero`. Introduce `M hM`. Take `⟨l, b, hlb⟩` from `GlobalTheory.NegOneNorm.exists_norm_eq_neg_one D M hM`. Establish `hM' : (M : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Establish `hb : D.host.conj (b : D.host.E) = b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg D.host.conj hlb` as an intermediate fact. Rewrite `this` using `[map_mul, conj_conj, mul_comm, hlb, map_add, map_neg, map_one, map_mul, map_natCast]`. Conclude with `(mul_left_cancel₀ hM' (add_left_cancel this)).symm`. Use `⟨mulV D (Matrix.diagonal fun _ => (l : D.host.E)) 1, mulV D (Matrix.diagonal fun _ => (b : D.host.E)) 1, fun x hx => ⟨hint _ _ (integral_diagonal fun _ => l.2) integral_one x hx, hint _ _ (integral_diagonal fun _ => b.2) integral_one x hx⟩, fun x => mulV_comm _ _ x, fun x => mulV …` and prove the remaining obligations. Rewrite using `[mulV_mulV, mulV_mulV, halfM, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_comm]`. Rewrite using `[Hf_mulV, adj_one, adj, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose]`. Simplify using `only [hb]`. Establish `h : ∀ τ, embT D τ l * (starRingEnd ℂ) (embT D τ l) = -1 + M * embT D τ b`. Introduce `τ`.
-
-Rewrite using `[← embT_conj, ← map_mul, hlb]`. Simplify using the standard rewrite rules. Simplify using `only [Hf, mulV_scalar, ← neg_div, ← mul_div_assoc, ← add_div, Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, map_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Take the linear combination `(x τ i j * (starRingEnd ℂ) (y τ i j)) * h τ`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pull_eq_smul_iop : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ), Even N → Even N' → ∀ th ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N'), ∀ (γA : GA D N) (γ : Matrix (Fin N) (Fin N) D.host.E) (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)), IsRat D (γA : GL (Fin N) (AE D)) γ → (1 - γ).det ≠ 0 → Moves D (γA : GL (Fin N) (AE D)) L₁ → pull D (tor0 D cc δ) γ 1 th = (∏ τ, embT D τ γ.det ^ (-((N' / 2 : ℕ) : ℤ))) • Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L₁ (stdL D N')) th := by
   intro D cc δ hc N N' hN hN' th hth γA γ L₁ hr hdet hm

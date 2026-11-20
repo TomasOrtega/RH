@@ -10,13 +10,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Simplify using `[form, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left (x x' y : Fin n → E) : form σ J (x + x') y = form σ J x y + form σ J x' y := by
   simp [form, add_dotProduct]
 
 /- English proof (translation)
-Establish `h : (fun i => σ ((y + y') i)) = (fun i => σ (y i)) + fun i => σ (y' i)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Simplify using `only [form, h, Matrix.mulVec_add, dotProduct_add]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem form_add_right (x y y' : Fin n → E) : form σ J x (y + y') = form σ J x y + form σ J x y' := by
   have h : (fun i => σ ((y + y') i)) = (fun i => σ (y i)) + fun i => σ (y' i) := by
@@ -24,13 +24,13 @@ theorem form_add_right (x y y' : Fin n → E) : form σ J x (y + y') = form σ J
   simp only [form, h, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (c : E) (x y : Fin n → E) : form σ J (c • x) y = c * form σ J x y := by
   simp [form, smul_dotProduct]
 
 /- English proof (translation)
-Establish `h : (fun i => σ ((c • y) i)) = σ c • fun i => σ (y i)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Simplify using `only [form, h, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem form_smul_right (c : E) (x y : Fin n → E) : form σ J x (c • y) = σ c * form σ J x y := by
   have h : (fun i => σ ((c • y) i)) = σ c • fun i => σ (y i) := by
@@ -38,7 +38,7 @@ theorem form_smul_right (c : E) (x y : Fin n → E) : form σ J x (c • y) = σ
   simp only [form, h, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_symm (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) :
     σ (form σ J x y) = form σ J y x := by
@@ -48,23 +48,23 @@ theorem form_symm (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J L hJ hL θ hθ x y₀ hxx hy₀x hL0`. Establish `hsa : σ (form σ J y₀ y₀) = form σ J y₀ y₀` using `form_symm σ J hσ hJ y₀ y₀`. Establish `hxw : ∀ w, form σ J x w = σ (form σ J w x)` using `fun w => (form_symm σ J hσ hJ w x).symm`. Establish `hxy₀ : form σ J x y₀ = 1` using `by rw [hxw, hy₀x, map_one]`. Establish `hsθ : σ (θ : E) = 1 - θ` using `by linear_combination hθ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθi : IsIntegral ℤ (θ : E)` using `θ.isIntegral_coe`. Establish `hA : ∀ z ∈ L, ∀ w ∈ L, IsIntegral ℤ (form σ J y₀ y₀ * form σ J z x * σ (form σ J w x))`. Introduce `z hz w hw`. Establish `h` using `(hL _).1 (hL0 z hz) _ (hL0 w hw)`. Rewrite `h` using `[form_smul_left, form_smul_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k : form σ J z x * (σ (form σ J w x) * form σ J y₀ y₀) = form σ J y₀ y₀ * form σ J z x * σ (form σ J w x)` using `by ring`. Rewrite using `[← k]`. Conclude with `h`. Use `⟨y₀ + (-((θ : E) * form σ J y₀ y₀)) • x, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [form_add_left, form_add_right, form_smul_left, form_smul_right, hxx, hxy₀, hy₀x, map_neg, map_mul, hsθ, hsa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [form_add_right, form_smul_right, hxx, hxy₀]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z hz`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `e : form σ J z (y₀ + (-((θ : E) * form σ J y₀ y₀)) • x) • x = form σ J z y₀ • x + (σ (-((θ : E) * form σ J y₀ y₀)) * form σ J z x) • x`. Rewrite using `[form_add_right, form_smul_right, add_smul]`. Rewrite using `[e]`. Use `L.add_mem ((hL _).2 fun w hw => ?_) ((hL _).2 fun w hw => ?_)` and prove the remaining obligations. Establish `h` using `(hL z).1 hz _ (hL0 w hw)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[form_smul_right]`. Rewrite using `[form_smul_left, hxw, mul_comm]`. Conclude with `h`. Rewrite using `[form_smul_left, hxw]`. Establish `h` using `(hA z hz w hw).neg.add (hθi.mul (hA z hz w hw))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k : σ (-((θ : E) * form σ J y₀ y₀)) * form σ J z x * σ (form σ J w x) = -(form σ J y₀ y₀ * form σ J z x * σ (form σ J w x)) + (θ : E) * (form σ J y₀ y₀ * form σ J z x * σ (form σ J w x))`. Rewrite using `[map_neg, map_mul, hsθ, hsa]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[k]`. Conclude with `h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : form σ J z x • (y₀ + (-((θ : E) * form σ J y₀ y₀)) • x) = form σ J z x • y₀ + (form σ J z x * (-((θ : E) * form σ J y₀ y₀))) • x`. Rewrite using `[smul_add, mul_smul]`. Rewrite using `[e]`. Use `L.add_mem (hL0 z hz) ((hL _).2 fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[form_smul_left, hxw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(hθi.mul (hA z hz w hw)).neg`. Establish `k : form σ J z x * (-((θ : E) * form σ J y₀ y₀)) * σ (form σ J w x) = -((θ : E) * (form σ J y₀ y₀ * form σ J z x * σ (form σ J w x)))` using `by ring`. Rewrite using `[k]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     (∀ e, σ (σ e) = e) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)),

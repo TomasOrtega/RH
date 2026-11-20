@@ -10,7 +10,7 @@ open GlobalTheory.Poinc
 namespace GlobalTheory.Poinc.EqNormAt
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -18,15 +18,15 @@ theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (
   rfl
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M D V _ _ _ ϖ a ξ p _ ι j hι hj hid f hf`. Take `⟨i, hxi, rfl⟩` from `hf`. Use `set z := ξ (closedPoint V) with hz`. Use `set e : V := (Scheme.stalkClosedPointTo ξ).hom ((M.Z.presheaf.germ _ z hxi).hom (D.f i)) with he`. Establish `key : Ideal.span {e} = Ideal.span {ϖ ^ a}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hid, idlAlong, D.stalkId_idealSheaf i z hxi, Ideal.map_span, Set.image_singleton]`. Take `⟨u, hu⟩` from `(Ideal.span_singleton_eq_span_singleton).1 key`. Establish `hval : M.val (gPt p ≫ spMap j ≫ ξ) (valF M.pt (D.U i) (D.f i)) = ((j e : OO p) : PadicAlgCl p)`. Rewrite using `[← Category.assoc, gPt, spectrumMap_comp, RatModel.val_spMap_comp _ ξ (specializes_rfl : z ⤳ z) ⟨valF M.pt (D.U i) (D.f i), RatModel.valF_mem_O hxi _⟩]`. Establish `hv : M.valLoc ξ z specializes_rfl ⟨valF M.pt (D.U i) (D.f i), RatModel.valF_mem_O hxi _⟩ = e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RatModel.valLoc, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, ← RatModel.stalkEquiv_germ hxi, RingEquiv.symm_apply_apply, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp, he]`. Rewrite using `[Category.id_comp]`. Rewrite using `[RingHom.comp_apply, hv]`. Both sides reduce to the same expression. Rewrite using `[hval, hj]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hunit : ∀ w : Vˣ, ‖ι (algebraMap V (FractionRing V) (w : V))‖ = 1`. Introduce `w`. Establish `h1` using `(hι _).2 ⟨(w : V), rfl⟩`. Establish `h2` using `(hι _).2 ⟨((w⁻¹ : Vˣ) : V), rfl⟩`. Establish `h3 : ‖ι (algebraMap V (FractionRing V) (w : V))‖ * ‖ι (algebraMap V (FractionRing V) ((w⁻¹ : Vˣ) : V))‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← norm_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (ι (algebraMap V (FractionRing V) (w : V))), norm_nonneg (ι (algebraMap V (FractionRing V) ((w⁻¹ : Vˣ) : V)))]`. Establish `he' : e = ϖ ^ a * ((u⁻¹ : Vˣ) : V)`. Rewrite using `[← hu, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[he', map_mul, map_mul, norm_mul, hunit, mul_one, map_pow, map_pow, norm_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_val_eqAt : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (D : GlobalTheory.EffCartierData M.Z) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ϖ : V) (a : ℕ) (ξ : Sp V ⟶ M.Z) (p : ℕ) [Fact p.Prime] (ι : FractionRing V →+* PadicAlgCl p) (j : V →+* OO p), (∀ x, ‖ι x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap V (FractionRing V))) → (∀ v, (j v : PadicAlgCl p) = ι (algebraMap V (FractionRing V) v)) → idlAlong D.idealSheaf ξ = Ideal.span {ϖ ^ a} → ∀ f, EqAt M D (ξ (closedPoint V)) f → ‖M.val (gPt p ≫ spMap j ≫ ξ) f‖ = ‖ι (algebraMap V (FractionRing V) ϖ)‖ ^ a := by
   intro o Ω _ _ _ M D V _ _ _ ϖ a ξ p _ ι j hι hj hid f hf

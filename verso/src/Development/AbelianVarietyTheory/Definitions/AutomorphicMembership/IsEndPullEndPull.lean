@@ -33,7 +33,7 @@ def twistFun (v : SecM A L b T) : SecM A L a T :=
   SecM.ofSec A (VVRank.exists_isTwistPull A (hm := hm) hL hα (SecM.toSec A v)).choose
 
 /- English proof (translation)
-The claim follows from `VVRank.sv_of_isTwistPull A (VVRank.exists_isTwistPull A (hm := hm) hL hα (SecM.toSec A v)).choose_spec r z hJ`.
+A detailed English derivation is pending.
 -/
 theorem sv_twistFun (v : SecM A L b T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J} (hJ : Good L z J) :
     sv (twistFun hL hm α hα v) r z J = (val α r z J).val * sv v (r ≫ ψ.left) z J :=
@@ -50,7 +50,7 @@ def twist : SecM A L b T →ₗ[Γ(T.left, ⊤)] SecM A L a T where
       sv_twistFun _ _ _ _ _ _ _ hJ, sv_smul _ v _ _ hJ, Category.assoc, e, mul_left_comm]
 
 /- English proof (translation)
-The claim follows from `sv_twistFun hL hm α hα v r z hJ`.
+A detailed English derivation is pending.
 -/
 theorem sv_twist (v : SecM A L b T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J} (hJ : Good L z J) :
     sv (twist hL hm hψ α hα v) r z J = (val α r z J).val * sv v (r ≫ ψ.left) z J :=
@@ -63,7 +63,7 @@ section Group
 variable {k : ℤ} {T : Over S}
 
 /- English proof (translation)
-Establish `e` using `sec_ext_val hM (s := genSec u hu) (s' := genSec u' hu') fun y J hJ => by`. Rewrite using `[sval_genSec _ _ _ _ hJ, sval_genSec _ _ _ _ hJ, h y J hJ]`. Consider the cases of `u`. Consider the cases of `u'`. Conclude with `congrArg _ (funext fun j => Units.ext (e j))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem gen_ext {X Y : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {u u' : LB.Gen (LB.LinComb M φ ε)} (hu : u.IsGen) (hu' : u'.IsGen)
@@ -74,7 +74,7 @@ theorem gen_ext {X Y : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type} [Fintype 
   exact congrArg _ (funext fun j => Units.ext (e j))
 
 /- English proof (translation)
-Take `⟨a, u, hu⟩` from `θ`. Take `⟨a', u', hu'⟩` from `θ'`. Take `rfl : a = a'` from `h`. Take `rfl : u = u'` from `gen_ext hL hu hu' hv`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem ext {L : LB A.left} (hL : L.IsLB) {θ θ' : ThetaGrp A L k T} (h : θ.pt = θ'.pt)
     (hv : ∀ y J, Good L y J → tval θ (𝟙 _) y J = tval θ' (𝟙 _) y J) : θ = θ' := by
@@ -85,9 +85,9 @@ theorem ext {L : LB A.left} (hL : L.IsLB) {θ θ' : ThetaGrp A L k T} (h : θ.pt
   rfl
 
 /- English proof (translation)
-Take `⟨t, ht, hv⟩` from `exists_gen hL (φ' := ![(snd T A).left, (translPt A (1 : T ⟶ A)).left]) (ε' := ![k, -k]) (fun U _ f => by`. Use `(Fintype.prod_empty _).trans ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, translPt_one, mul_inv_cancel])`. Use the proof step `(constGen A L c) (isGen_of_gm _ fun y j j' h h' => by`. Take `rfl : j = j'` from `Subsingleton.elim _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trF, Fintype.prod_empty, _root_.one_mul])`. Conclude with `⟨⟨1, t, ht⟩, rfl, fun Z r z J hJ => (hv Z r z J hJ).trans (H1.val_constGen L c r z J)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scalar {L : LB A.left} (hL : L.IsLB) (k : ℤ) (c : Γ(T.left, ⊤)ˣ) :
     ∃ θ : ThetaGrp A L k T, θ.pt = 1 ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J),
@@ -110,18 +110,18 @@ instance : Mul (ThetaGrp A L.L k T) := ⟨fun θ θ' => (ThetaAct.exists_mul L.i
 instance : Inv (ThetaGrp A L.L k T) := ⟨fun θ => (ThetaAct.exists_inv L.isLB θ).choose⟩
 
 /- English proof (translation)
-The claim follows from `(exists_scalar L.isLB k 1).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem pt_one : (1 : ThetaGrp A L.L k T).pt = 1 := (exists_scalar L.isLB k 1).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(ThetaAct.exists_mul L.isLB θ θ').choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem pt_mul' (θ θ' : ThetaGrp A L.L k T) : (θ * θ').pt = θ'.pt * θ.pt :=
   (ThetaAct.exists_mul L.isLB θ θ').choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(ThetaAct.exists_inv L.isLB θ).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem pt_inv (θ : ThetaGrp A L.L k T) : θ⁻¹.pt = θ.pt⁻¹ := (ThetaAct.exists_inv L.isLB θ).choose_spec.1
 
@@ -131,20 +131,20 @@ variable {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J : (Z ⟶ A.left)
 include hJ
 
 /- English proof (translation)
-The claim follows from `((exists_scalar L.isLB k 1).choose_spec.2 Z r z J hJ).trans (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem tval_one : tval (1 : ThetaGrp A L.L k T) r z J = 1 :=
   ((exists_scalar L.isLB k 1).choose_spec.2 Z r z J hJ).trans (map_one _)
 
 /- English proof (translation)
-The claim follows from `(ThetaAct.exists_mul L.isLB θ θ').choose_spec.2 Z r z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem tval_mul (θ θ' : ThetaGrp A L.L k T) :
     tval (θ * θ') r z J = tval θ r z J * tval θ' (r ≫ (translT A θ.pt).left) z J :=
   (ThetaAct.exists_mul L.isLB θ θ').choose_spec.2 Z r z J hJ
 
 /- English proof (translation)
-The claim follows from `(ThetaAct.exists_inv L.isLB θ).choose_spec.2 Z r z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem tval_inv (θ : ThetaGrp A L.L k T) : tval θ⁻¹ r z J = (tval θ (r ≫ (translT A θ.pt⁻¹).left) z J)⁻¹ :=
   (ThetaAct.exists_inv L.isLB θ).choose_spec.2 Z r z J hJ
@@ -172,7 +172,7 @@ def op {L : RigLB A} {k : ℤ} {T : Over S} (θ : ThetaGrp A L.L k T) : Module.E
   twist L.isLB (ψ := translT A θ.pt) (lift_snd _ _) (lift_fst _ _) θ.φ θ.isGen
 
 /- English proof (translation)
-The claim follows from `sv_twist L.isLB _ _ θ.φ θ.isGen v r z hJ`.
+A detailed English derivation is pending.
 -/
 theorem sv_op {L : RigLB A} {k : ℤ} {T : Over S} (θ : ThetaGrp A L.L k T) (v : SecM A L.L k T) {Z : Scheme.{0}}
     (r : Z ⟶ (T ⊗ A).left) (z : Z) {J} (hJ : Good L.L z J) :
@@ -190,18 +190,18 @@ def action : ThetaGrp A L.L k T →* Module.End Γ(T.left, ⊤) (SecM A L.L k T)
 variable {L k T}
 
 /- English proof (translation)
-The claim follows from `(exists_scalar L.isLB k c).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem pt_scalar (c : Γ(T.left, ⊤)ˣ) : (scalar k T L c).pt = 1 := (exists_scalar L.isLB k c).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_scalar L.isLB k c).choose_spec.2 Z r z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem tval_scalar (c : Γ(T.left, ⊤)ˣ) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J} (hJ : Good L.L z J) :
     tval (scalar k T L c) r z J = gm (r ≫ (fst T A).left) z ⊤ c := (exists_scalar L.isLB k c).choose_spec.2 Z r z J hJ
 
 /- English proof (translation)
-The claim follows from `ext L.isLB (by rw [pt_mul', pt_mul', pt_scalar, _root_.mul_one, _root_.one_mul]) fun y J hJ => by rw [tval_mul _ _ hJ, tval_mul _ _ hJ, tval_scalar _ _ _ hJ, tval_scalar _ _ _ hJ, pt_scalar, translT_one, Category.comp_id, Category.assoc, translT_fst, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem scalar_comm (c : Γ(T.left, ⊤)ˣ) (θ : ThetaGrp A L.L k T) : scalar k T L c * θ = θ * scalar k T L c :=
   ext L.isLB (by rw [pt_mul', pt_mul', pt_scalar, _root_.mul_one, _root_.one_mul]) fun y J hJ => by
@@ -209,7 +209,7 @@ theorem scalar_comm (c : Γ(T.left, ⊤)ˣ) (θ : ThetaGrp A L.L k T) : scalar k
       Category.comp_id, Category.assoc, translT_fst, mul_comm]
 
 /- English proof (translation)
-Introduce `c d h` and use `by refine unit_ext fun y _ => ?_ choose J hJ using fun χ : T.left ⟶ A.left => exists_chart L.isLB (χ y) have e : (ptSecT A (1 : T ⟶ A)).left ≫ (fst T A).left = 𝟙 _ := by rw [← Over.comp_left, ptSecT, lift_fst]; rfl have a := tval_scalar (k := k) c (ptSecT A (1 : T ⟶ A)).left y hJ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem scalar_injective : Function.Injective (scalar k T L) := fun c d h => by
   refine unit_ext fun y _ => ?_
@@ -221,7 +221,7 @@ theorem scalar_injective : Function.Injective (scalar k T L) := fun c d h => by
   rw [← a, ← b, h]
 
 /- English proof (translation)
-The claim follows from `sv_ext L.isLB fun y J hJ => by refine (sv_op _ _ _ _ hJ).trans ?_ rw [sv_smul _ _ _ _ hJ, tval_scalar _ _ _ hJ, pt_scalar, translT_one, Category.comp_id, gs_unit _ _ ⊤ trivial]`.
+A detailed English derivation is pending.
 -/
 theorem action_scalar (c : Γ(T.left, ⊤)ˣ) (v : SecM A L.L k T) : action k T L (scalar k T L c) v = c.val • v :=
   sv_ext L.isLB fun y J hJ => by
@@ -229,9 +229,9 @@ theorem action_scalar (c : Γ(T.left, ⊤)ˣ) (v : SecM A L.L k T) : action k T 
     rw [sv_smul _ _ _ _ hJ, tval_scalar _ _ _ hJ, pt_scalar, translT_one, Category.comp_id, gs_unit _ _ ⊤ trivial]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `SymLiftConst.exists_constT hp L.isLB (φ := ![(snd T A).left, (translPt A θ.pt).left]) (ε := ![k, -k]) (fun U _ f => by`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, h, translPt_one, mul_inv_cancel])`. Use the proof step `θ.isGen`. Use `⟨c, ext L.isLB ((pt_scalar c).trans h.symm) fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `hc (snd T A) y J hJ`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[lift_fst_snd]`. Rewrite using `[tval_scalar _ _ _ hJ, Category.id_comp]`. Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scalar_eq (hp : Function.Surjective (fst T A).left.appTop.hom) {θ : ThetaGrp A L.L k T} (h : θ.pt = 1) :
     ∃ c, scalar k T L c = θ := by
@@ -248,7 +248,7 @@ theorem exists_scalar_eq (hp : Function.Surjective (fst T A).left.appTop.hom) {�
 variable [IsCommMonObj A]
 
 /- English proof (translation)
-The claim follows from `(pt_mul' θ θ').trans (mul_comm _ _)`.
+A detailed English derivation is pending.
 -/
 theorem pt_mul (θ θ' : ThetaGrp A L.L k T) : (θ * θ').pt = θ.pt * θ'.pt := (pt_mul' θ θ').trans (mul_comm _ _)
 
@@ -263,7 +263,7 @@ def nval (ν : LB.Gen (negLB A L.L k T)) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).l
 omit [IsCommMonObj A] in
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, negT, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem negT_snd : (negT A T).left ≫ (snd T A).left = (snd T A ≫ (GrpObj.inv : A ⟶ A)).left := by
   rw [← Over.comp_left, negT, lift_snd]
@@ -271,7 +271,7 @@ theorem negT_snd : (negT A T).left ≫ (snd T A).left = (snd T A ≫ (GrpObj.inv
 omit [IsCommMonObj A] in
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, negT, lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem negT_fst : (negT A T).left ≫ (fst T A).left = (fst T A).left := by
   rw [← Over.comp_left, negT, lift_fst]
@@ -279,14 +279,14 @@ theorem negT_fst : (negT A T).left ≫ (fst T A).left = (fst T A).left := by
 omit [IsCommMonObj A] in
 
 /- English proof (translation)
-Establish `e : snd T A ≫ (GrpObj.inv : A ⟶ A) = (snd T A)⁻¹` using `rfl`. Rewrite using `[← Over.comp_left, negT, comp_lift, lift_fst, e, GrpObj.comp_inv, lift_snd, inv_inv, lift_fst_snd]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem negT_negT : (negT A T).left ≫ (negT A T).left = 𝟙 _ := by
   have e : snd T A ≫ (GrpObj.inv : A ⟶ A) = (snd T A)⁻¹ := rfl
   rw [← Over.comp_left, negT, comp_lift, lift_fst, e, GrpObj.comp_inv, lift_snd, inv_inv, lift_fst_snd]; rfl
 
 /- English proof (translation)
-Establish `e : snd T A ≫ (GrpObj.inv : A ⟶ A) = (snd T A)⁻¹` using `rfl`. Rewrite using `[← Over.comp_left, ← Over.comp_left, negT, e, lift_transl, comp_lift, translT, lift_fst, GrpObj.comp_inv, lift_snd, translPt_eq, mul_inv, GrpObj.comp_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem translT_negT (x : T ⟶ A) : (translT A x).left ≫ (negT A T).left = (negT A T).left ≫ (translT A x⁻¹).left := by
   have e : snd T A ≫ (GrpObj.inv : A ⟶ A) = (snd T A)⁻¹ := rfl
@@ -294,9 +294,9 @@ theorem translT_negT (x : T ⟶ A) : (translT A x).left ≫ (negT A T).left = (n
     translPt_eq, mul_inv, GrpObj.comp_inv]
 
 /- English proof (translation)
-Establish `e₁ : (negT A T).left ≫ (translPt A θ.pt).left = (translT A θ.pt⁻¹).left ≫ (snd T A ≫ (GrpObj.inv : A ⟶ A)).left`. Rewrite using `[← negT_snd, ← Category.assoc, translT_negT, inv_inv, Category.assoc, translT_snd]`. Take `⟨t, ht, hv⟩` from `exists_gen L.isLB (φ' := ![(snd T A).left, (translPt A θ.pt⁻¹).left]) (ε' := ![k, -k]) (fun U _ f => by`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, negT_snd, translT_snd, e₁]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_zpow]`. Use the proof step `module)`. Use the proof step `(LB.mulGen L.L ![(snd T A).left, (snd T A ≫ (GrpObj.inv : A ⟶ A)).left] ![k, -k] _ _ ν (LB.mulGen L.L _ _ _ _ (LB.pullGen L.L ![(snd T A).left, (translPt A θ.pt).left] ![k, -k] θ.φ (negT A T).left) (LB.invGen L.L _ _ (LB.pullGen L.L ![(snd T A).left, (snd T A ≫ (GrpObj.inv : A ⟶ …`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hν (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ θ.isGen _) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hν _))))`. Conclude with `⟨⟨_, t, ht⟩, rfl, fun Z r z J hJ => (hv Z r z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ _ _ _) ((val_inv _ _).trans (congrArg (·⁻¹) (val_pull hJ _ _ _)))))))⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj (ν : LB.Gen (negLB A L.L k T)) (hν : ν.IsGen) (θ : ThetaGrp A L.L k T) :
     ∃ θ' : ThetaGrp A L.L k T, θ'.pt = θ.pt⁻¹ ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J), Good L.L z J →
@@ -337,12 +337,12 @@ section Conj
 variable (ν : LB.Gen (negLB A L.L k T)) (hν : ν.IsGen)
 
 /- English proof (translation)
-The claim follows from `(exists_conj ν hν θ).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem pt_conj (θ : ThetaGrp A L.L k T) : (conj ν hν θ).pt = θ.pt⁻¹ := (exists_conj ν hν θ).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_conj ν hν θ).choose_spec.2 Z r z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem tval_conj (θ : ThetaGrp A L.L k T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J} (hJ : Good L.L z J) :
     tval (conj ν hν θ) r z J =
@@ -350,7 +350,7 @@ theorem tval_conj (θ : ThetaGrp A L.L k T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A
   (exists_conj ν hν θ).choose_spec.2 Z r z J hJ
 
 /- English proof (translation)
-The claim follows from `ext L.isLB (by rw [pt_conj, pt_scalar, inv_one]) fun y J hJ => by rw [tval_conj _ _ _ _ _ hJ, tval_scalar _ _ _ hJ, tval_scalar _ _ _ hJ, pt_scalar, inv_one, translT_one, Category.comp_id, Category.assoc, negT_fst, mul_inv_cancel_comm_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem conj_scalar (c : Γ(T.left, ⊤)ˣ) : conj ν hν (scalar k T L c) = scalar k T L c :=
   ext L.isLB (by rw [pt_conj, pt_scalar, inv_one]) fun y J hJ => by
@@ -364,7 +364,7 @@ variable (hp : Function.Surjective (fst T A).left.appTop.hom)
 include hp
 
 /- English proof (translation)
-The claim follows from `ext L.isLB (by rw [pt_conj, pt_conj, inv_inv]) fun y J hJ => by have e₁ : (negT A T).left ≫ (snd T A ≫ (GrpObj.inv : A ⟶ A)).left = (snd T A).left := by rw [← negT_snd, ← Category.assoc, negT_negT, Category.id_comp] obtain ⟨a, ha⟩ := H1.exists_const L.L L.isLB (fst T A).left hp ( …`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj (θ : ThetaGrp A L.L k T) : conj ν hν (conj ν hν θ) = θ :=
   ext L.isLB (by rw [pt_conj, pt_conj, inv_inv]) fun y J hJ => by
@@ -407,19 +407,19 @@ section Delta
 variable (hs : L.IsSymmetric) (hp : Function.Surjective (fst T A).left.appTop.hom)
 
 /- English proof (translation)
-The claim follows from `pt_conj _ (SymLiftConst.exists_gen_neg L hs k T).choose_spec θ`.
+A detailed English derivation is pending.
 -/
 theorem pt_delta (θ : ThetaGrp A L.L k T) : (delta hs hp θ).pt = θ.pt⁻¹ :=
   pt_conj _ (SymLiftConst.exists_gen_neg L hs k T).choose_spec θ
 
 /- English proof (translation)
-The claim follows from `conj_scalar _ (SymLiftConst.exists_gen_neg L hs k T).choose_spec c`.
+A detailed English derivation is pending.
 -/
 theorem delta_scalar (c : Γ(T.left, ⊤)ˣ) : delta hs hp (scalar k T L c) = scalar k T L c :=
   conj_scalar _ (SymLiftConst.exists_gen_neg L hs k T).choose_spec c
 
 /- English proof (translation)
-The claim follows from `conj_conj _ (SymLiftConst.exists_gen_neg L hs k T).choose_spec hp θ`.
+A detailed English derivation is pending.
 -/
 theorem delta_delta (θ : ThetaGrp A L.L k T) : delta hs hp (delta hs hp θ) = θ :=
   conj_conj _ (SymLiftConst.exists_gen_neg L hs k T).choose_spec hp θ
@@ -427,7 +427,7 @@ theorem delta_delta (θ : ThetaGrp A L.L k T) : delta hs hp (delta hs hp θ) = �
 end Delta
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `DVR.exists_gen_of_local (V := V) L.L L.isLB (K := Fin 2) ![(1 : Over.mk t ⟶ A).left, x.left] ![(n : ℤ), -(n : ℤ)]`. Conclude with `exists_theta c hx v hv fun U _ h => Fin.prod_univ_two _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lift (c : CubicalStr A L) {V : Type} [CommRing V] [IsLocalRing V] (t : Sp V ⟶ S) {n : ℕ}
     {x : Over.mk t ⟶ A} (hx : x ^ n = 1) : ∃ θ : ThetaGrp A L.L n (Over.mk t), θ.pt = x := by

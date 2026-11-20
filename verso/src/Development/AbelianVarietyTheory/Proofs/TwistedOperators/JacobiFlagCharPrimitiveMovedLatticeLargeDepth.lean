@@ -20,9 +20,9 @@ namespace GlobalTheory.RowShape
 namespace PrimJac
 
 /- English proof (translation)
-Establish `e1 : colMul (rowJac G n hn σ h).jX p a = fun k => a * incA D (1 * (G.rowDec n hn).a k (Fin.castLE (by omega) p))`. Use function extensionality and compare the values at `k`. Simplify using `[colMul, HypDec.jX, rat, Matrix.map_apply, rowJac, jacDec, HermitianOrthogonalExtensionData.iso]`. Establish `e2 : rowN G n = (G.rowDec n hn).lat (G.Λ (.top n)) (rowId D n)`. Unfold `rowN`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hn]`. Rewrite using `[e1, e2, GlobalTheory.StairLine.line_mem_iff _ _ _ _ (by simp only [Fin.coe_castLE]; omega) one_ne_zero v a, inv_one, FractionalIdeal.spanSingleton_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowJac_line {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (n : ℕ) (hn : n < D.R.m) (σ : ℕ)
     (h : D.R.m - 1 - n = 2 * σ) (v : Pl D) (p : Fin σ) (a : AE D) :
@@ -38,7 +38,7 @@ theorem rowJac_line {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridD
     FractionalIdeal.spanSingleton_one, one_mul]
 
 /- English proof (translation)
-Unfold `stairId`. Conclude with `mul_ne_zero (pow_ne_zero _ (GlobalTheory.CuspCharLattice.host_AA_ne_zero _)) (inv_ne_zero (pow_ne_zero _ (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem stairId_ne_zero (D : D7) (c : ℕ) (p : Fin c) : stairId D.host.AA D.host.AAbar c p ≠ 0 := by
   unfold stairId
@@ -46,18 +46,18 @@ theorem stairId_ne_zero (D : D7) (c : ℕ) (p : Fin c) : stairId D.host.AA D.hos
     (inv_ne_zero (pow_ne_zero _ (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D)))
 
 /- English proof (translation)
-Unfold `tiltSc`. Rewrite using `[if_pos hodd, if_pos hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tiltSc_first {D : D7} {n : ℕ} (hodd : Odd n) (p : Fin (D.R.m - 1 - n)) (hp : 2 * p.1 < D.R.m - 1 - n) :
     tiltSc D n p = (D.host.xi0 ^ p.1)⁻¹ := by
   unfold tiltSc; rw [if_pos hodd, if_pos hp]
 
 /- English proof (translation)
-Establish `hx : D.host.xi0 ≠ 0` using `cmHost_imaginaryGenerator_ne_zero`. Unfold `rowId`. Rewrite using `[tiltSc_first hodd p (by omega), tiltSc_first hodd q hq, stairId_succ (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D) p q hpq]`. Establish `hS` using `stairId_ne_zero D (D.R.m - 1 - n) q`. Use `revert hS`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `stairId D.host.AA D.host.AAbar (D.R.m - 1 - n) q = S`. Introduce `hS`. Rewrite using `[mul_inv, FractionalIdeal.spanSingleton_inv, inv_inv]`. Unfold `dI`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel₀ hS, mul_one, FractionalIdeal.spanSingleton_mul_spanSingleton, hpq, pow_succ, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hx), one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem rowId_ratio {D : D7} {n : ℕ} (hodd : Odd n) (p q : Fin (D.R.m - 1 - n)) (hpq : q.1 = p.1 + 1)
     (hq : 2 * q.1 < D.R.m - 1 - n) : rowId D n p * (rowId D n q)⁻¹ = dI D := by
@@ -82,11 +82,11 @@ end PrimJac
 open PrimJac
 
 /- English proof (translation)
-Establish `hodd : Odd n`. Take `⟨k, hk⟩` from `D.R.m_even`. Conclude with `⟨k - σ - 1, by omega⟩`. Introduce `i j hij s hs`. Establish `key : (∀ a : AE D, colMul (rowJac G n hn σ h).jX j a ∈ latV _ (rowN G n) (· = v) → colMul (rowJac G n hn σ h).jX i (s * a) ∈ latV _ (rowN G n) (· = v)) ↔ ∀ a ∈ idV (rowId D n (Fin.castLE (by omega) j)) v, s * a ∈ idV (rowId D n (Fin.castLE (by omega) i)) v` using `⟨fun H a ha => (rowJac_line G n hn σ h v i _).1 (H a ((rowJac_line G n hn σ h v j a).2 ha)), fun H a hc => (rowJac_line G n hn σ h v i _).2 (H a ((rowJac_line G n hn σ h v j a).1 hc))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : ∀ p : Fin (D.R.m - 1 - n), rowId D n p ≠ 0` using `fun p => mul_ne_zero (by`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Unfold `tiltSc`. Apply the tactic sequence `split_ifs <;> simp [cmHost_imaginaryGenerator_ne_zero])`. Use the proof step `(stairId_ne_zero D _ p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, GlobalTheory.IdealQuot.mul_subset_iff D v _ _ (hne _) (hne _) s hs, rowId_ratio hodd _ _ (by simp only [Fin.coe_castLE]; exact hij) (by simp only [Fin.coe_castLE]; have := j.2; omega)]`. Conclude with `DiffDual.idV_dI_iff D ψ hψ v s hs`.
+A detailed English derivation is pending.
 -/
 theorem primAt_rowJac {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (ψ : AddChar (AF D.host.F) ℂ)
     (hψ : IsStdChar D ψ (-1)) (n : ℕ) (hn : n < D.R.m) (σ : ℕ) (h : D.R.m - 1 - n = 2 * σ) (v : Pl D) :
@@ -111,7 +111,7 @@ theorem primAt_rowJac {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : Gri
   exact DiffDual.idV_dI_iff D ψ hψ v s hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ n hn σ h v => primAt_rowJac ch.G ch.W.ψ ch.W.ψ_std n hn σ h v⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem big_primAt_rowJac : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ n (hn : n < D.R.m) σ
     (h : D.R.m - 1 - n = 2 * σ) v, GlobalTheory.FinPl.PrimAt ch.W.ψ (rowJac ch.G n hn σ h) (GlobalTheory.RowShape.rowN ch.G n) v :=

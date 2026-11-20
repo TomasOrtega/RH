@@ -11,9 +11,9 @@ namespace GlobalTheory.CxForm.DensPow
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap (R := ℂ) (M := Fin n ⊕ Fin n → ℂ) w u)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = -(ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ w * ExteriorAlgebra.ι ℂ w') := by`. Rewrite using `[h]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_neg, neg_mul, mul_assoc]`. Use `_ = 0 := by rw [ExteriorAlgebra.ι_sq_zero]; simp`.
+A detailed English derivation is pending.
 -/
 theorem ι_mul_ι_mul_ι_mul_ι_left (u w w' : Fin n ⊕ Fin n → ℂ) :
     ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ w * (ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ w') = (0 : Alt n) := by
@@ -25,9 +25,9 @@ theorem ι_mul_ι_mul_ι_mul_ι_left (u w w' : Fin n ⊕ Fin n → ℂ) :
     _ = 0 := by rw [ExteriorAlgebra.ι_sq_zero]; simp
 
 /- English proof (translation)
-Establish `h` using `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap (R := ℂ) (M := Fin n ⊕ Fin n → ℂ) w u')`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = -(ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ u' * (ExteriorAlgebra.ι ℂ w * ExteriorAlgebra.ι ℂ w)) := by`. Rewrite using `[h]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_neg, neg_mul, mul_assoc]`. Use `_ = 0 := by rw [ExteriorAlgebra.ι_sq_zero]; simp`.
+A detailed English derivation is pending.
 -/
 theorem ι_mul_ι_mul_ι_mul_ι_right (u u' w : Fin n ⊕ Fin n → ℂ) :
     ExteriorAlgebra.ι ℂ u * ExteriorAlgebra.ι ℂ w * (ExteriorAlgebra.ι ℂ u' * ExteriorAlgebra.ι ℂ w) = (0 : Alt n) := by
@@ -44,14 +44,14 @@ def row (a : Fin n) : (Fin n → ℂ) →ₗ[ℂ] Ev n where
   map_smul' c w := by simp [Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Simplify using `[row, sym, dzb, Finset.mul_sum, mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_row (a : Fin n) (w : Fin n → ℂ) :
     (row a w : Alt n) = dz a * ExteriorAlgebra.ι ℂ (∑ b, w b • Pi.single (Sum.inr b) (1 : ℂ)) := by
   simp [row, sym, dzb, Finset.mul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, coe_row, dz]`. Conclude with `ι_mul_ι_mul_ι_mul_ι_left _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_mul_row (a : Fin n) (w : Fin n → ℂ) : row a w * row a w = 0 := by
   apply Subtype.ext
@@ -59,7 +59,7 @@ theorem row_mul_row (a : Fin n) (w : Fin n → ℂ) : row a w * row a w = 0 := b
   exact ι_mul_ι_mul_ι_mul_ι_left _ _ _
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, coe_row, coe_row, dz, dz]`. Conclude with `ι_mul_ι_mul_ι_mul_ι_right _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_mul_row_of_ne {a a' : Fin n} (w : Fin n → ℂ) : row a w * row a' w = 0 := by
   apply Subtype.ext
@@ -75,7 +75,7 @@ def altRows (n : ℕ) : (Fin n → ℂ) [⋀^Fin n]→ₗ[ℂ] Ev n where
         (Finset.mem_erase.2 ⟨hne.symm, Finset.mem_univ j⟩), ← mul_assoc, hij, row_mul_row_of_ne, zero_mul]
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp only [altRows, AlternatingMap.coe_mk, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem altRows_apply (v : Fin n → Fin n → ℂ) : altRows n v = ∏ a, row a (v a) := by
   first
@@ -83,9 +83,9 @@ theorem altRows_apply (v : Fin n → Fin n → ℂ) : altRows n v = ∏ a, row a
   | simp only [altRows, AlternatingMap.coe_mk, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]
 
 /- English proof (translation)
-Establish `key : f = (LinearMap.toSpanSingleton K N (f e)).compAlternatingMap e.det`. Use `e.ext_alternating (fun v hv => ?_)` and prove the remaining obligations. Establish `hb : Function.Bijective v` using `Finite.injective_iff_bijective.1 hv`. Set `σ : Equiv.Perm (Fin m)` to `Equiv.ofBijective v hb`. Establish `hσ : (fun i => e (v i)) = (⇑e) ∘ ⇑σ` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hσ, LinearMap.compAlternatingMap_apply, LinearMap.toSpanSingleton_apply, AlternatingMap.map_perm, AlternatingMap.map_perm, e.det_self, Units.smul_def, Units.smul_def, smul_one_smul]`. Rewrite using `[DFunLike.congr_fun key h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem alt_eq_det_smul {K M N : Type} [CommRing K] [AddCommGroup M] [Module K M]
     [AddCommGroup N] [Module K N] {m : ℕ} (e : Module.Basis (Fin m) K M)
@@ -102,7 +102,7 @@ theorem alt_eq_det_smul {K M N : Type} [CommRing K] [AddCommGroup M] [Module K M
   rfl
 
 /- English proof (translation)
-Establish `h1 : ∏ a, row a (H a) = altRows n (fun a b => H a b)` using `(altRows_apply _).symm`. Rewrite using `[h1, alt_eq_det_smul (Pi.basisFun ℂ (Fin n)), Pi.basisFun_det, altRows_apply]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[row, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem prod_row (H : Matrix (Fin n) (Fin n) ℂ) : ∏ a, row a (H a) = H.det • ∏ a, sym (a, a) := by
   have h1 : ∏ a, row a (H a) = altRows n (fun a b => H a b) := (altRows_apply _).symm
@@ -112,9 +112,9 @@ theorem prod_row (H : Matrix (Fin n) (Fin n) ℂ) : ∏ a, row a (H a) = H.det �
   simp [row, Pi.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [add_comm]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `((m : R) + 1) * y ^ m * hx`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem add_pow_of_mul_self {R : Type*} [CommRing R] {x : R} (hx : x * x = 0) (y : R) (m : ℕ) :
     (x + y) ^ (m + 1) = y ^ (m + 1) + ((m : R) + 1) * x * y ^ m := by
@@ -126,9 +126,9 @@ theorem add_pow_of_mul_self {R : Type*} [CommRing R] {x : R} (hx : x * x = 0) (y
     linear_combination ((m : R) + 1) * y ^ m * hx
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨fun m => by simp, by simp⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, Finset.card_insert_of_notMem ha]`. Use `⟨fun m => ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show s.card + 1 + 1 + m = (s.card + 1 + m) + 1 by omega, add_pow_of_mul_self (hf a), show s.card + 1 + m + 1 = s.card + 1 + (m + 1) by omega, ih.1, ih.1]`. Simplify using the standard rewrite rules. Rewrite using `[add_pow_of_mul_self (hf a), show s.card + 1 = s.card + 1 + 0 by rfl, ih.1, ih.2, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_pow_card {R ι : Type*} [CommRing R] [DecidableEq ι] (f : ι → R) (hf : ∀ a, f a * f a = 0) (s : Finset ι) :
     (∀ m, (∑ a ∈ s, f a) ^ (s.card + 1 + m) = 0) ∧ (∑ a ∈ s, f a) ^ s.card = (s.card.factorial : R) * ∏ a ∈ s, f a := by
@@ -145,22 +145,22 @@ theorem sum_pow_card {R ι : Type*} [CommRing R] [DecidableEq ι] (f : ι → R)
       ring
 
 /- English proof (translation)
-Simplify using `only [dens, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_div_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dens_smul (c : ℂ) (x : Alt n) : dens (c • x) = c * dens x := by
   simp only [dens, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_div_assoc]
 
 /- English proof (translation)
-Simplify using `only [vol, Algebra.smul_def, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vol_eq_smul_prod (n : ℕ) : vol n = (Complex.I / 2) ^ n • ∏ a, sym (a, a) := by
   simp only [vol, Algebra.smul_def, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin,
     map_pow]
 
 /- English proof (translation)
-Establish `hω : (∑ a, ∑ b, H a b • sym (a, b) : Ev n) = ∑ a, row a (H a)` using `by simp [row]`. Establish `hp : (∑ a, row a (H a)) ^ n = (n.factorial : Ev n) * ∏ a, row a (H a)`. Simplify using `using (sum_pow_card (fun a => row a (H a)) (fun a => row_mul_row a _) Finset.univ).2`. Establish `hP : (n.factorial : Ev n) * ∏ a, row a (H a) = ((n.factorial : ℂ) * H.det) • ∏ a, sym (a, a)`. Rewrite using `[prod_row, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `dens_vol n`. Rewrite `h1` using `[vol_eq_smul_prod, Subalgebra.coe_smul, dens_smul]`. Rewrite using `[hω, hp, hP, Subalgebra.coe_smul, dens_smul, div_eq_mul_inv, eq_inv_of_mul_eq_one_right h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dens_pow (n : ℕ) (H : Matrix (Fin n) (Fin n) ℂ) :
     GlobalTheory.CxForm.dens (((∑ a, ∑ b, H a b • GlobalTheory.CxForm.sym (a, b) : GlobalTheory.CxForm.Ev n) ^ n : GlobalTheory.CxForm.Ev n) :

@@ -56,11 +56,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 private local instance borelUA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : BorelSpace (UA σ J) := ⟨rfl⟩
 
 /- English proof (translation)
-Establish `hXW : ∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s'` using `⟨r, s, r', s', hX, hW⟩`. Establish `hl` using `GlobalTheory.T.adapted_mixed_model_intertwines hKP F E σ B n d X W M hM n₁ X₁ H j₀ j₁ M₂ hH hM₂ e₁ he hB hXW`. Take `⟨c, hc⟩` from `GlobalTheory.T.additive_homogeneous_functional_linear hKP F E σ B n d X W M hB hM hXW (fun φ => (∑' w : Fin d → E, thetaSum F (e₁ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (φ))))) hl.1 hl.2 (GlobalTheory.T.adapted_mixed_model_support hKP F E σ B n d X W M hM n₁ X₁ …`. Take `⟨φ₀, hφ₀, hne⟩` from `GlobalTheory.T.adapted_mixed_model_vanishing hKP F E σ B n d X W M hM n₁ X₁ H j₀ j₁ M₂ hH hM₂ e₁ he hB hXW`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hne (by simpa using hc φ₀ hφ₀)`. Use `⟨c⁻¹, inv_ne_zero hc0, ⟨φ₀, hφ₀, fun h0 => hne ?_⟩, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `hc φ₀ hφ₀ beta_reduce at this` as an intermediate fact. Rewrite using `[this, h0, mul_zero]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hc φ hφ beta_reduce at this` as an intermediate fact. Rewrite using `[this, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem expandX (hKP : KP) (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') (hM : M.IsGood B.ψ)
     (hM₂ : M₂.IsGood B.ψ) (hH : H.IsAdapted σ B X X₁ j₀ j₁) (he : IsEv B M M₂ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e₁) :
@@ -85,15 +85,13 @@ private theorem expandX (hKP : KP) (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (
     rw [this, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.ThKSwap.countable_of_numberField E`. Establish `hψ` using `hP.base.std`. Establish `hS` using `hP.weil.isUSplitting`. Take `⟨l₀, hl₀, hl₀eq⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin n₁ × Fin d)`. Set `l : (Fin d → E) → Fn F n d →ₗ[ℂ] ℂ` to `fun w => (l₀ ∘ₗ e₁) ∘ₗ GlobalTheory.ConeMeasV.schrLin B.ψ (M.co.e (Matrix.vecMulVec (incV F H.y) (incV F w)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : ∀ w, l w ∈ (adeleClass F).adm (Fin n × Fin d)` using `fun w => GlobalTheory.ConeMeasV.comp_schr_mem_adm hψ _ (GlobalTheory.ConeMeasV.comp_ev_mem_adm hP.good hP₂.good he hl₀)`. Establish `hleq : ∀ w, ∀ Φ ∈ schA F (Fin n × Fin d), l w Φ = thetaSum F (e₁ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) Φ))` using `fun w Φ hΦ => hl₀eq _ (he.maps _ (GlobalTheory.ConeMeasV.schr_mem_schA hψ _ hΦ))`. Establish `hsum : ∀ Φ ∈ schA F (Fin n × Fin d), Summable fun w => ‖l w Φ‖` using `fun Φ hΦ => by`. Repeatedly rewrite using `[fun w => hleq w Φ hΦ]`. Conclude with `(summable_norm_iff (E := ℂ)).mpr (GlobalTheory.T.adapted_mixed_model_evaluation hKP F E σ B n d X W M hP.good n₁ X₁ H j₀ j₁ M₂ hH hP₂.good e₁ he hP.base ⟨r, s, r', s', hP.herm, hP.skew⟩ Φ hΦ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hK, hcov⟩` from `UpperTheory.unipotent_compact_fundamental_domain F E σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hP.base hP.herm hP₂.herm hH`. Establish `hK' : IsCompact ((fun u : unip σ X H => ((u.1, 1) : UA σ X.J × UA σ W.J)) '' K)` using `hK.image (continuous_subtype_val.prodMk continuous_const)`. Take `⟨C, hC⟩` from `UpperTheory.theta_countable_functional_bound F E σ B n d X W M χX χW om r s r' s' hP _ l hl hsum Ψ hΨ _ hK'`. Use `GlobalTheory.ThKSwap.swap_of_bound μ 𝓕 (by simp [h1]) _ (fun w => ?_) C fun u => ?_` and prove the remaining obligations. Establish `hc` using `(hS.cont _ (hl w) Ψ hΨ).comp (continuous_subtype_val.prodMk continuous_const : Continuous fun u : unip σ X H => ((u.1, 1) : UA σ X.J × UA σ W.J))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(hc.congr fun u => ?_).aestronglyMeasurable` and prove the remaining obligations. Conclude with `hleq w _ (hS.pres _ _ hΨ)`. Take `⟨γ, hγ, hk⟩` from `hcov u`. Establish `key : ∀ w : Fin d → E, thetaSum F (e₁ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u.1, 1) Ψ))) = l w (om ((γ * u).1, 1) Ψ)` using `fun w => by`. Rewrite using `[hleq w _ (hS.pres _ _ hΨ)]`.
-
-Conclude with `(UpperTheory.theta_pair_plane_integral hKP F E σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s r₁ s₁ r' s' hP hP₂ hH e₁ he w γ.1 (Subgroup.mem_subgroupOf.1 hγ) γ.2 u.1 Ψ hΨ).symm`. Repeatedly rewrite using `[key]`. Conclude with `⟨hsum _ (hS.pres _ _ hΨ), hC _ ⟨_, hk, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem swapX (hKP : KP) (hP : IsPair B M χX χW om r s r' s') (hP₂ : IsPair B M₂ χX χW om₂ r₁ s₁ r' s')
     (hH : H.IsAdapted σ B X X₁ j₀ j₁) (he : IsEv B M M₂ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e₁)
@@ -134,17 +132,15 @@ private theorem swapX (hKP : KP) (hP : IsPair B M χX χW om r s r' s') (hP₂ :
     exact ⟨hsum _ (hS.pres _ _ hΨ), hC _ ⟨_, hk, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite `hu`, `hv` using `[GlobalTheory.UnipCT.unip_eq]`. Establish `hui` using `(GlobalTheory.UnipCT.unipSet σ X H).inv_mem hu`. Use `set a : Fin n → AE F E := incV F (H.ι *ᵥ w) with ha`. Use `set x : Fin n → AE F E := incV F H.x`. Use `set y : Fin n → AE F E := incV F H.y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `haY : GlobalTheory.UnipMass.hA σ X.J a y = 0`. Rewrite using `[ha, GlobalTheory.UnipMass.hA_incV, (hH.orth w).2, map_zero]`. Use `set t : Fin n → AE F E := mat u⁻¹ *ᵥ y - y with ht`. Establish `hXt : GlobalTheory.UnipMass.hA σ X.J x t = 0`. Establish `hx : mat u⁻¹ *ᵥ x = x` using `hui.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `GlobalTheory.IsoPhaseAdd.hA_mat_mulVec σ u⁻¹ x y`. Rewrite `h1` using `[hx]`. Establish `h2 : mat u⁻¹ *ᵥ y = t + y` using `by rw [ht, sub_add_cancel]`. Rewrite `h1` using `[h2, GlobalTheory.UnipMass.hA_add_right]`. Conclude with `add_eq_right.1 h1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hv.2 (incV F w)`. Rewrite `hc` using `[GlobalTheory.UnipMass.incM_mulVec_incV]`. Establish `hc' : mat v *ᵥ a = a + c • x` using `hc`. Establish `hvt : GlobalTheory.UnipMass.hA σ X.J a (mat v⁻¹ *ᵥ t) = GlobalTheory.UnipMass.hA σ X.J a t`. Establish `h1` using `GlobalTheory.IsoPhaseAdd.hA_mat_mulVec σ v a (mat v⁻¹ *ᵥ t)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.mulVec_mulVec, ← GlobalTheory.UnipCT.mat_mul', mul_inv_cancel, hc']`. Establish `h3 : mat (1 : UA σ X.J) = 1` using `rfl`. Rewrite `h1` using `[h3, Matrix.one_mulVec, add_comm, GlobalTheory.IsoPhaseAdd.hA_smul_add_left, hXt, mul_zero, zero_add]`. Conclude with `h1.symm`. Establish `key : GlobalTheory.UnipMass.hA σ X.J a (mat (u * v)⁻¹ *ᵥ y) = GlobalTheory.UnipMass.hA σ X.J a (mat u⁻¹ *ᵥ y) + GlobalTheory.UnipMass.hA σ X.J a (mat v⁻¹ *ᵥ y)`.
-
-Establish `e1 : mat u⁻¹ *ᵥ y = y + t` using `by rw [ht, add_sub_cancel]`. Rewrite using `[mul_inv_rev, GlobalTheory.UnipCT.mat_mul', ← Matrix.mulVec_mulVec, e1, Matrix.mulVec_add, GlobalTheory.UnipMass.hA_add_right, hvt, GlobalTheory.UnipMass.hA_add_right, haY, zero_add, add_comm]`. Unfold `GlobalTheory.IsoPhase.phase`. Rewrite using `[← ha, key, map_add, neg_add]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem phase_mul (hH : H.IsAdapted σ B X X₁ j₀ j₁) (w : Fin n₁ → E) {u v : UA σ X.J} (hu : u ∈ unip σ X H)
     (hv : v ∈ unip σ X H) :
@@ -182,9 +178,9 @@ private theorem phase_mul (hH : H.IsAdapted σ B X X₁ j₀ j₁) (w : Fin n₁
   rw [← ha, key, map_add, neg_add]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `htr : Continuous (Algebra.trace (AF F) (AE F E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hc : Continuous (cA σ : AE F E → AE F E)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hm : Continuous fun u : UA σ X.J => mat u⁻¹` using `Units.continuous_coe_inv.comp continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hv : Continuous fun u : UA σ X.J => mat u⁻¹ *ᵥ incV F H.y` using `hm.matrix_mulVec continuous_const`. Unfold `GlobalTheory.IsoPhase.phase GlobalTheory.UnipMass.hA`. Use `(htr.comp ?_).neg` and prove the remaining obligations. Use `continuous_const.dotProduct (continuous_const.matrix_mulVec (continuous_pi fun i => hc.comp ?_))` and prove the remaining obligations. Conclude with `(continuous_apply i).comp hv`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem phase_cont (X : Spc F E n) (H : Plane E n n₁) (w : Fin n₁ → E) :
     Continuous fun u : UA σ X.J => GlobalTheory.IsoPhase.phase σ X H w u := by
@@ -200,21 +196,21 @@ private theorem phase_cont (X : Spc F E n) (H : Plane E n n₁) (w : Fin n₁ �
   exact (continuous_apply i).comp hv
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.ThKSwap.countable_of_numberField E`. Establish `hψ` using `hP.base.std`. Establish `hS` using `hP.weil.isUSplitting`. Establish `hφ : ∀ Φ ∈ schA F (Fin n × Fin d), e₁ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) Φ) ∈ schA F (Fin n₁ × Fin d)` using `fun Φ hΦ => he.maps _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ _ hΦ)`. Use `set a : (Fin n₁ → E) → ℂ := fun ξ => thetaSum F (e₀ (M₂.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (e₁ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) Ψ)))) with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlaw : ∀ (ξ : Fin n₁ → E) (u : unip σ X H), thetaSum F (e₀ (M₂.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (e₁ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) (om (u.1, 1) Ψ))))) = B.ψ (-GlobalTheory.IsoPhase.phase σ X H ξ u.1) * a ξ` using `fun ξ u => UpperTheory.pair_restricts_along_adapted_plane hKP F E σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s r₁ s₁ r' s' hP hP₂ hH e₁ he d₁ W₁ H' i₀ i₁ M₃ hH' e₀ he₀ ξ u.1 u.2 Ψ hΨ`. Establish `hpt : ∀ u : unip σ X H, thetaSum F (e₁ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) (om (u.1, 1) Ψ))) = C * ∑' ξ : Fin n₁ → E, B.ψ (-GlobalTheory.IsoPhase.phase σ X H ξ u.1) * a ξ` using `fun u => by`. Rewrite using `[(hexp _ (hφ _ (hS.pres _ _ hΨ))).2]`. Repeatedly rewrite using `[hlaw]`. Establish `hsa : Summable fun ξ => ‖a ξ‖` using `(summable_norm_iff (E := ℂ)).mpr (hexp _ (hφ _ hΨ)).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_const_mul, GlobalTheory.ThKIsoSwap.integral_tsum_of_bound μ 𝓕 (by simp [h1]) (fun (ξ : Fin n₁ → E) (u : unip σ X H) => B.ψ (-GlobalTheory.IsoPhase.phase σ X H ξ u.1) * a ξ) (fun ξ => ((hψ.1.comp ((phase_cont X H ξ).co …`. Repeatedly rewrite using `[norm_mul, GlobalTheory.StdCharFromIsStd.norm_psi hψ, one_mul]`. Conclude with `⟨hsa, le_rfl⟩), tsum_eq_single 0]`. Establish `h0 : ∀ u : unip σ X H, GlobalTheory.IsoPhase.phase σ X H 0 u.1 = 0` using `fun u => by`. Establish `: incV F (H.ι *ᵥ (0 : Fin n₁ → E)) = 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`. Rewrite using `[GlobalTheory.IsoPhase.phase, GlobalTheory.UnipMass.hA, this, zero_dotProduct, map_zero, neg_zero]`. Establish `hz : Matrix.vecMulVec (incV F (0 : Fin n₁ → E)) (incV F H'.y) = 0`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[incV, Matrix.vecMulVec_apply]`. Establish `hrho0 : ∀ φ : Fn F n₁ d, M₂.co.rho B.ψ (Matrix.vecMulVec (incV F (0 : Fin n₁ → E)) (incV F H'.y)) φ = φ`. Introduce `φ`. Use function extensionality and compare the values at `x`. Simplify using `[hz, Darboux.rho, schr]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [h0, neg_zero, AddChar.map_zero_eq_one, one_mul, setIntegral_const, measureReal_def, h1, ENNReal.toReal_one, one_smul, ha, hrho0]`. Introduce `ξ hξ`. Take `⟨g, hg, hψg⟩` from `UpperTheory.unipotent_phase_nontrivial F E σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hP.base hP.herm hP₂.herm hH ξ hξ`. Use `haveI := hμ`. Use `GlobalTheory.IsoPhase.setIntegral_eq_zero_of_mul_right σ X H μ 𝓕 h𝓕 h1 (fun u : unip σ X H => B.ψ (-GlobalTheory.IsoPhase.phase σ X H ξ u.1) * a ξ) ?_ ⟨g, hg⟩ _ hψg ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `γ hγ x`. Take `⟨c, hc⟩` from `GlobalTheory.T.isotropic_phase_rational_value F E σ n n₁ X H ξ γ.1 (Subgroup.mem_subgroupOf.1 hγ)`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[phase_mul hH ξ γ.2 x.2, neg_add, AddChar.map_add_eq_mul, hc, ← map_neg, hψ.2.1, one_mul]`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[phase_mul hH ξ x.2 hg, neg_add, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem isoInner (hKP : KP) (hP : IsPair B M χX χW om r s r' s') (hP₂ : IsPair B M₂ χX χW om₂ r₁ s₁ r' s')
     (hH : H.IsAdapted σ B X X₁ j₀ j₁) (he : IsEv B M M₂ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e₁)
@@ -276,9 +272,9 @@ private theorem isoInner (hKP : KP) (hP : IsPair B M χX χW om r s r' s') (hP�
       ring
 
 /- English proof (translation)
-Establish `hS` using `hP.weil.isUSplitting`. Establish `hu : om (u, 1) Ψ ∈ schA F (Fin n × Fin d)` using `hS.pres _ _ hΨ`. Establish `hr` using `GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hP.base.std (Matrix.vecMulVec (incV F H.y) (incV F w)) _ hu`. Rewrite using `[← GlobalTheory.T.thetaSum_invariant_rational_unitary hKP.base F E σ B n₁ d X₁ W M₂ χX χW om₂ r₁ s₁ r' s' hP₂ 1 (one_mem _) γ hγ _ (he.maps _ hr), ← GlobalTheory.T.adapted_plane_pair_local_factor hKP.base F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₂ om₂ r₁ s₁ hH hP₂ e …`. Establish `hact : actAB (cA σ) ((1, γ) : UA σ X.J × UA σ W.J) (Matrix.vecMulVec (incV F H.y) (incV F w)) = Matrix.vecMulVec (incV F H.y) (incV F w')` using `by show (1 : Matrix (Fin n) (Fin n) (AE F E)) * Matrix.vecMulVec (incV F H.y) (incV F w) * (mat γ)ᵀ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, hw]`. Rewrite using `[hact, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem move (hKP : KP) (hP : IsPair B M χX χW om r s r' s') (hP₂ : IsPair B M₂ χX χW om₂ r₁ s₁ r' s')
     (hH : H.IsAdapted σ B X X₁ j₀ j₁) (he : IsEv B M M₂ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e₁)
@@ -300,15 +296,15 @@ private theorem move (hKP : KP) (hP : IsPair B M χX χW om r s r' s') (hP₂ : 
   simp
 
 /- English proof (translation)
-Establish `hh : ∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), e₁ (M.co.rho B.ψ (incM F H.ι * z) Φ) = M₂.co.rho B.ψ z (e₁ Φ)` using `fun z Φ hΦ => by`. Establish `h1` using `he.Heisenberg₂ z Φ hΦ`. Rewrite `h1` using `[GlobalTheory.ThK.IsoComp.incM_one, Matrix.transpose_one, Matrix.mul_one]`. Then use the resulting hypothesis. Use `⟨fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `he₀.Heisenberg₂ z (e₁ Φ) (he.maps Φ hΦ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[GlobalTheory.ThK.IsoComp.incM_one, Matrix.one_mul]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[Matrix.mul_assoc, hh _ Φ hΦ, h2]`. Simplify using `only [LinearMap.comp_apply]`. Break down `hu with hu | ⟨y, rfl⟩` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[he.inv u hu Φ hΦ]`. Rewrite using `[← Matrix.mul_vecMulVec, hh _ Φ hΦ, he₀.inv _ ⟨y, rfl⟩ _ (he.maps Φ hΦ)]`. Take `⟨ei₀, ev₀, -, h0v, h0loc⟩` from `he.loc`. Take `⟨ei', ev', -, h1v, h1loc⟩` from `he₀.loc`. Establish `hSB : ∀ v, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ev₀ v φ ∈ SB (Fin n₁ × Fin d → Fv F v)` using `fun v φ hφ => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← (h0v v).2]`. Conclude with `Submodule.mem_map_of_mem hφ`. Use `⟨ei'.comp ei₀, fun v => ev' v ∘ₗ ev₀ v, fun v => ⟨?_, ?_⟩, fun f φ hφ hφv => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[(h0v v).1, (h1v v).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_comp, (h0v v).2, (h1v v).2]`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.comp_apply]`. Rewrite using `[h0loc f φ hφ hφv, h1loc (ei₀ f) (fun v => ev₀ v (φ v)) (fun v => hSB v _ (hφ v))]`. Use `filter_upwards [hφv] with v hv`. Rewrite using `[hv, (h0v v).1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comp_laws (he : IsEv B M M₂ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e₁) (he₀ : IsEv B M₂ M₃ 1 H'.ι (iso0 n₁ H') e₀) :
     (∀ z, ∀ Φ ∈ schA F (Fin n × Fin d),
@@ -346,11 +342,11 @@ private theorem comp_laws (he : IsEv B M M₂ H.ι 1 {u | ∃ z, u = Matrix.vecM
       rw [hv, (h0v v).1]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨Ψ, hΨ, hne⟩` from `hne`. Establish `h0 : ∀ Φ ∈ schA F (Fin n × Fin d), thetaSum F (e₁ Φ) = 0` using `fun Φ hΦ => by`. Establish `hz : ∀ ξ : Fin n₁ → E, thetaSum F (e₀ (M₂.co.rho B.ψ (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (e₁ Φ))) = 0` using `fun ξ => by`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he.Heisenberg₂ _ Φ hΦ, h _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ _ hΦ)]`. Simplify using `[thetaSum]`. Rewrite using `[h₂ _ (he.maps Φ hΦ)]`. Simplify using `[hz]`. Apply `hne` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁ Ψ hΨ]`. Simplify using `[fun w : Fin d → E => h0 _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ (Matrix.vecMulVec (incV F H.y) (incV F w)) _ hΨ)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem comp_ne (hψ : IsStd B.ψ) (he : IsEv B M M₂ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e₁) {C C' : ℂ}
     (hne : ∃ Ψ ∈ schA F (Fin n × Fin d), thetaSum F Ψ ≠ 0)
@@ -373,9 +369,9 @@ private theorem comp_ne (hψ : IsStd B.ψ) (he : IsEv B M M₂ H.ι 1 {u | ∃ z
   simp [fun w : Fin d → E => h0 _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ (Matrix.vecMulVec (incV F H.y) (incV F w)) _ hΨ)]
 
 /- English proof (translation)
-Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).2`. Establish `hres : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range Y.α b`. Introduce `x`. Rewrite using `[hP.resX x, pow_add, neg_one_sq, mul_one]`. Take `⟨om₂, h⟩` from `GlobalTheory.T.hecke_characters_restriction_eta hKP.base F E σ B hT.base b _ G₁.V' G.W _ _ _ _ hG₁.hV' hP.skew M₂ hM₂ _ _ hP.hX hP.hW hres hP.resW`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨om₂, hT.base, hG₁.hV', hP.skew, hM₂, hP.hX, hP.hW, hres, hP.resW, h⟩`.
+Supply the required witnesses or components.
 -/
 private theorem pair_mid (hKP : KP) {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b} (hG₁ : G₁.IsGood B) {Y : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (hT : IsTriple B G Y om om') {M₂ : Model σ G₁.V' G.W} (hM₂ : M₂.IsGood B.ψ) :
@@ -393,39 +389,37 @@ end
 
 open GlobalTheory.ConeSmallUnf.CTerm in
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he'`. Establish `hH` using `hC.hH`. Establish `hH'` using `hC.hH'`. Establish `hWitt : ∃ γ, IsWitt (σ` using `σ) (J := G.W.J) H'.x γ := by`. Take `⟨h1, h2, l, h3, h4⟩` from `UpperTheory.skew_form_hermitian_twist F E σ _ _ G.V' G.W G.M' H.x H.y H'.x H'.y hH.xy hH'.xy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `UpperTheory.exists_witt_partner F E σ _ G.W.J l h1 h2 h3 h4 H'.x (fun h0 => ?_) hH'.xx` and prove the remaining obligations. Use `hH'.xy` as an intermediate fact. Simplify using `[form, h0] at this`. Distinguish the cases in `hex : ∃ X om om' om₁ om₁', IsTriple B G X om om' ∧ IsTriple B G₁ X om₁ om₁'`. Use `swap`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_ne_zero, hWitt, fun γ _ X om om' om₁ om₁' hT hT₁ => absurd ⟨X, om, om', om₁, om₁', hT, hT₁⟩ hex⟩`. Take `⟨X₀, o, o', o₁, o₁', hT₀, hT₀'⟩` from `hex`. Establish `hB` using `hT₀.base`. Establish `hG` using `hT₀.geo`. Establish `hG₁` using `hT₀'.geo`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M₂, hM₂⟩` from `GlobalTheory.T.exists_good_schrodinger_model F E σ B hB _ _ G₁.V' G.W _ _ _ _ hG₁.hV' hG.hW`. Take `⟨o₂, hQ₂⟩` from `pair_mid hKP hG₁ hT₀ hM₂`. Establish `hQ` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT₀).2`. Take `⟨e₁, he⟩` from `GlobalTheory.T.adapted_plane_pair_restriction hKP.base F E σ B _ _ G.V' G.W G.M' _ _ o' _ _ _ _ hQ b G₁.V' H _ _ M₂ o₂ _ _ hH hQ₂`. Take `⟨e₀, he₀⟩` from `((GlobalTheory.T.theta_evaluation_zero_cone hKP.base).1 F E σ B _ _ G₁.V' G.W M₂ _ _ o₂ _ _ _ _ hQ₂ _ G₁.V' G₁.W H' _ _ G₁.M' rfl hH' hG₁.hM').1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, hC₁, hne, hexp₁⟩` from `expandX hKP hB hG.hV' hG.hW hG.hM' hM₂ hH he`. Take `⟨C₂, hC₂, hexp₂⟩` from `GlobalTheory.T.eigen_intertwiner_restriction_rank hKP F E σ B _ _ _ G₁.V' G.W G₁.W M₂ G₁.M' H' _ _ hH' hG₁.hM' e₀ he₀ hB hM₂ ⟨_, _, _, _, hG₁.hV', hG.hW⟩`. Take `⟨c1, c2, c3⟩` from `comp_laws he he₀`. Take `⟨c, hc⟩` from `GlobalTheory.T.config_b_triple_evaluation_compatible hKP.base F E σ B a b G G₁ H H' hC X₀ o o' o₁ o₁' hT₀ hT₀' e' he' (e₀ ∘ₗ e₁) (fun Φ hΦ => he₀.maps _ (he.maps Φ hΦ)) c1 c2 c3`. Establish `hc0 : c ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Take `⟨Ψ, hΨ, h⟩` from `comp_ne hB.std he hne hexp₁ (fun φ hφ => (hexp₂ φ hφ).2)`. Conclude with `h (by simpa using hc Ψ hΨ)`. Use `⟨C₁ * (C₂ * c), mul_ne_zero hC₁ (mul_ne_zero hC₂ hc0), hWitt, ?_⟩` and prove the remaining obligations. Introduce `γ hγ X om om' om₁ om₁' hT hT₁ Φ' hΦ' h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).2`. Take `⟨om₂, hP₂⟩` from `pair_mid hKP hG₁ hT hM₂`. Establish `hS` using `hP.weil.isUSplitting`. Establish `hΦs : Φ' ∈ schA F _` using `GlobalTheory.ConeMeasV.polData_le_schA hG.hM' hΦ'.1`. Establish `hsh : shiftB σ H H' 1 = Matrix.vecMulVec (incV F H.y) (incV F H'.x)` using `by simp [shiftB]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiso : ∀ (μ : Measure (unip σ G.V' H)) (𝓕 : Set (unip σ G.V' H)), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.V'.J).subgroupOf (unip σ G.V' H)) 𝓕 μ → μ 𝓕 = 1 → ∀ g (w : IsoV σ G.W.J), ∫ u in 𝓕, thetaSum F (e₁ (G.M'.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w.1)) (om' …`. Introduce `μ 𝓕 hμ h𝓕 h1 g w`. Establish `hΨ` using `hS.pres (g, h) _ hΦs`. Establish `hΨ'` using `hS.pres (1, γ w) _ hΨ`. Repeatedly rewrite using `[fun u => move hKP hP hP₂ hH he (hγ w).1 (hγ w).2 u hΨ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[isoInner hKP hP hP₂ hH he hH' he₀ C₂ hexp₂ μ 𝓕 hμ h𝓕 h1 hΨ']`. Establish `e1 : ((g, γ w * h) : UA σ G.V'.J × UA σ G.W.J) = (1, γ w) * (g, h)` using `by simp`. Establish `e2` using `hc _ (GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hB.std (Matrix.vecMulVec (incV F H.y) (incV F H'.x)) _ hΨ')`. Rewrite `e2` using `[LinearMap.comp_apply]`. Rewrite using `[e2, GlobalTheory.ThKIsoSwap.thetaSum_smul, termW, hsh, e1, map_mul, Module.End.mul_apply, mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun g => ?_, ?_⟩` and prove the remaining obligations. Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `GlobalTheory.T.unipotent_haar_fundamental_domain_unit F E σ G.V' H (UpperTheory.unipotent_compact_fundamental_domain F E σ B _ _ G.V' G₁.V' H _ _ _ _ _ _ hB hG.hV' hG₁.hV' hH)`. Establish `hs` using `(swapX hKP hP hP₂ hH he μ 𝓕 h1 (hS.pres (g, h) _ hΦs)).1`. Establish `hs'` using `(hs.comp_injective (i := fun w : IsoV σ G.W.J => w.1) Subtype.val_injective).mul_left (C₂ * c)⁻¹`. Use `hs'.congr fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[hiso μ 𝓕 hμ h𝓕 h1 g w, ← mul_assoc, inv_mul_cancel₀ (mul_ne_zero hC₂ hc0), one_mul]`. Introduce `μ 𝓕 hμ h𝓕 h1 g`. Establish `hΨ` using `hS.pres (g, h) _ hΦs`. Take `⟨-, hsw⟩` from `swapX hKP hP hP₂ hH he μ 𝓕 h1 hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ u : unip σ G.V' H, theta om' Φ' (u.1 * g) h = C₁ * ∑' w, thetaSum F (e₁ (G.M'.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om' (u.1, 1) (om' (g, h) Φ'))))` using `fun u => by`. Establish `e1 : ((u.1 * g, h) : UA σ G.V'.J × UA σ G.W.J) = (u.1, 1) * (g, h)` using `by simp`. Rewrite using `[theta, e1, map_mul, Module.End.mul_apply]`. Conclude with `hexp₁ _ (hS.pres _ _ hΨ)`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_const_mul, hsw, mul_assoc]`. Use `congr 1`. Establish `hsupp : Function.support (fun w => ∫ u in 𝓕, thetaSum F (e₁ (G.M'.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om' (u.1, 1) (om' (g, h) Φ')))) ∂μ) ⊆ {w | w ≠ 0 ∧ form σ G.W.J w w = 0}`. Introduce `w hw`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce and unpack `rfl`. Apply `hw` to reduce the goal to its premises. Establish `hz : Matrix.vecMulVec (incV F H.y) (incV F (0 : Fin (a + (b + 2)) → E)) = 0`. Use extensionality with `i j`. Simplify using `[incV, Matrix.vecMulVec_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hrho0 : ∀ φ : Fn F (b + 2) (a + (b + 2)), G.M'.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F (0 : Fin (a + (b + 2)) → E))) φ = φ`. Introduce `φ`. Use function extensionality and compare the values at `x`. Simplify using `[hz, Darboux.rho, schr]`. Establish `hst` using `GlobalTheory.T.weil_representation_preserves_space hKP.base F E σ B _ _ G X om om' hT`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : ∀ u : unip σ G.V' H, e₁ (om' (u.1, 1) (om' (g, h) Φ')) = 0` using `fun u => UpperTheory.theta_pair_plane_unipotent hKP F E σ B _ _ _ G.V' G.W G₁.V' G.M' M₂ H _ _ _ _ om' om₂ _ _ _ _ _ _ hP hP₂ hH e₁ he _ B.τ₁ _ (hst _ _ (hst _ _ hΦ'.2))`. Simplify using `[hrho0, h0, thetaSum]`. Assume the negation of the conclusion as `hf`. Conclude with `hw (UpperTheory.pair_restriction_compatible_with_models hKP F E σ B _ _ _ G.V' G.W G₁.V' G.M' M₂ H _ _ _ _ om' om₂ _ _ _ _ _ _ hP hP₂ hH e₁ he μ 𝓕 hμ h𝓕 h1 _ hΨ w hf)`. Rewrite using `[← tsum_subtype_eq_of_support_subset hsupp, ← tsum_mul_left]`.
-
-Conclude with `tsum_congr fun w => (hiso μ 𝓕 hμ h𝓕 h1 g w).symm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.config_b_witt_constant_nonzero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

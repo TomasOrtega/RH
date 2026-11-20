@@ -26,13 +26,11 @@ namespace GlobalTheory.LastSeesaw
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Establish `hm : subOne S g = 0`. Use extensionality with `i j`. Establish `hr : (ratV (Pi.single j (1 : D.host.E)) : Fin S.rank → AE D) = Pi.single j 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using `[ratV]`. Simplify using `[ratV, hk]`. Establish `hj` using `congrFun (h (Pi.single j 1)) i`. Rewrite `hj` using `[hr, Matrix.mulVec_single]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hj`. Establish `h1 : ((matHom S g).1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) = 1` using `sub_eq_zero.mp hm`. Establish `h2 : matHom S g = matHom S 1`. Rewrite using `[map_one]`. Conclude with `Units.ext h1`.
-
-Conclude with `(HR (AF D.host.F) D.sp.cm.sig S.gram).subtype_injective h2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eq_one_of_subOne_mulVec_ratV_eq_zero {S : HSp D} (g : GA D S)
     (h : ∀ x : Fin S.rank → D.host.E, (subOne S g).mulVec (ratV x) = 0) : g = 1 := by
@@ -53,9 +51,9 @@ private lemma eq_one_of_subOne_mulVec_ratV_eq_zero {S : HSp D} (g : GA D S)
   exact (HR (AF D.host.F) D.sp.cm.sig S.gram).subtype_injective h2
 
 /- English proof (translation)
-Establish `hle : flagN d ≤ ⊥`. Unfold `flagN NFlag`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `g ⟨-, hg⟩`. Use `Subgroup.mem_bot.2 (eq_one_of_subOne_mulVec_ratV_eq_zero g fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `hg x (Subsingleton.elim _ _)`. Rewrite using `[ha]`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Conclude with `Subgroup.mem_bot.1 (hle hn)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_one_of_mem_flagN {S S₀ : HSp D} (d : HypDec S S₀ 0) {n : GA D S} (hn : n ∈ flagN d) : n = 1 := by
   have hle : flagN d ≤ ⊥ := by
@@ -70,17 +68,17 @@ theorem eq_one_of_mem_flagN {S S₀ : HSp D} (d : HypDec S S₀ 0) {n : GA D S} 
   exact Subgroup.mem_bot.1 (hle hn)
 
 /- English proof (translation)
-Establish `hν : J.vN.ν J.vN.𝓝 = 1` using `J.vN.unit.2.2`. Establish `hX : ∀ (T : HSp D) (x : Mx D T.rank 0), J.d.extX T x = 0`. Introduce `T x`. Rewrite using `[HypDec.extX_apply]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_apply]`. Establish `hs : symplO J.W L' (0 : WO J.W L') 0 = 0`. Establish `h` using `GlobalTheory.Asc.symplO_swap (S := J.W) (T := L') (0 : WO J.W L') 0`. Establish `h2 : symplO J.W L' 0 0 + symplO J.W L' 0 0 = 0` using `by nth_rw 1 [h]`. Conclude with `neg_add_cancel _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : algebraMap D.host.F (AF D.host.F) 2 * symplO J.W L' 0 0 = 0`. Rewrite using `[map_ofNat, two_mul, h2]`. Establish `h4` using `congrArg (fun t => algebraMap D.host.F (AF D.host.F) 2⁻¹ * t) h3`. Rewrite `h4` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one, one_mul, mul_zero]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp : psiFlag ψ J.d 1 = 1`. Simplify using `[psiFlag, upSum, psiE_zero]`. Establish `hc : ∀ (h : GA D J.W₀) (n : flagN J.d), fjSrcFun ψ J.d ζ' omz φ f Φ₀ h n = φ h * f (J.d.emb0 h) * star (omz (h, 1) Φ₀ 0)`. Introduce `h n`. Establish `hn : n.1 = 1` using `eq_one_of_mem_flagN J.d n.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [fjSrcFun, thetaJS, jacS, ptS, cenS, hn, hp, hX, one_mul, Matrix.zero_mul, heisO_zero, star_one, mul_one]`. Simplify using `[symplOH, hs]`. Simplify using `only [JacL.per, fjSrc]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[hc h]`. Rewrite using `[setIntegral_const]`. Simplify using `[Measure.real, hν]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem per_zero (J : JacL D 0) {L' : HSp D} (ζ' : Fin L'.rank → D.host.E) (omz : Om J.W₀ L') (φ : GA D J.W₀ → ℂ)
     (f : GA D J.W → ℂ) (Φ₀ : WO J.W₀ L' → ℂ) :
@@ -117,7 +115,7 @@ theorem per_zero (J : JacL D 0) {L' : HSp D} (ζ' : Fin L'.rank → D.host.E) (o
   simp [Measure.real, hν]
 
 /- English proof (translation)
-Establish `hm : AEStronglyMeasurable (fun g => ((quotHeight V g ^ k : ℝ) : ℂ)) (v.μ.restrict v.𝓕)` using `(Complex.continuous_ofReal.comp ((GlobalTheory.Grow.continuous_quotHeight V).pow k)).aestronglyMeasurable`. Establish `hI` using `hφ.integrableOn_mul_of_le v.haar v.fund hm (C := 1) (A := k) (fun g => by`. Rewrite using `[one_mul, Complex.norm_real, norm_pow, Real.norm_of_nonneg (GlobalTheory.Grow.quotHeight_pos _ g).le])`. Use `hI.norm.congr (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, norm_mul, Complex.norm_real, norm_pow, Real.norm_of_nonneg (GlobalTheory.Grow.quotHeight_pos _ g).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -132,19 +130,17 @@ theorem integrable_norm_mul_pow {V : HSp D} (v : GlobalTheory.Unf.Vol V) {φ : G
   ring
 
 /- English proof (translation)
-Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D S).2.1` as an intermediate fact. Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D T).2.1` as an intermediate fact. Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D S).1` as an intermediate fact. Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D T).1` as an intermediate fact. Use `vS.haar` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `vT.haar` as an intermediate fact. Take `⟨C, a, hC⟩` from `GlobalTheory.T.unitaryQuotientHeight_orthogonalSum_comparable D X T L o`. Establish `hC0 : 0 ≤ C`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `(hC 1).2`. Establish `h2` using `GlobalTheory.Grow.quotHeight_pos _ (o.emb ((1 : GA D T), 1))`. Establish `h3 : 0 < quotHeight T (1 : GA D T) ^ a` using `pow_pos (GlobalTheory.Grow.quotHeight_pos _ _) a`. Use the polynomial consequences of the given equalities and inequalities. Establish `hemb : Continuous fun y : GA D S × GA D T => o.emb (y.2, 1)` using `o.continuous_emb.comp (continuous_snd.prodMk continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ k : ℕ, Integrable (fun y : GA D S × GA D T => ‖φ y.1 * u y.2‖ * (quotHeight S y.1 * quotHeight X (o.emb (y.2, 1))) ^ k) ((vS.μ.restrict vS.𝓕).prod (vT.μ.restrict vT.𝓕))`. Introduce `k`. Establish `h1` using `integrable_norm_mul_pow vS hφ k`. Establish `h2` using `integrable_norm_mul_pow vT hu (a * k)`. Establish `hp` using `(MeasureTheory.Integrable.mul_prod h1 h2).const_mul (C ^ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hp.mono' ?_ (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Conclude with `((((hφ.2.1.comp continuous_fst).mul (hu.2.1.comp continuous_snd)).norm).mul ((((GlobalTheory.Grow.continuous_quotHeight _).comp continuous_fst).mul ((GlobalTheory.Grow.continuous_quotHeight _).comp hemb)).pow k)).aestronglyMeasurable`. Establish `hS0 : 0 ≤ quotHeight S y.1` using `(GlobalTheory.Grow.quotHeight_pos _ _).le`. Establish `hX0 : 0 ≤ quotHeight X (o.emb (y.2, 1))` using `(GlobalTheory.Grow.quotHeight_pos _ _).le`. Establish `hle : quotHeight X (o.emb (y.2, 1)) ≤ C * quotHeight T y.2 ^ a` using `(hC y.2).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hlin : quotHeight S y.1 * quotHeight X (o.emb (y.2, 1)) ≤ C * (quotHeight S y.1 * quotHeight T y.2 ^ a)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hle hS0]`. Establish `hpow : (quotHeight S y.1 * quotHeight X (o.emb (y.2, 1))) ^ k ≤ C ^ k * (quotHeight S y.1 ^ k * quotHeight T y.2 ^ (a * k))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (pow_nonneg (mul_nonneg hS0 hX0) k)), norm_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `GlobalTheory.T.weilKernelFunctional_superposition_isTame D ψ S X χS χX omX hX (GA D S × GA D T) ((vS.μ.restrict vS.𝓕).prod (vT.μ.restrict vT.𝓕)) (fun y => φ y.1 * u y.2) (fun y => y.1) (fun y => o.emb (y.2, 1)) (fun _ => 0) ((hφ.2.1.comp continuous_fst).mul (hu.2.1.comp continuou …`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tame_double {S X T L : HSp D} (o : OrthDec X T L) {χS χX : (AE D)ˣ →* Circle} {omX : Om S X}
     (hX : IsWeilDatumO ψ S X χS χX omX) (vS : GlobalTheory.Unf.Vol S) (vT : GlobalTheory.Unf.Vol T) {φ : GA D S → ℂ} {u : GA D T → ℂ}
@@ -198,7 +194,7 @@ theorem tame_double {S X T L : HSp D} (o : OrthDec X T L) {χS χX : (AE D)ˣ �
     ((hφ.2.1.comp continuous_fst).mul (hu.2.1.comp continuous_snd)).measurable continuous_fst hemb continuous_const hint
 
 /- English proof (translation)
-Consider the cases of `L`. Simplify using `only [negSp]`. Use `congr 1`. Conclude with `neg_neg _`.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma negSp_negSp (L : HSp D) : negSp (negSp L) = L := by
   cases L
@@ -207,9 +203,9 @@ private lemma negSp_negSp (L : HSp D) : negSp (negSp L) = L := by
   exact neg_neg _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjTarget omz, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using (GlobalTheory.ConjWeil.conj_isWeilDatumO D ψ S (negSp L) χS⁻¹ χz omz hz).1`. Introduce `g f F hF`. Take `rfl` from `eq_of_heq hF`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcf : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (star f : WO S (negSp (negSp L)) → ℂ) = f`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Rewrite using `[GlobalTheory.ConjWeil.conjTarget_apply, hcf]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma exists_isWeilDatumO_star_of_isWeilDatumO_negSp {S L M : HSp D} (e : negSp (negSp L) = M) {χS χz : (AE D)ˣ →* Circle}
     {omz : Om S (negSp L)} (hz : IsWeilDatumO ψ S (negSp L) χS⁻¹ χz omz) :
@@ -227,7 +223,7 @@ private lemma exists_isWeilDatumO_star_of_isWeilDatumO_negSp {S L M : HSp D} (e 
     simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]
 
 /- English proof (translation)
-Take `⟨omL, h1, h2⟩` from `exists_isWeilDatumO_star_of_isWeilDatumO_negSp (negSp_negSp L) hz`. Conclude with `⟨omL, h1, fun g f _ => h2 g f _ HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_conj {S L : HSp D} {χS χz : (AE D)ˣ →* Circle} {omz : Om S (negSp L)}
     (hz : IsWeilDatumO ψ S (negSp L) χS⁻¹ χz omz) : ∃ omL : Om S L, IsWeilDatumO ψ S L χS χz⁻¹ omL ∧
@@ -237,9 +233,9 @@ theorem exists_conj {S L : HSp D} {χS χz : (AE D)ˣ →* Circle} {omz : Om S (
   exact ⟨omL, h1, fun g f _ => h2 g f _ HEq.rfl⟩
 
 /- English proof (translation)
-Establish `H` using `GlobalTheory.CjNeg.theta_heis_neg D ψ hψ S L`. Establish `hcf : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (star f : WO S L → ℂ) = f`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`. Use `⟨fun hf => (H.1 (star f)).1.1 (by rw [hcf]; exact hf), fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(H.2 w (star f)).1`. Rewrite `h` using `[hcf]`. Rewrite using `[h]`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem star_neg (hψ : IsStdChar D ψ (-1)) (S L : HSp D) (f : WO S (negSp L) → ℂ) :
     (IsThetaFunO ψ S (negSp L) f → IsThetaFunO ψ S L (star f : WO S L → ℂ)) ∧
@@ -256,33 +252,31 @@ theorem star_neg (hψ : IsStdChar D ψ (-1)) (S L : HSp D) (f : WO S (negSp L) �
   simp [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]
 
 /- English proof (translation)
-Introduce `D ψ J X T L'' o Γ ΓL ΓX _ hLL ζ' χS χT χz om omX omz hom homX homz vT φ u hφ hu Ξ hΞ hne`. Establish `hψ : IsStdChar D ψ (-1)` using `homX.std`. Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D J.W₀).2.1` as an intermediate fact. Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D T).2.1` as an intermediate fact. Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D J.W₀).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D T).1` as an intermediate fact. Use `J.v0.haar` as an intermediate fact. Use `vT.haar` as an intermediate fact. Take `⟨hIntg, hTame⟩` from `tame_double (ψ := ψ) o homX J.v0 vT hφ hu`. Establish `hval : ∀ F : WO J.W₀ X → ℂ, IsThetaFunO ψ J.W₀ X F → (∫ y : GA D J.W₀ × GA D T, φ y.1 * u y.2 * omX (y.1, o.emb (y.2, 1)) F 0 ∂((J.v0.μ.restrict J.v0.𝓕).prod (vT.μ.restrict vT.𝓕))) = ∫ h in vT.𝓕, liftT omX J.v0.μ J.v0.𝓕 φ F (o.emb (h, 1)) * u h ∂vT.μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `F hF`. Rewrite using `[MeasureTheory.integral_prod_symm _ (hIntg F hF)]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[liftT_apply, ← integral_mul_const]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Expand and normalize the polynomial expressions, which then agree. Take `⟨f₁, f₂, hf₁, hf₂, hf₁0, hf₂0, hbox⟩` from `hLL.ex`. Establish `hf₀ : GlobalTheory.MixModel.OrthDec.boxT o J.W₀ (fun w => f₁ (J.d.ext0 T w)) (star f₂) ≠ 0`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `Function.ne_iff.1 hf₁0`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hf₂0`. Establish `hx' : f₁ x ≠ 0` using `hx`. Establish `hy' : f₂ y ≠ 0` using `hy`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrFun h0 ((o.resT J.W₀).symm ((GlobalTheory.WeilSrc.Zero.eqv J.d T).symm x, y))`. Simplify using `only [GlobalTheory.MixModel.OrthDec.boxT, AddEquiv.apply_symm_apply, Pi.zero_apply, Pi.star_apply] at h1`. Rewrite `h1` using `[← GlobalTheory.WeilSrc.Zero.eqv_apply, AddEquiv.apply_symm_apply]`. Conclude with `mul_ne_zero hx' (star_ne_zero.2 hy') h1`. Take `⟨omL, homL, hconj⟩` from `exists_conj (ψ := ψ) (S := J.W₀) (L := L'') homz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpull` using `GlobalTheory.WeilSrc.Zero.isWeilDatumO_pull J.d hom`. Establish `hTT` using `GlobalTheory.TensorTargetRule.tensorTarget D ψ hψ X T L'' o J.W₀`. Establish `hsee : ∀ (Φ : WO J.W T → ℂ) (Φ₀ : WO J.W₀ (negSp L'') → ℂ), IsThetaFunO ψ J.W T Φ → IsThetaFunO ψ J.W₀ (negSp L'') Φ₀ → (∫ y : GA D J.W₀ × GA D T, φ y.1 * u y.2 * omX (y.1, o.emb (y.2, 1)) (o.boxT J.W₀ (fun w => Φ (J.d.ext0 T w)) (star Φ₀)) 0 ∂((J.v0.μ.restrict J.v0.𝓕).prod (vT.μ …`. Introduce `Φ Φ₀ hΦ hΦ₀`. Establish `hA : IsThetaFunO ψ J.W₀ T (fun w => Φ (J.d.ext0 T w))` using `(GlobalTheory.WeilSrc.Zero.theta_iff J.d Φ).2 hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : IsThetaFunO ψ J.W₀ L'' (star Φ₀ : WO J.W₀ L'' → ℂ)` using `(star_neg hψ J.W₀ L'' Φ₀).1 hΦ₀`. Establish `hpt : ∀ (g : GA D J.W₀) (h : GA D T), omX (g, o.emb (h, 1)) (o.boxT J.W₀ (fun w => Φ (J.d.ext0 T w)) (star Φ₀)) 0 = om (J.d.emb0 g, h) Φ 0 * star (omz (g, 1) Φ₀ 0)`. Introduce `g h`. Rewrite using `[hTT.om_box χS χT χz⁻¹ omX _ omL homX hpull homL g h 1 _ _ hA hB, hTT.box_zero, hconj g Φ₀ hΦ₀, GlobalTheory.WeilSrc.Zero.pull_apply]`. Establish `hfx : (fun x => Φ (J.d.ext0 T ((GlobalTheory.WeilSrc.Zero.eqv J.d T).symm x))) = Φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← GlobalTheory.WeilSrc.Zero.eqv_apply, AddEquiv.apply_symm_apply]`. Simplify using `only [hfx, map_zero]`. Rewrite using `[per_zero, MeasureTheory.integral_prod _ (hIntg _ (hTT.box_theta _ _ hA hB))]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [hpt, liftS_apply]`. Rewrite using `[mul_comm (φ g) _, mul_assoc, ← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hval Ξ hΞ.1]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.tame_functional_vacuum_irreducibility D ψ hψ J.W₀ X ΓX _ hTame _ hbox hf₀ (fun w hw => ?_) Ξ hΞ` and prove the remaining obligations. Take `⟨hw1, hw2⟩` from `hLL.ann w hw`. Establish `hΦ` using `(GlobalTheory.Asc.annVac D ψ hψ J.W T Γ).1 f₁ hf₁ _ hw1`. Establish `hΦ₀` using `(GlobalTheory.Asc.annVac D ψ hψ J.W₀ (negSp L'') ΓL).1 f₂ hf₂ _ hw2`. Establish `e1 : heisO ψ J.W₀ T (o.resT J.W₀ w).1 (fun w => f₁ (J.d.ext0 T w)) = fun w' => heisO ψ J.W T (J.d.ext0 T (o.resT J.W₀ w).1) f₁ (J.d.ext0 T w')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `GlobalTheory.WeilSrc.Zero.heisO_eqv (ψ := ψ) J.d (o.resT J.W₀ w).1 f₁`. Simplify using `only [GlobalTheory.WeilSrc.Zero.eqv_apply] at h`. Conclude with `h.symm`. Establish `e2` using `(star_neg hψ J.W₀ L'' f₂).2 (o.resT J.W₀ w).2`. Rewrite using `[o.heisO_boxT ψ J.W₀, e1, e2, hsee _ _ hΦ.1 hΦ₀.1]`.
-
-Conclude with `hcon _ _ hΦ hΦ₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upLast : ∀ D : D7, UpLast D := by
   intro D ψ J X T L'' o Γ ΓL ΓX _ hLL ζ' χS χT χz om omX omz hom homX homz vT φ u hφ hu Ξ hΞ hne

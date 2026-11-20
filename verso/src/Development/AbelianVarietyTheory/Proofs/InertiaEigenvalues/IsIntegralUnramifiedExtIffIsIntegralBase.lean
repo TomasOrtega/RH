@@ -10,17 +10,15 @@ namespace GlobalTheory.UnitLemma.Unr
 open GlobalTheory.UnitLemma Polynomial
 
 /- English proof (translation)
-Use `choose ι hι using fun c => exists_int_image hU c`. Establish `inj : Function.Injective (algebraMap K'.O K'.E)` using `IsFractionRing.injective K'.O K'.E`. Set `f : K.O →+* K'.O` to `{ toFun := ι map_one' := inj (by rw [hι]; simp) map_mul' := fun x y => inj (by simp [hι]) map_zero' := inj (by rw [hι]; simp) map_add' := fun x y => inj (by simp [hι]) }`. Establish `hf : ∀ c, algebraMap K'.O K'.E (f c) = φ (algebraMap K.O K.E c)` using `hι`. Use `letI : Algebra K.O K'.O := f.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI iC : Algebra K'.O B.A := (overExt φ B ψ hψ hσ).aO`. Establish `hC : ∀ y : K'.O, algebraMap K'.O B.A y = ψ (algebraMap K'.O K'.E y)` using `fun _ => rfl`. Use `haveI : IsScalarTower K.O K'.O B.A := IsScalarTower.of_algebraMap_eq fun c => by`. Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A c, RingHom.algebraMap_toAlgebra, hC]`. Use `show _ = ψ (algebraMap K'.O K'.E (f c))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf, hψ]`. Use `show IsIntegral K'.O a ↔ IsIntegral K.O a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_integer_spanning_family_of_unramifiedExt K K' d φ hU`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : Module.Finite K.O K'.O := by`. Use `⟨⟨Finset.univ.image u, eq_top_iff.2 fun y _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hu y`. Establish `hy : y = ∑ i, c i • u i`. Apply `inj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, RingHom.algebraMap_toAlgebra, hf]`. Rewrite using `[hy]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
-
-Simplify using the standard rewrite rules. Use `haveI : Algebra.IsIntegral K.O K'.O := Algebra.IsIntegral.of_finite K.O K'.O`. Conclude with `isIntegral_trans (R := K.O) (A := K'.O) a h`. Introduce `h`. Conclude with `h.tower_top`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntegral_overExt_iff (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E) (hU : IsUnrExt K K' d φ) (B : InvAlg K)
     (ψ : K'.E →+* B.A) (hψ : ∀ e, ψ (φ e) = algebraMap K.E B.A e) (hσ : ∀ e, B.σ (ψ e) = ψ (K'.c e))

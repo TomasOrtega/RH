@@ -23,35 +23,35 @@ section Alg
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) {ι : Type} (w : ι → A.Pt → Ev n)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_add, Pi.add_apply, AddMemClass.coe_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem evalF_add' (P Q : MvPolynomial ι ℝ) : evalF A w (P + Q) = evalF A w P + evalF A w Q := by
   funext x
   simp only [evalF, fld, map_add, Pi.add_apply, AddMemClass.coe_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_mul, Pi.mul_apply, MulMemClass.coe_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem evalF_mul' (P Q : MvPolynomial ι ℝ) : evalF A w (P * Q) = evalF A w P * evalF A w Q := by
   funext x
   simp only [evalF, fld, map_mul, Pi.mul_apply, MulMemClass.coe_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_sub, Pi.sub_apply, AddSubgroupClass.coe_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem evalF_sub' (P Q : MvPolynomial ι ℝ) : evalF A w (P - Q) = evalF A w P - evalF A w Q := by
   funext x
   simp only [evalF, fld, map_sub, Pi.sub_apply, AddSubgroupClass.coe_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[evalF, fld]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem evalF_X' (i : ι) : evalF A w (X i) = fld A (w i) := by
   funext x
   simp [evalF, fld]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[evalF, fld, Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem evalF_C' (r : ℝ) : evalF A w (C r) = (r : ℂ) • (1 : A.Fld) := by
   funext x
@@ -59,7 +59,7 @@ theorem evalF_C' (r : ℝ) : evalF A w (C r) = (r : ℂ) • (1 : A.Fld) := by
   rfl
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r => simp [evalF_C']`. Consider the case `add P Q hP hQ => rw [map_add, evalF_add', evalF_add', hP, hQ]`. Consider the case `mul_X P i hP => rw [map_mul, evalF_mul', evalF_mul', hP, aeval_X, evalF_X', hs]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem evalF_aeval_self (s : ι → MvPolynomial ι ℝ) (hs : ∀ i, fld A (w i) = evalF A w (s i))
     (P : MvPolynomial ι ℝ) : evalF A w P = evalF A w (aeval s P) := by
@@ -80,7 +80,7 @@ variable {M M' : Type} [TopologicalSpace M] [TopologicalSpace M'] {n n' : ℕ} (
   {ι κ : Type} (w : ι → A.Pt → Ev n) (w' : κ → A'.Pt → Ev n')
 
 /- English proof (translation)
-Establish `hp` using `((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.2.2.2 M' n' A' f hf)`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r => rw [evalF_C', aeval_C, algebraMap_eq, evalF_C', (hp.2 (r : ℂ) 1 1).2.2.1, hp.1]`. Consider the case `add P Q hP hQ => rw [evalF_add', (hp.2 1 _ _).1, hP, hQ, map_add, evalF_add']`. Consider the case `mul_X P i hP => rw [evalF_mul', (hp.2 1 _ _).2.1, hP, evalF_X', hs, map_mul, aeval_X, evalF_mul']`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pullback_evalF (f : M' → M) (hf : A.IsHolo A' f) (s : ι → MvPolynomial κ ℝ)
     (hs : ∀ i, A.pullback A' f (fld A (w i)) = evalF A' w' (s i)) (P : MvPolynomial ι ℝ) :
@@ -98,11 +98,11 @@ def subQ : Fin 5 → MvPolynomial (Fin 5) ℝ := ![X 0, X 3 + X 4 - X 0, X 2, X 
 def subB : Fin 5 → MvPolynomial (Fin 5) ℝ := ![X 4, X 3, X 2, X 3, X 4]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add P Q hP hQ`. Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `dvd_add hP hQ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X P i hP`. Establish `hi : (X 4 - X 0 : MvPolynomial (Fin 5) ℝ) ∣ subQ i - subB i` using `by fin_cases i`. Conclude with `⟨-1, by simp [subQ, subB]⟩`. Conclude with `⟨1, by simp [subQ, subB]; ring⟩`. Conclude with `⟨0, by simp [subQ, subB]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, by simp [subQ, subB]⟩`. Conclude with `⟨0, by simp [subQ, subB]⟩`. Rewrite using `[map_mul, map_mul, aeval_X, aeval_X, show aeval subQ P * subQ i - aeval subB P * subB i = (aeval subQ P - aeval subB P) * subQ i + aeval subB P * (subQ i - subB i) by ring]`. Conclude with `dvd_add (dvd_mul_of_dvd_left hP _) (dvd_mul_of_dvd_right hi _)`.
+Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_aeval_sub (P : MvPolynomial (Fin 5) ℝ) : (X 4 - X 0 : MvPolynomial (Fin 5) ℝ) ∣ aeval subQ P - aeval subB P := by
   induction P using MvPolynomial.induction_on with
@@ -128,7 +128,7 @@ end GlobalTheory.LogSinElim
 namespace GlobalTheory.LogSinElim
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[evalF, fld]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem evalF_one' {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) {ι : Type} (w : ι → A.Pt → Ev n) :
     evalF A w 1 = 1 := by
@@ -136,35 +136,27 @@ theorem evalF_one' {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n) 
   simp [evalF, fld]
 
 /- English proof (translation)
-Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv K _hK`. Use `haveI : CompactSpace (CxPts p σ) := CxPts.compactSpace σ hY.isProjOver`. Use `haveI : T2Space (CxPts p σ) := CxPts.t2Space_cxPts_of_isProjOver σ hY.isProjOver`. Use `haveI : SecondCountableTopology (CxPts p σ) := CxPts.secondCountableTopology_of_isProjOver σ hY.isProjOver`. Take `⟨hLY, hEY, -⟩` from `GlobalTheory.T.firstChern_form_properties k Y p (d + 1) hY σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hLB, hEB, hPB⟩` from `GlobalTheory.T.firstChern_form_properties k B q d hB σ`. Take `⟨hol, hc1pull, hEpull⟩` from `hPB Y p (d + 1) hY π w`. Establish `hrel` using `(hEpull E h H flB fl).2`. Establish `calcY` using `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ (d + 1) (hY.atlas σ)`. Establish `calcB` using `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ d (hB.atlas σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `lin` using `GlobalTheory.T.holAtlas_topFormIntegral_finite_additive_homogeneous _ (d + 1) (hY.atlas σ)`. Take `⟨hint, hfib⟩` from `GlobalTheory.T.flag_bundle_chern_integral_pull_fourth k B Y q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hpl` using `GlobalTheory.T.flag_bundle_chern_integral_pull_fifth k B Y q p d hB hY π w E h H flB fl hfl A σ v hv`. Establish `hglob` using `GlobalTheory.T.flag_bundle_chern_integral_pull_third k B Y q p d hB hY π w E h H flB fl hfl A σ`. Establish `hpb` using `calcB.2.2.2.2 _ (d + 1) (hY.atlas σ) _ hol`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w5 : Fin 5 → (hY.atlas σ).Pt → Ev (d + 1) := fun i => c1F hY σ (fam5 π w H flB fl A i) with hw5`. Set `wB : Fin 5 → (hB.atlas σ).Pt → Ev d` to `![c1F hB σ (VMetric.grLB flB 1 H), c1F hB σ (VMetric.grLB flB 0 H), c1F hB σ A, c1F hB σ (VMetric.grLB flB 0 H), c1F hB σ (VMetric.grLB flB 1 H)]`. Establish `f5 : ∀ i, (hY.atlas σ).IsForm (fld _ (w5 i))` using `fun i => (hLY (fam5 π w H flB fl A i) (fam5 π w H flB fl A i)).1.1`. Establish `fB : ∀ i, (hB.atlas σ).IsForm (fld _ (wB i))`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fin_cases i`. Use `exacts [(hLB _ A).1.1, (hLB _ A).1.1, (hLB _ A).1.1, (hLB _ A).1.1, (hLB _ A).1.1]`. Establish `ev5 : ∀ P, (hY.atlas σ).IsForm (evalF _ w5 P)` using `fun P => (calcY.2.2.2.1 (Fin 5) w5 P f5).1`. Establish `evB : ∀ P, (hB.atlas σ).IsForm (evalF _ wB P)` using `fun P => (calcB.2.2.2.1 (Fin 5) wB P fB).1`. Establish `hωY : (hY.atlas σ).IsForm (fld _ (omF hY σ (h.pull π w) fl))` using `(hEY _ (h.pull π w) (H.pull π w) fl fl).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hωB : (hB.atlas σ).IsForm (fld _ (omF hB σ h flB))` using `(hEB E h H flB flB).1.1`. Establish `hmulY : ∀ α β, (hY.atlas σ).IsForm α → (hY.atlas σ).IsForm β → (hY.atlas σ).IsForm (α * β)` using `fun α β hα hβ => (calcY.2.1 1 α β hα hβ).2.1`. Establish `hmulB : ∀ α β, (hB.atlas σ).IsForm α → (hB.atlas σ).IsForm β → (hB.atlas σ).IsForm (α * β)` using `fun α β hα hβ => (calcB.2.1 1 α β hα hβ).2.1`. Establish `hpω : (hY.atlas σ).IsForm (pullF hB hY σ π w (fld _ (omF hB σ h flB)))` using `((hpb.2 1 _ 1).2.2.2 hωB).1`. Establish `intAdd : ∀ α β, (hY.atlas σ).IsForm α → (hY.atlas σ).IsForm β → (hY.atlas σ).integral (α + β) = (hY.atlas σ).integral α + (hY.atlas σ).integral β`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α β hα hβ`. Rewrite using `[← wInt_one, ← wInt_one, ← wInt_one]`. Conclude with `(lin.2.1 (fun _ => 1) α β hα hβ (fun ε => by haveI := lin.1 α hα ε; exact integrable_const _) (fun ε => by haveI := lin.1 β hβ ε; exact integrable_const _)).2`. Establish `hrel' : ∀ x, w5 1 x = w5 3 x + w5 4 x - w5 0 x` using `fun x => by`. Establish `e : w5 0 x + w5 1 x = w5 3 x + w5 4 x` using `congrFun hrel x`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eq_sub_of_add_eq' e`. Establish `hsQ : ∀ i, fld _ (w5 i) = evalF (hY.atlas σ) w5 (subQ i)`. Introduce `i`. Use `fin_cases i`. Conclude with `(evalF_X' _ w5 0).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show fld _ (w5 1) = evalF _ w5 (X 3 + X 4 - X 0)`. Rewrite using `[evalF_sub', evalF_add', evalF_X', evalF_X', evalF_X']`. Use function extensionality and compare the values at `x`. Simplify using `only [fld, Pi.add_apply, Pi.sub_apply, hrel' x, AddSubgroupClass.coe_sub, AddMemClass.coe_add]`. Conclude with `(evalF_X' _ w5 2).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(evalF_X' _ w5 3).symm`. Conclude with `(evalF_X' _ w5 4).symm`. Establish `hsB : ∀ i, pullF hB hY σ π w (fld _ (wB i)) = evalF (hY.atlas σ) w5 (subB i)`. Introduce `i`. Use `fin_cases i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Conclude with `(hc1pull (VMetric.grLB flB 1 H)).symm.trans (evalF_X' _ w5 4).symm`. Conclude with `(hc1pull (VMetric.grLB flB 0 H)).symm.trans (evalF_X' _ w5 3).symm`. Conclude with `(hc1pull A).symm.trans (evalF_X' _ w5 2).symm`. Conclude with `(hc1pull (VMetric.grLB flB 0 H)).symm.trans (evalF_X' _ w5 3).symm`. Conclude with `(hc1pull (VMetric.grLB flB 1 H)).symm.trans (evalF_X' _ w5 4).symm`.
-
-Establish `hφ : pullF hB hY σ π w (evalF _ wB K) = evalF _ w5 (aeval subB K)` using `pullback_evalF _ _ wB w5 _ hol subB hsB K`. Take `⟨K1, hK1⟩` from `dvd_aeval_sub K`. Establish `hKs : evalF _ w5 K = evalF _ w5 ((X 4 - X 0) * K1) + evalF _ w5 (aeval subB K)`. Rewrite using `[evalF_aeval_self _ w5 subQ hsQ K, ← evalF_add', ← hK1, sub_add_cancel]`. Establish `hXK : evalF _ w5 ((X 0 - X 3) * K) = evalF _ w5 ((X 0 - X 3) * ((X 4 - X 0) * K1)) + evalF _ w5 (X 0 - X 3) * pullF hB hY σ π w (evalF _ wB K)`.
-
-Rewrite using `[evalF_mul', hKs, mul_add, ← evalF_mul', hφ]`. Establish `e1` using `hfib _ (evB K)`. Establish `e2` using `(hglob _ (evB K) 0).2`. Establish `e3` using `(hglob _ (hmulB _ _ hωB (evB K)) 0).1`. Establish `hs0 : hs 0 = 1` using `by simp [hs]`.
-
-Rewrite `e2` using `[hs0, map_one, evalF_one', pow_zero, mul_one, one_mul]`. Establish `hpm : ∀ α β, pullF hB hY σ π w (α * β) = pullF hB hY σ π w α * pullF hB hY σ π w β` using `fun α β => (hpb.2 1 α β).2.1`. Rewrite `e3` using `[pow_zero, one_mul, hpm]`. Evaluate the numerical expressions using `at e2`. Establish `hpF : (hY.atlas σ).IsForm (pullF hB hY σ π w (evalF _ wB K))` using `((hpb.2 1 _ 1).2.2.2 (evB K)).1`.
-
-Establish `eA` using `(lin.2.1 (fun y => Real.log (1 - v y) / 2) _ _ (ev5 ((X 0 - X 3) * ((X 4 - X 0) * K1))) (hmulY _ _ (ev5 (X 0 - X 3)) hpF) (hint _ (ev5 _)) (hint _ (hmulY _ _ (ev5 (X 0 - X 3)) hpF))).2`. Establish `eK1` using `hpl K1`. Rewrite using `[hXK, eA, eK1, hKs, mul_add, mul_add, intAdd _ _ (hmulY _ _ hωY (ev5 _)) (hmulY _ _ hωY (ev5 _)), intAdd _ _ (hmulY _ _ hpω (ev5 _)) (hmulY _ _ hpω (ev5 _)), ← hφ, e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem logSin_elim : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)

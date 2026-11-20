@@ -7,11 +7,11 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun hh j) j`. Rewrite `h1` using `[Matrix.mul_apply]`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at h1`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `have : ((if ε j then (1 : ℝ) else -1 : ℝ) : ℂ) = if ε j then (1 : ℂ) else -1 := by split_ifs <;> simp`. Rewrite using `[this, ← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h2 : ((‖h i j‖ : ℝ) : ℂ) ^ 2 = star (h i j) * h i j`. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uJ_col_sum {n : ℕ} (ε : Fin n → Bool) (h : Matrix (Fin n) (Fin n) ℂ) (hh : inUJ ε h)
     (j : Fin n) :
@@ -31,11 +31,11 @@ theorem uJ_col_sum {n : ℕ} (ε : Fin n → Bool) (h : Matrix (Fin n) (Fin n) �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1` using `(uJInv n ε h hh).1`. Establish `hJ : Jm ε * Jm ε = 1`. Simplify using `only [Jm, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `inUJ`. Rewrite using `[Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc, hJ, Matrix.mul_one]`. Use `_ = Jm ε := by rw [h1, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uJ_conjTranspose {n : ℕ} (ε : Fin n → Bool) (h : Matrix (Fin n) (Fin n) ℂ)
     (hh : inUJ ε h) : inUJ ε hᴴ := by
@@ -53,17 +53,15 @@ theorem uJ_conjTranspose {n : ℕ} (ε : Fin n → Bool) (h : Matrix (Fin n) (Fi
     _ = Jm ε := by rw [h1, Matrix.one_mul]
 
 /- English proof (translation)
-Use `set e : Fin n → ℝ := fun i => if ε i then (1 : ℝ) else -1 with he`. Use `set σ : ℝ := if s then (1 : ℝ) else -1 with hσ`. Establish `hc : ∀ j, ∑ i, e i * ‖h i j‖ ^ 2 = e j` using `uJ_col_sum ε h hh`. Establish `hr : ∀ i, ∑ j, e j * ‖h i j‖ ^ 2 = e i` using `fun i => by`. Use `uJ_col_sum ε hᴴ (uJ_conjTranspose ε h hh) i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [Matrix.conjTranspose_apply, norm_star]`. Establish `hee : ∀ i, e i * e i = 1` using `fun i => by`. Apply the tactic sequence `simp only [he]; split_ifs <;> simp`. Establish `A : ∑ i, ∑ j, e i * (e j * ‖h i j‖ ^ 2) = n`. Simplify using `only [← Finset.mul_sum, hr, hee]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `B : ∑ i, ∑ j, e j * ‖h i j‖ ^ 2 = ∑ i, ∑ j, e i * ‖h i j‖ ^ 2`. Rewrite using `[Finset.sum_comm (f := fun i j => e i * ‖h i j‖ ^ 2)]`. Simplify using `only [hr, hc]`. Establish `C : ∑ i, ∑ j, (‖h i j‖ ^ 2 - e i * (e j * ‖h i j‖ ^ 2) + σ * (e j * ‖h i j‖ ^ 2) - σ * (e i * ‖h i j‖ ^ 2)) ≤ ∑ i, ∑ j, 4 * (if ε j = s then ‖h i j‖ ^ 2 else 0)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ ‖h i j‖ ^ 2` using `by positivity`. Simplify using `only [he, hσ]`. Apply the tactic sequence `cases ε i <;> cases ε j <;> cases s <;> simp <;> linarith`. Establish `D : ∑ i, ∑ j, σ * (e j * ‖h i j‖ ^ 2) = ∑ i, ∑ j, σ * (e i * ‖h i j‖ ^ 2)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (σ * ·) B` as an intermediate fact. Simplify `this` using `only [Finset.mul_sum]`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib] at C`. Rewrite `C` using `[A, D]`. Simplify using `only [Finset.sum_filter, Finset.mul_sum, hs]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hs_le_of_cols (n : ℕ) (ε : Fin n → Bool) (s : Bool) (h : Matrix (Fin n) (Fin n) ℂ)
     (hh : inUJ ε h) :

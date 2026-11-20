@@ -18,29 +18,27 @@ open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.Cus
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Take `⟨⟨ι, hι⟩, hemb⟩` from `embEx (2 + 2) w hw`. Take `⟨-, hc1, hc2, -, -, hlev⟩` from `hemb ι hι`. Establish `hcf1 : ∀ v : Pl K, GM.cf v (1 : FA K (2 + 2)) = 1`. Introduce `v`. Distinguish the cases in `hv : v ∈ im w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`. Establish `h` using `hc1 1 i`. Rewrite `h` using `[map_one]`. Then use the resulting hypothesis. Establish `h` using `hc2 1 v hv`. Rewrite `h` using `[map_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hinU : ∀ u ∈ Subgroup.pi Set.univ (fun i => U (w i)), ι u ∈ levOn (im w) U` using `fun u hu => (hlev U _).2 ⟨u, 1, (mul_one _).symm, fun i => hu i trivial, fun i => hcf1 _, fun v => by rw [hcf1]; exact one_mem _⟩`. Take `⟨-, hfl, hinj, -⟩` from `secTr μ₂ τ₁ τ₂ κ e hA.idem`. Take `⟨hZ, hZ'⟩` from `zMem μ₂ τ₁ τ₂ κ e hA.idem`. Establish `hle` using `(levLaws (2 + 2) (im w)).1`. Establish `hsimple` using `zSimple μ₂ τ₁ τ₂ κ e κ₂ p₁ p₂ k₀ hP hA w ι hw hι`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex` using `(heckeEx K μ μ₂ τ₁ τ₂ hP κ e hA.idem (im w) U hU D hD d A).1`. Set `Φ : Eu d →ₗ[ℂ] (G1 K (2 + 2) → ℂ)` to `{ toFun := fun v => flat 0 (A.sec v) map_add' := fun a b => by funext x; simp [flat, mul_add] map_smul' := fun c a => by funext x; simp [flat, mul_left_comm] }`. Establish `hΦ : ∀ v, Φ v = flat 0 (A.sec v)` using `fun _ => rfl`. Establish `hΦinj : Function.Injective Φ` using `fun a b h => A.inj (hinj _ _ h)`. Establish `hsec : ∀ v, IsSec τ₁ τ₂ (A.sec v) ∧ FixA κ e (A.sec v) ∧ FixF (levOn (im w) U) (A.sec v)` using `fun v => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `(A.onto _).1 (LinearMap.mem_range_self A.sec v)`. Conclude with `⟨h1, (hD.fix _ h1.cont).1 h2⟩`. Establish `hfixΦ : ∀ v, FixF (levOn (im w) U) (Φ v)` using `fun v => ((hfl _ (hsec v).1.cont).2 _ (hle U hU).2).2 (hsec v).2.2`. Establish `hmem : ∀ v, Φ v ∈ Zs τ₁ τ₂ κ e (im w)` using `fun v => (hZ _ _).2 ⟨_, (hsec v).1, (hsec v).2.1, ⟨U, hU, (hsec v).2.2⟩, rfl⟩`. Establish `hCO : ∀ i, CO (U (w i))` using `fun i => (hU (w i)).1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCOpi : CO (Subgroup.pi Set.univ fun i => U (w i))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_pi]`. Conclude with `isCompact_univ_pi fun i => (hCO i).1`. Rewrite using `[Subgroup.coe_pi]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isOpen_set_pi Set.finite_univ fun i _ => (hCO i).2`. Establish `hrS : ∀ g (φ : G1 K (2 + 2) → ℂ) x, rS ι g φ x = φ (x * fin1 (ι g))` using `fun _ _ _ => rfl`. Establish `hQfix : ∀ φ ∈ P.map Φ, ∀ u ∈ Subgroup.pi Set.univ fun i => U (w i), rS ι u φ = φ`. Introduce and unpack `_ ⟨v, -, rfl⟩ u hu`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrS]`. Conclude with `hfixΦ v _ (hinU u hu) x`. Establish `hQhop : ∀ g, ∀ φ ∈ P.map Φ, hopR (rS ι) (Subgroup.pi Set.univ fun i => U (w i)) g φ ∈ P.map Φ`. Use `hopProd (rS ι) (fun i => U (w i)) (P.map Φ) hCO hQfix ?_` and prove the remaining obligations. Introduce and unpack `i g _ ⟨v, hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨M, hM, -⟩` from `hex (AdelicGLn.localEmbedding (w i) g)`. Use `⟨M v, hst (w i) (Finset.mem_image_of_mem _ (Finset.mem_univ i)) g M hM v hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← hopEmb (2 + 2) w ι hw hι U hU _ (hfixΦ v), hι i g]`. Conclude with `hM v`. Break down `heckeSimple (rS ι) (Zs τ₁ τ₂ κ e (im w)) _ hCOpi hsimple (fun φ hφ => (hZ' w ι hw hι φ hφ).1) (P.map Φ) (by rintro _ ⟨v, -, rfl⟩; exact hmem v) hQfix hQhop with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `left`. Use `(Submodule.eq_bot_iff _).2 fun v hv => hΦinj ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(Submodule.eq_bot_iff _).1 h _ ⟨v, hv, rfl⟩`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `Submodule.eq_top_iff'.2 fun v => ?_` and prove the remaining obligations. Establish `hv : ∀ u ∈ Subgroup.pi Set.univ fun i => U (w i), rS ι u (Φ v) = Φ v`. Introduce `u hu`. Use function extensionality and compare the values at `x`. Rewrite using `[hrS]`.
-
-Conclude with `hfixΦ v _ (hinU u hu) x`. Take `⟨v', hv', he⟩` from `h _ (hmem v) hv`. Rewrite using `[← hΦinj he]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.irreducible_cuspidal_weight_component {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2)))
     [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (hP : Pair μ₂ τ₁ τ₂)
@@ -114,9 +112,9 @@ private theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.irreducible_
     rwa [← hΦinj he]
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hP κ e κ₂ p₁ p₂ k₀ hA S U hU D hD d A P hst`. Choose the witnesses or unpack the hypotheses as in `⟨r, w, hw, rfl⟩ : ∃ (r : ℕ) (w : Fin r → Pl K), Function.Injective w ∧ S = im w := by`. Use `⟨S.card, fun i => (S.equivFin.symm i : Pl K), fun a b h => S.equivFin.symm.injective (Subtype.ext h), ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun hv => ⟨S.equivFin ⟨v, hv⟩, by simp⟩, fun ⟨i, hi⟩ => hi ▸ (S.equivFin.symm i).2⟩`. Conclude with `irreducible_cuspidal_weight_component μ μ₂ τ₁ τ₂ hP hA w hw U hU D hD d A P hst`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.irrW :
     UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.IrrW := by

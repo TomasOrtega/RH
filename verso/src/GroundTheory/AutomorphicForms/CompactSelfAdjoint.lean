@@ -11,7 +11,7 @@ variable {𝕜 : Type*} [RCLike 𝕜] {E : Type*} [NormedAddCommGroup E] [InnerP
 local notation "⟪" x ", " y "⟫" => inner 𝕜 x y
 
 /- English proof (translation)
-Set `f : {i | v i ∈ W} → W` to `fun i => ⟨v i, i.2⟩`. Establish `hf : LinearIndependent 𝕜 f`. Apply `LinearIndependent.of_comp W.subtype` to reduce the goal to its premises. Conclude with `hv.linearIndependent.comp _ Subtype.val_injective`. Conclude with `Set.finite_coe_iff.1 hf.finite_of_isNoetherian`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem finite_setOf_mem_of_orthonormal {ι : Type*} {v : ι → E} (hv : Orthonormal 𝕜 v)
     (W : Submodule 𝕜 E) [FiniteDimensional 𝕜 W] : {i | v i ∈ W}.Finite := by
@@ -22,7 +22,7 @@ theorem finite_setOf_mem_of_orthonormal {ι : Type*} {v : ι → E} (hv : Orthon
   exact Set.finite_coe_iff.1 hf.finite_of_isNoetherian
 
 /- English proof (translation)
-Establish `: (eigenspace (T : E →ₗ[𝕜] E) μ : Set E) = (T - μ • ContinuousLinearMap.id 𝕜 E) ⁻¹' {0}`. Use extensionality with `x`. Simplify using `[sub_eq_zero]`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage (map_continuous _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_eigenspace (T : E →L[𝕜] E) (μ : 𝕜) :
     IsClosed (eigenspace (T : E →ₗ[𝕜] E) μ : Set E) := by
@@ -38,17 +38,15 @@ section HilbertBasis
 variable [CompleteSpace E]
 
 /- English proof (translation)
-Establish `: ∀ a, CompleteSpace (W a)` using `fun a => completeSpace_coe_iff_isComplete.2 (hc a).isComplete`. Use `choose w b hb using fun a => exists_hilbertBasis 𝕜 (W a)`. Set `v : (Σ a, w a) → E` to `fun p => ((p.2 : W p.1) : E)`. Establish `hv : Orthonormal 𝕜 v` using `hW.orthonormal_sigma_orthonormal (v_family := fun a => ((↑) : w a → W a)) (fun a => by rw [← hb a]; exact (b a).orthonormal)`. Establish `hkey : ∀ a, (W a : Set E) ⊆ closure (span 𝕜 (Set.range v) : Set E)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a y hy`. Set `y' : W a` to `⟨y, hy⟩`. Establish `h` using `(W a).subtypeL.hasSum ((b a).hasSum_repr y')`. Use `mem_closure_of_tendsto h (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul]`. Use `Submodule.smul_mem _ _ (subset_span ⟨⟨a, i⟩, ?_⟩)` and prove the remaining obligations. Simplify using `[v, hb a]`. Establish `hle : (⨆ a, W a) ≤ (span 𝕜 (Set.range v))ᗮᗮ`. Rewrite using `[Submodule.orthogonal_orthogonal_eq_closure, iSup_le_iff]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a y hy`. Rewrite using `[← SetLike.mem_coe, Submodule.topologicalClosure_coe]`. Conclude with `hkey a hy`. Establish `hspan : (span 𝕜 (Set.range v))ᗮ = ⊥`. Rewrite using `[eq_bot_iff, ← hbot, ← Submodule.triorthogonal_eq_orthogonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.orthogonal_le hle`. Establish `hinj : Function.Injective v` using `hv.linearIndependent.injective`. Establish `hv' : Orthonormal 𝕜 ((↑) : Set.range v → E)` using `(orthonormal_subtype_range hinj).2 hv`. Establish `hspan' : (span 𝕜 (Set.range ((↑) : Set.range v → E)))ᗮ = ⊥`. Rewrite using `[Subtype.range_coe]` and apply the resulting hypothesis.
-
-Use `⟨Set.range v, HilbertBasis.mkOfOrthogonalEqBot hv' hspan', HilbertBasis.coe_mkOfOrthogonalEqBot hv' hspan', ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `Set.mem_iUnion.2 ⟨p.1, (p.2 : W p.1).2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_hilbertBasis_subset_iUnion {α : Type*} (W : α → Submodule 𝕜 E)
     (hW : OrthogonalFamily 𝕜 (fun a => W a) fun a => (W a).subtypeₗᵢ)
@@ -95,9 +93,9 @@ section Spectrum
 variable {T : E →L[𝕜] E}
 
 /- English proof (translation)
-Rewrite using `[spectrum.zero_mem_iff]`. Introduce and unpack `⟨u, hu⟩`. Apply `hE` to reduce the goal to its premises. Establish `h : (⇑(↑u⁻¹ : E →L[𝕜] E) ∘ ⇑T) = id`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg (fun g : E →L[𝕜] E => g x) u.inv_mul` as an intermediate fact. Simplify `this` using `[hu]`. Establish `hc` using `hT.clm_comp (↑u⁻¹ : E →L[𝕜] E)`. Rewrite `hc` using `[h]`. Conclude with `isCompactOperator_id_iff_finiteDimensional.1 hc`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_mem_spectrum (hT : IsCompactOperator T) (hE : ¬ FiniteDimensional 𝕜 E) :
     (0 : 𝕜) ∈ spectrum 𝕜 T := by
@@ -115,7 +113,7 @@ theorem zero_mem_spectrum (hT : IsCompactOperator T) (hE : ¬ FiniteDimensional 
 variable [CompleteSpace E]
 
 /- English proof (translation)
-The claim follows from `RCLike.conj_eq_iff_real.1 ((ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 hT').conj_eigenvalue_eq_self hμ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_real_of_hasEigenvalue (hT' : IsSelfAdjoint T) {μ : 𝕜}
     (hμ : HasEigenvalue (T : E →ₗ[𝕜] E) μ) : ∃ r : ℝ, μ = r :=
@@ -123,19 +121,17 @@ theorem exists_real_of_hasEigenvalue (hT' : IsSelfAdjoint T) {μ : 𝕜}
     ((ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 hT').conj_eigenvalue_eq_self hμ)
 
 /- English proof (translation)
-Establish `hS` using `ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 hT'`. Assume the negation of the conclusion as `hinf`. Use `set S := {μ : 𝕜 | HasEigenvalue (T : E →ₗ[𝕜] E) μ ∧ ε ≤ ‖μ‖}`. Establish `: Infinite S` using `Set.infinite_coe_iff.2 hinf`. Set `f : ℕ ↪ S` to `Infinite.natEmbedding S`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hv : ∀ n, ∃ v : E, T v = ((f n : 𝕜)) • v ∧ ‖v‖ = 1`. Introduce `n`. Take `⟨v, hv1, hv2⟩` from `(f n).2.1.exists_hasEigenvector`. Use `⟨((‖v‖⁻¹ : ℝ) : 𝕜) • v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, show T v = (f n : 𝕜) • v from mem_eigenspace_iff.1 hv1, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, RCLike.norm_ofReal, abs_inv, abs_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 hv2)]`. Use `choose v hvT hvn using hv`. Take `⟨K, hK, hK'⟩` from `hT.image_closedBall_subset_compact 1`. Take `⟨y, -, ψ, hψ, hψy⟩` from `hK.tendsto_subseq (fun n => hK' ⟨v n, by simp [hvn], rfl⟩)`. Take `⟨N, hN⟩` from `Metric.cauchySeq_iff'.1 hψy.cauchySeq ε hε`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : dist (T (v (ψ (N + 1)))) (T (v (ψ N))) < ε` using `hN (N + 1) (Nat.le_succ N)`. Use `set a := ψ (N + 1)`. Use `set b := ψ N`. Establish `hne : (f a : 𝕜) ≠ f b`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `f.injective (Subtype.ext h)` as an intermediate fact. Conclude with `(hψ (Nat.lt_succ_self N)).ne this.symm`. Establish `horth : ⟪v a, v b⟫ = 0`. Use `hS.orthogonalFamily_eigenspaces hne ⟨v a, mem_eigenspace_iff.2 (hvT a)⟩ ⟨v b, mem_eigenspace_iff.2 (hvT b)⟩` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : ⟪T (v a), T (v b)⟫ = 0`. Rewrite using `[hvT, hvT, inner_smul_left, inner_smul_right, horth, mul_zero, mul_zero]`. Establish `hnx : ε ≤ ‖T (v a)‖`. Rewrite using `[hvT, norm_smul, hvn, mul_one]`. Conclude with `(f a).2.2`.
-
-Establish `hsq` using `norm_sub_sq (𝕜 := 𝕜) (T (v a)) (T (v b))`. Rewrite `hsq` using `[hx, map_zero, mul_zero, sub_zero]`. Rewrite `h1` using `[dist_eq_norm]`. Establish `h2 : 0 ≤ ‖T (v a) - T (v b)‖` using `norm_nonneg _`. Use polynomial arithmetic with `[sq_nonneg ‖T (v b)‖]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem finite_eigenvalues_norm_ge (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T) {ε : ℝ}
     (hε : 0 < ε) : {μ : 𝕜 | HasEigenvalue (T : E →ₗ[𝕜] E) μ ∧ ε ≤ ‖μ‖}.Finite := by
@@ -179,9 +175,9 @@ theorem finite_eigenvalues_norm_ge (hT : IsCompactOperator T) (hT' : IsSelfAdjoi
   nlinarith [sq_nonneg ‖T (v b)‖]
 
 /- English proof (translation)
-Establish `: {μ : 𝕜 | HasEigenvalue (T : E →ₗ[𝕜] E) μ} ⊆ {0} ∪ ⋃ n : ℕ, {μ : 𝕜 | HasEigenvalue (T : E →ₗ[𝕜] E) μ ∧ 1 / ((n : ℝ) + 1) ≤ ‖μ‖}`. Introduce `μ hμ`. Distinguish the cases in `h0 : μ = 0`. Conclude with `Or.inl h0`. Take `⟨n, hn⟩` from `exists_nat_one_div_lt (norm_pos_iff.2 h0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr (Set.mem_iUnion.2 ⟨n, hμ, hn.le⟩)`. Conclude with `((Set.countable_singleton 0).union (Set.countable_iUnion fun n => (finite_eigenvalues_norm_ge hT hT' (by positivity)).countable)).mono this`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem countable_eigenvalues (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T) :
     {μ : 𝕜 | HasEigenvalue (T : E →ₗ[𝕜] E) μ}.Countable := by
@@ -196,14 +192,14 @@ theorem countable_eigenvalues (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T)
     (finite_eigenvalues_norm_ge hT hT' (by positivity)).countable)).mono this
 
 /- English proof (translation)
-The claim follows from `(hT.hasEigenvalue_iff_mem_spectrum h0).2 hμ`.
+A detailed English derivation is pending.
 -/
 theorem hasEigenvalue_of_mem_spectrum (hT : IsCompactOperator T) {μ : 𝕜}
     (hμ : μ ∈ spectrum 𝕜 T) (h0 : μ ≠ 0) : HasEigenvalue (T : E →ₗ[𝕜] E) μ :=
   (hT.hasEigenvalue_iff_mem_spectrum h0).2 hμ
 
 /- English proof (translation)
-The claim follows from `(finite_eigenvalues_norm_ge hT hT' hε).subset fun _ hμ => ⟨hasEigenvalue_of_mem_spectrum hT hμ.1 (norm_pos_iff.1 (hε.trans_le hμ.2)), hμ.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_spectrum_norm_ge (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T) {ε : ℝ}
     (hε : 0 < ε) : {μ ∈ spectrum 𝕜 T | ε ≤ ‖μ‖}.Finite :=
@@ -211,7 +207,7 @@ theorem finite_spectrum_norm_ge (hT : IsCompactOperator T) (hT' : IsSelfAdjoint 
     ⟨hasEigenvalue_of_mem_spectrum hT hμ.1 (norm_pos_iff.1 (hε.trans_le hμ.2)), hμ.2⟩
 
 /- English proof (translation)
-The claim follows from `((Set.countable_singleton 0).union (countable_eigenvalues hT hT')).mono fun μ hμ => by by_cases h0 : μ = 0 · exact Or.inl h0 · exact Or.inr (hasEigenvalue_of_mem_spectrum hT hμ h0)`.
+A detailed English derivation is pending.
 -/
 theorem countable_spectrum (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T) :
     (spectrum 𝕜 T).Countable :=
@@ -221,7 +217,7 @@ theorem countable_spectrum (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T) :
     · exact Or.inr (hasEigenvalue_of_mem_spectrum hT hμ h0)
 
 /- English proof (translation)
-Introduce `μ hμ`. Distinguish the cases in `h0 : μ = 0`. Conclude with `⟨0, by simp [h0]⟩`. Take `⟨r, hr⟩` from `exists_real_of_hasEigenvalue hT' (hasEigenvalue_of_mem_spectrum hT hμ h0)`. Conclude with `⟨r, hr.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem spectrum_subset_range_ofReal (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T) :
     spectrum 𝕜 T ⊆ Set.range ((↑) : ℝ → 𝕜) := by
@@ -232,11 +228,11 @@ theorem spectrum_subset_range_ofReal (hT : IsCompactOperator T) (hT' : IsSelfAdj
     exact ⟨r, hr.symm⟩
 
 /- English proof (translation)
-Establish `hμ' : 0 < ‖μ‖ / 2` using `by have := norm_pos_iff.2 hμ; positivity`. Use `set F := {ν ∈ spectrum 𝕜 T | ‖μ‖ / 2 ≤ ‖ν‖}`. Establish `hF : (F \ {μ}).Finite` using `(finite_spectrum_norm_ge hT hT' hμ').sdiff`. Establish `hopen : IsOpen ((F \ {μ})ᶜ ∩ Metric.ball μ (‖μ‖ / 2))` using `hF.isClosed.isOpen_compl.inter Metric.isOpen_ball`. Establish `hmem : μ ∈ (F \ {μ})ᶜ ∩ Metric.ball μ (‖μ‖ / 2)` using `⟨fun h => h.2 rfl, Metric.mem_ball_self hμ'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [inter_mem_nhdsWithin {μ}ᶜ (hopen.mem_nhds hmem)] with ν hν hνs`. Take `⟨hne, hF', hball⟩` from `hν`. Apply `hF'` to reduce the goal to its premises. Use `⟨⟨hνs, ?_⟩, hne⟩` and prove the remaining obligations. Rewrite `hball` using `[Metric.mem_ball, dist_eq_norm, norm_sub_rev]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `norm_sub_norm_le μ ν` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem eventually_notMem_spectrum (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T) {μ : 𝕜}
     (hμ : μ ≠ 0) : ∀ᶠ ν in 𝓝[≠] μ, ν ∉ spectrum 𝕜 T := by
@@ -262,11 +258,11 @@ section Eigenbasis
 variable [CompleteSpace E]
 
 /- English proof (translation)
-Establish `hS` using `ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 hT'`. Take `⟨s, b, hb, hs⟩` from `exists_hilbertBasis_subset_iUnion (fun μ => eigenspace (T : E →ₗ[𝕜] E) μ) hS.orthogonalFamily_eigenspaces (isClosed_eigenspace T) (ContinuousLinearMap.orthogonalComplement_iSup_eigenspaces_eq_bot hT hS)`. Use `⟨s, b, hb, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `Set.mem_iUnion.1 (hs hv)`. Establish `hv0 : v ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `b.orthonormal.1 ⟨v, hv⟩`. Rewrite `h` using `[hb]`. Introduce `h0`. Simplify using `[h0] at h`. Establish `hE : HasEigenvalue (T : E →ₗ[𝕜] E) μ` using `hasEigenvalue_of_hasEigenvector ⟨hμ, hv0⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `exists_real_of_hasEigenvalue hT' hE`. Conclude with `⟨r, by rw [← hr]; exact mem_eigenspace_iff.1 hμ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hilbertBasis_eigenvectors {T : E →L[𝕜] E} (hT : IsCompactOperator T)
     (hT' : IsSelfAdjoint T) :
@@ -288,13 +284,13 @@ theorem exists_hilbertBasis_eigenvectors {T : E →L[𝕜] E} (hT : IsCompactOpe
   exact ⟨r, by rw [← hr]; exact mem_eigenspace_iff.1 hμ⟩
 
 /- English proof (translation)
-Take `⟨s, b, hb, hs⟩` from `exists_hilbertBasis_eigenvectors hT hT'`. Use `choose l hl using fun i : s => hs i i.2`. Establish `hTb : ∀ i, T (b i) = (l i : 𝕜) • b i` using `fun i => by rw [hb]; exact hl i`. Use `⟨s, b, l, hb, hTb, fun x => ?_, fun ε hε => ?_⟩` and prove the remaining obligations. Establish `h` using `T.hasSum (b.hasSum_repr x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [map_smul, hTb, smul_smul, b.repr_apply_apply, mul_comm]`. Establish `hF` using `finite_eigenvalues_norm_ge hT hT' hε`. Establish `hsub : {i | ε ≤ |l i|} ⊆ ⋃ μ ∈ {μ : 𝕜 | HasEigenvalue (T : E →ₗ[𝕜] E) μ ∧ ε ≤ ‖μ‖}, {i | b i ∈ eigenspace (T : E →ₗ[𝕜] E) μ}`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hmem : b i ∈ eigenspace (T : E →ₗ[𝕜] E) (l i : 𝕜)` using `mem_eigenspace_iff.2 (hTb i)`. Establish `hne : b i ≠ 0` using `fun h => by simpa [h] using b.orthonormal.1 i`. Use `Set.mem_biUnion (x := (l i : 𝕜)) ⟨hasEigenvalue_of_hasEigenvector ⟨hmem, hne⟩, ?_⟩ hmem` and prove the remaining obligations. Simplify `hi` using `[RCLike.norm_ofReal]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hF.biUnion fun μ hμ => ?_).subset hsub` and prove the remaining obligations. Establish `hμ0 : μ ≠ 0` using `norm_pos_iff.1 (hε.trans_le hμ.2)`. Use `ContinuousLinearMap.finite_dimensional_eigenspace hT μ hμ0` as an intermediate fact. Conclude with `finite_setOf_mem_of_orthonormal b.orthonormal _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_hilbertBasis_eigenvectors_hasSum {T : E →L[𝕜] E} (hT : IsCompactOperator T)
     (hT' : IsSelfAdjoint T) :
@@ -325,39 +321,37 @@ theorem exists_hilbertBasis_eigenvectors_hasSum {T : E →L[𝕜] E} (hT : IsCom
     exact finite_setOf_mem_of_orthonormal b.orthonormal _
 
 /- English proof (translation)
-Use `set M := ⨆ χ : ι → 𝕜, ⨅ i, eigenspace (T i : E →ₗ[𝕜] E) (χ i) with hMdef`. Establish `hcomm : ∀ i j v, T j (T i v) = T i (T j v)` using `fun i j v => by`. Simplify using `using congrArg (fun g : E →L[𝕜] E => g v) (hC j i)`. Establish `hJinv : ∀ (χ : ι → 𝕜) i, ∀ v ∈ ⨅ j, eigenspace (T j : E →ₗ[𝕜] E) (χ j), T i v ∈ ⨅ j, eigenspace (T j : E →ₗ[𝕜] E) (χ j)`. Introduce `χ i v hv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hv`, the goal using `[Submodule.mem_iInf]`. Introduce `j`. Establish `h` using `mem_eigenspace_iff.1 (hv j)`. Simplify using `only [ContinuousLinearMap.coe_coe] at h`. Rewrite using `[mem_eigenspace_iff, ContinuousLinearMap.coe_coe, hcomm, h, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMinv : ∀ i, ∀ v ∈ M, T i v ∈ M`. Introduce `i v hv`. Use `Submodule.iSup_induction _ (motive := fun v => T i v ∈ M) hv (fun χ x hx => Submodule.mem_iSup_of_mem χ (hJinv χ i x hx)) (by simp) ?_` and prove the remaining obligations. Introduce `x y hx hy`. Simplify `add_mem hx hy` using `only [map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hNinv : ∀ i, ∀ v ∈ Mᗮ, T i v ∈ Mᗮ`. Introduce `i v hv`. Rewrite `hv`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Establish `h` using `hS i u v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.coe_coe] at h`. Rewrite using `[← h]`. Conclude with `hv _ (hMinv i u hu)`. Assume the negation of the conclusion as `hne`. It suffices to establish `h : ∃ w ∈ Mᗮ, w ≠ 0 ∧ w ∈ M by`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hwN, hw0, hwM⟩` from `h`. Establish `hw : w ∈ M ⊓ Mᗮ` using `⟨hwM, hwN⟩`. Rewrite `hw` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot]`. Conclude with `hw0 hw`. Distinguish the cases in `hz : ∀ i, ∀ v ∈ Mᗮ, T i v = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hwN, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Use `⟨w, hwN, hw0, Submodule.mem_iSup_of_mem (fun _ => 0) ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_iInf]`. Introduce `i`. Rewrite using `[mem_eigenspace_iff, ContinuousLinearMap.coe_coe, hz i w hwN, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `push Not at hz`. Take `⟨k, v, hvN, hvk⟩` from `hz`. Set `S : Mᗮ →L[𝕜] Mᗮ` to `(T k).restrict (hNinv k)`. Establish `hS_compact : IsCompactOperator S` using `(hT k).restrict' (hNinv k)`. Establish `hS_symm : (S : Mᗮ →ₗ[𝕜] Mᗮ).IsSymmetric` using `(hS k).restrict_invariant (hNinv k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hS0 : S ≠ 0`. Introduce `h`. Apply `hvk` to reduce the goal to its premises. Use `congrArg (fun g : Mᗮ →L[𝕜] Mᗮ => ((g ⟨v, hvN⟩ : Mᗮ) : E)) h` as an intermediate fact. Simplify `this` using `[S]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨μ, hμ, hμ0⟩ : ∃ μ, HasEigenvalue (S : Mᗮ →ₗ[𝕜] Mᗮ) μ ∧ μ ≠ 0 := by`. Assume the negation of the conclusion as `h'`. Use `push Not at h'`. Conclude with `hS0 ((ContinuousLinearMap.eq_zero_of_forall_hasEigenvalue_eq_zero hS_compact hS_symm).1 h')`. Take `⟨u, hu1, hu2⟩` from `hμ.exists_hasEigenvector`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huk : T k u = μ • (u : E)`. Use `congrArg Subtype.val (mem_eigenspace_iff.1 hu1)` as an intermediate fact. Simplify `this` using `[S]`. Use `set U : Submodule 𝕜 E := eigenspace (T k : E →ₗ[𝕜] E) μ ⊓ Mᗮ with hUdef`. Establish `: FiniteDimensional 𝕜 (eigenspace (T k : E →ₗ[𝕜] E) μ)` using `ContinuousLinearMap.finite_dimensional_eigenspace (hT k) μ hμ0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: FiniteDimensional 𝕜 U` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hUinv : ∀ i, ∀ x ∈ U, (T i : E →ₗ[𝕜] E) x ∈ U`. Introduce `i x hx`. Use `⟨?_, hNinv i x hx.2⟩` and prove the remaining obligations. Establish `h` using `mem_eigenspace_iff.1 hx.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [ContinuousLinearMap.coe_coe] at h`. Rewrite using `[SetLike.mem_coe, mem_eigenspace_iff, ContinuousLinearMap.coe_coe, ContinuousLinearMap.coe_coe, hcomm, h, map_smul]`. Set `R : ι → Module.End 𝕜 U` to `fun i => (T i : E →ₗ[𝕜] E).restrict (hUinv i)`. Establish `hRs : ∀ i, (R i).IsSymmetric` using `fun i => (hS i).restrict_invariant (hUinv i)`. Establish `hRc : Pairwise (Function.onFun Commute R)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j _`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Simplify using `[R, LinearMap.restrict_apply, hcomm]`. Establish `huU : (u : E) ∈ U` using `⟨mem_eigenspace_iff.2 (by simpa using huk), u.2⟩`. Establish `hUne : (⊤ : Submodule 𝕜 U) ≠ ⊥`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Establish `: (⟨u, huU⟩ : U) ∈ (⊥ : Submodule 𝕜 U)` using `h ▸ Submodule.mem_top`. Rewrite `this` using `[Submodule.mem_bot]`. Conclude with `hu2 (Subtype.ext (by simpa using congrArg Subtype.val this))`. Rewrite `hUne` using `[← LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hRs hRc, ne_eq, iSup_eq_bot]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `push Not at hUne`. Take `⟨χ, hχ⟩` from `hUne`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hχ`. Use `⟨w, w.2.2, fun h => hw0 (Subtype.ext h), Submodule.mem_iSup_of_mem χ ?_⟩` and prove the remaining obligations. Rewrite `hw`, the goal using `[Submodule.mem_iInf]`.
-
-Introduce `i`. Use `congrArg Subtype.val (mem_eigenspace_iff.1 (hw i))` as an intermediate fact. Rewrite using `[mem_eigenspace_iff]`. Simplify `this` using `[R, LinearMap.restrict_apply]`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_iSup_iInf_eigenspaces_eq_bot {ι : Type*} (T : ι → E →L[𝕜] E)
     (hT : ∀ i, IsCompactOperator (T i)) (hS : ∀ i, (T i : E →ₗ[𝕜] E).IsSymmetric)
@@ -454,13 +448,13 @@ theorem orthogonal_iSup_iInf_eigenspaces_eq_bot {ι : Type*} (T : ι → E →L[
   simpa [R, LinearMap.restrict_apply] using this
 
 /- English proof (translation)
-Establish `hS : ∀ i, (T i : E →ₗ[𝕜] E).IsSymmetric` using `fun i => ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 (hT' i)`. Set `J : (ι → 𝕜) → Submodule 𝕜 E` to `fun χ => ⨅ i, eigenspace (T i : E →ₗ[𝕜] E) (χ i)`. Establish `hJo : OrthogonalFamily 𝕜 (fun χ => J χ) fun χ => (J χ).subtypeₗᵢ` using `LinearMap.IsSymmetric.orthogonalFamily_iInf_eigenspaces (T := fun i => (T i : E →ₗ[𝕜] E)) hS`. Establish `hJc : ∀ χ, IsClosed (J χ : Set E)` using `fun χ => by`. Simplify using `only [J, Submodule.coe_iInf]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `isClosed_iInter fun i => isClosed_eigenspace (T i) (χ i)`. Take `⟨s, b, hb, hs⟩` from `exists_hilbertBasis_subset_iUnion J hJo hJc (orthogonal_iSup_iInf_eigenspaces_eq_bot T hT hS hC)`. Use `⟨s, b, hb, fun v hv i => ?_⟩` and prove the remaining obligations. Take `⟨χ, hχ⟩` from `Set.mem_iUnion.1 (hs hv)`. Establish `hmem : v ∈ eigenspace (T i : E →ₗ[𝕜] E) (χ i)` using `(Submodule.mem_iInf _).1 hχ i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv0 : v ≠ 0`. Establish `h` using `b.orthonormal.1 ⟨v, hv⟩`. Rewrite `h` using `[hb]`. Introduce `h0`. Simplify using `[h0] at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `exists_real_of_hasEigenvalue (hT' i) (hasEigenvalue_of_hasEigenvector ⟨hmem, hv0⟩)`. Conclude with `⟨r, by rw [← hr]; exact mem_eigenspace_iff.1 hmem⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hilbertBasis_common_eigenvectors {ι : Type*} (T : ι → E →L[𝕜] E)
     (hT : ∀ i, IsCompactOperator (T i)) (hT' : ∀ i, IsSelfAdjoint (T i))

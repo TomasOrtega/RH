@@ -16,7 +16,7 @@ def crd (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] :
   (Module.finBasis ℂ V).equivFun.trans (WithLp.linearEquiv 2 ℂ (Fin (Module.finrank ℂ V) → ℂ)).symm
 
 /- English proof (translation)
-Establish `h : ∀ i, Continuous fun g => (f (ρ g v)) i` using `fun i => hρ ((EuclideanSpace.proj i : EuclideanSpace ℂ ι →L[ℂ] ℂ).toLinearMap ∘ₗ f) v`. Conclude with `(PiLp.continuous_toLp 2 _).comp (continuous_pi h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_lin {ι : Type} [Fintype ι] (ρ : Representation ℂ G V)
     (hρ : ∀ (φ : V →ₗ[ℂ] ℂ) (v : V), Continuous fun g => φ (ρ g v))
@@ -31,7 +31,7 @@ def avgF (μ : Measure G) (ρ : Representation ℂ G V) (v w : V) : ℂ :=
   ∫ g, ⟪crd V (ρ g⁻¹ v), crd V (ρ g⁻¹ w)⟫_ℂ ∂μ
 
 /- English proof (translation)
-The claim follows from `(continuous_lin ρ hρ (crd V).toLinearMap v).comp continuous_inv`.
+A detailed English derivation is pending.
 -/
 theorem continuous_crd_inv (ρ : Representation ℂ G V)
     (hρ : ∀ (φ : V →ₗ[ℂ] ℂ) (v : V), Continuous fun g => φ (ρ g v)) (v : V) :
@@ -41,7 +41,7 @@ theorem continuous_crd_inv (ρ : Representation ℂ G V)
 variable [CompactSpace G]
 
 /- English proof (translation)
-The claim follows from `((continuous_crd_inv ρ hρ v).inner (continuous_crd_inv ρ hρ w)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_avg (μ : Measure G) [IsFiniteMeasure μ] (ρ : Representation ℂ G V)
     (hρ : ∀ (φ : V →ₗ[ℂ] ℂ) (v : V), Continuous fun g => φ (ρ g v)) (v w : V) :
@@ -50,7 +50,7 @@ theorem integrable_avg (μ : Measure G) [IsFiniteMeasure μ] (ρ : Representatio
     (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Rewrite using `[avgF, ← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/

@@ -20,19 +20,19 @@ variable {n d n₁ d₁ : ℕ} {Y : Spc F E n} {W : Spc F E d} {Y₁ : Spc F E n
   {L : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁)} {Λ : ∀ v : Pl F, Fl F v n d →ₗ[ℂ] Fl F v n₁ d₁}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, hf, φ, fun v => le v (a.1 v), a.2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_polData {f} (hf : f ∈ M.Pol B.ψ B.emb) {φ} (le : ∀ v, S v ≤ SB _) (a : admitted M S φ) : pure f φ ∈ PolData B M :=
   Submodule.subset_span ⟨f, hf, φ, fun v => le v (a.1 v), a.2, rfl⟩
 
 /- English proof (translation)
-Establish `one : ∀ Φ, om (1, 1) Φ = Φ` using `fun Φ => by rw [Prod.mk_one_one, map_one]; rfl`. Use `⟨pol, mapS, fac, fun f hf φ a h0 => funext fun h₁ => ?_, fun f hf φ a t h₁ m hl u hu h' => ?_⟩` and prove the remaining obligations. Take `⟨T, -, -, h3, h4⟩` from `comp f hf φ a`. Take `⟨m, hm⟩` from `ex h₁`. Use `h4 h₁ m hm 1` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h3 h0, one]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hC`. Take `⟨T, h1, h2, -, h4⟩` from `comp f hf φ a`. Take `⟨m', hm'⟩` from `ex h'`. Take `⟨l, hl'⟩` from `ex (h' * h₁)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k` using `law_par h1 h2 hl hu hm' hl'`. Establish `k2` using `h4 _ l hl' 1`. Rewrite `k2` using `[mul_one, one]`. Rewrite `k` using `[h4 h' m' hm', k2]`. Apply `mul_left_cancel₀ hC` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem br_of (ex : ∀ h₁ : UA σ W₁.J, ∃ m : UA σ W.J, IsLevi H' 1 h₁ m) (pol : ∀ f ∈ M.Pol B.ψ B.emb, L f ∈ M₁.Pol B.ψ B.emb)
     (mapS : ∀ v, ∀ x ∈ S v, Λ v x ∈ S₁ v)
@@ -61,9 +61,9 @@ theorem br_of (ex : ∀ h₁ : UA σ W₁.J, ∃ m : UA σ W.J, IsLevi H' 1 h₁
     rw [k]; ring
 
 /- English proof (translation)
-Introduce `φ a v₀`. Use `⟨1, fun v => Λ v (φ v), one_ne_zero, ⟨fun v => mapS v _ (a.1 v), a.2.mono fun v hv => by beta_reduce; rw [hv, (h.vac v).1]⟩, fun v => ⟨1, (one_smul _ _).symm⟩, fun f x hx => ?_⟩` and prove the remaining obligations. Establish `b` using `a.upd hx`. Rewrite using `[h.pure f _ (fun v => le v (b.1 v)) b.2, one_smul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `v`. Conclude with `Function.apply_update (fun v => Λ v) φ v₀ x v`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fac_ev {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁} (h : IsEvLoc M M₁ e L Λ) (le : ∀ v, S v ≤ SB _) (mapS : ∀ v, ∀ x ∈ S v, Λ v x ∈ S₁ v) :
     ∀ φ, admitted M S φ → ∀ v₀, ∃ (c : ℂ) (ψ : ∀ v, Fl F v n₁ d₁), c ≠ 0 ∧ admitted M₁ S₁ ψ ∧ (∀ v, ∃ a : ℂ, Λ v (φ v) = a • ψ v) ∧
@@ -78,13 +78,13 @@ theorem fac_ev {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁} (h : IsEvLoc M M₁ e L
   exact Function.apply_update (fun v => Λ v) φ v₀ x v
 
 /- English proof (translation)
-Introduce `φ a v₀`. Set `T : Finset (Pl F)` to `insert v₀ (T₀ ∪ (Filter.eventually_cofinite.1 a.2).toFinset)`. Establish `sub : T₀ ⊆ T` using `Finset.subset_union_left.trans (Finset.subset_insert _ _)`. Establish `off : ∀ v ∉ T, φ v = M.vac v` using `fun v hv => by_contra fun hn => hv (Finset.mem_insert_of_mem (Finset.mem_union_right _ ((Set.Finite.mem_toFinset _).2 hn)))`. Establish `pne : (∏ v ∈ T \ T₀, u v) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v hv => (hu v (Finset.mem_sdiff.1 hv).2).1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(∏ v ∈ T \ T₀, u v)⁻¹ * k, fun v => if v ∈ T then Λ v (φ v) else M₁.vac v, mul_ne_zero (inv_ne_zero pne) hk, ⟨fun v => ?_, T.eventually_cofinite_notMem.mono fun v hv => if_neg hv⟩, fun v => ?_, fun f x hx => ?_⟩` and prove the remaining obligations. Use `beta_reduce split_ifs with hT exacts [mapS v _ (a.1 v), hv v (off v hT ▸ a.1 v)]`. Distinguish the cases in `hT : v ∈ T`. Conclude with `⟨1, by beta_reduce; rw [if_pos hT, one_smul]⟩`. Conclude with `⟨u v, by beta_reduce; rw [if_neg hT, off v hT, (hu v fun h => hT (sub h)).2]⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `b` using `a.upd hx`. Use `h T sub f _ (fun v => le v (b.1 v)) fun v hv => by` as an intermediate fact. Rewrite using `[Function.update_of_ne (fun e : v = v₀ => hv (by rw [e]; exact Finset.mem_insert_self _ _)), off v hv]`. Rewrite using `[mul_smul, ← (inv_smul_smul₀ pne (Ev _)), this]`. Use `congr 3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Distinguish the cases in `e : v = v₀`. Substitute `e` using the available equality. Rewrite using `[Function.update_self, Function.update_self, if_pos (Finset.mem_insert_self _ _)]`. Rewrite using `[Function.update_of_ne e, Function.update_of_ne e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fac_cone {T₀ : Finset (Pl F)} {u : Pl F → ℂ} {k : ℂ} (hk : k ≠ 0) (hu : ∀ v ∉ T₀, u v ≠ 0 ∧ Λ v (M.vac v) = u v • M₁.vac v)
     (le : ∀ v, S v ≤ SB _) (mapS : ∀ v, ∀ x ∈ S v, Λ v x ∈ S₁ v) (hv : ∀ v, M.vac v ∈ S v → M₁.vac v ∈ S₁ v)
@@ -117,11 +117,11 @@ theorem fac_cone {T₀ : Finset (Pl F)} {u : Pl F → ℂ} {k : ℂ} (hk : k ≠
     · rw [Function.update_of_ne e, Function.update_of_ne e]
 
 /- English proof (translation)
-Use `⟨fun f hf => arch_slice (vac_ne g₁) g₁.std _ ?_, fun f₁ hf₁ => ?_⟩` and prove the remaining obligations. Establish `: e (pure f M.vac) ∈ PolData B M₁` using `hm ▸ Submodule.mem_map_of_mem (Submodule.subset_span ⟨f, hf, M.vac, vac_sb g, Eventually.of_forall fun _ => rfl, rfl⟩)`. Rewrite `this` using `[h.pure f _ (vac_sb g) (Eventually.of_forall fun _ => rfl)]`. Simplify using `only [(h.vac _).1] at this`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, hf, ψ, -, -, rfl⟩`. Conclude with `⟨f, hf, ψ, rfl⟩`. Use `Submodule.mem_map.1 (arch_slice (vac_ne g₁) g₁.std ((M.Pol B.ψ B.emb).map (L : _ →ₗ[ℂ] _)) ?_)` and prove the remaining obligations. Establish `: pure f₁ M₁.vac ∈ (PolData B M).map e` using `hm ▸ Submodule.subset_span ⟨f₁, hf₁, M₁.vac, vac_sb g₁, Eventually.of_forall fun _ => rfl, rfl⟩`. Rewrite `this` using `[PolData, Submodule.map_span]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨f, hf, ψ, h1, h2, rfl⟩, rfl⟩`. Conclude with `⟨L f, Submodule.mem_map_of_mem hf, _, h.pure f ψ h1 h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem ev_pol {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁} (h : IsEvLoc M M₁ e L Λ) (g : M.IsGood B.ψ) (g₁ : M₁.IsGood B.ψ)
     (hm : (PolData B M).map e = PolData B M₁) :
@@ -148,7 +148,7 @@ variable {P₁ : Type} [AddCommGroup P₁] [Module ℂ P₁] {Q₁ : Pl F → Ty
   {pi₁ : SInf F (Fin n₁ × Fin d₁) →ₗ[ℂ] P₁} {p₁ : ∀ v, Fl F v n₁ d₁ →ₗ[ℂ] Q₁ v}
 
 /- English proof (translation)
-Take `⟨f, hf, h0⟩` from `hi`. Use `choose x hx hx' using h1`. Apply the tactic sequence `refine ⟨f, hf, fun v => if h : v ∈ T then x v h else M.vac v, ⟨fun v => ?_, T.eventually_cofinite_notMem.mono fun v hv => dif_neg hv⟩, h0, fun v => ?_⟩ <;> dsimp only <;> split_ifs with h`. Use `exacts [hx v h, (h2 v h).1, hx' v h, (h2 v h).2]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pt_of (hi : ∃ f ∈ M.Pol B.ψ B.emb, pi₁ (L f) ≠ 0) (T : Finset (Pl F)) (h1 : ∀ v ∈ T, ∃ x ∈ S v, p₁ v (Λ v x) ≠ 0)
     (h2 : ∀ v ∉ T, M.vac v ∈ S v ∧ p₁ v (Λ v (M.vac v)) ≠ 0) : Pt B M S pi₁ p₁ L Λ := by
@@ -159,11 +159,11 @@ theorem pt_of (hi : ∃ f ∈ M.Pol B.ψ B.emb, pi₁ (L f) ≠ 0) (T : Finset (
   exacts [hx v h, (h2 v h).1, hx' v h, (h2 v h).2]
 
 /- English proof (translation)
-Take `⟨f₀, φ, a, h0⟩` from `nz`. Take `⟨h, hh⟩` from `Function.ne_iff.1 h0`. Take `⟨l, hl⟩` from `s₁.clm a h`. Take `⟨f, hf⟩` from `bump l (fun e => hh (by rw [← hl, e]; rfl)) fun g hg f f₁ ac => by`. Take `⟨T, hT, -⟩` from `H.op F E σ B _ _ _ _ M₁ _ _ om₁ _ _ _ _ hp g hg 1 uat_one`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(s₁.uniq f f₁ (T f)).1 _ ac (hT.2 f), hl, hl, ← s₁.arch a hT, H.unim F E σ B _ _ _ _ M₁ _ _ om₁ _ _ _ _ hp _ (admissible_pure_tensor_schwartz hp.good f ⟨fun v => s₁.le v (a.1 v), a.2⟩)]`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Establish `: (l.comp L : _ → ℂ) = fun _ => 0` using `(l.comp L).continuous.ext_on dn continuous_const fun g hg => by show l (L g) = 0`. Rewrite using `[hl, s₁.kill _ (pol g hg) φ a (Or.inl (hn g hg))]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `hf (congrFun this f)`.
+A detailed English derivation is pending.
 -/
 theorem bump_pt {χX χW : Chr F E} {r s r' s' : ℕ} (H : Hyp) (hp : IsPair B M₁ χX χW om₁ r s r' s') (s₁ : Side B M₁ om₁ pi₁ p₁ S₁)
     (dn : Dense (M.Pol B.ψ B.emb : Set (SInf F (Fin n × Fin d)))) (pol : ∀ f ∈ M.Pol B.ψ B.emb, L f ∈ M₁.Pol B.ψ B.emb)
@@ -186,11 +186,9 @@ theorem bump_pt {χX χW : Chr F E} {r s r' s' : ℕ} (H : Hyp) (hp : IsPair B M
   exact hf (congrFun this f)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Take `⟨𝓒, h1, h2⟩` from `s₁.cls`. Establish `: Φ ∈ 𝓒 ∧ M₁.I om₁ Φ = 0` using `by clear h0`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem Φ hΦ => obtain ⟨f, φ, a, rfl⟩ := h Φ hΦ`. Conclude with `⟨h1 f φ a, hn f φ a⟩`. Consider the case `zero => exact ⟨zero_mem _, I_zero _ _⟩`. Consider the case `add x y _ _ hx hy => exact ⟨add_mem hx.1 hy.1, funext fun g => by rw [h2 _ hx.1 _ hy.1, hx.2, hy.2]; simp⟩`. Consider the case `smul c x _ hx => exact ⟨𝓒.smul_mem _ hx.1, funext fun g => by rw [I_smul, hx.2]; simp⟩`.
-
-Conclude with `h0 this.2`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nz_pure (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) (𝓖 : Set (Fn F n₁ d₁)) (h : ∀ Φ ∈ 𝓖, ∃ (f : SInf F _) (φ : _), admitted M₁ S₁ φ ∧ Φ = pure f φ)
     {Φ} (hΦ : Φ ∈ Submodule.span ℂ 𝓖) (h0 : M₁.I om₁ Φ ≠ 0) : ∃ (f : SInf F _) (φ : _), admitted M₁ S₁ φ ∧ M₁.I om₁ (pure f φ) ≠ 0 := by
@@ -209,17 +207,17 @@ theorem nz_pure (s₁ : Side B M₁ om₁ pi₁ p₁ S₁) (𝓖 : Set (Fn F n�
 end Pt
 
 /- English proof (translation)
-Use extensionality with `f y`. Rewrite using `[a, b]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Use `congr 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `l`. Establish `hl : At (evI F) ((l.1 : AE F E) - 1)`. Use `l.2` as an intermediate fact. Generalize the expression as in `l.1 = x at this`. Proceed by induction on `this using Subgroup.closure_induction with`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `mem x hx => exact hx`. Consider the case `one => intro u _`. Simplify using the standard rewrite rules. Consider the case `mul x y _ _ hx hy`. Introduce `u hu`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ((x * y : (AE F E)ˣ) : AE F E) - 1 = ((x : AE F E) - 1) * y + ((y : AE F E) - 1)` using `by push_cast; ring`. Rewrite using `[e, smul_add, ← smul_mul_assoc, hx u hu, hy u hu]`. Simplify using the standard rewrite rules. Consider the case `inv x _ hx`. Introduce `u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ((x⁻¹ : (AE F E)ˣ) : AE F E) - 1 = -(((x : AE F E) - 1) * (x⁻¹ : (AE F E)ˣ))`. Rewrite using `[sub_mul, Units.mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, smul_neg, ← smul_mul_assoc, hx u hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ w (f₁ : SInf F _), Acts (evI F) (fun Φ => M.co.rho B.ψ w (om (k.1, 1) Φ)) f f₁ ↔ Acts (evI F) (fun Φ => M.co.rho B.ψ w (om' (k.1, 1) Φ)) f f₁` using `fun w f₁ => forall₂_congr fun r hr => by beta_reduce; rw [pres _ (uat_closure k.2.2) _ hr.2]`. Rewrite using `[hν _ hl]`. Simplify using `only [opI, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coneI_eq {om' : Rep σ Y W} {K : Subgroup (UA σ Y.J)} {m : LocMeas K} {ei L' : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁)}
     {u ν ν' z} (pres : ∀ g ∈ UAt σ Y (evI F), ∀ Φ ∈ schA F _, om (g, 1) Φ = om' (g, 1) Φ)
@@ -250,7 +248,7 @@ theorem coneI_eq {om' : Rep σ Y W} {K : Subgroup (UA σ Y.J)} {m : LocMeas K} {
   simp only [opI, e]
 
 /- English proof (translation)
-Use `congrArg (fun z => (k * c * ∏ v ∈ T, w v) • TensorProduct.map li (PiTensorProduct.map fun v : T => lf v) z) h` as an intermediate fact. Simplify using `only [map_sum, TensorProduct.map_tmul, PiTensorProduct.map_tprod, Finset.smul_sum] at this`. Simplify using `only [← TensorProduct.smul_tmul', this, MultilinearMap.map_smul_univ, TensorProduct.tmul_smul, smul_smul, Finset.prod_coe_sort T w]`. Conclude with `Finset.sum_congr rfl fun j _ => by congr 1; ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tens_step {T : Finset (Pl F)} {P P₁ : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup P₁] [Module ℂ P₁] {Q Q₁ : Pl F → Type}
     [∀ v, AddCommGroup (Q v)] [∀ v, Module ℂ (Q v)] [∀ v, AddCommGroup (Q₁ v)] [∀ v, Module ℂ (Q₁ v)] (li : P →ₗ[ℂ] P₁)

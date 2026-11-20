@@ -9,11 +9,11 @@ namespace GlobalTheory.TopSpan
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∑ p : P, ((ψ p⁻¹ : Kˣ) : K) • r h (r p f) = ((ψ h : Kˣ) : K) • ∑ p : P, ((ψ p⁻¹ : Kˣ) : K) • r p f`. Rewrite using `[Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun p => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, smul_smul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[_root_.mul_inv_rev, map_mul, map_inv, map_inv, ← Units.val_mul]`. Use `congr 1`. Rewrite using `[mul_comm, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[map_smul, map_sum, smul_comm]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_level (K : Type) [Field K] (V : Type) [AddCommGroup V] [Module K V] (G : Type) [Group G]
     (r : Representation K G V) (P : Subgroup G) [Fintype P] (ψ : P →* Kˣ) (f : V) (h : P) :
@@ -34,9 +34,9 @@ theorem avg_level (K : Type) [Field K] (V : Type) [AddCommGroup V] [Module K V] 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F b t f hf q hq h`. Establish `e : (R.B.R t).pres.extL (A.leftGroupActionRight t ((R.B.R t).act_tie.red q) f) = Bridge.g0Act (levEnv D.sp.X' R.βX (R.datXt t)).ch q ((R.B.R t).pres.extL f)` using `(R.B.R t).act_tie.act_eq ((R.B.R t).act_tie.red q) q rfl f`. Establish `hf' : A.leftGroupActionRight t ((R.B.R t).act_tie.red q) f = (((F.lvl b).ψ ⟨_, hq⟩ : D.what₂.LLˣ) : D.what₂.LL) • f` using `hf ⟨_, hq⟩`. Establish `e3` using `congrArg (R.B.R t).pres.extL hf'`. Establish `e4 : (R.B.R t).pres.extL ((((F.lvl b).ψ ⟨_, hq⟩ : D.what₂.LLˣ) : D.what₂.LL) • f) = D.what₂.embLL (((F.lvl b).ψ ⟨_, hq⟩ : D.what₂.LLˣ) : D.what₂.LL) • (R.B.R t).pres.extL f` using `map_smulₛₗ (R.B.R t).pres.extL _ f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e5` using `congrFun ((e4.symm.trans e3.symm).trans e) h`. Simplify using `only [Bridge.g0Act, Pi.smul_apply] at e5`. Establish `e7` using `congrArg (fun w => (((levEnv D.sp.X' R.βX (R.datXt t)).ch q : ℂˣ) : ℂ) • w) e5`. Simplify using `only [smul_smul, Units.mul_inv, one_smul] at e7`. Conclude with `e7.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jR_level : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (b : Bool) (t : T) (f : A.fam.amb.FR t), (∀ h : (F.lvl b).P, (A.fam.R t).r h f = (((F.lvl b).ψ h : D.what₂.LLˣ) : D.what₂.LL) • f) → ∀ (q : (levEnv D.sp.X' R.βX (R.datXt t)).Q) (hq : (R.B.R t).act_tie.red q ∈ (F.lvl b).P) (h : Bridge.Gf D.sp.X'), R.B.jR t f (h * q) = (((levEnv D.sp.X' R.βX (R.datXt t)).ch q : ℂ) * D.what₂.embLL (((F.lvl b).ψ ⟨_, hq⟩ : D.what₂.LLˣ) : D.what₂.LL)) • R.B.jR t f h := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F b t f hf q hq h

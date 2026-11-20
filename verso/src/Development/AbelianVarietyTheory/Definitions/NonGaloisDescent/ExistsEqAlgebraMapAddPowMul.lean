@@ -16,13 +16,11 @@ section Scalars
 variable (l e) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [CompleteSpace K]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(mem_invL_A_iff l).1 (mem_invL_A_of_E_mul l e hh (le_away _ _ hE))`. Establish `hbdd : BddAbove (Set.range fun n => ‖coeff n h‖)` using `⟨b, by rintro _ ⟨n, rfl⟩; exact hb n⟩`. Establish `hle (n : ℕ) : ‖coeff n h‖ ≤ ⨆ n, ‖coeff n h‖` using `le_ciSup hbdd n`. Establish `h1 : ⨆ n, ‖coeff n h‖ ≤ max 1 (‖(l : K)‖ * ⨆ n, ‖coeff n h‖)` using `ciSup_le fun n => by`. Establish `: coeff n h = coeff (n + e) (E K l e * h) + -(l * coeff (n + e) h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[coeff_E_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (hE _) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hle _) (norm_nonneg _)`. Introduce `n`. Use `(hle n).trans ?_` and prove the remaining obligations. Break down `le_max_iff.1 h1 with h2 | h2` into its components or cases. Conclude with `h2`.
-
-Use polynomial arithmetic with `[norm_l_lt_one (K := K) l]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mem_A_of_E_mul_mem {h : K⟦X⟧} (hh : h ∈ Rpi O K l e) (hE : E K l e * h ∈ A O K) :
     h ∈ A O K := by
@@ -43,7 +41,7 @@ theorem mem_A_of_E_mul_mem {h : K⟦X⟧} (hh : h ∈ Rpi O K l e) (hE : E K l e
   · nlinarith [norm_l_lt_one (K := K) l]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using hE`. Consider the case `succ m ih`. Use `ih (mem_A_of_E_mul_mem l e (mul_mem (pow_mem (E_mem l e _) m) hh) ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_succ']` and apply the resulting hypothesis.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_A_of_E_pow_mul_mem (m : ℕ) {h : K⟦X⟧} (hh : h ∈ Rpi O K l e)
     (hE : E K l e ^ m * h ∈ A O K) : h ∈ A O K := by
@@ -54,14 +52,14 @@ theorem mem_A_of_E_pow_mul_mem (m : ℕ) {h : K⟦X⟧} (hh : h ∈ Rpi O K l e)
     rwa [← mul_assoc, ← pow_succ']
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective _ (Submonoid.powers_le.2 (Ehat_mem_nonZeroDivisors O K l e))`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_AhatE_injective :
     Function.Injective (algebraMap (Ahat O K l e) (AhatE O K l e)) :=
   IsLocalization.injective _ (Submonoid.powers_le.2 (Ehat_mem_nonZeroDivisors O K l e))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', mul_assoc, hat_mul l e (E_mem l e _) (mul_mem (pow_mem (E_mem l e _) n) hf), ih, hat_E, pow_succ', map_mul, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_E_pow_mul (n : ℕ) {f : K⟦X⟧} (hf : f ∈ RpiE O K l e) :
     hat O l e (E K l e ^ n * f) = algebraMap _ _ (Ehat O K l e ^ n) * hat O l e f := by
@@ -72,16 +70,16 @@ theorem hat_E_pow_mul (n : ℕ) {f : K⟦X⟧} (hf : f ∈ RpiE O K l e) :
       hat_E, pow_succ', map_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← hat_add l e (sub_mem hf hg) hg, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_sub {f g : K⟦X⟧} (hf : f ∈ RpiE O K l e) (hg : g ∈ RpiE O K l e) :
     hat O l e (f - g) = hat O l e f - hat O l e g := by
   rw [eq_sub_iff_add_eq, ← hat_add l e (sub_mem hf hg) hg, sub_add_cancel]
 
 /- English proof (translation)
-Use `⟨fun ⟨x, hx⟩ => ?_, fun h => ⟨_, (hat_coe_Rpi l e ⟨f, h⟩).symm⟩⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `id hf`. Establish `h1 : toHat O K l e ⟨_, hn⟩ = Ehat O K l e ^ n * x` using `algebraMap_AhatE_injective l e (by`. Rewrite using `[← hat_coe_Rpi, map_mul, hx]`. Conclude with `hat_E_pow_mul l e n hf)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : AdicCompletion.evalₐ (idE O K l e) n (Ehat O K l e) = Ideal.Quotient.mk _ (EIn l e _)` using `AlgHom.commutes _ _`. Take `⟨h, hh, H⟩` from `(evalₐ_toHat_eq_iff l e n ⟨_, hn⟩ 0).1 (by`. Rewrite using `[h1, map_mul, map_pow, hE, ← map_pow, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n), zero_mul, map_zero])`. Establish `H' : E K l e ^ n * f = E K l e ^ n * h` using `by simpa using H`. Rewrite using `[((isUnit_E l e).pow n).mul_left_cancel H']` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hat_mem_range_iff {f : K⟦X⟧} (hf : f ∈ RpiE O K l e) :
     (∃ x : Ahat O K l e, algebraMap _ _ x = hat O l e f) ↔ f ∈ Rpi O K l e := by
@@ -99,9 +97,9 @@ theorem hat_mem_range_iff {f : K⟦X⟧} (hf : f ∈ RpiE O K l e) :
   rwa [((isUnit_E l e).pow n).mul_left_cancel H']
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (Ideal.span {s}) B n x)`. Establish `h : x - AdicCompletion.of (Ideal.span {s}) B g ∈ Ideal.span {s} ^ n • (⊤ : Submodule B (AdicCompletion (Ideal.span {s}) B))`. Rewrite using `[AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton _), LinearMap.mem_ker, map_sub, ← hg, sub_eq_zero]`. Both sides reduce to the same expression. Rewrite `h` using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x', -, hx'⟩` from `h`. Use `⟨g, x', ?_⟩` and prove the remaining obligations. Rewrite `hx'` using `[Algebra.smul_def, map_pow, eq_sub_iff_add_eq']`. Conclude with `hx'.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap_add_pow_mul {B : Type} [CommRing B] (s : B) (n : ℕ)
     (x : AdicCompletion (Ideal.span {s}) B) :
@@ -121,9 +119,9 @@ theorem exists_eq_algebraMap_add_pow_mul {B : Type} [CommRing B] (s : B) (n : �
   exact hx'.symm
 
 /- English proof (translation)
-Use `AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ _ (n + 1) (toHat O K l e f))`. Rewrite using `[dHat, evalₐ_complDer _ _ hg.symm, evalₐ_toHat_eq_iff]`. Take `⟨h, hh, H⟩` from `(evalₐ_toHat_eq_iff l e (n + 1) f g).1 hg.symm`. Use `⟨E K l e * PowerSeries.derivative K h + h * (((n + 1 : ℕ) : K⟦X⟧) * PowerSeries.derivative K (E K l e)), add_mem (mul_mem (E_mem l e _) (derivative_mem_R l hh)) (mul_mem hh (mul_mem (natCast_mem _ _) (derivative_mem_R l (E_mem l e _)))), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coe_derAl, ← map_sub, H, Derivation.leibniz, derivative_pow]`. Simplify using `only [smul_eq_mul, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem toHat_derivative (f : Rpi O K l e) :
     toHat O K l e ⟨_, derivative_mem_R l f.2⟩ = dHat O K l e (toHat O K l e f) := by
@@ -141,13 +139,13 @@ theorem toHat_derivative (f : Rpi O K l e) :
 
 omit [NormedAlgebra ℚ_[l] K] [NeZero e] [CompleteSpace K] in
 /- English proof (translation)
-The claim follows from `N_mem (derivative_mem_away _ (fun _ => derivative_mem_R l) hf)`.
+A detailed English derivation is pending.
 -/
 theorem N_mem_RpiE {f : K⟦X⟧} (hf : f ∈ RpiE O K l e) : N K f ∈ RpiE O K l e :=
   N_mem (derivative_mem_away _ (fun _ => derivative_mem_R l) hf)
 
 /- English proof (translation)
-Establish `hu : hat O l e (X : K⟦X⟧) = algebraMap _ _ (uhat O K l e)` using `(hat_coe_Rpi l e (uIn _)).trans (congrArg _ (toHat_eq_ofAl l e rfl))`. Rewrite using `[N_apply, hat_mul l e HasU.X_mem (le_away _ _ (derivative_mem_R l hf)), hu, hat_coe_Rpi l e ⟨f, hf⟩, hat_coe_Rpi l e ⟨_, derivative_mem_R l hf⟩, toHat_derivative l e ⟨f, hf⟩, NHatE, Derivation.smul_apply, dHatE_algebraMap, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_N_of_mem_Rpi {f : K⟦X⟧} (hf : f ∈ Rpi O K l e) :
     hat O l e (N K f) = NHatE O K l e (hat O l e f) := by
@@ -158,9 +156,9 @@ theorem hat_N_of_mem_Rpi {f : K⟦X⟧} (hf : f ∈ Rpi O K l e) :
     NHatE, Derivation.smul_apply, dHatE_algebraMap, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `id hf`. Establish `hE : E K l e ^ n ∈ Rpi O K l e` using `pow_mem (E_mem l e _) n`. Establish `hE' : E K l e ^ n ∈ RpiE O K l e` using `le_away _ _ hE`. Establish `h1` using `hat_N_of_mem_Rpi l e hn`. Rewrite `h1` using `[coe_EIn, Derivation.leibniz, smul_eq_mul, smul_eq_mul, hat_add l e (mul_mem hE' (N_mem_RpiE l e hf)) (mul_mem hf (N_mem_RpiE l e hE')), hat_mul l e hf (N_mem_RpiE l e hE'), hat_N_of_mem_Rpi l e hE, hat_mul l e hE' hf, Derivation.leibniz, smul_eq_mul, smul_eq_mul, add_left_inj, h …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((IsLocalization.Away.algebraMap_isUnit (Ehat O K l e)).pow n).mul_left_cancel h1`.
+A detailed English derivation is pending.
 -/
 theorem hat_N {f : K⟦X⟧} (hf : f ∈ RpiE O K l e) :
     hat O l e (N K f) = NHatE O K l e (hat O l e f) := by
@@ -183,18 +181,18 @@ def Ezpow (i : ℤ) : K⟦X⟧ := (((isUnit_E (K := K) l e).unit ^ i : K⟦X⟧�
 omit [IsUltrametricDist K] [CompleteSpace K]
 
 /- English proof (translation)
-Simplify using `[Ezpow]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem Ezpow_natCast (n : ℕ) : Ezpow K l e n = E K l e ^ n := by simp [Ezpow]
 
 /- English proof (translation)
-Simplify using `[Ezpow, _root_.zpow_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ezpow_add (i j : ℤ) : Ezpow K l e (i + j) = Ezpow K l e i * Ezpow K l e j := by
   simp [Ezpow, _root_.zpow_add]
 
 /- English proof (translation)
-Rewrite using `[← Ezpow_natCast, ← Ezpow_add]`. Simplify using `[Ezpow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem E_pow_mul_Ezpow_neg (n : ℕ) : E K l e ^ n * Ezpow K l e (-n) = 1 := by
   rw [← Ezpow_natCast, ← Ezpow_add]
@@ -216,7 +214,7 @@ def divE (n : ℕ) (W : Submodule R (Vec K a ι)) : Submodule R (Vec K a ι) whe
 
 omit [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_divE {n : ℕ} {W : Submodule R (Vec K a ι)} {y : Vec K a ι} :
     y ∈ divE l e n W ↔ E K l e ^ n • y ∈ W := Iff.rfl
@@ -233,7 +231,7 @@ def shiftE (i : ℤ) (W : Submodule R (Vec K a ι)) : Submodule R (Vec K a ι) w
 
 omit [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_shiftE {i : ℤ} {W : Submodule R (Vec K a ι)} {y : Vec K a ι} :
     y ∈ shiftE l e i W ↔ Ezpow K l e (-i) • y ∈ W := Iff.rfl
@@ -260,7 +258,7 @@ variable (P : PhiMod O K l e a ι)
 abbrev EM (η : ℕ) : Submodule (A O K) (Vec K a ι) := divE l e η P.M
 
 /- English proof (translation)
-The claim follows from `mem_tot.2 fun τ i => ⟨n, mem_tot.1 hy τ i⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_Mext_invE_of_mem_divE {B : Subalgebra O K⟦X⟧} [HasU B] {n : ℕ} {y : Vec K a ι}
     (hy : E K l e ^ n • y ∈ P.Mext B) : y ∈ P.Mext (invE l e B) :=
@@ -269,12 +267,12 @@ theorem mem_Mext_invE_of_mem_divE {B : Subalgebra O K⟦X⟧} [HasU B] {n : ℕ}
 def Man : Submodule K (Vec K a ι) := (P.Mext (Rpi O K l e)).restrictScalars K
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Man {v : Vec K a ι} : v ∈ P.Man ↔ v ∈ P.Mext (Rpi O K l e) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `P.smul_tot_mem_Mext (f := fun _ => f) (fun _ => hf) hv`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_Man {f : K⟦X⟧} (hf : f ∈ Rpi O K l e) {v : Vec K a ι} (hv : v ∈ P.Man) :
     f • v ∈ P.Man := P.smul_tot_mem_Mext (f := fun _ => f) (fun _ => hf) hv
@@ -284,7 +282,7 @@ abbrev Pol : Type := Vec K a ι ⧸ P.Man
 abbrev cls : Vec K a ι →ₗ[K] P.Pol := P.Man.mkQ
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+A detailed English derivation is pending.
 -/
 theorem cls_eq_zero_iff {v : Vec K a ι} : P.cls v = 0 ↔ v ∈ P.Man := Submodule.Quotient.mk_eq_zero _
 
@@ -323,14 +321,14 @@ Both sides reduce to the same expression.
 theorem Mon_apply (y : Vec K a ι) : P.Mon y = P.cls (P.EN y - E K l e • P.zeta y) := rfl
 
 /- English proof (translation)
-Rewrite using `[EN_apply, plus_conn_xVec_eq, EN_apply, ← smul_sub, ← map_smul, ← map_neg, ← smul_neg, neg_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eisenstein_x_eq_neg {y : Vec K a ι} (hy : y ∈ P.Mext (invE l e (A O K))) :
     (P.plus hy).EN xVec = -(P.plusInl hy).app (P.EN y - E K l e • P.zeta y) := by
   rw [EN_apply, plus_conn_xVec_eq, EN_apply, ← smul_sub, ← map_smul, ← map_neg, ← smul_neg, neg_sub]
 
 /- English proof (translation)
-Rewrite using `[eisenstein_x_eq_neg, neg_mem_iff, plusInl_app, mem_Man, P.join_mem_Mext hy, Mon_apply, cls_eq_zero_iff]`. Conclude with `⟨fun h => ⟨h, fun _ => zero_mem _⟩, fun h => h.1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Mon_eq_zero_iff {y : Vec K a ι} (hy : y ∈ P.Mext (invE l e (A O K))) :
     P.Mon y = 0 ↔ (P.plus hy).EN xVec ∈ (P.plus hy).Man := by
@@ -338,15 +336,15 @@ theorem Mon_eq_zero_iff {y : Vec K a ι} (hy : y ∈ P.Mext (invE l e (A O K))) 
   exact ⟨fun h => ⟨h, fun _ => zero_mem _⟩, fun h => h.1⟩
 
 /- English proof (translation)
-Rewrite using `[Mon_apply, zeta_phi_sub, map_sub P.EN, ← EN_apply, sub_sub_cancel_left, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Mon_phi_sub (m : Vec K a ι) : P.Mon (P.phi m - m) = -P.cls (P.EN m) := by
   rw [Mon_apply, zeta_phi_sub, map_sub P.EN, ← EN_apply, sub_sub_cancel_left, map_neg]
 
 /- English proof (translation)
-Rewrite using `[EN_apply, EN_apply, conn_smul, Derivation.leibniz_pow]`. Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ n`. Use extensionality with `τ i : 2`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Simplify using `only [Nat.add_sub_cancel, nsmul_eq_mul, smul_eq_mul, Pi.smul_apply, Pi.sub_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem E_pow_smul_EN (n : ℕ) (y : Vec K a ι) : E K l e ^ n • P.EN y =
     P.EN (E K l e ^ n • y) - ((n : K⟦X⟧) * N K (E K l e)) • E K l e ^ n • y := by
@@ -362,12 +360,12 @@ theorem E_pow_smul_EN (n : ℕ) (y : Vec K a ι) : E K l e ^ n • P.EN y =
 variable [NormedAlgebra ℚ_[l] K] [NeZero e]
 
 /- English proof (translation)
-The claim follows from `P.Mext_mono (A_le_Rpi l e) hv`.
+A detailed English derivation is pending.
 -/
 theorem M_le_Man {v : Vec K a ι} (hv : v ∈ P.M) : v ∈ P.Man := P.Mext_mono (A_le_Rpi l e) hv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨y, P.M_le_Man hy, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem cls_mem_PolEta {η : ℕ} {y : Vec K a ι} (hy : y ∈ P.EM η) : P.cls y ∈ P.PolEta η :=
   ⟨y, P.M_le_Man hy, rfl⟩
@@ -381,20 +379,20 @@ def jumps : Set ℤ := {i | P.filL (i + 1) ≠ P.filL i}
 variable [CompleteSpace K]
 
 /- English proof (translation)
-The claim follows from `mem_tot.2 fun τ i => mem_A_of_E_pow_mul_mem l e η (mem_tot.1 h τ i) (mem_tot.1 hy τ i)`.
+A detailed English derivation is pending.
 -/
 theorem mem_M_of_mem_Man {η : ℕ} {y : Vec K a ι} (hy : y ∈ P.EM η) (h : y ∈ P.Man) : y ∈ P.M :=
   mem_tot.2 fun τ i => mem_A_of_E_pow_mul_mem l e η (mem_tot.1 h τ i) (mem_tot.1 hy τ i)
 
 /- English proof (translation)
-Simplify using `only [Mhat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, mem_Mhatc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Mhat {w : ZMod a → ι → AhatE O K l e} :
     w ∈ P.Mhat ↔ ∀ τ i, ∃ x : Ahat O K l e, algebraMap _ _ x = w τ i := by
   simp only [Mhat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, mem_Mhatc]
 
 /- English proof (translation)
-The claim follows from `P.mem_Mhat.trans <| Iff.trans (forall₂_congr fun τ i => hat_mem_range_iff l e (mem_tot.1 hv τ i)) (mem_tot (P := fun _ => vecs ι (Rpi O K l e))).symm`.
+A detailed English derivation is pending.
 -/
 theorem hatTot_mem_Mhat_iff {v : Vec K a ι} (hv : v ∈ P.Mext (RpiE O K l e)) :
     P.hatTot v ∈ P.Mhat ↔ v ∈ P.Man :=
@@ -402,7 +400,7 @@ theorem hatTot_mem_Mhat_iff {v : Vec K a ι} (hv : v ∈ P.Mext (RpiE O K l e)) 
     (mem_tot (P := fun _ => vecs ι (Rpi O K l e))).symm
 
 /- English proof (translation)
-Establish `: P.hatTot v - P.hatTot w = P.hatTot (v - w)` using `funext fun τ => funext fun i => (hat_sub l e (mem_tot.1 hv τ i) (mem_tot.1 hw τ i)).symm`. Rewrite using `[this, P.hatTot_mem_Mhat_iff (sub_mem hv hw)]`. Conclude with `(Submodule.Quotient.eq _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hatTot_sub_mem_Mhat_iff {v w : Vec K a ι} (hv : v ∈ P.Mext (RpiE O K l e))
     (hw : w ∈ P.Mext (RpiE O K l e)) : P.hatTot v - P.hatTot w ∈ P.Mhat ↔ P.cls v = P.cls w := by
@@ -412,7 +410,7 @@ theorem hatTot_sub_mem_Mhat_iff {v w : Vec K a ι} (hv : v ∈ P.Mext (RpiE O K 
   exact (Submodule.Quotient.eq _).symm
 
 /- English proof (translation)
-Establish `: Ehat O K l e ^ η • P.hatTot v = P.hatTot (E K l e ^ η • v)` using `funext fun τ => funext fun i => (Algebra.smul_def _ _).trans (hat_E_pow_mul l e η (mem_tot.1 hv τ i)).symm`. Rewrite using `[this, mem_divE]`. Conclude with `P.hatTot_mem_Mhat_iff (P.smul_tot_mem_Mext (f := fun _ => E K l e ^ η) (fun _ => pow_mem (E_mem l e _) η) hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_hatTot_mem_Mhat_iff (η : ℕ) {v : Vec K a ι} (hv : v ∈ P.Mext (RpiE O K l e)) :
     Ehat O K l e ^ η • P.hatTot v ∈ P.Mhat ↔ v ∈ divE l e η P.Man := by
@@ -423,13 +421,11 @@ theorem smul_hatTot_mem_Mhat_iff (η : ℕ) {v : Vec K a ι} (hv : v ∈ P.Mext 
     (P.smul_tot_mem_Mext (f := fun _ => E K l e ^ η) (fun _ => pow_mem (E_mem l e _) η) hv)
 
 /- English proof (translation)
-Use `choose x hx using P.mem_Mhat.1 hw`. Use `choose g x' hg using fun τ i => exists_eq_algebraMap_add_pow_mul (EIn l e (invL l (A O K))) η (x τ i)`. Establish `hE (τ i) : E K l e ^ η * (Ezpow K l e (-η) * g τ i) = g τ i`. Rewrite using `[← mul_assoc, E_pow_mul_Ezpow_neg, one_mul]`. Use `⟨fun τ i => Ezpow K l e (-η) * g τ i, mem_tot.2 fun τ i => ?_, P.mem_Mhat.2 fun τ i => ⟨x' τ i, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `E K l e ^ η * (Ezpow K l e (-η) * g τ i) ∈ invL l (A O K)`. Rewrite using `[hE]`. Conclude with `(g τ i).2`. Establish `hg'` using `invL_A_le_Rpi l e (g τ i).2`. Establish `h0 : Ezpow K l e (-η) * (g τ i : K⟦X⟧) ∈ RpiE O K l e` using `⟨η, by rw [coe_EIn, hE]; exact hg'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hat_E_pow_mul l e η h0`. Rewrite `h1` using `[hE, hat_coe_Rpi l e ⟨_, hg'⟩, toHat_eq_ofAl l e (g := g τ i) rfl]`. Establish `h2 : algebraMap _ _ (x τ i) = algebraMap _ _ (Ehat O K l e ^ η) * w τ i` using `(hx τ i).trans (Algebra.smul_def (Ehat O K l e ^ η) (w τ i))`. Establish `h3 : x τ i = ofAl O K l e (g τ i) + Ehat O K l e ^ η * x' τ i` using `hg τ i`. Rewrite `h2` using `[h3, map_add, map_mul, h1, add_comm, ← eq_sub_iff_add_eq, ← mul_sub, map_pow]`.
-
-Conclude with `((IsLocalization.Away.algebraMap_isUnit (Ehat O K l e)).pow η).mul_left_cancel h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_hatTot_mem_Mhat (η : ℕ) {w : ZMod a → ι → AhatE O K l e}
     (hw : Ehat O K l e ^ η • w ∈ P.Mhat) :
@@ -459,7 +455,7 @@ def connHat (w : ZMod a → ι → AhatE O K l e) : ZMod a → ι → AhatE O K 
 
 omit [NormedAlgebra ℚ_[l] K] [NeZero e] [CompleteSpace K] in
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_bas v]`. Simplify using `[conn_smul_tot, Finset.sum_apply, Finset.sum_add_distrib, bas, NTot, Pi.single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conn_apply_eq (v : Vec K a ι) (τ : ZMod a) (i : ι) :
     P.conn v τ i = N K (v τ i) + ∑ j, v τ j * P.conn (bas j) τ i := by
@@ -467,9 +463,9 @@ theorem conn_apply_eq (v : Vec K a ι) (τ : ZMod a) (i : ι) :
   simp [conn_smul_tot, Finset.sum_apply, Finset.sum_add_distrib, bas, NTot, Pi.single_apply]
 
 /- English proof (translation)
-Use extensionality with `τ i`. Establish `h1 (j) : v τ j ∈ RpiE O K l e` using `mem_tot.1 hv τ j`. Establish `h2 (j) : P.conn (bas j) τ i ∈ RpiE O K l e` using `mem_tot.1 (hN j) τ i`. Establish `h3 : ∑ j, v τ j * P.conn (bas j) τ i = ((∑ j, ⟨_, h1 j⟩ * ⟨_, h2 j⟩ : RpiE O K l e) : K⟦X⟧)` using `by simp`. Express the relevant statement in the definitionally equal form `hat O l e (P.conn v τ i) = NHatE O K l e (hat O l e _) + ∑ j, hat O l e _ * hat O l e _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[conn_apply_eq, hat_add l e (N_mem_RpiE l e (h1 i)) (sum_mem fun j _ => mul_mem (h1 j) (h2 j)), hat_N l e (h1 i), h3, hat_coe, map_sum]`. Simplify using `only [map_mul, hat_of_mem l e (h1 _), hat_of_mem l e (h2 _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hatTot_conn (hN : ∀ j, P.conn (bas j) ∈ P.Mext (RpiE O K l e)) {v : Vec K a ι}
     (hv : v ∈ P.Mext (RpiE O K l e)) : P.hatTot (P.conn v) = P.connHat (P.hatTot v) := by
@@ -500,27 +496,27 @@ Both sides reduce to the same expression.
 
 omit [NormedAlgebra ℚ_[l] K] [NeZero e] in
 /- English proof (translation)
-Rewrite using `[PhiMod.EN_apply, map_smul, app_conn, PhiMod.EN_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_EN (v : Vec K a ι) : F.app (P.EN v) = Q.EN (F.app v) := by
   rw [PhiMod.EN_apply, map_smul, app_conn, PhiMod.EN_apply]
 
 /- English proof (translation)
-Rewrite using `[PhiMod.Mon_apply, onPol_cls, map_sub, app_EN, map_smul, app_zeta, PhiMod.Mon_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem onPol_Mon (y : Vec K a ι) : F.onPol (P.Mon y) = Q.Mon (F.app y) := by
   rw [PhiMod.Mon_apply, onPol_cls, map_sub, app_EN, map_smul, app_zeta, PhiMod.Mon_apply]
 
 omit [NormedAlgebra ℚ_[l] K] [NeZero e] in
 /- English proof (translation)
-Rewrite using `[mem_divE, ← map_smul]`. Conclude with `F.app_mem_M hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem app_mem_EM {η : ℕ} {y : Vec K a ι} (hy : y ∈ P.EM η) : F.app y ∈ Q.EM η := by
   rw [mem_divE, ← map_smul]
   exact F.app_mem_M hy
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hw`. Use `⟨F.app y, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_divE, ← map_smul]`. Conclude with `F.app_mem_Mext (A_le_Rpi l e) hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onPol_mem_PolEta {η : ℕ} {w : P.Pol} (hw : w ∈ P.PolEta η) : F.onPol w ∈ Q.PolEta η := by
   obtain ⟨y, hy, rfl⟩ := hw

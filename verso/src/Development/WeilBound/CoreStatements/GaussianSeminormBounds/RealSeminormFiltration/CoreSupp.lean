@@ -12,11 +12,11 @@ section Gen
 variable {σ κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' P (fun s a => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_monomial, coeff_monomial, coeff_monomial]`. Distinguish the cases in `hs : s = γ + Finsupp.single l 1`. Substitute `hs` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg hs, zero_mul]`. Break down `Nat.eq_zero_or_pos (s l) with h0 | hpos` into its components or cases. Simplify using `[h0]`. Rewrite using `[if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hs` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `(tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr hpos)).symm`. Simplify using `[hp, hq, add_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coeff_pderiv_real_seminorm_filtration (l : σ) (P : MvPolynomial σ ℂ) (γ : σ →₀ ℕ) :
     coeff γ (pderiv l P) = coeff (γ + Finsupp.single l 1) P * ((γ l : ℂ) + 1) := by
@@ -37,13 +37,13 @@ private theorem coeff_pderiv_real_seminorm_filtration (l : σ) (P : MvPolynomial
   · simp [hp, hq, add_mul]
 
 /- English proof (translation)
-Rewrite `h` using `[coeff_X_mul']`. Use `split_ifs at h with hl`. Rewrite `h` using `[coeff_pderiv_real_seminorm_filtration]`. Use `⟨γ - Finsupp.single l 1 + Finsupp.single l' 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_support_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[h0, zero_mul]`. Establish `hle : Finsupp.single l 1 ≤ γ`. Rewrite using `[Finsupp.single_le_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hl)`. Establish `hsw : ∀ y, Finsupp.weight w (Finsupp.single y 1) = w y`. Introduce `y`. Simplify using `[Finsupp.weight_apply]`. Establish `key` using `congrArg (Finsupp.weight w) (tsub_add_cancel_of_le hle)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[map_add, hsw]`. Rewrite using `[map_add, hsw]`. Use linear arithmetic over natural numbers and integers. Conclude with `absurd rfl h`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem supp_wt_term (w : σ → ℕ) (l l' : σ) (P : MvPolynomial σ ℂ) (γ : σ →₀ ℕ)
     (h : coeff γ (X l * pderiv l' P) ≠ 0) :
@@ -70,7 +70,7 @@ theorem supp_wt_term (w : σ → ℕ) (l l' : σ) (P : MvPolynomial σ ℂ) (γ 
   · exact absurd rfl h
 
 /- English proof (translation)
-Introduce `γ hγ`. Take `⟨a, _, b, hb, rfl⟩` from `Finset.mem_add.mp (support_mul F G hγ)`. Rewrite using `[map_add]`. Conclude with `le_add_left (hG b hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem weight_le_of_mem_support_mul_of_right (w : σ → ℕ) (k : ℕ) (F G : MvPolynomial σ ℂ)
     (hG : ∀ γ ∈ G.support, k ≤ Finsupp.weight w γ) :
@@ -82,7 +82,7 @@ private theorem weight_le_of_mem_support_mul_of_right (w : σ → ℕ) (k : ℕ)
   exact le_add_left (hG b hb)
 
 /- English proof (translation)
-Introduce `γ hγ`. Take `⟨i, hi, hγi⟩` from `Finset.mem_biUnion.mp (support_sum hγ)`. Conclude with `hF i hi γ hγi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem weight_le_of_mem_support_sum {ι : Type} (w : σ → ℕ) (k : ℕ) (s : Finset ι)
     (F : ι → MvPolynomial σ ℂ) (hF : ∀ i ∈ s, ∀ γ ∈ (F i).support, k ≤ Finsupp.weight w γ) :
@@ -93,21 +93,19 @@ private theorem weight_le_of_mem_support_sum {ι : Type} (w : σ → ℕ) (k : �
   exact hF i hi γ hγi
 
 /- English proof (translation)
-Set `g0 : MvPolynomial σ ℂ` to `∑ x ∈ g.support.filter (fun x => Finsupp.weight w x = b), monomial x (coeff x g)`. Establish `hc0 : ∀ γ, coeff γ g0 = if Finsupp.weight w γ = b then coeff γ g else 0`. Introduce `γ`. Apply the tactic sequence `by_cases hγ : coeff γ g = 0 <;>`. Simplify using `[g0, coeff_sum, coeff_monomial, Finset.mem_filter, mem_support_iff, hγ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hg0 : g0 ≠ 0`. Introduce `h`. Establish `h1` using `hc0 γ0`. Rewrite `h1` using `[h, if_pos hb, coeff_zero]`. Conclude with `(mem_support_iff.mp hγ0) h1.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `PI.FJMP.exists_mem_support (mul_ne_zero hD0 hg0)`. Establish `hwγ : Finsupp.weight w γ = b`. Take `⟨x, hx, y, hy, hxy⟩` from `Finset.mem_add.mp (support_mul D g0 hγ)`. Rewrite using `[← hxy, map_add, hD x hx, zero_add]`. Establish `h2` using `mem_support_iff.mp hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hc0]`. Assume the negation of the conclusion as `hne`. Conclude with `h2 (if_neg hne)`. Use `⟨γ, ?_, hwγ⟩` and prove the remaining obligations. Establish `hsplit : D * g = D * g0 + D * (g - g0)` using `by ring`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hrest : ∀ δ ∈ (D * (g - g0)).support, b + 1 ≤ Finsupp.weight w δ`. Apply `weight_le_of_mem_support_mul_of_right` to reduce the goal to its premises. Introduce `δ hδ`. Rewrite `hδ` using `[mem_support_iff, coeff_sub, hc0]`. Distinguish the cases in `hδb : Finsupp.weight w δ = b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hδ` using `[if_pos hδb, sub_self]`. Conclude with `absurd rfl hδ`. Rewrite `hδ` using `[if_neg hδb, sub_zero]`. Establish `h3` using `hg δ (mem_support_iff.mpr hδ)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[mem_support_iff, hsplit, coeff_add]`. Establish `h4 : coeff γ (D * (g - g0)) = 0`. Assume the negation of the conclusion as `hne`. Establish `h5` using `hrest γ (mem_support_iff.mpr hne)`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[h4, add_zero]`. Conclude with `mem_support_iff.mp hγ`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mem_support_mul_weight_eq_of_weight_zero (w : σ → ℕ) (b : ℕ) (D g : MvPolynomial σ ℂ) (hD0 : D ≠ 0)
     (hD : ∀ γ ∈ D.support, Finsupp.weight w γ = 0)
@@ -155,53 +153,49 @@ private theorem exists_mem_support_mul_weight_eq_of_weight_zero (w : σ → ℕ)
   exact mem_support_iff.mp hγ
 
 /- English proof (translation)
-It suffices to establish `key : ∃ e ∈ P.support, ∀ c, pos c = true → e (v c) = 0 by`. Take `⟨e, he, hz⟩` from `key`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Unfold `PI.FJMP.sw`. Apply `Finset.sum_nonpos` to reduce the goal to its premises.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Distinguish the cases in `hc : pos c = true`. Rewrite using `[if_pos hc, hz c hc]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hk`. Use `push_neg at hk`. Set `w : σ → ℕ` to `fun y => if ∃ c, pos c = false ∧ v c = y then 1 else 0`. Establish `hwu : ∀ j c, w (u j c) = 0`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j c`. Simplify using `only [w]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨c', _, hc'⟩`. Conclude with `huv j c c' hc'.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwpos : ∀ c, pos c = true → w (v c) = 0`. Introduce `c hc`. Simplify using `only [w]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨c', hc', h'⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc'` using `[hv h', hc]`. Conclude with `absurd hc' (by decide)`. Establish `hwneg : ∀ c, ¬ pos c = true → w (v c) = 1`. Introduce `c hc`. Simplify using `only [w]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[if_pos]`. Conclude with `⟨c, by simpa using hc, rfl⟩`. Establish `hsw : ∀ y, Finsupp.weight w (Finsupp.single y 1) = w y`. Introduce `y`. Simplify using `[Finsupp.weight_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, he1⟩` from `PI.FJMP.exists_mem_support hP`. Take `⟨e0, he0, hmin⟩` from `Finset.exists_min_image P.support (Finsupp.weight w) ⟨e1, he1⟩`. Take `⟨c0, hc0, he0c⟩` from `hk e0 he0`. Take `⟨i0, hi0⟩` from `(hρ c0).mp hc0`. Establish `hpos0 : pos (ρ i0) = true` using `by rw [hi0]; exact hc0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `himg : Finset.univ.filter (fun c => pos c = true) = Finset.univ.image ρ`. Use extensionality with `c`. Simplify using `[hρ c]`. Set `g : Fin N → MvPolynomial σ ℂ` to `fun i => pderiv (v (ρ i)) P`. Set `R : Fin N → MvPolynomial σ ℂ` to `fun j => ∑ c ∈ Finset.univ.filter (fun c => ¬ pos c = true), X (v c) * pderiv (u j c) P`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hid : ∀ j, ∑ i, X (u j (ρ i)) * g i = R j`. Introduce `j`. Establish `h` using `hR j`. Unfold `PI.FJMP.gR at h`. Rewrite `h` using `[Finset.sum_ite, himg, Finset.sum_image (fun a _ b _ hab => hρi hab), Finset.sum_neg_distrib, add_neg_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `h`. Set `f : Fin N × Fin N → σ` to `fun x => u x.1 (ρ x.2)`. Establish `hfi : Function.Injective f` using `hu`. Set `M : Matrix (Fin N) (Fin N) (MvPolynomial σ ℂ)` to `(rename f).mapMatrix (Matrix.mvPolynomialX (Fin N) (Fin N) ℂ)`. Establish `hM : ∀ j i, M j i = X (u j (ρ i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `j i`. Simplify using `[M, f, AlgHom.mapMatrix_apply, Matrix.mvPolynomialX_apply, rename_X]`. Establish `hMv : M *ᵥ g = R`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `∑ i, M j i * g i = R j`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hM]`. Conclude with `hid j`. Establish `hdet : M.det * g i0 = ∑ j, M.adjugate i0 j * R j`. Establish `h1` using `congrArg (fun x => M.adjugate *ᵥ x) hMv`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.adjugate_mul] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `congrFun h1 i0`. Establish `h3 : ((M.det • (1 : Matrix (Fin N) (Fin N) (MvPolynomial σ ℂ))) *ᵥ g) i0 = M.det * g i0`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`. Rewrite using `[← h3, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdetM : M.det = rename f (Matrix.mvPolynomialX (Fin N) (Fin N) ℂ).det` using `(AlgHom.map_det (rename f) _).symm`. Establish `hD0 : M.det ≠ 0`. Rewrite using `[hdetM]`. Conclude with `(map_ne_zero_iff _ (rename_injective f hfi)).mpr (Matrix.det_mvPolynomialX_ne_zero _ _)`. Establish `hD : ∀ γ ∈ M.det.support, Finsupp.weight w γ = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `γ hγ`. Rewrite `hγ` using `[hdetM, support_rename_of_injective hfi, Finset.mem_image]`. Take `⟨δ, _, rfl⟩` from `hγ`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun i c => c • w i) (fun b => zero_smul ℕ (w b)) (fun b m1 m2 => add_smul m1 m2 (w b))]`. Simplify using `[Finsupp.sum, f, hwu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hR1 : ∀ j, ∀ γ ∈ (R j).support, Finsupp.weight w e0 + 1 ≤ Finsupp.weight w γ`. Introduce `j`. Conclude with `weight_le_of_mem_support_sum w _ _ _ (fun c hc γ hγ => by`. Establish `hc' : ¬ pos c = true` using `(Finset.mem_filter.mp hc).2`. Take `⟨β, hβ, hβw⟩` from `supp_wt_term w (v c) (u j c) P γ (mem_support_iff.mp hγ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hβw` using `[hwneg c hc', hwu j c]`. Establish `h1` using `hmin β hβ`. Use the proof step `omega)`. Establish `hRHS : ∀ γ ∈ (∑ j, M.adjugate i0 j * R j).support, Finsupp.weight w e0 + 1 ≤ Finsupp.weight w γ` using `weight_le_of_mem_support_sum w _ _ _ (fun j _ => weight_le_of_mem_support_mul_of_right w _ _ _ (hR1 j))`. Establish `hg : ∀ γ ∈ (g i0).support, Finsupp.weight w e0 ≤ Finsupp.weight w γ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `γ hγ`. Establish `h1` using `mem_support_iff.mp hγ`. Express the relevant statement in the definitionally equal form `coeff γ (pderiv (v (ρ i0)) P) ≠ 0 at h1`. Rewrite `h1` using `[coeff_pderiv_real_seminorm_filtration]`. Establish `hmem : γ + Finsupp.single (v (ρ i0)) 1 ∈ P.support`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[mem_support_iff]`. Introduce `h0`. Apply `h1` to reduce the goal to its premises. Rewrite using `[h0, zero_mul]`. Establish `h2` using `hmin _ hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h2` using `[map_add, hsw, hwpos _ hpos0]`. Use linear arithmetic over natural numbers and integers. Establish `hle : Finsupp.single (v (ρ i0)) 1 ≤ e0`. Rewrite using `[Finsupp.single_le_iff, hi0]`. Conclude with `Nat.one_le_iff_ne_zero.mpr he0c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hadd : e0 - Finsupp.single (v (ρ i0)) 1 + Finsupp.single (v (ρ i0)) 1 = e0` using `tsub_add_cancel_of_le hle`. Establish `hγ0 : e0 - Finsupp.single (v (ρ i0)) 1 ∈ (g i0).support`. Rewrite using `[mem_support_iff]`. Express the relevant statement in the definitionally equal form `coeff _ (pderiv (v (ρ i0)) P) ≠ 0`. Rewrite using `[coeff_pderiv_real_seminorm_filtration, hadd]`.
-
-Conclude with `mul_ne_zero (mem_support_iff.mp he0) (Nat.cast_add_one_ne_zero _)`. Establish `hwγ0 : Finsupp.weight w (e0 - Finsupp.single (v (ρ i0)) 1) = Finsupp.weight w e0`. Establish `h1` using `congrArg (Finsupp.weight w) hadd`. Rewrite `h1` using `[map_add, hsw, hwpos _ hpos0, add_zero]`. Conclude with `h1`.
-
-Take `⟨γ, hγ, hγw⟩` from `exists_mem_support_mul_weight_eq_of_weight_zero w _ M.det (g i0) hD0 hD hg _ hγ0 hwγ0`. Rewrite `hγ` using `[hdet]`. Establish `h1` using `hRHS γ hγ`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem supp_gen_pos {N : ℕ} (pos : κ → Bool) (ρ : Fin N → κ) (hρ : ∀ c, pos c = true ↔ ∃ i, ρ i = c)
     (hρi : Function.Injective ρ) (u : Fin N → κ → σ) (v : κ → σ)
@@ -338,11 +332,11 @@ theorem supp_gen_pos {N : ℕ} (pos : κ → Bool) (ρ : Fin N → κ) (hρ : �
   omega
 
 /- English proof (translation)
-Establish `hR' : ∀ j, PI.FJMP.gR (u j) v (fun c => !pos c) P = 0`. Introduce `j`. Establish `h` using `PI.FJMP.gR_swap (u j) v (fun c => !pos c) P`. Simplify using `only [Bool.not_not] at h`. Rewrite `h` using `[hR j]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `neg_eq_zero.mp h.symm`. Take `⟨e, he, hsw⟩` from `supp_gen_pos (fun c => !pos c) ρ (by intro c; rw [← hρ c]; simp) hρi u v hu huv hv P hP hR'`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Establish `hneg : PI.FJMP.sw e v (fun c => !pos c) = - PI.FJMP.sw e v pos`. Unfold `PI.FJMP.sw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (pos c) with hc | hc <;> simp [hc]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem supp_gen_neg {N : ℕ} (pos : κ → Bool) (ρ : Fin N → κ) (hρ : ∀ c, pos c = false ↔ ∃ i, ρ i = c)
     (hρi : Function.Injective ρ) (u : Fin N → κ → σ) (v : κ → σ)
@@ -372,18 +366,18 @@ section Col
 variable {p q r s : ℕ} {ν : Ix r s → ℚ} {g : Pol p q r s}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases c with c | c <;> rcases d with d | d <;> simp only [posC] at h <;> rcases a with a | a <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem supp_lp {c d : Ix r s} (h : posC c d) (a : Ix p q) :
     linePos ((a, d) : Ln p q r s) = linePos ((a, c) : Ln p q r s) := by
   rcases c with c | c <;> rcases d with d | d <;> simp only [posC] at h <;> rcases a with a | a <;> rfl
 
 /- English proof (translation)
-Establish `hg' : g ≠ 0 ∧ g ∈ hwSub (fockAct2 p q r s) ν` using `hg`. Establish `hcd : c ≠ d` using `PI.FJMP.ne_of_posC h`. Establish `h0` using `PI.FJMP.ker_of_hw hg'.2 c d h`. Rewrite `h0` using `[PI.WFJM.fockAct2_Eab]`. Rewrite using `[← PI.FJMP.rightRootOperator_eq_signedPolarization c d hcd (fun a => supp_lp h a) g]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (∑ a : Ix p q, omE ((a, c) : Ln p q r s) (a, d)) = PI.FJM.rai2 c d`. Unfold `PI.FJM.rai2`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Unfold `omE`. Rewrite using `[if_neg (fun hh => hcd (Prod.ext_iff.mp hh).2), add_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_gR (hg : IsHW (fockAct2 p q r s) ν g) {c d : Ix r s} (h : posC c d) :
     PI.FJMP.gR (fun a : Ix p q => ((a, c) : Ln p q r s)) (fun a => (a, d))
@@ -402,15 +396,13 @@ theorem supp_gR (hg : IsHW (fockAct2 p q r s) ν g) {c d : Ix r s} (h : posC c d
   exact h0
 
 /- English proof (translation)
-Establish `hg' : g ≠ 0 ∧ g ∈ hwSub (fockAct2 p q r s) ν` using `hg`. Take `⟨e, he, hsw⟩` from `supp_gen_pos (fun a : Ix p q => linePos ((a, d) : Ln p q r s)) ρ hρ hρi (fun j a => ((a, κ j) : Ln p q r s)) (fun a => ((a, d) : Ln p q r s)) (by`. Introduce and unpack `⟨j1, i1⟩ ⟨j2, i2⟩ h`. Simplify using `only [Prod.mk.injEq] at h`. Rewrite using `[hρi h.1, hκ h.2])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun j c c' h => PI.FJMP.ne_of_posC (hκd j) (congrArg Prod.snd h))`. Use the proof step `(fun a b h => congrArg Prod.fst h) g hg'.1`. Use the proof step `(by`. Introduce `j`. Establish `h` using `supp_gR hg (hκd j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl : (fun a : Ix p q => linePos ((a, κ j) : Ln p q r s)) = fun a => linePos ((a, d) : Ln p q r s)`. Use function extensionality and compare the values at `a`. Conclude with `(supp_lp (hκd j) a).symm`. Rewrite `h` using `[hl]`. Conclude with `h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hw` using `PI.FJMP.monomialRightWeight_eq_weight_sub PI.FJM.rightDiagonalActionFormula hg'.2 e he d`. Establish `hs : PI.FJMP.sw e (fun a => ((a, d) : Ln p q r s)) (fun a => linePos ((a, d) : Ln p q r s)) = PI.FJM.wt2 e d` using `rfl`. Rewrite `hsw` using `[hs]`. Establish `hq : (PI.FJM.wt2 e d : ℚ) ≤ 0` using `by exact_mod_cast hsw`. Rewrite `hq` using `[hw]`.
-
-Conclude with `hq`.
+A detailed English derivation is pending.
 -/
 theorem supp_col_pos (hg : IsHW (fockAct2 p q r s) ν g) {N : ℕ} (d : Ix r s) (ρ : Fin N → Ix p q)
     (hρ : ∀ a, linePos ((a, d) : Ln p q r s) = true ↔ ∃ i, ρ i = a) (hρi : Function.Injective ρ)
@@ -443,11 +435,11 @@ theorem supp_col_pos (hg : IsHW (fockAct2 p q r s) ν g) {N : ℕ} (d : Ix r s) 
   exact hq
 
 /- English proof (translation)
-Establish `hg' : g ≠ 0 ∧ g ∈ hwSub (fockAct2 p q r s) ν` using `hg`. Take `⟨e, he, hsw⟩` from `supp_gen_neg (fun a : Ix p q => linePos ((a, d) : Ln p q r s)) ρ hρ hρi (fun j a => ((a, κ j) : Ln p q r s)) (fun a => ((a, d) : Ln p q r s)) (by`. Introduce and unpack `⟨j1, i1⟩ ⟨j2, i2⟩ h`. Simplify using `only [Prod.mk.injEq] at h`. Rewrite using `[hρi h.1, hκ h.2])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun j c c' h => PI.FJMP.ne_of_posC (hκd j) (congrArg Prod.snd h).symm)`. Use the proof step `(fun a b h => congrArg Prod.fst h) g hg'.1`. Use the proof step `(fun j => supp_gR hg (hκd j))`. Establish `hw` using `PI.FJMP.monomialRightWeight_eq_weight_sub PI.FJM.rightDiagonalActionFormula hg'.2 e he d`. Establish `hs : PI.FJMP.sw e (fun a => ((a, d) : Ln p q r s)) (fun a => linePos ((a, d) : Ln p q r s)) = PI.FJM.wt2 e d` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsw` using `[hs]`. Establish `hq : (0 : ℚ) ≤ (PI.FJM.wt2 e d : ℚ)` using `by exact_mod_cast hsw`. Rewrite `hq` using `[hw]`. Conclude with `hq`.
+A detailed English derivation is pending.
 -/
 theorem supp_col_neg (hg : IsHW (fockAct2 p q r s) ν g) {N : ℕ} (d : Ix r s) (ρ : Fin N → Ix p q)
     (hρ : ∀ a, linePos ((a, d) : Ln p q r s) = false ↔ ∃ i, ρ i = a) (hρi : Function.Injective ρ)
@@ -474,9 +466,9 @@ theorem supp_col_neg (hg : IsHW (fockAct2 p q r s) ν g) {N : ℕ} (d : Ix r s) 
 end Col
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Apply the tactic sequence `exact supp_col_pos hg (Sum.inl k) (Sum.inl : Fin p → Ix p q) (by intro a; cases a <;> simp [linePos]) Sum.inl_injective (fun j => (Sum.inl ⟨j, by have := j.isLt; have := k.isLt; omega⟩ : Ix r s)) (by intro j1 j2 h; simp only [Sum.inl.injEq, Fin.mk.injEq] at h; exact Fin.ext h) (b …`. Introduce `l hl`. Apply the tactic sequence `exact supp_col_pos hg (Sum.inr l) (Sum.inr : Fin q → Ix p q) (by intro a; cases a <;> simp [linePos]) Sum.inr_injective (fun j => (Sum.inr ⟨j, by have := j.isLt; have := l.isLt; omega⟩ : Ix r s)) (by intro j1 j2 h; simp only [Sum.inr.injEq, Fin.mk.injEq] at h; exact Fin.ext h) (b …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `k hk`. Apply the tactic sequence `exact supp_col_neg hg (Sum.inl k) (Sum.inr : Fin q → Ix p q) (by intro a; cases a <;> simp [linePos]) Sum.inr_injective (fun j => (Sum.inl ⟨k + 1 + j, by have := j.isLt; omega⟩ : Ix r s)) (by intro j1 j2 h; simp only [Sum.inl.injEq, Fin.mk.injEq] at h; exact Fin.ext (by omega)) ( …`. Introduce `l hl`. Apply the tactic sequence `exact supp_col_neg hg (Sum.inr l) (Sum.inl : Fin p → Ix p q) (by intro a; cases a <;> simp [linePos]) Sum.inl_injective (fun j => (Sum.inr ⟨l + 1 + j, by have := j.isLt; omega⟩ : Ix r s)) (by intro j1 j2 h; simp only [Sum.inr.injEq, Fin.mk.injEq] at h; exact Fin.ext (by omega)) ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem supp2 {p q r s : ℕ} {ν : Ix r s → ℚ} {g : Pol p q r s} (hg : IsHW (fockAct2 p q r s) ν g) :
     Supp p q ν := by

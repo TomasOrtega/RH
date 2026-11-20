@@ -10,9 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1.S0.A
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Introduce `μN hH b _`. Establish `hc` using `hH.conc`. Rewrite `hc` using `[hNB k]`. Establish `hae : ∀ᵐ x ∂μN, x ∈ ({(show Mt k 0 from (1 : Matrix (Fin (2 * 0 + k + 1)) (Fin (2 * 0 + k + 1)) ℂ))} : Set (Mt k 0))`. Rewrite using `[ae_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hae, lintegral_singleton]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hH.finite_compact _ isCompact_singleton)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nIntAt_zero (hNB : NBase) (k : ℕ) : NIntAt k 0 := by
   intro μN hH b _
@@ -26,7 +26,7 @@ theorem nIntAt_zero (hNB : NBase) (k : ℕ) : NIntAt k 0 := by
   exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hH.finite_compact _ isCompact_singleton)
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact nIntAt_zero hNB k`. Consider the case `succ r' ih`. Establish `h` using `nIntAt_step hNR hHU hCN hHN hGL k r' ih`. Rewrite `h` using `[Nat.add_comm 1 r']`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nIntAt_all (hNB : NBase) (hNR : NRecHaar) (hHU : HaarUnique) (hCN : ClosedN) (hHN : HaarNExists)
     (hGL : GNLower) (k r : ℕ) : NIntAt k r := by

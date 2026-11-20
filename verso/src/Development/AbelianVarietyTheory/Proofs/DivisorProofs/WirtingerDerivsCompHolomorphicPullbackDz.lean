@@ -7,18 +7,18 @@ open scoped ContDiff ComplexConjugate Topology
 namespace GlobalTheory.LineForm
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[coordVec, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem chain_sum_coordVec {n : ℕ} (w : V n) : w = ∑ b, w b • coordVec b := by
   ext i
   simp [coordVec, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `m n τ c v hτ hc`. Prove the components needed by the constructor for the conclusion. Simplify using `only [del_comp_holo hc hτ, map_sum, map_smul, (pull_dz _ _).1, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [chain_sum_coordVec (fderiv ℂ τ v (coordVec a))]`. Simplify using `only [map_sum, map_smul, Finset.sum_smul, smul_smul, smul_eq_mul, mul_comm]`. Simplify using `only [dbar_comp_holo hc hτ, map_sum, map_smul, (pull_dz _ _).2, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [chain_sum_coordVec (fderiv ℂ τ v (coordVec a))]`. Simplify using `only [map_sum, map_smulₛₗ, Finset.sum_smul, smul_smul, smul_eq_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem del_dbar_comp_holo_pull : ∀ (m n : ℕ) (τ : V m → V n) (c : V n → ℂ) (v : V m),
     DifferentiableAt ℂ τ v → DifferentiableAt ℝ c (τ v) →

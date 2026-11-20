@@ -9,11 +9,11 @@ section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 namespace UpperTheory.N
 /- English proof (translation)
-Take `⟨x0, h0⟩` from `h Fm`. Take `⟨C0, x1, hC0, hpar⟩` from `GlobalTheory.T.admissible_parameters_family_const Fm`. Use `⟨18 * A * C0 + 2 * B * (3 * C0 + 9) + 5 * C0 + 1, max 3 (max x0 x1), ?_, fun x hxx hx i HW F Cm X C₂ hS k hTw hq π hπ => ?_⟩` and prove the remaining obligations. Establish `: 0 ≤ C0` using `by linarith`. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `h3 : 3 ≤ x` using `(le_max_left _ _).trans hxx`. Establish `hb` using `h0 x (((le_max_left _ _).trans (le_max_right _ _)).trans hxx) hx i HW F Cm X C₂ hS k hTw hq π hπ`. Take `⟨-, -, -, hn, ht, -⟩` from `hpar x (((le_max_right _ _).trans (le_max_right _ _)).trans hxx) hx i`. Establish `hlog : 1 ≤ Real.log (Fm.L x i).sc.x`. Rewrite using `[Fm.L_x x i hx, Real.le_log_iff_exp_le (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hl : ((Fm.D x i).nd.l k).Prime` using `((Fm.D x i).nd.lPrime k).out`. Establish `hc : costC (Fm.L x i) A B ((Fm.D x i).nd.l k) ≤ midF (Fm.L x i) (18 * A * C0 + 2 * B * (3 * C0 + 9) + 5 * C0 + 1)` using `Num.cost_le' (Fm.L x i) (Fm.params x hx i) hA hB hC0 hlog hn ht hl (hQ _ _ hl hq) le_rfl`. Unfold `Bd at hb ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mid_of_rowOn_alt (Q : D7 → ℕ → Prop)
     (hQ : ∀ D l, l.Prime → Q D l → D.host.condN.factorization l = D.host.QS.factorization l)
@@ -42,11 +42,11 @@ theorem mid_of_rowOn_alt (Q : D7 → ℕ → Prop)
   unfold Bd at hb ⊢
   linarith
 /- English proof (translation)
-Take `⟨A, B, hA, hB, h2⟩` from `h2`. Take `⟨A', B', hA', hB', h3⟩` from `h3`. Take `⟨C, x0, hC, h2⟩` from `_root_.UpperTheory.N.mid_of_rowOn_alt (fun _ l => l = 2) (fun D l _ (e : l = 2) => Num.factorization_condN D (by rw [e]; exact UpperTheory.Small.two_mem D.host)) A B hA hB (fun Fm => h2 Fm) Fm`. Take `⟨C', x1, hC', h3⟩` from `_root_.UpperTheory.N.mid_of_rowOn_alt (fun D l => l = 3 ∧ l ∉ D.host.small) (fun D l _ (e : l = 3 ∧ l ∉ D.host.small) => Num.factorization_condN' D (by rw [e.1]; exact (h3qd D).1) (by rw [e.1]; exact (h3qd D).2)) A' B' hA' hB' (fun Fm => h3 Fm) Fm`. Use `⟨max C C', max x0 x1, fun x hxx hx i HW F Cm X C₂ hS k hTw hl π hπ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : 0 ≤ max C C'` using `hC.trans (le_max_left _ _)`. Break down `hl with hl | hl` into its components or cases. Establish `h` using `h2 x ((le_max_left _ _).trans hxx) hx i HW F Cm X C₂ hS k hTw hl π hπ`. Establish `h'` using `midF_mono (Fm.L x i) (le_max_left C C') h0`. Unfold `Bd at h ⊢`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `h3 x ((le_max_right _ _).trans hxx) hx i HW F Cm X C₂ hS k hTw hl π hπ`. Establish `h'` using `midF_mono (Fm.L x i) (le_max_right C C') h0`. Unfold `Bd at h ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem boundAtTwoThree_of_local_bounds_at_two_three (h3qd : ∀ D : D7, 3 ≠ D.host.q ∧ 3 ≠ D.host.d)
     (h2 : ∃ A B : ℝ, 0 ≤ A ∧ 0 ≤ B ∧ _root_.UpperTheory.N.SecondBoundCondition A B) (h3 : ∃ A B : ℝ, 0 ≤ A ∧ 0 ≤ B ∧ _root_.UpperTheory.N.ThirdBoundCondition A B)

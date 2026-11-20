@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.UnipZero
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Apply the tactic sequence `have h : symplOH S T w 0 = 0 := by first | exact symplOH_zero_right .. | simp [symplOH] | (rw [symplOH]; simp)`. Simplify using `[heisO, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem heisO_zero {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
   funext w
@@ -27,13 +27,13 @@ theorem heisO_zero {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : 
   simp [heisO, h]
 
 /- English proof (translation)
-Introduce `D ψ S S₀ T ρ d χS χT om hW μ 𝓕 hμ f hf`. Break down `Nat.eq_zero_or_pos ρ with hρ | hρ` into its components or cases. Substitute `hρ` using the available equality. Take `⟨-, -, h0⟩` from `GlobalTheory.T.wittDecomposition_mixedCoords_rank_zero D ψ`. Take `⟨-, hB, hC⟩` from `h0 S S₀ d`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun b => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hB b, show ((1 : GA D S), (1 : GA D T)) = 1 from rfl, map_one]`. Both sides reduce to the same expression. Rewrite using `[hC c, show ((1 : GA D S), (1 : GA D T)) = 1 from rfl, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨hiso, hrat, -, -, -, hres, -, hnB, hnC⟩` from `GlobalTheory.T.wittSourceMixedCoord_heisenbergRestriction D ψ S S₀ T ρ d`. Establish `hμ' : IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D T.rank ρ) μ 𝓕` using `by rw [hrat]; exact hμ`. Establish `key : ∀ n : NI S d.e, d.mixS T ψ μ 𝓕 (om ((n : GA D S), 1) f) 0 = d.mixS T ψ μ 𝓕 f 0`. Introduce `n`. Rewrite using `[hres, hres, map_zero, heisO_zero, heisO_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.wittTower_restriction_unipotentRadical_invariant D S S₀ T ρ d.e d.i₀ (hiso hρ) ψ χS χT om hW μ 𝓕 hμ' n f hf`. Conclude with `⟨fun b => key ⟨_, hnB b⟩, fun c => key ⟨_, hnC c⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mixS_zero_unip : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)), IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f → (∀ b, d.mixS T ψ μ 𝓕 (om (d.nB b, 1) f) 0 = d.mixS T ψ μ 𝓕 (f) 0) ∧ ∀ c, d.mixS T ψ μ 𝓕 (om (d.nC c, 1) f) 0 = d.mixS T ψ μ 𝓕 (f) 0 := by
   intro D ψ S S₀ T ρ d χS χT om hW μ 𝓕 hμ f hf

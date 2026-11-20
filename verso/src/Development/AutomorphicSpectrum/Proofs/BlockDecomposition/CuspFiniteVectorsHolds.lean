@@ -17,7 +17,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
   {μ : Measure (GA E a)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.irreducible_smooth_module_unique E a μ H hH hi W hs h0 hW φ hφ`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_stable {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hH : H ≤ L2cusp μ)
     (hi : IsIrredSubrep (R (latticeGL E a) μ) H) (W : Submodule ℂ (Sm E a)) (hs : IsStable W) (h0 : W ≠ ⊥)
@@ -28,7 +28,7 @@ theorem mem_of_stable {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hH : H ≤ L2
   GlobalTheory.T.irreducible_smooth_module_unique E a μ H hH hi W hs h0 hW φ hφ
 
 /- English proof (translation)
-Take `⟨φ, e, hm, hl, hz, hlev, hkf, hzf⟩` from `GlobalTheory.T.K_finite_L2_smooth_representative E a μ H hH hi F hF hk`. Establish `hc : Continuous φ.1` using `ContAut.continuous_of_isOpen_stab E a φ hlev`. Establish `hFe : hm.toL2 = F` using `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (hm.lift_toL2_ae_eq.trans e.symm)`. Establish `hcusp : IsCuspidal φ.1` using `GlobalTheory.T.cuspidal_of_L2_cuspidal_mem E a μ φ.1 hc hl hz hm (by rw [hFe]; exact hH hF)`. Conclude with `⟨φ, e, ⟨⟨hl, hlev, hkf, hzf, GlobalTheory.T.smooth_K_finite_center E a μ φ hl hz hlev hkf hzf hm⟩, hcusp⟩, hz, hm, by rw [hFe]; exact hF⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_cusp_form_of_K_finite {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hH : H ≤ L2cusp μ)
     (hi : IsIrredSubrep (R (latticeGL E a) μ) H) {F : L2 (latticeGL E a) μ} (hF : F ∈ H) (hk : IsKFinL2 μ F) :
@@ -48,17 +48,15 @@ namespace GlobalTheory.CompanionTheory.Published
 open GlobalTheory.CompanionTheory.CuspFinite in
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ _ H hH hi`. Take `⟨V, hV, hs⟩` from `GlobalTheory.T.irreducible_cuspidal_smooth_module E a μ H hH hi`. Establish `hkf : ∀ F ∈ H, IsKFinL2 μ F → F ∈ classes V μ` using `fun F hF hk => by`. Take `⟨φ, e, h1, h2, h3⟩` from `exists_cusp_form_of_K_finite hH hi hF hk`. Conclude with `⟨φ, (hV φ).2 ⟨h1, h2, h3⟩, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hcl : classes V μ ≤ H`. Introduce and unpack `F ⟨φ, hφ, e⟩`. Take `⟨-, -, h, hH'⟩` from `(hV φ).1 hφ`. Establish `: F = h.toL2` using `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (e.trans h.lift_toL2_ae_eq.symm)`. Conclude with `this ▸ hH'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdense : H ≤ (classes V μ).topologicalClosure` using `(GlobalTheory.T.K_finite_vectors_dense E a μ H hi.1).trans (Submodule.topologicalClosure_mono (Submodule.span_le.2 fun F hF => hkf F hF.1 hF.2))`. Establish `hne : V ≠ ⊥`. Introduce `hb`. Use `hi.2.1 (eq_bot_iff.2 (hdense.trans (Submodule.topologicalClosure_minimal _ ?_ ?_)))` and prove the remaining obligations. Introduce and unpack `F ⟨φ, hφ, e⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hφ` using `[hb, Submodule.mem_bot]`. Establish `h0 : φ.1 = 0` using `by rw [hφ]; rfl`. Rewrite `e` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).2 (l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (e.trans (show lift (latticeGL E a) (0 : L2 (latticeGL E a) μ) =ᵐ[μ] 0 from ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)).symm))`. Rewrite using `[Submodule.bot_coe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `isClosed_singleton`. Establish `hirr : ∀ W ≤ V, IsStable W → W = ⊥ ∨ W = V` using `fun W hWV hWs => by`. Distinguish the cases in `h0 : W = ⊥`. Conclude with `Or.inl h0`. Conclude with `Or.inr (le_antisymm hWV fun φ hφ => mem_of_stable hH hi W hWs h0 (fun ψ hψ => (hV ψ).1 (hWV hψ)) φ ((hV φ).1 hφ))`.
-
-Set `π : CuspSub E a` to `⟨V, fun φ hφ => ((hV φ).1 hφ).1, hs, hne, hirr⟩`. Conclude with `⟨π, fun φ hφ => ((hV φ).1 hφ).2.1, fun φ hφ => ((hV φ).1 hφ).2.2.1, le_antisymm (Submodule.topologicalClosure_minimal _ hcl hi.1.1) hdense, hkf⟩`.
+Prove the first alternative. Prove the second alternative. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cuspFiniteVectorsGL : GlobalTheory.Published.CuspFiniteVectorsGL := by
   intro E _ _ _ a μ _ _ H hH hi

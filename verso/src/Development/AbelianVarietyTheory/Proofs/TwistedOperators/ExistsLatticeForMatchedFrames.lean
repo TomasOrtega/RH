@@ -38,13 +38,13 @@ open GlobalTheory.FinPl
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨β, rfl, -, h0⟩` from `hε`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hx`. Establish `hβα : β * α = 0`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `RestrictedProduct.ext _ _ fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F y (β * α) = evalV D.host.F y 0`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hy : y = w`. Substitute `hy` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hP y hw, mul_zero]`. Rewrite using `[h0 y hy, zero_mul]`. Establish `hp : pairA D.host.F 0 β * pairA D.host.F 0 α = 0` using `Prod.ext (mul_zero _) hβα`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 : D.host.E)) * (_ ⊗ₜ _) = (0 : AE D)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, hp, TensorProduct.zero_tmul]`. Consider the case `zero => rw [smul_zero]`. Consider the case `add x x' _ _ h h' => rw [smul_add, h, h', add_zero]`. Consider the case `neg x _ h => rw [smul_neg, h, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem placeIdem_smul_offP {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {w : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}
@@ -70,13 +70,13 @@ theorem placeIdem_smul_offP {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {
   | neg x _ h => rw [smul_neg, h, neg_zero]
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Establish `key : ∀ PP ∈ Pset, es PP * u a b = 0 ∧ cA D (es PP) * u a b = 0`. Introduce `PP hPP`. Take `⟨⟨a1, a2, w, ε, hε, a3⟩, -⟩` from `hes PP hPP`. Establish `hw : ¬ P w` using `fun h => hv PP hPP (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ PP w ε (hes PP hPP) hε a3]`. Conclude with `h)`. Establish `h0` using `congrFun (congrFun (placeIdem_smul_offP hε hw hu) a) b`. Rewrite `h0` using `[Matrix.smul_apply, smul_eq_mul, ← a3, Matrix.zero_apply]`. Establish `c1 : cA D (es PP) * cA D (es PP) = cA D (es PP)` using `by rw [← map_mul, a1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : cA D (es PP) * es PP = 0` using `by rw [mul_comm, a2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take the linear combination `es PP * h0 - u a b * a1 - u a b * a2`. Take the linear combination `cA D (es PP) * h0 - u a b * c1 - u a b * c2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun PP hPP => (key PP hPP).1`. Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun PP hPP => (key PP hPP).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idemSum_mul_offP {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {e : AE D} {Pset : Finset (Formalism.L2.DIV.Pl D.host.E)}
@@ -100,7 +100,7 @@ theorem idemSum_mul_offP {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT 
   · rw [map_sum, Finset.sum_mul]; exact Finset.sum_eq_zero fun PP hPP => (key PP hPP).2
 
 /- English proof (translation)
-Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, -, rest⟩`. Conclude with `⟨α, hα, fun v h => absurd trivial h, rest⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latO_le_true {S T : HSp D} (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) : latO S T LS LT P ≤ latO S T LS LT fun _ => True := by
@@ -117,9 +117,9 @@ open GlobalTheory.FinPl
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hf : IsThetaFunO ψ S T f` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hW.std hθ hth h₀`. Establish `hz : ∀ u ∈ latO S T (LS : Set _) (LT : Set _) P, ∀ a b, e * u a b = 0 ∧ cA D e * u a b = 0` using `fun u hu a b => idemSum_mul_offP he hoff hu a b`. Establish `hle` using `latO_le_true (S := S) (T := T) (LS : Set _) (LT : Set _) P`. Establish `hvac : Vac ψ S T LS LT P f`. Use `⟨hf, fun u hu => ?_, fun e' he' u hu hh => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.Hk3.heisO_fix_thetaAt_off ψ S T e _ 1 f₀ φ f hth (2 • u) (hz _ (AddSubgroup.nsmul_mem _ hu 2)) (hlat.1 u (hle hu))`. Conclude with `GlobalTheory.Hk3.heisO_fix_thetaAt_off ψ S T e _ 1 f₀ φ f hth u (hz u hu) (hlat.2 e' he' u (hle hu) hh)`. Establish `hfix : om (κ, κ') f = f` using `GlobalTheory.VacFixP.vac_fix_on D ψ S T χS χT om hW LS LT P hP f hvac κ κ' hκ hκ'`. Use `GlobalTheory.FiniteFock.om_pureTensorO_of_finite ψ θ S T χS χT om hθ hW sS sT BS BT f (fun R => GlobalTheory.GalLift.Vec.theta_pureTensorO hW.std hθ sS BS sT BT hf R) κ (GlobalTheory.FinPl.SetCut.grpAt_le_GfC S P hκ.1) κ' (GlobalTheory.FinPl.SetCut.grpAt_le_GfC T P hκ'.1) 1 (by r …` as an intermediate fact. Rewrite using `[this, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_fock_fix (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
@@ -151,7 +151,7 @@ theorem om_fock_fix (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp 
   rw [this, one_smul]
 
 /- English proof (translation)
-Use `⟨one_mem _, fun y _ => ?_⟩` and prove the remaining obligations. Establish `h : mt S 1 = 1` using `rfl`. Rewrite using `[h, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inK_one (S : HSp D) (L : Lat S) (P : Pl D → Prop) : InK S L P 1 := by
   refine ⟨one_mem _, fun y _ => ?_⟩
@@ -165,23 +165,21 @@ namespace GlobalTheory.SmallKerInv
 open GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS => ?_⟩⟩` and prove the remaining obligations. Introduce `G W hW B ρ hρ t i j Θ Θ' hΘ g g₁`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Take `⟨a, b, τ, τ', n, Φ, -, -, ⟨e, he, ⟨φ₁, φ₂, h1, -⟩, -⟩, -, rfl⟩` from `hΘ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm` using `W.om_is (.mu t i j) ⟨i.2.le, j.2⟩`. Establish `hc` using `W.om_is (.chi (i : ℕ) j) ⟨i.2, j.2.le⟩`. Establish `s0` using `(node_isV G hL (X := .grid (i : ℕ) (j : ℕ)) ⟨i.2.le, j.2.le⟩).sd`. Establish `s1` using `(node_isV G hL (X := .grid (i : ℕ) ((j : ℕ) + 1)) ⟨i.2.le, j.2⟩).sd`. Establish `s2` using `(node_isV G hL (X := .grid ((i : ℕ) + 1) (j : ℕ)) ⟨i.2, j.2.le⟩).sd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set good : Pl D → Prop := fun v => Tame D v ∧ GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (G.chrS (.mu t i j)) v ∧ GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (G.chrT (.mu t i j)) v ∧ GlobalTheory.IndefiniteRowSideFullHe …`. Establish `hev : ∀ᶠ v : Pl D in Filter.cofinite, good v` using `by filter_upwards [GlobalTheory.FinPl.eventually_extUnram_two_notMem D, GlobalTheory.FinPl.ShapeSecond.ae_charUnramAt _ hm.hecS.1, GlobalTheory.FinPl.ShapeSecond.ae_charUnramAt _ hm.hecT.1, GlobalTheory.FinPl.ShapeSecond.ae_charUnramAt _ hc.hecS.1, GlobalTheory.FinPl.ShapeSecond. …`. Conclude with `⟨⟨h0.1, Or.inl h0.2⟩, h1, h2, h3, h4⟩`. Establish `hfin : {v | ¬ good v}.Finite` using `Filter.eventually_cofinite.1 hev`. Use `⟨G.Λ (.grid i j), hfin.toFinset ∪ (locPl G t).image (fun PP => PP.under (𝓞 D.host.F)), s0.1.fg, s0.1.span_eq_top, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `κ hκ u`. Establish `hgd : ∀ v, v ∉ hfin.toFinset ∪ (locPl G t).image (fun PP => PP.under (𝓞 D.host.F)) → good v`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_left _ (hfin.mem_toFinset.2 h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hoff : ∀ PP ∈ locPl G t, ¬ (PP.under (𝓞 D.host.F) ∉ hfin.toFinset ∪ (locPl G t).image (fun PP => PP.under (𝓞 D.host.F)))` using `fun PP hPP h => h (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hPP))`. Unfold `kerSmall`. Use `Finsupp.sum_congr fun d hd => ?_` and prove the remaining obligations. Take `⟨P, -, hP⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hd)`. Take `⟨d', hd', hd''⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hP)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdd` using `Finsupp.support_single_subset hd''`. Rewrite `hdd` using `[Finset.mem_singleton]`. Substitute `hdd` using the available equality. Take `⟨⟨hsb1, hth1⟩, ⟨hsb2, hth2⟩⟩` from `h1 d' hd'`. Establish `hv1` using `ρ.vT_is t i j i.2.le j.2`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hv2` using `ρ.vX_is i j i.2 j.2.le`. Use `congr 1`. Use `congr 1`. Use `show thetaKO (W.om (.mu t i j)) (u * κ) g _ = thetaKO (W.om (.mu t i j)) u g _`. Unfold `thetaKO`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ((u * κ, g) : GA D (G.pS (.mu t i j)) × GA D (G.pT (.mu t i j))) = (u, g) * (κ, 1)` using `by simp`. Rewrite using `[e1, map_mul, Module.End.mul_apply]`. Use `congrArg (fun x => W.om (.mu t i j) (u, g) x 0) ?_` and prove the remaining obligations. Conclude with `om_fock_fix _ _ _ _ _ _ _ hm W.θ_is _ _ _ (fun v hv => ⟨s0, s1, (hgd v hv).1, (hgd v hv).2.1, (hgd v hv).2.2.1⟩) e _ he hoff _ _ _ hv1.2.theta hv1.2.lat hth1 _ _ _ _ _ κ 1 hκ (inK_one _ _ _)`. Use `show thetaKO (W.om (.chi (i : ℕ) j)) (negGA _ g₁) (u * κ) _ = thetaKO (W.om (.chi (i : ℕ) j)) (negGA _ g₁) u _`.
-
-Unfold `thetaKO`. Establish `e2 : ((negGA _ g₁, u * κ) : GA D (G.pS (.chi (i : ℕ) j)) × GA D (G.pT (.chi (i : ℕ) j))) = (negGA _ g₁, u) * (1, κ)` using `by simp`. Rewrite using `[e2, map_mul, Module.End.mul_apply]`. Use `congrArg (fun x => W.om (.chi (i : ℕ) j) (negGA _ g₁, u) x 0) ?_` and prove the remaining obligations. Conclude with `om_fock_fix _ _ _ _ _ _ _ hc W.θ_is _ _ _ (fun v hv => ⟨isSelfDualC_neg s2, s0, (hgd v hv).1, (hgd v hv).2.2.2.1, (hgd v hv).2.2.2.2⟩) e _ he hoff _ _ _ hv2.2.theta hv2.2.lat hth2 _ _ _ _ _ 1 κ (inK_one _ _ _) hκ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kerSmall_inv : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → BigR fun {D} _ _ _ _ T _ _ _ _ _ R sc => ∀ (G : GridData R.toLevCh sc) (W : G.Weil), W.Over R → ∀ (B : Frames G)
   (ρ : RealMatch W), ρ.Over R → ∀ (t : T) (i j : Fin D.R.m) Θ Θ', IsMatched B t ρ i j Θ Θ' → ∀ g g₁,

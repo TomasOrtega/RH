@@ -13,23 +13,21 @@ namespace SymmetricSemicharacter
 open CubeValues
 
 /- English proof (translation)
-Introduce `X x`. Establish `h1 : ∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U` using `fun U => ⟨fun h => h (x := (default : PrimeSpectrum ℂ)) trivial, fun h p _ => by`. Establish `: p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `this` using the available equality. Conclude with `h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, fun U h => ?_, fun U V h f hV => ?_, fun Y φ U f => ?_, fun U f => ?_, fun p hp U a h => ?_⟩` and prove the remaining obligations. Conclude with `⟨(Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (x.appLE U ⊤ h).hom, fun f => by simp only [valAt', dif_pos h, valAt]; rfl⟩`. Establish `hU : ⊤ ≤ x ⁻¹ᵁ U` using `fun p hp => h (hV hp)`. Simplify using `only [valAt', dif_pos hV, dif_pos hU, valAt]`. Use `congr 1`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Conclude with `congr($(Scheme.Hom.map_appLE x hV (homOfLE h).op).hom f)`. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ φ ⁻¹ᵁ U`. Establish `h' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `h`. Simplify using `only [valAt', dif_pos h, dif_pos h', valAt]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h' : ¬ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `h`. Simplify using `only [valAt', dif_neg h, dif_neg h']`. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Establish `e : (Sp ℂ).basicOpen ((x.appLE U ⊤ h).hom f) = x ⁻¹ᵁ X.basicOpen f`. Rewrite using `[Scheme.basicOpen_appLE, top_inf_eq]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [valAt', dif_pos h, valAt]`. Rewrite using `[← e]`. Generalize the expression as in `(x.appLE U ⊤ h).hom f = s`. Take `⟨a, rfl⟩ : ∃ a : ℂ, (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a = s` from `⟨(Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom s, by simp⟩`. Establish `ea : (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a) = a` using `by simp`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[ea]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `k rfl`. Rewrite `k` using `[map_zero, Scheme.basicOpen_zero]`. Conclude with `k (x := (default : PrimeSpectrum ℂ)) trivial`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `k`. Conclude with `(Scheme.basicOpen_of_isUnit _ ((isUnit_iff_ne_zero.2 k).map _)).ge`. Simplify using `only [valAt', dif_neg h, ne_eq, not_true, iff_false]`. Conclude with `fun k => h fun p hp => X.basicOpen_le f (k hp)`. Simplify using `only [valAt', dif_pos h, valAt, constFn]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr($(Scheme.Hom.appLE_comp_appLE x p ⊤ U ⊤ (fun _ _ => trivial) h).hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom a))` as an intermediate fact. Simplify using `only [hp, CommRingCat.hom_comp, RingHom.comp_apply] at this`. Rewrite using `[this]`. Establish `e : ∀ k, Scheme.Hom.appLE (𝟙 (Sp ℂ)) ⊤ ⊤ k = 𝟙 _` using `fun k => by`. Rewrite using `[← Scheme.Hom.id_app]`.
-
-Conclude with `(Scheme.Hom.app_eq_appLE (𝟙 (Sp ℂ)) (U := ⊤)).symm`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma valueRules : ValueRules := by
   intro X x
@@ -85,7 +83,7 @@ lemma valueRules : ValueRules := by
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
 /- English proof (translation)
-Establish `h : u.ex (-z) = (u.ex z)⁻¹`. Rewrite using `[eq_inv_iff_mul_eq_one, ← u.ex_add, neg_add_cancel, ex_zero]`. Rewrite using `[h, Hom.inv_def, Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma ex_neg_left (z : Fin g → ℂ) :
     (u.ex z).left ≫ (GrpObj.inv : A ⟶ A).left = (u.ex (-z)).left := by
@@ -94,7 +92,7 @@ lemma ex_neg_left (z : Fin g → ℂ) :
   rw [h, Hom.inv_def, Over.comp_left]
 
 /- English proof (translation)
-Establish `h : (u.ex z).left (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i`. Rewrite using `[hL.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨i, ((hv _ (u.ex z).left).1 _).2 hi⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_chart (hv : ValueRules) (hL : L.IsLB) (z : Fin g → ℂ) :
     ∃ i, ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i := by
@@ -104,11 +102,11 @@ lemma exists_chart (hv : ValueRules) (hL : L.IsLB) (z : Fin g → ℂ) :
   exact ⟨i, ((hv _ (u.ex z).left).1 _).2 hi⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart u hv hL 0`. Establish `hi' : ⊤ ≤ (u.ex (0 + l)).left ⁻¹ᵁ L.U i` using `by rwa [ex_add_period u 0 l l.2]`. Establish `h1` using `h.2.2.2 l i 0 hi`. Establish `h2` using `h.2.2.2 (-l) i _ hi'`. Rewrite `h1` using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [zero_add, Submodule.coe_neg, add_neg_cancel, star_neg, Matrix.mulVec_neg, dotProduct_neg, neg_dotProduct, neg_neg, zero_dotProduct, mul_zero] at h1`. Use `set b := (l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))`. Establish `he : Complex.exp (Real.pi / 2 * b) * Complex.exp (Real.pi * -b + Real.pi / 2 * b) = 1`. Rewrite using `[← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `mul_right_cancel₀ (u.fr_ne i 0 hi) ?_` and prove the remaining obligations. Take the linear combination `-h1 - χ l * χ (-l) * u.fr i 0 * he`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma mul_neg_eq_one (hv : ValueRules) (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (h : u.IsAH Hm χ) (l : u.Λ) : χ l * χ (-l) = 1 := by
@@ -128,19 +126,17 @@ lemma mul_neg_eq_one (hv : ValueRules) (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g
   linear_combination -h1 - χ l * χ (-l) * u.fr i 0 * he
 
 /- English proof (translation)
-Take `⟨U, hU, t, ht⟩` from `hs (default : PrimeSpectrum ℂ)`. Establish `hr : Set.range (𝟙 A.left : A.left ⟶ A.left) ⊆ Set.range (A.hom ⁻¹ᵁ U).ι`. Introduce `x _`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `: A.hom x = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `A.hom x ∈ U`. Rewrite using `[this]`. Conclude with `hU`. Take `⟨σ, hσ⟩ : ∃ σ : A.left ⟶ (A.hom ⁻¹ᵁ U).toScheme, σ ≫ (A.hom ⁻¹ᵁ U).ι = 𝟙 _` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`. Use `revert t`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set φ : Fin 2 → ((A.hom ⁻¹ᵁ U).toScheme ⟶ A.left) := ![(A.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : A ⟶ A).left, (A.hom ⁻¹ᵁ U).ι] with hφ`. Introduce `t ht`. Establish `h0 : ∀ z, ((u.ex z).left ≫ σ) ≫ φ 0 = (u.ex (-z)).left` using `fun z => by`. Simplify using `only [hφ, Matrix.cons_val_zero, Category.assoc, reassoc_of% hσ, ex_neg_left]`. Establish `h1 : ∀ z, ((u.ex z).left ≫ σ) ≫ φ 1 = (u.ex z).left` using `fun z => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hφ, Matrix.cons_val_one, Matrix.cons_val_zero, Category.assoc, hσ, Category.comp_id]`. Establish `hch : ∀ i j z, ⊤ ≤ (u.ex (-z)).left ⁻¹ᵁ L.U i → ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U j → ⊤ ≤ ((u.ex z).left ≫ σ) ⁻¹ᵁ L.wchart φ ![i, j]` using `fun i j z hi hj => by`. Use `(le_preimage_wchart ((u.ex z).left ≫ σ) L φ _).2 ?_` and prove the remaining obligations. Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨(h0 z).symm ▸ hi, (h1 z).symm ▸ hj⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j z => valAt' ((u.ex z).left ≫ σ) (L.wchart φ ![i, j]) (t.s ![i, j]).val, fun i j => ?_, fun i j z hi hj => ?_, fun i j i' j' z hi hj hi' hj' => ?_, fun i j z l => ?_⟩` and prove the remaining obligations. Establish `h` using `(u.hol (σ ⁻¹ᵁ L.wchart φ ![i, j]) ((σ.app _).hom (t.s ![i, j]).val)).2`. Use `(h.mono fun z hz => hch i j z hz.1 hz.2).congr fun z _ => ?_` and prove the remaining obligations. Conclude with `((hv _ (u.ex z).left).2.2.2.1 _ σ _ _).symm`. Conclude with `val_unit_ne_zero _ hv (hch i j z hi hj) _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k1` using `hch i j z hi hj`. Establish `k2` using `hch i' j' z hi' hj'`. Use `(val_gen _ hv t ht _ _ k1 k2).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `(val_linComb ((u.ex z).left ≫ σ) hv L φ _ _ _ k1 k2).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[Fin.prod_univ_two, h0, h1]`. Simplify using the standard rewrite rules. Simplify using `only [ex_add_period u z l l.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_symmetry_values (hv : ValueRules) (hs : Out.Sym A L) :
     ∃ T : L.ι → L.ι → (Fin g → ℂ) → ℂ,
@@ -191,23 +187,21 @@ lemma exists_symmetry_values (hv : ValueRules) (hs : Out.Sym A L) :
   · simp only [ex_add_period u z l l.2]
 
 /- English proof (translation)
-Take `⟨T, hTd, hT0, hTc, hTp⟩` from `exists_symmetry_values u hv hs`. Use `choose ch hch using exists_chart u hv hL`. Set `R : L.ι → L.ι → (Fin g → ℂ) → ℂ` to `fun i j z => T i j z * u.fr j z / u.fr i (-z)`. Set `r : (Fin g → ℂ) → ℂ` to `fun z => R (ch (-z)) (ch z) z`. Establish `hrR : ∀ i j z, ⊤ ≤ (u.ex (-z)).left ⁻¹ᵁ L.U i → ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U j → r z = R i j z` using `fun i j z hi hj => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k1` using `(le_preimage_inf _ _ _).2 ⟨hch (-z), hi⟩`. Establish `k2` using `(le_preimage_inf _ _ _).2 ⟨hch z, hj⟩`. Establish `n1` using `val_unit_ne_zero _ hv k1 (L.g _ _)`. Establish `n2` using `val_unit_ne_zero _ hv k2 (L.g _ _)`. Establish `n3` using `u.fr_ne i _ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [r, R]`. Rewrite using `[hTc _ _ i j z (hch _) (hch _) hi hj, u.fr_compat _ _ _ k1, u.fr_compat _ _ _ k2]`. Clear the denominators using the available nonvanishing facts. Establish `hopen : ∀ i, IsOpen {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i}` using `fun i => (u.hol _ 0).1`. Establish `hd : Differentiable ℂ r` using `fun z => by set i := ch (-z) set j := ch z`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho : IsOpen {w | ⊤ ≤ (u.ex (-w)).left ⁻¹ᵁ L.U i ∧ ⊤ ≤ (u.ex w).left ⁻¹ᵁ L.U j}` using `((hopen i).preimage continuous_neg).inter (hopen j)`. Establish `hR : DifferentiableOn ℂ (R i j) {w | ⊤ ≤ (u.ex (-w)).left ⁻¹ᵁ L.U i ∧ ⊤ ≤ (u.ex w).left ⁻¹ᵁ L.U j}`. Simplify using `only [R, div_eq_mul_inv]`. Use `((hTd i j).fun_mul ((u.fr_hol j).mono fun w hw => hw.2)).fun_mul (DifferentiableOn.fun_inv ?_ fun w hw => u.fr_ne i _ hw.1)` and prove the remaining obligations. Conclude with `(u.fr_hol i).comp (f := fun w => -w) (by fun_prop) fun w hw => hw.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hR.congr fun w hw => hrR i j w hw.1 hw.2).differentiableAt (ho.mem_nhds ⟨hch _, hch _⟩)`. Establish `hne : ∀ z, r z ≠ 0` using `fun z => div_ne_zero (mul_ne_zero (hT0 _ _ _ (hch _) (hch _)) (u.fr_ne _ _ (hch _))) (u.fr_ne _ _ (hch _))`. Establish `hχ : ∀ l, χ l ≠ 0` using `fun l h0 => by simpa [h0] using h.2.2.1 l`. Use `haveI := u.discrete`. Establish `key` using `(appellHumbert_trivial_of_nowhere_vanishing g u.Λ u.full 0 (fun l => χ (-l) / χ l) r Matrix.isHermitian_zero (fun l => by rw [norm_div, h.2.2.1, h.2.2.1, div_one]) hd hne (fun l z => ?_)).2.1 l`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(div_eq_one_iff_eq (hχ l)).1 key`. Establish `e : -(z + (l : Fin g → ℂ)) = -z + ((-l : u.Λ) : Fin g → ℂ)`. Rewrite using `[Submodule.coe_neg, neg_add]`. Establish `hi : ⊤ ≤ (u.ex (-(z + l))).left ⁻¹ᵁ L.U (ch (-z))`. Rewrite using `[e, ex_add_period u _ _ (-l).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hch _`. Establish `hj : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ L.U (ch z)`. Rewrite using `[ex_add_period u _ _ l.2]`. Conclude with `hch _`. Rewrite using `[hrR _ _ _ hi hj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `n1` using `u.fr_ne _ _ hi`. Establish `n2` using `hχ l`. Establish `n3` using `hχ (-l)`. Simplify using `only [r, R]`. Rewrite using `[hTp, h.2.2.2 l _ z (hch _), h.2.2.2 (-l) _ (-z) (hch _), ← e]`.
-
-Simplify using `only [hermForm, Matrix.zero_mulVec, dotProduct_zero, mul_zero, add_zero, Complex.exp_zero, Submodule.coe_neg, star_neg, Matrix.mulVec_neg, dotProduct_neg, neg_dotProduct, neg_neg]`. Establish `n4` using `Complex.exp_ne_zero (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))))`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma neg_eq (hv : ValueRules) (hL : L.IsLB) (hs : Out.Sym A L)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
@@ -271,7 +265,7 @@ end SymmetricSemicharacter
 open SymmetricSemicharacter in
 
 /- English proof (translation)
-Introduce `P u Hm χ h l`. Establish `h1` using `mul_neg_eq_one u valueRules P.isLB h l`. Rewrite `h1` using `[neg_eq u valueRules P.isLB P.sym h l, ← sq]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem semicharacter_sq_eq_one_of_symmetric :
     ∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ)

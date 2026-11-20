@@ -11,14 +11,14 @@ variable (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (
   (m : Type) [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Unfold `repKappa`. Simplify using `only [map_mul, map_inv₀, Complex.conj_ofReal, map_natCast]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma kappa_real : conj (repKappa a b d ha hd lam hlam) = repKappa a b d ha hd lam hlam := by
   unfold repKappa
   simp only [map_mul, map_inv₀, Complex.conj_ofReal, map_natCast]
 
 /- English proof (translation)
-Introduce `h`. Break down `(Nat.prime_iff_prime_int.mp hl).dvd_or_dvd h with h1 | h1` into its components or cases. Conclude with `hu h1`. Conclude with `hv h1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma not_dvd_mul' {l : ℕ} (hl : l.Prime) {u v : ℤ} (hu : ¬ (l : ℤ) ∣ u) (hv : ¬ (l : ℤ) ∣ v) :
     ¬ (l : ℤ) ∣ u * v := by
@@ -28,7 +28,7 @@ lemma not_dvd_mul' {l : ℕ} (hl : l.Prime) {u v : ℤ} (hu : ¬ (l : ℤ) ∣ u
   · exact hv h1
 
 /- English proof (translation)
-Simplify using `only [stdH, matH, LinearMap.mk₂'ₛₗ_apply, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by`. Simplify using `only [Pi.mul_apply, Pi.natCast_apply, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma H_nsmul_nsmul (L : PeriodPair) (s t : ℕ) (v w : m → ℂ) :
     stdH L m (s • v) (t • w) = (s : ℂ) * t * stdH L m v w := by
@@ -39,9 +39,9 @@ lemma H_nsmul_nsmul (L : PeriodPair) (s t : ℕ) (v w : m → ℂ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[stdH_apply]`. Establish `hA : area L ≠ 0` using `by rw [area_eq]; exact abs_ne_zero.mpr (detD_ne L)`. Use `mul_ne_zero ?_ (inv_ne_zero (by exact_mod_cast hA))` and prove the remaining obligations. Take `⟨i, hi⟩ : ∃ i, v i ≠ 0` from `by by_contra h; push_neg at h; exact hv (funext h)`. Establish `hsum : (∑ j, v j * conj (v j)) = ((∑ j, Complex.normSq (v j) : ℝ) : ℂ)` using `by push_cast; exact Finset.sum_congr rfl fun j _ => Complex.mul_conj (v j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hsum]`. Establish `: 0 < ∑ j, Complex.normSq (v j)` using `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hi⟩`. Conclude with `this.ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma H_self_ne (L : PeriodPair) {v : m → ℂ} (hv : v ≠ 0) : stdH L m v v ≠ 0 := by
   rw [stdH_apply]
@@ -58,9 +58,9 @@ lemma H_self_ne (L : PeriodPair) {v : m → ℂ} (hv : v ≠ 0) : stdH L m v v �
 variable {a b c d ha hd lam hlam m}
 
 /- English proof (translation)
-Take `⟨s, hs, hsv⟩` from `hv`. Take `⟨n, hn⟩` from `rep_H_self_int a b c d ha hd lam hlam m hOK Λ hΛ hθ hsv`. Establish `hs' : ¬ (l : ℤ) ∣ (s : ℤ)` using `fun h => hs (by exact_mod_cast h)`. Use `⟨n, (s : ℤ) * s, not_dvd_mul' hl hs' hs', ?_⟩` and prove the remaining obligations. Establish `hs0 : (s : ℂ) ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h; apply hs; rw [show s = 0 by exact_mod_cast h]; exact dvd_zero _`. Rewrite `hn` using `[H_nsmul_nsmul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma sat_norm (hOK : CmOK a b c d) {Λ : AddSubgroup (m → ℂ)}
     (hΛ : IsSelfDual (stdH (cmL a b d ha hd lam hlam) m) Λ) (hθ : ∀ z ∈ Λ, cmTheta b d • z ∈ Λ)
@@ -78,11 +78,11 @@ lemma sat_norm (hOK : CmOK a b c d) {Λ : AddSubgroup (m → ℂ)}
   linear_combination hn
 
 /- English proof (translation)
-Take `⟨s, hs, hsv⟩` from `hv`. Take `⟨t, ht, htw⟩` from `hw`. Take `⟨n, c₂, hn, -⟩` from `rep_H_int a b c d ha hd lam hlam m hOK Λ hΛ hθ hsv htw`. Establish `hs' : ¬ (l : ℤ) ∣ (s : ℤ)` using `fun h => hs (by exact_mod_cast h)`. Establish `ht' : ¬ (l : ℤ) ∣ (t : ℤ)` using `fun h => ht (by exact_mod_cast h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨n, c₂, (s : ℤ) * t, not_dvd_mul' hl hs' ht', ?_⟩` and prove the remaining obligations. Establish `hs0 : (s : ℂ) ≠ 0`. Introduce `h; apply hs; rw [show s = 0 by exact_mod_cast h]; exact dvd_zero _`. Establish `ht0 : (t : ℂ) ≠ 0`. Introduce `h; apply ht; rw [show t = 0 by exact_mod_cast h]; exact dvd_zero _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[H_nsmul_nsmul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma sat_pair (hOK : CmOK a b c d) {Λ : AddSubgroup (m → ℂ)}
     (hΛ : IsSelfDual (stdH (cmL a b d ha hd lam hlam) m) Λ) (hθ : ∀ z ∈ Λ, cmTheta b d • z ∈ Λ)
@@ -105,11 +105,11 @@ lemma sat_pair (hOK : CmOK a b c d) {Λ : AddSubgroup (m → ℂ)}
   linear_combination hn
 
 /- English proof (translation)
-Rewrite using `[rep_kappa_eq]`. Establish `hd' : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `hs : Real.sqrt d ≠ 0` using `(Real.sqrt_pos.2 hd').ne'`. Establish `hsq : Real.sqrt d * Real.sqrt d = d` using `Real.mul_self_sqrt hd'.le`. Establish `hpi : 2 * cmTheta b d - b = Complex.I * ((Real.sqrt d : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cmTheta`. Expand and normalize the polynomial expressions, which then agree. Establish `hconj : conj (cmTheta b d) = ((b : ℂ) - Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2`. Unfold `cmTheta`. Simplify using `[map_div₀, Complex.conj_ofReal, map_ofNat]`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpi, hconj]`. Simplify using `[Complex.mul_im, Complex.mul_re, Complex.inv_re, Complex.inv_im, Complex.normSq, Complex.div_re, Complex.div_im]`. Clear the denominators using the available nonvanishing facts. Rewrite `*` using `[show (Real.sqrt d) ^ 2 = d by rw [sq]; exact hsq]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

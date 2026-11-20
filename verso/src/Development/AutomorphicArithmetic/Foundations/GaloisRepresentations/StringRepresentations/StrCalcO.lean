@@ -15,19 +15,17 @@ end GlobalTheory.EigStrCalc
 namespace GlobalTheory.EigStrCalc
 
 /- English proof (translation)
-Introduce `hAF hL D P h41 h7 _ i x Q P0 Sig hQ hP0 hSig hB w hsplit hS hQw hunr z hz`. Establish `hsp : IsSplitPl D.host w` using `isSplitPl_of_under D w hsplit`. Take `⟨π, rfl⟩` from `hSig`. Establish `e1 : D.naut.locV i Q w = D.naut.locV i P0 w` using `(((h41 i).2.1 Q P0 (by rw [hQ]; exact Option.some_ne_none x) (hQ.trans hP0.symm)).2 w hS hQw).1 hsp`. Establish `e2` using `hB.2.2.2.1 w hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : isoLoc D.nd D.naut (twistIso D.nd D.naut ([⟨D.R.r, π, 1⟩] ++ [muPart D.nd D.naut i]) D.naut.etaTinv) w = D.naut.lpSum (D.naut.locG (D.naut.tw π D.naut.etaTinv) w) (spehLoc D.nd D.naut ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩ w)`. Establish `: spehLoc D.nd D.naut ⟨D.R.r, D.naut.tw π D.naut.etaTinv, 1⟩ w = D.naut.locG (D.naut.tw π D.naut.etaTinv) w`. Simplify using `[spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]`. Rewrite using `[← this]`. Conclude with `congrArg _ (D.naut.lpSum_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eV : D.naut.locV i Q w = D.naut.lpSum (D.naut.locG (D.naut.tw π D.naut.etaTinv) w) (spehLoc D.nd D.naut ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩ w)`. Rewrite using `[e1, ← e2, e3]`. Rewrite `hunr` using `[eV]`. Take `⟨ha, hb⟩` from `(D.naut.unr_sum _ _).1 hunr`. Establish `ht : 1 ≤ D.R.t` using `D.R.t_odd.pos`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ` using `unr_of_speh D.naut _ D.R.t ht w hb`. Take `⟨-, hblk⟩` from `GlobalTheory.RowModelRoad.frobEig_block D.naut _ D.R.t w z⁻¹ hθ hz`. Use `⟨(D.naut.frobEig (D.naut.locG (D.naut.tw π D.naut.etaTinv) w)).map (fun a : ℂ => a⁻¹), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eV, D.naut.frobEig_sum _ _ ha hb, Multiset.map_add, hblk, ← normV_eq_absNorm, inv_block]`. Take `⟨hTie, -⟩` from `GlobalTheory.AutomorphismSplitting.tieAut_and_split hAF hL D P`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEta : GlobalTheory.LocalInv.EtaType D.nd D.naut`. Use `⟨hTie.1.1, fun τ z hz => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases (hTie.2.1 τ).1 with h | h <;> rw [h, Multiset.mem_singleton] at hz <;> subst hz`. Conclude with `⟨0, by push_cast; ring⟩`. Conclude with `⟨-1, by push_cast; ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmem : (⟨D.R.r, D.naut.tw π D.naut.etaTinv, 1⟩ : Part D.naut.CG) ∈ twistIso D.nd D.naut ([⟨D.R.r, π, 1⟩] ++ [muPart D.nd D.naut i]) D.naut.etaTinv`. Simplify using `[twistIso]`. Take `⟨hcsd, hralg⟩` from `GlobalTheory.LocalInv.part_alg D.nd D.naut hEta (GlobalTheory.LocalInv.weightRegular_definite D) i P0 _ hB _ hmem (odd_rank D.R) odd_one`. Introduce `a haB`. Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.mp haB`.
-
-Conclude with `(((UpperTheory.GalN.tempo h7 D.R.r _ (odd_rank D.R).pos hcsd hralg w).part_tw hTie ha α hα).1.inv (UpperTheory.GalN.one_lt_q w)).le_rpow (UpperTheory.GalN.one_lt_q w) (UpperTheory.GalN.half_le_r D.R)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem strCalc_o : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.adm7 D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ (i : D.nd.Loc) (x : D.nd.X i) (Q P0 : D.naut.AV i) (Sig : List (Part D.naut.CG)), D.naut.ptV i Q = some x → D.naut.ptV i P0 = some x → IsCuspIso D.nd D.naut Sig → IsBCV D.nd D.naut i P0 (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv) → ∀ w : HeightOneSpectrum (𝓞 D.host.E), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (w.under (𝓞 D.host.F)) → w ∉ D.nd.S i → w ∉ D.nd.Q i → D.naut.unr (D.naut.locV i Q w) → ∀ z : ℂ, D.naut.frobEig (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w) = {z⁻¹} → ∃ B' : Multiset ℂ, (D.naut.frobEig (D.naut.locV i Q w)).map (fun a : ℂ => a⁻¹) = B' + GlobalTheory.DownLift.str (Ideal.absNorm w.asIdeal) z D.R.t ∧ ∀ a ∈ B', ‖a‖ ≤ (Ideal.absNorm w.asIdeal : ℝ) ^ (((D.R.r : ℝ) - 1) / 2) := by
   intro hAF hL D P h41 h7 _ i x Q P0 Sig hQ hP0 hSig hB w hsplit hS hQw hunr z hz
@@ -71,7 +69,7 @@ theorem strCalc_o : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL 
       (UpperTheory.GalN.one_lt_q w)).le_rpow (UpperTheory.GalN.one_lt_q w) (UpperTheory.GalN.half_le_r D.R)
 
 /- English proof (translation)
-The claim follows from `@strCalc_o`.
+A detailed English derivation is pending.
 -/
 example : type_of% @strCalc := @strCalc_o
 

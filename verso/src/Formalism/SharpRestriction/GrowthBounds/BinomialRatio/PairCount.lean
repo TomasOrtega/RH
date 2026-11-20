@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Establish `hsum : ∑ j, (nu j - mu j) = (g : ℤ)`. Rewrite using `[Finset.sum_sub_distrib]`. Conclude with `h.2.2`. Establish `hle : nu i - mu i ≤ ∑ j, (nu j - mu j)` using `Finset.single_le_sum (f := fun j => nu j - mu j) (fun j _ => sub_nonneg.2 (h.1 j)) (Finset.mem_univ i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pc_strip_le {r : ℕ} {nu mu : Fin r → ℤ} {g : ℕ} (h : Strip nu mu g) (i : Fin r) : nu i ≤ mu i + g := by
   have hsum : ∑ j, (nu j - mu j) = (g : ℤ) := by
@@ -24,32 +24,32 @@ def pcU (n : ℕ) : ℕ := if n = 0 then 0 else n / 2 + 1
 def pcL (n : ℕ) : ℕ := (n - 1) / 2
 
 /- English proof (translation)
-Unfold `pcU`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pcU_vec {n : ℕ} (h : n = 0 ∨ n % 2 = 1) : pcU (n + 1) = pcU n + 1 := by
   unfold pcU
   split_ifs <;> omega
 /- English proof (translation)
-Unfold `pcU`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pcU_cov {n : ℕ} (h : ¬ (n = 0 ∨ n % 2 = 1)) : pcU (n + 1) = pcU n := by
   unfold pcU
   split_ifs <;> omega
 /- English proof (translation)
-Unfold `pcL`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pcL_vec {n : ℕ} (h : n = 0 ∨ n % 2 = 1) : pcL (n + 1) = pcL n := by
   unfold pcL
   omega
 /- English proof (translation)
-Unfold `pcL`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pcL_cov {n : ℕ} (h : ¬ (n = 0 ∨ n % 2 = 1)) : pcL (n + 1) = pcL n + 1 := by
   unfold pcL
   omega
 
 /- English proof (translation)
-Simplify using `only [kLetters]`. Apply the tactic sequence `split_ifs <;> first | exact le_rfl | exact hA _ | exact hC _ | exact Nat.zero_le _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pc_deg {s : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {M : ℕ} (hA : ∀ i, Ai i ≤ M) (hC : ∀ i, Ci i ≤ M)
     (a : Fin (2 * s + 1)) : (kLetters A Ai Ci).deg a ≤ if a.val = 0 then A else M := by
@@ -57,7 +57,7 @@ theorem pc_deg {s : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {M : ℕ} (hA : ∀ i
   split_ifs <;> first | exact le_rfl | exact hA _ | exact hC _ | exact Nat.zero_le _
 
 /- English proof (translation)
-The claim follows from `|mu n idx| ≤ (if n.val = 0 then 0 else (A : ℤ)) + n.val * M := by have hM0 : (0 : ℤ) ≤ M := Int.natCast_nonneg _ have key : ∀ t : ℕ, ∀ ht : t < 2 * s + 1 + 1, ∀ idx : Fin (r + 1), (pcU t ≤ idx.val → mu ⟨t, ht⟩ idx ≤ 0) ∧ (idx.val + pcL t < r + 1 → 0 ≤ mu ⟨t, ht⟩ idx) ∧ |mu ⟨t, ht …`.
+A detailed English derivation is pending.
 -/
 theorem pc_shape {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {M : ℕ} (hA : ∀ i, Ai i ≤ M) (hC : ∀ i, Ci i ≤ M)
     {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ} (h : IsChain (kLetters A Ai Ci) mu) (n : Fin (2 * s + 1 + 1)) :
@@ -142,7 +142,7 @@ def pcEnc (K s : ℕ) (v : Fin K → ℤ) (q : Fin (2 * s + 1)) : ℤ :=
   if h : pcPosition K s q.val < K then v ⟨_, h⟩ else 0
 
 /- English proof (translation)
-Unfold `pcEnc`. Rewrite using `[dif_pos (by rw [hs]; exact i.2)]`. Use `congr 1`. Conclude with `Fin.ext hs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pcEnc_apply {K s : ℕ} (v : Fin K → ℤ) (q : Fin (2 * s + 1)) (i : Fin K) (hs : pcPosition K s q.val = i.val) :
     pcEnc K s v q = v i := by
@@ -152,11 +152,11 @@ theorem pcEnc_apply {K s : ℕ} (v : Fin K → ℤ) (q : Fin (2 * s + 1)) (i : F
   exact Fin.ext hs
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hzone : s + 1 ≤ i.val ∧ i.val + s < K`. Rewrite using `[hz i hzone.1 hzone.2, hz' i hzone.1 hzone.2]`. Establish `hq : ∃ q : Fin (2 * s + 1), pcPosition K s q.val = i.val`. Distinguish the cases in `hi : i.val < s + 1`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨⟨i.val, by omega⟩, by simp [pcPosition, hi]⟩`. Use `⟨⟨2 * s + 1 - (K - i.val), by have := i.2; omega⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : ¬ (2 * s + 1 - (K - i.val) < s + 1)` using `by have := i.2; omega`. Simplify using `only [pcPosition, h1, if_false]`. Use `i.2` as an intermediate fact.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨q, hq⟩` from `hq`. Establish `e1` using `pcEnc_apply v q i hq`. Establish `e2` using `pcEnc_apply v' q i hq`. Rewrite using `[← e1, ← e2, he]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pcEnc_inj {K s : ℕ} {v v' : Fin K → ℤ} (hz : ∀ i : Fin K, s + 1 ≤ i.val → i.val + s < K → v i = 0)
     (hz' : ∀ i : Fin K, s + 1 ≤ i.val → i.val + s < K → v' i = 0) (he : pcEnc K s v = pcEnc K s v') : v = v' := by
@@ -177,7 +177,7 @@ theorem pcEnc_inj {K s : ℕ} {v v' : Fin K → ℤ} (hz : ∀ i : Fin K, s + 1 
     rw [← e1, ← e2, he]
 
 /- English proof (translation)
-Unfold `pcEnc`. Use `split_ifs with h`. Conclude with `Finset.mem_Icc.2 (abs_le.1 (hv _))`. Conclude with `Finset.mem_Icc.2 ⟨by linarith, hT⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pcEnc_abs {K s : ℕ} {v : Fin K → ℤ} {T : ℤ} (hT : 0 ≤ T) (hv : ∀ i, |v i| ≤ T) (q : Fin (2 * s + 1)) :
     pcEnc K s v q ∈ Finset.Icc (-T) T := by
@@ -187,29 +187,27 @@ theorem pcEnc_abs {K s : ℕ} {v : Fin K → ℤ} {T : ℤ} (hT : 0 ≤ T) (hv :
   · exact Finset.mem_Icc.2 ⟨by linarith, hT⟩
 
 /- English proof (translation)
-Use `set T : ℤ := (A : ℤ) + (2 * (s : ℤ) + 1) * M with hTdef`. Establish `hT0 : 0 ≤ T` using `by positivity`. Establish `hbd : ∀ {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ}, IsChain (kLetters A Ai Ci) mu → ∀ n idx, |mu n idx| ≤ T`. Introduce `mu h n idx`. Use `(pc_shape hA hC h n idx).2.2.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn : (n.val : ℤ) ≤ 2 * (s : ℤ) + 1` using `by have := n.2; omega`. Establish `hM : (0 : ℤ) ≤ (M : ℤ)` using `Int.natCast_nonneg _`. Establish `hA0 : (0 : ℤ) ≤ (A : ℤ)` using `Int.natCast_nonneg _`. Use `mul_le_mul_of_nonneg_right hn hM` as an intermediate fact. Apply the tactic sequence `split_ifs <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hzero : ∀ {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ}, IsChain (kLetters A Ai Ci) mu → ∀ n (i : Fin (r + 1)), s + 1 ≤ i.val → i.val + s < r + 1 → mu n i = 0`. Introduce `mu h n i h1 h2`. Establish `hn` using `n.2`. Establish `hsh` using `pc_shape hA hC h n i`. Apply the tactic sequence `have hU : pcU n.val ≤ i.val := by unfold pcU; split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hL : i.val + pcL n.val < r + 1` using `by unfold pcL; omega`. Conclude with `le_antisymm (hsh.1 hU) (hsh.2.1 hL)`. Set `tgt : Finset ((Fin (2 * s + 1 + 1) → Fin (2 * s + 1) → ℤ) × (Fin (2 * s + 1) → ℤ))` to `(Fintype.piFinset fun _ => Fintype.piFinset fun _ => Finset.Icc (-T) T) ×ˢ (Fintype.piFinset fun _ => Finset.Icc (-T) T)`. Establish `hlamb : ∀ x ∈ pairSet r A Ai Ci, ∀ i, |x.2 i| ≤ T`. Introduce `x hx i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `abs_le.mp (hbd hx.1 (Fin.last _) i.succ)`. Establish `h2` using `abs_le.mp (hbd hx.1 (Fin.last _) i.castSucc)`. Establish `h3` using `hx.2 i`. Conclude with `abs_le.mpr ⟨by linarith [h1.1, h3.1], by linarith [h2.2, h3.2]⟩`. Establish `hlamz : ∀ x ∈ pairSet r A Ai Ci, ∀ i : Fin r, s + 1 ≤ i.val → i.val + s < r → x.2 i = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx i h1 h2`. Establish `h3` using `hx.2 i`. Establish `hsh1` using `pc_shape hA hC hx.1 (Fin.last _) i.castSucc`. Establish `hsh2` using `pc_shape hA hC hx.1 (Fin.last _) i.succ`. Establish `hl : (Fin.last (2 * s + 1)).val = 2 * s + 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hU : pcU (Fin.last (2 * s + 1)).val ≤ (i.castSucc : Fin (r + 1)).val`. Apply the tactic sequence `rw [hl]; show pcU (2 * s + 1) ≤ i.val; unfold pcU; split_ifs <;> omega`. Establish `hL : (i.succ : Fin (r + 1)).val + pcL (Fin.last (2 * s + 1)).val < r + 1`. Rewrite using `[hl, Fin.val_succ]`. Unfold `pcL`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `le_antisymm (h3.2.trans (hsh1.1 hU)) ((hsh2.2.1 hL).trans h3.1)`. Establish `hle` using `Set.ncard_le_ncard_of_injOn (s := pairSet r A Ai Ci) (t := (tgt : Set _)) (fun x => (fun n => pcEnc (r + 1) s (x.1 n), pcEnc r s x.2)) (by`. Introduce `x hx`. Simplify using `only [tgt, Finset.coe_product, Set.mem_prod, Finset.mem_coe, Fintype.mem_piFinset]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun n q => pcEnc_abs hT0 (hbd hx.1 n) q, fun q => pcEnc_abs hT0 (hlamb x hx) q⟩)`. Use the proof step `(by`. Introduce `x hx y hy hxy`. Simplify using `only [Prod.mk.injEq] at hxy`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `n`. Conclude with `pcEnc_inj (hzero hx.1 n) (hzero hy.1 n) (congrFun hxy.1 n)`. Conclude with `pcEnc_inj (hlamz x hx) (hlamz y hy) hxy.2)`. Use the proof step `(Finset.finite_toSet tgt)`. Rewrite `hle` using `[Set.ncard_coe_finset]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `hle.trans (le_of_eq ?_)` and prove the remaining obligations. Establish `hc : (Finset.Icc (-T) T).card = 2 * (A + (2 * s + 1) * M) + 1`. Rewrite using `[Int.card_Icc]`. Establish `: T + 1 - -T = ((2 * (A + (2 * s + 1) * M) + 1 : ℕ) : ℤ)` using `by rw [hTdef]; push_cast; ring`. Rewrite using `[this, Int.toNat_natCast]`.
-
-Simplify using `only [tgt, Finset.card_product, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hc]`. Rewrite using `[← pow_mul, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pc_count {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {M : ℕ} (hA : ∀ i, Ai i ≤ M) (hC : ∀ i, Ci i ≤ M) :
     (pairSet r A Ai Ci).ncard ≤ (2 * (A + (2 * s + 1) * M) + 1) ^ ((2 * s + 3) * (2 * s + 1)) := by
@@ -278,7 +276,7 @@ theorem pc_count {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {M : ℕ} (hA : �
   ring
 
 /- English proof (translation)
-Unfold `coarseC SegData.P`. Establish `h1 : (aTop i - ∑ c, b.ry i c) / p ^ (S.G - S.d i) * p ^ (S.G - S.d i) ≤ aTop i` using `(Nat.div_mul_le_self _ _).trans (Nat.sub_le _ _)`. Conclude with `h1` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pc_coarseC_mul {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (b : SegBlock s r) (i : Fin s) :
     (coarseC p S aTop b i : ℝ) * (p : ℝ) ^ (S.G - S.d i) ≤ (aTop i : ℝ) := by
@@ -288,35 +286,33 @@ theorem pc_coarseC_mul {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → �
   exact_mod_cast h1
 
 /- English proof (translation)
-Establish `hp1 : (1 : ℝ) ≤ X.p` using `h.p1`. Establish `hp0 : (0 : ℝ) < X.p` using `by linarith`. Establish `hN1 : (1 : ℝ) ≤ X.N1` using `by exact_mod_cast h.N1pos`. Establish `hk5 : 5 ≤ X.k` using `by have := h.N1k; linarith`. Establish `hY` using `h.Y1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY2 : 1 ≤ X.Y ^ 2` using `one_le_pow₀ hY`. Establish `hpk : X.k ^ 2 ≤ X.p` using `le_trans (by nlinarith [sq_nonneg X.k]) h.pk`. Establish `hb` using `h.bpos`. Establish `hpb : (X.p : ℝ) * X.b' < X.a` using `(lt_div_iff₀ hb).mp h.pab`. Establish `hba : X.b' ≤ X.a` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hapos : (0 : ℝ) < X.a` using `by linarith`. Establish `ha1 : (1 : ℝ) ≤ X.a`. Establish `: 0 < X.a` using `by exact_mod_cast hapos`. Conclude with `this` after adjusting the coercions. Establish `hbe1 : be X C0 ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h.beLe`. Establish `h2` using `h.de6`. Establish `h3 : 0 ≤ 18 * (X.N1 : ℝ) * X.La C0 / X.k`. Use `h.La1` as an intermediate fact. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPp : ∀ i : Fin (segS X.TT j), (X.p : ℝ) ≤ (X.p : ℝ) ^ ((X.seg C0 CE1 CE2 j).G - (X.seg C0 CE1 CE2 j).d i)` using `fun i => by`. Establish `hd` using `dist_pos_lt X.TT j i`. Conclude with `le_self_pow₀ hp1 (by show segG X.TT j - (segDists X.TT j).get i ≠ 0; omega)`. Use `set M : ℕ := ⌊2 * (X.a : ℝ) / X.p⌋₊ with hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hAi : ∀ i, clA C0 CE1 CE2 X j rz ry i ≤ M` using `fun i => by`. Apply `Nat.le_floor` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ hp0]`. Establish `h1` using `coarseA_mul X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i`. Establish `h2 : ((X.seg C0 CE1 CE2 j).bTop i : ℝ) ≤ X.b' * (1 + be X C0)` using `(h.winB _ (pos_mem X.TT j i).1).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (0 : ℝ) ≤ (coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i : ℝ)` using `Nat.cast_nonneg _`. Establish `h4` using `mul_le_mul_of_nonneg_left (hPp i) h3`. Establish `h5 : X.b' * (1 + be X C0) ≤ 2 * X.b'` using `by nlinarith`. Use `show (coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i : ℝ) * X.p ≤ 2 * X.a`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hCi : ∀ i, clC C0 CE1 CE2 X j rz ry i ≤ M` using `fun i => by`. Apply `Nat.le_floor` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ hp0]`. Establish `h1` using `pc_coarseC_mul X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (digitBlock rz ry) i`. Establish `h2 : ((segATop X.TT X.aT j i : ℕ) : ℝ) ≤ X.a * (1 + 2 / (X.k * X.Y))` using `(h.winA _ (pos_mem X.TT j i).1).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (0 : ℝ) ≤ (coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (digitBlock rz ry) i : ℝ)` using `Nat.cast_nonneg _`. Establish `h4` using `mul_le_mul_of_nonneg_left (hPp i) h3`. Establish `h6 : 2 / (X.k * X.Y) ≤ 1`. Rewrite using `[div_le_one (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (X.a : ℝ) * (1 + 2 / (X.k * X.Y)) ≤ 2 * X.a` using `by nlinarith`. Use `show (coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (digitBlock rz ry) i : ℝ) * X.p ≤ 2 * X.a`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcount` using `pc_count (r := X.m) (A := A) hAi hCi`. Establish `hs : segS X.TT j ≤ X.N1` using `(h.segB j).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsr : ((segS X.TT j : ℕ) : ℝ) ≤ X.N1` using `by exact_mod_cast hs`. Establish `hMr : (M : ℝ) ≤ 2 * (X.a : ℝ) / X.p` using `Nat.floor_le (by positivity)`. Establish `hAa : (A : ℝ) ≤ X.a`. Establish `h1` using `base_exponent_le_a X.p (by have := h.p5; omega) (X.seg C0 CE1 CE2 j) h.E0nn`. Establish `h2 : ((X.seg C0 CE1 CE2 j).a : ℝ) / (X.p : ℝ) ^ (X.seg C0 CE1 CE2 j).G ≤ X.a` using `div_le_self hapos.le (one_le_pow₀ hp1)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsM : (2 * ((segS X.TT j : ℕ) : ℝ) + 1) * (M : ℝ) ≤ X.a`. Establish `h1 : 2 * ((segS X.TT j : ℕ) : ℝ) + 1 ≤ X.k` using `by have := h.N1k; linarith`. Establish `h2 : (0 : ℝ) ≤ (M : ℝ)` using `Nat.cast_nonneg _`. Establish `h3 : (2 * ((segS X.TT j : ℕ) : ℝ) + 1) * (M : ℝ) ≤ X.k * (2 * (X.a : ℝ) / X.p)` using `mul_le_mul h1 hMr h2 (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h4 : X.k * (2 * (X.a : ℝ) / X.p) ≤ X.a`. Rewrite using `[mul_div_assoc', div_le_iff₀ hp0]`. Establish `hp2k : 2 * X.k ≤ X.p` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hp2k hapos.le]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : ((2 * (A + (2 * segS X.TT j + 1) * M) + 1 : ℕ) : ℝ) ≤ 8 * (X.a : ℝ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : (2 * segS X.TT j + 3) * (2 * segS X.TT j + 1) ≤ 4 * (X.N1 + 1) ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `hcount` after adjusting the coercions. Use `_ = ((2 * (A + (2 * segS X.TT j + 1) * M) + 1 : ℕ) : ℝ) ^ ((2 * segS X.TT j + 3) * (2 * segS X.TT j + 1)) := by push_cast; ring`. Use `_ ≤ (8 * (X.a : ℝ)) ^ ((2 * segS X.TT j + 3) * (2 * segS X.TT j + 1)) := pow_le_pow_left₀ (Nat.cast_nonneg _) hc _`. Use `_ ≤ (8 * (X.a : ℝ)) ^ (4 * (X.N1 + 1) ^ 2) := pow_le_pow_right₀ (by linarith) he`.
+A detailed English derivation is pending.
 -/
 theorem pairCount_of_std {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (h : Std C0 Cde CE1 CE2 H X) (j : Fin (numSeg X.TT))
     (rz ry : Fin (segS X.TT j) → Fin (X.m + 1) → ℕ) (A : ℕ) (hA : (A : ℝ) ≤ ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ)) :
@@ -405,7 +401,7 @@ theorem pairCount_of_std {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (h : Std C0 Cde CE1 
     _ ≤ (8 * (X.a : ℝ)) ^ (4 * (X.N1 + 1) ^ 2) := pow_le_pow_right₀ (by linarith) he
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1) fun _ _ _ _ _ _ _ _ _ _ hCc hC0 _ h1 h2 _ _ _ _ _ _ _ _ _ t1 t2 t3 t4 t5 => by intro X _ hD hI hc j rz ry _ A _ hA exact pairCount_of_std (std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD …`.
+A detailed English derivation is pending.
 -/
 theorem restPairCount : RestPairCount :=
   TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1)

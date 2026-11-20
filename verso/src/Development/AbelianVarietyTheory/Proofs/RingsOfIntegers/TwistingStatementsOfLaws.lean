@@ -19,7 +19,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL hT`. Establish `hG : GlobalFnsSt` using `hL.globalFns`. Establish `hTW : TWStatement` using `TWM.tw_of hG (twistBCSpan_of hT) GlobalTheory.T.valuation_thetaRatio_eq_bilinear`. Conclude with `⟨hTW, galois_fixed_adelic_matrices_descend hL hTW, pullback_valuation_forward_of (pullGen_of hG) (QuadraticAlgebraValuation.qAl_of hL)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem twisting_statements_of_laws :
     Laws → TwistBaseChangeStatement → TWStatement ∧ FiniteOrderValuationInvariance ∧ PullbackValuationForwardBound := by

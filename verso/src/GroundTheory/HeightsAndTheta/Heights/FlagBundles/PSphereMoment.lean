@@ -10,9 +10,9 @@ open scoped InnerProductSpace
 noncomputable section
 
 /- English proof (translation)
-Distinguish the cases in `h : a = 0`. Use `⟨EuclideanSpace.single 0 1, by simp, fun n => by simp [h]⟩` and prove the remaining obligations. Establish `hna : ‖a‖ ≠ 0` using `norm_ne_zero_iff.mpr h`. Use `⟨‖a‖⁻¹ • a, ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hna]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[real_inner_smul_left, ← mul_assoc, mul_inv_cancel₀ hna, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma SphereMoment.exists_unit (a : E3) :
     ∃ u : E3, ‖u‖ = 1 ∧ ∀ n : E3, ⟪a, n⟫_ℝ = ‖a‖ * ⟪u, n⟫_ℝ := by
@@ -24,9 +24,9 @@ lemma SphereMoment.exists_unit (a : E3) :
     · rw [real_inner_smul_left, ← mul_assoc, mul_inv_cancel₀ hna, one_mul]
 
 /- English proof (translation)
-Take `⟨u, hu, ha⟩` from `SphereMoment.exists_unit a`. Establish `hc : Continuous fun n : Sphere2 => ⟪u, (n : E3)⟫_ℝ` using `continuous_const.inner continuous_subtype_val`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[ha, mul_pow]`. Use `_ = ‖a‖ ^ k * ∫ n, ⟪u, (n : E3)⟫_ℝ ^ k ∂sphereMeasure := integral_const_mul _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ‖a‖ ^ k * ∫ t, t ^ k ∂(sphereMeasure.map fun n : Sphere2 => ⟪u, (n : E3)⟫_ℝ) := by`. Rewrite using `[integral_map hc.measurable.aemeasurable (continuous_pow k).aestronglyMeasurable]`. Use `_ = ‖a‖ ^ k * (2⁻¹ * ((1 - (-1 : ℝ) ^ (k + 1)) / (k + 1))) := by`. Rewrite using `[h0 u hu, integral_smul_measure, integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le (by norm_num), integral_pow]`. Simplify using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma SphereMoment.moment (h0 : SphereHeightUniform.Statement) (a : E3) (k : ℕ) :
     ∫ n, ⟪a, (n : E3)⟫_ℝ ^ k ∂sphereMeasure =
@@ -47,9 +47,9 @@ lemma SphereMoment.moment (h0 : SphereHeightUniform.Statement) (a : E3) (k : ℕ
         simp [smul_eq_mul]
 
 /- English proof (translation)
-Introduce `a m`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SphereMoment.moment h0, pow_succ, pow_mul]`. Establish `h2 : (2 * (m : ℝ) + 1) ≠ 0` using `by positivity`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Evaluate the numerical expressions. Clear the denominators using the available nonvanishing facts. Rewrite using `[SphereMoment.moment h0, show 2 * m + 1 + 1 = 2 * (m + 1) by ring, pow_mul]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem SphereMoment.proof (h0 : SphereHeightUniform.Statement) : SphereMoment.Statement := by
   intro a m

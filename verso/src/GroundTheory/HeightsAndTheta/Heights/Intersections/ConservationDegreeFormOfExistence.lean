@@ -16,11 +16,11 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[mul_finsum_mem]`. Use `finsum_mem_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `sheetDensity`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ptsIntegral_const {e : ℕ} (P : Ideal (MRing ι)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) (c : ℝ) :
     ptsIntegral P φ (fun _ => c) = c * ptsIntegral P φ (fun _ => 1) := by
@@ -39,7 +39,7 @@ theorem ptsIntegral_const {e : ℕ} (P : Ideal (MRing ι)) (φ : Fin e → ((Σ 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `h`. Establish `: a ∈ P.comap (C : ℤ →+* MRing ι)` using `Ideal.mem_comap.mpr h`. Rewrite `this` using `[show P.comap (C : ℤ →+* MRing ι) = ⊥ from hP, Ideal.mem_bot]`. Conclude with `ha this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem C_not_mem {P : Ideal (MRing ι)} (hP : IsHorizontal P) {a : ℤ} (ha : a ≠ 0) : C a ∉ P := by
   intro h
@@ -50,9 +50,7 @@ theorem C_not_mem {P : Ideal (MRing ι)} (hP : IsHorizontal P) {a : ℤ} (ha : a
 omit [Fintype K] in
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_C (a : ℤ) : IsMultiHomog (C a : MRing ι) 0 := by
   classical
@@ -65,7 +63,7 @@ theorem isMultiHomog_C (a : ℤ) : IsMultiHomog (C a : MRing ι) 0 := by
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hWp : W.IsPrime` using `hW.1.1.1`. Establish `hpW : (p : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)` using `Ideal.mem_comap.mpr (hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`. Establish `hmax` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Conclude with `(hmax.eq_of_le (Ideal.IsPrime.comap C).ne_top ((Ideal.span_singleton_le_iff_mem _).mpr hpW)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comap_eq_of_mem {P W : Ideal (MRing ι)} {p : ℕ} (hp : p.Prime) (hW : W ∈ divSupp P (C (p : ℤ))) :
     W.comap (C : ℤ →+* MRing ι) = Ideal.span {(p : ℤ)} := by
@@ -79,7 +77,7 @@ theorem comap_eq_of_mem {P W : Ideal (MRing ι)} {p : ℕ} (hp : p.Prime) (hW : 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `h`. Use `comap_eq_of_mem hp hW` as an intermediate fact. Rewrite `this` using `[show W.comap (C : ℤ →+* MRing ι) = ⊥ from h, eq_comm, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_horizontal {P W : Ideal (MRing ι)} {p : ℕ} (hp : p.Prime) (hW : W ∈ divSupp P (C (p : ℤ))) :
     ¬ IsHorizontal W := by
@@ -91,9 +89,9 @@ theorem not_horizontal {P W : Ideal (MRing ι)} {p : ℕ} (hp : p.Prime) (hW : W
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `h` using `comap_eq_of_mem hp hW`. Unfold `charOf`. Establish `hg : Ideal.span {Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι))} = Ideal.span {(p : ℤ)}`. Rewrite using `[← h]`. Conclude with `Submodule.IsPrincipal.span_singleton_generator _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[Ideal.span_singleton_eq_span_singleton, Int.associated_iff_natAbs]`. Simplify using `using hg`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charOf_eq {P W : Ideal (MRing ι)} {p : ℕ} (hp : p.Prime) (hW : W ∈ divSupp P (C (p : ℤ))) :
     charOf W = p := by
@@ -106,7 +104,7 @@ theorem charOf_eq {P W : Ideal (MRing ι)} {p : ℕ} (hp : p.Prime) (hW : W ∈ 
   simpa using hg
 
 /- English proof (translation)
-Unfold `vertR`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun V hV => ?_` and prove the remaining obligations. Rewrite `hV` using `[Set.Finite.mem_toFinset]`. Rewrite using `[if_neg (not_horizontal hp hV), charOf_eq hp hV]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -123,19 +121,19 @@ theorem vertR_C_prime (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → HermLine �
 end Conservation
 
 /- English proof (translation)
-Unfold `Conservation.Statement ConservationStatement`. Introduce `K _ ι _ I hI P n L p hP hL hp`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hA : IsSmoothHerm (constLine (ι` using `ι) (-Real.log p)) := contDiffOn_const`. Establish `ha : ∀ k, (constLine (ι` using `ι) (-Real.log p)).a k = ((0 : K → ℕ) k : ℤ) := fun _ => rfl`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpot : (fun j z => Real.log ((L j).h z)) = pot L` using `rfl`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hI.2.2 P n L _ (C (p : ℤ)) 0 hP hL hA ha (Conservation.isMultiHomog_C _) (Conservation.C_not_mem hP.2.2.1 (by exact_mod_cast hp.ne_zero))]`. Establish `hlog : logNorm (constLine (ι` using `ι) (-Real.log p)) (C (p : ℤ)) = fun _ => 0 := by`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show Real.log (‖eval z (map (Int.castRingHom ℂ) (C (p : ℤ)))‖ / Real.exp (-(-Real.log p))) = 0`. Rewrite using `[map_C, eval_C, neg_neg, Real.exp_log hp0]`. Simplify using `[hp0.ne']`. Unfold `recR vertR arInt`. Rewrite using `[hlog, Conservation.ptsIntegral_const, zero_mul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Rewrite using `[if_neg (Conservation.not_horizontal hp hW), if_neg (Conservation.not_horizontal hp hW)]`. Rewrite using `[hI.2.2 P n L _ (C 1) 0 hP hL hA ha (Conservation.isMultiHomog_C _) (Conservation.C_not_mem hP.2.2.1 one_ne_zero)]`. Establish `hlog : logNorm (constLine (ι` using `ι) (-Real.log p)) (C 1) = fun _ => -Real.log p := by`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show Real.log (‖eval z (map (Int.castRingHom ℂ) (C 1))‖ / Real.exp (-(-Real.log p))) = _`. Rewrite using `[map_C, eval_C, neg_neg, Real.exp_log hp0]`. Simplify using `[Real.log_inv]`. Establish `hempty : divSupp P (C 1 : MRing ι) = ∅`. Use extensionality with `W`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hW`. Establish `hle` using `hW.1.1.2`. Rewrite `hle` using `[C_1, Ideal.span_singleton_one, sup_top_eq, top_le_iff]`. Conclude with `hW.1.1.1.ne_top hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `recR arInt`. Rewrite using `[hempty, finsum_mem_empty, hlog, Conservation.ptsIntegral_const, hpot]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Conservation.statement_holds : Conservation.Statement := by
   unfold Conservation.Statement ConservationStatement
@@ -175,9 +173,9 @@ theorem Conservation.statement_holds : Conservation.Statement := by
     ring
 
 /- English proof (translation)
-Introduce `K _ ι _ P n L p hP hL hp`. Take `⟨I, hI⟩` from `hE`. Take `⟨h1, h2⟩` from `hC K ι (I K ι) (hI K ι) P n L p hP hL hp`. Establish `h` using `h1.symm.trans h2`. Rewrite `h` using `[Conservation.vertR_C_prime P L hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_left_cancel₀ (Real.log_pos (by exact_mod_cast hp.one_lt)).ne' h`.
+A detailed English derivation is pending.
 -/
 theorem Conservation.conservation_degree_form_of_existence (hE : ThmIExists.Statement) (hC : Conservation.Statement) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Conservation.Statement := by
@@ -189,9 +187,9 @@ theorem Conservation.conservation_degree_form_of_existence (hE : ThmIExists.Stat
   exact mul_left_cancel₀ (Real.log_pos (by exact_mod_cast hp.one_lt)).ne' h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h K _ ι _ P e L p hP hL hp`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P _)]`. Conclude with `(h K ι P e L p hP hL hp).symm`. Introduce `h K _ ι _ P e L p hP hL hp`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'` using `h K ι P e L p hP hL hp`. Rewrite `h'` using `[finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P _)]`. Conclude with `h'.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Conservation.conservation_iff_degree_statement :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter.Conservation.Statement ↔ DegreeStatement := by

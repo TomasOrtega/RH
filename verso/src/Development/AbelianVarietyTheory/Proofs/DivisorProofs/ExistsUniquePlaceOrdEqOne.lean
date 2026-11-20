@@ -15,9 +15,9 @@ open Polynomial
 variable {k L : Type} [Field k] [Field L] [Algebra k L]
 
 /- English proof (translation)
-Rewrite using `[aeval_eq_sum_range]`. Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_pow]`. Use `mul_le_one' ?_ (pow_le_one' hx _)` and prove the remaining obligations. Distinguish the cases in `hc : p.coeff i = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hc]`. Rewrite using `[u.2.2 _ hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem place_aeval_le_one (x : L) (u : Place k L) (hx : u.1 x ≤ 1) (p : k[X]) :
     u.1 (aeval x p) ≤ 1 := by
@@ -30,9 +30,7 @@ theorem place_aeval_le_one (x : L) (u : Place k L) (hx : u.1 x ≤ 1) (p : k[X])
   · rw [u.2.2 _ hc]
 
 /- English proof (translation)
-Establish `h1 : u.1 (algebraMap k L (q.coeff 0)) = 1` using `u.2.2 _ hq`. Establish `h2 : u.1 (x * aeval x q.divX) < 1`. Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_lt_of_le hx (place_aeval_le_one x u hx.le _)`. Use `conv_lhs => rw [← X_mul_divX_add q]`.
-
-Rewrite using `[map_add, map_mul, aeval_X, aeval_C, Valuation.map_add_eq_of_lt_right u.1 (by rw [h1]; exact h2), h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_aeval_eq_one (x : L) (u : Place k L) (hx : u.1 x < 1) (q : k[X]) (hq : q.coeff 0 ≠ 0) :
     u.1 (aeval x q) = 1 := by
@@ -44,9 +42,9 @@ theorem place_aeval_eq_one (x : L) (u : Place k L) (hx : u.1 x < 1) (q : k[X]) (
   rw [map_add, map_mul, aeval_X, aeval_C, Valuation.map_add_eq_of_lt_right u.1 (by rw [h1]; exact h2), h1]
 
 /- English proof (translation)
-Take `⟨q, hpq, hq⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hp 0`. Establish `hq0 : q.coeff 0 ≠ 0`. Introduce `h`. Apply `hq` to reduce the goal to its premises. Simplify `h` using `[X_dvd_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Use `conv_lhs => rw [hpq]`. Simplify using `[map_mul, map_pow, place_aeval_eq_one x u hx q hq0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem place_aeval_eq_pow (x : L) (u : Place k L) (hx : u.1 x < 1) (p : k[X]) (hp : p ≠ 0) :
     u.1 (aeval x p) = u.1 x ^ p.rootMultiplicity 0 := by
@@ -63,29 +61,27 @@ namespace GlobalTheory.Nef
 open Polynomial
 
 /- English proof (translation)
-Establish `hmem : ∀ y : L, ∃ r s : k[X], y = aeval x r / aeval x s` using `fun y => (IntermediateField.mem_adjoin_simple_iff (F := k) (α := x) y).1 (by rw [htop]; trivial)`. Establish `hne : ∀ p : k[X], p ≠ 0 → aeval x p ≠ 0` using `fun p hp h => hx ⟨p, hp, h⟩`. Establish `hval : ∀ u : Place k L, u.1 x < 1 → u.1 x = WithZero.exp (-1 : ℤ)`. Introduce `u hu`. Establish `hx0 : u.1 x ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Valuation.ne_zero_iff]`. Introduce `h`. Apply `hne X X_ne_zero` to reduce the goal to its premises. Simplify using `using h`. Use `set b := WithZero.log (u.1 x) with hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hub : u.1 x = WithZero.exp b` using `(WithZero.exp_log hx0).symm`. Establish `hb0 : b < 0`. Establish `: WithZero.exp b < WithZero.exp (0 : ℤ)` using `by rw [← hub, WithZero.exp_zero]; exact hu`. Conclude with `WithZero.exp_lt_exp.1 this`. Take `⟨y, hy⟩` from `u.2.1 (WithZero.exp (-1 : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, s, rfl⟩` from `hmem y`. Establish `hr : r ≠ 0` using `by rintro rfl; simp at hy; exact WithZero.exp_ne_zero hy.symm`. Establish `hs : s ≠ 0` using `by rintro rfl; simp at hy; exact WithZero.exp_ne_zero hy.symm`. Rewrite `hy` using `[map_div₀, place_aeval_eq_pow x u hu r hr, place_aeval_eq_pow x u hu s hs, hub, ← WithZero.exp_nsmul, ← WithZero.exp_nsmul, ← WithZero.exp_sub, WithZero.exp_inj]`. Establish `hmul : b * ((r.rootMultiplicity 0 : ℤ) - s.rootMultiplicity 0) = -1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hy]`. Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Break down `Int.eq_one_or_neg_one_of_mul_eq_neg_one hmul with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hub, h]`. Establish `hpol : ∀ u : Place k L, u.1 x < 1 → ∀ p : k[X], p ≠ 0 → u.1 (aeval x p) = WithZero.exp (-1 : ℤ) ^ p.rootMultiplicity 0` using `fun u hu p hp => by`. Rewrite using `[place_aeval_eq_pow x u hu p hp, hval u hu]`. Set `e : RatFunc k ≃ₐ[k] L` to `((RatFunc.algEquivOfTranscendental x hx).trans (IntermediateField.equivOfEq htop)).trans IntermediateField.topEquiv`. Establish `heX : e RatFunc.X = x` using `by simp [e]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `heXs : e.symm x = RatFunc.X` using `by rw [← heX, AlgEquiv.symm_apply_apply]`. Set `V` to `(Polynomial.idealX k).valuation (RatFunc k)`. Set `v0 : Valuation L (WithZero (Multiplicative ℤ))` to `V.comap (e.symm : L →+* RatFunc k)`. Establish `hv0 : ∀ y, v0 y = V (e.symm y)` using `fun y => rfl`. Establish `hVX : V RatFunc.X = WithZero.exp (-1 : ℤ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← RatFunc.algebraMap_X, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.intValuation_singleton _ X_ne_zero (Polynomial.idealX_span k)`. Set `v : Place k L` to `⟨v0, fun γ => by`. Take `⟨r, hr⟩` from `RatFunc.valuation_surjective (K := k) γ`. Conclude with `⟨e r, by rw [hv0, AlgEquiv.symm_apply_apply]; exact hr⟩,`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `fun c hc => by`. Rewrite using `[hv0, AlgEquiv.commutes, IsScalarTower.algebraMap_apply k k[X] (RatFunc k), IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `hmem'`. Rewrite `hmem'` using `[Polynomial.idealX_span, Ideal.mem_span_singleton, X_dvd_iff]`. Simplify using `[hc] at hmem'⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hvx : v.1 x = WithZero.exp (-1 : ℤ)` using `by show v0 x = _; rw [hv0, heXs, hVX]`. Use `⟨v, by simp [ord, hvx], fun w hw => ?_⟩` and prove the remaining obligations. Establish `hvl : v.1 x < 1` using `by rw [hvx]; exact WithZero.exp_lt_exp.2 (by norm_num) |>.trans_eq WithZero.exp_zero`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `y`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Take `⟨r, s, rfl⟩` from `hmem y`. Rewrite using `[map_div₀, map_div₀]`. Distinguish the cases in `hr : r = 0`. Simplify using `[hr]`. Distinguish the cases in `hs : s = 0`.
-
-Simplify using `[hs]`. Rewrite using `[hpol w hw r hr, hpol w hw s hs, hpol v hvl r hr, hpol v hvl s hs]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_place_ord_eq_one (k L : Type) [Field k] [Field L] [Algebra k L] (x : L)
     (hx : Transcendental k x) (htop : k⟮x⟯ = ⊤) :

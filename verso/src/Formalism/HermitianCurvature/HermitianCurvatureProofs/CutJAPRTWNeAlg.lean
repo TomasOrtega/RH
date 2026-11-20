@@ -15,14 +15,14 @@ section lemmas
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-The claim follows from `Formalism.REAL.qDetCentral_of Formalism.REAL.quantumMinorRowSkew_holds Formalism.REAL.quantumMinorColSkew_holds (Module.End ℂ V) n F hF u a b`.
+A detailed English derivation is pending.
 -/
 theorem qdet_comm {n : ℕ} {F : Fin n → Fin n → Module.End ℂ V} (hF : GlRel F) (u : ℂ) (a b : Fin n) :
     qdet F u * F a b = F a b * qdet F u :=
   Formalism.REAL.qDetCentral_of Formalism.REAL.quantumMinorRowSkew_holds Formalism.REAL.quantumMinorColSkew_holds (Module.End ℂ V) n F hF u a b
 
 /- English proof (translation)
-Introduce `a b c`. Establish `e1 : F a b * (qdet F u * y c) = qdet F u * (F a b * y c)`. Rewrite using `[← mul_assoc, ← qdet_comm hF u a b, mul_assoc]`. Rewrite using `[e1, mul_assoc, ← mul_sub, hy a b c]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zvec {n : ℕ} {F : Fin n → Fin n → Module.End ℂ V} {y : Fin n → Module.End ℂ V} (hF : GlRel F) (hy : IsVec F y)
     (u : ℂ) : IsVec F (fun x => qdet F u * y x) := by
@@ -33,11 +33,11 @@ theorem zvec {n : ℕ} {F : Fin n → Fin n → Module.End ℂ V} {y : Fin n →
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `cpol`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Function.update_self]`. Introduce `h`. Establish `h1 : (-1 : ℂ) = 0` using `by linear_combination h`. Evaluate the numerical expressions using `at h1`. Rewrite using `[Function.update_of_ne hj]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hj (hp (by linear_combination h))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cpol_down_self {n : ℕ} (p : Fin n → ℂ) (hp : Function.Injective p) (i : Fin n) :
     cpol (Function.update p i (p i - 1)) (-p i) ≠ 0 := by
@@ -55,7 +55,7 @@ theorem cpol_down_self {n : ℕ} (p : Fin n → ℂ) (hp : Function.Injective p)
     exact hj (hp (by linear_combination h))
 
 /- English proof (translation)
-Unfold `cpol`. Use `Finset.prod_eq_zero (Finset.mem_univ i) ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Ne.symm hji)]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cpol_down_other {n : ℕ} (p : Fin n → ℂ) (i j : Fin n) (hji : j ≠ i) :
     cpol (Function.update p j (p j - 1)) (-p i) = 0 := by
@@ -65,7 +65,7 @@ theorem cpol_down_other {n : ℕ} (p : Fin n → ℂ) (i j : Fin n) (hji : j ≠
   ring
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j hj h`. Conclude with `Finset.ne_of_mem_erase hj (hp (by linear_combination h))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem erase_ne_zero {n : ℕ} (p : Fin n → ℂ) (hp : Function.Injective p) (i : Fin n) :
     ∏ j ∈ Finset.univ.erase i, (-p i + p j) ≠ 0 := by
@@ -74,29 +74,25 @@ theorem erase_ne_zero {n : ℕ} (p : Fin n → ℂ) (hp : Function.Injective p) 
   exact Finset.ne_of_mem_erase hj (hp (by linear_combination h))
 
 /- English proof (translation)
-Take `⟨hsGl, -, hsVec, -, hyc, -⟩` from `Formalism.FourierDecayAlt.P.submodule_relations (Module.End ℂ V) n E hE`. Take `⟨Φ, hsum, hmemΦ, hrelΦ⟩` from `Formalism.FourierDecayAlt.P.vector_descent V n (subA E) (yK E) hsGl hsVec hyc p hp v hv`. Establish `hΦq : ∀ j x, qdet (subA E) (-p i) (Φ j x) = if j = i then cpol (Function.update p i (p i - 1)) (-p i) • Φ i x else 0`. Introduce `j x`. Rewrite using `[(mem_CapSp.mp (hmemΦ j x)) (-p i)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hji`. Substitute `hji` using the available equality. Both sides reduce to the same expression. Rewrite using `[cpol_down_other p i j hji, zero_smul]`. Establish `hqy : ∀ x, qdet (subA E) (-p i) (yK E x v) = cpol (Function.update p i (p i - 1)) (-p i) • Φ i x`.
+Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← hsum x, map_sum, Finset.sum_congr rfl (fun j _ => hΦq j x), Finset.sum_ite_eq']`. Simplify using the standard rewrite rules. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hqy x]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (hmemΦ i x)`. Use `set P := ∏ k ∈ Finset.univ.erase i, (-p i + p k) with hPdef`. Establish `hpart : ∀ w : Fin n, ∑ x : Fin n, ((-1 : ℂ) ^ ((w : ℕ) + (x : ℕ))) • qminor (subA E) (skip1 w) (skip1 x) (-p i - 1) (yK E x v) = P • Φ i w`. Introduce `w`. Establish `e1 : ∀ x, yK E x v = ∑ j, Φ j x` using `fun x => (hsum x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e1, map_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [hrelΦ]`. Rewrite using `[Finset.sum_eq_single i]`. Introduce `j _ hji`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨Ne.symm hji, Finset.mem_univ i⟩) (by ring), zero_smul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hS : (∑ w : Fin n, ∑ x : Fin n, ((((-1 : ℤ) ^ ((w : ℕ) + (x : ℕ)) : ℤ) : Module.End ℂ V) * (etaK E w * qminor (subA E) (skip1 w) (skip1 x) (-p i - 1) * yK E x))) v = P • ∑ w, etaK E w (Φ i w)`. Simplify using `only [Formalism.FourierDecayAlt.P.CapelliAbstractCharacter.sgn_mul, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul (etaK E w) P (Φ i w), ← hpart w, map_sum]`. Simplify using `only [map_smul]`. Establish `hBF` using `congrArg (fun T : Module.End ℂ V => T v) (Formalism.FourierDecayAlt.P.border_first (Module.End ℂ V) n E hE (1 - p i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (1 - p i - 1 : ℂ) = -p i` using `by ring`. Establish `h2 : (1 - p i - 2 : ℂ) = -p i - 1` using `by ring`. Simplify using `only [h1, h2, LinearMap.sub_apply, Module.End.mul_apply] at hBF`. Establish `hcp : cpol p (-p i) = 0` using `Finset.prod_eq_zero (Finset.mem_univ i) (by ring)`. Rewrite `hBF` using `[hS, hcap, (mem_CapSp.mp hv) (-p i), hcp, zero_smul, map_zero, zero_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : P ≠ 0` using `erase_ne_zero p hp i`. Establish `hcl : cpol l (1 - p i) ≠ 0`. Unfold `cpol`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl j (by linear_combination -h)`. Establish `hci` using `cpol_down_self p hp i`. Establish `hE2 : ∑ w, etaK E w (Φ i w) = -(P⁻¹ * cpol l (1 - p i)) • v`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hP, one_smul]`.
-
-Use `_ = P⁻¹ • -(cpol l (1 - p i) • v) := by rw [hBF, neg_neg]`. Use `_ = -(P⁻¹ * cpol l (1 - p i)) • v := by rw [smul_neg, smul_smul, neg_smul]`. Use `⟨-(cpol (Function.update p i (p i - 1)) (-p i) * (P⁻¹ * cpol l (1 - p i))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `neg_ne_zero.mpr (mul_ne_zero hci (mul_ne_zero (inv_ne_zero hP) hcl))`. Simplify using `only [hqy, map_smul]`.
-
-Rewrite using `[← Finset.smul_sum, hE2, smul_smul, mul_neg, neg_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem z_main (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (l : Fin (n + 1) → ℂ) (hE : GlRel E)
     (hcap : ∀ (w : ℂ) (v : V), qdet E w v = cpol l w • v) (p : Fin n → ℂ) (hp : Function.Injective p) (i : Fin n)
@@ -172,13 +168,13 @@ theorem z_main (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) 
       rw [← Finset.smul_sum, hE2, smul_smul, mul_neg, neg_smul]
 
 /- English proof (translation)
-Take `⟨hdiag, hup⟩` from `hv`. Prove the components needed by the constructor for the conclusion. Introduce `a c`. Establish `h` using `congrArg (fun T : Module.End ℂ V => T v) (hZ a a c)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hdiag a, map_smul] at h`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using `only [if_true, LinearMap.neg_apply] at h`. Rewrite using `[if_pos rfl, sub_eq_iff_eq_add.mp h, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [if_neg hac, LinearMap.zero_apply] at h`. Rewrite using `[if_neg hac, sub_zero]`. Conclude with `sub_eq_zero.mp h`. Introduce `a b c hab`. Establish `h` using `congrArg (fun T : Module.End ℂ V => T v) (hZ a b c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hup a b hab, map_zero, sub_zero] at h`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fam_of_hw {n : ℕ} {F : Fin n → Fin n → Module.End ℂ V} {Z : Fin n → Module.End ℂ V} (hZ : IsVec F Z)
     (ν : Fin n → ℂ) (v : V) (hv : IsHW F ν v) :
@@ -204,17 +200,15 @@ theorem fam_of_hw {n : ℕ} {F : Fin n → Fin n → Module.End ℂ V} {Z : Fin 
     split_ifs <;> simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_forall]`. Take `⟨c0, hc0⟩` from `hne`. Set `S` to `Finset.univ.filter (fun c => Φ c ≠ 0)`. Establish `hS : S.Nonempty` using `⟨c0, by simp [S, hc0]⟩`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcS : Φ (S.max' hS) ≠ 0` using `(Finset.mem_filter.mp (S.max'_mem hS)).2`. Establish `hbig : ∀ b, S.max' hS < b → Φ b = 0`. Introduce `b hb`. Assume the negation of the conclusion as `hb0`. Conclude with `absurd (S.le_max' b (by simp [S, hb0])) (not_le.mpr hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hHW : IsHW F (fun a => m a + ((a : ℕ) : ℂ) + (if a = i then 1 else 0) - if a = S.max' hS then 1 else 0) (Φ (S.max' hS))`. Use `⟨fun a => hd a _, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[hr a b _ hab]`. Use `split_ifs with hac`. Substitute `hac` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hbig b hab, neg_zero]`. Both sides reduce to the same expression. Establish `hne' : CapSp F m ≠ ⊥`. Introduce `h`. Establish `hm0` using `hmem (S.max' hS)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm0` using `[h]`. Conclude with `hcS ((Submodule.mem_bot ℂ).mp hm0)`. Establish `hw` using `(Formalism.FourierDecayAlt.P.capelli_singular V n F m hF hne').2 hm _ _ (hmem _) hcS hHW`. Distinguish the cases in `hic : i = S.max' hS`. Conclude with `hcS (hic ▸ h0)`.
-
-Use `hw i` as an intermediate fact. Simplify using `[hic] at this`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fam_zero [FiniteDimensional ℂ V] {n : ℕ} (F : Fin n → Fin n → Module.End ℂ V) (hF : GlRel F) (m : Fin n → ℂ)
     (hm : SDec m) (i : Fin n) (Φ : Fin n → V) (hmem : ∀ c, Φ c ∈ CapSp F m)
@@ -260,7 +254,7 @@ variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
   [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_CapSp]`. Introduce `w`. Rewrite using `[← Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KLExA.qdet_int J hJ w v, hv w, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem cap_map {n : ℕ} {F : Fin n → Fin n → Module.End ℂ V} {F' : Fin n → Fin n → Module.End ℂ V'} (J : V' →ₗ[ℂ] V)
     (hJ : ∀ a b v, J (F' a b v) = F a b (J v)) (m : Fin n → ℂ) (v : V') (hv : v ∈ CapSp F' m) : J v ∈ CapSp F m := by
@@ -269,9 +263,9 @@ theorem cap_map {n : ℕ} {F : Fin n → Fin n → Module.End ℂ V} {F' : Fin n
   rw [← Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KLExA.qdet_int J hJ w v, hv w, map_smul]
 
 /- English proof (translation)
-Introduce `j k hjk`. Establish `h1` using `(h k).2`. Establish `h2` using `(h j).1`. Establish `h3 : L k.castSucc ≤ L j.succ` using `hL.antitone (by`. Rewrite using `[Fin.le_iff_val_le_val, Fin.val_castSucc, Fin.val_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hjk)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem strictAnti_of_box_of_strictAnti {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (hL : StrictAnti L) (h : Box L M) :
     StrictAnti M := by
@@ -284,17 +278,15 @@ private theorem strictAnti_of_box_of_strictAnti {n : ℕ} {L : Fin (n + 1) → �
   omega
 
 /- English proof (translation)
-Introduce `hJx`. Take `⟨hsGl', -⟩` from `Formalism.FourierDecayAlt.P.submodule_relations (Module.End ℂ V') n E' hE'.gl`. Establish `hstabC` using `(Formalism.FourierDecayAlt.P.capelli_stabilizer V' n (subA E') (shf β' M') hsGl').1`. Establish `hstabK : Stab (subA E') (LinearMap.ker J ⊓ CapSp (subA E') (shf β' M'))`. Introduce `a b w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw`, the goal using `[Submodule.mem_inf, LinearMap.mem_ker]`. Conclude with `⟨by rw [hJ, hw.1, map_zero], hstabC a b w hw.2⟩`. Break down `Formalism.FourierDecayAlt.P.irreducible_capelli_modules V' n E' β' L' hE' M' hM' _ inf_le_right hstabK with h | h` into its components or cases. Establish `hxK : x ∈ LinearMap.ker J ⊓ CapSp (subA E') (shf β' M')` using `⟨hJx, hx⟩`. Rewrite `hxK` using `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx0 ((Submodule.mem_bot ℂ).mp hxK)`. Apply `hJ0` to reduce the goal to its premises. Establish `hanti : ∀ M'' : Fin n → ℤ, Box L' M'' → StrictAnti M''` using `fun M'' hB => strictAnti_of_box_of_strictAnti hE'.anti hB`. Establish `hpiece : ∀ M'' : Fin n → ℤ, Box L' M'' → CapSp (subA E') (shf β' M'') ≤ LinearMap.ker J`. Introduce `M'' hB w hw`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker]`. Distinguish the cases in `hMM : M'' = M'`. Substitute `hMM` using the available equality. Establish `hwK : w ∈ LinearMap.ker J ⊓ CapSp (subA E') (shf β' M'')` using `by rw [h]; exact hw`. Conclude with `hwK.1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : J w ∈ CapSp (subA E) (shf β' M'')` using `cap_map J hJ _ w hw`. Establish `hdisj : Disjoint (CapSp (subA E) (shf β' M'')) (CapSp (subA E) (shf β' M'))` using `(Formalism.FourierDecayAlt.P.capelli_independence V n (subA E) β').pairwiseDisjoint (i := ⟨M'', hanti M'' hB⟩) (j := ⟨M', hanti M' hM'⟩) (fun he => hMM (congrArg Subtype.val he))`. Conclude with `Submodule.disjoint_def.mp hdisj _ h1 (hJr w)`. Establish `htop` using `(Formalism.FourierDecayAlt.P.branching_decomposition V' n E' β' L' hE').2`. Establish `hle : (⨆ (M'' : Fin n → ℤ) (_ : Box L' M''), CapSp (subA E') (shf β' M'')) ≤ LinearMap.ker J` using `iSup₂_le hpiece`.
-
-Rewrite `hle` using `[htop, top_le_iff, LinearMap.ker_eq_top]`. Conclude with `hle`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem j_inj (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (E' : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V')
     (β' : ℂ) (L' : Fin (n + 1) → ℤ) (M' : Fin n → ℤ) (hE' : Hyp E' β' L') (hM' : Box L' M')
@@ -342,15 +334,15 @@ variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
   [FiniteDimensional ℂ V']
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Simplify using `only [not_forall] at hne`. Take `⟨c0, hic0, hc0⟩` from `hne`. Set `S` to `Finset.univ.filter (fun c => i < c ∧ Φ c ≠ 0)`. Establish `hS : S.Nonempty` using `⟨c0, by simp [S, hic0, hc0]⟩`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmS` using `(Finset.mem_filter.mp (S.max'_mem hS)).2`. Establish `hbig : ∀ b, S.max' hS < b → Φ b = 0`. Introduce `b hb`. Assume the negation of the conclusion as `hb0`. Conclude with `absurd (S.le_max' b (by simp [S, hb0, hmS.1.trans hb])) (not_le.mpr hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hHW : IsHW F (fun a => m a + ((a : ℕ) : ℂ) + (if a = i then 1 else 0) - if a = S.max' hS then 1 else 0) (Φ (S.max' hS))`. Use `⟨fun a => hd a _, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[hr a b _ hab]`. Use `split_ifs with hac`. Substitute `hac` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hbig b hab, neg_zero]`. Both sides reduce to the same expression. Establish `hne' : CapSp F m ≠ ⊥`. Introduce `h`. Establish `hm0` using `hmem (S.max' hS)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm0` using `[h]`. Conclude with `hmS.2 ((Submodule.mem_bot ℂ).mp hm0)`. Establish `hw` using `(Formalism.FourierDecayAlt.P.capelli_singular V n F m hF hne').2 hm _ _ (hmem _) hmS.2 hHW (S.max' hS)`. Establish `hci : S.max' hS ≠ i` using `ne_of_gt hmS.1`. Simplify using `[hci] at hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem capSp_family_eq_zero_above_index {n : ℕ} (F : Fin n → Fin n → Module.End ℂ V) (hF : GlRel F) (m : Fin n → ℂ)
     (hm : SDec m) (i : Fin n) (Φ : Fin n → V) (hmem : ∀ c, Φ c ∈ CapSp F m)
@@ -385,7 +377,7 @@ private theorem capSp_family_eq_zero_above_index {n : ℕ} (F : Fin n → Fin n 
   simp [hci] at hw
 
 /- English proof (translation)
-Take `⟨ν, v, hvS, hv0, hHW, -⟩` from `Formalism.FourierDecayAlt.P.exists_singular_maximal_vector W n F hF (CapSp F p) (Formalism.FourierDecayAlt.P.capelli_stabilizer W n F p hF).1 hne`. Establish `hν` using `(Formalism.FourierDecayAlt.P.capelli_singular W n F p hF hne).2 hp ν v hvS hv0 hHW`. Establish `hνe : ν = fun a => p a + ((a : ℕ) : ℂ)` using `funext hν`. Conclude with `⟨v, hvS, hv0, hνe ▸ hHW⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem exists_highest_weight_in_capSp_of_ne_bot {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] {n : ℕ}
     (F : Fin n → Fin n → Module.End ℂ W) (hF : GlRel F) (p : Fin n → ℂ) (hp : SDec p) (hne : CapSp F p ≠ ⊥) :
@@ -397,19 +389,19 @@ private theorem exists_highest_weight_in_capSp_of_ne_bot {W : Type} [AddCommGrou
   exact ⟨v, hvS, hv0, hνe ▸ hHW⟩
 
 /- English proof (translation)
-Take `⟨hsGl, -, hsVec, -, -, -⟩` from `Formalism.FourierDecayAlt.P.submodule_relations (Module.End ℂ V) n E hE`. Establish `hpinj : Function.Injective p` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.sdec_inj hp`. Establish `hmp : ∀ a, m a + (if a = i then 1 else 0) = p a`. Introduce `a`. Substitute `hpm` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Distinguish the cases in `h : a = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Take `⟨hmemw, t, ht, hsumw⟩` from `z_main n E l hE hcap p hpinj i hl v hv`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hdw, hrw⟩` from `fam_of_hw (zvec hsGl hsVec (-p i)) _ v hHW`. Establish `hmem' : ∀ c, qdet (subA E) (-p i) (yK E c v) ∈ CapSp (subA E) m`. Introduce `c`. Rewrite using `[hpm]`. Conclude with `hmemw c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd' : ∀ a c, subA E a a (qdet (subA E) (-p i) (yK E c v)) = (m a + ((a : ℕ) : ℂ) + (if a = i then 1 else 0) - if a = c then 1 else 0) • qdet (subA E) (-p i) (yK E c v)`. Introduce `a c`. Establish `h` using `hdw a c`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Take the linear combination `(hmp a).symm`. Establish `hr' : ∀ a b c, a < b → subA E a b (qdet (subA E) (-p i) (yK E c v)) = if a = c then -(qdet (subA E) (-p i) (yK E b v)) else 0`. Introduce `a b c hab`. Establish `h` using `hrw a b c hab`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply] at h`. Conclude with `h`. Use `⟨hmem', hd', hr', ⟨t, ht, hsumw⟩, fun h0 => hv0 ?_⟩` and prove the remaining obligations. Establish `hall` using `fam_zero (subA E) hsGl m hm i (fun c => qdet (subA E) (-p i) (yK E c v)) hmem' hd' hr' h0`. Establish `hall' : ∀ c, qdet (subA E) (-p i) (yK E c v) = 0` using `fun c => hall c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htv : t • v = 0`. Rewrite using `[← hsumw]`. Simplify using `[hall']`. Conclude with `(smul_eq_zero.mp htv).resolve_left ht`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fam_props_lemma_2 (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (l : Fin (n + 1) → ℂ)
     (hE : GlRel E) (hcap : ∀ (w : ℂ) (v : V), qdet E w v = cpol l w • v) (m p : Fin n → ℂ) (i : Fin n)
@@ -462,29 +454,27 @@ private theorem fam_props_lemma_2 (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) →
   exact (smul_eq_zero.mp htv).resolve_left ht
 
 /- English proof (translation)
-Take `⟨hsGl, -⟩` from `Formalism.FourierDecayAlt.P.submodule_relations (Module.End ℂ V) n E hE`. Take `⟨hsGl', -⟩` from `Formalism.FourierDecayAlt.P.submodule_relations (Module.End ℂ V') n E' hE'`. Establish `hpinj` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.sdec_inj hp`. Take `⟨v', hv'S, hv'0, hv'HW⟩` from `exists_highest_weight_in_capSp_of_ne_bot (subA E') hsGl' p hp hne'`. Take `⟨v, hvS, hv0, hvHW⟩` from `exists_highest_weight_in_capSp_of_ne_bot (subA E) hsGl p hp hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hmem', hd', hr', -, hwi'⟩` from `fam_props_lemma_2 n E' l' hE' hcap' m p i hm hp hpm hl' v' hv'S hv'0 hv'HW`. Take `⟨hmem, hd, hr, ⟨t, ht, hsum⟩, hwi⟩` from `fam_props_lemma_2 n E l hE hcap m p i hm hp hpm hl v hvS hv0 hvHW`. Establish `hΨmem : ∀ c, J (qdet (subA E') (-p i) (yK E' c v')) ∈ CapSp (subA E) m` using `fun c => hJr _`. Establish `hΨd : ∀ a c, subA E a a (J (qdet (subA E') (-p i) (yK E' c v'))) = (m a + ((a : ℕ) : ℂ) + (if a = i then 1 else 0) - if a = c then 1 else 0) • J (qdet (subA E') (-p i) (yK E' c v'))`. Introduce `a c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hJ, hd' a c, map_smul]`. Establish `hΨr : ∀ a b c, a < b → subA E a b (J (qdet (subA E') (-p i) (yK E' c v'))) = if a = c then -(J (qdet (subA E') (-p i) (yK E' b v'))) else 0`. Introduce `a b c hab`. Rewrite using `[← hJ, hr' a b c hab]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hΨi : J (qdet (subA E') (-p i) (yK E' i v')) ≠ 0` using `hinj _ (hmem' i) hwi'`. Establish `hHWof : ∀ Φ : Fin n → V, (∀ c, Φ c ∈ CapSp (subA E) m) → (∀ a c, subA E a a (Φ c) = (m a + ((a : ℕ) : ℂ) + (if a = i then 1 else 0) - if a = c then 1 else 0) • Φ c) → (∀ a b c, a < b → subA E a b (Φ c) = if a = c then -(Φ b) else 0) → IsHW (subA E) (fun a => m a + ((a : ℕ) : ℂ)) …`. Introduce `Φ h1 h2 h3`. Establish `habove` using `capSp_family_eq_zero_above_index (subA E) hsGl m hm i Φ h1 h2 h3`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2 a i]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[h3 a b i hab] split_ifs with hai`. Substitute `hai` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[habove b hab, neg_zero]`. Both sides reduce to the same expression. Take `⟨κ, hκ⟩` from `Formalism.FourierDecayAlt.P.multiplicity_one V n E _ _ _ hE hIrr (hHWof (fun c => qdet (subA E) (-p i) (yK E c v)) hmem hd hr) (hHWof (fun c => J (qdet (subA E') (-p i) (yK E' c v'))) hΨmem hΨd hΨr) hwi`. Establish `hdiff : ∀ c, J (qdet (subA E') (-p i) (yK E' c v')) = κ • qdet (subA E) (-p i) (yK E c v)`. Establish `hz` using `fam_zero (subA E) hsGl m hm i (fun c => J (qdet (subA E') (-p i) (yK E' c v')) - κ • qdet (subA E) (-p i) (yK E c v)) (fun c => Submodule.sub_mem _ (hΨmem c) (Submodule.smul_mem _ _ (hmem c))) (fun a c => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_smul, hΨd a c, hd a c, smul_sub, smul_comm κ])`. Use the proof step `(fun a b c hab => by`. Rewrite using `[map_sub, map_smul, hΨr a b c hab, hr a b c hab]`. Apply the tactic sequence `split_ifs <;> module)`. Use the proof step `(by rw [hκ, sub_self])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c`. Conclude with `sub_eq_zero.mp (hz c)`. Establish `hcm : cpol m (-p i) ≠ 0`. Rewrite using `[hpm]`. Conclude with `cpol_down_self p hpinj i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΨJ : ∀ c, J (qdet (subA E') (-p i) (yK E' c v')) = cpol m (-p i) • J (yK E' c v')`. Introduce `c`. Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.KLExA.qdet_int J hJ (-p i) (yK E' c v'), (mem_CapSp.mp (hJr _)) (-p i)]`. Establish `hs : ∑ c, etaK E c (J (yK E' c v')) = ((cpol m (-p i))⁻¹ * κ * t) • v`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hΨJ c, map_smul, smul_smul, inv_mul_cancel₀ hcm, one_smul]`. Use `_ = ((cpol m (-p i))⁻¹ * κ * t) • v := by`. Simplify using `only [hdiff, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.smul_sum, hsum, smul_smul, smul_smul]`. Establish `hκ0 : κ ≠ 0`. Introduce and unpack `rfl`. Apply `hΨi` to reduce the goal to its premises. Rewrite using `[hκ, zero_smul]`.
-
-Use `⟨v', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `smul_ne_zero (mul_ne_zero (mul_ne_zero (inv_ne_zero hcm) hκ0) ht) hv0`. Rewrite using `[hs]`. Conclude with `Submodule.smul_mem _ _ hvS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (E' : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V')
     (l l' : Fin (n + 1) → ℂ) (hE : GlRel E) (hIrr : Irr E) (hcap : ∀ (w : ℂ) (v : V), qdet E w v = cpol l w • v)
@@ -575,9 +565,9 @@ theorem core (n : ℕ) (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (E
 end core
 
 /- English proof (translation)
-Establish `ha` using `(h1 i).1`. Establish `hb` using `(h2 i).2`. Rewrite `hb` using `[Function.update_self]`. Introduce `hj`. Break down `le_or_gt j i.castSucc with hji | hji` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hL.antitone hji` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hL.antitone (Fin.castSucc_lt_iff_succ_le.mp hji)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem ne_of_box_of_box_update_succ {n : ℕ} {L : Fin (n + 1) → ℤ} {M : Fin n → ℤ} (hL : StrictAnti L) (i : Fin n)
     (h1 : Box L M) (h2 : Box L (Function.update M i (M i + 1))) (j : Fin (n + 1)) : M i ≠ L j := by
@@ -592,27 +582,23 @@ private theorem ne_of_box_of_box_update_succ {n : ℕ} {L : Fin (n + 1) → ℤ}
     omega
 
 /- English proof (translation)
-Introduce `V V' _ _ _ _ _ _ n E E' β β' L L' M M' i hE hE' hB hB' hBu hBu' hshf J hJ0 hJ hJr`. Use `set p := shf β (Function.update M i (M i + 1)) with hpdef`. Establish `hpm : shf β M = Function.update p i (p i - 1)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [hpdef, shf, Function.update_self]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hpdef, shf, Function.update_of_ne h]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp' : p = shf β' (Function.update M' i (M' i + 1))`. Use function extensionality and compare the values at `j`. Establish `hj` using `congrFun hshf j`. Simplify using `only [shf] at hj`. Distinguish the cases in `h : j = i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `only [hpdef, shf, Function.update_self]`. Use `push_cast`. Take the linear combination `hj`. Simplify using `only [hpdef, shf, Function.update_of_ne h]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hj`. Establish `hm : SDec (shf β M)` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.sdec_shf β (strictAnti_of_box_of_strictAnti hE.anti hB)`. Establish `hp : SDec p` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.sdec_shf β (strictAnti_of_box_of_strictAnti hE.anti hBu)`. Establish `hpi : p i - 1 = β + (M i : ℂ)`. Simplify using `only [hpdef, shf, Function.update_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hpi' : p i - 1 = β' + (M' i : ℂ)`. Rewrite using `[hpi]`. Simplify `congrFun hshf i` using `[shf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : ∀ j, p i - 1 ≠ shf β L j`. Introduce `j h`. Rewrite `h` using `[hpi]`. Simplify using `only [shf, add_right_inj, Int.cast_inj] at h`. Conclude with `ne_of_box_of_box_update_succ hE.anti i hB hBu j h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl' : ∀ j, p i - 1 ≠ shf β' L' j`. Introduce `j h`. Rewrite `h` using `[hpi']`. Simplify using `only [shf, add_right_inj, Int.cast_inj] at h`. Conclude with `ne_of_box_of_box_update_succ hE'.anti i hB' hBu' j h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : CapSp (subA E) p ≠ ⊥` using `(Formalism.FourierDecayAlt.P.branching_decomposition V n E β L hE).1 _ hBu`. Establish `hne' : CapSp (subA E') p ≠ ⊥`. Rewrite using `[hp']`. Conclude with `(Formalism.FourierDecayAlt.P.branching_decomposition V' n E' β' L' hE').1 _ hBu'`. Establish `hinj : ∀ x ∈ CapSp (subA E') (shf β M), x ≠ 0 → J x ≠ 0`.
-
-Introduce `x hx hx0`. Use `j_inj n E E' β' L' M' hE' hB' J hJ0 hJ (fun w => ?_) x ?_ hx0` and prove the remaining obligations. Rewrite using `[← hshf]`. Conclude with `hJr w`. Rewrite using `[← hshf]`.
-
-Conclude with `hx`. Conclude with `core n E E' (shf β L) (shf β' L') hE.gl hE.irr hE.cap hE'.gl hE'.cap (shf β M) p i hm hp hpm hl hl' hne hne' J hJ hJr hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_nonvanishing_algebraic : TWNeAlg := by
   intro V V' _ _ _ _ _ _ n E E' β β' L L' M M' i hE hE' hB hB' hBu hBu' hshf J hJ0 hJ hJr

@@ -7,9 +7,9 @@ namespace GlobalTheory.AbhyankarRootUnit
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hu`. Establish `hev : (Polynomial.X ^ e - Polynomial.C π : Polynomial S).eval₂ (algebraMap S (ResidueField S)) 0 = 0`. Simplify using `[Polynomial.eval₂_sub, zero_pow he.ne']`. Conclude with `hπ`. Use `hu.map (AdjoinRoot.lift (algebraMap S (ResidueField S)) 0 hev)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[AdjoinRoot.lift_root]`. Conclude with `not_isUnit_zero this`.
+A detailed English derivation is pending.
 -/
 theorem root_not_isUnit (S : Type) [CommRing S] [IsLocalRing S] (π : S)
     (hπ : π ∈ maximalIdeal S) (e : ℕ) (he : 0 < e) :
@@ -24,7 +24,7 @@ theorem root_not_isUnit (S : Type) [CommRing S] [IsLocalRing S] (π : S)
   exact not_isUnit_zero this
 
 /- English proof (translation)
-Establish `h` using `AdjoinRoot.eval₂_root (Polynomial.X ^ e - Polynomial.C π : Polynomial S)`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C] at h`. Rewrite `h` using `[sub_eq_zero]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem root_pow (S : Type) [CommRing S] (π : S) (e : ℕ) :
     AdjoinRoot.root (Polynomial.X ^ e - Polynomial.C π : Polynomial S) ^ e =
@@ -35,17 +35,15 @@ theorem root_pow (S : Type) [CommRing S] (π : S) (e : ℕ) :
   rw [h]; rfl
 
 /- English proof (translation)
-Establish `htDm : t ∈ maximalIdeal D` using `htu`. Use `haveI hQmax : (Q.comap (algebraMap D (integralClosure D (D ⊗[S] L)))).IsMaximal := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal Q`. Establish `hcomap : Q.comap (algebraMap D (integralClosure D (D ⊗[S] L))) = maximalIdeal D` using `IsLocalRing.eq_maximalIdeal hQmax`. Establish `htQ : algebraMap D (integralClosure D (D ⊗[S] L)) t ∈ Q`. Rewrite using `[← Ideal.mem_comap, hcomap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `htDm`. Establish `hsc : algebraMap D (Localization.AtPrime Q) t = algebraMap (integralClosure D (D ⊗[S] L)) (Localization.AtPrime Q) (algebraMap D (integralClosure D (D ⊗[S] L)) t)` using `IsScalarTower.algebraMap_apply D (integralClosure D (D ⊗[S] L)) _ t`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsc, IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime Q) Q]`. Conclude with `htQ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hsc]`. Apply `IsLocalization.nonZeroDivisors_le_comap Q.primeCompl (Localization.AtPrime Q)` to reduce the goal to its premises. Establish `hpow : (algebraMap D (D ⊗[S] L) t) ^ e = Algebra.TensorProduct.includeRight (algebraMap S L π)`. Rewrite using `[← map_pow, ht, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.algebraMap_eq_smul_one π, Algebra.algebraMap_eq_smul_one π, TensorProduct.smul_tmul]`. Establish `hunit : IsUnit (algebraMap D (D ⊗[S] L) t)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← isUnit_pow_iff he.ne', hpow]`. Conclude with `(Ne.isUnit hπL).map _`. Rewrite using `[mem_nonZeroDivisors_iff]`. Use `⟨fun b hb => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `congrArg (fun x : integralClosure D (D ⊗[S] L) => (x : D ⊗[S] L)) hb`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_algebraMap, ZeroMemClass.coe_zero] at h1`. Simplify using `using hunit.mul_right_eq_zero.1 h1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `congrArg (fun x : integralClosure D (D ⊗[S] L) => (x : D ⊗[S] L)) hb`.
-
-Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_algebraMap, ZeroMemClass.coe_zero] at h1`. Simplify using `using hunit.mul_left_eq_zero.1 h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_and_mem_nonZeroDivisors_of_pow (S L : Type) [CommRing S] [Field L]
     [Algebra S L] (π : S) (hπL : algebraMap S L π ≠ 0) (e : ℕ) (he : 0 < e) (D : Type)
@@ -90,11 +88,9 @@ theorem mem_maximalIdeal_and_mem_nonZeroDivisors_of_pow (S L : Type) [CommRing S
       simpa using hunit.mul_left_eq_zero.1 h1
 
 /- English proof (translation)
-Introduce `S K L _ _ _ _ _ _ _ _ _ _ _ _ π e D _ _ ψ hπ he _ _ Q _`. Establish `hπm : π ∈ maximalIdeal S` using `hπ.not_isUnit`. Establish `hπL : algebraMap S L π ≠ 0`. Rewrite using `[IsScalarTower.algebraMap_apply S K L]`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[map_eq_zero_iff _ (algebraMap K L).injective, map_eq_zero_iff _ (IsFractionRing.injective S K)]`. Conclude with `hπ.ne_zero h0`. Use `mem_maximalIdeal_and_mem_nonZeroDivisors_of_pow S L π hπL e he D _ ?_ ?_ Q` and prove the remaining obligations. Rewrite using `[← map_pow, root_pow, AlgEquiv.commutes]`. Introduce `h`.
-
-Conclude with `root_not_isUnit S π hπm e he (by simpa using h.map ψ)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem root_mem_maximalIdeal_and_mem_nonZeroDivisors : ∀ (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]

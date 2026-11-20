@@ -19,11 +19,11 @@ def posMin (O : Type) [CommRing O] : InvFun O where
   zero B := by rw [(InvFun.minVal O).zero, max_self]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `sInf {x | (∃ y, (k : ℝ) * B y y = x) ∧ x ≠ k * B 0 0} = k * sInf {x | (∃ y, B y y = x) ∧ x ≠ B 0 0}`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `only [Nat.cast_zero, zero_mul]`. Use `Real.sInf_empty` and compare the differences between its conclusion and the goal. Conclude with `Set.eq_empty_of_forall_notMem fun x ⟨⟨_, h⟩, h'⟩ => h' h.symm`.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `hk' : (0 : ℝ) < k` using `by exact_mod_cast hk`. Rewrite using `[← smul_eq_mul (k : ℝ) (sInf _), ← Real.sInf_smul_of_nonneg hk'.le]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨y, rfl⟩, h⟩`. Conclude with `⟨B y y, ⟨⟨y, rfl⟩, fun e => h (by rw [e])⟩, rfl⟩`. Introduce and unpack `⟨z, ⟨⟨y, rfl⟩, h⟩, rfl⟩`. Conclude with `⟨⟨y, rfl⟩, fun e => h (mul_left_cancel₀ hk'.ne' e)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem minVal_nat_mul (n k : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ) :
     (InvFun.minVal O).toFun n (fun a b => k * B a b) = k * (InvFun.minVal O).toFun n B := by
@@ -43,7 +43,7 @@ theorem minVal_nat_mul (n k : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ)
       exact ⟨⟨y, rfl⟩, fun e => h (mul_left_cancel₀ hk'.ne' e)⟩
 
 /- English proof (translation)
-Use `⟨fun n k B => ?_, fun n B => le_max_left _ _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `max 0 _ = (k : ℝ) * max 0 _`. Rewrite using `[minVal_nat_mul, mul_max_of_nonneg _ _ k.cast_nonneg, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTame_posMin : IsTame (posMin O) := by
   refine ⟨fun n k B => ?_, fun n B => le_max_left _ _⟩
@@ -51,7 +51,7 @@ theorem isTame_posMin : IsTame (posMin O) := by
   rw [minVal_nat_mul, mul_max_of_nonneg _ _ k.cast_nonneg, mul_zero]
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := h.2 1 (fun a _ => if a = 0 then 0 else -1) have : {x : ℝ | (∃ y : Fin 1 → ℤ, (if y = 0 then (0 : ℝ) else -1) = x) ∧ x ≠ (if (0 : Fin 1 → ℤ) = 0 then (0 : ℝ) else -1)} = {-1} := by ext x simp only [Set.mem_setOf_eq, if_true, Set.mem_singleton_iff] constructor · rintr …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isTame_minVal : ¬ IsTame (InvFun.minVal ℤ) := fun h => by
   have h1 := h.2 1 (fun a _ => if a = 0 then 0 else -1)
@@ -77,14 +77,14 @@ theorem comb_eval (a b : ℕ) (ψ φ : InvFun O) (X : Type) [AddCommGroup X] [Mo
     (comb a ψ b φ).eval X B = a * ψ.eval X B + b * φ.eval X B := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun n k B => by simp only [comb, h.1, h'.1]; ring, fun n B => add_nonneg (mul_nonneg a.cast_nonneg (h.2 n B)) (mul_nonneg b.cast_nonneg (h'.2 n B))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTame_comb {ψ φ : InvFun O} (h : IsTame ψ) (h' : IsTame φ) (a b : ℕ) : IsTame (comb a ψ b φ) :=
   ⟨fun n k B => by simp only [comb, h.1, h'.1]; ring,
     fun n B => add_nonneg (mul_nonneg a.cast_nonneg (h.2 n B)) (mul_nonneg b.cast_nonneg (h'.2 n B))⟩
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[(resInt O φ).eval_eq hr]`. Conclude with `φ.eval_comp (r := r.toAddMonoidHom.toIntLinearMap) hr B`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resInt_eval [Module.Finite ℤ O] (φ : InvFun ℤ) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X]
     [Module.Finite ℤ X] (B : X → X → ℝ) : (resInt O φ).eval X B = φ.eval X B := by
@@ -93,7 +93,7 @@ theorem resInt_eval [Module.Finite ℤ O] (φ : InvFun ℤ) (X : Type) [AddCommG
   exact φ.eval_comp (r := r.toAddMonoidHom.toIntLinearMap) hr B
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => h.1 _ _ _, fun _ _ => h.2 _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTame_resInt [Module.Finite ℤ O] {φ : InvFun ℤ} (h : IsTame φ) : IsTame (resInt O φ) :=
   ⟨fun _ _ _ => h.1 _ _ _, fun _ _ => h.2 _ _⟩
@@ -101,7 +101,7 @@ theorem isTame_resInt [Module.Finite ℤ O] {φ : InvFun ℤ} (h : IsTame φ) : 
 variable {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
 
 /- English proof (translation)
-The claim follows from `max_eq_right (Real.sInf_nonneg fun _ ⟨⟨_, h⟩, _⟩ => h ▸ hB _)`.
+A detailed English derivation is pending.
 -/
 theorem posMin_eval {B : X → X → ℝ} (hB : ∀ y, 0 ≤ B y y) : (posMin O).eval X B = (InvFun.minVal O).eval X B :=
   max_eq_right (Real.sInf_nonneg fun _ ⟨⟨_, h⟩, _⟩ => h ▸ hB _)
@@ -109,9 +109,9 @@ theorem posMin_eval {B : X → X → ℝ} (hB : ∀ y, 0 ≤ B y y) : (posMin O)
 variable {bar : O → O} {φ φ' : InvFun O}
 
 /- English proof (translation)
-Establish `hZ : ∀ β : LinearMap.BilinForm ℤ X, (∀ y, 0 ≤ β y y) → φ'.evalZ β = φ.evalZ β` using `fun β hβ => (h _ fun y => by exact_mod_cast hβ y).symm`. Use `⟨hγ.mem, hγ.nonneg, hγ.basis, fun c hc => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h _ fun y => Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hγ.nonneg i y), hγ.linear c hc]`. Simplify using `only [hZ _ (hγ.nonneg _)]`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ.strict`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, ℓ, hN, fun i => by rw [hZ _ (hγ.nonneg i), h1], fun β hβ hp => by rw [hZ _ hp]; exact h2 β hβ hp, fun β hβ hp he => h3 β hβ hp (by rw [← hZ _ hp]; exact he)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCone_congr (h : ∀ B : X → X → ℝ, (∀ y, 0 ≤ B y y) → φ.eval X B = φ'.eval X B) {m : ℕ}
     {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCone bar φ γ) : IsCone bar φ' γ := by
@@ -125,11 +125,11 @@ theorem isCone_congr (h : ∀ B : X → X → ℝ, (∀ y, 0 ≤ B y y) → φ.e
       fun β hβ hp he => h3 β hβ hp (by rw [← hZ _ hp]; exact he)⟩
 
 /- English proof (translation)
-Establish `h' : ∀ B : X → X → ℝ, (∀ y, 0 ≤ B y y) → φ'.eval X B = φ.eval X B` using `fun B hB => (h B hB).symm`. Establish `hR : ∀ B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ, (∀ y, 0 ≤ B y y) → evalR φ' B = evalR φ B` using `fun B hB => h' _ hB`. Establish `hZ : ∀ β : LinearMap.BilinForm ℤ X, (∀ y, 0 ≤ β y y) → φ'.evalZ β = φ.evalZ β` using `fun β hβ => h' _ fun y => by exact_mod_cast hβ y`. Use `⟨fun B hB t ht => ?_, fun B hB B' hB' => ?_, fun β hβ hp => ?_, fun β hβ hp h0 => ?_, fun m m' γ s hγ => isCone_congr h (hφ.face m m' γ s (isCone_congr h' hγ)), fun B hB => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hR _ (nonneg_of_mem_psdCone hB), hR _ (nonneg_of_mem_psdCone (smul_mem_psdCone hB ht)), hφ.homog B hB t ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR _ (nonneg_of_mem_psdCone hB), hR _ (nonneg_of_mem_psdCone hB'), hR _ fun y => add_nonneg (nonneg_of_mem_psdCone hB y) (nonneg_of_mem_psdCone hB' y)]`. Conclude with `hφ.superadd B hB B' hB'`. Rewrite using `[hZ _ hp]`. Conclude with `hφ.integral β hβ hp`. Rewrite using `[hZ _ hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hφ.pos β hβ hp h0`. Take `⟨m, γ, c, h1, h2⟩` from `hφ.cover B hB`. Conclude with `⟨m, γ, c, isCone_congr h h1, h2⟩`. Take `⟨S, hS, h1⟩` from `hφ.finite`. Conclude with `⟨S, hS, fun m γ hγ => h1 m γ (isCone_congr h' hγ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPolFanOn_congr (h : ∀ B : X → X → ℝ, (∀ y, 0 ≤ B y y) → φ.eval X B = φ'.eval X B)
     (hφ : IsPolFanOn bar φ X) : IsPolFanOn bar φ' X := by
@@ -151,7 +151,7 @@ theorem isPolFanOn_congr (h : ∀ B : X → X → ℝ, (∀ y, 0 ≤ B y y) → 
     exact ⟨S, hS, fun m γ hγ => h1 m γ (isCone_congr h' hγ)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun X _ _ _ _ hX => isPolFanOn_congr (fun _ hB => (posMin_eval hB).symm) (isPolFan_minVal_one X hX), isTame_posMin⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPolFan_posMin_one : IsPolFan id 1 (posMin ℤ) ∧ IsTame (posMin ℤ) :=
   ⟨fun X _ _ _ _ hX => isPolFanOn_congr (fun _ hB => (posMin_eval hB).symm) (isPolFan_minVal_one X hX), isTame_posMin⟩
@@ -163,14 +163,14 @@ section CM
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E)
 
 /- English proof (translation)
-Introduce `σ _ n B` and use `φ.eval_comp (r := (AddMonoidHom.compLeft σ.toAddEquiv.toAddMonoidHom (Fin n)).toIntLinearMap) (fun a => ⟨fun i => σ.symm (a i), funext fun i => σ.apply_symm_apply (a i)⟩) B`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isTwInv_resInt (φ : InvFun ℤ) : IsTwInv H (resInt (𝓞 E) φ) := fun σ _ n B =>
   φ.eval_comp (r := (AddMonoidHom.compLeft σ.toAddEquiv.toAddMonoidHom (Fin n)).toIntLinearMap)
     (fun a => ⟨fun i => σ.symm (a i), funext fun i => σ.apply_symm_apply (a i)⟩) B
 
 /- English proof (translation)
-Introduce `σ _ n B` and use `by change max 0 (sInf _) = max 0 (sInf _) congr 2 ext x have e : (fun i : Fin n => σ ((0 : Fin n → 𝓞 E) i)) = 0 := funext fun i => map_zero σ simp only [Set.mem_setOf_eq, e] refine and_congr_left' ⟨fun ⟨y, h⟩ => ⟨_, h⟩, fun ⟨y, h⟩ => ⟨fun i => σ.symm (y i), ?_⟩⟩ simpa using h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isTwInv_posMin : IsTwInv H (posMin (𝓞 E)) := fun σ _ n B => by
   change max 0 (sInf _) = max 0 (sInf _)
@@ -182,7 +182,7 @@ theorem isTwInv_posMin : IsTwInv H (posMin (𝓞 E)) := fun σ _ n B => by
   simpa using h
 
 /- English proof (translation)
-Introduce `X _ _ _ _ be _ hp` and use `by obtain ⟨n, r, hr⟩ := Module.Finite.exists_fin' (𝓞 E) X rw [InvFun.evalZ, InvFun.eval_eq _ hr] refine lt_max_of_lt_right (lt_of_lt_of_le one_pos (le_csInf ?_ ?_)) · obtain ⟨y, hy⟩ := exists_ne (0 : X) obtain ⟨z, rfl⟩ := hr y exact ⟨_, ⟨z, rfl⟩, by simpa using (hp _ hy).ne'⟩ · r …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPosFn_posMin : IsPosFn H (posMin (𝓞 E)) := fun X _ _ _ _ be _ hp => by
   obtain ⟨n, r, hr⟩ := Module.Finite.exists_fin' (𝓞 E) X
@@ -197,7 +197,7 @@ theorem isPosFn_posMin : IsPosFn H (posMin (𝓞 E)) := fun X _ _ _ _ be _ hp =>
     exact_mod_cast (show (1 : ℤ) ≤ _ from hp _ h0)
 
 /- English proof (translation)
-Use `⟨isPolFan_zero, noSelfInt_zero, isTwInv_posMin H, isPosFn_posMin H, isTame_posMin, fun X _ _ _ _ hX m γ hγ => ?_⟩` and prove the remaining obligations. Establish `: Subsingleton X` using `Module.finrank_zero_iff.1 (Nat.le_zero.1 hX)`. Establish `: IsEmpty (Fin m)` using `⟨fun i => hγ.linearIndependent.ne_zero i (Subsingleton.elim _ _)⟩`. Conclude with `⟨fun c _ => by simp [InvFun.eval_of_subsingleton], fun N _ y => ⟨0, isEmptyElim⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem refines_zero (φs : InvFun ℤ) (𝒩 : Finset ℕ) : Refines H 0 φs 𝒩 (posMin (𝓞 E)) := by
   refine ⟨isPolFan_zero, noSelfInt_zero, isTwInv_posMin H, isPosFn_posMin H, isTame_posMin, fun X _ _ _ _ hX m γ hγ => ?_⟩
@@ -208,7 +208,7 @@ theorem refines_zero (φs : InvFun ℤ) (𝒩 : Finset ℕ) : Refines H 0 φs �
 variable {H} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Introduce `z` and use `by obtain ⟨R, _, _, _, ξ, t, μ, P, m, γ, h1, h2, h3, h4, h5, h6, h7⟩ := hZ z exact ⟨R, _, _, _, ξ, t, μ, P, m, γ, h1, h2, h3, h4, h5, h _ _ _ h6, h7⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasCones_mono {Cn Cn' : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ),
       (Fin m → LinearMap.BilinForm ℤ X) → Prop}
@@ -224,7 +224,7 @@ section Cones
 variable {R : Type} [CommRing R] [IsDomain R] {Dg : DegPre R}
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨u, n, h1, h2⟩ := h y refine ⟨_, n 0, h2, h1 0, ?_⟩ simpa using associated_unit_mul_left _ _ u.isUnit`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem formAt_id_of_isMonomial {ϖ : R} {be : LinearMap.BilinForm ℤ Dg.X} (h : IsMonomial Dg ![ϖ] ![be]) :
     FormAt Dg (RingHom.id R) ϖ be := fun y => by
@@ -233,19 +233,19 @@ theorem formAt_id_of_isMonomial {ϖ : R} {be : LinearMap.BilinForm ℤ Dg.X} (h 
   simpa using associated_unit_mul_left _ _ u.isUnit
 
 /- English proof (translation)
-Introduce `W _ _ _ hW ϖ hϖ f be hbe hf`. Use `hW.1` as an intermediate fact. Set `c : Fin m → ℕ` to `fun i => if h0 : f (t i) = 0 then 0 else (IsDiscreteValuationRing.associated_pow_irreducible h0 hϖ).choose`. Establish `hc : ∀ i, f (t i) ≠ 0 → Associated (f (t i)) (ϖ ^ c i)` using `fun i h0 => by`. Simplify using `only [c, dif_neg h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(IsDiscreteValuationRing.associated_pow_irreducible h0 hϖ).choose_spec`. Establish `diag : ∀ y, be y y = ∑ i, (c i : ℤ) * γ i y y` using `fun y => by`. Take `⟨r, n, hr, hn, ha⟩` from `hf y`. Take `⟨u, k, hk, rfl⟩` from `h.coord hr`. Establish `hne : f (u * ∏ i, t i ^ k i) ≠ 0` using `ha.ne_zero_iff.2 (pow_ne_zero _ hϖ.ne_zero)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha`, `hne` using `[map_mul, map_prod]`. Establish `h1 : Associated (∏ i, f (t i ^ k i)) (∏ i, ϖ ^ (c i * k i))` using `Associated.prod _ _ _ fun i _ => by`. Break down `Nat.eq_zero_or_pos (k i) with h0 | h0` into its components or cases. Simplify using `[h0]`. Establish `: f (t i ^ k i) ≠ 0` using `fun e => hne (by rw [Finset.prod_eq_zero (Finset.mem_univ i) e, mul_zero])`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `this`, the goal using `[map_pow]`. Rewrite using `[pow_mul]`. Conclude with `(hc i fun e => this (by rw [e, zero_pow h0.ne'])).pow_pow`. Rewrite `h1` using `[Finset.prod_pow_eq_pow_sum]`. Establish `h2 : Associated (ϖ ^ n) (ϖ ^ ∑ i, c i * k i)` using `ha.symm.trans ((associated_unit_mul_left _ _ (u.isUnit.map f)).trans h1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : n = ∑ i, c i * k i`. Use `(IsDiscreteValuationRing.addVal_eq_iff_associated _ _).2 h2` as an intermediate fact. Rewrite `this` using `[hϖ.addVal_pow, hϖ.addVal_pow]`. Conclude with `this` after adjusting the coercions. Rewrite using `[hn, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hk]`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `⟨fun i => c i, fun i => (c i).cast_nonneg, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : be a b = ∑ i, (c i : ℤ) * γ i a b`. Establish `h1` using `diag (a + b)`. Simplify using `only [map_add, LinearMap.add_apply, diag a, diag b, hbe b a, mul_add, Finset.sum_add_distrib, hs _ b a] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[LinearMap.sum_apply, e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inCone_of_isMonomial {m : ℕ} {t : Fin m → R} {γ : Fin m → LinearMap.BilinForm ℤ Dg.X}
     (hs : ∀ i y z, γ i y z = γ i z y) (h : IsMonomial Dg t γ) : InCone Dg γ := by
@@ -289,7 +289,7 @@ theorem inCone_of_isMonomial {m : ℕ} {t : Fin m → R} {γ : Fin m → LinearM
   simp [LinearMap.sum_apply, e]
 
 /- English proof (translation)
-Take `⟨c, -, e⟩` from `hc R hR ϖ hϖ (RingHom.id R) be hs (formAt_id_of_isMonomial h)`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun₂ e a b` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_inCone_empty [IsLocalRing R] (hR : CDvr R) {ϖ : R} (hϖ : Irreducible ϖ)
     {be : LinearMap.BilinForm ℤ Dg.X} (hs : ∀ y z, be y z = be z y) (h : IsMonomial Dg ![ϖ] ![be])

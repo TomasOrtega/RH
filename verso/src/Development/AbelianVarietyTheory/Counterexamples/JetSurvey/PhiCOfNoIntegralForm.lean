@@ -23,9 +23,9 @@ Both sides reduce to the same expression.
 theorem phiC_def (b : SymB cj Y) : phiC cj b = sInf (vals b) := rfl
 
 /- English proof (translation)
-Rewrite using `[phiC_def]`. Establish `hb : b = 0` using `Subtype.ext (LinearMap.ext fun a => LinearMap.ext fun c => by`. Rewrite using `[Subsingleton.elim a 0]`. Use the proof step `simp)`. Establish `hsub : vals b ⊆ {0}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨l, -, -, rfl⟩`. Rewrite using `[hb, map_zero]`. Conclude with `Set.mem_singleton _`. Apply the tactic sequence `rcases Set.subset_singleton_iff_eq.1 hsub with he | he <;> simp [he]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem phiC_of_subsingleton [Subsingleton Y] (b : SymB cj Y) : phiC cj b = 0 := by
   rw [phiC_def]
@@ -38,9 +38,9 @@ theorem phiC_of_subsingleton [Subsingleton Y] (b : SymB cj Y) : phiC cj b = 0 :=
   rcases Set.subset_singleton_iff_eq.1 hsub with he | he <;> simp [he]
 
 /- English proof (translation)
-Take `⟨l, h1, h2, rfl⟩` from `hx`. Use `⟨(n : ℝ) • l, fun β hβ => ?_, fun β hβ hne => ?_, by simp⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `h1 β hβ`. Conclude with `⟨n * z, by simp [hz]⟩`. Establish `hl` using `h2 β hβ hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Simplify using `using mul_pos hn' hl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma nat_mul_mem_vals {b : SymB cj Y} {x : ℝ} (hx : x ∈ vals b) (n : ℕ) (hn : 0 < n) :
     (n : ℝ) * x ∈ vals b := by
@@ -53,9 +53,9 @@ private lemma nat_mul_mem_vals {b : SymB cj Y} {x : ℝ} (hx : x ∈ vals b) (n 
     simpa using mul_pos hn' hl
 
 /- English proof (translation)
-Rewrite using `[phiC_def]`. Apply `Real.sInf_of_not_bddBelow` to reduce the goal to its premises. Introduce and unpack `⟨m, hm⟩`. Take `⟨n, hn⟩` from `exists_nat_gt (m / x)`. Establish `hmem` using `nat_mul_mem_vals hx (n + 1) n.succ_pos`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : m ≤ ((n + 1 : ℕ) : ℝ) * x` using `hm hmem`. Establish `h2 : ((n + 1 : ℕ) : ℝ) * x < m`. Rewrite using `[← div_lt_iff_of_neg hneg]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -73,7 +73,7 @@ theorem phiC_eq_zero_of_neg (b : SymB cj Y) {x : ℝ} (hx : x ∈ vals b) (hneg 
   linarith
 
 /- English proof (translation)
-Use `eq_bot_iff.2 fun β hβ => (Submodule.mem_bot ℝ).2 ?_` and prove the remaining obligations. Establish `hb` using `hβ.2 1 0 (by simp [h])`. Use extensionality with `a c`. Simplify using `using hb a c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem symB_eq_bot_of_apply_one (h : cj 1 = 0) : SymB cj Y = ⊥ := by
   refine eq_bot_iff.2 fun β hβ => (Submodule.mem_bot ℝ).2 ?_
@@ -82,7 +82,7 @@ theorem symB_eq_bot_of_apply_one (h : cj 1 = 0) : SymB cj Y = ⊥ := by
   simpa using hb a c
 
 /- English proof (translation)
-Take `⟨l, h1, h2, rfl⟩` from `hx`. Use `⟨c • l, fun β hβ => ⟨0, ?_⟩, fun β hβ hne => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[h β hβ]`. Simplify using the standard rewrite rules. Simplify using `using mul_pos hc (h2 β hβ hne)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma pos_mul_mem_vals_of_integral_eq_zero (h : ∀ β : SymB cj Y, (∀ a c, ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a c = z) → β = 0)
     {b : SymB cj Y} {x : ℝ} (hx : x ∈ vals b) {c : ℝ} (hc : 0 < c) : c * x ∈ vals b := by
@@ -93,15 +93,13 @@ private lemma pos_mul_mem_vals_of_integral_eq_zero (h : ∀ β : SymB cj Y, (∀
   · simpa using mul_pos hc (h2 β hβ hne)
 
 /- English proof (translation)
-Distinguish the cases in `hneg : ∃ x ∈ vals b, x < 0`. Take `⟨x, hx, hx0⟩` from `hneg`. Conclude with `phiC_eq_zero_of_neg b hx hx0`. Use `push_neg at hneg`. Establish `hbdd : BddBelow (vals b)` using `⟨0, fun y hy => hneg y hy⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[phiC_def]`. Break down `(vals b).eq_empty_or_nonempty with he | hne` into its components or cases. Rewrite using `[he, Real.sInf_empty]`. Use `le_antisymm ?_ (le_csInf hne fun y hy => hneg y hy)` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_neg at hlt`. Take `⟨x, hx⟩` from `hne`. Establish `hxs : sInf (vals b) ≤ x` using `csInf_le hbdd hx`. Establish `hxpos : 0 < x` using `lt_of_lt_of_le hlt hxs`. Establish `hc : 0 < sInf (vals b) / (2 * x)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `pos_mul_mem_vals_of_integral_eq_zero h hx hc`. Establish `hle` using `csInf_le hbdd hmem`. Establish `hx0 : x ≠ 0` using `hxpos.ne'`. Establish `heq : sInf (vals b) / (2 * x) * x = sInf (vals b) / 2`. Clear the denominators using the available nonvanishing facts.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem phiC_of_no_integral_form
     (h : ∀ β : SymB cj Y, (∀ a c, ∃ z : ℤ, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a c = z) → β = 0) (b : SymB cj Y) :
@@ -129,9 +127,9 @@ theorem phiC_of_no_integral_form
   linarith
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, h1, h2, hx⟩`. Conclude with `⟨l, ⟨h1, h2⟩, hx⟩`. Introduce and unpack `⟨l, ⟨h1, h2⟩, hx⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨l, h1, h2, hx⟩`.
+Supply the required witnesses or components.
 -/
 private lemma vals_eq_functionalValues [IsCMField E] (b : SymB cj Y) : vals b = functionalValues b := by
   ext x
@@ -146,9 +144,9 @@ section CM
 variable [IsCMField E] [Module.Finite (𝓞 E) Y] [Module.Projective (𝓞 E) Y]
 
 /- English proof (translation)
-Rewrite using `[phiC_def]`. Use `le_csInf (by rw [vals_eq_functionalValues]; exact functionalValues_nonempty h b) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, h1, h2, rfl⟩`. Take `⟨z, hz⟩` from `h1 b hint`. Establish `hp` using `h2 b hpos h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hp`, the goal using `[hz]`. Establish `hz0 : (0 : ℤ) < z` using `by exact_mod_cast hp`. Conclude with `(show (1 : ℤ) ≤ z by omega)` after adjusting the coercions.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_phiC (h : IsConj cj) (b : SymB cj Y)
     (hint : ∀ a c, ∃ z : ℤ, (b : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a c = z)

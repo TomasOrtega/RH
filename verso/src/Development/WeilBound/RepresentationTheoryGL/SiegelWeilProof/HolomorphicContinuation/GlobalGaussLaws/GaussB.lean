@@ -10,11 +10,11 @@ namespace PositivityTheory.Rg.Sw.Glob.GaussH
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `hg`. Unfold `InG JJ at h`. Rewrite `h` using `[← Matrix.fromBlocks_toBlocks g, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.neg_mul, Matrix.one_mul, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂] at h`. Take `⟨h1, h2, h3, h4⟩` from `Matrix.fromBlocks_inj.1 h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `h1` as an intermediate fact. Rewrite `this` using `[neg_add_eq_sub, sub_eq_zero]`. Conclude with `this`. Use `h4` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[neg_add_eq_sub, sub_eq_zero]`. Conclude with `this`. Use `h2` as an intermediate fact. Rewrite `this` using `[neg_add_eq_sub]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_rel {g : M2 n} (hg : InG g) :
     g.toBlocks₁₁ᴴ * g.toBlocks₂₁ = g.toBlocks₂₁ᴴ * g.toBlocks₁₁ ∧
@@ -34,9 +34,9 @@ theorem inG_rel {g : M2 n} (hg : InG g) :
   · have := h2; rw [neg_add_eq_sub] at this; exact this
 
 /- English proof (translation)
-Take `⟨hG, hU⟩` from `hg`. Establish `hinv : g * gᴴ = 1` using `mul_eq_one_comm.1 hU`. Establish `hc : JJ n * g = g * JJ n`. Combine the equalities or inequalities in the displayed calculation. Unfold `JJ at hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Rewrite `hc` using `[← Matrix.fromBlocks_toBlocks g, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.neg_mul, Matrix.one_mul, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂] at hc`. Take `⟨h1, h2, h3, h4⟩` from `Matrix.fromBlocks_inj.1 hc`. Conclude with `⟨h1, h2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inK_blocks {g : M2 n} (hg : InK g) : g.toBlocks₂₁ = -g.toBlocks₁₂ ∧ g.toBlocks₂₂ = g.toBlocks₁₁ := by
   obtain ⟨hG, hU⟩ := hg

@@ -21,7 +21,7 @@ theorem laGLin_apply (Zm : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (l : Fin (r + 1
     laGLin Zm l = laG Zm l := rfl
 
 /- English proof (translation)
-Take `⟨w, hw, rfl⟩` from `(mem_headCols_iff Z.Z l).1 hl`. Rewrite using `[laG_mulVec Zh T T' Z hZ hu, hw]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem laG_headCols (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M.Mat (r + 1))
     (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') (hu : IsUnit (ZZm g Zh T T').det)
@@ -44,9 +44,9 @@ theorem laM_mk (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M.Mat
     (l : Fin (r + 1) → M.R) : laM Zh T T' Z hZ hu (Submodule.Quotient.mk l) = laG (ZZm g Zh T T') l := rfl
 
 /- English proof (translation)
-Establish `h1` using `((isUnit_iff_ph (g := g) _).1 hu₁)`. Establish `h2` using `((isUnit_iff_ph (g := g) _).1 hu₂)`. Establish `k1` using `congrArg (ph1 g) hK`. Establish `k2` using `congrArg (ph2 g) hK`. Simplify using `only [map_mul] at k1 k2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_iff_ph (g := g), cornerRatio_firstProj hs Zh₁ T T' hu₁, cornerRatio_firstProj hs Zh₂ T T' hu₂, cornerRatio_secondProj hs Zh₁ T T' hu₁, cornerRatio_secondProj hs Zh₂ T T' hu₂]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `field_simp [h1.1, h2.1] first | linear_combination (g.q : F) * k1 | linear_combination -(g.q : F) * k1`. Apply the tactic sequence `field_simp [h1.2, h2.2] first | linear_combination (g.q : F) * k2 | linear_combination -(g.q : F) * k2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts.
 -/
 theorem kap_common (hs : M.split = some g) (T T' : F) (Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hu₁ : IsUnit Zh₁.det) (hu₂ : IsUnit Zh₂.det) (hK : KapEq Zh₁ Zh₂) :
@@ -65,7 +65,7 @@ theorem kap_common (hs : M.split = some g) (T T' : F) (Zh₁ Zh₂ : Matrix (Fin
     first | linear_combination (g.q : F) * k2 | linear_combination -(g.q : F) * k2
 
 /- English proof (translation)
-Rewrite using `[laG_mulVec Zh T T' Z hZ hu]`. Simplify using `[eV]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem laG_b (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M.Mat (r + 1))
     (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') (hu : IsUnit (ZZm g Zh T T').det) :
@@ -74,9 +74,9 @@ theorem laG_b (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M.Mat 
   simp [eV]
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `hb' : ∀ (Z : M.Mat (r + 1)) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') (hu : IsUnit Zh.det), laM Zh T T' Z hZ (unit_zzm hs Zh T T' hu) (bCls Z.Z) = 1 - tau0 g T T' * kapR (ZZm g Zh T T')`. Introduce `Z Zh hZ hu`. Rewrite using `[bCls, col_eq_mulVec, laM_mk, laG_b Zh T T' Z hZ (unit_zzm hs Zh T T' hu)]`. Apply `(det_unit Z₁).mul_left_cancel` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1` using `congrArg (laM Zh₂ T T' Z₂ hZ₂ (unit_zzm hs Zh₂ T T' hu₂)) (congrArg γ (det_smul_mk Z₁ v))`. Establish `e2` using `congrArg (laM Zh₁ T T' Z₁ hZ₁ (unit_zzm hs Zh₁ T T' hu₁)) (det_smul_mk Z₁ v)`. Rewrite `e1` using `[map_smul, map_smul, map_smul, hb, map_smul, hb' Z₂ Zh₂ hZ₂ hu₂, Subring.smul_def, Subring.smul_def, smul_eq_mul, smul_eq_mul]`. Rewrite `e2` using `[map_smul, map_smul, hb' Z₁ Zh₁ hZ₁ hu₁, Subring.smul_def, Subring.smul_def, smul_eq_mul, smul_eq_mul]`. Rewrite using `[e1, e2, kap_common hs T T' Zh₁ Zh₂ hu₁ hu₂ hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem laM_equiv (hs : M.split = some g) (T T' : F) (Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (Z₁ Z₂ : M.Mat (r + 1)) (hZ₁ : Z₁.Z.map M.R.subtype = HermSp.ZZplusOf M Zh₁ T T')
@@ -100,9 +100,9 @@ theorem laM_equiv (hs : M.split = some g) (T T' : F) (Zh₁ Zh₂ : Matrix (Fin 
   rw [e1, e2, kap_common hs T T' Zh₁ Zh₂ hu₁ hu₂ hK]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hl`. Use `⟨dgR hs c • m, ?_⟩` and prove the remaining obligations. Use `show Z.Z.mulVec (dgR hs c • m) - (TT * dgR hs (trO hs ((dgR hs c • m) (Fin.last r)))) • eV r = dgR hs c • (Z.Z.mulVec m - (TT * dgR hs (trO hs (m (Fin.last r)))) • eV r)`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, trO_dgR_mul, map_mul, smul_sub, smul_smul]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem LL_dg_smul (hs : M.split = some g) (Z : M.Mat (r + 1)) (TT : M.R) (c : 𝒪[F])
     {l : Fin (r + 1) → M.R} (hl : l ∈ LL hs Z TT) : dgR hs c • l ∈ LL hs Z TT := by

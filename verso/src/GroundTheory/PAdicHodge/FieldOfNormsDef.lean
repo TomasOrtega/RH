@@ -34,14 +34,14 @@ def FieldOfNorms : Type _ :=
     (∀ E, x E ∈ E.1) ∧ ∀ E E' : FinSub K Ω L, ∀ h : E.1 ≤ E'.1, relNorm h (x E') = x E}
 
 /- English proof (translation)
-Rewrite using `[relNorm, dif_pos hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relNorm_of_mem {E E' : IntermediateField K Ω} (h : E ≤ E') {y : Ω} (hy : y ∈ E') :
     relNorm h y = ((@Algebra.norm E E' _ _ (inclAlgebra h) ⟨y, hy⟩ : E) : Ω) := by
   rw [relNorm, dif_pos hy]
 
 /- English proof (translation)
-Unfold `relNorm`. Use `split_ifs`. Conclude with `SetLike.coe_mem _`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem relNorm_mem {E E' : IntermediateField K Ω} (h : E ≤ E') (y : Ω) : relNorm h y ∈ E := by
   unfold relNorm
@@ -50,7 +50,7 @@ theorem relNorm_mem {E E' : IntermediateField K Ω} (h : E ≤ E') (y : Ω) : re
   · exact zero_mem _
 
 /- English proof (translation)
-Use `letI := inclAlgebra h`. Use `letI := inclAlgebra h'`. Use `letI := inclAlgebra (h.trans h')`. Conclude with `IsScalarTower.of_algebraMap_eq fun x ↦ rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isScalarTower_inclAlgebra {E E' E'' : IntermediateField K Ω} (h : E ≤ E') (h' : E' ≤ E'') :
     @IsScalarTower E E' E'' (inclAlgebra h).toSMul (inclAlgebra h').toSMul
@@ -61,7 +61,7 @@ theorem isScalarTower_inclAlgebra {E E' E'' : IntermediateField K Ω} (h : E ≤
   exact IsScalarTower.of_algebraMap_eq fun x ↦ rfl
 
 /- English proof (translation)
-Use `letI := inclAlgebra h`. Conclude with `IsScalarTower.of_algebraMap_eq fun x ↦ rfl`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isScalarTower_base_inclAlgebra {E E' : IntermediateField K Ω} (h : E ≤ E') :
     @IsScalarTower K E E' _ (inclAlgebra h).toSMul _ := by
@@ -69,9 +69,9 @@ theorem isScalarTower_base_inclAlgebra {E E' : IntermediateField K Ω} (h : E �
   exact IsScalarTower.of_algebraMap_eq fun x ↦ rfl
 
 /- English proof (translation)
-Use `letI := inclAlgebra h`. Use `letI := inclAlgebra h'`. Use `letI := inclAlgebra (h.trans h')`. Use `haveI := isScalarTower_inclAlgebra h h'`. Rewrite using `[relNorm_of_mem _ hy, relNorm_of_mem h' hy, relNorm_of_mem h (SetLike.coe_mem _)]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Subtype.coe_eta]`. Conclude with `Algebra.norm_norm.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relNorm_trans {E E' E'' : IntermediateField K Ω} (h : E ≤ E') (h' : E' ≤ E'') {y : Ω}
     (hy : y ∈ E'') : relNorm (h.trans h') y = relNorm h (relNorm h' y) := by
@@ -85,7 +85,7 @@ theorem relNorm_trans {E E' E'' : IntermediateField K Ω} (h : E ≤ E') (h' : E
   exact Algebra.norm_norm.symm
 
 /- English proof (translation)
-Rewrite using `[relNorm_of_mem _ hy]`. Establish `hA : inclAlgebra h = Algebra.id E` using `Algebra.algebra_ext _ _ fun _ ↦ rfl`. Establish `key : @Algebra.norm E E _ _ (inclAlgebra h) = @Algebra.norm E E _ _ (Algebra.id E)`. Rewrite using `[hA]`. Rewrite using `[key, Algebra.norm_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -99,7 +99,7 @@ theorem relNorm_self {E : IntermediateField K Ω} (h : E ≤ E) {y : Ω} (hy : y
   rfl
 
 /- English proof (translation)
-Use `letI := inclAlgebra h`. Rewrite using `[relNorm_of_mem h (mul_mem hy hz), relNorm_of_mem h hy, relNorm_of_mem h hz]`. Rewrite using `[← IntermediateField.coe_mul, ← map_mul]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem relNorm_mul {E E' : IntermediateField K Ω} (h : E ≤ E') {y z : Ω} (hy : y ∈ E')
     (hz : z ∈ E') : relNorm h (y * z) = relNorm h y * relNorm h z := by
@@ -121,7 +121,7 @@ namespace NormTower
 variable (t : NormTower K Ω p) (L : IntermediateField K Ω)
 
 /- English proof (translation)
-The claim follows from `t.mono h`.
+A detailed English derivation is pending.
 -/
 theorem E_mono {m n : ℕ} (h : m ≤ n) : t.E m ≤ t.E n := t.mono h
 
@@ -141,9 +141,9 @@ Both sides reduce to the same expression.
 @[simp] theorem IsTowerFor.finSub_val (ht : t.IsTowerFor L) (n : ℕ) : (ht.finSub n).1 = t.E n := rfl
 
 /- English proof (translation)
-Use `haveI := E.2.2`. Set `b` to `Module.finBasis K E.1`. Establish `: ∀ i, ∃ n, (b i : Ω) ∈ t.E n` using `fun i ↦ ht.exists_mem _ (E.2.1 (b i).2)`. Use `choose N hN using this`. Use `⟨Finset.univ.sup N, fun x hx ↦ ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, rfl⟩ : ∃ z : E.1, (z : Ω) = x` from `⟨⟨x, hx⟩, rfl⟩`. Rewrite using `[← b.sum_repr z, IntermediateField.coe_sum]`. Use `sum_mem fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_smul]`. Conclude with `(t.E _).smul_mem (t.E_mono (Finset.le_sup (Finset.mem_univ i)) (hN i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTowerFor.exists_le (ht : t.IsTowerFor L) (E : FinSub K Ω L) : ∃ n, E.1 ≤ t.E n := by
   haveI := E.2.2
@@ -158,7 +158,7 @@ theorem IsTowerFor.exists_le (ht : t.IsTowerFor L) (E : FinSub K Ω L) : ∃ n, 
   exact (t.E _).smul_mem (t.E_mono (Finset.le_sup (Finset.mem_univ i)) (hN i))
 
 /- English proof (translation)
-Proceed by induction on `m generalizing y with`. Consider the case `zero => exact relNorm_self _ hy`. Consider the case `succ m ih`. Establish `hle : t.E (n + m) ≤ t.E (n + m + 1)` using `t.E_mono (Nat.le_succ _)`. Rewrite using `[show t.E_mono (Nat.le_add_right n (m + 1)) = (t.E_mono (Nat.le_add_right n m)).trans hle from rfl, relNorm_trans (t.E_mono (Nat.le_add_right n m)) hle hy, ht.relNorm_eq (n + m) y hy, ih (t.N_mem _ hy), Nto_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTowerFor.relNorm_eq_Nto (ht : t.IsTowerFor L) (n m : ℕ) {y : Ω} (hy : y ∈ t.E (n + m)) :
     relNorm (t.E_mono (Nat.le_add_right n m)) y = t.Nto n m y := by
@@ -183,7 +183,7 @@ theorem IsTowerFor.toFam_val (ht : t.IsTowerFor L) (x : FieldOfNorms K Ω L) (n 
     (ht.toFam x).1 n = x.1 (ht.finSub n) := rfl
 
 /- English proof (translation)
-Use `wlog hmn : m ≤ n generalizing m n`. Conclude with `(this hn hm (le_of_not_ge hmn)).symm`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Rewrite using `[show hn = hm.trans (t.E_mono (Nat.le_add_right m j)) from rfl, relNorm_trans hm (t.E_mono (Nat.le_add_right m j)) (z.2 (m + j)).1, ht.relNorm_eq_Nto m j (z.2 (m + j)).1, z.2.Nto_eq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTowerFor.relNorm_indep (ht : t.IsTowerFor L) (z : t.Fam) {E : IntermediateField K Ω}
     {m n : ℕ} (hm : E ≤ t.E m) (hn : E ≤ t.E n) :
@@ -201,7 +201,7 @@ def IsTowerFor.ofFamFun (ht : t.IsTowerFor L) (z : t.Fam) (E : FinSub K Ω L) : 
   relNorm (Nat.find_spec (ht.exists_le E)) (z.1 (Nat.find (ht.exists_le E)))
 
 /- English proof (translation)
-Conclude with `ht.relNorm_indep z _ hn`.
+A detailed English derivation is pending.
 -/
 theorem IsTowerFor.ofFamFun_eq (ht : t.IsTowerFor L) (z : t.Fam) (E : FinSub K Ω L) {n : ℕ}
     (hn : E.1 ≤ t.E n) : ht.ofFamFun z E = relNorm hn (z.1 n) := by
@@ -216,7 +216,7 @@ def IsTowerFor.ofFam (ht : t.IsTowerFor L) (z : t.Fam) : FieldOfNorms K Ω L :=
     rw [ht.ofFamFun_eq z E' hn, ht.ofFamFun_eq z E (h.trans hn), relNorm_trans h hn (z.2 n).1]⟩
 
 /- English proof (translation)
-The claim follows from `ht.ofFamFun_eq z E hn`.
+A detailed English derivation is pending.
 -/
 theorem IsTowerFor.ofFam_val (ht : t.IsTowerFor L) (z : t.Fam) (E : FinSub K Ω L) {n : ℕ}
     (hn : E.1 ≤ t.E n) : (ht.ofFam z).1 E = relNorm hn (z.1 n) :=
@@ -246,13 +246,11 @@ section GaloisNorm
 variable {K : Type*} [Field K] {Ω : Type*} [Field Ω] [Algebra K Ω]
 
 /- English proof (translation)
-Use `letI := inclAlgebra h`. Use `haveI := isScalarTower_base_inclAlgebra h`. Use `haveI : IsGalois E E' := IsGalois.tower_top_of_isGalois K E E'`. Use `haveI : FiniteDimensional E E' := Module.Finite.of_restrictScalars_finite K E E'`. Establish `hcoe : ∀ e : E, ((algebraMap E E' e : E') : Ω) = e` using `fun e ↦ rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[relNorm_of_mem _ hy, ← hcoe, Algebra.norm_eq_prod_automorphisms, IntermediateField.coe_prod]`. Establish `hmem : ∀ τ : Gal(E'/E), τ.restrictScalars K ∈ H` using `fun τ ↦ (hH _).mpr fun z hz ↦ by`. Take `⟨e, rfl⟩ : ∃ e : E, algebraMap E E' e = z` from `⟨⟨z, hz⟩, Subtype.ext rfl⟩`. Rewrite using `[AlgEquiv.restrictScalars_apply, τ.commutes]`. Set `φ : Gal(E'/E) → H` to `fun τ ↦ ⟨τ.restrictScalars K, hmem τ⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Fintype.prod_bijective φ ⟨fun τ₁ τ₂ h ↦ ?_, fun g ↦ ?_⟩ _ _ fun τ ↦ rfl` and prove the remaining obligations. Use `AlgEquiv.ext fun z ↦ ?_` and prove the remaining obligations. Use `congrArg (fun g : H ↦ ((g : Gal(E'/K)) z)) h` as an intermediate fact. Conclude with `this`. Establish `hg : ∀ e : E, (g : Gal(E'/K)) (algebraMap E E' e) = algebraMap E E' e` using `fun e ↦ Subtype.ext ((hH g).mp g.2 (algebraMap E E' e) (by rw [hcoe]; exact e.2))`.
-
-Use `⟨AlgEquiv.ofRingEquiv (f := (g : Gal(E'/K)).toRingEquiv) hg, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `AlgEquiv.ext fun z ↦ rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem relNorm_eq_prod_of_isGalois {E E' : IntermediateField K Ω} (h : E ≤ E') [FiniteDimensional K E']
     [IsGalois K E'] (H : Subgroup Gal(E'/K)) [Fintype H]
@@ -291,13 +289,11 @@ namespace APFData
 variable (d : APFData L)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg z hz`. Establish `hg' : g ∈ (upperSupFixing K Ω L (d.u n)).map (AlgEquiv.restrictNormalHom (upperFieldFG d.apf (d.u (n + 1)) : IntermediateField K Ω))`. Rewrite using `[map_upperSupFixing d.apf]`. Conclude with `hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, rfl⟩` from `hg'`. Rewrite `hσ` using `[← fixingSubgroup_upperField d.apf]`. Conclude with `(AlgEquiv.restrictNormalHom_apply _ σ z).trans ((IntermediateField.mem_fixingSubgroup_iff _ _).mp hσ _ hz)`. Introduce `hg`. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := (d.F (n + 1) : IntermediateField K Ω)) Ω g`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `d.restrict_mem_H n ?_` and prove the remaining obligations. Rewrite using `[← fixingSubgroup_upperField d.apf, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Take `⟨z, rfl⟩ : ∃ z : (d.F (n + 1) : IntermediateField K Ω), (z : Ω) = x` from `⟨⟨x, upperField_mono (d.u_mono (Nat.le_succ n)) hx⟩, rfl⟩`. Rewrite using `[← AlgEquiv.restrictNormalHom_apply]`.
-
-Conclude with `hg z hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_H_iff (n : ℕ) (g : Gal((d.F (n + 1) : IntermediateField K Ω)/K)) :
     g ∈ d.H n ↔ ∀ z : (d.F (n + 1) : IntermediateField K Ω),
@@ -323,7 +319,7 @@ theorem mem_H_iff (n : ℕ) (g : Gal((d.F (n + 1) : IntermediateField K Ω)/K)) 
     exact hg z hx
 
 /- English proof (translation)
-Rewrite using `[T, Finset.prod_image (fun g _ g' _ h ↦ d.lift_injective n h)]`. Conclude with `Finset.prod_congr rfl fun g _ ↦ d.lift_apply n g hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_T_eq (n : ℕ) {y : Ω} (hy : y ∈ (d.F (n + 1) : IntermediateField K Ω)) :
     (∏ σ ∈ d.T n, σ y) =
@@ -333,13 +329,13 @@ theorem prod_T_eq (n : ℕ) {y : Ω} (hy : y ∈ (d.F (n + 1) : IntermediateFiel
   exact Finset.prod_congr rfl fun g _ ↦ d.lift_apply n g hy
 
 /- English proof (translation)
-The claim follows from `upperField_mono (d.u_mono (Nat.le_succ n))`.
+A detailed English derivation is pending.
 -/
 theorem F_le (n : ℕ) : (d.F n : IntermediateField K Ω) ≤ d.F (n + 1) :=
   upperField_mono (d.u_mono (Nat.le_succ n))
 
 /- English proof (translation)
-Rewrite using `[d.prod_T_eq n hy]`. Conclude with `relNorm_eq_prod_of_isGalois (d.F_le n) (d.H n) (d.mem_H_iff n) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relNorm_eq_prod (n : ℕ) {y : Ω} (hy : y ∈ (d.F (n + 1) : IntermediateField K Ω)) :
     relNorm (d.F_le n) y = ∏ σ ∈ d.T n, σ y := by
@@ -347,7 +343,7 @@ theorem relNorm_eq_prod (n : ℕ) {y : Ω} (hy : y ∈ (d.F (n + 1) : Intermedia
   exact relNorm_eq_prod_of_isGalois (d.F_le n) (d.H n) (d.mem_H_iff n) hy
 
 /- English proof (translation)
-The claim follows from `upperField_le _ exists_mem x hx := by obtain ⟨v, hv⟩ := exists_mem_upperField d.apf hx obtain ⟨m, hm⟩ := d.exists_le_u v exact ⟨m, upperField_mono hm hv⟩ relNorm_eq n y hy := d.relNorm_eq_prod n hy`.
+A detailed English derivation is pending.
 -/
 theorem isTowerFor (hinf : ¬ FiniteDimensional K L) : (d.tower hinf).IsTowerFor L where
   le n := upperField_le _

@@ -12,9 +12,9 @@ open scoped TensorProduct
 namespace GlobalTheory.Decompl
 
 /- English proof (translation)
-Apply `W.χΓ_inj` to reduce the goal to its premises. Rewrite using `[map_one W.χΓ]`. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h3` using `W.χΓ_res g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h3` using `[P.PD_χ, h1, Units.val_one, map_one]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resΓ_eq_one_of_chi {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K LL : FinExt l}
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K)))
@@ -28,9 +28,9 @@ theorem resΓ_eq_one_of_chi {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K LL : Fi
   exact h3
 
 /- English proof (translation)
-Introduce `l _ P AI K`. Establish `hχ : ∀ g ∈ Hinf K, P.χQ g = 1` using `fun g hg => ((GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc).2.2 K g (IntermediateField.fixingSubgroup_antitone (show K0 K ≤ Kinf K from le_sup_left) hg)).2.1 hg`. Use `⟨fun g hg j => ?_, fun s LL hG W g hg => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ExpImage.actT_εroot_eq_pow l P AI g 1 (by simp [hχ g hg]) j` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : Ks K s ≤ Kinf K` using `sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ fun (x : Om l) (hx : x ^ (l ^ s) = 1) => (⟨s, hx⟩ : ∃ j : ℕ, x ^ (l ^ j) = 1)) _`. Establish `h2 : K.1 ≤ Ks K s` using `hG.2.2.1`. Establish `hgK : g ∈ GK K` using `IntermediateField.fixingSubgroup_antitone (h2.trans h1) hg`. Conclude with `⟨hgK, resΓ_eq_one_of_chi P W ⟨g, hgK⟩ (hχ g hg)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hinf_fixes_εroot_and_resΓ_eq_one : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l),
     (∀ g ∈ Hinf K, ∀ j : ℕ, AI.actT g (AI.εroot j) = AI.εroot j) ∧

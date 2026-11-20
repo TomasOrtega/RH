@@ -34,7 +34,7 @@ def chartComponents (S : Set ((Σ k, ι k) → ℂ)) {m : ℕ} (σ : Fin m ≃ (
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-The claim follows from `Set.Finite.mem_toFinset _`.
+A detailed English derivation is pending.
 -/
 theorem mem_chartComponents {S : Set ((Σ k, ι k) → ℂ)} {m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)}
     {i : (k : K) → ι k} {J : Ideal (MvPolynomial (Fin m) ℂ)} :

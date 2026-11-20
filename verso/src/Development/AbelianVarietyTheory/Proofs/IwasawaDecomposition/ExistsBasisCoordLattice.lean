@@ -8,23 +8,21 @@ namespace GlobalTheory.HeightCounting
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host NumberField IsDedekindDomain Polynomial
 
 /- English proof (translation)
-Establish `hfin : Module.Finite O B` using `Module.Finite.iff_fg.2 hfg`. Establish `htf : Module.IsTorsionFree O V` using `Module.IsTorsionFree.trans_faithfulSMul O (FractionRing O) V`. Establish `hfree : Module.Free O B` using `inferInstance`. Set `bO` to `Module.finBasis O B`. Set `v : Fin (Module.finrank O B) → V` to `fun t => (bO t : V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hliO : LinearIndependent O v` using `bO.linearIndependent.map' B.subtype (Submodule.ker_subtype B)`. Establish `hliK : LinearIndependent (FractionRing O) v` using `(LinearIndependent.iff_fractionRing O (FractionRing O)).1 hliO`. Establish `hBspan : B = Submodule.span O (Set.range v)`. Establish `h1 : Submodule.map B.subtype (Submodule.span O (Set.range bO)) = B`. Rewrite using `[bO.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h1.symm`. Establish `hle : (⊤ : Submodule (FractionRing O) V) ≤ Submodule.span (FractionRing O) (Set.range v)`. Rewrite using `[← hsp, Submodule.span_le]`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : x ∈ Submodule.span O (Set.range v)` using `hBspan ▸ hx`. Conclude with `Submodule.span_subset_span O (FractionRing O) (Set.range v) hx'`. Set `e` to `Module.Basis.mk hliK hle`. Establish `he : ∀ t, e t = v t` using `fun t => by simp [e]`. Use `⟨_, e, fun f => ⟨fun hf => ?_, fun hf => ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Rewrite `hf` using `[hBspan]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, rfl⟩` from `hx`. Introduce `s`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← he, e.repr_self]`. Distinguish the cases in `h : t = s`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [h]⟩`. Consider the case `zero => intro s; exact ⟨0, by simp⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add x y _ _ hx hy`. Introduce `s`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem (hx s) (hy s)`. Consider the case `smul a x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Rewrite using `[← algebraMap_smul (FractionRing O) a x, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem ⟨a, rfl⟩ (hx s)`. Use `choose c hc using hf`. Rewrite using `[← e.sum_repr f]`.
-
-Use `sum_mem fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← hc t, algebraMap_smul, he]`. Conclude with `B.smul_mem _ (hBspan ▸ Submodule.subset_span ⟨t, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_coord_lattice {O V : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [AddCommGroup V] [Module (FractionRing O) V] [Module O V] [IsScalarTower O (FractionRing O) V]
@@ -94,21 +92,21 @@ def sideEv (b : Bool) : V b →+ ((Σ b', Fin (n b')) → C) where
     by_cases h : y.1 = b <;> simp [h]
 
 /- English proof (translation)
-Simplify using `[sideEv]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sideEv_same (b : Bool) (f : V b) (t : Fin (n b)) :
     sideEv iC e b f ⟨b, t⟩ = iC ((e b).repr f t) := by
   simp [sideEv]
 
 /- English proof (translation)
-Simplify using `[sideEv, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sideEv_other {b b' : Bool} (h : b' ≠ b) (f : V b) (t : Fin (n b')) :
     sideEv iC e b f ⟨b', t⟩ = 0 := by
   simp [sideEv, h]
 
 /- English proof (translation)
-Take `⟨b', t⟩` from `y`. Distinguish the cases in `h : b' = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[sideEv_other iC e h]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sideEv_smul (b : Bool) (a : K) (f : V b) (y : Σ b', Fin (n b')) :
     sideEv iC e b (a • f) y = iC a * sideEv iC e b f y := by
@@ -118,7 +116,7 @@ theorem sideEv_smul (b : Bool) (a : K) (f : V b) (y : Σ b', Fin (n b')) :
   · simp [sideEv_other iC e h]
 
 /- English proof (translation)
-Introduce `f g hfg`. Apply `(e b).repr.injective` to reduce the goal to its premises. Use extensionality with `t`. Use `congrFun hfg ⟨b, t⟩` as an intermediate fact. Conclude with `iC.injective (by simpa using this)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sideEv_inj (b : Bool) : Function.Injective (sideEv iC e b) := by
   intro f g hfg
@@ -131,11 +129,11 @@ def sideU (b : Bool) (T : Module.End K (V b)) (c y : Σ b', Fin (n b')) : C :=
   if h : c.1 = b then sideEv iC e b (T (e b (h ▸ c.2))) y else 0
 
 /- English proof (translation)
-Establish `h0 : T f = ∑ t, (e b).repr f t • T (e b t)` using `by conv_lhs => rw [← (e b).sum_repr f]`. Simplify using `only [map_sum, map_smul]`. Establish `h1 : sideEv iC e b (T f) y = ∑ t, iC ((e b).repr f t) * sideEv iC e b (T (e b t)) y`. Rewrite using `[h0, map_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun t _ => sideEv_smul iC e b _ _ y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Fintype.sum_sigma, Finset.sum_eq_single b]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `[sideU, mul_comm]`. Introduce `b' _ hb`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[sideEv_other iC e hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sideEv_end (b : Bool) (T : Module.End K (V b)) (f : V b) (y : Σ b', Fin (n b')) :
     sideEv iC e b (T f) y = ∑ c, sideU iC e b T c y * sideEv iC e b f c := by
@@ -158,17 +156,15 @@ theorem sideEv_end (b : Bool) (T : Module.End K (V b)) (f : V b) (y : Σ b', Fin
 end SideCoord
 
 /- English proof (translation)
-Introduce `D tw ex hi hB`. Use `choose iC hiC using hi`. Establish `hex` using `fun i j b => exists_basis_coord_lattice (ex.Bsup i j b) (hB i j b).1 (hB i j b).2`. Use `choose n e he using hex`. Establish `hsup : ∀ i j b, {f : ex.Fm i j b | f ∈ (⊤ : AddSubgroup (ex.Fm i j b)) ∧ ∀ y, ‖sideEv (iC i) (e i j) b f y‖ ≤ 1} = (ex.Bsup i j b : Set (ex.Fm i j b))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `i j b`. Use extensionality with `f`. Simplify using `only [Set.mem_ofPred_eq, AddSubgroup.mem_top, true_and, SetLike.mem_coe]`. Rewrite using `[he i j b f]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h t`. Use `h ⟨b, t⟩` as an intermediate fact. Rewrite `this` using `[sideEv_same]`. Conclude with `(hiC i _).1 this`. Introduce `h y`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨b', t⟩` from `y`. Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality. Rewrite using `[sideEv_same]`. Conclude with `(hiC i _).2 (h t)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sideEv_other _ _ hb]`. Simplify using the standard rewrite rules. Conclude with `⟨{ iC := iC iC_int := hiC aL := fun i => if ∃ k, tw.l i = D.host.g k then 1 else 0 aL_g := fun i k h => if_pos ⟨k, h⟩ aL_off := fun i h => if_neg (not_exists.2 h) Pt := fun i j => Σ b, Fin (n i j b) ev := fun i j b => sideEv (iC i) (e i j) b ev_smul := fun i j b a f y => sideEv_s …`. Rewrite using `[AddSubgroup.coe_top, Submodule.span_univ]`. Use `Bsup_def := fun i j b => by`.
-
-Rewrite using `[hsup i j b, Submodule.span_eq] }⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nth_of_fg_full : ∀ (D : D7) (tw : NTw D.R D.host D.what₂ D.LL0 D.nd)
     (ex : NExp D.R D.host D.what₂ D.LL0 D.nd tw),

@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.StdUnn
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_cA_scal {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (z : AE D) :
     GlobalTheory.AdelicU.compFin D.host.F D.host.E v (cA D z) =
@@ -27,7 +27,7 @@ theorem compFin_cA_scal {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (z : AE
   | tmul a x => rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, Units.mul_inv, map_one, mul_one]`. Use `_ = (f ((a⁻¹ : Rˣ) : R) * f (a : R)) * f ((b⁻¹ : Rˣ) : R) := by rw [h, mul_assoc]`. Use `_ = f ((b⁻¹ : Rˣ) : R) := by rw [← map_mul, Units.inv_mul, map_one, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_units_inv_eq_scal {R S : Type*} [Ring R] [Ring S] (f : R →+* S) (a b : Rˣ) (h : f a = f b) :
     f ((a⁻¹ : Rˣ) : R) = f ((b⁻¹ : Rˣ) : R) := by
@@ -37,15 +37,15 @@ theorem map_units_inv_eq_scal {R S : Type*} [Ring R] [Ring S] (f : R →+* S) (a
     _ = f ((b⁻¹ : Rˣ) : R) := by rw [← map_mul, Units.inv_mul, map_one, one_mul]
 
 /- English proof (translation)
-Introduce `D`. Take `⟨μ, hμ, u₀, ε₀, h0, hI, hI'⟩` from `GlobalTheory.T.exists_traceZero_localNorm_mul_integralUnit D`. Take `⟨u, ε, h1, hfin, hinf⟩` from `GlobalTheory.T.exists_idele_traceZero_norm_adjust_realComponents D μ hμ u₀`. Establish `key : ∀ v, GlobalTheory.AdelicU.compFin D.host.F D.host.E v (ε : AE D) = GlobalTheory.AdelicU.compFin D.host.F D.host.E v (ε₀ : AE D)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : GlobalTheory.AdelicU.compFin D.host.F D.host.E v (cA D (u : AE D)) = GlobalTheory.AdelicU.compFin D.host.F D.host.E v (cA D (u₀ : AE D))`. Rewrite using `[compFin_cA_scal, compFin_cA_scal, hfin v]`. Establish `e` using `congrArg (GlobalTheory.AdelicU.compFin D.host.F D.host.E v) (h1.trans h0.symm)`. Simplify using `only [map_mul] at e`. Rewrite `e` using `[hfin v, e2, mul_assoc, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : IsUnit (GlobalTheory.AdelicU.compFin D.host.F D.host.E v (u₀ : AE D) * GlobalTheory.AdelicU.compFin D.host.F D.host.E v (cA D (u₀ : AE D)))`. Use `IsUnit.mul (u₀.isUnit.map _) ?_` and prove the remaining obligations. Establish `hc : IsUnit (cA D (u₀ : AE D))` using `u₀.isUnit.map (cA D)`. Conclude with `hc.map _`. Conclude with `hu.mul_left_inj.mp e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `keyInv : ∀ v, GlobalTheory.AdelicU.compFin D.host.F D.host.E v ((ε⁻¹ : (AE D)ˣ) : AE D) = GlobalTheory.AdelicU.compFin D.host.F D.host.E v ((ε₀⁻¹ : (AE D)ˣ) : AE D)`. Introduce `v`. Conclude with `map_units_inv_eq_scal (GlobalTheory.AdelicU.compFin D.host.F D.host.E v) ε ε₀ (key v)`. Use `⟨μ, hμ, u, ε, h1, ?_, ?_, hinf⟩` and prove the remaining obligations. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key v]`. Conclude with `hI v`. Introduce `v`. Rewrite using `[keyInv v]`. Conclude with `hI' v`.
+A detailed English derivation is pending.
 -/
 theorem scalData_exists : ∀ D : D7, ∃ μ : D.host.E, IsSkew μ ∧ ∃ u ε : (AE D)ˣ, ScalData μ u ε := by
   intro D

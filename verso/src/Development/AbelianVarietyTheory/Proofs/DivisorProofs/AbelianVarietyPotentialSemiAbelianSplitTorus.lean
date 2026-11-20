@@ -19,11 +19,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ _ _ A _ hA`. Take `⟨K', _, _, _, V', _, _, _, _, _, _, hfin, hinj, hcomm, G, _, hc, hsm, hsep, hqc, he, hT⟩` from `GlobalTheory.SS.semistableReduction_zero V K A hA`. Take `⟨hloc, hcpl⟩` from `GlobalTheory.isLocalHom_and_isAdicComplete_of_finite_dvr V V' hfin hinj`. Use `haveI := hcpl`. Establish `hA' : IsAbelianScheme (baseChange K K' A)` using `Out.TLinPf.isAb_pullback _ A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : IsSemiAbelian G` using `GlobalTheory.SS.isSemiAbelian_of_abelian_generic_of_torusExt V' K' (baseChange K K' A) hA' G hc hsm hsep hqc he hT`. Take `⟨V'', _, _, _, hcpl', _, hfin', hinj', hloc', hG', hT'⟩` from `GlobalTheory.exists_finite_dvr_torusExtension_specialFibre V' G hG`. Take `⟨alg, hfd, hcomm', he'⟩` from `GlobalTheory.SS.model_finite_ext V K A K' V' hcomm G he V'' hfin' hinj'`. Set `: Algebra V V''` to `((algebraMap V' V'').comp (algebraMap V V')).toAlgebra`. Establish `: IsScalarTower V V' V''` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinV : Module.Finite V V''` using `Module.Finite.trans V' V''`. Establish `hlocV : IsLocalHom (algebraMap V V'')` using `by haveI := hloc; haveI := hloc'`. Conclude with `(inferInstance : IsLocalHom ((algebraMap V' V'').comp (algebraMap V V')))`. Conclude with `⟨V'', FractionRing V'', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, alg, inferInstance, hcomm', hfinV, hlocV, hcpl', baseChange V' V'' G, inferInstance, he', hG', hT'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem potModel_semiAbelian_torusExtension : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → GlobalTheory.SS.PotModel V K A (fun _ _ _ G _ => IsSemiAbelian G ∧ Nonempty (TorusExtension (GlobalTheory.SS.spFibre G))) := by
   intro V K _ _ _ _ _ _ _ _ A _ hA

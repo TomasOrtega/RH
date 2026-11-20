@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open UpperTheory.Gal.Int.Geo (IsTrans TIso)
 
 /- English proof (translation)
-Use `letI := o.grp`. Use `letI := o₁.grp`. Apply `GlobalTheory.SiegelPull.push_injective m.cart (Over.mk t)` to reduce the goal to its premises. Conclude with `Over.OverMorphism.ext h`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem pt_ext {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {b : GBase G R} {N : ℕ}
     {S S₁ T : Scheme.{0}} {s : S ⟶ Sp R} {s₁ : S₁ ⟶ Sp R} {f : S₁ ⟶ S} {o : GObj b N s} {o₁ : GObj b N s₁}
@@ -19,27 +19,25 @@ private theorem pt_ext {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {b :
   exact Over.OverMorphism.ext h
 
 /- English proof (translation)
-Introduce `hHom hPol hTate p _ D G L R _ _ b N N' S S₁ s s₁ f hfs o' o'' o₁' o₁'' m' m'' h ψ hT`. Take `⟨hψ, hact, ⟨ψ', d, hψ', hact', hc1, hc2, hd⟩, hpolc, hgeo⟩` from `hT`. Take `⟨c, hcp, hpol, hrest⟩` from `hpolc`. Use `letI := o'.grp`. Use `letI := o''.grp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := o₁'.grp`. Use `letI := o₁''.grp`. Take `⟨hlift, huniq, hpow⟩` from `hHom D.toG R b N N' S S₁ s s₁ f o' o'' o₁' o₁'' m' m''`. Take `⟨hlift', huniq', hpow'⟩` from `hHom D.toG R b N' N S S₁ s s₁ f o'' o' o₁'' o₁' m'' m'`. Establish `hu₁` using `(hHom D.toG R b N' N' S S₁ s s₁ f o' o' o₁' o₁' m' m').2.1`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu₂` using `(hHom D.toG R b N N S S₁ s s₁ f o'' o'' o₁'' o₁'' m'' m'').2.1`. Take `⟨ψ₁, hψ₁, hcomm⟩` from `hlift ψ hψ`. Take `⟨ψ₁', hψ₁', hcomm'⟩` from `hlift' ψ' hψ'`. Use `⟨ψ₁, hcomm, hψ₁, ?_, ⟨ψ₁', d, hψ₁', ?_, ?_, ?_, hd⟩, ⟨c, hcp, hPol D.toG R b N N' S S₁ s s₁ f o' o'' o₁' o₁'' m' m'' ψ ψ₁ hcomm c hpol, hrest⟩, ?_⟩` and prove the remaining obligations. Introduce `e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `huniq` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, reassoc_of% hcomm, hcomm, reassoc_of% (m'.act e), m'.act e, m''.act e]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, hact e]`. Introduce `e`. Apply `huniq'` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Over.comp_left, Category.assoc, reassoc_of% hcomm', hcomm', reassoc_of% (m''.act e), m''.act e, m'.act e]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, hact' e]`. Apply `hu₁` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, hcomm', reassoc_of% hcomm, hpow d, ← hc1]`. Apply `hu₂` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Over.comp_left, Category.assoc, hcomm, reassoc_of% hcomm', hpow' d, ← hc2]`. Introduce `k _ _ t β ht`. Establish `htf : (t ≫ f) ≫ s = spMap β` using `by rw [Category.assoc, hfs, ht]`. Take `⟨I', I'', h1, h2, h3⟩` from `hgeo k (t ≫ f) β htf`. Take `⟨I₁', k₁⟩` from `hTate p D R b N' S S₁ s s₁ f o' o₁' m' k t I'`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨I₁'', k₂⟩` from `hTate p D R b N S S₁ s s₁ f o'' o₁'' m'' k t I''`. Establish `hu : ∀ {X : Scheme} (g : Sp k ⟶ X), Over.Hom.left (toUnit (Over.mk g)) = g`. Introduce `X g`. Simplify using `using Over.w (toUnit (Over.mk g))`. Use `⟨I₁', I₁'', fun y => ?_, fun y => ?_, fun n hn hp x y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Apply `pt_ext m'` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, m'.eta, k₁, ← h1, hu]`. Apply `pt_ext m''` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, m''.eta, k₂, ← h2, hu]`. Use `Iff.trans ?_ (h3 n hn hp x y)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : Over.Hom.left (I₁'.ev n x ≫ ψ₁) ≫ m''.φ = Over.Hom.left (I'.ev n x ≫ ψ)`. Rewrite using `[Over.comp_left, Category.assoc, hcomm, ← Category.assoc, k₁ n x, Over.comp_left]`. Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← e, hxy]`. Conclude with `k₂ n y`. Introduce `hxy`. Apply `pt_ext m''` to reduce the goal to its premises. Rewrite using `[e, hxy]`.
-
-Conclude with `(k₂ n y).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.transPull_of :
     HomEx → PolPull → TatePull → TransPull := by

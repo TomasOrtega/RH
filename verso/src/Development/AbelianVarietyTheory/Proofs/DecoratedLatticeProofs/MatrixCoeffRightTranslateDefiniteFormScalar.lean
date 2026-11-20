@@ -25,7 +25,7 @@ namespace GlobalTheory.Core.Rk.RealCoef
 open scoped ComplexConjugate ComplexOrder
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Cusp.petersson, GlobalTheory.AutomorphicL2Unitary.pet]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem petersson_conj {D : D7} {V : HSp D} (m : Measure (GA D V)) (φ ψ : GA D V → ℂ) :
     GlobalTheory.Cusp.petersson V m φ ψ = conj (GlobalTheory.Cusp.petersson V m ψ φ) := by
@@ -36,23 +36,19 @@ theorem petersson_conj {D : D7} {V : HSp D} (m : Measure (GA D V)) (φ ψ : GA D
   simp [mul_comm]
 
 /- English proof (translation)
-Use `haveI := hm`. Use `haveI : m.IsMulRightInvariant := Formalism.IndefR.Eqv.unimodGA_holds V m hm`. Set `φ : c.W → GA D V → ℂ` to `fun x g => ⟪x, Y g⟫_ℂ`. Establish `hφL : ∀ x, GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) (φ x)` using `fun x γ hγ g => by`. Simplify using `only [φ, hYi γ hγ g]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : ∀ x, Continuous (φ x)` using `fun x => continuous_const.inner hYc`. Establish `hφ2 : ∀ x, GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GQ V) m (φ x)` using `fun x => by`. Take `⟨C, hCb⟩` from `hK.exists_bound_of_continuousOn (hφc x).continuousOn`. Use `GlobalTheory.Cusp.memL2_of_bounded_continuous_invariant (hφL x) (hφc x) (C := C) fun h => ?_` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, e⟩` from `hKc h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, hφL x γ hγ k]`. Conclude with `hCb k hk`. Establish `hshift : ∀ b ∈ GinfC V, ∀ x, rTr V b (φ x) = φ (c.ρ b x)`. Introduce `b hb x`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ⟪x, Y (g * b)⟫_ℂ = ⟪c.ρ b x, Y g⟫_ℂ`. Rewrite using `[hsh b hb g, ← hc.2.1 b x (c.ρ b⁻¹ (Y g)), GlobalTheory.DefiniteEnd.rho_inv_cancel]`. Establish `hadd : ∀ x x', φ (x + x') = φ x + φ x'` using `fun x x' => funext fun g => inner_add_left _ _ _`. Establish `hsmul : ∀ (a : ℂ) x, φ (a • x) = (starRingEnd ℂ a) • φ x` using `fun a x => funext fun g => inner_smul_left _ _ _`. Set `B : c.W →ₗ⋆[ℂ] c.W →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x x' => GlobalTheory.Cusp.petersson V m (φ x) (φ x')) (fun x x' y => by rw [hadd]; exact GlobalTheory.Cusp.petersson_add_left (hφ2 x) (hφ2 x') (hφ2 y)) (fun a x y => by rw [hsmul]; exact GlobalTheory.Cusp.petersson_smul_left _ …`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[petersson_conj m (φ x) (φ (y + y')), hadd, GlobalTheory.Cusp.petersson_add_left (hφ2 y) (hφ2 y') (hφ2 x), map_add, ← petersson_conj m (φ x) (φ y), ← petersson_conj m (φ x) (φ y')])`. Use the proof step `(fun a x y => by`. Rewrite using `[petersson_conj m (φ x) (φ (a • y)), hsmul, GlobalTheory.Cusp.petersson_smul_left, map_mul, ← petersson_conj m (φ x) (φ y), Complex.conj_conj, RingHom.id_apply, smul_eq_mul])`. Establish `hB : ∀ x x', B x x' = GlobalTheory.Cusp.petersson V m (φ x) (φ x')` using `fun _ _ => rfl`. Establish `hinv : ∀ u ∈ GinfC V, ∀ x x', B (c.ρ u x) (c.ρ u x') = B x x'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu x x'`. Rewrite using `[hB, hB, ← hshift u hu, ← hshift u hu]`. Conclude with `GlobalTheory.Cusp.petersson_rTr (hφ2 x) (hφ2 x') u`. Take `⟨z, hz⟩` from `GlobalTheory.T.real_invariant_sesquilinear_form_eq_smul_inner D V c hc B hinv`. Use `⟨z, fun w b hb => ?_, fun hY hz0 => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `show GlobalTheory.Cusp.petersson V m (rTr V b (φ w)) (φ w) = _`. Rewrite using `[hshift b hb, ← hB]`. Conclude with `hz _ _`. Apply `hY` to reduce the goal to its premises. Establish `h0 : ∀ x, φ x = 0`.
-
-Introduce `x`. Assume the negation of the conclusion as `hne`. Establish `hpos` using `GlobalTheory.Cusp.petersson_self_pos (hφ2 x) (hφc x) hne`. Establish `h1 : GlobalTheory.Cusp.petersson V m (φ x) (φ x) = 0`. Rewrite using `[← hB, hz x x, hz0, zero_mul]`.
-
-Rewrite `hpos` using `[h1, Complex.zero_re]`. Conclude with `lt_irrefl _ hpos`. Use function extensionality and compare the values at `g`. Conclude with `inner_self_eq_zero.1 (congrFun (h0 (Y g)) g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rcoef_of_fun {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) (m : Measure (GA D V)) (hm : m.IsHaarMeasure)
     (Y : GA D V → c.W) (hYc : Continuous Y) (hYi : ∀ γ ∈ GQ V, ∀ h, Y (γ * h) = Y h) {K : Set (GA D V)}
@@ -114,13 +110,13 @@ theorem rcoef_of_fun {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) (m : Measure
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC i t y m hm`. Establish `hmod` using `hC.models`. Establish `hc : (R.cV i).Is` using `hmod.cV i`. Establish `hx` using `(hmod.HV i t).2.1.le (LinearMap.mem_range_self _ y)`. Establish `hp : (Vc D i).IsPosDef` using `hmod.vpos i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpd : ∀ τ, (gramAt D (Vc D i) τ).PosDef` using `fun τ => GlobalTheory.RepsObj.gramAt_posDef hp (D.sp.V_sig ((i : ℕ) + 1)) τ`. Take `⟨K, hK, hKc⟩` from `GlobalTheory.definite_unitary_cocompact (Vc D i) hpd`. Establish `hYc : Continuous (R.extV i t y)` using `GlobalTheory.ThetaIntegrand.ext_continuous (R.cV i) hc (R.βV i) (R.datVt i t) hx`. Establish `hYi : ∀ γ ∈ GQ (Vc D i), ∀ h, R.extV i t y (γ * h) = R.extV i t y h` using `GlobalTheory.ThetaIntegrand.ext_invariant (R.cV i) hx`. Establish `hsh : ∀ b ∈ GinfC (Vc D i), ∀ g, R.extV i t y (g * b) = (R.cV i).ρ b⁻¹ (R.extV i t y g)` using `fun b hb g => GlobalTheory.DownLift.DefiniteComp.extV_mul_inf R i t y hb g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `rcoef_of_fun (R.cV i) hc m hm (R.extV i t y) hYc hYi hK hKc hsh`. Use `⟨key.choose, key.choose_spec.1, fun hy => key.choose_spec.2 fun hY0 => hy ?_⟩` and prove the remaining obligations. Establish `hf0 : (R.HV i t).e y = 0`. Use function extensionality and compare the values at `k`. Take `⟨g, rfl⟩` from `(finHom (Vc D i)).rangeRestrict_surjective k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `e : (R.cV i).ρ g⁻¹ ((R.HV i t).e y ((finHom (Vc D i)).rangeRestrict g)) = 0` using `congrFun hY0 g`. Establish `e2` using `congrArg ((R.cV i).ρ g) e`. Rewrite `e2` using `[GlobalTheory.DefiniteEnd.rho_inv_cancel]`. Conclude with `e2.trans (LinearMap.map_zero _)`. Conclude with `(hmod.HV i t).1 (hf0.trans ((R.HV i t).e.map_zero).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rcoef_scalar : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (m : Measure (GA D (Vc D i))), m.IsHaarMeasure → ∃ z : ℂ, (∀ (w : (R.cV i).W), ∀ b ∈ GinfC (Vc D i), GlobalTheory.Core.Rk.IP.rcoef m (fun g => ⟪w, R.extV i t y g⟫_ℂ) (fun g => ⟪w, R.extV i t y g⟫_ℂ) b = z * ⟪(R.cV i).ρ b w, w⟫_ℂ) ∧ (y ≠ 0 → z ≠ 0) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC i t y m hm

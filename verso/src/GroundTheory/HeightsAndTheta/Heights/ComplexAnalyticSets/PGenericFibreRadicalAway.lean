@@ -11,9 +11,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `σ _ n K g hK`. Take `⟨F, hF0, hF⟩` from `hR σ (Option (Fin n)) (rabinowitschIdeal K g) ((isRadicalAway_iff_isRadical_rabinowitschIdeal K g).1 hK)`. Use `⟨F, hF0, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h` using `hF t ht`. Rewrite `h` using `[rabinowitschIdeal_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(isRadicalAway_iff_isRadical_rabinowitschIdeal (fibreIdeal K t) _).2 h`.
+A detailed English derivation is pending.
 -/
 theorem GenericFibreRadicalAway.proof (hR : GenericFibreRadical.Statement) :
     GenericFibreRadicalAway.Statement := by

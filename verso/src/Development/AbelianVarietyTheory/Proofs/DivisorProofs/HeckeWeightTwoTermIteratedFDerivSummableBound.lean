@@ -15,17 +15,17 @@ noncomputable section
 namespace GlobalTheory.HeckeTwo
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟 K hK hKH L hL hLU n`. Take `⟨m, hm⟩` from `GlobalTheory.T.norm_iteratedFDeriv_fTerm_le_of_isCompact F K hK hKH L hL hLU n`. Take `⟨C₀, -, hC₀⟩` from `GlobalTheory.T.exists_balanced_unit_multiple_totallyReal F`. Take `⟨N, hN⟩` from `GlobalTheory.T.summable_heckeBalancedLatticeDoubleSum F 𝔞 𝔟 C₀ m`. Take `⟨C, hC⟩` from `hm N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose ε hε using fun c : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) => hC₀ c.out.1 c.out.2.2`. Use `⟨fun p => C * ∏ τ : Emb F, (|τ (((ε p.1 : 𝓞 F) : F) * p.1.out.1)| + |τ (((ε p.1 : 𝓞 F) : F) * p.1.out.1)|⁻¹) ^ m / (1 + |τ p.2.1 * τ p.1.out.1|) ^ N, (hN ε hε).mul_left C, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, ν⟩ σ hσ z hz`. Establish `hee : (((ε c)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) * ((ε c : 𝓞 F) : F) = 1` using `unit_inv_mul (ε c)`. Establish `hfun : (fun z : Emb F → ℂ => fTerm σ z c.out.1 ν.1) = fun z => fTerm σ z (((ε c : 𝓞 F) : F) * c.out.1) (((((ε c)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * ν.1)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Establish `hb : c.out.1 = ((((ε c)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * (((ε c : 𝓞 F) : F) * c.out.1)`. Rewrite using `[← mul_assoc, hee, one_mul]`. Use `conv_lhs => rw [hb]`. Conclude with `GlobalTheory.T.heckeEisensteinFourierTerm_move_unit F σ z _ _ (ε c)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `hb0 : ((ε c : 𝓞 F) : F) * c.out.1 ≠ 0` using `mul_ne_zero (right_ne_zero_of_mul_eq_one hee) c.out.2.2`. Establish `hν0 : ((((ε c)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * ν.1 ≠ 0` using `mul_ne_zero (left_ne_zero_of_mul_eq_one hee) ν.2.2`. Simplify using `only`. Rewrite using `[hfun]`. Use `(hC σ hσ z hz _ _ hb0 hν0).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1` using `congrArg τ hee`. Rewrite `h1` using `[map_mul, map_one]`. Establish `h2 : τ (((((ε c)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * ν.1) * τ (((ε c : 𝓞 F) : F) * c.out.1) = τ ν.1 * τ c.out.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul]`. Take the linear combination `(τ ν.1 * τ c.out.1) * h1`. Rewrite using `[h2]`.
+A detailed English derivation is pending.
 -/
 theorem fTerm_deriv_summable_bound : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : Frac F),
   ∀ K : Set ℂ, IsCompact K → K ⊆ halfPlane → ∀ L : Set (Emb F → ℂ), IsCompact L → L ⊆ upperHalf F → ∀ n : ℕ,

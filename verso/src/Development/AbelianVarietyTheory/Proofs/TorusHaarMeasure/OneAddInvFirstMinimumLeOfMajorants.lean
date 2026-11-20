@@ -20,7 +20,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma isUStab_one' {r : ℕ} (G : Matrix (Fin r) (Fin r) E)
     (L : Submodule (𝓞 E) (Fin r → E)) : _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab G L (1 : GL (Fin r) E) := by
@@ -31,7 +31,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.lact`. Use function extensionality and compare the values at `τ`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.mat]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma lact_one_eq_self {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.lact (1 : GL (Fin r) E) x = x := by
@@ -44,7 +44,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.la1`. Conclude with `one_div_nonneg.mpr (Real.sqrt_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma one_div_la1_nonneg {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) :
     0 ≤ 1 / X.la1 x := by
@@ -55,9 +55,9 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hp' : 0 < c * m0` using `one_div_pos.mp hp`. Establish `hm0 : 0 < m0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hm1 : 0 < m1` using `by nlinarith`. Rewrite using `[div_mul_div_comm, one_mul]`. Apply `one_div_le_one_div_of_le (mul_pos hc hm1)` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hc.le]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma one_div_mul_le_one_div_of_ratio_bounds {k c m0 m1 : ℝ} (hk : 0 < k) (hc : 0 < c)
     (hp : 0 < 1 / (c * m0)) (h1 : m0 ≤ k * m1) (h2 : m1 ≤ k * m0) :
@@ -76,7 +76,7 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Consider the cases of `isEmpty_or_nonempty ι with`. Consider the case `inl _ => simp [Real.iInf_of_isEmpty]`. Consider the case `inr _`. Conclude with `le_ciInf fun i => (mul_le_mul_of_nonneg_left (ciInf_le (Set.finite_range g).bddBelow i) hk).trans (h i)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma mul_iInf_le_iInf_of_mul_le {ι : Type*} [Finite ι] {f g : ι → ℝ} {k : ℝ} (hk : 0 ≤ k)
     (h : ∀ i, k * g i ≤ f i) : k * ⨅ i, g i ≤ ⨅ i, f i := by
@@ -90,13 +90,13 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Break down `hs0.eq_or_lt with h | h` into its components or cases. Substitute `h` using the available equality. Establish `hs1 : s1 ≤ 0` using `by simpa using h2`. Simplify using `[Real.sqrt_eq_zero'.mpr hs1]`. Establish `hs1 : 0 < s1` using `by nlinarith`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu` using `Real.sqrt_pos.mpr h`. Establish `hv` using `Real.sqrt_pos.mpr hs1`. Establish `h4 : s0 ≤ 4 * s1` using `by nlinarith`. Establish `hle : √s0 ≤ 2 * √s1`. Rewrite using `[show (2 : ℝ) * √s1 = √(4 * s1) by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_mul' _ hs1.le, show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]]`. Conclude with `Real.sqrt_le_sqrt h4`. Establish `h3 : 1 / √s1 ≤ 2 / √s0`. Rewrite using `[div_le_div_iff₀ hv hu]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h5 : 2 / √s0 = 2 * (1 / √s0)` using `by ring`. Establish `h6 : 0 ≤ 1 / √s0` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma one_add_one_div_sqrt_le_two_mul {s0 s1 k : ℝ} (hk : 0 < k) (hk2 : k ≤ 2) (hs0 : 0 ≤ s0)
     (h1 : s0 ≤ k * s1) (h2 : s1 ≤ k * s0) : 1 + 1 / √s1 ≤ 2 * (1 + 1 / √s0) := by
@@ -123,23 +123,23 @@ open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hT0 : 0 ≤ ⨅ τ, X.tt ξ x τ` using `Real.iInf_nonneg fun τ => by linarith only [htt τ]`. Establish `hla0 : 0 ≤ 1 / X.la1 x` using `one_div_la1_nonneg X x`. Establish `htty : ∀ τ, 1 / (1 + (1 - θ) / 2) * X.tt ξ x τ ≤ X.tt ξ y τ`. Introduce `τ`. Establish `hpos` using `htt τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.tt] at hpos ⊢`. Conclude with `one_div_mul_le_one_div_of_ratio_bounds (by linarith only [hθ1]) (_root_.ReciprocityTheory.ChartRestriction.G.FD.TwoSidedBoostBounds.c_pos X τ) (by linarith only [hpos]) (hcmp τ _).1 (hcmp τ _).2`. Establish `hty1 : ∀ τ, 1 ≤ X.tt ξ y τ`. Introduce `τ`. Establish `h1` using `htty τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `htt τ`. Establish `h3 : 1 ≤ 1 / (1 + (1 - θ) / 2) * X.tt ξ x τ`. Rewrite using `[div_mul_eq_mul_div, one_mul, le_div_iff₀ (by linarith only [hθ1])]`. Combine the linear relations using `only [h2, hθ0]`. Combine the linear relations using `only [h1, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hTy : 1 / (1 + (1 - θ) / 2) * ⨅ τ, X.tt ξ x τ ≤ ⨅ τ, X.tt ξ y τ` using `mul_iInf_le_iInf_of_mul_le (by positivity) htty`. Establish `hsq` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.MinimumGrowthBounds.minimumSq_two_sided_bounds X hx hy (k1 := 1 / (1 + (1 - θ) / 2)) (k2 := 1 + (1 - θ) / 2) (by positivity) (by linarith only [hθ1]) (fun τ w => by`. Rewrite using `[div_mul_eq_mul_div, one_mul, div_le_iff₀ (by linarith only [hθ1])]`. Combine the linear relations using `only [(hcmp τ w).1])`. Use the proof step `(fun τ w => (hcmp τ w).2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hL : 1 + 1 / X.la1 y ≤ 2 * (1 + 1 / X.la1 x)`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.la1]`. Use `one_add_one_div_sqrt_le_two_mul (k := 1 + (1 - θ) / 2) (by linarith only [hθ1]) (by linarith only [hθ0]) (_root_.ReciprocityTheory.ChartRestriction.G.FD.MinimumGrowthBounds.minimumSq_nonneg X hx) ?_ hsq.2` and prove the remaining obligations. Establish `h` using `hsq.1`. Rewrite `h` using `[div_mul_eq_mul_div, one_mul, div_le_iff₀ (by linarith only [hθ1])]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `only [h]`. Establish `hly0 : 0 ≤ 1 / X.la1 y` using `one_div_la1_nonneg X y`. Establish `hLy0 : 0 ≤ Real.log (1 + 1 / X.la1 y)` using `Real.log_nonneg (le_add_of_nonneg_right hly0)`. Establish `hLyle : Real.log (1 + 1 / X.la1 y) ≤ Real.log 2 + Real.log (1 + 1 / X.la1 x)`. Rewrite using `[← Real.log_mul (by norm_num) (ne_of_gt (by linarith only [hla0]))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.log_le_log (by linarith only [hly0]) hL`. Establish `hpsy` using `hps y hy ξ hξ hty1`. Establish `hA : A' * Real.log (1 + 1 / X.la1 y) ≤ |A'| * (Real.log 2 + Real.log (1 + 1 / X.la1 x))` using `(mul_le_mul_of_nonneg_right (le_abs_self A') hLy0).trans (mul_le_mul_of_nonneg_left hLyle (abs_nonneg _))`. Establish `hθε : θ * (1 + (1 - θ) / 2) ≤ 1 - 2 * ((1 - θ) / 4)` using `by nlinarith [sq_nonneg (θ - 1)]`. Establish `hkey : θ * ⨅ τ, X.tt ξ x τ ≤ (1 - 2 * ((1 - θ) / 4)) * ⨅ τ, X.tt ξ y τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : θ * ⨅ τ, X.tt ξ x τ ≤ (1 - 2 * ((1 - θ) / 4)) * (1 / (1 + (1 - θ) / 2) * ⨅ τ, X.tt ξ x τ)`. Rewrite using `[← mul_assoc]`. Apply `mul_le_mul_of_nonneg_right _ hT0` to reduce the goal to its premises. Rewrite using `[mul_one_div, le_div_iff₀ (by linarith only [hθ1])]`. Conclude with `hθε`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h1.trans (mul_le_mul_of_nonneg_left hTy (by linarith only [hθ0]))`. Establish `hexp : ps y / 2 ≤ (C + |A'| * Real.log 2) / 2 + Real.log (1 + 1 / X.la1 x) * (|A'| / 2) + -4 * Real.pi * (θ * a) * ⨅ τ, X.tt ξ x τ`. Establish `h8` using `mul_le_mul_of_nonneg_left hkey (by positivity : 0 ≤ 8 * Real.pi * a)`. Combine the linear relations using `only [hpsy, hA, h8]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private lemma exp_half_le_of_comparable_lemma_4 {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (ps : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℝ)
     {a θ C A' : ℝ} (ha : 0 ≤ a) (hθ0 : 0 < θ) (hθ1 : θ < 1)
@@ -217,19 +217,19 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Introduce `hcpt hinv hstat r X la F ps a hsec hcf ha hbound θ a' hθ0 hθ1 ha'`. Take `⟨-, -, hpinv⟩` from `hstat`. Take `⟨ρ, hρ0, hρ1, hnear⟩` from `hcpt r X ((1 - θ) / 2) (by linarith)`. Take `⟨C₀, hC₀⟩` from `hbound ρ hρ0 hρ1`. Take `⟨C, A', hps⟩` from `hcf.2 ((1 - θ) / 4) (by linarith) (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max C₀ 0 * Real.exp ((C + |A'| * Real.log 2) / 2), |A'| / 2, by positivity, ?_⟩` and prove the remaining obligations. Introduce `x hx ξ hξ htt`. Establish `hb : _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf_mem X hx`. Take `⟨hx₀, hmaj₀⟩` from `hinv r X 1 (isUStab_one' _ _) x hx _ hb`. Establish `hpn` using `hpinv r X la F hsec 1 (one_mem _) x hx _ hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hx₀`, `hmaj₀`, `hpn` using `[lact_one_eq_self]`. Establish `horth : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x))` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.ortho_bOf X hx`. Generalize the expression as in `_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x (_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.bOf X x) = x₀ at hx₀ hmaj₀ hpn horth`. Establish `hmaj : ∀ τ v, X.maj x₀ τ v = X.maj x τ v`. Introduce `τ v`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hmaj₀ τ v`. Establish `htt₀ : ∀ τ, X.tt ξ x₀ τ = X.tt ξ x τ`. Introduce `τ`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.tt, hmaj]`. Establish `hla : X.la1 x₀ = X.la1 x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.MinimumGrowthBounds.minimumSq_two_sided_bounds X hx hx₀ (k1 := 1) (k2 := 1) zero_le_one one_pos (fun τ w => by rw [hmaj, one_mul]) (fun τ w => by rw [hmaj, one_mul])`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.la1]`. Conclude with `congrArg Real.sqrt (by linarith [h.1, h.2])`. Establish `hT0 : 0 ≤ ⨅ τ, X.tt ξ x τ` using `Real.iInf_nonneg fun τ => by linarith only [htt τ]`. Establish `hla0 : 0 ≤ 1 / X.la1 x` using `one_div_la1_nonneg X x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsup : ⨆ (z : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X)) (_ : ‖z‖ < ρ) (_ : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x₀ z ∈ X.dom), ENNReal.ofReal (Real.exp (ps (_root_.ReciprocityTheory.ChartRestriction …`. Use `iSup_le fun z => iSup_le fun hz => iSup_le fun _ => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Take `⟨hy, hcmp⟩` from `hnear x₀ horth z hz`. Establish `h` using `exp_half_le_of_comparable_lemma_4 X ps ha hθ0 hθ1 hps hx₀ hy hξ (fun τ => by rw [htt₀]; exact htt τ) hcmp`. Rewrite `h` using `[hla, ← ha', iInf_congr htt₀]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hB0 : 0 ≤ Real.exp ((C + |A'| * Real.log 2) / 2) * (1 + 1 / X.la1 x) ^ (|A'| / 2) * Real.exp (-4 * Real.pi * a' * ⨅ τ, X.tt ξ x τ)` using `mul_nonneg (mul_nonneg (Real.exp_pos _).le (Real.rpow_nonneg (by linarith only [hla0]) _)) (Real.exp_pos _).le`. Establish `hfin` using `(hC₀ x₀ hx₀ horth).trans (mul_le_mul' (ENNReal.ofReal_le_ofReal (le_max_left C₀ 0)) hsup)`. Rewrite `hfin` using `[← ENNReal.ofReal_mul (le_max_right _ _), hpn, ENNReal.ofReal_le_ofReal_iff (mul_nonneg (le_max_right _ _) hB0)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.pnorm_le_exp_neg_tt_near_cusp :
     (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (ε : ℝ), 0 < ε → ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 ∧ ∀ x, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x → ∀ z : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X), ‖z‖ < ρ → _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z ∈ X.dom ∧ ∀ (τ : X.Ψ) (v : Fin r → ℂ), X.maj x τ v ≤ (1 + ε) * X.maj (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z) τ v ∧ X.maj (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z) τ v ≤ (1 + ε) * X.maj x τ v) → (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (γ : GL (Fin r) E), _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab X.Gm X.Λ γ → ∀ x ∈ X.dom, ∀ b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r, _root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) ∈ X.dom ∧ ∀ (τ : X.Ψ) (v : Fin r → ℂ), X.maj (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact γ (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b)) τ (Matrix.mulVec ((γ : Matrix (Fin r) (Fin r) E).map τ.1) v) = X.maj x τ v) → (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacRmulStatement (E := E) ∧ _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.NfacLactStatement (E := E) ∧ _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.PnormInvStatement (E := E)) → (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (F : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℂ) (ps : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → ℝ) (a : ℝ), X.IsSec la F → _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.cfwM X ps a → 0 ≤ a → (∀ ρ : ℝ, 0 < ρ → ρ ≤ 1 → ∃ C : ℝ, ∀ x ∈ X.dom, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x → ENNReal.ofReal (X.pnorm la F x) ≤ ENNReal.ofReal C * ⨆ (z : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X)) (_ : ‖z‖ < ρ) (_ : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z ∈ X.dom), ENNReal.ofReal (Real.exp (ps (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z) / 2))) → ∀ θ a' : ℝ, 0 < θ → θ < 1 → a' = θ * a → ∃ C A : ℝ, 0 ≤ A ∧ ∀ x ∈ X.dom, ∀ ξ : Fin r → E, X.IsIso ξ → (∀ τ, 2 ≤ X.tt ξ x τ) → X.pnorm la F x ≤ C * (1 + 1 / X.la1 x) ^ A * Real.exp (-4 * Real.pi * a' * ⨅ τ, X.tt ξ x τ)) := by

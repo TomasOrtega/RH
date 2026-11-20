@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerBAdm
 open UpperTheory.V.Z.Kato.Joint
 
 /- English proof (translation)
-Introduce `l hp Ω _ _ _ ε X N w χ hl hlN hN hw T b hT hb`. Establish `hNl : Nat.Coprime N l` using `((Nat.Prime.coprime_iff_not_dvd hp.out).2 hlN).symm`. Take `⟨φ, h1, h2⟩` from `X.j_hol`. Use `⟨GlobalTheory.T.hecke_letter_preserves_basis_set ε X ε.injective ⟨φ, h2, h1⟩ N l w hl hN hNl hw T hT b hb.1, fun d hd => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.modularTowerB_admissibleHecke_commute ε X ε.injective ⟨φ, h2, h1⟩ N l w hl hN hNl hw T (GlobalTheory.KZ.Letter.D d) hT hd b hb.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `X.op N l T (X.diam N l d b) = X.diam N l d (X.op N l T b) at h`. Rewrite using `[← h, hb.2 d hd, map_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.chiStab :
     UpperTheory.V.Z.Kato.Joint.ChiStab := by

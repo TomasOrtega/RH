@@ -14,9 +14,9 @@ def ChartMap : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X] 
   ∃ πU : U.toScheme ⟶ PN k N, πU ≫ PNto k N = U.ι ≫ p ∧ GenOn p w U πU
 
 /- English proof (translation)
-Introduce `k _ X _ p N w hw x`. Take `⟨i, hi, hx⟩` from `hw x`. Establish `hop : IsOpen {y : X | ∀ j, w j / w i ∈ loc X y}`. Establish `: {y : X | ∀ j, w j / w i ∈ loc X y} = ⋂ j, {y : X | w j / w i ∈ loc X y}`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun j => h1 X (w j / w i)`. Take `⟨πU, h1U, h2U⟩` from `h2 k p N w i hi ⟨_, hop⟩ (fun y hy => hy)`. Conclude with `⟨⟨_, hop⟩, πU, hx, h1U, h2U⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GenOutChart_of_cut (h1 : LocOpen) (h2 : ChartMap) : GenOutChart := by
   intro k _ X _ p N w hw x
@@ -30,9 +30,9 @@ theorem GenOutChart_of_cut (h1 : LocOpen) (h2 : ChartMap) : GenOutChart := by
   exact ⟨⟨_, hop⟩, πU, hx, h1U, h2U⟩
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `y ⟨a, rfl⟩`. Take `⟨V, hyV, s, rfl⟩` from `X.presheaf.exists_germ_eq (x := y) a`. Establish `: Nonempty V` using `⟨⟨y, hyV⟩⟩`. Use `⟨V, fun y' hy' => ?_, V.isOpen, hyV⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨X.presheaf.germ V y' hy' s, ?_⟩` and prove the remaining obligations. Simplify using `only [Scheme.algebraMap_germ_eq_germToFunctionField]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem LocOpen_pf (X : Scheme.{0}) [IsIntegral X] (z : X.functionField) : IsOpen {y : X | z ∈ loc X y} := by
   rw [isOpen_iff_forall_mem_open]
@@ -64,7 +64,7 @@ def ChartGen : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X] 
   ∃ πU : U.toScheme ⟶ PN k N, πU ≫ PNto k N = U.ι ≫ p ∧ GenOn p w U πU
 
 /- English proof (translation)
-Introduce `k _ X _ p N w i hi U hU`. Establish `hx : (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k 1` using `(mem_homogeneousSubmodule _ _).2 (isHomogeneous_X k i)`. Take `⟨φ, hφ⟩` from `h1 k p N w i hi U hU hx`. Conclude with `h2 k p N w i hi U hx φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ChartMap_pf (h1 : ChartRing) (h2 : ChartGen) : ChartMap := by
   intro k _ X _ p N w i hi U hU
@@ -74,7 +74,7 @@ theorem ChartMap_pf (h1 : ChartRing) (h2 : ChartGen) : ChartMap := by
   exact h2 k p N w i hi U hx φ hφ
 
 /- English proof (translation)
-The claim follows from `GenOutChart_of_cut (fun X _ z => LocOpen_pf X z) (ChartMap_pf h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem GenOutChart_of (h1 : ChartRing) (h2 : ChartGen) : GenOutChart :=
   GenOutChart_of_cut (fun X _ z => LocOpen_pf X z) (ChartMap_pf h1 h2)

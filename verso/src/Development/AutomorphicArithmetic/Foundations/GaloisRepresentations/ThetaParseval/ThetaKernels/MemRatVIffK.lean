@@ -14,11 +14,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Afc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx => obtain ⟨v, rfl⟩ := hx`. Conclude with `⟨v, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, by funext i; simp [GlobalTheory.ThK.incV]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨v, rfl⟩` from `hx`. Take `⟨v', rfl⟩` from `hy`. Conclude with `⟨v + v', by funext i; simp [GlobalTheory.ThK.incV]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `neg x _ hx`. Take `⟨v, rfl⟩` from `hx`. Conclude with `⟨-v, by funext i; simp [GlobalTheory.ThK.incV]⟩`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨v, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ratV_iff_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (u : Fin L.n → AE F E) :
     u ∈ L.ratV ↔ ∃ v : Fin L.n → E, u = GlobalTheory.ThK.incV F v := by

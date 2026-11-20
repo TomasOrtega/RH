@@ -14,21 +14,21 @@ variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] [FiniteDimension
   [MeasurableSpace F] [BorelSpace F] {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC x0 (mem_ball_self hρ))`. Establish `hx1 : ‖x - x0‖ < ρ / 2` using `mem_ball_iff_norm.mp hx`. Establish `hxd : DifferentiableAt ℂ f x` using `hf.differentiableAt (isOpen_ball.mem_nhds (ball_subset_ball (by linarith) hx))`. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun v => ?_` and prove the remaining obligations. Break down `eq_or_ne v 0 with rfl | hv` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Establish `hvpos : 0 < ‖v‖` using `norm_pos_iff.mpr hv`. Use `set R := ρ / 2 / ‖v‖ with hRdef`. Establish `hR : 0 < R` using `by positivity`. Establish `hRv : R * ‖v‖ = ρ / 2` using `div_mul_cancel₀ _ hvpos.ne'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ w : ℂ, ‖w‖ ≤ R → x + w • v ∈ ball x0 ρ`. Introduce `w hw`. Rewrite using `[mem_ball_iff_norm]`. Establish `h2 : ‖w • v‖ ≤ ρ / 2`. Rewrite using `[norm_smul, ← hRv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right hw (norm_nonneg v)`. Establish `h3 : x + w • v - x0 = (x - x0) + w • v` using `by abel`. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgd : DifferentiableOn ℂ (fun w : ℂ => f (x + w • v)) (closedBall 0 R)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hw' : ‖w‖ ≤ R` using `by simpa using hw`. Establish `hfa : DifferentiableAt ℂ f (x + w • v)` using `hf.differentiableAt (isOpen_ball.mem_nhds (hmem w hw'))`. Conclude with `(hfa.comp w ((differentiableAt_id.smul_const v).const_add x)).differentiableWithinAt`. Establish `hdc : DiffContOnCl ℂ (fun w : ℂ => f (x + w • v)) (ball 0 R)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball _ hR.ne']`. Conclude with `hgd`. Establish `hcau` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hR hdc (fun z hz => hC _ (hmem z (le_of_eq (mem_sphere_zero_iff_norm.mp hz))))`. Establish `hline : HasDerivAt (fun w : ℂ => x + w • v) ((1 : ℂ) • v) 0` using `((hasDerivAt_id (0 : ℂ)).smul_const v).const_add x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfd : HasFDerivAt f (fderiv ℂ f x) (x + (0 : ℂ) • v)`. Rewrite using `[zero_smul, add_zero]`. Conclude with `hxd.hasFDerivAt`. Establish `hg` using `hfd.comp_hasDerivAt (0 : ℂ) hline`. Rewrite `hg` using `[one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hder : deriv (fun w : ℂ => f (x + w • v)) 0 = fderiv ℂ f x v` using `hg.deriv`. Rewrite `hcau` using `[hder]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hRdef]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 private theorem norm_fderiv_le_of_differentiableOn_ball_of_norm_le {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F]
     {f : F → ℂ} {x0 x : F} {ρ C : ℝ} (hρ : 0 < ρ) (hf : DifferentiableOn ℂ f (ball x0 ρ))
@@ -83,19 +83,15 @@ private theorem norm_fderiv_le_of_differentiableOn_ball_of_norm_le {F : Type*} [
       field_simp
 
 /- English proof (translation)
-Introduce `x0 hx0`. Take `⟨ρ, hρ, C, hsub, hC⟩` from `hbd x0 hx0`. Use `haveI : IsFiniteMeasure (volume.restrict K) := isFiniteMeasure_restrict.mpr hKv.ne`. Establish `hballU : ball x0 ρ ⊆ U` using `ball_subset_closedBall.trans hsub`. Establish `hslice : ∀ t, DifferentiableOn ℂ (fun z => G (A t z)) U` using `fun t => hG.comp (A t).differentiable.differentiableOn (fun z hz => hAU t z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAx : ∀ x, Continuous fun t => A t x` using `fun x => hA.clm_apply continuous_const`. Establish `hcont : ∀ x ∈ U, Continuous fun t => G (A t x) * e t` using `fun x hx => (hG.continuousOn.comp_continuous (hAx x) (fun t => hAU t x hx)).mul he`. Establish `hfd : ∀ t, ∀ x ∈ U, HasFDerivAt (fun z => G (A t z) * e t) (e t • fderiv ℂ (fun z => G (A t z)) x) x` using `fun t x hx => ((hslice t).differentiableAt (hU.mem_nhds hx)).hasFDerivAt.mul_const (e t)`. Establish `hF'eq : (fun t => e t • fderiv ℂ (fun z => G (A t z)) x0) = fun t => e t • (fderiv ℂ G (A t x0)).comp (A t)`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hGd : DifferentiableAt ℂ G (A t x0)` using `hG.differentiableAt (hU.mem_nhds (hAU t x0 hx0))`. Conclude with `fderiv_comp x0 hGd (A t).differentiableAt |>.trans (by rw [(A t).fderiv])`. Establish `hmeasF' : AEStronglyMeasurable (fun t => e t • fderiv ℂ (fun z => G (A t z)) x0) (volume.restrict K)`. Rewrite using `[hF'eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `he.aestronglyMeasurable.smul ?_` and prove the remaining obligations. Use `letI : MeasurableSpace (F →L[ℂ] ℂ) := borel _`. Use `haveI : BorelSpace (F →L[ℂ] ℂ) := ⟨rfl⟩`. Establish `hm : Measurable (fderiv ℂ G)` using `measurable_fderiv ℂ G`. Establish `h1 : AEStronglyMeasurable (fun t => fderiv ℂ G (A t x0)) (volume.restrict K)` using `(hm.comp (hAx x0).measurable).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(ContinuousLinearMap.compL ℂ F F ℂ).aestronglyMeasurable_comp₂ h1 hA.aestronglyMeasurable`. Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := volume.restrict K) (F := fun x t => G (A t x) * e t) (F' := fun x t => e t • fderiv ℂ (fun z => G (A t z)) x) (bound := fun _ => C / (ρ / 2)) (x₀ := x0) (ball_mem_nhds x0 (half_pos hρ)) (Filter.eventually_of_mem (hU.mem_nhds hx …`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `hmeasF'`.
-
-Use the proof step `(Filter.Eventually.of_forall fun t x hx => by`. Rewrite using `[norm_smul]`. Establish `hb` using `norm_fderiv_le_of_differentiableOn_ball_of_norm_le hρ ((hslice t).mono hballU) (fun z hz => hC t z (ball_subset_closedBall hz)) hx`. Establish `hC0 : 0 ≤ C / (ρ / 2)` using `(norm_nonneg _).trans hb`. Combine the equalities or inequalities in the displayed calculation.
-
-Use the proof step `(integrable_const _)`. Use the proof step `(Filter.Eventually.of_forall fun t x hx => hfd t x (hballU (ball_subset_ball (by linarith) hx)))`. Conclude with `key.differentiableAt.differentiableWithinAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem diffOn_param_bdd {K : Set (ι → ℝ)} (hKv : volume K < ⊤)
     (A : (ι → ℝ) → F →L[ℂ] F) (hA : Continuous A) {U : Set F} (hU : IsOpen U)
@@ -182,9 +178,9 @@ lemma flowL_apply (ξ : Fin r → E) (s : X.Ψ → ℝ) (x : Frame X.Ψ r) :
     flowL X ξ s x = X.flow ξ (fun τ => (s τ : ℂ)) x := rfl
 
 /- English proof (translation)
-Apply `continuous_clm_apply.mpr` to reduce the goal to its premises. Introduce `x`. Simplify using `only [flowL_apply]`. Unfold `Data.flow`. Use `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mul_apply, Data.flowMat, Matrix.of_apply]`. Use `first`. Consider the case `fun_prop`. Consider the case `continuity`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma cont_flowL (ξ : Fin r → E) : Continuous fun s => flowL X ξ s := by
   apply continuous_clm_apply.mpr
@@ -198,9 +194,9 @@ lemma cont_flowL (ξ : Fin r → E) : Continuous fun s => flowL X ξ s := by
   | continuity
 
 /- English proof (translation)
-Unfold `dmin lminor`. Apply `Continuous.matrix_det` to reduce the goal to its premises. Apply `Continuous.matrix_submatrix` to reduce the goal to its premises. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [gram, Matrix.of_apply, hermC, col, mat]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `fun_prop`. Consider the case `continuity`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma cont_dmin (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
@@ -214,9 +210,9 @@ lemma cont_dmin (τ : X.Ψ) (i : Fin (r + 1)) :
   | continuity
 
 /- English proof (translation)
-Establish `h : ∀ (τ : X.Ψ) (i : Fin r), ContinuousAt (fun x : Frame X.Ψ r => ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2)) x0`. Introduce `τ i`. Establish `hd1` using `(cont_dmin X τ i.succ).continuousAt (x := x0)`. Establish `hd2` using `(cont_dmin X τ i.castSucc).continuousAt (x := x0)`. Establish `hne1` using `FlowCoefficientBounds.dmin_ne X hx0 τ i.succ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne2` using `FlowCoefficientBounds.dmin_ne X hx0 τ i.castSucc`. Conclude with `(hd1.div hd2 hne2).norm.rpow_const (Or.inl (norm_ne_zero_iff.mpr (div_ne_zero hne1 hne2)))`. Unfold `Data.nfac`. Conclude with `tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => h τ i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma continuousAt_nfac (la : Wt X.Ψ r) {x0 : Frame X.Ψ r} (hx0 : x0 ∈ X.dom) :
     ContinuousAt (X.nfac la) x0 := by
@@ -232,9 +228,9 @@ lemma continuousAt_nfac (la : Wt X.Ψ r) {x0 : Frame X.Ψ r} (hx0 : x0 ∈ X.dom
   exact tendsto_finset_prod _ fun τ _ => tendsto_finset_prod _ fun i _ => h τ i
 
 /- English proof (translation)
-Establish `hset : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `[Data.dom, GG]`. Rewrite using `[hset]`. Use `isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isOpen_ne_fun ((show Continuous fun x : Frame X.Ψ r => mat x τ from continuous_apply τ).matrix_det) continuous_const`. Conclude with `isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (cont_dmin X τ i)))`.
+A detailed English derivation is pending.
 -/
 private theorem isOpen_dom_upper_bounds : IsOpen X.dom := by
   have hset : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩
@@ -250,15 +246,15 @@ private theorem isOpen_dom_upper_bounds : IsOpen X.dom := by
       (continuous_const.mul (Complex.continuous_re.comp (cont_dmin X τ i)))
 
 /- English proof (translation)
-Introduce `x0 hx0`. Take `⟨-, C, hC⟩` from `hP`. Establish `hpos` using `FlowCoefficientBounds.nfac_pos X hx0 la`. Establish `hcont` using `continuousAt_nfac X la hx0`. Establish `hev : ∀ᶠ z in 𝓝 x0, X.nfac la x0 / 2 < X.nfac la z ∧ z ∈ X.dom` using `(hcont.eventually (lt_mem_nhds (by linarith : X.nfac la x0 / 2 < X.nfac la x0))).and ((isOpen_dom_upper_bounds X).mem_nhds hx0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ρ, hρ, hball⟩` from `Metric.mem_nhds_iff.mp hev`. Use `⟨ρ / 2, by positivity, 2 * C / X.nfac la x0, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `(hball (Metric.closedBall_subset_ball (by linarith) hz)).2`. Introduce `t z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz'` using `hball (Metric.closedBall_subset_ball (by linarith) hz)`. Take `⟨hfd, hfn⟩` from `FlowCoefficientBounds.flow_real X hξ hz'.2 t la`. Establish `h1` using `hC _ hfd`. Rewrite using `[flowL_apply]`. Establish `h2 : X.pnorm la P (X.flow ξ (fun τ => (t τ : ℂ)) z) = ‖P (X.flow ξ (fun τ => (t τ : ℂ)) z)‖ * X.nfac la z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfn]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Establish `h3 : ‖P (X.flow ξ (fun τ => (t τ : ℂ)) z)‖ * (X.nfac la x0 / 2) ≤ ‖P (X.flow ξ (fun τ => (t τ : ℂ)) z)‖ * X.nfac la z` using `mul_le_mul_of_nonneg_left hz'.1.le (norm_nonneg _)`. Rewrite using `[le_div_iff₀ hpos]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 lemma fj_hbd (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P) {ξ : Fin r → E}
     (hξ : X.IsIso ξ) : ∀ x0 ∈ X.dom, ∃ ρ > 0, ∃ C, closedBall x0 ρ ⊆ X.dom ∧
@@ -291,11 +287,11 @@ lemma fj_hbd (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P) 
     linarith
 
 /- English proof (translation)
-Unfold `Data.fj`. Use `split_ifs with h1 h2`. Apply `DifferentiableOn.const_mul` to reduce the goal to its premises. Establish `he1 : ∀ s : X.Ψ → ℝ, ‖cexp (-(4 * (Real.pi : ℂ) * I) * ∑ τ, (ν τ : ℂ) * (s τ : ℂ))‖ ≤ 1`. Introduce `s`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hre : -(4 * (Real.pi : ℂ) * I) * ∑ τ, (ν τ : ℂ) * (s τ : ℂ) = ((-(4 * Real.pi * ∑ τ, ν τ * s τ) : ℝ) : ℂ) * I`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hre, Complex.norm_exp_ofReal_mul_I]`. Establish `hec : Continuous fun s : X.Ψ → ℝ => cexp (-(4 * (Real.pi : ℂ) * I) * ∑ τ, (ν τ : ℂ) * (s τ : ℂ))` using `by first`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `fun_prop`. Consider the case `continuity`. Conclude with `diffOn_param_bdd h2.choose_spec.2.2.2 (flowL X ξ) (cont_flowL X ξ) (isOpen_dom_upper_bounds X) (fun t x hx => (FlowCoefficientBounds.flow_real X hξ hx t la).1) P hP.1.1 _ hec he1 (fj_hbd X la P hP hξ)`. Conclude with `differentiableOn_const 0`. Conclude with `differentiableOn_const 0`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fj_diffOn (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsBddSec la P) {ξ : Fin r → E}
     (hξ : X.IsIso ξ) (ν : X.Ψ → ℝ) : DifferentiableOn ℂ (X.fj la ξ ν P) X.dom := by

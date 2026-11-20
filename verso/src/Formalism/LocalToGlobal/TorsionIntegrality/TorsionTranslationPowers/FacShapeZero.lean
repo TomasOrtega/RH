@@ -10,84 +10,84 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.BiextensionHypo
 namespace Formalism.L2.Th1.E
 
 /- English proof (translation)
-The claim follows from `nonsingular_norm`.
+A detailed English derivation is pending.
 -/
 theorem nonsingNorm : NonsingNorm := nonsingular_norm
 /- English proof (translation)
-The claim follows from `UnitKap_of nonsingNorm`.
+A detailed English derivation is pending.
 -/
 theorem unitKap : UnitKap := UnitKap_of nonsingNorm
 /- English proof (translation)
-The claim follows from `UnitPsi2_of nonsingNorm`.
+A detailed English derivation is pending.
 -/
 theorem unitPsi2 : UnitPsi2 := UnitPsi2_of nonsingNorm
 /- English proof (translation)
-The claim follows from `UnitDiff_of nonsingNorm`.
+A detailed English derivation is pending.
 -/
 theorem unitDiff : UnitDiff := UnitDiff_of nonsingNorm
 /- English proof (translation)
-The claim follows from `integrality_rules`.
+A detailed English derivation is pending.
 -/
 theorem intRules : IntRules := integrality_rules
 /- English proof (translation)
-The claim follows from `unit_at_rules`.
+A detailed English derivation is pending.
 -/
 theorem unitAtRules : UnitAtRules := unit_at_rules
 /- English proof (translation)
-The claim follows from `root_integral_alt`.
+A detailed English derivation is pending.
 -/
 theorem rootInt : RootInt := root_integral_alt
 /- English proof (translation)
-The claim follows from `gauss_multiplicative`.
+A detailed English derivation is pending.
 -/
 theorem gaussMul : GaussMul := gauss_multiplicative
 /- English proof (translation)
-The claim follows from `XTShape_holds`.
+A detailed English derivation is pending.
 -/
 theorem xTShape : XTShape := XTShape_holds
 /- English proof (translation)
-The claim follows from `FacShape_of intRules unitAtRules unitKap unitPsi2 unitDiff xTShape`.
+A detailed English derivation is pending.
 -/
 theorem facShape : FacShape := FacShape_of intRules unitAtRules unitKap unitPsi2 unitDiff xTShape
 /- English proof (translation)
-The claim follows from `translate_power`.
+A detailed English derivation is pending.
 -/
 theorem transPower : TransPower := translate_power
 /- English proof (translation)
-The claim follows from `parallelogram_sum_two`.
+A detailed English derivation is pending.
 -/
 theorem parSumTwo : ParSumTwo := parallelogram_sum_two
 /- English proof (translation)
-The claim follows from `TransUnit_of intRules unitAtRules rootInt facShape transPower`.
+A detailed English derivation is pending.
 -/
 theorem transUnit : TransUnit := TransUnit_of intRules unitAtRules rootInt facShape transPower
 /- English proof (translation)
-The claim follows from `TransGauss_of intRules unitAtRules transUnit`.
+A detailed English derivation is pending.
 -/
 theorem transGauss : TransGauss := TransGauss_of intRules unitAtRules transUnit
 
 /- English proof (translation)
-The claim follows from `product_integral`.
+A detailed English derivation is pending.
 -/
 theorem prodInt : ProdInt := product_integral
 /- English proof (translation)
-The claim follows from `subst_exp_integral`.
+A detailed English derivation is pending.
 -/
 theorem substExpInt : SubstExpInt := subst_exp_integral
 /- English proof (translation)
-The claim follows from `congruence_iff_simeq`.
+A detailed English derivation is pending.
 -/
 theorem congIffSimeq : CongIffSimeq := congruence_iff_simeq
 /- English proof (translation)
-The claim follows from `sum_series_analytic`.
+A detailed English derivation is pending.
 -/
 theorem sumEBridge : SumEBridge := sum_series_analytic
 /- English proof (translation)
-The claim follows from `map_coboundary`.
+A detailed English derivation is pending.
 -/
 theorem mapCob : MapCob := map_coboundary
 /- English proof (translation)
-The claim follows from `IntHyp_of prodInt substExpInt congIffSimeq Formalism.L2.Th1.C.hyperbolicSum Formalism.L2.Th1.C.ptClosure`.
+A detailed English derivation is pending.
 -/
 theorem intHyp : IntHyp :=
   IntHyp_of prodInt substExpInt congIffSimeq Formalism.L2.Th1.C.hyperbolicSum Formalism.L2.Th1.C.ptClosure

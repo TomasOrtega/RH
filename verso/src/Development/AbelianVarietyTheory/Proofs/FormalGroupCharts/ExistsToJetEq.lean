@@ -8,7 +8,7 @@ namespace GlobalTheory.JetSer
 variable {R : Type} [CommRing R] {κ : Type}
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq]`. Use `(MvPolynomial.mem_pow_idealOfVars_iff' (m + 1) (P - Q)).trans ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.coeff_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jet_mk_eq_iff (m : ℕ) (P Q : MvPolynomial κ R) :
     (Ideal.Quotient.mk _ P : JetR R κ m) = Ideal.Quotient.mk _ Q ↔
@@ -20,7 +20,7 @@ theorem jet_mk_eq_iff (m : ℕ) (P Q : MvPolynomial κ R) :
 variable [Finite κ]
 
 /- English proof (translation)
-Unfold `toJet`. Rewrite using `[jet_mk_eq_iff]`. Use `forall₂_congr fun e he => ?_` and prove the remaining obligations. Rewrite using `[coeff_truncTotal_eq_ite, if_pos he]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toJet_eq_mk_iff (m : ℕ) (g : MvPowerSeries κ R) (Q : MvPolynomial κ R) :
     toJet m g = Ideal.Quotient.mk _ Q ↔
@@ -31,7 +31,7 @@ theorem toJet_eq_mk_iff (m : ℕ) (g : MvPowerSeries κ R) (Q : MvPolynomial κ 
   rw [coeff_truncTotal_eq_ite, if_pos he]
 
 /- English proof (translation)
-Use `(toJet_eq_mk_iff m g _).trans (forall₂_congr fun e he => ?_)` and prove the remaining obligations. Rewrite using `[coeff_truncTotal_eq_ite, if_pos he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toJet_eq_iff (m : ℕ) (g g' : MvPowerSeries κ R) :
     toJet m g = toJet m g' ↔ ∀ e : κ →₀ ℕ, Finsupp.degree e < m + 1 → coeff e g = coeff e g' := by
@@ -39,7 +39,7 @@ theorem toJet_eq_iff (m : ℕ) (g g' : MvPowerSeries κ R) :
   rw [coeff_truncTotal_eq_ite, if_pos he]
 
 /- English proof (translation)
-The claim follows from `(toJet_eq_mk_iff m _ Q).2 fun e _ => MvPolynomial.coeff_coe Q e`.
+A detailed English derivation is pending.
 -/
 theorem toJet_coe (m : ℕ) (Q : MvPolynomial κ R) :
     toJet m (Q : MvPowerSeries κ R) = Ideal.Quotient.mk _ Q :=
@@ -56,7 +56,7 @@ Both sides reduce to the same expression.
 theorem toJetHom_apply (m : ℕ) (g : MvPowerSeries κ R) : toJetHom R κ m g = toJet m g := rfl
 
 /- English proof (translation)
-Use `symm`. Use `(toJet_eq_mk_iff m g (truncTotal (m + 1 + 1) g)).2 fun e he => ?_` and prove the remaining obligations. Rewrite using `[coeff_truncTotal_eq_ite, if_pos (by omega)]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetTruncR_toJet (m : ℕ) (g : MvPowerSeries κ R) :
     jetTruncR R κ m (toJet (m + 1) g) = toJet m g := by
@@ -65,7 +65,7 @@ theorem jetTruncR_toJet (m : ℕ) (g : MvPowerSeries κ R) :
   rw [coeff_truncTotal_eq_ite, if_pos (by omega)]
 
 /- English proof (translation)
-Use `show MvPolynomial.aeval (fun _ : κ => (0 : R)) (truncTotal (m + 1) g) = _`. Rewrite using `[MvPolynomial.aeval_zero', MvPolynomial.constantCoeff_eq, coeff_truncTotal_eq_ite, if_pos (by simp)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jetAug_toJet (m : ℕ) (g : MvPowerSeries κ R) :
     jetAug R κ m (toJet m g) = constantCoeff g := by
@@ -74,18 +74,18 @@ theorem jetAug_toJet (m : ℕ) (g : MvPowerSeries κ R) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `e`. Conclude with `(toJet_eq_iff _ g g').1 (h (Finsupp.degree e)) e (Nat.lt_succ_self _)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_of_toJet_eq {g g' : MvPowerSeries κ R} (h : ∀ m, toJet m g = toJet m g') : g = g' := by
   ext e
   exact (toJet_eq_iff _ g g').1 (h (Finsupp.degree e)) e (Nat.lt_succ_self _)
 
 /- English proof (translation)
-Use `choose P hP using fun m => Ideal.Quotient.mk_surjective (p m)`. Establish `h1 : ∀ m (e : κ →₀ ℕ), Finsupp.degree e < m + 1 → (P (m + 1)).coeff e = (P m).coeff e` using `fun m => by`. Rewrite using `[← jet_mk_eq_iff, hP m, ← hp m, ← hP (m + 1)]`. Both sides reduce to the same expression. Establish `h2 : ∀ (e : κ →₀ ℕ) m, Finsupp.degree e ≤ m → (P (Finsupp.degree e)).coeff e = (P m).coeff e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e m hm`. Proceed by induction on `m, hm using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ m hm ih => rw [ih, h1 m e (by omega)]`. Use `⟨fun e => (P (Finsupp.degree e)).coeff e, fun m => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hP m]`. Conclude with `(toJet_eq_mk_iff m _ _).2 fun e he => h2 e m (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem exists_toJet_eq (p : ∀ m, JetR R κ m) (hp : ∀ m, jetTruncR R κ m (p (m + 1)) = p m) :
     ∃ g : MvPowerSeries κ R, ∀ m, toJet m g = p m := by
@@ -103,7 +103,7 @@ theorem exists_toJet_eq (p : ∀ m, JetR R κ m) (hp : ∀ m, jetTruncR R κ m (
   exact (toJet_eq_mk_iff m _ _).2 fun e he => h2 e m (by omega)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨jetLift R (RingHom.ker (jetAug R κ m)) (ker_jetAug_pow κ m) (fun j => toJet m (a j)) (fun j => (jetAug_toJet m (a j)).trans (ha j)), fun j => jetLift_zR _ _ _ _ j⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_jetHom {σ : Type} (a : σ → MvPowerSeries κ R) (ha : ∀ j, constantCoeff (a j) = 0) (m : ℕ) :
     ∃ ψ : JetR R σ m →ₐ[R] JetR R κ m, ∀ j, ψ (zR m j) = toJet m (a j) :=
@@ -111,13 +111,13 @@ theorem exists_jetHom {σ : Type} (a : σ → MvPowerSeries κ R) (ha : ∀ j, c
     (fun j => (jetAug_toJet m (a j)).trans (ha j)), fun j => jetLift_zR _ _ _ _ j⟩
 
 /- English proof (translation)
-Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Establish `hpoly : ∀ Q : MvPolynomial σ R, ψ (Ideal.Quotient.mk _ Q) = toJet m (subst a (Q : MvPowerSeries σ R))`. Introduce `Q`. Rewrite using `[subst_coe, ← toJetHom_apply]`. Establish `: ψ.comp (Ideal.Quotient.mkₐ R _) = (toJetHom R κ m).comp (MvPolynomial.aeval a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, MvPolynomial.aeval_X, toJetHom_apply]`. Conclude with `hψ j`. Conclude with `AlgHom.congr_fun this Q`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hpoly (truncTotal (m + 1) g)).trans ((toJet_eq_iff m _ _).2 fun e he => ?_)` and prove the remaining obligations. Use `set r : MvPowerSeries σ R := (truncTotal (m + 1) g : MvPolynomial σ R) - g with hr`. Establish `hro : ((m + 1 : ℕ) : ℕ∞) ≤ r.order` using `nat_le_order fun d hd => by`. Rewrite using `[hr, map_sub, MvPolynomial.coeff_coe, coeff_truncTotal_eq_ite, if_pos hd, sub_self]`. Establish `h1 : (1 : ℕ∞) ≤ ⨅ i, (a i).order` using `le_iInf fun i => one_le_order_iff_constCoeff_eq_zero.2 (ha i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `h2 : ((m + 1 : ℕ) : ℕ∞) ≤ (subst a r).order`. Use `le_trans ?_ (le_order_subst hs r)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : coeff e (subst a r) = 0` using `coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast he) h2)`. Rewrite `h3` using `[hr, ← substAlgHom_apply hs, map_sub, map_sub, sub_eq_zero, substAlgHom_apply, substAlgHom_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem jetHom_toJet {σ : Type} [Finite σ] (a : σ → MvPowerSeries κ R) (ha : ∀ j, constantCoeff (a j) = 0) (m : ℕ)
     (ψ : JetR R σ m →ₐ[R] JetR R κ m) (hψ : ∀ j, ψ (zR m j) = toJet m (a j)) (g : MvPowerSeries σ R) :
@@ -145,7 +145,7 @@ theorem jetHom_toJet {σ : Type} [Finite σ] (a : σ → MvPowerSeries κ R) (ha
   rwa [hr, ← substAlgHom_apply hs, map_sub, map_sub, sub_eq_zero, substAlgHom_apply, substAlgHom_apply] at h3
 
 /- English proof (translation)
-Introduce `R _ κ _` and use `⟨fun m => ⟨toJetHom R κ m, fun _ => rfl, fun j => toJet_X m j⟩, fun m g => ⟨jetTruncR_toJet m g, jetAug_toJet m g⟩, fun _ _ h => eq_of_toJet_eq h, exists_toJet_eq, fun _ _ a ha m => ⟨exists_jetHom a ha m, jetHom_toJet a ha m⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem jetAlg : JetAlgSt := fun R _ κ _ =>
   ⟨fun m => ⟨toJetHom R κ m, fun _ => rfl, fun j => toJet_X m j⟩,

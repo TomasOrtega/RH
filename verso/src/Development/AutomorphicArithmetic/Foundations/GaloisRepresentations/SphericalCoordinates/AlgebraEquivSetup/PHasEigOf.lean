@@ -8,9 +8,9 @@ open scoped TensorProduct Classical
 namespace UpperTheory.Gal.W2.Seed
 
 /- English proof (translation)
-Establish `hfin` using `Formalism.UG.P.finite_supp K hK f hf`. Unfold `hAct`. Rewrite using `[map_finsum L (hfin.subset (fun x hx => by`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[h0]))]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[map_smul, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem hAct_slice {X V : Type} [Group X] [AddCommGroup V] [Module ℂ V] (K : Subgroup X)
     (hK : IsCommensurated K) (f : X → ℂ) (hf : f ∈ Hecke ℂ K) (φ : X → V) (L : V →ₗ[ℂ] V) (a g : X) :
@@ -23,7 +23,7 @@ private theorem hAct_slice {X V : Type} [Group X] [AddCommGroup V] [Module ℂ V
   rw [map_smul, mul_assoc]
 
 /- English proof (translation)
-Unfold `UpperTheory.Gal.Spc.op hAct`. Use `finsum_congr fun h => ?_` and prove the remaining obligations. Simplify using `[Prod.mk_mul_mk]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem op_eq {p : ℕ} [Fact p.Prime] {G : HTGroup p} {V : Type} [AddCommGroup V] [Module ℂ V]
     (K : Subgroup G.GAf) (f : G.GAf → ℂ) (F : G.GAf × Gr G 1 → V) (g : G.GAf) (g₂ : Gr G 1) :
@@ -33,9 +33,9 @@ private theorem op_eq {p : ℕ} [Fact p.Prime] {G : HTGroup p} {V : Type} [AddCo
   simp [Prod.mk_mul_mk]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨g, g₂⟩`. Rewrite using `[op_eq]`. Break down `hF g₂ with h0 | ⟨γ, hγ⟩` into its components or cases. Establish `e : (fun x => F (x, g₂)) = fun _ => 0` using `funext h0`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hAct, h0]`. Establish `e : (fun x => F (x, g₂)) = fun x => ξ' γ (φ ((ι γ).1⁻¹ * x))` using `funext hγ`. Rewrite using `[e, hAct_slice K hK f hf, h]`. Simplify using `[hγ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem op_eig {p : ℕ} [Fact p.Prime] {G : HTGroup p} {V Γ : Type} [AddCommGroup V] [Module ℂ V] [Group Γ]
     (ι : Γ →* G.GAf × Gr G 1) (K : Subgroup G.GAf) (hK : IsCommensurated K) (ξ' : Representation ℂ Γ V)
@@ -56,21 +56,19 @@ private theorem op_eig {p : ℕ} [Fact p.Prime] {G : HTGroup p} {V Γ : Type} [A
 end UpperTheory.Gal.W2.Seed
 
 /- English proof (translation)
-Introduce `hStd hPI hPP hExt E _ _ _ A n p _ S T V _ _ ξ Φ hΦL hΦR hΦ0 K₀ hK₀ hK₀inv J ψ θ e hψ he heΦ hψΦ`. Take `⟨B, x, hx, ee, hee, hemb⟩` from `hStd E A n p S T`. Set `ξ' : Representation ℂ (S.G.Cˣ × ℚˣ) V` to `ξ`. Set `ξ₀ : Representation ℂ (GlobalTheory.LKCx.grp S.G B.β) V` to `ξ'.comp (GlobalTheory.LKCx.grp S.G B.β).subtype`. Set `φ : S.G.GAf → V` to `fun h => Φ (T.sec h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hEq : ∀ γ : GlobalTheory.LKCx.grp S.G B.β, (B.embAt x 1 hx γ).2 ∈ UpperTheory.Gal.LocalSmoothExtension.Kp S.G → ∀ g, φ ((B.embAt x 1 hx γ).1 * g) = ξ₀ γ (φ g)`. Introduce `γ hγ g`. Establish `h1 : (B.embAt x 1 hx γ).1 = T.j (rat (ee γ))` using `hemb γ`. Establish `hy : inclG S.G 1 (locC S.G ((ee γ : Gam0 E n) : GL (Fin n) E × ℚˣ)) ∈ UpperTheory.Gal.LocalSmoothExtension.Kp S.G`. Rewrite using `[hee]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hγ`. Take `⟨hI, -⟩` from `hPI E A n p S (ee γ) hy`. Take `⟨k, hk, hk1, hk2, hk3⟩` from `hPP E A n p S T (rat (ee γ))`. Establish `hsec : T.sec (T.j (rat (ee γ))) = rat (ee γ) * k⁻¹` using `eq_mul_inv_of_mul_eq hk.symm`. Establish `hc : k⁻¹ * T.sec g = T.sec g * k⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, hk3 g, inv_mul_cancel_left]`. Establish `hR : ∀ g', Φ (g' * k⁻¹) = Φ g'` using `hΦR k⁻¹ (fun w hw => by rw [map_inv, hk1 w hw, inv_one]) (fun w hw => by rw [map_inv]; exact inv_mem (by rw [hk2 w hw]; exact hI w hw))`. Use `show Φ (T.sec ((B.embAt x 1 hx γ).1 * g)) = ξ₀ γ (Φ (T.sec g))`. Rewrite using `[h1, map_mul, hsec, mul_assoc, hc, hΦL, hR, hee]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F, hF1, hF2⟩` from `hExt (GlobalTheory.LKCx.grp S.G B.β) S.G.GAf (Gr S.G 1) V (B.embAt x 1 hx) K₀ (UpperTheory.Gal.LocalSmoothExtension.Kp S.G) ξ₀ φ hEq (fun k hk g => hK₀inv k hk g)`. Establish `hne : F ≠ 0`. Take `⟨g₀, hg₀, hg₀p⟩` from `hΦ0`. Take `⟨k, hk, hk1, hk2, -⟩` from `hPP E A n p S T g₀`. Establish `h2 : Φ g₀ = φ (T.j g₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `h0`. Apply `hg₀` to reduce the goal to its premises. Rewrite using `[h2, ← hF1, h0]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨B, x, 1, hx, (F : S.G.GAf × Gr S.G 1 → V), F.2, ?_, ?_, fun j => ?_⟩` and prove the remaining obligations. Introduce `h0`. Conclude with `hne (Subtype.ext h0)`. Use `op_eig (B.embAt x 1 hx) K₀ hK₀ ξ₀ φ (F : S.G.GAf × Gr S.G 1 → V) hF2 e he 1 (by simpa using heΦ)` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `op_eig (B.embAt x 1 hx) K₀ hK₀ ξ₀ φ (F : S.G.GAf × Gr S.G 1 → V) hF2 (ψ j) (hψ j) (θ j) (hψΦ j)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pHasEigOf :
     StdForm → PInt → PPart → ExtP → HasEigOf := by

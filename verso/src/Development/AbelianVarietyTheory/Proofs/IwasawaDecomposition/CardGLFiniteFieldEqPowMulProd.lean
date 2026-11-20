@@ -8,19 +8,17 @@ open MeasureTheory Matrix NumberField IsDedekindDomain Formalism.BasicNotions Fo
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-Establish `hq1 : 1 < Fintype.card k` using `Fintype.one_lt_card`. Establish `hq0 : (Fintype.card k : ℝ) ≠ 0`. Establish `: 0 < Fintype.card k` using `by omega`. Conclude with `this.ne'` after adjusting the coercions. Establish `hconst : (Fintype.card k : ℝ) ^ (r * r) = ∏ _j ∈ Finset.Icc 1 r, (Fintype.card k : ℝ) ^ r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_const, Nat.card_Icc, Nat.add_sub_cancel, ← pow_mul]`. Rewrite using `[Matrix.card_GL_field, Nat.cast_prod, Fin.prod_univ_eq_prod_range (fun i => ((Fintype.card k ^ r - Fintype.card k ^ i : ℕ) : ℝ)) r, hconst, Formalism.MainNotions.ZetaProductPairs.qE, ← Finset.prod_mul_distrib]`. Use `Finset.prod_nbij' (fun i => r - i) (fun j => r - j) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Use `Finset.mem_range.mp hi` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_Icc.mpr (by omega)`. Introduce `j hj`. Use `Finset.mem_Icc.mp hj` as an intermediate fact. Conclude with `Finset.mem_range.mpr (by omega)`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.mem_range.mp hi` as an intermediate fact. Use `show r - (r - i) = i`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`. Use `Finset.mem_Icc.mp hj` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show r - (r - j) = j`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Establish `hir : i < r` using `Finset.mem_range.mp hi`. Establish `hle : Fintype.card k ^ i ≤ Fintype.card k ^ r` using `Nat.pow_le_pow_right (by omega) hir.le`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Nat.cast_sub hle, Nat.cast_pow, Nat.cast_pow, mul_sub, mul_one]`. Use `congr 1`. Establish `hcast : (-((r - i : ℕ) : ℤ)) = (i : ℤ) - (r : ℤ)`. Rewrite using `[Nat.cast_sub hir.le]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hcast, zpow_sub₀ hq0, zpow_natCast, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem card_GL_eq_pow_mul_qE (k : Type) [Field k] [Fintype k] (r : ℕ) :
     (Nat.card (GL (Fin r) k) : ℝ)

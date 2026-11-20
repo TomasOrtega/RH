@@ -24,7 +24,7 @@ variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {B : Type} [Norme
   {ρ : W → B →L[ℂ] B}
 
 /- English proof (translation)
-Unfold `Sm`. Simplify using `only [h.2.1]`. Use `ContDiff.smul (Complex.contDiff_exp.comp (contDiff_const.mul ?_)) (ContDiff.comp hf (contDiff_id.add contDiff_const))` and prove the remaining obligations. Conclude with `Complex.ofRealCLM.contDiff.comp (om.flip a).contDiff`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sm_heis (om : W →L[ℝ] W →L[ℝ] ℝ) (h : IsHeis (fun x y => om x y) ρ) (a : W) {f : B} (hf : Sm ρ f) :
     Sm ρ (ρ a f) := by
@@ -36,14 +36,14 @@ theorem sm_heis (om : W →L[ℝ] W →L[ℝ] ℝ) (h : IsHeis (fun x y => om x 
 
 omit [NormedSpace ℝ W] in
 /- English proof (translation)
-Rewrite using `[h.2.1, h.2.1, h1, h2, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heis_comm {om : W → W → ℝ} (h : IsHeis om ρ) {u v : W} (h1 : om u v = 0) (h2 : om v u = 0) (f : B) :
     ρ u (ρ v f) = ρ v (ρ u f) := by
   rw [h.2.1, h.2.1, h1, h2, add_comm]
 
 /- English proof (translation)
-Use `(hasDerivAt_dH w hAf).unique ?_` and prove the remaining obligations. Simplify using `only [hA]`. Conclude with `(A.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dH w hf)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dH_comm_line (A : B →L[ℂ] B) (w : W) {f : B} (hA : ∀ t : ℝ, ρ (t • w) (A f) = A (ρ (t • w) f)) (hf : Sm ρ f)
     (hAf : Sm ρ (A f)) : dH ρ w (A f) = A (dH ρ w f) := by
@@ -55,15 +55,15 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   [BorelSpace V] [FiniteDimensional ℝ W] [CompleteSpace B] {J : V ≃ₗᵢ[ℝ] V}
 
 /- English proof (translation)
-Establish `h : IsHeis (omJ J) fun v => ρ (E v)` using `UnitaryOsc.isHeis_comp hρ E hE`. Establish `hg : Good h x` using `Osc.good_of_sm hJ h (ContDiff.comp (g := fun v => ρ v x) hx E.contDiff)`. Take `⟨l, hl⟩` from `SeparatingDual.exists_eq_one (R := ℂ) h0`. Establish `key : ∀ u, proj h (ρ (E (-u)) x) = l (proj h (ρ (E (-u)) x)) • f₀`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : Sm ρ (proj h (ρ (E (-u)) x))` using `GlobalTheory.T.heisenberg_smooth_rapid_superposition_translates W V volume B om ρ hom hρ E gau continuous_gau Osc.integrable_pow_gau _ (sm_heis om hρ _ hx)`. Take `⟨c, hc⟩` from `hline ((proj h).comp (ρ (E (-u)))) (fun C hC f => by`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, Osc.proj_comm h C hC, hC]) hs`. Use `fun z => by`. Use `GlobalTheory.T.vacuumProjector_range_annihilated V B J _ hJ h (ρ (E (-u)) x) z` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dH at this`. Rewrite `this` using `[UnitaryOsc.fderiv_comp_clm hs, UnitaryOsc.fderiv_comp_clm hs]`. Then use the resulting hypothesis. Rewrite `hc` using `[ContinuousLinearMap.comp_apply]`. Rewrite using `[hc, map_smul, hl, smul_eq_mul, mul_one]`. Establish `hc : Continuous fun u => l (proj h (ρ (E (-u)) x))` using `l.continuous.comp ((proj h).continuous.comp (Osc.cont_neg h x))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hc, fun n => ?_, ?_⟩` and prove the remaining obligations. Use `Integrable.mono' ((hg n).const_mul ‖l‖) ((continuous_norm.pow n).mul hc.norm).aestronglyMeasurable (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity), mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (l.le_opNorm _) (by positivity)`. Use `(hg.inversion hJ).symm.trans (integral_congr_ae (Filter.Eventually.of_forall fun u => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← map_smul, ← key]`.
+A detailed English derivation is pending.
 -/
 theorem exists_superpos (om : W →L[ℝ] W →L[ℝ] ℝ) (hom : ∀ x, om x x = 0) (hρ : IsHeis (fun x y => om x y) ρ)
     (hJ : ∀ x, J (J x) = -x) (E : V →L[ℝ] W) (hE : ∀ x y, om (E x) (E y) = omJ J x y) {x f₀ : B} (hx : Sm ρ x)
@@ -119,9 +119,9 @@ theorem cpt_atPl (τ τ' : O) (y : Matrix (Fin m) (Fin n) ℂ) :
 
 omit [Fintype O] in
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Use `show t • cpt (atPl τ y) p.2 p.1.1 p.1.2 = cpt (atPl τ (t • y)) p.2 p.1.1 p.1.2`. Rewrite using `[cpt_atPl, cpt_atPl]`. Distinguish the cases in `h : p.2 = τ`. Rewrite using `[h, Pi.single_eq_same, Pi.single_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_atPl (τ : O) (t : ℝ) (y : Matrix (Fin m) (Fin n) ℂ) : t • atPl τ y = atPl τ (t • y) := by
   funext p
@@ -142,7 +142,7 @@ Both sides reduce to the same expression.
 theorem emb_apply (τ : O) (v : (Fin m × Fin n) × Unit → ℂ) : emb τ v = atPl τ (cpt v ()) := rfl
 
 /- English proof (translation)
-Rewrite using `[star_dotProduct_eq, star_dotProduct_eq, Finset.sum_eq_single τ, Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[cpt_blk, cpt_blk, emb_apply, emb_apply, cpt_atPl, cpt_atPl, Pi.single_eq_same, Pi.single_eq_same]`. Introduce `τ' _ h`. Rewrite using `[emb_apply, cpt_atPl, Pi.single_eq_of_ne h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -157,9 +157,9 @@ theorem form_emb (b : O → Matrix (Fin m) (Fin m) ℂ) (a : O → Matrix (Fin n
   · simp
 
 /- English proof (translation)
-Rewrite using `[star_dotProduct_eq]`. Use `Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[cpt_blk, cpt_atPl, cpt_atPl]`. Distinguish the cases in `e : ρ = τ`. Rewrite using `[Pi.single_eq_of_ne (e ▸ h : ρ ≠ τ')]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_ne (b : O → Matrix (Fin m) (Fin m) ℂ) (a : O → Matrix (Fin n) (Fin n) ℂ) {τ τ' : O} (h : τ ≠ τ')
     (x y : Matrix (Fin m) (Fin n) ℂ) : star (atPl τ y) ⬝ᵥ blk b a *ᵥ atPl τ' x = 0 := by
@@ -185,9 +185,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ Formalism.L2.Theta.AE D} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
 /- English proof (translation)
-Set `B₀ : (Ix S T → ℂ) →ₗ[ℝ] (Ix S T → ℂ) →ₗ[ℝ] ℝ` to `-(GlobalTheory.VacUnique.omO S T).compl₁₂ unvecL.toLinearMap unvecL.toLinearMap`. Set `om : (Ix S T → ℂ) →L[ℝ] (Ix S T → ℂ) →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap (𝕜 := ℝ)).toLinearMap ∘ₗ B₀)`. Establish `e : ∀ x y, om x y = (star y ⬝ᵥ HM S T *ᵥ x).im`. Introduce `x y`. Rewrite using `[im_HM x y]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨om, fun x => ?_, e⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `IsHermitian.im_star_dotProduct_mulVec_self (A := HM S T) HM_herm x`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_om (S T : HSp D) : ∃ om : (Ix S T → ℂ) →L[ℝ] (Ix S T → ℂ) →L[ℝ] ℝ,
     (∀ x, om x x = 0) ∧ ∀ x y, om x y = (star y ⬝ᵥ HM S T *ᵥ x).im := by
@@ -203,7 +203,7 @@ theorem exists_om (S T : HSp D) : ∃ om : (Ix S T → ℂ) →L[ℝ] (Ix S T �
   exact IsHermitian.im_star_dotProduct_mulVec_self (A := HM S T) HM_herm x
 
 /- English proof (translation)
-Use `(ev_fderiv hψ G hG (atPl τ y) w).trans ?_` and prove the remaining obligations. Establish `e : ∀ t : ℝ, iotaV σ S T (t • atPl τ y) = lineAt θ τ y t` using `fun t => by`. Rewrite using `[GlobalTheory.VacUnique.Ann.lineAt_eq h S T τ y t]`. Both sides reduce to the same expression. Simplify using `only [e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -218,9 +218,9 @@ theorem coe_dH_atPl (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {G : BB ψ S T
   rfl
 
 /- English proof (translation)
-Use `forall_congr' fun y => ?_` and prove the remaining obligations. Establish `e : ∀ w, ev _ _ w (dH (rhoV hψ σ S T) (atPl τ y) G + Complex.I • dH (rhoV hψ σ S T) (atPl τ (J y)) G) = annih (heisO ψ S T) θ τ J y G.1 w` using `fun w => by`. Rewrite using `[map_add, map_smul, coe_dH_atPl h hψ hG, coe_dH_atPl h hψ hG]`. Both sides reduce to the same expression. Use `⟨fun hv => QB_ext fun w => ?_, fun hv => funext fun w => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ev_apply, e, hv]`. Both sides reduce to the same expression. Rewrite using `[← e, hv, map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isFockVacAt_iff (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {G : BB ψ S T}
     (hG : GlobalTheory.RealWeil.Sm (rhoV hψ σ S T) G) (τ : D.what₂.Tau)
@@ -239,9 +239,9 @@ theorem isFockVacAt_iff (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {G : BB ψ
     rfl
 
 /- English proof (translation)
-Use `D.sp.cm.totReal` as an intermediate fact. Establish `h` using `GlobalTheory.InfAdeleCM.hom_tmul (tauE D τ) (θ τ) (hθ τ).1 (hθ τ).2 (Pi.single (plTau D τ) 1) 1`. Rewrite `h` using `[RingHom.map_one, mul_one]`. Use `h.trans ((GlobalTheory.InfAdeleCM.ext_apply _ _).trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding (plTau D τ) ((Pi.single (plTau D τ) 1 : ∀ w : InfinitePlace D.host.F, w.Completion) (plTau D τ)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Pi.single_eq_same, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_comp (hθ : IsInfFam θ) (τ : D.what₂.Tau) : θ τ (infPart D (idem D (.inr τ))) = 1 := by
   have := D.sp.cm.totReal
@@ -253,9 +253,9 @@ theorem idem_comp (hθ : IsInfFam θ) (τ : D.what₂.Tau) : θ τ (infPart D (i
   rw [Pi.single_eq_same, map_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `sub_eq_zero.1 (h.ext _ ?_ fun τ' => ?_)` and prove the remaining obligations. Establish `e : finPart D (iotaV σ S T (atPl τ y) i j) = 0` using `congrFun (congrFun (real_iotaV h _) i) j`. Rewrite using `[RingHom.map_sub, wAt, RingHom.map_mul, e, mul_zero, sub_zero]`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, wAt, RingHom.map_mul, RingHom.map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Rewrite using `[idem_comp h.inf, one_mul, sub_self]`. Establish `e1 : θ τ' (infPart D (iotaV σ S T (atPl τ y) i j)) = cpt (atPl τ y) τ' i j` using `congrFun (congrFun (congrFun (h.pi_iota T S (unvecL (atPl τ y))) τ') i) j`. Rewrite using `[e1, cpt_atPl, Pi.single_eq_of_ne e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -275,11 +275,11 @@ theorem wAt_iotaV (h : Chart θ σ) (τ : D.what₂.Tau) (y : Matrix (Fin T.rank
       simp
 
 /- English proof (translation)
-Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `: IsProbabilityMeasure (μ.restrict 𝓕)` using `⟨by rw [Measure.restrict_apply_univ]; exact hμ.2.2⟩`. Establish `hb : ∀ (F : BB ψ S T) w, ‖F.1 w * (starRingEnd ℂ) (G.1 w)‖ ≤ ‖G‖ * ‖F‖` using `fun F w => by`. Rewrite using `[norm_mul, Complex.norm_conj, mul_comm]`. Conclude with `mul_le_mul (norm_ev_le w G) (norm_ev_le w F) (norm_nonneg _) (norm_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : ∀ F : BB ψ S T, Integrable (fun w => F.1 w * (starRingEnd ℂ) (G.1 w)) (μ.restrict 𝓕)` using `fun F => Integrable.of_bound (F.1.continuous.mul (Complex.continuous_conj.comp G.1.continuous)).aestronglyMeasurable _ (Filter.Eventually.of_forall (hb F))`. Use `⟨LinearMap.mkContinuous { toFun := fun F => ipO μ 𝓕 F.1 G.1 map_add' := fun F F' => ?_ map_smul' := fun a F => ?_ } ‖G‖ fun F => ?_, fun F => rfl⟩` and prove the remaining obligations. Unfold `ipO`. Rewrite using `[← integral_add (hi F) (hi F')]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun w => add_mul _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ipO`. Rewrite using `[RingHom.id_apply, smul_eq_mul, ← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun w => mul_assoc _ _ _)`. Use `(norm_integral_le_of_norm_le_const (μ := μ.restrict 𝓕) (Filter.Eventually.of_forall (hb F))).trans_eq ?_` and prove the remaining obligations. Rewrite using `[probReal_univ, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ip {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hμ : IsCovolOne (ratL T S) μ 𝓕) (G : BB ψ S T) :
     ∃ l : BB ψ S T →L[ℂ] ℂ, ∀ F, l F = ipO μ 𝓕 F.1 G.1 := by
@@ -305,13 +305,11 @@ theorem exists_ip {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hμ : IsCovolOn
     rw [probReal_univ, mul_one]
 
 /- English proof (translation)
-Take `⟨E, J, hJ, hEJ, hE⟩` from `GlobalTheory.T.exists_euclideanCoords_hermitian_cartanInvolution ((Fin T.rank × Fin S.rank) × Unit) (blk (fun _ => ((2 * (tauE D τ D.host.xi0).im : ℝ) : ℂ) • gramAt D T τ) fun _ => (gramAt D S τ)⁻¹) (blk (fun _ => sT) fun _ => sS) (by`. Rewrite using `[blk_conjTranspose, conjTranspose_smul, GlobalTheory.SmoothForms.RealPts.gramAt_herm, conjTranspose_nonsing_inv, GlobalTheory.SmoothForms.RealPts.gramAt_herm]`. Use the proof step `simp)`. Use the proof step `(by`. Rewrite using `[blk_mul, hS.1, hT.1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `blk_one)`. Use the proof step `(by`. Rewrite using `[blk_mul]`. Use `blk_posDef (fun _ => ?_) fun _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT.2.2.smul (two_im_pos τ)`. Rewrite using `[← GlobalTheory.RealSymplForm.cartan_inv_mul hS]`. Conclude with `hS.2.2.inv)`. Take `⟨E', hE'⟩ : ∃ E' : EuclideanSpace ℂ ((Fin T.rank × Fin S.rank) × Unit) →L[ℝ] (Ix S T → ℂ), ∀ z, E' z = emb τ (E z)` from `⟨emb τ ∘L E, fun _ => rfl⟩`. Use `⟨E', J, hJ, fun x y => by rw [hE', hE', HM, form_emb, hE], fun z => ⟨_, (hE' z).trans (emb_apply _ _)⟩, fun y => ⟨E.symm (vecL fun _ => y), ?_, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[hE', E.apply_symm_apply, emb_apply]`. Both sides reduce to the same expression. Rewrite using `[hE', hEJ, E.apply_symm_apply, emb_apply]`. Use `cpt_blk (fun _ : Unit => sT) (fun _ => sS) (vecL fun _ => y) ()` as an intermediate fact. Conclude with `congrArg (fun z => atPl τ (Complex.I • z)) this`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_coord (τ : D.what₂.Tau) {sS : Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : Matrix (Fin T.rank) (Fin T.rank) ℂ}
     (hS : IsCartanInv (gramAt D S τ) sS) (hT : IsCartanInv (gramAt D T τ) sT) :
@@ -347,14 +345,14 @@ theorem exists_coord (τ : D.what₂.Tau) {sS : Matrix (Fin S.rank) (Fin S.rank)
     exact congrArg (fun z => atPl τ (Complex.I • z)) this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun e => QB_ext fun w => by rw [coe_rhoB, e], fun e => by rw [← coe_rhoB hψ, e]⟩`.
+Supply the required witnesses or components.
 -/
 theorem fix_iff (hψ : IsStdChar D ψ (-1)) (u : WO S T) (F : BB ψ S T) :
     heisO ψ S T u F.1 = F.1 ↔ rhoB hψ u F = F :=
   ⟨fun e => QB_ext fun w => by rw [coe_rhoB, e], fun e => by rw [← coe_rhoB hψ, e]⟩
 
 /- English proof (translation)
-Use `heis_comm (isHeis_rhoB (S := S) (T := T) h hψ) ?_ ?_ F` and prove the remaining obligations. Rewrite using `[HM, form_ne _ _ (Ne.symm ht), Complex.zero_im]`. Rewrite using `[HM, form_ne _ _ ht, Complex.zero_im]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoV_comm (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {τ τ' : D.what₂.Tau} (ht : τ' ≠ τ)
     (y y' : Matrix (Fin T.rank) (Fin S.rank) ℂ) (F : BB ψ S T) :
@@ -367,11 +365,11 @@ variable {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.w
   {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Establish `sm` using `sm_of_theta h hψ X hx.1`. Establish `h1 : ∀ {u : WO S T}, u.map (infPart D) = 0 → heisO ψ S T u X.1 = X.1 → heisO ψ S T u (A X).1 = (A X).1` using `fun hu e => (fix_iff hψ _ _).2 (by rw [hA _ fun v => rhoB_comm h hψ hu _, (fix_iff hψ _ _).1 e])`. Take `⟨U, hU, hl⟩` from `hx.1.level`. Establish `h2` using `isLatVac_mono (latO_mono (P := fun _ => True) fun _ _ => Sum.inl_ne_inr) hx.2.1`. Take `⟨a, ha⟩` from `GlobalTheory.T.restrictedTensor_vacuum_eq_smul_basePoint D ψ θ S T sS sT ΛS ΛT _ hb (A X).1 (theta_of_sm h hψ _ hs ⟨U, hU, fun u hu h0 => h1 h0 (hl u hu h0)⟩) ⟨fun u hu => h1 (GlobalTheory.SplitScalar.latO_fin (AddSubgroup.nsmul_mem _ hu 2)) (h2.1 u hu), fun e he u hu hh => h1 (G …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `ht : τ' = τ`. Substitute `ht` using the available equality. Conclude with `hann y`. Establish `hd : ∀ y, dH (rhoV hψ σ S T) (atPl τ' y) (A X) = A (dH (rhoV hψ σ S T) (atPl τ' y) X)` using `fun y => dH_comm_line A _ (fun t => hA _ fun v f => by rw [smul_atPl, rhoV_comm h hψ ht]) sm hs`. Rewrite using `[hd, hd, ← map_smul, ← map_add, (isFockVacAt_iff h hψ sm τ' _).1 (hx.2.2 τ' fun e => ht (Sum.inr_injective e)) y, map_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨a, QB_ext fun w => congrFun ha w⟩`.
+A detailed English derivation is pending.
 -/
 theorem line (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {X F₀ : BB ψ S T} (hb : IsBase ψ θ S T sS sT ΛS ΛT F₀.1)
     {τ : D.what₂.Tau} (hx : IsLocal ψ θ S T sS sT ΛS ΛT (.inr τ) X.1) (A : BB ψ S T →L[ℂ] BB ψ S T)
@@ -401,17 +399,15 @@ theorem line (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {X F₀ : BB ψ S T} 
   exact ⟨a, QB_ext fun w => congrFun ha w⟩
 
 /- English proof (translation)
-Establish `lift : ∀ f, IsThetaFunO ψ S T f → ∃ F : BB ψ S T, (F.1 : WO S T → ℂ) = f` using `fun f hf => ⟨toB hψ f hf, coe_toB hψ f hf⟩`. Take `⟨om, hom, e⟩` from `exists_om S T`. Establish `hρ : IsHeis (fun x y => om x y) (rhoV hψ σ S T)`. Simplify using `only [e]`. Conclude with `isHeis_rhoB h hψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : ∀ F : BB ψ S T, Integrable (fun u => c u • rhoV hψ σ S T (E u) F) ν` using `fun F => by`. Use `Integrable.mono' ((hci 0).mul_const ‖F‖) (hc.smul ((hρ.2.2.2 F).comp E.continuous)).aestronglyMeasurable (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, hρ.2.2.1, pow_zero, one_mul]`. Establish `hip : ∀ (F : BB ψ S T) g, IsThetaFunO ψ S T g → ipO μ 𝓕 (∫ u, c u • rhoV hψ σ S T (E u) F ∂ν : BB ψ S T).1 g = ∫ u, c u * ipO μ 𝓕 (heisO ψ S T (wAt (.inr τ) (iotaV σ S T (E u))) F.1) g ∂ν`. Introduce `F g hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨G, rfl⟩` from `lift g hg`. Take `⟨l, hl⟩` from `exists_ip hμ G`. Rewrite using `[← hl, ← l.integral_comp_comm (hint F)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Take `⟨y, hy⟩` from `hE u`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[map_smul, hl, coe_rhoV, hy, wAt_iotaV h, smul_eq_mul]`. Use `⟨fun φ => ∫ u, c u * φ (iotaV σ S T (E u)) ∂ν, fun a φ => ?_, fun f hf => ?_, hip F₀⟩` and prove the remaining obligations. Simplify using `only [mul_left_comm _ a, integral_const_mul]`. Take `⟨F, rfl⟩` from `lift f hf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hl⟩` from `hf.level`. Use `⟨_, theta_of_sm h hψ _ (GlobalTheory.T.heisenberg_smooth_rapid_superposition_translates _ _ ν _ om _ hom hρ E c hc hci F (sm_of_theta h hψ F hf)) ⟨U, hU, fun u hu h0 => (fix_iff hψ _ _).2 ?_⟩, hip F⟩` and prove the remaining obligations. Use `((rhoB hψ u).integral_comp_comm (hint F)).symm.trans (integral_congr_ae (Filter.Eventually.of_forall fun v => ?_))` and prove the remaining obligations. Establish `e1` using `rhoB_comm h hψ h0 (E v) F`. Rewrite `e1` using `[(fix_iff hψ u F).1 (hl u hu h0)]`.
-
-Conclude with `(map_smul _ _ _).trans (congrArg (c v • ·) e1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocOp_integral (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
@@ -455,11 +451,11 @@ theorem isLocOp_integral (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {μ : Mea
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨om, hom, e⟩` from `exists_om S T`. Establish `hρ : IsHeis (fun x y => om x y) (rhoV hψ σ S T)`. Simplify using `only [e]`. Conclude with `isHeis_rhoB h hψ`. Use `borelize V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : F₀ ≠ 0` using `fun h0 => base_ne_zero hb (by rw [h0]; rfl)`. Take `⟨c, hc, hci, hX⟩` from `exists_superpos om hom hρ hJ E (fun x y => (e _ _).trans (hE x y)) (sm_of_theta h hψ X hx.1) h0 fun A hA hs hann => by`. Use `line h hψ hb hx A (fun C hC => hA C (fun v f => ?_) X) hs fun y => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `h1 v`. Conclude with `hy ▸ hC y f`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨z, e1, e2⟩` from `h2 y`. Conclude with `e1 ▸ e2 ▸ hann z`. Use `isLocOp_integral h hψ hμ volume E h1 hc hci F₀` as an intermediate fact. Rewrite `this` using `[← hX]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isLocOp_coord (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) {X F₀ : BB ψ S T} (hb : IsBase ψ θ S T sS sT ΛS ΛT F₀.1)
@@ -485,9 +481,9 @@ theorem isLocOp_coord (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {μ : Measur
   rwa [← hX] at this
 
 /- English proof (translation)
-Introduce `D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ τ x hx`. Establish `hψ` using `base_std hb`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart (base_inf hb)`. Establish `lift : ∀ f, IsThetaFunO ψ S T f → ∃ F : BB ψ S T, (F.1 : WO S T → ℂ) = f` using `fun f hf => ⟨toB hψ f hf, coe_toB hψ f hf⟩`. Take `⟨X, rfl⟩` from `lift x hx.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨F₀, rfl⟩` from `lift f₀ (base_theta hb)`. Take `⟨E, J, hJ, hE, h1, h2⟩` from `exists_coord τ (hb.1 τ) (hb.2.1 τ)`. Conclude with `isLocOp_coord h hψ hμ hb hx E J hJ hE h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLocOp_real : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → ∀ (τ : D.what₂.Tau) (x : WO S T → ℂ), IsLocal ψ θ S T sS sT ΛS ΛT (.inr τ) x → IsLocOp ψ S T μ 𝓕 f₀ (.inr τ) x := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ τ x hx

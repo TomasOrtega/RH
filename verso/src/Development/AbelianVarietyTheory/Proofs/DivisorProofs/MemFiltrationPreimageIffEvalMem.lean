@@ -8,13 +8,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity Global
 namespace GlobalTheory.FilPreMem
 
 /- English proof (translation)
-Proceed by induction on `f using Polynomial.induction_on with`. Consider the case `C c`. Introduce `y hy`. Use `F.smul_mem (⟨(c : C), (hv _).1 c.2⟩ : w.valuationSubring) hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `s i`. Simplify using `only [Polynomial.eval_C]`. Both sides reduce to the same expression. Consider the case `add p q hp hq`. Introduce `y hy`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `F.add_mem (hp y hy) (hq y hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s i`. Simplify using `only [Polynomial.eval_add, Subring.coe_add, Pi.add_apply, add_mul]`. Consider the case `monomial n c h`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `y hy`. Use `hF _ (h y hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s i`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.unif, Pi.smul_apply, smul_eq_mul, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Subring.coe_mul, Subring.coe_pow, pow_succ, liftA]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,17 +48,13 @@ theorem poly_mem (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : AddValuatio
     ring
 
 /- English proof (translation)
-Introduce `C _ w v hv S _ _ a N F hF x`. Set `T : Submodule (RS (liftA hv a)) (Fin N → RS (liftA hv a))` to `{ carrier := {x | evalVec (liftA hv a) N x ∈ F} zero_mem' := by show evalVec (liftA hv a) N 0 ∈ F`. Establish `: evalVec (liftA hv a) N 0 = 0`. Use function extensionality and compare the values at `s i`. Simplify using `[evalVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `F.zero_mem`. Use the proof step `add_mem' := by`. Introduce `x y hx hy`. Use `show evalVec (liftA hv a) N (x + y) ∈ F`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[evalVec_add]`. Conclude with `F.add_mem hx hy`. Use the proof step `smul_mem' := by`. Introduce `r x hx`. Use `show evalVec (liftA hv a) N (r • x) ∈ F`.
+Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Proceed by induction on `r using AdjoinRoot.induction_on with`. Consider the case `ih f`. Use `poly_mem C w v hv S a N F hF f _ hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s i`.
-
-Simplify using `[evalVec, ev] }`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: filPre (liftA hv a) F ≤ T` using `Submodule.span_le.2 (fun y hy => hy)`. Conclude with `this hx`.
-
-Introduce `hx`. Conclude with `Submodule.subset_span hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem filPre_mem_iff : ∀ (C : Type) [Field C] (w : Valuation C ℝ≥0) (v : AddValuation C (WithTop ℝ)) (hv : ∀ x, x ∈ Int0 v ↔ x ∈ w.valuationSubring) (S : Type) [Fintype S] [DecidableEq S] (a : S → w.valuationSubring) (N : ℕ) (F : Submodule w.valuationSubring (S → Fin N → C)), (∀ x ∈ F, GlobalTheory.IndefiniteRowSideFullHecke.QuotientEigenDifference.unif a x ∈ F) → ∀ x, x ∈ filPre (liftA hv a) F ↔ evalVec (liftA hv a) N x ∈ F := by
   intro C _ w v hv S _ _ a N F hF x

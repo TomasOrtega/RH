@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.UnitarySelfGeneration.normal_scheme_height_one_stalk_dvr`.
+A detailed English derivation is pending.
 -/
 theorem stalk_isDiscreteValuationRing_of_dim_one : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X], IsNormalScheme X → ∀ p : X, ringKrullDim (X.presheaf.stalk p) = 1 → ∃ _ : IsDomain (X.presheaf.stalk p), IsDiscreteValuationRing (X.presheaf.stalk p) :=
   @PositivityTheory.UnitarySelfGeneration.normal_scheme_height_one_stalk_dvr

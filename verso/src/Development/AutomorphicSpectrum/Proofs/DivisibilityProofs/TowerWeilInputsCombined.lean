@@ -20,13 +20,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `hFH hIn hZ1 hZ2 hAP hG II hII Ψ _ _ N _ T frob C C' rd Lval hC hC' hrd hfs hP hI1 hI2 hA1 hM1 hM2 hAN hI5 hI6 hI7 hI8 hP6 hPA hPF hVol hSL`. Establish `hN : 2 ≤ N` using `by have := T.j_pos; have := T.j_lt; omega`. Establish `hI3 : T.I3` using `GlobalTheory.T.tower_I3_of_semipositive_nef Ψ N T hA1 hM1 hM2 hAN`. Establish `hT1 : T.T1 II` using `GlobalTheory.T.tower_T1_limit II Ψ N T hP hI2 hI3`. Establish `hW : T.ThmW II` using `GlobalTheory.T.tower_weil_theorem hIn.2.2.2.2.2.1 GlobalTheory.T.exists_unique_rational_statement GlobalTheory.CompanionTheory.Ar.Link.divSuppArith_holds hZ1 hZ2 II hII Ψ N T hP hI1 hI2 hI3 hI5 hI6 hI7`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI9 : I9 (Ψ` using `Ψ) (N := N) (hhFl Ψ N II) := GlobalTheory.T.flag_height_I9_properties hFH hIn II hII Ψ N hN`. Establish `hB : T.ThmB II (hhFl Ψ N II)` using `GlobalTheory.T.tower_theorem_B hAP II Ψ N T (hhFl Ψ N II) hP hW hI8 hI9`. Establish `he : GroundTheory.Heights₂.Heights.antisymDegree Ψ N = dimFl Ψ N`. Simplify using `[GroundTheory.Heights₂.Heights.antisymDegree, dimFl, Nat.choose_two_right]`. Establish `hAr` using `(GlobalTheory.T.flag_variety_boundary_dimension_drop Ψ N hN).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hAr` using `[he]`. Establish `hLab : LabelInv (Ψ` using `Ψ) (N := N) (hhFl Ψ N II) := GlobalTheory.T.flag_height_label_invariant II hII Ψ N hN hAr`. Establish `hBA : T.ThmBA II (hhFl Ψ N II)` using `GlobalTheory.T.tower_theorem_B_averaged II Ψ N T (hhFl Ψ N II) hB hPA hLab`. Establish `hTest : HhTestBound T.j (hhFl Ψ N II)` using `GlobalTheory.T.flag_height_test_bound hG hIn II hII Ψ N T.j T.j_pos T.j_lt`. Establish `hA0 : T.LowerBoundAtBase II (hhFl Ψ N II) frob (2 * (C + C') + 3) rd Lval` using `GlobalTheory.T.test_height_bound II Ψ N T (hhFl Ψ N II) frob C C' rd Lval hC hC' hrd hP hI9 hPF hSL hTest`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (0 : ℝ) ≤ 2 * (C + C') + 3` using `by linarith`. Establish `hT2'` using `GlobalTheory.T.tower_T2 II Ψ N T (hhFl Ψ N II) frob (2 * (C + C') + 3) C' rd Lval hK hC' hrd hP hfs hI9 hP6 hBA hPF hA0`. Establish `hEq : 2 * (C + C') + 3 + C' + 2 = 2 * C + 3 * C' + 5` using `by ring`. Rewrite `hT2'` using `[hEq]`. Conclude with `⟨hT1, hB, hT2', GlobalTheory.T.mean_slope_proportional_volume II Ψ N T _ rd Lval hP hVol hT2'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem chain_tower : PB.FlagHeight → PB.Inputs → SuccessiveMinimaLowerBound → SuccessiveMinimaUpperBound →
     GroundTheory.Heights₂.Heights.AntisymPerturbation.Statement → GroundTheory.Heights₂.Heights.LowerBoundFree.GrassmannianHeightZTwo.Statement →

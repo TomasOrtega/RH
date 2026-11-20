@@ -13,25 +13,23 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `K _ ι _ Q e M E D t hQ hMs hMp hE ht hD hDa hle`. Unfold `ptsIntegral`. Distinguish the cases in `hΨ : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ), IsGoodProj Q Ψ`. Use `swap`. Rewrite using `[dif_neg hΨ, dif_neg hΨ]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hΨ, dif_pos hΨ]`. Use `set Ψ := hΨ.choose with hΨdef`. Establish `hΨg : IsGoodProj Q Ψ` using `hΨ.choose_spec`. Unfold `ptsIntegralAt`. Establish `hD1 : IsSectionOn Q D 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨0, fun k => by simp [hDa], fun m hm k => ?_, fun h => hQ.2.1.1.ne_top ((Ideal.eq_top_iff_one Q).2 h)⟩` and prove the remaining obligations. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Establish `key : ∀ y w, sheetDensity Q Ψ (pot M) (fun z => Real.log (D.h z)) y w = -sheetDensity Q Ψ (pot M) (logNorm D 1) y w`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `y w`. Unfold `sheetDensity`. Apply the tactic sequence `split_ifs <;> simp [logNorm, Real.log_inv]`. Establish `h1` using `hInt K ι Q e Ψ M E t hQ hΨg hMs hE ht`. Establish `h2 : Integrable (fun y => ∑ᶠ w ∈ fibre Q Ψ y, sheetDensity Q Ψ (pot M) (fun z => Real.log (D.h z)) y w)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [key, finsum_neg_distrib]`. Conclude with `(hInt K ι Q e Ψ M D 1 hQ hΨg hMs hD hD1).neg`. Take `⟨a, -, hta, htQ⟩` from `ht`. Establish `hJ : IsMultiHomogIdeal (Ideal.span {t})` using `⟨{t}, fun f hf => ⟨a, (Set.mem_singleton_iff.mp hf) ▸ hta⟩, rfl⟩`. Establish `hJQ : ¬ Ideal.span {t} ≤ Q` using `fun h => htQ (h (Ideal.subset_span rfl))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hnull` using `projB_null Ψ hQ hΨg hJ hJQ`. Use `integral_mono_ae h1 h2 ?_` and prove the remaining obligations. Rewrite using `[Filter.EventuallyLE, ae_iff]`. Use `measure_mono_null (fun y hy => ?_) hnull` and prove the remaining obligations. Assume the negation of the conclusion as `hyB`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hy` to reduce the goal to its premises. Establish `hfin` using `fibreFinite K ι Q e Ψ hQ hΨg y`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Unfold `sheetDensity`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hγ : ∃ γ, IsSheet Q Ψ y w γ`. Rewrite using `[dif_pos hγ, dif_pos hγ]`. Take `⟨-, hev⟩` from `hγ.choose_spec`. Take `⟨-, hmem, hproj⟩` from `hev.self_of_nhds`. Establish `ht0 : eval (hγ.choose y) (map (Int.castRingHom ℂ) t) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Use `hyB ⟨hγ.choose y, hmem, ⟨hmem.1, fun f hf => ?_⟩, hproj⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`. Rewrite using `[map_mul, map_mul, h0, mul_zero]`. Establish `hma : 0 ≤ maDensity (fun j y' => pot M j (hγ.choose y')) y` using `ReciprocityTheory.AnForm.A.maDens_nonneg_of_posSemidef _ _ fun j => hHess K ι Q e Ψ (M j) y w hγ.choose (hMs j) (hMp j) hγ.choose_spec`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hle _ hmem ht0) hma`. Rewrite using `[dif_neg hγ, dif_neg hγ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PtsMonoSemiPos.proof (hInt : PtsIntegrableStatement) (hHess : SheetHessPSD.Statement) :
     PtsMonoSemiPos.Statement := by

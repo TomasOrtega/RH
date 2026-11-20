@@ -271,7 +271,7 @@ def GeoBound : Prop :=
     Formalism.NormVectorIdentities.Items.HSClaimS 26 X.T X.D X.n 1 X.abelian₂ X.beta X.LamD X.LamT (Real.log Λ₀) X.del h X.d (X.degM X.T)
 
 /- English proof (translation)
-Simplify using `[word]`.
+Simplify using the standard rewrite rules.
 -/
 example {K A : Type} [Field K] [AddCommGroup A] [Module K A] {N : ℕ} (mul : (Fin N → K) →ₗ[K] Module.End K A)
     (u : Fin 0 → Fin N → K) : word mul u = 1 := by simp [word]

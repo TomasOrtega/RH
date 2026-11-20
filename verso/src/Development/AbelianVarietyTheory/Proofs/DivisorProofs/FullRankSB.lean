@@ -41,7 +41,7 @@ def fibre (ν β : kˣ →* ℂˣ) (a b : ℕ) (Φ : Matrix (Fin a) (Fin (a + b)
     apow (gdet g) (((a + b : ℕ) : ℂ) / 2) ∂(haarVol (GlobalTheory.SplitWeil.KO k (Fin a)))
 
 /- English proof (translation)
-Unfold `fibre`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← omA_mul, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibre_omA (ν β : kˣ →* ℂˣ) (a b : ℕ) (h : GL (Fin (a + b)) k) (Φ : Matrix (Fin a) (Fin (a + b)) k → ℂ)
     (x : GL (Fin (a + b)) k) : fibre ν β a b (omA ν β 1 h Φ) x = fibre ν β a b Φ (x * h) := by

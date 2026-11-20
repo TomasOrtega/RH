@@ -17,9 +17,9 @@ namespace GlobalTheory.BundleTie
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Take `⟨h1, -, -, hmul, hnorm⟩` from `Formalism.L2.SG.Pf.level_subgroup_character_unitary X`. Establish `hsq` using `hmul 1 h1 1 h1`. Rewrite `hsq` using `[mul_one (1 : X.B.I.Gf)]`. Establish `hne : X.chi2 1 ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn` using `hnorm 1 h1`. Rewrite `hn` using `[h0, norm_zero]`. Conclude with `zero_ne_one hn`. Conclude with `mul_left_cancel₀ hne (by rw [mul_one]; exact hsq.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi2_apply_one : X.chi2 1 = 1 := by
 
@@ -34,7 +34,7 @@ theorem chi2_apply_one : X.chi2 1 = 1 := by
   exact mul_left_cancel₀ hne (by rw [mul_one]; exact hsq.symm)
 
 /- English proof (translation)
-Establish `h1 : (1 : X.B.I.Gf) ∈ K2set X.B.I X.B.g X.e0 X.z0 X.bw` using `(Formalism.L2.SG.Pf.level_subgroup_character_unitary X).1`. Rewrite using `[X.e_eq 1, if_pos h1]`. Establish `hc : chi2f X.B.I X.psiEf X.B.g X.e0 X.f0 X.z0 X.bw X.bwd 1 = 1` using `chi2_apply_one X`. Rewrite using `[hc, star_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_one : X.B.e 1 = 1 / (X.volK2 : ℂ) := by
   have h1 : (1 : X.B.I.Gf) ∈ K2set X.B.I X.B.g X.e0 X.z0 X.bw := (Formalism.L2.SG.Pf.level_subgroup_character_unitary X).1
@@ -46,13 +46,13 @@ theorem e_one : X.B.e 1 = 1 / (X.volK2 : ℂ) := by
 open Formalism Formalism.L2 Formalism.L2.SG in
 
 /- English proof (translation)
-Establish `hre : (X.B.e 1).re = 1 / X.volK2`. Rewrite using `[e_one X, ← Complex.ofReal_one, ← Complex.ofReal_div, Complex.ofReal_re]`. Establish `hd : (∏ v, fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) = ∏ v, X.dv v` using `rfl`. Establish `hsub : X.K2 ⊆ X.B.I.Kset` using `fun x hx => hx.1`. Establish `hv2 : X.volK2 = (X.B.μf X.K2).toReal` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Formalism.MainNotions.StandardLattice.volY0 D * Formalism.MainNotions.StandardLattice.idxSig D (D.host.g 0) (D.host.g 1) * ∏ ρ, D.dsig ρ = (∏ v, fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) * X.B.I.vol X.B.μf X.B.fund * (X.B.e 1).re`. Rewrite using `[hre, hd, ← hI]`. Distinguish the cases in `hv : X.volK2 = 0`. Rewrite using `[hv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK2 : X.B.μf X.K2 ≠ 0`. Introduce `h`. Apply `hv` to reduce the goal to its premises. Simplify using `[hv2, h]`. Establish `hμ : (X.B.μf X.B.I.Kset).toReal ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, ENNReal.toReal_eq_zero_iff, not_or]`. Conclude with `⟨fun h => hK2 (measure_mono_null hsub h), (PI.WAU.Cpt.isCompact_Kset X.B.I).measure_lt_top.ne⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_cancel₀ _ hμ, mul_one_div]`.
+Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dstarD_eq
     (hI : (X.B.μf X.B.I.Kset).toReal / X.volK2 = Formalism.MainNotions.StandardLattice.idxSig D (D.host.g 0) (D.host.g 1))
@@ -88,9 +88,9 @@ theorem dstarD_eq
         rw [div_mul_cancel₀ _ hμ, mul_one_div]
 
 /- English proof (translation)
-Introduce `D X hHH hint hD hinst hVol hcd hds`. Take `⟨ι⟩` from `hHH`. Establish `hV` using `GlobalTheory.covol_formalDegree_eq D X hinst hVol hcd hds`. Establish `hI` using `Formalism.L2.SG.Pf.DstarIdxPf.dstarIdx_holds X`. Conclude with `{ n_eq := X.n_eq f_eq := GlobalTheory.DegreeRankEquations.f_eq D X rd_eq := GlobalTheory.DegreeRankEquations.rd_eq D X eps_eq := X.eps_eq lam_eq := X.lam_eq ds := X.ds low := X.low g_eq := X.g_eq g0_eq := X.g0_eq D_eq := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.RowsCount.D_eq_finrank_HHX D X hint, ← ι.toLinearEquiv.finrank_eq, D.s_HH]`. Use `Dstar_eq := hD.trans (dstarD_eq X hI hV) }`.
+A detailed English derivation is pending.
 -/
 theorem autTie : ∀ (D : D7) (X : HidaSetting D), Nonempty (D.s.HH ≃ₗᵢ[ℂ] HHX X) →
     Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) → D.what₂.Dstar = Formalism.MainNotions.StandardLattice.DstarD D →

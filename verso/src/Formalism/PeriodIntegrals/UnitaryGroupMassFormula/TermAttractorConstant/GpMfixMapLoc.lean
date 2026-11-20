@@ -18,11 +18,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
   {Λ : Submodule (𝓞 E) S.V}
 
 /- English proof (translation)
-Introduce `v hv`. Use `Submodule.smul_induction_on hv ?_ ?_` and prove the remaining obligations. Introduce `a ha w hw`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Distinguish the cases in `hg : (g : E) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hg, inv_zero, zero_smul]`. Conclude with `zero_mem _`. Establish `: ((g : E))⁻¹ • ((t * (g : 𝓞 E)) • w) = t • w`. Rewrite using `[gp_osmul, gp_osmul, map_mul, map_natCast, smul_smul, mul_comm (algebraMap (𝓞 E) E t), ← mul_assoc, inv_mul_cancel₀ hg, one_mul]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ t hw`. Introduce `a b ha hb`. Rewrite using `[smul_add]`. Conclude with `add_mem ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_div (g : ℕ) : ∀ v ∈ Ideal.span {(g : 𝓞 E)} • Λ, ((g : E))⁻¹ • v ∈ Λ := by
   intro v hv
@@ -42,7 +42,7 @@ theorem gp_div (g : ℕ) : ∀ v ∈ Ideal.span {(g : 𝓞 E)} • Λ, ((g : E))
     exact add_mem ha hb
 
 /- English proof (translation)
-Take `⟨s, hs, hv⟩` from `(mem_localization_iff p Λ v).1 hv`. Conclude with `(mem_localization_iff p Λ _).2 ⟨s, hs, by rw [← gp_map_osmul]; exact autLam_maps hn hv⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gp_locΛ_map (p : Ideal (𝓞 E)) [p.IsPrime] {n : S.V ≃ₗ[E] S.V} (hn : IsAutLam S Λ n) {v : S.V}
     (hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ p Λ) : n v ∈ Formalism.HermitianLatticesTheory.localization₂ p Λ := by
@@ -50,9 +50,9 @@ theorem gp_locΛ_map (p : Ideal (𝓞 E)) [p.IsPrime] {n : S.V ≃ₗ[E] S.V} (h
   exact (mem_localization_iff p Λ _).2 ⟨s, hs, by rw [← gp_map_osmul]; exact autLam_maps hn hv⟩
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Establish `h` using `hξ.2.2 b P hP`. Take `⟨s, hs, hv⟩` from `(mem_localization_iff P.asIdeal _ _).1 h`. Use `(mem_localization_iff P.asIdeal Λ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Unfold `gpGen`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gp_smul_comm]`. Conclude with `gp_div g _ hv`.
+A detailed English derivation is pending.
 -/
 theorem gp_gen_mem (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F : LFlag S r T} {F' : LFlag S r T'}
     {ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)} (hξ : AdmWit Λ g F F' ξ) (hP : (g : 𝓞 E) ∈ P.asIdeal)
@@ -66,11 +66,11 @@ theorem gp_gen_mem (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F : LFlag S r T} 
   exact gp_div g _ hv
 
 /- English proof (translation)
-Establish `h : gpMfix Λ F ≤ (gpMfix Λ F).comap (fO n)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w (hw | hw)`. Take `⟨h1, h2⟩` from `mem_XLam.1 hw`. Conclude with `Submodule.subset_span (Set.mem_union_left _ (mem_XLam.2 ⟨autLam_maps hn.1 h1, nlam_maps_X hn _ h2⟩))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[Set.mem_singleton_iff]`. Rewrite using `[hw, hl.2]`. Use `show n F.fl.z ∈ gpMfix Λ F`. Establish `h1 : F.fl.z ∈ gpMfix Λ F`. Use `Submodule.subset_span (Set.mem_union_right _ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_singleton_iff, hl.2]`. Establish `h2 : n F.fl.z - F.fl.z ∈ gpMfix Λ F` using `Submodule.subset_span (Set.mem_union_left _ (nlam_z_sub hn hl.1))`. Use `Submodule.add_mem _ h2 h1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `fun v hv => h hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem gp_Mfix_map {F : LFlag S r T} (hl : IsLift Λ F) {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) :
     ∀ v ∈ gpMfix Λ F, n v ∈ gpMfix Λ F := by
@@ -92,7 +92,7 @@ theorem gp_Mfix_map {F : LFlag S r T} (hl : IsLift Λ F) {n : S.V ≃ₗ[E] S.V}
   exact fun v hv => h hv
 
 /- English proof (translation)
-Take `⟨s, hs, hv⟩` from `(mem_localization_iff p _ v).1 hv`. Conclude with `(mem_localization_iff p _ _).2 ⟨s, hs, by rw [← gp_map_osmul]; exact gp_Mfix_map hl hn _ hv⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gp_Mfix_map_loc (p : Ideal (𝓞 E)) [p.IsPrime] {F : LFlag S r T} (hl : IsLift Λ F)
     {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) {v : S.V} (hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ p (gpMfix Λ F)) :
@@ -101,9 +101,7 @@ theorem gp_Mfix_map_loc (p : Ideal (𝓞 E)) [p.IsPrime] {F : LFlag S r T} (hl :
   exact (mem_localization_iff p _ _).2 ⟨s, hs, by rw [← gp_map_osmul]; exact gp_Mfix_map hl hn _ hv⟩
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Take `⟨c, -, hc1, heq⟩` from `hc.1 P`. Rewrite using `[heq]`. Establish `: c a • F'.fl.e a ∈ Submodule.span (𝓞 E) (Set.range fun a => c a • F'.fl.e a)` using `Submodule.subset_span ⟨a, rfl⟩`. Rewrite `this` using `[hc1 hP a, one_smul]`.
-
-Conclude with `gp_le_locP _ _ this`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_e_mem (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F' : LFlag S r T'} (hc : IsFixedConv Λ g F')
     (hP : (g : 𝓞 E) ∈ P.asIdeal) (a : Fin r) :
@@ -117,9 +115,9 @@ theorem gp_e_mem (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F' : LFlag S r T'} 
   exact gp_le_locP _ _ this
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Take `⟨c, -, hc1, heq⟩` from `hc.1 P`. Rewrite using `[heq]`. Introduce `v hv`. Take `⟨s, hs, hv⟩` from `(mem_localization_iff P.asIdeal _ v).1 hv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hK s hs v ((Submodule.span_le.2 ?_) hv)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `show c a • F'.fl.e a ∈ K`. Rewrite using `[hc1 hP a, one_smul]`. Conclude with `he a`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_XLam_le (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F' : LFlag S r T'} (hc : IsFixedConv Λ g F')
     (hP : (g : 𝓞 E) ∈ P.asIdeal) (K : Submodule (𝓞 E) S.V)
@@ -137,9 +135,9 @@ theorem gp_XLam_le (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F' : LFlag S r T'
   exact he a
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[frame_last]`. Conclude with `gp_le_locP _ _ hl.1`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cast i`. Rewrite using `[frame_castSucc]`. Use `locP_mono _ (fun v hv => (mem_XLam.1 hv).1) (gp_e_mem P g hc hP i)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gp_frame_loc (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F' : LFlag S r T'} (hl : IsLift Λ F')
     (hc : IsFixedConv Λ g F') (hP : (g : 𝓞 E) ∈ P.asIdeal) (b : Fin (r + 1)) :
@@ -154,11 +152,11 @@ theorem gp_frame_loc (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F' : LFlag S r 
     refine locP_mono _ (fun v hv => (mem_XLam.1 hv).1) (gp_e_mem P g hc hP i)
 
 /- English proof (translation)
-Use `haveI := P.isPrime`. Unfold `frameAct`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `e : ((ξ a b : 𝓞 E) : E) • frame F a = ξ a b • frame F a` using `(gp_osmul _ _).symm`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Rewrite using `[frame_last]`. Use `gp_le_locP _ _ (Submodule.subset_span (Set.mem_union_right _ ?_))` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_singleton_iff, hl.2]`. Consider the case `cast i`. Rewrite using `[frame_castSucc]`. Conclude with `locP_mono _ (show XLam Λ F ≤ gpMfix Λ F from fun v hv => Submodule.subset_span (Set.mem_union_left _ hv)) (gp_e_mem P g hc hP i)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_frameAct_mem (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F : LFlag S r T} (hl : IsLift Λ F)
     (hc : IsFixedConv Λ g F) (hP : (g : 𝓞 E) ∈ P.asIdeal)
@@ -181,9 +179,9 @@ theorem gp_frameAct_mem (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) {F : LFlag S 
       (Set.mem_union_left _ hv)) (gp_e_mem P g hc hP i)
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[frame_last]`. Conclude with `hm.2.2 _ (z_mem_orth F')`. Consider the case `cast i`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frame_castSucc]`. Conclude with `Xflag_le_X F' i.1 (hm.2.1 i.1 _ (e_mem_Xflag F' i))`.
+A detailed English derivation is pending.
 -/
 theorem gp_nlam_sub_X {F' : LFlag S r T'} {m : S.V ≃ₗ[E] S.V} (hm : m ∈ NLam Λ F') (b : Fin (r + 1)) :
     m (frame F' b) - frame F' b ∈ Xsp F' := by
@@ -196,7 +194,7 @@ theorem gp_nlam_sub_X {F' : LFlag S r T'} {m : S.V ≃ₗ[E] S.V} (hm : m ∈ NL
     exact Xflag_le_X F' i.1 (hm.2.1 i.1 _ (e_mem_Xflag F' i))
 
 /- English proof (translation)
-Take `⟨s, hs, hv⟩` from `(mem_localization_iff p Λ v).1 hv`. Use `(mem_localization_iff p _ v).2 ⟨s, hs, mem_XLam.2 ⟨hv, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[gp_osmul]`. Conclude with `Submodule.smul_mem _ _ hX`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gp_loc_X (p : Ideal (𝓞 E)) [p.IsPrime] {F' : LFlag S r T'} {v : S.V} (hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ p Λ)
     (hX : v ∈ Xsp F') : v ∈ Formalism.HermitianLatticesTheory.localization₂ p (XLam Λ F') := by

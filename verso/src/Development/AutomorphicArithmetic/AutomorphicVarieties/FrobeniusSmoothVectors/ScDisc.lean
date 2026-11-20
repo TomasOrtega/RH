@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ K _ _ _ h2 hB`. Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h2⟩`. Use `haveI : IsGalois ℚ K := {}`. Establish `hl : l.Prime` using `Fact.out`. Rewrite using `[← (UpperTheory.V.CF.unramIff).2.1 K l hl, (UpperTheory.V.CF.unramIff).1 K l hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Take `⟨A, hA⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver (F := K) Ω w`. Establish `hv : A.valuation (l : Ω) < 1`. Establish `h` using `(hA (l : 𝓞 K)).2 hw`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hI` using `hB A hv`. Rewrite using `[← UpperTheory.V.CF.ineAbs ℚ K Ω A w hA, Subgroup.eq_bot_iff_forall]`. Introduce and unpack `_ ⟨σ, hσ, rfl⟩`. Establish `hσ' : ∀ x : K, σ (algebraMap K Ω x) = algebraMap K Ω x` using `hI hσ`. Use extensionality with `x`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(algebraMap K Ω).injective` to reduce the goal to its premises. Use `show algebraMap K Ω (σ.restrictNormal K x) = algebraMap K Ω x`. Rewrite using `[AlgEquiv.restrictNormal_commutes]`. Conclude with `hσ' x`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.sc_disc :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [NumberField K] [Algebra K Ω], Module.finrank ℚ K = 2 → (∀ B : ValuationSubring Ω, B.valuation (l : Ω) < 1 → Ine (F := ℚ) B ≤ galOf ℚ K Ω) → ¬ (l : ℤ) ∣ discr K := by

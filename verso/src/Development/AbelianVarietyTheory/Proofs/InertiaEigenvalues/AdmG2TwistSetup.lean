@@ -20,9 +20,7 @@ namespace GlobalTheory.JumpShapeAt
 open Classical
 
 /- English proof (translation)
-Establish `h : ((D.nbr i w hw).LL.1.val.toRingHom.comp (Br.toLLK (D.nbr i w hw))) = D.naut.iotaQ i`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (D.nd.O i)) (RingHom.ext fun c => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Br.toLLK_alg]`. Conclude with `((D.loc_tie i w hw).1 c).symm`.
-
-Conclude with `RingHom.congr_fun h z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toLLK_val (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (z : FractionRing (D.nd.O i)) :
@@ -35,23 +33,21 @@ theorem toLLK_val (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)
   exact RingHom.congr_fun h z
 
 /- English proof (translation)
-Use `D.nd.lPrime i` as an intermediate fact. Establish `hsplit : ∀ y, (C.LL.1.val.comp τ) y ∈ (D.nbr i w hw).LL.1.toSubalgebra` using `fun y => (D.nbr i w hw).LL_split (C.LL.1.val.comp τ) y`. Set `τ₀ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Br.LL D.nbr i w hw` to `(C.LL.1.val.comp τ).codRestrict (D.nbr i w hw).LL.1.toSubalgebra hsplit`. Establish `hτ₀ : ∀ x, τ x = C.inc (τ₀ x)` using `fun x => Subtype.ext rfl`. Establish `hE : EmbeddingTypes.EmbU C ep τ ↔ EmbeddingTypes.EmbTypeUe ep τ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ₁, h1, h2⟩`. Establish `: τ₁ = τ₀` using `AlgHom.ext fun x => C.inc.injective ((h2 x).symm.trans (hτ₀ x))`. Conclude with `this ▸ h1`. Introduce `h1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨τ₀, h1, hτ₀⟩`. Take `⟨g', key, hU⟩` from `GlobalTheory.HTW.exists_letter_of_local_embedding D i w hw τ₀`. Establish `hemb : ∀ x, D.what₂.embLL (D.embE (D.host.sigmaOf g' x)) = D.host.emb g' x` using `fun x => DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf g' x)`. Establish `hgg : g' = g`. Apply `(factEmb D.R D.host).1.1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[← h.1, ← hemb x, ← D.naut.iota_LL i, ← toLLK_val D i w hw, ← key x]`. Both sides reduce to the same expression. Substitute `hgg` using the available equality. Rewrite using `[hE]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `ep`. Rewrite using `[GlobalTheory.SplitDecl.embTypeUe_iff]`. Simplify using `only [AdmissibleParameterJ.TypeU, Bool.false_eq_true, iff_false]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, φ, hφ, h3⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hφe : φ = D.host.emb g'` using `RingHom.ext fun x => by`. Rewrite using `[← h3 x _ (key x).symm, hemb]`. Establish `h4 : D.host.emb (g' * D.R.cc) ∈ D.host.cmType`. Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp, ← hφe]`. Conclude with `hφ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `h5` using `((factEmb D.R D.host).2 _).1 h4`. Conclude with `fun hg => (Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g').1 hg h5`. Introduce `hg`. Establish `h5 : g' * D.R.cc ∈ D.R.Psi`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg ((Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g').2 hc)`. Establish `h4` using `((factEmb D.R D.host).2 _).2 h5`. Rewrite `h4` using `[Formalism.L2.Geo.emb_mul_cc_comp]`. Use `⟨fun x => ⟨_, (key x).symm⟩, D.host.emb g', h4, fun x y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y = D.embE (D.host.sigmaOf g' x)` using `(D.nd.embK i).injective ((Br.toLLK (D.nbr i w hw)).injective (hy.trans (key x)))`.
-
-Rewrite using `[hy', hemb]`. Simplify using `only [EmbeddingTypes.EmbTypeUe, if_true, AdmissibleParameterJ.TypeU, iff_true]`. Conclude with `hU`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embU_iff (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)
@@ -107,15 +103,15 @@ theorem embU_iff (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     exact hU
 
 /- English proof (translation)
-Take `⟨ep', hd⟩` from `hd`. Take `⟨sg, cτ, hs1, hs2, hmap, -⟩` from `hd i τ₀ g ρ h`. Establish `hsg : sg * sg = 1`. Distinguish the cases in `hT : AdmissibleParameterJ.TypeU D ep' g`. Rewrite using `[hs1 hT]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[hs2 hT]`. Evaluate the numerical expressions. Introduce `p hp`. Establish `hm : sg * p + cτ ∈ (D.naut.locAutHodgeTateWeightsLevelZero i τ₀).map (fun n : ℤ => (n : ℚ))`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hmap]`. Conclude with `Multiset.mem_map_of_mem _ hp`. Take `⟨n, -, hn⟩` from `Multiset.mem_map.1 hm`. Use `⟨sg.num * (n - cτ), ?_⟩` and prove the remaining obligations. Establish `hden : sg = (sg.num : ℚ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hT : AdmissibleParameterJ.TypeU D ep' g`. Rewrite using `[hs1 hT]`. Both sides reduce to the same expression. Rewrite using `[hs2 hT]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[← hden, hn]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ppm_int (D : D7) (hd : AdmissibleParameterJ.AdmDict D) (i : D.nd.Loc)
     (τ₀ : D.host.E →+* Qbar (D.nd.l i)) (g : D.R.GG) (ρ : D.what₂.Tau)
@@ -141,19 +137,19 @@ theorem ppm_int (D : D7) (hd : AdmissibleParameterJ.AdmDict D) (i : D.nd.Loc)
     _ = sg * (sg * p + cτ - cτ) := by ring
 
 /- English proof (translation)
-Establish `hj` using `D.nd.j_range i`. Establish `hF` using `GlobalTheory.JumpSets.jFacts_of hP _ hj.1 hj.2 ρ`. Establish `hI` using `ppm_int D hd i τ₀ g ρ h`. Establish `hsh : ∃ m : ℤ, AdmissibleParameterJ.sz D (D.nd.j i) ρ + AdmissibleParameterJ.c0 D = m`. Establish `hmem : -AdmissibleParameterJ.sz D (D.nd.j i) ρ + ((D.R.t : ℚ) + 1) / 2 - (((0 : ℕ) : ℚ) + 1) ∈ AdmissibleParameterJ.PPm D (D.nd.j i) ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `AdmissibleParameterJ.PPm`. Use `Multiset.mem_add.2 (Or.inr (Multiset.mem_map.2 ⟨0, ?_, rfl⟩))` and prove the remaining obligations. Simplify using `only [Finset.mem_val, Finset.mem_range]`. Conclude with `hF.t_pos`. Take `⟨m, hm⟩` from `hI _ hmem`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-m + (D.R.t : ℤ) - 1, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hm]`. Simplify using `only [AdmissibleParameterJ.c0]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hJp : ∀ q ∈ AdmissibleParameterJ.Jp D (D.nd.j i) ρ, ∃ n : ℤ, q = n`. Introduce `q hq`. Take `⟨n, hn⟩` from `hI _ ((GlobalTheory.JumpSets.jp_mem_iff hF q).2 hq)`. Take `⟨m, hm⟩` from `hsh`. Use `⟨n + m, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[← hn, ← hm]`. Expand and normalize the polynomial expressions, which then agree. Introduce `q hq`. Consider the cases of `up`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `hq' : AdmissibleParameterJ.refl D q ∈ AdmissibleParameterJ.Jp D (D.nd.j i) ρ` using `hq`. Take `⟨n, hn⟩` from `hJp _ hq'`. Use `⟨(D.R.t : ℤ) - 1 - n, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hn]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [AdmissibleParameterJ.refl]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hJp q hq`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jj_int (D : D7) (L : SizeData₂ D) (hP : AdmissibleParameterJ.AdmPar L) (hd : AdmissibleParameterJ.AdmDict D) (i : D.nd.Loc)
     (τ₀ : D.host.E →+* Qbar (D.nd.l i)) (g : D.R.GG) (ρ : D.what₂.Tau)
@@ -195,9 +191,9 @@ theorem jj_int (D : D7) (L : SizeData₂ D) (hP : AdmissibleParameterJ.AdmPar L)
   · exact hJp q hq
 
 /- English proof (translation)
-Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`. Rewrite `hq` using `[Set.Finite.mem_toFinset]`. Take `⟨n, rfl⟩` from `hint q hq`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Int.floor_intCast]`. Conclude with `hq`. Introduce `ha`. Conclude with `⟨a, (Set.Finite.mem_toFinset hS).2 ha, Int.floor_intCast a⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_floorImg (S : Set ℚ) (hS : S.Finite) (hint : ∀ q ∈ S, ∃ n : ℤ, q = n) (a : ℤ) :
     a ∈ hS.toFinset.image (fun q : ℚ => ⌊q⌋) ↔ (a : ℚ) ∈ S := by
@@ -211,9 +207,9 @@ theorem mem_floorImg (S : Set ℚ) (hS : S.Finite) (hint : ∀ q ∈ S, ∃ n : 
     exact ⟨a, (Set.Finite.mem_toFinset hS).2 ha, Int.floor_intCast a⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.card_image_of_injOn, Set.ncard_eq_toFinset_card S hS]`. Introduce `q hq q' hq' he`. Rewrite `hq`, `hq'` using `[Finset.mem_coe, Set.Finite.mem_toFinset]`. Take `⟨n, rfl⟩` from `hint q hq`. Take `⟨n', rfl⟩` from `hint q' hq'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Int.floor_intCast] at he`. Rewrite using `[he]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_floorImg (S : Set ℚ) (hS : S.Finite) (hint : ∀ q ∈ S, ∃ n : ℤ, q = n) :
     (hS.toFinset.image (fun q : ℚ => ⌊q⌋)).card = S.ncard := by
@@ -226,14 +222,14 @@ theorem card_floorImg (S : Set ℚ) (hS : S.Finite) (hint : ∀ q ∈ S, ∃ n :
   rw [he]
 
 /- English proof (translation)
-The claim follows from `Set.ncard_preimage_of_injective_subset_range GlobalTheory.HostJumpSets.refl_injective (fun q _ => GlobalTheory.HostJumpSets.refl_surjective q)`.
+A detailed English derivation is pending.
 -/
 theorem reflS_ncard (D : D7) (S : Set ℚ) : (AdmissibleParameterJ.reflS D S).ncard = S.ncard :=
   Set.ncard_preimage_of_injective_subset_range GlobalTheory.HostJumpSets.refl_injective
     (fun q _ => GlobalTheory.HostJumpSets.refl_surjective q)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h1`. Take `⟨b, hb⟩` from `h2`. Establish `h3` using `hF.v_nonneg a`. Establish `h4` using `GlobalTheory.JumpSets.jp_b_pos hF b`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cloud_not_low {D : D7} {L : SizeData₂ D} {j : ℕ} {ρ : D.what₂.Tau} (hF : GlobalTheory.JumpSets.JFacts L j ρ)
     (q : ℚ) (h1 : q ∈ AdmissibleParameterJ.cloudJ D j ρ) (h2 : q ∈ AdmissibleParameterJ.lowJ D j ρ) : False := by
@@ -244,47 +240,41 @@ theorem cloud_not_low {D : D7} {L : SizeData₂ D} {j : ℕ} {ρ : D.what₂.Tau
   linarith
 
 /- English proof (translation)
-Establish `hF` using `GlobalTheory.JumpSets.jFacts_of hP j hj1 hjm ρ`. Establish `hfin` using `GlobalTheory.HostJumpSets.JJ_finite (D := D) up j ρ`. Establish `hcl : AdmissibleParameterJ.cloudT D up j ρ ⊆ AdmissibleParameterJ.JJ D up j ρ`. Introduce `q hq`. Consider the cases of `up`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Conclude with `Or.inl (Or.inl hq)`. Conclude with `Or.inl (Or.inl hq)`. Establish `hlo : AdmissibleParameterJ.lowT D up j ρ ⊆ AdmissibleParameterJ.JJ D up j ρ`. Introduce `q hq`. Consider the cases of `up`.
+Prove the first alternative. Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Conclude with `Or.inl (Or.inr hq)`. Conclude with `Or.inl (Or.inr hq)`. Establish `hfC` using `hfin.subset hcl`. Establish `hfL` using `hfin.subset hlo`. Establish `hiC : ∀ q ∈ AdmissibleParameterJ.cloudT D up j ρ, ∃ n : ℤ, q = n` using `fun q hq => hint q (hcl hq)`.
+Prove the first alternative. Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiL : ∀ q ∈ AdmissibleParameterJ.lowT D up j ρ, ∃ n : ℤ, q = n` using `fun q hq => hint q (hlo hq)`. Use `set Cl := hfC.toFinset.image (fun q : ℚ => ⌊q⌋) with hCl`. Use `set Lo := hfL.toFinset.image (fun q : ℚ => ⌊q⌋) with hLo`. Establish `mC : ∀ a, a ∈ Cl ↔ (a : ℚ) ∈ AdmissibleParameterJ.cloudT D up j ρ` using `mem_floorImg _ hfC hiC`. Establish `mL : ∀ a, a ∈ Lo ↔ (a : ℚ) ∈ AdmissibleParameterJ.lowT D up j ρ` using `mem_floorImg _ hfL hiL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJW : ∀ a : ℤ, (a ∈ Cl ∨ a ∈ Lo) ↔ (a : ℚ) ∈ AdmissibleParameterJ.JW D up j ρ`. Introduce `a`. Rewrite using `[mC, mL]`. Both sides reduce to the same expression. Take `⟨-, -, -, hncC, hncL, -⟩` from `hb j hj1 hjm ρ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht0 : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Use `⟨Cl, Lo, ⟨⟨1, ∑ a ∈ Cl, |(a : ℚ)| + 1, ∑ a ∈ Lo, |(a : ℚ)| + 1, one_pos, by positivity, by positivity, fun a ha => ⟨?_, ?_⟩, fun a ha => ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_, fun a => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `(mC a).1 ha`. Consider the cases of `up`. Establish `h2` using `(hc j hj1 hjm ρ).2.2.1 _ h`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AdmissibleParameterJ.refl] at h2`. Establish `h3 : a < -2`. Establish `: (a : ℚ) < -2` using `by linarith`. Conclude with `this` after adjusting the coercions. Simplify using `only [Bool.false_eq_true, ↓reduceIte]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Establish `: (a : ℚ) ≤ -3` using `by exact_mod_cast (show a ≤ -3 by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `(hc j hj1 hjm ρ).2.2.1 _ h`. Establish `h3 : (1 : ℚ) < a` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [↓reduceIte]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ((((if up then 1 else -1) * a : ℤ)) : ℚ) ≤ |(a : ℚ)|`. Consider the cases of `up`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [Bool.false_eq_true, ↓reduceIte]`. Use `push_cast`. Combine the linear relations using `[neg_abs_le (a : ℚ)]`. Simplify using `only [↓reduceIte]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[le_abs_self (a : ℚ)]`. Establish `h2 : |(a : ℚ)| ≤ ∑ a ∈ Cl, |(a : ℚ)|` using `Finset.single_le_sum (f := fun a : ℤ => |(a : ℚ)|) (fun _ _ => abs_nonneg _) ha`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : |(a : ℚ)| ≤ ∑ a ∈ Lo, |(a : ℚ)|` using `Finset.single_le_sum (f := fun a : ℤ => |(a : ℚ)|) (fun _ _ => abs_nonneg _) ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hCl, card_floorImg _ hfC hiC]`. Consider the cases of `up`. Conclude with `(reflS_ncard D _).trans hncC`. Conclude with `hncC`. Rewrite using `[hLo, card_floorImg _ hfL hiL]`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the cases of `up`. Conclude with `(reflS_ncard D _).trans hncL`. Conclude with `hncL`. Rewrite using `[Finset.disjoint_left]`. Introduce `a ha1 ha2`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(mC a).1 ha1`. Establish `h2` using `(mL a).1 ha2`. Consider the cases of `up`. Conclude with `cloud_not_low hF _ h1 h2`. Conclude with `cloud_not_low hF _ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Finset.disjoint_left]`. Introduce `a ha1 ha2`. Rewrite `ha2` using `[Finset.mem_Ico]`. Conclude with `GlobalTheory.JumpSets.block_not_mem_JW hF up _ ((GlobalTheory.JumpSets.block_mem_iff a).2 ha2) ((hJW a).1 (Or.inl ha1))`. Rewrite using `[Finset.disjoint_left]`.
+Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Move the embeddings inside the algebraic operations.
 
-Introduce `a ha1 ha2`. Rewrite `ha2` using `[Finset.mem_Ico]`. Conclude with `GlobalTheory.JumpSets.block_not_mem_JW hF up _ ((GlobalTheory.JumpSets.block_mem_iff a).2 ha2) ((hJW a).1 (Or.inr ha1))`. Introduce `h`. Establish `hJ : (((-1 : ℤ)) : ℚ) ∈ AdmissibleParameterJ.JJ D up j ρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components.
 
-Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `hcl ((mC _).1 h)`. Conclude with `hlo ((mL _).1 h)`. Move the coercions through the operations in `at hJ`. Conclude with `((hc j hj1 hjm ρ).2.1 up).1 hJ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. The claim follows by propositional logic. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `hJ : (((D.R.t : ℤ)) : ℚ) ∈ AdmissibleParameterJ.JJ D up j ρ`. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `hcl ((mC _).1 h)`. Conclude with `hlo ((mL _).1 h)`.
-
-Move the coercions through the operations in `at hJ`. Conclude with `((hc j hj1 hjm ρ).2.1 up).2 hJ`. Establish `hiff : (a : ℚ) ∈ AdmissibleParameterJ.JJ D up j ρ ↔ a ∈ Cl ∪ Lo ∪ Finset.Ico 0 (D.R.t : ℤ)`. Rewrite using `[Finset.mem_union, Finset.mem_union, Finset.mem_Ico]`. Distinguish the cases in `hbk : (a : ℚ) ∈ AdmissibleParameterJ.blockJ D`.
-
-Use `(GlobalTheory.JumpSets.block_mem_iff a).1 hbk` as an intermediate fact. Conclude with `⟨fun _ => Or.inr this, fun _ => GlobalTheory.JumpSets.block_sub_JJ up j ρ _ hbk⟩`. Rewrite using `[GlobalTheory.JumpSets.JJ_iff_JW hF up _ hbk, ← hJW]`. Establish `: ¬ (0 ≤ a ∧ a < (D.R.t : ℤ))` using `fun h => hbk ((GlobalTheory.JumpSets.block_mem_iff a).2 h)`. The claim follows by propositional logic.
-
-Use `show (if (a : ℚ) ∈ AdmissibleParameterJ.JJ D up j ρ then (1 : ℤ) else 0) = _`. Distinguish the cases in `h : (a : ℚ) ∈ AdmissibleParameterJ.JJ D up j ρ`. Rewrite using `[if_pos h, if_pos (hiff.1 h)]`. Rewrite using `[if_neg h, if_neg (mt hiff.2 h)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shape (D : D7) (L : SizeData₂ D) (hP : AdmissibleParameterJ.AdmPar L) (hb : AdmissibleParameterJ.CloudCentreDistance L) (hc : AdmissibleParameterJ.jcCondition L)
     (j : ℕ) (hj1 : 1 ≤ j) (hjm : j ≤ D.R.m) (ρ : D.what₂.Tau) (up : Bool)
@@ -398,17 +388,17 @@ theorem shape (D : D7) (L : SizeData₂ D) (hP : AdmissibleParameterJ.AdmPar L) 
     · rw [if_neg h, if_neg (mt hiff.2 h)]
 
 /- English proof (translation)
-Introduce `hPr D L P nch HW F Cm X C₂ S ep hJ i h0 h1 w hw C`. Establish `hR : GoodR D.nd i (X.r i)` using `S.canon.fam.good i`. Establish `hA` using `S.facts.toCore.admA`. Establish `hg : D.nd.l i ∉ TwistedPlaces.gset D`. Simplify using `only [TwistedPlaces.gset, Finset.mem_insert, Finset.mem_singleton, not_or]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h0, h1⟩`. Establish `hChi` using `GlobalTheory.ChiOneNoPt.main hPr.font D hA.1 hA.2.2.2.1 hA.2.2.2.2.2.2 S.facts.block S.facts.muUnr i hg`. Establish `hG2` using `S.facts.g2.1 i (X.r i) hR`. Establish `hcr : ∀ x, IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rO D.nd i (X.r i) x)))` using `fun x => GlobalTheory.DualTwistCrys.crys_coef D i (X.r i) w hw C x (GlobalTheory.DualTwistCrys.crys_bridge D i (X.r i) hR hG2 h0 h1 w hw x)`. Use `⟨hcr, fun x => GlobalTheory.DualTwistCrys.tw_crys D i (X.r i) w hw C x (GlobalTheory.DualTwistCrys.crys_chi D i hChi w hw C) (hcr x), fun τ => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, ρ, hRd, hx, -⟩` from `hJ i (X.r i) hR w hw C τ`. Establish `hAJ` using `S.facts.admJ L S.par`. Establish `hJall : AdmissibleParameterJ.JumpConditions L` using `GlobalTheory.JumpStatement.holds_all D L hAJ`. Establish `hj` using `D.nd.j_range i`. Establish `hint` using `jj_int D L S.par hAJ.2.2.2.1 i _ g ρ hRd (decide (AdmissibleParameterJ.TypeU D ep g))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Cl, Lo, hS⟩` from `shape D L S.par hJall.2.1 hJall.2.2.1 _ hj.1 hj.2 ρ _ hint`. Use `⟨Cl, Lo, fun x => ?_⟩` and prove the remaining obligations. Establish `hsg : (if EmbeddingTypes.EmbU C ep τ then (1 : ℤ) else -1) = (if decide (AdmissibleParameterJ.TypeU D ep g) then 1 else -1)`. Distinguish the cases in `hT : AdmissibleParameterJ.TypeU D ep g`. Rewrite using `[if_pos ((embU_iff D i w hw C τ ep g ρ hRd).2 hT), decide_eq_true hT]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg (mt (embU_iff D i w hw C τ ep g ρ hRd).1 hT), decide_eq_false hT]`. Both sides reduce to the same expression. Rewrite using `[hsg]`. Use `hS using 1` and compare the differences between its conclusion and the goal.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[(hx x a).2.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), Setup L nch HW X C₂ → ∀ ep, AdmissibleParameterJ.hodgeTateJumpsAtModulesForSign D ep → ∀ i, EmbeddingTypes.admG2 i (X.r i) ep := by
   intro hPr D L P nch HW F Cm X C₂ S ep hJ i h0 h1 w hw C

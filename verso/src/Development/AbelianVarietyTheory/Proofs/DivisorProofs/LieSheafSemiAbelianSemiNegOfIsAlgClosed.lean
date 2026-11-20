@@ -17,7 +17,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Use `LieSemineg.isIntegral_curve h.1 h.2.2` as an intermediate fact. Set `x : Sp C.functionField ⟶ C` to `C.fromSpecStalk (genericPoint C)`. Set `φ : CommRingCat.of k ⟶ CommRingCat.of C.functionField` to `Spec.preimage (x ≫ strHom k C)`. Use `⟨C.functionField, inferInstance, φ.hom.toAlgebra, x, h, isGen_fromSpecStalk C, ?_⟩` and prove the remaining obligations. Conclude with `(Spec.map_preimage (x ≫ strHom k C)).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isGenOver (k : Type) [Field k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (h : IsCurve k C) :
     ∃ (K : Type) (_ : Field K) (_ : Algebra k K) (x : Sp K ⟶ C), IsGenOver k x := by
@@ -28,9 +28,9 @@ theorem exists_isGenOver (k : Type) [Field k] (C : Scheme.{0}) [Algebra k Γ(C, 
   exact (Spec.map_preimage (x ≫ strHom k C)).symm
 
 /- English proof (translation)
-Introduce `k _ _ _ C _ h G _ hG W r hW i hi`. Take `⟨K, _, _, x, hx⟩` from `exists_isGenOver k C h`. Take `⟨V₀, s, g, hV, hs, hg, hl⟩` from `GlobalTheory.T.exists_genericFrame_and_localFrames_allPlaces k K C x hx W r hW`. Establish `hL` using `GlobalTheory.T.lie_subsheaf_lines_degree_nonpos k K C x hx G hG W r i hi V₀ s g hV hs hg hl`. Establish `hd` using `GlobalTheory.T.adelicMatrixFamilyDegree_le_rank_mul_line_bound r k K (GlobalTheory.T.isFunctionFieldOfOneVariable_of_genericPointOfCurve k K C x hx) g hg 0 hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd` using `[mul_zero]`. Conclude with `GlobalTheory.T.detDegree_nonpos_of_adelicDegree_nonpos k K C x hx W r hW V₀ s g hV hs hg hl (by exact_mod_cast hd)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiNeg_lie_of_isAlgClosed : ∀ (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)], IsCurve k C → ∀ (G : Over C) [GrpObj G], IsSemiAbelian G → SemiNeg k (Lie G) := by
   intro k _ _ _ C _ h G _ hG W r hW i hi

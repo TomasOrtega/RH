@@ -10,13 +10,13 @@ namespace GlobalTheory.PolClass
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Use `set Dn := (DX.pull π h).nsmul T`. Use `set E' := Dn.add EX`. Establish `hZ : (lbPow ΩZ (T * k)).IsLB` using `LB.isLB_linComb hΩZ _ _`. Establish `hL` using `isLB_tens hZ (isLB_dual E'.isLB_lb)`. Establish `hXk : (lbPow ΩX k).IsLB` using `LB.isLB_linComb hΩX _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : (GlobalTheory.CechPic.tens (lbPow ΩX k) (GlobalTheory.CechPic.dual DX.lb)).IsLB` using `isLB_tens hXk (isLB_dual DX.isLB_lb)`. Establish `hMp` using `pull_isLB hM π`. Establish `hMpT : (lbPow ((GlobalTheory.CechPic.tens (lbPow ΩX k) (GlobalTheory.CechPic.dual DX.lb)).pull π) T).IsLB` using `LB.isLB_linComb hMp _ _`. Establish `hR` using `isLB_tens hMpT (isLB_dual EX.isLB_lb)`. Use `⟨hL, (cls_eq_iff hL hR).1 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eΩ : cls ΩZ hΩZ = pull π (cls ΩX hΩX)` using `(cls_eq_iff hΩZ (pull_isLB hΩX π)).2 hΩ`. Establish `hDp` using `(DX.pull π h).isLB_lb`. Establish `eDp : cls _ hDp = pull π (cls _ DX.isLB_lb)` using `(cls_eq_iff hDp (pull_isLB DX.isLB_lb π)).2 (DX.lbIso_pull π h)`. Establish `eDn : cls _ Dn.isLB_lb = T • cls _ hDp` using `((cls_eq_iff Dn.isLB_lb (LB.isLB_linComb hDp _ _)).2 ((DX.pull π h).lbIso_nsmul T)).trans (cls_lbPow hDp T _)`. Establish `eE : cls _ EX.isLB_lb = cls _ E'.isLB_lb - cls _ Dn.isLB_lb` using `((cls_eq_iff EX.isLB_lb (LB.isLB_div E'.isLB_lb Dn.isLB_lb)).2 (Dn.lbIso_add EX)).trans (cls_div E'.isLB_lb Dn.isLB_lb _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[cls_tens hZ (isLB_dual E'.isLB_lb), cls_tens hMpT (isLB_dual EX.isLB_lb), cls_dual E'.isLB_lb, cls_dual EX.isLB_lb, cls_lbPow hΩZ, cls_lbPow hMp, cls_pull hM, cls_tens hXk (isLB_dual DX.isLB_lb), cls_dual DX.isLB_lb, cls_lbPow hΩX, eΩ, eE, eDn, eDp]`. Simplify using `only [map_add, map_neg, map_nsmul, smul_add, smul_neg, mul_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem lbIso_blowPol {X Z : Scheme.{0}} (π : Z ⟶ X) (ΩX : LB X) (ΩZ : LB Z) (DX : GlobalTheory.EffCartierData X)
     (EX : GlobalTheory.EffCartierData Z) (h : DX.KeepsRegular π) (k T : ℕ) (hΩX : ΩX.IsLB) (hΩZ : ΩZ.IsLB)

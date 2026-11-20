@@ -19,9 +19,9 @@ open GlobalTheory.ArchRec
 namespace GlobalTheory.ArchRec
 
 /- English proof (translation)
-Establish `hc : Continuous π` using `hp.continuous`. Establish `ht : Filter.Tendsto π (Filter.cocompact T.G) (Filter.cocompact (Formalism.REAL.UJ ε))`. Use `Filter.hasBasis_cocompact.tendsto_right_iff.2 fun K hK => ?_` and prove the remaining obligations. Establish `hK' : IsCompact (π ⁻¹' K)` using `hp.isCompact_preimage hK`. Conclude with `hK'.compl_mem_cocompact`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI hν : (Measure.map π T.haar).IsHaarMeasure := Measure.isHaarMeasure_map T.haar π hc hs ht`. Use `⟨Measure.haarScalarFactor (Measure.map π T.haar) μ, (Measure.haarScalarFactor_pos_of_isHaarMeasure _ _).ne', hp.isClosedMap.isQuotientMap hc hs, hc.measurable, ?_⟩` and prove the remaining obligations. Conclude with `Measure.isMulLeftInvariant_eq_smul _ μ`.
+A detailed English derivation is pending.
 -/
 theorem haar_of_proper {p q n : ℕ} (T : GrpData p q) (ε : Fin n → Bool) (μ : Measure (Formalism.REAL.UJ ε))
     [μ.IsHaarMeasure] (π : T.G →* Formalism.REAL.UJ ε) (hp : IsProperMap π) (hs : Function.Surjective π) :
@@ -61,13 +61,13 @@ noncomputable def reixUJ {p q n : ℕ} {ε : Fin n → Bool} {e : Ix p q ≃ Fin
   continuous_invFun := Continuous.subtype_mk (((continuous_reixHom e.symm).units_map _).comp continuous_subtype_val) _
 
 /- English proof (translation)
-Introduce `p q n T ε e br μ h hμ`. Apply the tactic sequence `obtain ⟨C, hC, -⟩ := GlobalTheory.LeviIso.exists_conj_gauge_invariant n ε (if br then starRingEnd ℂ else RingHom.id ℂ) (by cases br <;> simp)`. Set `π : T.G →* Formalism.REAL.UJ ε` to `(C.toMonoidHom.comp (reixUJ h).toMonoidHom).comp (GlobalTheory.DetSqrtCover.covHom T)`. Establish `hcov : IsProperMap (GlobalTheory.DetSqrtCover.covHom T)` using `GlobalTheory.DetSqrtCover.isProperMap_covU T`. Establish `hp : IsProperMap π` using `(C.toHomeomorph.isProperMap.comp (reixUJ h).toHomeomorph.isProperMap).comp hcov`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective π` using `(C.surjective.comp (reixUJ h).surjective).comp (GlobalTheory.DetSqrtCover.surjective_covU T)`. Take `⟨c, hc0, hq, hm, hmap⟩` from `haar_of_proper T ε μ π hp hs`. Use `⟨π, c, hc0, fun g => ?_, hq, hm, hmap⟩` and prove the remaining obligations. Establish `hre : umat (reixUJ h (GlobalTheory.DetSqrtCover.covHom T g)) = Matrix.reindex e e ((T.cov g : GL (Ix p q) ℂ) : Mat p q)` using `GlobalTheory.RealPar.SqInt.reixHom_apply e _`. Establish `hconj` using `hC (reixUJ h (GlobalTheory.DetSqrtCover.covHom T g))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `umat (C (reixUJ h (GlobalTheory.DetSqrtCover.covHom T g))) = _`. Use `hconj.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(umat (reixUJ h (GlobalTheory.DetSqrtCover.covHom T g))).map _ = _`. Rewrite using `[hre]`. Consider the cases of `br`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Use extensionality with `i j`. Simplify using `[phi, plainMat]`. Use extensionality with `i j`. Simplify using `[phi, barMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cover_haar_map : ∀ (p q n : ℕ) (T : GrpData p q) (ε : Fin n → Bool) (e : Ix p q ≃ Fin n) (br : Bool) (μ : Measure (Formalism.REAL.UJ ε)), SignCompat ε e → μ.IsHaarMeasure → ∃ (π : T.G →* Formalism.REAL.UJ ε) (c : NNReal), c ≠ 0 ∧ (∀ g, umat (π g) = phi br e ((T.cov g : GL (Ix p q) ℂ) : Mat p q)) ∧ Topology.IsQuotientMap π ∧ Measurable π ∧ Measure.map π T.haar = c • μ := by
   intro p q n T ε e br μ h hμ

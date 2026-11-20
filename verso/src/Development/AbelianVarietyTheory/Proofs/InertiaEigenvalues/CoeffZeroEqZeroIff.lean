@@ -19,22 +19,22 @@ def Near (m : ℕ) (x : R) : Prop := ∃ (a : A) (r : R), x = t ^ m * ι a + (p 
 variable {ι p t}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, r, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Near.of_mul (m : ℕ) (r : R) : Near ι p t m ((p : R) * r) := ⟨0, r, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Near.zero (m : ℕ) : Near ι p t m 0 := ⟨0, 0, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, 0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Near.pow_mul (m : ℕ) (a : A) : Near ι p t m (t ^ m * ι a) := ⟨a, 0, by simp⟩
 
 /- English proof (translation)
-Take `⟨a, r, rfl⟩` from `hx`. Take `⟨b, s, rfl⟩` from `hy`. Conclude with `⟨a + b, r + s, by rw [map_add]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Near.add {m : ℕ} {x y : R} (hx : Near ι p t m x) (hy : Near ι p t m y) :
     Near ι p t m (x + y) := by
@@ -43,28 +43,28 @@ theorem Near.add {m : ℕ} {x y : R} (hx : Near ι p t m x) (hy : Near ι p t m 
   exact ⟨a + b, r + s, by rw [map_add]; ring⟩
 
 /- English proof (translation)
-Take `⟨a, r, rfl⟩` from `hx`. Conclude with `⟨-a, -r, by rw [map_neg]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Near.neg {m : ℕ} {x : R} (hx : Near ι p t m x) : Near ι p t m (-x) := by
   obtain ⟨a, r, rfl⟩ := hx
   exact ⟨-a, -r, by rw [map_neg]; ring⟩
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `hx.add hy.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Near.sub {m : ℕ} {x y : R} (hx : Near ι p t m x) (hy : Near ι p t m y) :
     Near ι p t m (x - y) := by
   rw [sub_eq_add_neg]; exact hx.add hy.neg
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction f _ (fun _ _ => Near.add) (Near.zero m) h`.
+A detailed English derivation is pending.
 -/
 theorem Near.sum {I : Type} {m : ℕ} (s : Finset I) {f : I → R} (h : ∀ i ∈ s, Near ι p t m (f i)) :
     Near ι p t m (∑ i ∈ s, f i) :=
   Finset.sum_induction f _ (fun _ _ => Near.add) (Near.zero m) h
 
 /- English proof (translation)
-Take `⟨a, r, rfl⟩` from `hx`. Take `⟨b, s, rfl⟩` from `hy`. Conclude with `⟨a * b, t ^ m * ι a * s + r * (t ^ n * ι b + p * s), by rw [map_mul]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Near.mul {m n : ℕ} {x y : R} (hx : Near ι p t m x) (hy : Near ι p t n y) :
     Near ι p t (m + n) (x * y) := by
@@ -73,14 +73,14 @@ theorem Near.mul {m n : ℕ} {x y : R} (hx : Near ι p t m x) (hy : Near ι p t 
   exact ⟨a * b, t ^ m * ι a * s + r * (t ^ n * ι b + p * s), by rw [map_mul]; ring⟩
 
 /- English proof (translation)
-Take `⟨a, r, rfl⟩` from `hx`. Conclude with `⟨b * a, ι b * r, by rw [map_mul]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Near.mul_ι {m : ℕ} {x : R} (hx : Near ι p t m x) (b : A) : Near ι p t m (ι b * x) := by
   obtain ⟨a, r, rfl⟩ := hx
   exact ⟨b * a, ι b * r, by rw [map_mul]; ring⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Take `⟨a, r, rfl⟩` from `hx`. Conclude with `⟨τ ^ k * a, r, by rw [map_mul, map_pow, ht]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Near.mono {τ : A} (ht : ι τ = t) {m n : ℕ} (h : m ≤ n) {x : R} (hx : Near ι p t n x) :
     Near ι p t m x := by
@@ -89,9 +89,9 @@ theorem Near.mono {τ : A} (ht : ι τ = t) {m n : ℕ} (h : m ≤ n) {x : R} (h
   exact ⟨τ ^ k * a, r, by rw [map_mul, map_pow, ht]; ring⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ht.exists_right_inv`. Take `⟨a, r, h⟩` from `hx`. Establish `h1 : t ^ k * u ^ k = 1` using `by rw [← mul_pow, hu, one_pow]`. Use `⟨a, u ^ k * r, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[pow_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `u ^ k * h - (x - t ^ m * ι a) * h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Near.cancel (ht : IsUnit t) {k m : ℕ} {x : R} (hx : Near ι p t (k + m) (t ^ k * x)) :
     Near ι p t m x := by
@@ -119,7 +119,7 @@ def fixSub {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (H : Set (GQ l)) 
   ⨅ g ∈ H, RingHom.eqLocus (AI.gRW LL g : RW LL →+* RW LL) (RingHom.id _)
 
 /- English proof (translation)
-Simplify using `only [fixSub, Subring.mem_iInf]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_fixSub {P : LocPrime l} {AI : LocAinf l P} {LL : FinExt l} {H : Set (GQ l)}
     {x : RW LL} : x ∈ fixSub AI LL H ↔ ∀ g ∈ H, AI.gRW LL g x = x := by
@@ -130,14 +130,14 @@ abbrev Wach (P : LocPrime l) (K LL : FinExt l) : Type 1 :=
   LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+A detailed English derivation is pending.
 -/
 theorem finite_OL (LL : FinExt l) : Module.Finite ℤ_[l] ↥(OL LL) :=
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 haveI : Module.IsTorsionFree ℤ_[l] ↥LL.1 := Module.IsTorsionFree.trans_faithfulSMul ℤ_[l] ℚ_[l] ↥LL.1 IsIntegralClosure.module_free ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+A detailed English derivation is pending.
 -/
 theorem free_OL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
@@ -165,9 +165,9 @@ Both sides reduce to the same expression.
 @[simp] theorem crd_tmul (i : I) (o : O) (w : W) : crd b i (o ⊗ₜ[Z] w) = b.repr o i • w := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o w`. Simplify using `only [crd_tmul, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Rewrite using `[← TensorProduct.sum_tmul, b.sum_repr]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]`.
+Treat this case separately.
 -/
 theorem sum_crd (x : O ⊗[Z] W) : ∑ i, b i ⊗ₜ[Z] crd b i x = x := by
   induction x using TensorProduct.induction_on with
@@ -178,14 +178,14 @@ theorem sum_crd (x : O ⊗[Z] W) : ∑ i, b i ⊗ₜ[Z] crd b i x = x := by
   | add x y hx hy => simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]
 
 /- English proof (translation)
-Simplify using `[map_sum, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crd_sum (w : I → W) (i : I) : crd b i (∑ j, b j ⊗ₜ[Z] w j) = w i := by
   classical
   simp [map_sum, Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[← sum_crd b x, ← sum_crd b y]`. Simplify using `only [h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ext_crd {x y : O ⊗[Z] W} (h : ∀ i, crd b i x = crd b i y) : x = y := by
   rw [← sum_crd b x, ← sum_crd b y]
@@ -193,7 +193,7 @@ theorem ext_crd {x y : O ⊗[Z] W} (h : ∀ i, crd b i x = crd b i y) : x = y :=
 
 omit [Fintype I] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o w => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem crd_map (f : W →ₐ[Z] W') (i : I) (x : O ⊗[Z] W) :
     crd b i (Algebra.TensorProduct.map (AlgHom.id O O) f x) = f (crd b i x) := by
@@ -204,7 +204,7 @@ theorem crd_map (f : W →ₐ[Z] W') (i : I) (x : O ⊗[Z] W) :
 
 omit [Fintype I] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o w => simp`. Consider the case `add x y hx hy => simp only [mul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem crd_mul (w : W) (i : I) (x : O ⊗[Z] W) :
     crd b i (((1 : O) ⊗ₜ[Z] w) * x) = w * crd b i x := by
@@ -215,7 +215,7 @@ theorem crd_mul (w : W) (i : I) (x : O ⊗[Z] W) :
 
 omit [Fintype I] in
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_natCast_mul (n : ℕ) (i : I) (x : O ⊗[Z] W) :
     crd b i ((n : O ⊗[Z] W) * x) = (n : W) * crd b i x := by
@@ -231,7 +231,7 @@ instance valuationRing_OCb : ValuationRing (OCb l) :=
   (GlobalTheory.TiltAlgClosed.isAlgClosed_tilt_and_valuationRing l).2
 
 /- English proof (translation)
-Rewrite using `[← WittVector.constantCoeff_apply, ← RingHom.mem_ker, WittVector.ker_constantCoeff, Ideal.mem_span_singleton]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_zero_eq_zero_iff (w : WCb l) : w.coeff 0 = 0 ↔ ∃ r, w = (l : WCb l) * r := by
   rw [← WittVector.constantCoeff_apply, ← RingHom.mem_ker, WittVector.ker_constantCoeff,
@@ -239,7 +239,7 @@ theorem coeff_zero_eq_zero_iff (w : WCb l) : w.coeff 0 = 0 ↔ ∃ r, w = (l : W
   rfl
 
 /- English proof (translation)
-The claim follows from `map_sub (WittVector.constantCoeff : WCb l →+* Cb l) x y`.
+A detailed English derivation is pending.
 -/
 theorem sub_coeff_zero (x y : WCb l) : (x - y).coeff 0 = x.coeff 0 - y.coeff 0 :=
   map_sub (WittVector.constantCoeff : WCb l →+* Cb l) x y
@@ -251,7 +251,7 @@ theorem piR_eq {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (s : ℕ) :
     piR AI LL s = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piW AI s) := rfl
 
 /- English proof (translation)
-Rewrite using `[inclW, WittVector.map_coeff, piW, ← WittVector.constantCoeff_apply, map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_zero_piW {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
     (inclW l (piW AI s)).coeff 0 = algebraMap (OCb l) (Cb l) (AI.εroot s - 1) := by
@@ -259,50 +259,50 @@ theorem coeff_zero_piW {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
     WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]
 
 /- English proof (translation)
-The claim follows from `crd_map (basisO LL) (inclWA l) i a`.
+A detailed English derivation is pending.
 -/
 theorem crd_inclR (LL : FinExt l) (i) (a : RA LL) :
     crd (basisO LL) i (inclR LL a) = inclW l (crd (basisO LL) i a) :=
   crd_map (basisO LL) (inclWA l) i a
 
 /- English proof (translation)
-The claim follows from `crd_map (basisO LL) (frobW l) i x`.
+A detailed English derivation is pending.
 -/
 theorem crd_φRW (LL : FinExt l) (i) (x : RW LL) :
     crd (basisO LL) i (φRW LL x) = frobW l (crd (basisO LL) i x) :=
   crd_map (basisO LL) (frobW l) i x
 
 /- English proof (translation)
-The claim follows from `crd_map (basisO LL) (AI.actWCbHom g).toAlgHom i x`.
+A detailed English derivation is pending.
 -/
 theorem crd_gRW {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (g : GQ l) (i) (x : RW LL) :
     crd (basisO LL) i (AI.gRW LL g x) = AI.actWCbHom g (crd (basisO LL) i x) :=
   crd_map (basisO LL) (AI.actWCbHom g).toAlgHom i x
 
 /- English proof (translation)
-The claim follows from `WittVector.map_coeff (autCb l (AI.actT g)).toRingHom w n`.
+A detailed English derivation is pending.
 -/
 theorem coeff_actWCbHom {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (w : WCb l) (n : ℕ) :
     (AI.actWCbHom g w).coeff n = autCb l (AI.actT g) (w.coeff n) :=
   WittVector.map_coeff (autCb l (AI.actT g)).toRingHom w n
 
 /- English proof (translation)
-The claim follows from `WittVector.map_coeff (frobenius (Cb l) l) w n`.
+A detailed English derivation is pending.
 -/
 theorem coeff_frobW (w : WCb l) (n : ℕ) : (frobW l w).coeff n = w.coeff n ^ l :=
   WittVector.map_coeff (frobenius (Cb l) l) w n
 
 /- English proof (translation)
-The claim follows from `WittVector.map_coeff _ a n`.
+A detailed English derivation is pending.
 -/
 theorem coeff_inclW (a : Ainf l) (n : ℕ) :
     (inclW l a).coeff n = algebraMap (OCb l) (Cb l) (a.coeff n) :=
   WittVector.map_coeff _ a n
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩ i`. Rewrite using `[crd_natCast_mul, coeff_zero_eq_zero_iff]`. Conclude with `⟨_, rfl⟩`. Introduce `h choose r hr using fun i => (coeff_zero_eq_zero_iff _).1 (h i)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ j, basisO LL j ⊗ₜ[ℤ_[l]] r j, ext_crd (basisO LL) fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[crd_natCast_mul, crd_sum, hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_iff_crd (LL : FinExt l) (x : RW LL) :
     (∃ r, x = (l : RW LL) * r) ↔ ∀ i, (crd (basisO LL) i x).coeff 0 = 0 := by
@@ -316,15 +316,15 @@ theorem dvd_iff_crd (LL : FinExt l) (x : RW LL) :
     rw [crd_natCast_mul, crd_sum, hr]
 
 /- English proof (translation)
-Establish `key : ∀ (a : RA LL) i, (crd (basisO LL) i (piR AI LL s ^ m * inclR LL a)).coeff 0 = algebraMap (OCb l) (Cb l) ((AI.εroot s - 1) ^ m * (crd (basisO LL) i a).coeff 0)`. Introduce `a i`. Establish `h1 : piR AI LL s ^ m = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (inclW l (piW AI s) ^ m)`. Rewrite using `[piR_eq, Algebra.TensorProduct.tmul_pow, one_pow]`. Establish `h2 : crd (basisO LL) i (inclR LL a) = inclW l (crd (basisO LL) i a)` using `crd_map (basisO LL) (inclWA l) i a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (inclW l (crd (basisO LL) i a)).coeff 0 = algebraMap (OCb l) (Cb l) ((crd (basisO LL) i a).coeff 0)` using `WittVector.map_coeff _ _ _`. Establish `h4 : (inclW l (piW AI s) ^ m).coeff 0 = (inclW l (piW AI s)).coeff 0 ^ m` using `map_pow (WittVector.constantCoeff : WCb l →+* Cb l) _ _`. Rewrite using `[h1, crd_mul, h2, WittVector.mul_coeff_zero, h3, h4, coeff_zero_piW, map_mul, map_pow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, r, h⟩ i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨(crd (basisO LL) i a).coeff 0, ?_⟩` and prove the remaining obligations. Establish `h' : x - piR AI LL s ^ m * inclR LL a = (l : RW LL) * r` using `sub_eq_of_eq_add' h`. Establish `h5` using `(dvd_iff_crd LL _).1 ⟨r, h'⟩ i`. Rewrite `h5` using `[LinearMap.map_sub, sub_coeff_zero]`. Conclude with `(sub_eq_zero.1 h5).trans (key a i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h choose c hc using h`. Take `⟨a, ha⟩ : ∃ a : RA LL, ∀ i, (crd (basisO LL) i a).coeff 0 = c i` from `⟨∑ j, basisO LL j ⊗ₜ[ℤ_[l]] WittVector.teichmuller l (c j), fun i => by`. Rewrite using `[crd_sum, WittVector.teichmuller_coeff_zero]⟩`. Take `⟨r, hr⟩` from `(dvd_iff_crd LL (x - piR AI LL s ^ m * inclR LL a)).2 fun i => by`. Establish `h6` using `key a i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h6` using `[ha]`. Rewrite using `[LinearMap.map_sub, sub_coeff_zero]`. Conclude with `sub_eq_zero.2 ((hc i).trans h6.symm)`. Conclude with `⟨a, r, eq_add_of_sub_eq' hr⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nearPi_iff_crd {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (s m : ℕ) (x : RW LL) :
     NearPi AI LL s m x ↔ ∀ i, ∃ c : OCb l,

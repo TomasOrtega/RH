@@ -12,7 +12,7 @@ def Decay (θ : ℝ) (m : ℕ) (S : MvPowerSeries τ K) : Prop :=
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem decay_one (θ : ℝ) : Decay θ 0 (1 : MvPowerSeries τ K) := by
   classical
@@ -21,9 +21,9 @@ theorem decay_one (θ : ℝ) : Decay θ 0 (1 : MvPowerSeries τ K) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg h0 _) fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = μ` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_of_le_one h0 h1` to reduce the goal to its premises. Rewrite using `[← hp', map_add]`. Use linear arithmetic over natural numbers and integers.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Decay.mul {θ : ℝ} (h0 : 0 ≤ θ) (h1 : θ ≤ 1) {m n : ℕ} {S T : MvPowerSeries τ K}
     (hS : Decay θ m S) (hT : Decay θ n T) : Decay θ (m + n) (S * T) := by
@@ -43,7 +43,7 @@ theorem Decay.mul {θ : ℝ} (h0 : 0 ≤ θ) (h1 : θ ≤ 1) {m n : ℕ} {S T : 
         omega
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `decay_one θ`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h0 h1 hS`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Decay.pow {θ : ℝ} (h0 : 0 ≤ θ) (h1 : θ ≤ 1) {S : MvPowerSeries τ K}
     (hS : Decay θ 1 S) (n : ℕ) : Decay θ n (S ^ n) := by
@@ -52,9 +52,7 @@ theorem Decay.pow {θ : ℝ} (h0 : 0 ≤ θ) (h1 : θ ≤ 1) {S : MvPowerSeries 
   | succ n ih => rw [pow_succ]; exact ih.mul h0 h1 hS
 
 /- English proof (translation)
-Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Conclude with `decay_one θ`. Introduce `a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`.
-
-Conclude with `(Decay.pow h0 h1 (hs a) (ν a)).mul h0 h1 ih`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay_prod {θ : ℝ} (h0 : 0 ≤ θ) (h1 : θ ≤ 1) {σ : Type} (t : Finset σ)
     (s : σ → MvPowerSeries τ K) (hs : ∀ i, Decay θ 1 (s i)) (ν : σ → ℕ) :
@@ -69,9 +67,9 @@ theorem decay_prod {θ : ℝ} (h0 : 0 ≤ θ) (h1 : θ ≤ 1) {σ : Type} (t : F
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Introduce `μ`. Distinguish the cases in `hμ : μ = 0`. Substitute `hμ` using the available equality. Rewrite using `[map_zero, Nat.sub_zero, pow_one, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `hθ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : μ.degree ≠ 0` using `(Finsupp.degree_eq_zero_iff μ).not.2 hμ`. Establish `: 1 - μ.degree = 0` using `by omega`. Rewrite using `[this, pow_zero]`. Conclude with `hS μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay_of_small {θ : ℝ} {S : MvPowerSeries τ K} (hS : Intg S)
     (hθ : ‖MvPowerSeries.constantCoeff S‖ ≤ θ) : Decay θ 1 S := by
@@ -86,11 +84,11 @@ theorem decay_of_small {θ : ℝ} {S : MvPowerSeries τ K} (hS : Intg S)
     exact hS μ
 
 /- English proof (translation)
-Use `set θ : ℝ := ((Finset.univ.sup fun i => ‖MvPowerSeries.constantCoeff (s i)‖₊ : NNReal) : ℝ) with hθdef`. Establish `hsi : ∀ i, Intg (s i) ∧ ‖MvPowerSeries.constantCoeff (s i)‖ < 1` using `hs`. Establish `h0 : 0 ≤ θ` using `NNReal.coe_nonneg _`. Establish `hlt : θ < 1`. Establish `: (Finset.univ.sup fun i => ‖MvPowerSeries.constantCoeff (s i)‖₊) < 1` using `(Finset.sup_lt_iff (by simp)).2 fun i _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(hsi i).2`. Rewrite `h` using `[← coe_nnnorm]`. Conclude with `h` after adjusting the coercions. Conclude with `this` after adjusting the coercions. Establish `hle : ∀ i, ‖MvPowerSeries.constantCoeff (s i)‖ ≤ θ` using `fun i => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hθdef, ← coe_nnnorm]`. Conclude with `Finset.le_sup (f := fun i => ‖MvPowerSeries.constantCoeff (s i)‖₊) (Finset.mem_univ i)` after adjusting the coercions. Use `⟨θ, h0, hlt, fun ν μ => ?_⟩` and prove the remaining obligations. Establish `h` using `decay_prod h0 hlt.le Finset.univ s (fun i => decay_of_small (hsi i).1 (hle i)) ν μ`. Rewrite `h` using `[← Finsupp.degree_eq_sum]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_decay {σ : Type} [Fintype σ] (s : σ → MvPowerSeries τ K) (hs : ∀ i, Small (s i)) :
     ∃ θ : ℝ, 0 ≤ θ ∧ θ < 1 ∧ ∀ (ν : σ →₀ ℕ) (μ : τ →₀ ℕ),
@@ -116,9 +114,9 @@ theorem exists_decay {σ : Type} [Fintype σ] (s : σ → MvPowerSeries τ K) (h
   rwa [← Finsupp.degree_eq_sum] at h
 
 /- English proof (translation)
-Rewrite using `[Filter.tendsto_atTop]`. Introduce `b`. Rewrite using `[Filter.eventually_cofinite]`. Use `(Set.finite_Icc (0 : σ →₀ ℕ) (Finsupp.equivFunOnFinite.symm fun _ => b)).subset fun ν hν => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, not_le] at hν`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Set.mem_Icc.2 ⟨zero_le, Finsupp.le_def.2 fun i => ?_⟩` and prove the remaining obligations. Simplify using `using (Finsupp.le_degree i ν).trans hν.le`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_degree {σ : Type} [Fintype σ] :
     Filter.Tendsto (fun ν : σ →₀ ℕ => ν.degree) Filter.cofinite Filter.atTop := by
@@ -137,21 +135,19 @@ end GlobalTheory.ConvSer.SubstSum
 open GlobalTheory.ConvSer.SubstSum in
 
 /- English proof (translation)
-Introduce `K _ _ _ σ τ _ s S hs hS`. Take `⟨θ, h0, h1, hθ⟩` from `exists_decay s hs`. Take `⟨C, hC⟩ : ∃ C : ℝ, ∀ ν, ‖MvPowerSeries.coeff ν S‖ ≤ C` from `hS`. Use `set t : (τ →₀ ℕ) → (σ →₀ ℕ) → K := fun μ ν => MvPowerSeries.coeff ν S * MvPowerSeries.coeff μ (∏ i, s i ^ ν i) with ht`. Establish `hprod1 : ∀ (ν : σ →₀ ℕ) μ, ‖MvPowerSeries.coeff μ (∏ i, s i ^ ν i)‖ ≤ 1` using `fun ν μ => (hθ ν μ).trans (pow_le_one₀ h0 h1.le)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∀ μ, HasSum (t μ) (MvPowerSeries.coeff μ (csub s S))`. Introduce `μ`. Establish `hC0 : 0 ≤ max C 0` using `le_max_right _ _`. Establish `htend : Filter.Tendsto (t μ) Filter.cofinite (nhds 0)`. Use `squeeze_zero_norm (a := fun ν => max C 0 * θ ^ (ν.degree - μ.degree)) (fun ν => ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, norm_mul]`. Conclude with `mul_le_mul ((hC ν).trans (le_max_left _ _)) (hθ ν μ) (norm_nonneg _) hC0`. Establish `h : Filter.Tendsto (fun ν : σ →₀ ℕ => θ ^ (ν.degree - μ.degree)) Filter.cofinite (nhds 0)` using `(tendsto_pow_atTop_nhds_zero_of_lt_one h0 h1).comp ((Filter.tendsto_sub_atTop_nat μ.degree).comp tendsto_degree)`. Simplify using `using h.const_mul (max C 0)`. Establish `heq : MvPowerSeries.coeff μ (csub s S) = ∑' ν, t μ ν` using `rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Conclude with `(NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero htend).hasSum`. Establish `hbound : ∀ B : ℝ, 0 ≤ B → (∀ μ ν, ‖t μ ν‖ ≤ B) → ∀ μ, ‖MvPowerSeries.coeff μ (csub s S)‖ ≤ B` using `fun B hB h μ => by`. Rewrite using `[← (hsum μ).tsum_eq]`. Conclude with `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg hB (h μ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hterm : ∀ μ ν, ‖t μ ν‖ ≤ ‖MvPowerSeries.coeff ν S‖` using `fun μ ν => by`. Rewrite using `[ht, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hprod1 ν μ)`. Establish `hintg : Intg S → Intg (csub s S)` using `fun hI => hbound 1 zero_le_one fun μ ν => (hterm μ ν).trans (hI ν)`. Use `⟨hsum, ?_, hintg, fun hI h00 => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `Exists.intro (max C 0) (hbound _ (le_max_right _ _) fun μ ν => (hterm μ ν).trans ((hC ν).trans (le_max_left _ _)))`. Establish `hc : ‖MvPowerSeries.coeff 0 (csub s S)‖ ≤ θ`. Rewrite using `[← (hsum 0).tsum_eq]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg h0 fun ν => ?_` and prove the remaining obligations. Distinguish the cases in `hν : ν = 0`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hν` using the available equality. Simplify using `[ht, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h00, h0]`. Rewrite using `[ht, norm_mul]`. Establish `hd : 1 ≤ ν.degree - (0 : τ →₀ ℕ).degree`. Establish `a` using `(Finsupp.degree_eq_zero_iff ν).not.2 hν`.
-
-Rewrite using `[map_zero]`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Conclude with `And.intro (hintg hI) (by rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]; exact hc.trans_lt h1)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Prove both required implications or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConvSer.csub_hasSum_and_bounds :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K] (σ τ : Type) [Fintype σ] (s : σ → MvPowerSeries τ K) (S : MvPowerSeries σ K), (∀ i, Small (s i)) → Bdd S → (∀ μ, HasSum (fun ν : σ →₀ ℕ => MvPowerSeries.coeff ν S * MvPowerSeries.coeff μ (∏ i, s i ^ ν i)) (MvPowerSeries.coeff μ (csub s S))) ∧ Bdd (csub s S) ∧ (Intg S → Intg (csub s S)) ∧ (Intg S → MvPowerSeries.constantCoeff S = 0 → Small (csub s S)) := by

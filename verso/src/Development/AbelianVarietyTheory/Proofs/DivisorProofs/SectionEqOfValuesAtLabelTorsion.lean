@@ -23,15 +23,13 @@ noncomputable section
 namespace GlobalTheory.GSep.GMem
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act V _ _ _ ev Y _ t δ 𝔪 x fr th th₂ _ h₁ h₂`. Take `⟨b, hb⟩` from `GlobalTheory.GSep.GMem.exists_th_ne_zero I X₁ z₁ act V ev Y t δ 𝔪`. Use `set y := 𝔪.yK ⟨X₁.S.th b, X₁.S.th_mem b⟩ with hy`. Establish `ht : (show GlobalTheory.TorsionExt.AbSec 𝔪.A (FractionRing V) 1 from th) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : ValAt (show GlobalTheory.TorsionExt.AbSec 𝔪.A (FractionRing V) 1 from th) (x b) (fr b) 0`. Rewrite using `[h0]`. Conclude with `GlobalTheory.TermsMove.valAt_zero (x b) (fr b)`. Conclude with `hb (GlobalTheory.TermsMove.valAt_unique (h₁ b) hz)`. Take `⟨c, hc⟩` from `GlobalTheory.TermsMove.exists_eq_smul ht (show GlobalTheory.TorsionExt.AbSec 𝔪.A (FractionRing V) 1 from th₂)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz0 : ValAt (0 : GlobalTheory.TorsionExt.AbSec 𝔪.A (FractionRing V) 1) (x b) (fr b) 0` using `GlobalTheory.TermsMove.valAt_zero (x b) (fr b)`. Establish `hl` using `GlobalTheory.TermsMove.valAt_lin (h₁ b) hz0 c`. Rewrite `hl` using `[add_zero, add_zero, ← hc]`. Establish `e` using `GlobalTheory.TermsMove.valAt_unique (h₂ b) hl`. Establish `c1 : c = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (c - 1) * y = 0` using `by rw [sub_mul, ← e]; ring`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h hb`. Rewrite `hc` using `[c1, one_smul]`.
-
-Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem sec_eq_of_valAt : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) (x : X₁.S.Gam → (TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A)) (fr : ∀ a, FrAt (x a)) (th th₂ : SecA 𝔪.A (FractionRing V) 1),
   (∀ a, (fr a).IsGen) → (∀ a, ValAt th (x a) (fr a) (𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩)) →

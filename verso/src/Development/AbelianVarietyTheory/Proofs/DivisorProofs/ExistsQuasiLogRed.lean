@@ -17,9 +17,9 @@ namespace GlobalTheory
 namespace Katz
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SequenceFromIteration.exists_seq_of_step`. Consider the case `exact _root_.GlobalTheory.SequenceFromIteration.exists_seq_of_step`. Consider the case `(apply _root_.GlobalTheory.SequenceFromIteration.exists_seq_of_step <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SequenceFromIteration.exists_seq_of_step <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SequenceFromIteration.exists_seq_of_step <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SequenceFromIteration.exists_seq_of_step ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_seq_of_step {A : Type} (P : ℕ → A → Prop) (Q : ℕ → A → A → Prop) (a₀ : A)
     (h₀ : P 0 a₀) (hs : ∀ n a, P n a → ∃ b, P (n + 1) b ∧ Q n a b) :
@@ -33,9 +33,9 @@ theorem exists_seq_of_step {A : Type} (P : ℕ → A → Prop) (Q : ℕ → A �
   | (intros; exact _root_.GlobalTheory.SequenceFromIteration.exists_seq_of_step ..)
 
 /- English proof (translation)
-Establish `stab : ∀ n (α : σ →₀ ℕ), α.degree < n + 2 → ∀ m, n ≤ m → coeff α (F m) = coeff α (F n)`. Introduce `n α hα m hm`. Proceed by induction on `m, hm using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ m hm ih => rw [hF m α (by omega), ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨fun α => coeff α (F α.degree), fun n α hα => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coeff α (F α.degree) = _`. Rewrite using `[← stab α.degree α (by omega) (max n α.degree) (le_max_right _ _), stab n α hα _ (le_max_left _ _)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_limit_of_steps {R σ : Type} [CommRing R] (F : ℕ → MvPowerSeries σ R)
     (hF : ∀ n (α : σ →₀ ℕ), α.degree ≠ n + 2 → coeff α (F (n + 1)) = coeff α (F n)) :
@@ -52,19 +52,19 @@ theorem exists_limit_of_steps {R σ : Type} [CommRing R] (F : ℕ → MvPowerSer
     stab n α hα _ (le_max_left _ _)]
 
 /- English proof (translation)
-Introduce `c hc w`. Take `⟨f₀, hf₀, hw, hb⟩` from `GlobalTheory.T.exists_cob1_witt_lift_mod_p p k d μ h c hc w`. Establish `hq₀ : f₀ ∈ quasiInt p k (Fin d)`. Introduce `α i`. Take `⟨v, hv⟩` from `hf₀ α`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(α i : WittVector p k) * (1 * v), by rw [hv, map_mul _ (α i : WittVector p k), map_natCast]⟩`. Take `⟨F, hF0, hF⟩` from `exists_seq_of_step (fun n (f : MvPowerSeries (Fin d) (Fr p k)) => f ∈ quasiInt p k (Fin d) ∧ ∀ γ : Fin d ⊕ Fin d →₀ ℕ, γ.degree < n + 2 → ∃ w : WittVector p k, coeff γ (cob1 (fun i => Katz.lift p (μ i)) f - Katz.lift p c) = algebraMap (WittVector p k) (Fr p k) (p * w)) (fun n a b …`. Introduce `n a ha`. Take `⟨g, hg0, hg1, hg2⟩` from `GlobalTheory.T.quasiLogarithm_successive_approximation_step p k d μ h c hc (n + 2) a (by omega) ha.1 ha.2`. Conclude with `⟨a - g, ⟨hg1, hg2⟩, fun α hα => by rw [map_sub, hg0 α hα, sub_zero]⟩)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf⟩` from `exists_limit_of_steps F fun n => (hF n).2`. Establish `hq : f ∈ quasiInt p k (Fin d)`. Introduce `α i`. Rewrite using `[hf α.degree α (by omega)]`. Conclude with `(hF α.degree).1.1 α i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : cob1 (fun i => Katz.lift p (μ i)) f - Katz.lift p c ∈ intBy p k (Fin d ⊕ Fin d) p`. Introduce `γ`. Take `⟨v, hv⟩` from `(hF γ.degree).1.2 γ (by omega)`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `h1` using `((GlobalTheory.T.coboundary_eq_additive_leading_terms (Fr p k) d (fun i => Katz.lift p (μ i)) (γ.degree + 2) (fun i α hα => (GlobalTheory.T.formal_group_law_linear_coeff_additive p k d μ h i α hα).2)).1 (f - F γ.degree) (fun α hα => by rw [map_sub, hf _ α hα, sub_self]) γ).1 (by …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `formalCoboundary_add (fun i => constantCoeff_lift p (h.const i)) (f - F γ.degree) (F γ.degree)`. Rewrite `h2` using `[sub_add_cancel]`. Rewrite using `[h2, add_sub_assoc, map_add, h1, zero_add, hv]`. Take `⟨r1, -, r3, r4, -, r6, -⟩` from `GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k (Fin d ⊕ Fin d)`. Establish `hred : Red p (cob1 (fun i => Katz.lift p (μ i)) f) c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(r4 _ _ _ _ ((r6 _).1 hp) (r3 c)).1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, zero_add]`. Then use the resulting hypothesis. Use `⟨f, ⟨hq, (r1 _).2 ⟨c, hred⟩⟩, hred, ?_⟩` and prove the remaining obligations. Establish `hl : lin f = lin f₀`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `lin`. Rewrite using `[hf 0 _ (by simp), hF0]`. Rewrite using `[hl]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quasiLog_red (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k) (h : IsLaw μ) :

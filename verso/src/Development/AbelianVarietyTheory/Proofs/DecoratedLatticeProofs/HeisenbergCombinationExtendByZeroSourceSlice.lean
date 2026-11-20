@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl.ExtZero
 
 /- English proof (translation)
-Introduce `D ψ S A L T o c f y w`. Establish `hinj : Function.Injective (fun a : WO A T => (o.resS T).symm (a, 0))` using `fun a b h => by`. Simplify using `using h`. Unfold `comb extS`. Rewrite using `[Finsupp.mapDomain_support_of_injective hinj, Finset.sum_image (fun a _ b _ h => hinj h), Finset.sum_apply, Finset.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_apply hinj, Pi.smul_apply, Pi.smul_apply, heisO_resS_symm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_extS_slice :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A L T : HSp D) (o : OrthDec S A L) (c : WO A T →₀ ℂ) (f : WO S T → ℂ) (y : WO L T) (w : WO A T), comb ψ A T c (fun w' => f ((o.resS T).symm (w', y))) w = comb ψ S T (extS o T c) f ((o.resS T).symm (w, y)) := by

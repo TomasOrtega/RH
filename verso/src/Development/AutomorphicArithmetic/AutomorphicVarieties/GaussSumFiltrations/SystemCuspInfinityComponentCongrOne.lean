@@ -14,13 +14,13 @@ open scoped Matrix
 namespace GlobalTheory.HilbertThetaSeries.CuspOne
 
 /- English proof (translation)
-Use `set x : ℤ_[p] := ⟨(r : ℚ_[p]), hr.le⟩ with hx`. Establish `hxu : ‖x‖ = 1` using `hr`. Establish `h1 : PadicInt.toZMod x ≠ 0`. Introduce `h0`. Establish `: x ∈ IsLocalRing.maximalIdeal ℤ_[p]` using `by rw [← PadicInt.ker_toZMod]; exact h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, rfl⟩` from `hk`. Establish `h2 : PadicInt.toZMod (x ^ ((p - 1) * m) - 1) = 0`. Rewrite using `[map_sub, map_pow, map_one, pow_mul, ZMod.pow_card_sub_one_eq_one h1, one_pow, sub_self]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : x ^ ((p - 1) * m) - 1 ∈ IsLocalRing.maximalIdeal ℤ_[p]` using `by rw [← PadicInt.ker_toZMod]; exact h2`. Rewrite `h3` using `[IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Establish `h4 : ‖x ^ ((p - 1) * m) - 1‖ ≤ (p : ℝ) ^ (-1 : ℤ)` using `(PadicInt.norm_le_pow_iff_norm_lt_pow_add_one _ (-1)).2 (by simpa using h3)`. Establish `h5 : ((x ^ ((p - 1) * m) - 1 : ℤ_[p]) : ℚ_[p]) = (r : ℚ_[p]) ^ ((p - 1) * m) - 1` using `by push_cast; rfl`. Rewrite using `[← h5, ← PadicInt.norm_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h4`.
+A detailed English derivation is pending.
 -/
 theorem pow_sub_one_small (p : ℕ) [Fact p.Prime] (r : ℚ) (hr : ‖(r : ℚ_[p])‖ = 1) (k : ℕ) (hk : p - 1 ∣ k) :
     ‖((r : ℚ_[p]) ^ k - 1)‖ ≤ (p : ℝ)⁻¹ := by
@@ -44,7 +44,7 @@ theorem pow_sub_one_small (p : ℕ) [Fact p.Prime] (r : ℚ) (hr : ‖(r : ℚ_[
   simpa using h4
 
 /- English proof (translation)
-Establish `: ((q : ℚ) : Qbar p) = algebraMap ℚ_[p] (Qbar p) (q : ℚ_[p])` using `by simp`. Rewrite using `[this]`. Conclude with `PadicAlgCl.norm_extends p _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_qbar_rat (p : ℕ) [Fact p.Prime] (q : ℚ) : ‖((q : ℚ) : Qbar p)‖ = ‖(q : ℚ_[p])‖ := by
   have : ((q : ℚ) : Qbar p) = algebraMap ℚ_[p] (Qbar p) (q : ℚ_[p]) := by simp
@@ -52,26 +52,26 @@ theorem norm_qbar_rat (p : ℕ) [Fact p.Prime] (q : ℚ) : ‖((q : ℚ) : Qbar 
   exact PadicAlgCl.norm_extends p _
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [toFin, aff]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toFin_aff {F : Type} [Field F] [NumberField F] (ξ : Fˣ) :
     toFin (aff ξ 0) = aff (Units.map (algebraMap F (Af F)).toMonoidHom ξ) 0 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [toFin, aff]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aff_mul {R : Type} [CommRing R] (a b : Rˣ) : aff (a * b) 0 = aff a 0 * aff b 0 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Simplify using `[aff, Matrix.det_fin_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_aff {R : Type} [CommRing R] (a : Rˣ) : (aff a 0).val.det = a := by
   simp [aff, Matrix.det_fin_two]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[sl0, toInf, cmp, aff, UpperHalfPlane.denom]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem weightSlash_hilbertAffine_apply {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (ξ : Fˣ) (g : Hn F → ℂ) :
     sl0 k (toInf (aff ξ 0)) g = fun z => g (act (toInf (aff ξ 0)) z) := by
@@ -79,47 +79,41 @@ theorem weightSlash_hilbertAffine_apply {F : Type} [Field F] [NumberField F] [Is
   simp [sl0, toInf, cmp, aff, UpperHalfPlane.denom]
 
 /- English proof (translation)
-Introduce `F _ _ _ p _ ι hp2 δ hδ k hk Ψ _ y y' z f hy' hf γ u hγ hu hmat hΨ`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hkev : Even k`. Establish `ho : Odd p` using `hpp.odd_of_ne_two hp2`. Establish `: Even (p - 1)` using `Nat.Odd.sub_odd ho odd_one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `even_iff_two_dvd.2 ((even_iff_two_dvd.1 this).trans hk)`. Establish `R` using `fun (g : Hn F → ℂ) => GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash F k g`. Establish `hrhom : ∀ v (x : F), rhom x v = reAt v x` using `(R f).1`. Take `⟨-, hdel⟩` from `GlobalTheory.T.exists_different_generator_totallyPositive_translate F p hpp`. Take `⟨ξ, hξTP, hξy⟩` from `hdel δ hδ y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set ξa : (Af F)ˣ := Units.map (algebraMap F (Af F)).toMonoidHom ξ with hξa`. Use `set γ₁ : GL (Fin 2) F := γ * (aff ξ 0)⁻¹ with hγ₁`. Establish `hγeq : γ = γ₁ * aff ξ 0` using `by simp [γ₁]`. Establish `hmat₁ : toFin γ₁ * aff (ξa * y) 0 = Matrix.GeneralLinearGroup.scalar (Fin 2) z * aff y' 0 * u`. Rewrite using `[← hmat, aff_mul, hγ₁, map_mul, map_inv, toFin_aff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← hξa, mul_assoc, inv_mul_cancel_left]`. Establish `hdet₁ : γ₁.val.det = γ.val.det / ξ`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply, hγ₁, map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, det_aff, div_eq_mul_inv]`. Establish `hTP₁ : TP γ₁.val.det` using `fun v => by`. Establish `h1 : γ.val.det = γ₁.val.det * ξ` using `by rw [hdet₁, div_mul_cancel₀ _ ξ.ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `hγ v`. Rewrite `h2` using `[h1, ← hrhom, map_mul, Pi.mul_apply, hrhom, hrhom]`. Conclude with `(mul_pos_iff_of_pos_right (hξTP v)).1 h2`. Take `⟨-, -, hgp⟩` from `GlobalTheory.T.exists_inG_scalar_mul_and_abs_norm_det_mul_absF_eq F p δ hδ`. Take `⟨η, r, hInG, hr0, hrn, hnorm⟩` from `hgp (ξa * y) y' z γ₁ u hξy hy' hTP₁ hu hmat₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set γ₂ : GL (Fin 2) F := Matrix.GeneralLinearGroup.scalar (Fin 2) η * γ₁ with hγ₂`. Use `set G : Hn F → ℂ := sl0 k (toInf γ₂) f with hGdef`. Establish `hG` using `hf γ₂ hInG`. Establish `hPos₁ : Pos (toInf γ₁)` using `((R f).2.1 γ₁).1.2 hTP₁`. Establish `hPosξ : Pos (toInf (aff ξ 0))` using `((R f).2.1 _).1.2 (by rw [det_aff]; exact hξTP)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set c' : ℂ := ((absF y' ^ ((k : ℝ) / 2) : ℝ) : ℂ) with hc'`. Use `set Nd : ℝ := |((Algebra.norm ℚ γ₂.val.det : ℚ) : ℝ)| with hNd`. Use `set Nξ : ℝ := |((Algebra.norm ℚ (aff ξ 0).val.det : ℚ) : ℝ)| with hNξ`. Establish `e1 : sl k (toInf γ) (c' • f) = sl k (toInf (aff ξ 0)) (sl k (toInf γ₁) (c' • f))`. Rewrite using `[hγeq, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.HilbertThetaSeries.SlashCocycle.slash_cocycle F k _ _ _ hPos₁ hPosξ).2.2.2.1`. Establish `e2 : sl k (toInf γ₁) (c' • f) = sl k (toInf γ₂) (c' • f)`. Establish `h` using `((R (c' • f)).2.2.1 hkev (Units.map (rhom (F := F)).toMonoidHom η) (toInf γ₁) hPos₁).2`. Rewrite `h` using `[← (R f).2.2.2.1 η, ← map_mul]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e3 : sl k (toInf γ₂) (c' • f) = ((Nd ^ ((k : ℝ) / 2) : ℝ) : ℂ) • (c' • G)`. Rewrite using `[((R (c' • f)).2.1 γ₂).2, (GlobalTheory.HilbertThetaSeries.slash_add_smul_pow F k 1 (toInf γ₂) f f c').2.1]`. Establish `e4 : sl k (toInf (aff ξ 0)) (((Nd ^ ((k : ℝ) / 2) : ℝ) : ℂ) • (c' • G)) = (((Nd ^ ((k : ℝ) / 2) : ℝ) : ℂ) * c' * ((Nξ ^ ((k : ℝ) / 2) : ℝ) : ℂ)) • sl0 k (toInf (aff ξ 0)) G`. Rewrite using `[smul_smul, (GlobalTheory.HilbertThetaSeries.slash_add_smul_pow F k 1 (toInf (aff ξ 0)) G G _).2.2.2.2.1, ((R G).2.1 (aff ξ 0)).2, smul_smul]`. Take `⟨hA0, hAmul, -, hAprod⟩` from `UpperTheory.V.Sd.Hm.absf F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hNξ' : Nξ * absF ξa = 1`. Rewrite using `[hNξ, det_aff, ← ((R f).2.2.2.2 (ξ : F)).1, Finset.abs_prod]`. Conclude with `hAprod ξ`. Establish `hreal : Nd ^ ((k : ℝ) / 2) * absF y' ^ ((k : ℝ) / 2) * Nξ ^ ((k : ℝ) / 2) = ((r : ℝ) ^ k) * absF y ^ ((k : ℝ) / 2)`. Establish `h0 : Nd * absF y' * Nξ = (r : ℝ) ^ 2 * absF y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hNd, hnorm, hAmul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hNd0 : 0 ≤ Nd` using `abs_nonneg _`. Establish `hNξ0 : 0 ≤ Nξ` using `abs_nonneg _`. Establish `hy'0 : 0 ≤ absF y'` using `(hA0 y').le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.mul_rpow hNd0 hy'0, ← Real.mul_rpow (mul_nonneg hNd0 hy'0) hNξ0, h0, Real.mul_rpow (sq_nonneg _) (hA0 y).le, ← Real.rpow_natCast ((r : ℝ)) 2, ← Real.rpow_mul (by exact_mod_cast hr0.le)]`. Use `congr 1`. Rewrite using `[← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hy0 : ((absF y ^ ((k : ℝ) / 2) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.rpow_pos_of_pos (hA0 y) _).ne'` after adjusting the coercions. Use `set H : Hn F → ℂ := sl0 k (toInf (aff ξ 0)) G with hHdef`. Use `set c : ℂ := ((r : ℚ) : ℂ) ^ k with hcdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : (((absF y ^ ((k : ℝ) / 2) : ℝ) : ℂ))⁻¹ * (((Nd ^ ((k : ℝ) / 2) : ℝ) : ℂ) * c' * ((Nξ ^ ((k : ℝ) / 2) : ℝ) : ℂ)) = c`. Rewrite using `[hc', inv_mul_eq_iff_eq_mul₀ hy0]`. Use `congrArg (fun x : ℝ => (x : ℂ)) hreal` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Rewrite using `[this, hcdef]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hΨ' : (((absF y ^ ((k : ℝ) / 2) : ℝ) : ℂ))⁻¹ • Ψ (aff y 0) = c • H`. Rewrite using `[hΨ, e1, e2, e3, e4, smul_smul, key]`. Rewrite using `[hΨ']`. Take `⟨a, ha, hb⟩` from `hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `S1 : Small ι (p : ℝ)⁻¹ (H - 1)`. Establish `hq` using `GlobalTheory.T.hasQExpansion_affineTranslate_coeff F k (G - 1) a ξ 0 hξTP ha`. Establish `hH1 : sl0 k (toInf (aff ξ 0)) (G - 1) = H - 1`. Rewrite using `[hHdef, weightSlash_hilbertAffine_apply, weightSlash_hilbertAffine_apply]`. Use function extensionality and compare the values at `w`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Rewrite `hq` using `[hH1]`. Use `⟨_, hq, fun x => ?_⟩` and prove the remaining obligations. Simplify `hb (x / ξ)` using `[et]`. Establish `Q` using `GlobalTheory.T.hilbertQExp_padicBound_algebra_properties F p ι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc : ‖ι.symm c‖ = 1`. Rewrite using `[hcdef, map_pow, map_ratCast, norm_pow, norm_qbar_rat, hrn, one_pow]`. Establish `hc1 : ‖ι.symm (c - 1)‖ ≤ (p : ℝ)⁻¹`. Establish `: ι.symm (c - 1) = (((r ^ k - 1 : ℚ)) : Qbar p)`. Rewrite using `[hcdef, map_sub, map_pow, map_ratCast, map_one]`.
-
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this, norm_qbar_rat]`. Establish `h` using `pow_sub_one_small p r hrn k hk`. Use `push_cast`.
-
-Conclude with `h`. Establish `hS2` using `(Q _ _ (H - 1) (H - 1) c S1 S1).2.2.1`. Establish `hS3` using `(Q _ _ (H - 1) (H - 1) (c - 1) S1 S1).2.2.2.2.2`. Establish `hsum` using `(Q _ _ _ _ 0 hS2 hS3).1`. Establish `heq : c • H - 1 = c • (H - 1) + fun _ => c - 1`.
-
-Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `(Q _ _ _ _ 0 hsum S1).2.2.2.1 (by rw [hc, one_mul]; exact max_le le_rfl hc1)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cusp_inf_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ : F, IsDel p δ → ∀ (k : ℕ), p - 1 ∣ k → ∀ (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ), Sys k Ψ → ∀ (y y' z : (Af F)ˣ) (f : Hn F → ℂ), AtP p δ y' → (∀ γ, InG p δ γ → Small ι (p : ℝ)⁻¹ (sl0 k (toInf γ) f - 1)) → ∀ (γ : GL (Fin 2) F) (u : GL (Fin 2) (Af F)), TP γ.val.det → u ∈ KLev F 2 1 → toFin γ * aff y 0 = Matrix.GeneralLinearGroup.scalar (Fin 2) z * aff y' 0 * u → Ψ (aff y 0) = sl k (toInf γ) (((absF y' ^ ((k : ℝ) / 2) : ℝ) : ℂ) • f) → Small ι (p : ℝ)⁻¹ ((((absF y ^ ((k : ℝ) / 2) : ℝ) : ℂ))⁻¹ • Ψ (aff y 0) - 1) := by
   intro F _ _ _ p _ ι hp2 δ hδ k hk Ψ _ y y' z f hy' hf γ u hγ hu hmat hΨ
@@ -234,7 +228,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.CuspOne.cusp_inf_one | exact GlobalTheory.HilbertThetaSeries.CuspOne.cusp_inf_one | (intros; apply GlobalTheory.HilbertThetaSeries.CuspOne.cusp_inf_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.system_cusp_infinity_component_congr_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ : F, IsDel p δ → ∀ (k : ℕ), p - 1 ∣ k → ∀ (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ), Sys k Ψ → ∀ (y y' z : (Af F)ˣ) (f : Hn F → ℂ), AtP p δ y' → (∀ γ, InG p δ γ → Small ι (p : ℝ)⁻¹ (sl0 k (toInf γ) f - 1)) → ∀ (γ : GL (Fin 2) F) (u : GL (Fin 2) (Af F)), TP γ.val.det → u ∈ KLev F 2 1 → toFin γ * aff y 0 = Matrix.GeneralLinearGroup.scalar (Fin 2) z * aff y' 0 * u → Ψ (aff y 0) = sl k (toInf γ) (((absF y' ^ ((k : ℝ) / 2) : ℝ) : ℂ) • f) → Small ι (p : ℝ)⁻¹ ((((absF y ^ ((k : ℝ) / 2) : ℝ) : ℂ))⁻¹ • Ψ (aff y 0) - 1) := by
   first | exact @GlobalTheory.HilbertThetaSeries.CuspOne.cusp_inf_one | exact GlobalTheory.HilbertThetaSeries.CuspOne.cusp_inf_one | (intros; apply GlobalTheory.HilbertThetaSeries.CuspOne.cusp_inf_one <;> assumption)

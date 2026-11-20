@@ -8,39 +8,27 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.ChEx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J T f bad S b hb hlev hT hone`. Set `eqv` to `Subgroup.equivMapOfInjective S.U (MulAut.conj b).toMonoidHom (fun x y h => (MulAut.conj b).injective h)`. Establish `heqv : ∀ z : S.U, ((eqv z : S.U.map (MulAut.conj b).toMonoidHom) : GL (Fin n) _) = b * z.1 * b⁻¹` using `fun z => rfl`. Establish `hbc : ∀ v (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), bc (prV (E` using `E) v) (b⁻¹ * x * b) = (bc (prV (E := E) v) b)⁻¹ * bc (prV (E := E) v) x * bc (prV (E := E) v) b := fun v x => by`. Rewrite using `[map_mul, map_mul, map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ∀ x, b⁻¹ * x * b ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) ↔ x ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e2 : b * (b⁻¹ * x * b) * b⁻¹ = x` using `by group`. Rewrite using `[← e2]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ hb h) (Subgroup.inv_mem _ hb)`. Introduce `h`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hb) h) hb`. Set `S' : StepLevel F E σ J T f bad` to `{ Lb := S.Lb Lb_fin := S.Lb_fin Lb_span := S.Lb_span Lb_int := S.Lb_int Lb_dual := S.Lb_dual Lb_index := S.Lb_index Uloc := fun v => (S.Uloc v).map (MulAut.conj (bc (prV (E := E) v) b)).toMonoidHom Uloc_le := by`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hbv : bc (prV (E` using `E) v) b ∈ UPts σ J (v.adicCompletion F) := (hlev v).1`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ hbv (S.Uloc_le v hy)) (Subgroup.inv_mem _ hbv)`. Use `Uloc_lev := by`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hbv` using `hlev v`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ hbv (S.Uloc_lev v hy)) (Subgroup.inv_mem _ hbv)`. Use `Uloc_hyp := by`. Introduce `v hv hTv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show (S.Uloc v).map (MulAut.conj (bc (prV (E := E) v) b)).toMonoidHom = levelVL σ J v S.Lb`. Use extensionality with `x`. Rewrite using `[mem_map_conj, hone v hv hTv, inv_one, one_mul, mul_one, S.Uloc_hyp v hv hTv]`. Use `fM := S.fM`. Use `fM_acg := S.fM_acg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fM_mod := S.fM_mod`. Use `fT := S.fT`. Use `fT_ne := S.fT_ne`. Use `fT_T := S.fT_T`. Use `fM_card := S.fM_card`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `fT_L := S.fT_L`. Use `UlocAlt := by`. Introduce `v h`. Use `show (S.Uloc v).map (MulAut.conj (bc (prV (E := E) v) b)).toMonoidHom = _`. Rewrite using `[hT v h]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `S.UlocAlt v h`. Use `U := S.U.map (MulAut.conj b).toMonoidHom`. Use `U_eq := by`. Introduce `x`. Rewrite using `[mem_map_conj, S.U_eq, hP]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `and_congr_right fun _ => forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[hbc v x]`. Conclude with `(mem_map_conj _ _ _).symm`. Use `U_compact := by`. Use `letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := Formalism.L2.Col.rlt_topRing (F := F) (E := E)`. Establish `hc : Continuous (fun x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) => b * x * b⁻¹)` using `(continuous_const.mul continuous_id).mul continuous_const`. Use `S.U_compact.image hc` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Subgroup.coe_map]`.
-
-Both sides reduce to the same expression. Use `U_open := by`. Use `letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Use `haveI := Formalism.L2.Col.rlt_topRing (F := F) (E := E)`. Use `haveI : ContinuousMul (UPts σ J (FiniteAdeleRing (𝓞 F) F)) := inferInstanceAs (ContinuousMul (UPts σ J (FiniteAdeleRing (𝓞 F) F)).toSubmonoid)`.
-
-Set `b' : UPts σ J (FiniteAdeleRing (𝓞 F) F)` to `⟨b, hb⟩`. Establish `hc : Continuous (fun x : UPts σ J (FiniteAdeleRing (𝓞 F) F) => b'⁻¹ * x * b')` using `(continuous_const.mul continuous_id).mul continuous_const`. Use `S.U_open.preimage hc` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
-
-Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, mem_map_conj]`. Both sides reduce to the same expression. Use `chi := S.chi.comp eqv.symm.toMonoidHom`. Use `chi_triv := by`. Introduce `x hx`.
-
-Use `show S.chi (eqv.symm x) = 1`. Apply `S.chi_triv` to reduce the goal to its premises. Introduce `v hv`. Establish `e1 : ((eqv.symm x : S.U) : GL (Fin n) _) = b⁻¹ * x.1 * b`. Establish `h2` using `heqv (eqv.symm x)`.
-
-Rewrite `h2` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[h2]`. Use `group`. Rewrite using `[e1, hbc v, hx v hv, mul_one, inv_mul_cancel] }`. Use `⟨S', rfl, rfl, fun x z hxz => ?_⟩` and prove the remaining obligations.
-
-Use `show S.chi (eqv.symm x) = S.chi z`. Use `congr 1`. Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `Subtype.ext (hxz.trans (heqv z).symm)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stepLevel_conj : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))} (S : StepLevel F E σ J T f bad) (b : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), b ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) → (∀ v, bc (prV (E := E) v) b ∈ levelVL σ J v S.Lb) → (∀ v, (T : 𝓞 F) ∈ v.asIdeal → (S.Uloc v).map (MulAut.conj (bc (prV (E := E) v) b)).toMonoidHom = S.Uloc v) → (∀ v, v ∉ bad → (T : 𝓞 F) ∉ v.asIdeal → bc (prV (E := E) v) b = 1) → ∃ S' : StepLevel F E σ J T f bad, S'.Lb = S.Lb ∧ S'.U = S.U.map (MulAut.conj b).toMonoidHom ∧ ∀ (x : S'.U) (z : S.U), x.1 = b * z.1 * b⁻¹ → S'.chi x = S.chi z := by
   intro F E _ _ _ _ _ σ n J T f bad S b hb hlev hT hone

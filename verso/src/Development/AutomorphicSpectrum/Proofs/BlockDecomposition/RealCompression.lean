@@ -12,7 +12,7 @@ variable {n : ℕ}
 def lowCount (lev : Fin n → ℕ) (a : Fin n) : ℕ := (univ.filter fun b => lev b < lev a).card
 
 /- English proof (translation)
-Establish `h : (univ.filter fun b => lev b < lev a).card < (univ : Finset (Fin n)).card` using `Finset.card_lt_card (Finset.filter_ssubset.2 ⟨a, Finset.mem_univ a, lt_irrefl (lev a)⟩)`. Rewrite `h` using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowCount_lt (lev : Fin n → ℕ) (a : Fin n) : lowCount lev a < n := by
   have h : (univ.filter fun b => lev b < lev a).card < (univ : Finset (Fin n)).card :=
@@ -21,7 +21,7 @@ theorem lowCount_lt (lev : Fin n → ℕ) (a : Fin n) : lowCount lev a < n := by
   exact h
 
 /- English proof (translation)
-Unfold `lowCount`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `c hc`. Simplify using `only [Finset.mem_filter] at hc ⊢`. Conclude with `⟨hc.1, lt_of_lt_of_le hc.2 h⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem lowCount_le_of_le {lev : Fin n → ℕ} {a b : Fin n} (h : lev a ≤ lev b) :
     lowCount lev a ≤ lowCount lev b := by
@@ -32,9 +32,9 @@ theorem lowCount_le_of_le {lev : Fin n → ℕ} {a b : Fin n} (h : lev a ≤ lev
   exact ⟨hc.1, lt_of_lt_of_le hc.2 h⟩
 
 /- English proof (translation)
-Unfold `lowCount`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset]`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨Finset.mem_univ a, h⟩`. Simplify using `only [Finset.mem_filter, lt_irrefl, and_false, not_false_eq_true]`. Introduce `c hc`. Simplify using `only [Finset.mem_filter] at hc ⊢`. Conclude with `⟨hc.1, hc.2.trans h⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem lowCount_lt_of_lt {lev : Fin n → ℕ} {a b : Fin n} (h : lev a < lev b) :
     lowCount lev a < lowCount lev b := by
@@ -50,7 +50,7 @@ theorem lowCount_lt_of_lt {lev : Fin n → ℕ} {a b : Fin n} (h : lev a < lev b
     exact ⟨hc.1, hc.2.trans h⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `h'`. Conclude with `absurd h (not_lt.2 (lowCount_le_of_le (not_lt.1 h')))`. Conclude with `lowCount_lt_of_lt`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lowCount_lt_iff {lev : Fin n → ℕ} {a b : Fin n} :
     lowCount lev a < lowCount lev b ↔ lev a < lev b := by
@@ -61,21 +61,21 @@ theorem lowCount_lt_iff {lev : Fin n → ℕ} {a b : Fin n} :
   · exact lowCount_lt_of_lt
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [rhoU, lowCount_lt_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rhoU_lowCount (lev : Fin n → ℕ) : rhoU (lowCount lev) = rhoU lev := by
   funext a
   simp only [rhoU, lowCount_lt_iff]
 
 /- English proof (translation)
-Unfold `muQ`. Rewrite using `[rhoU_lowCount]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem muQ_lowCount (lam : Fin n → ℤ) (lev : Fin n → ℕ) : muQ lam (lowCount lev) = muQ lam lev := by
   unfold muQ
   rw [rhoU_lowCount]
 
 /- English proof (translation)
-Use `⟨fun a b hab => lowCount_le_of_le (h.1 hab), fun a b hab => h.2 a b ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy (lev a) (lev b) with h1 | h1 | h1` into its components or cases. Conclude with `absurd hab (ne_of_lt (lowCount_lt_of_lt h1))`. Conclude with `h1`. Conclude with `absurd hab (ne_of_gt (lowCount_lt_of_lt h1))`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isLev_lowCount {lam : Fin n → ℤ} {lev : Fin n → ℕ} (h : IsLev lam lev) :
     IsLev lam (lowCount lev) := by
@@ -86,16 +86,16 @@ theorem isLev_lowCount {lam : Fin n → ℤ} {lev : Fin n → ℕ} (h : IsLev la
   · exact absurd hab (ne_of_gt (lowCount_lt_of_lt h1))
 
 /- English proof (translation)
-Conclude with `⟨fun a => ⟨lowCount lev a, lowCount_lt lev a⟩, isLev_lowCount h, muQ_lowCount lam lev⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_compress (lam : Fin n → ℤ) (lev : Fin n → ℕ) (h : IsLev lam lev) :
     ∃ l : Fin n → Fin n, (IsLev lam fun a => (l a : ℕ)) ∧ (muQ lam fun a => (l a : ℕ)) = muQ lam lev := by
   exact ⟨fun a => ⟨lowCount lev a, lowCount_lt lev a⟩, isLev_lowCount h, muQ_lowCount lam lev⟩
 
 /- English proof (translation)
-Take `⟨l, hl, he⟩` from `exists_compress lam lev h`. Unfold `harmSet`. Rewrite using `[Finset.mem_image]`. Use `⟨l, ?_, he⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hl`.
+A detailed English derivation is pending.
 -/
 theorem muQ_mem_harmSet {lam : Fin n → ℤ} {lev : Fin n → ℕ} (h : IsLev lam lev) :
     muQ lam lev ∈ harmSet lam := by

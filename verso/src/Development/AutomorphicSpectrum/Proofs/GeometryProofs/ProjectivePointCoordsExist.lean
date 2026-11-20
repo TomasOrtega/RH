@@ -11,7 +11,7 @@ open GlobalTheory.ProjSpace GlobalTheory.Points GlobalTheory.TuplePoint GlobalTh
 namespace GlobalTheory.CompanionTheory.Ar.TupleCoords
 
 /- English proof (translation)
-Simplify using `only [valR, dif_pos h, GlobalTheory.Points.valMap, CommRingCat.hom_comp, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem valR_eq_valMap {A : Type} [CommRing A] {X : Scheme} (x : Sp A ⟶ X)
     (U : X.Opens) (h : ⊤ ≤ (TopologicalSpace.Opens.map x.base).obj U) (f : X.presheaf.obj (op U)) :
@@ -19,17 +19,15 @@ private theorem valR_eq_valMap {A : Type} [CommRing A] {X : Scheme} (x : Sp A �
   simp only [valR, dif_pos h, GlobalTheory.Points.valMap, CommRingCat.hom_comp, RingHom.comp_apply]
 
 /- English proof (translation)
-Introduce `Ω _ _ r p`. Set `y0 : Sp Ω` to `(default : PrimeSpectrum Ω)`. Take `⟨i, hi0⟩` from `GlobalTheory.ProjSpace.exists_mem_chart ℚ r (p.base y0)`. Establish `hi : ⊤ ≤ (TopologicalSpace.Opens.map p.base).obj (GlobalTheory.ProjSpace.chart ℚ r i)`. Introduce `y _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : y = y0` using `Subsingleton.elim (α := PrimeSpectrum Ω) y y0`. Substitute `hy` using the available equality. Conclude with `hi0`. Use `set t : Fin (r + 1) → Ω := fun j => valR p (GlobalTheory.ProjSpace.chart ℚ r i) (GlobalTheory.ProjSpace.ratio ℚ r i j) with ht_def`. Establish `hti : t i = 1`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ht_def, valR_eq_valMap p _ hi]`. Rewrite using `[show GlobalTheory.ProjSpace.ratio ℚ r i i = 1 from GlobalTheory.ProjSpace.ratioOn_self]`. Conclude with `map_one _`. Establish `hti0 : t i ≠ 0` using `by rw [hti]; exact one_ne_zero`. Establish `htne : t ≠ 0` using `fun h => hti0 (congr_fun h i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, htne, ?_⟩` and prove the remaining obligations. Establish `hq : ⊤ ≤ (TopologicalSpace.Opens.map (point ℚ t htne).base).obj (GlobalTheory.ProjSpace.chart ℚ r i)` using `(GlobalTheory.TuplePoint.le_point_preimage_iff i).2 hti0`. Use `GlobalTheory.Points.ext_of_valR (GlobalTheory.ProjSpace.isAffineOpen_chart ℚ r i) hi hq ?_` and prove the remaining obligations. Introduce `f`. Take `⟨P, rfl⟩` from `GlobalTheory.ProjSpace.aeval_ratio_surjective ℚ r i f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[valR_eq_valMap p _ hi, valR_eq_valMap _ _ hq]`. Establish `key : (GlobalTheory.Points.valMap p _ hi).hom.comp (MvPolynomial.aeval (R` using `ℚ) (GlobalTheory.ProjSpace.ratio ℚ r i)).toRingHom = (GlobalTheory.Points.valMap (point ℚ t htne) _ hq).hom.comp (MvPolynomial.aeval (R := ℚ) (GlobalTheory.ProjSpace.ratio ℚ r i)).toRingHom := by`. Use `MvPolynomial.ringHom_ext' (RingHom.ext_rat _ _) ?_` and prove the remaining obligations. Introduce `j`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_X]`.
-
-Rewrite using `[← valR_eq_valMap p _ hi, ← valR_eq_valMap _ _ hq, GlobalTheory.TuplePoint.valR_point_ratio hti0 j, hti, div_one]`. Conclude with `RingHom.congr_fun key P`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tuple_eq_point : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (r : ℕ) (p : Sp Ω ⟶ PSpace ℚ r),
     ∃ (x' : Fin (r + 1) → Ω) (hx' : x' ≠ 0), p = point ℚ x' hx' := by

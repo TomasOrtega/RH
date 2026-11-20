@@ -12,9 +12,9 @@ namespace GlobalTheory.LevelLift
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `letI : Algebra K M := io.toAlgebra`. Use `haveI : Nontrivial (M ⊗[K] F) := Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_isDomain K M F io.injective (algebraMap K F).injective`. Take `⟨I, hI⟩` from `Ideal.exists_maximal (M ⊗[K] F)`. Use `letI : Field (M ⊗[K] F ⧸ I) := Ideal.Quotient.field I`. Use `⟨M ⊗[K] F ⧸ I, inferInstance, inferInstance, inferInstance, (Ideal.Quotient.mk I).comp Algebra.TensorProduct.includeRight.toRingHom, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Rewrite using `[IsScalarTower.algebraMap_apply K M (M ⊗[K] F), Ideal.Quotient.mk_algebraMap]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_field_over (K F M : Type) [Field K] [Field F] [Field M] [Algebra K F] [FiniteDimensional K F]
     (io : K →+* M) :
@@ -34,15 +34,13 @@ theorem exists_field_over (K F M : Type) [Field K] [Field F] [Field M] [Algebra 
   rfl
 
 /- English proof (translation)
-Use `haveI := hf`. Use `haveI := hs`. Use `haveI : Surjective (pullback.snd f y) := inferInstance`. Use `haveI : IsAffine (pullback f y) := isAffine_of_isAffineHom (pullback.snd f y)`. Set `P` to `pullback f y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `g' : Spec Γ(P, ⊤) ⟶ Sp L₀` to `P.isoSpec.inv ≫ pullback.snd f y`. Use `haveI : IsFinite g' := inferInstance`. Take `⟨φ, hφ⟩` from `Spec.map_surjective g'`. Establish `hφf : φ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `infer_instance`. Use `haveI : Nonempty (Sp L₀) := ⟨⟨⊥, Ideal.isPrime_bot⟩⟩`. Take `⟨p, -⟩` from `(pullback.snd f y).surjective (Classical.arbitrary (Sp L₀))`. Use `haveI : Nontrivial Γ(P, ⊤) := PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨P.isoSpec.hom p⟩`. Take `⟨I, hI⟩` from `Ideal.exists_maximal Γ(P, ⊤)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `letI : Field (Γ(P, ⊤) ⧸ I) := Ideal.Quotient.field I`. Use `letI : Algebra L₀ (Γ(P, ⊤) ⧸ I) := ((Ideal.Quotient.mk I).comp φ.hom).toAlgebra`. Establish `hfin : ((Ideal.Quotient.mk I).comp φ.hom).Finite` using `RingHom.Finite.comp (RingHom.Finite.of_surjective _ Ideal.Quotient.mk_surjective) hφf`. Use `⟨Γ(P, ⊤) ⧸ I, inferInstance, inferInstance, hfin, Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ P.isoSpec.inv ≫ pullback.fst f y, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc P.isoSpec.inv]`.
-
-Express the relevant statement in the definitionally equal form `_ ≫ g' ≫ y = _`. Rewrite using `[← hφ, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_point_finite_surjective {X Y : Scheme.{0}} (f : X ⟶ Y) (hf : IsFinite f) (hs : Surjective f)
     (L₀ : Type) [Field L₀] (y : Sp L₀ ⟶ Y) :
@@ -75,27 +73,23 @@ theorem exists_point_finite_surjective {X Y : Scheme.{0}} (f : X ⟶ Y) (hf : Is
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l₂ Xo Xo₂ c hpq hd hA la T io e ho x hx`. Take `⟨r, jK, m, -, -, -, -, -, hrF⟩` from `((GlobalTheory.moduliScheme_levelMaps_heckePoints).2 E H Dw hpq).1 l l₂ Xo Xo₂ hd`. Set `F₂ : IntermediateField ℚ ℂ` to `c.F ⊔ IntermediateField.adjoin ℚ {zeta l₂.M'}`. Establish `hle : c.F ≤ F₂` using `le_sup_left`. Establish `hpos : 0 < l₂.M'` using `Nat.lcm_pos (by have := l₂.three_le; omega) l₂.A_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℚ (zeta l₂.M')` using `((Complex.isPrimitiveRoot_exp l₂.M' hpos.ne').isIntegral hpos).tower_top`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ {zeta l₂.M'}) := IntermediateField.adjoin.finiteDimensional hint`. Establish `hfin : FiniteDimensional ℚ F₂` using `IntermediateField.finiteDimensional_sup _ _`. Establish `hKA : KA l₂ = KA l` using `by unfold KA; rw [hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c₂ : Coeff l₂` to `{ F := F₂, fin := hfin, conj := fun τ a => hle (c.conj τ a), zeta_mem := le_sup_right (a := c.F) (IntermediateField.subset_adjoin ℚ _ rfl), le := hKA ▸ c.le.trans hle }`. Set `c' : Coeff l` to `{ F := F₂, fin := hfin, conj := fun τ a => hle (c.conj τ a), zeta_mem := hle c.zeta_mem, le := c.le.trans hle }`. Take `⟨rF, hr1, hr2, hfinr, -, hsurj, -⟩` from `hrF c' c₂ rfl`. Use `letI : Algebra c.F F₂ := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ c.F F₂ := IsScalarTower.of_algebraMap_eq fun q => by`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `haveI : FiniteDimensional c.F F₂ := Module.Finite.of_restrictScalars_finite ℚ c.F F₂`. Take `⟨L₀, _, _, _, io', hio'⟩` from `exists_field_over c.F F₂ T.Fr io`. Establish `cond : (spMap (algebraMap T.Fr L₀) ≫ x) ≫ Xo.s = spMap io' ≫ spMap (IntermediateField.inclusion c'.le).toRingHom`. Rewrite using `[Category.assoc, hx, Formalism.L2.PjFree.spMap_comp', Formalism.L2.PjFree.spMap_comp']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `congr 1`. Use extensionality with `a`. Establish `h` using `RingHom.congr_fun hio' (IntermediateField.inclusion c.le a)`. Conclude with `h.symm`. Set `z' : Sp L₀ ⟶ Xo.XF c'` to `pullback.lift (spMap (algebraMap T.Fr L₀) ≫ x) (spMap io') cond`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨L, _, _, _, x', hx'⟩` from `exists_point_finite_surjective rF hfinr hsurj L₀ z'`. Use `letI : Algebra T.Fr L := ((algebraMap L₀ L).comp (algebraMap T.Fr L₀)).toAlgebra`. Use `haveI : IsScalarTower T.Fr L₀ L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : FiniteDimensional T.Fr L := Module.Finite.trans L₀ L`. Take `⟨T', iT, e', ψ, φ, he', hv, hψ, hφ, -⟩` from `GlobalTheory.PlaceExtField.exists_cdvr_finite_extension T L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `io₂ : c₂.F →+* T'.Fr` to `ψ.toRingHom.comp ((algebraMap L₀ L).comp io')`. Use `haveI : NumberField c₂.F := { to_charZero := inferInstance, to_finiteDimensional := hfin }`. Take `⟨la₂, e₂, ho₂⟩` from `GlobalTheory.LocalDepthCompare.exists_overLa_of_not_charZero (V := T'.V) io₂ (GlobalTheory.LocalDepthCompare.not_charZero_of_overLa (ho.bc iT he' hv))`. Establish `hid : spMap (IntermediateField.inclusion (le_of_eq (rfl : c'.F = c₂.F))).toRingHom = 𝟙 (Sp c₂.F)`. Establish `: (IntermediateField.inclusion (le_of_eq (rfl : c'.F = c₂.F))).toRingHom = RingHom.id _` using `RingHom.ext fun _ => rfl`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `(congrArg Spec.map (CommRingCat.ofHom_id)).trans (Spec.map_id _)`. Establish `hs : x' ≫ pullback.snd _ _ = spMap ((algebraMap L₀ L).comp io')`. Establish `h` using `congrArg (· ≫ pullback.snd _ _) hx'`. Simplify using `only [Category.assoc, hr2, pullback.lift_snd, z'] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hid, Category.comp_id]`. Rewrite using `[h, Formalism.L2.PjFree.spMap_comp']`. Establish `hf : x' ≫ pullback.fst _ _ ≫ r = spMap (algebraMap T.Fr L) ≫ x`. Establish `h` using `congrArg (· ≫ pullback.fst _ _) hx'`. Simplify using `only [Category.assoc, hr1, pullback.lift_fst, z'] at h`.
-
-Rewrite using `[h, ← Category.assoc, Formalism.L2.PjFree.spMap_comp']`. Use `⟨c₂, la₂, T', iT, φ, e', io₂, e₂, spMap ψ.toRingHom ≫ x' ≫ pullback.fst _ _, r, m, he', hv, hφ, ho₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc x', hs, ← Category.assoc, Formalism.L2.PjFree.spMap_comp', Formalism.L2.PjFree.spMap_comp']`. Rewrite using `[Category.assoc, Category.assoc, hf, ← Category.assoc, Formalism.L2.PjFree.spMap_comp']`. Establish `hc : ψ.toRingHom.comp (algebraMap T.Fr L) = iT` using `RingHom.ext fun a => hψ a`.
-
-Rewrite using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_to_finer_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l l₂ : Level H) (Xo : Moduli Dw l) (Xo₂ : Moduli Dw l₂) (c : Coeff l), 1 ≤ Dw.p + Dw.q → l.Dvd l₂ → l₂.A = l.A → ∀ (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la T.V io e → ∀ (x : Sp T.Fr ⟶ Xo.X), x ≫ Xo.s = spMap (io.comp (IntermediateField.inclusion c.le).toRingHom) → ∃ (c₂ : Coeff l₂) (la₂ : HeightOneSpectrum (𝓞 c₂.F)) (T' : CDVR) (iT : T.Fr →+* T'.Fr) (φ : T.V →+* T'.V) (e' : ℕ) (io₂ : c₂.F →+* T'.Fr) (e₂ : ℕ) (x₂ : Sp T'.Fr ⟶ Xo₂.X) (r : Xo₂.X ⟶ Xo.X) (_ : SABMap Xo₂.univ.t Xo.univ.t r), 0 < e' ∧ (∀ a : T.Fr, vV T'.V (iT a) = (e' : ℤ) * vV T.V a) ∧ (∀ a : T.V, algebraMap T'.V T'.Fr (φ a) = iT (algebraMap T.V T.Fr a)) ∧ OverLa la₂ T'.V io₂ e₂ ∧ x₂ ≫ Xo₂.s = spMap (io₂.comp (IntermediateField.inclusion c₂.le).toRingHom) ∧ x₂ ≫ r = spMap iT ≫ x := by
   intro E _ _ _ H Dw l l₂ Xo Xo₂ c hpq hd hA la T io e ho x hx
